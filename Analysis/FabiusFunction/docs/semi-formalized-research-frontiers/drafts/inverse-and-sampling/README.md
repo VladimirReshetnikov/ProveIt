@@ -26,6 +26,20 @@ New standalone intake members:
   It remains standalone pending post-publication assessment and a Lean
   crosswalk; manuscript labels do not establish Lean verification.
 
+- [`geometric_comb_interpolation_report-3/`](geometric_comb_interpolation_report-3/),
+  *Interpolation on a Geometric Comb: Lagrange Filters, Jackson--Newton
+  Series, q-Analogues, and the Fabius--Rvachev Bridge* (36 pp), arrived on
+  2026-08-30 from `geometric_comb_interpolation_report-3.zip` (outer SHA-256
+  `89c9de31b9b78b614c13d5a3ff24ae41b73ef6704a9daef77ba724b396e90fa0`).
+  All 20 submitted payload hashes verified; four CSV entries were refreshed
+  after CRLF-to-LF repository normalization. This is a distinct later
+  arrival, not a byte duplicate of `geometric_comb_interpolation_report/`,
+  and is filed in a collision-safe wrapper without superseding that package.
+  The A4 report retains 11 embedded Type-3 plot-font rows. It remains
+  unreviewed pending post-publication reconciliation with the earlier report
+  and a claim-by-claim Lean crosswalk; manuscript labels do not establish
+  Lean verification.
+
 - [`Inverse_Fabius_Computability_Report/`](Inverse_Fabius_Computability_Report/),
   *Computability of the Inverse Fabius Function* (29 pp), arrived on
   2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (outer SHA-256
