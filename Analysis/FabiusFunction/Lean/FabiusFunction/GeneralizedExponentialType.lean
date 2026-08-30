@@ -9,10 +9,10 @@ The exponents volume defines
 the law whose characteristic function is `Φ_a`.
 Before this module, the corpus had the number
 (`NewtonBasisGeneratingFunction` computes `A_P(1/2)`) but nothing
-connecting it to the size of `Φ_a`, and the volume recorded the
-identification as unformalized because it "would need the *support*
-statement ... an analytic and probabilistic fact about the associated
-random variable".
+connecting it to the size of `Φ_a`, and it still does not identify that
+number as the support radius of a formalized probability law; that
+identification requires the volume's support theorem for the associated
+random variable.
 
 Half of that is analytic and needs no probability at all.  By
 Paley–Wiener, a compactly supported law on `[-R, R]` has a
@@ -27,10 +27,9 @@ for every `z : ℂ`.
 Together with the separately proved entirety in
 `GeneralizedRvachevEntire.lean`, this gives order at most `1` and type
 at most `2π R_a`; the bound has exactly the normalization predicted by
-the support reading.  What is
-*not* proved is the converse — that the type is not smaller, and that
-the law is supported on `[-R_a, R_a]` — which does need the
-probabilistic side.
+the support reading.  What is *not* proved is the converse — that the
+type is not smaller, and that the law is supported on `[-R_a, R_a]` —
+which does need the probabilistic side.
 
 The estimate rests on one sharp inequality, and sharpness matters:
 any constant `C > 1` in `‖sinc w‖ ≤ C e^{‖w‖}` would compound to
@@ -153,12 +152,13 @@ theorem prod_norm_generalizedSincFactor_le (a : ℕ → ℕ)
 
 `‖Φ_a(z)‖ ≤ exp (π ‖z‖ · ∑_h a_h 2^{-h})`.
 
-The sum in the display is `A_a(1/2)`, twice the volume's candidate support
-radius `R_a`.  Together with `generalizedRvachevProduct_differentiable`
-from `GeneralizedRvachevEntire.lean`, the bound gives an entire function of
+The sum in the display is `A_a(1/2)`, twice the volume's support-radius
+quantity `R_a = (1/2) ∑_h a_h 2^{-h}`.  Together with
+`generalizedRvachevProduct_differentiable` from
+`GeneralizedRvachevEntire.lean`, the bound gives an entire function of
 order at most one and type at most `2π R_a` — the analytic half of the
-support normalization.  The converse half, that the law really is
-supported there, is not addressed. -/
+support normalization.  The converse half, that a corresponding law
+really is supported there, is not addressed. -/
 theorem norm_generalizedRvachevProduct_le_exp (a : ℕ → ℕ)
     (ha : Summable fun h : ℕ => (a h : ℝ) / 2 ^ h) (z : ℂ) :
     ‖generalizedRvachevProduct a z‖

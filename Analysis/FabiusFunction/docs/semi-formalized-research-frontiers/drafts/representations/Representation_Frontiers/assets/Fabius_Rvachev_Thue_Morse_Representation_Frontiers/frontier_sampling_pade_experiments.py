@@ -498,7 +498,7 @@ def generate_all(output_dir: Path) -> None:
     # Half-lattice coefficients.
     coeffs = [half_lattice_coefficient(k) for k in range(128)]
     with (data_dir / "half_lattice_coefficients.csv").open("w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
+        writer = csv.writer(f, lineterminator="\n")
         writer.writerow(["k", "epsilon_k", "tau_k", "c_k=Phi(k+1/2)", "-log_abs_c_k"])
         for k, ck in enumerate(coeffs):
             writer.writerow([
@@ -553,7 +553,7 @@ def generate_all(output_dir: Path) -> None:
             target = mp.mpf("0.5") if r == 0 else mp.mpf(0)
             cancellation_rows.append([K, r, mp.nstr(value, 40), mp.nstr(abs(value - target), 30)])
     with (data_dir / "weighted_cancellations.csv").open("w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
+        writer = csv.writer(f, lineterminator="\n")
         writer.writerow(["truncation_K", "r", "partial_sum", "absolute_error"])
         writer.writerows(cancellation_rows)
 
@@ -562,7 +562,7 @@ def generate_all(output_dir: Path) -> None:
     jacobi = formal_jacobi_data(max_degree)
     recursive_b = expected_b_from_dyadic_recursion(max_degree - 1)
     with (data_dir / "formal_jacobi_coefficients.csv").open("w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
+        writer = csv.writer(f, lineterminator="\n")
         writer.writerow(["n", "a_n", "b_n", "h_n"])
         for n in range(max_degree):
             b_n = None if n == 0 else jacobi.subdiagonal[n]
@@ -624,7 +624,7 @@ def generate_all(output_dir: Path) -> None:
     # Exact moments and Mellin checks.
     moments = exact_up_moments(160)
     with (data_dir / "up_even_moments.csv").open("w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
+        writer = csv.writer(f, lineterminator="\n")
         writer.writerow(["order", "moment_exact", "moment_decimal"])
         for n in range(0, 41, 2):
             q = moments[n]

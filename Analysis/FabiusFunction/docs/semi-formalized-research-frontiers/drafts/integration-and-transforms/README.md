@@ -4,7 +4,7 @@ Antiderivatives, integral calculus, transform dualities, and fractional
 calculus of the Fabius–Rvachev system, consolidated (2026-08-28) into
 the single volume
 [`Integration_and_Transform_Frontiers/`](Integration_and_Transform_Frontiers/)
-(369 pp, twelve parts):
+(371 pp, twelve parts):
 
 - **Part I** — *Antiderivatives of Monomially Weighted Fabius-Type
   Functions* (formerly `Fabius_Antiderivatives_Report/`);
@@ -42,21 +42,31 @@ asset paths mechanically prefixed per part; no mathematical content
 altered) and their directories deleted; provenance with SHA-256 hashes
 is recorded in the volume itself, and git history is the archive.
 
-The current ordinary Cauchy–Stieltjes layer is formalized across
-`CauchyTransform.lean`, `CauchyCDF.lean`, `CauchySurvival.lean`,
-`CauchyHigherPowers.lean`, the `Stieltjes*.lean` modules,
-`PoissonApproximateIdentity.lean`, `PoissonMassSwap.lean`,
-`OrthogonalPolynomialJacobi.lean`, and `CauchyRenormalization.lean`. It includes
-the report-oriented unit and up-law transforms and affine bridge; CDF and
-survival integration by parts at every positive resolvent power; real
-logarithmic and real-order resolvent hierarchies; real and complex exterior
-Laurent expansions; finite-height Herglotz–Poisson identities; integrated
-interval Stieltjes–Perron inversion; initial exact Jacobi data; and the up-law
-derivative DDE with its all-order finite Thue–Morse orbit. A direct named
-unit-interval Stieltjes DDE, complex logarithmic continuation, named
-Laplace/Fourier forms, complex order, pointwise/nontangential Plemelj and
-principal-value Hilbert-transform formulas, the full J-fraction/Padé package,
-and a separate higher-kernel integral form of the Thue–Morse orbit remain open.
+The current ordinary Cauchy–Stieltjes foundation starts in
+`MeasureCauchyTransform.lean`, which packages oriented transforms and every
+kernel power, affine naturality, slit-domain calculus, and the DDE/adjacent
+power recurrence of an arbitrary uniform affine fixed-point measure.  The law
+need not be normalized and its invariant carrier needs no topology or
+measurability.  `GeometricUniformCauchy.lean` specializes this to every
+nonzero real `|q| < 1`, including negative ratios.  `CauchyTransform.lean`
+then gives the canonical unit and centered transforms and powers, their
+measure/density forms, the transform and all-power affine bridges, the direct
+named unit equation `S'(z) = 4(S(2z) - S(2z - 1))`, and both complex-slit
+adjacent-power recurrences.  `CauchyCDF.lean`, `CauchySurvival.lean`, and
+`CauchyHigherPowers.lean` supply atom-exact CDF/survival integration by parts
+at every positive kernel power; `CauchyRenormalization.lean` supplies the
+centered DDE and its all-order finite Thue--Morse orbit.
+
+The merged `Stieltjes*.lean`, `PoissonApproximateIdentity.lean`,
+`PoissonMassSwap.lean`, and `OrthogonalPolynomialJacobi.lean` modules also
+prove the real logarithmic fixed point and positive integer hierarchy for
+`z > 1`, real order lowering for `α > 1`, real/complex exterior Laurent
+series, finite-height Herglotz--Poisson identities, integrated interval
+Stieltjes--Perron inversion, and initial exact Jacobi data.  Complex
+logarithmic continuation, named Laplace/Fourier forms, complex order,
+pointwise/nontangential Sokhotski--Plemelj and principal-value Hilbert
+formulas, the separate explicit Thue--Morse higher-kernel integral identity,
+and the full J-fraction/Padé theory remain open.
 
 Part VI's positive-real causal Rvachev primitive and semigroup are now exact
 Lean theorems.  `FabiusFractionalVolterra.lean` defines the total
@@ -65,5 +75,8 @@ Lean theorems.  `FabiusFractionalVolterra.lean` defines the total
 proves additive composition of positive real orders on `x ≥ -1`.  The
 transform and tail series, endpoint-moment and shifted-lattice formulas,
 complex orders, and fractional derivatives remain frontier claims.
+
+The independent 2026-08-28 `Fabius_Integral_Transforms_Report` arrival is now
+absorbed as Part XII; it is no longer an unmerged member.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.

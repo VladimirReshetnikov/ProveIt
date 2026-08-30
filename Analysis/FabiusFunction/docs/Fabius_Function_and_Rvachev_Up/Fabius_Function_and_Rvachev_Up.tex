@@ -122,11 +122,12 @@
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Integrated repository snapshot: 29 August 2026\\
-\small Cauchy/complex-product checkpoint \nolinkurl{a81a13b46};
+\small Historical Cauchy/complex-product checkpoint \nolinkurl{a81a13b46};
 CDF/implicit checkpoint \nolinkurl{e6f535e5d};
 affine-law checkpoint \nolinkurl{d312c0603};\\
-fractional-cutoff checkpoint \nolinkurl{149332f9d};
-inverse-layer-cake checkpoint \nolinkurl{37eab3c56}}
+\small fractional-cutoff checkpoint \nolinkurl{149332f9d};
+inverse-layer-cake checkpoint \nolinkurl{37eab3c56};
+current-tree affine Cauchy-power tranche}
 
 \begin{document}
 \maketitle
@@ -1599,7 +1600,10 @@ construction remain outside the formal API.  So do a named centered \(q\)-family
 derivative hierarchy and explicit endpoint-flatness wrappers, shape theorems, further
 transform formulas, and explicit Bernoulli-cumulant/Bell-moment formulas and asymptotics.
 The probability-law fixed point itself is uniquely characterized by
-\Cref{cor:geometric-uniform-law-unique}.
+\Cref{cor:geometric-uniform-law-unique}.  The oriented Cauchy transform and its
+adjacent-power hierarchy are also formal for every nonzero \(|q|<1\), including negative
+ratios, in \path{GeometricUniformCauchy.lean}; these are distinct from the still-open
+characteristic-function-to-infinite-product and Fourier-inversion formulas just listed.
 
 \subsection{Finite atomic laws and weak convergence}
 
@@ -2338,6 +2342,17 @@ public declarations are
 Here \(q\in\C\) and \(\lVert q\rVert<1\) are the exact hypotheses on every
 generic convergence, holomorphy, Mahler, zero-orbit, meromorphy, and reflection
 statement; normalization at zero itself needs no contraction hypothesis.
+
+At every reciprocal integer scale, \path{ReciprocalIntegerGammaZeros.lean}
+exposes four public theorems:
+\lean{norm_inv_natCast_lt_one},
+\lean{geometricReciprocalGamma_inv_natCast_eq_zero_iff},
+\lean{geometricReciprocalGamma_inv_natCast_ne_zero_of_nonneg}, and
+\lean{geometricGamma_inv_natCast_meromorphic}.  For \(b\ge2\), the entire product
+\(G_{1/b}\) vanishes exactly at the embedded strictly negative natural numbers,
+independently of \(b\), is nonzero at every embedded nonnegative natural number,
+and its pointwise inverse is meromorphic.  This closes the integer-base zero set,
+but not the multiplicity of those zeros.
 
 Finally, \path{DyadicGammaOrder.lean} exposes eight public declarations:
 \lean{dyadicReciprocalGamma_eq_zero_iff},
@@ -4133,6 +4148,22 @@ identity
 \end{equation}
 namely \lean{factorial_padicVal_two}; the combined declaration is
 \lean{fabiusAtInverseTwoPow_padicVal_two_closed} in \path{TwoAdic.lean}.
+
+The central-binomial specialization gives, for every \(n\ge0\),
+\begin{align}
+ \nu_2\!\binom{2n}{n}&=\wt(n),
+                                                   \label{eq:central-binomial-valuation}\\
+ \varepsilon_n&=(-1)^{\nu_2\binom{2n}{n}}.
+                                                   \label{eq:central-binomial-sign}
+\end{align}
+These are \lean{padicValNat_two_centralBinom} and
+\lean{thueMorseSign_eq_neg_one_pow_centralBinom}.  The companion theorem
+\lean{padicValNat_two_centralBinom_eq_zero_iff} says that the valuation
+vanishes exactly when the binary weight is zero, hence only at \(n=0\);
+a positive power of two has binary weight, and therefore valuation, one.
+These three declarations exhaust the public surface of
+\path{CentralBinomialValuation.lean} and give the direct formal crosswalk for
+the central-binomial theorem in the Thue--Morse atlas.
 
 \subsection{Bernoulli recurrences}
 
@@ -7882,7 +7913,10 @@ That rule explains several choices made above:
       Fourier inversion, centered packaging, closed
       higher-derivative and endpoint-flatness wrappers, shape results, further transforms,
       and explicit Bernoulli-cumulant/Bell-moment formulas and asymptotics remain outside
-      this interface.
+      this interface.  The exact-support oriented transform DDE and adjacent Cauchy-power
+      recurrence for every nonzero \(|q|<1\), including negative ratios, are direct theorems
+      of \path{GeometricUniformCauchy.lean}; these are distinct from the still-open
+      characteristic-function-to-infinite-product and Fourier-inversion formulas.
 \item Quantile transport is formal at the measure level first for arbitrary real
       probability laws, with no support or range restriction and an almost-everywhere
       sublevel characterization; a compact pointwise specialization feeds the clamped
@@ -8011,6 +8045,97 @@ now a map of proved mathematics.  Research claims can move back from the frontie
 a matching Lean theorem exists, with the same hypotheses, domain, normalization, endpoint
 convention, and conclusion.
 
+\section{Affine Cauchy--Stieltjes calculus}
+\label{sec:cauchy-calculus}
+
+The current library packages the report-oriented kernel without tying it to a particular
+probability law.  For a finite real measure \(\mu\), write
+\[
+ \mathcal C_\mu(z)=\int_{\R}\frac{\dd\mu(x)}{z-x},
+ \qquad
+ \mathcal P_{\mu,n}(z)=\int_{\R}(z-x)^{-n}\dd\mu(x).
+\]
+These are \lean{measureCauchyTransform} and \lean{measureCauchyPower}, on the natural open
+domain \lean{measureCauchyDomain}.  Their integral, index-one, affine-pushforward,
+open-domain, derivative, and holomorphy declarations are, respectively,
+\lean{measureCauchyTransform_apply}, \lean{measureCauchyPower_one},
+\lean{measureCauchyPower_map_affine}, \lean{measureCauchyTransform_map_affine},
+\lean{isOpen_measureCauchyDomain}, \lean{hasDerivAt_measureCauchyTransform}, and
+\lean{analyticOn_measureCauchyTransform}.  The affine identities are total under Lean's
+Bochner-integral convention and allow every nonzero real scale, including a negative one.
+
+The reusable fixed-point interface assumes only that \(\mu\) is finite, its support lies in
+a carrier \(K\), the map \((u,x)\mapsto c+au+bx\) preserves \(K\), both \(a\) and \(b\)
+are nonzero, and
+\[
+ \mu=\bigl(\operatorname{Unif}[0,1]\times\mu\bigr)_*
+       (u,x\mapsto c+au+bx).
+\]
+It requires no probability normalization and no closedness, compactness, measurability, or
+nonemptiness assumption on \(K\).  Off the complexification of that carrier, the direct
+named theorems \lean{hasDerivAt_measureCauchyTransform_of_uniformAffineFixedPoint} and
+\lean{measureCauchyPower_succ_of_uniformAffineFixedPoint} give
+\[
+ \mathcal C_\mu'(z)=\frac{1}{ab}
+ \left(\mathcal C_\mu\!\left(\frac{z-c}{b}\right)
+      -\mathcal C_\mu\!\left(\frac{z-c-a}{b}\right)\right)
+\]
+and, for \(n\ge1\),
+\[
+ \mathcal P_{\mu,n+1}(z)=\frac{1}{nab^n}
+ \left(\mathcal P_{\mu,n}\!\left(\frac{z-c-a}{b}\right)
+      -\mathcal P_{\mu,n}\!\left(\frac{z-c}{b}\right)\right).
+\]
+
+For the geometric uniform law the definitions
+\lean{geometricUniformStieltjesDomain}, \lean{geometricUniformStieltjesTransform}, and
+\lean{geometricUniformStieltjesPower} are total in real \(q\).  Their remaining direct
+public declarations are \lean{geometricUniformStieltjesTransform_apply},
+\lean{geometricUniformStieltjesPower_one},
+\lean{isOpen_geometricUniformStieltjesDomain},
+\lean{analyticOn_geometricUniformStieltjesTransform},
+\lean{hasDerivAt_geometricUniformStieltjesTransform_refinement}, and
+\lean{geometricUniformStieltjesPower_succ}.  Holomorphy assumes \(|q|<1\); the divided
+differential and adjacent-power equations also assume \(q\ne0\).  Their proofs use the
+exact series range as invariant carrier, so negative ratios are included.  The case \(q=0\)
+is excluded only from the divided formulas.
+
+At \(q=1/2\), for every bounded Fabius solution, the canonical unit and centered
+hierarchies are related by the direct named all-order bridge
+\[
+ S_n(z)=2^nR_n(2z-1).
+\]
+\begin{center}
+\footnotesize\lean{fabiusStieltjesPower_eq_two_pow_mul_rvachevCauchyPower}
+\end{center}
+The module \path{CauchyTransform.lean} contains six public definitions:
+\lean{rvachevCauchyDomain}, \lean{fabiusStieltjesDomain},
+\lean{rvachevCauchyTransform}, \lean{fabiusStieltjesTransform},
+\lean{rvachevCauchyPower}, and \lean{fabiusStieltjesPower}.  Its direct theorem surface is
+\lean{rvachevCauchyTransform_apply}, \lean{fabiusStieltjesTransform_apply},
+\lean{rvachevCauchyPower_one}, \lean{fabiusStieltjesPower_one},
+\lean{rvachevCauchyTransform_eq_integral_rvachevUp},
+\lean{isOpen_rvachevCauchyDomain}, \lean{isOpen_fabiusStieltjesDomain},
+\lean{hasDerivAt_rvachevCauchyTransform},
+\lean{hasDerivAt_fabiusStieltjesTransform},
+\lean{analyticOn_rvachevCauchyTransform},
+\lean{analyticOn_fabiusStieltjesTransform},
+\lean{fabiusStieltjesTransform_eq_two_mul_rvachevCauchyTransform},
+\lean{rvachevCauchyTransform_eq_inv_two_mul_fabiusStieltjesTransform}, the all-order bridge
+above, \lean{hasDerivAt_fabiusStieltjesTransform_refinement},
+\lean{fabiusStieltjesPower_succ}, and \lean{rvachevCauchyPower_succ}.
+In particular, the unit-interval equation
+\(S'(z)=4(S(2z)-S(2z-1))\) and both adjacent-order recurrences on their complex slit
+domains are now direct named results, not merely informal consequences of affine transport.
+
+This closure does not supply a complex logarithmic fixed point, complex order,
+pointwise or nontangential Sokhotski--Plemelj limits, a principal-value Hilbert-transform
+identity, or the full Jacobi/Pad\'e theory.  Separate current modules do prove the real
+logarithmic identity for \(z>1\), real order lowering for \(\alpha>1\), exterior Laurent
+series, finite-height Herglotz--Poisson identities, integrated interval
+Stieltjes--Perron inversion, and initial exact Jacobi data; none of those statements is read
+as one of the stronger boundary or continuation claims just listed.
+
 \appendix
 
 \section{Lean module map}
@@ -8030,10 +8155,10 @@ Definitions, existence, uniqueness &
 Shape and regularity &
 \path{Differential.lean}, \path{Monotonicity.lean}, \path{Convexity.lean},
 \path{Regularity.lean}\\
-Probability, weighted-law naturality, absolute continuity, exact support, affine recursion,
-and contractive affine-law uniqueness,
-quantile transport, survival/CDF layer cake, fractional stopped powers, Cauchy--CDF
-calculus and renormalization, and finite approximants &
+Probability, weighted-law naturality, absolute continuity, exact support and affine recursion,
+contractive affine-law uniqueness, geometric sinc-prefix factorization, quantile transport,
+survival/CDF layer cake, fractional stopped powers, affine Cauchy--Stieltjes calculus,
+renormalization, Laurent/Herglotz/inversion layers, initial Jacobi data, and finite approximants &
 \path{WeightedUniformSeries.lean}, \path{WeightedUniformDistribution.lean},
 \path{WeightedUniformSupport.lean}, \path{GeometricUniformLaw.lean},
 \path{AffineIndependentCopy.lean}, \path{GeometricUniformUniqueness.lean},
@@ -8044,8 +8169,14 @@ calculus and renormalization, and finite approximants &
 \path{SurvivalLayerCake.lean}, \path{CDFLayerCake.lean},
 \path{FractionalCDFLayerCake.lean}, \path{FabiusFractionalIntegral.lean},
 \path{InverseLayerCake.lean}, \path{InversePairIntegral.lean},
+\path{MeasureCauchyTransform.lean}, \path{GeometricUniformCauchy.lean},
 \path{CauchyTransform.lean}, \path{CauchyCDF.lean},
-\path{CauchyRenormalization.lean},
+\path{CauchySurvival.lean}, \path{CauchyHigherPowers.lean},
+\path{CauchyRenormalization.lean}, \path{StieltjesLogFixedPoint.lean},
+\path{StieltjesResolventHierarchy.lean}, \path{StieltjesGeneralizedOrder.lean},
+\path{StieltjesMomentLaurent.lean}, \path{StieltjesCauchyTransform.lean},
+\path{StieltjesHerglotz.lean}, \path{StieltjesInversion.lean},
+\path{StieltjesPerron.lean}, \path{OrthogonalPolynomialJacobi.lean},
 \path{EarlyApproximants.lean},
 \path{EarlyMeasureBridge.lean}, \path{WeakConvergence.lean},
 \path{ProbabilityLaplaceMoments.lean}, \path{LaplaceMoments.lean},
@@ -8067,7 +8198,7 @@ Fourier analysis &
 \path{BirkhoffVariance.lean}, \path{BirkhoffProductBridge.lean}\\
 Summable-scale products and geometric reciprocal-Gamma factorization &
 \path{ScaledInfiniteProducts.lean}, \path{GeometricReciprocalGamma.lean},
-\path{DyadicGammaOrder.lean}\\
+\path{ReciprocalIntegerGammaZeros.lean}, \path{DyadicGammaOrder.lean}\\
 Reciprocal-Gamma first jets and the Thue--Morse Gamma tower &
 \path{ReciprocalGammaJets.lean}, \path{ThueMorseGammaTower.lean}\\
 Local all-order jet calculus &
@@ -8096,7 +8227,8 @@ Moments and exact arithmetic &
 \path{BernoulliRecurrences.lean}, \path{MomentCumulantAlgebra.lean},
 \path{PolynomialExpectationCumulant.lean},
 \path{WeightedScaleMultiplicity.lean},
-\path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean}\\
+\path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean},
+\path{CentralBinomialValuation.lean}\\
 Universal exponential, Bell, and endpoint-transfer algebra &
 \path{SaddleExpansionAlgebra.lean}, \path{ExponentialPartition.lean},
 \path{ExponentialBell.lean},
@@ -8354,10 +8486,13 @@ pointwise-$C^1$ inverse layer-cake APIs, and the real- or complex-weighted
 arbitrary-$L^1$/real-absolutely-continuous Fabius wrapper were compiler-validated at
 checkpoint \texttt{37eab3c56cb28ab702878d71f7d1a87791adea44}.
 \newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/37eab3c56cb28ab702878d71f7d1a87791adea44/Analysis/FabiusFunction}.
-\newblock The integrated source additionally contains the atom-exact Cauchy--CDF
-integration-by-parts layer and the exact Rvachev Cauchy-transform DDE/all-order
-Thue--Morse orbit in \path{CauchyCDF.lean} and \path{CauchyRenormalization.lean}; it does
-not export a named Stieltjes DDE or boundary/Plemelj theorem.
+\newblock The current integrated source additionally contains the generic affine
+finite-measure Cauchy calculus, the general geometric-uniform transform and power
+hierarchies, the atom-exact CDF/survival higher-power formulas, the named dyadic
+unit-interval Stieltjes DDE, both complex-slit adjacent-power recurrences, and the exact
+centered Rvachev DDE/all-order Thue--Morse orbit.  Its inversion layer is an integrated
+interval Stieltjes--Perron theorem, not a pointwise or nontangential boundary/Plemelj
+formula.
 \newblock The generic three-theorem continuous-CDF bridge, the two-definition/twenty-five-
 theorem geometric-uniform CDF and smooth-density interface, the half-base Fabius/Rvachev
 bridges, and the one-definition/eight-theorem formal implicit-root engine are included in

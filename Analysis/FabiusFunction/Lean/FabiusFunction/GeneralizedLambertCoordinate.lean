@@ -32,10 +32,11 @@ already in that line; what remains is only to choose `u` so that
 `x / (C p) ≥ 0`.
 
 The current theorem carries the open-interval hypothesis `(-e⁻¹, 0)`
-explicitly rather than deriving it.  The defining identity also holds
-at the endpoint `-e⁻¹`, but that broader closed-endpoint API is not
-used here; deciding which `x` satisfy the theorem's hypothesis is a
-question about `C`, `p` and `q` that the volume answers by context.
+explicitly rather than deriving it: its proof uses that version of the
+lower-branch defining equation.  The identity also holds at the endpoint
+`-e⁻¹`, but that broader closed-endpoint API is not used here.  Deciding
+which `x` satisfy the theorem's hypothesis is a question about `C`, `p`
+and `q` that the volume answers by context, not by a formula.
 
 * `Fabius.generalizedLambertCoordinate` — `λ_P`, at `q = p - 1`;
 * `Fabius.pow_mul_exp_neg_lambert` — **the core identity**, free of

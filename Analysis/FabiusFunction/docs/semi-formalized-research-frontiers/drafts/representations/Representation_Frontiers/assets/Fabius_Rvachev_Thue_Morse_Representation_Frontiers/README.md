@@ -30,8 +30,9 @@ Fabius–Rvachev–Thue–Morse System**.
 - `generated/figures/` contains PDF and PNG versions of the four second-wave figures.
 - `figures/` and the two root-level Jacobi PDFs are compile-ready copies used by
   the LaTeX source.
-- `source_audit/` preserves the principal living/formula-atlas sources used for
-  theorem-level comparison. The complete path inventory is in the ledger.
+- The historical ledger below preserves the hashes of the deleted
+  `source_audit/` copies used for theorem-level comparison. The complete path
+  inventory is in `corpus_inventory.tex`.
 
 ## Principal corpus-relative results
 
@@ -84,5 +85,20 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error \
 ```
 
 The archive already contains every input needed for a clean compilation.
+
+## Historical deleted source-audit ledger
+
+The six source-audit copies below were removed during consolidation and are no
+longer active package files.  Their last archived SHA-256 values are preserved
+here; git history remains the byte-for-byte archive.
+
+```text
+be9b986264c626fffb889ffdac53c49f28ff78cbeabb87e376b5927667bc7b7b  source_audit/Consolidated_Formula_Atlas_for_the_Thue_Morse_Sequence.tex
+4c90d3a51eff3812c4248e4ffe37ba4e9ea8e06a00bee89db390dfc0b69309f3  source_audit/Fabius_Function_and_Rvachev_Up.tex
+027ba4ded88535b8e3f8a18a6ce0f15ea10e0b9f29ec0a8e80f54c430053fc42  source_audit/Fabius_Rvachev_Thue_Morse_Frontier_Results.tex
+b88b32f94dc3bcfe875705000d9e47386cab0b71ba43425dc68cd363bf35b439  source_audit/Thue_Morse_Formula_Atlas.tex
+a00f1cae980ac4e2a15600b68f55d5688b71c30a41bf8ed9898930177f7ab1e8  source_audit/fabius-q-special-functions.tex
+8fdba498ec33cde2db9e7dc82c0c928946f632beb8a0ffd216afe310eaea0ea2  source_audit/prior_representation_report.tex
+```
 
 > **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Representation_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

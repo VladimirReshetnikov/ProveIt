@@ -13,9 +13,10 @@ them look missing.
 Exit status is 1 when anything is unresolved, so this can gate a commit.
 """
 import io, os, re, sys
+from pathlib import Path
 
-DOCS = os.path.dirname(os.path.abspath(__file__))
-LEAN = os.path.normpath(os.path.join(DOCS, '..', '..', 'Lean', 'FabiusFunction'))
+DOCS = Path(__file__).resolve().parent
+LEAN = DOCS.parent.parent / 'Lean' / 'FabiusFunction'
 
 DECL = re.compile(
     r'^\s*(?:@\[[^\]]*\]\s*)?'
