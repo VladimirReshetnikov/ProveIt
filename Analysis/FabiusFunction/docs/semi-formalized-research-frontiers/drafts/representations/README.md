@@ -67,7 +67,8 @@ New standalone intake members:
   Libertinus prose, incomplete PDF metadata, and Type-3 plot fonts remain
   explicit post-intake normalization work.
 - [`Fabius_Rvachev_New_Frontiers-2/`](Fabius_Rvachev_New_Frontiers-2/),
-  *Fabius--Rvachev New Frontiers* (35 pp), arrived on 2026-08-30 from a
+  *Fabius--Rvachev New Frontiers* (36 pp; 2539 source lines), arrived on
+  2026-08-30 from a
   rootless archive with all 15 payload checksums verified. Its native up-law
   orthogonal polynomials, Jacobi and Christoffel reconstruction, rational
   limits and products for pi, Gauss--Pade structure, and Legendre--Gaunt
@@ -81,12 +82,12 @@ New standalone intake members:
   Poisson operators, martingales, nonreversibility certificate, scalar Stein
   kernel, and endpoint asymptotics extend the operator-representation theme.
 
-All four remain standalone pending claim-by-claim Lean crosswalk and deliberate
+All five remain standalone pending claim-by-claim Lean crosswalk and deliberate
 consolidation; paper theorem labels do not by themselves assert Lean status.
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
-[`Representation_Frontiers/`](Representation_Frontiers/) (298 pp,
+[`Representation_Frontiers/`](Representation_Frontiers/) (299 pp;
 eight parts):
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform

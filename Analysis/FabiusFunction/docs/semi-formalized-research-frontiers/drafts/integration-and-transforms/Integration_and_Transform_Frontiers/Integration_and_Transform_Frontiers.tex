@@ -644,7 +644,44 @@ norm-producing moment rather than a \(4\times4\) determinant), \(h_4\)
 (\nolinkurl{Fabius.hankelDet\_four}), and the next two monic orthogonal polynomials
 \(P_3=x^3-\tfrac{19}{75}x\) and \(P_4=x^4-\tfrac{62}{147}x^2+\tfrac{619}{33075}\)
 (\nolinkurl{Fabius.upOrthoPolynomial\_three}, \nolinkurl{Fabius.upOrthoPolynomial\_four}),
-with their pointwise and squared-norm corollaries.  The \emph{moment/Laurent layer} is
+with their pointwise and squared-norm corollaries.  Two further modules close the
+all-degree rational finite-algebra layer.  The zero-definition, six-theorem
+\path{GramStieltjesNaturality.lean} inventory is
+\path{Fabius.momentPairing_map},
+\path{Fabius.map_gramStieltjesNumerator},
+\path{Fabius.map_gramStieltjesPolynomial},
+\path{Fabius.map_gramStieltjesNorm},
+\path{Fabius.map_gramStieltjesJacobiDiagonal}, and
+\path{Fabius.map_gramStieltjesJacobiSubdiagonal}.  These are finite scalar-base-change
+theorems: the numerator statement is ring-level, while normalized polynomials and
+Jacobi quotients use fields; they assume no measure, positivity, or convergence.
+The four-definition, thirteen-theorem \path{RvachevRationalJacobi.lean} inventory has
+definitions \path{Fabius.rvachevHankelDetRat},
+\path{Fabius.rvachevOrthoPolynomialRat},
+\path{Fabius.rvachevOrthoNormRat}, and
+\path{Fabius.rvachevJacobiSubdiagonalRat}, and theorems
+\path{Fabius.upMoment_eq_rvachevRawMomentRat_cast},
+\path{Fabius.rvachevHankelDetRat_cast},
+\path{Fabius.rvachevHankelDetRat_pos},
+\path{Fabius.rvachevOrthoPolynomialRat_cast},
+\path{Fabius.rvachevOrthoPolynomialRat_isMonicOfDegree},
+\path{Fabius.momentPairing_rvachevOrthoPolynomialRat_eq_zero},
+\path{Fabius.rvachevOrthoNormRat_cast},
+\path{Fabius.rvachevOrthoNormRat_pos},
+\path{Fabius.gramStieltjesJacobiDiagonal_rvachevRawMomentRat_eq_zero},
+\path{Fabius.rvachevJacobiSubdiagonalRat_cast},
+\path{Fabius.rvachevJacobiSubdiagonalRat_pos},
+\path{Fabius.rvachevJacobiSubdiagonalRat_eq_det_ratio}, and
+\path{Fabius.rvachevOrthoPolynomialRat_three_term}.  Thus every order has exact
+rational Hankel determinant, monic polynomial (coefficientwise), squared norm, zero
+diagonal, and positive subdiagonal, together with real-cast bridges, rational
+orthogonality, the determinant cross-ratio, and the centered three-term recurrence.
+The zero-based value \path{Fabius.rvachevJacobiSubdiagonalRat}~\(n\) is the conventional
+coefficient \(\beta_{n+1}\).  These adjugate-based definitions are noncomputable finite
+algebra, not an evaluator: in particular the displayed report values for \(H_4\) and
+\(\beta_4\) are not named Lean evaluations.  Roots, Christoffel formulas, Gaussian
+quadrature, finite or infinite \(J\)-fraction/Pad\'e identification, and asymptotics
+remain outside this tranche.  The \emph{moment/Laurent layer} is
 now delivered on the symmetric side by
 \path{StieltjesMomentLaurent.lean}: for every real \(|z|>1\) and every \(N\),
 \(\int(z-x)^{-1}\dd\mu_{\Up}=\sum_{k<N}m_k\,z^{-(k+1)}+z^{-N}\int x^N(z-x)^{-1}\dd\mu_{\Up}\)
@@ -811,7 +848,10 @@ Herglotz--Poisson formulas, integrated interval
 Stieltjes--Perron inversion, and initial exact Jacobi data are formalized by the
 \path{MeasureCauchyMomentLaurent.lean}, \path{Stieltjes*.lean}, and
 \path{OrthogonalPolynomialJacobi.lean} layers described
-above.  What remains open is the complex logarithmic continuation/logarithmic
+above.  The scalar-base-change API and the exact all-degree rational centered Jacobi
+system are formalized by \path{GramStieltjesNaturality.lean} and
+\path{RvachevRationalJacobi.lean}; their exhaustive inventories and the convention that
+zero-based index \(n\) is \(\beta_{n+1}\) are recorded above.  What remains open is the complex logarithmic continuation/logarithmic
 potential, named Laplace/Fourier transform forms, complex order, pointwise or
 nontangential Sokhotski--Plemelj and principal-value Hilbert-transform formulas,
 the full J-fraction/Pad\'e package, and the separate explicit conversion of the
@@ -10213,6 +10253,16 @@ three-term recurrence from exactly the three nonzero minors of orders
 $n,n+1,n+2$.  These theorems are finite field algebra and assume neither a
 measure nor positivity.
 
+The six scalar-naturality theorems in \path{GramStieltjesNaturality.lean} and the
+four definitions plus thirteen theorems in \path{RvachevRationalJacobi.lean} now
+specialize this machinery over \(\Q\) at every degree.  The exhaustive 23-declaration
+inventory is recorded in the compilation status above.  The specialization proves
+positive rational determinants, monic coefficients, norms and subdiagonals; rational
+orthogonality; a zero diagonal; the determinant cross-ratio; the centered recurrence;
+and all real-cast bridges.  Its zero-based subdiagonal at index \(n\) is
+\(\beta_{n+1}\).  It neither evaluates the report's \(H_4\) or \(\beta_4\) fractions in
+Lean nor supplies root, quadrature, \(J\)-fraction, Pad\'e, or asymptotic theorems.
+
 The separate up-measure pipeline in \path{MomentHankelMatrix.lean},
 \path{MomentHankelValues.lean}, and the \path{OrthogonalPolynomial*.lean} modules now
 supplies strict positivity of the Hankel matrices and ratios, identifies the exact
@@ -10257,6 +10307,18 @@ $h_n=\int P_n^2\dd F$ is rational.  Positivity of the measure gives $h_n>0$ and 
 $P_n(1-x)=(-1)^nP_n(x)$, hence
 $\int xP_n(x)^2\dd F(x)=h_n/2$ and every diagonal Jacobi coefficient equals $1/2$.  The standard resolvent expansion of the Jacobi matrix gives \eqref{p5:eq:S-J-fraction}.  Finally \(b_1=\mathrm{Var}(X)=1/36\); using the fourth centered moment $19/10800$ gives $b_2=8/225$.
 \end{proof}
+
+\begin{remark}[Exact formal boundary]
+\path{RvachevRationalJacobi.lean} proves the all-degree rational recurrence for the
+centered up-law polynomials.  Its zero-based
+\path{Fabius.rvachevJacobiSubdiagonalRat} at index \(n\) is the conventional centered
+coefficient \(\beta_{n+1}\).  The affine transport from the centered law to this
+unit-interval normalization, including the induced factor in the subdiagonal, is not a
+named theorem in that module; neither is the Stieltjes \(J\)-fraction identification.
+Consequently the rational finite-recurrence engine behind the proposition is formal,
+but the proposition as a bundled unit-interval recurrence-and-continued-fraction
+statement is not yet fully formalized.
+\end{remark}
 
 This rational Jacobi matrix is a new arithmetic object attached to the Fabius law.  Determining valuations, denominator growth, and the rate at which $b_n$ approaches the universal interval value is a natural continuation of the repository's dyadic arithmetic program.
 
@@ -10407,8 +10469,8 @@ Gini/autocorrelation formulas
 & order statistics and Fourier representation of absolute distance\\
 \addlinespace
 Rational Jacobi parameters
-& not located explicitly
-& rational moments, symmetry, and Gram--Schmidt\\
+& centered all-degree rational recurrence now formal; affine unit-interval and (J)-fraction bridges open
+& \path{GramStieltjesNaturality.lean} and \path{RvachevRationalJacobi.lean}; affine transport and resolvent identification remain\\
 \bottomrule
 \end{longtable}
 
@@ -16389,7 +16451,11 @@ the atom-exact CDF and survival formulas at every positive kernel power, and
 real-order hierarchies, real/complex exterior Laurent series, finite-height
 Herglotz--Poisson identities, integrated interval Stieltjes--Perron inversion, and initial
 Jacobi data are also discharged by direct named theorems in the merged Stieltjes and
-orthogonal-polynomial modules.
+orthogonal-polynomial modules.  The exact all-degree rational centered determinants,
+polynomials, norms, zero diagonal, and positive subdiagonals---with zero-based index
+\(n\) equal to \(\beta_{n+1}\)---are discharged by
+\path{GramStieltjesNaturality.lean} and \path{RvachevRationalJacobi.lean}; their
+23-declaration inventory appears in the compilation status above.
 
 The Laurent obligation is now discharged at greater generality by the one-definition,
 fifteen-theorem \path{MeasureCauchyMomentLaurent.lean} API: arbitrary centers and
@@ -16408,10 +16474,12 @@ Thue--Morse orbit formula.
 \end{obligation}
 
 \begin{obligation}[Orthogonal-polynomial layer]
-Reuse the corpus's Hankel-positivity and Gaussian-quadrature infrastructure to
-construct \(a_n=h_n/h_{n-1}\), the finite J-fraction convergents, and exact
-certificates for the first coefficients.  Rakhmanov's asymptotic theorem may be
-imported as a separately documented analytic dependency.
+The all-degree centered rational determinants, monic polynomials, squared norms,
+zero diagonal, positive subdiagonals, determinant cross-ratio, orthogonality, and
+three-term recurrence are now constructed.  Still reuse the corpus's
+Gaussian-quadrature infrastructure to construct and identify finite \(J\)-fraction
+convergents; the unit-interval affine bridge is also not yet named.  Rakhmanov's
+asymptotic theorem may be imported as a separately documented analytic dependency.
 \end{obligation}
 
 \emph{Post-snapshot status.}  The construction's first stage is now formal:
@@ -16471,6 +16539,16 @@ is the ratio of consecutive squared norms, and the $n=0$ instance extracts the
 concrete $P_2=x^2-\tfrac19$ (\nolinkurl{Fabius.upOrthoPolynomial\_two}).  The J-fraction
 layer thus has its three-term engine; the second-kind polynomials, the continued
 fraction of the Stieltjes transform, and the deeper certificates remain open.
+
+The later rational-native tranche removes the remaining all-degree coefficient
+rationality gap: \path{GramStieltjesNaturality.lean} transports every finite
+Gram--Stieltjes object across scalar maps, and \path{RvachevRationalJacobi.lean}
+packages positive \(\Q\)-valued determinants, polynomials, norms and subdiagonals,
+their real casts, rational orthogonality, the zero diagonal, determinant cross-ratio,
+and the centered recurrence.  Here \path{Fabius.rvachevJacobiSubdiagonalRat}~\(n\)
+means \(\beta_{n+1}\).  This does not close second-kind polynomials, affine
+unit-interval transport, Gaussian quadrature, continued-fraction/Pad\'e
+identification or convergence, nor any Szeg\H{o}/Nevai/Rakhmanov asymptotics.
 
 % --------------------------------------------------------------------------
 \section{Conclusion}
