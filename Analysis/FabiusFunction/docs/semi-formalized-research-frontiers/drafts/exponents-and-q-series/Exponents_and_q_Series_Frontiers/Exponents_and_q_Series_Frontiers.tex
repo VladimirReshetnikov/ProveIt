@@ -4777,8 +4777,61 @@ last theorem proves, over every commutative ring,
  \end{cases}
 \]
 for every finite family, including the empty family and degree zero.  It does
-not supply a general weighted-inversion theorem, and the finite second Cauchy
-identity does not supply a \(q\)-Pfaff--Saalsch\"utz summation.
+not require division, a domain, a characteristic restriction, or a
+nonvanishing assumption.
+
+The formal generating-series companion is now exhaustive as well.
+\path{SymmetricFunctionGenerating.lean} has exactly two public definitions,
+\lean{Fabius.elementarySymmetricGeneratingSeries} and
+\lean{Fabius.completeHomogeneousGeneratingSeries}, and six public theorems:
+\lean{Fabius.coeff_elementarySymmetricGeneratingSeries},
+\lean{Fabius.coeff_completeHomogeneousGeneratingSeries},
+\lean{Fabius.elementarySymmetricGeneratingSeries_eq_prod},
+\lean{Fabius.elementarySymmetricGeneratingSeries_neg_mul_completeHomogeneousGeneratingSeries},
+\lean{Fabius.completeHomogeneousGeneratingSeries_eq_invOfUnit_elementarySymmetricGeneratingSeries_neg},
+and
+\lean{Fabius.prod_one_sub_qPow_X_mul_gaussianBinomialGeneratingSeries}.
+The definitions, coefficient formulas, and finite product
+\(E_a(X)=\prod_i(1+a_iX)\) hold over every commutative semiring.  Over every
+commutative ring the remaining declarations prove
+\[
+ E_{-a}(X)H_a(X)=1,
+ \qquad H_a(X)=\operatorname{invOfUnit}(E_{-a}(X),1),
+\]
+and, for the geometric alphabet \(1,q,\ldots,q^n\),
+\[
+ \left(\prod_{j=0}^{n}(1-q^jX)\right)
+ \left(\sum_{k\geq0}{n+k\brack k}_qX^k\right)=1
+ \quad\text{in }R[[X]].
+\]
+These are formal power-series identities only.  Analytic evaluation and
+convergence under hypotheses such as \(\lvert a_i z\rvert<1\) or
+\(\lvert z\rvert<1\) remain open.
+
+The general weighted inversion is now exact.
+\path{SymmetricFunctionTransform.lean} has exactly four public definitions
+and five public theorems, exhaustively
+\lean{Fabius.completeHomogeneousKernel},
+\lean{Fabius.signedElementaryKernel},
+\lean{Fabius.completeHomogeneousKernel_left_orthogonality},
+\lean{Fabius.completeHomogeneousKernel_right_orthogonality},
+\lean{Fabius.completeHomogeneousTransform},
+\lean{Fabius.signedElementaryTransform},
+\lean{Fabius.signedElementaryTransform_completeHomogeneousTransform},
+\lean{Fabius.completeHomogeneousTransform_signedElementaryTransform}, and
+\lean{Fabius.weightedSymmetricFunction_inversion}.  For a finite alphabet,
+the complete-homogeneous kernel and transform already require only a
+commutative semiring; the signed kernel and transform, both total kernel
+orthogonalities, both whole-function inverse compositions, and the inversion
+iff use a commutative ring.  Every transform target needs only an additive
+commutative monoid with its module structure.  Both kernels are extended by
+zero above the diagonal.  The proofs reuse the exactly one definition and
+one theorem of \path{FiniteTriangularTransform.lean},
+\lean{Fabius.lowerTriangularTransform} and
+\lean{Fabius.lowerTriangularTransform_comp}; the latter itself needs only a
+semiring acting on an additive commutative monoid and a total ordered
+finite-convolution hypothesis.  The finite second Cauchy identity still does
+not supply a \(q\)-Pfaff--Saalsch\"utz summation.
 
 The finite inversion layer is now formalized without denominators as well.
 \path{BitPositionQBinomial.lean} supplies the zero-based subset theorem
@@ -4811,10 +4864,16 @@ exhaustively,
 \lean{Fabius.scaledGaussianBinomialInverseTransform_transform},
 \lean{Fabius.scaledGaussianBinomialTransform_inverseTransform},
 \lean{Fabius.scaledGaussianBinomial_inversion}, and
-\lean{Fabius.gaussianBinomial_inversion}.  They give both pointwise
-compositions and the exact iff for
-\texttt{[CommRing R] [AddCommGroup M] [Module R M]}, with no topology or
-convergence.  Finally, \path{QBinomialInversionSpecializations.lean} has the
+\lean{Fabius.gaussianBinomial_inversion}.  The two forward definitions need
+only \texttt{[Semiring R] [AddCommMonoid M] [Module R M]}, while the two
+signed inverse definitions need \texttt{[Ring R]} with the same target
+assumptions.  All four theorems use
+\texttt{[CommRing R] [AddCommMonoid M] [Module R M]}; the two compositions
+are equalities of whole sequence functions and the triangular relations form
+an exact iff.  Their refactored proofs reuse
+\lean{Fabius.lowerTriangularTransform_comp}, and the Gaussian kernels are
+zero-extended above the row.  No topology or convergence is involved.
+Finally, \path{QBinomialInversionSpecializations.lean} has the
 two definitions \lean{Fabius.qGaussianResidualCoeff} and
 \lean{Fabius.qGaussianReconstructionCoeff}, and exactly the five theorems
 \lean{Fabius.geometricQBinomialWeightNumerator_eq_scaledGaussianBinomialInverseKernel},
@@ -11461,7 +11520,7 @@ Together with
 \lean{Fabius.scaledGaussianBinomialTransform_inverseTransform} from
 \path{QBinomialTransform.lean}, this proves the module-valued reconstruction
 \eqref{p6:eq:gs-inverse} whenever \(r=C'\eta\).  It needs only a commutative
-ring acting on an additive commutative group; \(q\) need not be nonzero or
+ring acting on an additive commutative monoid; \(q\) need not be nonzero or
 invertible.
 
 This does \emph{not} mark all of \cref{p6:thm:q-gram-schmidt} or

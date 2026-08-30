@@ -17,13 +17,85 @@ and the total elementary--complete orthogonality convolution. The structural
 API is valid over commutative semirings; orthogonality is valid over every
 commutative ring, including the empty family and degree zero. Together with the
 existing `completeHomogeneousEval_option_succ`, the elementary `Option`
-recurrence gives both weighted-Pascal laws exactly. `BitPositionQBinomial.lean` gives both the zero-based and literal
+recurrence gives both weighted-Pascal laws exactly.
+
+`FiniteTriangularTransform.lean` has the exhaustive one-definition,
+one-theorem surface `lowerTriangularTransform` and
+`lowerTriangularTransform_comp`. For `[Semiring R] [AddCommMonoid M]
+[Module R M]`, a total ordered kernel convolution on `Icc j n` yields an
+equality of whole sequence functions; no commutativity of `R`, subtraction,
+topology, or infinite summability is used.
+
+`SymmetricFunctionTransform.lean` has the exhaustive four-definition,
+five-theorem surface `completeHomogeneousKernel`, `signedElementaryKernel`,
+`completeHomogeneousKernel_left_orthogonality`,
+`completeHomogeneousKernel_right_orthogonality`,
+`completeHomogeneousTransform`, `signedElementaryTransform`,
+`signedElementaryTransform_completeHomogeneousTransform`,
+`completeHomogeneousTransform_signedElementaryTransform`, and
+`weightedSymmetricFunction_inversion`. The complete-homogeneous kernel and
+transform need only a commutative semiring. The signed declarations and all
+inverse results use a commutative ring; transform targets need only an
+additive commutative monoid with its module structure. Both kernels are
+zero-extended above the diagonal, and both whole-function compositions reuse
+the generic triangular theorem. Thus weighted inversion is exact, with a
+module-valued strengthening.
+
+`SymmetricFunctionGenerating.lean` has the exhaustive two-definition,
+six-theorem surface `elementarySymmetricGeneratingSeries`,
+`completeHomogeneousGeneratingSeries`,
+`coeff_elementarySymmetricGeneratingSeries`,
+`coeff_completeHomogeneousGeneratingSeries`,
+`elementarySymmetricGeneratingSeries_eq_prod`,
+`elementarySymmetricGeneratingSeries_neg_mul_completeHomogeneousGeneratingSeries`,
+`completeHomogeneousGeneratingSeries_eq_invOfUnit_elementarySymmetricGeneratingSeries_neg`,
+and `prod_one_sub_qPow_X_mul_gaussianBinomialGeneratingSeries`. The
+definitions, coefficient results, and finite elementary product hold over a
+commutative semiring; reciprocity, canonical inversion, and the finite
+Gaussian reciprocal identity require a commutative ring. These close only
+the formal-power-series halves of the weighted-generating and reciprocal
+finite claims. Analytic evaluation and convergence under `|w_i z| < 1` or
+`|z| < 1` remain open.
+
+The complementary finite-index API in `CompleteHomogeneousGenerating.lean`
+has one definition and six theorems:
+`completeHomogeneousGeneratingSeriesOn`,
+`coeff_completeHomogeneousGeneratingSeriesOn`,
+`completeHomogeneousGeneratingSeriesOn_empty`,
+`completeHomogeneousGeneratingSeriesOn_insert`,
+`one_sub_mul_completeHomogeneousGeneratingSeriesOn_insert`,
+`prod_one_sub_mul_completeHomogeneousGeneratingSeriesOn`, and
+`completeHomogeneousGeneratingSeriesOn_eq_invOfUnit_prod`. Its coefficient,
+empty-family, and adjoining-variable results hold over commutative semirings;
+its denominator-clearing and canonical-inverse results hold over arbitrary
+commutative rings, including rings with zero divisors. Together, this API and
+`SymmetricFunctionGenerating.lean` prove both formal algebraic halves of the
+weighted generating-product theorem, but neither proves its analytic clause.
+Separately, the sole public theorem
+`completeHomogeneousEvalOn_isBigO_pow` in
+`CompleteHomogeneousAsymptotics.lean` transfers coordinatewise `O(g)` bounds
+through every fixed complete homogeneous degree to `O(g^n)`, including degree
+zero and without a nonvanishing hypothesis on `g`; it does not evaluate or
+prove convergence of either formal series.
+
+`BitPositionQBinomial.lean` gives both the zero-based and literal
 one-based weighted-subset enumerations. `QBinomialInversion.lean` proves the
 Gaussian chain law, general alternating rows, and both finite convolution
 orders for unscaled and independently scaled kernels; the scale is arbitrary
-and need not be invertible. `QBinomialTransform.lean` packages both pointwise
-compositions and the exact inversion iff for sequences in any module over a
-commutative ring. `QBinomialInversionSpecializations.lean` identifies the
+and need not be invertible. In `QBinomialTransform.lean`, the two forward
+definitions require `[Semiring R] [AddCommMonoid M] [Module R M]`, the two
+signed inverse definitions require `[Ring R]` with the same target
+assumptions, and all four theorems require `[CommRing R]` with that additive
+commutative monoid target. Both compositions are whole-function equalities,
+the inversion statements are exact iff results, and the refactored proofs
+reuse `lowerTriangularTransform_comp`; Gaussian kernels are zero-extended
+above the row. Its exhaustive four-definition, four-theorem surface is
+`scaledGaussianBinomialTransform`, `scaledGaussianBinomialInverseTransform`,
+`scaledGaussianBinomialInverseTransform_transform`,
+`scaledGaussianBinomialTransform_inverseTransform`,
+`scaledGaussianBinomial_inversion`, `gaussianBinomialTransform`,
+`gaussianBinomialInverseTransform`, and `gaussianBinomial_inversion`.
+`QBinomialInversionSpecializations.lean` identifies the
 denominator-free geometric numerator globally with the scaled inverse kernel
 and proves both q-Gaussian coefficient inversions at base `q^2`, scale `-q`.
 The normalized geometric-Lagrange and analytic Lagrange layers additionally
@@ -63,7 +135,7 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 `149332f9d`.
 
 Member: `Exponents_and_q_Series_Frontiers`
-(currently 229 pp, seven parts) — the
+(currently 230 pp, seven parts) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -280,7 +352,7 @@ matching `assets/` directories.
 `Signed_Reciprocal_q_Fabius_Frontiers/` were merged editorially as the
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
-Second member: `q_pochhammer_q_binomial_monograph/` (194 pp, book class) —
+Second member: `q_pochhammer_q_binomial_monograph/` (196 pp, book class) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
@@ -301,21 +373,22 @@ Chern–Dilcher–Jiu deleted-singularity identity and Ramanujan's ₁ψ₁
 verified numerically to 30 digits; one dominated-convergence majorant
 repaired with an `% ed.:` note).
 
-Its current formalization ledger has 183 labelled results: 29 exact, 25
-partial, 126 with no counterpart, and 3 interface-only. The finite
-q-binomial/inversion chapter now accounts for 9 exact, 0 partial, and 1
-unformalized result; the weighted chapter for 2 exact, 2 partial, and 4
+Its current formalization ledger has 183 labelled results: 30 exact, 26
+partial, 124 with no counterpart, and 3 interface-only. The finite
+q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
+unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
 unformalized results; and the basic-hypergeometric chapter for 1 exact, 0
-partial, and 5 unformalized results. The promoted rows are exactly the primary
-q-Cauchy identity, both weighted-Pascal recurrences, elementary--complete
-orthogonality, and Cauchy convolution II. Their adjacent strengthenings are
-recorded human-readably in the monograph: reflected q-Cauchy and the
-q-Bernstein partition of unity, plus total empty-family and degree-zero
-boundaries. The q-Pfaff--Saalschutz summation and weighted inversion remain
-unformalized; no status is inferred from the finite identities. These counts
-and boundaries were statically cross-checked against the exhaustive public
-surfaces of `QBinomialCauchy.lean` (one definition, four theorems) and
-`SymmetricFunctionOrthogonality.lean` (one definition, six theorems).
+partial, and 5 unformalized results. Weighted symmetric-function inversion is
+now exact. Weighted generating products and the reciprocal finite theorem are
+partial because their formal power-series identities are exact while their
+analytic evaluation and convergence clauses remain open. The q-Pfaff--Saalschutz
+summation remains unformalized; no status is inferred from a related finite
+identity. These counts and boundaries were statically cross-checked against
+the exhaustive public surfaces of `QBinomialCauchy.lean` (one definition,
+four theorems), `SymmetricFunctionOrthogonality.lean` (one definition, six
+theorems), `FiniteTriangularTransform.lean` (one definition, one theorem),
+`SymmetricFunctionTransform.lean` (four definitions, five theorems), and
+`SymmetricFunctionGenerating.lean` (two definitions, six theorems).
 The chapter's alternating sums, both weighted-subset conventions,
 named module-valued inversion iff, and both kernel orthogonalities are exact.
 Both orientations
@@ -327,10 +400,14 @@ finite-support `finsum` over all integers. The ledger also now records the
 genuine real infinite product `qPochhammerInf` and its contractive-base
 convergence/positivity layer, replacing the stale claim that every infinite
 q-Pochhammer in the development was merely a finite `Finset.range` product.
-`CompleteHomogeneousGenerating.lean` makes the complete-homogeneous half of
-the weighted generating-product theorem partial rather than open: the finite
-formal reciprocal-product identity is proved, while the elementary product
-and analytic-convergence clause are not.  Separately,
+The complementary formal surfaces of
+`CompleteHomogeneousGenerating.lean` and
+`SymmetricFunctionGenerating.lean` prove both the finite elementary product
+and complete-homogeneous reciprocal product; the labelled weighted theorem
+remains partial only because its analytic evaluation and convergence clause
+is open. `CompleteHomogeneousAsymptotics.lean` adds the fixed-degree
+coordinatewise-Big-O transfer, but does not close that analytic boundary.
+Separately,
 `SymmetricFunctionOrthogonality.lean` proves the displayed
 elementary--complete coefficient convolution exactly over every commutative
 ring, including the empty family and degree zero.

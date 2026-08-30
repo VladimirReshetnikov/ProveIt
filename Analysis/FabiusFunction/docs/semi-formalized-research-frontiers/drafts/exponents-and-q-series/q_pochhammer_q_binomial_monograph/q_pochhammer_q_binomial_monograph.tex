@@ -2,8 +2,8 @@
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{amsmath,amssymb,mathtools,amsthm}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage[final]{microtype}
 \usepackage[a4paper,margin=25.4mm,headheight=15pt]{geometry}
 \usepackage{bm}
@@ -16,7 +16,7 @@
 \usepackage{hyperref}
 \usepackage[nameinlink,capitalise,noabbrev]{cleveref}
 \usepackage{bookmark}
-\usepackage{url}
+\usepackage{xurl}
 
 \definecolor{linkblue}{RGB}{18,74,130}
 \definecolor{citegreen}{RGB}{24,104,74}
@@ -1008,6 +1008,23 @@ where $H_0(z)=\sum_{k\ge0}z^k=(1-z)^{-1}$.  Iterating yields
 All operations are valid formally; analytically they are justified for $\abs z<1$.
 \end{proof}
 
+\begin{remark}[Formal version and analytic boundary]
+For every commutative ring \(R\), every \(q\in R\), and every \(n\in\N\),
+\lean{Fabius.prod_one_sub_qPow_X_mul_gaussianBinomialGeneratingSeries} in
+\path{SymmetricFunctionGenerating.lean} proves
+\[
+ \left(\prod_{j=0}^{n}(1-q^jX)\right)
+ \operatorname{PowerSeries.mk}\!\left(k\mapsto{n+k\brack k}_q\right)=1
+ \quad\text{in }R[[X]].
+\]
+This is denominator-free and total at \(q=0\), roots of unity, zero divisors,
+positive characteristic, and the zero ring.  It proves the formal
+power-series half of \Cref{thm:reciprocal-finite}; no current declaration here
+evaluates that series at a complex \(z\) or establishes convergence for
+\(\lvert z\rvert<1\).  The theorem therefore remains only partially
+formalized as stated.
+\end{remark}
+
 \section{\texorpdfstring{$q$}{q}-Vandermonde convolution}
 
 \begin{theorem}[$q$-Vandermonde convolution]\label{thm:q-vandermonde}
@@ -1169,6 +1186,17 @@ case \(n<j\).  The scaled forward and inverse entries are
 for an arbitrary independent \(s\); neither \(s\) nor \(q\) is assumed
 nonzero or invertible.
 
+The common finite-sum argument is isolated in
+\path{FiniteTriangularTransform.lean}, whose exhaustive public surface is the
+definition \lean{Fabius.lowerTriangularTransform} and the theorem
+\lean{Fabius.lowerTriangularTransform_comp}.  For
+\texttt{[Semiring R] [AddCommMonoid M] [Module R M]}, the theorem converts a
+total ordered kernel convolution on \texttt{Icc j n} into equality of the
+whole composite sequence function with its input.  It assumes neither
+commutativity of \(R\) nor additive inverses in \(M\).  The Gaussian kernels
+are zero-extended above the row, so the empty case \(n<j\) fits this generic
+total interface without a separate range hypothesis.
+
 The module-valued sequence theorem is formalized in
 \path{QBinomialTransform.lean}, whose exhaustive public surface is the four
 definitions
@@ -1180,10 +1208,14 @@ theorems
 \lean{Fabius.scaledGaussianBinomialInverseTransform_transform},
 \lean{Fabius.scaledGaussianBinomialTransform_inverseTransform},
 \lean{Fabius.scaledGaussianBinomial_inversion}, and
-\lean{Fabius.gaussianBinomial_inversion}.  Under exactly
-\texttt{[CommRing R] [AddCommGroup M] [Module R M]}, the first two theorems
-give both pointwise compositions and the last two give the scaled and
-classical iff statements.  Taking \(M=R\) yields
+\lean{Fabius.gaussianBinomial_inversion}.  The two forward-transform
+definitions require only
+\texttt{[Semiring R] [AddCommMonoid M] [Module R M]}; the two signed inverse
+definitions require \texttt{[Ring R]} with the same target assumptions.
+All four theorems require exactly
+\texttt{[CommRing R] [AddCommMonoid M] [Module R M]}.  The first two give
+both compositions as equalities of whole sequence functions and the last
+two give the scaled and classical iff statements.  Taking \(M=R\) yields
 \Cref{thm:qbinomial-inversion}; the formal theorem is stronger in allowing
 arbitrary module-valued sequences and requires no topology or convergence.
 
@@ -1379,8 +1411,67 @@ proves exactly
 \]
 over every commutative ring, for every finite index type and every \(m\in\N\).
 It therefore includes the empty family and degree zero and uses no division,
-domain, characteristic, or nonvanishing hypothesis.  No claim here supplies
-the separate weighted-inversion theorem of \Cref{thm:weighted-inversion}.
+domain, characteristic, or nonvanishing hypothesis.
+
+The exhaustive public surface of
+\path{SymmetricFunctionGenerating.lean} consists of the two definitions
+\begin{center}
+\lean{elementarySymmetricGeneratingSeries}\\
+\lean{completeHomogeneousGeneratingSeries}
+\end{center}
+and the six theorems
+\begin{center}
+\footnotesize
+\lean{coeff_elementarySymmetricGeneratingSeries}\\
+\lean{coeff_completeHomogeneousGeneratingSeries}\\
+\lean{elementarySymmetricGeneratingSeries_eq_prod}\\
+\lean{elementarySymmetricGeneratingSeries_neg_mul_completeHomogeneousGeneratingSeries}\\
+\lean{completeHomogeneousGeneratingSeries_eq_invOfUnit_elementarySymmetricGeneratingSeries_neg}\\
+\lean{prod_one_sub_qPow_X_mul_gaussianBinomialGeneratingSeries}.
+\end{center}
+The definitions, coefficient formulas, and finite product
+\(E_a(X)=\prod_i(1+a_iX)\) hold over every commutative semiring.  Over every
+commutative ring the remaining theorems prove
+\[
+ E_{-a}(X)H_a(X)=1,
+ \qquad H_a(X)=\operatorname{invOfUnit}(E_{-a}(X),1),
+\]
+as well as the geometric-alphabet reciprocal identity recorded after
+\Cref{thm:reciprocal-finite}.  Hence the polynomial elementary identity and
+the formal-power-series version of the complete identity in
+\Cref{thm:weighted-generating} are exact.  The theorem as labelled remains
+\statuspartial{} because its analytic evaluation and convergence assertion
+under \(\lvert w_i z\rvert<1\) has not been formalized.
+
+The complementary finite-index interface in
+\path{CompleteHomogeneousGenerating.lean} consists of the definition
+\lean{completeHomogeneousGeneratingSeriesOn} and the six theorems
+\begin{center}
+\footnotesize
+\lean{coeff_completeHomogeneousGeneratingSeriesOn}\\
+\lean{completeHomogeneousGeneratingSeriesOn_empty}\\
+\lean{completeHomogeneousGeneratingSeriesOn_insert}\\
+\lean{one_sub_mul_completeHomogeneousGeneratingSeriesOn_insert}\\
+\lean{prod_one_sub_mul_completeHomogeneousGeneratingSeriesOn}\\
+\lean{completeHomogeneousGeneratingSeriesOn_eq_invOfUnit_prod}.
+\end{center}
+The coefficient, empty-family, and adjoining-variable recurrence results hold
+over every commutative semiring.  Over every commutative ring, the remaining
+results clear one or all finite linear denominators and identify the series
+with Mathlib's canonical \texttt{PowerSeries.invOfUnit}; zero divisors are
+allowed.  Thus this module and \path{SymmetricFunctionGenerating.lean} give
+complementary formal proofs of the complete-product half of
+\Cref{thm:weighted-generating}, while the latter also supplies the elementary
+product and elementary--complete reciprocity.
+
+There is also a finite-family analytic companion.  The sole public theorem
+\lean{completeHomogeneousEvalOn_isBigO_pow} in
+\path{CompleteHomogeneousAsymptotics.lean} transfers coordinatewise
+\(\mathcal O(g)\) bounds through every fixed degree \(r\): the corresponding
+complete homogeneous evaluation is \(\mathcal O(g^r)\).  It includes degree zero
+and requires no nonvanishing assumption on \(g\).  This asymptotic bound does
+not evaluate either formal series at \(z\), establish its convergence, or
+close the analytic clause of the labelled theorem.
 \end{remark}
 
 \section{Classical, Stirling, and Gaussian specializations}
@@ -1641,6 +1732,45 @@ The generating functions $A(z)=\sum a_mz^m$ and $B(z)=\sum b_mz^m$ satisfy
 \]
 Multiplication by $\prod_i(1-w_i z)$ gives the proposed inverse coefficient formula.  Equivalently, use the orthogonality in \Cref{cor:e-h-orthogonality}.
 \end{proof}
+
+\begin{remark}[Formal version and module-valued strengthening]
+The exhaustive public surface of \path{SymmetricFunctionTransform.lean} is
+the four definitions
+\begin{center}
+\lean{Fabius.completeHomogeneousKernel}\\
+\lean{Fabius.signedElementaryKernel}\\
+\lean{Fabius.completeHomogeneousTransform}\\
+\lean{Fabius.signedElementaryTransform}
+\end{center}
+and the five theorems
+\begin{center}
+\footnotesize
+\lean{Fabius.completeHomogeneousKernel_left_orthogonality}\\
+\lean{Fabius.completeHomogeneousKernel_right_orthogonality}\\
+\lean{Fabius.signedElementaryTransform_completeHomogeneousTransform}\\
+\lean{Fabius.completeHomogeneousTransform_signedElementaryTransform}\\
+\lean{Fabius.weightedSymmetricFunction_inversion}.
+\end{center}
+For a finite family \(w:\iota\to R\), the complete-homogeneous kernel and
+transform need only \texttt{[CommSemiring R]}; the signed-elementary kernel
+and transform require \texttt{[CommRing R]}.  Both kernel orthogonalities,
+both inverse compositions, and the inversion iff use exactly
+\texttt{[CommRing R] [AddCommMonoid M] [Module R M]} with
+\texttt{[Fintype \(\iota\)]}.  The compositions are equalities of whole
+sequence functions, so
+\lean{Fabius.weightedSymmetricFunction_inversion} proves
+\Cref{thm:weighted-inversion} exactly and strengthens it to arbitrary
+module-valued sequences.
+
+Both kernels are extended by zero above the diagonal, including the empty
+outer interval.  Their composition proofs reuse
+\lean{Fabius.lowerTriangularTransform_comp}; together with the definition
+\lean{Fabius.lowerTriangularTransform}, these are exhaustively the one
+theorem and one definition of \path{FiniteTriangularTransform.lean}.  The
+generic theorem itself only assumes a semiring acting on an additive
+commutative monoid and a total ordered finite-convolution identity.  No
+division, topology, domain, characteristic, or nonvanishing condition occurs.
+\end{remark}
 
 \section{The subset--subspace analogy}
 
@@ -11492,15 +11622,20 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 183 labelled results, 29 are \statusexact, 25 are \statuspartial,
-126 are \statusnone, and 3 are \statusna.
+Of the 183 labelled results, 30 are \statusexact, 26 are \statuspartial,
+124 are \statusnone, and 3 are \statusna.
 The formalized part is concentrated exactly where the Fabius development
 needed it: the finite Gaussian-coefficient core, the geometric Lagrange and
 filter calculus, half-base and Thue--Morse cancellation, and the geometric
-uniform law.  The complete-homogeneous half of the weighted generating-product
-theorem is also formalized as a finite formal-power-series identity in
-\texttt{CompleteHomogeneousGenerating}; its elementary-symmetric half and its
-analytic convergence clause are not.  Most of the classical analytic layer --- nonterminating basic
+uniform law.  The complementary modules
+\texttt{CompleteHomogeneousGenerating} and
+\texttt{SymmetricFunctionGenerating} now formalize both finite algebraic
+halves of the weighted generating-product theorem as formal-power-series
+identities; its analytic evaluation and convergence clause is not
+formalized.  The finite-family theorem in
+\texttt{CompleteHomogeneousAsymptotics} separately transfers coordinatewise
+Big-O bounds through a fixed complete homogeneous degree, without asserting
+formal-series convergence.  Most of the classical analytic layer --- nonterminating basic
 hypergeometric summation, Jacobi triple product, and Bailey pairs --- remains
 untouched.  The former claim that every infinite \(q\)-Pochhammer symbol in
 the development was a finite \texttt{Finset.range} product is now false:
@@ -11512,17 +11647,26 @@ positive.  This real contractive-base product layer does not formalize the
 book's general complex analytic or basic-hypergeometric infinite-product
 theory.
 
-The four promotions in this edition were statically checked against the
-complete public declaration lists:
+The new weighted symmetric-function tranche and the triangular-transform
+refactor in this edition were statically checked against the complete public
+declaration lists:
 \begin{center}
 \small
 \path{QBinomialCauchy.lean}: one definition and four theorems;\\
-\path{SymmetricFunctionOrthogonality.lean}: one definition and six theorems.
+\path{SymmetricFunctionOrthogonality.lean}: one definition and six theorems;\\
+\path{CompleteHomogeneousGenerating.lean}: one definition and six theorems;\\
+\path{CompleteHomogeneousAsymptotics.lean}: one theorem;\\
+\path{FiniteTriangularTransform.lean}: one definition and one theorem;\\
+\path{SymmetricFunctionTransform.lean}: four definitions and five theorems;\\
+\path{SymmetricFunctionGenerating.lean}: two definitions and six theorems.
 \end{center}
 The theorem statements were checked at arbitrary parameters and
-degrees, including the empty and degree-zero boundaries.  In particular the
-nearby \(q\)-Pfaff--Saalsch\"utz summation and weighted inversion remain
-\statusnone: neither is inferred from a related finite identity.
+degrees, including the empty and degree-zero boundaries.  Weighted inversion
+is now \statusexact.  Weighted generating products and reciprocal finite
+products are each \statuspartial: their formal power-series identities are
+proved, but their analytic evaluation and convergence clauses are not.  The
+nearby \(q\)-Pfaff--Saalsch\"utz summation remains \statusnone{} and is not
+inferred from a related finite identity.
 
 \section{By chapter}
 
@@ -11533,8 +11677,8 @@ Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
 The algebra of $q$-shifted factorials & 1 & 2 & 12 & 0\\
 $q$-integers and Gaussian coefficients & 1 & 2 & 5 & 0\\
-Finite $q$-binomial theorems and inversion & 9 & 0 & 1 & 0\\
-Weighted binomial coefficients and symmetric functions & 2 & 2 & 4 & 0\\
+Finite $q$-binomial theorems and inversion & 9 & 1 & 0 & 0\\
+Weighted binomial coefficients and symmetric functions & 3 & 2 & 3 & 0\\
 Partitions, words, paths, and inversion statistics & 1 & 1 & 7 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 0 & 1 & 5 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
@@ -11555,7 +11699,7 @@ Geometric interpolation and exact $q$-filters & 6 & 2 & 1 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 7 & 3 & 0\\
 \midrule
-\textbf{Total} & 29 & 25 & 126 & 3\\
+\textbf{Total} & 30 & 26 & 124 & 3\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -11612,7 +11756,11 @@ Result & Status & Lean counterpart\\
 \texttt{sum\_\allowbreak{}pow\_\allowbreak{}sum\_\allowbreak{}powersetCard\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial},
 \texttt{sum\_\allowbreak{}pow\_\allowbreak{}sum\_\allowbreak{}powersetCard\_\allowbreak{}Icc\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial}\newline
 {\footnotesize\texttt{BitPositionQBinomial}; total zero-based and literal one-based forms}\\[2pt]
-\Cref{thm:reciprocal-finite} & \statusnone & ---\\[2pt]
+\Cref{thm:reciprocal-finite} & \statuspartial &
+\texttt{prod\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}qPow\_\allowbreak{}X\_\allowbreak{}mul\_\allowbreak{}gaussianBinomialGeneratingSeries}\newline
+{\footnotesize\texttt{SymmetricFunctionGenerating}; exact formal identity in
+\(R[[X]]\) over every commutative ring, but no analytic evaluation or
+convergence proof for \(\lvert z\rvert<1\)}\\[2pt]
 \Cref{thm:q-vandermonde} & \statusexact &
 \texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}vandermonde},
 \texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}vandermonde'}\newline
@@ -11643,11 +11791,16 @@ Result & Status & Lean counterpart\\
 \texttt{completeHomogeneousEval\_\allowbreak{}option\_\allowbreak{}succ}\newline
 {\footnotesize\texttt{SymmetricFunctionOrthogonality}, \texttt{CompleteHomogeneous}; both adjoining-variable recurrences, all degrees}\\[2pt]
 \Cref{thm:weighted-generating} & \statuspartial &
+\texttt{elementarySymmetricGeneratingSeries\_\allowbreak{}eq\_\allowbreak{}prod},
+\texttt{elementarySymmetricGeneratingSeries\_\allowbreak{}neg\_\allowbreak{}mul\_\allowbreak{}completeHomogeneousGeneratingSeries},
+\texttt{completeHomogeneousGeneratingSeries\_\allowbreak{}eq\_\allowbreak{}invOfUnit\_\allowbreak{}elementarySymmetricGeneratingSeries\_\allowbreak{}neg},
 \texttt{prod\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}mul\_\allowbreak{}completeHomogeneousGeneratingSeriesOn},
 \texttt{completeHomogeneousGeneratingSeriesOn\_\allowbreak{}eq\_\allowbreak{}invOfUnit\_\allowbreak{}prod}\newline
-{\footnotesize\texttt{CompleteHomogeneousGenerating}; exact formal
-complete-homogeneous reciprocal product, but not the elementary generating
-product or the analytic-convergence clause}\\[2pt]
+{\footnotesize\texttt{SymmetricFunctionGenerating} and
+\texttt{CompleteHomogeneousGenerating}; complementary finite-family formal
+surfaces prove the elementary product, elementary--complete reciprocity, and
+the canonical complete-homogeneous inverse, but not analytic evaluation or
+convergence under \(\lvert w_i z\rvert<1\)}\\[2pt]
 \Cref{cor:e-h-orthogonality} & \statusexact &
 \texttt{sum\_\allowbreak{}elementarySymmetricEval\_\allowbreak{}mul\_\allowbreak{}completeHomogeneousEval}\newline
 {\footnotesize\texttt{SymmetricFunctionOrthogonality}; arbitrary finite family, including empty family and degree zero}\\[2pt]
@@ -11655,7 +11808,11 @@ product or the analytic-convergence clause}\\[2pt]
 \Cref{lem:vandermonde-alternant} & \statusnone & ---\\[2pt]
 \Cref{thm:schur-principal} & \statusnone & ---\\[2pt]
 \Cref{cor:schur-e-h} & \statusnone & ---\\[2pt]
-\Cref{thm:weighted-inversion} & \statusnone & ---\\[2pt]
+\Cref{thm:weighted-inversion} & \statusexact &
+\texttt{weightedSymmetricFunction\_inversion}\newline
+{\footnotesize\texttt{SymmetricFunctionTransform}; whole-function iff over a
+commutative ring, strengthened to sequences in any additive commutative
+monoid carrying the module structure}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Partitions, words, paths, and inversion statistics}\\
 \midrule
