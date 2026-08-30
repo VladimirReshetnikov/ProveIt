@@ -2,6 +2,18 @@
 
 New standalone intake members:
 
+- [`Fabius_Rvachev_Noncommutative_Frontiers/`](Fabius_Rvachev_Noncommutative_Frontiers/),
+  *Noncommutative Cumulant Frontiers for the Fabius--Rvachev Law* (29 pp),
+  arrived on 2026-08-30 with all 21 payload checksums verified after four CSV
+  entries and one trailing-blank text entry were refreshed for repository
+  normalization. Its free and
+  Boolean cumulants, exact non-free-infinite-divisibility certificates,
+  q-parametric Hankel obstruction, Jacobi stripping and increment program,
+  finite-sinc cumulant transfer, and inverse-Fabius/Legendre/endpoint bridges
+  form a distinct representation layer with spectral-arithmetic cross-links.
+  Its generic document stems, bespoke letter-paper preamble, missing
+  Libertinus prose, incomplete PDF metadata, and Type-3 plot fonts remain
+  explicit post-intake normalization work.
 - [`Fabius_Rvachev_New_Frontiers-2/`](Fabius_Rvachev_New_Frontiers-2/),
   *Fabius--Rvachev New Frontiers* (35 pp), arrived on 2026-08-30 from a
   rootless archive with all 15 payload checksums verified. Its native up-law
@@ -17,7 +29,7 @@ New standalone intake members:
   Poisson operators, martingales, nonreversibility certificate, scalar Stein
   kernel, and endpoint asymptotics extend the operator-representation theme.
 
-Both remain standalone pending claim-by-claim Lean crosswalk and deliberate
+All three remain standalone pending claim-by-claim Lean crosswalk and deliberate
 consolidation; paper theorem labels do not by themselves assert Lean status.
 
 Series and orthogonal-expansion representations of the up-function,
