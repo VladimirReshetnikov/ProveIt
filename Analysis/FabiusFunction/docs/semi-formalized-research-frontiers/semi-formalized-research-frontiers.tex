@@ -3564,8 +3564,27 @@ already treats them at proof level: construction and uniqueness of $F$ and $\Up$
 Rvachev characterization apart from the redundancy isolated in \cref{integration:sec:scale-positive}; the infinite sinc product and Fourier decay; support, positivity,
 shape, and nowhere analyticity; exact moment recurrences and denominator arithmetic; dyadic
 rational evaluation, $q$-Pochhammer and $q$-binomial formulas; Thue--Morse interpolation and
-iterated difference identities; Legendre expansions and least-squares approximation; and the
-computational API.  Their use as input above is always signposted.
+iterated difference identities; Legendre expansions, coefficient Parseval and exact tails, the
+complete orthogonality of the polynomial-form Legendre blocks, the $A_2$ Legendre energy
+identity, and least-squares approximation; and the computational API.  Their use as input above
+is always signposted.
+
+At compiled source checkpoint \texttt{ca66a1247}, the exact concordance for the newly closed
+Legendre energy input is
+\path{FabiusLegendreEnergy.lean}.  Its two public definitions are
+\lean{rvachevLegendreBlock} and \lean{fabiusSquareEnergy}.  Its eight public theorems are
+\lean{intervalIntegral_rvachevLegendreBlock_mul},
+\lean{integral_sq_eval_rvachevLegendrePartialSumPolynomial},
+\lean{hasSum_rvachevLegendreCoefficient_energy},
+\lean{hasSum_rvachevLegendreCoefficient_energy_tail},
+\lean{rvachevLegendreSquaredError_partialSum_eq_tsum_tail},
+\lean{integral_sq_rvachevUp_eq_two_mul_fabiusSquareEnergy},
+\lean{hasSum_fabiusSquareEnergy_legendre}, and
+\lean{fabiusSquareEnergy_eq_tsum_legendre}.  This closes complete orthogonality for the
+polynomial-form blocks, coefficient Parseval and its exact shifted tail, and the real-variable
+Legendre series for $A_2=\int_0^1F(t)^2\dd t$.  It does not formalize the blocks' finite
+up-translate realization or atom-Gram identity, the Fourier-product or infinite-sinc formulas
+for $A_2$, or rationality of the energy partial sums.
 
 \subsection{Notation crosswalk}
 \label{integration:app:notation}

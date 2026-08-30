@@ -164,6 +164,13 @@ factorization, and a sharp central-coefficient root law.  Its
 theorem-level checks are exact rational with residual `0`; the reported
 energy value is a stabilized display of an exact partial sum, not a
 certified enclosure of the limit, and the report says so.
+Subsequent Lean module `FabiusLegendreEnergy.lean` now defines the
+polynomial-form blocks `B_n = u_n*P_(2n)` and proves exactly their complete
+orthogonality, the coefficient Parseval identity, the shifted coefficient-tail
+identity in both `HasSum` and `tsum` forms, and the real-variable Legendre
+series for `A_2`.  The blocks' finite up-translate realization and atom-Gram
+formula, the report's Fourier-product and infinite-sinc integrals, and its
+rationality claim for the partial sums remain outside that formalized tranche.
 
 Three further Legendre-closure reports landed the same day, all
 **pending merge into `Up_Polynomial_Synthesis/`** and all answering the

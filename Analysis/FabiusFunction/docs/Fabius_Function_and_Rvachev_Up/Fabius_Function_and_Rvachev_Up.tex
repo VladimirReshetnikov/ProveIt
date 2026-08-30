@@ -7701,7 +7701,44 @@ converges absolutely and uniformly in the formal development.  The exact declara
 competitor has strictly larger error.  These are
 \lean{rvachevLegendrePartialSum_least_squares} and
 \lean{rvachevLegendrePartialSum_strict_least_squares} in
-\path{FabiusLegendreLeastSquares.lean}.  On $[0,2]$, the signed global extension has the
+\path{FabiusLegendreLeastSquares.lean}.
+
+At compiled source checkpoint \texttt{ca66a1247}, the polynomial-form Legendre blocks
+\(B_n(x)=u_nP_{2n}(x)\) satisfy the complete orthogonality formula
+\begin{equation}
+ \int_{-1}^{1}B_m(x)B_n(x)\dd x
+ =\delta_{mn}\frac{2u_n^2}{4n+1}.                            \label{eq:legendre-block-orthogonality}
+\end{equation}
+This is \lean{intervalIntegral_rvachevLegendreBlock_mul}, for the definition
+\lean{rvachevLegendreBlock}.  The coefficient-energy form of Parseval is also
+exact.  Put \(S_N(x)=\sum_{n=0}^{N}u_nP_{2n}(x)\).  Then
+\begin{align}
+ \int_{-1}^{1}\Up(x)^2\dd x
+   &=\sum_{n=0}^{\infty}\frac{2u_n^2}{4n+1},                 \label{eq:legendre-parseval-energy}\\
+ \int_{-1}^{1}\bigl(\Up(x)-S_N(x)\bigr)^2\dd x
+   &=\sum_{n=N+1}^{\infty}\frac{2u_n^2}{4n+1}.              \label{eq:legendre-exact-tail}
+\end{align}
+The full-series and shifted-tail \texttt{HasSum} declarations are
+\lean{hasSum_rvachevLegendreCoefficient_energy} and
+\lean{hasSum_rvachevLegendreCoefficient_energy_tail}; the latter's \texttt{tsum}
+form is \lean{rvachevLegendreSquaredError_partialSum_eq_tsum_tail}.  The finite
+partial-sum norm is
+\lean{integral_sq_eval_rvachevLegendrePartialSumPolynomial}.  Finally, writing
+\begin{equation}
+ A_2:=\int_0^1F(t)^2\dd t,
+ \qquad
+ A_2=\sum_{n=0}^{\infty}\frac{u_n^2}{4n+1},                 \label{eq:fabius-square-energy-legendre}
+\end{equation}
+the bridge and series declarations are
+\lean{integral_sq_rvachevUp_eq_two_mul_fabiusSquareEnergy},
+\lean{hasSum_fabiusSquareEnergy_legendre}, and
+\lean{fabiusSquareEnergy_eq_tsum_legendre} in
+\path{FabiusLegendreEnergy.lean}.  The block is defined directly in its
+polynomial form: these declarations do not formalize its finite up-translate
+realization, a Fourier-product or infinite-sinc integral for $A_2$, or
+rationality of its partial sums.
+
+On $[0,2]$, the signed global extension has the
 corresponding translated Legendre series
 \lean{globalFabius_eq_tsum_translatedLegendre_formula}.
 
@@ -8117,7 +8154,8 @@ Endpoint asymptotics &
 \path{FabiusSecondSaddleExpansion.lean}\\
 Legendre expansion and computability &
 \path{FabiusLegendreCoefficients.lean}, \path{FabiusLegendreSeries.lean},
-\path{FabiusLegendreLeastSquares.lean}, \path{FabiusTranslatedLegendreSeries.lean},
+\path{FabiusLegendreLeastSquares.lean}, \path{FabiusLegendreEnergy.lean},
+\path{FabiusTranslatedLegendreSeries.lean},
 \path{FabiusComputableSpline.lean}\\
 \bottomrule
 \end{longtable}
