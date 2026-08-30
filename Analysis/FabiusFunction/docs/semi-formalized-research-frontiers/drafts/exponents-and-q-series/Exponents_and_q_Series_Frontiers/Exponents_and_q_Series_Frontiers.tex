@@ -377,8 +377,25 @@ geometric-Lagrange rows to the complete Gaussian residual tail, including the
 shifted-scale form used in \eqref{p1:eq:Rrm-exact}.  The hypothesis is sharp at a
 zero-weight node: the weighted series is then identically zero, and no convergence
 of the corresponding unweighted sample is required.  It does not cover a series
-convergent only in its natural order at a boundary point, and it proves neither
-positivity, signs, bounds, uniform convergence, nor a sinc-product instantiation.
+convergent only in its natural order at a boundary point, and by itself proves
+neither positivity, signs, bounds, nor uniform convergence.
+
+The current tree now supplies the previously missing \emph{infinite-product}
+instantiation.  \path{AnalyticMoments.lean} names the even mode
+\lean{Fabius.rvachevFourierMomentTerm}, proves its constant and scaling laws
+\lean{Fabius.rvachevFourierMomentTerm_zero} and
+\lean{Fabius.rvachevFourierMomentTerm_scale}, and proves genuine unconditional
+summation by \lean{Fabius.hasSum_rvachevFourierMomentTerm}.
+\path{RvachevQBinomialFilter.lean} then proves the corresponding series for the
+standalone product, its power-scaling law, and the exact Gaussian residual
+identity.  Generically \(c,z\in\C\), \(p\in\N\), \(q=c^2\), and the sole
+hypothesis is injectivity of \(j\mapsto q^j\) on
+\(\{0,\ldots,p\}\); no contraction, realness, positivity, or global
+nonvanishing is assumed.  At \(c=1/2\), \(q=1/4\), the theorem is
+assumption-free.  This does not yet identify the finite prefixes \(P_{b,n}\),
+their quotient or Bell coefficients, and it supplies none of the report's
+analytic error signs, bracketing or quantitative bounds, uniform/derivative
+convergence, or asymptotics.
 
 An independent reusable layer is now present in
 \path{FractionalVolterraCalculus.lean} and
@@ -401,7 +418,7 @@ post-snapshot series and fractional APIs were checked at source checkpoint
 \path{149332f9d}.
 
 These labels concern representation only, not correctness: report-specific
-probability and sinc-product instantiations still require their own bridges.  In
+probability and finite-prefix/Bell instantiations still require their own bridges.  In
 particular the sign and bound in \eqref{p1:eq:Rrm-sign}--\eqref{p1:eq:Rrm-bound},
 Fourier envelopes for the Pascal hierarchy
 of rank at least two, Mellin contour displacement, exponential Tauberian transfer,
@@ -2909,9 +2926,10 @@ A dependency-aware order is as follows.
 \item The geometric Lagrange weights, Gaussian-binomial closed form, exact
       principal specialization, survivor moments, finite residual sign, and exact finite
       norm are now formalized.  The exact transformed series is also formalized under
-      unconditional summability in \path{AnalyticSeriesFilter.lean}; the report's
-      positivity, sign-certified bound, uniform estimates, and sinc-product application
-      remain open.
+      unconditional summability in \path{AnalyticSeriesFilter.lean}, and
+      \path{RvachevQBinomialFilter.lean} applies it to the actual infinite Rvachev
+      sinc product.  The report's finite-prefix quotient and Bell series, positivity,
+      sign-certified bounds, and uniform or asymptotic estimates remain open.
 \end{enumerate}
 
 These statements require only finite sums, polynomials, valuations, and existing
@@ -3170,9 +3188,11 @@ their unweighted samples.  The infinite condition-number limit on the whole rang
 \lean{Fabius.tendsto\_sum\_abs\_qToeplitzWeight}, with left-limit divergence
 at one proved by
 \lean{Fabius.tendsto\_qConditionNumberLimit\_atTop\_at\_one\_left}.  The conditionally convergent
-boundary, the ordered one-sided sign and bound, the actual
-exponent-generating-function instantiation, and the uniform estimates remain
-results of this report rather than claims about the current Lean corpus.
+boundary, the ordered one-sided sign and bound, the report's finite-prefix
+exponent/Bell generating function, and the uniform estimates remain results
+of this report rather than claims about the current Lean corpus.  The distinct
+actual infinite-product Rvachev instantiation is now formalized in
+\path{RvachevQBinomialFilter.lean}.
 
 \section{Reproducibility manifest}
 \label{p1:app:manifest}
@@ -3420,9 +3440,11 @@ $+\infty$ as $q\uparrow1$
 (\lean{Fabius.tendsto\_qConditionNumberLimit\_atTop\_at\_one\_left}), and at
 $q=999/1000$ is already at least $1000$.
 
-Identifying the coefficients of the transformed-error series with the
-sinc-product tail, and proving the report's signs, remainder and bracketing
-bounds, uniform spline limits, and inverse-function consequences, remain
+The named even-moment coefficients and their Gaussian filter for the actual
+infinite Rvachev sinc product are now formalized.  Identifying instead the
+report's finite-prefix quotient \(P_{b,n}/P_b\) with its Bell series, and
+proving the resulting analytic signs, remainder and bracketing bounds,
+uniform spline limits, asymptotics, and inverse-function consequences, remain
 unformalized.
 
 
@@ -3946,11 +3968,44 @@ These declarations are finite algebraic statements.  The separate module
 \path{AnalyticSeriesFilter.lean} now establishes the corresponding finite-sum/
 infinite-series interchange and exact Gaussian tail under unconditional
 summability of the contributing samples; a zero filter weight creates no
-unweighted summability obligation.  It does not identify the coefficient sequence
-below with an actual sinc-product quotient, cover conditionally-only boundary
-convergence, or establish signs, bounds, asymptotics, or uniform convergence.
+unweighted summability obligation.  This generic module does not cover
+conditionally-only boundary convergence or establish signs, bounds,
+asymptotics, or uniform convergence.
 The finite declarations in this paragraph were checked at source checkpoint
 \path{1e761ed77583e9870ceeaeb2c74ac824094f0f3f}.
+
+\paragraph{Current infinite-product bridge.}
+The current tree names
+\[
+ A_r(\xi)=\lean{Fabius.rvachevFourierMomentTerm}\ \xi\ r
+\]
+and proves that these modes unconditionally sum to the standalone Rvachev
+product.  For \(c,\xi\in\C\), \(m\in\N\), \(q=c^2\), and only the finite
+node hypothesis that \(j\mapsto q^j\) is injective on
+\(\{0,\ldots,m\}\), it proves
+\begin{equation}
+ \sum_{j=0}^{m}w_j^{(m)}\,
+   \lean{Fabius.rvachevFourierProduct}(c^j\xi)
+ =1+\sum_{s=0}^{\infty}
+ (-1)^m q^{\binom{m+1}{2}}
+ \qbinomPartx{m+s}{m}A_{m+1+s}(\xi).                    \label{p2:eq:formal-rvachev-filter}
+\end{equation}
+No contraction, realness, positivity, or global nonvanishing assumption on
+\(c\) is present.  At \(c=1/2\), hence \(q=1/4\), the node hypothesis is
+discharged internally and the result is assumption-free.
+
+The five public declarations of \path{RvachevQBinomialFilter.lean} are
+\lean{Fabius.hasSum_rvachevFourierMomentTerm_product},
+\lean{Fabius.rvachevFourierMomentTerm_pow_scale},
+\lean{Fabius.geometricLagrange_rvachevFourierProduct_eq_gaussian_tsum},
+\lean{Fabius.quarterLagrange_rvachevFourierProduct_eq_gaussian_tsum}, and
+\lean{Fabius.geometricLagrange_rvachevFourier_eq_gaussian_tsum}; the last is
+the same identity for every bounded \(F\) satisfying \lean{Fabius.IsFabius}.
+This is an exact filter of the \emph{infinite} product.  It is not a Lean
+identification of this report's finite \(P_{b,n}\), the quotient
+\(P_{b,n}/P_b\), or its coefficients \(\alpha_r(b)\), and it proves none of
+the analytic sign, bracketing, error-bound, uniform/derivative-convergence,
+or asymptotic conclusions below.
 
 \subsection{The complete error series}
 
@@ -4561,27 +4616,42 @@ the sign of every residual moment, the exact finite norm, and dedicated
 quarter-base corollaries.  In particular the
 cancellations \(1\leq r\leq m\) and \eqref{p2:eq:Mrqbinom} have exact Lean
 counterparts.
+The companion \path{QBinomialVandermonde.lean} exhaustively exports
+\lean{Fabius.gaussianBinomial_add_vandermonde},
+\lean{Fabius.gaussianBinomial_add_vandermonde'},
+\lean{Fabius.gaussianBinomial_add_central},
+\lean{Fabius.gaussianBinomial_add_central_min},
+\lean{Fabius.gaussianBinomial_two_mul_add_shifted_central},
+\lean{Fabius.gaussianBinomial_two_mul_sub_shifted_central}, and
+\lean{Fabius.gaussianBinomial_two_mul_sub_shifted_central_Icc}.
+All seven are denominator-free commutative-semiring identities; the positive
+shift is total in natural \(k\), while the two negative-shift forms assume
+exactly \(k\le N\).
 
 \item \textbf{Formal and unconditionally summable series (partially formalized).}
 The coefficientwise geometric filter and its Gaussian residual are in
 \path{GeometricPowerSeriesFilter.lean}; \path{AnalyticSeriesFilter.lean} proves
 the matching exact tail for an abstract unconditionally summable coefficient
-series.  What remains here is to derive the Bell recurrence
-\eqref{p2:eq:alpharec} from \(\Phi=\exp(\sum c_kz^k)\) and connect that concrete
-series to the sinc-product quotient.
+series, and \path{RvachevQBinomialFilter.lean} connects the named even-moment
+series to the actual infinite Rvachev product.  What remains here is to derive
+the report's Bell recurrence \eqref{p2:eq:alpharec} from
+\(\Phi_b=\exp(\sum c_kz^k)\) and connect those coefficients to the
+\emph{finite-prefix quotient} \(P_{b,n}/P_b\).
 
-\item \textbf{Analytic sinc logarithm (formalized; concrete quotient bridge open).}
+\item \textbf{Analytic sinc logarithm (formalized; finite-prefix quotient bridge open).}
 The complex exponential and real logarithmic forms of \eqref{p2:eq:logsinc} are
 proved in \path{SincZetaSeries.lean}.  The dyadic geometric-scale sum, exact
 finite-prefix factorization, and certified zeta remainder are proved in
 \path{SincZetaDyadic.lean} and \path{SincZetaRemainder.lean}.  What remains here
 is the general-\(b\) reciprocal-product coefficient package and its identification
-with the actual quotient \(P_{b,n}/P_b\) in the analytic filter interface.
+with the quotient \(P_{b,n}/P_b\) in the analytic filter interface; this is
+not supplied by the infinite-product theorem \eqref{p2:eq:formal-rvachev-filter}.
 
 \item \textbf{Interpolation and positivity (partially formalized).}  The
 finite Lagrange weights, exact residual sign, and abstract unconditionally
-summable Gaussian tail are proved.  The divided-difference representation for
-the actual sinc transform, its absolute-monotonicity argument, quantitative
+summable Gaussian tail are proved, as is its exact entire Rvachev-product
+specialization.  The divided-difference representation for the finite-prefix
+quotient, its absolute-monotonicity argument, analytic sign, quantitative
 bounds, and uniform control remain frontier work.
 
 \item \textbf{Fourier/measure layer.} Define the uniform box measures and their
@@ -4680,10 +4750,10 @@ and local inversion then give a new interior approximation theory for the Fabius
 function and its inverse, complementary to the repository's Lambert--\(W\)
 endpoint asymptotics.
 
-These results create concrete next steps: connect the compiled formal and
-unconditionally summable Gaussian filter to the concrete sinc-product/Bell
-series, prove its ordered and uniform analytic error estimates, build a dyadic
-exact-evaluation implementation, and develop a matched
+These results create concrete next steps: connect the compiled infinite-product
+Gaussian filter to the report's finite-prefix quotient and its Bell
+coefficients, prove the ordered and uniform analytic error estimates, build a
+dyadic exact-evaluation implementation, and develop a matched
 two-parameter theory linking truncation acceleration to the periodic Lambert
 phase near the endpoint.
 

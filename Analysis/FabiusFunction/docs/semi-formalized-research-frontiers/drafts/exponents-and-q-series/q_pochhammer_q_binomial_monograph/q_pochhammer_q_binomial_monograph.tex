@@ -1,12 +1,11 @@
-\documentclass[11pt,oneside,openany]{book}
+\documentclass[11pt,a4paper,oneside,openany]{book}
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{amsmath,mathtools,amsthm}
-\usepackage{newtxtext,newtxmath}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{amsmath,amssymb,mathtools,amsthm}
 \usepackage[final]{microtype}
-\usepackage{geometry}
-\geometry{margin=1in,headheight=15pt}
+\usepackage[a4paper,margin=25.4mm,headheight=15pt]{geometry}
 \usepackage{bm}
 \usepackage{booktabs,longtable,tabularx,array,multirow}
 \usepackage{enumitem}
@@ -8224,7 +8223,13 @@ The formula is an exact rational certificate, but it is ill conditioned in float
 point, and the loss occurs \emph{inside} the blocks rather than between them.  The outer
 cancellation over $k$ is mild: at $\theta=1$ the largest block of
 \eqref{eq:fabius-inverse-dyadic-closed} exceeds the value of the whole sum by the factors
-$3.00,\;4.20,\;4.69,\;4.42,\;4.09,\;3.84,\;3.68,\;3.59,\;3.53,\;3.50$ for
+\[
+ \begin{gathered}
+  3.00,\;4.20,\;4.69,\;4.42,\;4.09,\\
+  3.84,\;3.68,\;3.59,\;3.53,\;3.50
+ \end{gathered}
+\]
+for
 $n=1,\ldots,10$, peaking at $n=3$ and decreasing thereafter, and other choices of
 $\theta$ alter these ratios only by a bounded factor.  The digits are lost within a
 single block, in the alternating Thue--Morse power sum: for $k=n$ the largest summand
@@ -10224,10 +10229,14 @@ Lipschitz with constant
 the constant $g_{q,N}\bigl(x-\tfrac12q^N\bigr)$ inside
 \eqref{eq:midpoint-error-integral}, so that
 \[
- \bigl|F^{\mathrm{mid}}_{q,N}(x)-F_q(x)\bigr|
- \le q^N\int_0^1\Bigl|g_{q,N}\bigl(x-q^Nu\bigr)-g_{q,N}\bigl(x-\tfrac12q^N\bigr)\Bigr|
-   \,\abs{H_q(u)}\dd u
- \le\frac{q^{2N}}{q(1-q)^2}\int_0^1\Bigl|u-\tfrac12\Bigr|\abs{H_q(u)}\dd u
+ \begin{aligned}
+  \bigl|F^{\mathrm{mid}}_{q,N}(x)-F_q(x)\bigr|
+  &\le q^N\int_0^1\Bigl|g_{q,N}\bigl(x-q^Nu\bigr)
+    -g_{q,N}\bigl(x-\tfrac12q^N\bigr)\Bigr|\\[-2pt]
+  &\hspace{7em}{}\cdot\abs{H_q(u)}\dd u\\
+  &\le\frac{q^{2N}}{q(1-q)^2}\int_0^1
+    \Bigl|u-\tfrac12\Bigr|\abs{H_q(u)}\dd u .
+ \end{aligned}
 \]
 by \eqref{eq:truncated-density-lipschitz}.  Now insert
 \eqref{eq:midpoint-H-moment-one}:
@@ -11276,16 +11285,25 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 182 labelled results, 17 are \statusexact, 26 are \statuspartial,
-136 are \statusnone, and 3 are \statusna.
+Of the 183 labelled results, 20 are \statusexact, 29 are \statuspartial,
+131 are \statusnone, and 3 are \statusna.
 The formalized part is concentrated exactly where the Fabius development
 needed it: the finite Gaussian-coefficient core, the geometric Lagrange and
 filter calculus, half-base and Thue--Morse cancellation, and the geometric
-uniform law.  The classical analytic layer --- infinite products,
-nonterminating basic hypergeometric summation, Jacobi triple product,
-Bailey pairs --- is essentially untouched, and every infinite
-$q$-Pochhammer symbol in the development is still a finite product over a
-\texttt{Finset.range}.
+uniform law.  The complete-homogeneous half of the weighted generating-product
+theorem is also formalized as a finite formal-power-series identity in
+\texttt{CompleteHomogeneousGenerating}; its elementary-symmetric half and its
+analytic convergence clause are not.  Most of the classical analytic layer --- nonterminating basic
+hypergeometric summation, Jacobi triple product, and Bailey pairs --- remains
+untouched.  The former claim that every infinite \(q\)-Pochhammer symbol in
+the development was a finite \texttt{Finset.range} product is now false:
+\texttt{LimitConditionNumber.qPochhammerInf} is the genuine real
+\(\prod'_{j\ge0}(1-aq^j)\); for \(0\le q<1\) the factors are multipliable for
+every real \(a\), the finite symbols converge to it, and the positive-factor
+specializations used for \((q;q)_\infty\) and \((-q;q)_\infty\) are strictly
+positive.  This real contractive-base product layer does not formalize the
+book's general complex analytic or basic-hypergeometric infinite-product
+theory.
 
 \section{By chapter}
 
@@ -11296,9 +11314,9 @@ Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
 The algebra of $q$-shifted factorials & 1 & 2 & 12 & 0\\
 $q$-integers and Gaussian coefficients & 1 & 2 & 5 & 0\\
-Finite $q$-binomial theorems and inversion & 1 & 1 & 7 & 0\\
-Weighted binomial coefficients and symmetric functions & 0 & 2 & 6 & 0\\
-Partitions, words, paths, and inversion statistics & 0 & 1 & 8 & 0\\
+Finite $q$-binomial theorems and inversion & 3 & 2 & 5 & 0\\
+Weighted binomial coefficients and symmetric functions & 0 & 4 & 4 & 0\\
+Partitions, words, paths, and inversion statistics & 1 & 1 & 7 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 0 & 1 & 5 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
 The infinite $q$-binomial theorem & 0 & 0 & 5 & 0\\
@@ -11318,7 +11336,7 @@ Geometric interpolation and exact $q$-filters & 6 & 2 & 1 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 7 & 3 & 0\\
 \midrule
-\textbf{Total} & 17 & 26 & 136 & 3\\
+\textbf{Total} & 20 & 29 & 131 & 3\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -11370,8 +11388,20 @@ Result & Status & Lean counterpart\\
 \Cref{cor:alternating-qbinom} & \statuspartial & \texttt{halfQBinomial\_\allowbreak{}two\_\allowbreak{}pow\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}zero}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
 \Cref{cor:weighted-subsets} & \statusnone & ---\\[2pt]
 \Cref{thm:reciprocal-finite} & \statusnone & ---\\[2pt]
-\Cref{thm:q-vandermonde} & \statusnone & ---\\[2pt]
-\Cref{cor:central-vandermonde} & \statusnone & ---\\[2pt]
+\Cref{thm:q-vandermonde} & \statusexact &
+\texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}vandermonde},
+\texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}vandermonde'}\newline
+{\footnotesize\texttt{QBinomialVandermonde}}\\[2pt]
+\Cref{cor:central-vandermonde} & \statusexact &
+\texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}central}\newline
+{\footnotesize\texttt{QBinomialVandermonde}}\\[2pt]
+\Cref{cor:shifted-central-vandermonde} & \statuspartial &
+\texttt{gaussianBinomial\_\allowbreak{}two\_\allowbreak{}mul\_\allowbreak{}add\_\allowbreak{}shifted\_\allowbreak{}central},
+\texttt{gaussianBinomial\_\allowbreak{}two\_\allowbreak{}mul\_\allowbreak{}sub\_\allowbreak{}shifted\_\allowbreak{}central},
+\texttt{gaussianBinomial\_\allowbreak{}two\_\allowbreak{}mul\_\allowbreak{}sub\_\allowbreak{}shifted\_\allowbreak{}central\_\allowbreak{}Icc}\newline
+{\footnotesize\texttt{QBinomialVandermonde}; natural positive shift is total,
+the two natural negative forms assume \(k\le N\), but the book states one
+signed-\(k\) formula}\\[2pt]
 \Cref{thm:qbinomial-inversion} & \statusnone & ---\\[2pt]
 \Cref{cor:qbinomial-orthogonality} & \statusnone & ---\\[2pt]
 \Cref{thm:q-cauchy} & \statusnone & ---\\[2pt]
@@ -11379,8 +11409,17 @@ Result & Status & Lean counterpart\\
 \multicolumn{3}{@{}l}{\itshape Weighted binomial coefficients and symmetric functions}\\
 \midrule
 \Cref{thm:weighted-pascal} & \statuspartial & \texttt{completeHomogeneousEval\_\allowbreak{}option\_\allowbreak{}succ}\newline{\footnotesize\texttt{CompleteHomogeneous}}\\[2pt]
-\Cref{thm:weighted-generating} & \statusnone & ---\\[2pt]
-\Cref{cor:e-h-orthogonality} & \statusnone & ---\\[2pt]
+\Cref{thm:weighted-generating} & \statuspartial &
+\texttt{prod\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}mul\_\allowbreak{}completeHomogeneousGeneratingSeriesOn},
+\texttt{completeHomogeneousGeneratingSeriesOn\_\allowbreak{}eq\_\allowbreak{}invOfUnit\_\allowbreak{}prod}\newline
+{\footnotesize\texttt{CompleteHomogeneousGenerating}; exact formal
+complete-homogeneous reciprocal product, but not the elementary generating
+product or the analytic-convergence clause}\\[2pt]
+\Cref{cor:e-h-orthogonality} & \statuspartial &
+\texttt{prod\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}mul\_\allowbreak{}completeHomogeneousGeneratingSeriesOn}\newline
+{\footnotesize\texttt{CompleteHomogeneousGenerating}; exact
+denominator-cleared power-series inverse, but no named coefficient theorem
+identifies its finite-product coefficients with the displayed $C_j^n$}\\[2pt]
 \Cref{thm:weighted-specializations} & \statuspartial & \texttt{completeHomogeneousEval\_\allowbreak{}geometric}\newline{\footnotesize\texttt{GeometricCompleteHomogeneous}}\\[2pt]
 \Cref{lem:vandermonde-alternant} & \statusnone & ---\\[2pt]
 \Cref{thm:schur-principal} & \statusnone & ---\\[2pt]
@@ -11393,7 +11432,9 @@ Result & Status & Lean counterpart\\
 \Cref{thm:rectangle-partitions} & \statusnone & ---\\[2pt]
 \Cref{cor:partition-symmetries} & \statuspartial & \texttt{qBinomial\_\allowbreak{}symm}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
 \Cref{cor:path-area} & \statusnone & ---\\[2pt]
-\Cref{thm:durfee-qvand} & \statusnone & ---\\[2pt]
+\Cref{thm:durfee-qvand} & \statusexact &
+\texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}central\_\allowbreak{}min}\newline
+{\footnotesize\texttt{QBinomialVandermonde}}\\[2pt]
 \Cref{thm:qmult-inversions} & \statusnone & ---\\[2pt]
 \Cref{prop:rogers-szego-recurrence} & \statusnone & ---\\[2pt]
 \Cref{prop:rogers-szego-three-term} & \statusnone & ---\\[2pt]

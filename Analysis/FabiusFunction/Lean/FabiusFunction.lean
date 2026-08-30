@@ -1,6 +1,7 @@
 import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.CompleteHomogeneousGenerating
 import FabiusFunction.FiniteQBinomialCore
+import FabiusFunction.QBinomialVandermonde
 import FabiusFunction.GaussianBinomialAtOne
 import FabiusFunction.GeometricCompleteHomogeneous
 import FabiusFunction.GeometricLagrange
@@ -9,6 +10,7 @@ import FabiusFunction.GeometricResidualMoments
 import FabiusFunction.FinitePowerSeriesFilter
 import FabiusFunction.GeometricPowerSeriesFilter
 import FabiusFunction.AnalyticSeriesFilter
+import FabiusFunction.RvachevQBinomialFilter
 import FabiusFunction.GeometricQBinomialLagrange
 import FabiusFunction.GeometricRichardson
 import FabiusFunction.GeometricLagrangeWeights
@@ -308,6 +310,7 @@ import FabiusFunction.PeriodicRegularity
 import FabiusFunction.LaplacePeriodicSecondOrder
 import FabiusFunction.FabiusTranslatedLegendreSeries
 import FabiusFunction.FabiusLegendreLeastSquares
+import FabiusFunction.FabiusLegendreEnergy
 import FabiusFunction.FabiusBinaryReductionSeries
 import FabiusFunction.FabiusComputability
 import FabiusFunction.Monotonicity

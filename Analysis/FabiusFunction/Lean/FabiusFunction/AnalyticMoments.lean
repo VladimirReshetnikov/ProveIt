@@ -1078,10 +1078,40 @@ theorem hasSum_even_of_odd_eq_zero
     obtain ⟨n, rfl⟩ := hm
     exact hodd n
 
-/-- The Fourier transform of Rvachev's function is its even-moment series. -/
-theorem rvachevFourier_eq_momentSeries
+/-- The `n`-th summand in the even-moment expansion of Rvachev's Fourier
+transform.  Naming the summand makes its exact geometric scaling visible to
+finite-series filters: scaling the Fourier argument by `c` multiplies the
+`n`-th mode by `(c ^ 2) ^ n`. -/
+noncomputable def rvachevFourierMomentTerm (z : ℂ) (n : ℕ) : ℂ :=
+  (-1 : ℂ) ^ n * (moment n : ℂ) /
+    ((2 * n).factorial : ℂ) * (2 * Real.pi * z) ^ (2 * n)
+
+/-- The constant mode in the Rvachev Fourier moment expansion is one. -/
+@[simp]
+theorem rvachevFourierMomentTerm_zero (z : ℂ) :
+    rvachevFourierMomentTerm z 0 = 1 := by
+  simp [rvachevFourierMomentTerm, moment_zero]
+
+/-- Scaling the Fourier argument by `c` acts diagonally on the `n`-th even
+moment mode, with ratio `c ^ 2`. -/
+theorem rvachevFourierMomentTerm_scale (c z : ℂ) (n : ℕ) :
+    rvachevFourierMomentTerm (c * z) n =
+      (c ^ 2) ^ n * rvachevFourierMomentTerm z n := by
+  have harg : 2 * Real.pi * (c * z) = c * (2 * Real.pi * z) := by
+    ring
+  have hpow : (c ^ 2) ^ n = c ^ (2 * n) := by
+    exact (pow_mul c 2 n).symm
+  simp only [rvachevFourierMomentTerm, harg, mul_pow, hpow]
+  ring
+
+/-- The even-moment summands genuinely sum to Rvachev's Fourier transform.
+
+This is the `HasSum` strengthening of `rvachevFourier_eq_momentSeries`.  In
+particular it exposes the unconditional summability needed to pass a finite
+geometric Lagrange row through the entire Fourier series. -/
+theorem hasSum_rvachevFourierMomentTerm
     (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
-    rvachevFourier F z = rvachevMomentSeries z := by
+    HasSum (rvachevFourierMomentTerm z) (rvachevFourier F z) := by
   let term : ℕ → ℂ := fun m =>
     ∫ t in (-1 : ℝ)..1,
       (rvachevUp F t : ℂ) *
@@ -1099,14 +1129,14 @@ theorem rvachevFourier_eq_momentSeries
     hasSum_even_of_odd_eq_zero hall fun n =>
       fourierSeriesTerm_odd_eq_zero F hF z n
   have hmoments : HasSum
-      (fun n : ℕ => (-1 : ℂ) ^ n * (moment n : ℂ) /
-        ((2 * n).factorial : ℂ) * (2 * Real.pi * z) ^ (2 * n))
+      (rvachevFourierMomentTerm z)
       (∫ t in (-1 : ℝ)..1,
         (rvachevUp F t : ℂ) *
           Complex.exp ((-2 * Real.pi * Complex.I * z) * t)) := by
     apply heven.congr_fun
     intro n
-    exact (fourierSeriesTerm_even_eq_moment F hF z n).symm
+    simpa only [rvachevFourierMomentTerm] using
+      (fourierSeriesTerm_even_eq_moment F hF z n).symm
   have hfourier : rvachevFourier F z =
       ∫ t in (-1 : ℝ)..1,
         (rvachevUp F t : ℂ) *
@@ -1125,7 +1155,14 @@ theorem rvachevFourier_eq_momentSeries
           (rvachevUp F t : ℂ) *
             Complex.exp ((-2 * Real.pi * Complex.I * z) * t) :=
         integral_rvachev_mul_eq_interval F hF _
-  rw [hfourier, rvachevMomentSeries]
-  exact hmoments.tsum_eq.symm
+  rw [hfourier]
+  exact hmoments
+
+/-- The Fourier transform of Rvachev's function is its even-moment series. -/
+theorem rvachevFourier_eq_momentSeries
+    (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
+    rvachevFourier F z = rvachevMomentSeries z := by
+  rw [rvachevMomentSeries]
+  exact (hasSum_rvachevFourierMomentTerm F hF z).tsum_eq.symm
 
 end Fabius

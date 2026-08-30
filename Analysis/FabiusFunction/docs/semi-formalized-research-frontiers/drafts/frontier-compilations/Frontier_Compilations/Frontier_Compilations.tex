@@ -286,7 +286,39 @@ Those two sentences are the main launch point of this report.  The first becomes
 
 \subsection{Status discipline}
 
-\statusbox{\textbf{Mathematical status.}  Every displayed frontier theorem below is accompanied by a proof or by an explicit reduction to standard Gaussian/Lobatto quadrature facts.  The low-order constants were independently checked by exact rational arithmetic or high-precision evaluation.  The results are presented as new relative to the audited \texttt{ProveIt} corpus.  A broad literature search did not locate these Fabius-specific formulas, but this report does not assert an exhaustive priority claim.  The finite algebraic bridge cross-referenced to \path{GeometricQBinomialLagrange.lean} is Lean-formalized, and \path{AnalyticSeriesFilter.lean} now proves the abstract exact Gaussian tail under unconditional summability, with no unweighted convergence condition at a zero-weight node.  It does not cover conditionally-only boundary series, signs, bounds, uniform convergence, or the report's sinc-product instantiation.  Separately, \path{FractionalVolterraCalculus.lean} proves positive affine covariance on ordered real intervals for arbitrary real order, and Gamma-normalized order raising for real $\alpha>0$ from a continuous Banach-valued primitive with an interval-integrable right derivative; for $\alpha\le0$, affine covariance is an identity for the totalized Lean interval-integral definition, and a classical Riemann--Liouville or integrability interpretation is asserted only for positive order.  \path{FabiusFractionalVolterra.lean} defines the total causal Rvachev fractional primitive, proves its support cutoff, positive-natural bridge, and positive-order semigroup on $x\ge-1$, and specializes order raising to the signed extension for $x\ge0$, bounded Fabius for $0\le x\le1$, and the $\Up$ bridge from $-1$ for $x\ge-1$.  These series and fractional APIs were checked at source checkpoint \path{149332f9d}.  Complex, weighted-monomial, iterated, negative-branch, shifted-lattice, endpoint-moment, transform/tail, piecewise/refinement, and inverse/quantile fractional formulas, and the report-specific analytic theorem families, remain frontier.}
+\statusbox{\textbf{Mathematical status.}  Every displayed frontier theorem
+below is accompanied by a proof or by an explicit reduction to standard
+Gaussian/Lobatto quadrature facts.  The low-order constants were independently
+checked by exact rational arithmetic or high-precision evaluation.  The results
+are presented as new relative to the audited \texttt{ProveIt} corpus.  A broad
+literature search did not locate these Fabius-specific formulas, but this report
+does not assert an exhaustive priority claim.  The finite algebraic bridge
+cross-referenced to \path{GeometricQBinomialLagrange.lean} is Lean-formalized,
+and \path{AnalyticSeriesFilter.lean} proves the abstract exact Gaussian tail
+under unconditional summability, with no unweighted convergence condition at a
+zero-weight node.  The later \path{RvachevQBinomialFilter.lean} specializes
+that mechanism to the actual infinite Rvachev sinc product for complex scale
+$c$, with Gaussian base $q=c^2$ and only finite node injectivity; its
+$c=1/2$, $q=1/4$ form is assumption-free.  This infinite-product theorem is
+not an identification of the report's finite-prefix quotient or its
+reciprocal-sinc/Bell coefficients, and it proves none of the report's analytic
+signs, bounds, uniform convergence, or asymptotics.  Separately,
+\path{FractionalVolterraCalculus.lean} proves positive affine covariance on
+ordered real intervals for arbitrary real order, and Gamma-normalized order
+raising for real $\alpha>0$ from a continuous Banach-valued primitive with an
+interval-integrable right derivative; for $\alpha\le0$, affine covariance is
+an identity for the totalized Lean interval-integral definition, and a
+classical Riemann--Liouville or integrability interpretation is asserted only
+for positive order.  \path{FabiusFractionalVolterra.lean} defines the total
+causal Rvachev fractional primitive, proves its support cutoff,
+positive-natural bridge, and positive-order semigroup on $x\ge-1$, and
+specializes order raising to the signed extension for $x\ge0$, bounded Fabius
+for $0\le x\le1$, and the $\Up$ bridge from $-1$ for $x\ge-1$.  The
+fractional APIs were checked at source checkpoint \path{149332f9d}; the
+infinite-product filter is a current-tree result.  Complex,
+weighted-monomial, iterated, negative-branch, shifted-lattice, endpoint-moment,
+transform/tail, piecewise/refinement, and inverse/quantile fractional formulas,
+and the report-specific analytic theorem families, remain frontier.}
 
 \subsection{Executive list of new results}
 
@@ -1512,11 +1544,15 @@ identity under Mathlib's unconditional \path{Summable} hypothesis: arbitrary
 finite filters act diagonally and split into exact heads and tails, and the
 geometric-Lagrange specialization has the full Gaussian tail, including shifted
 scales.  Summability is required only at nonzero-weight samples; a zero-weight
-node is automatic.  This does not cover conditionally-only boundary summation,
-identify the abstract coefficients with the spline or sinc-product sequence,
-or prove signs, bounds, asymptotics, or uniform convergence.  Consequently the
-concrete expansion and convergence rate in \cref{p1:thm:q-richardson} remain
-frontier.
+node is automatic.  The later module
+\path{RvachevQBinomialFilter.lean} identifies the named even-moment series
+with the actual infinite Rvachev product and gives its exact Gaussian filter;
+at quarter base it discharges node injectivity internally.  It does not
+identify the reciprocal-sinc coefficients of the finite-prefix quotient used
+here.  Conditionally-only boundary summation, that finite-prefix/Bell bridge,
+and the report's signs, bounds, asymptotics, and uniform convergence remain
+open.  Consequently the concrete expansion and convergence rate in
+\cref{p1:thm:q-richardson} remain frontier.
 
 \subsection{Accelerated combinations}
 
@@ -1891,14 +1927,17 @@ These cases can be formalized before a fully general quadrature library is compl
       \path{GeometricPowerSeriesFilter.lean} for their complete coefficientwise
       action on a formal series.
 \item Use \path{AnalyticSeriesFilter.lean} for the exact abstract
-      unconditionally summable Gaussian tail, then identify its coefficients
-      with the reciprocal-sinc expansion and prove the controlled uniform
-      remainder in \cref{p1:thm:q-richardson}.
+      unconditionally summable Gaussian tail and
+      \path{RvachevQBinomialFilter.lean} for its actual infinite-product
+      specialization; then separately identify the finite-prefix quotient's
+      reciprocal-sinc coefficients and prove the controlled uniform remainder
+      in \cref{p1:thm:q-richardson}.
 \end{enumerate}
-The finite algebraic, formal-series, and abstract unconditionally summable
-steps are now available at arbitrary ratio under node injectivity, including
-\(q=1/4\); the remaining steps are the reciprocal-sinc coefficient bridge and
-combination with controlled uniform remainders.  Its
+The finite algebraic and formal-series steps are now available at arbitrary
+ratio under node injectivity, and the actual infinite Rvachev product has the
+corresponding entire filter, assumption-free at \(q=1/4\).  The remaining
+steps are the finite-prefix reciprocal-sinc coefficient bridge and its
+combination with controlled uniform remainders.  The
 \(q=1/2\) specialization is the existing half-base Toeplitz bridge.
 
 \section{Open problems and next frontier}
@@ -4103,12 +4142,14 @@ arbitrary finite rescaling filter, and
 as an all-index formal-series residual identity.  The further module
 \path{AnalyticSeriesFilter.lean} gives an exact evaluated-series residual under
 unconditional summability of the contributing samples; zero-weight nodes impose
-no convergence condition on their unweighted samples.  This abstract theorem
-does not cover a conditionally convergent boundary series, identify its input
-with the product or holomorphic logarithm on \(D_N\), or prove the signs, bounds,
-brackets, asymptotics, or uniform convergence in this part.  Those concrete
-assertions retain their frontier status unless an explicit analytic declaration
-is cited.
+no convergence condition on their unweighted samples.  The distinct module
+\path{RvachevQBinomialFilter.lean} now identifies the named even-moment series
+with the dyadic infinite Rvachev product and filters it exactly.  It does not
+identify the general-base finite prefix \(P_{b,N}\), its quotient, or its
+holomorphic logarithm on \(D_N\).  A conditionally convergent boundary series
+and the signs, bounds, brackets, asymptotics, and uniform convergence in this
+part likewise remain outside that theorem.  Those concrete assertions retain
+their frontier status unless an explicit analytic declaration is cited.
 
 Away from zeros, the existing multiplicative transform can be written schematically as
 \[
@@ -12595,10 +12636,13 @@ mass boundary and all positive degrees in one formal-series identity.
 counterpart: under unconditional summability, the filter has an exact head/tail
 split and its geometric-Lagrange form has the complete shifted Gaussian tail.
 Only nonzero-weight samples require unweighted summability, so zero weights are
-handled sharply.  This still excludes conditionally-only boundary series and
-does not connect the abstract coefficients to the sinc product; convergence of
-product truncations, signs, bounds, brackets, asymptotics, and uniform remainder
-control remain governed by the analytic frontier stated below.
+handled sharply.  The later \path{RvachevQBinomialFilter.lean} connects the
+named even-moment coefficients to the actual infinite Rvachev sinc product and
+gives the corresponding entire filter, assumption-free at quarter base.  It
+does not connect the present logarithmic tail coefficients to the finite
+lacunary-product truncations.  Conditionally-only boundary series, convergence
+of those truncations, signs, bounds, brackets, asymptotics, and uniform
+remainder control remain governed by the analytic frontier stated below.
 
 At post-snapshot checkpoint
 \nolinkurl{1e761ed77583e9870ceeaeb2c74ac824094f0f3f}, the algebraic route to the

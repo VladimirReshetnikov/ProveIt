@@ -187,7 +187,7 @@ single consolidated volume `Lambert_W_Guide/` (the most complete
 treatment as the body, the other three's unique layers in a
 complements section, a four-way concordance, and a corpus-role
 section tying W₋₁ to the endpoint theory).  By the same precedent, a
-standalone 96-page reference monograph on q-Pochhammer symbols and
+standalone 191-page reference monograph on q-Pochhammer symbols and
 q-binomial coefficients — the machinery consumed by the exponents
 volume's Parts II/VI/VII and the formalized Gaussian-binomial core —
 was filed as a second member of `exponents-and-q-series/` rather than
