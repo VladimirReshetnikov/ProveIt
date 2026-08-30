@@ -322,7 +322,7 @@ is not by itself evidence of formalization.  Statements proved in Lean carry the
 declaration names in the text, typeset as \lean{Fabius.thueMorseSign}; statements without
 such a citation must not be inferred to have a formal counterpart.
 
-The current inventory in \cref{p1:sec:formalized-modules} consists of ninety-six compiled
+The current inventory in \cref{p1:sec:formalized-modules} consists of ninety-seven compiled
 Lean modules.  It covers the finite algebraic, automata, moment, Fourier, rarefaction,
 Dirichlet--Mellin, word-combinatorial, and Fabius--Rvachev bridges recorded there, often in
 greater generality than the displayed prose.  The dependency-aware map in
@@ -894,6 +894,19 @@ Substitution of \eqref{p1:eq:bit-floor} gives a digit-free, floor-only product:
 \end{equation}
 Every factor is \(1-2b_j(n)\in\{1,-1\}\).
 
+\emph{Formal versions.}  The exact digit extraction \eqref{p1:eq:bit-floor}, with
+the bit indicator on the left, is
+\lean{Fabius.testBit\_toNat\_eq\_div\_sub\_two\_mul\_div}; its intermediate
+difference-equals-remainder form is
+\lean{Fabius.div\_two\_pow\_sub\_two\_mul\_div\_two\_pow\_succ}.  The exhaustive
+four-theorem API of \path{BinaryDigitFloor.lean} also exposes the two helpers
+\lean{Fabius.div\_two\_pow\_succ\_eq\_div\_div} and
+\lean{Fabius.sub\_two\_mul\_div\_two}.  The corpus carried the equivalent
+\emph{residue} form first --- \lean{Fabius.testBit\_iff\_div\_two\_pow\_mod\_two} in
+\path{DigitCharacterCongruence.lean}, the \(j\)-th bit is set exactly when
+\(\lfloor n/2^j\rfloor\) is odd --- and the difference form was added so that this
+display could be cited rather than paraphrased.
+
 \subsection{Dyadic floor and fractional-part sums}
 
 \begin{lemma}[Legendre floor sum]
@@ -946,18 +959,19 @@ integer.
 
 \emph{Formal versions.}  \path{ThueMorseDigits.lean} proves the additive
 Legendre formula \(\wt(n)+\vtwo(n!)=n\)
-(\lean{Fabius.binaryWeight\_add\_padicValNat\_factorial}), the floor sums
-in truncation-free form
+(\lean{Fabius.binaryWeight\_add\_padicValNat\_factorial}), and the floor sums
+as finite identities for every cutoff strictly above \(\log_2 n\)
 (\lean{Fabius.binaryWeight\_add\_sum\_div\_two\_pow},
 \lean{Fabius.sum\_div\_two\_pow\_add\_binaryWeight}), the floor-parity
-formula \eqref{p1:eq:floor-formulas}
+formula \eqref{p1:eq:floor-formulas} under the same cutoff hypothesis
 (\lean{Fabius.thueMorseSign\_eq\_neg\_one\_pow\_sum\_div}), the bound
 \(\wt(n)\le n\) (\lean{Fabius.binaryWeight\_le\_self}), and the
 bit-extraction bridge
 \(\wt(n)=\sum_{j<m}b_j(n)\)
 (\lean{Fabius.binaryWeight\_eq\_sum\_testBit}) together with the digit
 product \eqref{p1:eq:digit-product}
-(\lean{Fabius.thueMorseSign\_eq\_prod\_testBit}).  Natural-number
+(\lean{Fabius.thueMorseSign\_eq\_prod\_testBit}).  Both finite statements
+require \(n<2^m\), so the window contains every nonzero bit.  Natural-number
 subtraction being awkward, every Lean statement is phrased additively; the
 prose forms above are recovered by moving one term across.
 
@@ -1330,6 +1344,16 @@ modulo two.
 The telescoping product \eqref{p1:eq:ruler-product} returns to this formula because
 \(\sum_{k=1}^{n}\vtwo(k)=\vtwo(n!)\).
 
+\emph{Formal versions.}  Legendre's formula \eqref{p1:eq:legendre-two} is
+\lean{Fabius.binaryWeight\_add\_padicValNat\_factorial} in \path{ThueMorseDigits.lean},
+stated additively as \(\wt(n)+\vtwo(n!)=n\) so that no subtraction in \(\N\) is needed.
+The floor form \eqref{p1:eq:floor-sum} is
+\lean{Fabius.binaryWeight\_add\_sum\_div\_two\_pow} and the all-index variant
+\eqref{p1:eq:floor-sum-all} is \lean{Fabius.sum\_div\_two\_pow\_add\_binaryWeight}, both
+in the same file.  Each floor statement carries one hypothesis the display leaves
+implicit: the sum is truncated at any \(b>\log_2n\), which is where its tail is already
+zero.
+
 \subsection{A single central binomial coefficient}
 
 \begin{theorem}[Central-binomial valuation]
@@ -1374,7 +1398,12 @@ Use \eqref{p1:eq:legendre-two} and \(\wt(2n)=\wt(n)\):
 \lean{Fabius.padicValNat_two_centralBinom_eq_zero_iff}.  The last theorem
 states that the valuation vanishes exactly when the binary weight is zero,
 which occurs only at \(n=0\); a positive power of two has valuation one, not
-zero.
+zero.  The first identity is the \(a=b=n\) case of the additive Kummer theorem
+\lean{Fabius.binaryWeight_add_addChoose_padicValNat}, with
+\(\wt(2n)=\wt(n)\) cancelling one copy of the weight.  Thus the Lean proof does
+not depend on a separate factorial-valuation argument.  The \(\tau(n)\)-mod-two
+and trigonometric displays are immediate report-level corollaries, not separate
+named declarations in this module.
 
 \begin{boxedremark}
 \textbf{The shortest Pascal replacement.}
@@ -1479,6 +1508,19 @@ For \(a_1,\ldots,a_r\ge0\) and \(N=a_1+\cdots+a_r\),
 Apply Legendre's formula to
 \(N!/(a_1!\cdots a_r!)\) and then take parity.
 \end{proof}
+
+\emph{Formal versions.}  Kummer's identity \eqref{p1:eq:kummer-digit-sum} is
+\lean{Fabius.binaryWeight\_add\_addChoose\_padicValNat} in
+\path{ThueMorseValuation.lean}, again stated additively as
+\(\wt(a+b)+\vtwo\binom{a+b}a=\wt(a)+\wt(b)\); the sign cocycle
+\eqref{p1:eq:carry-sign} is \lean{Fabius.thueMorseSign\_add\_valuation} in
+\path{TwoAdic.lean}, and the borrow form for subtraction is
+\lean{Fabius.subChoose\_padicValNat\_two\_add}.  The multinomial valuation
+\eqref{p1:eq:multinomial-v2} is formalized at an \emph{arbitrary} prime rather than only
+at two, as \lean{Fabius.sum\_digitSum\_eq\_sub\_one\_mul\_padicValNat\_multinomial} in
+\path{ThueMorseMultinomial.lean}, whose \(p=2\) reading is the display; its sign form
+\eqref{p1:eq:multinomial-carry-sign} follows by taking parity but is not separately
+stated there.
 
 \subsection{Subtraction and borrow counts}
 
@@ -1965,6 +2007,25 @@ For commuting indeterminates \(x_0,\ldots,x_{m-1}\),
 \end{equation}
 \end{theorem}
 
+\emph{Formal versions.}  The principal ingredients of the multivariable identity
+are formal in two pieces, and the split is the interesting part.  Over any
+commutative semiring,
+\lean{Fabius.prod\_one\_add\_eq\_sum\_powerset} in \path{ThueMorseBooleanCube.lean} is
+\(\prod_{j\in S}(1+x_j)=\sum_{T\subseteq S}\prod_{j\in T}x_j\) --- the display with the
+sum still indexed by \emph{subsets} --- and
+\lean{Fabius.sum\_powerset\_two\_pow} in \path{ThueMorseBitSupport.lean} is the
+re-indexing \(T\mapsto\sum_{j\in T}2^j\) that turns subsets of \(\{0,\dots,m-1\}\) into
+\(\{0,\dots,2^m-1\}\).  Together with the sign and bit-support dictionary, they
+are the principal formal ingredients of \eqref{p1:eq:boolean-mother}; the
+arbitrary multivariable composite itself has no single named declaration.  The
+corpus states the composite only in the
+one-variable specialization
+\(x_j=z^{2^j}\), as \lean{Fabius.prod\_one\_sub\_pow\_eq\_sum\_thueMorseSign}, and in the
+two-parameter form \lean{Fabius.prod\_one\_add\_mul\_pow},
+\(\prod_{j<m}(1+uz^{2^j})=\sum_{n<2^m}u^{\wt(n)}z^n\), from which the finite
+Thue--Morse product and the weight enumerator follow by setting \(u=-1\) and
+\(z=1\), respectively.
+
 \begin{proof}
 Identify \(n\) with its bit vector \(b\in\{0,1\}^m\).  The sum factors over
 coordinates:
@@ -2310,8 +2371,8 @@ finite-level factorization \(F(z)=P_k(z)F(z^{2^k})\) are
 theory.  The bit Mahler equation
 \eqref{p1:eq:T-Mahler} and the lacunary quotient are now formal in
 \path{ThueMorseLacunaryQuotient.lean}: the quotient
-\(z/(1-z^2)\) is realized as the dyadic geometric series
-\(G_1\) --- with \(G_j=\sum_k z^{k2^j}\) proved inverse to
+\(z/(1-z^2)\) is realized as \(zG_1\), where the dyadic geometric series
+\(G_j=\sum_k z^{k2^j}\) is proved inverse to
 \(1-z^{2^j}\) (\lean{Fabius.one\_sub\_X\_pow\_mul\_dyadicGeometric})
 --- so that \eqref{p1:eq:T-Mahler} becomes the denominator-free identity
 \(T=(1-z)T(z^2)+zG_1\)
@@ -2319,8 +2380,13 @@ theory.  The bit Mahler equation
 \cref{p1:thm:lacunary-quotient} holds at every finite level as
 \(T=\sum_{j<M}P_j\,z^{2^j}G_{j+1}+P_MT(z^{2^M})\)
 (\lean{Fabius.thueMorseBitZSeries\_lacunary\_quotient}), by
-iterating the Mahler step; only the analytic convergence statements
-remain informal.
+iterating the Mahler step.  In the formal statement the last term uses the
+\(M\)-fold \lean{PowerSeries.expand} of \(T\), and
+\lean{Fabius.one\_sub\_X\_pow\_mul\_dyadicGeometric} is the bridge that
+justifies reading \(G_{j+1}\) as \((1-X^{2^{j+1}})^{-1}\).  This finite
+identity is pure formal-power-series algebra; only the analytic passage
+\(M\to\infty\), including convergence of the remainder to zero for
+\(|z|<1\), remains informal.
 
 Iterating the inhomogeneous bit equation yields a useful lacunary sum.
 
@@ -3205,6 +3271,20 @@ framework are surveyed in
 \cite{p1:bugeaudQueffelec2013,p1:bugeaudHanWenYao2015}.  This is the cleanest
 place where the determinant rigidity of \cref{p1:thm:hankel-nonzero} pays an
 explicitly Diophantine dividend.
+
+\emph{Formal versions.}  Neither theorem of this subsection has one, and neither is
+planned: both are imported literature results about the \emph{analytic value} of \(E\)
+at an algebraic point, and transcendence and irrationality exponents are outside what
+the corpus develops.  Two algebraic ingredients used across those proofs are formal,
+but neither proves an analytic evaluation, transcendence statement, or irrationality
+exponent.  The Mahler equation \eqref{p1:eq:E-Mahler} is formal-power-series algebra:
+\lean{Fabius.thueMorseSeries\_mahler} in \path{ThueMorseMahler.lean}, in the form
+\(E=(1-X)\cdot\operatorname{expand}_2E\), and the determinant rigidity of
+\cref{p1:thm:hankel-nonzero} is \lean{Fabius.thueMorseHankel\_ne\_zero} in
+\path{ThueMorseHankel.lean}, a finite integer-matrix theorem proved through the sharper
+\lean{Fabius.hankelSign\_det\_eq\_two\_pow\_mul\_odd} --- the determinant is a power of
+two times an odd number, so its nonvanishing is a parity fact rather than an
+estimate.
 
 \section[Finite differences and moments]{Finite differences, Prouhet cancellation, and all dyadic moments}
 \label{p1:sec:finite-differences}
@@ -6406,7 +6486,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{p1:sec:formalized-modules}
 
-The first tranches of the formalization now exist as ninety-six
+The first tranches of the formalization now exist as ninety-seven
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -6434,6 +6514,7 @@ Module & Contents \\
 \path{ThueMorseBooleanCube.lean} & Two-parameter master product over any commutative semiring, signed product over any commutative ring, and weight enumerator, using the centralized bit-support reindexing API. \\
 \path{ThueMorseValuation.lean} & Successor law, weight subadditivity, ruler product, Catalan valuation, additive Kummer, borrow cocycle. \\
 \path{CentralBinomialValuation.lean} & Exhaustive three-theorem bridge: central-binomial valuation equals binary weight, its parity gives the Thue--Morse sign, and zero valuation is equivalent to zero binary weight (hence occurs only at \(n=0\)). \\
+\path{BinaryDigitFloor.lean} & Exhaustive four-theorem total-natural bridge from dyadic quotients to floor-difference binary digits: quotient-by-two normalization, parity remainder, the consecutive-floor difference, and the test-bit indicator identity; no analytic or real-floor generalization. \\
 \path{ThueMorseDigits.lean} & Additive Legendre, floor sums, floor-parity formula, `testBit` bridge, digit product. \\
 \path{ThueMorseEnumerators.lean} & Weight distribution, evil/odious enumerations and composition laws, XOR autocorrelation, signed Hamming spheres. \\
 \path{FinitePolynomialFunctional.lean} & Moment expansion for finite weighted polynomial evaluations, selected-, top-, and constant-coefficient extraction, scalar-extension forms, degree-valued strict cancellation, and same-ring conveniences over commutative semirings; repeated nodes and a zero surviving moment are allowed. \\

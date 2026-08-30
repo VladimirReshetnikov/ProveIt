@@ -53,6 +53,7 @@ import FabiusFunction.BitPositionGenerating
 import FabiusFunction.ParityCharacter
 import FabiusFunction.ParityCharacterKernel
 import FabiusFunction.DigitCharacterCongruence
+import FabiusFunction.BinaryDigitFloor
 import FabiusFunction.GeneralizedProuhetBlock
 import FabiusFunction.ProuhetBlockZeroOrder
 import FabiusFunction.BitPositionQBinomial
