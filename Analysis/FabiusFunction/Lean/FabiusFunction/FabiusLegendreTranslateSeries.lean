@@ -1,4 +1,5 @@
 import FabiusFunction.FabiusLegendreTranslateBlocks
+import Mathlib.Order.Filter.AtTopBot.Basic
 
 /-!
 # The Rvachev-translate Legendre series and its fixed-scale partial sums
@@ -17,8 +18,8 @@ functions on `[-1, 1]`, not equalities of the two coefficient vectors.
 
 set_option autoImplicit false
 
-open Polynomial Set Finset
-open scoped BigOperators
+open Filter Polynomial Set Finset
+open scoped BigOperators Topology
 
 namespace Fabius
 
@@ -321,6 +322,141 @@ theorem tsum_rvachevLegendreTranslateBlock_uniform
       continuousMapOnLegendreInterval
         (rvachevUp F) (rvachev_contDiff F hF).continuous :=
   (hasSum_rvachevLegendreTranslateBlock_uniform F hF).tsum_eq
+
+/-! ## Uniform convergence of the common-mesh partial trains -/
+
+/-- The common-mesh finite train for the `N`-th Legendre partial sum, bundled
+as a continuous function on `[-1,1]`.  Continuity follows from its equality
+there with the polynomial partial sum. -/
+noncomputable def rvachevLegendrePartialSumTranslateBlockOnInterval
+    (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) :
+    C(Icc (-1 : ℝ) 1, ℝ) :=
+  ⟨fun x => rvachevLegendrePartialSumTranslateBlock F N x, by
+    have heq :
+        (fun x : Icc (-1 : ℝ) 1 =>
+          rvachevLegendrePartialSumTranslateBlock F N x) =
+          fun x : Icc (-1 : ℝ) 1 =>
+            (rvachevLegendrePartialSumPolynomial F N).eval (x : ℝ) := by
+      funext x
+      exact rvachevLegendrePartialSumTranslateBlock_eq_eval_partialSumPolynomial
+        F hF N x.property
+    rw [heq]
+    exact (rvachevLegendrePartialSumPolynomial F N).continuous.comp
+      continuous_subtype_val⟩
+
+/-- Evaluation of the bundled common-mesh partial train. -/
+@[simp]
+theorem rvachevLegendrePartialSumTranslateBlockOnInterval_apply
+    (F : BoundedFabius) (hF : IsFabius F) (N : ℕ)
+    (x : Icc (-1 : ℝ) 1) :
+    rvachevLegendrePartialSumTranslateBlockOnInterval F hF N x =
+      rvachevLegendrePartialSumTranslateBlock F N x :=
+  rfl
+
+/-- The bundled common-mesh train is the polynomial Legendre partial sum on
+`[-1,1]`. -/
+theorem rvachevLegendrePartialSumTranslateBlockOnInterval_eq_eval_partialSumPolynomial
+    (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) :
+    rvachevLegendrePartialSumTranslateBlockOnInterval F hF N =
+      continuousMapOnLegendreInterval
+        (fun x : ℝ => (rvachevLegendrePartialSumPolynomial F N).eval x)
+        (rvachevLegendrePartialSumPolynomial F N).continuous := by
+  ext x
+  simp only [rvachevLegendrePartialSumTranslateBlockOnInterval_apply,
+    continuousMapOnLegendreInterval_apply]
+  exact rvachevLegendrePartialSumTranslateBlock_eq_eval_partialSumPolynomial
+    F hF N x.property
+
+/-- The bundled common-mesh train is also the sum of the separately scaled
+literal translate blocks through level `N`. -/
+theorem rvachevLegendrePartialSumTranslateBlockOnInterval_eq_sum
+    (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) :
+    rvachevLegendrePartialSumTranslateBlockOnInterval F hF N =
+      ∑ n ∈ range (N + 1),
+        rvachevLegendreTranslateBlockOnInterval F hF n := by
+  apply ContinuousMap.ext
+  intro x
+  rw [rvachevLegendrePartialSumTranslateBlockOnInterval_apply]
+  change rvachevLegendrePartialSumTranslateBlock F N x =
+    (ContinuousMap.evalAlgHom ℝ ℝ x)
+      (∑ n ∈ range (N + 1),
+        rvachevLegendreTranslateBlockOnInterval F hF n)
+  rw [map_sum]
+  change rvachevLegendrePartialSumTranslateBlock F N x =
+    ∑ n ∈ range (N + 1),
+      rvachevLegendreTranslateBlockOnInterval F hF n x
+  simp only [rvachevLegendreTranslateBlockOnInterval_apply]
+  exact rvachevLegendrePartialSumTranslateBlock_eq_sum_translateBlock
+    F hF N x.property
+
+/-- The one-mesh Legendre partial trains converge to `rvachevUp` in the
+supremum norm on `[-1,1]`. -/
+theorem tendsto_rvachevLegendrePartialSumTranslateBlockOnInterval
+    (F : BoundedFabius) (hF : IsFabius F) :
+    Tendsto
+      (fun N : ℕ =>
+        rvachevLegendrePartialSumTranslateBlockOnInterval F hF N)
+      atTop
+      (𝓝 (continuousMapOnLegendreInterval
+        (rvachevUp F) (rvachev_contDiff F hF).continuous)) := by
+  have h :=
+    (hasSum_rvachevLegendreTranslateBlock_uniform F hF).tendsto_sum_nat.comp
+      (tendsto_add_atTop_nat 1)
+  refine h.congr' (Filter.Eventually.of_forall fun N => ?_)
+  simp only [Function.comp_apply]
+  exact
+    (rvachevLegendrePartialSumTranslateBlockOnInterval_eq_sum F hF N).symm
+
+/-- Raw function form of uniform convergence of the one-mesh Legendre
+partial trains on `[-1,1]`. -/
+theorem rvachevLegendrePartialSumTranslateBlock_tendstoUniformlyOn
+    (F : BoundedFabius) (hF : IsFabius F) :
+    TendstoUniformlyOn
+      (fun N : ℕ => rvachevLegendrePartialSumTranslateBlock F N)
+      (rvachevUp F) atTop (Icc (-1 : ℝ) 1) := by
+  rw [tendstoUniformlyOn_iff_tendstoUniformly_comp_coe]
+  have h := ContinuousMap.tendsto_iff_tendstoUniformly.mp
+    (tendsto_rvachevLegendrePartialSumTranslateBlockOnInterval F hF)
+  have happrox :
+      (fun N (x : Icc (-1 : ℝ) 1) =>
+        rvachevLegendrePartialSumTranslateBlockOnInterval F hF N x) =ᶠ[atTop]
+        fun N (x : Icc (-1 : ℝ) 1) =>
+          rvachevLegendrePartialSumTranslateBlock F N x :=
+    Filter.Eventually.of_forall fun N => by
+      funext x
+      exact rvachevLegendrePartialSumTranslateBlockOnInterval_apply F hF N x
+  have h' := (tendstoUniformly_congr happrox).mp h
+  have hlim :
+      rvachevUp F ∘ Subtype.val =
+        ⇑(continuousMapOnLegendreInterval
+          (rvachevUp F) (rvachev_contDiff F hF).continuous) := by
+    funext x
+    exact (continuousMapOnLegendreInterval_apply
+      (rvachevUp F) (rvachev_contDiff F hF).continuous x).symm
+  rw [hlim]
+  exact h'
+
+/-- The supremum norm of the error of the bundled common-mesh train tends to
+zero on `[-1,1]`. -/
+theorem tendsto_norm_rvachevLegendrePartialSumTranslateBlockOnInterval_sub
+    (F : BoundedFabius) (hF : IsFabius F) :
+    Tendsto
+      (fun N : ℕ =>
+        ‖rvachevLegendrePartialSumTranslateBlockOnInterval F hF N -
+          continuousMapOnLegendreInterval
+            (rvachevUp F) (rvachev_contDiff F hF).continuous‖)
+      atTop (𝓝 0) :=
+  tendsto_iff_norm_sub_tendsto_zero.mp
+    (tendsto_rvachevLegendrePartialSumTranslateBlockOnInterval F hF)
+
+/-- Pointwise consequence on `[-1,1]` of uniform convergence of the
+common-mesh Legendre partial trains. -/
+theorem tendsto_rvachevLegendrePartialSumTranslateBlock
+    (F : BoundedFabius) (hF : IsFabius F)
+    {x : ℝ} (hx : x ∈ Icc (-1 : ℝ) 1) :
+    Tendsto (fun N : ℕ => rvachevLegendrePartialSumTranslateBlock F N x)
+      atTop (𝓝 (rvachevUp F x)) :=
+  (rvachevLegendrePartialSumTranslateBlock_tendstoUniformlyOn F hF).tendsto_at hx
 
 end
 

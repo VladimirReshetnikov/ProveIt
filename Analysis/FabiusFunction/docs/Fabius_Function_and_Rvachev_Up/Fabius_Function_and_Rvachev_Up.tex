@@ -3958,13 +3958,13 @@ not the analytic transfer expansion or its remainder estimates.
 \label{sec:rvachev-moment-appell}
 
 Starting from compiled source checkpoint \texttt{1f9ce6fd9} and including the
-current focused-build extension,
+current focused-build extension at compiled checkpoint \texttt{e2c310e7c},
 \path{RvachevMomentAppell.lean} specializes the formal Bell and Appell engines
 to the Rvachev probability law.  Its six public definitions are
 \lean{rvachevRawMomentRat}, \lean{rvachevReciprocalMomentRat},
 \lean{rvachevAppellPolynomialRat}, \lean{rvachevAppellPolynomial}, and
 \lean{rvachevDeconvolvedPolynomial}, together with
-\lean{rvachevDeconvolutionLinearMap}.  Its twenty-two public theorems are
+\lean{rvachevDeconvolutionLinearMap}.  Its twenty-four public theorems are
 \lean{rvachevRawMomentRat_zero}, \lean{rvachevRawMomentRat_even},
 \lean{rvachevRawMomentRat_odd}, \lean{rvachevReciprocalMomentRat_zero},
 \lean{binomialConv_rvachevRawMomentRat_reciprocal},
@@ -3983,6 +3983,8 @@ to the Rvachev probability law.  Its six public definitions are
 \lean{rvachevDeconvolvedPolynomial_smul},
 \lean{rvachevDeconvolvedPolynomial_finsetSum},
 \lean{rvachevDeconvolvedPolynomial_C_mul},
+\lean{rvachevDeconvolvedPolynomial_monomial},
+\lean{rvachevDeconvolvedPolynomial_X_pow},
 \lean{natDegree_rvachevDeconvolvedPolynomial_le}, and
 \lean{integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev}.
 
@@ -4000,11 +4002,13 @@ bridges are
    \label{eq:rvachev-deconvolution-smoothing}
 \end{align}
 where \(\mathcal D_{\Up}P\) denotes
-\lean{rvachevDeconvolvedPolynomial}\(P\).  This coefficientwise operation does
-not raise polynomial degree.  Its linear-map package proves preservation of
-zero, addition, real scalar multiplication, finite sums, and multiplication by
-a constant polynomial; these are algebraic identities and do not assert an
-analytic reciprocal-MGF, differential-series, or Appell generating function.
+\lean{rvachevDeconvolvedPolynomial}\(P\).  This coefficientwise operation sends
+a monomial and \(X^n\) to the correspondingly scaled and unscaled
+Rvachev--Appell polynomial and does not raise polynomial degree.  Its linear-map
+package proves preservation of zero, addition, real scalar multiplication,
+finite sums, and multiplication by a constant polynomial; these are algebraic
+identities and do not assert an analytic reciprocal-MGF, differential-series,
+or Appell generating function.
 
 At compiled source checkpoint \texttt{c51a41fcf},
 \path{RvachevPolynomialSynthesis.lean} exports no public definitions and
@@ -8335,12 +8339,15 @@ the fully expanded atom-Gram identity is
  =\delta_{mn}\frac{2u_n^2}{4n+1}.                         \label{eq:legendre-atom-gram}
 \end{equation}
 
-The focused-build module \path{FabiusLegendreTranslateSeries.lean} closes the
-literal outer series and the common-mesh partial sums.  Its four public
+At compiled source checkpoint \texttt{e2c310e7c}, the focused-build module
+\path{FabiusLegendreTranslateSeries.lean} closes the literal outer series and
+the common-mesh partial sums.  Its five public
 definitions are \lean{rvachevLegendrePartialSumDeconvolutionPolynomial},
 \lean{rvachevLegendrePartialSumAtomCoefficient},
-\lean{rvachevLegendrePartialSumTranslateBlock}, and
-\lean{rvachevLegendreTranslateBlockOnInterval}.  Its sixteen public theorems are
+\lean{rvachevLegendrePartialSumTranslateBlock},
+\lean{rvachevLegendreTranslateBlockOnInterval}, and
+\lean{rvachevLegendrePartialSumTranslateBlockOnInterval}.  Its twenty-three
+public theorems are
 \lean{summable_norm_rvachevLegendreTranslateBlock},
 \lean{summable_rvachevLegendreTranslateBlock},
 \lean{hasSum_rvachevLegendreTranslateBlock},
@@ -8355,8 +8362,15 @@ definitions are \lean{rvachevLegendrePartialSumDeconvolutionPolynomial},
 \lean{rvachevLegendreTranslateBlockOnInterval_eq_smul},
 \lean{summable_norm_rvachevLegendreTranslateBlockOnInterval},
 \lean{summable_rvachevLegendreTranslateBlockOnInterval},
-\lean{hasSum_rvachevLegendreTranslateBlock_uniform}, and
-\lean{tsum_rvachevLegendreTranslateBlock_uniform}.
+\lean{hasSum_rvachevLegendreTranslateBlock_uniform},
+\lean{tsum_rvachevLegendreTranslateBlock_uniform},
+\lean{rvachevLegendrePartialSumTranslateBlockOnInterval_apply},
+\lean{rvachevLegendrePartialSumTranslateBlockOnInterval_eq_eval_partialSumPolynomial},
+\lean{rvachevLegendrePartialSumTranslateBlockOnInterval_eq_sum},
+\lean{tendsto_rvachevLegendrePartialSumTranslateBlockOnInterval},
+\lean{rvachevLegendrePartialSumTranslateBlock_tendstoUniformlyOn},
+\lean{tendsto_norm_rvachevLegendrePartialSumTranslateBlockOnInterval_sub}, and
+\lean{tendsto_rvachevLegendrePartialSumTranslateBlock}.
 
 Consequently the literal finite trains in
 \eqref{eq:legendre-translate-block} are absolutely summable both pointwise and
@@ -8382,7 +8396,12 @@ every real input, while on the Legendre interval its exact finite form is
 \end{equation}
 On $[-1,1]$, the named fixed-scale train is equal pointwise both to \(S_N\)
 and to the finite sum of the separately scaled blocks.  The latter statement
-does not identify the two coefficient vectors.
+does not identify the two coefficient vectors.  Bundled in
+\(C([-1,1])\), these common-mesh partial trains converge to \(\Up\) in the
+supremum norm.  The API also provides the raw
+\texttt{TendstoUniformlyOn} statement, convergence of the supremum-norm error
+to zero, and the pointwise corollary at every \(x\in[-1,1]\).  It asserts no
+rate, coefficientwise limit, or uniform convergence outside this interval.
 
 At compiled source checkpoint \texttt{ca66a1247}, the polynomial-form Legendre blocks
 \(B_n(x)=u_nP_{2n}(x)\) satisfy the complete orthogonality formula
