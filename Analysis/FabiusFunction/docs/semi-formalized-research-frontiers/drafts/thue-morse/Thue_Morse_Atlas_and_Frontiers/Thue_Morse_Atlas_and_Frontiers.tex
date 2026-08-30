@@ -322,7 +322,7 @@ is not by itself evidence of formalization.  Statements proved in Lean carry the
 declaration names in the text, typeset as \lean{Fabius.thueMorseSign}; statements without
 such a citation must not be inferred to have a formal counterpart.
 
-The current inventory in \cref{p1:sec:formalized-modules} consists of one hundred compiled
+The current inventory in \cref{p1:sec:formalized-modules} consists of one hundred and one compiled
 Lean modules.  It covers the finite algebraic, automata, moment, Fourier, rarefaction,
 Dirichlet--Mellin, word-combinatorial, and Fabius--Rvachev bridges recorded there, often in
 greater generality than the displayed prose.  The dependency-aware map in
@@ -6486,7 +6486,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{p1:sec:formalized-modules}
 
-The first tranches of the formalization now exist as one hundred
+The first tranches of the formalization now exist as one hundred and one
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -6554,6 +6554,7 @@ Module & Contents \\
 \path{ThueMorseFourier.lean} & The circle factor \(|1-\e^{\ii\theta}|^2=2-2\cos\theta\) and the finite Riesz product with its nonnegativity. \\
 \path{ThueMorseSineProduct.lean} & The half-angle factorization, the complex sine-product closed form of the Thue--Morse trigonometric polynomial, and its arbitrary-phase affine real sine form. \\
 \path{ThueMorseComplexProductBridge.lean} & Total complex finite Thue--Morse sinc and negative-Laplace bridges at every level: complex-argument sine and half-angle forms, normalized prefixes with empty-level, successor, and origin laws, denominator-free block equalities valid at the removable origin, quotient normalizations away from zero, and the exact finite Fourier--Laplace rotation. \\
+\path{UniformDigitThueMorseBridge.lean} & The exact finite probability consumer: the characteristic function of the centered uniform-digit prefix is the normalized sinc prefix at every level and real frequency, hence satisfies the total Thue--Morse block identity; the reverse quotient formula assumes nonzero frequency. \\
 \path{LacunaryProductToSum.lean} & Binary-weight complementation on a dyadic block, the induced global-sign reflection, quarter-turn cosine parity, and the exact real lacunary sine product as a Thue--Morse sum. \\
 \path{ThueMorseFourierInversion.lean} & Root-of-unity orthogonality and finite Fourier inversion over any field with a primitive root, specialized to the dyadic DFT over \(\mathbb C\). \\
 \path{SummableCyclicAlias.lean} & Finite-range scalar twists of summable families in complete uniform additive groups, and bilateral integer residue sums with forward and inverse \(\operatorname{ZMod}\) Fourier transforms in complete Hausdorff uniform complex modules; no norm or absolute-convergence hypothesis is imposed. \\
@@ -8469,7 +8470,16 @@ is \leanPartx{Fabius.rvachevMeasure\_eq\_prefix\_conv}, with the digit-prefix la
 \leanPartx{Fabius.uniformDigitPrefix} defined by the digit recursion and its characteristic
 function evaluated as the finite sinc product
 (\leanPartx{Fabius.charFun\_uniformDigitPrefix}); the uniform-digit integral itself is the
-reusable \leanPartx{Fabius.charFun\_volume\_restrict\_Icc}.  The proof runs by exactly the
+reusable \leanPartx{Fabius.charFun\_volume\_restrict\_Icc}.
+The companion \path{UniformDigitThueMorseBridge.lean} identifies that characteristic
+function with the normalized prefix in
+\leanPartx{Fabius.charFun\_uniformDigitPrefix\_eq\_shiftedComplexSincPrefix}, substitutes
+it into the total finite block theorem in
+\leanPartx{Fabius.thueMorseBlock\_cexp\_eq\_charFun\_uniformDigitPrefix}, and solves back
+for the characteristic function away from zero in
+\leanPartx{Fabius.charFun\_uniformDigitPrefix\_eq\_thueMorseBlock\_cexp}.  These are
+finite-prefix identities; they assert no infinite-product convergence or random-tail
+limit.  The measure-refinement proof runs by exactly the
 characteristic-function route anticipated in the promotion table below.  On the
 random-variable side, the representation itself is formalized independently in
 \path{ProbabilityRepresentation.lean}: the product probability space of uniform digits,

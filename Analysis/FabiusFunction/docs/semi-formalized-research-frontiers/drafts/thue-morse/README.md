@@ -18,7 +18,12 @@ Both parts carry extensive inline Lean crosswalks. As of 2026-08-28,
 complex form at every level: the sinc and negative-Laplace block equalities
 include the removable origin, with quotient normalizations away from zero and
 simp laws for the normalized origin values, together with the exact finite
-Fourier--Laplace rotation between the two prefixes. The analytic-logarithm,
+Fourier--Laplace rotation between the two prefixes.
+`UniformDigitThueMorseBridge.lean` identifies the characteristic function of
+the finite centered digit prefix with the normalized sinc prefix, substitutes
+that equality into the total Thue--Morse block formula, and solves back for the
+characteristic function away from frequency zero.  These are finite-prefix
+identities, not an infinite-product or random-tail limit. The analytic-logarithm,
 certified-remainder, and measure-refinement results named in the volume also
 have formal counterparts; the remaining roadmap obligations stay explicitly
 labeled.

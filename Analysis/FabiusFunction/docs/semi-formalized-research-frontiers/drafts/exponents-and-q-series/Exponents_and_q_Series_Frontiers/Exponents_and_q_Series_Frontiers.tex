@@ -4640,6 +4640,52 @@ Vandermonde theorems state the monograph's single convolution for every
 \(k\in\Z\), including \(\lvert k\rvert>N\), both on the natural support and
 as a literal finite-support sum over \(\Z\).
 
+The finite inversion layer is now formalized without denominators as well.
+\path{BitPositionQBinomial.lean} supplies the zero-based subset theorem
+\lean{Fabius.sum_pow_sum_powersetCard_eq_gaussianBinomial} and the literal
+one-based interval theorem
+\lean{Fabius.sum_pow_sum_powersetCard_Icc_eq_gaussianBinomial}, both total in
+the row and subset size.  The four definitions and seven theorems of
+\path{QBinomialInversion.lean} are, exhaustively,
+\lean{Fabius.gaussianBinomialKernel},
+\lean{Fabius.gaussianBinomialInverseKernel},
+\lean{Fabius.scaledGaussianBinomialKernel},
+\lean{Fabius.scaledGaussianBinomialInverseKernel},
+\lean{Fabius.gaussianBinomial_mul},
+\lean{Fabius.sum_gaussianBinomial_alternating_mul_pow},
+\lean{Fabius.sum_gaussianBinomial_alternating},
+\lean{Fabius.gaussianBinomialKernel_left_orthogonality},
+\lean{Fabius.gaussianBinomialKernel_right_orthogonality},
+\lean{Fabius.scaledGaussianBinomialKernel_left_orthogonality}, and
+\lean{Fabius.scaledGaussianBinomialKernel_right_orthogonality}.  The chain law
+holds over a commutative semiring; the alternating and orthogonality theorems
+over a commutative ring.  The independent scale is arbitrary and is never
+inverted.
+
+The four definitions and four theorems of \path{QBinomialTransform.lean} are,
+exhaustively,
+\lean{Fabius.scaledGaussianBinomialTransform},
+\lean{Fabius.scaledGaussianBinomialInverseTransform},
+\lean{Fabius.gaussianBinomialTransform},
+\lean{Fabius.gaussianBinomialInverseTransform},
+\lean{Fabius.scaledGaussianBinomialInverseTransform_transform},
+\lean{Fabius.scaledGaussianBinomialTransform_inverseTransform},
+\lean{Fabius.scaledGaussianBinomial_inversion}, and
+\lean{Fabius.gaussianBinomial_inversion}.  They give both pointwise
+compositions and the exact iff for
+\texttt{[CommRing R] [AddCommGroup M] [Module R M]}, with no topology or
+convergence.  Finally, \path{QBinomialInversionSpecializations.lean} has the
+two definitions \lean{Fabius.qGaussianResidualCoeff} and
+\lean{Fabius.qGaussianReconstructionCoeff}, and exactly the five theorems
+\lean{Fabius.geometricQBinomialWeightNumerator_eq_scaledGaussianBinomialInverseKernel},
+\lean{Fabius.qGaussianResidualCoeff_eq},
+\lean{Fabius.qGaussianReconstructionCoeff_eq},
+\lean{Fabius.qGaussianReconstructionCoeff_residualCoeff_delta}, and
+\lean{Fabius.qGaussianResidualCoeff_reconstructionCoeff_delta}.  The first is
+a global denominator-free numerator bridge, including indices above the
+diagonal.  Normalized Lagrange weights still retain their separate field,
+finite-node injectivity, and in-range assumptions.
+
 \item \textbf{Formal and unconditionally summable series (partially formalized).}
 The coefficientwise geometric filter and its Gaussian residual are in
 \path{GeometricPowerSeriesFilter.lean}; \path{AnalyticSeriesFilter.lean} proves
@@ -11252,6 +11298,40 @@ $(1;Q)_d$ by Gauss, which vanishes for $d\ge1$ and is $1$ at $d=0$.  Triangulari
 two-sided, and $C'G_NC'^{\mathsf T}=D_N$ rearranges to
 $G_N=B_ND_NB_N^{\mathsf T}$.
 \end{proof}
+
+\begin{remark}[Exact formal boundary for the q-Gaussian inverse]
+Only the coefficient-inversion component of the preceding two theorems is
+currently exact in Lean.  In
+\path{QBinomialInversionSpecializations.lean}, at Gaussian base \(Q=q^2\) and
+independent scale \(s=-q\), the definitions
+\lean{Fabius.qGaussianResidualCoeff} and
+\lean{Fabius.qGaussianReconstructionCoeff} have the closed forms
+\[
+ C'_{n,k}=(-q)^{n-k}{n\brack k}_{q^2},
+ \qquad
+ B_{n,k}=q^{(n-k)^2}{n\brack k}_{q^2}
+\]
+by \lean{Fabius.qGaussianResidualCoeff_eq} and
+\lean{Fabius.qGaussianReconstructionCoeff_eq}.  The two declarations
+\lean{Fabius.qGaussianReconstructionCoeff_residualCoeff_delta} and
+\lean{Fabius.qGaussianResidualCoeff_reconstructionCoeff_delta} prove both
+total finite convolutions, hence \(C'_NB_N=B_NC'_N=I\) for every \(N\).
+Together with
+\lean{Fabius.scaledGaussianBinomialInverseTransform_transform} and
+\lean{Fabius.scaledGaussianBinomialTransform_inverseTransform} from
+\path{QBinomialTransform.lean}, this proves the module-valued reconstruction
+\eqref{p6:eq:gs-inverse} whenever \(r=C'\eta\).  It needs only a commutative
+ring acting on an additive commutative group; \(q\) need not be nonzero or
+invertible.
+
+This does \emph{not} mark all of \cref{p6:thm:q-gram-schmidt} or
+\cref{p6:thm:gs-nodal-inverse} formalized.  No current declaration in this
+tranche proves the displayed Hilbert inner products or norms, the Gram or
+inverse-Gram formulas, the nodal product and its evaluations, the pivots, or
+\(G_N=B_ND_NB_N^{\mathsf T}\).  Those analytic and Gram-factorization
+components remain open; only \eqref{p6:eq:gs-inverse} and the two-sided
+coefficient matrix inverse are exact here.
+\end{remark}
 
 \begin{remark}[Rogers--Szeg\H{o} identification]\label{p6:rem:rogers-szegoe}
 Substituting $e_j\mapsto z^j$ turns \eqref{p6:eq:q-gram-schmidt} into

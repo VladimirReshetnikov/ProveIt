@@ -2,6 +2,7 @@ import FabiusFunction.BitPositionGenerating
 import FabiusFunction.FiniteQBinomialCore
 import FabiusFunction.ThueMorseEnumerators
 import Mathlib.Algebra.Polynomial.Coeff
+import Mathlib.Algebra.Order.Interval.Finset.Basic
 
 /-!
 # The q-binomial grading of a dyadic block
@@ -39,6 +40,8 @@ characteristic, and in the presence of zero divisors.
 * `sum_pow_sum_powersetCard_eq_gaussianBinomial` — the subset-side
   face: the Gaussian polynomial enumerates size-`r` subsets of
   `range N` by their sum.
+* `sum_pow_sum_powersetCard_Icc_eq_gaussianBinomial` — the equivalent
+  one-based subset formula on the interval `1, ..., N`.
 * `gaussianBinomial_one_eq_choose` — the `q = 1` shadow, matching the
   atlas count `card_filter_binaryWeight_eq`.
 -/
@@ -278,6 +281,60 @@ theorem sum_pow_sum_powersetCard_eq_gaussianBinomial
       sum_powersetCard_two_pow N r (fun n => q ^ bitPositionSum n)
     _ = q ^ r.choose 2 * gaussianBinomial q N r :=
       sum_pow_bitPositionSum_filter_eq_gaussianBinomial q N r
+
+/-- **One-based subset-side face.**  Translating every element of a
+size-`r` subset of `range N` upward by one adds `r` to its element sum.
+Consequently
+
+`sum_{T ⊆ {1, ..., N}, |T| = r} q^(sum T)
+    = q^((r+1 choose 2)) * [N choose r]_q`.
+
+This is the literal one-based form paired with
+`sum_pow_sum_powersetCard_eq_gaussianBinomial`; it is total in `N` and
+`r` and uses no hypothesis on `q`. -/
+theorem sum_pow_sum_powersetCard_Icc_eq_gaussianBinomial
+    {R : Type*} [CommRing R] (q : R) (N r : ℕ) :
+    ∑ T ∈ powersetCard r (Icc 1 N), q ^ (∑ j ∈ T, j) =
+      q ^ (r + 1).choose 2 * gaussianBinomial q N r := by
+  let e : ℕ ↪ ℕ :=
+    ⟨fun j => 1 + j, fun _ _ h => Nat.add_left_cancel h⟩
+  have hIcc : (range N).map e = Icc 1 N := by
+    ext j
+    simp only [mem_map, mem_range, mem_Icc]
+    constructor
+    · rintro ⟨i, hi, rfl⟩
+      change 1 ≤ 1 + i ∧ 1 + i ≤ N
+      omega
+    · intro hj
+      refine ⟨j - 1, by omega, ?_⟩
+      change 1 + (j - 1) = j
+      omega
+  rw [← hIcc, powersetCard_map, Finset.sum_map]
+  calc
+    ∑ T ∈ powersetCard r (range N), q ^ (∑ j ∈ T.map e, j) =
+        ∑ T ∈ powersetCard r (range N), q ^ ((∑ j ∈ T, j) + r) := by
+      apply Finset.sum_congr rfl
+      intro T hT
+      congr 1
+      rw [Finset.sum_map]
+      have hcard : T.card = r := (Finset.mem_powersetCard.mp hT).2
+      change T.sum (fun x => 1 + x) = T.sum id + r
+      rw [Finset.sum_add_distrib]
+      simp [hcard]
+      omega
+    _ = q ^ r * ∑ T ∈ powersetCard r (range N), q ^ (∑ j ∈ T, j) := by
+      rw [Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro T _hT
+      rw [pow_add]
+      ring
+    _ = q ^ r * (q ^ r.choose 2 * gaussianBinomial q N r) := by
+      rw [sum_pow_sum_powersetCard_eq_gaussianBinomial]
+    _ = q ^ (r + 1).choose 2 * gaussianBinomial q N r := by
+      have hchoose : (r + 1).choose 2 = r.choose 2 + r := by
+        simpa [Nat.add_comm] using Nat.choose_succ_succ r 1
+      rw [hchoose, pow_add]
+      ring
 
 /-! ## The `q = 1` shadow -/
 
