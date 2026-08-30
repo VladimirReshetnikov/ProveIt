@@ -78,11 +78,18 @@ New standalone intake members:
   The original 29-page Letter/Type-3 rendering remains recoverable from the
   recorded arrival commit and archive SHA-256.
 - [`Fabius_Rvachev_New_Frontiers-2/`](Fabius_Rvachev_New_Frontiers-2/),
-  *Fabius--Rvachev New Frontiers* (35 pp), arrived on 2026-08-30 from a
-  rootless archive with all 15 arrival payload checksums verified. The
-  normalized 20-entry package adds five PNG companions, embeds them to avoid
-  the vector plots' Type 3 fonts, and has a three-pass A4/Libertinus rebuild.
-  Its native up-law
+  *Fabius--Rvachev New Frontiers* (36 A4 pp, 2579 source lines), arrived on 2026-08-30
+  from a rootless archive with all 15 arrival payload checksums verified. The
+  normalized package adds five PNG companions and embeds them to keep the
+  report PDF free of the vector plots' Type 3 fonts. Its current canonical
+  A4/Libertinus build is 36 pages with a verified 20-entry live ledger. The
+  merged report records the exact Lean boundary: scalar-base-change
+  Gram--Stieltjes naturality, all-degree rational native Jacobi coefficients,
+  the polynomial Gram/Hankel determinant transport, and its Legendre up-law
+  determinant and zero-based Jacobi cross-ratio specialization are formalized.
+  Finite Gaunt/Wigner entry expansions, rationality by that route, roots,
+  Christoffel products, quadrature, Padé identification, and asymptotics remain
+  outside that tranche. Its native up-law
   orthogonal polynomials, Jacobi and Christoffel reconstruction, rational
   limits and products for pi, Gauss--Pade structure, and Legendre--Gaunt
   determinants extend the moment, transform, and representation theme. It is
@@ -102,7 +109,7 @@ consolidation; paper theorem labels do not by themselves assert Lean status.
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
-[`Representation_Frontiers/`](Representation_Frontiers/) (298 pp,
+[`Representation_Frontiers/`](Representation_Frontiers/) (299 pp;
 eight parts):
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform
@@ -193,6 +200,36 @@ the monic orthogonal construction, parity, the symmetric three-term
 recurrence, and the first exact Jacobi data.  Roots and quadrature,
 second-kind polynomials, finite/infinite continued-fraction identification,
 and analytic convergence remain open.
+
+`PolynomialMomentGramDeterminant.lean` now supplies the exhaustive generic
+polynomial-basis transport surface: definitions `polynomialCoefficientMatrix`
+and `polynomialMomentGramMatrix`, and theorems
+`polynomialCoefficientMatrix_apply`, `polynomialMomentGramMatrix_apply`,
+`polynomialMomentGramMatrix_eq_transpose_mul_hankel_mul`,
+`polynomialMomentGramMatrix_det_eq_coefficient_det_sq_mul`,
+`polynomialCoefficientMatrix_det_eq_prod_coeff`,
+`polynomialMomentGramMatrix_det_eq_prod_coeff_sq_mul`, and
+`gramStieltjesJacobiSubdiagonal_eq_polynomialMomentGramMatrix_det_ratio`.
+The degree-coherent family hypothesis is `natDegree (p k) ≤ k`; the matrix
+identity is over a commutative semiring, determinant transport over a
+commutative ring, and the final field-level ratio also requires every diagonal
+coefficient to be nonzero.  It requires no Hankel nonvanishing and asserts no
+measure, positivity, orthogonality, root, quadrature, continued-fraction, or
+convergence result.
+
+`FabiusLegendreHankelDeterminant.lean` specializes that transport with the
+exhaustive definitions `upLegendreGramMatrix`, `upLegendreGramDet` and
+theorems `upLegendreGramMatrix_apply_eq_integral`,
+`upLegendreGramDet_eq_prod_leadingCoeff_sq_mul_hankelDet`,
+`upLegendreGramDet_zero`, `upLegendreGramDet_pos`,
+`coeff_legendrePolynomial_self_div_succ`,
+`gramStieltjesJacobiSubdiagonal_upMoment_eq_upLegendreGramDet_ratio`, and
+`rvachevJacobiSubdiagonalRat_cast_eq_upLegendreGramDet_ratio`.  The determinant
+identity and up-moment cross-ratio need only `BoundedFabius`; entry integration,
+positivity, and the rational-cast ratio additionally need `IsFabius`.  The
+subdiagonal index is zero-based (`beta_(n+1)`).  Finite Gaunt/Wigner entry
+expansions, Christoffel reconstruction, roots, quadrature, infinite Jacobi
+products/continued fractions, and asymptotics remain outside this module.
 
 The reciprocal-Gamma portion of Part II is now formal at source checkpoint
 `71ab6f6728fceb753c88d8b0573077a59acf2682`.  The reusable convergence engine

@@ -217,8 +217,9 @@ siblings were cross-checked through their manifests and targeted formula
 searches.  That audit found pre-existing Nevai-limit, $J$-fraction, Hankel, and
 Gauss--Pad\'e programs in the canonical representation frontier.  It found no
 matching report-level result for the log-concavity of $\Up$, the rational
-Christoffel limits and alternating Jacobi product for $\pi$, or the
-Legendre--Gaunt determinant bridge.  ``New'' therefore applies only to the
+Christoffel limits and alternating Jacobi product for $\pi$, or the finite
+Gaunt/Wigner entry expansion. The determinant change-of-basis and Jacobi
+cross-ratio are now formalized downstream. ``New'' therefore applies only to the
 non-overlapping claims relative to this repository snapshot, not to the whole
 package and not as a claim of worldwide priority.  Every imported fact, new
 proof, standard external theorem, numerical observation, and conjecture is
@@ -294,9 +295,12 @@ repository's much longer crosswalk.
 \item Fourier--Legendre expansions of $\Up$, finite synthesis of polynomials by
       shifted copies of $\Up$, and the resulting blockwise Legendre--Rvachev
       self-reconstruction.
-\item Initial native orthogonal-polynomial data: exact moments, positive Hankel
-      determinants, monic recurrence, and low-degree rational Jacobi
-      coefficients.
+\item Native orthogonal-polynomial data: exact moments and positive Hankel
+      matrices, together with an all-degree exact rational layer for Hankel
+      determinants, monic polynomial coefficients, norms, zero diagonal,
+      positive Jacobi subdiagonals, orthogonality, determinant cross-ratio, and
+      the centered recurrence; the separately evaluated low-degree table has
+      the formal/report boundary stated in Section~\ref{sec:native-op}.
 \item The moment Laurent series and a renormalization identity for the Cauchy
       transform.
 \end{itemize}
@@ -349,7 +353,9 @@ Alternating Jacobi product for $\pi$
  & New theorem here & Strong Szeg\H{o} center asymptotic \\
 Gauss--Pad\'e package
  & New synthesis here & Classical Markov/Stieltjes theory \\
-Legendre--Gaunt determinant bridge
+Legendre Gram determinant and Jacobi cross-ratio
+ & Exact Lean counterpart & \path{FabiusLegendreHankelDeterminant.lean} \\
+Finite Gaunt/Wigner entry expansion
  & New finite identity here & Existing exact Legendre coefficients \\
 Monotone $\beta_n$, precise log-square rate
  & Conjectural & Exact checks and 4,800-digit computation through $n=200$ \\
@@ -679,6 +685,70 @@ $H_n,\beta_n\in\Q$.  Starting from $1,x$ in
 $\pi_n$ by induction.
 \end{proof}
 
+\begin{remark}[Current Lean boundary and complete declaration inventory]
+The scalar-base-change module \path{GramStieltjesNaturality.lean} contains zero
+public definitions and exactly six public theorems:
+\path{momentPairing_map}, \path{map_gramStieltjesNumerator},
+\path{map_gramStieltjesPolynomial}, \path{map_gramStieltjesNorm},
+\path{map_gramStieltjesJacobiDiagonal}, and
+\path{map_gramStieltjesJacobiSubdiagonal}.  These are finite-algebra naturality
+results: the numerator theorem is ring-level, while normalization and Jacobi
+quotients use fields; there is no measure, positivity, or convergence hypothesis.
+
+The native specialization \path{RvachevRationalJacobi.lean} contains exactly
+four public definitions---\path{rvachevHankelDetRat},
+\path{rvachevOrthoPolynomialRat}, \path{rvachevOrthoNormRat}, and
+\path{rvachevJacobiSubdiagonalRat}---and thirteen public theorems:
+\path{upMoment_eq_rvachevRawMomentRat_cast},
+\path{rvachevHankelDetRat_cast}, \path{rvachevHankelDetRat_pos},
+\path{rvachevOrthoPolynomialRat_cast},
+\path{rvachevOrthoPolynomialRat_isMonicOfDegree},
+\path{momentPairing_rvachevOrthoPolynomialRat_eq_zero},
+\path{rvachevOrthoNormRat_cast}, \path{rvachevOrthoNormRat_pos},
+\path{gramStieltjesJacobiDiagonal_rvachevRawMomentRat_eq_zero},
+\path{rvachevJacobiSubdiagonalRat_cast},
+\path{rvachevJacobiSubdiagonalRat_pos},
+\path{rvachevJacobiSubdiagonalRat_eq_det_ratio}, and
+\path{rvachevOrthoPolynomialRat_three_term}.  Together they give, at every
+degree over \(\Q\), positive \(\Delta_n\), every coefficient of monic \(\pi_n\),
+positive \(H_n\), a zero diagonal, positive subdiagonals, exact rational
+orthogonality, the Hankel cross-ratio, the centered recurrence, and all real-cast
+bridges.  The definition \path{rvachevJacobiSubdiagonalRat} is zero-based:
+its value at index \(n\) is the report coefficient \(\beta_{n+1}\).
+
+These are noncomputable adjugate-based finite definitions, not a rational
+evaluator.  In particular, they do not name or evaluate the explicit \(H_4\) and
+\(\beta_4\) fractions displayed below.  This tranche also proves no roots,
+Christoffel reconstruction or central products, Gauss quadrature, second-kind
+polynomials, continued-fraction/Pad\'e identification, finite Gaunt/Wigner entry
+formula, or Szeg\H{o}/Nevai/Rakhmanov asymptotics.
+
+The generic determinant leaf \path{PolynomialMomentGramDeterminant.lean} has
+two definitions, \path{polynomialCoefficientMatrix} and
+\path{polynomialMomentGramMatrix}, and seven theorems:
+\path{polynomialCoefficientMatrix_apply},
+\path{polynomialMomentGramMatrix_apply},
+\path{polynomialMomentGramMatrix_eq_transpose_mul_hankel_mul},
+\path{polynomialMomentGramMatrix_det_eq_coefficient_det_sq_mul},
+\path{polynomialCoefficientMatrix_det_eq_prod_coeff},
+\path{polynomialMomentGramMatrix_det_eq_prod_coeff_sq_mul}, and
+\path{gramStieltjesJacobiSubdiagonal_eq_polynomialMomentGramMatrix_det_ratio}.
+It is finite change-of-basis algebra over commutative semirings, rings, and
+fields, without measure or positivity hypotheses.
+
+The specialization \path{FabiusLegendreHankelDeterminant.lean} has two
+definitions, \path{upLegendreGramMatrix} and \path{upLegendreGramDet}, and
+seven theorems: \path{upLegendreGramMatrix_apply_eq_integral},
+\path{upLegendreGramDet_eq_prod_leadingCoeff_sq_mul_hankelDet},
+\path{upLegendreGramDet_zero}, \path{upLegendreGramDet_pos},
+\path{coeff_legendrePolynomial_self_div_succ},
+\path{gramStieltjesJacobiSubdiagonal_upMoment_eq_upLegendreGramDet_ratio}, and
+\path{rvachevJacobiSubdiagonalRat_cast_eq_upLegendreGramDet_ratio}. These give
+exact Lean counterparts to
+\cref{eq:legendre-gram,eq:legendre-hankel,eq:beta-gaunt-determinants}, but not
+to the finite Gaunt/Wigner entry formula \cref{eq:finite-gaunt-matrix}.
+\end{remark}
+
 This is an unusually rigid situation.  The infinite Jacobi matrix
 \begin{equation}
  J=\begin{pmatrix}
@@ -703,8 +773,12 @@ The first moments from \cref{eq:moment-recurrence} are
  \qquad m_6=\frac{583}{59535}.
  \label{eq:native-first-moments}
 \end{equation}
-The repository already formalizes the following low-degree data; they are
-included to fix every normalization used later:
+The repository directly formalizes \(\pi_0,\ldots,\pi_4\) and
+\(H_0,\ldots,H_3\); the displayed \(\beta_1,\beta_2,\beta_3\) then follow as
+exact quotients of those formal norm values.  The final-row \(H_4\) and
+\(\beta_4\) fractions are instead report-level exact computations, not named
+Lean evaluations.  The combined table is included to fix every normalization
+used later:
 \begin{align}
  \pi_0(x)&=1, & H_0&=1,\notag\\
  \pi_1(x)&=x, & H_1&=\frac19,
@@ -719,8 +793,10 @@ included to fix every normalization used later:
    & \beta_4&=\frac{835232}{4640643}.
  \label{eq:low-jacobi-data}
 \end{align}
-The last value follows from the same exact moment algorithm and is independently
-verified by the archive's Python program.  Numerically,
+The two final-row fractions follow from the same exact moment algorithm and are
+independently verified by the archive's Python program.  The all-degree rational
+objects described above prove their rationality and positivity but do not compute
+these explicit values.  Numerically,
 \begin{equation}
  \beta_1=0.111111\ldots,
  \quad \beta_2=0.142222\ldots,
@@ -758,6 +834,12 @@ $\langle\pi_n,x^n\rangle=\langle\pi_n,\pi_n\rangle=H_n$, proving
 the two standard constructions of the same unique monic orthogonal
 polynomial.  The recurrence then follows from orthogonality and parity.
 \end{proof}
+
+The rational-native Lean tranche formalizes the determinant construction,
+unique monic orthogonality, norm quotient, determinant cross-ratio, and centered
+recurrence that form the algebraic core of these engines.  It does not package the
+three procedures as an executable algorithm, prove their operational equivalence as
+this proposition states it, or certify the \(\bigO(n^2)\) operation count.
 
 The third engine is numerically preferable to expanding
 $\int\pi_n^2\dd\mu$, but it remains severely ill-conditioned in ordinary
@@ -2154,14 +2236,23 @@ near-orthogonal reference basis.
 
 \subsection{Lean formalization order}
 The repository already contains rational moments, positive Hankel matrices,
-low-degree native polynomials, and the Cauchy renormalization.  A realistic
-formalization sequence is:
+low-degree native polynomials, and the Cauchy renormalization. It now also contains
+the finite scalar-naturality API, the all-degree rational native Jacobi layer,
+and the generic/Legendre Gram determinant change-of-basis layers
+catalogued in \cref{sec:native-op}: exact \(\Q\)-valued determinants, polynomial
+coefficients, norms, zero diagonal, positive subdiagonals, determinant cross-ratio,
+orthogonality, centered recurrence, and real-cast bridges, with zero-based index
+\(n\) corresponding to \(\beta_{n+1}\).  The remaining formalization sequence is:
 \begin{enumerate}
-\item \textbf{Finite algebra:} formalize
+\item \textbf{Finite algebra:} the determinant change-of-basis and
+      \cref{eq:legendre-hankel,eq:beta-gaunt-determinants} are supplied by
+      \path{PolynomialMomentGramDeterminant.lean} and
+      \path{FabiusLegendreHankelDeterminant.lean}. Formalize the remaining
       \cref{eq:inverse-hankel-christoffel,eq:monic-center-product,%
-eq:orthonormal-center-product,eq:harmonic-mean,%
-eq:legendre-hankel,eq:beta-gaunt-determinants}.  These need only finite
-      linear algebra and the existing positivity API.
+eq:orthonormal-center-product,eq:harmonic-mean,eq:finite-gaunt-matrix}.
+      These need finite linear algebra and the existing positivity and
+      rational-native APIs; the finite Gaunt/Wigner entry expansion remains
+      paper-only.
 \item \textbf{Quadrature and rational approximation:} define second-kind
       polynomials, prove \cref{eq:pade-exact-error}, and derive the Gaussian
       weights and exactness theorem.

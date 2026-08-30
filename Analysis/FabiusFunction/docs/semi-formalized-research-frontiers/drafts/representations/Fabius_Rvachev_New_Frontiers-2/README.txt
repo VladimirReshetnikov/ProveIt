@@ -13,7 +13,10 @@ superseded, generated, proved, numerical, and conjectural material.
 Main deliverables
 -----------------
 fabius_rvachev_new_frontiers.tex
-    Complete 35-page A4/Libertinus LaTeX report.
+    Complete 2579-line A4/Libertinus LaTeX report. The merged source adds the
+    current scalar-base-change Gram--Stieltjes, all-degree rational native
+    Jacobi, and generic/Legendre Gram-determinant Lean boundaries and is
+    synchronized with the 36-page PDF below.
 
 fabius_rvachev_new_frontiers.pdf
     Rendered and visually inspected PDF.
@@ -97,15 +100,15 @@ Arrival verification performed
 ------------------------------
 * Clean latexmk build with no unresolved references, duplicate labels, or
   overfull boxes.
-* PDF preflight: 35 pages, unencrypted, text-based, no warnings.
-* All 35 pages rendered to PNG and visually inspected in contact sheets;
+* PDF preflight: 36 pages, unencrypted, text-based, no warnings.
+* All 36 pages rendered to PNG and visually inspected in contact sheets;
   representative plot and table pages were also checked at full render size.
 * Python byte-compilation and an independent degree-24 smoke run succeeded.
 
 Repository rebuild verification
 -------------------------------
 * Exactly three strict pdflatex passes after the source and figure repair.
-* 35 A4 pages; Libertinus present; every font embedded and subset; no Type 3.
+* 36 A4 pages; Libertinus present; every font embedded and subset; no Type 3.
 * No overfull box, TeX error, unresolved reference, citation, or rerun request.
 * The live 20-entry checksum ledger includes all five PNG companions.
 
