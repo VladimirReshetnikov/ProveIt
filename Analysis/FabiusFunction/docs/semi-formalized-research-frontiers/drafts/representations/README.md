@@ -192,7 +192,7 @@ SHA-256 for all eight sources in the volume's front matter.
 The two fourth-wave polynomial-representation drafts (2026-08-28) were
 merged the same day into the volume
 [`Up_Polynomial_Synthesis/`](Up_Polynomial_Synthesis/) (*Exact
-Polynomial Synthesis from Rvachev Up-Atoms*, 22 pp): the common-scale
+Polynomial Synthesis from Rvachev Up-Atoms*, 23 pp): the common-scale
 dictionary construction (formerly
 `Rvachev_Up_Polynomial_Representation_Package/`, *Exact Polynomial
 Synthesis by Finite Rvachev Up-Function Dictionaries*) and the

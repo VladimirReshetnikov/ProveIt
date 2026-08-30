@@ -39,6 +39,7 @@ import FabiusFunction.LambertBranchDichotomy
 import FabiusFunction.PowerExponentialLambert
 import FabiusFunction.PowerExponentialLambertCalculus
 import FabiusFunction.PowerExponentialLambertInverse
+import FabiusFunction.PowerExponentialLambertAsymptotics
 import FabiusFunction.PowerExponentialLambertFabius
 import FabiusFunction.WeightedUniformSeries
 import FabiusFunction.WeightedUniformDistribution

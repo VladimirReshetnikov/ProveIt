@@ -8310,16 +8310,29 @@ These are respectively \lean{lowerLambertW_lt_neg_one},
 \path{LowerLambertW.lean}.
 \end{proof}
 
-On its natural domain, \(W_{-1}\) is continuous and strictly decreasing, and its image is
+On the smooth interior, \(W_{-1}\) is continuous and strictly decreasing, and its image is
 exactly \((-\infty,-1)\).  At every \(z\in(-\e^{-1},0)\), it is differentiable with
 \begin{equation}
  \frac{d}{dz}W_{-1}(z)
  =\frac{W_{-1}(z)}{z\bigl(1+W_{-1}(z)\bigr)}<0.              \label{eq:lower-lambert-derivative}
 \end{equation}
-These four assertions are \lean{lowerLambertW_continuousOn},
+These assertions are \lean{lowerLambertW_continuousOn},
 \lean{lowerLambertW_strictAntiOn}, \lean{lowerLambertW_image},
 \lean{deriv_lowerLambertW}, and \lean{deriv_lowerLambertW_neg}; the underlying derivative
 witness is \lean{lowerLambertW_hasDerivAt}, all in \path{LowerLambertW.lean}.
+
+The continuity statement now also includes the finite branch point: the raw lower branch is
+continuous on \([-\e^{-1},0)\), by
+\lean{lowerLambertW_continuousWithinAt_branchPoint} and
+\lean{lowerLambertW_continuousOn_Ico}.  Its principal companion has the corresponding
+right-continuity and full-domain continuity on \([-\e^{-1},\infty)\), namely
+\lean{principalLambertW_continuousWithinAt_branchPoint} and
+\lean{principalLambertW_continuousOn_Ici} in \path{PrincipalLambertW.lean}.  At the regular
+point \(0\), that module also proves
+\(\operatorname{deriv}W_0(0)=1\) and \(W_0(z)\sim z\), through
+\lean{deriv_principalLambertW_zero} and \lean{principalLambertW_isEquivalent_zero}.
+These endpoint-continuity declarations do not assert a derivative at the branch point, a
+vertical-tangent limit, a second-derivative or curvature law, or a Puiseux expansion there.
 
 \begin{corollary}[Solution of the saddle equation]
 \label{thm:tm-lambert-lambda}
@@ -8690,6 +8703,72 @@ closed endpoint step uses the exact restriction
 \(W_0([-\e^{-1},0])=[-1,0]\), namely
 \lean{principalLambertW_image_Icc} in \path{PrincipalLambertW.lean}.
 
+The same hypotheses give continuity on the full natural profile-value domains,
+including the common finite branch point:
+\[
+ \lambda_0\in C\bigl([0,P_{m,A,\beta}]\bigr),
+ \qquad
+ \lambda_{-1}\in C\bigl((0,P_{m,A,\beta}]\bigr).
+\]
+These are \lean{principalPowerExponentialPhase_continuousOn_Icc} and
+\lean{lowerPowerExponentialPhase_continuousOn_Ioc} in
+\path{PowerExponentialLambertCalculus.lean}; their proof composes the raw
+endpoint APIs above with the globally continuous normalized argument
+\lean{powerExponentialLambertArgument_continuous}.  Moreover, for
+\(x\in(0,P_{m,A,\beta}]\) and \(\mu\ge0\), Lean proves the exact dichotomy
+\begin{equation}
+ S_{m,A,\beta}(\mu)=x
+ \quad\Longleftrightarrow\quad
+ \mu=\lambda_0(x)\ \text{or}\ \mu=\lambda_{-1}(x).           \label{eq:power-exponential-root-dichotomy}
+\end{equation}
+This is \lean{powerExponentialSaddle_eq_iff_eq_principal_or_eq_lower}; on the strict
+interior \(0<x<P_{m,A,\beta}\), the two roots are unequal by
+\lean{principalPowerExponentialPhase_ne_lowerPowerExponentialPhase}, both in
+\path{PowerExponentialLambertInverse.lean}.  The nonnegativity assumption on \(\mu\) is
+essential: for even \(m\), negative inputs can create additional positive profile values.
+
+The compiled small-input package uses the intrinsic positive scale
+\begin{equation}
+ \epsilon_{m,A,\beta}(x)
+ =\frac{\beta}{m}\left(\frac{x}{A}\right)^{1/m}.             \label{eq:power-exponential-epsilon}
+\end{equation}
+With the same parameter hypotheses, as \(x\downarrow0\),
+\begin{align}
+ \lambda_0(x)&\sim\left(\frac{x}{A}\right)^{1/m},
+                                                               \label{eq:power-exponential-principal-small}\\
+ \lambda_{-1}(x)&\longrightarrow+\infty,                     \label{eq:power-exponential-lower-divergence}\\
+ \lambda_{-1}(x)-M_{m,A,\beta}(x)&\longrightarrow0,          \label{eq:power-exponential-lower-intrinsic}
+\end{align}
+where
+\[
+ M_{m,A,\beta}(x)
+ =-\frac m\beta\left(
+   \log\epsilon_{m,A,\beta}(x)
+   -\log\left|\log\epsilon_{m,A,\beta}(x)\right|\right).
+\]
+The exact Lean crosswalk is \lean{powerExponentialLambertEpsilon},
+\lean{principalPowerExponentialPhase_isEquivalent_rpow},
+\lean{tendsto_lowerPowerExponentialPhase_nhdsGT_zero_atTop},
+\lean{lowerPowerExponentialPhaseIntrinsicMain}, and
+\lean{lowerPowerExponentialPhase_sub_intrinsicMain_tendsto_zero} in
+\path{PowerExponentialLambertAsymptotics.lean}.  This generic theorem stops at the intrinsic
+\(\epsilon\)-form with an \(o(1)\) remainder.  A cleaned formula in
+\(\log(A/x)\), further logarithmic terms or a full series, and branch-point Puiseux,
+vertical-tangent, second-derivative, or curvature statements are not part of this package.
+
+For the classical parameters \((m,A,\beta)=(1,1,L)\), the principal root is
+\lean{fabiusPrincipalLambertPhase} and the lower root is \lean{fabiusLambertPhase}.
+The specialized wrappers
+\lean{fabiusSaddle_eq_iff_eq_principal_or_eq_lower},
+\lean{fabiusPrincipalLambertPhase_ne_fabiusLambertPhase},
+\lean{fabiusPrincipalLambertPhase_continuousOn_Icc}, and
+\lean{fabiusLambertPhase_continuousOn_Ioc} give respectively the nonnegative-root
+dichotomy, strict-interior separation, and the two full-domain continuity statements.
+Finally \lean{fabiusPrincipalLambertPhase_isEquivalent_id} gives
+\(\lambda_0(x)\sim x\) as \(x\downarrow0\).  These declarations are in
+\path{PowerExponentialLambertFabius}\texttt{.lean}; the generic lower divergence and
+intrinsic expansion above specialize to the same lower Fabius phase.
+
 On the same closed-upper domain, the phase has the sharp lower bound and endpoint
 characterization
 \begin{equation}
@@ -8718,17 +8797,18 @@ Equivalently, under the hypotheses \(x>0\) and \(Lx\le\e^{-1}\), the same
 lower bound and the strict positivity \(0<\lambda(x)\) are
 \lean{one_div_log_two_le_fabiusLambertPhase} and
 \lean{fabiusLambertPhase_pos_of_le}.  Thus the algebraic saddle identities
-extend to the finite branch point even though the smooth formulas below do not.
+and continuity extend to the finite branch point even though the differentiable formulas
+below do not.
 
-The smooth API is deliberately restricted to the open interior
-\(0<x<\e^{-1}/L\).  There \(\lambda\) is continuous and strictly decreasing, its image is
+The differentiable API is deliberately restricted to the open interior
+\(0<x<\e^{-1}/L\).  There \(\lambda\) is strictly decreasing, its image is
 \((1/L,\infty)\), and it is differentiable with
 \begin{equation}
  \lambda'(x)=
  \frac{\lambda(x)}{x\bigl(1-L\lambda(x)\bigr)}<0.            \label{eq:lambert-phase-derivative}
 \end{equation}
-These are \lean{fabiusLambertPhase_continuousOn},
-\lean{fabiusLambertPhase_strictAntiOn}, \lean{fabiusLambertPhase_image},
+The interior continuity wrapper is \lean{fabiusLambertPhase_continuousOn}; the remaining
+claims are \lean{fabiusLambertPhase_strictAntiOn}, \lean{fabiusLambertPhase_image},
 \lean{deriv_fabiusLambertPhase}, and \lean{deriv_fabiusLambertPhase_neg} in
 \path{FabiusLambertSaddle.lean}; the derivative witness is
 \lean{fabiusLambertPhase_hasDerivAt}, and pointwise continuity is
@@ -10165,6 +10245,7 @@ Endpoint asymptotics &
 \path{PrincipalLambertW.lean}, \path{LowerLambertW.lean},
 \path{PowerExponentialLambert.lean}, \path{PowerExponentialLambertCalculus.lean},
 \path{PowerExponentialLambertInverse.lean},
+\path{PowerExponentialLambertAsymptotics.lean},
 \path{PowerExponentialLambertFabius}\texttt{.lean}, \path{FabiusLambertPhase.lean},
 \path{FabiusLambertSaddle.lean}, \path{LambertPhaseLockedRichardson.lean},
 \path{FabiusSharpLambertMain.lean},

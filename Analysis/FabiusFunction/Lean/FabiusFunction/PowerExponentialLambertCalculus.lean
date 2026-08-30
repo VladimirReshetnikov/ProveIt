@@ -10,6 +10,11 @@ natural power `m`, positive amplitude `A`, and positive rate `beta`, the
 principal phase is strictly increasing from zero toward `m / beta`, while
 the lower phase is strictly decreasing above `m / beta`.
 
+The two phases are continuous on their full natural profile-value domains:
+the principal branch on the closed interval from zero through the peak and
+the lower branch on the positive half-open interval through the peak.  Their
+derivative formulas below remain restricted to the smooth interior.
+
 The derivative formula is the inverse derivative of
 
 `lambda ↦ A * lambda ^ m * exp (-beta * lambda)`:
@@ -173,6 +178,17 @@ theorem powerExponentialLambertArgument_strictAntiOn
   unfold powerExponentialLambertArgument
   linarith
 
+/-- The normalized Lambert argument is continuous for every natural power
+and every real amplitude and rate. -/
+theorem powerExponentialLambertArgument_continuous
+    (m : ℕ) (A beta : ℝ) :
+    Continuous (powerExponentialLambertArgument m A beta) := by
+  unfold powerExponentialLambertArgument
+  exact (continuous_const.mul
+    ((Real.continuous_rpow_const
+      (inv_nonneg.mpr (Nat.cast_nonneg m))).comp
+        (continuous_id.div_const A))).neg
+
 /-- Interior derivative of the principal power--exponential phase, in
 inverse-profile coordinates. -/
 theorem principalPowerExponentialPhase_hasDerivAt
@@ -284,6 +300,34 @@ theorem lowerPowerExponentialPhase_continuousOn
       (Ioo 0 (powerExponentialPeak m A beta)) :=
   fun _ hx =>
     (lowerPowerExponentialPhase_hasDerivAt hm hA hbeta hx).continuousAt.continuousWithinAt
+
+/-- The principal phase is continuous on its full closed profile-value
+interval, including zero and the common branch point at the peak. -/
+theorem principalPowerExponentialPhase_continuousOn_Icc
+    {m : ℕ} (hm : m ≠ 0) {A beta : ℝ}
+    (hA : 0 < A) (hbeta : 0 < beta) :
+    ContinuousOn (principalPowerExponentialPhase m A beta)
+      (Icc 0 (powerExponentialPeak m A beta)) := by
+  unfold principalPowerExponentialPhase
+  exact continuousOn_const.mul <|
+    principalLambertW_continuousOn_Ici.comp
+      (powerExponentialLambertArgument_continuous m A beta).continuousOn
+      fun x hx ↦ mem_Ici.mpr
+        (powerExponentialLambertArgument_mem_Icc hm hA hbeta hx).1
+
+/-- The lower phase is continuous on its full positive endpoint-inclusive
+profile-value interval.  The input zero is excluded because the lower inverse
+diverges there. -/
+theorem lowerPowerExponentialPhase_continuousOn_Ioc
+    {m : ℕ} (hm : m ≠ 0) {A beta : ℝ}
+    (hA : 0 < A) (hbeta : 0 < beta) :
+    ContinuousOn (lowerPowerExponentialPhase m A beta)
+      (Ioc 0 (powerExponentialPeak m A beta)) := by
+  unfold lowerPowerExponentialPhase
+  exact continuousOn_const.mul <|
+    lowerLambertW_continuousOn_Ico.comp
+      (powerExponentialLambertArgument_continuous m A beta).continuousOn
+      fun x hx ↦ powerExponentialLambertArgument_mem_Ico hm hA hbeta hx
 
 /-- The principal phase has positive derivative on the smooth interior. -/
 theorem deriv_principalPowerExponentialPhase_pos

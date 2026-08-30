@@ -2753,9 +2753,106 @@ subsequence arguments imported from the coarse Fabius endpoint theorem.  Each
 negative result is stated independently of the prose whose claim it refutes.
 
 \subsection{Repairing the lower Lambert branch}
-The draft uses a lower branch of a Lambert-type inverse.  The repository develops this branch with a correct domain, monotonicity, and inversion theorem.  Endpoint behavior and branch separation are proved explicitly; no appeal is made to an ambiguous multivalued inverse.
+The draft uses a lower branch of a Lambert-type inverse.  The repository
+develops both real branches with explicit domains, order, and inversion
+theorems; no appeal is made to an ambiguous multivalued inverse.  The raw
+endpoint continuity layer is now closed: in \nolinkurl{LowerLambertW.lean},
+\nolinkurl{lowerLambertW_continuousWithinAt_branchPoint} and
+\nolinkurl{lowerLambertW_continuousOn_Ico} give continuity of \(W_{-1}\) on
+\([-\exp(-1),0)\), while \nolinkurl{PrincipalLambertW.lean} supplies
+\nolinkurl{principalLambertW_continuousWithinAt_branchPoint} and
+\nolinkurl{principalLambertW_continuousOn_Ici} on
+\([-\exp(-1),\infty)\).  At the ordinary point zero,
+\nolinkurl{deriv_principalLambertW_zero} states
+\(\operatorname{deriv}W_0(0)=1\), and
+\nolinkurl{principalLambertW_isEquivalent_zero} packages \(W_0(z)\sim z\).
+These are continuity and regular-point statements, not a branch-point
+derivative, vertical-tangent limit, curvature theorem, or Puiseux expansion.
 
-These lemmas then support the corrected asymptotic comparisons in both the k-fold project and the principal Fabius saddle analysis.
+The reusable layer treats
+\[
+  S_{m,A,\beta}(\lambda)=A\lambda^m e^{-\beta\lambda},
+  \qquad
+  P_{m,A,\beta}
+    =A\left(\frac m\beta e^{-1}\right)^m,
+\]
+under \(m\ne0\), \(A>0\), and \(\beta>0\).
+\nolinkurl{PowerExponentialLambertCalculus.lean} proves
+\nolinkurl{principalPowerExponentialPhase_continuousOn_Icc} on
+\([0,P_{m,A,\beta}]\) and
+\nolinkurl{lowerPowerExponentialPhase_continuousOn_Ioc} on
+\((0,P_{m,A,\beta}]\).  Both proofs compose the raw endpoint theorems with
+the globally continuous normalized argument
+\nolinkurl{powerExponentialLambertArgument_continuous}.  For \(x\) in the
+latter interval and
+\(\lambda\ge0\),
+\nolinkurl{powerExponentialSaddle_eq_iff_eq_principal_or_eq_lower} is the
+exact equivalence
+\[
+ S_{m,A,\beta}(\lambda)=x
+ \quad\Longleftrightarrow\quad
+ \lambda=\lambda_0(x)\ \text{or}\ \lambda=\lambda_{-1}(x).
+\]
+The two values are unequal when \(0<x<P_{m,A,\beta}\), by
+\nolinkurl{principalPowerExponentialPhase_ne_lowerPowerExponentialPhase}.
+Both classification results live in
+\nolinkurl{PowerExponentialLambertInverse.lean}.  The hypothesis
+\(\lambda\ge0\) matters when \(m\) is even, because negative inputs can
+produce further positive profile values.
+
+The next import,
+\nolinkurl{PowerExponentialLambertAsymptotics.lean}, defines the intrinsic
+scale
+\[
+ \epsilon(x)=\frac{\beta}{m}\left(\frac{x}{A}\right)^{1/m}
+\]
+and proves exactly
+\[
+ \lambda_0(x)\sim\left(\frac{x}{A}\right)^{1/m},\qquad
+ \lambda_{-1}(x)\longrightarrow+\infty,\qquad
+ \lambda_{-1}(x)-M(x)\longrightarrow0
+ \quad(x\downarrow0),
+\]
+where
+\[
+ M(x)=-\frac m\beta
+ \bigl(\log\epsilon(x)-\log|\log\epsilon(x)|\bigr).
+\]
+The declarations are
+\nolinkurl{powerExponentialLambertEpsilon},
+\nolinkurl{principalPowerExponentialPhase_isEquivalent_rpow},
+\nolinkurl{tendsto_lowerPowerExponentialPhase_nhdsGT_zero_atTop},
+\nolinkurl{lowerPowerExponentialPhaseIntrinsicMain}, and
+\nolinkurl{lowerPowerExponentialPhase_sub_intrinsicMain_tendsto_zero}.
+This generic result is intentionally only the intrinsic two-term
+\(\epsilon\)-expansion with \(o(1)\) remainder.  A cleaned
+\(L=\log(A/x)\) formula, additional terms or a complete series, and
+branch-point vertical-tangent, Puiseux, second-derivative, or curvature
+claims remain outside this tranche.
+
+Finally \nolinkurl{PowerExponentialLambertFabius.lean} specializes
+\((m,A,\beta)=(1,1,\log2)\).  It defines
+\nolinkurl{fabiusPrincipalLambertPhase}, identifies the other branch with
+\nolinkurl{fabiusLambertPhase}, and exports
+\nolinkurl{fabiusSaddle_eq_iff_eq_principal_or_eq_lower},
+\nolinkurl{fabiusPrincipalLambertPhase_ne_fabiusLambertPhase},
+\nolinkurl{fabiusPrincipalLambertPhase_continuousOn_Icc}, and
+\nolinkurl{fabiusLambertPhase_continuousOn_Ioc}.
+\nolinkurl{fabiusPrincipalLambertPhase_isEquivalent_id} gives the
+specialized principal asymptotic \(\lambda_0(x)\sim x\); the generic lower
+divergence and intrinsic expansion specialize to the existing lower Fabius
+phase.
+
+The import ladder reflects the proof structure:
+\nolinkurl{PowerExponentialLambert.lean} imports the raw lower and principal
+branches, then
+\nolinkurl{PowerExponentialLambertCalculus.lean},
+\nolinkurl{PowerExponentialLambertInverse.lean}, and
+\nolinkurl{PowerExponentialLambertAsymptotics.lean} add continuity,
+classification, and asymptotics in that order.  The Fabius bridge imports
+the last module together with the older generalized-coordinate and Fabius
+saddle modules.  These lemmas support the corrected comparisons in both the
+k-fold project and the principal Fabius saddle analysis.
 
 \subsection{Decay comparisons}
 \nolinkurl{FabiusFlatness.lean} and \nolinkurl{FabiusDecayComparison.lean} convert the log-squared law into two useful endpoint comparisons.  For every \(m>0\),
@@ -3292,7 +3389,8 @@ Totalized inverse \(F^{-1}\) & \nolinkurl{fabiusInv}, \nolinkurl{fabiusOrderIso}
 Inverse curvature & \nolinkurl{deriv_deriv_fabiusInv}, \nolinkurl{deriv_deriv_fabiusInv_half}, \nolinkurl{deriv_deriv_fabiusInv_eq_zero_iff}, \nolinkurl{strictConcaveOn_fabiusInv_firstHalf}, \nolinkurl{strictConvexOn_fabiusInv_secondHalf} & \nolinkurl{FabiusInverse.lean} \\
 Uniform spline \(S_p\) & \nolinkurl{fabiusUniformSpline} & \nolinkurl{FabiusUniformSpline.lean} and \nolinkurl{FabiusComputability.lean} \\
 Logarithmic profile & \nolinkurl{fabiusLogProfile} & \nolinkurl{FabiusLogScale.lean} \\
-Lower-Lambert reference coordinate \(\lambda\) & \nolinkurl{fabiusLambertPhase} & \nolinkurl{FabiusLambertSaddle.lean} \\
+Generic scaled power--exponential phases & \nolinkurl{principalPowerExponentialPhase}, \nolinkurl{lowerPowerExponentialPhase}, \nolinkurl{powerExponentialLambertEpsilon}, \nolinkurl{lowerPowerExponentialPhaseIntrinsicMain} & \nolinkurl{PowerExponentialLambert.lean}, \nolinkurl{PowerExponentialLambertCalculus.lean}, \nolinkurl{PowerExponentialLambertInverse.lean}, and \nolinkurl{PowerExponentialLambertAsymptotics.lean} \\
+Classical principal/lower Lambert reference coordinates & \nolinkurl{fabiusPrincipalLambertPhase}, \nolinkurl{fabiusLambertPhase} & \nolinkurl{PowerExponentialLambertFabius.lean} and \nolinkurl{FabiusLambertSaddle.lean} \\
 Periodic correction \(\Psi\) & \nolinkurl{negativeLaplacePsi} & \nolinkurl{PeriodicCorrection.lean} \\
 Even Legendre truncation & \nolinkurl{rvachevLegendrePartialSumPolynomial} & \nolinkurl{FabiusLegendreLeastSquares.lean} \\
 \bottomrule
@@ -3556,7 +3654,13 @@ Module & Role in the development \\
 \nolinkurl{ThueMorseBinomialLog.lean} & Exact integer signed-binomial sum and rational binomial--log formula for the zero--one bit, including the power-of-two log argument and ring-general bridge to the signed convention. \\
 \nolinkurl{DraftCounterexamples.lean} & Exact and asymptotic counterexamples to false literal claims in the informal draft. \\
 \nolinkurl{StirlingAsymptotics.lean} & Factorial and binomial asymptotics needed for the k-fold scale. \\
-\nolinkurl{LowerLambertW.lean} & Correctly defined lower Lambert-type inverse branch, domain, monotonicity, and asymptotics. \\
+\nolinkurl{LowerLambertW.lean} & Correctly defined lower Lambert branch, endpoint-inclusive continuity on \([-\exp(-1),0)\), smooth-interior calculus, divergence at zero, and intrinsic two-term small-argument expansion. \\
+\nolinkurl{PrincipalLambertW.lean} & Principal real branch, endpoint-inclusive continuity on \([-\exp(-1),\infty)\), smooth-interior calculus, unit derivative at zero, and \(W_0(z)\sim z\). \\
+\nolinkurl{PowerExponentialLambert.lean} & Definitions and exact solve laws for the principal and lower inverses of \(A\lambda^m e^{-\beta\lambda}\). \\
+\nolinkurl{PowerExponentialLambertCalculus.lean} & Interior derivative and order laws, plus full-domain continuity of both scaled phases through their common finite branch point. \\
+\nolinkurl{PowerExponentialLambertInverse.lean} & Exact images and \nolinkurl{InvOn} laws, classification of every nonnegative root below or at the peak, and strict-interior separation of the two roots. \\
+\nolinkurl{PowerExponentialLambertAsymptotics.lean} & Principal root equivalence, lower-branch divergence, and the intrinsic two-term \(\epsilon\)-expansion only; no cleaned \(L=\log(A/x)\) form or full series. \\
+\nolinkurl{PowerExponentialLambertFabius.lean} & Unit-rate generalized-coordinate bridge and the classical Fabius principal/lower specialization, including full-domain continuity, exact root dichotomy, interior separation, and the principal \(x\)-equivalence. \\
 \nolinkurl{PaperKFoldThueMorse.lean} & Aggregator separating exact results, repaired statements, and formal counterexamples. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Top-level packaging}}\\[0.25em]
@@ -3604,6 +3708,11 @@ The subsequent five geometric and Lambert rows reflect source checkpoint
 The \nolinkurl{ImplicitPowerSeries.lean} row and the generic formal-root
 discussion are a post-snapshot foundation checked at source checkpoint
 \nolinkurl{cd9086a80cbecefecb9bc1e00378d151061595e0} on 28 August 2026.
+The seven Lambert rows from \nolinkurl{LowerLambertW.lean} through
+\nolinkurl{PowerExponentialLambertFabius.lean} record the current-tree
+endpoint-continuity, exact-root, and intrinsic-asymptotic tranche described
+in Section~\ref{ch:kfold}; their stated open boundaries are part of
+the crosswalk.
 The title-page pin and reproduction count continue to describe the older
 audited snapshot.
 \end{remark}
