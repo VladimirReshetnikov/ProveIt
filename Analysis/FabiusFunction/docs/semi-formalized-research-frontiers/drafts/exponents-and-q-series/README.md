@@ -12,17 +12,12 @@ consolidated volume, the report remains standalone until its genuinely new
 claims are isolated and the overlap is deliberately deduplicated.  Paper
 theorem labels do not by themselves assert Lean formalization.
 
-- [`Fabius_Rvachev_Frontier_Report_2026-08-30-E/`](Fabius_Rvachev_Frontier_Report_2026-08-30-E/),
-  a second arrival of *Negative Parameters, Reciprocal Bases, and the Gaussian
-  Boundary* (26 pp, 1491 source lines), arrived on 2026-08-30 from
-  `Fabius_Rvachev_Frontier_Report_2026-08-30-E.zip` (outer SHA-256
-  `174bf733156cd874cf4f9321c6ab71ca44f311856cc01dc158ddf83dc00cf813`).
-  All 13 submitted payload hashes verified; the ledger omits `README.txt`.
-  Three CSV entries were refreshed after CRLF-to-LF normalization.  After
-  that mechanical normalization, all 15 files are byte-for-byte identical to
-  the preceding package.  This collision-safe copy records arrival provenance
-  only, pending deliberate duplicate disposition; no claim review or
-  experiment rerun was performed.
+An exact reship, `Fabius_Rvachev_Frontier_Report_2026-08-30-E.zip`
+(outer SHA-256
+`174bf733156cd874cf4f9321c6ab71ca44f311856cc01dc158ddf83dc00cf813`),
+was verified and deleted on 2026-08-30 without creating a redundant directory:
+its payloads are byte-identical to this filed member after the existing CSV
+LF normalization.
 
 - [`inverse_q_analogs_report/`](inverse_q_analogs_report/),
   *Inverse q-Analogs: Branch Geometry, Asymptotic Inversion, and Computation
