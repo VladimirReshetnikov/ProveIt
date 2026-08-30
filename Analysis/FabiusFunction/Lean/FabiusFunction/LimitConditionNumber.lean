@@ -80,9 +80,11 @@ forces the limit to at least `1000`.
   `one_le_qPochhammerInf_neg_self` -- the two sandwiching bounds
   `(q;q)_∞ ≤ 1 - q` and `1 ≤ (-q;q)_∞`.
 * `one_div_one_sub_le_qConditionNumberLimit` and
-  `one_lt_qConditionNumberLimit` -- hence `1/(1-q)` is a lower bound
-  for the limit, and the limit is strictly above one for `q > 0`, so
-  the bound `1` is attained only at `q = 0`.
+  `tendsto_qConditionNumberLimit_atTop_at_one_left` -- hence
+  `1/(1-q)` is a lower bound and the limiting condition number tends
+  to `+∞` as `q → 1⁻`.
+* `one_lt_qConditionNumberLimit` -- the limit is strictly above one
+  for `q > 0`, so the bound `1` is attained only at `q = 0`.
 * `thousand_le_qConditionNumberLimit` -- a concrete consequence: at
   `q = 999/1000` the limiting condition number is at least `1000`.
 * `one_sub_geom_le_qPochhammerInf_self` and
@@ -348,6 +350,38 @@ theorem one_div_one_sub_le_qConditionNumberLimit {q : ℝ}
   rw [hsplit] at hnn
   show 1 / (1 - q) ≤ qPochhammerInf (-q) q / qPochhammerInf q q
   linarith
+
+/-- **The limiting condition number diverges as `q → 1⁻`.**  The
+pointwise lower bound `1 / (1 - q) ≤ qConditionNumberLimit q` is now
+promoted to the literal filter statement
+
+`qConditionNumberLimit q → +∞` as `q → 1` through values below one.
+
+The proof needs no asymptotic information about either infinite product:
+reflection sends the left neighborhood of `1` to the right neighborhood
+of `0`, inversion sends that to `atTop`, and the established lower bound
+finishes by eventual comparison. -/
+theorem tendsto_qConditionNumberLimit_atTop_at_one_left :
+    Tendsto qConditionNumberLimit (𝓝[<] (1 : ℝ)) atTop := by
+  have hsub :
+      Tendsto (fun q : ℝ => 1 - q) (𝓝[<] (1 : ℝ)) (𝓝[>] (0 : ℝ)) := by
+    rw [tendsto_nhdsWithin_iff]
+    constructor
+    · have hcontinuous : Continuous (fun q : ℝ => 1 - q) := by fun_prop
+      have hat : Tendsto (fun q : ℝ => 1 - q) (nhds (1 : ℝ))
+          (nhds (1 - (1 : ℝ))) := hcontinuous.continuousAt
+      simpa only [sub_self] using hat.mono_left nhdsWithin_le_nhds
+    · filter_upwards [self_mem_nhdsWithin] with q hq
+      change 0 < 1 - q
+      exact sub_pos.mpr hq
+  have hinv :
+      Tendsto (fun q : ℝ => (1 - q)⁻¹) (𝓝[<] (1 : ℝ)) atTop :=
+    hsub.inv_tendsto_nhdsGT_zero
+  refine tendsto_atTop_mono' _ ?_ hinv
+  filter_upwards [self_mem_nhdsWithin,
+    nhdsWithin_le_nhds (Ioi_mem_nhds (zero_lt_one : (0 : ℝ) < 1))] with q hq1 hq0
+  simpa only [one_div] using
+    (one_div_one_sub_le_qConditionNumberLimit hq0.le hq1)
 
 /-- **Strictness away from `q = 0`.**  For `0 < q < 1` the limiting
 condition number is strictly above one, because `(q;q)_∞ ≤ 1 - q < 1`

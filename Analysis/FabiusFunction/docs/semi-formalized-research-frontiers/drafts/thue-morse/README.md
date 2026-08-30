@@ -45,6 +45,14 @@ parameters.  GammaLog is the chosen derivative coordinate, not a proved
 `Complex.log` identity.  Only the parameter-`a` differential and iterated
 differential ladder remains open in this tower tranche.
 
+`CentralBinomialValuation.lean` supplies the atlas's direct central-binomial
+crosswalk.  Its exhaustive public API is
+`padicValNat_two_centralBinom`,
+`thueMorseSign_eq_neg_one_pow_centralBinom`, and
+`padicValNat_two_centralBinom_eq_zero_iff`: the valuation of `C(2n,n)` is
+`binaryWeight n`, its parity gives the Thue--Morse sign, and it vanishes only
+at `n = 0` (positive powers of two have valuation one).
+
 The member drafts were absorbed content-preservingly (labels, citation
 keys, and asset paths mechanically prefixed per part; wrapper metadata
 and section-counter handling normalized; no mathematical content

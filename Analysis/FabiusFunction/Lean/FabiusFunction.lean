@@ -60,6 +60,7 @@ import FabiusFunction.BinaryPartitionGreenInverse
 import FabiusFunction.DigitDefectCounting
 import FabiusFunction.DigitDefectBitForm
 import FabiusFunction.ThueMorseValuation
+import FabiusFunction.CentralBinomialValuation
 import FabiusFunction.ThueMorseDigits
 import FabiusFunction.ThueMorseEnumerators
 import FabiusFunction.ThueMorseRarefied

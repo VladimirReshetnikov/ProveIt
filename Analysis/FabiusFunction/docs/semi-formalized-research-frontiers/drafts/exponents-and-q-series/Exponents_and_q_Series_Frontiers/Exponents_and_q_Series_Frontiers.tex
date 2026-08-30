@@ -403,10 +403,15 @@ post-snapshot series and fractional APIs were checked at source checkpoint
 These labels concern representation only, not correctness: report-specific
 probability and sinc-product instantiations still require their own bridges.  In
 particular the sign and bound in \eqref{p1:eq:Rrm-sign}--\eqref{p1:eq:Rrm-bound},
-Fourier envelopes for the Pascal hierarchy of rank at least two, Mellin contour
-displacement, exponential Tauberian transfer, Berry--Esseen for
-non-identically-distributed summands, total-variation and Wasserstein distances,
-and the automatic-sequence machinery have no Lean counterpart here.
+Fourier envelopes for the Pascal hierarchy
+of rank at least two, Mellin contour displacement, exponential Tauberian transfer,
+Berry--Esseen for non-identically-distributed summands, total-variation and
+Wasserstein distances, and the automatic-sequence machinery have no Lean
+counterpart here.  The infinite condition-number limit is formalized separately
+in \path{LimitConditionNumber.lean} by
+\lean{Fabius.tendsto\_sum\_abs\_qToeplitzWeight}; its divergence as
+\(q\to1^-\) is the literal filter theorem
+\lean{Fabius.tendsto\_qConditionNumberLimit\_atTop\_at\_one\_left}.
 \end{statusbox}
 
 \section{The exponent-sequence convolution monoid}
@@ -1419,8 +1424,10 @@ is vacuous past $q=1/2$ --- itself recorded as a theorem
 (\lean{Fabius.weierstrass\_bound\_vacuous\_at\_three\_quarters}) rather
 than as a remark.  The failure of a uniform-in-$q$ bound is now
 effective as well: the limit is at least $1/(1-q)$
-(\lean{Fabius.one\_div\_one\_sub\_le\_qConditionNumberLimit}), hence
-unbounded as $q\to1^-$, with $q=999/1000$ exhibited
+(\lean{Fabius.one\_div\_one\_sub\_le\_qConditionNumberLimit}), and in fact
+tends to $+\infty$ as $q\to1^-$
+(\lean{Fabius.tendsto\_qConditionNumberLimit\_atTop\_at\_one\_left}),
+with $q=999/1000$ exhibited
 (\lean{Fabius.thousand\_le\_qConditionNumberLimit}), and it equals $1$
 exactly at $q=0$
 (\lean{Fabius.one\_lt\_qConditionNumberLimit}, \lean{Fabius.qConditionNumberLimit\_zero}).
@@ -3140,10 +3147,14 @@ B3--B4 are formalized in \path{GeometricQBinomialLagrange.lean},
 \path{GeometricLagrangeQMoments.lean}.  The exact unconditionally summable
 transformed series, including the shifted Gaussian tail, is formalized in
 \path{AnalyticSeriesFilter.lean}; zero-weight nodes require no convergence of
-their unweighted samples.  The conditionally convergent boundary, the ordered
-one-sided sign and bound, the actual exponent-generating-function instantiation,
-and uniform estimates remain results of this report rather than claims about
-the current Lean corpus.
+their unweighted samples.  The infinite condition-number limit on the whole range
+\(0\le q<1\) is formalized in \path{LimitConditionNumber.lean} by
+\lean{Fabius.tendsto\_sum\_abs\_qToeplitzWeight}, with left-limit divergence
+at one proved by
+\lean{Fabius.tendsto\_qConditionNumberLimit\_atTop\_at\_one\_left}.  The conditionally convergent
+boundary, the ordered one-sided sign and bound, the actual
+exponent-generating-function instantiation, and the uniform estimates remain
+results of this report rather than claims about the current Lean corpus.
 
 \section{Reproducibility manifest}
 \label{p1:app:manifest}
@@ -3386,8 +3397,10 @@ rather than as prose (\lean{Fabius.weierstrass\_bound\_vacuous\_at\_three\_quart
 Positivity instead comes from summability of the logarithms, which needs no
 threshold at all (\lean{Fabius.qPochhammerInf\_pos}).  The limit is bounded below
 by $1$, attained exactly at $q=0$, and by $1/(1-q)$
-(\lean{Fabius.one\_div\_one\_sub\_le\_qConditionNumberLimit}); it is unbounded as
-$q\uparrow1$, and at $q=999/1000$ is already at least $1000$.
+(\lean{Fabius.one\_div\_one\_sub\_le\_qConditionNumberLimit}); it tends to
+$+\infty$ as $q\uparrow1$
+(\lean{Fabius.tendsto\_qConditionNumberLimit\_atTop\_at\_one\_left}), and at
+$q=999/1000$ is already at least $1000$.
 
 Identifying the coefficients of the transformed-error series with the
 sinc-product tail, and proving the report's signs, remainder and bracketing
@@ -3609,6 +3622,19 @@ The classical expansion
  \label{p2:eq:logsinc}
 \end{equation}
 turns the geometric tail into an explicitly summable cumulant series.
+
+The analytic input in \eqref{p2:eq:logsinc} is already machine checked.
+On the complex disk, \path{SincZetaSeries.lean} proves the branch-free
+exponential forms \lean{Fabius.complexSinc\_pi\_mul\_eq\_cexp} and
+\lean{Fabius.complexSinc\_eq\_cexp}; its real theorem
+\lean{Fabius.log\_sin\_div\_pi\_mul} recovers the displayed logarithm
+literally.  At the dyadic base, \path{SincZetaDyadic.lean} resums all
+geometric scales in \lean{Fabius.rvachevFourierProduct\_eq\_cexp} and
+\lean{Fabius.rvachevFourierProduct\_eq\_prefix\_mul\_cexp}, while
+\path{SincZetaRemainder.lean} supplies the certified remaining zeta tail.
+What is not yet packaged for this part is the general-\(b\) reciprocal-tail
+coefficient sequence \(\alpha_r(b)\) and its concrete connection to the
+geometric analytic filter below.
 
 \begin{theorem}[Bernoulli cumulants]
 \label{p2:thm:cumulants}
@@ -4526,10 +4552,13 @@ series.  What remains here is to derive the Bell recurrence
 \eqref{p2:eq:alpharec} from \(\Phi=\exp(\sum c_kz^k)\) and connect that concrete
 series to the sinc-product quotient.
 
-\item \textbf{Analytic sinc logarithm.} Establish \eqref{p2:eq:logsinc} in a disk,
-sum the geometric scales, and identify the analytic power series with the actual
-product. Existing repository lemmas about the sinc product should reduce the
-amount of new infrastructure.
+\item \textbf{Analytic sinc logarithm (formalized; concrete quotient bridge open).}
+The complex exponential and real logarithmic forms of \eqref{p2:eq:logsinc} are
+proved in \path{SincZetaSeries.lean}.  The dyadic geometric-scale sum, exact
+finite-prefix factorization, and certified zeta remainder are proved in
+\path{SincZetaDyadic.lean} and \path{SincZetaRemainder.lean}.  What remains here
+is the general-\(b\) reciprocal-product coefficient package and its identification
+with the actual quotient \(P_{b,n}/P_b\) in the analytic filter interface.
 
 \item \textbf{Interpolation and positivity (partially formalized).}  The
 finite Lagrange weights, exact residual sign, and abstract unconditionally

@@ -157,4 +157,43 @@ verification package lives under
 Absorbed directories deleted; provenance with SHA-256 in the volume's
 Appendix B and `assets/SHA256SUMS-absorbed.txt`.
 
+`Legendre_Rvachev_Self_Reconstruction/` (*Legendre--Rvachev
+Self-Reconstruction on [-1,1]*) landed 2026-08-29 and is **pending
+merge into `Up_Polynomial_Synthesis/`**.  It is not a seventh
+Lagrange-loop sibling: the six loop reports synthesize *Lagrange
+cardinals* from shifted up-atoms, whereas this one turns the Legendre
+strand inward, onto the self-reconstruction and energy structure of up
+itself.  Its own `CORPUS_AUDIT.md` names
+`lagrange_rvachev_loop_report_v3/` as the directly preceding
+Legendre-aware report and lists what it imports rather than claims.
+New here: exact orthogonality of the finite self-translate blocks,
+Pythagorean tails and a Sobolev energy hierarchy, a positive rational
+series and an infinite-sinc integral for the energy constant
+`A_2 = int_0^1 F^2`, interlevel null trains with a quarter-grid lifting
+decomposition, Hilbert--Schmidt identities for the even-projector
+factorization, and a sharp central-coefficient root law.  Its
+theorem-level checks are exact rational with residual `0`; the reported
+energy value is a stabilized display of an exact partial sum, not a
+certified enclosure of the limit, and the report says so.
+
+Three further Legendre-closure reports landed the same day, all
+**pending merge into `Up_Polynomial_Synthesis/`** and all answering the
+same question from different angles:
+`legendre_rvachev_closed_loop/` (*Legendre--Rvachev Biorthogonal
+Closure*) carries the arithmetic — exact `u_n` to `n=80` with 2-adic
+valuations, reciprocal-MGF coefficients, and exact spectral sum rules;
+`Legendre_Rvachev_Closed_Loop_Report_v3/` (*Legendre Polynomials in the
+Rvachev Up Dictionary*) is the widest, and the only one to study the
+**root geometry** of the deconvolved Legendre polynomials, with Sturm
+certificates and an explicit Favard obstruction showing the family is
+orthogonal for no measure; `Legendre_Rvachev_Closed_Loop_Report_v4/`
+(*A One-Scale Legendre--Rvachev Closure*) is the narrowest by design,
+restricting to a single scale.  The `_v3`/`_v4` suffixes are
+deliberate: those two archives share a top-level directory name.
+
+Together with `Legendre_Rvachev_Self_Reconstruction/` these make four
+same-day Legendre reports beside the six Lagrange-loop ones, so the
+pending merge into `Up_Polynomial_Synthesis/` now has ten members
+waiting.
+
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and provenance.

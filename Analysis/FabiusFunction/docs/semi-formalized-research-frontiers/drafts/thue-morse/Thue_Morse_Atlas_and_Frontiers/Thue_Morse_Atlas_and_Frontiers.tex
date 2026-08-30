@@ -322,7 +322,7 @@ is not by itself evidence of formalization.  Statements proved in Lean carry the
 declaration names in the text, typeset as \lean{Fabius.thueMorseSign}; statements without
 such a citation must not be inferred to have a formal counterpart.
 
-The current inventory in \cref{p1:sec:formalized-modules} consists of ninety-five compiled
+The current inventory in \cref{p1:sec:formalized-modules} consists of ninety-six compiled
 Lean modules.  It covers the finite algebraic, automata, moment, Fourier, rarefaction,
 Dirichlet--Mellin, word-combinatorial, and Fabius--Rvachev bridges recorded there, often in
 greater generality than the displayed prose.  The dependency-aware map in
@@ -1366,6 +1366,15 @@ Use \eqref{p1:eq:legendre-two} and \(\wt(2n)=\wt(n)\):
   =\wt(n).
 \end{align*}
 \end{proof}
+
+\emph{Formal versions.}  The exhaustive three-theorem public API of
+\path{CentralBinomialValuation.lean} is
+\lean{Fabius.padicValNat_two_centralBinom},
+\lean{Fabius.thueMorseSign_eq_neg_one_pow_centralBinom}, and
+\lean{Fabius.padicValNat_two_centralBinom_eq_zero_iff}.  The last theorem
+states that the valuation vanishes exactly when the binary weight is zero,
+which occurs only at \(n=0\); a positive power of two has valuation one, not
+zero.
 
 \begin{boxedremark}
 \textbf{The shortest Pascal replacement.}
@@ -6397,7 +6406,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{p1:sec:formalized-modules}
 
-The first tranches of the formalization now exist as ninety-five
+The first tranches of the formalization now exist as ninety-six
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -6424,6 +6433,7 @@ Module & Contents \\
 \path{ThueMorseBitSupport.lean} & Canonical binary support and two-power equivalence, both reconstruction directions, test-bit and empty/zero laws, shifts, weight and sign laws, support bounds, the bounded Boolean-cube equivalence including level zero, image equality, and powerset-sum reindexing. \\
 \path{ThueMorseBooleanCube.lean} & Two-parameter master product over any commutative semiring, signed product over any commutative ring, and weight enumerator, using the centralized bit-support reindexing API. \\
 \path{ThueMorseValuation.lean} & Successor law, weight subadditivity, ruler product, Catalan valuation, additive Kummer, borrow cocycle. \\
+\path{CentralBinomialValuation.lean} & Exhaustive three-theorem bridge: central-binomial valuation equals binary weight, its parity gives the Thue--Morse sign, and zero valuation is equivalent to zero binary weight (hence occurs only at \(n=0\)). \\
 \path{ThueMorseDigits.lean} & Additive Legendre, floor sums, floor-parity formula, `testBit` bridge, digit product. \\
 \path{ThueMorseEnumerators.lean} & Weight distribution, evil/odious enumerations and composition laws, XOR autocorrelation, signed Hamming spheres. \\
 \path{FinitePolynomialFunctional.lean} & Moment expansion for finite weighted polynomial evaluations, selected-, top-, and constant-coefficient extraction, scalar-extension forms, degree-valued strict cancellation, and same-ring conveniences over commutative semirings; repeated nodes and a zero surviving moment are allowed. \\
@@ -6635,7 +6645,7 @@ proposed boundary each one realizes, and are not additional modules.
 \toprule
 Proposed module & Main declarations \\
 \midrule
-\path{ThueMorseValuation.lean} & Factorial, central-binomial, Catalan, successor, and carry formulae.  \emph{Delivered.} \\
+\path{ThueMorseValuation.lean}, \path{CentralBinomialValuation.lean} & Factorial, Catalan, successor, and carry formulae, together with the exhaustive three-theorem central-binomial valuation/sign bridge.  \emph{Delivered.} \\
 \path{ThueMorsePascal.lean} & Lucas submasks, Glaisher count, sparse probes, modulo-three formula.  \emph{Delivered} (in \path{Parity.lean}, \path{ThueMorseBinomialLog.lean}, \path{ThueMorseLucasSupport.lean}). \\
 \path{ThueMorseMultinomial.lean} & Frobenius factorization and \(O_r(n)=r^{\wt(n)}\).  \emph{Delivered} (via Kummer's criterion rather than Frobenius). \\
 \path{ThueMorseBooleanMobius.lean} & Submask incidence algebra and inverse parity matrix.  \emph{Delivered} (poset form; the matrix form is its row-by-row reading). \\

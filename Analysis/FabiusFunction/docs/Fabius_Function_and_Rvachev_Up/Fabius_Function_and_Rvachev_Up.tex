@@ -1268,6 +1268,13 @@ If \(A,B:\R\to\R\), with \(A\) absolutely continuous on \([a,b]\) and
  +\int_c^d A(Q(u))B'(u)\dd u
  =A(b)B(d)-A(a)B(c).                                      \label{eq:ac-inverse-pair}
 \end{equation}
+Moreover, every \(y\in[a,b]\) cuts out the smaller inverse rectangle
+\([a,y]\times[c,C(y)]\), and
+\begin{equation}
+ \int_a^y A'(x)B(C(x))\dd x
+ +\int_c^{C(y)} A(Q(u))B'(u)\dd u
+ =A(y)B(C(y))-A(a)B(c).                                   \label{eq:ac-inverse-pair-to}
+\end{equation}
 No measurability, continuity, or differentiability assumption is imposed on
 \(C\) or \(Q\).  The strict-order equivalence forces both restrictions to be
 monotone; canonical clamped extensions are then measurable.  Values of the
@@ -1277,9 +1284,10 @@ reversed endpoints require swapping the corresponding interval and its order
 data first.
 \end{theorem}
 
-This is
-\lean{intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_of_lt_iff_lt} in
-\path{InversePairIntegral.lean}.  Its proof combines
+The complete and variable-upper statements are, respectively,
+\lean{intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_of_lt_iff_lt} and
+\lean{intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_to_of_lt_iff_lt} in
+\path{InversePairIntegral.lean}.  Their proof combines
 \lean{intervalIntegral_smul_intervalIntegral_of_lt_iff_lt} with the
 fundamental theorem for absolutely-continuous functions; no derivative or
 Jacobian formula for the clocks enters.
@@ -1293,20 +1301,33 @@ For real functions \(A,B:\R\to\R\) that are absolutely continuous on
  +\int_0^1 A(I(u))B'(u)\dd u
  =A(1)B(1)-A(0)B(0).                                      \label{eq:fabius-ac-inverse-pair}
 \end{equation}
+For every \(y\in[0,1]\), the corresponding variable-upper identity is
+\begin{equation}
+ \int_0^y A'(x)B(F(x))\dd x
+ +\int_0^{F(y)} A(I(u))B'(u)\dd u
+ =A(y)B(F(y))-A(0)B(0).                                   \label{eq:fabius-ac-inverse-pair-to}
+\end{equation}
 In particular, taking both outer functions to be the identity gives the
 inverse-graph area identity
 \begin{equation}
  \int_0^1F(x)\dd x+\int_0^1I(u)\dd u=1.                   \label{eq:fabius-inverse-area-sum}
 \end{equation}
+At a variable inverse endpoint \(u\in[0,1]\), the same specialization gives
+\begin{equation}
+ \int_0^u I(v)\dd v
+ =uI(u)-\int_0^{I(u)}F(x)\dd x.                            \label{eq:fabius-inverse-area-to}
+\end{equation}
 \end{corollary}
 
-The two displayed statements are exactly
+The complete and variable-upper two-function statements are exactly
 \lean{intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv} and
-\lean{intervalIntegral_fabiusReal_add_fabiusInv_eq_one} in
-\path{InversePairIntegral.lean}.  They are full-interval first-order
-identities.  Variable-upper-endpoint, higher-order, improper-integral,
-fractional-power, and complex-Mellin extensions remain outside these
-declarations.
+\lean{intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv_to}; the
+two area statements are \lean{intervalIntegral_fabiusReal_add_fabiusInv_eq_one}
+and \lean{intervalIntegral_fabiusInv_to_eq_mul_sub_intervalIntegral_fabiusReal}
+in \path{InversePairIntegral.lean}.  These are proper-compact first-order
+identities.  Reversed-endpoint, higher-order, improper-integral,
+fractional-power, complex-valued arbitrary-AC, and complex-Mellin extensions
+remain outside these declarations.
 
 \subsection{The normalized geometric family}
 
@@ -4128,6 +4149,22 @@ identity
 namely \lean{factorial_padicVal_two}; the combined declaration is
 \lean{fabiusAtInverseTwoPow_padicVal_two_closed} in \path{TwoAdic.lean}.
 
+The central-binomial specialization gives, for every \(n\ge0\),
+\begin{align}
+ \nu_2\!\binom{2n}{n}&=\wt(n),
+                                                   \label{eq:central-binomial-valuation}\\
+ \varepsilon_n&=(-1)^{\nu_2\binom{2n}{n}}.
+                                                   \label{eq:central-binomial-sign}
+\end{align}
+These are \lean{padicValNat_two_centralBinom} and
+\lean{thueMorseSign_eq_neg_one_pow_centralBinom}.  The companion theorem
+\lean{padicValNat_two_centralBinom_eq_zero_iff} says that the valuation
+vanishes exactly when the binary weight is zero, hence only at \(n=0\);
+a positive power of two has binary weight, and therefore valuation, one.
+These three declarations exhaust the public surface of
+\path{CentralBinomialValuation.lean} and give the direct formal crosswalk for
+the central-binomial theorem in the Thue--Morse atlas.
+
 \subsection{Bernoulli recurrences}
 
 The formal development also proves Bernoulli convolution and recurrence forms for both
@@ -4844,10 +4881,24 @@ $\ell^1$ norm of the row.  Their dedicated quarter-base corollaries include
 \lean{quarterGeometricLagrangeQMoment_eq_residual_qBinomial} and
 \lean{sum_abs_quarterGeometricLagrangeWeight_eq_qPochhammer_ratio}.
 The generic unconditionally summable geometric filter and its exact Gaussian
-\(\mathsf{tsum}\) tail are proved in \Cref{prop:analytic-series-filter}.  What remains in
-the research-frontier volume is the actual quarter-base sinc-prefix or spectral-tail
-instantiation, including its coefficient bridge, infinite condition-number limit, sign
-and remainder estimates, uniform accelerated convergence, and derivative formulas.
+\(\mathsf{tsum}\) tail are proved in \Cref{prop:analytic-series-filter}.  The finite row
+variation, with \(w_q(n,j)\) the $q$-Toeplitz weight
+\lean{qToeplitzWeight} from \path{GeneralQConditionNumber.lean}, also has its exact
+infinite limit: for every
+\(0\le q<1\),
+\[
+ \sum_{j\le n}\lvert w_q(n,j)\rvert
+ \longrightarrow \frac{(-q;q)_\infty}{(q;q)_\infty}.
+\]
+This is \lean{tendsto_sum_abs_qToeplitzWeight} in
+\path{LimitConditionNumber.lean}; the same module proves positivity of the
+denominator on the full range and the effective lower bound
+\(1/(1-q)\le(-q;q)_\infty/(q;q)_\infty\), and promotes that bound to the
+literal divergence theorem
+\lean{tendsto_qConditionNumberLimit_atTop_at_one_left}.  What remains in the
+research-frontier volume is the actual quarter-base sinc-prefix or spectral-tail
+instantiation, including its coefficient bridge, sign and remainder estimates,
+uniform accelerated convergence, and derivative formulas.
 
 The polynomial in \eqref{eq:half-q-binomial-theorem} has the complete rational root locus
 \begin{equation}
@@ -7842,13 +7893,13 @@ That rule explains several choices made above:
       assuming it.  For a real-valued absolutely continuous primitive, a further generic
       subtraction theorem and its normalized and Fabius forms accept every real or complex
       \(L^1\) weight and require no separate complementary-integrability hypothesis.  Finally,
-      \path{InversePairIntegral.lean} proves the two-function identity for arbitrary
-      absolutely-continuous outer functions on an ordered compact rectangle, derives
-      monotonicity on that rectangle and measurable canonical clamped extensions from the
-      strict inverse-order relation, and supplies both the Fabius wrapper and its area sum.
-      These declarations do not package reversed-endpoint, variable-upper-endpoint,
-      higher-order, improper-integral, fractional, complex-valued arbitrary-AC-primitive,
-      or complex-Mellin identities.
+      \path{InversePairIntegral.lean} proves the full and variable-upper two-function
+      identities for arbitrary absolutely-continuous outer functions on an ordered compact
+      rectangle, derives monotonicity on that rectangle and measurable canonical clamped
+      extensions from the strict inverse-order relation, and supplies the two Fabius wrappers,
+      the full area sum, and the partial inverse-area identity.  These declarations do not
+      package reversed-endpoint, higher-order, improper-integral, fractional,
+      complex-valued arbitrary-AC-primitive, or complex-Mellin identities.
 \item Step cells use the formal half-endpoint indicator, including its point value at a
       shared boundary.
 \item The Fourier chapter distinguishes the real punctured-limit statement from the stronger
@@ -8139,7 +8190,8 @@ Moments and exact arithmetic &
 \path{BernoulliRecurrences.lean}, \path{MomentCumulantAlgebra.lean},
 \path{PolynomialExpectationCumulant.lean},
 \path{WeightedScaleMultiplicity.lean},
-\path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean}\\
+\path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean},
+\path{CentralBinomialValuation.lean}\\
 Universal exponential, Bell, and endpoint-transfer algebra &
 \path{SaddleExpansionAlgebra.lean}, \path{ExponentialPartition.lean},
 \path{ExponentialBell.lean},
