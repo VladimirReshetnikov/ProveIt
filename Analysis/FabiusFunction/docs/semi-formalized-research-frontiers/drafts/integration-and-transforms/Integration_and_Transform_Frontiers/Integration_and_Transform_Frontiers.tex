@@ -688,11 +688,18 @@ This exactly discharges \eqref{p6:eq:Cauchy-functional},
 The affine bridge makes a unit-interval Stieltjes derivative equation an
 unexported consequence; no named Stieltjes-DDE declaration is claimed.
 
-No logarithmic potential or fixed point, moment/Laurent or Laplace/Fourier
-expansion, survival-CDF or higher-resolvent-power wrapper, conversion of the
-all-order orbit into a higher-Cauchy-kernel integral identity,
-boundary/Plemelj theorem, generalized complex order, or Jacobi/Pad\'e result
-is claimed.
+The real logarithmic fixed point for \(z>1\), the positive-integer real hierarchy,
+real-order lowering for \(\alpha>1\), real and complex exterior all-moment Laurent
+series, finite-height Herglotz--Poisson formulas, integrated interval
+Stieltjes--Perron inversion, and initial exact Jacobi data are formalized by the
+\path{Stieltjes*.lean} and \path{OrthogonalPolynomialJacobi.lean} layers described
+above.  What remains open is the complex logarithmic continuation/logarithmic
+potential, named Laplace/Fourier transform forms, complex order, pointwise or
+nontangential Sokhotski--Plemelj and principal-value Hilbert-transform formulas,
+the full J-fraction/Pad\'e package, and the separate explicit conversion of the
+all-order Thue--Morse orbit into a named higher-Cauchy-kernel integral identity.
+The generic CDF/survival integration-by-parts formulas at every positive power do
+not by themselves prove that last orbit formula.
 This status box supersedes only contrary historical formalization wording in the absorbed
 snapshots; their provenance hashes remain unchanged.
 \end{statusbox}
@@ -6612,8 +6619,9 @@ beta-weighted formulas, Bernoulli-polynomial integrals, order-statistic represen
 Cauchy transforms, and Gini/autocorrelation integrals expressed through the infinite
 sinc product.  Numerical experiments are supplied in a reproducible Python script.
 
-A post-snapshot Lean audit, checked at compiled source checkpoint
-\texttt{e6f535e5d}, now provides the generic continuous-linear naturality and conditional
+The weighted-law, CDF, and affine fixed-point portion of the post-snapshot Lean audit,
+checked at compiled source checkpoint
+\texttt{d312c0603}, now provides the generic continuous-linear naturality and conditional
 operator/scalar affine-recursion substrate for weighted uniform laws, together with the
 named geometric weights \((1-q)q^n\), their probability law, self-similarity, reflection,
 absolute continuity, null singletons, exact support, and half-base bridges.  The new real-CDF
@@ -6621,10 +6629,24 @@ layer also proves continuity, reflection, and the midpoint value for \(|q|<1\), 
 tails for \(0\le q<1\), and, for \(0<q<1\), both conditioning integrals, an explicit
 Radon--Nikodym density with compact support, and \(C^\infty\) regularity.  At \(q=1/2\),
 the CDF and density are identified on all of \(\R\) with the bounded Fabius function and
-the affine Rvachev up-function.  This does not formalize the report's
+the affine Rvachev up-function.  The generic affine-independent-copy layer now also proves
+that, on every complete second-countable real inner-product target, a measurable digit map
+and a probability digit law determine at most one probability fixed point whenever
+\(|q|<1\).  Its geometric specialization characterizes the named law for the full range
+\(|q|<1\), including \(q=0\) and negative \(q\), without support, density, or moment
+hypotheses on a competing law.  This does not formalize the report's
 improper-singular inverse-pair extensions, fractional-power,
-complex-Mellin, Fourier-product, moment, shape, higher-derivative-wrapper, or fixed-point
-uniqueness consequences.  A still later module, \path{InversePairIntegral.lean}, does
+complex-Mellin, rapid-decay/Fourier-inversion, explicit Bernoulli-cumulant or Bell-moment
+formulas and asymptotics, shape, or higher-derivative-wrapper consequences.  A later
+mainline tranche, rechecked in the current combined full-facade build, does prove the exact
+finite residual product and pointwise convergence
+of its phase-bearing prefixes for every \(|q|<1\); finite characteristic-function, MGF, and
+CGF tail factorizations were already available in the geometric dictionary.  The existing
+\texttt{geometricSincProduct} packages the same sinc factors, after frequency rescaling,
+as a \texttt{tprod}; what remains separate is a named characteristic-function bridge to it
+(or explicit \texttt{HasProd} theorem) and compact-uniform convergence of the
+characteristic prefixes.
+A still later module, \path{InversePairIntegral.lean}, does
 formalize the complete and variable-upper proper-compact absolutely-continuous inverse-pair
 identities.
 
@@ -6812,9 +6834,10 @@ holds with \(U\sim\mathrm{Unif}[0,1]\) independent of a copy \(Y'\) of \(Y\).
 It will generate both the positive- and negative-moment recurrences.
 
 \begin{statusbox}[Formal arbitrary-weight law and geometric CDF underlying the dyadic split]
-The post-snapshot API recorded in this box was checked and frozen at compiled full-facade
-checkpoint \texttt{e6f535e5d}; the report's original novelty snapshot remains the one stated
-in its provenance metadata.
+The weighted-law, CDF, and affine fixed-point API recorded in this box was checked and
+frozen at compiled full-facade checkpoint \texttt{d312c0603}.  The sinc-prefix declarations
+below are later mainline additions rechecked in the current combined full-facade build; the
+report's original novelty snapshot remains the one stated in its provenance metadata.
 
 The current Lean source proves the distributional mechanism before specializing the
 weights.  For every norm-summable sequence in a real Banach space with its Borel
@@ -6890,6 +6913,28 @@ The seven compatibility declarations are
 The law-level scalar compatibility identity is oriented as
 \(\mu_{cw}=(x\mapsto cx)_*\mu_w\).
 
+The separate module \path{AffineIndependentCopy.lean} supplies one definition and eight
+theorems for the contractive measure-level mechanism.  In the namespace
+\nolinkurl{ProbabilityTheory}, they are
+\nolinkurl{affineIndependentCopyLaw},
+\nolinkurl{affineIndependentCopyLaw_isProbabilityMeasure},
+\nolinkurl{affineIndependentCopyLaw_eq_map_prod},
+\nolinkurl{charFun_affineIndependentCopyLaw},
+\nolinkurl{charFun_eq_mul_charFun_of_affineIndependentCopy_fixedPoint},
+\nolinkurl{charFun_iterate_of_affineIndependentCopy_fixedPoint},
+\nolinkurl{eq_of_charFun_affine_recurrence},
+\nolinkurl{affineIndependentCopyLaw_fixedPoint_unique}, and
+\nolinkurl{affineIndependentCopy_map_fixedPoint_unique}.
+The operator sends a candidate law \(\mu\) to the convolution of the pushed-forward digit
+law with the scalar image \((q\,\cdot)_*\mu\); the API identifies this convolution with the
+direct product-map law, proves probability preservation, factors its characteristic
+function, and iterates the fixed-point recurrence through the residual argument
+\(q^n t\).  On a complete second-countable real inner-product space with its Borel
+structure, a measurable digit map over an arbitrary probability digit space and two
+probability candidate laws, the hypothesis \(|q|<1\) makes the fixed point unique.  This
+includes \(q=0\) and every negative contraction and uses no support, absolute-continuity,
+density, or moment hypothesis.
+
 For every real \(q\), the named weights are \(w_n(q)=(1-q)q^n\), with exact zero and
 successor formulas.  Under \(|q|<1\) they are norm-summable with total mass one; their
 series is continuous and measurable, and the probability law satisfies the exact
@@ -6926,6 +6971,39 @@ The exact half-base series and law bridges are
 \nolinkurl{Fabius.ProbabilityRepresentation.weightedCoordinateSum_eq_geometricUniformSeries_one_half}
 and
 \nolinkurl{Fabius.ProbabilityRepresentation.weightedSumDistribution_eq_geometricUniformDistribution_one_half}.
+The further module \path{GeometricUniformUniqueness.lean} exports the single corollary
+\nolinkurl{Fabius.ProbabilityRepresentation.eq_geometricUniformDistribution_of_selfSimilar}.
+For every real \(q\) with \(|q|<1\), it says that a probability measure \(\mu\) satisfying
+\[
+ \mu=\bigl((u,x)\mapsto(1-q)u+qx\bigr)_*
+      \bigl(\lambda_{[0,1]}\otimes\mu\bigr)
+\]
+is exactly \nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution}\((q)\).
+The statement includes \(q=0\) and negative \(q\) and imposes no carried-support, density,
+or moment condition on \(\mu\).
+
+The finite four-face theorem
+\nolinkurl{Fabius.geometric_tail_dictionary_geometricUniform} already packages measure,
+characteristic-function, MGF, and CGF tail factorizations.  The six public declarations in
+\path{GeometricSincFactorization.lean} are
+\nolinkurl{Fabius.charFun_geometricUniformDigit},
+\nolinkurl{Fabius.charFun_geometricUniformDistribution_prefix},
+\nolinkurl{Fabius.charFun_geometricUniformDistribution_prefix_sinc},
+\nolinkurl{Fabius.tendsto_prefix_sinc_charFun},
+\nolinkurl{Fabius.charFun_weightedSumDistribution_prefix_sinc}, and
+\nolinkurl{Fabius.tendsto_prefix_sinc_charFun_weightedSumDistribution}.
+The digit formula is unconditional in real \(q\).  For every \(|q|<1\), \(m\in\N\), and
+\(t\in\R\), writing \(\phi_q(t)=\operatorname{charFun}(\mu_q)(t)\), the phase-collapsed
+finite residual formula is
+\[
+ \phi_q(t)=e^{\ii(1-q^m)t/2}
+ \left(\prod_{k=0}^{m-1}
+   \sinc\!\left(\frac{(1-q)q^kt}{2}\right)\right)
+ \phi_q(q^m t),
+\]
+and the phase-bearing prefix without the residual converges pointwise to \(\phi_q(t)\).
+This scope includes \(q=0\) and negative \(q\), and the final two declarations are the
+exact \(q=1/2\) weighted-sum wrappers.
 
 The three generic declarations in \path{ContinuousCDF.lean} are
 \nolinkurl{Fabius.continuous_cdf_of_nullSingleton},
@@ -6982,10 +7060,13 @@ Thus the dyadic CDF and density identities used at the start of this report are 
 
 The definition \nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDensity} is
 totalized, but its classical density and Radon--Nikodym interpretation are not formal here for
-\(q\le0\).  Still outside the formal layer are the characteristic-function product and
-rapid-decay/Fourier-inversion route, closed higher-derivative refinements and endpoint-flatness
-wrappers, shape results, moments and transforms, and uniqueness of the affine measure fixed
-point.
+\(q\le0\).  The pointwise phase-bearing characteristic-function prefix limit is formal;
+\nolinkurl{geometricSincProduct} already packages the same rescaled sinc factors as a
+\nolinkurl{tprod}.  Still outside the formal layer are a named characteristic-function
+bridge to that product (or explicit \nolinkurl{HasProd} theorem), compact-uniform
+convergence of the characteristic prefixes, the rapid-decay/Fourier-inversion route, closed higher-derivative refinements
+and endpoint-flatness wrappers, shape results, further transform formulas, and explicit
+Bernoulli-cumulant/Bell-moment formulas and asymptotics.
 \end{statusbox}
 
 \subsection{Moment-generating and Fourier products}
@@ -18578,9 +18659,10 @@ of \cref{p10:thm:gini-sinc} is another compact deduction not found in the compar
 The universal inverse-pair identity, entire moment/Newton calculus, negative-moment
 recurrence, beta transforms, and related ordinary formulas are presented as a useful
 self-contained synthesis and auxiliary deductions, without a priority claim.
-Since that audit, the proper full-interval absolutely-continuous inverse-pair identity has
-also become a proved Lean theorem in the more general compact-interval form recorded
-below; the variable-endpoint and improper-singular extensions remain frontier claims.
+Since that audit, the proper full-interval and variable-endpoint absolutely-continuous
+inverse-pair identities have also become proved Lean theorems in the more general
+compact-interval forms recorded below; only the improper-singular extensions remain
+frontier claims.
 \end{resultbox}
 
 \subsection{Conventions}
@@ -24351,10 +24433,12 @@ from the grid and
 from oscillatory quadrature agree to the expected grid accuracy.  The normalized
 balanced values begin
 \[
- K_1\approx0.5733793921,
- \quad K_{10}\approx0.5030089983,
- \quad K_{100}\approx0.5000147741,
- \quad K_{1000}\approx0.50000000757,
+ \begin{aligned}
+ K_1&\approx0.5733793921,
+ &K_{10}&\approx0.5030089983,\\
+ K_{100}&\approx0.5000147741,
+ &K_{1000}&\approx0.50000000757.
+ \end{aligned}
 \]
 consistent with strict decrease and superalgebraic localization.  They are far
 from the ultimate logarithmic regime in \eqref{p12:eq:Klog}, as the Lambert saddle
@@ -24450,7 +24534,7 @@ transform layer is formalized.
 
 For convenient reference, the central formulas are collected here.
 
-\begin{longtable}{>{\raggedright\arraybackslash}p{0.29\textwidth}p{0.66\textwidth}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.28\textwidth}p{0.65\textwidth}@{}}
 \toprule
 Object & Formula \\
 \midrule

@@ -6,15 +6,15 @@ import FabiusFunction.LobeSignLaw
 # `Φ_a` is bounded by one on the real axis
 
 The volume reads `Φ_a` as the characteristic function of a random
-variable `X_a`, and the corpus has two of the three properties that
-reading requires: `Φ_a(0) = 1`
-(`Fabius.generalizedRvachevProduct_at_zero`) and continuity, from
-entirety (`FabiusFunction.GeneralizedRvachevEntire`).  The third,
+variable `X_a`.  Besides value one at the origin and continuity from
+entirety, a necessary check is
 
-`‖Φ_a(x)‖ ≤ 1`  for every real `x`,
+`‖Φ_a(x)‖ ≤ 1`  for every real `x`.
 
-was missing, at every weight including the constant one.  It is
-proved here.
+The classical constant-weight case was already
+`Fabius.norm_rvachevFourierProduct_le_one` in `BaselineDecay.lean`;
+the arbitrary admissible-weight statement was missing and is proved
+here.
 
 The estimate is termwise and needs nothing analytic beyond a limit:
 each real-argument sinc has modulus at most one

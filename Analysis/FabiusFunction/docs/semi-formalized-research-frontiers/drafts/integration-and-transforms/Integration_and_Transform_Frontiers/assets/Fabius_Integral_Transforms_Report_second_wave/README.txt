@@ -1,13 +1,16 @@
 Fabius Integral and Transform Calculus Report
 =============================================
 
-Files
------
-Fabius_Integral_Transforms_Report.tex
-    Main LaTeX source.
+Consolidated report
+-------------------
+../../Integration_and_Transform_Frontiers.tex
+    Canonical consolidated source; this report is Part XII.
 
-Fabius_Integral_Transforms_Report.pdf
-    Compiled PDF.
+../../Integration_and_Transform_Frontiers.pdf
+    Compiled consolidated volume.
+
+Retained companion files
+------------------------
 
 fabius_integral_transforms.py
     Commented deterministic numerical checks.
@@ -42,7 +45,12 @@ Reproduction
 python -m pip install -r requirements.txt
 python fabius_integral_transforms.py --grid-power 17
 
-The PDF was compiled with the LaTeX source in this directory.  The numerical
-program requires Python 3, NumPy, and SciPy.
+The numerical program requires Python 3, NumPy, and SciPy.  Rebuild the
+consolidated PDF from the volume directory with exactly three explicit
+`pdflatex -interaction=nonstopmode -halt-on-error
+Integration_and_Transform_Frontiers.tex` passes.
 
-> **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Integration_and_Transform_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.
+> **Editorial note (2026-08-28):** the standalone report source and PDF were
+> removed after their content was merged into Part XII.  Git history and the
+> consolidated provenance section preserve the absorbed snapshot; this
+> directory is an ancillary asset bundle, not an independent build root.

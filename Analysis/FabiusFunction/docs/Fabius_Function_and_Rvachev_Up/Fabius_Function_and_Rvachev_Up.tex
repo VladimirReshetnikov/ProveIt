@@ -124,6 +124,7 @@
 \date{Integrated repository snapshot: 29 August 2026\\
 \small Cauchy/complex-product checkpoint \nolinkurl{a81a13b46};
 CDF/implicit checkpoint \nolinkurl{e6f535e5d};
+affine-law checkpoint \nolinkurl{d312c0603};\\
 fractional-cutoff checkpoint \nolinkurl{149332f9d};
 inverse-layer-cake checkpoint \nolinkurl{37eab3c56}}
 
@@ -151,7 +152,10 @@ respect to Lebesgue measure and has null singletons, and arbitrary signed real w
 exact min/max interval ranges and topological supports.  A named geometric-uniform
 specialization supplies the weights \((1-q)q^n\), their series and law, affine self-similarity
 and reflection, absolute continuity and null singletons for \(|q|<1\), support equal to the
-series range for \(|q|<1\), and exact unit-interval support for \(0\le q<1\).  Its named CDF is
+series range for \(|q|<1\), exact unit-interval support for \(0\le q<1\), and uniqueness
+among all probability laws satisfying the same affine independent-copy equation.  The
+uniqueness theorem includes \(q=0\) and negative \(q\), and assumes no support, density, or
+moment condition.  Its named CDF is
 continuous and reflection-symmetric for \(|q|<1\), has the exact exterior tails for
 \(0\le q<1\), and, for \(0<q<1\), is \(C^\infty\) with an explicit nonnegative,
 compactly supported \(C^\infty\) Radon--Nikodym density; the half-base CDF and density recover
@@ -1358,6 +1362,71 @@ is exactly the range \(X_q(\Omega)\).  When \(0\le q<1\), every weight is nonneg
 included.  At \(q=1/2\), both
 \(X_q\) and \(\mu_q\) are exactly the dyadic random series and law above.
 
+The same affine equation admits a reusable uniqueness theorem far beyond this real
+uniform-digit example.  Let \(D\) be a measurable space, let \(E\) be a complete,
+second-countable real inner-product space with its Borel measurable structure, let
+\(\rho\) be a probability measure on \(D\), and let \(d:D\to E\) be measurable.  For a
+probability measure \(\lambda\) on \(E\), define
+\begin{equation}
+ \mathcal A_{\rho,d,q}(\lambda)
+   =(d_*\rho)*\bigl((x\mapsto qx)_*\lambda\bigr)
+   =\bigl((u,x)\mapsto d(u)+qx\bigr)_*(\rho\otimes\lambda).
+ \label{eq:affine-independent-copy-law}
+\end{equation}
+The second equality is the product-map form of convolution.  Thus
+\(\mathcal A_{\rho,d,q}\) is precisely the law transformer for \(d(U)+qX\) when
+\(U\sim\rho\), \(X\sim\lambda\), and the two inputs are independent.
+
+\begin{theorem}[Contractive affine independent-copy law]
+\label{thm:affine-independent-copy-uniqueness}
+The transformer \(\mathcal A_{\rho,d,q}\) preserves probability measures, and its
+characteristic function factors as
+\begin{equation}
+ \widehat{\mathcal A_{\rho,d,q}(\lambda)}(t)
+ =\widehat{d_*\rho}(t)\,\widehat\lambda(qt).
+ \label{eq:affine-independent-copy-charfun}
+\end{equation}
+If \(\lambda\) is a fixed point, then for every \(n\in\N\),
+\begin{equation}
+ \widehat\lambda(t)
+ =\left(\prod_{k=0}^{n-1}\widehat{d_*\rho}(q^kt)\right)
+    \widehat\lambda(q^nt).                                  \label{eq:affine-charfun-finite-iterate}
+\end{equation}
+If \(|q|<1\), the transformer has at most one probability fixed point.  Equivalently, two
+probability measures satisfying the product-map equation in
+\eqref{eq:affine-independent-copy-law} are equal.
+\end{theorem}
+
+\begin{proof}
+The factorization is the convolution product rule followed by the characteristic-function
+rule for real scalar multiplication.  For two fixed points, their common digit factor has
+modulus at most one, so one recurrence step gives
+\[
+ \bigl|\widehat\lambda(t)-\widehat\nu(t)\bigr|
+ \le
+ \bigl|\widehat\lambda(qt)-\widehat\nu(qt)\bigr|.
+\]
+Iteration moves the argument to \(q^nt\).  Since \(|q|<1\), this tends to zero; continuity
+of characteristic functions and their common value \(1\) at the origin force equality at
+every \(t\), and characteristic-function extensionality gives \(\lambda=\nu\).  The proof
+uses no support, density, absolute-continuity, or moment hypothesis on either fixed point or
+on the arbitrary measurable digit law.  It includes \(q=0\) and negative \(q\).
+\end{proof}
+
+\begin{corollary}[Characterization of the geometric uniform law]
+\label{cor:geometric-uniform-law-unique}
+For every real \(q\) with \(|q|<1\), if a probability measure \(\lambda\) on \(\R\)
+satisfies
+\[
+ \lambda
+ =\bigl((u,x)\mapsto(1-q)u+qx\bigr)_*
+   \bigl(\operatorname{Unif}[0,1]\otimes\lambda\bigr),
+\]
+then \(\lambda=\mu_q\).  Hence the refinement equation
+\eqref{eq:geometric-law-refinement} characterizes the named law even at \(q=0\) and for
+negative \(q\), without any support, density, or moment assumption on \(\lambda\).
+\end{corollary}
+
 The CDF and its positive-ratio density are now named as well.  Put
 \begin{equation}
  F_q(x)=\operatorname{cdf}(\mu_q)(x),
@@ -1429,6 +1498,49 @@ The twenty-three public declarations in \path{GeometricUniformLaw.lean} are
 \lean{ProbabilityRepresentation.geometricUniformDistribution_compl_Icc},
 \lean{ProbabilityRepresentation.geometricUniformDistribution_support_eq_range}, and
 \lean{ProbabilityRepresentation.geometricUniformDistribution_support_eq_Icc}.
+
+At compiler-validated checkpoint \texttt{d312c0603}, the generic affine interface in
+\path{AffineIndependentCopy.lean} consists of the definition
+\lean{ProbabilityTheory.affineIndependentCopyLaw} and the eight theorems
+\lean{ProbabilityTheory.affineIndependentCopyLaw_isProbabilityMeasure},
+\lean{ProbabilityTheory.affineIndependentCopyLaw_eq_map_prod},
+\lean{ProbabilityTheory.charFun_affineIndependentCopyLaw},
+\lean{ProbabilityTheory.charFun_eq_mul_charFun_of_affineIndependentCopy_fixedPoint},
+\lean{ProbabilityTheory.charFun_iterate_of_affineIndependentCopy_fixedPoint},
+\lean{ProbabilityTheory.eq_of_charFun_affine_recurrence},
+\lean{ProbabilityTheory.affineIndependentCopyLaw_fixedPoint_unique}, and
+\lean{ProbabilityTheory.affineIndependentCopy_map_fixedPoint_unique}.
+The named specialization is
+\lean{ProbabilityRepresentation.eq_geometricUniformDistribution_of_selfSimilar} in
+\path{GeometricUniformUniqueness.lean}.  The generic theorem is formulated for a complete
+second-countable real inner-product target and an arbitrary measurable digit map from an
+arbitrary probability space; the named theorem specializes it to uniform digits.
+
+The predecessor \path{GeometricUniformDictionary.lean} already supplies finite measure,
+characteristic-function, MGF, and CGF tail factorizations.  The six public theorems in
+\path{GeometricSincFactorization.lean} are
+\lean{charFun_geometricUniformDigit},
+\lean{charFun_geometricUniformDistribution_prefix},
+\lean{charFun_geometricUniformDistribution_prefix_sinc},
+\lean{tendsto_prefix_sinc_charFun},
+\lean{charFun_weightedSumDistribution_prefix_sinc}, and
+\lean{tendsto_prefix_sinc_charFun_weightedSumDistribution}.
+The digit formula is unconditional in real \(q\).  For every \(|q|<1\), depth
+\(m\), and real frequency \(t\), the phase-collapsed residual identity is
+\[
+ \phi_q(t)=e^{\ii(1-q^m)t/2}
+ \left(\prod_{k=0}^{m-1}
+   \operatorname{sinc}\!\left(\frac{(1-q)q^kt}{2}\right)\right)
+ \phi_q(q^m t),
+\]
+and the phase-bearing prefix without the residual converges pointwise to \(\phi_q(t)\).
+This includes \(q=0\) and negative \(q\); the final two declarations are exact
+\(q=1/2\) wrappers for \lean{weightedSumDistribution}.  The existing
+\lean{geometricSincProduct} already packages the same sinc factors, after frequency
+rescaling, as a \lean{tprod}.  What is missing is a named
+characteristic-function-to-\lean{geometricSincProduct} bridge (or explicit
+\lean{HasProd} theorem) and compact-uniform convergence of the characteristic prefixes.
+
 The generic CDF mechanisms are
 \lean{continuous_cdf_of_nullSingleton},
 \lean{cdf_reflection_sub}, and
@@ -1478,11 +1590,16 @@ The remaining boundary is parameter-sensitive.  Although \(\mu_q\) is absolutely
 throughout \(|q|<1\), the displayed total function \(f_q\) is identified as its
 Radon--Nikodym density only for \(0<q<1\); no such interpretation is claimed here at
 \(q=0\) or for negative \(q\).  The positive-ratio \(C^\infty\) theorem is proved by the
-real-space derivative refinement.  A general-\(q\) characteristic-function product, rapid
-decay estimates, and a Fourier-inversion construction remain outside the formal API, as do a
-named centered \(q\)-family, a closed all-order derivative hierarchy and explicit endpoint
-flatness wrappers, shape theorems, transforms, moments and cumulants, and uniqueness of the
-affine measure fixed point.
+real-space derivative refinement.  The phase-bearing general-\(q\) sinc prefixes and their
+pointwise characteristic-function limit are formal, while \lean{geometricSincProduct}
+already packages the same rescaled sinc factors as a \lean{tprod}.  A named
+characteristic-function-to-\lean{geometricSincProduct} bridge (or explicit \lean{HasProd}
+theorem), compact-uniform convergence, rapid-decay estimates, and a Fourier-inversion
+construction remain outside the formal API.  So do a named centered \(q\)-family, a closed all-order
+derivative hierarchy and explicit endpoint-flatness wrappers, shape theorems, further
+transform formulas, and explicit Bernoulli-cumulant/Bell-moment formulas and asymptotics.
+The probability-law fixed point itself is uniquely characterized by
+\Cref{cor:geometric-uniform-law-unique}.
 
 \subsection{Finite atomic laws and weak convergence}
 
@@ -4733,8 +4850,10 @@ $\ell^1$ norm of the row.  Their dedicated quarter-base corollaries include
 \lean{quarterGeometricLagrangeQMoment_eq_residual_qBinomial} and
 \lean{sum_abs_quarterGeometricLagrangeWeight_eq_qPochhammer_ratio}.
 The generic unconditionally summable geometric filter and its exact Gaussian
-\(\mathsf{tsum}\) tail are proved in \Cref{prop:analytic-series-filter}.  What remains in
-The finite row variation also has its exact infinite limit: for every
+\(\mathsf{tsum}\) tail are proved in \Cref{prop:analytic-series-filter}.  The finite row
+variation, with \(w_q(n,j)\) the $q$-Toeplitz weight
+\lean{qToeplitzWeight} from \path{GeneralQConditionNumber.lean}, also has its exact
+infinite limit: for every
 \(0\le q<1\),
 \[
  \sum_{j\le n}\lvert w_q(n,j)\rvert
@@ -7710,10 +7829,23 @@ That rule explains several choices made above:
       for \(0<q<1\), the conditioning equations, everywhere derivative, explicit
       compactly supported Radon--Nikodym density, and real-space \(C^\infty\) package.
       \path{ProbabilityRepresentation.lean} supplies the exact half-base CDF and density
-      bridges.  The selected density has no proved interpretation here at \(q=0\) or
-      negative \(q\); general-\(q\) Fourier inversion, centered packaging, closed
-      higher-derivative and endpoint-flatness wrappers, shape, transform and moment formulas,
-      and fixed-point uniqueness remain outside this interface.
+      bridges.  \path{AffineIndependentCopy.lean} proves probability preservation,
+      product-map and characteristic-function factorization, finite characteristic-function
+      iteration, and uniqueness of probability fixed points for \(|q|<1\) in every complete
+      second-countable real inner-product target.  Its
+      \path{GeometricUniformUniqueness.lean} specialization characterizes the named law,
+      including \(q=0\) and negative \(q\), without support, density, or moment assumptions.
+      The selected density has no proved interpretation here at \(q=0\) or
+      negative \(q\).  \path{GeometricSincFactorization.lean} gives the exact finite
+      residual sinc factorization and pointwise phase-bearing prefix limit for every
+      \(|q|<1\), with dyadic wrappers; \lean{geometricSincProduct} already packages the
+      same rescaled sinc factors as a \lean{tprod}.  A named
+      characteristic-function-to-\lean{geometricSincProduct} bridge (or explicit
+      \lean{HasProd} theorem), compact-uniform convergence, general-\(q\) rapid decay and
+      Fourier inversion, centered packaging, closed
+      higher-derivative and endpoint-flatness wrappers, shape results, further transforms,
+      and explicit Bernoulli-cumulant/Bell-moment formulas and asymptotics remain outside
+      this interface.
 \item Quantile transport is formal at the measure level first for arbitrary real
       probability laws, with no support or range restriction and an almost-everywhere
       sublevel characterization; a compact pointwise specialization feeds the clamped
@@ -7861,11 +7993,14 @@ Definitions, existence, uniqueness &
 Shape and regularity &
 \path{Differential.lean}, \path{Monotonicity.lean}, \path{Convexity.lean},
 \path{Regularity.lean}\\
-Probability, weighted-law naturality, absolute continuity, exact support and affine recursion,
+Probability, weighted-law naturality, absolute continuity, exact support, affine recursion,
+and contractive affine-law uniqueness,
 quantile transport, survival/CDF layer cake, fractional stopped powers, Cauchy--CDF
 calculus and renormalization, and finite approximants &
 \path{WeightedUniformSeries.lean}, \path{WeightedUniformDistribution.lean},
 \path{WeightedUniformSupport.lean}, \path{GeometricUniformLaw.lean},
+\path{AffineIndependentCopy.lean}, \path{GeometricUniformUniqueness.lean},
+\path{GeometricSincFactorization.lean},
 \path{ContinuousCDF.lean}, \path{GeometricUniformCDF.lean},
 \path{ProbabilityRepresentation.lean},
 \path{QuantileTransport.lean}, \path{SubgraphFubini.lean},
@@ -8192,6 +8327,11 @@ compiler-validated checkpoint \texttt{e6f535e5d}.  The latter is generic nonmoni
 lifting over complete adic commutative rings and supplies no concrete inverse-Fabius germ
 or analytic-convergence theorem.
 \newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/e6f535e5d/Analysis/FabiusFunction}.
+\newblock The generic affine independent-copy probability operator, its characteristic-
+function factorization and finite iteration, its contractive probability-fixed-point
+uniqueness theorem, and the geometric-uniform uniqueness specialization are included in
+compiler-validated checkpoint \texttt{d312c0603}.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/d312c0603/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 
