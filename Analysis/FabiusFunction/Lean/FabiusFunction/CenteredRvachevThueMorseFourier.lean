@@ -213,9 +213,12 @@ theorem centeredSincPartialProduct_dyadic_eq_thueMorse
           ((2 : ℂ) ^ (m + 1) * (w : ℂ)) (m + 1) =
       (thueMorseSinePolynomial m w : ℂ) := by
   have hclear := centeredSincPartialProduct_dyadic_clear m w
-  have htmC := congrArg (fun r : ℝ => (r : ℂ))
-    (thueMorseSinePolynomial_eq_prod_sin_two_pow m w).symm
-  push_cast at htmC
+  have htmC :
+      (2 : ℂ) ^ m *
+          (∏ j ∈ Finset.range (m + 1),
+            (Real.sin ((2 : ℝ) ^ j * w) : ℂ)) =
+        (thueMorseSinePolynomial m w : ℂ) := by
+    exact_mod_cast (thueMorseSinePolynomial_eq_prod_sin_two_pow m w).symm
   calc
     ((2 : ℂ) ^ (m + (m + 1).choose 2) * (w : ℂ) ^ (m + 1)) *
           centeredSincPartialProduct
