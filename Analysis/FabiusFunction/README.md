@@ -246,7 +246,7 @@ points:
 | Alternating Newton Euler--zeta kernel | `FabiusFunction.AlternatingNewtonCumulantKernel` | Exhaustive public surface: `tsum_alternatingNewtonWeight_inv_four_pow`, `weightedScaleSeries_alternatingNewton`, `alternatingNewton_eq_cexp`.  The two kernel evaluations hold for every natural `d` and require `k ≠ 0`; the exponential theorem holds for every natural `d` under exactly `‖z‖ < 1`.  The natural weight exists for every `d`, but agreement with the source volume's signed generalized-binomial convention requires even `d`.  These are analytic identities only, with no characteristic-function, probabilistic-cumulant, or variance interpretation. |
 | Nonmonic Hensel lifting and formal implicit roots | `FabiusFunction.ImplicitPowerSeries` | `FormalImplicitRoot.exists_isRoot_sub_mem`, `FormalImplicitRoot.eq_of_isRoot_of_sub_mem`, `FormalImplicitRoot.existsUnique_isRoot_sub_mem`, `PowerSeries.Implicit.existsUnique_isRoot_constantCoeff`, `PowerSeries.Implicit.existsUnique_zeroConstant_root`, `PowerSeries.Implicit.root`, `PowerSeries.Implicit.constantCoeff_root`, `PowerSeries.Implicit.eval_root`, `PowerSeries.Implicit.eq_root`; this is a generic formal-series root engine over complete adic commutative rings and arbitrary commutative coefficient rings, with no concrete inverse-Fabius germ, analytic convergence, plateau localization, flat-remainder, or quantile theorem |
 | Finite polynomial integrals from raw moments and formal cumulants | `FabiusFunction.PolynomialExpectationCumulant` | `integral_eval₂_eq_sum_moment`, `integral_eval₂_eq_sum_completeBell_momentCumulant_with_mass_correction`, `integral_eval₂_eq_sum_completeBell_momentCumulant_of_moment_zero_eq_one`, `integral_eval₂_eq_sum_completeBell_momentCumulant` |
-| Rvachev raw moments, linear reciprocal-moment Appell deconvolution, and exact shifted-up polynomial synthesis | `FabiusFunction.RvachevMomentAppell`, `FabiusFunction.RvachevPolynomialSynthesis` | `rvachevRawMomentRat`, `rvachevReciprocalMomentRat`, `rvachevAppellPolynomial`, `rvachevDeconvolvedPolynomial`, `rvachevDeconvolutionLinearMap`, `rvachevDeconvolvedPolynomial_finsetSum`, `integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev`, `tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, `normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp` |
+| Rvachev raw moments, linear reciprocal-moment Appell deconvolution, and exact shifted-up polynomial synthesis | `FabiusFunction.RvachevMomentAppell`, `FabiusFunction.RvachevPolynomialSynthesis` | `rvachevRawMomentRat`, `rvachevReciprocalMomentRat`, `rvachevAppellPolynomial`, `rvachevDeconvolvedPolynomial`, `rvachevDeconvolutionLinearMap`, `rvachevDeconvolvedPolynomial_finsetSum`, `rvachevDeconvolvedPolynomial_monomial`, `rvachevDeconvolvedPolynomial_X_pow`, `integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev`, `tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, `normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp` |
 | Universal endpoint-transfer polynomials and their formal exponential series | `FabiusFunction.EndpointTransferPolynomials` | `endpointTransferPolynomial_succ`, `endpointTransferPolynomial_eq_partitionExpSum`, `endpointTransferSeries_eq_exp_subst`, `aeval_endpointTransferPolynomial`, `map_endpointTransferSeries` |
 | Finite base-`b` layer regrouping in multiplicative and additive form | `FabiusFunction.BaseLayerRegrouping` | `filter_dvd_eq_image`, `prod_multiples_eq_prod_filter`, `sum_multiples_eq_sum_filter`, `prod_layers_eq_prod_pow_card`, `sum_layers_eq_sum_nsmul_card`, `card_filter_pow_dvd`, `prod_layers_eq_prod_pow_multiplicity`, `sum_layers_eq_sum_nsmul_multiplicity` |
 | Infinite products at summable scales | `FabiusFunction.ScaledInfiniteProducts` | `summable_norm_scaled_sub_one`, `hasProdUniformlyOn_scaled`, `multipliableUniformlyOn_scaled`, `hasProdLocallyUniformly_scaled`, `multipliableLocallyUniformly_scaled`, `continuous_tprod_scaled`, `differentiable_tprod_scaled`, `differentiable_tprod_scaled_of_eq_one`, `tprod_scaled_ne_zero`, `tprod_scaled_eq_zero_iff`; pointwise deviation summability allows an arbitrary normed-ring target, the compact-uniform API assumes a continuous factor and a complete commutative normed-ring target with a normed unit, local uniformity adds local compactness, holomorphy uses a complete normed complex-algebra target, and zero detection adds a multiplicative norm but needs neither continuity nor local compactness |
@@ -272,7 +272,7 @@ points:
 | Exact dyadic computation and analytic correctness | `FabiusFunction.DyadicAnalytic`, `FabiusFunction.GlobalDyadic` | `fabiusDyadicValue`, `evalFabiusDyadic`, `fabiusDyadicUnit_cast`, `extendedFabiusDyadicValue_cast` |
 | First and second published papers | `FabiusFunction.Paper05442`, `FabiusFunction.Paper06487` | the theorem maps in the module docstrings and [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md) |
 | Corrected sharp and all-orders asymptotics | `FabiusFunction.PaperFabiusAsymptotic` | `abs_log_fabius_dyadic_sub_explicitCumulantMain_le`, `log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion`, `fabiusSharpLambertExpansion_two` |
-| Fourier--Legendre expansions, least squares, coefficient energy, exact rational approximants, Fourier/sinc energy identities, finite translate blocks, and fixed-scale self-reconstruction | `FabiusFunction.FabiusTranslatedLegendreSeries`, `FabiusFunction.FabiusLegendreLeastSquares`, `FabiusFunction.FabiusLegendreEnergy`, `FabiusFunction.FabiusLegendreRationalEnergy`, `FabiusFunction.FabiusSquareEnergyFourier`, `FabiusFunction.FabiusLegendreTranslateBlocks`, `FabiusFunction.FabiusLegendreTranslateSeries` | `hasSum_canonical_rvachevLegendreSeries_formula`, `rvachevLegendrePartialSum_pythagorean`, `rvachevLegendreBlock`, `intervalIntegral_rvachevLegendreBlock_mul`, `hasSum_rvachevLegendreCoefficient_energy`, `hasSum_rvachevLegendreCoefficient_energy_tail`, `rvachevLegendreSquaredError_partialSum_eq_tsum_tail`, `fabiusSquareEnergy_eq_tsum_legendre`, `canonicalRvachevLegendreCoefficientRat`, `fabiusSquareEnergyPartialSumRat`, `fabiusSquareEnergyPartialSumRat_pos`, `monotone_fabiusSquareEnergyPartialSumRat`, `fabiusSquareEnergyPartialSumRat_three`, `tendsto_fabiusSquareEnergyPartialSumRat_cast`, `integral_norm_sq_rvachevFourier_eq_two_mul_fabiusSquareEnergy`, `fabiusSquareEnergy_eq_integral_Ioi_norm_sq_rvachevFourier`, `fabiusSquareEnergy_eq_integral_Ioi_tprod_sinc_sq`, `fabiusSquareEnergy_eq_scaled_integral_Ioi_tprod_sinc_sq`, `rvachevLegendreDeconvolutionPolynomial`, `eval_legendrePolynomial_eq_sum_rvachevUp`, `eval_legendrePolynomial_even_eq_sum_rvachevUp`, `rvachevLegendreScale`, `rvachevLegendreIndexSet`, `rvachevLegendreAtomCoefficient`, `rvachevLegendreTranslateBlock`, `rvachevLegendreTranslateBlock_eq_rvachevLegendreBlock`, `intervalIntegral_rvachevLegendreTranslateBlock_mul`, `rvachevTranslateGram`, `sum_rvachevLegendreAtomCoefficient_mul_gram`, `hasSum_rvachevLegendreTranslateBlock`, `hasSum_rvachevLegendreTranslateBlock_uniform`, `rvachevLegendrePartialSumDeconvolutionPolynomial`, `rvachevLegendrePartialSumTranslateBlock`, `eval_rvachevLegendrePartialSumPolynomial_eq_sum_rvachevUp` |
+| Fourier--Legendre expansions, least squares, coefficient energy, exact rational approximants, Fourier/sinc energy identities, finite translate blocks, and uniformly convergent fixed-scale self-reconstruction | `FabiusFunction.FabiusTranslatedLegendreSeries`, `FabiusFunction.FabiusLegendreLeastSquares`, `FabiusFunction.FabiusLegendreEnergy`, `FabiusFunction.FabiusLegendreRationalEnergy`, `FabiusFunction.FabiusSquareEnergyFourier`, `FabiusFunction.FabiusLegendreTranslateBlocks`, `FabiusFunction.FabiusLegendreTranslateSeries` | `hasSum_canonical_rvachevLegendreSeries_formula`, `rvachevLegendrePartialSum_pythagorean`, `rvachevLegendreBlock`, `intervalIntegral_rvachevLegendreBlock_mul`, `hasSum_rvachevLegendreCoefficient_energy`, `hasSum_rvachevLegendreCoefficient_energy_tail`, `rvachevLegendreSquaredError_partialSum_eq_tsum_tail`, `fabiusSquareEnergy_eq_tsum_legendre`, `canonicalRvachevLegendreCoefficientRat`, `fabiusSquareEnergyPartialSumRat`, `fabiusSquareEnergyPartialSumRat_pos`, `monotone_fabiusSquareEnergyPartialSumRat`, `fabiusSquareEnergyPartialSumRat_three`, `tendsto_fabiusSquareEnergyPartialSumRat_cast`, `integral_norm_sq_rvachevFourier_eq_two_mul_fabiusSquareEnergy`, `fabiusSquareEnergy_eq_integral_Ioi_norm_sq_rvachevFourier`, `fabiusSquareEnergy_eq_integral_Ioi_tprod_sinc_sq`, `fabiusSquareEnergy_eq_scaled_integral_Ioi_tprod_sinc_sq`, `rvachevLegendreDeconvolutionPolynomial`, `eval_legendrePolynomial_eq_sum_rvachevUp`, `eval_legendrePolynomial_even_eq_sum_rvachevUp`, `rvachevLegendreScale`, `rvachevLegendreIndexSet`, `rvachevLegendreAtomCoefficient`, `rvachevLegendreTranslateBlock`, `rvachevLegendreTranslateBlock_eq_rvachevLegendreBlock`, `intervalIntegral_rvachevLegendreTranslateBlock_mul`, `rvachevTranslateGram`, `sum_rvachevLegendreAtomCoefficient_mul_gram`, `hasSum_rvachevLegendreTranslateBlock`, `hasSum_rvachevLegendreTranslateBlock_uniform`, `rvachevLegendrePartialSumDeconvolutionPolynomial`, `rvachevLegendrePartialSumTranslateBlock`, `rvachevLegendrePartialSumTranslateBlockOnInterval`, `rvachevLegendrePartialSumTranslateBlockOnInterval_apply`, `rvachevLegendrePartialSumTranslateBlockOnInterval_eq_eval_partialSumPolynomial`, `rvachevLegendrePartialSumTranslateBlockOnInterval_eq_sum`, `tendsto_rvachevLegendrePartialSumTranslateBlockOnInterval`, `rvachevLegendrePartialSumTranslateBlock_tendstoUniformlyOn`, `tendsto_norm_rvachevLegendrePartialSumTranslateBlockOnInterval_sub`, `tendsto_rvachevLegendrePartialSumTranslateBlock`, `eval_rvachevLegendrePartialSumPolynomial_eq_sum_rvachevUp` |
 | Inverse construction, exact smoothness locus, interior calculus, curvature, and endpoint steepness | `FabiusFunction.FabiusInverse` | `fabiusInv`, `fabiusReal_fabiusInv`, `fabiusInv_hasDerivAt`, `deriv_fabiusInv_eq_inv_two_mul_rvachevUp`, `deriv_fabiusInv_pos`, `fabiusInv_contDiffOn_Ioo`, `fabiusInv_contDiffAt_infty_iff`, `fabiusInv_differentiableAt_iff`, `deriv_deriv_fabiusInv`, `deriv_fabiusInv_half`, `deriv_deriv_fabiusInv_half`, `deriv_deriv_fabiusInv_neg_iff`, `deriv_deriv_fabiusInv_pos_iff`, `deriv_deriv_fabiusInv_eq_zero_iff`, `strictConcaveOn_fabiusInv_firstHalf`, `strictConvexOn_fabiusInv_secondHalf`, `id_isLittleO_fabiusInv_pow_at_zero_right`, `one_sub_isLittleO_one_sub_fabiusInv_pow_at_one_left`, `tendsto_deriv_fabiusInv_atTop_at_zero_right`, `tendsto_deriv_fabiusInv_atTop_at_one_left` |
 | Elementary functions and non-elementarity | `FabiusFunction.ElementaryFunction`, `FabiusFunction.AlgebraicBranch`, `FabiusFunction.InverseBranch`, `FabiusFunction.NotElementary`, `FabiusFunction.InverseNotElementary` | `IsElementary`, `IsElementary.comp`, `IsElementary.rpow_of_ne_zero`, `IsElementary.dense_analyticLocus`, `analyticDenseOn_of_algebraic`, `canonical_fabius_not_isElementary_on_Ioo`, `canonical_fabius_not_isElementary`, `canonical_fabius_not_algebraicBranch_on_Ioo`, `IsElementaryOrInverse`, `fabiusInv_not_analyticAt`, `canonical_fabiusInv_not_isElementary_on_Ioo`, `canonical_fabiusInv_not_isElementaryOrInverse_on_Ioo` |
 | Computable-real-function theorems | `FabiusFunction.FabiusComputableSpline` | `fabiusSplineApproxPR_computable`, `extendedFabiusSplineApproxPR_computable`, `fabius_isComputableRealFunction`, `globalFabius_isComputableRealFunction` |
@@ -490,11 +490,12 @@ positive-half-line mass with `A_2`, and the latter with both the unscaled and
 report.
 
 Starting from compiled source checkpoint `1f9ce6fd9` and including the current
-focused-build extension, `RvachevMomentAppell.lean` exports six public definitions:
+focused-build extension at compiled checkpoint `e2c310e7c`,
+`RvachevMomentAppell.lean` exports six public definitions:
 `Fabius.rvachevRawMomentRat`, `Fabius.rvachevReciprocalMomentRat`,
 `Fabius.rvachevAppellPolynomialRat`, `Fabius.rvachevAppellPolynomial`, and
 `Fabius.rvachevDeconvolvedPolynomial`, together with the linear-map package
-`Fabius.rvachevDeconvolutionLinearMap`.  Its twenty-two public theorems are
+`Fabius.rvachevDeconvolutionLinearMap`.  Its twenty-four public theorems are
 `Fabius.rvachevRawMomentRat_zero`, `Fabius.rvachevRawMomentRat_even`,
 `Fabius.rvachevRawMomentRat_odd`,
 `Fabius.rvachevReciprocalMomentRat_zero`,
@@ -514,6 +515,8 @@ focused-build extension, `RvachevMomentAppell.lean` exports six public definitio
 `Fabius.rvachevDeconvolvedPolynomial_smul`,
 `Fabius.rvachevDeconvolvedPolynomial_finsetSum`,
 `Fabius.rvachevDeconvolvedPolynomial_C_mul`,
+`Fabius.rvachevDeconvolvedPolynomial_monomial`,
+`Fabius.rvachevDeconvolvedPolynomial_X_pow`,
 `Fabius.natDegree_rvachevDeconvolvedPolynomial_le`, and
 `Fabius.integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev`.  They
 package the full rational raw-moment sequence, its formal binomial-convolution
@@ -521,8 +524,9 @@ reciprocal and complete-Bell description, rational and real monic Appell
 families of exact degree, and polynomial deconvolution as an explicit real
 linear map.  In particular deconvolution preserves zero, addition, scalar
 multiplication, finite sums, and multiplication by constant polynomials; it
-does not increase degree, and smoothing it by `up` recovers the original
-polynomial.
+sends a monomial and `X^n` to the correspondingly scaled and unscaled
+Rvachev--Appell polynomial, does not increase degree, and smoothing it by `up`
+recovers the original polynomial.
 
 At compiled source checkpoint `c51a41fcf`,
 `RvachevPolynomialSynthesis.lean` exports no public definitions and exactly
@@ -550,11 +554,14 @@ finite synthesis to mesh `2^d`, then to the even mesh `4^n`, identify the
 literal finite translate block with the existing polynomial block on
 `[-1,1]`, and prove both its orthogonality and exact finite atom-Gram formula.
 
-The focused-build module `FabiusLegendreTranslateSeries.lean` exports four
+At compiled source checkpoint `e2c310e7c`, the focused-build module
+`FabiusLegendreTranslateSeries.lean` exports five
 public definitions: `Fabius.rvachevLegendrePartialSumDeconvolutionPolynomial`,
 `Fabius.rvachevLegendrePartialSumAtomCoefficient`,
-`Fabius.rvachevLegendrePartialSumTranslateBlock`, and
-`Fabius.rvachevLegendreTranslateBlockOnInterval`.  Its sixteen public theorems
+`Fabius.rvachevLegendrePartialSumTranslateBlock`,
+`Fabius.rvachevLegendreTranslateBlockOnInterval`, and
+`Fabius.rvachevLegendrePartialSumTranslateBlockOnInterval`.  Its twenty-three
+public theorems
 are `Fabius.summable_norm_rvachevLegendreTranslateBlock`,
 `Fabius.summable_rvachevLegendreTranslateBlock`,
 `Fabius.hasSum_rvachevLegendreTranslateBlock`,
@@ -569,15 +576,26 @@ are `Fabius.summable_norm_rvachevLegendreTranslateBlock`,
 `Fabius.rvachevLegendreTranslateBlockOnInterval_eq_smul`,
 `Fabius.summable_norm_rvachevLegendreTranslateBlockOnInterval`,
 `Fabius.summable_rvachevLegendreTranslateBlockOnInterval`,
-`Fabius.hasSum_rvachevLegendreTranslateBlock_uniform`, and
-`Fabius.tsum_rvachevLegendreTranslateBlock_uniform`.  Thus the literal outer
+`Fabius.hasSum_rvachevLegendreTranslateBlock_uniform`,
+`Fabius.tsum_rvachevLegendreTranslateBlock_uniform`,
+`Fabius.rvachevLegendrePartialSumTranslateBlockOnInterval_apply`,
+`Fabius.rvachevLegendrePartialSumTranslateBlockOnInterval_eq_eval_partialSumPolynomial`,
+`Fabius.rvachevLegendrePartialSumTranslateBlockOnInterval_eq_sum`,
+`Fabius.tendsto_rvachevLegendrePartialSumTranslateBlockOnInterval`,
+`Fabius.rvachevLegendrePartialSumTranslateBlock_tendstoUniformlyOn`,
+`Fabius.tendsto_norm_rvachevLegendrePartialSumTranslateBlockOnInterval_sub`, and
+`Fabius.tendsto_rvachevLegendrePartialSumTranslateBlock`.  Thus the literal outer
 translate blocks are absolutely summable pointwise and in the interval
 supremum norm, have pointwise and uniform `HasSum`/`tsum` forms, and sum to
 `rvachevUp`.  The same module identifies the partial-sum deconvolution
 polynomial with the finite sum of separately deconvolved modes, expands every
 common-mesh coefficient, proves global `tsum` and finite `[-1,1]` synthesis at
 mesh `4^N`, and identifies the resulting finite train both with the polynomial
-partial sum and with the sum of its separately scaled blocks.
+partial sum and with the sum of its separately scaled blocks.  The bundled
+common-mesh trains converge to `rvachevUp` in `C([-1,1])`, equivalently in the
+interval supremum norm; the module also exports the raw `TendstoUniformlyOn`
+form, convergence of the supremum-norm error to zero, and the pointwise
+corollary on `[-1,1]`.
 
 These modules still do not assert the report's minimal-mesh or sharpness claims, an
 analytic reciprocal-MGF or differential-series realization of deconvolution,
