@@ -371,7 +371,9 @@ The remaining product is $(a^{-1};q^{-1})_n$.
 \section{Negative indices}
 
 The concatenation law suggests the only extension to negative integers that preserves
-\((a;q)_{m+n}=(a;q)_m(aq^m;q)_n\).
+\[
+ (a;q)_{m+n}=(a;q)_m(aq^m;q)_n.
+\]
 
 \begin{definition}
 For $n\ge1$, define
@@ -1240,6 +1242,31 @@ independent of $k$.  Therefore
 Taking $u=0$ recovers the tautology $(0;q)_k=1$ inside a weighted expansion; taking special limits of $u$ or $v$ produces several finite convolution formulas used later in the proof of the $q$-Pfaff--Saalsch\"utz summation.
 \end{remark}
 
+\begin{remark}[Formal version and strengthenings]
+The theorem is \lean{Fabius.finite_qCauchy_identity} in
+\path{QBinomialCauchy.lean}.  It is stated for arbitrary \(q,u,v\) in every
+commutative ring and every \(n\in\N\), so it includes \(n=0\), \(q=0\), roots
+of unity, positive characteristic, and zero divisors.  The proof is entirely
+polynomial and assumes neither cancellation nor nonvanishing.  The reflected
+strengthening \lean{Fabius.finite_qCauchy_identity_reflected} states
+\[
+ (uv;q)_n=\sum_{k=0}^{n}{n\brack k}_q
+ (v;q)_k v^{n-k}(u;q)_{n-k}.
+\]
+The same module defines the denominator-free \(q\)-Bernstein term
+\[
+ B^{(q)}_{n,k}(x)={n\brack k}_q x^k(x;q)_{n-k}
+\]
+as \lean{Fabius.qBernsteinBasis} and proves the total partition of unity
+\[
+ \sum_{k=0}^{n}B^{(q)}_{n,k}(x)=1
+\]
+as \lean{Fabius.sum_qBernsteinBasis}.  Together with
+\lean{Fabius.finite_qCauchy_second_identity}, described at
+\Cref{lem:cauchy-II}, these are exhaustively the one public definition and
+four public theorems of \path{QBinomialCauchy.lean}.
+\end{remark}
+
 
 \chapter{Weighted binomial coefficients and symmetric functions}\label{chap:weighted}
 \index{weighted binomial coefficient}
@@ -1307,6 +1334,56 @@ Multiply
 \)
 by its reciprocal and compare the coefficient of $z^m$, using \Cref{thm:weighted-generating} with $z$ replaced by $-z$ in the elementary generating function.
 \end{proof}
+
+\begin{remark}[Formal version and exact boundary]
+{\small
+For a finite family \(a:\iota\to R\), the evaluator and its bridge to
+Mathlib's universal \texttt{MvPolynomial.esymm} are
+\begin{center}
+\lean{elementarySymmetricEval}\\
+\lean{elementarySymmetricEval_eq_eval_esymm}.
+\end{center}
+The adjoining-variable recurrences are
+\begin{center}
+\lean{elementarySymmetricEval_option_succ}\\
+\lean{completeHomogeneousEval_option_succ}.
+\end{center}
+They prove, respectively,
+\[
+ e_{r+1}(x,a)=x e_r(a)+e_{r+1}(a),
+ \qquad
+ h_{r+1}(x,a)=x h_r(x,a)+h_{r+1}(a).
+\]
+Thus both weighted Pascal recurrences of \Cref{thm:weighted-pascal} are exact,
+including their zero-degree boundaries, over every commutative semiring.
+\par}
+
+{\footnotesize
+The exhaustive public surface of
+\path{SymmetricFunctionOrthogonality.lean} is its one definition above and
+the following six theorems, all in namespace \texttt{Fabius}:
+\begin{center}
+\footnotesize
+\lean{elementarySymmetricEval_eq_eval_esymm}\\
+\lean{elementarySymmetricEval_zero}\\
+\lean{elementarySymmetricEval_comp_equiv}\\
+\lean{elementarySymmetricEval_option_succ}\\
+\lean{elementarySymmetricEval_fin_succ}\\
+\lean{sum_elementarySymmetricEval_mul_completeHomogeneousEval}.
+\end{center}
+\par}
+The first five structural theorems hold over a commutative semiring; the last
+proves exactly
+\[
+ \sum_{j=0}^{m}(-1)^j e_j(a)h_{m-j}(a)
+ =\begin{cases}1,&m=0,\\0,&m>0,
+ \end{cases}
+\]
+over every commutative ring, for every finite index type and every \(m\in\N\).
+It therefore includes the empty family and degree zero and uses no division,
+domain, characteristic, or nonvanishing hypothesis.  No claim here supplies
+the separate weighted-inversion theorem of \Cref{thm:weighted-inversion}.
+\end{remark}
 
 \section{Classical, Stirling, and Gaussian specializations}
 
@@ -2536,6 +2613,18 @@ can be factored out.  The remaining sum is
 \]
 by one final application of the $q$-Cauchy identity.
 \end{proof}
+
+\begin{remark}[Formal version]
+The displayed identity is
+\lean{Fabius.finite_qCauchy_second_identity} in
+\path{QBinomialCauchy.lean}.  It holds for arbitrary \(q,a,b,c\) in every
+commutative ring and every \(n\in\N\), including \(n=0\), \(q=0\), roots of
+unity, positive characteristic, and rings with zero divisors.  The formal
+proof expands and reindexes a finite triangle and applies the primary and
+reflected finite \(q\)-Cauchy identities; it uses no quotient, cancellation,
+or nonvanishing assumption.  This exact finite convolution does not by itself
+formalize the quotient-bearing \(q\)-Pfaff--Saalsch\"utz theorem that follows.
+\end{remark}
 
 \section{The \texorpdfstring{$q$}{q}-Pfaff--Saalsch\"utz sum}
 
@@ -9990,9 +10079,15 @@ For $n\ge0$ and $\theta\in\C$ put
  \mathfrak a_n(\theta)\defeq\mathbb E\,(X+\theta)^n
  =\sum_{j=0}^{n}\binom nj\,\mathbb EX^{\,n-j}\,\theta^{\,j},
 \end{equation}
-a monic polynomial of degree $n$ with $\mathfrak a_n(0)=\mathbb EX^n=n!\,\alpha_n$ and
-exponential generating function
-$\sum_{n\ge0}\mathfrak a_n(\theta)z^n/n!=\e^{\theta z}\mathcal A(z)$.
+a monic polynomial of degree $n$ with
+\[
+ \mathfrak a_n(0)=\mathbb EX^n=n!\,\alpha_n
+\]
+and exponential generating function
+\[
+ \sum_{n\ge0}\mathfrak a_n(\theta)z^n/n!
+ =\e^{\theta z}\mathcal A(z).
+\]
 \end{definition}
 
 Thus $(\mathfrak a_n)$ is the Appell sequence attached to $\mathcal A$: differentiating
@@ -11389,8 +11484,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 183 labelled results, 25 are \statusexact, 25 are \statuspartial,
-130 are \statusnone, and 3 are \statusna.
+Of the 183 labelled results, 29 are \statusexact, 24 are \statuspartial,
+127 are \statusnone, and 3 are \statusna.
 The formalized part is concentrated exactly where the Fabius development
 needed it: the finite Gaussian-coefficient core, the geometric Lagrange and
 filter calculus, half-base and Thue--Morse cancellation, and the geometric
@@ -11406,6 +11501,18 @@ positive.  This real contractive-base product layer does not formalize the
 book's general complex analytic or basic-hypergeometric infinite-product
 theory.
 
+The four promotions in this edition were statically checked against the
+complete public declaration lists:
+\begin{center}
+\small
+\path{QBinomialCauchy.lean}: one definition and four theorems;\\
+\path{SymmetricFunctionOrthogonality.lean}: one definition and six theorems.
+\end{center}
+The theorem statements were checked at arbitrary parameters and
+degrees, including the empty and degree-zero boundaries.  In particular the
+nearby \(q\)-Pfaff--Saalsch\"utz summation and weighted inversion remain
+\statusnone: neither is inferred from a related finite identity.
+
 \section{By chapter}
 
 \begin{center}
@@ -11415,13 +11522,13 @@ Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
 The algebra of $q$-shifted factorials & 1 & 2 & 12 & 0\\
 $q$-integers and Gaussian coefficients & 1 & 2 & 5 & 0\\
-Finite $q$-binomial theorems and inversion & 8 & 0 & 2 & 0\\
-Weighted binomial coefficients and symmetric functions & 0 & 2 & 6 & 0\\
+Finite $q$-binomial theorems and inversion & 9 & 0 & 1 & 0\\
+Weighted binomial coefficients and symmetric functions & 2 & 1 & 5 & 0\\
 Partitions, words, paths, and inversion statistics & 1 & 1 & 7 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 0 & 1 & 5 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
 The infinite $q$-binomial theorem & 0 & 0 & 5 & 0\\
-Basic hypergeometric series & 0 & 0 & 6 & 0\\
+Basic hypergeometric series & 1 & 0 & 5 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 0 & 0 & 2 & 0\\
 $q$-difference calculus and the quantum binomial & 0 & 0 & 10 & 0\\
 The $q$-gamma and $q$-beta functions & 0 & 0 & 8 & 0\\
@@ -11437,7 +11544,7 @@ Geometric interpolation and exact $q$-filters & 6 & 2 & 1 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 7 & 3 & 0\\
 \midrule
-\textbf{Total} & 25 & 25 & 130 & 3\\
+\textbf{Total} & 29 & 24 & 127 & 3\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -11514,13 +11621,20 @@ Result & Status & Lean counterpart\\
 \texttt{gaussianBinomialKernel\_\allowbreak{}left\_\allowbreak{}orthogonality},
 \texttt{gaussianBinomialKernel\_\allowbreak{}right\_\allowbreak{}orthogonality}\newline
 {\footnotesize\texttt{QBinomialInversion}; both total \texttt{Icc} convolution orders}\\[2pt]
-\Cref{thm:q-cauchy} & \statusnone & ---\\[2pt]
+\Cref{thm:q-cauchy} & \statusexact &
+\texttt{finite\_\allowbreak{}qCauchy\_\allowbreak{}identity}\newline
+{\footnotesize\texttt{QBinomialCauchy}; reflected identity and q-Bernstein partition-of-unity strengthenings also exposed}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Weighted binomial coefficients and symmetric functions}\\
 \midrule
-\Cref{thm:weighted-pascal} & \statuspartial & \texttt{completeHomogeneousEval\_\allowbreak{}option\_\allowbreak{}succ}\newline{\footnotesize\texttt{CompleteHomogeneous}}\\[2pt]
+\Cref{thm:weighted-pascal} & \statusexact &
+\texttt{elementarySymmetricEval\_\allowbreak{}option\_\allowbreak{}succ},
+\texttt{completeHomogeneousEval\_\allowbreak{}option\_\allowbreak{}succ}\newline
+{\footnotesize\texttt{SymmetricFunctionOrthogonality}, \texttt{CompleteHomogeneous}; both adjoining-variable recurrences, all degrees}\\[2pt]
 \Cref{thm:weighted-generating} & \statusnone & ---\\[2pt]
-\Cref{cor:e-h-orthogonality} & \statusnone & ---\\[2pt]
+\Cref{cor:e-h-orthogonality} & \statusexact &
+\texttt{sum\_\allowbreak{}elementarySymmetricEval\_\allowbreak{}mul\_\allowbreak{}completeHomogeneousEval}\newline
+{\footnotesize\texttt{SymmetricFunctionOrthogonality}; arbitrary finite family, including empty family and degree zero}\\[2pt]
 \Cref{thm:weighted-specializations} & \statuspartial & \texttt{completeHomogeneousEval\_\allowbreak{}geometric}\newline{\footnotesize\texttt{GeometricCompleteHomogeneous}}\\[2pt]
 \Cref{lem:vandermonde-alternant} & \statusnone & ---\\[2pt]
 \Cref{thm:schur-principal} & \statusnone & ---\\[2pt]
@@ -11569,7 +11683,9 @@ Result & Status & Lean counterpart\\
 \Cref{prop:phi-convergence} & \statusnone & ---\\[2pt]
 \Cref{thm:heine} & \statusnone & ---\\[2pt]
 \Cref{thm:q-gauss} & \statusnone & ---\\[2pt]
-\Cref{lem:cauchy-II} & \statusnone & ---\\[2pt]
+\Cref{lem:cauchy-II} & \statusexact &
+\texttt{finite\_\allowbreak{}qCauchy\_\allowbreak{}second\_\allowbreak{}identity}\newline
+{\footnotesize\texttt{QBinomialCauchy}; arbitrary commutative ring and all parameters/degrees}\\[2pt]
 \Cref{thm:q-pfaff} & \statusnone & ---\\[2pt]
 \Cref{cor:q-chu} & \statusnone & ---\\[2pt]
 \midrule
