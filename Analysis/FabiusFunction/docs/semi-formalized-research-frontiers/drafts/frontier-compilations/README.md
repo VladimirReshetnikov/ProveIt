@@ -1,6 +1,6 @@
 # Frontier compilations
 
-New standalone intake member:
+New standalone intake members:
 
 - [`Digital_Spectral_Geometry_and_Log_Periodic_Saddles/`](Digital_Spectral_Geometry_and_Log_Periodic_Saddles/),
   *Digital Spectral Geometry and Log-Periodic Saddles: Frontier Results for
@@ -24,6 +24,16 @@ New standalone intake member:
   The package remains standalone only until a claim-by-claim
   deduplication and Lean crosswalk determine whether any refinement should be
   retained; manuscript theorem labels do not establish Lean proof status.
+
+- [`Frontier_Directions_for_Fabius_Rvachev_Analysis/`](Frontier_Directions_for_Fabius_Rvachev_Analysis/),
+  *Frontier Directions for Fabius--Rvachev Analysis* (33 pp), arrived on
+  2026-08-30 from `fabius_frontier_report_bundle-D.zip` (outer SHA-256
+  `39f3638f52f19955b88b7a865a60b76d9ce31154d98967d1400a6ad97396fa9a`)
+  and was filed under a title-derived collision-safe name rather than its
+  generic wrapper. All 34 submitted payload hashes verified; nine CSV entries
+  were refreshed after CRLF-to-LF repository normalization. It remains
+  standalone pending post-publication assessment, editorial deduplication, and
+  a Lean crosswalk; manuscript labels do not establish Lean verification.
 
 The broad multi-topic "collected new results" report series,
 consolidated (2026-08-28) into the 272-page single volume

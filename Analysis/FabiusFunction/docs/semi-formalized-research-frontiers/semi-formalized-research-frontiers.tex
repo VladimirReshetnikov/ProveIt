@@ -3522,10 +3522,7 @@ Herglotz--Poisson formulas, integrated interval Stieltjes--Perron inversion, and
 exact Jacobi data.  No complex logarithmic continuation, complex order, pointwise or
 nontangential Sokhotski--Plemelj/Hilbert-principal-value formula, or complete
 J-fraction/Pad\'e theory is asserted.\\
-\path{GramStieltjesNaturality.lean},
-\path{PolynomialMomentGramDeterminant.lean},
-\path{RvachevRationalJacobi.lean},
-\path{FabiusLegendreHankelDeterminant.lean} &
+\path{GramStieltjesNaturality.lean}, \path{RvachevRationalJacobi.lean} &
 The first module has zero public definitions and six public theorems:
 \lean{momentPairing_map},
 \lean{map_gramStieltjesNumerator},
@@ -3534,7 +3531,7 @@ The first module has zero public definitions and six public theorems:
 \lean{map_gramStieltjesJacobiDiagonal}, and
 \lean{map_gramStieltjesJacobiSubdiagonal}.  They prove scalar naturality of the finite
 pairing, fraction-free numerator, normalized polynomial, norm, and Jacobi coefficients at
-their commutative-semiring, commutative-ring, and field boundaries.  The third module has
+their commutative-semiring, commutative-ring, and field boundaries.  The second module has
 four public definitions,
 \lean{rvachevHankelDetRat},
 \lean{rvachevOrthoPolynomialRat},
@@ -3557,21 +3554,55 @@ monic rational orthogonal polynomials, positive rational norms, a zero diagonal,
 rational subdiagonals, their real-cast comparisons, the determinant cross-ratio, and the
 centered rational recurrence in every degree.  The zero-based subdiagonal at index $n$ is
 the conventional $\beta_{n+1}$.  The rational definitions are noncomputable finite
-objects.  The two additional determinant modules contribute two definitions and seven
-theorems each: the generic coherent-basis congruence
-$G_n=C_n^{\mathsf T}H_nC_n$, its leading-coefficient determinant formula and Jacobi
-cross-ratio transport, followed by the up-law Legendre Gram integral, determinant,
-positivity, consecutive-leading-coefficient quotient, and real/rational
-$\beta_{n+1}$ cross-ratios.  The generic coefficient matrix and entry formula are
-semiring-level, its Gram matrix and congruence are commutative-semiring-level, its
-determinant formulas are commutative-ring-level, and its quotient is field-level.
-For \(F\) of Lean type \lean{BoundedFabius}, the Legendre determinant identity, empty value,
-leading-coefficient quotient, and real Gram cross-ratio are unconditional; the
-entry-integral, strict-positivity, and rational-cast bridge theorems require
-\lean{IsFabius F}.  This closes the finite determinant component of the
-Legendre bridge.  No finite Gaunt/Wigner entry expansion or rationality by that route,
-explicit $H_4$ or $\beta_4$ evaluator, root, Christoffel, quadrature,
-continued-fraction, Pad\'e, asymptotic, or infinite-product theorem is asserted.\\
+objects; no explicit $H_4$ or $\beta_4$ value, evaluator, root, Christoffel, quadrature,
+continued-fraction, Pad\'e, or asymptotic theorem is asserted.\\
+\path{PolynomialMomentGramDeterminant.lean} &
+Exactly two public definitions,
+\lean{polynomialCoefficientMatrix} and \lean{polynomialMomentGramMatrix}, and seven public
+theorems:
+\lean{polynomialCoefficientMatrix_apply},
+\lean{polynomialMomentGramMatrix_apply},
+\lean{polynomialMomentGramMatrix_eq_transpose_mul_hankel_mul},
+\lean{polynomialMomentGramMatrix_det_eq_coefficient_det_sq_mul},
+\lean{polynomialCoefficientMatrix_det_eq_prod_coeff},
+\lean{polynomialMomentGramMatrix_det_eq_prod_coeff_sq_mul}, and
+\lean{gramStieltjesJacobiSubdiagonal_eq_polynomialMomentGramMatrix_det_ratio}.
+For a coherent family $p_j$, coefficient expansion proves
+$G_n=C_n^{\mathsf T}H_nC_n$; the degree bound makes $C_n$ upper triangular with diagonal
+$[X^j]p_j$, so taking determinants gives
+$\det G_n=(\prod_{j<n}[X^j]p_j)^2\det H_n$.  A nonzero diagonal then transports the
+zero-based finite Jacobi subdiagonal to the polynomial-Gram determinant cross-ratio.  This
+last Lean equality imposes no Hankel-nonvanishing hypothesis because field division is
+total: a zero middle Hankel determinant makes both cross-ratios zero, not a genuine
+nonsingular Jacobi recurrence.  This is
+finite ring/field algebra with no measure, positivity, entry-rationality,
+Gaunt/Wigner/$3j$, Christoffel, or infinite-Jacobi assertion.\\
+\path{FabiusLegendreHankelDeterminant.lean} &
+Exactly two public definitions, \lean{upLegendreGramMatrix} and
+\lean{upLegendreGramDet}, and seven public theorems:
+\lean{upLegendreGramMatrix_apply_eq_integral},
+\lean{upLegendreGramDet_eq_prod_leadingCoeff_sq_mul_hankelDet},
+\lean{upLegendreGramDet_zero}, \lean{upLegendreGramDet_pos},
+\lean{coeff_legendrePolynomial_self_div_succ},
+\lean{gramStieltjesJacobiSubdiagonal_upMoment_eq_upLegendreGramDet_ratio}, and
+\lean{rvachevJacobiSubdiagonalRat_cast_eq_upLegendreGramDet_ratio}.
+For arbitrary $F:\lean{BoundedFabius}$, let $D_n$ be the first-$n$ Legendre Gram
+determinant in its up-moment pairing and let $L_j=2^{-j}\binom{2j}{j}$.  The determinant
+identity $D_n=(\prod_{j<n}L_j^2)\det H_n$, the leading-coefficient quotient, and the real
+Gram cross-ratio hold for every such $F$.  Here $D_0=1$ is the determinant of the empty
+$0\mathbin{\times}0$ Gram matrix, extending the paper's prior $N\geq1$ definition.  The
+index $n$ is zero-based---the conventional $\beta_{n+1}$---and
+\[
+ \beta_{n+1}=\left(\frac{n+1}{2n+1}\right)^2
+ \frac{D_{n+2}D_n}{D_{n+1}^2},
+\]
+with totalized division in the arbitrary-$F$ theorem.  Identifying Gram entries with
+integrals, proving $D_n>0$, and identifying this ratio with the real cast of the rational
+Rvachev subdiagonal require $h_F:\lean{IsFabius}\,F$; positivity then makes the ratio a
+genuine nonsingular Jacobi formula.  It proves no finite
+Gaunt/Wigner/$3j$ entry formula, entry rationality by that route, Christoffel reconstruction,
+or infinite product.  The shifted-atom kernel \lean{rvachevTranslateGram} is a distinct
+unweighted interval Gram construction.\\
 \path{FractionalVolterra.lean}, \path{FractionalVolterraSemigroup.lean} &
 The total real-order Gamma-normalized operator, its unconditional endpoint/locality/scalar,
 order-one, and positive-natural-order rules, and its positive-order ordered-endpoint

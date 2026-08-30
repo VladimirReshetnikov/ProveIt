@@ -1,7 +1,8 @@
 # Exponents and q-series
 
-New standalone intake member:
-[`Fabius_Rvachev_Frontier_Report/`](Fabius_Rvachev_Frontier_Report/),
+New standalone intake members:
+
+- [`Fabius_Rvachev_Frontier_Report/`](Fabius_Rvachev_Frontier_Report/),
 *Negative Parameters, Reciprocal Bases, and the Gaussian Boundary* (26 pp),
 arrived on 2026-08-30 with all 13 payload checksums verified.  It develops
 negative-parameter affine transport, reciprocal-base digit reversal,
@@ -10,6 +11,47 @@ laws.  Because much of that subject already appears in Part VII of the
 consolidated volume, the report remains standalone until its genuinely new
 claims are isolated and the overlap is deliberately deduplicated.  Paper
 theorem labels do not by themselves assert Lean formalization.
+
+An exact reship, `Fabius_Rvachev_Frontier_Report_2026-08-30-E.zip`
+(outer SHA-256
+`174bf733156cd874cf4f9321c6ab71ca44f311856cc01dc158ddf83dc00cf813`),
+was verified and deleted on 2026-08-30 without creating a redundant directory:
+its payloads are byte-identical to this filed member after the existing CSV
+LF normalization. No claim-level reassessment or experiment rerun was
+performed.
+
+- [`inverse_q_analogs_report/`](inverse_q_analogs_report/),
+  *Inverse q-Analogs: Branch Geometry, Asymptotic Inversion, and Computation
+  for q-Pochhammer Symbols, Gaussian Coefficients, and Related Functions*
+  (73 pp), arrived on 2026-08-30 from `inverse_q_analogs_report.zip` (outer
+  SHA-256
+  `471ee715022df77f2c5f45b86c213e50e980478eee1a6fc48dd91556cdaeb627`).
+  The archive supplied 17 payloads but no checksum ledger; after five CSVs
+  were normalized from CRLF to LF, the repository-added `SHA256SUMS` recorded
+  and verified all 17. It remains standalone pending post-publication
+  assessment and a Lean crosswalk; manuscript classifications do not establish
+  Lean verification.
+
+- [`q_pochhammer_q_binomial_expansions_report/`](q_pochhammer_q_binomial_expansions_report/),
+  *Local, Boundary, and Reciprocal Expansions of q-Pochhammer Symbols,
+  Gaussian Coefficients, and Related q-Analogues* (56 pp), arrived on
+  2026-08-30 from `q_pochhammer_q_binomial_expansions_report.zip` (outer
+  SHA-256
+  `e8c6e5be4512abc0bacfd904e3f0027b35fd5e47e916a6ad11cc76b2893b3a07`).
+  All five entries in the submitted `MANIFEST.sha256` verified and every text
+  payload was already LF. It remains standalone pending post-publication
+  assessment, claim-by-claim consolidation, and a Lean crosswalk; manuscript
+  labels do not establish Lean verification.
+
+- [`Fabius_Flat_Parameter_Response_Dynamics/`](Fabius_Flat_Parameter_Response_Dynamics/),
+  *Flat Parameter Fronts, q-Susceptibility, and Smooth Dynamics* (23 pp),
+  arrived on 2026-08-30 from `fabius_frontier_report_2026.zip` (outer SHA-256
+  `afdcf522589a7baad82c81a527c02dcc09e58455ab14c57a9c492e65563c647e`)
+  and was filed under a title-derived collision-safe name. All 13 submitted
+  payload hashes verified; five CSV entries were refreshed after CRLF-to-LF
+  repository normalization. It remains standalone pending post-publication
+  assessment and a Lean crosswalk; manuscript labels do not establish Lean
+  verification.
 
 Generalizations of the dyadic construction to arbitrary exponent
 sequences and the q-series calculus that organizes them: the
@@ -535,7 +577,7 @@ matching `assets/` directories.
 `Signed_Reciprocal_q_Fabius_Frontiers/` were merged editorially as the
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
-Second member: `q_pochhammer_q_binomial_monograph/` (201 pp, book class) —
+Second member: `q_pochhammer_q_binomial_monograph/` (202 pp, book class) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
@@ -556,15 +598,15 @@ Chern–Dilcher–Jiu deleted-singularity identity and Ramanujan's ₁ψ₁
 verified numerically to 30 digits; one dominated-convergence majorant
 repaired with an `% ed.:` note).
 
-Its current formalization ledger covers the 183-result core in Chapters
-1–23: 34 exact, 24 partial, 122 with no counterpart, and 3 interface-only.
+Its current formalization ledger covers the 184-result core in Chapters
+1–23: 35 exact, 24 partial, 122 with no counterpart, and 3 interface-only.
 The later Chapter 24 Fabius bridge is crosswalked locally and is outside
 those aggregate counts; in particular its general spectral Pochhammer
 theorem remains partial despite the now-formal inside `q = 1/2`
 specialization. The algebra of
 q-shifted factorials now accounts for 3 exact, 1 partial, and 11
 unformalized results; the q-integer and Gaussian-coefficient chapter for
-2 exact, 2 partial, and 4 unformalized results. The finite
+3 exact, 2 partial, and 4 unformalized results. The finite
 q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
 unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
 unformalized results; the basic-hypergeometric chapter for 1 exact, 0
@@ -585,7 +627,8 @@ theorems), `FiniteTriangularTransform.lean` (one definition, one theorem),
 `SymmetricFunctionGenerating.lean` (two definitions, six theorems), as well
 as `QDifferenceAnnihilation.lean` (four theorems) and
 `QBinomialInversionSpecializations.lean` (two definitions, four theorems),
-`QPochhammerElementaryIdentities.lean` (13 theorems), and
+`QPochhammerElementaryIdentities.lean` (13 theorems),
+`QBinomialReciprocity.lean` (four theorems), and
 `RvachevPochhammerFactorization.lean` (one definition, six theorems).
 The chapter's alternating sums, both weighted-subset conventions,
 named module-valued inversion iff, and both kernel orthogonalities are exact.
