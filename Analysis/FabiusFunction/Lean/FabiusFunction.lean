@@ -322,6 +322,7 @@ import FabiusFunction.FabiusLegendreEnergy
 import FabiusFunction.FabiusLegendreRationalEnergy
 import FabiusFunction.FabiusSquareEnergyFourier
 import FabiusFunction.FabiusLegendreTranslateBlocks
+import FabiusFunction.FabiusLegendreTranslateSeries
 import FabiusFunction.FabiusBinaryReductionSeries
 import FabiusFunction.FabiusComputability
 import FabiusFunction.Monotonicity
