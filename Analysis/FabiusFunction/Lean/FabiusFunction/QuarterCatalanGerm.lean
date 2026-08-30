@@ -13,9 +13,10 @@ whereas the formal Taylor shadow of the actual inverse Fabius function at
 equation with right-hand side `X`.  Rescaling the parameter by `9 / 4`
 identifies the two series exactly.
 
-This file is purely formal.  It does not assert that the analytic inverse
-Fabius function is represented by either convergent series on a neighborhood;
-the missing analytic statement is equality of their derivative jets.
+This file is purely formal and does not itself identify the analytic inverse
+Fabius function with a convergent series on a neighborhood.  The downstream
+module `FabiusInverseQuarterJet` proves equality of the actual derivative jet
+with the quadratic inverse while retaining this nonanalytic boundary.
 -/
 
 set_option autoImplicit false
