@@ -14,9 +14,19 @@ New standalone intake members:
   rather than a new Thue--Morse atlas member.  The `n = 1` case and the
   inverse/non-elementarity infrastructure already exist in Lean; the
   `n ≥ 2` theorem appears genuinely new and remains unformalized.  The report
-  has 14 nonconjectural labelled results and three conjectures.  Its source
-  map says `StrictMonotonicity.lean`, but the live module is
-  `Monotonicity.lean`; a deeper claim-by-claim review is pending.  All 19
+  has 14 nonconjectural labelled results and three conjecture environments,
+  but two of those labels are quarantined rather than live conjectures.  The
+  proposed Taylor-series “trichotomy” is not exclusive as written: at an
+  interior dyadic point for `n = 1`, the finite Taylor polynomial has positive
+  radius and still does not represent the function locally, so it satisfies
+  both classes (ii) and (iii); class (iii) must exclude eventually-zero
+  polynomial series.  The tie-cancellation label is already discharged by
+  the canonical quarter derivative and quarter/three-quarter value facts,
+  together with the report's own binary-transition lemma.  Its source map
+  says `StrictMonotonicity.lean`, but the live module is `Monotonicity.lean`;
+  moreover, the delivered floating-point/FFT diagnostic does not support the
+  manuscript's separate claim of symbolic verification.  A deeper
+  claim-by-claim review is pending.  All 19
   clean A4 PDF pages were rendered during intake, while the experiment, TeX,
   and Lean were not run.  Manuscript proof labels do not establish Lean
   status.
