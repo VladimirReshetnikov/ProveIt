@@ -1,5 +1,26 @@
 # Frontier compilations
 
+New standalone intake member:
+
+- [`Digital_Spectral_Geometry_and_Log_Periodic_Saddles/`](Digital_Spectral_Geometry_and_Log_Periodic_Saddles/),
+  *Digital Spectral Geometry and Log-Periodic Saddles: Frontier Results for
+  the Thue--Morse, Fabius, Inverse-Fabius, and Rvachev Systems* (23 pp),
+  arrived on 2026-08-30 from the rootless archive
+  `Fabius_Rvachev_Frontier_Report_Package.zip` (outer SHA-256
+  `0028cb4f47134574ba7cd698bfc0ec11f08776b320cbc82b8467bea20d865f6d`).
+  The arrival's own manifest covers only its TeX and PDF; the complete ten-file
+  arrival ledger is recorded in `ARRIVAL_SHA256SUMS`. Its submitted repository
+  audit read zero TeX files, and its numerical generation failed, leaving a
+  fallback fragment instead of the advertised summary and figures. The clean
+  23-page PDF is a bespoke letter-paper Latin Modern build with blank metadata,
+  not yet a policy-conforming Libertinus/A4 build. Its zero multiplicities,
+  spectral zeta and digit count, log-periodic complex dimensions, endpoint and
+  inverse-Fabius saddles, Appell/Strang--Fix reproduction, and integer-base
+  generalization substantially overlap Parts II, V, VII, and VIII of the
+  consolidated volume below. It remains standalone only until a claim-by-claim
+  deduplication and Lean crosswalk determine whether any refinement should be
+  retained; manuscript theorem labels do not establish Lean proof status.
+
 The broad multi-topic "collected new results" report series,
 consolidated (2026-08-28) into the 272-page single volume
 [`Frontier_Compilations/`](Frontier_Compilations/): ten absorbed reports,
