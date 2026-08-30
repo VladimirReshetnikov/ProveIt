@@ -2947,6 +2947,24 @@ the exact entire series is
 \end{equation}
 This is \lean{rvachevFourier_eq_momentSeries} in
 \path{AnalyticMoments.lean}.
+For later finite filters the individual mode is named
+\begin{equation}
+ A_n(z):=\frac{(-1)^n c_n}{(2n)!}(2\pi z)^{2n}
+ =\lean{rvachevFourierMomentTerm}\ z\ n.                  \label{eq:rvachev-fourier-moment-term}
+\end{equation}
+The declarations \lean{rvachevFourierMomentTerm_zero} and
+\lean{rvachevFourierMomentTerm_scale} prove
+\[
+ A_0(z)=1,\qquad A_n(cz)=(c^2)^nA_n(z)
+ \quad(c,z\in\C,\ n\in\N).
+\]
+More strongly than the equality of total sums in
+\eqref{eq:fourier-moment-series},
+\lean{hasSum_rvachevFourierMomentTerm} proves
+\(\operatorname{HasSum}(A_\bullet(z),\widehat{\Up}(z))\) for every bounded
+Fabius solution.  These four declarations are in
+\path{AnalyticMoments.lean}; the canonical product specialization used below
+is in \path{RvachevQBinomialFilter.lean}.
 
 \section{The global extension, derivatives, flatness, and inverse}
 \label{sec:global}
@@ -4803,6 +4821,66 @@ with the established rational quotient, and
 \lean{halfQBinomial_theorem} is now the direct specialization of the ring theorem.
 \end{remark}
 
+\begin{theorem}[Denominator-free \(q\)-Vandermonde and shifted central forms]
+\label{thm:q-vandermonde-formal}
+Let \(R\) be a commutative semiring, let \(q\in R\), and let all displayed
+indices be natural numbers.  The two zero-extended Vandermonde orientations are
+\begin{align}
+ {m+n\brack r}_q
+ &=\sum_{j=0}^{r}q^{(m-j)(r-j)}
+   {m\brack j}_q{n\brack r-j}_q,                         \label{eq:q-vandermonde-first}\\
+ &=\sum_{j=0}^{r}q^{j\,(n-(r-j))}
+   {m\brack j}_q{n\brack r-j}_q.                         \label{eq:q-vandermonde-second}
+\end{align}
+Here subtraction is natural subtraction; outside the admissible support one
+of the zero-extended Gaussian coefficients vanishes.  Consequently no
+condition \(r\le m+n\) is needed.  The central specialization is
+\begin{equation}
+ {m+n\brack m}_q
+ =\sum_{j=0}^{m}q^{j^2}{m\brack j}_q{n\brack j}_q.       \label{eq:q-vandermonde-central}
+\end{equation}
+Equivalently, removing exactly the zero-extended terms gives the literal
+Durfee support
+\begin{equation}
+ {m+n\brack m}_q
+ =\sum_{j=0}^{\min(m,n)}q^{j^2}{m\brack j}_q{n\brack j}_q.
+                                                               \label{eq:q-vandermonde-central-min}
+\end{equation}
+For every \(N,k\in\N\), including \(N<k\), the positive shifted form is
+\begin{equation}
+ {2N\brack N+k}_q
+ =\sum_{\ell=0}^{N}q^{\ell(\ell+k)}
+   {N\brack\ell}_q{N\brack\ell+k}_q.                    \label{eq:q-vandermonde-shift-plus}
+\end{equation}
+If \(k\le N\), row reflection gives the same right side for
+\({2N\brack N-k}_q\), and its literal-support form is
+\begin{equation}
+ {2N\brack N-k}_q
+ =\sum_{\ell=k}^{N}q^{\ell(\ell-k)}
+   {N\brack\ell}_q{N\brack\ell-k}_q.                    \label{eq:q-vandermonde-shift-minus}
+\end{equation}
+No identity in this theorem uses division, cancellation, a nonvanishing
+hypothesis, or an exclusion of \(q=0\), roots of unity, positive
+characteristic, or zero divisors.
+\end{theorem}
+
+\begin{proof}[Formal proof]
+Equations \eqref{eq:q-vandermonde-first} and
+\eqref{eq:q-vandermonde-second} are
+\lean{gaussianBinomial_add_vandermonde} and
+\lean{gaussianBinomial_add_vandermonde'}.
+The full-range and literal-\(\min(m,n)\) central identities are
+\lean{gaussianBinomial_add_central} and
+\lean{gaussianBinomial_add_central_min}; the positive shift is
+\lean{gaussianBinomial_two_mul_add_shifted_central}; and the two
+negative-shift presentations are
+\lean{gaussianBinomial_two_mul_sub_shifted_central} and
+\lean{gaussianBinomial_two_mul_sub_shifted_central_Icc}.  These seven
+declarations exhaust the public surface of
+\path{QBinomialVandermonde.lean}.  The positive shift is total in \(k\);
+the last two declarations assume exactly \(k\le N\).
+\end{proof}
+
 \begin{theorem}[Reversed Gaussian row, Lagrange weights, and all residual moments]
 \label{thm:geometric-q-binomial-lagrange}
 Let $R$ be a commutative ring and $q\in R$.  The zero-extended numerator row is
@@ -4895,10 +4973,13 @@ This is \lean{tendsto_sum_abs_qToeplitzWeight} in
 denominator on the full range and the effective lower bound
 \(1/(1-q)\le(-q;q)_\infty/(q;q)_\infty\), and promotes that bound to the
 literal divergence theorem
-\lean{tendsto_qConditionNumberLimit_atTop_at_one_left}.  What remains in the
-research-frontier volume is the actual quarter-base sinc-prefix or spectral-tail
-instantiation, including its coefficient bridge, sign and remainder estimates,
-uniform accelerated convergence, and derivative formulas.
+\lean{tendsto_qConditionNumberLimit_atTop_at_one_left}.  The actual infinite
+Rvachev sinc-product instantiation, at the quarter base and at a generic
+complex squared base under finite-node injectivity, is now the exact theorem
+\cref{thm:rvachev-gaussian-filter}.  What remains in the research-frontier
+volume is the different finite-prefix problem for \(P_{b,n}\): its quotient
+and Bell-coefficient package, the analytic sign and remainder/bracketing
+bounds, uniform accelerated and derivative convergence, and asymptotics.
 
 The polynomial in \eqref{eq:half-q-binomial-theorem} has the complete rational root locus
 \begin{equation}
@@ -5872,9 +5953,55 @@ Lagrange, and shifted-scale tail declarations are
 \lean{geometricLagrangeAnalyticSeriesFilter_shifted}.  Thus this module has exactly two
 definitions and seven public theorems.  These results exclude series converging only in
 their natural order at a boundary point.  They also assert no formal-to-analytic
-power-series evaluation bridge, actual sinc-product coefficient instantiation, radius of
-convergence or uniform-convergence theorem, norm/sign/error bound, asymptotic estimate,
-positivity statement, or Fabius-specific acceleration theorem.
+power-series evaluation bridge, radius or uniform-convergence theorem,
+norm/sign/error bound, asymptotic estimate, or positivity statement.  The
+actual Rvachev sinc-product instantiation is a separate theorem, so that the
+generic module retains precisely this abstract scope.
+
+\begin{theorem}[Exact Gaussian filter of the Rvachev sinc product]
+\label{thm:rvachev-gaussian-filter}
+Let \(c,z\in\C\), let \(p\in\N\), put \(q=c^2\), and assume only that
+\[
+ j\longmapsto q^j
+ \quad\hbox{is injective on }\{0,\ldots,p\}.
+\]
+Writing \(\Phi=\lean{rvachevFourierProduct}=\widehat{\Up}\), one has the
+exact entire identity
+\begin{equation}
+ \sum_{j=0}^{p}\lambda_{p,j}^{(q)}\Phi(c^jz)
+ =1+\sum_{r=0}^{\infty}
+   (-1)^p q^{\binom{p+1}{2}}{p+r\brack p}_q
+   A_{p+1+r}(z).                                         \label{eq:rvachev-gaussian-filter}
+\end{equation}
+There is no contraction, realness, positivity, or global nonvanishing
+hypothesis on \(c\).  At \(c=1/2\), hence \(q=1/4\), the finite node
+condition is proved internally, so \eqref{eq:rvachev-gaussian-filter} holds
+for every complex \(z\) and every natural \(p\) with no hypothesis.
+The same generic formula is exported for the Fourier transform of every
+bounded \(F\) satisfying \(\lean{IsFabius}\ F\).
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The named moment series sums to the standalone product by
+\lean{hasSum_rvachevFourierMomentTerm_product}, and its iterated scaling law
+is \lean{rvachevFourierMomentTerm_pow_scale}.  Passing the finite Lagrange
+row through that unconditional sum and inserting the Gaussian residual gives
+\lean{geometricLagrange_rvachevFourierProduct_eq_gaussian_tsum}.  Its
+assumption-free \(c=1/2\), \(q=1/4\) specialization is
+\lean{quarterLagrange_rvachevFourierProduct_eq_gaussian_tsum}; the
+model-generic Fourier-transform form is
+\lean{geometricLagrange_rvachevFourier_eq_gaussian_tsum}.  These five
+declarations exhaust \path{RvachevQBinomialFilter.lean}.
+\end{proof}
+
+The theorem closes the coefficient bridge for the \emph{infinite} Rvachev
+product.  It does not identify the frontier report's finite products
+\(P_{b,n}\), their quotient \(P_{b,n}/P_b\), or their Bell coefficients with
+this series.  Nor does it prove a conditionally convergent boundary theorem,
+an analytic sign or bracketing/error bound, uniform or derivative
+convergence, or an asymptotic acceleration estimate.  The algebraic
+\((-1)^p\) in \eqref{eq:rvachev-gaussian-filter} should not be promoted to
+one of those analytic sign claims.
 
 For the present half-geometric grid, write $\lambda_{n,k}^{(1/2)}$ for the
 evaluation-at-zero weight belonging to the node $2^{-k}$.  The Toeplitz row is exactly the
@@ -7760,7 +7887,7 @@ partial-sum norm is
  \qquad
  A_2=\sum_{n=0}^{\infty}\frac{u_n^2}{4n+1},                 \label{eq:fabius-square-energy-legendre}
 \end{equation}
-the bridge and series declarations are
+so that \(A_2=\lean{fabiusSquareEnergy}\ F\), the bridge and series declarations are
 \lean{integral_sq_rvachevUp_eq_two_mul_fabiusSquareEnergy},
 \lean{hasSum_fabiusSquareEnergy_legendre}, and
 \lean{fabiusSquareEnergy_eq_tsum_legendre} in
@@ -7965,10 +8092,16 @@ That rule explains several choices made above:
       companion interchanges finite filters with unconditionally summable weighted
       coefficient series, splits exact heads from infinite tails, and gives the exact
       Gaussian \(\mathsf{tsum}\) tail for geometric and Lagrange rows.  Zero-weight nodes
-      impose no convergence condition.  Conditionally-only convergent boundary series,
-      formal-to-analytic power-series evaluation, a sinc-product instantiation, radii or
-      uniform convergence, norm/sign/error bounds, asymptotic estimates, and quarter-sinc
-      acceleration remain outside the formal corpus.
+      impose no convergence condition.  Named even Fourier modes now instantiate that
+      tail for the actual infinite Rvachev sinc product: arbitrary complex \(c,z\) need
+      only injectivity of the finite powers of \(c^2\), and \(c=1/2\), \(q=1/4\) is
+      assumption-free.  The two \(q\)-Vandermonde orientations, the central convolution,
+      the total positive shift, and both \(k\le N\) negative-shift forms are also
+      denominator-free commutative-semiring theorems.  Conditionally-only convergent
+      boundary series, formal-to-analytic evaluation outside the named entire series,
+      the report's finite-prefix quotient and Bell package, analytic sign/error bounds,
+      uniform or derivative convergence, and asymptotic quarter-sinc acceleration remain
+      outside the formal corpus.
 \item Integer-order Volterra integration is formal at arbitrary base point and endpoint in
       a real Banach space, including strict FTC, order composition, polynomial weights,
       Taylor reconstruction, and the exact Fabius ladder.  A separate total real-order
@@ -8184,6 +8317,7 @@ renormalization, Laurent/Herglotz/inversion layers, initial Jacobi data, and fin
 \path{FabiusUniformSpline.lean}, \path{FabiusComputability.lean}\\
 Fourier analysis &
 \path{FourierProduct.lean}, \path{FourierAnalytic.lean},
+\path{RvachevQBinomialFilter.lean},
 \path{OriginalPaperSupplement.lean}, \path{PoissonSummation.lean},
 \path{SummableCyclicAlias.lean}, \path{ThueMorseFourier.lean},
 \path{ThueMorseSineProduct.lean}, \path{ThueMorseComplexProductBridge.lean},
@@ -8254,7 +8388,8 @@ Phase-locked reciprocal-grid Richardson algebra &
 \path{LambertPhaseLockedRichardson.lean}\\
 Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
-\path{DyadicCorrectness.lean}, \path{FiniteQBinomialCore.lean}, \path{HalfQBinomial.lean},
+\path{DyadicCorrectness.lean}, \path{FiniteQBinomialCore.lean},
+\path{QBinomialVandermonde.lean}, \path{HalfQBinomial.lean},
 \path{FabiusDyadicQBinomialScalar.lean}, \path{FabiusQBinomialFormula.lean},
 \path{FabiusRawQBinomialScalar.lean},
 \path{FabiusBinaryReductionSeries.lean}, \path{FabiusParityPowerSeries.lean},
