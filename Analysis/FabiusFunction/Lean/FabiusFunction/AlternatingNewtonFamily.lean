@@ -53,8 +53,11 @@ sides vanishing.
   `Fabius.analyticOrderAt_alternatingNewton_neg` — **the display**,
   at `z = n` and at `z = -n`.
 
-The spectral zeta and the cumulants of the same theorem are not
-addressed here.
+The spectral zeta and analytic cumulant kernel are not addressed in this
+module; their downstream specializations are
+`FabiusFunction.AlternatingNewtonZeta` and
+`FabiusFunction.AlternatingNewtonCumulantKernel`, respectively.  The latter
+is an analytic exponential identity, not a probabilistic cumulant theorem.
 -/
 
 set_option autoImplicit false

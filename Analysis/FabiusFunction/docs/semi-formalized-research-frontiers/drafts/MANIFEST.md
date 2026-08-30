@@ -11,9 +11,13 @@ updated when that happens.
 New drafts arrive through `incoming/` (as archives or directories),
 are unpacked into the matching group, and are recorded here.
 
-Pending arrival: `incoming/Legendre_Rvachev_Self_Reconstruction-1.zip`
-(received 2026-08-29) is preserved unopened while its contents are triaged and
-assigned to the appropriate thematic group.
+Pending arrivals received 2026-08-29 are preserved unopened while their
+contents are triaged and assigned to the appropriate thematic groups:
+
+- `incoming/Legendre_Rvachev_Self_Reconstruction-1.zip`
+- `incoming/Legendre_Rvachev_Closed_Loop_Report-3.zip`
+- `incoming/Legendre_Rvachev_Closed_Loop_Report-4.zip`
+- `incoming/legendre_rvachev_closed_loop_report-2.zip`
 
 Reorganized into thematic groups on 2026-08-28. Path strings inside the
 documents themselves (corpus inventories, provenance banners,

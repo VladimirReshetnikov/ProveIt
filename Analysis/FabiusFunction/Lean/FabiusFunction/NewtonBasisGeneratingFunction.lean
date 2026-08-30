@@ -49,9 +49,13 @@ scope.
   `FabiusFunction.NewtonSpectralZeta`, which imports this module and
   composes `tsum_newtonPoly` at `q = 2^(-s)` with the general-weight
   spectral zeta.
-* The even cumulants
+* The probabilistic even cumulants
   `κ_{2j}(X_P) = (B_{2j}/(2j)) ∑_{r ≤ d} c_r 4^j/(4^j-1)^(r+1)`
-  (`p1:eq:kappaP`) are NOT formalized here, in any form.
+  (`p1:eq:kappaP`) are not formalized here.  Their analytic
+  Euler--zeta kernel is formalized downstream in
+  `FabiusFunction.GeneralizedSincZeta`, through
+  `FabiusFunction.WeightedEulerTransform`; the random-variable model and
+  its moments remain outside that result.
 * The product form `Φ_P = ∏_{r ≤ d} Φ_{r+1}^(c_r)`
   (`p1:eq:newton-Phi-factorization`) is not formalized here, and only
   half formalized elsewhere.  The corpus has the canonical sinc
