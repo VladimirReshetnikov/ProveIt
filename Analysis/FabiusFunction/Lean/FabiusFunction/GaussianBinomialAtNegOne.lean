@@ -117,7 +117,8 @@ private theorem gaussianBinomial_neg_one_rows
         have hodd : Odd (2 * b + 1) := ⟨b, by omega⟩
         rw [show 2 * b + 1 = 2 * b + 1 by rfl,
           gaussianBinomial_succ_succ_alt, hodd.neg_one_pow,
-          hnextEvenOdd b, neg_zero, zero_add, hnextEvenEven b]
+          hnextEvenOdd b, hnextEvenEven b]
+        simp
       exact ⟨hnextEvenEven, hnextEvenOdd, hnextOddEven, hnextOddOdd⟩
 
 /-- **Even row, even column at `q = -1`.**  The Gaussian coefficient
