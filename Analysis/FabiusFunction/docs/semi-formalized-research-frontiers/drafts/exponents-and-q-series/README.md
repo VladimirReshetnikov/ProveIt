@@ -2,6 +2,24 @@
 
 New standalone intake members:
 
+- [`inverse_q_analog_functions_report/`](inverse_q_analog_functions_report/),
+  *Inverse Functions of q-Pochhammer Symbols, Gaussian Coefficients, and
+  Related q-Analogues: Branch Geometry, Local Reversion, Singular Limits, and
+  Computation* (59 pp), arrived on 2026-08-30 from
+  `inverse_q_analog_functions_report.zip` (outer SHA-256
+  `19cc7da37f71ddbbc0c46b91c55c23059a1e305500260bd0a306394f4c21f4de`).
+  The archive supplied nine payloads but no checksum ledger; the
+  repository-generated `SHA256SUMS` records and verifies all nine, and all five
+  text payloads were already LF. None of its nine payload hashes matches any
+  of the 48 payloads in the three previously filed inverse-q report wrappers.
+  Its finite and infinite q-Pochhammer, Gaussian, q-gamma/q-beta,
+  q-exponential, normalized q-polylogarithm, and basic hypergeometric inverse
+  branches nevertheless place it beside those reports. All four delivered
+  PDFs are structurally readable and unencrypted (62 pages total). It remains
+  standalone pending post-publication semantic comparison, deliberate
+  consolidation, and a Lean crosswalk; manuscript classifications and
+  numerical evidence do not establish Lean verification.
+
 - [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](Cyclotomic_q_Fabius_Rvachev_Frontier/),
   *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
   Product* (25 pp), arrived on 2026-08-30 from
@@ -39,23 +57,6 @@ New standalone intake members:
   It remains standalone pending post-publication semantic deduplication and a
   Lean crosswalk; manuscript classifications and numerical checks do not
   establish Lean verification.
-
-- [`inverse_q_analog_functions_report/`](inverse_q_analog_functions_report/),
-  *Inverse Functions of q-Pochhammer Symbols, Gaussian Coefficients, and
-  Related q-Analogues: Branch Geometry, Local Reversion, Singular Limits, and
-  Computation* (59 pp), arrived on 2026-08-30 from
-  `inverse_q_analog_functions_report.zip` (outer SHA-256
-  `19cc7da37f71ddbbc0c46b91c55c23059a1e305500260bd0a306394f4c21f4de`).
-  The archive supplied nine payloads but no checksum ledger; the
-  repository-generated `ARRIVAL_SHA256SUMS` records all nine, and every text
-  payload was already LF. None of its nine payload hashes matches a payload in
-  the three previously filed inverse-q report wrappers. Its finite and
-  infinite q-Pochhammer, Gaussian, q-gamma/q-beta, q-exponential, normalized
-  q-polylogarithm, and basic hypergeometric inverse branches nevertheless place
-  it beside those reports. All four delivered PDFs are structurally readable
-  (62 pages total). It remains standalone pending post-publication semantic
-  comparison, deliberate consolidation, and a Lean crosswalk; manuscript
-  classifications and numerical evidence do not establish Lean verification.
 
 - [`Fabius_Rvachev_Frontier_Report/`](Fabius_Rvachev_Frontier_Report/),
 *Negative Parameters, Reciprocal Bases, and the Gaussian Boundary* (26 pp),
