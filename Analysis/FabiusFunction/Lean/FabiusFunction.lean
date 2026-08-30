@@ -363,6 +363,7 @@ import FabiusFunction.PerronRootEnclosure
 import FabiusFunction.KappaOneEnclosure
 import FabiusFunction.KappaConstantEnclosures
 import FabiusFunction.MeasureRefinement
+import FabiusFunction.UniformDigitThueMorseBridge
 import FabiusFunction.RandomSeriesLaw
 import FabiusFunction.MeasureCauchyTransform
 import FabiusFunction.GeometricUniformCauchy
