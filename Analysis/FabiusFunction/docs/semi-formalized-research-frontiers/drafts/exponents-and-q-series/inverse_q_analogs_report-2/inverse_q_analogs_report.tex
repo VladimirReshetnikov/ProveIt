@@ -1,0 +1,2310 @@
+\documentclass[11pt,oneside]{book}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1.05in,headheight=25pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{fancyvrb}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{etoolbox}
+
+\definecolor{linkblue}{RGB}{25,78,135}
+\definecolor{deepgreen}{RGB}{22,105,70}
+\definecolor{deepred}{RGB}{150,45,45}
+\definecolor{softgray}{RGB}{245,246,248}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=deepgreen,
+  urlcolor=linkblue,
+  pdftitle={Inverse Functions of q-Pochhammer Symbols, Gaussian Coefficients, and Related q-Analogs},
+  pdfauthor={Research report for the ProveIt Fabius/q-series program}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Inverse functions of $q$-analogs}
+\fancyhead[R]{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\setlist[itemize]{topsep=4pt,itemsep=2pt,parsep=1pt}
+\setlist[enumerate]{topsep=4pt,itemsep=2pt,parsep=1pt}
+\allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{problem}[theorem]{Problem}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\qpoch}[2]{\left(#1;#2\right)}
+\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Disc}{\operatorname{Disc}}
+\newcommand{\Cat}{\operatorname{Cat}}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\OO}{\mathcal{O}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\statusproved}{\textcolor{deepgreen}{\textbf{proved here}}}
+\newcommand{\statusderived}{\textcolor{linkblue}{\textbf{derived here}}}
+\newcommand{\statusconj}{\textcolor{deepred}{\textbf{conjectural}}}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\bfseries,
+  commentstyle=\itshape,
+  showstringspaces=false,
+  breaklines=true,
+  frame=single,
+  backgroundcolor=\color{softgray},
+  columns=fullflexible
+}
+
+\title{\Huge Inverse Functions of $q$-Pochhammer Symbols,\\[4pt]
+Gaussian Coefficients, and Related $q$-Analogs\\[12pt]
+\Large Local Reversion, Puiseux Branches, Singular Limits,\\
+Root-of-Unity Scaling, and Global Real Inverses}
+\author{Research report for the ProveIt Fabius/$q$-series program}
+\date{30 August 2026}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\maketitle
+\hypersetup{pageanchor=true}
+\frontmatter
+
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+This report develops a systematic inverse-function theory for finite and
+infinite $q$-Pochhammer symbols, Gaussian $q$-binomial coefficients,
+Jackson's $q$-gamma function, complex-order shifted factorials, and several
+related $q$-analogs.  The independent variables being inverted include the
+base $q$, the Pochhammer parameter $a$, the complex order $\alpha$, the two
+continuous Gaussian parameters, and the arguments of $q$-exponentials,
+$q$-numbers, Rogers--Szeg\H{o} polynomials, theta products, and a normalized
+$q$-Lambert map.
+
+The guiding point is that ``the inverse'' is normally not a single function.
+It is a branched analytic correspondence whose sheets meet above critical
+values.  Ordinary Taylor reversion applies at regular points; Puiseux series
+appear at multiple zeros and critical points; logarithmic and transseries-like
+coordinates are required at the singular boundary $q\to 1$; and algebraic
+coordinates are natural at $q\to\pm\infty$ for finite $q$-products.
+
+Among the concrete results are: explicit inverse series for $(a;q)_n$ and
+$(a;q)_\infty$ in $a$ and $q$; a stable coefficient law near $q=0$ together
+with every low-order exception through fifth order; logarithmic inversion at
+$q=1$; a complete Puiseux construction at $q=\infty$; exact classification of
+the exceptional inverse branches at $q=-1$; a root-of-unity radial theorem
+\[
+ \log(a;\zeta e^{-t})_\infty
+ =-\frac{\Li_2(a^d)}{d^2t}
+ +\sum_{r=0}^{d-1}\left(\frac12-\frac rd\right)
+      \Log(1-a\zeta^r)+\OO(t),
+\]
+for primitive $d$-th roots $\zeta$; the resulting $a\asymp t^{1/d}$ inverse
+law; global positive-real inverses of Gaussian polynomials; expansions at
+$q=0,1,\pm\infty$ and roots of unity; exact value and derivative formulas at
+$q=-1$; inverse theory for continuous Gaussian parameters via $q$-digamma
+functions; and $q\to0,1,\infty$ inversion for $\Gamma_q$.
+
+A companion Python program performs high-precision numerical and exact
+symbolic checks.  Conjectures are explicitly separated from proved or formally
+derived statements.  The final chapters formulate research programs on
+monodromy and generic Galois groups, resurgent corrections at the unit circle,
+certified continuation, coefficient positivity, and formal verification.
+
+
+\chapter*{Reader's guide and status conventions}
+\addcontentsline{toc}{chapter}{Reader's guide and status conventions}
+The target repository subtree contains two substantial source documents: a
+frontier volume on exponents and $q$-series, and a proof-oriented monograph on
+$q$-Pochhammer symbols and Gaussian coefficients
+\cite{ProveItFrontiers,ProveItMonograph}.  They establish a broad \emph{direct}
+theory: finite and infinite products, logarithmic derivatives, $q$-gamma
+representations, $q$-Newton interpolation, root-of-unity algebra, and
+$q\to1$ asymptotics.  They do not organize these facts into a systematic
+theory of functional inversion.  The present report supplies that missing
+layer and deliberately refers back to the direct theory rather than reproducing
+its many identity proofs.
+
+Statements marked \statusproved\ have proofs in this report.  Formulae marked
+\statusderived\ follow by explicit formal or asymptotic calculation; their
+analytic domains are stated where needed.  Conjectures and open problems are
+marked \statusconj.  Numerical experiments are consistency checks, never
+substitutes for proof.
+
+The main recurring notation is
+\[
+ (a;q)_n=\prod_{j=0}^{n-1}(1-aq^j),\qquad
+ (a;q)_\infty=\prod_{j=0}^{\infty}(1-aq^j),
+\]
+\[
+ \qbinom{n}{k}{q}=\frac{(q;q)_n}{(q;q)_k(q;q)_{n-k}},\qquad
+ [x]_q=\frac{1-q^x}{1-q}.
+\]
+For singular limits at $q=1$ we normally write $q=e^{-t}$ or $q=e^t$,
+according to whether the function is naturally defined inside the unit disk.
+Branches of $\Log$, fractional powers, and polylogarithms are always part of
+the data of a complex inverse branch.
+
+\tableofcontents
+
+\mainmatter
+
+\part{General architecture of inverse $q$-theory}
+
+\chapter{Source audit, scope, and the inverse correspondence}
+
+\section{What has to be inverted}
+A $q$-analog usually depends on several parameters, so every direct identity
+creates several different inverse problems.  For the Pochhammer symbol alone
+one may ask for
+\[
+ a=A_n(y;q),\qquad q=Q_n(y;a),\qquad
+ \alpha=\mathcal A(y;a,q)
+\]
+from $y=(a;q)_n$ or $y=(a;q)_\alpha$.  The first equation is algebraic of
+degree $n$ when $n<\infty$; the second is algebraic of degree
+$n(n-1)/2$; and the third is transcendental but monotone on a useful real
+domain.  No single notation can hide the different branch geometries.
+
+For a Gaussian polynomial, $y=\qbinom{n}{k}{q}$ is an algebraic equation of
+degree $D=k(n-k)$ in $q$.  If $n,k$ are replaced by continuous parameters
+$\alpha,\beta$ through $\Gamma_q$, inversion in $\alpha$ is regular and
+one-sided on the positive real domain, while inversion in $\beta$ has a
+symmetry-forced square-root branch at $\beta=\alpha/2$.
+
+\section{Inverse functions as Riemann surfaces}
+Let $F(x;\lambda)$ be holomorphic in $x$ and in auxiliary parameters
+$\lambda$.  The natural inverse object is
+\[
+ \mathcal X_F=\{(x,y,\lambda):F(x;\lambda)=y\}
+ \longrightarrow \{(y,\lambda)\}.
+\]
+Regular sheets are locally graphs $x=X(y;\lambda)$.  They meet where
+$F_x=0$ or where the direct function itself becomes singular.  In polynomial
+problems the finite branch locus is controlled by
+\[
+ \Disc_x(F(x;\lambda)-y)
+ =\Res_x(F(x;\lambda)-y,F_x(x;\lambda)).
+\]
+This viewpoint prevents three common errors: treating a multivalued inverse as
+single-valued, using Taylor series at a critical point, and confusing a zero of
+$F$ with a branch point of $F^{-1}$.  A simple zero gives a regular inverse;
+a multiple zero gives a Puiseux branch.
+
+\section{A map of the principal regimes}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.21\textwidth}
+                  >{\raggedright\arraybackslash}p{0.20\textwidth}
+                  >{\raggedright\arraybackslash}p{0.24\textwidth}
+                  >{\raggedright\arraybackslash}p{0.245\textwidth}}
+\toprule
+Direct object and variable & Base point & Natural inverse coordinate & Typical geometry\\
+\midrule
+\endfirsthead
+\toprule
+Direct object and variable & Base point & Natural inverse coordinate & Typical geometry\\
+\midrule
+\endhead
+$(a;q)_n$ in $a$ & $a=0$ & $1-y$ & Taylor, unless $[n]_q=0$\\
+$(a;q)_n$ in $a$ & $a=q^{-r}$ & $y^{1/\mu}$ & simple or multiple-zero Puiseux\\
+$(a;q)_n$ in $q$ & $q=0$ & $\{y-(1-a)\}/(a^2-a)$ & stable Taylor reversion\\
+$(a;q)_n$ in $q$ & $q=1$ & $\log\{y/(1-a)^n\}$ & logarithmic Taylor reversion\\
+$(a;q)_n$ in $q$ & $q=\pm\infty$ & $y^{-1/N}$ & $N$ Puiseux sheets\\
+$(a;q)_\infty$ in $q$ & $q\to\zeta$, $|q|<1$ & $1/(-\log y)$ & dilogarithmic singular inversion\\
+$(a;q)_\infty$ in $a$ & $q\to\zeta$ & $t^{1/d}$ & root-of-unity Puiseux scaling\\
+$\qbinom{n}{k}{q}$ in $q$ & $q=0$ & $y-1$ & partition-coefficient reversion\\
+$\qbinom{n}{k}{q}$ in $q$ & $q=1$ & $\log\{y/\binom nk\}$ & Bernoulli-cumulant reversion\\
+$\qbinom{n}{k}{q}$ in $q$ & $q=\pm\infty$ & $y^{-1/D}$ & reciprocal Puiseux sheets\\
+continuous $q$-binomial in $\beta$ & $\beta=\alpha/2$ & $\sqrt{-\log(y/y_{\max})}$ & symmetry-forced double branch\\
+$\Gamma_q(x)$ in $x$ & minimum & $\sqrt{y-y_{\min}}$ & two real sheets\\
+\bottomrule
+\end{longtable}
+
+\chapter{A reusable calculus of reversion and ramification}
+
+\section{Regular local inversion}
+\begin{theorem}[Holomorphic inverse and coefficient reversion]\label{thm:regular-inverse}
+Let
+\[
+ u=f(x)=c_1x+\frac{c_2}{2!}x^2+\frac{c_3}{3!}x^3
+       +\frac{c_4}{4!}x^4+\cdots,
+ \qquad c_1\ne0.
+\]
+Then the branch satisfying $x(0)=0$ is holomorphic and begins
+\begin{align}
+ x={}&\frac{u}{c_1}-\frac{c_2}{2c_1^3}u^2
+ +\frac{3c_2^2-c_1c_3}{6c_1^5}u^3 \notag\\
+ &+\frac{-c_1^2c_4+10c_1c_2c_3-15c_2^3}
+ {24c_1^7}u^4+\OO(u^5).\label{eq:universal-reversion}
+\end{align}
+More generally, if $f(x)=x/\phi(x)$ with $\phi(0)\ne0$, then
+\[
+ [u^m]x(u)=\frac1m[z^{m-1}]\phi(z)^m.
+\]
+\end{theorem}
+\begin{proof}
+The analytic assertion is the inverse-function theorem.  The coefficient
+formula is Lagrange--B\"urmann inversion.  Substituting a formal ansatz
+$x=b_1u+b_2u^2+\cdots$ and equating coefficients gives
+\eqref{eq:universal-reversion}; the calculation takes place in the complete
+local ring $\C[[u]]$ and therefore also proves formal uniqueness.
+\end{proof}
+
+\begin{remark}
+For $q$-products it is usually better to revert a logarithm.  If $F(x_0)\ne0$,
+set $u=\Log(F(x)/F(x_0))$.  Logarithmic derivatives turn products into Lambert
+sums, and the $c_j$ in \eqref{eq:universal-reversion} become cumulants rather
+than raw derivatives.
+\end{remark}
+
+\section{Critical points and Puiseux inversion}
+\begin{theorem}[Local Puiseux law]\label{thm:puiseux}
+Suppose
+\[
+ F(x)-y_0=c_m(x-x_0)^m+c_{m+1}(x-x_0)^{m+1}+\cdots,
+ \qquad c_m\ne0,
+\]
+with $m\ge2$.  Then the inverse correspondence has $m$ local sheets and each
+has a convergent Puiseux expansion
+\[
+ x-x_0=\omega\left(\frac{y-y_0}{c_m}\right)^{1/m}
+ +\OO\bigl((y-y_0)^{2/m}\bigr),\qquad \omega^m=1.
+\]
+\end{theorem}
+\begin{proof}
+Write $F(x)-y_0=(x-x_0)^mG(x)$ with $G(x_0)=c_m\ne0$.  Choose a local
+holomorphic $m$-th root $G(x)^{1/m}$ and apply the regular inverse theorem to
+$(x-x_0)G(x)^{1/m}$.
+\end{proof}
+
+The theorem covers multiple Pochhammer zeros, symmetry-forced extrema, and
+root-of-unity coalescence.  Newton polygons provide the analogous construction
+when two small parameters compete, as in $a\to0$ and $q\to\zeta$.
+
+\section{Implicit derivatives with respect to every parameter}
+If $F(x,p)=y$ and $F_x\ne0$, the inverse branch $x=X(y,p)$ satisfies
+\begin{align}
+ X_y&=\frac1{F_x},&
+ X_p&=-\frac{F_p}{F_x},\label{eq:implicit-first}\\
+ X_{yy}&=-\frac{F_{xx}}{F_x^3},&
+ X_{pp}&=-\frac{F_{pp}+2F_{xp}X_p+F_{xx}X_p^2}{F_x}.
+ \label{eq:implicit-second}
+\end{align}
+Mixed higher derivatives are efficiently encoded by multivariate Bell
+polynomials.  Equations \eqref{eq:implicit-first}--\eqref{eq:implicit-second}
+are the basic engine for expansions in $q$, $a$, order, or any auxiliary
+parameter without re-expanding the whole product.
+
+\section{Singular asymptotic inversion}
+Suppose $Y\to\infty$ and
+\[
+ Y=\frac{A}{t}-B+Ct-Et^3+\OO(t^5),\qquad A\ne0.
+\]
+With $\Lambda=Y+B$, direct reversion gives
+\begin{equation}\label{eq:singular-master}
+ t=\frac{A}{\Lambda}
+ +\frac{A^2C}{\Lambda^3}
+ +\frac{2A^3C^2-A^4E}{\Lambda^5}
+ +\OO(\Lambda^{-7}).
+\end{equation}
+This simple template will invert the McIntosh expansion of an infinite
+$q$-Pochhammer product at $q=1$, and its root-of-unity analogues.
+
+\section{Conditioning and rigorous residual bounds}
+For a real monotone branch, if $|F'(x)|\ge m>0$ between an approximation
+$\widehat x$ and the exact root $x_*$, then
+\[
+ |\widehat x-x_*|\le \frac{|F(\widehat x)-y|}{m}.
+\]
+Thus every truncated inverse series can be turned into a certified enclosure
+once a derivative lower bound is available.  In the complex plane, a Rouch\'e
+argument on a disk or an interval-Newton/Krawczyk operator gives the analogous
+certificate.  The inverse condition number is
+\[
+ \kappa_{\mathrm{abs}}=\frac1{|F_x|},\qquad
+ \kappa_{\mathrm{rel}}=\left|\frac{y}{xF_x}\right|,
+\]
+and diverges precisely as a regular sheet approaches the critical locus.
+
+\part{Finite $q$-Pochhammer symbols}
+
+\chapter{Inversion in the Pochhammer parameter $a$}
+
+Throughout this chapter
+\[
+ P_n(a,q):=(a;q)_n=\prod_{j=0}^{n-1}(1-aq^j),\qquad n\ge1.
+\]
+As a polynomial in $a$, it has degree $n$ and zeros $q^{-r}$,
+$0\le r<n$, when $q\ne0$.  Hence a generic level equation
+$P_n(a,q)=y$ has $n$ complex sheets.
+
+\section{A global real inverse}
+\begin{theorem}[Global $a$-inverse for $0<q<1$]\label{thm:global-a-finite}
+Fix $0<q<1$ and $n\ge1$.  The map
+\[
+ a\longmapsto P_n(a,q)
+\]
+is positive and strictly decreasing from $+\infty$ to $0$ on
+$(-\infty,1)$.  Consequently, for every $y>0$ there is a unique real solution
+$a<1$ of $P_n(a,q)=y$.
+\end{theorem}
+\begin{proof}
+For $a<1$ every factor is positive and
+\[
+ \partial_a\log P_n(a,q)
+ =-\sum_{j=0}^{n-1}\frac{q^j}{1-aq^j}<0.
+\]
+The limit at $a\to1^-$ is $0$.  As $a\to-\infty$, the leading term
+$(-a)^nq^{n(n-1)/2}$ tends to $+\infty$.
+\end{proof}
+
+This theorem gives a canonical real sheet.  The remaining $n-1$ sheets are
+essential for complex continuation and for the $q\to\infty$ analysis below.
+
+\section{Reversion at $a=0$}
+The finite $q$-binomial theorem gives
+\begin{equation}\label{eq:finite-a-expansion}
+ P_n(a,q)=\sum_{r=0}^n(-a)^r E_r(n,q),
+ \qquad E_r(n,q)=q^{r(r-1)/2}\qbinom{n}{r}{q}.
+\end{equation}
+Thus $E_1=[n]_q$.  Put $z=1-y$.
+
+\begin{proposition}[Inverse at the unit level]\label{prop:a-inverse-zero}
+If $E_1(n,q)\ne0$, the branch with $a(1)=0$ is
+\begin{align}
+ a={}&\frac{z}{E_1}+\frac{E_2}{E_1^3}z^2
+ +\left(\frac{2E_2^2}{E_1^5}-\frac{E_3}{E_1^4}\right)z^3
+ \notag\\
+ &+\left(\frac{5E_2^3}{E_1^7}
+ -\frac{5E_2E_3}{E_1^6}+\frac{E_4}{E_1^5}\right)z^4
+ +\OO(z^5).\label{eq:a-inverse-zero}
+\end{align}
+\end{proposition}
+\begin{proof}
+Equation \eqref{eq:finite-a-expansion} says
+$z=E_1a-E_2a^2+E_3a^3-E_4a^4+\cdots$.  Apply
+\cref{thm:regular-inverse}, or equate coefficients directly.
+\end{proof}
+
+At $q=1$, $E_r=\binom nr$ and \eqref{eq:a-inverse-zero} sums to the exact
+branch $a=1-y^{1/n}$.  At a nontrivial root of unity, the hypothesis can fail
+in a structured way.
+
+\begin{theorem}[Root-of-unity ramification at $a=0$]\label{thm:a-zero-root-unity}
+Let $\zeta$ be a primitive $d$-th root of unity and write $n=md+r$ with
+$0\le r<d$.
+\begin{enumerate}
+\item If $r>0$, then $[n]_\zeta=[r]_\zeta\ne0$ and the inverse at $a=0$
+      is regular.
+\item If $r=0$, then
+\[
+ P_n(a,\zeta)=(1-a^d)^m=1-ma^d+\OO(a^{2d}),
+\]
+so the inverse has $d$ Puiseux sheets
+\[
+ a=\omega\left(\frac{1-y}{m}\right)^{1/d}
+ +\OO\bigl((1-y)^{2/d}\bigr),\qquad \omega^d=1.
+\]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Group the factors into complete residue blocks modulo $d$ and use
+$\prod_{j=0}^{d-1}(1-a\zeta^j)=1-a^d$.  If a partial block remains, its
+linear coefficient is $-[r]_\zeta\ne0$.
+\end{proof}
+
+\section{Inversion at the Pochhammer zeros}
+Let $a_r=q^{-r}$, $0\le r<n$, and assume $q\ne0$ and that the zeros are
+distinct.  Define
+\[
+ R_{n,r}(q)=\prod_{\substack{0\le j<n\\j\ne r}}(1-q^{j-r})
+ =(-1)^rq^{-r(r+1)/2}(q;q)_r(q;q)_{n-1-r}.
+\]
+Then
+\begin{equation}\label{eq:poch-a-derivative-root}
+ \partial_aP_n(a_r,q)
+ =-q^rR_{n,r}(q)
+ =(-1)^{r+1}q^{-r(r-1)/2}(q;q)_r(q;q)_{n-1-r}.
+\end{equation}
+
+\begin{proposition}[Local inverse at a simple zero]
+Under the preceding hypotheses, the sheet through $a_r$ is
+\[
+ a=a_r+\frac{y}{P_a(a_r,q)}
+ -\frac{P_{aa}(a_r,q)}{2P_a(a_r,q)^3}y^2+\OO(y^3).
+\]
+\end{proposition}
+
+At a root of unity several zeros may coalesce.
+
+\begin{proposition}[Multiplicity at a root of unity]\label{prop:root-unity-a-mult}
+Let $\zeta$ be primitive of order $d$, let $n=md+r$, $0\le r<d$, and let
+$a_0=\zeta^{-s}$, $0\le s<d$.  As a function of $a$, the zero of
+$P_n(a,\zeta)$ at $a_0$ has multiplicity
+\[
+ \mu_s=m+\mathbf 1_{\{0\le s<r\}}.
+\]
+Consequently, the inverse at $y=0$ has $\mu_s$ Puiseux sheets.
+\end{proposition}
+\begin{proof}
+A factor vanishes exactly when its index is congruent to $s$ modulo $d$.
+Among $0,\ldots,n-1$, that residue occurs $m$ times and once more precisely
+when it belongs to the partial block $0,\ldots,r-1$.
+\end{proof}
+
+\section{Exact inverses at $q=0,1,-1$}
+Three bases collapse the $a$-equation to elementary algebra.
+
+At $q=0$,
+\[
+ P_n(a,0)=1-a,
+ \qquad a=1-y.
+\]
+At $q=1$,
+\[
+ P_n(a,1)=(1-a)^n,
+ \qquad a=1-\omega y^{1/n},\quad \omega^n=1.
+\]
+At $q=-1$, put $u=\lceil n/2\rceil$, $v=\lfloor n/2\rfloor$.  Then
+\begin{equation}\label{eq:finite-at-minus-one}
+ P_n(a,-1)=(1-a)^u(1+a)^v.
+\end{equation}
+If $n=2m$, this becomes $(1-a^2)^m$, and the inverse is exactly
+\[
+ a=\pm\sqrt{1-y^{1/m}},
+\]
+with all choices of the $m$-th root included in the complex correspondence.
+The double branch at $a=0,y=1$ is forced by evenness.  If $n=2m+1$, then
+$P_n=(1-a)(1-a^2)^m$ and the sheet at $a=0$ is regular because
+$P_a(0,-1)=-1$.
+
+\section{The $a$-inverse for $q$ near $0$ and $1$}
+Fix $y$ and regard $a=a(q;y)$.  For the branch satisfying $a(0)=1-y$,
+formal implicit reversion gives, for $n\ge5$ through the displayed order,
+\begin{align}
+ a={}&1-y+y(y-1)q-2y(y-1)^2q^2 \notag\\
+ &+y(y-1)^2(5y-3)q^3
+ -y(y-1)^2(2y-1)(7y-5)q^4+\OO(q^5).
+ \label{eq:a-inverse-q-zero}
+\end{align}
+The coefficient of $q^M$ stabilizes once $n>M$ because the omitted factors
+begin at $q^n$.
+
+For $q=e^t$ near $1$, choose an $n$-th root $r=y^{1/n}$ and the branch
+$a(0)=1-r$.  Implicit differentiation yields
+\begin{align}
+ a(t)={}&1-r-\frac{(n-1)(1-r)}2t\notag\\
+ &+\frac{(n-1)(1-r)(3nr-n-3r-1)}{24r}t^2
+ +\OO(t^3).\label{eq:a-near-q-one-finite}
+\end{align}
+The different choices of $r$ parametrize the $n$ complex sheets.
+
+\section{All $a$-branches as $q\to\infty$}
+The polynomial equation $P_n(a,q)=y$ has $n$ asymptotic $a$-branches.  This
+is more informative than following only the global real branch.
+
+\begin{theorem}[$a$-branch atlas at large base]\label{thm:a-branches-infty}
+Let $y\ne0$ be fixed and $q\to\infty$ in a sector.  For
+$0\le r\le n-2$, put
+\[
+ M_r=\frac{(n-1-r)(n-r)}2.
+\]
+There is a branch near the moving zero $q^{-r}$ with
+\begin{equation}\label{eq:a-large-q-moving}
+ a_r(q)=q^{-r}\left(1+(-1)^{n-r}yq^{-M_r}
+ +\OO(q^{-M_r-1})+\OO(q^{-2M_r})\right).
+\end{equation}
+The remaining branch has the full expansion
+\begin{align}
+ a_{n-1}(q)=q^{-(n-1)}\bigl(&1-y+y(y-1)q^{-1}
+ -2y(y-1)^2q^{-2}\notag\\
+ &+y(y-1)^2(5y-3)q^{-3}+\OO(q^{-4})\bigr).
+ \label{eq:a-large-q-last}
+\end{align}
+The same formal Laurent series describe $q\to-\infty$, with the signs already
+encoded by powers of $q^{-1}$.
+\end{theorem}
+\begin{proof}
+For $r\le n-2$, set $a=q^{-r}(1+\eps)$.  The vanishing factor is
+$1-aq^r=-\eps$, factors with $j<r$ tend to $1$, and those with $j>r$ have
+product $(-1)^{n-1-r}q^{M_r}(1+o(1))$.  Solving the leading equation gives
+\eqref{eq:a-large-q-moving}.  For the final branch write
+$a=q^{-(n-1)}c$ and $s=q^{-1}$.  Then
+\[
+ P_n(a,q)=(c;s)_n.
+\]
+The branch $c(0)=1-y$ is exactly the small-$s$ inverse
+\eqref{eq:a-inverse-q-zero}, proving \eqref{eq:a-large-q-last}.
+\end{proof}
+
+\chapter{Inversion in the base $q$}
+
+Let
+\[
+ N=\frac{n(n-1)}2.
+\]
+For fixed $a$, $P_n(a,q)$ is a polynomial of degree $N$ in $q$, except in
+degenerate cases.  Hence a generic base inverse has $N$ complex branches.
+
+\section{A canonical real branch on $0\le q\le1$}
+\begin{theorem}[Global finite base inverse]\label{thm:global-q-finite}
+Let $n\ge2$.
+\begin{enumerate}
+\item If $0<a<1$, then $q\mapsto P_n(a,q)$ is strictly decreasing on
+$[0,1]$ from $1-a$ to $(1-a)^n$.
+\item If $a<0$, it is strictly increasing on $[0,1]$ from $1-a$ to
+$(1-a)^n$.
+\end{enumerate}
+Thus every level strictly between the endpoint values has one and only one
+real inverse $q\in(0,1)$.
+\end{theorem}
+\begin{proof}
+For $0<q<1$,
+\[
+ \partial_q\log P_n(a,q)
+ =-a\sum_{j=1}^{n-1}\frac{j q^{j-1}}{1-aq^j}.
+\]
+All denominators are positive.  The sign is therefore $-\operatorname{sgn}a$.
+\end{proof}
+
+The cases $a=0$, $a=1$, $n=0$, and $n=1$ are constant in $q$ and have no
+local base inverse.
+
+\section{The stable inverse series at $q=0$}
+For $a\notin\{0,1\}$ define the normalized level coordinate
+\begin{equation}\label{eq:x-normalization-qzero}
+ x=\frac{y-(1-a)}{a^2-a}.
+\end{equation}
+Then $x=q+\OO(q^2)$.
+
+\begin{theorem}[Stable small-base reversion]\label{thm:stable-qzero}
+For the infinite formal product, and for the finite product whenever $n>5$,
+\begin{align}
+ q={}&x-x^2+(a+1)x^3-(4a+1)x^4\notag\\
+ &+(3a^2+11a+1)x^5+\OO(x^6).
+ \label{eq:qzero-stable}
+\end{align}
+More generally, the coefficient through $x^M$ agrees with the infinite-product
+coefficient whenever $n>M$.
+\end{theorem}
+\begin{proof}
+The quotient of $(a;q)_\infty$ by $(a;q)_n$ is
+$(aq^n;q)_\infty=1+\OO(q^n)$.  Therefore the direct $q$-series agree through
+$q^{n-1}$, and formal inversion preserves agreement through the same order.
+Direct reversion gives \eqref{eq:qzero-stable}.
+\end{proof}
+
+The low-degree exceptions are important enough to record:
+\begin{align*}
+ n=2:\quad q={}&x,\\
+ n=3:\quad q={}&x-x^2+(a+2)x^3-5(a+1)x^4
+ +(3a^2+21a+14)x^5+\OO(x^6),\\
+ n=4:\quad q={}&x-x^2+(a+1)x^3-4ax^4
+ +(3a^2+10a-4)x^5+\OO(x^6),\\
+ n=5:\quad q={}&x-x^2+(a+1)x^3-(4a+1)x^4
+ +(3a^2+11a+2)x^5+\OO(x^6).
+\end{align*}
+These identities were also checked exactly in the companion SymPy script.
+
+\section{Logarithmic inversion at $q=1$}
+Set $q=e^t$ and
+\[
+ u=\Log\frac{P_n(a,e^t)}{(1-a)^n}.
+\]
+Let $S_m(n)=\sum_{j=0}^{n-1}j^m$.  Expanding the logarithm of every factor
+gives the exact jet
+\begin{equation}\label{eq:finite-cumulants-qone}
+ u=\sum_{m\ge1}\frac{c_m}{m!}t^m,
+ \qquad c_m=-S_m(n)\Li_{1-m}(a).
+\end{equation}
+Thus the inverse $t=t(u)$ is obtained from
+\eqref{eq:universal-reversion}.  Explicitly,
+\begin{align}
+ t={}&\frac{u}{c_1}-\frac{c_2}{2c_1^3}u^2
+ +\frac{3c_2^2-c_1c_3}{6c_1^5}u^3+\OO(u^4),
+ \label{eq:finite-qone-inverse-t}\\
+ q={}&\exp(t).
+\end{align}
+The first direct derivative is
+\[
+ \partial_qP_n(a,1)=-aS_1(n)(1-a)^{n-1},
+\]
+so, in the raw level coordinate,
+\begin{equation}\label{eq:finite-qone-linear}
+ q-1=-\frac{y-(1-a)^n}{aS_1(n)(1-a)^{n-1}}
+ +\OO\bigl((y-(1-a)^n)^2\bigr).
+\end{equation}
+The inverse is regular unless $a=0$, $a=1$, or $n\le1$.
+
+\section{The complete Puiseux construction at $q=\infty$}
+Factor
+\begin{equation}\label{eq:finite-q-infty-factor}
+ P_n(a,q)=C(a)q^NH(q^{-1}),
+\quad C(a)=(1-a)(-a)^{n-1},
+\quad H(s)=\prod_{j=1}^{n-1}(1-a^{-1}s^j).
+\end{equation}
+Assume $a\notin\{0,1\}$ and $y\to\infty$.  Choose an $N$-th root
+$x=(C/y)^{1/N}$ and solve
+\begin{equation}\label{eq:s-lagrange-infty}
+ s=xH(s)^{1/N},\qquad q=s^{-1}.
+\end{equation}
+Lagrange inversion gives the all-orders coefficient formula
+\begin{equation}\label{eq:s-coeff-infty}
+ [x^m]s(x)=\frac1m[u^{m-1}]H(u)^{m/N}.
+\end{equation}
+Every choice of $x$ gives one sheet.  For $n\ge3$ the first terms are
+\begin{equation}\label{eq:q-infty-finite-first}
+ q=x^{-1}+\frac1{aN}
+ +\left(\frac1{aN}+\frac{N-1}{2N^2a^2}\right)x+\OO(x^2).
+\end{equation}
+For $n=2$, this reduces to the exact linear inverse
+$q=x^{-1}+a^{-1}$.  The negative-real asymptotic $q\to-\infty$ is not a
+separate formula: it is the sheet for which the leading root $x^{-1}$ is
+negative real.  The parity of $N$ and the sign of $C(a)$ determine which real
+levels reach that sheet.
+
+\section{Zeros in the $q$-plane}
+For fixed $a\ne0$, every equation
+\[
+ q^r=a^{-1},\qquad 1\le r<n,
+\]
+produces zeros of $P_n$ as a function of $q$.  If $q_0$ makes only the
+$r$-th factor vanish, then
+\begin{equation}\label{eq:qzero-derivative-general}
+ P_q(a,q_0)=-arq_0^{r-1}
+ \prod_{\substack{0\le j<n\\j\ne r}}(1-aq_0^j),
+\end{equation}
+and the inverse at $y=0$ is regular.  If several indices satisfy
+$aq_0^j=1$, their number is the zero multiplicity and
+\cref{thm:puiseux} applies.  Such collisions occur precisely on arithmetic
+strata involving roots of unity.
+
+\section{The exceptional geometry at $q=-1$}
+For $a\ne\pm1$, the logarithmic base derivative at $q=-1$ is
+\begin{equation}\label{eq:logder-minusone}
+ \frac{P_q(a,-1)}{P_n(a,-1)}
+ =a\left(\frac{S_{\mathrm{even}}}{1-a}
+          -\frac{S_{\mathrm{odd}}}{1+a}\right),
+\end{equation}
+where the sums run over $0\le j<n$.  Evaluation gives the following complete
+classification apart from constant degeneracies.
+
+\begin{theorem}[Critical Pochhammer parameters at $q=-1$]\label{thm:critical-minus-one}
+\begin{enumerate}
+\item If $n=2m$, then
+\[
+ \frac{P_q}{P}=\frac{am((2m-1)a-1)}{1-a^2}.
+\]
+For $m\ge2$, the nontrivial critical parameter is
+$a_c=(2m-1)^{-1}$ and
+\[
+ \left.\frac{P_{qq}}P\right|_{(a_c,-1)}
+ =-\frac{(m+1)(2m-1)^2}{12m(m-1)}\ne0.
+\]
+The inverse therefore has a square-root branch at
+$y_c=P_n(a_c,-1)$.
+\item If $n=2m+1$, then
+\[
+ \frac{P_q}{P}=\frac{am(1+(2m+1)a)}{1-a^2}.
+\]
+For $m\ge2$, the critical parameter is $a_c=-(2m+1)^{-1}$ and
+\[
+ \left.\frac{P_{qq}}P\right|_{(a_c,-1)}
+ =-\frac{(m-1)(2m+1)^2}{12m(m+1)}\ne0.
+\]
+Again the inverse is square-root ramified.
+\item The exceptional case $n=3$, $a=-1/3$ is cubic rather than quadratic:
+\[
+ P_3(-1/3,q)=\frac{32}{27}+\frac4{27}(q+1)^3.
+\]
+Hence
+\[
+ q=-1+\left(\frac{27}{4}\left(y-\frac{32}{27}\right)\right)^{1/3}
+\]
+with three local branches.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Equation \eqref{eq:logder-minusone} follows by differentiating the product.
+The even and odd arithmetic sums give the displayed first derivatives.
+A second differentiation and elementary power sums give the two ratios for
+$P_{qq}/P$.  The cubic identity in the last case is an exact expansion.
+\end{proof}
+
+\section{General roots of unity}
+Let $q=\zeta$ be primitive of order $d$.  The direct product value is
+\[
+ P_n(a,\zeta)=(1-a^d)^m(a;\zeta)_r,
+ \qquad n=md+r,\quad 0\le r<d.
+\]
+The derivative criterion
+\[
+ -a\sum_{j=1}^{n-1}\frac{j\zeta^{j-1}}{1-a\zeta^j}\ne0
+\]
+ensures an ordinary local $q$-inverse.  Its vanishing defines an explicit
+algebraic critical locus in $a$.  When a factor also vanishes, one first
+extracts all zero factors and applies the Newton polygon to the residual
+two-variable germ.  This produces a finite, algorithmic classification of
+root-of-unity branches for every fixed $n$.
+
+\part{Infinite products and complex order}
+
+\chapter{The infinite $q$-Pochhammer inverse}
+
+Assume initially $|q|<1$.  The product
+\[
+ P_\infty(a,q):=(a;q)_\infty
+\]
+is entire in $a$, while its dependence on $q$ is naturally tied to the unit
+disk.  The Lambert-series identity
+\begin{equation}\label{eq:lambert-log}
+ \Log(a;q)_\infty
+ =-\sum_{m\ge1}\frac{a^m}{m(1-q^m)}
+\end{equation}
+holds absolutely for $|a|<1$, $|q|<1$ and extends by analytic continuation in
+$a$ away from chosen logarithmic cuts.  It is the central tool for inverse
+asymptotics.
+
+\section{Global real inverses in $a$ and $q$}
+\begin{theorem}[Global real sheets for the infinite product]\label{thm:global-infinite}
+Fix $0<q<1$.  The function $a\mapsto(a;q)_\infty$ is positive and strictly
+decreasing from $+\infty$ to $0$ on $(-\infty,1)$, so it has a unique real
+$a$-inverse for every $y>0$.
+
+Fix instead $a\in(-\infty,1)\setminus\{0\}$.  On $0\le q<1$ the function is
+strictly decreasing when $0<a<1$ and strictly increasing when $a<0$.  Its
+ranges are
+\[
+ 0<a<1:\quad (0,1-a],
+ \qquad
+ a<0:\quad [1-a,\infty).
+\]
+Hence it has a unique real base inverse on the corresponding range.
+\end{theorem}
+\begin{proof}
+The $a$-derivative is
+\[
+ \partial_a\Log(a;q)_\infty
+ =-\sum_{j\ge0}\frac{q^j}{1-aq^j}<0
+\]
+for $a<1$.  The large negative-$a$ limit follows, for example, by retaining an
+increasing number of factors with $|a|q^j\ge1$.  The base derivative has the
+same sign calculation as in \cref{thm:global-q-finite}.  Finally,
+\eqref{eq:lambert-log} and the $q\to1$ asymptotic below show convergence to
+$0$ for $0<a<1$ and divergence to $+\infty$ for $a<0$.
+\end{proof}
+
+\section{The $a$-inverse at $a=0$}
+Euler's expansion gives
+\[
+ (a;q)_\infty=\sum_{r\ge0}
+ \frac{(-1)^rq^{r(r-1)/2}}{(q;q)_r}a^r.
+\]
+Substitution into \eqref{eq:a-inverse-zero} yields an explicit branch.  With
+$z=1-y$,
+\begin{align}
+ a={}&(1-q)z+\frac{q(1-q)}{1+q}z^2\notag\\
+ &+\frac{q^2(1-q)(q^2+q+2)}{(1+q)^2(1+q+q^2)}z^3
+ +\OO(z^4).\label{eq:ainf-near-zero}
+\end{align}
+This expansion is valid away from roots of the displayed cyclotomic
+denominators, and elsewhere after the appropriate Puiseux rescaling.
+
+\section{The $a$-inverse at the first zero $a=1$}
+Let
+\[
+ C(q)=(q;q)_\infty,
+ \qquad S_r(q)=\sum_{j\ge1}\left(\frac{q^j}{1-q^j}\right)^r,
+ \qquad w=\frac{y}{C(q)}.
+\]
+Writing $z=1-a$ gives
+\[
+ (a;q)_\infty=C(q)z
+ \exp\left(S_1z-\frac{S_2}{2}z^2+\frac{S_3}{3}z^3-\cdots\right).
+\]
+Therefore
+\begin{equation}\label{eq:ainf-near-one}
+ 1-a=w-S_1w^2+\frac{3S_1^2+S_2}{2}w^3+\OO(w^4).
+\end{equation}
+At the general zero $a_r=q^{-r}$, $r\ge0$, one has
+\begin{equation}\label{eq:infinite-a-derivative-root}
+ \partial_a(a;q)_\infty\big|_{a=q^{-r}}
+ =(-1)^{r+1}q^{-r(r-1)/2}(q;q)_r(q;q)_\infty,
+\end{equation}
+so every zero is simple when $q$ is not a root of unity and the local inverse
+is ordinary Taylor.
+
+\section{The base inverse at $q=0$}
+The stable finite formula \eqref{eq:qzero-stable} is exactly the infinite
+formula:
+\[
+ x=\frac{y-(1-a)}{a^2-a},
+\]
+\begin{equation}\label{eq:qinftyprod-qzero}
+ q=x-x^2+(a+1)x^3-(4a+1)x^4
+ +(3a^2+11a+1)x^5+\OO(x^6).
+\end{equation}
+Conversely, fixing $y$ and inverting in $a$ gives the all-product version of
+\eqref{eq:a-inverse-q-zero}:
+\begin{align}
+ a={}&1-y+y(y-1)q-2y(y-1)^2q^2\notag\\
+ &+y(y-1)^2(5y-3)q^3
+ -y(y-1)^2(2y-1)(7y-5)q^4+\OO(q^5).
+ \label{eq:ainf-qzero-fixed-y}
+\end{align}
+
+\section{Singular base inversion at $q\to1^-$}
+Put $q=e^{-t}$, $t\downarrow0$, and fix $a$ in a compact subset of a domain
+where the chosen branches are analytic.  The McIntosh expansion
+\cite{McIntosh1999,DLMFq} is
+\begin{align}
+ \Log(a;e^{-t})_\infty
+={}&-\frac{\Li_2(a)}{t}+\frac12\Log(1-a)\notag\\
+ &-\sum_{r=1}^{M-1}\frac{B_{2r}}{(2r)!}
+ t^{2r-1}\Li_{2-2r}(a)+\OO(t^{2M-1}).
+ \label{eq:mcintosh}
+\end{align}
+For $0<a<1$, let
+\[
+ Y=-\log y,\quad
+ A=\Li_2(a),\quad B=\frac12\log(1-a),
+\]
+\[
+ C=\frac{\Li_0(a)}{12}=\frac{a}{12(1-a)},
+ \qquad E=\frac{\Li_{-2}(a)}{720}
+ =\frac{a(1+a)}{720(1-a)^3},
+ \qquad \Lambda=Y+B.
+\]
+Then \eqref{eq:singular-master} gives the base inverse
+\begin{equation}\label{eq:qone-infinite-t-inverse}
+ t=\frac{A}{\Lambda}
+ +\frac{A^2C}{\Lambda^3}
+ +\frac{2A^3C^2-A^4E}{\Lambda^5}
+ +\OO(\Lambda^{-7}),
+ \qquad q=e^{-t}.
+\end{equation}
+In particular,
+\begin{align}
+ q={}&1-\frac{A}{\Lambda}+\frac{A^2}{2\Lambda^2}
+ -\frac{A^3/6+A^2C}{\Lambda^3}+\OO(\Lambda^{-4}).
+ \label{eq:qone-infinite-q-inverse}
+\end{align}
+The numerical table in the appendix shows the expected gain of two inverse
+powers of $\Lambda$ at each correction.
+
+\begin{remark}[Complex sectors and exponentially small terms]
+Formula \eqref{eq:mcintosh} is a Poincar\'e expansion.  A complete global
+inverse requires a branch of $\Li_2(a)$ and $\Log(1-a)$ and, near Stokes
+rays, exponentially small modular or resurgence corrections.  These effects
+are invisible to algebraic powers of $1/\Lambda$ but can move the inverse by an
+amount comparable with the least term of the expansion.
+\end{remark}
+
+\section{Fixed level, $a$-inversion as $q\to1$}
+The previous regime holds $a$ fixed and sends $y$ to zero.  A different and
+important inverse problem fixes $0<y<1$ and lets $a=a(t)$ tend to zero.  Put
+$L=-\log y$.  Substituting a power series into the Lambert sum gives
+\begin{align}
+ a(t)={}&Lt-\frac{L(L+2)}4t^2
+ +\frac{L(L^2+9L+12)}{72}t^3\notag\\
+ &-\frac{L(L^3+4L^2+12L+24)}{576}t^4
+ +\OO(t^5).
+ \label{eq:a-fixed-level-qone}
+\end{align}
+This is a regular series in $t$, not in $1/\log y$.  It describes the moving
+level curves that terminate at the corner $(a,q)=(0,1)$.
+
+\begin{proof}[Derivation]
+From \eqref{eq:lambert-log},
+\[
+ L=\sum_{m\ge1}\frac{a^m}{m(1-e^{-mt})}.
+\]
+Use
+$1/(1-e^{-x})=x^{-1}+\tfrac12+x/12-x^3/720+\cdots$, insert
+$a=c_1t+c_2t^2+\cdots$, and solve successively.  The first four equations give
+\eqref{eq:a-fixed-level-qone}.
+\end{proof}
+
+\section{Radial asymptotics at every root of unity}
+The singular point $q=1$ is one member of a family.  Let $\zeta$ be primitive
+of order $d$ and approach it radially by
+\[
+ q=\zeta e^{-t},\qquad t\downarrow0.
+\]
+Group factors by their residue class modulo $d$:
+\begin{equation}\label{eq:root-unity-factorization-infinite}
+ (a;\zeta e^{-t})_\infty
+ =\prod_{r=0}^{d-1}
+ (a\zeta^re^{-rt};e^{-dt})_\infty.
+\end{equation}
+
+\begin{theorem}[Root-of-unity dilogarithm law]\label{thm:root-unity-dilog}
+Let $|a|<1$ and fix compatible logarithm branches.  As $t\to0$ in a sector,
+\begin{align}
+ \Log(a;\zeta e^{-t})_\infty
+={}&-\frac{\Li_2(a^d)}{d^2t}+C_{d,\zeta}(a)+\OO(t),
+ \label{eq:root-unity-asymptotic}\\
+ C_{d,\zeta}(a)
+={}&\sum_{r=0}^{d-1}\left(\frac12-\frac rd\right)
+       \Log(1-a\zeta^r).\label{eq:root-unity-constant}
+\end{align}
+\end{theorem}
+\begin{proof}
+Apply \eqref{eq:mcintosh} with base $e^{-dt}$ to every factor in
+\eqref{eq:root-unity-factorization-infinite}.  The leading term is
+\[
+ -\frac1{dt}\sum_{r=0}^{d-1}\Li_2(a\zeta^r).
+\]
+The root-of-unity filter gives
+\[
+ \sum_{r=0}^{d-1}\Li_2(a\zeta^r)
+ =\frac1d\Li_2(a^d).
+\]
+The parameter $a\zeta^re^{-rt}$ contributes
+$-(r/d)\Log(1-a\zeta^r)$ from the first-order expansion of its dilogarithm,
+while McIntosh contributes $\tfrac12\Log(1-a\zeta^r)$.  Summing gives
+\eqref{eq:root-unity-constant}.
+\end{proof}
+
+\begin{corollary}[Base inverse near a root of unity]\label{cor:q-root-unity-inverse}
+Let $y=(a;q)_\infty$ tend to zero along a branch for which
+$A_d=\Li_2(a^d)/d^2\ne0$.  Put $Y=-\Log y$ and
+$\Lambda=Y+C_{d,\zeta}(a)$.  Then
+\[
+ t=\frac{A_d}{\Lambda}+\OO(\Lambda^{-3}),
+ \qquad q=\zeta\exp\left(-\frac{A_d}{\Lambda}
+ +\OO(\Lambda^{-3})\right).
+\]
+Higher terms follow by carrying \eqref{eq:root-unity-asymptotic} to higher
+order and applying \eqref{eq:singular-master}.
+\end{corollary}
+
+\begin{corollary}[Universal fixed-level Puiseux scale]\label{cor:a-root-unity-scale}
+Fix $y=e^{-L}$ with $L\ne0$.  On branches tending to $a=0$,
+\begin{equation}\label{eq:a-root-unity-leading}
+ a^d\sim d^2Lt,
+ \qquad
+ a\sim\omega(d^2Lt)^{1/d},\quad \omega^d=1.
+\end{equation}
+Thus radial inversion in $a$ has exponent $1/d$ at a primitive $d$-th root of
+unity.
+\end{corollary}
+\begin{proof}
+For small $a$, $\Li_2(a^d)=a^d+\OO(a^{2d})$.  Insert this into
+\eqref{eq:root-unity-asymptotic} while keeping $L$ fixed.
+\end{proof}
+
+The exponent $1/d$ is the analytic counterpart of the exact finite identity
+$(a;\zeta)_{md}=(1-a^d)^m$.
+
+\section{The radial point $q=-1$ in detail}
+Take $d=2$, $\zeta=-1$.  The exact factorization is
+\[
+ (a;-e^{-t})_\infty
+ =(a;e^{-2t})_\infty(-ae^{-t};e^{-2t})_\infty.
+\]
+For $0<a<1$, expansion to the first correction gives
+\begin{equation}\label{eq:minus-one-infinite-fixed-a}
+ \log(a;-e^{-t})_\infty
+ =-\frac{\Li_2(a^2)}{4t}+\frac12\log(1-a)
+ -\frac{a(a+3)}{12(1-a^2)}t+\OO(t^3).
+\end{equation}
+There is no $t^2$ term.  If
+\[
+ A_-={\Li_2(a^2)\over4},\qquad
+ B_-={1\over2}\log(1-a),\qquad
+ C_-={a(a+3)\over12(1-a^2)},
+\]
+then
+\begin{equation}\label{eq:minus-one-inverse-t}
+ t=\frac{A_-}{Y+B_-}
+ +\frac{A_-^2C_-}{(Y+B_-)^3}+\OO(Y^{-5}),
+ \qquad q=-e^{-t}.
+\end{equation}
+
+For the complementary fixed-level inverse, $a=\OO(t^{1/2})$.  Solving the
+Lambert series in powers of $s=t^{1/2}$ gives the more precise positive branch
+\begin{align}
+ a={}&2\sqrt{Lt}-t
+ +\frac{\tfrac14-L-L^2}{\sqrt L}t^{3/2}
+ +\frac{4L+3}{6}t^2+\OO(t^{5/2}).
+ \label{eq:a-fixed-level-minus-one}
+\end{align}
+The negative branch and the complex branches are obtained by the appropriate
+choice of the leading square root, followed by coefficient recursion.
+
+\section{Why $q=\pm\infty$ is different for the infinite product}
+The product $(a;q)_\infty$ does not converge when $|q|>1$.  Therefore a
+statement about its inverse at $q=\pm\infty$ is meaningless until a specific
+regularization or reciprocal-base continuation is chosen.  Finite products
+have the canonical algebraic theory of \cref{eq:q-infty-finite-first}; complex
+orders can be continued using reciprocal-base definitions; but two different
+regularizations of the infinite product can differ by exponential factors and
+produce different inverse asymptotics.  This report consequently treats
+$q=\pm\infty$ canonically for finite products and for functions such as
+$\Gamma_q$ that possess a standard reciprocal-base definition.
+
+\chapter{Inversion in the complex order and truncation index}
+
+For $|q|<1$, define the complex-order shifted factorial by
+\begin{equation}\label{eq:complex-order}
+ (a;q)_\alpha=\frac{(a;q)_\infty}{(aq^\alpha;q)_\infty},
+\end{equation}
+with a chosen branch of $q^\alpha=e^{\alpha\Log q}$.
+
+\section{Global real order inverse}
+\begin{theorem}[Monotone order branch]\label{thm:alpha-global}
+Let $0<a,q<1$.  The map
+\[
+ \alpha\longmapsto(a;q)_\alpha
+\]
+is strictly decreasing on $[0,\infty)$ from $1$ to $(a;q)_\infty$.
+Consequently every $y\in((a;q)_\infty,1]$ has a unique real inverse order.
+\end{theorem}
+\begin{proof}
+Differentiating \eqref{eq:complex-order} gives
+\begin{equation}\label{eq:alpha-logder}
+ \partial_\alpha\Log(a;q)_\alpha
+ =\Log q\sum_{j\ge0}\frac{aq^{\alpha+j}}{1-aq^{\alpha+j}}<0.
+\end{equation}
+The endpoints follow directly from the definition.
+\end{proof}
+
+\section{Series at order $\alpha=0$}
+Put $u=\Log y$ and
+\[
+ c_m=(\Log q)^m\sum_{j\ge0}\Li_{1-m}(aq^j),\qquad m\ge1.
+\]
+Then
+\[
+ \Log(a;q)_\alpha
+ =\sum_{m\ge1}\frac{c_m}{m!}\alpha^m,
+\]
+and hence
+\begin{align}
+ \alpha={}&\frac{u}{c_1}-\frac{c_2}{2c_1^3}u^2
+ +\frac{3c_2^2-c_1c_3}{6c_1^5}u^3+\OO(u^4).
+ \label{eq:alpha-near-zero-inverse}
+\end{align}
+The Lambert sums converge rapidly for fixed $q<1$ and give a practical local
+inverse without numerical differencing.
+
+\section{Large order and inversion of the tail}
+Let
+\[
+ P_\infty=(a;q)_\infty,
+ \qquad w=\frac{y}{P_\infty}-1,
+ \qquad z=aq^\alpha.
+\]
+As $\alpha\to\infty$, Euler's reciprocal expansion gives
+\[
+ 1+w=\frac1{(z;q)_\infty}
+ =1+\frac{z}{1-q}
+ +\frac{z^2}{(1-q)(1-q^2)}+\cdots.
+\]
+Reversion yields
+\begin{align}
+ z={}&(1-q)w-\frac{1-q}{1+q}w^2\notag\\
+ &+\frac{(1-q)(2q^2+q+1)}{(1+q)^2(1+q+q^2)}w^3
+ +\OO(w^4).
+ \label{eq:z-tail-inverse}
+\end{align}
+Therefore
+\begin{align}
+ \alpha={1\over\Log q}\biggl[&\Log\frac{(1-q)w}{a}
+ -\frac{w}{1+q}\notag\\
+ &+\frac{3q^2+q+1}{2(1+q)^2(1+q+q^2)}w^2
+ +\OO(w^3)\biggr].
+ \label{eq:alpha-large-inverse}
+\end{align}
+This logarithmic divergence quantifies how many factors are needed before a
+finite product is within a prescribed relative distance of the infinite one.
+
+\section{Recovering a discrete truncation index}
+For integer $n$ the sequence $(a;q)_n$ decreases to $P_\infty$.  Define
+\[
+ n_-(y)=\max\{n:(a;q)_n\ge y\},
+ \qquad P_\infty<y<1.
+\]
+The continuous inverse \eqref{eq:alpha-large-inverse} gives an asymptotically
+sharp estimate, and the exact discrete index is one of the two neighboring
+integers.  A certified algorithm evaluates those two finite products, avoiding
+any ambiguity caused by rounding a slowly varying logarithm.
+
+\section{Joint inversion and level-curve differential equations}
+For $F(a,q,\alpha)=(a;q)_\alpha$, a level surface $F=y$ satisfies
+\[
+ F_a\,da+F_q\,dq+F_\alpha\,d\alpha=0.
+\]
+Thus, for example,
+\[
+ \left.\frac{d\alpha}{dq}\right|_{a,y}
+ =-\frac{F_q}{F_\alpha},
+ \qquad
+ \left.\frac{da}{dq}\right|_{\alpha,y}
+ =-\frac{F_q}{F_a}.
+\]
+The logarithmic derivative representations make these ratios explicit Lambert
+series.  They are useful both analytically, for proving monotonicity, and
+numerically, as tangent predictors in continuation algorithms.
+
+\part{Gaussian coefficients and $q$-gamma inverses}
+
+\chapter{The base inverse of a Gaussian polynomial}
+
+Let
+\[
+ B_{n,k}(q)=\qbinom{n}{k}{q},
+ \qquad 0<k<n,
+ \qquad D=k(n-k).
+\]
+It is a monic reciprocal polynomial of degree $D$ with nonnegative integer
+coefficients:
+\begin{equation}\label{eq:qbinom-reciprocity}
+ B_{n,k}(q)=q^D B_{n,k}(q^{-1}).
+\end{equation}
+Its coefficient of $q^m$ counts partitions of $m$ fitting inside a
+$k\times(n-k)$ rectangle.
+
+\section{The unique positive inverse}
+\begin{theorem}[Global positive Gaussian inverse]\label{thm:qbinom-positive-inverse}
+The map $q\mapsto B_{n,k}(q)$ is strictly increasing from $1$ to $+\infty$ on
+$[0,\infty)$.  Therefore every $y\ge1$ has a unique inverse
+$Q_{n,k}(y)\ge0$.  For $y\ge\binom nk$,
+\begin{equation}\label{eq:qbinom-global-bounds}
+ \left(\frac{y}{\binom nk}\right)^{1/D}
+ \le Q_{n,k}(y)\le y^{1/D}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Every nonconstant coefficient is nonnegative and the coefficient of $q$ is
+$1$, so the derivative is positive for $q\ge0$.  For $q\ge1$, reciprocity and
+positivity give
+$q^D\le B_{n,k}(q)\le B_{n,k}(1)q^D=\binom nk q^D$.
+Invert these inequalities.
+\end{proof}
+
+This theorem isolates a canonical sheet among the $D$ complex branches.  It is
+also the best starting point for certified numerical inversion because
+bisection never loses the branch.
+
+\section{Partition-controlled reversion at $q=0$}
+Write
+\[
+ B_{n,k}(q)=1+\sum_{m\ge1}p_{k,n-k}(m)q^m,
+\]
+where $p_{r,s}(m)$ counts partitions of $m$ in an $r\times s$ rectangle.  Put
+$s=y-1$ and abbreviate
+\[
+ p_2=\mathbf1_{\{k\ge2\}}+\mathbf1_{\{n-k\ge2\}},
+\]
+\[
+ p_3=\mathbf1_{\{n-k\ge3\}}
+ +\mathbf1_{\{k\ge2,\ n-k\ge2\}}
+ +\mathbf1_{\{k\ge3\}}.
+\]
+Then
+\begin{equation}\label{eq:qbinom-qzero-inverse}
+ q=s-p_2s^2+(2p_2^2-p_3)s^3+\OO(s^4).
+\end{equation}
+All higher coefficients are universal polynomials in the rectangle partition
+numbers.  Lagrange--B\"urmann gives the compact all-orders formula
+\begin{equation}\label{eq:qbinom-lagrange-qzero}
+ [s^m]Q_{n,k}(1+s)
+ =\frac1m[z^{m-1}]
+ \left(\frac{z}{B_{n,k}(z)-1}\right)^m.
+\end{equation}
+
+\section{Bernoulli-cumulant inversion at $q=1$}
+Set $q=e^t$, $C_0=\binom nk$, and
+$u=\log(B_{n,k}(e^t)/C_0)$.  For
+\[
+ A_m(n,k)=\sum_{j=1}^k\bigl((n-k+j)^m-j^m\bigr),
+\]
+the exact formal expansion is
+\begin{equation}\label{eq:qbinom-cumulants}
+ u=\frac D2t+
+ \sum_{r\ge1}\frac{B_{2r}A_{2r}(n,k)}{2r(2r)!}t^{2r}.
+\end{equation}
+In particular,
+\[
+ A_2=D(n+1),
+ \qquad
+ A_4=D(n+1)\bigl(n(n+1)-D\bigr).
+\]
+Reversion gives
+\begin{align}
+ t={}&\frac{2u}{D}-\frac{n+1}{3D^2}u^2
+ +\frac{(n+1)^2}{9D^3}u^3\notag\\
+ &+\frac{(n+1)\{6[n(n+1)-D]-25(n+1)^2\}}
+ {540D^4}u^4+\OO(u^5),
+ \label{eq:qbinom-qone-inverse}\\
+ q={}&e^t.
+\end{align}
+
+\begin{proof}[Proof of the cumulant formula]
+For every positive integer $m$,
+\[
+ \log\frac{e^{mt}-1}{m(e^t-1)}
+ =\frac{m-1}{2}t+
+ \sum_{r\ge1}\frac{B_{2r}(m^{2r}-1)}{2r(2r)!}t^{2r}.
+\]
+Apply this identity to the product formula for $B_{n,k}$ and sum over
+$j=1,\ldots,k$.  The inverse series follows from ordinary reversion.
+\end{proof}
+
+The absence of odd cumulants beyond the linear term is a reciprocity effect.
+Indeed \eqref{eq:qbinom-reciprocity} implies that
+$e^{-Dt/2}B_{n,k}(e^t)$ is an even function of $t$.
+
+\section{Puiseux inversion at $q=\pm\infty$}
+Let $R=y^{1/D}$ on a chosen branch.  By reciprocity,
+\[
+ B_{n,k}(q)=q^D\left(1+q^{-1}+p_2q^{-2}+\OO(q^{-3})\right).
+\]
+Therefore
+\begin{equation}\label{eq:qbinom-infty-inverse}
+ q=R-\frac1D
+ +\left(\frac{D-1}{2D^2}-\frac{p_2}{D}\right)R^{-1}
+ +\OO(R^{-2}).
+\end{equation}
+The $D$ choices of $R$ are the $D$ inverse sheets at infinity.  A real
+$q\to-\infty$ branch exists for those real levels whose sign agrees with
+$q^D$; in particular, it reaches positive large $y$ when $D$ is even and
+negative large $y$ when $D$ is odd.
+
+The full expansion is algorithmic.  Substitute
+$q=R+c_0+c_1R^{-1}+\cdots$ into
+$q^DB_{n,k}(q^{-1})=R^D$ and solve recursively.  Only the first $m$
+partition coefficients are required for the inverse through $R^{1-m}$.
+
+\section{Exact local data at $q=-1$}
+The point $q=-1$ is especially clean.
+
+\begin{theorem}[Value and derivative at $-1$]\label{thm:qbinom-minus-one}
+Write $n=2m$ or $2m+1$.
+\begin{enumerate}
+\item If $n=2m$ and $k=2r+1$, then
+\begin{equation}\label{eq:qbinom-minusone-zero}
+ B_{2m,2r+1}(-1)=0,
+ \qquad
+ B'_{2m,2r+1}(-1)
+ =\frac{m!}{r!(m-r-1)!}.
+\end{equation}
+Thus the zero is simple and the inverse at $y=0$ is regular.
+\item In every other nontrivial case,
+\begin{equation}\label{eq:qbinom-minusone-value}
+ B_{n,k}(-1)=\binom{\lfloor n/2\rfloor}{\lfloor k/2\rfloor},
+ \qquad
+ B'_{n,k}(-1)=-\frac D2B_{n,k}(-1).
+\end{equation}
+The inverse is again regular.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The value is the $q$-Lucas theorem at a primitive square root of unity.  In the
+nonzero case $D$ is even; differentiating reciprocity at $q=-1$ gives
+$2B'(-1)=-DB(-1)$.  In the zero case, cancel the unique factor of
+$1+q$ in the cyclotomic factorization and evaluate the remaining product,
+which gives \eqref{eq:qbinom-minusone-zero}.
+\end{proof}
+
+Hence $q=-1$ itself creates no ramification for a nonconstant Gaussian
+polynomial: every level occurring there has nonzero first derivative.  This
+contrasts sharply with the Pochhammer family, where special $a$ values can
+force quadratic or cubic criticality.
+
+\section{Primitive roots of unity and cyclotomic valuation}
+Let $\zeta$ be primitive of order $d$ and write
+$n=ad+b$, $k=rd+s$, with $0\le b,s<d$.  The $q$-Lucas theorem states
+\begin{equation}\label{eq:q-lucas}
+ B_{n,k}(\zeta)=\binom ar B_{b,s}(\zeta).
+\end{equation}
+The exact exponent of the cyclotomic polynomial $\Phi_d(q)$ in $B_{n,k}$ is
+\begin{equation}\label{eq:cyclotomic-exponent}
+ e_d(n,k)=\left\lfloor\frac nd\right\rfloor
+ -\left\lfloor\frac kd\right\rfloor
+ -\left\lfloor\frac{n-k}{d}\right\rfloor\in\{0,1\}.
+\end{equation}
+Thus whenever $B_{n,k}(\zeta)=0$, the zero is simple.  The local inverse at
+$y=0$ is therefore analytic.  At nonzero root-of-unity values, criticality is
+not forced by cyclotomy; it is detected by the derivative of the residual
+polynomial.
+
+\section{The complex branch locus}
+For fixed $n,k$, the finite critical values are the roots in $y$ of
+\[
+ \Disc_q(B_{n,k}(q)-y).
+\]
+The radius of convergence of a local inverse series is bounded by the nearest
+critical value in the chosen $y$-plane.  Since the coefficients are real and
+the polynomial is reciprocal, critical points occur in conjugate and
+reciprocal patterns.  Determining their exact geometry is a finite algebraic
+problem for each rectangle, but no general closed classification appears to
+be known.  This motivates \cref{conj:qbinom-monodromy} below.
+
+\chapter{Continuous Gaussian parameters}
+
+For $0<q<1$, define
+\begin{equation}\label{eq:continuous-qbinom}
+ \mathcal B_q(\alpha,\beta)
+ =\frac{\Gamma_q(\alpha+1)}
+ {\Gamma_q(\beta+1)\Gamma_q(\alpha-\beta+1)}.
+\end{equation}
+This interpolates the Gaussian polynomial at integer parameters and makes
+inversion in ``$n$'' and ``$k$'' an analytic problem.
+
+\section{Inversion in the upper parameter}
+Let $\psi_q=\partial_x\log\Gamma_q$.  Then
+\begin{equation}\label{eq:continuous-alpha-derivative}
+ \partial_\alpha\log\mathcal B_q
+ =\psi_q(\alpha+1)-\psi_q(\alpha-\beta+1).
+\end{equation}
+Because $\psi_q$ is strictly increasing, this derivative is positive for
+$\beta>0$ on the domain $\alpha>\beta-1$.
+
+\begin{theorem}[Global continuous upper-parameter inverse]
+Fix $0<q<1$ and $\beta>0$.  The function
+$\alpha\mapsto\mathcal B_q(\alpha,\beta)$ is strictly increasing on
+$(\beta-1,\infty)$ from $0$ to
+\begin{equation}\label{eq:continuous-upper-limit}
+ \frac{1}{(1-q)^\beta\Gamma_q(\beta+1)}.
+\end{equation}
+It therefore has a unique real inverse for every level in this open range.
+\end{theorem}
+\begin{proof}
+Monotonicity follows from \eqref{eq:continuous-alpha-derivative}.  At the left
+endpoint the factor $\Gamma_q(\alpha-\beta+1)$ has a pole.  At infinity, the
+$q$-gamma quotient tends to $(1-q)^{-\beta}$.
+\end{proof}
+
+At a regular base point $(\alpha_0,y_0)$, put
+$u=\log(y/y_0)$ and
+\[
+ c_m=\psi_q^{(m-1)}(\alpha_0+1)
+      -\psi_q^{(m-1)}(\alpha_0-\beta+1).
+\]
+Then the inverse series is exactly \eqref{eq:universal-reversion} with
+$x=\alpha-\alpha_0$.
+
+\section{Inversion in the lower parameter and the central branch point}
+Differentiation gives
+\begin{equation}\label{eq:continuous-beta-derivative}
+ \partial_\beta\log\mathcal B_q
+ =\psi_q(\alpha-\beta+1)-\psi_q(\beta+1).
+\end{equation}
+The function is symmetric under $\beta\mapsto\alpha-\beta$, so it reaches its
+unique maximum at $\beta=\alpha/2$.  Put
+\[
+ A=\frac\alpha2+1,
+ \qquad x=\beta-\frac\alpha2,
+ \qquad \mathcal B_0=\mathcal B_q(\alpha,\alpha/2).
+\]
+Taylor expansion gives
+\begin{equation}\label{eq:beta-center-direct}
+ -\log\frac{\mathcal B_q(\alpha,\alpha/2+x)}{\mathcal B_0}
+ =\psi_q'(A)x^2+\frac{\psi_q'''(A)}{12}x^4+\OO(x^6).
+\end{equation}
+Hence, with $v=-\log(y/\mathcal B_0)$,
+\begin{equation}\label{eq:beta-center-inverse}
+ x=\pm\sqrt{\frac{v}{\psi_q'(A)}}
+ \left(1-\frac{\psi_q'''(A)}{24\psi_q'(A)^2}v
+ +\OO(v^2)\right).
+\end{equation}
+This is a structural, not accidental, square-root inverse: the two lower
+parameters $\beta$ and $\alpha-\beta$ are indistinguishable.
+
+\section{Continuous parameter inversion near $q=1$}
+The $q$-gamma expansion in the next chapter has the form
+\[
+ \log\Gamma_{e^{-t}}(x)=\log\Gamma(x)+A_1(x)t+A_2(x)t^2+\OO(t^4).
+\]
+Therefore
+\begin{align}
+ \log\mathcal B_{e^{-t}}(\alpha,\beta)
+={}&\log\binom{\alpha}{\beta}
+ +\Delta A_1(\alpha,\beta)t
+ +\Delta A_2(\alpha,\beta)t^2+\OO(t^4),
+ \label{eq:continuous-qbinom-qone}
+\end{align}
+where
+\[
+ \Delta A_j=A_j(\alpha+1)-A_j(\beta+1)
+              -A_j(\alpha-\beta+1).
+\]
+In particular,
+\begin{equation}\label{eq:delta-A1}
+ \Delta A_1=-\frac{\beta(\alpha-\beta)}2.
+\end{equation}
+If $\alpha_0$ solves the classical level equation
+$\binom{\alpha_0}{\beta}=y$ and
+\[
+ g_\alpha=\psi(\alpha_0+1)-\psi(\alpha_0-\beta+1)\ne0,
+\]
+then the corresponding $q$-inverse is
+\begin{equation}\label{eq:continuous-alpha-qcorrection}
+ \alpha_q=\alpha_0+
+ \frac{\beta(\alpha_0-\beta)}{2g_\alpha}t+\OO(t^2).
+\end{equation}
+Higher corrections follow mechanically from
+\eqref{eq:implicit-second}.
+
+\chapter{Inverse theory for Jackson's $q$-gamma function}
+
+For $0<q<1$,
+\begin{equation}\label{eq:qgamma-def}
+ \Gamma_q(x)=(1-q)^{1-x}\frac{(q;q)_\infty}{(q^x;q)_\infty}.
+\end{equation}
+Its logarithmic derivative is
+\begin{equation}\label{eq:qdigamma}
+ \psi_q(x)=-\log(1-q)
+ +(\log q)\sum_{j\ge0}\frac{q^{x+j}}{1-q^{x+j}}.
+\end{equation}
+
+\section{The two real $x$-inverse branches}
+\begin{theorem}[Unique minimum of $\Gamma_q$]\label{thm:qgamma-minimum}
+For every $0<q<1$, $\psi_q$ is strictly increasing from $-\infty$ to
+$-\log(1-q)>0$ on $(0,\infty)$.  Hence there is a unique $x_q^*>0$ with
+$\psi_q(x_q^*)=0$.  The function $\Gamma_q$ decreases on $(0,x_q^*)$,
+increases on $(x_q^*,\infty)$, and tends to $+\infty$ at both endpoints.
+Consequently:
+\begin{itemize}
+\item levels above $\Gamma_q(x_q^*)$ have exactly two positive real inverses;
+\item the minimum level has one double inverse;
+\item lower levels have no positive real inverse.
+\end{itemize}
+\end{theorem}
+\begin{proof}
+Differentiating \eqref{eq:qdigamma} gives
+\[
+ \psi_q'(x)=(\log q)^2
+ \sum_{j\ge0}\frac{q^{x+j}}{(1-q^{x+j})^2}>0.
+\]
+The endpoint limits follow from the $j=0$ term and from dominated convergence.
+The behavior of $\Gamma_q$ then follows by integration and from
+\eqref{eq:qgamma-def}.
+\end{proof}
+
+Let $y_*=\Gamma_q(x_q^*)$.  Since $\psi_q'(x_q^*)>0$,
+\[
+ \log\frac{\Gamma_q(x)}{y_*}
+ =\frac{\psi_q'(x_q^*)}{2}(x-x_q^*)^2+\OO((x-x_q^*)^3).
+\]
+Thus the two branches coalesce as
+\begin{equation}\label{eq:qgamma-min-inverse}
+ x-x_q^*=\pm
+ \sqrt{\frac{2\log(y/y_*)}{\psi_q'(x_q^*)}}
+ +\OO(\log(y/y_*)).
+\end{equation}
+
+\section{The limit $q\to1$ and inversion in $x$}
+Put $q=e^{-t}$.  Moak's $q$-Stirling theory and the shifted-factorial
+asymptotics imply \cite{Moak1984,McIntosh1999}
+\begin{equation}\label{eq:qgamma-qone-expansion}
+ \log\Gamma_{e^{-t}}(x)
+ =\log\Gamma(x)+A_1(x)t+A_2(x)t^2+\OO(t^4),
+\end{equation}
+with no cubic term and
+\begin{equation}\label{eq:qgamma-A12}
+ A_1(x)=-\frac{(x-1)(x-2)}4,
+ \qquad
+ A_2(x)=\frac{B_3(x)}{72}-\frac{x-1}{24},
+\end{equation}
+where $B_3(x)=x^3-\tfrac32x^2+\tfrac12x$.
+
+Fix a regular classical inverse $x_0$ satisfying $\Gamma(x_0)=y$ and
+$\psi(x_0)\ne0$.  Write
+$x_q=x_0+d_1t+d_2t^2+\cdots$.  Then
+\begin{align}
+ d_1={}&-\frac{A_1(x_0)}{\psi(x_0)},\label{eq:qgamma-xinverse-d1}\\
+ d_2={}&-\frac{A_2(x_0)+A_1'(x_0)d_1
+ +\tfrac12\psi'(x_0)d_1^2}{\psi(x_0)}.
+ \label{eq:qgamma-xinverse-d2}
+\end{align}
+The companion experiment for $x_0=3.4$ shows second-order errors decreasing
+as $t^3$.
+
+\section{Inversion in the base near $q=1$}
+Fix $x\notin\{1,2\}$ and put
+$u=\log(y/\Gamma(x))$.  Because $A_1(x)\ne0$,
+\begin{equation}\label{eq:qgamma-qinverse-qone}
+ t=\frac{u}{A_1(x)}-\frac{A_2(x)}{A_1(x)^3}u^2
+ +\OO(u^3),
+ \qquad q=e^{-t}.
+\end{equation}
+At $x=1$ and $x=2$, $\Gamma_q(x)\equiv1$, so no base inverse exists.  These
+are genuine constant degeneracies, not missing terms in
+\eqref{eq:qgamma-qinverse-qone}.
+
+\section{Inversion near $q=0$}
+Expansion of \eqref{eq:qgamma-def} gives
+\begin{equation}\label{eq:qgamma-qzero-direct}
+ \log\Gamma_q(x)=q^x+(x-2)q
+ +\OO\!\left(q^{\min(2,x+1,2x)}\right).
+\end{equation}
+The dominant term changes with $x$:
+\begin{enumerate}
+\item If $0<x<1$, then $q^x$ dominates and
+\begin{equation}\label{eq:qgamma-qzero-inverse-subunit}
+ q\sim(\log y)^{1/x}.
+\end{equation}
+This is a fractional-power inverse even when $x$ is irrational.
+\item If $x>1$ and $x\ne2$, then
+\begin{equation}\label{eq:qgamma-qzero-inverse-superunit}
+ q\sim\frac{\log y}{x-2}.
+\end{equation}
+\item At $x=1,2$, the function is identically $1$.
+\end{enumerate}
+The full expansion lives in a Hahn series generated by the exponents $1$ and
+$x$ when $x$ is nonintegral.
+
+\section{The standard $q>1$ continuation and $q\to\infty$}
+Jackson's reciprocal-base continuation satisfies
+\begin{equation}\label{eq:qgamma-reciprocal-base}
+ \Gamma_q(x)=q^{(x-1)(x-2)/2}\Gamma_{1/q}(x),
+ \qquad q>1.
+\end{equation}
+Let
+$A=(x-1)(x-2)/2$.  Since $\Gamma_{1/q}(x)\to1$ as $q\to\infty$,
+\begin{equation}\label{eq:qgamma-infty-leading}
+ \Gamma_q(x)\sim q^A.
+\end{equation}
+For $A\ne0$, the base inverse has the leading Puiseux form
+\begin{equation}\label{eq:qgamma-infty-inverse}
+ q\sim y^{1/A},
+\end{equation}
+with the branch selected by the reciprocal-base definition.  Corrections are
+obtained by inserting the small-$1/q$ expansion
+\eqref{eq:qgamma-qzero-direct} into \eqref{eq:qgamma-reciprocal-base}.  Again
+$x=1,2$ are constant exceptions.
+
+\part{Other $q$-analogs and transferable inverse schemes}
+
+\chapter{$q$-numbers, $q$-factorials, and $q$-exponentials}
+
+\section{The $q$-number}
+For
+\[
+ [x]_q=\frac{1-q^x}{1-q},
+\]
+inversion in $x$ is elementary once logarithm branches are chosen:
+\begin{equation}\label{eq:qnumber-xinverse}
+ x=\frac{\Log(1-y(1-q))}{\Log q}.
+\end{equation}
+This exact formula is useful as a model: branch changes in $\Log$ create all
+complex inverse sheets, while the positive real branch is unique for
+$0<q<1$ and $y>0$ in its range.
+
+For base inversion, integer $x=n$ gives the polynomial
+$[n]_q=1+q+\cdots+q^{n-1}$.  Near $q=1$, set $q=e^t$ and
+$u=\log([x]_{e^t}/x)$.  The Bernoulli expansion is
+\begin{equation}\label{eq:qnumber-log-expansion}
+ u=\frac{x-1}{2}t+
+ \sum_{r\ge1}\frac{B_{2r}(x^{2r}-1)}{2r(2r)!}t^{2r}.
+\end{equation}
+It is inverted by \eqref{eq:universal-reversion}.  At infinity, for integer
+$n\ge2$ and $R=y^{1/(n-1)}$,
+\begin{equation}\label{eq:qnumber-infty-inverse}
+ q=R-\frac1{n-1}+\OO(R^{-1}).
+\end{equation}
+For noninteger $x$, the equation
+$q^x-yq+(y-1)=0$ defines a generalized algebraic-transcendental correspondence;
+Newton polygons in the exponents $1$ and $x$ replace ordinary polynomial
+analysis.
+
+\section{The $q$-factorial}
+Let
+\[
+ [n]_q!=\prod_{j=1}^n[j]_q,
+ \qquad N=\frac{n(n-1)}2.
+\]
+At $q=0$,
+\[
+ [n]_q!=1+(n-1)q+\frac{(n-2)(n+1)}2q^2+\OO(q^3).
+\]
+Therefore, with $s=y-1$,
+\begin{equation}\label{eq:qfactorial-qzero-inverse}
+ q=\frac{s}{n-1}
+ -\frac{(n-2)(n+1)}{2(n-1)^3}s^2+\OO(s^3).
+\end{equation}
+At $q=e^t$ near $1$,
+\begin{equation}\label{eq:qfactorial-qone-direct}
+ \log\frac{[n]_{e^t}!}{n!}
+ =\frac N2t+
+ \sum_{r\ge1}\frac{B_{2r}}{2r(2r)!}
+ \sum_{j=1}^n(j^{2r}-1)t^{2r}.
+\end{equation}
+This is again a cumulant series with only one odd term.  Reciprocity gives
+$[n]_q!=q^N[n]_{1/q}!$, and therefore
+\begin{equation}\label{eq:qfactorial-infty-inverse}
+ q=y^{1/N}-\frac{n-1}{N}+\OO(y^{-1/N}).
+\end{equation}
+
+\section{Euler's two $q$-exponentials}
+Use
+\[
+ e_q(z)=\frac1{(z;q)_\infty},
+ \qquad E_q(z)=(-z;q)_\infty.
+\]
+For $0<q<1$, $e_q$ maps $(-\infty,1)$ strictly increasingly onto
+$(0,\infty)$, and $E_q$ maps $(-1,\infty)$ strictly increasingly onto
+$(0,\infty)$.  Thus both possess global positive-real inverses.
+
+Put $w=y-1$.  Euler's series and reversion give
+\begin{align}
+ e_q^{-1}(1+w)={}&(1-q)w-\frac{1-q}{1+q}w^2\notag\\
+ &+\frac{(1-q)(2q^2+q+1)}{(1+q)^2(1+q+q^2)}w^3
+ +\OO(w^4),\label{eq:eq-inverse}\\
+ E_q^{-1}(1+w)={}&(1-q)w-\frac{q(1-q)}{1+q}w^2\notag\\
+ &+\frac{q^2(1-q)(q^2+q+2)}{(1+q)^2(1+q+q^2)}w^3
+ +\OO(w^4).\label{eq:Eq-inverse}
+\end{align}
+Under the classical scaling $z=(1-q)x$, both direct functions tend to $e^x$,
+so their scaled inverses tend to $\log y$.
+
+\section{A normalized $q$-Lambert inverse}
+To obtain a deformation of the classical Lambert $W$ with a regular
+$q\to1$ limit, define $\mathcal W_q$ locally by
+\begin{equation}\label{eq:qLambert-def}
+ y=x e_q((1-q)x)
+ \quad\Longleftrightarrow\quad x=\mathcal W_q(y).
+\end{equation}
+Since
+\[
+ x e_q((1-q)x)=x+x^2+\frac{x^3}{1+q}+\OO(x^4),
+\]
+we obtain
+\begin{equation}\label{eq:qLambert-series}
+ \mathcal W_q(y)=y-y^2+\frac{1+2q}{1+q}y^3+\OO(y^4).
+\end{equation}
+As $q\to1^-$, the coefficient tends to $3/2$ and
+$\mathcal W_q\to W$ locally.  The critical points of the direct map satisfy
+\[
+ 1+(1-q)x\,\partial_z\log e_q(z)\big|_{z=(1-q)x}=0,
+\]
+and their images are the branch points of $\mathcal W_q$.  Mapping their
+motion from $q=0$ to $q=1$ is a concrete continuation problem.
+
+\chapter{Rogers--Szeg\H{o}, $q$-Catalan, theta, and basic hypergeometric inverses}
+
+\section{Rogers--Szeg\H{o} polynomials}
+Let
+\[
+ H_n(z;q)=\sum_{k=0}^n\qbinom{n}{k}{q}z^k.
+\]
+Inversion in $z$ at the unit level is regular when $[n]_q\ne0$:
+\begin{equation}\label{eq:rogers-z-inverse}
+ z=\frac{y-1}{[n]_q}
+ -\frac{\qbinom{n}{2}{q}}{[n]_q^3}(y-1)^2
+ +\OO((y-1)^3).
+\end{equation}
+For inversion in $q$, the direct endpoint data are
+\begin{align}
+ H_n(z;0)&=1+z+\cdots+z^n,\notag\\
+ \partial_qH_n(z;0)&=\sum_{k=1}^{n-1}z^k,\label{eq:rogers-qzero-data}\\
+ H_n(z;1)&=(1+z)^n,\notag\\
+ \partial_qH_n(z;1)&=\frac{n(n-1)}2z(1+z)^{n-2}.
+ \label{eq:rogers-qone-data}
+\end{align}
+Thus the base inverse is locally linear at either endpoint unless the displayed
+slope vanishes.  When it does vanish, the next nonzero $q$-derivative determines
+a Puiseux exponent.  At $q=\infty$, the Newton polygon is controlled by the
+maximum of $k(n-k)$ among those $k$ for which $z^k\ne0$; a tie for odd $n$
+can change the leading coefficient and create additional exceptional levels.
+
+\section{MacMahon's $q$-Catalan polynomial}
+Define
+\[
+ \Cat_n(q)=\frac{1}{[n+1]_q}\qbinom{2n}{n}{q}.
+\]
+For every $n\ge2$,
+\begin{equation}\label{eq:qCatalan-qzero}
+ \Cat_n(q)=1+q^2+\OO(q^3).
+\end{equation}
+The linear term cancels, so the inverse at $y=1$ is necessarily ramified:
+\begin{equation}\label{eq:qCatalan-inverse}
+ q=\pm\sqrt{y-1}+\OO(y-1).
+\end{equation}
+The positive sign is the canonical inverse on $q\ge0$.  At $q=1$,
+\[
+ \Cat_n(1)=\frac1{n+1}\binom{2n}{n},
+ \qquad
+ \frac{\Cat_n'(1)}{\Cat_n(1)}=\frac{n(n-1)}2,
+\]
+so the inverse is regular there for $n\ge2$.  This example shows that a ratio
+of two individually regular $q$-analogs can acquire a critical endpoint by
+coefficient cancellation.
+
+\section{Theta products}
+Let
+\begin{equation}\label{eq:theta-def}
+ \Theta(z;q)=(z;q)_\infty(q/z;q)_\infty,
+ \qquad 0<|q|<1.
+\end{equation}
+Its zeros $z=q^m$, $m\in\Z$, are simple when $q$ is not a root of unity, so
+the inverse in $z$ is analytic at the zero level.  The functional equations
+\[
+ \Theta(qz;q)=-z^{-1}\Theta(z;q),
+ \qquad
+ \Theta(q/z;q)=\Theta(z;q)
+\]
+organize the sheets.  The involution $z\mapsto q/z$ has fixed points
+$z=\pm\sqrt q$; differentiation of the symmetry shows
+\[
+ \Theta_z(\pm\sqrt q;q)=0.
+\]
+Whenever the second derivative is nonzero, the inverse in $z$ has a
+square-root branch at the corresponding theta value.  This is the theta
+analogue of the central lower-parameter branch of the continuous Gaussian
+coefficient.
+
+The logarithmic derivative
+\[
+ \partial_z\log\Theta(z;q)
+ =-\sum_{j\ge0}\frac{q^j}{1-zq^j}
+ +\frac1z\sum_{j\ge0}\frac{q^{j+1}/z}{1-q^{j+1}/z}
+\]
+provides both local coefficients and a stable Newton iteration away from
+zeros and critical points.
+
+\section{A universal inverse template for ${}_r\phi_s$}
+Write a basic hypergeometric function in a fixed convention as
+\[
+ F(z)={}_r\phi_s(\bm a;\bm b;q,z)
+ =1+c_1z+c_2z^2+c_3z^3+\cdots,
+ \qquad c_1\ne0.
+\]
+Then its local argument inverse is
+\begin{equation}\label{eq:basic-hypergeom-inverse}
+ z=\frac{y-1}{c_1}-\frac{c_2}{c_1^3}(y-1)^2
+ +\left(\frac{2c_2^2}{c_1^5}-\frac{c_3}{c_1^4}\right)(y-1)^3
+ +\OO((y-1)^4).
+\end{equation}
+Because each $c_m$ is a quotient of finite $q$-Pochhammer symbols, every
+parameter derivative can be written in finite Lambert sums.  The same
+procedure therefore inverts in any numerator or denominator parameter at a
+regular point.  At terminating parameters, coalescing zeros can force
+Puiseux series, and at $q\to1$ the correct scaling should be taken before
+reversion to recover the corresponding ordinary hypergeometric inverse.
+
+\section{Products and ratios with many parameters}
+A broad class is
+\begin{equation}\label{eq:multi-product}
+ F(\bm a,q)=\prod_{\nu=1}^r(a_\nu;q)_{n_\nu}^{\eps_\nu},
+ \qquad \eps_\nu\in\Z.
+\end{equation}
+For a selected parameter $a_\mu$,
+\[
+ \partial_{a_\mu}\log F
+ =-\eps_\mu\sum_{j=0}^{n_\mu-1}
+ \frac{q^j}{1-a_\mu q^j}.
+\]
+Thus all regular inverse coefficients follow from the universal calculus.
+The singular set is the union of factor zeros, poles, and the critical
+hypersurface on which the signed Lambert sums cancel.  This description
+extends immediately to ratios defining orthogonal polynomials, $q$-beta
+functions, and many terminating basic hypergeometric summands.
+
+\chapter{Series algorithms, continuation, and certified computation}
+
+\section{A branch-aware workflow}
+A reliable inverse computation should separate symbolic branch analysis from
+numerical evaluation.
+
+\begin{algorithm}[Local and global inversion workflow]\label{alg:workflow}
+Given $F(x;\lambda)=y$:
+\begin{enumerate}
+\item Choose a base point $(x_0,y_0,\lambda_0)$ and compute the first nonzero
+      derivative of $F-y_0$ in $x$.
+\item If the order is one, compute a Taylor inverse by Lagrange reversion or
+      Newton iteration in a truncated series ring.  If the order is $m>1$,
+      introduce $w=(y-y_0)^{1/m}$ and compute a Puiseux inverse.
+\item Factor exact cyclotomic and Pochhammer zeros before numerical evaluation.
+      Never evaluate a removable $0/0$ Gaussian product directly at a root of
+      unity.
+\item Near $q=1$ or another unit-circle root, replace $q$ by
+      $\zeta e^{-t}$ and invert the logarithmic asymptotic in $t$.
+\item Continue the selected branch with a tangent predictor from
+      \eqref{eq:implicit-first} and a Newton corrector.
+\item Monitor $|F_x|$.  When it becomes small, switch to a local Puiseux
+      coordinate or use pseudo-arclength continuation.
+\item Certify the result by an interval derivative bound, interval Newton, or
+      a complex Rouch\'e test.
+\end{enumerate}
+\end{algorithm}
+
+\section{Formal reversion without expression swell}
+Direct substitution into a long symbolic product is expensive.  Better
+methods are:
+\begin{itemize}
+\item work with logarithmic cumulants and Bell polynomials;
+\item use Newton iteration in the truncated ring
+      $\C[[u]]/(u^{M+1})$, doubling the number of correct coefficients at each
+      step;
+\item exploit coefficient stability: a finite product with $n>M$ has the same
+      $q=0$ inverse jet through order $M$ as the infinite product;
+\item for Gaussian polynomials, obtain only the required rectangle partition
+      numbers rather than expand the full polynomial;
+\item at infinity, work in $s=1/q$ and use reciprocal symmetry.
+\end{itemize}
+
+If $g_0(u)$ is an initial inverse approximation, the truncated Newton update
+\begin{equation}\label{eq:series-newton}
+ g_{r+1}(u)=g_r(u)-\frac{F(g_r(u))-u}{F'(g_r(u))}
+ \pmod{u^{2^{r+1}}}
+\end{equation}
+provides a fast general implementation.
+
+\section{Stable direct evaluation}
+Near $q=1$, multiplying factors is badly conditioned.  For $|a|<1$, use the
+Lambert series \eqref{eq:lambert-log}; for finite products use compensated sums
+of logarithms.  Near a root of unity, first group factors as in
+\eqref{eq:root-unity-factorization-infinite}.  For Gaussian coefficients at a
+root of unity, use cyclotomic factorization or the polynomial recurrence
+instead of the quotient of two vanishing Pochhammer products.
+
+\section{Numerical branch continuation}
+Suppose $F(q)=y$ and a branch is known at $y_0$.  The differential equation
+\[
+ \frac{dq}{dy}=\frac1{F'(q)}
+\]
+provides a predictor.  Close to a simple critical point, use
+$w=\sqrt{y-y_c}$ as the continuation parameter.  For polynomial inverses, all
+branches can be tracked simultaneously by homotopy from a large level, where
+the Puiseux roots are explicitly separated.  Matching at a moderate level
+then identifies the monodromy permutation induced by loops around critical
+values.
+
+\section{What the companion program checks}
+The distributed script \texttt{inverse\_q\_analogs\_experiments.py} uses
+80-digit arithmetic and exact SymPy polynomials.  It checks:
+\begin{itemize}
+\item the finite/infinite stable $q=0$ reversion and every low-$n$ exception;
+\item singular inversion of $(a;q)_\infty$ at $q\to1$;
+\item radial inversion at $q\to-1$;
+\item the fixed-level $a$-inverse at $q\to1$;
+\item the Gaussian $q=1$ inverse and exact $q=-1$ values and derivatives;
+\item the $q$-gamma inverse correction near $q=1$;
+\item square-root ramification of the MacMahon $q$-Catalan polynomial;
+\item the exact $x$-inverse of the $q$-number.
+\end{itemize}
+The output is reproduced in \cref{app:numerical-results}.
+
+\part{Frontier questions and synthesis}
+
+\chapter{Conjectures and research programs}
+
+\section{Monodromy and generic Galois groups}
+Polynomial inversion naturally asks for the permutation group generated by
+continuation around the critical values.
+
+\begin{conjecture}[Generic Pochhammer monodromy]\label{conj:poch-monodromy}
+Let $n\ge3$ and $N=n(n-1)/2$.  Over the rational function field
+$\C(a,y)$, the polynomial
+\[
+ (a;q)_n-y
+\]
+viewed as a polynomial in $q$ has full symmetric geometric monodromy
+$S_N$, except on an explicitly classifiable finite union of degenerate
+parameter strata and low-degree cases.
+\end{conjecture}
+
+Evidence should be sought by computing discriminants, branch cycles, and
+specializations with certified Galois groups.  The large-$y$ Puiseux branches
+from \eqref{eq:s-lagrange-infty} give a natural base fiber for monodromy
+tracking.
+
+\begin{conjecture}[Generic Gaussian monodromy]\label{conj:qbinom-monodromy}
+For rectangles outside an explicitly classifiable decomposable family, the
+polynomial map
+\[
+ q\longmapsto\qbinom{n}{k}{q}
+\]
+has full symmetric monodromy $S_D$, $D=k(n-k)$, over a generic level.
+Reciprocity constrains the critical configuration but does not force an
+imprimitive inverse action for generic $y$.
+\end{conjecture}
+
+This formulation intentionally allows exceptions.  Composition identities,
+small rectangles, and accidental critical-value collisions must be removed
+before a full-symmetric statement can be true.
+
+\section{All-orders root-of-unity inversion}
+\begin{conjecture}[Cyclotomic polylogarithm closure]\label{conj:cyclotomic-closure}
+For primitive $\zeta$ of order $d$, the complete radial expansion of
+$\Log(a;\zeta e^{-t})_\infty$ has coefficients in the differential algebra
+generated by
+\[
+ \Li_m(a\zeta^r),\quad \Log(1-a\zeta^r),
+ \qquad 0\le r<d,
+\]
+with rational functions of $a$ and cyclotomic constants.  After inversion, the
+base series belongs to the corresponding algebra in odd inverse powers of the
+large logarithmic coordinate, up to exponentially small sectors.
+\end{conjecture}
+
+The first part should follow systematically from Euler--Maclaurin expansion of
+each factor in \eqref{eq:root-unity-factorization-infinite}.  The difficult
+part is a uniform statement across branch cuts and Stokes directions.
+
+\begin{problem}[Uniform $a\asymp t^{1/d}$ expansion]
+Construct a two-parameter uniform expansion for
+$(a;\zeta e^{-t})_\infty$ when $a=t^{1/d}A$ and $A$ ranges over compact
+complex sets.  Determine the complete inverse series $A=A(y,t)$ and its
+Stokes transitions.  The formulas \eqref{eq:a-fixed-level-qone} and
+\eqref{eq:a-fixed-level-minus-one} are the first two cases.
+\end{problem}
+
+\section{Resurgence and exponentially small inverse corrections}
+The McIntosh series is generally divergent at sufficiently high order.  Its
+least term predicts an exponentially small error associated with modular or
+saddle contributions.  Inverting a divergent expansion is not accomplished
+by formal reversion alone: exponentially small changes in $\log(a;q)_\infty$
+can be amplified by the inverse condition number.
+
+\begin{problem}[Resurgent inverse $q$-Pochhammer]
+Determine the Borel singularities and Stokes constants of the $q\to1$ and
+$q\to\zeta$ expansions, then derive the induced transseries for the inverse
+base $q(y)$.  Quantify how the inverse Stokes jump depends on
+$\Li_2(a^d)$ and on proximity to a critical level.
+\end{problem}
+
+A promising method is to combine modular transformations of eta/theta
+specializations with exact WKB-style inversion of the logarithmic coordinate.
+
+\section{Critical values, zero attractors, and inverse conditioning}
+For fixed $(n,k)$, the critical points of a Gaussian polynomial and their
+images can be computed exactly, but their large-rectangle distribution is
+largely unexplored.
+
+\begin{problem}[Limit distribution of Gaussian critical values]
+Let $k/n\to\rho\in(0,1)$.  After the natural logarithmic scaling in $q$ and
+in the level, determine the limiting distribution of critical points and
+critical values of $\qbinom{n}{k}{q}$.  Relate it to the limit shape of
+partitions in a rectangle and to saddle points of the associated free energy.
+\end{problem}
+
+Such a result would determine asymptotic radii of convergence for inverse
+series at $q=0$ and $q=1$ and would identify the best domains for rational or
+conformal acceleration.
+
+\section{Coefficient structure of inverse series}
+The first inverse coefficients often display positivity or alternating signs,
+but exact computations show that naive global sign conjectures fail even for
+small rectangles.  The right question is more refined.
+
+\begin{problem}[Combinatorics of reversion coefficients]
+Find signed combinatorial models for
+\[
+ [s^m]Q_{n,k}(1+s)
+ \quad\text{and}\quad
+ [x^m]Q_n((1-a)+(a^2-a)x;a)
+\]
+in terms of decorated partitions, plane trees, or cumulant assemblies.
+Classify the first sign changes and determine whether natural rescalings yield
+log-concavity, total positivity, or finite-order sign regularity.
+\end{problem}
+
+Lagrange inversion already expresses the coefficients as weighted tree sums;
+the missing step is a weight-preserving interpretation adapted to rectangle
+partitions or Pochhammer subset sums.
+
+\section{Multivariate and elliptic extensions}
+A basic hypergeometric identity supplies an algebraic or analytic hypersurface
+in all of its parameters.  Multivariate inversion can therefore reveal
+relations invisible in one-variable specializations.
+
+\begin{problem}[Inverse basic hypergeometric varieties]
+Develop a branch atlas for simultaneous inversion in $(z,q,a_1,\ldots)$ of
+terminating ${}_r\phi_s$ functions.  Identify discriminant components caused
+by termination, balancing, and root-of-unity resonance.  Extend the method to
+elliptic shifted factorials and elliptic gamma functions, where two nomes
+produce interacting unit-circle singularities.
+\end{problem}
+
+The proper local tool is the multivariate Weierstrass preparation theorem;
+the proper global tool is numerical algebraic geometry combined with exact
+special-function identities.
+
+\section{Connections to geometric-comb interpolation and atomic functions}
+The source monograph emphasizes Newton and Lagrange interpolation on geometric
+nodes.  The basis factors of such interpolation are shifted products
+\[
+ \prod_{j=0}^{m-1}(x-q^j),
+\]
+which are elementary transforms of $q$-Pochhammer symbols.  Their inverse
+level sets determine where the basis is well conditioned and where several
+geometric nodes create ramification.  The complex-order inverse
+\eqref{eq:alpha-large-inverse} also gives an ``effective depth'' of a geometric
+tail: it answers how many dyadic or $q$-adic scales are needed to achieve a
+given product level.
+
+For the Rvachev up-function and the Fabius function, Fourier transforms and
+functional equations involve products over dyadic scales.  Although the
+factors are sinc functions rather than literal shifted factorials, the same
+architecture applies: logarithmic cumulants for regular inversion, Lambert
+$W$-type coordinates for exponentially flat limits, and Puiseux branches when
+symmetry forces criticality.  A concrete research direction is to transfer the
+certified branch-continuation machinery of this report to inverse level sets of
+infinite sinc products and then compare their effective-depth variable with
+$\alpha$ in \eqref{eq:complex-order}.
+
+\section{Formal verification}
+A realistic Lean development can be modular.
+\begin{enumerate}
+\item Formal power-series reversion and Lagrange--B\"urmann coefficients.
+\item A local Puiseux theorem for a factored holomorphic germ, initially in a
+      formal setting.
+\item Finite $q$-Pochhammer derivative and zero formulas such as
+      \eqref{eq:poch-a-derivative-root}.
+\item Positivity and monotonicity proofs for the global real branches.
+\item Cyclotomic factorization and the $q$-Lucas evaluation.
+\item The exact $q=-1$ formulas in \cref{thm:critical-minus-one,thm:qbinom-minus-one}.
+\item An asymptotic algebra supporting substitution and inversion of
+      Poincar\'e series, culminating in \eqref{eq:qone-infinite-t-inverse}.
+\end{enumerate}
+The finite algebraic layers are suitable for immediate formalization.  The
+uniform analytic and resurgent layers require a larger asymptotic library.
+
+\chapter{Conclusions}
+The inverse theory of $q$-analogs is not a collection of isolated numerical
+root-finding problems.  It has a coherent architecture:
+\begin{itemize}
+\item products suggest logarithmic cumulants;
+\item ordinary points give Taylor reversion;
+\item zero multiplicities and symmetry give Puiseux exponents;
+\item reciprocal polynomials give expansions at $\pm\infty$;
+\item cyclotomic factorization controls roots of unity;
+\item dilogarithmic singularities at the unit circle invert in a large
+      logarithmic coordinate;
+\item continuous parameters are governed by $q$-digamma monotonicity;
+\item global real branches can often be isolated before any complex analysis.
+\end{itemize}
+
+The most novel synthesis is the root-of-unity law
+\eqref{eq:root-unity-asymptotic}: it unifies $q\to1$ and radial $q\to-1$ and
+predicts the fixed-level inverse exponent $1/d$ at every primitive $d$-th
+root.  The finite theory mirrors it exactly through residue-block
+factorization.  Together with the full branch atlas at infinity and the
+continuous-parameter analysis, this gives a practical foundation for a much
+larger program of inverse basic hypergeometric and geometric-scale functions.
+
+\appendix
+
+\chapter{Compact coefficient atlas}\label{app:atlas}
+
+\section{Universal regular inverse}
+If
+$u=c_1x+c_2x^2/2!+c_3x^3/3!+c_4x^4/4!+\cdots$, then
+\[
+ x=\frac{u}{c_1}-\frac{c_2u^2}{2c_1^3}
+ +\frac{(3c_2^2-c_1c_3)u^3}{6c_1^5}
+ +\frac{(-c_1^2c_4+10c_1c_2c_3-15c_2^3)u^4}{24c_1^7}+\cdots.
+\]
+
+\section{Finite and infinite Pochhammer quick reference}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.27\textwidth}
+                  >{\raggedright\arraybackslash}p{0.65\textwidth}}
+\toprule
+Regime & Inverse expansion\\
+\midrule
+\endfirsthead
+\toprule
+Regime & Inverse expansion\\
+\midrule
+\endhead
+$a\to0$, finite &
+$a=z/E_1+E_2z^2/E_1^3+(2E_2^2/E_1^5-E_3/E_1^4)z^3+\cdots$, $z=1-y$\\
+$q\to0$, finite/infinite &
+$q=x-x^2+(a+1)x^3-(4a+1)x^4+(3a^2+11a+1)x^5+\cdots$\\
+$q\to1$, finite &
+$u=\sum_{m\ge1}-S_m(n)\Li_{1-m}(a)t^m/m!$, followed by universal reversion\\
+$q\to\infty$, finite &
+$s=xH(s)^{1/N}$, $[x^m]s=m^{-1}[u^{m-1}]H(u)^{m/N}$, $q=1/s$\\
+$a\to0$, infinite &
+$a=(1-q)z+q(1-q)z^2/(1+q)+\cdots$\\
+$q\to1$, infinite fixed $a$ &
+$t=A/\Lambda+A^2C/\Lambda^3+(2A^3C^2-A^4E)/\Lambda^5+\cdots$\\
+$q\to1$, infinite fixed $y=e^{-L}$ &
+$a=Lt-L(L+2)t^2/4+L(L^2+9L+12)t^3/72+\cdots$\\
+$q\to\zeta$, order $d$ &
+$\log(a;q)_\infty=-\Li_2(a^d)/(d^2t)+C_{d,\zeta}(a)+\OO(t)$\\
+$a$ at fixed level near $\zeta$ &
+$a\sim\omega(d^2Lt)^{1/d}$\\
+complex order $\alpha\to\infty$ &
+$\alpha=(\Log((1-q)w/a)-w/(1+q)+\cdots)/\Log q$\\
+\bottomrule
+\end{longtable}
+
+\section{Gaussian quick reference}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.25\textwidth}
+                  >{\raggedright\arraybackslash}p{0.67\textwidth}}
+\toprule
+Regime & Inverse expansion\\
+\midrule
+\endfirsthead
+\toprule
+Regime & Inverse expansion\\
+\midrule
+\endhead
+$q\to0$ & $q=s-p_2s^2+(2p_2^2-p_3)s^3+\cdots$, $s=y-1$\\
+$q\to1$ & $t=2u/D-(n+1)u^2/(3D^2)+(n+1)^2u^3/(9D^3)+\cdots$\\
+$q\to\infty$ & $q=y^{1/D}-D^{-1}+((D-1)/(2D^2)-p_2/D)y^{-1/D}+\cdots$\\
+$q=-1$, zero case & $B'_{2m,2r+1}(-1)=m!/[r!(m-r-1)!]$\\
+$q=-1$, nonzero case & $B'(-1)=-(D/2)B(-1)$\\
+continuous $\beta$ at center &
+$\beta-\alpha/2=\pm\sqrt{v/\psi_q'(\alpha/2+1)}(1+\OO(v))$\\
+\bottomrule
+\end{longtable}
+
+\chapter{Numerical and symbolic validation}\label{app:numerical-results}
+The following output is generated by the companion script.  The calculations
+use 80 decimal digits; symbolic checks are exact.
+
+\VerbatimInput[fontsize=\scriptsize]{numerical_results.txt}
+
+\chapter{Companion-code notes}
+The archive includes \texttt{inverse\_q\_analogs\_experiments.py}.  The script
+is deliberately independent of the LaTeX source.  Its main implementation
+choices are:
+\begin{itemize}
+\item the Lambert series
+$-\sum_{m\ge1}a^m/[m(1-q^m)]$ for stable infinite-product logarithms;
+\item exact Gaussian polynomials from the Pascal recurrence, avoiding
+      removable root-of-unity singularities;
+\item direct coefficient-by-coefficient symbolic reversion at $q=0$;
+\item high-precision root solving only after an asymptotic formula supplies a
+      branch-specific initial value;
+\item assertions for every exact $q=-1$ value and derivative formula.
+\end{itemize}
+Run it from the report directory with
+\begin{verbatim}
+python inverse_q_analogs_experiments.py
+\end{verbatim}
+It overwrites \texttt{numerical\_results.txt} with a reproducible report.
+
+\chapter{Bibliographic notes}
+The direct $q$-product and Gaussian theory is classical; standard references
+include Gasper--Rahman \cite{GasperRahman}, Andrews--Askey--Roy
+\cite{AndrewsAskeyRoy}, Ismail \cite{Ismail}, and the NIST Digital Library of
+Mathematical Functions \cite{DLMFq}.  McIntosh \cite{McIntosh1999} supplies
+the shifted-factorial asymptotic central to the singular inverse at $q=1$;
+Moak \cite{Moak1984} develops the $q$-Stirling framework.  Lagrange inversion,
+analytic combinatorics, and branch singularities are treated in
+\cite{Comtet,FlajoletSedgewick,Henrici}.  The repository sources
+\cite{ProveItFrontiers,ProveItMonograph} provide the immediate context and
+notation for this report.
+
+\begin{thebibliography}{99}
+
+\bibitem{ProveItFrontiers}
+V.~Reshetnikov,
+\emph{Exponents and $q$-Series Frontiers},
+LaTeX source in the ProveIt repository,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/exponents-and-q-series/Exponents_and_q_Series_Frontiers},
+accessed 30 August 2026.
+
+\bibitem{ProveItMonograph}
+V.~Reshetnikov,
+\emph{$q$-Pochhammer Symbols and $q$-Binomial Coefficients: Algebra,
+Combinatorics, Analysis, Arithmetic, and Summation Theory},
+LaTeX source in the ProveIt repository,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/exponents-and-q-series/q_pochhammer_q_binomial_monograph},
+accessed 30 August 2026.
+
+\bibitem{GasperRahman}
+G.~Gasper and M.~Rahman,
+\emph{Basic Hypergeometric Series}, 2nd ed.,
+Cambridge University Press, 2004.
+
+\bibitem{AndrewsAskeyRoy}
+G.~E.~Andrews, R.~Askey, and R.~Roy,
+\emph{Special Functions},
+Cambridge University Press, 1999.
+
+\bibitem{Ismail}
+M.~E.~H.~Ismail,
+\emph{Classical and Quantum Orthogonal Polynomials in One Variable},
+Cambridge University Press, 2005.
+
+\bibitem{KacCheung}
+V.~Kac and P.~Cheung,
+\emph{Quantum Calculus},
+Springer, 2002.
+
+\bibitem{DLMFq}
+NIST Digital Library of Mathematical Functions,
+Chapter 17, ``$q$-Hypergeometric and Related Functions,''
+\url{https://dlmf.nist.gov/17}, accessed 30 August 2026.
+
+\bibitem{McIntosh1999}
+R.~J.~McIntosh,
+``Some asymptotic formulae for $q$-shifted factorials,''
+\emph{Ramanujan Journal} \textbf{3} (1999), 205--214.
+\url{https://doi.org/10.1023/A:1006949508631}.
+
+\bibitem{Moak1984}
+D.~S.~Moak,
+``The $q$-analogue of Stirling's formula,''
+\emph{Rocky Mountain Journal of Mathematics} \textbf{14} (1984), 403--414.
+\url{https://doi.org/10.1216/RMJ-1984-14-2-403}.
+
+\bibitem{Comtet}
+L.~Comtet,
+\emph{Advanced Combinatorics},
+Reidel, 1974.
+
+\bibitem{FlajoletSedgewick}
+P.~Flajolet and R.~Sedgewick,
+\emph{Analytic Combinatorics},
+Cambridge University Press, 2009.
+
+\bibitem{Henrici}
+P.~Henrici,
+\emph{Applied and Computational Complex Analysis}, Vol.~1,
+Wiley, 1974.
+
+\bibitem{StanleyEC1}
+R.~P.~Stanley,
+\emph{Enumerative Combinatorics}, Vol.~1, 2nd ed.,
+Cambridge University Press, 2012.
+
+\bibitem{CorlessLambertW}
+R.~M.~Corless, G.~H.~Gonnet, D.~E.~G.~Hare, D.~J.~Jeffrey, and D.~E.~Knuth,
+``On the Lambert $W$ function,''
+\emph{Advances in Computational Mathematics} \textbf{5} (1996), 329--359.
+
+\end{thebibliography}
+
+\end{document}

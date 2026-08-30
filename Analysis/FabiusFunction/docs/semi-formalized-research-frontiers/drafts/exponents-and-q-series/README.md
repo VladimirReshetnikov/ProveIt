@@ -15,6 +15,31 @@ New standalone intake members:
   required post-publication claim-level comparison and a Lean crosswalk;
   manuscript labels and numerical evidence do not establish Lean verification.
 
+- [`inverse_q_analogs_extended_report/`](inverse_q_analogs_extended_report/),
+  *Inverse q-Analogs in All Parameters* (104 pp), arrived on 2026-08-30 from
+  `inverse_q_analogs_all_parameters_report.zip` (outer SHA-256
+  `0263542a7a6a50459eeb0359015b4086245e7311528e80e3875657529825669f`).
+  All 26 submitted payload hashes verified; seven CSV entries were refreshed
+  after CRLF-to-LF normalization. Its README identifies it as an extension of
+  the filed inverse-q drafts, covering regular, singular, endpoint,
+  cyclotomic, and multivariate parameter inversion and Fabius--Rvachev
+  parameter recovery. It remains standalone pending post-publication
+  comparison and deliberate consolidation with both inverse-q siblings, plus
+  a Lean crosswalk; manuscript labels and numerical checks do not establish
+  Lean verification.
+
+- [`inverse_q_analogs_report-2/`](inverse_q_analogs_report-2/),
+  *Inverse Functions of q-Pochhammer Symbols, Gaussian Coefficients, and
+  Related q-Analogs* (59 pp), arrived on 2026-08-30 from
+  `inverse_q_analogs_report_bundle.zip` (outer SHA-256
+  `82ab1dc2cbdd4e69d638cfc045d9ca331e8152e1faeba763732fa9231578b875`).
+  It was given a collision-safe suffix because `inverse_q_analogs_report/`
+  already exists. All five submitted payload hashes verified, every text
+  payload was already LF, and none matches the existing report byte-for-byte.
+  It remains standalone pending post-publication semantic deduplication and a
+  Lean crosswalk; manuscript classifications and numerical checks do not
+  establish Lean verification.
+
 - [`Fabius_Rvachev_Frontier_Report/`](Fabius_Rvachev_Frontier_Report/),
 *Negative Parameters, Reciprocal Bases, and the Gaussian Boundary* (26 pp),
 arrived on 2026-08-30 with all 13 payload checksums verified.  It develops
