@@ -35,6 +35,16 @@ theorem labels do not by themselves assert Lean formalization.
   assessment, claim-by-claim consolidation, and a Lean crosswalk; manuscript
   labels do not establish Lean verification.
 
+- [`Fabius_Flat_Parameter_Response_Dynamics/`](Fabius_Flat_Parameter_Response_Dynamics/),
+  *Flat Parameter Fronts, q-Susceptibility, and Smooth Dynamics* (23 pp),
+  arrived on 2026-08-30 from `fabius_frontier_report_2026.zip` (outer SHA-256
+  `afdcf522589a7baad82c81a527c02dcc09e58455ab14c57a9c492e65563c647e`)
+  and was filed under a title-derived collision-safe name. All 13 submitted
+  payload hashes verified; five CSV entries were refreshed after CRLF-to-LF
+  repository normalization. It remains standalone pending post-publication
+  assessment and a Lean crosswalk; manuscript labels do not establish Lean
+  verification.
+
 Generalizations of the dyadic construction to arbitrary exponent
 sequences and the q-series calculus that organizes them: the
 exponent-sequence convolution monoid with its Newton-basis frontiers, and
