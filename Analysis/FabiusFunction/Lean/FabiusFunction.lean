@@ -1,5 +1,7 @@
 import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.FiniteQBinomialCore
+import FabiusFunction.QBinomialInversion
+import FabiusFunction.QBinomialTransform
 import FabiusFunction.QBinomialVandermonde
 import FabiusFunction.GaussianBinomialAtOne
 import FabiusFunction.GeometricCompleteHomogeneous
@@ -11,6 +13,7 @@ import FabiusFunction.GeometricPowerSeriesFilter
 import FabiusFunction.AnalyticSeriesFilter
 import FabiusFunction.RvachevQBinomialFilter
 import FabiusFunction.GeometricQBinomialLagrange
+import FabiusFunction.QBinomialInversionSpecializations
 import FabiusFunction.GeometricRichardson
 import FabiusFunction.GeometricLagrangeWeights
 import FabiusFunction.GeometricLagrangeQBinomial
@@ -365,6 +368,7 @@ import FabiusFunction.PerronRootEnclosure
 import FabiusFunction.KappaOneEnclosure
 import FabiusFunction.KappaConstantEnclosures
 import FabiusFunction.MeasureRefinement
+import FabiusFunction.UniformDigitThueMorseBridge
 import FabiusFunction.RandomSeriesLaw
 import FabiusFunction.MeasureCauchyTransform
 import FabiusFunction.GeometricUniformCauchy
