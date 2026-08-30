@@ -13,7 +13,7 @@ superseded, generated, proved, numerical, and conjectural material.
 Main deliverables
 -----------------
 fabius_rvachev_new_frontiers.tex
-    Complete 35-page LaTeX report.
+    Complete 36-page LaTeX report.
 
 fabius_rvachev_new_frontiers.pdf
     Rendered and visually inspected PDF.
@@ -57,11 +57,12 @@ the report as evidence, not as a theorem.
 
 Rebuild the PDF
 ---------------
-Required: a reasonably complete TeX Live installation with pdflatex/latexmk.
+Required: a reasonably complete TeX Live installation with pdflatex.
 From this directory:
 
-latexmk -pdf -interaction=nonstopmode -halt-on-error \
-    fabius_rvachev_new_frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_new_frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_new_frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_new_frontiers.tex
 
 Re-run the numerical experiment
 -------------------------------
@@ -77,10 +78,10 @@ current monomial-basis recurrence is cancellation-prone.
 
 Verification performed
 ----------------------
-* Clean latexmk build with no unresolved references, duplicate labels, or
+* Clean three-pass pdflatex build with no unresolved references, duplicate labels, or
   overfull boxes.
-* PDF preflight: 35 pages, unencrypted, text-based, no warnings.
-* All 35 pages rendered to PNG and visually inspected in contact sheets;
+* PDF preflight: 36 pages, unencrypted, text-based, no warnings.
+* All 36 pages rendered to PNG and visually inspected in contact sheets;
   representative plot and table pages were also checked at full render size.
 * Python byte-compilation and an independent degree-24 smoke run succeeded.
 
