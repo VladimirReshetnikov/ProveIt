@@ -132,7 +132,7 @@
 positive rational energy series, infinite sinc integrals,\\
 and quarter-grid lifting identities}
 \author{Research report for Vladimir Reshetnikov's \texttt{ProveIt} project}
-\date{29 August 2026}
+\date{30 August 2026}
 
 \begin{document}
 \maketitle
@@ -266,13 +266,13 @@ the zero-based product to the one-based product.
 \end{statusbox}
 
 \begin{statusbox}{Formal status: moment--Appell foundation}
-Starting from compiled source checkpoint \texttt{1f9ce6fd9} and including the
-focused-build extension at compiled checkpoint \texttt{e2c310e7c}, the subsequent module
+At compiled source checkpoint \texttt{a3854643d}, the subsequent module
 \path{RvachevMomentAppell.lean} exports six public definitions:
 \path{rvachevRawMomentRat}, \path{rvachevReciprocalMomentRat},
 \path{rvachevAppellPolynomialRat}, \path{rvachevAppellPolynomial}, and
 \path{rvachevDeconvolvedPolynomial}, together with
-\path{rvachevDeconvolutionLinearMap}.  Its twenty-four public theorems are
+\path{rvachevDeconvolutionLinearMap}.  Of its thirty public theorems, the
+previously catalogued twenty-four are
 \path{rvachevRawMomentRat_zero}, \path{rvachevRawMomentRat_even},
 \path{rvachevRawMomentRat_odd}, \path{rvachevReciprocalMomentRat_zero},
 \path{binomialConv_rvachevRawMomentRat_reciprocal},
@@ -308,8 +308,22 @@ closes the formal coefficient content behind
 reciprocal-MGF, differential-series, or Appell generating-function identities.
 \end{statusbox}
 
+\begin{statusbox}{Formal status: exact deconvolution triangularity}
+At the same compiled checkpoint, the six further public theorems are
+\path{coeff_rvachevDeconvolvedPolynomial_natDegree},
+\path{natDegree_rvachevDeconvolvedPolynomial},
+\path{leadingCoeff_rvachevDeconvolvedPolynomial},
+\path{rvachevDeconvolvedPolynomial_eq_zero_iff},
+\path{rvachevDeconvolutionLinearMap_injective}, and
+\path{rvachevDeconvolvedPolynomial_injective}.  They prove that deconvolution
+preserves the coefficient in the original natural degree, hence preserves
+exact natural degree and leading coefficient.  Its kernel is trivial, and it
+is injective both as the packaged real linear map and as the underlying raw
+operation.
+\end{statusbox}
+
 \begin{statusbox}{Formal status: synthesis and translate blocks}
-At compiled source checkpoint \texttt{c51a41fcf},
+At compiled source checkpoint \texttt{a3854643d},
 \path{RvachevPolynomialSynthesis.lean} exports no public definitions and
 exactly four public theorems:
 \path{tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp},
@@ -325,8 +339,11 @@ At the same checkpoint, \path{FabiusLegendreTranslateBlocks.lean} exports six
 public definitions: \path{rvachevLegendreDeconvolutionPolynomial},
 \path{rvachevLegendreScale}, \path{rvachevLegendreIndexSet},
 \path{rvachevLegendreAtomCoefficient},
-\path{rvachevLegendreTranslateBlock}, and \path{rvachevTranslateGram}.  Its five
-public theorems are \path{eval_legendrePolynomial_eq_sum_rvachevUp},
+\path{rvachevLegendreTranslateBlock}, and \path{rvachevTranslateGram}.  Its seven
+public theorems are
+\path{natDegree_rvachevLegendreDeconvolutionPolynomial},
+\path{leadingCoeff_rvachevLegendreDeconvolutionPolynomial},
+\path{eval_legendrePolynomial_eq_sum_rvachevUp},
 \path{eval_legendrePolynomial_even_eq_sum_rvachevUp},
 \path{rvachevLegendreTranslateBlock_eq_rvachevLegendreBlock},
 \path{intervalIntegral_rvachevLegendreTranslateBlock_mul}, and
@@ -335,21 +352,26 @@ deconvolved Legendre definition \eqref{eq:Q-def}, the finite formulas
 \eqref{eq:Pd-synthesis} and \eqref{eq:even-P-synthesis}, the literal finite
 block data and equality \eqref{eq:block-def}--\eqref{eq:block-mode}, complete
 orthogonality of those translate blocks, and the atom-Gram identity
-\eqref{eq:atom-gram}.
+\eqref{eq:atom-gram}.  In addition, for $Q_d=\Dscr P_d$ they prove exact
+degree $d$ and the explicit unchanged leading coefficient
+$2^{-d}\binom{2d}{d}$.
 
 \end{statusbox}
 
 \begin{statusbox}{Formal status: translate-block series and common-mesh convergence}
 
-At compiled source checkpoint \texttt{e2c310e7c}, the focused-build module
+At compiled source checkpoint \texttt{a3854643d}, the focused-build module
 \path{FabiusLegendreTranslateSeries.lean} exports five
 public definitions:
 \path{rvachevLegendrePartialSumDeconvolutionPolynomial},
 \path{rvachevLegendrePartialSumAtomCoefficient},
 \path{rvachevLegendrePartialSumTranslateBlock},
 \path{rvachevLegendreTranslateBlockOnInterval}, and
-\path{rvachevLegendrePartialSumTranslateBlockOnInterval}.  Its twenty-three public theorems
-are \path{summable_norm_rvachevLegendreTranslateBlock},
+\path{rvachevLegendrePartialSumTranslateBlockOnInterval}.  Its twenty-five public theorems
+are
+\path{natDegree_rvachevLegendrePartialSumDeconvolutionPolynomial},
+\path{leadingCoeff_rvachevLegendrePartialSumDeconvolutionPolynomial},
+\path{summable_norm_rvachevLegendreTranslateBlock},
 \path{summable_rvachevLegendreTranslateBlock},
 \path{hasSum_rvachevLegendreTranslateBlock},
 \path{tsum_rvachevLegendreTranslateBlock},
@@ -371,7 +393,12 @@ are \path{summable_norm_rvachevLegendreTranslateBlock},
 \path{tendsto_rvachevLegendrePartialSumTranslateBlockOnInterval},
 \path{rvachevLegendrePartialSumTranslateBlock_tendstoUniformlyOn},
 \path{tendsto_norm_rvachevLegendrePartialSumTranslateBlockOnInterval_sub}, and
-\path{tendsto_rvachevLegendrePartialSumTranslateBlock}.  They close the pointwise
+\path{tendsto_rvachevLegendrePartialSumTranslateBlock}.
+\end{statusbox}
+
+\clearpage
+\begin{statusbox}{Formal consequences and remaining boundary}
+They close the pointwise
 and uniform, absolutely summable literal-block loop
 \eqref{eq:block-loop}; the full deconvolution identity \eqref{eq:SN-CN}; and
 the global and finite common-mesh synthesis \eqref{eq:fixed-scale}.  They also
@@ -379,14 +406,23 @@ identify the named fixed-scale train with both the polynomial partial sum and
 the sum of its separately scaled blocks as functions on $[-1,1]$.  The bundled
 common-mesh partial trains converge to $u$ in $C([-1,1])$, equivalently in the
 supremum norm, with raw \texttt{TendstoUniformlyOn}, norm-error-to-zero, and
-pointwise forms also exposed.
+pointwise forms also exposed.  The two new triangularity wrappers prove that
+$C_N=\Dscr S_N$ has exactly the natural degree and leading coefficient of
+$S_N$, including degenerate partial sums whose visible degree drops.
 
 The new APIs still do not prove minimality or sharpness of the displayed mesh;
 reciprocal/deconvolution parity or the derivative, Gegenbauer, Appell, and
 low-degree formulas for $Q_d$; rationality of the atom rows; equality of the
-fixed-scale and separately scaled coefficient vectors; exact degree of every
-partial sum; or the later refinement, projector, and asymptotic layers.
+fixed-scale and separately scaled coefficient vectors; an unconditional
+$\operatorname{natDegree}(S_N)=2N$ theorem or nonvanishing of its top Legendre
+coefficient; or the later refinement, projector, and asymptotic layers.
 \end{statusbox}
+
+At checkpoint \texttt{a3854643d}, the public definition/theorem inventories of
+\path{RvachevMomentAppell.lean}, \path{RvachevPolynomialSynthesis.lean},
+\path{FabiusLegendreTranslateBlocks.lean}, and
+\path{FabiusLegendreTranslateSeries.lean} are respectively $6/30$, $0/4$,
+$6/7$, and $5/25$: exactly $83$ public declarations.
 
 \clearpage
 \tableofcontents
@@ -1863,23 +1899,27 @@ The new results divide naturally into finite algebra and standard Hilbert-space
 arguments.
 
 \begin{enumerate}
- \item \textbf{Polynomial layer.}  At checkpoint \texttt{1f9ce6fd9},
+ \item \textbf{Polynomial layer.}  At compiled checkpoint \texttt{a3854643d},
  \path{RvachevMomentAppell.lean} formalizes the full rational raw moments,
  their formal reciprocal/Bell sequence, the rational and real monic
  reciprocal-moment Appell families, and coefficientwise polynomial
- deconvolution with exact smoothing recovery and a degree-nonincrease bound.
- At compiled checkpoint \texttt{e2c310e7c}, the focused-build extension packages
+ deconvolution with exact smoothing recovery and exact preservation of the
+ original top coefficient, natural degree, and leading coefficient.  The same
+ checkpoint packages
  deconvolution as a real linear map, proves its zero, addition, scalar,
  finite-sum, and constant-multiple laws, and identifies its values on monomials
- and $X^n$.
+ and $X^n$; it also proves the kernel is trivial and both the linear and raw
+ operations are injective.
  The analytic reciprocal-MGF/differential-series display, specialized parity,
  explicit low coefficients, and a specialized reciprocal recurrence remain
  outside that API.
- \item \textbf{Synthesis and Legendre specialization.}  At checkpoint
- \texttt{c51a41fcf}, \path{RvachevPolynomialSynthesis.lean} formalizes the
+ \item \textbf{Synthesis and Legendre specialization.}  At compiled checkpoint
+ \texttt{a3854643d}, \path{RvachevPolynomialSynthesis.lean} formalizes the
  global and finite sufficient-mesh forms of \eqref{eq:generic-synthesis}, and
  \path{FabiusLegendreTranslateBlocks.lean} packages \eqref{eq:Pd-synthesis}
- and \eqref{eq:even-P-synthesis} at meshes $2^d$ and $4^n$.  Minimality and
+ and \eqref{eq:even-P-synthesis} at meshes $2^d$ and $4^n$, together with
+ exact degree $d$ and leading coefficient $2^{-d}\binom{2d}{d}$ for $Q_d$.
+ Minimality and
  sharpness of those meshes and the closed derivative/Gegenbauer/Appell forms
  of $Q_d$ remain targets.
  \item \textbf{Orthogonal block layer.}  Complete orthogonality of the
@@ -1887,7 +1927,7 @@ arguments.
  are formalized in \path{FabiusLegendreEnergy.lean}.  The same checkpoint's
  \path{FabiusLegendreTranslateBlocks.lean} now formalizes the literal finite
  up-translate realization, its complete block orthogonality, and the atom-Gram
- formula.  At compiled checkpoint \texttt{e2c310e7c}, the focused-build
+ formula.  At compiled checkpoint \texttt{a3854643d}, the focused-build
  \path{FabiusLegendreTranslateSeries.lean} now
  formalizes pointwise and uniform absolute summability and
  \texttt{HasSum}/\texttt{tsum} forms for the literal outer blocks, the finite
@@ -1895,8 +1935,10 @@ arguments.
  synthesis at $4^N$, and convergence of the common-mesh partial trains to $u$
  in $C([-1,1])$, with raw uniform, norm-error, and pointwise forms.  Rationality
  of those atom rows, equality of the two
- coefficient vectors, and exact degree of every partial sum remain outside
- these APIs.
+ coefficient vectors, an unconditional $\operatorname{natDegree}(S_N)=2N$
+ statement, and nonvanishing of the top Legendre coefficient remain outside
+ these APIs; the natural degree and leading coefficient of $C_N$ are proved equal to
+ those of $S_N$, including degenerate drops.
  \item \textbf{Energy layer.}  The real-variable equality
  \eqref{eq:A2-legendre} is formalized in \path{FabiusLegendreEnergy.lean}.
  At checkpoint \texttt{9d5f41c2c},

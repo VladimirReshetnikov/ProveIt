@@ -152,9 +152,10 @@ Fractional Orders, and Inverse-Quantile Integrals}
 \endgroup
 \clearpage
 \section*{Provenance}
-This volume preserves the absorbed theorem and proof bodies, with labels, citation keys,
-and asset paths mechanically prefixed per part.  Later edits add status-only Lean
-crosswalk annotations; the historical source hashes below are unchanged.
+This volume preserves the absorbed theorem and proof bodies verbatim, with labels,
+citation keys, and asset paths mechanically prefixed per part.  Later edits add
+clearly marked, status-only Lean crosswalk annotations; the historical source hashes
+below are unchanged and no source theorem statement has been altered.
 The absorbed drafts are deleted from the working tree; git history is the archive.
 \begin{itemize}
 \item \path{Fabius_Antiderivatives_Report/fabius_antiderivatives.tex} \\ {\footnotesize SHA-256 \path{e1669eb704563db2c54a412d7fa8a823a31df5cef11074d6d321872cf16fa307}}
@@ -12369,7 +12370,8 @@ remain frontier claims.
 
 \subsection{Recursive source boundary}
 
-The source boundary was the public recursive tree under \repoPartxx{} as accessed on
+The source boundary was the public recursive tree under
+\path{ProveIt/Analysis/FabiusFunction/docs} as accessed on
 27 August 2026.  The tree contains living synthesis documents, a consolidated
 non-formalized-frontier volume, active frontier drafts, historical snapshots, and corrected or
 transcribed source papers.  A contemporaneous recursive inventory in the tree records
@@ -14958,7 +14960,18 @@ support-free clamped theorem, are
 \path{Fabius.intervalIntegral_survival_smul_eq_integral_clamp},
 \path{Fabius.intervalIntegral_survival_smul_eq_integral_min_of_ae_mem_Icc}, and
 \path{Fabius.intervalIntegral_survival_smul_eq_integral_of_ae_mem_Icc} in
-\path{SurvivalLayerCake.lean}.
+\path{SurvivalLayerCake.lean}.  The complementary order-of-integration
+formulation is also formalized in \path{ProbabilityLaplaceMoments.lean}: its
+full and clipped finite-measure engines are
+\path{Fabius.integral_Icc_intervalIntegral_eq_intervalIntegral_smul_survival}
+and
+\path{Fabius.integral_Icc_intervalIntegral_min_eq_intervalIntegral_smul_survival},
+with Fabius specializations and the scalar wrappers
+\path{Fabius.ProbabilityRepresentation.intervalIntegral_mul_rvachevUp_eq_integral_Icc_intervalIntegral}
+and
+\path{Fabius.ProbabilityRepresentation.intervalIntegral_mul_rvachevUp_eq_integral_Icc_intervalIntegral_min}.
+Only Bochner integrability is required, so these declarations also cover real
+and complex kernels.
 \end{statusbox}
 
 \begin{proof}

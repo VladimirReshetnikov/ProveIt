@@ -83,6 +83,24 @@ noncomputable def rvachevLegendrePartialSumDeconvolutionPolynomial
     (F : BoundedFabius) (N : ℕ) : ℝ[X] :=
   rvachevDeconvolvedPolynomial (rvachevLegendrePartialSumPolynomial F N)
 
+/-- Deconvolution preserves the exact degree of every Legendre partial-sum
+polynomial, including degenerate partial sums whose visible degree drops. -/
+@[simp]
+theorem natDegree_rvachevLegendrePartialSumDeconvolutionPolynomial
+    (F : BoundedFabius) (N : ℕ) :
+    (rvachevLegendrePartialSumDeconvolutionPolynomial F N).natDegree =
+      (rvachevLegendrePartialSumPolynomial F N).natDegree := by
+  simp [rvachevLegendrePartialSumDeconvolutionPolynomial]
+
+/-- Deconvolution preserves the leading coefficient of every Legendre
+partial-sum polynomial. -/
+@[simp]
+theorem leadingCoeff_rvachevLegendrePartialSumDeconvolutionPolynomial
+    (F : BoundedFabius) (N : ℕ) :
+    (rvachevLegendrePartialSumDeconvolutionPolynomial F N).leadingCoeff =
+      (rvachevLegendrePartialSumPolynomial F N).leadingCoeff := by
+  simp [rvachevLegendrePartialSumDeconvolutionPolynomial]
+
 /-- Linearity of Rvachev deconvolution identifies `C_N` with the finite sum
 of the separately deconvolved even Legendre modes. -/
 theorem rvachevLegendrePartialSumDeconvolutionPolynomial_eq_sum

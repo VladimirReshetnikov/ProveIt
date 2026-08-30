@@ -13,8 +13,8 @@ provides:
 * endpoint and exponentially tilted raw moments on the unit interval;
 * almost-sure support and restriction identities for the weighted-sum law;
 * its survival function on the full nonnegative ray;
-* a general compact-probability Fubini identity for expectations of
-  differentiable functions, expressed through the survival function;
+* a Banach-valued survival-kernel Fubini identity for every integrable kernel,
+  and the differentiable integration-by-parts formula as its scalar layer;
 * reflection principles for unrestricted and unit-restricted integrals, and
   the resulting signed binomial transforms of the complete raw and normalized
   tilted-moment hierarchies;
@@ -53,6 +53,56 @@ lemma unitLaplaceMoment_nonneg (μ : Measure ℝ) (s : ℝ) (k : ℕ) :
   filter_upwards [ae_restrict_mem measurableSet_Icc] with x hx
   exact mul_nonneg (Real.exp_nonneg _) (pow_nonneg hx.1 k)
 
+/-- **The Banach-valued survival-kernel identity.**  If a finite measure is
+supported on `[a, b]`, then for every Bochner-integrable kernel `k`,
+
+`∫ (∫ t in a..x, k t) ∂μ(x) = ∫ t in a..b, μ((t,∞)) • k t`.
+
+This is the Fubini core of survival-function integration by parts.  It assumes
+only integrability of the kernel—not continuity or the prior choice of an
+antiderivative—and its Banach-valued form includes real- and complex-valued
+kernels simultaneously.  For a probability measure, the two sides are the
+expected primitive and the probability-weighted survival integral. -/
+theorem integral_Icc_intervalIntegral_eq_intervalIntegral_smul_survival
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    (μ : Measure ℝ) [IsFiniteMeasure μ]
+    {a b : ℝ} (hab : a ≤ b) (hμ : ∀ᵐ x ∂μ, x ∈ Icc a b)
+    (k : ℝ → E) (hk : IntegrableOn k (Icc a b)) :
+    (∫ x in Icc a b, (∫ t in a..x, k t) ∂μ) =
+      ∫ t in a..b, (μ.real (Ioi t)) • k t := by
+  have hrestrict : μ.restrict (Icc a b) = μ :=
+    Measure.restrict_eq_self_of_ae_mem hμ
+  rw [hrestrict]
+  exact
+    (intervalIntegral_survival_smul_eq_integral_of_ae_mem_Icc
+      μ hab hμ k
+        ((intervalIntegrable_iff_integrableOn_Icc_of_le hab).2 hk)).symm
+
+/-- **Clipped Banach-valued survival-kernel identity.**  For a finite measure
+supported on `[a, b]`, stopping the primitive at `min x c` truncates the
+survival integral at the same `c ∈ [a, b]`:
+
+`∫ (∫ t in a..min x c, k t) ∂μ(x) = ∫ t in a..c, μ((t,∞)) • k t`.
+
+This is a direct compatibility corollary of the interval-supported stopped
+layer-cake theorem; no second Fubini argument is needed. -/
+theorem integral_Icc_intervalIntegral_min_eq_intervalIntegral_smul_survival
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    (μ : Measure ℝ) [IsFiniteMeasure μ]
+    {a b c : ℝ} (hμ : ∀ᵐ x ∂μ, x ∈ Icc a b)
+    (hc : c ∈ Icc a b)
+    (k : ℝ → E) (hk : IntegrableOn k (Icc a b)) :
+    (∫ x in Icc a b, (∫ t in a..min x c, k t) ∂μ) =
+      ∫ t in a..c, (μ.real (Ioi t)) • k t := by
+  have hrestrict : μ.restrict (Icc a b) = μ :=
+    Measure.restrict_eq_self_of_ae_mem hμ
+  rw [hrestrict]
+  exact
+    (intervalIntegral_survival_smul_eq_integral_min_of_ae_mem_Icc
+      μ hc hμ k
+        ((intervalIntegrable_iff_integrableOn_Icc_of_le hc.1).2
+          (hk.mono_set (Icc_subset_Icc_right hc.2)))).symm
+
 /-- Integration by parts for a probability law supported on `[a,b]`, written
 in terms of its survival function.  In probabilistic notation this is
 
@@ -74,44 +124,43 @@ theorem integral_Icc_eq_left_add_intervalIntegral_deriv_mul_survival
   have hgμ : Integrable g μ := by
     rw [← hrestrict]
     exact hg.integrableOn_Icc
-  have hg'int : IntervalIntegrable g' volume a b :=
-    hg'.intervalIntegrable_of_Icc hab
-  have hsurvival :=
-    intervalIntegral_survival_smul_eq_integral_of_ae_mem_Icc
-      μ hab hμ g' hg'int
-  have hprimitive :
-      ∀ᵐ x ∂μ, (∫ t in a..x, g' t) = g x - g a := by
-    filter_upwards [hμ] with x hx
+  have hprimitive (x : ℝ) (hx : x ∈ Icc a b) :
+      (∫ t in a..x, g' t) = g x - g a := by
     apply intervalIntegral.integral_eq_sub_of_hasDerivAt
     · intro t ht
       rw [uIcc_of_le hx.1] at ht
       exact hderiv t ⟨ht.1, ht.2.trans hx.2⟩
     · exact
         (hg'.mono (Icc_subset_Icc_right hx.2)).intervalIntegrable_of_Icc hx.1
-  have hstopped :
+  have hmeanPrimitive :
       (∫ x : ℝ, (∫ t in a..x, g' t) ∂μ) =
         (∫ x : ℝ, g x ∂μ) - g a := by
     calc
       (∫ x : ℝ, (∫ t in a..x, g' t) ∂μ) =
-          ∫ x : ℝ, (g x - g a) ∂μ := integral_congr_ae hprimitive
+          ∫ x : ℝ, (g x - g a) ∂μ := by
+            apply integral_congr_ae
+            filter_upwards [hμ] with x hx
+            exact hprimitive x hx
       _ = (∫ x : ℝ, g x ∂μ) - g a := by
         rw [integral_sub hgμ (integrable_const _), integral_const,
           probReal_univ, one_smul]
-  have hsurvival' :
-      (∫ t in a..b, g' t * μ.real (Ioi t)) =
-        ∫ x : ℝ, (∫ t in a..x, g' t) ∂μ := by
-    calc
-      (∫ t in a..b, g' t * μ.real (Ioi t)) =
-          ∫ t in a..b, μ.real (Ioi t) • g' t := by
-        apply intervalIntegral.integral_congr
-        intro t _ht
-        simp only [smul_eq_mul]
-        ring
-      _ = ∫ x : ℝ, (∫ t in a..x, g' t) ∂μ := hsurvival
-  rw [show (∫ x in Icc a b, g x ∂μ) = ∫ x : ℝ, g x ∂μ by
-    rw [hrestrict]]
-  rw [hsurvival', hstopped]
-  ring
+  have hkernel :=
+    integral_Icc_intervalIntegral_eq_intervalIntegral_smul_survival
+      μ hab hμ g' hg'.integrableOn_Icc
+  rw [hrestrict] at hkernel ⊢
+  calc
+    (∫ x : ℝ, g x ∂μ) =
+        g a + ((∫ x : ℝ, g x ∂μ) - g a) := by ring
+    _ = g a + ∫ x : ℝ, (∫ t in a..x, g' t) ∂μ := by
+      rw [hmeanPrimitive]
+    _ = g a + ∫ t in a..b, (μ.real (Ioi t)) • g' t := by
+      rw [hkernel]
+    _ = g a + ∫ t in a..b, g' t * μ.real (Ioi t) := by
+      apply congrArg (fun y : ℝ => g a + y)
+      apply intervalIntegral.integral_congr
+      intro t ht
+      simp only [smul_eq_mul]
+      ring
 
 /-- Unit-interval form of
 `integral_Icc_eq_left_add_intervalIntegral_deriv_mul_survival`. -/
@@ -429,6 +478,80 @@ theorem intervalIntegral_rvachevUp_smul_eq_integral
       intervalIntegral_survival_smul_eq_integral_of_ae_mem_Icc
         weightedSumDistribution (by norm_num)
           ae_weightedSumDistribution_mem_Icc k hk
+
+/-- Set-integral compatibility form of the full Rvachev survival layer cake.
+Every kernel integrable on `[0,1]` satisfies
+
+`𝔼[∫ t in 0..X, k t] = ∫ t in 0..1, up(t) • k t`,
+
+where `X` has the binary weighted-sum law and `up = rvachevUp F`. -/
+theorem integral_Icc_intervalIntegral_eq_intervalIntegral_smul_rvachevUp
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    (F : BoundedFabius) (hF : IsFabius F)
+    (k : ℝ → E) (hk : IntegrableOn k (Icc (0 : ℝ) 1)) :
+    (∫ x in Icc (0 : ℝ) 1, (∫ t in (0 : ℝ)..x, k t)
+        ∂weightedSumDistribution) =
+      ∫ t in (0 : ℝ)..1, (rvachevUp F t) • k t := by
+  rw [Measure.restrict_eq_self_of_ae_mem
+    ae_weightedSumDistribution_mem_Icc]
+  exact
+    (intervalIntegral_rvachevUp_smul_eq_integral F hF k
+      ((intervalIntegrable_iff_integrableOn_Icc_of_le (by norm_num)).2 hk)).symm
+
+/-- Set-integral compatibility form of the clipped Rvachev layer cake.  For
+`c ∈ [0,1]`, every kernel integrable on `[0,1]` satisfies
+
+`𝔼[∫ t in 0..min X c, k t] = ∫ t in 0..c, up(t) • k t`. -/
+theorem integral_Icc_intervalIntegral_min_eq_intervalIntegral_smul_rvachevUp
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    (F : BoundedFabius) (hF : IsFabius F)
+    {c : ℝ} (hc : c ∈ Icc (0 : ℝ) 1)
+    (k : ℝ → E) (hk : IntegrableOn k (Icc (0 : ℝ) 1)) :
+    (∫ x in Icc (0 : ℝ) 1, (∫ t in (0 : ℝ)..min x c, k t)
+        ∂weightedSumDistribution) =
+      ∫ t in (0 : ℝ)..c, (rvachevUp F t) • k t := by
+  rw [Measure.restrict_eq_self_of_ae_mem
+    ae_weightedSumDistribution_mem_Icc]
+  exact
+    (intervalIntegral_rvachevUp_smul_eq_integral_min F hF hc k
+      ((intervalIntegrable_iff_integrableOn_Icc_of_le hc.1).2
+        (hk.mono_set (Icc_subset_Icc_right hc.2)))).symm
+
+/-- Real scalar form of the survival-kernel identity in the report's
+orientation: integrating `k(t) * up(t)` equals the expected primitive of `k`
+evaluated at the Fabius random variable. -/
+theorem intervalIntegral_mul_rvachevUp_eq_integral_Icc_intervalIntegral
+    (F : BoundedFabius) (hF : IsFabius F)
+    (k : ℝ → ℝ) (hk : IntegrableOn k (Icc (0 : ℝ) 1)) :
+    (∫ t in (0 : ℝ)..1, k t * rvachevUp F t) =
+      ∫ x in Icc (0 : ℝ) 1, (∫ t in (0 : ℝ)..x, k t)
+        ∂weightedSumDistribution := by
+  rw [integral_Icc_intervalIntegral_eq_intervalIntegral_smul_rvachevUp
+    F hF k hk]
+  apply intervalIntegral.integral_congr
+  intro t _ht
+  simp only [smul_eq_mul]
+  ring
+
+/-- Real scalar clipped survival identity in the report's orientation:
+
+`∫ t in 0..c, k(t) up(t) = 𝔼[∫ t in 0..min X c, k(t)]`.
+
+It is the exact partial-endpoint companion of
+`intervalIntegral_mul_rvachevUp_eq_integral_Icc_intervalIntegral`. -/
+theorem intervalIntegral_mul_rvachevUp_eq_integral_Icc_intervalIntegral_min
+    (F : BoundedFabius) (hF : IsFabius F)
+    {c : ℝ} (hc : c ∈ Icc (0 : ℝ) 1)
+    (k : ℝ → ℝ) (hk : IntegrableOn k (Icc (0 : ℝ) 1)) :
+    (∫ t in (0 : ℝ)..c, k t * rvachevUp F t) =
+      ∫ x in Icc (0 : ℝ) 1, (∫ t in (0 : ℝ)..min x c, k t)
+        ∂weightedSumDistribution := by
+  rw [integral_Icc_intervalIntegral_min_eq_intervalIntegral_smul_rvachevUp
+    F hF hc k hk]
+  apply intervalIntegral.integral_congr
+  intro t _ht
+  simp only [smul_eq_mul]
+  ring
 
 /-- Integration against the weighted-sum law in terms of the survival
 function `rvachevUp`.  This is the compact-support expectation identity

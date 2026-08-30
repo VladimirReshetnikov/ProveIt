@@ -1,7 +1,7 @@
 LEGENDRE--RVACHEV SELF-RECONSTRUCTION PACKAGE
 =============================================
 
-Generated: 29 August 2026
+Generated: 30 August 2026
 Repository snapshot: faa3a9b94ac0e71abdc53c36fdf428222e4d2a8c
 Repository scope audited: Analysis/FabiusFunction/docs/**/*.tex
 
@@ -12,7 +12,7 @@ legendre_rvachev_self_reconstruction.tex
     Complete LaTeX source of the report.
 
 legendre_rvachev_self_reconstruction.pdf
-    Compiled report: 29 A4 pages, rebuilt with embedded/subset Libertinus prose
+    Compiled report: 30 A4 pages, rebuilt with embedded/subset Libertinus prose
     fonts under the repository's three-pass policy.
 
 legendre_rvachev_experiments.py

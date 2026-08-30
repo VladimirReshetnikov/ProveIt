@@ -35,6 +35,22 @@ noncomputable def rvachevLegendreDeconvolutionPolynomial
     (d : ℕ) : ℝ[X] :=
   rvachevDeconvolvedPolynomial (legendrePolynomial d)
 
+/-- Deconvolution preserves the exact degree of every Legendre polynomial. -/
+@[simp]
+theorem natDegree_rvachevLegendreDeconvolutionPolynomial (d : ℕ) :
+    (rvachevLegendreDeconvolutionPolynomial d).natDegree = d := by
+  simp [rvachevLegendreDeconvolutionPolynomial]
+
+/-- The deconvolved Legendre polynomial has the same leading coefficient as
+the original Rodrigues-normalized Legendre polynomial. -/
+@[simp]
+theorem leadingCoeff_rvachevLegendreDeconvolutionPolynomial (d : ℕ) :
+    (rvachevLegendreDeconvolutionPolynomial d).leadingCoeff =
+      (2 : ℝ)⁻¹ ^ d * (2 * d).choose d := by
+  rw [rvachevLegendreDeconvolutionPolynomial,
+    leadingCoeff_rvachevDeconvolvedPolynomial, Polynomial.leadingCoeff,
+    natDegree_legendrePolynomial, coeff_legendrePolynomial_self]
+
 /-- **Finite dyadic synthesis of a Legendre polynomial.**  On `[-1,1]`, the
 degree-`d` polynomial `P_d` is reconstructed exactly from shifted Rvachev
 atoms at mesh `M = 2^d`.  The open interval of integer indices is precisely
