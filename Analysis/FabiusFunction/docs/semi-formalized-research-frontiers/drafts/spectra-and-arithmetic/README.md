@@ -1,6 +1,30 @@
 # Spectra and arithmetic
 
 New standalone intake member:
+[`Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/`](Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/),
+*Reciprocal-Integer Convolution Divisors of the Rvachev Law* (32 pp),
+arrived from a rootless 14-file archive on 2026-08-30.  The package's
+characteristic quotients
+`Q_M(z) = Phi(z) / Phi(z/M)` classify reciprocal-integer decompositions of
+the Rvachev law.  Its digit IFS and multiplicative cocycle lead to an exact
+odd-singular/even-regular trichotomy, transport and inverse-Fabius bounds,
+an arithmetic zero divisor and spectral zeta function, and finite
+Thue--Morse quotients whose `M = 3` case recovers Stern/hyperbinary
+coefficients.
+
+This is a distinct sibling of the shape/Stein report under
+[`../representations/`](../representations/): unequal reciprocal-scale
+factors here do not conflict with that report's obstruction to identical
+convolution roots.  The report nevertheless shares foundational zero-count,
+Bernoulli/Bell, endpoint, and inverse-Fabius infrastructure with the
+consolidated corpus, so it remains separate pending a theorem-by-theorem
+crosswalk.  The rootless archive supplied no checksum ledger or dependency
+lock; the repository-generated `SHA256SUMS` covers every stored payload after
+five CSV files were normalized to LF.  All 32 PDF pages were rendered during
+intake, but the experiment and TeX were not rerun.  Manuscript theorem labels
+do not imply Lean proof status.
+
+New standalone intake member:
 [`Fabius_Total_Positivity_Frontier_Report/`](Fabius_Total_Positivity_Frontier_Report/),
 *Total Positivity and Cartwright Geometry in the Fabius--Rvachev Dyadic Sinc
 Product* (22 pp), arrived as a bare TeX/PDF/script package on 2026-08-30.
