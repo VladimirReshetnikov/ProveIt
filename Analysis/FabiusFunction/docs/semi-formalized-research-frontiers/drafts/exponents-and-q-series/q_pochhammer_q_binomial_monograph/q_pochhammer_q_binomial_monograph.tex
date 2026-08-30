@@ -9563,6 +9563,34 @@ $\poch{-(1-q^{-1})^2t^2/(4\pi^2m^2)}{q^{-2}}{\infty}$; taking reciprocals proves
 with $\abs q^{-1}<1$ in place of $\abs q$.
 \end{proof}
 
+\paragraph{Lean boundary for \Cref{thm:qF-spectral}.}
+The current formal counterpart is the fixed dyadic inside specialization, not
+the whole theorem.  The module
+\path{RvachevPochhammerFactorization.lean} defines
+\path{complexQPochhammerInf} and proves its defining identity,
+multipliability, named product, and finite-prefix convergence through
+\path{complexQPochhammerInf_eq_tprod},
+\path{multipliable_one_sub_mul_pow_complex},
+\path{hasProd_complexQPochhammerInf}, and
+\path{tendsto_finiteQPochhammerIn_complex}; the last three statements allow
+arbitrary complex $a$ and assume exactly $\lVert q\rVert<1$.  Its remaining
+two theorems,
+\path{rvachevFourierProduct_eq_tprod_complexQPochhammerInf} and
+\path{rvachevFourier_eq_tprod_complexQPochhammerInf}, fix the dyadic scale and
+hence the nome $1/4$, hold for every complex argument including at zero
+factors, and transfer the product to a bounded Fabius witness satisfying
+\path{IsFabius}.
+
+In centered sinc coordinates, $t=4\pi z$ identifies this with the inside
+$q=1/2$ product.  In the uncentered MGF normalization of
+\eqref{eq:qF-spectral-inside}, the corresponding substitution is
+$t=4\pi\mathrm i z$: its Pochhammer product becomes $\Phi(z)$ and the retained
+phase gives $M_{1/2}(4\pi\mathrm i z)=\e^{2\pi\mathrm i z}\Phi(z)$.
+There is no named Lean bridge to $M_q$, and neither the general inside
+parameter, the outside formula, zero--pole exchange, nor normal convergence
+on compact sets is asserted.  Thus \Cref{thm:qF-spectral} remains only
+partially formalized.
+
 \begin{remark}[The nome, and where the $q$-objects finally appear]\label{rem:qF-nome}
 The geometric ratio $q$ of the random series \eqref{eq:geometric-uniform-series}
 becomes the nome $q^2$ of the spectral product: at $q=\pm\tfrac12$ the nome is
@@ -11692,9 +11720,11 @@ Read \Cref{chap:geometric-filters,chap:halfbase-thuemorse,chap:geometric-uniform
 
 Every mathematical result in this book is intended, eventually, to have a
 machine-checked proof in the Lean development that accompanies the Fabius
-project~\cite{ReshetnikovProveIt2026}.  This appendix records how far that
-has got, result by result, so that what remains can be planned rather than
-rediscovered.
+project~\cite{ReshetnikovProveIt2026}.  This appendix records the
+183-result core in Chapters~1--23 result by result, so that what remains can
+be planned rather than rediscovered.  The later Chapter~24 Fabius bridge is
+crosswalked locally, including at \Cref{thm:qF-spectral}, and is not part of
+the aggregate ledger below.
 
 The classification is deliberately severe, and it is the same rule the
 project uses to decide whether a claim may leave its quarantine boundary.
@@ -11717,7 +11747,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 183 labelled results, 34 are \statusexact, 24 are \statuspartial,
+Of those 183 core labelled results, 34 are \statusexact, 24 are \statuspartial,
 122 are \statusnone, and 3 are \statusna.
 The formalized part is concentrated exactly where the Fabius development
 needed it: the finite Gaussian-coefficient core, the geometric Lagrange and
@@ -11748,7 +11778,11 @@ every real \(a\), the finite symbols converge to it, and the positive-factor
 specializations used for \((q;q)_\infty\) and \((-q;q)_\infty\) are strictly
 positive.  This real contractive-base product layer does not formalize the
 book's general complex analytic or basic-hypergeometric infinite-product
-theory.
+theory.  The separate \texttt{RvachevPochhammerFactorization} module now
+defines the complex symbol and proves its pointwise convergence for every
+contracting complex nome, but its spectral sinc factorization fixes the nome
+to \(1/4\); it therefore does not close the book's general-parameter or
+normal-convergence claims.
 
 The new weighted symmetric-function tranche and the triangular-transform
 refactor in this edition were statically checked against the complete public
@@ -11765,6 +11799,7 @@ declaration lists:
 \path{QDifferenceAnnihilation.lean}: four theorems;\\
 \path{QBinomialInversionSpecializations.lean}: two definitions and four theorems;\\
 \path{QPochhammerElementaryIdentities.lean}: 13 theorems;\\
+\path{RvachevPochhammerFactorization.lean}: one definition and six theorems;\\
 \path{GeometricCompleteHomogeneous.lean}: six theorems;\\
 \path{GeometricLagrangeCompleteHomogeneous.lean}: five theorems;\\
 \path{GeometricLagrangeQMoments.lean}: one definition and 37 theorems;\\
@@ -11799,6 +11834,22 @@ requires \((q;q)_{N-k}\ne0\).  The adjacent quotients require exactly their
 displayed Gaussian and linear-factor denominators, retain \(k<n\), and do not
 require \(q\ne0\); the two adjacent cross identities are total in all
 \(n,k\), including on and above the row boundary.
+
+\item \path{RvachevPochhammerFactorization.lean} has the one definition
+\path{Fabius.complexQPochhammerInf} and exactly six theorems:
+\path{Fabius.complexQPochhammerInf_eq_tprod},
+\path{Fabius.multipliable_one_sub_mul_pow_complex},
+\path{Fabius.hasProd_complexQPochhammerInf},
+\path{Fabius.tendsto_finiteQPochhammerIn_complex},
+\path{Fabius.rvachevFourierProduct_eq_tprod_complexQPochhammerInf}, and
+\path{Fabius.rvachevFourier_eq_tprod_complexQPochhammerInf}.  The complex
+symbol is total; its named convergence results require exactly
+\(\lVert q\rVert<1\).  The two product factorizations instead have the fixed
+nome \(1/4\), are global in the complex argument without a nonvanishing
+hypothesis, and the Fourier form assumes exactly a bounded Fabius witness and
+\path{IsFabius}.  Under \(t=4\pi z\), they give only the inside \(q=1/2\)
+centered specialization of \Cref{thm:qF-spectral}, not that theorem's
+general-parameter, reciprocal, or normal-convergence clauses.
 
 \item The six theorems of \path{GeometricCompleteHomogeneous.lean} are
 \path{Fabius.completeHomogeneousEval_geometric},

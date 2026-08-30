@@ -1547,6 +1547,9 @@ This includes \(q=0\) and negative \(q\); the final two declarations are exact
 rescaling, as a \lean{tprod}.  What is missing is a named
 characteristic-function-to-\lean{geometricSincProduct} bridge (or explicit
 \lean{HasProd} theorem) and compact-uniform convergence of the characteristic prefixes.
+The fixed-dyadic Pochhammer factorization in
+\path{RvachevPochhammerFactorization.lean} does not supply either of these
+general-\(q\) characteristic-function statements.
 
 The generic CDF mechanisms are
 \lean{continuous_cdf_of_nullSingleton},
@@ -1605,6 +1608,8 @@ theorem), compact-uniform convergence, rapid-decay estimates, and a Fourier-inve
 construction remain outside the formal API.  So do a named centered \(q\)-family, a closed all-order
 derivative hierarchy and explicit endpoint-flatness wrappers, shape theorems, further
 transform formulas, and explicit Bernoulli-cumulant/Bell-moment formulas and asymptotics.
+The global complex Pochhammer theorem proved below is the fixed inside
+\(q=1/2\) product identity, not a closure of this general-\(q\) boundary.
 The probability-law fixed point itself is uniquely characterized by
 \Cref{cor:geometric-uniform-law-unique}.  The oriented Cauchy transform and its
 adjacent-power hierarchy are also formal for every nonzero \(|q|<1\), including negative
@@ -2652,6 +2657,48 @@ requires a parameter-under-the-Mellin-integral theorem.  The raw Gamma product,
 canonical regrouping, logarithmic/digamma expansions, Gamma-product Malmsten
 and heat-trace representations, D-finiteness, and general-base collision order listed above
 remain separate frontiers.
+\end{proof}
+
+\begin{theorem}[Complex Pochhammer factorization of the Rvachev product]
+For \(a,q\in\C\), let the total complex infinite \(q\)-Pochhammer symbol be
+\begin{equation}
+ (a;q)_{\infty,\C}:=\prod_{j=0}^{\infty}(1-aq^j).
+                                                               \label{eq:complex-qpochhammer-inf}
+\end{equation}
+If \(\lVert q\rVert<1\), this factor family is multipliable and its finite
+prefixes converge to \((a;q)_{\infty,\C}\), with no restriction on \(a\).
+For every \(z\in\C\), without a nonvanishing hypothesis,
+\begin{equation}
+ \Phi(z)=\prod_{k=0}^{\infty}
+   \left(\frac{z^2}{(k+1)^2};\frac14\right)_{\infty,\C}.
+                                                               \label{eq:rvachev-complex-qpochhammer}
+\end{equation}
+The same right-hand side equals \(\widehat{\Up}(z)\) for every bounded
+Fabius witness satisfying the Fabius equations.  In the normalization of the
+signed-and-reciprocal \(q\)-frontier, \(t=4\pi z\) turns
+\eqref{eq:rvachev-complex-qpochhammer} into exactly the inside \(q=1/2\)
+specialization of its centered sinc--Pochhammer product.
+\end{theorem}
+
+\begin{proof}[Formal proof and exact boundary]
+\path{RvachevPochhammerFactorization.lean} has one public definition,
+\lean{complexQPochhammerInf}, and exactly six public theorems:
+\lean{complexQPochhammerInf_eq_tprod},
+\lean{multipliable_one_sub_mul_pow_complex},
+\lean{hasProd_complexQPochhammerInf},
+\lean{tendsto_finiteQPochhammerIn_complex},
+\lean{rvachevFourierProduct_eq_tprod_complexQPochhammerInf}, and
+\lean{rvachevFourier_eq_tprod_complexQPochhammerInf}.
+The middle three convergence declarations require exactly
+\(\lVert q\rVert<1\).  The final two declarations instead fix the dyadic
+scale and hence the Pochhammer nome \(1/4\); they hold globally in the complex
+argument, including at individual zero factors, and the Fourier-transform
+form assumes exactly a bounded witness and \lean{IsFabius}.  The generic
+complex symbol and its convergence API do not turn the final factorization
+into a general-\(q\) sinc theorem.  In particular, these declarations neither
+name the frontier's \(\psi_q\) or \(M_q\), nor prove the outside
+\(\lvert q\rvert>1\) reciprocal formula, zero--pole exchange, or
+local-uniform/normal convergence of that parameterized product.
 \end{proof}
 
 The exponent in the canonical product has a finite, base-generic double-counting
@@ -9600,7 +9647,8 @@ That rule explains several choices made above:
       Fourier inversion, centered packaging, closed
       higher-derivative and endpoint-flatness wrappers, shape results, further transforms,
       and explicit Bernoulli-cumulant/Bell-moment formulas and asymptotics remain outside
-      this interface.  The exact-support oriented transform DDE and adjacent Cauchy-power
+      this interface.  The separate global complex Pochhammer factorization is fixed at
+      the dyadic scale and does not change those general-\(q\) omissions.  The exact-support oriented transform DDE and adjacent Cauchy-power
       recurrence for every nonzero \(|q|<1\), including negative ratios, are direct theorems
       of \path{GeometricUniformCauchy.lean}; these are distinct from the still-open
       characteristic-function-to-infinite-product and Fourier-inversion formulas.
@@ -9951,8 +9999,10 @@ Fourier analysis &
 \path{PeakRayEnvelope.lean}, \path{GlobalDecayEnvelope.lean},
 \path{RvachevFourierDecay.lean}, \path{VarianceBookkeeping.lean},
 \path{BirkhoffVariance.lean}, \path{BirkhoffProductBridge.lean}\\
-Summable-scale products and geometric reciprocal-Gamma factorization &
+Summable-scale products, geometric reciprocal-Gamma factorization, and the
+dyadic complex Pochhammer product &
 \path{ScaledInfiniteProducts.lean}, \path{GeometricReciprocalGamma.lean},
+\path{RvachevPochhammerFactorization.lean},
 \path{ReciprocalIntegerGammaZeros.lean}, \path{DyadicGammaOrder.lean}\\
 Reciprocal-Gamma first jets and the Thue--Morse Gamma tower &
 \path{ReciprocalGammaJets.lean}, \path{ThueMorseGammaTower.lean}\\
