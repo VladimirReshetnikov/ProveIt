@@ -18,6 +18,8 @@ import FabiusFunction.PrincipalLambertW
 import FabiusFunction.LowerLambertW
 import FabiusFunction.GeneralizedLambertCoordinate
 import FabiusFunction.LambertBranchDichotomy
+import FabiusFunction.PowerExponentialLambert
+import FabiusFunction.PowerExponentialLambertFabius
 import FabiusFunction.WeightedUniformSeries
 import FabiusFunction.WeightedUniformDistribution
 import FabiusFunction.WeightedUniformSupport
