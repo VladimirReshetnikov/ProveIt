@@ -21,8 +21,13 @@ consolidated corpus, so it remains separate pending a theorem-by-theorem
 crosswalk.  The rootless archive supplied no checksum ledger or dependency
 lock; the repository-generated `SHA256SUMS` covers every stored payload after
 five CSV files were normalized to LF.  All 32 PDF pages were rendered during
-intake, but the experiment and TeX were not rerun.  Manuscript theorem labels
-do not imply Lean proof status.
+intake.  A temp-isolated Python 3.12 replay regenerated every output: four
+CSVs were byte-identical, the text summary was EOL-equivalent, and the endpoint
+CSV had only 66 last-place differences (maximum `1.11e-16`).  All four PNGs
+showed the expected layout drift between the unpinned packaged Matplotlib
+3.10.8 and replayed 3.11.1 (1475 versus 1476 pixels wide), strengthening the
+case for a dependency lock.  TeX and Lean were not run.  Manuscript theorem
+labels do not imply Lean proof status.
 
 New standalone intake member:
 [`Fabius_Total_Positivity_Frontier_Report/`](Fabius_Total_Positivity_Frontier_Report/),
