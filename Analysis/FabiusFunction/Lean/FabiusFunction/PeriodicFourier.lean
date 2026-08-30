@@ -1601,6 +1601,8 @@ noncomputable def negativeLaplacePsiCircle : C(AddCircle (1 : ℝ), ℂ) where
     change Continuous (fun t : ℝ => (negativeLaplacePsi t : ℂ))
     exact continuous_ofReal.comp continuous_negativeLaplacePsi)
 
+/-- Evaluating the circle lift at the class of `t` recovers the complex-valued
+normalized correction at `t`. -/
 @[simp] lemma negativeLaplacePsiCircle_coe (t : ℝ) :
     negativeLaplacePsiCircle (t : AddCircle (1 : ℝ)) =
       (negativeLaplacePsi t : ℂ) := by

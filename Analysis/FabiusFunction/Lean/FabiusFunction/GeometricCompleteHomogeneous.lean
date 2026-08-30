@@ -26,8 +26,10 @@ recurrence into q-Pascal's recurrence.
   scale on the geometric alphabet.
 * `completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial` gives the same
   result in the `Finset.range` representation used by interpolation rows.
-* `gaussianBinomial_add_symm` and `gaussianBinomial_symm` prove
-  complementary-index symmetry without division or cancellation.
+* `gaussianBinomial_add_symm` and
+  `gaussianBinomial_symm_via_completeHomogeneous` recover
+  complementary-index symmetry from the two principal specializations,
+  without division or cancellation.
 -/
 
 set_option autoImplicit false
@@ -179,7 +181,7 @@ theorem gaussianBinomial_add_symm
 /-- Reflection `k ↦ n - k` for denominator-free Gaussian coefficients.
 No theorem about quotients is used, so symmetry remains valid when a finite
 q-Pochhammer denominator vanishes. -/
-theorem gaussianBinomial_symm
+theorem gaussianBinomial_symm_via_completeHomogeneous
     {R : Type*} [CommSemiring R]
     (q : R) {n k : ℕ} (hk : k ≤ n) :
     gaussianBinomial q n (n - k) =

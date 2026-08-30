@@ -125,7 +125,7 @@ The rules that have actually cost time so far:
 
 7. **Unformalized mathematics belongs on the research frontier.** If any part
    of a draft lacks an exact proved Lean counterpart, move that part to a
-   LaTeX/PDF document under `docs/non-formalized-research-frontiers/`, with the
+   LaTeX/PDF document under `docs/semi-formalized-research-frontiers/`, with the
    missing formal obligation stated explicitly. Do this no matter how
    straightforward, standard, numerical, or plausible the claim appears. Do
    not weaken the wording until it merely resembles an existing theorem, and
@@ -172,8 +172,8 @@ compiled PDF is committed with it.**
 3. **Layout.** One directory per document, named after it, holding the `.tex`
    and the `.pdf` of the same name — as in
    `docs/Fabius_Function_and_Rvachev_Up/` and
-   `docs/non-formalized-research-frontiers/`, whose canonical TeX/PDF pair is
-   `non-formalized-research-frontiers.*`.
+   `docs/semi-formalized-research-frontiers/`, whose canonical TeX/PDF pair is
+   `semi-formalized-research-frontiers.*`.
 
 4. **The PDF is committed.** Build it before committing and commit it in the
    same commit as the source:

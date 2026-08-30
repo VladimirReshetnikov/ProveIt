@@ -16,10 +16,11 @@ on arbitrary ordered compact intervals:
 
 Only the inverse-order relation `C x < u ↔ x < Q u` is used.  In particular,
 no derivative, Jacobian, global inverse equation, or measurability assumption
-is required for either clock.  The order relation forces both clocks to be
-monotone on their compact domains.  Their canonical clamped extensions are
-therefore globally measurable, which is exactly what the layer-cake argument
-needs.
+is required for either clock.  The order relation is precisely a Galois
+connection between the interval restrictions, hence forces both clocks to be
+monotone there.  Canonical clamped extensions are used only to certify the
+integrability of the two composite products; the layer-cake theorem itself
+already hides its measurable extension.
 -/
 
 set_option autoImplicit false
@@ -45,10 +46,10 @@ so all degenerate endpoint cases are included.  Reversed endpoints should be
 handled by first swapping the corresponding interval; merely reversing an
 interval integral would not reverse the strict order equivalence.
 
-Neither clock is assumed globally measurable.  The proof derives monotonicity
-on each closed interval from the displayed order equivalence and uses
-`IccExtend` to construct canonical measurable clamped versions.  Thus values
-of `C` and `Q` outside the two closed intervals play no role. -/
+Neither clock is assumed globally measurable.  Their restricted Galois
+connection supplies monotonicity, and `IccExtend` constructs canonical
+measurable clamped versions for the composite-integrability argument.  Thus
+values of `C` and `Q` outside the two closed intervals play no role. -/
 theorem intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_of_lt_iff_lt
     (C Q : ℝ → ℝ)
     {a b c d : ℝ} (hab : a ≤ b) (hcd : c ≤ d)
@@ -63,36 +64,15 @@ theorem intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_of_lt_iff_lt
       (∫ u in c..d, A (Q u) * deriv B u) =
         A b * B d - A a * B c := by
   classical
-  -- The strict-order adjunction forces each clock to be monotone on its
-  -- compact domain.  For `C`, a hypothetical descent from `x` to `y` makes
-  -- `x < Q (C x)` both true (through `y`) and false (at `x`).
-  have hCmono : MonotoneOn C (Icc a b) := by
-    intro x hx y hy hxy
-    by_contra hCxy
-    have hCyCx : C y < C x := lt_of_not_ge hCxy
-    have hCx : C x ∈ Icc c d := hC hx
-    have hyQ : y < Q (C x) := (hinv hy hCx).mp hCyCx
-    have hxQ : x < Q (C x) := hxy.trans_lt hyQ
-    exact (lt_irrefl (C x)) ((hinv hx hCx).mpr hxQ)
-
-  -- The dual argument uses `x = Q v`: a descent of `Q` from `u` to `v`
-  -- would put `C (Q v)` strictly below `u ≤ v`, contradicting the
-  -- adjunction at `v` itself.
-  have hQmono : MonotoneOn Q (Icc c d) := by
-    intro u hu v hv huv
-    by_contra hQuv
-    have hQvQu : Q v < Q u := lt_of_not_ge hQuv
-    have hQv : Q v ∈ Icc a b := hQ hv
-    have hCQvU : C (Q v) < u := (hinv hQv hu).mpr hQvQu
-    have hCQvV : C (Q v) < v := hCQvU.trans_le huv
-    exact (lt_irrefl (Q v)) ((hinv hQv hv).mp hCQvV)
-
+  -- The strict order equivalence is a Galois connection on the interval
+  -- restrictions, so both monotonicity facts are immediate adjoint laws.
+  have hgc := galoisConnection_Icc_restrict_of_lt_iff_lt C Q hC hQ hinv
   have hCsubmono : Monotone (fun x : Icc a b ↦ C x) := by
     intro x y hxy
-    exact hCmono x.2 y.2 hxy
+    exact hgc.monotone_u hxy
   have hQsubmono : Monotone (fun u : Icc c d ↦ Q u) := by
     intro u v huv
-    exact hQmono u.2 v.2 huv
+    exact hgc.monotone_l huv
 
   let Cext : ℝ → ℝ := IccExtend hab (fun x : Icc a b ↦ C x)
   let Qext : ℝ → ℝ := IccExtend hcd (fun u : Icc c d ↦ Q u)
@@ -108,15 +88,6 @@ theorem intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_of_lt_iff_lt
   have hQext_eq (u : ℝ) (hu : u ∈ Icc c d) : Qext u = Q u := by
     change IccExtend hcd (fun z : Icc c d ↦ Q z) u = Q u
     simpa using IccExtend_of_mem hcd (fun z : Icc c d ↦ Q z) hu
-  have hQext : MapsTo Qext (Icc c d) (Icc a b) := by
-    intro u hu
-    rw [hQext_eq u hu]
-    exact hQ hu
-  have hinvExt : ∀ ⦃x u : ℝ⦄, x ∈ Icc a b → u ∈ Icc c d →
-      (C x < u ↔ x < Qext u) := by
-    intro x u hx hu
-    rw [hQext_eq u hu]
-    exact hinv hx hu
 
   have hAcont : ContinuousOn A (Icc a b) := by
     simpa only [uIcc_of_le hab] using hA.continuousOn
@@ -213,22 +184,12 @@ theorem intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_of_lt_iff_lt
       exact Icc_subset_Icc_left hCx.1)).integral_deriv_eq_sub
 
   have hlayer := intervalIntegral_smul_intervalIntegral_of_lt_iff_lt
-    (𝕜 := ℝ) (E := ℝ) C Qext hQextm hab hcd hC hQext hinvExt
+    (𝕜 := ℝ) (E := ℝ) C Q hab hcd hC hQ hinv
       (deriv B) hBderiv (deriv A) hAderiv
   have hlayer' :
       (∫ u in c..d, deriv B u * (∫ x in a..Q u, deriv A x)) =
         ∫ x in a..b, (∫ u in C x..d, deriv B u) * deriv A x := by
-    calc
-      (∫ u in c..d, deriv B u * (∫ x in a..Q u, deriv A x)) =
-          ∫ u in c..d, deriv B u * (∫ x in a..Qext u, deriv A x) := by
-        apply intervalIntegral.integral_congr
-        intro u hu
-        rw [uIcc_of_le hcd] at hu
-        change deriv B u * (∫ x in a..Q u, deriv A x) =
-          deriv B u * (∫ x in a..Qext u, deriv A x)
-        rw [hQext_eq u hu]
-      _ = ∫ x in a..b, (∫ u in C x..d, deriv B u) * deriv A x := by
-        simpa only [smul_eq_mul] using hlayer
+    simpa only [smul_eq_mul] using hlayer
   have hleftPrimitive :
       (∫ u in c..d, deriv B u * (∫ x in a..Q u, deriv A x)) =
         ∫ u in c..d, deriv B u * (A (Q u) - A a) := by
@@ -303,6 +264,59 @@ theorem intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_of_lt_iff_lt
     hleftExpand.symm.trans (htransport.trans hrightExpand)
   linear_combination hrearranged
 
+/-- **Variable-upper-endpoint inverse-pair identity.**  Under the hypotheses
+of `intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_of_lt_iff_lt`, every
+`y ∈ [a,b]` cuts out the smaller inverse rectangle
+`[a,y] × [c,C y]`.  Consequently,
+
+`∫ₐʸ A'(x) B(C(x)) dx + ∫_c^{C(y)} A(Q(u)) B'(u) du
+  = A(y) B(C(y)) - A(a) B(c)`.
+
+The restricted interval-preservation facts are consequences of the same
+Galois connection as in the complete identity.  In particular, no new
+measurability or differentiability assumption is imposed on either clock. -/
+theorem intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_to_of_lt_iff_lt
+    (C Q : ℝ → ℝ)
+    {a b c d : ℝ} (hab : a ≤ b) (hcd : c ≤ d)
+    (hC : MapsTo C (Icc a b) (Icc c d))
+    (hQ : MapsTo Q (Icc c d) (Icc a b))
+    (hinv : ∀ ⦃x u : ℝ⦄, x ∈ Icc a b → u ∈ Icc c d →
+      (C x < u ↔ x < Q u))
+    (A B : ℝ → ℝ)
+    (hA : AbsolutelyContinuousOnInterval A a b)
+    (hB : AbsolutelyContinuousOnInterval B c d)
+    {y : ℝ} (hy : y ∈ Icc a b) :
+    (∫ x in a..y, deriv A x * B (C x)) +
+      (∫ u in c..C y, A (Q u) * deriv B u) =
+        A y * B (C y) - A a * B c := by
+  have hCy := hC hy
+  have hgc := galoisConnection_Icc_restrict_of_lt_iff_lt C Q hC hQ hinv
+  have hCto : MapsTo C (Icc a y) (Icc c (C y)) := by
+    intro x hx
+    have hx' : x ∈ Icc a b := ⟨hx.1, hx.2.trans hy.2⟩
+    refine ⟨(hC hx').1, ?_⟩
+    have hxy : (⟨x, hx'⟩ : Icc a b) ≤ ⟨y, hy⟩ := hx.2
+    exact hgc.monotone_u hxy
+  have hQto : MapsTo Q (Icc c (C y)) (Icc a y) := by
+    intro u hu
+    have hu' : u ∈ Icc c d := ⟨hu.1, hu.2.trans hCy.2⟩
+    refine ⟨(hQ hu').1, ?_⟩
+    exact (hgc (⟨u, hu'⟩ : Icc c d) (⟨y, hy⟩ : Icc a b)).mpr hu.2
+  have hinvTo : ∀ ⦃x u : ℝ⦄, x ∈ Icc a y → u ∈ Icc c (C y) →
+      (C x < u ↔ x < Q u) := by
+    intro x u hx hu
+    exact hinv ⟨hx.1, hx.2.trans hy.2⟩ ⟨hu.1, hu.2.trans hCy.2⟩
+  have hAto : AbsolutelyContinuousOnInterval A a y :=
+    hA.mono (by
+      rw [uIcc_of_le hy.1, uIcc_of_le hab]
+      exact Icc_subset_Icc_right hy.2)
+  have hBto : AbsolutelyContinuousOnInterval B c (C y) :=
+    hB.mono (by
+      rw [uIcc_of_le hCy.1, uIcc_of_le hcd]
+      exact Icc_subset_Icc_right hCy.2)
+  exact intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_of_lt_iff_lt
+    C Q hy.1 hCy.1 hCto hQto hinvTo A B hAto hBto
+
 /-- **Absolutely-continuous inverse-pair identity for the Fabius clocks.**
 For absolutely continuous `A` and `B` on the unit interval, the two terms
 obtained by composing through `fabiusReal` and `fabiusInv` add to the endpoint
@@ -328,6 +342,34 @@ theorem intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv
   · exact hA
   · exact hB
 
+/-- **Variable-upper-endpoint Fabius inverse-pair identity.**  For every
+`y ∈ [0,1]`, the complete proper-compact identity restricts to the inverse
+rectangle `[0,y] × [0,fabiusReal F y]`. -/
+theorem intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv_to
+    (F : BoundedFabius) (hF : IsFabius F)
+    (A B : ℝ → ℝ)
+    (hA : AbsolutelyContinuousOnInterval A 0 1)
+    (hB : AbsolutelyContinuousOnInterval B 0 1)
+    {y : ℝ} (hy : y ∈ Icc 0 1) :
+    (∫ x in (0 : ℝ)..y, deriv A x * B (fabiusReal F x)) +
+      (∫ u in (0 : ℝ)..fabiusReal F y,
+        A (fabiusInv F hF u) * deriv B u) =
+        A y * B (fabiusReal F y) - A 0 * B 0 := by
+  apply intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_to_of_lt_iff_lt
+    (C := fabiusReal F) (Q := fabiusInv F hF)
+    (a := 0) (b := 1) (c := 0) (d := 1)
+  · norm_num
+  · norm_num
+  · intro x _hx
+    exact ⟨fabiusReal_nonneg F x, fabiusReal_le_one F x⟩
+  · intro u _hu
+    exact fabiusInv_mem_Icc F hF u
+  · intro x u hx hu
+    exact fabiusReal_lt_iff_lt_fabiusInv F hF hx hu
+  · exact hA
+  · exact hB
+  · exact hy
+
 /-- The classical inverse-graph area identity for the Fabius inverse pair:
 the areas below `fabiusReal` and `fabiusInv` on the unit interval add to the
 area of the unit square. -/
@@ -341,5 +383,25 @@ theorem intervalIntegral_fabiusReal_add_fabiusInv_eq_one
   simpa only [deriv_id', id_eq, one_mul, mul_one, zero_mul, sub_zero] using
     (intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv
       F hF id id hid hid)
+
+/-- **Partial inverse-area identity for the Fabius inverse.**  For
+`u ∈ [0,1]`, the area below the inverse graph up to `u` is the area of the
+rectangle with sides `u` and `fabiusInv F hF u`, minus the area below
+`fabiusReal F` up to the inverse endpoint. -/
+theorem intervalIntegral_fabiusInv_to_eq_mul_sub_intervalIntegral_fabiusReal
+    (F : BoundedFabius) (hF : IsFabius F)
+    {u : ℝ} (hu : u ∈ Icc 0 1) :
+    (∫ v in (0 : ℝ)..u, fabiusInv F hF v) =
+      u * fabiusInv F hF u -
+        ∫ x in (0 : ℝ)..fabiusInv F hF u, fabiusReal F x := by
+  have hid : AbsolutelyContinuousOnInterval (id : ℝ → ℝ) 0 1 :=
+    (contDiffOn_id :
+      ContDiffOn ℝ 1 (id : ℝ → ℝ) (uIcc (0 : ℝ) 1)).absolutelyContinuousOnInterval
+  have harea :=
+    intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv_to
+      F hF id id hid hid (fabiusInv_mem_Icc F hF u)
+  apply (eq_sub_iff_add_eq).2
+  simpa only [deriv_id', id_eq, one_mul, mul_one, zero_mul, sub_zero,
+    fabiusReal_fabiusInv F hF hu, add_comm, mul_comm] using harea
 
 end Fabius

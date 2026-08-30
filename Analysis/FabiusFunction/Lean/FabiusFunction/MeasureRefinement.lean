@@ -1,5 +1,6 @@
 import FabiusFunction.WeakConvergence
 import FabiusFunction.SincProductShells
+import FabiusFunction.GeometricConvolutionTails
 
 /-!
 # The measure-level refinement equation of the up-function
@@ -19,10 +20,12 @@ refinement `Φ(2w) = sinc(2πw)·Φ(w)` is the geometric-scale
 renormalization law, `charFun` turns convolution into product and
 scaling into argument scaling, and finite measures with equal
 characteristic functions are equal (`Measure.ext_of_charFun`).
-Iterating gives the measure-level random-tail law: `μ_up` is the
-convolution of its first `m` uniform digits with a `2^{-m}`-scale copy
-of itself — the drafts' `eq:random-tail` with no random variables in
-sight.
+The iteration to all scales is not repeated here: the abstract
+geometric tail law of `GeometricConvolutionTails.lean` turns the
+one-step refinement into the measure-level random-tail law — `μ_up` is
+the convolution of its first `m` uniform digits with a `2^{-m}`-scale
+copy of itself — the drafts' `eq:random-tail` with no random variables
+in sight.
 
 * `charFun_volume_restrict_Icc` — the characteristic function of the
   symmetric interval: `charFun (volume.restrict [-c,c]) t = 2c·sinc(ct)`.
@@ -112,6 +115,16 @@ theorem isProbabilityMeasure_uniformDigitPrefix (m : ℕ) :
       haveI := isProbability_uniform_half
       infer_instance
 
+/-- The digit-prefix system is the abstract geometric prefix system of
+`GeometricConvolutionTails.lean`, specialized to the uniform digit and
+the scale `½`. -/
+theorem uniformDigitPrefix_eq_mulPrefix (m : ℕ) :
+    uniformDigitPrefix m =
+      mulPrefix (volume.restrict (Icc (-(2⁻¹ : ℝ)) 2⁻¹)) 2⁻¹ m := by
+  induction m with
+  | zero => rfl
+  | succ m ih => rw [uniformDigitPrefix, mulPrefix_succ, ih]
+
 /-- **The characteristic function of the digit prefix** is the finite
 sinc product `∏_{k<m} sinc (t/2^(k+1))`. -/
 theorem charFun_uniformDigitPrefix (m : ℕ) (t : ℝ) :
@@ -181,58 +194,19 @@ theorem rvachevMeasure_refinement (F : BoundedFabius) (hF : IsFabius F) :
 
 /-- **The measure-level random-tail law** (`eq:random-tail`): the
 up-measure is the convolution of its first `m` uniform digits with a
-`2^{-m}`-scale copy of itself. -/
+`2^{-m}`-scale copy of itself.  This is the abstract geometric tail
+law of `GeometricConvolutionTails.lean` applied to the refinement
+equation: no characteristic functions are needed beyond the single
+step `rvachevMeasure_refinement`. -/
 theorem rvachevMeasure_eq_prefix_conv (F : BoundedFabius) (hF : IsFabius F)
     (m : ℕ) :
     rvachevMeasure F =
       uniformDigitPrefix m ∗
         ((rvachevMeasure F).map ((((2 : ℝ) ^ m)⁻¹) * ·)) := by
-  haveI hprob : IsProbabilityMeasure (rvachevMeasure F) :=
+  haveI : IsProbabilityMeasure (rvachevMeasure F) :=
     rvachevMeasure_isProbability F hF
-  haveI := isProbabilityMeasure_uniformDigitPrefix m
-  haveI : IsProbabilityMeasure
-      ((rvachevMeasure F).map ((((2 : ℝ) ^ m)⁻¹) * ·)) :=
-    Measure.isProbabilityMeasure_map (measurable_const_mul _).aemeasurable
-  refine Measure.ext_of_charFun (funext fun t => ?_)
-  rw [charFun_conv, charFun_map_mul, charFun_uniformDigitPrefix,
-    rvachevMeasure_charFun_pos F hF, rvachevMeasure_charFun_pos F hF,
-    rvachevFourier_eq_product F hF, rvachevFourier_eq_product F hF]
-  have h2m : ((2 : ℂ) ^ m) ≠ 0 := pow_ne_zero _ two_ne_zero
-  have hzdef : ((((((2 : ℝ) ^ m)⁻¹ * t : ℝ)) : ℂ)) / (2 * Real.pi) =
-      ((t : ℂ) / (2 * Real.pi)) / 2 ^ m := by
-    push_cast
-    ring
-  have harg : ((t : ℝ) : ℂ) / (2 * Real.pi) =
-      (2 : ℂ) ^ m * (((((((2 : ℝ) ^ m)⁻¹ * t : ℝ)) : ℂ)) / (2 * Real.pi)) := by
-    rw [hzdef]
-    exact ((div_mul_cancel₀ (((t : ℝ) : ℂ) / (2 * Real.pi)) h2m).symm.trans
-      (mul_comm _ _))
-  rw [harg, rvachevFourierProduct_two_pow_mul]
-  congr 1
-  have hpt : ∀ j ∈ Finset.range m,
-      complexSinc (Real.pi * ((2 : ℂ) ^ (j + 1) *
-          (((((((2 : ℝ) ^ m)⁻¹ * t : ℝ)) : ℂ)) / (2 * Real.pi)))) =
-        complexSinc ((t / 2 ^ ((m - 1 - j) + 1) : ℝ) : ℂ) := by
-    intro j hj
-    have hjm : j < m := Finset.mem_range.mp hj
-    have he : (j + 1) + (m - 1 - j) = m := by omega
-    have h2π : ((2 : ℂ) * Real.pi) ≠ 0 :=
-      mul_ne_zero two_ne_zero (ofReal_ne_zero.mpr Real.pi_ne_zero)
-    have harg2 : (2 : ℂ) ^ (j + 1) *
-        (((t : ℂ) / (2 * Real.pi)) / 2 ^ m) =
-        ((t : ℂ) / (2 * Real.pi)) / 2 ^ (m - 1 - j) := by
-      rw [← mul_div_assoc,
-        div_eq_div_iff h2m (pow_ne_zero _ (by norm_num : (2:ℂ) ≠ 0)),
-        mul_comm ((2 : ℂ) ^ (j + 1)) _, mul_assoc, ← pow_add, he]
-    rw [hzdef, harg2]
-    congr 1
-    have hu : ((2 : ℂ) ^ (m - 1 - j)) ≠ 0 := pow_ne_zero _ two_ne_zero
-    have hπ : (Real.pi : ℂ) ≠ 0 := ofReal_ne_zero.mpr Real.pi_ne_zero
-    push_cast
-    field_simp
-    ring
-  rw [Finset.prod_congr rfl hpt]
-  exact Finset.prod_range_reflect
-    (fun k => complexSinc ((t / 2 ^ (k + 1) : ℝ) : ℂ)) m
+  haveI := isProbability_uniform_half
+  rw [uniformDigitPrefix_eq_mulPrefix, ← inv_pow]
+  exact self_similar_conv_iterate_mul (rvachevMeasure_refinement F hF) m
 
 end Fabius

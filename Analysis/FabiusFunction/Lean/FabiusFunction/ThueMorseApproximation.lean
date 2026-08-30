@@ -604,4 +604,69 @@ theorem correctedPrefixGridSample_tendsto_fabius
       atTop (nhds (fabiusReal F x)) := by
   exact correctedPrefixGridSample_tendsto_fabius_of_le_one F hF hx.2
 
+/-! ## Independence of the order and coordinate corrections
+
+The gap register's *Independent roles of the order and coordinate
+corrections* candidate: the corrected interpretation matches polynomial
+index `k - 1` with prefix row `k`
+(`iteratedPrefix_eq_approximationPolynomial_coeff_all`) *and* places
+cell `m` at the centered coordinate `(2m - g_n)/2^{n+1}`
+(`stepIntervalLeft`/`stepIntervalRight`).  The two repairs are
+independently necessary: keeping the naive order (matching `P_k` with
+row `k`) fails already in the coefficients, regardless of the
+coordinate, and keeping the naive uncentered grid coordinate fails
+already at the first cell endpoint, regardless of the order. -/
+
+/-- The naive uncentered grid coordinate: cell `m` placed at `m/2^n`,
+without the centering shift `-g_n/2^{n+1}`. -/
+noncomputable def naiveGridCoordinate (n m : ℕ) : ℝ :=
+  (m : ℝ) / 2 ^ n
+
+/-- **The naive-order failure witness**: matching `P_k` with prefix row
+`k` (instead of `P_{k-1}`) is already wrong at `k = 1`, `m = 1`, inside
+the dyadic cutoff: the row value is `0`, the coefficient is `1`.  The
+defect is purely in the coefficients, so no coordinate convention can
+repair it. -/
+theorem iteratedPrefix_ne_approximationPolynomial_coeff_same_index :
+    iteratedPrefix 1 1 ≠ ((approximationPolynomial 1).coeff 1 : ℤ) := by
+  have hs0 : thueMorseSign 0 = 1 := by
+    norm_num [thueMorseSign, binaryWeight, Nat.digits_zero]
+  have hs1 : thueMorseSign 1 = -1 := by
+    simpa [hs0] using thueMorseSign_two_mul_add_one 0
+  have hrow : iteratedPrefix 1 1 = 0 := by
+    show (∑ j ∈ Finset.range 2, iteratedPrefix 0 j) = 0
+    rw [Finset.sum_range_succ, Finset.sum_range_one, iteratedPrefix_zero,
+      iteratedPrefix_zero, hs0, hs1]
+    norm_num
+  have hp : approximationPolynomial 1 = 1 + Polynomial.X := by
+    rw [show 1 = 0 + 1 by omega, approximationPolynomial_succ]
+    simp
+  have hcoeff : (approximationPolynomial 1).coeff 1 = 1 := by
+    rw [hp]
+    simp [Polynomial.coeff_one]
+  rw [hrow, hcoeff]
+  norm_num
+
+/-- **The naive-coordinate failure witness**: the uncentered grid
+places the left endpoint of the first level-one cell at `-1/4`, while
+the corrected tiling requires `-1/2`.  The defect is purely in the
+geometry, so no order convention can repair it. -/
+theorem naiveGridCoordinate_ne_stepIntervalLeft :
+    naiveGridCoordinate 1 0 - 1 / 2 ^ 2 ≠ stepIntervalLeft 1 0 := by
+  have hdeg : approximationDegree 1 = 1 := by
+    simp [approximationDegree]
+  rw [naiveGridCoordinate, stepIntervalLeft, hdeg]
+  norm_num
+
+/-- **Neither correction alone suffices** (the register's combined
+theorem): the order correction and the centered coordinate repair
+disjoint defects.  The first conjunct fails in the coefficients alone,
+the second in the endpoints alone, so retaining either naive convention
+leaves a defect that the other correction does not touch. -/
+theorem order_and_coordinate_corrections_independent :
+    (iteratedPrefix 1 1 ≠ ((approximationPolynomial 1).coeff 1 : ℤ)) ∧
+      (naiveGridCoordinate 1 0 - 1 / 2 ^ 2 ≠ stepIntervalLeft 1 0) :=
+  ⟨iteratedPrefix_ne_approximationPolynomial_coeff_same_index,
+    naiveGridCoordinate_ne_stepIntervalLeft⟩
+
 end Fabius

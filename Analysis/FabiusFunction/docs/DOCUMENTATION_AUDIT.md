@@ -34,9 +34,10 @@ python3 Analysis/FabiusFunction/scripts/doc_audit.py \
 ```
 
 This exits non-zero if the total rises, if any individual file gets worse, or
-if a new file appears without a module header.  It deliberately does *not*
-fail on the existing backlog: the invariant is enforced as a ratchet, because
-failing the whole corpus would make the gate useless on the first run.
+if a new file appears without a module header.  The ratchet was originally
+needed to make progress against a large inherited backlog.  As of 2026-08-29
+that backlog is zero, so the checked baseline now enforces both invariants
+without an exception.
 
 Refresh the baseline, after genuinely reducing the count, with
 `--write-baseline`.
@@ -107,12 +108,11 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The remaining backlog is now split between recently added research-frontier
-modules and same-line attributed bridges that the old scan concealed.  Its
-largest concentrations are the half-q-binomial algebra, early step
-approximants, and period-doubling Hankel identities.  These are precisely the
-technical interfaces where a reader most needs the formula, hypotheses, and
-normalization convention stated locally.
+The 2026-08-29 inventory contains 535 modules and 7,313 lexically visible
+public declarations, with zero missing module headers and zero missing doc
+comments.  The baseline records those zeroes, so every future source addition
+must preserve the full invariant rather than merely avoid worsening a
+historical backlog.
 
 ### What the review pass caught
 

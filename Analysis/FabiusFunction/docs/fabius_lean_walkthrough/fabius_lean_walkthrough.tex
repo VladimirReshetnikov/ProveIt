@@ -180,7 +180,7 @@ and the umbrella import is \nolinkurl{FabiusFunction.lean}.  The Lake package de
 
 The normal build command from the project root is:
 \begin{lstlisting}[style=pseudo]
-LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build +FabiusFunction
+LAKE_JOBS=1 lake build +FabiusFunction
 \end{lstlisting}
 The source claims in this walkthrough are pinned to commit
 \nolinkurl{eaea1b9afe2b7ff0b7dd880bd1710e303dec6d80}.  Before reproducing a
@@ -188,7 +188,7 @@ declaration or module count, check the checkout with \texttt{git rev-parse
 HEAD}; a moving \texttt{main} branch is not a reproducible specification.
 After dependencies have been installed, a focused edit loop can build one
 module at a time with a Lake target such as
-\texttt{LAKE\_JOBS=1 LEAN\_NUM\_THREADS=0 lake build
+\texttt{LAKE\_JOBS=1 lake build
 +FabiusFunction.DyadicAnalytic}.  The root-module build
 remains the release check.
 
@@ -857,6 +857,26 @@ at both ends, by
 \nolinkurl{tendsto_deriv_fabiusInv_atTop_at_one_left}.  These are one-sided
 limits through \((0,1)\), not derivative values at the clamping points.
 
+\subsection{Generic formal implicit roots versus inverse-Fabius germs}
+\nolinkurl{ImplicitPowerSeries.lean} isolates a purely formal root engine.
+\nolinkurl{FormalImplicitRoot.existsUnique_isRoot_sub_mem} lifts a simple
+approximate root modulo an adic ideal in a complete commutative ring without a
+monicity assumption.  Its
+power-series specialization
+\nolinkurl{PowerSeries.Implicit.existsUnique_zeroConstant_root} says that a
+polynomial over \(R[[X]]\) with vanishing parameter-constant
+constant coefficient and unit parameter-constant linear coefficient has a
+unique zero-constant formal root.  The chosen root and its uniqueness
+interface are \nolinkurl{PowerSeries.Implicit.root},
+\nolinkurl{PowerSeries.Implicit.constantCoeff_root},
+\nolinkurl{PowerSeries.Implicit.eval_root}, and
+\nolinkurl{PowerSeries.Implicit.eq_root}.
+
+These declarations are formal algebra only.  They neither define the inverse
+frontier's \(\mathcal A_r\) or \(Q_{x_0}\), nor prove convergence or analyticity
+of the resulting series, identification with a local inverse, entry into a
+finite-prefix plateau, a nonzero flat defect, or any Fabius quantile formula.
+
 \subsection{Exact analytic loci and non-elementarity}
 The smooth function is analytic precisely off its closed transition interval:
 \[
@@ -1316,6 +1336,171 @@ approximants.
 
 The self-similarity of \(X\) is the probabilistic counterpart of the fixed-point integral equation.  It supplies a second route to the same canonical bounded function once uniqueness of the \nolinkurl{IsFabius} specification is available.
 
+\subsection{The reusable affine-law, geometric CDF, and density layer}
+The post-snapshot modules \nolinkurl{ContinuousCDF.lean},
+\nolinkurl{AffineIndependentCopy.lean},
+\nolinkurl{GeometricUniformLaw.lean},
+\nolinkurl{GeometricUniformUniqueness.lean}, and
+\nolinkurl{GeometricUniformCDF.lean} separate the measure-theoretic argument
+from its dyadic specialization.  The generic CDF layer proves three facts for
+real probability laws.  A law with null singletons has a continuous CDF; invariance
+under \(y\mapsto a-y\) gives
+\[
+  H(a-x)=1-H(x);
+\]
+and an everywhere pointwise derivative \(H'(x)=h(x)\) identifies the law
+exactly as Lebesgue measure with density \(\operatorname{ofReal}\circ h\).
+The last theorem assumes neither continuity of \(h\), null singletons, nor
+prior absolute continuity.  Monotonicity of a CDF supplies the derivative's
+nonnegativity and local integrability inside the proof.  The declarations are
+\nolinkurl{continuous_cdf_of_nullSingleton},
+\nolinkurl{cdf_reflection_sub}, and
+\nolinkurl{measure_eq_withDensity_of_cdf_hasDerivAt}.
+
+The generic independent-copy layer starts with an arbitrary measurable digit
+space \(D\) and a second-countable Borel real inner-product space \(E\).  For a
+digit law \(\rho\), a map \(d:D\to E\), a real scale \(q\), and a candidate law
+\(\mu\) on \(E\), it packages
+\[
+ \mathcal T_{\rho,d,q}(\mu)
+   =(d_*\rho)\mathbin{\ast}((q\,\cdot)_*\mu)
+\]
+as \nolinkurl{affineIndependentCopyLaw}.  A measurable digit makes this a
+probability law when \(\rho\) and \(\mu\) are probability laws, and for s-finite input
+measures the convolution is exactly the direct product pushforward
+\[
+ \mathcal T_{\rho,d,q}(\mu)
+   =(\rho\otimes\mu)_*\bigl((u,x)\mapsto d(u)+qx\bigr).
+\]
+These are
+\nolinkurl{affineIndependentCopyLaw_isProbabilityMeasure} and
+\nolinkurl{affineIndependentCopyLaw_eq_map_prod}.  Characteristic functions
+then give the factorization, fixed-point recurrence, and its finite iterate:
+\[
+ \widehat{\mathcal T_{\rho,d,q}(\mu)}(t)
+  =\widehat{d_*\rho}(t)\widehat\mu(qt),\qquad
+ \widehat\mu(t)
+  =\prod_{k=0}^{n-1}\widehat{d_*\rho}(q^kt)\,
+    \widehat\mu(q^nt).
+\]
+The corresponding declarations are
+\nolinkurl{charFun_affineIndependentCopyLaw},
+\nolinkurl{charFun_eq_mul_charFun_of_affineIndependentCopy_fixedPoint}, and
+\nolinkurl{charFun_iterate_of_affineIndependentCopy_fixedPoint}.
+
+At compiled checkpoint \nolinkurl{d312c0603}, the module's public crosswalk
+consists of the definition above and eight theorems.  The final three declarations
+\nolinkurl{eq_of_charFun_affine_recurrence},
+\nolinkurl{affineIndependentCopyLaw_fixedPoint_unique}, and
+\nolinkurl{affineIndependentCopy_map_fixedPoint_unique} prove uniqueness when
+\(\lvert q\rvert<1\).  Completeness of \(E\) is used only by these three
+uniqueness theorems; the earlier definition, probability, product-map, and
+characteristic-function formulas require no completeness.  For the two
+fixed-point wrappers the digit is measurable and the digit and candidate laws
+are probability measures.  The argument includes \(q=0\) and negative \(q\),
+and assumes no support, density, or moment information.
+
+For the geometric weights \(w_n(q)=(1-q)q^n\), write \(\mu_q\) for the law,
+\(F_q\) for \nolinkurl{geometricUniformCDF q}, and, when \(0<q<1\), set
+\[
+  f_q(x)=
+  \frac{F_q(x/q)-F_q((x-(1-q))/q)}{1-q}.
+\]
+The Lean definition \nolinkurl{geometricUniformDensity q} is total in \(q\),
+but only \(0<q<1\) gives this classical density interpretation: at \(q=0\)
+field division is totalized, while for \(q<0\) the affine event inequality is
+reversed.
+The single theorem in \nolinkurl{GeometricUniformUniqueness.lean} specializes
+the generic product-map theorem to the already proved head--tail identity:
+\[
+ \mu=(\operatorname{Unif}[0,1]\otimes\mu)_*
+       \bigl((u,x)\mapsto(1-q)u+qx\bigr)
+ \quad\Longrightarrow\quad \mu=\mu_q.
+\]
+This is
+\nolinkurl{eq_geometricUniformDistribution_of_selfSimilar}; it holds for every
+\(\lvert q\rvert<1\), including \(q=0\) and negative \(q\), among all
+probability measures, with no support, density, or moment hypothesis.
+
+The finite-tail dictionary is already stronger than a characteristic-function-only
+statement: \nolinkurl{geometric_tail_dictionary_geometricUniform} packages finite
+measure, characteristic-function, MGF, and CGF factorizations.  The later
+\nolinkurl{GeometricSincFactorization.lean} evaluates the scaled digit explicitly.  If
+\(\phi_q(t)=\operatorname{charFun}(\mu_q)(t)\), then for every real \(q\) with
+\(\lvert q\rvert<1\), every \(m\in\N\), and every \(t\in\R\),
+\[
+ \phi_q(t)=
+ e^{\ii(1-q^m)t/2}
+ \left(\prod_{k=0}^{m-1}
+   \operatorname{sinc}\!\left(\frac{(1-q)q^kt}{2}\right)\right)
+ \phi_q(q^m t),
+\]
+and the phase-bearing prefix obtained by deleting the residual factor
+\(\phi_q(q^m t)\) converges pointwise to \(\phi_q(t)\).  The digit identity itself,
+\(\widehat\eta_q(t)=e^{\ii(1-q)t/2}\operatorname{sinc}((1-q)t/2)\), is unconditional
+in real \(q\).  Thus the contraction-range result includes \(q=0\) and negative
+ratios; at \(q=1/2\) it has exact wrappers for the classical weighted-sum law.
+
+The six-declaration inventory is
+\nolinkurl{charFun_geometricUniformDigit},
+\nolinkurl{charFun_geometricUniformDistribution_prefix},
+\nolinkurl{charFun_geometricUniformDistribution_prefix_sinc},
+\nolinkurl{tendsto_prefix_sinc_charFun},
+\nolinkurl{charFun_weightedSumDistribution_prefix_sinc}, and
+\nolinkurl{tendsto_prefix_sinc_charFun_weightedSumDistribution}.
+This is pointwise prefix convergence.  The existing
+\nolinkurl{geometricSincProduct} already packages the same sinc factors, after frequency
+rescaling, as a \nolinkurl{tprod}; what is missing is a named characteristic-function
+bridge to it (or an explicit \nolinkurl{HasProd} theorem) and compact-uniform convergence
+of the characteristic prefixes.  Rapid-decay bounds, Fourier inversion, a named centered family, explicit Bernoulli-cumulant and
+Bell-moment formulas and asymptotics, further transform formulas, and shape theory remain
+separate targets.
+
+The definition of \(F_q\), together with its monotonicity, range bounds, and
+measurability, is total in real \(q\).  If \(\lvert q\rvert<1\), then \(F_q\)
+is continuous and
+\[
+  F_q(1-x)=1-F_q(x),\qquad F_q(1/2)=1/2.
+\]
+For \(0\le q<1\), it is exactly zero on \(x\le0\) and exactly one on
+\(1\le x\).  Strict positivity of \(q\) is essential for solving the affine
+event inequality in the conditioning step.  Under \(0<q<1\), Lean proves on
+all of \(\R\)
+\begin{align}
+ F_q(x)
+ &=\int_0^1 F_q\!\left(\frac{x-(1-q)u}{q}\right)\dd u,\label{eq:walk-q-cdf-conditioning}\\
+ &=\frac{q}{1-q}
+   \int_{(x-(1-q))/q}^{x/q}F_q(t)\dd t,\label{eq:walk-q-cdf-interval}\\
+ F_q'(x)&=f_q(x).\label{eq:walk-q-cdf-density}
+\end{align}
+The final identity is pointwise \nolinkurl{HasDerivAt}, not merely an
+almost-everywhere derivative statement.  Consequently
+\[
+ \mu_q=\operatorname{Leb}\mathbin{\mathrm{withDensity}}
+       (\operatorname{ofReal}\circ f_q).
+\]
+Both \(F_q\) and \(f_q\) are \(C^\infty\), proved by bootstrapping the affine
+derivative formula rather than by Fourier inversion.  The density is
+continuous, nonnegative, and symmetric about \(1/2\); it vanishes for
+\(x\le0\) and \(1\le x\).  Its ordinary support is contained in \((0,1)\),
+its topological support is contained in \([0,1]\), and it has compact support.
+These are containment theorems for the density itself, not an assertion here
+that its nonzero set has closure exactly \([0,1]\).
+
+At \(q=1/2\), \nolinkurl{ProbabilityRepresentation.lean} supplies the exact
+all-real bridges
+\[
+ \operatorname{weightedSumCDF}=F_{1/2},\qquad
+ F_{1/2}(x)=F(x),\qquad
+ f_{1/2}(x)=2\Up(2x-1).
+\]
+Accordingly the dyadic smoothing, interval-integral, continuity, exterior-value,
+and reflection proofs now route through the reusable half-base API.  There is still no
+separately named centered random variable or general-\(q\) centered density.  The finite
+MGF/CGF dictionary and pointwise sinc-prefix limit above also stop short of explicit
+Bernoulli-cumulant and Bell-moment evaluations, their asymptotics, and log-concavity or
+shape-transition theorems.
+
 \subsection{Finite convolution measures}
 A formal convolution proof must verify that every measure involved is finite, usually a probability measure.  The source defines the elementary measures, proves their support and total mass, and then uses induction to show the convolution remains a probability measure.  Associativity is applied only after the necessary sigma-finiteness or finiteness instances are in scope.
 
@@ -1358,7 +1543,9 @@ identity is stated directly as
          =\Prob[X\leq1-|x|].
 \]
 These are CDF and event-probability theorems; the module does not package a
-separate centered random variable or density theorem.
+separate centered random variable.  Its half-base bridges do now identify the
+explicit density from \nolinkurl{GeometricUniformCDF.lean} with
+\(2\Up(2x-1)\) on all of \(\R\), as recorded above.
 
 This gives an independent conceptual construction of the same object as the Banach fixed point.  In the formal dependency graph it is normally developed after the canonical function is available, because identification is easier than rebuilding the entire \nolinkurl{IsFabius} interface from measure convergence.  Mathematically, however, it explains why the function is a distribution function.
 
@@ -2106,8 +2293,52 @@ from the geometric Lagrange row.  The four resulting declarations are
 \nolinkurl{sum_geometricLagrangeWeight_mul_shifted_pow_of_pos}.  In the final
 form the nodes are \(q^{start+k}\), and the exponent of \(q\) is exactly
 \(start\,m+\binom{p+1}{2}\).  These sixteen declarations are finite algebra:
-they assert no analytic Richardson remainder, convergence rate, or sign bound
-for a sampled function.
+by themselves they assert no analytic Richardson remainder, convergence rate,
+or sign bound for a sampled function.
+
+\subsection{Unconditionally summable analytic filters}
+At compiled full-facade checkpoint \nolinkurl{22f801337},
+\nolinkurl{AnalyticSeriesFilter.lean} supplies the pointwise convergent-series
+counterpart of that finite algebra.  For a finite set of nodes \(\xi_i\),
+weights \(w_i\), coefficients \(a_m\), and a scale \(z\), it defines
+\[
+  \mathcal L_z(a)
+  =\sum_i\sum_{m\geq0}w_i\bigl((\xi_i z)^m a_m\bigr).
+\]
+Here the displayed products are scalar actions in Lean.  The generic
+declarations \nolinkurl{summable_finiteAnalyticSeriesFilter_diagonal} and
+\nolinkurl{finiteAnalyticSeriesFilter_eq_tsum} work over a commutative
+semiring acting on a normed additive group.  If every \emph{weighted} sampled
+series is unconditionally summable, they prove the exact diagonalization
+\[
+  \mathcal L_z(a)
+  =\sum_{m\geq0}\left(\sum_iw_i\xi_i^m\right)z^m a_m.
+\]
+A zero weight therefore creates no convergence obligation at its node.
+
+When the row reproduces a target through degree \(p\),
+\nolinkurl{finiteAnalyticSeriesFilter_eq_head_add_tail_of_exact} splits off
+the exact finite head and leaves an explicit infinite tail.  Its target-zero
+specialization preserves \(a_0\).  Over a commutative ring with continuous constant
+scalar multiplication (each fixed scalar acts continuously), the geometric theorem
+\nolinkurl{geometricAnalyticSeriesFilter_eq_constant_add_gaussian_tsum}
+identifies the finite row-moment factor in every residual tail term as
+\[
+  (-1)^p q^{\binom{p+1}{2}}\qbinom{p+r}{p}{q}.
+\]
+Assuming \(j\mapsto q^j\) is injective on \(\{0,\ldots,p\}\), the geometric-Lagrange
+wrapper over a scalar field and its shifted-scale form are
+\nolinkurl{geometricLagrangeAnalyticSeriesFilter_eq_constant_add_gaussian_tsum}
+and \nolinkurl{geometricLagrangeAnalyticSeriesFilter_shifted}.  Their
+summability hypotheses are imposed only at nodes whose Lagrange weight is
+nonzero.
+
+This is an exact pointwise \nolinkurl{tsum} theorem, using Mathlib's
+unconditional summation semantics.  It does not cover conditionally convergent
+boundary series and proves no uniform convergence, error bound, residual sign,
+asymptotic acceleration rate, or specialization to the coefficients of an
+actual sinc product.  A bridge from a formal \nolinkurl{PowerSeries}
+evaluation to these coefficient hypotheses is also still separate work.
 
 \subsection{Uniform central remainders}
 Formal coefficients alone do not prove an asymptotic expansion.  \nolinkurl{FabiusSaddleCentralAllOrders.lean} bounds the difference between the exact central integrand and its truncated polynomial approximation uniformly on the growing central window.
@@ -2605,22 +2836,36 @@ Read:
 \end{enumerate}
 This path emphasizes compact support, transform refinement, convolutions, and pointwise approximants.
 
-\subsubsection{Path D (post-snapshot): normalized primitives and polynomial weights}
+\subsubsection{Path D (post-snapshot): integer and fractional Volterra calculus}
+The fractional modules in this path were included in the compiled full-facade
+checkpoint \nolinkurl{22f801337}.
 Read:
 \begin{enumerate}
   \item \nolinkurl{NormalizedVolterra.lean};
-  \item \nolinkurl{GlobalExtension.lean}; and
-  \item \nolinkurl{FabiusAntiderivatives.lean}.
+  \item \nolinkurl{FractionalVolterra.lean} and
+        \nolinkurl{FractionalVolterraSemigroup.lean};
+  \item \nolinkurl{FractionalVolterraCalculus.lean};
+  \item \nolinkurl{GlobalExtension.lean} and
+        \nolinkurl{FabiusAntiderivatives.lean}; and
+  \item \nolinkurl{FabiusFractionalVolterra.lean}.
 \end{enumerate}
-The first module is the reusable layer: arbitrary base points and oriented
+The first module is the reusable natural-order layer: arbitrary base points and oriented
 endpoints, real normed-space-valued kernels and algebra, exact affine covariance
 for every real scale, arbitrary base-point shifts, and the zero-local-tail Taylor
 jet.  For continuous Banach-valued inputs it additionally identifies literal
 iteration with the direct kernel and supplies the semigroup's strict FTC,
-derivative cancellation, smoothness, and Taylor reconstruction.  The final
-module specializes that calculus only
-after the generic work is complete, obtaining the signed-global Fabius ladder,
-the bounded ladder on \(x\le1\), and finite monomial weights.
+derivative cancellation, smoothness, and Taylor reconstruction.
+\nolinkurl{FractionalVolterra.lean} and its semigroup companion give the
+Gamma-normalized real-order operator and positive-order composition on ordered
+intervals.  \nolinkurl{FractionalVolterraCalculus.lean} adds positive affine
+covariance for arbitrary real order and, for \(\alpha>0\), the exact
+integration-by-parts order-raising law with its left-endpoint boundary term.
+The two Fabius-specific modules are used only after this generic work:
+\nolinkurl{FabiusAntiderivatives.lean} gives the signed-global and bounded
+natural-order ladders and finite monomial weights, while
+\nolinkurl{FabiusFractionalVolterra.lean} gives the positive-real one-step
+fractional shifts for the signed extension on \(x\geq0\), the bounded function
+on \([0,1]\), and the bridge from \(\Up\) based at \(-1\) to \(F\).
 
 \subsubsection{Path E: sharp asymptotics}
 Read:
@@ -2916,6 +3161,9 @@ Rvachev up-function \(\Up\) & \nolinkurl{rvachevUp} & \nolinkurl{Basic.lean}; an
 Signed global extension \(\widetilde F\) & \nolinkurl{extendedFabius} & defined in \nolinkurl{Basic.lean}; cell and smoothness theory in \nolinkurl{GlobalExtension.lean} \\
 Normalized Volterra operator \(\mathsf J_{n,a}\) & \nolinkurl{normalizedVolterra}, \nolinkurl{iteratedPrimitive}, \nolinkurl{normalizedVolterra_affine}, \nolinkurl{normalizedVolterra_comp_affine}, \nolinkurl{normalizedVolterra_basepoint_shift}, \nolinkurl{normalizedVolterra_succ_eq_taylor_of_eq_zero} & direct kernel, literal iterator, affine transport, and base-point Taylor jets in \nolinkurl{NormalizedVolterra.lean} \\
 Exact Fabius primitive ladders & \nolinkurl{normalizedVolterra_extendedFabius}, \nolinkurl{normalizedVolterra_fabiusReal_of_le_one} & \nolinkurl{FabiusAntiderivatives.lean} \\
+Fractional Volterra operator and order calculus & \nolinkurl{fractionalVolterra}, \nolinkurl{fractionalVolterra_add}, \nolinkurl{fractionalVolterra_affine}, \nolinkurl{fractionalVolterra_add_one_deriv} & \nolinkurl{FractionalVolterra.lean}, \nolinkurl{FractionalVolterraSemigroup.lean}, and \nolinkurl{FractionalVolterraCalculus.lean} \\
+Fractional Fabius--Rvachev shifts & \nolinkurl{fractionalVolterra_add_one_extendedFabius_of_nonneg}, \nolinkurl{fractionalVolterra_add_one_fabiusReal}, \nolinkurl{fractionalVolterra_add_one_rvachevUp} & \nolinkurl{FabiusFractionalVolterra.lean} \\
+Pointwise analytic finite filters & \nolinkurl{finiteAnalyticSeriesFilter}, \nolinkurl{geometricAnalyticSeriesFilter}, \nolinkurl{geometricLagrangeAnalyticSeriesFilter_shifted} & unconditional diagonal, exact-head/tail, and Gaussian-residual identities in \nolinkurl{AnalyticSeriesFilter.lean} \\
 Exact even moment \(c_n\) & \nolinkurl{moment}, \nolinkurl{momentIntegral} & \nolinkurl{Arithmetic.lean}, \nolinkurl{Basic.lean}, and \nolinkurl{AnalyticMoments.lean} \\
 Normalized half moment \(d_n\) & \nolinkurl{halfMoment}, \nolinkurl{halfMomentIntegral} & \nolinkurl{Arithmetic.lean}, \nolinkurl{Basic.lean}, and \nolinkurl{AnalyticMoments.lean} \\
 Canonical moment numerators \(F_n,G_n\) & \nolinkurl{momentNumerator}, \nolinkurl{halfMomentNumerator} & \nolinkurl{Arithmetic.lean}, \nolinkurl{NormalizedEvenMoments.lean}, and \nolinkurl{NormalizedMoments.lean} \\
@@ -2923,7 +3171,11 @@ Inverse-power table \(F(2^{-n})\) & \nolinkurl{fabiusInversePowTwoTable}, \nolin
 Total dyadic evaluator & \nolinkurl{fabiusDyadicValue} & \nolinkurl{Arithmetic.lean}; analytic correctness wrapper in \nolinkurl{PaperStatements.lean} \\
 Dyadic common denominator \(D_n\) & \nolinkurl{dyadicDenominator} & \nolinkurl{Arithmetic.lean} and \nolinkurl{DenominatorBound.lean} \\
 Reshetnikov quantity \(R_n\) & \nolinkurl{reshetnikov} & \nolinkurl{Arithmetic.lean} and \nolinkurl{PaperStatements.lean} \\
-Weighted-sum CDF & \nolinkurl{weightedSumCDF} & \nolinkurl{ProbabilityRepresentation.lean} \\
+Generic continuous-CDF and density extraction & \nolinkurl{continuous_cdf_of_nullSingleton}, \nolinkurl{cdf_reflection_sub}, \nolinkurl{measure_eq_withDensity_of_cdf_hasDerivAt} & \nolinkurl{ContinuousCDF.lean} \\
+Affine independent-copy operator and uniqueness & \nolinkurl{affineIndependentCopyLaw}, \nolinkurl{affineIndependentCopyLaw_isProbabilityMeasure}, \nolinkurl{affineIndependentCopyLaw_eq_map_prod}, \nolinkurl{charFun_affineIndependentCopyLaw}, \nolinkurl{charFun_eq_mul_charFun_of_affineIndependentCopy_fixedPoint}, \nolinkurl{charFun_iterate_of_affineIndependentCopy_fixedPoint}, \nolinkurl{eq_of_charFun_affine_recurrence}, \nolinkurl{affineIndependentCopyLaw_fixedPoint_unique}, \nolinkurl{affineIndependentCopy_map_fixedPoint_unique} & \nolinkurl{AffineIndependentCopy.lean}; arbitrary measurable digit space and second-countable Borel real inner-product target, with completeness only for the three uniqueness declarations \\
+Geometric uniform law \(\mu_q\) & \nolinkurl{geometricUniformDistribution}, \nolinkurl{geometricUniformDistribution_selfSimilar}, \nolinkurl{geometricUniformDistribution_support_eq_Icc}, \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar} & \nolinkurl{GeometricUniformLaw.lean} and \nolinkurl{GeometricUniformUniqueness.lean}; the characterization holds for \(\lvert q\rvert<1\) without support, density, or moment assumptions \\
+Geometric CDF \(F_q\) and density \(f_q\) & \nolinkurl{geometricUniformCDF}, \nolinkurl{geometricUniformDensity}, \nolinkurl{geometricUniformCDF_hasDerivAt}, \nolinkurl{geometricUniformDistribution_eq_withDensity}, \nolinkurl{contDiff_geometricUniformCDF}, \nolinkurl{contDiff_geometricUniformDensity} & \nolinkurl{GeometricUniformCDF.lean} \\
+Weighted-sum CDF and half-base bridges & \nolinkurl{weightedSumCDF}, \nolinkurl{weightedSumCDF_eq_geometricUniformCDF_one_half}, \nolinkurl{geometricUniformCDF_one_half_eq_fabiusReal}, \nolinkurl{geometricUniformDensity_one_half_eq_rvachevUp} & \nolinkurl{ProbabilityRepresentation.lean} \\
 Forward curvature profile & \nolinkurl{deriv_deriv_fabiusReal}, \nolinkurl{deriv_deriv_fabiusReal_eq_zero_iff} & \nolinkurl{Convexity.lean} \\
 Totalized inverse \(F^{-1}\) & \nolinkurl{fabiusInv}, \nolinkurl{fabiusOrderIso}, \nolinkurl{fabiusInv_differentiableAt_iff}, \nolinkurl{fabiusInv_contDiffAt_infty_iff} & \nolinkurl{FabiusInverse.lean} \\
 Inverse curvature & \nolinkurl{deriv_deriv_fabiusInv}, \nolinkurl{deriv_deriv_fabiusInv_half}, \nolinkurl{deriv_deriv_fabiusInv_eq_zero_iff}, \nolinkurl{strictConcaveOn_fabiusInv_firstHalf}, \nolinkurl{strictConvexOn_fabiusInv_secondHalf} & \nolinkurl{FabiusInverse.lean} \\
@@ -2966,6 +3218,9 @@ Module & Role in the development \\
 \nolinkurl{ScaleTranslation.lean} & Reusable chain-rule formulas for affine rescaling and translation of Fabius and up-functions. \\
 \nolinkurl{GlobalExtension.lean} & Local finiteness, smoothness, unit-interval agreement, and translation laws of the signed global extension. \\
 \nolinkurl{NormalizedVolterra.lean} & Base-point and endpoint-order independent repeated integration.  Over arbitrary real normed targets it provides direct normalized kernels, division-free affine covariance for every scale (and an inverse form at nonzero scale), arbitrary base-point shifts into a local tail plus finite jet, the zero-local-tail specialization, and finite Hasse-polynomial and monomial commutators.  Completeness is confined to the continuous literal-iterator/strict-FTC bridge, derivative cancellation and smoothness, and Taylor reconstruction. \\
+\nolinkurl{FractionalVolterra.lean} & Total Gamma-normalized real-order Volterra operator, unconditional endpoint/locality/scalar laws, the order-one and positive-natural-order bridges, and positive-order kernel integrability and input additivity on ordered intervals. \\
+\nolinkurl{FractionalVolterraSemigroup.lean} & Shifted beta-kernel integrability and evaluation, and addition of two positive real orders for continuous Banach-valued inputs on ordered compact intervals. \\
+\nolinkurl{FractionalVolterraCalculus.lean} & Positive-scale affine covariance at arbitrary real order on ordered endpoints, its inverse-smul form, and the positive-order integration-by-parts law raising the order of a right interior derivative, including the exact boundary-free specialization. \\
 \nolinkurl{GlobalDyadic.lean} & Exact dyadic identities for the signed extension with unrestricted and nonreduced representatives. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Global shape, inversion, and computability}}\\[0.25em]
@@ -2976,10 +3231,12 @@ Module & Role in the development \\
 \nolinkurl{GlobalBounds.lean} & Sharp value and iterated-derivative bounds for the signed global extension and \(\Up\), including attainment and derivative-support control. \\
 \nolinkurl{BoundedDerivatives.lean} & Exact global sup-norm bounds for every derivative, including attainment. \\
 \nolinkurl{FabiusAntiderivatives.lean} & Complete natural-order primitive ladder for the signed extension at every real endpoint, its bounded specialization on \(x\le1\), and finite natural-monomial formulas for both. \\
+\nolinkurl{FabiusFractionalVolterra.lean} & Positive-real one-step fractional order shift for the signed extension on \(x\ge0\), its bounded specialization on \([0,1]\), and the affine bridge from \(\Up\) based at \(-1\) to the bounded Fabius function for \(x\ge-1\). \\
 \nolinkurl{EffectiveFlatness.lean} & Explicit power bounds at the flat endpoint. \\
 \nolinkurl{SharpFlatness.lean} & Factorial-strengthened endpoint power bounds for \(F\) and \(\Up\). \\
 \nolinkurl{NowhereAnalytic.lean} & Exact real-analytic loci: off the closed transition supports and nowhere on them. \\
 \nolinkurl{FabiusInverse.lean} & Totalized inverse, order isomorphism on the unit interval, exact positive reciprocal derivative, exact global smoothness locus (continuity everywhere, but differentiability and every positive finite or \(C^\infty\) order exactly off the clamping endpoints), reciprocal-cubic second derivative, midpoint jet and interior curvature loci, strict closed-half curvature, and endpoint quotient/derivative blow-up. \\
+\nolinkurl{ImplicitPowerSeries.lean} & Nonmonic complete-adic lifting and residue-class uniqueness, with arbitrary-base and zero-constant formal implicit-root specializations over power-series rings; it does not construct or analytically realize a Fabius inverse germ. \\
 \nolinkurl{InverseBranch.lean} & Analytic inverse theorem, analytic-density preservation for continuous right-inverse branches, and the complement-interior analyticity condition and conditional Lambert-branch criterion for \nolinkurl{IsElementaryOrInverse}. \\
 \nolinkurl{AlgebraicBranch.lean} & Algebraic-function branch interface used in non-elementarity arguments. \\
 \nolinkurl{ElementaryFunction.lean} & Formal expression language and semantics for elementary real functions. \\
@@ -3020,7 +3277,16 @@ Module & Role in the development \\
 \nolinkurl{FourierAnalytic.lean} & Entire Fourier transform of \(\Up\), Fourier inversion consequences, and its imaginary-axis relation to the half-moment generating function. \\
 \nolinkurl{OriginalCharacterization.lean} & Rvachev's original compact-support predicate, derived scale positivity, the forced scale and normalization, and the general fold from bounded Fabius solutions. \\
 \nolinkurl{OriginalUniqueness.lean} & Fourier-refinement uniqueness, the exact kernel of the fold, and the equivalences with fixed candidates or unique bounded Fabius witnesses. \\
-\nolinkurl{ProbabilityRepresentation.lean} & Product measure on \([0,1]^{\N}\), weighted coordinate sum, self-similarity, and exact CDF/\(\Up\) identifications. \\
+\nolinkurl{WeightedUniformSeries.lean} & Absolutely summable uniform-coordinate series, their canonical pushforward laws, pointwise and law-level head--tail splitting, reflection, and carried-interval results. \\
+\nolinkurl{WeightedUniformDistribution.lean} & Compatibility and naturality API for weighted laws, including scalar transport, affine recursion, sharp absolute continuity from any nonzero real coefficient, and null singletons. \\
+\nolinkurl{WeightedUniformSupport.lean} & Support equal to the continuous series range, exact signed-real min/max support intervals, and nonnegative unit-mass specializations. \\
+\nolinkurl{ContinuousCDF.lean} & Generic continuity of atomless probability CDFs, reflection symmetry from measure invariance, and the theorem identifying any everywhere pointwise CDF derivative as the exact Lebesgue density without prior regularity or absolute continuity assumptions. \\
+\nolinkurl{AffineIndependentCopy.lean} & The affine independent-copy convolution operator, its probability and product-map forms, characteristic-function factorization and finite fixed-point iteration, and contractive uniqueness.  The digit space is arbitrary measurable, the target is second-countable Borel real inner-product, and completeness is confined to the three uniqueness declarations; \(\lvert q\rvert<1\) includes zero and negative scales without support, density, or moment hypotheses. \\
+\nolinkurl{GeometricUniformLaw.lean} & Named weights \((1-q)q^n\), their series and probability law, affine self-similarity, reflection, absolute continuity, null singletons, and exact range/support statements. \\
+\nolinkurl{GeometricUniformUniqueness.lean} & Specializes the generic product-map theorem to prove \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar}: every probability solution of the geometric affine head--tail equation is \(\mu_q\) when \(\lvert q\rvert<1\), including \(q=0\) and negative \(q\), with no support, density, or moment assumption. \\
+\nolinkurl{GeometricSincFactorization.lean} & Closed characteristic function of the scaled uniform digit, exact closed-factor and phase-collapsed finite residual formulas for \(\lvert q\rvert<1\), pointwise convergence of the phase-bearing sinc prefixes, and the two dyadic weighted-sum wrappers. \\
+\nolinkurl{GeometricUniformCDF.lean} & The named \(F_q\) and explicit \(f_q\), conditioning and interval-integral equations, pointwise derivative and exact \nolinkurl{withDensity} law, continuity, reflection, exterior zeros, ordinary/topological support containments, compact support, and \(C^\infty\) regularity under their exact parameter hypotheses. \\
+\nolinkurl{ProbabilityRepresentation.lean} & Product measure on \([0,1]^{\N}\), weighted coordinate sum, self-similarity, and exact CDF/\(\Up\) identifications.  Its dyadic CDF smoothing, continuity, exterior-value, and reflection proofs are half-base specializations of \nolinkurl{GeometricUniformCDF.lean}; it also identifies \(F_{1/2}\) with every bounded Fabius function and \(f_{1/2}(x)\) with \(2\Up(2x-1)\). \\
 \nolinkurl{WeakConvergence.lean} & Characteristic-function convergence, Lévy continuity, bounded-continuous test convergence, positivity on every open set meeting \((-1,1)\), and exact limiting-measure support \([-1,1]\). \\
 \nolinkurl{StepMeasureBridge.lean} & Relates discrete/step approximants to their associated finite measures. \\
 \nolinkurl{EarlyMeasureBridge.lean} & Foundational bridge between early convolution approximants and measure formulations. \\
@@ -3105,6 +3371,7 @@ Module & Role in the development \\
 \nolinkurl{GeometricCompleteHomogeneous.lean} & Denominator-free principal specialization \(h_n(1,q,\ldots,q^p)=\qbinom{n+p}{p}{q}\), its arbitrary common-scale form over every commutative semiring, and the range-indexed bridge used by interpolation rows. \\
 \nolinkurl{LagrangeResidualMoments.lean} & Every higher residual moment of a polynomially exact finite row, with a representation-independent commutative-ring theorem and the distinct-node Lagrange specialization. \\
 \nolinkurl{GeometricResidualMoments.lean} & Every positive residual moment on \(c,cq,\ldots,cq^p\) over a commutative ring, assuming exactness directly on those scaled nodes, together with distinct-node Lagrange, arbitrary-dilation, and shifted-block field corollaries. \\
+\nolinkurl{AnalyticSeriesFilter.lean} & Unconditional pointwise evaluation of finite coefficient filters: diagonalization under weighted sampled-series summability, exact finite heads and tails, and Gaussian residual tails for geometric and geometric-Lagrange rows, including shifted scales.  It does not supply conditional boundary summation, uniform estimates, asymptotic rates, or a sinc-product instantiation. \\
 \nolinkurl{GeometricRichardson.lean} & Generic geometric root polynomials and normalized forward Richardson polynomials, including their evaluation and coefficient interfaces. \\
 \nolinkurl{GeometricLagrangeWeights.lean} & Identification of the geometric Lagrange row with the Richardson coefficient polynomial and its complete-homogeneous all-order moments. \\
 \nolinkurl{GeometricLagrangeQBinomial.lean} & Field-valued q-Pochhammer weight formulas and report-facing rational q-binomial and quarter-base coefficient formulas. \\
@@ -3208,6 +3475,9 @@ post-snapshot discussion above, were checked at checkpoint
 \nolinkurl{1e761ed77583e9870ceeaeb2c74ac824094f0f3f}, all on 27 August 2026.
 The subsequent five geometric and Lambert rows reflect source checkpoint
 \nolinkurl{c45276994d9411a45bef409ad6bc481771613113}, also on 27 August 2026.
+The \nolinkurl{ImplicitPowerSeries.lean} row and the generic formal-root
+discussion are a post-snapshot foundation checked at source checkpoint
+\nolinkurl{cd9086a80cbecefecb9bc1e00378d151061595e0} on 28 August 2026.
 The title-page pin and reproduction count continue to describe the older
 audited snapshot.
 \end{remark}
@@ -3280,7 +3550,7 @@ Term or identifier & Meaning in this development \\
 \nolinkurl{atTop} & Filter describing a variable tending to positive infinity. \\
 \nolinkurl{nhdsWithin 0 (Set.Ioi 0)} & Right-hand approach to zero, the endpoint filter used for \(x\downarrow0\). \\
 \nolinkurl{eventually} & A property holding on some set belonging to a filter; used to encode large-variable thresholds. \\
-\nolinkurl{Summable} & Absolute or unconditional summability in the relevant normed additive group. \\
+\nolinkurl{Summable} & Unconditional summability in the relevant normed additive group.  In \nolinkurl{AnalyticSeriesFilter.lean} the generic hypothesis is on each weighted sampled series; specialized geometric statements require an unweighted sample only when its weight is nonzero. \\
 \nolinkurl{intervalIntegral} & Oriented integral over real endpoints, useful for FTC and integration by parts. \\
 \nolinkurl{MeasureTheory.Integrable} & Whole-space integrability; usually proved from compact support and continuity. \\
 \nolinkurl{SchwartzMap} & Smooth rapidly decreasing function type used for Fourier injectivity and Poisson summation. \\
@@ -3463,11 +3733,11 @@ environment.
 \subsection{Build and inspect trust}
 The release-level library check is
 \begin{lstlisting}[style=pseudo,language={}]
-LAKE_JOBS=1 LEAN_NUM_THREADS=0 lake build +FabiusFunction
+LAKE_JOBS=1 lake build +FabiusFunction
 \end{lstlisting}
 The repository policy requires one prefixed module target per Lake invocation,
-with \texttt{LAKE\_JOBS=1} and \texttt{LEAN\_NUM\_THREADS=0}, including during
-debugging.  It also requires a source audit for declarations that bypass
+with \texttt{LAKE\_JOBS=1}, including during debugging, and forbids setting
+\texttt{LEAN\_NUM\_THREADS=0}.  It also requires a source audit for declarations that bypass
 ordinary proof checking:
 \begin{lstlisting}[style=pseudo,language={}]
 rg -n '\b(sorry|admit)\b' \

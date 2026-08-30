@@ -1,0 +1,1200 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{bm}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Sharp Decay Laws for the Fourier Transform of Rvachev's Up-Function},
+  pdfsubject={Dyadic factorization, lacunary sine products, extremal envelopes, metric fluctuations, and Cesaro normalization},
+  pdfkeywords={Rvachev up-function, Fabius function, Fourier transform, sinc product, lacunary product, doubling map, transfer operator, Thue-Morse}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Fourier decay of Rvachev's up-function}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\Uhat}{\mathcal U}
+\newcommand{\T}{\mathsf T}
+\newcommand{\Lop}{\mathcal L}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\smallo}{o}
+\newcommand{\esssup}{\operatorname*{ess\,sup}}
+\newcommand{\vtwo}{\nu_2}
+\newcommand{\dist}{\operatorname{dist}}
+
+\newenvironment{boxedremark}{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{black}\hrule\vspace{0.6em}\small
+}{%
+  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
+}
+
+\lstdefinestyle{pseudo}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{shadegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  xleftmargin=0.7em,
+  xrightmargin=0.7em,
+  aboveskip=0.8em,
+  belowskip=0.8em
+}
+
+\title{\bfseries Sharp Decay Laws for the Fourier Transform\\
+of Rvachev's Up-Function\\[0.35em]
+\large Dyadic factorization, lacunary fluctuations, extremal envelopes, and Ces\`aro normalization}
+\author{Prepared for Vladimir Reshetnikov\\
+\small Companion analysis for the \texttt{ProveIt} Fabius-function development}
+\date{26 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $\Up$ be Rvachev's compactly supported $C^\infty$ function, normalized to have
+integral one, and use the Fourier convention
+$\widehat h(\xi)=\int_{\R}h(t)\e^{-2\pi\ii\xi t}\dd t$.  Its Fourier transform is
+\[
+ \Uhat(\xi)=\prod_{n=0}^{\infty}
+ \sinc\!\left(\frac{\pi\xi}{2^n}\right),
+ \qquad \sinc z=\frac{\sin z}{z}.
+\]
+The common description ``roughly log-normal'' is correct only at the coarsest scale.
+There is no single pointwise asymptotic equivalent: $\Uhat$ vanishes at every nonzero
+integer, and after removal of the universal quadratic logarithmic term the remainder is
+a lacunary Birkhoff sum for the doubling map.
+
+This article gives an exact dyadic factorization and then separates four distinct notions
+of amplitude.  The sharp global/extremal envelope has power exponent
+\[
+ \beta_\infty=\frac12+\frac{\log(2\pi/\sqrt3)}{\log2}
+ =2.359014879111740\ldots .
+\]
+On almost every fixed dyadic ray $\xi=2^k y$, the pointwise exponent is
+\[
+ \beta_{\mathrm{typ}}=\frac12+\frac{\log(2\pi)}{\log2}
+ =3.151496129472318\ldots ,
+\]
+with sharp positive law-of-the-iterated-logarithm excursions of order
+$\sqrt{\log\xi\,\log\log\log\xi}$.  The absolute Ces\`aro mean is controlled by the
+Fouvry--Mauduit constant $\lambda=0.661322602060565\ldots$ and has exponent
+\[
+ \beta_1=\frac12+\frac{\log(\pi/\lambda)}{\log2}
+ =2.748070014871334\ldots .
+\]
+Finally, the exponent $\log(2\pi)/\log2$ appearing in the earlier draft is identified
+exactly as the $L^2$ (root-mean-square) exponent, not a pointwise one.  A positive
+real-analytic, eventually decreasing gauge is constructed that rigorously satisfies the
+bounded-Ces\`aro requirement posed in the original question, and the residual dyadic
+profile obstructing a naive all-$T$ limit is described by a transfer-operator eigenmeasure.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Statement of the problem and the main correction}
+
+The object of study is
+\begin{equation}\label{eq:def-U}
+ \Uhat(x)=\prod_{n=0}^{\infty}
+ \sinc\!\left(\frac{\pi x}{2^n}\right),
+ \qquad x\in\R.
+\end{equation}
+It is real, even, entire, and rapidly decreasing on the real axis.  Since $\Up$ is
+$C^\infty$ with compact support, integration by parts already gives
+$\Uhat(x)=\bigO_N(|x|^{-N})$ for every $N$.  What that elementary argument does not
+reveal is the much sharper scale of decay, nor the arithmetic oscillations hidden inside
+that scale.
+
+The earlier draft proposed, in effect, a deterministic equivalent of the form
+\begin{equation}\label{eq:old-form}
+ |\Uhat(x)|\stackrel{?}{\sim}
+ C(\log x)^{-p}x^{-\log(2\pi)/\log2}
+ \exp\!\left(-\frac{(\log x)^2}{2\log2}\right).
+\end{equation}
+There are three immediate structural difficulties with such a statement.
+
+\begin{enumerate}
+\item $\Uhat(m)=0$ for every nonzero integer $m$, so no positive pointwise equivalent can
+hold on the full real axis.
+\item Even on a fixed dyadic ray, the normalized remainder is a lacunary sine product.
+For almost every ray it has unbounded, sharply quantifiable positive logarithmic excursions.
+\item Pointwise, extremal, $L^1$, and $L^2$ amplitudes are governed by different
+geometric means of the same lacunary product.  Conflating them produces a plausible but
+incorrect exponent.
+\end{enumerate}
+
+The common factor in every correct notion of decay is
+\begin{equation}\label{eq:universal-lognormal}
+ \exp\!\left(-\frac{(\log x)^2}{2\log2}\right).
+\end{equation}
+The next power of $x$, however, depends on what ``amplitude'' means.  The following table
+is a compact preview; all entries are proved below.  Write
+\[
+ G_\beta(x):=x^{-\beta}
+ \exp\!\left(-\frac{(\log x)^2}{2\log2}\right),\qquad x>0.
+\]
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}
+ >{\centering\arraybackslash}p{0.16\textwidth}
+ >{\centering\arraybackslash}p{0.21\textwidth}X@{}}
+\toprule
+Notion of size & effective sine mean $r$ & exponent
+$\displaystyle\beta=\frac12+\frac{\log(\pi/r)}{\log2}$ & status of normalization \\
+\midrule
+Sharp global/extremal envelope
+& $\sqrt3/2$
+& $2.359014879\ldots$
+& sharp up to $x^{o(1)}$; attained on a period-two dyadic ray \\
+Root mean square ($L^2$)
+& $1/\sqrt2$
+& $\log(2\pi)/\log2=2.651496129\ldots$
+& exact lacunary second moment \\
+Absolute mean ($L^1$)
+& $\lambda=0.661322602\ldots$
+& $2.748070015\ldots$
+& yields a bounded Ces\`aro ratio; dyadic-endpoint limit after scaling \\
+Almost-everywhere pointwise
+& $1/2$
+& $3.151496129\ldots$
+& with sharp one-sided LIL-scale lacunary excursions \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{boxedremark}
+The exponent in the old draft is not meaningless.  It is exactly the $L^2$ exponent:
+\[
+ \frac12+\frac{\log(\pi\sqrt2)}{\log2}
+ =\frac{\log(2\pi)}{\log2}.
+\]
+What fails is its interpretation as a pointwise decay law, together with the proposed
+$(\log x)^{-1/2}$ correction.
+\end{boxedremark}
+
+\section{Fourier product, zeros, and the unique extrema}
+
+\subsection{Normalization and product representations}
+
+With the Fourier convention used in the abstract, the standard construction of the
+up-function gives \eqref{eq:def-U}; see Arias de Reyna~\cite{arias1982} for a systematic
+treatment.  The product converges normally on compact subsets of $\C$, since
+$1-\sinc z=\bigO(z^2)$ near zero.
+
+The elementary identity
+\[
+ \frac{\sin z}{z}=\prod_{m=1}^{\infty}
+ \left(1-\frac{z^2}{\pi^2m^2}\right)
+\]
+yields a second, arithmetically revealing product.
+
+\begin{proposition}[Integer zeros and their multiplicities]\label{prop:zeros}
+For every $z\in\C$,
+\begin{equation}\label{eq:weierstrass-collected}
+ \Uhat(z)=\prod_{m=1}^{\infty}
+ \left(1-\frac{z^2}{m^2}\right)^{1+\vtwo(m)},
+\end{equation}
+where $\vtwo(m)$ is the exponent of $2$ in $m$.  Thus the zero at each
+$m\in\Z\setminus\{0\}$ has multiplicity $1+\vtwo(|m|)$.
+\end{proposition}
+
+\begin{proof}
+Inserting the sine product into \eqref{eq:def-U} gives factors with zeros at
+$z=2^nq$, $n\ge0$, $q\ge1$.  For a fixed positive integer $m$, the number of pairs
+$(n,q)$ satisfying $m=2^nq$ is $1+\vtwo(m)$.  Since
+$\sum_{m\ge1}(1+\vtwo(m))/m^2<\infty$, the collected genus-zero product converges
+normally and rearrangement is legitimate.
+\end{proof}
+
+A cosine form, useful for comparison with the Fabius literature, follows from repeated
+use of $\sinc(2z)=\sinc(z)\cos z$:
+\begin{equation}\label{eq:cosine-form}
+ \Uhat(z)=\prod_{m=1}^{\infty}
+ \left(\cos\frac{\pi z}{2^m}\right)^m.
+\end{equation}
+The elementary scaling equation is
+\begin{equation}\label{eq:scaling}
+ \Uhat(x)=\sinc(\pi x)\Uhat(x/2),
+ \qquad
+ \Uhat(2x)=\sinc(2\pi x)\Uhat(x).
+\end{equation}
+
+\subsection{Exactly one extremum between consecutive zeros}
+
+Although the present article is mainly about amplitudes, it is useful to close a small
+logical gap from the original discussion: the oscillation has exactly one stationary
+point in every interval between consecutive positive integers.
+
+\begin{proposition}[Unique interlacing critical point]\label{prop:critical}
+For each $n\ge1$, the restriction of $\Uhat$ to $(n,n+1)$ has exactly one critical
+point.  It is the unique maximum or minimum on that interval.
+\end{proposition}
+
+\begin{proof}
+Away from the integer zeros, logarithmic differentiation of
+\eqref{eq:weierstrass-collected} gives
+\begin{equation}\label{eq:log-derivative}
+ \frac{\Uhat'(x)}{\Uhat(x)}
+ =-2x\sum_{m=1}^{\infty}
+ \frac{1+\vtwo(m)}{m^2-x^2}.
+\end{equation}
+The series and its derivative converge locally uniformly on
+$\R\setminus\Z$.  Put
+\[
+ A(x):=\sum_{m=1}^{\infty}\frac{1+\vtwo(m)}{m^2-x^2}.
+\]
+For $x>0$ away from the integers,
+\[
+ A'(x)=2x\sum_{m=1}^{\infty}
+ \frac{1+\vtwo(m)}{(m^2-x^2)^2}>0.
+\]
+On $(n,n+1)$ one has $A(x)\to-\infty$ as $x\downarrow n$ and
+$A(x)\to+\infty$ as $x\uparrow n+1$.  Hence $A$ has exactly one zero there, and
+\eqref{eq:log-derivative} gives exactly one critical point of $\Uhat$.  Since the
+endpoints are zeros and the sign is constant in the open interval, that critical point
+is the unique extremum.
+\end{proof}
+
+Let
+\begin{equation}\label{eq:En}
+ E_n:=\max_{n\le x\le n+1}|\Uhat(x)|.
+\end{equation}
+The sharp limsup law for $E_n$ will follow in \Cref{sec:extremal}.
+
+\section{The exact dyadic factorization}\label{sec:dyadic}
+
+Every $x\ge1$ has a unique representation
+\begin{equation}\label{eq:mantissa}
+ x=2^k y,\qquad k=\lfloor\log_2x\rfloor,\qquad 1\le y<2.
+\end{equation}
+Write
+\[
+ t:=y-1\in[0,1),\qquad a:=\log2,
+\]
+and define
+\begin{align}
+ P_n(t)&:=\prod_{j=0}^{n-1}|\sin(\pi2^jt)|,\label{eq:Pn}\\
+ Q_n(t)&:=2^nP_n(t)
+       =\prod_{j=0}^{n-1}|2\sin(\pi2^jt)|,\label{eq:Qn}\\
+ H(y)&:=\prod_{m=1}^{\infty}
+ \left|\sinc\!\left(\frac{\pi y}{2^m}\right)\right|.
+ \label{eq:H}
+\end{align}
+The tail $H$ is continuous on $[1,2]$, strictly positive on $[1,2)$, and vanishes at
+$y=2$ only because its first factor does.
+
+\begin{theorem}[Exact dyadic factorization]\label{thm:factorization}
+For $k\ge0$ and $1\le y<2$,
+\begin{equation}\label{eq:exact-factorization}
+ |\Uhat(2^ky)|
+ =2^{-k(k+1)/2}(\pi y)^{-(k+1)}H(y)P_{k+1}(y-1).
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:exact-factorization-Q}
+ |\Uhat(2^ky)|
+ =2^{-k(k+1)/2}(2\pi y)^{-(k+1)}H(y)Q_{k+1}(y-1).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Split the product \eqref{eq:def-U} at $n=k$.  For $0\le n\le k$, set $j=k-n$.
+Then
+\[
+ \left|\sin\!\left(\pi\frac{2^ky}{2^n}\right)\right|
+ =|\sin(\pi2^jy)|
+ =|\sin(\pi2^j(y-1))|.
+\]
+The product of the corresponding denominators is
+\[
+ \prod_{j=0}^{k}\pi2^jy
+ =(\pi y)^{k+1}2^{k(k+1)/2}.
+\]
+The remaining factors, indexed by $n=k+m$ with $m\ge1$, are exactly $H(y)$.
+This proves \eqref{eq:exact-factorization}; multiplying $P_{k+1}$ by
+$2^{-(k+1)}Q_{k+1}$ gives \eqref{eq:exact-factorization-Q}.
+\end{proof}
+
+This identity isolates the entire problem.  The triangular denominator produces the
+quadratic logarithm.  The mantissa $y$ contributes only bounded-scale factors.  All
+nontrivial residual behavior is carried by the lacunary product $P_n(t)$.
+
+\subsection{An exact logarithmic normal form}
+
+For a real parameter $c$, define
+\begin{equation}\label{eq:Phi}
+ \Phi_c(b):=\frac{b^2}{2a}+\frac{bc}{a}-\frac b2-c.
+\end{equation}
+If $L=\log x=ka+b$, then direct expansion gives the elementary identity
+\begin{equation}\label{eq:algebra-identity}
+ -\frac a2k(k+1)-(k+1)(c+b)
+ =-\frac{L^2}{2a}
+  -\left(\frac12+\frac ca\right)L+\Phi_c(b).
+\end{equation}
+Taking $c=\log(2\pi)$ in \eqref{eq:exact-factorization-Q} gives the following exact,
+not merely asymptotic, decomposition.
+
+\begin{corollary}[Exact centered logarithm]\label{cor:centered-log}
+Let $x=2^ky$, $1\le y<2$, $t=y-1$, and $L=\log x$.  Then
+\begin{equation}\label{eq:exact-log-normal-form}
+ \log|\Uhat(x)|
+ =-\frac{L^2}{2a}-\beta_{\mathrm{typ}}L
+  +\Psi_{\mathrm{typ}}(y)+S_{k+1}(t),
+\end{equation}
+where
+\begin{align}
+ \beta_{\mathrm{typ}}
+   &:=\frac12+\frac{\log(2\pi)}{a},\label{eq:beta-typ-def}\\
+ \Psi_{\mathrm{typ}}(y)
+   &:=\log H(y)+\Phi_{\log(2\pi)}(\log y),\label{eq:Psi-typ}\\
+ S_n(t)&:=\log Q_n(t)
+ =\sum_{j=0}^{n-1}\log|2\sin(\pi2^jt)|.
+ \label{eq:Sn}
+\end{align}
+At points where a sine factor vanishes, both sides are understood as $-\infty$.
+\end{corollary}
+
+\begin{boxedremark}
+Formula \eqref{eq:exact-log-normal-form} is the decisive correction to a formal
+Euler--Maclaurin treatment of the logarithm of the sinc product.  The singular function
+$\log|\sin|$ cannot be replaced by a smooth average with a deterministic
+$\log\log x$ remainder.  Its dyadic samples form the Birkhoff sum $S_n(t)$, whose
+excursions are both arithmetically sensitive and, metrically, much larger than
+$\log\log x$.
+\end{boxedremark}
+
+\section{Almost-everywhere pointwise decay and its sharp upper fluctuation}
+\label{sec:typical}
+
+Let $\T(t)=2t\pmod1$ be the doubling map and
+\begin{equation}\label{eq:phi}
+ \varphi(t):=\log|2\sin(\pi t)|.
+\end{equation}
+Then $S_n(t)=\sum_{j=0}^{n-1}\varphi(\T^jt)$.  The classical integral
+\begin{equation}\label{eq:logsin-mean}
+ \int_0^1\log|2\sin(\pi t)|\dd t=0
+\end{equation}
+shows that the Birkhoff sum is centered.
+
+\begin{theorem}[Typical power exponent]\label{thm:typical}
+For Lebesgue-almost every $t\in(0,1)$, and hence for almost every $y=1+t\in(1,2)$,
+\begin{equation}\label{eq:Sn-sublinear}
+ S_n(t)=o(n).
+\end{equation}
+Consequently, along the dyadic ray $x_k=2^ky$,
+\begin{equation}\label{eq:typical-log-asymptotic}
+ \log|\Uhat(x_k)|
+ =-\frac{(\log x_k)^2}{2\log2}
+  -\beta_{\mathrm{typ}}\log x_k+o(\log x_k),
+\end{equation}
+where
+\begin{equation}\label{eq:beta-typ-value}
+ \beta_{\mathrm{typ}}
+ =\frac12+\frac{\log(2\pi)}{\log2}
+ =3.151496129472318798\ldots .
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The function $\varphi$ belongs to $L^1(0,1)$ and the doubling map is ergodic for
+Lebesgue measure.  Birkhoff's ergodic theorem and \eqref{eq:logsin-mean} give
+\eqref{eq:Sn-sublinear}.  Substitute this into the exact identity
+\eqref{eq:exact-log-normal-form}; the bounded mantissa term
+$\Psi_{\mathrm{typ}}(y)$ is absorbed into $o(\log x_k)$.
+\end{proof}
+
+The $o(\log x)$ remainder is not remotely as small as a deterministic power of
+$\log x$.  Aistleitner, Hofer, and Larcher proved a sharp one-sided law of the
+iterated logarithm for the upper excursions of precisely this lacunary
+product~\cite{ahl2017}.
+
+\begin{theorem}[Sharp upper metric fluctuation]\label{thm:lil}
+For Lebesgue-almost every $t\in(0,1)$,
+\begin{equation}\label{eq:LIL-S}
+ \limsup_{n\to\infty}
+ \frac{S_n(t)}{\sqrt{n\log\log n}}=\pi.
+\end{equation}
+Equivalently, for almost every fixed $y\in(1,2)$, along $x_k=2^ky$,
+\begin{multline}\label{eq:LIL-x}
+ \limsup_{k\to\infty}
+ \frac{
+ \log|\Uhat(x_k)|
+ +\dfrac{(\log x_k)^2}{2\log2}
+ +\beta_{\mathrm{typ}}\log x_k
+ -\Psi_{\mathrm{typ}}(y)
+ }
+ {\sqrt{\dfrac{\log x_k}{\log2}\,
+ \log\log\log x_k}}
+ =\pi.
+\end{multline}
+Changing $\log\log\log x_k$ by the asymptotically equivalent
+$\log\log((\log x_k)/\log2)$ does not alter the limit.
+\end{theorem}
+
+\begin{proof}
+Theorem~2 of Aistleitner--Hofer--Larcher states that, for every $\varepsilon>0$,
+$Q_{L+1}(t)$ is at most
+$\exp((\pi+\varepsilon)\sqrt{L\log\log L})$ for all sufficiently large $L$, and is
+at least $\exp((\pi-\varepsilon)\sqrt{L\log\log L})$ for infinitely many $L$,
+for almost every $t$.  Taking logarithms and shifting the index gives
+\eqref{eq:LIL-S}.  Formula \eqref{eq:LIL-x} then follows from
+\eqref{eq:exact-log-normal-form}, because $k+1\sim(\log x_k)/\log2$ and
+$\log\log(k+1)\sim\log\log\log x_k$.
+\end{proof}
+
+\begin{remark}
+The theorem says that the multiplicative correction to the typical core is eventually
+at most
+\[
+ \exp\!\left((\pi+o(1))
+ \sqrt{\frac{\log x}{\log2}\,\log\log\log x}\right),
+\]
+and reaches the same expression with $\pi-o(1)$ in place of $\pi+o(1)$ along a
+subsequence of almost every dyadic ray.  These positive excursions are subpolynomial in
+$x$ but larger than every fixed power of $\log x$.  No symmetric assertion about the
+negative excursions is needed here; those are sensitive to exceptionally close returns to
+the integer zero set.  In particular, no factor $(\log x)^c$, and especially no
+$(\log x)^{-1/2}$ factor, can produce a pointwise constant-amplitude normalization.
+\end{remark}
+
+\begin{remark}[Exceptional rays]
+The metric theorem does not erase arithmetic dependence.  If $t$ is dyadic rational,
+then an iterate of $t$ is $0$ and the ray eventually lands on integer zeros.  If $t$ is
+periodic under doubling, $P_n(t)$ has an exact periodic-geometric form.  By constructing
+binary expansions with very long blocks of zeros, one can also force arbitrarily deep
+negative excursions in $S_n(t)$.  Hence no nontrivial uniform lower envelope exists.
+\end{remark}
+
+\section{The sharp global and extremal envelope}\label{sec:extremal}
+
+The largest possible long-term geometric mean of $P_n(t)$ is not $1$; the doubling
+dynamics prevents an orbit from remaining near the maximum of $|\sin\pi t|$.  The exact
+answer is attained by the period-two orbit $1/3\leftrightarrow2/3$.
+
+\subsection{An ergodic-optimization lemma}
+
+Set
+\begin{equation}\label{eq:rho}
+ \rho:=\frac{\sqrt3}{2}.
+\end{equation}
+
+\begin{lemma}[Maximum sine average]\label{lem:max-average}
+Let $\mathcal M_\T$ denote the $\T$-invariant Borel probability measures on $[0,1]$.
+Then
+\begin{equation}\label{eq:max-average}
+ \sup_{\mu\in\mathcal M_\T}
+ \int_0^1\log|\sin(\pi t)|\dd\mu(t)
+ =\log\rho.
+\end{equation}
+The unique maximizing measure is the equidistribution on the two-cycle
+$\{1/3,2/3\}$.
+\end{lemma}
+
+\begin{proof}
+Put $z=\sin^2(\pi t)$.  Under doubling, $z$ evolves by the logistic map
+\[
+ R(z)=4z(1-z),\qquad 0\le z\le1.
+\]
+Let $\eta$ be the push-forward of a $\T$-invariant measure.  If
+$\int\log z\dd\eta=-\infty$, there is nothing to prove.  Otherwise invariance and
+$\log R(z)=\log4+\log z+\log(1-z)$ imply
+\begin{equation}\label{eq:log-one-minus-z}
+ \int\log(1-z)\dd\eta(z)=-\log4.
+\end{equation}
+The elementary inequality
+\begin{equation}\label{eq:z-inequality}
+ z^3(1-z)\le\frac{27}{256},
+\end{equation}
+with equality only at $z=3/4$, gives
+\[
+ 3\int\log z\dd\eta+\int\log(1-z)\dd\eta
+ \le\log\frac{27}{256}.
+\]
+Using \eqref{eq:log-one-minus-z} yields
+$\int\log z\dd\eta\le\log(3/4)$.  Since
+$\log|\sin\pi t|=\tfrac12\log z$, this is \eqref{eq:max-average}.
+Equality forces $z=3/4$ almost surely.  Its two lifts are $t=1/3,2/3$, exchanged by
+$\T$, so invariance forces equal masses on the two points.
+\end{proof}
+
+\begin{lemma}[Maximum finite products]\label{lem:Mn}
+Let $M_n:=\sup_{0\le t\le1}P_n(t)$.  Then
+\begin{equation}\label{eq:Mn-limit}
+ \lim_{n\to\infty}M_n^{1/n}=\rho.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The cocycle identity
+$P_{m+n}(t)=P_m(t)P_n(\T^mt)$ implies $M_{m+n}\le M_mM_n$, so
+$\lim n^{-1}\log M_n$ exists by Fekete's lemma.  The standard empirical-measure
+argument for an upper-semicontinuous potential gives
+\[
+ \lim_{n\to\infty}\frac1n\log M_n
+ =\sup_{\mu\in\mathcal M_\T}
+ \int\log|\sin(\pi t)|\dd\mu(t).
+\]
+For completeness, choose nearly maximizing $t_n$ and pass to a weak limit of the
+empirical measures $n^{-1}\sum_{j<n}\delta_{\T^jt_n}$.  Every limit is invariant.
+Truncating $\log|\sin\pi t|$ from below and applying upper semicontinuity gives the
+upper bound.  For the reverse bound, ergodic decomposition reduces matters to an ergodic
+invariant measure, and Birkhoff's theorem supplies a generic point.  Now apply
+\Cref{lem:max-average}.
+\end{proof}
+
+\subsection{The envelope theorem}
+
+Define
+\begin{equation}\label{eq:beta-infty}
+ \beta_\infty
+ :=\frac12+\frac{\log(\pi/\rho)}{\log2}
+ =\frac12+\frac{\log(2\pi/\sqrt3)}{\log2}
+ =2.359014879111740707\ldots .
+\end{equation}
+
+\begin{theorem}[Sharp global logarithmic envelope]\label{thm:envelope}
+One has
+\begin{equation}\label{eq:global-limsup}
+ \limsup_{x\to\infty}
+ \frac{
+ \log|\Uhat(x)|+\dfrac{(\log x)^2}{2\log2}}
+ {\log x}
+ =-\beta_\infty,
+\end{equation}
+where zeros contribute the value $-\infty$ and do not affect the limsup.
+Equivalently,
+\begin{equation}\label{eq:global-upper-o}
+ |\Uhat(x)|\le
+ \exp\!\left(-\frac{(\log x)^2}{2\log2}
+ -(\beta_\infty-o(1))\log x\right)
+\end{equation}
+uniformly as $x\to\infty$, and the exponent cannot be improved.
+\end{theorem}
+
+\begin{proof}
+In \eqref{eq:exact-factorization}, insert
+$P_{k+1}(t)\le M_{k+1}=\rho^{k+1}\e^{o(k)}$ from
+\Cref{lem:Mn}.  Apply \eqref{eq:algebra-identity} with
+$c=\log(\pi/\rho)$.  Since $y\in[1,2)$ and $H(y)\le1$, the mantissa contribution is
+bounded above, giving \eqref{eq:global-upper-o}.
+
+For sharpness choose $y=4/3$, so $t=1/3$.  The doubling orbit alternates between
+$1/3$ and $2/3$, and every sine factor equals $\rho$.  Thus
+$P_{k+1}(1/3)=\rho^{k+1}$ exactly.  Formula \eqref{eq:exact-factorization} and
+\eqref{eq:algebra-identity} then give
+\begin{equation}\label{eq:exact-max-ray}
+ |\Uhat(2^k\tfrac43)|
+ =C_\star
+ \exp\!\left(-\frac{(\log(2^k\tfrac43))^2}{2\log2}\right)
+ (2^k\tfrac43)^{-\beta_\infty},
+\end{equation}
+with the positive constant
+\[
+ C_\star=H(\tfrac43)
+ \exp\!\left(
+ \Phi_{\log(\pi/\rho)}(\log\tfrac43)
+ \right).
+\]
+This proves the matching lower limsup.
+\end{proof}
+
+The same exponent governs the largest local extrema.
+
+\begin{corollary}[Sharp envelope of the stationary values]\label{cor:extrema-envelope}
+For $E_n$ defined in \eqref{eq:En},
+\begin{equation}\label{eq:En-limsup}
+ \limsup_{n\to\infty}
+ \frac{
+ \log E_n+\dfrac{(\log n)^2}{2\log2}}
+ {\log n}
+ =-\beta_\infty.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The upper bound follows from \Cref{thm:envelope}, uniformly for $x\in[n,n+1]$.
+For the reverse bound, put $x_k=2^k(4/3)$ and $n_k=\lfloor x_k\rfloor$.  The unique
+extremum in $[n_k,n_k+1]$ has magnitude at least $|\Uhat(x_k)|$.  Apply
+\eqref{eq:exact-max-ray}; replacing $x_k$ by $n_k$ changes logarithms by $o(1)$.
+\end{proof}
+
+\begin{remark}
+This is a sharp \emph{limsup envelope}, not an asymptotic formula for every $E_n$.
+The sporadic rises visible in numerical plots are intrinsic: the binary orbit of the
+mantissa can spend unusually long intervals near favorable or unfavorable parts of the
+sine potential.
+\end{remark}
+
+\section{Absolute mean decay and a rigorous Ces\`aro gauge}\label{sec:cesaro}
+
+The original question asked for a positive analytic, eventually monotone $g$ such that
+\[
+ \frac1T\int_{T_0}^{T}\frac{|\Uhat(x)|}{g(x)}\dd x
+\]
+remains between two positive constants, or ideally tends to one.  The bounded version
+has a clean rigorous answer.
+
+\subsection{The Fouvry--Mauduit constant}
+
+Set
+\begin{equation}\label{eq:I1n}
+ I_1(n):=\int_0^1P_n(t)\dd t.
+\end{equation}
+Fouvry and Mauduit proved~\cite{fouvrymauduit1996} that there are constants
+$\kappa>0$ and $0<\lambda<1$ such that
+\begin{equation}\label{eq:FM}
+ I_1(n)=\kappa\lambda^n(1+o(1)).
+\end{equation}
+Aistleitner, Hofer, and Larcher gave the rigorous enclosure
+\begin{equation}\label{eq:lambda-rigorous}
+ 0.66130<\lambda<0.66135.
+\end{equation}
+A high-precision transfer-operator computation gives
+\begin{equation}\label{eq:lambda-numeric}
+ \lambda=0.661322602060565\ldots .
+\end{equation}
+Digits beyond \eqref{eq:lambda-rigorous} are numerical rather than claimed here as an
+interval-certified proof.
+
+The relevant transfer operator is
+\begin{equation}\label{eq:transfer-L1}
+ (\Lop f)(x)=\frac12\left[
+ \sin\!\left(\frac{\pi x}{2}\right)f\!\left(\frac x2\right)
+ +\cos\!\left(\frac{\pi x}{2}\right)f\!\left(\frac{x+1}{2}\right)
+ \right],\qquad 0\le x\le1.
+\end{equation}
+Indeed, $I_1(n)=\int_0^1\Lop^n\mathbf1(x)\dd x$, and $\lambda$ is the dominant
+eigenvalue of $\Lop$ on a suitable H\"older space.
+
+\subsection{The \texorpdfstring{$L^1$}{L1} exponent and the gauge}
+
+Define
+\begin{equation}\label{eq:beta1}
+ \beta_1:=\frac12+\frac{\log(\pi/\lambda)}{\log2}
+ =2.748070014871334\ldots
+\end{equation}
+and
+\begin{equation}\label{eq:g1}
+ g_1(x):=x^{-\beta_1}
+ \exp\!\left(-\frac{(\log x)^2}{2\log2}\right),\qquad x>0.
+\end{equation}
+
+\begin{theorem}[Bounded Ces\`aro normalization]\label{thm:cesaro-bounded}
+There exist constants $0<A<B<\infty$ and $X_0>0$ such that, for every $T\ge2X_0$,
+\begin{equation}\label{eq:cesaro-bounds}
+ A\le\frac1T\int_{X_0}^{T}
+ \frac{|\Uhat(x)|}{g_1(x)}\dd x\le B.
+\end{equation}
+Replacing $T$ by $T-X_0$ in the denominator does not change the conclusion.  Thus
+$g_1$ rigorously satisfies the weaker requirement in the original question.
+\end{theorem}
+
+\begin{proof}
+Let $x=2^ky$, $1\le y<2$, $t=y-1$, and $n=k+1$.  Apply
+\eqref{eq:algebra-identity} with
+$c=\log(\pi/\lambda)$.  The choice \eqref{eq:beta1} makes the powers of $x$ cancel,
+and the exact factorization becomes
+\begin{equation}\label{eq:ratio-exact-L1}
+ \frac{|\Uhat(2^ky)|}{g_1(2^ky)}
+ =W_1(y)\frac{P_n(t)}{\lambda^n},
+\end{equation}
+where
+\begin{equation}\label{eq:W1}
+ W_1(y):=H(y)
+ \exp\!\left(\Phi_{\log(\pi/\lambda)}(\log y)\right)
+ =H(y)\frac{\lambda}{\pi}
+ y^{\beta_1-1}
+ \exp\!\left(\frac{(\log y)^2}{2\log2}\right).
+\end{equation}
+The function $W_1$ is bounded on $[1,2]$ and has a positive minimum on
+$[1,3/2]$.
+
+Let
+\[
+ J_k:=\int_{2^k}^{2^{k+1}}
+ \frac{|\Uhat(x)|}{g_1(x)}\dd x.
+\]
+After $x=2^ky$,
+\begin{equation}\label{eq:Jk}
+ J_k=2^k\lambda^{-n}
+ \int_0^1W_1(1+t)P_n(t)\dd t.
+\end{equation}
+The symmetry $P_n(1-t)=P_n(t)$ gives
+$\int_0^{1/2}P_n=I_1(n)/2$.  Hence the lower and upper bounds for $W_1$, together
+with \eqref{eq:FM}, imply
+\begin{equation}\label{eq:Jk-asymp-bounds}
+ c\,2^k\le J_k\le C\,2^k
+\end{equation}
+for all sufficiently large $k$, with fixed $c,C>0$.
+
+If $2^K\le T<2^{K+1}$, the sum of complete shells and the current partial shell is at
+most a constant times $2^K$, hence at most a constant times $T$.  For the lower bound,
+the complete preceding shell contributes at least $c2^{K-1}$, whereas
+$T<2^{K+1}$.  This proves \eqref{eq:cesaro-bounds}.
+\end{proof}
+
+\subsection{Analyticity and monotonicity properties of the gauge}
+
+\begin{proposition}[Eventual alternating derivatives]\label{prop:g-derivatives}
+The function $g_1$ is positive and real analytic on $(0,\infty)$.  For each fixed
+$m\ge0$, there exists $X_m$ such that
+\begin{equation}\label{eq:derivative-sign}
+ (-1)^m g_1^{(m)}(x)>0\qquad(x\ge X_m).
+\end{equation}
+In particular $g_1$ is eventually strictly decreasing, and every fixed derivative is
+eventually monotone.
+\end{proposition}
+
+\begin{proof}
+Put
+\[
+ u(x):=\frac{\log x}{\log2}+\beta_1.
+\]
+Then $g_1'(x)=-x^{-1}u(x)g_1(x)$.  Induction using
+$\frac{\dd}{\dd x}=x^{-1}\frac{\dd}{\dd\log x}$ gives, for fixed $m$,
+\begin{equation}\label{eq:derivative-asymp}
+ \frac{g_1^{(m)}(x)}{g_1(x)}
+ =x^{-m}\left((-1)^m u(x)^m+\bigO_m(u(x)^{m-1})\right).
+\end{equation}
+The leading term controls the sign once $x$ is large enough.
+\end{proof}
+
+The proposition gives eventual monotonicity separately for every derivative order.  It
+does not assert complete monotonicity on one common half-line independent of $m$.
+
+\subsection{Why a simple normalization need not converge for every \texorpdfstring{$T$}{T}}
+
+The bounded result is elementary once \eqref{eq:FM} is known.  A finer spectral
+statement explains the remaining obstruction to a single all-$T$ limit.
+
+On a H\"older space, the operator \eqref{eq:transfer-L1} has a positive eigenfunction
+$h$, a positive eigenmeasure $\nu$, and a spectral gap.  Normalize
+$\Lop h=\lambda h$, $\Lop^*\nu=\lambda\nu$, and $\nu(h)=1$.  Then, for H\"older $q$,
+\begin{equation}\label{eq:spectral-gap}
+ \lambda^{-n}\Lop^nq
+ =h\,\nu(q)+\bigO(\theta^n\|q\|_{\mathrm{Hol}})
+ \qquad(0<\theta<1).
+\end{equation}
+It follows from \eqref{eq:Jk} that
+\begin{equation}\label{eq:Jk-limit}
+ \frac{J_k}{2^k}\longrightarrow C_1>0.
+\end{equation}
+After multiplying $g_1$ by $C_1$, the Ces\`aro average therefore tends to one along the
+dyadic endpoints $T=2^K$.
+
+For $T=2^Ky$ with fixed $1<y<2$, however, the newest partial shell has the same order as
+all preceding shells together.  At continuity points of the limiting measure one obtains
+a profile
+\begin{equation}\label{eq:mantissa-profile}
+ \lim_{K\to\infty}
+ \frac1{2^Ky}\int_{1}^{2^Ky}
+ \frac{|\Uhat(x)|}{C_1g_1(x)}\dd x
+ =\frac{1+D(y)/C_1}{y},
+\end{equation}
+where
+\begin{equation}\label{eq:D-profile}
+ D(y)=\left(\int_0^1h(x)\dd x\right)
+ \nu\!\left(W_1(1+\cdot)\mathbf1_{[0,y-1]}\right),
+ \qquad D(2)=C_1.
+\end{equation}
+The right side of \eqref{eq:mantissa-profile} is a dyadic-mantissa profile rather than a
+constant.
+
+There is a conceptual reason.  The invariant equilibrium measure $\mu=h\nu$ for the
+potential $\log|\sin\pi t|$ is singular.  Indeed, if it were absolutely continuous, the
+uniqueness of the absolutely continuous invariant probability for the doubling map would
+force it to be Lebesgue measure.  But Lebesgue measure gives the normalized pressure
+value $-\log2$, whereas \eqref{eq:lambda-rigorous} gives
+$\log\lambda>-\log2$.  Since $h$ is positive and continuous, $\nu$ is singular as well.
+Thus the cumulative function in \eqref{eq:D-profile} is not linear.
+
+The same argument applies if $g_1$ is multiplied by a positive continuous function of
+$\{\log_2x\}$: this merely reweights the singular measure by a continuous density and
+cannot turn it into Lebesgue measure.  Consequently, within this natural log-normal
+power class (even allowing smooth log-periodic corrections), one should expect a
+nonconstant dyadic profile rather than the full limit in the strongest version of the
+original question.  This does not rule out deliberately scale-dependent, more exotic
+gauges outside that class.
+
+\section{A unified \texorpdfstring{$L^p$}{Lp} spectrum}\label{sec:Lp}
+
+The preceding rates are instances of one pressure family.  For $p>0$, define
+\begin{equation}\label{eq:Ip}
+ I_p(n):=\int_0^1P_n(t)^p\dd t
+\end{equation}
+and the weighted transfer operator
+\begin{equation}\label{eq:Lp-op}
+ (\Lop_p f)(x):=\frac12\left[
+ \sin^p\!\left(\frac{\pi x}{2}\right)f\!\left(\frac x2\right)
+ +\cos^p\!\left(\frac{\pi x}{2}\right)f\!\left(\frac{x+1}{2}\right)
+ \right].
+\end{equation}
+Let $\lambda_p$ be its dominant eigenvalue.  Then
+\begin{equation}\label{eq:Ip-asymp}
+ I_p(n)=\kappa_p\lambda_p^n(1+o(1)),
+ \qquad \kappa_p>0,
+\end{equation}
+under the standard Perron--Frobenius theorem on a H\"older space.  Put
+\begin{equation}\label{eq:rp-betap}
+ r_p:=\lambda_p^{1/p},
+ \qquad
+ \beta_p:=\frac12+\frac{\log(\pi/r_p)}{\log2}.
+\end{equation}
+
+\begin{theorem}[$L^p$ shell normalization]\label{thm:Lp-shell}
+For every fixed $p>0$, with
+\[
+ g_p(x):=x^{-\beta_p}
+ \exp\!\left(-\frac{(\log x)^2}{2\log2}\right),
+\]
+there are constants $0<c_p<C_p<\infty$ such that, for all sufficiently large $k$,
+\begin{equation}\label{eq:Lp-shell-bound}
+ c_p2^k\le
+ \int_{2^k}^{2^{k+1}}
+ \left|\frac{\Uhat(x)}{g_p(x)}\right|^p\dd x
+ \le C_p2^k.
+\end{equation}
+With the spectral asymptotic \eqref{eq:Ip-asymp}, the shell integral divided by $2^k$
+has a positive finite limit after a constant rescaling of $g_p$.
+\end{theorem}
+
+\begin{proof}
+Repeat the proof of \Cref{thm:cesaro-bounded}, replacing $\lambda$ by
+$r_p=\lambda_p^{1/p}$ and raising the exact ratio to the $p$th power.  The bounded
+mantissa factor is positive on $[1,3/2]$, and symmetry again supplies half of the
+unweighted integral on that interval.
+\end{proof}
+
+\subsection{Three exact or limiting cases}
+
+\paragraph{The $L^1$ case.}
+Here $\lambda_1=\lambda$, so $\beta_1$ is exactly \eqref{eq:beta1}.
+
+\paragraph{The $L^2$ case.}
+There is an elementary identity:
+\begin{equation}\label{eq:L2-exact}
+ I_2(n)=2^{-n}.
+\end{equation}
+Indeed, $\Lop_2\mathbf1=\tfrac12\mathbf1$ because
+$\sin^2u+\cos^2u=1$.  Hence $\lambda_2=1/2$,
+$r_2=1/\sqrt2$, and
+\begin{equation}\label{eq:beta2}
+ \beta_2
+ =\frac12+\frac{\log(\pi\sqrt2)}{\log2}
+ =\frac{\log(2\pi)}{\log2}
+ =2.651496129472318798\ldots .
+\end{equation}
+This is precisely the power in the earlier draft.
+
+\paragraph{The limits $p\downarrow0$ and $p\to\infty$.}
+The pressure variational principle is
+\begin{equation}\label{eq:pressure}
+ \log\lambda_p
+ =\sup_{\mu\in\mathcal M_\T}
+ \left(h_\mu(\T)-\log2
+ +p\int\log|\sin\pi t|\dd\mu(t)\right).
+\end{equation}
+At $p=0$ the equilibrium state is Lebesgue measure, and differentiation of pressure gives
+\[
+ \lim_{p\downarrow0}r_p
+ =\exp\!\left(\int_0^1\log|\sin\pi t|\dd t\right)=\frac12.
+\]
+Thus $\lim_{p\downarrow0}\beta_p=\beta_{\mathrm{typ}}$.  At zero temperature,
+\eqref{eq:pressure} and \Cref{lem:max-average} give
+\[
+ \lim_{p\to\infty}r_p=\rho=\frac{\sqrt3}{2},
+ \qquad
+ \lim_{p\to\infty}\beta_p=\beta_\infty.
+\]
+The four headline rates are therefore not unrelated formulas; they are points on one
+thermodynamic spectrum.
+
+\section{Numerical evaluation of the mean constant}\label{sec:numerics}
+
+The rigorous interval \eqref{eq:lambda-rigorous} is sufficient for every qualitative and
+power-law conclusion above.  The extra digits in \eqref{eq:lambda-numeric} can be
+reproduced very efficiently because the two inverse branches in \eqref{eq:transfer-L1}
+contract by $1/2$.
+
+Choose the Chebyshev--Lobatto nodes
+\begin{equation}\label{eq:cheb-nodes}
+ x_j=\frac{1-\cos(j\pi/N)}2,
+ \qquad 0\le j\le N.
+\end{equation}
+Represent a function by its values at these nodes, evaluate it at $x_j/2$ and
+$(x_j+1)/2$ using barycentric interpolation, and form the $(N+1)\times(N+1)$ matrix
+corresponding to \eqref{eq:transfer-L1}.  Its Perron eigenvalue converges spectrally fast
+in this problem.  A typical computation gives:
+
+\begin{center}
+\begin{tabular}{@{}rr@{}}
+\toprule
+$N$ & dominant collocation eigenvalue \\
+\midrule
+$8$  & $0.6613226020798928$ \\
+$12$ & $0.6613226020605659$ \\
+$16$ & $0.6613226020605659$ \\
+$24$ & $0.6613226020605650$ \\
+$32$ & $0.6613226020605658$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+A compact implementation is conceptually as follows.
+
+\begin{lstlisting}[style=pseudo,caption={Chebyshev collocation for the Perron eigenvalue}]
+x[j] = (1 - cos(pi*j/N))/2,  j = 0,...,N
+A = barycentric_interpolation_matrix(x, x/2)
+B = barycentric_interpolation_matrix(x, (x+1)/2)
+L = 0.5 * (diag(sin(pi*x/2))*A + diag(cos(pi*x/2))*B)
+lambda_N = largest_real_eigenvalue(L)
+\end{lstlisting}
+
+For a fully certified decimal expansion, one may combine a high-precision approximate
+eigenfunction with a Collatz--Wielandt enclosure:
+if $v>0$ pointwise, then
+\begin{equation}\label{eq:CW}
+ \inf_x\frac{\Lop v(x)}{v(x)}
+ \le\lambda\le
+ \sup_x\frac{\Lop v(x)}{v(x)}.
+\end{equation}
+Interval arithmetic and a Chebyshev remainder bound can turn \eqref{eq:CW} into a
+machine-checkable enclosure.
+
+\section{Consequences and comparison with the earlier draft}\label{sec:comparison}
+
+The rigorous picture can be summarized in a few precise corrections.
+
+\subsection{The leading quadratic logarithm was right}
+
+Every rate contains
+\[
+ -\frac{(\log x)^2}{2\log2}.
+\]
+It comes exactly from
+$2^{-k(k+1)/2}$ with $k\sim\log_2x$.  Thus ``log-normal scale'' is an accurate
+first description.
+
+\subsection{The next power depends on the notion of amplitude}
+
+There is no universal next coefficient.  The relevant exponents are
+\begin{align*}
+ \beta_\infty&=2.359014879111740\ldots
+ &&\text{sharp global/extremal envelope},\\
+ \beta_2&=2.651496129472318\ldots
+ &&\text{root-mean-square amplitude},\\
+ \beta_1&=2.748070014871334\ldots
+ &&\text{absolute/Ces\`aro mean},\\
+ \beta_{\mathrm{typ}}&=3.151496129472318\ldots
+ &&\text{almost-everywhere pointwise amplitude}.
+\end{align*}
+The old coefficient $\log(2\pi)/\log2$ is exactly $\beta_2$.
+
+\subsection{The missing correction is not \texorpdfstring{$\log\log x$}{log log x}}
+
+For typical rays, the exact deterministic algebra supplies an additional
+$-\tfrac12\log x$ relative to the old proposed pointwise coefficient.  After that, the
+remainder is the lacunary sum $S_n(t)$, whose sharp metric size is
+\[
+ \sqrt{\log x\,\log\log\log x},
+\]
+not $\log\log x$.  Consequently a fixed power of $\log x$ cannot flatten the amplitude.
+
+\subsection{Constant pointwise amplitude is impossible}
+
+There are two independent obstructions:
+\begin{itemize}
+\item exact zeros at every nonzero integer;
+\item unbounded positive lacunary excursions even after restriction to almost every dyadic ray.
+\end{itemize}
+The correct replacement is a hierarchy: sharp limsup envelope, metric pointwise law,
+$L^p$ shell laws, and Ces\`aro bounds.
+
+\subsection{The bounded Ces\`aro problem is solved}
+
+The elementary analytic gauge
+\[
+ g_1(x)=x^{-2.748070014871334\ldots}
+ \exp\!\left(-\frac{(\log x)^2}{2\log2}\right)
+\]
+satisfies the two-sided bound \eqref{eq:cesaro-bounds}; after constant normalization,
+its averages converge to one at dyadic endpoints.  For arbitrary endpoints, a singular
+dyadic-mantissa profile naturally remains.
+
+\section{Formalization-ready decomposition}\label{sec:formalization}
+
+The argument separates into modules of very different formal difficulty.  This is useful
+for extending the existing Lean development.
+
+\begin{enumerate}
+\item \textbf{Elementary analytic module.}
+Formalize normal convergence of \eqref{eq:def-U}, the scaling law
+\eqref{eq:scaling}, the collected zero product \eqref{eq:weierstrass-collected}, and the
+unique-critical-point proof \Cref{prop:critical}.
+
+\item \textbf{Exact dyadic algebra.}
+The factorization \Cref{thm:factorization} and identity
+\eqref{eq:algebra-identity} are finite-product manipulations plus a tail product.  This
+is the natural first target and yields an exact theorem with no asymptotic machinery.
+
+\item \textbf{Ergodic optimization.}
+The sharp envelope reduces to subadditivity, empirical measures, and the elementary
+inequality $z^3(1-z)\le27/256$.  The only substantial library component is compactness of
+probability measures and the variational passage for an upper-semicontinuous potential.
+
+\item \textbf{Metric input.}
+The Birkhoff theorem gives the typical exponent.  The sharp one-sided LIL constant $\pi$ should
+initially be imported as an external theorem corresponding to Aistleitner--Hofer--Larcher,
+rather than reproved inside the Fabius development.
+
+\item \textbf{Mean input.}
+Import the Fouvry--Mauduit asymptotic \eqref{eq:FM} as a named hypothesis/theorem.
+Once available, the proof of \Cref{thm:cesaro-bounded} is elementary shell bookkeeping.
+The exact $L^2$ identity \eqref{eq:L2-exact} is especially attractive for immediate
+formalization.
+
+\item \textbf{Transfer-operator refinement.}
+The dyadic endpoint limit and singular profile require Perron--Frobenius theory on a
+H\"older or bounded-variation space.  These can be isolated from the core decay theorems
+and added later.
+\end{enumerate}
+
+\section{Conclusion}
+
+The Fourier transform of Rvachev's up-function has a universal quadratic logarithmic
+scale but no unique finer decay rate.  The exact factorization
+\[
+ |\Uhat(2^ky)|
+ =2^{-k(k+1)/2}(\pi y)^{-(k+1)}H(y)
+ \prod_{j=0}^{k}|\sin(\pi2^j(y-1))|
+\]
+shows why: after the deterministic triangular denominator is removed, one is left with a
+lacunary multiplicative cocycle for the doubling map.
+
+That cocycle has four natural summaries.  Its maximum ergodic mean is
+$\sqrt3/2$, producing the sharp extremal exponent $\beta_\infty$.  Its almost-sure
+geometric mean is $1/2$, producing $\beta_{\mathrm{typ}}$ together with sharp positive
+iterated-logarithm excursions.  Its $L^1$ spectral radius is the Fouvry--Mauduit constant
+$\lambda$, producing the Ces\`aro exponent $\beta_1$.  Its $L^2$ mean is exactly
+$1/\sqrt2$, producing the exponent that appeared, without the correct interpretation,
+in the earlier draft.
+
+Thus the right answer is more structured than a single corrected equivalent.  The
+transform decays on the log-normal scale
+$\exp(- (\log x)^2/(2\log2))$, but its power correction records whether one asks for a
+global envelope, a typical point, an absolute mean, or a root-mean-square mean.  Once
+those notions are kept separate, the apparent irregularity is not noise: it is the
+visible signature of dyadic dynamics.
+
+\begin{thebibliography}{99}
+
+\bibitem{arias1982}
+J.~Arias de Reyna,
+\emph{Definici\'on y estudio de una funci\'on indefinidamente diferenciable de soporte compacto},
+Rev. Real Acad. Cienc. Exactas F\'is. Nat. (Madrid) \textbf{76} (1982), 21--38;
+English translation, \emph{An infinitely differentiable function with compact support:
+definition and properties}, arXiv:1702.05442 (2017),
+\url{https://arxiv.org/abs/1702.05442}.
+
+\bibitem{ahl2017}
+C.~Aistleitner, R.~Hofer, and G.~Larcher,
+\emph{On evil Kronecker sequences and lacunary trigonometric products},
+Ann. Inst. Fourier (Grenoble) \textbf{67} (2017), no.~2, 637--687;
+preprint title \emph{On parametric Thue--Morse sequences and lacunary trigonometric products},
+arXiv:1502.06738,
+\url{https://arxiv.org/abs/1502.06738}.
+
+\bibitem{fouvrymauduit1996}
+\'E.~Fouvry and C.~Mauduit,
+\emph{Sommes des chiffres et nombres presque premiers},
+Math. Ann. \textbf{305} (1996), 571--599.
+
+\bibitem{baladi2000}
+V.~Baladi,
+\emph{Positive Transfer Operators and Decay of Correlations},
+Advanced Series in Nonlinear Dynamics, vol.~16, World Scientific, 2000.
+
+\bibitem{ruelle1978}
+D.~Ruelle,
+\emph{Thermodynamic Formalism: The Mathematical Structures of Classical Equilibrium
+Statistical Mechanics},
+Addison--Wesley, 1978; second edition, Cambridge University Press, 2004.
+
+\bibitem{walters1982}
+P.~Walters,
+\emph{An Introduction to Ergodic Theory},
+Graduate Texts in Mathematics, vol.~79, Springer, 1982.
+
+\bibitem{reshetnikov-question}
+V.~Reshetnikov,
+\emph{Asymptotic decay rate of an infinite product of sinc functions},
+Mathematics Stack Exchange question 2745497 (2018),
+\url{https://math.stackexchange.com/questions/2745497/asymptotic-decay-rate-of-an-infinite-product-of-sinc-functions}.
+
+\bibitem{proveit-draft}
+V.~Reshetnikov,
+\emph{Decay rate conjecture}, draft in the \texttt{ProveIt} repository,
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/Decay%20rate%20conjecture/Decay%20rate%20conjecture.tex}.
+
+\end{thebibliography}
+
+\end{document}

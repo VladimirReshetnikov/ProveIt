@@ -1,4 +1,5 @@
 import FabiusFunction.FractionalVolterraCalculus
+import FabiusFunction.FractionalVolterraSemigroup
 import FabiusFunction.GlobalExtension
 
 /-!
@@ -7,7 +8,9 @@ import FabiusFunction.GlobalExtension
 The generic order-raising and affine-covariance laws specialize to the exact
 fractional dyadic shift of the signed and bounded Fabius functions and to the
 fractional bridge from Rvachev's compactly supported function to the bounded
-Fabius function.
+Fabius function.  The causal Rvachev fractional primitive is also packaged
+with its support-truncated integral, integer-order bridge, and positive-order
+semigroup law.
 -/
 
 open scoped Interval Real
@@ -16,6 +19,59 @@ open MeasureTheory Set
 namespace Fabius
 
 set_option autoImplicit false
+
+/-- The causal positive-order primitive of Rvachev's compactly supported
+function, based at its left support endpoint `-1`.
+
+The definition is total in the order and endpoint.  Its classical
+Riemann--Liouville properties below assume positive order and an endpoint at
+or to the right of `-1`. -/
+noncomputable def rvachevFractionalPrimitive
+    (F : BoundedFabius) (beta x : ℝ) : ℝ :=
+  fractionalVolterra beta (-1) (rvachevUp F) x
+
+/-- The causal Rvachev fractional primitive is exactly the support-truncated
+integral used in the frontier report.  The endpoint `x = -1` is included. -/
+theorem rvachevFractionalPrimitive_eq_intervalIntegral_min
+    (F : BoundedFabius) (hF : IsFabius F)
+    {beta x : ℝ} (hbeta : 0 < beta) (hx : -1 ≤ x) :
+    rvachevFractionalPrimitive F beta x =
+      ∫ t in (-1 : ℝ)..min x 1,
+        ((x - t) ^ (beta - 1) / Real.Gamma beta) * rvachevUp F t := by
+  simpa only [rvachevFractionalPrimitive, smul_eq_mul] using
+    (fractionalVolterra_eq_intervalIntegral_min_of_eq_zero
+      (E := ℝ) (α := beta) (a := (-1 : ℝ)) (b := 1) (x := x)
+      hbeta (by norm_num) hx
+      (rvachev_contDiff F hF).continuous.continuousOn
+      (by
+        intro t ht
+        simpa using rvachevUp_eq_zero_of_one_le F hF ht.1.le))
+
+/-- At every positive natural order, the causal Rvachev fractional primitive
+is the existing factorial-normalized Volterra primitive. -/
+theorem rvachevFractionalPrimitive_nat_succ
+    (F : BoundedFabius) (n : ℕ) (x : ℝ) :
+    rvachevFractionalPrimitive F ((n + 1 : ℕ) : ℝ) x =
+      normalizedVolterra (n + 1) (-1) (rvachevUp F) x := by
+  simpa only [rvachevFractionalPrimitive] using
+    (fractionalVolterra_nat_succ
+      (E := ℝ) n (-1) (rvachevUp F) x)
+
+/-- The support-truncated Rvachev fractional primitives inherit the exact
+positive-order Volterra semigroup law. -/
+theorem rvachevFractionalPrimitive_add
+    (F : BoundedFabius) (hF : IsFabius F)
+    {alpha beta x : ℝ} (halpha : 0 < alpha) (hbeta : 0 < beta)
+    (hx : -1 ≤ x) :
+    rvachevFractionalPrimitive F (alpha + beta) x =
+      fractionalVolterra alpha (-1)
+        (rvachevFractionalPrimitive F beta) x := by
+  change fractionalVolterra (alpha + beta) (-1) (rvachevUp F) x =
+    fractionalVolterra alpha (-1)
+      (fun t => fractionalVolterra beta (-1) (rvachevUp F) t) x
+  exact fractionalVolterra_add
+    (E := ℝ) halpha hbeta hx
+    (rvachev_contDiff F hF).continuous.continuousOn
 
 /-- On a nonnegative endpoint, raising the fractional order of the signed
 Fabius extension by one is the same as halving the endpoint and multiplying

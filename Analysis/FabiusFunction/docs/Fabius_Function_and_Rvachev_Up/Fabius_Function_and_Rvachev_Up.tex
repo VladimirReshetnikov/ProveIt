@@ -121,9 +121,13 @@
 \large Exact arithmetic, probability, Fourier analysis, and corrected sharp asymptotics}
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
-\date{Integrated repository snapshot: 28 August 2026\\
-\small mainline checkpoint \nolinkurl{ff66f0ed5}; foundational addendum
-\nolinkurl{216724856}}
+\date{Integrated repository snapshot: 29 August 2026\\
+\small Historical Cauchy/complex-product checkpoint \nolinkurl{a81a13b46};
+CDF/implicit checkpoint \nolinkurl{e6f535e5d};
+affine-law checkpoint \nolinkurl{d312c0603};\\
+\small fractional-cutoff checkpoint \nolinkurl{149332f9d};
+inverse-layer-cake checkpoint \nolinkurl{37eab3c56};
+current-tree affine Cauchy-power tranche}
 
 \begin{document}
 \maketitle
@@ -149,7 +153,14 @@ respect to Lebesgue measure and has null singletons, and arbitrary signed real w
 exact min/max interval ranges and topological supports.  A named geometric-uniform
 specialization supplies the weights \((1-q)q^n\), their series and law, affine self-similarity
 and reflection, absolute continuity and null singletons for \(|q|<1\), support equal to the
-series range for \(|q|<1\), and exact unit-interval support for \(0\le q<1\); a support-free quantile
+series range for \(|q|<1\), exact unit-interval support for \(0\le q<1\), and uniqueness
+among all probability laws satisfying the same affine independent-copy equation.  The
+uniqueness theorem includes \(q=0\) and negative \(q\), and assumes no support, density, or
+moment condition.  Its named CDF is
+continuous and reflection-symmetric for \(|q|<1\), has the exact exterior tails for
+\(0\le q<1\), and, for \(0<q<1\), is \(C^\infty\) with an explicit nonnegative,
+compactly supported \(C^\infty\) Radon--Nikodym density; the half-base CDF and density recover
+the bounded Fabius function and the affine Rvachev bump exactly.  A support-free quantile
 theorem transports uniform measure through
 the clamped Fabius inverse and gives Banach-valued quantile substitution.  The analytic part develops the
 formal sinc and cosine products, Fourier inversion and Poisson summation, exact moment
@@ -158,8 +169,10 @@ values, Thue--Morse formulas for arbitrary dyadic arguments, executable binary r
 two-adic information, exact half-base values, and denominator-free arbitrary-base
 $q$-binomial and geometric-interpolation identities present in Lean.  A compact-rectangle
 inverse-pair theorem integrates arbitrary absolutely-continuous outer functions without a
-clock-measurability hypothesis, while finite formal-series filters package arbitrary-node
-moment exactness and the complete denominator-free Gaussian residual on geometric nodes.
+clock-measurability hypothesis.  Finite formal-series filters package arbitrary-node
+moment exactness and the complete denominator-free Gaussian residual on geometric nodes;
+their analytic companion gives the same head--tail law for unconditionally summable
+weighted sampled coefficient series, without a convergence obligation at zero-weight nodes.
 
 Repeated integration is developed once, before its Fabius specialization, as an oriented
 normalized Volterra calculus whose algebra takes values in an arbitrary real normed space.
@@ -170,14 +183,18 @@ the signed extension and every natural-monomial weight.  A separate Gamma-normal
 operator supplies the positive-real Riemann--Liouville kernel over arbitrary real normed
 spaces on ordered endpoints and agrees exactly with the normalized integer operator at
 every positive natural order.  For continuous inputs in a complete target, two positive
-real orders compose additively on every ordered compact interval.
+real orders compose additively on every ordered compact interval.  Positive affine
+covariance, Gamma-normalized order raising from an interior right derivative, and the first
+exact fractional shifts of the signed, bounded, and folded Fabius functions are also proved
+on their stated ordered domains.
 
 The endpoint chapters report only the negative-Laplace decompositions, periodic correction,
 lower-Lambert formulas, saddle estimates, and correction terms that have named proved
 counterparts in the formal source.  Plausible extensions, numerical observations,
-unformalized analytic generic-$q$ extensions, and other arguments not yet represented by an exact
-Lean theorem are kept in the companion volume under
-\path{docs/non-formalized-research-frontiers/}, not in this primary exposition.
+conditionally convergent boundary filters, sinc-specific generic-$q$ acceleration,
+complex-order and iterated fractional formulas, and other arguments not yet represented by
+an exact Lean theorem are kept in the companion volume under
+\path{docs/semi-formalized-research-frontiers/}, not in this primary exposition.
 \end{abstract}
 
 \tableofcontents
@@ -880,7 +897,11 @@ and
 \lean{ProbabilityRepresentation.weightedSumDistribution_eq_geometricUniformDistribution_one_half}
 identify the dyadic series and law with the named geometric specialization at \(q=1/2\).
 Its exact topological support is recorded by
-\lean{ProbabilityRepresentation.weightedSumDistribution_support_eq_Icc}.
+\lean{ProbabilityRepresentation.weightedSumDistribution_support_eq_Icc}.  The same
+\path{ProbabilityRepresentation.lean} ownership now includes the almost-everywhere carried
+support and restriction identity
+\lean{ProbabilityRepresentation.ae_weightedSumDistribution_mem_Icc} and
+\lean{ProbabilityRepresentation.weightedSumDistribution_restrict_Icc}.
 \end{proof}
 
 \subsection{Generic weighted laws and support-free quantile transport}
@@ -1178,15 +1199,54 @@ Then
 If \(\Psi(0)=0\), \(\psi\) is continuous on \([0,1]\), and
 \(\Psi'(x)=\psi(x)\) pointwise there, the inner primitive on the left may be
 replaced by \(\Psi(I(u))\).
+If instead \(\Psi:\R\to\R\) is merely absolutely continuous on \([0,1]\),
+the same replacement is valid with \(\psi=\Psi'\) almost everywhere, for every
+real or complex interval-integrable weight \(\phi\); no separate integrability
+hypothesis on the right-hand side is needed.
 \end{theorem}
 
+The arbitrary-absolutely-continuous Fabius form is
+\lean{intervalIntegral_mul_comp_fabiusInv_of_absolutelyContinuousOnInterval}.
 The explicit-primitive and pointwise-\(C^1\) forms are respectively
 \lean{intervalIntegral_smul_intervalIntegral_fabiusInv} and
 \lean{intervalIntegral_smul_comp_fabiusInv} in \path{InverseLayerCake.lean}.
-Their generic compact-rectangle versions are
+
+The generic theorem does not require the primitive to vanish at the left endpoint.
+
+\begin{theorem}[Absolutely-continuous inverse layer cake on a rectangle]
+\label{thm:ac-weighted-inverse-layer-cake}
+Let \(a\le b\) and \(c\le d\).  Suppose \(C,Q:\R\to\R\) map
+\([a,b]\) into \([c,d]\) and \([c,d]\) into \([a,b]\), respectively, and
+\[
+ C(x)<u\quad\Longleftrightarrow\quad x<Q(u)
+ \qquad(x\in[a,b],\ u\in[c,d]).
+\]
+For \(\mathbb K=\R\) or \(\C\), let
+\(\phi:[c,d]\to\mathbb K\) be integrable and let
+\(\Psi:\R\to\R\) be absolutely continuous on \([a,b]\).  Then
+\begin{equation}
+ \int_c^d\phi(u)\bigl(\Psi(Q(u))-\Psi(a)\bigr)\dd u
+ =\int_a^b\Psi'(x)\left(\int_{C(x)}^d\phi(u)\dd u\right)\dd x.
+ \label{eq:ac-weighted-inverse-layer-cake}
+\end{equation}
+When \(\Psi(a)=0\), the subtraction on the left disappears.  No measurability
+hypothesis is imposed on either clock, and equality is allowed in either endpoint
+pair.  Values of the clocks outside the two displayed intervals play no role.
+\end{theorem}
+
+The order-theoretic engine is
+\lean{galoisConnection_Icc_restrict_of_lt_iff_lt}: the strict order equivalence
+makes the two interval restrictions a Galois connection and hence monotone.  A
+canonical clamped extension of the restricted inverse is therefore measurable.
+Consequently, the generic explicit-primitive and pointwise-\(C^1\) theorems
 \lean{intervalIntegral_smul_intervalIntegral_of_lt_iff_lt} and
-\lean{intervalIntegral_smul_comp_of_lt_iff_lt}; all four use the strict order
-equivalence \(F(x)<u\Longleftrightarrow x<I(u)\).  The reusable arbitrary-s-finite-measure
+\lean{intervalIntegral_smul_comp_of_lt_iff_lt} no longer assume clock
+measurability.  The subtraction and normalized forms of
+\eqref{eq:ac-weighted-inverse-layer-cake} are
+\lean{intervalIntegral_mul_comp_sub_of_lt_iff_lt_of_absolutelyContinuousOnInterval}
+and
+\lean{intervalIntegral_mul_comp_of_lt_iff_lt_of_absolutelyContinuousOnInterval}.
+The reusable arbitrary-s-finite-measure
 engine is \lean{integral_smul_setIntegral_subgraph} in
 \path{SubgraphFubini.lean}.  Finally,
 \lean{intervalIntegral_mul_fabiusInv_eq} is the real weighted-area specialization;
@@ -1214,6 +1274,13 @@ If \(A,B:\R\to\R\), with \(A\) absolutely continuous on \([a,b]\) and
  +\int_c^d A(Q(u))B'(u)\dd u
  =A(b)B(d)-A(a)B(c).                                      \label{eq:ac-inverse-pair}
 \end{equation}
+Moreover, every \(y\in[a,b]\) cuts out the smaller inverse rectangle
+\([a,y]\times[c,C(y)]\), and
+\begin{equation}
+ \int_a^y A'(x)B(C(x))\dd x
+ +\int_c^{C(y)} A(Q(u))B'(u)\dd u
+ =A(y)B(C(y))-A(a)B(c).                                   \label{eq:ac-inverse-pair-to}
+\end{equation}
 No measurability, continuity, or differentiability assumption is imposed on
 \(C\) or \(Q\).  The strict-order equivalence forces both restrictions to be
 monotone; canonical clamped extensions are then measurable.  Values of the
@@ -1223,9 +1290,10 @@ reversed endpoints require swapping the corresponding interval and its order
 data first.
 \end{theorem}
 
-This is
-\lean{intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_of_lt_iff_lt} in
-\path{InversePairIntegral.lean}.  Its proof combines
+The complete and variable-upper statements are, respectively,
+\lean{intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_of_lt_iff_lt} and
+\lean{intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_to_of_lt_iff_lt} in
+\path{InversePairIntegral.lean}.  Their proof combines
 \lean{intervalIntegral_smul_intervalIntegral_of_lt_iff_lt} with the
 fundamental theorem for absolutely-continuous functions; no derivative or
 Jacobian formula for the clocks enters.
@@ -1239,20 +1307,33 @@ For real functions \(A,B:\R\to\R\) that are absolutely continuous on
  +\int_0^1 A(I(u))B'(u)\dd u
  =A(1)B(1)-A(0)B(0).                                      \label{eq:fabius-ac-inverse-pair}
 \end{equation}
+For every \(y\in[0,1]\), the corresponding variable-upper identity is
+\begin{equation}
+ \int_0^y A'(x)B(F(x))\dd x
+ +\int_0^{F(y)} A(I(u))B'(u)\dd u
+ =A(y)B(F(y))-A(0)B(0).                                   \label{eq:fabius-ac-inverse-pair-to}
+\end{equation}
 In particular, taking both outer functions to be the identity gives the
 inverse-graph area identity
 \begin{equation}
  \int_0^1F(x)\dd x+\int_0^1I(u)\dd u=1.                   \label{eq:fabius-inverse-area-sum}
 \end{equation}
+At a variable inverse endpoint \(u\in[0,1]\), the same specialization gives
+\begin{equation}
+ \int_0^u I(v)\dd v
+ =uI(u)-\int_0^{I(u)}F(x)\dd x.                            \label{eq:fabius-inverse-area-to}
+\end{equation}
 \end{corollary}
 
-The two displayed statements are exactly
+The complete and variable-upper two-function statements are exactly
 \lean{intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv} and
-\lean{intervalIntegral_fabiusReal_add_fabiusInv_eq_one} in
-\path{InversePairIntegral.lean}.  They are full-interval first-order
-identities.  Variable-upper-endpoint, higher-order, improper-integral,
-fractional-power, and complex-Mellin extensions remain outside these
-declarations.
+\lean{intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv_to}; the
+two area statements are \lean{intervalIntegral_fabiusReal_add_fabiusInv_eq_one}
+and \lean{intervalIntegral_fabiusInv_to_eq_mul_sub_intervalIntegral_fabiusReal}
+in \path{InversePairIntegral.lean}.  These are proper-compact first-order
+identities.  Reversed-endpoint, higher-order, improper-integral,
+fractional-power, complex-valued arbitrary-AC, and complex-Mellin extensions
+remain outside these declarations.
 
 \subsection{The normalized geometric family}
 
@@ -1288,7 +1369,118 @@ is exactly the range \(X_q(\Omega)\).  When \(0\le q<1\), every weight is nonneg
 included.  At \(q=1/2\), both
 \(X_q\) and \(\mu_q\) are exactly the dyadic random series and law above.
 
-\begin{proof}[Formal proof]
+The same affine equation admits a reusable uniqueness theorem far beyond this real
+uniform-digit example.  Let \(D\) be a measurable space, let \(E\) be a complete,
+second-countable real inner-product space with its Borel measurable structure, let
+\(\rho\) be a probability measure on \(D\), and let \(d:D\to E\) be measurable.  For a
+probability measure \(\lambda\) on \(E\), define
+\begin{equation}
+ \mathcal A_{\rho,d,q}(\lambda)
+   =(d_*\rho)*\bigl((x\mapsto qx)_*\lambda\bigr)
+   =\bigl((u,x)\mapsto d(u)+qx\bigr)_*(\rho\otimes\lambda).
+ \label{eq:affine-independent-copy-law}
+\end{equation}
+The second equality is the product-map form of convolution.  Thus
+\(\mathcal A_{\rho,d,q}\) is precisely the law transformer for \(d(U)+qX\) when
+\(U\sim\rho\), \(X\sim\lambda\), and the two inputs are independent.
+
+\begin{theorem}[Contractive affine independent-copy law]
+\label{thm:affine-independent-copy-uniqueness}
+The transformer \(\mathcal A_{\rho,d,q}\) preserves probability measures, and its
+characteristic function factors as
+\begin{equation}
+ \widehat{\mathcal A_{\rho,d,q}(\lambda)}(t)
+ =\widehat{d_*\rho}(t)\,\widehat\lambda(qt).
+ \label{eq:affine-independent-copy-charfun}
+\end{equation}
+If \(\lambda\) is a fixed point, then for every \(n\in\N\),
+\begin{equation}
+ \widehat\lambda(t)
+ =\left(\prod_{k=0}^{n-1}\widehat{d_*\rho}(q^kt)\right)
+    \widehat\lambda(q^nt).                                  \label{eq:affine-charfun-finite-iterate}
+\end{equation}
+If \(|q|<1\), the transformer has at most one probability fixed point.  Equivalently, two
+probability measures satisfying the product-map equation in
+\eqref{eq:affine-independent-copy-law} are equal.
+\end{theorem}
+
+\begin{proof}
+The factorization is the convolution product rule followed by the characteristic-function
+rule for real scalar multiplication.  For two fixed points, their common digit factor has
+modulus at most one, so one recurrence step gives
+\[
+ \bigl|\widehat\lambda(t)-\widehat\nu(t)\bigr|
+ \le
+ \bigl|\widehat\lambda(qt)-\widehat\nu(qt)\bigr|.
+\]
+Iteration moves the argument to \(q^nt\).  Since \(|q|<1\), this tends to zero; continuity
+of characteristic functions and their common value \(1\) at the origin force equality at
+every \(t\), and characteristic-function extensionality gives \(\lambda=\nu\).  The proof
+uses no support, density, absolute-continuity, or moment hypothesis on either fixed point or
+on the arbitrary measurable digit law.  It includes \(q=0\) and negative \(q\).
+\end{proof}
+
+\begin{corollary}[Characterization of the geometric uniform law]
+\label{cor:geometric-uniform-law-unique}
+For every real \(q\) with \(|q|<1\), if a probability measure \(\lambda\) on \(\R\)
+satisfies
+\[
+ \lambda
+ =\bigl((u,x)\mapsto(1-q)u+qx\bigr)_*
+   \bigl(\operatorname{Unif}[0,1]\otimes\lambda\bigr),
+\]
+then \(\lambda=\mu_q\).  Hence the refinement equation
+\eqref{eq:geometric-law-refinement} characterizes the named law even at \(q=0\) and for
+negative \(q\), without any support, density, or moment assumption on \(\lambda\).
+\end{corollary}
+
+The CDF and its positive-ratio density are now named as well.  Put
+\begin{equation}
+ F_q(x)=\operatorname{cdf}(\mu_q)(x),
+ \qquad
+ f_q(x)=\frac{F_q(x/q)-F_q((x-(1-q))/q)}{1-q}.
+ \label{eq:geometric-uniform-cdf-density}
+\end{equation}
+Both definitions are total in the real parameter.  For every real \(q\), \(F_q\) is
+measurable and monotone with values in \([0,1]\).  If \(|q|<1\), then
+\begin{equation}
+ F_q\in C(\R),
+ \qquad F_q(1-x)=1-F_q(x),
+ \qquad F_q(1/2)=1/2.                                      \label{eq:geometric-cdf-reflection}
+\end{equation}
+If \(0\le q<1\), including \(q=0\), its exterior values are
+\begin{equation}
+ F_q(x)=0\quad(x\le0),
+ \qquad F_q(x)=1\quad(x\ge1).                              \label{eq:geometric-cdf-tails}
+\end{equation}
+
+For \(0<q<1\), conditioning on the head coordinate gives, for every real \(x\),
+\begin{align}
+ F_q(x)
+ &=\int_0^1F_q\!\left(\frac{x-(1-q)u}{q}\right)\dd u,
+                                                                  \label{eq:geometric-cdf-integral}\\
+ &=\frac{q}{1-q}\int_{(x-(1-q))/q}^{x/q}F_q(t)\dd t.             \label{eq:geometric-cdf-interval-integral}
+\end{align}
+The second expression in \eqref{eq:geometric-uniform-cdf-density} is then the everywhere
+pointwise derivative of \(F_q\).  It is continuous, nonnegative, reflection-symmetric,
+vanishes for \(x\le0\) and for \(x\ge1\), has ordinary support contained in \((0,1)\) and
+topological support contained in \([0,1]\), and is compactly supported.  More precisely,
+\begin{equation}
+ \mu_q=(\operatorname{Leb}:\operatorname{Measure}(\R))
+   \mathbin{\mathrm{withDensity}}
+   \bigl(x\mapsto\operatorname{ofReal}(f_q(x))\bigr),
+ \qquad F_q,f_q\in C^\infty(\R).                            \label{eq:geometric-density-rn}
+\end{equation}
+Thus the smoothness proof and the explicit Radon--Nikodym identification are formal in real
+space for the full positive-ratio range, without passing through Fourier inversion.
+
+At the half base the named objects recover the classical functions globally:
+\begin{equation}
+ F_{1/2}=\operatorname{weightedSumCDF}=F,
+ \qquad f_{1/2}(x)=2\Up(2x-1)\quad(x\in\R).                 \label{eq:geometric-half-bridges}
+\end{equation}
+
+\begin{proof}[Formal API crosswalk]
 The twenty-three public declarations in \path{GeometricUniformLaw.lean} are
 \lean{ProbabilityRepresentation.geometricUniformWeight},
 \lean{ProbabilityRepresentation.geometricUniformWeight_zero},
@@ -1313,18 +1505,111 @@ The twenty-three public declarations in \path{GeometricUniformLaw.lean} are
 \lean{ProbabilityRepresentation.geometricUniformDistribution_compl_Icc},
 \lean{ProbabilityRepresentation.geometricUniformDistribution_support_eq_range}, and
 \lean{ProbabilityRepresentation.geometricUniformDistribution_support_eq_Icc}.
-Exact half-base recovery is
+
+At compiler-validated checkpoint \texttt{d312c0603}, the generic affine interface in
+\path{AffineIndependentCopy.lean} consists of the definition
+\lean{ProbabilityTheory.affineIndependentCopyLaw} and the eight theorems
+\lean{ProbabilityTheory.affineIndependentCopyLaw_isProbabilityMeasure},
+\lean{ProbabilityTheory.affineIndependentCopyLaw_eq_map_prod},
+\lean{ProbabilityTheory.charFun_affineIndependentCopyLaw},
+\lean{ProbabilityTheory.charFun_eq_mul_charFun_of_affineIndependentCopy_fixedPoint},
+\lean{ProbabilityTheory.charFun_iterate_of_affineIndependentCopy_fixedPoint},
+\lean{ProbabilityTheory.eq_of_charFun_affine_recurrence},
+\lean{ProbabilityTheory.affineIndependentCopyLaw_fixedPoint_unique}, and
+\lean{ProbabilityTheory.affineIndependentCopy_map_fixedPoint_unique}.
+The named specialization is
+\lean{ProbabilityRepresentation.eq_geometricUniformDistribution_of_selfSimilar} in
+\path{GeometricUniformUniqueness.lean}.  The generic theorem is formulated for a complete
+second-countable real inner-product target and an arbitrary measurable digit map from an
+arbitrary probability space; the named theorem specializes it to uniform digits.
+
+The predecessor \path{GeometricUniformDictionary.lean} already supplies finite measure,
+characteristic-function, MGF, and CGF tail factorizations.  The six public theorems in
+\path{GeometricSincFactorization.lean} are
+\lean{charFun_geometricUniformDigit},
+\lean{charFun_geometricUniformDistribution_prefix},
+\lean{charFun_geometricUniformDistribution_prefix_sinc},
+\lean{tendsto_prefix_sinc_charFun},
+\lean{charFun_weightedSumDistribution_prefix_sinc}, and
+\lean{tendsto_prefix_sinc_charFun_weightedSumDistribution}.
+The digit formula is unconditional in real \(q\).  For every \(|q|<1\), depth
+\(m\), and real frequency \(t\), the phase-collapsed residual identity is
+\[
+ \phi_q(t)=e^{\ii(1-q^m)t/2}
+ \left(\prod_{k=0}^{m-1}
+   \operatorname{sinc}\!\left(\frac{(1-q)q^kt}{2}\right)\right)
+ \phi_q(q^m t),
+\]
+and the phase-bearing prefix without the residual converges pointwise to \(\phi_q(t)\).
+This includes \(q=0\) and negative \(q\); the final two declarations are exact
+\(q=1/2\) wrappers for \lean{weightedSumDistribution}.  The existing
+\lean{geometricSincProduct} already packages the same sinc factors, after frequency
+rescaling, as a \lean{tprod}.  What is missing is a named
+characteristic-function-to-\lean{geometricSincProduct} bridge (or explicit
+\lean{HasProd} theorem) and compact-uniform convergence of the characteristic prefixes.
+
+The generic CDF mechanisms are
+\lean{continuous_cdf_of_nullSingleton},
+\lean{cdf_reflection_sub}, and
+\lean{measure_eq_withDensity_of_cdf_hasDerivAt} in
+\path{ContinuousCDF.lean}.
+
+The exact named interface in \path{GeometricUniformCDF.lean} consists of
+\lean{ProbabilityRepresentation.geometricUniformCDF},
+\lean{ProbabilityRepresentation.monotone_geometricUniformCDF},
+\lean{ProbabilityRepresentation.geometricUniformCDF_nonneg},
+\lean{ProbabilityRepresentation.geometricUniformCDF_le_one},
+\lean{ProbabilityRepresentation.measurable_geometricUniformCDF},
+\lean{ProbabilityRepresentation.continuous_geometricUniformCDF},
+\lean{ProbabilityRepresentation.geometricUniformCDF_reflection},
+\lean{ProbabilityRepresentation.geometricUniformCDF_one_half},
+\lean{ProbabilityRepresentation.geometricUniformCDF_zero_of_nonpos},
+\lean{ProbabilityRepresentation.geometricUniformCDF_one_of_one_le},
+\lean{ProbabilityRepresentation.geometricUniformCDF_eq_integral},
+\lean{ProbabilityRepresentation.geometricUniformCDF_eq_intervalIntegral},
+\lean{ProbabilityRepresentation.geometricUniformDensity},
+\lean{ProbabilityRepresentation.geometricUniformCDF_hasDerivAt},
+\lean{ProbabilityRepresentation.deriv_geometricUniformCDF},
+\lean{ProbabilityRepresentation.continuous_geometricUniformDensity},
+\lean{ProbabilityRepresentation.geometricUniformDensity_nonneg},
+\lean{ProbabilityRepresentation.geometricUniformDensity_zero_of_nonpos},
+\lean{ProbabilityRepresentation.geometricUniformDensity_zero_of_one_le},
+\lean{ProbabilityRepresentation.support_geometricUniformDensity_subset_Ioo},
+\lean{ProbabilityRepresentation.support_geometricUniformDensity_subset_Icc},
+\lean{ProbabilityRepresentation.tsupport_geometricUniformDensity_subset_Icc},
+\lean{ProbabilityRepresentation.geometricUniformDensity_hasCompactSupport},
+\lean{ProbabilityRepresentation.geometricUniformDensity_reflection},
+\lean{ProbabilityRepresentation.geometricUniformDistribution_eq_withDensity},
+\lean{ProbabilityRepresentation.contDiff_geometricUniformCDF}, and
+\lean{ProbabilityRepresentation.contDiff_geometricUniformDensity}.
+
+Exact half-base series and law recovery is
 \lean{weightedCoordinateSum_eq_geometricUniformSeries_one_half} and
 \lean{weightedSumDistribution_eq_geometricUniformDistribution_one_half} in
-\path{ProbabilityRepresentation.lean}; the exact dyadic support corollary there is
-\lean{weightedSumDistribution_support_eq_Icc}.
+\path{ProbabilityRepresentation.lean}.  The CDF and density bridges there are
+\lean{ProbabilityRepresentation.weightedSumCDF_eq_geometricUniformCDF_one_half},
+\lean{ProbabilityRepresentation.geometricUniformCDF_one_half_eq_fabiusReal}, and
+\lean{ProbabilityRepresentation.geometricUniformDensity_one_half_eq_rvachevUp}; the exact
+dyadic support corollary is \lean{weightedSumDistribution_support_eq_Icc}.
 \end{proof}
 
-These declarations prove absolute continuity, null singletons, and exact support-as-range for
-\(|q|<1\), together with exact unit-interval support for \(0\le q<1\).  They do not define a
-named general-\(q\) CDF or select an explicit Radon--Nikodym density, and make no claim here
-about \(q\)-specific CDF or density identities, Fourier products, moments, cumulants,
-smoothness, or uniqueness of the affine measure fixed point.
+The remaining boundary is parameter-sensitive.  Although \(\mu_q\) is absolutely continuous
+throughout \(|q|<1\), the displayed total function \(f_q\) is identified as its
+Radon--Nikodym density only for \(0<q<1\); no such interpretation is claimed here at
+\(q=0\) or for negative \(q\).  The positive-ratio \(C^\infty\) theorem is proved by the
+real-space derivative refinement.  The phase-bearing general-\(q\) sinc prefixes and their
+pointwise characteristic-function limit are formal, while \lean{geometricSincProduct}
+already packages the same rescaled sinc factors as a \lean{tprod}.  A named
+characteristic-function-to-\lean{geometricSincProduct} bridge (or explicit \lean{HasProd}
+theorem), compact-uniform convergence, rapid-decay estimates, and a Fourier-inversion
+construction remain outside the formal API.  So do a named centered \(q\)-family, a closed all-order
+derivative hierarchy and explicit endpoint-flatness wrappers, shape theorems, further
+transform formulas, and explicit Bernoulli-cumulant/Bell-moment formulas and asymptotics.
+The probability-law fixed point itself is uniquely characterized by
+\Cref{cor:geometric-uniform-law-unique}.  The oriented Cauchy transform and its
+adjacent-power hierarchy are also formal for every nonzero \(|q|<1\), including negative
+ratios, in \path{GeometricUniformCauchy.lean}; these are distinct from the still-open
+characteristic-function-to-infinite-product and Fourier-inversion formulas just listed.
 
 \subsection{Finite atomic laws and weak convergence}
 
@@ -2112,6 +2397,214 @@ an exponential, and is therefore strictly positive.  The canonical product is
 \lean{rvachevFourierProduct_eq_canonical} in \path{SincCanonicalProduct.lean}.
 \end{proof}
 
+\subsection{Geometric reciprocal-Gamma products}
+\label{sec:geometric-reciprocal-gamma}
+
+The Gamma factorization is most naturally formalized from the entire reciprocal
+factor
+\begin{equation}
+ R(z):=\frac1{\Gamma(1+z)}
+\end{equation}
+
+\begin{theorem}[Geometric reciprocal-Gamma products and the dyadic factor]
+For a complex contraction \(q\) satisfying \(\lVert q\rVert<1\), define the
+locally uniformly convergent product
+\begin{equation}
+ G_q(z):=\prod_{n=0}^{\infty}R(q^nz)
+ =\prod_{n=0}^{\infty}\frac1{\Gamma(1+q^nz)}.             \label{eq:geometric-reciprocal-gamma}
+\end{equation}
+The hypothesis includes \(q=0\); no positivity or reality assumption is made.
+The reciprocal factor and the geometric product satisfy
+\begin{align}
+ R(z)R(-z)&=\sinc(\pi z),                                  \label{eq:reciprocal-gamma-reflection}\\
+ G_q(0)&=1,\qquad
+ G_q(z)=R(z)G_q(qz),                                      \label{eq:geometric-reciprocal-gamma-mahler}\\
+ G_q(z)=0&\quad\Longleftrightarrow\quad
+ \exists\,n,m\in\N:\ 1+q^nz=-m.                          \label{eq:geometric-reciprocal-gamma-zeros}
+\end{align}
+In particular there are no hidden zeros in the infinite product.  Define the
+Gamma-side total meromorphic representative and the matching sinc product by
+\begin{equation}
+ \Gamma_{\langle q\rangle}(z):=G_q(z)^{-1},\qquad
+ \Phi_q(z):=\prod_{n=0}^{\infty}\sinc(\pi q^nz).
+\end{equation}
+Then
+\begin{align}
+ \Gamma_{\langle q\rangle}(z)
+   &=\Gamma(1+z)\Gamma_{\langle q\rangle}(qz),             \label{eq:geometric-gamma-mahler}\\
+ G_q(z)G_q(-z)&=\Phi_q(z).                                \label{eq:geometric-gamma-reflection}
+\end{align}
+
+At \(q=1/2\), write \(G_{\rm dy}=G_{1/2}\) and
+\(\Gamma_{\rm dy}=G_{\rm dy}^{-1}\).  The geometric sinc product is exactly the
+standalone Rvachev product, so for every \(z\in\C\)
+\begin{equation}
+ \Phi(z)=G_{\rm dy}(z)G_{\rm dy}(-z)
+ =\frac1{\Gamma_{\rm dy}(z)\Gamma_{\rm dy}(-z)}.          \label{eq:dyadic-reciprocal-gamma-bridge}
+\end{equation}
+Moreover \(G_{\rm dy}\) vanishes precisely at the negative integers.  For every
+\(n\ge1\),
+\begin{align}
+ \operatorname{ord}_{z=-n}G_{\rm dy}(z)&=1+\vtwo(n),       \label{eq:dyadic-reciprocal-gamma-order}\\
+ \operatorname{mord}_{z=-n}\Gamma_{\rm dy}(z)&=-(1+\vtwo(n)).
+                                                                  \label{eq:dyadic-gamma-pole-order}
+\end{align}
+Thus the positive pole order of \(\Gamma_{\rm dy}\) is \(1+\vtwo(n)\);
+Mathlib records it as the displayed negative meromorphic order.
+\end{theorem}
+
+\begin{proof}[Formal proof and exact API]
+At formal source checkpoint
+\path{71ab6f6728fceb753c88d8b0573077a59acf2682}, the reusable convergence
+engine is \path{ScaledInfiniteProducts.lean}.  Its ten public declarations are
+\lean{summable_norm_scaled_sub_one},
+\lean{hasProdUniformlyOn_scaled},
+\lean{multipliableUniformlyOn_scaled},
+\lean{hasProdLocallyUniformly_scaled},
+\lean{multipliableLocallyUniformly_scaled},
+\lean{continuous_tprod_scaled},
+\lean{differentiable_tprod_scaled},
+\lean{differentiable_tprod_scaled_of_eq_one},
+\lean{tprod_scaled_ne_zero}, and
+\lean{tprod_scaled_eq_zero_iff}.  The pointwise summability theorem assumes a
+normed scalar field, a normed space, a normed-ring target, summability of
+\(n\mapsto\lVert a_n\rVert\), and \(f(z)-1=O(z)\) at zero.  The uniform
+statements take values in a complete
+commutative normed ring with a normed unit and assume continuity of \(f\); the
+locally uniform statements additionally assume a locally compact domain.  The
+holomorphic statements take values in a complete commutative normed ring with a
+normed complex-algebra structure and assume complex differentiability, with
+\lean{differentiable_tprod_scaled_of_eq_one} replacing the explicit big-\(O\)
+hypothesis by \(f(0)=1\).  The no-hidden-zero statements use a complete
+commutative normed ring with a normed unit and a multiplicative norm, but need
+neither continuity of \(f\) nor local compactness of the domain.
+
+The specialization is \path{GeometricReciprocalGamma.lean}.  Its twenty-five
+public declarations are
+\lean{shiftedReciprocalGamma},
+\lean{shiftedReciprocalGamma_zero},
+\lean{shiftedReciprocalGamma_differentiable},
+\lean{shiftedReciprocalGamma_sub_one_isBigO},
+\lean{shiftedReciprocalGamma_eq_zero_iff},
+\lean{shiftedReciprocalGamma_mul_neg},
+\lean{summable_norm_qpow},
+\lean{geometricReciprocalGamma},
+\lean{geometricReciprocalGammaFactors_multipliable},
+\lean{geometricReciprocalGamma_differentiable},
+\lean{geometricReciprocalGamma_zero},
+\lean{geometricReciprocalGamma_mahler},
+\lean{geometricReciprocalGamma_eq_zero_iff},
+\lean{geometricGamma},
+\lean{geometricGamma_meromorphic},
+\lean{geometricGamma_mahler},
+\lean{geometricSincProduct},
+\lean{geometricReciprocalGamma_mul_neg},
+\lean{dyadicReciprocalGamma},
+\lean{dyadicGamma},
+\lean{dyadicReciprocalGamma_differentiable},
+\lean{dyadicReciprocalGamma_zero},
+\lean{geometricSincProduct_inv_two},
+\lean{dyadicReciprocalGamma_mul_neg}, and
+\lean{rvachevFourierProduct_eq_one_div_dyadicGamma_mul}.
+Here \(q\in\C\) and \(\lVert q\rVert<1\) are the exact hypotheses on every
+generic convergence, holomorphy, Mahler, zero-orbit, meromorphy, and reflection
+statement; normalization at zero itself needs no contraction hypothesis.
+
+At every reciprocal integer scale, \path{ReciprocalIntegerGammaZeros.lean}
+exposes four public theorems:
+\lean{norm_inv_natCast_lt_one},
+\lean{geometricReciprocalGamma_inv_natCast_eq_zero_iff},
+\lean{geometricReciprocalGamma_inv_natCast_ne_zero_of_nonneg}, and
+\lean{geometricGamma_inv_natCast_meromorphic}.  For \(b\ge2\), the entire product
+\(G_{1/b}\) vanishes exactly at the embedded strictly negative natural numbers,
+independently of \(b\), is nonzero at every embedded nonnegative natural number,
+and its pointwise inverse is meromorphic.  This closes the integer-base zero set,
+but not the multiplicity of those zeros.
+
+Finally, \path{DyadicGammaOrder.lean} exposes eight public declarations:
+\lean{dyadicReciprocalGamma_eq_zero_iff},
+\lean{dyadicReciprocalGamma_int_ne_zero_of_nonneg},
+\lean{dyadicReciprocalGamma_nat_ne_zero},
+\lean{dyadicGamma_meromorphic},
+\lean{analyticOrderAt_dyadicReciprocalGamma_int_of_neg},
+\lean{analyticOrderAt_dyadicReciprocalGamma_neg_nat},
+\lean{meromorphicOrderAt_dyadicGamma_int_of_neg}, and
+\lean{meromorphicOrderAt_dyadicGamma_neg_nat}.  The integer forms assume a
+strictly negative integer center; the natural-number wrappers assume \(n\ne0\).
+
+There is an important representation boundary.  Mathlib assigns
+\lean{Complex.Gamma} the value zero at a classical Gamma pole, and its inverse
+also has the totalized value zero there.  Accordingly
+\lean{geometricGamma} and \lean{dyadicGamma} are defined as pointwise inverses
+of the entire reciprocal products, and a pole is carried by negative
+\lean{meromorphicOrderAt}, not by an infinite point value.  At that checkpoint,
+the declarations above do not identify these functions with the raw products
+\(\prod_n\Gamma(1+q^nz)\) away from their poles, and they assert no arithmetic
+Weierstrass regrouping, logarithmic or digamma series, Malmsten or heat-trace
+integral, D-finiteness result, reciprocal-Gamma derivative coefficient for the
+Thue--Morse tower, or general integer-base collision order.
+
+The post-checkpoint source commit \path{0ba35abd4} closes the reciprocal-Gamma
+first-jet and Thue--Morse Gamma-tower tranche in two further modules.
+\path{ReciprocalGammaJets.lean} has exactly five public declarations:
+\lean{deriv_Gamma_inv_neg_nat},
+\lean{hasDerivAt_Gamma_inv_neg_nat},
+\lean{hasDerivAt_Gamma_inv_zero},
+\lean{analyticOrderAt_Gamma_inv_neg_nat}, and
+\lean{tendsto_Gamma_inv_div_add_nat}.  For every \(r\in\N\), they identify
+\[
+ \left(\Gamma^{-1}\right)'(-r)=(-1)^r r!,\qquad
+ \operatorname{ord}_{-r}\Gamma^{-1}=1,
+ \qquad
+ \frac{\Gamma(s)^{-1}}{s+r}\longrightarrow(-1)^r r!
+ \quad(s\to-r,\ s\ne-r),
+\]
+with \lean{hasDerivAt_Gamma_inv_zero} retaining the origin compatibility name.
+These are statements about the entire reciprocal function
+\(s\mapsto\Gamma(s)^{-1}\): they do not assign a value or derivative to the raw
+Gamma function at one of its poles.
+
+At the same commit, \path{ThueMorseGammaTower.lean} has exactly eight public
+declarations:
+\lean{hasDerivAt_dirichletMellinContinuation_neg_nat},
+\lean{deriv_dirichletMellinContinuation_neg_nat},
+\lean{thueMorseGammaLog},
+\lean{thueMorseGammaTower},
+\lean{thueMorseGammaLog_eq_mellin},
+\lean{thueMorseGammaLog_eq_integral},
+\lean{thueMorseGammaLog_dyadic}, and
+\lean{thueMorseGammaTower_dyadic}.  The first two give, for \(a>0\) and
+\(r\in\N\),
+\[
+ \widetilde D_a'(-r)=(-1)^r r!\,
+   \operatorname{Mellin}(t\mapsto e^{-at}\mathcal E(t))(-r).
+\]
+The two definitions are total for every real \(a\); their Mellin, integral, and
+dyadic identification theorems assume exactly \(a>0\).  In particular
+\lean{thueMorseGammaLog} is the chosen coordinate
+\(L_r(a):=\widetilde D_a'(-r)\), not a proved identity with
+\lean{Complex.log} of \lean{thueMorseGammaTower}; the latter is defined as
+\(T_r(a):=\exp L_r(a)\).  The formal laws are
+\[
+ L_r(a)=(-1)^r r!\int_0^\infty t^{-r-1}e^{-at}\mathcal E(t)\,dt,
+ \quad
+ L_r(a)=2^r\bigl(L_r(a/2)-L_r((a+1)/2)\bigr),
+\]
+and
+\[
+ T_r(a)=\left(\frac{T_r(a/2)}{T_r((a+1)/2)}\right)^{2^r}.
+\]
+The current integrated tree adds the ninth public tower declaration
+\lean{ofReal_exp_mpLimit_eq_gammaTower_div}: for \(a,b>0\), the complex
+embedding of \lean{Real.exp} of \lean{mpLimit} at \((a,b)\) is
+\(T_0(b)/T_0(a)\).  Within this tower tranche, only the differential and
+iterated differential ladder in the real parameter \(a\) remains frontier; it
+requires a parameter-under-the-Mellin-integral theorem.  The raw Gamma product,
+canonical regrouping, logarithmic/digamma expansions, Gamma-product Malmsten
+and heat-trace representations, D-finiteness, and general-base collision order listed above
+remain separate frontiers.
+\end{proof}
+
 The exponent in the canonical product has a finite, base-generic double-counting
 origin that is useful independently of sinc products.  For \(b,N,J\in\N\), put
 \[
@@ -2686,6 +3179,24 @@ the exact entire series is
 \end{equation}
 This is \lean{rvachevFourier_eq_momentSeries} in
 \path{AnalyticMoments.lean}.
+For later finite filters the individual mode is named
+\begin{equation}
+ A_n(z):=\frac{(-1)^n c_n}{(2n)!}(2\pi z)^{2n}
+ =\lean{rvachevFourierMomentTerm}\ z\ n.                  \label{eq:rvachev-fourier-moment-term}
+\end{equation}
+The declarations \lean{rvachevFourierMomentTerm_zero} and
+\lean{rvachevFourierMomentTerm_scale} prove
+\[
+ A_0(z)=1,\qquad A_n(cz)=(c^2)^nA_n(z)
+ \quad(c,z\in\C,\ n\in\N).
+\]
+More strongly than the equality of total sums in
+\eqref{eq:fourier-moment-series},
+\lean{hasSum_rvachevFourierMomentTerm} proves
+\(\operatorname{HasSum}(A_\bullet(z),\widehat{\Up}(z))\) for every bounded
+Fabius solution.  These four declarations are in
+\path{AnalyticMoments.lean}; the canonical product specialization used below
+is in \path{RvachevQBinomialFilter.lean}.
 
 \section{The global extension, derivatives, flatness, and inverse}
 \label{sec:global}
@@ -3090,10 +3601,10 @@ For a real order \(\alpha\), define the total oriented operator
 Here the real power is Lean's total real-power convention.  Its classical
 Riemann--Liouville interpretation below is restricted to \(0<\alpha\) and \(a\le x\).
 
-\begin{theorem}[Positive-real fractional Volterra foundation and semigroup]
+\begin{theorem}[Positive-real fractional Volterra foundation, covariance, and order raising]
 \label{thm:fractional-volterra-foundation}
 Let \(E\) be a real normed vector space and \(f,g:\R\to E\).  For arbitrary real
-\(\alpha,a,x,c\), the operator vanishes at its base point, depends only on the input on
+\(\alpha,a,x,c,d\), the operator vanishes at its base point, depends only on the input on
 the closed unoriented interval between \(a\) and \(x\), and satisfies
 \begin{align}
  I_{a+}^{\alpha}(cf)(x)&=cI_{a+}^{\alpha}f(x),
@@ -3109,6 +3620,19 @@ the two fractional kernels are interval-integrable and
  I_{a+}^{\alpha}(f+g)(x)
  =I_{a+}^{\alpha}f(x)+I_{a+}^{\alpha}g(x).                  \label{eq:fractional-volterra-add-input}
 \end{equation}
+More generally, let \(a\le b\), \(a\le x\), and let \(h\) be interval-integrable on
+\([a,x]\).  If \(h=0\) on the open tail \((b,x)\), then
+\begin{equation}
+ \int_a^x h(t)\dd t=\int_a^{\min(x,b)}h(t)\dd t.
+ \label{eq:interval-integral-support-cutoff}
+\end{equation}
+If \(0<\alpha\), \(f\) is continuous on \([a,x]\), and \(f=0\) on \((b,x)\), this
+specializes to
+\begin{equation}
+ I_{a+}^{\alpha}f(x)
+ =\int_a^{\min(x,b)}\frac{(x-t)^{\alpha-1}}{\Gamma(\alpha)}f(t)\dd t.
+ \label{eq:fractional-volterra-support-cutoff}
+\end{equation}
 For \(0<\alpha\), \(0<\beta\), and \(s\le x\), the shifted real beta kernel is
 interval-integrable.  If \(s<x\), its raw value is
 \begin{equation}
@@ -3117,7 +3641,7 @@ interval-integrable.  If \(s<x\), its raw value is
    \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}.
  \label{eq:fractional-volterra-beta-kernel}
 \end{equation}
-and its Gamma-normalized form is
+Its Gamma-normalized form is
 \begin{equation}
  \int_s^x
  \frac{(x-u)^{\alpha-1}}{\Gamma(\alpha)}
@@ -3132,25 +3656,136 @@ If, moreover, \(E\) is complete, \(a\le x\), and \(f\) is continuous on
  =I_{a+}^{\alpha}\!\left[u\mapsto I_{a+}^{\beta}f(u)\right](x).
  \label{eq:fractional-volterra-semigroup}
 \end{equation}
+For \(v\in E\), completeness of \(E\), and a strict endpoint \(a<x\), the same
+beta calculation gives the normalized shifted-power rule
+\begin{equation}
+ I_{a+}^{\alpha}\!\left[t\mapsto
+   \frac{(t-a)^{\beta-1}}{\Gamma(\beta)}v\right](x)
+ =\frac{(x-a)^{\alpha+\beta-1}}{\Gamma(\alpha+\beta)}v
+ \qquad(\alpha,\beta>0),
+ \label{eq:fractional-volterra-normalized-rpow}
+\end{equation}
+and, for \(\rho>-1\),
+\begin{equation}
+ I_{a+}^{\alpha}\!\left[t\mapsto(t-a)^\rho v\right](x)
+ =\frac{\Gamma(\rho+1)(x-a)^{\alpha+\rho}}
+        {\Gamma(\alpha+\rho+1)}v
+ \qquad(\alpha>0).
+ \label{eq:fractional-volterra-rpow}
+\end{equation}
+The constant specialization includes the degenerate endpoint:
+\begin{equation}
+ I_{a+}^{\alpha}[t\mapsto v](x)
+ =\frac{(x-a)^\alpha}{\Gamma(\alpha+1)}v
+ \qquad(\alpha>0,\ a\le x).
+ \label{eq:fractional-volterra-const}
+\end{equation}
+For arbitrary real \(\alpha\), \(0<c\), and \(a\le x\), increasing-affine covariance
+requires no regularity, integrability, or completeness hypothesis:
+\begin{align}
+ I_{(ca+d)+}^{\alpha}f(cx+d)
+ &=c^{\alpha}I_{a+}^{\alpha}[t\mapsto f(ct+d)](x),
+                                                               \label{eq:fractional-volterra-affine}\\
+ I_{a+}^{\alpha}[t\mapsto f(ct+d)](x)
+ &=\left(c^\alpha\right)^{-1}I_{(ca+d)+}^{\alpha}f(cx+d).     \label{eq:fractional-volterra-comp-affine}
+\end{align}
+Finally, let \(E\) be complete, let \(0<\alpha\), \(a\le x\), and suppose that
+\(g\) is continuous on \([a,x]\), has the right-sided interior derivative \(g'\),
+and that \(g'\) is interval-integrable.  Gamma-normalized integration by parts gives
+\begin{equation}
+ I_{a+}^{\alpha+1}g'(x)
+ =I_{a+}^{\alpha}g(x)
+  -\frac{(x-a)^\alpha}{\Gamma(\alpha+1)}g(a).                 \label{eq:fractional-volterra-add-one-deriv}
+\end{equation}
+This includes \(a=x\); when \(g(a)=0\), the boundary term vanishes.  Only the right
+derivative on the open interval is required; no two-sided derivative hypothesis is used.
 \end{theorem}
 
-The definition and eight exact theorems in \path{FractionalVolterra.lean} are
+The definition and ten exact theorems in \path{FractionalVolterra.lean} are
 \lean{fractionalVolterra}, \lean{fractionalVolterra_self},
 \lean{fractionalVolterra_congr}, \lean{fractionalVolterra_smul},
 \lean{intervalIntegrable_fractionalVolterra_kernel},
+\lean{intervalIntegral_eq_integral_min_of_eq_zero},
+\lean{fractionalVolterra_eq_intervalIntegral_min_of_eq_zero},
 \lean{fractionalVolterra_add_input}, \lean{fractionalVolterra_one}, and
 \lean{fractionalVolterra_nat_succ}, together with
-\lean{intervalIntegral_fractionalVolterra_betaKernel}.  The three theorems in
+\lean{intervalIntegral_fractionalVolterra_betaKernel}.  The six theorems in
 \path{FractionalVolterraSemigroup.lean} are
 \lean{intervalIntegrable_fractionalVolterra_betaKernel},
-\lean{intervalIntegral_fractionalVolterra_normalizedBetaKernel}, and
-\lean{fractionalVolterra_add}.  Together these modules prove no order-zero operator law,
-reversed-endpoint fractional interpretation, semigroup theorem for merely
-interval-integrable inputs or noncomplete targets, separately packaged general
-power/constant evaluation, Caputo or other fractional derivative, complex-order theorem,
-or Fabius-, \(\Up\)-, or inverse-function specialization.
+\lean{intervalIntegral_fractionalVolterra_normalizedBetaKernel},
+\lean{fractionalVolterra_normalized_rpow_smul},
+\lean{fractionalVolterra_rpow_smul}, \lean{fractionalVolterra_const}, and
+\lean{fractionalVolterra_add}.  The four theorems in
+\path{FractionalVolterraCalculus.lean} are
+\lean{fractionalVolterra_affine}, \lean{fractionalVolterra_comp_affine},
+\lean{fractionalVolterra_add_one_deriv}, and
+\lean{fractionalVolterra_add_one_deriv_of_eq_zero}.  Thus these three reusable operator
+modules have one definition and twenty public theorems.  They prove no classical
+order-zero law, reversed-endpoint fractional interpretation, semigroup theorem for merely
+interval-integrable inputs or noncomplete targets, Caputo or Riemann--Liouville derivative
+operator, complex-order theorem, nonpositive-scale affine covariance, or hierarchy-specific
+formula by themselves.  The positive-real Fabius-CDF specialization is recorded in
+\Cref{sec:probability-laplace-bridge}; the following total definition and six specialization
+theorems bring the four-module total to two definitions and twenty-six public theorems.
 
 The signed Fabius dilation law now enters only at the specialization step.
+
+\begin{theorem}[Causal Rvachev fractional primitives and exact first shifts]
+\label{thm:fabius-fractional-volterra-shift}
+For every real \(\beta,x\), define the total causal primitive
+\begin{equation}
+ U_\beta(x):=I_{(-1)+}^{\beta}\Up(x).
+ \label{eq:rvachev-fractional-primitive}
+\end{equation}
+If \(0<\beta\) and \(-1\le x\), compact support gives the exact cutoff
+\begin{equation}
+ U_\beta(x)
+ =\frac1{\Gamma(\beta)}
+   \int_{-1}^{\min(x,1)}(x-t)^{\beta-1}\Up(t)\dd t.
+ \label{eq:rvachev-fractional-primitive-min}
+\end{equation}
+For every \(n\in\N\) and every real \(x\),
+\begin{equation}
+ U_{n+1}(x)=J_{-1}^{n+1}\Up(x).
+ \label{eq:rvachev-fractional-primitive-natural}
+\end{equation}
+If \(0<\alpha\), \(0<\beta\), and \(-1\le x\), then
+\begin{equation}
+ U_{\alpha+\beta}(x)=I_{(-1)+}^{\alpha}U_\beta(x).
+ \label{eq:rvachev-fractional-primitive-semigroup}
+\end{equation}
+For \(0<\alpha\), the signed extension satisfies, for every \(x\ge0\),
+\begin{equation}
+ I_{0+}^{\alpha+1}\mathcal F(x)
+ =2^\alpha I_{0+}^{\alpha}\mathcal F\!\left(\frac{x}{2}\right).
+ \label{eq:fractional-global-Fabius-shift}
+\end{equation}
+The bounded function satisfies, for every \(x\in[0,1]\),
+\begin{equation}
+ I_{0+}^{\alpha+1}F(x)
+ =2^\alpha I_{0+}^{\alpha}F\!\left(\frac{x}{2}\right).
+ \label{eq:fractional-bounded-Fabius-shift}
+\end{equation}
+Finally the compactly supported fold, integrated from its left support endpoint, obeys
+for every \(x\ge-1\)
+\begin{equation}
+ I_{(-1)+}^{\alpha+1}\Up(x)
+ =2^\alpha I_{0+}^{\alpha}F\!\left(\frac{x+1}{2}\right).
+ \label{eq:fractional-rvachev-Up-shift}
+\end{equation}
+\end{theorem}
+
+The total definition and six theorems in \path{FabiusFractionalVolterra.lean} are
+\lean{rvachevFractionalPrimitive},
+\lean{rvachevFractionalPrimitive_eq_intervalIntegral_min},
+\lean{rvachevFractionalPrimitive_nat_succ},
+\lean{rvachevFractionalPrimitive_add},
+\lean{fractionalVolterra_add_one_extendedFabius_of_nonneg},
+\lean{fractionalVolterra_add_one_fabiusReal}, and
+\lean{fractionalVolterra_add_one_rvachevUp}.  Their domains are part of the statements:
+the signed formula does not cover \(x<0\), the bounded formula is confined to
+\([0,1]\), the cutoff and semigroup formulas start at \(-1\), and the support-truncated
+formula is asserted only at positive order.
 
 \begin{theorem}[Complete integer primitive ladder of the Fabius functions]
 \label{thm:fabius-volterra-ladder}
@@ -3191,16 +3826,21 @@ use \lean{fabiusReal_eq_extendedFabius_of_le_one}: the oriented segment from \(0
 \begin{boxedremark}
 The generic positive-real operator is formalized in
 \Cref{thm:fractional-volterra-foundation}, including its positive-real, ordered-endpoint,
-continuous-Banach-input semigroup.  Fractional Fabius or Rvachev formulas,
-hierarchy-adapted or complex-order semigroups, semigroup laws for merely
-interval-integrable inputs or noncomplete targets, complex powers, normal or Mellin
-continuation in a weight exponent, a piecewise global closed form for the bounded function
-beyond \(x\le1\), primitives of the folded function \(\Up\), and primitives of the inverse
-Fabius function remain separate analytic frontiers.  In particular, the generic affine and base-point
-theorems do not themselves supply named Fabius-specific declarations for the \(\Up\)
-ladder based at \(-1\), the reflected \(1-F\) ladder, arbitrary affine copies of \(F\), or
-the full piecewise polynomial tail after the support of \(\Up\); those packaged
-specializations also remain frontier targets.
+continuous-Banach-input semigroup, shifted-power and constant evaluations,
+positive-scale affine covariance, and right-derivative order-raising identity.  The
+positive-real Fabius-CDF stopped-power and unit-endpoint moment formulas are formalized in
+\Cref{thm:fabius-fractional-stopped-power}, and the first signed, bounded, and
+\(\Up\)-to-\(F\) fractional shifts in
+\Cref{thm:fabius-fractional-volterra-shift}.  What remains includes the signed branch for
+\(x<0\), iterated fractional shifts, the shifted dyadic lattice and its endpoint-\(\Up\)
+wrapper, reflected or piecewise support-tail formulas, weighted hierarchy-specific
+monomials, semigroups for shifted or reflected hierarchy variants, a full two-branch refinement law,
+fractional inverse/quantile formulas, classical order-zero or reversed-endpoint
+interpretations, Caputo and Riemann--Liouville derivative operators, complex powers and
+complex order, and normal or Mellin continuation.  At integer order, separately named
+packages for the complete \(\Up\) ladder based at \(-1\), the reflected \(1-F\) ladder,
+arbitrary affine copies of \(F\), and the full piecewise polynomial tail after the support
+of \(\Up\) also remain frontier targets.
 \end{boxedremark}
 
 \subsection{Dyadic derivative cells and exact value distributions}
@@ -3783,6 +4423,72 @@ They formalize the finite moment-to-Bell rewrite used by endpoint transfer,
 not the analytic transfer expansion or its remainder estimates.
 \end{proof}
 
+\subsection{Rvachev moment--Appell deconvolution and polynomial synthesis}
+\label{sec:rvachev-moment-appell}
+
+At compiled source checkpoint \texttt{1f9ce6fd9},
+\path{RvachevMomentAppell.lean} specializes the formal Bell and Appell engines
+to the Rvachev probability law.  Its five public definitions are
+\lean{rvachevRawMomentRat}, \lean{rvachevReciprocalMomentRat},
+\lean{rvachevAppellPolynomialRat}, \lean{rvachevAppellPolynomial}, and
+\lean{rvachevDeconvolvedPolynomial}.  Its sixteen public theorems are
+\lean{rvachevRawMomentRat_zero}, \lean{rvachevRawMomentRat_even},
+\lean{rvachevRawMomentRat_odd}, \lean{rvachevReciprocalMomentRat_zero},
+\lean{binomialConv_rvachevRawMomentRat_reciprocal},
+\lean{rvachevReciprocalMomentRat_eq_completeBellPolynomial},
+\lean{monic_rvachevAppellPolynomialRat},
+\lean{natDegree_rvachevAppellPolynomialRat},
+\lean{rvachevAppellPolynomial_eq_poly_cast},
+\lean{monic_rvachevAppellPolynomial},
+\lean{natDegree_rvachevAppellPolynomial},
+\lean{eval_rvachevAppellPolynomial_add},
+\lean{integral_pow_mul_rvachev_eq_rvachevRawMomentRat_cast},
+\lean{integral_eval_rvachevAppellPolynomial_add_mul_rvachev},
+\lean{natDegree_rvachevDeconvolvedPolynomial_le}, and
+\lean{integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev}.
+
+Thus the full rational raw-moment sequence has the executable even moments at
+even indices and zero at odd indices; its formal binomial-convolution
+reciprocal is the corresponding complete-Bell family.  The rational and real
+Rvachev reciprocal-moment Appell polynomials are monic of exact degree.  Write
+\(A_n=\lean{rvachevAppellPolynomial}\ n\).  If
+\(u_F=\lean{rvachevUp}\ F\) for any bounded Fabius solution, their analytic
+bridges are
+\begin{align}
+ \int_{\R} A_n(x+y)u_F(y)\dd y&=x^n,
+   \label{eq:rvachev-appell-smoothing}\\
+ \int_{\R} (\mathcal D_{\Up}P)(x+y)u_F(y)\dd y&=P(x),
+   \label{eq:rvachev-deconvolution-smoothing}
+\end{align}
+where \(\mathcal D_{\Up}P\) denotes
+\lean{rvachevDeconvolvedPolynomial}\(P\).  This coefficientwise operation does
+not raise polynomial degree.
+
+At compiled source checkpoint \texttt{c51a41fcf},
+\path{RvachevPolynomialSynthesis.lean} exports no public definitions and
+exactly four public theorems:
+\lean{tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp},
+\lean{normalized_tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp},
+\lean{sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp}, and
+\lean{normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp}.
+For \(M\in\N\setminus\{0\}\) and
+\(\deg P\le v_2(M)\), they give
+\begin{align}
+ \sum_{k\in\Z}(\mathcal D_{\Up}P)(k/M)u_F(x-k/M)
+   &=M P(x),                                                 \label{eq:rvachev-polynomial-synthesis-global}\\
+ P(x)&=\frac1M\sum_{-2M<k<2M}
+  (\mathcal D_{\Up}P)(k/M)u_F(x-k/M),\qquad -1\le x\le1. \label{eq:rvachev-polynomial-synthesis-finite}
+\end{align}
+The first sum is Lean's global \texttt{tsum}; compact support makes it
+pointwise finite.  The second is the exact uniform support truncation, including
+the vanishing boundary atoms.
+
+These two modules prove formal coefficient reciprocity and polynomial
+smoothing/synthesis, not an analytic reciprocal-MGF or Appell generating
+series, a literal reciprocal-MGF differential-operator identity, parity of the
+reciprocal or deconvolved families, the displayed low reciprocal coefficients,
+or minimality and sharpness of the admissible mesh.
+
 \subsection{The probability--Laplace bridge}
 \label{sec:probability-laplace-bridge}
 
@@ -3829,6 +4535,69 @@ identities are
 \end{align}
 No positivity assumption is imposed on \(k\); taking \(E=\C\) gives the
 complex-kernel form used by transform arguments.
+
+The atom-preserving closed-supergraph dual is the lower-CDF layer cake.  For any finite
+measure \(\nu\) on \(\R\), \(a\le b\), and Banach-valued \(k\) interval-integrable on
+\([a,b]\),
+\begin{equation}
+ \int_a^b \nu(({-\infty},t])k(t)\dd t
+ =\int_{\R}\left(
+   \int_{\min\{\max\{z,a\},b\}}^b k(t)\dd t\right)\dd\nu(z).
+ \label{eq:cdf-layer-cake-clamp}
+\end{equation}
+For the partial terminal form on \([c,b]\), only \(c\le b\) and the one-sided
+almost-everywhere bound \(z\le b\) are needed.  Compact support on \([a,b]\) gives the
+convenient partial corollary and the full form; the closed rays retain any atoms of \(\nu\).
+
+\begin{theorem}[Fractional stopped-power formula for the Fabius CDF]
+\label{thm:fabius-fractional-stopped-power}
+For every positive real \(\alpha\) and every \(x\in\R\),
+\begin{equation}
+ I_{0+}^{\alpha}F(x)
+ =\frac{1}{\Gamma(\alpha+1)}
+   \int_{\R}(x-z)_+^\alpha\dd\mu_X(z)
+ =\frac{1}{\Gamma(\alpha+1)}
+   \int_{\Omega}(x-X(\omega))_+^\alpha\dd\mathbf P(\omega).
+ \label{eq:fabius-fractional-stopped-power}
+\end{equation}
+This includes \(x\le0\), where both sides vanish.  At the unit endpoint, reflection of
+the weighted-sum law gives
+\begin{equation}
+ I_{0+}^{\alpha}F(1)
+ =\frac{1}{\Gamma(\alpha+1)}\int_{\R}z^\alpha\dd\mu_X(z)
+ =\frac{1}{\Gamma(\alpha+1)}
+   \int_{\Omega}X(\omega)^\alpha\dd\mathbf P(\omega).
+ \label{eq:fabius-fractional-endpoint-moment}
+\end{equation}
+\end{theorem}
+
+The generic closed-supergraph engine is
+\lean{integral_smul_setIntegral_supergraph} in \path{SubgraphFubini.lean}.  Its finite-measure
+clamped, one-sided-upper-supported partial, compactly supported partial, and full forms are
+\lean{intervalIntegral_cdf_smul_eq_integral_clamp},
+\lean{intervalIntegral_cdf_smul_eq_integral_max_of_ae_le},
+\lean{intervalIntegral_cdf_smul_eq_integral_max_of_ae_mem_Icc}, and
+\lean{intervalIntegral_cdf_smul_eq_integral_of_ae_mem_Icc} in
+\path{CDFLayerCake.lean}.  The positive-real fractional forms---respectively without a
+support hypothesis, with only an almost-everywhere lower support bound, directly for a
+probability CDF under that same bound, and at the endpoint of an almost-everywhere compact
+support interval---are
+\lean{fractionalVolterra_measureReal_Iic_eq_integral_clamp},
+\lean{fractionalVolterra_measureReal_Iic_eq_integral_posPart},
+\lean{fractionalVolterra_cdf_eq_integral_posPart}, and
+\lean{fractionalVolterra_measureReal_Iic_eq_integral_rpow_of_ae_mem_Icc} in
+\path{FractionalCDFLayerCake.lean}.  Finally,
+\lean{ProbabilityRepresentation.fractionalVolterra_fabiusReal_eq_integral_posPart},
+\lean{ProbabilityRepresentation.fractionalVolterra_fabiusReal_eq_uniformProduct_integral_posPart},
+\lean{ProbabilityRepresentation.fractionalVolterra_fabiusReal_one_eq_integral_rpow}, and
+\lean{ProbabilityRepresentation.fractionalVolterra_fabiusReal_one_eq_uniformProduct_integral_rpow}
+in \path{FabiusFractionalIntegral.lean} are exactly
+\eqref{eq:fabius-fractional-stopped-power}--
+\eqref{eq:fabius-fractional-endpoint-moment}.  These declarations require neither a density
+nor atomlessness.  They prove positive-real integral identities, not a fractional
+derivative, a Caputo formula, a complex-order continuation, or a folded-\(\Up\), quantile,
+or inverse-function specialization.
+
 For \(s\in\R\) and \(k\in\N\), put
 \begin{equation}
  L_k(s)=\int_{[0,1]}\e^{-sx}x^k\,\dd\mu_X(x).              \label{eq:raw-laplace-moment}
@@ -3967,6 +4736,22 @@ identity
 \end{equation}
 namely \lean{factorial_padicVal_two}; the combined declaration is
 \lean{fabiusAtInverseTwoPow_padicVal_two_closed} in \path{TwoAdic.lean}.
+
+The central-binomial specialization gives, for every \(n\ge0\),
+\begin{align}
+ \nu_2\!\binom{2n}{n}&=\wt(n),
+                                                   \label{eq:central-binomial-valuation}\\
+ \varepsilon_n&=(-1)^{\nu_2\binom{2n}{n}}.
+                                                   \label{eq:central-binomial-sign}
+\end{align}
+These are \lean{padicValNat_two_centralBinom} and
+\lean{thueMorseSign_eq_neg_one_pow_centralBinom}.  The companion theorem
+\lean{padicValNat_two_centralBinom_eq_zero_iff} says that the valuation
+vanishes exactly when the binary weight is zero, hence only at \(n=0\);
+a positive power of two has binary weight, and therefore valuation, one.
+These three declarations exhaust the public surface of
+\path{CentralBinomialValuation.lean} and give the direct formal crosswalk for
+the central-binomial theorem in the Thue--Morse atlas.
 
 \subsection{Bernoulli recurrences}
 
@@ -4606,6 +5391,241 @@ with the established rational quotient, and
 \lean{halfQBinomial_theorem} is now the direct specialization of the ring theorem.
 \end{remark}
 
+\begin{theorem}[Denominator-free \(q\)-Vandermonde and shifted central forms]
+\label{thm:q-vandermonde-formal}
+Let \(R\) be a commutative semiring, let \(q\in R\), and let all displayed
+unsigned indices be natural numbers.  Extend a Gaussian row to integer lower
+indices by
+\begin{equation}
+ \mathcal G_q(n,t)=
+ \begin{cases}{n\brack t}_q,&0\le t,\\0,&t<0,\end{cases}
+ \qquad t\in\Z,                                      \label{eq:q-gaussian-int}
+\end{equation}
+where the natural coefficient already vanishes for \(n<t\).  This extension
+has the total reflection law
+\begin{equation}
+ \mathcal G_q(n,n-t)=\mathcal G_q(n,t)\qquad(t\in\Z). \label{eq:q-gaussian-int-symm}
+\end{equation}
+The two zero-extended Vandermonde orientations are
+\begin{align}
+ {m+n\brack r}_q
+ &=\sum_{j=0}^{r}q^{(m-j)(r-j)}
+   {m\brack j}_q{n\brack r-j}_q,                         \label{eq:q-vandermonde-first}\\
+ &=\sum_{j=0}^{r}q^{j\,(n-(r-j))}
+   {m\brack j}_q{n\brack r-j}_q.                         \label{eq:q-vandermonde-second}
+\end{align}
+Here subtraction is natural subtraction; outside the admissible support one
+of the zero-extended Gaussian coefficients vanishes.  Consequently no
+condition \(r\le m+n\) is needed.  The central specialization is
+\begin{equation}
+ {m+n\brack m}_q
+ =\sum_{j=0}^{m}q^{j^2}{m\brack j}_q{n\brack j}_q.       \label{eq:q-vandermonde-central}
+\end{equation}
+Equivalently, removing exactly the zero-extended terms gives the literal
+Durfee support
+\begin{equation}
+ {m+n\brack m}_q
+ =\sum_{j=0}^{\min(m,n)}q^{j^2}{m\brack j}_q{n\brack j}_q.
+                                                               \label{eq:q-vandermonde-central-min}
+\end{equation}
+For every \(N,k\in\N\), including \(N<k\), the positive shifted form is
+\begin{equation}
+ {2N\brack N+k}_q
+ =\sum_{\ell=0}^{N}q^{\ell(\ell+k)}
+   {N\brack\ell}_q{N\brack\ell+k}_q.                    \label{eq:q-vandermonde-shift-plus}
+\end{equation}
+If \(k\le N\), row reflection gives the same right side for
+\({2N\brack N-k}_q\), and its literal-support form is
+\begin{equation}
+ {2N\brack N-k}_q
+ =\sum_{\ell=k}^{N}q^{\ell(\ell-k)}
+   {N\brack\ell}_q{N\brack\ell-k}_q.                    \label{eq:q-vandermonde-shift-minus}
+\end{equation}
+Most strongly, for every \(k\in\Z\), put \(t^\natural=\max(t,0)\in\N\).
+Then the two natural cases combine into the literal finite-support integer sum
+\begin{equation}
+ \mathcal G_q(2N,N+k)
+ =\sum_{\ell\in\Z}
+   q^{\ell^\natural(\ell+k)^\natural}
+   \mathcal G_q(N,\ell)\mathcal G_q(N,\ell+k).           \label{eq:q-vandermonde-shift-int}
+\end{equation}
+Only \(0\le\ell\le N\) can contribute; a nonzero term also has
+\(0\le\ell+k\le N\), so its exponent is exactly
+\(\ell(\ell+k)=\ell^2+\ell k\), as in the signed report formula.  In
+particular, both sides vanish automatically when \(\lvert k\rvert>N\).
+No identity in this theorem uses division, cancellation, a nonvanishing
+hypothesis, or an exclusion of \(q=0\), roots of unity, positive
+characteristic, or zero divisors.
+\end{theorem}
+
+\begin{proof}[Formal proof]
+Equations \eqref{eq:q-vandermonde-first} and
+\eqref{eq:q-vandermonde-second} are
+\lean{gaussianBinomial_add_vandermonde} and
+\lean{gaussianBinomial_add_vandermonde'}.
+The definition \eqref{eq:q-gaussian-int}, its cast, lower-zero, upper-zero,
+and total-reflection laws are respectively
+\lean{gaussianBinomialInt}, \lean{gaussianBinomialInt_ofNat},
+\lean{gaussianBinomialInt_eq_zero_of_neg},
+\lean{gaussianBinomialInt_eq_zero_of_lt}, and
+\lean{gaussianBinomialInt_symm} in \path{FiniteQBinomialCore.lean}.
+The full-range and literal-\(\min(m,n)\) central identities are
+\lean{gaussianBinomial_add_central} and
+\lean{gaussianBinomial_add_central_min}; the positive shift is
+\lean{gaussianBinomial_two_mul_add_shifted_central}; and the two
+negative-shift presentations are
+\lean{gaussianBinomial_two_mul_sub_shifted_central} and
+\lean{gaussianBinomial_two_mul_sub_shifted_central_Icc}.  The total signed
+finite-range and integer-sum forms are
+\lean{gaussianBinomial_two_mul_int_shifted_central} and
+\lean{gaussianBinomial_two_mul_int_shifted_central_finsum}.  These nine
+theorems exhaust the public surface of \path{QBinomialVandermonde.lean}.
+The three natural-shift theorems retain their stated domains, while the last
+two are total in \(k\in\Z\).
+\end{proof}
+
+\begin{theorem}[Weighted subsets and scaled $q$-binomial inversion]
+\label{thm:q-binomial-inversion-formal}
+Let \(R\) be a commutative ring and \(q,s\in R\); the first identity below
+already holds when \(R\) is only a commutative semiring.  For
+\(j\le k\le n\), the Gaussian chain identity is
+\begin{equation}
+ {n\brack k}_q{k\brack j}_q
+ ={n\brack j}_q{n-j\brack k-j}_q.                     \label{eq:q-gaussian-chain}
+\end{equation}
+For every \(m,n\in\N\), the alternating row specializes exactly to
+\begin{align}
+ \sum_{k=0}^{n}(-1)^kq^{\binom k2+mk}{n\brack k}_q
+   &=(q^m;q)_n,                                         \label{eq:q-alternating-general}\\
+ \sum_{k=0}^{n}(-1)^kq^{\binom k2}{n\brack k}_q
+   &=\begin{cases}1,&n=0,\\0,&n>0.\end{cases}          \label{eq:q-alternating-delta}
+\end{align}
+The same finite product has the two exact weighted-subset faces
+\begin{align}
+ \sum_{\substack{T\subseteq\{0,\ldots,N-1\}\\|T|=r}}
+   q^{\sum_{t\in T}t}
+   &=q^{\binom r2}{N\brack r}_q,                        \label{eq:q-subsets-zero-based}\\
+ \sum_{\substack{T\subseteq\{1,\ldots,N\}\\|T|=r}}
+   q^{\sum_{t\in T}t}
+   &=q^{\binom{r+1}{2}}{N\brack r}_q.                  \label{eq:q-subsets-one-based}
+\end{align}
+Both formulas are total in \(N,r\in\N\); above the Gaussian diagonal both
+sides vanish.
+
+Define total lower-triangular kernels on natural indices by
+\begin{align}
+ K^{q,s}_{n,k}&=s^{n-k}{n\brack k}_q,\label{eq:q-scaled-forward-kernel}\\
+ L^{q,s}_{n,k}&=(-s)^{n-k}q^{\binom{n-k}{2}}{n\brack k}_q.
+                                                        \label{eq:q-scaled-inverse-kernel}
+\end{align}
+Natural subtraction causes no ambiguity above the diagonal because the
+Gaussian coefficient is zero there.  With an empty sum when \(n<j\), both
+finite convolution orders are the Kronecker delta:
+\begin{align}
+ \sum_{k\in [j,n]\cap\N}L^{q,s}_{n,k}K^{q,s}_{k,j}
+   &=\delta_{n,j},                                      \label{eq:q-scaled-left-delta}\\
+ \sum_{k\in [j,n]\cap\N}K^{q,s}_{n,k}L^{q,s}_{k,j}
+   &=\delta_{n,j}.                                      \label{eq:q-scaled-right-delta}
+\end{align}
+In particular the scale \(s\) is independent of \(q\) and need not be
+nonzero or invertible.
+
+More generally, let \(M\) be an additive commutative group and an
+\(R\)-module.  For sequences \(a,b:\N\to M\), put
+\begin{equation}
+ (\mathcal T_{q,s}a)_n=\sum_{k=0}^{n}K^{q,s}_{n,k}\,a_k,
+ \qquad
+ (\mathcal T^{-1}_{q,s}b)_n=\sum_{k=0}^{n}L^{q,s}_{n,k}\,b_k,       \label{eq:q-scaled-module-transforms}
+\end{equation}
+where multiplication denotes the scalar action on \(M\).  Then
+\begin{equation}
+ \mathcal T^{-1}_{q,s}\mathcal T_{q,s}=1,
+ \qquad \mathcal T_{q,s}\mathcal T^{-1}_{q,s}=1,
+ \qquad
+ b=\mathcal T_{q,s}a\ \Longleftrightarrow\
+ a=\mathcal T^{-1}_{q,s}b.                              \label{eq:q-scaled-module-inversion}
+\end{equation}
+At \(s=1\) this is classical \(q\)-binomial inversion, now for
+module-valued rather than merely scalar-valued sequences.
+
+There are two useful exact specializations.  The denominator-free geometric
+Lagrange numerator in \eqref{eq:geometric-q-numerator} satisfies globally
+\begin{equation}
+ N_{n,k}(q)=L^{q,q}_{n,k},                               \label{eq:q-geometric-numerator-kernel}
+\end{equation}
+including \(n<k\), without an in-range hypothesis.  At Gaussian base
+\(Q=q^2\) and scale \(s=-q\), put
+\begin{equation}
+ C'_{n,k}=K^{q^2,-q}_{n,k}
+   =(-q)^{n-k}{n\brack k}_{q^2},
+ \qquad
+ B_{n,k}=L^{q^2,-q}_{n,k}
+   =q^{(n-k)^2}{n\brack k}_{q^2}.                        \label{eq:q-gaussian-inverse-kernels}
+\end{equation}
+Then both total finite products satisfy \(C'B=BC'=I\).  These coefficient
+identities use no analytic or nonvanishing assumption.  By contrast, the
+normalized Lagrange quotient in \eqref{eq:geometric-lagrange-gaussian}
+retains its separate field, finite-node injectivity, and displayed in-range
+hypotheses.
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The eight public theorems of \path{BitPositionQBinomial.lean} are, exhaustively,
+\lean{prod_one_add_mul_pow_eq_gaussianBinomial},
+\lean{prod_one_add_pow_eq_sum_gaussianBinomial},
+\lean{sum_powersetCard_two_pow},
+\lean{sum_pow_bitPositionSum_filter_eq_gaussianBinomial},
+\lean{sum_pow_bitPositionSum_filter_eq_gaussianBinomial'},
+\lean{sum_pow_sum_powersetCard_eq_gaussianBinomial},
+\lean{sum_pow_sum_powersetCard_Icc_eq_gaussianBinomial}, and
+\lean{gaussianBinomial_one_eq_choose}.  The sixth and seventh declarations
+are \eqref{eq:q-subsets-zero-based} and
+\eqref{eq:q-subsets-one-based}.
+
+The four definitions and seven theorems of
+\path{QBinomialInversion.lean} are, exhaustively,
+\lean{gaussianBinomial_mul},
+\lean{sum_gaussianBinomial_alternating_mul_pow},
+\lean{sum_gaussianBinomial_alternating},
+\lean{gaussianBinomialKernel},
+\lean{gaussianBinomialInverseKernel},
+\lean{scaledGaussianBinomialKernel},
+\lean{scaledGaussianBinomialInverseKernel},
+\lean{gaussianBinomialKernel_left_orthogonality},
+\lean{gaussianBinomialKernel_right_orthogonality},
+\lean{scaledGaussianBinomialKernel_left_orthogonality}, and
+\lean{scaledGaussianBinomialKernel_right_orthogonality}.  They prove
+\eqref{eq:q-gaussian-chain},
+\eqref{eq:q-alternating-general}--\eqref{eq:q-alternating-delta}, and both
+unscaled and scaled forms of
+\eqref{eq:q-scaled-left-delta}--\eqref{eq:q-scaled-right-delta}.
+
+The four definitions and four theorems of \path{QBinomialTransform.lean} are,
+exhaustively,
+\lean{scaledGaussianBinomialTransform},
+\lean{scaledGaussianBinomialInverseTransform},
+\lean{scaledGaussianBinomialInverseTransform_transform},
+\lean{scaledGaussianBinomialTransform_inverseTransform},
+\lean{scaledGaussianBinomial_inversion},
+\lean{gaussianBinomialTransform},
+\lean{gaussianBinomialInverseTransform}, and
+\lean{gaussianBinomial_inversion}.  They prove
+\eqref{eq:q-scaled-module-transforms}--\eqref{eq:q-scaled-module-inversion}
+under exactly the module assumptions stated above.
+
+Finally, the two definitions and five theorems of
+\path{QBinomialInversionSpecializations.lean} are, exhaustively,
+\lean{geometricQBinomialWeightNumerator_eq_scaledGaussianBinomialInverseKernel},
+\lean{qGaussianResidualCoeff},
+\lean{qGaussianReconstructionCoeff},
+\lean{qGaussianResidualCoeff_eq},
+\lean{qGaussianReconstructionCoeff_eq},
+\lean{qGaussianReconstructionCoeff_residualCoeff_delta}, and
+\lean{qGaussianResidualCoeff_reconstructionCoeff_delta}.  These are
+\eqref{eq:q-geometric-numerator-kernel}, the two closed forms in
+\eqref{eq:q-gaussian-inverse-kernels}, and both convolution orders.
+\end{proof}
+
 \begin{theorem}[Reversed Gaussian row, Lagrange weights, and all residual moments]
 \label{thm:geometric-q-binomial-lagrange}
 Let $R$ be a commutative ring and $q\in R$.  The zero-extended numerator row is
@@ -4683,9 +5703,28 @@ $q$-binomial notation, prove the residual sign, and compute the exact finite
 $\ell^1$ norm of the row.  Their dedicated quarter-base corollaries include
 \lean{quarterGeometricLagrangeQMoment_eq_residual_qBinomial} and
 \lean{sum_abs_quarterGeometricLagrangeWeight_eq_qPochhammer_ratio}.
-The analytic quarter-base prefix or spectral-tail expansion, its infinite
-condition-number limit, remainder estimates, and the resulting acceleration
-and convergence claims remain in the research-frontier volume.
+The generic unconditionally summable geometric filter and its exact Gaussian
+\(\mathsf{tsum}\) tail are proved in \Cref{prop:analytic-series-filter}.  The finite row
+variation, with \(w_q(n,j)\) the $q$-Toeplitz weight
+\lean{qToeplitzWeight} from \path{GeneralQConditionNumber.lean}, also has its exact
+infinite limit: for every
+\(0\le q<1\),
+\[
+ \sum_{j\le n}\lvert w_q(n,j)\rvert
+ \longrightarrow \frac{(-q;q)_\infty}{(q;q)_\infty}.
+\]
+This is \lean{tendsto_sum_abs_qToeplitzWeight} in
+\path{LimitConditionNumber.lean}; the same module proves positivity of the
+denominator on the full range and the effective lower bound
+\(1/(1-q)\le(-q;q)_\infty/(q;q)_\infty\), and promotes that bound to the
+literal divergence theorem
+\lean{tendsto_qConditionNumberLimit_atTop_at_one_left}.  The actual infinite
+Rvachev sinc-product instantiation, at the quarter base and at a generic
+complex squared base under finite-node injectivity, is now the exact theorem
+\cref{thm:rvachev-gaussian-filter}.  What remains in the research-frontier
+volume is the different finite-prefix problem for \(P_{b,n}\): its quotient
+and Bell-coefficient package, the analytic sign and remainder/bracketing
+bounds, uniform accelerated and derivative convergence, and asymptotics.
 
 The same finite row acts coefficientwise on every formal power series.  For
 $q\in\Q$, $p,n\in\N$, and $D(X)\in\Q[[X]]$, define
@@ -5598,7 +6637,9 @@ forms are \lean{completeHomogeneousEval_scaled_geometric} and
 direct principal-specialization induction gives the degree-indexed orientation
 \lean{completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial_degree}.
 Comparing the two orientations proves the denominator-free identities
-\lean{gaussianBinomial_add_symm} and \lean{gaussianBinomial_symm}.  The
+\lean{gaussianBinomial_add_symm} and
+\lean{gaussianBinomial_symm_via_completeHomogeneous}; the latter is a second,
+principal-specialization proof of the core reflection theorem.  The
 report-facing range alias is \lean{completeHomogeneousEvalOn_geometric_range};
 all of these declarations are in \path{GeometricCompleteHomogeneous.lean} or
 \path{GeometricLagrangeCompleteHomogeneous.lean}.
@@ -5704,6 +6745,117 @@ specializations are
 \lean{geometricLagrangeSeriesFilter_eq_residual_mk}.  Every series in this
 paragraph is formal: none of these declarations asserts analytic convergence,
 evaluation at a nonzero argument, or an infinite acceleration formula.
+
+There is now a separate convergent-series companion.  It deliberately uses
+Mathlib's unconditional summability rather than silently identifying a natural-order
+boundary sum with a \(\mathsf{tsum}\).
+
+\begin{proposition}[Unconditionally summable analytic filters and their Gaussian tail]
+\label{prop:analytic-series-filter}
+Let \(K\) be a commutative semiring, let \(E\) be a normed additive commutative group
+with a \(K\)-module structure, let \(S\) be finite, and choose nodes \(x_i\in K\),
+weights \(w_i\in K\), coefficients \(a_m\in E\), and a scale \(z\in K\).  Define
+\begin{equation}
+ \mathcal A_{S,x,w}(a;z)
+ :=\sum_{i\in S}\sum_{m\ge0}w_i(x_i z)^m a_m.              \label{eq:finite-analytic-series-filter}
+\end{equation}
+Assume for every \(i\in S\) that the displayed weighted inner series is
+unconditionally summable.  Then the finite and infinite sums interchange and
+\begin{equation}
+ \mathcal A_{S,x,w}(a;z)
+ =\sum_{m\ge0}\left(\sum_{i\in S}w_i x_i^m\right)z^m a_m. \label{eq:finite-analytic-series-filter-diagonal}
+\end{equation}
+If, moreover,
+\(\sum_{i\in S}w_i x_i^d=t^d\) for \(0\le d\le p\), then
+\begin{align}
+ \mathcal A_{S,x,w}(a;z)
+ &=\sum_{d=0}^{p}(tz)^d a_d                                      \notag\\
+ &\quad+\sum_{r\ge0}
+ \left(\sum_{i\in S}w_i x_i^{p+1+r}\right)
+ z^{p+1+r}a_{p+1+r}.                                      \label{eq:finite-analytic-series-filter-head-tail}
+\end{align}
+At target \(t=0\), the finite head is exactly \(a_0\), including \(p=0\); the
+positive degrees never pass through the \(0^0\) boundary.
+
+Now let \(K\) be a commutative ring with continuous constant scalar multiplication on
+\(E\) (each fixed scalar acts continuously), take
+\(x_j=q^j\) for \(0\le j\le p\), and suppose the row is exact at zero through
+degree \(p\); write \(\mathcal A_{q,p,w}\) for this geometric specialization.  It is
+enough to assume unconditional summability of
+\(\sum_m(q^jz)^m a_m\) only when \(w_j\ne0\).  Then
+\begin{equation}
+ \mathcal A_{q,p,w}(a;z)
+ =a_0+\sum_{r\ge0}
+ (-1)^p q^{\binom{p+1}{2}}{p+r\brack p}_q
+ z^{p+1+r}a_{p+1+r}.                                     \label{eq:geometric-analytic-series-filter-tail}
+\end{equation}
+Over a field, distinct geometric nodes supply the Lagrange specialization and its
+shifted-scale form \(z=q^{\mathrm{start}}\).  A zero-weight node imposes no convergence
+condition: its weighted series is identically zero.
+\end{proposition}
+
+The definitions are \lean{finiteAnalyticSeriesFilter} and
+\lean{geometricAnalyticSeriesFilter} in \path{AnalyticSeriesFilter.lean}.  The generic
+diagonal, exact-head, and zero-target declarations are
+\lean{summable_finiteAnalyticSeriesFilter_diagonal},
+\lean{finiteAnalyticSeriesFilter_eq_tsum},
+\lean{finiteAnalyticSeriesFilter_eq_head_add_tail_of_exact}, and
+\lean{finiteAnalyticSeriesFilter_eq_constant_add_tail_of_exact_zero}.  The Gaussian,
+Lagrange, and shifted-scale tail declarations are
+\lean{geometricAnalyticSeriesFilter_eq_constant_add_gaussian_tsum},
+\lean{geometricLagrangeAnalyticSeriesFilter_eq_constant_add_gaussian_tsum}, and
+\lean{geometricLagrangeAnalyticSeriesFilter_shifted}.  Thus this module has exactly two
+definitions and seven public theorems.  These results exclude series converging only in
+their natural order at a boundary point.  They also assert no formal-to-analytic
+power-series evaluation bridge, radius or uniform-convergence theorem,
+norm/sign/error bound, asymptotic estimate, or positivity statement.  The
+actual Rvachev sinc-product instantiation is a separate theorem, so that the
+generic module retains precisely this abstract scope.
+
+\begin{theorem}[Exact Gaussian filter of the Rvachev sinc product]
+\label{thm:rvachev-gaussian-filter}
+Let \(c,z\in\C\), let \(p\in\N\), put \(q=c^2\), and assume only that
+\[
+ j\longmapsto q^j
+ \quad\hbox{is injective on }\{0,\ldots,p\}.
+\]
+Writing \(\Phi=\lean{rvachevFourierProduct}=\widehat{\Up}\), one has the
+exact entire identity
+\begin{equation}
+ \sum_{j=0}^{p}\lambda_{p,j}^{(q)}\Phi(c^jz)
+ =1+\sum_{r=0}^{\infty}
+   (-1)^p q^{\binom{p+1}{2}}{p+r\brack p}_q
+   A_{p+1+r}(z).                                         \label{eq:rvachev-gaussian-filter}
+\end{equation}
+There is no contraction, realness, positivity, or global nonvanishing
+hypothesis on \(c\).  At \(c=1/2\), hence \(q=1/4\), the finite node
+condition is proved internally, so \eqref{eq:rvachev-gaussian-filter} holds
+for every complex \(z\) and every natural \(p\) with no hypothesis.
+The same generic formula is exported for the Fourier transform of every
+bounded \(F\) satisfying \(\lean{IsFabius}\ F\).
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The named moment series sums to the standalone product by
+\lean{hasSum_rvachevFourierMomentTerm_product}, and its iterated scaling law
+is \lean{rvachevFourierMomentTerm_pow_scale}.  Passing the finite Lagrange
+row through that unconditional sum and inserting the Gaussian residual gives
+\lean{geometricLagrange_rvachevFourierProduct_eq_gaussian_tsum}.  Its
+assumption-free \(c=1/2\), \(q=1/4\) specialization is
+\lean{quarterLagrange_rvachevFourierProduct_eq_gaussian_tsum}; the
+model-generic Fourier-transform form is
+\lean{geometricLagrange_rvachevFourier_eq_gaussian_tsum}.  These five
+declarations exhaust \path{RvachevQBinomialFilter.lean}.
+\end{proof}
+
+The theorem closes the coefficient bridge for the \emph{infinite} Rvachev
+product.  It does not identify the frontier report's finite products
+\(P_{b,n}\), their quotient \(P_{b,n}/P_b\), or their Bell coefficients with
+this series.  Nor does it prove a conditionally convergent boundary theorem,
+an analytic sign or bracketing/error bound, uniform or derivative
+convergence, or an asymptotic acceleration estimate.  The algebraic
+\((-1)^p\) in \eqref{eq:rvachev-gaussian-filter} should not be promoted to
+one of those analytic sign claims.
 
 For the present half-geometric grid, write $\lambda_{n,k}^{(1/2)}$ for the
 evaluation-at-zero weight belonging to the node $2^{-k}$.  The Toeplitz row is exactly the
@@ -6748,7 +7900,7 @@ exact dyadic product on the negative Laplace axis, a genuinely nonconstant perio
 correction on logarithmic scale, and a lower-Lambert saddle coordinate.  This section
 states the hierarchy in the form proved in Lean.  Longer heuristic derivations, numerical
 experiments, and proposed refinements without exact theorem counterparts are collected in
-\path{docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex}.
+\path{docs/semi-formalized-research-frontiers/semi-formalized-research-frontiers.tex}.
 
 Throughout, put
 \begin{equation}
@@ -7612,7 +8764,133 @@ converges absolutely and uniformly in the formal development.  The exact declara
 competitor has strictly larger error.  These are
 \lean{rvachevLegendrePartialSum_least_squares} and
 \lean{rvachevLegendrePartialSum_strict_least_squares} in
-\path{FabiusLegendreLeastSquares.lean}.  On $[0,2]$, the signed global extension has the
+\path{FabiusLegendreLeastSquares.lean}.
+
+At compiled source checkpoint \texttt{c51a41fcf},
+\path{FabiusLegendreTranslateBlocks.lean} specializes
+\eqref{eq:rvachev-polynomial-synthesis-finite} to the Legendre family.  Its six
+public definitions are \lean{rvachevLegendreDeconvolutionPolynomial},
+\lean{rvachevLegendreScale}, \lean{rvachevLegendreIndexSet},
+\lean{rvachevLegendreAtomCoefficient},
+\lean{rvachevLegendreTranslateBlock}, and \lean{rvachevTranslateGram}.  Its five
+public theorems are \lean{eval_legendrePolynomial_eq_sum_rvachevUp},
+\lean{eval_legendrePolynomial_even_eq_sum_rvachevUp},
+\lean{rvachevLegendreTranslateBlock_eq_rvachevLegendreBlock},
+\lean{intervalIntegral_rvachevLegendreTranslateBlock_mul}, and
+\lean{sum_rvachevLegendreAtomCoefficient_mul_gram}.
+
+Writing \(Q_d=\mathcal D_{\Up}P_d\), the first two theorems give
+\begin{align}
+ P_d(x)&=2^{-d}\sum_{-2^{d+1}<k<2^{d+1}}
+ Q_d(k/2^d)\Up(x-k/2^d),                                  \label{eq:legendre-rvachev-synthesis}\\
+ P_{2n}(x)&=4^{-n}\sum_{-2\cdot4^n<k<2\cdot4^n}
+ Q_{2n}(k/4^n)\Up(x-k/4^n),                               \label{eq:legendre-rvachev-even-synthesis}
+\end{align}
+for \(-1\le x\le1\).  More explicitly, let
+\[
+ M_n=4^n,\qquad I_n=\{k\in\Z:-2M_n<k<2M_n\},\qquad
+ a_{n,k}=\frac{u_n}{M_n}Q_{2n}(k/M_n),
+\]
+and define the literal finite translate block
+\begin{equation}
+ \widetilde B_n(x)=\sum_{k\in I_n}a_{n,k}\Up(x-k/M_n).
+ \label{eq:legendre-translate-block}
+\end{equation}
+Then \(\widetilde B_n(x)=u_nP_{2n}(x)\) throughout \([-1,1]\), and these
+finite trains satisfy the same complete orthogonality formula as the polynomial
+blocks.  With
+\[
+ G_{m,n}(k,\ell)=\int_{-1}^{1}
+ \Up(x-k/M_m)\Up(x-\ell/M_n)\dd x,
+\]
+the fully expanded atom-Gram identity is
+\begin{equation}
+ \sum_{k\in I_m}\sum_{\ell\in I_n}a_{m,k}a_{n,\ell}G_{m,n}(k,\ell)
+ =\delta_{mn}\frac{2u_n^2}{4n+1}.                         \label{eq:legendre-atom-gram}
+\end{equation}
+
+At compiled source checkpoint \texttt{ca66a1247}, the polynomial-form Legendre blocks
+\(B_n(x)=u_nP_{2n}(x)\) satisfy the complete orthogonality formula
+\begin{equation}
+ \int_{-1}^{1}B_m(x)B_n(x)\dd x
+ =\delta_{mn}\frac{2u_n^2}{4n+1}.                            \label{eq:legendre-block-orthogonality}
+\end{equation}
+This is \lean{intervalIntegral_rvachevLegendreBlock_mul}, for the definition
+\lean{rvachevLegendreBlock}.  The coefficient-energy form of Parseval is also
+exact.  Put \(S_N(x)=\sum_{n=0}^{N}u_nP_{2n}(x)\).  Then
+\begin{align}
+ \int_{-1}^{1}\Up(x)^2\dd x
+   &=\sum_{n=0}^{\infty}\frac{2u_n^2}{4n+1},                 \label{eq:legendre-parseval-energy}\\
+ \int_{-1}^{1}\bigl(\Up(x)-S_N(x)\bigr)^2\dd x
+   &=\sum_{n=N+1}^{\infty}\frac{2u_n^2}{4n+1}.              \label{eq:legendre-exact-tail}
+\end{align}
+The full-series and shifted-tail \texttt{HasSum} declarations are
+\lean{hasSum_rvachevLegendreCoefficient_energy} and
+\lean{hasSum_rvachevLegendreCoefficient_energy_tail}; the latter's \texttt{tsum}
+form is \lean{rvachevLegendreSquaredError_partialSum_eq_tsum_tail}.  The finite
+partial-sum norm is
+\lean{integral_sq_eval_rvachevLegendrePartialSumPolynomial}.  Finally, writing
+\begin{equation}
+ A_2:=\int_0^1F(t)^2\dd t,
+ \qquad
+ A_2=\sum_{n=0}^{\infty}\frac{u_n^2}{4n+1},                 \label{eq:fabius-square-energy-legendre}
+\end{equation}
+so that \(A_2=\lean{fabiusSquareEnergy}\ F\), the bridge and series declarations are
+\lean{integral_sq_rvachevUp_eq_two_mul_fabiusSquareEnergy},
+\lean{hasSum_fabiusSquareEnergy_legendre}, and
+\lean{fabiusSquareEnergy_eq_tsum_legendre} in
+\path{FabiusLegendreEnergy.lean}.  The block is defined directly in its
+polynomial form.
+
+At compiled source checkpoint \texttt{9d5f41c2c},
+\path{FabiusLegendreRationalEnergy.lean} supplies three executable rational
+definitions: \lean{canonicalRvachevLegendreCoefficientRat},
+\lean{fabiusSquareEnergyTermRat}, and
+\lean{fabiusSquareEnergyPartialSumRat}.  Its fifteen public theorems are
+\lean{canonicalRvachevLegendreCoefficientRat_cast},
+\lean{canonicalRvachevLegendreCoefficientRat_zero},
+\lean{fabiusSquareEnergyTermRat_cast},
+\lean{fabiusSquareEnergyTermRat_nonneg},
+\lean{fabiusSquareEnergyTermRat_zero},
+\lean{fabiusSquareEnergyPartialSumRat_cast},
+\lean{monotone_fabiusSquareEnergyPartialSumRat},
+\lean{fabiusSquareEnergyPartialSumRat_pos},
+\lean{fabiusSquareEnergyPartialSumRat_zero},
+\lean{fabiusSquareEnergyPartialSumRat_one},
+\lean{fabiusSquareEnergyPartialSumRat_two},
+\lean{fabiusSquareEnergyPartialSumRat_three},
+\lean{hasSum_fabiusSquareEnergy_ratCast},
+\lean{fabiusSquareEnergy_eq_tsum_ratCast}, and
+\lean{tendsto_fabiusSquareEnergyPartialSumRat_cast}.  Thus every finite
+Legendre-energy partial sum is represented by a positive rational number,
+the rational partial sums are monotone, and their real casts converge to
+$A_2$.  For cutoffs $N=0,1,2,3$, respectively, the four certified values are
+$1/4$, $7/18$, $3271/8100$, and $3246043/8037225$.
+
+At compiled source checkpoint \texttt{b9b240bc0},
+\path{FabiusSquareEnergyFourier.lean} exports no definitions and exactly four
+theorems:
+\lean{integral_norm_sq_rvachevFourier_eq_two_mul_fabiusSquareEnergy},
+\lean{fabiusSquareEnergy_eq_integral_Ioi_norm_sq_rvachevFourier},
+\lean{fabiusSquareEnergy_eq_integral_Ioi_tprod_sinc_sq}, and
+\lean{fabiusSquareEnergy_eq_scaled_integral_Ioi_tprod_sinc_sq}.  The first two
+identify the full real-axis squared Fourier mass with $2A_2$ and its
+positive-half-line half with $A_2$.  The last two give exactly
+\begin{align}
+ A_2
+ &=\int_0^\infty\prod_{j=0}^{\infty}
+   \sinc^2\!\left(\frac{\pi\xi}{2^j}\right)\dd\xi,\label{eq:fabius-square-energy-fourier}\\
+ &=\frac1{2\pi}\int_0^\infty\prod_{r=1}^{\infty}
+   \left(\frac{\sin(t/2^r)}{t/2^r}\right)^2\dd t.\label{eq:fabius-square-energy-sinc}
+\end{align}
+The synthesis declarations establish the displayed sufficient dyadic meshes,
+but not their minimality or the report's sharpness statement.  They also do not
+formalize parity, derivative/Gegenbauer/Appell closed forms, or the displayed
+low-degree values of \(Q_d\); rationality of the atom rows; a named outer
+translate-block \texttt{HasSum}; one-mesh synthesis of an entire partial sum;
+or the later refinement, projector, and asymptotic layers.
+
+On $[0,2]$, the signed global extension has the
 corresponding translated Legendre series
 \lean{globalFabius_eq_tsum_translatedLegendre_formula}.
 
@@ -7734,9 +9012,32 @@ That rule explains several choices made above:
       shift relation.  Separately, \path{GeometricUniformLaw.lean} defines the named weights
       \((1-q)q^n\), their series and probability law, and proves self-similarity, reflection,
       absolute continuity, null singletons, and support equal to the series range under
-      \(|q|<1\), with exact support \([0,1]\) under \(0\le q<1\).  It does not define a named
-      \(q\)-CDF or an explicit density, nor prove the corresponding CDF or density equations,
-      transform or moment formulas, smoothness, or fixed-point uniqueness.
+      \(|q|<1\), with exact support \([0,1]\) under \(0\le q<1\).
+      \path{ContinuousCDF.lean} and \path{GeometricUniformCDF.lean} add the named CDF,
+      continuity and reflection for \(|q|<1\), the exterior tails for \(0\le q<1\), and,
+      for \(0<q<1\), the conditioning equations, everywhere derivative, explicit
+      compactly supported Radon--Nikodym density, and real-space \(C^\infty\) package.
+      \path{ProbabilityRepresentation.lean} supplies the exact half-base CDF and density
+      bridges.  \path{AffineIndependentCopy.lean} proves probability preservation,
+      product-map and characteristic-function factorization, finite characteristic-function
+      iteration, and uniqueness of probability fixed points for \(|q|<1\) in every complete
+      second-countable real inner-product target.  Its
+      \path{GeometricUniformUniqueness.lean} specialization characterizes the named law,
+      including \(q=0\) and negative \(q\), without support, density, or moment assumptions.
+      The selected density has no proved interpretation here at \(q=0\) or
+      negative \(q\).  \path{GeometricSincFactorization.lean} gives the exact finite
+      residual sinc factorization and pointwise phase-bearing prefix limit for every
+      \(|q|<1\), with dyadic wrappers; \lean{geometricSincProduct} already packages the
+      same rescaled sinc factors as a \lean{tprod}.  A named
+      characteristic-function-to-\lean{geometricSincProduct} bridge (or explicit
+      \lean{HasProd} theorem), compact-uniform convergence, general-\(q\) rapid decay and
+      Fourier inversion, centered packaging, closed
+      higher-derivative and endpoint-flatness wrappers, shape results, further transforms,
+      and explicit Bernoulli-cumulant/Bell-moment formulas and asymptotics remain outside
+      this interface.  The exact-support oriented transform DDE and adjacent Cauchy-power
+      recurrence for every nonzero \(|q|<1\), including negative ratios, are direct theorems
+      of \path{GeometricUniformCauchy.lean}; these are distinct from the still-open
+      characteristic-function-to-infinite-product and Fourier-inversion formulas.
 \item Quantile transport is formal at the measure level first for arbitrary real
       probability laws, with no support or range restriction and an almost-everywhere
       sublevel characterization; a compact pointwise specialization feeds the clamped
@@ -7744,19 +9045,34 @@ That rule explains several choices made above:
       Banach-valued substitution with Lean's totalized Bochner integral.  A separate
       weighted-subgraph development proves Banach-valued survival layer cake and the
       full-interval Fabius inverse identity for an explicit interval-integrable primitive
-      or a pointwise-\(C^1\) primitive.  Finally,
-      \path{InversePairIntegral.lean} proves the two-function identity for arbitrary
-      absolutely-continuous outer functions on an ordered compact rectangle, derives
-      monotonicity on that rectangle and measurable canonical clamped extensions from the
-      strict inverse-order relation, and supplies both the Fabius wrapper and its area sum.
-      These declarations do not package variable-upper-endpoint, higher-order,
-      improper-integral, fractional, or complex-Mellin identities.
+      or a pointwise-\(C^1\) primitive.  Its strict-order hypothesis actually makes the
+      two compact-interval clock restrictions a Galois connection, so the generic
+      explicit and pointwise-\(C^1\) forms now derive clock measurability rather than
+      assuming it.  For a real-valued absolutely continuous primitive, a further generic
+      subtraction theorem and its normalized and Fabius forms accept every real or complex
+      \(L^1\) weight and require no separate complementary-integrability hypothesis.  Finally,
+      \path{InversePairIntegral.lean} proves the full and variable-upper two-function
+      identities for arbitrary absolutely-continuous outer functions on an ordered compact
+      rectangle, derives monotonicity on that rectangle and measurable canonical clamped
+      extensions from the strict inverse-order relation, and supplies the two Fabius wrappers,
+      the full area sum, and the partial inverse-area identity.  These declarations do not
+      package reversed-endpoint, higher-order, improper-integral, fractional,
+      complex-valued arbitrary-AC-primitive, or complex-Mellin identities.
 \item Step cells use the formal half-endpoint indicator, including its point value at a
       shared boundary.
 \item The Fourier chapter distinguishes the real punctured-limit statement from the stronger
       proved local theory: every nonzero signed integer has an exact complex analytic order,
       all lower complex derivatives vanish, and the first surviving derivative is evaluated
       explicitly in \Cref{sec:fourier-integer-zero-jets}.
+\item Summable-scale infinite products are formal under the exact norm-summability,
+      continuity, local-compactness, completeness, and big-\(O\) hypotheses stated in
+      \Cref{sec:geometric-reciprocal-gamma}.  For complex \(q\) with
+      \(\lVert q\rVert<1\), this gives the entire reciprocal-Gamma product, its zero orbit,
+      Mahler and reflection equations, and the dyadic zero and meromorphic pole orders.
+      The Gamma-side functions are totalized pointwise inverses: raw products of Gamma
+      factors away from their poles, arithmetic canonical regroupings, logarithmic,
+      digamma, Malmsten, heat-trace, integral, D-finite, reciprocal-Gamma derivative-tower,
+      and general-base order statements are not claimed.
 \item Flatness uses natural powers, and the analytic-locus claims use precisely the domains
       proved in \path{NowhereAnalytic.lean}.
 \item The \(q\)-calculus distinguishes the half-base Fabius identities from the
@@ -7766,9 +9082,23 @@ That rule explains several choices made above:
       specializations, denominator-free geometric residual moments, forward closed
       finite-node numerators, and the proved quarter-base specialization are formal.
       Generic finite formal-series filters act diagonally coefficientwise, and exact
-      geometric rows have the all-degree Gaussian residual multiplier.  These are purely
-      formal-series statements: analytic generic-\(q\) transforms, series evaluation,
-      convergence, and quarter-sinc acceleration remain outside the formal corpus.
+      geometric rows have the all-degree Gaussian residual multiplier.  Their analytic
+      companion interchanges finite filters with unconditionally summable weighted
+      coefficient series, splits exact heads from infinite tails, and gives the exact
+      Gaussian \(\mathsf{tsum}\) tail for geometric and Lagrange rows.  Zero-weight nodes
+      impose no convergence condition.  Named even Fourier modes now instantiate that
+      tail for the actual infinite Rvachev sinc product: arbitrary complex \(c,z\) need
+      only injectivity of the finite powers of \(c^2\), and \(c=1/2\), \(q=1/4\) is
+      assumption-free.  The two \(q\)-Vandermonde orientations, the central convolution,
+      and all natural shifted forms are denominator-free commutative-semiring theorems.
+      The core also zero-extends the Gaussian lower index to \(\Z\), proves its total
+      reflection symmetry, and packages the report's single shifted-central formula for
+      every signed \(k\), both over \(0,\ldots,N\) and as a literal finite-support
+      integer sum.  Conditionally-only convergent
+      boundary series, formal-to-analytic evaluation outside the named entire series,
+      the report's finite-prefix quotient and Bell package, analytic sign/error bounds,
+      uniform or derivative convergence, and asymptotic quarter-sinc acceleration remain
+      outside the formal corpus.
 \item Integer-order Volterra integration is formal at arbitrary base point and endpoint in
       a real Banach space, including strict FTC, order composition, polynomial weights,
       Taylor reconstruction, and the exact Fabius ladder.  A separate total real-order
@@ -7777,14 +9107,26 @@ That rule explains several choices made above:
       operator at every positive natural order.  The shifted real beta kernel is evaluated
       exactly when both orders are positive and the endpoint inequality is strict; its raw
       kernel is interval-integrable also at a coincident endpoint.  In a complete target,
-      two positive orders compose for a continuous input on an ordered compact interval.
-      The modules prove no corresponding law for merely interval-integrable inputs or
-      noncomplete targets, no fractional derivative or complex-order result, and no
-      Fabius-specific fractional formula.  Separately, the weighted
-      inverse-layer-cake API permits real or complex scalar weights and a Banach-valued
-      kernel on the full unit interval.  Variable-endpoint or higher inverse primitives,
-      fractional Fabius/inverse identities (including Caputo identities and semigroup
-      laws), improper-integral limits, and complex Mellin continuation
+      shifted powers and constants have exact Gamma-quotient values, and two positive
+      orders compose for a continuous input on an ordered compact interval.  The
+      atom-preserving lower-CDF layer cake also gives the positive-real Fabius stopped-power
+      identity for every real endpoint and its unit-endpoint moment.
+      Positive affine covariance holds at arbitrary real order for an ordered endpoint and
+      positive scale, and Gamma-normalized order raising needs only a continuous primitive,
+      an interval-integrable displayed derivative, and that derivative from the right on
+      the open interval.  The causal Rvachev primitive, its compact-support cutoff, its
+      positive-natural bridge, and its positive-order semigroup are formalized on
+      \(x\ge-1\).  The first exact fractional shifts are proved for the signed
+      extension on \(x\ge0\), the bounded function on \([0,1]\), and the \(\Up\)-to-\(F\)
+      bridge based at \(-1\) on \(x\ge-1\).  The modules prove no corresponding semigroup
+      law for merely interval-integrable inputs or noncomplete targets, no Caputo or
+      Riemann--Liouville derivative operator, no complex-order result, and no iterated or
+      negative-branch shift, shifted lattice, or endpoint-\(\Up\) wrapper.  Separately, the
+      weighted inverse-layer-cake API permits real or complex scalar weights and a
+      Banach-valued explicit or pointwise-\(C^1\) primitive on the full unit interval; its
+      arbitrary-absolutely-continuous form retains a real-valued primitive.  Variable or
+      reversed endpoints, complex-valued arbitrary-AC primitives, higher inverse primitives,
+      fractional inverse identities, improper-integral limits, and complex Mellin continuation
       remain outside these results.
 \item Endpoint asymptotics retain exact phases and the proved remainder scopes; numerical
       fits and unproved coefficient formulas are absent.
@@ -7794,18 +9136,21 @@ The source drafts have been discharged into two destinations.  Proved material w
 into the theorem-backed narrative here.  The remaining research material is preserved under
 
 \begin{quote}
-\path{Analysis/FabiusFunction/docs/non-formalized-research-frontiers/}.
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/}.
 \end{quote}
 
 In particular, inverse-function repeated integration and saddle expansions, improper
-inverse integrals, complex-power and fractional-order integration, small-argument analysis,
-analytic generic-\(q\) transforms, convergence claims, and other deferred results remain
-available there with an explicit warning that they are not part of the formal corpus.
-Natural-order Volterra integration and finite
+inverse integrals, complex-power and complex-order integration, conditionally convergent
+boundary transforms, sinc-tail instantiations and estimates, small-argument analysis, and
+other deferred results remain available there with an explicit warning that they are not
+part of the formal corpus.  Positive-real order raising, the first fractional
+Fabius--Rvachev shifts, and unconditional generic-\(q\) series transforms have moved into
+the theorem-backed narrative.  Natural-order Volterra integration and finite
 polynomial weights are formalized in \Cref{sec:normalized-volterra}; the compact-rectangle
 absolutely-continuous inverse calculus is \Cref{thm:ac-inverse-pair}; and the finite
-base-generic Gaussian/Richardson algebra and its formal-series filter are formalized in
-\Cref{prop:geometric-principal-residuals,prop:finite-power-series-filter}.
+base-generic Gaussian/Richardson algebra and its formal and unconditionally summable
+series filters are formalized in
+\Cref{prop:geometric-principal-residuals,prop:finite-power-series-filter,prop:analytic-series-filter}.
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -7819,15 +9164,107 @@ generic weighted distributions, geometrically weighted uniform laws, exact quant
 transport, Banach-valued survival layer cake, weighted inverse layer cake,
 arbitrary absolutely-continuous inverse-pair calculus, reciprocal-power values, dyadic
 algorithms, half-base \(q\)-binomial identities, prefix sums, denominator-free
-arbitrary-base geometric interpolation, finite formal-series filters and their Gaussian
-residuals, normalized integer-order and positive-real fractional Volterra foundations,
-exact integer Fabius primitives and polynomial weights, endpoint Laplace analysis, and
+  arbitrary-base geometric interpolation, finite formal-series and unconditionally summable
+  analytic filters with their Gaussian residuals, normalized integer-order and positive-real
+  fractional Volterra foundations, exact integer Fabius primitives and first fractional
+  Fabius--Rvachev shifts, polynomial weights, endpoint Laplace analysis, and
 computable approximation.
 
 The most important methodological conclusion is equally concrete: the primary document is
 now a map of proved mathematics.  Research claims can move back from the frontier only after
 a matching Lean theorem exists, with the same hypotheses, domain, normalization, endpoint
 convention, and conclusion.
+
+\section{Affine Cauchy--Stieltjes calculus}
+\label{sec:cauchy-calculus}
+
+The current library packages the report-oriented kernel without tying it to a particular
+probability law.  For a finite real measure \(\mu\), write
+\[
+ \mathcal C_\mu(z)=\int_{\R}\frac{\dd\mu(x)}{z-x},
+ \qquad
+ \mathcal P_{\mu,n}(z)=\int_{\R}(z-x)^{-n}\dd\mu(x).
+\]
+These are \lean{measureCauchyTransform} and \lean{measureCauchyPower}, on the natural open
+domain \lean{measureCauchyDomain}.  Their integral, index-one, affine-pushforward,
+open-domain, derivative, and holomorphy declarations are, respectively,
+\lean{measureCauchyTransform_apply}, \lean{measureCauchyPower_one},
+\lean{measureCauchyPower_map_affine}, \lean{measureCauchyTransform_map_affine},
+\lean{isOpen_measureCauchyDomain}, \lean{hasDerivAt_measureCauchyTransform}, and
+\lean{analyticOn_measureCauchyTransform}.  The affine identities are total under Lean's
+Bochner-integral convention and allow every nonzero real scale, including a negative one.
+
+The reusable fixed-point interface assumes only that \(\mu\) is finite, its support lies in
+a carrier \(K\), the map \((u,x)\mapsto c+au+bx\) preserves \(K\), both \(a\) and \(b\)
+are nonzero, and
+\[
+ \mu=\bigl(\operatorname{Unif}[0,1]\times\mu\bigr)_*
+       (u,x\mapsto c+au+bx).
+\]
+It requires no probability normalization and no closedness, compactness, measurability, or
+nonemptiness assumption on \(K\).  Off the complexification of that carrier, the direct
+named theorems \lean{hasDerivAt_measureCauchyTransform_of_uniformAffineFixedPoint} and
+\lean{measureCauchyPower_succ_of_uniformAffineFixedPoint} give
+\[
+ \mathcal C_\mu'(z)=\frac{1}{ab}
+ \left(\mathcal C_\mu\!\left(\frac{z-c}{b}\right)
+      -\mathcal C_\mu\!\left(\frac{z-c-a}{b}\right)\right)
+\]
+and, for \(n\ge1\),
+\[
+ \mathcal P_{\mu,n+1}(z)=\frac{1}{nab^n}
+ \left(\mathcal P_{\mu,n}\!\left(\frac{z-c-a}{b}\right)
+      -\mathcal P_{\mu,n}\!\left(\frac{z-c}{b}\right)\right).
+\]
+
+For the geometric uniform law the definitions
+\lean{geometricUniformStieltjesDomain}, \lean{geometricUniformStieltjesTransform}, and
+\lean{geometricUniformStieltjesPower} are total in real \(q\).  Their remaining direct
+public declarations are \lean{geometricUniformStieltjesTransform_apply},
+\lean{geometricUniformStieltjesPower_one},
+\lean{isOpen_geometricUniformStieltjesDomain},
+\lean{analyticOn_geometricUniformStieltjesTransform},
+\lean{hasDerivAt_geometricUniformStieltjesTransform_refinement}, and
+\lean{geometricUniformStieltjesPower_succ}.  Holomorphy assumes \(|q|<1\); the divided
+differential and adjacent-power equations also assume \(q\ne0\).  Their proofs use the
+exact series range as invariant carrier, so negative ratios are included.  The case \(q=0\)
+is excluded only from the divided formulas.
+
+At \(q=1/2\), for every bounded Fabius solution, the canonical unit and centered
+hierarchies are related by the direct named all-order bridge
+\[
+ S_n(z)=2^nR_n(2z-1).
+\]
+\begin{center}
+\footnotesize\lean{fabiusStieltjesPower_eq_two_pow_mul_rvachevCauchyPower}
+\end{center}
+The module \path{CauchyTransform.lean} contains six public definitions:
+\lean{rvachevCauchyDomain}, \lean{fabiusStieltjesDomain},
+\lean{rvachevCauchyTransform}, \lean{fabiusStieltjesTransform},
+\lean{rvachevCauchyPower}, and \lean{fabiusStieltjesPower}.  Its direct theorem surface is
+\lean{rvachevCauchyTransform_apply}, \lean{fabiusStieltjesTransform_apply},
+\lean{rvachevCauchyPower_one}, \lean{fabiusStieltjesPower_one},
+\lean{rvachevCauchyTransform_eq_integral_rvachevUp},
+\lean{isOpen_rvachevCauchyDomain}, \lean{isOpen_fabiusStieltjesDomain},
+\lean{hasDerivAt_rvachevCauchyTransform},
+\lean{hasDerivAt_fabiusStieltjesTransform},
+\lean{analyticOn_rvachevCauchyTransform},
+\lean{analyticOn_fabiusStieltjesTransform},
+\lean{fabiusStieltjesTransform_eq_two_mul_rvachevCauchyTransform},
+\lean{rvachevCauchyTransform_eq_inv_two_mul_fabiusStieltjesTransform}, the all-order bridge
+above, \lean{hasDerivAt_fabiusStieltjesTransform_refinement},
+\lean{fabiusStieltjesPower_succ}, and \lean{rvachevCauchyPower_succ}.
+In particular, the unit-interval equation
+\(S'(z)=4(S(2z)-S(2z-1))\) and both adjacent-order recurrences on their complex slit
+domains are now direct named results, not merely informal consequences of affine transport.
+
+This closure does not supply a complex logarithmic fixed point, complex order,
+pointwise or nontangential Sokhotski--Plemelj limits, a principal-value Hilbert-transform
+identity, or the full Jacobi/Pad\'e theory.  Separate current modules do prove the real
+logarithmic identity for \(z>1\), real order lowering for \(\alpha>1\), exterior Laurent
+series, finite-height Herglotz--Poisson identities, integrated interval
+Stieltjes--Perron inversion, and initial exact Jacobi data; none of those statements is read
+as one of the stronger boundary or continuation claims just listed.
 
 \appendix
 
@@ -7849,13 +9286,27 @@ Shape and regularity &
 \path{Differential.lean}, \path{Monotonicity.lean}, \path{Convexity.lean},
 \path{Regularity.lean}\\
 Probability, weighted-law naturality, absolute continuity, exact support and affine recursion,
-quantile transport, layer cake, and finite approximants &
+contractive affine-law uniqueness, geometric sinc-prefix factorization, quantile transport,
+survival/CDF layer cake, fractional stopped powers, affine Cauchy--Stieltjes calculus,
+renormalization, Laurent/Herglotz/inversion layers, initial Jacobi data, and finite approximants &
 \path{WeightedUniformSeries.lean}, \path{WeightedUniformDistribution.lean},
 \path{WeightedUniformSupport.lean}, \path{GeometricUniformLaw.lean},
+\path{AffineIndependentCopy.lean}, \path{GeometricUniformUniqueness.lean},
+\path{GeometricSincFactorization.lean},
+\path{ContinuousCDF.lean}, \path{GeometricUniformCDF.lean},
 \path{ProbabilityRepresentation.lean},
 \path{QuantileTransport.lean}, \path{SubgraphFubini.lean},
-\path{SurvivalLayerCake.lean}, \path{InverseLayerCake.lean},
-\path{InversePairIntegral.lean},
+\path{SurvivalLayerCake.lean}, \path{CDFLayerCake.lean},
+\path{FractionalCDFLayerCake.lean}, \path{FabiusFractionalIntegral.lean},
+\path{InverseLayerCake.lean}, \path{InversePairIntegral.lean},
+\path{MeasureCauchyTransform.lean}, \path{GeometricUniformCauchy.lean},
+\path{CauchyTransform.lean}, \path{CauchyCDF.lean},
+\path{CauchySurvival.lean}, \path{CauchyHigherPowers.lean},
+\path{CauchyRenormalization.lean}, \path{StieltjesLogFixedPoint.lean},
+\path{StieltjesResolventHierarchy.lean}, \path{StieltjesGeneralizedOrder.lean},
+\path{StieltjesMomentLaurent.lean}, \path{StieltjesCauchyTransform.lean},
+\path{StieltjesHerglotz.lean}, \path{StieltjesInversion.lean},
+\path{StieltjesPerron.lean}, \path{OrthogonalPolynomialJacobi.lean},
 \path{EarlyApproximants.lean},
 \path{EarlyMeasureBridge.lean}, \path{WeakConvergence.lean},
 \path{ProbabilityLaplaceMoments.lean}, \path{LaplaceMoments.lean},
@@ -7864,10 +9315,12 @@ quantile transport, layer cake, and finite approximants &
 \path{QuarterSplineTwoSided.lean}, \path{FabiusComputability.lean}\\
 Fourier analysis &
 \path{FourierProduct.lean}, \path{FourierAnalytic.lean},
+\path{RvachevQBinomialFilter.lean},
 \path{OriginalPaperSupplement.lean}, \path{PoissonSummation.lean},
 \path{SummableCyclicAlias.lean}, \path{HalfIntegerOddDFT.lean},
 \path{ThueMorseFourier.lean},
-\path{ThueMorseSineProduct.lean}, \path{LacunaryProductToSum.lean},
+\path{ThueMorseSineProduct.lean}, \path{ThueMorseComplexProductBridge.lean},
+\path{LacunaryProductToSum.lean},
 \path{CenteredRvachevThueMorseFourier.lean},
 \path{RenormalizationIdentity.lean}, \path{SincProductShells.lean},
 \path{SincPrefixBound.lean},
@@ -7877,13 +9330,21 @@ Fourier analysis &
 \path{PeakRayEnvelope.lean}, \path{GlobalDecayEnvelope.lean},
 \path{RvachevFourierDecay.lean}, \path{VarianceBookkeeping.lean},
 \path{BirkhoffVariance.lean}, \path{BirkhoffProductBridge.lean}\\
+Summable-scale products and geometric reciprocal-Gamma factorization &
+\path{ScaledInfiniteProducts.lean}, \path{GeometricReciprocalGamma.lean},
+\path{ReciprocalIntegerGammaZeros.lean}, \path{DyadicGammaOrder.lean}\\
+Reciprocal-Gamma first jets and the Thue--Morse Gamma tower &
+\path{ReciprocalGammaJets.lean}, \path{ThueMorseGammaTower.lean}\\
 Local all-order jet calculus &
 \path{LeadingJet.lean}\\
 Normalized integer- and positive-real-order Volterra calculus, affine covariance,
-base-point shifts, and exact integer Fabius primitives &
+shifted-power and constant evaluations, positive affine covariance and right-derivative
+order raising, base-point shifts, exact integer Fabius primitives, causal Rvachev
+fractional primitives, and first fractional Fabius--Rvachev shifts &
 \path{NormalizedVolterra.lean}, \path{FractionalVolterra.lean},
 \path{FractionalVolterraSemigroup.lean},
-\path{FabiusAntiderivatives.lean}\\
+\path{FractionalVolterraCalculus.lean}, \path{FabiusAntiderivatives.lean},
+\path{FabiusFractionalVolterra.lean}\\
 Global derivatives, value distributions, and flatness &
 \path{GlobalExtension.lean}, \path{GlobalBounds.lean},
 \path{BoundedDerivatives.lean}, \path{MidpointEndpointTransfer.lean},
@@ -7902,19 +9363,24 @@ Moments and exact arithmetic &
 \path{BernoulliRecurrences.lean}, \path{MomentCumulantAlgebra.lean},
 \path{CenteredMomentCumulants.lean}, \path{CenteredMomentParity.lean},
 \path{SinhDivBernoulliLog.lean},
-\path{PolynomialExpectationCumulant.lean},
+\path{PolynomialExpectationCumulant.lean}, \path{RvachevMomentAppell.lean},
 \path{WeightedScaleMultiplicity.lean},
-\path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean}\\
+\path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean},
+\path{CentralBinomialValuation.lean}\\
 Universal exponential, Bell, and endpoint-transfer algebra &
 \path{SaddleExpansionAlgebra.lean}, \path{ExponentialPartition.lean},
 \path{ExponentialBell.lean},
 \path{EndpointTransferPolynomials.lean},
 \path{LogSeriesMultiplicative.lean}\\
+Formal implicit roots and nonmonic Hensel lifting &
+\path{ImplicitPowerSeries.lean}\\
 Finite base-layer arithmetic &
 \path{BaseLayerRegrouping.lean}\\
-Finite polynomial and formal-series filters, and geometric Lagrange/Richardson exactness &
+Finite polynomial, formal-series, and unconditionally summable analytic-series filters,
+and geometric Lagrange/Richardson exactness &
 \path{FinitePolynomialFunctional.lean}, \path{CompleteHomogeneous.lean},
 \path{FinitePowerSeriesFilter.lean}, \path{GeometricPowerSeriesFilter.lean},
+\path{AnalyticSeriesFilter.lean},
 \path{GeometricLagrange.lean}, \path{LagrangeResidualMoments.lean},
 \path{GeometricCompleteHomogeneous.lean},
 \path{GeometricResidualMoments.lean},
@@ -7925,9 +9391,15 @@ Finite polynomial and formal-series filters, and geometric Lagrange/Richardson e
 \path{GeometricLagrangeCompleteHomogeneous.lean}\\
 Phase-locked reciprocal-grid Richardson algebra &
 \path{LambertPhaseLockedRichardson.lean}\\
+Weighted-subset Gaussian enumeration, scalar kernels, module-valued
+$q$-binomial inversion, and q-Gaussian specializations &
+\path{BitPositionQBinomial.lean}, \path{QBinomialInversion.lean},
+\path{QBinomialTransform.lean},
+\path{QBinomialInversionSpecializations.lean}\\
 Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
-\path{DyadicCorrectness.lean}, \path{FiniteQBinomialCore.lean}, \path{HalfQBinomial.lean},
+\path{DyadicCorrectness.lean}, \path{FiniteQBinomialCore.lean},
+\path{QBinomialVandermonde.lean}, \path{HalfQBinomial.lean},
 \path{QuarterCatalanGerm.lean}, \path{QuarterCatalanRichardson.lean},
 \path{FabiusDyadicQBinomialScalar.lean}, \path{FabiusQBinomialFormula.lean},
 \path{FabiusRawQBinomialScalar.lean},
@@ -7961,7 +9433,12 @@ Endpoint asymptotics &
 \path{FabiusSecondSaddleExpansion.lean}\\
 Legendre expansion and computability &
 \path{FabiusLegendreCoefficients.lean}, \path{FabiusLegendreSeries.lean},
-\path{FabiusLegendreLeastSquares.lean}, \path{FabiusTranslatedLegendreSeries.lean},
+\path{FabiusLegendreLeastSquares.lean}, \path{FabiusLegendreEnergy.lean},
+\path{FabiusLegendreRationalEnergy.lean},
+\path{FabiusSquareEnergyFourier.lean},
+\path{RvachevPolynomialSynthesis.lean},
+\path{FabiusLegendreTranslateBlocks.lean},
+\path{FabiusTranslatedLegendreSeries.lean},
 \path{FabiusComputableSpline.lean}\\
 \bottomrule
 \end{longtable}
@@ -7969,24 +9446,37 @@ Legendre expansion and computability &
 \section{Notation crosswalk}
 \label{app:notation}
 
-\begin{center}
-\begin{tabularx}{\textwidth}{@{}
+\begin{longtable}{@{}
   >{\raggedright\arraybackslash}p{0.13\textwidth}
   >{\raggedright\arraybackslash}p{0.49\textwidth}
-  >{\raggedright\arraybackslash}X@{}}
+  >{\raggedright\arraybackslash}p{0.32\textwidth}@{}}
 \toprule
 Article & Lean & Meaning\\
 \midrule
+\endfirsthead
+\toprule
+Article & Lean & Meaning\\
+\midrule
+\endhead
 \(F\) & \lean{fabiusReal}\hspace{0.35em}\lean{fabius} & bounded canonical Fabius function\\
 \(\Up\) & \lean{rvachevUp}\hspace{0.35em}\lean{fabius} & compactly supported fold\\
 \(\mathcal F\) & \lean{extendedFabius}\hspace{0.35em}\lean{fabius} & signed global extension\\
 \(S_w\) & \lean{ProbabilityRepresentation.weightedUniformSeries}\hspace{0.35em}\lean{w} & weighted coordinate series\\
 \(\mu_w\) & \lean{ProbabilityRepresentation.weightedUniformDistribution}\hspace{0.35em}\lean{w} & its pushforward law\\
+\(G_q\) & \lean{geometricReciprocalGamma}\hspace{0.35em}\lean{q} & entire reciprocal-Gamma product for \(\lVert q\rVert<1\)\\
+\(\Gamma_{\langle q\rangle}\) & \lean{geometricGamma}\hspace{0.35em}\lean{q} & totalized meromorphic inverse of \(G_q\)\\
+\(G_{\rm dy},\Gamma_{\rm dy}\) & \lean{dyadicReciprocalGamma}\hspace{0.35em}\lean{dyadicGamma} & dyadic reciprocal product and totalized meromorphic inverse\\
 \(V_af\) & \lean{volterraPrimitive}\hspace{0.35em}\lean{a}\hspace{0.35em}\lean{f} & first oriented primitive at base \(a\)\\
 \(L_a^nf\) & \lean{iteratedPrimitive}\hspace{0.35em}\lean{n}\hspace{0.35em}\lean{a}\hspace{0.35em}\lean{f} & literal \(n\)-fold primitive\\
 \(J_a^nf\) & \lean{normalizedVolterra}\hspace{0.35em}\lean{n}\hspace{0.35em}\lean{a}\hspace{0.35em}\lean{f} & normalized Cauchy-kernel primitive\\
 \(I_{a+}^{\alpha}f\) & \lean{fractionalVolterra} & total real-order Gamma-normalized Volterra operator\\
 \(I_{a+}^{\alpha+\beta}f=I_{a+}^{\alpha}I_{a+}^{\beta}f\) & \lean{fractionalVolterra_add} & positive orders, ordered endpoint, continuous Banach-valued input\\
+\(U_\beta(x)\) & \lean{rvachevFractionalPrimitive} & causal Rvachev fractional primitive based at \(-1\)\\
+\(I_{0+}^{\alpha}F(x)=\E[(x-X)_+^\alpha]/\Gamma(\alpha+1)\) & \lean{ProbabilityRepresentation.fractionalVolterra_fabiusReal_eq_uniformProduct_integral_posPart} & positive real order, every real endpoint\\
+affine \(I_{a+}^{\alpha}\) & \lean{fractionalVolterra_affine} & arbitrary real order, positive scale, ordered endpoint\\
+\(I_{a+}^{\alpha+1}g'\) & \lean{fractionalVolterra_add_one_deriv} & positive order, continuous primitive, integrable interior right derivative, exact Gamma boundary term\\
+fractional \(\mathcal F\) & \lean{fractionalVolterra_add_one_extendedFabius_of_nonneg} & \(I_{0+}^{\alpha+1}\mathcal F(x)=2^\alpha I_{0+}^{\alpha}\mathcal F(x/2)\), \(\alpha>0\), \(x\ge0\)\\
+\(\mathcal A_{S,x,w}(a;z)\) & \lean{finiteAnalyticSeriesFilter} & finite filter of unconditionally summable weighted coefficient series\\
 \(I\) & \lean{fabiusInv}\hspace{0.35em}\lean{fabius}\hspace{0.35em}\lean{fabius_spec} & totalized inverse\\
 \(c_n\) & \lean{moment}\hspace{0.35em}\lean{n} & even moment\\
 \(d_n\) & \lean{halfMoment}\hspace{0.35em}\lean{n} & half moment\\
@@ -7996,8 +9486,7 @@ Article & Lean & Meaning\\
 \(\varepsilon_n\) & \lean{thueMorseSign}\hspace{0.35em}\lean{n} & signed Thue--Morse value\\
 \(\wt(n)\) & \lean{binaryWeight}\hspace{0.35em}\lean{n} & binary digit sum\\
 \bottomrule
-\end{tabularx}
-\end{center}
+\end{longtable}
 
 \begin{thebibliography}{99}
 
@@ -8134,14 +9623,39 @@ V.~Reshetnikov,
 \bibitem{proveit}
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
-\newblock Lean~4 formal development, integrated source snapshot
-\texttt{ff66f0ed55591b23af74c34d3f1aaa0e1ed99e56}, consulted 28 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/ff66f0ed55591b23af74c34d3f1aaa0e1ed99e56/Analysis/FabiusFunction}.
-\newblock The inverse-pair integral theorem, finite formal-series filter, geometric
-Gaussian residual filter, and strengthened denominator-free finite \(q\)-binomial
-declarations were checked at commit
-\texttt{21672485601447ed2da543191f6d477c2a47f2b7}, on the same date.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/21672485601447ed2da543191f6d477c2a47f2b7/Analysis/FabiusFunction}.
+\newblock Lean~4 formal development, integrated Cauchy source checkpoint
+\texttt{a81a13b46b4c7d525f273a52c9018a6d281c5ef2}, consulted 28 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/a81a13b46b4c7d525f273a52c9018a6d281c5ef2/Analysis/FabiusFunction}.
+\newblock Fractional affine/order-raising calculus, causal support-truncated Rvachev
+primitives, first fractional Fabius--Rvachev shifts, unconditionally summable
+analytic-series filters, and the finite complex
+Thue--Morse product bridge were also compiler-validated at checkpoint
+\texttt{149332f9d}.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/149332f9d/Analysis/FabiusFunction}.
+\newblock The interval-restricted Galois connection, measurable-free Banach-valued and
+pointwise-$C^1$ inverse layer-cake APIs, and the real- or complex-weighted
+arbitrary-$L^1$/real-absolutely-continuous Fabius wrapper were compiler-validated at
+checkpoint \texttt{37eab3c56cb28ab702878d71f7d1a87791adea44}.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/37eab3c56cb28ab702878d71f7d1a87791adea44/Analysis/FabiusFunction}.
+\newblock The current integrated source additionally contains the generic affine
+finite-measure Cauchy calculus, the general geometric-uniform transform and power
+hierarchies, the atom-exact CDF/survival higher-power formulas, the named dyadic
+unit-interval Stieltjes DDE, both complex-slit adjacent-power recurrences, and the exact
+centered Rvachev DDE/all-order Thue--Morse orbit.  Its inversion layer is an integrated
+interval Stieltjes--Perron theorem, not a pointwise or nontangential boundary/Plemelj
+formula.
+\newblock The generic three-theorem continuous-CDF bridge, the two-definition/twenty-five-
+theorem geometric-uniform CDF and smooth-density interface, the half-base Fabius/Rvachev
+bridges, and the one-definition/eight-theorem formal implicit-root engine are included in
+compiler-validated checkpoint \texttt{e6f535e5d}.  The latter is generic nonmonic Hensel
+lifting over complete adic commutative rings and supplies no concrete inverse-Fabius germ
+or analytic-convergence theorem.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/e6f535e5d/Analysis/FabiusFunction}.
+\newblock The generic affine independent-copy probability operator, its characteristic-
+function factorization and finite iteration, its contractive probability-fixed-point
+uniqueness theorem, and the geometric-uniform uniqueness specialization are included in
+compiler-validated checkpoint \texttt{d312c0603}.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/d312c0603/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 
