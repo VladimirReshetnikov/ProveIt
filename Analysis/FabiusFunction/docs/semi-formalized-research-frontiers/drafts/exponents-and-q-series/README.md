@@ -280,7 +280,7 @@ matching `assets/` directories.
 `Signed_Reciprocal_q_Fabius_Frontiers/` were merged editorially as the
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
-Second member: `q_pochhammer_q_binomial_monograph/` (198 pp, book class) —
+Second member: `q_pochhammer_q_binomial_monograph/` (194 pp, book class) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
@@ -301,10 +301,10 @@ Chern–Dilcher–Jiu deleted-singularity identity and Ramanujan's ₁ψ₁
 verified numerically to 30 digits; one dominated-convergence majorant
 repaired with an `% ed.:` note).
 
-Its current formalization ledger has 183 labelled results: 29 exact, 24
-partial, 127 with no counterpart, and 3 interface-only. The finite
+Its current formalization ledger has 183 labelled results: 29 exact, 25
+partial, 126 with no counterpart, and 3 interface-only. The finite
 q-binomial/inversion chapter now accounts for 9 exact, 0 partial, and 1
-unformalized result; the weighted chapter for 2 exact, 1 partial, and 5
+unformalized result; the weighted chapter for 2 exact, 2 partial, and 4
 unformalized results; and the basic-hypergeometric chapter for 1 exact, 0
 partial, and 5 unformalized results. The promoted rows are exactly the primary
 q-Cauchy identity, both weighted-Pascal recurrences, elementary--complete
@@ -327,6 +327,13 @@ finite-support `finsum` over all integers. The ledger also now records the
 genuine real infinite product `qPochhammerInf` and its contractive-base
 convergence/positivity layer, replacing the stale claim that every infinite
 q-Pochhammer in the development was merely a finite `Finset.range` product.
+`CompleteHomogeneousGenerating.lean` makes the complete-homogeneous half of
+the weighted generating-product theorem partial rather than open: the finite
+formal reciprocal-product identity is proved, while the elementary product
+and analytic-convergence clause are not.  Separately,
+`SymmetricFunctionOrthogonality.lean` proves the displayed
+elementary--complete coefficient convolution exactly over every commutative
+ring, including the empty family and degree zero.
 
 The wave volumes' central probabilistic object — the normalized
 geometric-uniform law `Y_q = (1-q)·∑ qʲU_j`, with `q = 1/2` the

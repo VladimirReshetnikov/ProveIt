@@ -1,13 +1,11 @@
-\documentclass[11pt,oneside,openany]{book}
+\documentclass[11pt,a4paper,oneside,openany]{book}
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{amsmath,mathtools,amsthm}
-\usepackage{newtxtext,newtxmath}
-\usepackage[scaled=.94]{helvet}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{amsmath,amssymb,mathtools,amsthm}
 \usepackage[final]{microtype}
-\usepackage{geometry}
-\geometry{margin=1in,headheight=15pt}
+\usepackage[a4paper,margin=25.4mm,headheight=15pt]{geometry}
 \usepackage{bm}
 \usepackage{booktabs,longtable,tabularx,array,multirow}
 \usepackage{enumitem}
@@ -8426,7 +8424,13 @@ The formula is an exact rational certificate, but it is ill conditioned in float
 point, and the loss occurs \emph{inside} the blocks rather than between them.  The outer
 cancellation over $k$ is mild: at $\theta=1$ the largest block of
 \eqref{eq:fabius-inverse-dyadic-closed} exceeds the value of the whole sum by the factors
-$3.00,\;4.20,\;4.69,\;4.42,\;4.09,\;3.84,\;3.68,\;3.59,\;3.53,\;3.50$ for
+\[
+ \begin{gathered}
+  3.00,\;4.20,\;4.69,\;4.42,\;4.09,\\
+  3.84,\;3.68,\;3.59,\;3.53,\;3.50
+ \end{gathered}
+\]
+for
 $n=1,\ldots,10$, peaking at $n=3$ and decreasing thereafter, and other choices of
 $\theta$ alter these ratios only by a bounded factor.  The digits are lost within a
 single block, in the alternating Thue--Morse power sum: for $k=n$ the largest summand
@@ -10432,10 +10436,14 @@ Lipschitz with constant
 the constant $g_{q,N}\bigl(x-\tfrac12q^N\bigr)$ inside
 \eqref{eq:midpoint-error-integral}, so that
 \[
- \bigl|F^{\mathrm{mid}}_{q,N}(x)-F_q(x)\bigr|
- \le q^N\int_0^1\Bigl|g_{q,N}\bigl(x-q^Nu\bigr)-g_{q,N}\bigl(x-\tfrac12q^N\bigr)\Bigr|
-   \,\abs{H_q(u)}\dd u
- \le\frac{q^{2N}}{q(1-q)^2}\int_0^1\Bigl|u-\tfrac12\Bigr|\abs{H_q(u)}\dd u
+ \begin{aligned}
+  \bigl|F^{\mathrm{mid}}_{q,N}(x)-F_q(x)\bigr|
+  &\le q^N\int_0^1\Bigl|g_{q,N}\bigl(x-q^Nu\bigr)
+    -g_{q,N}\bigl(x-\tfrac12q^N\bigr)\Bigr|\\[-2pt]
+  &\hspace{7em}{}\cdot\abs{H_q(u)}\dd u\\
+  &\le\frac{q^{2N}}{q(1-q)^2}\int_0^1
+    \Bigl|u-\tfrac12\Bigr|\abs{H_q(u)}\dd u .
+ \end{aligned}
 \]
 by \eqref{eq:truncated-density-lipschitz}.  Now insert
 \eqref{eq:midpoint-H-moment-one}:
@@ -11484,12 +11492,15 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 183 labelled results, 29 are \statusexact, 24 are \statuspartial,
-127 are \statusnone, and 3 are \statusna.
+Of the 183 labelled results, 29 are \statusexact, 25 are \statuspartial,
+126 are \statusnone, and 3 are \statusna.
 The formalized part is concentrated exactly where the Fabius development
 needed it: the finite Gaussian-coefficient core, the geometric Lagrange and
 filter calculus, half-base and Thue--Morse cancellation, and the geometric
-uniform law.  Most of the classical analytic layer --- nonterminating basic
+uniform law.  The complete-homogeneous half of the weighted generating-product
+theorem is also formalized as a finite formal-power-series identity in
+\texttt{CompleteHomogeneousGenerating}; its elementary-symmetric half and its
+analytic convergence clause are not.  Most of the classical analytic layer --- nonterminating basic
 hypergeometric summation, Jacobi triple product, and Bailey pairs --- remains
 untouched.  The former claim that every infinite \(q\)-Pochhammer symbol in
 the development was a finite \texttt{Finset.range} product is now false:
@@ -11523,7 +11534,7 @@ Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 The algebra of $q$-shifted factorials & 1 & 2 & 12 & 0\\
 $q$-integers and Gaussian coefficients & 1 & 2 & 5 & 0\\
 Finite $q$-binomial theorems and inversion & 9 & 0 & 1 & 0\\
-Weighted binomial coefficients and symmetric functions & 2 & 1 & 5 & 0\\
+Weighted binomial coefficients and symmetric functions & 2 & 2 & 4 & 0\\
 Partitions, words, paths, and inversion statistics & 1 & 1 & 7 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 0 & 1 & 5 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
@@ -11544,7 +11555,7 @@ Geometric interpolation and exact $q$-filters & 6 & 2 & 1 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 7 & 3 & 0\\
 \midrule
-\textbf{Total} & 29 & 24 & 127 & 3\\
+\textbf{Total} & 29 & 25 & 126 & 3\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -11631,7 +11642,12 @@ Result & Status & Lean counterpart\\
 \texttt{elementarySymmetricEval\_\allowbreak{}option\_\allowbreak{}succ},
 \texttt{completeHomogeneousEval\_\allowbreak{}option\_\allowbreak{}succ}\newline
 {\footnotesize\texttt{SymmetricFunctionOrthogonality}, \texttt{CompleteHomogeneous}; both adjoining-variable recurrences, all degrees}\\[2pt]
-\Cref{thm:weighted-generating} & \statusnone & ---\\[2pt]
+\Cref{thm:weighted-generating} & \statuspartial &
+\texttt{prod\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}mul\_\allowbreak{}completeHomogeneousGeneratingSeriesOn},
+\texttt{completeHomogeneousGeneratingSeriesOn\_\allowbreak{}eq\_\allowbreak{}invOfUnit\_\allowbreak{}prod}\newline
+{\footnotesize\texttt{CompleteHomogeneousGenerating}; exact formal
+complete-homogeneous reciprocal product, but not the elementary generating
+product or the analytic-convergence clause}\\[2pt]
 \Cref{cor:e-h-orthogonality} & \statusexact &
 \texttt{sum\_\allowbreak{}elementarySymmetricEval\_\allowbreak{}mul\_\allowbreak{}completeHomogeneousEval}\newline
 {\footnotesize\texttt{SymmetricFunctionOrthogonality}; arbitrary finite family, including empty family and degree zero}\\[2pt]
