@@ -8,8 +8,10 @@ Its imaginary-square-root transform, Laguerre--Polya and multiplier-sequence
 structure, exact zero divisor and Thue--Morse sign interpolation, Cartwright
 geometry, and geometric-scale deformation extend the arithmetic/spectral
 Fourier-product theme. The package shipped no checksum ledger, README,
-environment pin, or captured run output; exact arrival hashes are recorded in
-the global manifest. Its novelty screen is already stale at its pinned
+environment pin, or captured run output. Its TeX also depends on four absent
+generated figure/table inputs, and the script's four CSV evidence tables were
+not delivered; exact arrival hashes and filenames are recorded in the global
+manifest. Its novelty screen is already stale at its pinned
 snapshot: matching Laguerre--Polya/PF-infinity/shifted-Jensen and zero-sign
 material appears in `Frontier_Compilations/`. It therefore remains standalone
 pending claim-by-claim crosswalk and deliberate deduplication. Its paper
