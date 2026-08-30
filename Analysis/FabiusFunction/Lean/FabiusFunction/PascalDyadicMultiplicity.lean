@@ -112,8 +112,8 @@ its rank profile. -/
 triangle. -/
 @[simp] theorem pascalDyadicMultiplicity_two_pow (r a : ℕ) :
     pascalDyadicMultiplicity r (2 ^ a) = (a + 1).choose r := by
-  rw [pascalDyadicMultiplicity_of_pos r (2 ^ a) (by
-      exact Nat.pow_pos (by omega)),
+  rw [pascalDyadicMultiplicity_of_pos r (2 ^ a)
+      (Nat.one_le_two_pow : 1 ≤ 2 ^ a),
     dyadicZeroMultiplicity_two_pow]
 
 /-! ## Support and dyadic scale recurrence -/
@@ -161,8 +161,8 @@ theorem pascalDyadicMultiplicity_two_pow_mul
     pascalDyadicMultiplicity r (2 ^ a * n) =
       ∑ ij ∈ Finset.antidiagonal r,
         pascalDyadicMultiplicity ij.1 n * a.choose ij.2 := by
-  rw [pascalDyadicMultiplicity_of_pos r (2 ^ a * n) (by
-      exact Nat.mul_pos (Nat.pow_pos (by omega)) hn),
+  rw [pascalDyadicMultiplicity_of_pos r (2 ^ a * n)
+      (one_le_mul (Nat.one_le_two_pow : 1 ≤ 2 ^ a) hn),
     dyadicZeroMultiplicity_two_pow_mul a n hn,
     Nat.add_choose_eq]
   apply Finset.sum_congr rfl
@@ -247,8 +247,8 @@ multiplicity. -/
     (r M a : ℕ) :
     finitePascalDyadicMultiplicity r M (2 ^ a) =
       (min M (a + 1)).choose r := by
-  rw [finitePascalDyadicMultiplicity_of_pos r M (2 ^ a) (by
-      exact Nat.pow_pos (by omega)),
+  rw [finitePascalDyadicMultiplicity_of_pos r M (2 ^ a)
+      (Nat.one_le_two_pow : 1 ≤ 2 ^ a),
     dyadicZeroMultiplicity_two_pow]
 
 /-- Once the cutoff contains every active dyadic scale, the finite and full
@@ -395,10 +395,10 @@ private theorem finitePascalDyadicMultiplicity_succ_eq_boundedScaleSum
     simpa only [Nat.lt_iff_add_one_le] using
       (dyadicZeroMultiplicity_ge_succ_iff_pow_two_dvd
         (k + 1) h hpositive)
-  by_cases hactive : h < dyadicZeroMultiplicity (k + 1)
-  · simp [hactive, hdiv.mp hactive]
-  · have hinactive : ¬ 2 ^ h ∣ k + 1 := fun hdvd ↦ hactive (hdiv.mpr hdvd)
-    simp [hactive, hinactive]
+  by_cases hlt : h < dyadicZeroMultiplicity (k + 1)
+  · rw [if_pos hlt, if_pos (hdiv.mp hlt)]
+  · have hndiv : ¬ 2 ^ h ∣ k + 1 := fun hdvd ↦ hlt (hdiv.mpr hdvd)
+    rw [if_neg hlt, if_neg hndiv]
 
 /-- **Exact finite-product scale count.**  Summing the truncated
 multiplicities through `N` counts each scale by its number of positive

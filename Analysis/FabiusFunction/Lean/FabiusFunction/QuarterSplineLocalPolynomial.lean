@@ -213,6 +213,7 @@ theorem thueMorsePowerSumRing_add_two_real (m : ℕ) :
       rw [hchooseThree, hchooseTwo, hsign, htriangular, hfactorial,
         hresidualStep, htwoSucc, htwoAddTwo]
       push_cast
+      simp only [pow_zero, pow_succ, pow_add, hfour]
       ring
 
 /-! ## A reusable degree-two residual extractor -/
