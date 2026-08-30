@@ -2108,9 +2108,24 @@ arbitrary weight may grow too fast --- is here \emph{discharged}, since $P_d$ gr
 polynomially and is admissible at every $s>0$
 (\lean{Fabius.summable\_alternatingNewtonWeight\_rpow}).
 
-The cumulants \eqref{p1:eq:Psi-cumulants} and the variance \eqref{p1:eq:Psi-variance} remain
-unformalized; both need the probabilistic model behind $\Psi_d$, which the corpus does not
-have.
+The cumulants \eqref{p1:eq:Psi-cumulants} are half formalized, in the same sense as
+\eqref{p1:eq:kappaP} and for the same reason.  Their analytic content is proved, in
+\path{AlternatingNewtonCumulantKernel.lean}: on the central disk,
+\[
+ \Psi_d(z)=\exp\Bigl(-\sum_{r\ge1}
+   \frac{\zeta(2r)\bigl(1+(4^r-1)^{-(d+1)}\bigr)}{r}\,z^{2r}\Bigr),
+ \qquad\lVert z\rVert<1
+\]
+(\lean{Fabius.alternatingNewton\_eq\_cexp}), and the bracket is exactly the one in
+\eqref{p1:eq:Psi-cumulants}.  So the coefficient of $z^{2r}$ in $-\log\Psi_d$ already carries
+the cumulant bracket; what separates the two statements is the probabilistic reading of
+$\Psi_d$ as the characteristic function of $Y_d$, not any further analysis.  The identity is
+the composite of the general-weight expansion (\path{GeneralizedSincZeta.lean}) with the closed
+form of $A_d$ (\path{AlternatingNewtonZeta.lean}), and the only work between them is a
+coercion, since both the weight and the ratio $4^{-r}$ are real.
+
+The variance \eqref{p1:eq:Psi-variance} remains unformalized: it is the $j=1$ cumulant, so it
+needs exactly the probabilistic step that is missing.
 \end{theorem}
 
 \begin{proof}
