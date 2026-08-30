@@ -1122,13 +1122,16 @@ $2a+1$ has in addition the even-exponent factor $1-z$, proving both formulas.
 The four Gaussian identities in
 Proposition~\ref{prop:gaussian-minus-one-ring} are the compiled declarations
 \path{Fabius.gaussianBinomial_neg_one_even_even},
-\path{Fabius.gaussianBinomial_neg_one_even_odd},
+\path{Fabius.gaussianBinomial_neg_one_even_odd_eq_zero},
 \path{Fabius.gaussianBinomial_neg_one_odd_even}, and
 \path{Fabius.gaussianBinomial_neg_one_odd_odd}.  The two product identities are
 \path{Fabius.finiteQPochhammerIn_neg_one_even} and
-\path{Fabius.finiteQPochhammerIn_neg_one_odd}.  All six live in
-\path{FabiusFunction.GaussianBinomialAtNegOne} and use only $q$-Pascal,
-parity, ordinary Pascal, and factor pairing.
+\path{Fabius.finiteQPochhammerIn_neg_one_odd}.  The odd-column zero lives in
+\path{FabiusFunction.QBinomialReciprocity}, where it follows from reciprocal
+symmetry; the other five live in
+\path{FabiusFunction.GaussianBinomialAtNegOne}.  The latter module reuses the
+zero theorem, then needs only $q$-Pascal, parity, ordinary Pascal, and factor
+pairing to obtain the remaining values and products.
 
 The derivative identities \eqref{eq:minus-one-der-nonzero} and
 \eqref{eq:minus-one-der-zero}, and hence the simple-root sentence in

@@ -1,4 +1,4 @@
-import FabiusFunction.FiniteQBinomialCore
+import FabiusFunction.QBinomialReciprocity
 import Mathlib.Data.Nat.Choose.Basic
 
 /-!
@@ -25,8 +25,9 @@ extraction:
 
 ## Main results
 
-* `gaussianBinomial_neg_one_even_even` and
-  `gaussianBinomial_neg_one_even_odd` evaluate an even row;
+* `gaussianBinomial_neg_one_even_even` complements
+  `gaussianBinomial_neg_one_even_odd_eq_zero` by evaluating the nonzero
+  entries of an even row;
 * `gaussianBinomial_neg_one_odd_even` and
   `gaussianBinomial_neg_one_odd_odd` evaluate an odd row;
 * `finiteQPochhammerIn_neg_one_even` and
@@ -41,8 +42,6 @@ private theorem gaussianBinomial_neg_one_rows
     {R : Type*} [CommRing R] (a : ℕ) :
     (∀ b : ℕ,
       gaussianBinomial (-1 : R) (2 * a) (2 * b) = (a.choose b : R)) ∧
-    (∀ b : ℕ,
-      gaussianBinomial (-1 : R) (2 * a) (2 * b + 1) = 0) ∧
     (∀ b : ℕ,
       gaussianBinomial (-1 : R) (2 * a + 1) (2 * b) = (a.choose b : R)) ∧
     (∀ b : ℕ,
@@ -59,9 +58,6 @@ private theorem gaussianBinomial_neg_one_rows
             simp
       constructor
       · intro b
-        rw [gaussianBinomial_eq_zero_of_lt (-1 : R) (by omega)]
-      constructor
-      · intro b
         cases b with
         | zero => simp
         | succ b =>
@@ -74,7 +70,7 @@ private theorem gaussianBinomial_neg_one_rows
             rw [gaussianBinomial_eq_zero_of_lt (-1 : R) (by omega)]
             simp
   | succ a ih =>
-      rcases ih with ⟨hee, heo, hoe, hoo⟩
+      rcases ih with ⟨hee, hoe, hoo⟩
       have hnextEvenEven : ∀ b : ℕ,
           gaussianBinomial (-1 : R) (2 * (a + 1)) (2 * b) =
             ((a + 1).choose b : R) := by
@@ -89,15 +85,6 @@ private theorem gaussianBinomial_neg_one_rows
               one_mul, show 2 * b + 1 + 1 = 2 * (b + 1) by omega,
               hoe (b + 1), hoo b, Nat.choose_succ_succ, Nat.cast_add]
             ring
-      have hnextEvenOdd : ∀ b : ℕ,
-          gaussianBinomial (-1 : R) (2 * (a + 1)) (2 * b + 1) = 0 := by
-        intro b
-        have hodd : Odd (2 * b + 1) := ⟨b, by omega⟩
-        rw [show 2 * (a + 1) = (2 * a + 1) + 1 by omega,
-          show 2 * b + 1 = 2 * b + 1 by rfl,
-          gaussianBinomial_succ_succ_alt, hodd.neg_one_pow,
-          hoo b, hoe b]
-        ring
       have hnextOddEven : ∀ b : ℕ,
           gaussianBinomial (-1 : R) (2 * (a + 1) + 1) (2 * b) =
             ((a + 1).choose b : R) := by
@@ -109,7 +96,9 @@ private theorem gaussianBinomial_neg_one_rows
             rw [show 2 * (b + 1) = (2 * b + 1) + 1 by omega,
               gaussianBinomial_succ_succ_alt, heven.neg_one_pow,
               one_mul, show 2 * b + 1 + 1 = 2 * (b + 1) by omega,
-              hnextEvenEven (b + 1), hnextEvenOdd b, add_zero]
+              hnextEvenEven (b + 1),
+              gaussianBinomial_neg_one_even_odd_eq_zero (R := R) (a + 1) b,
+              add_zero]
       have hnextOddOdd : ∀ b : ℕ,
           gaussianBinomial (-1 : R) (2 * (a + 1) + 1) (2 * b + 1) =
             ((a + 1).choose b : R) := by
@@ -117,9 +106,10 @@ private theorem gaussianBinomial_neg_one_rows
         have hodd : Odd (2 * b + 1) := ⟨b, by omega⟩
         rw [show 2 * b + 1 = 2 * b + 1 by rfl,
           gaussianBinomial_succ_succ_alt, hodd.neg_one_pow,
-          hnextEvenOdd b, hnextEvenEven b]
+          gaussianBinomial_neg_one_even_odd_eq_zero (R := R) (a + 1) b,
+          hnextEvenEven b]
         simp
-      exact ⟨hnextEvenEven, hnextEvenOdd, hnextOddEven, hnextOddOdd⟩
+      exact ⟨hnextEvenEven, hnextOddEven, hnextOddOdd⟩
 
 /-- **Even row, even column at `q = -1`.**  The Gaussian coefficient
 `[2a choose 2b]_{-1}` is the ordinary coefficient `[a choose b]` over every
@@ -129,19 +119,12 @@ theorem gaussianBinomial_neg_one_even_even
     gaussianBinomial (-1 : R) (2 * a) (2 * b) = (a.choose b : R) := by
   exact (gaussianBinomial_neg_one_rows a).1 b
 
-/-- **Even row, odd column at `q = -1`.**  Every Gaussian coefficient
-`[2a choose 2b+1]_{-1}` vanishes. -/
-theorem gaussianBinomial_neg_one_even_odd
-    {R : Type*} [CommRing R] (a b : ℕ) :
-    gaussianBinomial (-1 : R) (2 * a) (2 * b + 1) = 0 := by
-  exact (gaussianBinomial_neg_one_rows a).2.1 b
-
 /-- **Odd row, even column at `q = -1`.**  The Gaussian coefficient
 `[2a+1 choose 2b]_{-1}` is `[a choose b]`. -/
 theorem gaussianBinomial_neg_one_odd_even
     {R : Type*} [CommRing R] (a b : ℕ) :
     gaussianBinomial (-1 : R) (2 * a + 1) (2 * b) = (a.choose b : R) := by
-  exact (gaussianBinomial_neg_one_rows a).2.2.1 b
+  exact (gaussianBinomial_neg_one_rows a).2.1 b
 
 /-- **Odd row, odd column at `q = -1`.**  The adjacent coefficient
 `[2a+1 choose 2b+1]_{-1}` has the same value `[a choose b]`. -/
@@ -149,7 +132,7 @@ theorem gaussianBinomial_neg_one_odd_odd
     {R : Type*} [CommRing R] (a b : ℕ) :
     gaussianBinomial (-1 : R) (2 * a + 1) (2 * b + 1) =
       (a.choose b : R) := by
-  exact (gaussianBinomial_neg_one_rows a).2.2.2 b
+  exact (gaussianBinomial_neg_one_rows a).2.2 b
 
 /-- **Paired finite q-Pochhammer product at `q = -1`.**  Consecutive
 factors multiply to `(1-z)(1+z) = 1-z^2`, so
