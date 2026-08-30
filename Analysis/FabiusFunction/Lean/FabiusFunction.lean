@@ -343,6 +343,7 @@ import FabiusFunction.EvenZetaValues
 import FabiusFunction.SincZetaSeries
 import FabiusFunction.SincZetaDyadic
 import FabiusFunction.GeneralizedSincZeta
+import FabiusFunction.AlternatingNewtonCumulantKernel
 import FabiusFunction.ExponentialDiskMaximality
 import FabiusFunction.SincZetaRemainder
 import FabiusFunction.BernsteinPositivity
