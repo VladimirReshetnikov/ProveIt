@@ -1,5 +1,50 @@
 # Inverse and sampling
 
+New standalone intake members:
+
+- [`geometric_comb_q_fabius_report/`](geometric_comb_q_fabius_report/),
+  *Geometric-Comb Interpolation, Gaussian Pascal Transforms, and the
+  Fabius--Rvachev Boundary Layer* (65 pp), arrived on 2026-08-30 from
+  `geometric_comb_q_fabius_report.zip` (outer SHA-256
+  `d7a84fdad1cc0e98f3e2d9d6e6a101cdae2a070a190a957cd15d761ec765a54c`).
+  All 16 submitted payload hashes verified; two CSV entries were refreshed
+  after CRLF-to-LF repository normalization. It belongs beside the geometric
+  and dyadic comb reports below, while cross-linking the q-Pochhammer monograph.
+  It remains standalone pending post-publication assessment and a Lean
+  crosswalk; its formalization section is explicitly future work.
+
+- [`geometric_comb_interpolation_report/`](geometric_comb_interpolation_report/),
+  *Interpolation on a Geometric Comb* (34 pp), arrived on 2026-08-30 from
+  `geometric_comb_interpolation_report_bundle.zip` (outer SHA-256
+  `9a2e33f6a7dc3ac4c30b0da212349b9d91b1da6dd2fabacce14329a6458ade12`).
+  All 11 submitted payload hashes verified; four CSV entries were refreshed
+  after CRLF-to-LF repository normalization. Its arbitrary-ratio interpolation
+  layer belongs beside `Dyadic_Comb_Frontiers/` and cross-links to the finite
+  q-Lagrange/Gaussian row in
+  [`../exponents-and-q-series/q_pochhammer_q_binomial_monograph/`](../exponents-and-q-series/q_pochhammer_q_binomial_monograph/).
+  It remains standalone pending post-publication assessment and a Lean
+  crosswalk; manuscript labels do not establish Lean verification.
+
+- [`Inverse_Fabius_Computability_Report/`](Inverse_Fabius_Computability_Report/),
+  *Computability of the Inverse Fabius Function* (29 pp), arrived on
+  2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (outer SHA-256
+  `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
+  All five submitted payload hashes verified and every text payload was
+  already LF. It remains standalone pending post-publication assessment and a
+  Lean crosswalk; the newly submitted bridge is not thereby Lean-verified.
+
+- [`inverse_fabius_iterates_nowhere_analytic/`](inverse_fabius_iterates_nowhere_analytic/),
+  *Nowhere Analyticity of Every Positive Compositional Iterate of the Inverse
+  Fabius Function* (23 pp), arrived on 2026-08-30 from
+  `inverse_fabius_iterates_nowhere_analytic.zip` (outer SHA-256
+  `8b1c05d59e120ecd20d69cd5aeb0009639f2f3b9a6c9fef32bdf82270eee16bd`).
+  All 13 submitted payload hashes verified; `spine_diagnostic.csv` was
+  refreshed after CRLF-to-LF repository normalization. It remains standalone
+  pending post-publication reconciliation with
+  [`../representations/fabius_iterates_nowhere_analytic/`](../representations/fabius_iterates_nowhere_analytic/)
+  and a Lean crosswalk; its own status note says the principal claims have not
+  been translated into Lean.
+
 The inverse function's frontiers and the sampling/deconvolution circle of
 ideas, in two consolidated volumes.
 
