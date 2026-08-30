@@ -57,6 +57,27 @@ the formal-power-series halves of the weighted-generating and reciprocal
 finite claims. Analytic evaluation and convergence under `|w_i z| < 1` or
 `|z| < 1` remain open.
 
+The complementary finite-index API in `CompleteHomogeneousGenerating.lean`
+has one definition and six theorems:
+`completeHomogeneousGeneratingSeriesOn`,
+`coeff_completeHomogeneousGeneratingSeriesOn`,
+`completeHomogeneousGeneratingSeriesOn_empty`,
+`completeHomogeneousGeneratingSeriesOn_insert`,
+`one_sub_mul_completeHomogeneousGeneratingSeriesOn_insert`,
+`prod_one_sub_mul_completeHomogeneousGeneratingSeriesOn`, and
+`completeHomogeneousGeneratingSeriesOn_eq_invOfUnit_prod`. Its coefficient,
+empty-family, and adjoining-variable results hold over commutative semirings;
+its denominator-clearing and canonical-inverse results hold over arbitrary
+commutative rings, including rings with zero divisors. Together, this API and
+`SymmetricFunctionGenerating.lean` prove both formal algebraic halves of the
+weighted generating-product theorem, but neither proves its analytic clause.
+Separately, the sole public theorem
+`completeHomogeneousEvalOn_isBigO_pow` in
+`CompleteHomogeneousAsymptotics.lean` transfers coordinatewise `O(g)` bounds
+through every fixed complete homogeneous degree to `O(g^n)`, including degree
+zero and without a nonvanishing hypothesis on `g`; it does not evaluate or
+prove convergence of either formal series.
+
 `BitPositionQBinomial.lean` gives both the zero-based and literal
 one-based weighted-subset enumerations. `QBinomialInversion.lean` proves the
 Gaussian chain law, general alternating rows, and both finite convolution
@@ -331,7 +352,7 @@ matching `assets/` directories.
 `Signed_Reciprocal_q_Fabius_Frontiers/` were merged editorially as the
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
-Second member: `q_pochhammer_q_binomial_monograph/` (202 pp, book class) —
+Second member: `q_pochhammer_q_binomial_monograph/` (203 pp, book class) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
@@ -379,6 +400,17 @@ finite-support `finsum` over all integers. The ledger also now records the
 genuine real infinite product `qPochhammerInf` and its contractive-base
 convergence/positivity layer, replacing the stale claim that every infinite
 q-Pochhammer in the development was merely a finite `Finset.range` product.
+The complementary formal surfaces of
+`CompleteHomogeneousGenerating.lean` and
+`SymmetricFunctionGenerating.lean` prove both the finite elementary product
+and complete-homogeneous reciprocal product; the labelled weighted theorem
+remains partial only because its analytic evaluation and convergence clause
+is open. `CompleteHomogeneousAsymptotics.lean` adds the fixed-degree
+coordinatewise-Big-O transfer, but does not close that analytic boundary.
+Separately,
+`SymmetricFunctionOrthogonality.lean` proves the displayed
+elementary--complete coefficient convolution exactly over every commutative
+ring, including the empty family and degree zero.
 
 The wave volumes' central probabilistic object — the normalized
 geometric-uniform law `Y_q = (1-q)·∑ qʲU_j`, with `q = 1/2` the

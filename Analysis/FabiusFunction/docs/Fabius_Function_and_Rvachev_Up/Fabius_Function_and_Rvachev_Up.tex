@@ -3958,13 +3958,13 @@ not the analytic transfer expansion or its remainder estimates.
 \label{sec:rvachev-moment-appell}
 
 Starting from compiled source checkpoint \texttt{1f9ce6fd9} and including the
-current focused-build extension,
+current focused-build extension at compiled checkpoint \texttt{e2c310e7c},
 \path{RvachevMomentAppell.lean} specializes the formal Bell and Appell engines
 to the Rvachev probability law.  Its six public definitions are
 \lean{rvachevRawMomentRat}, \lean{rvachevReciprocalMomentRat},
 \lean{rvachevAppellPolynomialRat}, \lean{rvachevAppellPolynomial}, and
 \lean{rvachevDeconvolvedPolynomial}, together with
-\lean{rvachevDeconvolutionLinearMap}.  Its twenty-two public theorems are
+\lean{rvachevDeconvolutionLinearMap}.  Its twenty-four public theorems are
 \lean{rvachevRawMomentRat_zero}, \lean{rvachevRawMomentRat_even},
 \lean{rvachevRawMomentRat_odd}, \lean{rvachevReciprocalMomentRat_zero},
 \lean{binomialConv_rvachevRawMomentRat_reciprocal},
@@ -3983,6 +3983,8 @@ to the Rvachev probability law.  Its six public definitions are
 \lean{rvachevDeconvolvedPolynomial_smul},
 \lean{rvachevDeconvolvedPolynomial_finsetSum},
 \lean{rvachevDeconvolvedPolynomial_C_mul},
+\lean{rvachevDeconvolvedPolynomial_monomial},
+\lean{rvachevDeconvolvedPolynomial_X_pow},
 \lean{natDegree_rvachevDeconvolvedPolynomial_le}, and
 \lean{integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev}.
 
@@ -4000,11 +4002,13 @@ bridges are
    \label{eq:rvachev-deconvolution-smoothing}
 \end{align}
 where \(\mathcal D_{\Up}P\) denotes
-\lean{rvachevDeconvolvedPolynomial}\(P\).  This coefficientwise operation does
-not raise polynomial degree.  Its linear-map package proves preservation of
-zero, addition, real scalar multiplication, finite sums, and multiplication by
-a constant polynomial; these are algebraic identities and do not assert an
-analytic reciprocal-MGF, differential-series, or Appell generating function.
+\lean{rvachevDeconvolvedPolynomial}\(P\).  This coefficientwise operation sends
+a monomial and \(X^n\) to the correspondingly scaled and unscaled
+Rvachev--Appell polynomial and does not raise polynomial degree.  Its linear-map
+package proves preservation of zero, addition, real scalar multiplication,
+finite sums, and multiplication by a constant polynomial; these are algebraic
+identities and do not assert an analytic reciprocal-MGF, differential-series,
+or Appell generating function.
 
 At compiled source checkpoint \texttt{c51a41fcf},
 \path{RvachevPolynomialSynthesis.lean} exports no public definitions and
@@ -6181,12 +6185,62 @@ evaluation and its adjoining-variable recurrence are
 \lean{completeHomogeneousEval_eq_eval_hsymm} and
 \lean{completeHomogeneousEval_option_succ}; the quotient evaluation is
 \lean{eval_completeHomogeneousQuotient} in
-\path{CompleteHomogeneous.lean}.  The generic residual theorem
+\path{CompleteHomogeneous.lean}.  The companion
+\path{CompleteHomogeneousGenerating.lean} packages these evaluations as the
+formal series \lean{completeHomogeneousGeneratingSeriesOn}.  Its coefficient
+and adjoining-variable laws are
+\lean{coeff_completeHomogeneousGeneratingSeriesOn} and
+\lean{completeHomogeneousGeneratingSeriesOn_insert}; over every commutative
+ring, \lean{prod_one_sub_mul_completeHomogeneousGeneratingSeriesOn} clears the
+finite linear-denominator product and
+\lean{completeHomogeneousGeneratingSeriesOn_eq_invOfUnit_prod} identifies the
+series with its canonical \texttt{PowerSeries.invOfUnit} reciprocal.  This is
+a formal coefficient identity and asserts no analytic evaluation,
+convergence, or Bell/generalized-harmonic conversion.  The generic residual theorem
 \lean{sum_weight_mul_pow_card_add} and its distinct-node Lagrange
 specialization \lean{sum_lagrangeEvalWeight_mul_pow_card_add} are in
 \path{LagrangeResidualMoments.lean}.  Thus
 \eqref{eq:lagrange-all-residual-moments} extends the preceding first-error
 formula rather than replacing its low-degree exactness foundation.
+
+There is also a finite-family analytic companion to this formal algebra.
+The theorem \lean{completeHomogeneousEvalOn_isBigO_pow} in
+\path{CompleteHomogeneousAsymptotics.lean} says that coordinatewise
+\(\bigO(g)\) bounds on a fixed finite alphabet give an
+\(\bigO(g^n)\) bound for its degree-\(n\) complete homogeneous
+evaluation.  This evaluated asymptotic statement does not assert convergence
+of the preceding formal power series or its Bell/generalized-harmonic
+conversion.
+
+For the actual Fabius endpoint problem, put
+\(x_{\lambda,j}=(\lambda+j)2^{-(\lambda+j)}\).  The module
+\path{FabiusLambertPhaseLockedPullback.lean} pulls the arbitrary-order
+logarithmic expansion back to each fixed \(x_{\lambda,j}\), freezing
+the one-periodic correction and all periodic saddle coefficients at the base
+phase \(\lambda\).  The estimates in
+\path{LambertReciprocalAsymptotics.lean} show that the fixed order-\(r\)
+reciprocal Lagrange row has total variation \(\bigO(\lambda^r)\) and
+balance this growth against sufficiently high shifted inverse powers.  Writing
+\(\Psi\) for \lean{negativeLaplacePsi}, the definitions
+\lean{fabiusPhaseLockedReducedSample},
+\lean{fabiusPhaseLockedPeriodicEstimator},
+\lean{fabiusPhaseLockedResidualTerm}, and
+\lean{fabiusPhaseLockedResidualPartialSum} in
+\path{FabiusLambertPhaseExtraction.lean} give, for every fixed
+\(r,S\in\N\),
+\begin{equation}
+ E_r(\lambda)-\Psi(\lambda)-\sum_{n=0}^{S-1}R_{r,n}(\lambda)
+ =\bigO\bigl(\lambda^{-(r+1+S)}\bigr),
+ \qquad \lambda\to+\infty .                         \label{eq:phase-locked-finite-extraction}
+\end{equation}
+This is \lean{fabiusPhaseLockedPeriodicEstimator_sub_residual_isBigO};
+its proof uses the node expansion through order \(2r+S+1\).  The cases
+\(S=0\) and \(S=1\) are the named leading and first-omitted-moment
+bounds, and
+\lean{fabiusPhaseLockedPeriodicEstimator_tendsto_periodicAlong} gives
+convergence to \(\Psi(a)\) along \(\lambda=a+n\).  These are
+fixed-index Poincaré estimates; no uniformity for \(r\) or \(S\)
+growing with \(\lambda\) is claimed.
 
 \begin{proposition}[Principal specialization and denominator-free geometric residuals]
 \label{prop:geometric-principal-residuals}
@@ -7731,6 +7785,35 @@ strict-interior wrappers are \lean{fabiusLambertPhase_div_radius} and
 \lean{fabiusLambertRadius_mul_argument}.  All five declarations are in
 \path{FabiusLambertSaddle.lean}.
 
+This lower phase is also the exact specialization at
+\((m,A,\beta)=(1,1,L)\) of the generic scaled power--exponential inverse;
+this is \lean{lowerPowerExponentialPhase_one_one_log_two} in
+\path{PowerExponentialLambertFabius}\texttt{.lean}.  More generally, for
+\(m\in\mathbb N\setminus\{0\}\), \(A>0\), and \(\beta>0\), put
+\[
+ S_{m,A,\beta}(t)=At^m\e^{-\beta t},
+ \qquad P_{m,A,\beta}=A\left(\frac m\beta\e^{-1}\right)^m.
+\]
+Writing \(\lambda_0\) and \(\lambda_{-1}\) for the principal and lower
+Lambert phases, their exact images are
+\[
+ \lambda_0\bigl([0,P_{m,A,\beta}]\bigr)
+   =\left[0,\frac m\beta\right],
+ \qquad
+ \lambda_{-1}\bigl((0,P_{m,A,\beta}]\bigr)
+   =\left[\frac m\beta,\infty\right].
+\]
+These are \lean{principalPowerExponentialPhase_image_Icc} and
+\lean{lowerPowerExponentialPhase_image_Ioc}; the companion declarations
+\lean{principalPowerExponentialPhase_invOn} and
+\lean{lowerPowerExponentialPhase_invOn} make each phase a two-sided
+\(\operatorname{InvOn}\) inverse of \(S_{m,A,\beta}\) on the corresponding
+displayed interval pair.  They are proved in
+\path{PowerExponentialLambertInverse.lean}.  On the principal branch, the
+closed endpoint step uses the exact restriction
+\(W_0([-\e^{-1},0])=[-1,0]\), namely
+\lean{principalLambertW_image_Icc} in \path{PrincipalLambertW.lean}.
+
 On the same closed-upper domain, the phase has the sharp lower bound and endpoint
 characterization
 \begin{equation}
@@ -8359,12 +8442,15 @@ the fully expanded atom-Gram identity is
  =\delta_{mn}\frac{2u_n^2}{4n+1}.                         \label{eq:legendre-atom-gram}
 \end{equation}
 
-The focused-build module \path{FabiusLegendreTranslateSeries.lean} closes the
-literal outer series and the common-mesh partial sums.  Its four public
+At compiled source checkpoint \texttt{e2c310e7c}, the focused-build module
+\path{FabiusLegendreTranslateSeries.lean} closes the literal outer series and
+the common-mesh partial sums.  Its five public
 definitions are \lean{rvachevLegendrePartialSumDeconvolutionPolynomial},
 \lean{rvachevLegendrePartialSumAtomCoefficient},
-\lean{rvachevLegendrePartialSumTranslateBlock}, and
-\lean{rvachevLegendreTranslateBlockOnInterval}.  Its sixteen public theorems are
+\lean{rvachevLegendrePartialSumTranslateBlock},
+\lean{rvachevLegendreTranslateBlockOnInterval}, and
+\lean{rvachevLegendrePartialSumTranslateBlockOnInterval}.  Its twenty-three
+public theorems are
 \lean{summable_norm_rvachevLegendreTranslateBlock},
 \lean{summable_rvachevLegendreTranslateBlock},
 \lean{hasSum_rvachevLegendreTranslateBlock},
@@ -8379,8 +8465,15 @@ definitions are \lean{rvachevLegendrePartialSumDeconvolutionPolynomial},
 \lean{rvachevLegendreTranslateBlockOnInterval_eq_smul},
 \lean{summable_norm_rvachevLegendreTranslateBlockOnInterval},
 \lean{summable_rvachevLegendreTranslateBlockOnInterval},
-\lean{hasSum_rvachevLegendreTranslateBlock_uniform}, and
-\lean{tsum_rvachevLegendreTranslateBlock_uniform}.
+\lean{hasSum_rvachevLegendreTranslateBlock_uniform},
+\lean{tsum_rvachevLegendreTranslateBlock_uniform},
+\lean{rvachevLegendrePartialSumTranslateBlockOnInterval_apply},
+\lean{rvachevLegendrePartialSumTranslateBlockOnInterval_eq_eval_partialSumPolynomial},
+\lean{rvachevLegendrePartialSumTranslateBlockOnInterval_eq_sum},
+\lean{tendsto_rvachevLegendrePartialSumTranslateBlockOnInterval},
+\lean{rvachevLegendrePartialSumTranslateBlock_tendstoUniformlyOn},
+\lean{tendsto_norm_rvachevLegendrePartialSumTranslateBlockOnInterval_sub}, and
+\lean{tendsto_rvachevLegendrePartialSumTranslateBlock}.
 
 Consequently the literal finite trains in
 \eqref{eq:legendre-translate-block} are absolutely summable both pointwise and
@@ -8406,7 +8499,12 @@ every real input, while on the Legendre interval its exact finite form is
 \end{equation}
 On $[-1,1]$, the named fixed-scale train is equal pointwise both to \(S_N\)
 and to the finite sum of the separately scaled blocks.  The latter statement
-does not identify the two coefficient vectors.
+does not identify the two coefficient vectors.  Bundled in
+\(C([-1,1])\), these common-mesh partial trains converge to \(\Up\) in the
+supremum norm.  The API also provides the raw
+\texttt{TendstoUniformlyOn} statement, convergence of the supremum-norm error
+to zero, and the pointwise corollary at every \(x\in[-1,1]\).  It asserts no
+rate, coefficientwise limit, or uniform convergence outside this interval.
 
 At compiled source checkpoint \texttt{ca66a1247}, the polynomial-form Legendre blocks
 \(B_n(x)=u_nP_{2n}(x)\) satisfy the complete orthogonality formula
@@ -9026,6 +9124,7 @@ Finite base-layer arithmetic &
 Finite polynomial, formal-series, and unconditionally summable analytic-series filters,
 and geometric Lagrange/Richardson exactness &
 \path{FinitePolynomialFunctional.lean}, \path{CompleteHomogeneous.lean},
+\path{CompleteHomogeneousGenerating.lean},
 \path{FinitePowerSeriesFilter.lean}, \path{GeometricPowerSeriesFilter.lean},
 \path{AnalyticSeriesFilter.lean},
 \path{GeometricLagrange.lean}, \path{LagrangeResidualMoments.lean},
@@ -9037,6 +9136,12 @@ and geometric Lagrange/Richardson exactness &
 \path{GeometricLagrangeQMoments.lean}\\
 Phase-locked reciprocal-grid Richardson algebra &
 \path{LambertPhaseLockedRichardson.lean}\\
+Phase-locked pullback, complete-homogeneous asymptotics, reciprocal-row growth,
+and finite-order periodic extraction &
+\path{FabiusLambertPhaseLockedPullback.lean},
+\path{CompleteHomogeneousAsymptotics.lean},
+\path{LambertReciprocalAsymptotics.lean},
+\path{FabiusLambertPhaseExtraction.lean}\\
 Finite \(q\)-Cauchy convolutions and the \(q\)-Bernstein partition of unity &
 \path{QBinomialCauchy.lean}\\
 Weighted Pascal, elementary--complete orthogonality, formal generating
@@ -9075,7 +9180,10 @@ Endpoint asymptotics &
 \path{PeriodicCorrection.lean}, \path{PeriodicFourier.lean},
 \path{MellinBose.lean}, \path{MellinFinitePart.lean},
 \path{BoseFinitePartIntegral.lean},
-\path{LowerLambertW.lean}, \path{FabiusLambertPhase.lean},
+\path{PrincipalLambertW.lean}, \path{LowerLambertW.lean},
+\path{PowerExponentialLambert.lean}, \path{PowerExponentialLambertCalculus.lean},
+\path{PowerExponentialLambertInverse.lean},
+\path{PowerExponentialLambertFabius}\texttt{.lean}, \path{FabiusLambertPhase.lean},
 \path{FabiusLambertSaddle.lean}, \path{FabiusSharpLambertMain.lean},
 \path{FabiusWikipediaMain.lean},
 \path{FabiusDecayComparison.lean},

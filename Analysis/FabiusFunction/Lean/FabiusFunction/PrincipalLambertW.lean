@@ -14,7 +14,9 @@ that map is strictly increasing.
 * `neg_one_le_principalLambertW` — the branch stays at or above `-1`;
 * `principalLambertW_unique` — uniqueness among solutions `≥ -1`;
 * branch point `W₀(-e⁻¹) = -1`, `W₀(0) = 0`, `W₀(e) = 1`;
-* `principalLambertW_strictMonoOn` — strict monotonicity.
+* `principalLambertW_strictMonoOn` — strict monotonicity;
+* `principalLambertW_image_Icc` — the exact restricted image
+  `W₀ '' [-e⁻¹, 0] = [-1, 0]`.
 
 Together with the lower branch this completes the real Lambert pair —
 the subject of the `lambert-w` draft group and the function behind
@@ -160,6 +162,16 @@ theorem principalLambertW_strictMonoOn :
   rw [h1, h2] at hmono
   linarith
 
+/-- On the nonpositive part of its natural domain, the principal branch is
+nonpositive. -/
+theorem principalLambertW_nonpos {z : ℝ}
+    (hz : z ∈ Icc (-Real.exp (-1)) 0) :
+    principalLambertW z ≤ 0 := by
+  have h := principalLambertW_strictMonoOn.monotoneOn
+    (mem_Ici.mpr hz.1)
+    (mem_Ici.mpr (neg_nonpos.mpr (Real.exp_pos _).le)) hz.2
+  simpa using h
+
 /-- Above the branch point the branch exceeds `-1`. -/
 theorem neg_one_lt_principalLambertW {z : ℝ}
     (hz : -Real.exp (-1) < z) :
@@ -182,6 +194,25 @@ theorem principalLambertW_image_Ioi :
       simpa [neg_one_mul] using h
     exact ⟨w * Real.exp w, hgt,
       (principalLambertW_unique hgt.le (le_of_lt hw) rfl).symm⟩
+
+/-- Exact image of the nonpositive part of the natural domain:
+`W₀ '' [-e⁻¹, 0] = [-1, 0]`. -/
+theorem principalLambertW_image_Icc :
+    principalLambertW '' Icc (-Real.exp (-1)) 0 = Icc (-1) 0 := by
+  ext w
+  constructor
+  · rintro ⟨z, hz, rfl⟩
+    exact ⟨neg_one_le_principalLambertW hz.1,
+      principalLambertW_nonpos hz⟩
+  · intro hw
+    have hlo : -Real.exp (-1) ≤ w * Real.exp w := by
+      have h := mul_exp_strictMonoOn.monotoneOn
+        (mem_Ici.mpr (le_refl (-1 : ℝ))) (mem_Ici.mpr hw.1) hw.1
+      simpa only [neg_one_mul] using h
+    have hhi : w * Real.exp w ≤ 0 :=
+      mul_nonpos_of_nonpos_of_nonneg hw.2 (Real.exp_pos _).le
+    exact ⟨w * Real.exp w, ⟨hlo, hhi⟩,
+      (principalLambertW_unique hlo hw.1 rfl).symm⟩
 
 /-- The principal branch is continuous at every point of the open
 domain. -/

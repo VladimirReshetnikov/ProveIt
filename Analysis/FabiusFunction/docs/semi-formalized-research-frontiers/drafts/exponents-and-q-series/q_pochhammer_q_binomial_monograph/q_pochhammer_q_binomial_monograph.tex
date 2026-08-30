@@ -1,12 +1,11 @@
-\documentclass[11pt,oneside,openany]{book}
+\documentclass[11pt,letterpaper,oneside,openany]{book}
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb,mathtools,amsthm}
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage[final]{microtype}
-\usepackage{geometry}
-\geometry{margin=1in,headheight=15pt}
+\usepackage[letterpaper,margin=1in,headheight=15pt]{geometry}
 \usepackage{bm}
 \usepackage{booktabs,longtable,tabularx,array,multirow}
 \usepackage{enumitem}
@@ -1443,6 +1442,36 @@ the formal-power-series version of the complete identity in
 \Cref{thm:weighted-generating} are exact.  The theorem as labelled remains
 \statuspartial{} because its analytic evaluation and convergence assertion
 under \(\lvert w_i z\rvert<1\) has not been formalized.
+
+The complementary finite-index interface in
+\path{CompleteHomogeneousGenerating.lean} consists of the definition
+\lean{completeHomogeneousGeneratingSeriesOn} and the six theorems
+\begin{center}
+\footnotesize
+\lean{coeff_completeHomogeneousGeneratingSeriesOn}\\
+\lean{completeHomogeneousGeneratingSeriesOn_empty}\\
+\lean{completeHomogeneousGeneratingSeriesOn_insert}\\
+\lean{one_sub_mul_completeHomogeneousGeneratingSeriesOn_insert}\\
+\lean{prod_one_sub_mul_completeHomogeneousGeneratingSeriesOn}\\
+\lean{completeHomogeneousGeneratingSeriesOn_eq_invOfUnit_prod}.
+\end{center}
+The coefficient, empty-family, and adjoining-variable recurrence results hold
+over every commutative semiring.  Over every commutative ring, the remaining
+results clear one or all finite linear denominators and identify the series
+with Mathlib's canonical \texttt{PowerSeries.invOfUnit}; zero divisors are
+allowed.  Thus this module and \path{SymmetricFunctionGenerating.lean} give
+complementary formal proofs of the complete-product half of
+\Cref{thm:weighted-generating}, while the latter also supplies the elementary
+product and elementary--complete reciprocity.
+
+There is also a finite-family analytic companion.  The sole public theorem
+\lean{completeHomogeneousEvalOn_isBigO_pow} in
+\path{CompleteHomogeneousAsymptotics.lean} transfers coordinatewise
+\(\mathcal O(g)\) bounds through every fixed degree \(r\): the corresponding
+complete homogeneous evaluation is \(\mathcal O(g^r)\).  It includes degree zero
+and requires no nonvanishing assumption on \(g\).  This asymptotic bound does
+not evaluate either formal series at \(z\), establish its convergence, or
+close the analytic clause of the labelled theorem.
 \end{remark}
 
 \section{Classical, Stirling, and Gaussian specializations}
@@ -8525,7 +8554,13 @@ The formula is an exact rational certificate, but it is ill conditioned in float
 point, and the loss occurs \emph{inside} the blocks rather than between them.  The outer
 cancellation over $k$ is mild: at $\theta=1$ the largest block of
 \eqref{eq:fabius-inverse-dyadic-closed} exceeds the value of the whole sum by the factors
-$3.00,\;4.20,\;4.69,\;4.42,\;4.09,\;3.84,\;3.68,\;3.59,\;3.53,\;3.50$ for
+\[
+ \begin{gathered}
+  3.00,\;4.20,\;4.69,\;4.42,\;4.09,\\
+  3.84,\;3.68,\;3.59,\;3.53,\;3.50
+ \end{gathered}
+\]
+for
 $n=1,\ldots,10$, peaking at $n=3$ and decreasing thereafter, and other choices of
 $\theta$ alter these ratios only by a bounded factor.  The digits are lost within a
 single block, in the alternating Thue--Morse power sum: for $k=n$ the largest summand
@@ -10531,10 +10566,14 @@ Lipschitz with constant
 the constant $g_{q,N}\bigl(x-\tfrac12q^N\bigr)$ inside
 \eqref{eq:midpoint-error-integral}, so that
 \[
- \bigl|F^{\mathrm{mid}}_{q,N}(x)-F_q(x)\bigr|
- \le q^N\int_0^1\Bigl|g_{q,N}\bigl(x-q^Nu\bigr)-g_{q,N}\bigl(x-\tfrac12q^N\bigr)\Bigr|
-   \,\abs{H_q(u)}\dd u
- \le\frac{q^{2N}}{q(1-q)^2}\int_0^1\Bigl|u-\tfrac12\Bigr|\abs{H_q(u)}\dd u
+ \begin{aligned}
+  \bigl|F^{\mathrm{mid}}_{q,N}(x)-F_q(x)\bigr|
+  &\le q^N\int_0^1\Bigl|g_{q,N}\bigl(x-q^Nu\bigr)
+    -g_{q,N}\bigl(x-\tfrac12q^N\bigr)\Bigr|\\[-2pt]
+  &\hspace{7em}{}\cdot\abs{H_q(u)}\dd u\\
+  &\le\frac{q^{2N}}{q(1-q)^2}\int_0^1
+    \Bigl|u-\tfrac12\Bigr|\abs{H_q(u)}\dd u .
+ \end{aligned}
 \]
 by \eqref{eq:truncated-density-lipschitz}.  Now insert
 \eqref{eq:midpoint-H-moment-one}:
@@ -11588,7 +11627,15 @@ Of the 183 labelled results, 30 are \statusexact, 26 are \statuspartial,
 The formalized part is concentrated exactly where the Fabius development
 needed it: the finite Gaussian-coefficient core, the geometric Lagrange and
 filter calculus, half-base and Thue--Morse cancellation, and the geometric
-uniform law.  Most of the classical analytic layer --- nonterminating basic
+uniform law.  The complementary modules
+\texttt{CompleteHomogeneousGenerating} and
+\texttt{SymmetricFunctionGenerating} now formalize both finite algebraic
+halves of the weighted generating-product theorem as formal-power-series
+identities; its analytic evaluation and convergence clause is not
+formalized.  The finite-family theorem in
+\texttt{CompleteHomogeneousAsymptotics} separately transfers coordinatewise
+Big-O bounds through a fixed complete homogeneous degree, without asserting
+formal-series convergence.  Most of the classical analytic layer --- nonterminating basic
 hypergeometric summation, Jacobi triple product, and Bailey pairs --- remains
 untouched.  The former claim that every infinite \(q\)-Pochhammer symbol in
 the development was a finite \texttt{Finset.range} product is now false:
@@ -11607,6 +11654,8 @@ declaration lists:
 \small
 \path{QBinomialCauchy.lean}: one definition and four theorems;\\
 \path{SymmetricFunctionOrthogonality.lean}: one definition and six theorems;\\
+\path{CompleteHomogeneousGenerating.lean}: one definition and six theorems;\\
+\path{CompleteHomogeneousAsymptotics.lean}: one theorem;\\
 \path{FiniteTriangularTransform.lean}: one definition and one theorem;\\
 \path{SymmetricFunctionTransform.lean}: four definitions and five theorems;\\
 \path{SymmetricFunctionGenerating.lean}: two definitions and six theorems.
@@ -11744,10 +11793,14 @@ convergence proof for \(\lvert z\rvert<1\)}\\[2pt]
 \Cref{thm:weighted-generating} & \statuspartial &
 \texttt{elementarySymmetricGeneratingSeries\_\allowbreak{}eq\_\allowbreak{}prod},
 \texttt{elementarySymmetricGeneratingSeries\_\allowbreak{}neg\_\allowbreak{}mul\_\allowbreak{}completeHomogeneousGeneratingSeries},
-\texttt{completeHomogeneousGeneratingSeries\_\allowbreak{}eq\_\allowbreak{}invOfUnit\_\allowbreak{}elementarySymmetricGeneratingSeries\_\allowbreak{}neg}\newline
-{\footnotesize\texttt{SymmetricFunctionGenerating}; finite elementary product
-and complete reciprocal are exact as formal power series, but analytic
-evaluation and convergence under \(\lvert w_i z\rvert<1\) remain open}\\[2pt]
+\texttt{completeHomogeneousGeneratingSeries\_\allowbreak{}eq\_\allowbreak{}invOfUnit\_\allowbreak{}elementarySymmetricGeneratingSeries\_\allowbreak{}neg},
+\texttt{prod\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}mul\_\allowbreak{}completeHomogeneousGeneratingSeriesOn},
+\texttt{completeHomogeneousGeneratingSeriesOn\_\allowbreak{}eq\_\allowbreak{}invOfUnit\_\allowbreak{}prod}\newline
+{\footnotesize\texttt{SymmetricFunctionGenerating} and
+\texttt{CompleteHomogeneousGenerating}; complementary finite-family formal
+surfaces prove the elementary product, elementary--complete reciprocity, and
+the canonical complete-homogeneous inverse, but not analytic evaluation or
+convergence under \(\lvert w_i z\rvert<1\)}\\[2pt]
 \Cref{cor:e-h-orthogonality} & \statusexact &
 \texttt{sum\_\allowbreak{}elementarySymmetricEval\_\allowbreak{}mul\_\allowbreak{}completeHomogeneousEval}\newline
 {\footnotesize\texttt{SymmetricFunctionOrthogonality}; arbitrary finite family, including empty family and degree zero}\\[2pt]

@@ -2,9 +2,9 @@
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
-\usepackage[margin=1in]{geometry}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{booktabs,longtable,array,tabularx}
 \usepackage{graphicx}
@@ -13,7 +13,7 @@
 \usepackage{enumitem}
 \usepackage{xcolor}
 \usepackage{listings}
-\usepackage{url}
+\usepackage{xurl}
 \usepackage{hyperref}
 \usepackage[nameinlink,noabbrev,capitalise]{cleveref}
 \usepackage{aliascnt}
@@ -311,6 +311,23 @@ restriction to \((-\infty,-1]\) maps that interval bijectively, with reversed
 orientation, onto \([-1/\ee,0)\), and its inverse is \(\Wm\).  The listed
 numbers of solutions follow immediately.
 \end{proof}
+
+\begin{remark}[Formalized real-branch package]
+The project records the exact nonpositive principal-branch image
+\[
+ \Wz\bigl([-1/\ee,0]\bigr)=[-1,0]
+\]
+as \path{principalLambertW_image_Icc} in
+\path{PrincipalLambertW.lean}.  Together with the lower-branch image and
+strict antitonicity in \path{LowerLambertW.lean}, the global lower bound and
+the exhaustive declaration
+\path{eq_principalLambertW_or_eq_lowerLambertW} in
+\path{LambertBranchDichotomy.lean}, this formalizes the complete real
+existence, range, and two-solution classification of
+\cref{thm:realbranches}.  The endpoint-inclusive principal restriction is
+also the range theorem used by the formal two-branch power--exponential
+inverse package below.
+\end{remark}
 
 \begin{figure}[H]
 \centering
@@ -656,6 +673,16 @@ Use \eqref{eq:firstder} and the ranges in
 positive sign on the principal branch and negative sign on the
 nonprincipal branch.  The remaining factors tend to nonzero finite values.
 \end{proof}
+
+\begin{remark}[Formalized first-order calculus]
+The first-derivative identities and their strict signs on the two branch
+interiors are formalized in \path{PrincipalLambertW.lean} and
+\path{LowerLambertW.lean}; the scaled power--exponential specializations are
+in \path{PowerExponentialLambertCalculus.lean}.  The second-derivative
+formulas \eqref{eq:secondder-exp}--\eqref{eq:secondder}, their endpoint
+limits, and the full curvature classification below are not yet packaged as
+Lean declarations.
+\end{remark}
 
 \begin{theorem}[Concavity and the inflection point]\label{thm:curvature}
 The principal branch \(\Wz\) is strictly concave on
@@ -2715,6 +2742,39 @@ When \(p\) is even, taking a real root can introduce two signs.  Each sign
 must be treated separately, and each resulting Lambert argument may itself
 admit two real branches.
 
+\begin{remark}[Endpoint-safe integer-power inverse package]
+For \(m\in\N\setminus\{0\}\), \(A>0\), and \(\beta>0\), the project sets
+\[
+ S_{m,A,\beta}(t)=At^m\ee^{-\beta t},
+ \qquad
+ P_{m,A,\beta}=A\left(\frac m\beta\ee^{-1}\right)^m
+\]
+and defines principal and lower Lambert phases \(\lambda_0\) and
+\(\lambda_{-1}\).  Their exact endpoint-inclusive images are
+\[
+ \lambda_0\bigl([0,P_{m,A,\beta}]\bigr)
+   =\left[0,\frac m\beta\right],
+ \qquad
+ \lambda_{-1}\bigl((0,P_{m,A,\beta}]\bigr)
+   =\left[\frac m\beta,\infty\right].
+\]
+These are \path{principalPowerExponentialPhase_image_Icc} and
+\path{lowerPowerExponentialPhase_image_Ioc}.  The theorems
+\path{principalPowerExponentialPhase_invOn} and
+\path{lowerPowerExponentialPhase_invOn} further say that each phase and
+\(S_{m,A,\beta}\) are two-sided setwise inverses on the corresponding
+displayed interval pair.  All four declarations are in
+\path{PowerExponentialLambertInverse.lean}.  Thus this is a branch-explicit,
+endpoint-safe integer-power specialization of \cref{thm:xpowerexp}, without
+making an arbitrary-real-power root claim.
+
+At \((m,A,\beta)=(1,1,\log2)\), the profile is
+\(t2^{-t}\), its peak is \(\ee^{-1}/\log2\), and
+\path{lowerPowerExponentialPhase_one_one_log_two} in
+\path{PowerExponentialLambertFabius}\texttt{.lean} identifies the lower generic phase
+exactly with the Fabius lower-Lambert phase.
+\end{remark}
+
 \subsection{An exponential equal to an affine function}
 
 \begin{theorem}\label{thm:exp-affine}
@@ -3624,8 +3684,19 @@ normalization \(c\) --- the dyadic all-orders endpoint and inverse-endpoint
 expansions, their periodic Gamma--zeta phases, and the general-base
 transform-level theory live in the exponents-and-\(q\)-series volume
 (Parts VI--VII) and in the inverse-endpoint volume of this draft corpus,
-with the phase-locked Richardson layer formalized in
-\path{LambertPhaseLockedRichardson.lean}.  The two-term inversion
+with the exact phase-locked interpolation algebra formalized in
+\path{LambertPhaseLockedRichardson.lean}.  The downstream modules
+\path{FabiusLambertPhaseLockedPullback.lean},
+\path{CompleteHomogeneousAsymptotics.lean},
+\path{LambertReciprocalAsymptotics.lean}, and
+\path{FabiusLambertPhaseExtraction.lean} now combine the arbitrary-order
+endpoint remainder with the growing reciprocal row: for every fixed row
+order \(r\) and residual depth \(S\), the periodic estimator minus its first
+\(S\) exact residuals differs from the periodic endpoint term by
+\(\bigO(\lambda^{-r-1-S})\), and it converges to the corresponding periodic
+value along every integer phase ray.  This is a finite Poincar\'e statement,
+not convergence of an infinite residual series or uniformity in growing
+orders.  The two-term inversion
 \(\log(1/G^{-1}(y))=\sqrt{2L\log(1/y)}-\tfrac12\log\log(1/y)+\bigO(1)\)
 proved there is precisely the leading behavior of \(-W_{-1}\) in the
 logarithmic regime of \cref{sec:asymptotics}, and the fixed-point/cocycle
