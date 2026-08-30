@@ -1967,19 +1967,37 @@ $\lambda=-qw$,
 \]
 Everything else is the choice of $u$ making $(-qu)^q$ equal to $x/(C_Pp)$, and that is the only
 place the real power $(x/(C_Pp))^{1/q}$ enters, bringing its round-trip hypothesis
-$x/(C_Pp)\ge0$ with it.  The current theorem carries the open-interval branch hypothesis
-$(-\e^{-1},0)$ rather than deriving it; which $x$ land there depends on $C_P$, $p$ and $q$,
-something settled here by context rather than by a formula.  The lower-branch defining identity
-also holds at the endpoint $-\e^{-1}$, but that broader closed-endpoint API is not used by this
-statement.  At $q=1$ the coordinate collapses to $-W_{-1}(-x/(C_Pp))$
+$x/(C_Pp)\ge0$ with it.  The unit-rate bridge
+\lean{Fabius.lowerPowerExponentialPhase\_rate\_one} in
+\path{PowerExponentialLambertFabius}\texttt{.lean} identifies this coordinate with the generic lower
+power--exponential phase.  Write
+\[
+ P_q=(C_Pp)(q\e^{-1})^q.
+\]
+For $q\in\N\setminus\{0\}$ and $C_Pp>0$, the intrinsic profile intervals now derive the branch
+premise: $0<x<P_q$ puts the Lambert argument in $(-\e^{-1},0)$, while
+$0<x\le P_q$ puts it in $[-\e^{-1},0)$.  These are respectively
+\lean{Fabius.generalizedLambertCoordinate\_argument\_mem\_Ioo} and
+\lean{Fabius.generalizedLambertCoordinate\_argument\_mem\_Ico}.  On the endpoint-inclusive
+interval $(0,P_q]$, \lean{Fabius.generalizedLambertCoordinate\_solves\_saddle\_of\_mem}
+proves \eqref{p1:eq:generalized-saddle-equation}, including the peak.
+
+The generic inverse package in \path{PowerExponentialLambertInverse.lean} is stronger still:
+via the unit-rate bridge,
+\lean{Fabius.lowerPowerExponentialPhase\_image\_Ioc} gives the exact image
+$\lambda_P((0,P_q])=[q,\infty)$, and
+\lean{Fabius.lowerPowerExponentialPhase\_invOn} gives the two-sided
+$\operatorname{InvOn}$ law with $\lambda\mapsto C_Pp\lambda^q\e^{-\lambda}$ on
+$[q,\infty)$ and $(0,P_q]$.  At $q=1$ the coordinate collapses to
+$-W_{-1}(-x/(C_Pp))$
 (\lean{Fabius.generalizedLambertCoordinate\_one}), the shape the classical $p=2$ analysis uses:
 \lean{Fabius.lowerLambertW} (\lean{LowerLambertW.lean}), the project's totalized construction
 of the lower real branch, satisfies $W_{-1}(z)\e^{W_{-1}(z)}=z$ on
 $[-\e^{-1},0)$, with functional equation
 \lean{Fabius.lowerLambertW_mul_exp_of_mem_Ico} and uniqueness
-\lean{Fabius.lowerLambertW_unique_of_mem_Ico}.  Thus the generalized coordinate
-\eqref{p1:eq:generalized-lambert} has an exact Lean counterpart; the endpoint transseries
-organized by that coordinate remains outside the formal boundary.
+\lean{Fabius.lowerLambertW_unique_of_mem_Ico}.  Thus the coordinate, its intrinsic
+endpoint-inclusive solve law, and its exact inverse geometry have Lean counterparts; the
+endpoint transseries organized by that coordinate remains outside the formal boundary.
 
 
 \section{An alternating Newton family of positive-definite Pascal quotients}
@@ -4622,14 +4640,63 @@ Vandermonde theorems state the monograph's single convolution for every
 \(k\in\Z\), including \(\lvert k\rvert>N\), both on the natural support and
 as a literal finite-support sum over \(\Z\).
 
-The independent leaf \path{QBinomialCauchy.lean} proves the monograph's finite
-q-Cauchy convolution exactly as
-\lean{Fabius.finiteQPochhammerIn_mul_eq_sum_gaussianBinomial}.  Its parameters
-\(q,u,v\) range over an arbitrary commutative ring and its length over
-\(\N\); the statement is denominator-free and assumes no cancellation,
-nonvanishing, injectivity, topology, or convergence.  This is an exact
-counterpart only for the first q-Cauchy identity: the later Cauchy convolution
-II and q-Pfaff--Saalsch\"utz summation remain outside the formalized surface.
+The finite Cauchy companion is also complete.
+\path{QBinomialCauchy.lean} has exactly one public definition and five public
+theorems, counting the compatibility spelling
+\lean{Fabius.finiteQPochhammerIn_mul_eq_sum_gaussianBinomial} of the primary
+identity.  Its primary and reflected identities are
+\begin{align*}
+ (uv;q)_n
+ &=\sum_{k=0}^{n}\qbinom nkq (u;q)_k v^k(v;q)_{n-k},\\
+ &=\sum_{k=0}^{n}\qbinom nkq (v;q)_k v^{n-k}(u;q)_{n-k},
+\end{align*}
+namely \lean{Fabius.finite_qCauchy_identity} and
+\lean{Fabius.finite_qCauchy_identity_reflected}.  The definition
+\lean{Fabius.qBernsteinBasis} is
+\(B^{(q)}_{n,k}(x)=\qbinom nkq x^k(x;q)_{n-k}\), and
+\lean{Fabius.sum_qBernsteinBasis} proves
+\(\sum_{k=0}^{n}B^{(q)}_{n,k}(x)=1\).  Finally,
+\lean{Fabius.finite_qCauchy_second_identity} proves
+\[
+ (ac;q)_n(bc;q)_n
+ =\sum_{k=0}^{n}\qbinom nkq
+ (a;q)_k(b;q)_k c^k(c;q)_{n-k}(abcq^k;q)_{n-k}.
+\]
+All parameters and degrees are arbitrary over every commutative ring.  These
+are polynomial identities at \(q=0\), roots of unity, in positive
+characteristic, and with zero divisors; no division or cancellation is used.
+
+The symmetric-function companion has an equally explicit boundary.
+\path{SymmetricFunctionOrthogonality.lean} has exactly one public definition,
+\lean{Fabius.elementarySymmetricEval}, and the six public theorems
+\lean{Fabius.elementarySymmetricEval_eq_eval_esymm},
+\lean{Fabius.elementarySymmetricEval_zero},
+\lean{Fabius.elementarySymmetricEval_comp_equiv},
+\lean{Fabius.elementarySymmetricEval_option_succ},
+\lean{Fabius.elementarySymmetricEval_fin_succ}, and
+\lean{Fabius.sum_elementarySymmetricEval_mul_completeHomogeneousEval}.
+Human-readably, the first three identify the evaluator with Mathlib's
+universal elementary symmetric polynomial, prove \(e_0=1\), and prove
+reindexing invariance.  The next two give the adjoining-variable recurrence
+\[
+ e_{r+1}(x,a)=x e_r(a)+e_{r+1}(a)
+\]
+on both an \texttt{Option} family and a literal head--tail \texttt{Fin}
+family.  Together with the existing
+\lean{Fabius.completeHomogeneousEval_option_succ}, which states
+\[
+ h_{r+1}(x,a)=x h_r(x,a)+h_{r+1}(a),
+\]
+this proves both weighted-Pascal laws over every commutative semiring.  The
+last theorem proves, over every commutative ring,
+\[
+ \sum_{k=0}^{n}(-1)^k e_k(a)h_{n-k}(a)
+ =\begin{cases}1,&n=0,\\0,&n>0,
+ \end{cases}
+\]
+for every finite family, including the empty family and degree zero.  It does
+not supply a general weighted-inversion theorem, and the finite second Cauchy
+identity does not supply a \(q\)-Pfaff--Saalsch\"utz summation.
 
 The finite inversion layer is now formalized without denominators as well.
 \path{BitPositionQBinomial.lean} supplies the zero-based subset theorem
@@ -11298,9 +11365,9 @@ independent scale \(s=-q\), the definitions
 \lean{Fabius.qGaussianResidualCoeff} and
 \lean{Fabius.qGaussianReconstructionCoeff} have the closed forms
 \[
- C'_{n,k}=(-q)^{n-k}{n\brack k}_{q^2},
+ C'_{n,k}=(-q)^{n-k}\qbinom nk{q^2},
  \qquad
- B_{n,k}=q^{(n-k)^2}{n\brack k}_{q^2}
+ B_{n,k}=q^{(n-k)^2}\qbinom nk{q^2}
 \]
 by \lean{Fabius.qGaussianResidualCoeff_eq} and
 \lean{Fabius.qGaussianReconstructionCoeff_eq}.  The two declarations

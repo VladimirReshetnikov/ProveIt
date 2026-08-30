@@ -266,11 +266,13 @@ the zero-based product to the one-based product.
 \end{statusbox}
 
 \begin{statusbox}{Formal status: moment--Appell foundation}
-At compiled source checkpoint \texttt{1f9ce6fd9}, the subsequent module
-\path{RvachevMomentAppell.lean} exports five public definitions:
+Starting from compiled source checkpoint \texttt{1f9ce6fd9} and including the
+focused-build extension at compiled checkpoint \texttt{e2c310e7c}, the subsequent module
+\path{RvachevMomentAppell.lean} exports six public definitions:
 \path{rvachevRawMomentRat}, \path{rvachevReciprocalMomentRat},
 \path{rvachevAppellPolynomialRat}, \path{rvachevAppellPolynomial}, and
-\path{rvachevDeconvolvedPolynomial}.  Its sixteen public theorems are
+\path{rvachevDeconvolvedPolynomial}, together with
+\path{rvachevDeconvolutionLinearMap}.  Its twenty-four public theorems are
 \path{rvachevRawMomentRat_zero}, \path{rvachevRawMomentRat_even},
 \path{rvachevRawMomentRat_odd}, \path{rvachevReciprocalMomentRat_zero},
 \path{binomialConv_rvachevRawMomentRat_reciprocal},
@@ -283,12 +285,24 @@ At compiled source checkpoint \texttt{1f9ce6fd9}, the subsequent module
 \path{eval_rvachevAppellPolynomial_add},
 \path{integral_pow_mul_rvachev_eq_rvachevRawMomentRat_cast},
 \path{integral_eval_rvachevAppellPolynomial_add_mul_rvachev},
+\path{rvachevDeconvolutionLinearMap_apply},
+\path{rvachevDeconvolvedPolynomial_zero},
+\path{rvachevDeconvolvedPolynomial_add},
+\path{rvachevDeconvolvedPolynomial_smul},
+\path{rvachevDeconvolvedPolynomial_finsetSum},
+\path{rvachevDeconvolvedPolynomial_C_mul},
+\path{rvachevDeconvolvedPolynomial_monomial},
+\path{rvachevDeconvolvedPolynomial_X_pow},
 \path{natDegree_rvachevDeconvolvedPolynomial_le}, and
 \path{integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev}.  They
 formalize the full rational raw-moment sequence, its formal
 binomial-convolution reciprocal and complete-Bell description, rational and
 real monic Appell families of exact degree, and the polynomial smoothing
-inverse used below.  This closes the formal coefficient content behind
+inverse used below as a real linear map preserving zero, addition, scalar
+multiplication, finite sums, and constant-polynomial multiplication, with
+explicit monomial and $X^n$ simplification laws into the Rvachev--Appell
+family.  This
+closes the formal coefficient content behind
 \eqref{eq:beta-bell} and the operational polynomial-deconvolution content of
 \eqref{eq:deconvolution}--\eqref{eq:appell}, but not the displayed analytic
 reciprocal-MGF, differential-series, or Appell generating-function identities.
@@ -323,12 +337,55 @@ block data and equality \eqref{eq:block-def}--\eqref{eq:block-mode}, complete
 orthogonality of those translate blocks, and the atom-Gram identity
 \eqref{eq:atom-gram}.
 
-The new APIs do not prove minimality or sharpness of the displayed mesh;
+\end{statusbox}
+
+\begin{statusbox}{Formal status: translate-block series and common-mesh convergence}
+
+At compiled source checkpoint \texttt{e2c310e7c}, the focused-build module
+\path{FabiusLegendreTranslateSeries.lean} exports five
+public definitions:
+\path{rvachevLegendrePartialSumDeconvolutionPolynomial},
+\path{rvachevLegendrePartialSumAtomCoefficient},
+\path{rvachevLegendrePartialSumTranslateBlock},
+\path{rvachevLegendreTranslateBlockOnInterval}, and
+\path{rvachevLegendrePartialSumTranslateBlockOnInterval}.  Its twenty-three public theorems
+are \path{summable_norm_rvachevLegendreTranslateBlock},
+\path{summable_rvachevLegendreTranslateBlock},
+\path{hasSum_rvachevLegendreTranslateBlock},
+\path{tsum_rvachevLegendreTranslateBlock},
+\path{rvachevLegendrePartialSumDeconvolutionPolynomial_eq_sum},
+\path{rvachevLegendrePartialSumAtomCoefficient_eq_sum},
+\path{eval_rvachevLegendrePartialSumPolynomial_eq_tsum_rvachevUp},
+\path{eval_rvachevLegendrePartialSumPolynomial_eq_sum_rvachevUp},
+\path{rvachevLegendrePartialSumTranslateBlock_eq_eval_partialSumPolynomial},
+\path{rvachevLegendrePartialSumTranslateBlock_eq_sum_translateBlock},
+\path{rvachevLegendreTranslateBlockOnInterval_apply},
+\path{rvachevLegendreTranslateBlockOnInterval_eq_smul},
+\path{summable_norm_rvachevLegendreTranslateBlockOnInterval},
+\path{summable_rvachevLegendreTranslateBlockOnInterval},
+\path{hasSum_rvachevLegendreTranslateBlock_uniform},
+\path{tsum_rvachevLegendreTranslateBlock_uniform},
+\path{rvachevLegendrePartialSumTranslateBlockOnInterval_apply},
+\path{rvachevLegendrePartialSumTranslateBlockOnInterval_eq_eval_partialSumPolynomial},
+\path{rvachevLegendrePartialSumTranslateBlockOnInterval_eq_sum},
+\path{tendsto_rvachevLegendrePartialSumTranslateBlockOnInterval},
+\path{rvachevLegendrePartialSumTranslateBlock_tendstoUniformlyOn},
+\path{tendsto_norm_rvachevLegendrePartialSumTranslateBlockOnInterval_sub}, and
+\path{tendsto_rvachevLegendrePartialSumTranslateBlock}.  They close the pointwise
+and uniform, absolutely summable literal-block loop
+\eqref{eq:block-loop}; the full deconvolution identity \eqref{eq:SN-CN}; and
+the global and finite common-mesh synthesis \eqref{eq:fixed-scale}.  They also
+identify the named fixed-scale train with both the polynomial partial sum and
+the sum of its separately scaled blocks as functions on $[-1,1]$.  The bundled
+common-mesh partial trains converge to $u$ in $C([-1,1])$, equivalently in the
+supremum norm, with raw \texttt{TendstoUniformlyOn}, norm-error-to-zero, and
+pointwise forms also exposed.
+
+The new APIs still do not prove minimality or sharpness of the displayed mesh;
 reciprocal/deconvolution parity or the derivative, Gegenbauer, Appell, and
-low-degree formulas for $Q_d$; rationality of the atom rows; a named outer
-translate-block \texttt{HasSum} for \eqref{eq:block-loop}; the one-mesh
-partial-sum identity \eqref{eq:fixed-scale}; or the later refinement,
-projector, and asymptotic layers.
+low-degree formulas for $Q_d$; rationality of the atom rows; equality of the
+fixed-scale and separately scaled coefficient vectors; exact degree of every
+partial sum; or the later refinement, projector, and asymptotic layers.
 \end{statusbox}
 
 \clearpage
@@ -756,6 +813,18 @@ $\norm{P_j}_{L^\infty[-1,1]}\le1$ and the imported expansion satisfies
 $\sum|u_n|<\infty$, the Weierstrass test proves the stated block convergence.
 \end{proof}
 
+The focused-build declarations
+\path{summable_norm_rvachevLegendreTranslateBlock},
+\path{hasSum_rvachevLegendreTranslateBlock}, and
+\path{tsum_rvachevLegendreTranslateBlock} certify the literal pointwise
+series.  Their continuous-map counterparts
+\path{summable_norm_rvachevLegendreTranslateBlockOnInterval},
+\path{hasSum_rvachevLegendreTranslateBlock_uniform}, and
+\path{tsum_rvachevLegendreTranslateBlock_uniform} certify the absolute
+supremum-norm bound and uniform sum on the whole interval.  Thus the full
+statement of \cref{thm:block-loop}, with each inner train kept as one term, now
+has direct named Lean counterparts.
+
 The grouping qualification is essential.  The same translate $u(x)$ occurs as
 the $k=0$ atom in every block, and its scalar coefficients eventually become
 large.  The existing non-flattening theorem proves that the double series is
@@ -772,8 +841,8 @@ Let
  C_N(t)=\Dscr S_N(t)=\sum_{n=0}^{N}u_nQ_{2n}(t).
  \label{eq:SN-CN}
 \end{equation}
-Since $\deg S_N=2N$, the whole partial sum can be synthesized on the single
-finest grid $m_N=4^N$:
+The formal bound $\deg S_N\le2N$ is enough to synthesize the whole partial sum
+on the single common grid $m_N=4^N$:
 \begin{equation}
  \boxed{
  S_N(x)=\frac1{m_N}\sum_{|k|<2m_N}
@@ -782,6 +851,29 @@ finest grid $m_N=4^N$:
 \end{equation}
 All coefficients are rational.  This representation is the input for the
 coarse-to-fine lifting law below.
+
+Here \path{rvachevLegendrePartialSumDeconvolutionPolynomial_eq_sum} certifies
+both descriptions of $C_N$, while
+\path{eval_rvachevLegendrePartialSumPolynomial_eq_tsum_rvachevUp} and
+\path{eval_rvachevLegendrePartialSumPolynomial_eq_sum_rvachevUp} give the
+global and displayed finite synthesis formulas.  The named finite train is
+identified with $S_N$ and with the sum of the separately scaled blocks by
+\path{rvachevLegendrePartialSumTranslateBlock_eq_eval_partialSumPolynomial}
+and \path{rvachevLegendrePartialSumTranslateBlock_eq_sum_translateBlock}.
+The bundled train is related to both descriptions by
+\path{rvachevLegendrePartialSumTranslateBlockOnInterval_eq_eval_partialSumPolynomial}
+and \path{rvachevLegendrePartialSumTranslateBlockOnInterval_eq_sum}.  Its
+convergence to $u$ in $C([-1,1])$ is
+\path{tendsto_rvachevLegendrePartialSumTranslateBlockOnInterval};
+\path{rvachevLegendrePartialSumTranslateBlock_tendstoUniformlyOn},
+\path{tendsto_norm_rvachevLegendrePartialSumTranslateBlockOnInterval_sub}, and
+\path{tendsto_rvachevLegendrePartialSumTranslateBlock} give respectively the
+raw uniform-on-$[-1,1]$, supremum-norm-error, and pointwise forms.  Thus the
+right-hand side of \eqref{eq:fixed-scale} converges uniformly to $u$ as
+$N\to\infty$.  These are function equalities and limits; they do not identify
+the two coefficient vectors or provide a convergence rate or a uniform limit
+outside $[-1,1]$.  The displayed rationality assertion remains outside the
+current API.
 
 \section{Orthogonal finite translate blocks}
 \label{sec:orthogonal-blocks}
@@ -968,7 +1060,7 @@ independent tail enclosure.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.91\textwidth]{energy_convergence.pdf}
+\includegraphics[width=0.91\textwidth]{energy_convergence.png}
 \caption{Monotone exact-rational partial sums of
 $A_2=\sum u_n^2/(4n+1)$.  The dashed line is the $N=100$ computed reference.}
 \label{fig:energy-convergence}
@@ -976,7 +1068,7 @@ $A_2=\sum u_n^2/(4n+1)$.  The dashed line is the $N=100$ computed reference.}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.91\textwidth]{energy_terms.pdf}
+\includegraphics[width=0.91\textwidth]{energy_terms.png}
 \caption{Positive contributions $u_n^2/(4n+1)$ on a logarithmic scale.}
 \label{fig:energy-terms}
 \end{figure}
@@ -1131,7 +1223,7 @@ $1-4\one_{4\mid k}$.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.92\textwidth]{quarter_grid_null_stencil.pdf}
+\includegraphics[width=0.92\textwidth]{quarter_grid_null_stencil.png}
 \caption{The exact quarter-grid null coefficients for $Q_4$, comparing
 $m=16$ with $m=64$.  The corresponding translate train vanishes identically
 on $[-1,1]$ despite its substantial coefficients.}
@@ -1518,7 +1610,7 @@ polynomials.  The raw variation grows while the synthesized mode shrinks.}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.92\textwidth]{block_cancellation_growth.pdf}
+\includegraphics[width=0.92\textwidth]{block_cancellation_growth.png}
 \caption{Internal coefficient variation, largest individual coefficient, and
 resulting block size.  The rigorous asymptotic statement is
 \eqref{eq:central-root}; the plot only illustrates the pre-asymptotic regime.}
@@ -1776,6 +1868,10 @@ arguments.
  their formal reciprocal/Bell sequence, the rational and real monic
  reciprocal-moment Appell families, and coefficientwise polynomial
  deconvolution with exact smoothing recovery and a degree-nonincrease bound.
+ At compiled checkpoint \texttt{e2c310e7c}, the focused-build extension packages
+ deconvolution as a real linear map, proves its zero, addition, scalar,
+ finite-sum, and constant-multiple laws, and identifies its values on monomials
+ and $X^n$.
  The analytic reciprocal-MGF/differential-series display, specialized parity,
  explicit low coefficients, and a specialized reciprocal recurrence remain
  outside that API.
@@ -1791,8 +1887,16 @@ arguments.
  are formalized in \path{FabiusLegendreEnergy.lean}.  The same checkpoint's
  \path{FabiusLegendreTranslateBlocks.lean} now formalizes the literal finite
  up-translate realization, its complete block orthogonality, and the atom-Gram
- formula.  A named outer translate-block \texttt{HasSum} and the fixed-scale
- partial-sum synthesis remain outside these APIs.
+ formula.  At compiled checkpoint \texttt{e2c310e7c}, the focused-build
+ \path{FabiusLegendreTranslateSeries.lean} now
+ formalizes pointwise and uniform absolute summability and
+ \texttt{HasSum}/\texttt{tsum} forms for the literal outer blocks, the finite
+ mode expansion of $C_N=\Dscr S_N$, both global and finite common-mesh
+ synthesis at $4^N$, and convergence of the common-mesh partial trains to $u$
+ in $C([-1,1])$, with raw uniform, norm-error, and pointwise forms.  Rationality
+ of those atom rows, equality of the two
+ coefficient vectors, and exact degree of every partial sum remain outside
+ these APIs.
  \item \textbf{Energy layer.}  The real-variable equality
  \eqref{eq:A2-legendre} is formalized in \path{FabiusLegendreEnergy.lean}.
  At checkpoint \texttt{9d5f41c2c},
@@ -1815,11 +1919,11 @@ arguments.
  conclude the root-limsup law \eqref{eq:central-root}.
 \end{enumerate}
 
-The interlevel identities and orthogonal block theorem should be relatively
-short formal developments because their analytic content is already isolated
-in existing repository theorems.  The only new complex-analytic lemma needed
-for the sharp central law is the standard implication from geometric Legendre
-coefficient decay to holomorphic extension in a Bernstein ellipse.
+The orthogonal block theorem is now formalized in \path{FabiusLegendreEnergy.lean}
+and \path{FabiusLegendreTranslateBlocks.lean}; only the interlevel identities remain
+as a relatively short formalization target because their analytic content is already
+isolated in existing repository theorems.  The only new complex-analytic lemma needed
+for the sharp central law is the standard implication from geometric Legendre coefficient decay to holomorphic extension in a Bernstein ellipse.
 
 \section{Conclusion}
 \label{sec:conclusion}

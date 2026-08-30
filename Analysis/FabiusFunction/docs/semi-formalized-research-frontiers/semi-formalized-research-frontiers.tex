@@ -3731,11 +3731,13 @@ that half-line integral with the Self-Reconstruction report's unscaled
 $\prod_{j\ge0}\sinc^2(\pi\xi/2^j)$ formula and its $1/(2\pi)$-scaled sine-quotient formula
 indexed from one.
 
-At compiled source checkpoint \texttt{1f9ce6fd9}, the Rvachev moment--Appell concordance is
-\path{RvachevMomentAppell.lean}.  Its five public definitions are
+Starting from compiled source checkpoint \texttt{1f9ce6fd9} and including the focused-build
+extension at compiled checkpoint \texttt{e2c310e7c}, the Rvachev moment--Appell concordance is
+\path{RvachevMomentAppell.lean}.  Its six public definitions are
 \lean{rvachevRawMomentRat}, \lean{rvachevReciprocalMomentRat},
 \lean{rvachevAppellPolynomialRat}, \lean{rvachevAppellPolynomial}, and
-\lean{rvachevDeconvolvedPolynomial}.  Its sixteen public theorems are
+\lean{rvachevDeconvolvedPolynomial}, together with
+\lean{rvachevDeconvolutionLinearMap}.  Its twenty-four public theorems are
 \lean{rvachevRawMomentRat_zero}, \lean{rvachevRawMomentRat_even},
 \lean{rvachevRawMomentRat_odd}, \lean{rvachevReciprocalMomentRat_zero},
 \lean{binomialConv_rvachevRawMomentRat_reciprocal},
@@ -3748,12 +3750,23 @@ At compiled source checkpoint \texttt{1f9ce6fd9}, the Rvachev moment--Appell con
 \lean{eval_rvachevAppellPolynomial_add},
 \lean{integral_pow_mul_rvachev_eq_rvachevRawMomentRat_cast},
 \lean{integral_eval_rvachevAppellPolynomial_add_mul_rvachev},
+\lean{rvachevDeconvolutionLinearMap_apply},
+\lean{rvachevDeconvolvedPolynomial_zero},
+\lean{rvachevDeconvolvedPolynomial_add},
+\lean{rvachevDeconvolvedPolynomial_smul},
+\lean{rvachevDeconvolvedPolynomial_finsetSum},
+\lean{rvachevDeconvolvedPolynomial_C_mul},
+\lean{rvachevDeconvolvedPolynomial_monomial},
+\lean{rvachevDeconvolvedPolynomial_X_pow},
 \lean{natDegree_rvachevDeconvolvedPolynomial_le}, and
 \lean{integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev}.  They package the full
 rational raw-moment sequence, its formal binomial-convolution reciprocal and complete-Bell
 description, rational and real monic Appell families of exact degree, and coefficientwise
-polynomial deconvolution whose degree does not increase and whose Rvachev smoothing recovers
-the original polynomial.  This reciprocal-moment Appell family is not the dyadic
+polynomial deconvolution as a real linear map preserving zero, addition, scalar
+multiplication, finite sums, and constant-polynomial multiplication.  It sends a monomial
+and $X^n$ to the correspondingly scaled and unscaled Rvachev--Appell polynomial; its degree
+does not increase and Rvachev smoothing recovers the original polynomial.  This reciprocal-moment
+Appell family is not the dyadic
 $\operatorname{App}_n$ family fixed in the global notation convention above.
 
 At compiled source checkpoint \texttt{c51a41fcf},
@@ -3780,13 +3793,52 @@ synthesis to mesh $2^d$, then to $4^n$ for the even mode, identify each literal 
 translate block with the existing polynomial block on $[-1,1]$, and prove both its complete
 orthogonality and the expanded finite atom-Gram identity.
 
-These APIs do not prove minimality or sharpness of the displayed mesh, an analytic
+At compiled source checkpoint \texttt{e2c310e7c}, the focused-build
+\path{FabiusLegendreTranslateSeries.lean} exports five public definitions:
+\lean{rvachevLegendrePartialSumDeconvolutionPolynomial},
+\lean{rvachevLegendrePartialSumAtomCoefficient},
+\lean{rvachevLegendrePartialSumTranslateBlock},
+\lean{rvachevLegendreTranslateBlockOnInterval}, and
+\lean{rvachevLegendrePartialSumTranslateBlockOnInterval}.  Its twenty-three public theorems are
+\lean{summable_norm_rvachevLegendreTranslateBlock},
+\lean{summable_rvachevLegendreTranslateBlock},
+\lean{hasSum_rvachevLegendreTranslateBlock},
+\lean{tsum_rvachevLegendreTranslateBlock},
+\lean{rvachevLegendrePartialSumDeconvolutionPolynomial_eq_sum},
+\lean{rvachevLegendrePartialSumAtomCoefficient_eq_sum},
+\lean{eval_rvachevLegendrePartialSumPolynomial_eq_tsum_rvachevUp},
+\lean{eval_rvachevLegendrePartialSumPolynomial_eq_sum_rvachevUp},
+\lean{rvachevLegendrePartialSumTranslateBlock_eq_eval_partialSumPolynomial},
+\lean{rvachevLegendrePartialSumTranslateBlock_eq_sum_translateBlock},
+\lean{rvachevLegendreTranslateBlockOnInterval_apply},
+\lean{rvachevLegendreTranslateBlockOnInterval_eq_smul},
+\lean{summable_norm_rvachevLegendreTranslateBlockOnInterval},
+\lean{summable_rvachevLegendreTranslateBlockOnInterval},
+\lean{hasSum_rvachevLegendreTranslateBlock_uniform},
+\lean{tsum_rvachevLegendreTranslateBlock_uniform},
+\lean{rvachevLegendrePartialSumTranslateBlockOnInterval_apply},
+\lean{rvachevLegendrePartialSumTranslateBlockOnInterval_eq_eval_partialSumPolynomial},
+\lean{rvachevLegendrePartialSumTranslateBlockOnInterval_eq_sum},
+\lean{tendsto_rvachevLegendrePartialSumTranslateBlockOnInterval},
+\lean{rvachevLegendrePartialSumTranslateBlock_tendstoUniformlyOn},
+\lean{tendsto_norm_rvachevLegendrePartialSumTranslateBlockOnInterval_sub}, and
+\lean{tendsto_rvachevLegendrePartialSumTranslateBlock}.  They close the literal outer
+translate-block series with pointwise and supremum-norm absolute summability and pointwise
+and uniform \texttt{HasSum}/\texttt{tsum} forms.  They also identify
+$C_N=\mathcal D_{\Up}S_N$ with the finite sum of deconvolved modes, expand its common-mesh
+coefficients, prove global and finite synthesis at mesh $4^N$, and identify the resulting
+function with both the polynomial partial sum and the sum of the separately scaled blocks.
+The bundled common-mesh partial trains converge to $\Up$ in $C([-1,1])$, hence in the
+interval supremum norm; raw \texttt{TendstoUniformlyOn}, norm-error-to-zero, and pointwise
+forms are exported as well.  No rate, coefficientwise limit, or uniform convergence outside
+$[-1,1]$ is asserted.
+
+These APIs still do not prove minimality or sharpness of the displayed mesh, an analytic
 reciprocal-MGF or Appell generating-series identity, a literal differential-series
 realization of deconvolution, the displayed low reciprocal coefficients, parity or the
 displayed closed formulas for the deconvolved Legendre family, rationality of the atom rows,
-a named outer translate-block \texttt{HasSum},
-the fixed-scale partial-sum identity, or the later refinement, projector, and asymptotic
-layers.
+equality of the fixed-scale and separately scaled coefficient vectors, exact degree for every
+partial sum, or the later refinement, projector, and asymptotic layers.
 
 \subsection{Notation crosswalk}
 \label{integration:app:notation}

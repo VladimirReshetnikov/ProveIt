@@ -220,7 +220,7 @@ factorization, and a sharp central-coefficient root law.  Its
 theorem-level checks are exact rational with residual `0`; the reported
 energy value is a stabilized display of an exact partial sum, not a
 certified enclosure of the limit, and the report says so.  This is a
-checksum-verified 22-file package with a 27-page Libertinus rebuild, exact
+checksum-verified 22-file package with a 29-page Libertinus rebuild, exact
 data certificates, four dual-format figures, and snapshot
 `faa3a9b94ac0e71abdc53c36fdf428222e4d2a8c`.
 Subsequent Lean module `FabiusLegendreEnergy.lean` now defines the
@@ -260,10 +260,12 @@ full real-axis squared Fourier mass with twice `A_2`, the positive-half-line
 mass with `A_2`, and certify the report's Fourier-product and infinite-sinc
 integrals with their exact normalizations and index ranges.
 
-At compiled checkpoint `1f9ce6fd9`, `RvachevMomentAppell.lean` exports five
+Starting from compiled checkpoint `1f9ce6fd9` and including the focused-build
+extension at compiled checkpoint `e2c310e7c`, `RvachevMomentAppell.lean` exports six
 public definitions: `rvachevRawMomentRat`, `rvachevReciprocalMomentRat`,
 `rvachevAppellPolynomialRat`, `rvachevAppellPolynomial`, and
-`rvachevDeconvolvedPolynomial`.  Its sixteen public theorems are
+`rvachevDeconvolvedPolynomial`, together with
+`rvachevDeconvolutionLinearMap`.  Its twenty-four public theorems are
 `rvachevRawMomentRat_zero`, `rvachevRawMomentRat_even`,
 `rvachevRawMomentRat_odd`, `rvachevReciprocalMomentRat_zero`,
 `binomialConv_rvachevRawMomentRat_reciprocal`,
@@ -275,10 +277,22 @@ public definitions: `rvachevRawMomentRat`, `rvachevReciprocalMomentRat`,
 `eval_rvachevAppellPolynomial_add`,
 `integral_pow_mul_rvachev_eq_rvachevRawMomentRat_cast`,
 `integral_eval_rvachevAppellPolynomial_add_mul_rvachev`,
+`rvachevDeconvolutionLinearMap_apply`,
+`rvachevDeconvolvedPolynomial_zero`,
+`rvachevDeconvolvedPolynomial_add`,
+`rvachevDeconvolvedPolynomial_smul`,
+`rvachevDeconvolvedPolynomial_finsetSum`,
+`rvachevDeconvolvedPolynomial_C_mul`,
+`rvachevDeconvolvedPolynomial_monomial`,
+`rvachevDeconvolvedPolynomial_X_pow`,
 `natDegree_rvachevDeconvolvedPolynomial_le`, and
 `integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev`.  This is the
 exact rational raw-moment, formal reciprocal/Bell, reciprocal-moment Appell,
-and polynomial-smoothing/deconvolution foundation used by the report.
+and polynomial-smoothing/deconvolution foundation used by the report.  The
+deconvolution is now packaged as a real linear map, preserves zero, addition,
+scalar multiplication, finite sums, and multiplication by constant
+polynomials, and sends a monomial and `X^n` to the correspondingly scaled and
+unscaled Rvachev--Appell polynomial.
 
 At compiled checkpoint `c51a41fcf`, `RvachevPolynomialSynthesis.lean` exports
 no public definitions and exactly four public theorems:
@@ -304,12 +318,53 @@ synthesis to meshes `2^d` and `4^n`, identify each literal finite translate
 block with the existing polynomial block on `[-1,1]`, and prove its complete
 orthogonality and exact finite atom-Gram expansion.
 
-These modules do not certify minimality or sharpness of the mesh, analytic
+At compiled checkpoint `e2c310e7c`, the focused-build
+`FabiusLegendreTranslateSeries.lean` exports five public
+definitions: `rvachevLegendrePartialSumDeconvolutionPolynomial`,
+`rvachevLegendrePartialSumAtomCoefficient`,
+`rvachevLegendrePartialSumTranslateBlock`,
+`rvachevLegendreTranslateBlockOnInterval`, and
+`rvachevLegendrePartialSumTranslateBlockOnInterval`.  Its twenty-three public
+theorems are
+`summable_norm_rvachevLegendreTranslateBlock`,
+`summable_rvachevLegendreTranslateBlock`,
+`hasSum_rvachevLegendreTranslateBlock`,
+`tsum_rvachevLegendreTranslateBlock`,
+`rvachevLegendrePartialSumDeconvolutionPolynomial_eq_sum`,
+`rvachevLegendrePartialSumAtomCoefficient_eq_sum`,
+`eval_rvachevLegendrePartialSumPolynomial_eq_tsum_rvachevUp`,
+`eval_rvachevLegendrePartialSumPolynomial_eq_sum_rvachevUp`,
+`rvachevLegendrePartialSumTranslateBlock_eq_eval_partialSumPolynomial`,
+`rvachevLegendrePartialSumTranslateBlock_eq_sum_translateBlock`,
+`rvachevLegendreTranslateBlockOnInterval_apply`,
+`rvachevLegendreTranslateBlockOnInterval_eq_smul`,
+`summable_norm_rvachevLegendreTranslateBlockOnInterval`,
+`summable_rvachevLegendreTranslateBlockOnInterval`,
+`hasSum_rvachevLegendreTranslateBlock_uniform`,
+`tsum_rvachevLegendreTranslateBlock_uniform`,
+`rvachevLegendrePartialSumTranslateBlockOnInterval_apply`,
+`rvachevLegendrePartialSumTranslateBlockOnInterval_eq_eval_partialSumPolynomial`,
+`rvachevLegendrePartialSumTranslateBlockOnInterval_eq_sum`,
+`tendsto_rvachevLegendrePartialSumTranslateBlockOnInterval`,
+`rvachevLegendrePartialSumTranslateBlock_tendstoUniformlyOn`,
+`tendsto_norm_rvachevLegendrePartialSumTranslateBlockOnInterval_sub`, and
+`tendsto_rvachevLegendrePartialSumTranslateBlock`.  They certify absolute pointwise
+and interval-supremum summability of the literal blocks and their pointwise and
+uniform sums to `up`.  They also formalize the finite-mode formula for
+`C_N = D(S_N)`, expanded common-mesh coefficients, global and finite synthesis
+at mesh `4^N`, and function equality with both the polynomial partial sum and
+the sum of the separately scaled blocks.  The bundled common-mesh partial
+trains converge to `up` in `C([-1,1])`, equivalently in the interval supremum
+norm; raw `TendstoUniformlyOn`, norm-error-to-zero, and pointwise corollaries
+are also exported.  No convergence rate, coefficientwise limit, or uniform
+convergence outside `[-1,1]` is asserted.
+
+These modules still do not certify minimality or sharpness of the mesh, analytic
 reciprocal-MGF/Appell generating-series or differential-operator identities,
 the displayed low reciprocal coefficients, parity and the displayed closed
-forms for the deconvolved Legendre family, rationality of the atom rows, a
-named outer translate-block `HasSum`, the
-fixed-scale partial-sum identity, or the later refinement, projector, and
+forms for the deconvolved Legendre family, rationality of the atom rows,
+equality of the fixed-scale and separately scaled coefficient vectors, exact
+degree for every partial sum, or the later refinement, projector, and
 asymptotic layers.
 
 Three further Legendre-closure reports landed the same day, all

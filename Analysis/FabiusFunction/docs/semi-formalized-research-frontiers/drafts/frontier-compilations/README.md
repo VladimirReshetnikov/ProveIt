@@ -1,7 +1,7 @@
 # Frontier compilations
 
 The broad multi-topic "collected new results" report series,
-consolidated (2026-08-28) into the 268-page single volume
+consolidated (2026-08-28) into the 271-page single volume
 [`Frontier_Compilations/`](Frontier_Compilations/): ten absorbed reports,
 displayed as ten outer parts.
 
@@ -44,6 +44,17 @@ received the same treatment plus post-snapshot Lean-status updates recording
 exact-support, absolute-continuity, and null-singleton results. The former
 report directories were deleted. Provenance with SHA-256 hashes is recorded
 in the volume itself, and git history is the archive.
+
+Report VIII's logarithmic phase-extraction theorem is now represented
+directly in Lean. `FabiusLambertPhaseLockedPullback.lean` transports the
+arbitrary-order endpoint remainder to the exact Lambert nodes,
+`CompleteHomogeneousAsymptotics.lean` and
+`LambertReciprocalAsymptotics.lean` control the residual alphabet and growing
+row, and `FabiusLambertPhaseExtraction.lean` proves the fixed-order finite
+Poincaré hierarchy and integer-phase-ray convergence. The report's
+Bell/generalized-harmonic conversion, exponentiated Bell hierarchy, higher
+derivative extractors, sign/bracketing claims, and growing-order uniformity
+remain open.
 
 Post-snapshot Lean status began at source checkpoint `b3720d4b5` with two
 generic finite-algebra modules relevant to Report I; the current tree adds the

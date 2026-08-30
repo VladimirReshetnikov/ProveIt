@@ -5,7 +5,19 @@ sequences and the q-series calculus that organizes them: the
 exponent-sequence convolution monoid with its Newton-basis frontiers, and
 q-binomial Richardson acceleration of geometric sinc products. The
 denominator-free Gaussian/q-binomial core used by both is formalized at arbitrary
-ratio. `BitPositionQBinomial.lean` gives both the zero-based and literal
+ratio. `QBinomialCauchy.lean` exhaustively supplies one definition and five
+theorems: the finite q-Cauchy identity and its compatibility spelling, its reflected strengthening, the
+denominator-free q-Bernstein basis and its partition of unity, and the second
+finite Cauchy identity. They hold for arbitrary parameters and degrees over
+every commutative ring, including `q = 0`, roots of unity, and zero divisors.
+`SymmetricFunctionOrthogonality.lean` exhaustively supplies one definition and
+six theorems: evaluated elementary symmetric functions, their Mathlib bridge,
+zero-degree and reindexing laws, `Option` and `Fin` weighted-Pascal recurrences,
+and the total elementary--complete orthogonality convolution. The structural
+API is valid over commutative semirings; orthogonality is valid over every
+commutative ring, including the empty family and degree zero. Together with the
+existing `completeHomogeneousEval_option_succ`, the elementary `Option`
+recurrence gives both weighted-Pascal laws exactly. `BitPositionQBinomial.lean` gives both the zero-based and literal
 one-based weighted-subset enumerations. `QBinomialInversion.lean` proves the
 Gaussian chain law, general alternating rows, and both finite convolution
 orders for unscaled and independently scaled kernels; the scale is arbitrary
@@ -51,7 +63,7 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 `149332f9d`.
 
 Member: `Exponents_and_q_Series_Frontiers`
-(currently 227 pp, seven parts) — the
+(228 pp, seven parts) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -268,7 +280,7 @@ matching `assets/` directories.
 `Signed_Reciprocal_q_Fabius_Frontiers/` were merged editorially as the
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
-Second member: `q_pochhammer_q_binomial_monograph/` (199 pp, book class) —
+Second member: `q_pochhammer_q_binomial_monograph/` (201 pp, book class) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
@@ -289,10 +301,23 @@ Chern–Dilcher–Jiu deleted-singularity identity and Ramanujan's ₁ψ₁
 verified numerically to 30 digits; one dominated-convergence majorant
 repaired with an `% ed.:` note).
 
-Its current formalization ledger has 183 labelled results: 26 exact, 25
-partial, 129 with no counterpart, and 3 interface-only. The finite
+Its current formalization ledger has 247 labelled results: 35 exact, 72
+partial, 137 with no counterpart, and 3 interface-only. The finite
 q-binomial/inversion chapter now accounts for 9 exact, 0 partial, and 1
-unformalized result. Its alternating sums, both weighted-subset conventions,
+unformalized result; the weighted chapter for 2 exact, 2 partial, and 4
+unformalized results; and the basic-hypergeometric chapter for 1 exact, 0
+partial, and 8 unformalized results. The exact rows include the primary and
+second q-Cauchy identities, both weighted-Pascal recurrences, and
+elementary--complete orthogonality. Their adjacent strengthenings are recorded
+human-readably in the monograph: reflected q-Cauchy and the q-Bernstein
+partition of unity, plus total empty-family and degree-zero boundaries. The
+q-Pfaff--Saalschütz summation and weighted inversion remain unformalized; no
+status is inferred from the finite identities. These counts and boundaries
+were statically cross-checked against the exhaustive public surfaces of
+`QBinomialCauchy.lean` (one definition and five theorems, including the
+compatibility spelling of its primary identity) and
+`SymmetricFunctionOrthogonality.lean` (one definition and six theorems). The
+finite chapter's alternating sums, both weighted-subset conventions,
 named module-valued inversion iff, and both kernel orthogonalities are exact.
 Both orientations
 of q-Vandermonde and both central-support presentations are exact in
@@ -303,14 +328,23 @@ finite-support `finsum` over all integers. The ledger also now records the
 genuine real infinite product `qPochhammerInf` and its contractive-base
 convergence/positivity layer, replacing the stale claim that every infinite
 q-Pochhammer in the development was merely a finite `Finset.range` product.
+`CompleteHomogeneousGenerating.lean` makes the complete-homogeneous half of
+the weighted generating-product theorem partial rather than open: the finite
+formal reciprocal-product identity is proved, while the elementary product
+and analytic-convergence clause are not.  Separately,
+`SymmetricFunctionOrthogonality.lean` proves the displayed
+elementary--complete coefficient convolution exactly over every commutative
+ring, including the empty family and degree zero.
 
-`QBinomialCauchy.lean` now gives the exact finite q-Cauchy convolution as
-`Fabius.finiteQPochhammerIn_mul_eq_sum_gaussianBinomial` for arbitrary
-`q`, `u`, and `v` in an arbitrary commutative ring and every natural length.
-The identity is denominator-free and requires no cancellation, nonvanishing,
-injectivity, topology, or convergence hypothesis. This closes only the
-monograph's `thm:q-cauchy`; the later Cauchy convolution II and
-q-Pfaff–Saalschütz summation remain unformalized.
+`QBinomialCauchy.lean` gives the exact primary convolution under the canonical
+name `Fabius.finite_qCauchy_identity` and the compatibility spelling
+`Fabius.finiteQPochhammerIn_mul_eq_sum_gaussianBinomial`, together with its
+reflected orientation, the denominator-free q-Bernstein partition of unity,
+and the exact finite Cauchy convolution II. All parameters and degrees are
+arbitrary over every commutative ring, so no cancellation, nonvanishing,
+injectivity, topology, or convergence hypothesis is needed. The later
+q-Pfaff–Saalschütz summation and infinite-product consequences remain
+unformalized.
 
 The wave volumes' central probabilistic object — the normalized
 geometric-uniform law `Y_q = (1-q)·∑ qʲU_j`, with `q = 1/2` the

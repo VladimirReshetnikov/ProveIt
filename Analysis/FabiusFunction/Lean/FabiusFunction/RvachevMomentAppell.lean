@@ -228,6 +228,81 @@ theorem integral_eval_rvachevAppellPolynomial_add_mul_rvachev
 noncomputable def rvachevDeconvolvedPolynomial (P : ℝ[X]) : ℝ[X] :=
   P.sum fun n a ↦ C a * rvachevAppellPolynomial n
 
+/-- Polynomial deconvolution by the Rvachev moment law, packaged as a real
+linear map.  On the monomial coefficient of degree `n`, it sends `a` to
+`C a * rvachevAppellPolynomial n`.  Its underlying function is definitionally
+the existing `rvachevDeconvolvedPolynomial`. -/
+noncomputable def rvachevDeconvolutionLinearMap : ℝ[X] →ₗ[ℝ] ℝ[X] :=
+  Polynomial.lsum fun n ↦
+    (LinearMap.mulRight ℝ (rvachevAppellPolynomial n)).comp
+      (Polynomial.CAlgHom : ℝ →ₐ[ℝ] ℝ[X]).toLinearMap
+
+/-- Applying the linear-map package for Rvachev deconvolution is the original
+polynomial deconvolution operation. -/
+@[simp]
+theorem rvachevDeconvolutionLinearMap_apply (P : ℝ[X]) :
+    rvachevDeconvolutionLinearMap P = rvachevDeconvolvedPolynomial P := by
+  rfl
+
+/-- Rvachev polynomial deconvolution sends zero to zero. -/
+@[simp]
+theorem rvachevDeconvolvedPolynomial_zero :
+    rvachevDeconvolvedPolynomial (0 : ℝ[X]) = 0 := by
+  simpa only [rvachevDeconvolutionLinearMap_apply] using
+    rvachevDeconvolutionLinearMap.map_zero
+
+/-- Rvachev polynomial deconvolution preserves addition. -/
+@[simp]
+theorem rvachevDeconvolvedPolynomial_add (P Q : ℝ[X]) :
+    rvachevDeconvolvedPolynomial (P + Q) =
+      rvachevDeconvolvedPolynomial P + rvachevDeconvolvedPolynomial Q := by
+  simpa only [rvachevDeconvolutionLinearMap_apply] using
+    rvachevDeconvolutionLinearMap.map_add P Q
+
+/-- Rvachev polynomial deconvolution commutes with real scalar
+multiplication. -/
+@[simp]
+theorem rvachevDeconvolvedPolynomial_smul (a : ℝ) (P : ℝ[X]) :
+    rvachevDeconvolvedPolynomial (a • P) =
+      a • rvachevDeconvolvedPolynomial P := by
+  simpa only [rvachevDeconvolutionLinearMap_apply] using
+    rvachevDeconvolutionLinearMap.map_smul a P
+
+/-- Rvachev polynomial deconvolution commutes with finite polynomial sums. -/
+@[simp]
+theorem rvachevDeconvolvedPolynomial_finsetSum
+    {ι : Type*} (s : Finset ι) (P : ι → ℝ[X]) :
+    rvachevDeconvolvedPolynomial (∑ i ∈ s, P i) =
+      ∑ i ∈ s, rvachevDeconvolvedPolynomial (P i) := by
+  simpa only [rvachevDeconvolutionLinearMap_apply] using
+    map_sum rvachevDeconvolutionLinearMap P s
+
+/-- Multiplication by a constant polynomial can be pulled through Rvachev
+polynomial deconvolution. -/
+@[simp]
+theorem rvachevDeconvolvedPolynomial_C_mul (a : ℝ) (P : ℝ[X]) :
+    rvachevDeconvolvedPolynomial (C a * P) =
+      C a * rvachevDeconvolvedPolynomial P := by
+  simpa only [Polynomial.smul_eq_C_mul] using
+    rvachevDeconvolvedPolynomial_smul a P
+
+/-- Rvachev polynomial deconvolution sends a monomial to the corresponding
+Rvachev--Appell polynomial, scaled by its coefficient. -/
+@[simp]
+theorem rvachevDeconvolvedPolynomial_monomial (n : ℕ) (a : ℝ) :
+    rvachevDeconvolvedPolynomial (monomial n a) =
+      C a * rvachevAppellPolynomial n := by
+  simp [rvachevDeconvolvedPolynomial]
+
+/-- Rvachev polynomial deconvolution sends `X ^ n` to the `n`-th
+Rvachev--Appell polynomial. -/
+@[simp]
+theorem rvachevDeconvolvedPolynomial_X_pow (n : ℕ) :
+    rvachevDeconvolvedPolynomial (X ^ n) =
+      rvachevAppellPolynomial n := by
+  rw [X_pow_eq_monomial, rvachevDeconvolvedPolynomial_monomial, C_1,
+    one_mul]
+
 /-- Rvachev polynomial deconvolution does not raise degree. -/
 theorem natDegree_rvachevDeconvolvedPolynomial_le (P : ℝ[X]) :
     (rvachevDeconvolvedPolynomial P).natDegree ≤ P.natDegree := by

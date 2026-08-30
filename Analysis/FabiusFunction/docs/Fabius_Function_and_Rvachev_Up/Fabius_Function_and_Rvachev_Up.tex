@@ -3957,12 +3957,14 @@ not the analytic transfer expansion or its remainder estimates.
 \subsection{Rvachev moment--Appell deconvolution and polynomial synthesis}
 \label{sec:rvachev-moment-appell}
 
-At compiled source checkpoint \texttt{1f9ce6fd9},
+Starting from compiled source checkpoint \texttt{1f9ce6fd9} and including the
+current focused-build extension at compiled checkpoint \texttt{e2c310e7c},
 \path{RvachevMomentAppell.lean} specializes the formal Bell and Appell engines
-to the Rvachev probability law.  Its five public definitions are
+to the Rvachev probability law.  Its six public definitions are
 \lean{rvachevRawMomentRat}, \lean{rvachevReciprocalMomentRat},
 \lean{rvachevAppellPolynomialRat}, \lean{rvachevAppellPolynomial}, and
-\lean{rvachevDeconvolvedPolynomial}.  Its sixteen public theorems are
+\lean{rvachevDeconvolvedPolynomial}, together with
+\lean{rvachevDeconvolutionLinearMap}.  Its twenty-four public theorems are
 \lean{rvachevRawMomentRat_zero}, \lean{rvachevRawMomentRat_even},
 \lean{rvachevRawMomentRat_odd}, \lean{rvachevReciprocalMomentRat_zero},
 \lean{binomialConv_rvachevRawMomentRat_reciprocal},
@@ -3975,6 +3977,14 @@ to the Rvachev probability law.  Its five public definitions are
 \lean{eval_rvachevAppellPolynomial_add},
 \lean{integral_pow_mul_rvachev_eq_rvachevRawMomentRat_cast},
 \lean{integral_eval_rvachevAppellPolynomial_add_mul_rvachev},
+\lean{rvachevDeconvolutionLinearMap_apply},
+\lean{rvachevDeconvolvedPolynomial_zero},
+\lean{rvachevDeconvolvedPolynomial_add},
+\lean{rvachevDeconvolvedPolynomial_smul},
+\lean{rvachevDeconvolvedPolynomial_finsetSum},
+\lean{rvachevDeconvolvedPolynomial_C_mul},
+\lean{rvachevDeconvolvedPolynomial_monomial},
+\lean{rvachevDeconvolvedPolynomial_X_pow},
 \lean{natDegree_rvachevDeconvolvedPolynomial_le}, and
 \lean{integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev}.
 
@@ -3992,8 +4002,13 @@ bridges are
    \label{eq:rvachev-deconvolution-smoothing}
 \end{align}
 where \(\mathcal D_{\Up}P\) denotes
-\lean{rvachevDeconvolvedPolynomial}\(P\).  This coefficientwise operation does
-not raise polynomial degree.
+\lean{rvachevDeconvolvedPolynomial}\(P\).  This coefficientwise operation sends
+a monomial and \(X^n\) to the correspondingly scaled and unscaled
+Rvachev--Appell polynomial and does not raise polynomial degree.  Its linear-map
+package proves preservation of zero, addition, real scalar multiplication,
+finite sums, and multiplication by a constant polynomial; these are algebraic
+identities and do not assert an analytic reciprocal-MGF, differential-series,
+or Appell generating function.
 
 At compiled source checkpoint \texttt{c51a41fcf},
 \path{RvachevPolynomialSynthesis.lean} exports no public definitions and
@@ -4813,26 +4828,26 @@ the polynomial Gaussian coefficients recursively by
 \]
 and
 \[
- {n+1\brack k+1}_q={n\brack k+1}_q
-   +q^{n-k}{n\brack k}_q,\qquad
- {n\brack0}_q={n\brack n}_q=1,\qquad
- {n\brack k}_q=0\quad(n<k).
+ \qbinom{n+1}{k+1}{q}=\qbinom{n}{k+1}{q}
+   +q^{n-k}\qbinom{n}{k}{q},\qquad
+ \qbinom{n}{0}{q}=\qbinom{n}{n}{q}=1,\qquad
+ \qbinom{n}{k}{q}=0\quad(n<k).
 \]
 The recursive triangle is already defined over every semiring and is
 functorial: for semirings \(R,S\) and every homomorphism \(\varphi:R\to S\),
 \begin{equation}
- \varphi\!\left({n\brack k}_q\right)={n\brack k}_{\varphi(q)}.
+ \varphi\!\left(\qbinom{n}{k}{q}\right)=\qbinom{n}{k}{\varphi(q)}.
                                                                \label{eq:q-gaussian-map}
 \end{equation}
 Over a commutative semiring it also satisfies, for all natural \(n,k\), the
 second Pascal orientation
 \begin{equation}
- {n+1\brack k+1}_q
- =q^{k+1}{n\brack k+1}_q+{n\brack k}_q,                    \label{eq:q-pascal-alt}
+ \qbinom{n+1}{k+1}{q}
+ =q^{k+1}\qbinom{n}{k+1}{q}+\qbinom{n}{k}{q},                    \label{eq:q-pascal-alt}
 \end{equation}
 and, whenever \(k\le n\), the reflection law
 \begin{equation}
- {n\brack n-k}_q={n\brack k}_q.                            \label{eq:q-gaussian-symmetry}
+ \qbinom{n}{n-k}{q}=\qbinom{n}{k}{q}.                            \label{eq:q-gaussian-symmetry}
 \end{equation}
 None of these structural laws uses division or cancellation; the zero extension above
 the diagonal is what makes \eqref{eq:q-pascal-alt} valid without an index
@@ -4840,7 +4855,7 @@ side condition.
 
 Then for every $z\in R$,
 \begin{equation}
- (z;q)_n=\sum_{k=0}^{n}(-1)^kq^{\binom k2}{n\brack k}_qz^k.
+ (z;q)_n=\sum_{k=0}^{n}(-1)^kq^{\binom k2}\qbinom{n}{k}{q}z^k.
  \label{eq:finite-q-binomial-ring}
 \end{equation}
 The recursive coefficient already makes sense over an arbitrary semiring, while the
@@ -4868,8 +4883,8 @@ For natural \(m,n\), and for \(k\le n\),
 \begin{align}
  (a;q)_{n+1}&=(1-a)(aq;q)_n,                              \label{eq:qpochhammer-shift}\\
  (a;q)_{m+n}&=(a;q)_m(aq^m;q)_n,                         \label{eq:qpochhammer-concat}\\
- (q;q)_k{n\brack k}_q&=(q^{n-k+1};q)_k,                 \label{eq:qfactorial-gaussian}\\
- (q;q)_n&=(q;q)_k(q;q)_{n-k}{n\brack k}_q.              \label{eq:qfactorial-full}
+ (q;q)_k\qbinom{n}{k}{q}&=(q^{n-k+1};q)_k,                 \label{eq:qfactorial-gaussian}\\
+ (q;q)_n&=(q;q)_k(q;q)_{n-k}\qbinom{n}{k}{q}.              \label{eq:qfactorial-full}
 \end{align}
 They are \lean{finiteQPochhammerIn_succ_shift},
 \lean{finiteQPochhammerIn_add},
@@ -4887,29 +4902,6 @@ with the established rational quotient, and
 \lean{halfQBinomial_theorem} is now the direct specialization of the ring theorem.
 \end{remark}
 
-\begin{theorem}[Finite \(q\)-Cauchy convolution]
-\label{thm:q-cauchy-formal}
-Let \(R\) be a commutative ring, let \(q,u,v\in R\), and let \(n\in\N\).
-Then
-\begin{equation}
- (uv;q)_n
- =\sum_{k=0}^{n}{n\brack k}_q\,(u;q)_k\,v^k\,(v;q)_{n-k}.
- \label{eq:q-cauchy-formal}
-\end{equation}
-The identity is total and denominator-free: it requires no cancellation,
-nonvanishing, injectivity, topology, or convergence hypothesis and therefore
-includes zero divisors, positive characteristic, \(q=0\), and roots of unity.
-\end{theorem}
-
-\begin{proof}[Formal proof]
-Equation \eqref{eq:q-cauchy-formal} is
-\lean{finiteQPochhammerIn_mul_eq_sum_gaussianBinomial} in
-\path{QBinomialCauchy.lean}.  The proof combines the zero-extended
-\(q\)-Pascal recurrence with the last-factor recurrence for the two finite
-\(q\)-Pochhammer factors.  It is finite ring algebra and asserts no later
-Pfaff--Saalsch\"utz or infinite-product consequence.
-\end{proof}
-
 \begin{theorem}[Denominator-free \(q\)-Vandermonde and shifted central forms]
 \label{thm:q-vandermonde-formal}
 Let \(R\) be a commutative semiring, let \(q\in R\), and let all displayed
@@ -4917,7 +4909,7 @@ unsigned indices be natural numbers.  Extend a Gaussian row to integer lower
 indices by
 \begin{equation}
  \mathcal G_q(n,t)=
- \begin{cases}{n\brack t}_q,&0\le t,\\0,&t<0,\end{cases}
+ \begin{cases}\qbinom{n}{t}{q},&0\le t,\\0,&t<0,\end{cases}
  \qquad t\in\Z,                                      \label{eq:q-gaussian-int}
 \end{equation}
 where the natural coefficient already vanishes for \(n<t\).  This extension
@@ -4927,38 +4919,38 @@ has the total reflection law
 \end{equation}
 The two zero-extended Vandermonde orientations are
 \begin{align}
- {m+n\brack r}_q
+ \qbinom{m+n}{r}{q}
  &=\sum_{j=0}^{r}q^{(m-j)(r-j)}
-   {m\brack j}_q{n\brack r-j}_q,                         \label{eq:q-vandermonde-first}\\
+   \qbinom{m}{j}{q}\qbinom{n}{r-j}{q},                         \label{eq:q-vandermonde-first}\\
  &=\sum_{j=0}^{r}q^{j\,(n-(r-j))}
-   {m\brack j}_q{n\brack r-j}_q.                         \label{eq:q-vandermonde-second}
+   \qbinom{m}{j}{q}\qbinom{n}{r-j}{q}.                         \label{eq:q-vandermonde-second}
 \end{align}
 Here subtraction is natural subtraction; outside the admissible support one
 of the zero-extended Gaussian coefficients vanishes.  Consequently no
 condition \(r\le m+n\) is needed.  The central specialization is
 \begin{equation}
- {m+n\brack m}_q
- =\sum_{j=0}^{m}q^{j^2}{m\brack j}_q{n\brack j}_q.       \label{eq:q-vandermonde-central}
+ \qbinom{m+n}{m}{q}
+ =\sum_{j=0}^{m}q^{j^2}\qbinom{m}{j}{q}\qbinom{n}{j}{q}.       \label{eq:q-vandermonde-central}
 \end{equation}
 Equivalently, removing exactly the zero-extended terms gives the literal
 Durfee support
 \begin{equation}
- {m+n\brack m}_q
- =\sum_{j=0}^{\min(m,n)}q^{j^2}{m\brack j}_q{n\brack j}_q.
+ \qbinom{m+n}{m}{q}
+ =\sum_{j=0}^{\min(m,n)}q^{j^2}\qbinom{m}{j}{q}\qbinom{n}{j}{q}.
                                                                \label{eq:q-vandermonde-central-min}
 \end{equation}
 For every \(N,k\in\N\), including \(N<k\), the positive shifted form is
 \begin{equation}
- {2N\brack N+k}_q
+ \qbinom{2N}{N+k}{q}
  =\sum_{\ell=0}^{N}q^{\ell(\ell+k)}
-   {N\brack\ell}_q{N\brack\ell+k}_q.                    \label{eq:q-vandermonde-shift-plus}
+   \qbinom{N}{\ell}{q}\qbinom{N}{\ell+k}{q}.                    \label{eq:q-vandermonde-shift-plus}
 \end{equation}
 If \(k\le N\), row reflection gives the same right side for
-\({2N\brack N-k}_q\), and its literal-support form is
+\(\qbinom{2N}{N-k}{q}\), and its literal-support form is
 \begin{equation}
- {2N\brack N-k}_q
+ \qbinom{2N}{N-k}{q}
  =\sum_{\ell=k}^{N}q^{\ell(\ell-k)}
-   {N\brack\ell}_q{N\brack\ell-k}_q.                    \label{eq:q-vandermonde-shift-minus}
+   \qbinom{N}{\ell}{q}\qbinom{N}{\ell-k}{q}.                    \label{eq:q-vandermonde-shift-minus}
 \end{equation}
 Most strongly, for every \(k\in\Z\), put \(t^\natural=\max(t,0)\in\N\).
 Then the two natural cases combine into the literal finite-support integer sum
@@ -5009,32 +5001,32 @@ Let \(R\) be a commutative ring and \(q,s\in R\); the first identity below
 already holds when \(R\) is only a commutative semiring.  For
 \(j\le k\le n\), the Gaussian chain identity is
 \begin{equation}
- {n\brack k}_q{k\brack j}_q
- ={n\brack j}_q{n-j\brack k-j}_q.                     \label{eq:q-gaussian-chain}
+ \qbinom{n}{k}{q}\qbinom{k}{j}{q}
+ =\qbinom{n}{j}{q}\qbinom{n-j}{k-j}{q}.                     \label{eq:q-gaussian-chain}
 \end{equation}
 For every \(m,n\in\N\), the alternating row specializes exactly to
 \begin{align}
- \sum_{k=0}^{n}(-1)^kq^{\binom k2+mk}{n\brack k}_q
+ \sum_{k=0}^{n}(-1)^kq^{\binom k2+mk}\qbinom{n}{k}{q}
    &=(q^m;q)_n,                                         \label{eq:q-alternating-general}\\
- \sum_{k=0}^{n}(-1)^kq^{\binom k2}{n\brack k}_q
+ \sum_{k=0}^{n}(-1)^kq^{\binom k2}\qbinom{n}{k}{q}
    &=\begin{cases}1,&n=0,\\0,&n>0.\end{cases}          \label{eq:q-alternating-delta}
 \end{align}
 The same finite product has the two exact weighted-subset faces
 \begin{align}
  \sum_{\substack{T\subseteq\{0,\ldots,N-1\}\\|T|=r}}
    q^{\sum_{t\in T}t}
-   &=q^{\binom r2}{N\brack r}_q,                        \label{eq:q-subsets-zero-based}\\
+   &=q^{\binom r2}\qbinom{N}{r}{q},                        \label{eq:q-subsets-zero-based}\\
  \sum_{\substack{T\subseteq\{1,\ldots,N\}\\|T|=r}}
    q^{\sum_{t\in T}t}
-   &=q^{\binom{r+1}{2}}{N\brack r}_q.                  \label{eq:q-subsets-one-based}
+   &=q^{\binom{r+1}{2}}\qbinom{N}{r}{q}.                  \label{eq:q-subsets-one-based}
 \end{align}
 Both formulas are total in \(N,r\in\N\); above the Gaussian diagonal both
 sides vanish.
 
 Define total lower-triangular kernels on natural indices by
 \begin{align}
- K^{q,s}_{n,k}&=s^{n-k}{n\brack k}_q,\label{eq:q-scaled-forward-kernel}\\
- L^{q,s}_{n,k}&=(-s)^{n-k}q^{\binom{n-k}{2}}{n\brack k}_q.
+ K^{q,s}_{n,k}&=s^{n-k}\qbinom{n}{k}{q},\label{eq:q-scaled-forward-kernel}\\
+ L^{q,s}_{n,k}&=(-s)^{n-k}q^{\binom{n-k}{2}}\qbinom{n}{k}{q}.
                                                         \label{eq:q-scaled-inverse-kernel}
 \end{align}
 Natural subtraction causes no ambiguity above the diagonal because the
@@ -5076,10 +5068,10 @@ including \(n<k\), without an in-range hypothesis.  At Gaussian base
 \(Q=q^2\) and scale \(s=-q\), put
 \begin{equation}
  C'_{n,k}=K^{q^2,-q}_{n,k}
-   =(-q)^{n-k}{n\brack k}_{q^2},
+   =(-q)^{n-k}\qbinom{n}{k}{q^2},
  \qquad
  B_{n,k}=L^{q^2,-q}_{n,k}
-   =q^{(n-k)^2}{n\brack k}_{q^2}.                        \label{eq:q-gaussian-inverse-kernels}
+   =q^{(n-k)^2}\qbinom{n}{k}{q^2}.                        \label{eq:q-gaussian-inverse-kernels}
 \end{equation}
 Then both total finite products satisfy \(C'B=BC'=I\).  These coefficient
 identities use no analytic or nonvanishing assumption.  By contrast, the
@@ -5145,13 +5137,114 @@ Finally, the two definitions and five theorems of
 \eqref{eq:q-gaussian-inverse-kernels}, and both convolution orders.
 \end{proof}
 
+\begin{theorem}[Finite \(q\)-Cauchy identities and the \(q\)-Bernstein partition]
+\label{thm:q-cauchy-formal}
+Let \(R\) be a commutative ring, let \(q,u,v,a,b,c,x\in R\), and let
+\(n\in\N\).  The primary and reflected finite \(q\)-Cauchy identities are
+\begin{align}
+ (uv;q)_n
+ &=\sum_{k=0}^{n}\qbinom{n}{k}{q} (u;q)_k v^k(v;q)_{n-k},
+                                                        \label{eq:q-cauchy-formal}\\
+ &=\sum_{k=0}^{n}\qbinom{n}{k}{q} (v;q)_k v^{n-k}(u;q)_{n-k}.
+                                                        \label{eq:q-cauchy-reflected-formal}
+\end{align}
+Define the denominator-free \(q\)-Bernstein term by
+\begin{equation}
+ B^{(q)}_{n,k}(x)=\qbinom{n}{k}{q} x^k(x;q)_{n-k}.          \label{eq:q-bernstein-basis}
+\end{equation}
+Then its full row is a partition of unity,
+\begin{equation}
+ \sum_{k=0}^{n}B^{(q)}_{n,k}(x)=1.                       \label{eq:q-bernstein-unity}
+\end{equation}
+Finally, the second finite Cauchy convolution is
+\begin{equation}
+ (ac;q)_n(bc;q)_n
+ =\sum_{k=0}^{n}\qbinom{n}{k}{q}
+ (a;q)_k(b;q)_k c^k(c;q)_{n-k}(abcq^k;q)_{n-k}.          \label{eq:q-cauchy-second-formal}
+\end{equation}
+All four identities are total in the displayed parameters and degree.  They
+include \(n=0\), \(q=0\), roots of unity, positive characteristic, and zero
+divisors, and use no quotient, cancellation, domain, or nonvanishing
+hypothesis.
+\end{theorem}
+
+\begin{proof}[Formal proof and exhaustive API]
+Equations \eqref{eq:q-cauchy-formal} and
+\eqref{eq:q-cauchy-reflected-formal} are
+\lean{finite_qCauchy_identity} and
+\lean{finite_qCauchy_identity_reflected}.  The first also has the compatibility
+spelling \lean{finiteQPochhammerIn_mul_eq_sum_gaussianBinomial};
+\eqref{eq:q-bernstein-basis} is the definition
+\lean{qBernsteinBasis}; \eqref{eq:q-bernstein-unity} is
+\lean{sum_qBernsteinBasis}; and \eqref{eq:q-cauchy-second-formal} is
+\lean{finite_qCauchy_second_identity}.  These are exhaustively the one public
+definition and five public theorems of \path{QBinomialCauchy.lean}.  The
+partition of unity is the primary identity at \(u=0\); the second identity is
+proved by expanding a finite triangle, reindexing it, and applying both
+orientations of finite \(q\)-Cauchy.  Thus the proof never divides by a
+\(q\)-Pochhammer factor.
+\end{proof}
+
+\begin{theorem}[Weighted Pascal and elementary--complete orthogonality]
+\label{thm:symmetric-orthogonality-formal}
+Let \(R\) be a commutative semiring and let \(a:\iota\to R\) be a family on a
+finite index type.  Write \(e_r(a)\) for the evaluation of the universal
+elementary symmetric polynomial and \(h_r(a)\) for the existing complete
+homogeneous evaluation.  Then \(e_0(a)=1\), and reindexing by any equivalence
+\(e:\kappa\simeq\iota\) leaves the value unchanged:
+\begin{equation}
+ e_r(a\circ e)=e_r(a).                                   \label{eq:elementary-reindex}
+\end{equation}
+For a family indexed by a distinguished point and a finite tail, the two
+weighted-Pascal laws are
+\begin{align}
+ e_{r+1}(x,a)&=x e_r(a)+e_{r+1}(a),                       \label{eq:elementary-option-pascal}\\
+ h_{r+1}(x,a)&=x h_r(x,a)+h_{r+1}(a).                    \label{eq:complete-option-pascal}
+\end{align}
+The elementary identity is also exposed on a literal nonempty finite list as
+\begin{equation}
+ e_{r+1}(a_0,a_1,\ldots,a_m)
+ =a_0e_r(a_1,\ldots,a_m)+e_{r+1}(a_1,\ldots,a_m).         \label{eq:elementary-fin-pascal}
+\end{equation}
+If \(R\) is a commutative ring, then for every degree \(n\in\N\),
+\begin{equation}
+ \sum_{k=0}^{n}(-1)^k e_k(a)h_{n-k}(a)
+ =\begin{cases}1,&n=0,\\0,&n>0.
+ \end{cases}                                             \label{eq:elementary-complete-delta}
+\end{equation}
+This includes the empty family and degree zero and uses no division,
+characteristic, domain, or nonvanishing assumption.
+\end{theorem}
+
+\begin{proof}[Formal proof and exhaustive API]
+The definition is \lean{elementarySymmetricEval}; its identification with
+Mathlib's evaluated universal \texttt{MvPolynomial.esymm} is
+\lean{elementarySymmetricEval_eq_eval_esymm}.  The equation \(e_0=1\),
+\eqref{eq:elementary-reindex}, \eqref{eq:elementary-option-pascal}, and
+\eqref{eq:elementary-fin-pascal} are respectively
+\lean{elementarySymmetricEval_zero},
+\lean{elementarySymmetricEval_comp_equiv},
+\lean{elementarySymmetricEval_option_succ}, and
+\lean{elementarySymmetricEval_fin_succ}.  Equation
+\eqref{eq:elementary-complete-delta} is
+\lean{sum_elementarySymmetricEval_mul_completeHomogeneousEval}.  These are
+exhaustively the one public definition and six public theorems of
+\path{SymmetricFunctionOrthogonality.lean}.  The companion complete recurrence
+\eqref{eq:complete-option-pascal} is
+\lean{completeHomogeneousEval_option_succ} in
+\path{CompleteHomogeneous.lean}.  The structural elementary identities and
+both Pascal recurrences hold already over commutative semirings; subtraction
+is needed only for the final alternating convolution.  This result does not
+assert a general weighted-inversion formula beyond that convolution.
+\end{proof}
+
 \begin{theorem}[Reversed Gaussian row, Lagrange weights, and all residual moments]
 \label{thm:geometric-q-binomial-lagrange}
 Let $R$ be a commutative ring and $q\in R$.  The zero-extended numerator row is
 \begin{equation}
  N_{n,k}(q)=
  \begin{cases}
- (-1)^{n-k}q^{\binom{n-k+1}{2}}{n\brack k}_q,&k\le n,\\
+ (-1)^{n-k}q^{\binom{n-k+1}{2}}\qbinom{n}{k}{q},&k\le n,\\
  0,&n<k.
  \end{cases}                                              \label{eq:geometric-q-numerator}
 \end{equation}
@@ -5180,7 +5273,7 @@ then $(q;q)_n\ne0$ and, for $k\le n$,
 Finally every positive residual moment has the single closed form
 \begin{equation}
  \sum_{k=0}^{n}\lambda_{n,k}^{(q)}(q^k)^d
- =(-1)^nq^{n(n+1)/2}{d-1\brack n}_q,
+ =(-1)^nq^{n(n+1)/2}\qbinom{d-1}{n}{q},
  \qquad d>0.                                             \label{eq:geometric-lagrange-residual}
 \end{equation}
 All statements include $n=0$.  The field-level formulas impose only distinctness of the
@@ -5990,20 +6083,70 @@ evaluation and its adjoining-variable recurrence are
 \lean{completeHomogeneousEval_eq_eval_hsymm} and
 \lean{completeHomogeneousEval_option_succ}; the quotient evaluation is
 \lean{eval_completeHomogeneousQuotient} in
-\path{CompleteHomogeneous.lean}.  The generic residual theorem
+\path{CompleteHomogeneous.lean}.  The companion
+\path{CompleteHomogeneousGenerating.lean} packages these evaluations as the
+formal series \lean{completeHomogeneousGeneratingSeriesOn}.  Its coefficient
+and adjoining-variable laws are
+\lean{coeff_completeHomogeneousGeneratingSeriesOn} and
+\lean{completeHomogeneousGeneratingSeriesOn_insert}; over every commutative
+ring, \lean{prod_one_sub_mul_completeHomogeneousGeneratingSeriesOn} clears the
+finite linear-denominator product and
+\lean{completeHomogeneousGeneratingSeriesOn_eq_invOfUnit_prod} identifies the
+series with its canonical \texttt{PowerSeries.invOfUnit} reciprocal.  This is
+a formal coefficient identity and asserts no analytic evaluation,
+convergence, or Bell/generalized-harmonic conversion.  The generic residual theorem
 \lean{sum_weight_mul_pow_card_add} and its distinct-node Lagrange
 specialization \lean{sum_lagrangeEvalWeight_mul_pow_card_add} are in
 \path{LagrangeResidualMoments.lean}.  Thus
 \eqref{eq:lagrange-all-residual-moments} extends the preceding first-error
 formula rather than replacing its low-degree exactness foundation.
 
+There is also a finite-family analytic companion to this formal algebra.
+The theorem \lean{completeHomogeneousEvalOn_isBigO_pow} in
+\path{CompleteHomogeneousAsymptotics.lean} says that coordinatewise
+\(\bigO(g)\) bounds on a fixed finite alphabet give an
+\(\bigO(g^n)\) bound for its degree-\(n\) complete homogeneous
+evaluation.  This evaluated asymptotic statement does not assert convergence
+of the preceding formal power series or its Bell/generalized-harmonic
+conversion.
+
+For the actual Fabius endpoint problem, put
+\(x_{\lambda,j}=(\lambda+j)2^{-(\lambda+j)}\).  The module
+\path{FabiusLambertPhaseLockedPullback.lean} pulls the arbitrary-order
+logarithmic expansion back to each fixed \(x_{\lambda,j}\), freezing
+the one-periodic correction and all periodic saddle coefficients at the base
+phase \(\lambda\).  The estimates in
+\path{LambertReciprocalAsymptotics.lean} show that the fixed order-\(r\)
+reciprocal Lagrange row has total variation \(\bigO(\lambda^r)\) and
+balance this growth against sufficiently high shifted inverse powers.  Writing
+\(\Psi\) for \lean{negativeLaplacePsi}, the definitions
+\lean{fabiusPhaseLockedReducedSample},
+\lean{fabiusPhaseLockedPeriodicEstimator},
+\lean{fabiusPhaseLockedResidualTerm}, and
+\lean{fabiusPhaseLockedResidualPartialSum} in
+\path{FabiusLambertPhaseExtraction.lean} give, for every fixed
+\(r,S\in\N\),
+\begin{equation}
+ E_r(\lambda)-\Psi(\lambda)-\sum_{n=0}^{S-1}R_{r,n}(\lambda)
+ =\bigO\bigl(\lambda^{-(r+1+S)}\bigr),
+ \qquad \lambda\to+\infty .                         \label{eq:phase-locked-finite-extraction}
+\end{equation}
+This is \lean{fabiusPhaseLockedPeriodicEstimator_sub_residual_isBigO};
+its proof uses the node expansion through order \(2r+S+1\).  The cases
+\(S=0\) and \(S=1\) are the named leading and first-omitted-moment
+bounds, and
+\lean{fabiusPhaseLockedPeriodicEstimator_tendsto_periodicAlong} gives
+convergence to \(\Psi(a)\) along \(\lambda=a+n\).  These are
+fixed-index Poincaré estimates; no uniformity for \(r\) or \(S\)
+growing with \(\lambda\) is claimed.
+
 \begin{proposition}[Principal specialization and denominator-free geometric residuals]
 \label{prop:geometric-principal-residuals}
 Let $R$ first be a commutative semiring.  For arbitrary $c,q\in R$ and
 $p,r\in\N$, complete homogeneous evaluation on a geometric alphabet is
 \begin{align}
- h_r(1,q,\ldots,q^p)&={p+r\brack p}_q,                    \label{eq:complete-homogeneous-geometric}\\
- h_r(c,cq,\ldots,cq^p)&=c^r{p+r\brack p}_q.              \label{eq:complete-homogeneous-scaled-geometric}
+ h_r(1,q,\ldots,q^p)&=\qbinom{p+r}{p}{q},                    \label{eq:complete-homogeneous-geometric}\\
+ h_r(c,cq,\ldots,cq^p)&=c^r\qbinom{p+r}{p}{q}.              \label{eq:complete-homogeneous-scaled-geometric}
 \end{align}
 These identities are recursive and denominator-free: they remain valid at
 $q=0$, at roots of unity, in positive characteristic, and in the zero
@@ -6016,7 +6159,7 @@ Now let $R$ be a commutative ring and let $w_0,\ldots,w_p\in R$.  If
 then every positive moment is
 \begin{equation}
  \sum_{k=0}^{p}w_k(q^k)^m
- =(-1)^p q^{\binom{p+1}{2}}{m-1\brack p}_q,
+ =(-1)^p q^{\binom{p+1}{2}}\qbinom{m-1}{p}{q},
  \qquad m>0.                                             \label{eq:geometric-exact-row-all-moments}
 \end{equation}
 There is a strictly more general scaled-node form.  If exactness is assumed
@@ -6027,7 +6170,7 @@ directly on the displayed nodes,
 then
 \begin{equation}
  \sum_{k=0}^{p}w_k(cq^k)^m
- =c^m(-1)^p q^{\binom{p+1}{2}}{m-1\brack p}_q,
+ =c^m(-1)^p q^{\binom{p+1}{2}}\qbinom{m-1}{p}{q},
  \qquad m>0.                                             \label{eq:scaled-geometric-exact-row-all-moments}
 \end{equation}
 No nonzeroness or unit hypothesis is imposed on $c$; this direct scaled
@@ -6038,7 +6181,7 @@ Over a field, distinctness of $1,q,\ldots,q^p$ supplies
 $\lambda_{p,k}^{(q)}$.  Consequently, for every block start $s\in\N$,
 \begin{equation}
  \sum_{k=0}^{p}\lambda_{p,k}^{(q)}(q^{s+k})^m
- =(-1)^p q^{sm+\binom{p+1}{2}}{m-1\brack p}_q,
+ =(-1)^p q^{sm+\binom{p+1}{2}}\qbinom{m-1}{p}{q},
  \qquad m>0.                                             \label{eq:shifted-geometric-lagrange-all-moments}
 \end{equation}
 \end{proposition}
@@ -6123,7 +6266,7 @@ all coefficients, including the mass-one boundary, are
  [X^m]\mathcal G_{q,p,w}f=
  \begin{cases}
   [X^0]f,&m=0,\\[2pt]
-  (-1)^p q^{\binom{p+1}{2}}{m-1\brack p}_q[X^m]f,&m>0.
+  (-1)^p q^{\binom{p+1}{2}}\qbinom{m-1}{p}{q}[X^m]f,&m>0.
  \end{cases}                                               \label{eq:geometric-series-filter-residual}
 \end{equation}
 Thus the above-diagonal zero of the recursive Gaussian coefficient gives all
@@ -6196,7 +6339,7 @@ enough to assume unconditional summability of
 \begin{equation}
  \mathcal A_{q,p,w}(a;z)
  =a_0+\sum_{r\ge0}
- (-1)^p q^{\binom{p+1}{2}}{p+r\brack p}_q
+ (-1)^p q^{\binom{p+1}{2}}\qbinom{p+r}{p}{q}
  z^{p+1+r}a_{p+1+r}.                                     \label{eq:geometric-analytic-series-filter-tail}
 \end{equation}
 Over a field, distinct geometric nodes supply the Lagrange specialization and its
@@ -6234,7 +6377,7 @@ exact entire identity
 \begin{equation}
  \sum_{j=0}^{p}\lambda_{p,j}^{(q)}\Phi(c^jz)
  =1+\sum_{r=0}^{\infty}
-   (-1)^p q^{\binom{p+1}{2}}{p+r\brack p}_q
+   (-1)^p q^{\binom{p+1}{2}}\qbinom{p+r}{p}{q}
    A_{p+1+r}(z).                                         \label{eq:rvachev-gaussian-filter}
 \end{equation}
 There is no contraction, realness, positivity, or global nonvanishing
@@ -6289,7 +6432,7 @@ these two moment forms are
 For every $d>0$, the same reversed row has the sharper residual form
 \begin{equation}
  \sum_{k=0}^{n}\omega_{n,n-k}\bigl((1/2)^k\bigr)^d
- =(-1)^n(1/2)^{n(n+1)/2}{d-1\brack n}_{1/2}.             \label{eq:toeplitz-complete-residual}
+ =(-1)^n(1/2)^{n(n+1)/2}\qbinom{d-1}{n}{1/2}.             \label{eq:toeplitz-complete-residual}
 \end{equation}
 This is
 \lean{sum_range_discreteLimitWeight_reverse_moment_eq_halfQBinomial} in
@@ -7540,6 +7683,35 @@ strict-interior wrappers are \lean{fabiusLambertPhase_div_radius} and
 \lean{fabiusLambertRadius_mul_argument}.  All five declarations are in
 \path{FabiusLambertSaddle.lean}.
 
+This lower phase is also the exact specialization at
+\((m,A,\beta)=(1,1,L)\) of the generic scaled power--exponential inverse;
+this is \lean{lowerPowerExponentialPhase_one_one_log_two} in
+\path{PowerExponentialLambertFabius}\texttt{.lean}.  More generally, for
+\(m\in\mathbb N\setminus\{0\}\), \(A>0\), and \(\beta>0\), put
+\[
+ S_{m,A,\beta}(t)=At^m\e^{-\beta t},
+ \qquad P_{m,A,\beta}=A\left(\frac m\beta\e^{-1}\right)^m.
+\]
+Writing \(\lambda_0\) and \(\lambda_{-1}\) for the principal and lower
+Lambert phases, their exact images are
+\[
+ \lambda_0\bigl([0,P_{m,A,\beta}]\bigr)
+   =\left[0,\frac m\beta\right],
+ \qquad
+ \lambda_{-1}\bigl((0,P_{m,A,\beta}]\bigr)
+   =\left[\frac m\beta,\infty\right].
+\]
+These are \lean{principalPowerExponentialPhase_image_Icc} and
+\lean{lowerPowerExponentialPhase_image_Ioc}; the companion declarations
+\lean{principalPowerExponentialPhase_invOn} and
+\lean{lowerPowerExponentialPhase_invOn} make each phase a two-sided
+\(\operatorname{InvOn}\) inverse of \(S_{m,A,\beta}\) on the corresponding
+displayed interval pair.  They are proved in
+\path{PowerExponentialLambertInverse.lean}.  On the principal branch, the
+closed endpoint step uses the exact restriction
+\(W_0([-\e^{-1},0])=[-1,0]\), namely
+\lean{principalLambertW_image_Icc} in \path{PrincipalLambertW.lean}.
+
 On the same closed-upper domain, the phase has the sharp lower bound and endpoint
 characterization
 \begin{equation}
@@ -8168,6 +8340,70 @@ the fully expanded atom-Gram identity is
  =\delta_{mn}\frac{2u_n^2}{4n+1}.                         \label{eq:legendre-atom-gram}
 \end{equation}
 
+At compiled source checkpoint \texttt{e2c310e7c}, the focused-build module
+\path{FabiusLegendreTranslateSeries.lean} closes the literal outer series and
+the common-mesh partial sums.  Its five public
+definitions are \lean{rvachevLegendrePartialSumDeconvolutionPolynomial},
+\lean{rvachevLegendrePartialSumAtomCoefficient},
+\lean{rvachevLegendrePartialSumTranslateBlock},
+\lean{rvachevLegendreTranslateBlockOnInterval}, and
+\lean{rvachevLegendrePartialSumTranslateBlockOnInterval}.  Its twenty-three
+public theorems are
+\lean{summable_norm_rvachevLegendreTranslateBlock},
+\lean{summable_rvachevLegendreTranslateBlock},
+\lean{hasSum_rvachevLegendreTranslateBlock},
+\lean{tsum_rvachevLegendreTranslateBlock},
+\lean{rvachevLegendrePartialSumDeconvolutionPolynomial_eq_sum},
+\lean{rvachevLegendrePartialSumAtomCoefficient_eq_sum},
+\lean{eval_rvachevLegendrePartialSumPolynomial_eq_tsum_rvachevUp},
+\lean{eval_rvachevLegendrePartialSumPolynomial_eq_sum_rvachevUp},
+\lean{rvachevLegendrePartialSumTranslateBlock_eq_eval_partialSumPolynomial},
+\lean{rvachevLegendrePartialSumTranslateBlock_eq_sum_translateBlock},
+\lean{rvachevLegendreTranslateBlockOnInterval_apply},
+\lean{rvachevLegendreTranslateBlockOnInterval_eq_smul},
+\lean{summable_norm_rvachevLegendreTranslateBlockOnInterval},
+\lean{summable_rvachevLegendreTranslateBlockOnInterval},
+\lean{hasSum_rvachevLegendreTranslateBlock_uniform},
+\lean{tsum_rvachevLegendreTranslateBlock_uniform},
+\lean{rvachevLegendrePartialSumTranslateBlockOnInterval_apply},
+\lean{rvachevLegendrePartialSumTranslateBlockOnInterval_eq_eval_partialSumPolynomial},
+\lean{rvachevLegendrePartialSumTranslateBlockOnInterval_eq_sum},
+\lean{tendsto_rvachevLegendrePartialSumTranslateBlockOnInterval},
+\lean{rvachevLegendrePartialSumTranslateBlock_tendstoUniformlyOn},
+\lean{tendsto_norm_rvachevLegendrePartialSumTranslateBlockOnInterval_sub}, and
+\lean{tendsto_rvachevLegendrePartialSumTranslateBlock}.
+
+Consequently the literal finite trains in
+\eqref{eq:legendre-translate-block} are absolutely summable both pointwise and
+in the supremum norm on the interval, and their pointwise and uniform sums are
+exactly
+\begin{equation}
+ \Up(x)=\sum_{n=0}^{\infty}\widetilde B_n(x),
+ \qquad -1\le x\le1.                                      \label{eq:legendre-translate-block-series}
+\end{equation}
+For the existing polynomial partial sum
+\(S_N=\sum_{n=0}^{N}u_nP_{2n}\), define
+\begin{equation}
+ C_N:=\mathcal D_{\Up}S_N
+     =\sum_{n=0}^{N}u_nQ_{2n}.                             \label{eq:legendre-partial-sum-deconvolution}
+\end{equation}
+The equality is
+\lean{rvachevLegendrePartialSumDeconvolutionPolynomial_eq_sum}.  With
+\(M_N=4^N\), the global theorem uses a compactly supported \texttt{tsum} for
+every real input, while on the Legendre interval its exact finite form is
+\begin{equation}
+ S_N(x)=\frac1{M_N}\sum_{-2M_N<k<2M_N}
+ C_N(k/M_N)\Up(x-k/M_N).                                  \label{eq:legendre-fixed-scale-partial-sum}
+\end{equation}
+On $[-1,1]$, the named fixed-scale train is equal pointwise both to \(S_N\)
+and to the finite sum of the separately scaled blocks.  The latter statement
+does not identify the two coefficient vectors.  Bundled in
+\(C([-1,1])\), these common-mesh partial trains converge to \(\Up\) in the
+supremum norm.  The API also provides the raw
+\texttt{TendstoUniformlyOn} statement, convergence of the supremum-norm error
+to zero, and the pointwise corollary at every \(x\in[-1,1]\).  It asserts no
+rate, coefficientwise limit, or uniform convergence outside this interval.
+
 At compiled source checkpoint \texttt{ca66a1247}, the polynomial-form Legendre blocks
 \(B_n(x)=u_nP_{2n}(x)\) satisfy the complete orthogonality formula
 \begin{equation}
@@ -8245,9 +8481,9 @@ positive-half-line half with $A_2$.  The last two give exactly
 The synthesis declarations establish the displayed sufficient dyadic meshes,
 but not their minimality or the report's sharpness statement.  They also do not
 formalize parity, derivative/Gegenbauer/Appell closed forms, or the displayed
-low-degree values of \(Q_d\); rationality of the atom rows; a named outer
-translate-block \texttt{HasSum}; one-mesh synthesis of an entire partial sum;
-or the later refinement, projector, and asymptotic layers.
+low-degree values of \(Q_d\); rationality of the atom rows; equality of the
+fixed-scale and separately scaled coefficient vectors; exact degree of every
+partial sum; or the later refinement, projector, and asymptotic layers.
 
 On $[0,2]$, the signed global extension has the
 corresponding translated Legendre series
@@ -8511,29 +8747,6 @@ base-generic Gaussian/Richardson algebra and its formal and unconditionally summ
 series filters are formalized in
 \Cref{prop:geometric-principal-residuals,prop:finite-power-series-filter,prop:analytic-series-filter}.
 
-\section{Conclusion}
-\label{sec:conclusion}
-
-The formal development links three global presentations without confusing their domains.
-The bounded \(F\) supplies the probability and arithmetic viewpoints; the compactly
-supported \(\Up\) supplies refinement, Fourier, spline, and Legendre viewpoints; and the
-signed \(\mathcal F\) supplies the global dilation and binary-translation formulas.  Exact
-bridges connect them to finite atomic laws, weak convergence, centered splines, moments,
-generic weighted distributions, geometrically weighted uniform laws, exact quantile
-transport, Banach-valued survival layer cake, weighted inverse layer cake,
-arbitrary absolutely-continuous inverse-pair calculus, reciprocal-power values, dyadic
-algorithms, half-base \(q\)-binomial identities, prefix sums, denominator-free
-  arbitrary-base geometric interpolation, finite formal-series and unconditionally summable
-  analytic filters with their Gaussian residuals, normalized integer-order and positive-real
-  fractional Volterra foundations, exact integer Fabius primitives and first fractional
-  Fabius--Rvachev shifts, polynomial weights, endpoint Laplace analysis, and
-computable approximation.
-
-The most important methodological conclusion is equally concrete: the primary document is
-now a map of proved mathematics.  Research claims can move back from the frontier only after
-a matching Lean theorem exists, with the same hypotheses, domain, normalization, endpoint
-convention, and conclusion.
-
 \section{Affine Cauchy--Stieltjes calculus}
 \label{sec:cauchy-calculus}
 
@@ -8679,6 +8892,29 @@ Herglotz--Poisson identities, integrated interval
 Stieltjes--Perron inversion, and initial exact Jacobi data; none of those statements is read
 as one of the stronger boundary or continuation claims just listed.
 
+\section{Conclusion}
+\label{sec:conclusion}
+
+The formal development links three global presentations without confusing their domains.
+The bounded \(F\) supplies the probability and arithmetic viewpoints; the compactly
+supported \(\Up\) supplies refinement, Fourier, spline, and Legendre viewpoints; and the
+signed \(\mathcal F\) supplies the global dilation and binary-translation formulas.  Exact
+bridges connect them to finite atomic laws, weak convergence, centered splines, moments,
+generic weighted distributions, geometrically weighted uniform laws, exact quantile
+transport, Banach-valued survival layer cake, weighted inverse layer cake,
+arbitrary absolutely-continuous inverse-pair calculus, reciprocal-power values, dyadic
+algorithms, half-base \(q\)-binomial identities, prefix sums, denominator-free
+arbitrary-base geometric interpolation, finite formal-series and unconditionally summable
+analytic filters with their Gaussian residuals, normalized integer-order and positive-real
+fractional Volterra foundations, exact integer Fabius primitives and first fractional
+Fabius--Rvachev shifts, polynomial weights, endpoint Laplace analysis, affine
+Cauchy--Stieltjes and centered Laurent calculus, and computable approximation.
+
+The most important methodological conclusion is equally concrete: the primary document is
+now a map of proved mathematics.  Research claims can move back from the frontier only after
+a matching Lean theorem exists, with the same hypotheses, domain, normalization, endpoint
+convention, and conclusion.
+
 \appendix
 
 \section{Lean module map}
@@ -8786,6 +9022,7 @@ Finite base-layer arithmetic &
 Finite polynomial, formal-series, and unconditionally summable analytic-series filters,
 and geometric Lagrange/Richardson exactness &
 \path{FinitePolynomialFunctional.lean}, \path{CompleteHomogeneous.lean},
+\path{CompleteHomogeneousGenerating.lean},
 \path{FinitePowerSeriesFilter.lean}, \path{GeometricPowerSeriesFilter.lean},
 \path{AnalyticSeriesFilter.lean},
 \path{GeometricLagrange.lean}, \path{LagrangeResidualMoments.lean},
@@ -8797,6 +9034,17 @@ and geometric Lagrange/Richardson exactness &
 \path{GeometricLagrangeQMoments.lean}\\
 Phase-locked reciprocal-grid Richardson algebra &
 \path{LambertPhaseLockedRichardson.lean}\\
+Phase-locked pullback, complete-homogeneous asymptotics, reciprocal-row growth,
+and finite-order periodic extraction &
+\path{FabiusLambertPhaseLockedPullback.lean},
+\path{CompleteHomogeneousAsymptotics.lean},
+\path{LambertReciprocalAsymptotics.lean},
+\path{FabiusLambertPhaseExtraction.lean}\\
+Finite \(q\)-Cauchy convolutions, \(q\)-Bernstein partition of unity, weighted
+Pascal, and elementary--complete orthogonality &
+\path{QBinomialCauchy.lean},
+\path{SymmetricFunctionOrthogonality.lean},
+\path{CompleteHomogeneous.lean}\\
 Weighted-subset Gaussian enumeration, scalar kernels, module-valued
 $q$-binomial inversion, and q-Gaussian specializations &
 \path{BitPositionQBinomial.lean}, \path{QBinomialInversion.lean},
@@ -8826,7 +9074,10 @@ Endpoint asymptotics &
 \path{PeriodicCorrection.lean}, \path{PeriodicFourier.lean},
 \path{MellinBose.lean}, \path{MellinFinitePart.lean},
 \path{BoseFinitePartIntegral.lean},
-\path{LowerLambertW.lean}, \path{FabiusLambertPhase.lean},
+\path{PrincipalLambertW.lean}, \path{LowerLambertW.lean},
+\path{PowerExponentialLambert.lean}, \path{PowerExponentialLambertCalculus.lean},
+\path{PowerExponentialLambertInverse.lean},
+\path{PowerExponentialLambertFabius}\texttt{.lean}, \path{FabiusLambertPhase.lean},
 \path{FabiusLambertSaddle.lean}, \path{FabiusSharpLambertMain.lean},
 \path{FabiusWikipediaMain.lean},
 \path{FabiusDecayComparison.lean},
@@ -8843,6 +9094,7 @@ Legendre expansion and computability &
 \path{FabiusSquareEnergyFourier.lean},
 \path{RvachevPolynomialSynthesis.lean},
 \path{FabiusLegendreTranslateBlocks.lean},
+\path{FabiusLegendreTranslateSeries.lean},
 \path{FabiusTranslatedLegendreSeries.lean},
 \path{FabiusComputableSpline.lean}\\
 \bottomrule
