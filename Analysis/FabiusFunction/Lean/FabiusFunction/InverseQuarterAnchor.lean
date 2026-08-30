@@ -1,5 +1,6 @@
 import FabiusFunction.FabiusInverse
-import Mathlib.Data.Real.Sqrt
+import FabiusFunction.DyadicSpecializations
+import Mathlib.Analysis.Real.Sqrt
 
 /-!
 # The inverse Fabius function at the quarter anchor
@@ -52,11 +53,8 @@ noncomputable section
 This is the first nontrivial inverse-dyadic value, extracted from the general
 exact evaluator `fabiusAtInverseTwoPow_cast`. -/
 theorem fabiusReal_quarter (F : BoundedFabius) (hF : IsFabius F) :
-    fabiusReal F (1 / 4) = 5 / 72 := by
-  have h := fabiusAtInverseTwoPow_cast F hF 2
-  norm_num [fabiusAtInverseTwoPow_eq_halfMoment, halfMomentFabiusValue,
-    halfMoment] at h
-  exact h.symm
+    fabiusReal F (1 / 4) = 5 / 72 :=
+  fabiusReal_one_quarter F hF
 
 /-- The exact quarter quantile of every bounded Fabius function:
 `F^{-1}(5 / 72) = 1 / 4`. -/
@@ -255,7 +253,7 @@ theorem quarterPrefixDisplacement_le_inv_two_pow (n : ℕ) :
     (by positivity)).trans ?_
   calc
     (4 / 9 : ℝ) * ((4 : ℝ) ^ n)⁻¹ =
-        (4 / 9 : ℝ) / (4 : ℝ) ^ n := by rw [div_eq_mul_inv]
+        (4 / 9 : ℝ) / (4 : ℝ) ^ n := by simp only [div_eq_mul_inv]
     _ ≤ 1 / (2 : ℝ) ^ n := by
       rw [div_le_div_iff₀ (by positivity) (by positivity)]
       have hbase : (4 / 9 : ℝ) ≤ (2 : ℝ) ^ n :=
