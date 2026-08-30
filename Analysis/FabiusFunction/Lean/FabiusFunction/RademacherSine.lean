@@ -112,10 +112,17 @@ theorem floor_rademacherPoint (n j : ℕ) :
   have hpos : (0 : ℝ) < 2 ^ j := by positivity
   have hmod : n % 2 ^ j + 2 ^ j * (n / 2 ^ j) = n := Nat.mod_add_div n (2 ^ j)
   have hlt : n % 2 ^ j < 2 ^ j := Nat.mod_lt _ (Nat.two_pow_pos j)
-  have hmodR : ((n % 2 ^ j : ℕ) : ℝ) + 2 ^ j * ((n / 2 ^ j : ℕ) : ℝ) = (n : ℝ) := by
-    exact_mod_cast hmod
-  have hltR : ((n % 2 ^ j : ℕ) : ℝ) + 1 ≤ 2 ^ j := by exact_mod_cast hlt
-  have hnn : (0 : ℝ) ≤ ((n % 2 ^ j : ℕ) : ℝ) := Nat.cast_nonneg _
+  -- Make the quotient and remainder opaque before any cast normalization:
+  -- `push_cast` knows `Int.natCast_div` and would otherwise turn the natural
+  -- quotient `↑(n / 2 ^ j)` into an *integer* division, losing every fact
+  -- about it.
+  set q := n / 2 ^ j with hqdef
+  set r := n % 2 ^ j with hrdef
+  clear_value q r
+  clear hqdef hrdef
+  have hmodR : (r : ℝ) + 2 ^ j * (q : ℝ) = (n : ℝ) := by exact_mod_cast hmod
+  have hltR : (r : ℝ) + 1 ≤ 2 ^ j := by exact_mod_cast hlt
+  have hnn : (0 : ℝ) ≤ (r : ℝ) := Nat.cast_nonneg _
   rw [Int.floor_eq_iff]
   constructor
   · rw [le_div_iff₀ hpos]
@@ -132,20 +139,20 @@ the Rademacher product is defined and nonzero. -/
 theorem fract_rademacherPoint_ne_zero (n j : ℕ) :
     Int.fract (((n : ℝ) + 1 / 2) / 2 ^ j) ≠ 0 := by
   have hpos : (0 : ℝ) < 2 ^ j := by positivity
-  have hmod : n % 2 ^ j + 2 ^ j * (n / 2 ^ j) = n := Nat.mod_add_div n (2 ^ j)
-  have hmodR : ((n % 2 ^ j : ℕ) : ℝ) + 2 ^ j * ((n / 2 ^ j : ℕ) : ℝ) = (n : ℝ) := by
-    exact_mod_cast hmod
-  have hnn : (0 : ℝ) ≤ ((n % 2 ^ j : ℕ) : ℝ) := Nat.cast_nonneg _
   have hf : Int.fract (((n : ℝ) + 1 / 2) / 2 ^ j)
       = ((n : ℝ) + 1 / 2) / 2 ^ j - ((n / 2 ^ j : ℕ) : ℝ) := by
-    rw [← Int.self_sub_floor, floor_rademacherPoint]
-    push_cast
-    ring
+    rw [← Int.self_sub_floor, floor_rademacherPoint, Int.cast_natCast]
   rw [hf]
-  have : 0 < ((n : ℝ) + 1 / 2) / 2 ^ j - ((n / 2 ^ j : ℕ) : ℝ) := by
-    rw [sub_pos, lt_div_iff₀ hpos]
-    nlinarith
-  exact ne_of_gt this
+  have hmod : n % 2 ^ j + 2 ^ j * (n / 2 ^ j) = n := Nat.mod_add_div n (2 ^ j)
+  set q := n / 2 ^ j with hqdef
+  set r := n % 2 ^ j with hrdef
+  clear_value q r
+  clear hqdef hrdef
+  have hmodR : (r : ℝ) + 2 ^ j * (q : ℝ) = (n : ℝ) := by exact_mod_cast hmod
+  have hnn : (0 : ℝ) ≤ (r : ℝ) := Nat.cast_nonneg _
+  refine ne_of_gt ?_
+  rw [sub_pos, lt_div_iff₀ hpos]
+  nlinarith
 
 /-- **The `j`-th factor of the Rademacher product**, the sharper clause of
 the atlas theorem: it is exactly the sign of the `j`-th binary digit,
