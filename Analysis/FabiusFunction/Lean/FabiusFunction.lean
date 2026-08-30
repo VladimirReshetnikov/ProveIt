@@ -1,8 +1,10 @@
 import FabiusFunction.CompleteHomogeneous
+import FabiusFunction.SymmetricFunctionOrthogonality
 import FabiusFunction.FiniteQBinomialCore
 import FabiusFunction.QBinomialInversion
 import FabiusFunction.QBinomialTransform
 import FabiusFunction.QBinomialVandermonde
+import FabiusFunction.QBinomialCauchy
 import FabiusFunction.GaussianBinomialAtOne
 import FabiusFunction.GeometricCompleteHomogeneous
 import FabiusFunction.GeometricLagrange
