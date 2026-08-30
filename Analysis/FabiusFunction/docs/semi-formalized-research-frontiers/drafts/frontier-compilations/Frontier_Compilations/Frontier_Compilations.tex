@@ -12081,7 +12081,48 @@ where $s_2(n)$ is the binary digit sum. The standard finite product identity
 =\prod_{j=0}^{N-1}(1-z^{2^j})
 \label{p8:eq:TM-poly}
 \end{equation}
-becomes a precise sinc identity after a phase-scaled substitution.
+
+\begin{theorem}[Lean-verified finite complex block transforms]
+\label{p8:thm:lean-complex-block-transforms}
+For every $N\ge0$ and $u,a,\zeta\in\CPartll$,
+\begin{align}
+ \sum_{n=0}^{2^N-1}u^{s_2(n)}\exp(n\zeta)
+ &=\prod_{j=0}^{N-1}\left(1+u\exp(2^j\zeta)\right),
+ \label{p8:eq:lean-weighted-complex-block}\\
+ \sum_{n=0}^{2^N-1}u^{s_2(n)}\exp(a+n\zeta)
+ &=\exp(a)\prod_{j=0}^{N-1}\left(1+u\exp(2^j\zeta)\right),
+ \label{p8:eq:lean-weighted-complex-block-affine}\\
+ \sum_{n=0}^{2^N-1}\varepsilon_n\exp(n\zeta)
+ &=\prod_{j=0}^{N-1}\left(1-\exp(2^j\zeta)\right),
+ \label{p8:eq:lean-signed-complex-block}\\
+ \sum_{n=0}^{2^N-1}\varepsilon_n\exp(a+n\zeta)
+ &=\exp(a)\prod_{j=0}^{N-1}\left(1-\exp(2^j\zeta)\right).
+ \label{p8:eq:lean-signed-complex-block-affine}
+\end{align}
+All four equations include the zero-bit block $N=0$: the sum has its single empty-word term
+$n=0$ and the product is empty.  The unshifted identities read $1=1$, while the affine
+identities read $\exp(a)=\exp(a)$.
+\end{theorem}
+
+\begin{proof}
+The declarations, in the displayed order, are
+\path{sum_range_two_pow_binaryWeight_cexp},
+\path{sum_range_two_pow_binaryWeight_cexp_affine},
+\path{sum_range_two_pow_thueMorseSign_cexp}, and
+\path{sum_range_two_pow_thueMorseSign_cexp_affine} in
+\path{ThueMorseComplexExponential.lean}.  Binary expansion turns the left side of the first
+identity into independent include-or-omit choices for the powers $2^j$.  The affine forms
+factor out $\exp(a)$, while the signed forms are the corresponding Thue--Morse
+specialization.
+\end{proof}
+
+Thus the raw finite complex exponential product needed below is machine checked.  A
+phase-scaled substitution turns it into the raw product in the next proof.  These four
+declarations do not themselves perform the sine/sinc conversion or removable-origin
+normalization, but that finite layer is separately formal in
+\path{ThueMorseComplexProductBridge.lean}.  The accelerated infinite-product conclusions,
+exponential-generating-function convergence statements, and parity words with
+position-dependent digit weights are not consequences of either finite module.
 
 \begin{proposition}[Finite Thue--Morse representation of $P_N$]
 \label{p8:prop:TM-PN}
@@ -12136,7 +12177,11 @@ For $t\ne0$ and admissible $N$,
 The exact error, bracketing, and bounds of \cref{p8:thm:exact-rich-error,p8:cor:brackets,p8:thm:error-bound} therefore become statements purely about a finite collection of signed Thue--Morse exponential sums.
 \end{corollary}
 
-This transfer is conceptually useful even when direct product evaluation is faster. It makes the approximation a finite digital identity and exposes a new route for symbolic or formal treatment through the already developed Thue--Morse polynomial machinery.
+This transfer is conceptually useful even when direct product evaluation is faster.  Its raw
+complex-exponential core is now formalized by
+\cref{p8:thm:lean-complex-block-transforms}, and the total finite sine/sinc normalization is
+formalized by \path{ThueMorseComplexProductBridge.lean}; the analytic Richardson conclusions
+remain a route for further formal treatment.
 
 \section{Numerical verification and observed orders}
 \label{p8:sec:numerics}
@@ -13576,6 +13621,23 @@ $\e^{2\pi\ii z(1-2^{-m})}$.  The remaining product is
 which is $S_m(z)$.  Equation \eqref{p9:eq:Prouhet} annihilates the first $m$ Taylor
 coefficients of $S_m$ and gives the leading coefficient in \eqref{p9:eq:Sm-leading}.
 \end{proof}
+
+\paragraph{Updated Lean boundary.}
+The raw product-to-sum step in this proof is now an exact specialization of
+\path{sum_range_two_pow_thueMorseSign_cexp} in
+\path{ThueMorseComplexExponential.lean}, with the arbitrary exponential prefactor available
+separately as \path{sum_range_two_pow_thueMorseSign_cexp_affine}.  The same module records
+the genuinely stronger Hamming-weight family
+\path{sum_range_two_pow_binaryWeight_cexp} and its affine companion
+\path{sum_range_two_pow_binaryWeight_cexp_affine}.  These four declarations prove finite raw
+complex exponential identities.  The generic finite complex half-angle and total sinc
+normalization, including the removable origin, are separately formal in
+\path{ThueMorseComplexProductBridge.lean}.  What is not supplied by either module is the first
+$q$-Pochhammer-to-sinc equality in \eqref{p9:eq:triple-factor}, its resulting full
+$q$-specific triple factorization and exact origin order, any infinite-product or
+exponential-generating-function convergence statement, or a position-dependent parity-word
+generalization.  Accordingly, the complete triple factorization retains its report-level
+status even though its finite exponential and generic normalization layers are Lean verified.
 
 \begin{corollary}[A Gaussian-binomial identity for a Thue--Morse exponential sum]
 Combining \eqref{p9:eq:qbinom-sinc} and \eqref{p9:eq:triple-factor} gives

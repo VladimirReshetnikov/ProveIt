@@ -58,7 +58,8 @@ noncomputable section
 private theorem half_pow_pred_eq_two_mul (p : ℕ) (hp : 1 ≤ p) :
     (1 / 2 : ℝ) ^ (p - 1) = 2 * (1 / 2 : ℝ) ^ p := by
   rw [pow_sub₀ _ (by norm_num) hp]
-  norm_num <;> ring
+  norm_num
+  ring
 
 private theorem half_pow_two_mul_sub_eq
     {n j : ℕ} (hj : j ≤ n) :
@@ -66,6 +67,10 @@ private theorem half_pow_two_mul_sub_eq
       (1 / 4 : ℝ) ^ n * (2 : ℝ) ^ j := by
   have hj' : j ≤ 2 * n := by omega
   rw [pow_sub₀ _ (by norm_num) hj', pow_mul, ← inv_pow]
+  norm_num
+
+private theorem complexShiftErrorFactor_center :
+    2 * Real.exp ‖(1 / 2 : ℂ) - (1 / 2 : ℂ)‖ - 1 = 1 := by
   norm_num
 
 /-! ## One-spline estimates -/
@@ -91,8 +96,8 @@ theorem norm_fabiusComplexShiftSpline_sub_extendedFabius_le
       ‖fabiusComplexShiftSpline p (1 / 2 : ℂ) x -
           (extendedFabius F x : ℂ)‖ ≤
         (1 / 2 : ℝ) ^ p := by
-    simpa only [fabiusComplexShiftSpline_center_eq_uniformSpline,
-      ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs,
+    rw [fabiusComplexShiftSpline_center_eq_uniformSpline]
+    simpa only [← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs,
       one_div, inv_pow] using
       abs_fabiusUniformSpline_sub_extendedFabius_le F hF p x
   calc
@@ -243,11 +248,14 @@ theorem norm_fabiusDiscreteLimitApproximationComplex_sub_globalFabius_le
         (2 * Real.exp ‖q - (1 / 2 : ℂ)‖ - 1) *
         (1 / 4 : ℝ) ^ n := by
   rw [fabiusDiscreteLimitApproximationComplex_eq_weighted_shiftSpline]
-  apply norm_discreteLimitWeightIn_sum_sub_le
+  refine norm_discreteLimitWeightIn_sum_sub_le
+    (K := ℂ)
+    (H := fun p => fabiusComplexShiftSpline p q x)
+    (L := (globalFabius x : ℂ))
+    (C := 2 * Real.exp ‖q - (1 / 2 : ℂ)‖ - 1) ?_ n hn
   · intro p hp
     simpa only [mul_comm] using
       norm_fabiusComplexShiftSpline_sub_globalFabius_le p hp q x
-  · exact hn
 
 /-- Uniform version of the complex discrete-row error, with the explicit
 q-independent row constant `64`. -/
@@ -277,7 +285,7 @@ theorem norm_fabiusDiscreteLimitApproximationComplex_center_sub_globalFabius_le
         (globalFabius x : ℂ)‖ ≤
       (discreteLimitWeightedVariation n : ℝ) *
         (1 / 4 : ℝ) ^ n := by
-  simpa using
+  simpa only [complexShiftErrorFactor_center, mul_one] using
     norm_fabiusDiscreteLimitApproximationComplex_sub_globalFabius_le
       (1 / 2 : ℂ) x n hn
 
@@ -287,7 +295,7 @@ theorem norm_fabiusDiscreteLimitApproximationComplex_center_sub_globalFabius_le_
     ‖fabiusDiscreteLimitApproximationComplex (1 / 2 : ℂ) x n -
         (globalFabius x : ℂ)‖ ≤
       64 * (1 / 4 : ℝ) ^ n := by
-  simpa using
+  simpa only [complexShiftErrorFactor_center, mul_one] using
     norm_fabiusDiscreteLimitApproximationComplex_sub_globalFabius_le_sixtyFour
       (1 / 2 : ℂ) x n hn
 
@@ -306,12 +314,23 @@ theorem norm_fabiusDiscreteLimitApproximationComplex_sub_le
         (1 / 4 : ℝ) ^ n := by
   rw [fabiusDiscreteLimitApproximationComplex_eq_weighted_shiftSpline,
     fabiusDiscreteLimitApproximationComplex_eq_weighted_shiftSpline]
+  have hfactor :
+      2 * (discreteLimitWeightedVariation n : ℝ) *
+          ((Real.exp ‖q₁ - (1 / 2 : ℂ)‖ - 1) +
+            (Real.exp ‖q₂ - (1 / 2 : ℂ)‖ - 1)) =
+        (discreteLimitWeightedVariation n : ℝ) *
+          (2 * ((Real.exp ‖q₁ - (1 / 2 : ℂ)‖ - 1) +
+            (Real.exp ‖q₂ - (1 / 2 : ℂ)‖ - 1))) := by
+    ring
+  rw [hfactor]
   refine norm_discreteLimitWeightIn_sum_sub_sum_le
     (K := ℂ)
     (H := fun p =>
       fabiusComplexShiftSpline p q₁ x)
     (G := fun p =>
-      fabiusComplexShiftSpline p q₂ x) ?_ n hn
+      fabiusComplexShiftSpline p q₂ x)
+    (C := 2 * ((Real.exp ‖q₁ - (1 / 2 : ℂ)‖ - 1) +
+      (Real.exp ‖q₂ - (1 / 2 : ℂ)‖ - 1))) ?_ n hn
   intro p hp
   have htriangle :
       ‖fabiusComplexShiftSpline p q₁ x -

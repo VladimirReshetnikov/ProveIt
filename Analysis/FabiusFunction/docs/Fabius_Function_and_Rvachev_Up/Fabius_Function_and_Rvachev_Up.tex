@@ -2063,11 +2063,52 @@ The whole-plane analyticity theorem is
 the same module.
 \end{proof}
 
-\subsection{A finite Thue--Morse product-to-sum bridge}
+\subsection{Finite complex transforms and a Thue--Morse product-to-sum bridge}
 
 The finite binary block has a reflection law that matches the parity of a
 quarter-turn phase.  Recall that
 \(\varepsilon_n=(-1)^{\wt(n)}\).
+
+\begin{theorem}[Finite complex Boolean-cube and Thue--Morse transforms]
+\label{thm:finite-complex-thue-morse-transform}
+For every \(m\in\N\) and arbitrary \(u,a,z\in\C\),
+\begin{align}
+ \sum_{n=0}^{2^m-1}u^{\wt(n)}\e^{nz}
+   &=\prod_{j=0}^{m-1}\left(1+u\e^{2^jz}\right),
+                                                              \label{eq:complex-hamming-transform}\\
+ \sum_{n=0}^{2^m-1}u^{\wt(n)}\e^{a+nz}
+   &=\e^a\prod_{j=0}^{m-1}\left(1+u\e^{2^jz}\right),
+                                                       \label{eq:complex-hamming-transform-affine}\\
+ \sum_{n=0}^{2^m-1}\varepsilon_n\e^{nz}
+   &=\prod_{j=0}^{m-1}\left(1-\e^{2^jz}\right),
+                                                          \label{eq:complex-thue-morse-transform}\\
+ \sum_{n=0}^{2^m-1}\varepsilon_n\e^{a+nz}
+   &=\e^a\prod_{j=0}^{m-1}\left(1-\e^{2^jz}\right).
+                                                   \label{eq:complex-thue-morse-transform-affine}
+\end{align}
+All four identities include \(m=0\): the products are then empty, the two
+unshifted identities read \(1=1\), and the two affine identities read
+\(\e^a=\e^a\).  In particular, the weighted formulas also include \(u=0\),
+with the usual convention \(u^0=1\).
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The four identities are respectively
+\lean{sum_range_two_pow_binaryWeight_cexp},
+\lean{sum_range_two_pow_binaryWeight_cexp_affine},
+\lean{sum_range_two_pow_thueMorseSign_cexp}, and
+\lean{sum_range_two_pow_thueMorseSign_cexp_affine} in
+\path{ThueMorseComplexExponential.lean}.  The first is the Boolean-cube
+product after substituting \(\e^z\); the affine identity extracts the common
+factor \(\e^a\).  The signed pair is the specialization encoded by
+\(\varepsilon_n=(-1)^{\wt(n)}\).
+
+These four declarations are the raw finite exponential layer.  The separate
+\path{ThueMorseComplexProductBridge.lean} builds on the same Boolean-cube
+identity to provide the complex half-angle formula and total sinc and
+negative-Laplace prefixes, including their removable origins.  Neither finite
+module asserts convergence to an infinite product.
+\end{proof}
 
 \begin{proposition}[Binary complement and quarter-turn parity]
 \label{prop:binary-complement-quarter-turn}
@@ -2113,7 +2154,12 @@ This is exactly \lean{sum_thueMorseSign_mul_sin_affine} in
 \path{ThueMorseSineProduct.lean}.  Its proof rotates the complex
 Thue--Morse exponential product through the arbitrary phase \(\phi\),
 rewrites \((-2\ii)^m\) as a positive magnitude and a quarter-turn phase,
-and takes imaginary parts.
+and takes imaginary parts.  The theorem displayed here is real-valued; the
+preceding theorem supplies the raw finite complex exponential identity, while
+\lean{sum_thueMorseSign_cexp_eq_sin_prod} and
+\lean{thueMorseBlock_cexp_eq_sincPrefix} in
+\path{ThueMorseComplexProductBridge.lean} supply the complex half-angle and
+total sinc normalizations.
 \end{proof}
 
 \begin{theorem}[Lacunary sine product as a Thue--Morse sum]
@@ -2136,8 +2182,11 @@ This is exactly \lean{prod_sin_two_pow_eq_thueMorse_sum} in
  x=2w,\qquad \phi=\frac{m\pi}{2}+w.
 \]
 The final sine becomes \(\sin(2^mw)\), which appends the last factor to
-the product over \(j<m\).  The formal statement is over real \(w\); no
-complex continuation or neighboring cosine-product identity is asserted.
+the product over \(j<m\).  This formal statement is over real \(w\); its
+neighboring real cosine-product identity is
+\lean{prod_sin_two_pow_mul_cos_eq_thueMorse_sum} in
+\path{LacunaryProductToSumCosine.lean}, and the complex half-angle layer is
+recorded separately by \path{ThueMorseComplexProductBridge.lean}.
 \end{proof}
 
 The same polynomial is exactly the denominator-cleared shell of the centered sinc
@@ -4268,9 +4317,12 @@ The full moment series, its coefficients, and the factorially denormalized famil
 \path{CenteredMomentParity.lean}.  The generic mechanism is the involution
 $t\mapsto-t$: an even coefficient family is fixed by it, whereas an odd logarithmic
 coefficient changes sign.  This is formalized without an integral-domain hypothesis by
-\lean{SaddleExpansion.logCoeff_eq_zero_of_odd_coeff}; the reusable substitution law
-\lean{SaddleExpansion.logOf_expand} shows that formal logarithms commute with
-$X\mapsto X^p$.
+\lean{SaddleExpansion.logCoeff_eq_zero_of_odd_coeff}.  More generally,
+\lean{SaddleExpansion.logOf_expand_of_hasSubst} shows that formal logarithms commute
+with every nontrivial monomial substitution $X\mapsto X^p$ under exactly the
+admissibility hypothesis for substitution by $\phi-1$; this includes coefficient rings
+where its constant coefficient is nonzero but nilpotent.  The unit-constant specialization
+is \lean{SaddleExpansion.logOf_expand}.
 
 The positive even formula \eqref{eq:centered-bernoulli-mersenne-cumulant} is
 \lean{centeredRvachevEvenCumulant_eq_bernoulliMersenne_formula}, and
@@ -9407,8 +9459,10 @@ Dyadic and \(q\)-binomial formulas &
 \path{FabiusGlobalQBinomialSeries.lean},
 \path{FabiusDiscreteLimitToeplitz.lean},
 \path{FabiusDiscreteLimitIntegration.lean}\\
-Thue--Morse algebra, prefixes, disc series, and ring-valued Prouhet identities &
+Thue--Morse algebra, finite complex transforms, prefixes, disc series, and
+ring-valued Prouhet identities &
 \path{ThueMorseBitSupport.lean}, \path{ThueMorsePrefix.lean},
+\path{ThueMorseBooleanCube.lean}, \path{ThueMorseComplexExponential.lean},
 \path{ThueMorseGenerating.lean},
 \path{ThueMorseBlockAlgebra.lean},
 \path{ThueMorseInfiniteProduct.lean}, \path{ThueMorseDiscSeries.lean},

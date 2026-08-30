@@ -97,7 +97,7 @@ theorem perturbedLambertArgument_mem_Ico_of_saddle
           -(L * (u + C u) * Real.exp (-(L * (u + C u)))) :=
         neg_le_neg hbound
       _ = (-L * (u + C u)) * Real.exp (-L * (u + C u)) := by
-        ring
+        ring_nf
   · have hnegative : -L * (u + C u) < 0 :=
       mul_neg_of_neg_of_pos (neg_neg_of_pos hL) hy
     exact mul_neg_of_neg_of_pos hnegative (Real.exp_pos _)
@@ -125,7 +125,8 @@ theorem perturbedLowerLambertMap_eq_self_of_saddle
       (perturbedLambertArgument_eq_mul_exp_of_saddle hsaddle).symm
   unfold perturbedLowerLambertMap
   rw [← hW]
-  field_simp [hL.ne'] <;> ring
+  field_simp [hL.ne']
+  ring
 
 /-- At any fixed point, the lower Lambert value is the negative scaled shifted
 coordinate.  This is the elementary identity used both for the converse
@@ -143,7 +144,8 @@ theorem lowerLambertW_perturbedLambertArgument_eq_of_fixed
         -L *
           ((-lowerLambertW (perturbedLambertArgument L x C u) / L - C u) +
             C u) := by
-      field_simp [hL] <;> ring
+      field_simp [hL]
+      ring
     _ = -L * (u + C u) := by rw [hfixed]
 
 /-- A fixed point whose Lambert argument is in the natural domain satisfies
@@ -173,8 +175,9 @@ theorem saddle_eq_of_perturbedLowerLambertMap_eq_self
     ring
   have hexpCancel :
       Real.exp (-L * (u + C u)) * Real.exp (L * (u + C u)) = 1 := by
-    rw [← Real.exp_add]
-    convert Real.exp_zero using 1 <;> ring
+    rw [← Real.exp_add,
+      show -L * (u + C u) + L * (u + C u) = 0 by ring,
+      Real.exp_zero]
   calc
     x * Real.exp (L * u) =
         x * (Real.exp (-L * C u) * Real.exp (L * (u + C u))) := by
@@ -268,6 +271,8 @@ theorem perturbedLambertArgument_hasDerivAt
       HasDerivAt (fun v : ℝ => Real.exp (-L * C v))
         (Real.exp (-L * C u) * (-L * c)) u :=
     hinner.exp
+  change HasDerivAt (fun v : ℝ => perturbedLambertArgument L x C v)
+    (perturbedLambertArgument L x C u * (-L * c)) u
   simpa only [perturbedLambertArgument, mul_assoc] using
     hexp.const_mul (-L * x)
 
@@ -306,10 +311,10 @@ theorem perturbedLowerLambertMap_hasDerivAt
       -((Real.exp W * (W + 1))⁻¹ * (z * (-L * c))) / L - c =
         -c / (1 + W) := by
     rw [← hWeq]
-    field_simp [hL, hWone, honeW, Real.exp_ne_zero] <;> ring
-  simpa only [perturbedLowerLambertMap, Function.comp_apply,
-    Pi.neg_apply, Pi.sub_apply, z, W] using
-    hraw.congr_deriv hderiv
+    field_simp [hL, hWone, honeW, Real.exp_ne_zero]
+    ring
+  exact (hraw.congr_deriv hderiv).congr_of_eventuallyEq
+    (Filter.Eventually.of_forall fun _ => rfl)
 
 /-- At a lower-branch fixed point, the derivative takes the intrinsic saddle
 form from the periodically perturbed Lambert map:
@@ -330,13 +335,9 @@ theorem perturbedLowerLambertMap_hasDerivAt_of_fixed
   have hbase := perturbedLowerLambertMap_hasDerivAt hL.ne' hz hC
   have hW :=
     lowerLambertW_perturbedLambertArgument_eq_of_fixed hL.ne' hfixed
-  have hWlt := lowerLambertW_lt_neg_one hz
-  rw [hW] at hWlt
-  have hden : L * (u + C u) - 1 ≠ 0 := by linarith
-  have hden' : 1 + -L * (u + C u) ≠ 0 := by linarith
   apply hbase.congr_deriv
-  rw [hW]
-  field_simp [hden, hden'] <;> ring
+  rw [hW, show 1 + -L * (u + C u) = -(L * (u + C u) - 1) by ring,
+    neg_div_neg_eq]
 
 end
 

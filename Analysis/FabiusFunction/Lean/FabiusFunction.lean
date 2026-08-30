@@ -68,6 +68,7 @@ import FabiusFunction.PolynomialExpectationCumulant
 import FabiusFunction.ThueMorseBitSupport
 import FabiusFunction.AffineDifferenceOrbit
 import FabiusFunction.ThueMorseBooleanCube
+import FabiusFunction.ThueMorseComplexExponential
 import FabiusFunction.BitPositionGenerating
 import FabiusFunction.ParityCharacter
 import FabiusFunction.ParityCharacterKernel

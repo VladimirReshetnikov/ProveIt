@@ -13,8 +13,10 @@ are inverse after the appropriate constant-term normalization; the theorem
 here identifies that algebraically characterized logarithm with Mathlib's
 universal construction. The unconditional normalization theorems also record
 what both coefficient transforms do when the input constant term is arbitrary.
-The reusable `logOf_expand` theorem records that this formal logarithm commutes
-with every nontrivial monomial substitution `X ↦ X^p`.
+The reusable `logOf_expand_of_hasSubst` theorem records that this formal
+logarithm commutes with every nontrivial monomial substitution `X ↦ X^p` under
+the exact admissibility hypothesis; `logOf_expand` is its unit-constant
+specialization.
 -/
 
 set_option autoImplicit false
@@ -122,20 +124,25 @@ theorem logSeries_eq_logOf (a : ℕ → R) (ha0 : a 0 = 1) :
       rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply,
         coeff_massSeries, ha0])
 
-/-- Formal logarithms commute with the monomial substitution `X ↦ X^p`.
-The unit-constant hypothesis ensures that the substitution defining
-`PowerSeries.logOf` is admissible. -/
+/-- Formal logarithms commute with the monomial substitution `X ↦ X^p`
+whenever the substitution defining `PowerSeries.logOf phi` is admissible. -/
+theorem logOf_expand_of_hasSubst (p : ℕ) (hp : p ≠ 0)
+    (phi : PowerSeries R) (hsubst : PowerSeries.HasSubst (phi - 1)) :
+    PowerSeries.logOf (PowerSeries.expand p hp phi) =
+      PowerSeries.expand p hp (PowerSeries.logOf phi) := by
+  rw [PowerSeries.logOf_eq, PowerSeries.logOf_eq]
+  simpa only [PowerSeries.expand, map_sub, map_one] using
+    (PowerSeries.expand_subst p hp hsubst (PowerSeries.log R)).symm
+
+/-- Unit-constant formal logarithms commute with the monomial substitution
+`X ↦ X^p`. -/
 theorem logOf_expand (p : ℕ) (hp : p ≠ 0)
     (phi : PowerSeries R) (hphi0 : PowerSeries.constantCoeff phi = 1) :
     PowerSeries.logOf (PowerSeries.expand p hp phi) =
       PowerSeries.expand p hp (PowerSeries.logOf phi) := by
-  have hzero : PowerSeries.constantCoeff (phi - 1) = 0 := by
-    rw [map_sub, map_one, hphi0, sub_self]
-  have hsubst : PowerSeries.HasSubst (phi - 1) :=
-    PowerSeries.HasSubst.of_constantCoeff_zero' hzero
-  rw [PowerSeries.logOf_eq, PowerSeries.logOf_eq,
-    PowerSeries.expand_subst p hp hsubst]
-  simp
+  apply logOf_expand_of_hasSubst p hp phi
+  apply PowerSeries.HasSubst.of_constantCoeff_zero'
+  rw [map_sub, map_one, hphi0, sub_self]
 
 end
 

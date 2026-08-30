@@ -970,7 +970,6 @@ theorem discreteLimitWeightedVariation_succ (n : ℕ) :
   rw [discreteLimitWeightedVariation, finiteQPochhammer_neg_one_succ,
     halfQPochhammer_succ]
   field_simp [halfQPochhammer_ne_zero, hfac]
-  <;> ring
 
 /-- The dyadically weighted variations satisfy the uniform estimate
 `H_n ≤ 64`, including the zeroth row.  For a successor row the head factor

@@ -421,6 +421,12 @@ Pointwise analytic finite filters &
 Exact dyadic evaluator & \nolinkurl{fabiusDyadicValue} & \nolinkurl{Arithmetic.lean}, \nolinkurl{PaperStatements.lean} \\
 Binary and q-binomial series & \nolinkurl{fabiusReductionSum} and global q-series declarations & \nolinkurl{TaylorReduction.lean}, \nolinkurl{FabiusGlobalQBinomialSeries.lean} \\
 Thue--Morse grid samples & \nolinkurl{correctedPrefixGridSample} & \nolinkurl{ThueMorseApproximation.lean} \\
+Finite complex Thue--Morse block transforms &
+\nolinkurl{sum_range_two_pow_binaryWeight_cexp},
+\nolinkurl{sum_range_two_pow_binaryWeight_cexp_affine},
+\nolinkurl{sum_range_two_pow_thueMorseSign_cexp},
+\nolinkurl{sum_range_two_pow_thueMorseSign_cexp_affine} &
+\nolinkurl{ThueMorseComplexExponential.lean} \\
 Generic weighted uniform series and laws &
 \nolinkurl{uniformProduct_map_of_ae_head_tail_recursion},
 \nolinkurl{weightedUniformSeries_map},
@@ -4416,6 +4422,53 @@ The classical finite Thue--Morse identity is
  =\sum_{j\in\mathbb Z}\tau_n(j)z^j.
  \label{repeated2:eq:thue-morse-product}
 \end{equation}
+
+\begin{theorem}[Finite complex Boolean-cube and Thue--Morse transforms; \Formalized]
+\label{repeated2:thm:complex-thue-morse-transform}
+Let $m\in\N$ and $u,a,z\in\C$, and write
+$\varepsilon_n=(-1)^{\wt(n)}$.  Then
+\begin{align}
+ \sum_{n=0}^{2^m-1}u^{\wt(n)}\exp(nz)
+ &=\prod_{j=0}^{m-1}\left(1+u\exp(2^jz)\right),
+ \label{repeated2:eq:weighted-complex-block}\\
+ \sum_{n=0}^{2^m-1}u^{\wt(n)}\exp(a+nz)
+ &=\exp(a)\prod_{j=0}^{m-1}\left(1+u\exp(2^jz)\right),
+ \label{repeated2:eq:weighted-complex-block-affine}\\
+ \sum_{n=0}^{2^m-1}\varepsilon_n\exp(nz)
+ &=\prod_{j=0}^{m-1}\left(1-\exp(2^jz)\right),
+ \label{repeated2:eq:signed-complex-block}\\
+ \sum_{n=0}^{2^m-1}\varepsilon_n\exp(a+nz)
+ &=\exp(a)\prod_{j=0}^{m-1}\left(1-\exp(2^jz)\right).
+ \label{repeated2:eq:signed-complex-block-affine}
+\end{align}
+The statement includes $m=0$: the sum then contains the unique zero-bit word $n=0$ and
+the product is empty.  The unshifted identities read $1=1$, while the affine identities
+read $\exp(a)=\exp(a)$.
+\end{theorem}
+
+\begin{proof}
+The four identities are, in order, the Lean declarations
+\lean{sum_range_two_pow_binaryWeight_cexp},
+\lean{sum_range_two_pow_binaryWeight_cexp_affine},
+\lean{sum_range_two_pow_thueMorseSign_cexp}, and
+\lean{sum_range_two_pow_thueMorseSign_cexp_affine} in
+\path{ThueMorseComplexExponential.lean}.  Conceptually, the binary expansion of
+$n<2^m$ identifies $n$ with a subset of $\{0,\ldots,m-1\}$; multiplying the independent
+choices produces \eqref{repeated2:eq:weighted-complex-block}.  The affine identity factors
+out $\exp(a)$, and the two signed identities replace the Hamming-weight marker by the
+Thue--Morse sign.
+\end{proof}
+
+\begin{boxedremark}
+\textbf{Exact formal boundary.}
+These are finite identities valid at every complex argument, so they require no convergence
+or reality hypothesis.  The cited declarations are the raw exponential layer; the complex
+half-angle conversion and total sinc and negative-Laplace prefixes, including their removable
+origins, are separately formal in \path{ThueMorseComplexProductBridge.lean}.  Neither finite
+module proves an infinite product or exponential-generating-function convergence statement,
+nor do they cover a parity word with position-dependent digit weights.
+\end{boxedremark}
+
 Multiplication by $1-z$ takes first differences of the coefficient sequence:
 \begin{equation}
  B_n(z)=\sum_{j=0}^{2^n}\Delta\tau_n(j)z^j.
@@ -8712,6 +8765,7 @@ Module & Role in the present article \\
 \path{DyadicClosedForm.lean} & Exact Thue--Morse/even-moment formula for arbitrary dyadic numerators. \\
 \path{HalfQBinomial.lean} & Finite $q$-Pochhammer and Gaussian-binomial calculus at $q=1/2$, including the interpolation annihilation row. \\
 \path{ThueMorseExponential.lean} & Complete-block exponential factorization, Prouhet cancellation, and translation of inner powers. \\
+\path{ThueMorseComplexExponential.lean} & Weighted and signed finite complex-exponential block transforms, including arbitrary affine shifts and the empty block. \\
 \path{FabiusQBinomialFormula.lean} & Centered and translated finite $q$-binomial formulas, arbitrary numerators, common-translation invariance, and invariance under equal rational dyadic representations. \\
 \path{FabiusQBinomialTaylor.lean} & Identification of the finite $q$ expression with the Taylor reduction polynomial. \\
 \path{FabiusQBinomialScalarFormula.lean} and \path{FabiusDyadicQBinomialScalar.lean} & Scalar normalizations, real/complex translated forms, and the constant-polynomial coefficient theorem. \\
