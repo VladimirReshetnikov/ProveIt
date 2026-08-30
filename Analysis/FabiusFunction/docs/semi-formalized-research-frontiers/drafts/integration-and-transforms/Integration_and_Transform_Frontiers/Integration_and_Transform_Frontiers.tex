@@ -237,8 +237,16 @@ clamped \path{IccExtend} versions internally.  The exact Fabius specialization i
 \path{Fabius.intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv}, and taking
 both absolutely-continuous factors to be the identity gives
 \path{Fabius.intervalIntegral_fabiusReal_add_fabiusInv_eq_one}.
+For every proper compact cut \(y\in[a,b]\), the generic restricted identity is
+\path{Fabius.intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_to_of_lt_iff_lt};
+its exact Fabius wrapper is
+\path{Fabius.intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv_to}.
+The identity-function specialization at an inverse endpoint is
+\path{Fabius.intervalIntegral_fabiusInv_to_eq_mul_sub_intervalIntegral_fabiusReal}.
+These are the other three public theorems of \path{InversePairIntegral.lean}, for six in
+total.
 
-This inverse-layer-cake update does \emph{not} by itself claim incomplete identities at a variable upper endpoint,
+This inverse-layer-cake update does \emph{not} claim reversed-endpoint identities,
 improper extensions through singular endpoints, higher inverse primitives, a
 fractional-order semigroup for merely interval-integrable inputs or noncomplete targets,
 Fabius-specific Riemann--Liouville formulas beyond the all-real-endpoint positive-order
@@ -742,10 +750,10 @@ finite polynomial and natural-monomial commutators, the global signed Fabius
 ladder, and the bounded formulas on the full range \(x\leq1\).  The infinite
 complex-power series, Mellin consequences, remaining report-specific fractional formulas
 (including iterated, weighted, and complex-order formulas), global exterior pieces,
-Rvachev folds, and the partial, higher-order, or fractional inverse-function formulas
-remain research-frontier material.  The separate
-full-interval weighted inverse layer-cake identity and the complete proper-compact
-absolutely-continuous inverse-pair identity are covered by the current consolidated
+Rvachev folds, and the improper-singular, higher-order, or fractional inverse-function
+formulas remain research-frontier material.  The separate full-interval weighted inverse
+layer-cake identity and the complete and variable-upper proper-compact
+absolutely-continuous inverse-pair identities are covered by the current consolidated
 status note.
 \end{abstract}
 
@@ -935,11 +943,12 @@ hierarchy-weighted fractional monomials, dyadic-lattice or endpoint-\(\Up\) wrap
 \(x>1\) branches of the bounded global piecewise formula, folded/exterior Rvachev primitives
 other than the exported causal primitive, explicit exterior tail expansions or Fourier
 renormalization, or the
-partial, higher-order, and fractional inverse-Fabius primitives or inverse asymptotics developed below.
-The separate full-interval weighted inverse layer-cake theorem and complete
-proper-compact absolutely-continuous inverse-pair theorem recorded in the consolidated
-status box have since crossed the frontier; the stronger partial, higher-order,
-fractional, and asymptotic claims just listed have not.
+improper-singular, higher-order, and fractional inverse-Fabius primitives or inverse
+asymptotics developed below.  The separate full-interval weighted inverse layer-cake
+theorem and complete and variable-upper proper-compact absolutely-continuous inverse-pair
+theorems recorded in the consolidated status box have since crossed the frontier; the
+stronger improper-singular, higher-order, fractional, and asymptotic claims just listed
+have not.
 
 \subsection{What ``closed form'' means here}
 The repository proves strong non-elementarity statements for \(F\), \(\Up\),
@@ -2684,11 +2693,11 @@ snapshot-relative source-document comparisons.  The later Lean modules listed
 in the status crosswalk now formalize the integer Volterra core together with
 generic affine transport, local basepoint shifts, and positive-order open-tail
 Taylor jets.  Those generic declarations do not supply explicit Fabius/up
-coefficients or piecewise assembly; the complex-power, Mellin, folded, partial or higher
-inverse, exterior-piecewise, and remaining report-specific fractional claims remain
-outside that formalized core.  The complete proper-compact absolutely-continuous
-inverse-pair identity is now
-formalized separately in \path{InversePairIntegral.lean}.
+coefficients or piecewise assembly; the complex-power, Mellin, folded, improper-singular
+or higher inverse, exterior-piecewise, and remaining report-specific fractional claims
+remain outside that formalized core.  The complete and variable-upper proper-compact
+absolutely-continuous inverse-pair identities are now formalized separately in
+\path{InversePairIntegral.lean}.
 
 \section{Exact initial values and sample antiderivatives}
 
@@ -6613,10 +6622,11 @@ tails for \(0\le q<1\), and, for \(0<q<1\), both conditioning integrals, an expl
 Radon--Nikodym density with compact support, and \(C^\infty\) regularity.  At \(q=1/2\),
 the CDF and density are identified on all of \(\R\) with the bounded Fabius function and
 the affine Rvachev up-function.  This does not formalize the report's
-variable-upper-endpoint or improper-singular inverse-pair extensions, fractional-power,
+improper-singular inverse-pair extensions, fractional-power,
 complex-Mellin, Fourier-product, moment, shape, higher-derivative-wrapper, or fixed-point
 uniqueness consequences.  A still later module, \path{InversePairIntegral.lean}, does
-formalize the complete proper-compact absolutely-continuous inverse-pair identity.
+formalize the complete and variable-upper proper-compact absolutely-continuous inverse-pair
+identities.
 
 Here ``new'' means absent from the recursively audited LaTeX corpus of the referenced
 ProveIt directory at the time of writing.  It is not a claim of worldwide priority.
@@ -6725,8 +6735,14 @@ its normalized corollary, and its Fabius wrapper are formal as well.  Moreover,
 arbitrary ordered compact source and level intervals.  It requires no measurability
 hypothesis on either clock: interval preservation and the strict-order adjunction force
 monotonicity, after which the proof uses measurable clamped \path{IccExtend} versions.
-Thus the proper full-interval instance of \cref{p4:thm:AB} has crossed the frontier; its
-variable-upper-endpoint and improper-singular extensions have not.
+Its proper compact variable-upper companion is
+\path{Fabius.intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_to_of_lt_iff_lt}, with exact
+Fabius wrapper
+\path{Fabius.intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv_to}.
+Thus both proper-compact formulas in \cref{p4:thm:AB} have crossed the frontier; its
+improper-singular extension has not.  The identity specialization of the variable-upper
+wrapper is
+\path{Fabius.intervalIntegral_fabiusInv_to_eq_mul_sub_intervalIntegral_fabiusReal}.
 \end{statusbox}
 
 \begin{resultbox}[Results not found in the audited corpus]
@@ -6737,9 +6753,9 @@ function; the negative-moment recurrence, periodic limiting profile, and constan
 \(C_*\) in \cref{p4:thm:negative-recurrence,p4:thm:phase-limit}; the fractional duality of
 \cref{p4:thm:fractional-duality}; beta and resolvent transforms; and the sinc-product
 Gini formula in \cref{p4:thm:gini-sinc}.
-This is a snapshot-relative corpus claim: the proper full-interval absolutely-continuous
-case of \cref{p4:thm:AB} is now a proved Lean declaration, while its incomplete and
-improper extensions remain part of this frontier package.
+This is a snapshot-relative corpus claim: both proper-compact absolutely-continuous formulas
+of \cref{p4:thm:AB} are now proved Lean declarations, while the improper-singular
+extension remains part of this frontier package.
 \end{resultbox}
 
 \subsection{Conventions}
@@ -7104,8 +7120,15 @@ their monotonicity on the closed intervals and uses measurable clamped
 \nolinkurl{Fabius.intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv},
 so \cref{p4:eq:AB-complete} is machine checked exactly.  The identity-factor corollary
 \nolinkurl{Fabius.intervalIntegral_fabiusReal_add_fabiusInv_eq_one} is the corresponding
-area sum.  The theorem below as a whole remains a frontier claim only because it also
-asserts the variable-\(z\) formula and improper extensions through singular endpoints.
+area sum.  The proper compact variable-upper theorem
+\nolinkurl{Fabius.intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_to_of_lt_iff_lt}
+has exact Fabius wrapper
+\nolinkurl{Fabius.intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv_to},
+so \cref{p4:eq:AB-incomplete} is machine checked exactly as well.  Taking both factors to
+be the identity at an inverse endpoint gives
+\nolinkurl{Fabius.intervalIntegral_fabiusInv_to_eq_mul_sub_intervalIntegral_fabiusReal}.
+The theorem below as a whole remains a frontier claim only because it also asserts
+improper extensions through singular endpoints.
 \end{statusbox}
 
 \begin{theorem}[two-function inverse-pair identity]\label{p4:thm:AB}
@@ -8496,9 +8519,9 @@ coefficients is a natural extension.
 
 The most accessible Lean targets are:
 \begin{enumerate}
-\item package the remaining variable-upper-endpoint and improper-singular forms of
-      \cref{p4:thm:AB}; its complete proper-compact absolutely-continuous form is already
-      formal in greater interval-theoretic generality;
+\item package the remaining improper-singular form of \cref{p4:thm:AB}; its complete and
+      variable-upper proper-compact absolutely-continuous forms are already formal in
+      greater interval-theoretic generality;
 \item the power identity \cref{p4:eq:power-complete} and its polynomial corollaries;
 \item the positive and negative moment recurrences;
 \item positivity, monotonicity, and convergence of \(C_r\);
@@ -8572,8 +8595,8 @@ normalization.
 
 The next decisive steps are to determine whether the phase profile is exactly constant,
 to connect its Fourier modes with the spectral corrections already present in endpoint
-asymptotics, and to formalize the remaining variable-upper-endpoint and improper-singular
-inverse-pair scope, complex-order and iterated/lattice fractional identities, fractional
+asymptotics, and to formalize the remaining improper-singular inverse-pair scope,
+complex-order and iterated/lattice fractional identities, fractional
 derivatives, remaining hierarchy-weighted and endpoint-wrapper fractional identities, and
 moment recurrences.
 The reusable integer-order Volterra layer and its exact Fabius specialization are already
@@ -10887,12 +10910,17 @@ For every integrable weight \(w\), Fubini gives
 This identity is formalized exactly for every interval-integrable real weight as
 \path{Fabius.intervalIntegral_mul_fabiusInv_eq} in
 \path{InverseLayerCake.lean}.  The theorem is a full-\([0,1]\) identity; it does not
-package the variable-upper-endpoint, repeated, or fractional inverse primitives elsewhere
-in this volume.  The complementary two-function absolutely-continuous identity on proper
-compact intervals is now formalized, without measurability assumptions on either clock,
-as \path{Fabius.intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_of_lt_iff_lt} in
-\path{InversePairIntegral.lean}; its exact Fabius wrapper is
-\path{Fabius.intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv}.
+by itself package the repeated or fractional inverse primitives elsewhere in this volume.
+The complementary complete and variable-upper two-function absolutely-continuous identities
+on proper compact intervals are now formalized, without measurability assumptions on either
+clock, as
+\path{Fabius.intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_of_lt_iff_lt} and
+\path{Fabius.intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_to_of_lt_iff_lt} in
+\path{InversePairIntegral.lean}; their exact Fabius wrappers are
+\path{Fabius.intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv} and
+\path{Fabius.intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv_to}, and the
+partial inverse-area specialization is
+\path{Fabius.intervalIntegral_fabiusInv_to_eq_mul_sub_intervalIntegral_fabiusReal}.
 With \(w(y)=y^n\),
 \begin{equation}
  \int_0^1y^nI(y)\dd y
@@ -14400,15 +14428,21 @@ The support-free quantile pushforward and its Banach-valued substitution
 corollary are formalized in \path{QuantileTransport.lean}.  The survival and inverse
 layer-cake kernels are formalized in \path{SurvivalLayerCake.lean} and
 \path{InverseLayerCake.lean}.  Finally, \path{InversePairIntegral.lean} proves the
-complete proper-compact absolutely-continuous inverse-pair formula on arbitrary ordered
-source and level intervals, deriving monotonicity and measurable clamped extensions from
-the strict-order adjunction rather than assuming either clock measurable.  Beyond the
+complete and variable-upper proper-compact absolutely-continuous inverse-pair formulas on
+arbitrary ordered source and level intervals, deriving monotonicity and measurable clamped
+extensions from the strict-order adjunction rather than assuming either clock measurable.
+The variable-upper generic and Fabius declarations are
+\path{Fabius.intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_to_of_lt_iff_lt} and
+\path{Fabius.intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv_to}; the partial
+inverse-area specialization is
+\path{Fabius.intervalIntegral_fabiusInv_to_eq_mul_sub_intervalIntegral_fabiusReal}.  Beyond the
 causal primitive declarations and the single positive-real \(\Up\) order shift based at
 \(-1\), named iterated, explicit exterior-tail, endpoint-\(\Up\), refinement, reflected,
 and piecewise support-tail formulas,
-variable-upper-endpoint and higher inverse primitives, complex-power or Mellin
+higher inverse primitives, complex-power or Mellin
 continuation, fractional derivatives, iterated/lattice and endpoint-\(\Up\) wrappers, and
-wrappers not literally exported by these modules remain frontier material.
+wrappers not literally exported by these modules remain frontier material; reversed
+endpoints and improper singular endpoints are not covered by the proper-compact tranche.
 \end{statusbox}
 
 
@@ -14903,8 +14937,12 @@ directly from inverse reflection.  The proper-compact two-function theorem
 \path{InversePairIntegral.lean} also specializes, with both factors equal to the identity,
 to the exact area-sum corollary
 \path{Fabius.intervalIntegral_fabiusReal_add_fabiusInv_eq_one}.
-The variable-\(u\) identity \eqref{p8:eq:inverse-area} itself is not packaged by that
-full-interval declaration and remains outside the present exact Lean crosswalk.
+The variable-\(u\) identity \eqref{p8:eq:inverse-area} is exactly
+\path{Fabius.intervalIntegral_fabiusInv_to_eq_mul_sub_intervalIntegral_fabiusReal}; it is
+the identity-function specialization of
+\path{Fabius.intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv_to}, whose
+generic proper-compact parent is
+\path{Fabius.intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_to_of_lt_iff_lt}.
 
 \begin{proof}
 The rectangle \([0,\QF(u)]\times[0,u]\) is partitioned, up to the graph, into
@@ -14956,9 +14994,10 @@ interval-integrable Banach-valued kernel and writes \(\Psi\) explicitly as its p
 \(\Psi(0)=0\), its derivative is continuous on \([0,1]\), and the derivative identity
 holds pointwise there.  Both allow real or complex scalar weights and Banach-valued
 primitives.  The arbitrary-AC theorem does not extend that primitive codomain: it is
-real-valued.  Nor does this tranche export reversed-endpoint, variable-upper-endpoint,
-improper-singular, higher- or fractional-inverse, or named Fourier, Laplace, or Mellin
-corollaries.
+real-valued.  The separate \path{InversePairIntegral.lean} tranche exports the proper
+compact variable-upper identity just crosswalked above.  Neither tranche exports
+reversed-endpoint, improper-singular, higher- or fractional-inverse, or named Fourier,
+Laplace, or Mellin corollaries.
 \end{statusbox}
 
 \begin{proof}
@@ -16012,7 +16051,8 @@ signature.  The strict adjunction supplies a Galois connection, so all three gen
 interfaces now derive clock measurability internally.  The complete proper-compact
 two-function identity is additionally discharged for arbitrary real-valued absolutely
 continuous factors by \path{InversePairIntegral.lean}, with clock measurability derived
-internally.  Complex-valued arbitrary-AC primitives, reversed or variable endpoints,
+internally.  Its variable-upper proper-compact companion and exact Fabius specialization
+are discharged there as well.  Complex-valued arbitrary-AC primitives, reversed endpoints,
 improper singular endpoints, higher and fractional inverse primitives, and the report's
 named transform consequences remain outside this kernel tranche.
 \end{statusbox}
@@ -18684,15 +18724,20 @@ The clocks need only preserve their respective intervals and obey
 \(C(x)<u\Longleftrightarrow x<Q(u)\).  There is no measurability assumption on either
 clock: the order adjunction forces monotonicity on both closed intervals, and the Lean
 proof constructs measurable clamped \texttt{IccExtend} versions internally.
+The proper compact variable-upper theorem is
+\nolinkurl{Fabius.intervalIntegral_deriv_mul_comp_add_comp_mul_deriv_to_of_lt_iff_lt}.
 
 The exact unit-interval Fabius wrapper is
 \nolinkurl{Fabius.intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv},
 which is precisely \cref{p10:eq:AB-complete}.  With both absolutely-continuous factors
 equal to the identity, it yields the named area-sum corollary
-\nolinkurl{Fabius.intervalIntegral_fabiusReal_add_fabiusInv_eq_one}.  The bundled theorem
-below remains only partially formalized: its variable-\(z\) identity and its improper
-extensions through singular endpoints are not supplied by these proper-compact
-declarations.
+\nolinkurl{Fabius.intervalIntegral_fabiusReal_add_fabiusInv_eq_one}.  The exact
+variable-upper Fabius wrapper is
+\nolinkurl{Fabius.intervalIntegral_deriv_mul_fabiusReal_add_fabiusInv_mul_deriv_to},
+which is precisely \cref{p10:eq:AB-incomplete}; its identity-function specialization is
+\nolinkurl{Fabius.intervalIntegral_fabiusInv_to_eq_mul_sub_intervalIntegral_fabiusReal}.
+The bundled theorem below remains only partially formalized because its improper
+extensions through singular endpoints are not supplied by these proper-compact declarations.
 \end{statusbox}
 
 \begin{theorem}[two-function inverse-pair identity]\label{p10:thm:AB}
@@ -20634,11 +20679,12 @@ coefficients is a natural extension.
 
 The most accessible Lean targets are:
 \begin{enumerate}
-\item package the remaining variable-upper-endpoint and improper-singular scope of
+\item package the remaining improper-singular scope of
       \cref{p10:thm:AB}; measure-level quantile transport, the measurable-free
       Galois/explicit-primitive/pointwise-\(C^1\) layer-cake core, the arbitrary-\(L^1\)
-      weight and real-valued absolutely-continuous-primitive wrapper, and the complete
-      proper-compact two-function absolutely-continuous identity are already formal;
+      weight and real-valued absolutely-continuous-primitive wrapper, and the complete and
+      variable-upper proper-compact two-function absolutely-continuous identities are
+      already formal;
 \item the power identity \cref{p10:eq:power-complete} and its polynomial corollaries;
 \item the positive and negative moment recurrences;
 \item positivity, monotonicity, and convergence of \(C_r\);
@@ -20751,8 +20797,8 @@ the dyadic smoothing law, with exponentially fast normalization.
 
 The next decisive steps are to determine whether the phase profile is exactly constant,
 to connect its Fourier modes with the spectral corrections already present in endpoint
-asymptotics, and to formalize the remaining variable-upper-endpoint and improper-singular
-inverse-pair scope and the moment recurrences.  These directions
+asymptotics, and to formalize the remaining improper-singular inverse-pair scope and the
+moment recurrences.  These directions
 are sufficiently concrete to support both high-precision experiments and Lean proofs.
 
 \appendix
