@@ -1,13 +1,28 @@
 # Representations
 
-New standalone intake member:
-[`Fabius_Stein_Koopman_Frontier_Report/`](Fabius_Stein_Koopman_Frontier_Report/),
-*Dyadic Stein--Koopman and q-Oscillator Calculus for the Fabius--Rvachev
-Law* (32 pp), arrived on 2026-08-30 with all 20 payload checksums verified.
-Its Appell eigenmodes, transfer determinants, q-Weyl calculus, Stein and
-Poisson operators, martingales, nonreversibility certificate, scalar Stein
-kernel, and endpoint asymptotics extend the operator-representation theme.
-It remains standalone pending claim-by-claim Lean crosswalk and deliberate
+New standalone intake members:
+
+- [`Fabius_Rvachev_New_Frontiers-2/`](Fabius_Rvachev_New_Frontiers-2/),
+  *Fabius--Rvachev New Frontiers* (35 pp), arrived on 2026-08-30 from a
+  rootless archive with all 15 arrival payload checksums verified. The
+  normalized 20-entry package adds five PNG companions, embeds them to avoid
+  the vector plots' Type 3 fonts, and has a three-pass A4/Libertinus rebuild.
+  Its native up-law
+  orthogonal polynomials, Jacobi and Christoffel reconstruction, rational
+  limits and products for pi, Gauss--Pade structure, and Legendre--Gaunt
+  determinants extend the moment, transform, and representation theme. It is
+  distinct from the homonymous historical report already absorbed into
+  `Frontier_Compilations/`. Its original novelty screen overstated the gap:
+  the pinned representation frontier already contained the Nevai-limit,
+  J-fraction, Hankel, and Gauss--Padé program.
+- [`Fabius_Stein_Koopman_Frontier_Report/`](Fabius_Stein_Koopman_Frontier_Report/),
+  *Dyadic Stein--Koopman and q-Oscillator Calculus for the Fabius--Rvachev
+  Law* (32 pp), arrived on 2026-08-30 with all 20 payload checksums verified.
+  Its Appell eigenmodes, transfer determinants, q-Weyl calculus, Stein and
+  Poisson operators, martingales, nonreversibility certificate, scalar Stein
+  kernel, and endpoint asymptotics extend the operator-representation theme.
+
+Both remain standalone pending claim-by-claim Lean crosswalk and deliberate
 consolidation; paper theorem labels do not by themselves assert Lean status.
 
 Series and orthogonal-expansion representations of the up-function,
