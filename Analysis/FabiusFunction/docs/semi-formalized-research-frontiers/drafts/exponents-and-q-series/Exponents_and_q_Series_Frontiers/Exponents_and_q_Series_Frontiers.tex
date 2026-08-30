@@ -4640,6 +4640,62 @@ Vandermonde theorems state the monograph's single convolution for every
 \(k\in\Z\), including \(\lvert k\rvert>N\), both on the natural support and
 as a literal finite-support sum over \(\Z\).
 
+The finite Cauchy companion is also complete.
+\path{QBinomialCauchy.lean} has exactly one public definition and four public
+theorems.  Its primary and reflected identities are
+\begin{align*}
+ (uv;q)_n
+ &=\sum_{k=0}^{n}{n\brack k}_q (u;q)_k v^k(v;q)_{n-k},\\
+ &=\sum_{k=0}^{n}{n\brack k}_q (v;q)_k v^{n-k}(u;q)_{n-k},
+\end{align*}
+namely \lean{Fabius.finite_qCauchy_identity} and
+\lean{Fabius.finite_qCauchy_identity_reflected}.  The definition
+\lean{Fabius.qBernsteinBasis} is
+\(B^{(q)}_{n,k}(x)={n\brack k}_q x^k(x;q)_{n-k}\), and
+\lean{Fabius.sum_qBernsteinBasis} proves
+\(\sum_{k=0}^{n}B^{(q)}_{n,k}(x)=1\).  Finally,
+\lean{Fabius.finite_qCauchy_second_identity} proves
+\[
+ (ac;q)_n(bc;q)_n
+ =\sum_{k=0}^{n}{n\brack k}_q
+ (a;q)_k(b;q)_k c^k(c;q)_{n-k}(abcq^k;q)_{n-k}.
+\]
+All parameters and degrees are arbitrary over every commutative ring.  These
+are polynomial identities at \(q=0\), roots of unity, in positive
+characteristic, and with zero divisors; no division or cancellation is used.
+
+The symmetric-function companion has an equally explicit boundary.
+\path{SymmetricFunctionOrthogonality.lean} has exactly one public definition,
+\lean{Fabius.elementarySymmetricEval}, and the six public theorems
+\lean{Fabius.elementarySymmetricEval_eq_eval_esymm},
+\lean{Fabius.elementarySymmetricEval_zero},
+\lean{Fabius.elementarySymmetricEval_comp_equiv},
+\lean{Fabius.elementarySymmetricEval_option_succ},
+\lean{Fabius.elementarySymmetricEval_fin_succ}, and
+\lean{Fabius.sum_elementarySymmetricEval_mul_completeHomogeneousEval}.
+Human-readably, the first three identify the evaluator with Mathlib's
+universal elementary symmetric polynomial, prove \(e_0=1\), and prove
+reindexing invariance.  The next two give the adjoining-variable recurrence
+\[
+ e_{r+1}(x,a)=x e_r(a)+e_{r+1}(a)
+\]
+on both an \texttt{Option} family and a literal head--tail \texttt{Fin}
+family.  Together with the existing
+\lean{Fabius.completeHomogeneousEval_option_succ}, which states
+\[
+ h_{r+1}(x,a)=x h_r(x,a)+h_{r+1}(a),
+\]
+this proves both weighted-Pascal laws over every commutative semiring.  The
+last theorem proves, over every commutative ring,
+\[
+ \sum_{k=0}^{n}(-1)^k e_k(a)h_{n-k}(a)
+ =\begin{cases}1,&n=0,\\0,&n>0,
+ \end{cases}
+\]
+for every finite family, including the empty family and degree zero.  It does
+not supply a general weighted-inversion theorem, and the finite second Cauchy
+identity does not supply a \(q\)-Pfaff--Saalsch\"utz summation.
+
 The finite inversion layer is now formalized without denominators as well.
 \path{BitPositionQBinomial.lean} supplies the zero-based subset theorem
 \lean{Fabius.sum_pow_sum_powersetCard_eq_gaussianBinomial} and the literal

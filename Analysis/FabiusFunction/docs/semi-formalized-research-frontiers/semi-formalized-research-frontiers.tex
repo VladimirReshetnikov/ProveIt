@@ -481,6 +481,23 @@ Generic finite-measure Cauchy calculus &
 \nolinkurl{measureCauchyPower_succ_of_uniformAffineFixedPoint},
 \nolinkurl{hasDerivAt_measureCauchyTransform_of_uniformAffineFixedPoint} &
 \nolinkurl{MeasureCauchyTransform.lean} \\
+Generic bounded-measure centered moment/Laurent calculus
+(one definition, fifteen theorems) &
+\nolinkurl{measureCauchyMoment}, \nolinkurl{inv_sub_eq_sum_range_add},
+\nolinkurl{measureCauchyMoment_zero}, \nolinkurl{measurable_inv_sub_rclike},
+\nolinkurl{integrable_centered_pow_div_sub_of_ae_norm_sub_le},
+\nolinkurl{integrable_inv_sub_of_ae_norm_sub_le},
+\nolinkurl{norm_measureCauchyMoment_le},
+\nolinkurl{integral_inv_sub_eq_sum_range_measureCauchyMoment_add},
+\nolinkurl{norm_integral_inv_sub_sub_sum_range_measureCauchyMoment_le},
+\nolinkurl{summable_measureCauchyMoment_laurent},
+\nolinkurl{integral_inv_sub_eq_tsum_measureCauchyMoment},
+\nolinkurl{hasSum_measureCauchyMoment_laurent},
+\nolinkurl{measureCauchyTransform_eq_sum_range_measureCauchyMoment_add},
+\nolinkurl{norm_measureCauchyTransform_sub_sum_range_measureCauchyMoment_le},
+\nolinkurl{measureCauchyTransform_eq_tsum_measureCauchyMoment},
+\nolinkurl{hasSum_measureCauchyTransform_measureCauchyMoment_laurent} &
+\nolinkurl{MeasureCauchyMomentLaurent.lean} \\
 Geometric-uniform Cauchy hierarchy &
 \nolinkurl{geometricUniformStieltjesDomain},
 \nolinkurl{geometricUniformStieltjesTransform},
@@ -511,6 +528,20 @@ Canonical Cauchy--Stieltjes powers and refinement &
 \nolinkurl{hasDerivAt_fabiusStieltjesTransform_refinement},
 \nolinkurl{fabiusStieltjesPower_succ}, \nolinkurl{rvachevCauchyPower_succ} &
 \nolinkurl{CauchyTransform.lean} \\
+Radius-one, center-zero up-measure Laurent specialization &
+\nolinkurl{ae_norm_sub_zero_le_one_rvachevMeasure},
+\nolinkurl{measureCauchyMoment_rvachevMeasure_zero},
+\nolinkurl{integral_inv_sub_eq_sum_upMoment_add},
+\nolinkurl{abs_integral_inv_sub_sub_sum_le},
+\nolinkurl{integral_inv_sub_eq_tsum_upMoment},
+\nolinkurl{hasSum_upMoment_laurent},
+\nolinkurl{integral_inv_sub_complex_eq_sum_upMoment_add},
+\nolinkurl{norm_integral_inv_sub_complex_sub_sum_le},
+\nolinkurl{integral_inv_sub_complex_eq_tsum_upMoment},
+\nolinkurl{hasSum_upMoment_laurent_complex},
+\nolinkurl{rvachevCauchyTransform_eq_tsum_upMoment} &
+\nolinkurl{StieltjesMomentLaurent.lean},
+\nolinkurl{StieltjesCauchyTransform.lean} \\
 Weighted survival, lower-CDF, fractional, and inverse layer cake &
 \nolinkurl{integral_smul_setIntegral_subgraph},
 \nolinkurl{integral_smul_setIntegral_supergraph},
@@ -746,7 +777,8 @@ a longer proof-oriented or frontier discussion here: principally
 \path{InversePairIntegral.lean}, \path{FinitePowerSeriesFilter.lean}, and
 \path{GeometricPowerSeriesFilter.lean}, together with
 \path{AnalyticSeriesFilter.lean}, \path{ThueMorseComplexProductBridge.lean},
-\path{MeasureCauchyTransform.lean}, \path{GeometricUniformCauchy.lean},
+\path{MeasureCauchyTransform.lean}, \path{MeasureCauchyMomentLaurent.lean},
+\path{GeometricUniformCauchy.lean},
 \path{CauchyTransform.lean}, \path{CauchyCDF.lean},
 \path{CauchySurvival.lean}, \path{CauchyHigherPowers.lean}, and
 \path{CauchyRenormalization.lean}, together with the real logarithmic and
@@ -3420,12 +3452,17 @@ representatives derived from interval preservation and the strict order equivale
 Fabius wrappers, the full area sum, and the partial inverse-area identity; six public
 theorems in total;
 \cref{integration:sec:survival-fubini}.\\
-\path{MeasureCauchyTransform.lean}, \path{GeometricUniformCauchy.lean},
+\path{MeasureCauchyTransform.lean}, \path{MeasureCauchyMomentLaurent.lean},
+\path{GeometricUniformCauchy.lean},
 \path{CauchyTransform.lean}, \path{CauchyCDF.lean},
 \path{CauchySurvival.lean}, \path{CauchyHigherPowers.lean},
 \path{CauchyRenormalization.lean} &
-The generic finite-measure affine Cauchy calculus; the exact-support geometric-
-\(q\) transform DDE and adjacent-power hierarchy for every nonzero \(|q|<1\), including
+The generic finite-measure affine Cauchy calculus; the arbitrary-center
+\(\mathrm{RCLike}\) moment/Laurent expansion under an almost-everywhere radius-\(R\) ball
+and \(R<\lVert z-c\rVert\), with exact remainder, finite-mass geometric bound,
+\path{Summable}/\path{tsum}/\path{HasSum} forms, and complex named-transform wrappers;
+the exact-support geometric-\(q\) transform DDE and adjacent-power hierarchy for every
+nonzero \(|q|<1\), including
 negative ratios; the canonical unit/centered all-power bridge, named unit Stieltjes DDE,
 and both complex-slit adjacent-order recurrences; atom-exact CDF and survival integration by
 parts at every positive kernel power; and the centered DDE and all-order finite
@@ -3437,7 +3474,10 @@ normalization or topological/measurability assumptions on their invariant carrie
 \path{StieltjesInversion.lean}, \path{StieltjesPerron.lean},
 \path{OrthogonalPolynomialJacobi.lean} &
 The real logarithmic fixed point and integer hierarchy for \(z>1\), real order lowering for
-\(\alpha>1\), real and complex exterior all-moment Laurent expansions, finite-height
+\(\alpha>1\), the radius-one center-zero up-measure Laurent specialization through
+\nolinkurl{ae_norm_sub_zero_le_one_rvachevMeasure} and
+\nolinkurl{measureCauchyMoment_rvachevMeasure_zero}, its retained real and complex
+exterior \nolinkurl{upMoment} expansions, finite-height
 Herglotz--Poisson formulas, integrated interval Stieltjes--Perron inversion, and initial
 exact Jacobi data.  No complex logarithmic continuation, complex order, pointwise or
 nontangential Sokhotski--Plemelj/Hilbert-principal-value formula, or complete
@@ -3691,11 +3731,13 @@ that half-line integral with the Self-Reconstruction report's unscaled
 $\prod_{j\ge0}\sinc^2(\pi\xi/2^j)$ formula and its $1/(2\pi)$-scaled sine-quotient formula
 indexed from one.
 
-At compiled source checkpoint \texttt{1f9ce6fd9}, the Rvachev moment--Appell concordance is
-\path{RvachevMomentAppell.lean}.  Its five public definitions are
+Starting from compiled source checkpoint \texttt{1f9ce6fd9} and including the focused-build
+extension, the Rvachev moment--Appell concordance is
+\path{RvachevMomentAppell.lean}.  Its six public definitions are
 \lean{rvachevRawMomentRat}, \lean{rvachevReciprocalMomentRat},
 \lean{rvachevAppellPolynomialRat}, \lean{rvachevAppellPolynomial}, and
-\lean{rvachevDeconvolvedPolynomial}.  Its sixteen public theorems are
+\lean{rvachevDeconvolvedPolynomial}, together with
+\lean{rvachevDeconvolutionLinearMap}.  Its twenty-two public theorems are
 \lean{rvachevRawMomentRat_zero}, \lean{rvachevRawMomentRat_even},
 \lean{rvachevRawMomentRat_odd}, \lean{rvachevReciprocalMomentRat_zero},
 \lean{binomialConv_rvachevRawMomentRat_reciprocal},
@@ -3708,12 +3750,20 @@ At compiled source checkpoint \texttt{1f9ce6fd9}, the Rvachev moment--Appell con
 \lean{eval_rvachevAppellPolynomial_add},
 \lean{integral_pow_mul_rvachev_eq_rvachevRawMomentRat_cast},
 \lean{integral_eval_rvachevAppellPolynomial_add_mul_rvachev},
+\lean{rvachevDeconvolutionLinearMap_apply},
+\lean{rvachevDeconvolvedPolynomial_zero},
+\lean{rvachevDeconvolvedPolynomial_add},
+\lean{rvachevDeconvolvedPolynomial_smul},
+\lean{rvachevDeconvolvedPolynomial_finsetSum},
+\lean{rvachevDeconvolvedPolynomial_C_mul},
 \lean{natDegree_rvachevDeconvolvedPolynomial_le}, and
 \lean{integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev}.  They package the full
 rational raw-moment sequence, its formal binomial-convolution reciprocal and complete-Bell
 description, rational and real monic Appell families of exact degree, and coefficientwise
-polynomial deconvolution whose degree does not increase and whose Rvachev smoothing recovers
-the original polynomial.  This reciprocal-moment Appell family is not the dyadic
+polynomial deconvolution as a real linear map preserving zero, addition, scalar
+multiplication, finite sums, and constant-polynomial multiplication; its degree does not
+increase and Rvachev smoothing recovers the original polynomial.  This reciprocal-moment
+Appell family is not the dyadic
 $\operatorname{App}_n$ family fixed in the global notation convention above.
 
 At compiled source checkpoint \texttt{c51a41fcf},
@@ -3740,13 +3790,39 @@ synthesis to mesh $2^d$, then to $4^n$ for the even mode, identify each literal 
 translate block with the existing polynomial block on $[-1,1]$, and prove both its complete
 orthogonality and the expanded finite atom-Gram identity.
 
-These APIs do not prove minimality or sharpness of the displayed mesh, an analytic
+The focused-build \path{FabiusLegendreTranslateSeries.lean} exports four public definitions:
+\lean{rvachevLegendrePartialSumDeconvolutionPolynomial},
+\lean{rvachevLegendrePartialSumAtomCoefficient},
+\lean{rvachevLegendrePartialSumTranslateBlock}, and
+\lean{rvachevLegendreTranslateBlockOnInterval}.  Its sixteen public theorems are
+\lean{summable_norm_rvachevLegendreTranslateBlock},
+\lean{summable_rvachevLegendreTranslateBlock},
+\lean{hasSum_rvachevLegendreTranslateBlock},
+\lean{tsum_rvachevLegendreTranslateBlock},
+\lean{rvachevLegendrePartialSumDeconvolutionPolynomial_eq_sum},
+\lean{rvachevLegendrePartialSumAtomCoefficient_eq_sum},
+\lean{eval_rvachevLegendrePartialSumPolynomial_eq_tsum_rvachevUp},
+\lean{eval_rvachevLegendrePartialSumPolynomial_eq_sum_rvachevUp},
+\lean{rvachevLegendrePartialSumTranslateBlock_eq_eval_partialSumPolynomial},
+\lean{rvachevLegendrePartialSumTranslateBlock_eq_sum_translateBlock},
+\lean{rvachevLegendreTranslateBlockOnInterval_apply},
+\lean{rvachevLegendreTranslateBlockOnInterval_eq_smul},
+\lean{summable_norm_rvachevLegendreTranslateBlockOnInterval},
+\lean{summable_rvachevLegendreTranslateBlockOnInterval},
+\lean{hasSum_rvachevLegendreTranslateBlock_uniform}, and
+\lean{tsum_rvachevLegendreTranslateBlock_uniform}.  They close the literal outer
+translate-block series with pointwise and supremum-norm absolute summability and pointwise
+and uniform \texttt{HasSum}/\texttt{tsum} forms.  They also identify
+$C_N=\mathcal D_{\Up}S_N$ with the finite sum of deconvolved modes, expand its common-mesh
+coefficients, prove global and finite synthesis at mesh $4^N$, and identify the resulting
+function with both the polynomial partial sum and the sum of the separately scaled blocks.
+
+These APIs still do not prove minimality or sharpness of the displayed mesh, an analytic
 reciprocal-MGF or Appell generating-series identity, a literal differential-series
 realization of deconvolution, the displayed low reciprocal coefficients, parity or the
 displayed closed formulas for the deconvolved Legendre family, rationality of the atom rows,
-a named outer translate-block \texttt{HasSum},
-the fixed-scale partial-sum identity, or the later refinement, projector, and asymptotic
-layers.
+equality of the fixed-scale and separately scaled coefficient vectors, exact degree for every
+partial sum, or the later refinement, projector, and asymptotic layers.
 
 \subsection{Notation crosswalk}
 \label{integration:app:notation}

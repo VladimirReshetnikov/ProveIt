@@ -21,30 +21,15 @@ in the real program.
 
 set_option autoImplicit false
 
-open MeasureTheory spectrum
+open MeasureTheory
 
 namespace Fabius
 
-private theorem neg_resolvent_eq_inv_sub' (z : ℂ) (x : ℝ) :
-    -resolvent z x = (z - (x : ℂ))⁻¹ := by
-  rw [resolvent, Ring.inverse_eq_inv]
-  rw [← inv_neg]
-  congr 1
-  simp only [Complex.coe_algebraMap, sub_eq_add_neg, neg_add_rev,
-    neg_neg]
-
-/-- Measurability of the complex Cauchy kernel, through the corpus's
-resolvent route. -/
+/-- Measurability of the complex Cauchy kernel, specialized from the generic
+real-or-complex kernel theorem. -/
 theorem measurable_inv_sub_complex (z : ℂ) :
     Measurable fun x : ℝ => (z - (x : ℂ))⁻¹ := by
-  have hmeas : Measurable (-resolvent z) :=
-    (MeasureTheory.measurable_resolvent (𝕜 := ℝ) (A := ℂ)
-      (a := z)).neg
-  have heq : -resolvent z = fun x : ℝ => (z - (x : ℂ))⁻¹ := by
-    funext x
-    exact neg_resolvent_eq_inv_sub' z x
-  rw [← heq]
-  exact hmeas
+  exact measurable_inv_sub_rclike z
 
 /-- Off the closed unit disc the complex Cauchy kernel is integrable:
 it is bounded by `(‖z‖-1)⁻¹` almost everywhere. -/
@@ -52,17 +37,15 @@ theorem integrable_inv_sub_complex_rvachevMeasure (F : BoundedFabius)
     (hF : IsFabius F) {z : ℂ} (hz : 1 < ‖z‖) :
     Integrable (fun x : ℝ => (z - x)⁻¹) (rvachevMeasure F) := by
   haveI := rvachevMeasure_isProbability F hF
-  refine Integrable.mono' (integrable_const ((‖z‖ - 1)⁻¹))
-    ((measurable_inv_sub_complex z).aestronglyMeasurable) ?_
-  filter_upwards [ae_mem_Ioo_rvachevMeasure F hF] with x hx
-  have hxabs : ‖(x : ℂ)‖ ≤ 1 := by
-    rw [Complex.norm_real, Real.norm_eq_abs]
-    exact le_of_lt (abs_lt.mpr ⟨hx.1, hx.2⟩)
-  have hle : ‖z‖ - 1 ≤ ‖z - x‖ := by
-    have h := norm_sub_norm_le z ((x : ℝ) : ℂ)
-    linarith
-  rw [norm_inv, inv_eq_one_div, inv_eq_one_div]
-  exact one_div_le_one_div_of_le (by linarith) hle
+  have hball : ∀ᵐ x : ℝ ∂(rvachevMeasure F),
+      ‖(x : ℂ) - (0 : ℂ)‖ ≤ 1 := by
+    exact ae_norm_sub_zero_le_one_rvachevMeasure (𝕜 := ℂ) F hF
+  have hz' : (1 : ℝ) < ‖z - (0 : ℂ)‖ := by
+    simpa only [sub_zero] using hz
+  simpa using
+    (integrable_inv_sub_of_ae_norm_sub_le
+      (𝕜 := ℂ) (rvachevMeasure F) (c := 0) (R := 1)
+      (by norm_num) hball hz')
 
 /-- The complex remainder kernel is likewise integrable. -/
 theorem integrable_pow_div_sub_complex_rvachevMeasure
@@ -71,24 +54,15 @@ theorem integrable_pow_div_sub_complex_rvachevMeasure
     Integrable (fun x : ℝ => (x : ℂ) ^ N / (z - x))
       (rvachevMeasure F) := by
   haveI := rvachevMeasure_isProbability F hF
-  refine Integrable.mono' (integrable_const ((‖z‖ - 1)⁻¹))
-    ((((Complex.continuous_ofReal.measurable.pow_const
-        N).aestronglyMeasurable).mul
-      ((measurable_inv_sub_complex z).aestronglyMeasurable)).congr
-      (Filter.Eventually.of_forall fun x =>
-        (div_eq_mul_inv _ _).symm)) ?_
-  filter_upwards [ae_mem_Ioo_rvachevMeasure F hF] with x hx
-  have hxabs : ‖(x : ℂ)‖ ≤ 1 := by
-    rw [Complex.norm_real, Real.norm_eq_abs]
-    exact le_of_lt (abs_lt.mpr ⟨hx.1, hx.2⟩)
-  have hle : ‖z‖ - 1 ≤ ‖z - x‖ := by
-    have h := norm_sub_norm_le z ((x : ℝ) : ℂ)
-    linarith
-  have hpow : ‖(x : ℂ) ^ N‖ ≤ 1 := by
-    rw [norm_pow]
-    exact pow_le_one₀ (norm_nonneg _) hxabs
-  rw [norm_div, inv_eq_one_div]
-  exact div_le_div₀ (by norm_num) hpow (by linarith) hle
+  have hball : ∀ᵐ x : ℝ ∂(rvachevMeasure F),
+      ‖(x : ℂ) - (0 : ℂ)‖ ≤ 1 := by
+    exact ae_norm_sub_zero_le_one_rvachevMeasure (𝕜 := ℂ) F hF
+  have hz' : (1 : ℝ) < ‖z - (0 : ℂ)‖ := by
+    simpa only [sub_zero] using hz
+  simpa using
+    (integrable_centered_pow_div_sub_of_ae_norm_sub_le
+      (𝕜 := ℂ) (rvachevMeasure F) (c := 0) (R := 1)
+      (by norm_num) hball hz' N)
 
 /-- **The complex moment/Laurent expansion with exact remainder**:
 `∫ (z-x)⁻¹ dμ_up = ∑_{k<N} m_k/z^{k+1} + z^{-N}·∫ x^N/(z-x) dμ_up`

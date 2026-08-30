@@ -1,10 +1,12 @@
 import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.CompleteHomogeneousGenerating
 import FabiusFunction.CompleteHomogeneousAsymptotics
+import FabiusFunction.SymmetricFunctionOrthogonality
 import FabiusFunction.FiniteQBinomialCore
 import FabiusFunction.QBinomialInversion
 import FabiusFunction.QBinomialTransform
 import FabiusFunction.QBinomialVandermonde
+import FabiusFunction.QBinomialCauchy
 import FabiusFunction.GaussianBinomialAtOne
 import FabiusFunction.GeometricCompleteHomogeneous
 import FabiusFunction.GeometricLagrange
@@ -184,6 +186,8 @@ import FabiusFunction.GeometricUniformDictionary
 import FabiusFunction.GeometricSincFactorization
 import FabiusFunction.DyadicCombTrapezoid
 import FabiusFunction.IncompleteBetaMaster
+import FabiusFunction.MeasureCauchyTransform
+import FabiusFunction.MeasureCauchyMomentLaurent
 import FabiusFunction.MomentHankelMatrix
 import FabiusFunction.MomentHankelValues
 import FabiusFunction.StieltjesMomentLaurent
@@ -327,6 +331,7 @@ import FabiusFunction.FabiusLegendreEnergy
 import FabiusFunction.FabiusLegendreRationalEnergy
 import FabiusFunction.FabiusSquareEnergyFourier
 import FabiusFunction.FabiusLegendreTranslateBlocks
+import FabiusFunction.FabiusLegendreTranslateSeries
 import FabiusFunction.FabiusBinaryReductionSeries
 import FabiusFunction.FabiusComputability
 import FabiusFunction.Monotonicity
@@ -379,7 +384,6 @@ import FabiusFunction.KappaConstantEnclosures
 import FabiusFunction.MeasureRefinement
 import FabiusFunction.UniformDigitThueMorseBridge
 import FabiusFunction.RandomSeriesLaw
-import FabiusFunction.MeasureCauchyTransform
 import FabiusFunction.GeometricUniformCauchy
 import FabiusFunction.CauchyTransform
 import FabiusFunction.CauchyCDF
