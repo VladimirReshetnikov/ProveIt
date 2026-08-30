@@ -14,22 +14,28 @@ New standalone intake members:
   rather than a new Thue--Morse atlas member.  The `n = 1` case and the
   inverse/non-elementarity infrastructure already exist in Lean; the
   `n ≥ 2` theorem appears genuinely new and remains unformalized.  The report
-  has 14 nonconjectural labelled results and three conjecture environments,
-  but two of those labels are quarantined rather than live conjectures.  The
-  proposed Taylor-series “trichotomy” is not exclusive as written: at an
-  interior dyadic point for `n = 1`, the finite Taylor polynomial has positive
-  radius and still does not represent the function locally, so it satisfies
-  both classes (ii) and (iii); class (iii) must exclude eventually-zero
-  polynomial series.  The tie-cancellation label is already discharged by
-  the canonical quarter derivative and quarter/three-quarter value facts,
-  together with the report's own binary-transition lemma.  Its source map
-  says `StrictMonotonicity.lean`, but the live module is `Monotonicity.lean`;
-  moreover, the delivered floating-point/FFT diagnostic does not support the
-  manuscript's separate claim of symbolic verification.  A deeper
-  claim-by-claim review is pending.  All 19
-  clean A4 PDF pages were rendered during intake, while the experiment, TeX,
-  and Lean were not run.  Manuscript proof labels do not establish Lean
-  status.
+  has 14 nonconjectural labelled results and three conjecture environments.
+  A hostile
+  post-intake proof pass found no fatal gap and made three proof-exposition
+  repairs: an explicit uniform estimate in the weighted-defect decay, the
+  correct neighborhood for the outer function in the two-spine lemma, and an
+  empty-union-safe definition of the `n = 1` tie set.  It also corrected the
+  landing source map's nonexistent `StrictMonotonicity.lean` to the live
+  `Monotonicity.lean`.  Three direct `pdflatex` passes then rebuilt a clean
+  19-page PDF, and every page was rendered again.  The shipped command also
+  reproduced all six numerical outputs byte-for-byte in a recovered,
+  fully-pinned Ubuntu/Python environment.  The companion
+  [`REPOSITORY_AUDIT.md`](fabius_iterates_nowhere_analytic/REPOSITORY_AUDIT.md)
+  records that environment, the output hashes, the cross-platform drift, and
+  the remaining reproducibility limitations.  Two conjecture labels are
+  quarantined rather than treated as open: the proposed Taylor-series
+  “trichotomy” is nonexclusive at an `n = 1` interior dyadic point unless its
+  third class excludes eventually-zero polynomial series, while the
+  tie-cancellation statement follows from the canonical quarter-point facts
+  and the report's own binary-transition lemma.  The floating-point/FFT
+  diagnostic also does not substantiate the manuscript's separate claim of
+  symbolic verification.  None of the manuscript or numerical labels elevate
+  a result to Lean status.
 - [`Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/`](Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/),
   *Shape, Divisibility, and Stein Geometry of the Fabius--Rvachev Law*
   (50 pp), arrived on 2026-08-30 with all 14 submitted payload checksums
@@ -61,7 +67,8 @@ New standalone intake members:
   Libertinus prose, incomplete PDF metadata, and Type-3 plot fonts remain
   explicit post-intake normalization work.
 - [`Fabius_Rvachev_New_Frontiers-2/`](Fabius_Rvachev_New_Frontiers-2/),
-  *Fabius--Rvachev New Frontiers* (35 pp), arrived on 2026-08-30 from a
+  *Fabius--Rvachev New Frontiers* (36 pp; 2539 source lines), arrived on
+  2026-08-30 from a
   rootless archive with all 15 payload checksums verified. Its native up-law
   orthogonal polynomials, Jacobi and Christoffel reconstruction, rational
   limits and products for pi, Gauss--Pade structure, and Legendre--Gaunt
@@ -75,12 +82,12 @@ New standalone intake members:
   Poisson operators, martingales, nonreversibility certificate, scalar Stein
   kernel, and endpoint asymptotics extend the operator-representation theme.
 
-All four remain standalone pending claim-by-claim Lean crosswalk and deliberate
+All five remain standalone pending claim-by-claim Lean crosswalk and deliberate
 consolidation; paper theorem labels do not by themselves assert Lean status.
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
-[`Representation_Frontiers/`](Representation_Frontiers/) (298 pp,
+[`Representation_Frontiers/`](Representation_Frontiers/) (299 pp;
 eight parts):
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform

@@ -10091,6 +10091,50 @@ In particular, the unit-interval equation
 \(S'(z)=4(S(2z)-S(2z-1))\) and both adjacent-order recurrences on their complex slit
 domains are now direct named results, not merely informal consequences of affine transport.
 
+The finite orthogonal-polynomial layer now has an exact all-degree rational form.
+\path{GramStieltjesNaturality.lean} has no public definitions and exactly six public
+theorems:
+\lean{momentPairing_map},
+\lean{map_gramStieltjesNumerator},
+\lean{map_gramStieltjesPolynomial},
+\lean{map_gramStieltjesNorm},
+\lean{map_gramStieltjesJacobiDiagonal}, and
+\lean{map_gramStieltjesJacobiSubdiagonal}.
+The pairing and fraction-free statements work over their commutative-semiring and
+commutative-ring boundaries; normalization, norms, and Jacobi quotients use fields.
+They assert finite scalar naturality, not positivity or analytic convergence.
+
+\path{RvachevRationalJacobi.lean} has four public definitions:
+\lean{rvachevHankelDetRat},
+\lean{rvachevOrthoPolynomialRat},
+\lean{rvachevOrthoNormRat}, and
+\lean{rvachevJacobiSubdiagonalRat}.
+Its thirteen public theorems are
+\lean{upMoment_eq_rvachevRawMomentRat_cast},
+\lean{rvachevHankelDetRat_cast},
+\lean{rvachevHankelDetRat_pos},
+\lean{rvachevOrthoPolynomialRat_cast},
+\lean{rvachevOrthoPolynomialRat_isMonicOfDegree},
+\lean{momentPairing_rvachevOrthoPolynomialRat_eq_zero},
+\lean{rvachevOrthoNormRat_cast},
+\lean{rvachevOrthoNormRat_pos},
+\lean{gramStieltjesJacobiDiagonal_rvachevRawMomentRat_eq_zero},
+\lean{rvachevJacobiSubdiagonalRat_cast},
+\lean{rvachevJacobiSubdiagonalRat_pos},
+\lean{rvachevJacobiSubdiagonalRat_eq_det_ratio}, and
+\lean{rvachevOrthoPolynomialRat_three_term}.
+Thus every up-law moment, Hankel determinant, monic orthogonal polynomial, squared norm,
+and Jacobi subdiagonal has an exact rational witness; the determinant, norm, and
+subdiagonal witnesses are positive, the diagonal vanishes, and the rational polynomials
+satisfy the centered three-term recurrence in every degree.  The convention is zero-based:
+\lean{rvachevJacobiSubdiagonalRat}\((n)\) is the usual coefficient \(\beta_{n+1}\), so
+\[
+ \pi_{n+2}(X)=X\pi_{n+1}(X)-\beta_{n+1}\pi_n(X).
+\]
+These four rational definitions are noncomputable finite-algebra objects, not native-code
+evaluators.  In particular, this layer proves all-degree rationality but does not evaluate
+the report's displayed \(H_4\) or \(\beta_4\) fractions.
+
 This closure does not supply a complex logarithmic fixed point, complex order,
 pointwise or nontangential Sokhotski--Plemelj limits, a principal-value Hilbert-transform
 identity, or the full Jacobi/Pad\'e theory.  Separate current modules do prove the real
@@ -10165,6 +10209,7 @@ renormalization, Laurent/Herglotz/inversion layers, initial Jacobi data, and fin
 \path{StieltjesMomentLaurent.lean}, \path{StieltjesCauchyTransform.lean},
 \path{StieltjesHerglotz.lean}, \path{StieltjesInversion.lean},
 \path{StieltjesPerron.lean}, \path{OrthogonalPolynomialJacobi.lean},
+\path{GramStieltjesNaturality.lean}, \path{RvachevRationalJacobi.lean},
 \path{EarlyApproximants.lean},
 \path{EarlyMeasureBridge.lean}, \path{WeakConvergence.lean},
 \path{ProbabilityLaplaceMoments.lean}, \path{LaplaceMoments.lean},
