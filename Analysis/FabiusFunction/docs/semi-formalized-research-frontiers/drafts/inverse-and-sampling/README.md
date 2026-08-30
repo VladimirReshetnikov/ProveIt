@@ -14,6 +14,20 @@ New standalone intake members:
   It remains standalone pending post-publication assessment and a Lean
   crosswalk; manuscript labels do not establish Lean verification.
 
+- [`geometric_comb_q_fabius_report/`](geometric_comb_q_fabius_report/),
+  *Geometric-Comb Interpolation, Gaussian Pascal Transforms, and the
+  Fabius--Rvachev Boundary Layer* (65 pp, book class, 3455 source lines),
+  arrived on 2026-08-30 from `geometric_comb_q_fabius_report.zip` (outer
+  SHA-256
+  `d7a84fdad1cc0e98f3e2d9d6e6a101cdae2a070a190a957cd15d761ec765a54c`;
+  1,133,010 bytes).  All 16 submitted non-ledger payload hashes verified;
+  two CSV entries were refreshed after CRLF-to-LF normalization.  The package
+  records repository snapshot `e5175d5eb78d66f4e31db3bc506541b9bae12c57`
+  and remains standalone pending post-publication comparison with the sibling
+  report, reproducibility assessment, and a Lean crosswalk.  This quick intake
+  performed no claim review or experiment rerun; manuscript labels do not
+  establish Lean verification.
+
 - [`Inverse_Fabius_Computability_Report/`](Inverse_Fabius_Computability_Report/),
   *Computability of the Inverse Fabius Function* (29 pp), arrived on
   2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (outer SHA-256
