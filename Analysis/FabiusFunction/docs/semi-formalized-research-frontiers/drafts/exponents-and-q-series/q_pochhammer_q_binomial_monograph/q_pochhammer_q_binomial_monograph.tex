@@ -4,6 +4,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,mathtools,amsthm}
 \usepackage{newtxtext,newtxmath}
+\usepackage[scaled=.94]{helvet}
 \usepackage[final]{microtype}
 \usepackage{geometry}
 \geometry{margin=1in,headheight=15pt}
@@ -148,6 +149,8 @@
 \newcommand{\angles}[1]{\left\langle#1\right\rangle}
 \newcommand{\defeq}{\mathrel{:=}}
 \newcommand{\qbase}{\;q}
+\newcommand{\lean}[1]{%
+  \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
 
 % ed.: status flags for the formalization register, \Cref{app:lean-status}.
 \definecolor{statusgreen}{RGB}{20,110,60}
@@ -1051,6 +1054,28 @@ Assume therefore $-N\le k\le N$ and set $r=N+k\in\set{0,\dots,2N}$.  \Cref{thm:q
 \]
 Substitute $\ell=N-j$.  Then $N+k-j=\ell+k$, so the exponent becomes $\ell(\ell+k)=\ell^2+\ell k$; the symmetry $\qbinom N{N-\ell}=\qbinom N\ell$ of \Cref{thm:qbinom-structure}\,(i) turns the first Gaussian coefficient into $\qbinom N\ell$, and the second is $\qbinom N{\ell+k}$.  This is \eqref{eq:shifted-central-vandermonde}.
 \end{proof}
+
+\begin{remark}[Formal version]
+\sloppy
+\path{FiniteQBinomialCore.lean} defines the zero-extended integer coefficient
+\lean{Fabius.gaussianBinomialInt}; its cast, negative-index, above-row, and
+total-reflection laws are
+\lean{Fabius.gaussianBinomialInt_ofNat},
+\lean{Fabius.gaussianBinomialInt_eq_zero_of_neg},
+\lean{Fabius.gaussianBinomialInt_eq_zero_of_lt}, and
+\lean{Fabius.gaussianBinomialInt_symm}.
+\path{QBinomialVandermonde.lean} proves the signed formula first on the finite
+range \(0\le\ell\le N\) as
+\lean{Fabius.gaussianBinomial_two_mul_int_shifted_central}, and then literally
+over all \(\ell\in\Z\) as
+\lean{Fabius.gaussianBinomial_two_mul_int_shifted_central_finsum}.  The Lean
+power is written
+\(q^{\ell^{\natural}(\ell+k)^{\natural}}\), with
+\(t^{\natural}=\max(t,0)\); every possibly nonzero term has
+\(\ell,\ell+k\ge0\), so its exponent is exactly
+\(\ell(\ell+k)\).  Thus the formal theorem is total in \(k\), including
+\(\lvert k\rvert>N\), over every commutative semiring and at \(q=0\).
+\end{remark}
 
 \section{\texorpdfstring{$q$}{q}-binomial inversion}
 
@@ -11276,16 +11301,22 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 182 labelled results, 17 are \statusexact, 26 are \statuspartial,
-136 are \statusnone, and 3 are \statusna.
+Of the 183 labelled results, 21 are \statusexact, 26 are \statuspartial,
+133 are \statusnone, and 3 are \statusna.
 The formalized part is concentrated exactly where the Fabius development
 needed it: the finite Gaussian-coefficient core, the geometric Lagrange and
 filter calculus, half-base and Thue--Morse cancellation, and the geometric
-uniform law.  The classical analytic layer --- infinite products,
-nonterminating basic hypergeometric summation, Jacobi triple product,
-Bailey pairs --- is essentially untouched, and every infinite
-$q$-Pochhammer symbol in the development is still a finite product over a
-\texttt{Finset.range}.
+uniform law.  Most of the classical analytic layer --- nonterminating basic
+hypergeometric summation, Jacobi triple product, and Bailey pairs --- remains
+untouched.  The former claim that every infinite \(q\)-Pochhammer symbol in
+the development was a finite \texttt{Finset.range} product is now false:
+\texttt{LimitConditionNumber.qPochhammerInf} is the genuine real
+\(\prod'_{j\ge0}(1-aq^j)\); for \(0\le q<1\) the factors are multipliable for
+every real \(a\), the finite symbols converge to it, and the positive-factor
+specializations used for \((q;q)_\infty\) and \((-q;q)_\infty\) are strictly
+positive.  This real contractive-base product layer does not formalize the
+book's general complex analytic or basic-hypergeometric infinite-product
+theory.
 
 \section{By chapter}
 
@@ -11296,9 +11327,9 @@ Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
 The algebra of $q$-shifted factorials & 1 & 2 & 12 & 0\\
 $q$-integers and Gaussian coefficients & 1 & 2 & 5 & 0\\
-Finite $q$-binomial theorems and inversion & 1 & 1 & 7 & 0\\
+Finite $q$-binomial theorems and inversion & 4 & 1 & 5 & 0\\
 Weighted binomial coefficients and symmetric functions & 0 & 2 & 6 & 0\\
-Partitions, words, paths, and inversion statistics & 0 & 1 & 8 & 0\\
+Partitions, words, paths, and inversion statistics & 1 & 1 & 7 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 0 & 1 & 5 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
 The infinite $q$-binomial theorem & 0 & 0 & 5 & 0\\
@@ -11318,7 +11349,7 @@ Geometric interpolation and exact $q$-filters & 6 & 2 & 1 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 7 & 3 & 0\\
 \midrule
-\textbf{Total} & 17 & 26 & 136 & 3\\
+\textbf{Total} & 21 & 26 & 133 & 3\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -11370,8 +11401,18 @@ Result & Status & Lean counterpart\\
 \Cref{cor:alternating-qbinom} & \statuspartial & \texttt{halfQBinomial\_\allowbreak{}two\_\allowbreak{}pow\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}zero}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
 \Cref{cor:weighted-subsets} & \statusnone & ---\\[2pt]
 \Cref{thm:reciprocal-finite} & \statusnone & ---\\[2pt]
-\Cref{thm:q-vandermonde} & \statusnone & ---\\[2pt]
-\Cref{cor:central-vandermonde} & \statusnone & ---\\[2pt]
+\Cref{thm:q-vandermonde} & \statusexact &
+\texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}vandermonde},
+\texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}vandermonde'}\newline
+{\footnotesize\texttt{QBinomialVandermonde}}\\[2pt]
+\Cref{cor:central-vandermonde} & \statusexact &
+\texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}central}\newline
+{\footnotesize\texttt{QBinomialVandermonde}}\\[2pt]
+\Cref{cor:shifted-central-vandermonde} & \statusexact &
+\texttt{gaussianBinomial\_\allowbreak{}two\_\allowbreak{}mul\_\allowbreak{}int\_\allowbreak{}shifted\_\allowbreak{}central\_\allowbreak{}finsum}\newline
+{\footnotesize\texttt{QBinomialVandermonde}, using
+\texttt{gaussianBinomialInt} from \texttt{FiniteQBinomialCore}; total in
+\(k\in\Z\), with support contained in \(0\le\ell\le N\)}\\[2pt]
 \Cref{thm:qbinomial-inversion} & \statusnone & ---\\[2pt]
 \Cref{cor:qbinomial-orthogonality} & \statusnone & ---\\[2pt]
 \Cref{thm:q-cauchy} & \statusnone & ---\\[2pt]
@@ -11393,7 +11434,9 @@ Result & Status & Lean counterpart\\
 \Cref{thm:rectangle-partitions} & \statusnone & ---\\[2pt]
 \Cref{cor:partition-symmetries} & \statuspartial & \texttt{qBinomial\_\allowbreak{}symm}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
 \Cref{cor:path-area} & \statusnone & ---\\[2pt]
-\Cref{thm:durfee-qvand} & \statusnone & ---\\[2pt]
+\Cref{thm:durfee-qvand} & \statusexact &
+\texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}central\_\allowbreak{}min}\newline
+{\footnotesize\texttt{QBinomialVandermonde}}\\[2pt]
 \Cref{thm:qmult-inversions} & \statusnone & ---\\[2pt]
 \Cref{prop:rogers-szego-recurrence} & \statusnone & ---\\[2pt]
 \Cref{prop:rogers-szego-three-term} & \statusnone & ---\\[2pt]

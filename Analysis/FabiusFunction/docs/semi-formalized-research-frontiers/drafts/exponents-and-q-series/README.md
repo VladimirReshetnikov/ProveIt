@@ -9,9 +9,19 @@ ratio. The normalized geometric-Lagrange and analytic Lagrange layers additional
 assume injectivity of `j |-> q^j` on the finite node set (see the status boxes and
 crosswalk paragraphs inside the documents). `AnalyticSeriesFilter.lean` carries the core to exact
 diagonal and Gaussian-tail identities for unconditionally summable sampled
-series. Its hypotheses are sharp at zero-weight nodes, but it does not cover
-conditionally convergent boundary series, uniform estimates, signs or bounds,
-or the concrete sinc-product/Bell-series instantiation.
+series. Its hypotheses are sharp at zero-weight nodes. The current
+`AnalyticMoments.lean` and `RvachevQBinomialFilter.lean` close the actual
+infinite Rvachev-product specialization: for complex `c,z`, natural order `p`,
+and Gaussian base `q = c^2`, only injectivity of `j |-> q^j` on
+`range (p+1)` is assumed; `c = 1/2`, `q = 1/4` is assumption-free.
+This does not formalize the reports' finite prefixes `P_(b,n)`, their
+quotient or Bell coefficients, conditionally convergent boundary series, or
+the analytic signs, error bounds, uniform/derivative convergence, and
+asymptotics. `FiniteQBinomialCore.lean` zero-extends Gaussian lower indices
+to all integers and proves total row reflection. `QBinomialVandermonde.lean`
+separately proves both q-Vandermonde orientations, both central supports, the
+three natural shifted forms, and the monograph's single shifted-central
+identity for every integer shift, all over arbitrary commutative semirings.
 
 The documents also cross-reference the independent real fractional-Volterra
 layer. `FractionalVolterraCalculus.lean` proves positive affine covariance on
@@ -28,11 +38,11 @@ bounded Fabius function for `0 <= x <= 1`, and the Up-to-Fabius bridge for
 Complex orders, Caputo/Riemann--Liouville derivatives, weighted-monomial or iterated
 shifts, negative-branch, shifted-lattice, endpoint-moment, transform/tail,
 piecewise/refinement, and inverse/quantile formulas
-remain research frontiers. These API claims were checked at source checkpoint
+remain research frontiers. These fractional-Volterra API claims were checked at source checkpoint
 `149332f9d`.
 
 Member: `Exponents_and_q_Series_Frontiers`
-(225 pp, seven parts) — the
+(currently 226 pp, seven parts) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -249,7 +259,7 @@ matching `assets/` directories.
 `Signed_Reciprocal_q_Fabius_Frontiers/` were merged editorially as the
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
-Second member: `q_pochhammer_q_binomial_monograph/` (96 pp, book class) —
+Second member: `q_pochhammer_q_binomial_monograph/` (195 pp, book class) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
@@ -269,6 +279,17 @@ was audited on arrival (ten core theorems re-verified symbolically; the
 Chern–Dilcher–Jiu deleted-singularity identity and Ramanujan's ₁ψ₁
 verified numerically to 30 digits; one dominated-convergence majorant
 repaired with an `% ed.:` note).
+
+Its current formalization ledger has 183 labelled results: 21 exact, 26
+partial, 133 with no counterpart, and 3 interface-only. Both orientations
+of q-Vandermonde and both central-support presentations are exact in
+`QBinomialVandermonde.lean`; the monograph's single signed shifted-central
+formula is now exact for every integer shift through the zero-extended
+`gaussianBinomialInt`, both as a finite natural-range sum and literally as a
+finite-support `finsum` over all integers. The ledger also now records the
+genuine real infinite product `qPochhammerInf` and its contractive-base
+convergence/positivity layer, replacing the stale claim that every infinite
+q-Pochhammer in the development was merely a finite `Finset.range` product.
 
 The wave volumes' central probabilistic object — the normalized
 geometric-uniform law `Y_q = (1-q)·∑ qʲU_j`, with `q = 1/2` the
