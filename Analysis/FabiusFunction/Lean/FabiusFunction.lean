@@ -97,6 +97,7 @@ import FabiusFunction.ParityCharacter
 import FabiusFunction.ParityCharacterKernel
 import FabiusFunction.DigitCharacterCongruence
 import FabiusFunction.BinaryDigitFloor
+import FabiusFunction.RademacherSine
 import FabiusFunction.GeneralizedProuhetBlock
 import FabiusFunction.ProuhetBlockZeroOrder
 import FabiusFunction.BitPositionQBinomial
