@@ -11,6 +11,17 @@ consolidated volume, the report remains standalone until its genuinely new
 claims are isolated and the overlap is deliberately deduplicated.  Paper
 theorem labels do not by themselves assert Lean formalization.
 
+Second standalone intake member:
+[`q_pochhammer_q_binomial_expansions_report/`](q_pochhammer_q_binomial_expansions_report/),
+*Local, Boundary, and Reciprocal Expansions of q-Analogues* (56 pp), arrived
+on 2026-08-30 with all five submitted payload checksums verified.  It extends
+the q-Pochhammer reference monograph with regular- and resonant-center jets,
+the limits at `q = 0`, `q = -1`, and infinity, cyclotomic jets, q-gamma and
+modular asymptotics, hypergeometric operator expansions, and double scaling.
+It remains separate pending a claim-by-claim comparison with the 201-page
+monograph and the Lean q-algebra; manuscript theorem labels and exact
+numerical checks are evidence to audit, not Lean proof status.
+
 Generalizations of the dyadic construction to arbitrary exponent
 sequences and the q-series calculus that organizes them: the
 exponent-sequence convolution monoid with its Newton-basis frontiers, and
