@@ -3394,7 +3394,11 @@ priority search over the entire literature has been completed.
 Every result labelled theorem, proposition, lemma, or corollary below has a proof
 in this report. The numerical tables are reproducible from
 \path{verify_frontier_results.py}.  The denominator-free finite
-\(q\)-binomial theorem is formalized in \path{FiniteQBinomialCore.lean}, while
+\(q\)-binomial theorem is formalized in \path{FiniteQBinomialCore.lean}.
+The exact elementary base-reversal, terminating-factor, and adjacent-ratio
+layer is in \path{QPochhammerElementaryIdentities.lean}, with root-safe
+cross-multiplied statements separated from field quotients carrying their
+explicit nonzero denominators.  Meanwhile,
 \path{GeometricLagrange.lean} proves mass one, cancellation of the first
 geometric modes, the first surviving moment, and module-valued Richardson
 exactness.  The already compiled \path{GeometricQBinomialLagrange.lean}
@@ -4643,6 +4647,34 @@ All nine are denominator-free commutative-semiring identities.
 Vandermonde theorems state the monograph's single convolution for every
 \(k\in\Z\), including \(\lvert k\rvert>N\), both on the natural support and
 as a literal finite-support sum over \(\Z\).
+
+\path{QPochhammerElementaryIdentities.lean} has exactly thirteen public
+theorems.  Its commutative-ring surface is
+\lean{Fabius.finiteQPochhammerIn_base_reversal_units},
+\lean{Fabius.finiteQPochhammerIn_inv_base_reversal_units},
+\lean{Fabius.prod_pow_sub_pow_eq_finiteQPochhammerIn},
+\lean{Fabius.one_sub_mul_gaussianBinomial_one},
+\lean{Fabius.gaussianBinomial_adjacent_mul}, and
+\lean{Fabius.gaussianBinomial_row_adjacent_mul}.  The first two use unit
+parameters; the remaining four are root-safe polynomial identities, so the
+terminating numerator and adjacent cross identities remain valid at roots of
+unity.  Both cross identities are total for all natural \(n,k\), including on
+and above the row boundary by zero extension.  Its field surface is
+\lean{Fabius.finiteQPochhammerIn_base_reversal},
+\lean{Fabius.finiteQPochhammerIn_inv_base_reversal},
+\lean{Fabius.pow_mul_finiteQPochhammerIn_inv_pow_eq},
+\lean{Fabius.finiteQPochhammerIn_inv_pow_eq_self_div},
+\lean{Fabius.finiteQPochhammerIn_inv_pow_eq_zero_of_lt},
+\lean{Fabius.gaussianBinomial_adjacent_div}, and
+\lean{Fabius.gaussianBinomial_row_adjacent_div}.  The numerical reversal
+theorems require exactly \(a\ne0\) and \(q\ne0\).  For \(k\le N\), the
+cleared terminating formula needs \(q\ne0\), while its displayed quotient
+also needs \((q;q)_{N-k}\ne0\); the \(k>N\) zero clause needs only \(q\ne0\).
+For \(k<n\), the first adjacent quotient assumes
+\({n\brack k}_q\ne0\) and \(1-q^{k+1}\ne0\), and the second assumes
+\({n-1\brack k}_q\ne0\) and \(1-q^{n-k}\ne0\).  Neither adjacent quotient
+requires \(q\ne0\); unlike the total cross identities, both quotients retain
+the strict triangular condition.
 
 The finite Cauchy companion is also complete.
 \path{QBinomialCauchy.lean} has exactly one public definition and four public

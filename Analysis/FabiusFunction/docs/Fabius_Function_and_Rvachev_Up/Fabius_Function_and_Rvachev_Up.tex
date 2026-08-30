@@ -5498,6 +5498,49 @@ including empty products, zero divisors, positive characteristic, \(q=0\), and
 roots of unity.  The final identity is the full denominator-free replacement
 for the usual quotient definition of a Gaussian coefficient.
 
+The companion \path{QPochhammerElementaryIdentities.lean} has exactly thirteen
+public theorems.  Its commutative-ring layer consists of the two unit-valued
+base reversals
+\lean{finiteQPochhammerIn_base_reversal_units} and
+\lean{finiteQPochhammerIn_inv_base_reversal_units}, the root-safe terminating
+numerator \lean{prod_pow_sub_pow_eq_finiteQPochhammerIn}, the first-column
+clearer \lean{one_sub_mul_gaussianBinomial_one}, and the two adjacent cross
+identities \lean{gaussianBinomial_adjacent_mul} and
+\lean{gaussianBinomial_row_adjacent_mul}.  In human notation these identities
+are
+\begin{align*}
+ \prod_{j<k}(q^N-q^j)
+   &=(-1)^kq^{\binom k2}(q^{N-k+1};q)_k \qquad(k\le N),\\
+ (1-q^{k+1}){n\brack k+1}_q
+   &=(1-q^{n-k}){n\brack k}_q,\\
+ (1-q^{n-k}){n\brack k}_q
+   &=(1-q^n){n-1\brack k}_q.
+\end{align*}
+These formulas remain valid at roots of unity; the first also permits zero
+divisors and \(q=0\), while the last two are total for all natural \(n,k\).
+On and above the row boundary, zero extension makes both sides of each
+adjacent identity vanish.
+
+The seven field declarations are
+\lean{finiteQPochhammerIn_base_reversal},
+\lean{finiteQPochhammerIn_inv_base_reversal},
+\lean{pow_mul_finiteQPochhammerIn_inv_pow_eq},
+\lean{finiteQPochhammerIn_inv_pow_eq_self_div},
+\lean{finiteQPochhammerIn_inv_pow_eq_zero_of_lt},
+\lean{gaussianBinomial_adjacent_div}, and
+\lean{gaussianBinomial_row_adjacent_div}.  Both numerical base-reversal
+orientations require exactly \(a\ne0\) and \(q\ne0\).  For \(k\le N\), the
+cleared terminating identity needs only \(q\ne0\); the quotient
+\[
+ (q^{-N};q)_k
+ =\frac{(-1)^kq^{\binom k2}(q;q)_N}
+        {q^{Nk}(q;q)_{N-k}}
+\]
+additionally requires \((q;q)_{N-k}\ne0\), while the vanishing for \(k>N\)
+again needs only \(q\ne0\).  For \(k<n\), the adjacent quotient corollaries
+require, respectively, \({n\brack k}_q\ne0\) and \(1-q^{k+1}\ne0\), or
+\({n-1\brack k}_q\ne0\) and \(1-q^{n-k}\ne0\); neither assumes \(q\ne0\).
+
 Over the rationals, \lean{finiteQPochhammerIn_rat_eq} identifies the generic product
 with the established finite \(q\)-Pochhammer notation.  At $q=1/2$,
 \lean{gaussianBinomial_half_eq_halfQBinomial} identifies the recursive coefficient
@@ -10045,6 +10088,7 @@ geometric moments, scalar-extension top-coefficient extraction, and exact
 Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
 \path{DyadicCorrectness.lean}, \path{FiniteQBinomialCore.lean},
+\path{QPochhammerElementaryIdentities.lean},
 \path{QBinomialVandermonde.lean}, \path{HalfQBinomial.lean},
 \path{QuarterCatalanGerm.lean}, \path{QuarterCatalanRichardson.lean},
 \path{FabiusDyadicQBinomialScalar.lean}, \path{FabiusQBinomialFormula.lean},

@@ -344,7 +344,7 @@ as it must be, since $(a;q)_N$ is a product of $N$ linear factors in $a$.  At th
 \end{remark}
 
 \begin{proposition}[Base reversal]\label{prop:base-reversal}
-For $n\ge0$ and $a\ne0$,
+For $n\ge0$ and nonzero $a,q$ in a field,
 \[
  (a;q)_n=(-a)^n q^{\binom n2}(a^{-1};q^{-1})_n.
 \]
@@ -363,7 +363,10 @@ Multiplying for $0\le j<n$ gives the factor
 \(
  (-a)^nq^{0+1+\cdots+(n-1)}=(-a)^nq^{\binom n2}.
 \)
-The remaining product is $(a^{-1};q^{-1})_n$.
+The remaining product is $(a^{-1};q^{-1})_n$.  The assumptions
+$a\ne0$ and $q\ne0$ are exactly what makes the two displayed inverses
+legitimate; equivalently one may formulate the same proof for unit parameters
+over a commutative ring.
 \end{proof}
 
 \section{Negative indices}
@@ -410,20 +413,28 @@ Taking the reciprocal proves the formula.  The extended concatenation identity f
 \end{proof}
 
 \begin{corollary}[A terminating factor]\label{cor:qminusN}
-If $0\le k\le N$, then
+Let $q$ be a nonzero element of a field.  If $0\le k\le N$ and
+$(q;q)_{N-k}\ne0$, then
 \[
  (q^{-N};q)_k=(-1)^kq^{-Nk+\binom k2}
  \frac{(q;q)_N}{(q;q)_{N-k}}.
 \]
-In particular, $(q^{-N};q)_k=0$ for $k>N$.
+Independently of that denominator condition, $(q^{-N};q)_k=0$ for $k>N$.
 \end{corollary}
 
 \begin{proof}
-Apply base reversal to $(q^{-N};q)_k$:
+The denominator-cleared identity
 \[
- (q^{-N};q)_k=(-1)^kq^{-Nk+\binom k2}(q^{N-k+1};q)_k.
+ q^{Nk}(q^{-N};q)_k
+ =(-1)^kq^{\binom k2}(q^{N-k+1};q)_k
 \]
-The last factor is $(q;q)_N/(q;q)_{N-k}$.  For $k>N$, the defining product contains the factor $1-q^0$.
+holds for $k\le N$ once $q\ne0$.  Concatenation gives
+\[
+ (q;q)_N=(q;q)_{N-k}(q^{N-k+1};q)_k.
+\]
+Division by the nonzero product $q^{Nk}(q;q)_{N-k}$ gives the displayed
+quotient.  For $k>N$, the defining product contains its index-$N$ factor
+$1-q^{-N}q^N=0$; here only $q\ne0$ is needed.
 \end{proof}
 
 \section{Partial fractions and logarithmic derivatives}
@@ -822,12 +833,14 @@ Positivity follows from \Cref{cor:positivity}.
 \section{Adjacent ratios and efficient recurrences}
 
 \begin{proposition}\label{prop:adjacent-ratio}
-For $0\le k<n$,
+Let $q$ lie in a field.  For $0\le k<n$, if
+$\qbinom nk\ne0$ and $1-q^{k+1}\ne0$, then
 \[
  \frac{\qbinom n{k+1}}{\qbinom nk}
  =\frac{1-q^{n-k}}{1-q^{k+1}}.
 \]
-For $0\le k\le n-1$,
+For the same range, if $\qbinom{n-1}k\ne0$ and
+$1-q^{n-k}\ne0$, then
 \[
  \frac{\qbinom n k}{\qbinom{n-1}k}
  =\frac{1-q^n}{1-q^{n-k}}.
@@ -835,10 +848,27 @@ For $0\le k\le n-1$,
 \end{proposition}
 
 \begin{proof}
-Cancel common factors in the product or factorial definitions.
+The denominator-free cross identities
+\[
+ (1-q^{k+1})\qbinom n{k+1}
+ =(1-q^{n-k})\qbinom nk
+\]
+and
+\[
+ (1-q^{n-k})\qbinom nk
+ =(1-q^n)\qbinom{n-1}k
+\]
+hold over every commutative ring and, by zero extension, are total in all
+natural \(n,k\): on and above the row boundary both sides vanish.  In the
+strict range \(k<n\), division over a field by the two explicitly assumed
+nonzero denominators in each line gives the stated ratios.
 \end{proof}
 
-These ratios are useful numerically, but near roots of unity they hide cancellations.  The polynomial recurrences of \Cref{thm:qpascal} are then preferable.
+These ratios are useful numerically, but at roots of unity their denominators
+may vanish and the quotients need not be defined.  The cross-multiplied
+identities in the proof and the polynomial recurrences of
+\Cref{thm:qpascal} remain valid there; unlike the quotients, the two cross
+identities also include the row boundary and every above-row index.
 
 \section{Coefficient moments}
 
@@ -2914,7 +2944,8 @@ by comparing the leading factors of the two degree-$n$ polynomials in $1/b$.
 
 \begin{lemma}[Reversal of a terminating ${}_2\phi_1$]\label{lem:2phi1-reversal}
 \index{basic hypergeometric series!reversal of a terminating sum}
-Let $n\in\N_0$ and let $a$, $c$, $z$ be nonzero with $(c;q)_n\ne0$ and $(q^{1-n}/a;q)_n\ne0$.  Then
+Let $n\in\N_0$, let $q\ne0$, and let $a$, $c$, $z$ be nonzero with
+$(c;q)_n\ne0$ and $(q^{1-n}/a;q)_n\ne0$.  Then
 \begin{equation}
  {}_2\phi_1\!\left[
  \begin{matrix}q^{-n},a\\c\end{matrix};q,z\right]
@@ -11495,7 +11526,7 @@ Name & Formula & Location\\
 Concatenation & $(a;q)_{m+n}=(a;q)_m(aq^m;q)_n$ & \Cref{prop:concat}\\[1pt]
 Dissection & $(a;q)_{rn}=\prod_{j=0}^{r-1}(aq^j;q^r)_n$ & \Cref{prop:dissection}\\[1pt]
 Dissection with remainder & $(a;q)_{rn+u}=\prod_{s<u}(aq^s;q^r)_{n+1}\prod_{s\ge u}(aq^s;q^r)_n$ & \Cref{cor:dissection-remainder}\\[1pt]
-Base reversal & $(a;q)_n=(-a)^nq^{\binom n2}(a^{-1}q^{1-n};q)_n$ & \Cref{prop:base-reversal}\\[1pt]
+Base reversal & $(a;q)_n=(-a)^nq^{\binom n2}(a^{-1}q^{1-n};q)_n$, \(aq\ne0\) & \Cref{prop:base-reversal}\\[1pt]
 Negative index & $(a;q)_{-n}=1/(aq^{-n};q)_n$ & \Cref{prop:negative-index}\\[1pt]
 Infinite logarithm & $\log(a;q)_\infty=-\sum_{r\ge1}a^r/(r(1-q^r))$ & \Cref{thm:lambert-log}\\[1pt]
 Gaussian product & $\qbinom nk=(q;q)_n/((q;q)_k(q;q)_{n-k})$ & \Cref{prop:qbinom-products}\\[1pt]
@@ -11686,8 +11717,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 183 labelled results, 31 are \statusexact, 25 are \statuspartial,
-124 are \statusnone, and 3 are \statusna.
+Of the 183 labelled results, 34 are \statusexact, 24 are \statuspartial,
+122 are \statusnone, and 3 are \statusna.
 The formalized part is concentrated exactly where the Fabius development
 needed it: the finite Gaussian-coefficient core, the geometric Lagrange and
 filter calculus, half-base and Thue--Morse cancellation, and the geometric
@@ -11703,7 +11734,13 @@ formal-series convergence.  Most of the classical analytic layer --- nonterminat
 hypergeometric summation, Jacobi triple product, Bailey inversion and the
 Bailey lemma, and the Rogers--Ramanujan identities --- remains untouched;
 the algebraic \(q\)-difference annihilation input to that chapter is now
-exact.  The former claim that every infinite \(q\)-Pochhammer symbol in
+exact.  The elementary base-reversal, terminating-factor, and adjacent-ratio
+claims are now exact as well: their field forms record \(a\ne0\), \(q\ne0\),
+and every displayed nonzero denominator, while their cleared and
+cross-multiplied polynomial forms remain valid at roots of unity; both
+adjacent cross identities are total in all natural indices by zero extension.
+The former
+claim that every infinite \(q\)-Pochhammer symbol in
 the development was a finite \texttt{Finset.range} product is now false:
 \texttt{LimitConditionNumber.qPochhammerInf} is the genuine real
 \(\prod'_{j\ge0}(1-aq^j)\); for \(0\le q<1\) the factors are multipliable for
@@ -11727,6 +11764,7 @@ declaration lists:
 \path{SymmetricFunctionGenerating.lean}: two definitions and six theorems;\\
 \path{QDifferenceAnnihilation.lean}: four theorems;\\
 \path{QBinomialInversionSpecializations.lean}: two definitions and four theorems;\\
+\path{QPochhammerElementaryIdentities.lean}: 13 theorems;\\
 \path{GeometricCompleteHomogeneous.lean}: six theorems;\\
 \path{GeometricLagrangeCompleteHomogeneous.lean}: five theorems;\\
 \path{GeometricLagrangeQMoments.lean}: one definition and 37 theorems;\\
@@ -11735,9 +11773,33 @@ declaration lists:
 \path{QuarterCatalanRichardson.lean}: three definitions and 15 theorems.
 \end{center}
 
-The added finite geometric \(q\)-layer has the following exhaustive public
-surface.
+The added finite \(q\)-algebra and geometric layers have the following
+exhaustive public surfaces.
 \begin{itemize}
+\item The 13 theorems of
+\path{QPochhammerElementaryIdentities.lean} are
+\path{Fabius.finiteQPochhammerIn_base_reversal_units},
+\path{Fabius.finiteQPochhammerIn_inv_base_reversal_units},
+\path{Fabius.finiteQPochhammerIn_base_reversal},
+\path{Fabius.finiteQPochhammerIn_inv_base_reversal},
+\path{Fabius.prod_pow_sub_pow_eq_finiteQPochhammerIn},
+\path{Fabius.pow_mul_finiteQPochhammerIn_inv_pow_eq},
+\path{Fabius.finiteQPochhammerIn_inv_pow_eq_self_div},
+\path{Fabius.finiteQPochhammerIn_inv_pow_eq_zero_of_lt},
+\path{Fabius.one_sub_mul_gaussianBinomial_one},
+\path{Fabius.gaussianBinomial_adjacent_mul},
+\path{Fabius.gaussianBinomial_row_adjacent_mul},
+\path{Fabius.gaussianBinomial_adjacent_div}, and
+\path{Fabius.gaussianBinomial_row_adjacent_div}.  The two unit reversals,
+the terminating numerator, the first-column clearer, and the adjacent cross
+identities are commutative-ring statements.  The field reversals require
+exactly \(a\ne0\) and \(q\ne0\); the cleared terminating formula and
+above-range zero clause require \(q\ne0\), and the terminating quotient also
+requires \((q;q)_{N-k}\ne0\).  The adjacent quotients require exactly their
+displayed Gaussian and linear-factor denominators, retain \(k<n\), and do not
+require \(q\ne0\); the two adjacent cross identities are total in all
+\(n,k\), including on and above the row boundary.
+
 \item The six theorems of \path{GeometricCompleteHomogeneous.lean} are
 \path{Fabius.completeHomogeneousEval_geometric},
 \path{Fabius.completeHomogeneousEval_scaled_geometric},
@@ -11872,8 +11934,8 @@ inferred from a related finite identity.
 \toprule
 Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
-The algebra of $q$-shifted factorials & 1 & 2 & 12 & 0\\
-$q$-integers and Gaussian coefficients & 1 & 2 & 5 & 0\\
+The algebra of $q$-shifted factorials & 3 & 1 & 11 & 0\\
+$q$-integers and Gaussian coefficients & 2 & 2 & 4 & 0\\
 Finite $q$-binomial theorems and inversion & 9 & 1 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 2 & 3 & 0\\
 Partitions, words, paths, and inversion statistics & 1 & 1 & 7 & 0\\
@@ -11896,7 +11958,7 @@ Geometric interpolation and exact $q$-filters & 6 & 2 & 1 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 7 & 3 & 0\\
 \midrule
-\textbf{Total} & 31 & 25 & 124 & 3\\
+\textbf{Total} & 34 & 24 & 122 & 3\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -11918,9 +11980,18 @@ Result & Status & Lean counterpart\\
 \Cref{prop:concat} & \statusexact & \texttt{finiteQPochhammerIn\_\allowbreak{}add}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
 \Cref{prop:dissection} & \statusnone & ---\\[2pt]
 \Cref{cor:dissection-remainder} & \statusnone & ---\\[2pt]
-\Cref{prop:base-reversal} & \statusnone & ---\\[2pt]
+\Cref{prop:base-reversal} & \statusexact &
+\texttt{finiteQPochhammerIn\_\allowbreak{}base\_\allowbreak{}reversal},
+\texttt{finiteQPochhammerIn\_\allowbreak{}inv\_\allowbreak{}base\_\allowbreak{}reversal}\newline
+{\footnotesize\texttt{QPochhammerElementaryIdentities}; field wrappers with
+\(a\ne0\), \(q\ne0\), strengthened by the two unit-valued ring forms}\\[2pt]
 \Cref{prop:negative-index} & \statusnone & ---\\[2pt]
-\Cref{cor:qminusN} & \statuspartial & \texttt{qPochhammer\_\allowbreak{}two\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}mersenne\_\allowbreak{}div}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
+\Cref{cor:qminusN} & \statusexact &
+\texttt{finiteQPochhammerIn\_\allowbreak{}inv\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}self\_\allowbreak{}div},
+\texttt{finiteQPochhammerIn\_\allowbreak{}inv\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}lt}\newline
+{\footnotesize\texttt{QPochhammerElementaryIdentities}; \(q\ne0\), with the
+quotient additionally assuming \((q;q)_{N-k}\ne0\); root-safe numerator and
+cleared forms are also exported}\\[2pt]
 \Cref{thm:partial-fraction} & \statusnone & ---\\[2pt]
 \Cref{prop:logder-finite} & \statusnone & ---\\[2pt]
 \Cref{thm:poch-entire} & \statusnone & ---\\[2pt]
@@ -11939,7 +12010,12 @@ Result & Status & Lean counterpart\\
 \Cref{thm:qbinom-structure} & \statuspartial & \texttt{gaussianBinomial\_\allowbreak{}symm}\newline{\footnotesize\texttt{FiniteQBinomialCore (HalfQBinomial)}}\\[2pt]
 \Cref{cor:qbinom-classical} & \statusnone & ---\\[2pt]
 \Cref{prop:qmult-factor} & \statusnone & ---\\[2pt]
-\Cref{prop:adjacent-ratio} & \statusnone & ---\\[2pt]
+\Cref{prop:adjacent-ratio} & \statusexact &
+\texttt{gaussianBinomial\_\allowbreak{}adjacent\_\allowbreak{}div},
+\texttt{gaussianBinomial\_\allowbreak{}row\_\allowbreak{}adjacent\_\allowbreak{}div}\newline
+{\footnotesize\texttt{QPochhammerElementaryIdentities}; exact displayed
+denominators and \(k<n\), with both root-safe cross-multiplied forms exported
+totally for all \(n,k\) by zero extension}\\[2pt]
 \Cref{thm:qbinom-moments} & \statusnone & ---\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Finite $q$-binomial theorems and inversion}\\

@@ -259,6 +259,29 @@ to all integers and proves total row reflection. `QBinomialVandermonde.lean`
 separately proves both q-Vandermonde orientations, both central supports, the
 three natural shifted forms, and the monograph's single shifted-central
 identity for every integer shift, all over arbitrary commutative semirings.
+`QPochhammerElementaryIdentities.lean` adds exactly 13 public theorems:
+`finiteQPochhammerIn_base_reversal_units`,
+`finiteQPochhammerIn_inv_base_reversal_units`,
+`finiteQPochhammerIn_base_reversal`,
+`finiteQPochhammerIn_inv_base_reversal`,
+`prod_pow_sub_pow_eq_finiteQPochhammerIn`,
+`pow_mul_finiteQPochhammerIn_inv_pow_eq`,
+`finiteQPochhammerIn_inv_pow_eq_self_div`,
+`finiteQPochhammerIn_inv_pow_eq_zero_of_lt`,
+`one_sub_mul_gaussianBinomial_one`,
+`gaussianBinomial_adjacent_mul`,
+`gaussianBinomial_row_adjacent_mul`,
+`gaussianBinomial_adjacent_div`, and
+`gaussianBinomial_row_adjacent_div`. The two unit reversals, the root-safe
+terminating numerator, the first-column clearer, and the two adjacent cross
+identities hold over commutative rings. The two cross identities are total in
+all `n,k`, including on and above the row boundary by zero extension. The
+field reversal wrappers assume
+exactly `a != 0` and `q != 0`; the cleared terminating formula and its
+above-range zero theorem assume `q != 0`, while the displayed terminating
+quotient also assumes `(q;q)_(N-k) != 0`. The adjacent quotient corollaries
+remain restricted to `k < n` and instead assume exactly their displayed Gaussian and linear-factor
+denominators are nonzero and do not require `q != 0`.
 
 The documents also cross-reference the independent real fractional-Volterra
 layer. `FractionalVolterraCalculus.lean` proves positive affine covariance on
@@ -279,7 +302,7 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 `149332f9d`.
 
 Member: `Exponents_and_q_Series_Frontiers`
-(currently 231 pp, seven parts) — the
+(currently 232 pp, seven parts) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -496,7 +519,7 @@ matching `assets/` directories.
 `Signed_Reciprocal_q_Fabius_Frontiers/` were merged editorially as the
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
-Second member: `q_pochhammer_q_binomial_monograph/` (207 pp, book class) —
+Second member: `q_pochhammer_q_binomial_monograph/` (209 pp, book class) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
@@ -517,8 +540,11 @@ Chern–Dilcher–Jiu deleted-singularity identity and Ramanujan's ₁ψ₁
 verified numerically to 30 digits; one dominated-convergence majorant
 repaired with an `% ed.:` note).
 
-Its current formalization ledger has 183 labelled results: 31 exact, 25
-partial, 124 with no counterpart, and 3 interface-only. The finite
+Its current formalization ledger has 183 labelled results: 34 exact, 24
+partial, 122 with no counterpart, and 3 interface-only. The algebra of
+q-shifted factorials now accounts for 3 exact, 1 partial, and 11
+unformalized results; the q-integer and Gaussian-coefficient chapter for
+2 exact, 2 partial, and 4 unformalized results. The finite
 q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
 unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
 unformalized results; the basic-hypergeometric chapter for 1 exact, 0
@@ -538,7 +564,8 @@ theorems), `FiniteTriangularTransform.lean` (one definition, one theorem),
 `SymmetricFunctionTransform.lean` (four definitions, five theorems), and
 `SymmetricFunctionGenerating.lean` (two definitions, six theorems), as well
 as `QDifferenceAnnihilation.lean` (four theorems) and
-`QBinomialInversionSpecializations.lean` (two definitions, four theorems).
+`QBinomialInversionSpecializations.lean` (two definitions, four theorems),
+and `QPochhammerElementaryIdentities.lean` (13 theorems).
 The chapter's alternating sums, both weighted-subset conventions,
 named module-valued inversion iff, and both kernel orthogonalities are exact.
 Both orientations
