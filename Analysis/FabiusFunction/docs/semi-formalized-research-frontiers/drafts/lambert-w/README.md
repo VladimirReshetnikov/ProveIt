@@ -2,8 +2,11 @@
 
 The Lambert W function enters the Fabius–Rvachev corpus through the
 two-scale endpoint asymptotics and the phase-locked Richardson layer of
-the exponents-and-q-series group (`LambertPhaseLockedRichardson.lean`,
-the κ∞ decay gauge); the endpoint programs of that volume's Parts VI–VII
+the exponents-and-q-series group.  The latter now runs from the exact
+algebra in `LambertPhaseLockedRichardson.lean` through the fixed-order
+analytic extractor in `FabiusLambertPhaseExtraction.lean` (with its
+pullback, complete-homogeneous, and reciprocal-row estimate modules),
+while the κ∞ decay gauge remains separate.  The endpoint programs of that volume's Parts VI–VII
 and of the inverse-endpoint volume use the lower branch W₋₁ as their
 canonical coordinate.  These articles treat the function itself, so they
 form their own group.
@@ -13,7 +16,7 @@ Four independently written article packages arrived together on
 consolidated volume:
 
 Member: `Lambert_W_Guide/` — *The Lambert W Function: A Real-Variable
-Guide* (58 pp, consolidated edition).  The most complete of the four
+Guide* (59 pp, consolidated edition).  The most complete of the four
 treatments forms the body; the unique layers of the other three (the
 complete power-tower convergence theorem, inverse-Taylor corrections,
 the branch-exchange involution, the transcendence theorem, a
@@ -57,3 +60,16 @@ laws, exact branch images, interior derivatives and signs, and two-sided
 `InvOn` laws; the unit-rate generalized coordinate and the Fabius
 `(m,A,beta) = (1,1,log 2)` phase are exact specializations.  General
 small-argument asymptotics for this scaled family remain open.
+
+For the Fabius endpoint observable itself,
+`FabiusLambertPhaseLockedPullback.lean`,
+`CompleteHomogeneousAsymptotics.lean`,
+`LambertReciprocalAsymptotics.lean`, and
+`FabiusLambertPhaseExtraction.lean` prove that every fixed reciprocal
+Lagrange row extracts the periodic term with a complete finite Poincaré
+remainder hierarchy.  Subtracting the first `S` residuals at row order `r`
+leaves `O(lambda^(-(r+1+S)))`, and the estimator converges to the prescribed
+periodic value along every integer phase ray.  No convergence of the formal
+infinite residual series, Bell/harmonic conversion, multiplicative
+relative-error hierarchy, derivative extractor, or growing-order uniformity
+is claimed.

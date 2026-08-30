@@ -11532,9 +11532,12 @@ A targeted literature search located general Richardson-extrapolation theory and
 Every substantial assertion is tagged implicitly by its placement:
 \begin{itemize}
 \item Results in Sections~\ref{p8:sec:tail}--\ref{p8:sec:thue-morse-transfer} are \statusprovedPartll.
-\item The phase-locked Lambert transform in Section~\ref{p8:sec:lambert} is \statusconditional:
-the interpolation algebra is proved here, while the all-orders endpoint input is inherited
-from the formally verified endpoint theory.
+\item The logarithmic phase-locked Lambert transform in
+Section~\ref{p8:sec:lambert} is \statusprovedPartll{} and Lean-backed at every
+fixed extrapolation order and residual depth.  Its all-orders endpoint input is
+inherited from the formally verified endpoint theory, and the compiled
+pullback, growing-weight, and finite-residual layers now discharge the
+uniformity step.
 \item Items in Section~\ref{p8:sec:open} are explicitly conjectural or open.
 \end{itemize}
 Here ``proved'' means proved in this mathematical report, not necessarily formalized in
@@ -11542,7 +11545,16 @@ Lean.  In particular, the endpoint input is represented by
 \texttt{fabiusSaddleLogCoefficient},
 \path{log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion}, and
 \path{log_fabius_sub_sharpLambertExpansion_isBigO} in the Lean development,
-whereas the sinc-tail and phase-extraction transforms remain formalization obligations.
+while the logarithmic phase-extraction transform is implemented by
+\path{FabiusLambertPhaseLockedPullback.lean},
+\path{CompleteHomogeneousAsymptotics.lean},
+\path{LambertReciprocalAsymptotics.lean}, and
+\path{FabiusLambertPhaseExtraction.lean}.  This closed status does not extend
+to the Bell/generalized-harmonic conversion, the exponentiated estimator's
+Bell relative-error hierarchy, the higher derivative extractors, a Lambert
+sign/bracketing theorem, or estimates uniform in growing extrapolation order.
+The remaining sinc-tail sign, bracketing, and quantitative analytic claims are
+separate formalization obligations.
 
 \section{Notation and structural background}
 \label{p8:sec:notation}
@@ -12463,6 +12475,10 @@ Assume the all-orders expansion \cref{p8:eq:endpoint-template} holds uniformly a
 \label{p8:eq:Psi-leading-error}
 \end{align}
 In particular, the first $r$ inverse-$\lambda$ corrections are cancelled exactly.
+Here the symbol $\sim$ in \eqref{p8:eq:Psi-full-error} has its finite-order
+Poincar\'e meaning: for every fixed $S\ge0$, subtracting the terms
+$s=0,\ldots,S$ leaves $O_r(\lambda^{-r-S-2})$.  It does not assert that the
+displayed infinite series converges for any fixed $\lambda$.
 \end{theorem}
 
 \begin{proof}
@@ -12472,6 +12488,50 @@ Y(x_j)=\Psi(\lambda)+\sum_{m\ge1}A_m(\lambda)(\lambda+j)^{-m}.
 \]
 The constant survives because the weights sum to one. Terms $1\le m\le r$ vanish by \cref{p8:eq:omega-cancel}. Write $m=r+1+s$ and apply \cref{p8:thm:lambert-moments}. A small uniformity point is essential: the absolute weight sum is $O_r(\lambda^r)$. To obtain the expansion through residual index $s=S$, apply the input all-orders theorem through order $2r+S+1$. Its transformed remainder is then $O_r(\lambda^{-r-S-2})$, while the finitely many undisplayed transformed coefficients start at the same order. This proves the displayed Poincar\'e expansion despite the growing weights.
 \end{proof}
+
+\paragraph{Lean formalization status.}
+The logarithmic theorem, in the finite-order sense just specified, is now
+compiled.  The module \path{FabiusLambertPhaseLockedPullback.lean} proves
+\path{tendsto_lambertPhaseLockedNode_smallArgument} and the arbitrary-order
+single-node estimate
+\path{log_fabius_phaseLockedNode_sub_WikipediaLambertExpansion_isBigO}.
+The modules \path{CompleteHomogeneousAsymptotics.lean} and
+\path{LambertReciprocalAsymptotics.lean} provide, respectively,
+\path{completeHomogeneousEvalOn_isBigO_pow} and
+\path{sum_norm_shiftedReciprocalLagrangeWeight_isBigO_pow_atTop}, together
+with the balanced product estimate
+\path{shiftedReciprocalLagrangeWeight_mul_invPow_isBigO_atTop}.  These control
+the complete-homogeneous residual and the polynomially growing row.
+
+The report-facing definitions in
+\path{FabiusLambertPhaseExtraction.lean} are
+\path{fabiusPhaseLockedReducedSample},
+\path{fabiusPhaseLockedPeriodicEstimator},
+\path{fabiusPhaseLockedResidualTerm}, and
+\path{fabiusPhaseLockedResidualPartialSum}.  Under the dictionary
+$\Psi=\texttt{negativeLaplacePsi}$ and
+$A_m=\texttt{fabiusSaddleLogCoefficient}\ m$, the declaration
+\path{fabiusPhaseLockedPeriodicEstimator_sub_residual_isBigO} proves the
+finite truncation of \eqref{p8:eq:Psi-full-error};
+\path{fabiusPhaseLockedPeriodicEstimator_sub_periodic_isBigO} is its
+unsubtracted $O(\lambda^{-r-1})$ specialization;
+\path{fabiusPhaseLockedPeriodicEstimator_sub_firstOmitted_isBigO} is exactly
+\eqref{p8:eq:Psi-leading-error}, and
+\path{fabiusPhaseLockedPeriodicEstimator_tendsto_periodicAlong} gives the
+fixed-phase limit along $\lambda=a+n$.  The moving-target Big-$O$ statements
+hold on unrestricted real $\lambda\to+\infty$, so the fixed-phase result is a
+corollary rather than an additional uniformity assumption.
+
+There are two harmless indexing conventions.  Lean's residual parameter
+$S_{\mathrm L}$ counts the first $S_{\mathrm L}$ terms, whereas the report's
+$S$ is the last retained index; hence $S_{\mathrm L}=S+1$.  Lean also writes
+the input partial sum as \texttt{range N}, so its remainder has order
+$\lambda^{-N}$ and its highest retained coefficient is $N-1$.  The internal
+choice $N=2r+S_{\mathrm L}+1$ is therefore
+$N=2r+S+2$, with highest retained coefficient $2r+S+1$, exactly as used in
+the proof above.  All these theorems keep $r$ and $S$ fixed; no growing-order
+uniformity is claimed.  Their natural-number statements include the singleton
+row $r=0$ and the empty residual truncation $S_{\mathrm L}=0$.
 
 Exponentiating produces a multiplicative estimator of the periodic amplitude:
 \begin{equation}
@@ -12483,6 +12543,9 @@ Exponentiating produces a multiplicative estimator of the periodic amplitude:
 \label{p8:eq:Ahat}
 \end{equation}
 Its relative-error coefficients are again complete Bell polynomials applied to the logarithmic coefficients in \cref{p8:eq:Psi-full-error}.
+The identity \eqref{p8:eq:Ahat} is an immediate mathematical exponentiation,
+but this multiplicative estimator and its Bell relative-error hierarchy are
+not part of the closed Lean phase-extraction tranche.
 
 \subsection{Coefficient extraction beyond \texorpdfstring{$\Psi$}{Psi}}
 
@@ -12500,6 +12563,7 @@ with $\widehat A_0^{(r)}=\widehat\Psi_r$. For $s=1$,
 \label{p8:eq:first-derivative-weight}
 \end{equation}
 Higher derivative weights are elementary symmetric polynomials in the numbers $-(\lambda+k)$ and can be generated by Bell polynomials. Thus a single phase-locked sample block can recover a triangular set of periodic coefficient functions.
+These higher derivative extractors likewise remain a formalization target.
 
 \section{Bernoulli-polynomial geometry and conditioning of the Lambert lattice}
 \label{p8:sec:lambert-conditioning}
@@ -12617,15 +12681,23 @@ or a finite product times this tail, the same acceleration and bracketing apply 
 
 The sinc-side results are well suited to formalization because their analytic and algebraic components separate cleanly.
 
-\subsection{Suggested definitions}
+\subsection{Suggested definitions and compiled Lambert crosswalk}
 
 \begin{enumerate}
 \item \texttt{lacunarySincProd b N t}: finite product over $k=1,\ldots,N$.
 \item \texttt{lacunarySincProdInf b t}: infinite product, with convergence proved from $\sum t^2b^{-2k}$.
 \item \texttt{qRichardsonWeight q r j}: the closed form \cref{p8:eq:qweights}.
 \item \texttt{qRichardsonLog q r f N}: weighted sum of $f(N+j)$.
-\item \texttt{lambertPhaseNode lambda j}: $(\lambda+j)2^{-(\lambda+j)}$.
-\item \texttt{lambertRichardsonWeight lambda r j}: \cref{p8:eq:omega}.
+\item \texttt{lambertPhaseLockedNode lambda j}: the compiled definition
+      $(\lambda+j)2^{-(\lambda+j)}$.
+\item \texttt{shiftedReciprocalLagrangeWeight lambda r j}: the compiled
+      Lagrange definition underlying \cref{p8:eq:omega}.
+\item \texttt{fabiusPhaseLockedReducedSample} and
+      \texttt{fabiusPhaseLockedPeriodicEstimator}: the compiled forms of
+      $Y(x_j)$ and $\widehat\Psi_r$.
+\item \texttt{fabiusPhaseLockedResidualTerm} and
+      \texttt{fabiusPhaseLockedResidualPartialSum}: the compiled individual
+      and finite residual expressions in \eqref{p8:eq:Psi-full-error}.
 \end{enumerate}
 
 \subsection{Algebraic theorem chain}
@@ -12806,13 +12878,30 @@ lower-Lambert phase locking, factorial and binomial reciprocal-grid weights,
 their cancellation moments, and the report-shaped all-order identity
 \path{sum_shiftedReciprocalLagrangeWeight_mul_invPow_eq_completeHomogeneous}.
 Together with \path{CompleteHomogeneousGenerating.lean}, this closes the
-finite formal generating-product layer.  The still-open algebraic item is the
-Bell/generalized-harmonic presentation \eqref{p8:eq:h-Bell}; the transformed
-sinc-tail identities, analytic Richardson remainder and bracketing, infinite
-condition-number limits, and analytic phase-extraction estimates also remain
-frontier obligations.
+finite formal generating-product layer.  Four further modules close the
+logarithmic finite-order phase-extraction layer:
+\path{FabiusLambertPhaseLockedPullback.lean} pulls the uniform endpoint
+remainder to each fixed node;
+\path{CompleteHomogeneousAsymptotics.lean} bounds the homogeneous residuals;
+\path{LambertReciprocalAsymptotics.lean} controls the growing reciprocal row;
+and \path{FabiusLambertPhaseExtraction.lean} combines these estimates with the
+exact moments.  Its declarations
+\path{fabiusPhaseLockedPeriodicEstimator_sub_residual_isBigO},
+\path{fabiusPhaseLockedPeriodicEstimator_sub_periodic_isBigO},
+\path{fabiusPhaseLockedPeriodicEstimator_sub_firstOmitted_isBigO}, and
+\path{fabiusPhaseLockedPeriodicEstimator_tendsto_periodicAlong} give the full
+finite Poincar\'e truncations, the raw error order, the leading formula, and
+the fixed-phase limit, respectively.
 
-\subsection{Analytic theorem chain}
+The still-open algebraic item is the Bell/generalized-harmonic presentation
+\eqref{p8:eq:h-Bell}.  Also outside this closed tranche are the multiplicative
+estimator's Bell relative-error hierarchy, the higher derivative coefficient
+extractors, Lambert residual sign/bracketing results, and bounds uniform when
+$r$ or the residual depth grows with $\lambda$.  The transformed sinc-tail
+identities, analytic Richardson bracketing, and infinite condition-number
+limits are separate sinc-side frontier obligations.
+
+\subsection{Remaining sinc-side analytic theorem chain}
 
 The analytic side can then proceed as follows:
 \begin{enumerate}
@@ -12824,16 +12913,15 @@ The analytic side can then proceed as follows:
 \item add termwise differentiation on compact zero-free intervals.
 \end{enumerate}
 
-The endpoint input is already formalized with its exact phase and every finite
-remainder: the periodic coefficient functions are
-\texttt{fabiusSaddleLogCoefficient}, and the expansion is proved in
-\path{FabiusFullAsymptoticExpansion.lean}.  Exact phase locking, the closed
-reciprocal-grid weights, their low-order cancellations, and all their residual
-moments are now supplied by
-\path{LambertPhaseLockedRichardson.lean}.  What remains in the frontier is the
-analytic phase-extraction transform itself: no current declaration combines
-the growing reciprocal-grid weights with the uniform saddle remainders at the
-strength asserted in \cref{p8:thm:Psi-extraction}.
+The endpoint chain is independent of this remaining sinc-side list and is now
+complete at fixed finite order.  Its exact phase and endpoint coefficients
+come from \path{FabiusFullAsymptoticExpansion.lean}; its interpolation algebra
+comes from \path{LambertPhaseLockedRichardson.lean}; and the four-module
+pullback/asymptotic/extraction tranche listed above combines the growing row
+with the uniform saddle remainder at the strength asserted in
+\cref{p8:thm:Psi-extraction}.  The formal result is the family of finite
+Big-$O$ truncations specified after that theorem, not convergence of the
+displayed infinite residual series.
 
 \section{Open problems and next frontier steps}
 \label{p8:sec:open}

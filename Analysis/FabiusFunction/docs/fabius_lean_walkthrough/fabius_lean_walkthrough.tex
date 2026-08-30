@@ -2336,6 +2336,56 @@ form the nodes are \(q^{start+k}\), and the exponent of \(q\) is exactly
 by themselves they assert no analytic Richardson remainder, convergence rate,
 or sign bound for a sampled function.
 
+\subsection{Fixed-order phase-locked Lambert extraction}
+The later current-tree phase-extraction tranche supplies the analytic layer
+for the actual logarithmic Fabius samples.  At the exact lower-Lambert nodes
+\[
+  x_{\lambda,j}=(\lambda+j)2^{-(\lambda+j)},
+\]
+\nolinkurl{FabiusLambertPhaseLockedPullback.lean} pulls back the full
+small-argument expansion one fixed node at a time.  Periodicity freezes
+\nolinkurl{negativeLaplacePsi} and every saddle-log coefficient at the
+common base phase \(\lambda\), while the powers retain the shifted scale
+\((\lambda+j)^{-1}\).
+
+Two independent asymptotic tools make the finite extrapolation legitimate.
+\nolinkurl{completeHomogeneousEvalOn_isBigO_pow} in
+\nolinkurl{CompleteHomogeneousAsymptotics.lean} carries coordinatewise
+\(\bigO(g)\) estimates through a fixed degree-\(n\) complete homogeneous
+evaluation, including \(n=0\).  In
+\nolinkurl{LambertReciprocalAsymptotics.lean}, the reciprocal nodes are
+\(\Theta\)-equivalent to \(\lambda^{-1}\), each fixed row coefficient and the
+row's total variation are \(\bigO(\lambda^r)\), and
+\nolinkurl{shiftedReciprocalLagrangeWeight_mul_invPow_isBigO_atTop}
+absorbs that growth into a sufficiently high inverse power.
+
+Let \(Y_j(\lambda)\) be the logarithmic sample with the nonperiodic
+Wikipedia/Lambert main term removed, and let \(E_r(\lambda)\) be its
+order-\(r\) reciprocal-Lagrange combination.  These are
+\nolinkurl{fabiusPhaseLockedReducedSample} and
+\nolinkurl{fabiusPhaseLockedPeriodicEstimator}; the exact higher moments and
+their finite sum are \nolinkurl{fabiusPhaseLockedResidualTerm} and
+\nolinkurl{fabiusPhaseLockedResidualPartialSum}.  Write \(\Psi\) for
+\nolinkurl{negativeLaplacePsi}.  For every fixed \(r,S\in\N\),
+\[
+ E_r(\lambda)-\Psi(\lambda)
+   -\sum_{n=0}^{S-1}R_{r,n}(\lambda)
+ =\bigO\bigl(\lambda^{-(r+1+S)}\bigr)
+ \qquad(\lambda\to+\infty).
+\]
+This is
+\nolinkurl{fabiusPhaseLockedPeriodicEstimator_sub_residual_isBigO} in
+\nolinkurl{FabiusLambertPhaseExtraction.lean}; its proof requests the
+single-node expansion at order \(2r+S+1\), exactly compensating for the
+\(\bigO(\lambda^r)\) row.  The same module gives the
+\(\bigO(\lambda^{-(r+1)})\) estimator bound without residual subtraction,
+the one-order improvement after subtracting the first omitted moment, and
+convergence to \nolinkurl{negativeLaplacePsi} at a fixed phase along
+\(\lambda=a+n\).  The result is a fixed-\(r,S\) Poincaré statement: it does
+not assert uniformity for growing indices, convergence of the formal
+complete-homogeneous generating series, or the separate
+Bell/generalized-harmonic conversion.
+
 \subsection{Unconditionally summable analytic filters}
 At compiled full-facade checkpoint \nolinkurl{22f801337},
 \nolinkurl{AnalyticSeriesFilter.lean} supplies the pointwise convergent-series
@@ -3422,7 +3472,7 @@ Module & Role in the development \\
 \nolinkurl{FabiusSharpAsymptoticTransfer.lean} & General transfer lemmas for logarithmic and exponential asymptotic equivalence. \\
 \nolinkurl{FabiusSharpAsymptotic.lean} & Correct sharp formula with periodic phase, first error bound, and asymptotic equivalence. \\
 \addlinespace[0.45em]
-\multicolumn{2}{l}{\textbf{Post-snapshot exponential, cumulant, endpoint-transfer, and interpolation algebra}}\\[0.25em]
+\multicolumn{2}{l}{\textbf{Post-snapshot algebra and phase-extraction machinery}}\\[0.25em]
 \nolinkurl{ExponentialPartition.lean} & Weighted partitions and their reciprocal-factorial coefficient sum over arbitrary commutative \(\mathbb Q\)-algebras, including the marked-part and normalized successor recurrences and the field quotient bridge. \\
 \nolinkurl{ExponentialBell.lean} & Recurrence-uniqueness bridge identifying the finite weighted-partition family with \nolinkurl{SaddleExpansion.expCoeff}. \\
 \nolinkurl{MomentCumulantAlgebra.lean} & Factorial normalization, the complete Bell transform and inverse moment--cumulant transform, the classical Bell recurrence, normalized inverse laws, and functoriality over arbitrary commutative \(\mathbb Q\)-algebras. \\
@@ -3441,6 +3491,10 @@ Module & Role in the development \\
 \nolinkurl{GeometricLagrangeQBinomial.lean} & Field-valued q-Pochhammer weight formulas and report-facing rational q-binomial and quarter-base coefficient formulas. \\
 \nolinkurl{GeometricLagrangeQMoments.lean} & Closed forms for every rational geometric moment under nonzero-base and nonvanishing finite-denominator hypotheses, with exact residual sign and finite total variation for \(0<q<1\) and dedicated quarter-base corollaries. \\
 \nolinkurl{LambertPhaseLockedRichardson.lean} & Exact lower-Lambert phase locking, reciprocal-grid Lagrange weights, cancellation, and every complete-homogeneous residual moment. \\
+\nolinkurl{FabiusLambertPhaseLockedPullback.lean} & Pullback of the arbitrary-order logarithmic Fabius expansion to every fixed phase-locked Lambert node, with the periodic correction and saddle coefficients frozen at the base phase. \\
+\nolinkurl{CompleteHomogeneousAsymptotics.lean} & Coordinatewise Big-O closure for fixed finite complete-homogeneous evaluations, with the comparison scale raised to the homogeneous degree and degree zero included. \\
+\nolinkurl{LambertReciprocalAsymptotics.lean} & Theta and Big-O comparison of shifted reciprocal powers, fixed-row coefficient and total-variation growth, and the power-balancing estimate for weighted remainders. \\
+\nolinkurl{FabiusLambertPhaseExtraction.lean} & The reduced phase-locked sample, reciprocal-Lagrange periodic estimator, exact residual terms, fixed-order Poincaré extraction with arbitrary residual depth, the first-omitted improvement, and integer-ray convergence. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Central integral and all-order machinery}}\\[0.25em]
 \nolinkurl{FabiusSaddleReduction.lean} & Algebraic reduction of the inversion integral to a normalized central weight. \\
@@ -3525,6 +3579,10 @@ checked at code checkpoint \nolinkurl{3da579387}.  The four current declarations
 post-snapshot additions checked at code checkpoint \nolinkurl{e109088ed}.
 The sixteen rows from \nolinkurl{ExponentialPartition.lean} through
 \nolinkurl{LambertPhaseLockedRichardson.lean} are a post-snapshot addendum.
+The four immediately following rows, from
+\nolinkurl{FabiusLambertPhaseLockedPullback.lean} through
+\nolinkurl{FabiusLambertPhaseExtraction.lean}, form the later current-tree
+phase-extraction tranche.
 The first two of those sixteen were checked at code checkpoint
 \nolinkurl{e119db9032ab2641955d47e1da1338a8386aac4d}; the third reflects
 mainline checkpoint \nolinkurl{3989cd9d3}; the endpoint-transfer polynomials

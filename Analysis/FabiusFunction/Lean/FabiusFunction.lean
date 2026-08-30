@@ -1,5 +1,6 @@
 import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.CompleteHomogeneousGenerating
+import FabiusFunction.CompleteHomogeneousAsymptotics
 import FabiusFunction.FiniteQBinomialCore
 import FabiusFunction.QBinomialInversion
 import FabiusFunction.QBinomialTransform
@@ -20,6 +21,9 @@ import FabiusFunction.GeometricLagrangeWeights
 import FabiusFunction.GeometricLagrangeQBinomial
 import FabiusFunction.GeometricLagrangeQMoments
 import FabiusFunction.LambertPhaseLockedRichardson
+import FabiusFunction.LambertReciprocalAsymptotics
+import FabiusFunction.FabiusLambertPhaseLockedPullback
+import FabiusFunction.FabiusLambertPhaseExtraction
 import FabiusFunction.PrincipalLambertW
 import FabiusFunction.LowerLambertW
 import FabiusFunction.GeneralizedLambertCoordinate
