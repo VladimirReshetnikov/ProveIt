@@ -5049,7 +5049,7 @@ finite convolution orders are the Kronecker delta:
 In particular the scale \(s\) is independent of \(q\) and need not be
 nonzero or invertible.
 
-More generally, let \(M\) be an additive commutative group and an
+More generally, let \(M\) be an additive commutative monoid and an
 \(R\)-module.  For sequences \(a,b:\N\to M\), put
 \begin{equation}
  (\mathcal T_{q,s}a)_n=\sum_{k=0}^{n}K^{q,s}_{n,k}\,a_k,
@@ -5119,6 +5119,17 @@ The four definitions and seven theorems of
 unscaled and scaled forms of
 \eqref{eq:q-scaled-left-delta}--\eqref{eq:q-scaled-right-delta}.
 
+The one definition and one theorem of
+\path{FiniteTriangularTransform.lean} are, exhaustively,
+\lean{lowerTriangularTransform} and \lean{lowerTriangularTransform_comp}.
+For a possibly noncommutative semiring acting on an additive commutative
+monoid, the theorem turns a total ordered convolution
+\(\sum_{k\in[j,n]}K_{n,k}L_{k,j}=\delta_{n,j}\) into equality of the whole
+composite sequence function with the input.  Its hypothesis also covers
+\(n<j\), when the interval is empty.  The refactored Gaussian proof below
+reuses this generic finite-sum theorem; the Gaussian kernels' zero extension
+above the row supplies the same total convention.
+
 The four definitions and four theorems of \path{QBinomialTransform.lean} are,
 exhaustively,
 \lean{scaledGaussianBinomialTransform},
@@ -5130,7 +5141,11 @@ exhaustively,
 \lean{gaussianBinomialInverseTransform}, and
 \lean{gaussianBinomial_inversion}.  They prove
 \eqref{eq:q-scaled-module-transforms}--\eqref{eq:q-scaled-module-inversion}
-under exactly the module assumptions stated above.
+as whole-function equalities.  The two forward-transform definitions need
+only a semiring acting on an additive commutative monoid; the two signed
+inverse definitions need a ring with the same target assumptions.  The four
+inversion theorems require a commutative ring, again acting on an additive
+commutative monoid.  No additive inverses are required in the target.
 
 Finally, the two definitions and five theorems of
 \path{QBinomialInversionSpecializations.lean} are, exhaustively,
@@ -5241,8 +5256,96 @@ exhaustively the one public definition and six public theorems of
 \lean{completeHomogeneousEval_option_succ} in
 \path{CompleteHomogeneous.lean}.  The structural elementary identities and
 both Pascal recurrences hold already over commutative semirings; subtraction
-is needed only for the final alternating convolution.  This result does not
-assert a general weighted-inversion formula beyond that convolution.
+is needed only for the final alternating convolution.
+\end{proof}
+
+\begin{theorem}[Formal generating series for a finite alphabet]
+\label{thm:symmetric-generating-formal}
+Let \(R\) be a commutative semiring and let \(a:\iota\to R\) be indexed by a
+finite type.  In the formal power-series ring \(R[[X]]\), set
+\[
+ E_a(X)=\sum_{r\geq0}e_r(a)X^r,
+ \qquad H_a(X)=\sum_{r\geq0}h_r(a)X^r.
+\]
+Their coefficients are exactly the displayed symmetric-function
+evaluations, and
+\begin{equation}
+ E_a(X)=\prod_{i\in\iota}(1+a_iX).                       \label{eq:elementary-generating-product-formal}
+\end{equation}
+If \(R\) is a commutative ring, then
+\begin{equation}
+ E_{-a}(X)H_a(X)=1,\qquad
+ H_a(X)=\operatorname{invOfUnit}(E_{-a}(X),1).           \label{eq:symmetric-generating-reciprocal-formal}
+\end{equation}
+In particular, for every \(q\in R\) and \(n\in\N\),
+\begin{equation}
+ \left(\prod_{j=0}^{n}(1-q^jX)\right)
+ \left(\sum_{k\geq0}{n+k\brack k}_qX^k\right)=1
+ \quad\text{in }R[[X]].                                 \label{eq:q-reciprocal-finite-formal}
+\end{equation}
+These are formal identities, including the empty alphabet and all degenerate
+values of \(q\).  They do not assert evaluation of the series at a scalar or
+analytic convergence under \(\lvert a_i z\rvert<1\) or \(\lvert z\rvert<1\).
+\end{theorem}
+
+\begin{proof}[Formal proof and exhaustive API]
+The two definitions and six theorems of
+\path{SymmetricFunctionGenerating.lean} are, exhaustively,
+\lean{elementarySymmetricGeneratingSeries},
+\lean{completeHomogeneousGeneratingSeries},
+\lean{coeff_elementarySymmetricGeneratingSeries},
+\lean{coeff_completeHomogeneousGeneratingSeries},
+\lean{elementarySymmetricGeneratingSeries_eq_prod},
+\lean{elementarySymmetricGeneratingSeries_neg_mul_completeHomogeneousGeneratingSeries},
+\lean{completeHomogeneousGeneratingSeries_eq_invOfUnit_elementarySymmetricGeneratingSeries_neg},
+and
+\lean{prod_one_sub_qPow_X_mul_gaussianBinomialGeneratingSeries}.
+The definitions, coefficient identities, and finite elementary product need
+only a commutative semiring.  The reciprocity, canonical-inverse, and finite
+Gaussian reciprocal identities require a commutative ring.  Thus the Lean
+surface proves precisely the formal-power-series halves of the corresponding
+analytic formulas.
+\end{proof}
+
+\begin{theorem}[Weighted symmetric-function inversion]
+\label{thm:symmetric-transform-formal}
+Let \(R\) be a commutative ring, let \(M\) be an additive commutative monoid
+and an \(R\)-module, and let \(w:\iota\to R\) be indexed by a finite type.
+For \(a,b:\N\to M\), define
+\begin{align}
+ (\mathcal H_w a)_m&=\sum_{j=0}^{m}h_{m-j}(w)\,a_j,\\
+ (\mathcal E_w b)_m&=\sum_{j=0}^{m}(-1)^{m-j}e_{m-j}(w)\,b_j,
+                                                               \label{eq:weighted-symmetric-transforms-formal}
+\end{align}
+where the products with \(a_j,b_j\) denote scalar actions.  Then, as
+equalities of whole sequence functions,
+\begin{equation}
+ \mathcal E_w\mathcal H_w a=a,\qquad
+ \mathcal H_w\mathcal E_w b=b,\qquad
+ b=\mathcal H_w a\ \Longleftrightarrow\ a=\mathcal E_w b.       \label{eq:weighted-symmetric-inversion-formal}
+\end{equation}
+Both scalar kernels are extended by zero above the diagonal, so the kernel
+orthogonalities are total even when the outer interval is empty.  There is
+no division, topology, domain, characteristic, or nonvanishing assumption.
+\end{theorem}
+
+\begin{proof}[Formal proof and exhaustive API]
+The four definitions and five theorems of
+\path{SymmetricFunctionTransform.lean} are, exhaustively,
+\lean{completeHomogeneousKernel}, \lean{signedElementaryKernel},
+\lean{completeHomogeneousKernel_left_orthogonality},
+\lean{completeHomogeneousKernel_right_orthogonality},
+\lean{completeHomogeneousTransform}, \lean{signedElementaryTransform},
+\lean{signedElementaryTransform_completeHomogeneousTransform},
+\lean{completeHomogeneousTransform_signedElementaryTransform}, and
+\lean{weightedSymmetricFunction_inversion}.  The complete-homogeneous kernel
+and transform already need only a commutative semiring.  The signed kernel,
+signed transform, both total orthogonalities, both inverse compositions, and
+the inversion equivalence use a commutative ring; every module-valued
+transform uses only an additive commutative monoid as its target.  The two
+composition proofs reuse \lean{lowerTriangularTransform_comp} from the
+one-definition, one-theorem generic surface of
+\path{FiniteTriangularTransform.lean}.
 \end{proof}
 
 \begin{theorem}[Reversed Gaussian row, Lagrange weights, and all residual moments]
@@ -9075,13 +9178,18 @@ and finite-order periodic extraction &
 \path{CompleteHomogeneousAsymptotics.lean},
 \path{LambertReciprocalAsymptotics.lean},
 \path{FabiusLambertPhaseExtraction.lean}\\
-Finite \(q\)-Cauchy convolutions, \(q\)-Bernstein partition of unity, weighted
-Pascal, and elementary--complete orthogonality &
-\path{QBinomialCauchy.lean},
+Finite \(q\)-Cauchy convolutions and the \(q\)-Bernstein partition of unity &
+\path{QBinomialCauchy.lean}\\
+Weighted Pascal, elementary--complete orthogonality, formal generating
+series, and weighted sequence inversion &
 \path{SymmetricFunctionOrthogonality.lean},
+\path{SymmetricFunctionGenerating.lean},
+\path{SymmetricFunctionTransform.lean},
 \path{CompleteHomogeneous.lean}\\
-Weighted-subset Gaussian enumeration, scalar kernels, module-valued
-$q$-binomial inversion, and q-Gaussian specializations &
+Generic finite triangular transforms, weighted-subset Gaussian enumeration,
+scalar kernels, module-valued $q$-binomial inversion, and q-Gaussian
+specializations &
+\path{FiniteTriangularTransform.lean},
 \path{BitPositionQBinomial.lean}, \path{QBinomialInversion.lean},
 \path{QBinomialTransform.lean},
 \path{QBinomialInversionSpecializations.lean}\\

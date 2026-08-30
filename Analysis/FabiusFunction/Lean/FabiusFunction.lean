@@ -2,6 +2,9 @@ import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.CompleteHomogeneousGenerating
 import FabiusFunction.CompleteHomogeneousAsymptotics
 import FabiusFunction.SymmetricFunctionOrthogonality
+import FabiusFunction.FiniteTriangularTransform
+import FabiusFunction.SymmetricFunctionTransform
+import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
 import FabiusFunction.QBinomialInversion
 import FabiusFunction.QBinomialTransform
