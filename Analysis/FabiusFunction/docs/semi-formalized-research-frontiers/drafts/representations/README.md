@@ -260,12 +260,11 @@ full real-axis squared Fourier mass with twice `A_2`, the positive-half-line
 mass with `A_2`, and certify the report's Fourier-product and infinite-sinc
 integrals with their exact normalizations and index ranges.
 
-Starting from compiled checkpoint `1f9ce6fd9` and including the focused-build
-extension at compiled checkpoint `e2c310e7c`, `RvachevMomentAppell.lean` exports six
+At compiled source checkpoint `a3854643d`, `RvachevMomentAppell.lean` exports six
 public definitions: `rvachevRawMomentRat`, `rvachevReciprocalMomentRat`,
 `rvachevAppellPolynomialRat`, `rvachevAppellPolynomial`, and
 `rvachevDeconvolvedPolynomial`, together with
-`rvachevDeconvolutionLinearMap`.  Its twenty-four public theorems are
+`rvachevDeconvolutionLinearMap`.  Its thirty public theorems are
 `rvachevRawMomentRat_zero`, `rvachevRawMomentRat_even`,
 `rvachevRawMomentRat_odd`, `rvachevReciprocalMomentRat_zero`,
 `binomialConv_rvachevRawMomentRat_reciprocal`,
@@ -285,16 +284,25 @@ public definitions: `rvachevRawMomentRat`, `rvachevReciprocalMomentRat`,
 `rvachevDeconvolvedPolynomial_C_mul`,
 `rvachevDeconvolvedPolynomial_monomial`,
 `rvachevDeconvolvedPolynomial_X_pow`,
-`natDegree_rvachevDeconvolvedPolynomial_le`, and
+`coeff_rvachevDeconvolvedPolynomial_natDegree`,
+`natDegree_rvachevDeconvolvedPolynomial_le`,
+`natDegree_rvachevDeconvolvedPolynomial`,
+`leadingCoeff_rvachevDeconvolvedPolynomial`,
+`rvachevDeconvolvedPolynomial_eq_zero_iff`,
+`rvachevDeconvolutionLinearMap_injective`,
+`rvachevDeconvolvedPolynomial_injective`, and
 `integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev`.  This is the
 exact rational raw-moment, formal reciprocal/Bell, reciprocal-moment Appell,
 and polynomial-smoothing/deconvolution foundation used by the report.  The
 deconvolution is now packaged as a real linear map, preserves zero, addition,
 scalar multiplication, finite sums, and multiplication by constant
 polynomials, and sends a monomial and `X^n` to the correspondingly scaled and
-unscaled Rvachev--Appell polynomial.
+unscaled Rvachev--Appell polynomial.  Its triangular top term is exact: it
+preserves the coefficient in the original `natDegree`, exact `natDegree`, and
+`leadingCoeff`; its kernel is trivial; and both the packaged linear map and
+the underlying raw operation are injective.
 
-At compiled checkpoint `c51a41fcf`, `RvachevPolynomialSynthesis.lean` exports
+At compiled checkpoint `a3854643d`, `RvachevPolynomialSynthesis.lean` exports
 no public definitions and exactly four public theorems:
 `tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`,
 `normalized_tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`,
@@ -308,24 +316,30 @@ At the same checkpoint, `FabiusLegendreTranslateBlocks.lean` exports six
 public definitions: `rvachevLegendreDeconvolutionPolynomial`,
 `rvachevLegendreScale`, `rvachevLegendreIndexSet`,
 `rvachevLegendreAtomCoefficient`, `rvachevLegendreTranslateBlock`, and
-`rvachevTranslateGram`.  Its five public theorems are
+`rvachevTranslateGram`.  Its seven public theorems are
+`natDegree_rvachevLegendreDeconvolutionPolynomial`,
+`leadingCoeff_rvachevLegendreDeconvolutionPolynomial`,
 `eval_legendrePolynomial_eq_sum_rvachevUp`,
 `eval_legendrePolynomial_even_eq_sum_rvachevUp`,
 `rvachevLegendreTranslateBlock_eq_rvachevLegendreBlock`,
 `intervalIntegral_rvachevLegendreTranslateBlock_mul`, and
-`sum_rvachevLegendreAtomCoefficient_mul_gram`.  They specialize the finite
-synthesis to meshes `2^d` and `4^n`, identify each literal finite translate
+`sum_rvachevLegendreAtomCoefficient_mul_gram`.  For `Q_d = D(P_d)`, the first
+two prove exact natural degree `d` and the explicit unchanged leading
+coefficient `(1/2)^d * choose (2*d) d`.  The remaining theorems specialize the
+finite synthesis to meshes `2^d` and `4^n`, identify each literal finite translate
 block with the existing polynomial block on `[-1,1]`, and prove its complete
 orthogonality and exact finite atom-Gram expansion.
 
-At compiled checkpoint `e2c310e7c`, the focused-build
+At compiled checkpoint `a3854643d`, the focused-build
 `FabiusLegendreTranslateSeries.lean` exports five public
 definitions: `rvachevLegendrePartialSumDeconvolutionPolynomial`,
 `rvachevLegendrePartialSumAtomCoefficient`,
 `rvachevLegendrePartialSumTranslateBlock`,
 `rvachevLegendreTranslateBlockOnInterval`, and
-`rvachevLegendrePartialSumTranslateBlockOnInterval`.  Its twenty-three public
+`rvachevLegendrePartialSumTranslateBlockOnInterval`.  Its twenty-five public
 theorems are
+`natDegree_rvachevLegendrePartialSumDeconvolutionPolynomial`,
+`leadingCoeff_rvachevLegendrePartialSumDeconvolutionPolynomial`,
 `summable_norm_rvachevLegendreTranslateBlock`,
 `summable_rvachevLegendreTranslateBlock`,
 `hasSum_rvachevLegendreTranslateBlock`,
@@ -353,19 +367,24 @@ and interval-supremum summability of the literal blocks and their pointwise and
 uniform sums to `up`.  They also formalize the finite-mode formula for
 `C_N = D(S_N)`, expanded common-mesh coefficients, global and finite synthesis
 at mesh `4^N`, and function equality with both the polynomial partial sum and
-the sum of the separately scaled blocks.  The bundled common-mesh partial
+the sum of the separately scaled blocks.  They also prove that
+`C_N = D(S_N)` has exactly the `natDegree` and `leadingCoeff` of `S_N`,
+including degenerate partial sums whose visible degree drops.  The bundled common-mesh partial
 trains converge to `up` in `C([-1,1])`, equivalently in the interval supremum
 norm; raw `TendstoUniformlyOn`, norm-error-to-zero, and pointwise corollaries
 are also exported.  No convergence rate, coefficientwise limit, or uniform
 convergence outside `[-1,1]` is asserted.
 
-These modules still do not certify minimality or sharpness of the mesh, analytic
+These four modules have public definition/theorem inventories `6/30`, `0/4`,
+`6/7`, and `5/25`, for exactly 83 public declarations.  They still do not
+certify minimality or sharpness of the mesh, analytic
 reciprocal-MGF/Appell generating-series or differential-operator identities,
 the displayed low reciprocal coefficients, parity and the displayed closed
 forms for the deconvolved Legendre family, rationality of the atom rows,
-equality of the fixed-scale and separately scaled coefficient vectors, exact
-degree for every partial sum, or the later refinement, projector, and
-asymptotic layers.
+equality of the fixed-scale and separately scaled coefficient vectors, an
+unconditional `natDegree(S_N) = 2*N` theorem or nonvanishing of its top
+Legendre coefficient, or the later refinement, projector, and asymptotic
+layers.
 
 Three further Legendre-closure reports landed the same day, all
 **pending merge into `Up_Polynomial_Synthesis/`** and all answering the
