@@ -2,12 +2,12 @@
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{amsmath,mathtools,amsthm}
-\usepackage{newtxtext,newtxmath}
+\usepackage{amsmath,amssymb,mathtools,amsthm}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage[scaled=.94]{helvet}
 \usepackage[final]{microtype}
-\usepackage{geometry}
-\geometry{margin=1in,headheight=15pt}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\setlength{\emergencystretch}{1.5em}
 \usepackage{bm}
 \usepackage{booktabs,longtable,tabularx,array,multirow}
 \usepackage{enumitem}
@@ -1200,8 +1200,8 @@ theorem identifies the denominator-free geometric Lagrange numerator
 globally with the inverse kernel at base and scale \(q\), without \(k\le n\).
 At base \(q^2\) and scale \(-q\), the remaining coefficients are
 \[
- (-q)^{n-k}{n\brack k}_{q^2},
- \qquad q^{(n-k)^2}{n\brack k}_{q^2},
+ (-q)^{n-k}\Qbinom nk{q^2},
+ \qquad q^{(n-k)^2}\Qbinom nk{q^2},
 \]
 and both total finite convolution orders are the Kronecker delta.  This
 global numerator bridge does not remove the field, finite-node injectivity,
@@ -1235,6 +1235,22 @@ independent of $k$.  Therefore
  C_{n+1}(u,v)=(1-uvq^n)C_n(u,v)=(uv;q)_{n+1}.
 \]
 \end{proof}
+
+\begin{remark}[Exact formal counterpart]
+\path{QBinomialCauchy.lean} proves this identity in the declaration
+\begin{center}
+\small\nolinkurl{Fabius.finiteQPochhammerIn_mul_eq_sum_gaussianBinomial}.
+\end{center}
+For an
+arbitrary type \texttt{R} with \texttt{[CommRing R]}, arbitrary
+\(q,u,v\in R\), and every \(n\in\N\), the declaration states the displayed
+finite convolution with the same normalization.  Its proof is
+denominator-free and requires no cancellation, nonvanishing, injectivity,
+topology, or convergence hypothesis.  This exact counterpart does not include
+the later Cauchy convolution II (\Cref{lem:cauchy-II}) or
+q-Pfaff--Saalsch\"utz summation (\Cref{thm:q-pfaff}); both remain
+unformalized.
+\end{remark}
 
 \begin{remark}
 Taking $u=0$ recovers the tautology $(0;q)_k=1$ inside a weighted expansion; taking special limits of $u$ or $v$ produces several finite convolution formulas used later in the proof of the $q$-Pfaff--Saalsch\"utz summation.
@@ -1516,8 +1532,14 @@ except when $i\le k<j$, where it equals $1$.  The product of
  =\prod_{i=1}^{k}\frac{1-q^{\,n-i+1}}{1-q^{\,k-i+1}},
 \]
 the inner product telescoping.  The numerators are
-$(1-q^{n})(1-q^{n-1})\cdots(1-q^{\,n-k+1})=(q;q)_n/(q;q)_{n-k}$ and the
-denominators are $(1-q^k)\cdots(1-q)=(q;q)_k$, so the product is $\qbinom nk$.
+\[
+ \begin{aligned}
+ (1-q^{n})(1-q^{n-1})\cdots(1-q^{\,n-k+1})
+   &=\frac{(q;q)_n}{(q;q)_{n-k}},\\
+ (1-q^k)\cdots(1-q)&=(q;q)_k,
+ \end{aligned}
+\]
+so the product is $\qbinom nk$.
 
 (ii) Here $\lambda_1=k$ and $\lambda_j=0$ for $j\ge2$, so $n(\lambda)=0$ and
 only the pairs $(1,j)$ contribute:
@@ -2802,23 +2824,6 @@ while
 \]
 the last arrow being \Cref{prop:qchu2-by-reversal}.  The finite chain is valid in a commutative ring after denominators are cleared.  The infinite chain requires convergence or a suitable complete formal topology, but only as far as its third arrow: the first $q$-Chu--Vandermonde sum is already a rational, hence purely algebraic, identity, as the proof of \Cref{cor:q-chu} records, and by \Cref{lem:2phi1-reversal} the fourth arrow is finite-product algebra.  Thus \eqref{eq:qchu2} does not depend on \Cref{thm:q-pfaff}, and the two derivations of it given here are genuinely independent.  This distinction becomes important in computer formalization; see \Cref{chap:formalization}.
 
-\section{A hierarchy of mechanisms}
-
-The proofs in this chapter form a hierarchy:
-\[
- \text{finite $q$-Pascal}
- \Longrightarrow \text{$q$-Cauchy}
- \Longrightarrow \text{$q$-Pfaff--Saalsch\"utz},
-\]
-while
-\[
- \text{infinite $q$-binomial}
- \Longrightarrow \text{Heine}
- \Longrightarrow \text{$q$-Gauss}
- \Longrightarrow \text{first $q$-Chu--Vandermonde}.
-\]
-The finite chain is valid in a commutative ring after denominators are cleared.  The infinite chain requires convergence or a suitable complete formal topology.  This distinction becomes important in computer formalization; see \Cref{chap:formalization}.
-
 \chapter{Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum}\label{chap:bilateral}
 \index{Ramanujan ${}_1\psi_1$ summation}
 \index{bilateral basic hypergeometric series}
@@ -3088,7 +3093,8 @@ The elements $x_2,\dots,x_r$ satisfy the same commutation relations among themse
  =\sum_{\substack{n_2,\dots,n_r\ge0\\ n_2+\cdots+n_r=m}}
  \qmultinom{m}{n_2,\dots,n_r}\,x_2^{n_2}\cdots x_r^{n_r}.
 \]
-Since the coefficients are central, substitution produces precisely the ordered monomials $x_1^{n_1}x_2^{n_2}\cdots x_r^{n_r}$, the coefficient of $x_1^{n_1}\cdots x_r^{n_r}$ being
+Since the coefficients are central, substitution produces the ordered
+monomials.  For the multi-index $(n_1,\dots,n_r)$, the coefficient is
 \[
  \qbinom n{n_1}\qmultinom{n-n_1}{n_2,\dots,n_r}
  =\frac{\poch{q}{q}{n}}{\poch{q}{q}{n_1}\poch{q}{q}{n-n_1}}
@@ -5299,8 +5305,8 @@ Three features become visible in this form.  First, each coefficient is a differ
 \begin{align*}
  S_2(n)-S_2(k)-S_2(n-k)
  &=\frac{n(n+1)(2n+1)-k(k+1)(2k+1)}{6}\\
- &\qquad-\frac{(n-k)(n-k+1)(2n-2k+1)}{6}
- =k(n-k)(n+1)=D(n+1),
+ &\qquad-\frac{(n-k)(n-k+1)(2n-2k+1)}{6}\\
+ &=k(n-k)(n+1)=D(n+1),
 \end{align*}
 the value used in \Cref{cor:gaussian-first-asymptotic} below.
 \end{remark}
@@ -5310,7 +5316,8 @@ the value used in \Cref{cor:gaussian-first-asymptotic} below.
 % ed.: converges for $\abs x<2\pi$; the assembled range $\abs t<2\pi/n$ of
 % ed.: \Cref{thm:gaussian-bernoulli} is the correct statement and is retained here.
 
-[The second "% ed.:" note of the draft (lines 47-49) is deleted: the source's phrase "the linear power-sum difference is $k(n-k)$" is correct and, in parallel with the following clause "the quadratic difference is $S_2(n)-S_2(k)-S_2(n-k)=\ldots$", unambiguous.  The header verdict should read "sharper / verified", not "verified-after-repair".  Dropping the \label is also recommended, since nothing cross-references the remark and no other remark in the monograph carries one.]
+% ed.: a second source note was removed because the phrases describing the
+% ed.: linear and quadratic power-sum differences are already unambiguous.
 
 \begin{corollary}[First terms]\label{cor:gaussian-first-asymptotic}
 With $D=k(n-k)$,
@@ -8136,9 +8143,13 @@ $\tau_{h2^k+s}=\tau_h\tau_s$.  Hence
    \Bigl(\e^{-2^kz}\sum_{s=0}^{2^k-1}\tau_s\e^{sz}\Bigr)
   =(-1)^k2^{\binom k2}z^k\,\Psi_{m,k}(z),
 \end{align*}
-where $\Psi_{m,k}(z)\defeq\mathcal K_m(-2^kz)\Psi_k(z)$; the third equality uses
-$\mathcal K_m(-2^kz)=\e^{-(m-1)2^kz}\sum_{h<m}\tau_h\e^{h2^kz}$ and the fourth is
-\eqref{eq:thue-morse-normalized}.  Consequently
+where $\Psi_{m,k}(z)\defeq\mathcal K_m(-2^kz)\Psi_k(z)$.  The third equality
+uses
+\[
+ \mathcal K_m(-2^kz)
+ =\e^{-(m-1)2^kz}\sum_{h<m}\tau_h\e^{h2^kz},
+\]
+and the fourth is \eqref{eq:thue-morse-normalized}.  Consequently
 \begin{equation}\label{eq:long-block-coefficient}
  [z^n]\,\Psi_{m,k}(z)
  =\frac{(-1)^k}{2^{\binom k2}(n+k)!}\,T_{m;k,n+k}(0),
@@ -8337,7 +8348,9 @@ The formula is an exact rational certificate, but it is ill conditioned in float
 point, and the loss occurs \emph{inside} the blocks rather than between them.  The outer
 cancellation over $k$ is mild: at $\theta=1$ the largest block of
 \eqref{eq:fabius-inverse-dyadic-closed} exceeds the value of the whole sum by the factors
-$3.00,\;4.20,\;4.69,\;4.42,\;4.09,\;3.84,\;3.68,\;3.59,\;3.53,\;3.50$ for
+$3.00,\allowbreak\;4.20,\allowbreak\;4.69,\allowbreak\;4.42,\allowbreak\;4.09,
+\allowbreak\;3.84,\allowbreak\;3.68,\allowbreak\;3.59,\allowbreak\;3.53,
+\allowbreak\;3.50$ for
 $n=1,\ldots,10$, peaking at $n=3$ and decreasing thereafter, and other choices of
 $\theta$ alter these ratios only by a bounded factor.  The digits are lost within a
 single block, in the alternating Thue--Morse power sum: for $k=n$ the largest summand
@@ -10336,12 +10349,15 @@ Lipschitz with constant
 \emph{(ii).}  Let $N\ge2$.  By \eqref{eq:midpoint-H-moment-zero} we may subtract
 the constant $g_{q,N}\bigl(x-\tfrac12q^N\bigr)$ inside
 \eqref{eq:midpoint-error-integral}, so that
-\[
+\begin{align*}
  \bigl|F^{\mathrm{mid}}_{q,N}(x)-F_q(x)\bigr|
- \le q^N\int_0^1\Bigl|g_{q,N}\bigl(x-q^Nu\bigr)-g_{q,N}\bigl(x-\tfrac12q^N\bigr)\Bigr|
-   \,\abs{H_q(u)}\dd u
- \le\frac{q^{2N}}{q(1-q)^2}\int_0^1\Bigl|u-\tfrac12\Bigr|\abs{H_q(u)}\dd u
-\]
+ &\le q^N\int_0^1
+   \Bigl|g_{q,N}\bigl(x-q^Nu\bigr)
+     -g_{q,N}\bigl(x-\tfrac12q^N\bigr)\Bigr|
+   \,\abs{H_q(u)}\dd u\\
+ &\le\frac{q^{2N}}{q(1-q)^2}
+   \int_0^1\Bigl|u-\tfrac12\Bigr|\abs{H_q(u)}\dd u
+\end{align*}
 by \eqref{eq:truncated-density-lipschitz}.  Now insert
 \eqref{eq:midpoint-H-moment-one}:
 \[
@@ -10540,9 +10556,18 @@ Then:
 \end{equation}
 \item $\omega_{n,j}=W_{n,j}=\lambda^{(1/2)}_{n,\,n-j}$ in the notation of
 \Cref{rem:halfbase-row-reversal}; in particular
-$\sum_{j=0}^{n}\omega_{n,j}=1$, $\sgn\omega_{n,j}=(-1)^j$,
-$\sum_{j=0}^{n}\omega_{n,j}z^j=\poch{z/2}{1/2}{n}\big/\poch{1/2}{1/2}{n}$ and
-$\sum_{j=0}^{n}\abs{\omega_{n,j}}=\poch{-1/2}{1/2}{n}\big/\poch{1/2}{1/2}{n}$;
+\[
+ \sum_{j=0}^{n}\omega_{n,j}=1,
+ \qquad \sgn\omega_{n,j}=(-1)^j,
+\]
+and
+\[
+ \sum_{j=0}^{n}\omega_{n,j}z^j
+ =\frac{\poch{z/2}{1/2}{n}}{\poch{1/2}{1/2}{n}},
+ \qquad
+ \sum_{j=0}^{n}\abs{\omega_{n,j}}
+ =\frac{\poch{-1/2}{1/2}{n}}{\poch{1/2}{1/2}{n}};
+\]
 \item $D_n$ interpolates $F$ on the grid of resolution $2^{-n}$:
 \begin{equation}\label{eq:offgrid-interpolation}
  D_n\!\left(\frac m{2^n}\right)=F\!\left(\frac m{2^n}\right)
@@ -10571,12 +10596,13 @@ since $4^{\binom k2}=2^{2\binom k2}$.  Substitute $j=n-k$, so that $n+k=2n-j$.
 The sign is $(-1)^{2n-j}=(-1)^j$; the Gaussian coefficient is unchanged because
 $\Qbinom n{n-j}{1/2}=\Qbinom nj{1/2}$, by the symmetry visible in
 \eqref{eq:halfbase-gaussian}; and the exponent of $2$ becomes
-\[
+\begin{align*}
  \binom{2n-j}{2}-2\binom{n-j}{2}-n^2
- =\tfrac12(2n-j)(2n-j-1)-(n-j)(n-j-1)-n^2
- =-\tfrac12 j(j+1)
+ &=\tfrac12(2n-j)(2n-j-1)\\
+ &\qquad -(n-j)(n-j-1)-n^2\\
+ &=-\tfrac12 j(j+1)
  =-\binom{j+1}{2},
-\]
+\end{align*}
 an identity in $n$ and $j$ verified by expanding both sides.  This is exactly
 \eqref{eq:offgrid-weights}, and \eqref{eq:offgrid-decomposition} follows.
 
@@ -10718,8 +10744,11 @@ by the exact bound $\sup_x\abs{S_1-F}=5/72$ restores a valid estimate
 $\abs{D_1-F}\le1/12$.
 
 It is worth separating what is and is not an instance of the abstract machinery.
-That $\sum_j\omega_{n,j}F_{1/2,r(n,j)}\to F$ uniformly, for any exponents
-$r(n,j)\ge n$, is \Cref{cor:gaussian-row-spline-average} at $q=1/2$, itself an
+For any exponents $r(n,j)\ge n$, the uniform convergence
+\[
+ \sum_j\omega_{n,j}F_{1/2,r(n,j)}\longrightarrow F
+\]
+is \Cref{cor:gaussian-row-spline-average} at $q=1/2$, itself an
 application of \Cref{thm:tail-row-toeplitz} with the two hypotheses supplied by
 \Cref{thm:geometric-row-variation}; that argument gives no rate beyond the rate
 of its input, and applied to \eqref{eq:fabius-truncation-rate} it yields only
@@ -10889,8 +10918,12 @@ By \Cref{cor:transfer-translation} with $\alpha=\eta$, together with
  =\mathfrak m_n\,\frac{A_n(\theta)}{n!},
 \]
 and the same corollary states that this value does not depend on $\eta$.
-Inserting $W_{n,k}(1/2)=(-1)^k2^{-\binom k2}\Qbinom nk{1/2}$ makes the two signs
-cancel and combines the two triangular powers of two into $4^{-\binom k2}$; that
+Inserting
+\[
+ W_{n,k}(1/2)=(-1)^k2^{-\binom k2}\Qbinom nk{1/2}
+\]
+makes the two signs cancel and combines the two triangular powers of two into
+$4^{-\binom k2}$; that
 is \eqref{eq:fabius-appell-geometric}.
 
 Putting $\eta=0$, writing $r-2^k-2^k\theta=r-2^k(1+\theta)$ and dividing by
@@ -11186,7 +11219,7 @@ This appendix is a navigation table, not a substitute for hypotheses and proofs.
 \index{Newton interpolation}
 
 \footnotesize
-\begin{longtable}{>{\raggedright\arraybackslash}p{0.23\textwidth}>{\raggedright\arraybackslash}p{0.55\textwidth}>{\raggedright\arraybackslash}p{0.14\textwidth}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}>{\raggedright\arraybackslash}p{0.55\textwidth}>{\raggedright\arraybackslash}p{0.14\textwidth}@{}}
 \toprule
 Name & Formula & Location\\
 \midrule
@@ -11255,8 +11288,8 @@ Each has been proved in the main text; the relevant references are \Cref{prop:cl
 % ed.: finite-to-infinite transition at all, and conflated the columnwise
 % ed.: limit 1/(q;q)_k with the central limit 1/(q;q)_infty.  Both are
 % ed.: corrected here.
-Transitions in the size parameter, rather than in $q$, are already represented
-above by $\lim_{n\to\infty}\qbinom nk=1/(q;q)_k$.  Their central counterpart is
+The dictionary also contains transitions in the size parameter.  For example,
+$\lim_{n\to\infty}\qbinom nk=1/(q;q)_k$ appears above.  Its central counterpart is
 \[
  \lim_{N\to\infty}\qbinom{2N}{N+k}=\frac1{(q;q)_\infty}
  \qquad(k\in\Z\text{ fixed},\ 0<\abs q<1),
@@ -11389,8 +11422,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 183 labelled results, 25 are \statusexact, 25 are \statuspartial,
-130 are \statusnone, and 3 are \statusna.
+Of the 247 labelled results, 32 are \statusexact, 72 are \statuspartial,
+140 are \statusnone, and 3 are \statusna.
 The formalized part is concentrated exactly where the Fabius development
 needed it: the finite Gaussian-coefficient core, the geometric Lagrange and
 filter calculus, half-base and Thue--Morse cancellation, and the geometric
@@ -11415,35 +11448,39 @@ Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
 The algebra of $q$-shifted factorials & 1 & 2 & 12 & 0\\
 $q$-integers and Gaussian coefficients & 1 & 2 & 5 & 0\\
-Finite $q$-binomial theorems and inversion & 8 & 0 & 2 & 0\\
+Finite $q$-binomial theorems and inversion & 9 & 0 & 1 & 0\\
 Weighted binomial coefficients and symmetric functions & 0 & 2 & 6 & 0\\
 Partitions, words, paths, and inversion statistics & 1 & 1 & 7 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 0 & 1 & 5 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
 The infinite $q$-binomial theorem & 0 & 0 & 5 & 0\\
-Basic hypergeometric series & 0 & 0 & 6 & 0\\
+Basic hypergeometric series & 0 & 0 & 9 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 0 & 0 & 2 & 0\\
 $q$-difference calculus and the quantum binomial & 0 & 0 & 10 & 0\\
 The $q$-gamma and $q$-beta functions & 0 & 0 & 8 & 0\\
-Jacobi's triple product & 0 & 0 & 6 & 0\\
+Jacobi's triple product & 0 & 0 & 8 & 0\\
 Partitions and product--sum identities & 0 & 0 & 4 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 0 & 1 & 6 & 0\\
 Cyclotomic factorization and congruences & 0 & 0 & 9 & 0\\
 Negative upper indices and geometric Newton interpolation & 0 & 2 & 7 & 0\\
 Central $q$-binomial sums and Lambert series & 0 & 0 & 7 & 0\\
 Asymptotic regimes and Bernoulli expansions & 0 & 0 & 8 & 0\\
-Computation, certification, and formal proof architecture & 0 & 2 & 8 & 3\\
+Computation, certification, and formal proof architecture & 0 & 3 & 8 & 3\\
 Geometric interpolation and exact $q$-filters & 6 & 2 & 1 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
-Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 7 & 3 & 0\\
+Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 8 & 3 & 0\\
+Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 45 & 6 & 0\\
 \midrule
-\textbf{Total} & 25 & 25 & 130 & 3\\
+\textbf{Total} & 32 & 72 & 140 & 3\\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \section{By result}
 
+\begingroup
+\let\statusunderscore\_
+\renewcommand{\_}{\statusunderscore\allowbreak{}}
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.28\textwidth}p{0.09\textwidth}>{\raggedright\arraybackslash}p{0.53\textwidth}@{}}
 \toprule
 Result & Status & Lean counterpart\\
@@ -11514,7 +11551,9 @@ Result & Status & Lean counterpart\\
 \texttt{gaussianBinomialKernel\_\allowbreak{}left\_\allowbreak{}orthogonality},
 \texttt{gaussianBinomialKernel\_\allowbreak{}right\_\allowbreak{}orthogonality}\newline
 {\footnotesize\texttt{QBinomialInversion}; both total \texttt{Icc} convolution orders}\\[2pt]
-\Cref{thm:q-cauchy} & \statusnone & ---\\[2pt]
+\Cref{thm:q-cauchy} & \statusexact &
+\texttt{finiteQPochhammerIn\_\allowbreak{}mul\_\allowbreak{}eq\_\allowbreak{}sum\_\allowbreak{}gaussianBinomial}\newline
+{\footnotesize\texttt{QBinomialCauchy}; arbitrary commutative ring, with arbitrary \(q,u,v\) and natural length}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Weighted binomial coefficients and symmetric functions}\\
 \midrule
@@ -11567,11 +11606,14 @@ Result & Status & Lean counterpart\\
 \multicolumn{3}{@{}l}{\itshape Basic hypergeometric series}\\
 \midrule
 \Cref{prop:phi-convergence} & \statusnone & ---\\[2pt]
+\Cref{thm:classical-hypergeometric-limit} & \statusnone & ---\\[2pt]
 \Cref{thm:heine} & \statusnone & ---\\[2pt]
 \Cref{thm:q-gauss} & \statusnone & ---\\[2pt]
 \Cref{lem:cauchy-II} & \statusnone & ---\\[2pt]
 \Cref{thm:q-pfaff} & \statusnone & ---\\[2pt]
 \Cref{cor:q-chu} & \statusnone & ---\\[2pt]
+\Cref{lem:2phi1-reversal} & \statusnone & ---\\[2pt]
+\Cref{prop:qchu2-by-reversal} & \statusnone & ---\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum}\\
 \midrule
@@ -11606,6 +11648,8 @@ Result & Status & Lean counterpart\\
 \midrule
 \Cref{thm:jtp} & \statusnone & ---\\[2pt]
 \Cref{cor:theta-quasi} & \statusnone & ---\\[2pt]
+\Cref{thm:finite-jtp} & \statusnone & ---\\[2pt]
+\Cref{cor:jtp-from-finite} & \statusnone & ---\\[2pt]
 \Cref{thm:pentagonal} & \statusnone & ---\\[2pt]
 \Cref{cor:euler-partition-recurrence} & \statusnone & ---\\[2pt]
 \Cref{thm:jacobi-cubic} & \statusnone & ---\\[2pt]
@@ -11688,6 +11732,11 @@ Result & Status & Lean counterpart\\
 \Cref{cor:identity-finder-certificate} & \statusnone & ---\\[2pt]
 \Cref{thm:formal-analytic-transfer} & \statusnone & ---\\[2pt]
 \Cref{prin:proof-architecture} & \statusna & \\[2pt]
+\Cref{prin:identity-tests} & \statuspartial &
+\texttt{gaussianBinomial\_succ\_succ\_alt},
+\texttt{qBinomial\_half\_sum\_eq\_zero\_iff}\newline
+{\footnotesize\texttt{FiniteQBinomialCore}; \texttt{HalfQBinomial}; several
+tests are formalized separately, but not the six-part falsification principle}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Geometric interpolation and exact $q$-filters}\\
 \midrule
@@ -11724,11 +11773,243 @@ Result & Status & Lean counterpart\\
 \Cref{thm:geometric-uniform-smooth-density} & \statuspartial & \texttt{geometricUniformDistribution\_\allowbreak{}eq\_\allowbreak{}withDensity}\newline{\footnotesize\texttt{GeometricUniformCDF}}\\[2pt]
 \Cref{thm:finite-uniform-spline} & \statusnone & ---\\[2pt]
 \Cref{thm:dyadic-thue-morse-spline} & \statuspartial & \texttt{fabiusUniformSpline\_\allowbreak{}eq\_\allowbreak{}tsum\_\allowbreak{}positivePart}\newline{\footnotesize\texttt{FabiusUniformSpline}}\\[2pt]
+\Cref{prop:geometric-uniform-density-band} & \statuspartial &
+\texttt{geometricUniformDistribution\_eq\_withDensity},
+\texttt{isGreatest\_deriv\_fabiusReal}\newline
+{\footnotesize\texttt{GeometricUniformCDF}; \texttt{Convexity}; the
+general-$q$ central-band formula and sharp supremum statement are absent}\\[2pt]
 \Cref{cor:finite-uniform-convergence} & \statuspartial & \texttt{abs\_\allowbreak{}uniformPartialSum\_\allowbreak{}sub\_\allowbreak{}weightedCoordinateSum\_\allowbreak{}le}\newline{\footnotesize\texttt{FabiusUniformSpline}}\\[2pt]
 \Cref{thm:probabilistic-fabius} & \statusexact & \texttt{weightedSumCDF\_\allowbreak{}eq\_\allowbreak{}fabiusReal}\newline{\footnotesize\texttt{ProbabilityRepresentation}}\\[2pt]
 \Cref{thm:up-sinc-product} & \statusexact & \texttt{rvachevFourier\_\allowbreak{}eq\_\allowbreak{}product}\newline{\footnotesize\texttt{FourierProduct}}\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Dyadic Gaussian--Thue--Morse structure and the values of $F$}\\
+\midrule
+\Cref{prop:up-tail} & \statuspartial &
+\texttt{weightedSumDistribution\_real\_Ioi\_eq\_rvachevUp}\newline
+{\footnotesize\texttt{ProbabilityLaplaceMoments}; Lean has the strict survival
+event, not the stated closed-tail equality}\\[2pt]
+\Cref{cor:up-moments} & \statuspartial &
+\texttt{intervalIntegral\_rvachevUp\_smul\_eq\_integral}\newline
+{\footnotesize\texttt{ProbabilityLaplaceMoments}; the integral bridge is
+formalized, but not the displayed tail-moment formula}\\[2pt]
+\Cref{thm:geometric-uniform-mgf} & \statuspartial &
+\texttt{complexMGF\_weightedSumDistribution\_eq\_complexGeneratingFunction}\newline
+{\footnotesize\texttt{FabiusComplexMGF}; only the half-base transform is present,
+not the general complex-$q$ product and recurrence}\\[2pt]
+\Cref{lem:fabius-moment-dilation} & \statuspartial &
+\texttt{fabiusRecurrenceSequence\_recurrence}\newline
+{\footnotesize\texttt{FabiusRecurrenceSequence}; coefficient-level half-base
+consequences are present, not the stated entire-function dilation package}\\[2pt]
+\Cref{lem:fabius-derivative-iterate} & \statuspartial &
+\texttt{iteratedDeriv\_fabiusReal\_of\_lt\_one}\newline
+{\footnotesize\texttt{BoundedDerivatives}; the Lean domain and endpoint
+packaging differ from the displayed statement}\\[2pt]
+\Cref{thm:fabius-half-moment} & \statusexact &
+\texttt{fabiusAtInverseTwoPow\_eq\_halfMoment},
+\texttt{unitEndpointMoment\_weightedSumDistribution\_eq\_halfMoment}\newline
+{\footnotesize\texttt{MomentPowerSeries}; \texttt{ProbabilityLaplaceMoments}}\\[2pt]
+\Cref{prop:inverse-power-values} & \statuspartial &
+\texttt{fabiusAtInverseTwoPow\_eq\_halfMoment}\newline
+{\footnotesize\texttt{MomentPowerSeries}; only the $q=1/2$ specialization is
+formalized}\\[2pt]
+\Cref{cor:fabius-bell-values} & \statuspartial &
+\texttt{completeBellPolynomial},
+\texttt{unitEndpointMoment\_weightedSumDistribution\_eq\_halfMoment}\newline
+{\footnotesize\texttt{MomentCumulantAlgebra}; \texttt{ProbabilityLaplaceMoments};
+the displayed Bell specialization is not packaged}\\[2pt]
+\Cref{thm:geometric-moment-transform} & \statuspartial &
+\texttt{halfQBinomial\_negativeDyadic\_polynomial\_sum\_eq\_coeff}\newline
+{\footnotesize\texttt{HalfQBinomial}; only the half-base polynomial transform is
+present}\\[2pt]
+\Cref{cor:reciprocal-leading-coefficient} & \statuspartial &
+\texttt{halfQBinomial\_negativeDyadic\_polynomial\_sum\_eq\_coeff}\newline
+{\footnotesize\texttt{HalfQBinomial}; the general reciprocal-base statement is
+absent}\\[2pt]
+\Cref{thm:reciprocal-exact-tail} & \statuspartial &
+\texttt{coeff\_finitePowerSeriesFilter}\newline
+{\footnotesize\texttt{FinitePowerSeriesFilter}; Lean has the diagonal filter,
+not this reciprocal Gaussian tail formula}\\[2pt]
+\Cref{cor:halfbase-gaussian-valuation} & \statuspartial &
+\texttt{qBinomial\_half\_eq}, \texttt{gaussianBinomial\_symm}\newline
+{\footnotesize\texttt{HalfQBinomial}; the odd-integer valuation conclusion is
+not formalized}\\[2pt]
+\Cref{thm:gaussian-coefficient-transfer} & \statuspartial &
+{\footnotesize\texttt{qBinomialThueMorseTranslatedNumeratorIn\_eq\_centered}}\newline
+{\footnotesize\texttt{FabiusQBinomialTaylor}; only the specialized half-base
+transfer used by the Fabius formula is present}\\[2pt]
+\Cref{cor:transfer-translation} & \statuspartial &
+{\footnotesize\texttt{qBinomialThueMorseTranslatedNumeratorIn\_eq\_centered}}\newline
+{\footnotesize\texttt{FabiusQBinomialTaylor}; common-shift invariance is
+formalized only for the half-base numerator}\\[2pt]
+\Cref{lem:thue-morse-dilation-bridge} & \statuspartial &
+\texttt{thueMorseBlock\_exp\_neg\_eq\_laplacePrefix},
+\texttt{complexLaplacePrefix\_eq\_exp\_mul\_shiftedComplexSincPrefix}\newline
+{\footnotesize\texttt{ThueMorseComplexProductBridge}; the full coefficient-series
+bridge is not stated}\\[2pt]
+\Cref{prop:psi-normalization} & \statuspartial &
+{\small\texttt{qBinomialThueMorseRawTranslatedNumeratorIn\_eq\_centered}}\newline
+{\footnotesize\texttt{FabiusRawQBinomialScalar}; the component identities exist,
+not the displayed $\Psi_k$ normalization dictionary}\\[2pt]
+\Cref{thm:dyadic-gaussian-thue-morse} & \statusexact &
+{\small\texttt{qBinomialThueMorseRawTranslatedNumeratorIn\_eq\_wolfram\_sum},
+\texttt{qBinomialThueMorseTranslatedNumeratorIn\_div\_eq\_halfMoment}}\newline
+{\footnotesize\texttt{FabiusRawQBinomialScalar}; \texttt{FabiusQBinomialTaylor}}\\[2pt]
+\Cref{thm:fabius-inverse-dyadic} & \statusexact &
+\texttt{fabius\_inverse\_two\_pow\_eq\_qBinomialThueMorse\_rawTranslated\_sum\_complex}\newline
+{\footnotesize\texttt{FabiusRawQBinomialScalar}}\\[2pt]
+\Cref{cor:fabius-centered-formula} & \statusexact &
+{\footnotesize\texttt{globalFabius\_dyadic\_eq\_qBinomialThueMorseDyadic\_translated\_sum\_complex},
+\texttt{qBinomialThueMorseDyadicTranslatedFormulaIn\_independent}}\newline
+{\footnotesize\texttt{FabiusDyadicQBinomialScalar}}\\[2pt]
+\Cref{prop:dyadic-taylor-reduction} & \statuspartial &
+\texttt{qBinomialFabiusReductionPolynomial\_eq\_reductionSumIn},
+\texttt{iteratedDeriv\_fabiusReal\_inv\_two\_pow\_all}\newline
+{\footnotesize\texttt{FabiusQBinomialTaylor}; \texttt{BoundedDerivatives}; the
+two pieces are not the proposition's single Taylor-polynomial identity}\\[2pt]
+\Cref{lem:geometric-simplex} & \statusnone & ---\\[2pt]
+\Cref{thm:fabius-composition} & \statuspartial &
+\texttt{fabiusAtInverseTwoPow\_eq\_composition\_formula}\newline
+{\footnotesize\texttt{FabiusInverseDyadicClosedForm}; only the half-base
+specialization is formalized}\\[2pt]
+\Cref{thm:fabius-hessenberg} & \statusnone & ---\\[2pt]
+\Cref{cor:fabius-fourier-formula} & \statuspartial &
+\texttt{rvachev\_fourier\_inversion\_analytic},
+\texttt{rvachevFourier\_eq\_product}\newline
+{\footnotesize\texttt{FourierAnalytic}; \texttt{FourierProduct}; inversion and
+the product are separate, not the stated CDF formula}\\[2pt]
+\Cref{thm:radix-b-prouhet} & \statuspartial &
+\texttt{sum\_thueMorseSign\_mul\_affine\_pow\_eq\_zero}\newline
+{\footnotesize\texttt{ThueMorseSparseProuhet}; only radix two is formalized}\\[2pt]
+\Cref{cor:radix-two-recovers-thue-morse} & \statusexact &
+\texttt{prod\_one\_sub\_pow\_two\_pow},
+\texttt{sum\_thueMorseSign\_mul\_affine\_pow\_card}\newline
+{\footnotesize\texttt{ThueMorseProductIdentity}; \texttt{ThueMorseSparseProuhet}}\\[2pt]
+\Cref{thm:geometric-row-variation} & \statuspartial &
+\texttt{sum\_abs\_qToeplitzWeight},
+\texttt{tendsto\_sum\_abs\_qToeplitzWeight}\newline
+{\footnotesize\texttt{GeneralQConditionNumber}; \texttt{LimitConditionNumber};
+the strict increase and full stated bound package are absent}\\[2pt]
+\Cref{cor:geometric-extrapolation-conditioning} & \statuspartial &
+\texttt{sum\_abs\_geometricLagrangeWeight\_eq\_prod}\newline
+{\footnotesize\texttt{GeometricLagrangeQMoments}; the error inequality is not
+stated and this counterpart is rational-valued}\\[2pt]
+\Cref{thm:tail-row-toeplitz} & \statuspartial &
+\texttt{tendsto\_weighted\_rows\_of\_tendsto}\newline
+{\footnotesize\texttt{FabiusDiscreteLimitToeplitz}; Lean is restricted to a
+normed ring rather than an arbitrary normed vector space}\\[2pt]
+\Cref{cor:gaussian-row-spline-average} & \statuspartial &
+{\footnotesize\texttt{fabiusDiscreteLimitApproximationComplex\_eq\_weighted\_shiftSpline}}\newline
+{\footnotesize\texttt{FabiusDiscreteLimitIntegration}; only the half-base
+discrete-limit spline layer is present}\\[2pt]
+\Cref{prin:row-exactness-stability} & \statuspartial &
+\texttt{reversed\_finite\_qBinomial\_theorem},
+\texttt{sum\_abs\_qToeplitzWeight}\newline
+{\footnotesize\texttt{GeometricQBinomialLagrange};
+\texttt{GeneralQConditionNumber}; no declaration packages the same row and
+all conclusions of the principle}\\[2pt]
+\Cref{prop:qF-negative-affine} & \statuspartial &
+\texttt{geometricUniformDistribution\_reflection}\newline
+{\footnotesize\texttt{GeometricUniformLaw}; only positive-base reflection is
+formalized, not the negative-base affine law}\\[2pt]
+\Cref{thm:qF-germ-uniqueness} & \statuspartial &
+\texttt{mgf\_id\_self\_similar}\newline
+{\footnotesize\texttt{GeometricCgfTails}; a refinement identity exists, but not
+the general normalized analytic-germ uniqueness theorem}\\[2pt]
+\Cref{thm:qF-reciprocity} & \statusnone & ---\\[2pt]
+\Cref{thm:qF-spectral} & \statuspartial &
+\texttt{rvachevFourier\_eq\_product}, \texttt{qPochhammerInf}\newline
+{\footnotesize\texttt{FourierProduct}; \texttt{LimitConditionNumber}; only the
+half-base Fourier product and a real contractive-base product exist}\\[2pt]
+\Cref{thm:qF-moment-polynomial} & \statusnone & ---\\[2pt]
+\Cref{prop:qF-P-degree-sharp} & \statusnone & ---\\[2pt]
+\Cref{cor:qF-halfbase-dictionary} & \statuspartial &
+\texttt{fabiusAtInverseTwoPow\_eq\_halfMoment},
+\texttt{halfQPochhammer\_eq\_mersenne\_div}\newline
+{\footnotesize\texttt{MomentPowerSeries}; \texttt{HalfQBinomial}; the polynomial
+$\mathcal P_n(q)$ and general-$q$ endpoint formula are absent}\\[2pt]
+\Cref{thm:universal-functoriality} & \statuspartial &
+\texttt{map\_gaussianBinomial}\newline
+{\footnotesize\texttt{FiniteQBinomialCore}; functoriality is formalized, but not
+the theorem's full universal characterization}\\[2pt]
+\Cref{cor:universal-factorial-identities} & \statusexact &
+\texttt{finiteQPochhammerIn\_self\_mul\_gaussianBinomial},
+\texttt{finiteQPochhammerIn\_self\_eq\_mul\_mul\_gaussianBinomial}\newline
+{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
+\Cref{thm:subspace-mobius} & \statusnone & ---\\[2pt]
+\Cref{prop:thue-morse-power-recurrence} & \statuspartial &
+\texttt{thueMorsePowerSum\_succ}\newline
+{\footnotesize\texttt{ThueMorsePrefix}; Lean has the untranslated recurrence,
+not the arbitrary-shift and complexity statement}\\[2pt]
+\Cref{thm:ring-moment-residual} & \statuspartial &
+\texttt{sum\_weight\_mul\_pow\_card\_add}\newline
+{\footnotesize\texttt{LagrangeResidualMoments}; the hypotheses and ordering of
+the general residual theorem differ}\\[2pt]
+\Cref{cor:ring-geometric-residual} & \statuspartial &
+\texttt{sum\_geometricLagrangeWeight\_mul\_pow\_eq\_gaussianBinomial}\newline
+{\footnotesize\texttt{GeometricQBinomialLagrange}; this is the special
+Lagrange-weight case, not the arbitrary-weight corollary}\\[2pt]
+\Cref{cor:ring-series-filter} & \statuspartial &
+\texttt{coeff\_finitePowerSeriesFilter}\newline
+{\footnotesize\texttt{FinitePowerSeriesFilter}; the diagonal identity is
+formalized, not the displayed complete tail formula}\\[2pt]
+\Cref{lem:fabius-spline-expectation} & \statuspartial &
+\texttt{fabiusUniformSpline\_eq\_tsum\_positivePart}\newline
+{\footnotesize\texttt{FabiusUniformSpline}; the spline formula exists without
+the same unrestricted expectation identity}\\[2pt]
+\Cref{thm:fabius-dyadic-cell} & \statuspartial &
+\texttt{globalFabius\_dyadic\_eq\_qBinomialThueMorseDyadic\_translated\_sum\_complex}\newline
+{\footnotesize\texttt{FabiusDyadicQBinomialScalar}; exact dyadic-grid values are
+formalized, not the off-grid cell formula}\\[2pt]
+\Cref{prop:midpoint-truncation} & \statuspartial &
+\texttt{fabiusUniformSpline\_eq\_centeredPartialCDF\_all}\newline
+{\footnotesize\texttt{FabiusUniformSpline}; the midpoint identity is present,
+but the general-$q$ sharp second-order rate is absent}\\[2pt]
+\Cref{lem:cutoff-to-spline} & \statuspartial &
+\texttt{fabiusDiscreteLimitRangeLength\_eq\_floor\_add\_one},
+\texttt{fabiusUniformSpline\_eq\_tsum\_positivePart}\newline
+{\footnotesize\texttt{FabiusDiscreteLimitToeplitz}; \texttt{FabiusUniformSpline};
+no declaration states the same cutoff-to-spline equality}\\[2pt]
+\Cref{thm:offgrid-dyadic} & \statuspartial &
+{\footnotesize\texttt{fabiusDiscreteLimitApproximationComplex\_eq\_weighted\_shiftSpline}}\newline
+{\footnotesize\texttt{FabiusDiscreteLimitIntegration}; the convolutional
+approximation is present without the theorem's full interpolation geometry}\\[2pt]
+\Cref{thm:offgrid-uniform-rate} & \statuspartial &
+\texttt{fabiusUniformSpline\_tendstoUniformly\_extendedFabius}\newline
+{\footnotesize\texttt{FabiusComputability}; uniform convergence is formalized,
+but not the stated sharp $16^{-n}$ rate}\\[2pt]
+\Cref{prop:fabius-appell-laws} & \statuspartial &
+\texttt{Appell.derivative\_poly}, \texttt{Appell.poly\_translate}\newline
+{\footnotesize\texttt{AppellSequence}; the generic derivative and addition laws
+exist, but the Fabius-moment reflection law is absent}\\[2pt]
+\Cref{thm:fabius-appell-geometric-shift} & \statuspartial &
+{\small\texttt{qBinomialThueMorseTranslatedNumeratorIn\_eq\_centered},
+\texttt{qBinomialThueMorseRawTranslatedNumeratorIn\_eq\_centered}}\newline
+{\footnotesize\texttt{FabiusQBinomialTaylor};
+\texttt{FabiusRawQBinomialScalar}; only the $\theta=0$ and $\theta=-1$
+specializations are present}\\[2pt]
+\Cref{lem:fabius-real-spline} & \statuspartial &
+\texttt{fabiusUniformSpline\_eq\_tsum\_positivePart}\newline
+{\footnotesize\texttt{FabiusUniformSpline}; no named declaration gives the same
+expectation formula for real $t$}\\[2pt]
+\Cref{cor:fabius-local-reduction} & \statuspartial &
+\texttt{extendedFabius\_reduction}\newline
+{\footnotesize\texttt{TaylorReduction}; Lean has the binary reduction identity,
+not this Appell two-cell formulation}\\[2pt]
+\Cref{thm:fabius-digit-expansion} & \statuspartial &
+\texttt{extendedFabius\_eq\_globalBinaryReductionSum\_add\_remainder},
+\texttt{hasSum\_globalBinaryReductionSummand\_succ\_all}\newline
+{\footnotesize\texttt{FabiusBinaryReductionSeries}; the binary telescope is
+formalized, but not the stated Appell summand, factorial residual bound, and
+termination package}\\[2pt]
+\Cref{cor:fabius-digit-qseries} & \statuspartial &
+\texttt{globalFabius\_eq\_qBinomialThueMorse\_global\_sum\_complex},
+\texttt{globalFabius\_eq\_qBinomialThueMorse\_telescope\_add\_remainder\_complex}\newline
+{\footnotesize\texttt{FabiusGlobalQBinomialSeries};
+\texttt{FabiusDiscreteLimitIntegration}; the formalized global series has a
+different convolutional summand and lacks the stated sharp residual package}\\[2pt]
 \bottomrule
 \end{longtable}
+\endgroup
 
 \backmatter
 

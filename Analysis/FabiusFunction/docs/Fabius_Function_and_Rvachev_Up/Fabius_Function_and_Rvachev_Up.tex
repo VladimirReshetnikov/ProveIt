@@ -4887,6 +4887,29 @@ with the established rational quotient, and
 \lean{halfQBinomial_theorem} is now the direct specialization of the ring theorem.
 \end{remark}
 
+\begin{theorem}[Finite \(q\)-Cauchy convolution]
+\label{thm:q-cauchy-formal}
+Let \(R\) be a commutative ring, let \(q,u,v\in R\), and let \(n\in\N\).
+Then
+\begin{equation}
+ (uv;q)_n
+ =\sum_{k=0}^{n}{n\brack k}_q\,(u;q)_k\,v^k\,(v;q)_{n-k}.
+ \label{eq:q-cauchy-formal}
+\end{equation}
+The identity is total and denominator-free: it requires no cancellation,
+nonvanishing, injectivity, topology, or convergence hypothesis and therefore
+includes zero divisors, positive characteristic, \(q=0\), and roots of unity.
+\end{theorem}
+
+\begin{proof}[Formal proof]
+Equation \eqref{eq:q-cauchy-formal} is
+\lean{finiteQPochhammerIn_mul_eq_sum_gaussianBinomial} in
+\path{QBinomialCauchy.lean}.  The proof combines the zero-extended
+\(q\)-Pascal recurrence with the last-factor recurrence for the two finite
+\(q\)-Pochhammer factors.  It is finite ring algebra and asserts no later
+Pfaff--Saalsch\"utz or infinite-product consequence.
+\end{proof}
+
 \begin{theorem}[Denominator-free \(q\)-Vandermonde and shifted central forms]
 \label{thm:q-vandermonde-formal}
 Let \(R\) be a commutative semiring, let \(q\in R\), and let all displayed
@@ -8782,7 +8805,8 @@ $q$-binomial inversion, and q-Gaussian specializations &
 Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
 \path{DyadicCorrectness.lean}, \path{FiniteQBinomialCore.lean},
-\path{QBinomialVandermonde.lean}, \path{HalfQBinomial.lean},
+\path{QBinomialCauchy.lean}, \path{QBinomialVandermonde.lean},
+\path{HalfQBinomial.lean},
 \path{FabiusDyadicQBinomialScalar.lean}, \path{FabiusQBinomialFormula.lean},
 \path{FabiusRawQBinomialScalar.lean},
 \path{FabiusBinaryReductionSeries.lean}, \path{FabiusParityPowerSeries.lean},

@@ -3,6 +3,18 @@
 The inverse function's frontiers and the sampling/deconvolution circle of
 ideas, in two consolidated volumes.
 
+Post-snapshot formal status: `QuarterCatalanGerm.lean` now proves that the
+distinguished rational quarter germ becomes the Catalan inverse of
+`X + 4 X²` under the exact `9/4` parameter rescaling, together with the reverse
+rescaling and every positive coefficient.  `FabiusInverseQuarterJet.lean`
+then connects that quadratic inverse to the actual smooth inverse: its full
+centered jet at `5/72 = F(1/4)` is the factorial-scaled Catalan coefficient
+sequence, so `G^(m+1)(5/72) = (m+1)! (-4)^m C_m`.  This is equality of all
+derivatives, not local analytic equality.  A named nonzero flat-remainder
+decomposition remains open.  Beyond the quarter specialization, the
+general-dyadic analytic/algebraic shadow, convergence and identification of
+the inverse Taylor series, and the Bell--Lagrange formula also remain open.
+
 ## `Inverse_and_Sampling_Frontiers/`
 
 Consolidated (2026-08-28) from:

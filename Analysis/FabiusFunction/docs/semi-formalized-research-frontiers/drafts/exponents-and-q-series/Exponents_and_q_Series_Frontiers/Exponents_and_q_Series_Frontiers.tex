@@ -4622,6 +4622,15 @@ Vandermonde theorems state the monograph's single convolution for every
 \(k\in\Z\), including \(\lvert k\rvert>N\), both on the natural support and
 as a literal finite-support sum over \(\Z\).
 
+The independent leaf \path{QBinomialCauchy.lean} proves the monograph's finite
+q-Cauchy convolution exactly as
+\lean{Fabius.finiteQPochhammerIn_mul_eq_sum_gaussianBinomial}.  Its parameters
+\(q,u,v\) range over an arbitrary commutative ring and its length over
+\(\N\); the statement is denominator-free and assumes no cancellation,
+nonvanishing, injectivity, topology, or convergence.  This is an exact
+counterpart only for the first q-Cauchy identity: the later Cauchy convolution
+II and q-Pfaff--Saalsch\"utz summation remain outside the formalized surface.
+
 The finite inversion layer is now formalized without denominators as well.
 \path{BitPositionQBinomial.lean} supplies the zero-based subset theorem
 \lean{Fabius.sum_pow_sum_powersetCard_eq_gaussianBinomial} and the literal

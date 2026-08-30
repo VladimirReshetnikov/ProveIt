@@ -268,7 +268,7 @@ matching `assets/` directories.
 `Signed_Reciprocal_q_Fabius_Frontiers/` were merged editorially as the
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
-Second member: `q_pochhammer_q_binomial_monograph/` (196 pp, book class) —
+Second member: `q_pochhammer_q_binomial_monograph/` (199 pp, book class) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
@@ -289,10 +289,10 @@ Chern–Dilcher–Jiu deleted-singularity identity and Ramanujan's ₁ψ₁
 verified numerically to 30 digits; one dominated-convergence majorant
 repaired with an `% ed.:` note).
 
-Its current formalization ledger has 183 labelled results: 25 exact, 25
-partial, 130 with no counterpart, and 3 interface-only. The finite
-q-binomial/inversion chapter now accounts for 8 exact, 0 partial, and 2
-unformalized results. Its alternating sums, both weighted-subset conventions,
+Its current formalization ledger has 183 labelled results: 26 exact, 25
+partial, 129 with no counterpart, and 3 interface-only. The finite
+q-binomial/inversion chapter now accounts for 9 exact, 0 partial, and 1
+unformalized result. Its alternating sums, both weighted-subset conventions,
 named module-valued inversion iff, and both kernel orthogonalities are exact.
 Both orientations
 of q-Vandermonde and both central-support presentations are exact in
@@ -303,6 +303,14 @@ finite-support `finsum` over all integers. The ledger also now records the
 genuine real infinite product `qPochhammerInf` and its contractive-base
 convergence/positivity layer, replacing the stale claim that every infinite
 q-Pochhammer in the development was merely a finite `Finset.range` product.
+
+`QBinomialCauchy.lean` now gives the exact finite q-Cauchy convolution as
+`Fabius.finiteQPochhammerIn_mul_eq_sum_gaussianBinomial` for arbitrary
+`q`, `u`, and `v` in an arbitrary commutative ring and every natural length.
+The identity is denominator-free and requires no cancellation, nonvanishing,
+injectivity, topology, or convergence hypothesis. This closes only the
+monograph's `thm:q-cauchy`; the later Cauchy convolution II and
+q-Pfaff–Saalschütz summation remain unformalized.
 
 The wave volumes' central probabilistic object — the normalized
 geometric-uniform law `Y_q = (1-q)·∑ qʲU_j`, with `q = 1/2` the
