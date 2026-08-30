@@ -128,7 +128,7 @@ New standalone intake members:
   Poisson operators, martingales, nonreversibility certificate, scalar Stein
   kernel, and endpoint asymptotics extend the operator-representation theme.
 
-All five remain standalone pending deliberate consolidation and completion of
+All six remain standalone pending deliberate consolidation and completion of
 their claim-by-claim Lean crosswalks; the determinant sublayer just identified
 is the recorded partial crosswalk for `Fabius_Rvachev_New_Frontiers-2/`.
 Other paper theorem labels do not by themselves assert Lean status.
