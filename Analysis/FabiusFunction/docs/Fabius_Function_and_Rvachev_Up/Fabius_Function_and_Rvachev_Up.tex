@@ -8530,6 +8530,59 @@ open-domain, derivative, and holomorphy declarations are, respectively,
 \lean{analyticOn_measureCauchyTransform}.  The affine identities are total under Lean's
 Bochner-integral convention and allow every nonzero real scale, including a negative one.
 
+The companion module \path{MeasureCauchyMomentLaurent.lean} gives the bounded-measure
+moment expansion without choosing the real or complex scalar field in advance.  Let
+\(\mathbb K\) be any \(\mathrm{RCLike}\) field, let \(\iota:\R\to\mathbb K\) be its real
+embedding, and put
+\[
+ m_{\mu,k}^{(c)}=\int_{\R}(\iota(x)-c)^k\,\dd\mu(x).
+\]
+For a finite real measure, arbitrary \(c,z\in\mathbb K\), \(0\le R\), almost-everywhere
+support \(\lVert\iota(x)-c\rVert\le R\), and the strict exterior condition
+\(R<\lVert z-c\rVert\), the direct named theorem
+\lean{integral_inv_sub_eq_sum_range_measureCauchyMoment_add} gives
+\[
+ \int_{\R}\frac{\dd\mu(x)}{z-\iota(x)}
+ =\sum_{k<N}\frac{m_{\mu,k}^{(c)}}{(z-c)^{k+1}}
+  +(z-c)^{-N}\int_{\R}\frac{(\iota(x)-c)^N}{z-\iota(x)}\,\dd\mu(x),
+\]
+with positive moment coefficients for the report-oriented kernel.  Its finite error obeys
+\[
+ \left\lVert
+ \int_{\R}\frac{\dd\mu(x)}{z-\iota(x)}
+ -\sum_{k<N}\frac{m_{\mu,k}^{(c)}}{(z-c)^{k+1}}
+ \right\rVert
+ \le \mu(\R)\bigl(\lVert z-c\rVert-R\bigr)^{-1}
+       \left(\frac{R}{\lVert z-c\rVert}\right)^N.
+\]
+The zeroth centered moment is \(\mu(\R)\), and this is also the finite real mass factor
+\(\mu.\mathrm{real}(\mathrm{Set.univ})\) in the bound.  No probability normalization or
+topological-support theorem is assumed.
+
+That module's exhaustive public surface is one definition,
+\lean{measureCauchyMoment}, and fifteen theorems:
+\lean{inv_sub_eq_sum_range_add}, \lean{measureCauchyMoment_zero},
+\lean{measurable_inv_sub_rclike},
+\lean{integrable_centered_pow_div_sub_of_ae_norm_sub_le},
+\lean{integrable_inv_sub_of_ae_norm_sub_le}, \lean{norm_measureCauchyMoment_le},
+\lean{integral_inv_sub_eq_sum_range_measureCauchyMoment_add},
+\lean{norm_integral_inv_sub_sub_sum_range_measureCauchyMoment_le},
+\lean{summable_measureCauchyMoment_laurent},
+\lean{integral_inv_sub_eq_tsum_measureCauchyMoment},
+\lean{hasSum_measureCauchyMoment_laurent},
+\lean{measureCauchyTransform_eq_sum_range_measureCauchyMoment_add},
+\lean{norm_measureCauchyTransform_sub_sum_range_measureCauchyMoment_le},
+\lean{measureCauchyTransform_eq_tsum_measureCauchyMoment}, and
+\lean{hasSum_measureCauchyTransform_measureCauchyMoment_laurent}.
+The first theorem is the field-generic finite kernel identity; the remaining generic
+calculus is \(\mathrm{RCLike}\), and the last four declarations are complex wrappers for
+the named oriented transform.  The \path{StieltjesMomentLaurent.lean} and
+\path{StieltjesCauchyTransform.lean} layers retain the radius-one, center-zero up-measure
+statements.  Their precise bridges are
+\lean{ae_norm_sub_zero_le_one_rvachevMeasure} and
+\lean{measureCauchyMoment_rvachevMeasure_zero}, the latter identifying the generic
+coefficients with \lean{upMoment}.
+
 The reusable fixed-point interface assumes only that \(\mu\) is finite, its support lies in
 a carrier \(K\), the map \((u,x)\mapsto c+au+bx\) preserves \(K\), both \(a\) and \(b\)
 are nonzero, and
@@ -8597,8 +8650,9 @@ domains are now direct named results, not merely informal consequences of affine
 This closure does not supply a complex logarithmic fixed point, complex order,
 pointwise or nontangential Sokhotski--Plemelj limits, a principal-value Hilbert-transform
 identity, or the full Jacobi/Pad\'e theory.  Separate current modules do prove the real
-logarithmic identity for \(z>1\), real order lowering for \(\alpha>1\), exterior Laurent
-series, finite-height Herglotz--Poisson identities, integrated interval
+logarithmic identity for \(z>1\), real order lowering for \(\alpha>1\), the generic centered
+exterior Laurent series and its radius-one up-measure specialization, finite-height
+Herglotz--Poisson identities, integrated interval
 Stieltjes--Perron inversion, and initial exact Jacobi data; none of those statements is read
 as one of the stronger boundary or continuation claims just listed.
 
@@ -8635,7 +8689,8 @@ renormalization, Laurent/Herglotz/inversion layers, initial Jacobi data, and fin
 \path{SurvivalLayerCake.lean}, \path{CDFLayerCake.lean},
 \path{FractionalCDFLayerCake.lean}, \path{FabiusFractionalIntegral.lean},
 \path{InverseLayerCake.lean}, \path{InversePairIntegral.lean},
-\path{MeasureCauchyTransform.lean}, \path{GeometricUniformCauchy.lean},
+\path{MeasureCauchyTransform.lean}, \path{MeasureCauchyMomentLaurent.lean},
+\path{GeometricUniformCauchy.lean},
 \path{CauchyTransform.lean}, \path{CauchyCDF.lean},
 \path{CauchySurvival.lean}, \path{CauchyHigherPowers.lean},
 \path{CauchyRenormalization.lean}, \path{StieltjesLogFixedPoint.lean},

@@ -2,7 +2,7 @@
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
-[`Representation_Frontiers/`](Representation_Frontiers/) (297 pp,
+[`Representation_Frontiers/`](Representation_Frontiers/) (298 pp,
 eight parts):
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform
@@ -40,6 +40,22 @@ oriented transforms and every kernel power, affine pushforward naturality,
 holomorphy off complexified support, and transform/power recurrences for an
 arbitrary uniform affine fixed-point law.  Its invariant carrier needs no
 topological or measurable structure and the law need not be normalized.
+`MeasureCauchyMomentLaurent.lean` supplies the complementary bounded-measure
+Laurent layer with exactly one public definition and fifteen public theorems.
+For a finite real measure, arbitrary `{𝕜} [RCLike 𝕜]`, center `c`, and
+almost-everywhere relative-ball bound `‖(x : 𝕜) - c‖ ≤ R`, its direct API
+assumes `0 ≤ R < ‖z - c‖` and gives the centered moments, kernel and remainder
+integrability, the exact finite Laurent identity, the mass-scaled moment bound,
+the sharp geometric remainder
+`μ.real univ * (‖z-c‖-R)⁻¹ * (R/‖z-c‖)^N`, and
+`Summable`/`tsum`/`HasSum` convergence, together with complex wrappers for the
+named oriented transform.  The existing up-specific real and complex Laurent
+results are the `c = 0`, `R = 1` specialization.  The compatibility theorems
+`ae_norm_sub_zero_le_one_rvachevMeasure` and
+`measureCauchyMoment_rvachevMeasure_zero` respectively discharge its support
+hypothesis and identify its coefficients with `upMoment`.  This Laurent tranche
+does not formalize the coefficient recursion or a moment-determinacy/uniqueness
+argument.
 `GeometricUniformCauchy.lean` specializes this calculus to every real
 `|q| < 1`; its divided DDE and adjacent-power hierarchy assume only `q ≠ 0`
 and include negative ratios.  `CauchyTransform.lean` defines the canonical

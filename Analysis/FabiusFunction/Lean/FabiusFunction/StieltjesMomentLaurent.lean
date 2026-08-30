@@ -1,3 +1,4 @@
+import FabiusFunction.MeasureCauchyMomentLaurent
 import FabiusFunction.MomentHankelMatrix
 
 /-!
@@ -18,7 +19,7 @@ determinant polynomials and the asymptotic expansion of the
 transform.
 
 * `inv_sub_eq_sum_range_add` — the finite geometric expansion of the
-  Cauchy kernel, an algebraic identity;
+  Cauchy kernel, inherited from the generic measure-level Laurent layer;
 * `integrable_inv_sub_rvachevMeasure` — integrability of the kernel
   off the support;
 * `integral_inv_sub_eq_sum_upMoment_add` — the expansion with exact
@@ -32,23 +33,6 @@ open MeasureTheory
 
 namespace Fabius
 
-/-- Finite geometric expansion of the Cauchy kernel, in any field:
-`(z-x)⁻¹ = ∑_{k<N} x^k/z^{k+1} + x^N/(z^N(z-x))`. -/
-theorem inv_sub_eq_sum_range_add {K : Type*} [Field K] (N : ℕ)
-    {z x : K} (hz : z ≠ 0) (hzx : z - x ≠ 0) :
-    (z - x)⁻¹ = (∑ k ∈ Finset.range N, x ^ k / z ^ (k + 1)) +
-      x ^ N / (z ^ N * (z - x)) := by
-  induction N with
-  | zero => simp
-  | succ N ih =>
-    have hstep : x ^ N / z ^ (N + 1) +
-        x ^ (N + 1) / (z ^ (N + 1) * (z - x)) =
-        x ^ N / (z ^ N * (z - x)) := by
-      field_simp
-      ring
-    rw [Finset.sum_range_succ, add_assoc, hstep]
-    exact ih
-
 /-- Almost every point of the up-measure lies in `(-1,1)`. -/
 theorem ae_mem_Ioo_rvachevMeasure (F : BoundedFabius)
     (hF : IsFabius F) :
@@ -59,40 +43,63 @@ theorem ae_mem_Ioo_rvachevMeasure (F : BoundedFabius)
       (rvachevMeasure_Ioo_eq_one F hF)
   exact mem_ae_iff.mpr hcompl
 
+/-- The up-measure lies almost everywhere in the unit ball after embedding
+the real line into any real-or-complex scalar field. -/
+theorem ae_norm_sub_zero_le_one_rvachevMeasure
+    {𝕜 : Type*} [RCLike 𝕜]
+    (F : BoundedFabius) (hF : IsFabius F) :
+    ∀ᵐ x : ℝ ∂(rvachevMeasure F), ‖(x : 𝕜) - (0 : 𝕜)‖ ≤ 1 := by
+  filter_upwards [ae_mem_Ioo_rvachevMeasure F hF] with x hx
+  rw [sub_zero, RCLike.norm_ofReal]
+  exact le_of_lt (abs_lt.mpr ⟨hx.1, hx.2⟩)
+
+/-- Centering the generic measure moment at zero recovers the up-measure
+moment used by the Hankel and Jacobi layers, in any `RCLike` scalar field. -/
+@[simp] theorem measureCauchyMoment_rvachevMeasure_zero
+    {𝕜 : Type*} [RCLike 𝕜]
+    (F : BoundedFabius) (n : ℕ) :
+    measureCauchyMoment (𝕜 := 𝕜) (rvachevMeasure F) 0 n =
+      (upMoment F n : 𝕜) := by
+  rw [measureCauchyMoment, upMoment]
+  calc
+    (∫ x : ℝ, ((x : 𝕜) - 0) ^ n ∂(rvachevMeasure F)) =
+        ∫ x : ℝ, ((x ^ n : ℝ) : 𝕜) ∂(rvachevMeasure F) := by
+      apply integral_congr_ae
+      filter_upwards with x
+      rw [sub_zero, RCLike.ofReal_pow]
+    _ = ((∫ x : ℝ, x ^ n ∂(rvachevMeasure F) : ℝ) : 𝕜) := by
+      exact integral_ofReal
+
 /-- Off the support the Cauchy kernel is integrable: it is bounded by
 `(|z|-1)⁻¹` almost everywhere. -/
 theorem integrable_inv_sub_rvachevMeasure (F : BoundedFabius)
     (hF : IsFabius F) {z : ℝ} (hz : 1 < |z|) :
     Integrable (fun x => (z - x)⁻¹) (rvachevMeasure F) := by
   haveI := rvachevMeasure_isProbability F hF
-  refine Integrable.mono' (integrable_const ((|z| - 1)⁻¹))
-    ((measurable_const.sub measurable_id).inv.aestronglyMeasurable) ?_
-  filter_upwards [ae_mem_Ioo_rvachevMeasure F hF] with x hx
-  have hxabs : |x| ≤ 1 := le_of_lt (abs_lt.mpr ⟨hx.1, hx.2⟩)
-  have hle : |z| - 1 ≤ |z - x| := by
-    have h := abs_sub_abs_le_abs_sub z x
-    linarith
-  rw [norm_inv, Real.norm_eq_abs, inv_eq_one_div, inv_eq_one_div]
-  exact one_div_le_one_div_of_le (by linarith) hle
+  have hball : ∀ᵐ x : ℝ ∂(rvachevMeasure F),
+      ‖((x : ℝ) : ℝ) - (0 : ℝ)‖ ≤ 1 := by
+    exact ae_norm_sub_zero_le_one_rvachevMeasure (𝕜 := ℝ) F hF
+  have hz' : (1 : ℝ) < ‖((z : ℝ) : ℝ) - (0 : ℝ)‖ := by
+    simpa only [sub_zero, Real.norm_eq_abs] using hz
+  simpa using
+    (integrable_inv_sub_of_ae_norm_sub_le
+      (𝕜 := ℝ) (rvachevMeasure F) (c := 0) (R := 1)
+      (by norm_num) hball hz')
 
 /-- The remainder kernel is likewise integrable. -/
 theorem integrable_pow_div_sub_rvachevMeasure (F : BoundedFabius)
     (hF : IsFabius F) {z : ℝ} (hz : 1 < |z|) (N : ℕ) :
     Integrable (fun x => x ^ N / (z - x)) (rvachevMeasure F) := by
   haveI := rvachevMeasure_isProbability F hF
-  refine Integrable.mono' (integrable_const ((|z| - 1)⁻¹))
-    (((measurable_id.pow_const N).div
-      (measurable_const.sub measurable_id)).aestronglyMeasurable) ?_
-  filter_upwards [ae_mem_Ioo_rvachevMeasure F hF] with x hx
-  have hxabs : |x| ≤ 1 := le_of_lt (abs_lt.mpr ⟨hx.1, hx.2⟩)
-  have hle : |z| - 1 ≤ |z - x| := by
-    have h := abs_sub_abs_le_abs_sub z x
-    linarith
-  have hpow : |x ^ N| ≤ 1 := by
-    rw [abs_pow]
-    exact pow_le_one₀ (abs_nonneg x) hxabs
-  rw [Real.norm_eq_abs, abs_div, inv_eq_one_div]
-  exact div_le_div₀ (by norm_num) hpow (by linarith) hle
+  have hball : ∀ᵐ x : ℝ ∂(rvachevMeasure F),
+      ‖((x : ℝ) : ℝ) - (0 : ℝ)‖ ≤ 1 := by
+    exact ae_norm_sub_zero_le_one_rvachevMeasure (𝕜 := ℝ) F hF
+  have hz' : (1 : ℝ) < ‖((z : ℝ) : ℝ) - (0 : ℝ)‖ := by
+    simpa only [sub_zero, Real.norm_eq_abs] using hz
+  simpa using
+    (integrable_centered_pow_div_sub_of_ae_norm_sub_le
+      (𝕜 := ℝ) (rvachevMeasure F) (c := 0) (R := 1)
+      (by norm_num) hball hz' N)
 
 /-- **The finite moment/Laurent expansion with exact remainder**:
 `∫ (z-x)⁻¹ dμ_up = ∑_{k<N} m_k/z^{k+1} + z^{-N}·∫ x^N/(z-x) dμ_up`
