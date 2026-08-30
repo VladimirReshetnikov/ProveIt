@@ -894,6 +894,15 @@ Substitution of \eqref{p1:eq:bit-floor} gives a digit-free, floor-only product:
 \end{equation}
 Every factor is \(1-2b_j(n)\in\{1,-1\}\).
 
+\emph{Formal versions.}  The digit extraction \eqref{p1:eq:bit-floor} is
+\lean{Fabius.div\_two\_pow\_sub\_two\_mul\_div\_two\_pow\_succ}, with the bit itself on
+the left in \lean{Fabius.testBit\_toNat\_eq\_div\_sub\_two\_mul\_div}, both in
+\path{BinaryDigitFloor.lean}.  The corpus carried the equivalent \emph{residue} form
+first --- \lean{Fabius.testBit\_iff\_div\_two\_pow\_mod\_two} in
+\path{DigitCharacterCongruence.lean}, the \(j\)-th bit is set exactly when
+\(\lfloor n/2^j\rfloor\) is odd --- and the difference form was added so that this
+display could be cited rather than paraphrased.
+
 \subsection{Dyadic floor and fractional-part sums}
 
 \begin{lemma}[Legendre floor sum]
@@ -1330,6 +1339,16 @@ modulo two.
 The telescoping product \eqref{p1:eq:ruler-product} returns to this formula because
 \(\sum_{k=1}^{n}\vtwo(k)=\vtwo(n!)\).
 
+\emph{Formal versions.}  Legendre's formula \eqref{p1:eq:legendre-two} is
+\lean{Fabius.binaryWeight\_add\_padicValNat\_factorial} in \path{ThueMorseDigits.lean},
+stated additively as \(\wt(n)+\vtwo(n!)=n\) so that no subtraction in \(\N\) is needed.
+The floor form \eqref{p1:eq:floor-sum} is
+\lean{Fabius.binaryWeight\_add\_sum\_div\_two\_pow} and the all-index variant
+\eqref{p1:eq:floor-sum-all} is \lean{Fabius.sum\_div\_two\_pow\_add\_binaryWeight}, both
+in the same file.  Each floor statement carries one hypothesis the display leaves
+implicit: the sum is truncated at any \(b>\log_2n\), which is where its tail is already
+zero.
+
 \subsection{A single central binomial coefficient}
 
 \begin{theorem}[Central-binomial valuation]
@@ -1374,6 +1393,16 @@ logarithm.  Formula \eqref{p1:eq:central-thue-morse} inspects the two-adic order
 one entry in row \(2n\), and in fact recovers the entire digit sum rather than
 only its parity.
 \end{boxedremark}
+
+\emph{Formal versions.}  Equation \eqref{p1:eq:central-v2} is
+\lean{Fabius.padicValNat\_two\_centralBinom} and the sign form
+\eqref{p1:eq:central-thue-morse} is
+\lean{Fabius.thueMorseSign\_eq\_neg\_one\_pow\_centralBinom}, both in
+\path{CentralBinomialValuation.lean}.  The Lean proof does not pass through the
+factorial valuation as the proof above does: it is the \(a=b=n\) case of the additive
+Kummer identity \lean{Fabius.binaryWeight\_add\_addChoose\_padicValNat}, with
+\(\wt(2n)=\wt(n)\) cancelling one copy of the weight.  Nothing about central binomial
+coefficients as such is used.
 
 \subsection{Catalan valuations}
 
@@ -1470,6 +1499,19 @@ For \(a_1,\ldots,a_r\ge0\) and \(N=a_1+\cdots+a_r\),
 Apply Legendre's formula to
 \(N!/(a_1!\cdots a_r!)\) and then take parity.
 \end{proof}
+
+\emph{Formal versions.}  Kummer's identity \eqref{p1:eq:kummer-digit-sum} is
+\lean{Fabius.binaryWeight\_add\_addChoose\_padicValNat} in
+\path{ThueMorseValuation.lean}, again stated additively as
+\(\wt(a+b)+\vtwo\binom{a+b}a=\wt(a)+\wt(b)\); the sign cocycle
+\eqref{p1:eq:carry-sign} is \lean{Fabius.thueMorseSign\_add\_valuation} in
+\path{TwoAdic.lean}, and the borrow form for subtraction is
+\lean{Fabius.subChoose\_padicValNat\_two\_add}.  The multinomial valuation
+\eqref{p1:eq:multinomial-v2} is formalized at an \emph{arbitrary} prime rather than only
+at two, as \lean{Fabius.sum\_digitSum\_eq\_sub\_one\_mul\_padicValNat\_multinomial} in
+\path{ThueMorseMultinomial.lean}, whose \(p=2\) reading is the display; its sign form
+\eqref{p1:eq:multinomial-carry-sign} follows by taking parity but is not separately
+stated there.
 
 \subsection{Subtraction and borrow counts}
 

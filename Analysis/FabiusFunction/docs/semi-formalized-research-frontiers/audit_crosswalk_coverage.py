@@ -39,11 +39,26 @@ OPEN = re.compile(
     re.I)
 
 
+SECTION = re.compile(r'\\(?:sub)*section\*?\{', re.M)
+
+
 def spans(text):
-    """Each result, paired with the text from it to the next result."""
+    """Each result, paired with the rest of its (sub)section.
+
+    These volumes put one crosswalk postscript per subsection, covering
+    every result in it -- so the span must run to the next sectioning
+    command, not to the next result.  Cutting at the next result made
+    `p1:thm:primitive-recursive` look uncited because a lemma follows it
+    and the shared crosswalk lands after the lemma.
+    """
     marks = [(m.start(), m.group(1), m.group(2)) for m in ENV.finditer(text)]
-    for k, (start, kind, label) in enumerate(marks):
-        stop = marks[k + 1][0] if k + 1 < len(marks) else len(text)
+    cuts = [m.start() for m in SECTION.finditer(text)]
+    for start, kind, label in marks:
+        stop = len(text)
+        for c in cuts:
+            if c > start:
+                stop = c
+                break
         yield kind, label, text[start:stop]
 
 
