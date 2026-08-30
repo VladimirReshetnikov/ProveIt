@@ -17,8 +17,8 @@ from pathlib import Path
 
 FRONTIER_ROOT = Path(__file__).resolve().parent
 FABIUS_ROOT = FRONTIER_ROOT.parent.parent
-LEAN = FABIUS_ROOT / 'Lean' / 'FabiusFunction'
 DOCS = FRONTIER_ROOT
+LEAN = FABIUS_ROOT / 'Lean' / 'FabiusFunction'
 
 DECL = re.compile(
     r'^\s*(?:@\[[^\]]*\]\s*)?'

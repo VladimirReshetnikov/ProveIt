@@ -30,8 +30,8 @@ and the shortest of them to state.
 * `Fabius.thueMorseSign_eq_neg_one_pow_centralBinom` — **the sign
   form** `ε_n = (-1)^{v₂ C(2n,n)}`;
 * `Fabius.padicValNat_two_centralBinom_eq_zero_iff` — the valuation
-  vanishes exactly at `0`, the unique natural number of binary weight
-  zero.
+  vanishes exactly when the binary weight is zero, hence exactly at `n = 0`
+  (not at positive powers of two).
 -/
 
 set_option autoImplicit false
@@ -55,9 +55,9 @@ theorem thueMorseSign_eq_neg_one_pow_centralBinom (n : ℕ) :
     thueMorseSign n = (-1 : ℤ) ^ padicValNat 2 ((2 * n).choose n) := by
   rw [padicValNat_two_centralBinom, thueMorseSign]
 
-/-- The valuation vanishes exactly when `n` has binary weight zero —
-that is, exactly at `0`.  Stated in the weight form, which is what the
-previous theorem makes available. -/
+/-- The valuation vanishes exactly when `n` has binary weight zero, hence
+exactly at `n = 0`; positive powers of two have binary weight one. The theorem
+is stated in the weight form supplied by the preceding valuation identity. -/
 theorem padicValNat_two_centralBinom_eq_zero_iff (n : ℕ) :
     padicValNat 2 ((2 * n).choose n) = 0 ↔ binaryWeight n = 0 := by
   rw [padicValNat_two_centralBinom]

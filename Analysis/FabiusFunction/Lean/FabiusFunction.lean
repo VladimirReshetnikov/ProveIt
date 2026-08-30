@@ -34,6 +34,7 @@ import FabiusFunction.FinitePolynomialFunctional
 import FabiusFunction.PolynomialMomentFunctional
 import FabiusFunction.FiniteMomentGram
 import FabiusFunction.GramStieltjes
+import FabiusFunction.FiniteMomentJacobi
 import FabiusFunction.WeightedScaleMultiplicity
 import FabiusFunction.SpectralZetaWeighted
 import FabiusFunction.ShiftDifferenceWeights
@@ -179,6 +180,7 @@ import FabiusFunction.StieltjesLogFixedPoint
 import FabiusFunction.StieltjesResolventHierarchy
 import FabiusFunction.StieltjesGeneralizedOrder
 import FabiusFunction.OrthogonalPolynomialConstruction
+import FabiusFunction.OrthogonalPolynomialGramBridge
 import FabiusFunction.OrthogonalPolynomialValues
 import FabiusFunction.OrthogonalPolynomialParity
 import FabiusFunction.OrthogonalPolynomialRecurrence
@@ -305,6 +307,7 @@ import FabiusFunction.PeriodicRegularity
 import FabiusFunction.LaplacePeriodicSecondOrder
 import FabiusFunction.FabiusTranslatedLegendreSeries
 import FabiusFunction.FabiusLegendreLeastSquares
+import FabiusFunction.FabiusLegendreEnergy
 import FabiusFunction.FabiusBinaryReductionSeries
 import FabiusFunction.FabiusComputability
 import FabiusFunction.Monotonicity
@@ -356,6 +359,8 @@ import FabiusFunction.KappaOneEnclosure
 import FabiusFunction.KappaConstantEnclosures
 import FabiusFunction.MeasureRefinement
 import FabiusFunction.RandomSeriesLaw
+import FabiusFunction.MeasureCauchyTransform
+import FabiusFunction.GeometricUniformCauchy
 import FabiusFunction.CauchyTransform
 import FabiusFunction.CauchyCDF
 import FabiusFunction.CauchyRenormalization

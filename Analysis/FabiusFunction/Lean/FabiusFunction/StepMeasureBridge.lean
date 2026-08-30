@@ -320,7 +320,8 @@ theorem atom_lt_stepIntervalRight (n m : ℕ) :
   apply (div_lt_div_iff_of_pos_right hden).2
   linarith
 
-/-- A polynomial atom lies in its open cell, so that cell's half-endpoint indicator is one. -/
+/-- A polynomial atom lies in its open cell, so that cell's half-endpoint
+indicator is one. -/
 @[simp] theorem halfEndpointIntervalIndicator_atom (n m : ℕ) :
     halfEndpointIntervalIndicator (stepIntervalLeft n m) (stepIntervalRight n m)
       (polynomialAtomLocation n m) = 1 := by

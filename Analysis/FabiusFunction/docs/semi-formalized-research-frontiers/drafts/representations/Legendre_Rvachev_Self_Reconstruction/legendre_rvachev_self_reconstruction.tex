@@ -211,6 +211,19 @@ that snapshot after searches for their defining formulas and terminology.
 This is a corpus-relative novelty statement, not an assertion of worldwide
 priority.  Conjectures are explicitly labeled; numerical evidence is never
 used in place of a proof.
+
+Editorial update (2026-08-29): at compiled source checkpoint
+\texttt{ca66a1247}, the subsequent Lean module
+\path{FabiusLegendreEnergy.lean} defines the polynomial-form blocks
+$B_n=u_nP_{2n}$ and formalizes their complete orthogonality formula
+\eqref{eq:block-orthogonality}, the coefficient Parseval identity
+\eqref{eq:parseval-up}, the exact coefficient tail
+\eqref{eq:exact-L2-tail}, and the real-variable Legendre equality
+\eqref{eq:A2-legendre}.  Its public tail API includes both a
+\texttt{HasSum} theorem and a \texttt{tsum} equality.  It does not formalize
+the blocks' finite up-translate realization or atom-Gram formula, the
+Fourier-product and infinite-sinc formulas \eqref{eq:A2-fourier} and
+\eqref{eq:A2-sinc}, or the assertion that the partial sums are rational.
 \end{statusbox}
 
 \clearpage
@@ -1659,12 +1672,14 @@ arguments.
  \item \textbf{Legendre specialization.}  Instantiate the existing synthesis
  theorem with $p=P_d$, $m=2^d$, and interval $[-1,1]$.  Package
  \eqref{eq:Pd-synthesis} and the even specialization.
- \item \textbf{Orthogonal block layer.}  Combine the finite identity with
- formal Legendre orthogonality to prove \eqref{eq:block-orthogonality}, the
- exact tail, and the atom-Gram formula.
- \item \textbf{Energy layer.}  Relate $u$ and $F$, invoke Parseval for the
- Fourier product, and prove the three-way identity
- \eqref{eq:A2-legendre}--\eqref{eq:A2-sinc}.
+ \item \textbf{Orthogonal block layer.}  Complete orthogonality of the
+ polynomial-form blocks, the coefficient Parseval identity, and the exact tail
+ are now formalized in \path{FabiusLegendreEnergy.lean}.  The finite
+ up-translate realization and atom-Gram formula remain targets.
+ \item \textbf{Energy layer.}  The real-variable equality
+ \eqref{eq:A2-legendre} is now formalized.  The Fourier-product and
+ infinite-sinc equalities \eqref{eq:A2-fourier}--\eqref{eq:A2-sinc} remain
+ targets.
  \item \textbf{Refinement layer.}  Define finite index embeddings $E_r$ and
  prove \eqref{eq:interlevel-null} by subtraction.  The lifting theorem then
  reduces to coefficient normalization and linearity.

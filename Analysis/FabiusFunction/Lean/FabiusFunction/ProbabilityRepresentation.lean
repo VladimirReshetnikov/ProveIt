@@ -414,7 +414,8 @@ space used in the existence proof. -/
 noncomputable def cdfContinuousMap : Existence.C :=
   ⟨fun x => weightedSumCDF x, continuous_weightedSumCDF.comp continuous_subtype_val⟩
 
-/-- The continuous-map representative of the CDF evaluates to `weightedSumCDF`. -/
+/-- The restricted continuous CDF evaluates to `weightedSumCDF` at each point
+of the unit interval. -/
 @[simp] lemma cdfContinuousMap_apply (x : Existence.I) :
     cdfContinuousMap x = weightedSumCDF x := rfl
 

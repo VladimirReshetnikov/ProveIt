@@ -1958,7 +1958,9 @@ statement.  At $q=1$ the coordinate collapses to $-W_{-1}(-x/(C_Pp))$
 of the lower real branch, satisfies $W_{-1}(z)\e^{W_{-1}(z)}=z$ on
 $[-\e^{-1},0)$, with functional equation
 \lean{Fabius.lowerLambertW_mul_exp_of_mem_Ico} and uniqueness
-\lean{Fabius.lowerLambertW_unique_of_mem_Ico}.
+\lean{Fabius.lowerLambertW_unique_of_mem_Ico}.  Thus the generalized coordinate
+\eqref{p1:eq:generalized-lambert} has an exact Lean counterpart; the endpoint transseries
+organized by that coordinate remains outside the formal boundary.
 
 
 \section{An alternating Newton family of positive-definite Pascal quotients}
@@ -3147,7 +3149,7 @@ transformed series, including the shifted Gaussian tail, is formalized in
 \path{AnalyticSeriesFilter.lean}; zero-weight nodes require no convergence of
 their unweighted samples.  The infinite condition-number limit on the whole range
 \(0\le q<1\) is formalized in \path{LimitConditionNumber.lean} by
-\lean{Fabius.tendsto\_sum\_abs\_qToeplitzWeight}, with left-endpoint divergence
+\lean{Fabius.tendsto\_sum\_abs\_qToeplitzWeight}, with left-limit divergence
 at one proved by
 \lean{Fabius.tendsto\_qConditionNumberLimit\_atTop\_at\_one\_left}.  The conditionally convergent
 boundary, the ordered one-sided sign and bound, the actual

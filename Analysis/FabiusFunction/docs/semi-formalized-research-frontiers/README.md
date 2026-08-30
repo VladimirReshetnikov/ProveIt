@@ -11,9 +11,10 @@ carries a crosswalk naming the declarations that discharge its claims.
 So the contents are *mixed*, and the point of the directory is now to keep
 the two sides in correspondence rather than to hold one side apart: every
 claim should either name the Lean theorem that proves it or say precisely
-what is still missing.  `audit_all.sh` enforces the mechanical half of that
-(every cited name resolves; every module is reachable), and
-`audit_stale_claims.py` reports the half that needs reading.
+what is still missing.  `audit_all.sh` enforces the mechanical half of that:
+facade reachability, exact crosswalk names, declaration-name uniqueness, and
+the names advertised by module docstrings.  `audit_stale_claims.py` reports the
+half that needs reading.
 
 The canonical frontier artifacts are:
 
@@ -218,38 +219,45 @@ group README on removal.
 
 ### Consistency audits
 
-Four scripts here form the mechanical gate against the Lean corpus and exit
-nonzero on failure. Run them together with `sh audit_all.sh` before pushing
-any change that touches either side. The stale-claim and crosswalk-coverage
-surveys are advisory; the build-log checker is run separately after compiling
-a changed volume.
+Four scripts here check the volumes and module documentation against the Lean
+corpus. `audit_all.sh` runs all four and exits nonzero if any hard check fails;
+run it before pushing any change that touches either side. The stale-claim and
+crosswalk-coverage surveys are advisory; the build-log checker is run
+separately after compiling a changed volume.
 
+- `audit_facade_reachability.py` — every module on disk is reachable from the
+  library root `FabiusFunction.lean`. A newly added leaf module that nothing
+  imports is never elaborated by `lake build FabiusFunction`, so a whole-library
+  build would report success while silently skipping it.
 - `audit_crosswalk_names.py` — every `Fabius.*` name cited in a `.tex` file
   resolves to a declaration or a namespace that exists in the corpus. The
   corpus is scanned with a namespace stack, so dotted citations such as
   `Fabius.SaddleExpansion.expCoeff` are matched whole rather than truncated at
   the first dot. A citation that no longer resolves usually means a Lean
   declaration was renamed without its crosswalk being updated.
-- `audit_facade_reachability.py` — every module on disk is reachable from the
-  library root `FabiusFunction.lean`. A newly added leaf module that nothing
-  imports is never elaborated by `lake build FabiusFunction`, so a whole-library
-  build would report success while silently skipping it.
-- `audit_duplicate_names.py` — no declaration name is introduced by more than
-  one module.
-- `audit_docstring_names.py` — every fully qualified `Fabius.*` declaration
-  advertised by a module docstring exists in the corpus.
+- `audit_duplicate_names.py` — no two modules declare the same non-private,
+  fully qualified name. A collision generally means that a new module has
+  reproved an existing result and should import it instead.
+- `audit_docstring_names.py` — backticked identifiers advertised in bulleted
+  module-docstring declarations resolve in the corpus. An unresolved
+  `Fabius.*` name is a hard failure. An unresolved unqualified name is advisory
+  only, because it may be a root-namespace Mathlib declaration that this
+  lexical audit cannot distinguish from a stale local name.
 - `audit_stale_claims.py` and `audit_crosswalk_coverage.py` — advisory worklists
   for contradictory “open” claims and theorem environments lacking either a
   nearby Lean citation or an explicit formalization disclaimer.
-- `audit_overfull.py LOG [THRESHOLD_PT]` — reports every overfull box in a
-  generated LaTeX log and exits nonzero when one exceeds the threshold
-  (20 pt by default). It is intentionally outside `audit_all.sh`, because logs
-  are generated locally and never committed.
 
-Neither script has standing exceptions. If one starts reporting a failure that
-looks spurious, fix the script rather than carrying the exception: the three
-false positives it used to report were hiding about ninety citations that were
-only being checked at their first component.
+The four hard checks have no standing exceptions. If one starts reporting a
+failure that looks spurious, fix the script rather than carrying the exception:
+the three false positives the crosswalk used to report were hiding about ninety
+citations that were only being checked at their first component. Docstring-name
+advisories are printed for review but intentionally do not change the exit
+status.
+
+`audit_overfull.py <file.log> [threshold_pt]` is a separate post-build helper,
+not part of `audit_all.sh`: it parses LaTeX overfull-box widths without the
+shell-escaping ambiguity of the old `grep` pipeline and exits nonzero above the
+chosen threshold.
 
 Build the canonical document with exactly three `pdflatex` passes, inspect the
 rendered PDF, and commit the PDF with its source. A coordinator may authorize a

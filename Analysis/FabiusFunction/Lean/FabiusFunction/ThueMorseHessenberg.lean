@@ -51,14 +51,15 @@ below the diagonal, superdiagonal `1, 2, …, n-1`. -/
 def thueMorseHessenberg (n : ℕ) : Matrix (Fin n) (Fin n) ℤ :=
   hessBand n rulerDiag rulerCoeff
 
-/-- Entrywise formula for the lower-triangular ruler-convolution matrix. -/
+/-- Entrywise formula for the lower-triangular Thue–Morse ruler-convolution
+matrix. -/
 theorem thueMorseTriangular_apply (n : ℕ) (m j : Fin n) :
     thueMorseTriangular n m j =
       if (j : ℕ) = (m : ℕ) then ((m : ℕ) + 1 : ℤ)
       else if (j : ℕ) < (m : ℕ) then rulerCoeff ((m : ℕ) - (j : ℕ)) else 0 :=
   rfl
 
-/-- Entrywise formula for the Thue--Morse ruler Hessenberg matrix. -/
+/-- Entrywise formula for the Thue–Morse ruler-coefficient Hessenberg matrix. -/
 theorem thueMorseHessenberg_apply (n : ℕ) (i j : Fin n) :
     thueMorseHessenberg n i j =
       if (j : ℕ) = (i : ℕ) + 1 then ((i : ℕ) + 1 : ℤ)

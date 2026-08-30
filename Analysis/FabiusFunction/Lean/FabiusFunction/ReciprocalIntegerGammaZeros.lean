@@ -24,7 +24,7 @@ exact counterpart".
 This module supplies the *set* at every integer base.  The **order**
 is not proved here and is not a corollary of it: at `b = 2` the order
 comes from transferring the integer-zero order of the Rvachev product
-through `G₂(z) G₂(-z) = Φ(z)`, and the corpus has no `Φ_b` to transfer
+through `G_{1/2}(z) G_{1/2}(-z) = Φ(z)`, and the corpus has no `Φ_b` to transfer
 through at other bases.  Proving it directly would mean splitting off
 the finitely many vanishing factors — the `h` with `b^h ∣ n` — and
 showing the remaining product is an analytic unit, which is the

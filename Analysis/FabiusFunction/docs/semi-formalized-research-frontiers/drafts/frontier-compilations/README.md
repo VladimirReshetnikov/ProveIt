@@ -1,7 +1,7 @@
 # Frontier compilations
 
 The broad multi-topic "collected new results" report series,
-consolidated (2026-08-28) into the 267-page single volume
+consolidated (2026-08-28) into the 268-page single volume
 [`Frontier_Compilations/`](Frontier_Compilations/): ten absorbed reports,
 displayed as ten outer parts.
 
@@ -45,8 +45,9 @@ exact-support, absolute-continuity, and null-singleton results. The former
 report directories were deleted. Provenance with SHA-256 hashes is recorded
 in the volume itself, and git history is the archive.
 
-Post-snapshot Lean status at source checkpoint `b3720d4b5` adds two generic
-finite-algebra modules relevant to Report I:
+Post-snapshot Lean status began at source checkpoint `b3720d4b5` with two
+generic finite-algebra modules relevant to Report I; the current tree adds the
+generic Jacobi layer and its exact up-measure comparison:
 
 - `FiniteMomentGram.lean` exports `momentFunctional`,
   `momentFunctional_apply`, `momentFunctional_monomial`,
@@ -76,10 +77,31 @@ finite-algebra modules relevant to Report I:
   `eq_gramStieltjesPolynomial_of_isMonicOfDegree_of_orthogonal`,
   `momentPairing_gramStieltjesPolynomial_self`, and
   `momentPairing_gramStieltjesPolynomial_self_ne_zero`.
+- `FiniteMomentJacobi.lean` adds `momentPairing_X_mul_left`,
+  `momentPairing_eq_zero_of_forall_X_pow`, `gramStieltjesNorm`,
+  `momentPairing_gramStieltjesPolynomial_X_pow_eq_norm`,
+  `momentPairing_gramStieltjesPolynomial_self_eq_norm`,
+  `gramStieltjesNorm_ne_zero`, `gramStieltjesJacobiDiagonal`,
+  `gramStieltjesJacobiSubdiagonal`,
+  `gramStieltjesJacobiSubdiagonal_eq_det_ratio`,
+  `gramStieltjesPolynomial_three_term_zero`, and
+  `gramStieltjesPolynomial_three_term`.
+- `OrthogonalPolynomialGramBridge.lean` adds
+  `momentFunctional_upMoment_eq_integral`,
+  `momentPairing_upMoment_eq_integral`,
+  `momentHankel_eq_momentHankelMatrix`,
+  `hankelDet_eq_momentHankelDet`,
+  `hankelOrthoPolynomial_eq_gramStieltjesNumerator`, and
+  `upOrthoPolynomial_eq_gramStieltjesPolynomial`, together with
+  `hankelRatio_eq_gramStieltjesNorm`,
+  `gramStieltjesJacobiDiagonal_upMoment_eq_zero`, and
+  `gramStieltjesJacobiSubdiagonal_upMoment_eq` for the recurrence data.
 
 This is a finite, generic Gram--Stieltjes layer under nonzero-Hankel-minor
-hypotheses; those two modules themselves assume no measure and prove no
-positivity.  The complementary Fabius-specific modules
+hypotheses; the first three modules themselves assume no measure and prove no
+positivity.  The bridge identifies their objects exactly with the
+up-measure-specific matrix, determinant, determinant polynomial, and monic
+normalization.  The complementary Fabius-specific modules
 `MomentHankelMatrix.lean`, `MomentHankelValues.lean`, and
 `OrthogonalPolynomial*.lean` prove positivity and nonvanishing, the monic
 orthogonal construction, parity, the symmetric three-term recurrence, and the

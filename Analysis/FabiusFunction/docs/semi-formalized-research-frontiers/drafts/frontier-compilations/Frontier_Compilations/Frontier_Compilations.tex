@@ -288,8 +288,8 @@ Those two sentences are the main launch point of this report.  The first becomes
 
 \statusbox{\textbf{Mathematical status.}  Every displayed frontier theorem below is accompanied by a proof or by an explicit reduction to standard Gaussian/Lobatto quadrature facts.  The low-order constants were independently checked by exact rational arithmetic or high-precision evaluation.  The results are presented as new relative to the audited \texttt{ProveIt} corpus.  A broad literature search did not locate these Fabius-specific formulas, but this report does not assert an exhaustive priority claim.  The finite algebraic bridge cross-referenced to \path{GeometricQBinomialLagrange.lean} is Lean-formalized, and \path{AnalyticSeriesFilter.lean} now proves the abstract exact Gaussian tail under unconditional summability, with no unweighted convergence condition at a zero-weight node.  It does not cover conditionally-only boundary series, signs, bounds, uniform convergence, or the report's sinc-product instantiation.  Separately, \path{FractionalVolterraCalculus.lean} proves positive affine covariance on ordered real intervals for arbitrary real order, and Gamma-normalized order raising for real $\alpha>0$ from a continuous Banach-valued primitive with an interval-integrable right derivative; for $\alpha\le0$, affine covariance is an identity for the totalized Lean interval-integral definition, and a classical Riemann--Liouville or integrability interpretation is asserted only for positive order.  \path{FabiusFractionalVolterra.lean} defines the total causal Rvachev fractional primitive, proves its support cutoff, positive-natural bridge, and positive-order semigroup on $x\ge-1$, and specializes order raising to the signed extension for $x\ge0$, bounded Fabius for $0\le x\le1$, and the $\Up$ bridge from $-1$ for $x\ge-1$.  These series and fractional APIs were checked at source checkpoint \path{149332f9d}.  Complex, weighted-monomial, iterated, negative-branch, shifted-lattice, endpoint-moment, transform/tail, piecewise/refinement, and inverse/quantile fractional formulas, and the report-specific analytic theorem families, remain frontier.}
 
-\statusbox{\textbf{Post-snapshot finite moment and Gram--Stieltjes status.}
-At source checkpoint \path{b3720d4b5}, \path{FiniteMomentGram.lean} defines the
+\statusbox{\textbf{Post-snapshot finite moment, Gram--Stieltjes, and Jacobi status.}
+The generic layer begins with \path{FiniteMomentGram.lean}, which defines the
 generic polynomial \path{momentFunctional}, symmetric \path{momentPairing},
 \path{momentHankelMatrix}, \path{momentHankelDet}, and
 \path{finiteMomentPairing}.  The declarations
@@ -311,12 +311,23 @@ The downstream \path{GramStieltjes.lean} constructs the fraction-free
 \path{momentPairing_gramStieltjesPolynomial_self} prove finite
 Gram--Stieltjes orthogonality, uniqueness under a nonzero leading minor, and
 the quotient of consecutive Hankel determinants for the self-pairing.
-These two generic modules themselves assume no measure and prove no positivity.
+\path{FiniteMomentJacobi.lean} continues without a measure: it defines
+\path{gramStieltjesNorm}, \path{gramStieltjesJacobiDiagonal}, and
+\path{gramStieltjesJacobiSubdiagonal}; proves the determinant cross-ratio for
+the subdiagonal; proves the degree-zero equation through
+\path{gramStieltjesPolynomial_three_term_zero}; and proves every higher finite
+three-term recurrence through \path{gramStieltjesPolynomial_three_term} from
+the three consecutive nonzero minors.  These three generic modules themselves
+assume no measure and prove no positivity.
 The complementary up-measure pipeline in \path{MomentHankelMatrix.lean},
 \path{MomentHankelValues.lean}, and the \path{OrthogonalPolynomial*.lean}
 modules proves strict positivity, constructs the normalized polynomials, proves
 parity and the symmetric three-term recurrence, and evaluates the first exact
-Jacobi data.  Root location or simplicity, Gaussian or Lobatto nodes, weights,
+Jacobi data.  \path{OrthogonalPolynomialGramBridge.lean} now identifies the
+generic up-moment functional and pairing with integration, both Hankel
+objects, both determinant polynomials, and both monic normalizations; its
+Jacobi wrappers identify the norm, zero diagonal, and subdiagonal ratio with
+the up-specific data.  Root location or simplicity, Gaussian or Lobatto nodes, weights,
 exactness, or error signs, finite or infinite Jacobi/Stieltjes-fraction
 identification, and convergence remain outside Lean.  This post-snapshot
 proof-status update does not alter the absorbed reports' provenance hashes or
@@ -1892,15 +1903,20 @@ A reusable finite-dimensional module can avoid committing immediately to explici
 \item Repeat with the weighted measure $(1-x^2)\mu$ for Lobatto quadrature, including the positive-weight proof from isolating nonnegative polynomials.
 \end{enumerate}
 
-At source checkpoint \path{b3720d4b5}, the generic finite-algebraic portions of
-the first two items are now supplied by \path{FiniteMomentGram.lean} and
-\path{GramStieltjes.lean}: the latter gives the unique normalized monic
+The generic finite-algebraic portions of the first two items are now supplied
+by \path{FiniteMomentGram.lean} and \path{GramStieltjes.lean}: the latter gives
+the unique normalized monic
 polynomial under a nonzero leading Hankel determinant and proves
 \(h_r=\Delta_{r+1}/\Delta_r\) as a self-pairing identity.  Those generic
 modules do not connect the hypotheses to a measure or prove positivity.
+\path{FiniteMomentJacobi.lean} also proves the generic finite three-term
+recurrence, including its degree-zero base equation, and the determinant
+formula for its subdiagonal coefficient.
 Separately, the up-law modules now prove strict positivity, construct the
 normalized orthogonal polynomials, and establish their symmetric three-term
-recurrence.  The positive Gaussian/Lobatto construction, root and weight
+recurrence, while \path{OrthogonalPolynomialGramBridge.lean} proves that their
+objects are exactly the generic construction specialized to
+\path{upMoment}.  The positive Gaussian/Lobatto construction, root and weight
 theory, Hermite-remainder sign, and Peano-kernel tasks in this phase remain
 open.
 
@@ -14677,7 +14693,9 @@ geometric corollary characterizes this report's law even at \(q=0\) and negative
 no support, density, or moment assumptions.  A later mainline tranche, rechecked in the
 current combined full-facade build, gives the phase-bearing sinc prefixes an exact finite
 residual formula and proves their pointwise convergence to the characteristic function for
-every \(|q|<1\).  The existing \path{geometricSincProduct} packages the same sinc factors,
+every \(|q|<1\).  Independently, for every nonzero such \(q\), direct named Cauchy-transform
+and adjacent-power refinement equations hold off the exact support.  The existing
+\path{geometricSincProduct} packages the same sinc factors,
 after frequency rescaling, as a \path{tprod}; a named characteristic-function bridge to it
 (or explicit \path{HasProd} theorem), compact-uniform convergence of the characteristic
 prefixes, the report's rapid-decay and inversion proof, explicit Bernoulli-cumulant/Bell-moment formulas and
@@ -14744,14 +14762,29 @@ no support, absolute continuity, density, or moments.  The corollary
 law by its displayed affine independent-copy equation throughout that full parameter range.
 
 The definition of \path{geometricUniformDensity} is total, but no density formula or
-Radon--Nikodym interpretation is claimed here for \(q\le0\).  Also still frontier are the
-named characteristic-function bridge to the existing \path{geometricSincProduct}
+Radon--Nikodym interpretation is claimed here for \(q\le0\).  Fixed-point uniqueness is now
+the direct theorem \path{eq_geometricUniformDistribution_of_selfSimilar}, valid for every
+\(|q|<1\), including negative \(q\) and \(q=0\).  The definitions
+\path{geometricUniformStieltjesDomain},
+\path{geometricUniformStieltjesTransform}, and
+\path{geometricUniformStieltjesPower} are total in real \(q\); for \(|q|<1\), the transform
+is holomorphic off the exact support, and for \(q\ne0\) the direct named theorems
+\path{hasDerivAt_geometricUniformStieltjesTransform_refinement} and
+\path{geometricUniformStieltjesPower_succ} give the transform DDE and every positive
+adjacent-power recurrence, including negative ratios.  At \(q=1/2\), the all-power affine
+bridge, named unit Stieltjes DDE, and both canonical complex-slit adjacent-order recurrences
+are direct theorems of \path{CauchyTransform.lean}.
+
+The finite characteristic-function residual formula and its pointwise prefix limit are now
+formal.  Still frontier are the named characteristic-function bridge to the existing
+\path{geometricSincProduct}
 \path{tprod} (or explicit \path{HasProd} theorem) and compact-uniform convergence beyond
 the formal pointwise phase-bearing sinc-prefix limit, the rapid-decay bound and Fourier inversion
 route, a closed higher-derivative refinement and endpoint-flatness wrapper, the shape
 transition, further transforms, and explicit Bernoulli-cumulant/Bell-moment formulas and
 asymptotics.  The geometric tail dictionary already gives finite characteristic-function,
-MGF, and CGF tail factorizations.
+MGF, and CGF tail factorizations.  The closed density hierarchy here is distinct from the
+proved Cauchy-power hierarchy.
 \end{boxedremark}
 
 
@@ -15179,12 +15212,14 @@ derivative of the CDF.  Finally,
 measure with this nonnegative Radon--Nikodym density.  The exterior-value convention used
 in the proposition is formalized for \(0\le q<1\) by
 \path{geometricUniformCDF_zero_of_nonpos} and
-\path{geometricUniformCDF_one_of_one_le}.  Conversely,
-\path{eq_geometricUniformDistribution_of_selfSimilar} now proves that this product-map
-equation characterizes the geometric-uniform law among all probability measures whenever
-\(|q|<1\).  The characterization includes \(q=0\) and negative \(q\) and requires no
-support, density, or moment hypothesis.  The classical density interpretation has not been
-extended to the totalized \(q\le0\) formula.
+\path{geometricUniformCDF_one_of_one_le}.  Uniqueness is supplied separately and directly
+by \path{eq_geometricUniformDistribution_of_selfSimilar} for every \(|q|<1\), including
+negative \(q\) and \(q=0\); it requires no support, density, or moment hypothesis on the
+competing probability law.  The classical density interpretation has not been extended to
+the selected totalized \(q\le0\) formula.  Also separately,
+\path{GeometricUniformCauchy.lean} gives the exact-support transform DDE and adjacent
+Cauchy-power hierarchy for every nonzero \(|q|<1\); those declarations do not formalize
+the characteristic-function product or the real-space density-derivative hierarchy below.
 
 For $q=1/2$ and $0\le x\le1/2$, the second term in
 \eqref{p10:eq:density-refinement} vanishes, so
@@ -16485,6 +16520,9 @@ The live \path{GeometricUniformDictionary.lean} and
 \path{tprod}.  A named characteristic-function bridge to that product (or explicit
 \path{HasProd} theorem), compact-uniform convergence of the characteristic prefixes, and
 quantitative Fourier estimates remain in the analysis layer.
+The distinct oriented Cauchy-transform DDE and adjacent-power hierarchy are now formal in
+\path{GeometricUniformCauchy.lean}; they are separate from the characteristic-function
+product and real-space density-derivative hierarchies.
 
 \subsection{Analysis layer}
 
