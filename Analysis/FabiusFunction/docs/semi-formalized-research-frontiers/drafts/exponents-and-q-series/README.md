@@ -12,6 +12,14 @@ consolidated volume, the report remains standalone until its genuinely new
 claims are isolated and the overlap is deliberately deduplicated.  Paper
 theorem labels do not by themselves assert Lean formalization.
 
+An exact reship, `Fabius_Rvachev_Frontier_Report_2026-08-30-E.zip`
+(outer SHA-256
+`174bf733156cd874cf4f9321c6ab71ca44f311856cc01dc158ddf83dc00cf813`),
+was verified and deleted on 2026-08-30 without creating a redundant directory:
+its payloads are byte-identical to this filed member after the existing CSV
+LF normalization. No claim-level reassessment or experiment rerun was
+performed.
+
 - [`inverse_q_analogs_report/`](inverse_q_analogs_report/),
   *Inverse q-Analogs: Branch Geometry, Asymptotic Inversion, and Computation
   for q-Pochhammer Symbols, Gaussian Coefficients, and Related Functions*
@@ -570,7 +578,7 @@ matching `assets/` directories.
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Second member: `q_pochhammer_q_binomial_monograph/`
-(209 pp; A4 book class) —
+(210 pp; A4 book class) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
@@ -591,16 +599,16 @@ Chern–Dilcher–Jiu deleted-singularity identity and Ramanujan's ₁ψ₁
 verified numerically to 30 digits; one dominated-convergence majorant
 repaired with an `% ed.:` note).
 
-Its current formalization ledger has 247 labelled results: 40 exact, 74
+Its current formalization ledger has 248 labelled results: 41 exact, 74
 partial, 130 with no counterpart, and 3 interface-only.  Within that
-exhaustive total, the 190-result core in Chapters 1–23 has 34 exact, 29
+exhaustive total, the 191-result core in Chapters 1–23 has 35 exact, 29
 partial, 124 with no counterpart, and 3 interface-only entries.  The later
 Chapter 24 Fabius bridge is included in the full ledger and crosswalked
 locally; in particular its general spectral Pochhammer theorem remains
 partial despite the now-formal inside `q = 1/2` specialization. The algebra of
 q-shifted factorials now accounts for 3 exact, 1 partial, and 11
 unformalized results; the q-integer and Gaussian-coefficient chapter for
-2 exact, 2 partial, and 4 unformalized results. The finite
+3 exact, 2 partial, and 4 unformalized results. The finite
 q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
 unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
 unformalized results; and the basic-hypergeometric chapter for 1 exact, 0
@@ -623,7 +631,8 @@ compatibility spelling of its primary identity),
 `SymmetricFunctionGenerating.lean` (two definitions and six theorems),
 `QDifferenceAnnihilation.lean` (four theorems),
 `QBinomialInversionSpecializations.lean` (two definitions, four theorems),
-`QPochhammerElementaryIdentities.lean` (13 theorems), and
+`QPochhammerElementaryIdentities.lean` (13 theorems),
+`QBinomialReciprocity.lean` (four theorems), and
 `RvachevPochhammerFactorization.lean` (one definition, six theorems).
 The q-difference annihilation row is exact through
 `qDifference_sum_eval₂_eq_zero_of_degree_lt`, with the stronger

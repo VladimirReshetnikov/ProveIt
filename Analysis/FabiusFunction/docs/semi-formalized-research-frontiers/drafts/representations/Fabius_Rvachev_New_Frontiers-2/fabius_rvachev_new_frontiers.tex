@@ -353,8 +353,9 @@ Alternating Jacobi product for $\pi$
  & New theorem here & Strong Szeg\H{o} center asymptotic \\
 Gauss--Pad\'e package
  & New synthesis here & Classical Markov/Stieltjes theory \\
-Legendre Gram determinant and Jacobi cross-ratio
- & Exact Lean counterpart & \path{FabiusLegendreHankelDeterminant.lean} \\
+Legendre Gram determinant, executable rational data, and Jacobi cross-ratio
+ & Exact Lean counterpart & \path{FabiusLegendreHankelDeterminant.lean};
+   \path{FabiusLegendreRationalGram.lean} \\
 Finite Gaunt/Wigner entry expansion
  & New finite identity here & Existing exact Legendre coefficients \\
 Monotone $\beta_n$, precise log-square rate
@@ -764,14 +765,58 @@ identity, strict positivity, and the bridge identifying the ratio with the real 
 of the exact rational Rvachev subdiagonal additionally require \path{IsFabius}.
 Under that hypothesis positivity excludes the totalized singular case.
 
-This closure does \emph{not} formalize the finite Gaunt integral,
-Wigner/\(3j\)-symbol, or factorial entry formulas
-\cref{eq:gaunt-integral,eq:finite-gaunt-matrix,eq:wigner-factorial}; consequently it
-does not establish entry rationality by that route.  It also proves no Christoffel
-reconstruction.  Finally, the existing \path{rvachevTranslateGram} is a different
-object: it pairs shifted-up atoms under unweighted interval integration, whereas
-\path{upLegendreGramMatrix} pairs ordinary polynomials under the up-law moment
-functional.
+The executable rational continuation has the following dedicated API inventory;
+these are all and only its 22 public declarations, listed once here rather than
+repeating the generic and real inventories above.
+\begin{itemize}
+\item \path{LegendrePolynomialRational.lean} has two definitions and six
+      theorems: \path{legendrePolynomialCoeffRat},
+      \path{legendrePolynomialRat}, \path{legendrePolynomialRat_cast},
+      \path{coeff_legendrePolynomialRat},
+      \path{natDegree_legendrePolynomialRat},
+      \path{coeff_legendrePolynomialRat_self},
+      \path{coeff_legendrePolynomialRat_self_ne_zero}, and
+      \path{coeff_legendrePolynomialRat_self_div_succ}.
+\item \path{FabiusLegendreRationalGram.lean} has three definitions and eleven
+      theorems: \path{rvachevLegendreGramEntryRat},
+      \path{rvachevLegendreGramEntryRat_eq_momentPairing},
+      \path{rvachevLegendreGramMatrixRat},
+      \path{rvachevLegendreGramMatrixRat_apply},
+      \path{rvachevLegendreGramMatrixRat_eq_polynomialMomentGramMatrix},
+      \path{rvachevLegendreGramDetRat},
+      \path{rvachevLegendreGramEntryRat_cast},
+      \path{rvachevLegendreGramMatrixRat_cast},
+      \path{rvachevLegendreGramDetRat_cast},
+      \path{rvachevLegendreGramDetRat_eq_prod_leadingCoeff_sq_mul_rvachevHankelDetRat},
+      \path{rvachevLegendreGramDetRat_zero},
+      \path{rvachevLegendreGramDetRat_pos},
+      \path{rvachevOrthoNormRat_eq_rvachevLegendreGramDetRat_ratio}, and
+      \path{rvachevJacobiSubdiagonalRat_eq_rvachevLegendreGramDetRat_ratio}.
+\end{itemize}
+The first module closes the executable rational coefficient layer, including
+the rational polynomial wrapper, its real cast, exact degree and leading
+coefficient, leading-coefficient nonvanishing, and the consecutive-coefficient
+quotient.  The second closes executable rational entry, matrix, and determinant
+layers; identifies them with the abstract moment Gram construction; supplies
+entrywise, matrix, and determinant cast bridges; proves the determinant identity,
+empty case, and positivity; and expresses the exact rational norm and zero-based
+Jacobi subdiagonal as determinant ratios.  Each of the three rational-to-real
+cast bridges takes a \path{BoundedFabius} input together with its
+\path{IsFabius} certificate; the finite rational identities themselves have
+no such parameter.
+
+This closure does \emph{not} formalize the finite Gaunt integral
+\cref{eq:gaunt-integral}, the finite matrix identity
+\cref{eq:finite-gaunt-matrix}, or the Wigner/\(3j\)-symbol factorial form
+\cref{eq:wigner-factorial}.  Entry
+rationality is now formalized through the executable coefficient--moment double
+sum, but rationality by the Gaunt/Wigner route remains paper-only.  Christoffel
+reconstruction, root results, quadrature, infinite Jacobi products, and
+asymptotics also remain paper-only.  Finally, the existing
+\path{rvachevTranslateGram} is a different object: it pairs shifted-up atoms
+under unweighted interval integration, whereas \path{upLegendreGramMatrix} and
+its rational executable counterpart pair ordinary polynomials under the up-law
+moment functional.
 \end{remark}
 
 This is an unusually rigid situation.  The infinite Jacobi matrix
@@ -862,9 +907,12 @@ polynomial.  The recurrence then follows from orthogonality and parity.
 
 The rational-native Lean tranche formalizes the determinant construction,
 unique monic orthogonality, norm quotient, determinant cross-ratio, and centered
-recurrence that form the algebraic core of these engines.  It does not package the
-three procedures as an executable algorithm, prove their operational equivalence as
-this proposition states it, or certify the \(\bigO(n^2)\) operation count.
+recurrence that form the algebraic core of these engines.  Its executable
+Legendre continuation additionally computes rational coefficients and bounded
+moment-pairing entries, matrices, and determinants, with norm and Jacobi
+determinant-ratio identities.  It still does not package the three procedures
+in this proposition as one executable algorithm, prove their operational
+equivalence as stated here, or certify the \(\bigO(n^2)\) operation count.
 
 The third engine is numerically preferable to expanding
 $\int\pi_n^2\dd\mu$, but it remains severely ill-conditioned in ordinary
@@ -1673,6 +1721,12 @@ leading-coefficient quotient, and the real Gram cross-ratio hold for every
 bridge require \path{IsFabius}.  Without Hankel nonvanishing, the generic and real
 Gram cross-ratios are unconditional only through totalized division: a zero middle
 determinant makes both sides zero and does not supply a nonsingular Jacobi recurrence.
+The executable rational continuation catalogued in
+\cref{sec:native-op} computes the same finite Legendre entries directly from
+rational coefficients and moments, casts its matrix and determinant to these
+real objects, and proves the corresponding rational norm and zero-based Jacobi
+determinant ratios.  This route is coefficientwise and does not use
+\cref{eq:gaunt-integral,eq:finite-gaunt-matrix,eq:wigner-factorial}.
 \end{remark}
 
 A low-degree check is instructive.  From the moments,
@@ -2284,19 +2338,23 @@ near-orthogonal reference basis.
 The repository already contains rational moments, positive Hankel matrices,
 low-degree native polynomials, and the Cauchy renormalization. It now also contains
 the finite scalar-naturality API, the all-degree rational native Jacobi layer,
-and the generic/Legendre Gram determinant change-of-basis layers
+the generic/Legendre Gram determinant change-of-basis layers, and executable
+rational Legendre coefficient, entry, matrix, and determinant layers
 catalogued in \cref{sec:native-op}: exact \(\Q\)-valued determinants, polynomial
 coefficients, norms, zero diagonal, positive subdiagonals, determinant cross-ratio,
 orthogonality, centered recurrence, and real-cast bridges, with zero-based index
 \(n\) corresponding to \(\beta_{n+1}\).  The polynomial change-of-basis and Legendre
-specialization catalogued there now formalize
+specializations catalogued there now formalize
 \cref{eq:legendre-hankel,eq:beta-gaunt-determinants}, without formalizing the
 Gaunt/Wigner entry expansion.  The remaining formalization sequence is:
 \begin{enumerate}
 \item \textbf{Finite algebra:} the determinant change-of-basis and
       \cref{eq:legendre-hankel,eq:beta-gaunt-determinants} are supplied by
       \path{PolynomialMomentGramDeterminant.lean} and
-      \path{FabiusLegendreHankelDeterminant.lean}. Formalize the remaining
+      \path{FabiusLegendreHankelDeterminant.lean}; their executable rational
+      coefficient and Gram refinements are supplied by
+      \path{LegendrePolynomialRational.lean} and
+      \path{FabiusLegendreRationalGram.lean}. Formalize the remaining
       \cref{eq:inverse-hankel-christoffel,eq:monic-center-product,%
 eq:orthonormal-center-product,eq:harmonic-mean}.  These need only finite
       linear algebra and the existing positivity and rational-native APIs.  Separately,

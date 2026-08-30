@@ -777,7 +777,8 @@ For $0\le k\le n$,
 \end{theorem}
 
 \begin{proof}
-Symmetry is immediate from the factorial definition.  For reciprocity, use
+Work first in the rational-function field \(\Q(q)\).  Symmetry is immediate
+from the factorial quotient.  For reciprocity, use
 \[
  (q^{-1};q^{-1})_m=(-1)^mq^{-\binom{m+1}{2}}(q;q)_m
 \]
@@ -785,12 +786,76 @@ for $m=n,k,n-k$.  The signs cancel and the exponent is
 \[
  -\binom{n+1}{2}+\binom{k+1}{2}+\binom{n-k+1}{2}=-k(n-k).
 \]
-Since $\qbinom nk$ is a polynomial with constant term $1$, reciprocity says
+Both sides of the resulting cleared identity are polynomials, so the identity
+holds identically, including at roots of unity where the factorial quotient
+itself may display a removable \(0/0\).
+
+The polynomiality already proved in \Cref{cor:positivity} makes the degree
+calculation legitimate.  Since \((q;q)_m\) has degree \(\binom{m+1}{2}\),
+constant term \(1\), and leading coefficient \((-1)^m\), the quotient in
+\(\Q(q)\) has degree
+\[
+ \binom{n+1}{2}-\binom{k+1}{2}-\binom{n-k+1}{2}=k(n-k),
+\]
+with constant and leading coefficients both equal to \(1\).  Finally,
+reciprocity says
 \[
  \qbinom nk=q^{k(n-k)}\Qbinom nk{q^{-1}}.
 \]
-Hence its degree is at most $k(n-k)$ and its leading coefficient equals its constant coefficient.  The product form shows that the order at infinity is exactly $k(n-k)$, so the degree is exact.  The same reciprocal identity equates coefficients at complementary degrees and proves palindromicity.
+Writing \(\qbinom nk=\sum_{j=0}^{k(n-k)}c_jq^j\) and comparing powers gives
+\(c_j=c_{k(n-k)-j}\), which is precisely palindromicity.
 \end{proof}
+
+\begin{remark}[Exact reciprocal core in Lean]
+Items~\textup{(i)} and \textup{(ii)} have exact machine-checked counterparts.
+Symmetry is \lean{Fabius.gaussianBinomial_symm}.  Reciprocity is
+\lean{Fabius.gaussianBinomial_reciprocity_units} in
+\path{QBinomialReciprocity.lean}: for every unit \(u\) in every commutative
+semiring and all \(n,k\in\N\), including the zero extension above the
+diagonal,
+\[
+ u^{k(n-k)}\Qbinom nk{u^{-1}}=\Qbinom nk{u}.
+\]
+The wrapper \lean{Fabius.gaussianBinomial_reciprocity} specializes this to a
+nonzero element of an arbitrary semifield.  Unlike the quotient proof above,
+the formal proof is a denominator-free induction on the two Pascal
+recurrences, so it remains valid with zero divisors.  Items~\textup{(iii)} and
+\textup{(iv)} are not yet represented as polynomial-degree and coefficient
+theorems; consequently \Cref{thm:qbinom-structure} remains \statuspartial.
+\end{remark}
+
+\begin{corollary}[Odd reciprocal degree at \(q=-1\)]
+\label{cor:qbinom-neg-one-odd}
+Let \(R\) be a commutative ring.  If \(k(n-k)\) is odd, then
+\[
+ \Qbinom nk{-1}=0 \qquad\text{in }R.
+\]
+In particular, for every \(a,b\in\N\),
+\[
+ \Qbinom{2a}{2b+1}{-1}=0,
+\]
+where a column above the row is interpreted by the zero extension.
+\end{corollary}
+
+\begin{proof}
+First evaluate the universal integer Gaussian polynomial at \(-1\).
+Reciprocity changes its value to its negative when \(k(n-k)\) is odd.  Hence
+twice that integer is zero, and torsion-freeness of \(\Z\) makes the integer
+itself zero.  The recursive Gaussian coefficient commutes with every semiring
+homomorphism, so the canonical map \(\Z\to R\) transports this zero to every
+commutative ring, including characteristic two.  For the displayed
+specialization, if \(b<a\), then both \(2b+1\) and
+\(2a-(2b+1)=2(a-b-1)+1\) are odd, so their product is odd.  If \(b\ge a\),
+then \(2b+1>2a\) and the zero extension applies directly.
+\end{proof}
+
+\begin{remark}[Formal version]
+The two statements are respectively
+\lean{Fabius.gaussianBinomial_neg_one_eq_zero_of_odd_degree} and
+\lean{Fabius.gaussianBinomial_neg_one_even_odd_eq_zero} in
+\path{QBinomialReciprocity.lean}.  Both are total in the natural indices and
+hold over every commutative ring.
+\end{remark}
 
 \begin{corollary}[Classical limit]\label{cor:qbinom-classical}
 For fixed $n,k$,
@@ -1262,7 +1327,7 @@ exhaustively the four theorems
 \texttt{\_eq\_zero\_of\_degree\_lt}.
 Writing
 \[
- K^{-1}_{q,s}(n,k)=(-s)^{n-k}q^{\binom{n-k}{2}}{n\brack k}_q,
+ K^{-1}_{q,s}(n,k)=(-s)^{n-k}q^{\binom{n-k}{2}}\qbinom{n}{k},
 \]
 the first theorem is the homogeneous identity
 \begin{equation}
@@ -11549,7 +11614,6 @@ This appendix is a navigation table, not a substitute for hypotheses and proofs.
 
 \index{$q$-Pochhammer symbol}
 \index{Gaussian coefficient}
-\index{$q$-binomial coefficient|see{Gaussian coefficient}}
 \index{basic hypergeometric series}
 \index{cyclotomic polynomial}
 \index{Jacobi triple product}
@@ -11740,9 +11804,9 @@ Read \Cref{chap:geometric-filters,chap:halfbase-thuemorse,chap:geometric-uniform
 
 Every mathematical result in this book is intended, eventually, to have a
 machine-checked proof in the Lean development that accompanies the Fabius
-project~\cite{ReshetnikovProveIt2026}.  This appendix records all 247 labelled
+project~\cite{ReshetnikovProveIt2026}.  This appendix records all 248 labelled
 results result by result, so that what remains can be planned rather than
-rediscovered.  The 190-result core lies in Chapters~1--23; the later
+rediscovered.  The 191-result core lies in Chapters~1--23; the later
 Chapter~24 Fabius bridge is also included, with local crosswalks such as the
 one at \Cref{thm:qF-spectral} and corresponding rows in the exhaustive ledger
 below.
@@ -11768,10 +11832,10 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 247 labelled results, 40 are \statusexact, 74 are \statuspartial,
+Of the 248 labelled results, 41 are \statusexact, 74 are \statuspartial,
 130 are \statusnone, and 3 are \statusna.
-Within that exhaustive total, the 190-result Chapters~1--23 core has 34
-\statusexact, 29 \statuspartial, 124 \statusnone, and 3 \statusna entries.
+Within that exhaustive total, the 191-result Chapters~1--23 core has 35
+\statusexact, 29 \statuspartial, 124 \statusnone, and 3 \statusna{} entries.
 The formalized part is concentrated exactly where the Fabius development
 needed it: the finite Gaussian-coefficient core, the geometric Lagrange and
 filter calculus, half-base and Thue--Morse cancellation, and the geometric
@@ -11822,6 +11886,7 @@ compatibility spelling of the primary identity;\\
 \path{QDifferenceAnnihilation.lean}: four theorems;\\
 \path{QBinomialInversionSpecializations.lean}: two definitions and four theorems;\\
 \path{QPochhammerElementaryIdentities.lean}: 13 theorems;\\
+\path{QBinomialReciprocity.lean}: four theorems;\\
 \path{RvachevPochhammerFactorization.lean}: one definition and six theorems;\\
 \path{GeometricCompleteHomogeneous.lean}: six theorems;\\
 \path{GeometricLagrangeCompleteHomogeneous.lean}: five theorems;\\
@@ -11834,6 +11899,17 @@ compatibility spelling of the primary identity;\\
 The added finite \(q\)-algebra and geometric layers have the following
 exhaustive public surfaces.
 \begin{itemize}
+\item The four theorems of \path{QBinomialReciprocity.lean} are
+\path{Fabius.gaussianBinomial_reciprocity_units},
+\path{Fabius.gaussianBinomial_reciprocity},
+\path{Fabius.gaussianBinomial_neg_one_eq_zero_of_odd_degree}, and
+\path{Fabius.gaussianBinomial_neg_one_even_odd_eq_zero}.  Unit reciprocity is
+total over every commutative semiring; its nonzero-base wrapper needs only a
+semifield.  The two \(q=-1\) consequences are universal commutative-ring
+identities, transported from the integer Gaussian polynomial, and the
+even-row odd-column statement includes columns above the row by zero
+extension.
+
 \item The 13 theorems of
 \path{QPochhammerElementaryIdentities.lean} are
 \path{Fabius.finiteQPochhammerIn_base_reversal_units},
@@ -12014,7 +12090,7 @@ inferred from a related finite identity.
 Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
 The algebra of $q$-shifted factorials & 3 & 1 & 11 & 0\\
-$q$-integers and Gaussian coefficients & 2 & 2 & 4 & 0\\
+$q$-integers and Gaussian coefficients & 3 & 2 & 4 & 0\\
 Finite $q$-binomial theorems and inversion & 9 & 1 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 2 & 3 & 0\\
 Partitions, words, paths, and inversion statistics & 1 & 1 & 7 & 0\\
@@ -12038,7 +12114,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 45 & 6 & 0\\
 \midrule
-\textbf{Total} & 40 & 74 & 130 & 3\\
+\textbf{Total} & 41 & 74 & 130 & 3\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -12090,7 +12166,16 @@ cleared forms are also exported}\\[2pt]
 \Cref{prop:qbinom-products} & \statuspartial & \texttt{qPochhammer\_\allowbreak{}tail\_\allowbreak{}div\_\allowbreak{}self\_\allowbreak{}eq\_\allowbreak{}qBinomial}\newline{\footnotesize\texttt{GeometricLagrangeQMoments}}\\[2pt]
 \Cref{thm:qpascal} & \statusexact & \texttt{gaussianBinomial\_\allowbreak{}succ\_\allowbreak{}succ\_\allowbreak{}alt}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
 \Cref{cor:positivity} & \statusnone & ---\\[2pt]
-\Cref{thm:qbinom-structure} & \statuspartial & \texttt{gaussianBinomial\_\allowbreak{}symm}\newline{\footnotesize\texttt{FiniteQBinomialCore (HalfQBinomial)}}\\[2pt]
+\Cref{thm:qbinom-structure} & \statuspartial &
+\texttt{gaussianBinomial\_\allowbreak{}symm},
+\texttt{gaussianBinomial\_\allowbreak{}reciprocity\_\allowbreak{}units}\newline
+{\footnotesize\texttt{FiniteQBinomialCore}; \texttt{QBinomialReciprocity};
+items (i)--(ii) exact, polynomial degree and coefficient reversal still open}\\[2pt]
+\Cref{cor:qbinom-neg-one-odd} & \statusexact &
+\texttt{gaussianBinomial\_\allowbreak{}neg\_\allowbreak{}one\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}odd\_\allowbreak{}degree},
+\texttt{gaussianBinomial\_\allowbreak{}neg\_\allowbreak{}one\_\allowbreak{}even\_\allowbreak{}odd\_\allowbreak{}eq\_\allowbreak{}zero}\newline
+{\footnotesize\texttt{QBinomialReciprocity}; arbitrary commutative ring,
+including above-row zero extension}\\[2pt]
 \Cref{cor:qbinom-classical} & \statusnone & ---\\[2pt]
 \Cref{prop:qmult-factor} & \statusnone & ---\\[2pt]
 \Cref{prop:adjacent-ratio} & \statusexact &

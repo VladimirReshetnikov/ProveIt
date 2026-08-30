@@ -5534,6 +5534,22 @@ The functoriality, alternate Pascal, and symmetry statements
 \lean{gaussianBinomial_succ_succ_alt}, and
 \lean{gaussianBinomial_symm}, respectively, in the same module.
 
+The companion \path{QBinomialReciprocity.lean} has no public definitions and exactly
+four public theorems.  For a unit \(q\) in any commutative semiring,
+\begin{equation}
+ q^{k(n-k)}{n\brack k}_{q^{-1}}={n\brack k}_q             \label{eq:q-gaussian-reciprocity}
+\end{equation}
+is \lean{gaussianBinomial_reciprocity_units}; the statement is total in \(n,k\), since
+the recursive Gaussian coefficients on both sides vanish when \(n<k\).  The theorem
+\lean{gaussianBinomial_reciprocity} is exactly the nonzero-\(q\) wrapper over an arbitrary
+semifield.  Over every commutative ring,
+\lean{gaussianBinomial_neg_one_eq_zero_of_odd_degree} proves
+\({n\brack k}_{-1}=0\) when \(k(n-k)\) is odd, and
+\lean{gaussianBinomial_neg_one_even_odd_eq_zero} proves the total specialization
+\({2a\brack 2b+1}_{-1}=0\), including the above-diagonal cases.  These are finite
+algebraic identities: they use no quotient formula, cancellation, integral-domain,
+characteristic, topology, or convergence hypothesis.
+
 Four denominator-free product identities make this recursion especially useful downstream.
 For natural \(m,n\), and for \(k\le n\),
 \begin{align}
@@ -10116,6 +10132,27 @@ hypothesis: Lean uses totalized field division, so when the middle Hankel determ
 vanishes both cross-ratios are zero.  The singular equality is therefore not a genuine
 nonsingular Jacobi recurrence.
 
+The coefficient layer needed to execute the Legendre specialization is supplied by
+\path{LegendrePolynomialRational.lean}.  It has exactly two public definitions:
+\lean{legendrePolynomialCoeffRat}, the bounded rational sum computing the coefficient of
+\(X^k\) in \(P_n\), and \lean{legendrePolynomialRat}, its noncomputable
+\(\Q[X]\)-valued wrapper.  Its exactly six public theorems are
+\lean{legendrePolynomialRat_cast},
+\lean{coeff_legendrePolynomialRat},
+\lean{natDegree_legendrePolynomialRat},
+\lean{coeff_legendrePolynomialRat_self},
+\lean{coeff_legendrePolynomialRat_self_ne_zero}, and
+\lean{coeff_legendrePolynomialRat_self_div_succ}.
+They identify every wrapper coefficient with the executable sum, identify its coefficientwise
+real cast with the Rodrigues-normalized \lean{legendrePolynomial}, and prove natural degree
+\(n\), leading coefficient \(2^{-n}\binom{2n}{n}\), its nonvanishing, and the consecutive
+quotient
+\[
+ \frac{[X^n]P_n}{[X^{n+1}]P_{n+1}}=\frac{n+1}{2n+1}.
+\]
+This module proves finite rational coefficient algebra only; it contains no root,
+Christoffel, quadrature, orthogonality, or asymptotic theorem.
+
 \path{FabiusLegendreHankelDeterminant.lean} specializes this calculation to the ordinary
 Legendre family and the up-law moments.  It has exactly two public definitions,
 \lean{upLegendreGramMatrix} and \lean{upLegendreGramDet}, and exactly seven public theorems:
@@ -10152,6 +10189,37 @@ Christoffel reconstruction, or an infinite Jacobi product.  Also,
 \lean{rvachevTranslateGram} is a different object: it pairs shifted-up atoms under
 unweighted interval integration, whereas \lean{upLegendreGramMatrix} pairs polynomials under
 the up-law moment functional.
+
+Finally, \path{FabiusLegendreRationalGram.lean} turns the same specialization into an
+executable rational layer.  Its three public definitions are
+\lean{rvachevLegendreGramEntryRat}, the bounded double coefficient--moment sum,
+\lean{rvachevLegendreGramMatrixRat}, its finite matrix, and
+\lean{rvachevLegendreGramDetRat}, its determinant.  Its exactly eleven public theorems are
+\lean{rvachevLegendreGramEntryRat_eq_momentPairing},
+\lean{rvachevLegendreGramMatrixRat_apply},
+\lean{rvachevLegendreGramMatrixRat_eq_polynomialMomentGramMatrix},
+\lean{rvachevLegendreGramEntryRat_cast},
+\lean{rvachevLegendreGramMatrixRat_cast},
+\lean{rvachevLegendreGramDetRat_cast},
+\lean{rvachevLegendreGramDetRat_eq_prod_leadingCoeff_sq_mul_rvachevHankelDetRat},
+\lean{rvachevLegendreGramDetRat_zero},
+\lean{rvachevLegendreGramDetRat_pos},
+\lean{rvachevOrthoNormRat_eq_rvachevLegendreGramDetRat_ratio}, and
+\lean{rvachevJacobiSubdiagonalRat_eq_rvachevLegendreGramDetRat_ratio}.
+The first three identify the executable entry and matrix with the abstract moment pairing
+and polynomial-moment Gram matrix.  For \(F:\lean{BoundedFabius}\) with
+\(h_F:\lean{IsFabius}\,F\), the next three identify the real casts of the entry, matrix,
+and determinant with the corresponding up-law objects.  Over \(\Q\), the determinant is
+the rational Hankel determinant times the product of the squared Legendre leading
+coefficients; it equals one at order zero and is strictly positive in every order.  The last
+two theorems express the exact rational squared norm and the zero-based
+\lean{rvachevJacobiSubdiagonalRat}\((n)=\beta_{n+1}\) as consecutive rational Legendre
+Gram-determinant ratios, with the latter carrying the factor
+\(((n+1)/(2n+1))^2\).  Thus the executable coefficient, entry, matrix, determinant,
+cast, positivity, norm-ratio, and Jacobi-ratio layer is formalized.  No finite
+Gaunt/Wigner/\(3j\) expansion, Christoffel reconstruction, root or quadrature theorem,
+infinite Jacobi product or continued fraction, or asymptotic statement is supplied by
+these modules.
 
 This closure does not supply a complex logarithmic fixed point, complex order,
 pointwise or nontangential Sokhotski--Plemelj limits, a principal-value Hilbert-transform
@@ -10229,7 +10297,9 @@ renormalization, Laurent/Herglotz/inversion layers, initial Jacobi data, and fin
 \path{StieltjesPerron.lean}, \path{OrthogonalPolynomialJacobi.lean},
 \path{GramStieltjesNaturality.lean}, \path{RvachevRationalJacobi.lean},
 \path{PolynomialMomentGramDeterminant.lean},
+\path{LegendrePolynomialRational.lean},
 \path{FabiusLegendreHankelDeterminant.lean},
+\path{FabiusLegendreRationalGram.lean},
 \path{EarlyApproximants.lean},
 \path{EarlyMeasureBridge.lean}, \path{WeakConvergence.lean},
 \path{ProbabilityLaplaceMoments.lean}, \path{LaplaceMoments.lean},
@@ -10345,6 +10415,7 @@ geometric moments, scalar-extension top-coefficient extraction, and exact
 Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
 \path{DyadicCorrectness.lean}, \path{FiniteQBinomialCore.lean},
+\path{QBinomialReciprocity.lean},
 \path{QPochhammerElementaryIdentities.lean},
 \path{QBinomialCauchy.lean}, \path{QBinomialVandermonde.lean},
 \path{HalfQBinomial.lean},

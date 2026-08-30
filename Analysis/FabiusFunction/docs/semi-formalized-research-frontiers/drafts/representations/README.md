@@ -88,7 +88,7 @@ New standalone intake members:
   The original 29-page Letter/Type-3 rendering remains recoverable from the
   recorded arrival commit and archive SHA-256.
 - [`Fabius_Rvachev_New_Frontiers-2/`](Fabius_Rvachev_New_Frontiers-2/),
-  *Fabius--Rvachev New Frontiers* (37 A4 pp, 2634 source lines), arrived on
+  *Fabius--Rvachev New Frontiers* (38 A4 pp, 2692 source lines), arrived on
   2026-08-30 from a rootless
   archive with all 15 arrival payload checksums verified. Its native up-law
   orthogonal polynomials, Jacobi and Christoffel reconstruction, rational
@@ -106,7 +106,7 @@ New standalone intake members:
   formulas, rationality by that route, or Christoffel reconstruction. The
   normalized package adds five PNG companions and
   embeds them to keep the report PDF free of the vector plots' Type 3 fonts.
-  Its current 37-page A4/Libertinus PDF has embedded/subset fonts and no Type 3
+  Its current 38-page A4/Libertinus PDF has embedded/subset fonts and no Type 3
   fonts, and its refreshed 20-entry live ledger verifies the synchronized
   source/PDF package.
 - [`Fabius_Stein_Koopman_Frontier_Report/`](Fabius_Stein_Koopman_Frontier_Report/),
@@ -123,7 +123,7 @@ Other paper theorem labels do not by themselves assert Lean status.
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
-[`Representation_Frontiers/`](Representation_Frontiers/) (299 pp;
+[`Representation_Frontiers/`](Representation_Frontiers/) (300 pp;
 eight parts):
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform
@@ -233,6 +233,19 @@ convergence result. Because field division is total, a zero middle Hankel
 determinant makes both displayed cross-ratios zero; that equality alone is not
 a genuine nonsingular Jacobi recurrence.
 
+`LegendrePolynomialRational.lean` supplies the adjacent executable coefficient
+layer. Its exhaustive public surface is two definitions,
+`legendrePolynomialCoeffRat` and `legendrePolynomialRat`, and six theorems:
+`legendrePolynomialRat_cast`, `coeff_legendrePolynomialRat`,
+`natDegree_legendrePolynomialRat`, `coeff_legendrePolynomialRat_self`,
+`coeff_legendrePolynomialRat_self_ne_zero`, and
+`coeff_legendrePolynomialRat_self_div_succ`. The first definition is a bounded
+executable rational coefficient sum; the second is its noncomputable polynomial
+wrapper. The theorems give the coefficient and real-cast bridges, exact degree,
+leading coefficient `2^(-n) * choose(2*n,n)`, its nonvanishing, and consecutive
+quotient `(n+1)/(2*n+1)`. No root, Christoffel, quadrature, orthogonality, or
+asymptotic result is asserted.
+
 `FabiusLegendreHankelDeterminant.lean` specializes that transport with the
 exhaustive definitions `upLegendreGramMatrix`, `upLegendreGramDet` and
 theorems `upLegendreGramMatrix_apply_eq_integral`,
@@ -250,6 +263,38 @@ expansions, Christoffel reconstruction, roots, quadrature, infinite Jacobi
 products/continued fractions, and asymptotics remain outside this module.
 The existing `rvachevTranslateGram` is instead the unweighted Gram kernel of
 shifted-up atoms.
+
+`FabiusLegendreRationalGram.lean` supplies the executable rational
+specialization. Its exhaustive public surface is three definitions,
+`rvachevLegendreGramEntryRat`, `rvachevLegendreGramMatrixRat`, and
+`rvachevLegendreGramDetRat`, and eleven theorems:
+`rvachevLegendreGramEntryRat_eq_momentPairing`,
+`rvachevLegendreGramMatrixRat_apply`,
+`rvachevLegendreGramMatrixRat_eq_polynomialMomentGramMatrix`,
+`rvachevLegendreGramEntryRat_cast`, `rvachevLegendreGramMatrixRat_cast`,
+`rvachevLegendreGramDetRat_cast`,
+`rvachevLegendreGramDetRat_eq_prod_leadingCoeff_sq_mul_rvachevHankelDetRat`,
+`rvachevLegendreGramDetRat_zero`, `rvachevLegendreGramDetRat_pos`,
+`rvachevOrthoNormRat_eq_rvachevLegendreGramDetRat_ratio`, and
+`rvachevJacobiSubdiagonalRat_eq_rvachevLegendreGramDetRat_ratio`. The bounded
+rational entry sum, matrix, and determinant agree with the abstract
+moment-pairing objects and cast to the real up-law objects for a `BoundedFabius`
+satisfying `IsFabius`. The determinant is the rational Hankel determinant times
+the squared-leading-coefficient product, equals one in order zero, is positive,
+and gives the exact rational norm and zero-based `beta_(n+1)` ratios, the latter
+with prefactor `((n+1)/(2*n+1))^2`. This does not prove a Gaunt/Wigner/`3j`
+entry expansion, Christoffel reconstruction, roots, quadrature, an infinite
+Jacobi product/continued fraction, or asymptotics.
+
+Separately, `QBinomialReciprocity.lean` has no public definitions and exactly
+four public theorems: `gaussianBinomial_reciprocity_units`,
+`gaussianBinomial_reciprocity`,
+`gaussianBinomial_neg_one_eq_zero_of_odd_degree`, and
+`gaussianBinomial_neg_one_even_odd_eq_zero`. They give unit-valued reciprocity
+over a commutative semiring (total above the diagonal), the nonzero-base
+semifield wrapper, and the odd-degree and total even-row/odd-column zeros at
+`q = -1` over every commutative ring. They use no quotient, cancellation,
+domain, characteristic, topology, or convergence hypothesis.
 
 The reciprocal-Gamma portion of Part II is now formal at source checkpoint
 `71ab6f6728fceb753c88d8b0573077a59acf2682`.  The reusable convergence engine

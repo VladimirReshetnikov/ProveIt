@@ -848,13 +848,25 @@ integer hierarchy, while \path{StieltjesGeneralizedOrder.lean} lowers real
 finite-height Herglotz--Poisson formulas, integrated interval Stieltjes--Perron inversion,
 and initial exact Jacobi data are likewise direct named results in the corresponding
 \path{Stieltjes*.lean} and \path{OrthogonalPolynomialJacobi.lean} modules.
-The later four-module tranche---\path{PolynomialMomentGramDeterminant.lean},
-\path{GramStieltjesNaturality.lean}, \path{RvachevRationalJacobi.lean}, and
-\path{FabiusLegendreHankelDeterminant.lean}---supplies polynomial-basis determinant
-transport, scalar naturality, the exact all-degree rational centered Jacobi system, and its
-Legendre Gram specialization.  Its exhaustive 41-name inventory and its zero-based-index
+The later six-module tranche---\path{PolynomialMomentGramDeterminant.lean},
+\path{LegendrePolynomialRational.lean}, \path{GramStieltjesNaturality.lean},
+\path{RvachevRationalJacobi.lean}, \path{FabiusLegendreHankelDeterminant.lean}, and
+\path{FabiusLegendreRationalGram.lean}---supplies polynomial-basis determinant
+transport, executable rational ordinary-Legendre coefficients, scalar naturality, the exact
+all-degree rational centered Jacobi system, and both the real and executable rational
+Legendre Gram specializations.  Its exhaustive 63-name inventory and its zero-based-index
 convention \(n\leftrightarrow\beta_{n+1}\) are recorded at the finite-algebra boundary below.
 Continued-fraction identification and asymptotics are not part of that tranche.
+
+Independently, \path{QBinomialReciprocity.lean} has no public definitions and exactly
+four public theorems: \path{gaussianBinomial_reciprocity_units},
+\path{gaussianBinomial_reciprocity},
+\path{gaussianBinomial_neg_one_eq_zero_of_odd_degree}, and
+\path{gaussianBinomial_neg_one_even_odd_eq_zero}.  The first is unit-valued reciprocity over
+every commutative semiring, total above the diagonal; the second assumes precisely a nonzero
+base in a semifield; and the last two give the odd-degree and total even-row/odd-column
+zeros at \(q=-1\) over every commutative ring.  No quotient, cancellation, domain,
+characteristic, topology, or convergence hypothesis is present.
 
 The bounded-measure Laurent status is stronger than those two named
 specializations.  \path{MeasureCauchyMomentLaurent.lean} contains exactly one
@@ -1467,6 +1479,20 @@ division is total.  This is measure-free finite algebra and makes no
 positivity, orthogonality, root, quadrature, continued-fraction, or convergence
 claim.
 
+The rational ordinary-Legendre leaf \path{LegendrePolynomialRational.lean} has exactly two
+public definitions---the executable coefficient sum
+\path{legendrePolynomialCoeffRat} and the noncomputable polynomial wrapper
+\path{legendrePolynomialRat}---and six public theorems:
+\path{legendrePolynomialRat_cast}, \path{coeff_legendrePolynomialRat},
+\path{natDegree_legendrePolynomialRat},
+\path{coeff_legendrePolynomialRat_self},
+\path{coeff_legendrePolynomialRat_self_ne_zero}, and
+\path{coeff_legendrePolynomialRat_self_div_succ}.  These identify every wrapper coefficient
+with the bounded rational sum and its real cast with the ordinary Legendre polynomial, and
+prove degree \(n\), leading coefficient \(2^{-n}\binom{2n}{n}\), its nonvanishing, and
+consecutive quotient \((n+1)/(2n+1)\).  They prove no root, Christoffel, quadrature,
+orthogonality, or asymptotic statement.
+
 The scalar-base-change leaf \path{GramStieltjesNaturality.lean} has zero
 definitions and exactly six public theorems:
 \path{momentPairing_map}, \path{map_gramStieltjesNumerator},
@@ -1519,6 +1545,30 @@ positivity, and comparing with the exact rational subdiagonal additionally use
 does not prove a Gaunt/Wigner-symbol expansion or entry rationality by that
 route, Christoffel reconstruction, roots, quadrature, an infinite Jacobi
 product/continued fraction, or asymptotics.
+
+The executable rational specialization \path{FabiusLegendreRationalGram.lean} has exactly
+three public definitions---\path{rvachevLegendreGramEntryRat},
+\path{rvachevLegendreGramMatrixRat}, and \path{rvachevLegendreGramDetRat}---and eleven
+public theorems:
+\path{rvachevLegendreGramEntryRat_eq_momentPairing},
+\path{rvachevLegendreGramMatrixRat_apply},
+\path{rvachevLegendreGramMatrixRat_eq_polynomialMomentGramMatrix},
+\path{rvachevLegendreGramEntryRat_cast},
+\path{rvachevLegendreGramMatrixRat_cast},
+\path{rvachevLegendreGramDetRat_cast},
+\path{rvachevLegendreGramDetRat_eq_prod_leadingCoeff_sq_mul_rvachevHankelDetRat},
+\path{rvachevLegendreGramDetRat_zero},
+\path{rvachevLegendreGramDetRat_pos},
+\path{rvachevOrthoNormRat_eq_rvachevLegendreGramDetRat_ratio}, and
+\path{rvachevJacobiSubdiagonalRat_eq_rvachevLegendreGramDetRat_ratio}.
+The bounded rational entry sum, finite matrix, and determinant agree with the abstract
+moment-pairing objects; for \path{BoundedFabius} data satisfying \path{IsFabius}, their
+casts are the real up-law objects.  The rational determinant is the Hankel determinant times
+the squared-leading-coefficient product, equals one in order zero, is strictly positive,
+and gives exact norm and zero-based \(\beta_{n+1}\) determinant ratios, the latter with
+factor \(((n+1)/(2n+1))^2\).  This does not supply a Gaunt/Wigner/\(3j\) entry expansion,
+Christoffel reconstruction, roots, quadrature, an infinite Jacobi product/continued
+fraction, or asymptotics.
 \end{remark}
 
 \subsection{Exact coefficients and numerical evidence}
@@ -1835,12 +1885,15 @@ generic finite-algebra modules above formalize the determinant construction
 and complete finite three-term recurrence without positivity.  Item 5 is now
 delivered by \path{OrthogonalPolynomialGramBridge.lean}.  In addition,
 \path{PolynomialMomentGramDeterminant.lean},
+\path{LegendrePolynomialRational.lean},
 \path{GramStieltjesNaturality.lean}, \path{RvachevRationalJacobi.lean}, and
-\path{FabiusLegendreHankelDeterminant.lean} deliver polynomial-basis determinant
+\path{FabiusLegendreHankelDeterminant.lean}, and
+\path{FabiusLegendreRationalGram.lean} deliver polynomial-basis determinant
 transport, scalar naturality, the all-degree centered rational determinants,
 polynomial coefficients, norms, zero diagonal, positive subdiagonals,
 determinant cross-ratio, orthogonality, recurrence, real-cast bridges, and the
-Legendre Gram-determinant specialization.  The zero-based rational subdiagonal
+ordinary-Legendre coefficient and real/executable rational Gram-determinant
+specializations.  The zero-based rational subdiagonal
 at index \(n\) is \(\beta_{n+1}\); this is exact finite algebra, not a native
 evaluator for the displayed \(H_4\) or \(\beta_4\) fractions.  Item 6's
 second-kind polynomials, complete finite convergents, and Gaussian error

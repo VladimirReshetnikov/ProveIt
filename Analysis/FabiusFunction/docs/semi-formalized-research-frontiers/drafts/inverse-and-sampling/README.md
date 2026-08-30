@@ -2,6 +2,31 @@
 
 New standalone intake members:
 
+- [`geometric_comb_interpolation_report-3/`](geometric_comb_interpolation_report-3/),
+  *Interpolation on a Geometric Comb: Lagrange Filters, Jackson--Newton
+  Series, q-Analogues, and the Fabius--Rvachev Bridge* (36 pp), arrived on
+  2026-08-30 from `geometric_comb_interpolation_report-3.zip` (outer SHA-256
+  `89c9de31b9b78b614c13d5a3ff24ae41b73ef6704a9daef77ba724b396e90fa0`).
+  All 20 submitted payload hashes verified; four CSV entries were refreshed
+  after CRLF-to-LF repository normalization. Its title and abstract place it
+  beside the two existing geometric-comb reports and the q-Pochhammer
+  monograph. It is not an exact reship (no submitted payload hash matches
+  either existing geometric report), and remains standalone pending
+  post-publication semantic comparison and a Lean crosswalk; manuscript claims
+  do not establish Lean verification.
+
+- [`geometric_comb_q_fabius_report/`](geometric_comb_q_fabius_report/),
+  *Geometric-Comb Interpolation, Gaussian Pascal Transforms, and the
+  Fabius--Rvachev Boundary Layer* (65 pp), arrived on 2026-08-30 from
+  `geometric_comb_q_fabius_report.zip` (outer SHA-256
+  `d7a84fdad1cc0e98f3e2d9d6e6a101cdae2a070a190a957cd15d761ec765a54c`).
+  All 16 submitted payload hashes verified; two CSV entries were refreshed
+  after CRLF-to-LF repository normalization. It belongs beside the geometric
+  and dyadic comb reports below, while cross-linking the q-Pochhammer monograph.
+  It remains standalone pending post-publication assessment and a Lean
+  crosswalk; its formalization section is explicitly future work. Manuscript
+  labels do not establish Lean verification.
+
 - [`geometric_comb_interpolation_report/`](geometric_comb_interpolation_report/),
   *Interpolation on a Geometric Comb* (34 pp), arrived on 2026-08-30 from
   `geometric_comb_interpolation_report_bundle.zip` (outer SHA-256
