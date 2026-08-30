@@ -687,6 +687,22 @@ public definitions and exactly six public theorems:
 results: the numerator theorem is ring-level, while normalization and Jacobi
 quotients use fields; there is no measure, positivity, or convergence hypothesis.
 
+The coherent-basis module \path{PolynomialMomentGramDeterminant.lean} contains
+two public definitions, \path{polynomialCoefficientMatrix} and
+\path{polynomialMomentGramMatrix}, and seven public theorems: the two entry
+formulas, \path{polynomialMomentGramMatrix_eq_transpose_mul_hankel_mul},
+\path{polynomialMomentGramMatrix_det_eq_coefficient_det_sq_mul},
+\path{polynomialCoefficientMatrix_det_eq_prod_coeff},
+\path{polynomialMomentGramMatrix_det_eq_prod_coeff_sq_mul}, and
+\path{gramStieltjesJacobiSubdiagonal_eq_polynomialMomentGramMatrix_det_ratio}.
+For a degree-coherent family these prove \(G_n=C_n^{\mathsf T}H_nC_n\), its
+leading-coefficient determinant formula, and the field-level Jacobi
+Gram-determinant cross-ratio under nonzero diagonal coefficients.  No Hankel
+nonvanishing hypothesis is needed in the last theorem.  The coefficient-matrix
+definition and entry formula require only a semiring; the Gram-matrix definition,
+entry formula, and congruence require a commutative semiring; and the determinant
+formulas require a commutative ring.
+
 The native specialization \path{RvachevRationalJacobi.lean} contains exactly
 four public definitions---\path{rvachevHankelDetRat},
 \path{rvachevOrthoPolynomialRat}, \path{rvachevOrthoNormRat}, and
@@ -708,12 +724,30 @@ orthogonality, the Hankel cross-ratio, the centered recurrence, and all real-cas
 bridges.  The definition \path{rvachevJacobiSubdiagonalRat} is zero-based:
 its value at index \(n\) is the report coefficient \(\beta_{n+1}\).
 
+The specialization \path{FabiusLegendreHankelDeterminant.lean} contains two
+public definitions, \path{upLegendreGramMatrix} and
+\path{upLegendreGramDet}, and seven public theorems:
+\path{upLegendreGramMatrix_apply_eq_integral},
+\path{upLegendreGramDet_eq_prod_leadingCoeff_sq_mul_hankelDet},
+\path{upLegendreGramDet_zero}, \path{upLegendreGramDet_pos},
+\path{coeff_legendrePolynomial_self_div_succ},
+\path{gramStieltjesJacobiSubdiagonal_upMoment_eq_upLegendreGramDet_ratio}, and
+\path{rvachevJacobiSubdiagonalRat_cast_eq_upLegendreGramDet_ratio}.  Thus the
+Legendre Gram determinant is the monomial Hankel determinant times the squared
+product of Legendre leading coefficients, is positive, and gives both the real
+and rational \(\beta_{n+1}\) determinant cross-ratios.
+For \(F\) of Lean type \path{BoundedFabius}, the determinant identity, empty value,
+leading-coefficient quotient, and real Gram cross-ratio are unconditional; the
+entry-integral, strict-positivity, and rational-cast bridge theorems require
+\path{IsFabius F}.
+
 These are noncomputable adjugate-based finite definitions, not a rational
 evaluator.  In particular, they do not name or evaluate the explicit \(H_4\) and
 \(\beta_4\) fractions displayed below.  This tranche also proves no roots,
 Christoffel reconstruction or central products, Gauss quadrature, second-kind
-polynomials, continued-fraction/Pad\'e identification, Legendre--Gaunt determinant
-bridge, or Szeg\H{o}/Nevai/Rakhmanov asymptotics.
+polynomials, continued-fraction/Pad\'e identification, finite Gaunt/Wigner
+entry formula or rationality by that route, or
+Szeg\H{o}/Nevai/Rakhmanov asymptotics.
 \end{remark}
 
 This is an unusually rigid situation.  The infinite Jacobi matrix
@@ -2208,14 +2242,19 @@ the finite scalar-naturality API and the all-degree rational native Jacobi layer
 catalogued in \cref{sec:native-op}: exact \(\Q\)-valued determinants, polynomial
 coefficients, norms, zero diagonal, positive subdiagonals, determinant cross-ratio,
 orthogonality, centered recurrence, and real-cast bridges, with zero-based index
-\(n\) corresponding to \(\beta_{n+1}\).  The remaining formalization sequence is:
+\(n\) corresponding to \(\beta_{n+1}\).  The coherent-basis determinant congruence,
+the Legendre--Hankel identity \cref{eq:legendre-hankel}, and the Legendre
+Gram-determinant form \cref{eq:beta-gaunt-determinants} are now supplied by
+\path{PolynomialMomentGramDeterminant.lean} and
+\path{FabiusLegendreHankelDeterminant.lean}; the explicit finite
+Gaunt/Wigner entry formula \cref{eq:finite-gaunt-matrix} remains open.  The remaining
+formalization sequence is:
 \begin{enumerate}
 \item \textbf{Finite algebra:} formalize
       \cref{eq:inverse-hankel-christoffel,eq:monic-center-product,%
-eq:orthonormal-center-product,eq:harmonic-mean,%
-eq:legendre-hankel,eq:beta-gaunt-determinants}.  These need only finite
-      linear algebra and the existing positivity and rational-native APIs; none is
-      supplied by \path{RvachevRationalJacobi.lean} itself.
+eq:orthonormal-center-product,eq:harmonic-mean,eq:finite-gaunt-matrix}.
+      These need only finite linear algebra and the existing positivity,
+      rational-native, and determinant-bridge APIs.
 \item \textbf{Quadrature and rational approximation:} define second-kind
       polynomials, prove \cref{eq:pade-exact-error}, and derive the Gaussian
       weights and exactness theorem.

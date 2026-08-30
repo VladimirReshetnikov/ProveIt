@@ -644,8 +644,8 @@ norm-producing moment rather than a \(4\times4\) determinant), \(h_4\)
 (\nolinkurl{Fabius.hankelDet\_four}), and the next two monic orthogonal polynomials
 \(P_3=x^3-\tfrac{19}{75}x\) and \(P_4=x^4-\tfrac{62}{147}x^2+\tfrac{619}{33075}\)
 (\nolinkurl{Fabius.upOrthoPolynomial\_three}, \nolinkurl{Fabius.upOrthoPolynomial\_four}),
-with their pointwise and squared-norm corollaries.  Two further modules close the
-all-degree rational finite-algebra layer.  The zero-definition, six-theorem
+with their pointwise and squared-norm corollaries.  Four further modules close the
+all-degree rational and determinant finite-algebra layer.  The zero-definition, six-theorem
 \path{GramStieltjesNaturality.lean} inventory is
 \path{Fabius.momentPairing_map},
 \path{Fabius.map_gramStieltjesNumerator},
@@ -655,6 +655,13 @@ all-degree rational finite-algebra layer.  The zero-definition, six-theorem
 \path{Fabius.map_gramStieltjesJacobiSubdiagonal}.  These are finite scalar-base-change
 theorems: the numerator statement is ring-level, while normalized polynomials and
 Jacobi quotients use fields; they assume no measure, positivity, or convergence.
+The two-definition, seven-theorem \path{PolynomialMomentGramDeterminant.lean}
+inventory defines \path{Fabius.polynomialCoefficientMatrix} and
+\path{Fabius.polynomialMomentGramMatrix}, gives their entry formulas, proves the
+commutative-semiring-level congruence \(G_n=C_n^{\mathsf T}H_nC_n\), its two commutative-ring-level
+leading-coefficient determinant forms, and the field-level Jacobi Gram-determinant
+cross-ratio under degree coherence and nonzero diagonal coefficients.  The last theorem
+does not assume a nonzero Hankel minor.
 The four-definition, thirteen-theorem \path{RvachevRationalJacobi.lean} inventory has
 definitions \path{Fabius.rvachevHankelDetRat},
 \path{Fabius.rvachevOrthoPolynomialRat},
@@ -679,8 +686,18 @@ orthogonality, the determinant cross-ratio, and the centered three-term recurren
 The zero-based value \path{Fabius.rvachevJacobiSubdiagonalRat}~\(n\) is the conventional
 coefficient \(\beta_{n+1}\).  These adjugate-based definitions are noncomputable finite
 algebra, not an evaluator: in particular the displayed report values for \(H_4\) and
-\(\beta_4\) are not named Lean evaluations.  Roots, Christoffel formulas, Gaussian
-quadrature, finite or infinite \(J\)-fraction/Pad\'e identification, and asymptotics
+\(\beta_4\) are not named Lean evaluations.
+The two-definition, seven-theorem \path{FabiusLegendreHankelDeterminant.lean}
+inventory defines \path{Fabius.upLegendreGramMatrix} and
+\path{Fabius.upLegendreGramDet}; for \(F:\)\path{BoundedFabius} it proves the
+leading-coefficient determinant identity, the empty value, the consecutive Legendre
+leading-coefficient quotient, and the real \(\beta_{n+1}\) Gram-determinant
+cross-ratio without an \path{IsFabius} hypothesis.  The integral entry formula,
+strict positivity, and exact rational-cast bridge additionally assume
+\path{IsFabius F}.  This closes the determinant/cross-ratio component, not the
+finite Gaunt/Wigner entry expansion or rationality by that route.  Roots, Christoffel
+formulas, Gaussian quadrature, finite or infinite \(J\)-fraction/Pad\'e identification,
+and asymptotics
 remain outside this tranche.  The \emph{moment/Laurent layer} is
 now delivered on the symmetric side by
 \path{StieltjesMomentLaurent.lean}: for every real \(|z|>1\) and every \(N\),
@@ -848,10 +865,14 @@ Herglotz--Poisson formulas, integrated interval
 Stieltjes--Perron inversion, and initial exact Jacobi data are formalized by the
 \path{MeasureCauchyMomentLaurent.lean}, \path{Stieltjes*.lean}, and
 \path{OrthogonalPolynomialJacobi.lean} layers described
-above.  The scalar-base-change API and the exact all-degree rational centered Jacobi
-system are formalized by \path{GramStieltjesNaturality.lean} and
-\path{RvachevRationalJacobi.lean}; their exhaustive inventories and the convention that
-zero-based index \(n\) is \(\beta_{n+1}\) are recorded above.  What remains open is the complex logarithmic continuation/logarithmic
+above.  The scalar-base-change API, coherent-basis Gram determinant calculus, exact
+all-degree rational centered Jacobi system, and up-law Legendre determinant bridge are
+formalized by \path{GramStieltjesNaturality.lean},
+\path{PolynomialMomentGramDeterminant.lean},
+\path{RvachevRationalJacobi.lean}, and
+\path{FabiusLegendreHankelDeterminant.lean}; their exhaustive 41-name inventory and the
+convention that zero-based index \(n\) is \(\beta_{n+1}\) are recorded above.  The
+finite Gaunt/Wigner entry route remains open.  What also remains open is the complex logarithmic continuation/logarithmic
 potential, named Laplace/Fourier transform forms, complex order, pointwise or
 nontangential Sokhotski--Plemelj and principal-value Hilbert-transform formulas,
 the full J-fraction/Pad\'e package, and the separate explicit conversion of the
@@ -10253,15 +10274,20 @@ three-term recurrence from exactly the three nonzero minors of orders
 $n,n+1,n+2$.  These theorems are finite field algebra and assume neither a
 measure nor positivity.
 
-The six scalar-naturality theorems in \path{GramStieltjesNaturality.lean} and the
-four definitions plus thirteen theorems in \path{RvachevRationalJacobi.lean} now
-specialize this machinery over \(\Q\) at every degree.  The exhaustive 23-declaration
-inventory is recorded in the compilation status above.  The specialization proves
-positive rational determinants, monic coefficients, norms and subdiagonals; rational
-orthogonality; a zero diagonal; the determinant cross-ratio; the centered recurrence;
-and all real-cast bridges.  Its zero-based subdiagonal at index \(n\) is
-\(\beta_{n+1}\).  It neither evaluates the report's \(H_4\) or \(\beta_4\) fractions in
-Lean nor supplies root, quadrature, \(J\)-fraction, Pad\'e, or asymptotic theorems.
+The six scalar-naturality theorems in \path{GramStieltjesNaturality.lean}, the
+two definitions plus seven theorems in \path{PolynomialMomentGramDeterminant.lean},
+the four definitions plus thirteen theorems in \path{RvachevRationalJacobi.lean}, and
+the two definitions plus seven theorems in
+\path{FabiusLegendreHankelDeterminant.lean} now specialize this machinery through
+arbitrary coherent bases and then over \(\Q\) and the up-law Legendre basis.  The
+exhaustive 41-declaration inventory is recorded in the compilation status above.  It
+proves positive rational determinants, monic coefficients, norms and subdiagonals;
+rational orthogonality; a zero diagonal; coherent-basis and Legendre determinant
+formulas; the determinant cross-ratios; the centered recurrence; and all stated
+real-cast bridges.  Its zero-based subdiagonal at index \(n\) is \(\beta_{n+1}\).
+It neither evaluates the report's \(H_4\) or \(\beta_4\) fractions in Lean nor supplies
+the Gaunt/Wigner entry formula, roots, quadrature, \(J\)-fraction, Pad\'e, or
+asymptotic theorems.
 
 The separate up-measure pipeline in \path{MomentHankelMatrix.lean},
 \path{MomentHankelValues.lean}, and the \path{OrthogonalPolynomial*.lean} modules now
@@ -10469,8 +10495,8 @@ Gini/autocorrelation formulas
 & order statistics and Fourier representation of absolute distance\\
 \addlinespace
 Rational Jacobi parameters
-& centered all-degree rational recurrence now formal; affine unit-interval and (J)-fraction bridges open
-& \path{GramStieltjesNaturality.lean} and \path{RvachevRationalJacobi.lean}; affine transport and resolvent identification remain\\
+& centered all-degree rational recurrence plus coherent-basis and Legendre determinant cross-ratios now formal; Gaunt entries, affine unit-interval, and (J)-fraction bridges open
+& \path{GramStieltjesNaturality.lean}, \path{PolynomialMomentGramDeterminant.lean}, \path{RvachevRationalJacobi.lean}, and \path{FabiusLegendreHankelDeterminant.lean}; Gaunt/Wigner entries, affine transport, and resolvent identification remain\\
 \bottomrule
 \end{longtable}
 
@@ -16452,10 +16478,14 @@ real-order hierarchies, real/complex exterior Laurent series, finite-height
 Herglotz--Poisson identities, integrated interval Stieltjes--Perron inversion, and initial
 Jacobi data are also discharged by direct named theorems in the merged Stieltjes and
 orthogonal-polynomial modules.  The exact all-degree rational centered determinants,
-polynomials, norms, zero diagonal, and positive subdiagonals---with zero-based index
+polynomials, norms, zero diagonal, positive subdiagonals, coherent-basis Gram determinant
+identities, and up-law Legendre determinant cross-ratios---with zero-based index
 \(n\) equal to \(\beta_{n+1}\)---are discharged by
-\path{GramStieltjesNaturality.lean} and \path{RvachevRationalJacobi.lean}; their
-23-declaration inventory appears in the compilation status above.
+\path{GramStieltjesNaturality.lean},
+\path{PolynomialMomentGramDeterminant.lean},
+\path{RvachevRationalJacobi.lean}, and
+\path{FabiusLegendreHankelDeterminant.lean}; their 41-declaration inventory appears
+in the compilation status above.  The explicit Gaunt/Wigner entry route remains open.
 
 The Laurent obligation is now discharged at greater generality by the one-definition,
 fifteen-theorem \path{MeasureCauchyMomentLaurent.lean} API: arbitrary centers and
@@ -16540,14 +16570,19 @@ concrete $P_2=x^2-\tfrac19$ (\nolinkurl{Fabius.upOrthoPolynomial\_two}).  The J-
 layer thus has its three-term engine; the second-kind polynomials, the continued
 fraction of the Stieltjes transform, and the deeper certificates remain open.
 
-The later rational-native tranche removes the remaining all-degree coefficient
-rationality gap: \path{GramStieltjesNaturality.lean} transports every finite
-Gram--Stieltjes object across scalar maps, and \path{RvachevRationalJacobi.lean}
-packages positive \(\Q\)-valued determinants, polynomials, norms and subdiagonals,
-their real casts, rational orthogonality, the zero diagonal, determinant cross-ratio,
-and the centered recurrence.  Here \path{Fabius.rvachevJacobiSubdiagonalRat}~\(n\)
-means \(\beta_{n+1}\).  This does not close second-kind polynomials, affine
-unit-interval transport, Gaussian quadrature, continued-fraction/Pad\'e
+The later finite-algebra tranche removes the remaining all-degree coefficient
+rationality gap and closes the determinant part of the Legendre bridge:
+\path{GramStieltjesNaturality.lean} transports every finite Gram--Stieltjes object
+across scalar maps; \path{PolynomialMomentGramDeterminant.lean} proves the coherent-basis
+Gram congruence, determinant, and Jacobi cross-ratio formulas;
+\path{RvachevRationalJacobi.lean} packages positive \(\Q\)-valued determinants,
+polynomials, norms and subdiagonals, their real casts, rational orthogonality, the zero
+diagonal, determinant cross-ratio, and centered recurrence; and
+\path{FabiusLegendreHankelDeterminant.lean} identifies the up-law Legendre Gram
+determinant and its real/rational \(\beta_{n+1}\) cross-ratios.  Here
+\path{Fabius.rvachevJacobiSubdiagonalRat}~\(n\) means \(\beta_{n+1}\).
+This does not close the finite Gaunt/Wigner entry expansion, second-kind polynomials,
+affine unit-interval transport, Gaussian quadrature, continued-fraction/Pad\'e
 identification or convergence, nor any Szeg\H{o}/Nevai/Rakhmanov asymptotics.
 
 % --------------------------------------------------------------------------

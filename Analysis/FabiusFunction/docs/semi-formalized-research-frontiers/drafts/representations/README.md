@@ -67,14 +67,21 @@ New standalone intake members:
   Libertinus prose, incomplete PDF metadata, and Type-3 plot fonts remain
   explicit post-intake normalization work.
 - [`Fabius_Rvachev_New_Frontiers-2/`](Fabius_Rvachev_New_Frontiers-2/),
-  *Fabius--Rvachev New Frontiers* (36 pp; 2539 source lines), arrived on
+  *Fabius--Rvachev New Frontiers* (36 pp; 2578 source lines), arrived on
   2026-08-30 from a
   rootless archive with all 15 payload checksums verified. Its native up-law
   orthogonal polynomials, Jacobi and Christoffel reconstruction, rational
   limits and products for pi, Gauss--Pade structure, and Legendre--Gaunt
   determinants extend the moment, transform, and representation theme. It is
   distinct from the homonymous historical report already absorbed into
-  `Frontier_Compilations/`.
+  `Frontier_Compilations/`. The coherent-basis Gram/Hankel determinant and
+  Fabius beta-cross-ratio subtranche is now formally crosswalked through
+  `PolynomialMomentGramDeterminant.lean` and
+  `FabiusLegendreHankelDeterminant.lean`; finite Gaunt/Wigner entry formulas
+  and the remaining Christoffel, quadrature, Pade, asymptotic, and
+  infinite-product claims remain report-level.  Its five submitted vector-PDF
+  figures retain ten embedded/subset Type-3 DejaVu font rows; producing
+  raster companions for a Type-3-free render remains standalone-artifact debt.
 - [`Fabius_Stein_Koopman_Frontier_Report/`](Fabius_Stein_Koopman_Frontier_Report/),
   *Dyadic Stein--Koopman and q-Oscillator Calculus for the Fabius--Rvachev
   Law* (32 pp), arrived on 2026-08-30 with all 20 payload checksums verified.
@@ -82,7 +89,7 @@ New standalone intake members:
   Poisson operators, martingales, nonreversibility certificate, scalar Stein
   kernel, and endpoint asymptotics extend the operator-representation theme.
 
-All five remain standalone pending claim-by-claim Lean crosswalk and deliberate
+All five remain standalone pending completion of claim-by-claim Lean crosswalks and deliberate
 consolidation; paper theorem labels do not by themselves assert Lean status.
 
 Series and orthogonal-expansion representations of the up-function,
