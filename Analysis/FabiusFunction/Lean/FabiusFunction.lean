@@ -63,7 +63,6 @@ import FabiusFunction.DigitDefectBitForm
 import FabiusFunction.ThueMorseValuation
 import FabiusFunction.CentralBinomialValuation
 import FabiusFunction.ThueMorseDigits
-import FabiusFunction.FractionalDigitSum
 import FabiusFunction.ThueMorseEnumerators
 import FabiusFunction.ThueMorseRarefied
 import FabiusFunction.ThueMorseAperiodicity

@@ -1003,6 +1003,16 @@ Consequently
   \tau(n)=\frac{1-\eps_n}{2}.
   \label{p1:eq:fractional-cos}
 \end{equation}
+
+\emph{Formal version.}  Equation \eqref{p1:eq:fractional-weight} is
+\lean{Fabius.tsum\_fract\_natCast\_div\_two\_pow} in \path{DigitDefectCounting.lean},
+\(\sum_{h\ge0}\{N/2^h\}=S_2(N)\); the index \(h=0\) contributes nothing, so the sum
+there and the sum here agree, and \(S_2\) is \(\wt\) by definition of the latter.  It
+sits in a defect-counting file rather than a Thue--Morse one because that is the role
+it plays: it is the regression test that fixes the \emph{sign} of the weighted defect
+series \lean{Fabius.tsum\_mul\_natCast\_div\_two\_pow} against Legendre's classical
+count.  The pointwise ingredient, \(\{N/2^h\}=(N\bmod 2^h)/2^h\), is
+\lean{Fabius.fract\_natCast\_div\_two\_pow}.
 \end{proposition}
 
 \begin{proof}
