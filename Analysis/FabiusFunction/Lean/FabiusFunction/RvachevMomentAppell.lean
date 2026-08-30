@@ -303,6 +303,36 @@ theorem rvachevDeconvolvedPolynomial_X_pow (n : ℕ) :
   rw [X_pow_eq_monomial, rvachevDeconvolvedPolynomial_monomial, C_1,
     one_mul]
 
+/-- Rvachev deconvolution preserves the coefficient in the original top
+degree.  This is the triangularity statement behind exact degree
+preservation. -/
+theorem coeff_rvachevDeconvolvedPolynomial_natDegree (P : ℝ[X]) :
+    (rvachevDeconvolvedPolynomial P).coeff P.natDegree =
+      P.coeff P.natDegree := by
+  rw [rvachevDeconvolvedPolynomial, Polynomial.coeff_sum]
+  refine Eq.trans (Finset.sum_eq_single P.natDegree ?_ ?_) ?_
+  · intro n hn hne
+    have hlt :
+        (rvachevAppellPolynomial n).natDegree < P.natDegree := by
+      rw [natDegree_rvachevAppellPolynomial]
+      exact lt_of_le_of_ne
+        (Polynomial.le_natDegree_of_mem_supp n hn) hne
+    change (C (P.coeff n) * rvachevAppellPolynomial n).coeff
+      P.natDegree = 0
+    rw [Polynomial.coeff_C_mul,
+      Polynomial.coeff_eq_zero_of_natDegree_lt hlt, mul_zero]
+  · simp +contextual
+  · change
+      (C (P.coeff P.natDegree) *
+        rvachevAppellPolynomial P.natDegree).coeff P.natDegree =
+          P.coeff P.natDegree
+    rw [Polynomial.coeff_C_mul]
+    have htop :
+        (rvachevAppellPolynomial P.natDegree).coeff P.natDegree = 1 := by
+      simpa only [natDegree_rvachevAppellPolynomial] using
+        (monic_rvachevAppellPolynomial P.natDegree).coeff_natDegree
+    rw [htop, mul_one]
+
 /-- Rvachev polynomial deconvolution does not raise degree. -/
 theorem natDegree_rvachevDeconvolvedPolynomial_le (P : ℝ[X]) :
     (rvachevDeconvolvedPolynomial P).natDegree ≤ P.natDegree := by
@@ -312,6 +342,55 @@ theorem natDegree_rvachevDeconvolvedPolynomial_le (P : ℝ[X]) :
   exact (Polynomial.natDegree_C_mul_le _ _).trans <|
     (natDegree_rvachevAppellPolynomial n).le.trans
       (Polynomial.le_natDegree_of_mem_supp n hn)
+
+/-- Rvachev polynomial deconvolution preserves degree exactly. -/
+@[simp]
+theorem natDegree_rvachevDeconvolvedPolynomial (P : ℝ[X]) :
+    (rvachevDeconvolvedPolynomial P).natDegree = P.natDegree := by
+  by_cases hP : P = 0
+  · simp [hP]
+  · apply Polynomial.natDegree_eq_of_le_of_coeff_ne_zero
+      (natDegree_rvachevDeconvolvedPolynomial_le P)
+    rw [coeff_rvachevDeconvolvedPolynomial_natDegree]
+    simpa only [Polynomial.coeff_natDegree] using
+      Polynomial.leadingCoeff_ne_zero.mpr hP
+
+/-- Rvachev polynomial deconvolution preserves the leading coefficient. -/
+@[simp]
+theorem leadingCoeff_rvachevDeconvolvedPolynomial (P : ℝ[X]) :
+    (rvachevDeconvolvedPolynomial P).leadingCoeff = P.leadingCoeff := by
+  simp only [Polynomial.leadingCoeff,
+    natDegree_rvachevDeconvolvedPolynomial,
+    coeff_rvachevDeconvolvedPolynomial_natDegree]
+
+/-- Rvachev polynomial deconvolution has trivial kernel. -/
+@[simp]
+theorem rvachevDeconvolvedPolynomial_eq_zero_iff (P : ℝ[X]) :
+    rvachevDeconvolvedPolynomial P = 0 ↔ P = 0 := by
+  constructor
+  · intro hP
+    apply Polynomial.leadingCoeff_eq_zero.mp
+    rw [← leadingCoeff_rvachevDeconvolvedPolynomial P, hP,
+      Polynomial.leadingCoeff_zero]
+  · rintro rfl
+    exact rvachevDeconvolvedPolynomial_zero
+
+/-- The linear-map package for Rvachev polynomial deconvolution is
+injective. -/
+theorem rvachevDeconvolutionLinearMap_injective :
+    Function.Injective rvachevDeconvolutionLinearMap := by
+  refine (injective_iff_map_eq_zero rvachevDeconvolutionLinearMap).2 ?_
+  intro P hP
+  rw [rvachevDeconvolutionLinearMap_apply,
+    rvachevDeconvolvedPolynomial_eq_zero_iff] at hP
+  exact hP
+
+/-- The underlying Rvachev polynomial deconvolution operation is injective. -/
+theorem rvachevDeconvolvedPolynomial_injective :
+    Function.Injective rvachevDeconvolvedPolynomial := by
+  intro P Q hPQ
+  apply rvachevDeconvolutionLinearMap_injective
+  simpa only [rvachevDeconvolutionLinearMap_apply] using hPQ
 
 private theorem integrable_eval_rvachevAppellPolynomial_add_mul_rvachev
     (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (x : ℝ) :
