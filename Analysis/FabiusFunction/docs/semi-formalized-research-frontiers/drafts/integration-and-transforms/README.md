@@ -4,7 +4,7 @@ Antiderivatives, integral calculus, transform dualities, and fractional
 calculus of the Fabius–Rvachev system, consolidated (2026-08-28) into
 the single volume
 [`Integration_and_Transform_Frontiers/`](Integration_and_Transform_Frontiers/)
-(372 pp; twelve parts):
+(373 pp; twelve parts):
 
 - **Part I** — *Antiderivatives of Monomially Weighted Fabius-Type
   Functions* (formerly `Fabius_Antiderivatives_Report/`);
@@ -47,7 +47,17 @@ The current ordinary Cauchy–Stieltjes foundation starts in
 kernel power, affine naturality, slit-domain calculus, and the DDE/adjacent
 power recurrence of an arbitrary uniform affine fixed-point measure.  The law
 need not be normalized and its invariant carrier needs no topology or
-measurability.  `GeometricUniformCauchy.lean` specializes this to every
+measurability.  `MeasureCauchyMomentLaurent.lean` adds exactly one public
+definition and fifteen public theorems for the generic bounded-support
+moment/Laurent layer.  For a finite real measure, coefficients and spectral
+parameters in any `RCLike` field, an arbitrary center `c`, and an almost-everywhere
+relative-ball hypothesis `‖(x : 𝕜) - c‖ ≤ R`, it defines
+`measureCauchyMoment μ c n`, proves the exact finite expansion whenever
+`0 ≤ R < ‖z - c‖`, and gives the mass-sensitive sharp remainder
+`μ.real Set.univ * (‖z-c‖-R)⁻¹ * (R/‖z-c‖)^N`, together with moment bounds,
+measurability, integrability, `Summable`, `tsum`, and `HasSum` forms and four
+complex named-transform wrappers.  Separately, `GeometricUniformCauchy.lean`
+specializes the uniform-affine fixed-point interface to every
 nonzero real `|q| < 1`, including negative ratios.  `CauchyTransform.lean`
 then gives the canonical unit and centered transforms and powers, their
 measure/density forms, the transform and all-power affine bridges, the direct
@@ -67,6 +77,14 @@ logarithmic continuation, named Laplace/Fourier forms, complex order,
 pointwise/nontangential Sokhotski--Plemelj and principal-value Hilbert
 formulas, the separate explicit Thue--Morse higher-kernel integral identity,
 and the full J-fraction/Padé theory remain open.
+
+The pre-existing real and complex up-measure Laurent theorems retain their
+public names and are the probability specialization `c = 0`, `R = 1` of the
+generic layer; their mass factor therefore simplifies to one.  The compatibility
+bridges `ae_norm_sub_zero_le_one_rvachevMeasure` and
+`measureCauchyMoment_rvachevMeasure_zero` identify, respectively, the generic
+relative-ball hypothesis and generic centered moments with the up-specific
+support and Hankel-moment data in every `RCLike` field.
 
 Part VI's positive-real causal Rvachev primitive and semigroup are now exact
 Lean theorems.  `FabiusFractionalVolterra.lean` defines the total

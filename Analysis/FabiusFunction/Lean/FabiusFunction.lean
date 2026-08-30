@@ -174,6 +174,8 @@ import FabiusFunction.GeometricUniformDictionary
 import FabiusFunction.GeometricSincFactorization
 import FabiusFunction.DyadicCombTrapezoid
 import FabiusFunction.IncompleteBetaMaster
+import FabiusFunction.MeasureCauchyTransform
+import FabiusFunction.MeasureCauchyMomentLaurent
 import FabiusFunction.MomentHankelMatrix
 import FabiusFunction.MomentHankelValues
 import FabiusFunction.StieltjesMomentLaurent
@@ -365,7 +367,6 @@ import FabiusFunction.KappaConstantEnclosures
 import FabiusFunction.MeasureRefinement
 import FabiusFunction.UniformDigitThueMorseBridge
 import FabiusFunction.RandomSeriesLaw
-import FabiusFunction.MeasureCauchyTransform
 import FabiusFunction.GeometricUniformCauchy
 import FabiusFunction.CauchyTransform
 import FabiusFunction.CauchyCDF
