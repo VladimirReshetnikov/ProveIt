@@ -104,7 +104,7 @@ theorem pascalDyadicMultiplicity_one (n : ℕ) (hn : 1 ≤ n) :
 /-- The first positive frequency has the first row of Pascal's triangle as
 its rank profile. -/
 @[simp] theorem pascalDyadicMultiplicity_one_index (r : ℕ) :
-    pascalDyadicMultiplicity r 1 = 1.choose r := by
+    pascalDyadicMultiplicity r 1 = Nat.choose 1 r := by
   rw [pascalDyadicMultiplicity_of_pos r 1 (by omega),
     dyadicZeroMultiplicity_one]
 
@@ -112,7 +112,8 @@ its rank profile. -/
 triangle. -/
 @[simp] theorem pascalDyadicMultiplicity_two_pow (r a : ℕ) :
     pascalDyadicMultiplicity r (2 ^ a) = (a + 1).choose r := by
-  rw [pascalDyadicMultiplicity_of_pos r (2 ^ a) (by positivity),
+  rw [pascalDyadicMultiplicity_of_pos r (2 ^ a)
+      (Nat.one_le_two_pow : 1 ≤ 2 ^ a),
     dyadicZeroMultiplicity_two_pow]
 
 /-! ## Support and dyadic scale recurrence -/
@@ -135,7 +136,7 @@ theorem pascalDyadicMultiplicity_succ_ne_zero_iff_pow_two_dvd
 
 /-- Odd positive indices carry the first row of Pascal's triangle. -/
 @[simp] theorem pascalDyadicMultiplicity_two_mul_add_one (r n : ℕ) :
-    pascalDyadicMultiplicity r (2 * n + 1) = 1.choose r := by
+    pascalDyadicMultiplicity r (2 * n + 1) = Nat.choose 1 r := by
   rw [pascalDyadicMultiplicity_of_pos r (2 * n + 1) (by omega),
     dyadicZeroMultiplicity_two_mul_add_one]
 
@@ -158,9 +159,10 @@ Pascal's triangle. -/
 theorem pascalDyadicMultiplicity_two_pow_mul
     (a r n : ℕ) (hn : 1 ≤ n) :
     pascalDyadicMultiplicity r (2 ^ a * n) =
-      ∑ ij ∈ Finset.Nat.antidiagonal r,
+      ∑ ij ∈ Finset.antidiagonal r,
         pascalDyadicMultiplicity ij.1 n * a.choose ij.2 := by
-  rw [pascalDyadicMultiplicity_of_pos r (2 ^ a * n) (by positivity),
+  rw [pascalDyadicMultiplicity_of_pos r (2 ^ a * n)
+      (one_le_mul (Nat.one_le_two_pow : 1 ≤ 2 ^ a) hn),
     dyadicZeroMultiplicity_two_pow_mul a n hn,
     Nat.add_choose_eq]
   apply Finset.sum_congr rfl
@@ -245,7 +247,8 @@ multiplicity. -/
     (r M a : ℕ) :
     finitePascalDyadicMultiplicity r M (2 ^ a) =
       (min M (a + 1)).choose r := by
-  rw [finitePascalDyadicMultiplicity_of_pos r M (2 ^ a) (by positivity),
+  rw [finitePascalDyadicMultiplicity_of_pos r M (2 ^ a)
+      (Nat.one_le_two_pow : 1 ≤ 2 ^ a),
     dyadicZeroMultiplicity_two_pow]
 
 /-- Once the cutoff contains every active dyadic scale, the finite and full
@@ -356,7 +359,7 @@ theorem dyadicZeroMultiplicity_le_self (n : ℕ) (hn : 1 ≤ n) :
     dyadicZeroMultiplicity n ≤ n := by
   rw [dyadicZeroMultiplicity]
   have hval : padicValNat 2 n < n :=
-    padicValNat_lt_self (Nat.one_le_iff_ne_zero.mp hn)
+    Nat.padicValNat_lt_self (Nat.one_le_iff_ne_zero.mp hn)
   omega
 
 /-- The cumulative finite-scale rank-`r` multiplicity through `N`. -/
@@ -392,7 +395,10 @@ private theorem finitePascalDyadicMultiplicity_succ_eq_boundedScaleSum
     simpa only [Nat.lt_iff_add_one_le] using
       (dyadicZeroMultiplicity_ge_succ_iff_pow_two_dvd
         (k + 1) h hpositive)
-  rw [hdiv]
+  by_cases hlt : h < dyadicZeroMultiplicity (k + 1)
+  · rw [if_pos hlt, if_pos (hdiv.mp hlt)]
+  · have hndiv : ¬ 2 ^ h ∣ k + 1 := fun hdvd ↦ hlt (hdiv.mpr hdvd)
+    rw [if_neg hlt, if_neg hndiv]
 
 /-- **Exact finite-product scale count.**  Summing the truncated
 multiplicities through `N` counts each scale by its number of positive

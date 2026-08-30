@@ -53,9 +53,19 @@ This is the first nontrivial inverse-dyadic value, extracted from the general
 exact evaluator `fabiusAtInverseTwoPow_cast`. -/
 theorem fabiusReal_quarter (F : BoundedFabius) (hF : IsFabius F) :
     fabiusReal F (1 / 4) = 5 / 72 := by
+  have hhalfMoment_one : halfMoment 1 = 1 / 2 := by
+    rw [halfMoment_succ 0, Fin.sum_univ_one]
+    norm_num [halfMoment_zero]
+  have hhalfMoment_two : halfMoment 2 = 5 / 18 := by
+    rw [halfMoment_succ 1, Fin.sum_univ_two]
+    norm_num [halfMoment_zero, hhalfMoment_one]
+  have hvalue : fabiusAtInverseTwoPow 2 = 5 / 72 := by
+    rw [fabiusAtInverseTwoPow_eq_halfMoment, halfMomentFabiusValue,
+      hhalfMoment_two]
+    norm_num
   have h := fabiusAtInverseTwoPow_cast F hF 2
-  norm_num [fabiusAtInverseTwoPow_eq_halfMoment, halfMomentFabiusValue,
-    halfMoment] at h
+  rw [hvalue] at h
+  norm_num at h
   exact h.symm
 
 /-- The exact quarter quantile of every bounded Fabius function:
@@ -255,7 +265,8 @@ theorem quarterPrefixDisplacement_le_inv_two_pow (n : ℕ) :
     (by positivity)).trans ?_
   calc
     (4 / 9 : ℝ) * ((4 : ℝ) ^ n)⁻¹ =
-        (4 / 9 : ℝ) / (4 : ℝ) ^ n := by rw [div_eq_mul_inv]
+        (4 / 9 : ℝ) / (4 : ℝ) ^ n :=
+      (div_eq_mul_inv (4 / 9 : ℝ) ((4 : ℝ) ^ n)).symm
     _ ≤ 1 / (2 : ℝ) ^ n := by
       rw [div_le_div_iff₀ (by positivity) (by positivity)]
       have hbase : (4 / 9 : ℝ) ≤ (2 : ℝ) ^ n :=

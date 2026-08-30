@@ -180,8 +180,9 @@ theorem thueMorsePowerSumRing_add_two_real (m : ℕ) :
         thueMorsePowerSumRing_add_one_real, ih,
         Nat.choose_succ_self_right]
       rw [hchooseThree, hchooseTwo, choose_succ_two, pow_add, pow_succ,
-        Nat.factorial_succ, hfour]
+        Nat.factorial_succ]
       push_cast
+      simp only [pow_zero, pow_succ, pow_add, hfour]
       ring
 
 /-! ## A reusable degree-two residual extractor -/
@@ -218,6 +219,7 @@ theorem thueMorse_translated_power_sum_add_two_real (m : ℕ) (x : ℝ) :
           thueMorsePowerSumRing ℝ m (m + 2 - (3 + k))) = 0 := by
     apply Finset.sum_eq_zero
     intro k hk
+    have hklt : k < m := Finset.mem_range.mp hk
     have hdegree : m + 2 - (3 + k) < m := by omega
     rw [thueMorsePowerSumRing_eq_zero_of_lt m _ hdegree, mul_zero]
   rw [htail, add_zero]
@@ -267,12 +269,16 @@ theorem normalized_thueMorse_translated_power_sum_add_two
   have hsignSq : ((-1 : ℝ) ^ m) ^ 2 = 1 := by
     rw [pow_two, ← pow_add, ← two_mul, pow_mul]
     norm_num
+  have hsignDouble : (-1 : ℝ) ^ (m * 2) = 1 := by
+    rw [pow_mul]
+    exact hsignSq
   have hm1 : (m : ℝ) + 1 ≠ 0 := by positivity
   have hm2 : (m : ℝ) + 2 ≠ 0 := by positivity
   have hfac : (m.factorial : ℝ) ≠ 0 := by positivity
   field_simp [hm1, hm2, hfac]
   ring_nf
-  rw [hsignSq]
+  rw [hsignDouble]
+  ring
 
 /-! ## The quarter block and the half-cell endpoint -/
 
@@ -306,7 +312,7 @@ theorem normalized_quarter_thueMorse_block (m : ℕ) (z : ℝ) :
   have htwoAdd :
       (2 : ℝ) ^ (m + 2) = 4 * (2 : ℝ) ^ m := by
     rw [pow_add]
-    norm_num
+    norm_num <;> ring
   have htwoDoubleOne :
       (2 : ℝ) ^ (2 * m + 1) = 2 * ((2 : ℝ) ^ m) ^ 2 := by
     rw [pow_add]
@@ -324,7 +330,7 @@ theorem normalized_quarter_thueMorse_block (m : ℕ) (z : ℝ) :
       congr 1
       omega
     rw [hdouble]
-    norm_num
+    norm_num <;> ring
   have hfour : (4 : ℝ) ^ m = ((2 : ℝ) ^ m) ^ 2 := by
     calc
       (4 : ℝ) ^ m = ((2 : ℝ) * 2) ^ m := by norm_num
@@ -340,13 +346,17 @@ theorem normalized_quarter_thueMorse_block (m : ℕ) (z : ℝ) :
 
 private theorem dyadic_quarterCellRadius_scale (m : ℕ) :
     (2 : ℝ) ^ (m + 2) * (((2 : ℝ) ^ (m + 3))⁻¹) = 1 / 2 := by
-  rw [show m + 3 = (m + 2) + 1 by omega, pow_succ]
-  field_simp
+  have hscale :
+      (2 : ℝ) ^ (m + 3) = (2 : ℝ) ^ (m + 2) * 2 := by
+    rw [show m + 3 = (m + 2) + 1 by omega, pow_succ]
+  rw [hscale]
+  have hne : (2 : ℝ) ^ (m + 2) ≠ 0 := by positivity
+  field_simp [hne]
 
 private theorem dyadic_quarterAnchor_scale (m : ℕ) :
     (2 : ℝ) ^ (m + 2) * (1 / 4) = (2 : ℝ) ^ m := by
   rw [pow_add]
-  norm_num
+  norm_num <;> ring
 
 private theorem quarter_range_length_of_mem_left_closed_right_open
     (m : ℕ) {z : ℝ}
@@ -377,11 +387,11 @@ private theorem quarter_range_length_of_mem_left_closed_right_open
   apply (Nat.floor_eq_iff hargNonneg).2
   rw [show (2 : ℝ) ^ (m + 2) * (1 / 4 + z) + 1 / 2 =
       (2 : ℝ) ^ m + (2 : ℝ) ^ (m + 2) * z + 1 / 2 by
-        rw [mul_add, dyadic_quarterAnchor_scale]])
+        rw [mul_add, dyadic_quarterAnchor_scale]]
   constructor
-  · push_cast
+  · norm_num only [Nat.cast_pow, Nat.cast_ofNat]
     linarith
-  · push_cast
+  · norm_num only [Nat.cast_pow, Nat.cast_ofNat]
     linarith
 
 private theorem quarter_range_length_at_endpoint (m : ℕ) :
@@ -416,7 +426,7 @@ theorem fabiusUniformSpline_quarter_eq_thueMorseBlock
   rcases lt_or_eq_of_le hz.2 with hzlt | rfl
   · rw [fabiusUniformSpline,
       quarter_range_length_of_mem_left_closed_right_open m hz.1 hzlt]
-    rw [Fin.sum_univ_eq_sum_range]
+    rw [← Fin.sum_univ_eq_sum_range]
   · rw [fabiusUniformSpline, quarter_range_length_at_endpoint,
       Finset.sum_range_succ]
     have hlast :
@@ -428,7 +438,7 @@ theorem fabiusUniformSpline_quarter_eq_thueMorseBlock
       push_cast
       ring
     rw [hlast, zero_pow (by omega : m + 2 ≠ 0), mul_zero, add_zero]
-    rw [Fin.sum_univ_eq_sum_range]
+    rw [← Fin.sum_univ_eq_sum_range]
 
 /-- The finite repository spline has the exact quarter quadratic throughout
 the whole closed dyadic cell around `1/4`.  This semantic theorem hides the
@@ -458,8 +468,8 @@ theorem reportFiniteFabiusApproximant_quarter_eq_quadratic
   have hz' :
       z ∈ Icc (-((2 : ℝ) ^ (m + 3))⁻¹) (((2 : ℝ) ^ (m + 3))⁻¹) := by
     simpa only [hadd] using hz
-  simpa only [reportFiniteFabiusApproximant, hsub, hadd] using
-    fabiusUniformSpline_quarter_eq_quadratic m hz'
+  rw [reportFiniteFabiusApproximant, hsub, hadd]
+  exact fabiusUniformSpline_quarter_eq_quadratic m hz'
 
 /-! ## The exact local polynomial and inverse transfer -/
 
