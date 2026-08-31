@@ -103,6 +103,11 @@ No finite endpoint derivative is asserted.  An `O(z + exp(-1))` remainder after 
 
 ## inverse-and-sampling — `inverse-and-sampling/`
 
+Current documents are grouped one level deeper under
+`comb-interpolation/`, `inverse-asymptotics-and-computability/`, and
+`analyticity-and-elementarity/`; the table below keeps the document leaf
+directory names concise.
+
 | Directory | Document | Previous path |
 | --- | --- | --- |
 | `geometric_comb_q_fabius_report/` | *Geometric-Comb Interpolation, Gaussian Pascal Transforms, and the Fabius–Rvachev Boundary Layer* (65 pp, 3455 source lines; with a 593-line experiment, three data files, and four PDF/PNG figure pairs). Landed 2026-08-30 from `drafts/incoming/geometric_comb_q_fabius_report.zip` (outer SHA-256 `d7a84fdad1cc0e98f3e2d9d6e6a101cdae2a070a190a957cd15d761ec765a54c`) in its collision-free wrapper. The submitted checksum ledger covers all 16 non-ledger payloads, all of which verified on arrival; two CSV entries were refreshed after CRLF-to-LF repository normalization. Its geometric Lagrange/Newton and Gaussian-Pascal calculus, Lebesgue stability dichotomy, half-base Fabius boundary layer, and Rvachev Gaussian-Appell synthesis loop belong beside `geometric_comb_interpolation_report/` and `Dyadic_Comb_Frontiers/`. All 69 pages across the report and figure PDFs rendered cleanly; unpinned dependencies and Type-3 plot fonts remain policy work. It remains standalone pending post-publication assessment and a Lean crosswalk; its 37 nonconjectural labels, three conjectures, and seven problems record manuscript status, while its formalization section is explicitly future work. Manuscript labels do not establish Lean verification | arrived through `drafts/incoming/`; archive unpacked here and deleted |
