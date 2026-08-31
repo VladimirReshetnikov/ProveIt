@@ -190,9 +190,10 @@ of an existing draft; semantic consolidation is deferred to the post-
   The original 29-page Letter/Type-3 rendering remains recoverable from the
   recorded arrival commit and archive SHA-256.
 - [`Fabius_Rvachev_New_Frontiers-2/`](Fabius_Rvachev_New_Frontiers-2/),
-  *Fabius--Rvachev New Frontiers* (39 A4 pp, 2,827 source lines; with a
-  580-line high-precision experiment), arrived on 2026-08-30 from a rootless
-  archive with all 15 arrival payload checksums verified. Its native up-law
+  *Fabius--Rvachev New Frontiers* (final synchronized artifact: 41 A4 pp from
+  a 2,863-line source, with a 580-line high-precision experiment), arrived on
+  2026-08-30 from a rootless archive with all 15 arrival payload checksums
+  verified. Its native up-law
   orthogonal polynomials, Jacobi and Christoffel reconstruction, rational
   limits and products for pi, Gauss--Pade structure, and Legendre--Gaunt
   determinants extend the moment, transform, and representation theme. It is
@@ -202,7 +203,7 @@ of an existing draft; semantic consolidation is deferred to the post-
   J-fraction, Hankel, and Gauss--Padé program; those strands are inherited
   overlap. The report retains repository-relative log-concavity, rational-pi,
   and finite Gaunt contributions, but manuscript labels do not imply Lean
-  proof status. The frozen Lean crosswalk is exactly 99 public declarations
+  proof status. The intended union crosswalk inventories exactly 99 public declarations
   across nine modules: `GramStieltjesNaturality` (0
   definitions/6 theorems), `RvachevRationalJacobi` (4/13),
   `PolynomialMomentGramDeterminant` (2/7),
@@ -220,13 +221,19 @@ of an existing draft; semantic consolidation is deferred to the post-
   does not yet identify those integrals with Wigner `3j` symbols or prove the
   factorial closed form; Christoffel reconstruction, root and quadrature
   theory, Padé identification, infinite Jacobi products, and asymptotics also
-  remain paper-only where specified. The normalized report embeds the five cleaned
-  vector PDF figures; five PNG companions remain supplemental. Exactly three
-  clean serial passes (37/39/39 pages) produced the final 39-page A4 PDF, and
-  the exhaustive current 20-entry ledger verifies 20/20.
-  All 35 font rows are embedded/subset, five are Libertinus, and none is Latin
-  Modern or Type 3; the PDF contains no raster figures. The synchronized
-  20-entry live ledger verifies the final source/PDF package.
+  remain paper-only where specified. The final post-union report embeds five
+  cleaned vector PDF figures, while five PNG companions remain supplemental.
+  Its frozen 2,863-line source has SHA-256
+  `4eeea1a1cbe5497e6db3424a0c185f3a3be750f5816b22be5e7baed091753455`;
+  exactly three strict serial passes (39/41/41 pages) produced the 780,141-byte,
+  41-page A4 PDF with SHA-256
+  `9871ac93cce5d8ee1aa48e946f46dc2e19865fb33a1d2e3b9b8be01360318901`.
+  All 35 font rows are embedded/subset, five are Libertinus, and there are no
+  Latin Modern or Type 3 fonts and no raster images. Extraction retains all 99
+  public names, including all 25 Gaunt names; targeted page and vector-figure
+  visuals pass; and the fixed 20-entry ledger verifies 20/20. The earlier
+  39-page cleaned-vector and 41-page local Gaunt builds remain documented as
+  historical checkpoints.
 - [`Fabius_Stein_Koopman_Frontier_Report/`](Fabius_Stein_Koopman_Frontier_Report/),
   *Dyadic Stein--Koopman and q-Oscillator Calculus for the Fabius--Rvachev
   Law* (32 pp), arrived on 2026-08-30 with all 20 payload checksums verified.
