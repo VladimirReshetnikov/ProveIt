@@ -1,5 +1,14 @@
 # Geometric-Comb Interpolation and the Fabius--Rvachev Boundary Layer
 
+> **Source-only merge status (2026-08-31).** The current TeX has 3,554 lines
+> (SHA-256
+> `18f710a0fc8b67263c64e52e9b6fedf41a71a6149ff154a12da4ef0881a8ed99`).
+> The retained 68-page PDF was not rebuilt after the notation migration and is
+> not claimed to be synchronized with that source. `SHA256SUMS.txt` was
+> intentionally not refreshed: its TeX row and this README row are pending,
+> while its other eighteen rows pass. Historical build and preflight facts
+> below describe the preceding checkpoint.
+
 This package contains the source, rendered PDF, reproducibility program,
 data, and figures for a manuscript on interpolation at
 `c, cq, ..., cq^n`, together with its Fabius/Rvachev specialization.
@@ -59,7 +68,8 @@ global maximization.
 - `INTAKE_AUDIT.md` — provenance, mathematical/Lean-status, editorial, build,
   and validation audit.
 - `pdf_preflight.json` — machine-readable final PDF checks.
-- `SHA256SUMS.txt` — exhaustive final ledger, excluding itself by convention.
+- `SHA256SUMS.txt` — unrefreshed 20-entry operational ledger, excluding itself
+  by convention; its TeX and README rows are pending.
 
 ## Reproduce the numerics
 
@@ -87,8 +97,8 @@ Global asymptotic prefactor: 1.75421915716734780836138830414
 
 ## Rebuild the PDF
 
-The final archive was built from a clean auxiliary state with exactly three
-strict serial passes:
+The preceding archive checkpoint was built from a clean auxiliary state with
+exactly three strict serial passes:
 
 ```bash
 pdflatex -halt-on-error -file-line-error -interaction=nonstopmode geometric_comb_q_fabius_report.tex
@@ -96,19 +106,19 @@ pdflatex -halt-on-error -file-line-error -interaction=nonstopmode geometric_comb
 pdflatex -halt-on-error -file-line-error -interaction=nonstopmode geometric_comb_q_fabius_report.tex
 ```
 
-The final PDF is 68 A4 pages and 818043 bytes. Its SHA-256 is
+The retained PDF is 68 A4 pages and 818043 bytes. Its SHA-256 is
 `bcd2559f1e6f4be608c291c6ef5de48108c3b0d78139ecf1a5672942d72d9b92`; the
-final TeX has 3575 lines and SHA-256
-`37e71ad371673a8c301d1b2f23e516cf34b904fb98f22e18448e4dedfe939c08`.
-Geometry, fonts, extractable text, build diagnostics, and
+current TeX has 3,554 lines and the SHA-256 recorded above. Geometry, fonts,
+extractable text, build diagnostics, and
 all-page visual inspection are recorded in `pdf_preflight.json` and
-`INTAKE_AUDIT.md`. Build auxiliaries are intentionally absent.
+`INTAKE_AUDIT.md` for the preceding checkpoint. Build auxiliaries are
+intentionally absent.
 
 ## Provenance and checksums
 
 No source ZIP attributable to this package was present in the audited
 workspace. Accordingly, no archive hash is invented. The delivered
 `SHA256SUMS.txt` verified 16/16 payload entries before edits and is preserved
-verbatim as `ARRIVAL_SHA256SUMS.txt`. The normalized `SHA256SUMS.txt` has 20
-entries, covers every other regular package file, and
-excludes itself to avoid a recursive checksum.
+verbatim as `ARRIVAL_SHA256SUMS.txt`. The unrefreshed operational
+`SHA256SUMS.txt` has 20 entries and excludes itself to avoid a recursive
+checksum; its TeX and README rows are pending after the source-only merge.

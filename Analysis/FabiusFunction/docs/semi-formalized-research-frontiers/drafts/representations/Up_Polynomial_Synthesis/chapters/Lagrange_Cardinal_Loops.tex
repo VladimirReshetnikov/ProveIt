@@ -21,11 +21,11 @@ Fix pairwise distinct nodes
 and write
 \[
  \mathscr D_u:=\MM_u(D)^{-1},\qquad
- m\in\N_{>0},\qquad h=m^{-1},\qquad
- K_m:=\{k\in\Z:|k|<2m\}.
+ m\in\PositiveIntegers,\qquad h=m^{-1},\qquad
+ K_m:=\{k\in\IntegerNumbers:|k|<2m\}.
 \]
 The mesh is called \emph{admissible through degree $d$} when
-$\vtwo(m)\ge d$.  The canonical choice is $m=2^d$.  Notice that
+$\TwoAdicValuation(m)\ge d$.  The canonical choice is $m=2^d$.  Notice that
 $\mathscr D_u x^r=\Gd_r(x)$ in the notation of
 \eqref{eq:appell-pair}.
 
@@ -57,7 +57,7 @@ there is no dilation.
 \begin{proof}
 Use the physical-scale identity \eqref{eq:interval-algorithm} with target
 interval $[-1,1]$, origin $0$, spacing $h=m^{-1}$, and radius
-$\rho=mh=1$.  It applies because $\deg\ell_j=d\le\vtwo(m)$ and gives
+$\rho=mh=1$.  It applies because $\deg\ell_j=d\le\TwoAdicValuation(m)$ and gives
 \eqref{eq:lag-cardinal}; compact support leaves exactly the indices
 $|k|<2m$.  Multiply by $y_j$, sum over the finite node set, and use linearity
 of $\mathscr D_u$ to obtain \eqref{eq:lag-interpolant}.
@@ -72,7 +72,7 @@ the $d$ nodes with $x_j$ omitted.
 
 \begin{corollary}[Nodes-only Bernoulli--Bell amplitudes]
 \label{cor:lag-nodes-only}
-For every $0\le j\le d$ and every $t\in\R$,
+For every $0\le j\le d$ and every $t\in\RealNumbers$,
 \begin{align}
  (\mathscr D_u\ell_j)(t)
  &=\sum_{r=0}^{\lfloor d/2\rfloor}
@@ -108,15 +108,15 @@ Let $q_m=|K_m|=4m-1$ and define
  B_{kj}=h(\mathscr D_u\ell_j)(kh).
  \label{eq:lag-UB}
 \end{equation}
-Thus $U\in\R^{(d+1)\times q_m}$ samples the atoms and
-$B\in\R^{q_m\times(d+1)}$ synthesizes the cardinals.
-For a coefficient row $c\in\R^{K_m}$ and a continuous function $f$, write
+Thus $U\in\RealNumbers^{(d+1)\times q_m}$ samples the atoms and
+$B\in\RealNumbers^{q_m\times(d+1)}$ synthesizes the cardinals.
+For a coefficient row $c\in\RealNumbers^{K_m}$ and a continuous function $f$, write
 \[
  \operatorname{Synth}c:=\sum_{k\in K_m}c_k\,u(\,\cdot-kh),
  \qquad
  I_Xf:=\sum_{j=0}^{d}f(x_j)\ell_j.
 \]
-Thus $\operatorname{Synth}\colon\R^{K_m}\to C[-1,1]$ and
+Thus $\operatorname{Synth}\colon\RealNumbers^{K_m}\to C[-1,1]$ and
 $I_X\colon C[-1,1]\to\Pi_d$ have compatible types in the intertwining law
 below.
 
@@ -288,7 +288,7 @@ Take the canonical $m=M=2^d$ and use all literal translates meeting
 $[-1,1]$:
 \[
  \mathcal V_d^{\rm lit}
- :=\Span\{u(\,\cdot-k/M)|_{[-1,1]}:k\in K_M\}.
+ :=\SpanOperator\{u(\,\cdot-k/M)|_{[-1,1]}:k\in K_M\}.
 \]
 Let $\mathcal T$ synthesize coefficient vectors into this space and let
 $\mathcal E_X$ evaluate at the $d+1$ nodes.  Finally put
@@ -301,7 +301,7 @@ $\mathcal E_X$ evaluate at the $d+1$ nodes.  Finally put
 One has
 \begin{align}
  \dim\mathcal V_d^{\rm lit}&=2M+d+1,
- &\mathcal V_d^{\rm lit}\cap\R[x]&=\PiD,
+ &\mathcal V_d^{\rm lit}\cap\RealNumbers[x]&=\PiD,
  \label{eq:lag-lit-dimension}\\
  \dim\ker\mathcal T&=2M-d-2,
  &\dim\mathcal Z_X&=2M.
@@ -388,7 +388,7 @@ and
  \boxed{I_{d+2}-\widehat B\widehat U=v\zeta^T.}
  \label{eq:lag-rank-one}
 \end{equation}
-For $a\in\R^{d+2}$ put
+For $a\in\RealNumbers^{d+2}$ put
 \[
  F_a=\sum_ra_r\Phi_r,
  \qquad G_X=\sum_rv_r\Phi_r.
@@ -412,8 +412,8 @@ $\widehat U\widehat B=I$ yield
        \det\widehat B_{\widehat r}=\zeta^Tv.
 \]
 The complementary idempotent $I-\widehat B\widehat U$ has rank one, range
-$\ker\widehat U=\Span\{v\}$, and left range
-$\ker\widehat B^T=\Span\{\zeta\}$.  The normalization
+$\ker\widehat U=\SpanOperator\{v\}$, and left range
+$\ker\widehat B^T=\SpanOperator\{\zeta\}$.  The normalization
 $\zeta^Tv=1$ proves \eqref{eq:lag-rank-one}.
 
 The endpoint coefficient vector of $I_XF_a$ is
@@ -438,7 +438,7 @@ The square matrix
 \begin{equation}
  \mathcal M_X=
  \begin{pmatrix}\widehat U\\ \zeta^T\end{pmatrix}
- \in\R^{(d+2)\times(d+2)}
+ \in\RealNumbers^{(d+2)\times(d+2)}
  \label{eq:lag-square-completion}
 \end{equation}
 is invertible and
@@ -563,7 +563,7 @@ sequence.
 Let $J_n$ denote interpolation at the $n+1$ Chebyshev--Lobatto nodes.  For
 every $R>0$,
 \begin{equation}
- \|u-J_nu\|_\infty=\bigO_R(n^{-R}).
+ \|u-J_nu\|_\infty=\BigO_R(n^{-R}).
  \label{eq:lag-cheb-superalg}
 \end{equation}
 The dyadic subsequence $I_q^{\rm CL}:=J_{2^q}$ is nested.  With
@@ -590,15 +590,15 @@ error transfer in any topology where the expressions are defined.
 
 For Chebyshev--Lobatto nodes, Lebesgue's lemma gives
 $\|u-J_nu\|_\infty\le(1+\Lambda_n)E_n(u)$ with
-$\Lambda_n=\bigO(\log n)$.  Since the zero extension of $u$ is
-$C^\infty$, Jackson estimates give $E_n(u)=\bigO_r(n^{-r})$ for every
+$\Lambda_n=\BigO(\log n)$.  Since the zero extension of $u$ is
+$C^\infty$, Jackson estimates give $E_n(u)=\BigO_r(n^{-r})$ for every
 $r$; choosing $r>R+1$ proves \eqref{eq:lag-cheb-superalg}.
 
 The Chebyshev--Lobatto grids at degrees $2^q$ are nested, and for $q\ge1$,
 \[
  \|\Delta_q^{\rm CL}u\|_\infty
  \le\|u-J_{2^q}u\|_\infty+\|u-J_{2^{q-1}}u\|_\infty
- =\bigO_R(2^{-qR}).
+ =\BigO_R(2^{-qR}).
 \]
 Any $R>1$ proves summability.  On the target interval every synthesized block
 equals its polynomial detail, so the Weierstrass test and finite telescoping
@@ -643,7 +643,7 @@ and
 \end{equation}
 For the literal up-function realization below, specialize to
 $q\in[-1,1]$ with the powers $1,q,\ldots,q^d$ distinct, and let
-$m\in\N_{>0}$ be an admissible integer mesh.
+$m\in\PositiveIntegers$ be an admissible integer mesh.
 
 \begin{proposition}[Gaussian-binomial/Appell coefficient matrix]
 \label{prop:lag-q-lift}
@@ -851,7 +851,7 @@ to $[-1,-1+\delta_d]$.
 Every endpoint representation \eqref{eq:lag-raw-endpoint} satisfies
 \begin{equation}
  \boxed{\|a\|_1\ge
- \frac{\|P\|_\infty}{F(\delta_d)}.}
+ \frac{\|P\|_\infty}{\FabiusBounded(\delta_d)}.}
  \label{eq:lag-endpoint-amplitude}
 \end{equation}
 Consequently, for any sequence $P_d\in\Pi_d$ with
@@ -867,19 +867,19 @@ $2^d$, as in the normalized endpoint basis.
 
 \begin{proof}
 For $d\ge2$, every active argument is $-1+s$ with
-$0\le s\le\delta_d\le1$, so monotonicity and $u(-1+s)=F(s)$ give
+$0\le s\le\delta_d\le1$, so monotonicity and $u(-1+s)=\FabiusBounded(s)$ give
 \[
  0\le
  u\!\left(\frac{x-c_{d,r}}{2^{d+1}}\right)
- \le F(\delta_d)
+ \le \FabiusBounded(\delta_d)
 \]
 for every active atom and $x\in[-1,1]$.  For $d=0,1$ one instead uses
-$0\le u\le1=F(\delta_d)$, because $\delta_d\ge1$ under the stated constant
+$0\le u\le1=\FabiusBounded(\delta_d)$, because $\delta_d\ge1$ under the stated constant
 extension.  Hence in every degree
-$|P(x)|\le F(\delta_d)\|a\|_1$; taking the supremum proves
+$|P(x)|\le \FabiusBounded(\delta_d)\|a\|_1$; taking the supremum proves
 \eqref{eq:lag-endpoint-amplitude}.  The established endpoint law
 \[
- -\log F(2^{-t})=\frac{\log2}{2}t^2+o(t^2)
+ -\log \FabiusBounded(2^{-t})=\frac{\log2}{2}t^2+o(t^2)
  \qquad(t\to\infty)
 \]
 is equation \texttt{dyadic-quadratic-law} in
@@ -918,7 +918,7 @@ belongs to $\mathcal P_d$.
 After clearing the common spacing, the $j$th cardinal is an integer polynomial
 divided by $2^d j!(d-j)!$.  Its coefficients and derivatives therefore
 introduce only primes at most $d$.  Multiplication by $h=2^{-d}$ and
-evaluation at $kh\in\Z[1/2]$ introduce only the already listed prime $2$.
+evaluation at $kh\in\IntegerNumbers[1/2]$ introduce only the already listed prime $2$.
 
 The even cumulant
 \[

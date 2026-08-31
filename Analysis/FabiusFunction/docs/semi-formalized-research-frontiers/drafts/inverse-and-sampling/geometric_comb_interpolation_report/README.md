@@ -1,5 +1,14 @@
 # Interpolation on a Geometric Comb
 
+> **Source-only merge status (2026-08-31).** The current TeX has 2,360 lines
+> (SHA-256
+> `81c7e646e40fbd613fb814a2c863e697351f022219af1f84e73c07a810c400a4`).
+> The retained 32-page PDF was not rebuilt after the notation migration and is
+> not claimed to be synchronized with that source. `SHA256SUMS.txt` was
+> intentionally not refreshed: its TeX row and this README row are pending,
+> while its other fifteen rows pass. Historical build facts below describe the
+> preceding checkpoint.
+
 This package contains the deeply audited report
 *Interpolation on a Geometric Comb: Lagrange and Newton Formulas, Jackson
 Calculus, Modal Filters, Geometric B-Splines, and Fabius--Rvachev Connections*
@@ -19,8 +28,9 @@ coverage and distinguish it from report-specific results that remain
 manuscript mathematics. See `REPOSITORY_AUDIT.md` for the exact crosswalk and
 audit limits.
 
-The final PDF is a 32-page A4/27 mm Libertinus artifact. It was built from the
-frozen final source with exactly three strict serial `pdflatex` passes. All
+The retained PDF is a 32-page A4/27 mm Libertinus artifact. At the preceding
+checkpoint it was built from the then-frozen source with exactly three strict
+serial `pdflatex` passes. All
 fonts are embedded and subset, there are no Type 3 fonts, references are
 resolved, extracted text is clean, and every rendered page was inspected. See
 `PDF_VALIDATION.txt`.
@@ -74,7 +84,9 @@ undefined references or citations, rerun requests, or TeX errors.
 
 ## Files
 
-- `geometric_comb_interpolation_report.tex` and `.pdf`: final source and PDF;
+- `geometric_comb_interpolation_report.tex`: current source;
+- `geometric_comb_interpolation_report.pdf`: retained preceding-checkpoint PDF,
+  pending rebuild;
 - `geometric_comb_experiments.py`: experiment and figure generator;
 - `moment_checks.csv`, `stability_growth.csv`, `regular_variation.csv`, and
   `fabius_boundary.csv`: archived numerical tables;
@@ -83,5 +95,5 @@ undefined references or citations, rerun requests, or TeX errors.
 - `requirements.txt` and `requirements-lock.txt`: direct and exact replay pins;
 - `ARRIVAL_MANIFEST.txt` and `SHA256SUMS.arrival.txt`: arrival provenance;
 - `REPOSITORY_AUDIT.md` and `PDF_VALIDATION.txt`: deep-audit records;
-- `SHA256SUMS.txt`: exhaustive current-package checksum ledger, excluding
-  itself.
+- `SHA256SUMS.txt`: unrefreshed 17-entry operational ledger, excluding itself;
+  its TeX and README rows are pending.

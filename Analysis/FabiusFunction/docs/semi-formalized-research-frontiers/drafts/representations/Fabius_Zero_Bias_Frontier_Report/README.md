@@ -28,17 +28,24 @@ zero-bias transformations are classical.
 
 ## Package contents
 
-- `Zero_Bias_Towers_and_Spectral_Peeling.tex` / `.pdf` — canonical
-  A4/27 mm/Libertinus source and its validated 26-page three-pass render.
+- `Zero_Bias_Towers_and_Spectral_Peeling.tex` — current 1,926-line,
+  72,038-byte A4/27 mm/Libertinus source; SHA-256
+  `07a6876751b79db0b4af3fb7a765eced5846fb24ad82c02e19fb01314b65c834`.
+- `Zero_Bias_Towers_and_Spectral_Peeling.pdf` — last validated 26-page
+  three-pass render of the preceding source checkpoint; it has not yet been
+  regenerated from the current merge-resolved source.
 - `zero_bias_tower_experiments.py` — 839-line exact/numerical experiment.
 - `requirements.txt` — pinned publication environment.
 - `data/` — three exact/released tables and three floating-point tables.
 - `figures/` — five figures in PDF and PNG form; regenerated PDFs use
   embedded/subset TrueType outlines and no Type 3 fonts.
-- `INTAKE_AUDIT.md` — provenance, replay drift, mathematical-status, and PDF
-  validation record.
+- `INTAKE_AUDIT.md` — provenance, replay drift, mathematical-status, and
+  last-render PDF validation record, plus the current uncompiled-source
+  fingerprint.
 - `ARRIVAL_SHA256SUMS` — immutable 21-entry delivered-payload ledger.
-- `SHA256SUMS` — current normalized-package ledger (excluding itself).
+- `SHA256SUMS` — last validated normalized-package ledger (excluding itself).
+  Its current-source and pending-rebuild metadata rows await refresh; the
+  existing PDF row continues to verify the last validated render.
 
 ## Numerical replay
 
@@ -71,10 +78,15 @@ pdflatex -interaction=nonstopmode -halt-on-error -file-line-error \
   Zero_Bias_Towers_and_Spectral_Peeling.tex
 ```
 
-The final clean build used exactly those three serial passes. Its log has no
+The existing PDF's final clean build used exactly those three serial passes.
+It is not synchronized with the current source. Its historical build log has no
 errors, undefined references, rerun requests, duplicate destinations, or
 overfull boxes; five benign underfull cells in the claim-status table were
 visually checked. All 39 PDF font rows are embedded and subset, Libertinus is
 present, and neither the report nor its five vector figures contains Type 3
 fonts. Representative theorem, plot, conjecture, and appendix pages were
 rendered and inspected.
+
+After rebuilding the current source, refresh its TeX/PDF entries and the
+README/INTAKE_AUDIT rows in `SHA256SUMS` together. Until then, a full ledger
+check is expected to report those pending rows rather than a clean package.

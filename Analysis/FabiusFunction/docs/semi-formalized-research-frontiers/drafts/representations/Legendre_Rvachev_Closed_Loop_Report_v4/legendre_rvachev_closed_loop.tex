@@ -6,6 +6,7 @@
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,array,tabularx}
 \usepackage{graphicx}
 \usepackage{caption}
@@ -62,23 +63,6 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\E}{\mathbb E}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\Span}{\operatorname{span}}
-\newcommand{\diag}{\operatorname{diag}}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\littleo}{o}
-\newcommand{\vtwo}{v_2}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\cX}{\mathcal X}
 \newcommand{\cQ}{\mathcal Q}
@@ -124,7 +108,7 @@
 \maketitle
 
 \begin{abstract}
-Let $u=\Up$ be Rvachev's even, compactly supported $C^\infty$ function on
+Let $u=\RvachevUp$ be Rvachev's even, compactly supported $C^\infty$ function on
 $[-1,1]$, normalized by $\int u=1$, and let $P_n$ denote the Legendre
 polynomial with $P_n(1)=1$.  The repository contains two ingredients that do
 not appear there in their fully composed form: an exact representation of an
@@ -164,7 +148,7 @@ their degree-matched scales.
 
 A second contribution is a direct connection theory between Legendre
 polynomials and the centered Rvachev--Appell polynomials $A_n$, defined by
-$\e^{xz}/M_u(z)=\sum A_n(x)z^n/n!$.  We derive mutually inverse triangular
+$\EulerE^{xz}/M_u(z)=\sum A_n(x)z^n/n!$.  We derive mutually inverse triangular
 matrices
 \[
  P_{2m}=\sum_{r=0}^m C_{m,r}A_{2r},\qquad
@@ -279,24 +263,24 @@ priority is made.
 \section{Imported Rvachev, Fabius, and Legendre data}
 
 \subsection{The up-function and its transforms}
-We use $u=\Up$ normalized by
+We use $u=\RvachevUp$ normalized by
 \begin{equation}
- u\in C_c^\infty(\R),\qquad
- \supp u=[-1,1],\qquad u(-x)=u(x),\qquad
- \int_{-1}^{1}u(x)\dd x=1.
+ u\in C_c^\infty(\RealNumbers),\qquad
+ \SupportOperator u=[-1,1],\qquad u(-x)=u(x),\qquad
+ \int_{-1}^{1}u(x)\Differential x=1.
  \label{eq:up-basic}
 \end{equation}
 With Fourier convention
-$\widehat f(\xi)=\int_\R f(x)\e^{-2\pi\ii x\xi}\dd x$, the transform is
+$\widehat f(\xi)=\int_\RealNumbers f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\Differential x$, the transform is
 \begin{equation}
  \widehat u(\xi)=\prod_{j=0}^{\infty}
- \sinc\!\left(\frac{\pi\xi}{2^j}\right),
- \qquad \sinc z=\frac{\sin z}{z}.
+ \SincRad\!\left(\frac{\pi\xi}{2^j}\right),
+ \qquad \SincRad z=\frac{\sin z}{z}.
  \label{eq:sinc-product}
 \end{equation}
 At a nonzero integer $m$,
 \begin{equation}
- \operatorname{ord}_{\xi=m}\widehat u(\xi)=1+\vtwo(m).
+ \operatorname{ord}_{\xi=m}\widehat u(\xi)=1+\TwoAdicValuation(m).
  \label{eq:zero-multiplicity}
 \end{equation}
 This multiplicity is the spectral reason that the minimal dyadic dilation
@@ -304,7 +288,7 @@ reproducing all polynomials through degree $d$ is $2^d$.
 
 Let
 \begin{equation}
- M_u(z)=\int_{-1}^{1}\e^{zx}u(x)\dd x
+ M_u(z)=\int_{-1}^{1}\EulerE^{zx}u(x)\Differential x
  =\prod_{j=1}^{\infty}\frac{\sinh(z/2^j)}{z/2^j}
  =\sum_{n\ge0}\mu_n\frac{z^n}{n!}.
  \label{eq:mgf}
@@ -364,7 +348,7 @@ Let $P_n$ be normalized by $P_n(1)=1$.  Since $u$ is even,
 \begin{equation}
  u(x)=\sum_{m=0}^{\infty}\lambda_{2m}P_{2m}(x),
  \qquad
- \lambda_{2m}=\frac{4m+1}{2}\int_{-1}^{1}u(x)P_{2m}(x)\dd x.
+ \lambda_{2m}=\frac{4m+1}{2}\int_{-1}^{1}u(x)P_{2m}(x)\Differential x.
  \label{eq:legendre-series}
 \end{equation}
 The series is absolutely and uniformly convergent on $[-1,1]$ in the primary
@@ -421,7 +405,7 @@ representation
  \qquad0\le t\le1.}
  \label{eq:polynomial-endpoint}
 \end{equation}
-If $P\in\Q[t]$, then $b_r\in\Q$.  Moreover, $d+2$ is the least possible
+If $P\in\RationalNumbers[t]$, then $b_r\in\RationalNumbers$.  Moreover, $d+2$ is the least possible
 size of any fixed dictionary of nontrivial affine up-atoms whose span is
 required to contain all of $\Pi_d$.  This fixed-dictionary result does not
 assert that every individual target polynomial needs $d+2$ atoms when shifts,
@@ -481,7 +465,7 @@ $d$;
 \end{equation}
 \end{enumerate}
 Then the $b_r$ satisfy \eqref{eq:polynomial-endpoint}.  The arithmetic cost is
-$\bigO(d^2)$ with quadratic truncated-series operations.
+$\BigO(d^2)$ with quadratic truncated-series operations.
 \end{algorithm}
 
 \subsection{The finite Thue--Morse certificate}
@@ -557,7 +541,7 @@ Then, for $-1\le x\le1$,
 \end{equation}
 Every coefficient is rational.  For fixed $d$, the vectors
 $\bm\beta_{d;0},\ldots,\bm\beta_{d;d}$ are linearly independent and span the
-polynomiality hyperplane $\tau_d^\perp\subset\Q^{d+2}$.
+polynomiality hyperplane $\tau_d^\perp\subset\RationalNumbers^{d+2}$.
 \end{theorem}
 
 \begin{proof}
@@ -767,7 +751,7 @@ $2N+2$ distinct atoms without approximation.
 \subsection{Centered Rvachev--Appell polynomials}
 Define $A_n$ by
 \begin{equation}
- \frac{\e^{xz}}{M_u(z)}=\sum_{n=0}^{\infty}A_n(x)\frac{z^n}{n!}.
+ \frac{\EulerE^{xz}}{M_u(z)}=\sum_{n=0}^{\infty}A_n(x)\frac{z^n}{n!}.
  \label{eq:Appell-egf}
 \end{equation}
 Then
@@ -925,14 +909,14 @@ As $N\to\infty$,
 \begin{align}
  \log\det C^{(N)}
  &=(\log2)N(N+1)-\frac N2\log(2\pi)
- -\frac12\log(N!)-\frac1{16}H_N+\bigO(1)
+ -\frac12\log(N!)-\frac1{16}H_N+\BigO(1)
  \label{eq:C-det-fine}\\
- &=(\log2)N^2-\frac12N\log N+\bigO(N).
+ &=(\log2)N^2-\frac12N\log N+\BigO(N).
  \label{eq:C-det-leading}
 \end{align}
 Consequently
 \begin{equation}
- \log\|C^{(N)}\|_2\ge N\log2-\frac12\log N+\bigO(1).
+ \log\|C^{(N)}\|_2\ge N\log2-\frac12\log N+\BigO(1).
  \label{eq:C-norm-lower}
 \end{equation}
 \end{corollary}
@@ -942,7 +926,7 @@ Use
 \begin{equation}
  2^{-2m}\binom{4m}{2m}
  =\frac{2^{2m}}{\sqrt{2\pi m}}
- \left(1-\frac1{16m}+\bigO(m^{-2})\right)
+ \left(1-\frac1{16m}+\BigO(m^{-2})\right)
  \label{eq:central-binomial-asymptotic}
 \end{equation}
 inside \eqref{eq:C-det} and sum logarithms.  The norm bound follows from
@@ -1060,7 +1044,7 @@ These functions form a basis of the $(d+2)$-dimensional local up-space on
 $[-1,1]$.  Let
 \begin{equation}
  (\mathsf L_d)_{n,r}=\frac{2n+1}{2}
- \int_{-1}^{1}\Psi_{d,r}(x)P_n(x)\dd x,
+ \int_{-1}^{1}\Psi_{d,r}(x)P_n(x)\Differential x,
  \qquad0\le n\le d.
  \label{eq:L-matrix}
 \end{equation}
@@ -1081,7 +1065,7 @@ where $\tau_d$ is \eqref{eq:tau-row}.
 
 \begin{theorem}[Legendre--Thue--Morse biorthogonal completion]
 \label{thm:augmented-invertible}
-The matrix $\cQ_d\in\R^{(d+2)\times(d+2)}$ is invertible.  If
+The matrix $\cQ_d\in\RealNumbers^{(d+2)\times(d+2)}$ is invertible.  If
 $\bm\beta_{d;n}$ is the endpoint coordinate vector of $P_n$, then
 \begin{equation}
  \cQ_d\bm\beta_{d;n}=
@@ -1140,14 +1124,14 @@ A change of variables followed by \eqref{eq:F-up} gives
  \boxed{
  (\mathsf L_d)_{n,r}
  =(2n+1)\int_{a/M}^{(a+1)/M}
- F(s)P_n\!\left(2Ms-(2a+1)\right)\dd s.}
+ F(s)P_n\!\left(2Ms-(2a+1)\right)\Differential s.}
  \label{eq:F-cell-matrix}
 \end{equation}
 
 \begin{proof}
 In \eqref{eq:L-matrix}, put
 $y=(x+1-2k_{d,r})/(2M)$.  The factor $M^{-1}$ in $\Psi_{d,r}$ and
-$\dd x=2M\dd y$ leave a factor $2$, which cancels the $1/2$ in the Legendre
+$\Differential x=2M\Differential y$ leave a factor $2$, which cancels the $1/2$ in the Legendre
 normalization.  The integration interval is
 $[-k_{d,r}/M,(1-k_{d,r})/M]$.  With $s=y+1$ it becomes
 $[a/M,(a+1)/M]$, and
@@ -1182,7 +1166,7 @@ $q$-integer triangular solve has integer entries and unit diagonal.
 Three polynomial products occur in apparently different roles:
 \begin{enumerate}
 \item the infinite sinc product controls zero multiplicities through
-$1+\vtwo(m)$;
+$1+\TwoAdicValuation(m)$;
 \item the finite alias annihilator is the $q$-integer product
 $\mathfrak A_d(z)=\prod_{m=1}^d[2^m]_z$;
 \item multiplying by $(z-1)^{d+1}$ turns it into the finite Thue--Morse
@@ -1282,7 +1266,7 @@ The repository's sharp endpoint analysis reduces the small-$s$ behavior of
 $F(s)$ to a saddle equation whose inversion uses a branch of Lambert--$W$.
 At the endpoint scale \eqref{eq:delta-d},
 \begin{equation}
- \log\frac1{\delta_d}=d\log2-\log d+\bigO(1).
+ \log\frac1{\delta_d}=d\log2-\log d+\BigO(1).
  \label{eq:log-delta}
 \end{equation}
 The leading flat-tail law is quadratic in this logarithm, with lower-order
@@ -1334,7 +1318,7 @@ basis-free interpretation of the endpoint construction.
 For any local endpoint up-spline
 $f=\sum_rb_r\Psi_{d,r}$, define
 \begin{equation}
- \alpha_n=\frac{2n+1}{2}\int_{-1}^{1}f(x)P_n(x)\dd x,
+ \alpha_n=\frac{2n+1}{2}\int_{-1}^{1}f(x)P_n(x)\Differential x,
  \qquad
  \eta=\tau_d^{\mathsf T}\bm b.
  \label{eq:alpha-eta}
@@ -1352,7 +1336,7 @@ one boundary datum.
 
 \subsection{Universality beyond the Rvachev law}
 The direct connection theorem has a universal component.  Given any normalized
-even moment series $M(z)$, define its Appell family by $\e^{xz}/M(z)$.  The
+even moment series $M(z)$, define its Appell family by $\EulerE^{xz}/M(z)$.  The
 formulas \eqref{eq:C-moment}, \eqref{eq:D-explicit}, and
 \eqref{eq:C-det} remain valid with the new moments and reciprocal moments.
 What is special to Rvachev is not the triangular Appell algebra but the finite
@@ -1443,7 +1427,7 @@ Legendre inner product to
 \begin{equation}
  \langle f,g\rangle_u
  =\int_{-1}^{1}\bigl[M_u(D)^{-1}f\bigr](x)
-                 \bigl[M_u(D)^{-1}g\bigr](x)\dd x,
+                 \bigl[M_u(D)^{-1}g\bigr](x)\Differential x,
  \label{eq:formal-inner-product}
 \end{equation}
 but locality, positivity on suitable completions, and a spectral theorem are
@@ -1466,7 +1450,7 @@ stability functional such as
  \qquad
  \kappa_2(\cQ_d),
  \quad\text{or}\quad
- \max_r\operatorname{dist}(\supp\Psi_{d,r},[-1,1]).
+ \max_r\operatorname{dist}(\SupportOperator\Psi_{d,r},[-1,1]).
  \label{eq:basis-objectives}
 \end{equation}
 The right-endpoint basis is algebraically canonical but strongly
@@ -1562,7 +1546,7 @@ and a $q$-hypergeometric formula for the Legendre--Appell matrix.
  M_u(z)&=\prod_{j\ge1}\frac{\sinh(z/2^j)}{z/2^j},
  &\kappa_{2m}&=\frac{B_{2m}}{2m(1-4^{-m})},\\
  \frac1{M_u(z)}&=\sum_{n\ge0}\gamma_n\frac{z^n}{n!},
- &\frac{\e^{xz}}{M_u(z)}&=\sum_{n\ge0}A_n(x)\frac{z^n}{n!}.
+ &\frac{\EulerE^{xz}}{M_u(z)}&=\sum_{n\ge0}A_n(x)\frac{z^n}{n!}.
 \end{align*}
 
 \paragraph{Endpoint dictionary.}

@@ -6,6 +6,7 @@
 \usepackage{microtype}
 \usepackage[a4paper,margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,array,tabularx}
 \usepackage{enumitem}
 \usepackage{graphicx}
@@ -52,31 +53,12 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\DeclareMathOperator{\Up}{up}
-\DeclareMathOperator{\sinc}{sinc}
-\DeclareMathOperator{\rank}{rank}
 \DeclareMathOperator{\range}{ran}
-\DeclareMathOperator{\Span}{span}
-\DeclareMathOperator{\diag}{diag}
 \DeclareMathOperator{\cond}{cond}
-\DeclareMathOperator{\wt}{wt}
-\DeclareMathOperator{\sgn}{sgn}
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\C}{\mathbb{C}}
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\Z}{\mathbb{Z}}
-\newcommand{\dd}{\,\mathrm{d}}
-\newcommand{\e}{\mathrm{e}}
-\newcommand{\ii}{\mathrm{i}}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\1}{\mathbf{1}}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
 \newcommand{\inner}[2]{\left\langle#1,#2\right\rangle}
 \newcommand{\PiN}[1]{\Pi_{#1}}
-\newcommand{\bigO}{\mathcal{O}}
-\newcommand{\littleo}{o}
-\newcommand{\qbinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
 \newcommand{\falling}[2]{(#1)_{#2}}
 
 \lstdefinestyle{pythonstyle}{
@@ -100,8 +82,8 @@ factorizations, convergence dichotomies, and Lambert-scale conditioning}
 \maketitle
 
 \begin{abstract}
-Let $u=\Up$ denote Rvachev's compactly supported $C^\infty$ function,
-normalized by $u(x)=F(1-\abs{x})$ on $[-1,1]$, where $F$ is the Fabius
+Let $u=\RvachevUp$ denote Rvachev's compactly supported $C^\infty$ function,
+normalized by $u(x)=F(1-\AbsoluteValue{x})$ on $[-1,1]$, where $F$ is the Fabius
 function.  For arbitrary distinct interpolation nodes
 $-1\le x_0,\ldots,x_n\le1$, this report obtains an exact representation of
 every Lagrange cardinal polynomial $\ell_{n,j}$ on $[-1,1]$ as a linear
@@ -139,13 +121,13 @@ a genuine convergent series of shifted up-functions.  Nevertheless, the
 endpoint dictionary is intrinsically coefficient-ill-conditioned.  If
 $a_{n,j,r}=2^{-n}b_{j,r}$ are the raw amplitudes, then
 \[
- \sum_r\abs{a_{n,j,r}}\ge
- \frac{\norm{\ell_{n,j}}_\infty}{F((n+2)2^{-n})},
+ \sum_r\AbsoluteValue{a_{n,j,r}}\ge
+ \frac{\Norm{\ell_{n,j}}_\infty}{F((n+2)2^{-n})},
 \]
 so the dyadic endpoint law implies
 \[
  \liminf_{n\to\infty}\frac1{n^2}
- \log\sum_r\abs{a_{n,j,r}}\ge\frac{\log2}{2}.
+ \log\sum_r\AbsoluteValue{a_{n,j,r}}\ge\frac{\log2}{2}.
 \]
 Thus stable function approximation can coexist with cancellations of size
 $\exp((\log2/2+o(1))n^2)$.  Exact computations through degree $13$ support a
@@ -174,7 +156,7 @@ different coordinate systems.  The first is polynomial interpolation:
  \ell_{n,j}(x)=\prod_{i\ne j}\frac{x-x_i}{x_j-x_i}.
 \]
 The second is the finite common-scale dictionary of translates of Rvachev's
-$u=\Up$.  The repository proves that, at the sharp dyadic ratio $2^n$, a
+$u=\RvachevUp$.  The repository proves that, at the sharp dyadic ratio $2^n$, a
 specific right-endpoint block of $n+2$ translates is a basis for the degree
 $n$ polynomial subspace on a unit interval.  The present report specializes
 that result to the entire Lagrange cardinal basis, writes the coefficients in
@@ -322,15 +304,15 @@ as unconditional claims of first publication in the world literature.
 
 Let $F$ denote the Fabius function on $[0,1]$ and let
 \[
- u(x)=\Up(x)=F(1-\abs{x}),\qquad -1\le x\le1,
+ u(x)=\RvachevUp(x)=F(1-\AbsoluteValue{x}),\qquad -1\le x\le1,
 \]
 extended by zero outside $[-1,1]$ \cite{Fabius1966,Rvachev1990,PrimaryRepo}.  Then $u$ is nonnegative, even,
 $C^\infty$, supported on $[-1,1]$, satisfies $u(0)=1$, and is flat at both
 endpoints.  In the Fourier convention
-$\widehat f(\xi)=\int_{\R}f(x)\e^{-\ii\xi x}\dd x$,
+$\widehat f(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-\ImaginaryUnit\xi x}\Differential x$,
 \[
- \widehat u(\xi)=\prod_{j=1}^{\infty}\sinc\!\left(\frac{\xi}{2^j}\right),
- \qquad \sinc z=\frac{\sin z}{z}.
+ \widehat u(\xi)=\prod_{j=1}^{\infty}\SincRad\!\left(\frac{\xi}{2^j}\right),
+ \qquad \SincRad z=\frac{\sin z}{z}.
 \]
 Equivalently, $u$ is the density of
 \[
@@ -339,7 +321,7 @@ Equivalently, $u$ is the density of
 \]
 with independent summands.  Hence its moment generating function is
 \[
- M_u(z)=\mathbb E\e^{zX}
+ M_u(z)=\mathbb E\EulerE^{zX}
  =\prod_{j=1}^{\infty}\frac{\sinh(z/2^j)}{z/2^j}.
 \]
 The odd cumulants vanish, while \cite{PrimaryRepo,UpSynthesisRepo}
@@ -427,7 +409,7 @@ Three node families will be distinguished.
 $x_j=-1+2j/n$.  They give simple rational cardinals but exponentially large
 Lebesgue constants and Runge instability.
 \item[Chebyshev--Lobatto nodes]
-$x_j=\cos(j\pi/n)$.  Their Lebesgue constants are $\bigO(\log n)$ and they
+$x_j=\cos(j\pi/n)$.  Their Lebesgue constants are $\BigO(\log n)$ and they
 are the stable choice for a global loop.
 \item[Geometric nodes]
 $\theta_j=q^j$, $0<q<1$, hence $x_j=2q^j-1$.  Their cardinal weights admit
@@ -515,7 +497,7 @@ Then $b$ is the unique solution of the unit-triangular convolution
  \qquad 0\le r\le n+1.
  \label{eq:triangular}
 \end{equation}
-The arithmetic cost is $\bigO(n^2)$ once the coefficients of $P$ are known.
+The arithmetic cost is $\BigO(n^2)$ once the coefficients of $P$ are known.
 \end{theorem}
 
 \begin{remark}[Why the scale $2^n$ is sharp]
@@ -744,7 +726,7 @@ The denominator in the cardinal weight factors exactly:
 where $(q;q)_m=\prod_{r=1}^m(1-q^r)$.  Hence
 \begin{equation}
  w_j=(-1)^j q^{\binom{j+1}{2}-jn}
- \frac{\qbinom{n}{j}}{(q;q)_n}.
+ \frac{\GaussianBinomial{n}{j}{q}}{(q;q)_n}.
  \label{eq:q-wj}
 \end{equation}
 
@@ -753,16 +735,16 @@ The full nodal polynomial has the finite $q$-binomial expansion \cite{PrimaryRep
  \prod_{i=0}^n(t-q^i)
  =t^{n+1}(t^{-1};q)_{n+1}
  =\sum_{s=0}^{n+1}(-1)^s q^{\binom{s}{2}}
- \qbinom{n+1}{s}t^{n+1-s}.
+ \GaussianBinomial{n+1}{s}{q}t^{n+1-s}.
  \label{eq:q-nodal}
 \end{equation}
 For the elementary symmetric polynomial with $q^j$ omitted, define
 $e_s^{(j)}=e_s(1,q,\ldots,\widehat{q^j},\ldots,q^n)$.  Since
-$e_s(1,q,\ldots,q^n)=q^{\binom{s}{2}}\qbinom{n+1}{s}$,
+$e_s(1,q,\ldots,q^n)=q^{\binom{s}{2}}\GaussianBinomial{n+1}{s}{q}$,
 removing one variable gives
 \begin{equation}
  e_s^{(j)}=\sum_{r=0}^s(-1)^r q^{jr+\binom{s-r}{2}}
- \qbinom{n+1}{s-r}.
+ \GaussianBinomial{n+1}{s-r}{q}.
  \label{eq:q-excluded-e}
 \end{equation}
 
@@ -864,10 +846,10 @@ is computationally preferable when only one data vector is needed.
 
 \begin{corollary}[Complexity]
 After construction of the interpolating polynomial in a stable basis, the
-direct loop coefficients can be computed in $\bigO(n^2)$ exact arithmetic
+direct loop coefficients can be computed in $\BigO(n^2)$ exact arithmetic
 operations.  Precomputing the full cardinal synthesis matrix costs
-$\bigO(n^3)$ by applying the $\bigO(n^2)$ transform to $n+1$ cardinals, after
-which each new data vector costs $\bigO(n^2)$.
+$\BigO(n^3)$ by applying the $\BigO(n^2)$ transform to $n+1$ cardinals, after
+which each new data vector costs $\BigO(n^2)$.
 \end{corollary}
 
 \section{The defect-completed matrix factorization}
@@ -887,13 +869,13 @@ Define the common atoms on $[-1,1]$ by
 Let
 \begin{equation}
  \Phi_X=(\phi_{n,r}(x_i))_{0\le i\le n,\,0\le r\le n+1}
- \in\R^{(n+1)\times(n+2)}
+ \in\RealNumbers^{(n+1)\times(n+2)}
  \label{eq:Phi}
 \end{equation}
 be the sampling matrix, and let
 \begin{equation}
  B_X=(b_{j,r})_{0\le r\le n+1,\,0\le j\le n}
- \in\R^{(n+2)\times(n+1)}
+ \in\RealNumbers^{(n+2)\times(n+1)}
  \label{eq:B}
 \end{equation}
 be the cardinal synthesis matrix, with cardinals indexed by columns.
@@ -908,7 +890,7 @@ Thus $B_X$ is a right inverse of the rectangular sampling matrix.
 
 Let
 \[
- \eps_m=(-1)^{\wt(m)}
+ \eps_m=(-1)^{\BinaryDigitSum(m)}
 \]
 be the signed Thue--Morse sequence.  Restriction of the repository's full
 polynomiality certificate to the endpoint block gives a row
@@ -936,7 +918,7 @@ Every cardinal column is polynomial, hence
 The square matrix
 \begin{equation}
  M_X=\begin{pmatrix}\Phi_X\\ \lambda_n^T\end{pmatrix}
- \in\R^{(n+2)\times(n+2)}
+ \in\RealNumbers^{(n+2)\times(n+2)}
  \label{eq:MX}
 \end{equation}
 is invertible, and
@@ -965,7 +947,7 @@ Thue--Morse defect constraint.
 
 Define
 \begin{equation}
- \mathcal P_X=B_X\Phi_X\in\R^{(n+2)\times(n+2)}.
+ \mathcal P_X=B_X\Phi_X\in\RealNumbers^{(n+2)\times(n+2)}.
  \label{eq:PX}
 \end{equation}
 Then
@@ -997,9 +979,9 @@ nonpolynomial quotient of the local shift space:
 where $E_n$ is a smooth $1$-periodic Fourier series supported on odd
 frequencies,
 \begin{equation}
- E_n(t)=-\frac{(n+1)!}{(2\pi\ii)^{n+1}}
- \sum_{m\in2\Z+1}\frac{\widehat u(m/2)}{m^{n+1}}
- \e^{2\pi\ii mt}.
+ E_n(t)=-\frac{(n+1)!}{(2\pi\ImaginaryUnit)^{n+1}}
+ \sum_{m\in2\IntegerNumbers+1}\frac{\widehat u(m/2)}{m^{n+1}}
+ \EulerE^{2\pi\ImaginaryUnit mt}.
  \label{eq:En}
 \end{equation}
 The defect coordinate of an endpoint coefficient vector $b$ is
@@ -1073,7 +1055,7 @@ where the first term is polynomial and the second is the nodal ghost.
 
 \begin{proof}
 By \eqref{eq:projector-spaces}, $I-\mathcal P_X$ has range
-$\ker\Phi_X=\Span\{v_X\}$ and annihilates $\ker\lambda_n^T$.  Therefore it
+$\ker\Phi_X=\SpanOperator\{v_X\}$ and annihilates $\ker\lambda_n^T$.  Therefore it
 has the form $v_X\mu^T$ for a row $\mu^T$ proportional to $\lambda_n^T$.
 Applying it to $v_X$ and using \eqref{eq:vnorm} gives
 $\mu^T=\lambda_n^T/[A_n(1)(n+1)!]$.
@@ -1169,16 +1151,16 @@ Let $I_n^{\mathrm{CL}}$ denote interpolation at the $n+1$
 Chebyshev--Lobatto nodes.  Since $u\in C^\infty[-1,1]$, its best polynomial
 approximation error satisfies
 \begin{equation}
- E_n(u):=\inf_{p\in\Pi_n}\norm{u-p}_\infty
- =\bigO(n^{-m})
+ E_n(u):=\inf_{p\in\Pi_n}\Norm{u-p}_\infty
+ =\BigO(n^{-m})
  \qquad\text{for every }m>0.
  \label{eq:best-super}
 \end{equation}
-The Chebyshev--Lobatto Lebesgue constant is $\bigO(\log n)$, so Lebesgue's
+The Chebyshev--Lobatto Lebesgue constant is $\BigO(\log n)$, so Lebesgue's
 lemma gives \cite{BerrutTrefethen2004,Trefethen2013,RepresentationRepo}
 \begin{equation}
- \norm{u-I_n^{\mathrm{CL}}u}_\infty
- \le(1+\Lambda_n)E_n(u)=\bigO(n^{-p})
+ \Norm{u-I_n^{\mathrm{CL}}u}_\infty
+ \le(1+\Lambda_n)E_n(u)=\BigO(n^{-p})
  \qquad\text{for every }p>0.
  \label{eq:cheb-super}
 \end{equation}
@@ -1194,7 +1176,7 @@ coefficients from \cref{thm:cardinal-synth}.  Then
  \label{eq:cheb-loop-limit}
 \end{equation}
 uniformly for $x\in[-1,1]$, and the function error is
-$\bigO(n^{-p})$ for every $p>0$.
+$\BigO(n^{-p})$ for every $p>0$.
 \end{theorem}
 
 \begin{proof}
@@ -1209,7 +1191,7 @@ The Fabius function is a nowhere analytic $C^\infty$ function, and so is the
 corresponding up-function on its interior pieces.  If a fixed $\rho>1$ and
 $C>0$ satisfied
 \[
- \norm{u-I_n^{\mathrm{CL}}u}_\infty\le C\rho^{-n},
+ \Norm{u-I_n^{\mathrm{CL}}u}_\infty\le C\rho^{-n},
 \]
 then the best approximation errors would obey the same bound.  Bernstein's
 converse theorem would imply analytic continuation to a Bernstein ellipse,
@@ -1220,7 +1202,7 @@ contradicting nowhere analyticity.
 For the Chebyshev closed loop,
 \begin{equation}
  \limsup_{n\to\infty}
- \norm{u-I_n^{\mathrm{CL}}u}_\infty^{1/n}=1.
+ \Norm{u-I_n^{\mathrm{CL}}u}_\infty^{1/n}=1.
  \label{eq:root-rate}
 \end{equation}
 Thus convergence is faster than every algebraic power but slower than every
@@ -1248,9 +1230,9 @@ Then
 \end{equation}
 uniformly.  In fact, for every $p>0$,
 \[
- \norm{Q_m}_\infty
- \le\norm{u-J_m}_\infty+\norm{u-J_{m-1}}_\infty
- =\bigO(2^{-pm}),
+ \Norm{Q_m}_\infty
+ \le\Norm{u-J_m}_\infty+\Norm{u-J_{m-1}}_\infty
+ =\BigO(2^{-pm}),
 \]
 so the series is absolutely convergent in the Banach space $C[-1,1]$.
 Synthesizing each $Q_m\in\Pi_{N_m}$ yields
@@ -1274,7 +1256,7 @@ series
  \label{eq:self-series}
 \end{equation}
 Absolute convergence here means
-$\sum_m\norm{Q_m}_\infty<\infty$; it does not imply absolute convergence of
+$\sum_m\Norm{Q_m}_\infty<\infty$; it does not imply absolute convergence of
 the scalar atom amplitudes.
 \end{theorem}
 
@@ -1325,14 +1307,14 @@ Every representation \eqref{eq:raw-form} of a polynomial $P\in\Pi_n$ in
 the endpoint basis satisfies
 \begin{equation}
  \boxed{
- \norm{a}_1\ge\frac{\norm{P}_\infty}{F(\delta_n)},
+ \Norm{a}_1\ge\frac{\Norm{P}_\infty}{F(\delta_n)},
  \qquad
- \norm{b}_1\ge\frac{2^n\norm{P}_\infty}{F(\delta_n)}.}
+ \Norm{b}_1\ge\frac{2^n\Norm{P}_\infty}{F(\delta_n)}.}
  \label{eq:amplitude-bound}
 \end{equation}
 In particular, for every Lagrange cardinal polynomial,
 \begin{equation}
- \norm{a_j}_1\ge\frac1{F(\delta_n)}.
+ \Norm{a_j}_1\ge\frac1{F(\delta_n)}.
  \label{eq:cardinal-lower}
 \end{equation}
 \end{theorem}
@@ -1340,10 +1322,10 @@ In particular, for every Lagrange cardinal polynomial,
 \begin{proof}
 From \eqref{eq:atom-bound}, for every $x\in[-1,1]$,
 \[
- \abs{P(x)}
- \le\sum_r\abs{a_r}
+ \AbsoluteValue{P(x)}
+ \le\sum_r\AbsoluteValue{a_r}
  u\!\left(\frac{x-c_{n,r}}{2^{n+1}}\right)
- \le F(\delta_n)\norm{a}_1.
+ \le F(\delta_n)\Norm{a}_1.
 \]
 Take the supremum in $x$.  Since $b=2^na$, the second inequality follows.
 A cardinal polynomial takes the value $1$ at its own node, so its sup norm is
@@ -1364,25 +1346,25 @@ Combining \eqref{eq:cardinal-lower} with the dyadic law
 \begin{corollary}[Lambert-scale coefficient growth]
 \label{cor:quadratic-growth}
 For every sequence of endpoint representations of normalized polynomials
-$P_n\in\Pi_n$ with $\norm{P_n}_\infty\ge1$,
+$P_n\in\Pi_n$ with $\Norm{P_n}_\infty\ge1$,
 \begin{equation}
- \log\norm{a^{(n)}}_1
+ \log\Norm{a^{(n)}}_1
  \ge\left(\frac{\log2}{2}+o(1)\right)t_n^2,
  \label{eq:t-growth}
 \end{equation}
 and therefore
 \begin{equation}
  \boxed{
- \liminf_{n\to\infty}\frac1{n^2}\log\norm{a^{(n)}}_1
+ \liminf_{n\to\infty}\frac1{n^2}\log\Norm{a^{(n)}}_1
  \ge\frac{\log2}{2}.}
  \label{eq:n2-growth}
 \end{equation}
-The same leading lower bound holds for $\norm{b^{(n)}}_1$.
+The same leading lower bound holds for $\Norm{b^{(n)}}_1$.
 \end{corollary}
 
 \begin{proof}
 Theorem \ref{thm:amplitude-barrier} gives
-$\log\norm{a^{(n)}}_1\ge-\log F(2^{-t_n})=g(t_n)$.
+$\log\Norm{a^{(n)}}_1\ge-\log F(2^{-t_n})=g(t_n)$.
 Since $t_n\to\infty$, \eqref{eq:dyadic-law} proves
 \eqref{eq:t-growth}.  Finally $t_n/n\to1$, giving
 \eqref{eq:n2-growth}.  Multiplication by $2^n$ changes the logarithm by only
@@ -1392,7 +1374,7 @@ $n\log2=o(n^2)$.
 \subsection{Stable output versus unstable internal coordinates}
 
 For Chebyshev nodes, the function-space interpolation operator has norm
-$\bigO(\log n)$ and converges superalgebraically on $u$.  Nevertheless, every
+$\BigO(\log n)$ and converges superalgebraically on $u$.  Nevertheless, every
 individual cardinal column of the endpoint synthesis matrix has
 $\ell^1$ norm at least
 \[
@@ -1424,7 +1406,7 @@ The reproducibility script computes equispaced cardinal matrices exactly over
 $\mathbb Q$.  Let
 \[
  L_n=\max_{0\le j\le n}\sum_{r=0}^{n+1}
- \abs{2^{-n}b_{j,r}}.
+ \AbsoluteValue{2^{-n}b_{j,r}}.
 \]
 Selected exact-arithmetic results are shown below.
 
@@ -1571,7 +1553,7 @@ Appell basis rather than monomials.
 \subsection{Infinite sinc products and Strang--Fix reproduction}
 
 The Fourier zeros of
-$\widehat u(\xi)=\prod_j\sinc(\xi/2^j)$ have dyadic multiplicities.  At scale
+$\widehat u(\xi)=\prod_j\SincRad(\xi/2^j)$ have dyadic multiplicities.  At scale
 $2^n$, nonzero lattice frequencies have enough zero multiplicity to reproduce
 all polynomials through degree $n$.  This is the spectral reason the common
 scale is $2^n$ and the shift family has approximation order $n+1$
@@ -1622,7 +1604,7 @@ and numerical evidence, but they are not proved here.
 \label{conj:sharp-lambert}
 For normalized endpoint cardinal columns in a regular node family,
 \begin{equation}
- \log\norm{a_{n,j}}_1
+ \log\Norm{a_{n,j}}_1
  =-\log F((n+2)2^{-n})+\Gamma_{X,j}(n)+o(1),
  \label{eq:sharp-lambert-conj}
 \end{equation}
@@ -1646,7 +1628,7 @@ to represent unit-size degree-$n$ polynomials on one cell.
 The unresolved central consecutive $(n+2)$-atom basis is nonsingular for every
 $n$.  After natural diagonal scaling by endpoint values and factorial/Appell
 weights, its condition number grows strictly more slowly than that of the
-right-endpoint basis, perhaps as $\exp(\bigO(n\log n))$ rather than
+right-endpoint basis, perhaps as $\exp(\BigO(n\log n))$ rather than
 $\exp(\Theta(n^2))$.
 \end{conjecture}
 
@@ -1677,7 +1659,7 @@ by short Thue--Morse recurrences.  Can one obtain exact valuation formulas?
 The endpoint basis is unique, so its amplitude norm is fixed.  If arbitrary
 centres and scales are allowed, what is the minimum total variation
 \[
- \inf\left\{\sum_s\abs{a_s}:P(x)=\sum_sa_su((x-c_s)/\sigma_s)
+ \inf\left\{\sum_s\AbsoluteValue{a_s}:P(x)=\sum_sa_su((x-c_s)/\sigma_s)
  \text{ on }[-1,1]\right\}?
 \]
 Can positivity, sign-change counts, or moment duality produce scale-independent
@@ -1844,7 +1826,7 @@ Iterating,
  E_s^{(j)}=E_s-q^jE_{s-1}+q^{2j}E_{s-2}-\cdots+(-1)^sq^{sj}E_0.
 \]
 The finite $q$-binomial theorem gives
-$E_r=q^{\binom r2}\qbinom{n+1}{r}$, proving
+$E_r=q^{\binom r2}\GaussianBinomial{n+1}{r}{q}$, proving
 \eqref{eq:q-excluded-e}.
 
 \section{Exact low-degree regression identities}

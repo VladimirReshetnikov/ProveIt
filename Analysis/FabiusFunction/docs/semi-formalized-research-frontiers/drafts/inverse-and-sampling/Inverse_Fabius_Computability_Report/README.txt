@@ -1,16 +1,26 @@
 COMPUTABILITY OF THE INVERSE FABIUS FUNCTION
 =============================================
 
+SOURCE-ONLY MERGE STATUS (2026-08-31)
+-------------------------------------
+The current TeX has 2937 lines and SHA-256
+9945b23025006337e87001332db7a1141896b2f29f0d715fa85261682a6b0397.
+The retained 42-page PDF was not rebuilt after the notation migration and is
+not claimed to be synchronized with that source.  SHA256SUMS.txt was
+intentionally not refreshed: its TeX row and this README row are pending,
+while its other four rows pass.  Later uses of "synchronized", "current", or
+"final" in historical build notes refer to the preceding checkpoint.
+
 Contents
 --------
 inverse_fabius_computability.tex
-    Complete 2967-line, canonically styled LaTeX source of the report.  Its
-    synchronized update unites the equality/rigidity, effective-continuity,
-    and logarithmic reciprocal-modulus crosswalks described below.
+    Complete 2937-line, canonically styled LaTeX source of the report.  Its
+    semantic merge unites the equality/rigidity, effective-continuity, and
+    logarithmic reciprocal-modulus crosswalks described below.
 
 inverse_fabius_computability.pdf
-    Current synchronized 42-page A4 rendering, rebuilt from the merged source
-    in exactly three strict serial pdfLaTeX passes.
+    Retained 42-page A4 rendering from the preceding publication checkpoint;
+    not rebuilt from the current merged source.
 
 inverse_fabius_computability_experiments.py
     Exact-rational Python supplement using only the standard library.  It
@@ -24,8 +34,8 @@ ARRIVAL_SHA256SUMS.txt
     Immutable five-file ledger for the delivered payload.
 
 SHA256SUMS.txt
-    Six-entry ledger for the current repository-normalized package (the
-    ledger itself is intentionally not self-hashed).
+    Six-entry operational ledger from the preceding checkpoint (the ledger
+    itself is intentionally not self-hashed); TeX and README rows are pending.
 
 Arrival provenance
 ------------------
@@ -130,14 +140,16 @@ target tolerance 1/n.
 
 Build and validation
 --------------------
-The 2967-line source uses the repository's canonical article/A4/27 mm/
-Libertinus style and was rebuilt from clean auxiliaries in exactly three
-strict serial pdfLaTeX passes.  The synchronized 42-page PDF has populated
+At the preceding publication checkpoint, the then-2967-line source used the
+repository's canonical article/A4/27 mm/Libertinus style and was rebuilt from
+clean auxiliaries in exactly three strict serial pdfLaTeX passes.  The
+retained 42-page PDF has populated
 author metadata; every page is A4 with zero rotation; every font is embedded
 and subset; Libertinus is present; and no Type 3 font is used.  The final log
 has no errors, unresolved references/citations, rerun request, or overfull
 box.  Text extraction and visual checks cover the status boundary, corpus
 audit, asymptotic caveat, Lean roadmap, proof-status tables, and both
 exhaustive effective-continuity crosswalks.  Auxiliary files were removed
-after validation and the six-entry active checksum ledger refreshed.  Exact
-current hashes are recorded in SHA256SUMS.txt.
+after validation and the six-entry active checksum ledger refreshed. Those
+build and ledger facts are historical; the source-only merge status above is
+the current state.

@@ -13,7 +13,9 @@ superseded, generated, proved, numerical, and conjectural material.
 Main deliverables
 -----------------
 fabius_rvachev_new_frontiers.tex
-    Complete 2,827-line A4/27 mm/Libertinus LaTeX report. The merged source
+    Current 2,783-line, 110,176-byte A4/27 mm/Libertinus LaTeX report,
+    SHA-256 9a9d59159ed3f447762088d14d3c1770346f182006961cbb9617ea32dbbe7401.
+    The merge-resolved source
     preserves the canonical preamble, vector-figure and claim-status
     safeguards, retains
     the current scalar-base-change Gram--Stieltjes and all-degree rational
@@ -28,10 +30,10 @@ fabius_rvachev_new_frontiers.tex
     paper-only boundary explicit.
 
 fabius_rvachev_new_frontiers.pdf
-    Current 39-page A4 rendering with embedded/subset fonts, Libertinus prose,
-    and no Type 3 fonts. It was rebuilt in exactly three strict passes against
-    the updated source and is synchronized with the PDF preflight and checksum
-    ledger.
+    Last validated 39-page A4 rendering with embedded/subset fonts, Libertinus
+    prose, and no Type 3 fonts. It was rebuilt in exactly three strict passes
+    against the preceding source checkpoint; it has not yet been regenerated
+    from the current merge-resolved source.
 
 fabius_frontier_experiments.py
     Fully commented 580-line exact/high-precision experiment. It computes
@@ -62,7 +64,14 @@ CORPUS_AUDIT.md
     Scope, source strata, nonduplication method, and status boundary.
 
 pdf_preflight.json
-    PDF structural, geometry, font, text, build-log, and visual preflight.
+    PDF structural, geometry, font, text, build-log, and visual preflight for
+    the last validated render, plus the current uncompiled-source fingerprint.
+
+SHA256SUMS.txt
+    Last validated package ledger. Its current-source and pending-rebuild
+    metadata rows intentionally remain stale until the TeX receives three
+    strict serial passes and the TeX/PDF/preflight/README rows are refreshed
+    together. The existing PDF row still verifies the last validated render.
 
 Numerical publication run
 -------------------------
@@ -127,8 +136,8 @@ Historical verification
   checked at full-page resolution.
 * Python byte-compilation and an independent degree-24 smoke run succeeded.
 
-Current repository rebuild verification
----------------------------------------
+Last validated repository rebuild
+---------------------------------
 * Clean strict serial pdflatex passes 1--3 produced 37, 39, and 39 pages.
 * The final unencrypted PDF has 39 A4 pages, zero rotation, and A4
   MediaBox/CropBox/BleedBox/TrimBox/ArtBox on every page. All 35 font rows are
@@ -146,8 +155,11 @@ Current repository rebuild verification
 * Pages 1, 7, 11, 13, 14, 25, 27, 34, 35, and 39 were visually inspected; the title,
   corrected status table, complete rational/Gaunt crosswalk, vector figures,
   formalization roadmap, and final references page are unclipped and readable.
-* The refreshed 20-entry checksum ledger includes all five PNG companions and
-  synchronizes the TeX, PDF, README, CORPUS_AUDIT, and pdf_preflight entries.
+* At that checkpoint, the refreshed 20-entry checksum ledger included all five
+  PNG companions and synchronized the TeX, PDF, README, CORPUS_AUDIT, and
+  pdf_preflight entries. The current merge-resolved TeX is not synchronized
+  with that PDF. The TeX and the metadata rows carrying this notice remain
+  pending until the next rebuild and ledger refresh.
 
 Claim status
 ------------

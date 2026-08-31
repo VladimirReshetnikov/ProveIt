@@ -46,6 +46,8 @@
 \fancyhead[L]{\small\textsc{Fabius--Rvachev information geometry}}
 \fancyhead[R]{\small\thepage}
 \fancyfoot[C]{}
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
 \renewcommand{\headrulewidth}{0.4pt}
 
 \setlength{\parindent}{0pt}
@@ -69,30 +71,11 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
 \newcommand{\Corr}{\operatorname{Corr}}
 \newcommand{\KL}{D_{\mathrm{KL}}}
 \newcommand{\MI}{I}
 \newcommand{\mmse}{\operatorname{mmse}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\e}{\mathrm e}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\littleo}{o}
 \newcommand{\ind}{\mathbf 1}
-\newcommand{\pospart}[1]{\left(#1\right)_{+}}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
-\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
 \newcommand{\epsTM}{\varepsilon}
 \newcommand{\Repo}{\textcolor{navy}{\textbf{[repository input]}}}
 \newcommand{\New}{\textcolor{teal}{\textbf{[proved here]}}}
@@ -185,9 +168,9 @@ prefixes:
 \]
 where $\mathcal J$ is Fisher information.  In the dyadic case a new bridge gives
 \[
- \mathcal J(\Up)
- =\int_0^1\frac{F'(x)^2}{F(x)(1-F(x))}\dd x
- =\int_0^1\frac{\dd y}{y(1-y)(F^{-1})'(y)}.
+ \mathcal J(\RvachevUp)
+ =\int_0^1\frac{F'(x)^2}{F(x)(1-F(x))}\Differential x
+ =\int_0^1\frac{\Differential y}{y(1-y)(F^{-1})'(y)}.
 \]
 Combining the inverse-Fabius elasticity with the lower-Lambert scale produces a
 new endpoint entropy law.  Finally, exact Bernoulli cumulants yield a formal
@@ -231,7 +214,7 @@ new:
 \item Legendre, Jacobi, Lagrange, sampling, multiresolution, Fredholm, resolvent,
       Appell, Stein, and Koopman representations already developed in the corpus;
 \item the existing global entropy identity
-      $\int_0^1\log (F^{-1})'(y)\dd y=h(F')$ and entropy laws for derivative-energy
+      $\int_0^1\log (F^{-1})'(y)\Differential y=h(F')$ and entropy laws for derivative-energy
       measures in the non-dyadic atomic-function hierarchy.
 \end{itemize}
 
@@ -262,7 +245,7 @@ Rate-distortion bracket and asymptotic prefix-code gap & derived & Shannon lower
 Finite Thue--Morse spline Bayesian/KL identity & proved & inclusion-exclusion spline plus Rvachev posterior \\
 Information-spectrum limit and R\'enyi cumulant generating function & proved & independent-tail coupling \\
 Finite-sinc entropy correction governed by Fisher information & proved & Fourier deconvolution and entropy variation \\
-Fisher bridge through $F$, $F^{-1}$, and $\Up$ & proved & symmetry, differentiation, and quantile transport \\
+Fisher bridge through $F$, $F^{-1}$, and $\RvachevUp$ & proved & symmetry, differentiation, and quantile transport \\
 Lower-Lambert endpoint tail-entropy law & derived from audited asymptotics & inverse elasticity and Watson integration \\
 Entropic Edgeworth coefficients $3/100$ and $33/500$ near $q=1$ & formal plus numerical & Bernoulli cumulants and Hermite orthogonality \\
 Full entropic $q\uparrow1$ expansion and monotonic deficit & conjectural & uniform Fourier/entropy control \\
@@ -290,9 +273,9 @@ Let $U_0,U_1,\ldots$ be independent $\mathrm{Unif}[-1,1]$ random variables and s
 The series converges absolutely and $X_q\in[-1,1]$.  Write $f_q$ for its density,
 $F_q$ for its distribution function, and
 \begin{equation}
- \phi_q(t)=\E\e^{\ii tX_q}
- =\prod_{j=0}^{\infty}\sinc\bigl((1-q)q^jt\bigr),
- \qquad \sinc z=\frac{\sin z}{z}.
+ \phi_q(t)=\Expectation\EulerE^{\ImaginaryUnit tX_q}
+ =\prod_{j=0}^{\infty}\SincRad\bigl((1-q)q^jt\bigr),
+ \qquad \SincRad z=\frac{\sin z}{z}.
  \label{eq:phi-q}
 \end{equation}
 The first digit gives the distributional fixed point
@@ -306,15 +289,15 @@ where $X_q'$ is an independent copy.  Consequently
  \label{eq:density-transfer}
 \end{equation}
 The product in \eqref{eq:phi-q} decays faster than every power on the real line;
-thus $f_q\in C_c^\infty(\R)$ and is flat at the support endpoints.  These regularity
+thus $f_q\in C_c^\infty(\RealNumbers)$ and is flat at the support endpoints.  These regularity
 facts are repository inputs, but they are also immediate from the standard
 ``number of active sinc factors'' estimate.
 
 \subsection{Variance, Bernoulli cumulants, and Bell moments}
 
-Since $\Var(U_j)=1/3$,
+Since $\Variance(U_j)=1/3$,
 \begin{equation}
- \sigma_q^2:=\Var(X_q)=\frac{(1-q)^2}{3}\sum_{j\ge0}q^{2j}
+ \sigma_q^2:=\Variance(X_q)=\frac{(1-q)^2}{3}\sum_{j\ge0}q^{2j}
  =\frac{1-q}{3(1+q)}.
  \label{eq:variance}
 \end{equation}
@@ -330,7 +313,7 @@ The logarithm of $\sinh z/z$ gives the even cumulants
 Here $B_n$ are the Bernoulli numbers with $B_2=1/6$.  Every ordinary moment is
 therefore a complete Bell polynomial:
 \begin{equation}
- \mu_n(q):=\E X_q^n
+ \mu_n(q):=\Expectation X_q^n
  =\mathcal B_n\bigl(0,\kappa_2,0,\kappa_4,\ldots,\kappa_n\bigr).
  \label{eq:Bell-moments}
 \end{equation}
@@ -341,20 +324,20 @@ below completely explicit.
 
 At $q=1/2$, write $X=X_{1/2}$.  In the probability normalization used here,
 \begin{equation}
- \Prob(X\in\dd x)=\Up(x)\dd x,
+ \Probability(X\in\Differential x)=\RvachevUp(x)\Differential x,
  \qquad -1\le x\le1,
  \label{eq:up-density}
 \end{equation}
 and the affine variable $Y=(X+1)/2$ has the Fabius distribution:
 \begin{equation}
- \Prob(Y\le y)=F(y),
- \qquad F'(y)=2\Up(2y-1),
+ \Probability(Y\le y)=F(y),
+ \qquad F'(y)=2\RvachevUp(2y-1),
  \qquad 0<y<1.
  \label{eq:F-density}
 \end{equation}
 Equivalently,
 \begin{equation}
- \Up(x)=F(1-\abs{x}),\qquad \abs{x}\le1.
+ \RvachevUp(x)=F(1-\AbsoluteValue{x}),\qquad \AbsoluteValue{x}\le1.
  \label{eq:up-F}
 \end{equation}
 Let
@@ -364,10 +347,10 @@ Let
 \end{equation}
 be the inverse Fabius function.  The variance is
 \begin{equation}
- \Var(X)=\frac19.
+ \Variance(X)=\frac19.
  \label{eq:dyadic-var}
 \end{equation}
-The report will move repeatedly among the centered density $\Up$, the bounded CDF
+The report will move repeatedly among the centered density $\RvachevUp$, the bounded CDF
 $F$, and the quantile $G$; \eqref{eq:F-density} fixes every factor of two.
 
 \section{An exact equal-information filtration}
@@ -459,8 +442,8 @@ Consequently, for $0<p<1$,
 \end{equation}
 where $Q_q=F_q^{-1}$, and
 \begin{equation}
- \E\bigl[\e^{\ii tX_q}\mid S_{q,m}=s\bigr]
- =\e^{\ii ts}\phi_q(q^mt).
+ \Expectation\bigl[\EulerE^{\ImaginaryUnit tX_q}\mid S_{q,m}=s\bigr]
+ =\EulerE^{\ImaginaryUnit ts}\phi_q(q^mt).
  \label{eq:posterior-cf}
 \end{equation}
 The scalar $S_{q,m}$ is a sufficient statistic for the entire block
@@ -482,7 +465,7 @@ For $r\ge2$,
 \end{equation}
 while the conditional mean is $s$.  In particular,
 \begin{equation}
- \E\bigl[(X_q-s)^n\mid S_{q,m}=s\bigr]
+ \Expectation\bigl[(X_q-s)^n\mid S_{q,m}=s\bigr]
  =q^{mn}\mathcal B_n(0,\kappa_2,0,\kappa_4,\ldots,\kappa_n).
  \label{eq:posterior-Bell}
 \end{equation}
@@ -495,9 +478,9 @@ one geometric power.
 Let $h_\alpha$ denote differential R\'enyi entropy of order $\alpha>0$,
 $\alpha\ne1$, and let
 \[
- \mathcal J(f_q)=\int_{-1}^{1}\frac{f_q'(x)^2}{f_q(x)}\dd x,
+ \mathcal J(f_q)=\int_{-1}^{1}\frac{f_q'(x)^2}{f_q(x)}\Differential x,
  \qquad
- V(f_q)=\Var[-\log f_q(X_q)].
+ V(f_q)=\Variance[-\log f_q(X_q)].
 \]
 Then
 \begin{align}
@@ -520,7 +503,7 @@ variance is invariant.
 
 \subsection{Transport of Legendre and Appell representations}
 
-The audited repository contains Legendre expansions of $\Up$ and inverse-moment
+The audited repository contains Legendre expansions of $\RvachevUp$ and inverse-moment
 Appell polynomial systems for $f_q$.  The posterior theorem transports either
 representation without recomputing a coefficient.
 
@@ -539,7 +522,7 @@ converges in any mode valid for the repository's expansion.  Then
  \label{eq:legendre-posterior}
 \end{equation}
 for $|x-s|\le q^m$.  In particular, all odd coefficients vanish by symmetry, and
-at $q=1/2$ the existing even Legendre expansion of $\Up$ becomes an exact local
+at $q=1/2$ the existing even Legendre expansion of $\RvachevUp$ becomes an exact local
 posterior expansion at every prefix value.
 \end{proposition}
 
@@ -565,9 +548,9 @@ complete polynomial deconvolution algebra at every depth.
 \label{thm:mmse}
 For every $m\ge1$,
 \begin{equation}
- \E[X_q\mid S_{q,m}]=S_{q,m},
+ \Expectation[X_q\mid S_{q,m}]=S_{q,m},
  \qquad
- \Var(X_q\mid S_{q,m})=q^{2m}\sigma_q^2,
+ \Variance(X_q\mid S_{q,m})=q^{2m}\sigma_q^2,
  \label{eq:conditional-mean-var}
 \end{equation}
 and hence
@@ -587,9 +570,9 @@ The tail in \eqref{eq:tail-decomposition} is independent, centered, and has
 variance $q^{2m}\sigma_q^2$.  Thus the prefix is the conditional mean and is the
 orthogonal $L^2$ projection.  Also
 \[
- \Var(S_{q,m})=\sigma_q^2-q^{2m}\sigma_q^2,
+ \Variance(S_{q,m})=\sigma_q^2-q^{2m}\sigma_q^2,
  \qquad
- \Cov(X_q,S_{q,m})=\Var(S_{q,m}),
+ \Covariance(X_q,S_{q,m})=\Variance(S_{q,m}),
 \]
 which gives \eqref{eq:corr}.
 \end{proof}
@@ -633,19 +616,19 @@ distortion are
 \begin{equation}
  R_m:=I(X_q;\widehat X_m)=m\log(1/q),
  \qquad
- D_m:=\E(X_q-\widehat X_m)^2=q^{2m}\sigma_q^2.
+ D_m:=\Expectation(X_q-\widehat X_m)^2=q^{2m}\sigma_q^2.
  \label{eq:RD-points}
 \end{equation}
 Therefore
 \begin{equation}
- D_m=\sigma_q^2\e^{-2R_m}.
+ D_m=\sigma_q^2\EulerE^{-2R_m}.
  \label{eq:selfsimilar-RD}
 \end{equation}
 
 Define the Gaussian entropy deficit
 \begin{equation}
  \delta_q
- :=\frac12\log(2\pi\e\sigma_q^2)-h(X_q)
+ :=\frac12\log(2\pi\EulerE\sigma_q^2)-h(X_q)
  =\KL\!\left(f_q\,\middle\|\,
    \frac{1}{\sqrt{2\pi\sigma_q^2}}
    \exp\!\left[-\frac{x^2}{2\sigma_q^2}\right]\right).
@@ -673,13 +656,13 @@ precisely the non-Gaussian entropy deficit $\delta_q$.
 The upper bound is achieved by $\widehat X_m=S_{q,m}$.  Shannon's lower bound for
 squared error gives
 \[
- R_{X_q}(D)\ge h(X_q)-\frac12\log(2\pi\e D).
+ R_{X_q}(D)\ge h(X_q)-\frac12\log(2\pi\EulerE D).
 \]
 At $D=D_m$, this equals $R_m-\delta_q$, proving the bracket.  The compactly
 supported smooth density $f_q$ satisfies the standard regularity assumptions for
 the high-resolution formula
 \[
- R_{X_q}(D)=h(X_q)-\frac12\log(2\pi\e D)+o(1)
+ R_{X_q}(D)=h(X_q)-\frac12\log(2\pi\EulerE D)+o(1)
  \qquad(D\downarrow0).
 \]
 Substitution of $D_m$ proves \eqref{eq:RD-asymptotic}.
@@ -689,7 +672,7 @@ Substitution of $D_m$ proves \eqref{eq:RD-asymptotic}.
 \label{cor:EPI-deficit}
 For every $0<q<1$,
 \begin{equation}
- 0<\delta_q\le\frac12\log\frac{\pi\e}{6}.
+ 0<\delta_q\le\frac12\log\frac{\pi\EulerE}{6}.
  \label{eq:EPI-deficit}
 \end{equation}
 The upper endpoint is the entropy deficit of a standardized uniform law and is
@@ -700,9 +683,9 @@ approached as $q\downarrow0$.
 Apply the entropy-power inequality to the independent summands
 $(1-q)q^jU_j$.  Since $h(U_j)=\log2$,
 \[
- N(X_q):=\frac{\e^{2h(X_q)}}{2\pi\e}
- \ge\sum_{j\ge0}(1-q)^2q^{2j}\frac{2}{\pi\e}
- =\frac{2(1-q)}{\pi\e(1+q)}.
+ N(X_q):=\frac{\EulerE^{2h(X_q)}}{2\pi\EulerE}
+ \ge\sum_{j\ge0}(1-q)^2q^{2j}\frac{2}{\pi\EulerE}
+ =\frac{2(1-q)}{\pi\EulerE(1+q)}.
 \]
 Compare this with \eqref{eq:variance}.  Rearrangement gives
 \eqref{eq:EPI-deficit}.  Strict positivity follows because $f_q$ has compact
@@ -711,8 +694,8 @@ support and is not Gaussian.
 
 \begin{remark}[Operational meaning]
 At high resolution the optimal distortion at rate $R_m$ is asymptotic to
-$D_m\e^{-2\delta_q}$.  Hence the exact geometric prefix has multiplicative
-high-resolution loss $\e^{2\delta_q}$.  Numerically, for $q=1/2$ this factor is
+$D_m\EulerE^{-2\delta_q}$.  Hence the exact geometric prefix has multiplicative
+high-resolution loss $\EulerE^{2\delta_q}$.  Numerically, for $q=1/2$ this factor is
 approximately $1.0476742$: the dyadic prefix is within about $4.77\%$ of the
 high-resolution optimum while retaining an exact algebraic interpretation.
 \end{remark}
@@ -726,7 +709,7 @@ Let $b_{q,m}$ be the density of $S_{q,m}$.  Its characteristic function is the
 finite sinc product
 \begin{equation}
  \widehat b_{q,m}(t)
- =\prod_{j=0}^{m-1}\sinc\bigl((1-q)q^jt\bigr)
+ =\prod_{j=0}^{m-1}\SincRad\bigl((1-q)q^jt\bigr)
  =\frac{\phi_q(t)}{\phi_q(q^mt)}.
  \label{eq:finite-sinc}
 \end{equation}
@@ -743,7 +726,7 @@ For every $r\ge1$,
 \end{equation}
 In particular,
 \begin{equation}
- \Var(S_{q,m})=(1-q^{2m})\sigma_q^2,
+ \Variance(S_{q,m})=(1-q^{2m})\sigma_q^2,
  \label{eq:prefix-var}
 \end{equation}
 and for even order $2r$,
@@ -787,12 +770,12 @@ The density of $S_m$ is the compact spline
  \boxed{
  b_m(s)=\frac{2^{m(m-1)/2}}{(m-1)!}
  \sum_{j=0}^{2^m-1}\epsTM_j
- \pospart{s+A_m-\frac{j}{2^{m-1}}}^{m-1}.}
+ \PositivePart{s+A_m-\frac{j}{2^{m-1}}}^{m-1}.}
  \label{eq:TM-spline}
 \end{equation}
 Its Fourier transform is
 \begin{equation}
- \widehat b_m(t)=\prod_{k=1}^{m}\sinc(t/2^k).
+ \widehat b_m(t)=\prod_{k=1}^{m}\SincRad(t/2^k).
  \label{eq:dyadic-finite-sinc}
 \end{equation}
 \end{theorem}
@@ -802,7 +785,7 @@ The convolution of uniforms on $[-a_k,a_k]$ has the inclusion-exclusion density
 \[
  \frac{1}{(m-1)!\prod_{k=1}^{m}(2a_k)}
  \sum_{E\subseteq\{1,\ldots,m\}}(-1)^{|E|}
- \pospart{s+\sum_ka_k-2\sum_{k\in E}a_k}^{m-1}.
+ \PositivePart{s+\sum_ka_k-2\sum_{k\in E}a_k}^{m-1}.
 \]
 For $a_k=2^{-k}$,
 \[
@@ -827,17 +810,17 @@ spline and the infinite sinc-product density.
 
 \begin{theorem}[Finite/infinite sinc Bayesian bridge]
 \label{thm:KL-TM}
-For the dyadic law $X\sim\Up$,
+For the dyadic law $X\sim\RvachevUp$,
 \begin{equation}
  p_{S_m,X}(s,x)
- =b_m(s)\,2^m\Up\bigl(2^m(x-s)\bigr).
+ =b_m(s)\,2^m\RvachevUp\bigl(2^m(x-s)\bigr).
  \label{eq:joint-TM-up}
 \end{equation}
 Consequently,
 \begin{equation}
  \boxed{
- \iint_{\R^2} b_m(s)\,2^m\Up\bigl(2^m(x-s)\bigr)
- \log\frac{2^m\Up(2^m(x-s))}{\Up(x)}\dd x\dd s
+ \iint_{\RealNumbers^2} b_m(s)\,2^m\RvachevUp\bigl(2^m(x-s)\bigr)
+ \log\frac{2^m\RvachevUp(2^m(x-s))}{\RvachevUp(x)}\Differential x\Differential s
  =m\log2.}
  \label{eq:KL-TM}
 \end{equation}
@@ -857,7 +840,7 @@ $I(X;S_m)=m\log2$ by \cref{thm:prefix-information}.
 The same depth $m$ has three simultaneous meanings:
 \begin{enumerate}
 \item it is the number of factors in the finite sinc product
-      $\prod_{k=1}^m\sinc(t/2^k)$;
+      $\prod_{k=1}^m\SincRad(t/2^k)$;
 \item it is the length of the Thue--Morse inclusion-exclusion block in
       \eqref{eq:TM-spline};
 \item it is exactly the number of bits of mutual information in
@@ -871,7 +854,7 @@ views of the same finite convolution.
 
 Let $G=F^{-1}$.  The centered Rvachev quantile is
 \begin{equation}
- Q_{\Up}(p)=2G(p)-1.
+ Q_{\RvachevUp}(p)=2G(p)-1.
  \label{eq:up-quantile}
 \end{equation}
 Therefore the exact dyadic posterior quantile is
@@ -909,7 +892,7 @@ Almost surely,
 \end{equation}
 The second term is exactly centered:
 \begin{equation}
- \E\bigl[\log f_q(X_q^{(m)})-\log f_q(X_q)\bigr]=0.
+ \Expectation\bigl[\log f_q(X_q^{(m)})-\log f_q(X_q)\bigr]=0.
  \label{eq:centered-exact}
 \end{equation}
 \end{theorem}
@@ -923,7 +906,7 @@ $X_q^{(m)}$ and $X_q$ have marginal density $f_q$, proving the mean-zero identit
 Define the surprisal random variable and varentropy
 \begin{equation}
  J_q:=-\log f_q(X_q),
- \qquad V_q:=\Var(J_q).
+ \qquad V_q:=\Variance(J_q).
  \label{eq:surprisal}
 \end{equation}
 Flatness of $f_q$ at the endpoints implies that every polynomial moment of $J_q$
@@ -941,15 +924,15 @@ independent,
 \end{equation}
 where $J_q^{(1)},J_q^{(2)}$ are independent copies of $J_q$.  In particular,
 \begin{equation}
- \Var\bigl(\imath_m(X_q;S_{q,m})\bigr)\longrightarrow2V_q.
+ \Variance\bigl(\imath_m(X_q;S_{q,m})\bigr)\longrightarrow2V_q.
  \label{eq:info-var-limit}
 \end{equation}
 For $|t|<1$, the limiting cumulant generating function is
 \begin{equation}
  \boxed{
  \Lambda_q(t)
- =\log\int_{-1}^{1}f_q(x)^{1+t}\dd x
- +\log\int_{-1}^{1}f_q(x)^{1-t}\dd x.}
+ =\log\int_{-1}^{1}f_q(x)^{1+t}\Differential x
+ +\log\int_{-1}^{1}f_q(x)^{1-t}\Differential x.}
  \label{eq:limit-cgf}
 \end{equation}
 \end{theorem}
@@ -965,7 +948,7 @@ $\log f_q(X_q^{(m)})-\log f_q(\widetilde X_q)$, a difference of independent
 copies.  Endpoint flatness supplies uniform integrability for every fixed
 polynomial moment, proving \eqref{eq:info-var-limit}.  Independence gives
 \[
- \E\e^{t(J_q^{(1)}-J_q^{(2)})}
+ \Expectation\EulerE^{t(J_q^{(1)}-J_q^{(2)})}
  =\left(\int f_q^{1-t}\right)\left(\int f_q^{1+t}\right),
 \]
 which is finite for $|t|<1$ and yields \eqref{eq:limit-cgf}.
@@ -1014,7 +997,7 @@ first asymptotic coefficient.
 
 Let
 \begin{equation}
- h_{q,m}:=h(S_{q,m})=-\int b_{q,m}(x)\log b_{q,m}(x)\dd x.
+ h_{q,m}:=h(S_{q,m})=-\int b_{q,m}(x)\log b_{q,m}(x)\Differential x.
  \label{eq:prefix-entropy}
 \end{equation}
 
@@ -1057,7 +1040,7 @@ The exact coefficient is source-dependent and is governed by Fisher information.
 
 For a smooth density $f$, write
 \begin{equation}
- \mathcal J(f)=\int\frac{f'(x)^2}{f(x)}\dd x.
+ \mathcal J(f)=\int\frac{f'(x)^2}{f(x)}\Differential x.
  \label{eq:Fisher-def}
 \end{equation}
 The following technical lemma isolates the analytic step.  It is phrased for the
@@ -1075,7 +1058,7 @@ As $m\to\infty$,
 where $r_{q,m}=o(q^{2m})$ in every fixed Sobolev norm and in the weighted norms
 needed to differentiate entropy.  In particular,
 \begin{equation}
- \int r_{q,m}(x)\dd x=0.
+ \int r_{q,m}(x)\Differential x=0.
  \label{eq:remainder-mass}
 \end{equation}
 \end{lemma}
@@ -1166,27 +1149,27 @@ Gaussian score and is impossible for the compactly supported $f_q$; hence
 
 \begin{proof}
 For a centered differentiable density, integration by parts gives
-$\E[X_q(f_q'/f_q)(X_q)]=-1$.  Cauchy--Schwarz yields
+$\Expectation[X_q(f_q'/f_q)(X_q)]=-1$.  Cauchy--Schwarz yields
 $1\le\sigma_q^2\mathcal J(f_q)$.  Equality characterizes a linear score and hence
 a Gaussian density.
 \end{proof}
 
-\subsection{A new Fisher bridge for $F$, $G$, and $\Up$}
+\subsection{A new Fisher bridge for $F$, $G$, and $\RvachevUp$}
 
 At $q=1/2$, the coefficient in \eqref{eq:fisher-gap} is
-$\mathcal J(\Up)/18$.  The next identity places it directly in the Fabius and
+$\mathcal J(\RvachevUp)/18$.  The next identity places it directly in the Fabius and
 inverse-Fabius coordinates.
 
 \begin{theorem}[Fabius--quantile representation of Rvachev Fisher information]
 \label{thm:Fisher-bridge}
 The Fisher information of the centered Rvachev density has the equivalent forms
 \begin{align}
- \mathcal J(\Up)
- &=8\int_0^1\frac{\Up(2x-1)^2}{\Up(x)}\dd x,
+ \mathcal J(\RvachevUp)
+ &=8\int_0^1\frac{\RvachevUp(2x-1)^2}{\RvachevUp(x)}\Differential x,
  \label{eq:Fisher-up-dilation}\\
- &=\int_0^1\frac{F'(x)^2}{F(x)(1-F(x))}\dd x,
+ &=\int_0^1\frac{F'(x)^2}{F(x)(1-F(x))}\Differential x,
  \label{eq:Fisher-F}\\
- &=\int_0^1\frac{\dd y}{y(1-y)G'(y)}.
+ &=\int_0^1\frac{\Differential y}{y(1-y)G'(y)}.
  \label{eq:Fisher-G}
 \end{align}
 All three integrals are finite.
@@ -1195,24 +1178,24 @@ All three integrals are finite.
 \begin{proof}
 For $0<x<1$, \eqref{eq:up-F} and the symmetry of $F'$ give
 \[
- \Up(x)=1-F(x),
+ \RvachevUp(x)=1-F(x),
  \qquad
- \Up'(x)=-F'(x)=-2\Up(2x-1).
+ \RvachevUp'(x)=-F'(x)=-2\RvachevUp(2x-1).
 \]
-Evenness of $\Up$ therefore yields
+Evenness of $\RvachevUp$ therefore yields
 \[
- \mathcal J(\Up)
- =2\int_0^1\frac{F'(x)^2}{1-F(x)}\dd x
- =8\int_0^1\frac{\Up(2x-1)^2}{\Up(x)}\dd x.
+ \mathcal J(\RvachevUp)
+ =2\int_0^1\frac{F'(x)^2}{1-F(x)}\Differential x
+ =8\int_0^1\frac{\RvachevUp(2x-1)^2}{\RvachevUp(x)}\Differential x.
 \]
 By $x\mapsto1-x$ and $F(1-x)=1-F(x)$,
 \[
- \int_0^1\frac{F'(x)^2}{1-F(x)}\dd x
- =\int_0^1\frac{F'(x)^2}{F(x)}\dd x.
+ \int_0^1\frac{F'(x)^2}{1-F(x)}\Differential x
+ =\int_0^1\frac{F'(x)^2}{F(x)}\Differential x.
 \]
 Adding the two equal integrals gives \eqref{eq:Fisher-F}.  Finally substitute
 $y=F(x)$, so $x=G(y)$, $F'(x)=1/G'(y)$, and
-$\dd x=G'(y)\dd y$.  This gives \eqref{eq:Fisher-G}.  Finiteness follows from the
+$\Differential x=G'(y)\Differential y$.  This gives \eqref{eq:Fisher-G}.  Finiteness follows from the
 flat endpoint asymptotics: although $1/[y(1-y)]$ diverges, $G'$ diverges rapidly
 enough to compensate.
 \end{proof}
@@ -1221,14 +1204,14 @@ enough to compensate.
 \label{cor:dyadic-fisher-gap}
 For $S_m=\sum_{k=1}^m2^{-k}U_{k-1}$,
 \begin{equation}
- h(\Up)-h(S_m)
- =\frac{\mathcal J(\Up)}{18}\,4^{-m}+o(4^{-m}).
+ h(\RvachevUp)-h(S_m)
+ =\frac{\mathcal J(\RvachevUp)}{18}\,4^{-m}+o(4^{-m}).
  \label{eq:dyadic-fisher-gap}
 \end{equation}
 Equivalently,
 \begin{equation}
- \lim_{m\to\infty}4^m\bigl[h(\Up)-h(S_m)\bigr]
- =\frac1{18}\int_0^1\frac{\dd y}{y(1-y)G'(y)}.
+ \lim_{m\to\infty}4^m\bigl[h(\RvachevUp)-h(S_m)\bigr]
+ =\frac1{18}\int_0^1\frac{\Differential y}{y(1-y)G'(y)}.
  \label{eq:dyadic-fisher-G-limit}
 \end{equation}
 \end{corollary}
@@ -1262,7 +1245,7 @@ Let $y\downarrow0$ and put
 The audited inverse-Fabius analysis proves the leading quantile law
 \begin{equation}
  G(y)
- \sim\frac{\sqrt T}{\e\sqrt L}
+ \sim\frac{\sqrt T}{\EulerE\sqrt L}
        \exp\!\bigl(-\sqrt{2LT}\bigr),
  \label{eq:G-leading}
 \end{equation}
@@ -1309,12 +1292,12 @@ The lower endpoint of the Fabius density $F'$ contains probability $y$ on the
 interval $[0,G(y)]$.  Define its entropy contribution by
 \begin{equation}
  \mathscr H_F(y)
- :=-\int_0^{G(y)}F'(x)\log F'(x)\dd x.
+ :=-\int_0^{G(y)}F'(x)\log F'(x)\Differential x.
  \label{eq:tail-entropy-F-def}
 \end{equation}
 Substitution $u=F(x)$ gives the exact quantile identity
 \begin{equation}
- \mathscr H_F(y)=\int_0^y\log G'(u)\dd u.
+ \mathscr H_F(y)=\int_0^y\log G'(u)\Differential u.
  \label{eq:tail-entropy-quantile}
 \end{equation}
 
@@ -1327,33 +1310,33 @@ As $y\downarrow0$,
  =y\left(T-\sqrt{2LT}-\frac L2+o(1)\right).}
  \label{eq:tail-entropy-F}
 \end{equation}
-For the centered Rvachev density, let $\mathscr H_{\Up}(y)$ denote the entropy
+For the centered Rvachev density, let $\mathscr H_{\RvachevUp}(y)$ denote the entropy
 contribution of either endpoint interval carrying probability $y$.  Then
 \begin{equation}
  \boxed{
- \mathscr H_{\Up}(y)
+ \mathscr H_{\RvachevUp}(y)
  =y\left(T-\sqrt{2LT}+\frac L2+o(1)\right).}
  \label{eq:tail-entropy-up}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-Write $u=\e^{-t}$.  Equation \eqref{eq:tail-entropy-quantile} becomes
+Write $u=\EulerE^{-t}$.  Equation \eqref{eq:tail-entropy-quantile} becomes
 \[
- \mathscr H_F(y)=\int_T^\infty \e^{-t}
- \left(t-\sqrt{2Lt}-1-\frac L2+o(1)\right)\dd t.
+ \mathscr H_F(y)=\int_T^\infty \EulerE^{-t}
+ \left(t-\sqrt{2Lt}-1-\frac L2+o(1)\right)\Differential t.
 \]
 Watson integration at the lower endpoint gives
 \[
- \int_T^\infty\e^{-t}t\dd t=y(T+1),
+ \int_T^\infty\EulerE^{-t}t\Differential t=y(T+1),
  \qquad
- \int_T^\infty\e^{-t}\sqrt{2Lt}\dd t
+ \int_T^\infty\EulerE^{-t}\sqrt{2Lt}\Differential t
  =y\left(\sqrt{2LT}+o(1)\right).
 \]
 The $+1$ from the first integral cancels the explicit $-1$ in
 \eqref{eq:log-Gprime}, proving \eqref{eq:tail-entropy-F}.  If
-$X\sim\Up$ and $Y=(X+1)/2$, then $F'$ is the density of $Y$ and
-$\Up(x)=\tfrac12F'((x+1)/2)$.  Therefore the centered surprisal exceeds the
+$X\sim\RvachevUp$ and $Y=(X+1)/2$, then $F'$ is the density of $Y$ and
+$\RvachevUp(x)=\tfrac12F'((x+1)/2)$.  Therefore the centered surprisal exceeds the
 Fabius-density surprisal by $L$, adding $Ly$ to the tail contribution and proving
 \eqref{eq:tail-entropy-up}.
 \end{proof}
@@ -1362,13 +1345,13 @@ Fabius-density surprisal by $L$, adding $Ly$ to the tail contribution and provin
 \label{cor:tail-moments}
 For every fixed positive integer $r$,
 \begin{equation}
- \int_0^y\bigl[\log G'(u)\bigr]^r\dd u
+ \int_0^y\bigl[\log G'(u)\bigr]^r\Differential u
  =yT^r\left(1-r\sqrt{\frac{2L}{T}}+O\!\left(\frac1T\right)\right).
  \label{eq:tail-surprisal-moments}
 \end{equation}
 In particular, the unnormalized second surprisal moment is
 \begin{equation}
- \int_0^y\bigl[\log G'(u)\bigr]^2\dd u
+ \int_0^y\bigl[\log G'(u)\bigr]^2\Differential u
  =y\left(T^2-2\sqrt{2L}\,T^{3/2}+O(T)\right).
  \label{eq:tail-second-moment}
 \end{equation}
@@ -1376,7 +1359,7 @@ In particular, the unnormalized second surprisal moment is
 
 \begin{proof}
 By \eqref{eq:log-Gprime},
-$\log G'(\e^{-t})=t-\sqrt{2Lt}+O(1)$.  Raise this to the fixed power $r$, retain
+$\log G'(\EulerE^{-t})=t-\sqrt{2Lt}+O(1)$.  Raise this to the fixed power $r$, retain
 the first two orders, and apply the same Watson integration.  Differentiation of
 $t^r$ contributes only relative order $1/T$.
 \end{proof}
@@ -1398,7 +1381,7 @@ to $\mathscr H_F(y)/y$ at order $T^{-1/2}$.  This is formulated precisely as
 Set
 \begin{equation}
  Z_q=\frac{X_q}{\sigma_q},
- \qquad \Var(Z_q)=1,
+ \qquad \Variance(Z_q)=1,
  \label{eq:Zq}
 \end{equation}
 and let $\lambda_r(q)=\kappa_r(Z_q)$ be its standardized cumulants.  Combining
@@ -1437,10 +1420,10 @@ each new order in $1-q$, only finitely many Bernoulli cumulants contribute.
 
 \subsection{Formal Hermite calculation of the entropy deficit}
 
-Let $\gamma(x)=(2\pi)^{-1/2}\e^{-x^2/2}$ and
+Let $\gamma(x)=(2\pi)^{-1/2}\EulerE^{-x^2/2}$ and
 \begin{equation}
  \Delta(q)=D(Z_q\|\gamma)
- =\frac12\log(2\pi\e)-h(Z_q)
+ =\frac12\log(2\pi\EulerE)-h(Z_q)
  =\delta_q.
  \label{eq:standardized-deficit}
 \end{equation}
@@ -1457,9 +1440,9 @@ through the orders relevant for cubic entropy is
 Hermite orthogonality eliminates the cross terms involving $H_6$ and $H_8$ at
 cubic order.  Since
 \begin{equation}
- \E H_4(N)^2=4!=24,
+ \Expectation H_4(N)^2=4!=24,
  \qquad
- \E H_4(N)^3=1728,
+ \Expectation H_4(N)^3=1728,
  \qquad N\sim\mathcal N(0,1),
  \label{eq:H4-moments}
 \end{equation}
@@ -1510,7 +1493,7 @@ appeal to an iid theorem.
 \label{conj:deficit-monotone}
 The entropy deficit $\delta_q$ is strictly decreasing on $(0,1)$, with
 \begin{equation}
- \lim_{q\downarrow0}\delta_q=\frac12\log\frac{\pi\e}{6},
+ \lim_{q\downarrow0}\delta_q=\frac12\log\frac{\pi\EulerE}{6},
  \qquad
  \lim_{q\uparrow1}\delta_q=0.
  \label{eq:deficit-endpoints}
@@ -1595,16 +1578,16 @@ CSV but are omitted from the asymptotic comparison.}
 
 For the centered Rvachev density the computation gives
 \begin{align}
- h(\Up)&=0.297039912858918,\label{eq:num-hup}\\
- \mathcal J(\Up)&=11.800710562320129,\label{eq:num-Jup}\\
- V(\Up)&=0.259694517369981,\label{eq:num-Vup}\\
+ h(\RvachevUp)&=0.297039912858918,\label{eq:num-hup}\\
+ \mathcal J(\RvachevUp)&=11.800710562320129,\label{eq:num-Jup}\\
+ V(\RvachevUp)&=0.259694517369981,\label{eq:num-Vup}\\
  \delta_{1/2}&=0.023286331677645\ \text{nats}
  =0.033595075231834\ \text{bits}.
  \label{eq:num-deficit-up}
 \end{align}
 Thus the predicted finite-prefix coefficient is
 \begin{equation}
- \frac{\mathcal J(\Up)}{18}=0.655595031240007.
+ \frac{\mathcal J(\RvachevUp)}{18}=0.655595031240007.
  \label{eq:num-prefix-coeff}
 \end{equation}
 
@@ -1615,7 +1598,7 @@ Thus the predicted finite-prefix coefficient is
 \small
 \begin{tabular}{@{}rrrrr@{}}
 \toprule
-$m$ & $h(S_m)$ & $h(\Up)-h(S_m)$ & $4^m[h(\Up)-h(S_m)]$ & exact MMSE\\
+$m$ & $h(S_m)$ & $h(\RvachevUp)-h(S_m)$ & $4^m[h(\RvachevUp)-h(S_m)]$ & exact MMSE\\
 \midrule
 1 & 0.000000000 & $2.9703991\!\times10^{-1}$ & 1.1881597 & $2.7777778\!\times10^{-2}$\\
 2 & 0.250000000 & $4.7039913\!\times10^{-2}$ & 0.7526386 & $6.9444444\!\times10^{-3}$\\
@@ -1633,7 +1616,7 @@ $m$ & $h(S_m)$ & $h(\Up)-h(S_m)$ & $4^m[h(\Up)-h(S_m)]$ & exact MMSE\\
 \centering
 \includegraphics[width=0.86\textwidth]{prefix_entropy_gap.pdf}
 \caption{The normalized finite-prefix entropy gap converges rapidly to the
-Fisher coefficient $\mathcal J(\Up)/18$.  Depths beyond eight are retained in the
+Fisher coefficient $\mathcal J(\RvachevUp)/18$.  Depths beyond eight are retained in the
 CSV, but their gaps approach the fixed-grid quadrature resolution.}
 \label{fig:prefix-gap}
 \end{figure}
@@ -1642,7 +1625,7 @@ CSV, but their gaps approach the fixed-grid quadrature resolution.}
 
 The limiting variance predicted by \eqref{eq:info-var-limit} is
 \begin{equation}
- 2V(\Up)=0.519389034739962.
+ 2V(\RvachevUp)=0.519389034739962.
  \label{eq:num-info-var}
 \end{equation}
 
@@ -1699,7 +1682,7 @@ conjectural:
 For every compact interval $K\subset(-1,1)$ in the transform variable $t$,
 \begin{equation}
  \sup_{t\in K}
- \left|\log\E\e^{t(\imath_m-R_m)}-\Lambda_q(t)\right|
+ \left|\log\Expectation\EulerE^{t(\imath_m-R_m)}-\Lambda_q(t)\right|
  =O_q(q^m),
  \label{eq:quantitative-spectrum}
 \end{equation}
@@ -1762,7 +1745,7 @@ Watson expansion.
 Define the normalized posterior pullback
 \begin{equation}
  (\mathcal B_mg)(s)
- :=\E\left[g\!\left(\frac{X_q-S_{q,m}}{q^m}\right)
+ :=\Expectation\left[g\!\left(\frac{X_q-S_{q,m}}{q^m}\right)
        \middle|S_{q,m}=s\right].
  \label{eq:Bayesian-operator}
 \end{equation}
@@ -1770,8 +1753,8 @@ By self-similarity, $\mathcal B_mg$ is the constant $\int g f_q$, so the
 normalized residual erases the prefix.  More interesting is the unnormalized
 conditional expectation
 \begin{equation}
- (\mathcal C_mg)(s)=\E[g(X_q)\mid S_{q,m}=s]
- =\int_{-1}^{1}g(s+q^mz)f_q(z)\dd z.
+ (\mathcal C_mg)(s)=\Expectation[g(X_q)\mid S_{q,m}=s]
+ =\int_{-1}^{1}g(s+q^mz)f_q(z)\Differential z.
  \label{eq:Cm}
 \end{equation}
 
@@ -1800,8 +1783,8 @@ prefix channel:
  I_\alpha(S_m;X)
  =\frac1{\alpha-1}
  \log\iint b_m(s)
- \left(\frac{2^m\Up(2^m(x-s))}{\Up(x)}\right)^{\alpha}
- \Up(x)\dd x\dd s.
+ \left(\frac{2^m\RvachevUp(2^m(x-s))}{\RvachevUp(x)}\right)^{\alpha}
+ \RvachevUp(x)\Differential x\Differential s.
  \label{eq:TM-Renyi}
 \end{equation}
 At $\alpha=1$ it collapses to $m\log2$.  At integer orders, substitution of the
@@ -1822,7 +1805,7 @@ Let a compactly supported law satisfy an independent affine refinement
  X\stackrel d=A X'+\xi,
  \label{eq:matrix-refinement}
 \end{equation}
-with invertible contraction $A\in\R^{d\times d}$ and an absolutely continuous
+with invertible contraction $A\in\RealNumbers^{d\times d}$ and an absolutely continuous
 innovation $\xi$.  For the depth-$m$ innovation prefix $S_m$,
 \begin{equation}
  I(X;S_m)=-m\log|\det A|,
@@ -1886,8 +1869,8 @@ curve become natural new invariants of the Fabius--Rvachev law.  The unresolved
 tail carries exponentially small information, whose first coefficient is Fisher
 information.  This creates a new transform bridge
 \[
- \mathcal J(\Up)
- =\int_0^1\frac{\dd y}{y(1-y)G'(y)}
+ \mathcal J(\RvachevUp)
+ =\int_0^1\frac{\Differential y}{y(1-y)G'(y)}
 \]
 and a new asymptotic bridge from finite sinc prefixes to the inverse Fabius
 function.  At the flat endpoint, the lower-Lambert quantile scale governs not only
@@ -1911,38 +1894,38 @@ from exact values and transforms to exact information geometry.
 
 For completeness, if $a_j=(1-q)q^j$ and $U_j\sim\mathrm{Unif}[-1,1]$, then
 \[
- N(a_jU_j)=a_j^2\frac{\e^{2\log2}}{2\pi\e}
- =a_j^2\frac{2}{\pi\e}.
+ N(a_jU_j)=a_j^2\frac{\EulerE^{2\log2}}{2\pi\EulerE}
+ =a_j^2\frac{2}{\pi\EulerE}.
 \]
 The entropy-power inequality gives
 \[
- N(X_q)\ge\frac{2}{\pi\e}\sum_{j\ge0}a_j^2
- =\frac{2(1-q)}{\pi\e(1+q)}.
+ N(X_q)\ge\frac{2}{\pi\EulerE}\sum_{j\ge0}a_j^2
+ =\frac{2(1-q)}{\pi\EulerE(1+q)}.
 \]
 Thus
 \[
- h(X_q)\ge\frac12\log\left(2\pi\e\,
- \frac{2(1-q)}{\pi\e(1+q)}\right)
+ h(X_q)\ge\frac12\log\left(2\pi\EulerE\,
+ \frac{2(1-q)}{\pi\EulerE(1+q)}\right)
  =\log2+\frac12\log\frac{1-q}{1+q}.
 \]
 Subtracting from the matching Gaussian entropy
 \[
- \frac12\log\left(2\pi\e\frac{1-q}{3(1+q)}\right)
+ \frac12\log\left(2\pi\EulerE\frac{1-q}{3(1+q)}\right)
 \]
-gives $\delta_q\le\tfrac12\log(\pi\e/6)$.
+gives $\delta_q\le\tfrac12\log(\pi\EulerE/6)$.
 
 \subsection{Exact information and correlation in one line}
 
 The prefix variance and tail variance split orthogonally:
 \[
- \Var(S_{q,m})=\sigma_q^2(1-q^{2m}),
+ \Variance(S_{q,m})=\sigma_q^2(1-q^{2m}),
  \qquad
- \Var(q^mX_q^{(m)})=\sigma_q^2q^{2m}.
+ \Variance(q^mX_q^{(m)})=\sigma_q^2q^{2m}.
 \]
 Therefore
 \[
  1-\Corr(X_q,S_{q,m})^2
- =\frac{\Var(X_q-S_{q,m})}{\Var(X_q)}=q^{2m},
+ =\frac{\Variance(X_q-S_{q,m})}{\Variance(X_q)}=q^{2m},
 \]
 while entropy scaling gives
 \[
@@ -1957,18 +1940,18 @@ Let $r=1+u=f_{Z_q}/\gamma$.  Since $\int\gamma u=0$,
 \[
  D(f_{Z_q}\|\gamma)
  =\int\gamma(1+u)\log(1+u)
- =\frac12\E_\gamma u^2-\frac16\E_\gamma u^3+O(\E|u|^4).
+ =\frac12\Expectation_\gamma u^2-\frac16\Expectation_\gamma u^3+O(\Expectation|u|^4).
 \]
 To cubic order in $\epsilon=1-q$, only
 $u_1=(\lambda_4/24)H_4$ contributes after Hermite orthogonality.  Hence
 \[
- \frac12\E u_1^2
+ \frac12\Expectation u_1^2
  =\frac12\frac{\lambda_4^2}{24^2}\,24
  =\frac{\lambda_4^2}{48},
 \]
 and
 \[
- -\frac16\E u_1^3
+ -\frac16\Expectation u_1^3
  =-\frac16\frac{\lambda_4^3}{24^3}\,1728
  =-\frac{\lambda_4^3}{48}.
 \]

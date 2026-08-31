@@ -7,6 +7,8 @@
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
 \usepackage{bm}
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,array,tabularx}
 \usepackage{graphicx}
 \usepackage{pgfplots}
@@ -66,35 +68,10 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\wt}{\operatorname{wt}_2}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\Li}{\operatorname{Li}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\sgn}{\operatorname{sgn}}
-\newcommand{\lcm}{\operatorname{lcm}}
-\newcommand{\vtwo}{v_2}
-\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
 \newcommand{\lean}[1]{%
   \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
-\newcommand{\leanevaltwo}[1]{%
-  \nolinkurl{integral_eval}\texttt{\textsubscript{2}}\nolinkurl{#1}}
 
-\newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
 \newenvironment{boxedremark}{%
   \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
   \color{black}\hrule\vspace{0.6em}\small
@@ -125,12 +102,9 @@
 \renewcommand{\arraystretch}{1.12}
 \newtheorem{problem}[theorem]{Problem}
 \newtheorem{experiment}[theorem]{Numerical experiment}
-\newcommand{\Pp}{\mathbb P}
 \newcommand{\eps}{\varepsilon}
-\newcommand{\Law}{\mathcal L}
 \newcommand{\PhiN}{\Phi}
 \newcommand{\phiN}{\varphi}
-\newcommand{\qpoch}[2]{(#1;#2)}
 \newcommand{\proved}{\textcolor{proofgreen}{\textbf{proved here}}}
 \newcommand{\numerical}{\textcolor{linkblue}{\textbf{numerically supported}}}
 \newcommand{\conjectural}{\textcolor{conjred}{\textbf{conjectural}}}
@@ -168,7 +142,7 @@ The full-text nonduplication baseline consists primarily of the current main exp
 The following subjects are therefore
 \emph{not} presented as new here:
 \begin{itemize}
-  \item the basic Fabius functional equation and the affine relation between the Fabius density and $\Up$;
+  \item the basic Fabius functional equation and the affine relation between the Fabius density and $\RvachevUp$;
   \item exact dyadic values, Thue--Morse finite sums, $2$-adic arithmetic, and the existing $q$-binomial identities;
   \item the probability representation by a dyadically weighted sum of independent uniforms;
   \item the infinite sinc/cosine products, Fourier inversion, repeated integration, and existing Legendre expansions;
@@ -238,7 +212,7 @@ Shape and derivatives & dyadic derivative peaks and flatness & log-concavity for
 Sinc product & product representation and Fourier analysis & entire zero divisor, collision criterion, spectral zeta, zero counting, digit-sum collapse\\
 Thue--Morse & many finite sums and Dirichlet identities & recovery of the Thue--Morse sign from spectral zero-count parity\\
 $q$-binomial layer & exact dyadic and parametric identities & normalized moment-polynomial recurrence and positivity/integrality conjecture\\
-Legendre layer & expansions of $\Up$ and polynomial reconstruction & fixed-degree $q\uparrow1$ expansion and heat-kernel double scaling\\
+Legendre layer & expansions of $\RvachevUp$ and polynomial reconstruction & fixed-degree $q\uparrow1$ expansion and heat-kernel double scaling\\
 Endpoint asymptotics & rigorous sharp $q=1/2$ periodic Lambert expansion & exact arbitrary-$q$ periodic Laplace decomposition and a general-$q$ endpoint program\\
 Inverse function & dyadic inverse evaluator and $q=1/2$ asymptotic & central quantile Edgeworth expansion, fixed-$q$ endpoint inversion, crossover problem\\
 \bottomrule
@@ -254,7 +228,7 @@ Let $U_0,U_1,\ldots$ be independent uniform random variables on $[0,1]$.  For $-
 \end{equation}
 The series converges absolutely almost surely.  Write $F_q$ for the CDF of $X_q$, and write $g_q$ for its density whenever one is being used.  For $0<q<1$ the support is $[0,1]$ and the repository establishes that $g_q$ is $C^\infty$ and compactly supported.  At $q=1/2$,
 \begin{equation}\label{eq:fabius-up-bridge}
- g_{1/2}(x)=2\,\Up(2x-1),\qquad 0\le x\le1.
+ g_{1/2}(x)=2\,\RvachevUp(2x-1),\qquad 0\le x\le1.
 \end{equation}
 Thus the family is a genuine one-parameter deformation of the Fabius--Rvachev density rather than an unrelated probabilistic analogy.
 
@@ -268,15 +242,15 @@ If $X_q'$ is an independent copy, then
 \end{equation}
 This recursion is the common source of the density equation, the central plateau, the derivative-copy formulas, and the dilation identities.
 
-We use the normalization $\sinc z=\sin z/z$.  The centered characteristic and moment-generating functions are
+We use the normalization $\SincRad z=\sin z/z$.  The centered characteristic and moment-generating functions are
 \begin{align}
- C_q(t)&=\E e^{itY_q}
- =\prod_{n\ge0}\sinc\!\left(\frac{(1-q)q^nt}{2}\right),\label{eq:Cq}\\
- M_q(t)&=\E e^{tY_q}
+ C_q(t)&=\Expectation e^{itY_q}
+ =\prod_{n\ge0}\SincRad\!\left(\frac{(1-q)q^nt}{2}\right),\label{eq:Cq}\\
+ M_q(t)&=\Expectation e^{tY_q}
  =\prod_{n\ge0}\frac{\sinh((1-q)q^nt/2)}{(1-q)q^nt/2}.
  \label{eq:Mq}
 \end{align}
-Both products converge locally uniformly in $t\in\C$; the characteristic product will be studied as an entire function in \cref{sec:spectral}.
+Both products converge locally uniformly in $t\in\ComplexNumbers$; the characteristic product will be studied as an entire function in \cref{sec:spectral}.
 
 \section{Negative parameters are affine images of positive parameters}
 
@@ -321,7 +295,7 @@ The remaining statements follow by affine transport.  Since $X_r\in[0,1]$, the e
 \begin{proposition}[sign-correct density recursion]\label{prop:density-sign}
 For $q\ne0$ the genuine nonnegative density satisfies
 \begin{equation}\label{eq:density-sign}
- g_q(x)=\frac{\sgn(q)}{1-q}
+ g_q(x)=\frac{\Sign(q)}{1-q}
  \left[
  F_q\!\left(\frac{x}{q}\right)
  -F_q\!\left(\frac{x-(1-q)}{q}\right)
@@ -331,15 +305,15 @@ At $q=0$, $X_0$ is uniform on $[0,1]$.
 \end{proposition}
 
 \begin{proof}
-For $q>0$, condition on $U_0$ in \cref{eq:distributional-recursion}, integrate the CDF of $X_q'$, and differentiate.  For $q<0$, division by $q$ reverses the inequality, so the conditional probability is $1-F_q$ rather than $F_q$.  This introduces exactly the factor $\sgn(q)$ in \cref{eq:density-sign}.  Equivalently, the formula follows immediately by differentiating \cref{eq:negative-cdf} and using the positive-parameter recursion.
+For $q>0$, condition on $U_0$ in \cref{eq:distributional-recursion}, integrate the CDF of $X_q'$, and differentiate.  For $q<0$, division by $q$ reverses the inequality, so the conditional probability is $1-F_q$ rather than $F_q$.  This introduces exactly the factor $\Sign(q)$ in \cref{eq:density-sign}.  Equivalently, the formula follows immediately by differentiating \cref{eq:negative-cdf} and using the positive-parameter recursion.
 \end{proof}
 
-The selected expression without $\sgn(q)$ is therefore the negative of the probability density when $q<0$.  This is not a pathology of the law; it is an orientation sign caused by the negative affine contraction.
+The selected expression without $\Sign(q)$ is therefore the negative of the probability density when $q<0$.  This is not a pathology of the law; it is an orientation sign caused by the negative affine contraction.
 
 \begin{corollary}[standardized equivalence]\label{cor:standardized-duality}
 Let
 \begin{equation}\label{eq:sigmaq}
- \sigma_q^2=\Var(Y_q)=\frac{1-q}{12(1+q)},
+ \sigma_q^2=\Variance(Y_q)=\frac{1-q}{12(1+q)},
  \qquad Z_q=\frac{Y_q}{\sigma_q}.
 \end{equation}
 Then $Z_{-r}\overset d=Z_r$.  Every standardized cumulant, standardized moment, and standardized quantile depends only on $q^2$.
@@ -377,7 +351,7 @@ For $-1<q<1$,
 \end{equation}
 Consequently
 \begin{equation}\label{eq:bell-moments}
- \E Y_q^{2n}
+ \Expectation Y_q^{2n}
  =\mathfrak B_{2n}\bigl(0,\kappa_2,0,\kappa_4,\ldots,0,\kappa_{2n}\bigr),
 \end{equation}
 where $\mathfrak B_n$ is the complete exponential Bell polynomial.
@@ -417,9 +391,9 @@ As $q\uparrow1$ or $q\downarrow-1$,
 \[
  Z_q\Longrightarrow N(0,1).
 \]
-For $q\uparrow1$, the moment-generating functions converge locally uniformly on $\C$ after restriction to any fixed compact set.  More precisely, for every compact $K\subset\C$,
+For $q\uparrow1$, the moment-generating functions converge locally uniformly on $\ComplexNumbers$ after restriction to any fixed compact set.  More precisely, for every compact $K\subset\ComplexNumbers$,
 \begin{equation}\label{eq:analytic-gaussian}
- \log\E e^{zZ_q}
+ \log\Expectation e^{zZ_q}
  =\frac{z^2}{2}+\frac{\lambda_4(q)}{24}z^4
  +O_K\bigl((1-q^2)^2\bigr).
 \end{equation}
@@ -449,7 +423,7 @@ $C_{\mathrm{BE}}\sqrt{3/2}\,\sqrt{1-q}$.
 \end{proposition}
 
 \begin{proof}
-For $V\sim U[-1/2,1/2]$, $\E|V|^3=1/32$.  Sum the absolute third moments of the independent terms in \cref{eq:centered-series}, divide by $\sigma_q^3$, and simplify using $1-q^3=(1-q)(1+q+q^2)$.
+For $V\sim U[-1/2,1/2]$, $\Expectation|V|^3=1/32$.  Sum the absolute third moments of the independent terms in \cref{eq:centered-series}, divide by $\sigma_q^3$, and simplify using $1-q^3=(1-q)(1+q+q^2)$.
 \end{proof}
 
 The bound is not expected to be sharp because symmetry cancels the third cumulant.  The true first correction is of order $1-q$, not $\sqrt{1-q}$.
@@ -466,7 +440,7 @@ As $q\uparrow1$,
  G_q(z)&=\PhiN(z)-\frac{\lambda_4(q)}{24}\phiN(z)H_3(z)
  +O\bigl((1-q)^2\bigr),\label{eq:edge-cdf}
 \end{align}
-with uniform error on $\R$.  At minimum, the same estimates should hold uniformly on every moderate-deviation window $|z|\le (1-q)^{-\alpha}$ for some explicit $\alpha>0$.
+with uniform error on $\RealNumbers$.  At minimum, the same estimates should hold uniformly on every moderate-deviation window $|z|\le (1-q)^{-\alpha}$ for some explicit $\alpha>0$.
 \end{conjecture}
 
 The formal characteristic-function expansion follows from \cref{eq:analytic-gaussian}; the missing step is a uniform Fourier-tail estimate strong enough to retain the $O((1-q)^2)$ remainder after inversion.  The sinc product has far more decay than a generic triangular array, so this appears tractable.
@@ -558,7 +532,7 @@ The central limit theorem describes fluctuations of size $\sqrt{1-q}$ around $1/
 
 Put $\eps=1-q$ and consider
 \[
- \Lambda_q(\theta)=\eps\log\E\exp\!\left(\frac{\theta X_q}{\eps}\right).
+ \Lambda_q(\theta)=\eps\log\Expectation\exp\!\left(\frac{\theta X_q}{\eps}\right).
 \]
 Since $X_q/\eps=\sum q^nU_n$,
 \begin{equation}\label{eq:scaled-cgf-finite}
@@ -571,19 +545,19 @@ As $q\uparrow1$, the convergence below is locally uniform for real $\theta$.  It
 \begin{equation}\label{eq:scaled-cgf-limit}
  \Lambda_q(\theta)\longrightarrow
  \Lambda(\theta)=\int_0^1
- \log\frac{e^{\theta u}-1}{\theta u}\,\frac{\dd u}{u}.
+ \log\frac{e^{\theta u}-1}{\theta u}\,\frac{\Differential u}{u}.
 \end{equation}
 For the centered variable,
 \begin{equation}\label{eq:centered-scaled-cgf}
  \Lambda_c(\theta)=\Lambda(\theta)-\frac\theta2
- =\int_0^1\log\frac{\sinh(\theta u/2)}{\theta u/2}\,\frac{\dd u}{u}.
+ =\int_0^1\log\frac{\sinh(\theta u/2)}{\theta u/2}\,\frac{\Differential u}{u}.
 \end{equation}
 \end{theorem}
 
 \begin{proof}
 Let $L=-\log q$.  Then $q^n=e^{-Ln}$ and $\eps/L\to1$.  The sum in \cref{eq:scaled-cgf-finite}, multiplied by $L$, is a Riemann sum for
 \[
- \int_0^\infty \log\frac{e^{\theta e^{-t}}-1}{\theta e^{-t}}\dd t.
+ \int_0^\infty \log\frac{e^{\theta e^{-t}}-1}{\theta e^{-t}}\Differential t.
 \]
 The substitution $u=e^{-t}$ gives \cref{eq:scaled-cgf-limit}.  The integrand has a removable singularity at $u=0$, uniformly on compact real $\theta$-sets.  The same Riemann-sum argument is locally uniform on the admissible complex compact sets specified in the theorem, once the logarithm is chosen consistently.  Centering subtracts $\theta/2$ and yields the hyperbolic-sine form.
 \end{proof}
@@ -591,19 +565,19 @@ The substitution $u=e^{-t}$ gives \cref{eq:scaled-cgf-limit}.  The integrand has
 \begin{theorem}[interior large-deviation principle]\label{thm:ldp}
 The family $X_q$, $q\uparrow1$, satisfies a large-deviation principle on every compact subinterval of $(0,1)$ with speed $(1-q)^{-1}$ and good strictly convex rate function
 \begin{equation}\label{eq:rate-function}
- I(x)=\sup_{\theta\in\R}\{\theta x-\Lambda(\theta)\}.
+ I(x)=\sup_{\theta\in\RealNumbers}\{\theta x-\Lambda(\theta)\}.
 \end{equation}
 Equivalently,
 \begin{equation}\label{eq:centered-rate}
  I\left(\frac12+y\right)
- =\sup_{\theta\in\R}\{\theta y-\Lambda_c(\theta)\},
+ =\sup_{\theta\in\RealNumbers}\{\theta y-\Lambda_c(\theta)\},
  \qquad |y|<\frac12.
 \end{equation}
 The rate is symmetric, $I(x)=I(1-x)$, and diverges as $x\downarrow0$ or $x\uparrow1$.
 \end{theorem}
 
 \begin{proof}
-The limiting function is finite and differentiable for every real $\theta$, and strict convexity follows because its second derivative is an integral of positive variances.  Its derivative maps $\R$ onto $(0,1)$.  The G\"artner--Ellis theorem gives the interior LDP, while compact support gives exponential tightness.  Symmetry follows from \cref{eq:centered-scaled-cgf}.  As $\theta\to-\infty$, $\Lambda(\theta)\to-\infty$ with quadratic logarithmic growth, so the Legendre transform diverges at $x=0$; the other endpoint follows by symmetry.
+The limiting function is finite and differentiable for every real $\theta$, and strict convexity follows because its second derivative is an integral of positive variances.  Its derivative maps $\RealNumbers$ onto $(0,1)$.  The G\"artner--Ellis theorem gives the interior LDP, while compact support gives exponential tightness.  Symmetry follows from \cref{eq:centered-scaled-cgf}.  As $\theta\to-\infty$, $\Lambda(\theta)\to-\infty$ with quadratic logarithmic growth, so the Legendre transform diverges at $x=0$; the other endpoint follows by symmetry.
 \end{proof}
 
 The Bernoulli expansion gives
@@ -617,7 +591,7 @@ Legendre inversion therefore yields the local rate expansion
  I\left(\frac12+y\right)
  =12y^2+\frac{144}{5}y^4+O(y^6).
 \end{equation}
-The quadratic term agrees with $\Var(X_q)\sim(1-q)/24$; the positive quartic correction reflects the negative excess kurtosis.
+The quadratic term agrees with $\Variance(X_q)\sim(1-q)/24$; the positive quartic correction reflects the negative excess kurtosis.
 
 \begin{figure}[H]
 \centering
@@ -657,7 +631,7 @@ Every finite partial sum in \cref{eq:Xq-def} has a density equal to a convolutio
 
 For the plateau, write $X_q=(1-q)U_0+R_q$, where $R_q=qX_q'$ is supported on $[0,q]$.  Convolution with the first uniform density gives
 \[
- g_q(x)=\frac1{1-q}\Pp\bigl(x-(1-q)\le R_q\le x\bigr)
+ g_q(x)=\frac1{1-q}\Probability\bigl(x-(1-q)\le R_q\le x\bigr)
  \le\frac1{1-q}.
 \]
 If $q\le x\le1-q$, the interval in the probability contains all of $[0,q]$, so equality holds.  If $q<1/2$ and $x$ lies outside that interval but inside $(0,1)$, an open portion of the support is missed; interior positivity makes the probability strictly smaller than one.
@@ -666,7 +640,7 @@ If $q\le x\le1-q$, the interval in the probability contains all of $[0,q]$, so e
 \begin{conjecture}[strict superdyadic shape]\label{conj:strict-logconcavity}
 For $1/2<q<1$, $g_q$ is strictly log-concave on $(0,1)$ and strictly decreasing on $(1/2,1)$.  More quantitatively, there should be a positive curvature function $K_q(x)$ such that
 \[
- -\frac{\dd^2}{\dd x^2}\log g_q(x)\ge K_q(x)>0
+ -\frac{\Differential^2}{\Differential x^2}\log g_q(x)\ge K_q(x)>0
 \]
 on every compact subinterval of $(0,1)$.
 \end{conjecture}
@@ -781,9 +755,9 @@ The formulas show that the celebrated dyadic derivative peaks are the critical l
 
 Fix $0<q<1$ and regard
 \begin{equation}\label{eq:entire-Cq}
- C_q(z)=\prod_{n\ge0}\sinc\!\left(\frac{(1-q)q^nz}{2}\right)
+ C_q(z)=\prod_{n\ge0}\SincRad\!\left(\frac{(1-q)q^nz}{2}\right)
 \end{equation}
-as a function of $z\in\C$.  Set
+as a function of $z\in\ComplexNumbers$.  Set
 \begin{equation}\label{eq:cq}
  c_q=\frac{2\pi}{1-q}.
 \end{equation}
@@ -798,7 +772,7 @@ A nonzero zero is simple whenever it has a unique representation in \cref{eq:zer
 \end{theorem}
 
 \begin{proof}
-On compact sets, $\sinc w=1-w^2/6+O(w^4)$ and $\sum q^{2n}<\infty$, so the infinite-product criterion gives local uniform convergence.  The zeros of the $n$-th factor are exactly \cref{eq:zeros}.  A collision
+On compact sets, $\SincRad w=1-w^2/6+O(w^4)$ and $\sum q^{2n}<\infty$, so the infinite-product criterion gives local uniform convergence.  The zeros of the $n$-th factor are exactly \cref{eq:zeros}.  A collision
 $kq^{-n}=\ell q^{-m}$ with $m\ne n$ implies $q^{m-n}=\ell/k\in\mathbb Q$.
 \end{proof}
 
@@ -834,7 +808,7 @@ Sum over the double index in \cref{eq:zeros}:
  \sum_{n\ge0}\sum_{k\ge1}(c_qkq^{-n})^{-s}
  =c_q^{-s}\zeta(s)\sum_{n\ge0}q^{ns}.
 \]
-Euler's product $\sinc w=\prod_{k\ge1}(1-w^2/(\pi^2k^2))$, followed by an absolutely convergent rearrangement, gives \cref{eq:hadamard}.  Expanding its logarithm gives \cref{eq:log-spectral}.  Comparing with
+Euler's product $\SincRad w=\prod_{k\ge1}(1-w^2/(\pi^2k^2))$, followed by an absolutely convergent rearrangement, gives \cref{eq:hadamard}.  Expanding its logarithm gives \cref{eq:log-spectral}.  Comparing with
 \[
  \log C_q(z)=\sum_{r\ge1}\kappa_{2r}(Y_q)\frac{(iz)^{2r}}{(2r)!}
 \]
@@ -974,7 +948,7 @@ Let $W_0,W_1,\ldots$ be independent uniform variables on $[-1,1]$ and define
 \begin{equation}\label{eq:Sqr}
  S_q=\sum_{j\ge0}q^jW_j,
  \qquad r=q^2,
- \qquad m_n(r)=\E S_q^{2n}.
+ \qquad m_n(r)=\Expectation S_q^{2n}.
 \end{equation}
 Since $2Y_q=(1-q)S_q$, these moments are equivalent to the moments of the geometric-uniform density.  The distributional identity $S_q\overset d=W_0+qS_q'$ gives
 \begin{equation}\label{eq:moment-recurrence}
@@ -1059,8 +1033,8 @@ The even-block moment expansion, the Gaussian binomial in \cref{eq:P-qbinomial},
 
 For the density on $[0,1]$, define the shifted Legendre moments
 \begin{equation}\label{eq:legendre-moment}
- \ell_n(q)=\int_0^1g_q(x)P_n(2x-1)\dd x
- =\E P_n(2X_q-1).
+ \ell_n(q)=\int_0^1g_q(x)P_n(2x-1)\Differential x
+ =\Expectation P_n(2X_q-1).
 \end{equation}
 Symmetry gives $\ell_{2m+1}=0$.  Formally, and in the appropriate $L^2$ or distributional sense,
 \begin{equation}\label{eq:legendre-expansion}
@@ -1072,7 +1046,7 @@ Put
 \begin{equation}\label{eq:vq}
  Z_q^{\natural}=2X_q-1=2Y_q,
  \qquad
- v_q=\Var(Z_q^{\natural})=\frac{1-q}{3(1+q)}.
+ v_q=\Variance(Z_q^{\natural})=\frac{1-q}{3(1+q)}.
 \end{equation}
 
 \begin{theorem}[fixed-degree Legendre expansion]\label{thm:legendre-fixed}
@@ -1095,9 +1069,9 @@ Taylor-expand the even polynomial $P_{2m}$ at zero.  The Legendre differential e
  \qquad
  P_{2m}^{(4)}(0)=M(M-6)P_{2m}(0).
 \]
-Now $\E(Z_q^{\natural})^2=v_q$.  By \cref{eq:lambda4}, the absolute fourth cumulant is $O(v_q^3)$, so
+Now $\Expectation(Z_q^{\natural})^2=v_q$.  By \cref{eq:lambda4}, the absolute fourth cumulant is $O(v_q^3)$, so
 \[
- \E(Z_q^{\natural})^4=3v_q^2+O(v_q^3).
+ \Expectation(Z_q^{\natural})^4=3v_q^2+O(v_q^3).
 \]
 All moments of order at least six are $O_m(v_q^3)$ for fixed order.  Substitution into the Taylor expansion gives \cref{eq:legendre-fixed}.
 \end{proof}
@@ -1112,7 +1086,7 @@ Let $q\uparrow1$ and $m=m(q)\to\infty$ so that
 Then
 \begin{equation}\label{eq:legendre-heat}
  \boxed{\quad
- \frac{\E P_{2m}(2X_q-1)}{P_{2m}(0)}
+ \frac{\Expectation P_{2m}(2X_q-1)}{P_{2m}(0)}
  \longrightarrow e^{-\tau^2/2}.
  \quad}
 \end{equation}
@@ -1147,7 +1121,7 @@ This gives a quantitative bridge between the repository's fixed-$q$ Fourier--Leg
 
 For $0<q<1$ define the negative Laplace transform
 \begin{equation}\label{eq:Bq}
- B_q(s)=\E e^{-sX_q}
+ B_q(s)=\Expectation e^{-sX_q}
  =\prod_{n\ge0}\frac{1-e^{-(1-q)q^ns}}{(1-q)q^ns},
  \qquad s>0.
 \end{equation}
@@ -1203,7 +1177,7 @@ Let
  \chi_k=\frac{2\pi i k}{L}.
 \]
 For every nonzero integer $k$, the Fourier coefficient
-$\widehat P_q(k)=\int_0^1P_q(u)e^{-2\pi iku}\dd u$ is
+$\widehat P_q(k)=\int_0^1P_q(u)e^{-2\pi iku}\Differential u$ is
 \begin{equation}\label{eq:Pq-fourier}
  \boxed{\quad
  \widehat P_q(k)=-\frac1L\Gamma(-\chi_k)\zeta(1-\chi_k).
@@ -1216,7 +1190,7 @@ In particular, $P_q$ is nonconstant for every $0<q<1$.
 Apply Mellin inversion to the harmonic sum generated by
 $\log(1-e^{-x})$.  Its Mellin transform in the relevant strip is
 \[
- \int_0^\infty\log(1-e^{-x})x^{s-1}\dd x
+ \int_0^\infty\log(1-e^{-x})x^{s-1}\Differential x
  =-\Gamma(s)\zeta(s+1).
 \]
 The poles of the geometric factor $1/(1-q^{-s})$ at $s=\chi_k$ generate the Fourier modes after the change $a=q^{-u}$.  The polynomial terms in \cref{eq:Lambda-periodic} remove the multiple pole at $s=0$, while $T_q$ supplies the exponentially regularized forward part; neither changes nonzero Fourier modes.  Taking the residue at $s=\chi_k$ gives \cref{eq:Pq-fourier}.  Standard vertical-line bounds for $\Gamma$ and polynomial bounds for $\zeta$ justify contour displacement.  Since $\zeta$ has no zeros on $\Re s=1$ away from its pole and $\Gamma$ has no zeros, the first coefficient is nonzero.
@@ -1415,7 +1389,7 @@ It uses NumPy, SciPy, SymPy, mpmath, and Matplotlib.  The computations are deter
 
 On a Fourier period larger than the support, the script samples \cref{eq:Cq} at the FFT frequencies.  Sinc factors are multiplied until the largest remaining argument is below $10^{-7}$; the residual product is replaced by the quadratic log-sinc tail
 \[
- \exp\left(-\frac12t^2\Var(\text{omitted tail})\right).
+ \exp\left(-\frac12t^2\Variance(\text{omitted tail})\right).
 \]
 The omitted fourth-order contribution is far below the reported precision.  Densities are clipped only at roundoff-level negative values and renormalized before CDF integration.
 
@@ -1623,7 +1597,7 @@ preprint/version of 12 February 2026,
 
 \bibitem{rvachev1977}
 V. A. Rvachev,
-\emph{On approximation by means of the function $\Up(x)$},
+\emph{On approximation by means of the function $\RvachevUp(x)$},
 Dokl. Akad. Nauk SSSR 233 (1977), 295--296.
 
 \bibitem{rvachev1990}

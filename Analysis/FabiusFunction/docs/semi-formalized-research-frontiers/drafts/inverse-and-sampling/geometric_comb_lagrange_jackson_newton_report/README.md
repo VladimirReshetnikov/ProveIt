@@ -1,5 +1,13 @@
 # Interpolation on a geometric comb: archival intake
 
+> **Source-only merge status (2026-08-31).** The current TeX has 2,736 lines
+> (SHA-256
+> `b6d1ff047953e7ee6376c235210fa80de0e95ca1750ebd4eedd68a753950db9d`).
+> The retained submitted 36-page PDF was not rebuilt after the notation
+> migration and is not claimed to be synchronized with that source.
+> `SHA256SUMS.txt` was intentionally not refreshed: its TeX row and this
+> README row are pending, while its other twenty-three rows pass.
+
 This collision-safe package contains the distinct report titled
 *Interpolation on a Geometric Comb: Lagrange Filters, Jackson--Newton Series,
 $q$-Analogues, and the Fabius--Rvachev Bridge*.
@@ -8,10 +16,11 @@ $q$-Analogues, and the Fabius--Rvachev Bridge*.
 
 This package has passed only the quick archival intake gate. The archive was
 tested for path safety and payload integrity, its submitted checksum ledger was
-verified, and four generated CSV files were normalized from CRLF to LF. No
-hostile mathematical audit, repository-wide novelty review, experiment replay,
-canonical-preamble normalization, figure regeneration, or PDF rebuild has yet
-been performed. The manuscript's theorem labels and submitted numerical files
+verified, and four generated CSV files were normalized from CRLF to LF. A later
+source-only canonical-notation migration changed the TeX but did not rebuild
+the PDF. No hostile mathematical audit, repository-wide novelty review,
+experiment replay, full canonical-preamble normalization, figure regeneration,
+or PDF rebuild has yet been performed. The manuscript's theorem labels and submitted numerical files
 do not by themselves establish Lean proof status.
 
 The submitted PDF remains the 36-page A4 artifact. It is openable and
@@ -41,7 +50,8 @@ archival batch is published.
 
 ## Contents
 
-- `geometric_comb_interpolation.tex` and `.pdf` — submitted source and PDF;
+- `geometric_comb_interpolation.tex` — current notation-migrated source;
+- `geometric_comb_interpolation.pdf` — retained submitted PDF, pending rebuild;
 - `geometric_comb_experiments.py` — submitted experiment generator;
 - `data/` — four submitted CSV tables, normalized to LF in the live package;
 - `figures/` — five submitted plots in both PDF and PNG form;
@@ -50,7 +60,8 @@ archival batch is published.
 - `ARRIVAL_MANIFEST.txt` and `SHA256SUMS.arrival.txt` — immutable arrival
   bookkeeping;
 - `INTAKE_AUDIT.md` and `PDF_VALIDATION.txt` — quick-gate records;
-- `SHA256SUMS.txt` — exhaustive current-package ledger, excluding itself.
+- `SHA256SUMS.txt` — unrefreshed 25-entry operational ledger, excluding itself;
+  its TeX and README rows are pending.
 
 The submitted reproduction command, not replayed at this gate, is:
 

@@ -101,19 +101,22 @@ establish Lean verification.
 
 - [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](Cyclotomic_q_Fabius_Rvachev_Frontier/),
   *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
-  Product* (25 pp), arrived on 2026-08-30 from
+  Product* (25 pp at arrival; currently 29 A4 pp and 1,896 source lines),
+  arrived on 2026-08-30 from
   `Cyclotomic_q_Fabius_Rvachev_Frontier.zip` (outer SHA-256
   `029da7d9ec96a0b2e5c4164c37f2b361dd015112bd0c6237263e3c538c5b0f64`).
   All 22 submitted payload hashes verified; five CSV entries were refreshed
   after CRLF-to-LF repository normalization. Its title and abstract place its
   radial root-of-unity expansions, claimed natural-boundary theorem,
   cyclotomic blow-ups, Bell/moment condensation, and inverse branches beside
-  the consolidated q-series frontier. It remains standalone pending the
-  required post-publication claim-level comparison and a Lean crosswalk;
-  manuscript labels and numerical evidence do not establish Lean verification.
-  The submitted 25-page A4 report uses Latin Modern rather than the house
-  Libertinus face and retains nine embedded/subset Type-3 figure-font rows;
-  normalization is deferred so that the verified arrival payload stays intact.
+  the consolidated q-series frontier. A post-publication revision crosswalks
+  the global geometric-sinc q-Pochhammer factorization while leaving the
+  cyclotomic asymptotic and natural-boundary layers manuscript-only; the
+  refreshed active ledger verifies all 22 payloads. The current five PDFs have
+  33 pages in total (29 main plus four one-page figures). The main report still
+  uses Latin Modern rather than the house Libertinus face and retains nine
+  embedded/subset Type-3 figure-font rows; the standalone figures contain nine
+  more. Font normalization remains deferred.
 
 - [`inverse_q_analogs_extended_report/`](inverse_q_analogs_extended_report/),
   *Inverse q-Analogs in All Parameters* (104 pp), arrived on 2026-08-30 from
@@ -549,8 +552,12 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 `149332f9d`.
 
 Member: `Exponents_and_q_Series_Frontiers`
-(currently 237 A4 pp, seven parts; 16,240 source lines and a
-6,308,083-byte PDF) — the
+(currently 16,221 source lines; the retained origin-main rendering is 236 A4
+pages and 6,941,043 bytes). During the source-only conflict resolution the PDF
+was deliberately selected from `origin/main`, not rebuilt from the merged TeX.
+Accordingly, the TeX rows in the two historical asset ledgers still record the
+origin-main source hash and remain stale until the next rendered rebuild. The
+volume is the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic

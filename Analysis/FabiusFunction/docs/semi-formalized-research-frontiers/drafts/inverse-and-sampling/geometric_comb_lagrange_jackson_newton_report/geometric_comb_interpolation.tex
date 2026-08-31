@@ -6,6 +6,7 @@
 \usepackage[final]{microtype}
 \usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
 \usepackage{amsmath,amssymb,mathtools,amsthm,mathrsfs,bm}
+\input{../../../../fabius-notation.tex}
 \usepackage{aliascnt}
 \usepackage{booktabs,longtable,tabularx,array,multirow}
 \usepackage{graphicx}
@@ -133,42 +134,14 @@
   belowskip=0.7em
 }
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\N}{\mathbb N}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
 \newcommand{\eps}{\varepsilon}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\Span}{\operatorname{span}}
-\newcommand{\diag}{\operatorname{diag}}
-\newcommand{\rank}{\operatorname{rank}}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sincpi}{\operatorname{sinc}_{\pi}}
 \newcommand{\Mellin}{\mathcal M}
 \newcommand{\Gop}{\mathcal G}
 \newcommand{\Iop}{\mathcal I}
 \newcommand{\Dq}{D_q}
 \newcommand{\Mq}{\mathsf M_q}
-\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
-\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
-\newcommand{\angles}[1]{\left\langle#1\right\rangle}
-\newcommand{\qpoch}[3]{\left(#1;#2\right)_{#3}}
-\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
-\newcommand{\qint}[2]{\left[#1\right]_{#2}}
 \newcommand{\qfac}[2]{\left[#1\right]_{#2}!}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction/docs}}
-\DeclareMathOperator{\Res}{Res}
-\DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\ord}{ord}
 
 \title{\bfseries Interpolation on a Geometric Comb\\[0.4em]
@@ -227,16 +200,16 @@ with distribution function $F_q$ and centered density $u_q$.  At $q=1/2$,
 $F_q$ is the bounded Fabius function and $u_q$ is Rvachev's up-function.  For
 $0<q\le1/2$ we prove the exact comb-moment identity
 \[
- F_q(q^n)=\frac{q^{n(n+1)/2}}{(1-q)^n n!}\,\E X_q^n.
+ F_q(q^n)=\frac{q^{n(n+1)/2}}{(1-q)^n n!}\,\Expectation X_q^n.
 \]
 At the dyadic point this converts the Fabius interpolation table into an
 explicit Gaussian/Mersenne transform of the moment sequence.  If $A_n$ is the
 Newton coefficient multiplying $\prod_{r<n}(x-2^{-r})$, then
 \[
  A_n=\frac1{(1/2;1/2)_n}
- \sum_{j=0}^n(-1)^j\qbinom nj2\frac{\E X^j}{j!}
+ \sum_{j=0}^n(-1)^j\GaussianBinomial nj2\frac{\Expectation X^j}{j!}
  =2^{n(n+1)/2}\sum_{j=0}^n
- \frac{(-1)^j\E X^j}{j!\,\mathfrak M_j\mathfrak M_{n-j}},
+ \frac{(-1)^j\Expectation X^j}{j!\,\mathfrak M_j\mathfrak M_{n-j}},
 \]
 where $\mathfrak M_r=\prod_{m=1}^r(2^m-1)$.  The extrapolants at zero converge
 superexponentially, with a proved $2^{-n^2/4+O(n)}$ bound.  In sharp contrast,
@@ -248,7 +221,7 @@ its accumulation point.
 Finally, the Fourier product
 \[
  \widehat u_q(\xi)=\prod_{j\ge0}
- \sincpi\!\left(2(1-q)q^j\xi\right)
+ \SincPi\!\left(2(1-q)q^j\xi\right)
 \]
 is fed back through the same geometric filter.  Away from its zeros this gives
 a rapidly convergent reciprocal-product expansion for $1/\widehat u_q$, with
@@ -286,7 +259,7 @@ corpus, not a claim of worldwide priority.
 
 \subsection{The geometric comb}
 
-Fix $a\in\C\setminus\{0\}$ and a base $q\in\C$ such that
+Fix $a\in\ComplexNumbers\setminus\{0\}$ and a base $q\in\ComplexNumbers$ such that
 $q^i\ne q^j$ for the powers under consideration.  The finite geometric comb
 of order $n$ is
 \[
@@ -303,10 +276,10 @@ Four descriptions of the same interpolation problem will be used repeatedly.
 \begin{enumerate}
 \item In the original variable $x$, the Newton factors are
       $x-a,x-aq,x-aq^2,\ldots$ and hence are finite $q$-Pochhammer products.
-\item In the logarithmic variable $x=a\e^{-t}$ with $q=\e^{-h}$, the nodes are
+\item In the logarithmic variable $x=a\EulerE^{-t}$ with $q=\EulerE^{-h}$, the nodes are
       the arithmetic grid $t=0,h,2h,\ldots$, while a degree-$n$ polynomial in
       $x$ becomes an exponential polynomial in $t$ spanned by
-      $1,\e^{-t},\ldots,\e^{-nt}$.
+      $1,\EulerE^{-t},\ldots,\EulerE^{-nt}$.
 \item On sequences $f(aq^k)$, interpolation at $x=0$ is a finite polynomial in
       the dilation operator $E_q:f(x)\mapsto f(qx)$.
 \item Mellin monomials $x^s$ diagonalize dilations.  The interpolation filter
@@ -323,7 +296,7 @@ these traditions.
 
 \subsection{Basic notation}
 
-For $n\in\N_0$,
+For $n\in\NaturalNumbers$,
 \[
  (z;q)_n=\prod_{r=0}^{n-1}(1-zq^r),
  \qquad
@@ -335,12 +308,12 @@ Gaussian coefficient are
  [m]_q=\frac{1-q^m}{1-q},\qquad
  [m]_q!=\prod_{r=1}^m[r]_q=\frac{(q;q)_m}{(1-q)^m},
  \qquad
- \qbinom nkq=\frac{(q;q)_n}{(q;q)_k(q;q)_{n-k}}.
+ \GaussianBinomial nkq=\frac{(q;q)_n}{(q;q)_k(q;q)_{n-k}}.
 \]
 The Gaussian coefficient is set to zero when $k\notin\{0,\ldots,n\}$.  We use
 Euler's finite $q$-binomial theorem in the form
 \begin{equation}
- (z;q)_n=\sum_{r=0}^n(-1)^rq^{\binom r2}\qbinom nrq z^r.
+ (z;q)_n=\sum_{r=0}^n(-1)^rq^{\binom r2}\GaussianBinomial nrq z^r.
  \label{eq:finite-qbinomial}
 \end{equation}
 Standard references for this notation and its analytic continuations are
@@ -440,7 +413,7 @@ For $0\le k,j\le n$,
 \begin{equation}
  \Phi_k(aq^j)=
  \begin{cases}
- (-a)^kq^{\binom k2}(q;q)_k\qbinom jkq,&j\ge k,\\
+ (-a)^kq^{\binom k2}(q;q)_k\GaussianBinomial jkq,&j\ge k,\\
  0,&j<k.
  \end{cases}
  \label{eq:newton-evaluation}
@@ -450,7 +423,7 @@ $V^{\mathrm N}_{j,k}=\Phi_k(aq^j)$ factors as
 \begin{equation}
  V^{\mathrm N}=P_qD_{a,q},
  \qquad
- (P_q)_{j,k}=\qbinom jkq,
+ (P_q)_{j,k}=\GaussianBinomial jkq,
  \qquad
  (D_{a,q})_{k,k}=(-a)^kq^{\binom k2}(q;q)_k.
  \label{eq:pascal-matrix-factorization}
@@ -458,7 +431,7 @@ $V^{\mathrm N}_{j,k}=\Phi_k(aq^j)$ factors as
 The inverse Gaussian Pascal matrix is
 \begin{equation}
  (P_q^{-1})_{j,k}
- =(-1)^{j-k}q^{\binom{j-k}{2}}\qbinom jkq
+ =(-1)^{j-k}q^{\binom{j-k}{2}}\GaussianBinomial jkq
  \qquad (j\ge k).
  \label{eq:q-pascal-inverse}
 \end{equation}
@@ -472,15 +445,15 @@ If $j<k$, the product $\Phi_k(aq^j)$ contains its zero factor.  If $j\ge k$,
  &=(-a)^kq^{\binom k2}
    \prod_{r=0}^{k-1}(1-q^{j-r})\\
  &=(-a)^kq^{\binom k2}\frac{(q;q)_j}{(q;q)_{j-k}}\\
- &=(-a)^kq^{\binom k2}(q;q)_k\qbinom jkq.
+ &=(-a)^kq^{\binom k2}(q;q)_k\GaussianBinomial jkq.
 \end{align*}
 This proves the factorization.  To verify the inverse, multiply the proposed
 matrices.  After the standard Gaussian convolution
 \(
- \qbinom jrq\qbinom rkq=\qbinom jkq\qbinom{j-k}{r-k}q
+ \GaussianBinomial jrq\GaussianBinomial rkq=\GaussianBinomial jkq\GaussianBinomial{j-k}{r-k}q
 \), the off-diagonal entry is a scalar multiple of
 \[
- \sum_{s=0}^{j-k}(-1)^sq^{\binom s2}\qbinom{j-k}{s}q
+ \sum_{s=0}^{j-k}(-1)^sq^{\binom s2}\GaussianBinomial{j-k}{s}q
  =(1;q)_{j-k}=0.
 \]
 The diagonal entry is $1$.
@@ -502,10 +475,10 @@ For every $k,m\ge0$,
 \begin{align}
  \Phi_k(x)
  &=\sum_{j=0}^k(-1)^{k-j}a^{k-j}
- q^{\binom{k-j}{2}}\qbinom kjq x^j,
+ q^{\binom{k-j}{2}}\GaussianBinomial kjq x^j,
  \label{eq:newton-to-monomial}\\
  x^m
- &=\sum_{k=0}^m\qbinom mkq a^{m-k}\Phi_k(x).
+ &=\sum_{k=0}^m\GaussianBinomial mkq a^{m-k}\Phi_k(x).
  \label{eq:monomial-to-newton}
 \end{align}
 \end{theorem}
@@ -516,7 +489,7 @@ Expand $x^k(a/x;q)_k$ by \eqref{eq:finite-qbinomial} and put $j=k-r$ to get
 \eqref{eq:q-pascal-inverse}, or note that the coefficient of $\Phi_k$ in the
 Newton interpolant of $x^m$ is its divided difference on
 $a,aq,\ldots,aq^k$.  The direct calculation in \Cref{thm:jackson-divided}
-below gives $a^{m-k}\qbinom mkq$.
+below gives $a^{m-k}\GaussianBinomial mkq$.
 \end{proof}
 
 \begin{corollary}[Newton coefficients of a formal power series]
@@ -524,7 +497,7 @@ below gives $a^{m-k}\qbinom mkq$.
 If $f(x)=\sum_{m\ge0}c_mx^m$ is a formal power series, then its formal
 geometric Newton coefficients are
 \begin{equation}
- A_k=\sum_{r\ge0}c_{k+r}\qbinom{k+r}{k}q a^r.
+ A_k=\sum_{r\ge0}c_{k+r}\GaussianBinomial{k+r}{k}q a^r.
  \label{eq:formal-Ak}
 \end{equation}
 Whenever rearrangement is justified,
@@ -675,7 +648,7 @@ Expand the product after reversing the finite $q$-binomial theorem.  More
 explicitly, the coefficient of $z^k$ in
 $\prod_{j=1}^n(z-q^j)$ is
 \[
- (-1)^{n-k}q^{\binom{n-k+1}{2}}\qbinom nkq,
+ (-1)^{n-k}q^{\binom{n-k+1}{2}}\GaussianBinomial nkq,
 \]
 and division by $(q;q)_n$ gives \eqref{eq:zero-target-row}.  Substitution of
 $E_q$ for $z$ proves \eqref{eq:dilation-filter}.  On $x^d$, $E_q$ has
@@ -685,7 +658,7 @@ constant is $1$.
 
 \begin{remark}[Denominator-free form]
 Multiplying \eqref{eq:lambda-characteristic} by $(q;q)_n$ produces an identity
-in $\Z[q,z]$.  It remains meaningful at roots of unity even when the normalized
+in $\IntegerNumbers[q,z]$.  It remains meaningful at roots of unity even when the normalized
 Lagrange row is undefined because nodes collide.  This denominator-free
 residual is the right starting point for confluent and cyclotomic versions of
 the theory.
@@ -697,7 +670,7 @@ the theory.
 \label{thm:row-norm}
 For $0<q<1$,
 \begin{equation}
- \sum_{k=0}^n\abs{\lambda_{n,k}^{(q)}}
+ \sum_{k=0}^n\AbsoluteValue{\lambda_{n,k}^{(q)}}
  =\frac{(-q;q)_n}{(q;q)_n}
  =\prod_{j=1}^n\frac{1+q^j}{1-q^j}.
  \label{eq:row-norm}
@@ -709,13 +682,13 @@ In particular the row norms increase to the finite limit
 \end{equation}
 For fixed $n$ and $q\to1^-$,
 \begin{equation}
- \sum_{k=0}^n\abs{\lambda_{n,k}^{(q)}}
+ \sum_{k=0}^n\AbsoluteValue{\lambda_{n,k}^{(q)}}
  \sim\frac{2^n}{n!(1-q)^n}.
  \label{eq:finite-row-q1}
 \end{equation}
-If $q=\e^{-h}$ and $h\to0^+$, then
+If $q=\EulerE^{-h}$ and $h\to0^+$, then
 \begin{equation}
- K(\e^{-h})
+ K(\EulerE^{-h})
  \sim\frac{\sqrt h}{2\sqrt\pi}
  \exp\!\left(\frac{\pi^2}{4h}\right).
  \label{eq:infinite-row-q1}
@@ -727,7 +700,7 @@ Because the signs alternate,
 \begin{align*}
  \sum_{k=0}^n|\lambda_{n,k}^{(q)}|
  &=\frac1{(q;q)_n}\sum_{r=0}^n
- q^{\binom{r+1}{2}}\qbinom nrq\\
+ q^{\binom{r+1}{2}}\GaussianBinomial nrq\\
  &=\frac{(-q;q)_n}{(q;q)_n},
 \end{align*}
 where $r=n-k$ and the last step is the finite $q$-binomial theorem applied to
@@ -739,7 +712,7 @@ Finally,
  =\frac{(q^2;q^2)_\infty}{(q;q)_\infty^2}.
 \]
 The standard Dedekind--eta asymptotic
-$(\e^{-h};\e^{-h})_\infty\sim
+$(\EulerE^{-h};\EulerE^{-h})_\infty\sim
 \sqrt{2\pi/h}\exp(-\pi^2/(6h)+h/24)$ gives
 \eqref{eq:infinite-row-q1} after substitution at $h$ and $2h$.
 \end{proof}
@@ -763,7 +736,7 @@ $x^s$, the full spectral response is available at once.
 
 \begin{theorem}[Exact Mellin symbol]
 \label{thm:mellin-symbol}
-Let $s\in\C$, choose a branch of $a^s$ and $q^s$, and set
+Let $s\in\ComplexNumbers$, choose a branch of $a^s$ and $q^s$, and set
 \begin{equation}
  M_{n,q}(s)=\sum_{k=0}^n\lambda_{n,k}^{(q)}q^{ks}.
  \label{eq:mellin-symbol-definition}
@@ -785,7 +758,7 @@ Equivalently,
  \label{eq:mellin-eigenvalue}
 \end{equation}
 The zeros at $s=1,\ldots,n$ are simple modulo the imaginary period
-$2\pi\ii/\log q$.
+$2\pi\ImaginaryUnit/\log q$.
 \end{theorem}
 
 \begin{proof}
@@ -796,13 +769,13 @@ each factor gives \eqref{eq:mellin-forward}; factoring $-q^j$ gives
 
 \begin{corollary}[Natural moments and the first residual]
 \label{cor:integer-moments}
-For $d\in\N_0$,
+For $d\in\NaturalNumbers$,
 \begin{equation}
  \sum_{k=0}^n\lambda_{n,k}^{(q)}q^{kd}
  =\begin{cases}
  1,&d=0,\\
  0,&1\le d\le n,\\
- (-1)^nq^{\binom{n+1}{2}}\qbinom{d-1}{n}q,&d\ge n+1.
+ (-1)^nq^{\binom{n+1}{2}}\GaussianBinomial{d-1}{n}q,&d\ge n+1.
  \end{cases}
  \label{eq:integer-moment-law}
 \end{equation}
@@ -819,7 +792,7 @@ coefficient.
 \end{proof}
 
 \begin{remark}[Fractional endpoint laws]
-For fixed $s$ with $\Re s>0$ and $s\notin\N$,
+For fixed $s$ with $\Re s>0$ and $s\notin\NaturalNumbers$,
 \begin{equation}
  M_{n,q}(s)
  \sim q^{ns}\frac{(q^{1-s};q)_\infty}{(q;q)_\infty}
@@ -886,7 +859,7 @@ $(1-q^j)^{-r}$ and can be organized with complete Bell polynomials.
 
 For a function on $(0,\infty)$ with Mellin transform
 \[
- (\Mellin f)(z)=\int_0^\infty f(x)x^{z-1}\dd x,
+ (\Mellin f)(z)=\int_0^\infty f(x)x^{z-1}\Differential x,
 \]
 one has
 \[
@@ -923,7 +896,7 @@ $r\ge0$,
 On $v_j=aq^j$,
 \begin{equation}
  h_r(x,a,aq,\ldots,aq^n)
- =\sum_{s=0}^r x^s a^{r-s}\qbinom{n+r-s}{n}q.
+ =\sum_{s=0}^r x^s a^{r-s}\GaussianBinomial{n+r-s}{n}q.
  \label{eq:geometric-complete-h}
 \end{equation}
 \end{theorem}
@@ -941,7 +914,7 @@ Equivalently, polynomial division of $x^{n+1+r}$ by $\Omega$ gives the same
 recurrence.  At geometric nodes,
 \[
  \prod_{j=0}^n\frac1{1-aq^jt}
- =\sum_{m\ge0}\qbinom{n+m}{n}q a^mt^m
+ =\sum_{m\ge0}\GaussianBinomial{n+m}{n}q a^mt^m
 \]
 by the reciprocal finite $q$-binomial theorem.  Multiplication by
 $(1-xt)^{-1}$ and extraction of $t^r$ proves
@@ -956,14 +929,14 @@ nodes and the target.  Then
  f(x)-(\Iop_nf)(x)
  =\Omega_{n+1}(x)
  \sum_{r\ge0}c_{n+1+r}
- \sum_{s=0}^r x^sa^{r-s}\qbinom{n+r-s}{n}q.
+ \sum_{s=0}^r x^sa^{r-s}\GaussianBinomial{n+r-s}{n}q.
  \label{eq:analytic-residual}
 \end{equation}
 At $x=0$ this becomes
 \begin{equation}
  (\Gop_{n,q}f)(a)-f(0)
  =(-1)^n a^{n+1}q^{\binom{n+1}{2}}
- \sum_{r\ge0}c_{n+1+r}a^r\qbinom{n+r}{n}q.
+ \sum_{r\ge0}c_{n+1+r}a^r\GaussianBinomial{n+r}{n}q.
  \label{eq:zero-analytic-tail}
 \end{equation}
 \end{corollary}
@@ -980,7 +953,7 @@ other side gives \eqref{eq:zero-analytic-tail}.
 Suppose $f$ is analytic on $|z|<R$ and $|f(z)|\le B$ on $|z|=R$.  If
 $|a|<R$, then
 \begin{equation}
- \abs{(\Gop_{n,q}f)(a)-f(0)}
+ \AbsoluteValue{(\Gop_{n,q}f)(a)-f(0)}
  \le
  \frac{Bq^{\binom{n+1}{2}}}{(q;q)_n}
  \frac{(|a|/R)^{n+1}}{1-|a|/R}.
@@ -990,7 +963,7 @@ $|a|<R$, then
 
 \begin{proof}
 Cauchy's estimate gives $|c_m|\le BR^{-m}$, and
-$\qbinom{n+r}{n}q\le1/(q;q)_n$ for $0<q<1$.  Apply these estimates to
+$\GaussianBinomial{n+r}{n}q\le1/(q;q)_n$ for $0<q<1$.  Apply these estimates to
 \eqref{eq:zero-analytic-tail} and sum the geometric series.
 \end{proof}
 
@@ -1025,7 +998,7 @@ Equivalently,
  \label{eq:jackson-explicit}\\
  &=\frac1{a^k(q;q)_k}
  \sum_{j=0}^k(-1)^jq^{-jk+\binom{j+1}{2}}
- \qbinom kjq f(aq^j).
+ \GaussianBinomial kjq f(aq^j).
  \label{eq:jackson-explicit-qbinom}
 \end{align}
 \end{theorem}
@@ -1041,7 +1014,7 @@ iteration of \eqref{eq:jackson-definition} gives the operator identity
 \end{equation}
 Expand the product with the finite $q^{-1}$-binomial theorem and use
 \(
- \qbinom kj{q^{-1}}=q^{-j(k-j)}\qbinom kjq
+ \GaussianBinomial kj{q^{-1}}=q^{-j(k-j)}\GaussianBinomial kjq
 \).  Division by
 $[k]_q!=(q;q)_k/(1-q)^k$ yields
 \eqref{eq:jackson-explicit-qbinom}.  On the other hand, the explicit formula
@@ -1067,7 +1040,7 @@ The degree-$n$ interpolant is
 For $f(x)=x^m$, the coefficient is
 \begin{equation}
  \frac{D_q^kx^m|_{x=a}}{[k]_q!}
- =\qbinom mkq a^{m-k},
+ =\GaussianBinomial mkq a^{m-k},
  \label{eq:monomial-jackson}
 \end{equation}
 which recovers \eqref{eq:monomial-to-newton}.
@@ -1089,7 +1062,7 @@ Let $0<q<1$, and let $f(z)=\sum_{m\ge0}c_mz^m$ be analytic in $|z|<R$.
 If $|a|<R$, define
 \begin{equation}
  A_k=\frac{D_q^kf(a)}{[k]_q!}
- =\sum_{r\ge0}c_{k+r}\qbinom{k+r}{k}q a^r.
+ =\sum_{r\ge0}c_{k+r}\GaussianBinomial{k+r}{k}q a^r.
  \label{eq:analytic-Ak}
 \end{equation}
 Then
@@ -1109,7 +1082,7 @@ locally uniformly for $|x|<R$.  At the accumulation point,
 Fix $s<R$ and choose $\rho$ with
 $\max(s,|a|)<\rho<R$.  Cauchy's estimate gives
 $|c_m|\le C\rho^{-m}$.  Since
-$\qbinom{k+r}{k}q\le1/(q;q)_\infty$,
+$\GaussianBinomial{k+r}{k}q\le1/(q;q)_\infty$,
 \[
  |A_k|\le C_1\rho^{-k}.
 \]
@@ -1339,7 +1312,7 @@ A sequence $y_j\to L$ is \emph{$q$-superflat at its limit} if
  y_j-L=o(q^{mj})\qquad(j\to\infty)
  \label{eq:q-superflat}
 \end{equation}
-for every $m\in\N$.
+for every $m\in\NaturalNumbers$.
 \end{definition}
 
 \begin{theorem}[Exact convergence set for nontrivial superflat data]
@@ -1359,7 +1332,7 @@ Moreover:
 \begin{enumerate}
 \item $P_n(0)\to L$;
 \item for each $m\ge0$, $P_n(aq^m)=y_m$ once $n\ge m$;
-\item for every $x\in\C\setminus(\{0\}\cup\{aq^m:m\ge0\})$, the increments
+\item for every $x\in\ComplexNumbers\setminus(\{0\}\cup\{aq^m:m\ge0\})$, the increments
       $A_n\Phi_n(x)$ fail to tend to zero, and the sequence $P_n(x)$ diverges;
       indeed it is unbounded along a subsequence.
 \end{enumerate}
@@ -1442,7 +1415,7 @@ of every $U_j$ shows
  X_q\stackrel d=1-X_q.
  \label{eq:Xq-symmetry}
 \end{equation}
-Let $F_q(x)=\Prob(X_q\le x)$, extended by $0$ to $x\le0$ and by $1$ to
+Let $F_q(x)=\Probability(X_q\le x)$, extended by $0$ to $x\le0$ and by $1$ to
 $x\ge1$.  Removing the first coordinate gives the affine fixed-point law
 \begin{equation}
  X_q\stackrel d=(1-q)U+qX_q',
@@ -1451,10 +1424,10 @@ $x\ge1$.  Removing the first coordinate gives the affine fixed-point law
 where $X_q'$ is an independent copy.  Consequently
 \begin{align}
  F_q(x)
- &=\int_0^1F_q\!\left(\frac{x-(1-q)u}{q}\right)\dd u
+ &=\int_0^1F_q\!\left(\frac{x-(1-q)u}{q}\right)\Differential u
  \label{eq:Fq-integral-equation}\\
  &=\frac q{1-q}
- \int_{(x-(1-q))/q}^{x/q}F_q(t)\dd t.
+ \int_{(x-(1-q))/q}^{x/q}F_q(t)\Differential t.
  \label{eq:Fq-integral-equation-2}
 \end{align}
 Differentiation gives
@@ -1473,12 +1446,12 @@ The centered random variable
 \end{equation}
 has an even $C^\infty$ density $u_q$ supported on $[-1,1]$.  With the Fourier
 convention
-$\widehat f(\xi)=\int_\R f(x)\e^{-2\pi\ii\xi x}\dd x$,
+$\widehat f(\xi)=\int_\RealNumbers f(x)\EulerE^{-2\pi\ImaginaryUnit\xi x}\Differential x$,
 \begin{equation}
  \widehat u_q(\xi)=\prod_{j=0}^\infty
- \sincpi\!\left(2(1-q)q^j\xi\right),
+ \SincPi\!\left(2(1-q)q^j\xi\right),
  \qquad
- \sincpi(t)=\frac{\sin(\pi t)}{\pi t}.
+ \SincPi(t)=\frac{\sin(\pi t)}{\pi t}.
  \label{eq:uq-fourier-product}
 \end{equation}
 Moreover
@@ -1491,7 +1464,7 @@ Moreover
 \begin{proof}
 The characteristic function factors by independence and gives
 \eqref{eq:uq-fourier-product}.  To see rapid decay, use
-$|\sincpi(t)|\le\min(1,1/(\pi|t|))$ on the first
+$|\SincPi(t)|\le\min(1,1/(\pi|t|))$ on the first
 $N\asymp\log|\xi|/|\log q|$ factors.  The logarithm of the resulting product
 is $-c_q(\log|\xi|)^2+O_q(\log|\xi|)$, hence the product decreases faster than
 any inverse power.  Fourier inversion then gives a $C^\infty$ density.  The
@@ -1510,7 +1483,7 @@ one-sided interpolation comb.
 
 Write
 \begin{equation}
- \mu_n(q)=\E X_q^n.
+ \mu_n(q)=\Expectation X_q^n.
  \label{eq:muq-definition}
 \end{equation}
 
@@ -1533,14 +1506,14 @@ At $q=1/2$ this reduces to
 
 \begin{proof}
 Raise \eqref{eq:Xq-fixed-point} to the $n$th power, expand, and use
-$\E U^r=1/(r+1)$.  Move the $k=n$ term to the left.  At $q=1/2$ every factor
+$\Expectation U^r=1/(r+1)$.  Move the $k=n$ term to the left.  At $q=1/2$ every factor
 $q^k(1-q)^{n-k}$ equals $2^{-n}$, and multiplication by $2^n$ gives
 \eqref{eq:dyadic-moment-recurrence}.
 \end{proof}
 
 The centered moment generating function is
 \begin{equation}
- \Mq(z)=\E\e^{zZ_q}
+ \Mq(z)=\Expectation\EulerE^{zZ_q}
  =\prod_{j=0}^\infty
  \frac{\sinh((1-q)q^jz)}{(1-q)q^jz}.
  \label{eq:uq-mgf}
@@ -1619,16 +1592,16 @@ $q^n\le(1-q)q^{n-1}$ when $q\le1/2$, Taylor's integral formula and
 \Cref{lem:boundary-tower} give
 \begin{align*}
  F_q(q^n)
- &=\frac1{(n-1)!}\int_0^{q^n}(q^n-t)^{n-1}F_q^{(n)}(t)\dd t\\
+ &=\frac1{(n-1)!}\int_0^{q^n}(q^n-t)^{n-1}F_q^{(n)}(t)\Differential t\\
  &=\frac{(1-q)^{-n}q^{-\binom n2}}{(n-1)!}
-   \int_0^{q^n}(q^n-t)^{n-1}F_q(t/q^n)\dd t\\
+   \int_0^{q^n}(q^n-t)^{n-1}F_q(t/q^n)\Differential t\\
  &=\frac{q^{n^2-\binom n2}}{(1-q)^n(n-1)!}
-   \int_0^1(1-u)^{n-1}F_q(u)\dd u.
+   \int_0^1(1-u)^{n-1}F_q(u)\Differential u.
 \end{align*}
 By Fubini,
 \[
- \int_0^1(1-u)^{n-1}F_q(u)\dd u
- =\frac1n\E(1-X_q)^n.
+ \int_0^1(1-u)^{n-1}F_q(u)\Differential u
+ =\frac1n\Expectation(1-X_q)^n.
 \]
 Symmetry \eqref{eq:Xq-symmetry} changes the last moment to $\mu_n(q)$, and
 $n^2-\binom n2=\binom{n+1}{2}$.
@@ -1668,7 +1641,7 @@ normalization.  From \eqref{eq:uq-Fq-relation},
 \end{equation}
 Its Fourier transform is the canonical infinite sinc product
 \begin{equation}
- \widehat u(\xi)=\prod_{j=0}^\infty\sincpi(\xi/2^j).
+ \widehat u(\xi)=\prod_{j=0}^\infty\SincPi(\xi/2^j).
  \label{eq:up-fourier-classical}
 \end{equation}
 The construction and these identities agree with the classical treatments of
@@ -1683,7 +1656,7 @@ with the normalization used in the repository's primary exposition
 
 Write
 \begin{equation}
- \mu_n=\E X^n,
+ \mu_n=\Expectation X^n,
  \qquad
  \mathfrak M_n=\prod_{r=1}^n(2^r-1),
  \qquad \mathfrak M_0=1.
@@ -1761,7 +1734,7 @@ $1,q,\ldots,q^n$.  Then
  |P_{n,q}(0)|
  \le
  \frac{\exp((1-q)^{-1})}{(q;q)_\infty^2}
- q^{\binom{n+1}{2}-\floor{n^2/4}}.
+ q^{\binom{n+1}{2}-\Floor{n^2/4}}.
  \label{eq:quadratic-endpoint-bound}
 \end{equation}
 In particular the convergence is at least as fast as
@@ -1781,7 +1754,7 @@ $0\le\mu_k(q)\le1$, and \eqref{eq:zero-target-row}:
 The exponent is
 \[
  \binom{n+1}{2}-k(n-k)
- \ge\binom{n+1}{2}-\floor{n^2/4}.
+ \ge\binom{n+1}{2}-\Floor{n^2/4}.
 \]
 Also $(q;q)_k,(q;q)_{n-k}\ge(q;q)_\infty$.  Extract the smallest power of
 $q$ and majorize the remaining sum by
@@ -1805,7 +1778,7 @@ $F_q(1),F_q(q),\ldots$.  Then
 \begin{equation}
  A_n(q)=\frac1{(q;q)_n}
  \sum_{j=0}^n(-1)^j
- \qbinom nj{q^{-1}}
+ \GaussianBinomial nj{q^{-1}}
  \left(\frac q{1-q}\right)^j
  \frac{\mu_j(q)}{j!}.
  \label{eq:general-Gaussian-moment-transform}
@@ -1816,7 +1789,7 @@ $B_k=(q;q)_kA_k(q)$ and $Q=q^{-1}$, then
  \frac{\mu_n(q)}{n!}
  =\left(\frac{1-q}{q}\right)^n
  \sum_{k=0}^n(-1)^kQ^{\binom{n-k}{2}}
- \qbinom nkQ B_k.
+ \GaussianBinomial nkQ B_k.
  \label{eq:inverse-Gaussian-moment-transform}
 \end{equation}
 \end{theorem}
@@ -1829,7 +1802,7 @@ Insert \eqref{eq:comb-moment} into the explicit divided difference
  =q^{-j(n-j)}\left(\frac q{1-q}\right)^j,
 \]
 and reciprocity
-$q^{-j(n-j)}\qbinom njq=\qbinom nj{q^{-1}}$ proves
+$q^{-j(n-j)}\GaussianBinomial njq=\GaussianBinomial nj{q^{-1}}$ proves
 \eqref{eq:general-Gaussian-moment-transform}.
 For inversion, factor the transform into a diagonal matrix and the Gaussian
 Pascal matrix, and use \eqref{eq:q-pascal-inverse} with base $Q$; direct
@@ -1842,7 +1815,7 @@ For the Fabius function,
 \begin{align}
  A_n
  &=\frac1{(1/2;1/2)_n}
- \sum_{j=0}^n(-1)^j\qbinom nj2\frac{\mu_j}{j!}
+ \sum_{j=0}^n(-1)^j\GaussianBinomial nj2\frac{\mu_j}{j!}
  \label{eq:fabius-Gaussian-transform}\\
  &=2^{\binom{n+1}{2}}
  \sum_{j=0}^n
@@ -1862,7 +1835,7 @@ Moreover
 Set $q=1/2$ in \eqref{eq:general-Gaussian-moment-transform}.  Then
 $q^{-1}=2$ and $q/(1-q)=1$.  Use
 \(
- \qbinom nj2=\mathfrak M_n/(\mathfrak M_j\mathfrak M_{n-j})
+ \GaussianBinomial nj2=\mathfrak M_n/(\mathfrak M_j\mathfrak M_{n-j})
 \)
 and \eqref{eq:qpoch-mersenne} for the second form.  Finally, the difference
 between two successive Newton partial sums at zero is
@@ -1963,7 +1936,7 @@ experiment in \Cref{sec:numerics} is consistent with
 
 Put
 \begin{equation}
- s_q(\xi)=\sincpi(2(1-q)\xi),
+ s_q(\xi)=\SincPi(2(1-q)\xi),
  \qquad
  S_{q,k}(\xi)=\prod_{j=0}^{k-1}s_q(q^j\xi),
  \quad S_{q,0}=1.
@@ -1993,10 +1966,10 @@ Then
 \end{equation}
 More precisely,
 \begin{equation}
- \abs{R_{n,q}(\xi)-\frac1{\widehat u_q(\xi)}}
+ \AbsoluteValue{R_{n,q}(\xi)-\frac1{\widehat u_q(\xi)}}
  \le
  \frac{q^{\binom{n+1}{2}}}{|\widehat u_q(\xi)|(q;q)_n}
- \e^{2\pi|\xi|}\frac{(2\pi|\xi|)^{n+1}}{(n+1)!}.
+ \EulerE^{2\pi|\xi|}\frac{(2\pi|\xi|)^{n+1}}{(n+1)!}.
  \label{eq:reciprocal-error-bound}
 \end{equation}
 \end{theorem}
@@ -2004,7 +1977,7 @@ More precisely,
 \begin{proof}
 Apply the geometric filter to the entire function of $t$
 \[
- h_\xi(t)=\widehat u_q(t\xi)=\E\e^{-2\pi\ii t\xi Z_q}.
+ h_\xi(t)=\widehat u_q(t\xi)=\Expectation\EulerE^{-2\pi\ImaginaryUnit t\xi Z_q}.
 \]
 Since $h_\xi(0)=1$, \Cref{thm:regular-summability} already gives
 $\sum_k\lambda_{n,k}h_\xi(q^k)\to1$.  By
@@ -2013,19 +1986,19 @@ $\widehat u_q(\xi)R_{n,q}(\xi)$, proving the limit.
 For the quantitative bound, the Taylor coefficients of $h_\xi$ satisfy
 $|c_m|\le(2\pi|\xi|)^m/m!$ because $|Z_q|\le1$.  Formula
 \eqref{eq:zero-analytic-tail} with $a=1$ and
-$\qbinom{n+r}{n}q\le1/(q;q)_n$ gives
+$\GaussianBinomial{n+r}{n}q\le1/(q;q)_n$ gives
 \[
  |\widehat u_q(\xi)R_{n,q}(\xi)-1|
  \le\frac{q^{\binom{n+1}{2}}}{(q;q)_n}
  \sum_{m=n+1}^\infty\frac{(2\pi|\xi|)^m}{m!}.
 \]
 The exponential-tail bound
-$\sum_{m\ge n+1}t^m/m!\le\e^t t^{n+1}/(n+1)!$ completes the proof.
+$\sum_{m\ge n+1}t^m/m!\le\EulerE^t t^{n+1}/(n+1)!$ completes the proof.
 \end{proof}
 
 \begin{remark}[Zeros and regularized reciprocals]
 The hypothesis excludes the union of zero lattices
-$2(1-q)q^j\xi\in\Z\setminus\{0\}$.  Near a zero, the individual prefix
+$2(1-q)q^j\xi\in\IntegerNumbers\setminus\{0\}$.  Near a zero, the individual prefix
 reciprocals are badly conditioned.  Multiplying by the known vanishing factor,
 or differentiating the filtered identity to reconstruct the finite part,
 should produce stable formulas for residues and zero multiplicities; see
@@ -2038,7 +2011,7 @@ Expanding the characteristic function gives
 \begin{equation}
  \widehat u_q(t\xi)
  =\sum_{m=0}^\infty
- \frac{(-2\pi\ii\xi)^m}{m!}\E Z_q^m\,t^m.
+ \frac{(-2\pi\ImaginaryUnit\xi)^m}{m!}\Expectation Z_q^m\,t^m.
  \label{eq:uq-characteristic-series}
 \end{equation}
 Substitution into \eqref{eq:zero-analytic-tail} expresses the error in
@@ -2052,10 +2025,10 @@ and cancels moments in the characteristic-function comb.
 \label{sec:up-synthesis-bridge}
 
 The adjacent repository report on the Lagrange--Legendre--Rvachev loop proves
-the following finite synthesis theorem.  Let $u=\Up$ be the classical up
+the following finite synthesis theorem.  Let $u=\RvachevUp$ be the classical up
 density, let
 \begin{equation}
- \mathsf M_u(z)=\int_{-1}^1\e^{zx}u(x)\dd x,
+ \mathsf M_u(z)=\int_{-1}^1\EulerE^{zx}u(x)\Differential x,
  \qquad
  \mathscr D_u=\mathsf M_u(D)^{-1}
  \label{eq:moment-deconvolution}
@@ -2105,7 +2078,7 @@ They have the Gaussian formula
 \begin{equation}
  e_s^{(j)}=
  \sum_{r=0}^s(-1)^rq^{jr+\binom{s-r}{2}}
- \qbinom{n+1}{s-r}q.
+ \GaussianBinomial{n+1}{s-r}q.
  \label{eq:excluded-elementary-Gaussian}
 \end{equation}
 Therefore
@@ -2121,7 +2094,7 @@ to compactly supported $C^\infty$ atoms.
 \begin{proof}[Proof of \eqref{eq:excluded-elementary-Gaussian} and
 \eqref{eq:q-Appell-cardinal}]
 For the full set,
-$e_s(1,q,\ldots,q^n)=q^{\binom s2}\qbinom{n+1}{s}q$ by
+$e_s(1,q,\ldots,q^n)=q^{\binom s2}\GaussianBinomial{n+1}{s}q$ by
 \eqref{eq:finite-qbinomial}.  Removing $q^j$ gives the recurrence
 $e_s^{\mathrm{full}}=e_s^{(j)}+q^je_{s-1}^{(j)}$; iteration proves
 \eqref{eq:excluded-elementary-Gaussian}.  Expanding
@@ -2142,7 +2115,7 @@ spline.  For the dyadic widths, all subset sums form the uniform grid
 $m/2^N$ and their inclusion--exclusion signs become the Thue--Morse signs.
 Thus
 \begin{equation}
- \Prob(X^{(N)}\le x)
+ \Probability(X^{(N)}\le x)
  =\frac{2^{N(N+1)/2}}{N!}
  \sum_{m=0}^{2^N-1}(-1)^{s_2(m)}
  \left(x-\frac{m}{2^N}\right)_+^N,
@@ -2608,7 +2581,7 @@ For quick reference, the principal finite formulas are collected here.
  \Phi_k(x)
  &=(-a)^kq^{\binom k2}(x/a;q^{-1})_k,\\[0.3em]
  \Phi_k(aq^j)
- &=(-a)^kq^{\binom k2}(q;q)_k\qbinom jkq,\\[0.3em]
+ &=(-a)^kq^{\binom k2}(q;q)_k\GaussianBinomial jkq,\\[0.3em]
  \beta_{n,j}
  &=\frac{(-1)^jq^{-jn+\binom{j+1}{2}}}
  {a^n(q;q)_j(q;q)_{n-j}},\\[0.3em]
@@ -2624,13 +2597,13 @@ For quick reference, the principal finite formulas are collected here.
  M_{n,q}(s)
  &=q^{ns}\frac{(q^{1-s};q)_n}{(q;q)_n},\\[0.3em]
  F_q(q^n)
- &=\frac{q^{\binom{n+1}{2}}}{(1-q)^nn!}\E X_q^n
+ &=\frac{q^{\binom{n+1}{2}}}{(1-q)^nn!}\Expectation X_q^n
  \quad(0<q\le1/2),\\[0.3em]
  F(2^{-n})
  &=2^{-\binom n2}\frac{\mu_n}{n!},\\[0.3em]
  A_n
  &=\frac1{(1/2;1/2)_n}
- \sum_{j=0}^n(-1)^j\qbinom nj2\frac{\mu_j}{j!}.
+ \sum_{j=0}^n(-1)^j\GaussianBinomial nj2\frac{\mu_j}{j!}.
 \end{align*}
 
 \section{Pseudocode for exact dyadic computation}

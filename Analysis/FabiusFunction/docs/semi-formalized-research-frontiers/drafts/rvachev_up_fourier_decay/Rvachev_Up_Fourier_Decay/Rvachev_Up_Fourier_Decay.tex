@@ -200,7 +200,8 @@ large by $\sqrt2$; the source of the discrepancy is the missing $1/2$ in the $L^
 the cosine basis.
 
 For the literal Cesaro question, the arithmetic-mean gauge
-$g(x)=A_1E_{\kappa_1}(x)$, where $A_1=0.091266124131588\ldots$, gives shell means tending to
+$g(x)=A_1E_{\kappa_1}(x)$, where numerically
+$A_1\approx0.091266124131588$, gives shell means tending to
 one and solves the requested two-sided boundedness condition.  It also gives convergence at
 dyadic endpoints.  At unrestricted endpoints a nonconstant dyadic-mantissa profile remains,
 governed by a continuous singular eigenmeasure of an explicit transfer operator.  We prove
@@ -210,7 +211,8 @@ Unrestricted scale-dependent gauges are not ruled out by that theorem; in fact, 
 shell-adaptive positive real-analytic decreasing gauge is constructed below and gives the
 literal unrestricted Cesaro limit.  The
 multiplicatively natural logarithmic Cesaro mean does converge for all endpoints, with
-normalizing constant $A_1^{\log}=0.09386063575678126354\ldots$.
+normalizing constant numerically
+$A_1^{\log}\approx0.09386063575678126354$.
 
 Finally, the raw annular maximum
 $\mathfrak M_k=\max_{2^k\le x\le2^{k+1}}|\Phi(x)|$ has a sharper boundary-layer law:
@@ -1009,11 +1011,12 @@ which may be normalized by
  \nu_q(h_q)=1.
 \]
 On $C^\alpha[0,1]$, with $0<\alpha\le\min(1,q)$ and norm
-$\|f\|_\infty+[f]_\alpha$, there is a spectral gap and
+$\|f\|_\infty+[f]_\alpha$, there is a spectral gap: there are
+$C_{q,\alpha}<\infty$ and $0<\vartheta_{q,\alpha}<1$ such that, for every
+$f\in C^\alpha[0,1]$ and $n\ge0$,
 \begin{equation}
- \rho_q^{-n}\mathcal L_q^nf
- =\nu_q(f)h_q+\bigO(\vartheta_q^n\norm f_{C^\alpha}),
- \qquad 0<\vartheta_q<1.
+ \norm{\rho_q^{-n}\mathcal L_q^nf-\nu_q(f)h_q}_{C^\alpha}
+ \le C_{q,\alpha}\vartheta_{q,\alpha}^n\norm f_{C^\alpha}.
  \label{eq:RPF-convergence}
 \end{equation}
 \end{proposition}
@@ -1316,16 +1319,35 @@ martingale-difference sequence.  Moreover,
  \longrightarrow\int_0^1d^2
 \]
 almost surely by the ergodic theorem, and the conditional Lindeberg condition follows from
-$d\in L^2$.  For clarity, the extra LIL hypotheses are not being hidden: the predictable
-quadratic variation is the displayed ergodic sum and hence is asymptotic to
-$n\int d^2$, while the exponential tail and Borel--Cantelli give
-$\max_{j\le n}|d\circ T^j|=O(\log n)=o(\sqrt{n/\log\log n})$ almost surely.  Truncating at
-$\varepsilon\sqrt{n/\log\log n}$ and using the same tail bound gives the conditional
-Lindeberg summability required by Stout's martingale LIL.  Thus the stationary martingale
-CLT and the martingale LIL apply to $\sum_{j<n}d\circ T^j$; see Stout
-\cite{stout1970} and the invariance-principle formulation of Heyde--Scott
-\cite{heyde-scott1973}.  These two classical martingale theorems are the imported
-probabilistic input.  The variance is \eqref{eq:d-variance}.  It remains only to remove
+$d\in L^2$.  A standard martingale CLT applied after passing to the natural extension and
+reversing a fixed block therefore gives the distributional limit; stationarity identifies
+that fixed-block distribution with the positive-time sum.  This observation is sufficient
+for the CLT, but not for a pathwise limsup theorem.
+
+For the LIL we instead use the direct reverse-martingale strong invariance principle of
+Cuny and Merlev\`ede \cite[Cor.~2.5 and Rem.~2.6]{cuny-merlevede2015}.  Its hypotheses are
+exactly that $T$ is measure-preserving and ergodic, $d\in L^2$, and
+$(d\circ T^j)$ is stationary and adapted to the decreasing filtration with
+$\mathbb E[d\circ T^j\mid\mathcal F_{j+1}]=0$.  It supplies, on an extension of the
+probability space, independent centered Gaussian variables $Z_j$ with
+\[
+ \mathbb E Z_j^2=\int_0^1d^2=\frac{\pi^2}{4}
+\]
+such that
+\[
+ \max_{1\le k\le n}
+ \left|\sum_{j=1}^k d\circ T^j-\sum_{j=1}^kZ_j\right|
+ =o(\sqrt{n\log\log n})
+ \qquad\text{almost surely}.
+\]
+The exponential-tail Borel--Cantelli estimate
+$\max_{j\le n}|d\circ T^j|=O(\log n)$ makes the indexing change from
+$\sum_{j=1}^k d\circ T^j$ to $\sum_{j=0}^{k-1}d\circ T^j$ negligible uniformly on this
+scale.  The classical Gaussian LIL therefore gives the constants $\pm\pi/2$.  A mere
+time reversal followed by a forward martingale LIL would control negative-time sums;
+equality in law of each fixed block cannot transfer an almost-sure limsup, which is why the
+direct reverse-martingale theorem is used here.  The variance is \eqref{eq:d-variance}.
+It remains only to remove
 the two coboundary terms in \eqref{eq:Gordin-exact}.  The positive part of $\psi$ is bounded
 by $\log2$, while near the integers
 \[
@@ -1549,10 +1571,10 @@ This is exactly \eqref{eq:total-energy}.  Super-polynomial decay makes the serie
 and rapidly convergent.
 \end{proof}
 
-The Plancherel/sinc-square part of this result is represented in Lean by the declaration
-\[
-  \lean{FabiusSquareEnergyFourier}.
-\]
+The Plancherel/sinc-square part of this result is represented by the exact Lean declarations
+\decl{integral_norm_sq_rvachevFourier_eq_two_mul_fabiusSquareEnergy} and
+\decl{fabiusSquareEnergy_eq_integral_Ioi_tprod_sinc_sq} in module
+\lean{FabiusSquareEnergyFourier}.
 The half-integer sampling identity above is a concise human-readable target for completing
 that formalized energy layer.
 
@@ -1900,7 +1922,9 @@ The exact factorization in the coordinates $x=2^k(1+z)$ gives
  \frac{|\Phi(2^k(1+z))|}{E_{\kappa_1}(2^k(1+z))}
  =\rho_1^{-(k+1)}W(z)\prod_{j=0}^{k}|\sin(\pi2^jz)|,
 \]
-where $W$ is continuous and positive on $[0,1)$.  Combining this identity with
+where
+$W(z):=W_{\kappa_1}((1+z)/2)=f_1(z)$ is continuous and positive on $[0,1)$.
+Combining this identity with
 \eqref{eq:stabilizing-shape} and the Ruelle--Perron--Frobenius limit shows that every
 subsequential shell limit in \eqref{eq:partial-shell-linearity} is a constant multiple of
 \[
@@ -1926,7 +1950,8 @@ On the positive support of $r$, iteration and Birkhoff's theorem yield
  =r(z)\exp\bigl(n(\log(2\rho_1)+o(1))\bigr).
 \]
 Here $2\rho_1>1$; for example, Cauchy--Schwarz together with the exact $L^2$ identity and
-the Gelfond upper bound gives $\rho_1\ge1/\sqrt3>1/2$.  On the other hand, invariance of
+the Gelfond upper bound gives $\rho_1\ge1/\sqrt3>1/2$, consistently with the rigorous
+bracket in \Cref{prop:rho1-rigorous-bound}.  On the other hand, invariance of
 Lebesgue measure, Markov's inequality, and Borel--Cantelli imply
 $r(T^nz)\le\e^{\varepsilon n}$ eventually for a.e. $z$, for every $\varepsilon>0$.
 Choosing $\varepsilon<\log(2\rho_1)$ is a contradiction.  Thus $\nu_1$ is singular and
@@ -2173,9 +2198,12 @@ real axis, such that
 This is Hoischen's derivative form of Carleman approximation; we use the formulation of
 Gauthier and Kienzle \cite{gauthier-kienzle}.
 
-Extend $h$ in \eqref{eq:smooth-adaptive-gauge} to a positive, strictly increasing $C^1$
-function on $\R$.  Choose a continuous $\delta(x)>0$ with $\delta(x)\to0$ as
-$x\to+\infty$ and apply \eqref{eq:Hoischen} with
+Extend $h$ in \eqref{eq:smooth-adaptive-gauge} to a positive $C^1$ function on $\R$
+such that $h'(x)>0$ for every $x$.  This is possible because
+\eqref{eq:baseline-slope} makes $h'$ positive on the retained tail; before a joining point,
+a positive exponential chosen to match its value and first derivative supplies a $C^1$
+extension.  Choose a continuous $\delta(x)>0$ with $\delta(x)\to0$ as $x\to+\infty$,
+then choose a continuous positive tolerance $\epsilon$ satisfying
 \begin{equation}
  \epsilon(x)<\frac12\min\{h(x),h'(x),\delta(x)h(x)\}.
  \label{eq:Hoischen-error}
@@ -2351,7 +2379,8 @@ Consequently
 
 \begin{proof}
 At $x=1/3$ the orbit alternates between $1/3$ and $2/3$, and every factor equals
-$\lambda$, proving the lower bound.  For the upper bound, sum
+$\lambda$, proving the lower bound.  For $n=1$ the upper bound is
+$\sup s=1=\lambda^0$.  Assume henceforth that $n\ge2$.  For the upper bound, sum
 \eqref{eq:weighted-log-inequality} for $x,Tx,\dots,T^{n-2}x$.  If
 $\phi=\log s$, the result is
 \[
@@ -2669,7 +2698,7 @@ we use the principal real branch of $W$ throughout \cite{corless-lambert}.  Thus
 
 \begin{theorem}[Sharp dyadic-annulus maximum]
 \label{thm:annular-main}
-Let $w_k=W(c(k+1))$, with $c$ from \eqref{eq:annular-c}.  Then
+Let $w_k=W(c(k+1))$, with $c$ from \eqref{eq:annular-c}.  Then, as $k\to\infty$,
 \begin{equation}
  \boxed{\displaystyle
  \log\mathfrak M_k
@@ -2751,8 +2780,8 @@ and most explicit obstruction occurs immediately after powers of two.
 
 \begin{theorem}[Peaks after an odd multiple of a power of two]
 \label{thm:odd-multiple-valley}
-Fix an odd positive integer $m$.  Write the unique maximizer in
-$(m2^k,m2^k+1)$ as $m2^k+t_k$, $0<t_k<1$.  Then
+Fix an odd positive integer $m$, and let $k\in\mathbb Z_{\ge0}$.  Write the unique
+maximizer in $(m2^k,m2^k+1)$ as $m2^k+t_k$, $0<t_k<1$.  Then, as $k\to\infty$,
 \begin{equation}
  (k+1)(1-t_k)\longrightarrow1,
  \label{eq:odd-multiple-location}
@@ -3215,7 +3244,8 @@ $C_b(y)=\log|\Phi_b(y)|+(\log y)^2/(2\log b)
 
 \begin{theorem}[Exact $b$-adic logarithmic variance]
 \label{thm:b-adic-variance}
-Let $b\ge2$ be an integer and let $S_N(t)=\sum_{j=0}^{N-1}\psi(T_b^jt)$.  Then, for
+Let $b\ge2$ be an integer, let $N\ge1$, and put
+$S_N(t)=\sum_{j=0}^{N-1}\psi(T_b^jt)$.  Then, for
 $j\ge0$,
 \begin{equation}
  \int_0^1\psi(t)\psi(T_b^jt)\dd t=\frac{\pi^2}{12b^j},
@@ -3302,20 +3332,23 @@ constant.
 The sequence $(d\circ T_b^j)$ is a stationary ergodic reverse martingale difference.
 Its predictable quadratic variation divided by $N$ converges almost surely to
 $\|d\|_2^2=\sigma_b^2$ by the ergodic theorem.  The logarithmic singularities give moments
-of every finite order and exponential tails, hence the Borel--Cantelli maximal bound and
-conditional Lindeberg summability checked in the proof of \Cref{thm:correct-lil}.  The same
-imported stationary martingale CLT and Stout LIL therefore apply.  Finally the coboundary
+of every finite order and exponential tails, hence the conditional Lindeberg condition for
+the distributional martingale CLT.  Since $T_b$ is ergodic and $d\in L^2$, the direct
+reverse-martingale ASIP of Cuny--Merlev\`ede cited in the proof of
+\Cref{thm:correct-lil} gives the positive-time LIL with variance $\sigma_b^2$.  Finally the coboundary
 $-h+h\circ T_b^N$ is negligible on both normalizations by the identical exponential-tail
 argument.
 \end{proof}
 
 \begin{boxedremark}
 The global dyadic Pochhammer identity is represented in the current Lean source by
-\lean{RvachevPochhammerFactorization}; the entire contracting-ratio product is developed in
-\lean{GeometricReciprocalGamma}; and the case $b=2$ of the shell and variance algebra is
-formalized in \lean{SincProductShells} and \lean{BirkhoffVariance}.  The arbitrary-$b$
-Pochhammer grouping, integer-$b$ ray law, and general covariance theorem above are new
-human-readable results and explicit Lean targets.
+\lean{RvachevPochhammerFactorization}; more generally,
+\decl{geometricSincProduct_eq_tprod_complexQPochhammerInf} proves the global
+contracting-ratio product for every strict complex contraction.  The reciprocal-Gamma layer
+is developed in \lean{GeometricReciprocalGamma}, and the case $b=2$ of the shell and
+variance algebra is formalized in \lean{SincProductShells} and \lean{BirkhoffVariance}.
+The integer-$b$ ray law and general covariance theorem above remain new human-readable
+results and explicit Lean targets.
 \end{boxedremark}
 
 \section{Numerical evaluation of the finite-\texorpdfstring{$q$}{q} spectrum}
@@ -3323,15 +3356,17 @@ human-readable results and explicit Lean targets.
 
 \subsection{Chebyshev collocation}
 
-For smooth weights (in particular $q\ge1$), the Perron root of
-\eqref{eq:transfer-operator} is efficiently obtained by Chebyshev--Lobatto collocation.
+For the integer values $q\ge1$ computed below, the endpoint weights are smooth, and
+Chebyshev--Lobatto collocation efficiently approximates the Perron root of
+\eqref{eq:transfer-operator}.
 Let
 \[
  x_j=\frac{1-\cos(j\pi/(N-1))}{2},\qquad 0\le j<N,
 \]
 interpolate $f$ at the points $x_j/2$ and $(x_j+1)/2$ by the barycentric formula, and form
-the matrix representation of $\mathcal L_q$.  Its leading eigenvalue converges rapidly to
-$\rho_q$.
+the matrix representation of $\mathcal L_q$.  Its leading eigenvalue exhibits rapid
+numerical stabilization toward $\rho_q$; no independent collocation-convergence theorem is
+claimed here.
 
 For $q=1$ the convergence is:
 \begin{center}
@@ -3635,13 +3670,16 @@ all-endpoint repair.
 
 The product algebra, zero divisor, Thue--Morse sign, exact factorization, finite variance,
 finite-grid Parseval, Gelfond inequality, Lambert optimization, peak--area estimate, and both
-valley theorems are proved here.  The exact $L^2$ row is finite Fourier algebra.  Three
-classical analytic packages remain imported with their hypotheses visible:
+valley theorems are proved here.  The exact $L^2$ numerator identity and exponent are finite
+Fourier algebra; convergence of the weighted shell-limit constant still uses RPF.  Four
+classical analytic, ergodic, and probabilistic packages remain imported with their hypotheses
+visible:
 
 \begin{enumerate}
 \item Ruelle--Perron--Frobenius quasi-compactness and simplicity for
       \eqref{eq:transfer-operator};
-\item stationary reverse-martingale CLT/LIL theorems;
+\item Birkhoff's ergodic theorem for the doubling and integer-base maps;
+\item the distributional martingale CLT and the stationary reverse-martingale ASIP/LIL;
 \item Carleman--Hoischen simultaneous approximation of a $C^1$ function and its derivative.
 \end{enumerate}
 
@@ -3799,6 +3837,9 @@ Fourier-product bridge
    \decl{rvachevFourier_neg}, \decl{rvachevFourier_ofReal_im_eq_zero},
    \decl{rvachevFourier_zero}, \decl{rvachevFourier_eq_product}
  & \Cref{sec:introduction,sec:exact-products}\\
+Super-polynomial real-axis decay of the Fourier transform
+ & \decl{rvachevFourier_real_rapidDecay}
+ & \Cref{cor:superpoly-subexp}\\
 Exact nonzero complex zero set and analytic multiplicity $1+\nu_2(m)$
  & \decl{rvachevFourierProduct_eq_zero_iff},
    \decl{analyticOrderAt_rvachevFourierProduct_int}
@@ -3810,11 +3851,14 @@ Exact zero-safe dyadic shell factorization and exponent algebra
  & \Cref{thm:exact-dyadic-factorization}\\
 Finite Thue--Morse product-to-sum identity
  & \decl{prod_sin_two_pow_eq_thueMorse_sum}
- & \Cref{eq:TM-polynomial,eq:TM-modulus}\\
+ & \Cref{cor:finite-TM-sinc-expansion}\\
 Strict central/side-lobe concavity, unique lobe maxima, and Thue--Morse lobe sign
  & \decl{strictConcaveOn_central_log_series},
    \decl{strictConcaveOn_lobe_log_series},
    \decl{existsUnique_isMaxOn_rvachevFourier_lobe},
+   \decl{existsUnique_isMaxOn_rvachevFourier_neg_lobe},
+   \decl{isMaxOn_norm_rvachevFourier},
+   \decl{isMaxOn_rvachevFourier_central_eq_zero},
    \decl{rvachevFourier_eq_thueMorse_sign_mul_norm}
  & \Cref{thm:unique-extremum}\\
 Sharp Gelfond inequality and equality orbit
@@ -3826,7 +3870,8 @@ Global envelope, exact fixed ray, and failure of every stronger exponent
    \decl{norm_rvachevFourier_peak_ray_envelope},
    \decl{not_exists_norm_rvachevFourierProduct_le_decayGauge_of_kappaInf_lt}
  & \Cref{thm:uniform-envelope,cor:universal-log-order}\\
-Exact $\kappa$ dictionary, ordering, and closed-form interval certificates
+Exact closed-form $\kappa_0,\kappa_2,\kappa_\infty$ dictionary, their ordering, and interval
+certificates
  & \decl{kappaOf_half}, \decl{kappaOf_sqrt_two},
    \decl{kappaOf_sqrt_three}, \decl{kappaInf_lt_kappa_two},
    \decl{kappa_two_lt_kappa_zero}, \decl{kappa_zero_bracket},
@@ -3849,6 +3894,9 @@ Gordin pointwise algebra and the $\pi^2/12,\pi^2/4$ Parseval values
    \decl{integral_sq_log_two_sin_pi_mul},
    \decl{integral_sq_log_abs_tan_pi_mul}
  & \Cref{sec:fluctuations}\\
+One-step logarithmic centering identity underlying the geometric mean
+ & \decl{integral_log_prod_two_sin}
+ & \Cref{thm:geometric-mean}\\
 Explicit $q=2$ transfer eigen-identities
  & \decl{rms_transfer_const_eigen}, \decl{rms_transfer_sin_eigen},
    \decl{rms_transfer_one_add_cos_eigen}
@@ -3857,24 +3905,19 @@ Plancherel and sinc-square energy identities (not the half-integer sampling form
  & \decl{integral_norm_sq_rvachevFourier_eq_two_mul_fabiusSquareEnergy},
    \decl{fabiusSquareEnergy_eq_integral_Ioi_tprod_sinc_sq}
  & \Cref{prop:total-energy}\\
+Global arbitrary-base spectral Pochhammer factorization
+ & \decl{geometricSincProduct_eq_tprod_complexQPochhammerInf}
+ & \Cref{prop:global-spectral-pochhammer}\\
 Global dyadic Pochhammer and reciprocal-Gamma products (not the extracted tail series)
  & \decl{rvachevFourierProduct_eq_tprod_complexQPochhammerInf},
    \decl{dyadicReciprocalGamma_mul_neg},
    \decl{rvachevFourierProduct_eq_one_div_dyadicGamma_mul}
- & \Cref{thm:pochhammer-tail,prop:global-spectral-pochhammer}\\
-Existence and uniqueness of the transfer-supremum growth root (not yet its RPF spectral
-identification)
- & \decl{exists_perron_exponent}, \decl{exists_perron_root},
-   \decl{existsUnique_perron_root}
- & \Cref{prop:RPF,prop:rho1-rigorous-bound}\\
-Lean Bernstein enclosures of the growth root and its $\kappa$ image
- & \decl{perron_bracket_pointwise}, \decl{perron_root_enclosure},
-   \decl{kappa_one_enclosure}
- & Separate-certificate remark after \Cref{prop:rho1-rigorous-bound}\\
+ & \Cref{thm:pochhammer-tail}\\
 \bottomrule
 \end{longtable}
 
-\subsection{Exact Lean-source-only results still owed a conventional proof here}
+\subsection[Lean-source-only proof debts]
+{Exact Lean-source-only results still owed a conventional proof here}
 
 These declarations are exact source statements, but the present volume uses them only as
 context or supporting infrastructure and does not yet reproduce their full conventional
@@ -3886,17 +3929,24 @@ human-proof parity table.
 Mathematical content & Exact Lean declaration(s)\\
 \midrule
 \endhead
-Rapid real-axis decay of the Fourier transform and all of its iterated derivatives
- & \decl{rvachevFourier_real_rapidDecay},
-   \decl{rvachevFourier_real_iteratedDeriv_rapidDecay}\\
-Typical logarithmic exponent in measure and uniform $\sqrt n$-scale tightness
+Rapid real-axis decay of every positive-order iterated derivative
+ & \decl{rvachevFourier_real_iteratedDeriv_rapidDecay}\\
+Finite-level logarithmic concentration, an absolute-moment bound, and uniform
+$\sqrt n$-scale tightness
  & \decl{measureReal_log_prod_ge_le}, \decl{tendsto_measureReal_log_prod_ge},
    \decl{measureReal_log_prod_sqrt_ge_le},
-   \decl{integral_log_prod_two_sin}, \decl{integral_abs_log_prod_le}\\
+   \decl{integral_abs_log_prod_le}\\
 Baseline $1/(\pi|x|)$ bound, global one-bound, and strictness away from zero
  & \decl{norm_rvachevFourier_le_inv}, \decl{norm_rvachevFourier_le_one},
    \decl{norm_rvachevFourier_lt_one_of_ne_zero},
    \decl{norm_rvachevFourier_eq_one_iff}\\
+Existence and uniqueness of the transfer-supremum growth root (without its RPF spectral
+identification)
+ & \decl{exists_perron_exponent}, \decl{exists_perron_root},
+   \decl{existsUnique_perron_root}\\
+Lean Bernstein enclosures of that growth root and its $\kappa$ image
+ & \decl{perron_bracket_pointwise}, \decl{perron_root_enclosure},
+   \decl{kappa_one_enclosure}\\
 \bottomrule
 \end{longtable}
 
@@ -3938,6 +3988,9 @@ The remaining frontier is now explicit rather than hidden in prose:
 \begin{enumerate}
 \item the full RPF eigenfunction/eigenmeasure/spectral-gap package for
       \eqref{eq:transfer-operator}, including the singular full-support $q=1$ eigenmeasure;
+\item the resulting normalized finite-$q$ spectrum in \Cref{thm:Lq-spectrum} and the full
+      $q=0$ geometric-mean and almost-everywhere typical-ray consequences, beyond the
+      one-step centering integral and finite-level concentration already formalized;
 \item the stationary martingale CLT and LIL applications, although their exact variance and
       coboundary algebra are formal;
 \item the bounded-distortion obstruction and the completed smooth/analytic adaptive gauge;
@@ -3945,19 +3998,23 @@ The remaining frontier is now explicit rather than hidden in prose:
       the already formal local zero orders and global envelope;
 \item the quantitative peak--area estimate and any eventual peak-height CLT;
 \item the first-zero-extracted and arbitrary-$J$ Pochhammer series;
+\item the strict human Collatz--Wielandt/Sturm bracket in
+      \Cref{prop:rho1-rigorous-bound}; the existing Lean Bernstein certificate is a
+      distinct, wider enclosure;
 \item the integer-$b$ shell law, typical exponent, covariance, variance, and general
       martingale decomposition from \Cref{sec:integer-ratios};
 \item the half-integer sampling equality in \Cref{prop:total-energy}, if not yet exported as
       a named theorem by the energy module.
 \end{enumerate}
 
-Every theorem promoted in the prose now appears in the exact, abstract, or unformalized
-ledger above, while the three exact Lean-source-only families are visibly recorded as
+The principal theorem families promoted in the prose now appear in the exact, abstract, or
+unformalized ledger above, while exact Lean-source-only families are visibly recorded as
 documentation debts.  Any future substantive Lean theorem added to the facade should add a
 row here; any future theorem promoted in the prose should name its declaration or remain
 visibly marked as imported, numerical, or frontier work.
 
 \begin{thebibliography}{99}
+\small
 
 \bibitem{arias1982}
 J. Arias de Reyna,
@@ -4067,17 +4124,12 @@ preprint arXiv:1502.06738.
 Math. Ann. \textbf{305} (1996), no.~3, 571--600,
 \href{https://doi.org/10.1007/BF01444238}{doi:10.1007/BF01444238}.
 
-\bibitem{stout1970}
-W. F. Stout,
-\emph{A martingale analogue of Kolmogorov's law of the iterated logarithm},
-Z. Wahrscheinlichkeitstheorie verw. Gebiete \textbf{15} (1970), 279--290,
-\href{https://doi.org/10.1007/BF00533299}{doi:10.1007/BF00533299}.
-
-\bibitem{heyde-scott1973}
-C. C. Heyde and D. J. Scott,
-\emph{Invariance principles for the law of the iterated logarithm for martingales and
-processes with stationary increments},
-Ann. Probab. \textbf{1} (1973), 428--436.
+\bibitem{cuny-merlevede2015}
+C. Cuny and F. Merlev\`ede,
+\emph{Strong invariance principles with rate for ``reverse'' martingale differences and
+applications},
+J. Theoret. Probab. \textbf{28} (2015), no.~1, 137--183,
+\href{https://doi.org/10.1007/s10959-013-0506-z}{doi:10.1007/s10959-013-0506-z}.
 
 \bibitem{wave1-doc1}
 \emph{Rvachev up Fourier decay, Wave 1, Document 1}, working report in the

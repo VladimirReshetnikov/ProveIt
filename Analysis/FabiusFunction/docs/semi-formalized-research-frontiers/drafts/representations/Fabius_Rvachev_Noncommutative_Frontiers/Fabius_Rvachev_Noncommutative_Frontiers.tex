@@ -6,6 +6,7 @@
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\input{../../../../fabius-notation.tex}
 \usepackage{bm}
 \usepackage{booktabs,longtable,array,tabularx}
 \usepackage{graphicx}
@@ -67,29 +68,8 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\wt}{\operatorname{wt}_2}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\Li}{\operatorname{Li}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\sgn}{\operatorname{sgn}}
-\newcommand{\lcm}{\operatorname{lcm}}
-\newcommand{\vtwo}{v_2}
-\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
+\newcommand{\FreeIDParameterSet}{\mathcal{I}_{\mathrm{free}}}
 \newcommand{\lean}[1]{%
   \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
 \newcommand{\leanevaltwo}[1]{%
@@ -126,7 +106,7 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-The Fabius function and Rvachev's compactly supported \(C^\infty\) function \(\Up\) sit at the meeting point of dyadic functional equations, the Thue--Morse sequence, infinite sinc products, Bernoulli and Bell polynomials, \(q\)-series, orthogonal polynomials, and Lambert--\(W\) endpoint asymptotics. The accompanying repository corpus develops these classical, analytic, arithmetic, and representation-theoretic directions in great depth. This report adds a different layer: free and Boolean cumulants of the probability law with density \(\Up\), together with their interaction with the existing Jacobi, \(q\)-binomial, finite-sinc, inverse-Fabius, Legendre, and endpoint frameworks.
+The Fabius function and Rvachev's compactly supported \(C^\infty\) function \(\RvachevUp\) sit at the meeting point of dyadic functional equations, the Thue--Morse sequence, infinite sinc products, Bernoulli and Bell polynomials, \(q\)-series, orthogonal polynomials, and Lambert--\(W\) endpoint asymptotics. The accompanying repository corpus develops these classical, analytic, arithmetic, and representation-theoretic directions in great depth. This report adds a different layer: free and Boolean cumulants of the probability law with density \(\RvachevUp\), together with their interaction with the existing Jacobi, \(q\)-binomial, finite-sinc, inverse-Fabius, Legendre, and endpoint frameworks.
 
 The main paper-level proved result is an exact rational certificate that the Rvachev up-law is \emph{not} freely infinitely divisible. After variance normalization, a \(3\times3\) shifted free-cumulant Hankel block has negative determinant; an even simpler polynomial test vector gives a negative quadratic form. We extend this obstruction to the geometric-uniform family
 \[
@@ -198,13 +178,13 @@ The novelty claim is relative to the repository corpus. Free and Boolean cumulan
 \subsection{Notation and normalization}
 Write \(U\sim\mathrm{Unif}[-1,1]\), so
 \[
-\E e^{tU}=\frac{\sinh t}{t},\qquad \E e^{itU}=\sinc t:=\frac{\sin t}{t}.
+\Expectation e^{tU}=\frac{\sinh t}{t},\qquad \Expectation e^{itU}=\SincRad t:=\frac{\sin t}{t}.
 \]
 Let \(U_1,U_2,\ldots\) be independent copies. For \(0<q<1\), define
 \begin{equation}\label{eq:Yq}
 Y_q:=\sum_{k=1}^{\infty}q^kU_k.
 \end{equation}
-Its support is \([-q/(1-q),q/(1-q)]\). At \(q=1/2\), the support is \([-1,1]\), and the density is Rvachev's \(\Up\) function normalized by \(\int_{-1}^1\Up(x)\,dx=1\). The law for negative \(q\) is the same as for \(|q|\), because the summands are symmetric.
+Its support is \([-q/(1-q),q/(1-q)]\). At \(q=1/2\), the support is \([-1,1]\), and the density is Rvachev's \(\RvachevUp\) function normalized by \(\int_{-1}^1\RvachevUp(x)\,dx=1\). The law for negative \(q\) is the same as for \(|q|\), because the summands are symmetric.
 
 The repository also uses a unit-support geometric normalization with weights \((1-q)q^k\). It differs only by a nonzero scalar. Free infinite divisibility and variance-normalized cumulants are invariant under scaling, so \eqref{eq:Yq} is algebraically convenient.
 
@@ -212,10 +192,10 @@ The repository also uses a unit-support geometric normalization with weights \((
 \subsection{Infinite sinc products and the Rvachev law}
 Independence gives
 \begin{align}
-\phi_q(t)&:=\E e^{itY_q}=\prod_{k=1}^{\infty}\sinc(q^kt),\label{eq:charprod}\\
-\mathcal M_q(t)&:=\E e^{tY_q}=\prod_{k=1}^{\infty}\frac{\sinh(q^kt)}{q^kt}.\label{eq:mgfprod}
+\phi_q(t)&:=\Expectation e^{itY_q}=\prod_{k=1}^{\infty}\SincRad(q^kt),\label{eq:charprod}\\
+\mathcal M_q(t)&:=\Expectation e^{tY_q}=\prod_{k=1}^{\infty}\frac{\sinh(q^kt)}{q^kt}.\label{eq:mgfprod}
 \end{align}
-For \(q=1/2\), \eqref{eq:charprod} is the standard infinite sinc product for \(\Up\). The random series gives the fixed point
+For \(q=1/2\), \eqref{eq:charprod} is the standard infinite sinc product for \(\RvachevUp\). The random series gives the fixed point
 \begin{equation}\label{eq:fixedY}
 Y_{1/2}\stackrel{d}{=}\frac{Y_{1/2}'+U}{2},
 \end{equation}
@@ -243,7 +223,7 @@ At \(q=1/2\),
 Apply the uniform cumulant expansion to each \(q^kU_k\), then sum \(\sum_{k\ge1}q^{2mk}=q^{2m}/(1-q^{2m})\).
 \end{proof}
 
-Let \(m_n=\E Y^n\). The complete exponential Bell polynomial gives
+Let \(m_n=\Expectation Y^n\). The complete exponential Bell polynomial gives
 \begin{equation}\label{eq:bellmoment}
 m_n=B_n(\kappa_1,\ldots,\kappa_n),
 \end{equation}
@@ -254,13 +234,13 @@ m_n=\sum_{j=1}^n\binom{n-1}{j-1}\kappa_jm_{n-j},\qquad m_0=1.
 
 \subsection{A positive dyadic moment recurrence}
 \begin{proposition}[Stable dyadic moment recurrence]\label{prop:momentrec}
-For \(m_{2n}=\E Y_{1/2}^{2n}\),
+For \(m_{2n}=\Expectation Y_{1/2}^{2n}\),
 \begin{equation}\label{eq:dyadicmomentrec}
 (4^n-1)m_{2n}=\sum_{k=1}^n\binom{2n}{2k}\frac{m_{2n-2k}}{2k+1},\qquad m_0=1.
 \end{equation}
 \end{proposition}
 \begin{proof}
-Raise \eqref{eq:fixedY} to power \(2n\), expand, and use symmetry. The \(k=0\) term is \(4^{-n}m_{2n}\), and \(\E U^{2k}=1/(2k+1)\).
+Raise \eqref{eq:fixedY} to power \(2n\), expand, and use symmetry. The \(k=0\) term is \(4^{-n}m_{2n}\), and \(\Expectation U^{2k}=1/(2k+1)\).
 \end{proof}
 
 \section{Free and Boolean transforms of the moment sequence}
@@ -384,7 +364,7 @@ must be positive semidefinite. For a symmetric law, odd free cumulants vanish, s
 
 \subsection{The dyadic certificate}
 \begin{theorem}[The Rvachev up-law is not freely infinitely divisible]\label{thm:upnotFID}
-Let \(Y=Y_{1/2}\), and let \(X=3Y\), so \(\Var(X)=1\). Write
+Let \(Y=Y_{1/2}\), and let \(X=3Y\), so \(\Variance(X)=1\). Write
 \[
 c_{2n}:=r_{2n}(X)=3^{2n}r_{2n}(Y).
 \]
@@ -548,13 +528,13 @@ The following are the largest zeros detected numerically for \(\det H_m(s)\) in 
 \begin{remark}[Open problem: free-divisibility phase diagram]\label{prob:phase}
 Determine the set
 \[
-\mathcal F:=\{q\in(0,1):Y_q\text{ is freely infinitely divisible}\}.
+\FreeIDParameterSet:=\{q\in(0,1):Y_q\text{ is freely infinitely divisible}\}.
 \]
-The present work proves \(\mathcal F\cap(0,\sqrt\alpha)=\varnothing\). Two plausible scenarios remain: a genuine threshold after which all laws are freely infinitely divisible, or failure for every finite \(q<1\) with free infinite divisibility appearing only in the Gaussian limit.
+The present work proves \(\FreeIDParameterSet\cap(0,\sqrt\alpha)=\varnothing\). Two plausible scenarios remain: a genuine threshold after which all laws are freely infinitely divisible, or failure for every finite \(q<1\) with free infinite divisibility appearing only in the Gaussian limit.
 \end{remark}
 
 \subsection{The Gaussian endpoint and connected partitions}
-Let \(Z_q=Y_q/\sqrt{\Var(Y_q)}\). From \eqref{eq:kappaq}, the standardized classical cumulants satisfy
+Let \(Z_q=Y_q/\sqrt{\Variance(Y_q)}\). From \eqref{eq:kappaq}, the standardized classical cumulants satisfy
 \begin{equation}\label{eq:stdclassical}
 \lambda_{2m}(s)=
 \frac{3^m2^{2m}B_{2m}}{2m}\frac{(1-s)^m}{1-s^m},
@@ -682,9 +662,9 @@ A proof would likely require a sign-free reinterpretation of Lehner's lattice-pa
 \subsection{An inverse-Fabius moment identity}
 On \([0,1]\), the standard relation between the two functions is
 \begin{equation}\label{eq:upF}
-\Up(x)=F(1-x),
+\RvachevUp(x)=F(1-x),
 \end{equation}
-with \(\Up\) even. Therefore
+with \(\RvachevUp\) even. Therefore
 \begin{equation}\label{eq:momentF}
 m_{2n}=2\int_0^1x^{2n}F(1-x)\,dx
       =2\int_0^1(1-y)^{2n}F(y)\,dy.
@@ -718,7 +698,7 @@ The corresponding Boolean formula is obtained by replacing the outer power with 
 \subsection{A finite transform from Legendre coefficients}
 Suppose the even Legendre expansion is
 \begin{equation}\label{eq:Legendreseries}
-\Up(x)=\sum_{k\ge0}a_{2k}P_{2k}(x),
+\RvachevUp(x)=\sum_{k\ge0}a_{2k}P_{2k}(x),
 \end{equation}
 with the repository's normalization of \(P_n\). Orthogonality is not needed for the following triangular transform; only the standard integral
 \begin{equation}\label{eq:xPintegral}
@@ -736,10 +716,10 @@ m_{2n}=\sum_{k=0}^n
 Consequently, \(r_{2n}\) and \(b_{2n}\) are finite polynomial functions of the first \(n+1\) even Legendre coefficients.
 \end{proposition}
 \begin{proof}
-Insert \eqref{eq:Legendreseries} into \(m_{2n}=\int_{-1}^1x^{2n}\Up(x)\,dx\). Terms with \(k>n\) vanish, and \eqref{eq:xPintegral} yields \eqref{eq:Legendremoment}. Apply \eqref{eq:freecomposition} and \eqref{eq:booleancomposition}.
+Insert \eqref{eq:Legendreseries} into \(m_{2n}=\int_{-1}^1x^{2n}\RvachevUp(x)\,dx\). Terms with \(k>n\) vanish, and \eqref{eq:xPintegral} yields \eqref{eq:Legendremoment}. Apply \eqref{eq:freecomposition} and \eqref{eq:booleancomposition}.
 \end{proof}
 
-This is useful computationally in both directions. High-quality Legendre coefficients produce free and Boolean cumulants without sampling \(\Up\); conversely, exact cumulants supply nonlinear consistency checks on numerically computed Legendre expansions.
+This is useful computationally in both directions. High-quality Legendre coefficients produce free and Boolean cumulants without sampling \(\RvachevUp\); conversely, exact cumulants supply nonlinear consistency checks on numerically computed Legendre expansions.
 
 \section{Finite dyadic sinc products and exact \texorpdfstring{\(q=1/4\)}{q=1/4} acceleration}
 \subsection{Partial random series}
@@ -750,7 +730,7 @@ Y^{(N)}:=\sum_{k=1}^N2^{-k}U_k,
 \end{equation}
 Its characteristic function is the finite sinc product
 \[
-\phi_N(t)=\prod_{k=1}^N\sinc(t/2^k),
+\phi_N(t)=\prod_{k=1}^N\SincRad(t/2^k),
 \]
 and its density is a compactly supported spline whose signed knot structure is governed by dyadic subset sums and the Thue--Morse parity pattern. The classical cumulants truncate geometrically:
 \begin{equation}\label{eq:finiteclassical}
@@ -828,9 +808,9 @@ The density of \(Y^{(N)}\) admits alternating truncated-power formulas whose sig
 Define
 \begin{equation}\label{eq:Sconstant}
 S:=A(1)=\sum_{n\ge0}m_{2n}
-=\int_{-1}^1\frac{\Up(x)}{1-x^2}\,dx.
+=\int_{-1}^1\frac{\RvachevUp(x)}{1-x^2}\,dx.
 \end{equation}
-The integral converges because \(\Up\) is flat at \(x=\pm1\).  The positive
+The integral converges because \(\RvachevUp\) is flat at \(x=\pm1\).  The positive
 recurrence \eqref{eq:dyadicmomentrec} through \(n=200\) gives the truncated
 diagnostics
 \begin{align}
@@ -904,7 +884,7 @@ S_{200}^2
 S_{200}^2+2S_{200}A'_{200}(1)
   &=1.8979149135838475794124350881873\ldots.
 \end{align*}
-Because \(\Psi'(1)>0\), the real inverse is regular up to the endpoint. The obstruction to analytic continuation is not an algebraic branch point but the flat, nonanalytic endpoint singularity inherited from \(\Up\).
+Because \(\Psi'(1)>0\), the real inverse is regular up to the endpoint. The obstruction to analytic continuation is not an algebraic branch point but the flat, nonanalytic endpoint singularity inherited from \(\RvachevUp\).
 
 \begin{conjecture}[Positive free cumulants and endpoint radius]\label{conj:freeradius}
 For the dyadic up-law:
@@ -931,13 +911,13 @@ convergence is treated as a certified value or proof.}
 \end{figure}
 
 \subsection{Why Lambert--\texorpdfstring{\(W\)}{W} should reappear}
-The repository's endpoint analysis expresses the saddle location and the flat decay of \(\Up(1-x)\) through Lambert--\(W\)-type scales. Moments
+The repository's endpoint analysis expresses the saddle location and the flat decay of \(\RvachevUp(1-x)\) through Lambert--\(W\)-type scales. Moments
 \[
-m_{2n}=2\int_0^1x^{2n}\Up(x)\,dx
+m_{2n}=2\int_0^1x^{2n}\RvachevUp(x)\,dx
 \]
 are therefore controlled by a moving endpoint saddle whose distance from one is itself described by nested logarithms and Lambert--\(W\). The Boolean transform \(1-A^{-1}\) preserves the endpoint location but changes its amplitude. The free transform additionally rescales the singular location by \(\Psi(1)=S^2\). A full proof of Conjectures~\ref{conj:booleanratio} and \ref{conj:freeradius} should combine:
 \begin{enumerate}[label=(\alph*)]
-\item the existing all-orders endpoint expansion for \(\Up\);
+\item the existing all-orders endpoint expansion for \(\RvachevUp\);
 \item a uniform saddle-point estimate for \(m_{2n-k}/m_{2n}\) when \(k\) ranges from fixed to mesoscopic scales;
 \item a defective-renewal theorem for the Boolean coefficients;
 \item singular inversion of \(\Psi(t)=tA(t)^2\) in a slit complex neighborhood of \(t=1\).

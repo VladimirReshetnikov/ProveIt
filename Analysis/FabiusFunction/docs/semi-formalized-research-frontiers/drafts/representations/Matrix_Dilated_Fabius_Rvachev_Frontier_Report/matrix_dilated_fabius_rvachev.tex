@@ -6,6 +6,7 @@
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,tabularx,array,multirow}
 \usepackage{graphicx}
 \usepackage{caption}
@@ -69,41 +70,18 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\N}{\mathbb N}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Law}{\operatorname{Law}}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\Up}{\operatorname{up}}
 \newcommand{\tr}{\operatorname{tr}}
 \newcommand{\vol}{\operatorname{vol}}
 \newcommand{\Per}{\operatorname{Per}}
 \newcommand{\Sym}{\operatorname{Sym}}
-\newcommand{\Span}{\operatorname{span}}
 \newcommand{\diam}{\operatorname{diam}}
-\newcommand{\dist}{\operatorname{dist}}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\e}{\mathrm e}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\littleo}{o}
 \newcommand{\one}{\mathbf 1}
-\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
-\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
 \newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
 \newcommand{\Repo}{\textcolor{navy}{\textbf{[repository input]}}}
 \newcommand{\New}{\textcolor{teal}{\textbf{[proved here]}}}
 \newcommand{\Derived}{\textcolor{gold}{\textbf{[derived synthesis]}}}
 \newcommand{\Conj}{\textcolor{burgundy}{\textbf{[conjecture]}}}
 \newcommand{\Num}{\textcolor{burgundy}{\textbf{[numerical]}}}
-\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
 
 \newenvironment{statusbox}[1]{%
   \par\medskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}
@@ -148,7 +126,7 @@ a direction not found in the recursively audited LaTeX tree: an expansive matrix
 replaces scalar dilation, and a finite vector dictionary replaces the single
 uniform digit.
 
-Let $A\in\mathrm{GL}_d(\R)$ be expansive, let
+Let $A\in\mathrm{GL}_d(\RealNumbers)$ be expansive, let
 $V=[v_1\ \cdots\ v_r]$, and let the vectors $U_n$ have independent
 $\mathrm{Unif}[-1,1]$ coordinates.  We study
 \[
@@ -159,9 +137,9 @@ $K_{A,V}=\sum_{n,j}[-A^{-n}v_j,A^{-n}v_j]$, while its Fourier transform is the
 matrix-Mahler product
 \[
  \Phi_{A,V}(\xi)=\prod_{n\ge1}\prod_{j=1}^r
- \sinc\!\bigl(\ip{\xi}{A^{-n}v_j}\bigr),
+ \SincRad\!\bigl(\ip{\xi}{A^{-n}v_j}\bigr),
  \qquad
- \Phi_{A,V}(A^T\xi)=\prod_j\sinc\!\bigl(\ip{\xi}{v_j}\bigr)\Phi_{A,V}(\xi).
+ \Phi_{A,V}(A^T\xi)=\prod_j\SincRad\!\bigl(\ip{\xi}{v_j}\bigr)\Phi_{A,V}(\xi).
 \]
 A finite-orbit spanning condition is shown to be exactly the condition for a
 full-dimensional compactly supported $C^\infty$ density.  The proof supplies a
@@ -187,10 +165,10 @@ and denominator bounds for rational data, an exact Appell--Koopman intertwining
 law, and explicit Legendre coefficients for every one-dimensional projection.
 
 The planar family $A^{-1}=qR_\theta$ produces the most concrete new geometry.
-Its support has perimeter $4\norm v q/(1-q)$ and area
+Its support has perimeter $4\Norm v q/(1-q)$ and area
 \[
- \frac{4\norm v^2q^2}{1-q^2}
- \sum_{m\ge1}\abs{\sin(m\theta)}q^m.
+ \frac{4\Norm v^2q^2}{1-q^2}
+ \sum_{m\ge1}\AbsoluteValue{\sin(m\theta)}q^m.
 \]
 For rational $\theta/\pi$ this area series is rational in $q$; for irrational
 $\theta/\pi$ the unit circle is its natural boundary.  Irrational supports have a
@@ -273,10 +251,10 @@ The probabilistic normalization behind Rvachev's up-function is
  X_2=\sum_{n\ge1}2^{-n}U_n,
  \qquad U_n\stackrel{\mathrm{iid}}\sim\mathrm{Unif}[-1,1].
 \]
-Its law has support $[-1,1]$, density $\Up$, and characteristic function
-$\prod_{n\ge1}\sinc(2^{-n}\xi)$, where throughout
+Its law has support $[-1,1]$, density $\RvachevUp$, and characteristic function
+$\prod_{n\ge1}\SincRad(2^{-n}\xi)$, where throughout
 \[
- \sinc z=\begin{cases}\sin z/z,&z\ne0,\\1,&z=0.\end{cases}
+ \SincRad z=\begin{cases}\sin z/z,&z\ne0,\\1,&z=0.\end{cases}
 \]
 The bounded Fabius distribution on $[0,1]$ is obtained by the affine change of
 variables $(X_2+1)/2$.  The repository already derives its dyadic arithmetic,
@@ -286,9 +264,9 @@ and $v_1=1$.
 
 \subsection{Matrix notation}
 
-Fix integers $d,r\ge1$.  Let $A\in\mathrm{GL}_d(\R)$ be \emph{expansive}:
+Fix integers $d,r\ge1$.  Let $A\in\mathrm{GL}_d(\RealNumbers)$ be \emph{expansive}:
 every eigenvalue of $A$ has modulus greater than one.  Put $B=A^{-1}$, let
-$V=[v_1\ \cdots\ v_r]\in\R^{d\times r}$, and let
+$V=[v_1\ \cdots\ v_r]\in\RealNumbers^{d\times r}$, and let
 $U_n=(U_{n,1},\ldots,U_{n,r})^T$ be independent vectors whose coordinates are
 independent $\mathrm{Unif}[-1,1]$ variables.  Define
 \begin{equation}
@@ -297,7 +275,7 @@ independent $\mathrm{Unif}[-1,1]$ variables.  Define
  \label{eq:defX}
 \end{equation}
 The law, characteristic function, moment generating function, and support will
-be denoted by $\mu$, $\Phi$, $M$, and $K$ respectively.  For $g\in\R^d$,
+be denoted by $\mu$, $\Phi$, $M$, and $K$ respectively.  For $g\in\RealNumbers^d$,
 $D_g=\sum_a g_a\partial_a$ is the directional derivative.  Tensor powers are
 symmetric whenever they occur as moments or cumulants; $\Sym$ denotes normalized
 symmetrization.
@@ -317,7 +295,7 @@ zonotope
 and its support function is
 \begin{equation}
  h_K(w)=\sup_{x\in K}\ip{w}{x}
-       =\sum_{n\ge1}\sum_{j=1}^r\abs{\ip{w}{g_{n,j}}}.
+       =\sum_{n\ge1}\sum_{j=1}^r\AbsoluteValue{\ip{w}{g_{n,j}}}.
  \label{eq:support-function}
 \end{equation}
 If $X'$ is an independent copy of $X$ and $U$ is an independent uniform vector
@@ -328,25 +306,25 @@ on $[-1,1]^r$, then
  K=B\bigl(V[-1,1]^r+K\bigr).
  \label{eq:affine-recursion}
 \end{equation}
-Finally, $K$ has nonempty interior in $\R^d$ exactly when
+Finally, $K$ has nonempty interior in $\RealNumbers^d$ exactly when
 \begin{equation}
- \Span\{B^nv_j:n\ge1,\ 1\le j\le r\}=\R^d.
+ \SpanOperator\{B^nv_j:n\ge1,\ 1\le j\le r\}=\RealNumbers^d.
  \label{eq:span-condition}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
 Choose $\rho$ with $\rho(B)<\rho<1$.  There is $C_\rho$ such that
-$\norm{B^n}\le C_\rho\rho^n$.  Since
-$\abs{U_{n,j}}\le1$,
+$\Norm{B^n}\le C_\rho\rho^n$.  Since
+$\AbsoluteValue{U_{n,j}}\le1$,
 \[
- \sum_{n,j}\norm{B^nv_jU_{n,j}}
- \le C_\rho\sum_j\norm{v_j}\sum_{n\ge1}\rho^n<\infty.
+ \sum_{n,j}\Norm{B^nv_jU_{n,j}}
+ \le C_\rho\sum_j\Norm{v_j}\sum_{n\ge1}\rho^n<\infty.
 \]
 The convergence is therefore deterministic and uniform on the compact product
-space $\Omega=[-1,1]^{\N\times r}$.
+space $\Omega=[-1,1]^{\NaturalNumbers\times r}$.
 
-The summation map $S:\Omega\to\R^d$ is continuous, and the product measure of
+The summation map $S:\Omega\to\RealNumbers^d$ is continuous, and the product measure of
 the digits has full support $\Omega$.  Hence the support of its pushforward is
 the compact image $S(\Omega)$, which is exactly the Minkowski sum
 \eqref{eq:support-zonotope}.  Support functions add under Minkowski addition and
@@ -358,7 +336,7 @@ the support function of $[-g,g]$ is $|\ip{w}{g}|$, proving
 which proves the distributional and set recursions.
 
 If the displayed span is proper, $K$ lies in that proper subspace.  Conversely,
-if the span is all of $\R^d$, some finite subcollection of generators is a basis;
+if the span is all of $\RealNumbers^d$, some finite subcollection of generators is a basis;
 their Minkowski sum contains a full-dimensional parallelotope, and therefore
 $K$ has nonempty interior.
 \end{proof}
@@ -373,7 +351,7 @@ appearing in self-affine two-digit geometry \cite{ProtasovZaitseva}.
 
 \begin{corollary}[Exact projection support]
 \label{cor:projection-support}
-For every $w\in\R^d$, the scalar projection $\ip{w}{X}$ has support
+For every $w\in\RealNumbers^d$, the scalar projection $\ip{w}{X}$ has support
 $[-h_K(w),h_K(w)]$.  In particular, widths and directional endpoint problems
 are explicit before the density itself is known.
 \end{corollary}
@@ -392,19 +370,19 @@ Minkowski sums of centered intervals add their half-widths.
 
 \begin{theorem}[Entire sinc product and matrix Mahler equation]
 \label{thm:mahler}
-\New\ The characteristic function extends to an entire function on $\C^d$ and
+\New\ The characteristic function extends to an entire function on $\ComplexNumbers^d$ and
 has the locally uniformly convergent product
 \begin{equation}
- \Phi(z)=\E\e^{\ii\ip{z}{X}}
+ \Phi(z)=\Expectation\EulerE^{\ImaginaryUnit\ip{z}{X}}
  =\prod_{n=1}^{\infty}\prod_{j=1}^r
-   \sinc\!\bigl(\ip{z}{B^nv_j}\bigr).
+   \SincRad\!\bigl(\ip{z}{B^nv_j}\bigr).
  \label{eq:fourier-product}
 \end{equation}
 It satisfies
 \begin{equation}
  \Phi(A^Tz)=m_V(z)\Phi(z),
  \qquad
- m_V(z):=\prod_{j=1}^r\sinc\!\bigl(\ip{z}{v_j}\bigr).
+ m_V(z):=\prod_{j=1}^r\SincRad\!\bigl(\ip{z}{v_j}\bigr).
  \label{eq:matrix-mahler}
 \end{equation}
 Moreover,
@@ -417,16 +395,16 @@ so its exponential indicator is controlled exactly by the support zonoid.
 
 \begin{proof}
 Independence gives the finite products.  Since
-$\sinc u=1-u^2/6+O(u^4)$ locally and
-$\sum_{n,j}\norm{B^nv_j}^2<\infty$, the Weierstrass criterion gives local
-uniform convergence on $\C^d$ and hence an entire limit.  Substitution gives
+$\SincRad u=1-u^2/6+O(u^4)$ locally and
+$\sum_{n,j}\Norm{B^nv_j}^2<\infty$, the Weierstrass criterion gives local
+uniform convergence on $\ComplexNumbers^d$ and hence an entire limit.  Substitution gives
 \[
  \Phi(A^Tz)
- =\prod_{n,j}\sinc\!\bigl(\ip{z}{AB^nv_j}\bigr)
- =\prod_j\sinc\!\bigl(\ip{z}{v_j}\bigr)
-  \prod_{n,j}\sinc\!\bigl(\ip{z}{B^nv_j}\bigr).
+ =\prod_{n,j}\SincRad\!\bigl(\ip{z}{AB^nv_j}\bigr)
+ =\prod_j\SincRad\!\bigl(\ip{z}{v_j}\bigr)
+  \prod_{n,j}\SincRad\!\bigl(\ip{z}{B^nv_j}\bigr).
 \]
-Finally, $|\e^{\ii\ip{z}{x}}|=\e^{-\ip{\operatorname{Im}z}{x}}$ and
+Finally, $|\EulerE^{\ImaginaryUnit\ip{z}{x}}|=\EulerE^{-\ip{\operatorname{Im}z}{x}}$ and
 $x\in K$ almost surely, so expectation is bounded by the maximum over $K$,
 which is \eqref{eq:exp-type}.
 \end{proof}
@@ -444,26 +422,26 @@ Assume \eqref{eq:span-condition}.  Then there are an integer $L\ge1$ and $c>0$
 such that
 \begin{equation}
  \max_{1\le k\le L,\ 1\le j\le r}
- \abs{\ip{y}{B^kv_j}}\ge c\norm y
- \qquad(y\in\R^d).
+ \AbsoluteValue{\ip{y}{B^kv_j}}\ge c\Norm y
+ \qquad(y\in\RealNumbers^d).
  \label{eq:frame}
 \end{equation}
 For every $\beta>\rho(A)$ there is $C_\beta\ge1$ such that, for every block
-index $m\ge0$ and every $\xi\in\R^d$, one of the factors with
+index $m\ge0$ and every $\xi\in\RealNumbers^d$, one of the factors with
 $n=mL+k$, $1\le k\le L$, has argument at least
 \begin{equation}
- cC_\beta^{-1}\beta^{-mL}\norm\xi.
+ cC_\beta^{-1}\beta^{-mL}\Norm\xi.
  \label{eq:block-large}
 \end{equation}
 \end{lemma}
 
 \begin{proof}
-Choose $L$ so that the finite family in \eqref{eq:frame} spans $\R^d$.
+Choose $L$ so that the finite family in \eqref{eq:frame} spans $\RealNumbers^d$.
 The maximum on the left, restricted to the unit sphere, is continuous and
 strictly positive, giving $c$.  Since $\beta>\rho(A)$,
-$\norm{A^m}\le C_\beta\beta^m$.  Apply \eqref{eq:frame} to
+$\Norm{A^m}\le C_\beta\beta^m$.  Apply \eqref{eq:frame} to
 $y=B^{TmL}\xi$.  Its norm is bounded below by
-$\norm\xi/\norm{A^{TmL}}\ge C_\beta^{-1}\beta^{-mL}\norm\xi$, and
+$\Norm\xi/\Norm{A^{TmL}}\ge C_\beta^{-1}\beta^{-mL}\Norm\xi$, and
 \[
  \ip{B^{TmL}\xi}{B^kv_j}=\ip{\xi}{B^{mL+k}v_j}.
 \]
@@ -472,25 +450,25 @@ $\norm\xi/\norm{A^{TmL}}\ge C_\beta^{-1}\beta^{-mL}\norm\xi$, and
 \begin{theorem}[Sharp dimensional dichotomy and log-Gaussian decay]
 \label{thm:smoothness}
 \New\ Let
-$W=\Span\{B^nv_j:n\ge1,1\le j\le r\}$.  If $W\ne\R^d$, then $\mu$ is
+$W=\SpanOperator\{B^nv_j:n\ge1,1\le j\le r\}$.  If $W\ne\RealNumbers^d$, then $\mu$ is
 supported on a proper subspace and is singular with respect to $d$-dimensional
-Lebesgue measure.  If $W=\R^d$, then $\mu$ has a compactly supported
+Lebesgue measure.  If $W=\RealNumbers^d$, then $\mu$ has a compactly supported
 $C^\infty$ density $f$, and for every $\beta>\rho(A)$,
 \begin{equation}
  |\Phi(\xi)|\le
  \exp\left
- \{-\frac{(\log\norm\xi)^2}{2L\log\beta}+O(\log\norm\xi)\right\}
- \qquad(\norm\xi\to\infty),
+ \{-\frac{(\log\Norm\xi)^2}{2L\log\beta}+O(\log\Norm\xi)\right\}
+ \qquad(\Norm\xi\to\infty),
  \label{eq:log-gaussian}
 \end{equation}
 where $L$ is any spanning-block length in \cref{lem:block-frame}.  In
-particular, $\norm\xi^N\Phi(\xi)$ is bounded for every $N$.
+particular, $\Norm\xi^N\Phi(\xi)$ is bounded for every $N$.
 \end{theorem}
 
 \begin{proof}
 Only the full-span case remains.  On the real axis,
-$|\sinc t|\le\min(1,|t|^{-1})$.  Choose from each block the factor supplied by
-\cref{lem:block-frame}.  Put $R=\norm\xi$ and let $M$ be the largest integer for
+$|\SincRad t|\le\min(1,|t|^{-1})$.  Choose from each block the factor supplied by
+\cref{lem:block-frame}.  Put $R=\Norm\xi$ and let $M$ be the largest integer for
 which $cC_\beta^{-1}\beta^{-ML}R\ge1$.  Discarding all factors except one from
 each block $0\le m\le M$ gives
 \[
@@ -524,7 +502,7 @@ than the spectral-radius envelope; see \cref{prob:optimal-decay}.
 \label{thm:logconcavity}
 \New\ The probability measure $\mu$ is log-concave in the measure-theoretic
 sense.  Under the span condition, its smooth density $f$ is log-concave on
-$\R^d$, is strictly positive on $\operatorname{int}K$, and vanishes off $K$.
+$\RealNumbers^d$, is strictly positive on $\operatorname{int}K$, and vanishes off $K$.
 Consequently every positive superlevel set $\{x:f(x)\ge c\}$ is compact and
 convex.
 \end{theorem}
@@ -578,7 +556,7 @@ law and the Thue--Morse cube below.
 \end{equation}
 For $d=r=1$, $A=2$, and $V=(1)$, it becomes
 \begin{equation}
- \Up'(x)=2\bigl(\Up(2x+1)-\Up(2x-1)\bigr).
+ \RvachevUp'(x)=2\bigl(\RvachevUp(2x+1)-\RvachevUp(2x-1)\bigr).
  \label{eq:scalar-rvachev}
 \end{equation}
 \end{theorem}
@@ -594,7 +572,7 @@ gives translations by
 $BV(2\omega-\one)$ with signs $(-1)^{|\omega|}$.  The density of $B_\#\mu$ is
 $|\det A|f(Ax)$, so translating and simplifying produces
 \eqref{eq:matrix-rvachev}.  In the scalar case the left side is
-$D_{1/2}\Up=\Up'/2$, and the displayed specialization follows.
+$D_{1/2}\RvachevUp=\RvachevUp'/2$, and the displayed specialization follows.
 \end{proof}
 
 \begin{remark}
@@ -637,8 +615,8 @@ sinc product.  This is the standard probabilistic realization of a box spline
 where $X'$ is an independent copy of $X$.  Consequently, for every $p\ge1$,
 \begin{equation}
  W_p(\mu,\mu_N)
- \le \left(\E\norm{B^NX}^p\right)^{1/p}
- \le \sum_{n>N,j}\norm{g_{n,j}},
+ \le \left(\Expectation\Norm{B^NX}^p\right)^{1/p}
+ \le \sum_{n>N,j}\Norm{g_{n,j}},
  \label{eq:wasserstein}
 \end{equation}
 and the same last quantity bounds the Hausdorff distance $d_H(K,K_N)$.
@@ -654,7 +632,7 @@ For the differential expansion define the tail power tensors
 \begin{equation}
  Q_{k,N}:=\sum_{n>N}\sum_{j=1}^r g_{n,j}^{\otimes k},
  \qquad
- S_{k,N}:=\sum_{n>N,j}\norm{g_{n,j}}^k.
+ S_{k,N}:=\sum_{n>N,j}\Norm{g_{n,j}}^k.
  \label{eq:tail-tensors}
 \end{equation}
 Thus $Q_{2,N}$ is three times the tail covariance.  If
@@ -674,36 +652,36 @@ density $f_N$ is $C^{m+6}$ once $N$ is sufficiently large, and
  \label{eq:second-correction}
 \end{align}
 Here $Q:D^2=\sum_{a,b}Q_{ab}\partial_a\partial_b$.  In particular,
-$\norm{f-f_N}_{C^m}=O(\rho^{2N})$ for every $\rho>\rho(B)$.
+$\Norm{f-f_N}_{C^m}=O(\rho^{2N})$ for every $\rho>\rho(B)$.
 \end{theorem}
 
 \begin{proof}
 Choose a fixed prefix $N_0$ containing sufficiently many spanning blocks that
-$|\Phi_{N_0}(\xi)|\le C(1+\norm\xi)^{-m-2k-d-2}$ for the needed value of $k$.
+$|\Phi_{N_0}(\xi)|\le C(1+\Norm\xi)^{-m-2k-d-2}$ for the needed value of $k$.
 The block argument of \cref{thm:smoothness}, stopped after finitely many blocks,
 gives such a prefix.  For $N\ge N_0$, every additional real sinc factor has
 modulus at most one, so $\Phi_N$ inherits this integrable majorant.
 
 The tail multiplier is
 \[
- \Psi_N(\xi)=\prod_{n>N,j}\sinc\ip{\xi}{g_{n,j}}.
+ \Psi_N(\xi)=\prod_{n>N,j}\SincRad\ip{\xi}{g_{n,j}}.
 \]
 The cumulant expansion of a uniform digit begins
 \[
- \log\sinc t=-\frac{t^2}{6}-\frac{t^4}{180}+O(t^6).
+ \log\SincRad t=-\frac{t^2}{6}-\frac{t^4}{180}+O(t^6).
 \]
 Therefore
 \[
  \Psi_N(\xi)=1-\frac16Q_{2,N}[\xi,\xi]
  -\frac1{180}\sum_{n>N,j}\ip{\xi}{g_{n,j}}^4
  +\frac1{72}Q_{2,N}[\xi,\xi]^2
- +O(\norm\xi^6S_{2,N}^3).
+ +O(\Norm\xi^6S_{2,N}^3).
 \]
 The same estimate can be made global by increasing the constant, because
-$|1-\sinc t|\le Ct^2$ and the sixth-order Taylor remainder is bounded by
-$C|t|^6$.  Multiply by $\Phi_N$, integrate against $\norm\xi^m$, and use the
+$|1-\SincRad t|\le Ct^2$ and the sixth-order Taylor remainder is bounded by
+$C|t|^6$.  Multiply by $\Phi_N$, integrate against $\Norm\xi^m$, and use the
 fixed integrable majorant.  Under the convention
-$\widehat f(\xi)=\int\e^{\ii\ip{\xi}{x}}f(x)\dd x$, multiplication by
+$\widehat f(\xi)=\int\EulerE^{\ImaginaryUnit\ip{\xi}{x}}f(x)\Differential x$, multiplication by
 $-\ip{\xi}{g}^2$ is the Fourier image of $D_g^2$, giving
 \eqref{eq:first-correction} and \eqref{eq:second-correction}.
 \end{proof}
@@ -722,7 +700,7 @@ logarithm
 \begin{equation}
  \log\Psi_N(\xi)
  =\sum_{m\ge1}\frac{c_{2m}}{(2m)!}
-   (\ii)^{2m}\sum_{n>N,j}\ip{\xi}{g_{n,j}}^{2m}.
+   (\ImaginaryUnit)^{2m}\sum_{n>N,j}\ip{\xi}{g_{n,j}}^{2m}.
  \label{eq:tail-log}
 \end{equation}
 Thus the formal differential operator
@@ -784,7 +762,7 @@ $|\det A|^Nf(A^Nx)$, yielding \eqref{eq:density-cube}.
 \label{cor:tensor-prouhet}
 \New\ The cube points satisfy the exponential identity
 \begin{equation}
- \sum_{\omega}\varepsilon_\omega\e^{\ip{z}{s_\omega}}
+ \sum_{\omega}\varepsilon_\omega\EulerE^{\ip{z}{s_\omega}}
  =(-2)^M\prod_{\ell=1}^M\sinh\ip{z}{g_\ell}.
  \label{eq:exponential-prouhet}
 \end{equation}
@@ -800,7 +778,7 @@ and at the first surviving degree
  =(-2)^MM!\,\Sym(g_1\otimes\cdots\otimes g_M).
  \label{eq:first-tensor}
 \end{equation}
-Equivalently, the signed cube annihilates every polynomial on $\R^d$ of total
+Equivalently, the signed cube annihilates every polynomial on $\RealNumbers^d$ of total
 degree less than $M$.
 \end{corollary}
 
@@ -808,7 +786,7 @@ degree less than $M$.
 The left side factors coordinate by coordinate as
 \[
  \prod_{\ell=1}^M
- \left(\e^{-\ip{z}{g_\ell}}-\e^{\ip{z}{g_\ell}}\right),
+ \left(\EulerE^{-\ip{z}{g_\ell}}-\EulerE^{\ip{z}{g_\ell}}\right),
 \]
 which is \eqref{eq:exponential-prouhet}.  Compare homogeneous Taylor terms at
 $z=0$.  The product of $M$ hyperbolic sines has no term below degree $M$, and
@@ -882,7 +860,7 @@ as a matrix identity and use $c_2=1/3$.
 \label{cor:bell-moments}
 \New\ Let $\Pi_k$ be the set of set partitions of $\{1,\ldots,k\}$.  Then
 \begin{equation}
- \E X^{\otimes k}
+ \Expectation X^{\otimes k}
  =\sum_{\pi\in\Pi_k}\Sym
    \bigotimes_{C\in\pi}\kappa_{|C|}(X).
  \label{eq:set-partition-moments}
@@ -891,7 +869,7 @@ For a projection $Y_w=\ip{w}{X}$, put
 $\lambda_k(w)=\ip{\kappa_k(X)}{w^{\otimes k}}$.  Its scalar moments are the
 complete Bell polynomials
 \begin{equation}
- \E Y_w^k=\mathcal B_k(\lambda_1(w),\ldots,\lambda_k(w)).
+ \Expectation Y_w^k=\mathcal B_k(\lambda_1(w),\ldots,\lambda_k(w)).
  \label{eq:bell-projection}
 \end{equation}
 \end{corollary}
@@ -939,13 +917,13 @@ Smith normal form, rather than a single valuation, is the natural next layer.
 
 Define the averaging operator on polynomials by
 \begin{equation}
- (Tp)(x)=\E\,p\bigl(B(x+VU)\bigr),
+ (Tp)(x)=\Expectation\,p\bigl(B(x+VU)\bigr),
  \label{eq:transfer-operator}
 \end{equation}
 where $U$ is uniform on $[-1,1]^r$.  Define the multivariate Appell generating
 function
 \begin{equation}
- \mathcal A(x,t)=\frac{\e^{\ip{t}{x}}}{M(t)}
+ \mathcal A(x,t)=\frac{\EulerE^{\ip{t}{x}}}{M(t)}
  =\sum_{k\ge0}\frac1{k!}
   \ip{\mathbf A_k(x)}{t^{\otimes k}}.
  \label{eq:appell-generating}
@@ -966,7 +944,7 @@ and therefore
  T\mathbf A_k=(B^{\otimes k})\mathbf A_k.
  \label{eq:appell-tensor-action}
 \end{equation}
-If $A$ is diagonalizable over $\C$, contraction of $\mathbf A_k$ with symmetric
+If $A$ is diagonalizable over $\ComplexNumbers$, contraction of $\mathbf A_k$ with symmetric
 tensor products of left eigenvectors gives a complete Appell eigenbasis for
 polynomials.  The degree-$k$ eigenvalues are products of $k$ eigenvalues of
 $B=A^{-1}$.
@@ -982,9 +960,9 @@ The affine fixed-point equation implies
 Using this identity in \eqref{eq:transfer-operator},
 \[
  T\mathcal A(x,t)
- =\frac{\e^{\ip{B^Tt}{x}}}{M(t)}
+ =\frac{\EulerE^{\ip{B^Tt}{x}}}{M(t)}
   \prod_j\frac{\sinh\ip{B^Tt}{v_j}}{\ip{B^Tt}{v_j}}
- =\frac{\e^{\ip{B^Tt}{x}}}{M(B^Tt)}.
+ =\frac{\EulerE^{\ip{B^Tt}{x}}}{M(B^Tt)}.
 \]
 Compare homogeneous coefficients in $t$.  Since Appell tensors are monic by
 \eqref{eq:appell-generating}, they form a triangular basis of the polynomial
@@ -1007,7 +985,7 @@ in $L^2[-1,1]$ and, in fact, with rapid coefficient decay.
 \label{prop:legendre}
 \New\ The exact coefficient is
 \begin{equation}
- a_\ell(w)=\frac{2\ell+1}{2}\E P_\ell(Y).
+ a_\ell(w)=\frac{2\ell+1}{2}\Expectation P_\ell(Y).
  \label{eq:legendre-coefficient}
 \end{equation}
 Using
@@ -1023,8 +1001,8 @@ all coefficients are finite expressions in the tensor resolvents
 ones are
 \begin{align}
  a_0&=\frac12,\nonumber\\
- a_2&=\frac54\left(3\E Y^2-1\right),\nonumber\\
- a_4&=\frac9{16}\left(35\E Y^4-30\E Y^2+3\right).
+ a_2&=\frac54\left(3\Expectation Y^2-1\right),\nonumber\\
+ a_4&=\frac9{16}\left(35\Expectation Y^4-30\Expectation Y^2+3\right).
  \label{eq:first-legendre}
 \end{align}
 \end{proposition}
@@ -1052,7 +1030,7 @@ the support gauge $h_K(w)$ and the tensor contractions.
 $(g_\ell)_{\ell\ge1}$.  Then
 \begin{equation}
  \vol_d(K)=2^d\sum_{1\le\ell_1<\cdots<\ell_d}
- \abs{\det(g_{\ell_1},\ldots,g_{\ell_d})}.
+ \AbsoluteValue{\det(g_{\ell_1},\ldots,g_{\ell_d})}.
  \label{eq:infinite-volume}
 \end{equation}
 The series converges absolutely.  It is positive exactly under the span
@@ -1067,8 +1045,8 @@ formula is
  |\det(g_{\ell_1},\ldots,g_{\ell_d})|;
 \]
 see \cite{GoverKrikorian}.  Absolute convergence follows from
-$|\det(g_{\ell_1},\ldots,g_{\ell_d})|\le\prod_i\norm{g_{\ell_i}}$ and
-$\sum_\ell\norm{g_\ell}<\infty$.  The finite zonotopes converge to $K$ in
+$|\det(g_{\ell_1},\ldots,g_{\ell_d})|\le\prod_i\Norm{g_{\ell_i}}$ and
+$\sum_\ell\Norm{g_\ell}<\infty$.  The finite zonotopes converge to $K$ in
 Hausdorff distance, and volume is continuous under Hausdorff convergence of
 convex compact sets.  Positivity is equivalent to the existence of a nonzero
 $d\times d$ minor, hence to spanning.
@@ -1080,7 +1058,7 @@ For \eqref{eq:defX},
 \begin{equation}
  \vol_d(K)=2^d\sum_{
  (n_1,j_1)<\cdots<(n_d,j_d)}
- \abs{\det(B^{n_1}v_{j_1},\ldots,B^{n_d}v_{j_d})}.
+ \AbsoluteValue{\det(B^{n_1}v_{j_1},\ldots,B^{n_d}v_{j_d})}.
  \label{eq:matrix-volume}
 \end{equation}
 Thus support volume is a convergent matrix $q$-series in the singular geometry
@@ -1098,14 +1076,14 @@ Let $R_\theta$ denote counterclockwise rotation and define
 \end{equation}
 This is the matrix law with
 $B=qR_\theta$ and $A=q^{-1}R_{-\theta}$.  It is collinear only when
-$\theta\in\pi\Z$; otherwise it has a $C^\infty$ density.
+$\theta\in\pi\IntegerNumbers$; otherwise it has a $C^\infty$ density.
 
 \begin{proposition}[Rotating Mahler and Rvachev equations]
 \label{prop:rotating-equations}
 \New\ The characteristic function and density satisfy
 \begin{align}
  \Phi(q^{-1}R_\theta\xi)
- &=\sinc\ip{\xi}{v}\,\Phi(\xi),
+ &=\SincRad\ip{\xi}{v}\,\Phi(\xi),
  \label{eq:rotating-mahler}\\
  D_{qR_\theta v}f(x)
  &=\frac1{2q^2}
@@ -1122,7 +1100,7 @@ $|\det A|=q^{-2}$.
 
 \subsection{Perimeter and area as exact \texorpdfstring{$q$}{q}-series}
 
-Write $a=\norm v$.  The support is
+Write $a=\Norm v$.  The support is
 \begin{equation}
  K_{q,\theta}=\sum_{n\ge1}[-q^nR_{n\theta}v,q^nR_{n\theta}v].
  \label{eq:rotating-support}
@@ -1135,7 +1113,7 @@ then
 \begin{equation}
  h_{q,\theta}(\varphi)
  =a\sum_{n\ge1}q^n
-   \abs{\cos(n\theta+\varphi_0-\varphi)}.
+   \AbsoluteValue{\cos(n\theta+\varphi_0-\varphi)}.
  \label{eq:rotating-support-function}
 \end{equation}
 The perimeter is independent of $\theta$:
@@ -1148,7 +1126,7 @@ The area is
  \boxed{\quad
  \operatorname{Area}(K_{q,\theta})
  =\frac{4a^2q^2}{1-q^2}
-  \sum_{m=1}^{\infty}\abs{\sin(m\theta)}q^m.
+  \sum_{m=1}^{\infty}\AbsoluteValue{\sin(m\theta)}q^m.
  \quad}
  \label{eq:rotating-area}
 \end{equation}
@@ -1158,7 +1136,7 @@ The $N$-stage formulas are
  \label{eq:finite-perimeter}\\
  \operatorname{Area}(K_N)
  &=\frac{4a^2q^2}{1-q^2}
- \sum_{m=1}^{N-1}q^m\abs{\sin(m\theta)}
+ \sum_{m=1}^{N-1}q^m\AbsoluteValue{\sin(m\theta)}
        \left(1-q^{2(N-m)}\right).
  \label{eq:finite-area}
 \end{align}
@@ -1167,13 +1145,13 @@ The $N$-stage formulas are
 \begin{proof}
 The support function is \eqref{eq:support-function}.  In the plane, the
 perimeter of a Minkowski sum is the sum of perimeters, and the degenerate segment
-$[-g,g]$ contributes $4\norm g$; approximation by thin rectangles justifies this
+$[-g,g]$ contributes $4\Norm g$; approximation by thin rectangles justifies this
 convention directly.  Summing $4aq^n$ gives \eqref{eq:rotating-perimeter}.
 
 The two-dimensional case of \eqref{eq:infinite-volume} gives
 \[
  \operatorname{Area}(K)
- =4\sum_{1\le n<k}q^{n+k}a^2\abs{\sin((k-n)\theta)}.
+ =4\sum_{1\le n<k}q^{n+k}a^2\AbsoluteValue{\sin((k-n)\theta)}.
 \]
 Group by $m=k-n$ and sum $\sum_{n\ge1}q^{2n}=q^2/(1-q^2)$ to obtain
 \eqref{eq:rotating-area}.  Stopping at $k\le N$ gives
@@ -1253,7 +1231,7 @@ of the exposed faces of its summands.  A segment $[-g,g]$ contributes an endpoin
 unless $u\perp g$, in which case it contributes the full segment.  Irrationality
 ensures that no two generator directions agree modulo $\pi$.  Thus a nontrivial
 face occurs exactly when $u$ is perpendicular to one generator, and its length is
-$2\norm{g_n}=2aq^n$.  The directions $n\theta\bmod\pi$ are dense by Weyl's
+$2\Norm{g_n}=2aq^n$.  The directions $n\theta\bmod\pi$ are dense by Weyl's
 equidistribution theorem \cite{Weyl}.  The two edges for each $n$ have total
 length $4aq^n$; summing gives $4aq/(1-q)$, exactly the perimeter in
 \eqref{eq:rotating-perimeter}.  Hence the complement has zero arclength.
@@ -1269,12 +1247,12 @@ its outward unit normal.  The proof gives the atomic measure
  \label{eq:surface-measure}
 \end{equation}
 With Fourier convention
-$\widehat S(k)=\int\e^{-\ii k\phi}\dd S(\phi)$,
+$\widehat S(k)=\int\EulerE^{-\ImaginaryUnit k\phi}\Differential S(\phi)$,
 \begin{equation}
  \widehat S(k)
  =4a\cos\frac{k\pi}{2}\,
-  \e^{-\ii k\varphi_0}
-  \frac{q\e^{-\ii k\theta}}{1-q\e^{-\ii k\theta}}.
+  \EulerE^{-\ImaginaryUnit k\varphi_0}
+  \frac{q\EulerE^{-\ImaginaryUnit k\theta}}{1-q\EulerE^{-\ImaginaryUnit k\theta}}.
  \label{eq:surface-fourier}
 \end{equation}
 Thus the boundary's curvature data are finite cyclotomic resolvents even though
@@ -1284,26 +1262,26 @@ the density inside is governed by an infinite sinc product.
 
 The area series introduces
 \begin{equation}
- S_\theta(z)=\sum_{m\ge1}\abs{\sin(m\theta)}z^m,
+ S_\theta(z)=\sum_{m\ge1}\AbsoluteValue{\sin(m\theta)}z^m,
  \qquad |z|<1.
  \label{eq:area-series}
 \end{equation}
 
 \begin{theorem}[Rotation-orbit Abel residues]
 \label{thm:abel-residues}
-\New\ Let $g(x)=\sum_{k\in\Z}c_k\e^{\ii kx}$ be a continuous periodic
+\New\ Let $g(x)=\sum_{k\in\IntegerNumbers}c_k\EulerE^{\ImaginaryUnit kx}$ be a continuous periodic
 function with $\sum_k|c_k|<\infty$, let $\theta/(2\pi)$ be irrational, and put
 \begin{equation}
  G(z)=\sum_{n\ge1}g(n\theta+\delta)z^n.
  \label{eq:orbit-generating}
 \end{equation}
-Then for every $k\in\Z$,
+Then for every $k\in\IntegerNumbers$,
 \begin{equation}
- \lim_{r\uparrow1}(1-r)G(r\e^{-\ii k\theta})
- =c_k\e^{\ii k\delta}.
+ \lim_{r\uparrow1}(1-r)G(r\EulerE^{-\ImaginaryUnit k\theta})
+ =c_k\EulerE^{\ImaginaryUnit k\delta}.
  \label{eq:abel-residue}
 \end{equation}
-Every point $\e^{-\ii k\theta}$ for which $c_k\ne0$ is therefore a singularity
+Every point $\EulerE^{-\ImaginaryUnit k\theta}$ for which $c_k\ne0$ is therefore a singularity
 of $G$.  If those points are dense on the unit circle, the circle is a natural
 boundary.
 \end{theorem}
@@ -1311,12 +1289,12 @@ boundary.
 \begin{proof}
 Insert the absolutely convergent Fourier series:
 \[
- (1-r)G(r\e^{-\ii k\theta})
- =\sum_{\ell\in\Z}c_\ell\e^{\ii\ell\delta}
- \frac{(1-r)r\e^{\ii(\ell-k)\theta}}
-      {1-r\e^{\ii(\ell-k)\theta}}.
+ (1-r)G(r\EulerE^{-\ImaginaryUnit k\theta})
+ =\sum_{\ell\in\IntegerNumbers}c_\ell\EulerE^{\ImaginaryUnit\ell\delta}
+ \frac{(1-r)r\EulerE^{\ImaginaryUnit(\ell-k)\theta}}
+      {1-r\EulerE^{\ImaginaryUnit(\ell-k)\theta}}.
 \]
-The $\ell=k$ term tends to $c_k\e^{\ii k\delta}$, and every other term tends to
+The $\ell=k$ term tends to $c_k\EulerE^{\ImaginaryUnit k\delta}$, and every other term tends to
 zero because irrationality prevents a unit denominator.  Each fraction has
 modulus at most one, so dominated convergence applies using
 $\sum|c_\ell|<\infty$.  If $G$ extended holomorphically across the candidate
@@ -1335,7 +1313,7 @@ contains a nonzero coefficient at every even frequency.
 
 \begin{corollary}[Arithmetic dichotomy for rotating area]
 \label{cor:natural-boundary}
-\New\ If $\theta/\pi\in\Q$, the coefficient sequence
+\New\ If $\theta/\pi\in\RationalNumbers$, the coefficient sequence
 $|\sin(m\theta)|$ is periodic, so $S_\theta(z)$ is rational; if
 $\theta=\pi a/p$ with integers $a,p$, one may write
 \begin{equation}
@@ -1343,7 +1321,7 @@ $\theta=\pi a/p$ with integers $a,p$, one may write
  \frac{\sum_{m=1}^{p}|\sin(m\theta)|z^m}{1-z^p}.
  \label{eq:rational-area-series}
 \end{equation}
-If $\theta/\pi\notin\Q$, the unit circle is a natural boundary of
+If $\theta/\pi\notin\RationalNumbers$, the unit circle is a natural boundary of
 $S_\theta(z)$ and hence of the analytically continued area in
 \eqref{eq:rotating-area}.
 \end{corollary}
@@ -1351,7 +1329,7 @@ $S_\theta(z)$ and hence of the analytically continued area in
 \begin{proof}
 The rational case is periodic summation.  In the irrational case apply
 \cref{thm:abel-residues} to \eqref{eq:absolute-sine-fourier}.  The singular
-points $\e^{-2\ii k\theta}$ are dense because $\theta/\pi$ is irrational.
+points $\EulerE^{-2\ImaginaryUnit k\theta}$ are dense because $\theta/\pi$ is irrational.
 The rational prefactor in \eqref{eq:rotating-area} cannot remove a dense set of
 nonzero Abel residues.
 \end{proof}
@@ -1362,7 +1340,7 @@ nonzero Abel residues.
 analytic function
 \begin{equation}
  H_{\theta,\varphi}(z)
- =\sum_{n\ge1}\abs{\cos(n\theta+\varphi_0-\varphi)}z^n
+ =\sum_{n\ge1}\AbsoluteValue{\cos(n\theta+\varphi_0-\varphi)}z^n
  \label{eq:support-series}
 \end{equation}
 has the unit circle as a natural boundary.
@@ -1400,7 +1378,7 @@ its perimeter is the constant $4a$.
 \item if $\theta/\pi$ is irrational, then
 \begin{equation}
  \widetilde K_{q,\theta}\longrightarrow
- \{x\in\R^2:\norm x\le 2a/\pi\}
+ \{x\in\RealNumbers^2:\Norm x\le 2a/\pi\}
  \label{eq:disk-limit}
 \end{equation}
 in Hausdorff distance;
@@ -1431,7 +1409,7 @@ For irrational rotation, insert the absolutely convergent Fourier series of
 $|\cos|$.  The constant coefficient contributes $2a/\pi$.  Every nonconstant
 mode contains
 \[
- \frac{(1-q)\e^{\ii k\theta}}{1-q\e^{\ii k\theta}}\longrightarrow0.
+ \frac{(1-q)\EulerE^{\ImaginaryUnit k\theta}}{1-q\EulerE^{\ImaginaryUnit k\theta}}\longrightarrow0.
 \]
 Its modulus is at most one, so absolute summability gives convergence uniformly
 in $\varphi$.  Uniform convergence of support functions is exactly Hausdorff
@@ -1463,7 +1441,7 @@ the limit.
 \subsection{Cyclotomic formulas for projection cumulants}
 
 Let $w$ make angle $\varphi$ and put $\delta=\varphi_0-\varphi$.  Then
-$\ip{w}{q^nR_{n\theta}v}=a\norm w q^n\cos(n\theta+\delta)$.  Let
+$\ip{w}{q^nR_{n\theta}v}=a\Norm w q^n\cos(n\theta+\delta)$.  Let
 $Q=q^{2m}$.
 
 \begin{proposition}[Finite resolvent formula]
@@ -1471,15 +1449,15 @@ $Q=q^{2m}$.
 \New\ For $m\ge1$,
 \begin{align}
  \kappa_{2m}(\ip{w}{X_{q,\theta}})
- ={}&c_{2m}(a\norm w)^{2m}
+ ={}&c_{2m}(a\Norm w)^{2m}
  \Bigg[
  2^{-2m}\binom{2m}{m}\frac{Q}{1-Q}
  \nonumber\\
  &\quad+2^{1-2m}\sum_{\ell=1}^m\binom{2m}{m-\ell}
  \operatorname{Re}\left(
- \e^{2\ii\ell\delta}
- \frac{Q\e^{2\ii\ell\theta}}
-      {1-Q\e^{2\ii\ell\theta}}
+ \EulerE^{2\ImaginaryUnit\ell\delta}
+ \frac{Q\EulerE^{2\ImaginaryUnit\ell\theta}}
+      {1-Q\EulerE^{2\ImaginaryUnit\ell\theta}}
  \right)\Bigg].
  \label{eq:rotating-cumulant}
 \end{align}
@@ -1526,7 +1504,7 @@ hyperplane
  D_w=h-\ip{w}{X}\ge0.
  \label{eq:deficit}
 \end{equation}
-Its distribution function $C_w(x)=\Prob(D_w\le x)$ is a directional analogue of
+Its distribution function $C_w(x)=\Probability(D_w\le x)$ is a directional analogue of
 a Fabius endpoint germ, and $C_w^{-1}$ is a generalized inverse Fabius
 quantile.
 
@@ -1540,9 +1518,9 @@ quantile.
 \end{equation}
 and its Laplace transform is
 \begin{equation}
- \mathcal L_w(s):=\E\e^{-sD_w}
+ \mathcal L_w(s):=\Expectation\EulerE^{-sD_w}
  =\prod_{n,j:a_{n,j}>0}
-  \frac{1-\e^{-2sa_{n,j}}}{2sa_{n,j}}
+  \frac{1-\EulerE^{-2sa_{n,j}}}{2sa_{n,j}}
  \qquad(s\ge0).
  \label{eq:cap-laplace}
 \end{equation}
@@ -1563,8 +1541,8 @@ $c_n=|\cos(n\theta+\delta)|$.  Then
  \mathcal L_w(s)
  =\prod_{\substack{1\le r\le p\\ c_r>0}}
   \prod_{k=0}^{\infty}
-  \frac{1-\exp(-2sa\norm w c_rq^{r+kp})}
-       {2sa\norm w c_rq^{r+kp}}.
+  \frac{1-\exp(-2sa\Norm w c_rq^{r+kp})}
+       {2sa\Norm w c_rq^{r+kp}}.
  \label{eq:rational-cap-factorization}
 \end{equation}
 Thus a rationally rotating cap is a convolution of finitely many scalar
@@ -1586,7 +1564,7 @@ multiplicative modulation.  The logarithm of the large-argument part of
  \label{eq:rotation-cocycle}
 \end{equation}
 Its mean is zero, because
-$(2\pi)^{-1}\int_0^{2\pi}\log(2|\cos x|)\dd x=0$, but close returns to the zeros
+$(2\pi)^{-1}\int_0^{2\pi}\log(2|\cos x|)\Differential x=0$, but close returns to the zeros
 of cosine can create large negative excursions.  This is the new obstruction to
 a literal periodic Lambert correction.
 
@@ -1677,7 +1655,7 @@ tail fell below $10^{-16}$.
 For twelve random frequencies, the largest residual in the exact finite-product
 identity
 \[
- \Phi_N(A^T\xi)=\sinc\ip{\xi}{v}\Phi_{N-1}(\xi)
+ \Phi_N(A^T\xi)=\SincRad\ip{\xi}{v}\Phi_{N-1}(\xi)
 \]
 was $3.33\times10^{-16}$.  For a six-generator directional Prouhet cube, all
 signed moments below degree six vanished with maximum residual
@@ -1788,7 +1766,7 @@ Kronecker powers.
 The zero set of \eqref{eq:fourier-product} is the union of hyperplanes
 \[
  \ip{z}{B^nv_j}=k\pi,
- \qquad k\in\Z\setminus\{0\}.
+ \qquad k\in\IntegerNumbers\setminus\{0\}.
 \]
 Classify multiplicities and intersections arithmetically.  For rational matrices,
 coincidences reduce to lattice relations among rows of powers of $A$; for
@@ -1822,7 +1800,7 @@ sequence of changing box-spline cells.
 \Conj\ In the irrational rotating family, the rate at which the rescaled support
 approaches its limiting disk and the rate at which the standardized density
 approaches a Gaussian as $q\uparrow1$ are controlled by the same small
-denominators $|1-q\e^{2\ii k\theta}|$.  More precisely, suitable anisotropy norms
+denominators $|1-q\EulerE^{2\ImaginaryUnit k\theta}|$.  More precisely, suitable anisotropy norms
 of the support function and of the fourth-cumulant tensor should be comparable
 up to universal powers of $1-q$ for bounded-type angles.
 \end{conjecture}
@@ -1879,12 +1857,12 @@ existing scalar and base-$b$ theory.
 
 The Fourier transform is
 \[
- \widehat f(\xi)=\int_{\R^d}\e^{\ii\ip{\xi}{x}}f(x)\dd x,
+ \widehat f(\xi)=\int_{\RealNumbers^d}\EulerE^{\ImaginaryUnit\ip{\xi}{x}}f(x)\Differential x,
  \qquad
- f(x)=\frac1{(2\pi)^d}\int_{\R^d}
- \e^{-\ii\ip{\xi}{x}}\widehat f(\xi)\dd\xi.
+ f(x)=\frac1{(2\pi)^d}\int_{\RealNumbers^d}
+ \EulerE^{-\ImaginaryUnit\ip{\xi}{x}}\widehat f(\xi)\Differential\xi.
 \]
-Thus $\widehat{D_gf}(\xi)=-\ii\ip{\xi}{g}\widehat f(\xi)$ and
+Thus $\widehat{D_gf}(\xi)=-\ImaginaryUnit\ip{\xi}{g}\widehat f(\xi)$ and
 $\widehat{D_g^{2m}f}=(-1)^m\ip{\xi}{g}^{2m}\widehat f$.
 
 For vectors $x_1,\ldots,x_k$, normalized symmetrization means
@@ -1903,11 +1881,11 @@ $\prod_i\ip{z}{x_i}$, which fixes the factor $k!$ in
 For completeness, here is the finite version implicit in
 \cref{thm:Cm-expansion}.  Suppose the first $L$ scales span and choose $p$
 consecutive spanning blocks.  From each block, the frame argument selects a
-factor satisfying $|\ip{\xi}{g}|\ge c_m\norm\xi$.  Hence
+factor satisfying $|\ip{\xi}{g}|\ge c_m\Norm\xi$.  Hence
 \[
- |\Phi_{pL}(\xi)|\le C_p(1+\norm\xi)^{-p}.
+ |\Phi_{pL}(\xi)|\le C_p(1+\Norm\xi)^{-p}.
 \]
-If $p>d+k$, then $\norm\xi^k\Phi_{pL}\in L^1$, so the corresponding finite box
+If $p>d+k$, then $\Norm\xi^k\Phi_{pL}\in L^1$, so the corresponding finite box
 spline is $C^k$.  Additional sinc factors cannot increase the real-axis modulus.
 Thus, for any prescribed derivative order, all sufficiently long finite
 prefixes possess that order uniformly.  This argument avoids invoking a detailed

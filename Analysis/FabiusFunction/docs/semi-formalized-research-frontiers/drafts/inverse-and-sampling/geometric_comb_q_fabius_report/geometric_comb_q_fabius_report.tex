@@ -5,9 +5,9 @@
 \usepackage[utf8]{inputenc}
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
-\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
-\usepackage{bm}
-\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\input{../../../../fabius-notation.tex}
+\usepackage{booktabs,longtable,tabularx,array}
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage{enumitem}
@@ -86,36 +86,15 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{observation}[theorem]{Numerical observation}
 
-\newcommand{\N}{\mathbb N}
 \newcommand{\Nzero}{\mathbb N_0}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\abs}[1]{\left|#1\right|}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
-\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
-\newcommand{\Qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
-\newcommand{\qbinom}[2]{\Qbinom{#1}{#2}{q}}
-\newcommand{\halfbinom}[2]{\Qbinom{#1}{#2}{1/2}}
-\newcommand{\twobinom}[2]{\Qbinom{#1}{#2}{2}}
-\newcommand{\Up}{\operatorname{up}}
+\newcommand{\halfbinom}[2]{\GaussianBinomial{#1}{#2}{1/2}}
+\newcommand{\twobinom}[2]{\GaussianBinomial{#1}{#2}{2}}
 \newcommand{\App}{\mathcal A}
 \newcommand{\Interp}{\mathcal I}
 \newcommand{\Leb}{\Lambda}
-\newcommand{\Res}{\mathcal R}
 \newcommand{\MGF}{\mathcal M}
 \newcommand{\PiN}{\Pi}
-\DeclareMathOperator{\diag}{diag}
-\DeclareMathOperator{\spanop}{span}
 \DeclareMathOperator{\ord}{ord}
-\DeclareMathOperator{\Log}{Log}
 
 \newenvironment{resultbox}
 {\par\medskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}\hrule\medskip}
@@ -167,7 +146,7 @@ In contrast, the global Lebesgue constant on $[0,c]$ is
 superexponential.  A boundary-layer analysis proved here gives
 \[
  \max_{0\le x\le c}\Leb_n(x)
- \sim \frac{2(-q;q)_\infty}{\e}
+ \sim \frac{2(-q;q)_\infty}{\EulerE}
        \frac{q^{-\binom n2}}{n},
  \qquad
  \frac{x_n^*}{c}=1-\frac1n+o(n^{-1}).
@@ -177,7 +156,7 @@ accumulates and a violently ill-conditioned global interpolation device in
 the persistent outer gap.
 
 For $q=1/2$, the nodes are precisely the inverse-dyadic scales naturally
-selected by the Fabius function.  Writing $a_j=\E X^j/j!$ for the Fabius
+selected by the Fabius function.  Writing $a_j=\Expectation X^j/j!$ for the Fabius
 moment coefficients, the geometric Newton coefficients become the exact
 base-$2$ Gaussian transform
 \[
@@ -191,9 +170,9 @@ and superexponential bounds proving recovery of every fixed flat endpoint
 jet even though $F$ is nonanalytic there.  Simultaneously, exact rational
 experiments show rapid divergence inside the gap $(1/2,1)$ and motivate a
 sharp saddle-point conjecture.  Reflecting $x=1-t$ transfers the results to
-the Rvachev function $\Up(t)=F(1-|t|)$ on its boundary comb
+the Rvachev function $\RvachevUp(t)=F(1-|t|)$ on its boundary comb
 $t_j=1-2^{-j}$.  Finally, exact polynomial reproduction by translates of
-$\Up$ is composed with the geometric Lagrange operator, producing a finite
+$\RvachevUp$ is composed with the geometric Lagrange operator, producing a finite
 Gaussian--Appell decoder and a closed interpolation/synthesis loop.
 
 Statements labeled theorem, proposition, lemma, or corollary carry
@@ -222,9 +201,9 @@ For $x_j=cq^j$ and $N_k(x)=\prod_{r<k}(x-x_r)$,
  &=c^{-k}\sum_{j=0}^k
  \frac{(-1)^jq^{-jk+\binom{j+1}{2}}}
  {(q;q)_j(q;q)_{k-j}}f(cq^j),\\
- x^m&=\sum_{k=0}^m c^{m-k}\qbinom{m}{k}N_k(x),\\
+ x^m&=\sum_{k=0}^m c^{m-k}\GaussianBinomial{m}{k}{q}N_k(x),\\
  N_k(x)&=\sum_{m=0}^k(-1)^{k-m}c^{k-m}
- q^{\binom{k-m}{2}}\qbinom{k}{m}x^m.
+ q^{\binom{k-m}{2}}\GaussianBinomial{k}{m}{q}x^m.
 \end{align*}
 The last two displays are mutually inverse Gaussian-Pascal transforms.
 \end{resultbox}
@@ -238,7 +217,7 @@ For the degree-$n$ interpolant $\Interp_nf$,
 and
 \[
  h_r(x,c,cq,\ldots,cq^n)
- =\sum_{s=0}^r x^s c^{r-s}\qbinom{n+r-s}{n}.
+ =\sum_{s=0}^r x^s c^{r-s}\GaussianBinomial{n+r-s}{n}{q}.
 \]
 This is the exact all-orders interpolation residual; the usual remainder
 with an unspecified intermediate derivative is replaced by an explicit
@@ -258,9 +237,9 @@ For the Fabius function and $q=1/2$,
    \sum_{j\ge0}\frac{2^{-\binom j2}a_j}{(1/2;1/2)_j}z^j.
 \end{align*}
 At $x=0$ the residues decay at least like
-$2^{-\floor{n^2/4}}$ up to a fixed factor; at $x=3/4$ they grow, according
+$2^{-\Floor{n^2/4}}$ up to a fixed factor; at $x=3/4$ they grow, according
 to exact rational data, on the conjectural scale
-$2^{n^2/4}n^{-n/2}\e^{O(n)}$.
+$2^{n^2/4}n^{-n/2}\EulerE^{O(n)}$.
 \end{resultbox}
 
 \tableofcontents
@@ -297,7 +276,7 @@ $j/2^m$ fill $[0,1]$ but suffer the familiar global high-degree instability.
 The geometric comb $2^{-j}$ has a different pathology: it samples one
 boundary on all binary scales, but it leaves a fixed gap $(1/2,1)$.  The
 Rvachev--Lagrange loop report supplies the exact inverse-moment Appell
-synthesis of polynomials by translates of $\Up$.  Results imported from those
+synthesis of polynomials by translates of $\RvachevUp$.  Results imported from those
 reports are identified when used; the report-specific derivations carry
 manuscript proofs here.
 
@@ -355,7 +334,7 @@ problems have no proof status in either layer.
 \section{The affine geometric comb}
 
 \begin{definition}[Affine geometric comb]
-Let $\alpha,\beta,q\in\C$ with $\beta\ne0$.  The degree-$n$ affine geometric
+Let $\alpha,\beta,q\in\ComplexNumbers$ with $\beta\ne0$.  The degree-$n$ affine geometric
 comb is
 \[
  \mathcal G_n(\alpha,\beta;q)
@@ -363,7 +342,7 @@ comb is
 \]
 When $|q|<1$, its infinite continuation accumulates at $\alpha$.  The
 multiplicative normalization is $\alpha=0$, $\beta=c$; the reflected
-boundary normalization used for $\Up$ is $\alpha=1$, $\beta=-1$.
+boundary normalization used for $\RvachevUp$ is $\alpha=1$, $\beta=-1$.
 \end{definition}
 
 Finite interpolation requires distinct nodes, equivalently
@@ -406,13 +385,13 @@ For $k\in\Nzero$,
  & (a;q)_0&:=1,\\
  [k]_q&:=\frac{1-q^k}{1-q},
  & [k]_q!&:=\prod_{r=1}^k[r]_q=\frac{(q;q)_k}{(1-q)^k},\\
- \qbinom{n}{k}&:=\frac{(q;q)_n}{(q;q)_k(q;q)_{n-k}}
+ \GaussianBinomial{n}{k}{q}&:=\frac{(q;q)_n}{(q;q)_k(q;q)_{n-k}}
  &&(0\le k\le n).
 \end{align}
 The Gaussian coefficient is a polynomial in $q$; quotient notation is used
 only where the displayed denominators are nonzero.  Reciprocity reads
 \begin{equation}
- \Qbinom{n}{k}{q^{-1}}=q^{-k(n-k)}\qbinom{n}{k}.
+ \GaussianBinomial{n}{k}{q^{-1}}=q^{-k(n-k)}\GaussianBinomial{n}{k}{q}.
  \label{eq:q-reciprocity}
 \end{equation}
 The complete homogeneous symmetric polynomial is characterized by
@@ -423,7 +402,7 @@ The complete homogeneous symmetric polynomial is characterized by
 \end{equation}
 Its geometric principal specialization is
 \begin{equation}
- h_r(c,cq,\ldots,cq^m)=c^r\qbinom{m+r}{m}.
+ h_r(c,cq,\ldots,cq^m)=c^r\GaussianBinomial{m+r}{m}{q}.
  \label{eq:h-principal}
 \end{equation}
 This simple identity is the source of almost every Gaussian coefficient in
@@ -480,7 +459,7 @@ Let $E_qf(x)=f(qx)$.  For every $k\ge0$,
  D_q^kf(x)
  &=\frac{x^{-k}}{(1-q)^k}
    \sum_{j=0}^k(-1)^j
-   q^{-jk+\binom{j+1}{2}}\qbinom{k}{j}f(q^jx).
+   q^{-jk+\binom{j+1}{2}}\GaussianBinomial{k}{j}{q}f(q^jx).
  \label{eq:Dq-explicit}
 \end{align}
 Consequently, for distinct nodes $c,cq,\ldots,cq^k$,
@@ -510,7 +489,7 @@ base $q^{-1}$ gives
 \[
  (E_q;q^{-1})_k
  =\sum_{j=0}^k(-1)^jq^{-\binom j2}
-   \Qbinom{k}{j}{q^{-1}}E_q^j.
+   \GaussianBinomial{k}{j}{q^{-1}}E_q^j.
 \]
 Using reciprocity \eqref{eq:q-reciprocity}, the exponent becomes
 $-\binom j2-j(k-j)=-jk+\binom{j+1}{2}$, proving
@@ -623,11 +602,11 @@ scale without invalidating the existing expansion.
 For every $m,k\in\Nzero$,
 \begin{align}
  x^m
- &=\sum_{k=0}^m c^{m-k}\qbinom{m}{k}N_k(x;c,q),
+ &=\sum_{k=0}^m c^{m-k}\GaussianBinomial{m}{k}{q}N_k(x;c,q),
  \label{eq:monomial-to-newton}\\
  N_k(x;c,q)
  &=\sum_{m=0}^k(-1)^{k-m}c^{k-m}
-   q^{\binom{k-m}{2}}\qbinom{k}{m}x^m.
+   q^{\binom{k-m}{2}}\GaussianBinomial{k}{m}{q}x^m.
  \label{eq:newton-to-monomial}
 \end{align}
 The two triangular coefficient arrays are mutually inverse.
@@ -643,7 +622,7 @@ identity for monomial divided differences gives
 \[
  [x^m;c,cq,\ldots,cq^k]
  =h_{m-k}(c,cq,\ldots,cq^k)
- =c^{m-k}\qbinom{m}{k},
+ =c^{m-k}\GaussianBinomial{m}{k}{q},
 \]
 where the value is zero for $k>m$.  Substitution in the Newton interpolation
 formula proves \eqref{eq:monomial-to-newton}.  Since both transformations are
@@ -674,11 +653,11 @@ Let
 Then \Cref{thm:gaussian-pascal-basis} gives
 \begin{align}
  \gamma_k
- &=\sum_{m=k}^M a_mc^{m-k}\qbinom{m}{k},
+ &=\sum_{m=k}^M a_mc^{m-k}\GaussianBinomial{m}{k}{q},
  \label{eq:coeff-forward}\\
  a_m
  &=\sum_{k=m}^M\gamma_k(-1)^{k-m}c^{k-m}
- q^{\binom{k-m}{2}}\qbinom{k}{m}.
+ q^{\binom{k-m}{2}}\GaussianBinomial{k}{m}{q}.
  \label{eq:coeff-inverse}
 \end{align}
 These are finite $q$-binomial inversions with a grading by the scale $c$.
@@ -687,7 +666,7 @@ is one even though individual off-diagonal entries can be large.
 
 Define the Rogers--Szeg\H{o} polynomial
 \begin{equation}
- H_m(z;q):=\sum_{k=0}^m\qbinom{m}{k}z^k.
+ H_m(z;q):=\sum_{k=0}^m\GaussianBinomial{m}{k}{q}z^k.
  \label{eq:rogers-szego}
 \end{equation}
 Then the ordinary generating polynomial of the Newton coefficients satisfies
@@ -705,7 +684,7 @@ to the orthogonal-polynomial side of $q$-analysis.
 Let $A=(a_0,\ldots,a_n)^T$, $\Gamma=(\gamma_0,\ldots,\gamma_n)^T$, and
 $Y=(f(c),f(cq),\ldots,f(cq^n))^T$.  Introduce
 \begin{align*}
- T_{k,m}&=\begin{cases}c^{m-k}\qbinom{m}{k},&k\le m,\\0,&k>m,\end{cases}\\
+ T_{k,m}&=\begin{cases}c^{m-k}\GaussianBinomial{m}{k}{q},&k\le m,\\0,&k>m,\end{cases}\\
  L_{j,k}&=\begin{cases}
  (-c)^kq^{\binom k2}\dfrac{(q;q)_j}{(q;q)_{j-k}},&k\le j,\\
  0,&k>j.
@@ -737,10 +716,10 @@ This factorization is useful in three distinct senses.
 When $q=b^{-1}$ with an integer $b\ge2$, reciprocity rewrites many
 coefficients with Gaussian polynomials at base $b$:
 \begin{equation}
- \qbinom{n}{k}=b^{-k(n-k)}\Qbinom{n}{k}{b}.
+ \GaussianBinomial{n}{k}{q}=b^{-k(n-k)}\GaussianBinomial{n}{k}{b}.
  \label{eq:reciprocal-integer-base}
 \end{equation}
-For prime-power $b$, $\Qbinom{n}{k}{b}$ counts $k$-dimensional subspaces of
+For prime-power $b$, $\GaussianBinomial{n}{k}{b}$ counts $k$-dimensional subspaces of
 $\mathbb F_b^n$.  In particular, the half-base interpolation transforms for
 the Fabius function contain literal counts of binary subspaces, multiplied
 by the powers of two dictated by reciprocity.  This is a more rigid
@@ -767,7 +746,7 @@ For fixed $k$ and $\xi$,
 Indeed, $(q^\xi-q^r)/(1-q)\to r-\xi$.  Hence geometric Newton interpolation
 is a multiplicative deformation of ordinary Newton interpolation on the
 integer grid in the logarithmic coordinate.  Simultaneously,
-$\qbinom{m}{k}\to\binom mk$, so
+$\GaussianBinomial{m}{k}{q}\to\binom mk$, so
 \eqref{eq:monomial-to-newton} tends to the ordinary binomial/falling-factorial
 basis transform after the same rescaling.
 
@@ -904,7 +883,7 @@ Let $f(z)=\sum_{m\ge0}a_mz^m$ be a formal power series.  Then
 \begin{equation}
  \sum_{j=0}^n\mu_{j,n}f(cq^jz)
  =a_0+(-1)^nc^{n+1}q^{\binom{n+1}{2}}
- \sum_{r\ge0}a_{n+1+r}c^r\qbinom{n+r}{n}z^{n+1+r}.
+ \sum_{r\ge0}a_{n+1+r}c^r\GaussianBinomial{n+r}{n}{q}z^{n+1+r}.
  \label{eq:richardson-tail}
 \end{equation}
 Whenever both sides converge analytically, the same identity holds as an
@@ -921,7 +900,7 @@ surviving moment is
 which is the negative of the nodal polynomial at zero.  The universal moment
 residual theorem proved in \Cref{thm:universal-moment-residual}, or a direct
 application of \eqref{eq:h-principal}, gives the factor
-$c^r\qbinom{n+r}{n}$ for every higher moment.
+$c^r\GaussianBinomial{n+r}{n}{q}$ for every higher moment.
 \end{proof}
 
 \section{Generating function of the Richardson triangle}
@@ -1025,7 +1004,7 @@ Moreover,
 \begin{equation}
  \boxed{
  h_r(x,c,cq,\ldots,cq^n)
- =\sum_{s=0}^rx^sc^{r-s}\qbinom{n+r-s}{n}.}
+ =\sum_{s=0}^rx^sc^{r-s}\GaussianBinomial{n+r-s}{n}{q}.}
  \label{eq:geometric-h-with-x}
 \end{equation}
 \end{theorem}
@@ -1047,7 +1026,7 @@ Indeed,
  \sum_{r\ge0}h_r(x,c,cq,\ldots,cq^n)t^r
  &=\frac1{1-xt}\frac1{(ct;q)_{n+1}}\\
  &=\left(\sum_{s\ge0}x^st^s\right)
-   \left(\sum_{u\ge0}c^u\qbinom{n+u}{n}t^u\right).
+   \left(\sum_{u\ge0}c^u\GaussianBinomial{n+u}{n}{q}t^u\right).
 \end{align*}
 Extracting the coefficient of $t^r$ proves
 \eqref{eq:geometric-h-with-x}.
@@ -1062,7 +1041,7 @@ The first three errors are
  &=N_{n+1}(x)\left(x+c[n+1]_q\right),\\
  x^{n+3}-\Interp_nx^{n+3}
  &=N_{n+1}(x)
- \left(x^2+c[n+1]_qx+c^2\qbinom{n+2}{n}\right).
+ \left(x^2+c[n+1]_qx+c^2\GaussianBinomial{n+2}{n}{q}\right).
 \end{align*}
 The coefficients are positive for $0<q<1$, which is useful for one-sided
 error bounds when the Taylor coefficients of the target have a fixed sign.
@@ -1081,7 +1060,7 @@ convergent.  Then
  \label{eq:analytic-residual-h}\\
  &=N_{n+1}(x;c,q)
    \sum_{r\ge0}a_{n+1+r}
-   \sum_{s=0}^rx^sc^{r-s}\qbinom{n+r-s}{n}.
+   \sum_{s=0}^rx^sc^{r-s}\GaussianBinomial{n+r-s}{n}{q}.
  \label{eq:analytic-residual-q}
 \end{align}
 The same identity is valid coefficientwise for a formal power series.
@@ -1115,7 +1094,7 @@ geometric divided differences.
 If $f(x)=\sum_{m\ge0}a_mx^m$ converges in a disk containing the nodes, then
 \begin{equation}
  \gamma_k:=[f;c,cq,\ldots,cq^k]
- =\sum_{m\ge k}a_mc^{m-k}\qbinom{m}{k}.
+ =\sum_{m\ge k}a_mc^{m-k}\GaussianBinomial{m}{k}{q}.
  \label{eq:taylor-to-newton}
 \end{equation}
 \end{proposition}
@@ -1154,7 +1133,7 @@ $R_0>R$.  Put
 \]
 For every $0<r<R$, the geometric Newton coefficients satisfy
 \begin{equation}
- \abs{\gamma_k}
+ \AbsoluteValue{\gamma_k}
  \le \frac{M_RR^{-k}}{(q;q)_k(1-c/R)},
  \label{eq:newton-coefficient-bound}
 \end{equation}
@@ -1162,7 +1141,7 @@ and the infinite Newton series converges absolutely and uniformly on
 $|x|\le r$ to $f(x)$.  Quantitatively,
 \begin{equation}
  \boxed{
- \sup_{|x|\le r}\abs{f(x)-\Interp_nf(x)}
+ \sup_{|x|\le r}\AbsoluteValue{f(x)-\Interp_nf(x)}
  \le
  \frac{M_R(-c/r;q)_\infty}
  {(1-c/R)(q;q)_\infty}
@@ -1177,11 +1156,11 @@ Cauchy's estimate gives $|a_m|\le M_RR^{-m}$.  By
 \eqref{eq:taylor-to-newton},
 \[
  |\gamma_k|
- \le\sum_{m\ge k}M_RR^{-m}c^{m-k}\qbinom{m}{k}.
+ \le\sum_{m\ge k}M_RR^{-m}c^{m-k}\GaussianBinomial{m}{k}{q}.
 \]
 For $0<q<1$,
 \[
- \qbinom{m}{k}
+ \GaussianBinomial{m}{k}{q}
  =\frac{(q^{m-k+1};q)_k}{(q;q)_k}
  \le\frac1{(q;q)_k}.
 \]
@@ -1279,11 +1258,11 @@ By \eqref{eq:richardson-weights}, with $r=n-j$,
  &=\sum_{j=0}^n
    \frac{q^{\binom{n-j+1}{2}}}{(q;q)_j(q;q)_{n-j}}\\
  &=\frac1{(q;q)_n}\sum_{r=0}^n
-   q^{\binom{r+1}{2}}\qbinom{n}{r}.
+   q^{\binom{r+1}{2}}\GaussianBinomial{n}{r}{q}.
 \end{align*}
 The finite $q$-binomial theorem with parameter $q$ gives
 \[
- \sum_{r=0}^nq^{\binom r2}\qbinom{n}{r}q^r=(-q;q)_n.
+ \sum_{r=0}^nq^{\binom r2}\GaussianBinomial{n}{r}{q}q^r=(-q;q)_n.
 \]
 This proves the finite formula.  Both infinite products converge to positive
 limits for $0<q<1$.
@@ -1321,7 +1300,7 @@ Fix $0<q<1$.  Uniformly for $\alpha$ in compact subsets of $(0,\infty)$,
  \boxed{
  n q^{M_n}\Leb_n(1-\alpha/n)
  \longrightarrow
- 2(-q;q)_\infty\,\alpha\e^{-\alpha}.}
+ 2(-q;q)_\infty\,\alpha\EulerE^{-\alpha}.}
  \label{eq:lebesgue-profile}
 \end{equation}
 \end{theorem}
@@ -1334,7 +1313,7 @@ First, \eqref{eq:last-cardinal-top-gap} gives
    \frac{(q/(1-\alpha/n);q)_{n-1}}{(q;q)_n}.
  \label{eq:last-cardinal-profile}
 \end{equation}
-The first two factors tend uniformly to $\alpha\e^{-\alpha}$.  For the
+The first two factors tend uniformly to $\alpha\EulerE^{-\alpha}$.  For the
 product ratio, take logarithms.  On a compact $\alpha$-set and for large
 $n$, the mean-value theorem gives
 \[
@@ -1349,7 +1328,7 @@ Now compare every cardinal to the last one.  Put $j=n-r$.  The barycentric
 weights in \eqref{eq:barycentric-weight} imply
 \begin{equation}
  \frac{|\ell_{n-r,n}(x)|}{|\ell_{n,n}(x)|}
- =q^{\binom r2}\qbinom{n}{r}
+ =q^{\binom r2}\GaussianBinomial{n}{r}{q}
   \frac{|x-q^n|}{|x-q^{n-r}|}.
  \label{eq:cardinal-ratio}
 \end{equation}
@@ -1357,7 +1336,7 @@ For $x=1-\alpha/n$ and fixed $r$, the right side tends to
 $q^{\binom r2}/(q;q)_r$.  For $0\le r\le n-1$, the denominator
 $x-q^{n-r}$ is uniformly bounded below because $q^{n-r}\le q$, and
 \[
- \qbinom{n}{r}\le\frac1{(q;q)_r}\le\frac1{(q;q)_\infty}.
+ \GaussianBinomial{n}{r}{q}\le\frac1{(q;q)_r}\le\frac1{(q;q)_\infty}.
 \]
 The summable majorant $Cq^{\binom r2}$ permits dominated convergence.  The
 remaining term $r=n$, corresponding to the outer node $1$, is
@@ -1381,7 +1360,7 @@ Then
 \begin{align}
  \boxed{
  \Leb_n^*
- \sim \frac{2(-q;q)_\infty}{\e}
+ \sim \frac{2(-q;q)_\infty}{\EulerE}
        \frac{q^{-\binom n2}}{n},}
  \label{eq:global-lebesgue-asymptotic}\\
  \boxed{
@@ -1412,7 +1391,7 @@ $(q;q)_\infty$, summing \eqref{eq:cardinal-away-bound-start} over $r$ gives
  \le C_{q,\varepsilon}(1-\varepsilon/2)^{n-R-1}.
 \]
 After multiplication by $n$, this tends to zero, whereas the lower bound at
-$1-1/n$ tends to the positive constant $2(-q;q)_\infty/\e$.  Thus
+$1-1/n$ tends to the positive constant $2(-q;q)_\infty/\EulerE$.  Thus
 $x_n^*\to1$.
 
 Put $\delta_n=1-x_n^*$.  On
@@ -1444,11 +1423,11 @@ further subsequence with $n\delta_n\to\alpha\in(0,\infty)$.  The locally
 uniform profile theorem then gives
 \[
  \lim nq^{M_n}\Leb_n(x_n^*)
- =2(-q;q)_\infty\alpha\e^{-\alpha}
- \le\frac{2(-q;q)_\infty}{\e}.
+ =2(-q;q)_\infty\alpha\EulerE^{-\alpha}
+ \le\frac{2(-q;q)_\infty}{\EulerE}.
 \]
 The lower bound at $\alpha=1$ forces equality.  Since
-$\alpha\e^{-\alpha}$ has a unique maximum at $\alpha=1$, every subsequential
+$\alpha\EulerE^{-\alpha}$ has a unique maximum at $\alpha=1$, every subsequential
 limit is $1$.  This proves both assertions.
 \end{proof}
 
@@ -1494,7 +1473,7 @@ and exact $q$-quadrature coordinates.
 
 Recall the Jackson integral on $[0,c]$,
 \begin{equation}
- \int_0^c f(x)\,\dd_qx
+ \int_0^c f(x)\,\Differential_qx
  :=(1-q)c\sum_{j=0}^{\infty}q^j f(cq^j),
  \qquad 0<q<1.
  \label{eq:jackson-definition}
@@ -1508,7 +1487,7 @@ weights, into the native quadrature grid of $q$-calculus
 For every $k\ge0$,
 \begin{equation}
  \boxed{
- \int_0^c N_k(x;c,q)\,\dd_qx
+ \int_0^c N_k(x;c,q)\,\Differential_qx
  =(-1)^k c^{k+1}
    \frac{q^{\binom{k+1}{2}}}{[k+1]_q}.}
  \label{eq:jackson-newton-moment}
@@ -1516,7 +1495,7 @@ For every $k\ge0$,
 Consequently, if $p=\sum_{k=0}^d\gamma_kN_k$ is a polynomial, then
 \begin{equation}
  \boxed{
- \int_0^c p(x)\,\dd_qx
+ \int_0^c p(x)\,\Differential_qx
  =\sum_{k=0}^d\gamma_k(-1)^kc^{k+1}
    \frac{q^{\binom{k+1}{2}}}{[k+1]_q}.}
  \label{eq:newton-jackson-quadrature}
@@ -1534,7 +1513,7 @@ For $j\ge k$,
 \end{equation}
 Therefore
 \begin{align*}
- \int_0^cN_k(x)\,\dd_qx
+ \int_0^cN_k(x)\,\Differential_qx
  &=(-1)^kc^{k+1}q^{\binom k2}(1-q)
    \sum_{j=k}^{\infty}q^j\frac{(q;q)_j}{(q;q)_{j-k}}\\
  &=(-1)^kc^{k+1}q^{\binom k2+k}(1-q)(q;q)_k
@@ -1556,7 +1535,7 @@ Since $(1-q)/(1-q^{k+1})=1/[k+1]_q$, this proves
 Under the hypotheses of \Cref{thm:analytic-newton-convergence}, if
 $f(x)=\sum_{k\ge0}\gamma_kN_k(x;c,q)$ on a neighborhood of $[0,c]$, then
 \begin{equation}
- \int_0^c f(x)\,\dd_qx
+ \int_0^c f(x)\,\Differential_qx
  =\sum_{k=0}^{\infty}\gamma_k(-1)^kc^{k+1}
    \frac{q^{\binom{k+1}{2}}}{[k+1]_q},
  \label{eq:analytic-newton-jackson}
@@ -1732,13 +1711,13 @@ The symmetry $X\overset d=1-X$ gives
 \end{equation}
 On $[-1,1]$ the Rvachev function is related by
 \begin{equation}
- \Up(t)=F(1-|t|).
+ \RvachevUp(t)=F(1-|t|).
  \label{eq:up-fabius-relation}
 \end{equation}
 
 Define the moments and their exponential normalization by
 \begin{equation}
- d_n:=\E X^n,
+ d_n:=\Expectation X^n,
  \qquad
  a_n:=\frac{d_n}{n!}.
  \label{eq:fabius-moment-normalization}
@@ -1747,34 +1726,34 @@ The notation $d_n$ is especially natural for the Rvachev half-moments,
 because
 \begin{equation}
  \boxed{
- d_n=n\int_0^1t^{n-1}\Up(t)\,\dd t.}
+ d_n=n\int_0^1t^{n-1}\RvachevUp(t)\,\Differential t.}
  \label{eq:preferred-half-moment}
 \end{equation}
 Indeed, the layer-cake identity and \eqref{eq:fabius-symmetry} give
 \[
- \E X^n=n\int_0^1t^{n-1}\Prob(X>t)\,\dd t
-       =n\int_0^1t^{n-1}F(1-t)\,\dd t.
+ \Expectation X^n=n\int_0^1t^{n-1}\Probability(X>t)\,\Differential t
+       =n\int_0^1t^{n-1}F(1-t)\,\Differential t.
 \]
 Thus $d_n$ is the preferred moment notation throughout the dyadic
 specialization.
 
 The moment-generating function is the entire product
 \begin{align}
- A(z)&:=\E\e^{zX}=\sum_{n=0}^{\infty}a_nz^n
+ A(z)&:=\Expectation\EulerE^{zX}=\sum_{n=0}^{\infty}a_nz^n
  \label{eq:fabius-mgf-series}\\
  &=\prod_{r=1}^{\infty}
-   \frac{\e^{z/2^r}-1}{z/2^r}.
+   \frac{\EulerE^{z/2^r}-1}{z/2^r}.
  \label{eq:fabius-mgf-product}
 \end{align}
 Separating the first factor gives
 \begin{equation}
- A(2z)=\frac{\e^z-1}{z}A(z).
+ A(2z)=\frac{\EulerE^z-1}{z}A(z).
  \label{eq:fabius-mgf-functional}
 \end{equation}
 
 \begin{proposition}[Exact moment recurrence]
 \label{prop:fabius-moment-recurrence}
-The coefficients $a_n\in\Q$ are determined by $a_0=1$ and
+The coefficients $a_n\in\RationalNumbers$ are determined by $a_0=1$ and
 \begin{equation}
  \boxed{
  (2^n-1)a_n=\sum_{j=0}^{n-1}\frac{a_j}{(n-j+1)!},
@@ -1826,9 +1805,9 @@ with integral remainder and the flat germ at zero give
 \begin{align*}
  F(2^{-n})
  &=\frac1{(n-1)!}\int_0^{2^{-n}}
-   (2^{-n}-t)^{n-1}F^{(n)}(t)\,\dd t\\
+   (2^{-n}-t)^{n-1}F^{(n)}(t)\,\Differential t\\
  &=\frac{2^{-\binom n2}}{(n-1)!}
-   \int_0^1(1-u)^{n-1}F(u)\,\dd u.
+   \int_0^1(1-u)^{n-1}F(u)\,\Differential u.
 \end{align*}
 After $t=1-u$, the last integral is $d_n/n$ by
 \eqref{eq:preferred-half-moment}.  The result follows.
@@ -1863,7 +1842,7 @@ For $q=1/2$,
  \boxed{
  \nu_k=\frac1{(q;q)_k}
  \sum_{j=0}^{k}(-1)^j
- \Qbinom{k}{j}{q^{-1}}a_j
+ \GaussianBinomial{k}{j}{q^{-1}}a_j
  =\frac1{(1/2;1/2)_k}
  \sum_{j=0}^{k}(-1)^j\twobinom{k}{j}a_j.}
  \label{eq:fabius-gaussian-transform}
@@ -1887,8 +1866,8 @@ Insert $F(q^j)=q^{\binom j2}a_j$ from
 \]
 Reciprocity of Gaussian coefficients gives
 \[
- \Qbinom{k}{j}{q^{-1}}
- =q^{-j(k-j)}\qbinom{k}{j}=q^{j(j-k)}\qbinom{k}{j}.
+ \GaussianBinomial{k}{j}{q^{-1}}
+ =q^{-j(k-j)}\GaussianBinomial{k}{j}{q}=q^{j(j-k)}\GaussianBinomial{k}{j}{q}.
 \]
 Factoring $(q;q)_k$ proves \eqref{eq:fabius-gaussian-transform}.  The Newton
 formula and rationality are immediate.
@@ -1931,11 +1910,11 @@ Then
  (\Interp_nF)(x)
  =\frac{\omega_{n+1}(x)}{(q;q)_n}
    \sum_{j=0}^{n}
-   \frac{(-1)^j\Qbinom{n}{j}{q^{-1}}a_j}{x-q^j}.}
+   \frac{(-1)^j\GaussianBinomial{n}{j}{q^{-1}}a_j}{x-q^j}.}
  \label{eq:fabius-gaussian-cardinal}
 \end{equation}
 At a node the right side is interpreted by cancellation.  Formula
-\eqref{eq:fabius-gaussian-cardinal} is an identity in $\Q[x]$.
+\eqref{eq:fabius-gaussian-cardinal} is an identity in $\RationalNumbers[x]$.
 \end{theorem}
 
 \begin{proof}
@@ -1949,7 +1928,7 @@ Multiplication by $F(q^j)=q^{\binom j2}a_j$ changes the exponent to
 $j(j-n)$.  Since
 \[
  \frac{q^{j(j-n)}}{(q;q)_j(q;q)_{n-j}}
- =\frac1{(q;q)_n}\Qbinom{n}{j}{q^{-1}},
+ =\frac1{(q;q)_n}\GaussianBinomial{n}{j}{q^{-1}},
 \]
 the ordinary Lagrange formula gives the result.
 \end{proof}
@@ -2033,8 +2012,8 @@ For every $n\ge0$,
 \begin{equation}
  \boxed{
  |R_n|\le
- \frac{\e}{(q;q)_\infty^2}
- q^{\floor{n^2/4}},
+ \frac{\EulerE}{(q;q)_\infty^2}
+ q^{\Floor{n^2/4}},
  \qquad q=\frac12.}
  \label{eq:fabius-boundary-bound}
 \end{equation}
@@ -2051,8 +2030,8 @@ $(q;q)_\infty$,
  E_n(j)=\binom{n-j+1}{2}+\binom j2.
 \]
 A direct completion of the square gives
-$E_n(j)\ge\floor{n^2/4}$.  Finally
-$\sum_{j=0}^n1/j!\le\e$.
+$E_n(j)\ge\Floor{n^2/4}$.  Finally
+$\sum_{j=0}^n1/j!\le\EulerE$.
 \end{proof}
 
 \section{Recovery of every fixed flat jet}
@@ -2075,10 +2054,10 @@ Let $0\le m\le n$.  Then
 Moreover,
 \begin{equation}
  \boxed{
- \abs{(\Interp_nF)^{(m)}(0)}
- \le \frac{\e m!}{(q;q)_\infty^2}
+ \AbsoluteValue{(\Interp_nF)^{(m)}(0)}
+ \le \frac{\EulerE m!}{(q;q)_\infty^2}
  \binom nm
- q^{\floor{n^2/4}-mn+\binom m2}.}
+ q^{\Floor{n^2/4}-mn+\binom m2}.}
  \label{eq:fabius-jet-bound}
 \end{equation}
 For every fixed $m$,
@@ -2107,7 +2086,7 @@ $\{q^{-r}:0\le r\le n\}$:
  \label{eq:elementary-symmetric-jet-bound}
 \end{equation}
 Apply the proof of \Cref{thm:fabius-boundary-bound}.  For fixed $m$, the
-quadratic term $\floor{n^2/4}$ dominates the linear loss $mn$ and the
+quadratic term $\Floor{n^2/4}$ dominates the linear loss $mn$ and the
 polynomial factor $\binom nm$, proving convergence.
 \end{proof}
 
@@ -2123,10 +2102,10 @@ Let
  J_n(t):=(\Interp_nF)(1-t).
  \label{eq:up-reflected-interpolant}
 \end{equation}
-Then $J_n(1-2^{-j})=\Up(1-2^{-j})$ for $0\le j\le n$, and for every fixed
+Then $J_n(1-2^{-j})=\RvachevUp(1-2^{-j})$ for $0\le j\le n$, and for every fixed
 $m$,
 \begin{equation}
- J_n^{(m)}(1)\longrightarrow\Up^{(m)}(1)=0.
+ J_n^{(m)}(1)\longrightarrow\RvachevUp^{(m)}(1)=0.
  \label{eq:up-fixed-boundary-jet}
 \end{equation}
 \end{corollary}
@@ -2142,20 +2121,20 @@ sharper data-specific estimate than the full Lebesgue constant.
 \label{thm:fabius-gap-upper}
 For fixed $x\in(q,1)$,
 \begin{equation}
- \abs{(\Interp_nF)(x)}
- \le C_{q,x}\,x^n q^{-\floor{n^2/4}},
+ \AbsoluteValue{(\Interp_nF)(x)}
+ \le C_{q,x}\,x^n q^{-\Floor{n^2/4}},
  \label{eq:fabius-gap-upper}
 \end{equation}
 where one may take
 \begin{equation}
  C_{q,x}=\frac1{(q;q)_\infty^2}
- \left(1+\frac{\e(1-x)}{x-q}\right).
+ \left(1+\frac{\EulerE(1-x)}{x-q}\right).
  \label{eq:fabius-gap-constant}
 \end{equation}
 A sharper logarithmic estimate is
 \begin{equation}
  \boxed{
- \log^+\abs{(\Interp_nF)(x)}
+ \log^+\AbsoluteValue{(\Interp_nF)(x)}
  \le \frac{\log(1/q)}4n^2-\frac n2\log n
       +O_{q,x}\!\left(n+(\log n)^2\right).}
  \label{eq:fabius-gap-saddle-upper}
@@ -2172,12 +2151,12 @@ For $x\in(q,1)$,
 In \eqref{eq:fabius-gaussian-cardinal}, the $j=0$ denominator is $1-x$,
 whereas $x-q^j\ge x-q$ for $j\ge1$.  Also
 \[
- \frac1{(q;q)_n}\Qbinom nj{q^{-1}}
+ \frac1{(q;q)_n}\GaussianBinomial nj{q^{-1}}
  =\frac{q^{-j(n-j)}}{(q;q)_j(q;q)_{n-j}},
  \qquad a_j\le\frac1{j!}.
 \]
 Taking absolute values and using
-$j(n-j)\le\floor{n^2/4}$ proves
+$j(n-j)\le\Floor{n^2/4}$ proves
 \eqref{eq:fabius-gap-upper}.
 
 For the sharper form, it suffices to estimate
@@ -2223,7 +2202,7 @@ two leading scales.
 For every fixed $x\in(1/2,1)$ outside a possibly discrete exceptional set,
 \begin{equation}
  \boxed{
- \log\abs{(\Interp_nF)(x)-F(x)}
+ \log\AbsoluteValue{(\Interp_nF)(x)-F(x)}
  =\frac{\log2}{4}n^2-\frac n2\log n+O_x(n).}
  \label{eq:conj-fabius-gap-asymptotic}
 \end{equation}
@@ -2258,7 +2237,7 @@ unstable, transport.
 Interpolation produces polynomials; Rvachev theory reproduces polynomials
 by compactly supported atoms.  Composing the two operations gives an exact
 finite factorization of geometric-comb interpolation through translates of
-$\Up$.  Because the geometric cardinal coefficients are Gaussian and the
+$\RvachevUp$.  Because the geometric cardinal coefficients are Gaussian and the
 polynomial reproduction coefficients are inverse-moment Appell values, the
 result is naturally a Gaussian--Appell transform.
 
@@ -2266,9 +2245,9 @@ result is naturally a Gaussian--Appell transform.
 
 Use the Fourier convention
 \[
- \widehat f(\xi)=\int_{\R}f(x)\e^{-2\pi\ii x\xi}\,\dd x.
+ \widehat f(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\,\Differential x.
 \]
-For $u=\Up$,
+For $u=\RvachevUp$,
 \begin{equation}
  \widehat u(\xi)
  =\prod_{r=0}^{\infty}
@@ -2289,7 +2268,7 @@ The moment-generating function of the centered random series
 $Z=\sum_{r\ge1}2^{-r}V_r$, with
 $V_r\sim\operatorname{Unif}[-1,1]$, is
 \begin{equation}
- \MGF_u(z)=\int_{-1}^{1}\e^{zx}u(x)\,\dd x
+ \MGF_u(z)=\int_{-1}^{1}\EulerE^{zx}u(x)\,\Differential x
  =\prod_{r=1}^{\infty}
    \frac{\sinh(z/2^r)}{z/2^r}.
  \label{eq:up-mgf}
@@ -2320,7 +2299,7 @@ For a polynomial $p$, introduce the terminating operator
 \begin{equation}
  \boxed{
  \App p:=\MGF_u(D)^{-1}p
- =\sum_{r=0}^{\floor{\deg p/2}}
+ =\sum_{r=0}^{\Floor{\deg p/2}}
    \frac{\gamma_{2r}}{(2r)!}p^{(2r)}.}
  \label{eq:up-Appell-operator}
 \end{equation}
@@ -2341,8 +2320,8 @@ Let $p$ have degree at most $n$, and set
 Then
 \begin{equation}
  \boxed{
- p(x)=h\sum_{k\in\Z}(\App p)(kh)u(x-kh),
- \qquad x\in\R,}
+ p(x)=h\sum_{k\in\IntegerNumbers}(\App p)(kh)u(x-kh),
+ \qquad x\in\RealNumbers,}
  \label{eq:up-global-synthesis}
 \end{equation}
 and, on $[-1,1]$, compact support reduces this to
@@ -2356,22 +2335,22 @@ and, on $[-1,1]$, compact support reduces this to
 \begin{proof}
 Define the sampled synthesis operator
 \[
- (S_hv)(x)=h\sum_{k\in\Z}v(kh)u(x-kh).
+ (S_hv)(x)=h\sum_{k\in\IntegerNumbers}v(kh)u(x-kh).
 \]
-Apply Poisson summation to $t\mapsto\e^{zt}u(x-t)$.  For $z$ near zero,
+Apply Poisson summation to $t\mapsto\EulerE^{zt}u(x-t)$.  For $z$ near zero,
 \begin{equation}
- S_h(\e^{z\,\cdot})(x)
- =\sum_{\ell\in\Z}
-   \e^{(z-2\pi\ii\ell/h)x}
-   \MGF_u(-z+2\pi\ii\ell/h).
+ S_h(\EulerE^{z\,\cdot})(x)
+ =\sum_{\ell\in\IntegerNumbers}
+   \EulerE^{(z-2\pi\ImaginaryUnit\ell/h)x}
+   \MGF_u(-z+2\pi\ImaginaryUnit\ell/h).
  \label{eq:poisson-exponential-synthesis}
 \end{equation}
 Because $u$ is even, the $\ell=0$ term is
-$\e^{zx}\MGF_u(z)$.  If $h=2^{-n}$ and $\ell\ne0$, then
+$\EulerE^{zx}\MGF_u(z)$.  If $h=2^{-n}$ and $\ell\ne0$, then
 $\ell/h=2^n\ell$; by \eqref{eq:up-integer-zero-order}, the corresponding
 factor has a zero of order at least $n+1$ at $z=0$.  Therefore the Taylor
 coefficients through degree $n$ in \eqref{eq:poisson-exponential-synthesis}
-coincide with those of $\e^{zx}\MGF_u(z)$.  Equating the coefficient of
+coincide with those of $\EulerE^{zx}\MGF_u(z)$.  Equating the coefficient of
 $z^r/r!$ gives
 \begin{equation}
  S_h(t^r)(x)=\MGF_u(D)x^r,
@@ -2406,7 +2385,7 @@ For $k\ge0$,
 \begin{equation}
  \boxed{
  \mathscr A_k(y;c,q)
- =\sum_{r=0}^{\floor{k/2}}\gamma_{2r}
+ =\sum_{r=0}^{\Floor{k/2}}\gamma_{2r}
  e_{k-2r}(y-c,y-cq,\ldots,y-cq^{k-1}).}
  \label{eq:q-Appell-falling}
 \end{equation}
@@ -2423,7 +2402,7 @@ for $x\in[-1,1]$ and $h=2^{-n}$.
 \begin{proof}
 For a product of $k$ linear factors,
 \[
- \frac1{r!}\frac{\dd^r}{\dd y^r}
+ \frac1{r!}\frac{\Differential^r}{\Differential y^r}
  \prod_{j=0}^{k-1}(y-cq^j)
  =e_{k-r}(y-c,y-cq,\ldots,y-cq^{k-1}).
 \]
@@ -2438,7 +2417,7 @@ recovers inverse-moment Appell transforms of ordinary falling factorials.
 Their mixed recurrences, zero geometry, and connection coefficients appear
 to be unexplored.
 
-\section{Geometric cardinals as finite sums of \texorpdfstring{$\Up$}{up} translates}
+\section{Geometric cardinals as finite sums of \texorpdfstring{$\RvachevUp$}{up} translates}
 \label{sec:geometric-cardinal-up}
 
 Assume now $0<c\le1$, so the comb nodes lie in $[-1,1]$.  Let
@@ -2459,7 +2438,7 @@ where
  &:=(\App L_{j,n}^{c,q})(kh)
  \label{eq:decoder-entry-definition}\\
  &=\lambda_{j,n}^{c,q}
-   \sum_{r=0}^{\floor{n/2}}\gamma_{2r}
+   \sum_{r=0}^{\Floor{n/2}}\gamma_{2r}
    e_{n-2r}\!\left(
      \{kh-cq^s:0\le s\le n,\ s\ne j\}\right),
  \label{eq:decoder-entry-explicit}
@@ -2585,7 +2564,7 @@ Then
 \end{equation}
 Hence, in every norm or seminorm restricted to $[-1,1]$,
 \begin{equation}
- \norm{u-U_n}=\norm{u-\Interp_nu}.
+ \Norm{u-U_n}=\Norm{u-\Interp_nu}.
  \label{eq:rvachev-loop-error-transfer}
 \end{equation}
 The atomic substitution creates no additional truncation error at a fixed
@@ -2671,7 +2650,7 @@ The Lebesgue function is positive but astronomically large.  It is therefore
 computed from logarithms of the absolute cardinal factors, followed by a
 log-sum-exp reduction.  A coarse scan isolates the outer boundary layer and
 a golden-section search refines the maximum.  The analytic constants
-$(-q;q)_\infty/(q;q)_\infty$ and $2(-q;q)_\infty/\e$ are computed with
+$(-q;q)_\infty/(q;q)_\infty$ and $2(-q;q)_\infty/\EulerE$ are computed with
 \texttt{mpmath} at elevated precision.
 
 Running the script from its directory creates the tabular outputs
@@ -2684,7 +2663,7 @@ directly in this report.
 
 The script verifies, in exact arithmetic,
 \begin{align}
- x^m&=\sum_{k=0}^{m}c^{m-k}\qbinom{m}{k}N_k(x;c,q),
+ x^m&=\sum_{k=0}^{m}c^{m-k}\GaussianBinomial{m}{k}{q}N_k(x;c,q),
  &&0\le m\le9,
  \label{eq:numeric-check-basis}\\
  x^{n+1+r}-\Interp_n(x^{n+1+r})
@@ -2709,7 +2688,7 @@ For $q=1/2$ and $c=1$, the two constants are
  \frac{(-q;q)_\infty}{(q;q)_\infty}
  &=8.25598793577825006554414084943\ldots,
  \label{eq:numeric-endpoint-constant}\\
- \frac{2(-q;q)_\infty}{\e}
+ \frac{2(-q;q)_\infty}{\EulerE}
  &=1.75421915716734780836138830414\ldots.
  \label{eq:numeric-global-prefactor}
 \end{align}
@@ -2751,7 +2730,7 @@ one, in agreement with \Cref{thm:global-lebesgue}.
 \centering
 \includegraphics[width=0.90\textwidth]{lebesgue_growth.pdf}
 \caption{Top-gap maxima and the sharp global asymptotic
-$2(-q;q)_\infty q^{-\binom n2}/(\e n)$ for $q=1/2$.  Logarithmic arithmetic
+$2(-q;q)_\infty q^{-\binom n2}/(\EulerE n)$ for $q=1/2$.  Logarithmic arithmetic
 is essential: the ordinate already exceeds $10^{148}$ at $n=32$.}
 \label{fig:lebesgue-growth}
 \end{figure}
@@ -2760,7 +2739,7 @@ is essential: the ordinate already exceeds $10^{148}$ at $n=32$.}
 \centering
 \includegraphics[width=0.90\textwidth]{lebesgue_peak_location.pdf}
 \caption{The scaled top-gap location $n(1-x_n^{\mathrm{top}})$.  The limiting value
-$1$ is the maximizer of $\alpha\e^{-\alpha}$ in
+$1$ is the maximizer of $\alpha\EulerE^{-\alpha}$ in
 \Cref{thm:lebesgue-profile}.}
 \label{fig:lebesgue-peak}
 \end{figure}
@@ -2865,7 +2844,7 @@ There exist explicit constants $A(q)$ and $B(q)$ such that
  &=1-\frac1n+\frac{A(q)}{n^2}+O_q(n^{-3}),
  \label{eq:second-order-peak-conj}\\
  \Leb_n^*
- &=\frac{2(-q;q)_\infty}{\e}
+ &=\frac{2(-q;q)_\infty}{\EulerE}
    \frac{q^{-\binom n2}}{n}
    \left(1+\frac{B(q)}n+O_q(n^{-2})\right).
  \label{eq:second-order-lambda-conj}
@@ -3059,7 +3038,7 @@ the dyadic arithmetic:
       annuli $[cq^{j+1},cq^j]$;
 \item rational barycentric interpolation with fixed local degree;
 \item oversampled least squares in a logarithmic coordinate;
-\item direct approximation in scaled translates of $\Up$ rather than first
+\item direct approximation in scaled translates of $\RvachevUp$ rather than first
       passing through one global polynomial;
 \item hybrid Taylor--Newton schemes that use the flat germ near zero and a
       separate approximation across the outer gap.
@@ -3118,7 +3097,7 @@ a claim that the whole report is already formalized.
       $\ell^1$ identity and extend its presentation as needed; the real
       infinite-product limit remains to be formalized.
 \item \textbf{Boundary profile.}  Isolate the elementary limits
-      $(1-\alpha/n)^n\to\e^{-\alpha}$, dominated convergence for the Euler
+      $(1-\alpha/n)^n\to\EulerE^{-\alpha}$, dominated convergence for the Euler
       cloud, and the tail bound from $q^{\binom r2}$.
 \item \textbf{Fabius arithmetic.}  Reuse the existing exact dyadic-value and
       moment development to prove \Cref{thm:fabius-gaussian-transform}, the
@@ -3170,10 +3149,10 @@ Explicit data transform
  (-1)^jq^{-jk+\binom{j+1}{2}}f(cq^j)/
  ((q;q)_j(q;q)_{k-j})$\\[6pt]
 Monomial to Newton
-& $x^m=\sum_{k=0}^{m}c^{m-k}\qbinom{m}{k}N_k(x)$\\[4pt]
+& $x^m=\sum_{k=0}^{m}c^{m-k}\GaussianBinomial{m}{k}{q}N_k(x)$\\[4pt]
 Newton to monomial
 & $N_k(x)=\sum_{m=0}^{k}(-1)^{k-m}c^{k-m}
- q^{\binom{k-m}{2}}\qbinom{k}{m}x^m$\\[6pt]
+ q^{\binom{k-m}{2}}\GaussianBinomial{k}{m}{q}x^m$\\[6pt]
 Barycentric weight
 & $\lambda_{j,n}=c^{-n}(-1)^jq^{\binom{j+1}{2}-nj}/
  ((q;q)_j(q;q)_{n-j})$\\[6pt]
@@ -3183,21 +3162,21 @@ Accumulation weight
 Endpoint Lebesgue constant
 & $\Leb_n(0)=(-q;q)_n/(q;q)_n$\\[4pt]
 Global Lebesgue asymptotic
-& $\Leb_n^*\sim2(-q;q)_\infty q^{-\binom n2}/(\e n)$\\[4pt]
+& $\Leb_n^*\sim2(-q;q)_\infty q^{-\binom n2}/(\EulerE n)$\\[4pt]
 Monomial residual
 & $x^{n+1+r}-\Interp_nx^{n+1+r}
  =N_{n+1}(x)h_r(x,c,cq,\ldots,cq^n)$\\[6pt]
 Geometric specialization
-& $h_r(c,cq,\ldots,cq^n)=c^r\qbinom{n+r}{n}$\\[4pt]
+& $h_r(c,cq,\ldots,cq^n)=c^r\GaussianBinomial{n+r}{n}{q}$\\[4pt]
 Jackson moment
-& $\int_0^cN_k(x)\,\dd_qx=(-1)^kc^{k+1}
+& $\int_0^cN_k(x)\,\Differential_qx=(-1)^kc^{k+1}
  q^{\binom{k+1}{2}}/[k+1]_q$\\
 \bottomrule
 \end{longtable}
 
 \section{Half-base Fabius formulas}
 
-For $q=1/2$, $d_n=\E X^n$, and $a_n=d_n/n!$,
+For $q=1/2$, $d_n=\Expectation X^n$, and $a_n=d_n/n!$,
 \begin{longtable}{@{}p{0.28\textwidth}p{0.64\textwidth}@{}}
 \caption{Fabius and Rvachev specialization.}\label{tab:formula-dictionary-fabius}\\
 \toprule
@@ -3211,26 +3190,26 @@ Object & Formula\\
 Moment recurrence
 & $(2^n-1)a_n=\sum_{j<n}a_j/(n-j+1)!$\\[5pt]
 Rvachev half-moment
-& $d_n=n\int_0^1t^{n-1}\Up(t)\,\dd t$\\[5pt]
+& $d_n=n\int_0^1t^{n-1}\RvachevUp(t)\,\Differential t$\\[5pt]
 Inverse-dyadic value
 & $F(2^{-n})=2^{-\binom n2}a_n$\\[5pt]
 Newton coefficient
 & $\nu_k=(q;q)_k^{-1}\sum_{j=0}^k(-1)^j
- \Qbinom{k}{j}{q^{-1}}a_j$\\[6pt]
+ \GaussianBinomial{k}{j}{q^{-1}}a_j$\\[6pt]
 Finite interpolant
 & $\Interp_nF(x)=\omega_{n+1}(x)(q;q)_n^{-1}
- \sum_{j=0}^n(-1)^j\Qbinom{n}{j}{q^{-1}}a_j/(x-q^j)$\\[7pt]
+ \sum_{j=0}^n(-1)^j\GaussianBinomial{n}{j}{q^{-1}}a_j/(x-q^j)$\\[7pt]
 Boundary residue generating function
 & $\sum_{n\ge0}R_nz^n=(qz;q)_\infty
  \sum_{j\ge0}q^{\binom j2}a_jz^j/(q;q)_j$\\[7pt]
 Boundary bound
-& $|R_n|\le\e(q;q)_\infty^{-2}q^{\floor{n^2/4}}$\\[5pt]
+& $|R_n|\le\EulerE(q;q)_\infty^{-2}q^{\Floor{n^2/4}}$\\[5pt]
 Fixed-jet bound
 & $|(\Interp_nF)^{(m)}(0)|\le
- \e m!\binom nm(q;q)_\infty^{-2}
- q^{\floor{n^2/4}-mn+\binom m2}$\\[7pt]
+ \EulerE m!\binom nm(q;q)_\infty^{-2}
+ q^{\Floor{n^2/4}-mn+\binom m2}$\\[7pt]
 Rvachev relation
-& $\Up(t)=F(1-|t|)$ and $\Interp_n\Up=1-\Interp_nF$
+& $\RvachevUp(t)=F(1-|t|)$ and $\Interp_n\RvachevUp=1-\Interp_nF$
  on the center-directed positive comb\\
 \bottomrule
 \end{longtable}
@@ -3470,7 +3449,7 @@ Hermite saddle displacement
 & Conjecture
 & Unproved
 & \Cref{conj:hermite-saddle}\\
-Dyadic fixed-radius $\Up$ synthesis
+Dyadic fixed-radius $\RvachevUp$ synthesis
 & Paper proof
 & Directly formalized by
   \path{normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp}

@@ -5,8 +5,10 @@
 The delivered archive `Fabius_Zero_Bias_Frontier_Report.zip` had SHA-256
 `fb8bbf8e34a2f5eb4e5bbe7b06b22566502be7583696f01960a6e41d25b518ee`.
 Its paths were traversal-safe and its 21-file delivered ledger verified
-21/21 before any edit. `ARRIVAL_SHA256SUMS` preserves that ledger verbatim;
-`SHA256SUMS` describes the normalized current package.
+21/21 before any edit. `ARRIVAL_SHA256SUMS` preserves that ledger verbatim.
+The live `SHA256SUMS` file records the last validated normalized checkpoint;
+its current-source and pending-rebuild metadata rows must be refreshed after
+the next PDF build.
 
 ## Mathematical-status audit
 
@@ -58,10 +60,10 @@ The numerical generator pins PDF font type 42. Mathematical body, labels, and
 conjecture boundaries were otherwise preserved, with only the explicit
 formal-status and replay notes added.
 
-The final source SHA-256 is
+The source used for the existing validated PDF had SHA-256
 `e83f0e426ce872b4da4cd046fa5fcc8a53b4c5e29e60c60ecc6ff7bbc7fb823e`.
 After a clean auxiliary state it received exactly three strict serial
-`pdflatex` passes. The final PDF is 26 A4 pages, 770,486 bytes, with SHA-256
+`pdflatex` passes. That last validated PDF is 26 A4 pages, 770,486 bytes, with SHA-256
 `2d90086da466124eae2e32addf6d68556f35459b4a6debac07be4859035a12b5`.
 The third-pass log has no errors, undefined references, rerun requests,
 duplicate destinations, or overfull boxes; its five underfull notices are
@@ -69,3 +71,12 @@ confined to a visually clean claim-status table. All 39 font rows are embedded
 and subset, Libertinus is present, and no Type 3 font occurs. Text extraction
 and representative visual checks of the title, status table, theorem pages,
 five figures, conjectures, and appendix passed. Build auxiliaries were removed.
+
+The current merge-resolved source has 1,926 lines and 72,038 bytes, with
+SHA-256
+`07a6876751b79db0b4af3fb7a765eced5846fb24ad82c02e19fb01314b65c834`.
+It has no conflict markers and the focused canonical-notation audit reports no
+findings, but it has not been compiled. The existing PDF remains the last
+validated render. Its ledger row still verifies; the TeX and metadata rows
+carrying this pending-rebuild notice must be refreshed together after a new
+three-pass build.

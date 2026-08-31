@@ -6,6 +6,7 @@
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\input{../../../../fabius-notation.tex}
 \usepackage{bm}
 \usepackage{booktabs,longtable,array,tabularx}
 \usepackage{graphicx}
@@ -67,67 +68,17 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\wt}{\operatorname{wt}_2}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\Li}{\operatorname{Li}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\sgn}{\operatorname{sgn}}
-\newcommand{\lcm}{\operatorname{lcm}}
-\newcommand{\vtwo}{v_2}
-\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
-\newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
-\newcommand{\lean}[1]{%
-  \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
-\newcommand{\leanevaltwo}[1]{%
-  \nolinkurl{integral_eval}\texttt{\textsubscript{2}}\nolinkurl{#1}}
-
-\newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
-\newenvironment{boxedremark}{%
-  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
-  \color{black}\hrule\vspace{0.6em}\small
-}{%
-  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
-}
-
-\lstdefinestyle{pseudo}{
-  basicstyle=\ttfamily\small,
-  backgroundcolor=\color{shadegray},
-  frame=single,
-  rulecolor=\color{rulegray},
-  columns=fullflexible,
-  keepspaces=true,
-  showstringspaces=false,
-  xleftmargin=0.7em,
-  xrightmargin=0.7em,
-  aboveskip=0.8em,
-  belowskip=0.8em
-}
-
 % Report-local notation and environments.
 \graphicspath{{figures/}}
 \allowdisplaybreaks
-\newcommand{\Cov}{\operatorname{Cov}}
 \newcommand{\ord}{\operatorname{ord}}
 \newcommand{\Wass}{W_1}
-\newcommand{\Law}{\mathcal L}
 \newcommand{\LP}{\mathcal{LP}}
 \newcommand{\Dop}{\mathscr D}
 \newcommand{\Tower}[1]{Y^{\langle #1\rangle}}
-\newcommand{\qpoch}[2]{(#1;#1)_{#2}}
+\newcommand{\repo}{\texttt{ProveIt}}
+
+\newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
 \newenvironment{statusbox}{%
   \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
   \hrule\vspace{0.6em}\small
@@ -168,12 +119,12 @@ Let
   Y=\sum_{j\ge1}2^{-j}U_j,
   \qquad U_j\stackrel{\mathrm{iid}}\sim\operatorname{Unif}[-1,1],
 \]
-so that $Y$ has Rvachev density $\Up$, while $X=(Y+1)/2$ has the Fabius
+so that $Y$ has Rvachev density $\RvachevUp$, while $X=(Y+1)/2$ has the Fabius
 distribution function.  This report studies the iterated zero-bias tower
 $Y=Y^{\langle0\rangle},Y^{\langle1\rangle},Y^{\langle2\rangle},\ldots$,
 defined by
 \(
- \E[Wf(W)]=\Var(W)\E[f'(W^z)]
+ \Expectation[Wf(W)]=\Variance(W)\Expectation[f'(W^z)]
 \)
 at each symmetric level.  The direction was selected only after a recursive
 search and manifest-level audit of the full \texttt{Analysis/FabiusFunction/docs}
@@ -189,7 +140,7 @@ factorization
 where $R_m$ is the $2m$-power-biased radius $|Y|$ and $B_m$ is the first
 coordinate of a uniform point of the sphere $S^{2m}$.  If
 \[
- H(z)=\widehat{\Up}(\ii\sqrt z/\pi),
+ H(z)=\widehat{\RvachevUp}(\ImaginaryUnit\sqrt z/\pi),
 \]
 then every normalized derivative $H^{(m)}(z)/H^{(m)}(0)$ is exactly the
 square-moment generating transform of $Y^{\langle m\rangle}$.  Consequently,
@@ -337,7 +288,7 @@ Let $U_1,U_2,\ldots$ be independent uniform variables on $[-1,1]$ and set
  Y=\sum_{j=1}^{\infty}2^{-j}U_j.                    \label{eq:Y-series}
 \end{equation}
 The series converges absolutely almost surely, is symmetric, and has support
-$[-1,1]$.  Its density is Rvachev's even up-function $\Up$.  The affine variable
+$[-1,1]$.  Its density is Rvachev's even up-function $\RvachevUp$.  The affine variable
 \begin{equation}
  X=\frac{Y+1}{2}
    =\sum_{j=1}^{\infty}2^{-j}V_j,
@@ -346,12 +297,12 @@ $[-1,1]$.  Its density is Rvachev's even up-function $\Up$.  The affine variable
 has distribution function $F$, the bounded Fabius function.  Reflection gives
 $X\stackrel d=1-X$, and on $0\le x\le1$ the two normalizations satisfy
 \begin{equation}
- \Up(x)=F(1-x).                                      \label{eq:up-F}
+ \RvachevUp(x)=F(1-x).                                      \label{eq:up-F}
 \end{equation}
 Write
 \begin{equation}
- \mu_n=\E|Y|^n\quad(n\ge0),
- \qquad \mu_{2n}=\E Y^{2n}.                         \label{eq:mu-def}
+ \mu_n=\Expectation|Y|^n\quad(n\ge0),
+ \qquad \mu_{2n}=\Expectation Y^{2n}.                         \label{eq:mu-def}
 \end{equation}
 In particular,
 \begin{equation}
@@ -363,13 +314,13 @@ In particular,
 
 The characteristic and moment generating functions are
 \begin{align}
- \phi(t)&=\E\e^{\ii tY}
-   =\prod_{j=1}^{\infty}\sinc\!\left(\frac{t}{2^j}\right),
+ \phi(t)&=\Expectation\EulerE^{\ImaginaryUnit tY}
+   =\prod_{j=1}^{\infty}\SincRad\!\left(\frac{t}{2^j}\right),
                                                                \label{eq:phi-product}\\
- M(t)&=\E\e^{tY}
+ M(t)&=\Expectation\EulerE^{tY}
    =\prod_{j=1}^{\infty}\frac{\sinh(t/2^j)}{t/2^j},             \label{eq:M-product}
 \end{align}
-where $\sinc z=\sin z/z$ with its removable value at the origin.  The even
+where $\SincRad z=\sin z/z$ with its removable value at the origin.  The even
 cumulants are
 \begin{equation}
  \kappa_{2r}
@@ -385,7 +336,7 @@ We shall also use the fixed-support geometric family
 \end{equation}
 Its support is again $[-1,1]$, and
 \begin{equation}
- \sigma_q^2=\Var(Y_q)=\frac{1-q}{3(1+q)}.            \label{eq:q-variance}
+ \sigma_q^2=\Variance(Y_q)=\frac{1-q}{3(1+q)}.            \label{eq:q-variance}
 \end{equation}
 The Rvachev law is $q=1/2$ after the harmless reindexing in
 \eqref{eq:Y-series}.
@@ -394,10 +345,10 @@ The Rvachev law is $q=1/2$ after the harmless reindexing in
 
 Using the repository's Fourier convention
 \(
- \widehat{\Up}(z)=\int\Up(x)\e^{-2\pi\ii zx}\dd x
+ \widehat{\RvachevUp}(z)=\int\RvachevUp(x)\EulerE^{-2\pi\ImaginaryUnit zx}\Differential x
 \), define
 \begin{equation}
- H(z)=\widehat{\Up}\!\left(\frac{\ii\sqrt z}{\pi}\right)
+ H(z)=\widehat{\RvachevUp}\!\left(\frac{\ImaginaryUnit\sqrt z}{\pi}\right)
  =\prod_{j=0}^{\infty}
    \frac{\sinh(2^{-j}\sqrt z)}{2^{-j}\sqrt z}
  =\sum_{n=0}^{\infty}\frac{4^n\mu_{2n}}{(2n)!}z^n.  \label{eq:H-def}
@@ -411,9 +362,9 @@ PF$_\infty$.  Its zeros are
 \end{equation}
 with exact multiplicity
 \begin{equation}
- r(N)=\vtwo(N)+1.                                   \label{eq:rN}
+ r(N)=\TwoAdicValuation(N)+1.                                   \label{eq:rN}
 \end{equation}
-Here $\vtwo$ is the $2$-adic valuation.  Relations
+Here $\TwoAdicValuation$ is the $2$-adic valuation.  Relations
 \begin{equation}
  M(t)=H(t^2/4),
  \qquad \phi(t)=H(-t^2/4)                           \label{eq:H-M-phi}
@@ -425,9 +376,9 @@ will turn derivatives of $H$ into probability transforms.
 
 Let
 \begin{equation}
- L_X(s)=\E\e^{-sX}
+ L_X(s)=\Expectation\EulerE^{-sX}
  =\prod_{j=1}^{\infty}
-   \frac{1-\e^{-s/2^j}}{s/2^j},
+   \frac{1-\EulerE^{-s/2^j}}{s/2^j},
  \qquad \Lambda(s)=\log L_X(s),                    \label{eq:LX}
 \end{equation}
 and put $L=\log2$.  A central formalized result in the repository is the exact
@@ -440,7 +391,7 @@ decomposition
 where $\Psi$ is smooth and one-periodic, while $E(s)$ and its needed
 derivatives are exponentially small.  With
 \begin{equation}
- \chi_k=\frac{2\pi\ii k}{L},                        \label{eq:chi}
+ \chi_k=\frac{2\pi\ImaginaryUnit k}{L},                        \label{eq:chi}
 \end{equation}
 the Fourier coefficients of $\Psi$ are
 \begin{equation}
@@ -455,7 +406,7 @@ In particular, every nonzero Fourier mode is nonzero.  Differentiating
 \begin{equation}
  \Lambda'(s)
  =\frac{-\log s/L+1/2+\Psi'(\log_2s)/L}{s}
-  +\bigO(s^{-2}).                                   \label{eq:Lambda-prime}
+  +\BigO(s^{-2}).                                   \label{eq:Lambda-prime}
 \end{equation}
 The periodic ripple is numerically tiny, but it survives at the first
 phase-resolved order and will reappear in the radius of the zero-bias tower.
@@ -469,15 +420,15 @@ phase-resolved order and will reappear in the radius of the zero-bias tower.
 Let $W$ have mean zero and variance $\sigma^2\in(0,\infty)$.  A random variable
 $W^z$ has the $W$-zero-biased distribution if
 \begin{equation}
- \E[Wf(W)]=\sigma^2\E[f'(W^z)]                     \label{eq:zero-bias-def}
+ \Expectation[Wf(W)]=\sigma^2\Expectation[f'(W^z)]                     \label{eq:zero-bias-def}
 \end{equation}
 for every smooth test function for which the expectations exist.
 \end{definition}
 Existence and uniqueness are classical \cite{goldsteinreinert1997}.  Choosing
 $f(x)=x^{k+1}/(k+1)$ yields
 \begin{equation}
- \E[(W^z)^k]
- =\frac{\E W^{k+2}}{(k+1)\sigma^2},
+ \Expectation[(W^z)^k]
+ =\frac{\Expectation W^{k+2}}{(k+1)\sigma^2},
  \qquad k\ge0.                                     \label{eq:zero-bias-moments}
 \end{equation}
 If $W$ is symmetric, then $W^z$ is symmetric as well, so the transform may be
@@ -508,7 +459,7 @@ exact geometric law.
 \label{thm:q-selector}
 Let $c_j=(1-q)q^j$, and let $J$ be independent of all digits with
 \begin{equation}
- \Prob(J=j)=(1-q^2)q^{2j},\qquad j=0,1,2,\ldots.     \label{eq:J-law}
+ \Probability(J=j)=(1-q^2)q^{2j},\qquad j=0,1,2,\ldots.     \label{eq:J-law}
 \end{equation}
 Let $V_j$ be independent copies of $U^z$.  Then
 \begin{equation}
@@ -542,11 +493,11 @@ the second branch occurs produces exactly the geometric index in
 
 \begin{corollary}[Characteristic function]
 \label{cor:q-zero-cf}
-With $\phi_q(t)=\prod_{j\ge0}\sinc(c_jt)$,
+With $\phi_q(t)=\prod_{j\ge0}\SincRad(c_jt)$,
 \begin{equation}
  \phi_q^z(t)
  =\sum_{j\ge0}(1-q^2)q^{2j}\,
-   \beta_1(c_jt)\prod_{\ell\ne j}\sinc(c_\ell t).   \label{eq:q-zero-cf-sum}
+   \beta_1(c_jt)\prod_{\ell\ne j}\SincRad(c_\ell t).   \label{eq:q-zero-cf-sum}
 \end{equation}
 Away from the zeros of the individual factors, this can be factored as
 \begin{equation}
@@ -558,18 +509,18 @@ The unfactored formula \eqref{eq:q-zero-cf-sum} is the correct entire
 continuation at those zeros.
 \end{corollary}
 
-For $q=1/2$, let $p_0=\Up$ and let $p_1$ be the density of $Y^z$.  Since
+For $q=1/2$, let $p_0=\RvachevUp$ and let $p_1$ be the density of $Y^z$.  Since
 $\mu_2=1/9$,
 \begin{equation}
- p_1(x)=9\int_{|x|}^{1}y\Up(y)\dd y,
- \qquad p_1'(x)=-9x\Up(x)\quad(-1<x<1).              \label{eq:first-density}
+ p_1(x)=9\int_{|x|}^{1}y\RvachevUp(y)\Differential y,
+ \qquad p_1'(x)=-9x\RvachevUp(x)\quad(-1<x<1).              \label{eq:first-density}
 \end{equation}
 The exact center value follows without numerical integration.  Indeed,
-$\Var(X)=\mu_2/4=1/36$ and $\E X=1/2$, hence
-$\E X^2=5/18$.  The moment bridge proved later in
-\Cref{lem:moment-bridge} gives $\E|Y|=5/18$, and therefore
+$\Variance(X)=\mu_2/4=1/36$ and $\Expectation X=1/2$, hence
+$\Expectation X^2=5/18$.  The moment bridge proved later in
+\Cref{lem:moment-bridge} gives $\Expectation|Y|=5/18$, and therefore
 \begin{equation}
- p_1(0)=\frac{\E|Y|}{2\mu_2}=\frac54.               \label{eq:p1-center}
+ p_1(0)=\frac{\Expectation|Y|}{2\mu_2}=\frac54.               \label{eq:p1-center}
 \end{equation}
 
 \section{The complete zero-bias tower}
@@ -590,15 +541,15 @@ main structural reason that the tower is tractable.
 
 \begin{theorem}[Moments of every tower level]
 \label{thm:tower-moments}
-Let $W$ be symmetric and let $m_r=\E|W|^r$.  Then, for $m,r\ge0$,
+Let $W$ be symmetric and let $m_r=\Expectation|W|^r$.  Then, for $m,r\ge0$,
 \begin{equation}
- \E\bigl[(W^{\langle m\rangle})^{2r}\bigr]
+ \Expectation\bigl[(W^{\langle m\rangle})^{2r}\bigr]
  =\frac{(2m-1)!!(2r-1)!!}{(2m+2r-1)!!}
   \frac{m_{2m+2r}}{m_{2m}},                         \label{eq:tower-moment-formula}
 \end{equation}
 with $(-1)!!=1$.  In particular,
 \begin{equation}
- \Var(W^{\langle m\rangle})
+ \Variance(W^{\langle m\rangle})
  =\frac{m_{2m+2}}{(2m+1)m_{2m}}.                    \label{eq:tower-variance}
 \end{equation}
 \end{theorem}
@@ -606,9 +557,9 @@ with $(-1)!!=1$.  In particular,
 \begin{proof}
 Formula \eqref{eq:zero-bias-moments}, applied at level $m$, gives
 \[
- \E[(W^{\langle m+1\rangle})^{2r}]
- =\frac{\E[(W^{\langle m\rangle})^{2r+2}]}
-        {(2r+1)\Var(W^{\langle m\rangle})}.
+ \Expectation[(W^{\langle m+1\rangle})^{2r}]
+ =\frac{\Expectation[(W^{\langle m\rangle})^{2r+2}]}
+        {(2r+1)\Variance(W^{\langle m\rangle})}.
 \]
 Starting with $m=0$, induction makes all intermediate moment ratios telescope.
 The remaining odd-number products are precisely the double factorials in
@@ -619,8 +570,8 @@ The remaining odd-number products are precisely the double factorials in
 
 For $m\ge1$, define the $2m$-power-biased radius $R_m$ by
 \begin{equation}
- \E g(R_m)
- =\frac{\E\bigl[|W|^{2m}g(|W|)\bigr]}{m_{2m}}.       \label{eq:power-radius}
+ \Expectation g(R_m)
+ =\frac{\Expectation\bigl[|W|^{2m}g(|W|)\bigr]}{m_{2m}}.       \label{eq:power-radius}
 \end{equation}
 Let $B_m$ be independent of $R_m$ and have density
 \begin{equation}
@@ -629,7 +580,7 @@ Let $B_m$ be independent of $R_m$ and have density
  c_m=\frac{\Gamma(m+1/2)}{\sqrt\pi\,\Gamma(m)}.    \label{eq:Bm-density}
 \end{equation}
 Equivalently, $(B_m+1)/2\sim\operatorname{Beta}(m,m)$, and $B_m$ is the first
-coordinate of a uniform point on the sphere $S^{2m}\subset\R^{2m+1}$.
+coordinate of a uniform point on the sphere $S^{2m}\subset\RealNumbers^{2m+1}$.
 
 \begin{theorem}[Spherical factorization]
 \label{thm:spherical-factorization}
@@ -642,7 +593,7 @@ For every compactly supported symmetric $W$ and every $m\ge1$,
 \begin{proof}
 The beta integral gives
 \begin{equation}
- \E B_m^{2r}
+ \Expectation B_m^{2r}
  =\frac{(2m-1)!!(2r-1)!!}{(2m+2r-1)!!}.             \label{eq:Bm-moments}
 \end{equation}
 Independence and \eqref{eq:power-radius} therefore make the even moments of
@@ -666,7 +617,7 @@ integral kernel.
 For $m\ge1$,
 \begin{equation}
  p_m(x)=\frac{C_m}{m_{2m}}
- \int_{|x|}^{1}y(y^2-x^2)^{m-1}p(y)\dd y,
+ \int_{|x|}^{1}y(y^2-x^2)^{m-1}p(y)\Differential y,
  \qquad
  C_m=\frac{(2m-1)!!}{(2m-2)!!}.                    \label{eq:density-kernel}
 \end{equation}
@@ -675,7 +626,7 @@ For $0<x<1$,
  p_m'(x)=-(2m-1)\frac{m_{2m-2}}{m_{2m}}\,x p_{m-1}(x).
                                                                \label{eq:density-descent}
 \end{equation}
-Consequently, with $\mathscr R=x^{-1}\frac{\dd}{\dd x}$ interpreted on even
+Consequently, with $\mathscr R=x^{-1}\frac{\Differential}{\Differential x}$ interpreted on even
 smooth functions by continuity at zero,
 \begin{equation}
  \mathscr R^m p_m
@@ -713,9 +664,9 @@ This is the characteristic function of $B_m$.  The factorization therefore
 has the transform form
 \begin{equation}
  \phi_m(t)
- =\E\mathcal J_m(tR_m)
+ =\Expectation\mathcal J_m(tR_m)
  =\frac{1}{\mu_{2m}}
-   \E\left[|Y|^{2m}\mathcal J_m(t|Y|)\right].       \label{eq:Bessel-mixture}
+   \Expectation\left[|Y|^{2m}\mathcal J_m(t|Y|)\right].       \label{eq:Bessel-mixture}
 \end{equation}
 This formula will motivate the Bessel--Airy spectral conjecture in
 \Cref{sec:conjectures}.
@@ -725,7 +676,7 @@ This formula will motivate the Bessel--Airy spectral conjecture in
 
 Let
 \begin{equation}
- \Dop_t=\frac1t\frac{\dd}{\dd t}                  \label{eq:radial-D}
+ \Dop_t=\frac1t\frac{\Differential}{\Differential t}                  \label{eq:radial-D}
 \end{equation}
 act on even entire functions, with the removable value at $t=0$.  The zero-bias
 identity implies a radial derivative calculus.
@@ -734,9 +685,9 @@ identity implies a radial derivative calculus.
 \label{thm:radial-derivatives}
 For the Rvachev tower,
 \begin{align}
- M_m(t)&:=\E\e^{t\Tower{m}}
+ M_m(t)&:=\Expectation\EulerE^{t\Tower{m}}
    =\frac{(2m-1)!!}{\mu_{2m}}\Dop_t^m M(t),          \label{eq:Mm-radial}\\
- \phi_m(t)&:=\E\e^{\ii t\Tower{m}}
+ \phi_m(t)&:=\Expectation\EulerE^{\ImaginaryUnit t\Tower{m}}
    =(-1)^m\frac{(2m-1)!!}{\mu_{2m}}\Dop_t^m\phi(t). \label{eq:phim-radial}
 \end{align}
 Equivalently,
@@ -751,8 +702,8 @@ where
 \end{theorem}
 
 \begin{proof}
-Taking $f(x)=\e^{tx}/t$ in the defining zero-bias identity gives
-$M_{W^z}(t)=M_W'(t)/(\Var(W)t)$.  At level $m$, use
+Taking $f(x)=\EulerE^{tx}/t$ in the defining zero-bias identity gives
+$M_{W^z}(t)=M_W'(t)/(\Variance(W)t)$.  At level $m$, use
 \eqref{eq:tower-variance}; the variances telescope and produce
 \eqref{eq:Mm-radial}.  The characteristic-function formula acquires one minus
 sign at each step.  Finally,
@@ -771,7 +722,7 @@ Define
 Then
 \begin{equation}
  H_m(z)=\sum_{r=0}^{\infty}
-        \frac{4^r\E[(\Tower{m})^{2r}]}{(2r)!}z^r.    \label{eq:Hm-coeff}
+        \frac{4^r\Expectation[(\Tower{m})^{2r}]}{(2r)!}z^r.    \label{eq:Hm-coeff}
 \end{equation}
 Every $H_m$ is a type-I Laguerre--P\'olya function with positive coefficients.
 Consequently:
@@ -797,7 +748,7 @@ moment log-convexity give a two-sided inequality.
 
 \begin{corollary}[Two-sided tower moment inequality]
 For $m\ge0$ and $r\ge1$, writing
-$m_{m,2r}=\E[(\Tower{m})^{2r}]$,
+$m_{m,2r}=\Expectation[(\Tower{m})^{2r}]$,
 \begin{equation}
  \frac{(2r)(2r-1)}{(2r+2)(2r+1)}
  m_{m,2r-2}m_{m,2r+2}
@@ -820,27 +771,27 @@ on both sides.
 \label{sec:spectral-peeling}
 
 The base characteristic function has the arithmetic zero lattice
-$t_N=2\pi N$.  Its multiplicity is $r(N)=\vtwo(N)+1$.  Differentiation removes
+$t_N=2\pi N$.  Its multiplicity is $r(N)=\TwoAdicValuation(N)+1$.  Differentiation removes
 these inherited multiplicities one at a time, but the first value after a zero
 is released contains more information than the multiplicity count alone.
 
 For $N\ge1$, write
 \begin{equation}
- r=\vtwo(N)+1,
+ r=\TwoAdicValuation(N)+1,
  \qquad N=2^{r-1}u,
  \qquad u\text{ odd},                              \label{eq:N-r-u}
 \end{equation}
 and define the nonzero odd-tail product
 \begin{equation}
  A_u=\prod_{\ell=1}^{\infty}
-     \sinc\!\left(\frac{\pi u}{2^\ell}\right)
-     =\widehat{\Up}(u/2).                           \label{eq:Au}
+     \SincRad\!\left(\frac{\pi u}{2^\ell}\right)
+     =\widehat{\RvachevUp}(u/2).                           \label{eq:Au}
 \end{equation}
 The sign law already present in the repository gives
 \begin{equation}
- \sgn(A_u)=(-1)^{\wt((u-1)/2)},                    \label{eq:Au-sign}
+ \Sign(A_u)=(-1)^{\BinaryDigitSum((u-1)/2)},                    \label{eq:Au-sign}
 \end{equation}
-where $\wt(n)$ is the binary digit sum.
+where $\BinaryDigitSum(n)$ is the binary digit sum.
 
 \begin{theorem}[Exact local peeling]
 \label{thm:local-peeling}
@@ -852,7 +803,7 @@ exact order $r-m$, and
    \frac{r!}{(r-m)!}
    \frac{A_u}{t_N^{r+m}}
    (t-t_N)^{r-m}
- +\bigO\bigl((t-t_N)^{r-m+1}\bigr).                \label{eq:local-peeling}
+ +\BigO\bigl((t-t_N)^{r-m+1}\bigr).                \label{eq:local-peeling}
 \end{equation}
 At the release level $m=r$, the zero disappears and
 \begin{equation}
@@ -865,8 +816,8 @@ At the release level $m=r$, the zero disappears and
 \end{equation}
 Therefore
 \begin{equation}
- \sgn\phi_r(2\pi N)
- =(-1)^{r+1+\wt((u-1)/2)}.                          \label{eq:released-sign}
+ \Sign\phi_r(2\pi N)
+ =(-1)^{r+1+\BinaryDigitSum((u-1)/2)}.                          \label{eq:released-sign}
 \end{equation}
 \end{theorem}
 
@@ -874,8 +825,8 @@ Therefore
 Exactly the factors $j=1,\ldots,r$ in \eqref{eq:phi-product} vanish at $t_N$.
 For such $j$,
 \begin{equation}
- \left.\frac{\dd}{\dd t}
- \sinc\!\left(\frac{t}{2^j}\right)\right|_{t=t_N}
+ \left.\frac{\Differential}{\Differential t}
+ \SincRad\!\left(\frac{t}{2^j}\right)\right|_{t=t_N}
  =\frac{(-1)^{N/2^{j-1}}}{2\pi N}.                 \label{eq:zero-factor-derivative}
 \end{equation}
 Their signs multiply to
@@ -886,10 +837,10 @@ Their signs multiply to
 All remaining factors multiply to $A_u$.  Hence
 \begin{equation}
  \phi(t)=-\frac{A_u}{t_N^r}(t-t_N)^r
-          +\bigO((t-t_N)^{r+1}).                    \label{eq:base-local-zero}
+          +\BigO((t-t_N)^{r+1}).                    \label{eq:base-local-zero}
 \end{equation}
 At a nonzero center $t_N$, the leading term of $\Dop_t^m$ is
-$t_N^{-m}\frac{\dd^m}{\dd t^m}$; all lower ordinary derivatives vanish to
+$t_N^{-m}\frac{\Differential^m}{\Differential t^m}$; all lower ordinary derivatives vanish to
 higher order.  Substitution into \eqref{eq:phim-radial} proves
 \eqref{eq:local-peeling}.  Setting $m=r$ gives
 \eqref{eq:released-value}, and \eqref{eq:Au-sign} gives the sign.
@@ -922,7 +873,7 @@ $N$ & $r=\nu_2(N)+1$ & odd part $u$ & sign & $\phi_r(2\pi N)$ \\
 Define the total inherited positive-lattice multiplicity through frequency
 $K$ by
 \begin{equation}
- D_m(K)=\sum_{N=1}^{K}\max\{\vtwo(N)+1-m,0\}.        \label{eq:Dm-def}
+ D_m(K)=\sum_{N=1}^{K}\max\{\TwoAdicValuation(N)+1-m,0\}.        \label{eq:Dm-def}
 \end{equation}
 This deliberately counts only zeros forced by the original arithmetic divisor;
 it does not assume that a frequency cannot accidentally become a zero again at
@@ -932,17 +883,17 @@ a later derivative level.
 \label{prop:divisor-count}
 Let $M=\lfloor K/2^m\rfloor$.  Then
 \begin{equation}
- \boxed{D_m(K)=2M-\wt(M).}                          \label{eq:Dm-formula}
+ \boxed{D_m(K)=2M-\BinaryDigitSum(M).}                          \label{eq:Dm-formula}
 \end{equation}
 \end{proposition}
 
 \begin{proof}
 A positive contribution requires $2^m\mid N$.  Write $N=2^mk$; the remaining
-multiplicity is $\vtwo(k)+1$.  Therefore
+multiplicity is $\TwoAdicValuation(k)+1$.  Therefore
 \[
- D_m(K)=\sum_{k=1}^{M}(\vtwo(k)+1)
-       =M+\vtwo(M!)
-       =M+(M-\wt(M)),
+ D_m(K)=\sum_{k=1}^{M}(\TwoAdicValuation(k)+1)
+       =M+\TwoAdicValuation(M!)
+       =M+(M-\BinaryDigitSum(M)),
 \]
 using Legendre's binary formula.
 \end{proof}
@@ -970,7 +921,7 @@ At
 the zero multiplicity is $r_b(N)=\nu_b(N)+1$, where $\nu_b(N)$ is the largest
 $r$ for which $b^r\mid N$.  If $N=b^{r-1}u$ and
 \begin{equation}
- A_{b,u}=\prod_{\ell\ge1}\sinc(\pi u/b^\ell),
+ A_{b,u}=\prod_{\ell\ge1}\SincRad(\pi u/b^\ell),
  \qquad
  \varepsilon_{b,N}=(-1)^{u(b^r-1)/(b-1)},           \label{eq:baseb-tail-sign}
 \end{equation}
@@ -1002,8 +953,8 @@ Consider first a finite independent symmetric sum
 \begin{equation}
  W=X_1+\cdots+X_d,                                  \label{eq:finite-sum}
 \end{equation}
-and write $\mu_{i,2k}=\E X_i^{2k}$ and
-$\mu_{W,2m}=\E W^{2m}$.  Let $X_i^{\langle k\rangle}$ denote the $k$th
+and write $\mu_{i,2k}=\Expectation X_i^{2k}$ and
+$\mu_{W,2m}=\Expectation W^{2m}$.  Let $X_i^{\langle k\rangle}$ denote the $k$th
 zero-bias level of $X_i$.
 
 \begin{theorem}[Zero-bias occupancy law]
@@ -1011,7 +962,7 @@ zero-bias level of $X_i$.
 For every $m\ge0$, choose a weak composition
 $\bm k=(k_1,\ldots,k_d)$ of $m$ with probability
 \begin{equation}
- \Prob(K_1=k_1,\ldots,K_d=k_d)
+ \Probability(K_1=k_1,\ldots,K_d=k_d)
  =\frac{(2m-1)!!\,m!}{\mu_{W,2m}}
   \prod_{i=1}^{d}
   \frac{\mu_{i,2k_i}}{k_i!(2k_i-1)!!}.             \label{eq:occupancy-general}
@@ -1026,8 +977,8 @@ truncation and weak convergence.
 \end{theorem}
 
 \begin{proof}
-Let $M_i(t)=\E\e^{tX_i}$ and use the derivation
-$\Dop_t=t^{-1}\frac{\dd}{\dd t}$.  By
+Let $M_i(t)=\Expectation\EulerE^{tX_i}$ and use the derivation
+$\Dop_t=t^{-1}\frac{\Differential}{\Differential t}$.  By
 \Cref{thm:radial-derivatives},
 \begin{equation}
  \Dop_t^kM_i(t)
@@ -1052,7 +1003,7 @@ For $X_j=c_jU_j$, $c_j=(1-q)q^j$,
 Thus \eqref{eq:occupancy-general} becomes
 \begin{equation}
  \boxed{
- \Prob(\bm K=\bm k)
+ \Probability(\bm K=\bm k)
  =\frac{(2m-1)!!\,m!}{\mu_{2m}(q)}
   \prod_{j\ge0}
   \frac{c_j^{2k_j}}{k_j!(2k_j+1)!!},
@@ -1083,7 +1034,7 @@ sinc-product expansions.
 The probability that all $m$ zero-bias hits fall on distinct digits is
 \begin{equation}
  \boxed{
- \Prob(K_j\in\{0,1\}\ \forall j)
+ \Probability(K_j\in\{0,1\}\ \forall j)
  =\frac{(2m-1)!!\,m!}{\mu_{2m}(q)3^m}
   \frac{(1-q)^{2m}q^{m(m-1)}}{(q^2;q^2)_m}.}        \label{eq:collision-free}
 \end{equation}
@@ -1146,7 +1097,7 @@ Normalize the endpoint of the support to one.
 \label{thm:universal-Gaussian}
 Let $W$ be symmetric, nondegenerate, supported in $[-1,1]$, and suppose
 \begin{equation}
- \Prob(|W|>1-\varepsilon)>0
+ \Probability(|W|>1-\varepsilon)>0
  \qquad\text{for every }\varepsilon>0.              \label{eq:endpoint-reached}
 \end{equation}
 Then
@@ -1156,7 +1107,7 @@ Then
 \end{equation}
 For every fixed $r\ge0$ the moments converge as well:
 \begin{equation}
- \E\left[(\sqrt{2m}\,W^{\langle m\rangle})^{2r}\right]
+ \Expectation\left[(\sqrt{2m}\,W^{\langle m\rangle})^{2r}\right]
  =(2r-1)!!
   \prod_{j=0}^{r-1}\frac{2m}{2m+2j+1}
   \frac{m_{2m+2r}}{m_{2m}}
@@ -1168,8 +1119,8 @@ For every fixed $r\ge0$ the moments converge as well:
 Under the power-biased law \eqref{eq:power-radius}, for every
 $\varepsilon>0$,
 \[
- \Prob(R_m\le1-\varepsilon)
- =\frac{\E[|W|^{2m}\mathbf 1_{\{|W|\le1-\varepsilon\}}]}{m_{2m}}
+ \Probability(R_m\le1-\varepsilon)
+ =\frac{\Expectation[|W|^{2m}\mathbf 1_{\{|W|\le1-\varepsilon\}}]}{m_{2m}}
  \longrightarrow0.
 \]
 Indeed, compare the numerator with a fixed positive amount of mass in
@@ -1199,7 +1150,7 @@ function $\phi_m$.  Then
 \begin{proof}
 The characteristic functions of
 $\sqrt{2m}\Tower{m}$ converge uniformly on compact sets to
-$\e^{-t^2/2}$, which has no real zero.  Corollary \ref{cor:LP-hierarchy}
+$\EulerE^{-t^2/2}$, which has no real zero.  Corollary \ref{cor:LP-hierarchy}
 ensures that $\tau_m$ is a real zero, so it must leave every compact scaled
 interval.
 \end{proof}
@@ -1222,8 +1173,8 @@ controls the small-argument Fabius asymptotics.
 For every real $a>-1$,
 \begin{equation}
  \boxed{
- \mu_a=\E|Y|^a
- =\frac{2}{a+1}\E X^{a+1}.}                         \label{eq:moment-CDF-bridge}
+ \mu_a=\Expectation|Y|^a
+ =\frac{2}{a+1}\Expectation X^{a+1}.}                         \label{eq:moment-CDF-bridge}
 \end{equation}
 \end{lemma}
 
@@ -1231,17 +1182,17 @@ For every real $a>-1$,
 Using \eqref{eq:up-F}, reflection of $X$, and Stieltjes integration by parts,
 \begin{align*}
  \mu_a
- &=2\int_0^1r^aF(1-r)\dd r
-  =2\int_0^1(1-x)^aF(x)\dd x\\
- &=\frac{2}{a+1}\E(1-X)^{a+1}
-  =\frac{2}{a+1}\E X^{a+1}.
+ &=2\int_0^1r^aF(1-r)\Differential r
+  =2\int_0^1(1-x)^aF(x)\Differential x\\
+ &=\frac{2}{a+1}\Expectation(1-X)^{a+1}
+  =\frac{2}{a+1}\Expectation X^{a+1}.
 \end{align*}
 \end{proof}
 
 For $n>0$, let $\mathcal R_n$ denote the $n$-power-biased radius:
 \begin{equation}
- \E g(\mathcal R_n)
- =\frac{\E[|Y|^ng(|Y|)]}{\mu_n}.                   \label{eq:Rn-general}
+ \Expectation g(\mathcal R_n)
+ =\frac{\Expectation[|Y|^ng(|Y|)]}{\mu_n}.                   \label{eq:Rn-general}
 \end{equation}
 Thus the radius in the level-$m$ factorization is
 $R_m=\mathcal R_{2m}$.  Put
@@ -1250,15 +1201,15 @@ $R_m=\mathcal R_{2m}$.  Put
 \end{equation}
 After the change of variable $x=1-r$, the Laplace transform of $T_n$ is
 \begin{equation}
- \E\e^{-uT_n}
+ \Expectation\EulerE^{-uT_n}
  =\frac{I_n(u)}{I_n(0)},
  \qquad
- I_n(u)=\int_0^1\e^{-unx}(1-x)^nF(x)\dd x.          \label{eq:In}
+ I_n(u)=\int_0^1\EulerE^{-unx}(1-x)^nF(x)\Differential x.          \label{eq:In}
 \end{equation}
 The auxiliary Laplace integral
 \begin{equation}
- J(s)=\int_0^1\e^{-sx}F(x)\dd x
- =\frac{L_X(s)-\e^{-s}}{s}                         \label{eq:J-L}
+ J(s)=\int_0^1\EulerE^{-sx}F(x)\Differential x
+ =\frac{L_X(s)-\EulerE^{-s}}{s}                         \label{eq:J-L}
 \end{equation}
 follows by integration by parts.
 
@@ -1268,26 +1219,26 @@ Uniformly for $u$ in a fixed compact subset of $(-1,\infty)$,
 \begin{equation}
  \frac{I_n(u)}{I_n(0)}
  =\frac{J((1+u)n)}{J(n)}
-  \left(1+\bigO\!\left(\frac{(\log n)^2}{n}\right)\right).     \label{eq:power-laplace}
+  \left(1+\BigO\!\left(\frac{(\log n)^2}{n}\right)\right).     \label{eq:power-laplace}
 \end{equation}
 The same estimate remains valid after any fixed number of derivatives with
 respect to $u$ in a neighborhood of the origin.
 \end{lemma}
 
 \begin{proofidea}
-The inequality $\log(1-x)\le-x$ gives $(1-x)^n\le\e^{-nx}$.  On
+The inequality $\log(1-x)\le-x$ gives $(1-x)^n\le\EulerE^{-nx}$.  On
 $0\le x\le1/2$,
 \[
- 0\le \e^{-nx}-(1-x)^n
- \le Cnx^2\e^{-nx}.
+ 0\le \EulerE^{-nx}-(1-x)^n
+ \le Cnx^2\EulerE^{-nx}.
 \]
-For the measure proportional to $\e^{-sx}F(x)\dd x$, derivatives of
+For the measure proportional to $\EulerE^{-sx}F(x)\Differential x$, derivatives of
 \eqref{eq:Lambda} and \eqref{eq:J-L} give
 \[
- \E_s x^k=\bigO_k\!\left((\log s/s)^k\right).
+ \Expectation_s x^k=\BigO_k\!\left((\log s/s)^k\right).
 \]
 Consequently, the relative error made by replacing $(1-x)^n$ with
-$\e^{-nx}$ is $O((\log n)^2/n)$.  The region $x>1/2$ is exponentially small
+$\EulerE^{-nx}$ is $O((\log n)^2/n)$.  The region $x>1/2$ is exponentially small
 relative to $J(n)$, whose logarithm has only quadratic-logarithmic decay.
 Inserting fixed powers of $nx$ proves the differentiated estimates.
 \end{proofidea}
@@ -1316,14 +1267,14 @@ argument.
 Uniformly for $u$ in a fixed compact subset of $(-1,\infty)$,
 \begin{equation}
  \boxed{
- \E\e^{-uT_n}
+ \Expectation\EulerE^{-uT_n}
  =(1+u)^{-\alpha_n}\mathcal R_{\theta_n}(u)
-  \left(1+\bigO\!\left(\frac{(\log n)^2}{n}\right)\right).}    \label{eq:modgamma-main}
+  \left(1+\BigO\!\left(\frac{(\log n)^2}{n}\right)\right).}    \label{eq:modgamma-main}
 \end{equation}
 In particular, along every sequence for which the fractional part of
 $\log_2n$ tends to $\theta$,
 \begin{equation}
- (1+u)^{\alpha_n}\E\e^{-uT_n}
+ (1+u)^{\alpha_n}\Expectation\EulerE^{-uT_n}
  \longrightarrow\mathcal R_\theta(u).              \label{eq:modgamma-subsequence}
 \end{equation}
 \end{theorem}
@@ -1333,7 +1284,7 @@ By \Cref{lem:power-laplace} and \eqref{eq:J-L}, the logarithm of the left side
 is
 \[
  \Lambda((1+u)n)-\Lambda(n)-\log(1+u)
- +\bigO((\log n)^2/n).
+ +\BigO((\log n)^2/n).
 \]
 Put $a=\log(1+u)$.  Substituting \eqref{eq:Lambda} gives
 \begin{align*}
@@ -1356,14 +1307,14 @@ bounded phase cocycle rather than disappearing in the limit.
 \label{cor:endpoint-cumulants}
 As $n\to\infty$,
 \begin{align}
- \E T_n
+ \Expectation T_n
  &=\alpha_n-\frac{\Psi'(\theta_n)}{L}
-   +\bigO\!\left(\frac{(\log n)^2}{n}\right),        \label{eq:Tn-mean}\\
- \Var(T_n)
+   +\BigO\!\left(\frac{(\log n)^2}{n}\right),        \label{eq:Tn-mean}\\
+ \Variance(T_n)
  &=\alpha_n-\frac1L
    -\frac{\Psi'(\theta_n)}{L}
    +\frac{\Psi''(\theta_n)}{L^2}
-   +\bigO\!\left(\frac{(\log n)^2}{n}\right).      \label{eq:Tn-var}
+   +\BigO\!\left(\frac{(\log n)^2}{n}\right).      \label{eq:Tn-var}
 \end{align}
 Moreover,
 \begin{equation}
@@ -1397,7 +1348,7 @@ moment ratio.}
 
 Since
 \(
- \E\mathcal R_n^k=\mu_{n+k}/\mu_n
+ \Expectation\mathcal R_n^k=\mu_{n+k}/\mu_n
 \), the endpoint law immediately gives fixed-shift moment ratios.
 
 \begin{corollary}[Phase-resolved high-moment ratios]
@@ -1410,7 +1361,7 @@ For every fixed positive integer $k$,
   \left(
     \log_2n+\frac12-\frac{\Psi'(\log_2n)}{L}
   \right)
- +\bigO_k\!\left(\frac{(\log n)^2}{n^2}\right).}    \label{eq:high-moment-ratio}
+ +\BigO_k\!\left(\frac{(\log n)^2}{n^2}\right).}    \label{eq:high-moment-ratio}
 \end{equation}
 In particular,
 \begin{equation}
@@ -1435,19 +1386,19 @@ moment.
 \label{cor:tower-moment-correction}
 Put $n=2m$.  For fixed $r\ge1$,
 \begin{align}
- &\frac{\E[(\sqrt{2m}\Tower{m})^{2r}]}{(2r-1)!!}
+ &\frac{\Expectation[(\sqrt{2m}\Tower{m})^{2r}]}{(2r-1)!!}
  \notag\\
  &\quad=1-
  \frac{
    2r\log_2n+r+r^2-2r\Psi'(\log_2n)/L
  }{n}
- +\bigO_r\!\left(\frac{(\log n)^2}{n^2}\right).    \label{eq:tower-moment-correction}
+ +\BigO_r\!\left(\frac{(\log n)^2}{n^2}\right).    \label{eq:tower-moment-correction}
 \end{align}
 For the variance this specializes to
 \begin{equation}
- 1-\Var(\sqrt{2m}\Tower{m})
+ 1-\Variance(\sqrt{2m}\Tower{m})
  =\frac{2\log_2(2m)+2-2\Psi'(\log_2(2m))/L}{2m}
- +\bigO\!\left(\frac{(\log m)^2}{m^2}\right).       \label{eq:tower-variance-correction}
+ +\BigO\!\left(\frac{(\log m)^2}{m^2}\right).       \label{eq:tower-variance-correction}
 \end{equation}
 \end{corollary}
 
@@ -1500,11 +1451,11 @@ The factorization couples $Z_m=R_mG_m$ with $R_m$ independent of $G_m$.
 \label{lem:beta-W1}
 For the beta coordinate in \eqref{eq:Bm-density},
 \begin{equation}
- W_1(G_m,Z)=\bigO(m^{-1}).                           \label{eq:beta-W1}
+ W_1(G_m,Z)=\BigO(m^{-1}).                           \label{eq:beta-W1}
 \end{equation}
 Moreover,
 \begin{equation}
- \E|G_m|
+ \Expectation|G_m|
  =\sqrt{2m}\frac{c_m}{m}
  =\sqrt{\frac2\pi}\left(1-\frac1{8m}+O(m^{-2})\right).         \label{eq:Gm-abs}
 \end{equation}
@@ -1519,7 +1470,7 @@ The density of $G_m$ is
 Stirling's expansion for $c_m$ and a Taylor expansion of the logarithm show
 that the first absolute moment of the signed density difference from the
 standard normal is $O(1/m)$; this bounds $W_1$.  The exact integral
-$\E|B_m|=c_m/m$ gives \eqref{eq:Gm-abs}.
+$\Expectation|B_m|=c_m/m$ gives \eqref{eq:Gm-abs}.
 \end{proofidea}
 
 \begin{theorem}[Sharp leading transport scale]
@@ -1536,7 +1487,7 @@ For the Rvachev zero-bias tower,
 \begin{proof}
 Let
 \[
- d_m=\E(1-R_m)=1-\frac{\mu_{2m+1}}{\mu_{2m}}.
+ d_m=\Expectation(1-R_m)=1-\frac{\mu_{2m+1}}{\mu_{2m}}.
 \]
 By \eqref{eq:high-moment-ratio},
 \begin{equation}
@@ -1547,7 +1498,7 @@ By \eqref{eq:high-moment-ratio},
 The factorization coupling gives
 \[
  W_1(Z_m,G_m)
- \le\E|G_m|(1-R_m)=\E|G_m|d_m.
+ \le\Expectation|G_m|(1-R_m)=\Expectation|G_m|d_m.
 \]
 Together with \Cref{lem:beta-W1}, this yields
 \begin{equation}
@@ -1557,8 +1508,8 @@ Together with \Cref{lem:beta-W1}, this yields
 For the reverse bound, the function $x\mapsto|x|$ is $1$-Lipschitz, so
 \begin{align*}
  W_1(Z_m,Z)
- &\ge \E|Z|-\E|Z_m|\\
- &=\sqrt{\frac2\pi}-\E|G_m|\E R_m
+ &\ge \Expectation|Z|-\Expectation|Z_m|\\
+ &=\sqrt{\frac2\pi}-\Expectation|G_m|\Expectation R_m
   =\sqrt{\frac2\pi}d_m+O(m^{-1}).                  \label{eq:W1-lower}
 \end{align*}
 Since $d_m\sim\log(2m)/(2m\log2)$ dominates $m^{-1}$, the upper and lower
@@ -1613,7 +1564,7 @@ not formal proofs of the manuscript theorems.
 \toprule
 $m$ & $\mu_{2m+2}/\mu_{2m}$
 & normalized gap in \eqref{eq:even-ratio-leading}
-& $\Var(\sqrt{2m}\Tower{m})$ \\
+& $\Variance(\sqrt{2m}\Tower{m})$ \\
 \midrule
 10   & 0.644909548417 & 0.821601942 & 0.614199569921 \\
 20   & 0.760481812449 & 0.900118090 & 0.741933475560 \\
@@ -1687,7 +1638,7 @@ $j_{m-1/2,k}$ be the $k$th positive zero of $J_{m-1/2}$.  For fixed $k$,
 The first term is forced by the spherical beta factor.  At the Bessel turning
 point, fluctuations of $R_m$ occur on a scale much smaller than the
 $m^{1/3}$ Airy scale, while the mean contraction shifts the argument by
-approximately $j_{m-1/2,k}\E(1-R_m)$.  A proof should combine uniform turning
+approximately $j_{m-1/2,k}\Expectation(1-R_m)$.  A proof should combine uniform turning
 point asymptotics for Bessel functions with the mod-Gamma law of
 \Cref{thm:mod-gamma}.
 
@@ -1709,7 +1660,7 @@ converge to a Gaussian law with covariance
 A saddle parameter $z\sim2m^2$ in the product
 \eqref{eq:occupancy-partition} predicts
 \(
- \E K_j\sim c_jm
+ \Expectation K_j\sim c_jm
 \)
 and grand-canonical variance $c_jm/2$.  Conditioning on the total occupancy
 produces the rank-one covariance correction in \eqref{eq:occupancy-CLT}.
@@ -1720,7 +1671,7 @@ Multivariate analytic combinatorics should make this route rigorous.
 For every fixed $r$, the ratio in
 \eqref{eq:tower-moment-correction} admits a complete expansion
 \begin{equation}
- \frac{\E[(\sqrt{2m}\Tower{m})^{2r}]}{(2r-1)!!}
+ \frac{\Expectation[(\sqrt{2m}\Tower{m})^{2r}]}{(2r-1)!!}
  \sim1+\sum_{j\ge1}\frac{P_{r,j}(\log m,\{\log_2m\})}{m^j},    \label{eq:all-order-Gaussian}
 \end{equation}
 where $P_{r,j}$ is polynomial in $\log m$ and smooth periodic in the dyadic
@@ -1736,7 +1687,7 @@ points.
 
 \begin{conjecture}[Monotone standardized Stein discrepancy]
 \label{conj:Stein-monotone}
-Let $\widetilde Y_m=\Tower{m}/\sqrt{\Var(\Tower{m})}$.  A natural quadratic
+Let $\widetilde Y_m=\Tower{m}/\sqrt{\Variance(\Tower{m})}$.  A natural quadratic
 Stein discrepancy, and possibly the relative entropy to the standard normal,
 is eventually strictly decreasing in $m$.
 \end{conjecture}
@@ -1760,13 +1711,13 @@ supply the corresponding period $\log(1/q)$.
 \paragraph{Ultraspherical and Legendre synthesis.}
 The kernel $(1-u^2)^{m-1}$ is the Gegenbauer weight with parameter
 $m-1/2$.  Thus the tower defines a triangular transform from the repository's
-Legendre coefficients of $\Up$ to ultraspherical coefficients of $p_m$.  An
+Legendre coefficients of $\RvachevUp$ to ultraspherical coefficients of $p_m$.  An
 explicit coefficient map could close a new representation loop and may be
 better conditioned than repeated differentiation of the Legendre series.
 
 \paragraph{Dyadic exact values.}
 Formula \eqref{eq:density-kernel} expands into finitely many weighted
-primitives of $\Up$.  At dyadic $x$, the repository's exact primitive and
+primitives of $\RvachevUp$.  At dyadic $x$, the repository's exact primitive and
 moment machinery should therefore yield rational values of $p_m(x)$ and its
 derivatives.  Determining denominator valuations as a function of $(m,x)$ is a
 concrete arithmetic project.
@@ -1874,7 +1825,7 @@ $\prod_{\ell=j}^{J-1}\sum_{k=0}^mw_\ell(k)z^k$.  Backward convolution computes
 all $S(j,r)$ in $O(Jm^2)$ operations.  Given that $r$ hits remain at digit $j$,
 choose $k$ with probability
 \begin{equation}
- \Prob(K_j=k\mid r\text{ remain})
+ \Probability(K_j=k\mid r\text{ remain})
  =\frac{w_j(k)S(j+1,r-k)}{S(j,r)}.                  \label{eq:DP-transition}
 \end{equation}
 After the occupancy vector is sampled, draw the independent beta digits from
@@ -1968,7 +1919,7 @@ functions,
 V.~L. Rvachev and V.~A. Rvachev,
 \newblock A certain finite function,
 \newblock 1971; foundational paper introducing the compactly supported finite
-function now written $\Up$.
+function now written $\RvachevUp$.
 
 \end{thebibliography}
 

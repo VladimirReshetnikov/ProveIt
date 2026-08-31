@@ -1,4 +1,5 @@
 {
+  "status": "last_validated_render_pending_source_rebuild",
   "path": "fabius_rvachev_new_frontiers.pdf",
   "sha256": "a5953f214512bf0f53ebb982b44c06f5fcc69b19c93bb68164b0048af3abb29d",
   "bytes": 774221,
@@ -55,6 +56,7 @@
     "report_embeds": "cleaned vector PDFs"
   },
   "source_audit": {
+    "checkpoint_status": "last_validated_source_used_for_existing_pdf",
     "path": "fabius_rvachev_new_frontiers.tex",
     "sha256": "64bd5c34ccfe38dc77c43c42a1fc6653f1ecd55685c8aaaa7e04211cb85aedbc",
     "lines": 2827,
@@ -83,7 +85,18 @@
     "wigner_3j_identification_and_factorial_form_formalized": false,
     "inherited_overlap": ["Nevai limit", "J-fraction", "Hankel program", "Gauss--Pade program"]
   },
+  "current_uncompiled_source": {
+    "path": "fabius_rvachev_new_frontiers.tex",
+    "sha256": "9a9d59159ed3f447762088d14d3c1770346f182006961cbb9617ea32dbbe7401",
+    "bytes": 110176,
+    "lines": 2783,
+    "conflict_markers": 0,
+    "canonical_notation_audit_findings": 0,
+    "pdf_synchronized": false,
+    "checksum_ledger_source_row_pending_rebuild": true
+  },
   "build": {
+    "checkpoint_status": "last_validated_pdf_build",
     "engine": "pdfTeX 3.141592653-2.6-1.40.22",
     "command": "pdflatex -interaction=nonstopmode -halt-on-error -file-line-error -no-shell-escape fabius_rvachev_new_frontiers.tex",
     "strict_serial_pdflatex_passes": 3,
@@ -100,11 +113,15 @@
     "underfull_note": "Narrow claim-status table on page 7 (source line 399); visually inspected and readable"
   },
   "visual_inspection": {
+    "scope": "last_validated_pdf",
     "report_pages": 39,
     "representative_pages_checked": [1, 7, 11, 13, 14, 25, 27, 34, 35, 39],
     "full_page_dpi": 90,
     "standalone_vector_figures": 5,
     "status": "passed"
   },
-  "warnings": []
+  "warnings": [
+    "The existing PDF is the last validated render and predates the current merge-resolved source.",
+    "Rebuild the PDF with three strict serial passes, then refresh the TeX, PDF, README, and preflight checksum rows together."
+  ]
 }

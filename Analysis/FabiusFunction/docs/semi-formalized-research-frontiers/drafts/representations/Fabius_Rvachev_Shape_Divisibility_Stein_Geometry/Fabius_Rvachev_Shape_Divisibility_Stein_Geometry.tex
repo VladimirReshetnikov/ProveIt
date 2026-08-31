@@ -6,6 +6,7 @@
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\input{../../../../fabius-notation.tex}
 \usepackage{bm}
 \usepackage{booktabs,longtable,array,tabularx}
 \usepackage{graphicx}
@@ -68,28 +69,6 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\wt}{\operatorname{wt}_2}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\Li}{\operatorname{Li}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\sgn}{\operatorname{sgn}}
-\newcommand{\lcm}{\operatorname{lcm}}
-\newcommand{\vtwo}{v_2}
-\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
 \newcommand{\lean}[1]{%
   \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
@@ -121,7 +100,6 @@
 \graphicspath{{numerical_output/}}
 \allowdisplaybreaks
 \lstset{style=pseudo}
-\newcommand{\Cov}{\operatorname{Cov}}
 \newcommand{\ord}{\operatorname{ord}}
 \newcommand{\Imported}{\textsc{Imported}}
 \newcommand{\ProvedHere}{\textsc{Proved here}}
@@ -306,7 +284,7 @@ to Lean-proved status here.
 The report proves the following chain.
 
 \begin{enumerate}[label=\textbf{R\arabic*.},leftmargin=3.2em]
-\item The Rvachev density $p=\Up$ is strictly log-concave on $(-1,1)$.
+\item The Rvachev density $p=\RvachevUp$ is strictly log-concave on $(-1,1)$.
 \item The Fabius CDF and survival function are strictly log-concave; the hazard is strictly increasing, the reverse hazard strictly decreasing, and the location family has strict monotone likelihood ratio.
 \item The derivative of the inverse Fabius function is strictly log-convex, although its complete nonconstant Taylor jet vanishes at probability $1/2$.
 \item The score of $p$ equals the Fabius hazard and has the exact dyadic form
@@ -345,13 +323,13 @@ $X$ & $\sum_{n\ge0}2^{-n-1}U_n$, the Fabius random variable\\
 $F$ & CDF of $X$ on $[0,1]$\\
 $V_n$ & $2U_n-1$, independent $\operatorname{Unif}[-1,1]$ variables\\
 $Z$ & $2X-1=\sum_{n\ge0}2^{-n-1}V_n$\\
-$p$ & density of $Z$, equal to the Rvachev up-function $\Up$\\
+$p$ & density of $Z$, equal to the Rvachev up-function $\RvachevUp$\\
 $H$ & CDF of $Z$\\
 $I$ & inverse Fabius function $F^{-1}$\\
 $Q$ & centered quantile $H^{-1}=2I-1$\\
 $\tau$ & canonical Stein kernel of $Z$\\
 $\rho(\delta)$ & endpoint elasticity $\delta F'(\delta)/F(\delta)$\\
-$\sinc z$ & $\sin z/z$, with $\sinc 0=1$\\
+$\SincRad z$ & $\sin z/z$, with $\SincRad 0=1$\\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -394,7 +372,7 @@ Only a small portion of the repository's established theory is needed as input.
 The imported statements are:
 
 \begin{enumerate}
-\item $p=\Up$ is the positive $C^\infty$ density of $Z$ on $(-1,1)$, vanishes
+\item $p=\RvachevUp$ is the positive $C^\infty$ density of $Z$ on $(-1,1)$, vanishes
 with all derivatives at $\pm1$, is even, and satisfies the refinement equation.
 \item $p$ is log-concave on $(-1,1)$.
 \item $p$ is nowhere real analytic on $[-1,1]$; in particular it is analytic on
@@ -437,10 +415,10 @@ Fabius function $F$.  Centering and doubling gives
  Z=2X-1=\sum_{n=0}^{\infty}\frac{V_n}{2^{n+1}},
  \qquad V_n=2U_n-1\sim\operatorname{Unif}[-1,1].
 \end{equation}
-The density of $Z$ is $p=\Up$.  Direct calculation gives
+The density of $Z$ is $p=\RvachevUp$.  Direct calculation gives
 \begin{equation}\label{eq:moments-basic}
- \E Z=0,\qquad \Var(Z)=\frac19,
- \qquad \E X=\frac12,\qquad \Var(X)=\frac1{36}.
+ \Expectation Z=0,\qquad \Variance(Z)=\frac19,
+ \qquad \Expectation X=\frac12,\qquad \Variance(X)=\frac1{36}.
 \end{equation}
 
 Splitting the first summand in \eqref{eq:Zseries} shows that
@@ -469,7 +447,7 @@ will organize much of the report.
 \begin{proposition}[Density-survival self-duality]\label{prop:survival}
 For every $x\in[0,1]$,
 \begin{equation}\label{eq:survival}
- p(x)=\Prob(X\ge x)=1-F(x)=F(1-x).
+ p(x)=\Probability(X\ge x)=1-F(x)=F(1-x).
 \end{equation}
 Moreover,
 \begin{equation}\label{eq:fabius-density}
@@ -481,7 +459,7 @@ Moreover,
 For $x\in[0,1]$, the upper endpoint in \eqref{eq:refinement} lies outside the
 support, so
 \[
- p(x)=\int_{2x-1}^{1}p(t)\,dt=\Prob(Z\ge2x-1)=\Prob(X\ge x).
+ p(x)=\int_{2x-1}^{1}p(t)\,dt=\Probability(Z\ge2x-1)=\Probability(X\ge x).
 \]
 The symmetry $F(1-x)=1-F(x)$ gives the remaining equality.  The density
 transformation under $Z=2X-1$ gives \eqref{eq:fabius-density}.
@@ -511,7 +489,7 @@ local curvature lower bound.
 
 \subsection{A general strictness lemma}
 \begin{lemma}[No affine patch implies strict concavity]\label{lem:no-affine}
-Let $J$ be an interval and let $g:J\to\R$ be concave.  If $g$ is not affine on
+Let $J$ be an interval and let $g:J\to\RealNumbers$ be concave.  If $g$ is not affine on
 any nondegenerate subinterval of $J$, then $g$ is strictly concave on $J$.
 \end{lemma}
 
@@ -526,7 +504,7 @@ throughout that chord, hence $g$ is affine on $[x,y]$.
 
 \subsection{Resolution of the binary strictness conjecture}
 \begin{theorem}[Strict log-concavity of the Rvachev density]\label{thm:strict-logconcave}
-The function $p=\Up$ is strictly log-concave on $(-1,1)$.  Equivalently, for
+The function $p=\RvachevUp$ is strictly log-concave on $(-1,1)$.  Equivalently, for
 $x\ne y$ in $(-1,1)$ and $0<t<1$,
 \begin{equation}\label{eq:strict-logconcave}
  p((1-t)x+ty)>p(x)^{1-t}p(y)^t.
@@ -566,7 +544,7 @@ curvature test at the mode returns zero.
 
 \subsection{Strict log-concavity of the distribution tails}
 \begin{theorem}[Strictly log-concave CDF and survival]\label{thm:cdf-survival}
-The centered CDF $H(x)=\Prob(Z\le x)$ and survival $1-H(x)$ are strictly
+The centered CDF $H(x)=\Probability(Z\le x)$ and survival $1-H(x)$ are strictly
 log-concave on $(-1,1)$.  The Fabius CDF $F$ and survival $1-F$ are strictly
 log-concave on $(0,1)$.
 \end{theorem}
@@ -701,12 +679,12 @@ $I(1/2+h)=1/2+h/2+$ a flat remainder.  Strict log-convexity follows from
 \subsection{The entire characteristic function}
 With the Fourier convention
 \[
- \Phi(\xi)=\E e^{2\pi i\xi Z},
+ \Phi(\xi)=\Expectation e^{2\pi i\xi Z},
 \]
 independence in \eqref{eq:Zseries} gives
 \begin{equation}\label{eq:sinc-product}
- \Phi(\xi)=\prod_{n=0}^{\infty}\sinc\!\left(\frac{\pi\xi}{2^n}\right),
- \qquad \sinc z=\frac{\sin z}{z}.
+ \Phi(\xi)=\prod_{n=0}^{\infty}\SincRad\!\left(\frac{\pi\xi}{2^n}\right),
+ \qquad \SincRad z=\frac{\sin z}{z}.
 \end{equation}
 The compact support of $p$ makes $\Phi$ entire.  At a nonzero integer $m$, the
 factors indexed by $0\le n\le\nu_2(m)$ vanish simply and all later factors are
@@ -718,7 +696,7 @@ In particular, every odd integer is a simple zero.
 
 Vieta's product
 \[
- \sinc z=\prod_{j=1}^{\infty}\cos\!\left(\frac{z}{2^j}\right)
+ \SincRad z=\prod_{j=1}^{\infty}\cos\!\left(\frac{z}{2^j}\right)
 \]
 reorganizes \eqref{eq:sinc-product} as
 \begin{equation}\label{eq:cosine-triangle}
@@ -729,13 +707,13 @@ Thus $Z$ also has the Bernoulli-triangular representation
 \begin{equation}\label{eq:bernoulli-triangle}
  Z\ \stackrel d=\ \sum_{m=1}^{\infty}\sum_{j=1}^{m}
  \frac{\varepsilon_{m,j}}{2^{m+1}},
- \qquad \Prob(\varepsilon_{m,j}=\pm1)=\frac12.
+ \qquad \Probability(\varepsilon_{m,j}=\pm1)=\frac12.
 \end{equation}
 This is the natural bridge from the sinc product to finite Thue--Morse sign sums.
 
 \subsection{A general zero-multiplicity obstruction}
 \begin{lemma}[Entire zero divisibility]\label{lem:zero-divisibility}
-Let $\mu$ be a compactly supported probability measure on $\R$.  If
+Let $\mu$ be a compactly supported probability measure on $\RealNumbers$.  If
 $\mu=\nu^{*r}$ for an integer $r\ge2$, then $\nu$ is compactly supported and every
 zero of the entire characteristic function $\widehat\mu$ has multiplicity
 divisible by $r$.
@@ -749,15 +727,15 @@ $M$.  This contradicts compact support of $\mu$.  The lower tail is identical, s
 $\nu$ has compact support.
 
 Both characteristic functions therefore extend to entire functions, and the real
-identity $\widehat\mu=\widehat\nu^{\,r}$ extends to $\C$.  At every zero, the order
+identity $\widehat\mu=\widehat\nu^{\,r}$ extends to $\ComplexNumbers$.  At every zero, the order
 of the right-hand side is $r$ times an integer.
 \end{proof}
 
 \begin{theorem}[No identical convolution roots]\label{thm:rootless}
-Let $\mu_{\Up}$ be the probability law with density $p=\Up$.  For every integer
+Let $\mu_{\RvachevUp}$ be the probability law with density $p=\RvachevUp$.  For every integer
 $r\ge2$, there is no probability measure $\nu$ such that
 \begin{equation}
- \mu_{\Up}=\nu^{*r}.
+ \mu_{\RvachevUp}=\nu^{*r}.
 \end{equation}
 \end{theorem}
 \Status{\ProvedHere}
@@ -782,7 +760,7 @@ Normalize the general geometric uniform series by
 \begin{equation}\label{eq:Za}
  Z_a=(a-1)\sum_{n=1}^{\infty}\frac{V_n}{a^n},\qquad a>1,
 \end{equation}
-so that $\supp Z_a=[-1,1]$.  Its characteristic function is a product of sinc
+so that $\SupportOperator Z_a=[-1,1]$.  Its characteristic function is a product of sinc
 factors with strictly decreasing scales.  The first positive zero of the
 largest-scale factor is not a zero of any smaller-scale factor and is therefore
 simple.
@@ -806,7 +784,7 @@ subseries.  The simple-zero theorem shows that equal-factor partitions are
 impossible, but it leaves the general factor lattice open.
 
 \begin{conjecture}[Dyadic Bernoulli-divisor rigidity]\label{conj:factor-rigidity}
-Suppose $\mu_{\Up}=\alpha*\beta$ with compactly supported probability measures
+Suppose $\mu_{\RvachevUp}=\alpha*\beta$ with compactly supported probability measures
 $\alpha$ and $\beta$.  Then, up to opposite translations of the two factors,
 there is a partition of the multiset
 \[
@@ -844,7 +822,7 @@ The upper endpoint is $1$ because $p$ is supported on $[-1,1]$.
 \begin{proposition}[Basic Stein calculus]\label{prop:stein-basic}
 The kernel $\tau$ is positive, even, and $C^\infty$ on $(-1,1)$.  It satisfies
 \begin{align}
- \E[Z\varphi(Z)]&=\E[\tau(Z)\varphi'(Z)],\label{eq:stein-identity}\\
+ \Expectation[Z\varphi(Z)]&=\Expectation[\tau(Z)\varphi'(Z)],\label{eq:stein-identity}\\
  (p\tau)'&=-xp,\label{eq:stein-conservative}\\
  \tau'(x)+(\log p)'(x)\tau(x)&=-x.\label{eq:stein-ode}
 \end{align}
@@ -883,16 +861,16 @@ For $0\le x<1$,
  \label{eq:stein-F}\tag{T1}\\
  &=\frac{\displaystyle\int_x^1t\,[1-F(t)]\,dt}{1-F(x)},
  \label{eq:stein-survival}\tag{T2}\\
- &=\frac12\E\bigl[X^2-x^2\mid X\ge x\bigr].
+ &=\frac12\Expectation\bigl[X^2-x^2\mid X\ge x\bigr].
  \label{eq:stein-conditional}\tag{T3}
 \end{align}
 If
 \[
- e(x)=\E[X-x\mid X\ge x]
+ e(x)=\Expectation[X-x\mid X\ge x]
 \]
 is the mean residual life and $R_x=X-x$ under the same conditioning, then
 \begin{equation}\label{eq:stein-residual}
- \tau(x)=x e(x)+\frac12\E[R_x^2],
+ \tau(x)=x e(x)+\frac12\Expectation[R_x^2],
  \qquad x e(x)\le\tau(x)\le e(x)\le1-x.
 \end{equation}
 \end{theorem}
@@ -925,22 +903,22 @@ A useful absolute moment follows directly from the distributional recursion.
 
 \begin{lemma}[Exact first absolute moment]\label{lem:absolute-moment}
 \begin{equation}\label{eq:absolute-moment}
- \E|Z|=\frac5{18}.
+ \Expectation|Z|=\frac5{18}.
 \end{equation}
 \end{lemma}
 
 \begin{proof}
 From \eqref{eq:distributional-recursion},
 \[
- \E|Z|=\frac12\E|V+Z'|.
+ \Expectation|Z|=\frac12\Expectation|V+Z'|.
 \]
 For fixed $z\in[-1,1]$ and $V\sim\operatorname{Unif}[-1,1]$,
 \[
- \E|V+z|=\frac12\int_{-1}^1|v+z|\,dv=\frac{1+z^2}{2}.
+ \Expectation|V+z|=\frac12\int_{-1}^1|v+z|\,dv=\frac{1+z^2}{2}.
 \]
 Therefore
 \[
- \E|Z|=\frac14(1+\E Z^2)=\frac14\left(1+\frac19\right)=\frac5{18}.
+ \Expectation|Z|=\frac14(1+\Expectation Z^2)=\frac14\left(1+\frac19\right)=\frac5{18}.
 \]
 \end{proof}
 
@@ -959,18 +937,18 @@ $\tau(1/2)=1/12$ also appear in the earlier Stein--Koopman report}
 \begin{proof}
 At $x=0$, \eqref{eq:stein-conditional} gives
 \[
- \tau(0)=\frac12\E X^2
- =\frac12\left(\Var X+(\E X)^2\right)
+ \tau(0)=\frac12\Expectation X^2
+ =\frac12\left(\Variance X+(\Expectation X)^2\right)
  =\frac12\left(\frac1{36}+\frac14\right)=\frac5{36}.
 \]
 At $x=1/2$, condition $X\ge1/2$ is equivalent to $Z\ge0$.  Symmetry gives
 \[
- \E[Z^2\mid Z\ge0]=\E Z^2=\frac19,
- \qquad \E[Z\mid Z\ge0]=\E|Z|=\frac5{18}.
+ \Expectation[Z^2\mid Z\ge0]=\Expectation Z^2=\frac19,
+ \qquad \Expectation[Z\mid Z\ge0]=\Expectation|Z|=\frac5{18}.
 \]
 Using the equivalent form
 \[
- \tau(x)=\frac18\E[(1+Z)^2\mid Z\ge2x-1]-\frac{x^2}{2}
+ \tau(x)=\frac18\Expectation[(1+Z)^2\mid Z\ge2x-1]-\frac{x^2}{2}
 \]
 yields $\tau(1/2)=1/12$.
 
@@ -993,7 +971,7 @@ $s'(1/2)=-(\log p)''(1/2)=16$.  Differentiating once more,
 \begin{proof}
 The tail formula for a symmetric variable gives
 \[
- \E|Z|=\int_0^1\Prob(|Z|>t)\,dt
+ \Expectation|Z|=\int_0^1\Probability(|Z|>t)\,dt
  =4\int_0^{1/2}F(s)\,ds.
 \]
 Apply \cref{lem:absolute-moment}.
@@ -1019,7 +997,7 @@ antiderivative and dyadic evaluation results.
 \end{proof}
 
 \subsection{Bell--Bernoulli moment bridge}
-Let $\mu_k=\E Z^k$.  The repository expresses the even cumulants as
+Let $\mu_k=\Expectation Z^k$.  The repository expresses the even cumulants as
 \begin{equation}\label{eq:cumulants}
  \kappa_{2m}=\frac{2^{2m}B_{2m}}{2m(2^{2m}-1)},
  \qquad \kappa_{2m+1}=0,
@@ -1030,13 +1008,13 @@ second layer.
 \begin{theorem}[Stein--Bell moment identity]\label{thm:stein-bell}
 For every integer $m\ge0$,
 \begin{equation}\label{eq:stein-moment}
- \E[\tau(Z)Z^m]=\frac{\mu_{m+2}}{m+1}.
+ \Expectation[\tau(Z)Z^m]=\frac{\mu_{m+2}}{m+1}.
 \end{equation}
 In particular,
 \begin{align}
- \E\tau(Z)&=\frac19,\label{eq:Etau}\\
- \E[\tau(Z)Z^2]&=\frac{19}{2025},\label{eq:EtauZ2}\\
- \E[\tau(Z)Z^4]&=\frac{583}{297675}.
+ \Expectation\tau(Z)&=\frac19,\label{eq:Etau}\\
+ \Expectation[\tau(Z)Z^2]&=\frac{19}{2025},\label{eq:EtauZ2}\\
+ \Expectation[\tau(Z)Z^4]&=\frac{583}{297675}.
  \label{eq:EtauZ4}
 \end{align}
 All odd mixed moments vanish.
@@ -1074,7 +1052,7 @@ valid weight in a Poincare inequality for every density with connected support
 \begin{theorem}[Sharp weighted Poincare inequality]\label{thm:poincare}
 For every absolutely continuous $g$ with finite variance,
 \begin{equation}\label{eq:weighted-poincare}
- \Var(g(Z))\le \E\bigl[\tau(Z)g'(Z)^2\bigr].
+ \Variance(g(Z))\le \Expectation\bigl[\tau(Z)g'(Z)^2\bigr].
 \end{equation}
 The optimal constant multiplying the right-hand side is exactly $1$, and equality
 holds for every affine $g$.
@@ -1085,11 +1063,11 @@ interpretation are \ProvedHere}
 \begin{proof}
 The inequality is Saumard's weighted Poincare theorem.  For $g(z)=az+b$,
 \[
- \Var(g(Z))=a^2\Var(Z)=\frac{a^2}{9},
+ \Variance(g(Z))=a^2\Variance(Z)=\frac{a^2}{9},
 \]
 while \eqref{eq:Etau} gives
 \[
- \E[\tau(Z)g'(Z)^2]=a^2\E\tau(Z)=\frac{a^2}{9}.
+ \Expectation[\tau(Z)g'(Z)^2]=a^2\Expectation\tau(Z)=\frac{a^2}{9}.
 \]
 Thus no smaller multiplicative constant is possible.
 \end{proof}
@@ -1108,8 +1086,8 @@ Equation \eqref{eq:stein-conservative} gives the divergence form
 \label{prop:generator}
 For smooth $f,g$ for which the boundary terms vanish,
 \begin{equation}\label{eq:dirichlet}
- -\E[f(Z)\mathcal Lg(Z)]
- =\E[\tau(Z)f'(Z)g'(Z)].
+ -\Expectation[f(Z)\mathcal Lg(Z)]
+ =\Expectation[\tau(Z)f'(Z)g'(Z)].
 \end{equation}
 Hence $\mathcal L$ is symmetric and nonpositive in $L^2(p)$, the Rvachev law is
 invariant, and
@@ -1511,7 +1489,7 @@ The script performs consistency assertions against
 \[
  \int p=1,\quad p(0)=1,\quad p(1/2)=1/2,
  \quad \tau(0)=5/36,\quad \tau(1/2)=1/12,
- \quad \E\tau=1/9.
+ \quad \Expectation\tau=1/9.
 \]
 The observed absolute errors in the last three nontrivial identities are below
 $2\times10^{-11}$.
@@ -1609,12 +1587,12 @@ small; endpoint asymptotic evaluation should replace brute-force gridding there.
 For the centered Gaussian with the same variance, the Stein kernel is the constant
 $\sigma^2=1/9$.  The computation gives
 \begin{equation}\label{eq:stein-discrepancy-numeric}
- \E\tau(Z)^2\approx0.0129205621965,
+ \Expectation\tau(Z)^2\approx0.0129205621965,
 \end{equation}
 and therefore the dimensionless quadratic Stein discrepancy
 \begin{equation}\label{eq:normalized-stein-discrepancy}
- \frac{\E(\tau(Z)-1/9)^2}{(1/9)^2}
- =81\Var(\tau(Z))
+ \frac{\Expectation(\tau(Z)-1/9)^2}{(1/9)^2}
+ =81\Variance(\tau(Z))
  \approx0.04656553792.
 \end{equation}
 This number is not claimed exact.  Obtaining a closed $q$-series or dyadic-integral
@@ -1688,7 +1666,7 @@ subproduct times a translation.
 \begin{boxedremark}
 \textbf{Research problem (entire quotient positivity).}
 Given an integer-valued zero divisor bounded by $1+\nu_2(m)$, characterize when
-the corresponding canonical product is positive definite on $\R$.
+the corresponding canonical product is positive definite on $\RealNumbers$.
 \end{boxedremark}
 
 A solution would connect harmonic analysis, entire functions of exponential type,
@@ -1709,7 +1687,7 @@ Natural questions include:
 Reshetnikov numbers;
 \item a Bell-polynomial formula for Taylor jets of $\tau$ at arbitrary dyadic
 points;
-\item closed forms for $\E\tau(Z)^m$ and in particular the discrepancy
+\item closed forms for $\Expectation\tau(Z)^m$ and in particular the discrepancy
 \eqref{eq:normalized-stein-discrepancy}.
 \end{enumerate}
 
@@ -1918,7 +1896,7 @@ from the repository's geometric-family volume.
 \subsection{Half-line marginals}
 For completeness, write
 \[
- H(x)=\int_{\R}\mathbf 1_{\{t\le x\}}p(t)\,dt.
+ H(x)=\int_{\RealNumbers}\mathbf 1_{\{t\le x\}}p(t)\,dt.
 \]
 The set $\{(x,t):t\le x\}$ is convex, so its indicator is log-concave in the
 extended-value convention.  The product with $p(t)$ is log-concave in $(x,t)$.

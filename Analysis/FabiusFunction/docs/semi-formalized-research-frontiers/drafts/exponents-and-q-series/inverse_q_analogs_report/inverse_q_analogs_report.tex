@@ -6,6 +6,7 @@
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\input{../../../../fabius-notation.tex}
 \usepackage{bm}
 \usepackage{booktabs,longtable,array,tabularx}
 \usepackage{graphicx}
@@ -67,41 +68,8 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\wt}{\operatorname{wt}_2}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\Li}{\operatorname{Li}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\sgn}{\operatorname{sgn}}
-\newcommand{\lcm}{\operatorname{lcm}}
-\newcommand{\vtwo}{v_2}
-\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
-\newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
 \newcommand{\lean}[1]{%
   \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
-\newcommand{\leanevaltwo}[1]{%
-  \nolinkurl{integral_eval}\texttt{\textsubscript{2}}\nolinkurl{#1}}
-
-\newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
-\newenvironment{boxedremark}{%
-  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
-  \color{black}\hrule\vspace{0.6em}\small
-}{%
-  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
-}
 
 \lstdefinestyle{pseudo}{
   basicstyle=\ttfamily\small,
@@ -130,19 +98,10 @@
 \definecolor{conjectureorange}{RGB}{158,82,0}
 \definecolor{numericalblue}{RGB}{28,78,135}
 \newcommand{\Disc}{\operatorname{Disc}}
-\newcommand{\Res}{\operatorname{Res}}
-\newcommand{\Log}{\operatorname{Log}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\diag}{\operatorname{diag}}
-\newcommand{\qbinomq}[2]{\qbinom{#1}{#2}{q}}
-\newcommand{\Qbinom}[3]{\qbinom{#1}{#2}{#3}}
-\newcommand{\poch}[3]{(#1;#2)_{#3}}
 \newcommand{\Aq}{\mathcal A_q}
 \newcommand{\statusproved}{\textcolor{provedgreen}{\textsc{paper proof}}}
 \newcommand{\statusnumerical}{\textcolor{numericalblue}{\textsc{symbolic/numerical}}}
 \newcommand{\statusconjectural}{\textcolor{conjectureorange}{\textsc{conjectural}}}
-\newcommand{\abs}[1]{\left|#1\right|}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 \allowdisplaybreaks[3]
 \numberwithin{equation}{section}
 \numberwithin{figure}{section}
@@ -205,8 +164,8 @@ proved globally monotone in the principal sign regimes and is expanded both at
 \(q=0\) and \(q=1\), the latter in polylogarithmic form.
 
 For Gaussian coefficients, positivity of coefficients yields a global theorem:
-for every nontrivial \(\qbinomq nk\) and every \(y>1\), there is exactly one
-positive real base \(q\) with \(\qbinomq nk=y\).  Bernoulli expansions are then
+for every nontrivial \(\GaussianBinomial{n}{k}{q}\) and every \(y>1\), there is exactly one
+positive real base \(q\) with \(\GaussianBinomial{n}{k}{q}=y\).  Bernoulli expansions are then
 reverted to all orders near \(q=1\), and reciprocal symmetry controls the
 large-\(q\) inverse.  Continuous inverses in the upper and lower parameters are
 developed through the \(q\)-gamma representation.  Separate chapters treat
@@ -261,7 +220,7 @@ asymptotic organization of the nonprincipal inverse branches, appear not to be
 standard in this form.  No assertion of bibliographic priority is made without
 an exhaustive literature search.  Numerical experiments are not substitutes
 for interval or formal proof; the exact polynomial identities, however, can be
-checked in a computer algebra system over \(\Z[q]\).
+checked in a computer algebra system over \(\IntegerNumbers[q]\).
 
 \tableofcontents
 \listoffigures
@@ -315,7 +274,7 @@ Object & Recoverable parameter & Principal mechanism\\
 \((a;q)_n\), \((a;q)_\infty\) & argument \(a\) & algebraic covering for finite \(n\); entire-function covering for \(n=\infty\)\\
 & base \(q\) & monotonicity on real sign domains; polynomial or analytic branch continuation\\
 & order \(n\) or \(\alpha\) & discrete recurrence or complex-order quotient\\[0.2em]
-\(\qbinomq nk\) & base \(q\) & nonnegative coefficients, Bernoulli reversion, reciprocal symmetry\\
+\(\GaussianBinomial{n}{k}{q}\) & base \(q\) & nonnegative coefficients, Bernoulli reversion, reciprocal symmetry\\
 & \(n,k\) or \(\alpha,\beta\) & ratio recurrences and \(q\)-gamma interpolation\\[0.2em]
 \([x]_q\), \([n]_q!\) & \(x,n,q\) & elementary logarithm or positive-polynomial inversion\\[0.2em]
 \(\Gamma_q(x)\) & \(x\) & two real branches separated by the unique minimum\\
@@ -332,7 +291,7 @@ On a real interval, a continuous strictly monotone function has one ordinary
 inverse.  In the complex plane, even a polynomial of degree two has two sheets.
 A useful global object is therefore the analytic curve
 \[
- \mathscr R_F=\{(p,y)\in\C^2:F(p)=y\},
+ \mathscr R_F=\{(p,y)\in\ComplexNumbers^2:F(p)=y\},
 \]
 projected to the \(y\)-plane.  Away from critical values this projection is a
 covering map.  Analytic continuation along loops permutes the sheets; this is
@@ -387,10 +346,10 @@ For one variable,
 A dimensionless relative condition number is
 \[
  \kappa_{p\leftarrow y}
- =\abs{\frac{y}{pF_p(p)}}.
+ =\AbsoluteValue{\frac{y}{pF_p(p)}}.
 \]
 At \(p=0\), or when relative error is inappropriate, the absolute condition
-number \(1/\abs{F_p}\) is preferable.  Divergence of either quantity near
+number \(1/\AbsoluteValue{F_p}\) is preferable.  Divergence of either quantity near
 \(F_p=0\) is not a numerical artifact: it is the analytic signature of a
 branch point.
 
@@ -401,7 +360,7 @@ Let \(F\) be holomorphic near \(p_0\), with \(F'(p_0)\ne0\), and set
 \[
  G(y)=p_0+\sum_{m\ge1}\frac{(y-y_0)^m}{m!}
  \left.
- \frac{\dd^{m-1}}{\dd p^{m-1}}
+ \frac{\Differential^{m-1}}{\Differential p^{m-1}}
  \left(\frac{p-p_0}{F(p)-F(p_0)}\right)^m
  \right|_{p=p_0}.
 \]
@@ -484,12 +443,12 @@ caustic, local ramification order changes.  At a Maxwell point, two ordinary
 square-root branch points project to the same target value.
 
 \section{Several unknown parameters}
-If \(F:\C^m\to\C^m\), a simultaneous local inverse exists when
+If \(F:\ComplexNumbers^m\to\ComplexNumbers^m\), a simultaneous local inverse exists when
 \(\det DF\ne0\).  Its differential is
 \[
- \dd\bm p=(DF)^{-1}\dd\bm y.
+ \Differential\bm p=(DF)^{-1}\Differential\bm y.
 \]
-For a scalar \(F:\C^m\to\C\), no such matrix inverse exists; the tangent space
+For a scalar \(F:\ComplexNumbers^m\to\ComplexNumbers\), no such matrix inverse exists; the tangent space
 of the level set is the nullspace of \(\nabla F\).  This observation prevents a
 common ambiguity in phrases such as ``invert with respect to \(q\) and all
 parameters'': the mathematically meaningful program is to construct every
@@ -498,11 +457,11 @@ one-parameter partial inverse and then study coupled systems separately.
 \chapter{Derivative kernels for \texorpdfstring{\(q\)}{q}-products}
 
 \section{Finite and infinite argument derivatives}
-For \(N\in\N\cup\{\infty\}\), write
+For \(N\in\NaturalNumbers\cup\{\infty\}\), write
 \[
  P_N(a;q)=(a;q)_N.
 \]
-For \(N=\infty\) assume \(0<\abs q<1\).  Define
+For \(N=\infty\) assume \(0<\AbsoluteValue q<1\).  Define
 \[
  S_{r,N}(a;q)=\sum_{j=0}^{N-1}
  \frac{q^{rj}}{(1-aq^j)^r},
@@ -547,7 +506,7 @@ For finite \(N\),
  \frac{\partial}{\partial q}\log(a;q)_N
  =-a\sum_{j=1}^{N-1}\frac{j q^{j-1}}{1-aq^j}.
 \]
-For \(N=\infty\) and \(\abs q<1\), the same formula holds with the sum extended
+For \(N=\infty\) and \(\AbsoluteValue q<1\), the same formula holds with the sum extended
 to infinity, locally uniformly away from zeros.
 \end{proposition}
 \begin{proof}
@@ -579,22 +538,22 @@ log-convex on that real branch.
 
 \section{Truncation bounds for certified evaluation}
 \begin{lemma}[\statusproved\ Infinite-product tail bound]\label{thm:product-tail}
-Let \(0<\abs q<1\), choose \(N\) so that
-\(\rho=\abs a\abs q^N<1\), and write
+Let \(0<\AbsoluteValue q<1\), choose \(N\) so that
+\(\rho=\AbsoluteValue a\AbsoluteValue q^N<1\), and write
 \(T_N=(aq^N;q)_\infty\).  For the logarithm obtained by continuation from
 \(a=0\),
 \[
- \abs{\log T_N}
- \le \frac{\rho}{(1-\abs q)(1-\rho)}.
+ \AbsoluteValue{\log T_N}
+ \le \frac{\rho}{(1-\AbsoluteValue q)(1-\rho)}.
 \]
 Consequently,
 \[
- \abs{T_N-1}
- \le \exp\!\left(\frac{\rho}{(1-\abs q)(1-\rho)}\right)-1.
+ \AbsoluteValue{T_N-1}
+ \le \exp\!\left(\frac{\rho}{(1-\AbsoluteValue q)(1-\rho)}\right)-1.
 \]
 \end{lemma}
 \begin{proof}
-For \(\abs z<1\), \(\abs{\log(1-z)}\le\abs z/(1-\abs z)\).  Sum this estimate
+For \(\AbsoluteValue z<1\), \(\AbsoluteValue{\log(1-z)}\le\AbsoluteValue z/(1-\AbsoluteValue z)\).  Sum this estimate
 for \(z=aq^j\), \(j\ge N\), and bound every denominator below by
 \(1-\rho\).  The second estimate follows from \(T_N=\exp(\log T_N)\).
 \end{proof}
@@ -703,13 +662,13 @@ replacement.
 \section{The principal series at \texorpdfstring{\(y=1\)}{y=1}}
 Euler's finite \(q\)-binomial theorem gives
 \[
- P_n(a)=\sum_{m=0}^n(-1)^m q^{\binom m2}\qbinomq nm a^m.
+ P_n(a)=\sum_{m=0}^n(-1)^m q^{\binom m2}\GaussianBinomial{n}{m}{q} a^m.
 \]
 Set
 \[
  e_1=[n]_q,
- \qquad e_2=q\qbinomq n2,
- \qquad e_3=q^3\qbinomq n3,
+ \qquad e_2=q\GaussianBinomial{n}{2}{q},
+ \qquad e_3=q^3\GaussianBinomial{n}{3}{q},
  \qquad u=1-y.
 \]
 
@@ -782,7 +741,7 @@ multiplicity.  Then
 \begin{proof}
 Use
 \[
- \Disc(F)=(-1)^{n(n-1)/2}L^{-1}\Res(F,F')
+ \Disc(F)=(-1)^{n(n-1)/2}L^{-1}\ResidueOperator(F,F')
 \]
 and evaluate the resultant through the roots of \(F'=P_n'\), whose leading
 coefficient is \(nL\).
@@ -1019,11 +978,11 @@ equations at large positive values.
 
 \subsection{Large targets and log-periodic correction}
 The behavior as \(y\to\infty\) is not a simple power law.  Put
-\(q=\e^{-\lambda}\), \(\lambda>0\), and write \(x=-a>0\),
+\(q=\EulerE^{-\lambda}\), \(\lambda>0\), and write \(x=-a>0\),
 \(u=\log x\).  Choose the unique decomposition
 \[
  x=q^{-m}r,
- \qquad m\in\N_0,
+ \qquad m\in\NaturalNumbers,
  \qquad 1\le r<q^{-1},
 \]
 and set \(\rho=\log r\in[0,\lambda)\).
@@ -1034,13 +993,13 @@ Define the bounded \(\lambda\)-periodic phase function
  \Omega_q(\rho)=
  \log\bigl((-r;q)_\infty(-q/r;q)_\infty\bigr)
  -\frac{\rho}{2}-\frac{\rho^2}{2\lambda},
- \qquad r=\e^\rho.
+ \qquad r=\EulerE^\rho.
 \]
 Then, as \(x\to\infty\),
 \begin{equation}
  \log(-x;q)_\infty
  =\frac{u^2}{2\lambda}+\frac{u}{2}
- +\Omega_q(u\bmod\lambda)+O(\e^{-u}).
+ +\Omega_q(u\bmod\lambda)+O(\EulerE^{-u}).
  \label{eq:logperiodic-product}
 \end{equation}
 Consequently, as \(y\to\infty\),
@@ -1096,10 +1055,10 @@ Let \(m=k+1\).  As \(k\to\infty\),
 and
 \begin{equation}
 \begin{split}
- \abs{(c_k(q);q)_\infty}
+ \AbsoluteValue{(c_k(q);q)_\infty}
  ={}&(q;q)_\infty^2q^{-m(m+1)/2}
  \frac{m^m}{(m+1)^{m+1}}\bigl(1+O(m^{-1})\bigr)\\
- ={}&\frac{(q;q)_\infty^2}{\e(m+1)}
+ ={}&\frac{(q;q)_\infty^2}{\EulerE(m+1)}
  q^{-m(m+1)/2}\bigl(1+O(m^{-1})\bigr).
 \end{split}
 \label{eq:vk-asymptotic}
@@ -1139,7 +1098,7 @@ The bounded final term perturbs the solution of the first two terms by
 \(\varepsilon=1/(m+1)+O(m^{-2})\).  Substitution in
 \eqref{eq:scaled-critical-product} yields
 \eqref{eq:vk-asymptotic}; Stirling's elementary limit
-\((1-1/(m+1))^m=\e^{-1}(1+O(m^{-1}))\) gives the second line.
+\((1-1/(m+1))^m=\EulerE^{-1}(1+O(m^{-1}))\) gives the second line.
 \end{proof}
 
 \begin{figure}[htbp]
@@ -1196,7 +1155,7 @@ proved convexity of \(\Aq\).
 \chapter{Inversion with respect to the base \texorpdfstring{\(q\)}{q}}
 
 \section{Finite products on the principal sign domains}
-Fix \(a\in\R\) and \(n\ge2\).  Regard \((a;q)_n\) as a polynomial in \(q\) of
+Fix \(a\in\RealNumbers\) and \(n\ge2\).  Regard \((a;q)_n\) as a polynomial in \(q\) of
 degree \(n(n-1)/2\).
 
 \begin{theorem}[\statusproved\ Global finite-base inverses]
@@ -1250,7 +1209,7 @@ cubic truncation.
 
 \section{The infinite product as a function of the base}
 \begin{theorem}[\statusproved\ Global infinite-base inverse]
-Fix \(a\in\R\).
+Fix \(a\in\RealNumbers\).
 \begin{enumerate}[label=(\roman*)]
 \item If \(0<a<1\), then \(q\mapsto(a;q)_\infty\) is strictly decreasing on
 \((0,1)\), from \(1-a\) to \(0\).  Every \(y\in(0,1-a)\) has exactly one base
@@ -1264,23 +1223,23 @@ inverse, denoted \(Q_a(y)\).
 The derivative kernel has the asserted sign.  For \(0<a<1\), as \(q\to1^-\),
 infinitely many factors are bounded above by a fixed number less than one, so
 the product tends to zero.  For \(a<0\), arbitrarily many factors exceed
-\(1+\abs a/2\) when \(q\) is sufficiently close to one, so the product tends to
+\(1+\AbsoluteValue a/2\) when \(q\) is sufficiently close to one, so the product tends to
 infinity.  The \(q\to0\) limit is \(1-a\).
 \end{proof}
 
-\section{Polylogarithmic inversion near \texorpdfstring{\(q=1\)}{q=1}}
-Let \(0<a<1\), put \(q=\e^{-t}\), and define
+\section{Polylogarithmic inversion near \(q=1\)}
+Let \(0<a<1\), put \(q=\EulerE^{-t}\), and define
 \[
- A=\Li_2(a),
+ A=\Polylogarithm_2(a),
  \qquad B=\frac12\log(1-a),
  \qquad C=\frac{a}{12(1-a)}.
 \]
 The classical expansion of the shifted factorial is
 \begin{equation}
- \log(a;\e^{-t})_\infty
- =-\frac{\Li_2(a)}t+\frac12\log(1-a)
+ \log(a;\EulerE^{-t})_\infty
+ =-\frac{\Polylogarithm_2(a)}t+\frac12\log(1-a)
  -\sum_{r\ge1}\frac{B_{2r}}{(2r)!}
- \Li_{2-2r}(a)t^{2r-1}.
+ \Polylogarithm_{2-2r}(a)t^{2r-1}.
  \label{eq:mcintosh-expansion}
 \end{equation}
 It is asymptotic in sectors and, after truncation, admits standard remainder
@@ -1333,7 +1292,7 @@ The reciprocal identity
 transports large-base behavior to small reciprocal base, provided zeros and
 logarithm branches are tracked.
 
-For the infinite product, \(q\mapsto(a;q)_\infty\) is analytic in \(\abs q<1\).
+For the infinite product, \(q\mapsto(a;q)_\infty\) is analytic in \(\AbsoluteValue q<1\).
 Its inverse branches can be continued until either
 \(\partial_q(a;q)_\infty=0\) or the path meets a singular boundary.  Roots of
 unity organize the boundary asymptotics, but a blanket assertion of a natural
@@ -1387,15 +1346,15 @@ with monotonicity reversed: \((a;q)_\alpha\) increases from \(1\) at
 \section{Complex order lattice}
 Because \(q^\alpha=\exp(\alpha\log q)\), the complex order is periodic under
 \[
- \alpha\longmapsto\alpha+\frac{2\pi\ii m}{\log q},
- \qquad m\in\Z.
+ \alpha\longmapsto\alpha+\frac{2\pi\ImaginaryUnit m}{\log q},
+ \qquad m\in\IntegerNumbers.
 \]
 If \(b\) is any chosen inverse value satisfying
 \((b;q)_\infty=P(a)/y\), then the order sheets are
 \begin{equation}
  \alpha_m=
- \frac{\Log(b/a)+2\pi\ii m}{\log q},
- \qquad m\in\Z.
+ \frac{\PrincipalLogarithm(b/a)+2\pi\ImaginaryUnit m}{\log q},
+ \qquad m\in\IntegerNumbers.
  \label{eq:complex-order-lattice}
 \end{equation}
 Thus order inversion factors into two independent branch structures: the
@@ -1439,7 +1398,7 @@ hypergeometric coefficients.
 \section{A global positive-base theorem}
 For integers \(0\le k\le n\), write
 \[
- G_{n,k}(q)=\qbinomq nk
+ G_{n,k}(q)=\GaussianBinomial{n}{k}{q}
  =\sum_{j=0}^{D}c_jq^j,
  \qquad D=k(n-k).
 \]
@@ -1492,8 +1451,8 @@ the rectangle.  More generally, every inverse coefficient is an integer
 polynomial in the rectangle-partition numbers.  Determining its sign pattern is
 an interesting combinatorial reversion problem.
 
-\section{Complete Bernoulli reversion near \texorpdfstring{\(q=1\)}{q=1}}
-Put \(q=\e^{-t}\), \(D=k(n-k)\), and
+\section{Complete Bernoulli reversion near \(q=1\)}
+Put \(q=\EulerE^{-t}\), \(D=k(n-k)\), and
 \[
  B=\binom nk,
  \qquad
@@ -1501,14 +1460,14 @@ Put \(q=\e^{-t}\), \(D=k(n-k)\), and
 \]
 For the \(q<1\) branch, \(s>0\).  The forward expansion is
 \begin{equation}
- \log\frac{G_{n,k}(\e^{-t})}{B}
+ \log\frac{G_{n,k}(\EulerE^{-t})}{B}
  =-\frac D2t+
  \sum_{r\ge1}\frac{B_{2r}t^{2r}}{2r(2r)!}
  \sum_{j=1}^k\bigl((n-k+j)^{2r}-j^{2r}\bigr).
  \label{eq:gaussian-bernoulli-repeated}
 \end{equation}
 This is the Bernoulli expansion established in the source monograph and is
-convergent for fixed \(n,k\) when \(\abs t<2\pi/n\).
+convergent for fixed \(n,k\) when \(\AbsoluteValue t<2\pi/n\).
 
 \begin{theorem}[\statusproved\ First inverse terms at \(q=1\)]
 As \(y\uparrow B\) from below,
@@ -1565,7 +1524,7 @@ inverse expansion.
 \centering
 \includegraphics[width=0.88\textwidth]{figures/qbinomial_inverse_accuracy.pdf}
 \caption{Relative errors of the quadratic and cubic truncations of
-\eqref{eq:qbinom-inverse-one} for \(\qbinomq{12}{5}\).  The observed slopes
+\eqref{eq:qbinom-inverse-one} for \(\GaussianBinomial{12}{5}{q}\).  The observed slopes
 agree with the predicted next powers.}
 \label{fig:qbinom-inverse-accuracy}
 \end{figure}
@@ -1602,7 +1561,7 @@ Put \(Y=y^{1/D}\) and \(q=Y+c+O(Y^{-1})\).  Then
 The positive real branch is only one sheet of the degree-\(D\) algebraic
 inverse.  The cyclotomic factorization
 \begin{equation}
- \qbinomq nk
+ \GaussianBinomial{n}{k}{q}
  =\prod_{d\ge2}\Phi_d(q)^{
  \lfloor n/d\rfloor-\lfloor k/d\rfloor-\lfloor(n-k)/d\rfloor}
  \label{eq:qbinom-cyclotomic}
@@ -1621,10 +1580,10 @@ because the target is rescaled by \(q^D\).
 \section{Discrete parameters \texorpdfstring{\(n\) and \(k\)}{n and k}}
 Fix \(q>0\).  The standard ratio identities give
 \begin{align}
- \frac{\Qbinom{n+1}{k}{q}}{\Qbinom nkq}
+ \frac{\GaussianBinomial{n+1}{k}{q}}{\GaussianBinomial{n}{k}{q}}
  &=\frac{[n+1]_q}{[n+1-k]_q}>1,
  &&0<k\le n,\label{eq:n-ratio}\\
- \frac{\Qbinom n{k+1}q}{\Qbinom nkq}
+ \frac{\GaussianBinomial{n}{k+1}{q}}{\GaussianBinomial{n}{k}{q}}
  &=\frac{[n-k]_q}{[k+1]_q}.
  \label{eq:k-ratio}
 \end{align}
@@ -1633,11 +1592,11 @@ Because \([x]_q\) is increasing in a positive integer \(x\), the sequence in
 symmetric and strictly increases up to the middle, then decreases.
 
 \begin{theorem}[\statusproved\ Discrete inverse structure]
-For fixed \(q>0\) and \(k\ge1\), \(n\mapsto\Qbinom nkq\) is strictly increasing
+For fixed \(q>0\) and \(k\ge1\), \(n\mapsto\GaussianBinomial{n}{k}{q}\) is strictly increasing
 for \(n\ge k\).  For \(0<q<1\), it converges to \(1/(q;q)_k\); for \(q\ge1\)
 it is unbounded (at \(q=1\), this is the usual classical binomial growth).
 
-For fixed \(n\), the map \(k\mapsto\Qbinom nkq\) is symmetric under
+For fixed \(n\), the map \(k\mapsto\GaussianBinomial{n}{k}{q}\) is symmetric under
 \(k\leftrightarrow n-k\), strictly increasing for \(k<(n-1)/2\), and strictly
 decreasing after the center.  A target therefore has at most two integer
 \(k\)-preimages, paired by symmetry.
@@ -1659,7 +1618,7 @@ For \(\alpha\ge\beta\ge0\), define
  {\Gamma_q(\beta+1)\Gamma_q(\alpha-\beta+1)}.
  \label{eq:generalized-gaussian}
 \end{equation}
-It agrees with \(\qbinomq nk\) at nonnegative integers.
+It agrees with \(\GaussianBinomial{n}{k}{q}\) at nonnegative integers.
 
 \subsection{Recovering the upper parameter}
 \begin{theorem}[\statusproved\ Upper-parameter inverse]
@@ -1761,7 +1720,7 @@ longer available.  The local derivative is
 \]
 At \(q\to1^-\), the first-order \(q\)-gamma expansion gives
 \begin{equation}
- \log\frac{\mathcal G_{\e^{-t}}(\alpha,\beta)}
+ \log\frac{\mathcal G_{\EulerE^{-t}}(\alpha,\beta)}
  {\binom{\alpha}{\beta}}
  =-\frac{\beta(\alpha-\beta)}2t+O(t^2),
  \label{eq:generalized-qbinom-q1}
@@ -1793,7 +1752,7 @@ on \((0,\infty)\), from \(c_0\) to \(+\infty\).  Hence it has a unique positive
 inverse for every \(y>c_0\).  The inverse is analytic except at images of
 complex critical points and has condition number
 \[
- \kappa(q)=\abs{\frac{F(q)}{qF'(q)}}.
+ \kappa(q)=\AbsoluteValue{\frac{F(q)}{qF'(q)}}.
 \]
 \end{theorem}
 \begin{proof}
@@ -1817,7 +1776,7 @@ positive-base inverse for every \(y>1\); on \((0,1)\), the range is
 \subsection{\(q\)-multinomial coefficients}
 For a composition \(n_1+\cdots+n_r=n\),
 \[
- \Qbinom{n}{n_1,\ldots,n_r}{q}
+ \GaussianBinomial{n}{n_1,\ldots,n_r}{q}
  =\frac{[n]_q!}{[n_1]_q!\cdots[n_r]_q!}
 \]
 is a polynomial with nonnegative coefficients.  Unless the composition is
@@ -1828,7 +1787,7 @@ inversion statistic, so mean and variance determine the first inverse terms.
 \subsection{Rogers--Szego polynomials}
 For fixed \(z>0\),
 \[
- H_n(z;q)=\sum_{k=0}^n\qbinomq nk z^k
+ H_n(z;q)=\sum_{k=0}^n\GaussianBinomial{n}{k}{q} z^k
 \]
 has nonnegative coefficients as a polynomial in \(q\).  It therefore has a
 unique positive-base inverse for every target above \(H_n(z;0)\), unless
@@ -1836,7 +1795,8 @@ unique positive-base inverse for every target above \(H_n(z;0)\), unless
 
 \subsection{Partition polynomials and selected \(q\)-Catalan numbers}
 Any finite partition generating polynomial
-\(\sum_{\lambda\in\mathcal F}q^{w(\lambda)}\) with a nonconstant nonnegative
+\(\sum_{\lambda\in\mathscr P}q^{w(\lambda)}\), where \(\mathscr P\) is the
+specified finite family of partitions, with a nonconstant nonnegative
 weight has a unique positive-base inverse.  The same conclusion applies to
 those normalizations of \(q\)-Catalan numbers known to be polynomials with
 nonnegative coefficients.  Because several inequivalent \(q\)-Catalan
@@ -1847,8 +1807,8 @@ than inferred from the name alone.
 Normalize \(F\) at \(q=1\) and let \(X\) have probabilities
 \(\Pr(X=j)=c_j/F(1)\).  Then
 \[
- \log\frac{F(\e^t)}{F(1)}
- =\log\mathbb E\e^{tX}
+ \log\frac{F(\EulerE^t)}{F(1)}
+ =\log\mathbb E\EulerE^{tX}
  =\sum_{r\ge1}\kappa_r\frac{t^r}{r!},
 \]
 where \(\kappa_r\) are cumulants.  Inverting a target near \(F(1)\) is thus
@@ -1876,7 +1836,7 @@ For \(q>0\), \(q\ne1\), define
 \begin{theorem}[\statusproved\ Exact inverse in \(x\)]
 For a fixed branch of the logarithm and an admissible target,
 \begin{equation}
- x=\frac{\Log(1-(1-q)y)}{\Log q}.
+ x=\frac{\PrincipalLogarithm(1-(1-q)y)}{\PrincipalLogarithm q}.
  \label{eq:qnumber-inverse-x}
 \end{equation}
 For real \(0<q<1\), this gives a strictly increasing bijection
@@ -1889,7 +1849,7 @@ follows from \(q^x\) decreasing in \(x\).
 
 As a complex inverse, \eqref{eq:qnumber-inverse-x} has the logarithmic lattice
 \[
- x_m=\frac{\Log(1-(1-q)y)+2\pi\ii m}{\Log q}.
+ x_m=\frac{\PrincipalLogarithm(1-(1-q)y)+2\pi\ImaginaryUnit m}{\PrincipalLogarithm q}.
 \]
 
 \section{Recovering the base of a \texorpdfstring{\(q\)}{q}-number}
@@ -1902,7 +1862,7 @@ has one base inverse.
 \begin{proof}
 Use the integral average
 \[
- [x]_q=\frac1{1-q}\int_q^1xt^{x-1}\dd t.
+ [x]_q=\frac1{1-q}\int_q^1xt^{x-1}\Differential t.
 \]
 If \(x>1\), the integrand is increasing, so deleting the lower part of the
 interval raises its average.  If \(0<x<1\), it is decreasing, so the average
@@ -2023,7 +1983,7 @@ so
 \end{equation}
 As \(x\to\infty\),
 \[
- \Gamma_q(x)=C_q\e^{Lx}
+ \Gamma_q(x)=C_q\EulerE^{Lx}
  \left(1+\frac{q^x}{1-q}+O(q^{2x})\right),
 \]
 which yields
@@ -2068,7 +2028,7 @@ away from the exact exceptional points \(x=1,2\).  Therefore
  q&\sim\frac{1-y}{2-x},&&1<x<2,\\
  q&\sim\frac{y-1}{x-2},&&x>2.
 \end{align*}
-At the classical endpoint, with \(q=\e^{-t}\),
+At the classical endpoint, with \(q=\EulerE^{-t}\),
 \begin{equation}
  \log\Gamma_q(x)
  =\log\Gamma(x)-\frac{(x-1)(x-2)}4t+O(t^2).
@@ -2110,7 +2070,7 @@ minimum value \(m_q\) is strictly decreasing from \(1\) to
 The data in \texttt{data/qgamma\_minima.csv} support both assertions.  A proof
 should follow from a sign analysis of
 \[
- \frac{\dd x_q^*}{\dd q}
+ \frac{\Differential x_q^*}{\Differential q}
  =-\frac{\partial_q\psi_q(x_q^*)}{\psi_q'(x_q^*)},
 \]
 so the problem reduces to the sign of one explicit Lambert-series derivative.
@@ -2259,10 +2219,10 @@ without a sign theorem for \eqref{eq:qbeta-base-kernel}.
 For positive integer parameters, however, the answer is complete.
 
 \begin{theorem}[\statusproved\ Integer-parameter base inverse]
-Let \(m,n\in\N\), not both equal to one.  Then
+Let \(m,n\in\NaturalNumbers\), not both equal to one.  Then
 \begin{equation}
  B_q(m,n)=
- \frac1{[n]_q\Qbinom{m+n-1}{m-1}{q}}.
+ \frac1{[n]_q\GaussianBinomial{m+n-1}{m-1}{q}}.
  \label{eq:qbeta-integer-reciprocal}
 \end{equation}
 It is strictly decreasing for \(q>0\), from \(1\) to \(0\).  Hence every
@@ -2402,7 +2362,7 @@ It satisfies
 \[
  \theta(qz;q)=-z^{-1}\theta(z;q)
 \]
-and has zeros at \(z=q^m\), \(m\in\Z\).  Its logarithmic argument derivative is
+and has zeros at \(z=q^m\), \(m\in\IntegerNumbers\).  Its logarithmic argument derivative is
 \begin{equation}
  z\partial_z\log\theta(z;q)
  =-\sum_{j\ge0}\frac{zq^j}{1-zq^j}
@@ -2528,7 +2488,7 @@ A first-order predictor is
  p_{\mathrm{pred}}=p_m+\frac{\Delta y}{F'(p_m)}.
 \]
 Correct it with Newton's method at the new target.  Step size should be reduced
-when \(\abs{F'}\) becomes small or the corrector takes too many iterations.
+when \(\AbsoluteValue{F'}\) becomes small or the corrector takes too many iterations.
 Near a known branch point, switch to the local square-root coordinate
 \(w=\sqrt{y-y_c}\), in which the sheets become analytic.
 
@@ -2540,7 +2500,7 @@ critical-value set.
 \item Correct with Newton iteration and verify the residual.
 \item Compare the corrected root with all nearby known roots to detect an
 unintended sheet jump.
-\item Adapt the step according to \(\abs{F'}\), Newton contraction, and distance
+\item Adapt the step according to \(\AbsoluteValue{F'}\), Newton contraction, and distance
 to known critical values.
 \item Record the permutation after closed loops to compute monodromy.
 \end{enumerate}
@@ -2562,7 +2522,7 @@ For transcendental products, bracket the real critical point using poles of the
 logarithmic derivative.  In the complex plane, use argument-principle counts to
 ensure that all critical points in a box or disk have been found:
 \[
- N=\frac1{2\pi\ii}\int_\gamma\frac{F_{pp}(p)}{F_p(p)}\dd p.
+ N=\frac1{2\pi\ImaginaryUnit}\int_\gamma\frac{F_{pp}(p)}{F_p(p)}\Differential p.
 \]
 Subdivide until each region contains one root, then apply interval Newton or
 ball arithmetic.
@@ -2625,7 +2585,7 @@ The symbolic calculation forms
 \quad
  \mathfrak M_n(q)=\Disc_y\Delta_n.
 \]
-Factoring over \(\Z[q]\) produces \eqref{eq:M3}--\eqref{eq:H5}.  Bisection on
+Factoring over \(\IntegerNumbers[q]\) produces \eqref{eq:M3}--\eqref{eq:H5}.  Bisection on
 the exact factor \(H_5\) gives the quoted \(q_0\).  Independent bracketed
 solutions of the logarithmic critical equation locate \(c_{5,0}\) and
 \(c_{5,2}\).
@@ -2652,7 +2612,7 @@ when the product tail length grows.  A double asymptotic in \(k\) and
 
 \section{Experiment C: inverse Bernoulli expansion}
 For \(n=12\), \(k=5\), and targets
-\(y=\binom{12}{5}\e^{-s}\), the exact positive base is found by bisection.  At
+\(y=\binom{12}{5}\EulerE^{-s}\), the exact positive base is found by bisection.  At
 \(s=10^{-4}\), the cubic approximation in
 \eqref{eq:qbinom-inverse-one} has relative error below \(10^{-15}\) in
 \(t=-\log q\), whereas the quadratic error is about
@@ -2736,9 +2696,9 @@ For fixed \(0<q<1\), the critical-point scale in
  &\sim\frac1{k+2}+\sum_{r\ge2}\frac{E_r(q)}{(k+2)^r},\\
  c_k
  &\sim q^{-(k+1)}\left(1-\sum_{r\ge1}\frac{C_r(q)}{(k+2)^r}\right),\\
- \frac{\abs{(c_k;q)_\infty}}
+ \frac{\AbsoluteValue{(c_k;q)_\infty}}
  {(q;q)_\infty^2q^{-(k+1)(k+2)/2}}
- &\sim\frac{\e^{-1}}{k+2}
+ &\sim\frac{\EulerE^{-1}}{k+2}
  \left(1+\sum_{r\ge1}\frac{V_r(q)}{(k+2)^r}\right),
 \end{align*}
 where the coefficients are explicit polynomials in Lambert series such as
@@ -2750,7 +2710,7 @@ as a transseries correction.
 
 \section{Double scaling and Lambert \texorpdfstring{\(W\)}{W}}
 Fixed-\(a\) inversion near \(q=1\) is controlled by
-\(\Li_2(a)/(-\log q)\).  When \(a\to1\) simultaneously, the dilogarithm and
+\(\Polylogarithm_2(a)/(-\log q)\).  When \(a\to1\) simultaneously, the dilogarithm and
 \(\log(1-a)\) terms compete.  Scaling laws such as
 \[
  1-a\asymp -\log q,
@@ -2772,7 +2732,7 @@ bounds.
 A proof that \(1-\Aq\) is complete Bernstein would imply a representation
 \[
  1-\Aq(y)=c_0+c_1y+
- \int_0^\infty\frac{y}{y+t}\,\mu_q(\dd t)
+ \int_0^\infty\frac{y}{y+t}\,\mu_q(\Differential t)
 \]
 for a positive measure \(\mu_q\).  The singular support should encode the
 negative or complex critical values of the direct product.  The challenge is
@@ -2788,15 +2748,15 @@ Bernstein cone.
 \section{Galois and monodromy theory}
 For finite \(n\), consider
 \[
- P_n(a;q)-y\in\Q(q,y)[a].
+ P_n(a;q)-y\in\RationalNumbers(q,y)[a].
 \]
 Away from critical-value collisions, the analytic monodromy is \(S_n\), which
-strongly suggests the generic algebraic Galois group over \(\Q(q,y)\) is also
+strongly suggests the generic algebraic Galois group over \(\RationalNumbers(q,y)\) is also
 \(S_n\).
 
 \begin{conjecture}[\statusconjectural\ Generic Galois group]
 For every \(n\ge2\), the polynomial \((a;q)_n-y\) has Galois group \(S_n\) over
-\(\Q(q,y)\).  Specializations with smaller group are contained in an explicit
+\(\RationalNumbers(q,y)\).  Specializations with smaller group are contained in an explicit
 thin set controlled by discriminants and resolvents.
 \end{conjecture}
 A proof can combine irreducibility over the rational function field,
@@ -3014,7 +2974,7 @@ points; at a higher caustic, one also has \(F''(c)=0\), and the Puiseux
 exponent changes.
 
 \section{Multivariate implicit inversion}
-For \(F:\C^m\to\C^m\) and \(F(p_0)=y_0\), local inversion is possible
+For \(F:\ComplexNumbers^m\to\ComplexNumbers^m\) and \(F(p_0)=y_0\), local inversion is possible
 exactly when \(J_F(p_0)=\det DF(p_0)\ne0\).  The first derivative of the
 inverse is
 \[
@@ -3226,7 +3186,7 @@ Symbol & Meaning\\
 \(\Aq(y)\) & Principal real inverse in the argument:
 \((\Aq(y);q)_\infty=y\), \(\Aq(y)<1\), for \(0<q<1\), \(y>0\).\\
 \(\mathcal Q_{n,k}(y)\) & Unique positive real base satisfying
-\(\qbinomq nk=y\), for \(0<k<n\) and \(y>1\).\\
+\(\GaussianBinomial{n}{k}{q}=y\), for \(0<k<n\) and \(y>1\).\\
 \([x]_q\) & \(q\)-number \((1-q^x)/(1-q)\), with a branch specified for
 complex powers.\\
 \(\Gamma_q,\psi_q\) & \(q\)-gamma and \(q\)-digamma functions.\\
@@ -3243,7 +3203,7 @@ complex continuation, by a stated base point and path.\\
 \end{longtable}
 
 Unless stated otherwise, real-product results use \(0<q<1\).  Complex powers
-use a locally fixed logarithm, \(q^z=\exp(z\Log q)\).  Consequently, inverses
+use a locally fixed logarithm, \(q^z=\exp(z\PrincipalLogarithm q)\).  Consequently, inverses
 in an exponent or order naturally repeat on a logarithmic lattice.  Square
 roots in Puiseux expansions are fixed by continuation from the real side or by
 an explicitly chosen local sheet.

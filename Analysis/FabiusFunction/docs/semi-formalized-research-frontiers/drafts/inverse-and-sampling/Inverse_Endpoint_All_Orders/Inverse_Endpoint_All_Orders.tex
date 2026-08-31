@@ -5,6 +5,7 @@
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,array,tabularx,multirow}
 \usepackage{graphicx}
 \usepackage{caption}
@@ -94,26 +95,8 @@
 \crefname{warning}{warning}{warnings}
 \Crefname{warning}{Warning}{Warnings}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
 \newcommand{\eps}{\varepsilon}
-\newcommand{\vtwo}{\nu_2}
-\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
-\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
-\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
-\DeclareMathOperator{\Res}{Res}
 \newcommand{\LambertW}{W}
-\newcommand{\Up}{\operatorname{up}}
 \newcommand{\Bell}{Y}
 \newcommand{\Psihat}{\widehat\Psi}
 \newcommand{\Csharp}{C_{\sharp}}
@@ -176,9 +159,9 @@ quantile satisfies, for every fixed $N$,
 \[
  G(y)=\Gzero(y)\Bigl(1+\sum_{n=1}^{N}
  \frac{g_n(\ell,\theta)}{\rho^{\,n}}
- +\bigO_N\bigl((1+\ell)^{N+1}\rho^{-N-1}\bigr)\Bigr),
+ +\BigO_N\bigl((1+\ell)^{N+1}\rho^{-N-1}\bigr)\Bigr),
  \qquad
- \Gzero(y)=\frac{\sqrt T}{\e\sqrt L}\,\e^{-\sqrt{2LT}},
+ \Gzero(y)=\frac{\sqrt T}{\EulerE\sqrt L}\,\EulerE^{-\sqrt{2LT}},
 \]
 with coefficients polynomial in $\ell$ and real-analytic one-periodic
 in $\theta$.  A catalytic-variable Lagrange--B\"urmann inversion
@@ -189,7 +172,7 @@ the universal highest logarithm $[\ell^{\,n}]g_n=1/(2^{n}n!)$; the
 newest-jet transfer
 $[\Psi^{(2n-2)}]g_n=(-1)^{n}/(2^{n-1}(n-1)!\,L^{2n-2})$; explicit
 Gamma--zeta convolutions for every Fourier mode with a common
-analyticity strip $\abs{\Im\theta}<\pi/(2L)$; phase-locked quantile
+analyticity strip $\AbsoluteValue{\Im\theta}<\pi/(2L)$; phase-locked quantile
 sequences and coefficient tomography; an all-orders elasticity
 recurrence; and, for each fixed $m$, the two-term derivative law with
 harmonic-number correction.  The explicit third correction lowers the
@@ -202,12 +185,12 @@ $1/t$ factor) that specializes to the Mills-ratio coefficients ---
 completing an explicit pipeline
 $\Psi\to\{\varkappa_r\}\to\{C_n\}\to\{\Lambda_n\}\to\{A_j\}\to
 \{d_n\}\to\{g_n\}$.  And the Laplace exponent
-$K=\log\E\,\e^{-tX}$ admits the \emph{exact} decomposition
+$K=\log\Expectation\,\EulerE^{-tX}$ admits the \emph{exact} decomposition
 \[
  K(t)=-\frac{\log^2t}{2L}+\frac12\log t-\CB
  +\Psi(\log_2t)+B(t),
  \qquad
- B(t)=\sum_{n\ge1}\frac{2^{\vtwo(n)+1}-1}{n}\,\e^{-nt},
+ B(t)=\sum_{n\ge1}\frac{2^{\TwoAdicValuation(n)+1}-1}{n}\,\EulerE^{-nt},
 \]
 whose $2$-adically weighted Bose tail has Mahler equation, Dirichlet
 series $\zeta(s+1)/(1-2^{-s})$, and a Mellin bridge showing that the
@@ -283,12 +266,12 @@ $T$ & $\log(1/y)$\\
 $\rho$ & $\sqrt{2T/L}$; \ $z=1/\rho$ &
 $\ell$ & $\log\rho$\\
 $\theta$ & $\rho+\beta$ (mod $1$ in periodic functions) &
-$\lambda(x)$ & $-\LambertW_{-1}(-Lx)/L$, so $x=\lambda\e^{-L\lambda}$\\
+$\lambda(x)$ & $-\LambertW_{-1}(-Lx)/L$, so $x=\lambda\EulerE^{-L\lambda}$\\
 $\Psi$ & mean-zero periodic Gamma--zeta fluctuation &
 $A_j$ & periodic forward saddle coefficients\\
 $D$ & $\lambda(G(y))-\rho-\beta=\sum d_nz^{n}$ &
 $h_n$, $g_n$ & coefficients of $\log(G/\Gzero)$, $G/\Gzero$\\
-$K(t)$ & $\log\E\,\e^{-tX}$ (Laplace exponent) &
+$K(t)$ & $\log\Expectation\,\EulerE^{-tX}$ (Laplace exponent) &
 $B(t)$ & dyadic Bose tail \eqref{eq:B-2adic}\\
 $\varkappa_r$ & $s^{r}K^{(r)}(s)$ at the saddle &
 $\varrho_r$ & $\varkappa_r/\varkappa_2$\\
@@ -311,37 +294,37 @@ $2$-adic completion in \cref{sec:dyadic-completion}.
 \subsection{Forward input}
 
 With $X=\sum_{j\ge1}2^{-j}U_j$ ($U_j$ i.i.d.\ uniform on $[0,1]$) and
-$F(x)=\Prob(X\le x)$, the Laplace transform and exponent are
+$F(x)=\Probability(X\le x)$, the Laplace transform and exponent are
 \begin{equation}
- M(t)=\E\,\e^{-tX}
- =\prod_{j\ge1}\frac{1-\e^{-t/2^{j}}}{t/2^{j}},
+ M(t)=\Expectation\,\EulerE^{-tX}
+ =\prod_{j\ge1}\frac{1-\EulerE^{-t/2^{j}}}{t/2^{j}},
  \qquad
  K(t)=\log M(t),
  \label{eq:K-def}
 \end{equation}
 and the Bromwich integral
-$F(x)=\frac1{2\pi\ii}\int_{(\sigma)}t^{-1}\exp(xt+K(t))\dd t$ is the
+$F(x)=\frac1{2\pi\ImaginaryUnit}\int_{(\sigma)}t^{-1}\exp(xt+K(t))\Differential t$ is the
 analytic source of the saddle expansion.  For small $x>0$ the exact
 lower-Lambert phase is
 $\lambda(x)=-\LambertW_{-1}(-Lx)/L$, i.e.\
-$x=\lambda\e^{-L\lambda}$ exactly, and the repository's forward
+$x=\lambda\EulerE^{-L\lambda}$ exactly, and the repository's forward
 theorem states: for every fixed $N\ge1$,
 \begin{equation}
  \log F(x)=
  -\frac L2\lambda^{2}+L\beta\lambda-\frac12\log\lambda
  +\Csharp+\Psi(\lambda)
  +\sum_{j=1}^{N-1}\frac{A_j(\lambda)}{\lambda^{j}}
- +\bigO_N\bigl(\lambda^{-N}\bigr),
+ +\BigO_N\bigl(\lambda^{-N}\bigr),
  \label{eq:forward-all-orders}
 \end{equation}
 uniformly in the phase, with every $A_j$ a bounded smooth one-periodic
 differential polynomial in the Gamma--zeta fluctuation
 \begin{equation}
- \Psi(u)=\sum_{k\ne0}\Psihat(k)\,\e^{2\pi\ii ku},
+ \Psi(u)=\sum_{k\ne0}\Psihat(k)\,\EulerE^{2\pi\ImaginaryUnit ku},
  \qquad
  \Psihat(k)=-\frac{\Gamma(-\chi_k)\,\zeta(1-\chi_k)}{L},
  \qquad
- \chi_k=\frac{2\pi\ii k}{L},
+ \chi_k=\frac{2\pi\ImaginaryUnit k}{L},
  \label{eq:Psi-Fourier}
 \end{equation}
 $\Psihat(0)=0$.  The explicit first correction and the forward
@@ -387,8 +370,8 @@ every structural layer.
 For $y\downarrow0$ set
 $T,\rho,z,\ell,\theta$ as in the notation table and
 \begin{equation}
- \Gzero(y)=\rho\,\e^{-L\rho-L\beta}
- =\frac{\sqrt T}{\e\sqrt L}\,\e^{-\sqrt{2LT}},
+ \Gzero(y)=\rho\,\EulerE^{-L\rho-L\beta}
+ =\frac{\sqrt T}{\EulerE\sqrt L}\,\EulerE^{-\sqrt{2LT}},
  \qquad
  \lambda(G(y))=\rho+\beta+D,
  \qquad
@@ -425,7 +408,7 @@ convention is forced, not cosmetic: $\theta$ winds around the circle
 and $\ell$ is unbounded, so expanding either as a slow series would
 destroy terms at their own order --- there is no phase-free complete
 expansion (\cref{sec:structure}), and the correct coefficient space
-is $\R[\ell]\otimes C^\infty(\R/\Z)$.
+is $\RealNumbers[\ell]\otimes C^\infty(\RealNumbers/\IntegerNumbers)$.
 
 \begin{theorem}[All-orders inverse endpoint expansion]
 \label{thm:all-orders}
@@ -436,15 +419,15 @@ $y\downarrow0$, uniformly in the phase,
 \begin{align}
  \lambda(G(y))
  &=\rho+\beta+\sum_{n=1}^{N}\frac{d_n(\ell,\theta)}{\rho^{n}}
- +\bigO_N\Bigl(\frac{(1+\ell)^{N}}{\rho^{N+1}}\Bigr),
+ +\BigO_N\Bigl(\frac{(1+\ell)^{N}}{\rho^{N+1}}\Bigr),
  \label{eq:phase-expansion}\\
  \log\frac{G(y)}{\Gzero(y)}
  &=\sum_{n=1}^{N}\frac{h_n(\ell,\theta)}{\rho^{n}}
- +\bigO_N\Bigl(\frac{(1+\ell)^{N}}{\rho^{N+1}}\Bigr),
+ +\BigO_N\Bigl(\frac{(1+\ell)^{N}}{\rho^{N+1}}\Bigr),
  \qquad
  \frac{G(y)}{\Gzero(y)}
  =1+\sum_{n=1}^{N}\frac{g_n(\ell,\theta)}{\rho^{n}}
- +\bigO_N\Bigl(\frac{(1+\ell)^{N+1}}{\rho^{N+1}}\Bigr).
+ +\BigO_N\Bigl(\frac{(1+\ell)^{N+1}}{\rho^{N+1}}\Bigr).
  \label{eq:G-expansion}
 \end{align}
 $d_n$ depends only on $\Psi,A_1,\dots,A_{n-1}$ and finitely many of
@@ -459,13 +442,13 @@ $d_n$ uniquely and triangularly ($D$ enters multiplied by $z$);
 polynomial dependence on $\ell$ follows because the only explicit
 $\ell$ in $\Phi$ is affine, and periodic analyticity from closure of
 $\mathscr A$ (\cref{sec:fourier}).  The residual at $D^{[N]}$ is
-$\bigO_N((1+\ell)^{N}z^{N})$, while on the connecting segment
-$\partial_w\bigl(\tfrac Lzw+\mathcal R\bigr)=\tfrac Lz+\bigO_N(1)$;
+$\BigO_N((1+\ell)^{N}z^{N})$, while on the connecting segment
+$\partial_w\bigl(\tfrac Lzw+\mathcal R\bigr)=\tfrac Lz+\BigO_N(1)$;
 the mean-value theorem gains one power of $z$ and proves
 \eqref{eq:phase-expansion} (details in
 \cref{app:proof-details}).  The exact Lambert identity gives
 \begin{equation}
- \frac{G}{\Gzero}=(1+\beta z+zD)\,\e^{-LD},
+ \frac{G}{\Gzero}=(1+\beta z+zD)\,\EulerE^{-LD},
  \qquad
  H:=\log\frac{G}{\Gzero}=\log(1+\beta z+zD)-LD,
  \label{eq:ratio-exact}
@@ -507,7 +490,7 @@ generally, for any formal $K(z,w)$,
  \label{eq:diagonal-composition}
 \end{equation}
 which with $K=\log(1+\beta z+zw)-Lw$ and
-$K=(1+\beta z+zw)\e^{-Lw}$ gives closed diagonal formulas for
+$K=(1+\beta z+zw)\EulerE^{-Lw}$ gives closed diagonal formulas for
 $h_n$ and $g_n$ directly.
 \end{theorem}
 
@@ -555,8 +538,8 @@ $ng_n=\sum_{j\le n}jh_jg_{n-j}$.
 
 \begin{proof}
 Expand the exact factorization \eqref{eq:ratio-exact}: the three
-lines are $[z^{n}]\e^{-LD}$, $[z^{n-1}]\beta\e^{-LD}$, and
-$[z^{n-1}]D\e^{-LD}$, each a standard partial-Bell expansion.
+lines are $[z^{n}]\EulerE^{-LD}$, $[z^{n-1}]\beta\EulerE^{-LD}$, and
+$[z^{n-1}]D\EulerE^{-LD}$, each a standard partial-Bell expansion.
 \end{proof}
 
 \begin{algorithm}[Arbitrary-order symbolic generation]
@@ -681,7 +664,7 @@ logarithm is \emph{universal}:
  \boxed{\;[\ell^{\,n}]\,g_n=\frac1{2^{n}n!},\;}
  \qquad
  g_n=\frac{\ell^{\,n}}{2^{n}n!}
- +\bigO_n\bigl((1+\abs\ell)^{n-1}\bigr)
+ +\BigO_n\bigl((1+\AbsoluteValue\ell)^{n-1}\bigr)
  \text{ uniformly in }\theta.
  \label{eq:universal-top-log}
 \end{equation}
@@ -702,7 +685,7 @@ $-L[\ell^{n-1}]d_n$; orders $1,2$ are read off
 at $z$-weight $n$ in $\exp(H)$ is $(h_1z)^{n}/n!$ with the term
 $\ell/2$ chosen in every factor:
 $[\ell^{n}]g_n=(1/2)^{n}/n!$.  (Equivalently, in the direct
-$d$-route: only $(-LD)^{n}/n!$ with $d_1=-\ell/(2L)+\bigO(1)$ from
+$d$-route: only $(-LD)^{n}/n!$ with $d_1=-\ell/(2L)+\BigO(1)$ from
 every copy attains degree $n$, giving
 $(-L)^{n}(-1/2L)^{n}/n!$ --- the two absorbed proofs of the same
 law.)
@@ -776,9 +759,9 @@ For a finite jet monomial
 $\mathcal M=\prod_{r}\bigl(\Psi^{(r)}\bigr)^{m_r}$,
 \begin{equation}
  \widehat{\mathcal M}(k)
- =\sum_{\substack{k_{r,s}\in\Z\setminus\{0\}\\ \sum k_{r,s}=k}}
+ =\sum_{\substack{k_{r,s}\in\IntegerNumbers\setminus\{0\}\\ \sum k_{r,s}=k}}
  \prod_{r}\prod_{s=1}^{m_r}
- (2\pi\ii k_{r,s})^{r}\,\Psihat(k_{r,s}),
+ (2\pi\ImaginaryUnit k_{r,s})^{r}\,\Psihat(k_{r,s}),
  \label{eq:convolution}
 \end{equation}
 and every Fourier coefficient of every $d_n,h_n,g_n$ is a finite
@@ -790,16 +773,16 @@ in $\ell$ and rational in $L,\beta$.
 \label{prop:strip}
 For every $\sigma<\pi/(2L)$, all periodic coefficient functions of
 all $d_n,h_n,g_n$ extend holomorphically and boundedly to
-$\abs{\Im\theta}\le\sigma$, with normally convergent Fourier series:
+$\AbsoluteValue{\Im\theta}\le\sigma$, with normally convergent Fourier series:
 Stirling on vertical lines gives
-$\abs{\Psihat(k)}\le C_\eps\exp[-(\pi^{2}/L-\eps)\abs k]$, and
+$\AbsoluteValue{\Psihat(k)}\le C_\eps\exp[-(\pi^{2}/L-\eps)\AbsoluteValue k]$, and
 differentiation, multiplication, and composition preserve the
 exponential type.  Consequently, truncating all Fourier sums at
-$\abs k\le K$ costs at most
-$C(1+\ell)^{N}K^{\bigO(1)}
-\e^{-(\pi^{2}/L-2\pi\sigma)K}$ at fixed inverse order $N$ --- a few
+$\AbsoluteValue k\le K$ costs at most
+$C(1+\ell)^{N}K^{\BigO(1)}
+\EulerE^{-(\pi^{2}/L-2\pi\sigma)K}$ at fixed inverse order $N$ --- a few
 modes suffice for high-precision real-phase evaluation, since already
-$\abs{\Psihat(1)}=1.06271\ldots\times10^{-6}$.
+$\AbsoluteValue{\Psihat(1)}=1.06271\ldots\times10^{-6}$.
 \end{proposition}
 
 \section{Phase locking and coefficient tomography}
@@ -832,7 +815,7 @@ renormalized statistic
  -\sum_{n<N}\frac{g_n(\log\rho_{m,u},u)}{\rho_{m,u}^{n}}
  \Bigr\}
  =g_N(\log\rho_{m,u},u)
- +\bigO_N\Bigl(\frac{(1+\log\rho_{m,u})^{N+1}}{\rho_{m,u}}\Bigr)
+ +\BigO_N\Bigl(\frac{(1+\log\rho_{m,u})^{N+1}}{\rho_{m,u}}\Bigr)
  \label{eq:tomography}
 \end{equation}
 reconstructs, phase by phase, every periodic layer
@@ -845,10 +828,10 @@ Fourier spectra \eqref{eq:convolution} are predicted explicitly.
 \section{Elasticity and every inverse derivative}
 \label{sec:derivatives}
 
-Since $T=L\rho^{2}/2$ and $y=\e^{-T}$, the endpoint Euler operator
+Since $T=L\rho^{2}/2$ and $y=\EulerE^{-T}$, the endpoint Euler operator
 acts through the two-scale derivation
 \begin{equation}
- y\frac{\dd}{\dd y}=-\frac1{L\rho}\,\mathfrak d,
+ y\frac{\Differential}{\Differential y}=-\frac1{L\rho}\,\mathfrak d,
  \qquad
  \mathfrak d=\partial_\theta+z\,\partial_\ell-z^{2}\partial_z,
  \qquad
@@ -875,7 +858,7 @@ $\mathcal E=\sum_{m\ge1}e_mz^{m}$ with $e_1=1$ and, for $m\ge2$
  \qquad
  \mathcal E
  =\frac1\rho+\frac{\Psi'(\theta)-1}{L\rho^{2}}
- +\bigO\Bigl(\frac{1+\ell}{\rho^{3}}\Bigr).
+ +\BigO\Bigl(\frac{1+\ell}{\rho^{3}}\Bigr).
  \label{eq:elasticity}
 \end{equation}
 \end{theorem}
@@ -895,7 +878,7 @@ conversion.
 \begin{theorem}[Derivative hierarchy and the universal two-term law]
 \label{thm:derivative-hierarchy}
 The ratios $Q_m=y^{m}G^{(m)}/G$ obey the exact recurrence
-$Q_{m+1}=y\tfrac{\dd}{\dd y}Q_m+(\mathcal E-m)Q_m$ (linear at fixed
+$Q_{m+1}=y\tfrac{\Differential}{\Differential y}Q_m+(\mathcal E-m)Q_m$ (linear at fixed
 $\mathcal E$), whose coefficient form via
 \eqref{eq:two-scale-D} computes every fixed $G^{(m)}$ to arbitrary
 order.  Its two-term consequence is universal: for each fixed
@@ -905,14 +888,14 @@ $m\ge1$,
  G^{(m)}(y)=(-1)^{m-1}(m-1)!\,
  \frac{G(y)}{y^{m}\rho}
  \Bigl[1+\frac{(\Psi'(\theta)-1)/L-\Hnum_{m-1}}{\rho}
- +\bigO_m\Bigl(\frac{1+\ell}{\rho^{2}}\Bigr)\Bigr],
+ +\BigO_m\Bigl(\frac{1+\ell}{\rho^{2}}\Bigr)\Bigr],
  \;}
  \label{eq:two-term-derivative}
 \end{equation}
 so the quantile is eventually increasing, concave, with alternating
 higher derivatives near the endpoint (each fixed $m$ on its own
 interval $0<y<y_m$; no uniformity in $m$ is asserted).
-Alternatively, with $E=y\,\dd/\dd y$, $f=\log G$, and signed
+Alternatively, with $E=y\,\Differential/\Differential y$, $f=\log G$, and signed
 Stirling numbers $s(k,j)$,
 \begin{equation}
  H_k:=y^{k}f^{(k)}(y)=\sum_{j=1}^{k}s(k,j)\,E^{j}f,
@@ -928,13 +911,13 @@ repeated applications of \eqref{eq:two-scale-D} to $\log G$.
 \begin{proof}
 The recurrence is the product rule on
 $G^{(m+1)}=(G^{(m)})'$.  Writing
-$Q_m=a_mz(1+b_mz+\cdots)$, the operator $y\,\dd/\dd y$ raises the
+$Q_m=a_mz(1+b_mz+\cdots)$, the operator $y\,\Differential/\Differential y$ raises the
 displayed order, so $a_{m+1}=-ma_m$ and $b_{m+1}=b_m-1/m$; from
 $Q_1=\mathcal E$, $a_m=(-1)^{m-1}(m-1)!$ and
 $b_m=e_2-\Hnum_{m-1}$ with $e_2=(\Psi'(\theta)-1)/L$.  The
 Stirling--Bell route is the classical Euler-to-ordinary conversion
 followed by the complete-Bell exponential formula for
-$G=\e^{f}$.
+$G=\EulerE^{f}$.
 \end{proof}
 
 
@@ -951,7 +934,7 @@ third absorbed source resums them completely.
 
 Let $\omega$ denote the Wright omega function,
 $\omega(s)+\log\omega(s)=s$ on the real line
-(equivalently $\omega(s)=\LambertW_0(\e^{s})$), and set
+(equivalently $\omega(s)=\LambertW_0(\EulerE^{s})$), and set
 \begin{equation}
  \mathsf H:=T+\Csharp+\frac{L\beta^{2}}2,
  \qquad
@@ -968,7 +951,7 @@ $w$ is the unique positive solution of
  T=\frac L2w^{2}-\frac{L\beta^{2}}2+\frac12\log w-\Csharp,
  \label{eq:w-carrier}
 \end{equation}
-i.e.\ $w^{2}=\LambertW_0(2L\,\e^{4\mathsf H})/(2L)$ --- the omega form
+i.e.\ $w^{2}=\LambertW_0(2L\,\EulerE^{4\mathsf H})/(2L)$ --- the omega form
 being the numerically stable one, since it never forms the
 astronomically large argument.  (Newton iteration on
 $\Omega+\log\Omega=S$ from the seed $\Omega_0=S-\log S+(\log S)/S$
@@ -985,7 +968,7 @@ parametrizes the exact map $x\mapsto\lambda$ --- no contradiction.
 \end{proof}
 
 \begin{definition}[W-resummed carrier]
-$G_W(y):=\vartheta\,\e^{-L\vartheta}
+$G_W(y):=\vartheta\,\EulerE^{-L\vartheta}
 =(w+\beta)\,2^{-(w+\beta)}$.
 \end{definition}
 
@@ -1004,7 +987,7 @@ residual
 \emph{every constant and every logarithm has disappeared}.  The
 entire diagonal calculus of \cref{sec:diagonal} applies verbatim to
 $\Phi_W=-\mathcal R_W/L$, and the ratio identity becomes
-$G/G_W=\bigl(1+\tfrac{zD}{1+\beta z}\bigr)\e^{-LD}$.
+$G/G_W=\bigl(1+\tfrac{zD}{1+\beta z}\bigr)\EulerE^{-LD}$.
 
 \begin{theorem}[Log-free all-orders expansion, with an extra order]
 \label{thm:W-all-orders}
@@ -1012,13 +995,13 @@ With $d_m,h_m,g_m$ the diagonal coefficients of
 \eqref{eq:RW} (via \cref{thm:diagonal} and its composition form),
 each is a \emph{bounded} smooth one-periodic differential polynomial
 in $\Psi,A_1,\dots,A_{m-1}$ --- after inserting the closed forward
-formulas, a polynomial over $\Q(L^{-1})$ in
+formulas, a polynomial over $\RationalNumbers(L^{-1})$ in
 $\Psi,\Psi',\dots,\Psi^{(2m-2)}$ evaluated at $\vartheta$, with no
 occurrence of $\log w$ --- and, uniformly in the phase,
 \begin{equation}
  \boxed{\;
  G(y)=G_W(y)\Bigl(1+\sum_{m=1}^{N}\frac{g_m(\vartheta)}{w^{m}}
- +\bigO_N\bigl(w^{-N-1}\bigr)\Bigr).
+ +\BigO_N\bigl(w^{-N-1}\bigr)\Bigr).
  \;}
  \label{eq:W-expansion}
 \end{equation}
@@ -1089,7 +1072,7 @@ $A_{m-1}$, whose top jet is normalization-independent), so the
 linearized oscillation amplitude law
 \begin{equation}
  \operatorname{amp}(g_m)\approx
- 2\abs{\Psihat(1)}\,
+ 2\AbsoluteValue{\Psihat(1)}\,
  \frac{(2\pi^{2}/L^{2})^{m-1}}{(m-1)!}
  \label{eq:amplitude-law}
 \end{equation}
@@ -1110,7 +1093,7 @@ $z=0$,
  =-\frac{\beta}{2L}z^{2}
  +\frac{\beta^{2}}{4L}z^{3}
  +\Bigl(-\frac{\beta^{3}}{6L}+\frac{\beta}{4L^{2}}\Bigr)z^{4}
- +\bigO(z^{5}).
+ +\BigO(z^{5}).
  \label{eq:bare-series}
 \end{equation}
 Hence any divergence of the complete inverse series enters through
@@ -1130,10 +1113,10 @@ the germ, and coefficient comparison the series.
 
 \begin{theorem}[Conditional Gevrey-one transfer]
 \label{thm:gevrey-transfer}
-If the $A_j$ extend to a strip $\abs{\Im u}<\sigma$ with
-$\norm{A_j}_\sigma\le CK^{j}j!$, then on every smaller strip the
+If the $A_j$ extend to a strip $\AbsoluteValue{\Im u}<\sigma$ with
+$\Norm{A_j}_\sigma\le CK^{j}j!$, then on every smaller strip the
 W-scale $d_m,h_m,g_m$ satisfy
-$\norm\cdot_{\sigma'}\le C'(K')^{m}m!$: W-resummed inversion does not
+$\Norm\cdot_{\sigma'}\le C'(K')^{m}m!$: W-resummed inversion does not
 worsen Gevrey order.  (Cauchy estimates control phase derivatives;
 the diagonal formula is a finite sum of total weight $m$; and
 $\sum_jj!\,(m-j)!\le C_0\,m!$ closes the majorant induction.)
@@ -1142,18 +1125,18 @@ $\sum_jj!\,(m-j)!\le C_0\,m!$ closes the majorant induction.)
 \subsection{Derivatives, numerics, and the pre-asymptotic hierarchy}
 
 Differentiating \eqref{eq:w-carrier} gives
-$\dd T/\dd w=Lw+(2w)^{-1}$, so with
+$\Differential T/\Differential w=Lw+(2w)^{-1}$, so with
 $\mathcal H_W(w)=\sum_mh_m(w+\beta)w^{-m}$,
 \begin{equation}
  \frac{yG'(y)}{G(y)}
  =\frac{L-(w+\beta)^{-1}-\mathcal H_W'(w)}{Lw+(2w)^{-1}}
  =\frac1w+\frac{\Psi'(\vartheta)-1}{Lw^{2}}
  +\frac{\beta+h_1-h_2'-\tfrac12}{Lw^{3}}
- +\bigO(w^{-4}),
+ +\BigO(w^{-4}),
  \label{eq:W-elasticity}
 \end{equation}
-and repeated $y\,\dd/\dd y$ derivatives are powers of the single
-operator $-\bigl(Lw+(2w)^{-1}\bigr)^{-1}\dd/\dd w$ --- no second
+and repeated $y\,\Differential/\Differential y$ derivatives are powers of the single
+operator $-\bigl(Lw+(2w)^{-1}\bigr)^{-1}\Differential/\Differential w$ --- no second
 inversion, consistent with \cref{sec:derivatives}.
 
 On the exact dyadic quantiles the improvement over the
@@ -1199,10 +1182,10 @@ predicted next powers $w^{-3}$, $w^{-4}$.}
 \end{figure}
 
 \begin{remark}[Pre-asymptotic hierarchy]
-Since $\norm{\Psi}_\infty\approx2.13\times10^{-6}$ while
+Since $\Norm{\Psi}_\infty\approx2.13\times10^{-6}$ while
 $h_2^{(0)}=5/24$, the nominally first correction $h_1/w=-\Psi/w$ is
 numerically \emph{invisible} against $h_2/w^{2}$ until
-$w\gtrsim(5/24)/\norm{\Psi}_\infty\approx10^{5}$, i.e.\
+$w\gtrsim(5/24)/\Norm{\Psi}_\infty\approx10^{5}$, i.e.\
 $T\sim3\times10^{9}$.  Practical approximations must therefore
 include $h_2$ whenever they include $h_1$
 (cf.\ the table's near-identical first two columns).  This does not
@@ -1214,17 +1197,17 @@ oscillation resolvable only at high precision.
 \begin{remark}[Two beyond-all-orders scales, sharpened]
 The W-normalization cleanly separates the two sectors of
 \cref{conj:transseries}: a doubly exponential dyadic tail
-$\bigO(w^{-1}\e^{-2^{\vartheta}})$ (a forward perturbation of size
-$\e^{-2^{\lambda}}$, divided by the steep phase derivative $Lw$) and
+$\BigO(w^{-1}\EulerE^{-2^{\vartheta}})$ (a forward perturbation of size
+$\EulerE^{-2^{\lambda}}$, divided by the steep phase derivative $Lw$) and
 the saddle-resurgent scale.  For the latter, optimizing the
 amplitude law \eqref{eq:amplitude-law} against the Fourier decay
-$\abs{\Psihat(k)}\asymp\e^{-\pi^{2}\abs k/L}$ places the dominant
+$\AbsoluteValue{\Psihat(k)}\asymp\EulerE^{-\pi^{2}\AbsoluteValue k/L}$ places the dominant
 mode of $g_m$ near $k_*\sim2(m-1)L/\pi^{2}$ and gives the linearized
 growth $m!\,(8/\pi^{2})^{m}$ up to algebraic factors --- optimal
 truncation near $m\simeq\pi^{2}w/8$ with remainder scale
 $\exp(-\pi^{2}w/8)$, enormously larger than the dyadic sector.  This
 sharpens \cref{conj:gevrey} to the limsup form
-$\limsup_m(\norm{g_m}/m!)^{1/m}=8/\pi^{2}$ (after removing finitely
+$\limsup_m(\Norm{g_m}/m!)^{1/m}=8/\pi^{2}$ (after removing finitely
 many low orders and in a suitable norm) and
 \cref{conj:optimal-truncation} to Borel one-summability on the
 positive $w$-ray with nearest singularities at modulus
@@ -1251,13 +1234,13 @@ saddle jets and their ratios
  \quad(r\ge3).
  \label{eq:saddle-jets}
 \end{equation}
-Scaling the contour by $t=s(1+\ii Z/\sqrt{\varkappa_2})$,
+Scaling the contour by $t=s(1+\ImaginaryUnit Z/\sqrt{\varkappa_2})$,
 $Z\sim N(0,1)$, produces the formal correction factor
 \begin{equation}
- \mathcal S=\E\left[
- \Bigl(1+\frac{\ii Z}{\sqrt{\varkappa_2}}\Bigr)^{-1}
+ \mathcal S=\Expectation\left[
+ \Bigl(1+\frac{\ImaginaryUnit Z}{\sqrt{\varkappa_2}}\Bigr)^{-1}
  \exp\Bigl(\sum_{r\ge3}\frac{\varrho_r}{r!}
- \frac{(\ii Z)^{r}}{\varkappa_2^{(r-2)/2}}\Bigr)
+ \frac{(\ImaginaryUnit Z)^{r}}{\varkappa_2^{(r-2)/2}}\Bigr)
  \right]
  \sim1+\sum_{n\ge1}\frac{C_n}{\varkappa_2^{\,n}},
  \label{eq:S-def}
@@ -1299,11 +1282,11 @@ nonrecursively from
 
 \begin{proof}
 Expand the reciprocal geometrically ($m_0$ factors of
-$-\ii Z/\sqrt{\varkappa_2}$) and the exponential by multiplicities
+$-\ImaginaryUnit Z/\sqrt{\varkappa_2}$) and the exponential by multiplicities
 $m_r$.  The total inverse half-power of $\varkappa_2$ is
 $\tfrac12(m_0+\sum(r-2)m_r)$, giving the constraint; the Gaussian
 degree is $N$ with $N-2n=2\sum m_r$ even, so
-$\E Z^{N}=(N-1)!!$; the powers of $\ii$ and the reciprocal's sign
+$\Expectation Z^{N}=(N-1)!!$; the powers of $\ImaginaryUnit$ and the reciprocal's sign
 give $(-1)^{m_0+N/2}$; and the exponential series supplies the
 multiplicity factorials.  The $\Lambda$ formula is
 $\log(1+\cdot)$ composed with the $C$-series.
@@ -1357,7 +1340,7 @@ harmonic numbers $\Hnum_n$, the bounded saddle jets are
 \end{equation}
 the normalized mass coefficients $a_j$ are finite sums over
 compositions of $2j$ and subsets weighted by double factorials
-$(2j+2\abs S-1)!!$, and
+$(2j+2\AbsoluteValue S-1)!!$, and
 $A_j=\sum_{r\le j}\frac{(-1)^{r-1}}r
 \sum_{\mathcal C(j,r)}a_{s_1}\cdots a_{s_r}$ --- an explicit finite
 differential polynomial in $\Psi',\dots,\Psi^{(2j)}$ whose top jet
@@ -1378,12 +1361,12 @@ faces of one Mellin kernel.
 \subsection{The decomposition and the dyadic Bose tail}
 
 The product \eqref{eq:K-def} gives the dyadic difference equation
-$K(2t)-K(t)=\log(1-\e^{-t})-\log t$.  Define the \emph{dyadic Bose
+$K(2t)-K(t)=\log(1-\EulerE^{-t})-\log t$.  Define the \emph{dyadic Bose
 tail}
 \begin{equation}
- B(t)=-\sum_{k\ge0}\log\bigl(1-\e^{-2^{k}t}\bigr),
+ B(t)=-\sum_{k\ge0}\log\bigl(1-\EulerE^{-2^{k}t}\bigr),
  \qquad
- B(t)=-\log(1-\e^{-t})+B(2t).
+ B(t)=-\log(1-\EulerE^{-t})+B(2t).
  \label{eq:B-def}
 \end{equation}
 
@@ -1406,7 +1389,7 @@ $\Omega(q):=K(2^{q})-Q(q)-B(2^{q})$ is $1$-periodic by the two
 difference equations.  The small-$t$ Mellin expansion of $B$
 (\cref{thm:mellin-bridge} below) is
 $B(t)=\log^{2}(1/t)/(2L)+\tfrac12\log(1/t)+\CB-\Psi(\log_2t)+
-\smallo(1)$, and $K(t)\to0$ as $t\downarrow0$; letting
+\LittleO(1)$, and $K(t)\to0$ as $t\downarrow0$; letting
 $q=m+u\to-\infty$ at fixed $u$ identifies
 $\Omega(u)=\Psi(u)-\CB$, and periodicity upgrades the identity to
 all $q$.
@@ -1417,38 +1400,38 @@ all $q$.
 For every $t>0$,
 \begin{equation}
  \boxed{\;
- B(t)=\sum_{n\ge1}b_n\,\e^{-nt},
+ B(t)=\sum_{n\ge1}b_n\,\EulerE^{-nt},
  \qquad
- b_n=\frac{2^{\vtwo(n)+1}-1}{n},
+ b_n=\frac{2^{\TwoAdicValuation(n)+1}-1}{n},
  \;}
  \qquad
  0<b_n<2,
  \label{eq:B-2adic}
 \end{equation}
 with the elementary tail enclosure
-$0<B(t)-\sum_{n\le N}b_n\e^{-nt}\le2\e^{-(N+1)t}/(1-\e^{-t})$.
+$0<B(t)-\sum_{n\le N}b_n\EulerE^{-nt}\le2\EulerE^{-(N+1)t}/(1-\EulerE^{-t})$.
 \end{theorem}
 
 \begin{proof}
 Expand each Bose logarithm and regroup
-$B(t)=\sum_{k\ge0}\sum_{m\ge1}m^{-1}\e^{-m2^{k}t}$: the
-representations $n=m2^{k}$ are indexed by $0\le k\le\vtwo(n)$, with
+$B(t)=\sum_{k\ge0}\sum_{m\ge1}m^{-1}\EulerE^{-m2^{k}t}$: the
+representations $n=m2^{k}$ are indexed by $0\le k\le\TwoAdicValuation(n)$, with
 total weight
-$\tfrac1n\sum_{k\le\vtwo(n)}2^{k}=(2^{\vtwo(n)+1}-1)/n$.
+$\tfrac1n\sum_{k\le\TwoAdicValuation(n)}2^{k}=(2^{\TwoAdicValuation(n)+1}-1)/n$.
 \end{proof}
 
 The first terms,
-$B(t)=\e^{-t}+\tfrac32\e^{-2t}+\tfrac13\e^{-3t}
-+\tfrac74\e^{-4t}+\tfrac15\e^{-5t}+\tfrac12\e^{-6t}+\cdots$, spike at
+$B(t)=\EulerE^{-t}+\tfrac32\EulerE^{-2t}+\tfrac13\EulerE^{-3t}
++\tfrac74\EulerE^{-4t}+\tfrac15\EulerE^{-5t}+\tfrac12\EulerE^{-6t}+\cdots$, spike at
 powers of two: the exact arithmetic trace of the dyadic scale
-hierarchy.  The integer weight $f(n)=nb_n=2^{\vtwo(n)+1}-1$
+hierarchy.  The integer weight $f(n)=nb_n=2^{\TwoAdicValuation(n)+1}-1$
 satisfies $f(2n)=2f(n)+1$, $f(2n+1)=1$, and its generating function
 obeys the Mahler equation $C(z)=2C(z^{2})+z/(1-z)$, placing the
 sectors in the same digital universe as the Thue--Morse and ruler
 sequences --- but with geometric accumulation over the full
 $2$-adic valuation in place of digit-sum parity.  Note the
-crosswalk: $\vtwo(n)+1$ is precisely the integer zero order of
-$\widehat\Up$ that drives the exactness theorems of the companion
+crosswalk: $\TwoAdicValuation(n)+1$ is precisely the integer zero order of
+$\widehat\RvachevUp$ that drives the exactness theorems of the companion
 volume \emph{Dyadic-Comb Frontiers}; here the same statistic returns
 as the arithmetic seed of the beyond-all-orders sectors.
 
@@ -1461,7 +1444,7 @@ For $\Re s>0$,
  \sum_{n\ge1}\frac{b_n}{n^{s}}
  =\frac{\zeta(s+1)}{1-2^{-s}},
  \qquad
- \int_0^\infty B(t)\,t^{s-1}\dd t
+ \int_0^\infty B(t)\,t^{s-1}\Differential t
  =\Gamma(s)\,\frac{\zeta(s+1)}{1-2^{-s}},
  \label{eq:mellin}
 \end{equation}
@@ -1470,7 +1453,7 @@ $M$, with $R=\log(1/t)$,
 \begin{equation}
  B(t)=\frac{R^{2}}{2L}+\frac R2+\CB-\Psi(\log_2t)
  +\sum_{m=1}^{M-1}\frac{(-1)^{m}\zeta(1-m)}{m!\,(1-2^{m})}\,t^{m}
- +\bigO_M(t^{M})
+ +\BigO_M(t^{M})
  \qquad(t\downarrow0).
  \label{eq:B-small-t}
 \end{equation}
@@ -1490,7 +1473,7 @@ $\Gamma$ at $-m$ yield the Bernoulli-type powers.
 
 \begin{statusbox}{Two faces of one kernel}
 The Gamma--zeta phase $\Psi$ (small-$t$ residues at the complex
-dimensions $2\pi\ii k/L$) and the exact $2$-adic exponential sectors
+dimensions $2\pi\ImaginaryUnit k/L$) and the exact $2$-adic exponential sectors
 (large-$t$ Dirichlet regrouping) are generated by the \emph{same}
 kernel $\Gamma(s)\zeta(s+1)/(1-2^{-s})$.  No new frequencies ever
 appear downstream: the entire hierarchy of inverse oscillations
@@ -1509,7 +1492,7 @@ With $t=2^{q}$, the saddle abscissa $x=-K'(t)$ is exactly
 \begin{equation}
  \boxed{\;
  x(q)=2^{-q}\Bigl(q-\frac12-\frac{\Psi'(q)}{L}\Bigr)
- +\sum_{n\ge1}\bigl(2^{\vtwo(n)+1}-1\bigr)\,\e^{-n2^{q}},
+ +\sum_{n\ge1}\bigl(2^{\TwoAdicValuation(n)+1}-1\bigr)\,\EulerE^{-n2^{q}},
  \;}
  \label{eq:saddle-map}
 \end{equation}
@@ -1517,22 +1500,22 @@ the first term the complete algebraic--periodic saddle map, the
 second an exact convergent ultraflat correction.  Derivative
 bookkeeping is closed: with Stirling numbers of the second kind,
 \begin{equation}
- \frac{\dd^{r}}{\dd q^{r}}B(2^{q})
+ \frac{\Differential^{r}}{\Differential q^{r}}B(2^{q})
  =L^{r}\sum_{n\ge1}b_n
  \sum_{j=0}^{r}
- \genfrac\{\}{0pt}{}{r}{j}\,(-n2^{q})^{j}\,\e^{-n2^{q}},
+ \genfrac\{\}{0pt}{}{r}{j}\,(-n2^{q})^{j}\,\EulerE^{-n2^{q}},
  \qquad
- t^{r}B^{(r)}(t)=(-1)^{r}\sum_{n\ge1}b_n\,(nt)^{r}\e^{-nt}.
+ t^{r}B^{(r)}(t)=(-1)^{r}\sum_{n\ge1}b_n\,(nt)^{r}\EulerE^{-nt}.
  \label{eq:touchard-jets}
 \end{equation}
 \end{corollary}
 
 The jet formulas expose the technical obstacle to naive
 hyperasymptotics: each $q$-derivative of an
-$\e^{-n2^{q}}$ sector produces powers of $2^{q}$, so the ordinary
+$\EulerE^{-n2^{q}}$ sector produces powers of $2^{q}$, so the ordinary
 inverse-power saddle hierarchy is \emph{not uniform} inside a fixed
 dyadic sector; and although the algebraic inversion gives the saddle
-coordinate $q_\star(y)=\theta+\bigO(\ell/\rho)$, the induced change
+coordinate $q_\star(y)=\theta+\BigO(\ell/\rho)$, the induced change
 in the exponent $n2^{q_\star}$ is of order
 $2^{\theta}\ell/\rho\to\infty$ --- the exact saddle coordinate is
 part of the beyond-all-orders datum
@@ -1629,12 +1612,12 @@ $B(t)$, with the elementary enclosure of
 \emph{Literal small-$y$ form.}  Substituting
 $\rho=\sqrt{2T/L}$ back, the complete expansion reads
 \begin{equation}
- G(y)=\frac{\sqrt T}{\e\sqrt L}\,\e^{-\sqrt{2LT}}
+ G(y)=\frac{\sqrt T}{\EulerE\sqrt L}\,\EulerE^{-\sqrt{2LT}}
  \exp\Bigl\{\sum_{n=1}^{N}
  \Bigl(\frac{L}{2T}\Bigr)^{n/2}
  h_n\bigl(\tfrac12\log\tfrac{2T}L,\;
  \sqrt{2T/L}+\beta\bigr)\Bigr\}
- \Bigl[1+\bigO_N\Bigl(\frac{(1+\log T)^{N}}{T^{(N+1)/2}}\Bigr)\Bigr].
+ \Bigl[1+\BigO_N\Bigl(\frac{(1+\log T)^{N}}{T^{(N+1)/2}}\Bigr)\Bigr].
  \label{eq:literal}
 \end{equation}
 \emph{Lambert geometry.}  The method performs the saddle inversion in
@@ -1650,7 +1633,7 @@ assemblies of the $h_j$ --- the diagonal formula is the
 \emph{Thue--Morse and $q$-data.}  The exact dyadic quantiles that
 verify the expansion are the same $q$-binomial arithmetic that runs
 the companion volumes; the $2$-adic seed
-$b_n$ shares its statistic $\vtwo(n)+1$ with the sinc zero orders;
+$b_n$ shares its statistic $\TwoAdicValuation(n)+1$ with the sinc zero orders;
 and the up-function reading of the expansion is geometric: it is the
 all-orders law of the inward displacement from the support boundary
 of the Rvachev bell at prescribed tiny height, the Gamma--zeta
@@ -1663,8 +1646,8 @@ generates the sinc product.
 \begin{conjecture}[Gevrey-one growth]
 \label{conj:gevrey}
 On compact real phase sets (and in weighted analytic norms on a
-strip, with weight $1+\abs\ell$ for the polynomial part),
-$\abs{h_n}+\abs{g_n}\le CA^{n}n!$.  The top-jet transfer
+strip, with weight $1+\AbsoluteValue\ell$ for the polynomial part),
+$\AbsoluteValue{h_n}+\AbsoluteValue{g_n}\le CA^{n}n!$.  The top-jet transfer
 \eqref{eq:inverse-topjet} combined with a Cauchy estimate at the
 strip boundary $\pi/(2L)$ gives the heuristic exponential constant
 $8/\pi^{2}$ --- a Gevrey-one, not worse, divergence --- but other
@@ -1692,8 +1675,8 @@ Fourier decay rate is stable under all inverse operations.
 Every $d_n,h_n,g_n$ has a nonconstant periodic component for generic
 $\ell$: no finite truncation beyond the elementary factor is
 phase-blind.  (The top-jet law makes this overwhelmingly plausible;
-a certified proof could isolate the $\abs k=1$ modes against the
-enormous decay gap to $\abs k\ge2$.)  At higher orders the
+a certified proof could isolate the $\AbsoluteValue k=1$ modes against the
+enormous decay gap to $\AbsoluteValue k\ge2$.)  At higher orders the
 renormalized phase profiles trace closed analytic curves; for generic
 jet selections these should be immersed, and for rich selections
 embedded, with embedding dimension controlled by the first
@@ -1707,7 +1690,7 @@ description with at least two distinct levels: saddle-resurgent
 sectors controlled by the large-order growth of the $A_j$, and
 ultraflat dyadic sectors
 $\exp(-n2^{\,q_\star(y)})$ seeded by
-$b_n=(2^{\vtwo(n)+1}-1)/n$, where $q_\star$ is the \emph{exact}
+$b_n=(2^{\TwoAdicValuation(n)+1}-1)/n$, where $q_\star$ is the \emph{exact}
 saddle coordinate of \eqref{eq:saddle-map} (not replaceable by
 $\theta$; see \cref{sec:dyadic-completion}).  Within the ultraflat
 level, the Stokes/connection data should be Dirichlet convolutions
@@ -1741,15 +1724,15 @@ law \eqref{eq:two-term-derivative}; locate the nearest complex
 critical values of $F$ (the analytic continuation radius of $G$ and
 the Borel singularities); and build certified few-mode
 Fourier-polynomial coefficient tables
-$g_n\approx\sum_{r\le n}\sum_{\abs k\le K}c_{n,r,k}\ell^{r}
-\e^{2\pi\ii k\theta}$ that, with one Newton step on the exact
+$g_n\approx\sum_{r\le n}\sum_{\AbsoluteValue k\le K}c_{n,r,k}\ell^{r}
+\EulerE^{2\pi\ImaginaryUnit k\theta}$ that, with one Newton step on the exact
 functional equation, give a fast globally certified quantile
 algorithm.
 
 \begin{statusbox}{Lean formalization roadmap}
 Four layers, the first three purely formal:
 (1) a two-scale coefficient ring (truncated series over
-$\R[\ell]\otimes C^\infty(\R/\Z)$, closure under composition, log,
+$\RealNumbers[\ell]\otimes C^\infty(\RealNumbers/\IntegerNumbers)$, closure under composition, log,
 exp); (2) parameterized Lagrange inversion
 $[t^{k}]W=\tfrac1k[w^{k-1}]\Phi^{k}$ and the diagonal specialization
 \eqref{eq:diagonal-dn}; (3) the Gaussian contraction
@@ -1775,15 +1758,15 @@ top-jet proof.
 
 \emph{Formal-to-asymptotic transfer.}  With
 $\mathscr F(w)=\tfrac Lzw+\mathcal R_N(w)+E_N(w)$,
-$E_N=\bigO_N(z^{N})$, formal cancellation gives
-$\mathscr F(D^{[N]})=\bigO_N((1+\ell)^{N}z^{N})$, while
-$\inf\abs{\partial_w\mathscr F}\ge L/(2z)$ throughout the relevant
-$\bigO(\ell z)$ neighborhood for small $z$; hence
-$\abs{D-D^{[N]}}\le(2z/L)\abs{\mathscr F(D^{[N]})}
-=\bigO_N((1+\ell)^{N}z^{N+1})$ --- the gain-of-one-power argument
+$E_N=\BigO_N(z^{N})$, formal cancellation gives
+$\mathscr F(D^{[N]})=\BigO_N((1+\ell)^{N}z^{N})$, while
+$\inf\AbsoluteValue{\partial_w\mathscr F}\ge L/(2z)$ throughout the relevant
+$\BigO(\ell z)$ neighborhood for small $z$; hence
+$\AbsoluteValue{D-D^{[N]}}\le(2z/L)\AbsoluteValue{\mathscr F(D^{[N]})}
+=\BigO_N((1+\ell)^{N}z^{N+1})$ --- the gain-of-one-power argument
 that lets a forward expansion through $A_{N-1}$ certify an inverse
 expansion through $d_N$.  The map
-$\lambda\mapsto\lambda\e^{-L\lambda}$ then transfers phase error to
+$\lambda\mapsto\lambda\EulerE^{-L\lambda}$ then transfers phase error to
 relative inverse error of the same order.
 
 \section{Coefficient dictionary}
@@ -1797,12 +1780,12 @@ relative inverse error of the same order.
  z&=\rho^{-1},
  &\ell&=\log\rho,
  &\theta&=\rho+\beta,
- &\Gzero&=\rho\,\e^{-L\rho-L\beta},\\
+ &\Gzero&=\rho\,\EulerE^{-L\rho-L\beta},\\
  \lambda&=\rho+\beta+D,
  &D&=\textstyle\sum d_nz^{n},
  &d_n&=\textstyle\sum_{k=1}^{n}\frac{(-1)^{k}}{kL^{k}}
  [z^{n-k}w^{k-1}]\mathcal R^{k},
- &\tfrac G{\Gzero}&=(1+\beta z+zD)\e^{-LD},
+ &\tfrac G{\Gzero}&=(1+\beta z+zD)\EulerE^{-LD},
 \end{align*}
 with $\mathcal R$ from \eqref{eq:R-def}; these lines suffice to
 implement the complete inverse expansion once the forward

@@ -1,25 +1,33 @@
 # Frontier Directions for Fabius–Rvachev Analysis
 
-This package contains the source, canonical compiled PDF, deterministic numerical experiments, figures, and machine-readable tables for the report dated **30 August 2026**.
+This package contains the current source, the last validated compiled PDF,
+deterministic numerical experiments, figures, and machine-readable tables for
+the report dated **30 August 2026**. The PDF has not yet been regenerated from
+the merge-resolved source described below.
 
 ## Intake provenance
 
-The package was filed from `drafts/incoming/fabius_frontier_report_bundle-D.zip` (1,508,514 bytes; SHA-256 `39f3638f52f19955b88b7a865a60b76d9ce31154d98967d1400a6ad97396fa9a`). The archive was safety-checked and its submitted 34-row checksum ledger passed in full. That immutable arrival ledger is preserved as `ARRIVAL_SHA256SUMS`; `SHA256SUMS` describes the normalized files now in the repository.
+The package was filed from `drafts/incoming/fabius_frontier_report_bundle-D.zip` (1,508,514 bytes; SHA-256 `39f3638f52f19955b88b7a865a60b76d9ce31154d98967d1400a6ad97396fa9a`). The archive was safety-checked and its submitted 34-row checksum ledger passed in full. That immutable arrival ledger is preserved as `ARRIVAL_SHA256SUMS`. The live `SHA256SUMS` ledger still records the last validated source/PDF checkpoint; its current-source and pending-rebuild metadata rows must be refreshed together after the next PDF build.
 
 Repository normalization retained the mathematical body while replacing the submitted Letter/Latin-Modern preamble with the shared A4/27 mm/Libertinus preamble, regenerating all vector figures with embedded non-Type-3 fonts, and making generated CSV line endings deterministic. The report now states its current Lean boundary and its overlap with the separately audited digital-spectral and reciprocal-integer reports.
 
 ## Main deliverables
 
-- `fabius_frontier_report.tex` — 1,641-line report source.
-- `fabius_frontier_report.pdf` — 30-page canonical A4 report.
+- `fabius_frontier_report.tex` — current 1,615-line, 77,252-byte report
+  source; SHA-256
+  `a67fa3b1ffeaa561f3349c74ed45f7b707bbd8f7b3d20617061730d043592041`.
+- `fabius_frontier_report.pdf` — last validated 30-page A4 render of the
+  preceding source checkpoint; it is not synchronized with the current TeX.
 - `source/fabius_frontier_experiments.py` — 874-line deterministic experiment suite.
 - `figures/` — eight vector PDF figures used by the report and eight PNG previews.
 - `data/` — eleven CSV, TXT, and JSON outputs used for numerical checks.
 - `requirements.txt` — pinned Python package versions used for the validated replay.
 - `REPOSITORY_AUDIT.md` — source-audit, claim-boundary, replay, and nonduplication record.
-- `PDF_VALIDATION.txt` — final-source build, geometry, font, text, and visual checks.
+- `PDF_VALIDATION.txt` — last-render build, geometry, font, text, and visual
+  checks, plus the current uncompiled-source fingerprint.
 - `ARRIVAL_SHA256SUMS` — immutable 34-row submitted-payload ledger.
-- `SHA256SUMS` — current normalized-package ledger.
+- `SHA256SUMS` — last validated normalized-package ledger; its affected rows
+  intentionally await the pending source/PDF rebuild and metadata refresh.
 
 ## Claim and formalization boundary
 
@@ -68,5 +76,10 @@ pdflatex -interaction=nonstopmode -halt-on-error -file-line-error fabius_frontie
 ```bash
 sha256sum -c SHA256SUMS
 ```
+
+Until the pending PDF rebuild and ledger refresh are completed, this command
+is expected to report mismatches for the current TeX and the metadata files
+carrying this divergence notice. The existing PDF row continues to verify the
+last validated render.
 
 `ARRIVAL_SHA256SUMS` is intentionally historical and should be checked against the original archive, not against normalized current files.

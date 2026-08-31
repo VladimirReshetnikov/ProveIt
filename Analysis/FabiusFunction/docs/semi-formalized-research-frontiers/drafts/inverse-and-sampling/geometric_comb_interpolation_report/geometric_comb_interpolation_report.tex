@@ -7,6 +7,7 @@
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
 \usepackage{bm}
+\input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,array,tabularx}
 \usepackage{graphicx}
 \usepackage{pgfplots}
@@ -111,19 +112,6 @@
   \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
 }
 
-\newcommand{\N}{\mathbb N}
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\TV}{\operatorname{TV}}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\qbinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
-\newcommand{\Qbinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{Q}}
 \newcommand{\Gc}{\mathcal G}
 \newcommand{\Rc}{\mathcal R}
 \newcommand{\Ic}{\mathcal I}
@@ -244,7 +232,7 @@ core facts, which are treated here as a baseline rather than as new results:
 \item Newton interpolation on $1,q,\ldots,q^n$ with explicit coefficients;
 \item the reversed Gaussian row
 \[
-  N_{n,k}=(-1)^{n-k}q^{\binom{n-k+1}{2}}\qbinom nk;
+  N_{n,k}=(-1)^{n-k}q^{\binom{n-k+1}{2}}\GaussianBinomial{n}{k}{q};
 \]
 \item the normalized origin weights
 \[
@@ -293,19 +281,19 @@ reconstruction from multiscale samples, and moment-flat residuals.\\
 
 \section{Notation and elementary $q$-identities}
 
-Throughout the main body, $0<q<1$, $A>0$, and $n\in\N_0$.  Most algebraic
+Throughout the main body, $0<q<1$, $A>0$, and $n\in\NaturalNumbers$.  Most algebraic
 formulas remain valid for complex $A\ne0$ and $0<|q|<1$ after the obvious
 noncollision assumptions.
 
 \begin{definition}[$q$-shifted factorial and Gaussian coefficient]
-For $m\in\N_0$,
+For $m\in\NaturalNumbers$,
 \[
  (a;q)_m:=\prod_{j=0}^{m-1}(1-aq^j),\qquad
  (a;q)_\infty:=\prod_{j=0}^{\infty}(1-aq^j),
 \]
 and
 \[
- \qbinom mk:=\frac{(q;q)_m}{(q;q)_k(q;q)_{m-k}}
+ \GaussianBinomial{m}{k}{q}:=\frac{(q;q)_m}{(q;q)_k(q;q)_{m-k}}
  \quad(0\le k\le m).
 \]
 We also write
@@ -318,10 +306,10 @@ We also write
 We repeatedly use the finite and reciprocal $q$-binomial theorems
 \begin{align}
  (z;q)_m
- &=\sum_{k=0}^m(-1)^kq^{\binom{k}{2}}\qbinom mk z^k,
+ &=\sum_{k=0}^m(-1)^kq^{\binom{k}{2}}\GaussianBinomial{m}{k}{q} z^k,
  \label{eq:finite-q-binomial}\\
  \frac1{(z;q)_{m+1}}
- &=\sum_{r=0}^{\infty}\qbinom{m+r}{m}z^r,
+ &=\sum_{r=0}^{\infty}\GaussianBinomial{m+r}{m}{q}z^r,
  \qquad |z|<1.
  \label{eq:reciprocal-q-binomial}
 \end{align}
@@ -336,7 +324,7 @@ polynomial, characterized by
 \]
 A direct use of \eqref{eq:reciprocal-q-binomial} gives
 \begin{equation}
- h_r(A,Aq,\ldots,Aq^m)=A^r\qbinom{m+r}{m}.
+ h_r(A,Aq,\ldots,Aq^m)=A^r\GaussianBinomial{m+r}{m}{q}.
  \label{eq:h-geometric}
 \end{equation}
 This small identity is the source of nearly every Gaussian residual below.
@@ -346,7 +334,7 @@ This small identity is the source of nearly every Gaussian residual below.
 \begin{definition}[Geometric comb]
 For $A\ne0$ and $0<|q|<1$, define
 \[
- \Cc(A,q):=\{Aq^k:k\in\N_0\},\qquad
+ \Cc(A,q):=\{Aq^k:k\in\NaturalNumbers\},\qquad
  \Cc_n(A,q):=\{A,Aq,\ldots,Aq^n\}.
 \]
 A shifted comb $\{aq^{s+k}:k\ge0\}$ is the same object with $A=aq^s$.
@@ -513,7 +501,7 @@ $A,Aq,\ldots,Aq^n$, evaluated at $x$, satisfies
  &=x^{n+1+r}-\omega_{n,A,q}(x)
    h_r(x,A,Aq,\ldots,Aq^n)\notag\\
  &=x^{n+1+r}-\omega_{n,A,q}(x)
-   \sum_{j=0}^r x^jA^{r-j}\qbinom{n+r-j}{n}.
+   \sum_{j=0}^r x^jA^{r-j}\GaussianBinomial{n+r-j}{n}{q}.
  \label{eq:arbitrary-residual}
 \end{align}
 \end{theorem}
@@ -530,14 +518,14 @@ gives the second line.
 At $x=0$ this gives the exact moment row.
 
 \begin{corollary}[All origin moments]
-For $d\in\N_0$,
+For $d\in\NaturalNumbers$,
 \begin{equation}
  \sum_{k=0}^n\lambda_{n,k}^{(q)}(Aq^k)^d
  =\begin{cases}
   1,&d=0,\\
   0,&1\le d\le n,\\
   (-1)^nA^dq^{\binom{n+1}{2}}
-  \qbinom{d-1}{n},&d\ge n+1.
+  \GaussianBinomial{d-1}{n}{q},&d\ge n+1.
  \end{cases}
  \label{eq:all-moments}
 \end{equation}
@@ -554,7 +542,7 @@ Then \eqref{eq:all-moments} gives the exact identity
 \begin{equation}
  (\Gc_{n,q}f)(A)-f(0)
  =(-1)^nq^{\binom{n+1}{2}}
-  \sum_{r=0}^{\infty}\qbinom{n+r}{n}a_{n+1+r}A^{n+1+r}.
+  \sum_{r=0}^{\infty}\GaussianBinomial{n+r}{n}{q}a_{n+1+r}A^{n+1+r}.
  \label{eq:exact-analytic-tail}
 \end{equation}
 
@@ -576,7 +564,7 @@ $MR^{-m}$.
 Take absolute values in \eqref{eq:exact-analytic-tail} and apply
 \eqref{eq:reciprocal-q-binomial}:
 \[
- \sum_{r\ge0}\qbinom{n+r}{n}t^r=\frac1{(t;q)_{n+1}}.
+ \sum_{r\ge0}\GaussianBinomial{n+r}{n}{q}t^r=\frac1{(t;q)_{n+1}}.
 \]
 \end{proof}
 
@@ -609,7 +597,7 @@ defined.
 Both sides are linear in $f$, so it suffices to take $f(x)=x^m$.  If $m<k$,
 both sides vanish.  If $m=k+r$, the divided difference is
 \[
- h_r(A,Aq,\ldots,Aq^k)=A^r\qbinom{k+r}{k}.
+ h_r(A,Aq,\ldots,Aq^k)=A^r\GaussianBinomial{k+r}{k}{q}.
 \]
 On the other hand,
 \[
@@ -654,14 +642,14 @@ Let
 \]
 
 \begin{theorem}[Monomial--Newton transforms]
-For $k,m\in\N_0$,
+For $k,m\in\NaturalNumbers$,
 \begin{align}
  \phi_k(x)
  &=\sum_{j=0}^k(-1)^{k-j}A^{k-j}q^{\binom{k-j}{2}}
-   \qbinom{k}{j}x^j,
+   \GaussianBinomial{k}{j}{q}x^j,
  \label{eq:newton-to-monomial}\\
  x^m
- &=\sum_{k=0}^mA^{m-k}\qbinom{m}{k}\phi_k(x).
+ &=\sum_{k=0}^mA^{m-k}\GaussianBinomial{m}{k}{q}\phi_k(x).
  \label{eq:monomial-to-newton}
 \end{align}
 Thus the two triangular coefficient matrices are exact inverses.
@@ -672,14 +660,14 @@ Equation \eqref{eq:newton-to-monomial} is the finite $q$-binomial theorem
 applied to $x^k(A/x;q)_k$.  For \eqref{eq:monomial-to-newton}, use the Newton
 formula for the monomial $x^m$ and
 \eqref{eq:divdiff-Jackson}.  The coefficient is
-$A^{m-k}\qbinom{m}{k}$.
+$A^{m-k}\GaussianBinomial{m}{k}{q}$.
 \end{proof}
 
 If $f(x)=\sum_{m\ge0}a_mx^m$, comparison with
 \eqref{eq:monomial-to-newton} gives a useful coefficient transform:
 \begin{equation}
  c_k:=\frac{D_q^kf(A)}{[k]_q!}
- =\sum_{r=0}^{\infty}a_{k+r}A^r\qbinom{k+r}{k}.
+ =\sum_{r=0}^{\infty}a_{k+r}A^r\GaussianBinomial{k+r}{k}{q}.
  \label{eq:analytic-Newton-coeff}
 \end{equation}
 This is a Gaussian-binomial tail transform of the Taylor coefficients.
@@ -795,7 +783,7 @@ The spectral point of $x^\alpha$ is $q^\alpha$, even when $\alpha$ is not an
 integer.
 
 \begin{theorem}[Power multiplier]
-For $A>0$ and $\alpha\in\C$,
+For $A>0$ and $\alpha\in\ComplexNumbers$,
 \begin{equation}
  (\Gc_{n,q}x^\alpha)(A)
  =A^\alpha W_{n,q}(q^\alpha)
@@ -815,7 +803,7 @@ $W_{n,q}$ gives the second expression.
 Differentiating with respect to the exponent yields all logarithmic companions.
 
 \begin{corollary}[Logarithmic modes]
-For $s\in\N_0$,
+For $s\in\NaturalNumbers$,
 \begin{equation}
  \bigl(\Gc_{n,q}[x^\alpha(\log x)^s]\bigr)(A)
  =\partial_\alpha^s
@@ -852,8 +840,8 @@ special functions often contain fractional powers and logarithms.  The
 dilation-operator viewpoint gives the correct generalization immediately.
 
 \begin{definition}[Mode polynomial]
-Let $\alpha_1,\ldots,\alpha_J\in\C$ have pairwise distinct spectral
-points $q^{\alpha_j}$, none equal to $1$, and let $m_1,\ldots,m_J\in\N$, and put $N=\sum_jm_j$.  Define
+Let $\alpha_1,\ldots,\alpha_J\in\ComplexNumbers$ have pairwise distinct spectral
+points $q^{\alpha_j}$, none equal to $1$, and let $m_1,\ldots,m_J\in\NaturalNumbers$, and put $N=\sum_jm_j$.  Define
 \begin{equation}
  W_{\bm\alpha,\bm m}(z)
  :=\prod_{j=1}^J
@@ -891,7 +879,7 @@ normalization then force \eqref{eq:mode-polynomial}.
 \end{proof}
 
 \begin{corollary}[Exact general multiplier]
-For any $\alpha\in\C$ and $s\in\N_0$,
+For any $\alpha\in\ComplexNumbers$ and $s\in\NaturalNumbers$,
 \begin{equation}
  \Rc_{\bm\alpha,\bm m}
  [x^\alpha(\log x)^s]
@@ -1102,7 +1090,7 @@ $J\to\infty$.
 
 \subsection{Regularly varying endpoint germs}
 
-A function $f$ is regularly varying at $0+$ with index $\alpha\in\R$ if
+A function $f$ is regularly varying at $0+$ with index $\alpha\in\RealNumbers$ if
 $f(tx)/f(t)\to x^\alpha$ as $t\downarrow0$ for every $x>0$, with $f$ eventually
 of one sign.  Standard background is in \cite{BinghamGoldieTeugels}.
 
@@ -1163,7 +1151,7 @@ Then
 \begin{equation}
  (\Gc_{n,q}f)(A)-f(0)
  =\frac{(-1)^nA^{n+1}q^{\binom{n+1}{2}}}{(n+1)!}
- \E\bigl[f^{(n+1)}(Y_{n,A,q})\bigr].
+ \Expectation\bigl[f^{(n+1)}(Y_{n,A,q})\bigr].
  \label{eq:HG-remainder}
 \end{equation}
 \end{theorem}
@@ -1180,7 +1168,7 @@ The Hermite--Genocchi formula for a divided difference of order $n+1$ is
 \[
  f[0,A,Aq,\ldots,Aq^n]
  =\frac1{(n+1)!}
- \E f^{(n+1)}\!\left(A\sum_{k=0}^nq^kT_k\right).
+ \Expectation f^{(n+1)}\!\left(A\sum_{k=0}^nq^kT_k\right).
 \]
 Since $I_nf(0)=(\Gc_{n,q}f)(A)$, the result follows.
 \end{proof}
@@ -1208,7 +1196,7 @@ For $n\ge1$, define the Peano kernel
 \end{equation}
 Then
 \[
- (\Gc_{n,q}f)(A)-f(0)=\int_0^Af^{(n+1)}(t)K_{n,A,q}(t)\dd t.
+ (\Gc_{n,q}f)(A)-f(0)=\int_0^Af^{(n+1)}(t)K_{n,A,q}(t)\Differential t.
 \]
 Normalize it by
 \begin{equation}
@@ -1222,7 +1210,7 @@ The function $B_{n,A,q}$ is the probability density of
 $Y_{n,A,q}$ in \eqref{eq:Y-dirichlet}.  In particular,
 \begin{enumerate}[label=(\roman*),leftmargin=2em]
 \item $B_{n,A,q}\ge0$ and is supported on $[0,A]$;
-\item $\int_0^AB_{n,A,q}(t)\dd t=1$;
+\item $\int_0^AB_{n,A,q}(t)\Differential t=1$;
 \item it is the classical univariate B-spline associated with the knots
 $0,Aq^n,\ldots,Aq,A$, up to the displayed normalization;
 \item it is log-concave and hence unimodal on the interior of its support.
@@ -1252,25 +1240,25 @@ remainder in this report.
 \subsection{Exact moments}
 
 \begin{theorem}[Gaussian-binomial B-spline moments]
-For every $r\in\N_0$,
+For every $r\in\NaturalNumbers$,
 \begin{equation}
- \E Y_{n,A,q}^r
+ \Expectation Y_{n,A,q}^r
  =\frac{r!(n+1)!}{(n+r+1)!}
- A^r\qbinom{n+r}{n}.
+ A^r\GaussianBinomial{n+r}{n}{q}.
  \label{eq:Y-moments}
 \end{equation}
 Equivalently,
 \begin{equation}
- \int_0^At^rB_{n,A,q}(t)\dd t
+ \int_0^At^rB_{n,A,q}(t)\Differential t
  =\frac{r!(n+1)!}{(n+r+1)!}
- A^r\qbinom{n+r}{n}.
+ A^r\GaussianBinomial{n+r}{n}{q}.
 \end{equation}
 \end{theorem}
 
 \begin{proof}
 For a Dirichlet$(1,\ldots,1)$ vector with $n+2$ components,
 \[
- \E\left(\sum_i x_iT_i\right)^r
+ \Expectation\left(\sum_i x_iT_i\right)^r
  =\frac{r!(n+1)!}{(n+r+1)!}h_r(x_0,\ldots,x_{n+1}).
 \]
 Take the knots $0,A,Aq,\ldots,Aq^n$ and apply
@@ -1296,9 +1284,9 @@ For fixed $0<q<1$,
 \end{equation}
 The limit has moments and Laplace transform
 \begin{align}
- \E Z_q^r&=\frac{r!}{(q;q)_r},
+ \Expectation Z_q^r&=\frac{r!}{(q;q)_r},
  \label{eq:Z-moments}\\
- \E e^{-sZ_q}&=\frac1{(-s;q)_\infty},\qquad s\ge0.
+ \Expectation e^{-sZ_q}&=\frac1{(-s;q)_\infty},\qquad s\ge0.
  \label{eq:Z-Laplace}
 \end{align}
 For $y>0$ its density admits the absolutely convergent expansion
@@ -1322,7 +1310,7 @@ The denominator divided by $n+2$ converges almost surely to $1$, while
 $\sum_{k=0}^nq^kE_k$ converges almost surely and in every $L^r$ to $Z_q$.
 Slutsky's theorem proves \eqref{eq:Y-scaling-limit}.  Independence gives
 \[
- \E e^{-sZ_q}=\prod_{k\ge0}(1+sq^k)^{-1}=(-s;q)_\infty^{-1}.
+ \Expectation e^{-sZ_q}=\prod_{k\ge0}(1+sq^k)^{-1}=(-s;q)_\infty^{-1}.
 \]
 Expanding $1/(t;q)_\infty=\sum_{r\ge0}t^r/(q;q)_r$ around $t=0$ and comparing
 moment-generating coefficients gives \eqref{eq:Z-moments}.
@@ -1374,7 +1362,7 @@ the distributional self-similarity
 where $X_b'$ is an independent copy.  If $F_b$ is the distribution function,
 then
 \begin{equation}
- F_b(x)=\int_0^1F_b\!\left(\frac{x-(1-b)u}{b}\right)\dd u,
+ F_b(x)=\int_0^1F_b\!\left(\frac{x-(1-b)u}{b}\right)\Differential u,
  \label{eq:Fb-integral}
 \end{equation}
 with the conventions $F_b=0$ to the left of $0$ and $F_b=1$ to the right of
@@ -1475,19 +1463,19 @@ Put
 Then $Z_b$ is symmetric and supported on $[-1,1]$.  Under the Fourier
 convention
 \[
- \widehat u_b(z)=\E e^{-2\pi izZ_b},
+ \widehat u_b(z)=\Expectation e^{-2\pi izZ_b},
 \]
 its characteristic function is
 \begin{equation}
  \widehat u_b(z)
  =\prod_{j=0}^{\infty}
- \sinc\!\bigl(2\pi(1-b)b^jz\bigr),
- \qquad \sinc w:=\frac{\sin w}{w}.
+ \SincRad\!\bigl(2\pi(1-b)b^jz\bigr),
+ \qquad \SincRad w:=\frac{\sin w}{w}.
  \label{eq:generic-sinc-product}
 \end{equation}
 At $b=1/2$, this is
 \begin{equation}
- \widehat\Up(z)=\prod_{j=0}^{\infty}\sinc(\pi z/2^j),
+ \widehat\RvachevUp(z)=\prod_{j=0}^{\infty}\SincRad(\pi z/2^j),
  \label{eq:up-sinc}
 \end{equation}
 which is the standard Rvachev product.
@@ -1542,10 +1530,10 @@ and, for $0\le x\le1/2$,
 \end{equation}
 The compactly supported Rvachev function is related by
 \begin{equation}
- \Up(x)=F(1-|x|),\qquad |x|\le1,
+ \RvachevUp(x)=F(1-|x|),\qquad |x|\le1,
  \label{eq:Up-F}
 \end{equation}
-with $\Up(x)=0$ for $|x|\ge1$.  These normalizations agree with the primary
+with $\RvachevUp(x)=0$ for $|x|\ge1$.  These normalizations agree with the primary
 Fabius/Rvachev literature \cite{Fabius1966,Rvachev1990,AriasDeReyna} and with
 the inspected ProveIt exposition \cite{ProveItFabius}.
 
@@ -1584,7 +1572,7 @@ Then
 \begin{equation}
  \sum_{k=0}^n\lambda_{n,k}^{(1/2)}F(A2^{-k})
  =\frac{(-1)^n(2A)^{n+1}}{(n+1)!}
- \E F(2^{n+1}AS_n).
+ \Expectation F(2^{n+1}AS_n).
  \label{eq:F-boundary-filter}
 \end{equation}
 In particular, the left side has strict sign $(-1)^n$ and obeys
@@ -1600,7 +1588,7 @@ Apply \eqref{eq:HG-remainder} with $q=1/2$ and $f=F$.  Since $F(0)=0$,
 \[
  \sum_k\lambda_{n,k}^{(1/2)}F(A2^{-k})
  =\frac{(-1)^nA^{n+1}2^{-n(n+1)/2}}{(n+1)!}
- \E F^{(n+1)}(AS_n).
+ \Expectation F^{(n+1)}(AS_n).
 \]
 The hypothesis on $A$ allows \eqref{eq:F-derivatives} with $m=n+1$ throughout
 the support of $AS_n$.  The powers of $2$ reduce to $2^{n+1}$, giving
@@ -1614,20 +1602,20 @@ If $M\ge n+1$, then
 \begin{equation}
  \sum_{k=0}^n\lambda_{n,k}^{(1/2)}F(2^{-(M+k)})
  =\frac{(-1)^n2^{-(M-1)(n+1)}}{(n+1)!}
- \E F(2^{n+1-M}S_n).
+ \Expectation F(2^{n+1-M}S_n).
  \label{eq:F-dyadic-filter}
 \end{equation}
 For $M=n+1$, the ratio of the absolute value to the upper bound is exactly
-$\E F(S_n)$.
+$\Expectation F(S_n)$.
 \end{corollary}
 
 Through \eqref{eq:Up-F}, the same result is an identity on the left boundary of
-$\Up$:
+$\RvachevUp$:
 \begin{equation}
  \sum_{k=0}^n\lambda_{n,k}^{(1/2)}
- \Up(-1+A2^{-k})
+ \RvachevUp(-1+A2^{-k})
  =\frac{(-1)^n(2A)^{n+1}}{(n+1)!}
- \E F(2^{n+1}AS_n).
+ \Expectation F(2^{n+1}AS_n).
  \label{eq:Up-boundary-filter}
 \end{equation}
 Thus a signed combination of values of a nowhere-analytic $C^\infty$ function
@@ -1641,7 +1629,7 @@ The variable $S_n$ is $Y_{n,1,1/2}$ from \cref{sec:bspline}.  Therefore
  (n+2)S_n\xrightarrow{d}Z_{1/2}
  =\sum_{k\ge0}2^{-k}E_k,
  \qquad
- \E e^{-sZ_{1/2}}=\frac1{(-s;1/2)_\infty}.
+ \Expectation e^{-sZ_{1/2}}=\frac1{(-s;1/2)_\infty}.
  \label{eq:Sn-limit}
 \end{equation}
 This identifies the random scale sampled by the normalized Fabius remainder.
@@ -1706,7 +1694,7 @@ For $H_z$ as in \eqref{eq:Hzt},
 \begin{align}
  \sum_{k=0}^n\lambda_{n,k}^{(Q)}\Phi(c^kz)
  &=1+(-1)^nQ^{\binom{n+1}{2}}
- \sum_{r=0}^{\infty}\Qbinom{n+r}{n}
+ \sum_{r=0}^{\infty}\GaussianBinomial{n+r}{n}{Q}
  c_{n+1+r}z^{2n+2+2r}.
  \label{eq:even-entire-filter}
 \end{align}
@@ -1719,10 +1707,10 @@ $A=1$ and base $Q$.
 \end{proof}
 
 For a characteristic function under the convention
-$\Phi(z)=\E e^{-2\pi izX}$ with a symmetric random variable $X$,
+$\Phi(z)=\Expectation e^{-2\pi izX}$ with a symmetric random variable $X$,
 \begin{equation}
  c_m=(-1)^m\frac{(2\pi)^{2m}\mu_{2m}}{(2m)!},
- \qquad \mu_{2m}=\E X^{2m}.
+ \qquad \mu_{2m}=\Expectation X^{2m}.
  \label{eq:Fourier-coeff-moments}
 \end{equation}
 Hence the first nonzero term of the filtered residual is always
@@ -1733,12 +1721,12 @@ Hence the first nonzero term of the filtered residual is always
 \end{equation}
 For real $z$ near zero this is negative, regardless of the parity of $n$.
 
-\subsection{Application to $\Up$}
+\subsection{Application to $\RvachevUp$}
 
 For the Rvachev function,
 \[
- \Phi(z)=\widehat\Up(z)
- =\prod_{j=0}^{\infty}\sinc(\pi z/2^j).
+ \Phi(z)=\widehat\RvachevUp(z)
+ =\prod_{j=0}^{\infty}\SincRad(\pi z/2^j).
 \]
 Taking $c=1/2$ and $Q=1/4$ in
 \eqref{eq:even-entire-filter} gives an exact finite multiscale identity.  Its
@@ -1758,8 +1746,8 @@ The finite filter recovers the constant term approximately.  The infinite
 Newton series reconstructs the complete scale function.
 
 \begin{theorem}[Scale reconstruction from a geometric sample ray]
-Let $\Phi$ be even entire, fix $z\in\C$, and set $H_z$ by
-\eqref{eq:Hzt}.  Then for every $t\in\C$,
+Let $\Phi$ be even entire, fix $z\in\ComplexNumbers$, and set $H_z$ by
+\eqref{eq:Hzt}.  Then for every $t\in\ComplexNumbers$,
 \begin{equation}
  \Phi(z\sqrt t)
  =\sum_{j=0}^{\infty}
@@ -1945,7 +1933,7 @@ For $A=2^{-(n+1)}$, define
  \qquad
  B_n:=\frac{2^{-n(n+1)}}{(n+1)!}.
 \]
-The theorem gives $(-1)^nR_n>0$ and $|R_n|/B_n=\E F(S_n)\in(0,1)$.  Exact
+The theorem gives $(-1)^nR_n>0$ and $|R_n|/B_n=\Expectation F(S_n)\in(0,1)$.  Exact
 fraction arithmetic produces the following decimal summary.
 
 \begin{table}[htbp]
@@ -1974,7 +1962,7 @@ $n$ & sign of $R_n$ & $|R_n|/B_n$\\
 \centering
 \includegraphics[width=0.88\textwidth]{fabius_boundary_ratio.png}
 \caption{The normalized Fabius boundary remainder
-$|R_n|/B_n=\E F(S_n)$ through order $36$.  The decrease is much slower than
+$|R_n|/B_n=\Expectation F(S_n)$ through order $36$.  The decrease is much slower than
 the already extracted factorial-supergeometric factor $B_n$; its finer
 asymptotics are posed as a conjecture in \cref{sec:frontiers}.}
 \label{fig:Fabius-ratio}
@@ -2029,7 +2017,7 @@ density.
 
 Let
 \[
- \rho_n:=\E F(S_n)=\frac{|R_n|}{B_n}.
+ \rho_n:=\Expectation F(S_n)=\frac{|R_n|}{B_n}.
 \]
 The scaling limit $(n+2)S_n\Rightarrow Z_{1/2}$ suggests that $S_n$ is of order
 $1/n$, while the Fabius function has a logarithmic-square flatness scale at
@@ -2230,7 +2218,7 @@ For an integer $d=n+1+r$, \eqref{eq:pure-power} and
  \frac{\prod_{j=0}^{n-1}(1-q^{-n-r+j})}{(q;q)_n}\\
  &=(-1)^nq^{\binom{n+1}{2}}
  \frac{(q;q)_{n+r}}{(q;q)_n(q;q)_r}\\
- &=(-1)^nq^{\binom{n+1}{2}}\qbinom{n+r}{n}.
+ &=(-1)^nq^{\binom{n+1}{2}}\GaussianBinomial{n+r}{n}{q}.
 \end{align*}
 This calculation is often useful when moving between Mellin exponents and
 integer Taylor moments.
@@ -2242,10 +2230,10 @@ Take $f(x)=e^{tx}$ in \eqref{eq:HG-remainder}.  Using
 \begin{align}
  (\Gc_{n,q}e^{t\cdot})(A)-1
  &=\frac{(-1)^nA^{n+1}q^{\binom{n+1}{2}}t^{n+1}}{(n+1)!}
- \E e^{tY_{n,A,q}}\notag\\
+ \Expectation e^{tY_{n,A,q}}\notag\\
  &=(-1)^nA^{n+1}q^{\binom{n+1}{2}}t^{n+1}
  \sum_{r=0}^{\infty}
- \frac{A^r\qbinom{n+r}{n}}{(n+r+1)!}t^r.
+ \frac{A^r\GaussianBinomial{n+r}{n}{q}}{(n+r+1)!}t^r.
  \label{eq:exp-remainder}
 \end{align}
 The same series follows from \eqref{eq:exact-analytic-tail}.  The equality is a

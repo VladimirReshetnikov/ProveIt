@@ -1,5 +1,14 @@
 # Inverse Fabius compositional iterates: nowhere analyticity
 
+> **Source-only merge status (2026-08-31).** The current TeX has 1,742 lines
+> (SHA-256
+> `a9ffad2d6d38212b3434af0a5dec119ffca9f8391a9ef942fde20aa37d993b6d`).
+> The retained 26-page PDF was not rebuilt after the notation migration and is
+> not claimed to be synchronized with that source. `SHA256SUMS.txt` was
+> intentionally not refreshed: its TeX row and this README row are pending,
+> while its other thirteen rows pass. Historical build facts below describe
+> the preceding checkpoint.
+
 This package is a derived companion to the corrected forward report in
 `drafts/representations/fabius_iterates_nowhere_analytic/`.  Its repeated
 forward engine is retained to make the inverse argument readable in one
@@ -73,13 +82,14 @@ submitted ledger had SHA-256
 `c270903631b0942aa7f7742b84ea0117bb9f2f4cc0d0eb374889077ba37873a0`
 and is preserved byte-for-byte as `SHA256SUMS.arrival.txt`.
 `MANIFEST.txt` is the unchanged submitted file list; `SHA256SUMS.txt` is the
-full current package ledger.  See `REPOSITORY_AUDIT.md` for the claim audit,
+unrefreshed 15-entry operational ledger. See `REPOSITORY_AUDIT.md` for the claim audit,
 original source/PDF hashes, and replay details.
 
 ## Files
 
-- `inverse_fabius_iterates_nowhere_analytic.tex` and matching `.pdf` — the
-  normalized report;
+- `inverse_fabius_iterates_nowhere_analytic.tex` — current normalized source;
+- `inverse_fabius_iterates_nowhere_analytic.pdf` — retained
+  preceding-checkpoint PDF, pending rebuild;
 - `numerical_experiments.py` — deterministic forward-spine and inverse formal
   reversion diagnostics;
 - `figures/` — the five PNG files embedded in the report;
@@ -87,7 +97,8 @@ original source/PDF hashes, and replay details.
 - `requirements.txt` — the submitted unpinned Python dependencies;
 - `REPOSITORY_AUDIT.md` — repository provenance, hostile audit, and limitations;
 - `SHA256SUMS.arrival.txt` — immutable submitted checksum ledger;
-- `SHA256SUMS.txt` — refreshed current checksum ledger.
+- `SHA256SUMS.txt` — unrefreshed operational checksum ledger; its TeX and
+  README rows are pending.
 
 No numerical output is used as a proof premise.
 
@@ -137,8 +148,9 @@ including Libertinus prose, with only allowed metadata/running-head changes
 and used local notation afterward.  Auxiliary build files are not part of the
 package.
 
-The checked final-source build completed exactly three strict serial passes and
-produced a 26-page A4 PDF.  Its final log has no warnings, errors, unresolved
+At the preceding checkpoint, the checked source build completed exactly three
+strict serial passes and produced the retained 26-page A4 PDF. Its final log
+has no warnings, errors, unresolved
 references, rerun requests, or overfull/underfull boxes.  All 24 font rows are
 embedded, subset Type 1 fonts; the prose rows are Libertinus, with no Type 3 or
 Latin Modern font.  Text extraction and a visual review of every rendered page
