@@ -12,8 +12,11 @@ normalization visible:
 For the exponential observable exp(tX), the local Hoeffding variance ratio and
 its Bernoulli activation probability are
 
-    r(x) = x*coth(x) - 1,
-    p(x) = r(x)/(1+r(x)) = 1 - tanh(x)/x.
+    r(x) = m(2*x)/m(x)^2 - 1,
+    p(x) = r(x)/(1+r(x)),
+
+with r(0)=p(0)=0.  Away from zero these are respectively
+``x*coth(x)-1`` and ``1-tanh(x)/x``.
 
 The code performs only deterministic high-precision calculations; no Monte
 Carlo sampling is needed.  Every truncation uses an explicit geometric tail
@@ -58,6 +61,12 @@ MP_DPS = 80
 mp.mp.dps = MP_DPS
 LOG2 = mp.log(2)
 
+# Matplotlib otherwise emits Type-3 glyphs in PDF output.  TrueType embedding
+# keeps the vector figures searchable, scalable, and suitable for inclusion in
+# the report without importing Type-3 fonts into the final document.
+plt.rcParams["pdf.fonttype"] = 42
+plt.rcParams["ps.fonttype"] = 42
+
 
 def mp_sinhc(x: mp.mpf | mp.mpc) -> mp.mpf | mp.mpc:
     """Return sinh(x)/x with the removable value 1 at x=0."""
@@ -67,9 +76,11 @@ def mp_sinhc(x: mp.mpf | mp.mpc) -> mp.mpf | mp.mpc:
 
 
 def local_r(x: mp.mpf | mp.mpc) -> mp.mpf | mp.mpc:
-    """Local normalized nonconstant L2 energy r(x)=x*coth(x)-1.
+    """Return the totalized local energy ``m(2*x)/m(x)^2 - 1``.
 
-    A short Taylor expansion avoids catastrophic cancellation near zero.
+    This equals ``x*coth(x)-1`` away from zero and has value zero at the
+    origin.  A short Taylor expansion both supplies that removable value and
+    avoids catastrophic cancellation nearby.
     """
     ax = abs(x)
     if ax < mp.mpf("1e-8"):
@@ -85,7 +96,10 @@ def local_r(x: mp.mpf | mp.mpc) -> mp.mpf | mp.mpc:
 
 
 def local_p(x: mp.mpf | mp.mpc) -> mp.mpf | mp.mpc:
-    """Local active-digit probability p(x)=1-tanh(x)/x."""
+    """Return the active probability, totalized by ``p(0)=0``.
+
+    Away from zero this is ``1-tanh(x)/x``.
+    """
     ax = abs(x)
     if ax < mp.mpf("1e-8"):
         x2 = x * x

@@ -174,11 +174,14 @@ For the centered random series
 \]
 we prove an explicit infinite Hoeffding decomposition of $\e^{tX}$.  The
 normalized variance of each component indexed by a finite set $S$ factorizes
-as $\prod_{j\in S}(x_j\coth x_j-1)$, where $x_j=t2^{-j}$.  Consequently the
+as $\prod_{j\in S}r(x_j)$, where $x_j=t2^{-j}$ and $r$ is the continuous
+extension of $x\coth x-1$ with $r(0)=0$.  Consequently the
 entire hierarchy of variance shares is the law of a countable
 Poisson--binomial active-digit process with probabilities
 \[
- p(x)=1-\frac{\tanh x}{x}.
+ p(x)=\frac{r(x)}{1+r(x)},
+ \qquad p(x)=1-\frac{\tanh x}{x}\quad(x\ne0),
+ \qquad p(0)=0.
 \]
 The same decomposition refines into a tensor Legendre chaos whose local degree
 marks are given exactly by modified spherical Bessel functions.  For an
@@ -308,8 +311,8 @@ The proved contributions are:
 \item a Poisson--binomial law for the active set and exact first/total Sobol
       indices;
 \item a marked tensor-Legendre refinement and a local Parseval identity;
-\item a mixed-replacement inequality for all smooth observables, with an exact
-      dyadic $q$-Pochhammer factor and sharp monomial top order;
+\item a sharp mixed-replacement inequality for smooth observables, its exact
+      dyadic $q$-Pochhammer factor, and the monomial top order;
 \item exact polynomial component formulae in terms of tail Bell--Bernoulli
       moments;
 \item a chaos generating product with Newton--Bell recurrences and a
@@ -396,13 +399,18 @@ $\mu=\bigotimes_{j\ge1}(\dd v_j/2)$.  For each coordinate, let
  \qquad Q_j=I-E_j.
  \label{eq:coordinate-projections}
 \end{equation}
-For a finite set $S\subset\N$, put
+For a finite set $S\subset\N$, let
+\(\mathcal F_S=\sigma(V_j:j\in S)\) and put
 \begin{equation}
  Q_S=\prod_{j\in S}Q_j,
- \qquad E_{S^c}=\prod_{j\notin S}E_j,
+ \qquad E_{S^c}f=\E[f\mid\mathcal F_S],
  \qquad f_S=Q_SE_{S^c}f.
  \label{eq:Hoeffding-component}
 \end{equation}
+Thus $E_{S^c}$ means integration over all complementary coordinates, not a
+literal unordered infinite product of operators.  Equivalently it is the
+$L^2$ limit of the finite complementary-coordinate integrations.  This
+conditional-expectation definition makes the infinite product notation exact.
 The commuting orthogonal projections give the Hoeffding or functional-ANOVA
 expansion
 \begin{equation}
@@ -455,29 +463,39 @@ converges unconditionally in $L^2(\mu)$, its terms are mutually orthogonal, and
 \begin{equation}
  \boxed{
  \|H_S(t)\|_2^2=M(t)^2\prod_{j\in S}r(x_j),
- \qquad r(x)=x\coth x-1.}
+ \qquad r(x)=\frac{m(2x)}{m(x)^2}-1.}
  \label{eq:H-S-norm}
 \end{equation}
+Here $r(0)=0$, and $r(x)=x\coth x-1$ for $x\ne0$; thus $r$ is defined and
+analytic at the origin as well.
 The empty product gives $H_\varnothing(t)=M(t)$.
 \end{theorem}
 
 \begin{proof}
-For a finite coordinate set $J$, factorization gives
+Let $\mathcal F_n=\sigma(V_1,\ldots,V_n)$ and
 \[
- \e^{t\sum_{j\in J}a_jV_j}
- =\prod_{j\in J}m(x_j)\prod_{j\in J}(1+Z_j).
+ M_{>n}(t)=\prod_{j>n}m(x_j).
+\]
+The finite-prefix conditional expectation, including its indispensable tail
+normalization, is
+\[
+ f_n:=\E[\e^{tX}\mid\mathcal F_n]
+ =M_{>n}(t)\e^{t\sum_{j=1}^na_jV_j}
+ =M(t)\prod_{j=1}^n(1+Z_j).
 \]
 Applying $E_j$ selects the constant term in coordinate $j$, while $Q_j$
-selects $Z_j$.  Thus the finite-dimensional Hoeffding component indexed by
-$S\subset J$ is exactly the corresponding product.
+selects $Z_j$.  Thus for $S\subset\{1,\ldots,n\}$ the component of $f_n$
+indexed by $S$ is already exactly $M(t)\prod_{j\in S}Z_j$, independently of
+$n$.
 
 For the infinite limit, first compute
 \begin{align*}
  \E Z_j^2
  &=\frac{m(2x_j)}{m(x_j)^2}-1\\
- &=\frac{\sinh(2x_j)/(2x_j)}{(\sinh x_j/x_j)^2}-1
- =x_j\coth x_j-1=r(x_j).
+ &=\frac{m(2x_j)}{m(x_j)^2}-1=r(x_j),
 \end{align*}
+where the identity with $x_j\coth x_j-1$ holds when $x_j\ne0$, and the
+displayed quotient gives its value $0$ at the origin.
 The Taylor expansion $r(x)=x^2/3+O(x^4)$ implies
 $\sum_jr(x_j)<\infty$.  Hence
 \[
@@ -490,9 +508,11 @@ has mean zero.  Their squared norms therefore sum to
  M(t)^2\sum_{S\Subset\N}\prod_{j\in S}r(x_j)
  =M(t)^2\prod_{j\ge1}(1+r(x_j))<\infty.
 \]
-Thus the orthogonal series converges unconditionally in $L^2$.  Its finite
-partial sums are the finite-coordinate products and converge almost surely and
-in $L^2$ to $\e^{tX}$, proving the identity and the norm formula.
+Thus the orthogonal series converges unconditionally in $L^2$.  Its prefix
+sums are the conditional expectations $f_n$, which converge in $L^2$ to
+$\e^{tX}$ by the $L^2$ martingale convergence theorem (and also pointwise by
+the convergent random series for $X$).  This proves the identity and the norm
+formula.
 \end{proof}
 
 \begin{corollary}[Second-moment product and refinement quotient; \statusP]
@@ -569,10 +589,11 @@ Separate the $j=1$ factor after replacing $t$ by $2t$:
 \]
 Coefficient comparison gives \eqref{eq:A-refinement}.  Finally,
 \[
- x\frac{\dd}{\dd x}\log m(x)=x\coth x-1=r(x),
+ x\frac{\dd}{\dd x}\log m(x)=x\coth x-1=r(x)\qquad(x\ne0),
 \]
-and termwise differentiation of the locally uniformly convergent product for
-$M$ gives \eqref{eq:A1-logM}.
+with both outer members extending to $0$ at the origin.  Termwise
+differentiation of the locally uniformly convergent product for $M$ gives
+\eqref{eq:A1-logM}.
 \end{proof}
 
 \subsection{Newton sums and a Bell-polynomial form}
@@ -618,7 +639,9 @@ shift as in \cref{prop:chaos-refinement}.
 The local factor $r$ has a canonical conversion from odds to probability:
 \begin{equation}
  p(x)=\frac{r(x)}{1+r(x)}
-     =1-\frac{\tanh x}{x},
+ \quad(x\in\R),
+ \qquad
+ p(x)=1-\frac{\tanh x}{x}\quad(x\ne0),
  \qquad p(0)=0.
  \label{eq:p-local}
 \end{equation}
@@ -766,9 +789,13 @@ central-limit scale.}
 For $x\ge0$,
 \begin{equation}
  0\le p(x)\le\min\left(1,\frac{x^2}{3}\right),
- \qquad
- 0\le1-p(x)=\frac{\tanh x}{x}\le\min\left(1,\frac1x\right).
  \label{eq:p-bounds}
+\end{equation}
+For $x>0$ one also has
+\begin{equation}
+ 0<1-p(x)=\frac{\tanh x}{x}\le\min\left(1,\frac1x\right),
+ \qquad 1-p(0)=1.
+ \label{eq:one-minus-p-bounds}
 \end{equation}
 Also
 \begin{equation}
@@ -779,7 +806,8 @@ Also
 \end{lemma}
 
 \begin{proof}
-The lower bounds and $p<1$ follow from $0<\tanh x<x$ for $x>0$.
+The lower bounds and $p<1$ follow from $0<\tanh x<x$ for $x>0$, with the
+origin supplied by the continuous definitions in \eqref{eq:p-local}.
 The inequality $\tanh x\ge x-x^3/3$ follows because the derivative of
 $\tanh x-x+x^3/3$ is
 $x^2-\tanh^2x\ge0$.  This proves $p(x)\le x^2/3$.  Since $\tanh x\le1$, the
@@ -836,6 +864,57 @@ $\nu=(\nu_1,\nu_2,\ldots)\in\N_0^{(\N)}$, put
  \label{eq:tensor-Legendre}
 \end{equation}
 
+\begin{proposition}[Local active-degree Parseval identity; \statusP]
+\label{prop:local-Parseval}
+For every real $x$,
+\begin{equation}
+ \boxed{
+ \sum_{n\ge1}(2n+1)\frac{i_n(x)^2}{i_0(x)^2}
+ =r(x).}
+ \label{eq:local-Parseval}
+\end{equation}
+For $x\ne0$, define the local degree probabilities
+\begin{equation}
+ q_n(x)=\frac{(2n+1)i_n(x)^2}{m(2x)-m(x)^2},
+ \qquad n\ge1.
+ \label{eq:degree-mark}
+\end{equation}
+They sum to one and extend continuously to the origin by
+\begin{equation}
+ q_1(0)=1,
+ \qquad q_n(0)=0\quad(n\ge2).
+ \label{eq:degree-mark-zero}
+\end{equation}
+Consequently the local degree generating function has the unambiguous
+continuous definition
+\begin{equation}
+ D(x,z)=
+ \begin{cases}
+  \displaystyle\sum_{n\ge1}q_n(x)z^n,&x\ne0,\\[0.4em]
+  z,&x=0,
+ \end{cases}
+ \qquad |z|\le1.
+ \label{eq:D-local}
+\end{equation}
+The convergence to $D(0,z)=z$ is uniform for $|z|\le1$.
+\end{proposition}
+
+\begin{proof}
+Parseval applied to \eqref{eq:local-Legendre-expansion} gives
+\[
+ m(2x)=\frac12\int_{-1}^1\e^{2xv}\dd v
+ =\sum_{n\ge0}(2n+1)i_n(x)^2.
+\]
+Subtract the $n=0$ term and divide by $m(x)^2$.  This proves
+\eqref{eq:local-Parseval}; for $x\ne0$, the denominator in
+\eqref{eq:degree-mark} is the same positive nonconstant local energy.  Finally,
+$i_n(x)=x^n/(2n+1)!!+O(x^{n+2})$ and
+$m(2x)-m(x)^2=x^2/3+O(x^4)$.  Hence $q_1(x)\to1$, while
+$\sum_{n\ge2}q_n(x)=1-q_1(x)\to0$.  This proves
+\eqref{eq:degree-mark-zero} and the asserted uniform convergence on the closed
+unit disk.
+\end{proof}
+
 \begin{theorem}[Exact tensor-Legendre coefficients; \statusP]
 \label{thm:tensor-Legendre}
 The expansion
@@ -858,54 +937,35 @@ $S$ recovers the Hoeffding component:
  =\|H_S(t)\|_2^2.
  \label{eq:support-Legendre-energy}
 \end{equation}
+For $t\ne0$, the normalized \emph{nonconstant} squared tensor coefficients are
+therefore generated by independent active indicators $B_j$ and, on active
+coordinates, independent marks $N_j$ with
+$\Prob(N_j=n\mid B_j=1)=q_n(x_j)$, conditioned on at least one activation.
+At zero local field the continuous convention is $N_j=1$; it is harmless
+because then $B_j=0$ almost surely.
 \end{theorem}
 
 \begin{proof}
-Expand every local factor $\e^{x_jV_j}$ by
-\eqref{eq:local-Legendre-expansion}.  Factoring out
-$\prod_ji_0(x_j)=M(t)$ gives \eqref{eq:c-nu}.  Finite tensor products are
-orthonormal.  Local Parseval and the summability established below imply that
-the coefficient squares sum to $M(2t)$, so the infinite expansion converges in
-$L^2$.
-
-A tensor coefficient has Hoeffding support $S$ exactly when $\nu_j>0$ precisely
-for $j\in S$.  Orthogonality of the basis inside the closed Hoeffding subspace
-then gives \eqref{eq:support-Legendre-energy}.
-\end{proof}
-
-\begin{proposition}[Local active-degree Parseval identity; \statusP]
-\label{prop:local-Parseval}
-For every real $x$,
-\begin{equation}
- \boxed{
- \sum_{n\ge1}(2n+1)\frac{i_n(x)^2}{i_0(x)^2}
- =r(x)=x\coth x-1.}
- \label{eq:local-Parseval}
-\end{equation}
-Conditionally on digit $j$ being active, define a mark $N_j\in\{1,2,\ldots\}$
-by
-\begin{equation}
- \boxed{
- \Prob(N_j=n\mid B_j=1)
- =\frac{(2n+1)i_n(x_j)^2}{m(2x_j)-m(x_j)^2}.}
- \label{eq:degree-mark}
-\end{equation}
-Then the normalized squared tensor coefficients are generated by independent
-active indicators $B_j$ and, on active coordinates, independent marks $N_j$,
-conditioned on at least one activation.
-\end{proposition}
-
-\begin{proof}
-Parseval applied to \eqref{eq:local-Legendre-expansion} gives
+Local Parseval is already established in \cref{prop:local-Parseval}.  Now fix
+$N$ and use the exactly normalized conditional expectation
 \[
- m(2x)=\frac12\int_{-1}^1\e^{2xv}\dd v
- =\sum_{n\ge0}(2n+1)i_n(x)^2.
+ f_N=\E[\e^{tX}\mid\mathcal F_N]
+ =M_{>N}(t)\prod_{j=1}^N\e^{x_jV_j}.
 \]
-Subtract the $n=0$ term and divide by $m(x)^2$.  This proves
-\eqref{eq:local-Parseval}; the denominator in \eqref{eq:degree-mark} is the
-same positive nonconstant local energy.  The coefficient factorization in
-\eqref{eq:c-nu}, together with \cref{thm:active-set-law}, gives the independent
-mark construction.
+Expanding these $N$ local factors by
+\eqref{eq:local-Legendre-expansion} gives a finite tensor expansion in each
+finite degree truncation; completeness and local Parseval give its $L^2$
+limit.  Since
+$M_{>N}(t)\prod_{j=1}^Ni_0(x_j)=M(t)$, its coefficient for every $\nu$ with
+$\supp\nu\subset\{1,\ldots,N\}$ is exactly \eqref{eq:c-nu}.
+
+The martingale $f_N$ converges in $L^2$ to $\e^{tX}$.  The nested finite tensor
+bases therefore yield \eqref{eq:tensor-expansion} and show that the coefficient
+squares sum to $\|\e^{tX}\|_2^2=M(2t)$.  A tensor coefficient lies in the
+Hoeffding subspace indexed by $S$ exactly when $\supp\nu=S$; Parseval inside
+that closed subspace proves \eqref{eq:support-Legendre-energy}.  Dividing the
+local nonconstant energies by their sums gives the independent mark law, and
+\cref{thm:active-set-law} supplies the independent active indicators.
 \end{proof}
 
 \begin{figure}[H]
@@ -920,14 +980,15 @@ almost entirely degree one when it activates.}
 \begin{corollary}[Joint interaction-degree generating function; \statusP]
 \label{cor:joint-generating}
 Let $u$ mark active-coordinate count and $z$ mark total Legendre degree.  The
-normalized second-moment generating product is
+normalized second-moment generating product, for $|u|,|z|\le1$, is
 \begin{equation}
  \frac1{M(2t)}
  \sum_{\nu}|c_\nu(t)|^2u^{|\supp\nu|}z^{|\nu|_1}
  =\prod_{j\ge1}\left[(1-p_j)+p_ju\,D_j(z)\right],
  \label{eq:joint-degree-product}
 \end{equation}
-where
+where $D_j(z)=D(x_j,z)$, so in particular $D_j(z)=z$ when $x_j=0$.
+Equivalently, for $x_j\ne0$,
 \begin{equation}
  D_j(z)=\sum_{n\ge1}
  \frac{(2n+1)i_n(x_j)^2}{m(2x_j)-m(x_j)^2}z^n.
@@ -939,7 +1000,8 @@ law.
 
 \begin{proof}
 This is the probability-generating function of the independent marked process
-in \cref{prop:local-Parseval}.
+identified by
+\cref{thm:active-set-law,prop:local-Parseval,thm:tensor-Legendre}.
 \end{proof}
 
 \section{A sharp interaction bound for every smooth observable}
@@ -1274,14 +1336,14 @@ $4^{-k(k+1)/2}$ dominates by a negative quadratic exponent.
 
 \subsection{Local expansion and the leading Gaussian-binomial row}
 
-The local odds have the convergent expansion
+The local odds, totalized by $r(0)=0$, have the convergent expansion
 \begin{equation}
- r(x)=x\coth x-1
- =\frac{x^2}{3}-\frac{x^4}{45}+\frac{2x^6}{945}
+ r(x)=\frac{x^2}{3}-\frac{x^4}{45}+\frac{2x^6}{945}
   -\frac{x^8}{4725}+O(x^{10}),
  \qquad |x|<\pi.
  \label{eq:r-series}
 \end{equation}
+For $x\ne0$ this is the Taylor expansion of $x\coth x-1$.
 Let $Q=1/4$ and abbreviate
 \begin{equation}
  E_k(Q)=\frac{Q^{k(k+1)/2}}{(Q;Q)_k}.
@@ -1392,21 +1454,26 @@ Define
 \begin{equation}
  \lambda_{2m}=(2^{2m}-2)\kappa_{2m}
  =\frac{(2^{2m}-2)2^{2m-1}B_{2m}}{m(4^m-1)},
- \qquad \lambda_{2m+1}=0.
+ \quad m\ge1,
+ \qquad
+ \lambda_{2m+1}=0,\quad m\ge0.
  \label{eq:lambda-energy}
 \end{equation}
-Then
+Then, as Taylor series in the complex variable $t$,
 \begin{align}
  \log R(t)
  &=\sum_{m\ge1}\lambda_{2m}\frac{t^{2m}}{(2m)!},
+ \qquad |t|<\pi,
  \label{eq:logR-cumulants}\\
  R(t)
  &=\sum_{n\ge0}\Bell_n(\lambda_1,\ldots,\lambda_n)
-                  \frac{t^n}{n!},
+                   \frac{t^n}{n!},
+ \qquad |t|<4\pi,
  \label{eq:R-Bell}\\
  R(t)-1
  &=\sum_{m\ge1}\Bell_{2m}(0,\lambda_2,0,\lambda_4,\ldots)
-                  \frac{t^{2m}}{(2m)!}.
+                   \frac{t^{2m}}{(2m)!},
+ \qquad |t|<4\pi.
  \label{eq:Rminus1-Bell}
 \end{align}
 Thus the sum over every nonempty interaction order is encoded by a complete
@@ -1420,7 +1487,13 @@ The cumulant expansion of $\log M$ gives
  =\sum_{n\ge1}(2^n-2)\kappa_n\frac{t^n}{n!}.
 \]
 Odd terms vanish.  Exponentiating by the complete Bell-polynomial formula
-proves the result.
+proves the result near the origin.  The displayed domains are the exact Taylor
+disks.  Indeed $\log R$ first meets a zero of
+$R(t)=m(t)/M(t)$ at $t=\pm\pi\ii$, whereas the apparent singularities of $R$
+at $t=\pm2\pi\ii$ are removable: the simple zeros of $m(t)$ and $M(t)$
+cancel.  At $t=\pm4\pi\ii$, $M(t)$ has two zero factors while $m(t)$ has only
+one, so $R$ has a pole.  Thus the logarithmic series has radius $\pi$, while
+the Taylor series for $R$ and $R-1$ have radius $4\pi$.
 \end{proof}
 
 \begin{remark}[Two Bell structures]
@@ -1502,15 +1575,21 @@ For $-2<\Re s<0$,
  2^{2-s}(1-2^{2-s})\Gamma(s-1)\zeta(s-1).}
  \label{eq:Mellin-p}
 \end{equation}
-For $-2<\Re s<1$,
+Write $\Mcal_p^{\mathrm{cont}}$ for the meromorphic continuation supplied by
+the right side of \eqref{eq:Mellin-p}.  For $-2<\Re s<1$,
 \begin{equation}
  \boxed{
- \Ical_p(s)=-s\Mcal_p(s)
+ \Ical_p(s)=-s\Mcal_p^{\mathrm{cont}}(s)
  =\frac{2^{2-s}(1-2^{2-s})\Gamma(s+1)\zeta(s-1)}{1-s}.}
  \label{eq:Mellin-pprime}
 \end{equation}
-The right sides are understood by analytic continuation at removable
-singularities.
+The right sides are understood after filling removable singularities.
+On $-2<\Re s<0$, $\Mcal_p^{\mathrm{cont}}$ agrees with the defining Mellin
+integral $\Mcal_p$.  On the boundary line $\Re s=0$ and away from $s=0$, it
+equals $-\Ical_p(s)/s$; the defining integral for $\Mcal_p$ is not absolutely
+convergent there and does not have an ordinary improper limit.  By contrast,
+the defining integral for $\Ical_p$ remains absolutely convergent on that
+line.
 \end{theorem}
 
 \begin{proof}
@@ -1519,27 +1598,36 @@ infinity, giving the strip $-2<\Re s<0$ for $\Mcal_p$.  Also
 $p'(x)=O(x)$ at zero and $p'(x)=x^{-2}+O(\e^{-2x}/x)$ at infinity, giving
 $-2<\Re s<1$ for $\Ical_p$.
 
-For $0<\Re s<1$, put
-$J(s)=\int_0^\infty x^{s-1}\sech^2x\dd x$.  Since
-\[
- p'(x)=\frac{\tanh x-x\sech^2x}{x^2},
-\]
-integration by parts in the first term gives
-\[
- \Ical_p(s)=\frac{s}{1-s}J(s).
-\]
-The absolutely convergent expansion
+Put
+$J(s)=\int_0^\infty x^{s-1}\sech^2x\dd x$, which is holomorphic on the
+half-plane $\Re s>0$.  The exponential expansion
 \[
  \sech^2x=4\sum_{n\ge1}(-1)^{n-1}n\e^{-2nx}
 \]
-yields
+may be integrated term by term absolutely when $\Re s>2$, and there gives
 \[
  J(s)=2^{2-s}\Gamma(s)(1-2^{2-s})\zeta(s-1).
+\]
+Both sides are holomorphic on $\Re s>0$ after filling their removable
+singularities.  The identity theorem therefore extends this equality from
+$\Re s>2$ to the whole half-plane $\Re s>0$; no conditionally justified
+Fubini interchange is needed.
+
+Now let $0<\Re s<1$.  Since
+\[
+ p'(x)=\frac{\tanh x-x\sech^2x}{x^2},
+\]
+integration by parts in the $\tanh x$ term is legitimate at both endpoints
+and gives
+\[
+ \Ical_p(s)=\frac{s}{1-s}J(s).
 \]
 This proves \eqref{eq:Mellin-pprime} on $0<\Re s<1$, and analytic
 continuation extends it to the full convergence strip of the left side.
 Finally, integration by parts in \eqref{eq:Mellin-p-def} gives
-$\Ical_p(s)=-s\Mcal_p(s)$ for $-2<\Re s<0$.  The gamma recurrence
+$\Ical_p(s)=-s\Mcal_p(s)$ for $-2<\Re s<0$: the boundary term
+$p(x)x^s$ vanishes because $p(x)=O(x^2)$ at zero and $p(x)=1+O(x^{-1})$ at
+infinity.  The gamma recurrence
 $\Gamma(s)=(s-1)\Gamma(s-1)$ gives \eqref{eq:Mellin-p}.
 \end{proof}
 
@@ -1619,11 +1707,13 @@ one has
  \label{eq:Q0}\\
  \boxed{
  \widehat Q(n)
- =\frac{\Mcal_p(-\ii\tau_n)}{\log2}
+ =\frac{\Mcal_p^{\mathrm{cont}}(-\ii\tau_n)}{\log2}
  =\frac{\Ical_p(-\ii\tau_n)}{2\pi\ii n},
  \qquad n\ne0.}
  \label{eq:Qn}
 \end{align}
+In \eqref{eq:Qn}, the equal expression using $\Ical_p$ is an absolutely
+convergent integral.
 The coefficients decay exponentially; in particular the Fourier series and
 all its termwise derivatives converge absolutely in a complex strip.
 Numerically,
@@ -1662,7 +1752,7 @@ For the mean, the Mellin transform of the harmonic sum is
 \end{equation}
 At $s=0$,
 \[
- \Mcal_p(s)=-\frac1s+c_0+O(s),
+ \Mcal_p^{\mathrm{cont}}(s)=-\frac1s+c_0+O(s),
  \qquad
  c_0=\gamma-12\log A+\frac73\log2.
 \]
@@ -1731,14 +1821,16 @@ then
  \TV\bigl(J_t-n,K_\theta\bigr)\le\frac4t.}
  \label{eq:conditioned-phase-TV}
 \end{equation}
-The limiting probability generating Laurent product is
+For every $z\in\C^\times$, the limiting bilateral probability generating
+Laurent product is
 \begin{equation}
  \boxed{
  \E z^{K_\theta}
  =\prod_{k\le0}\left[p_{\theta,k}+(1-p_{\theta,k})z^{-1}\right]
-  \prod_{k\ge1}\left[(1-p_{\theta,k})+p_{\theta,k}z\right].}
+ \prod_{k\ge1}\left[(1-p_{\theta,k})+p_{\theta,k}z\right].}
  \label{eq:phase-pgf}
 \end{equation}
+Both products converge locally uniformly on $\C^\times$.
 It has mean
 \begin{equation}
  \E K_\theta=P(\theta).
@@ -1775,25 +1867,36 @@ variation exactly $\delta$.  Here
 \]
 The triangle inequality yields \eqref{eq:conditioned-phase-TV}.
 The independent product \eqref{eq:phase-pgf} is immediate from
-\eqref{eq:K-theta}, and summing the expectations gives precisely
-\eqref{eq:P-theta}.
+\eqref{eq:K-theta}.  On compact subsets of $\C^\times$, its coarse-factor
+deviations are bounded by a constant times $1-p_{\theta,k}$ and its
+fine-factor deviations by a constant times $p_{\theta,k}$; their sums converge.
+This proves local uniform convergence.  Summing the expectations gives
+precisely \eqref{eq:P-theta}.
 \end{proof}
 
 \begin{corollary}[No central-limit widening; \statusP]
 \label{cor:no-CLT-width}
-Uniformly in $t$,
+As $t\to\infty$, uniformly in the dyadic phase
+$\{\log_2t\}\in[0,1)$,
 \begin{equation}
  K_t=\log_2t+O_{\Prob}(1),
  \qquad
  J_t=\log_2t+O_{\Prob}(1).
  \label{eq:tight-order}
 \end{equation}
-Along each fixed phase $\theta$, all centered moments that are uniformly
-integrable converge to the corresponding moments of $K_\theta$.  In
-particular,
+Along each fixed phase $\theta$, every uniformly integrable family of powers
+of $K_{2^{n+\theta}}-n$ has its moment converge to the corresponding moment of
+$K_\theta$.  In particular,
 \begin{equation}
  \Var(K_{2^{n+\theta}})\longrightarrow\Var(K_\theta).
  \label{eq:variance-phase-limit}
+\end{equation}
+More precisely, for $t=2^{n+\theta}$ with $n\ge1$,
+\begin{equation}
+ 0\le \Var(K_\theta)-\Var(K_t)
+ =\sum_{k\le-n}p_{\theta,k}(1-p_{\theta,k})
+ \le\frac2t.
+ \label{eq:variance-phase-tail}
 \end{equation}
 The family obeys the quasi-periodicity
 \begin{equation}
@@ -1804,9 +1907,19 @@ The family obeys the quasi-periodicity
 
 \begin{proof}
 Tightness follows from \cref{thm:phase-law}, or directly from the uniformly
-bounded variance and the bounded periodic mean correction.  The second moments
-are uniformly bounded after centering, so total-variation convergence plus
-uniform integrability gives \eqref{eq:variance-phase-limit}.  Reindex
+bounded variance and the bounded periodic mean correction, with $t\ge2$ (and
+hence the stated $t\to\infty$ interpretation) understood.  Under the coupling
+in \cref{thm:phase-law}, subtracting $n$ does not change variance and the only
+terms missing from $K_t-n$ are the independent coarse deficits with $k\le-n$.
+Consequently
+\[
+ \Var(K_\theta)-\Var(K_t)
+ =\sum_{k\le-n}p_{\theta,k}(1-p_{\theta,k})
+ \le\sum_{k\le-n}(1-p_{\theta,k})\le\frac2t,
+\]
+which proves \eqref{eq:variance-phase-tail} and
+\eqref{eq:variance-phase-limit} directly, without inferring uniform
+integrability of squares from bounded second moments.  Reindex
 $B_{\theta+1,k}$ as $B_{\theta,k-1}$ in \eqref{eq:K-theta} to obtain
 \eqref{eq:phase-quasiperiodic}.
 \end{proof}
@@ -1814,8 +1927,8 @@ $B_{\theta+1,k}$ as $B_{\theta,k-1}$ in \eqref{eq:K-theta} to obtain
 \begin{corollary}[Log-concavity and full support; \statusP]
 \label{cor:phase-logconcave}
 For every phase $\theta$, the mass function of $K_\theta$ is log-concave on
-$\Z$ and strictly positive at every integer.  It is therefore unimodal,
-possibly with a two-point plateau.
+$\Z$ and strictly positive at every integer.  Its set of modes is therefore a
+nonempty finite interval of consecutive integers.
 \end{corollary}
 
 \begin{proof}
@@ -1829,7 +1942,10 @@ For any prescribed integer, choose finitely many coarse deficits or fine
 activations producing it.  That finite pattern has positive probability, and
 the probability that no other tail event occurs is a positive convergent
 product because the relevant tail probabilities are summable.  Hence the
-support is all of $\Z$.
+support is all of $\Z$.  A log-concave sequence has a consecutive set of
+maximizers; because this probability mass tends to zero in both tails, that
+set is nonempty and finite.  Log-concavity alone does not bound its length by
+two.
 \end{proof}
 
 \begin{figure}[H]
@@ -1941,7 +2057,7 @@ uniform variable admits the independent sign--magnitude factorization
 This refines the continuous chaos into Walsh sign interactions and magnitude
 interactions.
 
-For $a>0$, let
+For $a\in\R$, let
 \begin{equation}
  \Delta_a g(x)=g(x+a)-g(x-a).
  \label{eq:symmetric-difference}
@@ -1949,7 +2065,11 @@ For $a>0$, let
 
 \begin{theorem}[Continuous Thue--Morse corner identity; \statusP]
 \label{thm:TM-corner}
-For $g\in C^N$ and positive $a_1,\ldots,a_N$,
+Let $a_1,\ldots,a_N>0$, let $I\subset\R$ be an open interval containing
+\[
+ \left[x-\sum_{j=1}^Na_j,\ x+\sum_{j=1}^Na_j\right],
+\]
+and suppose $g\in C^N(I)$.  Then
 \begin{align}
  \Delta_{a_1}\cdots\Delta_{a_N}g(x)
  &=\sum_{\varepsilon\in\{-1,1\}^N}
@@ -2026,7 +2146,8 @@ conditional on its magnitude.  The sign--magnitude refinement provides the
 precise bridge.
 \end{remark}
 
-\section{Lambert-W degree cutoffs for Legendre chaos}
+\section[Lambert-W cutoffs for Legendre chaos]
+{Lambert-W degree cutoffs for Legendre chaos}
 \label{sec:Lambert-cutoff}
 
 The corpus uses Lambert $W$ primarily in endpoint inversion.  Polynomial chaos
@@ -2064,7 +2185,27 @@ Using $(2n+1)!!=(2n+1)!/(2^nn!)$ gives \eqref{eq:i-bound}.
 
 \begin{corollary}[Lambert-$W$ inversion rule; \statusP]
 \label{cor:Lambert-degree}
-Fix $x\ne0$ and let $\varepsilon\downarrow0$.  Define
+Fix $x\ne0$ and define the exact envelope and its monotone-tail threshold by
+\begin{equation}
+ b_n(x)=\e^{|x|}\frac{|x|^n}{(2n+1)!!},
+ \qquad
+ N_x=\left\lceil\frac{|x|}{2}\right\rceil.
+ \label{eq:degree-envelope}
+\end{equation}
+For every $\varepsilon>0$, define
+\begin{equation}
+ n_\varepsilon(x)=
+ \min\left\{n\in\N_0:n\ge N_x\ \text{and}\ b_n(x)\le\varepsilon\right\}.
+ \label{eq:n-epsilon-def}
+\end{equation}
+This set is nonempty, and the resulting cutoff is certified for the entire
+tail:
+\begin{equation}
+ |i_m(x)|\le b_m(x)\le\varepsilon
+ \qquad\text{for every }m\ge n_\varepsilon(x).
+ \label{eq:degree-certified-tail}
+\end{equation}
+As $\varepsilon\downarrow0$, define
 \begin{equation}
  A_\varepsilon=\log\frac{\e^{|x|}}{\varepsilon}.
  \label{eq:A-epsilon}
@@ -2073,29 +2214,57 @@ The degree at which the envelope \eqref{eq:i-bound} reaches tolerance
 $\varepsilon$ has the leading inversion
 \begin{equation}
  \boxed{
- n_\varepsilon
+ n_\varepsilon(x)
  \sim\frac{A_\varepsilon}
  {W_0\!\left(\dfrac{2A_\varepsilon}{\e|x|}\right)}.}
  \label{eq:Lambert-degree}
 \end{equation}
-A rigorous adaptive cutoff is obtained by taking the smallest integer $n$ for
-which the exact right side of \eqref{eq:i-bound} is at most $\varepsilon$;
-\eqref{eq:Lambert-degree} is its asymptotic initial guess.
+Thus \eqref{eq:Lambert-degree} is an asymptotic initial guess for the exact,
+tail-valid cutoff \eqref{eq:n-epsilon-def}, not merely for a single coefficient.
 \end{corollary}
 
 \begin{proof}
-Stirling's formula gives
+The exact ratio
 \[
- \log(2n+1)!!
+ \frac{b_{n+1}(x)}{b_n(x)}=\frac{|x|}{2n+3}<1
+ \qquad(n\ge N_x)
+\]
+shows that the envelope is decreasing there and tends to zero, so the defining
+set is nonempty and its minimum certifies every later envelope value.  This
+proves \eqref{eq:degree-certified-tail} from
+\cref{prop:Rodrigues-bound}.
+
+For the asymptotic, put
+\[
+ F_x(n)=\log\bigl((2n+1)!!\bigr)-n\log|x|,
+\]
+so that $b_n(x)\le\varepsilon$ is equivalent to
+$F_x(n)\ge A_\varepsilon$.  As $\varepsilon\downarrow0$ one has
+$n_\varepsilon(x)\to\infty$.  Hence, for all sufficiently small
+$\varepsilon$, minimality on the monotone tail gives, with
+$n=n_\varepsilon(x)$,
+\[
+ F_x(n-1)<A_\varepsilon\le F_x(n).
+\]
+Since
+\[
+ F_x(n)-F_x(n-1)=\log\frac{2n+1}{|x|}=O(\log n),
+\]
+this sandwiches the threshold sharply enough to give
+$F_x(n)=A_\varepsilon+O(\log n)$.  Stirling's formula gives
+\[
+ \log\bigl((2n+1)!!\bigr)
  =n\log\frac{2n}{\e}+O(\log n).
 \]
-The leading equality in \eqref{eq:i-bound} is therefore
+Therefore the exact minimal cutoff satisfies
 \[
  n\log\frac{2n}{\e|x|}=A_\varepsilon+O(\log n).
 \]
-Solving the leading equation uses $W_0(z)\e^{W_0(z)}=z$ and yields
-\eqref{eq:Lambert-degree}.  The $O(\log n)$ term is lower order relative to
-$A_\varepsilon$.
+Solving the leading equation with $W_0(z)\e^{W_0(z)}=z$ yields
+\eqref{eq:Lambert-degree}.  Moreover, the derivative of
+$y\mapsto y\log(2y/(\e|x|))$ is
+$1+\log(2y/(\e|x|))\to\infty$.  Hence the $O(\log n)$ perturbation moves the
+inverse by $o(n)$ and does not affect the asymptotic ratio.
 \end{proof}
 
 \begin{remark}[Adaptive tensor truncation]
@@ -2422,7 +2591,7 @@ Statement & Status & Main dependency \\
 \midrule
 \endhead
 Exact exponential Hoeffding components & \statusP & independent products and coordinate projections \\
-Component norm $r(x)=x\coth x-1$ & \statusP & one-dimensional hyperbolic integral \\
+Totalized component norm $r(0)=0$ & \statusP & one-dimensional hyperbolic integral \\
 Active-set Poisson--binomial law & \statusP & odds-to-probability factorization \\
 First and total Sobol indices & \statusP & active-set law and orthogonality \\
 Tensor-Legendre coefficients & \statusP & standard Legendre exponential expansion \\
@@ -2462,11 +2631,12 @@ Object & Exact formula \\
 Centered law
 & $X=\sum_{j\ge1}2^{-j}V_j$, $V_j\sim\operatorname{Unif}[-1,1]$ \\
 MGF
-& $M(t)=\prod_{j\ge1}m(t2^{-j})$, $m(x)=\sinh(x)/x$, $M(2t)=m(t)M(t)$ \\
+& $M(t)=\prod_{j\ge1}m(t2^{-j})$, $m(0)=1$, $m(x)=\sinh(x)/x$ for $x\ne0$;
+$M(2t)=m(t)M(t)$ \\
 Local Hoeffding odds
-& $r(x)=m(2x)/m(x)^2-1=x\coth x-1$ \\
+& $r(x)=m(2x)/m(x)^2-1$; $r(0)=0$ and $r(x)=x\coth x-1$ for $x\ne0$ \\
 Local activation probability
-& $p(x)=r(x)/(1+r(x))=1-\tanh(x)/x$ \\
+& $p(x)=r(x)/(1+r(x))$; $p(0)=0$ and $p(x)=1-\tanh(x)/x$ for $x\ne0$ \\
 Component
 & $H_S=M\prod_{j\in S}(\e^{x_jV_j}/m(x_j)-1)$ \\
 Component energy
@@ -2483,6 +2653,8 @@ Power-sum Bell form
 & $A_k=k!^{-1}\Bell_k(s_1,-1!s_2,\ldots,(-1)^{k-1}(k-1)!s_k)$ \\
 Legendre coefficient
 & $c_\nu=M\prod_{\nu_j>0}\sqrt{2\nu_j+1}\,i_{\nu_j}(x_j)/i_0(x_j)$ \\
+Continuous degree mark
+& $D(x,z)=\sum_{n\ge1}q_n(x)z^n$ for $x\ne0$, while $D(0,z)=z$ \\
 Smooth order bound
 & $\Ecal_k(g)\le3^{-k}\|g^{(k)}\|_\infty^2
 4^{-k(k+1)/2}/(1/4;1/4)_k$ \\
@@ -2491,11 +2663,11 @@ Monomial top energy
 Effective mean
 & $\mu(t)=\sum_jp(t2^{-j})$, $\mu(2t)-\mu(t)=p(t)$ \\
 Mellin transform
-& $\Mcal_p(s)=2^{2-s}(1-2^{2-s})\Gamma(s-1)\zeta(s-1)$ \\
+& $\Mcal_p(s)=2^{2-s}(1-2^{2-s})\Gamma(s-1)\zeta(s-1)$ for $-2<\Re s<0$ \\
 Periodic mean
 & $\mu(t)=\log_2t+Q(\{\log_2t\})+O(t^{-1})$ \\
 Nonzero Fourier modes
-& $\widehat Q(n)=\Mcal_p(-2\pi\ii n/\log2)/\log2$ \\
+& $\widehat Q(n)=\Mcal_p^{\mathrm{cont}}(-2\pi\ii n/\log2)/\log2$ \\
 Phase coupling
 & $\TV(K_t-\lfloor\log_2t\rfloor,K_\theta)\le2/t$ \\
 Laplace transfer
@@ -2505,7 +2677,7 @@ Thue--Morse corner
 Legendre envelope
 & $|i_n(x)|\le\e^{|x|}|x|^n/(2n+1)!!$ \\
 Lambert cutoff
-& $n_\varepsilon\sim A_\varepsilon/W_0(2A_\varepsilon/(\e|x|))$ \\
+& $n_\varepsilon(x)\sim A_\varepsilon/W_0(2A_\varepsilon/(\e|x|))$ \\
 \bottomrule
 \end{longtable}
 
@@ -2566,7 +2738,8 @@ the search vocabulary, controlling sources, exclusions, and counting caveat.
 \section{Archive manifest and reproducibility boundary}
 \label{app:archive}
 
-The ZIP archive contains:
+The maintained report package contains (the original ZIP was consumed at
+repository intake):
 \begin{center}
 \begin{tabularx}{0.95\textwidth}{@{}lX@{}}
 \toprule
@@ -2577,13 +2750,15 @@ Path & Purpose \\
 \path{experiments.py} & Fully commented deterministic experiment driver \\
 \path{requirements.txt} & Python dependencies \\
 \path{README.md} & Build and reproduction instructions \\
-\path{SHA256SUMS} & Integrity hashes for archive contents \\
+\path{LEAN_CROSSWALK.md} & Label-complete theorem-to-Lean status map \\
+\path{SHA256SUMS} & Integrity hashes for current package contents \\
 \path{data/*.csv} & Machine-readable numerical tables \\
 \path{data/numerical_summary.txt} & Human-readable verification summary \\
 \path{figures/*.pdf} & Vector figures used in the report \\
 \path{figures/*.png} & Raster previews of the same figures \\
 \path{audit/CORPUS_AUDIT.md} & Claim-level nonduplication audit \\
 \path{audit/SOURCE_AUDIT.md} & Source and literature audit \\
+\path{audit/POST_INTAKE_REVIEW.md} & Mathematical repairs and replay audit \\
 \path{audit/corpus_manifest_2026-08-27.txt} & Preserved recursive TeX path ledger \\
 \bottomrule
 \end{tabularx}

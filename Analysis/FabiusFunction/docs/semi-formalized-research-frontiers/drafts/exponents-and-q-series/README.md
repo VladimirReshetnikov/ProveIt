@@ -3,46 +3,62 @@
 New standalone intake members:
 
 - [`fabius_q_frontiers_report/`](fabius_q_frontiers_report/),
-  the 23-page *Parameter-Flow, Gaussian, and Large-Deviation Frontiers for the
-  q-Fabius--Rvachev Family* bundle from direct-arrival commit
-  `8a184546747082cbd92ad4675fb61981c6b8c3b6`.  Its twenty non-ledger
-  payloads remain completely covered; four CSV hashes were refreshed after
-  repository CRLF-to-LF normalization.
+  *Parameter-Flow, Gaussian, and Large-Deviation Frontiers for the
+  q-Fabius--Rvachev Family* (23 A4 pp, 1,506 source lines; with two scripts,
+  four CSV tables, two captured outputs, and four PDF/PNG figure pairs),
+  arrived as a bare directory in direct-arrival commit
+  `8a184546747082cbd92ad4675fb61981c6b8c3b6`; no archive or outer hash was
+  supplied. Its submitted ledger covers all 20 non-ledger payloads and now
+  verifies after four CSV entries were refreshed for CRLF-to-LF
+  normalization. All five delivered PDFs are readable and unencrypted (27
+  pages total); its main report uses embedded Type-1 Latin Modern fonts and
+  remains later document-style work.
 
-- [`Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/`](Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/)
-  is the title-derived filing of incoming wrapper
-  `Fabius_Rvachev_Frontier_Report_2026-08-30-G/` from
-  `52179f63fe955a64508915eedaa560de9f3056da`.  Its 29-page report and
-  supporting payload are completely described by the submitted manifest and
-  19-entry checksum ledger; three CSV hashes were refreshed for LF storage.
+- [`Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/`](Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/),
+  *Continuous-Parameter Edgeworth Theory, Large Deviations, and Quadratic
+  q-Gevrey Regularity at the Fabius--Rvachev Frontier* (29 A4 pp, 1,387
+  main-source lines), arrived on 2026-08-30 in direct-arrival commit
+  `52179f63fe955a64508915eedaa560de9f3056da` under the bare generic wrapper
+  `Fabius_Rvachev_Frontier_Report_2026-08-30-G/` and was filed under this
+  title-derived collision-safe name. Its manifest covers the full delivery,
+  and its 19-entry checksum ledger now verifies after three CSV rows were
+  refreshed for CRLF-to-LF normalization. Its title and abstract concern
+  continuous-parameter Edgeworth and deviation regimes, Lambert endpoint
+  asymptotics, and quadratic-exponential Denjoy--Carleman regularity.
 
-- [`q_series_from_first_principles/`](q_series_from_first_principles/)
-  contains the 30-page *q-Series from First Principles* TeX/PDF pair from
-  `c167e550348bfb33b4297684100d55dfb48b8c1a`.  The repository-generated
-  `SHA256SUMS` records both delivered files.
+- [`q-series-proof-oriented-article/`](q-series-proof-oriented-article/),
+  *A Proof-Oriented Guide to q-Series: Shifted Factorials, Basic
+  Hypergeometric Summation, Theta Products, Partitions, Bailey Pairs, and
+  Rogers--Ramanujan Theory* (39 letter-paper pp, 2,891 source lines), arrived
+  as a bare TeX/PDF directory in direct-arrival commit
+  `1360db6064c676f83bceb23bece5ed304dd09ce8` without an archive, outer hash,
+  or ledger. The repository-generated `SHA256SUMS` covers and verifies both
+  delivered files; its TeX was already LF.
 
-- [`q_series_monograph/`](q_series_monograph/) contains the source-only
+- [`q_series_from_first_principles/`](q_series_from_first_principles/),
+  *q-Series from First Principles: Products, Basic Hypergeometric Sums,
+  Theta Functions, Partitions, Bailey Pairs, and the Rogers--Ramanujan World*
+  (30 letter-paper pp, 1,548 source lines), likewise arrived as a bare
+  TeX/PDF directory in direct-arrival commit
+  `c167e550348bfb33b4297684100d55dfb48b8c1a` without an archive, outer hash,
+  or ledger. The repository-generated `SHA256SUMS` covers and verifies both
+  delivered files; its TeX was already LF.
+
+- [`q_series_monograph/`](q_series_monograph/),
   *A Proof-Driven Guide to q-Series, Basic Hypergeometric Identities, Bailey
-  Chains, and Rogers--Ramanujan Theory* from
-  `1f0f98390d551725fc7d2274638dbd7de86ee346`.  Intake repaired one corrupt
-  control byte in the intended `\rho_2` command and added a one-entry
-  `SHA256SUMS`; no PDF or auxiliary package was delivered.
+  Chains, and Rogers--Ramanujan Theory* (1,915 source lines), arrived as a
+  source-only bare directory in direct-arrival commit
+  `1f0f98390d551725fc7d2274638dbd7de86ee346` with neither PDF nor ledger.
+  Intake repaired the carriage-return (CR) corruption in the intended `\rho_2`
+  token at line 863 and added a one-entry repository `SHA256SUMS` for the sole
+  delivered TeX. The package remains source-only: no PDF or auxiliary package
+  was delivered or produced.
 
-- [`q-series-proof-oriented-article/`](q-series-proof-oriented-article/)
-  contains the 39-page *A Proof-Oriented Guide to q-Series* TeX/PDF pair from
-  `1360db6064c676f83bceb23bece5ed304dd09ce8`; the repository-generated
-  ledger covers both files.
-
-These five reports arrived as already-extracted tracked directories, not ZIP
-archives, so no outer archive hashes exist.  The eleven delivered PDFs
-contain 128 pages in total and are structurally readable and unencrypted.
-The parameter-flow and Edgeworth reports substantially overlap each other;
-the three general q-series guides also have parallel proof architectures and
-intersect the existing q-Pochhammer/q-binomial monograph.  They remain
-separate pending the required post-publication claim comparison.  This quick
-intake did not render pages, rebuild TeX, replay computations, validate the
-mathematics, or run Lean;
-manuscript theorem/proof labels do not establish Lean proof status.
+These five packages remain separate pending post-publication comparison,
+canonical document work, and Lean crosswalks. In particular, no semantic
+duplicate analysis of the three similarly scoped general q-series articles
+was performed during intake, and manuscript labels or numerical checks do not
+establish Lean verification.
 
 - [`inverse_q_analog_jet_atlas/`](inverse_q_analog_jet_atlas/),
   *An Inverse-Jet Atlas for q-Analogs: Multivariate Reversion, Singular

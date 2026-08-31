@@ -7912,9 +7912,21 @@ The first two are arbitrary commutative-semiring response and exactness laws;
 the field-valued geometric forms retain their nonzero-base and normalization-
 denominator hypotheses and expose the first surviving mode.
 
+\item \path{QBinomialCauchy.lean} has one public definition,
+\path{Fabius.qBernsteinBasis}, and exactly five public theorems:
+\path{Fabius.finite_qCauchy_identity},
+\path{Fabius.finiteQPochhammerIn_mul_eq_sum_gaussianBinomial},
+\path{Fabius.finite_qCauchy_identity_reflected},
+\path{Fabius.sum_qBernsteinBasis}, and
+\path{Fabius.finite_qCauchy_second_identity}.  The second name is the compatibility
+spelling of the primary finite $q$-Cauchy identity.  The reflected convolution, the
+denominator-free $q$-Bernstein partition of unity, and the second Cauchy identity hold
+over every commutative ring, including degree zero, $q=0$, roots of unity, positive
+characteristic, and zero divisors, with no quotient or nonvanishing hypothesis.
+
 \item \path{QuarterCatalanGerm.lean} has the two definitions
 \path{Fabius.quarterCatalanCoefficient} and
-\path{Fabius.quarterCatalanGermSeries}, and the nine theorems
+\path{Fabius.quarterCatalanGermSeries}, and the thirteen theorems
 \path{Fabius.quarterCatalanCoefficient_zero},
 \path{Fabius.quarterCatalanCoefficient_succ_eq_report},
 \path{Fabius.quarterCatalanGermSeries_coeff},
@@ -7923,9 +7935,25 @@ denominator hypotheses and expose the first surviving mode.
 \path{Fabius.quarterCatalanGermSeries_equation},
 \path{Fabius.powerSeries_quadratic_injectiveOn_zeroConstant},
 \path{Fabius.eq_quarterCatalanGermSeries_of_equation}, and
-\path{Fabius.existsUnique_quarterCatalanGermSeries}.  This is the unique
-zero-constant solution of \(D+4D^2=(4/9)X\) in \(\Q[[X]]\), with its complete
-coefficient formula, but no convergence or real-inverse identification.
+\path{Fabius.existsUnique_quarterCatalanGermSeries},
+\path{Fabius.dyadicGermTwo_functionalEquation},
+\path{Fabius.rescale_dyadicGermTwo_eq_quadraticInverse},
+\path{Fabius.dyadicGermTwo_eq_rescale_quadraticInverse}, and
+\path{Fabius.coeff_dyadicGermTwo_succ}.  The explicit series is the unique
+zero-constant solution of \(D+4D^2=(4/9)X\) in \(\Q[[X]]\).  Rescaling the
+distinguished rational dyadic germ by \(9/4\) identifies it with the Catalan inverse of
+\(X+4X^2\), and its positive coefficients are \((4/9)^{m+1}(-4)^m C_m\).
+This module is formal power-series algebra and asserts no convergence or equality of real
+functions on a neighborhood.
+
+\item \path{FabiusInverseQuarterJet.lean} has zero public definitions and exactly two
+theorems:
+\path{Fabius.iteratedDeriv_centeredFabiusInv_quarter_eq_quadraticInverse} and
+\path{Fabius.iteratedDeriv_fabiusInv_five_seventy_two_succ}.  For every bounded Fabius
+solution, the complete centered inverse jet at \(5/72=F(1/4)\) is the factorial-scaled
+coefficient sequence of \path{QuadraticInverse.inverse} at parameter \(4\); equivalently,
+\(G^{(m+1)}(5/72)=(m+1)!(-4)^m C_m\).  The conclusion is equality of all jets, not
+local analytic equality and not a named nonzero flat-remainder theorem.
 
 \item \path{QuarterCatalanRichardson.lean} has the three definitions
 \path{Fabius.finiteRescaleFilter},
@@ -15224,6 +15252,40 @@ transport from $x=2^{-t}$ to the full limit $x\downarrow0$. & \Formalized\\
 \endgroup
 
 \subsection{Named declarations worth knowing}
+
+The structural uniform-modulus layer is the exhaustive public surface of
+\path{InverseModulus.lean}: one definition,
+\path{Fabius.fabiusIntervalMass}, and twenty theorems,
+\path{Fabius.fabiusIntervalMass_reflect},
+\path{Fabius.monotoneOn_fabiusIntervalMass_firstHalf},
+\path{Fabius.antitoneOn_fabiusIntervalMass_secondHalf},
+\path{Fabius.fabiusReal_sub_le_sub},
+\path{Fabius.fabiusReal_add_le},
+\path{Fabius.fabiusInv_sub_le_sub_of_mem_Icc},
+\path{Fabius.fabiusInv_sub_le_sub_of_le},
+\path{Fabius.fabiusInv_sub_le_sub},
+\path{Fabius.fabiusInv_add_le},
+\path{Fabius.abs_fabiusInv_sub_le},
+\path{Fabius.dist_fabiusInv_le},
+\path{Fabius.fabiusInv_min_one},
+\path{Fabius.isGreatest_abs_fabiusInv_sub},
+\path{Fabius.sSup_abs_fabiusInv_sub_eq},
+\path{Fabius.isGreatest_abs_fabiusInv_sub_Icc},
+\path{Fabius.sSup_abs_fabiusInv_sub_Icc_eq},
+\path{Fabius.abs_fabiusInv_sub_lt_of_abs_sub_lt_fabiusReal},
+\path{Fabius.abs_fabiusInv_sub_le_of_abs_sub_le_fabiusReal},
+\path{Fabius.fabiusReal_le_abs_sub_of_le_abs_fabiusInv_sub}, and
+\path{Fabius.forall_abs_fabiusInv_sub_lt_iff}.
+For nonnegative length the fixed-length Fabius increment is reflection-invariant,
+increases toward the centered interval, and then decreases.  The endpoint minimum yields
+the ordered and order-free inverse-gap bounds, subadditivity, absolute and metric
+self-moduli, saturation at one, and attained exact \path{IsGreatest}/\path{sSup} moduli
+globally and on the unit interval.  The final four declarations are the strict and closed
+effective-injectivity bounds, their contrapositive separation form, and the uniform
+strict-threshold biconditional.  This module does not supply the report's closed
+\(\Delta_r\) lower bound, recursive-modulus wrapper, tolerant-bisection realizer,
+sequential computability theorem, combined computable-real-function theorem, or input-bit
+asymptotics.
 
 The inverse interface is centered around
 \begin{lstlisting}[style=pseudo]
