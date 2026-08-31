@@ -2,6 +2,27 @@
 
 New standalone intake members:
 
+- [`fabius_dyadic_chaos_frontier/`](fabius_dyadic_chaos_frontier/),
+  *Dyadic Sensitivity and Polynomial-Chaos Frontiers for the
+  Fabius--Rvachev Law* (34 pp), arrived in
+  `fabius_dyadic_chaos_frontier.zip` (outer SHA-256
+  `d57fd01c3991a6a7ecd6ba6e745729c745745d3265cb3cfd414aac1991b11b86`).
+  The archive had one safe top-level wrapper and all thirty submitted
+  non-ledger checksums verified before extraction.  Nine CSV entries and
+  their ledger hashes were then normalized from CRLF to repository LF.
+  All seven delivered PDFs are structurally readable and unencrypted
+  (40 pages total).
+
+  The report's Hoeffding/functional-ANOVA decomposition, active-digit law,
+  tensor-Legendre marks, smooth-observable interaction bounds,
+  q-binomial/Gaussian limit, periodic effective dimension, phase limit,
+  negative-Laplace bridge, and Thue--Morse corner make it an orthogonal-chaos
+  representation member.  It remains standalone pending post-publication
+  theorem comparison, experiment assessment, and a Lean crosswalk.  Quick
+  intake did not render pages, rebuild TeX, replay the experiment, or validate
+  the mathematical claims; manuscript result labels do not establish Lean
+  proof status.
+
 - [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/),
   the 36-page *Common-Digit Fabius Zonoids* bundle committed directly to
   `incoming/` by `fef364bfd162f80919cd77b808530dd0734f1cb1`.
