@@ -36,9 +36,11 @@ tree. `<FabiusFunction-docs>` is the checkout's
 
 Dependencies are package-specific. Some exact-arithmetic paths need only the
 Python standard library; plotting and high-precision paths may require
-`mpmath`, Matplotlib, NumPy, SciPy, or SymPy. The retained requirements files
-are historical minimum-version notes rather than a unified, locked
-environment.
+`mpmath`, Matplotlib, NumPy, SciPy, or SymPy. Most retained requirements files
+are historical minimum-version notes rather than a unified environment.  The
+arbitrary-ratio `geometric_comb_interpolation_report` is the exception: its
+post-pin `requirements.txt` and complete `requirements-lock.txt` are retained
+byte for byte from the reconciled mainline audit.
 
 ## Shared payload
 

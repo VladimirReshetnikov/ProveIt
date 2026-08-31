@@ -109,7 +109,7 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 615 modules and 8,388 lexically
+The post-merge 2026-08-31 inventory contains 615 modules and 8,389 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  Relative to the 610/8,318 activation checkpoint, the initial exact
 union added five modules and 67 declarations.  The branch-point geometry and
@@ -128,10 +128,17 @@ strictness and equality refinements.  The fifth module,
 `GeometricUniformMultisection.lean`, contributes two coordinate definitions
 and three fixed half/quarter multisection theorems.  The baseline records the
 current inventory after the subsequent three-theorem signed natural-moment
-addition to `RvachevDerivativeDistribution.lean`, and records those zeroes, so
-every future source addition must preserve the
+addition to `RvachevDerivativeDistribution.lean` and the all-depth
+`generalizedRvachevProduct_two_pow_mul` shift--refinement theorem in
+`WeightLinearityProducts.lean`, and records those zeroes, so every future
+source addition must preserve the
 full invariant rather than merely avoid worsening a historical backlog.  Run
 the script for live numbers after merging concurrent source work.
+
+The documentation merge itself was validated source-only at the user's
+request.  Its merged TeX sources are newer than the selected committed PDFs;
+those PDFs remain potentially stale until the next required three-pass
+Libertinus rebuild.
 
 ### What the review pass caught
 

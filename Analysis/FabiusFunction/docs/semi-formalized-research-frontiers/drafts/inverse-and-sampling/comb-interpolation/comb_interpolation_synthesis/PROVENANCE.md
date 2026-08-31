@@ -106,6 +106,47 @@ matplotlib>=3.7
 
 No other retained payload was collapsed by byte identity.
 
+## Post-pin mainline reconciliation
+
+The immutable 180-file inventory remains pinned to the revision stated above,
+but the synthesis branch was merged with mainline revision
+`9e70a1a2145e9c01566d5638d33045af24516790` before publication.  Main had
+added or refreshed intake notes, arrival-ledger copies, historical PDF checks,
+and source-only status wrappers inside the report trees that this synthesis
+retires.  Those administrative files were reviewed during conflict resolution
+and distilled here rather than being preserved as a second documentation
+layer.
+
+The useful conclusions were as follows.
+
+- The arbitrary-ratio geometric report had received a hostile read of all 37
+  labelled nonconjectural results.  No fatal counterexample was found, and the
+  infinite partial-fraction argument for the q-exponential perpetuity density
+  had already been repaired in the source used by this synthesis.  A CPython
+  3.13.14 replay with `mpmath==1.4.1` and `matplotlib==3.10.8` reproduced its
+  four CSV tables and three PNG figures byte for byte.
+- The stronger q/Fabius report had a claim-level audit separating exact Lean
+  ingredients from report-level manuscript theorems.  Its eleven generated
+  data/figure artifacts reproduced byte for byte in the recorded pinned
+  environment.  Its two-sided Fabius-gap asymptotic, second-order Lebesgue
+  expansion, and Hermite-saddle displacement remained conjectures, exactly as
+  the canonical theorem concordance records.
+- The third geometric report had passed an archival integrity gate, not a
+  hostile mathematical audit: its 20-entry submitted ledger verified, four
+  generated CSV files were newline-normalized, and its source archive had
+  SHA-256
+  `89c9de31b9b78b614c13d5a3ff24ae41b73ef6704a9daef77ba724b396e90fa0`.
+  The present synthesis supplies the later theorem-by-theorem crosswalk and
+  proof review; it does not retroactively describe that intake gate as one.
+
+The exact two-file environment for the arbitrary-ratio report is genuinely
+useful reproducibility data, so `requirements.txt` and
+`requirements-lock.txt` are retained under that report's companion-evidence
+slug.  Their provenance rows are explicitly marked `post-pin-mainline` and
+checked against the reconciliation revision.  The superseded intake prose,
+arrival-ledger copies, and old-PDF preflight records remain recoverable at that
+Git revision but are not live publications or canonical evidence manifests.
+
 ## Historical checksum ledgers
 
 Eight source-package ledgers contain 151 entries in total. Re-evaluating them

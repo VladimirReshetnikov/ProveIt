@@ -97,6 +97,8 @@
 \newcommand{\cL}{\mathcal{L}}
 \newcommand{\cZ}{\mathcal{Z}}
 \newcommand{\vct}[1]{\boldsymbol{#1}}
+% LOCAL-NON-FOURIER-HAT: \LeastSquaresProjectionEstimate denotes the least-squares projection estimator in the span of comparison variables
+\newcommand{\LeastSquaresProjectionEstimate}[1]{\widehat{#1}}
 \newcommand{\repo}{\texttt{ProveIt/Analysis/FabiusFunction/docs}}
 \newcommand{\statusproved}{\textcolor{deepgreen}{\textbf{proved here}}}
 \newcommand{\statusinput}{\textcolor{deepblue}{\textbf{repository input}}}
@@ -360,7 +362,7 @@ For $t=(t_1,\ldots,t_d)\in\RealNumbers^d$,
 Its real zero set is exactly the locally finite union of affine-through-the-origin hyperplanes
 \begin{equation}
   \sum_{j=1}^dt_j(1-q_j)q_j^n=2\pi k,
-  \qquad n\ge0,\quad k\in\mathbb Z\setminus\{0\}.
+  \qquad n\ge0,\quad k\in\IntegerNumbers\setminus\{0\}.
   \label{eq:zero-hyperplanes}
 \end{equation}
 \end{theorem}
@@ -658,7 +660,7 @@ Define the standardized process
 \end{equation}
 For distinct nodes $q_1,\ldots,q_m$ and a further $q$, let
 \[
- \widehat Y_q=\operatorname*{argmin}_{Z\in\SpanOperator(Y_{q_1},\ldots,Y_{q_m})}
+ \LeastSquaresProjectionEstimate{Y_q}=\operatorname*{argmin}_{Z\in\SpanOperator(Y_{q_1},\ldots,Y_{q_m})}
       \Expectation(Y_q-Z)^2
 \]
 denote the best linear predictor in $L^2$.
@@ -1438,10 +1440,10 @@ Equation \eqref{eq:inverse-Fabius-copula-boundary} is a direct, exact bridge fro
 
 Let
 \begin{equation}
-  \tau_n=(-1)^{s_2(n)},
+  \tau_n=(-1)^{\BinaryDigitSum(n)},
   \label{eq:tau}
 \end{equation}
-where $s_2(n)$ is the binary digit sum.  The finite product identity
+where $\BinaryDigitSum(n)$ is the binary digit sum.  The finite product identity
 \begin{equation}
   \sum_{n=0}^{2^m-1}\tau_nz^n
    =\prod_{j=0}^{m-1}(1-z^{2^j})

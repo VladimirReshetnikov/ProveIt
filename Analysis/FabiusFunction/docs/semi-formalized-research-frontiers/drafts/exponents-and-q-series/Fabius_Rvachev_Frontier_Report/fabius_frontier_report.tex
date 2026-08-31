@@ -193,7 +193,7 @@ Write
 \[
  F_q(x)=\Probability(X_q\le x),
  \qquad
- \psi_q(t)=\Expectation e^{itY_q},
+ \psi_q(t)=\Expectation \EulerE^{itY_q},
  \qquad
  \SincRad z=\begin{cases}\sin z/z,&z\ne0,\\1,&z=0.\end{cases}
 \]
@@ -560,7 +560,7 @@ set, with the usual extended-value convention.
 \begin{theorem}[Log-concavity of the geometric-uniform family]\label{thm:logconcavity}
 For every real \(q\) with \(\lvert q\rvert<1\), the law of \(X_q\) is log-concave.  For
 \(q\ne0\), its smooth density \(g_q\) is log-concave on \(\RealNumbers\); at \(q=0\), the density
-is \(\mathbf 1_{[0,1]}\), which is log-concave in the extended sense.
+is \(\IndicatorOf{[0,1]}\), which is log-concave in the extended sense.
 \end{theorem}
 
 \begin{proof}
@@ -930,7 +930,7 @@ From \cref{eq:variance-q}, \(\sigma_{-r}=c_r\sigma_r\).  Divide
 
 The centered characteristic function of \(Z_r\) has the useful normalized product
 \begin{equation}
- \Psi_r(t)=\Expectation e^{itZ_r}
+ \Psi_r(t)=\Expectation \EulerE^{itZ_r}
  =\prod_{n=0}^{\infty}
  \SincRad\!\left(\sqrt{3(1-r^2)}\,r^nt\right).              \label{eq:standardized-sinc}
 \end{equation}
@@ -1206,9 +1206,9 @@ asymptotic calculus.  The crucial analytic estimate is uniform control of
 
 For fixed \(0<r<1\), the negative Laplace transform of \(X_r\) is
 \begin{equation}
- \Expectation e^{-sX_r}
+ \Expectation \EulerE^{-sX_r}
  =\prod_{n\ge0}
- \frac{1-e^{-(1-r)r^ns}}{(1-r)r^ns}.                      \label{eq:general-laplace-product}
+ \frac{1-\EulerE^{-(1-r)r^ns}}{(1-r)r^ns}.                      \label{eq:general-laplace-product}
 \end{equation}
 Its logarithm is a geometric harmonic sum.  Mellin analysis should produce a quadratic
 polynomial in \(\log s\), a smooth periodic fluctuation in

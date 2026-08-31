@@ -65,13 +65,12 @@
 \newcommand{\eps}{\varepsilon}
 \newcommand{\PV}{\operatorname{PV}}
 \newcommand{\polylog}{\operatorname{Li}}
-\newcommand{\InverseFourierTwoPiOperator}{\operatorname{Fourier}^{-1}_{2\pi}}
-\newcommand{\cO}{\mathcal O}
 \newcommand{\cK}{\mathcal K}
 \newcommand{\cL}{\mathcal L}
 \newcommand{\cS}{\mathcal S}
 \newcommand{\cR}{\mathcal R}
-\newcommand{\one}{\mathbf 1}
+% Ordinary generating function of the even moment sequence in Parts I and VI.
+\newcommand{\EvenMomentOrdinaryGeneratingFunction}{\operatorname{OGF}_{\mathrm{even}}}
 \newcommand{\statusknown}{\textsf{K}}
 \newcommand{\statusderived}{\textsf{D}}
 \newcommand{\statusnew}{\textsf{N}}
@@ -101,7 +100,6 @@
 % Representation_Second_Wave volume; colliding definitions were
 % deduplicated, and \TwoAdicValuation/\BinaryDigitSum are re-declared at the Part IV
 % boundary. ----
-\newcommand{\Probability}{\mathbb P}
 \newcommand{\Spec}{\operatorname{Spec}}
 \newcommand{\PhiF}{\Phi}
 \newcommand{\phiF}{\varphi}
@@ -304,13 +302,13 @@ Then \(\rho\) is even, strictly positive on \((-1,1)\), normalized by
 
 We use
 \begin{equation}
- \widehat f(\xi)=\int_{\RealNumbers}f(x)e^{-2\pi i\xi x}\,\Differential x,
+ \FourierTwoPi{f}(\xi)=\int_{\RealNumbers}f(x)e^{-2\pi i\xi x}\,\Differential x,
  \qquad
- f(x)=\int_{\RealNumbers}\widehat f(\xi)e^{2\pi i\xi x}\,\Differential\xi.       \label{p1:eq:fourier-convention}
+ f(x)=\int_{\RealNumbers}\FourierTwoPi{f}(\xi)e^{2\pi i\xi x}\,\Differential\xi.       \label{p1:eq:fourier-convention}
 \end{equation}
 Set
 \begin{equation}
- \Phi(\xi):=\widehat\rho(\xi),
+ \Phi(\xi):=\FourierTwoPi{\rho}(\xi),
  \qquad
  \SincPi(z):=\frac{\sin(\pi z)}{\pi z},\quad \SincPi(0)=1. \label{p1:eq:Phi-def}
 \end{equation}
@@ -1108,7 +1106,7 @@ In particular,
  \int_0^1\frac{\Differential u}{z-I(u)}
  &=2R(2z-1),\qquad z\in\ComplexNumbers\setminus[0,1],                   \label{p1:eq:inverse-Cauchy}\\
  \int_0^1I(u)^n\,\Differential u
- &=2^{-n}\sum_{r=0}^{\lfloor n/2\rfloor}
+ &=2^{-n}\sum_{r=0}^{\Floor{n/2}}
    \binom{n}{2r}\mu_{2r}.                                   \label{p1:eq:inverse-moments}
 \end{align}
 \end{theorem}
@@ -1353,7 +1351,7 @@ Lean modules.
 
 Define the ordinary even-moment generating function
 \begin{equation}
- \cO(t)=\sum_{n=0}^{\infty}\mu_{2n}t^n
+ \EvenMomentOrdinaryGeneratingFunction(t)=\sum_{n=0}^{\infty}\mu_{2n}t^n
  =\int_{-1}^{1}\frac{\rho(x)}{1-tx^2}\,\Differential x,
  \qquad |t|<1.                                               \label{p1:eq:O-def}
 \end{equation}
@@ -1363,26 +1361,28 @@ Substituting \(t=z^{-2}\) into \eqref{p1:eq:R-J-fraction} gives the contracted f
 For \(|t|<1\),
 \begin{align}
  \boxed{
- \cO(t)=\cfrac{1}{1-\cfrac{\beta_1t}{1-\cfrac{\beta_2t}{1-
+ \EvenMomentOrdinaryGeneratingFunction(t)=\cfrac{1}{1-\cfrac{\beta_1t}{1-\cfrac{\beta_2t}{1-
                \cfrac{\beta_3t}{1-\ddots}}}}
  }                                                           \label{p1:eq:O-S-fraction}\\
- \cO(t)=\int_0^{\infty}e^{-u}
+ \EvenMomentOrdinaryGeneratingFunction(t)=\int_0^{\infty}e^{-u}
  \prod_{k=1}^{\infty}
  \frac{\sinh(\sqrt t\,u/2^k)}{\sqrt t\,u/2^k}\,\Differential u.    \label{p1:eq:O-product-integral}
 \end{align}
 \end{corollary}
 
 \begin{proof}
-The continued fraction follows from \(\cO(z^{-2})=zR(z)\).  For the integral, use
+The continued fraction follows from
+\(\EvenMomentOrdinaryGeneratingFunction(z^{-2})=zR(z)\).  For the integral, use
 \[
  \frac1{1-tx^2}=\int_0^{\infty}e^{-u}\cosh(\sqrt t\,xu)\,\Differential u
 \]
 and then average over \(X\), obtaining \(M(\sqrt t\,u)\).
 \end{proof}
 
-For \(s\ge0\), \(\cO(-s)\) is completely monotone:
+For \(s\ge0\), \(\EvenMomentOrdinaryGeneratingFunction(-s)\) is completely monotone:
 \begin{equation}
- (-1)^m\frac{\Differential^m}{\Differential s^m}\cO(-s)
+ (-1)^m\frac{\Differential^m}{\Differential s^m}
+ \EvenMomentOrdinaryGeneratingFunction(-s)
  =m!\int_{-1}^{1}\frac{x^{2m}\rho(x)}{(1+sx^2)^{m+1}}\,\Differential x>0. \label{p1:eq:O-complete-monotone}
 \end{equation}
 Thus the even moments form a Stieltjes moment sequence, and the fraction
@@ -1725,12 +1725,13 @@ determinant.
 
 \subsection{A resolvent--product--continued-fraction triangle}
 
-For \(|t|<1\), the same analytic function \(\cO(t)\) has three structurally different
+For \(|t|<1\), the same analytic function
+\(\EvenMomentOrdinaryGeneratingFunction(t)\) has three structurally different
 representations:
 \begin{equation}
  \boxed{
  \begin{aligned}
- \cO(t)
+ \EvenMomentOrdinaryGeneratingFunction(t)
  &=\sum_{n\ge0}\mu_{2n}t^n\\
  &=\int_0^{\infty}e^{-u}
    \prod_{k\ge1}\frac{\sinh(\sqrt t\,u/2^k)}{\sqrt t\,u/2^k}\,\Differential u\\
@@ -1824,7 +1825,7 @@ Let \(d_n=1+\nu_2(|n|)\), and let \(\operatorname{PP}_n(z)\) be the principal pa
 finite genus of subtraction polynomials such that
 \begin{equation}
  \frac1{\Phi(z)}
- =E(z)+\sum_{n\in\mathbb Z\setminus\{0\}}^{\mathrm{dyadic}}
+ =E(z)+\sum_{n\in\IntegerNumbers\setminus\{0\}}^{\mathrm{dyadic}}
  \left(\operatorname{PP}_n(z)-\text{canonical subtraction at }n\right), \label{p1:eq:ML-conj}
 \end{equation}
 where \(E\) is an explicitly controlled entire function, ideally constant or of very low
@@ -2103,7 +2104,6 @@ W. Van Assche,
 \renewcommand{\headrulewidth}{0.4pt}
 \newcommand{\pv}{\operatorname{pv}}
 \newcommand{\distPartx}{\mathrel{\stackrel{\mathrm d}=}}
-\newcommand{\wtPartx}{s_2}
 \newcommand{\GammaDy}{\Gamma_{\!\mathrm{dy}}}
 \newcommand{\GammaGeom}{\Gamma_{\langle q\rangle}}
 \newcommand{\Acal}{\mathcal A}
@@ -2158,7 +2158,7 @@ probabilistic, spectral, and transform representations of the bounded Fabius fun
 $F$, Rvachev's compactly supported even function $\RvachevUp$, the inverse Fabius function
 $Q=F^{-1}$, and the entire Fourier image
 \(
- \Phi(z)=\widehat\RvachevUp(z).
+ \Phi(z)=\FourierTwoPi{\RvachevUp}(z).
 \)
 The baseline material is organized from the current formal exposition and the living
 non-formalized frontier documents in the \texttt{ProveIt} repository.  Previously present
@@ -2277,7 +2277,7 @@ The following structures were already present and are therefore baseline in this
 \begin{itemize}[leftmargin=2em]
 \item the infinite sinc product, weighted cosine product, and integer-zero canonical product;
 \item the arithmetic multiplicities $a_n=1+\TwoAdicValuation(n)$, their Dirichlet series, counting law
-      $\sum_{n\le N}a_n=2N-\wtPartx(N)$, lobe signs, heat traces, spectral zeta functions, and
+      $\sum_{n\le N}a_n=2N-\BinaryDigitSum(N)$, lobe signs, heat traces, spectral zeta functions, and
       Fredholm determinant;
 \item half-integer cosine expansions, spectral quadrature, sampling and alias formulae;
 \item moments and cumulants through Bell and Bernoulli numbers, $q$-binomial and multiple-zeta
@@ -2406,11 +2406,11 @@ CDF outside its valid normalization.
 
 \subsection{Box convolution}
 
-The density of $2^{-j}U_j$ is $2^{j-1}\mathbf1_{[-2^{-j},2^{-j}]}$.  Therefore
+The density of $2^{-j}U_j$ is $2^{j-1}\IndicatorOf{[-2^{-j},2^{-j}]}$.  Therefore
 \begin{equation}
  \boxed{\quad
  \RvachevUp=\mathop{\ast}_{j=1}^{\infty}
- \left(2^{j-1}\mathbf1_{[-2^{-j},2^{-j}]}\right).
+ \left(2^{j-1}\IndicatorOf{[-2^{-j},2^{-j}]}\right).
  \quad}                                                  \label{p2:eq:infinite-box-convolution}
 \end{equation}
 This identity may be read in probability, in $L^1$, or through uniform convergence of
@@ -2422,7 +2422,7 @@ Let
  Y_N=\sum_{j=1}^N2^{-j}U_j,
  \qquad
  u_N=\mathop{\ast}_{j=1}^{N}
- \left(2^{j-1}\mathbf1_{[-2^{-j},2^{-j}]}\right).        \label{p2:eq:finite-box-spline}
+ \left(2^{j-1}\IndicatorOf{[-2^{-j},2^{-j}]}\right).        \label{p2:eq:finite-box-spline}
 \end{equation}
 Then $u_N$ is a piecewise polynomial of degree $N-1$ and
 \begin{equation}
@@ -2459,14 +2459,14 @@ Thue--Morse spline
 \begin{equation}
  \boxed{\quad
  u_N(x)=\frac{2^{N(N-1)/2}}{(N-1)!}
- \sum_{k=0}^{2^N-1}(-1)^{\wtPartx(k)}
+ \sum_{k=0}^{2^N-1}(-1)^{\BinaryDigitSum(k)}
  \PositivePart{x+\frac{2^N-1-2k}{2^N}}^{N-1}.
  \quad}                                                  \label{p2:eq:TM-spline}
 \end{equation}
 The corresponding finite CDF is
 \begin{equation}
  U_N(x)=\frac{2^{N(N-1)/2}}{N!}
- \sum_{k=0}^{2^N-1}(-1)^{\wtPartx(k)}
+ \sum_{k=0}^{2^N-1}(-1)^{\BinaryDigitSum(k)}
  \PositivePart{x+\frac{2^N-1-2k}{2^N}}^{N}.                  \label{p2:eq:TM-spline-cdf}
 \end{equation}
 Prouhet cancellation makes the apparent polynomial tails cancel exactly.  These formulae
@@ -2497,13 +2497,13 @@ arguments.
 
 We use
 \begin{equation}
- \widehat g(z)=\int_{\RealNumbers}g(x)\EulerE^{-2\pi\ImaginaryUnit xz}\Differential x,
+ \FourierTwoPi{g}(z)=\int_{\RealNumbers}g(x)\EulerE^{-2\pi\ImaginaryUnit xz}\Differential x,
  \qquad
  \SincRad w=\frac{\sin w}{w},                               \label{p2:eq:FT-convention}
 \end{equation}
 with the removable value at zero.  Put
 \begin{equation}
- \Phi(z)=\widehat\RvachevUp(z).                                  \label{p2:eq:Phi-def}
+ \Phi(z)=\FourierTwoPi{\RvachevUp}(z).                                  \label{p2:eq:Phi-def}
 \end{equation}
 The repository establishes the entire products
 \begin{align}
@@ -2544,7 +2544,7 @@ and exact counting function
 \begin{equation}
  A(N)=\sum_{n\le N}a_n
  =\sum_{h\ge0}\Floor{N/2^h}
- =2N-\wtPartx(N).                                             \label{p2:eq:a-count}
+ =2N-\BinaryDigitSum(N).                                             \label{p2:eq:a-count}
 \end{equation}
 Thus the zero divisor simultaneously encodes the Riemann zeta function, dyadic valuation,
 and binary digit sum.
@@ -2801,7 +2801,7 @@ variable.
 \section{Thue--Morse, dyadic arithmetic, and finite product-to-sum bridges}
 \label{p2:sec:thue-morse}
 
-Let $\varepsilon_k=(-1)^{\wtPartx(k)}$.  The finite Prouhet product is
+Let $\varepsilon_k=(-1)^{\BinaryDigitSum(k)}$.  The finite Prouhet product is
 \begin{equation}
  \prod_{j=0}^{N-1}(1-z^{2^j})
  =\sum_{k=0}^{2^N-1}\varepsilon_kz^k.                    \label{p2:eq:Prouhet-product}
@@ -3367,7 +3367,7 @@ The second sum is finite.  Equivalently,
 Jensen's formula for the entire function $\Phi$, normalized by $\Phi(0)=1$, says that the
 mean is the sum of $\log(r/|\rho|)$ over zeros $\rho$ in the disk, counted with multiplicity.
 The zeros occur at $\pm n$ with multiplicity $a_n$, giving \eqref{p2:eq:J-zero-sum}.  Expand
-$a_n=\sum_{j\ge0}\mathbf1_{2^j\mid n}$, write $n=2^jm$, and sum
+$a_n=\sum_{j\ge0}\IndicatorOf{2^j\mid n}$, write $n=2^jm$, and sum
 $\log(r/(2^jm))$ for $1\le m\le N_j$.  This proves \eqref{p2:eq:J-factorial} and
 \eqref{p2:eq:J-geometric-mean}.
 \end{proof}
@@ -3379,18 +3379,18 @@ For $N<r<N+1$,
 \begin{equation}
  \boxed{\quad
  J'(r)=\frac{2A(N)}r
- =\frac{2(2N-\wtPartx(N))}{r}.
+ =\frac{2(2N-\BinaryDigitSum(N))}{r}.
  \quad}                                                  \label{p2:eq:J-derivative}
 \end{equation}
 Thus
 \begin{equation}
- \frac{rJ'(r)}2=2\Floor r-\wtPartx(\Floor r)                  \label{p2:eq:J-digit-recovery}
+ \frac{rJ'(r)}2=2\Floor r-\BinaryDigitSum(\Floor r)                  \label{p2:eq:J-digit-recovery}
 \end{equation}
 recovers the binary digit sum directly from a circular mean of the Fourier image.
 \end{corollary}
 
 \begin{remark}
-The zero-counting law $A(N)=2N-\wtPartx(N)$ was already in the repository.  The new point is that
+The zero-counting law $A(N)=2N-\BinaryDigitSum(N)$ was already in the repository.  The new point is that
 it is the logarithmic radial derivative of a two-dimensional complex-analytic average, and
 that the full mean has the factorial product \eqref{p2:eq:J-geometric-mean}.
 \end{remark}
@@ -3413,14 +3413,14 @@ Let $N=\Floor r$.  Partial summation applied to \eqref{p2:eq:J-zero-sum} gives
  +\int_1^N\frac{A(\Floor t)}{t}\Differential t.
 \]
 The first term is $\BigO(1)$.  Since
-$A(n)=2n-\wtPartx(n)$, the linear part contributes $2N+\BigO(\log N)$.  The elementary
+$A(n)=2n-\BinaryDigitSum(n)$, the linear part contributes $2N+\BigO(\log N)$.  The elementary
 summatory digit estimate
 \[
- \sum_{n\le x}\wtPartx(n)=\frac{x\log x}{2\log2}+\BigO(x)
+ \sum_{n\le x}\BinaryDigitSum(n)=\frac{x\log x}{2\log2}+\BigO(x)
 \]
 and another partial summation give
 \[
- \int_1^N\frac{\wtPartx(\Floor t)}{t}\Differential t
+ \int_1^N\frac{\BinaryDigitSum(\Floor t)}{t}\Differential t
  =\frac{(\log N)^2}{4\log2}+\BigO(\log N).
 \]
 Multiply by two and replace $N$ with $r$.
@@ -3510,21 +3510,21 @@ ODE framework proving this proposition.  It therefore remains a frontier result.
 Let $f_X=F'=2\RvachevUp(2x-1)$ on $[0,1]$ and zero outside.  A change of variables gives
 \begin{equation}
  \boxed{\quad
- \widehat{f_X}(\xi)=\EulerE^{-\pi\ImaginaryUnit\xi}\Phi(\xi/2).
+ \FourierTwoPi{f_X}(\xi)=\EulerE^{-\pi\ImaginaryUnit\xi}\Phi(\xi/2).
  \quad}                                                  \label{p2:eq:fX-transform}
 \end{equation}
 Hence the compactly supported pieces
 \begin{equation}
- F_0(x)=F(x)\mathbf1_{[0,1]}(x),
+ F_0(x)=F(x)\IndicatorOf{[0,1]}(x),
  \qquad
- S_0(x)=(1-F(x))\mathbf1_{[0,1]}(x)                      \label{p2:eq:F0S0}
+ S_0(x)=(1-F(x))\IndicatorOf{[0,1]}(x)                      \label{p2:eq:F0S0}
 \end{equation}
 have, for $\xi\ne0$,
 \begin{align}
- \widehat{F_0}(\xi)
+ \FourierTwoPi{F_0}(\xi)
  &=\frac{\EulerE^{-\pi\ImaginaryUnit\xi}\Phi(\xi/2)-\EulerE^{-2\pi\ImaginaryUnit\xi}}
  {2\pi\ImaginaryUnit\xi},                                         \label{p2:eq:F0-transform}\\
- \widehat{S_0}(\xi)
+ \FourierTwoPi{S_0}(\xi)
  &=\frac{1-\EulerE^{-\pi\ImaginaryUnit\xi}\Phi(\xi/2)}{2\pi\ImaginaryUnit\xi}.\label{p2:eq:S0-transform}
 \end{align}
 Both values at zero are $1/2$.  Inserting \eqref{p2:eq:Phi-sinc},
@@ -3535,12 +3535,12 @@ representations of the Fourier image of the bounded CDF.
 
 Let $H$ be the Heaviside distribution.  Since $F=H\ast f_X$,
 \begin{equation}
- \widehat H=\frac12\delta_0+\frac{1}{2\pi\ImaginaryUnit}\pv\frac1\xi
+ \FourierTwoPi{H}=\frac12\delta_0+\frac{1}{2\pi\ImaginaryUnit}\pv\frac1\xi
 \end{equation}
 gives the distributional formula
 \begin{equation}
  \boxed{\quad
- \widehat F
+ \FourierTwoPi{F}
  =\frac12\delta_0+
  \frac{1}{2\pi\ImaginaryUnit}\pv\left(
  \frac{\EulerE^{-\pi\ImaginaryUnit\xi}\Phi(\xi/2)}{\xi}
@@ -3594,7 +3594,7 @@ $\RvachevUp\in C_c^\infty$.
 
 The new factorization makes the preceding formulae explicitly gamma-theoretic:
 \begin{align}
- \widehat{f_X}(\xi)
+ \FourierTwoPi{f_X}(\xi)
  &=\frac{\EulerE^{-\pi\ImaginaryUnit\xi}}
  {\GammaDy(\xi/2)\GammaDy(-\xi/2)},                       \label{p2:eq:fX-gamma}\\
  F(x)
@@ -3740,7 +3740,7 @@ $\RvachevUp$ & $\RvachevUp(x)=\int_{2x-1}^{2x+1}\RvachevUp(t)\Differential t$ & 
 $\RvachevUp'$ & $\RvachevUp'(x)=2\RvachevUp(2x+1)-2\RvachevUp(2x-1)$ & pointwise & \RepoShort \\
 $F$ & fixed integral equation \eqref{p2:eq:F-fixed} & $[0,1]$ & \RepoShort \\
 $\FabiusGlobal^{(m)}$ & $2^{\binom{m+1}{2}}\FabiusGlobal(2^mx)$ & all orders & \RepoShort \\
-$\RvachevUp$ & $\ast_{j\ge1}(2^{j-1}\mathbf1_{[-2^{-j},2^{-j}]})$ & $L^1$/probability & \RepoShort \\
+$\RvachevUp$ & $\ast_{j\ge1}(2^{j-1}\IndicatorOf{[-2^{-j},2^{-j}]})$ & $L^1$/probability & \RepoShort \\
 $u_N$ & finite box convolution \eqref{p2:eq:finite-box-spline} & compact spline & \RepoShort \\
 $u_N$ & Thue--Morse truncated powers \eqref{p2:eq:TM-spline} & pointwise & \RepoShort \\
 $\RvachevUp$ & $u_N\ast(2^N\RvachevUp(2^N\cdot))$ & exact head--tail & \RepoShort \\
@@ -3783,7 +3783,7 @@ $Z_\tau$ & gamma/sinc characteristic products \eqref{p2:eq:Ztau-cf-logistic}--\e
 $Z_\tau$ & normal-mixture density \eqref{p2:eq:Z-density-mixture} & real $x$ & \NewShort \\
 $Z_\tau$ & Levy density \eqref{p2:eq:Z-Levy-density} & $x\ne0$ & \NewShort \\
 $J(r)$ & zero sum and factorial product \eqref{p2:eq:J-zero-sum}--\eqref{p2:eq:J-geometric-mean} & $r>0$ & \NewShort \\
-$J'(r)$ & $(4\Floor r-2\wtPartx(\Floor r))/r$ & noninteger $r$ & \NewShort \\
+$J'(r)$ & $(4\Floor r-2\BinaryDigitSum(\Floor r))/r$ & noninteger $r$ & \NewShort \\
 $J(r)$ & $4r-(\log r)^2/(2\log2)+\BigO(\log r)$ & $r\to\infty$ & \NewShort \\
 $Q$ & quantile pushforward \eqref{p2:eq:quantile-substitution} & measurable tests & \RepoShort \\
 $Q$ & Laplace/product transform \eqref{p2:eq:Q-Laplace} & complex $s$ & \DerivedShort \\
@@ -4164,11 +4164,11 @@ For convenient reuse, here are the central bridges in compressed form:
  &&\Longrightarrow\quad J(r)=2\sum_{n\le r}a_n\log(r/n),\\
  a_{2^k}&=k+1\to\infty
  &&\Longrightarrow\quad \Phi\text{ is not D-finite},\\
- F'(x)&=2\RvachevUp(2x-1),\quad \widehat\RvachevUp=\Phi
- &&\Longrightarrow\quad \widehat{F'}(\xi)=\EulerE^{-\pi\ImaginaryUnit\xi}\Phi(\xi/2),\\
+ F'(x)&=2\RvachevUp(2x-1),\quad \FourierTwoPi{\RvachevUp}=\Phi
+ &&\Longrightarrow\quad \FourierTwoPi{F'}(\xi)=\EulerE^{-\pi\ImaginaryUnit\xi}\Phi(\xi/2),\\
  y&=F(x),\quad Q(F(x))=x
  &&\Longrightarrow\quad
- \widehat Q(\eta)=\frac{\int_0^1\EulerE^{-2\pi\ImaginaryUnit\eta F(x)}\Differential x-
+ \FourierTwoPi{Q}(\eta)=\frac{\int_0^1\EulerE^{-2\pi\ImaginaryUnit\eta F(x)}\Differential x-
  \EulerE^{-2\pi\ImaginaryUnit\eta}}{2\pi\ImaginaryUnit\eta}.
 \end{align*}
 }
@@ -4358,7 +4358,7 @@ with rational weights $\Delta_{N,k}$.  Its moment-generating and Fourier
 transforms are therefore limits of positive rational mixtures of confluent
 hypergeometric functions.  A dual construction uses dyadic values of the inverse
 $G=F^{-1}$: equal probability cells with variable spatial widths give a finite
-sinc-mixture formula for $\widehat\RvachevUp$, as well as polynomial limits for all
+sinc-mixture formula for $\FourierTwoPi{\RvachevUp}$, as well as polynomial limits for all
 moments.
 
 Finally, the exact Haar detail energy $E_N$ is rational and has an all-orders
@@ -4470,7 +4470,7 @@ representations, including locally uniform entire transform limits. & \statuspro
 B & Rational unnormalized Haar and Faber--Schauder representations, with an
 orthonormal Haar/Fourier product expansion. & \statusproved\\
 C & Walsh--Hadamard representation, reflection selection rule, and a series
-for $\widehat\RvachevUp$ whose terms are finite trigonometric products. & \statusproved\\
+for $\FourierTwoPi{\RvachevUp}$ whose terms are finite trigonometric products. & \statusproved\\
 D & Exact Hamming-weight cancellation order, first nonzero Walsh moment, and
 $q=1/2$ Gaussian-binomial aggregation. & \statusproved\\
 E & Bell--Bernoulli formula for every higher Walsh moment. & \statusproved\\
@@ -4520,13 +4520,13 @@ appears only in the baseline atlas.
 
 For an integrable function $f$ we use angular frequency,
 \begin{equation}\label{p3:eq:Fourier-convention}
- \widehat f(t)=\int_\RealNumbers f(x)\EulerE^{-\ImaginaryUnit tx}\Differential x,
+ \FourierAngular{f}(t)=\int_\RealNumbers f(x)\EulerE^{-\ImaginaryUnit tx}\Differential x,
  \qquad
- f(x)=\frac1{2\pi}\int_\RealNumbers\widehat f(t)\EulerE^{\ImaginaryUnit tx}\Differential t.
+ f(x)=\frac1{2\pi}\int_\RealNumbers\FourierAngular{f}(t)\EulerE^{\ImaginaryUnit tx}\Differential t.
 \end{equation}
 Set
 \begin{equation}\label{p3:eq:Phi-M-def}
- \Phi(t)=\widehat\RvachevUp(t),\qquad
+ \Phi(t)=\FourierAngular{\RvachevUp}(t),\qquad
  M(z)=\int_{-1}^1\RvachevUp(x)\EulerE^{zx}\Differential x=\Phi(\ImaginaryUnit z).
 \end{equation}
 The compact-interval Fourier image of the bounded Fabius function is
@@ -4733,7 +4733,7 @@ Every derivative may be taken termwise.
 
 The affine relation between $p$ and $\RvachevUp$ gives
 \begin{equation}\label{p3:eq:p-transform}
- \widehat p(t)=\EulerE^{-\ImaginaryUnit t/2}\Phi(t/2).
+ \FourierAngular{p}(t)=\EulerE^{-\ImaginaryUnit t/2}\Phi(t/2).
 \end{equation}
 Integration by parts then yields the exact compact-interval transforms
 \begin{align}
@@ -4937,14 +4937,14 @@ mass polynomial.
 \label{p3:thm:primal-transform}
 For every $z\in\ComplexNumbers$,
 \begin{equation}\label{p3:eq:pN-transform-polynomial}
- \widehat p_N(z)
+ \FourierAngular{p_N}(z)
  =\frac{n_N(1-\EulerE^{-\ImaginaryUnit z/n_N})}{\ImaginaryUnit z}
    D_N(\EulerE^{-\ImaginaryUnit z/n_N}).
 \end{equation}
 Consequently
 \begin{align}
  \Phi_N^{\mathrm{cell}}(t)
- &:=\EulerE^{\ImaginaryUnit t}\widehat p_N(2t)\label{p3:eq:PhiN-cell-def}\\
+ &:=\EulerE^{\ImaginaryUnit t}\FourierAngular{p_N}(2t)\label{p3:eq:PhiN-cell-def}\\
  &=\SincRad(t/n_N)
    \sum_{k=0}^{n_N-1}\Delta_{N,k}
    \exp\!\left[-\ImaginaryUnit t\left(\frac{2k+1}{n_N}-1\right)\right].
@@ -4952,7 +4952,7 @@ Consequently
 \end{align}
 The limits
 \begin{align}
- \widehat p(z)&=\lim_{N\to\infty}
+ \FourierAngular{p}(z)&=\lim_{N\to\infty}
  \frac{n_N(1-\EulerE^{-\ImaginaryUnit z/n_N})}{\ImaginaryUnit z}
  D_N(\EulerE^{-\ImaginaryUnit z/n_N}),\label{p3:eq:p-transform-mass-limit}\\
  \Phi(t)&=\lim_{N\to\infty}\SincRad(t/n_N)
@@ -4974,7 +4974,7 @@ Integrating $p_N$ cell by cell gives
 which sums to \eqref{p3:eq:pN-transform-polynomial}.  The affine change from $p$
 to $\RvachevUp$ gives \eqref{p3:eq:PhiN-cell}.  If $K\subset\ComplexNumbers$ is compact, then
 \[
- \sup_{z\in K}|\widehat p_N(z)-\widehat p(z)|
+ \sup_{z\in K}|\FourierAngular{p_N}(z)-\FourierAngular{p}(z)|
  \le \EulerE^{\sup_{z\in K}|\Im z|}\|p_N-p\|_1,
 \]
 so convergence is locally uniform.  The same argument applies after the affine
@@ -5013,7 +5013,7 @@ If $p,g\in C^1[0,1]$, then
 \end{equation}
 In particular, on each compact set $|z|\le R$,
 \begin{equation}\label{p3:eq:transform-O4N}
- \widehat p_N(z)-\widehat p(z)=\BigO_R(4^{-N}),
+ \FourierAngular{p_N}(z)-\FourierAngular{p}(z)=\BigO_R(4^{-N}),
  \qquad
  \Phi_N^{\mathrm{cell}}(z)-\Phi(z)=\BigO_R(4^{-N}).
 \end{equation}
@@ -5143,7 +5143,7 @@ This is a discrete second derivative of $F$ at a dyadic midpoint.
 
 A direct integration gives
 \begin{equation}\label{p3:eq:Haar-transform}
- \widehat h_{n,k}(z)
+ \FourierAngular{h_{n,k}}(z)
  =2^{n/2}\EulerE^{-\ImaginaryUnit zk/2^n}
  \frac{(1-\EulerE^{-\ImaginaryUnit z/2^{n+1}})^2}{\ImaginaryUnit z}.
 \end{equation}
@@ -5153,7 +5153,7 @@ Therefore:
 \label{p3:thm:Haar-transform-series}
 Locally uniformly on $\ComplexNumbers$,
 \begin{equation}\label{p3:eq:p-Haar-transform}
- \widehat p(z)=\frac{1-\EulerE^{-\ImaginaryUnit z}}{\ImaginaryUnit z}
+ \FourierAngular{p}(z)=\frac{1-\EulerE^{-\ImaginaryUnit z}}{\ImaginaryUnit z}
  +\sum_{n=0}^\infty\sum_{k=0}^{2^n-1}
  c_{n,k}2^{n/2}\EulerE^{-\ImaginaryUnit zk/2^n}
  \frac{(1-\EulerE^{-\ImaginaryUnit z/2^{n+1}})^2}{\ImaginaryUnit z}.
@@ -5172,7 +5172,7 @@ Transform the finite identity \eqref{p3:eq:pN-Haar} and let $N\to\infty$.
 Local uniform convergence follows from uniform $L^1$ convergence of $p_N$ to
 $p$.  Absolute convergence by scale also follows directly: smoothness gives
 $c_{n,k}=\BigO(2^{-3n/2})$ uniformly in $k$, while
-$\widehat h_{n,k}(z)=\BigO_K(2^{-3n/2})$ on a compact $K$; summing $2^n$
+$\FourierAngular{h_{n,k}}(z)=\BigO_K(2^{-3n/2})$ on a compact $K$; summing $2^n$
 locations leaves a convergent $\BigO_K(4^{-n})$ scale contribution.
 \end{proof}
 
@@ -5279,7 +5279,7 @@ of the canonical zero product \eqref{p3:eq:zero-product}.
 
 Let
 \begin{equation}\label{p3:eq:Rademacher}
- r_j(x)=(-1)^{\lfloor2^{j+1}x\rfloor},
+ r_j(x)=(-1)^{\Floor{2^{j+1}x}},
  \qquad j\ge0,
 \end{equation}
 away from dyadic endpoints.  If
@@ -5397,7 +5397,7 @@ Set
 \end{equation}
 For $m>0$, let
 \begin{equation}\label{p3:eq:Nm-def}
- N(m)=1+\lfloor\log_2m\rfloor.
+ N(m)=1+\Floor{\log_2m}.
 \end{equation}
 
 \begin{theorem}[Walsh finite-product transform]
@@ -5468,7 +5468,7 @@ Each coefficient $a_m$ is rational and is given exactly by
 Since $p_N\to p$ in $L^1$ and all functions are supported in $[0,1]$, their
 Fourier transforms converge locally uniformly.  Substitute the finite Walsh
 expansion \eqref{p3:eq:pN-Walsh} and use
-$\Phi(t)=\EulerE^{\ImaginaryUnit t}\widehat p(2t)$.  Equation
+$\Phi(t)=\EulerE^{\ImaginaryUnit t}\FourierAngular{p}(2t)$.  Equation
 \eqref{p3:eq:Phi-Walsh-trig} follows from
 \cref{p3:thm:Walsh-product-transform} and the parity filter
 \eqref{p3:eq:a-odd-vanish}.
@@ -5609,7 +5609,7 @@ Let $m>0$, $r=r(m)$, and $\ell\ge0$.  Then
 \begin{equation}\label{p3:eq:Walsh-higher-moments}
  \int_0^1x^{r+\ell}w_m(x)\Differential x
  =(-1)^r\frac{(r+\ell)!}{2^{2r+\sigma(m)}}
- \sum_{j=0}^{\lfloor\ell/2\rfloor}
+ \sum_{j=0}^{\Floor{\ell/2}}
  \frac{(-1)^je_{m,j}}
       {2^{\ell-2j}(\ell-2j)!},
 \end{equation}
@@ -5760,7 +5760,7 @@ rational mixtures of confluent hypergeometric functions.
 \begin{proof}
 Integrate \eqref{p3:eq:pB-beta-density} against $\EulerE^{zx}$ and use uniform
 convergence.  The affine transform relations
-$\Phi(t)=\EulerE^{\ImaginaryUnit t}\widehat p(2t)$ and
+$\Phi(t)=\EulerE^{\ImaginaryUnit t}\FourierAngular{p}(2t)$ and
 $M(z)=\EulerE^{-z}\int_0^1p(x)\EulerE^{2zx}\Differential x$ give the remaining formulas.
 \end{proof}
 
@@ -6046,7 +6046,7 @@ Let
 \end{equation}
 Its squared Fourier modulus is
 \begin{equation}\label{p3:eq:Kh-transform}
- |\widehat K_h(\xi)|^2
+ |\FourierAngular{K_h}(\xi)|^2
  =\frac{16}{h\xi^2}\sin^4\!\left(\frac{h\xi}{4}\right).
 \end{equation}
 The coefficients $c_{n,k}$ are samples of a translate of $p*K_h$ at the cell
@@ -6057,7 +6057,7 @@ all nonzero aliases.
 \label{p3:thm:sinc4-energy}
 For $h=2^{-n}$,
 \begin{equation}\label{p3:eq:En-multiplier}
- E_n=\frac1{2\pi}\int_\RealNumbers|\widehat p(\xi)|^2
+ E_n=\frac1{2\pi}\int_\RealNumbers|\FourierAngular{p}(\xi)|^2
  \frac{h^2\xi^2}{16}\SincRad^4\!\left(\frac{h\xi}{4}\right)\Differential\xi
  +R(h),
 \end{equation}
@@ -6072,13 +6072,13 @@ Apply Poisson summation to the samples of $|p*K_h|^2$ on the shifted lattice
 $h(\IntegerNumbers+1/2)$.  The zero Fourier mode is
 \[
  \frac1h\|p*K_h\|_2^2
- =\frac1{2\pi h}\int|\widehat p(\xi)|^2
- |\widehat K_h(\xi)|^2\Differential\xi,
+ =\frac1{2\pi h}\int|\FourierAngular{p}(\xi)|^2
+ |\FourierAngular{K_h}(\xi)|^2\Differential\xi,
 \]
 which simplifies to the integral in \eqref{p3:eq:En-multiplier}.  Every nonzero
-alias contains a factor $\widehat p(\xi+2\pi\ell/h)$ or its conjugate.
+alias contains a factor $\FourierAngular{p}(\xi+2\pi\ell/h)$ or its conjugate.
 Because the zero extension of $p$ is $C_c^\infty(\RealNumbers)$,
-$\widehat p$ is Schwartz; the nonzero aliases are therefore smaller than every
+$\FourierAngular{p}$ is Schwartz; the nonzero aliases are therefore smaller than every
 power of $h$ after summation over $\ell\ne0$.
 \end{proof}
 
@@ -6114,9 +6114,9 @@ In particular,
 
 \begin{proof}
 Taylor-expand $\SincRad^4(h\xi/4)$ to an arbitrary fixed order in
-\eqref{p3:eq:En-multiplier}.  The Schwartz decay of $\widehat p$ justifies
+\eqref{p3:eq:En-multiplier}.  The Schwartz decay of $\FourierAngular{p}$ justifies
 termwise integration and bounds the remainder.  Parseval identifies
-$(2\pi)^{-1}\int\xi^{2j+2}|\widehat p(\xi)|^2\Differential\xi$ with
+$(2\pi)^{-1}\int\xi^{2j+2}|\FourierAngular{p}(\xi)|^2\Differential\xi$ with
 $\|p^{(j+1)}\|_2^2$.  The alias term is smaller than every algebraic order.
 \end{proof}
 
@@ -6217,7 +6217,7 @@ Bell--Bernoulli coefficient $\alpha_j$.
 
 The remainder $R(2^{-n})$ is superalgebraic but not expected to be a featureless
 error term.  Its Poisson representation samples cross-products of
-$\widehat p$ at frequencies separated by $2\pi2^n\ell$.  The corpus proves that
+$\FourierAngular{p}$ at frequencies separated by $2\pi2^n\ell$.  The corpus proves that
 $\Phi$ has a log-square envelope with a nonconstant periodic phase in
 $\log_2|t|$.  Along a dyadic scale sequence, the phase of each fixed alias
 $\ell$ is locked at the fractional part of $\log_2(2\pi|\ell|)$.
@@ -6434,11 +6434,11 @@ The same vector also determines the mass polynomial $D_N$.  The resulting
 functions all integrate to one and converge to $p$, but their Fourier images
 factor differently:
 \begin{align}
- \widehat p_N(z)&=\text{exponential polynomial}\times\text{sinc window},
+ \FourierAngular{p_N}(z)&=\text{exponential polynomial}\times\text{sinc window},
  \label{p3:eq:transform-type-cell}\\
- \widehat p_N(z)&=\sum_{m<2^N}a_m\times\text{finite sine--cosine product},
+ \FourierAngular{p_N}(z)&=\sum_{m<2^N}a_m\times\text{finite sine--cosine product},
  \label{p3:eq:transform-type-Walsh}\\
- \widehat p_N^{\mathrm B}(z)&=\sum_k\Delta_{N,k}\times{}_1F_1(k+1;2^N+1;-\ImaginaryUnit z).
+ \FourierAngular{p_N^{\mathrm B}}(z)&=\sum_k\Delta_{N,k}\times{}_1F_1(k+1;2^N+1;-\ImaginaryUnit z).
  \label{p3:eq:transform-type-beta}
 \end{align}
 This makes it possible to transfer a question among a local partition, a
@@ -6883,7 +6883,7 @@ $E_n$ & \eqref{p3:eq:En-multiplier} & $\SincRad^4$ Fourier multiplier plus alias
 $E_n$ & \eqref{p3:eq:En-all-orders} & Bell--Bernoulli Sobolev expansion\\
 $\mathcal H$ & \eqref{p3:eq:H-energy-generating} & meromorphic rational-energy generating series\\
 $G$ & \eqref{p3:eq:G-Schauder} & inverse Faber--Schauder series\\
-$\widehat G$ & \eqref{p3:eq:Ghat-Schauder} & inverse translated-$\SincRad^2$ series\\
+$\FourierAngular{G}$ & \eqref{p3:eq:Ghat-Schauder} & inverse translated-$\SincRad^2$ series\\
 \bottomrule
 \end{longtable}
 
@@ -7054,7 +7054,7 @@ where \(Z\) has density \(\RvachevUp\).  Combining this with the exact reciproca
 identity gives the positive spectral formula
 \[
  F(2^{-n})=2^{-n(n+1)/2}
- \sum_{k=0}^{\lfloor n/2\rfloor}
+ \sum_{k=0}^{\Floor{n/2}}
  \frac{\TraceOperator(\wedge^kB)}{(n-2k)!}.
 \]
 Newton identities convert it into finite combinations of
@@ -7259,7 +7259,7 @@ simplex integrals and triangular recurrences for dyadic samples.
 
 Let
 \[
- b_a(x)=\frac1{2a}\mathbf 1_{[-a,a]}(x).
+ b_a(x)=\frac1{2a}\IndicatorOf{[-a,a]}(x).
 \]
 Then
 \begin{equation}
@@ -8061,7 +8061,7 @@ The rationality follows from the power traces
 \(p_j=\TraceOperator B^j\), since Euler's evaluation of \(\zeta(2j)\) gives
 \begin{equation}
  p_j=\frac{(-1)^{j+1}2^{2j-1}B_{2j}}
- {(2j)!(4^j-1)}\in\mathbb Q_{>0}.
+ {(2j)!(4^j-1)}\in\RationalNumbers_{>0}.
  \label{p4:eq:p-Bernoulli}
 \end{equation}
 Newton's identities become
@@ -8111,7 +8111,7 @@ The first values are
 The audited corpus supplies \eqref{p4:eq:dyadic-moment}.  The centered variable gives
 \begin{equation}
  \Expectation X^n=2^{-n}\Expectation(1+Z)^n
- =2^{-n}\sum_{k=0}^{\lfloor n/2\rfloor}
+ =2^{-n}\sum_{k=0}^{\Floor{n/2}}
  \binom n{2k}\Expectation Z^{2k}.
  \label{p4:eq:X-centered-moment}
 \end{equation}
@@ -8124,7 +8124,7 @@ For every integer \(n\ge0\),
 \begin{equation}
  \boxed{\quad
  F(2^{-n})=2^{-n(n+1)/2}
- \sum_{k=0}^{\lfloor n/2\rfloor}
+ \sum_{k=0}^{\Floor{n/2}}
  \frac{\TraceOperator(\wedge^kB)}{(n-2k)!}.
  \quad}
  \label{p4:eq:dyadic-exterior}
@@ -8142,7 +8142,7 @@ infinite multiple series.  Combining \eqref{p4:eq:dyadic-exterior} with
 \eqref{p4:eq:e-partitions} gives a finite Bernoulli--partition expression:
 \begin{equation}
  F(2^{-n})=2^{-n(n+1)/2}
- \sum_{k=0}^{\lfloor n/2\rfloor}\frac1{(n-2k)!}
+ \sum_{k=0}^{\Floor{n/2}}\frac1{(n-2k)!}
  \sum_{\substack{m_1+2m_2+\cdots+km_k=k}}
  \prod_{j=1}^{k}
  \frac1{m_j!}
@@ -8153,7 +8153,7 @@ infinite multiple series.  Combining \eqref{p4:eq:dyadic-exterior} with
 A purely positive multiple-zeta form follows from \eqref{p4:eq:e-spectral-sum}:
 \begin{equation}
  F(2^{-n})=2^{-n(n+1)/2}
- \sum_{k=0}^{\lfloor n/2\rfloor}\frac1{(n-2k)!}
+ \sum_{k=0}^{\Floor{n/2}}\frac1{(n-2k)!}
  \sum_{j_1<\cdots<j_k}\prod_{r=1}^{k}\lambda_{j_r}.
  \label{p4:eq:dyadic-positive-multiple}
 \end{equation}
@@ -8832,9 +8832,9 @@ be written in one line.  From \(X=(1+Z)/2\) and symmetry,
 \begin{align*}
  [z^n]A(z)
  &=\frac{\Expectation X^n}{n!}
- =\frac1{2^nn!}\sum_{k=0}^{\lfloor n/2\rfloor}
+ =\frac1{2^nn!}\sum_{k=0}^{\Floor{n/2}}
    \binom n{2k}\Expectation Z^{2k}\\
- &=\frac1{2^n}\sum_{k=0}^{\lfloor n/2\rfloor}
+ &=\frac1{2^n}\sum_{k=0}^{\Floor{n/2}}
    \frac{e_k(B)}{(n-2k)!}.
 \end{align*}
 Multiplication by \(2^{-\binom n2}\) proves \eqref{p4:eq:dyadic-exterior}.  Equivalently,
@@ -9109,7 +9109,7 @@ The new organizing object is the sparse-scale Fourier product
 Partitioning the scales of the ordinary Rvachev product modulo $r$ gives the
 exact polyphase factorization
 \[
- \widehat{\RvachevUp}(z)=\prod_{a=0}^{r-1}\Psi_r(z/2^a).
+ \FourierTwoPi{\RvachevUp}(z)=\prod_{a=0}^{r-1}\Psi_r(z/2^a).
 \]
 If $g_r$ is the probability density with Fourier image $\Psi_r$, then
 \[
@@ -9118,7 +9118,7 @@ If $g_r$ is the probability density with Fourier image $\Psi_r$, then
 This one identity generates cosine, Gamma, canonical-zero, logarithmic-zeta,
 hyperbolic-product, cumulant, Bell-polynomial, spectral-zeta, and integral
 representations.  The component zero multiplicity is
-$1+\lfloor\nu_2(n)/r\rfloor$, and its spectral zeta is
+$1+\Floor{\nu_2(n)/r}$, and its spectral zeta is
 $\zeta(s)/(1-2^{-rs})$.  Mellin analysis shows an exact roots-of-unity
 cancellation: the $r$-periodic pole lattice of a sparse component recombines so
 that only the ordinary dyadic harmonics survive.
@@ -9141,7 +9141,7 @@ Finite sparse box splines $g_{r,N}$ have knots
 $x_{r,N,k}=-A_{r,N}+\sum_j b_j(k)2^{-rj}$, and their highest classical
 derivative has jumps
 \[
- \eps_k=(-1)^{s_2(k)}
+ \eps_k=(-1)^{\BinaryDigitSum(k)}
  =2^{-r\binom N2}\jump{D^{N-1}g_{r,N}}{x_{r,N,k}}.
 \]
 Equivalently, the complete signed block is the inverse Fourier transform of a
@@ -9297,14 +9297,14 @@ them.
 
 The Fourier transform is
 \begin{equation}
- \widehat f(z)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit zx}\,\Differential x,
+ \FourierTwoPi{f}(z)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit zx}\,\Differential x,
  \qquad
- f(x)=\int_{\RealNumbers}\widehat f(z)\EulerE^{2\pi\ImaginaryUnit zx}\,\Differential z.       \label{p5:eq:Fourier-convention}
+ f(x)=\int_{\RealNumbers}\FourierTwoPi{f}(z)\EulerE^{2\pi\ImaginaryUnit zx}\,\Differential z.       \label{p5:eq:Fourier-convention}
 \end{equation}
 Write
 \begin{equation}
  \SincPi(z)=\frac{\sin(\pi z)}{\pi z},\qquad \SincPi(0)=1,
- \qquad \Phi(z)=\widehat u(z).                             \label{p5:eq:sinc-Phi}
+ \qquad \Phi(z)=\FourierTwoPi{u}(z).                             \label{p5:eq:sinc-Phi}
 \end{equation}
 Then
 \begin{equation}
@@ -9323,9 +9323,9 @@ The moment-generating function is
 
 For $k\ge0$, write
 \begin{equation}
- \tau(k)=s_2(k)\bmod2\in\{0,1\},
+ \tau(k)=\BinaryDigitSum(k)\bmod2\in\{0,1\},
  \qquad
- \eps_k=(-1)^{s_2(k)}=1-2\tau(k).                          \label{p5:eq:TM-normalizations}
+ \eps_k=(-1)^{\BinaryDigitSum(k)}=1-2\tau(k).                          \label{p5:eq:TM-normalizations}
 \end{equation}
 The signed normalization is natural for products, differences, and atomic
 measures.  The unsigned normalization is recovered by
@@ -9348,7 +9348,7 @@ From \eqref{p5:eq:X-series}, for every bounded Borel function $h$,
  \int_{-1}^{1}h(x)u(x)\,\Differential x
  &=\Expectation\,h\!\left(\sum_{n\ge0}2^{-n-1}U_n\right),             \label{p5:eq:prob-test}\\
  F(x)
- &=\int_{[-1,1]^{\NaturalNumbers}}\mathbf1_{\{\sum 2^{-n-1}v_n\le2x-1\}}
+ &=\int_{[-1,1]^{\NaturalNumbers}}\IndicatorOf{\sum 2^{-n-1}v_n\le2x-1}
        \prod_{n\ge0}\frac{\Differential v_n}{2}.                   \label{p5:eq:infinite-cube-F}
 \end{align}
 These are \statusknown.  They immediately imply the quantile-transport formula
@@ -9412,7 +9412,7 @@ Integration by parts therefore yields, for $s\ne0$,
 with limiting value $1/2$ at $s=0$.  Setting $s=-2\pi\ImaginaryUnit\xi$ gives the exact
 Fourier image
 \begin{equation}
- \widehat{F\mathbf1_{[0,1]}}(\xi)
+ \FourierTwoPi{F\IndicatorOf{[0,1]}}(\xi)
  =\frac{\EulerE^{-\pi\ImaginaryUnit\xi}\Phi(\xi/2)-\EulerE^{-2\pi\ImaginaryUnit\xi}}
         {2\pi\ImaginaryUnit\xi},                                    \label{p5:eq:F-Fourier}
 \end{equation}
@@ -9539,7 +9539,7 @@ radius is
 \end{equation}
 and its density is denoted $g_r$.  Then
 \begin{equation}
- \widehat{g_r}(z)=\Psi_r(z),
+ \FourierTwoPi{g_r}(z)=\Psi_r(z),
  \qquad \SupportOperator g_r=[-A_r,A_r].                              \label{p5:eq:gr-Fourier-support}
 \end{equation}
 The generic geometrically weighted uniform law is part of the repository
@@ -9654,9 +9654,9 @@ For every $r\ge1$,
  \Psi_r(z)
  &=\prod_{m=0}^{\infty}\SincPi(z/2^{rm}),                  \label{p5:eq:Psi-sinc}\\
  &=\prod_{n=1}^{\infty}
-   \cos(\pi z/2^n)^{1+\lfloor(n-1)/r\rfloor},              \label{p5:eq:Psi-cos}\\
+   \cos(\pi z/2^n)^{1+\Floor{(n-1)/r}},              \label{p5:eq:Psi-cos}\\
  &=\prod_{n=1}^{\infty}
-   \left(1-\frac{z^2}{n^2}\right)^{1+\lfloor\TwoAdicValuation(n)/r\rfloor}, \label{p5:eq:Psi-canonical}\\
+   \left(1-\frac{z^2}{n^2}\right)^{1+\Floor{\TwoAdicValuation(n)/r}}, \label{p5:eq:Psi-canonical}\\
  &=\prod_{m=0}^{\infty}
    \frac1{\Gamma(1+z/2^{rm})\Gamma(1-z/2^{rm})}.           \label{p5:eq:Psi-gamma}
 \end{align}
@@ -9670,7 +9670,7 @@ Away from its integer zeros,
 \begin{equation}
  \frac{\Psi_r'(z)}{\Psi_r(z)}
  =-2z\sum_{n=1}^{\infty}
-   \frac{1+\lfloor\TwoAdicValuation(n)/r\rfloor}{n^2-z^2}.            \label{p5:eq:Psi-logderivative}
+   \frac{1+\Floor{\TwoAdicValuation(n)/r}}{n^2-z^2}.            \label{p5:eq:Psi-logderivative}
 \end{equation}
 \end{theorem}
 
@@ -9679,9 +9679,9 @@ The sinc and Gamma forms follow from
 $\SincPi w=(\Gamma(1+w)\Gamma(1-w))^{-1}$.  Expanding each sinc by
 $\SincPi w=\prod_{j\ge1}\cos(\pi w/2^j)$, a fixed cosine at scale $2^{-n}$
 occurs once for each $m\ge0$ with $rm<n$, giving
-$1+\lfloor(n-1)/r\rfloor$ copies.  Expanding instead by Euler's sine product,
+$1+\Floor{(n-1)/r}$ copies.  Expanding instead by Euler's sine product,
 a zero at a nonzero integer $n$ receives one copy for each $m$ with
-$rm\le\TwoAdicValuation(n)$, hence multiplicity $1+\lfloor\TwoAdicValuation(n)/r\rfloor$.
+$rm\le\TwoAdicValuation(n)$, hence multiplicity $1+\Floor{\TwoAdicValuation(n)/r}$.
 The logarithmic series follows from
 \(
  \log\SincPi z=-\sum_{j\ge1}\zeta(2j)z^{2j}/j
@@ -9695,7 +9695,7 @@ gives \eqref{p5:eq:Psi-logderivative}.
 Let $v=\TwoAdicValuation(n)$.  The zero order $1+v$ of $\Phi$ at $n\ne0$ decomposes as
 \begin{equation}
  1+v=\sum_{a=0}^{r-1}
- \mathbf1_{a\le v}\left(1+\left\lfloor\frac{v-a}{r}\right\rfloor\right). \label{p5:eq:valuation-split}
+ \IndicatorOf{a\le v}\left(1+\Floor{\frac{v-a}{r}}\right). \label{p5:eq:valuation-split}
 \end{equation}
 The $a$th summand is the order contributed by $\Psi_r(z/2^a)$.
 \end{corollary}
@@ -9710,7 +9710,7 @@ identifies these pairs with the integers $0,1,\ldots,v$.
 
 Let
 \begin{equation}
- m_r(n)=1+\left\lfloor\frac{\TwoAdicValuation(n)}r\right\rfloor.        \label{p5:eq:mr-def}
+ m_r(n)=1+\Floor{\frac{\TwoAdicValuation(n)}r}.        \label{p5:eq:mr-def}
 \end{equation}
 The zero divisor of $\Psi_r$ has spectral zeta
 \begin{equation}
@@ -10078,7 +10078,7 @@ sparse component:
  &=\frac12+\frac1\pi\int_0^\infty
    \left(\prod_{a=0}^{r-1}\Psi_r(z/2^a)\right)
    \frac{\sin(2\pi z(2x-1))}{z}\,\Differential z,                 \label{p5:eq:F-polyphase-CDF-integral}\\
- \widehat{F\mathbf1_{[0,1]}}(\xi)
+ \FourierTwoPi{F\IndicatorOf{[0,1]}}(\xi)
  &=\frac{\EulerE^{-\pi\ImaginaryUnit\xi}
    \prod_{a=0}^{r-1}\Psi_r(\xi/2^{a+1})-
    \EulerE^{-2\pi\ImaginaryUnit\xi}}{2\pi\ImaginaryUnit\xi}.                   \label{p5:eq:F-polyphase-Fourier}
@@ -10155,7 +10155,7 @@ Its Fourier transform has the equivalent finite-product and deconvolution
 forms
 \begin{equation}
  \boxed{\displaystyle
- \widehat{g_{r,N}}(z)
+ \FourierTwoPi{g_{r,N}}(z)
  =\prod_{j=0}^{N-1}\SincPi(q^jz)
  =\frac{\Psi_r(z)}{\Psi_r(q^Nz)}.}                        \label{p5:eq:g-rN-Fourier}
 \end{equation}
@@ -10168,7 +10168,7 @@ so the omitted tail is exactly a $q^N$-dilate of the full sparse law.
 
 \begin{proof}
 The density of the $j$th summand is
-$q^{-j}\mathbf1_{[-q^j/2,q^j/2]}$.  The standard inclusion--exclusion formula
+$q^{-j}\IndicatorOf{[-q^j/2,q^j/2]}$.  The standard inclusion--exclusion formula
 for a convolution of nonuniform boxes gives
 \eqref{p5:eq:sparse-truncated-power}; the product of all widths is
 $q^{\binom N2}$ and the left endpoints produce the knots
@@ -10264,7 +10264,7 @@ subset sum because
 $q^j>\sum_{\ell=j+1}^{N-1}q^\ell$ for $q<1/2$, and the same inequality remains
 strict for the finite sum when $q=1/2$.  Lexicographic order in low-to-high
 binary digits is ordinary integer order after bit reversal.  Finally,
-$s_2(\operatorname{rev}_N(j))=s_2(j)$.
+$\BinaryDigitSum(\operatorname{rev}_N(j))=\BinaryDigitSum(j)$.
 \end{proof}
 
 \subsection{Atomic convolution, Fourier, and Laplace products}
@@ -10285,10 +10285,10 @@ They factor as convolutions of two-point measures:
 \end{align}
 Their Fourier transforms are the finite lacunary products
 \begin{align}
- \widehat\Theta_{r,N}(z)
+ \FourierTwoPi{\Theta_{r,N}}(z)
  &=(2\ImaginaryUnit)^N\prod_{j=0}^{N-1}\sin(\pi q^jz)                \label{p5:eq:Theta-Fourier}\\
- &=(2\pi\ImaginaryUnit z)^Nq^{\binom N2}\widehat{g_{r,N}}(z),       \label{p5:eq:Theta-Fourier-spline}\\
- \widehat\Lambda_{r,N}(z)
+ &=(2\pi\ImaginaryUnit z)^Nq^{\binom N2}\FourierTwoPi{g_{r,N}}(z),       \label{p5:eq:Theta-Fourier-spline}\\
+ \FourierTwoPi{\Lambda_{r,N}}(z)
  &=2^N\prod_{j=0}^{N-1}\cos(\pi q^jz).                   \label{p5:eq:Lambda-Fourier}
 \end{align}
 Equivalently,
@@ -10309,7 +10309,7 @@ The bilateral Laplace transforms are similarly
 \end{align}
 More generally, the Hamming-weight enumerator is the master product
 \begin{equation}
- \sum_{k<2^N}y^{s_2(k)}\EulerE^{t x_{r,N,k}}
+ \sum_{k<2^N}y^{\BinaryDigitSum(k)}\EulerE^{t x_{r,N,k}}
  =\EulerE^{-tA_{r,N}}\prod_{j=0}^{N-1}(1+y\EulerE^{tq^j}).          \label{p5:eq:master-knot-enumerator}
 \end{equation}
 The choices $y=-1$ and $y=1$ recover
@@ -10330,11 +10330,11 @@ Then the Jordan decomposition is exact:
 \end{equation}
 Accordingly,
 \begin{align}
- \widehat E_{r,N}(z)
+ \FourierTwoPi{E_{r,N}}(z)
  &=2^{N-1}\left(
    \prod_{j<N}\cos(\pi q^jz)
    +\ImaginaryUnit^N\prod_{j<N}\sin(\pi q^jz)\right),               \label{p5:eq:E-Fourier}\\
- \widehat O_{r,N}(z)
+ \FourierTwoPi{O_{r,N}}(z)
  &=2^{N-1}\left(
    \prod_{j<N}\cos(\pi q^jz)
    -\ImaginaryUnit^N\prod_{j<N}\sin(\pi q^jz)\right).               \label{p5:eq:O-Fourier}
@@ -10532,7 +10532,7 @@ Thue--Morse limit representations for both integrals.
 The same binary digits carry a second geometric statistic
 $\sigma(k)=\sum_jjb_j(k)$.  Its joint Hamming-weight enumerator is
 \begin{equation}
- \sum_{k<2^N}y^{s_2(k)}q^{\sigma(k)}
+ \sum_{k<2^N}y^{\BinaryDigitSum(k)}q^{\sigma(k)}
  =\prod_{j=0}^{N-1}(1+yq^j)
  =\sum_{h=0}^{N}y^hq^{\binom h2}\GaussianBinomial{N}{h}{q}.               \label{p5:eq:qbinomial-digit-enumerator}
 \end{equation}
@@ -10565,7 +10565,7 @@ For $a>0$, define
 \end{equation}
 Its Fourier multiplier and formal differential symbol are
 \begin{equation}
- \widehat{\cU_af}(z)=\SincPi(2az)\widehat f(z),
+ \FourierTwoPi{\cU_af}(z)=\SincPi(2az)\FourierTwoPi{f}(z),
  \qquad
  \cU_a=\frac{\sinh(aD)}{aD}.                              \label{p5:eq:Ua-symbol}
 \end{equation}
@@ -10682,7 +10682,7 @@ $q^{-N}g_r(\cdot/q^N)$.  Then
 \begin{equation}
  \cG_r=\cT_{r,N}\cG_{r,N},
  \qquad
- \widehat{\cT_{r,N}f}(z)=\Psi_r(q^Nz)\widehat f(z).       \label{p5:eq:tail-operator-factor}
+ \FourierTwoPi{\cT_{r,N}f}(z)=\Psi_r(q^Nz)\FourierTwoPi{f}(z).       \label{p5:eq:tail-operator-factor}
 \end{equation}
 On polynomials and in the low-frequency calculus,
 \begin{equation}
@@ -10720,7 +10720,7 @@ $\mu_{2m}^{(r)}/(2m)!$, by the Bell relation between cumulants and moments.
 
 \subsection{Reciprocal and deconvolution operators}
 
-Since $\widehat{g_{r,N}}=\Psi_r/\Psi_r(q^N\cdot)$, the finite spline is a
+Since $\FourierTwoPi{g_{r,N}}=\Psi_r/\Psi_r(q^N\cdot)$, the finite spline is a
 formal deconvolution of the smooth limit:
 \begin{equation}
  g_{r,N}
@@ -10890,7 +10890,7 @@ For $n\ge0$ and any $x\in(n,n+1)$,
 \begin{align}
  \Sign\Psi_r(x)
  &=(-1)^{\sum_{j=1}^{n}m_r(j)}                             \label{p5:eq:sparse-sign-zero-count}\\
- &=(-1)^{n+\sum_{\ell\ge1}\lfloor n/2^{r\ell}\rfloor}    \label{p5:eq:sparse-sign-floor}\\
+ &=(-1)^{n+\sum_{\ell\ge1}\Floor{n/2^{r\ell}}}    \label{p5:eq:sparse-sign-floor}\\
  &=\boxed{(-1)^{s_{2^r}(n)}}.                             \label{p5:eq:sparse-sign-base}
 \end{align}
 Thus the signs of the consecutive real lobes of $\Psi_r$ form the parity-of-
@@ -10900,15 +10900,15 @@ digit-sum sequence in base $2^r$.
 \begin{proof}
 The sign starts positive on $(0,1)$ and flips once for each zero multiplicity
 crossed, giving \eqref{p5:eq:sparse-sign-zero-count}.  Since
-$m_r(j)=1+\lfloor\nu_2(j)/r\rfloor$,
+$m_r(j)=1+\Floor{\nu_2(j)/r}$,
 \[
- \sum_{j=1}^{n}\left\lfloor\frac{\nu_2(j)}r\right\rfloor
+ \sum_{j=1}^{n}\Floor{\frac{\nu_2(j)}r}
  =\sum_{\ell\ge1}\#\{j\le n:2^{r\ell}\mid j\}
- =\sum_{\ell\ge1}\left\lfloor\frac n{2^{r\ell}}\right\rfloor.
+ =\sum_{\ell\ge1}\Floor{\frac n{2^{r\ell}}}.
 \]
 For $b=2^r$, the base-$b$ Legendre identity is
 \[
- \sum_{\ell\ge1}\left\lfloor\frac n{b^\ell}\right\rfloor
+ \sum_{\ell\ge1}\Floor{\frac n{b^\ell}}
  =\frac{n-s_b(n)}{b-1}.
 \]
 Because $b-1$ is odd and $b$ is even,
@@ -10925,13 +10925,13 @@ For every $r\ge1$ and $n\ge0$,
 \begin{equation}
  \boxed{\displaystyle
  \eps_n
- =\prod_{a=0}^{r-1}(-1)^{s_{2^r}(\lfloor n/2^a\rfloor)}.} \label{p5:eq:TM-base-factorization}
+ =\prod_{a=0}^{r-1}(-1)^{s_{2^r}(\Floor{n/2^a})}.} \label{p5:eq:TM-base-factorization}
 \end{equation}
 Equivalently,
 \begin{equation}
  \boxed{\displaystyle
  \tau(n)\equiv
- \sum_{a=0}^{r-1}s_{2^r}(\lfloor n/2^a\rfloor)\pmod2.}   \label{p5:eq:TM-base-parity}
+ \sum_{a=0}^{r-1}s_{2^r}(\Floor{n/2^a})\pmod2.}   \label{p5:eq:TM-base-parity}
 \end{equation}
 The same representation is analytic:
 \begin{equation}
@@ -10944,7 +10944,7 @@ The same representation is analytic:
 \begin{proof}
 Take signs in the polyphase product
 $\Phi(n+1/2)=\prod_a\Psi_r((n+1/2)/2^a)$.  The argument of the $a$th factor
-lies in the lobe indexed by $\lfloor n/2^a\rfloor$.  Apply
+lies in the lobe indexed by $\Floor{n/2^a}$.  Apply
 \cref{p5:thm:sparse-lobe-sign} and use
 $\Sign\Phi(n+1/2)=\eps_n$.  The unsigned parity form is the exponent modulo two.
 \end{proof}
@@ -10952,11 +10952,11 @@ $\Sign\Phi(n+1/2)=\eps_n$.  The unsigned parity form is the exponent modulo two.
 An entirely arithmetical proof follows by summing the floor exponents:
 \begin{equation}
  \sum_{a=0}^{r-1}\sum_{m\ge0}
- \left\lfloor\frac{n}{2^{a+rm}}\right\rfloor
- =\sum_{j\ge0}\left\lfloor\frac{n}{2^j}\right\rfloor
- =2n-s_2(n),                                               \label{p5:eq:floor-polyphase-TM}
+ \Floor{\frac{n}{2^{a+rm}}}
+ =\sum_{j\ge0}\Floor{\frac{n}{2^j}}
+ =2n-\BinaryDigitSum(n),                                               \label{p5:eq:floor-polyphase-TM}
 \end{equation}
-whose parity is $s_2(n)$.  Formula
+whose parity is $\BinaryDigitSum(n)$.  Formula
 \eqref{p5:eq:TM-base-factorization} therefore expresses binary digit parity as a
 cyclic product of overlapping base-$2^r$ digit parities.
 
@@ -11118,7 +11118,7 @@ Bromwich inversion &
 $F(x)=(2\pi\ImaginaryUnit)^{-1}\int_{c-\ImaginaryUnit\infty}^{c+\ImaginaryUnit\infty}
 \EulerE^{s(x-1/2)}M(s/2)\Differential s/s$. & \statusderived\\
 Fourier image on $[0,1]$ &
-$\widehat{F\mathbf1_{[0,1]}}(\xi)=
+$\FourierTwoPi{F\IndicatorOf{[0,1]}}(\xi)=
 [\EulerE^{-\pi\ImaginaryUnit\xi}\Phi(\xi/2)-\EulerE^{-2\pi\ImaginaryUnit\xi}]/(2\pi\ImaginaryUnit\xi)$. & \statusderived\\
 Cosine transform &
 Equation \eqref{p5:eq:F-cos-transform}. & \statusderived\\
@@ -11140,7 +11140,7 @@ $F(x)=\int_{w_r\cdot y\le2x-1}\prod_ag_r(y_a)\Differential y$. & \statusnew\\
 Polyphase section &
 $F(x)=\Norm{w_r}^{-1}\int_{w_r\cdot y=x-1}\prod_ag_r(y_a)\Differential\sigma$. & \statusnew\\
 Quantile level set &
-$G(y)=\int_0^1\mathbf1_{\{F(x)\le y\}}\Differential x$ for $0<y<1$. & \statusderived\\
+$G(y)=\int_0^1\IndicatorOf{F(x)\le y}\Differential x$ for $0<y<1$. & \statusderived\\
 Quantile transport &
 $\int_0^1h(G(y))\Differential y=\Expectation h(Y)$. & \statusknown\\
 Quantile moments &
@@ -11172,12 +11172,12 @@ Viewpoint & Representation & Status\\
 \midrule
 \endhead
 Binary definition &
-$\eps_n=(-1)^{s_2(n)}$, $\tau(n)=(1-\eps_n)/2$. & \statusknown\\
+$\eps_n=(-1)^{\BinaryDigitSum(n)}$, $\tau(n)=(1-\eps_n)/2$. & \statusknown\\
 Recursion &
 $\eps_{2n}=\eps_n$, $\eps_{2n+1}=-\eps_n$; equivalently
 $\tau(2n)=\tau(n)$, $\tau(2n+1)=1-\tau(n)$. & \statusknown\\
 Floor-sum parity &
-$\eps_n=(-1)^{n-\sum_{j\ge1}\lfloor n/2^j\rfloor}$. & \statusknown\\
+$\eps_n=(-1)^{n-\sum_{j\ge1}\Floor{n/2^j}}$. & \statusknown\\
 Factorial valuation &
 $\eps_n=(-1)^{n-\nu_2(n!)}$. & \statusknown\\
 Finite coefficient product &
@@ -11194,9 +11194,9 @@ $\eps_n=-\Sign\Phi'(2n+1)$. & \statusnew\\
 Sparse lobe product &
 $\eps_n=\prod_{a=0}^{r-1}\Sign\Psi_r((n+1/2)/2^a)$. & \statusnew\\
 Base-$2^r$ digit factorization &
-$\eps_n=\prod_{a=0}^{r-1}(-1)^{s_{2^r}(\lfloor n/2^a\rfloor)}$. & \statusnew\\
+$\eps_n=\prod_{a=0}^{r-1}(-1)^{s_{2^r}(\Floor{n/2^a})}$. & \statusnew\\
 Unsigned base factorization &
-$\tau(n)\equiv\sum_{a<r}s_{2^r}(\lfloor n/2^a\rfloor)\pmod2$. & \statusnew\\
+$\tau(n)\equiv\sum_{a<r}s_{2^r}(\Floor{n/2^a})\pmod2$. & \statusnew\\
 Spline jump &
 $\eps_k=q^{\binom N2}[D^{N-1}g_{r,N}]_{x_{r,N,k}}$. & \statusnew\\
 Unsigned spline jump &
@@ -11788,16 +11788,16 @@ prose as follows.  Put $q=2^{-r}$.
  \Psi_r(z)&=\prod_{m\ge0}\SincPi(q^mz),                    \label{p5:eq:machine-1}\\
  \Phi(z)&=\prod_{a=0}^{r-1}\Psi_r(2^{-a}z),                \label{p5:eq:machine-2}\\
  \log\Psi_r(z)&=-\sum_{m\ge1}\frac{\zeta(2m)}{m(1-q^{2m})}z^{2m}, \label{p5:eq:machine-3}\\
- \OrderOperator_{z=n}\Psi_r&=1+\left\lfloor\frac{\nu_2(n)}r\right\rfloor, \label{p5:eq:machine-4}\\
+ \OrderOperator_{z=n}\Psi_r&=1+\Floor{\frac{\nu_2(n)}r}, \label{p5:eq:machine-4}\\
  \mathcal Z_r(s)&=\frac{\zeta(s)}{1-2^{-rs}},             \label{p5:eq:machine-5}\\
  g_{r,N}(x)&=\frac{q^{-\binom N2}}{(N-1)!}
  \sum_{k<2^N}\eps_k(x-x_{r,N,k})_+^{N-1},                \label{p5:eq:machine-6}\\
  D^Ng_{r,N}&=q^{-\binom N2}\sum_{k<2^N}\eps_k\delta_{x_{r,N,k}}, \label{p5:eq:machine-7}\\
  \eps_k&=q^{\binom N2}[D^{N-1}g_{r,N}]_{x_{r,N,k}},       \label{p5:eq:machine-8}\\
- \widehat{g_{r,N}}(z)&=\Psi_r(z)/\Psi_r(q^Nz),            \label{p5:eq:machine-9}\\
+ \FourierTwoPi{g_{r,N}}(z)&=\Psi_r(z)/\Psi_r(q^Nz),            \label{p5:eq:machine-9}\\
  \sum_{k<2^N}\eps_kx_{r,N,k}^{N+m}
  &=(-1)^Nq^{\binom N2}\frac{(N+m)!}{m!}\mu_m^{(r,N)},    \label{p5:eq:machine-10}\\
- \eps_n&=\prod_{a=0}^{r-1}(-1)^{s_{2^r}(\lfloor n/2^a\rfloor)}, \label{p5:eq:machine-11}\\
+ \eps_n&=\prod_{a=0}^{r-1}(-1)^{s_{2^r}(\Floor{n/2^a})}, \label{p5:eq:machine-11}\\
  \eps_n&=-\Sign\Phi'(2n+1).                               \label{p5:eq:machine-12}
 \end{align}
 These formulas use the Fourier convention \eqref{p5:eq:Fourier-convention}; a
@@ -11970,16 +11970,16 @@ fraction of the up-law.
 The second wave develops several different representation mechanisms.  Compact support
 and the vanishing integer samples of \(\Phi\) give the sparse half-lattice reconstruction
 \[
- \Phi(z)=\operatorname{sinc}_{\pi}(2z)+
+ \Phi(z)=\SincPi(2z)+
  \sum_{k\ge0}\Phi(k+\tfrac12)
- \bigl[\operatorname{sinc}_{\pi}(2z-2k-1)+
-       \operatorname{sinc}_{\pi}(2z+2k+1)\bigr],
+ \bigl[\SincPi(2z-2k-1)+
+       \SincPi(2z+2k+1)\bigr],
 \]
 and hence a convergent Mittag--Leffler expansion whose residues recover both signed and
 unsigned Thue--Morse.  Fourier duality gives odd-harmonic cosine series for up and \(F\)
 and the infinite weighted Prouhet identities
 \[
- \sum_{k\ge0}(-1)^{s_2(k)}|\Phi(k+\tfrac12)|(2k+1)^{2r}
+ \sum_{k\ge0}(-1)^{\BinaryDigitSum(k)}|\Phi(k+\tfrac12)|(2k+1)^{2r}
  =\begin{cases}\tfrac12,&r=0,\\0,&r\ge1.\end{cases}
 \]
 A Bose--Malmsten kernel converts the sinc product into an exponential integral and yields
@@ -12105,13 +12105,13 @@ Then \(\rho\) is even, strictly positive on \((-1,1)\), normalized by
 
 We use
 \begin{equation}
- \widehat f(\xi)=\int_{\RealNumbers}f(x)e^{-2\pi i\xi x}\,\Differential x,
+ \FourierTwoPi{f}(\xi)=\int_{\RealNumbers}f(x)e^{-2\pi i\xi x}\,\Differential x,
  \qquad
- f(x)=\int_{\RealNumbers}\widehat f(\xi)e^{2\pi i\xi x}\,\Differential\xi.       \label{p6:eq:fourier-convention}
+ f(x)=\int_{\RealNumbers}\FourierTwoPi{f}(\xi)e^{2\pi i\xi x}\,\Differential\xi.       \label{p6:eq:fourier-convention}
 \end{equation}
 Set
 \begin{equation}
- \Phi(\xi):=\widehat\rho(\xi),
+ \Phi(\xi):=\FourierTwoPi{\rho}(\xi),
  \qquad
  \SincPi(z):=\frac{\sin(\pi z)}{\pi z},\quad \SincPi(0)=1. \label{p6:eq:Phi-def}
 \end{equation}
@@ -12708,7 +12708,7 @@ In particular,
  \int_0^1\frac{\Differential u}{z-I(u)}
  &=2R(2z-1),\qquad z\in\ComplexNumbers\setminus[0,1],                   \label{p6:eq:inverse-Cauchy}\\
  \int_0^1I(u)^n\,\Differential u
- &=2^{-n}\sum_{r=0}^{\lfloor n/2\rfloor}
+ &=2^{-n}\sum_{r=0}^{\Floor{n/2}}
    \binom{n}{2r}\mu_{2r}.                                   \label{p6:eq:inverse-moments}
 \end{align}
 \end{theorem}
@@ -12943,7 +12943,7 @@ transform and gives local uniform convergence off the support \cite{p6:VanAssche
 
 Define the ordinary even-moment generating function
 \begin{equation}
- \cO(t)=\sum_{n=0}^{\infty}\mu_{2n}t^n
+ \EvenMomentOrdinaryGeneratingFunction(t)=\sum_{n=0}^{\infty}\mu_{2n}t^n
  =\int_{-1}^{1}\frac{\rho(x)}{1-tx^2}\,\Differential x,
  \qquad |t|<1.                                               \label{p6:eq:O-def}
 \end{equation}
@@ -12953,26 +12953,28 @@ Substituting \(t=z^{-2}\) into \eqref{p6:eq:R-J-fraction} gives the contracted f
 For \(|t|<1\),
 \begin{align}
  \boxed{
- \cO(t)=\cfrac{1}{1-\cfrac{\beta_1t}{1-\cfrac{\beta_2t}{1-
+ \EvenMomentOrdinaryGeneratingFunction(t)=\cfrac{1}{1-\cfrac{\beta_1t}{1-\cfrac{\beta_2t}{1-
                \cfrac{\beta_3t}{1-\ddots}}}}
  }                                                           \label{p6:eq:O-S-fraction}\\
- \cO(t)=\int_0^{\infty}e^{-u}
+ \EvenMomentOrdinaryGeneratingFunction(t)=\int_0^{\infty}e^{-u}
  \prod_{k=1}^{\infty}
  \frac{\sinh(\sqrt t\,u/2^k)}{\sqrt t\,u/2^k}\,\Differential u.    \label{p6:eq:O-product-integral}
 \end{align}
 \end{corollary}
 
 \begin{proof}
-The continued fraction follows from \(\cO(z^{-2})=zR(z)\).  For the integral, use
+The continued fraction follows from
+\(\EvenMomentOrdinaryGeneratingFunction(z^{-2})=zR(z)\).  For the integral, use
 \[
  \frac1{1-tx^2}=\int_0^{\infty}e^{-u}\cosh(\sqrt t\,xu)\,\Differential u
 \]
 and then average over \(X\), obtaining \(M(\sqrt t\,u)\).
 \end{proof}
 
-For \(s\ge0\), \(\cO(-s)\) is completely monotone:
+For \(s\ge0\), \(\EvenMomentOrdinaryGeneratingFunction(-s)\) is completely monotone:
 \begin{equation}
- (-1)^m\frac{\Differential^m}{\Differential s^m}\cO(-s)
+ (-1)^m\frac{\Differential^m}{\Differential s^m}
+ \EvenMomentOrdinaryGeneratingFunction(-s)
  =m!\int_{-1}^{1}\frac{x^{2m}\rho(x)}{(1+sx^2)^{m+1}}\,\Differential x>0. \label{p6:eq:O-complete-monotone}
 \end{equation}
 Thus the even moments form a Stieltjes moment sequence, and the fraction
@@ -13122,12 +13124,13 @@ determinant.
 
 \subsection{A resolvent--product--continued-fraction triangle}
 
-For \(|t|<1\), the same analytic function \(\cO(t)\) has three structurally different
+For \(|t|<1\), the same analytic function
+\(\EvenMomentOrdinaryGeneratingFunction(t)\) has three structurally different
 representations:
 \begin{equation}
  \boxed{
  \begin{aligned}
- \cO(t)
+ \EvenMomentOrdinaryGeneratingFunction(t)
  &=\sum_{n\ge0}\mu_{2n}t^n\\
  &=\int_0^{\infty}e^{-u}
    \prod_{k\ge1}\frac{\sinh(\sqrt t\,u/2^k)}{\sqrt t\,u/2^k}\,\Differential u\\
@@ -13189,7 +13192,7 @@ of the entire function \(\Phi\) is supported in \([-1,1]\).  Thus \(\Phi\) lies 
 Paley--Wiener space of bandwidth one.  The Whittaker--Shannon theorem \cite{p6:HigginsSampling} at the critical
 spacing \(1/2\) gives
 \begin{equation}
- \Phi(z)=\sum_{n\in\mathbb Z}\Phi(n/2)\SincPi(2z-n).
+ \Phi(z)=\sum_{n\in\IntegerNumbers}\Phi(n/2)\SincPi(2z-n).
                                                                \label{p6:eq:full-shannon}
 \end{equation}
 Here \(\Phi(0)=1\), while \(\Phi(n)=0\) for every nonzero integer \(n\) because the
@@ -13204,7 +13207,7 @@ The paired cardinal kernel has a rational form:
 \begin{equation}
  \SincPi(2z-a)+\SincPi(2z+a)
  =-\frac{4z\sin(2\pi z)}{\pi(4z^2-a^2)}
- \qquad(a\in2\mathbb Z+1).                                \label{p6:eq:paired-cardinal}
+ \qquad(a\in2\IntegerNumbers+1).                                \label{p6:eq:paired-cardinal}
 \end{equation}
 Substitution gives a genuine, rapidly convergent partial-fraction expansion.
 
@@ -13297,7 +13300,7 @@ The corresponding formulas for \(F\) differ only by the sign visible in
 \begin{proof}
 The period-two Fourier series of \(\rho\) is
 \[
- \rho(x)=\frac12\sum_{n\in\mathbb Z}\Phi(n/2)e^{\pi i n x}.
+ \rho(x)=\frac12\sum_{n\in\IntegerNumbers}\Phi(n/2)e^{\pi i n x}.
 \]
 As in the proof of Theorem~\ref{p6:thm:sparse-shannon}, the only nonzero even-frequency
 coefficient is the constant coefficient.  Pairing the odd positive and negative
@@ -13471,7 +13474,7 @@ spectral weight \(c_k\), and hence of every sign in \eqref{p6:eq:tm-residue-sign
 Combining \eqref{p6:eq:global-product-integral} with Fourier inversion gives a nested
 integral representation of the up-function:
 \begin{equation}
- \rho(x)=\int_{\mathbb R}e^{2\pi ixt}
+ \rho(x)=\int_{\RealNumbers}e^{2\pi ixt}
  \left[\prod_{j=0}^{M(t)-1}\SincPi(t/2^j)\right]
  \exp\!\left\{-2\int_0^\infty
  \frac{H(tu/2^{M(t)})}{u(e^u-1)}\,\Differential u\right\}\Differential t,     \label{p6:eq:rho-nested-malmsten}
@@ -13540,7 +13543,7 @@ The series is absolutely convergent.  For a nonnegative integer \(n\), it termin
 reduces to
 \begin{equation}
  \mathcal M_Y(n)=2^{-n}
- \sum_{j=0}^{\lfloor n/2\rfloor}\binom n{2j}\mu_{2j}.      \label{p6:eq:MY-integer}
+ \sum_{j=0}^{\Floor{n/2}}\binom n{2j}\mu_{2j}.      \label{p6:eq:MY-integer}
 \end{equation}
 Moreover,
 \begin{equation}
@@ -13976,7 +13979,7 @@ Let \(d_n=1+\nu_2(|n|)\), and let \(\operatorname{PP}_n(z)\) be the principal pa
 finite genus of subtraction polynomials such that
 \begin{equation}
  \frac1{\Phi(z)}
- =E(z)+\sum_{n\in\mathbb Z\setminus\{0\}}^{\mathrm{dyadic}}
+ =E(z)+\sum_{n\in\IntegerNumbers\setminus\{0\}}^{\mathrm{dyadic}}
  \left(\operatorname{PP}_n(z)-\text{canonical subtraction at }n\right), \label{p6:eq:ML-conj}
 \end{equation}
 where \(E\) is an explicitly controlled entire function, ideally constant or of very low
@@ -14407,16 +14410,16 @@ The moment-generating and Cauchy transforms are
  M(t)=\Expectation\EulerE^{tX},
  \qquad
  R(z)=\int_{-1}^{1}\frac{\rho(x)}{z-x}\Differential x,
- \qquad z\in\mathbb C\setminus[-1,1].
+ \qquad z\in\ComplexNumbers\setminus[-1,1].
  \label{p7:eq:M-R-defs}
 \end{equation}
 For the Thue--Morse sequence we use
 \begin{equation}
- \epsilon_n=(-1)^{s_2(n)},\qquad
+ \epsilon_n=(-1)^{\BinaryDigitSum(n)},\qquad
  \tau_n=\frac{1-\epsilon_n}{2}\in\{0,1\},
  \label{p7:eq:TM-conventions}
 \end{equation}
-where \(s_2(n)\) is the sum of the binary digits of \(n\).
+where \(\BinaryDigitSum(n)\) is the sum of the binary digits of \(n\).
 
 \subsection{Corpus audit}
 
@@ -14477,7 +14480,7 @@ From \eqref{p7:eq:X-random-series}, \(X\) satisfies the distributional fixed poi
 \end{equation}
 Consequently \(\rho\) is an infinite convolution of normalized boxes,
 \begin{equation}
- \rho=\underset{k\ge1}{*}\left(2^{k-1}\mathbf1_{[-2^{-k},2^{-k}]}\right),
+ \rho=\underset{k\ge1}{*}\left(2^{k-1}\IndicatorOf{[-2^{-k},2^{-k}]}\right),
  \label{p7:eq:infinite-convolution}
 \end{equation}
 and the finite truncation \(X_N=\sum_{k=1}^{N}2^{-k}U_k\) has a compactly supported
@@ -14822,7 +14825,7 @@ For \(0<|w|<1\),
  C(w)=\frac{1-w^2}{2w}R(\Jouk(w)).
  \label{p7:eq:C-R-Jouk}
 \end{equation}
-Equivalently, for \(z\in\mathbb C\setminus[-1,1]\),
+Equivalently, for \(z\in\ComplexNumbers\setminus[-1,1]\),
 \begin{align}
  R(z)&=\frac{2w(z)}{1-w(z)^2}C(w(z)),
  \label{p7:eq:R-C-w}\\
@@ -14985,7 +14988,7 @@ turn the Fourier moments of \(\nu\) into Bessel coefficients.
 
 \begin{theorem}[Bessel--sinc--canonical product identity]
 \label{p7:thm:Bessel-Phi}
-For every \(\xi\in\mathbb C\),
+For every \(\xi\in\ComplexNumbers\),
 \begin{equation}
  \boxed{\displaystyle
  \Phi(\xi)=J_0(2\pi\xi)
@@ -15023,7 +15026,7 @@ become exact Bessel cancellation identities. In particular,
 
 \begin{theorem}[Modified-Bessel--hyperbolic identity]
 \label{p7:thm:Bessel-M}
-For every \(t\in\mathbb C\),
+For every \(t\in\ComplexNumbers\),
 \begin{equation}
  \boxed{\displaystyle
  M(t)=I_0(t)+2\sum_{m=1}^{\infty}c_{2m}I_{2m}(t).}
@@ -15125,7 +15128,7 @@ All functions and coefficients are real under the present symmetries.
 \label{p7:thm:rational-alpha}
 The Schur parameters \(\alpha_n\) are the Verblunsky coefficients of \(\nu\). They satisfy
 \begin{equation}
- \alpha_n\in\mathbb Q\cap(-1,1),\qquad \alpha_{2n}=0\quad(n\ge0).
+ \alpha_n\in\RationalNumbers\cap(-1,1),\qquad \alpha_{2n}=0\quad(n\ge0).
  \label{p7:eq:alpha-rational-parity}
 \end{equation}
 The odd coefficients are obtained by exact rational operations from the moments \(c_{2m}\).
@@ -15286,19 +15289,19 @@ This is the number of positive zeros of \(\Phi\) in \((0,n+1/2)\), counted with 
 \label{p7:thm:spectral-digit-sum}
 For every \(n\ge0\),
 \begin{equation}
- N_\Phi(n)=n+\vTwo(n!)=2n-s_2(n).
+ N_\Phi(n)=n+\vTwo(n!)=2n-\BinaryDigitSum(n).
  \label{p7:eq:Nphi-digit}
 \end{equation}
 Thus the complete binary digit sum, not only its parity, is recovered by
 \begin{equation}
- \boxed{\displaystyle s_2(n)=2n-N_\Phi(n).}
+ \boxed{\displaystyle \BinaryDigitSum(n)=2n-N_\Phi(n).}
  \label{p7:eq:digit-from-spectrum}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
 The first equality follows from \eqref{p7:eq:zero-multiplicity}. Legendre's formula for the
-2-adic valuation gives \(\vTwo(n!)=n-s_2(n)\).
+2-adic valuation gives \(\vTwo(n!)=n-\BinaryDigitSum(n)\).
 \end{proof}
 
 Let \(\Gamma_n\) be any positively oriented contour enclosing precisely the positive integer
@@ -15308,7 +15311,7 @@ zeros \(1,\ldots,n\), and no other zeros of \(\Phi\).
 \label{p7:cor:argument-TM}
 For \(n\ge0\),
 \begin{align}
- s_2(n)
+ \BinaryDigitSum(n)
  &=2n-\frac{1}{2\pi\ImaginaryUnit}\oint_{\Gamma_n}\frac{\Phi'(z)}{\Phi(z)}\Differential z,
  \label{p7:eq:digit-contour}\\
  \boxed{\displaystyle
@@ -15324,7 +15327,7 @@ For \(n\ge0\),
 
 \begin{proof}
 The argument principle gives the contour integral as \(2\pi\ImaginaryUnit N_\Phi(n)\). Since
-\(N_\Phi(n)\equiv s_2(n)\pmod2\), exponentiation gives \(\epsilon_n\), while
+\(N_\Phi(n)\equiv \BinaryDigitSum(n)\pmod2\), exponentiation gives \(\epsilon_n\), while
 \(\sin^2(\pi N_\Phi(n)/2)\) is its unsigned parity.
 \end{proof}
 
@@ -15397,7 +15400,7 @@ Define, for \(0<r<1\),
 This is the Abel/Poisson regularization of \(\Sign(\sin\theta)\), and
 \(H_r(\theta)\to\Sign(\sin\theta)\) away from multiples of \(\pi\).
 
-For \(n\ge1\), put \(J_n=\lfloor\log_2(n+1/2)\rfloor\); for \(n=0\), interpret the product
+For \(n\ge1\), put \(J_n=\Floor{\log_2(n+1/2)}\); for \(n=0\), interpret the product
 below as empty.
 
 \begin{theorem}[Smooth finite-product representation]
@@ -15486,7 +15489,7 @@ Baseline; probability model\\
 Baseline; source of recurrences\\
 
 \(\rho\), convolution &
-\(\rho=*_{k\ge1}(2^{k-1}\mathbf1_{[-2^{-k},2^{-k}]})\) &
+\(\rho=*_{k\ge1}(2^{k-1}\IndicatorOf{[-2^{-k},2^{-k}]})\) &
 Baseline; compact support and smoothness\\
 
 \(\rho_N\), spline &
@@ -15629,7 +15632,7 @@ Szeg\H{o} product &
 \(\prod(1-\alpha_n^2)=\exp[(2\pi)^{-1}\int\log W]\) &
 New entropy/product invariant\\
 
-\(s_2(n)\), spectral &
+\(\BinaryDigitSum(n)\), spectral &
 \(2n-(2\pi i)^{-1}\oint\Phi'/\Phi\) &
 New; full digit sum from zero divisor\\
 
@@ -15670,7 +15673,7 @@ Geronimus;
 \end{enumerate}
 
 The two routes agree exactly through \(\alpha_{15}\) in the automated assertion. The script
-also verifies \(N_\Phi(n)=2n-s_2(n)\) for \(0\le n\le256\), the monodromy normalization for
+also verifies \(N_\Phi(n)=2n-\BinaryDigitSum(n)\) for \(0\le n\le256\), the monodromy normalization for
 \(1\le N\le9\), and all positivity/unit-disk conditions for the computed coefficients.
 
 \input{assets/rvachev_fabius_representations_2026/generated_tables.tex}
@@ -16066,7 +16069,6 @@ Oliver \& Boyd, 1965.
 
 
 % extra macros for part 5
-\newcommand{\1}{\mathbf 1}
 \newcommand{\PW}{\operatorname{PW}}
 \newcommand{\Haus}{\mathcal H}
 \newcommand{\baseline}{\textcolor{linkblue}{\textbf{Corpus baseline.}}\ }
@@ -16360,7 +16362,7 @@ We use the angular Fourier convention
  \Phi(t)=\int_{-1}^{1}\RvachevUp(y)\EulerE^{-\ImaginaryUnit ty}\Differential y.           \label{p8:eq:Phi-definition}
 \end{equation}
 The cycles-per-unit transform in the repository is
-$\widehat{\RvachevUp}(\xi)=\Phi(2\pi\xi)$.  Throughout,
+$\FourierTwoPi{\RvachevUp}(\xi)=\Phi(2\pi\xi)$.  Throughout,
 $\SincRad z=\sin z/z$ with $\SincRad0=1$.
 
 \baseline Independence in \eqref{p8:eq:random-series} gives
@@ -16743,7 +16745,7 @@ kernels, and fractional integral kernels.
 
 For $p\in\NaturalNumbers$, define
 \begin{equation}
- L_p(c,h)=2h\sum_{r=0}^{\lfloor p/2\rfloor}
+ L_p(c,h)=2h\sum_{r=0}^{\Floor{p/2}}
  \binom{p}{2r}\frac{c^{p-2r}h^{2r}}{(2r+1)(2r+2)}.       \label{p8:eq:tent-moment}
 \end{equation}
 This is exactly the moment of a tent:

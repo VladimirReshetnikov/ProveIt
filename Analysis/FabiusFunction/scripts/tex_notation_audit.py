@@ -30,6 +30,7 @@ from __future__ import annotations
 import argparse
 from collections import Counter, defaultdict
 from dataclasses import asdict, dataclass
+from functools import lru_cache
 import hashlib
 import json
 from pathlib import Path
@@ -40,22 +41,24 @@ from typing import Iterable
 
 CANONICAL_INPUT = "fabius-notation.tex"
 HISTORICAL_NOTATION_MARKER = "HISTORICAL-NOTATION-SCOPE"
+LOCAL_NON_FOURIER_HAT_MARKER = "LOCAL-NON-FOURIER-HAT:"
+RAW_HAT_PATTERN = r"\\(?:widehat|hat)(?![A-Za-z@])"
 
 # Broader recurring spellings whose meaning must be classified during the
 # semantic source pass.  This is intentionally opt-in: the ordinary strict gate
 # remains a fast check for already-retired aliases and contract violations.
 SEMANTIC_LITERAL_PATTERNS = {
-    r"\\(?:widehat|hat)(?![A-Za-z@])": (
+    RAW_HAT_PATTERN: (
         r"raw hat requires classification; use \FourierTwoPi or \FourierAngular "
         r"for a Fourier transform, or declare the non-Fourier accent locally"
     ),
     r"\\lfloor(?![A-Za-z@])": r"use \Floor after checking the enclosed expression",
     r"\\lceil(?![A-Za-z@])": r"use \Ceiling after checking the enclosed expression",
-    r"\\(?:mathbf|mathbb)\s*\{\s*1\s*\}": (
+    r"\\(?:mathbf|mathbb)(?![A-Za-z@])\s*(?:\{\s*1\s*\}|1)(?![A-Za-z0-9])": (
         r"raw bold one requires classification; use \IndicatorOf for an indicator "
         r"or declare a constant-one function locally"
     ),
-    r"\\mathbb\s*\{\s*(?:N|Z|Q|R|C)\s*\}": (
+    r"\\mathbb(?![A-Za-z@])\s*(?:\{\s*(?:N|Z|Q|R|C)\s*\}|(?:N|Z|Q|R|C))(?![A-Za-z])": (
         r"use the explicit canonical number-system command and classify whether "
         r"natural numbers include zero"
     ),
@@ -63,17 +66,23 @@ SEMANTIC_LITERAL_PATTERNS = {
         r"raw s_2 requires classification; use \BinaryDigitSum for the binary "
         r"digit-sum function or declare another local sequence"
     ),
-    r"\\(?:mathcal|mathrm)\s*\{\s*O\s*\}": (
+    r"\\(?:mathcal|mathrm)(?![A-Za-z@])\s*(?:\{\s*O\s*\}|O)(?![A-Za-z_])": (
         r"use \BigO or \BigOAt and state the limiting regime"
     ),
-    r"\\(?:mathcal|mathrm)\s*\{\s*o\s*\}": (
+    r"\\(?:mathcal|mathrm)(?![A-Za-z@])\s*(?:\{\s*o\s*\}|o)(?![A-Za-z_])": (
         r"use \LittleO or \LittleOAt and state the limiting regime"
+    ),
+    r"\\(?:mathcal|mathrm)(?![A-Za-z@])\s*(?:\{\s*[Oo]\s*\}|[Oo])"
+    r"\s*_(?:\{[^\n{}]*(?:\{[^\n{}]*\}[^\n{}]*)*\}|[A-Za-z0-9]+|\\[A-Za-z@]+)"
+    r"\s*(?:\\[!,;:]\s*)*(?:\\(?:left|bigl|Bigl|biggl|Biggl)\s*)?\(": (
+        r"scripted raw O/o followed by an argument requires classification; use "
+        r"\BigOAt or \LittleOAt and state the limiting regime"
     ),
     r"\\operatorname\s*\{\s*sinc\s*\}": (
         r"classify the normalization and use \SincRad or \SincPi"
     ),
-    r"\\mathbb\s*\{\s*P\s*\}": r"use \Probability for probability",
-    r"\\mathbb\s*\{\s*E\s*\}": r"use \Expectation for expectation",
+    r"\\mathbb(?![A-Za-z@])\s*(?:\{\s*P\s*\}|P)(?![A-Za-z])": r"use \Probability for probability",
+    r"\\mathbb(?![A-Za-z@])\s*(?:\{\s*E\s*\}|E)(?![A-Za-z])": r"use \Expectation for expectation",
     r"\\operatorname\s*\{\s*Var\s*\}": r"use \Variance for probability variance",
     r"\\operatorname\s*\{\s*Cov\s*\}": r"use \Covariance for probability covariance",
 }
@@ -116,7 +125,10 @@ RETIRED_COMMANDS = {
     "Pp": "Probability",
     "bigO": "BigO or BigOAt",
     "Oh": "BigO or BigOAt",
+    "OO": "BigO or BigOAt",
+    "bigOPartl": "BigO or BigOAt",
     "smallo": "LittleO or LittleOAt",
+    "smalloPartl": "LittleO or LittleOAt",
     "littleo": "LittleO or LittleOAt",
     "littleoh": "LittleO or LittleOAt",
     "supp": "SupportOperator or SupportOf",
@@ -152,18 +164,6 @@ RETIRED_COMMANDS = {
     "extF": "FabiusGlobal",
     "Fext": "FabiusGlobal",
     "InvF": "FabiusClampedQuantile or FabiusQuantile",
-}
-
-SEMANTIC_COMMANDS = {
-    "FabiusBounded", "FabiusGlobal", "FabiusQuantile",
-    "FabiusClampedQuantile", "RvachevUp", "SincRad", "SincPi",
-    "FourierTwoPiOperator", "FourierAngularOperator",
-    "FourierTwoPiTransformOf", "FourierAngularTransformOf",
-    "FourierTwoPi", "FourierAngular", "LaplaceTransformOf",
-    "MellinTransformOf", "BinaryDigitSum", "ThueMorseSign",
-    "GaussianBinomial", "QPochhammer", "QInteger", "MetricDistance",
-    "EqualInLaw", "ConvergesInLaw", "DyadicSigmaField",
-    "DecayOptimizationObjective", "LinearizedDecayObjective",
 }
 
 DECL_RE = re.compile(
@@ -256,8 +256,60 @@ def strip_comments(text: str) -> str:
     return "".join(output)
 
 
+@lru_cache(maxsize=1)
+def canonical_command_names(path: Path) -> frozenset[str]:
+    """Read the shared contract itself as the authoritative command registry."""
+    code = strip_comments(path.read_text(encoding="utf-8-sig"))
+    return frozenset(match.group("name") for match in DECL_RE.finditer(code))
+
+
 def line_number(text: str, offset: int) -> int:
     return text.count("\n", 0, offset) + 1
+
+
+def is_annotated_local_non_fourier_hat_definition(
+    raw: str,
+    code: str,
+    match: re.Match[str],
+    shared_commands: frozenset[str],
+) -> bool:
+    """Recognize one explicitly classified, document-local hat definition.
+
+    The exemption is intentionally narrow.  The raw hat must occur on a one-line
+    ``\\newcommand`` declaration.  The immediately preceding source line must carry
+    ``LOCAL-NON-FOURIER-HAT:``, name the declared command, and give nonempty
+    explanatory text.  Raw hats at mathematical use sites therefore remain findings.
+    """
+    source_lines = raw.splitlines()
+    number = line_number(code, match.start())
+    if number < 2 or number > len(source_lines):
+        return False
+
+    declaration_line = source_lines[number - 1]
+    marker_line = source_lines[number - 2]
+    marker_at = marker_line.find(LOCAL_NON_FOURIER_HAT_MARKER)
+    if marker_at < 0:
+        return False
+
+    explanation = marker_line[marker_at + len(LOCAL_NON_FOURIER_HAT_MARKER):].strip()
+    if not explanation:
+        return False
+
+    declaration = re.search(
+        r"\\newcommand\s*\{\s*\\(?P<name>[A-Za-z@]+)\s*\}"
+        r"(?:\s*\[\s*\d+\s*\])?\s*\{[^\n]*"
+        + RAW_HAT_PATTERN,
+        declaration_line,
+    )
+    if declaration is None:
+        return False
+
+    name = declaration.group("name")
+    if f"\\{name}" not in explanation:
+        return False
+    if name in RETIRED_COMMANDS or name in shared_commands:
+        return False
+    return True
 
 
 def relative(path: Path, docs: Path) -> str:
@@ -281,6 +333,7 @@ def audit_file(
     catalogue_source = rel.startswith("FabiusFunction_Mathematical_Notation_Catalogue/")
     historical_source = rel.startswith("papers/")
     historical_scope = HISTORICAL_NOTATION_MARKER in raw
+    shared_commands = canonical_command_names(docs / CANONICAL_INPUT)
     root = bool(DOCUMENTCLASS_RE.search(code))
     findings: list[Finding] = []
     commands = Counter(match.group("name") for match in COMMAND_RE.finditer(code))
@@ -315,7 +368,7 @@ def audit_file(
         for regexp in (DECL_RE, DECLARE_OPERATOR_RE):
             for match in regexp.finditer(code):
                 name = match.group("name")
-                if name in RETIRED_COMMANDS or name in SEMANTIC_COMMANDS:
+                if name in RETIRED_COMMANDS or name in shared_commands:
                     findings.append(Finding(
                         rel, line_number(code, match.start()), "local-definition",
                         f"local definition of \\{name}; shared notation commands are defined only in {CANONICAL_INPUT}",
@@ -399,6 +452,13 @@ def audit_file(
     if semantic and not canonical_source and not catalogue_source and not historical_scope:
         for pattern, message in SEMANTIC_LITERAL_PATTERNS.items():
             for match in re.finditer(pattern, code):
+                if (
+                    pattern == RAW_HAT_PATTERN
+                    and is_annotated_local_non_fourier_hat_definition(
+                        raw, code, match, shared_commands
+                    )
+                ):
+                    continue
                 findings.append(Finding(
                     rel,
                     line_number(code, match.start()),

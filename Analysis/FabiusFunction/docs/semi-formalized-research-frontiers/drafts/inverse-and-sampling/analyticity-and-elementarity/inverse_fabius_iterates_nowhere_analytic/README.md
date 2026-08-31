@@ -2,7 +2,7 @@
 
 > **Source-only merge status (2026-08-31).** The current TeX has 1,742 lines
 > (SHA-256
-> `a9ffad2d6d38212b3434af0a5dec119ffca9f8391a9ef942fde20aa37d993b6d`).
+> `eda8c676e00a68c1e57e36ee22bfb3502cd56dd95f5630efcaf6a7f0f3b3d3d5`).
 > The retained 26-page PDF was not rebuilt after the notation migration and is
 > not claimed to be synchronized with that source. `SHA256SUMS.txt` was
 > intentionally not refreshed: its TeX row and this README row are pending,

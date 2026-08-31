@@ -86,7 +86,7 @@ digits
 \[
  \rho_\alpha(u)=
  \frac{\Gamma(\alpha+\tfrac12)}{\sqrt\pi\,\Gamma(\alpha)}
- (1-u^2)^{\alpha-1}\mathbf 1_{(-1,1)}(u),
+ (1-u^2)^{\alpha-1}\IndicatorOf{(-1,1)}(u),
  \qquad \alpha>0,
 \]
 and one studies
@@ -226,14 +226,16 @@ Throughout the report,
  \qquad \nu:=\alpha-\frac12,
  \qquad L:=\log\frac1q.
 \]
-The Fourier transform of a probability measure is its characteristic
-function \(\widehat\mu(t)=\Expectation e^{itX}\).
+For a random variable $X$ with probability law $\mu$, the positive-sign
+Fourier--Stieltjes transform of $\mu$ is its characteristic function,
+\(\CharacteristicFunction{X}(t)=\CharacteristicFunction{\mu}(t)
+=\Expectation\EulerE^{\ImaginaryUnit tX}\).
 
 \begin{definition}[Jacobi digit and Jacobi-digit cascade]
 Let \(U_\alpha\) have density
 \begin{equation}
  \rho_\alpha(u)
- =c_\alpha(1-u^2)^{\alpha-1}\mathbf1_{|u|<1},
+ =c_\alpha(1-u^2)^{\alpha-1}\IndicatorOf{|u|<1},
  \qquad
  c_\alpha:=\frac{\Gamma(\alpha+\tfrac12)}{\sqrt\pi\,\Gamma(\alpha)}.
  \label{eq:digit-density}
@@ -404,9 +406,9 @@ For \(\nu=1/2\), \(\Jcal_{1/2}(z)=\sin z/z\); for \(\nu=-1/2\),
 \label{thm:geometric-bessel-product}
 The characteristic functions of the digit and cascade are
 \begin{align}
- \widehat\rho_\alpha(t)&=\Jcal_{\alpha-1/2}(t),
+ \CharacteristicFunction{U_\alpha}(t)&=\Jcal_{\alpha-1/2}(t),
  \label{eq:digit-cf}\\
- \widehat f_{q,\alpha}(t)
+ \CharacteristicFunction{X_{q,\alpha}}(t)
  &=\prod_{n=0}^{\infty}
  \Jcal_{\alpha-1/2}(aq^nt).
  \label{eq:full-bessel-product}
@@ -445,7 +447,7 @@ respectively; standardization of the latter gives a Gaussian.}
 \label{thm:smoothness}
 For each fixed \(q\in(0,1)\) and \(\alpha>0\),
 \begin{equation}
- \log|\widehat f_{q,\alpha}(t)|
+ \log|\CharacteristicFunction{X_{q,\alpha}}(t)|
  \le -\frac{\alpha}{2L}(\log|t|)^2+O_{q,\alpha}(\log|t|)
  \qquad(|t|\to\infty)
  \label{eq:fourier-log-square-bound}
@@ -753,7 +755,7 @@ and evaluate \(\sum_{n\ge0}q^{ns}\).  Equation
 Under the standard meromorphic continuation of the Bessel zeta, the geometric
 factor adds the lattice of possible poles
 \begin{equation}
- \chi_\ell=\frac{2\pi i\ell}{L},\qquad \ell\in\mathbb Z,
+ \chi_\ell=\frac{2\pi i\ell}{L},\qquad \ell\in\IntegerNumbers,
  \label{eq:complex-dimensions}
 \end{equation}
 subject to cancellations by \(\zeta_\nu^{\mathrm B}\).  At a noncancelled
@@ -784,7 +786,7 @@ For fixed \(\nu>-1/2\), define
 \label{thm:resonance}
 The set \(\mathcal E_\nu\) is countable and dense in \((0,1)\).  If
 \(q\notin\mathcal E_\nu\), every nonzero zero of
-\(\widehat f_{q,\alpha}\) is simple.  If \(q\in\mathcal E_\nu\), at least one
+\(\CharacteristicFunction{X_{q,\alpha}}\) is simple.  If \(q\in\mathcal E_\nu\), at least one
 zero has multiplicity at least two.  Hence simple zeros occur for Lebesgue
 almost every \(q\), even though resonant \(q\)'s are dense.
 \end{theorem}
@@ -804,7 +806,7 @@ For density it suffices to use \(d=1\).  McMahon's asymptotic formula \cite{Wats
 \(j_{\nu,k}=\pi(k+\nu/2-1/4)+O(k^{-1})\) implies that, whenever
 \(k_\ell/\ell\to r\in(0,1)\),
 \(j_{\nu,k_\ell}/j_{\nu,\ell}\to r\).  Choosing
-\(k_\ell=\lfloor r\ell\rfloor\) proves density.
+\(k_\ell=\Floor{r\ell}\) proves density.
 \end{proof}
 
 \begin{figure}[H]
@@ -836,7 +838,7 @@ This table is illustrative, not needed for the density proof.
 \label{cor:sign-count}
 Away from its zeros,
 \begin{equation}
- \Sign\widehat f_{q,\alpha}(t)
+ \Sign\CharacteristicFunction{X_{q,\alpha}}(t)
  =(-1)^{N_{q,\alpha}(|t|)},
  \label{eq:sign-zero-count}
 \end{equation}
@@ -1126,7 +1128,7 @@ An explicit convergent representation is obtained as follows.  For
 \end{theorem}
 
 \begin{proof}
-Write \(\log z=L(N+\theta)\), where \(N=\lfloor\log z/L\rfloor\), and
+Write \(\log z=L(N+\theta)\), where \(N=\Floor{\log z/L}\), and
 reindex \(m=N-n\):
 \[
  \Kcal(z)=\sum_{m=-\infty}^{N}h_\alpha(e^{L(m+\theta)}).
@@ -1628,7 +1630,7 @@ parameter.  Write \(\phi_\alpha(t)=\Jcal_\nu(t)\).
 \label{prop:q0-expansion}
 Uniformly for \(t\) in compact sets,
 \begin{equation}
- \widehat f_{q,\alpha}(t)
+ \CharacteristicFunction{X_{q,\alpha}}(t)
  =\phi_\alpha(t)-qt\phi_\alpha'(t)
  +q^2\left[
  \frac{t^2}{2}\phi_\alpha''(t)

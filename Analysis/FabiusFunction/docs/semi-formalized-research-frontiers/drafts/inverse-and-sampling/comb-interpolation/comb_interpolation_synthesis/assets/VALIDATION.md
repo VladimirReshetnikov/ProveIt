@@ -27,6 +27,10 @@ publication work. The immutable source baseline is
   PNG companions, bringing the current companion-evidence tree to 23 PNG
   files. This was a targeted figure repair, not a full numerical replay of all
   packages.
+- Mainline reconciliation retained the arbitrary-ratio report's exact direct
+  requirements and 12-package lock.  Both files are checked against revision
+  `9e70a1a2145e9c01566d5638d33045af24516790` and are deliberately separate
+  from the 180-file source-pin disposition.
 
 ## Historical-ledger audit
 

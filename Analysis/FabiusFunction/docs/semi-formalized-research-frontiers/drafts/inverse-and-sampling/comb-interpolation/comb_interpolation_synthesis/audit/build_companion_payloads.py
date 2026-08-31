@@ -8,7 +8,9 @@ payload.  Three PNGs without source-pin PNG counterparts are recorded as
 canonical generated assets derived from the pinned figure generator.
 
 ``SHA256SUMS`` covers every live file below ``assets/`` after the provenance
-CSV is written and excludes itself by construction.
+CSV is written and excludes itself by construction.  Two exact environment
+files added on main after the immutable 180-file source pin are checked
+against the mainline reconciliation revision and recorded separately.
 """
 
 from __future__ import annotations
@@ -46,8 +48,37 @@ RETAINED = {"retained-evidence", "retained-deduplicated-evidence"}
 EXPECTED_SOURCE_ROWS = 106
 EXPECTED_SOURCE_PAYLOADS = 105
 EXPECTED_GENERATED_ROWS = 3
-EXPECTED_TOTAL_ROWS = EXPECTED_SOURCE_ROWS + EXPECTED_GENERATED_ROWS
-EXPECTED_PHYSICAL_PAYLOADS = EXPECTED_SOURCE_PAYLOADS + EXPECTED_GENERATED_ROWS
+EXPECTED_MAINLINE_ROWS = 2
+EXPECTED_TOTAL_ROWS = (
+    EXPECTED_SOURCE_ROWS + EXPECTED_GENERATED_ROWS + EXPECTED_MAINLINE_ROWS
+)
+EXPECTED_PHYSICAL_PAYLOADS = (
+    EXPECTED_SOURCE_PAYLOADS + EXPECTED_GENERATED_ROWS + EXPECTED_MAINLINE_ROWS
+)
+
+MAINLINE_RECONCILIATION_REVISION = (
+    "9e70a1a2145e9c01566d5638d33045af24516790"
+)
+MAINLINE_FILES = (
+    (
+        "Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/"
+        "drafts/inverse-and-sampling/comb-interpolation/"
+        "geometric_comb_interpolation_report/requirements.txt",
+        "Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/"
+        "drafts/inverse-and-sampling/comb-interpolation/"
+        "comb_interpolation_synthesis/assets/companion-evidence/"
+        "geometric_comb_interpolation_report/requirements.txt",
+    ),
+    (
+        "Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/"
+        "drafts/inverse-and-sampling/comb-interpolation/"
+        "geometric_comb_interpolation_report/requirements-lock.txt",
+        "Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/"
+        "drafts/inverse-and-sampling/comb-interpolation/"
+        "comb_interpolation_synthesis/assets/companion-evidence/"
+        "geometric_comb_interpolation_report/requirements-lock.txt",
+    ),
+)
 
 SOURCE_GENERATOR = (
     "Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/"
@@ -113,6 +144,16 @@ def live_metadata(repository_path: str) -> tuple[str, str]:
     return sha256(path), str(path.stat().st_size)
 
 
+def git_blob_metadata(revision: str, repository_path: str) -> tuple[str, str]:
+    completed = subprocess.run(
+        ["git", "-C", str(REPOSITORY), "show", f"{revision}:{repository_path}"],
+        check=True,
+        stdout=subprocess.PIPE,
+    )
+    payload = completed.stdout
+    return hashlib.sha256(payload).hexdigest(), str(len(payload))
+
+
 def build_rows() -> tuple[str, list[dict[str, str]]]:
     revision = source_revision()
     source = disposition_rows()
@@ -173,6 +214,34 @@ def build_rows() -> tuple[str, list[dict[str, str]]]:
                 "live_sha256": digest,
                 "live_bytes": size,
                 "provenance_note": GENERATED_NOTE,
+            }
+        )
+
+    for source_path, live_path in MAINLINE_FILES:
+        source_digest, source_size = git_blob_metadata(
+            MAINLINE_RECONCILIATION_REVISION, source_path
+        )
+        live_digest, live_size = live_metadata(live_path)
+        if (source_digest, source_size) != (live_digest, live_size):
+            raise ValueError(
+                "mainline reconciliation payload differs from source blob: "
+                f"{live_path}"
+            )
+        rows.append(
+            {
+                "entry_kind": "post-pin-mainline",
+                "source_revision": MAINLINE_RECONCILIATION_REVISION,
+                "source_path": source_path,
+                "source_sha256": source_digest,
+                "source_bytes": source_size,
+                "source_disposition": "retained-post-pin-environment",
+                "live_path": live_path,
+                "live_sha256": live_digest,
+                "live_bytes": live_size,
+                "provenance_note": (
+                    "Exact reproducibility environment added on main after the "
+                    "immutable source pin and retained during merge reconciliation."
+                ),
             }
         )
 

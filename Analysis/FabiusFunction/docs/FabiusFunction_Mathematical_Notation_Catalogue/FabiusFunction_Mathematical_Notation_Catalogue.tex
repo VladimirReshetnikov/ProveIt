@@ -346,6 +346,9 @@ Fourier transform with kernel $\EulerE^{-\ImaginaryUnit x\omega}$.\\
 \commandname{FourierSeriesCoefficient}\texttt{\{h\}\{k\}} &
 $\FourierSeriesCoefficient{h}{k}$ & The $k$th coefficient of a one-periodic function,
 with kernel $\EulerE^{-2\pi\ImaginaryUnit kx}$ on $[0,1]$.\\
+\commandname{FourierSeriesCoefficientAtPeriod}\texttt{\{h\}\{k\}\{T\}} &
+$\FourierSeriesCoefficientAtPeriod{h}{k}{T}$ & The normalized $k$th coefficient of
+an explicitly $T$-periodic function; the period is part of the symbol.\\
 \commandname{LaplaceTransformSymbol} & $\LaplaceTransformSymbol$ & One-sided Laplace
 operator token unless a bilateral subscript is printed.\\
 \commandname{MellinTransformSymbol} & $\MellinTransformSymbol$ & Mellin-transform
@@ -357,7 +360,8 @@ transform $\int_0^\infty x^{s-1}f(x)\,\Differential x$ on its stated strip.\\
 \commandname{MomentGeneratingFunction}\texttt{\{X\}} & $\MomentGeneratingFunction{X}$ &
 $z\mapsto\Expectation[\EulerE^{zX}]$ on its stated domain.\\
 \commandname{CharacteristicFunction}\texttt{\{X\}} & $\CharacteristicFunction{X}$ &
-$t\mapsto\Expectation[\EulerE^{\ImaginaryUnit tX}]$.\\
+$t\mapsto\Expectation[\EulerE^{\ImaginaryUnit tX}]$; a declared probability measure
+$\mu$ may replace $X$, meaning its positive-sign Fourier--Stieltjes transform.\\
 \commandname{SincRad} & $\SincRad$ & Radian sinc, $\sin t/t$, totalized to one at zero.\\
 \commandname{SincPi} & $\SincPi$ & Normalized sinc, $\sin(\pi x)/(\pi x)$, totalized
 to one at zero.\\
@@ -1114,6 +1118,14 @@ and \commandname{FourierAngular}\texttt{\{f\}} is its normalization-labelled hat
  f(x)\EulerE^{-\ImaginaryUnit\omega x}\,\Differential x,
  \qquad\omega\in\RealNumbers.
 \]}
+\entryfield{Measures}{For a finite Borel measure $\mu$,
+\[
+ \FourierAngular{\mu}(\omega)
+ \DefinitionEquals\int_{\RealNumbers}
+ \EulerE^{-\ImaginaryUnit\omega x}\,\Differential\mu(x),
+ \qquad\omega\in\RealNumbers.
+\]
+This is a Fourier--Stieltjes transform and requires no density.}
 \entryfield{Inverse}{Under an inversion hypothesis,
 \[
  f(x)=\frac1{2\pi}\int_{\RealNumbers}
@@ -1131,19 +1143,26 @@ $\FourierAngular{f\Convolution g}
  \FourierTwoPi f(\xi)=\FourierAngular f(2\pi\xi),\qquad
  \FourierAngular f(\omega)=\FourierTwoPi f(\omega/(2\pi)).
 \]
-A formula may change variables between them only by displaying this rescaling.}
+The same identities hold, with $f$ replaced throughout by a finite Borel measure
+$\mu$, for the two Fourier--Stieltjes transforms just defined.  A formula may change
+variables between the conventions only by displaying this rescaling.}
 \end{catalogueentry}
 
 \begin{catalogueentry}{characteristic-function}{Characteristic functions and Fourier
 signs}
-\entryfield{Definition}{For a real random variable $X$,
+\entryfield{Definition}{For a real random variable $X$ with probability law $\mu$,
 \[
  \CharacteristicFunction{X}(t)
  \DefinitionEquals\Expectation[\EulerE^{\ImaginaryUnit tX}]
- =\int_{\RealNumbers}\EulerE^{\ImaginaryUnit tx}\,\Differential\LawOf X(x),
+ =\CharacteristicFunction{\mu}(t)
+ \DefinitionEquals\int_{\RealNumbers}\EulerE^{\ImaginaryUnit tx}\,\Differential\mu(x),
  \qquad t\in\RealNumbers.
 \]
-The probabilistic sign is positive.}
+Thus the command accepts either a declared random variable or a declared probability
+measure.  The argument's type fixes the interpretation, and
+$\CharacteristicFunction{X}=\CharacteristicFunction{\LawOf X}$ pointwise.  It is not
+used for an arbitrary signed or complex measure without a local declaration.  The
+probabilistic sign is positive.}
 \entryfield{Fourier conversion}{Because both catalogued Fourier transforms use a negative
 sign,
 \[
@@ -1208,7 +1227,9 @@ having disjoint zero sets.}
 \entryfield{Command}{
 \commandname{FourierSeriesCoefficient}\texttt{\{h\}\{k\}}.  The printed
 subscript ``FS'' distinguishes a discrete Fourier-series coefficient from both continuous
-line-transform normalizations.}
+line-transform normalizations.  For a period other than one, use
+\commandname{FourierSeriesCoefficientAtPeriod}\texttt{\{h\}\{k\}\{T\}}; its third
+argument is mandatory and appears in the printed symbol.}
 \entryfield{Coefficient}{For a $1$-periodic integrable function $h$,
 \[
  \FourierSeriesCoefficient{h}{k}\DefinitionEquals\int_0^1h(x)
@@ -1224,9 +1245,11 @@ summability method---is part of every theorem.}
 Fourier-series coefficient.  Parentheses and a real frequency mark
 $\FourierTwoPi h(\xi)$ or $\FourierAngular h(\omega)$ on the line.}
 \entryfield{Period \(T\)}{For a $T$-periodic function, $T>0$,
-$\FourierSeriesCoefficient{h_T}{k}
+$\FourierSeriesCoefficientAtPeriod{h}{k}{T}
 =T^{-1}\int_0^T h(x)\EulerE^{-2\pi\ImaginaryUnit kx/T}\,\Differential x$.
-The factor $T^{-1}$ is never implicit.}
+The period, the factor $T^{-1}$, and the kernel scale are never implicit.  A finite
+measure or an unnormalized Fourier--Stieltjes coefficient is a different local object
+and does not use either function-coefficient command.}
 \end{catalogueentry}
 
 \begin{catalogueentry}{laplace-transform}{One-sided and bilateral Laplace transforms}
@@ -2925,9 +2948,15 @@ in the same scope.\\
 \begin{catalogueentry}{accent-collisions}{Hats, tildes, bars, stars, primes, and scripts}
 \entryfield{Hats}{A normalization-labelled hat produced by
 \commandname{FourierTwoPi} or \commandname{FourierAngular} is a Fourier transform.  A
-hat on a polynomial, matrix, estimator, or lifted object is local and is declared in
-words.  No unlabelled hat is silently interpreted as a Fourier transform in a document
-that also uses monic or normalized polynomials.}
+unit-period coefficient uses \commandname{FourierSeriesCoefficient}; any other period uses
+\commandname{FourierSeriesCoefficientAtPeriod} and prints that period.  A hat on a polynomial,
+matrix, estimator, accelerated approximant, or lifted object is local: all use sites call
+a descriptive document-local macro, and the raw accent occurs only in that macro's
+one-line definition.  The immediately preceding source comment has the form
+\texttt{LOCAL-NON-FOURIER-HAT: \textbackslash MacroName meaning}, names the same macro,
+and explains its mathematical role.  A generic local alias for \commandname{widehat} or
+\commandname{hat} is forbidden.  Thus no unlabelled hat is silently interpreted as a
+Fourier transform in a document that also uses monic or normalized polynomials.}
 \entryfield{Tildes}{A tilde may mark centering, normalization, continuation, lifting, or
 an alternative sign convention.  The transformed object's type and the defining map are
 given at first use.  It is never a substitute for the signed global Fabius function.}
@@ -3046,10 +3075,13 @@ printed as a subscript.\\
 local and semantically labelled.\\
 \commandname{Prob}, \commandname{Pp} & \commandname{Probability} & Probability measure,
 not polynomial or projection.\\
-\commandname{bigO}, \commandname{Oh} & \commandname{BigO} or \commandname{BigOAt} & Prefer
+\commandname{bigO}, \commandname{Oh}, \commandname{OO},
+\commandname{bigOPartl} &
+\commandname{BigO} or \commandname{BigOAt} & Prefer
 the explicit-regime command; retain the token-only form only when the same sentence
 quantifies the limit.\\
-\commandname{smallo}, \commandname{littleo}, \commandname{littleoh} &
+\commandname{smallo}, \commandname{smalloPartl}, \commandname{littleo},
+\commandname{littleoh} &
 \commandname{LittleO} or \commandname{LittleOAt} & Prefer the explicit-regime command
 and state uniformity parameters.\\
 \commandname{supp} & \commandname{SupportOperator} or \commandname{SupportOf} & Use the
@@ -3136,6 +3168,9 @@ Rendered symbol family & Shared command(s) & Distinguishing data\\
 Rendered symbol family & Shared command(s) & Distinguishing data\\
 \midrule
 \endhead
+$\FabiusNotationVersion$ & \commandname{FabiusNotationVersion} & Date-valued
+snapshot stamp for the shared notation contract; it is metadata, not a mathematical
+variable.\\
 $\NaturalNumbers,\PositiveIntegers$ & \commandname{NaturalNumbers},
 \commandname{PositiveIntegers} & Zero included versus excluded.\\
 $\IntegerNumbers,\RationalNumbers,\RealNumbers,\ComplexNumbers,
@@ -3208,8 +3243,10 @@ application and hat rendering of the same $2\pi$ transform.\\
 $\FourierAngularTransformOf{f},\FourierAngular{f}$ &
 \commandname{FourierAngularTransformOf}, \commandname{FourierAngular} & Bracketed
 operator application and hat rendering of the same angular transform.\\
-$\FourierSeriesCoefficient{h}{k}$ & \commandname{FourierSeriesCoefficient} &
-Integer-indexed coefficient of a periodic function; not a continuous line transform.\\
+$\FourierSeriesCoefficient{h}{k},\FourierSeriesCoefficientAtPeriod{h}{k}{T}$ &
+\commandname{FourierSeriesCoefficient},
+\commandname{FourierSeriesCoefficientAtPeriod} & Unit-period and explicitly
+$T$-periodic normalized coefficients; neither is a continuous line transform.\\
 $\LaplaceTransformSymbol,\LaplaceTransformOf{f}$ &
 \commandname{LaplaceTransformSymbol}, \commandname{LaplaceTransformOf} & One-sided
 operator token and application; bilateral use is subscripted.\\
@@ -3288,6 +3325,7 @@ Command & Arity & Normative entry\\
 \commandname{FourierAngularOperator} & 0 & \notelink{fourier-angular}{Angular Fourier transform}.\\
 \commandname{FourierAngularTransformOf} & 1 & \notelink{fourier-angular}{Angular Fourier transform}.\\
 \commandname{FourierSeriesCoefficient} & 2 & \notelink{periodic-fourier}{Fourier series}.\\
+\commandname{FourierSeriesCoefficientAtPeriod} & 3 & \notelink{periodic-fourier}{Fourier series}.\\
 \commandname{FourierTwoPi} & 1 & \notelink{fourier-two-pi}{$2\pi$ Fourier transform}.\\
 \commandname{FourierTwoPiOperator} & 0 & \notelink{fourier-two-pi}{$2\pi$ Fourier transform}.\\
 \commandname{FourierTwoPiTransformOf} & 1 & \notelink{fourier-two-pi}{$2\pi$ Fourier transform}.\\
@@ -3494,6 +3532,7 @@ The repository audit is invoked from the repository root as follows.
 
 \begin{lstlisting}[style=pseudo]
 python Analysis/FabiusFunction/scripts/tex_notation_audit.py --strict --list
+python Analysis/FabiusFunction/scripts/tex_notation_audit.py --semantic --strict --list
 \end{lstlisting}
 
 For each active source it records the relative path, byte and line counts, SHA-256 digest,
@@ -3504,9 +3543,15 @@ pattern.  A focused catalogue check supplies this file's path as the positional 
 The strict gate detects retired commands, local redefinitions of shared semantic
 commands, missing or duplicated canonical inputs, fragment imports of the shared input,
 selected literal bypasses of semantic operators, and known script-composition hazards.
-It is deliberately not a TeX parser and cannot infer the meaning of every one-letter
-variable.  The local declaration schema and collision register close that semantic gap;
-rendered-PDF inspection later closes the composition and layout gap.
+The opt-in semantic gate additionally requires classification of raw hats, delimiter
+spellings, number systems, indicator symbols, digit sums, asymptotic operators, sinc
+normalizations, and probability operators.  Its sole raw-hat exemption is a descriptive
+one-line local macro definition whose immediately preceding
+\texttt{LOCAL-NON-FOURIER-HAT:} comment names that macro and states its meaning; direct
+raw-hat use remains an error.  The audit is deliberately not a TeX parser and cannot infer
+the meaning of every one-letter variable.  The local declaration schema and collision
+register close that semantic gap; rendered-PDF inspection later closes the composition
+and layout gap.
 
 \section{Completeness and maintenance contract}
 \label{sec:maintenance}
@@ -3514,14 +3559,14 @@ rendered-PDF inspection later closes the composition and layout gap.
 At shared-contract version \FabiusNotationVersion:
 
 \begin{itemize}
-\item \path{docs/fabius-notation.tex} defines exactly 90 shared commands.
-\item Every one of those 90 command names occurs in the canonical quick reference and
+\item \path{docs/fabius-notation.tex} defines exactly 91 shared commands.
+\item Every one of those 91 command names occurs in the canonical quick reference and
       in the alphabetical command index, with its exact arity.
 \item Every command belongs to a detailed normative entry defining its type-level role,
       normalization, exceptional cases, or the local data the command intentionally
       requires at each use.
-\item Both line-Fourier conventions, Fourier-series coefficients, both sinc
-      normalizations, both Fabius inverses, the
+\item Both line-Fourier conventions, unit-period and explicit-period Fourier-series
+      coefficients, both sinc normalizations, both Fabius inverses, the
       bounded/global/up-function triad, zero-inclusive/positive naturals, exact/linearized
       decay objectives, and pointwise/topological support have distinct printed forms.
 \item The retired-alias index is exhaustive with respect to the audit's retired-command

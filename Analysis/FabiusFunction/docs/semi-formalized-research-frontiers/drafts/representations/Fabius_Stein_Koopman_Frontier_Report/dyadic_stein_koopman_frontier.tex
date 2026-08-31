@@ -88,7 +88,6 @@
   boxrule=0.8pt,arc=2pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
   title=\textbf{#1},fonttitle=\bfseries}
 
-\newcommand{\Probability}{\mathbb P}
 \newcommand{\Lip}{\operatorname{Lip}}
 \newcommand{\Acal}{\mathcal A}
 \newcommand{\Pcal}{\mathcal P}
@@ -97,7 +96,6 @@
 \newcommand{\Kcal}{\mathcal K}
 \newcommand{\Hcal}{\mathcal H}
 \newcommand{\PiD}{\Pi}
-\newcommand{\BigO}{\mathcal O}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction/docs}}
 
 \crefname{theorem}{theorem}{theorems}
@@ -253,7 +251,7 @@ Let $F:[0,1]\to[0,1]$ be the standard bounded Fabius distribution, characterized
 \end{equation}
 with $F(0)=0$ and $F(1)=1$. Rvachev's compactly supported density is
 \begin{equation}
- u(x):=\RvachevUp(x)=F(1-|x|)\mathbf 1_{[-1,1]}(x).
+ u(x):=\RvachevUp(x)=F(1-|x|)\IndicatorOf{[-1,1]}(x).
  \label{eq:up-F}
 \end{equation}
 It is even, nonnegative, $C^\infty$, flat at $\pm1$, and has total mass one. Its differential-dilation equation is
@@ -1441,7 +1439,7 @@ The accompanying script \texttt{experiments.py} uses exact SymPy rational arithm
 \begin{equation}
  F(2^{-n})
  =2^{-\binom{n+1}{2}}
- \sum_{k=0}^{\lfloor n/2\rfloor}
+ \sum_{k=0}^{\Floor{n/2}}
  \frac{\mu_{2k}}{(2k)!(n-2k)!},
  \label{eq:dyadic-F-compute}
 \end{equation}
