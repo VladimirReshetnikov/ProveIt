@@ -54,6 +54,8 @@ nonnegative binomial combination.
   passage**;
 * `Fabius.shiftExponent_iterate`,
   `Fabius.summable_shiftExponent_iterate` — the iterated shift;
+* `Fabius.generalizedRvachevProduct_two_pow_mul` — the full iterated
+  shift--refinement law;
 * `Fabius.generalizedRvachevProduct_shift_factorization` — the
   volume's finite-difference factorization, where its differences are
   nonnegative.
@@ -195,6 +197,52 @@ theorem summable_shiftExponent_iterate (a : ℕ → ℕ)
   | succ m IH =>
     rw [Function.iterate_succ_apply']
     exact summable_shiftExponent _ IH
+
+/-- **Iterated shift--refinement law** for a general admissible exponent
+sequence.  Dilating by `2 ^ m` exposes exactly the first `m` layers and
+shifts the remaining exponent sequence by `m`:
+
+`Φ_a(2^m z) = (∏ h < m, complexSinc(π · 2^(m-h) z)^(a h)) · Φ_{S^m a}(z)`.
+
+The statement is total in `m`; at `m = 0` the finite product is empty and
+the identity reduces to `Φ_a(z) = Φ_a(z)`. -/
+theorem generalizedRvachevProduct_two_pow_mul
+    (a : ℕ → ℕ)
+    (ha : Summable fun h : ℕ => (a h : ℝ) / 2 ^ h)
+    (m : ℕ) (z : ℂ) :
+    generalizedRvachevProduct a ((2 : ℂ) ^ m * z) =
+      (∏ h ∈ range m,
+        complexSinc ((Real.pi : ℂ) * ((2 : ℂ) ^ (m - h) * z)) ^ a h) *
+        generalizedRvachevProduct (shiftExponent^[m] a) z := by
+  induction m generalizing a with
+  | zero => simp
+  | succ m IH =>
+    rw [pow_succ', mul_assoc,
+      generalizedRvachevProduct_two_mul a ha ((2 : ℂ) ^ m * z),
+      IH (shiftExponent a) (summable_shiftExponent a ha)]
+    have hfactor :
+        complexSinc ((Real.pi : ℂ) * (2 * ((2 : ℂ) ^ m * z))) ^ a 0 =
+          complexSinc ((Real.pi : ℂ) * ((2 : ℂ) ^ (m + 1) * z)) ^ a 0 := by
+      congr 2
+      rw [pow_succ']
+      ring
+    have hprefix :
+        (∏ h ∈ range (m + 1),
+          complexSinc
+            ((Real.pi : ℂ) * ((2 : ℂ) ^ (m + 1 - h) * z)) ^ a h) =
+          complexSinc
+              ((Real.pi : ℂ) * ((2 : ℂ) ^ (m + 1) * z)) ^ a 0 *
+            ∏ h ∈ range m,
+              complexSinc
+                ((Real.pi : ℂ) * ((2 : ℂ) ^ (m - h) * z)) ^
+                  shiftExponent a h := by
+      rw [Finset.prod_range_succ', mul_comm]
+      congr 1
+      apply Finset.prod_congr rfl
+      intro h hh
+      have hsub : m + 1 - (h + 1) = m - h := by omega
+      rw [hsub, shiftExponent_apply]
+    rw [hfactor, hprefix, ← Function.iterate_succ_apply, mul_assoc]
 
 /-- **The finite-difference factorization**, wherever the differences
 it uses are nonnegative.

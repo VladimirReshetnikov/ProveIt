@@ -532,9 +532,12 @@ the origin, with `F⁻¹(y)/y → ∞` as `y → 0⁺`.
 The derivative-distribution layer resolves the exact dyadic cell structure
 behind those sharp bounds.  It gives every signed cell profile and midpoint,
 the all-order Thue--Morse finite-mixture law for Banach-valued continuous
-tests, and equality of the Borel pushforwards of the normalized absolute
-derivative and `up` on `[-1,1]`.  All nonnegative real absolute moments follow
-with the exact scale `2^(p * C(n+1,2))`, including order and moment zero.
+tests, and every signed natural-power moment in one Boolean-cube formula.  Its
+even specialization holds at every derivative order, while positive-order odd
+moments vanish.  Equality of the Borel pushforwards of the normalized absolute
+derivative and `up` on `[-1,1]` separately yields all nonnegative real `rpow`
+absolute moments with exact scale `2^(p * C(n+1,2))`, including order and
+moment zero.
 
 The small-argument asymptotic layer is completed by closed forms for the
 objects that previously existed only as recursions.  The differential
@@ -578,6 +581,16 @@ prefix–corrections–tail form of `Φ`.  The even zeta values enter as
 elementary series with positivity, antitonicity, the closed evaluations
 `ζ(2) = π²/6` and `ζ(4) = π⁴/90`, the Bernoulli form, and agreement with
 `riemannZeta`.
+
+The generalized-product layer also carries every finite natural-linear
+identity between admissible exponent sequences to an exact product identity.
+For an admissible natural weight `a`, every natural depth `m`, and every
+complex `z`, dilation by `2^m` exposes precisely the first `m` sinc layers and
+leaves the product for the shifted weight `h ↦ a(h+m)`.  This all-depth
+shift--refinement theorem has no frequency restriction; at `m=0` its prefix
+is empty and the statement is reflexive.  Natural coefficients are the exact
+boundary of this API: it does not promote signed finite differences to an
+analytic-germ or pole-cancellation theorem.
 
 The Perron root `ρ₁` of the arithmetic-mean transfer operator is enclosed by
 kernel-checked arithmetic: `0.66126798 ≤ ρ₁ ≤ 0.66134921`, by carrying the

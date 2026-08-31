@@ -485,8 +485,9 @@ identity, not merely a specialization
 (\lean{Fabius.generalizedRvachevProduct\_one}).  The zero divisor is formal in both
 directions --- $\Phi_a(z)=0$ exactly when $z=k2^h$ for a nonzero integer $k$ and some $h$
 with $a_h\ne0$
-(\lean{Fabius.generalizedRvachevProduct\_eq\_zero\_iff}) --- as is the one-step
-refinement law (\lean{Fabius.generalizedRvachevProduct\_two\_mul}).
+(\lean{Fabius.generalizedRvachevProduct\_eq\_zero\_iff}) --- as are the one-step
+refinement law (\lean{Fabius.generalizedRvachevProduct\_two\_mul}) and its all-orders
+iterate (\lean{Fabius.generalizedRvachevProduct\_two\_pow\_mul}).
 
 Assertion (ii) is formalized as well, in \path{GeneralizedRvachevEntire.lean}: the product
 converges locally uniformly on every ball
@@ -1521,7 +1522,7 @@ For every admissible nonnegative sequence,
  \Phi_a(2z)=\SincPi(2z)^{a_0}\Phi_{Sa}(z).}
  \label{p1:eq:shift-refinement}
 \end{equation}
-More generally, for $m\ge1$,
+More generally, for every $m\in\NaturalNumbers$,
 \begin{equation}
  \Phi_a(2^mz)
  =\left(\prod_{h=0}^{m-1}\SincPi(2^{m-h}z)^{a_h}\right)
@@ -1541,14 +1542,22 @@ content of \eqref{p1:eq:shift-refinement}--\eqref{p1:eq:mshift-refinement}---tha
 exposes the first $m$ layers and shifts the rest---is formalized as
 \lean{Fabius.weightedScaleMultiplicity_base_pow_mul} (\lean{WeightedScaleMultiplicity.lean}),
 for an arbitrary base $b>1$ and weights in an arbitrary additive commutative monoid.  The
-iterated dilation identities \eqref{p1:eq:shift-refinement}--\eqref{p1:eq:mshift-refinement}
-are formalized only at $a_h\equiv1$, as
-\lean{Fabius.rvachevFourierProduct_two_mul} and \lean{Fabius.rvachevFourierProduct_two_pow_mul}
-(\lean{SincProductShells.lean}); these are instances of \lean{Fabius.tprod_geom_scale} and
-\lean{Fabius.tprod_geom_scale_pow} (\lean{GeometricScaleProducts.lean}), which renormalize a
-scale product $\prod_ng(z/c^n)$ for an arbitrary factor function $g$, an arbitrary nonzero ratio
-$c$ and an arbitrary commutative topological monoid---but for one fixed $g$, so they do not by
-themselves reach a variable exponent sequence.  The finite-difference factorization
+one-step identity is \lean{Fabius.generalizedRvachevProduct\_two\_mul}, and the complete
+variable-exponent iteration is
+\lean{Fabius.generalizedRvachevProduct\_two\_pow\_mul}
+(\lean{WeightLinearityProducts.lean}).  Under exactly the admissibility hypothesis
+$\sum_h a_h/2^h<\infty$, the latter theorem holds for every $m\in\NaturalNumbers$ and every
+complex $z$: its finite product over $0\le h<m$ is precisely the exposed prefix
+$\SincPi(2^{m-h}z)^{a_h}$, while the infinite tail is $\Phi_{S^ma}(z)$.  At $m=0$ the prefix
+is empty, $S^0a=a$, and the statement reduces to $\Phi_a(z)=\Phi_a(z)$.  Admissibility of
+the tail at every depth is recorded separately as
+\lean{Fabius.summable_shiftExponent\_iterate}.  The classical identities
+\lean{Fabius.rvachevFourierProduct\_two\_mul} and
+\lean{Fabius.rvachevFourierProduct\_two\_pow\_mul} (\lean{SincProductShells.lean}) are thus
+the $a_h\equiv1$ instances; the generic fixed-factor lemmas
+\lean{Fabius.tprod_geom_scale} and \lean{Fabius.tprod_geom_scale_pow}
+(\lean{GeometricScaleProducts.lean}) remain the underlying scale-product pattern rather
+than the formalization boundary.  The finite-difference factorization
 \eqref{p1:eq:finite-difference-factorization} is now formalized as an identity of products,
 in \path{WeightLinearityProducts.lean}, and by supplying the passage the last sentence of this
 paragraph calls for --- once, and in the generality that sentence describes rather than for this
@@ -1570,10 +1579,9 @@ the weights $w_i$ are natural numbers, because $\Phi_a$ is defined only for $a$ 
 $\NaturalNumbers$; a combination with a negative coefficient names no transform at all.  So the Lean
 statement is the factorization \emph{wherever the differences $\Delta^ra$ are nonnegative},
 which is precisely the case in which our own display needs no passage through germs.  The
-signed case --- where the apparent poles cancel because the left side is entire --- is not
-formalized.  The remaining unformalized analytic identity in this theorem is the iterated
-dilation $\Phi_a(2^mz)$ itself; only the one-step law
-\lean{Fabius.generalizedRvachevProduct\_two\_mul} is available.
+signed finite-difference case --- where the apparent poles cancel because the left side is
+entire --- is not formalized.  This germ issue does not affect the nonnegative admissible
+shift--refinement identity above, whose all-$m$ analytic product statement is formalized.
 
 The exponent-level content is formal as well, in
 \path{ShiftDifferenceWeights.lean}: the identity $S^m=(I+\Delta)^m$ that drives it is the
@@ -15232,7 +15240,7 @@ permits reordering, and the product over the scale index is a
 $q^2$-Pochhammer symbol.  Outside the disk, apply this to $1/C_{1/q}$.
 \end{proof}
 
-\begin{statusbox}{Lean crosswalk: general contracting Pochhammer factorization}
+\begin{statusbox}{Lean crosswalk: general complex sinc--Pochhammer factorization}
 The current formal API does not prove the whole compound statement
 \cref{p7:thm:sinc-poch}.  It defines the complex symbol through
 \path{complexQPochhammerInf} and exposes exactly the nine theorems
@@ -15254,10 +15262,10 @@ and, for every complex $q,z$ with $\lVert q\rVert<1$, the global identity
  S_q(z)=\prod_{k\ge0}
  \left(\frac{z^2}{(k+1)^2};q^2\right)_\infty .
 \]
-They include $q=0$ and all individual zero factors.  The final two spectral
-theorems specialize this result to the dyadic scale and nome $1/4$; the
-Fourier-transform form additionally assumes a bounded Fabius witness
-satisfying \path{IsFabius}.
+They include $q=0$, negative and nonreal contractions, and all individual
+zero factors.  The final two spectral theorems specialize this result to the
+dyadic scale and nome $1/4$; the Fourier-transform form additionally assumes
+a bounded Fabius witness satisfying \path{IsFabius}.
 
 After the substitution $z=(1-q)t/(2\pi)$, the general product theorem gives
 the Pochhammer-product part of the inside formula

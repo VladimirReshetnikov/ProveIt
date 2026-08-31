@@ -15,7 +15,7 @@ The repository manifest says that current consolidated frontier volumes are the 
 The main exposition and the relevant consolidated volumes were read in full or theorem-by-theorem:
 
 - `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
-- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/Dyadic_Comb_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/comb-interpolation/Dyadic_Comb_Frontiers/Dyadic_Comb_Frontiers.tex`
 - `semi-formalized-research-frontiers/drafts/integration-and-transforms/Integration_and_Transform_Frontiers/Integration_and_Transform_Frontiers.tex`
 - `semi-formalized-research-frontiers/drafts/representations/Up_Polynomial_Synthesis/Up_Polynomial_Synthesis.tex`
 - the current exponent/q-series, inverse/sampling, representation, and Thue–Morse consolidation sources identified by `drafts/MANIFEST.md`

@@ -29,11 +29,13 @@ New standalone intake members:
 - [`q-series-proof-oriented-article/`](q-series-proof-oriented-article/),
   *A Proof-Oriented Guide to q-Series: Shifted Factorials, Basic
   Hypergeometric Summation, Theta Products, Partitions, Bailey Pairs, and
-  Rogers--Ramanujan Theory* (39 letter-paper pp, 2,891 source lines), arrived
-  as a bare TeX/PDF directory in direct-arrival commit
+  Rogers--Ramanujan Theory* (retained 39-page letter-paper PDF; 2,891 source
+  lines at arrival and 2,872 after the current source-only merge), arrived as
+  a bare TeX/PDF directory in direct-arrival commit
   `1360db6064c676f83bceb23bece5ed304dd09ce8` without an archive, outer hash,
-  or ledger. The repository-generated `SHA256SUMS` covers and verifies both
-  delivered files; its TeX was already LF.
+  or ledger. The repository-generated two-entry `SHA256SUMS` still verifies
+  the retained PDF, but its TeX row is pending after the source-only merge;
+  the TeX was already LF.
 
 - [`q_series_from_first_principles/`](q_series_from_first_principles/),
   *q-Series from First Principles: Products, Basic Hypergeometric Sums,
@@ -46,13 +48,15 @@ New standalone intake members:
 
 - [`q_series_monograph/`](q_series_monograph/),
   *A Proof-Driven Guide to q-Series, Basic Hypergeometric Identities, Bailey
-  Chains, and Rogers--Ramanujan Theory* (1,915 source lines), arrived as a
-  source-only bare directory in direct-arrival commit
+  Chains, and Rogers--Ramanujan Theory* (1,915 source lines at arrival and
+  1,906 after the current source-only merge), arrived as a source-only bare
+  directory in direct-arrival commit
   `1f0f98390d551725fc7d2274638dbd7de86ee346` with neither PDF nor ledger.
   Intake repaired the carriage-return (CR) corruption in the intended `\rho_2`
   token at line 863 and added a one-entry repository `SHA256SUMS` for the sole
   delivered TeX. The package remains source-only: no PDF or auxiliary package
-  was delivered or produced.
+  was delivered or produced, and the ledger's sole TeX row is pending after
+  the current source edit.
 
 These five packages remain separate pending post-publication comparison,
 canonical document work, and Lean crosswalks. In particular, no semantic
@@ -62,22 +66,28 @@ establish Lean verification.
 
 - [`inverse_q_analogs_and_series/`](inverse_q_analogs_and_series/),
   *Inverse q-Analogs and Their Series Expansions: A Branch-Aware,
-  Proof-Complete Synthesis*, is the canonical consolidation of the six former
-  inverse-q and forward-expansion packages.  Its
+  Proof-Complete Synthesis* (85 A4 pages), is the canonical consolidation of
+  the six former inverse-q and forward-expansion packages.  Its
   [`theorem_concordance.csv`](inverse_q_analogs_and_series/theorem_concordance.csv)
-  accounts for all 260 source result environments, while
+  accounts for all 260 source result environments, with the revision-backed
+  audit validating 260/260 rows; the retained-asset checksum ledger verifies
+  43/43 entries.  The
   [`PROVENANCE.md`](inverse_q_analogs_and_series/PROVENANCE.md) and
   [`assets/ASSET_DISPOSITION.csv`](inverse_q_analogs_and_series/assets/ASSET_DISPOSITION.csv)
   preserve package-, result-, archive-, and asset-level provenance.  Unique
   reproducibility assets live under `assets/`; the superseded layouts remain
   recoverable from the pinned pre-retirement Git revision and repository
-  history.  The q-Pochhammer monograph remains the broad forward-theory
+  history.  The retained canonical PDF is the validated 85-page publication
+  artifact.  The q-Pochhammer monograph remains the broad forward-theory
   reference, while `Cyclotomic_q_Fabius_Rvachev_Frontier/` retains the wider
   natural-boundary and blow-up program beyond this inverse-branch synthesis.
+  The three-pass build, clean-log, metadata/font, and all-page visual
+  publication gates passed on 2026-08-31.
 
 - [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](Cyclotomic_q_Fabius_Rvachev_Frontier/),
   *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
-  Product* (25 pp at arrival; currently 29 A4 pp and 1,896 source lines),
+  Product* (25 pp at arrival; retained 29-page A4 main PDF and current
+  1,873-line source),
   arrived on 2026-08-30 from
   `Cyclotomic_q_Fabius_Rvachev_Frontier.zip` (outer SHA-256
   `029da7d9ec96a0b2e5c4164c37f2b361dd015112bd0c6237263e3c538c5b0f64`).
@@ -87,9 +97,10 @@ establish Lean verification.
   cyclotomic blow-ups, Bell/moment condensation, and inverse branches beside
   the consolidated q-series frontier. A post-publication revision crosswalks
   the global geometric-sinc q-Pochhammer factorization while leaving the
-  cyclotomic asymptotic and natural-boundary layers manuscript-only; the
-  refreshed active ledger verifies all 22 payloads. The current five PDFs have
-  33 pages in total (29 main plus four one-page figures). The main report still
+  cyclotomic asymptotic and natural-boundary layers manuscript-only. The
+  22-entry active ledger now passes 21/22 rows: only the current TeX row is
+  pending after the source-only merge. The retained five PDFs have 33 pages in
+  total (29 main plus four one-page figures). The main report still
   uses Latin Modern rather than the house Libertinus face and retains nine
   embedded/subset Type-3 figure-font rows; the standalone figures contain nine
   more. Font normalization remains deferred.
@@ -103,43 +114,6 @@ laws.  Because much of that subject already appears in Part VII of the
 consolidated volume, the report remains standalone until its genuinely new
 claims are isolated and the overlap is deliberately deduplicated.  Paper
 theorem labels do not by themselves assert Lean formalization.
-
-[`q_pochhammer_q_binomial_expansions_report/`](q_pochhammer_q_binomial_expansions_report/)
-is a 39-page A4 companion on q-Pochhammer and q-binomial jets,
-resonances, and asymptotic frontiers, filed from the 730,285-byte archive
-`q_pochhammer_q_binomial_expansions_report.zip` (SHA-256
-`e8c6e5be4512abc0bacfd904e3f0027b35fd5e47e916a6ad11cc76b2893b3a07`).
-Its five arrival hashes and seven-file current ledger pass, and its
-exact-rational numerical output replays byte-for-byte.  The canonical
-A4/27 mm/Libertinus report is deliberately crosswalked as a companion:
-the finite Pascal, symmetry, factorial, evaluation, and base-reversal layer
-has Lean counterparts, while the general jet, higher-cyclotomic, analytic,
-operator, and double-scaling claims remain paper-level.
-
-[`inverse_q_analogs_report/`](inverse_q_analogs_report/) is the 51-page
-A4/27 mm/Libertinus research-frontier companion *Inverse q-Analogues:
-Branch Geometry, Asymptotic Inversion, and Computation for q-Pochhammer
-Symbols, Gaussian Coefficients, and Related Functions*, filed 2026-08-30
-from `inverse_q_analogs_report.zip` (894,405 bytes; SHA-256
-`471ee715022df77f2c5f45b86c213e50e980478eee1a6fc48dd91556cdaeb627`).
-No checksum ledger was submitted; a repository-created 17-row arrival
-snapshot verifies 17/17, while the current 21-row ledger verifies 21/21.
-The 3,324-line TeX and 708-line deterministic script reproduce seven data
-outputs (five CSVs after LF normalization) and five regenerated vector
-figures. A hostile
-audit corrected the order endpoint, Newton convergence hypotheses,
-near-unit-base truncation cost, and conditional radicals boundary.
-Paper-proof labels do not assert Lean formalization: selected finite
-q-algebra and product convergence are formalized, but none of the
-report-specific inverse, branch, Maxwell/discriminant, monodromy, or
-inverse-asymptotic results has an exact public Lean counterpart.
-An exact reship, `Fabius_Rvachev_Frontier_Report_2026-08-30-E.zip`
-(outer SHA-256
-`174bf733156cd874cf4f9321c6ab71ca44f311856cc01dc158ddf83dc00cf813`),
-was verified and deleted on 2026-08-30 without creating a redundant directory:
-its payloads are byte-identical to this filed member after the existing CSV
-LF normalization. No claim-level reassessment or experiment rerun was
-performed.
 
 - [`Fabius_Flat_Parameter_Response_Dynamics/`](Fabius_Flat_Parameter_Response_Dynamics/),
   *Flat Parameter Fronts, q-Susceptibility, and Smooth Dynamics* (26 A4 pp;
@@ -499,7 +473,9 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 `149332f9d`.
 
 Member: `Exponents_and_q_Series_Frontiers`
-(237 pp, seven parts) — the
+(retained pre-update PDF: 236 A4 pp; current merged TeX: 16,237 lines
+across seven parts; PDF rebuild pending; both parent ledgers verify the current
+source and retained PDF without asserting that the PDF was rebuilt) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -731,9 +707,9 @@ matching `assets/` directories.
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Second member: `q_pochhammer_q_binomial_monograph/`
-(212 A4 pp; book class; 13,111 source lines and a 1,574,592-byte PDF;
-rebuilt after the exact `q = -1` and generalized sinc--Pochhammer crosswalk
-updates) —
+(212-page last validated A4 PDF; book class; the current source-only merge is
+13,119 lines while the retained PDF is 1,576,424 bytes; the PDF was not
+rebuilt after the merged sinc--Pochhammer crosswalk update) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
@@ -759,9 +735,11 @@ partial, 129 with no counterpart, and 3 interface-only.  Within that
 exhaustive total, the 191-result core in Chapters 1–23 has 36 exact, 29
 partial, 123 with no counterpart, and 3 interface-only entries.  The later
 Chapter 24 Fabius bridge is included in the full ledger and crosswalked
-locally; in particular its general spectral Pochhammer theorem remains
-partial despite the now-formal pointwise `q^2`-Pochhammer factorization for
-every complex strict contraction.  The algebra of
+locally; its pointwise inside `q^2`-Pochhammer factorization is now formal for
+every complex strict contraction, while the compound spectral theorem remains
+partial at its named centered/MGF wrappers, reciprocal outside-disk clause,
+and named local-uniform or normal convergence of the Pochhammer-product
+right-hand side.  The algebra of
 q-shifted factorials now accounts for 3 exact, 1 partial, and 11
 unformalized results; the q-integer and Gaussian-coefficient chapter for
 3 exact, 2 partial, and 4 unformalized results. The finite
@@ -820,9 +798,10 @@ convergence/positivity layer, replacing the stale claim that every infinite
 q-Pochhammer in the development was merely a finite `Finset.range` product.
 The separate complex symbol now has its own contractive-nome convergence
 API, and the geometric sinc product has a global spectral factorization for
-every complex strict contraction with nome `q^2`.  The compound Chapter 24
-theorem remains partial because its named centered/MGF wrapper, outside-disk
-reciprocal formula, and local-uniform/normal-convergence packaging are not all
+every complex strict contraction with nome `q^2`; only the two final Rvachev
+wrappers specialize to nome `1/4`.  The compound Chapter 24 theorem remains
+partial because its named centered/MGF wrapper, outside-disk reciprocal
+formula, and local-uniform/normal-convergence packaging are not all
 formalized.
 The complementary formal surfaces of
 `CompleteHomogeneousGenerating.lean` and
@@ -922,7 +901,8 @@ specializations, `geometricSincProduct_eq_tprod_complexQPochhammerInf` proves
 globally for every complex `q,z` with `‖q‖ < 1` that
 `S_q(z) = ∏'_k (z^2/(k+1)^2;q^2)_∞`; the paired-index and absolute-summability
 theorems justify the exchange of scale and spectral-zero indices, including
-`q = 0` and zero factors.  The eight-theorem sinc-product tranche above
+`q = 0`, negative and nonreal contractions, and zero factors.  The
+eight-theorem sinc-product tranche above
 supplies the general-`q` uncentered real-frequency bridge, locally uniform
 entire `S_q`, and real-frequency local and compact uniform convergence of the
 full phase-bearing prefixes.  There is still no named centered or MGF
