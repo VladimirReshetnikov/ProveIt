@@ -1,96 +1,93 @@
-# Geometric-Comb Interpolation, Gaussian Pascal Transforms, and the Fabius-Rvachev Boundary Layer
+# Geometric-Comb Interpolation and the Fabius--Rvachev Boundary Layer
 
-This archive contains the LaTeX source, rendered PDF, and reproducibility files
-for a self-contained research report on Lagrange/Newton interpolation at
-geometric nodes
+> **Source-only merge status (2026-08-31).** The current TeX has 3,554 lines
+> (SHA-256
+> `18f710a0fc8b67263c64e52e9b6fedf41a71a6149ff154a12da4ef0881a8ed99`).
+> The retained 68-page PDF was not rebuilt after the notation migration and is
+> not claimed to be synchronized with that source. `SHA256SUMS.txt` was
+> intentionally not refreshed: its TeX row and this README row are pending,
+> while its other eighteen rows pass. Historical build and preflight facts
+> below describe the preceding checkpoint.
 
-\[
-  c,\;cq,\;cq^2,\ldots,\qquad 0<q<1.
-\]
+This package contains the source, rendered PDF, reproducibility program,
+data, and figures for a manuscript on interpolation at
+`c, cq, ..., cq^n`, together with its Fabius/Rvachev specialization.
 
-The report was developed against the `main` branch of
-`VladimirReshetnikov/ProveIt` at commit
+The report was written against ProveIt commit
+`e5175d5eb78d66f4e31db3bc506541b9bae12c57` (30 August 2026). Its Lean-status
+boundary was rechecked at intake head
+`ffcdbdac47246bd553f272bd1ceac441f8dd4f0c`; the relevant formal files did not
+change between those commits.
 
-```
-e5175d5eb78d66f4e31db3bc506541b9bae12c57
-```
+## Mathematical and formal status
 
-as observed on 30 August 2026.  Its primary source was
+“Theorem,” “proposition,” “lemma,” and “corollary” in the PDF mean that the
+manuscript supplies a proof. They do not automatically mean Lean-checked.
 
-```
-Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/
-drafts/exponents-and-q-series/q_pochhammer_q_binomial_monograph/
-q_pochhammer_q_binomial_monograph.tex
-```
+Existing Lean declarations cover important finite inputs: q-Pochhammer and
+Gaussian-binomial identities, complete-homogeneous geometric specialization,
+evaluation-at-zero geometric Lagrange weights and residual moments, their
+finite rational l1 norm, the inverse-dyadic Fabius moment identity, Rvachev
+Appell deconvolution, and exact finite polynomial synthesis by shifted
+Rvachev atoms.
 
-Neighboring dyadic-comb and Rvachev-Lagrange reports were used to preserve the
-repository's notation and to separate imported results from new deductions.
+No one-to-one Lean declaration was found for the report's Jackson
+divided-difference theorem, Gaussian Newton basis pair, arbitrary-evaluation
+interpolation residual, analytic Newton convergence, boundary-layer/global
+Lebesgue asymptotics, Newton--Jackson quadrature, Fabius boundary-residue and
+fixed-jet estimates, gap bound, or Gaussian--Appell cardinal/right-inverse
+packaging. The two-sided Fabius gap law, second-order Lebesgue expansion, and
+Hermite saddle law remain conjectural. See the PDF status ledger and
+`INTAKE_AUDIT.md` for exact declaration names and boundaries.
 
-## Contents
+The hostile intake read-through repaired two substantive scope issues: the
+Hermite convergence corollary now requires a centered analytic disk of radius
+greater than `c`, as used by its proof, and the numerical output is described
+as a top-gap maximization rather than an independently certified finite-degree
+global maximization.
 
-- `geometric_comb_q_fabius_report.tex` - complete LaTeX source.
-- `geometric_comb_q_fabius_report.pdf` - rendered 65-page report.
-- `geometric_comb_experiments.py` - exact-rational and high-dynamic-range
-  numerical experiments, extensively commented.
-- `requirements.txt` - third-party Python packages used by the experiment
-  script.
-- `data/lebesgue_data.csv` - endpoint and global Lebesgue diagnostics.
-- `data/fabius_interpolation_data.csv` - exact-rational Fabius interpolation
+## Package contents
+
+- `geometric_comb_q_fabius_report.tex` — complete LaTeX source.
+- `geometric_comb_q_fabius_report.pdf` — normalized A4 rendering.
+- `geometric_comb_experiments.py` — exact-rational and logarithmic numerical
+  checks; it writes all files under `data/` and `figures/`.
+- `requirements.txt` — exact replay environment pins.
+- `data/lebesgue_data.csv` — endpoint and top-gap Lebesgue diagnostics.
+- `data/fabius_interpolation_data.csv` — exact-rational Fabius interpolation
   diagnostics converted to plotting fields.
-- `data/identity_checks.txt` - exact identity-check transcript and selected
+- `data/identity_checks.txt` — exact identity-check transcript and selected
   Newton coefficients.
-- `figures/*.pdf` - vector figures included by the LaTeX document.
-- `figures/*.png` - raster copies of the same figures.
+- `figures/*.pdf` — four vector plots with embedded/subset CID TrueType fonts
+  and no Type 3 fonts.
+- `figures/*.png` — raster counterparts of the four plots.
+- `ARRIVAL_SHA256SUMS.txt` — verbatim verified ledger of the 16-file arrival
+  payload.
+- `NUMERICAL_REPLAY.txt` — pinned replay command, versions, comparisons, and
+  output hashes.
+- `INTAKE_AUDIT.md` — provenance, mathematical/Lean-status, editorial, build,
+  and validation audit.
+- `pdf_preflight.json` — machine-readable final PDF checks.
+- `SHA256SUMS.txt` — unrefreshed 20-entry operational ledger, excluding itself
+  by convention; its TeX and README rows are pending.
 
-## Main mathematical results developed in the report
+## Reproduce the numerics
 
-The report identifies the geometric Newton basis with a normalized
-q-Pochhammer basis and gives explicit iterated q-difference/divided-difference
-formulas.  It derives mutually inverse Gaussian-Pascal coordinate transforms,
-closed Lagrange cardinals and barycentric weights, complete-homogeneous exact
-residuals, Jackson-integral formulas, and an analytic infinite Newton theorem.
-
-A sharp stability dichotomy is proved.  Evaluation at the accumulation point
-has bounded Lebesgue constants,
-
-\[
-  \Lambda_n(0)=\frac{(-q;q)_n}{(q;q)_n},
-\]
-
-whereas the global Lebesgue constant satisfies
-
-\[
-  \Lambda_n^*\sim
-  \frac{2(-q;q)_\infty}{e}\,\frac{q^{-\binom n2}}{n},
-  \qquad \frac{x_n^*}{c}=1-\frac1n+o(n^{-1}).
-\]
-
-For the half-base Fabius comb, the report derives a reciprocal-base Gaussian
-transform for the Newton coefficients, exact finite formulas, superexponential
-recovery of every fixed endpoint jet, and a proved quadratic-logarithmic upper
-bound for divergence inside the persistent outer gap.  It then composes the
-geometric cardinal transform with the inverse-moment Appell/Rvachev synthesis
-operator, producing an exact finite Lagrange-Rvachev loop and a matrix right
-inverse.
-
-Conjectural statements and open research directions are explicitly labeled as
-such.
-
-## Reproducing the experiments
-
-Python 3.10 or later is recommended.  From the extracted archive directory:
+Python 3.13.14 was used for the normalized replay. From this directory:
 
 ```bash
-python -m pip install -r requirements.txt
-python geometric_comb_experiments.py
+python -m venv /tmp/geometric-comb-replay
+/tmp/geometric-comb-replay/bin/python -m pip install -r requirements.txt
+/tmp/geometric-comb-replay/bin/python geometric_comb_experiments.py
 ```
 
-The script has no network dependency.  It overwrites the files under `data/`
-and `figures/`.  Exact algebraic and Fabius computations use
-`fractions.Fraction`; only the logarithmic Lebesgue maximization and plotting
-use floating-point arithmetic.
+The script has no runtime network or random input. Exact algebraic and Fabius
+computations use `fractions.Fraction`; only the positive Lebesgue sums,
+one-dimensional top-gap optimization, and plotting use floating point. PDF
+font type 42 and fixed artifact metadata make two consecutive pinned replays
+byte-identical.
 
-A successful run ends with output of the form
+A successful replay ends with:
 
 ```text
 All exact identity checks passed.
@@ -98,16 +95,30 @@ Endpoint Lebesgue limit: 8.25598793577825006554414084943
 Global asymptotic prefactor: 1.75421915716734780836138830414
 ```
 
-## Rebuilding the PDF
+## Rebuild the PDF
 
-A reasonably complete TeX Live installation with `pdflatex`, Libertinus (or the
-fallback Latin Modern font), `hyperref`, `cleveref`, `mathtools`, `longtable`,
-`listings`, and the standard graphics packages is sufficient.  The source
-expects the vector figures to remain in `figures/`.
+The preceding archive checkpoint was built from a clean auxiliary state with
+exactly three strict serial passes:
 
 ```bash
-pdflatex geometric_comb_q_fabius_report.tex
-pdflatex geometric_comb_q_fabius_report.tex
+pdflatex -halt-on-error -file-line-error -interaction=nonstopmode geometric_comb_q_fabius_report.tex
+pdflatex -halt-on-error -file-line-error -interaction=nonstopmode geometric_comb_q_fabius_report.tex
+pdflatex -halt-on-error -file-line-error -interaction=nonstopmode geometric_comb_q_fabius_report.tex
 ```
 
-`latexmk -pdf geometric_comb_q_fabius_report.tex` may be used instead.
+The retained PDF is 68 A4 pages and 818043 bytes. Its SHA-256 is
+`bcd2559f1e6f4be608c291c6ef5de48108c3b0d78139ecf1a5672942d72d9b92`; the
+current TeX has 3,554 lines and the SHA-256 recorded above. Geometry, fonts,
+extractable text, build diagnostics, and
+all-page visual inspection are recorded in `pdf_preflight.json` and
+`INTAKE_AUDIT.md` for the preceding checkpoint. Build auxiliaries are
+intentionally absent.
+
+## Provenance and checksums
+
+No source ZIP attributable to this package was present in the audited
+workspace. Accordingly, no archive hash is invented. The delivered
+`SHA256SUMS.txt` verified 16/16 payload entries before edits and is preserved
+verbatim as `ARRIVAL_SHA256SUMS.txt`. The unrefreshed operational
+`SHA256SUMS.txt` has 20 entries and excludes itself to avoid a recursive
+checksum; its TeX and README rows are pending after the source-only merge.

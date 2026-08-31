@@ -31,7 +31,7 @@
   urlcolor=linkblue,
   pdftitle={Nowhere Analyticity of Every Positive Compositional Iterate of the Fabius Function},
   pdfauthor={Research report prepared for the ProveIt Fabius-function corpus},
-  pdfsubject={Fabius function, Rvachev up-function, Thue--Morse sequence, Faa di Bruno formula},
+  pdfsubject={Fabius function, Rvachev up-function, Thue--Morse sequence, and Faa di Bruno partitions},
   pdfkeywords={Fabius function, nowhere analytic, composition, Rvachev, Thue--Morse, Bell polynomials}
 }
 
@@ -130,7 +130,10 @@ the finite positive-list arithmetic of the partition defect has been formalized 
 Lean.  Repository statements explicitly marked as formalized are used only as
 established input facts; the finite-set-partition wrapper, composition theorem,
 weighted partition-defect estimate, spine asymptotic, and principal iterate theorem
-remain manuscript results.}
+remain manuscript results.  Former Conjectures 14.1 and 14.2 are retained below
+only as numbered quarantine warnings: the first is nonexclusive as submitted,
+and the second is discharged at manuscript level by the exact tie proposition;
+only that proposition's quarter-value anchors are Lean-backed.}
 
 \begin{abstract}
 Let $F\colon[0,1]\to[0,1]$ be the bounded Fabius function and let
@@ -1235,34 +1238,43 @@ conclusion.
 A tempting strengthening would assert zero Taylor radius at every interior point.
 That statement is already false for $n=1$: at a dyadic point, the high-order jet of
 $F$ eventually vanishes, so the formal Taylor series is a finite polynomial, although
-it does not represent $F$ on any neighborhood.  For fixed $n$, every interior point
-belongs to exactly one of the following three classes:
+it does not represent $F$ on any neighborhood.  A corrected classification, rather
+than a universal zero-radius assertion, is the appropriate open problem.
+
+\begin{warning}[Former Conjecture 14.1 is nonexclusive]
+\label{warn:trichotomy}
+The submitted formulation claimed that, for fixed $n$, every interior point belongs
+to exactly one of the following classes:
 \begin{enumerate}[label=(\roman*)]
  \item the Taylor series has radius zero;
- \item only finitely many Taylor coefficients are nonzero, so the series is a
- finite polynomial and has infinite radius;
- \item the Taylor series has positive radius and infinitely many nonzero
- coefficients.
+ \item the Taylor series is a finite polynomial because the entire high-order jet
+ eventually vanishes;
+ \item the Taylor series has positive radius but does not represent the function.
 \end{enumerate}
-In alternatives (ii) and (iii), \cref{thm:main} says that the Taylor series cannot
-represent $G_n$ on any neighborhood.  The requirement of infinitely many nonzero
-coefficients in (iii) is essential: without it, every series in (ii) would also lie
-in (iii).
+This is not a trichotomy.  For $n=1$ and any interior dyadic point, the eventually
+zero jet puts the Taylor series in class (ii); that finite polynomial has positive
+(indeed infinite) radius but cannot represent the nowhere-analytic function locally,
+so the same point also lies in class (iii).  Requiring infinitely many nonzero
+coefficients in class (iii) makes the three alternatives disjoint, but no claim is
+made here that the corrected positive-radius class is empty.  The exceptional-point
+classification for $n\geq2$ remains open.
+\end{warning}
 
-\begin{conjecture}[Zero-radius or eventually-zero jet]
-\label{conj:trichotomy}
-For fixed $n$, alternative (iii) is empty.  The points in alternative (ii) form a
-countable orbit-arithmetic set governed by dyadic orbit points.
-\end{conjecture}
+The failure above illustrates why nowhere analyticity and zero Taylor radius must be
+kept distinct.  The present theorem proves zero Taylor radius on a co-countable set
+and rules out local representation everywhere, while the detailed Taylor behavior at
+the exceptional points remains open for $n\geq2$.
 
-This distinction explains why nowhere analyticity does not by itself imply zero
-Taylor radius.  The present theorem proves alternative (i) on a co-countable set and
-rules out local representation everywhere.  Moreover, the tie-cancellation question
-posed in the submitted version is no longer conjectural:
-\cref{prop:tie-noncancellation} proves the exact amplitude on $m=6\ell+4$, the
-full-derivative lower bound with constant $A_{k+1,n}/4$, and zero Taylor radius at
-every tie point.  The remaining exceptional Taylor behavior for $n\geq2$ is therefore
-associated with dyadic orbit points and their mixed composition jets.
+\begin{warning}[Former Conjecture 14.2 is already discharged]
+\label{warn:ties}
+The submitted tie-cancellation statement is not a live conjecture.
+\Cref{prop:tie-noncancellation} proves that, at every tie, the explicit orders
+$m=6\ell+4$ make the earlier maximal spine vanish and give the later one amplitude
+exactly $\Up(1/9)\geq1/2$.  The finite-spine expansion then yields the full-derivative
+lower bound with constant $A_{k+1,n}/4$ and zero Taylor radius at every tie point.
+The exact quarter-point anchors used there are Lean-backed; the proposition, its
+finite-spine argument, and its iterate conclusion remain manuscript results.
+\end{warning}
 
 \begin{conjecture}[Defect-polynomial spectral gap]
 \label{conj:defect-polynomial}
@@ -1338,8 +1350,8 @@ For reference, the entire argument can be compressed into the following chain.
  positive quadratic defect $D(\pi)$.
  \item The weighted sum of all non-spine partitions is exponentially small, despite
  the Bell-number multiplicity.
- \item Therefore $G_n^{(m)}$ is asymptotic, after division by $Q_m$, to a finite sum
- of orbit spines $A_{j,n}B_j^m\ThetaF(2^m x_j)$.
+ \item After division by $Q_m$, the derivative $G_n^{(m)}$ is asymptotic to a finite
+ orbit-spine sum with terms $A_{j,n}B_j^m\ThetaF(2^m x_j)$.
  \item Away from a finite tie set, monotone orbit dynamics makes one $B_j$ uniquely
  maximal.
  \item Away from countably many dyadic orbit preimages, binary digit transitions make
@@ -1462,13 +1474,12 @@ directly connected to the proof are:
  \item \path{GlobalExtension.lean}
  and \path{BoundedDerivatives.lean} in \path{Lean/FabiusFunction/} for the derivative atlas;
  \item \path{PartitionDefect.lean} in \path{Lean/FabiusFunction/} for the
- exhaustive three-definition, thirty-three-theorem positive-list defect layer;
+ exhaustive three-definition, thirty-three-theorem positive-list defect layer,
+ including the zero profiles, sharp fixed-block minimum, and first positive shell;
  \item \path{Convexity.lean}, \path{Monotonicity.lean}, and the order-isomorphism
  modules for the orbit dynamics;
  \item \path{OriginalPaperSupplement.lean} and \path{NowhereAnalytic.lean} for the
  base nonanalyticity proof;
- \item \path{PartitionDefect.lean} for the exact finite block-size arithmetic,
- including the zero profiles, sharp fixed-block minimum, and first positive shell;
  \item \path{docs/Non_Elementarity_of_the_Fabius_Function/} for the dense
  analytic-locus obstruction;
  \item \path{docs/semi-formalized-research-frontiers/} for q-series, Bell/Bernoulli,

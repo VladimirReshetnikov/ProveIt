@@ -1,48 +1,87 @@
-# Fabius-Rvachev frontier report (30 August 2026)
+# Fabius–Rvachev flat-parameter response report
 
-This archive contains the LaTeX source, compiled PDF, numerical code, exact tables, Monte Carlo validation data, and figures for:
+This directory preserves and normalizes the submitted research package
+**“Flat Parameter Fronts, q-Susceptibility, and Smooth Dynamics: New Frontier Results in the
+Fabius–Rvachev System.”** The normalization keeps the arrival record separate from the current
+working ledger and corrects the mathematical status boundaries described below.
 
-**Flat Parameter Fronts, q-Susceptibility, and Smooth Dynamics: New Frontier Results in the Fabius-Rvachev System**
+## Status of the mathematical claims
 
-## Main contents
+- The report proves, on paper, joint parameter–space smoothness and flat plateau fronts, the
+  first parameter-response measure and its KR resolvent, the tangent refinement and Fourier
+  formulas, response cumulants and moments, the Legendre coefficients, and the endpoint height
+  \(B\).
+- The higher-response differentiated identity is distributional. Its KR resolvent form for
+  orders \(s\ge2\) is explicitly conditional on representing the differentiated source as a
+  finite zero-mass measure.
+- The flat \(C^\infty\) Koenigs convergence assertion is isolated as hypothesis (K), because
+  the all-orders derivative estimates are not proved in the submitted argument. The global
+  coordinate \(\Theta\), inverse-iterate asymptotics, escape clock, and periodic quotient with
+  \(B\) are all conditional on (K).
+- None of the new claims has an exact current Lean theorem. The existing Lean files certify
+  fixed-parameter laws and smoothness, half-base identifications, shape/inverse/midpoint and
+  endpoint inputs, and algebraic infrastructure only. See **REPOSITORY_AUDIT.md** for the exact
+  crosswalk and overlap audit.
 
-- `fabius_frontier_report.tex` — complete LaTeX source.
-- `fabius_frontier_report.pdf` — compiled 23-page report.
-- `code/fabius_q_response_experiments.py` — documented Python program for exact symbolic calculations and numerical checks.
-- `data/` — exact rational coefficient tables and Monte Carlo validation tables.
-- `figures/` — figures included in the report.
-- `NUMERICAL_README.txt` — numerical parameters, methodology, and interpretation.
-- `requirements.txt` — Python package requirements.
+“Repository-novel” means only that an equivalent claim was not found in the audited active
+primary exposition, canonical frontier synthesis, or current draft corpus. It is not a claim
+of priority over the mathematical literature.
 
-## Principal results developed in the report
+## Contents and provenance
 
-1. Joint smoothness of the normalized geometric-uniform density in both the parameter and spatial variables, together with a continuum of flat but nonanalytic plateau fronts.
-2. A linear-response theory at the Fabius parameter `q = 1/2`, including a contractive signed-measure resolvent, exact refinement equations, a marked infinite-sinc product, Bernoulli cumulant jets, Bell-polynomial moment recurrences, and exact rational shifted-Legendre coefficients.
-3. A global smooth Schroeder/Koenigs coordinate conjugating Fabius iteration to multiplication by two, with beyond-all-orders inverse-iterate asymptotics.
-4. A logarithmic Bottcher-type endpoint height, double-exponential forward-orbit asymptotics, and an exact one-periodic quotient relating the two dynamical coordinates.
-5. Explicit conjectures, open problems, and a staged Lean formalization roadmap.
+- **fabius_frontier_report.tex** and **fabius_frontier_report.pdf** — normalized report source
+  and its matching compiled PDF.
+- **code/fabius_q_response_experiments.py** — symbolic and numerical replay program.
+- **data/** and **figures/** — committed exact tables, Monte Carlo checks, and figures.
+- **NUMERICAL_README.txt** and **EXPERIMENT_REPLAY.txt** — run parameters and replay comparison.
+- **REPOSITORY_AUDIT.md** — claim-status and Lean-source crosswalk.
+- **PDF_VALIDATION.txt** — final build and PDF validation record.
+- **ARRIVAL_SHA256SUMS.txt** — immutable verbatim ledger from the submitted archive.
+- **SHA256SUMS.txt** — exhaustive ledger of the current normalized package, excluding itself.
 
-“Repository-novel” in the report means that the result was not found in the active primary exposition, canonical frontier synthesis, or current draft manifest under the audited concepts and equivalent terminology. It is not a claim of absolute priority over the entire mathematical literature.
+The submitted ZIP was **fabius_frontier_report_2026.zip**, 803,598 bytes, with SHA-256
+**afdcf522589a7baad82c81a527c02dcc09e58455ab14c57a9c492e65563c647e** and Git blob
+**ec8727448efff206724963f5b3922ff5b8f5fc61**. It contained one wrapper directory, 14 files,
+and four directory entries; its 13-row internal ledger verified every payload file. The
+arrival ledger is preserved unchanged even though normalized files now have new hashes.
 
 ## Rebuilding the PDF
 
-From the archive root, run:
+From this directory, run exactly three strict serial passes on the frozen final source:
 
-```bash
-latexmk -pdf -interaction=nonstopmode -halt-on-error fabius_frontier_report.tex
-```
+~~~bash
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error fabius_frontier_report.tex
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error fabius_frontier_report.tex
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error fabius_frontier_report.tex
+~~~
 
-The source uses standard TeX Live packages and the Libertinus Type 1 font package.
+The document uses the repository’s canonical primary preamble: A4 paper, 27 mm margins, and
+Libertinus fonts when available. The validated artifact is 26 pages and its exact geometry,
+font, text-extraction, visual-inspection, and log facts are recorded in
+**PDF_VALIDATION.txt**. Remove LaTeX auxiliary files after validation.
 
 ## Reproducing the numerical layer
 
-Create an environment with Python 3.11 or later, install the requirements, and run:
+The committed run used Python 3.13.14 and the exact pinned versions in **requirements.txt**.
+From the package root:
 
-```bash
+~~~bash
 python -m pip install -r requirements.txt
-python code/fabius_q_response_experiments.py --output-root .
-```
+python code/fabius_q_response_experiments.py \
+  --output-root . \
+  --samples 1000000 \
+  --cdf-samples 1500000 \
+  --chunk-size 25000 \
+  --digits 32 \
+  --q-step 0.005 \
+  --seed 20260830 \
+  --max-moment 14 \
+  --max-legendre 20
+~~~
 
-The default invocation regenerates the exact CSV files, Monte Carlo validation tables, and figures. The computations use a fixed seed for reproducibility. Command-line options permit changing sample counts, digit truncation, precision, finite-difference step, and output location; see `python code/fabius_q_response_experiments.py --help`.
-
-Exact cumulant, moment, and Legendre calculations use SymPy rational arithmetic. Monte Carlo experiments are validation checks only and are not used as proofs.
+These values are also the program defaults. Command-line options change the sample counts,
+chunk size, digit truncation, finite-difference step, seed, maximum moment, maximum Legendre
+degree, and output location; there is no separate precision option. Exact SymPy outputs are
+deterministic. Monte Carlo tables are validation checks only and can exhibit harmless
+last-bit floating-point variation; the recorded comparison and tolerances are in
+**EXPERIMENT_REPLAY.txt**.

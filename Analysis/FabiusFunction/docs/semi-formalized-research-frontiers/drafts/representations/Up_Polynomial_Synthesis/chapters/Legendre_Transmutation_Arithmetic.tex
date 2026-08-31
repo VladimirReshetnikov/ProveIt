@@ -187,8 +187,8 @@ Let $m\in\PositiveIntegers$ satisfy $\TwoAdicValuation(m)\ge d$, put
 $h=m^{-1}$ and $K_m=\{k\in\IntegerNumbers:|k|<2m\}$, and define
 $\mathbf D_{kn}=hQ_n^-(kh)$ for $k\in K_m$, $0\le n\le d$,
 $V_{jn}=P_n(\xi_j)$ for $0\le j,n\le d$,
-$W=\operatorname{diag}(\omega_0,\ldots,\omega_d)$, and
-$H=\operatorname{diag}(h_0,\ldots,h_d)$.
+$W=\DiagonalOperator(\omega_0,\ldots,\omega_d)$, and
+$H=\DiagonalOperator(h_0,\ldots,h_d)$.
 
 \begin{theorem}[Christoffel--Darboux cardinals and weighted SVD transfer]
 \label{thm:leg2-weighted-SVD}
@@ -350,7 +350,7 @@ the normalized endpoint basis on $[-1,1]$.  Its polynomiality certificate may
 be normalized as
 \begin{equation}
  \boxed{\tau_{d,r}=(-1)^{r+1}
- \eps_{\left\lfloor(2^{d+1}-d-2+r)/2\right\rfloor},
+ \ThueMorseSign{\Floor{(2^{d+1}-d-2+r)/2}},
  \qquad 0\le r\le d+1.}
  \label{eq:leg2-tau-row}
 \end{equation}
@@ -465,7 +465,7 @@ The periodic residue and the one-dimensional quotient satisfy
 \begin{proof}
 Replace $t$ by $1-t$ in the odd-frequency Fourier series for
 $\mathcal E_d$ and then replace the frequency by its negative.  Integrality
-of the frequencies and evenness of $\widehat u$ leave the factor
+of the frequencies and evenness of $\FourierTwoPi{u}$ leave the factor
 $(-1)^{d+1}$.  Moreover,
 \[
  \mathcal R\mathcal D_d-(-1)^{d+1}\mathcal D_d
@@ -498,7 +498,7 @@ then gives the two equalities.
 
 For the determinant argument put
 \begin{equation}
- A_d(z)=\prod_{m=1}^{d}[2^m]_z,\qquad
+ A_d(z)=\prod_{m=1}^{d}\QInteger{2^m}{z},\qquad
  N_d^{\rm rel}=\deg A_d=2^{d+1}-d-2.
  \label{eq:leg2-annihilator}
 \end{equation}
@@ -613,7 +613,7 @@ matrix with entries $(L_N)_{sr}=\ell_{s-r}$ for $s\ge r$.  Apply
 \cref{lem:leg2-endpoint-tail} to the two impulses at positions
 $M-r-1$ and $M+r$.  Using
 \[
- A_{2N}(z)=A_{2N-1}(z)[M]_z
+ A_{2N}(z)=A_{2N-1}(z)\QInteger{M}{z}
 \]
 and convolving by $A_{2N-1}(z)/(1-z)$ gives
 $L_N\mathsf B_N=\mathsf F_N$, where
@@ -662,7 +662,7 @@ $\mathbf P_N=\mathsf U_N\mathbf S_N$, and
 \[
  \mathcal G_N=\int_{-1}^{1}\mathbf S_N\mathbf S_N^T\Differential x,
  \qquad
- H_N^+=\operatorname{diag}(h_0,h_2,\ldots,h_{2N}).
+ H_N^+=\DiagonalOperator(h_0,h_2,\ldots,h_{2N}).
 \]
 Then
 \begin{equation}
@@ -725,7 +725,7 @@ and choose $s$ larger than $L+r+2$.
 
 The primary Fourier theory gives, for $|\xi|\ge1$,
 \begin{equation}
- |\widehat u(\xi)|\le C_0
+ |\FourierTwoPi{u}(\xi)|\le C_0
  \exp\!\left(-\frac{(\log|\xi|)^2}{2\log2}\right)
  |\xi|^{-\kappa_\infty},
  \qquad
@@ -857,7 +857,7 @@ $[x^{2N}]P_{2N}=2^{-2N}\binom{4N}{2N}$.  Multiplying that coordinate by the
 ladder amplitude $D_{2N}=(2N)!2^{\binom{2N+1}{2}}$ proves
 \eqref{eq:leg2-top-amplitude}.  The coefficient bound
 $|a_N|\le(4N+1)/2$ and \eqref{eq:leg2-an-root} show that its logarithm
-contributes $o(N^2)$ along the limsup.  Stirling shows that the factorial and
+contributes $\LittleO(N^2)$ along the limsup.  Stirling shows that the factorial and
 central binomial contribute only $\BigO(N\log N)$.  The sole quadratic term is
 $\binom{2N+1}{2}\log2=(2N^2+N)\log2$, proving
 \eqref{eq:leg2-top-growth}.
@@ -970,7 +970,7 @@ As $X\to\infty$,
 \begin{equation}
  \boxed{n_Q(X)=
  \frac{\log X}
- {2W\!\left(\log X/(\pi\EulerE)\right)}+\BigO(1).}
+ {2\LambertW_0\!\left(\log X/(\pi\EulerE)\right)}+\BigO(1).}
  \label{eq:leg2-Q-Lambert}
 \end{equation}
 \end{corollary}
@@ -980,9 +980,9 @@ The ratio of consecutive absolute values in
 \eqref{eq:leg2-Q0-root} tends to infinity; hence
 $|Q_{2n}^-(0)|$ is strictly increasing for all sufficiently large $n$.  This
 justifies inversion of the least-integer threshold.  Put $H=\log X$ and
-$w=W(H/(\pi\EulerE))$.  Then $n_0=H/(2w)$ solves
+$w=\LambertW_0(H/(\pi\EulerE))$.  Then $n_0=H/(2w)$ solves
 $2n_0\log(2n_0/(\pi\EulerE))=H$.  The logarithm of the prefactor in
-\eqref{eq:leg2-Q0-root} changes the continuous solution by $o(1)$ because the
+\eqref{eq:leg2-Q0-root} changes the continuous solution by $\LittleO(1)$ because the
 derivative of the leading logarithm tends to infinity.  Eventual monotonicity
 and integer rounding contribute only $\BigO(1)$.
 \end{proof}
@@ -1081,7 +1081,7 @@ This is the precise sharpness question left by
 With $\sigma_N$ from \eqref{eq:leg2-sigma},
 \[
  (-1)^N\sigma_N>0\quad(N\ge2),\qquad
- \log\!\left(\frac{(-1)^N\sigma_N}{2^{2N-3}}\right)=o(N),
+ \log\!\left(\frac{(-1)^N\sigma_N}{2^{2N-3}}\right)=\LittleO(N),
 \]
 and the normalized factor tends to infinity.  The sign assertion has exact
 evidence for $2\le N\le128$; the exceptional value is $\sigma_1=0$.

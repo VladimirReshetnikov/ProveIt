@@ -5178,7 +5178,20 @@ denominator hypotheses and expose the first surviving mode.
 \path{Fabius.coeff_dyadicGermTwo_succ}.  This is the unique zero-constant
 solution of \(D+4D^2=(4/9)X\) in \(\RationalNumbers[[X]]\), with its complete coefficient
 formula and exact rescaling bridge to the distinguished dyadic germ and the
-quadratic inverse, but no convergence or real-inverse identification.
+quadratic inverse.  The separate downstream module
+\path{FabiusInverseQuarterJet.lean} has exactly two public theorems,
+\path{Fabius.iteratedDeriv_centeredFabiusInv_quarter_eq_quadraticInverse}
+and
+\path{Fabius.iteratedDeriv_fabiusInv_five_seventy_two_succ}.  They identify
+the full derivative jet of the actual centered Fabius inverse at
+\(5/72=F(1/4)\) with the factorial-scaled coefficients of the inverse of
+\(X+4X^2\), and hence prove
+\[
+ G^{(m+1)}(5/72)=(m+1)!(-4)^m C_m.
+\]
+This is an equality of smooth jets only: neither module proves convergence of
+the formal germ, equality with the inverse on a neighborhood, or analyticity
+at the quarter anchor.
 
 \item \path{QuarterCatalanRichardson.lean} has three public definitions,
 \path{Fabius.finiteRescaleFilter},
@@ -15148,6 +15161,32 @@ The specializations at $m=2$ organize the two orbits into one system:
  M_2(t)=M_4(t/3)\,M_4(2t/3),
  \label{p7:eq:signed-reciprocal-decimation}
 \end{align}
+
+\begin{statusbox}{Lean crosswalk: exact fixed half--quarter law}
+The fixed first line \cref{p7:eq:half-quarter} is now exact in
+\path{GeometricUniformMultisection.lean}.  Its two definitions
+\path{evenCoordinates} and \path{oddCoordinates} split a coordinate sequence by
+parity.  The theorem \path{geometricUniformSeries_one_half_multisection} proves
+pointwise that
+\[
+ Y_{1/2}(\omega)=\tfrac23Y_{1/4}(\omega^{(0)})
+                  +\tfrac13Y_{1/4}(\omega^{(1)}).
+\]
+The theorem \path{geometricUniformDistribution_one_half_multisection} proves that
+the two quarter-ratio processes are independent copies under the product-uniform
+law and identifies the corresponding product pushforward, while
+\path{geometricUniformDistribution_one_half_conv_one_quarter} gives the exact
+convolution of the \(2/3\)- and \(1/3\)-scaled quarter laws.  These fixed
+identities need no user hypothesis.
+
+The compound result in \cref{p7:thm:multisection} remains partial: the formal API
+does not yet supply general \(q,m\), \cref{p7:eq:M-multisection}, cumulant
+compatibility, signed reciprocal or all-\(m\) decimation, the centered-series or
+density formula \cref{p7:eq:R-multisection}, or its Fourier--Pochhammer, \(Z\),
+and comb counterparts.  In particular, a convolution of scaled measures alone
+does not establish the displayed density identity.
+\end{statusbox}
+
 and more generally
 $Y_{1/2}\overset d=(2^m-1)^{-1}\sum_{j<m}2^{m-1-j}Y_{2^{-m}}^{(j)}$: the
 Fabius law is a convolutional barycenter of the $q=2^{-m}$ family.  In the
@@ -16084,9 +16123,12 @@ the convolution \eqref{p7:eq:R-multisection}.
 
 The existing formal development (weighted-uniform series, geometric law,
 affine self-similarity, reflection, support, absolute continuity, the Fabius
-bridge) supports an incremental plan, merged from both waves.  The low-risk
-algebraic tranche: negative affine conjugacy (coordinatewise sign flip and
-affine pushforward), geometric multisection (reindex $j=mk+r$), the moment
+bridge) now includes the exact fixed half--quarter pointwise split, product-law
+identity, and scaled-measure convolution in
+\path{GeometricUniformMultisection.lean}.  It supports an incremental plan,
+merged from both waves.  The remaining low-risk algebraic tranche: negative
+affine conjugacy (coordinatewise sign flip and affine pushforward), general
+geometric multisection (reindex $j=mk+r$), the moment
 recurrence and formal uniqueness away from roots of unity, the reciprocity
 $M_qM_{1/q}(-\,\cdot)=1$, the position-energy layer over the finite
 $q$-binomial core, the two-nome partition function with its multisection, and
@@ -16097,13 +16139,12 @@ simplex-volume stop-loss formula (upper cube constraints inactive under
 jets from the CDF pantograph equation, and the two-term asymptotic
 (Stirling, crude moment bounds, monotone bracketing) --- far lighter than the
 existing all-orders dyadic saddle machinery.  The reciprocal analytic
-tranche: the inverse product germ, the general-$q$ and outside-disk Euler
-rearrangements (the fixed inside $q=1/2$ rearrangement is now formalized in
-\path{RvachevPochhammerFactorization.lean}), the $L^2$ Laplace
+tranche: the inverse product germ and the outside-disk reciprocal Euler
+rearrangement (the general inside strict-complex-contraction rearrangement is
+now formalized in \path{RvachevPochhammerFactorization.lean}), the $L^2$ Laplace
 series, Hankel positivity and affine transport of determinants, and the
 quasi-definite orthogonal recurrence.  Suggested module names:
-\texttt{GeometricUniformSign}, \texttt{GeometricUniformMultisection},
-\texttt{GeometricProuhet}, \texttt{TwoNomePartition},
+\texttt{GeometricUniformSign}, \texttt{GeometricProuhet}, \texttt{TwoNomePartition},
 \texttt{GeometricEndpoint}, \texttt{GeometricEndpointJets},
 \texttt{GeometricEndpointAsymptotic}.  The conjectures of this part remain in
 frontier quarantine until proved.

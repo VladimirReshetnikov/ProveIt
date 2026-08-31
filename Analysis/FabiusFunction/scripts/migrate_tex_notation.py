@@ -73,6 +73,7 @@ SAFE_RENAMES = {
     "supp": "SupportOperator",
     "sgn": "Sign",
     "lcm": "LeastCommonMultiple",
+    "ord": "OrderOperator",
     "vtwo": "TwoAdicValuation",
     "Law": "LawOperator",
     "Lop": "LaplaceTransformSymbol",
@@ -98,6 +99,27 @@ SAFE_RENAMES = {
     "Fext": "FabiusGlobal",
     "InvF": "FabiusClampedQuantile",
 }
+
+# Literal operator spellings duplicate a canonical command even when no local
+# alias is involved.  These replacements preserve the following argument
+# syntax exactly; the binary-weight pattern additionally consumes its fixed
+# base-2 subscript because ``\BinaryDigitSum`` already owns that decoration.
+SAFE_LITERAL_RENAMES = (
+    ("operator-span", r"\\operatorname\s*\{\s*span\s*\}", "SpanOperator"),
+    ("operator-diag", r"\\operatorname\s*\{\s*diag\s*\}", "DiagonalOperator"),
+    ("operator-tr", r"\\operatorname\s*\{\s*tr\s*\}", "TraceOperator"),
+    ("operator-rank", r"\\operatorname\s*\{\s*rank\s*\}", "RankOperator"),
+    ("operator-ord", r"\\operatorname\s*\{\s*ord\s*\}", "OrderOperator"),
+    (
+        "operator-binary-weight",
+        r"\\operatorname\s*\{\s*wt\s*\}\s*_\s*(?:\{\s*2\s*\}|2)",
+        "BinaryDigitSum",
+    ),
+    ("operator-supp", r"\\operatorname\s*\{\s*supp\s*\}", "SupportOperator"),
+    ("operator-sgn", r"\\operatorname\s*\{\s*sgn\s*\}", "Sign"),
+    ("operator-lcm", r"\\operatorname\s*\{\s*lcm\s*\}", "LeastCommonMultiple"),
+    ("operator-dist", r"\\operatorname\s*\{\s*dist\s*\}", "MetricDistance"),
+)
 
 DOCUMENTCLASS_RE = re.compile(r"(?m)^[^%\n]*\\documentclass(?:\[[^]]*\])?\{")
 CANONICAL_INPUT_RE = re.compile(
@@ -296,6 +318,13 @@ def transform(
             pattern = re.compile(r"\\" + re.escape(old) + r"(?![A-Za-z@])")
             code, substitutions = pattern.subn(r"\\" + new, code)
             counts[old] += substitutions
+        for key, pattern, replacement in SAFE_LITERAL_RENAMES:
+            # The source pattern ends in a closing brace, whereas the target
+            # is a control word.  Keep a trailing separator so a following
+            # letter cannot be swallowed into the replacement command name.
+            code, substitutions = re.subn(pattern, r"\\" + replacement + " ", code)
+            if substitutions:
+                counts[key] = counts.get(key, 0) + substitutions
         if replace_global_fabius:
             for pattern in (
                 r"\\mathcal\s*\{\s*F\s*\}",
@@ -405,6 +434,13 @@ def main() -> int:
             print(f"  {count:6d}  scripted \\NaturalNumbers -> \\PositiveIntegers")
         elif name == "NaturalNumbers-redundant-zero":
             print(f"  {count:6d}  \\NaturalNumbers_0 -> \\NaturalNumbers")
+        elif name.startswith("operator-"):
+            target = next(
+                replacement
+                for key, _pattern, replacement in SAFE_LITERAL_RENAMES
+                if key == name
+            )
+            print(f"  {count:6d}  literal {name[9:]} operator -> \\{target}")
         elif name in SAFE_RENAMES:
             print(f"  {count:6d}  \\{name} -> \\{SAFE_RENAMES[name]}")
         elif name == "sinc":

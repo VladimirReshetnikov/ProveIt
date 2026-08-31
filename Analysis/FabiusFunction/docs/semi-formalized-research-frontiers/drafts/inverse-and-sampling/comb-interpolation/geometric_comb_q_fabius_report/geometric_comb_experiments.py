@@ -29,14 +29,35 @@ from __future__ import annotations
 
 import csv
 import math
+from datetime import datetime, timezone
 from dataclasses import dataclass
 from fractions import Fraction
 from pathlib import Path
 from typing import Callable, Iterable, Sequence
 
+import matplotlib
+
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import mpmath as mp
 import numpy as np
+
+
+# Preserve text as embedded TrueType outlines in vector output.  Matplotlib's
+# historical PDF default is Type 3, which is unsuitable for archival intake.
+matplotlib.rcParams["pdf.fonttype"] = 42
+matplotlib.rcParams["ps.fonttype"] = 42
+
+ARTIFACT_TIMESTAMP = datetime(2026, 8, 30, 12, 0, tzinfo=timezone.utc)
+PDF_METADATA = {
+    "Creator": "geometric_comb_experiments.py (Matplotlib 3.11.1)",
+    "Producer": "Matplotlib PDF backend",
+    "CreationDate": ARTIFACT_TIMESTAMP,
+    "ModDate": ARTIFACT_TIMESTAMP,
+}
+PNG_METADATA = {
+    "Software": "geometric_comb_experiments.py (Matplotlib 3.11.1)",
+}
 
 
 ROOT = Path(__file__).resolve().parent
@@ -431,11 +452,13 @@ def lebesgue_data(q: float = 0.5, max_n: int = 32) -> list[dict[str, float | int
                 "n": n,
                 "endpoint_lebesgue": endpoint_lebesgue(q, n),
                 "endpoint_limit": float(endpoint_limit),
-                "x_max": x_max,
-                "n_times_one_minus_x_max": n * (1.0 - x_max),
-                "log10_lambda_max": log_lambda / math.log(10.0),
-                "log10_asymptotic": asymptotic_log / math.log(10.0),
-                "lambda_over_asymptotic": math.exp(log_lambda - asymptotic_log),
+                "x_top_gap_max": x_max,
+                "n_times_one_minus_x_top_gap_max": n * (1.0 - x_max),
+                "log10_lambda_top_gap_max": log_lambda / math.log(10.0),
+                "log10_global_asymptotic": asymptotic_log / math.log(10.0),
+                "top_gap_over_global_asymptotic": math.exp(
+                    log_lambda - asymptotic_log
+                ),
             }
         )
     return rows
@@ -450,7 +473,9 @@ def write_csv(path: Path, rows: Sequence[dict[str, float | int]]) -> None:
     if not rows:
         raise ValueError("cannot write an empty table")
     with path.open("w", newline="", encoding="utf-8") as stream:
-        writer = csv.DictWriter(stream, fieldnames=list(rows[0].keys()))
+        writer = csv.DictWriter(
+            stream, fieldnames=list(rows[0].keys()), lineterminator="\n"
+        )
         writer.writeheader()
         writer.writerows(rows)
 
@@ -459,8 +484,17 @@ def save_figure(path_stem: Path) -> None:
     """Save both vector PDF and raster PNG versions of the active figure."""
 
     plt.tight_layout()
-    plt.savefig(path_stem.with_suffix(".pdf"), bbox_inches="tight")
-    plt.savefig(path_stem.with_suffix(".png"), dpi=180, bbox_inches="tight")
+    plt.savefig(
+        path_stem.with_suffix(".pdf"),
+        bbox_inches="tight",
+        metadata=PDF_METADATA,
+    )
+    plt.savefig(
+        path_stem.with_suffix(".png"),
+        dpi=180,
+        bbox_inches="tight",
+        metadata=PNG_METADATA,
+    )
     plt.close()
 
 
@@ -469,8 +503,12 @@ def make_figures(
     fabius_rows: Sequence[dict[str, float | int]],
 ) -> None:
     ns = np.array([int(row["n"]) for row in lebesgue_rows])
-    log_max = np.array([float(row["log10_lambda_max"]) for row in lebesgue_rows])
-    log_asym = np.array([float(row["log10_asymptotic"]) for row in lebesgue_rows])
+    log_max = np.array(
+        [float(row["log10_lambda_top_gap_max"]) for row in lebesgue_rows]
+    )
+    log_asym = np.array(
+        [float(row["log10_global_asymptotic"]) for row in lebesgue_rows]
+    )
 
     plt.figure(figsize=(7.1, 4.4))
     plt.plot(ns, log_max, marker="o", markersize=3, label="computed top-gap maximum")
@@ -483,14 +521,20 @@ def make_figures(
     save_figure(FIGURE_DIR / "lebesgue_growth")
 
     scaled_location = np.array(
-        [float(row["n_times_one_minus_x_max"]) for row in lebesgue_rows]
+        [float(row["n_times_one_minus_x_top_gap_max"]) for row in lebesgue_rows]
     )
     plt.figure(figsize=(7.1, 4.2))
-    plt.plot(ns, scaled_location, marker="o", markersize=3, label=r"$n(1-x_n^*)$")
+    plt.plot(
+        ns,
+        scaled_location,
+        marker="o",
+        markersize=3,
+        label=r"$n(1-x_n^{\mathrm{top}})$",
+    )
     plt.axhline(1.0, linestyle="--", label="proved limit 1")
     plt.xlabel("interpolation degree n")
     plt.ylabel("scaled distance from the outer node")
-    plt.title("Location of the geometric-comb Lebesgue peak")
+    plt.title("Location of the geometric-comb top-gap Lebesgue peak")
     plt.legend()
     plt.grid(True, alpha=0.25)
     save_figure(FIGURE_DIR / "lebesgue_peak_location")

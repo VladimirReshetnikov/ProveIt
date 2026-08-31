@@ -88,9 +88,38 @@ calculation, or numerical check in any manuscript does not imply that the
 claim has been proved in Lean.
 
 New standalone intake member:
+[`Digital_Spectral_Geometry_and_Log_Periodic_Saddles/`](Digital_Spectral_Geometry_and_Log_Periodic_Saddles/),
+*Digital Spectral Geometry and Log-Periodic Saddles* (24 A4 pp), arrived from the
+rootless `Fabius_Rvachev_Frontier_Report_Package.zip` on 2026-08-30. The
+title-based directory avoids collision with an unrelated q-series package
+that used the same generic report filename. Its delivered zero-file audit was
+replaced by a reproducible recursive audit of 188 prior TeX files (390,119
+lines and 16,813,357 bytes) excluding this package directory, with raw corpus
+digest `bb8a7de4c16a960f8d640d99797085b4f17cd0cdcc38b38caa4014536806b4d3`.
+Its
+failed numerical generation was repaired and rerun at 80-digit precision,
+producing all three optional figures and the generated tables. No theorem-
+level novelty is accepted on intake: the divisor/zeta/count/heat/cumulant,
+exact `K`/Lambert/base-family, Appell/first-defect, Legendre--Bessel, sub-
+Gaussian, and endpoint/inverse strands all have exact or stronger prior homes
+in the consolidated corpus. Only minor corollary-level residue remains to
+assess. The all-orders saddle and inverse claims were downgraded for a missing
+uniform remainder, the global Strang--Fix conclusion was restricted to the
+proved canonical Appell defect, and the false strict-curvature range was
+corrected using center flatness at `b=2` and the exact plateau for `b>2`.
+The report remains a separate overlap intake; its labels assert neither
+novelty nor Lean status. It now reproduces the current primary document's
+canonical A4 package, theorem, macro, boxed-environment, and listing-style
+block verbatim, apart from permitted metadata and running-head text, with only
+four required local notation commands appended. The validated PDF
+uses fully embedded, subset Libertinus fonts and no Type 3 fonts. Current
+payload checksums, including the preserved ten-entry arrival ledger, pass
+completely (18/18).
+
+New standalone intake member:
 [`Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/`](Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/),
 *Reciprocal-Integer Convolution Divisors of the Rvachev Law* (35 A4 pp,
-2328 source lines; with a 352-line exact/numerical experiment),
+2327 source lines; with a 352-line exact/numerical experiment),
 arrived from a rootless 14-file archive on 2026-08-30.  The package's
 characteristic quotients
 `Q_M(z) = Phi(z) / Phi(z/M)` classify reciprocal-integer decompositions of
