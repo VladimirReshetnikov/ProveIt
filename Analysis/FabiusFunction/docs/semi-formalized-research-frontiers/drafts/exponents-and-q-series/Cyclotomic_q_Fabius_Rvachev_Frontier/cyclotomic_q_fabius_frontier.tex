@@ -99,7 +99,7 @@
 
 \title{\bfseries Cyclotomic Blow-Ups and Natural Boundaries\\[4pt]
 for the $q$-Fabius--Rvachev Sinc Product\\[8pt]
-\large Spectral dilogarithms, polyharmonic limits, Bell condensation, and inverse branches}
+\large Spectral dilogarithms, polyharmonic limits, Bell condensation, and formal inverse series}
 \author{Research report for the \texttt{ProveIt/Analysis/FabiusFunction} project}
 \date{30 August 2026}
 
@@ -137,7 +137,7 @@ then gives the locally uniform cyclotomic limit
  \qquad
  A_\omega=\frac{\zeta(2d)(1-\omega)^{2d}}{2d^2\pi^{2d}}.
 \]
-We prove the first corrections and an all-orders Bell-polynomial expansion, identify the corresponding polyharmonic heat symbol, show that the reciprocal zero moments and Bernoulli cumulants collapse to a single order $2d$, derive the limiting Gould--Hopper Appell family, and construct inverse branches both in the scaled frequency and in $q$ itself.  A universal analytic-germ theorem shows that the mechanism extends beyond sinc products to $q$-Pochhammer and other geometric products.  High-precision experiments, source code, CSV data, and figures accompany the report.
+ We prove the first corrections and an all-orders Bell-polynomial expansion, identify the corresponding polyharmonic heat symbol, show that the reciprocal zero moments and Bernoulli cumulants collapse to a single order $2d$, derive the limiting Gould--Hopper Appell family, and construct formal inverse series both in the scaled frequency and in $q$ itself.  A universal analytic-germ theorem shows that the mechanism extends beyond sinc products to $q$-Pochhammer and other geometric products.  High-precision experiments, source code, CSV data, and figures accompany the report.
 \end{abstract}
 
 \tableofcontents
@@ -168,7 +168,7 @@ Throughout this report, \emph{new} means apparently new relative to the audited 
 
 The principal contributions are as follows.
 \begin{enumerate}[label=\textbf{R\arabic*.},leftmargin=3.4em]
-\item An exact logarithmic and $q$-Pochhammer representation of the complex geometric sinc product, organized so that cyclotomic resonance is visible coefficient by coefficient.
+\item An exact logarithmic and $q$-Pochhammer representation of the complex geometric sinc product, organized so that cyclotomic resonance is visible coefficient by coefficient.  The underlying product and the global spectral $q$-Pochhammer factorization now have exact Lean counterparts; the local master logarithm remains a manuscript theorem.
 \item A two-term radial expansion at every nontrivial root of unity, with an explicit action $\mathscr A_\omega$ and constant term $\mathscr B_\omega$.
 \item Three equivalent descriptions of $\mathscr A_\omega$: a resonant zeta series, an infinite spectral dilogarithm, and a cyclic projection integral.
 \item A sign theorem for the action and, as a consequence, a proof that the unit circle is a natural boundary for every fixed real $0<|z|<\pi/2$.
@@ -178,11 +178,29 @@ The principal contributions are as follows.
 \item Bernoulli--Bell condensation: among all scaled cumulants, exactly the $2d$th survives, forcing an explicit sparse moment sequence.
 \item A limiting Gould--Hopper/Appell family obtained from the inverse moment generating function.
 \item Polyharmonic heat-kernel and Stokes-sector interpretations, distinguishing the genuinely dissipative roots $m\equiv2\pmod4$ from backward/rotated sectors.
-\item Analytic inverse branches in the scaled frequency and in $q$, with explicit first corrections and predicted monodromy.
-\item Reproducible high-precision tests whose fitted convergence exponents agree with the proved orders.
+\item Formal inverse series in the scaled frequency and in $q$, with explicit first corrections; sectorial analytic realization and monodromy remain open.
+\item Reproducible high-precision tests whose fitted convergence exponents agree with the displayed asymptotic orders.
 \end{enumerate}
 
-\section{The Fabius--Rvachev interface and its complex $q$-extension}
+\begin{status}[Current formal and analytic boundary]
+The repository already defines the complex geometric sinc product and its
+reciprocal-Gamma reflection factorization.  The global spectral
+$q$-Pochhammer identity in \cref{eq:qpoch-factor} is now machine-checked in
+Lean; exact names and normalizations are recorded below.  No later
+root-of-unity asymptotic, natural-boundary, condensation, Gould--Hopper, or
+inverse-branch claim in this report is thereby Lean-verified.
+
+There is also an analytic distinction inside the manuscript.  The fixed-index
+cyclotomic expansions do not by themselves justify summation over an unbounded
+index.  The proof of \cref{thm:two-term-radial} closes this gap with a uniform
+two-range estimate, splitting at $k\asymp\delta^{-1/2}$ and using geometric
+decay beyond the cutoff.  By contrast, the inverse formulas below record
+formal coefficients and sectorial targets, not established convergent analytic
+germs at the boundary.
+\end{status}
+
+\section{The Fabius--Rvachev interface and its complex
+\texorpdfstring{$q$}{q}-extension}
 
 \subsection{The dyadic probability law}
 
@@ -239,7 +257,40 @@ The product in \cref{eq:Phi-def} converges locally uniformly on $\D\times\C$ and
 On a compact set $|q|\le r<1$, $|z|\le R$, the $j$th argument is $O(r^j)$ uniformly.  Since $\sinc w=1-w^2/6+O(w^4)$, the deviation of the $j$th factor from one is $O(r^{2j})$.  The Weierstrass criterion gives locally uniform convergence of the product and of its holomorphic finite approximants.  The three normalizations follow directly.
 \end{proof}
 
-\section{Master logarithmic and $q$-Pochhammer representations}
+\begin{remark}[Exact Lean normalization dictionary]
+Lean's existing product uses the frequency coordinate
+\[
+ \operatorname{geometricSincProduct}(q,u)
+ =\prod_{j\ge0}\sinc\!\bigl(\pi q^j u\bigr).
+\]
+Consequently the present convention is exactly
+\[
+ \Phi(q,z)=\operatorname{geometricSincProduct}
+ \left(q,\frac{(1-q)z}{\pi}\right).
+\]
+The definition and its module are
+\begin{center}
+\small
+\path|Fabius.geometricSincProduct|\quad in\quad
+\path|FabiusFunction.GeometricReciprocalGamma|.
+\end{center}
+At the dyadic point, the theorem
+\begin{center}
+\small
+\path|Fabius.centeredSincProduct_eq_rvachevFourierProduct|
+\end{center}
+records the further coordinate conversion
+\[
+ \Phi\!\left(\tfrac12,z\right)
+ =\operatorname{centeredSincProduct}(z)
+ =\operatorname{rvachevFourierProduct}\!\left(\frac{z}{2\pi}\right).
+\]
+Thus the manuscript's Fourier variable and Lean's canonical Rvachev product
+variable differ by the displayed factor $2\pi$.
+\end{remark}
+
+\section{Master logarithmic and
+\texorpdfstring{$q$}{q}-Pochhammer representations}
 
 \subsection{The exact logarithmic series}
 
@@ -290,7 +341,7 @@ The coefficient
 \end{equation}
 is simultaneously a geometric power sum, a cumulant multiplier, and the source of every root-of-unity singularity.  The entire cyclotomic theory below is a careful organization of the resonances $q^{2k}=1$.
 
-\subsection{A spectral $q$-Pochhammer factorization}
+\subsection{A spectral \texorpdfstring{$q$}{q}-Pochhammer factorization}
 
 Let $(a;Q)_\infty=\prod_{j\ge0}(1-aQ^j)$.  Reordering Euler's sine factors gives a second exact representation.
 
@@ -317,8 +368,29 @@ The sum of absolute first-order deviations is bounded on compact sets by a const
 \), so the products may be interchanged.  The inner product over $j$ is the stated $q^2$-Pochhammer symbol.
 \end{proof}
 
+\begin{remark}[Lean crosswalk: global factorization]
+The compiled theorem
+\begin{center}
+\small
+\path|Fabius.geometricSincProduct_eq_tprod_complexQPochhammerInf|
+\end{center}
+in \path|FabiusFunction.RvachevPochhammerFactorization| states, for every
+$q\in\C$ with $|q|<1$ and every $u\in\C$,
+\[
+ \operatorname{geometricSincProduct}(q,u)
+ =\prod_{k\ge0}
+ \left(\frac{u^2}{(k+1)^2};q^2\right)_\infty .
+\]
+Substituting $u=(1-q)z/\pi$ and reindexing $n=k+1$ gives
+\cref{eq:qpoch-factor} exactly.  Its proof is global in $u$, includes $q=0$
+without division by a geometric scale, and remains valid when individual
+Euler factors vanish.  The older dyadic theorem
+\path|Fabius.rvachevFourierProduct_eq_tprod_complexQPochhammerInf| is now a
+direct specialization of this variable-$q$ result.
+\end{remark}
+
 \begin{remark}[Why dilogarithms appear]
-Radial root-of-unity asymptotics of a single $q$-Pochhammer symbol are governed by a dilogarithmic action and a finite cyclic factor.  Formula \cref{eq:qpoch-factor} superposes one such action for each spectral point $\pi n$.  The result is the infinite spectral dilogarithm obtained below.  Our direct proof from \cref{eq:master-log} avoids branch bookkeeping and makes the uniformity transparent.
+Radial root-of-unity asymptotics of a single $q$-Pochhammer symbol are governed by a dilogarithmic action and a finite cyclic factor.  Formula \cref{eq:qpoch-factor} superposes one such action for each spectral point $\pi n$.  The result is the infinite spectral dilogarithm obtained below.  Our direct proof from \cref{eq:master-log} avoids branch bookkeeping and reduces the needed uniformity to the explicit two-range estimate in \cref{thm:two-term-radial}.
 \end{remark}
 
 \section{Radial resonance at roots of unity}
@@ -363,7 +435,8 @@ For fixed $k\ge1$,
  && d\mid k.
  \label{eq:res-exp}
 \end{align}
-The error is uniform for $k$ in any fixed residue class, after multiplication by a geometrically decaying factor $\rho^{2k}$ with $0<\rho<1$.
+Both remainders are asserted here only for each fixed $k$; no uniformity in an
+unbounded residue class is part of this lemma.
 \end{lemma}
 
 \begin{proof}
@@ -376,7 +449,9 @@ The nonresonant denominator tends to the nonzero number $1-\omega^{2k}$.  In the
  &=1-(1-\delta)^{2k}
  =2k\delta-k(2k-1)\delta^2+O(k^3\delta^3).
 \end{align*}
-Divide the two expansions.  The final uniformity statement follows because the Taylor coefficients grow at most polynomially in $k$.
+Divide the two expansions.  This proves the two fixed-$k$ statements.  Passing
+from them to a summed expansion requires the separate uniform remainder
+estimate isolated in the appendix.
 \end{proof}
 
 \subsection{The radial action and constant term}
@@ -403,7 +478,8 @@ Also define
 \end{align}
 \end{definition}
 
-\begin{theorem}[Two-term radial root-of-unity expansion]
+\begin{theorem}[Uniform two-term radial root-of-unity expansion]
+\label{thm:two-term-radial}
 Let $K$ be a compact subset of $\set{z:|a_\omega z|<\pi}$.  Uniformly for $z\in K$,
 \begin{equation}
  \boxed{
@@ -416,7 +492,68 @@ In particular, every nontrivial root of unity carries a full exponential-scale s
 \end{theorem}
 
 \begin{proof}
-Insert \cref{eq:nonres-exp,eq:res-exp} into \cref{eq:master-log}.  The coefficients of $\delta^{-1}$ are exactly the resonant terms $k=\ell d$ and sum to $-\Aact_\omega(z)/\delta$.  The constant terms are \cref{eq:B-first,eq:B-second}.  Choose $\rho<1$ with $|a_\omega z|\le\rho\pi$ on $K$.  Since $c_k|a_\omega z|^{2k}=O(\rho^{2k}/k)$ and the expansion remainders have at most polynomial growth in $k$, their sum is $O_K(\delta)$.
+Put $a=a_\omega$, choose $0<\rho<\rho_1<1$ with
+$|az|\le\rho\pi$ on $K$, and shrink $\delta_0>0$ so that
+$|(a+\omega\delta)z|\le\rho_1\pi$ for $z\in K$ and
+$0\le\delta\le\delta_0$.  Write the $k$th multiplier as
+\[
+ S_k(\delta)=
+ \frac{(a+\omega\delta)^{2k}}
+ {1-\omega^{2k}(1-\delta)^{2k}}.
+\]
+
+If $d\nmid k$, the finitely many possible phases $\omega^{2k}\ne1$ give
+\(
+ \inf_{0\le t\le1}|1-\omega^{2k}t|>0
+\)
+uniformly in $k$.  Differentiating $S_k$ on the real interval
+$[0,\delta_0]$, and using the two bounds just chosen, gives
+\begin{equation}
+ c_k|z|^{2k}|S_k(\delta)-S_k(0)|
+ \le C_K\delta\rho_1^{2k}.
+ \label{eq:nonres-uniform}
+\end{equation}
+Indeed, the derivative contributes at most one factor of $k$, which cancels
+the $1/k$ in $c_k\le\zeta(2)/(k\pi^{2k})$.  Summing
+\cref{eq:nonres-uniform} proves the required $O_K(\delta)$ estimate for all
+nonresonant indices.
+
+Now suppose $d\mid k$, put $n=2k$ and $b=\omega/a$, and choose the cutoff
+$N=\lfloor\delta^{-1/2}\rfloor$.  Uniformly when $k\le N$,
+\begin{align*}
+ (1+b\delta)^n&=1+nb\delta+O(n^2\delta^2),\\
+ \frac1{1-(1-\delta)^n}
+ &=\frac1{n\delta}+\frac{n-1}{2n}+O(n\delta).
+\end{align*}
+Here $n\delta\le2\sqrt\delta$, so the constants are independent of $k$ and
+$\delta$.  Multiplication yields
+\begin{equation}
+ \frac{S_k(\delta)}{a^{2k}}
+ =\frac1{2k\delta}+\frac{\omega}{a}
+  +\frac{2k-1}{4k}+O(k\delta).
+ \label{eq:res-uniform}
+\end{equation}
+After multiplication by $c_k|az|^{2k}$, the summed remainder in
+\cref{eq:res-uniform} is bounded by
+\(
+ C_K\delta\sum_{k\le N}\rho^{2k}=O_K(\delta)
+\).
+
+It remains only to justify discarding $k>N$.  The elementary inequality
+\[
+ 1-(1-\delta)^n\ge 1-\e^{-n\delta}
+ \ge (1-\e^{-1})\min(1,n\delta)
+\]
+and the $\rho_1$ bound imply that the actual resonant tail, as well as the
+three subtracted terms in \cref{eq:res-uniform}, is at most
+\[
+ C_K\sum_{k>N}\rho_1^{2k}
+ \left(1+\frac1{k\delta}\right)
+ =O_K\!\left(\delta^{-1}\rho_1^{2N}\right)=o_K(\delta).
+\]
+Thus the fixed-index coefficients may be summed uniformly.  Their pole and
+constant parts are precisely $\Aact_\omega$ and $\Bact_\omega$, respectively,
+which proves \cref{eq:two-term-radial}.
 \end{proof}
 
 \subsection{Dilogarithmic and cyclic descriptions}
@@ -461,7 +598,10 @@ For $|a_\omega z|<\pi$,
  \right]\frac{\dd t}{t}.}
  \label{eq:cyclic-projection}
 \end{equation}
-The integrand has a removable singularity at zero.
+Here every logarithm is the zero-normalized holomorphic branch from
+\cref{eq:sinc-log}, and the integral is taken along the straight segment from
+$0$ to $z$ (equivalently, along any path in the disk).  The integrand has a
+holomorphic removable extension at zero.
 \end{theorem}
 
 \begin{proof}
@@ -537,7 +677,7 @@ For $0<x<1$, $\Li_2(x)>0$ and $\Li_2(-x)<0$.  Every summand in \cref{eq:spectral
 
 \subsection{Natural boundary}
 
-\begin{theorem}[Explicit natural boundary for the $q$-Fabius sinc transform]
+\begin{theorem}[Natural boundary on a universal frequency interval]
 Fix real $z$ with $0<|z|<\pi/2$.  The holomorphic function
 \begin{equation}
  q\longmapsto\Phi(q,z),\qquad |q|<1,
@@ -556,15 +696,18 @@ Let $\omega\ne1$ be any root of unity.  By the preceding theorem,
  =-\frac{A}{\delta}+O(1).
  \label{eq:mod-growth}
 \end{equation}
-If $A>0$, the modulus tends to zero faster than every power of $\delta$.  A holomorphic continuation through $\omega$ would either be nonzero there or have a zero of finite order, both incompatible with this decay.  A zero of infinite order would force the continuation to vanish identically near $\omega$, hence everywhere in the connected disk by identity, contradicting $\Phi(0,z)=\sinc z\ne0$.
+If $A>0$, the modulus tends to zero faster than every power of $\delta$.  A holomorphic continuation through $\omega$ would either be nonzero there or have a zero of finite order, both incompatible with this decay.  A zero of infinite order would force the continuation to vanish identically near $\omega$, hence everywhere in the connected disk by identity, contradicting $\Phi(0,z)=\sinc z\ne0$.  A meromorphic continuation cannot have a pole because its modulus would then grow at a finite polynomial rate; without a pole it is holomorphic, which is the case just excluded.
 
 If $A<0$, the modulus grows faster than every power of $\delta$.  This is incompatible not only with a holomorphic continuation but also with a meromorphic continuation, whose singularity could have only finite pole order.
 
 Thus every nontrivial root of unity is a nonmeromorphic boundary singularity.  Roots of unity are dense on $|q|=1$, so no open boundary arc can be crossed.
 \end{proof}
 
-\begin{remark}[What has and has not been proved]
-The theorem settles the repository's natural-boundary conjecture for the explicit, nonempty, root-independent interval $0<|z|<\pi/2$.  It does not yet classify exceptional complex frequencies outside that interval.  There the action can cross dilogarithm branch cuts, and cancellation between spectral terms is a genuine possibility.
+\begin{remark}[Scope of the theorem]
+The theorem gives an explicit, root-independent interval
+$0<|z|<\pi/2$.  It does not classify exceptional complex frequencies outside
+that interval.  There the action can cross dilogarithm branch cuts, and
+cancellation between spectral terms is a genuine possibility.
 \end{remark}
 
 \section{Cyclotomic blow-ups}
@@ -589,6 +732,37 @@ and define
  \label{eq:Aomega}
 \end{equation}
 
+\begin{lemma}[Uniform scaled-tail bound]
+For every compact set $W\subset\C$ there are $C_W>0$ and $\eps_0>0$ such
+that, for every integer $M\ge d$, every $w\in W$, and
+$0<\eps\le\eps_0$, the tail of the master logarithm satisfies
+\begin{equation}
+ \sum_{k\ge M}c_k\eps^k|w|^{2k}
+ \left|\frac{(a_\omega+\omega\eps^d)^{2k}}
+ {1-\omega^{2k}(1-\eps^d)^{2k}}\right|
+ \le C_W\eps^{M-d}.
+ \label{eq:scaled-tail}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Put $s=\eps^d$.  If $d\mid k$, then
+\(
+ 1-(1-s)^{2k}\ge s
+\).
+If $d\nmid k$, the finitely many phases $\omega^{2k}\ne1$ keep
+$|1-\omega^{2k}(1-s)^{2k}|$ uniformly away from zero.  After reducing
+$\eps_0$ if necessary, both cases are therefore bounded below by $c_\omega s$
+for a fixed $c_\omega>0$.  If $|w|\le R$ on $W$, then
+$c_k\le\zeta(2)/(k\pi^{2k})$ turns the left side into at most
+\[
+ C\eps^{-d}\sum_{k\ge M}\frac1k
+ \left(\frac{|a_\omega+\omega\eps^d|^2R^2}{\pi^2}\eps\right)^k.
+\]
+The parenthesized base is at most $B_W\eps<1/2$ for small $\eps$.
+Summing the geometric tail proves \cref{eq:scaled-tail}.
+\end{proof}
+
 \begin{theorem}[Cyclotomic blow-up limit]
 Locally uniformly for $w\in\C$,
 \begin{equation}
@@ -603,10 +777,10 @@ Locally uniformly for $w\in\C$,
 In \cref{eq:master-log}, the $k$th term acquires the factor $\eps^k$.  If $d\nmid k$, the multiplier \cref{eq:Rk} remains bounded and the term tends to zero.  If $k=\ell d$, its multiplier is asymptotic to
 \(
  a_\omega^{2k}/(2k\eps^d)
-\), so the term has order $\eps^{(\ell-1)d}$.  Only $k=d$ survives, giving $-A_\omega w^{2d}$.  On compact $w$-sets, the remaining terms are dominated by a convergent geometric series, which proves local uniformity and permits exponentiation.
+\), so the term has order $\eps^{(\ell-1)d}$.  Only $k=d$ survives, giving $-A_\omega w^{2d}$.  Taking $M=d+1$ in \cref{eq:scaled-tail} makes every omitted term $O_W(\eps)$, which proves local uniformity and permits exponentiation.
 \end{proof}
 
-\subsection{Subcritical and order-$d$ corrections}
+\subsection{Subcritical and order-\texorpdfstring{$d$}{d} corrections}
 
 For $1\le k<d$ define
 \begin{equation}
@@ -639,7 +813,7 @@ Uniformly on compact $w$-sets,
 \end{theorem}
 
 \begin{proof}
-For $k<d$ there is no resonance, so the constant term of the multiplier gives \cref{eq:Ck}.  At total order $\eps^d$, two and only two resonant sources contribute.  The next term in the $k=d$ multiplier is the constant in \cref{eq:res-exp}, producing $A_\omega\eta_\omega w^{2d}$.  The leading pole of the $k=2d$ multiplier produces $D_\omega w^{4d}$.  Every omitted nonresonant term begins at $k=d+1$, and every later resonant term begins at order at least $2d$, so the remainder is $O(\eps^{d+1})$.
+For $k<d$ there is no resonance, so the constant term of the multiplier gives \cref{eq:Ck}.  At total order $\eps^d$, two and only two resonant sources contribute.  The next term in the $k=d$ multiplier is the constant in \cref{eq:res-exp}, producing $A_\omega\eta_\omega w^{2d}$.  The leading pole of the $k=2d$ multiplier produces $D_\omega w^{4d}$.  Every omitted nonresonant term begins at $k=d+1$, and every later resonant term begins at order at least $2d$.  Taylor's theorem handles the finitely many displayed indices, while \cref{eq:scaled-tail} with $M=2d+1$ handles the infinite remainder, giving $O(\eps^{d+1})$.
 \end{proof}
 
 \subsection{All orders and Bell polynomials}
@@ -685,7 +859,7 @@ where $B_n$ is the complete exponential Bell polynomial.
 \end{theorem}
 
 \begin{proof}
-Substitute \cref{eq:Rkeps} into the master logarithm.  The coefficient of $\eps^n$ in the $k$th term is the displayed Laurent coefficient with index $n-k$.  Since the lowest possible exponent in $\mathcal R_k$ is $-d$, only $k\le n+d$ can contribute, so the sum is finite.  Truncation with a compact-uniform geometric tail proves the asymptotic statement.  Formula \cref{eq:Bell-Pn} is the standard exponential formula for exponentiating a formal series.
+Substitute \cref{eq:Rkeps} into the master logarithm.  The coefficient of $\eps^n$ in the $k$th term is the displayed Laurent coefficient with index $n-k$.  Since the lowest possible exponent in $\mathcal R_k$ is $-d$, only $k\le n+d$ can contribute, so the sum is finite.  For a truncation through order $n$, Taylor's theorem applies to those finitely many Laurent germs, and \cref{eq:scaled-tail} with $M=n+d+1$ bounds the remaining infinite sum by $O_W(\eps^{n+1})$.  This proves the compact-uniform Poincar\'e expansion.  Formula \cref{eq:Bell-Pn} is the standard exponential formula for exponentiating a formal series.
 \end{proof}
 
 \begin{remark}
@@ -763,7 +937,7 @@ This is the first genuinely higher-order dissipative limit.
 The sinc product is one instance of a more general mechanism.
 
 \begin{theorem}[Universal resonant germ]
-Let $h$ be analytic near zero, with $h(0)=1$, and choose the local logarithm
+Let $h$ be entire, with $h(0)=1$, and choose the local logarithm
 \begin{equation}
  \log h(z)=\sum_{n\ge1}b_nz^n.
  \label{eq:germ-log}
@@ -778,7 +952,9 @@ Fix a root $\omega\ne1$, and let
  r=\min\set{n\ge1:b_n\ne0\ \text{and}\ \omega^n=1}.
  \label{eq:r-germ}
 \end{equation}
-Assume this set is nonempty.  Then, locally uniformly for $w$,
+Assume this set is nonempty.  Along the radial approach
+$q=\omega(1-\delta)$ with $\delta>0$ and $\delta\downarrow0$, interpret
+$\delta^{1/r}$ as the positive real root.  Then, locally uniformly for $w$,
 \begin{equation}
  \boxed{
  \mathcal P_h\bigl(\omega(1-\delta),\delta^{1/r}w\bigr)
@@ -793,7 +969,27 @@ The logarithm of \cref{eq:Ph} is
 \[
  \sum_{n\ge1}b_n\frac{(1-q)^n}{1-q^n}z^n.
 \]
-For nonresonant $n$, the multiplier stays bounded and the scaled term is $O(\delta^{n/r})$.  For resonant $n$, it is asymptotic to $(1-\omega)^n/(n\delta)$, so the scaled order is $\delta^{n/r-1}$.  By the definition of $r$, exactly the $n=r$ term survives.  Compact-uniform convergence follows from the analyticity radius of $h$.
+Choose a zero-free disk about zero for $h$.  Cauchy's estimate for its analytic
+logarithm gives $|b_n|\le CR_0^{-n}$ for some $R_0>0$.  For nonresonant $n$,
+the finitely many possible phases $\omega^n\ne1$ keep the denominator uniformly
+away from zero, and the scaled term is $O(\delta^{n/r})$.  For resonant $n$,
+\(
+ 1-(1-\delta)^n\ge\delta
+\), while the $n=r$ term converges to
+\[
+ b_r w^r\frac{(a_\omega+\omega\delta)^r\delta}
+ {1-(1-\delta)^r}
+ \longrightarrow \frac{b_ra_\omega^r}{r}w^r.
+\]
+Every resonant coefficient below $r$ vanishes by its definition.  Finally, on
+a compact $w$-set the entire tail $n>r$ is bounded, in both resonance classes,
+by
+\[
+ C\delta^{-1}\sum_{n>r}(B\delta^{1/r})^n
+ =O(\delta^{1/r}).
+\]
+Thus exactly the $n=r$ term survives, uniformly on compact sets.  Exponentiating
+gives \cref{eq:universal-germ}.
 \end{proof}
 
 \begin{corollary}[Sinc and $q$-Pochhammer specializations]
@@ -815,13 +1011,21 @@ The theorem separates three ingredients: the local Taylor support of $\log h$, t
 
 \subsection{The zero cloud}
 
-Every sinc factor contributes zeros
+For $0<|q|<1$, every sinc factor contributes the factor-labelled zeros
 \begin{equation}
  z_{\ell,j}(q)=\frac{\pi\ell}{(1-q)q^j},
  \qquad \ell\in\Z\setminus\set0,
  \quad j\ge0.
  \label{eq:zeros}
 \end{equation}
+The division-free form
+\[
+ (1-q)q^jz=\pi\ell
+\]
+is valid also at $q=0$ and is the correct total statement there.  Distinct
+pairs $(\ell,j)$ may describe the same geometric zero; throughout this
+section reciprocal sums count the Euler factors with their resulting
+multiplicity.
 For positive $\ell$, define the reciprocal even power sum
 \begin{equation}
  S_k(q)=\sum_{j\ge0}\sum_{\ell\ge1}z_{\ell,j}(q)^{-2k}.
@@ -844,7 +1048,13 @@ Moreover, the master logarithm is the canonical zero-moment expansion
 \end{proposition}
 
 \begin{proof}
-Insert \cref{eq:zeros}, then separate the geometric and zeta sums.  Formula \cref{eq:log-Sk} is equivalent to \cref{eq:master-log} because $c_k=S_k(q)k^{-1}$ after removing the multiplier.
+Insert \cref{eq:zeros}, then separate the geometric and zeta sums.  The exact
+identity
+\[
+ \frac{S_k(q)}{k}
+ =c_k\frac{(1-q)^{2k}}{1-q^{2k}}
+\]
+makes \cref{eq:log-Sk} identical to the master logarithm.
 \end{proof}
 
 \begin{theorem}[One surviving spectral moment]
@@ -1053,7 +1263,20 @@ If $A_\omega<0$ (all odd $m$ and all $m\equiv0\pmod4$), the real-axis symbol $\e
  \set{w:\Re(A_\omega w^{2d})>0}.
  \label{eq:stokes-sectors}
 \end{equation}
-On contours asymptotic to rays inside these sectors, inverse transforms converge and solve the same polyharmonic equation by analytic continuation.  The sector boundaries
+More precisely, let $\Gamma$ be a piecewise smooth contour with two unbounded
+ends and suppose that, outside a compact set,
+\(
+ \Re(A_\omega w^{2d})\ge c|w|^{2d}
+\)
+for some $c>0$.  Then
+\[
+ K_\Gamma(x,\tau)=\frac1{2\pi}\int_\Gamma
+ \e^{-\tau A_\omega w^{2d}-\ii xw}\dd w
+\]
+converges absolutely and locally uniformly in $x\in\C$ for $\tau>0$.
+The degree-$2d$ decay dominates the linear $xw$ term, so differentiation under
+the integral is justified and $K_\Gamma$ solves the same polyharmonic equation
+as in \cref{eq:polyharmonic-PDE}.  The sector boundaries
 \(
  \Re(A_\omega w^{2d})=0
 \)
@@ -1064,6 +1287,10 @@ Construct a single Riemann--Hilbert or steepest-descent description that connect
 \end{problem}
 
 \section{Inverse cyclotomic branches}
+
+Throughout this section, $O(\eps^N)$ and $O(z^N)$ denote formal order: the
+omitted series belongs to the corresponding principal ideal in the indicated
+formal power-series ring.  No analytic remainder estimate is implicit.
 
 \subsection{Inverse frequency at fixed radial scaling}
 
@@ -1078,8 +1305,10 @@ Choose one of the $2d$ roots $w_0\ne0$ satisfying
  \label{eq:w0}
 \end{equation}
 
-\begin{theorem}[Analytic inverse frequency branch]
-For sufficiently small $\eps$, there is a unique analytic branch $w(\eps)$ near $w_0$ such that
+\begin{proposition}[Formal inverse frequency series]
+There is a unique formal series
+$w(\eps)\in w_0+\eps\C[[\eps]]$ which solves, coefficient by coefficient in
+the formal expansion \cref{eq:all-log},
 \begin{equation}
  \Phi(q_\eps,\sqrt\eps\,w(\eps))=y,
  \qquad
@@ -1101,31 +1330,53 @@ For $d=1$,
  \label{eq:w-first-d1}
 \end{equation}
 All higher coefficients are obtained recursively from \cref{eq:Ln} and partial Bell polynomials.
-\end{theorem}
+\end{proposition}
 
 \begin{proof}
-Take the analytic logarithm near $(\eps,w)=(0,w_0)$ and use \cref{eq:all-log}.  The derivative of the limiting equation with respect to $w$ is
+Use the prescribed logarithm value $\ell$ and substitute a formal series for
+$w$ in \cref{eq:all-log}.  The derivative of the constant-term equation with
+respect to $w$ is
 \(
  -2dA_\omega w_0^{2d-1}\ne0
-\), so the analytic implicit-function theorem applies.  At order $\eps$, compare the derivative contribution with the $-C_{1,\omega}w^2$ term when $d\ge2$.  For $d=1$, use the complete order-one expression in \cref{eq:correction-2}.
+\), hence it is a unit and determines each successive coefficient
+triangularly (equivalently, apply the formal implicit-function theorem).  At
+order $\eps$, compare the derivative contribution with the
+$-C_{1,\omega}w^2$ term when $d\ge2$.  For $d=1$, use the complete order-one
+expression in \cref{eq:correction-2}.
 \end{proof}
 
-\subsection{Inverse $q$ at small frequency}
+\begin{remark}[Analytic realization remains open]
+The proposition is formal: it does not assert a convergent germ in a full
+complex neighborhood of $\eps=0$.  The denominators
+$1-(1-\eps^d)^{2k}$ have complex singularities accumulating at the origin as
+$k\to\infty$.  Thus the direct analytic implicit-function argument is not
+available without proving cancellations among these singularities.  Any
+analytic realization must supply such control, or else be formulated
+sectorially or asymptotically with a uniform remainder estimate.
+\end{remark}
+
+\subsection{Inverse \texorpdfstring{$q$}{q} at small frequency}
 
 The more unusual inverse asks for $q$ as a function of $z$ while the transform value is held fixed.
 
-\begin{theorem}[A $q$-branch emerging from a root of unity]
-Assume $d\ge2$, fix $y$ and $\ell$ as above, and choose the radial coordinate
+\begin{proposition}[Formal inverse $q$-series at a root of unity]
+Assume $d\ge2$, fix $y$ and $\ell$ as above, and choose the root-centered coordinate
 \begin{equation}
  q(z)=\omega(1-\delta(z)).
  \label{eq:qz}
 \end{equation}
-There is a unique analytic germ $\delta(z)$ in $z^2$, with $\delta(0)=0$, such that
+There is a unique formal series
+\[
+ \rho(s)\in -\frac{A_\omega}{\ell}+s\C[[s]],
+ \qquad \delta(z)=z^{2d}\rho(z^2),
+\]
+such that, after substitution into the master logarithm on the prescribed
+logarithm sheet, the identity
 \begin{equation}
  \Phi(q(z),z)=y
  \label{eq:q-inverse-eq}
 \end{equation}
-for all sufficiently small nonzero $z$ in every sector where $|q(z)|<1$.  Equivalently, the identity holds for the analytic logarithmic continuation defined by \cref{eq:master-log} wherever that series converges, with the prescribed logarithm branch.  Its first terms are
+holds coefficient by coefficient.  Its first terms are
 \begin{equation}
  \boxed{
  \delta(z)=-\frac{A_\omega}{\ell}z^{2d}
@@ -1142,13 +1393,14 @@ and therefore
  \right].}
  \label{eq:q-z-expansion}
 \end{equation}
-\end{theorem}
+\end{proposition}
 
 \begin{proof}
-Write $\delta=\rho z^{2d}$.  The logarithmic series extends analytically to $z=0$ as a function of $(\rho,z^2)$, and its limiting value is
+Write $\delta=\rho z^{2d}$.  Coefficientwise substitution in the master
+series has constant term
 \(
  -A_\omega/\rho
-\).  The equation $-A_\omega/\rho=\ell$ has the simple solution $\rho_0=-A_\omega/\ell$, since the derivative $A_\omega/\rho_0^2$ is nonzero.  The analytic implicit-function theorem gives $\rho(z^2)$.  Expanding
+\).  The equation $-A_\omega/\rho=\ell$ has the simple solution $\rho_0=-A_\omega/\ell$, since the derivative $A_\omega/\rho_0^2$ is nonzero.  The formal implicit-function theorem, or direct triangular coefficient recursion, gives $\rho(z^2)$.  Expanding
 \[
  \log\Phi=-\frac{A_\omega z^{2d}}{\delta}
  -C_{1,\omega}z^2+O(z^4)+O(z^{2d})
@@ -1156,8 +1408,22 @@ Write $\delta=\rho z^{2d}$.  The logarithmic series extends analytically to $z=0
 and matching the coefficient of $z^2$ yields \cref{eq:delta-z}.
 \end{proof}
 
-\begin{remark}[Branch geometry]
-For each root $\omega$, each logarithm value $\ell+2\pi\ii k$, and each $2d$th root in \cref{eq:w0}, one obtains a local branch.  Analytic continuation around $y=0$ permutes these branches.  Thus the root-of-unity boundary is accompanied by a nontrivial inverse monodromy, not merely by a divergent scalar asymptotic.
+\begin{remark}[No convergent boundary germ is claimed]
+The formal series is meaningful because every requested coefficient involves
+only finitely many orders of the master expansion.  It does not by itself
+define an analytic germ through $z=0$: the root-of-unity singular loci of the
+individual denominators accumulate there.  Establishing sectorial sums, their
+domains, and their Stokes transitions is a separate problem.
+\end{remark}
+
+\begin{remark}[Formal branch geometry]
+For the inverse-frequency problem, each fixed root $\omega$ and logarithm value
+$\ell+2\pi\ii k$ has $2d$ choices of $w_0$, and each choice produces one formal
+series.  For the inverse-$q$ problem, fixing $\omega$ and a nonzero logarithm
+value determines a unique formal series $\rho$.  Turning either algebraic
+indexing into analytic continuation or monodromy requires sectorial
+realizations and a careful separation of logarithm-sheet changes from
+critical-value branching; neither is asserted here.
 \end{remark}
 
 \section{Numerical experiments}
@@ -1220,7 +1486,7 @@ The calculation tests both the divergent action and the finite constant term.  I
 \end{table}
 
 The inverse $q$ experiment at $\omega=\ii$ fixes $y=1.1$ and solves for
-\(q(z)=\ii(1-\delta(z))\).  The leading approximation has error $O(z^6)$; after the $C_{1,\omega}$ correction, the fitted exponent is $7.9960$, matching the predicted $O(z^8)$ remainder.  At $z=0.145$, the exact radial coordinate was
+\(q(z)=\ii(1-\delta(z))\).  The leading approximation has error $O(z^6)$; after the $C_{1,\omega}$ correction, the fitted exponent is $7.9960$, matching the predicted $O(z^8)$ remainder.  At $z=0.145$, the computed local $q$-coordinate was
 \[
  \delta=2.57314407304007927\times10^{-5}
  +9.47348632511157983\times10^{-7}\ii,
@@ -1228,7 +1494,14 @@ The inverse $q$ experiment at $\omega=\ii$ fixes $y=1.1$ and solves for
 while the two-term absolute error was $3.53\times10^{-8}$.
 
 \begin{status}[Role of computation]
-The numerical experiments do not substitute for the proofs.  They check constants, signs, and asymptotic orders, and they are especially useful for detecting missing resonant correction terms.  All theorem statements above are derived analytically from the locally uniformly convergent series.
+The numerical experiments do not substitute for proofs.  They check constants,
+signs, and predicted asymptotic orders, and they are especially useful for
+detecting missing resonant correction terms.  In particular, they do not prove
+the uniform radial estimate established analytically above, convergence of
+either formal inverse series, or any Lean theorem.  Only the global spectral
+$q$-Pochhammer factorization has the exact Lean crosswalk recorded above; the
+remaining cyclotomic assertions retain manuscript or frontier status according
+to the boundary note at the start of the report.
 \end{status}
 
 \section{Connections with Thue--Morse and cyclic digital structure}
@@ -1251,11 +1524,27 @@ For finite products carrying both a Thue--Morse sign and a scale phase $\omega^j
 
 \subsection{Maximal natural-boundary domain}
 
-\begin{conjecture}[Natural boundary outside a discrete exceptional set]
-For every fixed $z\ne0$ outside a locally finite exceptional set determined by simultaneous zeros of the actions $\mathscr A_\omega(z)$, the unit circle is a natural boundary for $q\mapsto\Phi(q,z)$.
-\end{conjecture}
+\begin{problem}[Generic natural boundary and action-zero control]
+Determine a precise exceptional set of frequencies for which enough
+root-of-unity actions $\mathscr A_\omega(z)$ vanish to obstruct the
+natural-boundary argument.  Prove at least a residual or full-measure generic
+statement, and identify additional uniform arithmetic hypotheses that would
+give an explicit complement.  A locally finite exceptional set is not assumed:
+a countable union of discrete action-zero sets need not be locally finite.
+\end{problem}
 
-The theorem proved here covers $0<|z|<\pi/2$ uniformly.  Beyond that disk, the dilogarithm arguments cross branch cuts and the sign argument no longer applies.  A useful first target is to show that each $\mathscr A_\omega$ is not identically zero and has a discrete zero set; a Baire-category argument might then yield generic natural boundary, while arithmetic control of intersections could sharpen ``generic'' to an explicit complement.
+The theorem proved here covers $0<|z|<\pi/2$ uniformly.  Outside that interval,
+the dilogarithm arguments may leave the unit disk or encounter branch cuts, and
+the sign argument is unavailable.  On its defining disk each action is already
+a nonzero analytic germ, since
+\(
+ \mathscr A_\omega(z)=A_\omega z^{2d}+O(z^{4d})
+\)
+with $A_\omega\ne0$, so its zeros there are discrete.  The genuine target is
+simultaneous control of these zero sets across a dense family of roots, on
+compatible larger frequency domains; a Baire-category argument might then
+yield generic natural boundary, while arithmetic control of intersections
+could sharpen ``generic'' to an explicit complement.
 
 \subsection{Cyclic quantum dilogarithm in the finite term}
 
@@ -1306,15 +1595,25 @@ remains nontrivial as $d\to\infty$, and identify whether the limiting profile is
 
 \subsection{Inverse monodromy and branch braiding}
 
-The $2d$ inverse frequency branches and the infinitely many logarithm sheets of $y$ form a branched covering.  The first coefficients are explicit, but global continuation may braid branches around zeros of $\Phi$.
+The formal inverse-frequency series have $2d$ algebraic choices on each
+logarithm sheet.  If sectorial analytic realizations exist, continuation may
+braid them around critical values of the frequency map, while winding the
+target around zero changes the logarithm sheet.
 
-\begin{conjecture}[Cyclotomic inverse braid]
-For generic target $y$, continuation around a simple zero of the finite-level sinc product acts by a transposition on inverse branches, while continuation around $y=0$ acts by the cyclic rotation $w_0\mapsto\e^{\pi\ii/d}w_0$.  In the infinite limit these generators produce a nontrivial braid representation compatible with the escaping zero cloud.
-\end{conjecture}
+\begin{problem}[Cyclotomic inverse monodromy]
+First construct sectorial analytic realizations of the formal inverse branches.
+Then determine their continuation around simple \emph{critical values}, where
+inverse branches may transpose, and separately track the logarithm-sheet shift
+$\ell\mapsto\ell+2\pi\ii$ caused by winding around $y=0$.  The rotation
+$w_0\mapsto\e^{\pi\ii/d}w_0$ permutes the $2d$ roots on a fixed nonzero
+logarithm sheet; it should not be identified with the sheet shift without an
+additional continuation argument.  Classify any resulting braid action and
+its compatibility with the escaping zero cloud.
+\end{problem}
 
 \subsection{Two-nome extension}
 
-The repository's open problem asks for a two-nome phase diagram and canonical root-of-unity limits.  The scalar theorem suggests the correct first invariant: identify the lowest Taylor monomial whose bidegree resonates with the pair of roots.  The universal germ proof extends almost verbatim to
+The repository's open problem asks for a two-nome phase diagram and canonical root-of-unity limits.  The scalar theorem suggests the correct first invariant: identify the lowest Taylor monomial whose bidegree resonates with the pair of roots.  The universal germ calculation suggests studying
 \[
  \prod_{j\ge0}h\bigl((1-\rho)\rho^jz,(1-\sigma)\sigma^jw\bigr),
 \]
@@ -1327,31 +1626,44 @@ For an analytic two-variable germ, the canonical two-nome root-of-unity blow-up 
 \subsection{Formalization roadmap}
 
 The new theory has a favorable dependency graph.
+The product layer is already represented by
+\path|Fabius.geometricSincProduct_eq_tprod_complexQPochhammerInf|, while the
+general root-of-unity filter is available as \path|Fabius.sum_pow_eq_ite| and
+\path|Fabius.sum_pow_mul_inv_pow_eq_ite|.  Thus the remaining roadmap begins
+after these reusable foundations.
 \begin{enumerate}[label=\arabic*.]
 \item \textbf{Finite algebra.}  Formalize $d=\ord(\omega^2)$, the resonant/nonresonant split, and the exact first two coefficients of \cref{eq:res-exp}.
 \item \textbf{Formal power series.}  Prove the coefficient identity \cref{eq:Ln} in a Laurent-series ring; Bell exponentiation is already well suited to existing combinatorial infrastructure.
-\item \textbf{Finite cyclic projection.}  Prove
+\item \textbf{Finite cyclic projection.}  Specialize the existing
+root-of-unity filter to
 \(
  d^{-1}\sum_{r<d}\omega^{2kr}=\mathbf1_{d\mid k}
 \)
 and derive a finite-truncation version of \cref{eq:cyclic-projection}.
-\item \textbf{Analytic tails.}  Establish geometric majorants for $|a_\omega z|<\pi$ and pass from truncations to the radial theorem.
+\item \textbf{Analytic tails.}  Formalize the square-root cutoff proof of \cref{thm:two-term-radial}, including the finite phase separation and exponential tail bound.
 \item \textbf{Sign and natural boundary.}  Formalize the sign of $a_\omega^{2d}$ and $\Li_2(\pm x)$ on $0<x<1$, then use the finite-order zero/pole contradiction.
 \item \textbf{Moments.}  Reuse the repository's Bernoulli cumulant and Bell moment APIs to prove the one-cumulant limit.
 \item \textbf{Inverse branches.}  Begin with formal coefficient recursion; defer the analytic implicit-function theorem until the local complex-analysis library is convenient.
 \end{enumerate}
 
-A compact first formal milestone would prove the blow-up limit and sparse moment formula without dilogarithms.  The natural-boundary theorem can then be added after the sign representation is available.
+A compact first formal milestone would prove the blow-up limit and sparse moment formula without dilogarithms.  The natural-boundary theorem can then be added after both the analytic tail estimate and the sign representation are available in Lean.
 
 \section{Conclusion}
 
 The complex $q$-plane reveals a structure invisible on the positive real interval.  At every root of unity, the geometric sinc product organizes itself by the order of $\omega^2$.  Fixed frequencies see a spectral dilogarithmic action of size $1/\delta$; shrinking frequencies at the exact cyclotomic rate isolate one resonant coefficient and produce a pure exponential $\e^{-A_\omega w^{2d}}$.  The same resonance appears simultaneously in the zero divisor, Bernoulli cumulants, Bell moments, and inverse Appell polynomials.
 
-This unifies several themes of the Fabius--Rvachev corpus without duplicating its existing results.  The sinc product supplies the spectral side; $q$-Pochhammer factorization explains the dilogarithm; Bell and Bernoulli polynomials control corrections and moments; root order determines a polyharmonic PDE; inverse-function theory reveals branch geometry; and the density of roots of unity turns the local action into a global natural boundary.  The scalar root-of-unity renormalization is therefore not an isolated asymptotic trick but a common cyclotomic layer connecting the repository's $q$-analog, Fourier, moment, and inverse theories.
+This organizes several themes of the Fabius--Rvachev corpus while explicitly
+reusing its existing product, root-of-unity-filter, Bell, Appell, and dyadic
+infrastructure.  The sinc product supplies the spectral side;
+$q$-Pochhammer factorization explains the dilogarithmic action; Bell and
+Bernoulli polynomials control formal corrections and moments; and root order
+predicts a polyharmonic limit symbol.  The two-range estimate below completes
+the radial theorem and hence the natural-boundary layer.  Constructing
+sectorial inverse branches remains a separate analytic problem.
 
 \appendix
 
-\section{Uniformity details for the radial theorem}
+\section{Uniform estimates behind the radial theorem}
 
 Let $K\Subset\set{z:|a_\omega z|<\pi}$ and choose $\rho<1$ such that
 \(
@@ -1362,22 +1674,48 @@ Let $K\Subset\set{z:|a_\omega z|<\pi}$ and choose $\rho<1$ such that
  \le \frac{\zeta(2)}{k}\rho^{2k}
  \label{eq:ck-majorant}
 \end{equation}
-provides the basic summable majorant.  The nonresonant denominators at $\delta=0$ run through a finite set
-\(
- \set{1-\omega^{2r}:1\le r<d}
-\), so they are uniformly separated from zero.  The $s$th Taylor coefficient in $\delta$ of either numerator or denominator quotient grows polynomially in $k$ for fixed $s$.  Therefore every fixed-order expansion is dominated by
-\(
- C_s k^{M_s}\rho^{2k}
-\), which is summable.  This proves not only \cref{eq:two-term-radial} but a full radial expansion
+provides the basic summable majorant.  When $d>1$, the nonresonant phases
+$\omega^{2k}$ range over a finite set not containing one.  More explicitly,
+with
+\[
+ \gamma=\min_{\substack{1\le r<d\\0\le t\le1}}
+ |1-\omega^{2r}t|>0,
+\]
+both denominators occurring in the derivative of $S_k(\delta)$ are bounded
+below by $\gamma$.  The numerator derivative and the derivative of
+$(1-\delta)^{2k}$ each contribute at most $Ck$ times a geometric majorant.
+This is the detailed justification of \cref{eq:nonres-uniform}; when $d=1$
+the nonresonant part is empty.
+
+For resonant $k$, the cutoff $N=\lfloor\delta^{-1/2}\rfloor$ is deliberately
+smaller than the tempting scale $\delta^{-1}$.  On $k\le N$ the true expansion
+parameter $k\delta$ tends uniformly to zero, so Taylor's theorem with remainder
+gives \cref{eq:res-uniform}.  On $k>N$, geometric decay wins against every
+power of $\delta$: for each $M>0$ and $0<r<1$,
+\begin{equation}
+ \delta^{-M}r^{\,\delta^{-1/2}}\longrightarrow0.
+ \label{eq:exp-beats-power}
+\end{equation}
+This proves, rather than merely predicts, the uniform $O_K(\delta)$ remainder
+in \cref{thm:two-term-radial}.
+
+The same cutoff method can be repeated to any prescribed finite order, but a
+full Poincar\'e theorem requires keeping the order-dependent Taylor constants
+explicit.  This suggests the further expansion
 \begin{equation}
  \log\Phi(\omega(1-\delta),z)
  \sim -\frac{\Aact_\omega(z)}{\delta}
  +\sum_{r\ge0}B_{r,\omega}(z)\delta^r
  \label{eq:full-radial}
 \end{equation}
-locally uniformly in the same disk.  Each $B_{r,\omega}$ is an explicitly convergent zeta-weighted series with rational functions of $k$ and $\omega$ as coefficients.
+locally uniformly in the same disk.  Each candidate $B_{r,\omega}$ is an
+explicitly convergent zeta-weighted coefficient series with rational functions
+of $k$ and $\omega$ as coefficients.  We leave this all-orders fixed-frequency
+statement as a conjectural strengthening; it is not needed for any theorem in
+the main text.
 
-\section{A direct coefficient derivation for the inverse $q$-branch}
+\section{A direct coefficient derivation for the inverse
+\texorpdfstring{$q$}{q}-branch}
 
 Set
 \(
