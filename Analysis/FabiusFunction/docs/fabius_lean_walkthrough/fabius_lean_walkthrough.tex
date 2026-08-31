@@ -1429,9 +1429,14 @@ For the geometric weights \(w_n(q)=(1-q)q^n\), write \(\mu_q\) for the law,
   \frac{F_q(x/q)-F_q((x-(1-q))/q)}{1-q}.
 \]
 The Lean definition \nolinkurl{geometricUniformDensity q} is total in \(q\),
-but only \(0<q<1\) gives this classical density interpretation: at \(q=0\)
-field division is totalized, while for \(q<0\) the affine event inequality is
-reversed.
+but only \(0<q<1\) gives this classical density interpretation.  The formal
+boundary is now exact: at \(q=0\) the selected quotient is identically zero,
+whereas for \(q<0\) it is nonpositive because the affine CDF interval reverses.
+Thus its \nolinkurl{ENNReal.ofReal} clamp gives the zero
+\nolinkurl{withDensity} measure for every \(q\le0\), and that measure is
+provably not \(\mu_q\) when also \(\lvert q\rvert<1\).  This does not contradict
+the absolute continuity of the law; an exact Lean theorem for the paper-level
+corrected signed-ratio density at negative \(q\) remains open.
 The single theorem in \nolinkurl{GeometricUniformUniqueness.lean} specializes
 the generic product-map theorem to the already proved head--tail identity:
 \[
@@ -1541,7 +1546,8 @@ all-real bridges
 \]
 Accordingly the dyadic smoothing, interval-integral, continuity, exterior-value,
 and reflection proofs now route through the reusable half-base API.  There is still no
-separately named centered random variable or general-\(q\) centered density.  The finite
+Lean formalization of the paper-level corrected signed-ratio density for negative \(q\), separately named centered
+random variable, or general-\(q\) centered density.  The finite
 MGF/CGF dictionary and pointwise sinc-prefix limit above also stop short of explicit
 Bernoulli-cumulant and Bell-moment evaluations, their asymptotics, and log-concavity or
 shape-transition theorems.
@@ -3812,7 +3818,7 @@ Reshetnikov quantity \(R_n\) & \nolinkurl{reshetnikov} & \nolinkurl{Arithmetic.l
 Generic continuous-CDF and density extraction & \nolinkurl{continuous_cdf_of_nullSingleton}, \nolinkurl{cdf_reflection_sub}, \nolinkurl{measure_eq_withDensity_of_cdf_hasDerivAt} & \nolinkurl{ContinuousCDF.lean} \\
 Affine independent-copy operator and uniqueness & \nolinkurl{affineIndependentCopyLaw}, \nolinkurl{affineIndependentCopyLaw_isProbabilityMeasure}, \nolinkurl{affineIndependentCopyLaw_eq_map_prod}, \nolinkurl{charFun_affineIndependentCopyLaw}, \nolinkurl{charFun_eq_mul_charFun_of_affineIndependentCopy_fixedPoint}, \nolinkurl{charFun_iterate_of_affineIndependentCopy_fixedPoint}, \nolinkurl{eq_of_charFun_affine_recurrence}, \nolinkurl{affineIndependentCopyLaw_fixedPoint_unique}, \nolinkurl{affineIndependentCopy_map_fixedPoint_unique} & \nolinkurl{AffineIndependentCopy.lean}; arbitrary measurable digit space and second-countable Borel real inner-product target, with completeness only for the three uniqueness declarations \\
 Geometric uniform law \(\mu_q\) & \nolinkurl{geometricUniformDistribution}, \nolinkurl{geometricUniformDistribution_selfSimilar}, \nolinkurl{geometricUniformDistribution_support_eq_Icc}, \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar} & \nolinkurl{GeometricUniformLaw.lean} and \nolinkurl{GeometricUniformUniqueness.lean}; the characterization holds for \(\lvert q\rvert<1\) without support, density, or moment assumptions \\
-Geometric CDF \(F_q\) and density \(f_q\) & \nolinkurl{geometricUniformCDF}, \nolinkurl{geometricUniformDensity}, \nolinkurl{geometricUniformCDF_hasDerivAt}, \nolinkurl{geometricUniformDistribution_eq_withDensity}, \nolinkurl{contDiff_geometricUniformCDF}, \nolinkurl{contDiff_geometricUniformDensity} & \nolinkurl{GeometricUniformCDF.lean} \\
+Geometric CDF \(F_q\) and density \(f_q\) & \nolinkurl{geometricUniformCDF}, \nolinkurl{geometricUniformDensity}, \nolinkurl{geometricUniformDensity_zero}, \nolinkurl{geometricUniformDensity_nonpos_of_neg}, \nolinkurl{volume_withDensity_geometricUniformDensity_eq_zero_of_nonpos}, \nolinkurl{geometricUniformDistribution_ne_withDensity_geometricUniformDensity_of_nonpos}, \nolinkurl{geometricUniformCDF_hasDerivAt}, \nolinkurl{geometricUniformDistribution_eq_withDensity}, \nolinkurl{contDiff_geometricUniformCDF}, \nolinkurl{contDiff_geometricUniformDensity} & \nolinkurl{GeometricUniformCDF.lean} \\
 Weighted-sum CDF and half-base bridges & \nolinkurl{weightedSumCDF}, \nolinkurl{weightedSumCDF_eq_geometricUniformCDF_one_half}, \nolinkurl{geometricUniformCDF_one_half_eq_fabiusReal}, \nolinkurl{geometricUniformDensity_one_half_eq_rvachevUp} & \nolinkurl{ProbabilityRepresentation.lean} \\
 Totalized activation kernel \(p\) & \nolinkurl{activationProbability}, \nolinkurl{tanhDiv_eq_dslope}, \nolinkurl{activationProbability_le_min_one_sq_div_three}, \nolinkurl{activationProbability_mul_le_quadratic}, \nolinkurl{tendsto_activationProbability_mul_div_sq} & \nolinkurl{HyperbolicActivation.lean}, \nolinkurl{ActivationSeries.lean}, and \nolinkurl{ActivationAsymptotics.lean} \\
 Finite activation Taylor jet & \nolinkurl{tanh_sub_taylor_nine_isBigO}, \nolinkurl{activationProbability_sub_taylor_eight_isBigO}, \nolinkurl{activationProbability_sub_taylor_eight_isBigO_pow} & \nolinkurl{ActivationTaylor.lean}; exact degree-nine \(\tanh\) and degree-eight \(p\) polynomials with respective \(O(\lVert x\rVert^{11})\) and \(O(\lVert x\rVert^{10})\) remainders, plus the equivalent \(O(x^{10})\) activation form \\
@@ -3932,7 +3938,7 @@ Module & Role in the development \\
 \nolinkurl{GeometricSincFactorization.lean} & Closed characteristic function of the scaled uniform digit, exact closed-factor and phase-collapsed finite residual formulas for \(\lvert q\rvert<1\), pointwise convergence of the phase-bearing sinc prefixes, and the two dyadic weighted-sum wrappers. \\
 \nolinkurl{GeometricReciprocalGamma.lean} & Locally uniform convergence, pointwise multipliability and \nolinkurl{HasProd}, and entireness of the geometric sinc product, together with its reciprocal-Gamma reflection factorization. \\
 \nolinkurl{GeometricSincCharacteristicFunction.lean} & The two exact phase-bearing bridges from the geometric-uniform characteristic function to the rescaled geometric sinc product and to the paired reciprocal-Gamma factors for every real \(\lvert q\rvert<1\), including zero and negative ratios. \\
-\nolinkurl{GeometricUniformCDF.lean} & The named \(F_q\) and explicit \(f_q\), conditioning and interval-integral equations, pointwise derivative and exact \nolinkurl{withDensity} law, continuity, reflection, exterior zeros, ordinary/topological support containments, compact support, and \(C^\infty\) regularity under their exact parameter hypotheses. \\
+\nolinkurl{GeometricUniformCDF.lean} & The named \(F_q\) and explicit \(f_q\), conditioning and interval-integral equations, pointwise derivative and exact positive-ratio \nolinkurl{withDensity} law, continuity, reflection, exterior zeros, ordinary/topological support containments, compact support, and \(C^\infty\) regularity under their exact parameter hypotheses.  It also proves that the selected total formula is zero at \(q=0\), nonpositive for \(q<0\), yields the zero clamped measure for \(q\le0\), and cannot represent \(\mu_q\) on the nonpositive contraction range. \\
 \nolinkurl{HyperbolicActivation.lean} & Four definitions and 58 theorems forming the totalized real hyperbolic-sinc, \nolinkurl{tanhDiv}, activation-odds, and activation-probability dictionary, with continuity, parity, positivity, exact odds bridges, global elementary bounds, and the canonical identification \nolinkurl{tanhDiv_eq_dslope}. \\
 \nolinkurl{ActivationTaylor.lean} & Three theorems: the exact degree-nine Taylor polynomial of \(\tanh\) with \(O(\lVert x\rVert^{11})\) remainder, the induced degree-eight activation-probability polynomial with \(O(\lVert x\rVert^{10})\) remainder, and its equivalent \(O(x^{10})\) form. \\
 \nolinkurl{ActivationSeries.lean} & Three theorems: the rescaled pointwise quadratic budget, genuine summability for arbitrary-index square-summable signed real weights, and the corresponding global \nolinkurl{tsum} budget. \\
