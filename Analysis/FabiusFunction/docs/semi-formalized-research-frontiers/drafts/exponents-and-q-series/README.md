@@ -16,13 +16,18 @@ New standalone intake members:
 
 - [`Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/`](Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/),
   *Continuous-Parameter Edgeworth Theory, Large Deviations, and Quadratic
-  q-Gevrey Regularity at the Fabius--Rvachev Frontier* (29 A4 pp, 1,387
-  main-source lines), arrived on 2026-08-30 in direct-arrival commit
+  q-Gevrey Regularity at the Fabius--Rvachev Frontier* (29 A4 pp and 1,387
+  main-source lines at arrival; current source: 1,372 lines, SHA-256
+  `8e10ac3575f12054deb47142732a6d50baf97363352627223b97da068459cb86`),
+  arrived on 2026-08-30 in direct-arrival commit
   `52179f63fe955a64508915eedaa560de9f3056da` under the bare generic wrapper
   `Fabius_Rvachev_Frontier_Report_2026-08-30-G/` and was filed under this
   title-derived collision-safe name. Its manifest covers the full delivery,
-  and its 19-entry checksum ledger now verifies after three CSV rows were
-  refreshed for CRLF-to-LF normalization. Its title and abstract concern
+  and its refreshed 19-entry checksum ledger verifies every current payload.
+  The checked-in PDF is a
+  retained historical render per the source-only integration request; it is
+  not synchronized with the current source; ledger verification does not
+  assert otherwise. Its title and abstract concern
   continuous-parameter Edgeworth and deviation regimes, Lambert endpoint
   asymptotics, and quadratic-exponential Denjoy--Carleman regularity.
 
@@ -30,33 +35,36 @@ New standalone intake members:
   *A Proof-Oriented Guide to q-Series: Shifted Factorials, Basic
   Hypergeometric Summation, Theta Products, Partitions, Bailey Pairs, and
   Rogers--Ramanujan Theory* (retained 39-page letter-paper PDF; 2,891 source
-  lines at arrival and 2,872 after the current source-only merge), arrived as
+  lines at arrival and 2,876 after the current notation merge), arrived as
   a bare TeX/PDF directory in direct-arrival commit
   `1360db6064c676f83bceb23bece5ed304dd09ce8` without an archive, outer hash,
-  or ledger. The repository-generated two-entry `SHA256SUMS` still verifies
-  the retained PDF, but its TeX row is pending after the source-only merge;
-  the TeX was already LF.
+  or ledger. The refreshed two-entry `SHA256SUMS` verifies the current source
+  and retained historical PDF as separate payloads; the TeX was already LF.
 
 - [`q_series_from_first_principles/`](q_series_from_first_principles/),
   *q-Series from First Principles: Products, Basic Hypergeometric Sums,
   Theta Functions, Partitions, Bailey Pairs, and the Rogers--Ramanujan World*
-  (30 letter-paper pp, 1,548 source lines), likewise arrived as a bare
+  (30 letter-paper pp and 1,548 source lines at arrival; current source:
+  1,540 lines, SHA-256
+  `a4f625fb16b250cb097e415c9a2bf97d806d2015414fadce40f470839e4f34ee`),
+  likewise arrived as a bare
   TeX/PDF directory in direct-arrival commit
   `c167e550348bfb33b4297684100d55dfb48b8c1a` without an archive, outer hash,
-  or ledger. The repository-generated `SHA256SUMS` covers and verifies both
-  delivered files; its TeX was already LF.
+  or ledger. The refreshed repository-generated `SHA256SUMS` verifies the
+  current source and retained historical PDF as separate payloads. The retained
+  PDF is a historical arrival render, not a rendering of the current source;
+  source/PDF synchronization is pending a future render. Its TeX was already LF.
 
 - [`q_series_monograph/`](q_series_monograph/),
   *A Proof-Driven Guide to q-Series, Basic Hypergeometric Identities, Bailey
   Chains, and Rogers--Ramanujan Theory* (1,915 source lines at arrival and
-  1,906 after the current source-only merge), arrived as a source-only bare
+  1,910 after the current notation merge), arrived as a source-only bare
   directory in direct-arrival commit
   `1f0f98390d551725fc7d2274638dbd7de86ee346` with neither PDF nor ledger.
   Intake repaired the carriage-return (CR) corruption in the intended `\rho_2`
   token at line 863 and added a one-entry repository `SHA256SUMS` for the sole
   delivered TeX. The package remains source-only: no PDF or auxiliary package
-  was delivered or produced, and the ledger's sole TeX row is pending after
-  the current source edit.
+  was delivered or produced, and the refreshed ledger's sole TeX row verifies.
 
 These five packages remain separate pending post-publication comparison,
 canonical document work, and Lean crosswalks. In particular, no semantic
@@ -473,9 +481,10 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 `149332f9d`.
 
 Member: `Exponents_and_q_Series_Frontiers`
-(retained pre-update PDF: 236 A4 pp; current merged TeX: 16,237 lines
-across seven parts; PDF rebuild pending; both parent ledgers verify the current
-source and retained PDF without asserting that the PDF was rebuilt) — the
+(retained historical PDF: 236 A4 pp; current merged TeX: 16,235 lines,
+SHA-256 `96a367de3454770c53b5c2b543404c9a78bb5e73b1f5c9234309f369502671b8`,
+across seven parts; both parent ledgers verify the source and retained PDF as
+distinct payloads, while source/PDF synchronization remains pending) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -708,8 +717,10 @@ volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Second member: `q_pochhammer_q_binomial_monograph/`
 (212-page last validated A4 PDF; book class; the current source-only merge is
-13,119 lines while the retained PDF is 1,576,424 bytes; the PDF was not
-rebuilt after the merged sinc--Pochhammer crosswalk update) —
+13,117 lines with SHA-256
+`a79dd281e1906b58874bd321587bee395a43ec650cd0fe99ed1afc5adc25347e`,
+while the retained historical PDF is 1,576,424 bytes; the PDF was not rebuilt
+after the notation update, and source/PDF synchronization remains pending) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather

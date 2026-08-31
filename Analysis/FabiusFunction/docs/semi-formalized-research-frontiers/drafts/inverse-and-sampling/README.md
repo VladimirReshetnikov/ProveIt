@@ -35,8 +35,9 @@ that package is not included in the stale-artifact table below.
 By explicit integration policy, none of the other same-stem PDFs was rebuilt;
 operational ledgers covering changed roots were not refreshed except as stated.
 The relinked 12-entry ledger for
-`inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers` now
-fails only its root-TeX row, while its other eleven rows pass. Its retained PDF
+`inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers` records
+the current root source and the retained historical PDF as distinct payloads;
+all twelve rows verify after the source-only checksum refresh. The retained PDF
 is not a rendering of the changed source.
 The PDFs and their page/font/build facts below are therefore retained
 historical artifacts, not claimed renderings of the current sources.
@@ -44,9 +45,9 @@ historical artifacts, not claimed renderings of the current sources.
 | Root report | Current TeX lines | Current TeX SHA-256 | Retained PDF | Operational-ledger status |
 |---|---:|---|---:|---|
 | `comb-interpolation/Dyadic_Comb_Frontiers` | 5,649 | `24bfa9196f00223f7e4dd04344a784ab7be2049499ee739b63d38267b20d6649` | 66 pages | no live root-pair ledger |
-| `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders` | 1,979 | `0709a513017d42b94f931f6e4a2b0ac396464497c8fa75ef660545f4ab163507` | 23 pages | no live root-pair ledger |
-| `inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report` | 2,937 | `a6932249804ea3fb07a08b09542e123bbbca23b76a29e13ef27c91aa902ffbe3` | 42 pages | TeX and README rows pending; other four pass |
-| `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers` | 6,607 | `d5f5ba096af58634fe0693bd4731b10898a85ad38204c661edde2ddbe38ed04a` | 100 pages | TeX row pending; other eleven pass |
+| `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders` | 1,978 | `1dbf538e16b619f2c03403333cd46c912dc28b66a2823a1bb1f2b81ba859613e` | 23 pages | no live root-pair ledger |
+| `inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report` | 2,937 | `a6932249804ea3fb07a08b09542e123bbbca23b76a29e13ef27c91aa902ffbe3` | 42 pages | all six payload rows pass; PDF is historical |
+| `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers` | 6,603 | `3bae6a0d6df38778f31365acb8d5da7a09bd3ecafcd2a257c6be964df3740601` | 100 pages | all twelve payload rows pass; PDF is historical |
 | `comb-interpolation/geometric_comb_interpolation_report` | 2,360 | `816e4408eb4e390738a58dadecdae842d8d932e741afbe276dceb0ee7d36f2f2` | 32 pages | TeX and README rows pending; other fifteen pass |
 | `comb-interpolation/geometric_comb_interpolation_report-3` | 2,735 | `df9456de278b3608658797ffaedf415526e487e1124a86e0907ca00c6b1cc349` | 36 pages | TeX, README, and relocated-audit rows pending; other twenty-two pass |
 | `comb-interpolation/geometric_comb_q_fabius_report` | 3,553 | `2d888100650656ef2c85bb08bf9967164e0b22c1486987d7a209091fe25ab80f` | 68 pages | TeX and README rows pending; other eighteen pass |
@@ -207,9 +208,9 @@ New standalone intake members:
   serial passes, with repaired
   author metadata, every font embedded/subset (22 fonts), Libertinus present,
   and no Type 3 fonts. The immutable five-entry arrival ledger verifies the
-  submitted payload. The six-entry operational ledger was intentionally not
-  refreshed after the source-only merge: its TeX and README rows are pending
-  and the other four rows pass.
+  submitted payload. The refreshed six-entry operational ledger verifies the
+  current TeX/README and retained PDF as distinct payloads; it does not assert
+  source/PDF synchronization.
 
 - [`inverse_fabius_iterates_nowhere_analytic/`](analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Inverse
@@ -243,10 +244,12 @@ the inverse Taylor series, and the Bell--Lagrange formula also remain open.
 
 ## `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers/`
 
-The current merged root has 6,607 lines. Its retained 100-page PDF was not
-rebuilt after the notation merge. The relinked 12-entry ledger under
-`assets/Fabius_Inverse_Frontier_Report_Source_and_PDF/` fails only the current
-root-TeX row; its other eleven rows pass.
+The current merged root has 6,603 lines and SHA-256
+`3bae6a0d6df38778f31365acb8d5da7a09bd3ecafcd2a257c6be964df3740601`.
+Its retained 100-page PDF was not rebuilt after the notation merge. The
+relinked 12-entry ledger under
+`assets/Fabius_Inverse_Frontier_Report_Source_and_PDF/` verifies all twelve
+current payloads; that integrity check does not assert source/PDF synchronization.
 
 Consolidated (2026-08-28) from:
 
@@ -323,9 +326,10 @@ directories are deleted; git history is the archive.
 
 ## `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders/`
 
-The current merged root has 1,979 lines. Its retained 23-page PDF was not
-rebuilt after the notation merge, and this volume has no live checksum ledger
-covering the root TeX/PDF pair.
+The current merged root has 1,978 lines and SHA-256
+`1dbf538e16b619f2c03403333cd46c912dc28b66a2823a1bb1f2b81ba859613e`.
+Its retained 23-page PDF was not rebuilt after the notation merge, and this
+volume has no live checksum ledger covering the root TeX/PDF pair.
 
 Editorially merged (2026-08-28) from the three same-topic
 inverse-asymptotics drafts of the fourth, fifth, and sixth waves:
