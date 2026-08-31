@@ -3860,8 +3860,6 @@ L.~C.~Washington,
 \renewcommand{\headrule}{\hbox to\headwidth{\color{rulegray}\leaders\hrule height \headrulewidth\hfill}}
 \newcommand{\nuu}{\nu_2}
 \newcommand{\ResPartl}{\operatorname*{Res}}
-\newcommand{\bigOPartl}{\mathrm O}
-\newcommand{\smalloPartl}{\mathrm o}
 \newcommand{\PhiR}{\Phi_r}
 \newcommand{\Nr}{\mathcal N_r}
 \newcommand{\Zr}{\mathcal Z_r}
@@ -4162,7 +4160,7 @@ Write $1+\nu_2(n)=\sum_{h\ge0}\mathbf 1_{2^h\mid n}$.  Absolute convergence perm
  =\frac{\zeta(s)}{1-2^{-s}}.
 \]
 Truncating the geometric sum gives the second formula.  The pole statements follow from the meromorphic continuation of $\zeta$ and from
-$1-2^{-s}=(s-s_k)\log2+\bigOPartl((s-s_k)^2)$ near $s_k$.  On the imaginary axis $\zeta$ has no zeros: this follows from the functional equation and the classical zero-free line $\Re s=1$.  Thus the displayed poles are genuine.
+$1-2^{-s}=(s-s_k)\log2+\BigO((s-s_k)^2)$ near $s_k$.  On the imaginary axis $\zeta$ has no zeros: this follows from the functional equation and the classical zero-free line $\Re s=1$.  Thus the displayed poles are genuine.
 \end{proof}
 
 \begin{resultbox}[First new bridge]
@@ -4383,7 +4381,7 @@ The meromorphic continuation of $\mathcal Z_r$ has:
 \begin{equation}\label{p3:eq:laurent-zeta-r}
   \mathcal Z_r(s)=
   \frac{\zeta(s_k)}{(\log2)^r(s-s_k)^r}
-  +\bigOPartl\!\left((s-s_k)^{1-r}\right)
+  +\BigO\!\left((s-s_k)^{1-r}\right)
 \end{equation}
 near $s_k$.
 \end{enumerate}
@@ -4399,7 +4397,7 @@ From \eqref{p3:eq:mu-r}, or directly by counting scale contributions,
 \end{align*}
 The finite identity follows by stopping at $h=M-1$.  At $s=1$ the non-zeta factor equals
 $2^{-(r-1)}/(1-1/2)^r=2$, so the residue is $2$.  Near $s_k$, the numerator $2^{-(r-1)s_k}=1$ and
-$1-2^{-s}=(s-s_k)\log2+\bigOPartl((s-s_k)^2)$.  As in \cref{p3:thm:zeta1}, $\zeta(s_k)\ne0$, proving exact order and \eqref{p3:eq:laurent-zeta-r}.
+$1-2^{-s}=(s-s_k)\log2+\BigO((s-s_k)^2)$.  As in \cref{p3:thm:zeta1}, $\zeta(s_k)\ne0$, proving exact order and \eqref{p3:eq:laurent-zeta-r}.
 \end{proof}
 
 The factor
@@ -4680,7 +4678,7 @@ The bits of $U_m$ are independent Bernoulli variables $B_j$ of parameter $1/2$, 
 $S_r(U_m)=\sum_{j<m}Q_r(j)B_j$.  The mean and variance follow immediately; the closed mean formula was computed in \cref{p3:cor:discrepancy-range}.  Since
 $Q_r(j)\sim j^{r-1}/(r-1)!$, integral comparison gives \eqref{p3:eq:digital-asymptotics}.
 
-The largest centered summand divided by the standard deviation is $\bigOPartl(m^{-1/2})$, so Lindeberg's condition holds.  The Berry--Esseen theorem \cite{p3:feller} gives the stated error because
+The largest centered summand divided by the standard deviation is $\BigO(m^{-1/2})$, so Lindeberg's condition holds.  The Berry--Esseen theorem \cite{p3:feller} gives the stated error because
 \[
  \frac{\sum_{j<m}Q_r(j)^3}{\left(\sum_{j<m}Q_r(j)^2\right)^{3/2}}
  =\BigO_r(m^{-1/2}).
@@ -4938,7 +4936,7 @@ Taking logarithms and retaining only these factors gives
    \bigl(\log|x|-h\log2+\log\pi\bigr)\\
  &=-\log2\binom{H+1}{r+1}+\BigO_r(H^r),
 \end{align*}
-where \cref{p3:lem:binomial-distance} absorbs the leading distance from $h$ to $H$, and the difference between $\log|x|$ and $H\log2$ contributes only $\BigO_r(H^r)$.  Since $H=(\log|x|)/(\log2)+\bigOPartl(1)$, the result follows.
+where \cref{p3:lem:binomial-distance} absorbs the leading distance from $h$ to $H$, and the difference between $\log|x|$ and $H\log2$ contributes only $\BigO_r(H^r)$.  Since $H=(\log|x|)/(\log2)+\BigO(1)$, the result follows.
 \end{proof}
 
 \subsection{A sharp dyadic ray}
@@ -4991,7 +4989,7 @@ Summing with weights $\binom h{r-1}$ and using
  \sum_{h=0}^{m}\binom h{r-1}(m-h)=\binom{m+1}{r+1}
 \]
 gives the first two terms.  For $h=m+j$, $j\ge1$, the argument is $\frac23 2^{-j}$ and
-$\log\SincPi y=\bigOPartl(y^2)$.  Hence the tail is
+$\log\SincPi y=\BigO(y^2)$.  Hence the tail is
 \[
  \BigO_r\!\left(\sum_{j\ge1}(m+j)^{r-1}4^{-j}\right)
  =\BigO_r(m^{r-1}).
@@ -5091,7 +5089,7 @@ For $-1<\Re s<0$,
 \end{lemma}
 
 \begin{proof}
-At zero, $\rho(u)=u/2+\bigOPartl(u^2)$; at infinity, $\rho(u)=\log u+\bigOPartl(e^{-u})$, so the displayed strip is the fundamental strip.  Since
+At zero, $\rho(u)=u/2+\BigO(u^2)$; at infinity, $\rho(u)=\log u+\BigO(e^{-u})$, so the displayed strip is the fundamental strip.  Since
 \[
  \rho'(u)=\frac1u-\frac1{e^u-1},
 \]
@@ -5198,7 +5196,7 @@ $|\Gamma(-ik\omega)|=\exp(-\pi|k|\omega/2)$ up to a polynomial factor.  Standard
 
 Near zero,
 \[
- \Gamma(-z)\zeta(1-z)=\frac1{z^2}+\bigOPartl(1)
+ \Gamma(-z)\zeta(1-z)=\frac1{z^2}+\BigO(1)
 \]
 (the coefficient of $z^{-1}$ cancels), while
 \[
@@ -5210,7 +5208,7 @@ Taking the residue after multiplying by $e^{zL}$ yields the first two coefficien
 At $z=z_k\ne0$,
 \[
  \mathcal A_r(z)=\frac1{(\log2)^r(z-z_k)^r}
- +\bigOPartl((z-z_k)^{1-r}),
+ +\BigO((z-z_k)^{1-r}),
 \]
 because $2^{-(r-1)z_k}=1$.  The coefficient of $L^{r-1}$ in the residue is therefore exactly \eqref{p3:eq:top-periodic-coefficient}.  The case $r=1$ gives \eqref{p3:eq:universal-periodic-lift}.
 \end{proof}
@@ -5303,7 +5301,7 @@ Then $\Lambda_r(x)>0$ is the large solution of
 Moreover,
 \begin{equation}\label{p3:eq:Lambda-expansion}
  \Lambda_r(x)=\log\frac1x+r\log\log\frac1x
- -\log\!\bigl(r!(\log2)^r\bigr)+\smalloPartl(1).
+ -\log\!\bigl(r!(\log2)^r\bigr)+\LittleO(1).
 \end{equation}
 \end{proposition}
 
@@ -5512,7 +5510,7 @@ Zero zeta
 
 Digital discrepancy
 & $\mathcal N_r(N)=2N-\sum_jb_j(N)Q_r(j)$
-& Exact $\bigOPartl((\log N)^r)$ Weyl discrepancy and a digital CLT.\\
+& Exact $\BigO((\log N)^r)$ Weyl discrepancy and a digital CLT.\\
 
 Spectral signs
 & $\varepsilon_r(N)=(-1)^{\sum_jb_j(N)\binom j{r-1}}$

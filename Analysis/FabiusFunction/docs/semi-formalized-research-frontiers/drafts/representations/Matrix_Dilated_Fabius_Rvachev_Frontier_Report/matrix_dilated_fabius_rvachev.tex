@@ -74,7 +74,8 @@
 \newcommand{\Per}{\operatorname{Per}}
 \newcommand{\Sym}{\operatorname{Sym}}
 \newcommand{\diam}{\operatorname{diam}}
-\newcommand{\one}{\mathbf 1}
+\newcommand{\AllOnesVector}{\boldsymbol{1}}
+\newcommand{\AngularFourierStieltjesCoefficient}[2]{\operatorname{FSU}_{2\pi}\!\left[#1\right]\!\left[#2\right]}
 \newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
 \newcommand{\Repo}{\textcolor{navy}{\textbf{[repository input]}}}
 \newcommand{\New}{\textcolor{teal}{\textbf{[proved here]}}}
@@ -151,7 +152,7 @@ differential operators.
 The scalar Thue--Morse derivative formula lifts to an exact multivariate cube.
 After differentiating once along every generator in the first $N$ scales, the
 density becomes a signed sum of $2^{rN}$ affine copies of itself, with signs
-$(-1)^{s_2(k)}$.  The same cube gives a tensor Prouhet identity annihilating every
+$(-1)^{\BinaryDigitSum(k)}$.  The same cube gives a tensor Prouhet identity annihilating every
 polynomial of total degree below $rN$.  All joint cumulants are obtained from the
 resolvent
 \[
@@ -550,7 +551,7 @@ law and the Thue--Morse cube below.
  \left(\prod_{j=1}^rD_{Bv_j}\right)f(x)
  =\frac{|\det A|}{2^r}
   \sum_{\omega\in\{0,1\}^r}(-1)^{|\omega|}
-  f\bigl(Ax-V(2\omega-\one)\bigr).
+  f\bigl(Ax-V(2\omega-\AllOnesVector)\bigr).
  \label{eq:matrix-rvachev}
 \end{equation}
 For $d=r=1$, $A=2$, and $V=(1)$, it becomes
@@ -568,7 +569,7 @@ The one-step recursion factors the law as
 Apply one directional derivative to its matching segment factor and use
 \eqref{eq:segment-derivative}.  Expanding the resulting $r$ endpoint choices
 gives translations by
-$BV(2\omega-\one)$ with signs $(-1)^{|\omega|}$.  The density of $B_\#\mu$ is
+$BV(2\omega-\AllOnesVector)$ with signs $(-1)^{|\omega|}$.  The density of $B_\#\mu$ is
 $|\det A|f(Ax)$, so translating and simplifying produces
 \eqref{eq:matrix-rvachev}.  In the scalar case the left side is
 $D_{1/2}\RvachevUp=\RvachevUp'/2$, and the displayed specialization follows.
@@ -680,7 +681,7 @@ The same estimate can be made global by increasing the constant, because
 $|1-\SincRad t|\le Ct^2$ and the sixth-order Taylor remainder is bounded by
 $C|t|^6$.  Multiply by $\Phi_N$, integrate against $\Norm\xi^m$, and use the
 fixed integrable majorant.  Under the convention
-$\widehat f(\xi)=\int\EulerE^{\ImaginaryUnit\ip{\xi}{x}}f(x)\Differential x$, multiplication by
+$\FourierAngular{f}(-\xi)=\int\EulerE^{\ImaginaryUnit\ip{\xi}{x}}f(x)\Differential x$, multiplication by
 $-\ip{\xi}{g}^2$ is the Fourier image of $D_g^2$, giving
 \eqref{eq:first-correction} and \eqref{eq:second-correction}.
 \end{proof}
@@ -989,7 +990,7 @@ in $L^2[-1,1]$ and, in fact, with rapid coefficient decay.
 \end{equation}
 Using
 \begin{equation}
- P_\ell(y)=2^{-\ell}\sum_{k=0}^{\lfloor\ell/2\rfloor}
+ P_\ell(y)=2^{-\ell}\sum_{k=0}^{\Floor{\ell/2}}
  (-1)^k\frac{(2\ell-2k)!}{k!(\ell-k)!(\ell-2k)!}
  y^{\ell-2k},
  \label{eq:legendre-monomial}
@@ -1245,10 +1246,11 @@ its outward unit normal.  The proof gives the atomic measure
       +\delta_{n\theta+\varphi_0-\pi/2}\right).
  \label{eq:surface-measure}
 \end{equation}
-With Fourier convention
-$\widehat S(k)=\int\EulerE^{-\ImaginaryUnit k\phi}\Differential S(\phi)$,
+With the unnormalized angular Fourier--Stieltjes convention
+$\AngularFourierStieltjesCoefficient{S}{k}
+=\int\EulerE^{-\ImaginaryUnit k\phi}\Differential S(\phi)$,
 \begin{equation}
- \widehat S(k)
+ \AngularFourierStieltjesCoefficient{S}{k}
  =4a\cos\frac{k\pi}{2}\,
   \EulerE^{-\ImaginaryUnit k\varphi_0}
   \frac{q\EulerE^{-\ImaginaryUnit k\theta}}{1-q\EulerE^{-\ImaginaryUnit k\theta}}.
@@ -1580,7 +1582,7 @@ has
  \label{eq:conj-log-laplace}
 \end{equation}
 with a refinement whose nonuniversal term is an explicit smoothing of
-$\mathcal C_{\lfloor\log s/\lambda\rfloor}(\theta,\delta)$.  After saddle-point
+$\mathcal C_{\Floor{\log s/\lambda}}(\theta,\delta)$.  After saddle-point
 inversion, $C_w(x)$ and $C_w^{-1}(y)$ have the same leading lower-Lambert
 skeleton as the scalar geometric law, but the scalar log-periodic carrier is
 replaced by a bounded or logarithmically growing quasiperiodic cocycle.
@@ -1856,13 +1858,13 @@ existing scalar and base-$b$ theory.
 
 The Fourier transform is
 \[
- \widehat f(\xi)=\int_{\RealNumbers^d}\EulerE^{\ImaginaryUnit\ip{\xi}{x}}f(x)\Differential x,
+ \FourierAngular{f}(-\xi)=\int_{\RealNumbers^d}\EulerE^{\ImaginaryUnit\ip{\xi}{x}}f(x)\Differential x,
  \qquad
  f(x)=\frac1{(2\pi)^d}\int_{\RealNumbers^d}
- \EulerE^{-\ImaginaryUnit\ip{\xi}{x}}\widehat f(\xi)\Differential\xi.
+ \EulerE^{-\ImaginaryUnit\ip{\xi}{x}}\FourierAngular{f}(-\xi)\Differential\xi.
 \]
-Thus $\widehat{D_gf}(\xi)=-\ImaginaryUnit\ip{\xi}{g}\widehat f(\xi)$ and
-$\widehat{D_g^{2m}f}=(-1)^m\ip{\xi}{g}^{2m}\widehat f$.
+Thus $\FourierAngular{D_gf}(-\xi)=-\ImaginaryUnit\ip{\xi}{g}\FourierAngular{f}(-\xi)$ and
+$\FourierAngular{D_g^{2m}f}(-\xi)=(-1)^m\ip{\xi}{g}^{2m}\FourierAngular{f}(-\xi)$.
 
 For vectors $x_1,\ldots,x_k$, normalized symmetrization means
 \[

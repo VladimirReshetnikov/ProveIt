@@ -145,7 +145,7 @@ Each contains exactly one simple zero \(r_j\), and together they exhaust the
 maximal real injective branches; their interiors are the maximal open domains
 of regular real inversion.  Equivalently, each zero-free gap
 \((r_j,r_{j+1})\) consists of two half-branches meeting at the fold \(c_j\).
-When \(n=1\), the sole maximal branch is all of \(\mathbb R\).
+When \(n=1\), the sole maximal branch is all of \(\RealNumbers\).
 \end{theorem}
 
 \begin{proof}
@@ -207,7 +207,7 @@ Let \(\zeta\) be primitive of order \(d\), and write \(n=Md+r\) with
 \end{equation}
 At \(a_s=\zeta^{-s}\), \(0\leq s<d\), the zero multiplicity is
 \begin{equation}
- \nu_s=M+\mathbf1_{\{s<r\}}.
+ \nu_s=M+\IndicatorOf{s<r}.
  \label{fp-root-multiplicity}
 \end{equation}
 For every \(s\) with \(\nu_s\ge1\), the point \(a_s\) is a zero of
@@ -450,7 +450,7 @@ where \(E\) and \(O\) are the sums of the positive even and odd indices below
 \(n\).  For \(n=2s\), \(E=s(s-1)\), \(O=s^2\), giving
 \(a=1/(2s-1)\).  For \(n=2s+1\), \(E=s(s+1)\), \(O=s^2\), giving
 \(a=-1/(2s+1)\).  Substitution in
-\(P_n(a,-1)=(1-a)^{\lceil n/2\rceil}(1+a)^{\lfloor n/2\rfloor}\) gives the
+\(P_n(a,-1)=(1-a)^{\Ceiling{n/2}}(1+a)^{\Floor{n/2}}\) gives the
 two critical values.
 
 Differentiating \cref{fp-q-logder} once more gives
@@ -492,9 +492,9 @@ identically zero.  At \(a=-1\),
 \[
  P_n(-1,q)=\prod_{j=0}^{n-1}(1+q^j)
 \]
-has at \(q=-1\) a zero of exact order \(r=\lfloor n/2\rfloor\), because
+has at \(q=-1\) a zero of exact order \(r=\Floor{n/2}\), because
 exactly the odd-indexed factors vanish and each does so simply.  More
-precisely, with \(e=\lceil n/2\rceil\) and
+precisely, with \(e=\Ceiling{n/2}\) and
 \(J_n=\prod_{\substack{1\leq j<n\\j\ {\rm odd}}}j\),
 \begin{equation}
  P_n(-1,q)=2^eJ_n(q+1)^r+\BigO((q+1)^{r+1}).

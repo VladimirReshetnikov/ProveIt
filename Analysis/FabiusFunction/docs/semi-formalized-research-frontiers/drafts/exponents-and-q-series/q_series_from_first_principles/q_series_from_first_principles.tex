@@ -565,7 +565,7 @@ The triple product converts a bilateral theta series into three arithmetic progr
 
 \section{Jacobi theta functions and the Dedekind eta function}
 
-Let $\tau$ lie in the upper half-plane $\mathbb H$ and put $Q=e^{\pi i\tau}$.  We use the theta constants
+Let $\tau$ lie in the upper half-plane $\mathbb H$ and put $Q=\EulerE^{\pi i\tau}$.  We use the theta constants
 \begin{align*}
 \vartheta_2(\tau)&=\sum_{n\in\IntegerNumbers}Q^{(n+1/2)^2},\\
 \vartheta_3(\tau)&=\sum_{n\in\IntegerNumbers}Q^{n^2},\\
@@ -573,7 +573,7 @@ Let $\tau$ lie in the upper half-plane $\mathbb H$ and put $Q=e^{\pi i\tau}$.  W
 \end{align*}
 and the Dedekind eta function
 \begin{equation}\label{eq:eta-def}
-\eta(\tau)=e^{\pi i\tau/12}\prod_{n=1}^{\infty}(1-e^{2\pi in\tau})
+\eta(\tau)=\EulerE^{\pi i\tau/12}\prod_{n=1}^{\infty}(1-\EulerE^{2\pi in\tau})
 =Q^{1/12}(Q^2;Q^2)_\infty.
 \end{equation}
 
@@ -614,13 +614,13 @@ show that all factors apart from $2Q^{1/4}(Q^2;Q^2)_\infty^3$ cancel.  This rema
 
 For an integrable function $f$ on $\RealNumbers$, write
 \[
-\widehat f(\xi)=\int_{-\infty}^{\infty}f(x)e^{-2\pi i x\xi}\,dx.
+\FourierTwoPi{f}(\xi)=\int_{-\infty}^{\infty}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\,\Differential x.
 \]
 
 \begin{theorem}[Poisson summation for Schwartz functions]\label{thm:poisson}
 If $f$ is a Schwartz function, then
 \begin{equation}\label{eq:poisson}
-\sum_{n\in\IntegerNumbers}f(n)=\sum_{m\in\IntegerNumbers}\widehat f(m),
+\sum_{n\in\IntegerNumbers}f(n)=\sum_{m\in\IntegerNumbers}\FourierTwoPi{f}(m),
 \end{equation}
 and both series converge absolutely.
 \end{theorem}
@@ -628,29 +628,29 @@ and both series converge absolutely.
 \begin{proof}
 The periodization $P(x)=\sum_{n\in\IntegerNumbers}f(x+n)$ and all its derivatives converge uniformly on $[0,1]$, because $f$ is rapidly decreasing.  Thus $P$ is a smooth $1$-periodic function.  Its $m$th Fourier coefficient is
 \begin{align*}
-\int_0^1P(x)e^{-2\pi imx}\,dx
-&=\sum_{n\in\IntegerNumbers}\int_0^1f(x+n)e^{-2\pi imx}\,dx\\
-&=\int_{-\infty}^{\infty}f(u)e^{-2\pi imu}\,du
-=\widehat f(m).
+\int_0^1P(x)\EulerE^{-2\pi imx}\,dx
+&=\sum_{n\in\IntegerNumbers}\int_0^1f(x+n)\EulerE^{-2\pi imx}\,dx\\
+&=\int_{-\infty}^{\infty}f(u)\EulerE^{-2\pi imu}\,du
+=\FourierTwoPi{f}(m).
 \end{align*}
-Repeated integration by parts makes $\widehat f(m)$ decrease faster than every power of $|m|$, so the Fourier series is absolutely and uniformly convergent.  Evaluating it at $x=0$ gives \eqref{eq:poisson}.
+Repeated integration by parts makes $\FourierTwoPi{f}(m)$ decrease faster than every power of $|m|$, so the Fourier series is absolutely and uniformly convergent.  Evaluating it at $x=0$ gives \eqref{eq:poisson}.
 \end{proof}
 
 \begin{lemma}[Fourier transform of a Gaussian]\label{lem:gaussian-ft}
 If $\Re t>0$, then, with the branch of $t^{1/2}$ positive for $t>0$,
 \begin{equation}\label{eq:gaussian-ft}
-\int_{-\infty}^{\infty}e^{-\pi tx^2}e^{-2\pi ix\xi}\,dx
-=t^{-1/2}e^{-\pi\xi^2/t}.
+\int_{-\infty}^{\infty}\EulerE^{-\pi tx^2}\EulerE^{-2\pi ix\xi}\,dx
+=t^{-1/2}\EulerE^{-\pi\xi^2/t}.
 \end{equation}
 \end{lemma}
 
 \begin{proof}
 For real $t>0$, let $I(\xi)$ denote the integral.  Differentiating under the integral and integrating by parts gives
 \[
-I'(\xi)=-2\pi i\int xe^{-\pi tx^2}e^{-2\pi ix\xi}\,dx
+I'(\xi)=-2\pi i\int xe^{-\pi tx^2}\EulerE^{-2\pi ix\xi}\,dx
 =-\frac{2\pi\xi}{t}I(\xi).
 \]
-Hence $I(\xi)=I(0)e^{-\pi\xi^2/t}$.  Squaring the elementary Gaussian integral gives $I(0)=t^{-1/2}$.  Both sides of \eqref{eq:gaussian-ft} are holomorphic for $\Re t>0$, so the identity theorem extends the formula to that half-plane.
+Hence $I(\xi)=I(0)\EulerE^{-\pi\xi^2/t}$.  Squaring the elementary Gaussian integral gives $I(0)=t^{-1/2}$.  Both sides of \eqref{eq:gaussian-ft} are holomorphic for $\Re t>0$, so the identity theorem extends the formula to that half-plane.
 \end{proof}
 
 \begin{theorem}[Theta transformation laws]\label{thm:theta-transform}
@@ -663,22 +663,22 @@ On $\mathbb H$, with the holomorphic square root that is positive at $\tau=i$,
 \end{theorem}
 
 \begin{proof}
-Take $t=-i\tau$, whose real part is positive.  Applying Poisson summation and \cref{lem:gaussian-ft} to $f(x)=e^{-\pi tx^2}$ gives
+Take $t=-i\tau$, whose real part is positive.  Applying Poisson summation and \cref{lem:gaussian-ft} to $f(x)=\EulerE^{-\pi tx^2}$ gives
 \[
-\sum_{n\in\IntegerNumbers}e^{\pi i\tau n^2}
-=(-i\tau)^{-1/2}\sum_{m\in\IntegerNumbers}e^{-\pi im^2/\tau}.
+\sum_{n\in\IntegerNumbers}\EulerE^{\pi i\tau n^2}
+=(-i\tau)^{-1/2}\sum_{m\in\IntegerNumbers}\EulerE^{-\pi im^2/\tau}.
 \]
 Rearrangement proves \eqref{eq:theta3-S}.
 
 The shifted Poisson formula
 \begin{equation}\label{eq:shifted-poisson}
-\sum_{n\in\IntegerNumbers}f(n+a)=\sum_{m\in\IntegerNumbers}e^{2\pi ima}\widehat f(m)
+\sum_{n\in\IntegerNumbers}f(n+a)=\sum_{m\in\IntegerNumbers}\EulerE^{2\pi\ImaginaryUnit ma}\FourierTwoPi{f}(m)
 \end{equation}
 follows by applying the proof of \cref{thm:poisson} to the periodization of $f(x+a)$.  Taking $a=1/2$ yields
 \[
 \vartheta_2(\tau)=(-i\tau)^{-1/2}\vartheta_4(-1/\tau),
 \]
-which is equivalent to \eqref{eq:theta4-S}.  Applying ordinary Poisson summation to $e^{2\pi ix(1/2)}f(x)$ gives
+which is equivalent to \eqref{eq:theta4-S}.  Applying ordinary Poisson summation to $\EulerE^{2\pi ix(1/2)}f(x)$ gives
 \[
 \vartheta_4(\tau)=(-i\tau)^{-1/2}\vartheta_2(-1/\tau),
 \]
@@ -688,13 +688,13 @@ which is \eqref{eq:theta2-S}.
 \begin{theorem}[Dedekind eta transformations]\label{thm:eta-transform}
 For $\tau\in\mathbb H$,
 \begin{align}
-\eta(\tau+1)&=e^{\pi i/12}\eta(\tau), \label{eq:eta-T}\\
+\eta(\tau+1)&=\EulerE^{\pi i/12}\eta(\tau), \label{eq:eta-T}\\
 \eta(-1/\tau)&=(-i\tau)^{1/2}\eta(\tau). \label{eq:eta-S}
 \end{align}
 \end{theorem}
 
 \begin{proof}
-Equation \eqref{eq:eta-T} follows directly from the product definition: $e^{2\pi in(\tau+1)}=e^{2\pi in\tau}$, while the initial exponential acquires $e^{\pi i/12}$.
+Equation \eqref{eq:eta-T} follows directly from the product definition: $\EulerE^{2\pi in(\tau+1)}=\EulerE^{2\pi in\tau}$, while the initial exponential acquires $\EulerE^{\pi i/12}$.
 
 For inversion, combine \eqref{eq:theta-eta-cubic} with \cref{thm:theta-transform}:
 \[
@@ -1082,9 +1082,9 @@ Q_{-1}=0,\qquad Q_0=1,\qquad Q_N=Q_{N-1}+q^NQ_{N-2}. \label{eq:Q-recurrence}
 \end{align}
 We claim
 \begin{align}
-P_N&=\sum_{j=0}^{\lfloor(N+1)/2\rfloor}
+P_N&=\sum_{j=0}^{\Floor{(N+1)/2}}
 q^{j^2}\GaussianBinomial{N+1-j}{j}{q}, \label{eq:P-polynomial}\\
-Q_N&=\sum_{j=0}^{\lfloor N/2\rfloor}
+Q_N&=\sum_{j=0}^{\Floor{N/2}}
 q^{j^2+j}\GaussianBinomial{N-j}{j}{q}. \label{eq:Q-polynomial}
 \end{align}
 The initial cases are immediate.  Substitution of the $q$-Pascal recurrence \eqref{eq:qpascal1} verifies that the right sides satisfy \eqref{eq:P-recurrence} and \eqref{eq:Q-recurrence}; uniqueness of the recurrence proves the claim.
@@ -1119,11 +1119,11 @@ The supplied Andrews--Gordon entry presents a multisum whose product modulus is 
 Start with $\beta_n=\delta_{n,0}$ and apply the transformation $S_a$ of \cref{cor:bailey-S} exactly $t\ge1$ times.  Then
 \begin{equation}\label{eq:iterated-beta}
 \beta_n^{(t)}=
-\sum_{n\ge s_1\ge\cdots\ge s_{t-1}\ge0}
-\frac{a^{s_1+\cdots+s_{t-1}}
- q^{s_1^2+\cdots+s_{t-1}^2}}
-{(q;q)_{n-s_1}(q;q)_{s_1-s_2}\cdots
- (q;q)_{s_{t-2}-s_{t-1}}(q;q)_{s_{t-1}}},
+\sum_{n\ge r_1\ge\cdots\ge r_{t-1}\ge0}
+\frac{a^{r_1+\cdots+r_{t-1}}
+ q^{r_1^2+\cdots+r_{t-1}^2}}
+{(q;q)_{n-r_1}(q;q)_{r_1-r_2}\cdots
+ (q;q)_{r_{t-2}-r_{t-1}}(q;q)_{r_{t-1}}},
 \end{equation}
 with the empty-chain interpretation $\beta_n^{(1)}=1/(q;q)_n$.  The corresponding alpha sequence is
 \begin{equation}\label{eq:iterated-alpha}
@@ -1132,7 +1132,7 @@ with the empty-chain interpretation $\beta_n^{(1)}=1/(q;q)_n$.  The correspondin
 \end{lemma}
 
 \begin{proof}
-Formula \eqref{eq:iterated-alpha} follows immediately by multiplying the alpha factor in \eqref{eq:S-alpha} at each step.  The case $t=1$ of \eqref{eq:iterated-beta} follows from $\beta_j=\delta_{j,0}$.  If it holds for $t$, substituting it in \eqref{eq:S-beta} adds a new outer index and a new denominator $(q;q)_{n-s_1}$, giving the formula for $t+1$.
+Formula \eqref{eq:iterated-alpha} follows immediately by multiplying the alpha factor in \eqref{eq:S-alpha} at each step.  The case $t=1$ of \eqref{eq:iterated-beta} follows from $\beta_j=\delta_{j,0}$.  If it holds for $t$, substituting it in \eqref{eq:S-beta} adds a new outer index and a new denominator $(q;q)_{n-r_1}$, giving the formula for $t+1$.
 \end{proof}
 
 \begin{theorem}[Andrews--Gordon identity]\label{thm:AG}
@@ -1160,20 +1160,20 @@ K=k-1,
 \]
 It is convenient to use decreasing variables
 \[
-s_j=N_j\quad(1\le j\le K),
-\qquad s_{K+1}=0.
+r_j=N_j\quad(1\le j\le K),
+\qquad r_{K+1}=0.
 \]
-Then $n_j=s_j-s_{j+1}$, and the left side of \eqref{eq:AG} is
+Then $n_j=r_j-r_{j+1}$, and the left side of \eqref{eq:AG} is
 \begin{equation}\label{eq:AG-monotone}
-\sum_{s_1\ge\cdots\ge s_K\ge0}
-\frac{q^{s_1^2+\cdots+s_K^2+s_i+\cdots+s_K}}
-{(q;q)_{s_1-s_2}\cdots(q;q)_{s_{K-1}-s_K}(q;q)_{s_K}}.
+\sum_{r_1\ge\cdots\ge r_K\ge0}
+\frac{q^{r_1^2+\cdots+r_K^2+r_i+\cdots+r_K}}
+{(q;q)_{r_1-r_2}\cdots(q;q)_{r_{K-1}-r_K}(q;q)_{r_K}}.
 \end{equation}
 We derive this sum from the unit Bailey pair relative to $q$.
 
 \medskip
 \noindent\textbf{Case 1: $i=1$.}
-Apply $S_q$ exactly $K$ times, and then apply the limiting identity \eqref{eq:limiting-bailey}, still relative to $q$.  By \cref{lem:iterated-S}, the left side is exactly \eqref{eq:AG-monotone}: the final limiting sum supplies the outer variable $s_1$ and its weight $q^{s_1^2+s_1}$, while the preceding $K-1$ nested variables have the same quadratic-plus-linear weights.
+Apply $S_q$ exactly $K$ times, and then apply the limiting identity \eqref{eq:limiting-bailey}, still relative to $q$.  By \cref{lem:iterated-S}, the left side is exactly \eqref{eq:AG-monotone}: the final limiting sum supplies the outer variable $r_1$ and its weight $q^{r_1^2+r_1}$, while the preceding $K-1$ nested variables have the same quadratic-plus-linear weights.
 
 On the alpha side, the $K$ chain steps and the final limiting identity together multiply the unit alpha by $q^{(K+1)(n^2+n)}$.  Using \eqref{eq:unit-alpha},
 \begin{align*}
@@ -1207,7 +1207,7 @@ so that $t\ge1$, $u\ge0$, and $t+u=K$.  Starting with the unit pair relative to 
 \]
 where $L_q$ is the shift in \cref{lem:bailey-L}; finally apply the limiting identity relative to $1$.
 
-The first $S_q$ applied to the delta beta sequence creates only the terminal factor $1/(q;q)_n$.  The remaining $t-1$ applications create the innermost variables, each weighted by $q^{s_j^2+s_j}$.  The shift $L_q$ leaves beta unchanged and changes the relative parameter to $1$.  The next $u$ applications create variables weighted by $q^{s_j^2}$, and the final limiting identity creates one more outer variable with weight $q^{s_1^2}$.  Since $u=i-2$, the variables with linear weight begin exactly at position $i$.  Thus the left side is \eqref{eq:AG-monotone}.
+The first $S_q$ applied to the delta beta sequence creates only the terminal factor $1/(q;q)_n$.  The remaining $t-1$ applications create the innermost variables, each weighted by $q^{r_j^2+r_j}$.  The shift $L_q$ leaves beta unchanged and changes the relative parameter to $1$.  The next $u$ applications create variables weighted by $q^{r_j^2}$, and the final limiting identity creates one more outer variable with weight $q^{r_1^2}$.  Since $u=i-2$, the variables with linear weight begin exactly at position $i$.  Thus the left side is \eqref{eq:AG-monotone}.
 
 It remains to calculate the alpha side.  After the first $t$ chain steps, put
 \[
