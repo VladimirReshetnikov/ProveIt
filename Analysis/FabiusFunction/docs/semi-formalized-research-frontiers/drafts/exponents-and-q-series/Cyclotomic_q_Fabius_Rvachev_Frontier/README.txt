@@ -28,20 +28,43 @@ With a standard TeX installation:
 
     latexmk -pdf -interaction=nonstopmode cyclotomic_q_fabius_frontier.tex
 
-or use pdflatex twice.  The source expects figures/ and data/ to remain beside
-it.
+or use pdflatex three times so the contents and cross-references stabilize.
+The source expects figures/ and data/ to remain beside it.
 
-Main proved results
--------------------
-1. An explicit two-term radial root-of-unity expansion for the complex
-   q-Fabius/Rvachev sinc product.
-2. A spectral-dilogarithm action with an elementary sign classification.
-3. A natural-boundary theorem for every fixed real 0<|z|<pi/2.
-4. Cyclotomic blow-ups to exp(-A_omega w^(2d)), with all-order Bell corrections.
-5. Condensation of zero power sums, cumulants, moments, and Appell polynomials.
-6. Explicit inverse frequency and inverse-q branches.
+Result status and inventory
+---------------------------
 
-Status
-------
-"New" in the manuscript means apparently new relative to the audited ProveIt
-repository corpus, not a claim of worldwide priority.
+Lean-verified
+- The global spectral q-Pochhammer factorization is machine-checked as
+  `Fabius.geometricSincProduct_eq_tprod_complexQPochhammerInf`; the dyadic
+  Rvachev factorization is its direct specialization.  The report records the
+  exact normalization relating Phi(q,z) to Lean's geometric sinc product.
+
+Manuscript-proved, not yet formalized in Lean
+- Holomorphy and normalization, the master logarithm, the uniform two-term
+  radial root-of-unity expansion, spectral-dilogarithm and cyclic descriptions
+  of the action, the action sign theorem, and the resulting natural boundary
+  for every fixed real 0<|z|<pi/2.
+- The shrinking-frequency cyclotomic blow-up, its finite and all-order
+  correction algebra, the universal entire-kernel scaling principle,
+  reciprocal-zero and Bernoulli-cumulant condensation, sparse Bell moments,
+  the Gould--Hopper/Appell limit, and the polyharmonic semigroup interpretation.
+
+Formal only
+- The inverse-frequency and inverse-q formulas are coefficientwise formal
+  series.  No convergent boundary germ, sectorial realization, or inverse
+  monodromy theorem is claimed.
+
+Conjectural and open
+- The proposed all-orders fixed-frequency radial expansion, Diophantine phase
+  transition, and two-nome Newton-polygon principle remain conjectural.
+- Sectorial inverse theory and the explicitly labeled Stokes, Thue--Morse
+  coupling, generic natural-boundary, cyclic-dilogarithm, small-divisor,
+  Galois, large-order, and inverse-monodromy problems remain open.
+- The downstream cyclotomic asymptotics, condensation, Appell results, and
+  natural-boundary proof remain to be formalized in Lean.
+
+The numerical files test constants and asymptotic orders only; they are not
+proofs and do not change any status above.  "New" in the manuscript means
+apparently new relative to the audited ProveIt repository corpus, not a claim
+of worldwide priority.

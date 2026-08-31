@@ -23,7 +23,7 @@ New standalone intake members:
 
 - [`fabius_information_frontier/`](fabius_information_frontier/),
   *Exact Information Geometry and New Frontiers for the Fabius--Rvachev
-  System* (30 pp), arrived on 2026-08-30 from the rootless archive
+  System* (30 pp), arrived on 2026-08-30 from the single-root archive
   `fabius_information_frontier_report.zip` (outer SHA-256
   `41f9aba6eb85bb173827f13cb6b7b1d54b7ea9346faf7c9e5b1af859bbd42ec7`).
   All 18 submitted non-ledger payload hashes verified; four CSV entries and

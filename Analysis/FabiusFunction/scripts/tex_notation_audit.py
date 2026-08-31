@@ -7,7 +7,8 @@ high-risk aliases and overloads retired by ``docs/fabius-notation.tex``.
 It does not attempt to parse TeX or decide the meaning of arbitrary one-letter
 variables; those are documented by the catalogue's per-document namespace.
 
-Default mode prints an inventory and all findings but exits successfully.
+Default mode prints the inventory and finding counts but exits successfully;
+use ``--list`` to print the individual findings.
 ``--strict`` turns findings into a failing CI-style gate.  ``--json`` emits the
 same information as machine-readable JSON.  Paths may be supplied explicitly
 for focused migration work; explicit archive paths are still rejected.
@@ -17,7 +18,7 @@ Examples::
     python Analysis/FabiusFunction/scripts/tex_notation_audit.py
     python Analysis/FabiusFunction/scripts/tex_notation_audit.py --strict
     python Analysis/FabiusFunction/scripts/tex_notation_audit.py --json report.json
-    python Analysis/FabiusFunction/scripts/tex_notation_audit.py docs/foo.tex
+    python Analysis/FabiusFunction/scripts/tex_notation_audit.py Analysis/FabiusFunction/docs/foo.tex
 """
 
 from __future__ import annotations
@@ -45,12 +46,13 @@ RETIRED_COMMANDS = {
     "N": "NaturalNumbers or PositiveIntegers",
     "Z": "IntegerNumbers",
     "Up": "RvachevUp",
+    "up": "RvachevUp",
     "upf": "RvachevUp",
     "sinc": "SincRad or SincPi",
     "sincpi": "SincPi",
     "wt": "BinaryDigitSum",
-    "tm": "ThueMorseSign",
-    "TM": "ThueMorseSign",
+    "tm": "ThueMorseSignSymbol or ThueMorseSign",
+    "TM": "ThueMorseSignSymbol or ThueMorseSign",
     "e": "EulerE",
     "ee": "EulerE",
     "ii": "ImaginaryUnit",
@@ -66,20 +68,40 @@ RETIRED_COMMANDS = {
     "smallo": "LittleO or LittleOAt",
     "littleo": "LittleO or LittleOAt",
     "littleoh": "LittleO or LittleOAt",
-    "supp": "SupportOf",
+    "supp": "SupportOperator or SupportOf",
     "sgn": "Sign",
     "lcm": "LeastCommonMultiple",
     "vtwo": "TwoAdicValuation",
     "qbinom": "GaussianBinomial (three explicit arguments)",
     "qpoch": "QPochhammer (three explicit arguments)",
     "poch": "QPochhammer (three explicit arguments)",
-    "Law": "LawOf",
-    "Lop": "LaplaceTransformOf",
+    "Law": "LawOperator or LawOf",
+    "Lop": "LaplaceTransformSymbol or LaplaceTransformOf",
+    "abs": "AbsoluteValue",
+    "norm": "Norm",
+    "floor": "Floor",
+    "ceil": "Ceiling",
+    "pospart": "PositivePart",
+    "set": "SetOf",
+    "angles": "InnerProduct",
+    "diag": "DiagonalOperator",
+    "Span": "SpanOperator",
+    "spanop": "SpanOperator",
+    "Tr": "TraceOperator",
+    "rank": "RankOperator",
+    "Res": "ResidueOperator",
+    "Id": "IdentityOperator",
+    "Log": "PrincipalLogarithm",
+    "defeq": "DefinitionEquals",
+    "Fglobal": "FabiusGlobal",
+    "InvF": "FabiusClampedQuantile or FabiusQuantile",
 }
 
 SEMANTIC_COMMANDS = {
     "FabiusBounded", "FabiusGlobal", "FabiusQuantile",
     "FabiusClampedQuantile", "RvachevUp", "SincRad", "SincPi",
+    "FourierTwoPiOperator", "FourierAngularOperator",
+    "FourierTwoPiTransformOf", "FourierAngularTransformOf",
     "FourierTwoPi", "FourierAngular", "LaplaceTransformOf",
     "MellinTransformOf", "BinaryDigitSum", "ThueMorseSign",
     "GaussianBinomial", "QPochhammer", "QInteger", "MetricDistance",
@@ -234,6 +256,12 @@ def audit_file(path: Path, docs: Path) -> tuple[dict, list[Finding], Counter[str
         r"\\operatorname\s*\{\s*up\s*\}": r"literal up operator; use \RvachevUp",
         r"\\mathrm\s*\{\s*up\s*\}": r"literal up operator; use \RvachevUp",
         r"\\mathop\s*\{\s*\\rm\s+up\s*\}": r"literal up operator; use \RvachevUp",
+        r"\\mathcal\s*(?:\{\s*F\s*\}|F(?![A-Za-z@]))": (
+            r"ambiguous calligraphic F; use \FabiusGlobal or a descriptive local symbol"
+        ),
+        r"\\widetilde\s*(?:\{\s*F\s*\}|F(?![A-Za-z@]))": (
+            r"ambiguous tilde F; use \FabiusGlobal or a descriptive local symbol"
+        ),
     }
     if not canonical_source:
         for pattern, message in literal_patterns.items():

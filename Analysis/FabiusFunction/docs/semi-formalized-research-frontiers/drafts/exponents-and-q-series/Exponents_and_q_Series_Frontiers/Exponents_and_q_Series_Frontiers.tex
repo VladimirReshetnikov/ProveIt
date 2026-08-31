@@ -15216,26 +15216,37 @@ permits reordering, and the product over the scale index is a
 $q^2$-Pochhammer symbol.  Outside the disk, apply this to $1/C_{1/q}$.
 \end{proof}
 
-\begin{statusbox}{Lean crosswalk: general sinc bridge and fixed dyadic Pochhammer specialization}
+\begin{statusbox}{Lean crosswalk: general contracting Pochhammer factorization}
 The current formal API does not prove the whole compound statement
 \cref{p7:thm:sinc-poch}.  It defines the complex symbol through
-\path{complexQPochhammerInf} and exposes exactly the six theorems
+\path{complexQPochhammerInf} and exposes exactly the nine theorems
 \path{complexQPochhammerInf_eq_tprod},
 \path{multipliable_one_sub_mul_pow_complex},
 \path{hasProd_complexQPochhammerInf},
 \path{tendsto_finiteQPochhammerIn_complex},
+\path{summable_norm_sineTerm_qpow_pair},
+\path{geometricSincProduct_eq_tprod_pair},
+\path{geometricSincProduct_eq_tprod_complexQPochhammerInf},
 \path{rvachevFourierProduct_eq_tprod_complexQPochhammerInf}, and
 \path{rvachevFourier_eq_tprod_complexQPochhammerInf} in
 \path{RvachevPochhammerFactorization.lean}.  The first three convergence
 results after the definitional equality allow arbitrary complex $a$ and
-require exactly $\lVert q\rVert<1$.  The spectral theorems themselves fix the
-dyadic scale and hence the nome $1/4$, and are global in $z\in\C$, including
-at individual zero factors; the Fourier-transform form additionally assumes
-a bounded Fabius witness satisfying \path{IsFabius}.
+require exactly $\lVert q\rVert<1$.  The next three theorems give absolute
+summability of the paired Euler perturbations, the paired scale--zero tprod,
+and, for every complex $q,z$ with $\lVert q\rVert<1$, the global identity
+\[
+ S_q(z)=\prod_{k\ge0}
+ \left(\frac{z^2}{(k+1)^2};q^2\right)_\infty .
+\]
+They include $q=0$ and all individual zero factors.  The final two spectral
+theorems specialize this result to the dyadic scale and nome $1/4$; the
+Fourier-transform form additionally assumes a bounded Fabius witness
+satisfying \path{IsFabius}.
 
-Under $t=4\pi z$, the standalone Pochhammer-product theorem is exactly the
-inside $q=1/2$ specialization of \eqref{p7:eq:sinc-poch}.  A separate final
-sinc-product tranche now proves the general uncentered bridge.  For
+After the substitution $z=(1-q)t/(2\pi)$, the general product theorem gives
+the Pochhammer-product part of the inside formula
+\eqref{p7:eq:sinc-poch}.  A separate final sinc-product tranche proves the
+general uncentered characteristic-function bridge.  For
 $q,z\in\C$, $\lVert q\rVert<1$, the four theorems
 \path{hasProdLocallyUniformly_geometricSincProduct},
 \path{geometricSincProductFactors_multipliable},
@@ -15262,11 +15273,10 @@ Theorems \path{tendstoLocallyUniformly_prefix_sinc_charFun} and
 uniform convergence of the full phase-bearing prefixes on \(\R\) and its
 explicit uniform-on-every-compact-set form.
 
-There is still no named centered $\psi_q$ or MGF wrapper, no declaration
-identifying this sinc product with the general $q^2$-Pochhammer rearrangement,
-and no outside-$\abs q>1$ reciprocal formula or zero--pole exchange.  The
-normal convergence asserted for the complex Pochhammer double product also
-remains outside the API.  Consequently the compound label
+There is still no named centered $\psi_q$ or MGF wrapper, no
+outside-$\abs q>1$ reciprocal formula or zero--pole exchange, and no named
+local-uniform or normal-convergence theorem for the Pochhammer-product
+right-hand side.  Consequently the compound label
 \cref{p7:thm:sinc-poch} remains only partially formalized.
 \end{statusbox}
 

@@ -38,6 +38,8 @@
 \fancyhead[L]{\small Fabius function in Lean}
 \fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
+% Canonical project-wide mathematical notation.
+\input{../fabius-notation.tex}
 \renewcommand{\headrulewidth}{0.4pt}
 
 \titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
@@ -67,28 +69,6 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\wt}{\operatorname{wt}_2}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\Li}{\operatorname{Li}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\sgn}{\operatorname{sgn}}
-\newcommand{\lcm}{\operatorname{lcm}}
-\newcommand{\vtwo}{v_2}
-\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
 \newcommand{\leanevaltwo}[1]{%
   \nolinkurl{integral_eval}\texttt{\textsubscript{2}}\nolinkurl{#1}}
@@ -148,8 +128,8 @@ checkpoints or current-tree inspection dates are recorded with each addendum.
 
 Mathematically, two functions must be kept distinct throughout:
 \begin{itemize}
-  \item the bounded cumulative-distribution form \(F\colon\R\to[0,1]\), equal to \(0\) on the left of the unit interval and to \(1\) on the right; and
-  \item the compactly supported even Rvachev up-function \(\Up\), obtained by folding or differentiating the bounded form and naturally living near \([-1,1]\).
+  \item the bounded cumulative-distribution form \(F\colon\RealNumbers\to[0,1]\), equal to \(0\) on the left of the unit interval and to \(1\) on the right; and
+  \item the compactly supported even Rvachev up-function \(\RvachevUp\), obtained by folding or differentiating the bounded form and naturally living near \([-1,1]\).
 \end{itemize}
 The code also defines a signed global extension of the bounded function.  It is this extension, rather than the clamped bounded map, that satisfies certain translation and dyadic identities for arbitrary real arguments.  Several apparent contradictions in informal accounts disappear once these three objects are not conflated.
 
@@ -159,7 +139,7 @@ Unless stated otherwise, empty finite sums are \(0\), empty finite products
 are \(1\), and Lean's natural-power convention makes \(0^0=1\).  The Fourier
 transform convention used in this walkthrough is
 \[
-  \widehat f(\xi)=\int_{\R}f(x)e^{-2\pi\ii x\xi}\,\dd x.
+  \widehat f(\xi)=\int_{\RealNumbers}f(x)e^{-2\pi\ImaginaryUnit x\xi}\,\Differential x.
 \]
 These conventions matter at base indices and in every Poisson- or
 Fourier-normalization check.
@@ -272,7 +252,7 @@ A productive workflow in an editor with the Lean language server is:
   \item follow imports upward only until the mathematical mechanism becomes clear; and
   \item return to the wrapper theorem to see how casts, side conditions, and notation are discharged.
 \end{enumerate}
-The wrapper theorem is often intentionally short.  The real content may be a sequence of modules: one establishing a recurrence over \(\N\) or \(\Q\), one proving an analytic recurrence for an arbitrary object satisfying \nolinkurl{IsFabius}, and one proving that both recurrences share the same initial values.
+The wrapper theorem is often intentionally short.  The real content may be a sequence of modules: one establishing a recurrence over \(\NaturalNumbers\) or \(\RationalNumbers\), one proving an analytic recurrence for an arbitrary object satisfying \nolinkurl{IsFabius}, and one proving that both recurrences share the same initial values.
 
 \begin{boxedremark}\textbf{Architectural point.}\space
 The development is easier to understand as a directed acyclic graph than as a directory listing.  Exact arithmetic starts without the canonical analytic function.  Generic analysis starts from an abstract specification rather than from a constructed term.  Only after both sides are mature does the code identify exact rational expressions with analytic values and package a canonical function.
@@ -286,7 +266,7 @@ The foundational module \nolinkurl{Basic.lean} introduces the closed unit interv
 abbrev UnitInterval := Set.Icc (0 : Real) 1
 abbrev BoundedFabius := Real -> UnitInterval
 \end{lstlisting}
-The subtype codomain records the range bound in the type itself.  The projection to \(\R\), which the code exposes through a convenience definition such as \nolinkurl{fabiusReal}, is used for calculus and integration.  This division of labor avoids reproving \(0\leq F(x)\leq1\) every time a measure-theoretic bound is required, while still giving the differentiable real-valued function expected by mathlib's analysis APIs.
+The subtype codomain records the range bound in the type itself.  The projection to \(\RealNumbers\), which the code exposes through a convenience definition such as \nolinkurl{fabiusReal}, is used for calculus and integration.  This division of labor avoids reproving \(0\leq F(x)\leq1\) every time a measure-theoretic bound is required, while still giving the differentiable real-valued function expected by mathlib's analysis APIs.
 
 The abstract predicate \nolinkurl{IsFabius} packages the characteristic properties of a candidate.  Its fields express, in essence:
 \begin{align*}
@@ -309,20 +289,20 @@ This organization resembles an interface-and-implementation pattern:
 \end{itemize}
 
 \subsection{The Rvachev up-function}
-The compactly supported function \(\Up\) is the symmetric ``twin'' of the bounded cumulative form.  The code defines \nolinkurl{rvachevUp} by folding the bounded function around the center of the unit interval.  Up to the chosen normalization and translation, the relation is the familiar one
+The compactly supported function \(\RvachevUp\) is the symmetric ``twin'' of the bounded cumulative form.  The code defines \nolinkurl{rvachevUp} by folding the bounded function around the center of the unit interval.  Up to the chosen normalization and translation, the relation is the familiar one
 \[
-   \Up(x)=F(x+1) \quad (-1\leq x\leq0),
+   \RvachevUp(x)=F(x+1) \quad (-1\leq x\leq0),
    \qquad
-   \Up(x)=F(1-x) \quad (0\leq x\leq1),
+   \RvachevUp(x)=F(1-x) \quad (0\leq x\leq1),
 \]
 with zero outside the support.  Symmetry gives the equivalent positive-branch expression \(1-F(x)\) on the unit interval.  The exact Lean definition is arranged to make evenness and support proofs tractable and to match the Fourier normalization used in the original paper.
 
 The up-function is the more natural object for Fourier analysis because it is even, smooth, compactly supported, and normalized to have integral one.  The bounded form is the more natural object for dyadic arithmetic because its derivative equation and boundary values generate finite Taylor recurrences.
 
 \subsection{The signed global extension}
-The bounded function cannot satisfy an unrestricted translation law: it is constant on both tails.  The repository therefore defines \nolinkurl{extendedFabius}, a signed global extension assembled as a locally finite sum of odd translates of \(\Up\), weighted by the Thue--Morse sign.  In the repository's normalization,
+The bounded function cannot satisfy an unrestricted translation law: it is constant on both tails.  The repository therefore defines \nolinkurl{extendedFabius}, a signed global extension assembled as a locally finite sum of odd translates of \(\RvachevUp\), weighted by the Thue--Morse sign.  In the repository's normalization,
 \[
-  \widetilde F(x)=\sum_{n\geq0}(-1)^{s_2(n)}\,\Up(x-2n-1).
+  \FabiusGlobal(x)=\sum_{n\geq0}(-1)^{s_2(n)}\,\RvachevUp(x-2n-1).
 \]
 Only finitely many summands are nonzero at any given \(x\).  Lean nevertheless treats the expression through a \nolinkurl{tsum}, so the library must prove local finiteness, summability, and the reduction of the infinite sum to a finite set before elementary rearrangements are legal.
 
@@ -336,7 +316,7 @@ When an informal statement writes \(F(x)\) for all real \(x\), inspect the theor
 \nolinkurl{Basic.lean} also reserves names for the analytic transforms that later modules identify:
 \begin{itemize}
   \item a complex sinc function with a removable value at zero;
-  \item the Fourier transform and infinite sinc product associated with \(\Up\);
+  \item the Fourier transform and infinite sinc product associated with \(\RvachevUp\);
   \item moment and half-moment generating series;
   \item real and complex versions of \((\exp z-1)/z\), again with the singularity removed; and
   \item integral definitions of moments over the support.
@@ -395,7 +375,7 @@ This separation has three advantages:
 
 \section{The exact-arithmetic foundation}\label{ch:arithmetic}
 
-\subsection{Why the development begins over \texorpdfstring{\(\N\) and \(\Q\)}{N and Q}}
+\subsection{Why the development begins over \texorpdfstring{\(\NaturalNumbers\) and \(\RationalNumbers\)}{N and Q}}
 The module \nolinkurl{Arithmetic.lean} is deliberately independent of the canonical analytic function.  It defines the integer and rational sequences that later turn out to be moments, dyadic values, normalizing factors, and denominator bounds.  This has a profound practical advantage: exact identities can be proved using induction, finite sums, divisibility, and polynomial normalization without carrying measurability, differentiability, or convergence hypotheses.
 
 The exact side is not just a transcription of closed formulas.  It supplies executable definitions.  One can evaluate a dyadic rational by normalization and recursion, and Lean's kernel can reduce the resulting rational expression.  The same definitions then serve as specifications for correctness theorems.
@@ -430,15 +410,15 @@ The source uses names such as \nolinkurl{mersenneProduct}, \nolinkurl{evenMersen
 
 A formal proof benefits from keeping two versions of a formula:
 \begin{itemize}
-  \item a mathematically transparent quotient in \(\Q\); and
-  \item a division-free equality in \(\N\), obtained after multiplying by a common product.
+  \item a mathematically transparent quotient in \(\RationalNumbers\); and
+  \item a division-free equality in \(\NaturalNumbers\), obtained after multiplying by a common product.
 \end{itemize}
 The quotient is convenient for stating a moment recurrence.  The division-free equality is the robust object for induction, parity, and divisibility, because it avoids repeated side goals asserting that denominators are nonzero.
 
 \subsection{Moment and half-moment recurrences}
-The exact sequences \nolinkurl{moment} and \nolinkurl{halfMoment} are defined recursively as rational numbers.  The first models the even moments \(\int_{\R}x^{2n}\Up(x)\,\dd x\).  The second has normalized base value \(d_0=1\) and, for \(n\geq0\), models
+The exact sequences \nolinkurl{moment} and \nolinkurl{halfMoment} are defined recursively as rational numbers.  The first models the even moments \(\int_{\RealNumbers}x^{2n}\RvachevUp(x)\,\Differential x\).  The second has normalized base value \(d_0=1\) and, for \(n\geq0\), models
 \[
-  d_{n+1}=(n+1)\int_0^1 t^n\Up(t)\,\dd t.
+  d_{n+1}=(n+1)\int_0^1 t^n\RvachevUp(t)\,\Differential t.
 \]
 Its connection to the bounded function's inverse-power values is derived afterward rather than built into the definition.  Both exact definitions mirror recurrences obtained analytically by integration by parts and scaling.
 
@@ -483,7 +463,7 @@ Such lemmas look implementation-specific, but they prevent computational code fr
 \subsection{Horner evaluation}
 The local Taylor polynomial is evaluated by \nolinkurl{fabiusTaylorHorner}.  Horner's rule is not only computationally efficient; it is proof-friendly.  The correctness theorem is an induction over the coefficient list, and the induction invariant is a suffix polynomial.  In contrast, a direct power-sum implementation forces repeated reasoning about exponents, list indices, and truncated ranges.
 
-The coefficients are rational and involve powers of two coming from iterated differentiation.  The proof therefore includes cast-normalization lemmas ensuring that a natural exponent or binomial coefficient has the same interpretation in \(\N\), \(\Q\), and \(\R\).  The code frequently uses explicit type annotations at precisely these interfaces; their apparent verbosity documents where coercion inference would otherwise be ambiguous.
+The coefficients are rational and involve powers of two coming from iterated differentiation.  The proof therefore includes cast-normalization lemmas ensuring that a natural exponent or binomial coefficient has the same interpretation in \(\NaturalNumbers\), \(\RationalNumbers\), and \(\RealNumbers\).  The code frequently uses explicit type annotations at precisely these interfaces; their apparent verbosity documents where coercion inference would otherwise be ambiguous.
 
 \subsection{Recursive removal of the highest bit}
 At the center of the evaluator is a structurally terminating function such as \nolinkurl{fabiusDyadicUnitAux}.  Given a dyadic numerator \(a\) and exponent \(n\), it removes the highest set bit of \(a\).  Write
@@ -515,7 +495,7 @@ The code proves each normalization preserves the intended mathematical value bef
 \subsection{Recognizing dyadic rationals}
 The definitions \nolinkurl{IsDyadicRational} and \nolinkurl{dyadicExponent?} support a user-facing exact evaluator for rational inputs.  A rational is dyadic when its reduced denominator is a power of two.  The decision procedure must connect:
 \begin{itemize}
-  \item the internal normalized numerator and positive denominator of \(\Q\);
+  \item the internal normalized numerator and positive denominator of \(\RationalNumbers\);
   \item a Boolean or optional power-of-two test; and
   \item a proposition asserting the existence of an integer numerator and natural exponent.
 \end{itemize}
@@ -533,7 +513,7 @@ The construction in \nolinkurl{Existence.lean} uses Banach's fixed-point theorem
 \[
   I=[0,1],
   \qquad
-  C=C(I,\R)
+  C=C(I,\RealNumbers)
 \]
 with the uniform metric.  Since the codomain is complete and \(I\) is compact, the continuous-map space is complete.  The code then cuts out a closed subset of \(C\) consisting of functions satisfying two elementary conditions:
 \begin{align*}
@@ -545,15 +525,15 @@ The source calls the reflection operator and the admissibility predicate by loca
 Using a closed subspace rather than the entire continuous-function space is decisive.  Symmetry is not recovered after the fixed point; it is an invariant of the contraction.  This makes the integral normalization automatic and improves the contraction constant from the naive value one to one half.
 
 \subsection{Extending an interval function}
-An element of \(C(I,\R)\) accepts a subtype argument.  To integrate it over an ordinary real interval, the code defines an extension by projecting an arbitrary real number to \(I\).  This projection clamps values below zero to zero and values above one to one.  Continuity follows from continuity of the metric projection to a closed convex interval.
+An element of \(C(I,\RealNumbers)\) accepts a subtype argument.  To integrate it over an ordinary real interval, the code defines an extension by projecting an arbitrary real number to \(I\).  This projection clamps values below zero to zero and values above one to one.  Continuity follows from continuity of the metric projection to a closed convex interval.
 
 For an admissible \(f\), define the cumulative integral
 \[
-  A_f(y)=\int_0^y \widehat f(t)\,\dd t,
+  A_f(y)=\int_0^y \widehat f(t)\,\Differential t,
 \]
 where \(\widehat f\) is the clamped extension.  Symmetry implies
 \[
-  \int_0^1 f(t)\,\dd t=\frac12.
+  \int_0^1 f(t)\,\Differential t=\frac12.
 \]
 The Lean proof reflects the integral by the substitution \(t\mapsto1-t\), adds the two copies, and uses the pointwise symmetry equation.  The subtype coercions and interval maps are handled in helper lemmas so the final normalization proof resembles the paper calculation.
 
@@ -573,7 +553,7 @@ The transform is affine on the admissible set.  The constants in the right branc
 \subsection{The contraction estimate}
 Let \(h=f-g\) for two admissible functions.  Symmetry gives
 \[
-  \int_0^1 h(t)\,\dd t=0.
+  \int_0^1 h(t)\,\Differential t=0.
 \]
 For \(0\leq y\leq1\), the prefix integral may be estimated in two ways:
 \[
@@ -600,7 +580,7 @@ Banach's theorem now yields a unique fixed point in the admissible subspace.  Th
 \subsection{From an integral fixed point to the differential law}
 A fixed point satisfies an integral equation.  On the left half,
 \[
-  F(x)=\int_0^{2x}F(t)\,\dd t.
+  F(x)=\int_0^{2x}F(t)\,\Differential t.
 \]
 For the probability CDF this identity is actually valid for every
 $x\leq1/2$, not only for $x\in[0,1/2]$: below zero both the CDF and the
@@ -622,7 +602,7 @@ The fixed-point theorem initially gives only continuity.  The integral equation 
 The formal proof is organized around reusable scale-and-derivative lemmas rather than a single enormous induction on \nolinkurl{ContDiff}.  At stage \(n+1\), the derivative formula expresses the new derivative in terms of a scaled version of the \(n\)-th derivative.  Boundary compatibility follows from vanishing on the tails and symmetry.  The final theorem packages all finite stages as \(C^\infty\).
 
 \subsection{Uniqueness by dyadic density}
-The contraction theorem already gives uniqueness inside the admissible continuous space.  The exported specification, however, is phrased for real functions satisfying \nolinkurl{IsFabius}; it is useful to prove uniqueness at this abstract level.  The later dyadic analysis shows that every such function has the same exact value at every dyadic point.  Since dyadics are dense in \(\R\) and both candidates are continuous, the functions coincide.
+The contraction theorem already gives uniqueness inside the admissible continuous space.  The exported specification, however, is phrased for real functions satisfying \nolinkurl{IsFabius}; it is useful to prove uniqueness at this abstract level.  The later dyadic analysis shows that every such function has the same exact value at every dyadic point.  Since dyadics are dense in \(\RealNumbers\) and both candidates are continuous, the functions coincide.
 
 The proof has the standard topological shape: approximate an arbitrary \(x\) by a sequence of dyadics, rewrite equality at each sequence term, and pass to the limit by continuity.  The nontrivial work lies earlier, in proving exact dyadic equality without assuming the fixed-point implementation.
 
@@ -660,21 +640,21 @@ This bookkeeping is not bureaucratic.  One of the asymptotic draft corrections l
 \[
   x\longmapsto c\,F(ax+b),
   \qquad
-  x\longmapsto c\,\Up(ax+b).
+  x\longmapsto c\,\RvachevUp(ax+b).
 \]
 These are used by approximation arguments, global extension formulas, Fourier transforms, and splines.  The value of a dedicated module is that every later proof can invoke a theorem with all factors of \(a\), signs, and differentiability hypotheses already correct.
 
 A common Lean mistake is to rewrite an iterated derivative of a composition as though the affine map contributed only one factor of \(a\).  The library's lemmas state the full \(a^n\) factor.  Specialized powers-of-two corollaries then combine this with the triangular coefficient from the Fabius differential law.
 
 \subsection{Local finiteness of the translate sum}
-\nolinkurl{GlobalExtension.lean} proves that the signed translate series defining \(\widetilde F\) is harmless.  Because \(\Up\) has compact support, only finitely many natural indices \(n\) can satisfy \(x-2n-1\in[-1,1]\) for fixed \(x\).  More strongly, on a compact neighborhood of \(x\), a single finite set of odd translates contains every nonzero summand.
+\nolinkurl{GlobalExtension.lean} proves that the signed translate series defining \(\FabiusGlobal\) is harmless.  Because \(\RvachevUp\) has compact support, only finitely many natural indices \(n\) can satisfy \(x-2n-1\in[-1,1]\) for fixed \(x\).  More strongly, on a compact neighborhood of \(x\), a single finite set of odd translates contains every nonzero summand.
 
 That stronger local statement is what permits termwise continuity and differentiation.  The proof turns support inequalities into natural-number bounds and proves every index outside a finite range contributes zero.  The \nolinkurl{tsum} can then be rewritten as a finite sum using a summability-by-finite-support lemma.
 
 \subsection{Agreement and global identities}
 Once local finiteness is available, the signed extension is shown to agree with the bounded function on \([0,1]\).  On every cell \(2b\leq x\leq2b+2\), exactly one translate survives and
 \[
-  \widetilde F(x)=(-1)^{s_2(b)}\,\Up(x-2b-1).
+  \FabiusGlobal(x)=(-1)^{s_2(b)}\,\RvachevUp(x-2b-1).
 \]
 The case \(b=0\), together with the defining fold relation, gives unit-interval agreement.
 
@@ -682,17 +662,17 @@ The extension is therefore a sequence of two-unit cells, not a globally periodic
 
 \subsection{Global differential calculus}
 Local finiteness also permits termwise differentiation and even--odd
-reindexing.  For every \(x\in\R\), the theorems
+reindexing.  For every \(x\in\RealNumbers\), the theorems
 \nolinkurl{extendedFabius_hasDerivAt} and
 \nolinkurl{deriv_extendedFabius} give
 \[
-  \widetilde F'(x)=2\widetilde F(2x).
+  \FabiusGlobal'(x)=2\FabiusGlobal(2x).
 \]
 Iterating this identity yields \nolinkurl{iteratedDeriv_extendedFabius}:
-for every \(k\in\N\) and \(x\in\R\),
+for every \(k\in\NaturalNumbers\) and \(x\in\RealNumbers\),
 \[
-  \widetilde F^{(k)}(x)
-  =2^{\binom{k+1}{2}}\widetilde F(2^k x).
+  \FabiusGlobal^{(k)}(x)
+  =2^{\binom{k+1}{2}}\FabiusGlobal(2^k x).
 \]
 Unlike the bounded derivative formula above, these identities require no
 branch-domain hypothesis.
@@ -700,14 +680,14 @@ branch-domain hypothesis.
 \subsection{Exact Taylor reduction}
 On its initial block, \nolinkurl{extendedFabius_add_pow_two} says that
 \[
-  \widetilde F(x+2^r)=-\widetilde F(x)
+  \FabiusGlobal(x+2^r)=-\FabiusGlobal(x)
   \qquad(r\geq1,\ 0\leq x\leq2^r).
 \]
 A derivative version extends this sign change to an integer scale \(s\)
 whenever the derivative order \(m\) is high enough that \(0\leq s+m\).
 Under that condition, \nolinkurl{taylorRemainder_translate} packages the exact
 cancellation of the two adjacent integral Taylor remainders.  Write \(R_m(y)\)
-for \nolinkurl{fabiusReductionSum m y}.  If \(n\in\Z\),
+for \nolinkurl{fabiusReductionSum m y}.  If \(n\in\IntegerNumbers\),
 \(x>0\),
 \[
   2^{-n}\leq x<2^{-n+1},
@@ -716,7 +696,7 @@ for \nolinkurl{fabiusReductionSum m y}.  If \(n\in\Z\),
 then \nolinkurl{extendedFabius_reduction}, exported as
 \nolinkurl{proposition_ten}, states
 \[
-  \widetilde F(x)=-\widetilde F(y)+
+  \FabiusGlobal(x)=-\FabiusGlobal(y)+
   \begin{cases}
     R_{\operatorname{toNat}(n)}(y),& n\geq0,\\
     0,& n<0.
@@ -738,13 +718,13 @@ construct the inverse and a certified computable evaluator.
 \subsection{One global derivative equation}
 The key simplification is the identity
 \[
-  F'(x)=2\,\Up(2x-1)\qquad(x\in\R),
+  F'(x)=2\,\RvachevUp(2x-1)\qquad(x\in\RealNumbers),
 \]
-proved for every \nolinkurl{IsFabius} candidate.  Since \(\Up\geq0\), the bounded
+proved for every \nolinkurl{IsFabius} candidate.  Since \(\RvachevUp\geq0\), the bounded
 function is globally monotone.  The strict theory in
 \nolinkurl{Monotonicity.lean} proves that \(F\) is strictly increasing on
 \([0,1]\) and maps that interval bijectively to itself.  On the folded side,
-\(\Up\) is positive exactly on \((-1,1)\), increases strictly to its unique
+\(\RvachevUp\) is positive exactly on \((-1,1)\), increases strictly to its unique
 maximum \(1\) at \(0\), and then decreases strictly.
 
 \nolinkurl{Convexity.lean} feeds this unimodality back through the derivative
@@ -754,7 +734,7 @@ midpoint.  Consequently \(F\) is convex on the left half-line and concave on
 the right, strictly so on the two open halves of its transition interval.
 The same module now identifies the curvature pointwise:
 \[
-  F''(x)=8\bigl(\Up(4x-1)-\Up(4x-3)\bigr).
+  F''(x)=8\bigl(\RvachevUp(4x-1)-\RvachevUp(4x-3)\bigr).
 \]
 The declarations \nolinkurl{deriv_deriv_fabiusReal_pos_iff},
 \nolinkurl{deriv_deriv_fabiusReal_neg_iff}, and
@@ -765,7 +745,7 @@ off \((0,1)\) or at the midpoint.
 \subsection{Sharp regularity and flatness}
 \nolinkurl{Regularity.lean} proves that \(2\) is not merely a convenient Lipschitz
 constant: it is the least global Lipschitz constant for both \(F\) and
-\(\Up\).  The scaling recurrence then yields, for every \(k\geq0\),
+\(\RvachevUp\).  The scaling recurrence then yields, for every \(k\geq0\),
 \[
   \bigl|F^{(k)}(x)\bigr|\leq 2^{\binom{k+1}{2}},
 \]
@@ -801,7 +781,7 @@ global smoothness locus.  On \(0<y<1\),
 \[
   (F^{-1})'(y)
     =\frac{1}{F'(F^{-1}(y))}
-    =\frac{1}{2\Up(2F^{-1}(y)-1)}>0,
+    =\frac{1}{2\RvachevUp(2F^{-1}(y)-1)}>0,
 \]
 and \nolinkurl{fabiusInv_contDiffOn_Ioo} proves \(C^\infty\) smoothness on the
 open unit interval.  Because the totalization is locally constant on both
@@ -893,7 +873,7 @@ For \(0\leq u\leq v\leq1\), the ordered inverse-gap bound is sharp exactly when
 \(u=v\), \(u=0\), or \(v=1\).  In the order-free absolute bound, equality for
 \(u,v\in[0,1]\) means that the inputs coincide or at least one is an endpoint.
 Both restrictions to the unit interval are essential: the totalized inverse has
-constant tails, which create additional equality configurations on all of \(\R\).
+constant tails, which create additional equality configurations on all of \(\RealNumbers\).
 The preceding twenty declarations still supply the weak shape, sharp inequalities,
 attained exact moduli, and effective-injectivity implications; the next module turns
 the structural modulus into explicit recursive dyadic denominators.
@@ -1044,7 +1024,7 @@ The approximation branch also became effective.  \nolinkurl{FabiusComputability.
 proves the uniform estimates
 \[
   \sup_{x\in[0,1]}|S_p(x)-F(x)|\leq2^{-p},\qquad
-  \sup_{x\in\R}|S_p(x)-\widetilde F(x)|\leq2^{-p},
+  \sup_{x\in\RealNumbers}|S_p(x)-\FabiusGlobal(x)|\leq2^{-p},
 \]
 and records the primitive-recursive modulus \(d(n)=2n\) coming from the sharp
 Lipschitz bound.  \nolinkurl{FabiusComputableSpline.lean} implements the centered
@@ -1067,10 +1047,10 @@ numerator.
 Uniform convergence also controls changing inputs.  The theorem
 \nolinkurl{abs_fabiusUniformSpline_sub_extendedFabius_le_add} states
 \[
-  |S_p(x)-\widetilde F(y)|\leq 2^{-p}+2|x-y|,
+  |S_p(x)-\FabiusGlobal(y)|\leq 2^{-p}+2|x-y|,
 \]
 and \nolinkurl{fabiusUniformSpline_tendsto_extendedFabius_of_tendsto} concludes
-that \(S_p(x_p)\to\widetilde F(x)\) whenever \(x_p\to x\).
+that \(S_p(x_p)\to\FabiusGlobal(x)\) whenever \(x_p\to x\).
 
 \section{The exact--analytic dyadic bridge}\label{ch:dyadic-bridge}
 
@@ -1115,7 +1095,7 @@ Independently, \nolinkurl{Arithmetic.lean} defines a rational sequence satisfyin
 \[
   A_n(F)=A_n^{\mathrm{exact}}
 \]
-for every \(n\).  The induction step is predominantly algebraic, but the statement lives in \(\R\); the proof must cast exact rational sums and products into reals.  The source localizes these casts in lemmas asserting that the rational recurrence is preserved by the canonical embedding \(\Q\hookrightarrow\R\).
+for every \(n\).  The induction step is predominantly algebraic, but the statement lives in \(\RealNumbers\); the proof must cast exact rational sums and products into reals.  The source localizes these casts in lemmas asserting that the rational recurrence is preserved by the canonical embedding \(\RationalNumbers\hookrightarrow\RealNumbers\).
 
 \subsection{From closed polynomial to Horner program}
 Once the analytic value is a finite polynomial in exact inverse-power values, \nolinkurl{DyadicAnalytic.lean} invokes the algebraic theorem that the closed polynomial equals \nolinkurl{fabiusTaylorHorner}.  This is a clean interface point:
@@ -1127,7 +1107,7 @@ Once the analytic value is a finite polynomial in exact inverse-power values, \n
 No proof about derivatives needs to know how a coefficient list is stored, and no proof about lists needs to know the fundamental theorem of calculus.
 
 \subsection{Correctness of highest-bit reduction}
-Suppose the numerator decomposes as \(a=2^b+r\).  The analytic Taylor theorem proves exactly the recurrence used by the recursive evaluator.  The recursive call has numerator \(r<a\), so strong induction on \(a\) applies.  At the end, the theorem states that evaluating the exact program and embedding its rational output into \(\R\) gives \(F(a/2^n)\).
+Suppose the numerator decomposes as \(a=2^b+r\).  The analytic Taylor theorem proves exactly the recurrence used by the recursive evaluator.  The recursive call has numerator \(r<a\), so strong induction on \(a\) applies.  At the end, the theorem states that evaluating the exact program and embedding its rational output into \(\RealNumbers\) gives \(F(a/2^n)\).
 
 The proof handles endpoint and out-of-range cases before entering the recursion.  This matches the program structure and avoids forcing the induction hypothesis to cover impossible branch conditions.  Each branch ends with a theorem about the corresponding normalization operation: left-tail clamping, right-tail clamping, highest-bit Taylor reduction, or refinement.  Reflection appears only in the separate signed global evaluator.
 
@@ -1173,20 +1153,20 @@ The dyadic bridge is the repository's main ``commuting square.''  One path start
 \section{Moments, generating functions, and exact denominators}\label{ch:moments}
 
 \subsection{Analytic moments of the up-function}
-\nolinkurl{AnalyticMoments.lean} develops integral interpretations of the exact moment sequences.  Because \(\Up\) is smooth and compactly supported, every polynomial moment exists:
+\nolinkurl{AnalyticMoments.lean} develops integral interpretations of the exact moment sequences.  Because \(\RvachevUp\) is smooth and compactly supported, every polynomial moment exists:
 \[
-  M_n=\int_{\R}x^n\Up(x)\,\dd x.
+  M_n=\int_{\RealNumbers}x^n\RvachevUp(x)\,\Differential x.
 \]
 Evenness immediately gives \(M_{2k+1}=0\), while the exact rational sequence is indexed only by the even moments:
 \[
-  M_{2k}=(\operatorname{moment}(k):\R).
+  M_{2k}=(\operatorname{moment}(k):\RealNumbers).
 \]
 The total mass \(M_0=1\) is proved from the bounded differential equation and the fundamental theorem of calculus, rather than assumed as part of the definition.
 
-The main recurrence is obtained by integration by parts and a dyadic change of variables.  The precise coefficients depend on the chosen centering of \(\Up\), but the structure is a finite convolution of lower moments with powers of two and binomial coefficients.  The same recurrence was used to define \nolinkurl{moment} in the exact layer.
+The main recurrence is obtained by integration by parts and a dyadic change of variables.  The precise coefficients depend on the chosen centering of \(\RvachevUp\), but the structure is a finite convolution of lower moments with powers of two and binomial coefficients.  The same recurrence was used to define \nolinkurl{moment} in the exact layer.
 
 \subsubsection{Integration over compact support}
-Mathlib's integral on \(\R\) is convenient for Fourier transforms, while interval integrals are convenient for integration by parts.  The proof repeatedly converts between them using support lemmas.  A standard sequence is:
+Mathlib's integral on \(\RealNumbers\) is convenient for Fourier transforms, while interval integrals are convenient for integration by parts.  The proof repeatedly converts between them using support lemmas.  A standard sequence is:
 \begin{enumerate}
   \item prove the integrand vanishes outside a compact interval;
   \item rewrite the whole-line integral as an integral over that interval;
@@ -1199,13 +1179,13 @@ The support theorem is therefore not merely qualitative metadata; it is an activ
 \subsection{Identifying analytic and exact moments}
 After deriving the recurrence, the module proves by strong induction that
 \[
-  M_{2n}=(\operatorname{moment}(n):\R)
+  M_{2n}=(\operatorname{moment}(n):\RealNumbers)
 \]
 for every \(n\).  Raw odd moments are handled separately by evenness.  The displayed formula intentionally suppresses namespace syntax; the Lean theorem states the rational cast explicitly.
 
 The base case is total mass.  In the induction step, the analytic recurrence is rewritten term by term using the induction hypotheses.  A cast lemma turns the finite rational sum into the corresponding real sum.  The exact recurrence then closes the goal.
 
-The same method identifies the normalized integrals of \(\Up\) over \([0,1]\) with \nolinkurl{halfMoment}.  The
+The same method identifies the normalized integrals of \(\RvachevUp\) over \([0,1]\) with \nolinkurl{halfMoment}.  The
 source-facing theorem starts at positive index, while
 \nolinkurl{halfMoment_eq_integral_formula_all} packages the normalized zeroth value
 and the integral cases into one statement for every natural index.  These
@@ -1221,10 +1201,10 @@ which are more than sufficient for convergence of
 \[
   \sum_{n\geq0} M_n\frac{z^n}{n!}
 \]
-for every complex \(z\).  Dominated convergence justifies interchanging sum and integral, giving the usual identity with \(\int e^{zx}\Up(x)\,\dd x\).
+for every complex \(z\).  Dominated convergence justifies interchanging sum and integral, giving the usual identity with \(\int e^{zx}\RvachevUp(x)\,\Differential x\).
 
 \nolinkurl{MomentPowerSeries.lean} is a separate exact-algebra layer over
-\nolinkurl{PowerSeries} over \(\Q\).  If
+\nolinkurl{PowerSeries} over \(\RationalNumbers\).  If
 \[
  M(X)=\sum_{n\geq0}\frac{\operatorname{moment}(n)}{(2n)!}X^n,
  \qquad
@@ -1286,7 +1266,7 @@ The moment recurrence is reduced modulo two.  Most terms vanish in pairs or carr
 The argument differs for odd and even indices.  Odd-index statements reduce to the normalized even moments.  Even-index statements use the half-moment recurrence together with the Lucas count of odd binomial coefficients.  The formal proof includes lemmas relating:
 \begin{itemize}
   \item the numerator and denominator fields of a normalized rational;
-  \item divisibility by two in \(\N\) and \(\mathbb Z\);
+  \item divisibility by two in \(\NaturalNumbers\) and \(\mathbb Z\);
   \item coprimality in reduced form; and
   \item a valuation statement for the dyadic value \(F(2^{-n})\).
 \end{itemize}
@@ -1330,9 +1310,9 @@ Formal Fourier proofs are extremely sensitive to normalization.  Mathlib's trans
 
 A schematic transform identity is
 \[
-  \widehat{\Up}(z)
+  \widehat{\RvachevUp}(z)
   =\operatorname{sinc}(\pi z)\,
-   \widehat{\Up}(z/2).
+   \widehat{\RvachevUp}(z/2).
 \]
 Depending on whether the source theorem uses angular or ordinary frequency, the argument of sinc is adjusted.  The Lean theorem's constants should be taken as authoritative; the important structural feature is multiplication by one sinc factor and halving of frequency.
 
@@ -1341,7 +1321,7 @@ The source first proves that a candidate satisfying the original assumptions is 
 
 After simplification, the phases combine into a sine quotient, producing the sinc recurrence.  The mass normalization gives
 \[
-  \widehat{\Up}(0)=\int_{\R}\Up(x)\,\dd x=1.
+  \widehat{\RvachevUp}(0)=\int_{\RealNumbers}\RvachevUp(x)\,\Differential x=1.
 \]
 This is the seed value that controls the limit after infinitely many refinements.
 
@@ -1352,17 +1332,17 @@ The proof does not rewrite Fourier integrals by hand at every step.  It first es
 \subsection{Iteration to a finite product}
 Iterating the refinement identity \(n\) times gives
 \[
-  \widehat{\Up}(z)
+  \widehat{\RvachevUp}(z)
   =\left(\prod_{j=0}^{n-1}
       \operatorname{sinc}\!\left(\frac{\pi z}{2^j}\right)
     \right)
-    \widehat{\Up}\!\left(\frac{z}{2^n}\right).
+    \widehat{\RvachevUp}\!\left(\frac{z}{2^n}\right).
 \]
 This is proved by induction.  The Lean induction must reconcile two equivalent ways of writing a finite product: appending the last factor versus splitting off the first.  A small library of \nolinkurl{Finset.range} product identities keeps the main theorem readable.
 
 As \(n\to\infty\), \(z/2^n\to0\), so continuity of the Fourier transform gives
 \[
-  \widehat{\Up}(z/2^n)\to1.
+  \widehat{\RvachevUp}(z/2^n)\to1.
 \]
 The formal product proof uses the available bound \(\operatorname{complexSinc}(w)-1=O(w)\) near zero, so the deviations are dominated by the geometric series \(\sum_j |\pi z|/2^j\).  The sharper classical quadratic expansion is not needed.
 
@@ -1373,7 +1353,7 @@ Infinite products in Lean can be represented through partial products and limits
 
 The result is the celebrated formula
 \[
-  \widehat{\Up}(z)
+  \widehat{\RvachevUp}(z)
    =\prod_{j\geq0}
       \operatorname{sinc}\!\left(\frac{\pi z}{2^j}\right)
 \]
@@ -1402,10 +1382,10 @@ the value of \nolinkurl{rvachevFourierMomentTerm} at \(z,n\).  The declarations
 \nolinkurl{hasSum_rvachevFourierMomentTerm} prove
 \[
   A_0(z)=1,\qquad A_n(cz)=(c^2)^nA_n(z),\qquad
-  \operatorname{HasSum}(A_\bullet(z),\widehat\Up(z)).
+  \operatorname{HasSum}(A_\bullet(z),\widehat\RvachevUp(z)).
 \]
 The separate module \nolinkurl{RvachevQBinomialFilter.lean} feeds this genuine
-series into the geometric Lagrange filter.  For arbitrary \(c,z\in\C\), natural
+series into the geometric Lagrange filter.  For arbitrary \(c,z\in\ComplexNumbers\), natural
 order \(p\), and Gaussian base \(q=c^2\), it assumes only injectivity of
 \(j\mapsto q^j\) on \(\{0,\ldots,p\}\) and proves the exact Gaussian
 \nolinkurl{tsum} tail for the actual infinite Rvachev product.  At
@@ -1420,9 +1400,9 @@ The original paper's Poisson-summation theorem is formalized in a dedicated modu
 
 For positive spacing \(u\), the normalized identity has the form
 \[
-  \sum_{k\in\Z}\Up(t+uk)
-  =\frac1u\sum_{k\in\Z}
-    \widehat{\Up}(k/u)e^{2\pi\ii kt/u}.
+  \sum_{k\in\IntegerNumbers}\RvachevUp(t+uk)
+  =\frac1u\sum_{k\in\IntegerNumbers}
+    \widehat{\RvachevUp}(k/u)e^{2\pi\ImaginaryUnit kt/u}.
 \]
 The formal audit records two source corrections visible in this equation: the
 printed equation~(25) omitted the translation variable \(t\) from the
@@ -1439,9 +1419,9 @@ part of the reusable Lean API.
 Compact support sharpens the \(t=0\) specialization on the full ray
 \(a\geq\tfrac12\).  Only the lattice sites \(-1,0,1\) remain, so
 \[
-  \sum_{m\in\Z}\Up(am)=1+2\Up(a),
+  \sum_{m\in\IntegerNumbers}\RvachevUp(am)=1+2\RvachevUp(a),
   \qquad
-  a+2a\Up(a)=\sum_{m\in\Z}\widehat{\Up}(m/a).
+  a+2a\RvachevUp(a)=\sum_{m\in\IntegerNumbers}\widehat{\RvachevUp}(m/a).
 \]
 The declarations \nolinkurl{rvachev_lattice_sum_of_one_half_le} and
 \nolinkurl{rvachev_poisson_support_specialization_of_one_half_le} require no
@@ -1458,7 +1438,7 @@ The Fourier uniqueness proof is a rigidity argument.  The differential/refinemen
 
 \subsection{The probabilistic representation}
 \nolinkurl{ProbabilityRepresentation.lean} uses the product probability space
-\(\Omega=[0,1]^{\N}\) and the geometrically weighted coordinate sum
+\(\Omega=[0,1]^{\NaturalNumbers}\) and the geometrically weighted coordinate sum
 \[
   X(\omega)=\sum_{n\geq0}\frac{\omega_n}{2^{n+1}}.
 \]
@@ -1466,13 +1446,13 @@ Splitting off the first coordinate gives the exact self-similarity
 \[
   X(\omega)=\frac{\omega_0+X(\operatorname{tail}\omega)}2.
 \]
-If \(H(y)=\Prob[X\leq y]\), conditioning on \(\omega_0\) produces
+If \(H(y)=\Probability[X\leq y]\), conditioning on \(\omega_0\) produces
 \[
-  H(y)=\int_0^1 H(2y-u)\,\dd u.
+  H(y)=\int_0^1 H(2y-u)\,\Differential u.
 \]
 The module proves globally that \(H=F\), and identifies the folded function by
 \[
-  \Up(x)=H(1-|x|).
+  \RvachevUp(x)=H(1-|x|).
 \]
 This is the direct CDF model on \([0,1]\).  It should not be conflated with
 the centered finite-convolution measures used by the original-paper
@@ -1576,17 +1556,17 @@ statement: \nolinkurl{geometric_tail_dictionary_geometricUniform} packages finit
 measure, characteristic-function, MGF, and CGF factorizations.  The later
 \nolinkurl{GeometricSincFactorization.lean} evaluates the scaled digit explicitly.  If
 \(\phi_q(t)=\operatorname{charFun}(\mu_q)(t)\), then for every real \(q\) with
-\(\lvert q\rvert<1\), every \(m\in\N\), and every \(t\in\R\),
+\(\lvert q\rvert<1\), every \(m\in\NaturalNumbers\), and every \(t\in\RealNumbers\),
 \[
  \phi_q(t)=
- e^{\ii(1-q^m)t/2}
+ e^{\ImaginaryUnit(1-q^m)t/2}
  \left(\prod_{k=0}^{m-1}
    \operatorname{sinc}\!\left(\frac{(1-q)q^kt}{2}\right)\right)
  \phi_q(q^m t),
 \]
 and the phase-bearing prefix obtained by deleting the residual factor
 \(\phi_q(q^m t)\) converges pointwise to \(\phi_q(t)\).  The digit identity itself,
-\(\widehat\eta_q(t)=e^{\ii(1-q)t/2}\operatorname{sinc}((1-q)t/2)\), is unconditional
+\(\widehat\eta_q(t)=e^{\ImaginaryUnit(1-q)t/2}\operatorname{sinc}((1-q)t/2)\), is unconditional
 in real \(q\).  Thus the contraction-range result includes \(q=0\) and negative
 ratios; at \(q=1/2\) it has exact wrappers for the classical weighted-sum law.
 
@@ -1603,7 +1583,7 @@ This is pointwise prefix convergence.  The four new public theorems attached to
 \nolinkurl{geometricSincProductFactors_multipliable},
 \nolinkurl{hasProd_geometricSincProduct}, and
 \nolinkurl{geometricSincProduct_differentiable}.  For complex \(q\) with
-\(\lVert q\rVert<1\), they prove locally uniform convergence on \(\C\) of the defining
+\(\lVert q\rVert<1\), they prove locally uniform convergence on \(\ComplexNumbers\) of the defining
 sinc products, pointwise multipliability and the exact \nolinkurl{HasProd} identity, and
 entireness.  Write \(S_q(z)\) for
 \nolinkurl{geometricSincProduct q z}.
@@ -1618,23 +1598,40 @@ Write \(G_q(z)\) for \nolinkurl{geometricReciprocalGamma q z}, and put
 \[
  z_q(t)=\frac{(1-q)t}{2\pi}.
 \]
-For every real \(\lvert q\rvert<1\) and \(t\in\R\), including \(q=0\) and negative
+For every real \(\lvert q\rvert<1\) and \(t\in\RealNumbers\), including \(q=0\) and negative
 ratios, the first two theorems give the exact identities
 \[
- \phi_q(t)=e^{\ii t/2}S_q\bigl(z_q(t)\bigr)
- =e^{\ii t/2}G_q\bigl(z_q(t)\bigr)G_q\bigl(-z_q(t)\bigr).
+ \phi_q(t)=e^{\ImaginaryUnit t/2}S_q\bigl(z_q(t)\bigr)
+ =e^{\ImaginaryUnit t/2}G_q\bigl(z_q(t)\bigr)G_q\bigl(-z_q(t)\bigr).
 \]
 For
 \[
- P_{q,m}(t):=e^{\ii(1-q^m)t/2}
+ P_{q,m}(t):=e^{\ImaginaryUnit(1-q^m)t/2}
    \prod_{k=0}^{m-1}\operatorname{sinc}
       \!\left(\frac{(1-q)q^kt}{2}\right),
 \]
 the last two prove that \(P_{q,m}\) tends locally uniformly on the real frequency line
-to \(\phi_q\), and uniformly on every compact set \(K\subseteq\R\).  The Gamma-side
+to \(\phi_q\), and uniformly on every compact set \(K\subseteq\RealNumbers\).  The Gamma-side
 locally uniform theorem concerns \(S_q\) as a complex-variable pure sinc product, whereas
 the full phase-bearing theorem is stated for real frequencies.  No complex-frequency
-analogue of the latter or uniform-convergence claim on all of \(\R\) is made.
+analogue of the latter or uniform-convergence claim on all of \(\RealNumbers\) is made.
+The one-definition, nine-theorem module
+\nolinkurl{RvachevPochhammerFactorization.lean} then supplies the independent spectral
+rearrangement.  Besides the total \nolinkurl{complexQPochhammerInf} and its
+contracting-nome convergence API, the declarations
+\nolinkurl{summable_norm_sineTerm_qpow_pair},
+\nolinkurl{geometricSincProduct_eq_tprod_pair}, and
+\nolinkurl{geometricSincProduct_eq_tprod_complexQPochhammerInf} prove, for complex
+\(\lVert q\rVert<1\) and arbitrary \(z\),
+\[
+ S_q(z)=\prod_{k\ge0}
+ \left(\frac{z^2}{(k+1)^2};q^2\right)_\infty .
+\]
+The identity includes \(q=0\) and individual zero factors; its final two theorems are the
+dyadic nome-\(1/4\) Rvachev-product and bounded-Fabius Fourier specializations.  A named
+centered/MGF wrapper, the outside-disk reciprocal formula and zero--pole exchange, and a
+named local-uniform/normal-convergence theorem for the Pochhammer right-hand side remain
+outside this module.
 Rapid-decay bounds, Fourier inversion, a named centered family or MGF wrapper, explicit
 Bernoulli-cumulant and Bell-moment formulas and asymptotics, further transform formulas,
 and shape theory remain separate targets.
@@ -1648,12 +1645,12 @@ is continuous and
 For \(0\le q<1\), it is exactly zero on \(x\le0\) and exactly one on
 \(1\le x\).  Strict positivity of \(q\) is essential for solving the affine
 event inequality in the conditioning step.  Under \(0<q<1\), Lean proves on
-all of \(\R\)
+all of \(\RealNumbers\)
 \begin{align}
  F_q(x)
- &=\int_0^1 F_q\!\left(\frac{x-(1-q)u}{q}\right)\dd u,\label{eq:walk-q-cdf-conditioning}\\
+ &=\int_0^1 F_q\!\left(\frac{x-(1-q)u}{q}\right)\Differential u,\label{eq:walk-q-cdf-conditioning}\\
  &=\frac{q}{1-q}
-   \int_{(x-(1-q))/q}^{x/q}F_q(t)\dd t,\label{eq:walk-q-cdf-interval}\\
+   \int_{(x-(1-q))/q}^{x/q}F_q(t)\Differential t,\label{eq:walk-q-cdf-interval}\\
  F_q'(x)&=f_q(x).\label{eq:walk-q-cdf-density}
 \end{align}
 The final identity is pointwise \nolinkurl{HasDerivAt}, not merely an
@@ -1675,7 +1672,7 @@ all-real bridges
 \[
  \operatorname{weightedSumCDF}=F_{1/2},\qquad
  F_{1/2}(x)=F(x),\qquad
- f_{1/2}(x)=2\Up(2x-1).
+ f_{1/2}(x)=2\RvachevUp(2x-1).
 \]
 Accordingly the dyadic smoothing, interval-integral, continuity, exterior-value,
 and reflection proofs now route through the reusable half-base API.  There is still no
@@ -1716,9 +1713,9 @@ The short module \nolinkurl{ActivationSeries.lean} extracts the rescaled
 one-coordinate estimate as
 \nolinkurl{activationProbability_mul_le_quadratic}:
 \[
- p(at)\le \frac{t^2}{3}a^2\qquad(a,t\in\R).
+ p(at)\le \frac{t^2}{3}a^2\qquad(a,t\in\RealNumbers).
 \]
-For an arbitrary index type \(I\) and real family \(w:I\to\R\) with
+For an arbitrary index type \(I\) and real family \(w:I\to\RealNumbers\) with
 \(\sum_i w_i^2<\infty\), the declarations
 \nolinkurl{summable_activationProbability_mul_of_summable_sq} and
 \nolinkurl{tsum_activationProbability_mul_le} then prove genuine summability
@@ -1742,7 +1739,7 @@ together with the identically-zero case, yields
 \nolinkurl{tendsto_activationProbability_mul_div_sq}:
 \[
  \lim_{\substack{t\to0\\t\ne0}}\frac{p(at)}{t^2}=\frac{a^2}{3}
- \qquad(a\in\R).
+ \qquad(a\in\RealNumbers).
 \]
 Thus the statement explicitly includes \(a=0\), which is essential for sparse
 weight families.
@@ -1834,7 +1831,7 @@ Specializing the square-summable theorem gives
 The analytic range \(\lvert q\rvert<1\) includes negative ratios.  These are deterministic
 activation-sum identities.  The frontier report's positive-weight active-count
 interpretation uses \(0<q<1\), and the formal declarations construct no
-Bernoulli family and assert no identity \(d_{1/2}(t)=\E K_t\).  The exact
+Bernoulli family and assert no identity \(d_{1/2}(t)=\Expectation K_t\).  The exact
 quadratic limits themselves do not supply Taylor coefficients.  A sharp finite
 jet is now formalized independently as above, while an all-order Bernoulli
 coefficient formula and a theorem identifying its exact radius of convergence
@@ -1889,13 +1886,13 @@ The direct weighted sum \(X\in[0,1]\) from
 \nolinkurl{ProbabilityRepresentation.lean} has CDF \(F\) globally.  The folded
 identity is stated directly as
 \[
-  \Up(x)=\operatorname{weightedSumCDF}(1-|x|)
-         =\Prob[X\leq1-|x|].
+  \RvachevUp(x)=\operatorname{weightedSumCDF}(1-|x|)
+         =\Probability[X\leq1-|x|].
 \]
 These are CDF and event-probability theorems; the module does not package a
 separate centered random variable.  Its half-base bridges do now identify the
 explicit density from \nolinkurl{GeometricUniformCDF.lean} with
-\(2\Up(2x-1)\) on all of \(\R\), as recorded above.
+\(2\RvachevUp(2x-1)\) on all of \(\RealNumbers\), as recorded above.
 
 This gives an independent conceptual construction of the same object as the Banach fixed point.  In the formal dependency graph it is normally developed after the canonical function is available, because identification is easier than rebuilding the entire \nolinkurl{IsFabius} interface from measure convergence.  Mathematically, however, it explains why the function is a distribution function.
 
@@ -1987,7 +1984,7 @@ It is a finite identity, so no interchange of limits or infinite products is
 hidden in the proof.
 
 \subsection{The finite q-Pochhammer infrastructure}
-\nolinkurl{HalfQBinomial.lean} develops exact q-binomial algebra at \(q=1/2\) over \(\Q\).  The finite q-Pochhammer product is represented without analytic convergence issues:
+\nolinkurl{HalfQBinomial.lean} develops exact q-binomial algebra at \(q=1/2\) over \(\RationalNumbers\).  The finite q-Pochhammer product is represented without analytic convergence issues:
 \[
   (a;q)_n=\prod_{j=0}^{n-1}(1-aq^j).
 \]
@@ -2025,7 +2022,7 @@ The even/odd split is the common engine behind Thue--Morse cancellation and q-bi
 \end{proofidea}
 
 \subsection{Translation invariance as a polynomial theorem}
-One of the strongest internal statements says that the relevant finite q-expression is independent of a translation parameter because it is a polynomial of degree below the cancellation threshold.  This is proved before specializing the parameter to real or complex values.  As a result, common translation invariance holds over a broad coefficient ring and later applies uniformly to \(\R\) and \(\C\).
+One of the strongest internal statements says that the relevant finite q-expression is independent of a translation parameter because it is a polynomial of degree below the cancellation threshold.  This is proved before specializing the parameter to real or complex values.  As a result, common translation invariance holds over a broad coefficient ring and later applies uniformly to \(\RealNumbers\) and \(\ComplexNumbers\).
 
 This is a recurring proof-design strategy: prove a fact at the most algebraic level where it is true, then transport it through evaluation homomorphisms.  Analytic specializations become one-line consequences of polynomial extensionality.
 
@@ -2047,14 +2044,14 @@ and \nolinkurl{tsum} identities.
 \nolinkurl{FabiusGlobalQBinomialSeries.lean} proves that its literal real or complex
 \(q\)-summand is pointwise equal to the \(q\)-independent binary-reduction
 summand before either side is summed.  The resulting real and complex series
-represent the signed extension for every \(x\in\R\); the earlier
+represent the signed extension for every \(x\in\RealNumbers\); the earlier
 nonnegative-input statements remain compatibility wrappers.
 
 \subsection{Parity-power series}
 \nolinkurl{FabiusParityPowerSeries.lean} rewrites the corrected scale-zero
 binary-reduction series in the draft's parity-power notation.  The outer sum
 starts at \(m=0\) and equals the signed global Fabius extension for every
-\(x\in\R\), with the nonpositive side termwise zero; the original series
+\(x\in\RealNumbers\), with the nonpositive side termwise zero; the original series
 starting at \(m=1\) is recovered only on \(0\leq x<1\).  Its integer exponent
 is \(\kappa_n=\binom{n+1}{2}-1\), so \(\kappa_0=-1\), not a truncated natural
 subtraction; the scale-zero identity also uses Lean's convention \(0^0=1\).
@@ -2071,9 +2068,9 @@ This distinction between finite-stage dependence and limiting independence is ex
 \subsection{Uniform spline approximants}
 \nolinkurl{FabiusUniformSpline.lean} introduces centered finite Thue--Morse splines.  These are piecewise-polynomial functions whose coefficients encode a finite convolution row.  They are uniformly bounded, vanish on the nonpositive half-line, and repeat on the nonnegative axis as signed two-unit blocks.  \nolinkurl{FabiusComputability.lean} proves the global error estimate
 \[
- \sup_{x\in\R}|S_p(x)-\mathcal F(x)|\le 2^{-p}\qquad(p\ge1).
+ \sup_{x\in\RealNumbers}|S_p(x)-\FabiusGlobal(x)|\le 2^{-p}\qquad(p\ge1).
 \]
-Thus they converge uniformly on all of $\R$, while their bounded-CDF specialization converges uniformly to $F$ on $[0,1]$.
+Thus they converge uniformly on all of $\RealNumbers$, while their bounded-CDF specialization converges uniformly to $F$ on $[0,1]$.
 
 On the fundamental interval the source identifies the spline with the CDF of
 a centered finite weighted sum.  This yields monotonicity, range and support
@@ -2083,7 +2080,7 @@ facts across the nonnegative axis.
 \subsection{Complex-shift control}
 \nolinkurl{FabiusComplexShiftSpline.lean} and \nolinkurl{FabiusDiscreteLimitComplexShift.lean} control evaluating a finite spline at a complex displacement.  A Taylor expansion separates the real centered value from correction terms.  Uniform derivative bounds, together with the scale of the shift, show the corrections vanish in the limit.
 
-The proof is careful not to use order arguments on \(\C\).  Norm bounds replace real inequalities, and factorial denominators are estimated in \(\R\) before being cast into complex norms.  The finite nature of the Taylor expansion is again important: each finite spline has bounded degree, so no complex analytic remainder theorem is required.
+The proof is careful not to use order arguments on \(\ComplexNumbers\).  Norm bounds replace real inequalities, and factorial denominators are estimated in \(\RealNumbers\) before being cast into complex norms.  The finite nature of the Taylor expansion is again important: each finite spline has bounded degree, so no complex analytic remainder theorem is required.
 
 \subsection{The Toeplitz averaging mechanism}
 \nolinkurl{FabiusDiscreteLimitToeplitz.lean} rewrites the normalized row as a Toeplitz-type weighted average of centered spline values.  The weights need not be nonnegative: their row sum is one and their total variation is uniformly bounded, while the sampled spline degrees all tend to infinity.  These facts transfer convergence of the splines to convergence of the averages.
@@ -2223,7 +2220,7 @@ Explicit conversion lemmas are preferable to ad hoc substitutions in each theore
 \subsection{The negative moment generating function}
 The repository's entire generating function is totalized as
 \[
-  G(z)=1+z\int_0^1\Up(t)e^{zt}\,\dd t.
+  G(z)=1+z\int_0^1\RvachevUp(t)e^{zt}\,\Differential t.
 \]
 For \(s>0\), \nolinkurl{NegativeLaplace.lean} identifies its negative-axis value with the exact product
 \[
@@ -2233,7 +2230,7 @@ For \(s>0\), \nolinkurl{NegativeLaplace.lean} identifies its negative-axis value
 \]
 The companion \nolinkurl{LaplaceTransform.lean} proves the equivalent bounded-function formula
 \[
-  \frac{G(-s)}s=\int_{(0,\infty)}F(t)e^{-st}\,\dd t.
+  \frac{G(-s)}s=\int_{(0,\infty)}F(t)e^{-st}\,\Differential t.
 \]
 The product's logarithm is
 \[
@@ -2306,7 +2303,7 @@ Later modules strengthen regularity.  \nolinkurl{PeriodicRegularity.lean} differ
 \subsection{Mellin--Bose analysis and finite parts}
 \nolinkurl{MellinBose.lean} proves, first for real \(a>0\),
 \[
- \int_0^\infty x^{a-1}\log(1-e^{-x})\,\dd x
+ \int_0^\infty x^{a-1}\log(1-e^{-x})\,\Differential x
  =-\Gamma(a)\zeta(a+1),
 \]
 by expanding the logarithm into an absolutely integrable exponential series
@@ -2355,12 +2352,12 @@ This closes the loop between exact moment series, Fourier/probability products, 
 For every \(r>0\), \nolinkurl{FabiusBromwichInput.lean} proves the exact
 Fourier--Bromwich identity
 \[
- F(x)=e^{rx}\int_{\R}
- e^{2\pi\ii\xi x}\,
- \frac{G\!\left(-(r+2\pi\ii\xi)\right)}
-      {r+2\pi\ii\xi}\,\dd\xi .
+ F(x)=e^{rx}\int_{\RealNumbers}
+ e^{2\pi\ImaginaryUnit\xi x}\,
+ \frac{G\!\left(-(r+2\pi\ImaginaryUnit\xi)\right)}
+      {r+2\pi\ImaginaryUnit\xi}\,\Differential\xi .
 \]
-Thus the vertical coordinate \(z=r+2\pi\ii\xi\) has positive real part,
+Thus the vertical coordinate \(z=r+2\pi\ImaginaryUnit\xi\) has positive real part,
 while the generating function is sampled at the negative argument \(-z\).
 The theorem comes directly from Fourier inversion of the exponentially tilted
 CDF and requires no contour-shifting assumption.
@@ -2408,7 +2405,7 @@ where \(M(x)\) contains the explicit quadratic-logarithmic, Lambert, Gaussian, a
 This theorem is the critical interface between contour analysis and asymptotic algebra.  All later approximations can focus on two controlled terms: a normalized central integral tending to one, and an exponentially flat tail inherited from the negative-Laplace product.
 
 \subsection{Central and tail decomposition}
-Write the vertical contour variable as \(s=\sigma+\ii y\).  The integral is split at a central radius \(|y|\leq Y(\lambda)\):
+Write the vertical contour variable as \(s=\sigma+\ImaginaryUnit y\).  The integral is split at a central radius \(|y|\leq Y(\lambda)\):
 \[
   I=I_{\mathrm{central}}+I_{\mathrm{tail}}.
 \]
@@ -2450,7 +2447,7 @@ the base radius \(2^0=1\).  The legacy \(Cb\) estimate is retained for
 \(b\geq1\).  At any radius \(r>0\),
 \nolinkurl{iteratedDeriv_negativeLaplaceVerticalLog_at_zero_eq_ordinary_all}
 identifies every zero-axis jet: order zero is normalized to zero, while order
-\(n>0\) is \((r\ii)^n\) times the \(n\)-th ordinary derivative of the
+\(n>0\) is \((r\ImaginaryUnit)^n\) times the \(n\)-th ordinary derivative of the
 negative-Laplace logarithm at \(r\).
 
 \subsection{Minor arcs and tail decay}
@@ -2555,7 +2552,7 @@ module.
 \subsection{Universal endpoint-transfer polynomials and finite expectations}
 Two explicitly post-snapshot modules isolate the finite algebra behind an
 endpoint-transfer step.  \nolinkurl{EndpointTransferPolynomials.lean} defines
-universal polynomials \(P_r\in\Q[X]\) by the formal identity
+universal polynomials \(P_r\in\RationalNumbers[X]\) by the formal identity
 \[
   \exp\!\left(-\sum_{j\geq2}\frac{X^j t^{j-1}}{j}\right)
   =\sum_{r\geq0}P_r(X)t^r.
@@ -2632,7 +2629,7 @@ Its strongest theorem is the division-free commutative-semiring identity
  \operatorname{Bell.complete}(\kappa)_n=n!\,h_n(a),
 \]
 named \nolinkurl{bellComplete_completeHomogeneousBellInput}.  Only after
-passing to a commutative \(\Q\)-algebra does
+passing to a commutative \(\RationalNumbers\)-algebra does
 \nolinkurl{completeHomogeneousEvalOn_eq_factorialNormalize_completeBellPolynomial}
 state the report form
 \[
@@ -2647,9 +2644,9 @@ analytic generating-series or convergence theorem.
 Over every commutative semiring, without division or a hypothesis on \(q\),
 \nolinkurl{GeometricCompleteHomogeneous.lean} proves
 \[
-  h_n(1,q,\ldots,q^p)=\qbinom{n+p}{p}{q},
+  h_n(1,q,\ldots,q^p)=\GaussianBinomial{n+p}{p}{q},
   \qquad
-  h_n(c,cq,\ldots,cq^p)=c^n\qbinom{n+p}{p}{q}.
+  h_n(c,cq,\ldots,cq^p)=c^n\GaussianBinomial{n+p}{p}{q}.
 \]
 The exact declarations are
 \nolinkurl{completeHomogeneousEval_geometric},
@@ -2666,10 +2663,10 @@ on the displayed scaled nodes:
 They then give, for \(r\geq0\) and \(m>0\),
 \[
  \sum_{k=0}^{p}w_k(cq^k)^{p+1+r}
- =c^{p+1+r}(-1)^p q^{\binom{p+1}{2}}\qbinom{p+r}{p}{q},
+ =c^{p+1+r}(-1)^p q^{\binom{p+1}{2}}\GaussianBinomial{p+r}{p}{q},
  \qquad
  \sum_{k=0}^{p}w_k(cq^k)^m
- =c^m(-1)^p q^{\binom{p+1}{2}}\qbinom{m-1}{p}{q}.
+ =c^m(-1)^p q^{\binom{p+1}{2}}\GaussianBinomial{m-1}{p}{q}.
 \]
 The theorem with this direct scaled-node hypothesis is strictly more general
 than a result that first assumes exactness before dilation: it remains valid
@@ -2726,11 +2723,11 @@ They remain finite algebra and provide no asymptotic control.
 Two independent asymptotic tools make the finite extrapolation legitimate.
 \nolinkurl{completeHomogeneousEvalOn_isBigO_pow} in
 \nolinkurl{CompleteHomogeneousAsymptotics.lean} carries coordinatewise
-\(\bigO(g)\) estimates through a fixed degree-\(n\) complete homogeneous
+\(\BigO(g)\) estimates through a fixed degree-\(n\) complete homogeneous
 evaluation, including \(n=0\).  In
 \nolinkurl{LambertReciprocalAsymptotics.lean}, the reciprocal nodes are
 \(\Theta\)-equivalent to \(\lambda^{-1}\), each fixed row coefficient and the
-row's total variation are \(\bigO(\lambda^r)\), and
+row's total variation are \(\BigO(\lambda^r)\), and
 \nolinkurl{shiftedReciprocalLagrangeWeight_mul_invPow_isBigO_atTop}
 absorbs that growth into a sufficiently high inverse power.
 
@@ -2759,19 +2756,19 @@ as \nolinkurl{fabiusPhaseLockedResidualTerm_eq_bell};
 term in the exact finite partial sum.  These are algebraic wrappers, not new
 analytic claims.
 
-For every fixed \(r,S\in\N\),
+For every fixed \(r,S\in\NaturalNumbers\),
 \[
  E_r(\lambda)-\Psi(\lambda)
    -\sum_{n=0}^{S-1}R_{r,n}(\lambda)
- =\bigO\bigl(\lambda^{-(r+1+S)}\bigr)
+ =\BigO\bigl(\lambda^{-(r+1+S)}\bigr)
  \qquad(\lambda\to+\infty).
 \]
 This is
 \nolinkurl{fabiusPhaseLockedPeriodicEstimator_sub_residual_isBigO} in
 \nolinkurl{FabiusLambertPhaseExtraction.lean}; its proof requests the
 single-node expansion at order \(2r+S+1\), exactly compensating for the
-\(\bigO(\lambda^r)\) row.  The same module gives the
-\(\bigO(\lambda^{-(r+1)})\) estimator bound without residual subtraction,
+\(\BigO(\lambda^r)\) row.  The same module gives the
+\(\BigO(\lambda^{-(r+1)})\) estimator bound without residual subtraction,
 the one-order improvement after subtracting the first omitted moment, and
 convergence to \nolinkurl{negativeLaplacePsi} at a fixed phase along
 \(\lambda=a+n\).  The result is a fixed-\(r,S\) Poincaré statement: it does
@@ -2810,7 +2807,7 @@ scalar multiplication (each fixed scalar acts continuously), the geometric theor
 \nolinkurl{geometricAnalyticSeriesFilter_eq_constant_add_gaussian_tsum}
 identifies the finite row-moment factor in every residual tail term as
 \[
-  (-1)^p q^{\binom{p+1}{2}}\qbinom{p+r}{p}{q}.
+  (-1)^p q^{\binom{p+1}{2}}\GaussianBinomial{p+r}{p}{q}.
 \]
 Assuming \(j\mapsto q^j\) is injective on \(\{0,\ldots,p\}\), the geometric-Lagrange
 wrapper over a scalar field and its shifted-scale form are
@@ -2874,7 +2871,7 @@ where the \(d_j\) are again bounded period-one functions.  The analytic proof us
 
 At the formal level, \nolinkurl{SaddleLogExpansionAlgebra.lean} proves that
 the recursive logarithm and exponential coefficient transforms are exact
-inverses in every commutative \(\Q\)-algebra.  Unit and zero constant-term
+inverses in every commutative \(\RationalNumbers\)-algebra.  Unit and zero constant-term
 hypotheses give identities at all indices; at every positive index the
 inverse identities need no normalization because the recurrences do not read
 the zeroth input coefficient.  \nolinkurl{SaddleLogExpansionPowerSeries.lean}
@@ -2921,7 +2918,7 @@ Modules with names such as \nolinkurl{FabiusWikipediaMain.lean} and \nolinkurl{F
 \subsection{Why Legendre polynomials are a natural basis}
 The up-function is supported on \([-1,1]\), is even, and is infinitely differentiable.  Legendre polynomials are orthogonal on exactly this interval with respect to Lebesgue measure, so they provide a canonical spectral expansion:
 \[
-  \Up(x)=\sum_{n\geq0}a_nP_n(x).
+  \RvachevUp(x)=\sum_{n\geq0}a_nP_n(x).
 \]
 Evenness forces every odd coefficient to vanish.  The repository does not stop at a formal \(L^2\) expansion: it evaluates the even coefficients exactly through moments, proves absolute and uniform convergence, translates the series back to the global Fabius function, and proves least-squares optimality of finite truncations.
 
@@ -2929,7 +2926,7 @@ Evenness forces every odd coefficient to vanish.  The repository does not stop a
 \nolinkurl{LegendrePolynomial.lean} develops the required Legendre facts in the normalization used by the project.  The polynomials are defined through Rodrigues' formula or an equivalent derivative representation:
 \[
   P_n(x)=\frac{1}{2^n n!}
-          \frac{\dd^n}{\dd x^n}(x^2-1)^n.
+          \frac{\Differential^n}{\Differential x^n}(x^2-1)^n.
 \]
 The module proves degree, parity, endpoint values, differential equation, and derivative bounds.
 
@@ -2943,7 +2940,7 @@ The Legendre differential equation is
 Multiplying the equation for \(P_n\) by \(P_m\), the equation for \(P_m\) by \(P_n\), subtracting, and integrating gives
 \[
   \bigl(n(n+1)-m(m+1)\bigr)
-  \int_{-1}^{1}P_n(x)P_m(x)\,\dd x=0.
+  \int_{-1}^{1}P_n(x)P_m(x)\,\Differential x=0.
 \]
 Boundary terms vanish because of the factor \(1-x^2\).  For \(m\ne n\), the eigenvalues differ, proving orthogonality.
 
@@ -2952,12 +2949,12 @@ Boundary terms vanish because of the factor \(1-x^2\).  For \(m\ne n\), the eige
 \subsection{Norms and pointwise bounds}
 The exact norm is
 \[
-  \int_{-1}^{1}P_n(x)^2\,\dd x=\frac{2}{2n+1}.
+  \int_{-1}^{1}P_n(x)^2\,\Differential x=\frac{2}{2n+1}.
 \]
 The source derives it from Rodrigues' formula and repeated integration by parts, or from a recurrence plus normalization depending on the helper theorem used.  This norm fixes the Fourier--Legendre coefficient:
 \[
   a_n=\frac{2n+1}{2}
-      \int_{-1}^{1}\Up(x)P_n(x)\,\dd x.
+      \int_{-1}^{1}\RvachevUp(x)P_n(x)\,\Differential x.
 \]
 
 A bound \(|P_n(x)|\leq1\) on \([-1,1]\) is proved from the differential equation and an extremum argument.  This simple uniform bound is the last ingredient needed to convert absolute convergence of coefficients into uniform convergence of the function series.
@@ -2967,7 +2964,7 @@ The parity theorem states
 \[
   P_n(-x)=(-1)^nP_n(x).
 \]
-Since \(\Up\) is even, the integrand \(\Up(x)P_n(x)\) is odd when \(n\) is odd.  A symmetric-interval integral of an odd integrable function is zero.  In Lean, the proof either invokes a generic odd-integral lemma or performs the substitution \(x\mapsto-x\) and adds the two integral identities.
+Since \(\RvachevUp\) is even, the integrand \(\RvachevUp(x)P_n(x)\) is odd when \(n\) is odd.  A symmetric-interval integral of an odd integrable function is zero.  In Lean, the proof either invokes a generic odd-integral lemma or performs the substitution \(x\mapsto-x\) and adds the two integral identities.
 
 The resulting series is indexed naturally by \(P_{2n}\).  This is not only cosmetic: the exact coefficient formula then uses the even moment \(M_{2k}\), for which the arithmetic normalization and denominator theory are available.
 
@@ -3002,7 +2999,7 @@ For the Fabius up-function, compact support and smoothness supply these hypothes
 The generic theorem is separated from Fabius-specific coefficient arithmetic.  This permits future reuse for other compactly supported smooth functions and keeps the main convergence proof independent of exact moment formulas.
 
 \subsection{Identifying the uniform limit}
-Orthogonality first shows that the partial sums are the \(L^2\) projections of \(\Up\).  Absolute/uniform convergence produces a continuous limit \(S\).  To prove \(S=\Up\), the source may use one of two equivalent routes:
+Orthogonality first shows that the partial sums are the \(L^2\) projections of \(\RvachevUp\).  Absolute/uniform convergence produces a continuous limit \(S\).  To prove \(S=\RvachevUp\), the source may use one of two equivalent routes:
 \begin{itemize}
   \item completeness of Legendre polynomials in \(L^2[-1,1]\), followed by equality of continuous representatives; or
   \item a generic convergence theorem already identifying the pointwise limit for sufficiently smooth functions.
@@ -3023,12 +3020,12 @@ The module also expands translated Legendre polynomials into ordinary monomials.
 \]
 For any polynomial \(p\) with \(\deg p\leq2N+1\),
 \[
-  \lVert\Up-p\rVert_2^2
-  =\lVert\Up-S_N^{\mathrm{even}}\rVert_2^2
+  \lVert\RvachevUp-p\rVert_2^2
+  =\lVert\RvachevUp-S_N^{\mathrm{even}}\rVert_2^2
    +\lVert S_N^{\mathrm{even}}-p\rVert_2^2.
 \]
 This Pythagorean identity follows because
-\(\Up-S_N^{\mathrm{even}}\) is orthogonal to every polynomial in that
+\(\RvachevUp-S_N^{\mathrm{even}}\) is orthogonal to every polynomial in that
 degree class.
 
 The formal proof represents the finite span either as a submodule of \(L^2\)-type functions or directly through polynomial coefficients.  It proves orthogonality term by term and then expands the square of the norm.  Uniqueness follows because equality of errors forces
@@ -3038,7 +3035,7 @@ polynomial continuity upgrades this to pointwise polynomial equality.
 The later module \nolinkurl{FabiusLegendreEnergy.lean} closes the coefficient
 energy side of the same expansion.  It defines the polynomial-form blocks
 \(B_n=u_nP_{2n}\) and proves their complete orthogonality, including the
-diagonal value \(2u_n^2/(4n+1)\).  It then proves Parseval for \(\Up\), the
+diagonal value \(2u_n^2/(4n+1)\).  It then proves Parseval for \(\RvachevUp\), the
 exact shifted coefficient tail for every partial-sum squared error in both
 \nolinkurl{HasSum} and \nolinkurl{tsum} form, and
 \[
@@ -3048,6 +3045,139 @@ exact shifted coefficient tail for every partial-sum squared error in both
 The block is defined directly as a polynomial.  These declarations do not
 formalize its finite up-translate realization, the separate Fourier-product
 or infinite-sinc integral for this energy, or rationality of its partial sums.
+
+\subsection{Executable Gaunt coefficients and finite up-law Gram sums}
+\label{ch:legendre-gaunt}
+
+The post-snapshot module \nolinkurl{LegendreGaunt.lean} closes the finite
+triple-product calculation over the rationals.  Its exhaustive public API consists of
+four definitions,
+\nolinkurl{legendreLebesgueMomentRat},
+\nolinkurl{legendreGauntRat},
+\nolinkurl{legendreGaunt}, and
+\nolinkurl{legendreProductLinearizationCoeffRat}, and twelve theorems,
+\nolinkurl{legendreLebesgueMomentRat_even},
+\nolinkurl{legendreLebesgueMomentRat_odd},
+\nolinkurl{legendreLebesgueMomentRat_cast},
+\nolinkurl{legendreGauntRat_eq_momentFunctional},
+\nolinkurl{legendreGauntRat_cast},
+\nolinkurl{legendreGauntRat_swap_left},
+\nolinkurl{legendreGauntRat_swap_right},
+\nolinkurl{legendrePolynomial_mul_eq_sum_gaunt},
+\nolinkurl{legendrePolynomialRat_mul_eq_sum_gaunt},
+\nolinkurl{legendreGauntRat_eq_zero_of_odd_sum},
+\nolinkurl{legendreGauntRat_eq_zero_of_add_lt}, and
+\nolinkurl{legendreGauntRat_eq_zero_of_triangle_violation}.
+
+Writing \(\mu_n^{\mathrm L}\) for
+\nolinkurl{legendreLebesgueMomentRat}\((n)\), the definition and its first three
+theorems say exactly
+\[
+ \mu_n^{\mathrm L}=
+ \begin{cases}
+   2/(n+1),&n\ \text{even},\\
+   0,&n\ \text{odd},
+ \end{cases}
+ \qquad
+ (\mu_n^{\mathrm L}:\RealNumbers)=\int_{-1}^{1}x^n\,\Differential x.
+\]
+Thus \(\mu_{2n}^{\mathrm L}=2/(2n+1)\) and
+\(\mu_{2n+1}^{\mathrm L}=0\).  If \(p_{n,a}=[X^a]P_n\) denotes the executable
+rational Legendre coefficient, the rational Gaunt definition is the bounded sum
+\[
+ G^{\RationalNumbers}_{ijk}
+ =\sum_{a=0}^{i}\sum_{b=0}^{j}\sum_{c=0}^{k}
+   p_{i,a}p_{j,b}p_{k,c}\,\mu_{a+b+c}^{\mathrm L},
+\]
+while \nolinkurl{legendreGaunt}\((i,j,k)\) is
+\[
+ G_{ijk}=\int_{-1}^{1}P_i(x)P_j(x)P_k(x)\,\Differential x,
+ \qquad
+ L_{ijk}=\frac{2k+1}{2}G^{\RationalNumbers}_{ijk}
+\]
+is \nolinkurl{legendreProductLinearizationCoeffRat}\((i,j,k)\).
+The moment-functional theorem identifies the bounded sum algebraically, and the cast
+theorem gives \((G^{\RationalNumbers}_{ijk}:\RealNumbers)=G_{ijk}\).  The two swap
+theorems exchange the first pair or the last pair of indices.  The real and rational
+product theorems then give, without extra hypotheses,
+\[
+ P_iP_j=\sum_{k=0}^{i+j}L_{ijk}P_k
+\]
+in \(\RealNumbers[X]\) and \(\RationalNumbers[X]\), respectively.
+
+All four definitions are total at every \(i,j,k\in\NaturalNumbers\).  The only
+hypotheses in the public theorem surface occur in the three support results:
+\(\operatorname{Odd}(i+j+k)\) implies \(G^{\RationalNumbers}_{ijk}=0\);
+\(i+j<k\) implies the same; and any strict triangle violation
+\[
+ i+j<k\ \lor\ i+k<j\ \lor\ j+k<i
+\]
+implies the same.  These are necessary support zeros only.  There is no converse
+support theorem, Wigner \(3j\) identification, factorial closed form, positivity
+theorem, or asymptotic assertion.
+
+The companion \nolinkurl{FabiusLegendreGaunt.lean} converts those product
+linearizations into finite formulas for the Rvachev Legendre Gram entries.  Its
+exhaustive public API has one definition,
+\nolinkurl{canonicalRvachevFullLegendreCoefficientRat}, and eight theorems,
+\nolinkurl{canonicalRvachevFullLegendreCoefficientRat_even},
+\nolinkurl{canonicalRvachevFullLegendreCoefficientRat_odd},
+\nolinkurl{canonicalRvachevFullLegendreCoefficientRat_cast},
+\nolinkurl{canonicalRvachevFullLegendreCoefficientRat_eq_normalized_moment},
+\nolinkurl{rvachevLegendreGramEntryRat_eq_sum_full_gaunt},
+\nolinkurl{rvachevLegendreGramEntryRat_eq_sum_gaunt},
+\nolinkurl{rvachevLegendreGramMatrixRat_apply_eq_sum_gaunt}, and
+\nolinkurl{upLegendreGramMatrix_apply_eq_sum_gaunt}.
+If \(c_r^{\RationalNumbers}\) is
+\nolinkurl{canonicalRvachevLegendreCoefficientRat}\((r)\), its full extension is
+\[
+ \widehat c_k^{\RationalNumbers}=
+ \begin{cases}
+   c_{k/2}^{\RationalNumbers},&2\mid k,\\
+   0,&2\nmid k.
+ \end{cases}
+\]
+The even and odd theorems give
+\(\widehat c_{2n}^{\RationalNumbers}=c_n^{\RationalNumbers}\) and
+\(\widehat c_{2n+1}^{\RationalNumbers}=0\).  Unconditionally in \(k\), the
+normalized-moment theorem says that \(\widehat c_k^{\RationalNumbers}\) is
+\((2k+1)/2\) times \nolinkurl{momentFunctional} with moment sequence
+\nolinkurl{rvachevRawMomentRat}, evaluated at
+\nolinkurl{legendrePolynomialRat}\((k)\).  In abbreviated notation,
+\[
+ \widehat c_k^{\RationalNumbers}
+ =\frac{2k+1}{2}\,\mathcal M_{\mathrm{Rv}}(P_k^{\RationalNumbers}).
+\]
+For arbitrary natural \(i,j\), write \(R_{ij}^{\RationalNumbers}\) for
+\nolinkurl{rvachevLegendreGramEntryRat}\((i,j)\).  The two rational entry
+theorems state exactly
+\[
+ R_{ij}^{\RationalNumbers}
+ =\sum_{k=0}^{i+j}\widehat c_k^{\RationalNumbers}
+    G^{\RationalNumbers}_{ijk}
+ =\sum_{r=0}^{\lfloor(i+j)/2\rfloor}c_r^{\RationalNumbers}
+    G^{\RationalNumbers}_{ij,2r}.
+\]
+The rational matrix theorem supplies the second equality entrywise for every
+\(i,j\in\operatorname{Fin} n\).
+
+Exactly two public theorems in this companion require analytic hypotheses.
+Given \(F\) of type \nolinkurl{BoundedFabius} and a proof \(h_F\) of
+\nolinkurl{IsFabius F},
+\nolinkurl{canonicalRvachevFullLegendreCoefficientRat_cast} identifies the real cast
+of \(\widehat c_k^{\RationalNumbers}\) with
+\nolinkurl{rvachevFullLegendreCoefficient}\((F,k)\), and
+\nolinkurl{upLegendreGramMatrix_apply_eq_sum_gaunt} states, writing
+\(D^F_{n,ij}\) for \nolinkurl{upLegendreGramMatrix}\((F,n,i,j)\),
+\[
+ D^F_{n,ij}
+ =\sum_{r=0}^{\lfloor(i+j)/2\rfloor}c_r(F)\,G_{ij,2r},
+\]
+where \(c_r(F)\) is \nolinkurl{rvachevLegendreCoefficient}\((F,r)\), for
+\(i,j\in\operatorname{Fin} n\).  The other six theorems are unconditional finite
+identities.  No infinite Legendre series is interchanged with integration, and the
+module proves no Wigner \(3j\) or factorial formula, Christoffel reconstruction, or
+new positivity or asymptotic result.
 
 \subsection{Computational significance}
 The exact coefficient theorem gives a certified way to produce rational polynomial approximants.  The least-squares theorem certifies optimality in \(L^2\), while uniform convergence certifies pointwise approximation.  This is a rare combination:
@@ -3069,7 +3199,7 @@ This part of the repository illustrates a mature use of formalization.  A failed
 The Thue--Morse modules prove prefix-sum cancellation, long zero runs of finite differences, convolution formulas, and generating-series identities.  Repeated finite difference annihilates polynomials below a threshold degree, which explains the high-order cancellation of the sign sequence.
 
 The full row-level symmetry is sharper than the endpoint cancellation.  If
-$k,r,d\in\N$, $k\le r$, and $k+d<2^r$, then
+$k,r,d\in\NaturalNumbers$, $k\le r$, and $k+d<2^r$, then
 \[
  \sigma_k(2^r-k-1-d)=(-1)^{r-k}\sigma_k(d),
  \qquad
@@ -3129,7 +3259,7 @@ The repaired theorem uses the shifted, dyadic-floor samples
 right endpoint each sample is exactly \nolinkurl{stepApproximant n} at
 \nolinkurl{correctedPrefixCellCenter n x}; those centers tend to \(2x-1\).  The
 endpoint is handled separately, giving pointwise convergence on \([0,1]\) to
-\(\Up(2x-1)\), and sampling at \(x/2\) recovers \(F(x)\).  No quantitative
+\(\RvachevUp(2x-1)\), and sampling at \(x/2\) recovers \(F(x)\).  No quantitative
 uniform rate or continuity of the sample function is asserted.
 
 \subsection{Formal counterexamples}
@@ -3576,15 +3706,15 @@ For even/odd splits, a specialized theorem is especially valuable:
 Once established, it drives Thue--Morse identities, convolution recurrences, and parity counts.
 
 \subsection{Casts as explicit interfaces}
-Exact theorems live in \(\N\), \(\mathbb Z\), or \(\Q\); analytic theorems live in \(\R\) or \(\C\).  Lean will insert canonical casts, but it will not silently prove that a finite sum commutes with the cast or that a natural exponent has the intended target type.
+Exact theorems live in \(\NaturalNumbers\), \(\mathbb Z\), or \(\RationalNumbers\); analytic theorems live in \(\RealNumbers\) or \(\ComplexNumbers\).  Lean will insert canonical casts, but it will not silently prove that a finite sum commutes with the cast or that a natural exponent has the intended target type.
 
 The code therefore proves and reuses lemmas of the forms
 \begin{align*}
-  \left(\sum_{k\in s}q_k:\Q\right)\!\uparrow^{\R}
-    &=\sum_{k\in s}(q_k:\R),\\
-  (2^n:\Q)\!\uparrow^{\R}&=(2:\R)^n,\\
-  \left(\binom nk:\N\right)\!\uparrow^{\Q}
-    &=\binom nk \text{ interpreted in }\Q.
+  \left(\sum_{k\in s}q_k:\RationalNumbers\right)\!\uparrow^{\RealNumbers}
+    &=\sum_{k\in s}(q_k:\RealNumbers),\\
+  (2^n:\RationalNumbers)\!\uparrow^{\RealNumbers}&=(2:\RealNumbers)^n,\\
+  \left(\binom nk:\NaturalNumbers\right)\!\uparrow^{\RationalNumbers}
+    &=\binom nk \text{ interpreted in }\RationalNumbers.
 \end{align*}
 In actual Lean syntax the upward arrows are ordinary coercions.  Tactics such as \nolinkurl{norm_cast}, \nolinkurl{exact_mod_cast}, and \nolinkurl{push_cast} are used after the expression is put in a form they recognize.
 
@@ -3620,9 +3750,9 @@ The most common integrability proof has three ingredients:
   \item compact support; and
   \item a uniform bound on that support.
 \end{itemize}
-The repository builds reusable support lemmas for \(F\), \(\Up\), their derivatives, and affine transforms.  Polynomial or exponential multipliers remain bounded on a compact support, so moment and transform integrability follows from a generic compact-support theorem.
+The repository builds reusable support lemmas for \(F\), \(\RvachevUp\), their derivatives, and affine transforms.  Polynomial or exponential multipliers remain bounded on a compact support, so moment and transform integrability follows from a generic compact-support theorem.
 
-This style avoids global estimates that are stronger than needed.  For instance, \(x^n\Up(x)\) is integrable not because \(x^n\) is globally bounded, but because the product vanishes outside \([-1,1]\).
+This style avoids global estimates that are stronger than needed.  For instance, \(x^n\RvachevUp(x)\) is integrable not because \(x^n\) is globally bounded, but because the product vanishes outside \([-1,1]\).
 
 \subsection{Interchanging sums, limits, derivatives, and integrals}
 Every interchange in the project is supported by a named convergence theorem:
@@ -3749,7 +3879,7 @@ The two Fabius-specific modules are used only after this generic work:
 natural-order ladders and finite monomial weights, while
 \nolinkurl{FabiusFractionalVolterra.lean} gives the positive-real one-step
 fractional shifts for the signed extension on \(x\geq0\), the bounded function
-on \([0,1]\), and the bridge from \(\Up\) based at \(-1\) to \(F\).
+on \([0,1]\), and the bridge from \(\RvachevUp\) based at \(-1\) to \(F\).
 
 \subsubsection{Path E: sharp asymptotics}
 Read:
@@ -3770,7 +3900,7 @@ Use the specialized central/tail and all-order modules as dependencies are encou
 \subsection{Adding a new exact identity}
 Suppose a new conjectured formula concerns \(F(a/2^n)\).  A productive workflow is:
 \begin{enumerate}
-  \item state and test the identity entirely in \(\Q\) using \nolinkurl{fabiusDyadicValue};
+  \item state and test the identity entirely in \(\RationalNumbers\) using \nolinkurl{fabiusDyadicValue};
   \item normalize representations and determine whether the bounded or global extension is intended;
   \item prove the finite arithmetic identity, preferably through existing closed-form or q-binomial lemmas;
   \item only then transport it to the analytic function using dyadic correctness; and
@@ -4085,8 +4215,8 @@ Mathematical object & Principal Lean name & Defining or identifying module \\
 \endhead
 Abstract bounded Fabius specification & \nolinkurl{IsFabius} & \nolinkurl{Basic.lean} \\
 Canonical bounded function \(F\) & \nolinkurl{fabius}, \nolinkurl{fabius_spec} & chosen in \nolinkurl{PaperStatements.lean}; existence and uniqueness proved in \nolinkurl{Existence.lean} \\
-Rvachev up-function \(\Up\) & \nolinkurl{rvachevUp} & \nolinkurl{Basic.lean}; analytic properties in \nolinkurl{Differential.lean} and later shape modules \\
-Signed global extension \(\widetilde F\) & \nolinkurl{extendedFabius} & defined in \nolinkurl{Basic.lean}; cell and smoothness theory in \nolinkurl{GlobalExtension.lean} \\
+Rvachev up-function \(\RvachevUp\) & \nolinkurl{rvachevUp} & \nolinkurl{Basic.lean}; analytic properties in \nolinkurl{Differential.lean} and later shape modules \\
+Signed global extension \(\FabiusGlobal\) & \nolinkurl{extendedFabius} & defined in \nolinkurl{Basic.lean}; cell and smoothness theory in \nolinkurl{GlobalExtension.lean} \\
 Normalized Volterra operator \(\mathsf J_{n,a}\) & \nolinkurl{normalizedVolterra}, \nolinkurl{iteratedPrimitive}, \nolinkurl{normalizedVolterra_affine}, \nolinkurl{normalizedVolterra_comp_affine}, \nolinkurl{normalizedVolterra_basepoint_shift}, \nolinkurl{normalizedVolterra_succ_eq_taylor_of_eq_zero} & direct kernel, literal iterator, affine transport, and base-point Taylor jets in \nolinkurl{NormalizedVolterra.lean} \\
 Exact Fabius primitive ladders & \nolinkurl{normalizedVolterra_extendedFabius}, \nolinkurl{normalizedVolterra_fabiusReal_of_le_one} & \nolinkurl{FabiusAntiderivatives.lean} \\
 Fractional Volterra operator and order calculus & \nolinkurl{fractionalVolterra}, \nolinkurl{fractionalVolterra_add}, \nolinkurl{fractionalVolterra_affine}, \nolinkurl{fractionalVolterra_add_one_deriv} & \nolinkurl{FractionalVolterra.lean}, \nolinkurl{FractionalVolterraSemigroup.lean}, and \nolinkurl{FractionalVolterraCalculus.lean} \\
@@ -4163,14 +4293,14 @@ Module & Role in the development \\
 \multicolumn{2}{l}{\textbf{Global shape, inversion, and computability}}\\[0.25em]
 \nolinkurl{ScalingRecurrence.lean} & Mathlib-only chain rules for arbitrary positive dilations, in vector and scalar forms, with caller-normalized outgoing weight; inert-parameter variants and dyadic wrappers used by negative-Laplace derivatives. \\
 \nolinkurl{Monotonicity.lean} & Strict increase of \(F\) on \([0,1]\), endpoint range, and order consequences. \\
-\nolinkurl{Regularity.lean} & Optimal global Lipschitz constants for \(F\) and \(\Up\). \\
+\nolinkurl{Regularity.lean} & Optimal global Lipschitz constants for \(F\) and \(\RvachevUp\). \\
 \nolinkurl{Convexity.lean} & Exact second-derivative formula and sign/zero loci, convexity before the midpoint, and concavity afterward. \\
-\nolinkurl{GlobalBounds.lean} & Sharp value and iterated-derivative bounds for the signed global extension and \(\Up\), including attainment and derivative-support control. \\
+\nolinkurl{GlobalBounds.lean} & Sharp value and iterated-derivative bounds for the signed global extension and \(\RvachevUp\), including attainment and derivative-support control. \\
 \nolinkurl{BoundedDerivatives.lean} & Exact global sup-norm bounds for every derivative, including attainment. \\
 \nolinkurl{FabiusAntiderivatives.lean} & Complete natural-order primitive ladder for the signed extension at every real endpoint, its bounded specialization on \(x\le1\), and finite natural-monomial formulas for both. \\
-\nolinkurl{FabiusFractionalVolterra.lean} & Positive-real one-step fractional order shift for the signed extension on \(x\ge0\), its bounded specialization on \([0,1]\), and the affine bridge from \(\Up\) based at \(-1\) to the bounded Fabius function for \(x\ge-1\). \\
+\nolinkurl{FabiusFractionalVolterra.lean} & Positive-real one-step fractional order shift for the signed extension on \(x\ge0\), its bounded specialization on \([0,1]\), and the affine bridge from \(\RvachevUp\) based at \(-1\) to the bounded Fabius function for \(x\ge-1\). \\
 \nolinkurl{EffectiveFlatness.lean} & Explicit power bounds at the flat endpoint. \\
-\nolinkurl{SharpFlatness.lean} & Factorial-strengthened endpoint power bounds for \(F\) and \(\Up\). \\
+\nolinkurl{SharpFlatness.lean} & Factorial-strengthened endpoint power bounds for \(F\) and \(\RvachevUp\). \\
 \nolinkurl{NowhereAnalytic.lean} & Exact real-analytic loci: off the closed transition supports and nowhere on them. \\
 \nolinkurl{FabiusInverse.lean} & Totalized inverse, order isomorphism on the unit interval, exact positive reciprocal derivative, exact global smoothness locus (continuity everywhere, but differentiability and every positive finite or \(C^\infty\) order exactly off the clamping endpoints), reciprocal-cubic second derivative, midpoint jet and interior curvature loci, strict closed-half curvature, and endpoint quotient/derivative blow-up. \\
 \nolinkurl{InverseModulus.lean} & Exhaustive one-definition/thirty-one-theorem structural inverse-modulus layer: global weak and maximal strict fixed-length increment shape, exact endpoint minimizers, constrained-superadditivity equality, unit-interval inverse-gap rigidity, global sharp modulus bounds and attained suprema, and effective injectivity.  The inverse equality loci are deliberately not global because of the clamped tails. \\
@@ -4198,7 +4328,7 @@ Module & Role in the development \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Moments, arithmetic, and denominators}}\\[0.25em]
 \nolinkurl{AnalyticMoments.lean} & Compact-support integration, total mass, moment and half-moment recurrences, identification with exact rational sequences, and the named even Fourier modes \nolinkurl{rvachevFourierMomentTerm} with their zero term, scaling law, and genuine \nolinkurl{HasSum} to the Rvachev Fourier transform. \\
-\nolinkurl{MomentPowerSeries.lean} & Exact \nolinkurl{PowerSeries} algebra over \(\Q\), including \(M(4X)=M(X)S(X)\); analytic evaluation is deferred to later modules. \\
+\nolinkurl{MomentPowerSeries.lean} & Exact \nolinkurl{PowerSeries} algebra over \(\RationalNumbers\), including \(M(4X)=M(X)S(X)\); analytic evaluation is deferred to later modules. \\
 \nolinkurl{NormalizedMoments.lean} & Division-free normalization theorem for half moments using factorial and Mersenne products. \\
 \nolinkurl{NormalizedEvenMoments.lean} & Natural numerator and common-denominator formula for even centered moments. \\
 \nolinkurl{Parity.lean} & Lucas-theorem parity analysis and oddness of natural moment numerators. \\
@@ -4213,7 +4343,7 @@ Module & Role in the development \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Fourier, probability, and the first paper}}\\[0.25em]
 \nolinkurl{FourierProduct.lean} & Entire sinc, pointwise multipliability, finite-product recurrence, and equality of the product with the analytic Fourier transform. \\
-\nolinkurl{FourierAnalytic.lean} & Entire Fourier transform of \(\Up\), Fourier inversion consequences, and its imaginary-axis relation to the half-moment generating function. \\
+\nolinkurl{FourierAnalytic.lean} & Entire Fourier transform of \(\RvachevUp\), Fourier inversion consequences, and its imaginary-axis relation to the half-moment generating function. \\
 \nolinkurl{OriginalCharacterization.lean} & Rvachev's original compact-support predicate, derived scale positivity, the forced scale and normalization, and the general fold from bounded Fabius solutions. \\
 \nolinkurl{OriginalUniqueness.lean} & Fourier-refinement uniqueness, the exact kernel of the fold, and the equivalences with fixed candidates or unique bounded Fabius witnesses. \\
 \nolinkurl{WeightedUniformSeries.lean} & Absolutely summable uniform-coordinate series, their canonical pushforward laws, pointwise and law-level head--tail splitting, reflection, and carried-interval results. \\
@@ -4226,6 +4356,7 @@ Module & Role in the development \\
 \nolinkurl{GeometricSincFactorization.lean} & Closed characteristic function of the scaled uniform digit, exact closed-factor and phase-collapsed finite residual formulas for \(\lvert q\rvert<1\), pointwise convergence of the phase-bearing sinc prefixes, and the two dyadic weighted-sum wrappers. \\
 \nolinkurl{GeometricReciprocalGamma.lean} & Locally uniform convergence, pointwise multipliability and \nolinkurl{HasProd}, and entireness of the geometric sinc product, together with its reciprocal-Gamma reflection factorization. \\
 \nolinkurl{GeometricSincCharacteristicFunction.lean} & The four-theorem, zero-definition surface: two exact phase-bearing bridges from the geometric-uniform characteristic function to the rescaled geometric sinc product and paired reciprocal-Gamma factors, plus locally uniform convergence of the full phase-bearing prefixes on the real frequency line and uniform convergence on every compact real frequency set, for every \(\lvert q\rvert<1\), including zero and negative ratios. \\
+\nolinkurl{RvachevPochhammerFactorization.lean} & One definition and nine theorems: the total complex infinite Pochhammer product and its strict-contraction convergence API, absolute summability and paired scale--zero product, the global \(S_q(z)=\prod_{k\ge0}(z^2/(k+1)^2;q^2)_\infty\) factorization for complex \(\lVert q\rVert<1\), and its two dyadic Rvachev/Fabius specializations. \\
 \nolinkurl{GeometricUniformCDF.lean} & The named \(F_q\) and explicit \(f_q\), conditioning and interval-integral equations, pointwise derivative and exact positive-ratio \nolinkurl{withDensity} law, continuity, reflection, exterior zeros, ordinary/topological support containments, compact support, and \(C^\infty\) regularity under their exact parameter hypotheses.  It also proves that the selected total formula is zero at \(q=0\), nonpositive for \(q<0\), yields the zero clamped measure for \(q\le0\), and cannot represent \(\mu_q\) on the nonpositive contraction range. \\
 \nolinkurl{HyperbolicActivation.lean} & Four definitions and 58 theorems forming the totalized real hyperbolic-sinc, \nolinkurl{tanhDiv}, activation-odds, and activation-probability dictionary, with continuity, parity, positivity, exact odds bridges, global elementary bounds, and the canonical identification \nolinkurl{tanhDiv_eq_dslope}. \\
 \nolinkurl{ActivationTaylor.lean} & Three theorems: the exact degree-nine Taylor polynomial of \(\tanh\) with \(O(\lVert x\rVert^{11})\) remainder, the induced degree-eight activation-probability polynomial with \(O(\lVert x\rVert^{10})\) remainder, and its equivalent \(O(x^{10})\) form. \\
@@ -4234,7 +4365,7 @@ Module & Role in the development \\
 \nolinkurl{ActivationSeriesAsymptotics.lean} & One arbitrary-index Tannery theorem identifying the exact quadratic coefficient of every square-summable activation series; the global majorant equals the limiting \(\ell^2\) coefficient, so no Taylor remainder is used. \\
 \nolinkurl{GeometricActivationDimension.lean} & Two definitions and 30 theorems: geometric/dyadic activation sums, genuine summability, global budgets, positivity and parity, refinement and finite-prefix/tail certificates, and the exact \nolinkurl{HasSum} of the squared normalized geometric weights. \\
 \nolinkurl{GeometricActivationAsymptotics.lean} & Two thin specializations of the generic Tannery theorem, giving coefficient \((1-q)/(3(1+q))\) for \(\lvert q\rvert<1\) and the dyadic value \(1/9\). \\
-\nolinkurl{ProbabilityRepresentation.lean} & Product measure on \([0,1]^{\N}\), weighted coordinate sum, self-similarity, and exact CDF/\(\Up\) identifications.  Its dyadic CDF smoothing, continuity, exterior-value, and reflection proofs are half-base specializations of \nolinkurl{GeometricUniformCDF.lean}; it also identifies \(F_{1/2}\) with every bounded Fabius function and \(f_{1/2}(x)\) with \(2\Up(2x-1)\). \\
+\nolinkurl{ProbabilityRepresentation.lean} & Product measure on \([0,1]^{\NaturalNumbers}\), weighted coordinate sum, self-similarity, and exact CDF/\(\RvachevUp\) identifications.  Its dyadic CDF smoothing, continuity, exterior-value, and reflection proofs are half-base specializations of \nolinkurl{GeometricUniformCDF.lean}; it also identifies \(F_{1/2}\) with every bounded Fabius function and \(f_{1/2}(x)\) with \(2\RvachevUp(2x-1)\). \\
 \nolinkurl{WeakConvergence.lean} & Characteristic-function convergence, Lévy continuity, bounded-continuous test convergence, positivity on every open set meeting \((-1,1)\), and exact limiting-measure support \([-1,1]\). \\
 \nolinkurl{StepMeasureBridge.lean} & Relates discrete/step approximants to their associated finite measures. \\
 \nolinkurl{EarlyMeasureBridge.lean} & Foundational bridge between early convolution approximants and measure formulations. \\
@@ -4258,7 +4389,7 @@ Module & Role in the development \\
 \nolinkurl{FabiusDyadicQBinomialScalar.lean} & Specialization using exact dyadic Fabius values. \\
 \nolinkurl{FabiusQBinomialTaylor.lean} & Constancy in the common translation indeterminate and identification, after normalization, with \nolinkurl{fabiusReductionSum}. \\
 \nolinkurl{FabiusGlobalQBinomialSeries.lean} & Real and complex all-real q-series for the signed extension, with pointwise q-independent summands and zero-series behavior on the nonpositive side. \\
-\nolinkurl{FabiusBinaryReductionSeries.lean} & Exact binary telescope, the scale-zero term distinguishing even and odd unit blocks, a global \(2^{1-N}\) residual bound, uniform convergence on \(\R\), and all-real sum identities. \\
+\nolinkurl{FabiusBinaryReductionSeries.lean} & Exact binary telescope, the scale-zero term distinguishing even and odd unit blocks, a global \(2^{1-N}\) residual bound, uniform convergence on \(\RealNumbers\), and all-real sum identities. \\
 \nolinkurl{FabiusParityPowerSeries.lean} & All-real parity-power form of the signed extension, including the integer-valued scale-zero exponent, termwise vanishing on the nonpositive side, and the restricted older \(m=1\) form. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Discrete-limit family}}\\[0.25em]
@@ -4318,7 +4449,7 @@ Module & Role in the development \\
 \nolinkurl{CompleteHomogeneous.lean} & Evaluation and adjoining-variable recurrences for complete homogeneous symmetric polynomials, together with their univariate quotient polynomial, over arbitrary commutative semirings or rings as appropriate. \\
 \nolinkurl{CompleteHomogeneousGenerating.lean} & Finite formal generating series for complete homogeneous evaluations: coefficient and adjoining-variable recurrences over commutative semirings, and one-factor/full-product denominator clearing plus the canonical \nolinkurl{PowerSeries.invOfUnit} reciprocal over commutative rings.  No analytic evaluation, convergence, or Bell/generalized-harmonic conversion is asserted. \\
 \nolinkurl{CompleteHomogeneousBell.lean} & Finite power sums and factorially weighted Bell input; the division-free complete-homogeneous/complete-Bell identity over every commutative semiring and its factorially normalized pointwise report form over commutative \(\mathbb Q\)-algebras.  No analytic convergence is asserted. \\
-\nolinkurl{GeometricCompleteHomogeneous.lean} & Denominator-free principal specialization \(h_n(1,q,\ldots,q^p)=\qbinom{n+p}{p}{q}\), its arbitrary common-scale form over every commutative semiring, and the range-indexed bridge used by interpolation rows. \\
+\nolinkurl{GeometricCompleteHomogeneous.lean} & Denominator-free principal specialization \(h_n(1,q,\ldots,q^p)=\GaussianBinomial{n+p}{p}{q}\), its arbitrary common-scale form over every commutative semiring, and the range-indexed bridge used by interpolation rows. \\
 \nolinkurl{LagrangeResidualMoments.lean} & Every higher residual moment of a polynomially exact finite row, with a representation-independent commutative-ring theorem and the distinct-node Lagrange specialization. \\
 \nolinkurl{GeometricResidualMoments.lean} & Every positive residual moment on \(c,cq,\ldots,cq^p\) over a commutative ring, assuming exactness directly on those scaled nodes, together with distinct-node Lagrange, arbitrary-dilation, and shifted-block field corollaries. \\
 \nolinkurl{AnalyticSeriesFilter.lean} & Unconditional pointwise evaluation of finite coefficient filters: diagonalization under weighted sampled-series summability, exact finite heads and tails, and Gaussian residual tails for geometric and geometric-Lagrange rows, including shifted scales.  This generic module does not supply conditional boundary summation, uniform estimates, asymptotic rates, or a sinc-product instantiation. \\
@@ -4388,6 +4519,8 @@ Module & Role in the development \\
 \nolinkurl{FabiusTranslatedLegendreSeries.lean} & Affine translation to the signed Fabius function and monomial expansion of the translated series. \\
 \nolinkurl{FabiusLegendreLeastSquares.lean} & Pythagorean identity and unique least-squares optimality of finite Legendre truncations. \\
 \nolinkurl{FabiusLegendreEnergy.lean} & Polynomial-form Legendre blocks, their complete orthogonality, full coefficient Parseval identity, exact shifted coefficient-energy tails in \nolinkurl{HasSum} and \nolinkurl{tsum} form, and the real-variable Legendre series for \(\int_0^1F(t)^2\,dt\).  Finite up-translate realization, Fourier/sinc energy formulas, and rationality of partial sums remain outside the module. \\
+\nolinkurl{LegendreGaunt.lean} & Four definitions and twelve theorems giving executable rational Lebesgue moments and Gaunt coefficients, real-cast and moment-functional bridges, two index swaps, finite real/rational Legendre product linearizations, and the proved parity and triangle-support zeros; see \cref{ch:legendre-gaunt}. \\
+\nolinkurl{FabiusLegendreGaunt.lean} & One definition and eight theorems extending the rational Rvachev--Legendre coefficients by odd zeros and expressing rational and genuine up-law Gram entries as exact finite full/even Gaunt sums; see \cref{ch:legendre-gaunt}. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{K-fold Thue--Morse audit and auxiliary asymptotics}}\\[0.25em]
 \nolinkurl{ThueMorseApproximation.lean} & Exact identification of corrected grid samples with moving-center step approximants and pointwise convergence, including the endpoint. \\
@@ -4520,11 +4653,11 @@ Topic & Informal hazard & Formal treatment \\
 Topic & Informal hazard & Formal treatment \\
 \midrule
 \endhead
-Bounded versus global \(F\) & A translation or dyadic formula is written for a clamped function on all of \(\R\). & Use \nolinkurl{extendedFabius} for the signed global statement; prove agreement with the bounded function on the unit interval. \\
+Bounded versus global \(F\) & A translation or dyadic formula is written for a clamped function on all of \(\RealNumbers\). & Use \nolinkurl{extendedFabius} for the signed global statement; prove agreement with the bounded function on the unit interval. \\
 Original finite convolution & A limiting convolution object is used where a finite-stage identity is required. & State the convolution theorem for each finite row, then pass to the limit through weak convergence. \\
 Step endpoints & Closed interval indicators count a shared endpoint twice. & Define a half-weight endpoint representative when the theorem is pointwise; retain ordinary indicators for almost-everywhere/integral statements. \\
 Fourier equation factor & A transform variable or scaling factor is dropped during differentiation/dilation. & Derive the identity from mathlib's Fourier derivative and affine-map theorems under a fixed convention. \\
-Poisson equations~(25) and~(32) & Equation~(25) omits the translation variable from the exponential, equation~(32) retains a factor \(1/a\) after the equation has been scaled by \(a\), and the printed specialization carries an unused upper bound \(a\leq1\). & Use the proved normalized identity with \(e^{2\pi\ii kt/u}\); after multiplying both sides by the spacing, cancel the reciprocal factor.  The sharp support specialization needs only \(a\geq\tfrac12\). \\
+Poisson equations~(25) and~(32) & Equation~(25) omits the translation variable from the exponential, equation~(32) retains a factor \(1/a\) after the equation has been scaled by \(a\), and the printed specialization carries an unused upper bound \(a\leq1\). & Use the proved normalized identity with \(e^{2\pi\ImaginaryUnit kt/u}\); after multiplying both sides by the spacing, cancel the reciprocal factor.  The sharp support specialization needs only \(a\geq\tfrac12\). \\
 Positive index & A denominator, derivative order, or truncated product is used at \(n=0\) although the formula assumes \(n>0\). & Add the explicit order hypothesis and prove the zero case separately when meaningful. \\
 Removable singularity & A quotient such as \((e^z-1)/z\) is treated as globally defined. & Define a total function with the limiting value at zero and prove a global power-series theorem. \\
 Dyadic representation & A formula is proved only for a reduced numerator even though later sums produce unreduced fractions. & Prove refinement invariance and formulate global correctness for arbitrary representatives. \\
@@ -4560,7 +4693,7 @@ Term or identifier & Meaning in this development \\
 Term or identifier & Meaning in this development \\
 \midrule
 \endhead
-\nolinkurl{UnitInterval} & The subtype \(\{x:\R\mid0\leq x\leq1\}\), used as the codomain of the bounded function. \\
+\nolinkurl{UnitInterval} & The subtype \(\{x:\RealNumbers\mid0\leq x\leq1\}\), used as the codomain of the bounded function. \\
 \nolinkurl{BoundedFabius} & A real-input function whose values carry the unit-interval bound in their type. \\
 \nolinkurl{fabiusReal} & Real-valued projection of a subtype-valued bounded function, suitable for calculus and integration. \\
 \nolinkurl{IsFabius} & Abstract specification combining tail values, smoothness, symmetry, and the left-half derivative law. \\
@@ -4687,9 +4820,9 @@ variable (F : BoundedFabius) (hF : IsFabius F)
 \end{lstlisting}
 The signed-extension theorems have unrestricted real endpoints; the bounded
 theorems use the exact hypothesis \(x\le1\).  The generic affine and base-point
-API does not yet give named Fabius-specific declarations for the \(\Up\) ladder
+API does not yet give named Fabius-specific declarations for the \(\RvachevUp\) ladder
 based at \(-1\), the reflected \(1-F\) ladder, arbitrary affine copies of \(F\),
-or the full piecewise polynomial tail beyond the support of \(\Up\); those remain
+or the full piecewise polynomial tail beyond the support of \(\RvachevUp\); those remain
 separate frontier targets rather than additional \texttt{\#check} entries here.
 
 \newpage

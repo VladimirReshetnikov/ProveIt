@@ -13721,6 +13721,31 @@ $\log(1-w)=-\sum_{r\ge1}w^r/r$ and summing the geometric progression in $n$ prov
 logarithmic formulas.
 \end{proof}
 
+\paragraph{Post-snapshot Lean boundary.}
+The infinite identity \eqref{p9:eq:qpoch-full} now has an exact general
+counterpart in \path{RvachevPochhammerFactorization.lean}.  Its three new
+declarations are
+\path{summable_norm_sineTerm_qpow_pair},
+\path{geometricSincProduct_eq_tprod_pair}, and
+\path{geometricSincProduct_eq_tprod_complexQPochhammerInf}.  For every
+complex scale \(r\) and argument \(z\) with \(\lVert r\rVert<1\), the last
+theorem states
+\[
+ \prod_{n\ge0}\sinc(\pi r^n z)
+ =\prod_{k\ge0}\left(\frac{z^2}{(k+1)^2};r^2\right)_\infty .
+\]
+The first two declarations prove absolute summability of the paired Euler
+perturbations and identify the same product with its paired
+scale--spectral-zero tprod.  The statements include \(r=0\) and individual
+zero factors and impose no nonvanishing hypothesis.  Taking
+\(r=\sqrt q\) for the report's \(0<q<1\) gives the first equality in
+\eqref{p9:eq:qpoch-full}.  The finite identity
+\eqref{p9:eq:qpoch-finite}, the two logarithmic formulas, and a named
+local-uniform or normal-convergence theorem for the rearranged Pochhammer
+right-hand side remain outside this exact counterpart.  In particular, this
+update does not promote the separate finite triple factorization
+\eqref{p9:eq:triple-factor}.
+
 \begin{corollary}[Gaussian-binomial finite factorization]\label{p9:cor:qbinom-finite}
 \statusN\ The finite product has the exact representation
 \begin{equation}
@@ -14879,13 +14904,13 @@ V.~Reshetnikov,
 V.~Reshetnikov,
 \emph{The Decay Envelope of the Rvachev Sinc Product: Comparative Audit},
 active draft, \texttt{ProveIt} repository, 2026.
-\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Comparative_Audit}
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/2e3567feb14947ee3ebcdab11adca64e746ad26f/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Comparative_Audit}
 
 \bibitem{p9:proveit-fourier-wave2}
 V.~Reshetnikov,
 \emph{The Decay Envelope of the Rvachev Sinc Product: Second-Wave Audit},
 active draft, \texttt{ProveIt} repository, 27 August 2026.
-\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Second_Wave_Audit}
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/2e3567feb14947ee3ebcdab11adca64e746ad26f/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Second_Wave_Audit}
 
 \bibitem{p9:arias-function}
 J.~Arias de Reyna,

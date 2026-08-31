@@ -11,9 +11,9 @@ carries a crosswalk naming the declarations that discharge its claims.
 So the contents are *mixed*, and the point of the directory is now to keep
 the two sides in correspondence rather than to hold one side apart: every
 claim should either name the Lean theorem that proves it or say precisely
-what is still missing.  `audit_all.sh` enforces the mechanical half of that:
+what is still missing.  `scripts/audit_all.sh` enforces the mechanical half of that:
 facade reachability, exact crosswalk names, declaration-name uniqueness, and
-the names advertised by module docstrings.  `audit_stale_claims.py` reports the
+the names advertised by module docstrings.  `scripts/audit_stale_claims.py` reports the
 half that needs reading.
 
 The canonical frontier artifacts are:
@@ -108,7 +108,7 @@ The draft inboxes under [`drafts/`](drafts/) are grouped thematically
 when four articles on the Lambert W function itself arrived), with new
 archives arriving through `drafts/incoming/` (see its README for the
 protocol).
-Later the same day every group except the Fourier-decay corpus was
+Later the same day the groups other than the Fourier-decay corpus were
 **consolidated into volumes**, in two styles: the original members were
 merged mechanically — one document per group, absorbing the member
 drafts verbatim with per-part label prefixes (the later second-wave
@@ -199,9 +199,12 @@ part-boundary section numbering and
 page-counter handling were repaired along the way (edits are marked
 `% ed.:` in the sources).  Every volume carries
 a provenance section with each absorbed member's SHA-256; the absorbed
-directories were deleted (git history is the archive). The
-Fourier-decay corpus deliberately stays as separate documents: its
-structure is audit evidence (see its README). Each group carries a
+directories were deleted (git history is the archive). The Fourier-decay
+corpus initially stayed separate so its independent reports could be audited;
+on 2026-08-31 it too was consolidated, editorially, into one corrected proof
+volume. Its source concordance and immutable pre-consolidation Git links retain
+that audit evidence without leaving superseded documents live (see its README).
+Each group carries a
 `README.md` stating its purpose and contents, and
 [`drafts/MANIFEST.md`](drafts/MANIFEST.md) is the global inventory:
 every volume with its title and the previous paths of what it
@@ -221,31 +224,32 @@ group README on removal.
 
 ### Consistency audits
 
-Four scripts here check the volumes and module documentation against the Lean
-corpus. `audit_all.sh` runs all four and exits nonzero if any hard check fails;
+The scripts under `scripts/` check the volumes and module documentation against
+the Lean corpus. `scripts/audit_all.sh` runs all four hard checks and exits
+nonzero if any hard check fails;
 run it before pushing any change that touches either side. The stale-claim and
 crosswalk-coverage surveys are advisory; the build-log checker is run
 separately after compiling a changed volume.
 
-- `audit_facade_reachability.py` — every module on disk is reachable from the
+- `scripts/audit_facade_reachability.py` — every module on disk is reachable from the
   library root `FabiusFunction.lean`. A newly added leaf module that nothing
   imports is never elaborated by `lake build FabiusFunction`, so a whole-library
   build would report success while silently skipping it.
-- `audit_crosswalk_names.py` — every `Fabius.*` name cited in a `.tex` file
+- `scripts/audit_crosswalk_names.py` — every `Fabius.*` name cited in a `.tex` file
   resolves to a declaration or a namespace that exists in the corpus. The
   corpus is scanned with a namespace stack, so dotted citations such as
   `Fabius.SaddleExpansion.expCoeff` are matched whole rather than truncated at
   the first dot. A citation that no longer resolves usually means a Lean
   declaration was renamed without its crosswalk being updated.
-- `audit_duplicate_names.py` — no two modules declare the same non-private,
+- `scripts/audit_duplicate_names.py` — no two modules declare the same non-private,
   fully qualified name. A collision generally means that a new module has
   reproved an existing result and should import it instead.
-- `audit_docstring_names.py` — backticked identifiers advertised in bulleted
+- `scripts/audit_docstring_names.py` — backticked identifiers advertised in bulleted
   module-docstring declarations resolve in the corpus. An unresolved
   `Fabius.*` name is a hard failure. An unresolved unqualified name is advisory
   only, because it may be a root-namespace Mathlib declaration that this
   lexical audit cannot distinguish from a stale local name.
-- `audit_stale_claims.py` and `audit_crosswalk_coverage.py` — advisory worklists
+- `scripts/audit_stale_claims.py` and `scripts/audit_crosswalk_coverage.py` — advisory worklists
   for contradictory “open” claims and theorem environments lacking either a
   nearby Lean citation or an explicit formalization disclaimer.
 
@@ -256,8 +260,8 @@ citations that were only being checked at their first component. Docstring-name
 advisories are printed for review but intentionally do not change the exit
 status.
 
-`audit_overfull.py <file.log> [threshold_pt]` is a separate post-build helper,
-not part of `audit_all.sh`: it parses both horizontal excess widths and vertical
+`scripts/audit_overfull.py <file.log> [threshold_pt]` is a separate post-build
+helper, not part of `scripts/audit_all.sh`: it parses both horizontal excess widths and vertical
 excess heights without the shell-escaping ambiguity of the old `grep` pipeline,
 and exits nonzero above the chosen threshold.  Output-routine vertical boxes,
 which carry no source-line range in a LaTeX log, are reported explicitly rather

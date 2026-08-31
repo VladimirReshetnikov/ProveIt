@@ -2,6 +2,25 @@
 
 New standalone intake members:
 
+- [`Non_Elementarity_of_the_Fabius_Function/`](Non_Elementarity_of_the_Fabius_Function/),
+  *The Fabius Function and Its Inverse are Not Elementary: Density of the
+  Analytic Locus under Algebraic Branches and Inversion* (14 A4 pp, 1,057
+  source lines), was reclassified on 2026-08-31 from the former top-level
+  `docs/Non_Elementarity_of_the_Fabius_Function/` pair through
+  `drafts/incoming/` and initially filed here without changing either submitted
+  payload. A later semantic-notation normalization rewrote the TeX and rebuilt
+  its PDF; the repository-added `SHA256SUMS` was refreshed and verifies both
+  current files. The bare two-file package supplied no archive or checksum
+  ledger. Its TeX source remains LF, and its structurally readable,
+  unencrypted PDF uses embedded/subset fonts, includes Libertinus, and has no
+  Type 3 font. The
+  title and abstract place its forward/inverse non-elementarity and analytic-
+  locus material with the inverse-function reports in this group. It remains
+  standalone pending post-publication claim-level reassessment and verification
+  of its Lean crosswalk; manuscript theorem labels and the document's own
+  formalization description do not independently establish current Lean
+  verification.
+
 - [`geometric_comb_q_fabius_report/`](geometric_comb_q_fabius_report/),
   *Geometric-Comb Interpolation, Gaussian Pascal Transforms, and the
   Fabius--Rvachev Boundary Layer* (65 pp), arrived on 2026-08-30 from

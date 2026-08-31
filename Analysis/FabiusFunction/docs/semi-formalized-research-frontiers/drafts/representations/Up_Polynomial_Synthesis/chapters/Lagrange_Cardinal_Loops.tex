@@ -1,0 +1,950 @@
+% ed.: Consolidated from the six Lagrange--Rvachev loop reports listed in
+% Appendix~\ref{sec:provenance-poly}.  All notation is normalized to the
+% moment/deconvolution pair of the parent volume.
+
+\section{Lagrange cardinal synthesis and exact interpolation loops}
+\label{sec:lagrange-loops}
+
+The preceding chapters solve polynomial synthesis independently of any
+choice of interpolation nodes.  Lagrange interpolation adds a finite analysis
+map to that synthesis map and thereby closes an exact loop.  This section
+collects the six reports that developed that observation.  Their repeated
+foundations are stated once in the parent volume; the genuinely different
+conclusions are organized here as consequences of one diagram.
+
+Fix pairwise distinct nodes
+\[
+ X=(x_0,\ldots,x_d)\subset[-1,1],
+ \qquad
+ \ell_j(x)=\prod_{r\ne j}\frac{x-x_r}{x_j-x_r},
+\]
+and write
+\[
+ \mathscr D_u:=\MM_u(D)^{-1},\qquad
+ m\in\N_{>0},\qquad h=m^{-1},\qquad
+ K_m:=\{k\in\Z:|k|<2m\}.
+\]
+The mesh is called \emph{admissible through degree $d$} when
+$\vtwo(m)\ge d$.  The canonical choice is $m=2^d$.  Notice that
+$\mathscr D_u x^r=\Gd_r(x)$ in the notation of
+\eqref{eq:appell-pair}.
+
+\subsection{Cardinal polynomials as literal translates}
+
+\begin{theorem}[Universal Lagrange--Rvachev cardinal formula]
+\label{thm:lag-cardinal}
+For every admissible $m$, every $0\le j\le d$, and every
+$x\in[-1,1]$,
+\begin{equation}
+ \boxed{
+ \ell_j(x)=h\sum_{k\in K_m}
+ (\mathscr D_u\ell_j)(kh)\,u(x-kh).}
+ \label{eq:lag-cardinal}
+\end{equation}
+Consequently, for arbitrary nodal data $y=(y_0,\ldots,y_d)^T$ and
+$I_Xy:=\sum_jy_j\ell_j$,
+\begin{equation}
+ \boxed{
+ (I_Xy)(x)=h\sum_{k\in K_m}
+ [\mathscr D_u(I_Xy)](kh)\,u(x-kh).}
+ \label{eq:lag-interpolant}
+\end{equation}
+Both sums are finite identities, not approximations.  The atoms in these
+formulas are literal translates of the original radius-one function $u$;
+there is no dilation.
+\end{theorem}
+
+\begin{proof}
+Use the physical-scale identity \eqref{eq:interval-algorithm} with target
+interval $[-1,1]$, origin $0$, spacing $h=m^{-1}$, and radius
+$\rho=mh=1$.  It applies because $\deg\ell_j=d\le\vtwo(m)$ and gives
+\eqref{eq:lag-cardinal}; compact support leaves exactly the indices
+$|k|<2m$.  Multiply by $y_j$, sum over the finite node set, and use linearity
+of $\mathscr D_u$ to obtain \eqref{eq:lag-interpolant}.
+\end{proof}
+
+The coefficients are closed algebraic expressions in the nodes.  Put
+\[
+ \lambda_j=\left(\prod_{r\ne j}(x_j-x_r)\right)^{-1},
+\]
+and let $e_s^{(j)}$ be the elementary symmetric polynomial of degree $s$ in
+the $d$ nodes with $x_j$ omitted.
+
+\begin{corollary}[Nodes-only Bernoulli--Bell amplitudes]
+\label{cor:lag-nodes-only}
+For every $0\le j\le d$ and every $t\in\R$,
+\begin{align}
+ (\mathscr D_u\ell_j)(t)
+ &=\sum_{r=0}^{\lfloor d/2\rfloor}
+   \gamma_{2r}\frac{\ell_j^{(2r)}(t)}{(2r)!}
+ \label{eq:lag-derivative-amplitude}\\
+ &=\lambda_j\sum_{n=0}^{d}(-1)^{d-n}e_{d-n}^{(j)}\Gd_n(t).
+ \label{eq:lag-nodes-only}
+\end{align}
+Thus rational nodes give rational amplitudes.  More explicitly, the
+$\gamma_{2r}$ are complete Bell polynomials in the negated Bernoulli
+cumulants of \eqref{eq:appell-pair}, so no implicit linear solve is hidden in
+\eqref{eq:lag-cardinal}.
+\end{corollary}
+
+\begin{proof}
+The reciprocal moment series is even, and it terminates on a degree-$d$
+polynomial; this gives \eqref{eq:lag-derivative-amplitude}.  Expanding
+\[
+ \ell_j(x)=\lambda_j\sum_{n=0}^{d}
+ (-1)^{d-n}e_{d-n}^{(j)}x^n
+\]
+and applying $\mathscr D_ux^n=\Gd_n(x)$ term by term gives
+\eqref{eq:lag-nodes-only}.  The Bell--cumulant description is exactly the
+coefficient identity following \eqref{eq:appell-pair}.
+\end{proof}
+
+\subsection{The exact right inverse and its projector}
+
+Let $q_m=|K_m|=4m-1$ and define
+\begin{equation}
+ U_{ik}=u(x_i-kh),
+ \qquad
+ B_{kj}=h(\mathscr D_u\ell_j)(kh).
+ \label{eq:lag-UB}
+\end{equation}
+Thus $U\in\R^{(d+1)\times q_m}$ samples the atoms and
+$B\in\R^{q_m\times(d+1)}$ synthesizes the cardinals.
+For a coefficient row $c\in\R^{K_m}$ and a continuous function $f$, write
+\[
+ \operatorname{Synth}c:=\sum_{k\in K_m}c_k\,u(\,\cdot-kh),
+ \qquad
+ I_Xf:=\sum_{j=0}^{d}f(x_j)\ell_j.
+\]
+Thus $\operatorname{Synth}\colon\R^{K_m}\to C[-1,1]$ and
+$I_X\colon C[-1,1]\to\Pi_d$ have compatible types in the intertwining law
+below.
+
+\begin{theorem}[Nodal closure, basis independence, and determinant identity]
+\label{thm:lag-right-inverse}
+The matrices in \eqref{eq:lag-UB} satisfy
+\begin{equation}
+ \boxed{UB=I_{d+1}.}
+ \label{eq:lag-UB-I}
+\end{equation}
+Consequently
+\begin{equation}
+ \mathcal P_X:=BU,\qquad
+ \mathcal P_X^2=\mathcal P_X,\qquad
+ \operatorname{ran}\mathcal P_X=\operatorname{ran}B,\qquad
+ \ker\mathcal P_X=\ker U,
+ \label{eq:lag-projector}
+\end{equation}
+and
+\[
+ \operatorname{rank}\mathcal P_X=\operatorname{tr}\mathcal P_X=d+1.
+\]
+Its characteristic polynomial and synthesis intertwining law are
+\begin{equation}
+ \chi_{\mathcal P_X}(t)=t^{q_m-d-1}(t-1)^{d+1},
+ \qquad
+ \operatorname{Synth}\mathcal P_X=I_X\operatorname{Synth}.
+ \label{eq:lag-projector-extra}
+\end{equation}
+
+More generally, let $p_0,\ldots,p_d$ be any basis of $\PiD$ and put
+\begin{equation}
+ V_{in}=p_n(x_i),
+ \qquad
+ \mathbf D_{kn}=h(\mathscr D_up_n)(kh).
+ \label{eq:lag-UVD}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{U\mathbf D=V,\qquad B=\mathbf D V^{-1},\qquad
+ \mathbf D=BV.}
+ \label{eq:lag-basis-factorization}
+\end{equation}
+For $0\le r\le d$ one also has
+\begin{equation}
+ B(x_0^r,\ldots,x_d^r)^T
+ =h\bigl(\Gd_r(kh)\bigr)_{k\in K_m},
+ \label{eq:lag-moment-transmutation}
+\end{equation}
+and Cauchy--Binet gives the exact partition of one
+\begin{equation}
+ 1=\sum_{\substack{S\subset K_m\\|S|=d+1}}
+ \det U_{:,S}\det B_{S,:}.
+ \label{eq:lag-cauchy-binet}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Evaluate \eqref{eq:lag-cardinal} at $x=x_i$ to obtain
+$(UB)_{ij}=\ell_j(x_i)=\delta_{ij}$.  Hence
+$\mathcal P_X^2=B(UB)U=BU$; the range, kernel, rank, and trace assertions are
+the standard consequences of a right inverse.
+
+The $n$th column of $U\mathbf D$ consists of the nodal values of the exact synthesis
+of $p_n$, hence equals the $n$th column of $V$.  Since the columns of
+$V^{-1}$ are the coordinates of the cardinal polynomials in the basis
+$(p_n)$, $B=\mathbf D V^{-1}$, and multiplication by $V$ gives
+$\mathbf D=BV$.
+Taking $p_r(x)=x^r$ proves \eqref{eq:lag-moment-transmutation}.  An
+idempotent is diagonalizable with eigenvalues zero and one, so its rank gives
+the characteristic polynomial.  Moreover
+$\operatorname{Synth}BU=I_X\operatorname{Synth}$ because $BU$ first samples
+the synthesized function and then synthesizes its cardinal interpolant.
+Finally apply Cauchy--Binet to $\det(UB)=1$.
+\end{proof}
+
+The factorization has an exact probabilistic normalization.  Put
+\[
+ \widetilde U=hU,
+ \qquad
+ \widetilde B=h^{-1}B.
+\]
+
+\begin{proposition}[Positive Markov encoder and forced signed decoder]
+\label{prop:lag-markov}
+The matrix $\widetilde U$ is nonnegative and row-stochastic,
+$\widetilde B\bm1=\bm1$, and
+\begin{equation}
+ \widetilde U\widetilde B=I_{d+1}.
+ \label{eq:lag-markov-inverse}
+\end{equation}
+If two distinct rows of $\widetilde U$ overlap in a strictly positive column,
+then $\widetilde B$ necessarily has a negative entry.
+\end{proposition}
+
+\begin{proof}
+Nonnegativity is $u\ge0$, and the partition of unity at admissible mesh gives
+$h\sum_ku(x_i-kh)=1$.  Since $\sum_j\ell_j=1$ and
+$\mathscr D_u1=1$, every row of $\widetilde B$ sums to one.
+Equation \eqref{eq:lag-markov-inverse} is \eqref{eq:lag-UB-I}.
+
+Suppose instead that $\widetilde B\ge0$.  Its rows are then probability
+vectors.  The equation
+$e_i=\widetilde U_{i,:}\widetilde B$ expresses the extreme point $e_i$ of
+the probability simplex as a convex combination of those rows.  Every row
+used with positive weight must therefore equal $e_i$.  A column positive in
+two different encoder rows would force the same decoder row to equal two
+different extreme points, a contradiction.
+\end{proof}
+
+The sign obstruction has a quantitative form.  For a row-unital right
+inverse $E$ of a nonnegative row-stochastic matrix $A$, write
+\[
+ V(E)=\max_k\sum_j|E_{kj}|,\qquad
+ \operatorname{TV}(a,b)=\tfrac12\|a-b\|_1.
+\]
+
+\begin{theorem}[Decoder variation and the Lebesgue barrier]
+\label{thm:lag-variation}
+If $AE=I$ and $E\bm1=\bm1$, then for distinct rows $i,j$,
+\begin{equation}
+ \boxed{
+ V(E)\ge\frac{2}{\|A_{i,:}-A_{j,:}\|_1}
+ =\frac1{\operatorname{TV}(A_{i,:},A_{j,:})}.}
+ \label{eq:lag-TV-lower}
+\end{equation}
+Some row of $E$ has total negative mass at least
+\begin{equation}
+ \frac1{\|A_{i,:}-A_{j,:}\|_1}-\frac12.
+ \label{eq:lag-negative-mass}
+\end{equation}
+For the Lagrange pair $(A,E)=(\widetilde U,\widetilde B)$,
+\begin{equation}
+ \boxed{V(\widetilde B)\ge\Lambda_X,}
+ \label{eq:lag-lebesgue-barrier}
+\end{equation}
+where $\Lambda_X$ is the Lebesgue constant of the node set.
+\end{theorem}
+
+\begin{proof}
+From $(A_{i,:}-A_{j,:})E=e_i-e_j$,
+\[
+ 2\le\sum_k|A_{ik}-A_{jk}|\,\|E_{k,:}\|_1
+ \le\|A_{i,:}-A_{j,:}\|_1V(E),
+\]
+which proves \eqref{eq:lag-TV-lower}.  A row summing to one has negative mass
+$(\|E_{k,:}\|_1-1)/2$, giving \eqref{eq:lag-negative-mass}.
+
+For nodal data $y$ with $\|y\|_\infty\le1$, the synthesized interpolant is
+$\sum_k(B y)_ku(x-kh)$.  Since $\sum_ku(x-kh)=h^{-1}$,
+\[
+ \|I_Xy\|_\infty
+ \le h^{-1}\|By\|_\infty
+ =\|\widetilde By\|_\infty
+ \le V(\widetilde B).
+\]
+Taking the supremum over such $y$ gives the operator norm $\Lambda_X$ and
+proves \eqref{eq:lag-lebesgue-barrier}.
+\end{proof}
+
+Thus changing from cardinal coordinates to smooth compactly supported atoms
+does not regularize interpolation.  It preserves the interpolating
+polynomial exactly and must carry any Runge amplification into signed decoder
+coordinates.
+
+\subsection{The local shift space and its exact sequence}
+
+Take the canonical $m=M=2^d$ and use all literal translates meeting
+$[-1,1]$:
+\[
+ \mathcal V_d^{\rm lit}
+ :=\Span\{u(\,\cdot-k/M)|_{[-1,1]}:k\in K_M\}.
+\]
+Let $\mathcal T$ synthesize coefficient vectors into this space and let
+$\mathcal E_X$ evaluate at the $d+1$ nodes.  Finally put
+\[
+ \mathcal Z_X=\{f\in\mathcal V_d^{\rm lit}:f(x_j)=0\text{ for all }j\}.
+\]
+
+\begin{theorem}[Alias/sample exact sequence]
+\label{thm:lag-exact-sequence}
+One has
+\begin{align}
+ \dim\mathcal V_d^{\rm lit}&=2M+d+1,
+ &\mathcal V_d^{\rm lit}\cap\R[x]&=\PiD,
+ \label{eq:lag-lit-dimension}\\
+ \dim\ker\mathcal T&=2M-d-2,
+ &\dim\mathcal Z_X&=2M.
+ \label{eq:lag-kernel-dimensions}
+\end{align}
+Moreover,
+\begin{equation}
+ \boxed{
+ \mathcal V_d^{\rm lit}=\PiD\oplus\mathcal Z_X,}
+ \label{eq:lag-direct-sum}
+\end{equation}
+and synthesis induces the short exact sequence
+\begin{equation}
+ 0\longrightarrow\ker\mathcal T
+ \longrightarrow\ker(\mathcal E_X\mathcal T)
+ \xrightarrow{\ \mathcal T\ }\mathcal Z_X
+ \longrightarrow0.
+ \label{eq:lag-exact-sequence}
+\end{equation}
+Hence the zero eigenspace of the coefficient projector has the exact split
+\begin{equation}
+ 4M-d-2=(2M-d-2)+2M:
+ \label{eq:lag-zero-split}
+\end{equation}
+genuine Fourier aliases plus nonzero local splines invisible at the nodes.
+\end{theorem}
+
+\begin{proof}
+Apply \cref{thm:multicell} to $[-1,1]$ with physical cell width $M^{-1}$,
+so the interval contains $J=2M$ cells.  It gives
+$\dim\mathcal V_d^{\rm lit}=J+d+1=2M+d+1$ and the polynomial intersection
+$\PiD$.  The coefficient space has dimension $4M-1$, which gives the first
+kernel dimension.
+
+Evaluation is onto because its restriction to $\PiD$ is the usual
+Vandermonde isomorphism.  Rank--nullity gives $\dim\mathcal Z_X=2M$.
+The intersection $\PiD\cap\mathcal Z_X$ is zero: a degree-$d$ polynomial
+with $d+1$ distinct roots vanishes.  Dimensions prove
+\eqref{eq:lag-direct-sum}.
+
+If a coefficient vector is killed by $\mathcal E_X\mathcal T$, its synthesis
+lies in $\mathcal Z_X$.  Conversely every member of $\mathcal Z_X$ has a
+coefficient preimage, necessarily killed by the samples.  The kernel of this
+restricted synthesis is exactly $\ker\mathcal T$, which proves exactness and
+the dimension split.
+\end{proof}
+
+The complete $2M-d-2$-dimensional alias sector has the explicit confluent
+Fourier basis of \cref{thm:alias-family}.  The complementary $2M$-dimensional
+nodal-zero sector depends on $X$; it is the precise part that interpolation
+removes without synthesizing the zero function.
+
+\subsection{The minimal dictionary and its rank-one ghost}
+
+Transport the endpoint basis $\mathcal B_d$ of
+\cref{thm:endpoint-basis} from $[0,1]$ to $[-1,1]$ and denote its
+$d+2$ normalized atoms by $\Phi_0,\ldots,\Phi_{d+1}$.  Let
+\[
+ \widehat U_{ir}=\Phi_r(x_i)
+\]
+and let $\widehat B$ contain the unique endpoint-basis coordinates of the
+cardinals.  Then $\widehat U\widehat B=I_{d+1}$.
+
+For $0\le r\le d+1$, delete column $r$ from $\widehat U$ and row $r$ from
+$\widehat B$, and set
+\begin{equation}
+ v_r=(-1)^r\det\widehat U_{\widehat r},
+ \qquad
+ \zeta_r=(-1)^r\det\widehat B_{\widehat r}.
+ \label{eq:lag-cofactor-vectors}
+\end{equation}
+
+\begin{theorem}[Rank-one complement and canonical nodal ghost]
+\label{thm:lag-rank-one}
+The cofactor vectors satisfy
+\begin{equation}
+ \widehat Uv=0,
+ \qquad \zeta^T\widehat B=0,
+ \qquad \zeta^Tv=1,
+ \label{eq:lag-cofactor-null}
+\end{equation}
+and
+\begin{equation}
+ \boxed{I_{d+2}-\widehat B\widehat U=v\zeta^T.}
+ \label{eq:lag-rank-one}
+\end{equation}
+For $a\in\R^{d+2}$ put
+\[
+ F_a=\sum_ra_r\Phi_r,
+ \qquad G_X=\sum_rv_r\Phi_r.
+\]
+Then $G_X(x_i)=0$ for every node and
+\begin{equation}
+ \boxed{F_a=I_XF_a+(\zeta^Ta)G_X.}
+ \label{eq:lag-functional-ghost}
+\end{equation}
+In particular, $F_a$ is a degree-$d$ polynomial on the interval if and only
+if $\zeta^Ta=0$.
+\end{theorem}
+
+\begin{proof}
+Alternating maximal minors give a right-null vector of a full-row-rank
+matrix, hence $\widehat Uv=0$; applied to $\widehat B^T$ they give
+$\zeta^T\widehat B=0$.  Cauchy--Binet and
+$\widehat U\widehat B=I$ yield
+\[
+ 1=\sum_r\det\widehat U_{\widehat r}
+       \det\widehat B_{\widehat r}=\zeta^Tv.
+\]
+The complementary idempotent $I-\widehat B\widehat U$ has rank one, range
+$\ker\widehat U=\Span\{v\}$, and left range
+$\ker\widehat B^T=\Span\{\zeta\}$.  The normalization
+$\zeta^Tv=1$ proves \eqref{eq:lag-rank-one}.
+
+The endpoint coefficient vector of $I_XF_a$ is
+$\widehat B\widehat Ua$.  Subtracting it from $a$ and applying
+\eqref{eq:lag-rank-one} proves \eqref{eq:lag-functional-ghost}.  The ghost is
+nonpolynomial: if it belonged to $\PiD$, its $d+1$ nodal zeros would make it
+zero, contradicting $v\ne0$ and independence of the endpoint basis.  Thus the
+scalar defect (ghost) coefficient $\zeta^Ta$ vanishes exactly for polynomial
+synthesis.
+\end{proof}
+
+This reconciles two apparently different ``defects.''  The universal
+polynomiality functional of \cref{thm:certificate} is node independent; after
+normalization it is the same one-dimensional quotient coordinate as
+$\zeta^T$.  The ghost $G_X$ is a node-dependent representative of that
+universal nonpolynomial quotient, chosen to vanish at the interpolation
+nodes.
+
+\begin{corollary}[Defect-completed square inverse]
+\label{cor:lag-square-completion}
+The square matrix
+\begin{equation}
+ \mathcal M_X=
+ \begin{pmatrix}\widehat U\\ \zeta^T\end{pmatrix}
+ \in\R^{(d+2)\times(d+2)}
+ \label{eq:lag-square-completion}
+\end{equation}
+is invertible and
+\begin{equation}
+ \boxed{\widehat B=\mathcal M_X^{-1}
+ \begin{pmatrix}I_{d+1}\\0\end{pmatrix}.}
+ \label{eq:lag-square-inverse}
+\end{equation}
+In the normalized cell coordinate $t\in[0,1]$, let
+\[
+ \mathcal D_d(t)=t^{d+1}+\mathcal E_d(t)
+\]
+be the canonical defect of \cref{thm:defect-Fourier} and let $I_\Theta$ interpolate at
+the affinely transported nodes $\Theta=(\theta_0,\ldots,\theta_d)$.  The
+ defect-one representative of the evaluation kernel inside the transported
+ $(d+2)$-dimensional endpoint-basis space is
+\begin{equation}
+ \boxed{\mathcal G_{d,\Theta}
+ =\mathcal D_d-I_\Theta\mathcal D_d
+ =\omega_\Theta+\mathcal E_d-I_\Theta\mathcal E_d,}
+ \qquad
+ \omega_\Theta(t)=\prod_{j=0}^{d}(t-\theta_j).
+ \label{eq:lag-canonical-ghost}
+\end{equation}
+Thus the algebraic ghost $v$ of \cref{thm:lag-rank-one} and the Fourier defect
+of \cref{sec:certificate} are the same quotient direction with two different
+normalizations.
+\end{corollary}
+
+\begin{proof}
+If $\mathcal M_Xa=0$, then $\zeta^Ta=0$, so $F_a$ is a polynomial of degree
+at most $d$.  The equation $\widehat Ua=0$ says that this polynomial has the
+$d+1$ distinct zeros $x_j$, hence it is zero.  Independence of the endpoint
+atoms gives $a=0$, proving invertibility.  The two identities
+$\widehat U\widehat B=I$ and $\zeta^T\widehat B=0$ are exactly
+\[
+ \mathcal M_X\widehat B=\begin{pmatrix}I\\0\end{pmatrix},
+\]
+which proves \eqref{eq:lag-square-inverse}.
+
+Both $\mathcal D_d$ and $I_\Theta\mathcal D_d$ belong to the normalized local
+shift space.  Their difference vanishes at every $\theta_j$, and it is
+nonzero because its defect coordinate is one whereas the interpolating
+polynomial has defect coordinate zero.  The evaluation kernel inside the
+transported $(d+2)$-dimensional endpoint-basis space is one-dimensional, so
+this is its normalized generator.  The full nodal-zero sector from
+\eqref{eq:lag-exact-sequence} is much larger.  Finally,
+$t^{d+1}-I_\Theta t^{d+1}=\omega_\Theta$ because both sides are monic of
+degree $d+1$ and have precisely the nodes $\theta_j$ as zeros.
+\end{proof}
+
+\subsection{Nested grids and exact multiresolution algebra}
+
+Fix an integer $s\ge0$.  Let
+$X^{(0)}\subset X^{(1)}\subset\cdots\subset X^{(s)}$ be nested node
+sets, with $|X^{(q)}|=d_q+1$, and let $I_q$ be the corresponding
+interpolation projector.  Let $C_s$ be the coefficient space of a fixed
+terminal up-dictionary.  Choose once and for all a synthesis map
+$T_s:C_s\to C[-1,1]$ and its canonical coefficient map
+$E_s:\Pi_{d_s}\to C_s$ at the terminal degree, so
+$T_sE_s=I$ on $\Pi_{d_s}$.
+
+\begin{theorem}[Nested projector semilattice and coefficient flag]
+\label{thm:lag-nested-flag}
+For all $0\le q,r\le s$,
+\begin{equation}
+ \boxed{I_qI_r=I_rI_q=I_{\min(q,r)}.}
+ \label{eq:lag-projector-semilattice}
+\end{equation}
+The lifted coefficient operators
+\begin{equation}
+ \widehat{\mathcal P}_q^{(s)}:=E_sI_qT_s
+ \label{eq:lag-lifted-projector}
+\end{equation}
+satisfy the same multiplication law and
+$\operatorname{rank}\widehat{\mathcal P}_q^{(s)}=d_q+1$.  Hence the details
+\begin{equation}
+ \widehat\Delta_0^{(s)}=\widehat{\mathcal P}_0^{(s)},
+ \qquad
+ \widehat\Delta_q^{(s)}=
+ \widehat{\mathcal P}_q^{(s)}-\widehat{\mathcal P}_{q-1}^{(s)}
+ \quad(q\ge1)
+ \label{eq:lag-lifted-details}
+\end{equation}
+are pairwise-annihilating idempotents with ranks
+$d_0+1$ and $d_q-d_{q-1}$, respectively.
+\end{theorem}
+
+\begin{proof}
+Assume $q\le r$.  The polynomial $I_rf$ agrees with $f$ on the smaller node
+set, so $I_qI_rf=I_qf$.  Conversely $I_qf\in\Pi_{d_q}\subseteq\Pi_{d_r}$,
+so $I_rI_qf=I_qf$.  This proves \eqref{eq:lag-projector-semilattice}.
+
+Since $I_rT_s$ takes values in $\Pi_{d_s}$,
+\[
+ \widehat{\mathcal P}_q^{(s)}\widehat{\mathcal P}_r^{(s)}
+ =E_sI_q(T_sE_s)I_rT_s
+ =E_sI_qI_rT_s.
+\]
+The semilattice law follows.  The range is exactly
+$E_s(\Pi_{d_q})$, proving the rank.  Expanding products of the differences
+with the semilattice law proves idempotence, pairwise annihilation, and the
+rank differences.
+\end{proof}
+
+\begin{corollary}[Level-grouped self-series and dyadic absolute convergence]
+\label{cor:lag-self-series}
+For any function $f$ for which $I_qf\to f$ in a chosen function-space
+topology, put $\Delta_0=I_0$ and $\Delta_q=I_q-I_{q-1}$.  For each $q$ let
+$\mathcal U_qp$ denote any finite up-atom synthesis supplied by
+\cref{thm:lag-cardinal} for $p\in\Pi_{d_q}$, so that
+$\mathcal U_qp=p$ on $[-1,1]$.  Then
+\begin{equation}
+ \boxed{\sum_{q=0}^{N}\mathcal U_q(\Delta_qf)=I_Nf
+ \quad\hbox{on }[-1,1]}
+ \label{eq:lag-telescoping-atoms}
+\end{equation}
+for every $N$.  Therefore the level-grouped atom series converges exactly in the
+same topology, with exactly the same error, as the original interpolation
+sequence.
+
+Let $J_n$ denote interpolation at the $n+1$ Chebyshev--Lobatto nodes.  For
+every $R>0$,
+\begin{equation}
+ \|u-J_nu\|_\infty=\bigO_R(n^{-R}).
+ \label{eq:lag-cheb-superalg}
+\end{equation}
+The dyadic subsequence $I_q^{\rm CL}:=J_{2^q}$ is nested.  With
+$\Delta_0^{\rm CL}=I_0^{\rm CL}$ and
+$\Delta_q^{\rm CL}=I_q^{\rm CL}-I_{q-1}^{\rm CL}$, choose for each $q$ a
+finite up-atom synthesis
+$\mathcal U_q^{\rm CL}:\Pi_{2^q}\to C[-1,1]$ supplied by
+\cref{thm:lag-cardinal}, with
+$\mathcal U_q^{\rm CL}p=p$ on $[-1,1]$.  Then
+\begin{equation}
+ \boxed{\sum_{q=0}^{\infty}\|\Delta_q^{\rm CL}u\|_\infty<\infty,
+ \qquad
+ u=\sum_{q=0}^{\infty}\mathcal U_q^{\rm CL}(\Delta_q^{\rm CL}u)}
+ \label{eq:lag-cheb-block-summability}
+\end{equation}
+absolutely and uniformly on $[-1,1]$.  Despite that summability, no uniform
+geometric rate in the polynomial degree follows.
+\end{corollary}
+
+\begin{proof}
+Every synthesized block equals the polynomial $\Delta_qf$ on the target
+interval, so the finite sum telescopes to $I_Nf$.  This proves the exact
+error transfer in any topology where the expressions are defined.
+
+For Chebyshev--Lobatto nodes, Lebesgue's lemma gives
+$\|u-J_nu\|_\infty\le(1+\Lambda_n)E_n(u)$ with
+$\Lambda_n=\bigO(\log n)$.  Since the zero extension of $u$ is
+$C^\infty$, Jackson estimates give $E_n(u)=\bigO_r(n^{-r})$ for every
+$r$; choosing $r>R+1$ proves \eqref{eq:lag-cheb-superalg}.
+
+The Chebyshev--Lobatto grids at degrees $2^q$ are nested, and for $q\ge1$,
+\[
+ \|\Delta_q^{\rm CL}u\|_\infty
+ \le\|u-J_{2^q}u\|_\infty+\|u-J_{2^{q-1}}u\|_\infty
+ =\bigO_R(2^{-qR}).
+\]
+Any $R>1$ proves summability.  On the target interval every synthesized block
+equals its polynomial detail, so the Weierstrass test and finite telescoping
+identity give \eqref{eq:lag-cheb-block-summability}.  A uniform
+geometric rate would extend $u$ holomorphically through a Bernstein ellipse,
+contradicting flatness and nontrivial compact support.
+\end{proof}
+
+At each fixed level there is no second, hidden truncation error: the
+differential series defining $\mathscr D_u$ terminates at the polynomial
+degree; compact support makes the lattice sum finite; and cardinal
+substitution is a finite node sum.  Floating-point cancellation is a
+numerical phenomenon, not an additional mathematical approximation.
+
+\subsection{Geometric nodes and the Gaussian-binomial lift}
+
+The interpolation geometry and the dyadic alias geometry can be varied
+independently.  To see this algebraically, take geometric nodes
+$1,q,\ldots,q^d$ over a characteristic-zero field, with distinct powers, and
+write
+\begin{align}
+ \Omega_{d+1}^{(q)}(x)&=\prod_{r=0}^{d}(x-q^r)
+ =\sum_{s=0}^{d+1}g_sx^s,
+ \label{eq:lag-q-product}\\
+ g_s&=(-1)^{d+1-s}q^{\binom{d+1-s}{2}}
+ \genfrac{[}{]}{0pt}{}{d+1}{s}_q.
+ \label{eq:lag-q-coeff}
+\end{align}
+Synthetic division gives
+\begin{equation}
+ \frac{\Omega_{d+1}^{(q)}(x)}{x-q^j}
+ =\sum_{n=0}^{d}h_{n,j}x^n,
+ \qquad
+ h_{n,j}=\sum_{s=n+1}^{d+1}g_sq^{j(s-n-1)},
+ \label{eq:lag-q-synthetic}
+\end{equation}
+and
+\begin{equation}
+ (\Omega_{d+1}^{(q)})'(q^j)=(-1)^j
+ q^{jd-j(j+1)/2}(q;q)_j(q;q)_{d-j}.
+ \label{eq:lag-q-denominator}
+\end{equation}
+For the literal up-function realization below, specialize to
+$q\in[-1,1]$ with the powers $1,q,\ldots,q^d$ distinct, and let
+$m\in\N_{>0}$ be an admissible integer mesh.
+
+\begin{proposition}[Gaussian-binomial/Appell coefficient matrix]
+\label{prop:lag-q-lift}
+For this real specialization, $k\in K_m$, and $0\le j\le d$, the coefficient of the
+$j$th geometric-node cardinal is
+\begin{equation}
+ \boxed{
+ B_{kj}^{(q)}=
+ \frac{h}{(\Omega_{d+1}^{(q)})'(q^j)}
+ \sum_{n=0}^{d}h_{n,j}\Gd_n(kh).}
+ \label{eq:lag-q-lift}
+\end{equation}
+Thus a Gaussian-binomial row from node geometry is convolved, finitely, with
+the Rvachev--Appell row from moment deconvolution.  The separate dyadic
+annihilator $\prod_{r=1}^{d}[2^r]_z$ controls compression of the resulting
+atom row; it is not the same $q$-product.
+\end{proposition}
+
+\begin{proof}
+The cardinal polynomial is
+$\Omega_{d+1}^{(q)}(x)/
+ [(x-q^j)(\Omega_{d+1}^{(q)})'(q^j)]$.  Insert
+\eqref{eq:lag-q-synthetic}, apply
+$\mathscr D_ux^n=\Gd_n(x)$ term by term, sample at $kh$, and multiply by the
+quadrature weight $h$ from \eqref{eq:lag-cardinal}.
+\end{proof}
+
+The proposition separates the two uses of $q$-algebra cleanly: geometric
+nodes create Gaussian binomial coefficients, whereas the binary sinc product
+creates the $q$-integer/Thue--Morse alias law.  Their interaction is a genuine
+two-parameter finite transform, not an identification of the two products.
+
+\subsection{Appell--Vandermonde inversion and unavoidable amplification}
+
+The scale-ladder construction of \cref{sec:ladder} gives a second, sparse
+cardinal realization.  Let $y_0,\ldots,y_d$ be distinct, let
+$L_j(y)$ be their cardinal polynomials, and expand
+\[
+ L_j(y)=\sum_{n=0}^{d}b_{nj}G_n(y).
+\]
+Set
+\begin{equation}
+ \mathsf A_{in}=G_n(y_i),\qquad
+ \mathsf B=(b_{nj})_{0\le n,j\le d},\qquad
+ D_n=n!\,2^{\binom{n+1}{2}}.
+ \label{eq:lag-appell-vandermonde-data}
+\end{equation}
+
+\begin{theorem}[Appell--Vandermonde inverse and volume growth]
+\label{thm:lag-appell-vandermonde}
+One has
+\begin{equation}
+ \boxed{\mathsf B=\mathsf A^{-1},\qquad
+ \det\mathsf A=\prod_{0\le i<j\le d}(y_j-y_i).}
+ \label{eq:lag-appell-vandermonde}
+\end{equation}
+The raw two-atom amplitude map
+\[
+ \mathsf T=
+ \operatorname{diag}(D_0,\ldots,D_d)\mathsf A^{-1}
+\]
+therefore satisfies
+\begin{equation}
+ \boxed{\det\mathsf T=
+ \frac{2^{\binom{d+2}{3}}\prod_{n=0}^{d}n!}
+ {\prod_{i<j}(y_j-y_i)}.}
+ \label{eq:lag-amplitude-determinant}
+\end{equation}
+If the nodes lie in an interval of length two, then
+\begin{equation}
+ \boxed{\|\mathsf T\|_2\ge
+ 2^{d(d-1)/6}
+ \left(\prod_{n=0}^{d}n!\right)^{1/(d+1)}.}
+ \label{eq:lag-node-free-amplification}
+\end{equation}
+Thus even optimal node placement cannot remove the quadratic-exponential
+volume expansion caused by the dyadic integration ladder.
+\end{theorem}
+
+\begin{proof}
+Evaluation of the cardinal expansion at $y_i$ gives
+$\mathsf A\mathsf B=I$.  Each $G_n$ is monic of degree $n$, so replacing the
+monomial columns $(1,y,\ldots,y^d)$ by $(G_0,\ldots,G_d)$ is a unit-triangular
+column operation.  It preserves the ordinary Vandermonde determinant and
+proves \eqref{eq:lag-appell-vandermonde}.
+
+Multiply that determinant by
+\[
+ \prod_{n=0}^{d}D_n
+ =\left(\prod_{n=0}^{d}n!\right)
+ 2^{\sum_{n=0}^{d}\binom{n+1}{2}}
+ =\left(\prod_{n=0}^{d}n!\right)2^{\binom{d+2}{3}}
+\]
+to obtain \eqref{eq:lag-amplitude-determinant}.  Finally,
+$\|\mathsf T\|_2^{d+1}\ge|\det\mathsf T|$ and
+$\prod_{i<j}|y_j-y_i|\le2^{\binom{d+1}{2}}$.  Taking the
+$(d+1)$st root and using
+\[
+ \binom{d+2}{3}-\binom{d+1}{2}=\binom{d+1}{3}
+\]
+gives \eqref{eq:lag-node-free-amplification}.
+\end{proof}
+
+\begin{proposition}[Parity-adapted four-atom Appell ladder]
+\label{prop:lag-even-four-atom-ladder}
+For $n,r\ge0$, define on $[-1,1]$ the causal and anticausal Appell blocks
+\begin{align}
+ \Phi_n^L(x)
+ &:=D_n\left[
+ u\!\left(-1+\frac{x+3}{2^{n+1}}\right)
+ +u\!\left(-1+\frac{x+1}{2^{n+1}}\right)
+ \right]=G_n(x+2),
+ \label{eq:lag-left-appell-block}\\
+ \Phi_n^R(x)&:=\Phi_n^L(-x)=G_n(2-x),
+ \label{eq:lag-right-appell-block}\\
+ \mathscr E_r^{\rm sym}(x)
+ &:=\frac12\bigl(\Phi_{2r}^L(x)+\Phi_{2r}^R(x)\bigr).
+ \label{eq:lag-even-appell-block}
+\end{align}
+Then, for every $r\ge0$, $\mathscr E_r^{\rm sym}$ is an even monic polynomial
+of degree $2r$.  Consequently, for every $N\ge0$,
+$\mathscr E_0^{\rm sym},\ldots,\mathscr E_N^{\rm sym}$ form a basis of the
+even polynomials of degree at most
+$2N$: every such polynomial $p$ has a unique expansion
+\begin{equation}
+ \boxed{p(x)=\sum_{r=0}^{N}\eta_r\mathscr E_r^{\rm sym}(x),
+ \qquad x\in[-1,1].}
+ \label{eq:lag-even-appell-expansion}
+\end{equation}
+Each $\mathscr E_r^{\rm sym}$ is a symmetric four-atom up-block.  For $r=0$
+the repeated atoms
+combine by the partition identity, so no artificial multiplicity is required.
+In particular, every even Fourier--Legendre cutoff $S_N$ has this exact
+parity-adapted realization.
+\end{proposition}
+
+\begin{proof}
+The two-atom identity \eqref{eq:canonical-Psi}, specialized to
+$[a,b]=[-1,1]$, is exactly the first equality in
+\eqref{eq:lag-left-appell-block}; reflection gives the right block.  Hence
+$\mathscr E_r^{\rm sym}(-x)=\mathscr E_r^{\rm sym}(x)$.  The moment Appell
+polynomial $G_{2r}$ is monic, and both
+$G_{2r}(x+2)$ and $G_{2r}(2-x)$ have leading term $x^{2r}$; their average is
+therefore monic of degree $2r$.  Relative to
+$1,x^2,\ldots,x^{2N}$, the ordered family
+$\mathscr E_0^{\rm sym},\ldots,\mathscr E_N^{\rm sym}$ has a unit-triangular
+coefficient matrix.  It is therefore a
+basis, proving existence and uniqueness in
+\eqref{eq:lag-even-appell-expansion}.  Expanding the two definitions of
+$\Phi^L$ and $\Phi^R$ displays the four atoms explicitly.
+\end{proof}
+
+\subsection{Sharp interpolation rate and endpoint amplitude barrier}
+
+\begin{theorem}[Exact Chebyshev root-rate obstruction]
+\label{thm:lag-cheb-root-rate}
+Let $I_d^{\rm CL}$ be interpolation at the $d+1$ Chebyshev--Lobatto nodes.
+For the nonzero compactly supported $C^\infty$ function $u$,
+\begin{equation}
+ \boxed{\limsup_{d\to\infty}
+ \|u-I_d^{\rm CL}u\|_\infty^{1/d}=1.}
+ \label{eq:lag-cheb-root-rate}
+\end{equation}
+Consequently there are no constants $C>0$, $\rho>1$, and $d_0$ for which
+\[
+ \|u-I_d^{\rm CL}u\|_\infty\le C\rho^{-d}
+ \qquad(d\ge d_0).
+\]
+This assertion concerns an eventual uniform bound; it does not rule out
+faster exceptional subsequences.
+\end{theorem}
+
+\begin{proof}
+The superalgebraic convergence in \eqref{eq:lag-cheb-superalg} implies the
+limsup in \eqref{eq:lag-cheb-root-rate} is at most one.  If it were less than
+one, choose $\rho>1$ below its reciprocal.  The interpolation errors would
+then be eventually bounded by $C\rho^{-d}$, and the best degree-$d$
+approximation errors would be no larger.  Bernstein's converse theorem would
+extend $u$ holomorphically to a Bernstein ellipse.  Its restriction to the
+real axis would be analytic through an endpoint, impossible for a nonzero
+compactly supported function that is flat there.  Hence the limsup is one.
+\end{proof}
+
+Using the constant-extension convention for $F$ from the parent notation, put
+\[
+ \delta_d=(d+2)2^{-d}=2^{-t_d},
+ \qquad t_d=d-\log_2(d+2).
+\]
+Define
+\[
+ c_{d,r}=2^{d+1}-2d-3+2r,\qquad 0\le r\le d+1.
+\]
+In the raw endpoint basis, write
+\begin{equation}
+ P(x)=\sum_{r=0}^{d+1}a_r
+ u\!\left(\frac{x-c_{d,r}}{2^{d+1}}\right),
+ \qquad x\in[-1,1].
+ \label{eq:lag-raw-endpoint}
+\end{equation}
+The endpoint centers are chosen so that every displayed atom argument belongs
+to $[-1,-1+\delta_d]$.
+
+\begin{theorem}[Endpoint amplitude and quadratic-log barriers]
+\label{thm:lag-endpoint-amplitude}
+Every endpoint representation \eqref{eq:lag-raw-endpoint} satisfies
+\begin{equation}
+ \boxed{\|a\|_1\ge
+ \frac{\|P\|_\infty}{F(\delta_d)}.}
+ \label{eq:lag-endpoint-amplitude}
+\end{equation}
+Consequently, for any sequence $P_d\in\Pi_d$ with
+$\|P_d\|_\infty\ge1$,
+\begin{equation}
+ \boxed{\liminf_{d\to\infty}
+ \frac{\log\|a^{(d)}\|_1}{d^2}\ge\frac{\log2}{2}.}
+ \label{eq:lag-quadratic-amplitude}
+\end{equation}
+The same leading lower bound holds after multiplying all amplitudes by
+$2^d$, as in the normalized endpoint basis.
+\end{theorem}
+
+\begin{proof}
+For $d\ge2$, every active argument is $-1+s$ with
+$0\le s\le\delta_d\le1$, so monotonicity and $u(-1+s)=F(s)$ give
+\[
+ 0\le
+ u\!\left(\frac{x-c_{d,r}}{2^{d+1}}\right)
+ \le F(\delta_d)
+\]
+for every active atom and $x\in[-1,1]$.  For $d=0,1$ one instead uses
+$0\le u\le1=F(\delta_d)$, because $\delta_d\ge1$ under the stated constant
+extension.  Hence in every degree
+$|P(x)|\le F(\delta_d)\|a\|_1$; taking the supremum proves
+\eqref{eq:lag-endpoint-amplitude}.  The established endpoint law
+\[
+ -\log F(2^{-t})=\frac{\log2}{2}t^2+o(t^2)
+ \qquad(t\to\infty)
+\]
+is equation \texttt{dyadic-quadratic-law} in
+\path{Fabius_Function_and_Rvachev_Up.tex}; its normalized limit is
+kernel-verified as \path{fabiusLogProfile_normalized_tendsto} in
+\path{FabiusLogSquaredAsymptotic.lean}.  This law
+and $t_d/d\to1$ now give \eqref{eq:lag-quadratic-amplitude}.  A factor $2^d$
+adds only $d\log2=o(d^2)$ to the logarithm.
+\end{proof}
+
+\subsection{Denominator support on an equispaced grid}
+
+Let $d\ge1$, take the canonical synthesis mesh $m=2^d$, $h=2^{-d}$, and
+put $x_j=-1+2j/d$ for $0\le j\le d$.  Define
+\begin{equation}
+ \mathcal P_d=
+ \{p\text{ prime}:p\le d+1\}
+ \cup
+ \bigcup_{1\le r\le\lfloor d/2\rfloor}
+ \{p\text{ prime}:p\mid 2^{2r}-1\}.
+ \label{eq:lag-prime-set}
+\end{equation}
+
+\begin{theorem}[Prime support of rational cardinal amplitudes]
+\label{thm:lag-prime-support}
+For the equispaced grid and canonical mesh above, every prime occurring in
+the reduced denominator of any literal cardinal amplitude
+\[
+ h(\mathscr D_u\ell_j)(kh),
+ \qquad 0\le j\le d,\quad k\in K_m,
+\]
+belongs to $\mathcal P_d$.
+\end{theorem}
+
+\begin{proof}
+After clearing the common spacing, the $j$th cardinal is an integer polynomial
+divided by $2^d j!(d-j)!$.  Its coefficients and derivatives therefore
+introduce only primes at most $d$.  Multiplication by $h=2^{-d}$ and
+evaluation at $kh\in\Z[1/2]$ introduce only the already listed prime $2$.
+
+The even cumulant
+\[
+ \kappa_{2r}=\frac{B_{2r}}{2r(1-4^{-r})}
+\]
+can have denominator primes only from $r$, from $2^{2r}-1$, and from
+$B_{2r}$.  By von Staudt--Clausen, a prime in the last denominator satisfies
+$p-1\mid2r$, hence $p\le2r+1\le d+1$.  Finally the reciprocal moments obey the
+explicit recurrence
+\begin{equation}
+ \gamma_0=1,\qquad
+ \gamma_n=-\sum_{r=1}^{n}
+ \binom{n-1}{r-1}\kappa_r\gamma_{n-r}.
+ \label{eq:lag-reciprocal-prime-recurrence}
+\end{equation}
+Induction shows that addition and multiplication by the displayed integers
+introduce no denominator prime absent from the cumulants already used.
+Substitution in \eqref{eq:lag-derivative-amplitude} proves the claim.
+\end{proof}
+
+\begin{problem}[Exact denominator valuations]
+\label{prob:lag-denominator-valuations}
+Determine the exact $p$-adic valuations of the least common denominator of
+the whole cardinal-amplitude matrix for equispaced, dyadic, and
+Chebyshev-rational nodes.  \Cref{thm:lag-prime-support} determines the possible
+primes but not the exponents; the latter mix factorial valuations,
+von Staudt--Clausen denominators, the factors $2^{2r}-1$, and substantial
+cancellation.
+\end{problem}
