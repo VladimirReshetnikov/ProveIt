@@ -58,8 +58,9 @@ experiment is promoted to a proof.
 
 The resulting article is modularized under `chapters/` so that shared notation
 and lemmas appear once. The theorem concordance and the final structural
-validator are separate editorial products; their eventual successful run must
-not be inferred merely from the presence of the assembled TeX.
+validator are separate editorial products. The final validator now passes;
+that result follows the recorded validation gate rather than merely the
+presence of assembled TeX.
 
 ## File disposition
 
@@ -162,8 +163,9 @@ against the immutable source pin gives:
 The row-level evidence is preserved in
 [`assets/HISTORICAL_LEDGER_AUDIT.csv`](assets/HISTORICAL_LEDGER_AUDIT.csv).
 These ledgers describe earlier package states and are not a checksum manifest
-for the canonical tree. A live payload ledger, when generated, must be kept
-separate from this historical audit.
+for the canonical tree. The live root and asset payload ledgers are kept
+separate from this historical audit. At the recorded publication checkpoint,
+both verified in full.
 
 ## Recoverability
 
@@ -174,6 +176,7 @@ retains the absorbed manuscript bytes. The canonical tree deliberately keeps
 only one human-readable publication plus unique evidence; Git is the archival
 store for superseded wrappers and publications.
 
-Publication validation is tracked in [`assets/VALIDATION.md`](assets/VALIDATION.md).
-This provenance record does not claim that the final PDF or full canonical
-validator has already passed.
+Publication validation is tracked in [`assets/VALIDATION.md`](assets/VALIDATION.md),
+which records the completed canonical validator, final PDF, and live root/asset
+ledger gates. Full numerical replay and fresh-checkout reproduction remain
+separate reproducibility work.

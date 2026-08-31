@@ -1,7 +1,10 @@
 # Validation record
 
-This record deliberately distinguishes completed inventory work from pending
-publication work. The immutable source baseline is
+This record deliberately distinguishes completed inventory and canonical-
+publication work from outstanding reproducibility work. The structural
+validator, final PDF, and live root/asset ledgers were complete at this
+recorded checkpoint; full numerical replay and fresh-checkout reproduction
+remain separate. The immutable source baseline is
 `73f0b373126ef22a3b5dccadfa7b99d61d445345`.
 
 ## Completed source and evidence checks
