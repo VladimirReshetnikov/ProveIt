@@ -1,7 +1,7 @@
 # Inverse and sampling
 
-The nine document bundles in this theme are organized one level deeper by
-their principal overlap:
+The documents in this theme are organized one level deeper by their principal
+overlap:
 
 - [`comb-interpolation/`](comb-interpolation/) — additive and geometric comb
   interpolation, quadrature, extrapolation, and stability;
@@ -12,13 +12,13 @@ their principal overlap:
   nowhere-analytic inverse iterates and elementary-representation
   obstructions.
 
-All nine documents remain in `inverse-and-sampling`: neighboring themes
-provide techniques or related forward results, but none is a better primary
-home. In particular, the inverse-iterate report remains here while retaining
-its explicit reconciliation link to the forward-iterate report under
+Neighboring themes provide techniques or related forward results, but these
+documents remain here when inverse behavior or sampling geometry is their
+principal subject. In particular, the inverse-iterate report retains its
+explicit reconciliation link to the forward-iterate report under
 `representations/`.
 
-New standalone intake members:
+Current members and recent intake:
 
 - [`Non_Elementarity_of_the_Fabius_Function/`](analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function/),
   *The Fabius Function and Its Inverse are Not Elementary: Density of the
@@ -43,54 +43,21 @@ New standalone intake members:
   formalization description do not independently establish current Lean
   verification.
 
-- [`geometric_comb_q_fabius_report/`](comb-interpolation/geometric_comb_q_fabius_report/),
-  *Geometric-Comb Interpolation, Gaussian Pascal Transforms, and the
-  Fabius--Rvachev Boundary Layer* (retained 68-page A4 PDF; current
-  3,554-line TeX; 637-line deterministic experiment). No attributable source
-  archive remains, so no outer-archive hash is inferred; the immutable
-  submitted ledger preserves the arrival state. The 20-entry operational
-  ledger was intentionally not refreshed after the source-only merge: its TeX
-  and README rows are pending and the other 18 rows pass. A pinned CPython
-  3.13.14 replay was byte-identical across all 11 generated artifacts. The
-  retained A4/27 mm/Libertinus PDF was built in exactly three strict passes
-  at the preceding publication checkpoint, but not from the current source,
-  with every font embedded/subset and no Type 3 fonts. The finite Gaussian,
-  complete-homogeneous, geometric-Lagrange, moment, condition-number,
-  half-moment, and Rvachev-deconvolution layers are crosswalked to their named
-  Lean declarations. The report-specific Jackson basis, arbitrary-point
-  residual, analytic convergence, Lebesgue asymptotics, Fabius bounds, and
-  Gaussian--Appell packaging remain manuscript-only; the two-sided gap,
-  second-order Lebesgue, and Hermite-saddle claims remain conjectures, and the
-  growing-order Hermite problem remains open. It belongs beside the geometric
-  and dyadic comb reports below and cross-links the q-Pochhammer monograph;
-  manuscript labels do not establish Lean verification.
-
-- [`geometric_comb_interpolation_report/`](comb-interpolation/geometric_comb_interpolation_report/),
-  *Interpolation on a Geometric Comb* (34 pp), arrived on 2026-08-30 from
-  `geometric_comb_interpolation_report_bundle.zip` (outer SHA-256
-  `9a2e33f6a7dc3ac4c30b0da212349b9d91b1da6dd2fabacce14329a6458ade12`).
-  All 11 submitted payload hashes verified; four CSV entries were refreshed
-  after CRLF-to-LF repository normalization. Its arbitrary-ratio interpolation
-  layer belongs beside `Dyadic_Comb_Frontiers/` and cross-links to the finite
-  q-Lagrange/Gaussian row in
-  [`../exponents-and-q-series/q_pochhammer_q_binomial_monograph/`](../exponents-and-q-series/q_pochhammer_q_binomial_monograph/).
-  It remains standalone pending post-publication assessment and a Lean
-  crosswalk; manuscript labels do not establish Lean verification.
-
-- [`geometric_comb_interpolation_report-3/`](comb-interpolation/geometric_comb_interpolation_report-3/),
-  *Interpolation on a Geometric Comb: Lagrange Filters, Jackson--Newton
-  Series, q-Analogues, and the Fabius--Rvachev Bridge* (36 pp), arrived on
-  2026-08-30 from `geometric_comb_interpolation_report-3.zip` (outer SHA-256
-  `89c9de31b9b78b614c13d5a3ff24ae41b73ef6704a9daef77ba724b396e90fa0`).
-  All 20 submitted payload hashes verified; four CSV entries were refreshed
-  after CRLF-to-LF repository normalization. This is a distinct later
-  arrival, not a byte duplicate of `geometric_comb_interpolation_report/`,
-  and no submitted payload hash matches either existing geometric-comb report.
-  It is filed in a collision-safe wrapper without superseding either package.
-  The A4 report retains 11 embedded Type-3 plot-font rows. It remains
-  unreviewed pending post-publication reconciliation with the earlier report
-  and a claim-by-claim Lean crosswalk; manuscript labels do not establish
-  Lean verification.
+- [`comb_interpolation_synthesis/`](comb-interpolation/comb_interpolation_synthesis/),
+  *Comb Interpolation and Sampling Frontiers: Additive and Geometric Combs in
+  the Fabius--Rvachev System*, is the canonical synthesis of the former
+  additive-dyadic volume and the three geometric-comb manuscripts. Common
+  Gaussian-Pascal, Jackson--Newton, Lagrange, stability, and Fabius boundary
+  material is stated once; genuinely distinct modal, Mellin,
+  regular-variation, spline, reciprocal-product, Euler--Maclaurin, Ruffa,
+  Thue--Morse, and interpolation results retain their proofs. The additive
+  source had already absorbed nine nested manuscript packages; their duplicate
+  documentation and the three geometric wrappers have now been retired.
+  Unique computational evidence is preserved by source slug. The source
+  inventory is pinned to
+  `73f0b373126ef22a3b5dccadfa7b99d61d445345`; its 180-row disposition and
+  151-row historical-ledger audit are recorded in the canonical package.
+  Final PDF and full-validator success remain separate publication gates.
 
 - [`Inverse_Fabius_Computability_Report/`](inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report/),
   *Computability of the Inverse Fabius Function* (41 A4 pp, 2923 source
@@ -163,8 +130,8 @@ New standalone intake members:
   bridge, weighted Bell/spine asymptotics, and principal forward/inverse
   iterate claims remain paper-only.
 
-The inverse function's frontiers and the sampling/deconvolution circle of
-ideas, in three consolidated volumes and seven retained standalone reports.
+This theme combines consolidated volumes with retained standalone reports;
+the subgroup READMEs are the authoritative navigation after each synthesis.
 
 Post-snapshot formal status: `QuarterCatalanGerm.lean` now proves that the
 distinguished rational quarter germ becomes the Catalan inverse of
@@ -200,63 +167,26 @@ asset paths mechanically prefixed per part; no mathematical content
 altered) and their directories deleted; provenance with SHA-256 hashes
 is recorded in the volume itself, and git history is the archive.
 
-## `comb-interpolation/Dyadic_Comb_Frontiers/`
+## `comb-interpolation/comb_interpolation_synthesis/`
 
-The current merged root has 5,648 lines. Its retained 66-page PDF was not
-rebuilt after the notation merge, and this volume has no live checksum ledger
-covering the root TeX/PDF pair.
+*Comb Interpolation and Sampling Frontiers* is the canonical editorial union
+of the former additive-dyadic volume and all three geometric-comb manuscripts.
+The additive source already represented nine absorbed packages: six
+comb-sum/interpolation sources, two Euler--Maclaurin/exhaustion sources, and
+one Bernoulli--Ruffa phase-calculus source. The new synthesis uses the strongest
+Gaussian-Pascal and Jackson--Newton development as its finite geometric spine,
+deduplicates common derivations, and preserves the genuinely additional
+modal, Mellin, regular-variation, spline, Fabius-transform, reciprocal-product,
+quadrature, phase, Thue--Morse, and interpolation results.
 
-Editorially merged (2026-08-28) from the six dyadic-comb drafts of the
-second and third waves — three on comb sums/quadrature
-(`Fabius_Dyadic_Comb_Sums_Report_Package/`,
-`fabius-dyadic-comb-sums-report/`, `fabius_dyadic_comb_report_final/`)
-and three on global polynomial interpolation
-(`fabius_dyadic_interpolation_report/`, `fabius_interpolation_report/`,
-`Fabius_Rvachev_Dyadic_Interpolation_Report/`).  Because the six
-sources largely re-derived one another's core results, this volume is a
-true merge (unified notation, one statement per shared theorem with the
-best proof, all source-specific material retained) rather than a
-part-per-source concatenation.  A seventh, an eighth, and a ninth source were absorbed 2026-08-28 as the
-Bernoulli-periodization section of Part I — the tenth-wave
-`Fabius_Euler_Maclaurin_Report_Package/` (*Euler–Maclaurin and
-Exhaustion Quadratures for Fabius and Rvachev Moments*): shifted
-corrected rules for general polynomial weights, composite-mesh 2-adic
-termination and reflection reduction, phase-modulated first-defect
-series with Fabius-side forced phases, the first-harmonic proof that
-D(2r) > 0 for every r (settling the volume's spectral-positivity
-conjecture, and with it the odd half of the sharp-threshold
-conjecture), the closed Ruffa exhaustion tail with derivative-free
-rational Richardson extraction, the base-b termination dichotomy, the
-composite-mesh Rvachev quadrature (sharp by the companion polynomial
-volume's scale classification), and the Thue–Morse moment-identity
-family; and its independently written eleventh-wave twin
-(`fabius_rvachev_exhaustion_euler_maclaurin_bundle/`, *Exhaustion,
-Euler–Maclaurin, and Spectral Exactness for Fabius–Rvachev Monomial
-Integrals*), merged into the same section: the exact all-mesh alias–Bernoulli identity (layer cake +
-Faulhaber, valid below every threshold), the general-q first defect in
-Bernoulli-moment and spectral forms with midpoint/upper parity
-superconvergence one level below threshold, the Bernoulli-moment
-identity β₂ₘ = (−1)ᵐ·2(2m)!·D(2m)/(2π)²ᵐ (the twin's
-conjectured sign law now follows from the positivity theorem; up to
-sign these are the polynomial volume's defect values ℰ₂ₘ₋₁(0)),
-the one-correction half-interval Rvachev rule with its
-termination/one-mode exhaustion dichotomy and exact two-level
-recovery, the supergeometric odd-base bound, and the q=1/4
-Gaussian-binomial filter form; and the twelfth-wave Bernoulli–Ruffa
-phase–resolution calculus, whose multiple-angle domination lemma
-|Φ(qℓ/2)| ≤ |Φ(q/2)|/ℓ settles the twisted-positivity question
-and BOTH phase-classification conjectures (the parity-forced phases
-are the only superconvergent shifts, at every level and every odd
-part), and which adds finite phase cubature (Simpson/Boole/Gauss in
-the phase variable — exact moment certificates with no Bernoulli
-correction), the phase–resolution separation principle,
-Thue–Morse–Bernoulli digital phase filters with exact top-mode
-constants and root-of-unity/digit-mask generalizations, coherent
-radix exhaustion along tag orbits, anisotropic tensor shells, and a
-proved all-orders complex-power expansion.  Provenance with SHA-256 hashes and the
-deduplication record are Appendix E of the volume; every source's
-supporting files live under its `assets/`.  The absorbed draft
-directories are deleted; git history is the archive.
+The pre-retirement state is pinned to
+`73f0b373126ef22a3b5dccadfa7b99d61d445345`. Unique scripts, exact tables,
+data, text outputs, and PNG figures are retained by historical source slug;
+old manuscript wrappers, report/preview PDFs, stale package ledgers, and
+duplicated documentation are retired. The canonical package records a
+180-row source disposition and a 151-row historical-ledger audit. Its README
+and provenance file describe the evidence boundary. Final PDF and full
+validator success are not claimed until the separate publication gates pass.
 
 ## `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders/`
 
