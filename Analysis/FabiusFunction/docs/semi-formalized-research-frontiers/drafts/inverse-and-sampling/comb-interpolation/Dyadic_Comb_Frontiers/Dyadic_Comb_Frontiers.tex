@@ -103,7 +103,6 @@
 \newcommand{\fall}[2]{#1^{\underline{#2}}}
 \newcommand{\rise}[2]{#1^{\overline{#2}}}
 \newcommand{\stirlingfirst}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
-\DeclareMathOperator{\ord}{ord}
 \newcommand{\Dop}{\mathcal D}
 \newcommand{\Bell}{Y}
 \newcommand{\ThetaTM}{\Theta}
@@ -387,7 +386,7 @@ At a nonzero integer $n$, write $n=\sigma2^{v}q$ with $q$ odd,
 $\sigma=\pm1$, $v=\TwoAdicValuation(n)$.  Exactly the factors
 $j=0,\dots,v$ of \eqref{eq:Phi-product} vanish at $n$, each simply, so
 \begin{equation}
- \ord_{\xi=n}\Phi=\TwoAdicValuation(n)+1,
+ \OrderOperator_{\xi=n}\Phi=\TwoAdicValuation(n)+1,
  \label{eq:Phi-zero-order}
 \end{equation}
 and the leading jet at the zero is explicit \cite{ProveItPrimary}:
@@ -399,7 +398,7 @@ with $d=\TwoAdicValuation(n)+1$,
 \end{equation}
 Consequently, at the dual lattice of the level-$m$ comb,
 \begin{equation}
- \ord_{\xi=M\ell}\chi=m+\TwoAdicValuation(\ell)
+ \OrderOperator_{\xi=M\ell}\chi=m+\TwoAdicValuation(\ell)
  \qquad(\ell\ne0),
  \label{eq:chi-zero-order}
 \end{equation}
@@ -1603,7 +1602,8 @@ section made formal: \nolinkurl{MonomialCombFourier.lean} packages $x^{p}\Rvache
 Schwartz map with $(-2\pi\ImaginaryUnit)^{p}\widehat{f_p}=(\widehat{f_0})^{(p)}$,
 \nolinkurl{MonomialCombDerivatives.lean} evaluates $(\widehat{f_0})^{(p)}$ through the entire
 transform via the real--complex derivative bridge, \nolinkurl{MonomialCombAlias.lean} kills
-every nonzero alias by the integer-zero order theorem ($\ord_{2^{m}\ell}\Phi=v_2(2^{m}\ell)+1>m$),
+every nonzero alias by the integer-zero order theorem
+($\OrderOperator_{2^{m}\ell}\Phi=v_2(2^{m}\ell)+1>m$),
 and Poisson summation for Schwartz maps collapses the comb to the zero-frequency
 integral.  The odd centered moments (\cref{cor:up-exact-specials}) vanish at every real
 scale with no level restriction by evenness alone
@@ -1613,7 +1613,8 @@ trapezoidal $p=0$ exactness holds on every uniform grid
 
 \begin{proof}
 By \eqref{eq:Phi-zero-order},
-$\ord_{\xi=M\ell}\Phi=m+\TwoAdicValuation(\ell)+1\ge m+1$ for $\ell\ne0$, so every
+$\OrderOperator_{\xi=M\ell}\Phi=m+\TwoAdicValuation(\ell)+1\ge m+1$ for
+$\ell\ne0$, so every
 alias term in \eqref{eq:Q-Poisson} vanishes for $p\le m$; linearity
 extends monomials to polynomials.
 \end{proof}
@@ -3504,7 +3505,7 @@ denominator
  \label{eq:DeltaN}
 \end{equation}
 one gets immediately $\Delta_mM^{\,p+1}L_{m,p}\in\IntegerNumbers$ and, with
-$\Lambda_M=\operatorname{lcm}(1,\dots,M-1)$,
+$\Lambda_M=\LeastCommonMultiple(1,\dots,M-1)$,
 $\Delta_m\Lambda_M^{\,q}L_{m,-q}\in\IntegerNumbers$; the factorials and powers of
 $M$ visible in \eqref{eq:iterated-reduction} propagate the bounds to
 iterated sums.  These are deliberately crude: the exact

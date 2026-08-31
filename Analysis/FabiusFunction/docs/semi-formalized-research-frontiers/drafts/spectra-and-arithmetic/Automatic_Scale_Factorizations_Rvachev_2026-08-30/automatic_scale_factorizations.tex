@@ -107,11 +107,11 @@ Write the centered Rvachev random variable as the convergent series
 with independent summands.  Its density is Rvachev's up-function and its characteristic
 function is the familiar infinite sinc product.  This report introduces a complementary
 pair of compactly supported probability laws by assigning the scale $2^{-n}$ according
-to the Prouhet--Thue--Morse sign $e_{n-1}=(-1)^{s_2(n-1)}$:
+to the Prouhet--Thue--Morse sign $\ThueMorseSign{n-1}=(-1)^{\BinaryDigitSum(n-1)}$:
 \[
- X_+=\sum_{e_{n-1}=1}U_n,
+ X_+=\sum_{\ThueMorseSign{n-1}=1}U_n,
  \qquad
- X_-=\sum_{e_{n-1}=-1}U_n.
+ X_-=\sum_{\ThueMorseSign{n-1}=-1}U_n.
 \]
 Their densities $u_\pm$ are $C^\infty$, nonnegative, and satisfy the exact factorization
 \[
@@ -121,7 +121,7 @@ This is not an algebraic splitting of a formal transform: both factors are genui
 probability densities.  Their support radii are controlled by the Thue--Morse--Mahler
 product
 \[
- E(q)=\sum_{m\ge0}e_mq^m=\prod_{j\ge0}(1-q^{2^j}),
+ E(q)=\sum_{m\ge0}\ThueMorseSign{m}q^m=\prod_{j\ge0}(1-q^{2^j}),
 \qquad
  R_\pm=\frac12\pm\frac14E\!\left(\frac12\right).
 \]
@@ -134,7 +134,7 @@ $\RvachevUp$ at the origin.
 A complex parameter $q$ produces characteristic subproducts
 \[
  \Phi_\sigma(z;q)=\prod_{m\ge0}
- \SincRad(zq^{m+1})^{(1+\sigma e_m)/2},\qquad \sigma\in\{+1,-1\},
+ \SincRad(zq^{m+1})^{(1+\sigma\ThueMorseSign{m})/2},\qquad \sigma\in\{+1,-1\},
 \]
 which obey an exact two-component $q$-Mahler recursion.  Their logarithms have explicit
 lacunary $q$-series, and all even cumulants are Bernoulli multiples of
@@ -268,11 +268,11 @@ and define
 The series converges absolutely almost surely, and $X$ is supported on $[-1,1]$.  In the
 Fourier convention
 \(
- \widehat f(z)=\int_\RealNumbers \EulerE^{\ImaginaryUnit zx}f(x)\Differential x
+ \FourierAngular{f}(-z)=\int_\RealNumbers \EulerE^{\ImaginaryUnit zx}f(x)\Differential x
 \)
-and with $\SincRad z=\sin z/z$, independence gives
+and with $\SincRad z=\sin z/z$, evenness and independence give
 \begin{equation}
- \widehat\RvachevUp(z)=\prod_{n\ge1}\SincRad\!\left(\frac z{2^n}\right).
+ \FourierAngular{\RvachevUp}(z)=\prod_{n\ge1}\SincRad\!\left(\frac z{2^n}\right).
  \label{eq:up-product}
 \end{equation}
 The corresponding density is Rvachev's up-function.  This probability interpretation and
@@ -331,7 +331,7 @@ unless $A=\varnothing$.  If $A^c=\PositiveIntegers\setminus A$, then
 \begin{equation}
  \mu_A*\mu_{A^c}=\mu_{\PositiveIntegers},
  \qquad
- \phi_A\phi_{A^c}=\widehat\RvachevUp.
+ \phi_A\phi_{A^c}=\FourierAngular{\RvachevUp}.
  \label{eq:general-complement-factor}
 \end{equation}
 \end{proposition}
@@ -356,26 +356,26 @@ bounded discrepancy, exact q-series algebra, and a nonperiodic automatic renorma
 
 Let
 \begin{equation}
- e_m=(-1)^{s_2(m)},\qquad m\ge0,
+ \ThueMorseSign{m}\DefinitionEquals(-1)^{\BinaryDigitSum(m)},\qquad m\ge0,
  \label{eq:tm-sign}
 \end{equation}
-where $s_2(m)$ is the sum of the binary digits of $m$.  Put
+where $\BinaryDigitSum(m)$ is the sum of the binary digits of $m$.  Put
 \begin{equation}
- A_+=\SetOf{n\ge1:e_{n-1}=1},
+ A_+=\SetOf{n\ge1:\ThueMorseSign{n-1}=1},
  \qquad
- A_-=\SetOf{n\ge1:e_{n-1}=-1}.
+ A_-=\SetOf{n\ge1:\ThueMorseSign{n-1}=-1}.
  \label{eq:Apm}
 \end{equation}
 Let $X_\pm=X_{A_\pm}$, $\mu_\pm=\mu_{A_\pm}$, and $\phi_\pm=\phi_{A_\pm}$.  The classical
 Mahler product is
 \begin{equation}
- E(q)=\sum_{m\ge0}e_mq^m
+ E(q)=\sum_{m\ge0}\ThueMorseSign{m}q^m
  =\prod_{j\ge0}(1-q^{2^j}),
  \qquad |q|<1,
  \label{eq:Eq}
 \end{equation}
 and satisfies $E(q)=(1-q)E(q^2)$.  The product identity follows immediately from
-$e_{2m}=e_m$ and $e_{2m+1}=-e_m$; it is a standard Thue--Morse identity, surveyed for
+$\ThueMorseSign{2m}=\ThueMorseSign{m}$ and $\ThueMorseSign{2m+1}=-\ThueMorseSign{m}$; it is a standard Thue--Morse identity, surveyed for
 example by Allouche and Mend\`es France~\cite{AlloucheMendesFrance2008}.
 
 \begin{theorem}[Thue--Morse factorization]
@@ -390,14 +390,14 @@ where the existence and smoothness of the densities $u_\pm$ are proved in
 \cref{thm:smoothness}.  Their characteristic functions are
 \begin{equation}
  \phi_\sigma(z)=\prod_{m\ge0}
- \SincRad\!\left(\frac z{2^{m+1}}\right)^{(1+\sigma e_m)/2},
+ \SincRad\!\left(\frac z{2^{m+1}}\right)^{(1+\sigma\ThueMorseSign{m})/2},
  \qquad \sigma\in\{+1,-1\}.
  \label{eq:phi-pm}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-The two selectors $(1+e_m)/2$ and $(1-e_m)/2$ are complementary at every index.  Apply
+The two selectors $(1+\ThueMorseSign{m})/2$ and $(1-\ThueMorseSign{m})/2$ are complementary at every index.  Apply
 \cref{prop:subset-product}.
 \end{proof}
 
@@ -431,9 +431,9 @@ In particular $R_++R_-=1$.
 \begin{proof}
 For $\sigma=\pm1$ and $|q|<1$,
 \begin{align}
- \sum_{m\ge0}\frac{1+\sigma e_m}{2}q^{m+1}
+ \sum_{m\ge0}\frac{1+\sigma\ThueMorseSign{m}}{2}q^{m+1}
  &=\frac q2\left(\sum_{m\ge0}q^m+
-       \sigma\sum_{m\ge0}e_mq^m\right)\\
+       \sigma\sum_{m\ge0}\ThueMorseSign{m}q^m\right)\\
  &=\frac q2\left(\frac1{1-q}+\sigma E(q)\right).
  \label{eq:selector-generating}
 \end{align}
@@ -535,7 +535,7 @@ For $|q|<1$, $q\ne0$, define
  \Phi_\sigma(z;q)=\prod_{m\ge0}
  \SincRad(zq^{m+1})^{a_m^\sigma},
  \qquad
- a_m^\sigma=\frac{1+\sigma e_m}{2}.
+ a_m^\sigma=\frac{1+\sigma\ThueMorseSign{m}}{2}.
  \label{eq:Phiq}
 \end{equation}
 The product converges locally uniformly on $\ComplexNumbers\times\{q:|q|<1\}$ and is entire in $z$.
@@ -573,7 +573,7 @@ and
 
 \begin{proof}
 Split the defining product into even and odd $m$.  Since
-$e_{2r}=e_r$ and $e_{2r+1}=-e_r$, the even-indexed factors are
+$\ThueMorseSign{2r}=\ThueMorseSign{r}$ and $\ThueMorseSign{2r+1}=-\ThueMorseSign{r}$, the even-indexed factors are
 \[
  \prod_{r\ge0}\SincRad(zq^{2r+1})^{a_r^\sigma}
  =\Phi_\sigma(z/q;q^2),
@@ -611,7 +611,7 @@ types in \eqref{eq:q-mahler}.
 
 For $r\ge0$, define the shifted-selector log-MGF
 \begin{equation}
- K_{\sigma,r}(t)=\sum_{m\ge0}\frac{1+\sigma e_{m+r}}2
+ K_{\sigma,r}(t)=\sum_{m\ge0}\frac{1+\sigma\ThueMorseSign{m+r}}2
  h\!\left(\frac{t}{2^{m+1}}\right),
  \qquad
  h(t)=\log\frac{\sinh t}{t}.
@@ -623,7 +623,7 @@ For $r\ge0$, define the shifted-selector log-MGF
 For every $r\ge0$,
 \begin{equation}
  K_{\sigma,r}(2t)
- =\frac{1+\sigma e_r}{2}h(t)+K_{\sigma,r+1}(t).
+ =\frac{1+\sigma\ThueMorseSign{r}}{2}h(t)+K_{\sigma,r+1}(t).
  \label{eq:shift-cocycle}
 \end{equation}
 \end{identity}
@@ -886,9 +886,9 @@ $u_-$.  Moreover
 \begin{proof}
 The Thue--Morse prefix sums satisfy
 \[
- \sum_{m=0}^{2r-1}e_m=0,
+ \sum_{m=0}^{2r-1}\ThueMorseSign{m}=0,
  \qquad
- \sum_{m=0}^{2r}e_m=e_r.
+ \sum_{m=0}^{2r}\ThueMorseSign{m}=\ThueMorseSign{r}.
 \]
 Thus each sign occurs $N/2+\BigO(1)$ times among the first $N$ terms.  Apply
 \cref{thm:selector-Fourier} with $\delta=1/2$.
@@ -920,7 +920,7 @@ $1+\nu_2(k)$.  The automatic splitting gives a finer formula.
 \label{thm:zero-multiplicity}
 Let $k\in\IntegerNumbers\setminus\{0\}$, put $N=1+\nu_2(k)$, and define
 \begin{equation}
- S_N=\sum_{m=0}^{N-1}e_m.
+ S_N=\sum_{m=0}^{N-1}\ThueMorseSign{m}.
  \label{eq:SN}
 \end{equation}
 Then the multiplicity of the zero $2\pi k$ in $\phi_\sigma$ is
@@ -935,7 +935,7 @@ Here
 \begin{equation}
  S_{2r}=0,
  \qquad
- S_{2r+1}=e_r.
+ S_{2r+1}=\ThueMorseSign{r}.
  \label{eq:prefix-exact}
 \end{equation}
 The two multiplicities add to $N$.
@@ -946,10 +946,10 @@ At $z=2\pi k$, the factor indexed by $n$ vanishes exactly when
 $2^{n-1}\mid k$, equivalently $1\le n\le N$.  All such zeros are simple.  Counting the
 selected indices among $1,\ldots,N$ gives
 \[
- \sum_{m=0}^{N-1}\frac{1+\sigma e_m}{2}
+ \sum_{m=0}^{N-1}\frac{1+\sigma\ThueMorseSign{m}}{2}
  =\frac{N+\sigma S_N}{2}.
 \]
-The prefix identities follow by pairing $e_{2j}+e_{2j+1}=0$.
+The prefix identities follow by pairing $\ThueMorseSign{2j}+\ThueMorseSign{2j+1}=0$.
 \end{proof}
 
 \begin{corollary}[No equal compact convolution roots]
@@ -988,7 +988,7 @@ Set
  K_0=K_++K_-=
  \sum_{n\ge1}h(t/2^n),
  \qquad
- J=K_+-K_-=\sum_{m\ge0}e_mh(t/2^{m+1}).
+ J=K_+-K_-=\sum_{m\ge0}\ThueMorseSign{m}h(t/2^{m+1}).
  \label{eq:K0J}
 \end{equation}
 
@@ -1043,7 +1043,7 @@ Therefore
 \[
  \sum_{n\ge1}2^{ns}=\frac{2^s}{1-2^s},
  \qquad
- \sum_{m\ge0}e_m2^{(m+1)s}=2^sE(2^s).
+ \sum_{m\ge0}\ThueMorseSign{m}2^{(m+1)s}=2^sE(2^s).
 \]
 Multiply by \eqref{eq:mellin-h}, and use
 $K_\sigma=(K_0+\sigma J)/2$.
@@ -1346,7 +1346,7 @@ checks are:
 \begin{enumerate}
 \item agreement of the series and product definitions of $E(1/2)$ to 60 displayed digits;
 \item $R_++R_-=1$ to working precision;
-\item the complex product identity $\phi_+\phi_-=\widehat\RvachevUp$ with residual
+\item the complex product identity $\phi_+\phi_-=\FourierAngular{\RvachevUp}$ with residual
 $2.2\times10^{-81}$ at the test point;
 \item both q-Mahler identities with residuals below $5\times10^{-81}$;
 \item the Mellin formula \eqref{eq:mellin-h} at $s=-3/2$ and at
@@ -1461,7 +1461,7 @@ are already classified.
 After normalization to $[-1,1]$, the Jacobi parameters $\beta_n^\pm$ in
 \eqref{eq:Jacobi} possess a compact limit set generated by a finite-dimensional
 renormalization over the Thue--Morse hull.  The paired sequences are related by the
-involution induced by $e_{2m+1}=-e_m$.
+involution induced by $\ThueMorseSign{2m+1}=-\ThueMorseSign{m}$.
 \end{conjecture}
 
 \begin{conjecture}[Matching local Fourier envelope]
@@ -1504,8 +1504,8 @@ exact plateaux or nested support coincidences analogous to \cref{thm:exact-plate
 A Lean development can be split into largely independent layers.
 
 \paragraph{Combinatorics.}
-Formalize $e_n=(-1)^{\operatorname{popcount}(n)}$, the recurrences
-$e_{2n}=e_n$, $e_{2n+1}=-e_n$, prefix sums \eqref{eq:prefix-exact}, selector counts, and
+Formalize $\ThueMorseSign{n}=(-1)^{\BinaryDigitSum(n)}$, the recurrences
+$\ThueMorseSign{2n}=\ThueMorseSign{n}$, $\ThueMorseSign{2n+1}=-\ThueMorseSign{n}$, prefix sums \eqref{eq:prefix-exact}, selector counts, and
 weighted-count summation by parts.  Much of the natural-boundary infrastructure already
 exists in the repository and should be reused rather than duplicated.
 
@@ -1563,18 +1563,18 @@ single rigorously connected model.
 \subsection{Weighted Thue--Morse prefixes}
 Let
 \begin{equation}
- T_N=\sum_{m=0}^{N-1}m e_m.
+ T_N=\sum_{m=0}^{N-1}m\ThueMorseSign{m}.
  \label{eq:weighted-prefix-def}
 \end{equation}
 Pairing even and odd indices gives
 \begin{align}
  T_{2M}
- &=\sum_{r=0}^{M-1}\bigl(2r e_{2r}+(2r+1)e_{2r+1}\bigr)
- =-\sum_{r=0}^{M-1}e_r=-S_M,
+ &=\sum_{r=0}^{M-1}\bigl(2r\ThueMorseSign{2r}+(2r+1)\ThueMorseSign{2r+1}\bigr)
+ =-\sum_{r=0}^{M-1}\ThueMorseSign{r}=-S_M,
  \label{eq:T-even}\\
  T_{2M+1}
- &=T_{2M}+2M e_{2M}
- =-S_M+2Me_M.
+ &=T_{2M}+2M\ThueMorseSign{2M}
+ =-S_M+2M\ThueMorseSign{M}.
  \label{eq:T-odd}
 \end{align}
 A version shifted by one index controls exact linear-logarithmic terms in finite truncations
