@@ -15022,9 +15022,12 @@ negative contractions, and \(t\in\R\), putting \(z_q(t)=(1-q)t/(2\pi)\) gives th
 \(G_q(z)\) denotes \path{geometricReciprocalGamma} applied to \(q,z\), through
 \path{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct} and
 \path{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma}.
-Independently, for every nonzero such \(q\), direct named Cauchy-transform and adjacent-power
-refinement equations hold off the exact support.  A packaged compact-uniform theorem for the
-full phase-bearing characteristic prefixes, a named centered wrapper, the report's
+Moreover, \path{tendstoLocallyUniformly_prefix_sinc_charFun} proves that the displayed
+phase-bearing finite prefixes converge locally uniformly on the real frequency line to
+\(\phi_q\), and \path{tendstoUniformlyOn_prefix_sinc_charFun} gives the explicit uniform
+wrapper on every compact subset of \(\R\).  Independently, for every nonzero such \(q\),
+direct named Cauchy-transform and adjacent-power refinement equations hold off the exact
+support.  A named centered wrapper, the report's
 rapid-decay and inversion proof, explicit Bernoulli-cumulant/Bell-moment formulas and
 asymptotics, further transforms, higher-derivative and endpoint-flatness wrappers, and shape
 theory remain outside that promotion.
@@ -15126,8 +15129,10 @@ ratios, \path{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincPro
  =\e^{\ii t/2}G_q(z_q(t))G_q(-z_q(t)).
 \]
 Here \(G_q(z)\) denotes \path{geometricReciprocalGamma} applied to \(q,z\).
-Still frontier are a packaged compact-uniform theorem for the full phase-bearing
-characteristic prefixes and a named centered wrapper, the rapid-decay bound and Fourier
+The additional declarations \path{tendstoLocallyUniformly_prefix_sinc_charFun} and
+\path{tendstoUniformlyOn_prefix_sinc_charFun} upgrade the same real-frequency prefixes to
+local uniform convergence and uniform convergence on every compact subset of \(\R\).
+Still frontier are a named centered wrapper, the rapid-decay bound and Fourier
 inversion route, a closed higher-derivative refinement and endpoint-flatness wrapper, the
 shape transition, further transforms, and explicit Bernoulli-cumulant/Bell-moment formulas
 and asymptotics.  The geometric tail dictionary already gives finite characteristic-function,
@@ -15445,18 +15450,20 @@ The four new public theorems in \path{GeometricReciprocalGamma.lean} are
 \]
 is a locally uniformly convergent product, has genuine pointwise \path{Multipliable} and
 \path{HasProd} witnesses with that exact value, and is entire.  The zero-definition,
-two-theorem module \path{GeometricSincCharacteristicFunction.lean} contains exactly
+four-theorem module \path{GeometricSincCharacteristicFunction.lean} contains exactly
 \path{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct} and
-\path{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma}.  For real
+\path{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma}, together
+with \path{tendstoLocallyUniformly_prefix_sinc_charFun} and
+\path{tendstoUniformlyOn_prefix_sinc_charFun}.  For real
 \(|q|<1\), \(t\in\R\), and \(z_q(t)=(1-q)t/(2\pi)\), they assert the following, where
 \(G_q(z)\) denotes \path{geometricReciprocalGamma} applied to \(q,z\):
 \[
  \phi_q(t)=\e^{\ii t/2}S_q(z_q(t))
  =\e^{\ii t/2}G_q(z_q(t))G_q(-z_q(t)).
 \]
-The range again includes \(q=0\) and negative contractions.  No named centered wrapper or
-uniform-on-compacts theorem for the full phase-bearing characteristic-prefix sequence is
-asserted.
+The range again includes \(q=0\) and negative contractions.  The latter two theorems state
+that the phase-bearing finite prefixes converge locally uniformly on \(\R\), hence uniformly
+on every compact \(K\subset\R\), to \(\phi_q\).  No named centered wrapper is asserted.
 
 The three generic real-CDF declarations in \path{ContinuousCDF.lean} are
 \path{continuous_cdf_of_nullSingleton},
@@ -15697,8 +15704,11 @@ pointwise product witnesses, and is entire.  For real \(|q|<1\), \(t\in\R\), and
 =\e^{\ii t/2}G_q(z_q(t))G_q(-z_q(t))\), where \(G_q(z)\) denotes
 \path{geometricReciprocalGamma} applied to \(q,z\).  The equality includes \(q=0\) and
 negative \(q\).
-There is not yet a named centered wrapper or a packaged compact-uniform theorem for the full
-phase-bearing characteristic prefixes.  The rapid bound \eqref{p10:eq:rapid-bound} and the
+Theorems \path{tendstoLocallyUniformly_prefix_sinc_charFun} and
+\path{tendstoUniformlyOn_prefix_sinc_charFun} additionally give local uniform convergence
+of those full prefixes on real frequencies and uniform convergence on every compact real
+frequency set.  There is not yet a named centered wrapper.  The rapid bound
+\eqref{p10:eq:rapid-bound} and the
 absolutely convergent Fourier-inversion formulas for higher derivatives have not been
 formalized.
 
@@ -16927,8 +16937,10 @@ The live \path{GeometricUniformDictionary.lean} and
 =\e^{\ii t/2}G_q(z_q(t))G_q(-z_q(t))\), where \(G_q(z)\) denotes
 \path{geometricReciprocalGamma} applied to \(q,z\).  The equality includes \(q=0\) and
 negative contractions.
-A named centered wrapper, packaged compact-uniform convergence of the full phase-bearing
-characteristic prefixes, and quantitative Fourier estimates remain in the analysis layer.
+The same zero-definition module proves real-frequency local uniform convergence through
+\path{tendstoLocallyUniformly_prefix_sinc_charFun} and its compact-set form through
+\path{tendstoUniformlyOn_prefix_sinc_charFun}.  A named centered wrapper and quantitative
+Fourier estimates remain in the analysis layer.
 The distinct oriented Cauchy-transform DDE and adjacent-power hierarchy are now formal in
 \path{GeometricUniformCauchy.lean}; they are separate from the characteristic-function
 product and real-space density-derivative hierarchies.

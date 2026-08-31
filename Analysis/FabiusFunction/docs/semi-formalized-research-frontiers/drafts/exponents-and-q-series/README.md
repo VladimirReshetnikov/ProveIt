@@ -858,7 +858,7 @@ raw closed-factor form `_prefix`) — the finite half of Part IV's master
 factorization `F̂ₙ = Φ·A(2⁻ⁿs)` at `q = 1/2` and of Part VI's `ĥ_a`
 sinc products at `q = 1/a`, kernel-verified.
 
-The final analytic bridge consists of exactly six new public theorems. For
+The final analytic bridge consists of exactly eight public theorems. For
 complex `q,z` with `‖q‖ < 1`, writing
 `S_q(z) = geometricSincProduct q z = ∏_{n≥0} sinc(πqⁿz)`, the four theorems
 `Fabius.hasProdLocallyUniformly_geometricSincProduct`,
@@ -873,7 +873,13 @@ and
 `Fabius.charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma`
 give
 `φ_q(t) = exp(i t/2)·S_q(z_q(t)) = exp(i t/2)·G_q(z_q(t))·G_q(-z_q(t))`,
-where `G_q(z) = geometricReciprocalGamma q z`.
+where `G_q(z) = geometricReciprocalGamma q z`. The further theorems
+`Fabius.tendstoLocallyUniformly_prefix_sinc_charFun` and
+`Fabius.tendstoUniformlyOn_prefix_sinc_charFun` prove that the full
+phase-bearing finite prefixes converge locally uniformly on the real
+frequency line, and uniformly on every compact real frequency set, to
+`φ_q`. These statements still use only `|q| < 1`, so they include `q = 0`
+and negative contractions.
 
 `RvachevPochhammerFactorization.lean` adds the exhaustive complex
 Pochhammer surface: the one definition `Fabius.complexQPochhammerInf` and
@@ -888,9 +894,9 @@ require exactly `‖q‖ < 1` and allow arbitrary complex `a`.  The two spectral
 theorems instead fix the dyadic scale and nome `1/4`, hold for every complex
 `z` including at zero factors, and the Fourier form assumes exactly a
 bounded Fabius witness satisfying `IsFabius`.  With `t = 4πz` this is the
-inside `q = 1/2` centered factorization only. The six-theorem sinc-product
+inside `q = 1/2` centered factorization only. The eight-theorem sinc-product
 tranche above supplies the general-`q` uncentered real-frequency bridge and
-locally uniform entire `S_q`, but still no named centered or MGF wrapper, no
-general q²-Pochhammer rearrangement, no outside-disk reciprocal formula, and
-no packaged compact-uniform theorem for the full phase-bearing
-characteristic-prefix sequence.
+locally uniform entire `S_q`, together with real-frequency local and compact
+uniform convergence of the full phase-bearing prefixes, but still no named
+centered or MGF wrapper, no general q²-Pochhammer rearrangement, and no
+outside-disk reciprocal formula.

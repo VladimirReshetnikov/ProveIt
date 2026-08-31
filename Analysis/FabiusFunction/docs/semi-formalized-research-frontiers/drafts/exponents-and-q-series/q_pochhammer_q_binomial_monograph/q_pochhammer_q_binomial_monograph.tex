@@ -6915,10 +6915,16 @@ give
  G_q(z)&=\operatorname{geometricReciprocalGamma}(q,z).
 \end{aligned}
 \]
+Moreover, \path{tendstoLocallyUniformly_prefix_sinc_charFun} proves local
+uniform convergence on the real frequency line of the full phase-bearing
+finite-prefix sequence used above, and
+\path{tendstoUniformlyOn_prefix_sinc_charFun} supplies the explicit uniform
+convergence statement on every compact \(K\subset\R\).
 Under this monograph's exact-counterpart rule, the labelled theorem remains
 partial: no single declaration packages its complex-$t$ continuation together
-with locally uniform convergence of the full phase-bearing finite-prefix
-sequence.  The real-$t$ formula and the locally uniform entire product are
+with complex-frequency locally uniform convergence of the full phase-bearing
+finite-prefix sequence.  The real-$t$ formula, real-frequency local and
+compact uniform convergence, and the locally uniform entire sinc product are
 nevertheless exact subclaims, not merely dyadic specializations.
 
 Let $Y_q=X_q-1/2$.  We use Bernoulli numbers in the convention
@@ -9720,11 +9726,15 @@ give
  =\e^{\mathrm i t/2}G_q(z_q(t))G_q(-z_q(t)),
 \]
 where $G_q(z)=\operatorname{geometricReciprocalGamma}(q,z)$.  This includes
-$q=0$ and negative contractions.  There is still no named centered
+$q=0$ and negative contractions.  The additional declarations
+\path{tendstoLocallyUniformly_prefix_sinc_charFun} and
+\path{tendstoUniformlyOn_prefix_sinc_charFun} give local uniform convergence
+of the full prefixes on the real frequency line and uniform convergence on
+every compact real frequency set.  There is still no named centered
 or MGF bridge, no general inside identification with the $q^2$-Pochhammer
 double product, and no outside formula or zero--pole exchange; normal
-convergence of that double product and a packaged complex-$t$/full-prefix
-statement are likewise absent.  Thus \Cref{thm:qF-spectral} remains only
+convergence of that double product and a packaged complex-frequency
+full-prefix statement are likewise absent.  Thus \Cref{thm:qF-spectral} remains only
 partially formalized.
 
 \begin{remark}[The nome, and where the $q$-objects finally appear]\label{rem:qF-nome}
@@ -12041,25 +12051,30 @@ general-parameter, reciprocal, or normal-convergence clauses.
 \path{Fabius.geometricSincProductFactors_multipliable},
 \path{Fabius.hasProd_geometricSincProduct}, and
 \path{Fabius.geometricSincProduct_differentiable}, and the zero-definition,
-two-theorem module \path{GeometricSincCharacteristicFunction.lean} consists of
+four-theorem module \path{GeometricSincCharacteristicFunction.lean} consists of
 \path{Fabius.charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct}
 and
-\path{Fabius.charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma}.
+\path{Fabius.charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma},
+\path{Fabius.tendstoLocallyUniformly_prefix_sinc_charFun}, and
+\path{Fabius.tendstoUniformlyOn_prefix_sinc_charFun}.
 For complex $q,z$ with $\lVert q\rVert<1$, the first four prove locally
 uniform convergence, pointwise \path{Multipliable}/\path{HasProd}, and
 entire-ness of
 $S_q(z)=\prod_{n\ge0}\operatorname{sinc}(\pi q^nz)$.  For real
 $\abs q<1$, $t\in\R$, and $z_q(t)=(1-q)t/(2\pi)$, including $q=0$ and
-negative contractions, the latter two state
+negative contractions, the first two characteristic-function declarations state
 \[
  \varphi_q(t)=\e^{\mathrm i t/2}S_q(z_q(t))
  =\e^{\mathrm i t/2}G_q(z_q(t))G_q(-z_q(t)).
 \]
 Here $G_q(z)=\operatorname{geometricReciprocalGamma}(q,z)$.
+The last two declarations assert local uniform convergence of the full
+phase-bearing prefixes on \(\R\) and its uniform-on-every-compact-set
+corollary.
 These are exact subclaims of
 \Cref{thm:geometric-uniform-characteristic,thm:qF-spectral}; neither compound
 label is promoted, because no declaration packages the former's
-complex-$t$/full phase-prefix convergence or the latter's centered/MGF
+complex-frequency full phase-prefix convergence or the latter's centered/MGF
 $q^2$-Pochhammer, reciprocal, and normal-convergence clauses.
 
 \item The six theorems of \path{GeometricCompleteHomogeneous.lean} are
@@ -12580,15 +12595,18 @@ tests are formalized separately, but not the six-part falsification principle}\\
 \Cref{thm:geometric-uniform-basic} & \statuspartial & \texttt{geometricUniformSeries\_\allowbreak{}mem\_\allowbreak{}Icc}\newline{\footnotesize\texttt{GeometricUniformLaw}}\\[2pt]
 \Cref{thm:geometric-uniform-characteristic} & \statuspartial &
 \texttt{charFun\_\allowbreak{}geometricUniformDistribution\_\allowbreak{}eq\_\allowbreak{}phase\_\allowbreak{}mul\_\allowbreak{}geometricSincProduct},
-\texttt{charFun\_\allowbreak{}geometricUniformDistribution\_\allowbreak{}eq\_\allowbreak{}phase\_\allowbreak{}mul\_\allowbreak{}geometricReciprocalGamma}\newline
+\texttt{charFun\_\allowbreak{}geometricUniformDistribution\_\allowbreak{}eq\_\allowbreak{}phase\_\allowbreak{}mul\_\allowbreak{}geometricReciprocalGamma},
+\texttt{tendstoLocallyUniformly\_\allowbreak{}prefix\_\allowbreak{}sinc\_\allowbreak{}charFun},
+\texttt{tendstoUniformlyOn\_\allowbreak{}prefix\_\allowbreak{}sinc\_\allowbreak{}charFun}\newline
 {\footnotesize\texttt{GeometricSincCharacteristicFunction}; together with
 \texttt{hasProdLocallyUniformly\_\allowbreak{}geometricSincProduct},
 \texttt{geometricSincProductFactors\_\allowbreak{}multipliable},
 \texttt{hasProd\_\allowbreak{}geometricSincProduct}, and
 \texttt{geometricSincProduct\_\allowbreak{}differentiable} in
 \texttt{GeometricReciprocalGamma}; exact real-$t$ formula for every
-$\abs q<1$ and standalone locally uniform entire complex product, but no
-single complex-$t$/full phase-prefix package}\\[2pt]
+$\abs q<1$, real-frequency local and compact uniform convergence of the full
+prefixes, and standalone locally uniform entire complex product, but no
+single complex-frequency full phase-prefix package}\\[2pt]
 \Cref{thm:q-cumulants-uniform} & \statuspartial &
 \texttt{centeredRvachevEvenCumulant\_\allowbreak{}eq\_\allowbreak{}bernoulliMersenne\_\allowbreak{}formula},
 \texttt{centeredRvachevFullCumulant\_\allowbreak{}odd}\newline
@@ -12758,7 +12776,9 @@ the general normalized analytic-germ uniqueness theorem}\\[2pt]
 \Cref{thm:qF-reciprocity} & \statusnone & ---\\[2pt]
 \Cref{thm:qF-spectral} & \statuspartial &
 \texttt{charFun\_\allowbreak{}geometricUniformDistribution\_\allowbreak{}eq\_\allowbreak{}phase\_\allowbreak{}mul\_\allowbreak{}geometricSincProduct},
-\texttt{charFun\_\allowbreak{}geometricUniformDistribution\_\allowbreak{}eq\_\allowbreak{}phase\_\allowbreak{}mul\_\allowbreak{}geometricReciprocalGamma}\newline
+\texttt{charFun\_\allowbreak{}geometricUniformDistribution\_\allowbreak{}eq\_\allowbreak{}phase\_\allowbreak{}mul\_\allowbreak{}geometricReciprocalGamma},
+\texttt{tendstoLocallyUniformly\_\allowbreak{}prefix\_\allowbreak{}sinc\_\allowbreak{}charFun},
+\texttt{tendstoUniformlyOn\_\allowbreak{}prefix\_\allowbreak{}sinc\_\allowbreak{}charFun}\newline
 {\footnotesize\texttt{GeometricSincCharacteristicFunction}; with
 \texttt{hasProdLocallyUniformly\_\allowbreak{}geometricSincProduct},
 \texttt{geometricSincProductFactors\_\allowbreak{}multipliable},
@@ -12766,7 +12786,8 @@ the general normalized analytic-germ uniqueness theorem}\\[2pt]
 \texttt{geometricSincProduct\_\allowbreak{}differentiable} from
 \texttt{GeometricReciprocalGamma}, plus the fixed-half-base
 \texttt{rvachevFourierProduct\_\allowbreak{}eq\_\allowbreak{}tprod\_\allowbreak{}complexQPochhammerInf}; general uncentered real-frequency sinc bridge and
-locally uniform entire $S_q$ are exact, but the centered/MGF
+locally uniform entire $S_q$, together with real-frequency local and compact
+uniform convergence of the full prefixes, are exact, but the centered/MGF
 $q^2$-Pochhammer rearrangement, reciprocal outside-disk formula, and normal
 double-product convergence are not packaged}\\[2pt]
 \Cref{thm:qF-moment-polynomial} & \statusnone & ---\\[2pt]

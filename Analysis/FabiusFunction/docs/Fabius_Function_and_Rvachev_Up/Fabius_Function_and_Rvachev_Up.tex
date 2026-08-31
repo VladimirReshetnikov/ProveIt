@@ -1573,22 +1573,32 @@ This includes \(q=0\) and negative \(q\); the final two declarations are exact
 \(q=1/2\) wrappers for \lean{weightedSumDistribution}.  The Gamma-side product now
 supplies a named locally uniform product, pointwise \lean{Multipliable} and
 \lean{HasProd} forms, and entireness for the same rescaled sinc factors.  The new module
-\path{GeometricSincCharacteristicFunction.lean} has exactly the two public theorems
+\path{GeometricSincCharacteristicFunction.lean} has no public definitions and exactly
+the four public theorems
 \lean{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct} and
-\lean{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma}.
+\lean{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma},
+followed by \lean{tendstoLocallyUniformly_prefix_sinc_charFun} and
+\lean{tendstoUniformlyOn_prefix_sinc_charFun}.
 For
 \[
  z=z_{q,t}:=\frac{(1-q)t}{2\pi},
 \]
-they give, under the same sharp hypothesis \(|q|<1\),
+the first two give, under the same sharp hypothesis \(|q|<1\),
 \[
  \phi_q(t)=e^{\ii t/2}\Phi_q(z)
  =e^{\ii t/2}G_q(z)G_q(-z).
 \]
-Thus the bridge includes \(q=0\) and negative \(q\).  What remains missing is a named
-compact-uniform convergence wrapper for the \emph{full phase-bearing} characteristic
-prefixes.  The fixed-dyadic Pochhammer factorization in
-\path{RvachevPochhammerFactorization.lean} is not such a general-\(q\) wrapper.
+For the full prefix
+\[
+ P_{q,m}(t):=e^{\ii(1-q^m)t/2}
+ \prod_{k=0}^{m-1}\sinc\!\left(\frac{(1-q)q^kt}{2}\right),
+\]
+the last two prove \(P_{q,m}\to\phi_q\) locally uniformly on the real frequency line
+and uniformly on every compact \(K\subseteq\R\).  Thus all four results include
+\(q=0\) and negative \(q\).  No complex-frequency analogue for the full phase-bearing
+prefixes or uniform-convergence claim on all of \(\R\) is made.  The fixed-dyadic
+Pochhammer factorization in
+\path{RvachevPochhammerFactorization.lean} does not add either general-\(q\) extension.
 
 The generic CDF mechanisms are
 \lean{continuous_cdf_of_nullSingleton},
@@ -1649,11 +1659,13 @@ An exact Lean theorem for the paper-level corrected signed-ratio density remains
 \(C^\infty\) theorem is proved by the real-space derivative refinement.  The
 phase-bearing general-\(q\) sinc prefixes and their
 pointwise characteristic-function limit are formal; the pure complex sinc product now has
-named locally uniform convergence, pointwise \lean{HasProd}, and entireness, and the two
-identities above close its characteristic-function and reciprocal-Gamma bridges.  A named
-compact-uniform convergence wrapper for the full phase-bearing prefixes, rapid-decay
-estimates, and a Fourier-inversion construction remain outside the formal API.  So do a
-named centered \(q\)-family, a closed all-order
+named locally uniform convergence, pointwise \lean{HasProd}, and entireness, and the four
+theorems above close its characteristic-function and reciprocal-Gamma bridges and upgrade
+the full prefixes to locally uniform convergence on the real frequency line and uniform
+convergence on every compact real frequency set.  No complex-frequency full-prefix
+analogue or uniform-convergence assertion on all real frequencies is made.  Rapid-decay
+estimates and a Fourier-inversion construction remain outside the formal API.  So do a
+named centered \(q\)-family or MGF wrapper, a closed all-order
 derivative hierarchy and explicit endpoint-flatness wrappers, shape theorems, further
 transform formulas, and explicit Bernoulli-cumulant/Bell-moment formulas and asymptotics.
 The global complex Pochhammer theorem proved below is the fixed inside
@@ -10543,19 +10555,24 @@ That rule explains several choices made above:
       residual sinc factorization and pointwise phase-bearing prefix limit for every
       \(|q|<1\), with dyadic wrappers.  The pure rescaled sinc product now has named
       locally uniform convergence, pointwise \lean{Multipliable}/\lean{HasProd}, and
-      entireness.  The two theorems of
+      entireness.  The four theorems of
       \path{GeometricSincCharacteristicFunction.lean} give, for
       \(z=(1-q)t/(2\pi)\), the exact identities
       \(\phi_q(t)=e^{\ii t/2}\Phi_q(z)=e^{\ii t/2}G_q(z)G_q(-z)\), including
-      \(q=0\) and negative \(q\).  The seven activation modules separately prove the sharp
+      \(q=0\) and negative \(q\), and prove that
+      \(e^{\ii(1-q^m)t/2}\prod_{k<m}\sinc((1-q)q^kt/2)\) converges locally uniformly
+      on the real frequency line to \(\phi_q(t)\) and uniformly on every compact real
+      frequency set.  These convergence declarations are
+      \lean{tendstoLocallyUniformly_prefix_sinc_charFun} and
+      \lean{tendstoUniformlyOn_prefix_sinc_charFun}.  The seven activation modules
+      separately prove the sharp
       coefficient \(p(at)/t^2\to a^2/3\), its arbitrary-index square-summable Tannery
       theorem, the exact geometric coefficient \((1-q)/(3(1+q))\), and the dyadic value
       \(1/9\), together with the degree-eight finite Taylor jet of \(p\) and its
       order-ten remainder.  These quotient limits are punctured and deterministic; no
-      active-count expectation identity is asserted.  A named compact-uniform convergence
-      wrapper for the
-      full phase-bearing prefixes, general-\(q\) rapid decay and Fourier inversion,
-      centered packaging, closed
+      active-count expectation identity is asserted.  No complex-frequency analogue for
+      the full phase-bearing prefixes or uniform-convergence claim on all of \(\R\) is
+      made.  General-\(q\) rapid decay and Fourier inversion, centered or MGF packaging, closed
       higher-derivative and endpoint-flatness wrappers, shape results, further transforms,
       and Taylor coefficients beyond the proved finite jet, an all-order Bernoulli
       coefficient formula, a radius-of-convergence theorem, and the corresponding full

@@ -1486,22 +1486,33 @@ sinc products, pointwise multipliability and the exact \nolinkurl{HasProd} ident
 entireness.  Write \(S_q(z)\) for
 \nolinkurl{geometricSincProduct q z}.
 
-The new zero-definition, two-theorem module
+The new zero-definition, four-theorem module
 \nolinkurl{GeometricSincCharacteristicFunction.lean} consists exactly of
 \nolinkurl{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct} and
-\nolinkurl{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma}.
+\nolinkurl{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma},
+followed by \nolinkurl{tendstoLocallyUniformly_prefix_sinc_charFun} and
+\nolinkurl{tendstoUniformlyOn_prefix_sinc_charFun}.
 Write \(G_q(z)\) for \nolinkurl{geometricReciprocalGamma q z}, and put
 \[
  z_q(t)=\frac{(1-q)t}{2\pi}.
 \]
 For every real \(\lvert q\rvert<1\) and \(t\in\R\), including \(q=0\) and negative
-ratios, these theorems give the exact identities
+ratios, the first two theorems give the exact identities
 \[
  \phi_q(t)=e^{\ii t/2}S_q\bigl(z_q(t)\bigr)
  =e^{\ii t/2}G_q\bigl(z_q(t)\bigr)G_q\bigl(-z_q(t)\bigr).
 \]
-The locally uniform theorem concerns \(S_q\) as a complex-variable sinc product; there is
-still no named compact-uniform theorem for the full phase-bearing characteristic prefixes.
+For
+\[
+ P_{q,m}(t):=e^{\ii(1-q^m)t/2}
+   \prod_{k=0}^{m-1}\operatorname{sinc}
+      \!\left(\frac{(1-q)q^kt}{2}\right),
+\]
+the last two prove that \(P_{q,m}\) tends locally uniformly on the real frequency line
+to \(\phi_q\), and uniformly on every compact set \(K\subseteq\R\).  The Gamma-side
+locally uniform theorem concerns \(S_q\) as a complex-variable pure sinc product, whereas
+the full phase-bearing theorem is stated for real frequencies.  No complex-frequency
+analogue of the latter or uniform-convergence claim on all of \(\R\) is made.
 Rapid-decay bounds, Fourier inversion, a named centered family or MGF wrapper, explicit
 Bernoulli-cumulant and Bell-moment formulas and asymptotics, further transform formulas,
 and shape theory remain separate targets.
@@ -3937,7 +3948,7 @@ Module & Role in the development \\
 \nolinkurl{GeometricUniformUniqueness.lean} & Specializes the generic product-map theorem to prove \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar}: every probability solution of the geometric affine head--tail equation is \(\mu_q\) when \(\lvert q\rvert<1\), including \(q=0\) and negative \(q\), with no support, density, or moment assumption. \\
 \nolinkurl{GeometricSincFactorization.lean} & Closed characteristic function of the scaled uniform digit, exact closed-factor and phase-collapsed finite residual formulas for \(\lvert q\rvert<1\), pointwise convergence of the phase-bearing sinc prefixes, and the two dyadic weighted-sum wrappers. \\
 \nolinkurl{GeometricReciprocalGamma.lean} & Locally uniform convergence, pointwise multipliability and \nolinkurl{HasProd}, and entireness of the geometric sinc product, together with its reciprocal-Gamma reflection factorization. \\
-\nolinkurl{GeometricSincCharacteristicFunction.lean} & The two exact phase-bearing bridges from the geometric-uniform characteristic function to the rescaled geometric sinc product and to the paired reciprocal-Gamma factors for every real \(\lvert q\rvert<1\), including zero and negative ratios. \\
+\nolinkurl{GeometricSincCharacteristicFunction.lean} & The four-theorem, zero-definition surface: two exact phase-bearing bridges from the geometric-uniform characteristic function to the rescaled geometric sinc product and paired reciprocal-Gamma factors, plus locally uniform convergence of the full phase-bearing prefixes on the real frequency line and uniform convergence on every compact real frequency set, for every \(\lvert q\rvert<1\), including zero and negative ratios. \\
 \nolinkurl{GeometricUniformCDF.lean} & The named \(F_q\) and explicit \(f_q\), conditioning and interval-integral equations, pointwise derivative and exact positive-ratio \nolinkurl{withDensity} law, continuity, reflection, exterior zeros, ordinary/topological support containments, compact support, and \(C^\infty\) regularity under their exact parameter hypotheses.  It also proves that the selected total formula is zero at \(q=0\), nonpositive for \(q<0\), yields the zero clamped measure for \(q\le0\), and cannot represent \(\mu_q\) on the nonpositive contraction range. \\
 \nolinkurl{HyperbolicActivation.lean} & Four definitions and 58 theorems forming the totalized real hyperbolic-sinc, \nolinkurl{tanhDiv}, activation-odds, and activation-probability dictionary, with continuity, parity, positivity, exact odds bridges, global elementary bounds, and the canonical identification \nolinkurl{tanhDiv_eq_dslope}. \\
 \nolinkurl{ActivationTaylor.lean} & Three theorems: the exact degree-nine Taylor polynomial of \(\tanh\) with \(O(\lVert x\rVert^{11})\) remainder, the induced degree-eight activation-probability polynomial with \(O(\lVert x\rVert^{10})\) remainder, and its equivalent \(O(x^{10})\) form. \\
