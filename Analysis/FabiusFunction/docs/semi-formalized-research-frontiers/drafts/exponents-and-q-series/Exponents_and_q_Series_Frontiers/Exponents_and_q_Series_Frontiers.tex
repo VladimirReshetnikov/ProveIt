@@ -5390,7 +5390,7 @@ This appendix records the source families used to establish the non-duplication
 boundary. Historical variants were read for content rather than treated as
 independent discoveries.  The family headings below describe the audit
 snapshot, not current navigation.  The non-elementarity report is now filed at
-\path{drafts/inverse-and-sampling/Non_Elementarity_of_the_Fabius_Function/};
+\path{drafts/inverse-and-sampling/analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function/};
 the consolidated Thue--Morse and Fourier-decay sources are respectively
 \path{drafts/thue-morse/Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex}
 and
@@ -11026,6 +11026,13 @@ give
  G_q(z)&=\operatorname{geometricReciprocalGamma}(q,z).
 \end{aligned}
 \]
+The two further declarations
+\path{tendstoLocallyUniformly_prefix_sinc_charFun} and
+\path{tendstoUniformlyOn_prefix_sinc_charFun} prove that the full
+phase-bearing finite prefixes converge locally uniformly on the real
+frequency line, and uniformly on every compact subset of \(\R\), to
+\(\phi_q\).  Their hypothesis is again exactly \(\abs q<1\), so this includes
+\(q=0\) and negative contractions.
 A separately named centered and $h_a$-scaled Fourier wrapper, the derivative
 hierarchy, plateau geometry, cumulants, and uniqueness remain the frontier
 obligations relevant here.  The next sections address several of those
@@ -15244,22 +15251,22 @@ The current formal API does not prove the whole compound statement
 \path{rvachevFourier_eq_tprod_complexQPochhammerInf} in
 \path{RvachevPochhammerFactorization.lean}.  The first three convergence
 results after the definitional equality allow arbitrary complex $a$ and
-require exactly $\lVert q\rVert<1$.  For arbitrary complex $q,z$ with
-$\lVert q\rVert<1$, the next three results prove absolute summability of the
-paired Euler perturbations, identify the geometric sinc product with the
-product indexed by scale--zero pairs, and justify the index exchange
+require exactly $\lVert q\rVert<1$.  The next three theorems give absolute
+summability of the paired Euler perturbations, the paired scale--zero tprod,
+and, for every complex $q,z$ with $\lVert q\rVert<1$, the global identity
 \[
  S_q(z)=\prod_{k\ge0}
- \left(\frac{z^2}{(k+1)^2};q^2\right)_{\!\infty}.
+ \left(\frac{z^2}{(k+1)^2};q^2\right)_\infty .
 \]
-The result includes $q=0$, negative and nonreal contractions, and every zero
-of an individual factor.  The final two theorems specialize it to dyadic
-scale and nome $1/4$; the Fourier-transform form additionally assumes a
-bounded Fabius witness satisfying \path{IsFabius}.
+They include $q=0$, negative and nonreal contractions, and all individual
+zero factors.  The final two spectral theorems specialize this result to the
+dyadic scale and nome $1/4$; the Fourier-transform form additionally assumes
+a bounded Fabius witness satisfying \path{IsFabius}.
 
-Under $t=4\pi z$, the general Pochhammer-product theorem is exactly the
-inside centered factorization in \eqref{p7:eq:sinc-poch}.  The complementary
-sinc-product tranche supplies the analytic convergence layer: for
+After the substitution $z=(1-q)t/(2\pi)$, the general product theorem gives
+the Pochhammer-product part of the inside formula
+\eqref{p7:eq:sinc-poch}.  A separate final sinc-product tranche proves the
+general uncentered characteristic-function bridge.  For
 $q,z\in\ComplexNumbers$, $\lVert q\rVert<1$, the four theorems
 \path{hasProdLocallyUniformly_geometricSincProduct},
 \path{geometricSincProductFactors_multipliable},
@@ -15281,13 +15288,16 @@ give
 \end{aligned}
 \]
 including $q=0$ and negative contractions.
+Theorems \path{tendstoLocallyUniformly_prefix_sinc_charFun} and
+\path{tendstoUniformlyOn_prefix_sinc_charFun} additionally prove local
+uniform convergence of the full phase-bearing prefixes on \(\RealNumbers\) and its
+explicit uniform-on-every-compact-set form.
 
 There is still no named centered $\psi_q$ or MGF wrapper, no
-outside-$\AbsoluteValue q>1$ reciprocal formula or zero--pole exchange, and no packaged
-compact-uniform theorem for the full phase-bearing characteristic prefixes.
-Consequently the inside product identity is proved, while the compound label
-\cref{p7:thm:sinc-poch} remains partial exactly at those wrappers and the
-outside-disk clause.
+outside-$\AbsoluteValue q>1$ reciprocal formula or zero--pole exchange, and no named
+local-uniform or normal-convergence theorem for the Pochhammer-product
+right-hand side.  Consequently the compound label
+\cref{p7:thm:sinc-poch} remains only partially formalized.
 \end{statusbox}
 
 The nome is $q^2$, not $q$: centering makes every factor even, and evenness

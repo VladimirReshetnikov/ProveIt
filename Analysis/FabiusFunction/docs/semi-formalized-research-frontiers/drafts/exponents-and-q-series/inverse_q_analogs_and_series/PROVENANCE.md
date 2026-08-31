@@ -1,7 +1,10 @@
 # Provenance ledger
 
-The canonical volume absorbs the following six source packages.  Paths are
-relative to the surrounding `exponents-and-q-series/` directory.
+The canonical volume absorbs the following six source packages.  The paths
+below are historical paths relative to their former sibling layout under
+`exponents-and-q-series/`.  The exact normalized source tree is pinned by
+[`audit/SOURCE_REVISION`](audit/SOURCE_REVISION), and repository history
+preserves every retired path.
 
 | Source package | Canonical role |
 | --- | --- |
@@ -11,6 +14,25 @@ relative to the surrounding `exponents-and-q-series/` directory.
 | `inverse_q_analogs_report/` | Discriminant and remote-branch analyses, interval and continuation certificates, early conjecture register. |
 | `inverse_q_analogs_report-2/` | Independent branch synthesis, reciprocal regimes, compact coefficient tables, algorithmic cross-checks. |
 | `q_pochhammer_q_binomial_expansions_report/` | Canonical forward expansion engine for finite and infinite products, Gaussian and multinomial coefficients, roots of unity, and q-special functions. |
+
+## Intake archive provenance
+
+All six packages arrived on 2026-08-30.  These hashes identify the submitted
+archive bytes, before repository normalization or later editorial changes.
+
+| Historical package | Delivered archive | Outer SHA-256 |
+| --- | --- | --- |
+| `inverse_q_analog_jet_atlas/` | `inverse_q_analog_jet_atlas_2026-08-30.zip` | `9c9a0353eb355e6defb87845c4a2a79d85c537fe5a6c38c5473f9d3d56448ead` |
+| `inverse_q_analog_functions_report/` | `inverse_q_analog_functions_report.zip` | `19cc7da37f71ddbbc0c46b91c55c23059a1e305500260bd0a306394f4c21f4de` |
+| `inverse_q_analogs_extended_report/` | `inverse_q_analogs_all_parameters_report.zip` | `0263542a7a6a50459eeb0359015b4086245e7311528e80e3875657529825669f` |
+| `inverse_q_analogs_report-2/` | `inverse_q_analogs_report_bundle.zip` | `82ab1dc2cbdd4e69d638cfc045d9ca331e8152e1faeba763732fa9231578b875` |
+| `inverse_q_analogs_report/` | `inverse_q_analogs_report.zip` | `471ee715022df77f2c5f45b86c213e50e980478eee1a6fc48dd91556cdaeb627` |
+| `q_pochhammer_q_binomial_expansions_report/` | `q_pochhammer_q_binomial_expansions_report.zip` | `e8c6e5be4512abc0bacfd904e3f0027b35fd5e47e916a6ad11cc76b2893b3a07` |
+
+The archive hashes identify delivery bytes.  `theorem_concordance.csv`
+records normalized result-level provenance, `assets/ASSET_DISPOSITION.csv`
+records path-level disposition, and `audit/SOURCE_REVISION` pins the immutable
+pre-retirement Git tree used by the source extractor.
 
 The source packages were independently delivered reports, not a linear series
 of editions.  Shared titles or formulas therefore do not imply ancestry.  The
@@ -27,8 +49,8 @@ extended report.
 ## Source-result inventory
 
 `audit/extract_source_results.py` inventories every theorem-style source
-environment before any editorial deletion.  The current six snapshots contain
-260 such environments:
+environment from the pinned pre-retirement Git revision.  The six inventoried
+snapshots contain 260 such environments:
 
 | Kind | Count |
 | --- | ---: |
@@ -51,23 +73,25 @@ environment followed the statement.  Editorial columns then record the
 canonical label, proof status, Lean counterpart when one exists, and the
 reason for merging, correcting, retaining, or retiring the source item.
 
-## Non-TeX asset audit
+## Non-TeX asset audit and migration
 
-The six packages contain 65 tracked non-TeX files totalling 5,832,780 bytes:
+At the pinned pre-retirement revision, the six packages contained 65 tracked
+non-TeX files totalling 5,832,780 bytes:
 six Python experiment programs, two requirements files, six READMEs, six
 checksum ledgers, six generated report PDFs, twenty generated figures, and
 nineteen generated data or audit files.  Four additional untracked files in
 the forward-expansion package are ordinary `.aux`, `.log`, `.out`, and `.toc`
 build intermediates.
 
-Every entry in all six source checksum ledgers matches its current file.
-SHA-256 comparison found no byte-identical pair among the 69 tracked and
-untracked non-TeX files.  Similar names therefore do not license deletion:
+Every entry in all six source checksum ledgers matched its corresponding file
+at that revision.  SHA-256 comparison found no byte-identical pair among the
+69 tracked and untracked non-TeX files.  Similar names therefore did not
+license deletion:
 for example, the three scripts named `inverse_q_analogs_experiments.py`, the
 two PDFs named `inverse_q_analogs_report.pdf`, and the two
 `qgamma_inverse_branches.pdf` figures all have different contents.
 
-Only two source packages record an immutable repository snapshot:
+Only two source packages themselves recorded an immutable repository snapshot:
 
 - `inverse_q_analog_jet_atlas/` records
   `1cea73234a363ddbc392816f6babb5a57920e984`;
@@ -75,18 +99,44 @@ Only two source packages record an immutable repository snapshot:
   `23b19a515ceb44a513b1ec56aeb5c9e99dda5952`.
 
 Both names resolve to commits in the repository.  The other four packages
-record no immutable source commit, so their build statements are preserved as
-historical package claims, not promoted to current validation evidence.
+recorded no immutable source commit, so their build statements are preserved
+as historical package claims, not promoted to current validation evidence.
+Independently, this consolidation pins the normalized sources of all six
+packages at
+`6fe9fb8f50e1b8a9a800fa0e8ef6f688f5bb5838`, the value stored in
+`audit/SOURCE_REVISION` and verified as an ancestor of the retirement commit.
 
-Unique scripts, captured outputs, tables, and figures are migrated under
-`assets/` only when they support a retained theorem, conjecture, or
-reproducible calculation.  Because there are no byte-identical assets, any
-retirement must instead be justified by proved content coverage and
-regeneration parity.  Generated LaTeX byproducts are retired.  The six PNG
-previews in the extended package may be omitted when their vector-PDF
-counterparts are retained, because no document refers to the PNG copies.
-Exact source and destination hashes are appended to the migration ledger
-before removal of the old package directories.
+Unique scripts, captured outputs, tables, and figures were migrated under
+`assets/` when they support a retained theorem, conjecture, or reproducible
+calculation.  The completed 77-row disposition ledger retains 39 files---six
+programs, 19 CSV/TXT outputs, and 14 vector figures---and retires 38
+superseded narratives, duplicate previews, package metadata files, generated
+LaTeX fragments, and build products.  All 33 retained non-script payloads
+match their historical source bytes.  The six programs were rerun serially;
+[`assets/VALIDATION.md`](assets/VALIDATION.md) records exact-output parity and
+the one disclosed last-digit runtime drift, while `assets/SHA256SUMS` fixes
+the post-migration bytes.
 
-All superseded material remains recoverable from Git history after the source
-directories are removed.
+All tracked superseded material remains recoverable from Git history.  The
+only untracked files removed with the old directories were four disposable
+TeX build intermediates (`.aux`, `.log`, `.out`, and `.toc`) already recorded
+as retirements in the asset-disposition audit.
+
+## Scope boundaries with neighboring volumes
+
+This consolidation is canonical for branch-specified inverse maps, singular
+inverse regimes, certification, and the six-package concordance above.  The
+separate `q_pochhammer_q_binomial_monograph/` remains the broad reference for
+forward q-algebra, combinatorics, summation, and arithmetic; forward results
+are repeated here only when an inverse proof needs them.
+
+`Cyclotomic_q_Fabius_Rvachev_Frontier/` remains a separate natural-boundary
+and blow-up volume.  Its radial root-of-unity layer overlaps Chapters 3 and 6,
+but its condensation, Gould--Hopper, polyharmonic, and natural-boundary
+programs are broader than inverse-q branch theory.  Likewise,
+`Exponents_and_q_Series_Frontiers/` owns the geometric-uniform/Fabius
+deformation and signed/reciprocal parameter-orbit program, and
+`inverse-and-sampling/geometric_comb_q_fabius_report/` owns the detailed
+interpolation and stability theory behind the short geometric-comb application
+in Chapter 6.  These explicit boundaries prevent the six-source concordance
+from being misread as a claim to have absorbed those broader volumes.

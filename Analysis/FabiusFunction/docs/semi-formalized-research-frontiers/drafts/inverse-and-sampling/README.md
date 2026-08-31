@@ -1,24 +1,48 @@
 # Inverse and sampling
 
+Nine document bundles live in this theme, organized one level deeper by their
+principal overlap:
+
+- [`comb-interpolation/`](comb-interpolation/) — additive and geometric comb
+  interpolation, quadrature, extrapolation, and stability;
+- [`inverse-asymptotics-and-computability/`](inverse-asymptotics-and-computability/)
+  — inverse germs, endpoint asymptotics, self-sampling, effective moduli, and
+  certified computation;
+- [`analyticity-and-elementarity/`](analyticity-and-elementarity/) —
+  nowhere-analytic inverse iterates and elementary-representation
+  obstructions.
+
+The cross-cutting information-geometry intake now lives under
+[`../frontier-compilations/fabius_information_frontier/`](../frontier-compilations/fabius_information_frontier/),
+whose broader geometric-uniform scope is a better thematic fit. The
+inverse-iterate report here retains its explicit reconciliation link to the
+forward-iterate report under `representations/`.
+
 ## Source-only merge status (2026-08-31)
 
-The canonical-notation merge changed nine living TeX roots in this group.
+The local canonical-notation integration changed eight living TeX roots in this
+group. The remote reorganization supplied a synchronized TeX/PDF/ledger trio
+for `analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function`, so
+that package is not included in the stale-artifact table below.
 By explicit integration policy, none of their same-stem PDFs was rebuilt and
-none of the seven operational ledgers that cover a changed root was refreshed.
+none of the seven local operational ledgers that cover a changed root was
+refreshed. The remote's relinked 12-entry ledger for
+`inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers` is safe
+to take unchanged and verifies 12/12 current files, but that integrity result
+does not make its retained PDF a rendering of the changed source.
 The PDFs and their page/font/build facts below are therefore retained
 historical artifacts, not claimed renderings of the current sources.
 
 | Root report | Current TeX lines | Retained PDF | Operational-ledger status |
 |---|---:|---:|---|
-| `Dyadic_Comb_Frontiers` | 5,648 | 66 pages | no live root-pair ledger |
-| `Inverse_Endpoint_All_Orders` | 1,979 | 23 pages | no live root-pair ledger |
-| `Inverse_Fabius_Computability_Report` | 2,937 | 42 pages | TeX row pending rebuild |
-| `Inverse_and_Sampling_Frontiers` | 6,608 | 100 pages | TeX row pending rebuild |
-| `fabius_information_frontier` | 2,137 | 30 pages | TeX row pending rebuild |
-| `geometric_comb_interpolation_report` | 2,360 | 32 pages | TeX row pending rebuild |
-| `geometric_comb_lagrange_jackson_newton_report` | 2,736 | 36 pages | TeX row pending rebuild |
-| `geometric_comb_q_fabius_report` | 3,554 | 68 pages | TeX row pending rebuild |
-| `inverse_fabius_iterates_nowhere_analytic` | 1,742 | 26 pages | TeX row pending rebuild |
+| `comb-interpolation/Dyadic_Comb_Frontiers` | 5,648 | 66 pages | no live root-pair ledger |
+| `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders` | 1,979 | 23 pages | no live root-pair ledger |
+| `inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report` | 2,937 | 42 pages | TeX row pending rebuild |
+| `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers` | 6,608 | 100 pages | remote relinked ledger passes; PDF remains historical |
+| `comb-interpolation/geometric_comb_interpolation_report` | 2,360 | 32 pages | TeX row pending rebuild |
+| `comb-interpolation/geometric_comb_interpolation_report-3` | 2,736 | 36 pages | TeX/README/relocated-audit rows pending |
+| `comb-interpolation/geometric_comb_q_fabius_report` | 3,554 | 68 pages | TeX row pending rebuild |
+| `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic` | 1,742 | 26 pages | TeX row pending rebuild |
 
 Package README edits that record this source-only state also make their own
 operational-ledger rows intentionally pending.  Arrival ledgers and historical
@@ -26,32 +50,18 @@ PDF hashes remain immutable and are not affected by this note.
 
 New standalone intake members:
 
-- [`fabius_information_frontier/`](fabius_information_frontier/),
-  *Exact Information Geometry and New Frontiers for the Fabius--Rvachev
-  System*, is the retained submitted 30-page A4 research report filed from
-  `fabius_information_frontier_report.zip` (751,588 bytes; SHA-256
-  `41f9aba6eb85bb173827f13cb6b7b1d54b7ea9346faf7c9e5b1af859bbd42ec7`).
-  Its submitted 18-entry ledger is preserved and verified, while the
-  operational ledger recorded the repository-mandated LF normalization of
-  four CSVs before the later 2,137-line notation migration.  Its TeX row and
-  this README row are now intentionally pending.  This quick-gate
-  archival checkpoint makes no claim-level acceptance: hostile mathematical
-  audit, numerical replay, Lean crosswalk, canonical-preamble normalization,
-  plot-font repair, and rebuild remain deliberately deferred.  The submitted
-  PDF still uses Latin Modern and includes Type 3 plot-font rows.
-
-- [`Non_Elementarity_of_the_Fabius_Function/`](Non_Elementarity_of_the_Fabius_Function/),
+- [`Non_Elementarity_of_the_Fabius_Function/`](analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function/),
   *The Fabius Function and Its Inverse are Not Elementary: Density of the
   Analytic Locus under Algebraic Branches and Inversion* (14 A4 pp; 1,068
   source lines at intake and 1,057 after the notation migration), was
   reclassified on 2026-08-31 from the former top-level
   `docs/Non_Elementarity_of_the_Fabius_Function/` pair through
-  `drafts/incoming/` and filed here without changing either submitted
+  `drafts/incoming/` and initially filed here without changing either submitted
   payload. The bare two-file package supplied no archive or checksum ledger.
   The intake hashes were PDF `ab722e11...` and TeX `3c3c2f48...`; the active
-  `SHA256SUMS` was refreshed after the post-publication semantic-notation
-  migration and verifies the current TeX/PDF pair. Its TeX source was already
-  LF, and its structurally readable, unencrypted PDF uses embedded/subset
+  repository-added `SHA256SUMS` was refreshed after the post-publication
+  semantic-notation migration and verifies the current TeX/PDF pair. Its TeX
+  source remains LF, and its structurally readable, unencrypted PDF uses embedded/subset
   fonts, includes Libertinus, and has no Type 3 font. The
   title and abstract place its forward/inverse non-elementarity and analytic-
   locus material with the inverse-function reports in this group. An older
@@ -63,7 +73,7 @@ New standalone intake members:
   formalization description do not independently establish current Lean
   verification.
 
-- [`geometric_comb_q_fabius_report/`](geometric_comb_q_fabius_report/),
+- [`geometric_comb_q_fabius_report/`](comb-interpolation/geometric_comb_q_fabius_report/),
   *Geometric-Comb Interpolation, Gaussian Pascal Transforms, and the
   Fabius--Rvachev Boundary Layer* (retained 68-page A4 PDF; current
   3,554-line TeX; 637-line deterministic experiment). No attributable source
@@ -85,7 +95,7 @@ New standalone intake members:
   and dyadic comb reports below and cross-links the q-Pochhammer monograph;
   manuscript labels do not establish Lean verification.
 
-- [`geometric_comb_interpolation_report/`](geometric_comb_interpolation_report/),
+- [`geometric_comb_interpolation_report/`](comb-interpolation/geometric_comb_interpolation_report/),
   *Interpolation on a Geometric Comb* (retained 32-page A4 PDF; current
   2,360-line TeX), is the canonical A4/27 mm/Libertinus edition of the report
   filed on 2026-08-30.
@@ -107,7 +117,7 @@ New standalone intake members:
   was not rebuilt from the current source. Manuscript labels do not establish
   Lean verification.
 
-- [`geometric_comb_lagrange_jackson_newton_report/`](geometric_comb_lagrange_jackson_newton_report/),
+- [`geometric_comb_interpolation_report-3/`](comb-interpolation/geometric_comb_interpolation_report-3/),
   *Interpolation on a Geometric Comb: Lagrange Filters, Jackson--Newton
   Series, q-Analogues, and the Fabius--Rvachev Bridge*, is a distinct 36-page
   A4 intake filed from
@@ -116,8 +126,9 @@ New standalone intake members:
   Its submitted 20-entry ledger is preserved as arrival provenance. After
   four CSV files were normalized from CRLF to LF, the operational ledger was
   expanded to 25 entries. It was intentionally not refreshed after the later
-  source-only notation migration: its TeX and README rows are pending and the
-  other 23 rows pass. The current TeX has 2,736 lines; the retained 36-page
+  source-only notation migration and thematic relocation: its TeX, README,
+  and intake-audit rows are pending and the other 22 rows pass. The current
+  TeX has 2,736 lines; the retained 36-page
   submitted PDF was not rebuilt. This is not a reship of the neighboring comb
   report: none of their non-ledger payload hashes coincide. In accordance
   with the incoming-archive gate, replay, hostile claim audit, dependency
@@ -125,7 +136,7 @@ New standalone intake members:
   audit are deliberately deferred until after this archival checkpoint is
   committed and pushed.
 
-- [`Inverse_Fabius_Computability_Report/`](Inverse_Fabius_Computability_Report/),
+- [`Inverse_Fabius_Computability_Report/`](inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report/),
   *Computability of the Inverse Fabius Function* (retained 42-page A4 PDF;
   current 2,937-line source), arrived on
   2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (outer SHA-256
@@ -166,7 +177,7 @@ New standalone intake members:
   theorem, and precision asymptotics remain open Lean work. The `d_*` claim
   remains denominator-minimal only for the fixed dyadic proxy `2^{-r(n)}`, not
   the weaker target `1/n`. The current 2,937-line source has SHA-256
-  `9945b23025006337e87001332db7a1141896b2f29f0d715fa85261682a6b0397`;
+  `3ee69aa0c27486d5005e4d5f8448b36a8133083c8b79df51e9d08a5af56880b5`;
   the retained 42-page A4 PDF has 711,374 bytes and SHA-256
   `5a9976f9ece840d1b8456b4ea3753c36e369cbade8caff1c04158cc7d33cff75`.
   That PDF was built at the preceding checkpoint in exactly three strict
@@ -177,7 +188,7 @@ New standalone intake members:
   refreshed after the source-only merge: its TeX and README rows are pending
   and the other four rows pass.
 
-- [`inverse_fabius_iterates_nowhere_analytic/`](inverse_fabius_iterates_nowhere_analytic/),
+- [`inverse_fabius_iterates_nowhere_analytic/`](analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Inverse
   Fabius Function* (retained 26-page A4 PDF; current 1,742-line source),
   arrived on 2026-08-30 from
@@ -193,7 +204,7 @@ New standalone intake members:
   iterate claims remain paper-only.
 
 The inverse function's frontiers and the sampling/deconvolution circle of
-ideas, in three consolidated volumes and seven retained standalone reports.
+ideas, in three consolidated volumes and six retained standalone reports.
 
 Post-snapshot formal status: `QuarterCatalanGerm.lean` now proves that the
 distinguished rational quarter germ becomes the Catalan inverse of
@@ -207,12 +218,13 @@ decomposition remains open.  Beyond the quarter specialization, the
 general-dyadic analytic/algebraic shadow, convergence and identification of
 the inverse Taylor series, and the Bell--Lagrange formula also remain open.
 
-## `Inverse_and_Sampling_Frontiers/`
+## `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers/`
 
 The current merged root has 6,608 lines. Its retained 100-page PDF was not
-rebuilt after the notation merge. The covering 12-entry ledger under
-`assets/Fabius_Inverse_Frontier_Report_Source_and_PDF/` was not refreshed;
-the root-TeX row is pending and its other eleven rows pass.
+rebuilt after the notation merge. The remote's relinked 12-entry ledger under
+`assets/Fabius_Inverse_Frontier_Report_Source_and_PDF/` matches the current
+source, retained PDF, and all ten supporting files; it is accepted as an
+integrity receipt, not as evidence that the PDF was rebuilt from this source.
 
 Consolidated (2026-08-28) from:
 
@@ -229,7 +241,7 @@ asset paths mechanically prefixed per part; no mathematical content
 altered) and their directories deleted; provenance with SHA-256 hashes
 is recorded in the volume itself, and git history is the archive.
 
-## `Dyadic_Comb_Frontiers/`
+## `comb-interpolation/Dyadic_Comb_Frontiers/`
 
 The current merged root has 5,648 lines. Its retained 66-page PDF was not
 rebuilt after the notation merge, and this volume has no live checksum ledger
@@ -287,7 +299,7 @@ deduplication record are Appendix E of the volume; every source's
 supporting files live under its `assets/`.  The absorbed draft
 directories are deleted; git history is the archive.
 
-## `Inverse_Endpoint_All_Orders/`
+## `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders/`
 
 The current merged root has 1,979 lines. Its retained 23-page PDF was not
 rebuilt after the notation merge, and this volume has no live checksum ledger
@@ -319,13 +331,13 @@ Complements — and imports the prior inverse corrections of —
 provenance with SHA-256 in the volume's Appendix C and
 `assets/SHA256SUMS-absorbed.txt`.
 
-## `Inverse_Fabius_Computability_Report/`
+## `inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report/`
 
 Filed 2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (689,198
 bytes; SHA-256
 `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
 The current canonical source has 2,937 lines (SHA-256
-`9945b23025006337e87001332db7a1141896b2f29f0d715fa85261682a6b0397`).
+`3ee69aa0c27486d5005e4d5f8448b36a8133083c8b79df51e9d08a5af56880b5`).
 The retained historical 42-page A4/27 mm/Libertinus PDF has 711,374 bytes
 (SHA-256
 `5a9976f9ece840d1b8456b4ea3753c36e369cbade8caff1c04158cc7d33cff75`).
@@ -352,7 +364,7 @@ refreshed after the source-only merge: its TeX and README rows are pending and
 the other four rows pass. The live union audit scans 615 Lean modules
 and 8,383 public declarations with zero documentation/header gaps.
 
-## `inverse_fabius_iterates_nowhere_analytic/`
+## `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/`
 
 Filed 2026-08-30 from `inverse_fabius_iterates_nowhere_analytic.zip`
 (1,137,032 bytes; SHA-256

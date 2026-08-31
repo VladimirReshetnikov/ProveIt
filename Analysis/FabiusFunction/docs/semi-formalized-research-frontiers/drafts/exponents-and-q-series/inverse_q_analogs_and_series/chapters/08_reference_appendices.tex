@@ -8,9 +8,11 @@ The canonical volume is a semantic consolidation of six independently
 delivered source packages.  They are not numbered editions of one manuscript:
 overlap records independent rediscovery or reuse, and disagreement must be
 settled mathematically rather than by choosing the newest-looking file.  The
-paths in \cref{tab:ref-source-packages} are relative to the surrounding
-\lean{exponents-and-q-series} directory.  The row counts are the numbers of
-theorem-like source environments recorded in the machine-readable concordance.
+historical paths in \cref{tab:ref-source-packages} were relative to the former
+sibling layout under \lean{exponents-and-q-series}; the pinned pre-retirement
+revision and repository history preserve them.  The row counts are the
+numbers of theorem-like source environments recorded in the machine-readable
+concordance.
 
 \begin{table}[p]
 \centering
@@ -170,16 +172,16 @@ is explained in the disposition field.  Likewise, \emph{merged},
 \emph{strengthened}, \emph{corrected}, and \emph{retired} are dispositions,
 not proof statuses.
 
-The extraction script deliberately generates the five canonical-disposition
-columns empty, because text matching cannot decide mathematical equivalence.
-In the checked snapshot those fields remain unpopulated in all \(260\) rows.
-Thus the ledger is already exhaustive as a source-result inventory, but its
-row-by-row editorial disposition audit is not yet mechanically closed.  A
-blank canonical label must therefore be read as \emph{awaiting recorded
-disposition}, never as \emph{false}, \emph{deleted}, or \emph{Lean-proved}.
-The regenerating audit is
-\lean{audit/extract_source_results.py}; regeneration must not overwrite
-reviewed disposition data without first preserving and rejoining those
+The extractor initially generated the five editorial columns empty, because
+text matching cannot decide mathematical equivalence.  In the reviewed
+ledger, all \(260\) rows now have a canonical status and disposition note;
+\(180\) map to canonical labels, while the remaining \(80\) are explicitly
+absorbed, retired, or not separately asserted.  Exact Lean module and
+declaration cells remain empty unless an exact formal counterpart is claimed.
+The retained reviewed CSV is authoritative.  The revision-backed extractor
+\lean{audit/extract_source_results.py} reproduces and verifies its ten
+immutable source columns from the commit pinned in
+\lean{audit/SOURCE_REVISION}; it refuses to overwrite the five editorial
 columns.
 
 \section{Notation and mandatory branch data}
@@ -398,11 +400,12 @@ reported separately.
 No citation key occurs in the canonical package at the time of this
 consolidation, so this volume does not manufacture a bibliography from the
 longer reading lists of its precursors.  Its immediate documentary sources
-are the six packages in \cref{tab:ref-source-packages}, the package-level
-ledger \lean{PROVENANCE.md}, the editorial contract \lean{README.md}, the
-row-level ledger \lean{theorem_concordance.csv}, and the reproducible extractor
-\lean{audit/extract_source_results.py}.  Repository history is the archival
-record for superseded layouts and retired duplicates.
+were the six packages in \cref{tab:ref-source-packages}.  The retained
+package-level ledger \lean{PROVENANCE.md}, row-level ledger
+\lean{theorem_concordance.csv}, editorial contract \lean{README.md}, and
+revision-backed extractor \lean{audit/extract_source_results.py} are the live
+canonical records.  Repository history preserves superseded layouts and
+retired duplicates.
 
 Classical named tools used in proofs---the inverse-function theorem,
 Lagrange--B\"urmann and Lagrange--Good inversion, Rouch\'e's theorem,

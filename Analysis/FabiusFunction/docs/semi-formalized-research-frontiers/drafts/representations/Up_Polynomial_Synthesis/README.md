@@ -33,8 +33,15 @@ normalization claims have been demoted to problems.
 - assets/provenance/THEOREM_CROSSWALK.md — one-to-one provenance and evidence
   ledger for all 80 theorem-like assertions.
 - assets/provenance/ — source snapshots, migration map, and asset policy.
+- assets/provenance/COMPANION_PAYLOADS.csv — one-to-one old-to-new map for all
+  113 selected companion payloads.
+- assets/companion-evidence/ — 111 migrated scripts, exact tables, captured
+  outputs, requirements, historical ledgers, and useful PNG diagnostics,
+  grouped by source slug; its ledger also covers the two already-canonical
+  root-geometry files.
 - assets/evidence/legendre/root-geometry/ — exact Q12 Sturm certificate,
   complete counts through degree twenty, and a focused verifier.
+- SHA256SUMS — live root ledger for every other canonical package file.
 
 ## Notation contract
 
@@ -88,19 +95,22 @@ The Q12 root transition is exact computer-assisted mathematics: rational
 polynomials and rational Sturm chains decide root counts. Approximate complex
 root locations are diagnostics only.
 
-## Asset and retirement policy
+## Asset and retirement record
 
-No two companion files among the ten later reports are byte-identical, even
+No two companion files among the ten later reports were byte-identical, even
 after line-ending normalization. Similar filenames often use different ranges,
-normalizations, or operators. Therefore report prose may be deduplicated, but
-scripts and data are not discarded merely because their names look similar.
+normalizations, or operators. The report prose and PDFs were therefore retired
+after consolidation, while 113 distinct evidence payloads received canonical
+destinations and live hashes.
 
 Historical checksum ledgers are provenance. They are preserved without
-rewriting old hashes to fit new paths. A future live SHA256SUMS must hash the
-canonical Git-tree bytes and must not target removed arrival files.
+rewriting old hashes to fit new paths. The live companion and root ledgers hash
+canonical Git-tree bytes and do not target removed arrival files.
 
-The ten source directories are intentionally retained until all 113 selected
-payloads have canonical destinations and live hashes, every theorem label has
-an auditable crosswalk, the PDF and exact verifier are green, and a fresh
-checkout validates the new live ledger. The exact removal gate is documented
-in assets/provenance/ASSET_INVENTORY.md.
+The ten source directories were retired on 31 August 2026 after all 113
+selected payloads received canonical destinations and hashes, every theorem
+label received an auditable crosswalk, the PDF and exact verifier passed, and a
+fresh checkout validated the live root ledger. Their exact pre-retirement bytes
+remain recoverable at commit
+`443793e846934e7363e314ea01129b9f50197a58`; the completed gate is documented
+in `assets/provenance/ASSET_INVENTORY.md`.

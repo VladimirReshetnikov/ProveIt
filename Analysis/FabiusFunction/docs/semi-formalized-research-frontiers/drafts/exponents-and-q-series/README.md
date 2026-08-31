@@ -60,44 +60,22 @@ duplicate analysis of the three similarly scoped general q-series articles
 was performed during intake, and manuscript labels or numerical checks do not
 establish Lean verification.
 
-- [`inverse_q_analog_jet_atlas/`](inverse_q_analog_jet_atlas/),
-  *An Inverse-Jet Atlas for q-Analogs: Multivariate Reversion, Singular
-  Branches, and Asymptotics at q=0,1,-1, Roots of Unity, and q=±∞*
-  (72 pp), arrived on 2026-08-30 from
-  `inverse_q_analog_jet_atlas_2026-08-30.zip` (outer SHA-256
-  `9c9a0353eb355e6defb87845c4a2a79d85c537fe5a6c38c5473f9d3d56448ead`).
-  The rootless archive supplied five non-ledger payloads plus
-  `SHA256SUMS.txt`; all five submitted payload hashes verified, and all five
-  text members were already LF. Its title and abstract place its inverse-jet
-  treatment of finite and infinite q-Pochhammer products, Gaussian and
-  q-multinomial coefficients, q-special functions, singular bases, roots of
-  unity, and the Fabius--Rvachev effective geometric base beside the existing
-  inverse-q reports in this group. It remains standalone pending
-  post-publication comparison and deliberate consolidation, plus a Lean
-  crosswalk; manuscript classifications and symbolic/numerical checks do not
-  establish Lean verification. Its Libertinus/Type-1-only report is letter
-  paper rather than A4, so page-size normalization remains deferred.
-
-- [`inverse_q_analog_functions_report/`](inverse_q_analog_functions_report/),
-  *Inverse Functions of q-Pochhammer Symbols, Gaussian Coefficients, and
-  Related q-Analogues: Branch Geometry, Local Reversion, Singular Limits, and
-  Computation* (59 pp), arrived on 2026-08-30 from
-  `inverse_q_analog_functions_report.zip` (outer SHA-256
-  `19cc7da37f71ddbbc0c46b91c55c23059a1e305500260bd0a306394f4c21f4de`).
-  The archive supplied nine payloads but no checksum ledger; the
-  repository-generated `SHA256SUMS` records and verifies all nine, and all five
-  text payloads were already LF. None of its nine payload hashes matches any
-  of the 48 payloads in the three previously filed inverse-q report wrappers.
-  Its finite and infinite q-Pochhammer, Gaussian, q-gamma/q-beta,
-  q-exponential, normalized q-polylogarithm, and basic hypergeometric inverse
-  branches nevertheless place it beside those reports. All four delivered
-  PDFs are structurally readable and unencrypted (62 pages total). It remains
-  standalone pending post-publication semantic comparison, deliberate
-  consolidation, and a Lean crosswalk; manuscript classifications and
-  numerical evidence do not establish Lean verification. The A4 main report
-  uses Libertinus but inherits six embedded/subset Type-3 rows from the three
-  vector figures (twelve Type-3 rows across all four PDFs); a Type-3-free
-  rebuild and refreshed checksums remain deferred.
+- [`inverse_q_analogs_and_series/`](inverse_q_analogs_and_series/),
+  *Inverse q-Analogs and Their Series Expansions: A Branch-Aware,
+  Proof-Complete Synthesis*, is the canonical consolidation of the six former
+  inverse-q and forward-expansion packages.  Its
+  [`theorem_concordance.csv`](inverse_q_analogs_and_series/theorem_concordance.csv)
+  accounts for all 260 source result environments, while
+  [`PROVENANCE.md`](inverse_q_analogs_and_series/PROVENANCE.md) and
+  [`assets/ASSET_DISPOSITION.csv`](inverse_q_analogs_and_series/assets/ASSET_DISPOSITION.csv)
+  preserve package-, result-, archive-, and asset-level provenance.  Unique
+  reproducibility assets live under `assets/`; the superseded layouts remain
+  recoverable from the pinned pre-retirement Git revision and repository
+  history.  The canonical master remains source-only with no PDF; its stated
+  publication gate is deferred by user request.  The q-Pochhammer monograph
+  remains the broad forward-theory
+  reference, while `Cyclotomic_q_Fabius_Rvachev_Frontier/` retains the wider
+  natural-boundary and blow-up program beyond this inverse-branch synthesis.
 
 - [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](Cyclotomic_q_Fabius_Rvachev_Frontier/),
   *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
@@ -117,35 +95,6 @@ establish Lean verification.
   uses Latin Modern rather than the house Libertinus face and retains nine
   embedded/subset Type-3 figure-font rows; the standalone figures contain nine
   more. Font normalization remains deferred.
-
-- [`inverse_q_analogs_extended_report/`](inverse_q_analogs_extended_report/),
-  *Inverse q-Analogs in All Parameters* (104 pp), arrived on 2026-08-30 from
-  `inverse_q_analogs_all_parameters_report.zip` (outer SHA-256
-  `0263542a7a6a50459eeb0359015b4086245e7311528e80e3875657529825669f`).
-  All 26 submitted payload hashes verified; seven CSV entries were refreshed
-  after CRLF-to-LF normalization. Its README identifies it as an extension of
-  the filed inverse-q drafts, covering regular, singular, endpoint,
-  cyclotomic, and multivariate parameter inversion and Fabius--Rvachev
-  parameter recovery. It remains standalone pending post-publication
-  comparison and deliberate consolidation with both inverse-q siblings, plus
-  a Lean crosswalk; manuscript labels and numerical checks do not establish
-  Lean verification. Its 104-page main report is letter paper and retains
-  twelve embedded/subset Type-3 figure-font rows; those are disclosed
-  post-intake normalization debts, not canonical rendering choices.
-
-- [`inverse_q_analogs_report-2/`](inverse_q_analogs_report-2/),
-  *Inverse Functions of q-Pochhammer Symbols, Gaussian Coefficients, and
-  Related q-Analogs* (59 pp), arrived on 2026-08-30 from
-  `inverse_q_analogs_report_bundle.zip` (outer SHA-256
-  `82ab1dc2cbdd4e69d638cfc045d9ca331e8152e1faeba763732fa9231578b875`).
-  It was given a collision-safe suffix because `inverse_q_analogs_report/`
-  already exists. All five submitted payload hashes verified, every text
-  payload was already LF, and none matches the existing report byte-for-byte.
-  It remains standalone pending post-publication semantic deduplication and a
-  Lean crosswalk; manuscript classifications and numerical checks do not
-  establish Lean verification. Its 59-page PDF is letter paper and uses Latin
-  Modern rather than Libertinus (with no Type-3 fonts), so page/font
-  normalization remains deferred.
 
 - [`Fabius_Rvachev_Frontier_Report/`](Fabius_Rvachev_Frontier_Report/),
 *Negative Parameters, Reciprocal Bases, and the Gaussian Boundary* (26 pp),
@@ -552,7 +501,7 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 `149332f9d`.
 
 Member: `Exponents_and_q_Series_Frontiers`
-(currently 16,221 source lines; the retained origin-main rendering is 236 A4
+(currently 16,231 source lines; the retained origin-main rendering is 236 A4
 pages and 6,941,043 bytes). During the source-only conflict resolution the PDF
 was deliberately selected from `origin/main`, not rebuilt from the merged TeX.
 Accordingly, the TeX rows in the two historical asset ledgers still record the
@@ -789,9 +738,9 @@ matching `assets/` directories.
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Second member: `q_pochhammer_q_binomial_monograph/`
-(212 A4 pp; book class; 13,111 source lines and a 1,574,592-byte PDF;
-rebuilt after the exact `q = -1` and generalized sinc--Pochhammer crosswalk
-updates) —
+(212-page last validated A4 PDF; book class; the current source-only merge is
+13,121 lines while the retained PDF is 1,576,424 bytes; the PDF was not
+rebuilt after the merged sinc--Pochhammer crosswalk update) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
@@ -817,9 +766,11 @@ partial, 129 with no counterpart, and 3 interface-only.  Within that
 exhaustive total, the 191-result core in Chapters 1–23 has 36 exact, 29
 partial, 123 with no counterpart, and 3 interface-only entries.  The later
 Chapter 24 Fabius bridge is included in the full ledger and crosswalked
-locally; its general inside spectral Pochhammer product is now formal for
-every strict complex contraction, while its named centered/MGF wrappers and
-reciprocal outside-disk clause keep the compound theorem partial. The algebra of
+locally; its pointwise inside `q^2`-Pochhammer factorization is now formal for
+every complex strict contraction, while the compound spectral theorem remains
+partial at its named centered/MGF wrappers, reciprocal outside-disk clause,
+and named local-uniform or normal convergence of the Pochhammer-product
+right-hand side.  The algebra of
 q-shifted factorials now accounts for 3 exact, 1 partial, and 11
 unformalized results; the q-integer and Gaussian-coefficient chapter for
 3 exact, 2 partial, and 4 unformalized results. The finite
@@ -877,11 +828,12 @@ genuine real infinite product `qPochhammerInf` and its contractive-base
 convergence/positivity layer, replacing the stale claim that every infinite
 q-Pochhammer in the development was merely a finite `Finset.range` product.
 The separate complex symbol now has its own contractive-nome convergence
-API.  Its spectral layer also proves the arbitrary-complex-contraction
-scale-by-zero product and its rearrangement as a `q²`-Pochhammer product;
-the two Rvachev wrappers specialize this result to nome `1/4`.  The compound
-Chapter 24 theorem remains partial only at its named centered/MGF wrappers
-and its reciprocal outside-disk formula.
+API, and the geometric sinc product has a global spectral factorization for
+every complex strict contraction with nome `q^2`; only the two final Rvachev
+wrappers specialize to nome `1/4`.  The compound Chapter 24 theorem remains
+partial because its named centered/MGF wrapper, outside-disk reciprocal
+formula, and local-uniform/normal-convergence packaging are not all
+formalized.
 The complementary formal surfaces of
 `CompleteHomogeneousGenerating.lean` and
 `SymmetricFunctionGenerating.lean` prove both the finite elementary product
@@ -937,7 +889,7 @@ raw closed-factor form `_prefix`) — the finite half of Part IV's master
 factorization `F̂ₙ = Φ·A(2⁻ⁿs)` at `q = 1/2` and of Part VI's `ĥ_a`
 sinc products at `q = 1/a`, kernel-verified.
 
-The final analytic bridge consists of exactly six new public theorems. For
+The final analytic bridge consists of exactly eight public theorems. For
 complex `q,z` with `‖q‖ < 1`, writing
 `S_q(z) = geometricSincProduct q z = ∏_{n≥0} sinc(πqⁿz)`, the four theorems
 `Fabius.hasProdLocallyUniformly_geometricSincProduct`,
@@ -952,7 +904,13 @@ and
 `Fabius.charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma`
 give
 `φ_q(t) = exp(i t/2)·S_q(z_q(t)) = exp(i t/2)·G_q(z_q(t))·G_q(-z_q(t))`,
-where `G_q(z) = geometricReciprocalGamma q z`.
+where `G_q(z) = geometricReciprocalGamma q z`. The further theorems
+`Fabius.tendstoLocallyUniformly_prefix_sinc_charFun` and
+`Fabius.tendstoUniformlyOn_prefix_sinc_charFun` prove that the full
+phase-bearing finite prefixes converge locally uniformly on the real
+frequency line, and uniformly on every compact real frequency set, to
+`φ_q`. These statements still use only `|q| < 1`, so they include `q = 0`
+and negative contractions.
 
 `RvachevPochhammerFactorization.lean` adds the exhaustive complex
 Pochhammer surface: the one definition `Fabius.complexQPochhammerInf` and
@@ -966,17 +924,18 @@ the nine theorems `Fabius.complexQPochhammerInf_eq_tprod`,
 `Fabius.rvachevFourierProduct_eq_tprod_complexQPochhammerInf`, and
 `Fabius.rvachevFourier_eq_tprod_complexQPochhammerInf`.  The symbol is total;
 the named multipliability, product, and finite-prefix convergence theorems
-require exactly `‖q‖ < 1` and allow arbitrary complex `a`.  For every complex
-`q,z` with `‖q‖ < 1`, the next three results prove absolute summability of the
-paired Euler perturbations, identify `S_q(z)` with their product over
-`ℕ×ℕ`, and exchange the scale and zero indices to obtain
-`S_q(z) = ∏_k (z²/(k+1)²;q²)_∞`.  This includes `q = 0`, negative and
-nonreal contractions, and individual zero factors.  The final two theorems
-specialize to the dyadic scale and nome `1/4`; the Fourier form assumes
-exactly a bounded Fabius witness satisfying `IsFabius`.  With `t = 4πz`,
-the general factorization is the inside centered identity from the report.
-Together with the six-theorem locally uniform sinc-product tranche above,
-the inside analytic/product layer is closed.  There is still no named
-centered or MGF wrapper, no outside-disk reciprocal formula or zero--pole
-exchange, and no packaged compact-uniform theorem for the full phase-bearing
-characteristic-prefix sequence.
+require exactly `‖q‖ < 1` and allow arbitrary complex `a`.  The two dyadic
+spectral theorems are the last two: they fix the scale and nome `1/4`, hold for
+every complex `z` including at zero factors, and the Fourier form assumes
+exactly a bounded Fabius witness satisfying `IsFabius`.  Before those
+specializations, `geometricSincProduct_eq_tprod_complexQPochhammerInf` proves
+globally for every complex `q,z` with `‖q‖ < 1` that
+`S_q(z) = ∏'_k (z^2/(k+1)^2;q^2)_∞`; the paired-index and absolute-summability
+theorems justify the exchange of scale and spectral-zero indices, including
+`q = 0`, negative and nonreal contractions, and zero factors.  The
+eight-theorem sinc-product tranche above
+supplies the general-`q` uncentered real-frequency bridge, locally uniform
+entire `S_q`, and real-frequency local and compact uniform convergence of the
+full phase-bearing prefixes.  There is still no named centered or MGF
+wrapper, no outside-disk reciprocal formula, and no named local-uniform or
+normal-convergence theorem for the Pochhammer-product right-hand side.

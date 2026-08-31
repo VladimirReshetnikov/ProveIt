@@ -299,10 +299,13 @@ signed-density replacement for that parameter range remains open.  Write
 \]
 It also gives locally uniform convergence on \(\ComplexNumbers\) of the defining products for \(S_q\),
 their pointwise multipliability and exact \texttt{HasProd} identity, and entireness of
-\(S_q\).  A named compact-uniform theorem for the full phase-bearing characteristic
-prefixes, general-\(q\) rapid decay and Fourier inversion, and the further centered/MGF,
-shape, explicit Bernoulli-cumulant/Bell-moment, transform, derivative-hierarchy, and
-endpoint-flatness layers remain in the frontier on the precise boundary recorded below.
+\(S_q\).  For every real \(|q|<1\), the full phase-bearing prefixes now converge locally
+uniformly on the real frequency line, hence uniformly on every compact real-frequency
+set, including at \(q=0\) and for negative \(q\).  A corresponding complex-frequency
+locally uniform theorem for the full phase-bearing prefix sequence, general-\(q\) rapid
+decay and Fourier inversion, and the further centered/MGF, shape, explicit
+Bernoulli-cumulant/Bell-moment, transform, derivative-hierarchy, and endpoint-flatness
+layers remain in the frontier on the precise boundary recorded below.
 
 Closely overlapping presentations have been merged rather than concatenated.  Each topic
 uses the strongest or most complete source as its backbone, imports independent proofs,
@@ -482,7 +485,9 @@ entireness of the geometric sinc product &
 \nolinkurl{GeometricReciprocalGamma.lean} \\
 Geometric characteristic/sinc/Gamma bridges &
 Exact phase-bearing characteristic-function identities through the rescaled geometric sinc
-product and paired reciprocal-Gamma factors for every real \(\lvert q\rvert<1\) &
+product and paired reciprocal-Gamma factors, together with locally uniform real-frequency
+convergence of the full phase-bearing prefixes and its compact-set specialization, for every
+real \(\lvert q\rvert<1\) &
 \nolinkurl{GeometricSincCharacteristicFunction.lean} \\
 Generic continuous-CDF bridge &
 \nolinkurl{continuous_cdf_of_nullSingleton},
@@ -712,7 +717,9 @@ three sign equivalences assume exactly \(z\in(-e^{-1},0)\); the unique zero is
 \(-2e^{-2}\), with strict convexity on
 \([-e^{-1},-2e^{-2}]\) and strict concavity on
 \([-2e^{-2},0)\).  The endpoint-inclusive shape results do not assert a
-branch-point derivative, vertical-tangent limit, or Puiseux law. &
+branch-point derivative, vertical-tangent limit, or Puiseux law; the two
+later branch-point leaves in the next rows supply the vertical geometry and
+leading square-root law. &
 \nolinkurl{deriv_principalLambertW},
 \nolinkurl{deriv_principalLambertW_hasDerivAt},
 \nolinkurl{deriv_deriv_principalLambertW},
@@ -727,6 +734,41 @@ branch-point derivative, vertical-tangent limit, or Puiseux law. &
 \nolinkurl{strictConvexOn_lowerLambertW_left},
 \nolinkurl{strictConcaveOn_lowerLambertW_right} &
 \nolinkurl{LambertWCurvature.lean} \\
+Lambert branch-point vertical geometry (eight theorems).  Along the
+right-hand filter at \(b=-\exp(-1)\), the principal derivative and endpoint
+secant slope tend to \(+\infty\), while their lower-branch counterparts tend
+to \(-\infty\).  Consequently neither branch has a finite right derivative
+on \(\operatorname{Ioi}(b)\), and neither totalized real branch is
+differentiable at \(b\). &
+\nolinkurl{tendsto_deriv_principalLambertW_branchPoint_atTop},
+\nolinkurl{tendsto_deriv_lowerLambertW_branchPoint_atBot},
+\nolinkurl{tendsto_principalLambertW_secantSlope_branchPoint_atTop},
+\nolinkurl{tendsto_lowerLambertW_secantSlope_branchPoint_atBot},
+\nolinkurl{principalLambertW_not_differentiableWithinAt_branchPoint},
+\nolinkurl{lowerLambertW_not_differentiableWithinAt_branchPoint},
+\nolinkurl{principalLambertW_not_differentiableAt_branchPoint},
+\nolinkurl{lowerLambertW_not_differentiableAt_branchPoint} &
+\nolinkurl{LambertWBranchPointGeometry.lean} \\
+Lambert leading branch-point asymptotics (one noncomputable definition and
+eight theorems).  Put \(b=-\exp(-1)\).  The intrinsic scale
+\(\mathcal S(z)=\sqrt{2\exp(1)(z-b)}\) is positive to the right of \(b\) and
+has the stated exact square.  Both squared displacement ratios tend
+to \(2\exp(1)\), their squared forms are asymptotically equivalent, and the
+signs select
+\(W_0(z)+1\sim\mathcal S(z)\) and
+\(W_{-1}(z)+1\sim-\mathcal S(z)\) along the same right-hand filter.  These are
+only the leading square-root terms: an \(O(z-b)\) remainder, higher
+coefficients, and a convergent or full Puiseux expansion remain open. &
+\nolinkurl{lambertWBranchPointScale},
+\nolinkurl{lambertWBranchPointScale_pos},
+\nolinkurl{lambertWBranchPointScale_sq},
+\nolinkurl{tendsto_principalLambertW_add_one_sq_div_branchPoint},
+\nolinkurl{tendsto_lowerLambertW_add_one_sq_div_branchPoint},
+\nolinkurl{principalLambertW_add_one_sq_isEquivalent_branchPoint},
+\nolinkurl{lowerLambertW_add_one_sq_isEquivalent_branchPoint},
+\nolinkurl{principalLambertW_add_one_isEquivalent_branchPoint},
+\nolinkurl{lowerLambertW_add_one_isEquivalent_branchPoint} &
+\nolinkurl{LambertWBranchPointAsymptotics.lean} \\
 Generic scaled power--exponential curvature (four declarations).  Write \(P\)
 for the power--exponential peak at parameters \(m,A,\beta\).
 If \(m\in\NaturalNumbers\setminus\{0\}\), \(A>0\), \(\beta>0\), and \(0<x<P\), both
@@ -803,11 +845,13 @@ prefixes are formal, with exact dyadic wrappers.  The defining products for
 =e^{\ImaginaryUnit t/2}G_q(z_q(t))G_q(-z_q(t))\) throughout \(|q|<1\), including zero
 and negative ratios.  The selected total density formula is formally zero at \(q=0\),
 nonpositive for negative ratios, and gives the zero \texttt{withDensity} measure throughout
-\(q\le0\), hence not the probability law on the nonpositive contraction range.  What
-remains here is Lean formalization of the paper-level corrected signed-density construction
-for \(q\le0\), a named
-compact-uniform theorem for the full phase-bearing characteristic prefixes, rapid decay and
-Fourier inversion, named centered/MGF packaging, a closed
+\(q\le0\), hence not the probability law on the nonpositive contraction range.  The full
+phase-bearing prefixes now converge locally uniformly on the real frequency line and
+uniformly on every compact real-frequency set throughout \(|q|<1\), including zero and
+negative ratios.  What remains here is Lean formalization of the paper-level corrected
+signed-density construction for \(q\le0\), a corresponding complex-frequency locally
+uniform theorem for the full phase-bearing prefix sequence, rapid decay and Fourier
+inversion, named centered/MGF packaging, a closed
 higher-derivative hierarchy and endpoint-flatness wrappers, shape theorems, further
 transforms, and explicit Bernoulli-cumulant/Bell-moment formulas and asymptotics.  Finite
 characteristic-function, MGF, and CGF tail factorizations are already part of the geometric
@@ -1662,10 +1706,13 @@ The four new public theorems in \path{GeometricReciprocalGamma.lean} are
 \(\lVert q\rVert<1\), they prove locally uniform convergence on \(\ComplexNumbers\) of the defining
 products for \(S_q(z)=\operatorname{geometricSincProduct}(q,z)\), pointwise
 multipliability and the exact \texttt{HasProd} identity, and entireness of \(S_q\).
-The zero-definition, two-theorem module
+The zero-definition, four-theorem module
 \path{GeometricSincCharacteristicFunction.lean} consists exactly of
 \lean{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct} and
-\lean{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma}.
+\lean{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma},
+followed by
+\lean{tendstoLocallyUniformly_prefix_sinc_charFun} and
+\lean{tendstoUniformlyOn_prefix_sinc_charFun}.
 Writing \(G_q(z)=\operatorname{geometricReciprocalGamma}(q,z)\) and
 \(z_q(t)=(1-q)t/(2\pi)\), these declarations give, for every real \(|q|<1\) and
 \(t\in\RealNumbers\),
@@ -1676,9 +1723,42 @@ Writing \(G_q(z)=\operatorname{geometricReciprocalGamma}(q,z)\) and
  &=e^{\ImaginaryUnit t/2}G_q\bigl(z_q(t)\bigr)G_q\bigl(-z_q(t)\bigr).
  \label{integration:eq:geometric-reciprocal-gamma-characteristic}
 \end{align}
-The scope again includes \(q=0\) and negative \(q\).  The locally uniform theorem is for
-the complex-variable sinc product \(S_q\); no named theorem yet packages compact-uniform
-convergence of the full phase-bearing characteristic prefixes.
+The scope again includes \(q=0\) and negative \(q\).  If
+\[
+ P_m(t)=e^{\ImaginaryUnit(1-q^m)t/2}
+ \prod_{k=0}^{m-1}\SincRad\!\left(\frac{(1-q)q^kt}{2}\right),
+\]
+the last two theorems state that \(P_m\to\phi_q\) locally uniformly on the real frequency
+line and, explicitly, uniformly on every compact \(K\subset\RealNumbers\).  This is stronger than the
+predecessor's pointwise limit, while remaining a real-frequency result; no declaration yet
+packages locally uniform convergence of the full phase-bearing prefix sequence on the
+complex frequency plane.  These are frequency-side convergence statements and assert no
+density identity or density regularity consequence.
+
+The adjacent one-definition, nine-theorem module
+\path{RvachevPochhammerFactorization.lean} has the exhaustive surface
+\lean{complexQPochhammerInf},
+\lean{complexQPochhammerInf_eq_tprod},
+\lean{multipliable_one_sub_mul_pow_complex},
+\lean{hasProd_complexQPochhammerInf},
+\lean{tendsto_finiteQPochhammerIn_complex},
+\lean{summable_norm_sineTerm_qpow_pair},
+\lean{geometricSincProduct_eq_tprod_pair},
+\lean{geometricSincProduct_eq_tprod_complexQPochhammerInf},
+\lean{rvachevFourierProduct_eq_tprod_complexQPochhammerInf}, and
+\lean{rvachevFourier_eq_tprod_complexQPochhammerInf}.
+For complex \(q,z\) with \(\lVert q\rVert<1\), the middle three new declarations justify
+the scale--zero index exchange and prove globally
+\begin{equation}
+ S_q(z)=\prod_{k\ge0}
+ \left(\frac{z^2}{(k+1)^2};q^2\right)_\infty .
+ \label{integration:eq:geometric-sinc-pochhammer}
+\end{equation}
+This includes \(q=0\) and individual zero factors; the last two declarations are its
+dyadic Rvachev-product and bounded-Fabius Fourier specializations.  The compound frontier
+still lacks a named centered/MGF wrapper, the outside-disk reciprocal formula and
+zero--pole exchange, and a named local-uniform/normal-convergence theorem for the
+Pochhammer-product right-hand side.
 
 The earlier compiler-validated checkpoint \texttt{e6f535e5d} supplied the two modules that
 promote the
@@ -1793,10 +1873,11 @@ not \(\mu_q\) on the nonpositive contraction range.  Lean formalization of the p
 corrected signed-density construction for \(q=0\) and negative \(q\) remains in the research
 quarantine, together with:
 \begin{itemize}
-\item a named compact-uniform theorem for the full phase-bearing characteristic prefixes,
-      beyond both the formal pointwise characteristic-prefix limit and the locally uniform
-      convergence of the unphased complex sinc product, quantitative rapid decay, and the
-      Fourier-inversion construction of smooth densities;
+\item a complex-frequency locally uniform theorem for the full phase-bearing prefix
+      sequence, beyond the formal locally uniform real-frequency limit, its compact-set
+      specialization, and the locally uniform convergence of the unphased complex sinc
+      product; quantitative rapid decay and the Fourier-inversion construction of smooth
+      densities;
 \item separately named centered variables, MGF wrappers, and densities and their affine
       transport package;
 \item a closed all-order derivative-refinement hierarchy and explicit endpoint-flatness
@@ -1813,9 +1894,12 @@ now supply the finite geometric sinc specialization, while
 \eqref{integration:eq:geometric-sinc-characteristic}--%
 \eqref{integration:eq:geometric-reciprocal-gamma-characteristic} supply the exact infinite
 sinc and reciprocal-Gamma characteristic-function bridges.  The locally uniform
-\texttt{HasProd} theorem controls \(S_q\) as a complex-variable product; these declarations
-do not supply the named full phase-bearing characteristic-prefix compact-uniform theorem
-or the Fourier estimates in the first item.
+\texttt{HasProd} theorem controls \(S_q\) as a complex-variable product, while
+\lean{tendstoLocallyUniformly_prefix_sinc_charFun} and
+\lean{tendstoUniformlyOn_prefix_sinc_charFun} control the full phase-bearing prefixes on the
+real frequency line and on each compact real-frequency set.  These declarations do not
+supply the corresponding complex-frequency full-prefix theorem or the Fourier estimates in
+the first item.
 The affine measure fixed point is also the direct theorem
 \lean{eq_geometricUniformDistribution_of_selfSimilar}.  The transform DDE and adjacent
 Cauchy-power hierarchy are direct named results in \path{GeometricUniformCauchy.lean}; the
@@ -3665,10 +3749,18 @@ Locally uniform convergence on \(\ComplexNumbers\), pointwise multipliability an
 reciprocal-Gamma reflection factorization;
 \cref{integration:eq:geometric-sinc-characteristic}.\\
 \path{GeometricSincCharacteristicFunction.lean} &
-The zero-definition, two-theorem exact bridge from the geometric-uniform characteristic
-function to the rescaled geometric sinc product and to the paired reciprocal-Gamma factors
-for every real \(|q|<1\), including zero and negative ratios;
+The zero-definition, four-theorem interface: the two exact bridges from the geometric-uniform
+characteristic function to the rescaled geometric sinc product and paired reciprocal-Gamma
+factors, followed by locally uniform convergence of the full phase-bearing prefixes on the
+real frequency line and its uniform-on-compact-sets specialization, for every real
+\(|q|<1\), including zero and negative ratios;
 \cref{integration:eq:geometric-sinc-characteristic,integration:eq:geometric-reciprocal-gamma-characteristic}.\\
+\path{RvachevPochhammerFactorization.lean} &
+The one-definition, nine-theorem complex Pochhammer interface: strict-contraction product
+convergence, absolute paired perturbation summability, the global general-\(q\)
+\(S_q(z)=\prod_{k\ge0}(z^2/(k+1)^2;q^2)_\infty\) factorization, and its dyadic
+Rvachev/Fabius specializations;
+\cref{integration:eq:geometric-sinc-pochhammer}.\\
 \path{ContinuousCDF.lean} &
 The three reusable real-CDF bridges: continuity from null singletons, CDF reflection from
 affine reflection invariance, and identification of an everywhere pointwise CDF derivative
@@ -3836,9 +3928,10 @@ index $n$ is zero-based---the conventional $\beta_{n+1}$---and
 with totalized division in the arbitrary-$F$ theorem.  Identifying Gram entries with
 integrals, proving $D_n>0$, and identifying this ratio with the real cast of the rational
 Rvachev subdiagonal require $h_F:\lean{IsFabius}\,F$; positivity then makes the ratio a
-genuine nonsingular Jacobi formula.  It proves no finite
-Gaunt/Wigner/$3j$ entry formula, entry rationality by that route, Christoffel reconstruction,
-or infinite product.  The shifted-atom kernel \lean{rvachevTranslateGram} is a distinct
+genuine nonsingular Jacobi formula.  This module itself proves no finite Gaunt entry
+formula or entry rationality by that route; the two downstream Gaunt modules below do.
+It proves no Wigner/$3j$ or factorial closed form, Christoffel reconstruction, or infinite
+product.  The shifted-atom kernel \lean{rvachevTranslateGram} is a distinct
 unweighted interval Gram construction.\\
 \path{FabiusLegendreRationalGram.lean} &
 Exactly three executable public definitions,
@@ -3861,9 +3954,81 @@ objects.  For \(F:\lean{BoundedFabius}\) satisfying \(\lean{IsFabius}\,F\), thei
 matrix, and determinant cast to the real up-law objects.  The rational determinant is the
 Hankel determinant times the squared-leading-coefficient product, equals one in order zero,
 and is positive; its exact ratios give the rational norm and zero-based
-\(\beta_{n+1}\), with the latter prefactor \(((n+1)/(2n+1))^2\).  No
-Gaunt/Wigner/$3j$ entry expansion, Christoffel reconstruction, root or quadrature theorem,
-infinite Jacobi product/continued fraction, or asymptotic result is asserted.\\
+\(\beta_{n+1}\), with the latter prefactor \(((n+1)/(2n+1))^2\).  This module itself
+asserts no Gaunt entry expansion; the downstream modules below supply the finite formulas.
+A Wigner/$3j$ or factorial closed form, Christoffel reconstruction, root or quadrature
+theorem, infinite Jacobi product/continued fraction, and asymptotics remain outside this
+layer.\\
+\path{LegendreGaunt.lean} &
+Exactly four public definitions:
+\lean{legendreLebesgueMomentRat},
+\lean{legendreGauntRat},
+\lean{legendreGaunt}, and
+\lean{legendreProductLinearizationCoeffRat}; and twelve public theorems:
+\lean{legendreLebesgueMomentRat_even},
+\lean{legendreLebesgueMomentRat_odd},
+\lean{legendreLebesgueMomentRat_cast},
+\lean{legendreGauntRat_eq_momentFunctional},
+\lean{legendreGauntRat_cast},
+\lean{legendreGauntRat_swap_left},
+\lean{legendreGauntRat_swap_right},
+\lean{legendrePolynomial_mul_eq_sum_gaunt},
+\lean{legendrePolynomialRat_mul_eq_sum_gaunt},
+\lean{legendreGauntRat_eq_zero_of_odd_sum},
+\lean{legendreGauntRat_eq_zero_of_add_lt}, and
+\lean{legendreGauntRat_eq_zero_of_triangle_violation}.
+For every \(n\in\NaturalNumbers\), the rational Lebesgue moment is \(2/(n+1)\) at even
+\(n\), zero at odd \(n\), and casts to \(\int_{-1}^{1}x^n\,dx\).  For arbitrary natural
+\(i,j,k\), \lean{legendreGauntRat} is the bounded rational coefficient--moment sum,
+\lean{legendreGaunt} is \(G_{ijk}=\int_{-1}^{1}P_iP_jP_k\,dx\), and, writing
+\(a_{ijk}=((2k+1)/2)G_{ijk}^{\mathbb Q}\), the coefficient \(a_{ijk}\) is exactly
+\lean{legendreProductLinearizationCoeffRat}\((i,j,k)\).
+The sum equals the rational moment functional and casts to the integral, obeys the
+displayed first-two and last-two swaps, and gives over both \(\mathbb R[X]\) and
+\(\mathbb Q[X]\)
+\[
+ P_iP_j=\sum_{k=0}^{i+j}a_{ijk}P_k.
+\]
+Only the zero theorems have hypotheses: \(\operatorname{Odd}(i+j+k)\), \(i+j<k\), or
+\(i+j<k\lor i+k<j\lor j+k<i\), respectively.  All definitions and other statements are
+total at arbitrary natural indices.  No converse support theorem, Wigner/$3j$
+identification, factorial closed form, positivity theorem, or asymptotic claim is made.\\
+\path{FabiusLegendreGaunt.lean} &
+Exactly one public definition,
+\lean{canonicalRvachevFullLegendreCoefficientRat}, and eight public theorems:
+\lean{canonicalRvachevFullLegendreCoefficientRat_even},
+\lean{canonicalRvachevFullLegendreCoefficientRat_odd},
+\lean{canonicalRvachevFullLegendreCoefficientRat_cast},
+\lean{canonicalRvachevFullLegendreCoefficientRat_eq_normalized_moment},
+\lean{rvachevLegendreGramEntryRat_eq_sum_full_gaunt},
+\lean{rvachevLegendreGramEntryRat_eq_sum_gaunt},
+\lean{rvachevLegendreGramMatrixRat_apply_eq_sum_gaunt}, and
+\lean{upLegendreGramMatrix_apply_eq_sum_gaunt}.
+The definition equals \lean{canonicalRvachevLegendreCoefficientRat}\((k/2)\) when
+\(2\mid k\) and zero otherwise, so its even restriction is the canonical sequence and its
+odd entries vanish.  Write \(c_k^{\mathrm{full}}\) for this definition and
+\(M_{\mathbb Q}\) for the rational moment functional.  Unconditionally in \(k\),
+\[
+ c_k^{\mathrm{full}}=\frac{2k+1}{2}\,M_{\mathbb Q}(P_k).
+\]
+For all natural \(i,j\), write \(H_{ij}^{\mathbb Q}\) for the rational Gram entry,
+\(c_r\) for the canonical even coefficient, and \(G_{ijk}^{\mathbb Q}\) for the
+rational Gaunt coefficient.  Then
+\[
+ H_{ij}^{\mathbb Q}=\sum_{k=0}^{i+j}c_k^{\mathrm{full}}G_{ijk}^{\mathbb Q},
+ \qquad
+ H_{ij}^{\mathbb Q}=\sum_{r=0}^{\lfloor(i+j)/2\rfloor}c_rG_{ij,2r}^{\mathbb Q}.
+\]
+The rational matrix theorem gives the even formula for every \(i,j:\lean{Fin}\,n\).
+Only the cast theorem and real matrix-entry formula require
+\(F:\lean{BoundedFabius}\) with \(h_F:\lean{IsFabius}\,F\): they identify the full
+rational coefficient with \lean{rvachevFullLegendreCoefficient}\((F,k)\) and the real
+entry with the same even finite sum using
+\lean{rvachevLegendreCoefficient}\((F,r)\) and
+\lean{legendreGaunt}\((i,j,2r)\).  The other six theorems are unconditional.  These are
+finite polynomial and finite-sum identities, with no Wigner/$3j$ or factorial formula,
+infinite Legendre-series interchange, Christoffel reconstruction, or new positivity or
+asymptotic result.\\
 \path{FabiusLegendreRationalGramValues.lean} &
 Zero public definitions and exactly eleven public theorems:
 \lean{moment_four},
@@ -3888,11 +4053,12 @@ These first eight computations are unconditional over $\RationalNumbers$.  The f
 transport the norm to the real Hankel ratio, its squared orthogonal-polynomial integral,
 and the quotient of the fourth and third real Hankel ratios only for
 $F:\lean{BoundedFabius}$ together with $h_F:\lean{IsFabius}\,F$.
-Together with the preceding five finite-algebra modules, these two modules complete a
-seven-module inventory of thirteen public definitions and sixty-one public theorems,
-hence seventy-four public declarations.
-No Gaunt/Wigner/$3j$ entry expansion, Christoffel reconstruction, root or quadrature
-theorem, infinite Jacobi product/continued fraction, or asymptotic result is asserted.\\
+Together, the nine-module finite-algebra inventory through this values leaf has eighteen
+public definitions and eighty-one public theorems, hence ninety-nine public declarations.
+This values leaf itself has no Gaunt entry expansion; the preceding two Gaunt modules
+supply the finite formulas.  A Wigner/$3j$ or factorial closed form, Christoffel
+reconstruction, root or quadrature theorem, infinite Jacobi product/continued fraction,
+and asymptotics remain outside the combined layer.\\
 \path{FractionalVolterra.lean}, \path{FractionalVolterraSemigroup.lean} &
 The total real-order Gamma-normalized operator, its unconditional endpoint/locality/scalar,
 order-one, and positive-natural-order rules, and its positive-order ordered-endpoint
@@ -4048,11 +4214,13 @@ pointwise multipliability and an exact \texttt{HasProd} theorem, and entireness.
 \(z_q(t)=(1-q)t/(2\pi)\), exact named bridges prove
 \(\phi_q(t)=e^{\ImaginaryUnit t/2}S_q(z_q(t))
 =e^{\ImaginaryUnit t/2}G_q(z_q(t))G_q(-z_q(t))\) throughout \(|q|<1\), including
-zero and negative ratios.  Failure of the selected total density formula on \(q\le0\) is
-formal; Lean formalization of the paper-level corrected signed-density replacement, a named compact-uniform
-theorem for the full phase-bearing characteristic prefixes, general-\(q\) rapid decay and
-Fourier inversion, centered/MGF package, closed higher-derivative and endpoint-flatness
-wrappers, shape, further transforms, and explicit
+zero and negative ratios.  The same module proves locally uniform convergence of the full
+phase-bearing prefixes on the real frequency line and uniform convergence on every compact
+real-frequency set.  Failure of the selected total density formula on \(q\le0\) is formal;
+Lean formalization of the paper-level corrected signed-density replacement, a corresponding
+complex-frequency locally uniform theorem for the full phase-bearing prefix sequence,
+general-\(q\) rapid decay and Fourier inversion, centered/MGF package, closed
+higher-derivative and endpoint-flatness wrappers, shape, further transforms, and explicit
 Bernoulli-cumulant/Bell-moment formulas and asymptotics remain outside the formal boundary.
 In contrast, the finite residual sinc formula, pointwise characteristic-prefix limit,
 locally uniform complex sinc product, exact infinite characteristic/Gamma bridges, generic
@@ -15452,18 +15620,18 @@ The structural uniform-modulus layer is the exhaustive public surface of
 \path{Fabius.fabiusReal_le_abs_sub_of_le_abs_fabiusInv_sub}, and
 \path{Fabius.forall_abs_fabiusInv_sub_lt_iff}.
 For nonnegative length the fixed-length Fabius increment is reflection-invariant,
-vanishes on either constant tail, increases toward the centered interval, and then
-decreases; for \(0<h\le1\), the maximal support-meeting branches
-\([-h,(1-h)/2]\) and \([(1-h)/2,1]\) are strict.  On the unit interval, the endpoint
-minimum has exact strict-interior and degenerate/endpoint equality loci, and constrained
-superadditivity has its full equality classification.  The ordered and order-free
-inverse-gap bounds include complete ordered and absolute equality loci on \([0,1]\), while
-the global clamped tails deliberately remain outside that equality classification.
-Subadditivity, absolute and metric self-moduli, saturation at one, and attained exact
-\path{IsGreatest}/\path{sSup} moduli hold globally and on the unit interval.  The final
-four declarations are the strict and closed effective-injectivity bounds, their
-contrapositive separation form, and the uniform strict-threshold biconditional.  This
-module does not supply the report's closed
+vanishes on both constant tails, and has the global weak increase--decrease shape.  When
+\(0<h\leq1\), the maximal support-meeting branches \([-h,(1-h)/2]\) and
+\([(1-h)/2,1]\) are respectively strictly increasing and strictly decreasing.  On the
+unit interval, the endpoint minimum has exact strict-interior and degenerate/endpoint
+equality loci, and constrained superadditivity has its full equality classification.  The
+ordered and order-free inverse-gap bounds include complete ordered and absolute equality
+loci on \([0,1]\), while clamping creates additional cases and therefore precludes the
+corresponding global equality claims.  Subadditivity, absolute and metric self-moduli,
+saturation at one, and attained exact \path{IsGreatest}/\path{sSup} moduli hold globally
+and on the unit interval.  The final four declarations are the strict and closed
+effective-injectivity bounds, their contrapositive separation form, and the uniform
+strict-threshold biconditional.  This module does not supply the report's closed
 \(\Delta_r\) lower bound, recursive-modulus wrapper, tolerant-bisection realizer,
 sequential computability theorem, combined computable-real-function theorem, or input-bit
 asymptotics.

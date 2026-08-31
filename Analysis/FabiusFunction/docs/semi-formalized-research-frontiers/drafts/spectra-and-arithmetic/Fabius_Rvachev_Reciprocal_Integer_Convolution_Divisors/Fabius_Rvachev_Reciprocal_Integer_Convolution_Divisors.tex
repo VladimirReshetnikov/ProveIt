@@ -38,6 +38,8 @@
 \fancyhead[L]{\small Rvachev divisor report}
 \fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
 \renewcommand{\headrulewidth}{0.4pt}
 
 \titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
@@ -67,28 +69,6 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\wt}{\operatorname{wt}_2}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\Li}{\operatorname{Li}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\sgn}{\operatorname{sgn}}
-\newcommand{\lcm}{\operatorname{lcm}}
-\newcommand{\vtwo}{v_2}
-\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
 \newcommand{\lean}[1]{%
   \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
@@ -119,13 +99,10 @@
 % Report-local notation not present in the shared preamble.
 \newcommand{\T}{\mathbb T}
 \newcommand{\ord}{\operatorname{ord}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\Law}{\operatorname{Law}}
 \newcommand{\TV}{\operatorname{TV}}
 \newcommand{\Lip}{\operatorname{Lip}}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\Bell}{\mathcal B}
-\newcommand{\cF}{\mathcal F}
 \newcommand{\D}{\mathcal D}
 \newcommand{\1}{\mathbf 1}
 
@@ -141,7 +118,7 @@
 Let $X$ be the compactly supported random variable whose density is the Rvachev
 up-function and whose characteristic function, in the Fourier convention used here, is
 \[
- \Phi(z)=\prod_{n\geq0}\sinc\!\left(\frac{\pi z}{2^n}\right).
+ \Phi(z)=\prod_{n\geq0}\SincRad\!\left(\frac{\pi z}{2^n}\right).
 \]
 This report develops a new arithmetic family of exact convolution divisors of the
 Rvachev law.  For every integer $M\geq2$ the quotient
@@ -280,7 +257,7 @@ The report's main additions relative to the audited corpus are:
 divisors of the Rvachev law;
 \item the multiplicative convolution cocycle $\nu_{MN}=\nu_M*\D_{1/M}\nu_N$;
 \item a complete odd/even and $2$-adic regularity classification of $\nu_M$;
-\item singular continuous, full-interval approximants converging to $\Up$ at exact
+\item singular continuous, full-interval approximants converging to $\RvachevUp$ at exact
 $W_\infty$ distance $1/M$;
 \item the zero multiplicity formula, zero zeta function, and power-of-two complex-pole
 rigidity for $Q_M$;
@@ -300,16 +277,16 @@ formula specialized to the divisor family.
 
 Throughout,
 \[
- \sinc u=\begin{cases}\sin u/u,&u\ne0,\\1,&u=0,\end{cases}
+ \SincRad u=\begin{cases}\sin u/u,&u\ne0,\\1,&u=0,\end{cases}
  \qquad
- \widehat\mu(z)=\int_{\R}\e^{2\pi\ii zx}\,\mu(\dd x).
+ \widehat\mu(z)=\int_{\RealNumbers}\EulerE^{2\pi\ImaginaryUnit zx}\,\mu(\Differential x).
 \]
-Let $X$ be the random variable with density $\Up(x)$, supported on $[-1,1]$.
+Let $X$ be the random variable with density $\RvachevUp(x)$, supported on $[-1,1]$.
 The repository's primary exposition records the entire characteristic function~\cite{ProveItPrimary}
 \begin{equation}
- \Phi(z)=\widehat{\Law(X)}(z)
- =\prod_{n=0}^{\infty}\sinc\!\left(\frac{\pi z}{2^n}\right),
- \qquad z\in\C.
+ \Phi(z)=\widehat{\LawOperator(X)}(z)
+ =\prod_{n=0}^{\infty}\SincRad\!\left(\frac{\pi z}{2^n}\right),
+ \qquad z\in\ComplexNumbers.
  \label{eq:Phi}
 \end{equation}
 Equivalently, if $U_0,U_1,\ldots$ are independent and uniform on $[-1,1]$, then
@@ -321,7 +298,7 @@ The convergence is absolute almost surely, the support is $[-1,1]$, and
 \begin{equation}
  \mathbb E X=0,
  \qquad
- \Var(X)=\frac19.
+ \Variance(X)=\frac19.
  \label{eq:X-variance}
 \end{equation}
 
@@ -331,27 +308,27 @@ Let $F$ be the standard Fabius function on $[0,1]$.  In this normalization,
  \qquad -1\le t\le1,
  \label{eq:F-cdf}
 \end{equation}
-and $F'(x)=2\Up(2x-1)$.  This distinction is important: $F$ is the affine CDF of
-the $\Up$ density, while the identity $F(x)=\Up(x-1)$ on $[0,1]$ is a special
+and $F'(x)=2\RvachevUp(2x-1)$.  This distinction is important: $F$ is the affine CDF of
+the $\RvachevUp$ density, while the identity $F(x)=\RvachevUp(x-1)$ on $[0,1]$ is a special
 functional coincidence of the Fabius/Rvachev pair.
 
 \subsection{The integer zero lattice}
 
 A second established fact used repeatedly below is the complete zero divisor of $\Phi$~\cite{ProveItPrimary}.
-For $m\in\Z\setminus\{0\}$,
+For $m\in\IntegerNumbers\setminus\{0\}$,
 \begin{equation}
- \ord_{z=m}\Phi(z)=1+\vtwo(|m|),
+ \ord_{z=m}\Phi(z)=1+\TwoAdicValuation(|m|),
  \label{eq:Phi-zero-order}
 \end{equation}
-where $\vtwo(m)$ is the exponent of $2$ in $m$.  There are no other zeros.  The
+where $\TwoAdicValuation(m)$ is the exponent of $2$ in $m$.  There are no other zeros.  The
 canonical product can therefore be written
 \begin{equation}
  \Phi(z)=\prod_{n=1}^{\infty}
- \left(1-\frac{z^2}{n^2}\right)^{1+\vtwo(n)}.
+ \left(1-\frac{z^2}{n^2}\right)^{1+\TwoAdicValuation(n)}.
  \label{eq:Phi-canonical}
 \end{equation}
 The convergence is locally uniform because
-$\sum_{n\ge1}(1+\vtwo(n))/n^2<\infty$.
+$\sum_{n\ge1}(1+\TwoAdicValuation(n))/n^2<\infty$.
 
 These two pieces---the random uniform series and the exact integer zero lattice---are the
 only deep repository inputs required for the main classification theorem.  Everything else
@@ -367,19 +344,19 @@ Fix an integer $M\ge2$ and define initially away from removable singularities
  Q_M(z)=\frac{\Phi(z)}{\Phi(z/M)}.
  \label{eq:QM-quotient}
 \end{equation}
-For $y\in\C$ the elementary identity
+For $y\in\ComplexNumbers$ the elementary identity
 \begin{equation}
- \frac{\sinc(My)}{\sinc(y)}
+ \frac{\SincRad(My)}{\SincRad(y)}
  =\frac{\sin(My)}{M\sin y}
- =\frac1M\sum_{j=0}^{M-1}\e^{\ii(M-1-2j)y}
+ =\frac1M\sum_{j=0}^{M-1}\EulerE^{\ImaginaryUnit(M-1-2j)y}
  \label{eq:Dirichlet-kernel}
 \end{equation}
 holds by analytic continuation at the common zeros.  Applying it with
 $y=\pi z/(M2^n)$ gives
 \begin{equation}
- \frac{\sinc(\pi z/2^n)}{\sinc(\pi z/(M2^n))}
+ \frac{\SincRad(\pi z/2^n)}{\SincRad(\pi z/(M2^n))}
  =\frac1M\sum_{j=0}^{M-1}
- \exp\!\left(\frac{\pi\ii z(M-1-2j)}{M2^n}\right).
+ \exp\!\left(\frac{\pi\ImaginaryUnit z(M-1-2j)}{M2^n}\right).
  \label{eq:digit-factor}
 \end{equation}
 
@@ -389,8 +366,8 @@ Let $D_M$ be uniform on the symmetric $M$-point set
  \label{eq:DM}
 \end{equation}
 Then the right side of \eqref{eq:digit-factor} is the characteristic function of
-$D_M/2^{n+1}$.  The factors equal $1+\bigO_K(4^{-n})$ uniformly for $z$ in a
-compact set $K\subset\C$, so their product converges locally uniformly.
+$D_M/2^{n+1}$.  The factors equal $1+\BigO_K(4^{-n})$ uniformly for $z$ in a
+compact set $K\subset\ComplexNumbers$, so their product converges locally uniformly.
 
 \begin{theorem}[Reciprocal-integer divisor theorem]
 \label{thm:divisor}
@@ -398,7 +375,7 @@ For every integer $M\ge2$, $Q_M$ extends to an even entire characteristic functi
 with product representation
 \begin{equation}
  Q_M(z)=\prod_{n=0}^{\infty}
- \frac{\sinc(\pi z/2^n)}{\sinc(\pi z/(M2^n))}.
+ \frac{\SincRad(\pi z/2^n)}{\SincRad(\pi z/(M2^n))}.
  \label{eq:QM-product}
 \end{equation}
 If $D_{M,0},D_{M,1},\ldots$ are independent copies of $D_M$, then
@@ -408,8 +385,8 @@ If $D_{M,0},D_{M,1},\ldots$ are independent copies of $D_M$, then
 \end{equation}
 has characteristic function $Q_M$, support
 \begin{equation}
- \supp(\nu_M)=\left[-\frac{M-1}{M},\frac{M-1}{M}\right],
- \qquad \nu_M:=\Law(Y_M),
+ \SupportOperator(\nu_M)=\left[-\frac{M-1}{M},\frac{M-1}{M}\right],
+ \qquad \nu_M:=\LawOperator(Y_M),
  \label{eq:nu-support}
 \end{equation}
 and satisfies the exact independent-copy decomposition
@@ -449,7 +426,7 @@ $M$, not only a power of two, produces an exact independent divisor.
 
 \begin{theorem}[Complete reciprocal-scale classification]
 \label{thm:classification}
-Let $c\in\R$.  There exist independent random variables $X'\overset d=X$ and $Y$ such
+Let $c\in\RealNumbers$.  There exist independent random variables $X'\overset d=X$ and $Y$ such
 that
 \begin{equation}
  X\overset d=cX'+Y
@@ -477,7 +454,7 @@ $Y=W-cX'$ is bounded.  Its characteristic function $\psi$ is therefore entire, a
  \Phi(z)=\Phi(cz)\psi(z)
  \label{eq:entire-factorization}
 \end{equation}
-holds first for real $z$ and then on all of $\C$ by the identity theorem.  If $c\ne0$,
+holds first for real $z$ and then on all of $\ComplexNumbers$ by the identity theorem.  If $c\ne0$,
 substitute $z=1/c$.  The factor $\Phi(cz)=\Phi(1)$ vanishes, so $\Phi(1/c)=0$.
 The zero classification \eqref{eq:Phi-zero-order} forces $1/c$ to be a nonzero integer.
 Thus $c=\pm1/M$.
@@ -486,18 +463,18 @@ Thus $c=\pm1/M$.
 \begin{remark}[Semiselfdecomposability, but only arithmetically]
 In probability terminology, \cref{thm:classification} says that the Rvachev law is
 $c$-decomposable exactly on the closed reciprocal-integer set
-$\{0\}\cup\{\pm1/M:M\in\N\}$.  It is not self-decomposable in the classical sense,
+$\{0\}\cup\{\pm1/M:M\in\NaturalNumbers\}$.  It is not self-decomposable in the classical sense,
 which would require every $0<c<1$ and would in particular force a zero-free
 characteristic function.
 \end{remark}
 
-\subsection{New refinement equations for $\Up$ and $F$}
+\subsection{New refinement equations for $\RvachevUp$ and $F$}
 
 Write $\D_a\mu$ for the pushforward of a measure under $x\mapsto ax$.  Then
 \eqref{eq:main-decomposition} is the measure identity
 \begin{equation}
  \mu=\D_{1/M}\mu*\nu_M,
- \qquad \mu(\dd x)=\Up(x)\dd x.
+ \qquad \mu(\Differential x)=\RvachevUp(x)\Differential x.
  \label{eq:measure-refinement}
 \end{equation}
 Because $\mu$ has a smooth density, convolution gives a family of exact non-dyadic
@@ -507,13 +484,13 @@ integral refinements.
 \label{cor:Up-refinement}
 For every integer $M\ge2$,
 \begin{equation}
- \Up(x)=M\int_{\R}\Up\bigl(M(x-y)\bigr)\,\nu_M(\dd y).
+ \RvachevUp(x)=M\int_{\RealNumbers}\RvachevUp\bigl(M(x-y)\bigr)\,\nu_M(\Differential y).
  \label{eq:Up-M-refinement}
 \end{equation}
 If $F$ is extended by $0$ on $(-\infty,0]$ and by $1$ on $[1,\infty)$, then
 \begin{equation}
- F(u)=\int_{\R}
- F\!\left(\frac{M(2u-1-y)+1}{2}\right)\nu_M(\dd y).
+ F(u)=\int_{\RealNumbers}
+ F\!\left(\frac{M(2u-1-y)+1}{2}\right)\nu_M(\Differential y).
  \label{eq:F-M-refinement}
 \end{equation}
 \end{corollary}
@@ -521,7 +498,7 @@ If $F$ is extended by $0$ on $(-\infty,0]$ and by $1$ on $[1,\infty)$, then
 \begin{proof}
 The first formula is the density of \eqref{eq:measure-refinement}.  For the second, apply
 the CDF identity to $G(t)=F((t+1)/2)$:
-$G(t)=\int G(M(t-y))\nu_M(\dd y)$, then set $t=2u-1$.
+$G(t)=\int G(M(t-y))\nu_M(\Differential y)$, then set $t=2u-1$.
 \end{proof}
 
 The operator in \eqref{eq:F-M-refinement} is not a rephrasing of the standard dyadic
@@ -546,7 +523,7 @@ Then
  Y_M\overset d=\frac{2Z_M-(M-1)}{M}.
  \label{eq:Y-Z-affine}
 \end{equation}
-Let $\eta_M=\Law(Z_M)$.  Removing the first digit gives the exact self-similarity
+Let $\eta_M=\LawOperator(Z_M)$.  Removing the first digit gives the exact self-similarity
 \begin{equation}
  Z_M\overset d=\frac{J+Z_M'}2,
  \qquad J\perp Z_M',
@@ -660,7 +637,7 @@ inside one fixed limiting law.
 Write
 \begin{equation}
  M=2^r q,
- \qquad r=\vtwo(M),
+ \qquad r=\TwoAdicValuation(M),
  \qquad q\text{ odd}.
  \label{eq:M-rq}
 \end{equation}
@@ -673,7 +650,7 @@ Then \cref{thm:cocycle} gives
 \end{equation}
 For the power-of-two factor, the original sinc product telescopes:
 \begin{equation}
- Q_{2^r}(z)=\prod_{j=0}^{r-1}\sinc\!\left(\frac{\pi z}{2^j}\right).
+ Q_{2^r}(z)=\prod_{j=0}^{r-1}\SincRad\!\left(\frac{\pi z}{2^j}\right).
  \label{eq:power-two-Q}
 \end{equation}
 Hence $Y_{2^r}$ is a sum of $r$ independent centered uniforms with half-widths
@@ -695,13 +672,13 @@ continuous or purely singular with respect to Lebesgue measure.
 \end{lemma}
 
 \begin{proof}
-Write the Lebesgue decomposition $\eta_M=f\,\dd x+\sigma$.  The affine operator
+Write the Lebesgue decomposition $\eta_M=f\,\Differential x+\sigma$.  The affine operator
 \[
  \mathcal T\rho=\frac1M\sum_{j=0}^{M-1}(S_j)_*\rho
 \]
 preserves absolute continuity and singularity.  Uniqueness of the Lebesgue decomposition
 in $\eta_M=\mathcal T\eta_M$ therefore gives
-$f\dd x=\mathcal T(f\dd x)$ and $\sigma=\mathcal T\sigma$.  If both parts had positive
+$f\Differential x=\mathcal T(f\Differential x)$ and $\sigma=\mathcal T\sigma$.  If both parts had positive
 mass, normalizing them would produce two distinct invariant probability measures for the
 contracting IFS, contradicting uniqueness.
 \end{proof}
@@ -710,7 +687,7 @@ contracting IFS, contradicting uniqueness.
 
 Define the entire one-level ratio
 \begin{equation}
- R_M(z)=\frac{\sinc(\pi z)}{\sinc(\pi z/M)}.
+ R_M(z)=\frac{\SincRad(\pi z)}{\SincRad(\pi z/M)}.
  \label{eq:RM}
 \end{equation}
 Then
@@ -775,7 +752,7 @@ $C^{r-2}$ and not $C^{r-1}$.
 \item If $r\ge1$ and $q>1$, then $\nu_M$ has a compactly supported density $g_M$ that is
 exactly
 \begin{equation}
- g_M\in C^{r-1}(\R)\setminus C^r(\R).
+ g_M\in C^{r-1}(\RealNumbers)\setminus C^r(\RealNumbers).
  \label{eq:exact-regularity}
 \end{equation}
 Its $r$th distributional derivative is a nonzero finite singular continuous signed measure.
@@ -835,15 +812,15 @@ already be stated in measure-theoretic form.
 
 \begin{theorem}[Fractional-part law]
 \label{thm:torus}
-Let $Y_M\bmod1$ denote the pushforward of $\nu_M$ to $\T=\R/\Z$.
+Let $Y_M\bmod1$ denote the pushforward of $\nu_M$ to $\T=\RealNumbers/\IntegerNumbers$.
 \begin{enumerate}
 \item If $M$ is even, $Y_M\bmod1$ is Haar-uniform on $\T$.
-\item If $M$ is odd, its Fourier spectrum is supported on $M\Z$, it is invariant under
+\item If $M$ is odd, its Fourier spectrum is supported on $M\IntegerNumbers$, it is invariant under
 translation by $1/M$, and it is not Haar-uniform.
 \end{enumerate}
 If $M$ is even and $g_M$ is a density, then
 \begin{equation}
- \sum_{k\in\Z}g_M(x+k)=1
+ \sum_{k\in\IntegerNumbers}g_M(x+k)=1
  \label{eq:partition-unity}
 \end{equation}
 in $L^1(\T)$, and pointwise whenever the periodization is continuous.
@@ -853,7 +830,7 @@ in $L^1(\T)$, and pointwise whenever the periodization is continuous.
 By \cref{prop:zero-multiplicity} below, for even $M$ all nonzero integer Fourier
 coefficients vanish, so the torus law is Haar.  For odd $M$, precisely the coefficients at
 multiples of $M$ may survive, and the coefficient at $M$ is nonzero by
-\eqref{eq:nondecay-subsequence}.  Fourier support in $M\Z$ is equivalent to invariance
+\eqref{eq:nondecay-subsequence}.  Fourier support in $M\IntegerNumbers$ is equivalent to invariance
 under translation by $1/M$.  The density periodization has exactly these integer Fourier
 coefficients, proving \eqref{eq:partition-unity} by Fourier uniqueness.
 \end{proof}
@@ -871,7 +848,7 @@ The coupling in \eqref{eq:main-decomposition} gives more than weak convergence.
 
 \begin{theorem}[Exact transport distance]
 \label{thm:Winfty}
-Let $\mu=\Law(X)$ and $\nu_M=\Law(Y_M)$.  Then
+Let $\mu=\LawOperator(X)$ and $\nu_M=\LawOperator(Y_M)$.  Then
 \begin{equation}
  W_\infty(\mu,\nu_M)=\frac1M.
  \label{eq:Winfty-exact}
@@ -883,7 +860,7 @@ For every $1\le p<\infty$,
  \label{eq:Wp-bound}
 \end{equation}
 Consequently $\nu_M\Rightarrow\mu$ as $M\to\infty$.  Along odd $M$ this is convergence
-of singular continuous full-support measures to the $C^\infty$ density $\Up$.
+of singular continuous full-support measures to the $C^\infty$ density $\RvachevUp$.
 \end{theorem}
 
 \begin{proof}
@@ -947,7 +924,7 @@ Let
 \end{equation}
 Then $X=S_{M,k}+M^{-k}X^{(k)}$ in the natural coupling.  Hence
 \begin{equation}
- W_\infty(\Law(S_{M,k}),\mu)=M^{-k}.
+ W_\infty(\LawOperator(S_{M,k}),\mu)=M^{-k}.
  \label{eq:iter-W}
 \end{equation}
 If $L_{M,k}$ is the quantile of $S_{M,k}$,
@@ -970,14 +947,14 @@ The characteristic function of $S_{M,k}$ is
 Near the origin,
 \begin{equation}
  \log\Phi(w)=\sum_{r\ge1}
- \frac{\kappa_{2r}(X)(2\pi\ii w)^{2r}}{(2r)!}.
+ \frac{\kappa_{2r}(X)(2\pi\ImaginaryUnit w)^{2r}}{(2r)!}.
  \label{eq:logPhi-cumulant}
 \end{equation}
 Therefore, with $q=M^{-2}$,
 \begin{equation}
  P_{M,k}(z)=\Phi(z)
  \exp\!\left(-\sum_{r\ge1}
- \frac{\kappa_{2r}(X)(2\pi\ii z)^{2r}}{(2r)!}q^{rk}\right).
+ \frac{\kappa_{2r}(X)(2\pi\ImaginaryUnit z)^{2r}}{(2r)!}q^{rk}\right).
  \label{eq:PMk-q-expansion}
 \end{equation}
 On every compact $z$-set this is a convergent expansion in powers $q^k$.  Define recursively
@@ -993,7 +970,7 @@ On every compact $z$-set this is a convergent expansion in powers $q^k$.  Define
 \label{prop:q-accel}
 For fixed $J$ and locally uniformly in $z$,
 \begin{equation}
- R_k^{(J)}(z)=\Phi(z)+\bigO\!\left(q^{(J+1)k}\right)
+ R_k^{(J)}(z)=\Phi(z)+\BigO\!\left(q^{(J+1)k}\right)
  \qquad(k\to\infty).
  \label{eq:q-accel-rate}
 \end{equation}
@@ -1021,7 +998,7 @@ integer scale.
 Let
 \begin{equation}
  \delta_M(n)=\ord_{z=n}Q_M(z),
- \qquad n\in\N_{>0}.
+ \qquad n\in\PositiveIntegers.
  \label{eq:deltaM-def}
 \end{equation}
 The quotient has removable cancellations whenever $M\mid n$.
@@ -1031,30 +1008,30 @@ The quotient has removable cancellations whenever $M\mid n$.
 For every $M\ge2$ and $n\ge1$,
 \begin{equation}
  \delta_M(n)
- =1+\vtwo(n)-\1_{M\mid n}\bigl(1+\vtwo(n/M)\bigr).
+ =1+\TwoAdicValuation(n)-\1_{M\mid n}\bigl(1+\TwoAdicValuation(n/M)\bigr).
  \label{eq:deltaM-general}
 \end{equation}
 Equivalently,
 \begin{equation}
  \delta_M(n)=
  \begin{cases}
- 1+\vtwo(n),&M\nmid n,\\
- \vtwo(M),&M\mid n.
+ 1+\TwoAdicValuation(n),&M\nmid n,\\
+ \TwoAdicValuation(M),&M\mid n.
  \end{cases}
  \label{eq:deltaM-cases}
 \end{equation}
 Thus:
 \begin{itemize}
-\item if $M$ is odd, the positive zero set is $\N\setminus M\N$;
+\item if $M$ is odd, the positive zero set is $\NaturalNumbers\setminus M\NaturalNumbers$;
 \item if $M$ is even, every positive integer is a zero;
-\item on multiples of $M$, the residual order is the constant $\vtwo(M)$.
+\item on multiples of $M$, the residual order is the constant $\TwoAdicValuation(M)$.
 \end{itemize}
 \end{proposition}
 
 \begin{proof}
 Subtract the zero order of $\Phi(z/M)$ from that of $\Phi(z)$.  The denominator vanishes
 at $z=n$ exactly when $M\mid n$.  If so,
-$\vtwo(n)=\vtwo(M)+\vtwo(n/M)$, giving the second form.
+$\TwoAdicValuation(n)=\TwoAdicValuation(M)+\TwoAdicValuation(n/M)$, giving the second form.
 \end{proof}
 
 The entire quotient has the canonical product
@@ -1063,7 +1040,7 @@ The entire quotient has the canonical product
  \left(1-\frac{z^2}{n^2}\right)^{\delta_M(n)}.
  \label{eq:QM-canonical}
 \end{equation}
-For odd $M$, the zero lattice has periodic holes at $M\N$; for even $M$ it remains the
+For odd $M$, the zero lattice has periodic holes at $M\NaturalNumbers$; for even $M$ it remains the
 full integer lattice but with a flattened multiplicity on multiples of $M$.
 
 \subsection{A closed spectral zeta function}
@@ -1076,7 +1053,7 @@ Define the positive zero-divisor zeta function
 \end{equation}
 Since
 \begin{equation}
- \sum_{n\ge1}\frac{1+\vtwo(n)}{n^s}
+ \sum_{n\ge1}\frac{1+\TwoAdicValuation(n)}{n^s}
  =\frac{\zeta(s)}{1-2^{-s}},
  \label{eq:Phi-zero-zeta}
 \end{equation}
@@ -1090,14 +1067,14 @@ For $\Re s>1$,
  \mathcal Z_M(s)=(1-M^{-s})\frac{\zeta(s)}{1-2^{-s}}.}
  \label{eq:zero-zeta}
 \end{equation}
-This identity gives a meromorphic continuation to $\C$.  Its residue at $s=1$ is
+This identity gives a meromorphic continuation to $\ComplexNumbers$.  Its residue at $s=1$ is
 \begin{equation}
  \operatorname*{Res}_{s=1}\mathcal Z_M(s)=2\left(1-\frac1M\right).
  \label{eq:zeta-res-one}
 \end{equation}
 At the nonzero dyadic lattice points
 \begin{equation}
- s_k=\frac{2\pi\ii k}{\log2},\qquad k\in\Z\setminus\{0\},
+ s_k=\frac{2\pi\ImaginaryUnit k}{\log2},\qquad k\in\IntegerNumbers\setminus\{0\},
  \label{eq:dyadic-complex-dim}
 \end{equation}
 the residue, when nonzero, is
@@ -1112,8 +1089,8 @@ the residue, when nonzero, is
 From \eqref{eq:deltaM-general},
 \[
  \mathcal Z_M(s)
- =\sum_{n\ge1}\frac{1+\vtwo(n)}{n^s}
- -\sum_{m\ge1}\frac{1+\vtwo(m)}{(Mm)^s},
+ =\sum_{n\ge1}\frac{1+\TwoAdicValuation(n)}{n^s}
+ -\sum_{m\ge1}\frac{1+\TwoAdicValuation(m)}{(Mm)^s},
 \]
 which is \eqref{eq:zero-zeta}.  The residue computations follow from the simple pole of
 $\zeta$ at $1$ and from
@@ -1130,13 +1107,13 @@ For an integer $M\ge2$, the following are equivalent:
 \item the numerator $1-M^{-s}$ cancels every nonzero zero $s_k$ of $1-2^{-s}$;
 \item the factor $(1-M^{-s})/(1-2^{-s})$ is a finite Dirichlet polynomial;
 \item there exists an integer $r\ge1$ such that
-$Q_M(z)=\prod_{j=0}^{r-1}\sinc(\pi z/2^j)$.
+$Q_M(z)=\prod_{j=0}^{r-1}\SincRad(\pi z/2^j)$.
 \end{enumerate}
 If $M=2^r$, then
 \begin{equation}
  \frac{1-M^{-s}}{1-2^{-s}}=\sum_{j=0}^{r-1}2^{-js},
  \qquad
- Q_M(z)=\prod_{j=0}^{r-1}\sinc(\pi z/2^j).
+ Q_M(z)=\prod_{j=0}^{r-1}\SincRad(\pi z/2^j).
  \label{eq:power-two-equivalences}
 \end{equation}
 If $M$ is not a power of two, the Euler numerator cancels none of the nonzero $s_k$;
@@ -1146,7 +1123,7 @@ $\mathcal Z_M$ has a genuine pole at each such point for which $\zeta(s_k)\ne0$.
 \begin{proof}
 If $M=2^r$, the finite geometric sum and \eqref{eq:power-two-Q} give all four
 statements.  Conversely, the numerator cancels a denominator zero $s_k$ exactly when
-$k\log_2M\in\Z$.  Cancellation at one nonzero $k$ makes $\log_2M$ rational, and
+$k\log_2M\in\IntegerNumbers$.  Cancellation at one nonzero $k$ makes $\log_2M$ rational, and
 unique factorization then forces the integer $M$ to be a power of two.  A finite Dirichlet
 polynomial is entire, so statement~3 implies these cancellations.  Finally, if statement~4
 holds, characteristic-function uniqueness identifies $\nu_M$ with $\nu_{2^r}$; comparing
@@ -1188,7 +1165,7 @@ cumulant formulas in \cref{sec:cumulants}.
 
 The moment generating function of the symmetric digit $D_M$ is
 \begin{equation}
- \mathbb E\e^{tD_M}
+ \mathbb E\EulerE^{tD_M}
  =\frac1M\frac{\sinh t}{\sinh(t/M)}.
  \label{eq:DM-mgf}
 \end{equation}
@@ -1218,7 +1195,7 @@ All odd cumulants of $D_M$, $Y_M$, and $X$ vanish.  For $r\ge1$,
 \end{align}
 In particular,
 \begin{equation}
- \Var(Y_M)=\frac{1-M^{-2}}9,
+ \Variance(Y_M)=\frac{1-M^{-2}}9,
  \qquad
  \kappa_4(Y_M)=-\frac2{225}(1-M^{-4}).
  \label{eq:first-cumulants}
@@ -1294,7 +1271,7 @@ reconstruction from two or more divisors.
 
 Define the Appell polynomials associated with $Y_M$ by
 \begin{equation}
- \frac{\e^{xt}}{\mathbb E\e^{tY_M}}
+ \frac{\EulerE^{xt}}{\mathbb E\EulerE^{tY_M}}
  =\sum_{n=0}^{\infty}\mathscr A_n^{(M)}(x)\frac{t^n}{n!}.
  \label{eq:Appell-def}
 \end{equation}
@@ -1306,7 +1283,7 @@ The cocycle of moment generating functions is
 
 \begin{proposition}[Appell cocycle]
 \label{prop:Appell-cocycle}
-For all $x_1,x_2\in\C$,
+For all $x_1,x_2\in\ComplexNumbers$,
 \begin{equation}
  \mathscr A_n^{(MN)}\!\left(x_1+\frac{x_2}{M}\right)
  =\sum_{j=0}^{n}\binom nj M^{-j}
@@ -1318,8 +1295,8 @@ For all $x_1,x_2\in\C$,
 \begin{proof}
 Factor the generating function using \eqref{eq:mgf-cocycle}:
 \[
- \frac{\e^{x_1t}}{M_M(t)}
- \frac{\e^{x_2(t/M)}}{M_N(t/M)},
+ \frac{\EulerE^{x_1t}}{M_M(t)}
+ \frac{\EulerE^{x_2(t/M)}}{M_N(t/M)},
 \]
 and compare coefficients.
 \end{proof}
@@ -1373,7 +1350,7 @@ For every $M\ge2$ and $N\ge1$,
  \boxed{A_{M,N}(x)T_N(x)=T_N(x^M).}
  \label{eq:finite-TM-quotient}
 \end{equation}
-Coefficientwise in the formal power-series ring $\Z[[x]]$,
+Coefficientwise in the formal power-series ring $\IntegerNumbers[[x]]$,
 \begin{equation}
  A_M(x)T(x)=T(x^M),
  \label{eq:infinite-TM-quotient}
@@ -1404,7 +1381,7 @@ For each $j$,
 \]
 Multiplying over $j<N$ gives \eqref{eq:finite-TM-quotient}.  Every coefficient of the
 infinite products depends on only finitely many factors, so the identity passes
-coefficientwise to $\Z[[x]]$.  Comparing coefficients gives \eqref{eq:TM-convolution-inverse}.
+coefficientwise to $\IntegerNumbers[[x]]$.  Comparing coefficients gives \eqref{eq:TM-convolution-inverse}.
 \end{proof}
 
 This is a direct algebraic bridge between the positive digit counts underlying the Rvachev
@@ -1454,7 +1431,7 @@ which is the shifted Stern recursion.
 
 \begin{corollary}[Stern--Thue--Morse convolution]
 \label{cor:Stern-TM}
-In $\Z[[x]]$,
+In $\IntegerNumbers[[x]]$,
 \begin{equation}
  \boxed{
  \left(\sum_{n\ge0}s(n+1)x^n\right)
@@ -1521,7 +1498,7 @@ Put
  \label{eq:alphaM}
 \end{equation}
 For $x\in(0,1/2]$, write
-$-\log_2x=n+\theta$ with $n\in\N$ and $0\le\theta<1$.  Iterating
+$-\log_2x=n+\theta$ with $n\in\NaturalNumbers$ and $0\le\theta<1$.  Iterating
 \eqref{eq:H-edge-scaling} gives
 \begin{equation}
  H_M(x)=x^{\alpha_M}\Omega_M(\theta),
@@ -1582,7 +1559,7 @@ For $M\ge2$, the following are equivalent:
 \begin{enumerate}
 \item $M$ is a power of two;
 \item there exists $r\ge1$ such that
-$Q_M(z)=\prod_{j=0}^{r-1}\sinc(\pi z/2^j)$;
+$Q_M(z)=\prod_{j=0}^{r-1}\SincRad(\pi z/2^j)$;
 \item the Euler numerator $1-M^{-s}$ cancels all nonzero dyadic denominator zeros;
 \item the endpoint CDF phase $\Omega_M$ is constant;
 \item there exists $r\ge1$ such that the bounded-binary-partition series is
@@ -1662,8 +1639,8 @@ The decomposition $X=Y_M+X'/M$ acts exactly on polynomials.  For a polynomial $p
 \end{equation}
 where $m_k(X)=\mathbb EX^k$.  Then
 \begin{equation}
- \int p(x)\,\mu(\dd x)
- =\int (\mathcal S_Mp)(y)\,\nu_M(\dd y).
+ \int p(x)\,\mu(\Differential x)
+ =\int (\mathcal S_Mp)(y)\,\nu_M(\Differential y).
  \label{eq:polynomial-transfer}
 \end{equation}
 Because all odd moments of $X$ vanish, only even derivatives occur.
@@ -1675,7 +1652,7 @@ For the Legendre polynomial $P_n$,
  \mathbb E P_n(X)
  =\sum_{j=0}^{\lfloor n/2\rfloor}
  \frac{m_{2j}(X)}{(2j)!M^{2j}}
- \int_{\R}P_n^{(2j)}(y)\,\nu_M(\dd y).
+ \int_{\RealNumbers}P_n^{(2j)}(y)\,\nu_M(\Differential y).
  \label{eq:Legendre-transfer}
 \end{equation}
 More generally, for any affine scaling $P_n(ax+b)$ the same formula holds after the
@@ -1850,9 +1827,9 @@ fails.
 
 The exact edge law also has a short Mellin formulation.  Put
 \begin{equation}
- \mathfrak M_M(s)=\int_0^{1/2}H_M(x)x^{s-1}\dd x,
+ \mathfrak M_M(s)=\int_0^{1/2}H_M(x)x^{s-1}\Differential x,
  \qquad
- B_M(s)=\int_{1/2}^{1}H_M(x)x^{s-1}\dd x.
+ B_M(s)=\int_{1/2}^{1}H_M(x)x^{s-1}\Differential x.
  \label{eq:endpoint-Mellin-def}
 \end{equation}
 The first integral converges initially for $\Re s>-\alpha_M$, while $B_M$ is entire.
@@ -1867,8 +1844,8 @@ The endpoint Mellin transform has the meromorphic continuation
 \end{equation}
 Its candidate pole lattice is
 \begin{equation}
- s=-\log_2M+\frac{2\pi\ii k}{\log2},
- \qquad k\in\Z.
+ s=-\log_2M+\frac{2\pi\ImaginaryUnit k}{\log2},
+ \qquad k\in\IntegerNumbers.
  \label{eq:endpoint-pole-lattice}
 \end{equation}
 The residue at a noncancelled pole is $B_M(s)/\log2$.  All nonzero-frequency poles cancel
@@ -1880,14 +1857,14 @@ survives.
 Use \eqref{eq:H-edge-scaling} and the substitution $u=2x$:
 \[
  \mathfrak M_M(s)
- =\frac{2^{-s}}M\int_0^1H_M(u)u^{s-1}\dd u
+ =\frac{2^{-s}}M\int_0^1H_M(u)u^{s-1}\Differential u
  =\frac{2^{-s}}M\bigl(\mathfrak M_M(s)+B_M(s)\bigr).
 \]
 Solving gives \eqref{eq:endpoint-Mellin}.  The pole lattice and residues are immediate.
 To identify cancellations, decompose $(0,1/2]$ into dyadic shells and put
 $x=2^{-(n+\theta)}$.  Up to a nonzero constant independent of $k$, the residue at
-$s=-\alpha_M+2\pi\ii k/\log2$ is the Fourier coefficient
-$\int_0^1\Omega_M(\theta)\e^{-2\pi\ii k\theta}\,\dd\theta$.  Hence a constant
+$s=-\alpha_M+2\pi\ImaginaryUnit k/\log2$ is the Fourier coefficient
+$\int_0^1\Omega_M(\theta)\EulerE^{-2\pi\ImaginaryUnit k\theta}\,\Differential\theta$.  Hence a constant
 phase cancels every nonzero-frequency pole, whereas a nonconstant continuous periodic
 phase leaves at least one such pole.  Apply \cref{thm:endpoint-rigidity}.
 \end{proof}
@@ -1998,7 +1975,7 @@ would add a function-theoretic member to the rigidity equivalences in
 
 For an integer base $b\ge2$, consider
 \begin{equation}
- \Phi_b(z)=\prod_{n=0}^{\infty}\sinc\!\left(\frac{\pi z}{b^n}\right).
+ \Phi_b(z)=\prod_{n=0}^{\infty}\SincRad\!\left(\frac{\pi z}{b^n}\right).
  \label{eq:Phi-b}
 \end{equation}
 The same Dirichlet-kernel calculation constructs
@@ -2031,7 +2008,7 @@ atomic function.
 \label{conj:Legendre-preconditioner}
 For suitable $M=M(n)$, the triangular transfer \eqref{eq:Legendre-transfer} yields a
 better-conditioned computation of the high-degree Legendre coefficient
-$\mathbb EP_n(X)$ than direct integration against $\Up$.  Powers of two optimize symbolic
+$\mathbb EP_n(X)$ than direct integration against $\RvachevUp$.  Powers of two optimize symbolic
 simplicity, while even non-powers optimize a tradeoff between compact spline smoothing and
 nontrivial endpoint phase.
 \end{conjecture}
@@ -2123,7 +2100,7 @@ negative Sobolev, and total variation metrics.
 
 \subsection{Conceptual payoff}
 
-The divisor family changes the usual viewpoint on $\Up$.  Rather than one special dyadic
+The divisor family changes the usual viewpoint on $\RvachevUp$.  Rather than one special dyadic
 infinite convolution, the Rvachev law becomes the terminal object of an arithmetic system of
 innovation laws.  Prime factorization acts by convolution cocycles; $2$-adic valuation acts
 as a regularity counter; odd factors generate singular cores; Thue--Morse signs invert the
@@ -2174,12 +2151,12 @@ repository's all-orders inverse and asymptotic machinery.
 
 For completeness,
 \begin{align}
- \sum_{n\ge1}\frac{\vtwo(n)}{n^s}
+ \sum_{n\ge1}\frac{\TwoAdicValuation(n)}{n^s}
  &=\sum_{k\ge1}\sum_{2^k\mid n}\frac1{n^s}
  =\zeta(s)\sum_{k\ge1}2^{-ks}
  =\frac{\zeta(s)}{2^s-1},
  \label{eq:v2-Dirichlet}\\
- \sum_{n\ge1}\frac{1+\vtwo(n)}{n^s}
+ \sum_{n\ge1}\frac{1+\TwoAdicValuation(n)}{n^s}
  &=\frac{\zeta(s)}{1-2^{-s}}.
  \label{eq:m-Dirichlet}
 \end{align}
@@ -2191,11 +2168,11 @@ Dilation by $M$ multiplies a Dirichlet series by $M^{-s}$, giving
 Let $a=\log_2M$ and $h=\log M=a\log2$.  Then
 \begin{equation}
  \frac{1-M^{-s}}{1-2^{-s}}
- =a\left(1+\frac{\log2-\log M}{2}s+\bigO(s^2)\right).
+ =a\left(1+\frac{\log2-\log M}{2}s+\BigO(s^2)\right).
  \label{eq:A-at-zero}
 \end{equation}
 Multiplying by
-$\zeta(s)=-\frac12-\frac12\log(2\pi)s+\bigO(s^2)$ gives
+$\zeta(s)=-\frac12-\frac12\log(2\pi)s+\BigO(s^2)$ gives
 \eqref{eq:ZM-zero}--\eqref{eq:ZM-derivative-zero}.
 
 \subsection{The finite-cascade coefficient recurrence}

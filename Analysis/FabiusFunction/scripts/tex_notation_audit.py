@@ -80,6 +80,9 @@ RETIRED_COMMANDS = {
     "supp": "SupportOperator or SupportOf",
     "sgn": "Sign",
     "lcm": "LeastCommonMultiple",
+    "ord": "OrderOperator",
+    "TV": "TotalVariationDistance",
+    "dist": "MetricDistance or EqualInLaw",
     "vtwo": "TwoAdicValuation",
     "qbinom": "GaussianBinomial (three explicit arguments)",
     "qpoch": "QPochhammer (three explicit arguments)",
@@ -117,7 +120,8 @@ SEMANTIC_COMMANDS = {
     "FourierTwoPi", "FourierAngular", "LaplaceTransformOf",
     "MellinTransformOf", "BinaryDigitSum", "ThueMorseSign",
     "GaussianBinomial", "QPochhammer", "QInteger", "MetricDistance",
-    "EqualInLaw", "ConvergesInLaw",
+    "EqualInLaw", "ConvergesInLaw", "DyadicSigmaField",
+    "DecayOptimizationObjective", "LinearizedDecayObjective",
 }
 
 DECL_RE = re.compile(
@@ -263,6 +267,22 @@ def audit_file(path: Path, docs: Path) -> tuple[dict, list[Finding], Counter[str
                     f"retired \\{old}; use \\{replacement}",
                 ))
 
+        # ``\NaturalNumbers`` already owns its defining ``_0`` subscript.
+        # Any following subscript is both a likely TeX double-script failure
+        # and a semantic smell (the common ``>0`` case is
+        # ``\PositiveIntegers``).  This catches an argument-composition defect
+        # that a command-name-only audit cannot see.
+        for match in re.finditer(r"\\NaturalNumbers\s*_", code):
+            findings.append(Finding(
+                rel,
+                line_number(code, match.start()),
+                "canonical-double-script",
+                (
+                    r"\NaturalNumbers already includes the subscript 0; "
+                    r"use \PositiveIntegers or spell the intended set explicitly"
+                ),
+            ))
+
     # Literal operator spellings bypass the shared semantic command.
     literal_patterns = {
         r"\\operatorname\s*\{\s*up\s*\}": r"literal up operator; use \RvachevUp",
@@ -280,6 +300,31 @@ def audit_file(path: Path, docs: Path) -> tuple[dict, list[Finding], Counter[str
             for match in re.finditer(pattern, code):
                 findings.append(Finding(
                     rel, line_number(code, match.start()), "literal-core-symbol", message,
+                ))
+
+    literal_semantic_patterns = {
+        r"\\operatorname\s*\{\s*span\s*\}": r"use \SpanOperator",
+        r"\\operatorname\s*\{\s*diag\s*\}": r"use \DiagonalOperator",
+        r"\\operatorname\s*\{\s*tr\s*\}": r"use \TraceOperator",
+        r"\\operatorname\s*\{\s*rank\s*\}": r"use \RankOperator",
+        r"\\operatorname\s*\{\s*TV\s*\}": r"use \TotalVariationDistance",
+        r"\\operatorname\s*\{\s*ord\s*\}": r"use \OrderOperator",
+        r"\\operatorname\s*\{\s*wt\s*\}\s*_\s*(?:\{\s*2\s*\}|2)": (
+            r"use \BinaryDigitSum"
+        ),
+        r"\\operatorname\s*\{\s*supp\s*\}": r"use \SupportOperator",
+        r"\\operatorname\s*\{\s*sgn\s*\}": r"use \Sign",
+        r"\\operatorname\s*\{\s*lcm\s*\}": r"use \LeastCommonMultiple",
+        r"\\operatorname\s*\{\s*dist\s*\}": r"use \MetricDistance",
+    }
+    if not canonical_source:
+        for pattern, message in literal_semantic_patterns.items():
+            for match in re.finditer(pattern, code):
+                findings.append(Finding(
+                    rel,
+                    line_number(code, match.start()),
+                    "literal-shared-operator",
+                    f"literal shared operator; {message}",
                 ))
 
     digest = hashlib.sha256(raw.encode("utf-8-sig")).hexdigest()

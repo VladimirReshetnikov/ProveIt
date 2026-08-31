@@ -103,7 +103,8 @@
 \small base commit \nolinkurl{eaea1b9afe2b7ff0b7dd880bd1710e303dec6d80};
 Volterra addenda \nolinkurl{3da579387}, \nolinkurl{e109088ed};\\
 \small activation-series and finite-Taylor addendum
-\nolinkurl{a345425d21d90e680bf15e34093af42c69c08a83}}
+\nolinkurl{a345425d21d90e680bf15e34093af42c69c08a83};\\
+\small inverse-modulus equality/rigidity addendum \nolinkurl{f05c2fc7d}}
 
 \begin{document}
 \maketitle
@@ -996,6 +997,44 @@ at both ends, by
 \nolinkurl{tendsto_deriv_fabiusInv_atTop_at_one_left}.  These are one-sided
 limits through \((0,1)\), not derivative values at the clamping points.
 
+\subsection{Exact inverse modulus and rigidity (post-snapshot)}
+
+The structural layer \nolinkurl{InverseModulus.lean} now has an exhaustive public
+surface of one definition and thirty-one theorems.  Relative to its earlier
+twenty-theorem surface, the eleven equality/rigidity declarations, in source order, are:
+\begin{lstlisting}[style=pseudo]
+fabiusIntervalMass_eq_zero_of_add_nonpos
+fabiusIntervalMass_eq_zero_of_one_le
+strictMonoOn_fabiusIntervalMass_firstHalf
+strictAntiOn_fabiusIntervalMass_secondHalf
+fabiusReal_lt_fabiusIntervalMass_of_mem_Ioo
+fabiusIntervalMass_eq_fabiusReal_iff
+fabiusReal_sub_lt_sub
+fabiusReal_sub_eq_sub_iff
+fabiusReal_add_eq_iff
+fabiusInv_sub_eq_sub_iff_of_mem_Icc
+abs_fabiusInv_sub_eq_iff_of_mem_Icc
+\end{lstlisting}
+The first two record the zero-mass tails for nonnegative interval lengths.  The
+global weak shape remains valid for every nonnegative length; at a nondegenerate
+length \(0<h\leq1\), the new strict branches are exactly
+\([-h,(1-h)/2]\) and \([(1-h)/2,1]\), ending where the two constant tails begin.
+Within \([0,1]\), an interval of length \(h\) has the endpoint mass \(F(h)\)
+exactly when \(h=0\), its left endpoint is zero, or its right endpoint is one.
+The strict-interior and subtraction wrappers give the same classification for the
+least-mass inequality, while constrained superadditivity is an equality exactly
+when one summand is zero or their sum is one.
+
+Transport through the inverse classifies the unit-interval equality cases as well.
+For \(0\leq u\leq v\leq1\), the ordered inverse-gap bound is sharp exactly when
+\(u=v\), \(u=0\), or \(v=1\).  In the order-free absolute bound, equality for
+\(u,v\in[0,1]\) means that the inputs coincide or at least one is an endpoint.
+Both restrictions to the unit interval are essential: the totalized inverse has
+constant tails, which create additional equality configurations on all of \(\RealNumbers\).
+The preceding twenty declarations still supply the weak shape, sharp inequalities,
+attained exact moduli, and effective-injectivity implications; the next module turns
+the structural modulus into explicit recursive dyadic denominators.
+
 \subsection{Effective dyadic continuity of the noncomputable inverse}
 
 \nolinkurl{FabiusInverseEffectiveContinuity.lean} supplies an explicit
@@ -1734,22 +1773,50 @@ sinc products, pointwise multipliability and the exact \nolinkurl{HasProd} ident
 entireness.  Write \(S_q(z)\) for
 \nolinkurl{geometricSincProduct q z}.
 
-The new zero-definition, two-theorem module
+The new zero-definition, four-theorem module
 \nolinkurl{GeometricSincCharacteristicFunction.lean} consists exactly of
 \nolinkurl{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct} and
-\nolinkurl{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma}.
+\nolinkurl{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma},
+followed by \nolinkurl{tendstoLocallyUniformly_prefix_sinc_charFun} and
+\nolinkurl{tendstoUniformlyOn_prefix_sinc_charFun}.
 Write \(G_q(z)\) for \nolinkurl{geometricReciprocalGamma q z}, and put
 \[
  z_q(t)=\frac{(1-q)t}{2\pi}.
 \]
 For every real \(\lvert q\rvert<1\) and \(t\in\RealNumbers\), including \(q=0\) and negative
-ratios, these theorems give the exact identities
+ratios, the first two theorems give the exact identities
 \[
  \phi_q(t)=e^{\ImaginaryUnit t/2}S_q\bigl(z_q(t)\bigr)
  =e^{\ImaginaryUnit t/2}G_q\bigl(z_q(t)\bigr)G_q\bigl(-z_q(t)\bigr).
 \]
-The locally uniform theorem concerns \(S_q\) as a complex-variable sinc product; there is
-still no named compact-uniform theorem for the full phase-bearing characteristic prefixes.
+For
+\[
+ P_{q,m}(t):=e^{\ImaginaryUnit(1-q^m)t/2}
+   \prod_{k=0}^{m-1}\operatorname{sinc}
+      \!\left(\frac{(1-q)q^kt}{2}\right),
+\]
+the last two prove that \(P_{q,m}\) tends locally uniformly on the real frequency line
+to \(\phi_q\), and uniformly on every compact set \(K\subseteq\RealNumbers\).  The Gamma-side
+locally uniform theorem concerns \(S_q\) as a complex-variable pure sinc product, whereas
+the full phase-bearing theorem is stated for real frequencies.  No complex-frequency
+analogue of the latter or uniform-convergence claim on all of \(\RealNumbers\) is made.
+The one-definition, nine-theorem module
+\nolinkurl{RvachevPochhammerFactorization.lean} then supplies the independent spectral
+rearrangement.  Besides the total \nolinkurl{complexQPochhammerInf} and its
+contracting-nome convergence API, the declarations
+\nolinkurl{summable_norm_sineTerm_qpow_pair},
+\nolinkurl{geometricSincProduct_eq_tprod_pair}, and
+\nolinkurl{geometricSincProduct_eq_tprod_complexQPochhammerInf} prove, for complex
+\(\lVert q\rVert<1\) and arbitrary \(z\),
+\[
+ S_q(z)=\prod_{k\ge0}
+ \left(\frac{z^2}{(k+1)^2};q^2\right)_\infty .
+\]
+The identity includes \(q=0\) and individual zero factors; its final two theorems are the
+dyadic nome-\(1/4\) Rvachev-product and bounded-Fabius Fourier specializations.  A named
+centered/MGF wrapper, the outside-disk reciprocal formula and zero--pole exchange, and a
+named local-uniform/normal-convergence theorem for the Pochhammer right-hand side remain
+outside this module.
 Rapid-decay bounds, Fourier inversion, a named centered family or MGF wrapper, explicit
 Bernoulli-cumulant and Bell-moment formulas and asymptotics, further transform formulas,
 and shape theory remain separate targets.
@@ -3261,26 +3328,16 @@ The block is defined directly as a polynomial.  These declarations do not
 formalize its finite up-translate realization, the separate Fourier-product
 or infinite-sinc integral for this energy, or rationality of its partial sums.
 
-\subsection{Executable Gaunt coefficients and finite up-law Gram entries}
+\subsection{Executable Gaunt coefficients and finite up-law Gram sums}
+\label{ch:legendre-gaunt}
 
-The later finite Gaunt tranche gives an independent, entrywise bridge from
-rational Legendre algebra to the up-law Gram matrix.  In
-\nolinkurl{LegendreGaunt.lean}, define
-\[
- \mu_n^{\RationalNumbers}=\begin{cases}2/(n+1),&n\text{ even},\\0,&n\text{ odd},\end{cases}
- \qquad
- G_{ijk}=\int_{-1}^{1}P_i(x)P_j(x)P_k(x)\,\Differential x,
-\]
-and let \(G_{ijk}^{\RationalNumbers}\) be the bounded triple coefficient sum obtained by
-expanding the three rational Legendre polynomials and evaluating the monomial
-moment \(\mu_{a+b+c}^{\RationalNumbers}\).  The four exact definitions are
+The post-snapshot module \nolinkurl{LegendreGaunt.lean} closes the finite
+triple-product calculation over the rationals.  Its exhaustive public API consists of
+four definitions,
 \nolinkurl{legendreLebesgueMomentRat},
 \nolinkurl{legendreGauntRat},
 \nolinkurl{legendreGaunt}, and
-\nolinkurl{legendreProductLinearizationCoeffRat}, with the last equal to
-\((2k+1)G_{ijk}^{\RationalNumbers}/2\).
-
-The module's complete twelve-theorem inventory is
+\nolinkurl{legendreProductLinearizationCoeffRat}, and twelve theorems,
 \nolinkurl{legendreLebesgueMomentRat_even},
 \nolinkurl{legendreLebesgueMomentRat_odd},
 \nolinkurl{legendreLebesgueMomentRat_cast},
@@ -3293,34 +3350,57 @@ The module's complete twelve-theorem inventory is
 \nolinkurl{legendreGauntRat_eq_zero_of_odd_sum},
 \nolinkurl{legendreGauntRat_eq_zero_of_add_lt}, and
 \nolinkurl{legendreGauntRat_eq_zero_of_triangle_violation}.
-Thus, for every \(i,j\in\NaturalNumbers\), both coefficient fields satisfy the exact
-finite linearization
+Writing \(\mu_n^{\mathrm L}\) for
+\nolinkurl{legendreLebesgueMomentRat}\((n)\), the definition and its first three
+theorems say exactly
 \[
- P_iP_j=\sum_{k=0}^{i+j}\frac{2k+1}{2}G_{ijk}P_k,
+ \mu_n^{\mathrm L}=
+ \begin{cases}
+   2/(n+1),&n\ \text{even},\\
+   0,&n\ \text{odd},
+ \end{cases}
+ \qquad
+ (\mu_n^{\mathrm L}:\RealNumbers)=\int_{-1}^{1}x^n\,\Differential x.
 \]
-where the real coefficient is the cast of its executable rational version.
-The two swap theorems generate full symmetry.  Odd \(i+j+k\), or violation
-of any triangle inequality, forces the rational Gaunt coefficient to vanish.
+Thus \(\mu_{2n}^{\mathrm L}=2/(2n+1)\) and
+\(\mu_{2n+1}^{\mathrm L}=0\).  If \(p_{n,a}=[X^a]P_n\) denotes the executable
+rational Legendre coefficient, the rational Gaunt definition is the bounded sum
+\[
+ G^{\RationalNumbers}_{ijk}
+ =\sum_{a=0}^{i}\sum_{b=0}^{j}\sum_{c=0}^{k}
+   p_{i,a}p_{j,b}p_{k,c}\,\mu_{a+b+c}^{\mathrm L},
+\]
+while \nolinkurl{legendreGaunt}\((i,j,k)\) is
+\[
+ G_{ijk}=\int_{-1}^{1}P_i(x)P_j(x)P_k(x)\,\Differential x,
+ \qquad
+ L_{ijk}=\frac{2k+1}{2}G^{\RationalNumbers}_{ijk}
+\]
+is \nolinkurl{legendreProductLinearizationCoeffRat}\((i,j,k)\).
+The moment-functional theorem identifies the bounded sum algebraically, and the cast
+theorem gives \((G^{\RationalNumbers}_{ijk}:\RealNumbers)=G_{ijk}\).  The two swap
+theorems exchange the first pair or the last pair of indices.  The real and rational
+product theorems then give, without extra hypotheses,
+\[
+ P_iP_j=\sum_{k=0}^{i+j}L_{ijk}P_k
+\]
+in \(\RealNumbers[X]\) and \(\RationalNumbers[X]\), respectively.
 
-The proof uses only finite algebra and ordinary Legendre orthogonality.
-Integrating \(x^n\) over the symmetric interval gives the displayed rational
-moment.  Expanding the three finite polynomials proves that the bounded triple
-sum is their rational moment functional, and casting term by term identifies
-it with the real triple integral.  Since \(\deg(P_iP_j)\le i+j\), its finite
-Fourier--Legendre projection is exact; the norm
-\(\int_{-1}^{1}P_k^2=2/(2k+1)\) gives the normalization.  Injectivity of
-\(\RationalNumbers[X]\to\RealNumbers[X]\) reflects the real identity back to
-rational polynomials.
-Parity makes the triple product odd when the index sum is odd.  If
-\(i+j<k\), the exact product expansion contains only degrees below \(k\), so
-orthogonality kills its pairing with \(P_k\); symmetry handles the other two
-triangle violations.
+All four definitions are total at every \(i,j,k\in\NaturalNumbers\).  The only
+hypotheses in the public theorem surface occur in the three support results:
+\(\operatorname{Odd}(i+j+k)\) implies \(G^{\RationalNumbers}_{ijk}=0\);
+\(i+j<k\) implies the same; and any strict triangle violation
+\[
+ i+j<k\ \lor\ i+k<j\ \lor\ j+k<i
+\]
+implies the same.  These are necessary support zeros only.  There is no converse
+support theorem, Wigner \(3j\) identification, factorial closed form, positivity
+theorem, or asymptotic assertion.
 
-The companion \nolinkurl{FabiusLegendreGaunt.lean} has the single definition
-\nolinkurl{canonicalRvachevFullLegendreCoefficientRat}.  It inserts zero at
-odd indices and at \(2r\) returns
-\nolinkurl{canonicalRvachevLegendreCoefficientRat}\((r)\).  Its complete
-eight-theorem inventory is
+The companion \nolinkurl{FabiusLegendreGaunt.lean} converts those product
+linearizations into finite formulas for the Rvachev Legendre Gram entries.  Its
+exhaustive public API has one definition,
+\nolinkurl{canonicalRvachevFullLegendreCoefficientRat}, and eight theorems,
 \nolinkurl{canonicalRvachevFullLegendreCoefficientRat_even},
 \nolinkurl{canonicalRvachevFullLegendreCoefficientRat_odd},
 \nolinkurl{canonicalRvachevFullLegendreCoefficientRat_cast},
@@ -3329,36 +3409,56 @@ eight-theorem inventory is
 \nolinkurl{rvachevLegendreGramEntryRat_eq_sum_gaunt},
 \nolinkurl{rvachevLegendreGramMatrixRat_apply_eq_sum_gaunt}, and
 \nolinkurl{upLegendreGramMatrix_apply_eq_sum_gaunt}.
+If \(c_r^{\RationalNumbers}\) is
+\nolinkurl{canonicalRvachevLegendreCoefficientRat}\((r)\), its full extension is
+\[
+ \widehat c_k^{\RationalNumbers}=
+ \begin{cases}
+   c_{k/2}^{\RationalNumbers},&2\mid k,\\
+   0,&2\nmid k.
+ \end{cases}
+\]
+The even and odd theorems give
+\(\widehat c_{2n}^{\RationalNumbers}=c_n^{\RationalNumbers}\) and
+\(\widehat c_{2n+1}^{\RationalNumbers}=0\).  Unconditionally in \(k\), the
+normalized-moment theorem says that \(\widehat c_k^{\RationalNumbers}\) is
+\((2k+1)/2\) times \nolinkurl{momentFunctional} with moment sequence
+\nolinkurl{rvachevRawMomentRat}, evaluated at
+\nolinkurl{legendrePolynomialRat}\((k)\).  In abbreviated notation,
+\[
+ \widehat c_k^{\RationalNumbers}
+ =\frac{2k+1}{2}\,\mathcal M_{\mathrm{Rv}}(P_k^{\RationalNumbers}).
+\]
+For arbitrary natural \(i,j\), write \(R_{ij}^{\RationalNumbers}\) for
+\nolinkurl{rvachevLegendreGramEntryRat}\((i,j)\).  The two rational entry
+theorems state exactly
+\[
+ R_{ij}^{\RationalNumbers}
+ =\sum_{k=0}^{i+j}\widehat c_k^{\RationalNumbers}
+    G^{\RationalNumbers}_{ijk}
+ =\sum_{r=0}^{\lfloor(i+j)/2\rfloor}c_r^{\RationalNumbers}
+    G^{\RationalNumbers}_{ij,2r}.
+\]
+The rational matrix theorem supplies the second equality entrywise for every
+\(i,j\in\operatorname{Fin} n\).
 
-The normalized-moment theorem says
+Exactly two public theorems in this companion require analytic hypotheses.
+Given \(F\) of type \nolinkurl{BoundedFabius} and a proof \(h_F\) of
+\nolinkurl{IsFabius F},
+\nolinkurl{canonicalRvachevFullLegendreCoefficientRat_cast} identifies the real cast
+of \(\widehat c_k^{\RationalNumbers}\) with
+\nolinkurl{rvachevFullLegendreCoefficient}\((F,k)\), and
+\nolinkurl{upLegendreGramMatrix_apply_eq_sum_gaunt} states, writing
+\(D^F_{n,ij}\) for \nolinkurl{upLegendreGramMatrix}\((F,n,i,j)\),
 \[
- C_k^{\RationalNumbers}=\frac{2k+1}{2}
-   \operatorname{moment}_{\RvachevUp}^{\RationalNumbers}
-     (P_k^{\RationalNumbers}).
+ D^F_{n,ij}
+ =\sum_{r=0}^{\lfloor(i+j)/2\rfloor}c_r(F)\,G_{ij,2r},
 \]
-Applying that functional to the finite product linearization proves
-\[
- \mathcal G_{ij}^{\RationalNumbers}
-  =\sum_{k=0}^{i+j}C_k^{\RationalNumbers}G_{ijk}^{\RationalNumbers}
-  =\sum_{r=0}^{\lfloor(i+j)/2\rfloor}
-     c_r^{\RationalNumbers}G_{ij,2r}^{\RationalNumbers}.
-\]
-The second equality deletes the zero odd terms and reindexes \(k=2r\); the
-rational matrix theorem is this same formula at finite indices.  For every
-bounded Fabius representative \(F\) satisfying \nolinkurl{IsFabius F}, the
-coefficient and Gaunt cast bridges give
-the real entry formula
-\[
- \mathcal G_{ij}^{(n)}(F)
-  =\sum_{r=0}^{\lfloor(i+j)/2\rfloor}
-     c_r(F)G_{ij,2r}.
-\]
-Every sum is finite, so no infinite Legendre series is interchanged with an
-integral.  This closes the finite Gaunt entry expansion and its rational
-realization.  It does not identify \(G_{ijk}\) with a Wigner \(3j\) symbol,
-prove the associated factorial formula, positivity or converse support, or
-develop roots, Christoffel reconstruction, quadrature, Pad\'e approximation,
-asymptotics, or an infinite expansion.
+where \(c_r(F)\) is \nolinkurl{rvachevLegendreCoefficient}\((F,r)\), for
+\(i,j\in\operatorname{Fin} n\).  The other six theorems are unconditional finite
+identities.  No infinite Legendre series is interchanged with integration, and the
+module proves no Wigner \(3j\) or factorial formula, Christoffel reconstruction, or
+new positivity or asymptotic result.
 
 \subsection{Computational significance}
 The exact coefficient theorem gives a certified way to produce rational polynomial approximants.  The least-squares theorem certifies optimality in \(L^2\), while uniform convergence certifies pointwise approximation.  This is a rare combination:
@@ -4491,8 +4591,8 @@ Module & Role in the development \\
 \nolinkurl{SharpFlatness.lean} & Factorial-strengthened endpoint power bounds for \(F\) and \(\RvachevUp\). \\
 \nolinkurl{NowhereAnalytic.lean} & Exact real-analytic loci: off the closed transition supports and nowhere on them. \\
 \nolinkurl{FabiusInverse.lean} & Totalized inverse, order isomorphism on the unit interval, exact positive reciprocal derivative, exact global smoothness locus (continuity everywhere, but differentiability and every positive finite or \(C^\infty\) order exactly off the clamping endpoints), reciprocal-cubic second derivative, midpoint jet and interior curvature loci, strict closed-half curvature, and endpoint quotient/derivative blow-up. \\
-\nolinkurl{InverseModulus.lean} & Reflection and global one-sided shape of fixed-length Fabius increments, least endpoint mass, forward superadditivity, global inverse subadditivity, the attained exact totalized and unit-interval inverse moduli, and strict/closed/contrapositive/exact-threshold effective injectivity. \\
-\nolinkurl{FabiusInverseEffectiveContinuity.lean} & Two primitive-recursive explicit denominators, the factorial and elementary lower bounds for dyadic Fabius values, strict and closed dyadic inverse moduli, and the final effective-uniform-continuity package; no inverse realizer or sequential-computability theorem. \\
+\nolinkurl{InverseModulus.lean} & Exhaustive one-definition/thirty-one-theorem structural inverse-modulus layer: global weak and maximal strict fixed-length increment shape, exact endpoint minimizers, constrained-superadditivity equality, unit-interval inverse-gap rigidity, global sharp modulus bounds and attained suprema, and effective injectivity.  The inverse equality loci are deliberately not global because of the clamped tails. \\
+\nolinkurl{FabiusInverseEffectiveContinuity.lean} & Exhaustive two-definition/twelve-theorem effective inverse-continuity layer: primitive-recursive factorial and report denominators, recurrence and endpoint-mass lower bounds, strict and closed global inverse moduli, and \nolinkurl{EffectivelyUniformContinuous}; the inverse remains noncomputable and no sequential realizer or combined computable-function theorem is supplied. \\
 \nolinkurl{FabiusInverseLogarithmicModulus.lean} & Three definitions and fifteen theorems: the primitive-recursive least binary-length order, its exact \nolinkurl{Nat.log2} formula and minimality, factorial and Delta denominators at that order, strict/closed-input reciprocal moduli, and an effective-uniform-continuity theorem for either witness; no exact endpoint-mass ceiling, tolerant-bisection realizer, sequential computability, combined computable-real-function theorem, or input-bit asymptotic. \\
 \nolinkurl{FabiusInverseQuarterJet.lean} & Full smooth derivative jet of the centered inverse at \(5/72\), identified with the factorial-scaled coefficients of the quadratic compositional inverse; this is not a local analytic identity. \\
 \nolinkurl{ImplicitPowerSeries.lean} & Nonmonic complete-adic lifting and residue-class uniqueness, with arbitrary-base and zero-constant formal implicit-root specializations over power-series rings; it does not construct or analytically realize a Fabius inverse germ. \\
@@ -4547,8 +4647,8 @@ Module & Role in the development \\
 \nolinkurl{GeometricUniformUniqueness.lean} & Specializes the generic product-map theorem to prove \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar}: every probability solution of the geometric affine head--tail equation is \(\mu_q\) when \(\lvert q\rvert<1\), including \(q=0\) and negative \(q\), with no support, density, or moment assumption. \\
 \nolinkurl{GeometricSincFactorization.lean} & Closed characteristic function of the scaled uniform digit, exact closed-factor and phase-collapsed finite residual formulas for \(\lvert q\rvert<1\), pointwise convergence of the phase-bearing sinc prefixes, and the two dyadic weighted-sum wrappers. \\
 \nolinkurl{GeometricReciprocalGamma.lean} & Locally uniform convergence, pointwise multipliability and \nolinkurl{HasProd}, and entireness of the geometric sinc product, together with its reciprocal-Gamma reflection factorization. \\
-\nolinkurl{GeometricSincCharacteristicFunction.lean} & The two exact phase-bearing bridges from the geometric-uniform characteristic function to the rescaled geometric sinc product and to the paired reciprocal-Gamma factors for every real \(\lvert q\rvert<1\), including zero and negative ratios. \\
-\nolinkurl{RvachevPochhammerFactorization.lean} & One definition and nine theorems: convergence of the total complex infinite \(q\)-Pochhammer symbol, absolute summability and paired Euler form for every strict complex contraction, the global spectral factorization \(S_q(z)=\prod_k(z^2/(k+1)^2;q^2)_\infty\), and its standalone/Fourier dyadic specializations. \\
+\nolinkurl{GeometricSincCharacteristicFunction.lean} & The four-theorem, zero-definition surface: two exact phase-bearing bridges from the geometric-uniform characteristic function to the rescaled geometric sinc product and paired reciprocal-Gamma factors, plus locally uniform convergence of the full phase-bearing prefixes on the real frequency line and uniform convergence on every compact real frequency set, for every \(\lvert q\rvert<1\), including zero and negative ratios. \\
+\nolinkurl{RvachevPochhammerFactorization.lean} & One definition and nine theorems: the total complex infinite Pochhammer product and its strict-contraction convergence API, absolute summability and paired scale--zero product, the global \(S_q(z)=\prod_{k\ge0}(z^2/(k+1)^2;q^2)_\infty\) factorization for complex \(\lVert q\rVert<1\), and its two dyadic Rvachev/Fabius specializations. \\
 \nolinkurl{GeometricUniformCDF.lean} & The named \(F_q\) and explicit \(f_q\), conditioning and interval-integral equations, pointwise derivative and exact positive-ratio \nolinkurl{withDensity} law, continuity, reflection, exterior zeros, ordinary/topological support containments, compact support, and \(C^\infty\) regularity under their exact parameter hypotheses.  It also proves that the selected total formula is zero at \(q=0\), nonpositive for \(q<0\), yields the zero clamped measure for \(q\le0\), and cannot represent \(\mu_q\) on the nonpositive contraction range. \\
 \nolinkurl{HyperbolicActivation.lean} & Four definitions and 58 theorems forming the totalized real hyperbolic-sinc, \nolinkurl{tanhDiv}, activation-odds, and activation-probability dictionary, with continuity, parity, positivity, exact odds bridges, global elementary bounds, and the canonical identification \nolinkurl{tanhDiv_eq_dslope}. \\
 \nolinkurl{ActivationTaylor.lean} & Three theorems: the exact degree-nine Taylor polynomial of \(\tanh\) with \(O(\lVert x\rVert^{11})\) remainder, the induced degree-eight activation-probability polynomial with \(O(\lVert x\rVert^{10})\) remainder, and its equivalent \(O(x^{10})\) form. \\
@@ -4714,8 +4814,8 @@ Module & Role in the development \\
 \nolinkurl{FabiusTranslatedLegendreSeries.lean} & Affine translation to the signed Fabius function and monomial expansion of the translated series. \\
 \nolinkurl{FabiusLegendreLeastSquares.lean} & Pythagorean identity and unique least-squares optimality of finite Legendre truncations. \\
 \nolinkurl{FabiusLegendreEnergy.lean} & Polynomial-form Legendre blocks, their complete orthogonality, full coefficient Parseval identity, exact shifted coefficient-energy tails in \nolinkurl{HasSum} and \nolinkurl{tsum} form, and the real-variable Legendre series for \(\int_0^1F(t)^2\,dt\).  Finite up-translate realization, Fourier/sinc energy formulas, and rationality of partial sums remain outside the module. \\
-\nolinkurl{LegendreGaunt.lean} & Four definitions and twelve theorems: executable rational symmetric-interval moments and Gaunt triple sums, their real-integral cast, finite real and rational product linearizations, symmetry, and parity/triangle support zeros. \\
-\nolinkurl{FabiusLegendreGaunt.lean} & One definition and eight theorems: the full rational Rvachev--Legendre coefficient sequence and exact full/even finite Gaunt expansions of rational entries, rational matrices, and real up-law Gram entries. \\
+\nolinkurl{LegendreGaunt.lean} & Four definitions and twelve theorems giving executable rational Lebesgue moments and Gaunt coefficients, real-cast and moment-functional bridges, two index swaps, finite real/rational Legendre product linearizations, and the proved parity and triangle-support zeros; see \cref{ch:legendre-gaunt}. \\
+\nolinkurl{FabiusLegendreGaunt.lean} & One definition and eight theorems extending the rational Rvachev--Legendre coefficients by odd zeros and expressing rational and genuine up-law Gram entries as exact finite full/even Gaunt sums; see \cref{ch:legendre-gaunt}. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{K-fold Thue--Morse audit and auxiliary asymptotics}}\\[0.25em]
 \nolinkurl{ThueMorseApproximation.lean} & Exact identification of corrected grid samples with moving-center step approximants and pointwise convergence, including the endpoint. \\
