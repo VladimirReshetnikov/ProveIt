@@ -69,8 +69,9 @@ New standalone intake members:
   committed and pushed.
 
 - [`Inverse_Fabius_Computability_Report/`](Inverse_Fabius_Computability_Report/),
-  *Computability of the Inverse Fabius Function* (35 pp after post-publication
-  revision; 29 pp at intake), arrived on
+  *Computability of the Inverse Fabius Function* (37 A4 pp, 2,665 source
+  lines; 34 pp and 2,446 lines in the preceding revision; 29 pp at intake),
+  arrived on
   2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (outer SHA-256
   `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
   All five submitted payload hashes verified and every text payload was
@@ -78,11 +79,22 @@ New standalone intake members:
   the structural least-mass, inverse-gap, exact-supremum, subadditivity, and
   effective-injectivity layer to compiler-validated
   [`InverseModulus.lean`](../../../../Lean/FabiusFunction/InverseModulus.lean).
-  That module does not formalize the report's closed `Delta_r` bound,
-  recursive-modulus packaging, tolerant-bisection realizer, sequential
-  computability theorem, or input-bit asymptotics. The revision also corrects
-  `d_*`: it is denominator-minimal for the fixed dyadic proxy `2^{-r(n)}`,
-  not for the weaker target tolerance `1/n`.
+  The source now also exhaustively crosswalks all fourteen public declarations
+  in
+  [`FabiusInverseEffectiveContinuity.lean`](../../../../Lean/FabiusFunction/FabiusInverseEffectiveContinuity.lean):
+  a one-term recurrence lower bound stronger than the report's box estimate,
+  the exact numerical `Delta_r` inequality, strict and closed versions of the
+  Delta/factorial dyadic inverse moduli, primitive-recursive denominators, and
+  `EffectivelyUniformContinuous` with the simple `r=n` factorial witness. The
+  probabilistic box-event proof itself, logarithmic `r(n)`, exact ceiling
+  `d_*`, tolerant bisection, sequential computability, the combined
+  computable-real-function theorem, and precision asymptotics remain open Lean
+  work. The `d_*` claim remains denominator-minimal only for the fixed dyadic
+  proxy `2^{-r(n)}`, not the weaker target `1/n`. The synchronized three-pass
+  PDF includes the previously blank author metadata; all fonts are
+  embedded/subset and Type 3-free. The immutable five-entry arrival ledger
+  verifies the submitted payload, and the current six-entry operational
+  ledger verifies the repository-normalized package.
 
 - [`inverse_fabius_iterates_nowhere_analytic/`](inverse_fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Inverse

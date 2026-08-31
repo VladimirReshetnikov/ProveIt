@@ -4,18 +4,39 @@ New standalone intake members:
 
 - [`fabius_dyadic_chaos_frontier/`](fabius_dyadic_chaos_frontier/),
   *Dyadic Sensitivity and Polynomial-Chaos Frontiers for the
-  Fabius--Rvachev Law* (34 A4 pp), arrived on 2026-08-30 from
-  `fabius_dyadic_chaos_frontier.zip` (1,351,045 bytes; outer SHA-256
+  Fabius--Rvachev Law* (34 pp at arrival; current 37-page A4,
+  2,869-line repository-reviewed report), arrived in
+  `fabius_dyadic_chaos_frontier.zip` (outer SHA-256
   `d57fd01c3991a6a7ecd6ba6e745729c745745d3265cb3cfd414aac1991b11b86`).
-  The safe single-wrapper archive's submitted 30-entry ledger verified 30/30
-  and is preserved unchanged; nine CSVs were normalized from CRLF to LF and
-  the current 31-entry ledger passes.  The 2,694-line report develops
-  functional-ANOVA and polynomial-chaos decompositions, active-digit laws,
-  Legendre marks, q-binomial interaction asymptotics, effective dimension,
-  phase limits, and Thue--Morse/Lambert connections.  This is a quick archival
-  intake only: the submitted source and PDF are unchanged, the numerical
-  program has not been replayed, and claim audit, Lean crosswalk, canonical
-  normalization, Type-3 plot-font repair, and rebuild remain deferred.
+  The archive had one safe top-level wrapper and all thirty submitted
+  non-ledger checksums verified before extraction.  Nine CSV entries and
+  their ledger hashes were then normalized from CRLF to repository LF.  The
+  seven delivered PDFs were structurally readable and unencrypted and
+  comprised 40 pages.
+
+  The report's Hoeffding/functional-ANOVA decomposition, active-digit law,
+  tensor-Legendre marks, smooth-observable interaction bounds,
+  q-binomial/Gaussian limit, periodic effective dimension, phase limit,
+  negative-Laplace bridge, and Thue--Morse corner make it an orthogonal-chaos
+  representation member.  The post-publication
+  [mathematical and reproducibility review](fabius_dyadic_chaos_frontier/audit/POST_INTAKE_REVIEW.md)
+  repaired the zero-field, infinite-product, Mellin-continuation, phase-limit,
+  mode-set, Thue--Morse-domain, and Lambert-cutoff statements; replayed the
+  deterministic experiment in the recorded and a newer compatible
+  environment; and rebuilt the figures and report without Type 3 fonts.  The
+  current seven PDFs comprise 43 pages: a 37-page A4 report and six one-page
+  vector figures.  The active 33-entry checksum ledger covers every current
+  non-ledger file.
+
+  The [label-complete Lean crosswalk](fabius_dyadic_chaos_frontier/LEAN_CROSSWALK.md)
+  inventories all 36 nonconjectural report results.  None is yet formalized
+  exactly as stated.  `ThueMorseSymmetricDifference.lean` supplies two
+  definitions and eleven theorems covering the Boolean-cube, polynomial,
+  dyadic-sign, and exact report-grid algebraic clauses of `thm:TM-corner`;
+  its repeated `C^N` integral clause and final report-shaped wrapper remain.
+  The package remains standalone only pending
+  broader claim comparison and deliberate editorial integration; manuscript
+  result labels do not establish Lean proof status.
 
 - [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/),
   the 36-page *Common-Digit Fabius Zonoids* bundle committed directly to

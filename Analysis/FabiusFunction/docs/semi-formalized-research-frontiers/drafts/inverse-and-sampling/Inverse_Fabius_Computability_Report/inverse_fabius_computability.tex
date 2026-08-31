@@ -29,6 +29,7 @@
   citecolor=linkblue,
   urlcolor=linkblue,
   pdftitle={Computability of the Inverse Fabius Function},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov's ProveIt project},
   pdfsubject={Sequential computability, effective uniform continuity, exact inverse moduli, Thue--Morse splines, and certified inversion},
   pdfkeywords={Fabius function, inverse Fabius function, computable analysis, Grzegorczyk computability, Thue--Morse, Rvachev up function, q-binomial, sinc product, Lambert W}
 }
@@ -204,8 +205,9 @@ The report audits the recursive LaTeX corpus under
 repository results from the arguments proved here, relates the construction to
 $q$-binomial and sinc-product representations, Lambert-$W$ inverse asymptotics,
 Legendre expansions, and Bell/Bernoulli coefficient calculi.  It records both
-the completed post-publication Lean crosswalk for the structural inverse
-modulus and the remaining roadmap for the computability layer.  An
+the completed post-publication Lean crosswalks for the structural inverse
+modulus and effective uniform continuity, and the remaining roadmap for a
+computable name-transformer.  An
 exact-rational Python supplement reproduces the finite-spline and modulus
 calculations.
 \end{abstract}
@@ -218,22 +220,30 @@ repository audit and all relative-novelty statements remain pinned to commit
 fixed-length Fabius-increment inequality, the exact inverse modulus, and the
 closed elementary modulus were absent under the formulations used here.
 
-A post-publication Lean development now formalizes the structural
+A post-publication Lean development now formalizes two layers.  The structural
 inverse-modulus layer in
-\path{Analysis/FabiusFunction/Lean/FabiusFunction/InverseModulus.lean}.  It
-proves the global unimodal shape of fixed-length Fabius increments, the
-endpoint lower bound, constrained forward superadditivity, local and global
-inverse-gap inequalities, global inverse subadditivity, attained exact moduli
-on both $[0,1]$ and $\R$, and the exact effective-injectivity threshold.  The
-declaration-level crosswalk is given in \cref{sec:lean-status}.
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/InverseModulus.lean} proves
+the global shape of fixed-length increments, the endpoint lower bound,
+inverse-gap inequalities, attained exact moduli, and the exact
+effective-injectivity threshold.  The downstream module
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/FabiusInverseEffectiveContinuity.lean}
+proves a one-term recurrence lower bound stronger than the elementary
+$\Delta_r$ estimate, derives the exact numerical inequality
+$\Delta_r\le F(2^{-r})$ and the corresponding strict and closed dyadic inverse
+moduli, and packages a primitive-recursive factorial-denominator witness for
+\texttt{EffectivelyUniformContinuous}.  Exhaustive declaration-level
+crosswalks are given in \cref{sec:lean-status}.
 
-This update does \emph{not} by itself formalize the closed bound $\Delta_r$,
-recursive-modulus packaging, tolerant bisection, sequential computability, the
-combined computable-real-function theorem, or the input-precision asymptotics.
-Those claims retain the complete human proofs and imported-source
-qualifications stated below.  ``New'' means new relative to the pinned corpus;
-no unqualified worldwide priority claim is made.  Conjectures and research
-problems are explicitly labelled and are not used in the proof.
+The probabilistic box-event \emph{proof} of the $\Delta_r$ inequality is not
+formalized: Lean reaches the same inequality by the stronger recurrence
+route.  The logarithmic choice $r(n)$, the exact ceiling denominator $d_*$,
+tolerant bisection, sequential computability, the combined computable-real-
+function theorem, and the input-precision asymptotics also remain outside the
+current formalization.  Those claims retain the complete human proofs and
+imported-source qualifications stated below.  ``New'' means new relative to
+the pinned corpus; no unqualified worldwide priority claim is made.
+Conjectures and research problems are explicitly labelled and are not used in
+the proof.
 \end{statusbox}
 
 \tableofcontents
@@ -334,7 +344,9 @@ The delivered manuscript recorded commit \arrivalcommit\ \cite{ProveIt} as its
 arrival snapshot and counted 96 LaTeX sources there.  On intake, the audit was
 rerun against the live repository: the formal documentation audit scanned 582
 modules and 7,976 public declarations, with no missing declaration comments or
-module headers, while a separate inventory found 147 prior \texttt{.tex}
+module headers.  The present merged tree now scans 602 modules and 8,194
+public declarations with the same zero-gap result.  A separate intake
+inventory found 147 prior \texttt{.tex}
 sources below \path{Analysis/FabiusFunction/docs}, excluding this newly filed
 package.  These counts identify the corpus inspected; they are not a novelty
 certificate.  All source paths were inventoried.  Primary and consolidated
@@ -400,10 +412,10 @@ reversion, but those stronger formulas are not public Lean theorems.
 
 \subsection{The paper-level gap addressed here}
 
-No public theorem named or formulated as sequential computability, effective
-uniform continuity, or computable-real-function status for \lean{fabiusInv}
-occurs in the live formal corpus.  The missing bridge is not a formal
-triviality.  A
+At the pinned arrival snapshot, no public theorem named or formulated as
+sequential computability, effective uniform continuity, or
+computable-real-function status for \lean{fabiusInv} occurred in the formal
+corpus.  The missing bridge was not a formal triviality.  A
 computable strictly increasing function can be inverted effectively on a
 compact interval only after one supplies effective injectivity information;
 ordinary strict monotonicity is qualitative.
@@ -421,9 +433,13 @@ the roadmap in \cref{sec:lean-status}.
 The historical statement above remains about the pinned snapshot.  In the
 current post-publication development, \path{InverseModulus.lean} formally
 proves the first inequality and its exact transfer through the clamped inverse,
-including sharpness and attainment.  The second inequality, its recursive
-packaging, and the tolerant-bisection realizer remain on the human-proof side
-of the boundary recorded in \cref{sec:lean-status}.
+including sharpness and attainment.
+\path{FabiusInverseEffectiveContinuity.lean} formally proves the second
+\emph{inequality} by a stronger one-term recurrence estimate and packages a
+simple primitive-recursive reciprocal modulus.  The report's probabilistic
+event proof, its smaller logarithmic-$r(n)$ packaging, and the
+tolerant-bisection realizer remain on the human-proof side of the boundary
+recorded in \cref{sec:lean-status}.
 
 \subsection{Three functions that must not be conflated}
 
@@ -712,6 +728,24 @@ The bound is deliberately elementary: it uses only independence, the support
 of the tail, and integer arithmetic.  It is not numerically sharp, but
 \cref{sec:binary-conditioning} shows that its logarithm has the correct two
 largest orders for computability purposes.
+
+The numerical conclusion of \cref{lem:box-event} is now Lean-formalized, but
+by a different and stronger route.  The exact inverse-dyadic recurrence gives
+the one-term estimate
+\begin{equation}\label{eq:factorial-endpoint-lower}
+ F(2^{-r})\ge
+ \frac{1}{2^{\binom{r+1}{2}}(r+1)!}
+ \ge
+ \frac{1}{2^{\binom{r+1}{2}}(r+1)^{r+1}}
+ =\Delta_r.
+\end{equation}
+The declarations
+\path{Fabius.fabiusReal_inverse_two_pow_one_term_lower_bound},
+\path{Fabius.inv_inverseFabiusFactorialDenominator_le_fabiusReal}, and
+\path{Fabius.inv_inverseFabiusDeltaDenominator_le_fabiusReal} certify this
+chain.  They do not formalize the event in
+\eqref{eq:box-restrictions}, its containment, or its product probability;
+that probabilistic proof remains report-level.
 
 \subsection{Strict monotonicity from the random series}
 
@@ -1065,6 +1099,23 @@ By \cref{lem:box-event}, $\Delta_r\le F(2^{-r})$.  Apply
 \cref{cor:effective-injectivity} with $h=2^{-r}$.
 \end{proof}
 
+The exact statement \eqref{eq:closed-dyadic-modulus} is also formalized as
+\path{Fabius.abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_deltaDenominator}.
+The stronger factorial-denominator version is
+\path{Fabius.abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_factorialDenominator}.
+The formal API also closes both endpoints:
+\[
+ \abs{u-v}\le\Delta_r
+ \quad\Longrightarrow\quad
+ \abs{\InvT(u)-\InvT(v)}\le2^{-r},
+\]
+with declaration
+\path{Fabius.abs_fabiusInv_sub_le_inverse_two_pow_of_le_deltaDenominator};
+\path{Fabius.abs_fabiusInv_sub_le_inverse_two_pow_of_le_factorialDenominator}
+is its stronger factorial-denominator companion.  Thus the strict and closed
+input/output boundaries are separately available rather than recovered by an
+unstated limiting argument.
+
 \begin{theorem}[Reciprocal modulus required by the definition]\label{thm:reciprocal-modulus}
 For $n\ge1$, let $r(n)$ be the least positive integer with $2^{r(n)}>n$ and
 put
@@ -1099,6 +1150,17 @@ Taking $r=n$ gives the one-line primitive-recursive choice
 because $2^{-n}<1/n$.  The logarithmic choice $r(n)$ in
 \cref{thm:reciprocal-modulus} is far smaller and has the correct leading
 complexity scale.
+
+The Lean development uses the stronger one-line witness
+\[
+ d_{\mathrm{fac}}(n)=2^{\binom{n+1}{2}}(n+1)!,
+\]
+which is no larger than $d_0(n)$.  The theorem
+\path{Fabius.fabiusInv_effectivelyUniformContinuous} proves
+\texttt{EffectivelyUniformContinuous} for the totalized inverse directly
+from this primitive-recursive witness and $n<2^n$.  Thus effective uniform
+continuity itself is formalized.  The smaller logarithmic choice $r(n)$ in
+\cref{thm:reciprocal-modulus} is still only packaged in the report.
 \end{remark}
 
 \subsection{The exact-dyadic repository modulus}
@@ -1180,6 +1242,11 @@ The distinction is already visible at $n=1$.  Here $r(1)=1$,
 $F(1/2)=1/2$, and hence $d_*(1)=2$, whereas $d=1$ already satisfies the
 required implication with output tolerance $1$.
 \end{remark}
+
+The exact-ceiling construction $d_*$, including its recursion and qualified
+denominator minimality, has not yet been translated into Lean.  The current
+effective-continuity theorem deliberately avoids the ceiling by using the
+explicit factorial denominator at order $n$.
 
 \subsection{Binary conditioning is quadratic}
 \label{sec:binary-conditioning}
@@ -1956,27 +2023,101 @@ extremizing pair; the \texttt{sSup} equalities are immediate corollaries.  The
 totalized formal theorem returns \texttt{fabiusInv ... eta}, which is literally
 the report's $G(\min(\eta,1))$ because \texttt{fabiusInv} is already clamped.
 
-\subsection{The remaining computability module}
+\subsection{The completed effective-uniform-continuity layer}
+
+The next formal layer is
+\begin{center}
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/FabiusInverseEffectiveContinuity.lean}.
+\end{center}
+It imports the forward computability interface, the exact inverse-dyadic
+recurrence, and \path{InverseModulus.lean}.  Its recurrence proof is stronger
+than the report's box estimate, while its final reciprocal modulus is simpler
+and larger than the logarithmic-$r(n)$ modulus.  The following table exhausts
+all fourteen public declarations in the module (two definitions and twelve
+theorems); private recurrence and
+primitive-recursion helpers are intentionally omitted.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.57\textwidth}@{}}
+\toprule
+Lean declaration & Report object or claim \\
+\midrule
+\endhead
+\path{Fabius.inverseFabiusFactorialDenominator} &
+The recursively executable factorial denominator $d_{\mathrm{fac}}(r)$.\\
+\addlinespace
+\path{Fabius.inverseFabiusFactorialDenominator_eq} &
+The closed form
+$d_{\mathrm{fac}}(r)=2^{\binom{r+1}{2}}(r+1)!$.\\
+\addlinespace
+\path{Fabius.inverseFabiusFactorialDenominator_primrec} &
+Primitive recursiveness of $d_{\mathrm{fac}}$.\\
+\addlinespace
+\path{Fabius.inverseFabiusDeltaDenominator} &
+The report's elementary denominator
+$d_{\Delta}(r)=2^{\binom{r+1}{2}}(r+1)^{r+1}=\Delta_r^{-1}$.\\
+\addlinespace
+\path{Fabius.inverseFabiusDeltaDenominator_primrec} &
+Primitive recursiveness of $d_{\Delta}$.\\
+\addlinespace
+\path{Fabius.fabiusReal_inverse_two_pow_one_term_lower_bound} &
+For $r>0$, the sharper unrounded zeroth-term recurrence bound with denominator
+$2^{\binom r2}(r+1)!(2^r-1)$.\\
+\addlinespace
+\path{Fabius.inv_inverseFabiusFactorialDenominator_le_fabiusReal} &
+The first inequality in \eqref{eq:factorial-endpoint-lower}, including $r=0$.\\
+\addlinespace
+\path{Fabius.inverseFabiusFactorialDenominator_le_deltaDenominator} &
+The denominator comparison $d_{\mathrm{fac}}(r)\le d_{\Delta}(r)$, from
+$(r+1)!\le(r+1)^{r+1}$.\\
+\addlinespace
+\path{Fabius.inv_inverseFabiusDeltaDenominator_le_fabiusReal} &
+The exact numerical conclusion $\Delta_r\le F(2^{-r})$ of
+\cref{lem:box-event}, proved through the recurrence rather than its box event.\\
+\addlinespace
+\path{Fabius.abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_factorialDenominator} &
+The stronger strict dyadic inverse modulus: input distance
+$<d_{\mathrm{fac}}(r)^{-1}$ forces output distance $<2^{-r}$.\\
+\addlinespace
+\path{Fabius.abs_fabiusInv_sub_le_inverse_two_pow_of_le_factorialDenominator} &
+The closed factorial companion: input distance
+$\le d_{\mathrm{fac}}(r)^{-1}$ forces output distance $\le2^{-r}$.\\
+\addlinespace
+\path{Fabius.abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_deltaDenominator} &
+The report's exact strict implication \eqref{eq:closed-dyadic-modulus}: input
+distance $<\Delta_r$ forces output distance $<2^{-r}$.\\
+\addlinespace
+\path{Fabius.abs_fabiusInv_sub_le_inverse_two_pow_of_le_deltaDenominator} &
+The exact closed-boundary companion: input distance $\le\Delta_r$ forces
+output distance $\le2^{-r}$.\\
+\addlinespace
+\path{Fabius.fabiusInv_effectivelyUniformContinuous} &
+Effective uniform continuity of the totalized inverse, witnessed by
+$n\mapsto d_{\mathrm{fac}}(n)$ and hence using the simple scale $r=n$.\\
+\bottomrule
+\end{longtable}
+
+This table crosswalks theorem statements, not proof methods.  In particular,
+the declaration with conclusion $\Delta_r\le F(2^{-r})$ does not construct the
+random-series event used in \cref{lem:box-event}.  Conversely, the final
+theorem establishes the repository predicate
+\texttt{EffectivelyUniformContinuous}; it does not establish a sequential
+realizer or the two-field \texttt{IsComputableRealFunction} structure.
+
+\subsection{The remaining name-transformation module}
 
 A natural downstream file remains
 \begin{center}
 \path{Analysis/FabiusFunction/Lean/FabiusFunction/}\\
 \path{FabiusInverseComputability.lean}.
 \end{center}
-It should import \path{FabiusFunction.InverseModulus}.  It no longer needs to
-reprove interval shape or inverse-gap estimates.  Its remaining public surface
-is the effective layer; the following Lean is schematic rather than a claim
-about declarations already present.
+It should import
+\path{FabiusFunction.FabiusInverseEffectiveContinuity}.  It no longer needs to
+reprove interval shape, inverse-gap estimates, dyadic endpoint lower bounds,
+or effective uniform continuity.  Its remaining public surface is the
+name-transformation layer; the following Lean is schematic rather than a
+claim about declarations already present.
 
 \begin{lstlisting}[style=reportpseudo,language={}]
-/-- Closed elementary dyadic lower bound. -/
-theorem delta_le_fabiusAtInverseTwoPow (r : Nat) :
-    delta r <= fabiusReal F ((2 : Real) ^ (-r : Int))
-
-/-- The totalized inverse has a recursive reciprocal modulus. -/
-theorem fabiusInv_effectivelyUniformContinuous :
-    EffectivelyUniformContinuous (fabiusInv fabius fabius_spec)
-
 /-- Tolerant bisection transforms every computable input sequence. -/
 theorem fabiusInv_sequentiallyComputable :
     SequentiallyComputable (fabiusInv fabius fabius_spec)
@@ -1989,22 +2130,30 @@ theorem fabiusInv_isComputableRealFunction :
 \subsection{Remaining formalization order}
 
 The former structural roadmap steps are complete in
-\path{InverseModulus.lean}.  The remaining order is:
+\path{InverseModulus.lean}, and the closed-bound/effective-continuity steps are
+complete in \path{FabiusInverseEffectiveContinuity.lean}.  The remaining order
+is:
 
 \begin{enumerate}
+\item If a probability-level counterpart is desired, formalize the particular
+      box event in \eqref{eq:box-restrictions}, its containment, and its product
+      probability.  This is no longer needed to obtain its endpoint
+      inequality, which is already formalized by recurrence.
+\item Formalize the logarithmic scale $r(n)$ and the smaller report modulus
+      from \cref{thm:reciprocal-modulus}; this is an efficiency refinement, not
+      a prerequisite for effective uniform continuity.
 \item Connect the exact dyadic evaluator to the positive rational
-      $F(2^{-r})$ and package the reciprocal-ceiling modulus, with the
-      qualified minimality statement of
+      $F(2^{-r})$ and package the reciprocal-ceiling modulus, including the
+      qualified fixed-dyadic-target minimality statement of
       \cref{prop:exact-dyadic-modulus}.
-\item Formalize the elementary box-event bound $\Delta_r\le F(2^{-r})$ as a
-      portable closed alternative.
 \item Formalize a generic tolerant-bisection lemma for a monotone computable
       map equipped with a recursive lower-increment bound.  The result should
       not be Fabius-specific.
 \item Instantiate the generic lemma with the primitive-recursive centered
       spline evaluator from \path{FabiusComputableSpline.lean}.
-\item Package sequential computability and effective uniform continuity into
-      the repository's computable-real-function interface.
+\item Package the resulting sequential-computability theorem together with
+      the now-formalized effective uniform continuity into the repository's
+      computable-real-function interface.
 \item Only after the effective core is complete, formalize the flatness bounds
       and input-bit asymptotics; they are not logical prerequisites of the
       computability theorem.
@@ -2201,6 +2350,15 @@ connects probability, computable analysis, exact dyadic arithmetic, and
 inverse asymptotics.  It is also the part most likely to generalize beyond the
 particular atomic function studied here.
 
+The current Lean boundary cuts through the two clauses of computability.
+\path{InverseModulus.lean} certifies the exact structural modulus, and
+\path{FabiusInverseEffectiveContinuity.lean} certifies the closed dyadic bound
+and \texttt{EffectivelyUniformContinuous}, using a recurrence estimate that is
+stronger than the report's box bound.  Tolerant bisection, sequential
+computability, and the final computable-real-function package remain to be
+formalized; the logarithmic-$r(n)$ and exact-ceiling moduli remain optional
+sharpenings of the already certified effective-continuity witness.
+
 \appendix
 
 \section{Pseudocode with explicit error budgets}
@@ -2304,18 +2462,27 @@ contrapositive, and biconditional forms are formalized in
 \path{InverseModulus.lean}.\\
 \addlinespace
 Closed modulus $\Delta_r$ & Explicit positive box event in the random series &
-Paper-level proof in \cref{thm:closed-dyadic-modulus}; no direct public Lean
-theorem.\\
+The event proof is in \cref{lem:box-event}; its numerical endpoint inequality
+and the exact inverse implication of \cref{thm:closed-dyadic-modulus} are
+formalized in \path{FabiusInverseEffectiveContinuity.lean} through the stronger
+one-term recurrence route.\\
 \addlinespace
 Effective uniform continuity & Closed modulus and recursive integer arithmetic &
-Proved in \cref{thm:reciprocal-modulus}.  Its structural pointwise estimate is
-formalized in \path{InverseModulus.lean}; recursive-modulus packaging is not.\\
+Proved in \cref{thm:reciprocal-modulus}.  The repository predicate itself is
+formalized as \path{Fabius.fabiusInv_effectivelyUniformContinuous}, using the
+simple primitive-recursive factorial denominator at $r=n$; the report's
+smaller logarithmic-$r(n)$ packaging remains human-only.\\
+\addlinespace
+Exact dyadic ceiling denominator $d_*$ & Exact rational dyadic evaluation,
+ceiling arithmetic, and the exact threshold & Human proof in
+\cref{prop:exact-dyadic-modulus}; neither the ceiling construction nor its
+qualified fixed-target minimality is yet formalized.\\
 \addlinespace
 Sequential computability & Forward rational oracle, closed inverse modulus,
 and tolerant bisection & Proved in
 \cref{thm:bisection-correct,cor:GT-sequential}.  No tolerant-bisection or
 sequential-computability declaration is supplied by
-\path{InverseModulus.lean}.\\
+\path{FabiusInverseEffectiveContinuity.lean}.\\
 \addlinespace
 Optimal bit asymptotic & Closed lower bound plus iterated-flatness upper bound &
 Paper-level proof in \cref{thm:mu-asymptotic}; no direct public Lean theorem.\\
@@ -2377,6 +2544,15 @@ constrained forward superadditivity, local and global inverse-gap inequalities,
 global inverse subadditivity, absolute and metric pointwise moduli, attained
 exact unit-interval and totalized suprema, and the exact effective-injectivity
 threshold.  Exact declaration names appear in \cref{sec:lean-status}.\\
+\addlinespace
+\path{FabiusInverseEffectiveContinuity.lean} & Post-snapshot formalization of
+the recurrence-derived factorial endpoint lower bound, the exact numerical
+$\Delta_r$ endpoint inequality, strict and closed versions of the Delta and
+factorial dyadic inverse moduli, primitive-recursive denominator arithmetic,
+and effective uniform continuity with the simple $r=n$ factorial witness.  It
+does not formalize the probabilistic event, logarithmic $r(n)$, exact ceiling
+$d_*$, or a sequential realizer.  Every public declaration is crosswalked in
+\cref{sec:lean-status}.\\
 \addlinespace
 \path{Inverse_and_Sampling_Frontiers.tex} and
 \path{Inverse_Endpoint_All_Orders.tex} & Exact finite-prefix quantiles,

@@ -41,11 +41,14 @@ import FabiusFunction.PrincipalLambertW
 import FabiusFunction.LowerLambertW
 import FabiusFunction.GeneralizedLambertCoordinate
 import FabiusFunction.LambertBranchDichotomy
+import FabiusFunction.LambertWCurvature
 import FabiusFunction.PowerExponentialLambert
 import FabiusFunction.PowerExponentialLambertCalculus
+import FabiusFunction.PowerExponentialLambertCurvature
 import FabiusFunction.PowerExponentialLambertInverse
 import FabiusFunction.PowerExponentialLambertAsymptotics
 import FabiusFunction.PowerExponentialLambertFabius
+import FabiusFunction.PowerExponentialLambertFabiusCurvature
 import FabiusFunction.WeightedUniformSeries
 import FabiusFunction.WeightedUniformDistribution
 import FabiusFunction.WeightedUniformSupport
@@ -132,6 +135,7 @@ import FabiusFunction.ThueMorseWalsh
 import FabiusFunction.ThueMorseComplexProductBridge
 import FabiusFunction.ThueMorseSparseMoments
 import FabiusFunction.ThueMorseMixedDifference
+import FabiusFunction.ThueMorseSymmetricDifference
 import FabiusFunction.ThueMorseAutocorrelation
 import FabiusFunction.ThueMorseOverlapFree
 import FabiusFunction.ThueMorseRecurrence
@@ -383,6 +387,7 @@ import FabiusFunction.EffectiveFlatness
 import FabiusFunction.SharpFlatness
 import FabiusFunction.FabiusInverse
 import FabiusFunction.InverseModulus
+import FabiusFunction.FabiusInverseEffectiveContinuity
 import FabiusFunction.MidpointEndpointTransfer
 import FabiusFunction.InverseMidpointDefect
 import FabiusFunction.InverseLayerCake

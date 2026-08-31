@@ -3,9 +3,9 @@
 Target: `Analysis/FabiusFunction/docs/**/*.tex`, excluding this newly filed package directory.
 
 - TeX files read: **188**
-- Total source lines: **386822**
-- Total source bytes: **16641250**
-- Concatenated-corpus SHA-256: `fcbf61d797f98e27877c3132e39161832d6523cb7708d07064e7b3793271b7cd`
+- Total source lines: **387884**
+- Total source bytes: **16696934**
+- Concatenated-corpus SHA-256: `db617ceba02db5fe80f004f5d88e506fe9fe194c93d494848acb9d6bb0cf8997`
 
 The corpus digest hashes raw file bytes concatenated in lexicographic relative-path order.
 Phrase clusters are a broad overlap screen, not a decision procedure for mathematical equivalence
@@ -383,7 +383,7 @@ Matched **37** prior TeX files:
 
 ### `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
 
-- SHA-256: `e17c4dfd94d2f5f4450fe75ed115972ee00b3dab0ffdf0c71ced99661b925e93`
+- SHA-256: `7471ae0ff0905b7b9a43b6b7b55e900e9b54f9b31ba6e420b2c83517c0234d56`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
 - Structural headings:
   - section: Historical note and scope
@@ -428,6 +428,7 @@ Matched **37** prior TeX files:
   - subsection: The precise analytic statements
   - subsection: The totalized inverse
   - subsection: The exact inverse modulus
+  - subsection: Effective dyadic continuity of the inverse
   - subsection: Precise non-elementarity
   - section: Moments, generating functions, and reciprocal powers
   - subsection: Even and half moments
@@ -3004,7 +3005,7 @@ Matched **37** prior TeX files:
 
 ### `fabius_lean_walkthrough/fabius_lean_walkthrough.tex`
 
-- SHA-256: `c0c46244fe539a44f1b832b5e145d5202fe4a5e27eeea039d4aebe3032fda2a1`
+- SHA-256: `a7c02649aca5652a36221964bfdf922274188400e668e81998d53bfb50731a15`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle
 - Structural headings:
   - section: Scope and conventions
@@ -3107,6 +3108,7 @@ Matched **37** prior TeX files:
   - subsection: Why a separate coverage document matters
   - section: Thue--Morse and q-binomial identities}\label{ch:qbinomial
   - subsection: Why q-binomial algebra appears
+  - subsection: Centered mixed differences
   - subsection: The finite q-Pochhammer infrastructure
   - subsection: Why prove a specialized q-binomial theorem?
   - subsection: Raw, scalar, and polished formulas
@@ -3495,7 +3497,7 @@ Matched **37** prior TeX files:
 
 ### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Exponents_and_q_Series_Frontiers/Exponents_and_q_Series_Frontiers.tex`
 
-- SHA-256: `7dbc1f940abf464be0e783c8cb3bc9e37a248066c46db485b47e921c88ab26d7`
+- SHA-256: `9dbdfd2ad84b66485f2fa2f30a3b7a010546dd923e29f20436369903f1e719c1`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle; Integer-base atomic family
 - Structural headings:
   - section: Provenance
@@ -6780,7 +6782,7 @@ Matched **37** prior TeX files:
 
 ### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Fabius_Computability_Report/inverse_fabius_computability.tex`
 
-- SHA-256: `c258ee98ecc740981863d8a7f44c055c8bd8ee5d32f7f39a5b106517b409574e`
+- SHA-256: `17d5e306561da3b5e6c909569b89e56b68f374efbec45c9f57389cebc33be3bb`
 - Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
 - Structural headings:
   - section: Main result and proof architecture
@@ -6834,7 +6836,8 @@ Matched **37** prior TeX files:
   - section: Lean formalization status and remaining roadmap
   - subsection: Why the present \texttt{noncomputable} definition is not an obstacle
   - subsection: The completed structural inverse-modulus layer
-  - subsection: The remaining computability module
+  - subsection: The completed effective-uniform-continuity layer
+  - subsection: The remaining name-transformation module
   - subsection: Remaining formalization order
   - subsection: Reusable generic infrastructure
   - section: Further deductions, conjectures, and research directions
@@ -7433,7 +7436,7 @@ Matched **37** prior TeX files:
 
 ### `semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/Lambert_W_Guide.tex`
 
-- SHA-256: `44d6f4e61c35719173a034b246a0b47afa815a8801d94ce0a9c9259848c44386`
+- SHA-256: `f6e89bf8c515db6894c5705db612b710d7f86cd9f90fc9de94c0eee729d80f7c`
 - Phrase clusters: Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
 - Structural headings:
   - subsection: Provenance
@@ -9200,7 +9203,7 @@ Matched **37** prior TeX files:
 
 ### `semi-formalized-research-frontiers/drafts/representations/fabius_dyadic_chaos_frontier/fabius_dyadic_chaos_frontiers.tex`
 
-- SHA-256: `bb4650d2cd0ffdb16f5f4f4168367d392ca8f3f59de95fcb8b08840ec3fc6ac5`
+- SHA-256: `c5488ef45977281907989229b56efc29360868130191fe117af7072130a6f7c3`
 - Phrase clusters: Exact digit-sum zero count; Phase-locked Lambert-W saddle
 - Structural headings:
   - section: Scope, corpus audit, and contribution boundary
@@ -9234,7 +9237,6 @@ Matched **37** prior TeX files:
   - subsection: A phase-indexed limiting distribution
   - section: The no-active atom and the negative Fabius Laplace endpoint
   - section: Thue--Morse corners inside the continuous digit chaos
-  - section: Lambert-W degree cutoffs for Legendre chaos
   - section: Reproducible exact and numerical experiments
   - subsection: Certified truncation policy
   - subsection: What the program verifies
@@ -10818,7 +10820,7 @@ Matched **37** prior TeX files:
 
 ### `semi-formalized-research-frontiers/semi-formalized-research-frontiers.tex`
 
-- SHA-256: `98e85d05cf0469741a0b72a99d78d8b9148cb0c59e22886966bd81b065148a82`
+- SHA-256: `d16e6edb36dd1e1b0a9fe36f8fb8c87e885769a39152888571efd68a27dba483`
 - Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle
 - Structural headings:
   - section: Consolidation map and reading conventions
