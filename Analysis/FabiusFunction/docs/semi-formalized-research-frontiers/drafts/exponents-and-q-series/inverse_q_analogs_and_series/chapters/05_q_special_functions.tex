@@ -155,12 +155,13 @@ either by choosing \(q\) from two distinct factors, in
 
 \begin{theorem}[Exact root-of-unity ramification of \(q\)-factorials]
 \label{thm:qs-qfactorial-root}
-Let \(\zeta\ne1\) be a primitive \(d\)-th root of unity.  Then
+For every \(n\ge0\), let \(\zeta\ne1\) be a primitive \(d\)-th root of
+unity.  Then
 \[
   \operatorname{ord}_{q=\zeta}[n]_q!
   =\left\lfloor\frac nd\right\rfloor.
 \]
-In particular, if \(M=\lfloor n/2\rfloor\),
+If \(n\ge2\), put \(M=\lfloor n/2\rfloor\ge1\).  Then
 \[
   [n]_q!=M!(q+1)^M\bigl(1+\BigO(q+1)\bigr)
   \qquad(q\to-1),
@@ -171,6 +172,8 @@ and the inverse at target zero has the \(M\) branches
     +\BigO(y^{2/M}),
   \qquad 0\le j<M.
 \]
+For \(n=0,1\), one has \([n]_q!\equiv1\), so there is no inverse at target
+zero.
 \end{theorem}
 
 \begin{proof}
@@ -179,7 +182,7 @@ Because \(\zeta\ne1\), the denominator in
 simple zero there exactly when \(d\mid j\).  Exactly
 \(\lfloor n/d\rfloor\) factors therefore vanish, each simply.
 
-For \(d=2\), the even factors satisfy
+For \(d=2\) and \(n\ge2\), the even factors satisfy
 \[
   [2r]_q=r(q+1)+\BigO((q+1)^2),
 \]
@@ -189,16 +192,19 @@ coefficient \(M!\).  Applying
 Puiseux branches and their remainder.
 \end{proof}
 
-Writing \(N=\binom n2\), one also has
+For \(n\ge2\), write \(N=\binom n2>0\).  One also has
 \[
   [n]_q!=q^N\left(1+\frac{n-1}{q}+\BigO(q^{-2})\right),
 \]
 and the same logarithmic coefficient comparison as in
-\cref{thm:gq-large-inverse} yields, on each root branch,
+\cref{thm:gq-large-inverse} yields, on each choice
+\(Y=y^{1/N}\to\infty\),
 \[
-  q=y^{1/N}-\frac{n-1}{N}+\BigO(y^{-1/N})
-   =y^{1/N}-\frac2n+\BigO(y^{-1/N}).
+  q=Y-\frac{n-1}{N}+\BigO(Y^{-1})
+   =Y-\frac2n+\BigO(Y^{-1}).
 \]
+For \(n=0,1\), the forward function is constant and has no large-target
+inverse.
 
 \section{The \(q\)-gamma function}
 \label{sec:qs-qgamma}
@@ -232,10 +238,12 @@ series with exponents in
 \]
 For rational \(x\) it is a Puiseux series; for irrational \(x\), its natural
 ordering is a generalized-power ordering rather than an ordinary Taylor
-ordering.  The two primitive contributions are
-\[
-  \log\Gamma_q(x)=q^x-(2-x)q+\text{higher supported powers}.
-\]
+ordering.  Before coincident exponents are collected, the \((m,r)=(1,0)\)
+term of the first double series contributes \(q^x\), while the two
+integer-power series contribute \(-(2-x)q\) at exponent one.  These are
+bookkeeping contributions, not necessarily the first two terms in the
+ordered generalized-power expansion.  Whenever exponents coincide, all
+contributions at that exponent must be collected.
 \end{proposition}
 
 \begin{proof}
@@ -248,8 +256,9 @@ Lambert identity
 from \cref{lem:ip-lambert-log}, together with
 \(\log(1-q)=-\sum_{m\ge1}q^m/m\).  Absolute convergence permits expansion of
 each geometric denominator and rearrangement.  The displayed exponent set is
-then immediate, and the terms \(m=1,r=0\) and the integer exponent one give
-\(q^x-(2-x)q\), subject to the stated collisions at special \(x\).
+then immediate.  The \((m,r)=(1,0)\) term and the integer exponent-one terms
+give the two stated uncollected contributions; collecting all terms with a
+common exponent is essential when collisions occur.
 \end{proof}
 
 The logarithmic derivative and its derivative are
@@ -364,7 +373,7 @@ At \(x=1,2\), \(\Gamma_q(x)\equiv1\), so there is no base inverse.
 \section{\(q\)-digamma inversion}
 \label{sec:qs-qdigamma}
 
-\begin{proposition}[Global argument inverse and the exceptional base fold]
+\begin{proposition}[Global argument inverse and the exceptional reciprocal fold]
 \label{prop:qs-qdigamma-inverse}
 For fixed \(0<q<1\), the function \(\psi_q\) is a strictly increasing
 bijection
@@ -382,7 +391,31 @@ At fixed \(x\ne3/2\), base inversion at \(q=1\) is ordinary.  At \(x=3/2\),
   \psi_{\EulerE^{-t}}(3/2)-\psi(3/2)
   =-\frac{t^2}{288}+\BigO(t^4),
 \]
-so the base inverse is a quadratic fold.
+so, within the original domain \(0<q<1\), \(q=1\) is a one-sided quadratic
+endpoint.  More precisely, if
+\[
+ \Delta=\psi_{\EulerE^{-t}}(3/2)-\psi(3/2),
+\]
+then the unique local inverse with \(t\downarrow0\) is
+\[
+ t=\sqrt{-288\Delta}\,\bigl(1+\BigO(\Delta)\bigr),
+ \qquad \Delta\uparrow0,\quad \Delta<0.
+\]
+
+There is also a natural genuine two-sided statement.  Extend the standard
+normalization to \(q>1\) by
+\[
+ \Gamma_q(x):=q^{(x-1)(x-2)/2}\Gamma_{1/q}(x),
+ \qquad \psi_q(x):=\partial_x\log\Gamma_q(x),
+\]
+and use the classical functions at \(q=1\).  Then
+\[
+ \psi_q(x)=\psi_{1/q}(x)+\left(x-\frac32\right)\log q.
+\]
+In particular, \(t\mapsto\psi_{\EulerE^{-t}}(3/2)\) is reciprocal-even,
+is \(C^2\) at \(t=0\), and has a genuine two-sided quadratic fold there.
+Its branches are \(t=\pm\sqrt{-288\Delta}(1+\BigO(\Delta))\), equivalently
+\(q=\EulerE^{\mp\sqrt{-288\Delta}(1+\BigO(\Delta))}\).
 \end{proposition}
 
 \begin{proof}
@@ -395,14 +428,36 @@ local uniformity.  The linear coefficient
   c_2(x)=\frac{(x-2)(x-1)(2x+3)}{144}
 \]
 gives \(c_2'(3/2)=-1/288\).  The inverse function theorem handles the
-nonexceptional points, and the finite-ramification theorem handles the
-nondegenerate quadratic point.
+nonexceptional points.  The differentiated remainder in
+\cref{thm:qs-qgamma-one} gives, at the exceptional point,
+\[
+ \partial_t\psi_{\EulerE^{-t}}(3/2)
+ =-\frac{t}{144}+\BigO(t^3)<0
+\]
+for all sufficiently small \(t>0\).  Hence the physical one-sided inverse
+exists and is locally unique.  Factoring the forward relation as
+\(\Delta=-t^2(1+\BigO(t^2))/288\) and taking the positive square root gives
+its displayed expansion.
+
+The twice-differentiated remainder likewise gives
+\[
+ \partial_t^2\psi_{\EulerE^{-t}}(3/2)
+ =-\frac1{144}+\BigO(t^2).
+\]
+For the reciprocal extension, logarithmic differentiation in \(x\) gives
+the stated identity for \(\psi_q\).  At \(x=3/2\) its correction term
+vanishes, so replacing \(q\) by \(1/q\), or \(t\) by \(-t\), changes
+nothing.  The one-sided expansion and its differentiated remainder patch
+with this exact reflection to a \(C^2\) function at zero, with second
+derivative \(-1/144\).  The reflected positive and negative solutions are
+therefore the asserted two branches.  This real argument requires no
+holomorphic continuation across the boundary \(|q|=1\).
 \end{proof}
 
 \section{\(q\)-beta coordinate and base inverses}
 \label{sec:qs-qbeta}
 
-For \(x,y>0\), define
+For \(x,y>0\) and initially \(0<q<1\), define
 \[
   B_q(x,y):=\frac{\Gamma_q(x)\Gamma_q(y)}{\Gamma_q(x+y)}.
 \]
@@ -428,9 +483,26 @@ The base inverse is ordinary when \(xy\ne1\).  On \(xy=1\),
 \[
   b_2(x,1/x)=-\frac{(x-1)^2}{24x};
 \]
-there is a quadratic fold for \(x\ne1\), while
-\(B_q(1,1)\equiv1\) makes the base completely unidentifiable at
-\((1,1)\).
+For \(x\ne1\), this is a one-sided quadratic endpoint in the original
+domain.  If
+\[
+ \Delta=\log\frac{B_{\EulerE^{-t}}(x,1/x)}{B(x,1/x)},
+\]
+then its unique local inverse with \(t\downarrow0\) is
+\[
+ t=\sqrt{-\frac{24x}{(x-1)^2}\Delta}\,
+ \bigl(1+\BigO(\Delta)\bigr),
+ \qquad \Delta\uparrow0,\quad \Delta<0.
+\]
+Under the reciprocal extension of \(\Gamma_q\) from
+\cref{prop:qs-qdigamma-inverse},
+\[
+ B_q(x,y)=q^{1-xy}B_{1/q}(x,y).
+\]
+Consequently, on \(xy=1\) the extended beta function is exactly
+reciprocal-even and the one-sided endpoint becomes a genuine two-sided
+quadratic fold.  At \((x,y)=(1,1)\), the identity \(B_q(1,1)\equiv1\)
+makes the base completely unidentifiable.
 \end{theorem}
 
 \begin{proof}
@@ -449,8 +521,33 @@ Subtract the \(x+y\) instance of \cref{thm:qs-qgamma-one} from the sum of its
 gives the displayed \(b_1,b_2\); no cubic term exists because the
 \(q\)-gamma expansion has no odd term beyond the linear one.  The inverse
 function theorem applies when \(b_1\ne0\).  On \(xy=1\), substitution gives
-the stated negative \(b_2\), nonzero unless \(x=1\).  At the remaining point,
-\(\Gamma_q(1)=\Gamma_q(2)=1\) proves the exact identity.
+the stated negative \(b_2\), nonzero unless \(x=1\).  Uniform differentiated
+remainders give
+\[
+ \partial_t\Delta
+ =-\frac{(x-1)^2}{12x}t+\BigO(t^3)<0
+\]
+for sufficiently small \(t>0\).  Thus the one-sided inverse exists and is
+unique, and taking the positive square root in
+\(\Delta=-(x-1)^2t^2/(24x)+\BigO(t^4)\) gives its displayed expansion.
+The twice-differentiated remainder is
+\[
+ \partial_t^2\Delta
+ =-\frac{(x-1)^2}{12x}+\BigO(t^2),
+\]
+which will control the regularity at the reflected endpoint.
+
+For \(q>1\), substitution of the reciprocal \(q\)-gamma normalization into
+the definition of \(B_q\) gives an exponent
+\[
+ \frac{(x-1)(x-2)+(y-1)(y-2)-(x+y-1)(x+y-2)}2
+ =1-xy,
+\]
+which proves the reciprocal identity.  On \(xy=1\) it gives exact evenness
+under \(t\mapsto-t\); the differentiated one-sided remainder patches to a
+\(C^2\) function with nonzero second derivative, and reflection supplies
+the second branch.  At \((1,1)\),
+\(\Gamma_q(1)=\Gamma_q(2)=1\) proves the exact constant identity.
 \end{proof}
 
 \begin{warning}
@@ -478,15 +575,16 @@ scaling:
 
 \begin{proposition}[Exact inverse reduction and \(q\to1\) generator]
 \label{prop:qs-qexponential}
-If \(A_q\) is a selected argument-inverse branch of
+Let \(|q|<1\).  If \(A_q\) is a selected argument-inverse branch of
 \(a\mapsto(a;q)_\infty\), then
 \[
   \mathsf e_q^{-1}(y)=A_q(y^{-1}),
   \qquad
   \mathsf E_q^{-1}(y)=-A_q(y).
 \]
-Writing \(h=1-q\), the scaled functions satisfy the convergent logarithmic
-identities
+Writing \(h=1-q\), suppose additionally that \(|hx|<1\), and choose the
+logarithms determined by their power series at \(x=0\).  Then the scaled
+functions satisfy the absolutely convergent identities
 \[
   \log e_q(x)
   =\sum_{m\ge1}\frac{h^m x^m}{m(1-(1-h)^m)},
@@ -496,7 +594,9 @@ identities
   =\sum_{m\ge1}\frac{(-1)^{m+1}h^m x^m}
                        {m(1-(1-h)^m)}.
 \]
-At each fixed order in \(h\), only finitely many indices \(m\) contribute.
+For every fixed \(x\), the condition \(|hx|<1\) holds for all sufficiently
+small positive \(h\).  In the resulting \(h\downarrow0\) asymptotic
+expansion, only finitely many indices \(m\) contribute at each fixed order.
 \end{proposition}
 
 \begin{proof}
@@ -506,7 +606,18 @@ data retained.  Apply \cref{lem:ip-lambert-log} with
 \(a=\pm hx\) and \(q=1-h\), remembering the minus sign introduced by the
 reciprocal in \(e_q\).  Since the \(m\)-th summand begins at order
 \(h^{m-1}\) after the denominator is expanded, only finitely many \(m\) can
-affect any prescribed coefficient.
+affect any prescribed coefficient.  For completeness, fix \(K\ge0\), take
+real \(0<h<1\), and shrink \(h\) until \(h|x|\le1/2\).  Since
+\(1-(1-h)^m\ge h\), the tail satisfies
+\[
+ \sum_{m\ge K+2}
+ \left|\frac{h^mx^m}{m(1-(1-h)^m)}\right|
+ \leq\frac1h\sum_{m\ge K+2}\frac{(h|x|)^m}{m}
+ =\BigO(h^{K+1}).
+\]
+The alternating numerator obeys the same bound.  The finitely many terms
+with \(m\le K+1\) may be expanded individually, proving the asserted
+coefficientwise asymptotic statement with a genuine remainder estimate.
 \end{proof}
 
 For example,

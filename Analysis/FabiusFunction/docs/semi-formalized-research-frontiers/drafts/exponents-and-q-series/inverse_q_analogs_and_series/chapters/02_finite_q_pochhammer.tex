@@ -134,7 +134,18 @@ Let \(q>0\), \(q\ne1\), and order the zeros increasingly as
   \(P_n(c_j,q)\) have square-root ramification.
 \item There is no critical point on \((r_{n-1},\infty)\).
 \end{enumerate}
-These intervals exhaust the real inverse branches.
+For \(n\ge2\), the maximal real intervals on which
+\(P_n(\,\cdot\,,q)\) is one-to-one are
+\[
+ (-\infty,c_0],\qquad
+ [c_{j-1},c_j]\quad(1\leq j\leq n-2),\qquad
+ [c_{n-2},\infty).
+\]
+Each contains exactly one simple zero \(r_j\), and together they exhaust the
+maximal real injective branches; their interiors are the maximal open domains
+of regular real inversion.  Equivalently, each zero-free gap
+\((r_j,r_{j+1})\) consists of two half-branches meeting at the fold \(c_j\).
+When \(n=1\), the sole maximal branch is all of \(\mathbb R\).
 \end{theorem}
 
 \begin{proof}
@@ -156,8 +167,19 @@ On \((r_j,r_{j+1})\), the logarithmic derivative decreases continuously from
 \cref{fp-root-logder}; hence \(P_n''\ne0\).  Taylor's formula and reversion of
 its first nonzero quadratic term give two square-root sheets.  To the right of
 the largest root every summand in \cref{fp-root-logder} is positive.  The
-listed intervals partition the real line after the roots are included as
-endpoints, so there are no further real branches.
+preceding argument, together with the nonvanishing derivatives at the simple
+zeros, proves that \(c_0,\ldots,c_{n-2}\) are all the real zeros of
+\(\partial_aP_n\).  Its sign is therefore fixed and nonzero on each component
+of their complement.  The function is strictly monotone on the closure of
+each such component.  Because every \(c_j\) is a strict local extremum, no
+closure can be extended past one of its finite endpoints while preserving
+injectivity.  These closures are therefore precisely the maximal injective
+intervals, while their interiors are the maximal regular inverse domains.
+The interlacing
+\(c_{j-1}<r_j<c_j\), with the evident one-sided versions at the extremes,
+shows that each contains exactly one simple zero; analytic inversion continues
+through that zero.  For \(n=1\), the polynomial is linear and the same
+conclusion is immediate.
 \end{proof}
 
 Put \(N=\binom n2\), \(A_n=(-1)^nq^N\), and
@@ -188,12 +210,14 @@ At \(a_s=\zeta^{-s}\), \(0\leq s<d\), the zero multiplicity is
  \nu_s=M+\mathbf1_{\{s<r\}}.
  \label{fp-root-multiplicity}
 \end{equation}
-Hence, on the ramified cover of a sufficiently small punctured target
-neighborhood, the inverse at target zero has exactly \(\nu_s\) local Puiseux
-sheets, coalescing at \(a_s\).  Equivalently, after choosing a
-\(\nu_s\)-th root on a simply connected punctured target domain, these are the
-\(\nu_s\) determinations obtained by multiplying that root by the roots of
-unity.
+For every \(s\) with \(\nu_s\ge1\), the point \(a_s\) is a zero of
+multiplicity \(\nu_s\).  On the ramified cover of a sufficiently small
+punctured target neighborhood, the inverse at target zero then has exactly
+\(\nu_s\) local Puiseux sheets coalescing at \(a_s\).  Equivalently, after
+choosing a \(\nu_s\)-th root on a simply connected punctured target domain,
+these are the \(\nu_s\) determinations obtained by multiplying that root by
+the \(\nu_s\)-th roots of unity.  When \(\nu_s=0\), \(a_s\) is not a zero
+and contributes no inverse germ at target zero.
 At the unit target \(y=1\), the branch through \(a=0\) is regular when
 \(r>0\).  When \(r=0\), it has the \(d\) local sheets
 \begin{equation}
@@ -210,9 +234,10 @@ residual block.  Each complete block contributes
 \cref{fp-root-block}.  A factor vanishes at \(a_s\) exactly when its index is
 congruent to \(s\pmod d\).  That residue occurs \(M\) times in the complete
 blocks and once more precisely when \(s<r\), proving
-\cref{fp-root-multiplicity}.  Removing the nonvanishing factors leaves a
-nonzero constant times \((a-a_s)^{\nu_s}\), whose equation with \(y\) has
-\(\nu_s\) Puiseux determinations.
+\cref{fp-root-multiplicity}.  When \(\nu_s\ge1\), removing the nonvanishing
+factors leaves a nonzero constant times \((a-a_s)^{\nu_s}\), whose equation
+with \(y\) has \(\nu_s\) Puiseux determinations.  When \(\nu_s=0\), no factor
+vanishes at \(a_s\), so there is no inverse germ over target zero there.
 
 At \(a=0\), the derivative is
 \(-\sum_{j=0}^{n-1}\zeta^j=-\sum_{j=0}^{r-1}\zeta^j\), which is nonzero for
