@@ -42,12 +42,20 @@ New standalone intake members:
   Lean verification.
 
 - [`Inverse_Fabius_Computability_Report/`](Inverse_Fabius_Computability_Report/),
-  *Computability of the Inverse Fabius Function* (29 pp), arrived on
+  *Computability of the Inverse Fabius Function* (34 pp after post-publication
+  revision; 29 pp at intake), arrived on
   2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (outer SHA-256
   `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
   All five submitted payload hashes verified and every text payload was
-  already LF. It remains standalone pending post-publication assessment and a
-  Lean crosswalk; the newly submitted bridge is not thereby Lean-verified.
+  already LF. A post-publication claim-by-claim reassessment now crosswalks
+  the structural least-mass, inverse-gap, exact-supremum, subadditivity, and
+  effective-injectivity layer to compiler-validated
+  [`InverseModulus.lean`](../../../../Lean/FabiusFunction/InverseModulus.lean).
+  That module does not formalize the report's closed `Delta_r` bound,
+  recursive-modulus packaging, tolerant-bisection realizer, sequential
+  computability theorem, or input-bit asymptotics. The revision also corrects
+  `d_*`: it is denominator-minimal for the fixed dyadic proxy `2^{-r(n)}`,
+  not for the weaker target tolerance `1/n`.
 
 - [`inverse_fabius_iterates_nowhere_analytic/`](inverse_fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Inverse

@@ -381,6 +381,7 @@ import FabiusFunction.Convexity
 import FabiusFunction.EffectiveFlatness
 import FabiusFunction.SharpFlatness
 import FabiusFunction.FabiusInverse
+import FabiusFunction.InverseModulus
 import FabiusFunction.MidpointEndpointTransfer
 import FabiusFunction.InverseMidpointDefect
 import FabiusFunction.InverseLayerCake
