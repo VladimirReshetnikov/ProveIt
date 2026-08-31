@@ -1,5 +1,11 @@
 # Frontier compilations
 
+> **Source-only merge status (2026-08-31).** Canonical-notation edits changed
+> the consolidated `Frontier_Compilations.tex`, but the retained 274-page PDF
+> was not rebuilt. Its previous page, font, and build facts are historical
+> validation facts rather than a synchronization claim; recompilation and any
+> dependent metadata refresh are deferred.
+
 The Digital Spectral Geometry intake is registered once, in the
 [`spectra-and-arithmetic`](../spectra-and-arithmetic/) group.  That filing
 preserves the full verified arrival ledger, repairs the failed audit and
@@ -8,19 +14,6 @@ policy-conforming canonical build; the unrepaired duplicate formerly listed
 here has been removed.
 
 New standalone intake members:
-
-- [`fabius_information_frontier/`](fabius_information_frontier/), *Exact
-  Information Geometry and New Frontiers for the Fabius--Rvachev System*, is
-  the cross-cutting 30-page A4 intake filed from
-  `fabius_information_frontier_report.zip` (751,588 bytes; SHA-256
-  `41f9aba6eb85bb173827f13cb6b7b1d54b7ea9346faf7c9e5b1af859bbd42ec7`).
-  Its immutable submitted 18-entry ledger remains preserved. The current
-  2,137-line canonical-notation source was not rebuilt at the user's request,
-  so the retained PDF is the last submitted render and the operational
-  ledger's README and TeX rows remain pending. Its full geometric-uniform,
-  entropy, information-spectrum, and endpoint scope makes this broader
-  frontier group its canonical home; manuscript labels do not assert Lean
-  formalization.
 
 The standalone
 [`Geometric_Uniform_Frontier_Directions/`](Geometric_Uniform_Frontier_Directions/)
@@ -63,7 +56,7 @@ audited packages, without wholesale textual duplication.
   establishes that any manuscript theorem is proved in Lean.
 
 The broad multi-topic "collected new results" report series,
-consolidated (2026-08-28) into the 275-page single volume
+consolidated (2026-08-28) into the retained 274-page single volume
 [`Frontier_Compilations/`](Frontier_Compilations/): ten absorbed reports,
 displayed as ten outer parts.
 

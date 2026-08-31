@@ -4478,6 +4478,41 @@ The pushforward equality \eqref{eq:rvachev-absolute-pushforward} is
 \path{RvachevDerivativeDistribution.lean}.
 \end{proof}
 
+\begin{corollary}[All signed natural-power moments]
+\label{cor:rvachev-derivative-signed-nat-moments}
+For every \(n,m\in\NaturalNumbers\), ordinary natural powers satisfy the exact
+Boolean-cube formula
+\begin{equation}
+ \int_{-1}^{1}\left(\RvachevUp^{(n)}(x)\right)^m\Differential x
+ =2^{-n}\left(1+(-1)^m\right)^n\left(2^{T_n}\right)^m
+ \int_{-1}^{1}\RvachevUp(y)^m\Differential y.              \label{eq:rvachev-signed-nat-moments}
+\end{equation}
+Consequently, if \(m\) is even, then for every \(n\in\NaturalNumbers\)
+\begin{equation}
+ \int_{-1}^{1}\left(\RvachevUp^{(n)}(x)\right)^m\Differential x
+ =\left(2^{T_n}\right)^m
+ \int_{-1}^{1}\RvachevUp(y)^m\Differential y,              \label{eq:rvachev-even-nat-moments}
+\end{equation}
+whereas if \(m\) is odd and \(0<n\), then
+\begin{equation}
+ \int_{-1}^{1}\left(\RvachevUp^{(n)}(x)\right)^m\Differential x=0.            \label{eq:rvachev-odd-nat-moments}
+\end{equation}
+The general and even formulas include derivative order zero and moment order zero.
+The positive-order hypothesis in the odd formula is essential: when \(n=0\), the
+factor \(\left(1+(-1)^m\right)^n\) is \(0^0=1\), and the formula returns the
+generally nonzero base odd moment.
+\end{corollary}
+
+\begin{proof}[Formal proof]
+Equations \eqref{eq:rvachev-signed-nat-moments},
+\eqref{eq:rvachev-even-nat-moments}, and \eqref{eq:rvachev-odd-nat-moments} are respectively
+\lean{intervalIntegral_iteratedDeriv_rvachev_pow},
+\lean{intervalIntegral_iteratedDeriv_rvachev_pow_of_even}, and
+\lean{intervalIntegral_iteratedDeriv_rvachev_pow_eq_zero_of_odd} in
+\path{RvachevDerivativeDistribution.lean}.  The final theorem assumes exactly
+\(0<n\) and odd \(m\).
+\end{proof}
+
 \begin{corollary}[All nonnegative real absolute moments]
 \label{cor:rvachev-derivative-rpow-moments}
 For every \(n\in\NaturalNumbers\) and every real \(p\ge0\),
@@ -4498,14 +4533,18 @@ This is \lean{intervalIntegral_abs_iteratedDeriv_rvachev_rpow} in
 
 \begin{boxedremark}
 \textbf{Exact current boundary.}
-The signed API above is the finite continuous-test-function mixture
-\eqref{eq:rvachev-signed-mixture}; a separately packaged Borel pushforward law simplified
-to an independent Rademacher sign is not yet formalized.  Nor does the current module state
+The signed API consists of the finite continuous-test-function mixture
+\eqref{eq:rvachev-signed-mixture} and the ordinary \(\NaturalNumbers\)-power formulas
+\eqref{eq:rvachev-signed-nat-moments}--\eqref{eq:rvachev-odd-nat-moments}.  The latter
+are distinct from the nonnegative-real \lean{Real.rpow} absolute moments in
+\eqref{eq:rvachev-rpow-moments}.  A separately packaged signed Borel pushforward law
+simplified to an independent Rademacher sign is not yet formalized.  Nor does the current module state
 the \lean{eLpNorm} or general rearrangement-invariant norm ladder, the exact inverse-Fabius
 level sets, the beta-transform identities, or the later spectral layers.  Those claims
 remain in the research-frontier report.  Equation
 \eqref{eq:rvachev-absolute-pushforward} is the formal measure-theoretic base from which such
-absolute-value corollaries can subsequently be proved.
+absolute-value corollaries can subsequently be proved.  The exhaustive public surface of
+\path{RvachevDerivativeDistribution.lean} is one definition and sixteen theorems.
 \end{boxedremark}
 
 \subsection{Effective flatness}

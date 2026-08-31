@@ -34,11 +34,12 @@ reference; `Cyclotomic_q_Fabius_Rvachev_Frontier/` retains the wider
 natural-boundary and cyclotomic blow-up program.  `PROVENANCE.md` records these
 and the other scope boundaries explicitly.
 
-The final publication gate is three serial pdfLaTeX passes, a clean final log,
-full-page raster inspection, A4 and metadata checks, embedded/subset Libertinus
-and Type-1 fonts with no Type 3 fonts, a verified checksum ledger, and a
-source-to-concordance coverage audit.
-
-No canonical PDF has been generated at this source-only merge checkpoint.
-Per the user's instruction, PDF generation is deferred and the publication
-gate above remains open.
+The publication gate completed on 2026-08-31.  Three serial pdfLaTeX passes
+produced the committed 85-page PDF with a clean final log: no undefined or
+multiply defined references, rerun request, package warning, or underfull or
+overfull box.  All 85 pages were rasterized and inspected.  `pdfinfo` confirms
+A4, complete title/author/subject/keyword metadata, and no encryption;
+`pdffonts` reports 27 embedded/subset Type-1 rows, five Libertinus rows, and no
+Type 3 font.  The 43-entry retained-asset ledger verifies exactly, and the
+revision-backed audit reproduces all 260 concordance rows across the ten
+immutable source fields.

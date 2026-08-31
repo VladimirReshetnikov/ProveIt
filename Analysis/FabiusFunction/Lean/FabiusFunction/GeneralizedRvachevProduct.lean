@@ -561,11 +561,12 @@ of the zeroth factor is Mathlib's `tprod_eq_zero_mul'`, whose
 multipliability hypothesis is supplied by
 `generalizedSincFactors_multipliable` for the shifted sequence.
 
-Only the one-step law is proved here.  The iterated form
-`Φ_a(2^m z)` is still not proved anywhere in the corpus.  The
-finite-difference factorization of `Φ_{S^m a}` is, in
-`FabiusFunction.WeightLinearityProducts`
-(`generalizedRvachevProduct_shift_factorization`), wherever the
+Only the one-step law is proved in this module.  Its full iterated form
+`Φ_a(2^m z)` is proved downstream as
+`Fabius.generalizedRvachevProduct_two_pow_mul` in
+`FabiusFunction.WeightLinearityProducts`.  The same downstream module
+also proves the finite-difference factorization of `Φ_{S^m a}` as
+`generalizedRvachevProduct_shift_factorization`, wherever the
 differences it uses are nonnegative — which is where both sides are
 defined, `Φ` accepting only `ℕ`-valued weights. -/
 theorem generalizedRvachevProduct_two_mul

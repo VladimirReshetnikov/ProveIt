@@ -1540,15 +1540,18 @@ whenever the left side is entire.  These statements are \statusproved.  The expo
 content of \eqref{p1:eq:shift-refinement}--\eqref{p1:eq:mshift-refinement}---that passing to $S^ma$
 exposes the first $m$ layers and shifts the rest---is formalized as
 \lean{Fabius.weightedScaleMultiplicity_base_pow_mul} (\lean{WeightedScaleMultiplicity.lean}),
-for an arbitrary base $b>1$ and weights in an arbitrary additive commutative monoid.  The
-iterated dilation identities \eqref{p1:eq:shift-refinement}--\eqref{p1:eq:mshift-refinement}
-are formalized only at $a_h\equiv1$, as
-\lean{Fabius.rvachevFourierProduct_two_mul} and \lean{Fabius.rvachevFourierProduct_two_pow_mul}
-(\lean{SincProductShells.lean}); these are instances of \lean{Fabius.tprod_geom_scale} and
-\lean{Fabius.tprod_geom_scale_pow} (\lean{GeometricScaleProducts.lean}), which renormalize a
-scale product $\prod_ng(z/c^n)$ for an arbitrary factor function $g$, an arbitrary nonzero ratio
-$c$ and an arbitrary commutative topological monoid---but for one fixed $g$, so they do not by
-themselves reach a variable exponent sequence.  The finite-difference factorization
+for an arbitrary base $b>1$ and weights in an arbitrary additive commutative monoid.  At the
+product level, \lean{Fabius.generalizedRvachevProduct_two_mul}
+(\lean{GeneralizedRvachevProduct.lean}) proves \eqref{p1:eq:shift-refinement}, and
+\lean{Fabius.generalizedRvachevProduct_two_pow_mul}
+(\lean{WeightLinearityProducts.lean}) proves the full iterated identity
+\eqref{p1:eq:mshift-refinement} for every admissible $\NaturalNumbers$-valued exponent sequence
+and every $m\ge0$.  The constant sequence $a_h\equiv1$ gives the earlier specializations
+\lean{Fabius.rvachevFourierProduct_two_mul} and
+\lean{Fabius.rvachevFourierProduct_two_pow_mul} (\lean{SincProductShells.lean}).  The generic
+renormalization lemmas \lean{Fabius.tprod_geom_scale} and
+\lean{Fabius.tprod_geom_scale_pow} (\lean{GeometricScaleProducts.lean}) remain the common
+fixed-factor mechanism behind those specializations.  The finite-difference factorization
 \eqref{p1:eq:finite-difference-factorization} is now formalized as an identity of products,
 in \path{WeightLinearityProducts.lean}, and by supplying the passage the last sentence of this
 paragraph calls for --- once, and in the generality that sentence describes rather than for this
@@ -1571,9 +1574,9 @@ $\NaturalNumbers$; a combination with a negative coefficient names no transform 
 statement is the factorization \emph{wherever the differences $\Delta^ra$ are nonnegative},
 which is precisely the case in which our own display needs no passage through germs.  The
 signed case --- where the apparent poles cancel because the left side is entire --- is not
-formalized.  The remaining unformalized analytic identity in this theorem is the iterated
-dilation $\Phi_a(2^mz)$ itself; only the one-step law
-\lean{Fabius.generalizedRvachevProduct\_two\_mul} is available.
+formalized.  Both dilation identities themselves are formalized for arbitrary admissible
+$\NaturalNumbers$-valued exponents; \lean{Fabius.shiftExponent\_iterate} identifies the shifted
+tail in the iterated theorem with $h\mapsto a_{h+m}$.
 
 The exponent-level content is formal as well, in
 \path{ShiftDifferenceWeights.lean}: the identity $S^m=(I+\Delta)^m$ that drives it is the

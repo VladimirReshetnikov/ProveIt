@@ -72,7 +72,6 @@
 \newsharedtheorem{remark}{Remark}
 \newsharedtheorem{warning}{Warning}
 
-\newcommand{\ord}{\operatorname{ord}}
 \newcommand{\Gal}{\operatorname{Gal}}
 \newcommand{\FieldNorm}{\operatorname{N}}
 \newcommand{\PhiU}{\Phi}
@@ -152,7 +151,7 @@ The second main theorem is a finite dyadic spectral transform.  If $N=2^n$ and
 $r$ is odd with $1\le r<N$, define
 \[
  A_{n,r}=\frac1N\left[1-2\sum_{j=1}^{N-1}
- F\!\left(\frac jN\right)\cos\!\left(\frac{\pi rj}{N}\right)\right].
+ \FabiusBounded\!\left(\frac jN\right)\cos\!\left(\frac{\pi rj}{N}\right)\right].
 \]
 Then the exact alias identity
 \[
@@ -166,7 +165,7 @@ transform, and
  \qquad(n\ge2).
 \]
 Substitution of the repository's finite $q=1/2$ Gaussian-binomial formula for
-each $F(j/N)$ therefore gives superexponentially convergent, finite
+each $\FabiusBounded(j/N)$ therefore gives superexponentially convergent, finite
 $q$-binomial--Thue--Morse--cyclotomic approximants to every fixed half-integer
 Fourier amplitude.
 
@@ -234,7 +233,7 @@ of very recent deductions that are not yet part of the main exposition.
 
 The following are \emph{not} claimed as discoveries here.
 \begin{enumerate}
- \item The relations between the bounded Fabius function $F$, its signed global
+ \item The relations between the bounded Fabius function $\FabiusBounded$, its signed global
  extension $\FabiusGlobal$, and Rvachev's even compactly supported function $\RvachevUp$.
  \item The refinement differential equation, the entire Fourier product, the
  cosine-product form, and rapid decay of $\PhiU$.
@@ -243,7 +242,7 @@ The following are \emph{not} claimed as discoveries here.
  formula for $\FabiusGlobal(m/2^n)$.
  \item The integer zero set of $\PhiU$, multiplicity $1+\nu_2(m)$ at a nonzero
  integer $m$, strict logarithmic concavity between zeros, and the sign law
- $\operatorname{sgn}\PhiU(x)=(-1)^{s_2(M)}$ on $M<x<M+1$.
+ $\Sign \PhiU(x)=(-1)^{s_2(M)}$ on $M<x<M+1$.
  \item The pointwise, metric, probabilistic, extremal, annular, and transfer-operator
  Fourier-decay results developed in the successive decay reports.
  \item The corrected endpoint asymptotic in the lower-Lambert coordinate,
@@ -309,7 +308,7 @@ Half-integer cosine spectrum & Isolates the sequence $a_k=\PhiU(k+1/2)$ as the n
 Weighted Prouhet theorem & Proves equality of every positive weighted even moment in the Thue--Morse partition of the odd integers. & \newresult \\
 Spectral quadrature & Shows $\sum_k\ThueMorseSign{k}w_kP((2k+1)^2)=P(0)/2$ for every polynomial $P$. & \newresult \\
 Dyadic moment filtration & Converts every derivative jet at a reduced dyadic point into a half-integer spectral moment and identifies its exact terminating depth. & \newresult\ formulation \\
-Beyond-all-orders remainder & Rewrites $F(x)$ after subtraction of an arbitrary cosine Taylor polynomial, with all algebraic terms cancelling exactly. & \newresult \\
+Beyond-all-orders remainder & Rewrites $\FabiusBounded(x)$ after subtraction of an arbitrary cosine Taylor polynomial, with all algebraic terms cancelling exactly. & \newresult \\
 Exact dyadic alias transform & Gives a finite DCT of dyadic Fabius values equal to a complete folded half-integer alias class. & \newresult\ Abstract cyclic engine formal; specialization remains a separate Lean obligation. \\
 Certified convergence & Gives a uniform $2^{-n^2/2+\BigO(n)}$ error bound from the folded coefficient to $\PhiU(r/2)$. & \newresult \\
 $q$-binomial spectral approximants & Substitutes the finite Gaussian-binomial formula into the DCT, producing exact cyclotomic approximants. & \newresult \\
@@ -325,7 +324,7 @@ Alias-sign positivity & Conjectures positivity of the residual shifted spectral 
 
 \subsection{The three functions}
 
-Let $F:[0,1]\to[0,1]$ be the bounded Fabius function.  Let
+Let $\FabiusBounded:[0,1]\to[0,1]$ be the bounded Fabius function.  Let
 \begin{equation}\label{p1:eq:global-F}
  \FabiusGlobal(x):=\sum_{n=0}^{\infty}\ThueMorseSign{n}\RvachevUp(x-2n-1),
  \qquad \ThueMorseSign{n}:=(-1)^{s_2(n)},
@@ -334,14 +333,14 @@ be its signed global extension; the sum is locally finite.  On $[-1,1]$,
 \begin{equation}\label{p1:eq:Up-F-relations}
  \RvachevUp(t)=\FabiusGlobal(t+1)=
  \begin{cases}
-  F(t+1),&-1\le t\le0,\\
-  F(1-t)=1-F(t),&0\le t\le1.
+  \FabiusBounded(t+1),&-1\le t\le0,\\
+  \FabiusBounded(1-t)=1-\FabiusBounded(t),&0\le t\le1.
  \end{cases}
 \end{equation}
 The function $\RvachevUp$ is even, nonnegative, $C^\infty$, supported on $[-1,1]$,
 normalized by $\int_{\RealNumbers}\RvachevUp=1$, and satisfies $\RvachevUp(0)=1$.
 Every positive derivative of $\RvachevUp$ vanishes at $0$, because on the right of
-zero it is $1-F(t)$ and $F$ is flat at the origin.
+zero it is $1-\FabiusBounded(t)$ and $\FabiusBounded$ is flat at the origin.
 
 The global derivative identities are
 \begin{equation}\label{p1:eq:global-derivatives}
@@ -380,7 +379,7 @@ selecting the first $J$ factors gives the elementary rapid-decay estimate
 The nonzero real zeros are exactly the integers; at $m\ne0$ the multiplicity is
 $1+\nu_2(|m|)$.  If $M<x<M+1$, then
 \begin{equation}\label{p1:eq:Phi-sign-law}
- \operatorname{sgn}\PhiU(x)=(-1)^{s_2(M)}.
+ \Sign \PhiU(x)=(-1)^{s_2(M)}.
 \end{equation}
 
 \subsection{The exact dyadic \texorpdfstring{$q$}{q}-binomial formula}
@@ -401,7 +400,7 @@ $\GaussianBinomial{n}{k}{q}$, one has for $m,n\in\NaturalNumbers$ and every rati
 \end{aligned}
 \end{equation}
 The right side is independent of $c$.  When $0\le m\le2^n$, it equals the
-bounded value $F(m/2^n)$.  This is \imported\ from the main exposition; the
+bounded value $\FabiusBounded(m/2^n)$.  This is \imported\ from the main exposition; the
 new use below is to insert it into a cyclotomic discrete cosine transform.
 
 \subsection{The lower-Lambert endpoint theorem}
@@ -427,14 +426,14 @@ Put
 \end{equation}
 The corrected endpoint theorem in the corpus states
 \begin{equation}\label{p1:eq:Lambert-baseline}
- F(x)=
+ \FabiusBounded(x)=
  \frac{\EulerE^{\Psi(-W/L)}}{2^{7/12}\sqrt{\pi x}}
  \exp\!\left(\frac{\mathfrak g-W-\tfrac12W^2}{L}\right)
  \left(1+\BigO\!\left(\lambda(x)^{-1}\right)\right).
 \end{equation}
 The periodic factor is nonconstant and cannot be deleted from a sharp
 asymptotic.  We shall not reprove \eqref{p1:eq:Lambert-baseline}; instead we derive
-an exact half-integer spectral identity whose left side is $F(x)$ and then
+an exact half-integer spectral identity whose left side is $\FabiusBounded(x)$ and then
 insert this imported theorem.
 
 \section{The half-integer spectral sequence}\label{p1:sec:half-spectrum}
@@ -764,13 +763,13 @@ with the sum empty when $M=0$.
 \begin{theorem}[Exact all-order spectral remainder]\label{p1:thm:spectral-remainder}
 For every $x\in[0,1]$ and every integer $M\ge0$,
 \begin{equation}\label{p1:eq:F-basic-spectral}
- F(x)=\sum_{k=0}^{\infty}a_k
+ \FabiusBounded(x)=\sum_{k=0}^{\infty}a_k
  \bigl(1-\cos(\pi o_kx)\bigr),
 \end{equation}
 and, more strongly,
 \begin{equation}\label{p1:eq:F-rho-spectral}
  \boxed{
- F(x)=\sum_{k=0}^{\infty}\ThueMorseSign{k}w_k\,
+ \FabiusBounded(x)=\sum_{k=0}^{\infty}\ThueMorseSign{k}w_k\,
  \rho_M(\pi o_kx).}
 \end{equation}
 The series in \eqref{p1:eq:F-rho-spectral} converges absolutely for every fixed
@@ -779,7 +778,7 @@ $M$ and uniformly for $x\in[0,1]$.
 
 \begin{proof}
 For $0\le x\le1$, \eqref{p1:eq:Up-F-relations} gives
-$F(x)=1-\RvachevUp(x)$.  Subtract \eqref{p1:eq:cosine-spectrum} from $1$ and use
+$\FabiusBounded(x)=1-\RvachevUp(x)$.  Subtract \eqref{p1:eq:cosine-spectrum} from $1$ and use
 $\sum_ka_k=1/2$ to obtain \eqref{p1:eq:F-basic-spectral}.  Subtracting the first
 $M$ nonconstant Taylor terms of $1-\cos y$ changes the right side by
 \[
@@ -796,7 +795,7 @@ Taylor series at zero.  Formula \eqref{p1:eq:F-rho-spectral} says that after the
 frequencies are summed with their exact Thue--Morse sinc weights, \emph{every}
 algebraic Taylor coefficient disappears.  The endpoint value survives only as
 a collective remainder beyond all finite algebraic orders.  This is stronger
-than checking $F^{(m)}(0)=0$ one derivative at a time: the same exact identity
+than checking $\FabiusBounded^{(m)}(0)=0$ one derivative at a time: the same exact identity
 holds after subtraction at any prescribed order $M$.
 \end{remark}
 
@@ -818,7 +817,7 @@ The left side is independent of $M$, although its individual summands are not.
 \end{corollary}
 
 \begin{proof}
-The left side equals $F(x)$ exactly by
+The left side equals $\FabiusBounded(x)$ exactly by
 \cref{p1:thm:spectral-remainder}.  Apply the imported endpoint theorem
 \eqref{p1:eq:Lambert-baseline}.
 \end{proof}
@@ -904,7 +903,7 @@ The series converges absolutely.  Moreover,
  \cos\!\left(\frac{\pi rj}{N}\right)\right]
  \label{p1:eq:A-Up-DCT}\\
  &=\frac1N\left[1-2\sum_{j=1}^{N-1}
- F\!\left(\frac jN\right)
+ \FabiusBounded\!\left(\frac jN\right)
  \cos\!\left(\frac{\pi rj}{N}\right)\right].
  \label{p1:eq:A-F-DCT}
 \end{align}
@@ -931,7 +930,7 @@ decay.
 Pair the terms $j$ and $2N-j$ in \eqref{p1:eq:A-n-r-def}.  The endpoint
 $j=N$ contributes zero because $P(1)=\RvachevUp(1)=0$, while $P(0)=1$; this gives
 \eqref{p1:eq:A-Up-DCT}.  On $0\le j\le N$,
-$\RvachevUp(j/N)=1-F(j/N)$.  Since $r$ is odd,
+$\RvachevUp(j/N)=1-\FabiusBounded(j/N)$.  Since $r$ is odd,
 \[
  \sum_{j=1}^{N-1}\cos(\pi rj/N)=0,
 \]
@@ -1085,7 +1084,7 @@ The distinguished coefficient $A_{n,1}$ converges to
  =0.553771275888810095344217416344548881284886642554\ldots.
 \end{equation}
 The finite values in \cref{p1:tab:A-convergence} were computed from exact rational
-$F(j/2^n)$ values, with only the final cyclotomic evaluation performed at high
+$\FabiusBounded(j/2^n)$ values, with only the final cyclotomic evaluation performed at high
 precision.
 
 \begin{table}[ht]
@@ -1163,7 +1162,7 @@ Let
  \qquad
  K_n:=\RationalNumbers(\zeta_{2N}+\zeta_{2N}^{-1}).
 \end{equation}
-Since every $F(j/N)$ is rational,
+Since every $\FabiusBounded(j/N)$ is rational,
 \begin{equation}\label{p1:eq:A-in-K}
  A_{n,r}\in K_n.
 \end{equation}
@@ -1527,7 +1526,7 @@ For odd $1\le r<N$,
  \left|T_n\!\left(\EulerE^{2\pi\ImaginaryUnit r/N}\right)\right|
  &=2^n\left|\prod_{h=1}^{n}\sin(\pi r/2^h)\right|,
  \label{p1:eq:T-root-magnitude}\\
- \operatorname{sgn}\Gamma_{n,r}
+ \Sign \Gamma_{n,r}
  &=(-1)^{\sum_{h=1}^{n}\lfloor r/2^h\rfloor}
  =\ThueMorseSign{(r-1)/2}.
  \label{p1:eq:Gamma-sign}
@@ -1562,7 +1561,7 @@ therefore governs both real-axis intervals and finite dyadic spectral folding.
 
 Computations through $n=7$ show
 \begin{equation}\label{p1:eq:observed-A-sign}
- \operatorname{sgn}A_{n,r}=\ThueMorseSign{(r-1)/2}
+ \Sign A_{n,r}=\ThueMorseSign{(r-1)/2}
 \end{equation}
 for every admissible $r$.  By \eqref{p1:eq:Gamma-sign}, this is equivalent to
 positivity of the residual shifted sum.
@@ -1669,10 +1668,10 @@ The following were evaluated using exact rational arithmetic whenever possible
 and 80--100 decimal digits for the final transcendental operations.
 \begin{enumerate}
  \item The moment recurrence for $c_k$ and the closed moment--Thue--Morse formula
- for $F(a/2^n)$, including
- $F(1/4)=5/72$, $F(1/8)=1/288$,
- $F(3/8)=73/288$, and
- $F(5/16)=305857/2073600$.
+ for $\FabiusBounded(a/2^n)$, including
+ $\FabiusBounded(1/4)=5/72$, $\FabiusBounded(1/8)=1/288$,
+ $\FabiusBounded(3/8)=73/288$, and
+ $\FabiusBounded(5/16)=305857/2073600$.
  \item Direct sinc-product values of $a_k$ against the cosine reconstruction of
  $\RvachevUp$.
  \item The weighted moment residuals
@@ -1702,7 +1701,7 @@ compute
 \end{equation}
 Then the repository's closed formula is
 \begin{equation}\label{p1:eq:closed-dyadic-verification}
- F\!\left(\frac a{2^n}\right)
+ \FabiusBounded\!\left(\frac a{2^n}\right)
  =\frac{2^{-\binom{n+1}{2}}}{n!}
  \sum_{h=0}^{a-1}\ThueMorseSign{h}
  \sum_{k=0}^{\lfloor n/2\rfloor}
@@ -1746,8 +1745,8 @@ def fabius_dyadic(a: int, n: int, c: list[Fraction]) -> Fraction:
         total += tm_sign(h) * inner
     return total / Fraction(2**(n*(n + 1)//2) * factorial(n))
 
-# A_{n,r} = 1/N - (2/N) sum_j F(j/N) cos(pi*r*j/N).
-# Use exact Fraction values for F and a high-precision cyclotomic backend
+# A_{n,r} = 1/N - (2/N) sum_j F_bounded(j/N) cos(pi*r*j/N).
+# Use exact Fraction values for F_bounded and a high-precision cyclotomic backend
 # (or symbolic radicals for small n) for the cosine evaluation.
 \end{lstlisting}
 
@@ -2198,7 +2197,7 @@ arithmetic theory for
  =\prod_{n=0}^{\infty}\SincRad\!\left(\frac{\pi x}{2^n}\right).
 \]
 The central result is an exact decay law on every non-dyadic rational ray
-$x_N=2^N(1+a/q)$. If $q$ is odd, $d=\ord_q(2)$, and
+$x_N=2^N(1+a/q)$. If $q$ is odd, $d=\OrderOperator_q(2)$, and
 \[
  A_{a,q}=\left|\prod_{j=0}^{d-1}(1-\zeta_q^{a2^j})\right|,
 \]
@@ -2318,7 +2317,7 @@ reviewed corpus and were not found explicitly in the located literature.
 \subsection{Fabius, Rvachev, and the Fourier product}
 
 The primary exposition carefully separates the bounded Fabius distribution
-function $F$, the even compactly supported Rvachev function $\RvachevUp$, and the signed
+function $\FabiusBounded$, the even compactly supported Rvachev function $\RvachevUp$, and the signed
 global continuation governed by Thue--Morse signs \cite{p2:proveit,p2:ariascompact,p2:ariasarith}.
 For this report only $\RvachevUp$ and its Fourier transform are needed. In the repository
 normalization,
@@ -2396,7 +2395,7 @@ exact covariance calculations, a central limit theorem, a law of the iterated
 logarithm, transfer-operator formulas, and a multifractal moment spectrum. Those
 results are context, not new contributions here.
 
-For a primitive $q$th root $\zeta_q$ and $d=\ord_q(2)$, the sequence
+For a primitive $q$th root $\zeta_q$ and $d=\OrderOperator_q(2)$, the sequence
 $T_n(\zeta_q^a)$ obeys a two-term recurrence of span $d$. This is an elementary
 special case of Sobolewski's general recurrence theory for automatic-sequence
 polynomials at roots of unity \cite{p2:sobolewski2019}. The same work places the
@@ -2509,7 +2508,7 @@ finite algebraic cycle.
 
 Let $q>1$ be odd, $(a,q)=1$, and write
 \begin{equation}
- d:=\ord_q(2),\qquad
+ d:=\OrderOperator_q(2),\qquad
  \zeta_q:=\EulerE^{2\pi\ImaginaryUnit/q},\qquad
  H_q:=\langle2\rangle\subseteq(\IntegerNumbers/q\IntegerNumbers)^\times.
  \label{p2:eq:q-d-H}
@@ -2646,7 +2645,7 @@ Let $t$ be as in \eqref{p2:eq:even-denominator}.
  \item If $q=1$, then $Q_n(t)=0$ for every $n>e$, and
  $\mathscr U(2^N(1+t))=0$ for every $N\ge e$.
  \item If $q>1$, the finite prefix $Q_e(t)$ is followed by the exact law of
- \cref{p2:thm:exact-rational-ray}, with period $\ord_q(2)$.
+ \cref{p2:thm:exact-rational-ray}, with period $\OrderOperator_q(2)$.
 \end{enumerate}
 Thus a rational ray is either eventually an exact zero ray or an eventually
 periodic nonzero ray.
@@ -2931,9 +2930,9 @@ and let $A_d^-$ and $A_d^+$ denote the amplitudes $A_{1,q}$ for these denominato
 \begin{lemma}[Orders of two]\label{p2:lem:orders-pm}
 One has
 \begin{equation}
- \ord_{q_d^-}(2)=d,
+ \OrderOperator_{q_d^-}(2)=d,
  \qquad
- \ord_{q_d^+}(2)=2d.
+ \OrderOperator_{q_d^+}(2)=2d.
  \label{p2:eq:orders-pm}
 \end{equation}
 \end{lemma}
@@ -3256,7 +3255,7 @@ resultant or Ramanujan power sums. No numerical integration of $\RvachevUp$ is i
 \begin{algorithm}[Resultant route]\label{p2:alg:resultant}
 Given odd $q>1$:
 \begin{enumerate}
- \item compute $d=\ord_q(2)$;
+ \item compute $d=\OrderOperator_q(2)$;
  \item form $F_d(z)=\prod_{j=0}^{d-1}(1-z^{2^j})$;
  \item compute $R(X)=\ResidueOperator_z(\Phi_q(z),X-F_d(z))$ over $\IntegerNumbers[X]$;
  \item factor $R$ and divide every factor exponent by $d$;
@@ -3285,7 +3284,7 @@ structure, because $c_q(m)$ depends only on $(q,m)$.
 \centering\small
 \begin{tabularx}{\textwidth}{@{}r r X@{}}
 \toprule
-$q$ & $d=\ord_q(2)$ & $\mathscr P_{q,2}(X)$ \\
+$q$ & $d=\OrderOperator_q(2)$ & $\mathscr P_{q,2}(X)$ \\
 \midrule
 3  & 2  & $X-3$ \\
 5  & 4  & $X-5$ \\
@@ -3422,7 +3421,7 @@ For every $N\ge0$,
  =b^{-N(N+1)/2}(\pi y)^{-(N+1)}H_b(y)2^{-(N+1)}Q_{b,N+1}(t).
  \label{p2:eq:base-b-factorization}
 \end{equation}
-Let $q>1$, $(a,q)=1$, $(b,q)=1$, $d=\ord_q(b)$, and
+Let $q>1$, $(a,q)=1$, $(b,q)=1$, $d=\OrderOperator_q(b)$, and
 \begin{equation}
  A_{a,q}^{(b)}:=\left|\prod_{j=0}^{d-1}
  (1-\zeta_q^{ab^j})\right|.
@@ -3600,9 +3599,9 @@ lower endpoint; the missing issue is interpolation.
 
 For each $d$, determine
 \[
- A_d^{\max}:=\max_{\ord_q(2)=d}A_{a,q},
+ A_d^{\max}:=\max_{\OrderOperator_q(2)=d}A_{a,q},
  \qquad
- A_d^{\min}:=\min_{\ord_q(2)=d}A_{a,q}.
+ A_d^{\min}:=\min_{\OrderOperator_q(2)=d}A_{a,q}.
 \]
 The sharp global maximum of $A^{1/d}$ is known from \cref{p2:thm:sqrt3-bound}, but the
 finite-period problem may have a rich symbolic structure. A successful solution
@@ -3650,14 +3649,14 @@ $q$-binomial formulas. Possible entry points are:
  \item resultant identities in which $F_d(z)$ is paired with the half-base
  Pochhammer polynomial.
 \end{itemize}
-A direct finite identity here would join the exact dyadic values of $F$ to the
+A direct finite identity here would join the exact dyadic values of $\FabiusBounded$ to the
 arithmetic rays of $\widehat{\RvachevUp}$, rather than linking them only asymptotically.
 
 \subsection{Sharp constants in other bases}
 
 For $b\ge3$, determine
 \[
- \sup_{q,a}\left(A_{a,q}^{(b)}\right)^{1/\ord_q(b)}
+ \sup_{q,a}\left(A_{a,q}^{(b)}\right)^{1/\OrderOperator_q(b)}
 \]
 and classify the maximizing periodic orbits. The binary proof is exceptional
 because the real part of $z\mapsto z^2$ closes quadratically. The general problem
@@ -4027,7 +4026,7 @@ It is the characteristic function, in the above Fourier convention, of
 \end{equation}
 with independent summands.  Its density is the normalized Rvachev up-function, supported on $[-1,1]$.  On the left half of that support, the standard Fabius function is
 \begin{equation}\label{p3:eq:fabius-shift}
-  F(x)=f_1(x-1),\qquad 0\le x\le1.
+  \FabiusBounded(x)=f_1(x-1),\qquad 0\le x\le1.
 \end{equation}
 
 \subsection{The established rank-one architecture}
@@ -5267,13 +5266,16 @@ The elementary Chernoff inequality already shows why the constant is unchanged: 
 
 \subsection{Recovery of the Fabius endpoint}
 
-Let $g_1$ be the density of $D_1$, so $g_1(x)=f_1(x-1)$.  On $[0,1]$, $g_1$ is the standard Fabius function $F$.  Since $D_0$ is uniform on $[0,2]$, the density form of \eqref{p3:eq:Dr-refine} gives, for $0\le x\le1$,
+Let $g_1$ be the density of $D_1$, so $g_1(x)=f_1(x-1)$.  On $[0,1]$,
+$g_1$ is the standard Fabius function $\FabiusBounded$.  Since $D_0$ is
+uniform on $[0,2]$, the density form of \eqref{p3:eq:Dr-refine} gives, for
+$0\le x\le1$,
 \[
  g_1(x)=2(g_1*g_0)(2x)=\int_0^{2x}g_1(u)\,\Differential u=H_1(2x).
 \]
 Therefore
 \begin{equation}\label{p3:eq:H1-F}
-  H_1(x)=F(x/2),\qquad 0\le x\le2.
+  H_1(x)=\FabiusBounded(x/2),\qquad 0\le x\le2.
 \end{equation}
 The rank-one case of \cref{p3:thm:small-ball} is exactly the leading Fabius small-argument law, with the harmless factor $2$ affecting only lower logarithmic orders.
 
@@ -6145,7 +6147,6 @@ Wiley, New York, 1971, \S XVI.5.
 
 
 % extra macros for part 4
-\newcommand{\dist}{\operatorname{dist}}
 \newcommand{\Dop}{\mathscr D}
 \newcommand{\Mop}{\mathscr M}
 \newcommand{\Bop}{\mathscr B}
@@ -6191,8 +6192,9 @@ Wiley, New York, 1971, \S XVI.5.
 
 
 \begin{abstract}
-Let $F$ be the bounded Fabius distribution function, $G=F^{-1}$ its inverse on
-$[0,1]$, $\RvachevUp(x)=1-F(|x|)$ on $[-1,1]$, and
+Let $\FabiusBounded$ be the bounded Fabius distribution function,
+$\FabiusQuantile=\FabiusBounded^{-1}$ its inverse on $[0,1]$,
+$\RvachevUp(x)=1-\FabiusBounded(|x|)$ on $[-1,1]$, and
 \[
  \Phi(\xi)=\widehat{\RvachevUp}(\xi)
  =\prod_{j=0}^{\infty}\SincRad\!\left(\frac{\pi\xi}{2^j}\right)
@@ -6215,7 +6217,8 @@ $0<p\leq\infty$, obeys
 \]
 The level sets are also exact:
 \[
- \bigl|\{x:\AbsoluteValue{\RvachevUp^{(n)}(x)}>2^{T_n}t\}\bigr|=2G(1-t),
+ \bigl|\{x:\AbsoluteValue{\RvachevUp^{(n)}(x)}>2^{T_n}t\}\bigr|
+ =2\FabiusQuantile(1-t),
  \qquad 0<t<1.
 \]
 Thus the complete inverse Fabius function is encoded in the value statistics of every
@@ -6224,7 +6227,7 @@ nonzero derivative.
 Writing
 $A_p=\tfrac12\Norm{\RvachevUp}_p^p$, one obtains the exact beta transform
 \[
- A_p=p\int_0^1(1-y)^{p-1}G(y)\Differential y.
+ A_p=p\int_0^1(1-y)^{p-1}\FabiusQuantile(y)\Differential y.
 \]
 For $\Dop=y\,\Differential/\Differential y$, the dilation variable $Z_p=pY_p$ with
 $Y_p\sim\mathrm{Beta}(1,p)$ has Mellin symbol
@@ -6234,9 +6237,9 @@ $Y_p\sim\mathrm{Beta}(1,p)$ has Mellin symbol
 This yields a new Euler--Gamma differential calculus
 \[
  A_p\sim
- G-\gamma\Dop G
- +\frac{\gamma^2+\pi^2/6}{2}\Dop^2G
- -\frac{\gamma^3+\gamma\pi^2/2+2\zeta(3)}{6}\Dop^3G+\cdots
+ \FabiusQuantile-\gamma\Dop\FabiusQuantile
+ +\frac{\gamma^2+\pi^2/6}{2}\Dop^2\FabiusQuantile
+ -\frac{\gamma^3+\gamma\pi^2/2+2\zeta(3)}{6}\Dop^3\FabiusQuantile+\cdots
  \quad\text{at }y=p^{-1}.
 \]
 The coefficients are complete Bell polynomials in log-exponential cumulants; finite-$p$
@@ -6244,7 +6247,7 @@ corrections are generated by Bernoulli polynomials through the gamma-ratio expan
 Combining this operator with the periodic inverse-Fabius endpoint expansion gives
 \[
  \Norm{\RvachevUp}_p^p
- =2G(p^{-1})\left(1-\frac{\gamma}{\rho}
+ =2\FabiusQuantile(p^{-1})\left(1-\frac{\gamma}{\rho}
  +\BigO\!\left(\rho^{-2}\right)\right),
  \qquad
  \rho=\sqrt{\frac{2\log p}{\log2}},
@@ -6326,10 +6329,11 @@ not claim a proof.  None of these labels asserts global publication priority.
 
 The following are corpus baseline and are not claimed as new:
 \begin{enumerate}[label=(\roman*)]
-\item the identities relating $F$, $\RvachevUp$, and the signed global extension;
+\item the identities relating $\FabiusBounded$, $\RvachevUp$, and the signed global extension;
 \item the differential-refinement law for $\RvachevUp$ and its finite Thue--Morse derivative tiling;
 \item the infinite sinc product and its integer zero multiplicities;
-\item the exact dyadic values of $F$, their $q$-Pochhammer and Gaussian-binomial forms;
+\item the exact dyadic values of $\FabiusBounded$, their $q$-Pochhammer and
+      Gaussian-binomial forms;
 \item the corrected endpoint expansion with a nonconstant periodic Gamma--zeta term;
 \item the inverse endpoint expansion in the lower-Lambert coordinate, including Bell
       reversion and quantile elasticity;
@@ -6341,7 +6345,8 @@ The following are corpus baseline and are not claimed as new:
 \begin{resultbox}{New deductions proved in this report}
 The main new results are: exact derivative equimeasurability; scaling in every
 rearrangement-invariant norm; exact inverse-Fabius level-set laws; a Hausdorff reconstruction
-of $F$ from integer derivative norms; the inverse-Fabius beta transform; an exact Mellin
+of $\FabiusBounded$ from integer derivative norms; the inverse-Fabius beta
+transform; an exact Mellin
 symbol and asymptotic Euler--Gamma/Bell/Bernoulli differential calculus; a large-$p$
 Lambert law with an Euler-constant shift and phase tomography; a shifted
 Stieltjes--Wigert spectral-energy measure; explicit Hankel determinants and q-binomial monic
@@ -6355,10 +6360,11 @@ The current source file
 \path{Analysis/FabiusFunction/Lean/FabiusFunction/RvachevDerivativeDistribution.lean}
 now formalizes the exact dyadic cell coordinate and tiling, every signed cell-midpoint value,
 the all-order signed finite-mixture identity for continuous tests with values in an arbitrary
-real Banach space, the normalized absolute continuous-test identity, the equality of the two
-absolute Borel pushforward measures on Lebesgue measure restricted to \([-1,1]\), and every
-nonnegative real absolute moment.  This is a post-audit proof-status update; it does not alter
-the pinned novelty comparison above.
+real Banach space, every signed natural-power moment through the exact Boolean-cube formula
+and its parity corollaries, the normalized absolute continuous-test identity, the equality of
+the two absolute Borel pushforward measures on Lebesgue measure restricted to \([-1,1]\), and
+every nonnegative real absolute moment.  This is a post-audit proof-status update; it does not
+alter the pinned novelty comparison above.
 
 The report as a whole is not thereby formalized.  In particular, the simplified signed
 Rademacher law as a Borel pushforward, the \path{eLpNorm} and general
@@ -6370,17 +6376,19 @@ q-binomial layers below remain without matching declarations.
 \section{Normalization and established structural identities}
 \label{p4:sec:baseline}
 
-Let $F:\RealNumbers\to[0,1]$ be the bounded Fabius function, with $F=0$ on $(-\infty,0]$,
-$F=1$ on $[1,\infty)$, symmetry
+Let $\FabiusBounded:\RealNumbers\to[0,1]$ be the bounded Fabius function, with
+$\FabiusBounded=0$ on $(-\infty,0]$, $\FabiusBounded=1$ on $[1,\infty)$,
+symmetry
 \begin{equation}
- F(1-x)=1-F(x),\qquad 0\leq x\leq1,
+ \FabiusBounded(1-x)=1-\FabiusBounded(x),\qquad 0\leq x\leq1,
  \label{p4:eq:F-symmetry}
 \end{equation}
-and differential law $F'(x)=2F(2x)$ on $0<x<1/2$, continued by symmetry.  Let
+and differential law $\FabiusBounded'(x)=2\FabiusBounded(2x)$ on
+$0<x<1/2$, continued by symmetry.  Let
 \begin{equation}
  \RvachevUp(x)=
  \begin{cases}
-  1-F(|x|),&|x|\leq1,\\
+  1-\FabiusBounded(|x|),&|x|\leq1,\\
   0,&|x|\geq1.
  \end{cases}
  \label{p4:eq:up-from-F}
@@ -6525,9 +6533,9 @@ length-$2^n$ Thue--Morse block has sign $+1$ and half sign $-1$, proving
 \eqref{p4:eq:H-signed}.
 \end{proof}
 
-\begin{statusbox}{Exact Lean parity for the distribution identities}
-The signed theorem presently exposed by Lean is the following all-order finite mixture,
-not yet its Rademacher simplification.  If \(E\) is any real Banach space and
+\begin{statusbox}{Exact Lean parity for the distribution identities and signed moments}
+At the continuous-test level, Lean exposes the following all-order signed finite mixture,
+not yet its Rademacher Borel simplification.  If \(E\) is any real Banach space and
 \(H:\RealNumbers\to E\) is continuous, then for every \(n\ge0\),
 \begin{equation}
  \int_{-1}^{1}H\!\left(\RvachevUp^{(n)}(x)\right)\Differential x
@@ -6538,6 +6546,24 @@ not yet its Rademacher simplification.  If \(E\) is any real Banach space and
 \end{equation}
 This is \path{intervalIntegral_comp_iteratedDeriv_rvachev}.  In particular, it includes the
 order-zero boundary without introducing a fictitious independent sign.
+
+Specializing to \(H(t)=t^m\) and evaluating the Boolean-cube weight enumerator gives the
+separately named all-order identity, valid for every \(n,m\in\NaturalNumbers\),
+\begin{equation}
+ \int_{-1}^{1}\RvachevUp^{(n)}(x)^m\Differential x
+ =2^{-n}\bigl(1+(-1)^m\bigr)^n
+   \left(2^{T_n}\right)^m
+   \int_{-1}^{1}\RvachevUp(y)^m\Differential y.
+ \label{p4:eq:formal-signed-moment-boolean-cube}
+\end{equation}
+This is \path{intervalIntegral_iteratedDeriv_rvachev_pow}.  Its even-moment corollary,
+valid for every derivative order including \(n=0\), is
+\path{intervalIntegral_iteratedDeriv_rvachev_pow_of_even}; its odd-moment corollary,
+valid only when \(0<n\), is
+\path{intervalIntegral_iteratedDeriv_rvachev_pow_eq_zero_of_odd}.  The boundary distinction
+is essential: when \(n=0\) and \(m\) is odd, the Boolean factor in
+\eqref{p4:eq:formal-signed-moment-boolean-cube} is \(0^0=1\), so the identity recovers the
+generally nonzero base moment.
 
 The same Banach-valued continuous-test API proves
 \begin{align}
@@ -6578,21 +6604,37 @@ For every real $p\geq0$, interpreting the powers as real powers and using \(0^0=
  =\left(2^{T_n}\right)^p\int_{-1}^{1}\RvachevUp(x)^p\Differential x.
  \label{p4:eq:absolute-moments}
 \end{equation}
-For every integer $m\geq0$ and $n\geq1$,
+For every $n,m\in\NaturalNumbers$, the signed natural-power moments satisfy the exact
+Boolean-cube identity
 \begin{equation}
  \int_{-1}^{1}\RvachevUp^{(n)}(x)^m\Differential x
- =\begin{cases}
-  0,&m\text{ odd},\\
-  2^{mT_n}\displaystyle\int_{-1}^{1}\RvachevUp(x)^m\Differential x,&m\text{ even}.
- \end{cases}
- \label{p4:eq:signed-moments}
+ =2^{-n}\bigl(1+(-1)^m\bigr)^n
+   \left(2^{T_n}\right)^m
+   \int_{-1}^{1}\RvachevUp(y)^m\Differential y.
+ \label{p4:eq:signed-moments-boolean-cube}
 \end{equation}
+Consequently,
+\begin{align}
+ \int_{-1}^{1}\RvachevUp^{(n)}(x)^m\Differential x
+ &=\left(2^{T_n}\right)^m
+   \int_{-1}^{1}\RvachevUp(x)^m\Differential x
+ &&(m\text{ even},\ n\geq0),\label{p4:eq:signed-moments-even}\\
+ \int_{-1}^{1}\RvachevUp^{(n)}(x)^m\Differential x
+ &=0
+ &&(m\text{ odd},\ 0<n).
+ \label{p4:eq:signed-moments}
+\end{align}
 \end{corollary}
 
 The absolute identity \eqref{p4:eq:absolute-moments}, with the exact hypothesis \(p\ge0\), is
 \path{intervalIntegral_abs_iteratedDeriv_rvachev_rpow}.  At \(p=0\) this uses Lean's
-\path{Real.rpow} convention \(0^0=1\).  The signed parity simplification
-\eqref{p4:eq:signed-moments} is not separately formalized.
+\path{Real.rpow} convention \(0^0=1\).  The signed master identity
+\eqref{p4:eq:signed-moments-boolean-cube} is
+\path{intervalIntegral_iteratedDeriv_rvachev_pow}; its two parity specializations are
+\path{intervalIntegral_iteratedDeriv_rvachev_pow_of_even} and
+\path{intervalIntegral_iteratedDeriv_rvachev_pow_eq_zero_of_odd}.  Thus the even formula is
+formal for every \(n\ge0\), whereas the zero odd moment is asserted only for \(0<n\); at
+\(n=0\), the master formula deliberately retains the Boolean factor \(0^0=1\).
 
 \subsection{Every rearrangement-invariant norm scales exactly}
 
@@ -6640,7 +6682,7 @@ Since $\Norm{\RvachevUp}_1=\Norm{\RvachevUp}_\infty=1$,
 \begin{align}
  \Norm{\RvachevUp^{(n)}}_1&=2^{T_n},\label{p4:eq:L1-exact}\\
  \Norm{\RvachevUp^{(n)}}_\infty&=2^{T_n},\label{p4:eq:Linf-exact}\\
- \operatorname{TV}(\RvachevUp^{(n)})
+ \TotalVariationOf{\RvachevUp^{(n)}}
  =\Norm{\RvachevUp^{(n+1)}}_1&=2^{T_{n+1}}.
  \label{p4:eq:TV-exact}
 \end{align}
@@ -6680,9 +6722,11 @@ The signed midpoint equation \eqref{p4:eq:midpoint-values} is formally
 \path{iteratedDeriv_rvachev_cell_zero}.  This does not by itself formalize the exact
 inverse-Fabius level sets below.
 
-Let $G=F^{-1}:[0,1]\to[0,1]$.  Since $\RvachevUp(y)=1-F(|y|)$,
+Let $\FabiusQuantile=\FabiusBounded^{-1}:[0,1]\to[0,1]$.  Since
+$\RvachevUp(y)=1-\FabiusBounded(|y|)$,
 \begin{equation}
- \SetOf{y\in[-1,1]:\RvachevUp(y)>t}=(-G(1-t),G(1-t)),\qquad0<t<1.
+ \SetOf{y\in[-1,1]:\RvachevUp(y)>t}
+ =(-\FabiusQuantile(1-t),\FabiusQuantile(1-t)),\qquad0<t<1.
  \label{p4:eq:up-level-set}
 \end{equation}
 
@@ -6693,19 +6737,19 @@ For every $n\geq0$ and $0<t<1$,
  \boxed{
  \left|\SetOf{x\in\RealNumbers:
  \AbsoluteValue{\RvachevUp^{(n)}(x)}>2^{T_n}t}\right|
- =2G(1-t).}
+ =2\FabiusQuantile(1-t).}
  \label{p4:eq:derivative-level-set}
 \end{equation}
 Consequently, if $V_n=2^{-T_n}\AbsoluteValue{\RvachevUp^{(n)}(U)}$, then
 \begin{align}
- \Probability(V_n>t)&=G(1-t),\label{p4:eq:V-tail}\\
- \Probability(V_n\leq t)&=1-G(1-t),\label{p4:eq:V-cdf}\\
- f_{V_n}(t)&=G'(1-t),\qquad0<t<1.
+ \Probability(V_n>t)&=\FabiusQuantile(1-t),\label{p4:eq:V-tail}\\
+ \Probability(V_n\leq t)&=1-\FabiusQuantile(1-t),\label{p4:eq:V-cdf}\\
+ f_{V_n}(t)&=\FabiusQuantile'(1-t),\qquad0<t<1.
  \label{p4:eq:V-density}
 \end{align}
 For $n\geq1$, the signed variable $2^{-T_n}\RvachevUp^{(n)}(U)$ has density
 \begin{equation}
- f_n(v)=\frac12G'(1-|v|),\qquad-1<v<1.
+ f_n(v)=\frac12\FabiusQuantile'(1-|v|),\qquad-1<v<1.
  \label{p4:eq:signed-value-density}
 \end{equation}
 \end{theorem}
@@ -6720,14 +6764,15 @@ symmetric Rademacher mixture.
 Equation \eqref{p4:eq:formal-absolute-pushforward} proves exact absolute equimeasurability as
 a Borel measure identity.  The further identifications
 \eqref{p4:eq:derivative-level-set}--\eqref{p4:eq:signed-value-density}, which express the sets
-and densities explicitly through the totalized inverse \(G\), do not yet have matching Lean
+and densities explicitly through the totalized inverse \(\FabiusQuantile\), do
+not yet have matching Lean
 theorems.  In particular, the exact level-set and density package remains unformalized.
 \end{statusbox}
 
 \begin{remark}[A quantile coupling]
 If $U$ is uniform on $[-1,1]$, then $|U|$ is uniform on $[0,1]$ and
 \begin{equation}
- G\!\left(1-\RvachevUp(U)\right)=|U|.
+ \FabiusQuantile\!\left(1-\RvachevUp(U)\right)=|U|.
  \label{p4:eq:quantile-coupling}
 \end{equation}
 Thus the inverse Fabius function is not merely asymptotically related to derivative values;
@@ -6775,7 +6820,8 @@ The finite-difference formula follows by expanding $(1-W)^r$.
 
 \begin{theorem}[Hausdorff reconstruction from integer derivative norms]
 \label{p4:thm:hausdorff-reconstruction}
-The sequence $\{A_m\}_{m\geq0}$ uniquely determines $G$, hence $F$ and $\RvachevUp$.
+The sequence $\{A_m\}_{m\geq0}$ uniquely determines $\FabiusQuantile$, hence
+$\FabiusBounded$ and $\RvachevUp$.
 More explicitly, define
 \begin{equation}
  b_{N,k}:=\binom Nk
@@ -6786,7 +6832,7 @@ More explicitly, define
 Then $b_{N,k}\geq0$, $\sum_kb_{N,k}=1$, and at every $0<t<1$,
 \begin{equation}
  \boxed{
- G(1-t)=1-\lim_{N\to\infty}
+ \FabiusQuantile(1-t)=1-\lim_{N\to\infty}
  \sum_{k=0}^{\lfloor Nt\rfloor}b_{N,k}.}
  \label{p4:eq:G-from-norms}
 \end{equation}
@@ -6807,7 +6853,8 @@ $K_N\sim\operatorname{Bin}(N,w)$.  Therefore
 \]
 The conditional law of large numbers makes the inner probability converge to
 $\mathbf1_{\{W\leq t\}}$ away from $w=t$.  The distribution of $W$ is continuous, so the
-expectation converges to $\Probability(W\leq t)=1-G(1-t)$ by
+expectation converges to
+$\Probability(W\leq t)=1-\FabiusQuantile(1-t)$ by
 \eqref{p4:eq:V-cdf}.  Uniqueness is also the classical determinacy of the Hausdorff moment
 problem on $[0,1]$.
 \end{proof}
@@ -6827,12 +6874,12 @@ information about the underlying profile is lost.
 For every real $p>0$,
 \begin{equation}
  \boxed{
- A_p=p\int_0^1(1-y)^{p-1}G(y)\Differential y.}
+ A_p=p\int_0^1(1-y)^{p-1}\FabiusQuantile(y)\Differential y.}
  \label{p4:eq:beta-transform}
 \end{equation}
 Equivalently, if $Y_p\sim\operatorname{Beta}(1,p)$, then
 \begin{equation}
- \boxed{A_p=\Expectation G(Y_p).}
+ \boxed{A_p=\Expectation \FabiusQuantile(Y_p).}
  \label{p4:eq:beta-expectation}
 \end{equation}
 \end{theorem}
@@ -6840,14 +6887,16 @@ Equivalently, if $Y_p\sim\operatorname{Beta}(1,p)$, then
 \begin{proof}
 Using evenness and \eqref{p4:eq:up-from-F},
 \[
- A_p=\int_0^1(1-F(x))^p\Differential x.
+ A_p=\int_0^1(1-\FabiusBounded(x))^p\Differential x.
 \]
-The monotone substitution $y=F(x)$, interpreted as a Lebesgue--Stieltjes substitution at the
+The monotone substitution $y=\FabiusBounded(x)$, interpreted as a
+Lebesgue--Stieltjes substitution at the
 flat endpoints, gives
 \[
- A_p=\int_0^1(1-y)^p\Differential G(y).
+ A_p=\int_0^1(1-y)^p\Differential \FabiusQuantile(y).
 \]
-Integration by parts has no boundary term because $G(0)=0$ and $(1-y)^p=0$ at $y=1$.
+Integration by parts has no boundary term because $\FabiusQuantile(0)=0$ and
+$(1-y)^p=0$ at $y=1$.
 This proves \eqref{p4:eq:beta-transform}; the beta density is
 $p(1-y)^{p-1}$.
 \end{proof}
@@ -6856,13 +6905,15 @@ $p(1-y)^{p-1}$.
 For every $p>0$ and every $n\geq0$,
 \begin{equation}
  \Norm{\RvachevUp^{(n)}}_p^p
- =2^{pT_n+1}p\int_0^1(1-y)^{p-1}G(y)\Differential y.
+ =2^{pT_n+1}p\int_0^1(1-y)^{p-1}\FabiusQuantile(y)\Differential y.
  \label{p4:eq:derivative-beta-transform}
 \end{equation}
 \end{corollary}
 
-The beta kernel concentrates at $y\asymp p^{-1}$.  Because $G$ is slowly varying at zero,
-\eqref{p4:eq:beta-transform} already implies $A_p\sim G(1/p)$.  The next section replaces that
+The beta kernel concentrates at $y\asymp p^{-1}$.  Because
+$\FabiusQuantile$ is slowly varying at zero,
+\eqref{p4:eq:beta-transform} already implies
+$A_p\sim\FabiusQuantile(1/p)$.  The next section replaces that
 first-order Abelian statement by an all-orders differential operator.
 
 \section{The Euler--Gamma differential operator}
@@ -6886,10 +6937,10 @@ For $\Re s>-1$,
  =p^s\frac{\Gamma(p+1)\Gamma(1+s)}{\Gamma(p+1+s)}.}
  \label{p4:eq:Mellin-symbol}
 \end{equation}
-For any bounded extension of $G$ to $(1,\infty)$,
+For any bounded extension of $\FabiusQuantile$ to $(1,\infty)$,
 \begin{equation}
  \boxed{
- A_p=\left[M_p(\Dop)G\right](p^{-1}),}
+ A_p=\left[M_p(\Dop)\FabiusQuantile\right](p^{-1}),}
  \label{p4:eq:exact-operator}
 \end{equation}
 where the operator is rigorously interpreted by the Bochner average
@@ -6898,7 +6949,8 @@ where the operator is rigorously interpreted by the Bochner average
  :=\Expectation\left[H(Z_py)\right].
  \label{p4:eq:Bochner-dilation}
 \end{equation}
-The value in \eqref{p4:eq:exact-operator} is independent of how $G$ is extended, because
+The value in \eqref{p4:eq:exact-operator} is independent of how
+$\FabiusQuantile$ is extended, because
 $0<Z_p/p=Y_p<1$.
 \end{proposition}
 
@@ -6910,7 +6962,8 @@ The beta integral gives
 \]
 The dilation semigroup satisfies $\exp(t\Dop)H(y)=H(\EulerE^t y)$.  Averaging with
 \(t=\log Z_p\) and evaluating at $y=p^{-1}$ gives
-$\Expectation G(Z_p/p)=\Expectation G(Y_p)=A_p$.
+$\Expectation\FabiusQuantile(Z_p/p)
+=\Expectation\FabiusQuantile(Y_p)=A_p$.
 \end{proof}
 
 As $p\to\infty$, $Z_p$ converges to an exponential random variable $Z$ of mean one, and
@@ -6967,7 +7020,7 @@ Fix $N\geq1$.  As $p\to\infty$,
  \sum_{m=0}^{N-1}\frac{\mu_m}{m!}
  \Dop^mG(p^{-1})
  +\BigO_{N}\!\left(
- G(p^{-1})\frac{(\log\rho)^{c_N}}{\rho^N}
+ \FabiusQuantile(p^{-1})\frac{(\log\rho)^{c_N}}{\rho^N}
  \right),}
  \label{p4:eq:Gamma-Bell-expansion}
 \end{equation}
@@ -6987,14 +7040,17 @@ $\mu_m$ with \eqref{p4:eq:log-moments-Bell} or, equivalently, substituting
 \begin{proof}
 Write $y=p^{-1}$ and $t=\log Z_p$.  On a logarithmic neighborhood of $y$,
 \[
- G(\EulerE^t y)=\sum_{m=0}^{N-1}\frac{t^m}{m!}\Dop^mG(y)+R_N(t,y).
+ \FabiusQuantile(\EulerE^t y)
+ =\sum_{m=0}^{N-1}\frac{t^m}{m!}\Dop^m\FabiusQuantile(y)+R_N(t,y).
 \]
 The all-orders inverse endpoint expansion in the corpus implies, for each fixed $m$,
-$\Dop^mG(y)/G(y)$ is bounded by a power of $\log\rho$ times $\rho^{-m}$.
+$\Dop^m\FabiusQuantile(y)/\FabiusQuantile(y)$ is bounded by a power of
+$\log\rho$ times $\rho^{-m}$.
 Fix a constant $C>L+1$ and split the expectation into $|t|\leq C\rho$ and its complement.
 On the central range, every point $\EulerE^u y$ between $y$ and $\EulerE^t y$ has endpoint coordinate
 $\rho+\BigO_C(1)$.  Integrating the elasticity shows
-$G(\EulerE^u y)/G(y)=\BigO_C(1)$ there, so Taylor's integral remainder is
+$\FabiusQuantile(\EulerE^u y)/\FabiusQuantile(y)=\BigO_C(1)$ there, so
+Taylor's integral remainder is
 \[
  |R_N(t,y)|\leq C_NG(y)\frac{(\log\rho)^{c_N}}{\rho^N}|t|^N.
 \]
@@ -7003,10 +7059,11 @@ $Z_p$ is at most one, while for $z\geq1$ it is bounded by $\EulerE^{-z/2}$.
 For the omitted negative tail,
 $\Probability(Z_p<\EulerE^{-C\rho})\leq\EulerE^{-C\rho}$; for the positive tail,
 $\Probability(Z_p>\EulerE^{C\rho})\leq\exp(-\EulerE^{C\rho})$ once $p$ is large.  Since
-$G(p^{-1})\asymp\rho\EulerE^{-L\rho}$, both tail contributions are
-$\LittleO(G(p^{-1})\rho^{-N})$.  Taking expectations gives coefficients $\mu_{m,p}$;
-replacing them by $\mu_m$ changes the result by $\BigO(p^{-1}G(p^{-1}))$, which is beyond
-every power of $\rho^{-1}$ relative to $G(p^{-1})$.  The Bell and Bernoulli descriptions
+$\FabiusQuantile(p^{-1})\asymp\rho\EulerE^{-L\rho}$, both tail contributions
+are $\LittleO(\FabiusQuantile(p^{-1})\rho^{-N})$.  Taking expectations gives
+coefficients $\mu_{m,p}$; replacing them by $\mu_m$ changes the result by
+$\BigO(p^{-1}\FabiusQuantile(p^{-1}))$, which is beyond every power of
+$\rho^{-1}$ relative to $\FabiusQuantile(p^{-1})$.  The Bell and Bernoulli descriptions
 follow from differentiation of \eqref{p4:eq:Kp} and the standard gamma-ratio expansion.
 \end{proof}
 
@@ -7022,10 +7079,11 @@ The first five log-exponential moments are
 \end{align}
 Thus
 \begin{align}
- A_p={}&G-\gamma\Dop G
- +\frac{\gamma^2+\pi^2/6}{2}\Dop^2G\nonumber\\
- &-\frac{\gamma^3+\gamma\pi^2/2+2\zeta(3)}{6}\Dop^3G\nonumber\\
- &+\frac{\gamma^4+\gamma^2\pi^2+8\gamma\zeta(3)+3\pi^4/20}{24}\Dop^4G
+ A_p={}&\FabiusQuantile-\gamma\Dop\FabiusQuantile
+ +\frac{\gamma^2+\pi^2/6}{2}\Dop^2\FabiusQuantile\nonumber\\
+ &-\frac{\gamma^3+\gamma\pi^2/2+2\zeta(3)}{6}\Dop^3\FabiusQuantile\nonumber\\
+ &+\frac{\gamma^4+\gamma^2\pi^2+8\gamma\zeta(3)+3\pi^4/20}{24}
+ \Dop^4\FabiusQuantile
  +\cdots,
  \qquad y=p^{-1}.
  \label{p4:eq:Gamma-operator-first-terms}
@@ -7065,7 +7123,7 @@ The inverse-frontier report in the corpus proves
 \end{equation}
 and
 \begin{equation}
- \frac{G(p^{-1})}{G_0(p^{-1})}
+ \frac{\FabiusQuantile(p^{-1})}{G_0(p^{-1})}
  =1+\frac{\frac12\log\rho+\kappa_0-\Psi(\theta)}{\rho}
  +\BigO\!\left(\frac{(\log\rho)^2}{\rho^2}\right),
  \label{p4:eq:imported-G-expansion}
@@ -7073,7 +7131,7 @@ and
 where $\Psi$ is a nonconstant real-analytic one-periodic Gamma--zeta function.  It also proves
 the endpoint elasticity
 \begin{equation}
- \frac{yG'(y)}{G(y)}
+ \frac{y\FabiusQuantile'(y)}{\FabiusQuantile(y)}
  =\frac1\rho+\frac{\Psi'(\rho+\beta)-1}{L\rho^2}
  +\BigO\!\left(\frac{\log\rho}{\rho^3}\right),
  \qquad y\downarrow0.
@@ -7088,7 +7146,7 @@ These are baseline inputs; the norm consequences below are new.
 As $p\to\infty$,
 \begin{equation}
  \boxed{
- \frac{A_p}{G(p^{-1})}
+ \frac{A_p}{\FabiusQuantile(p^{-1})}
  =1-\frac{\gamma}{\rho}
  +\frac{1}{\rho^2}
  \left[
@@ -7100,7 +7158,7 @@ As $p\to\infty$,
 \end{equation}
 In particular,
 \begin{equation}
- \boxed{A_p\sim G(p^{-1}).}
+ \boxed{A_p\sim\FabiusQuantile(p^{-1}).}
  \label{p4:eq:Ap-G-equivalent}
 \end{equation}
 \end{theorem}
@@ -7108,19 +7166,21 @@ In particular,
 \begin{proof}
 By \eqref{p4:eq:Gamma-operator-first-terms},
 \[
- \frac{A_p}{G}
- =1-\gamma\frac{\Dop G}{G}
- +\frac{\gamma^2+\pi^2/6}{2}\frac{\Dop^2G}{G}
+ \frac{A_p}{\FabiusQuantile}
+ =1-\gamma\frac{\Dop\FabiusQuantile}{\FabiusQuantile}
+ +\frac{\gamma^2+\pi^2/6}{2}
+  \frac{\Dop^2\FabiusQuantile}{\FabiusQuantile}
  +\BigO(\rho^{-3}\log\rho).
 \]
 Equation \eqref{p4:eq:imported-elasticity} gives
 \[
- \frac{\Dop G}{G}
+ \frac{\Dop\FabiusQuantile}{\FabiusQuantile}
  =\frac1\rho+\frac{\Psi'(\theta)-1}{L\rho^2}
  +\BigO\!\left(\frac{\log\rho}{\rho^3}\right).
 \]
-If $a=\Dop\log G$, then
-$\Dop^2G/G=a^2+\Dop a=\rho^{-2}+\BigO((\log\rho)/\rho^3)$.
+If $a=\Dop\log\FabiusQuantile$, then
+$\Dop^2\FabiusQuantile/\FabiusQuantile
+=a^2+\Dop a=\rho^{-2}+\BigO((\log\rho)/\rho^3)$.
 Substitution proves the formula.
 \end{proof}
 
@@ -7193,7 +7253,8 @@ Then
  \label{p4:eq:phase-tomography-limit}
 \end{equation}
 Hence the nonconstant endpoint fluctuation $\Psi$ can be reconstructed from a family of
-\emph{global norm measurements}; pointwise evaluation or inversion of $F$ is not required.
+\emph{global norm measurements}; pointwise evaluation or inversion of
+$\FabiusBounded$ is not required.
 \end{theorem}
 
 \begin{proof}
@@ -7541,7 +7602,7 @@ For $r\geq1/2$,
  \omega_M(t)=\frac{\log2}{2}
  \left[
  \left(r-\frac12\right)^2
- -\dist\!\left(r-\frac12,\NaturalNumbers\right)^2
+ -\MetricDistance\!\left(r-\frac12,\NaturalNumbers\right)^2
  \right].}
  \label{p4:eq:q-Legendre}
 \end{equation}
@@ -7575,7 +7636,7 @@ For every $\xi\neq0$,
 If $r=\log_2(2\pi|\xi|)\geq1/2$, this is
 \begin{equation}
  |\Phi(\xi)|\leq
- 2^{-\frac12(r-1/2)^2+\frac12\dist(r-1/2,\NaturalNumbers)^2}.
+ 2^{-\frac12(r-1/2)^2+\frac12\MetricDistance(r-1/2,\NaturalNumbers)^2}.
  \label{p4:eq:explicit-IBP-envelope}
 \end{equation}
 \end{corollary}
@@ -7652,7 +7713,7 @@ scale, Parseval convention, and moment exponent.
 \subsection{Euler--Gamma operator convergence}
 
 The inverse interpolant was obtained directly from
-$G(1-\RvachevUp(x))=x$ on $0\leq x\leq1$.  Logarithmic finite differences estimated
+$\FabiusQuantile(1-\RvachevUp(x))=x$ on $0\leq x\leq1$.  Logarithmic finite differences estimated
 $\Dop^kG(1/p)$ for $k\leq3$.  The following table lists relative errors of successive
 truncations of \eqref{p4:eq:Gamma-operator-first-terms}.
 
@@ -7660,7 +7721,8 @@ truncations of \eqref{p4:eq:Gamma-operator-first-terms}.
 \small
 \begin{tabular}{@{}rrrrrr@{}}
 \toprule
-$p$ & $A_p/G(1/p)$ & $G$ only & through $\Dop$ & through $\Dop^2$ & through $\Dop^3$\\
+$p$ & $A_p/\FabiusQuantile(1/p)$ & $\FabiusQuantile$ only &
+through $\Dop$ & through $\Dop^2$ & through $\Dop^3$\\
 \midrule
 256   & 0.92618125 & $-7.38\!\times10^{-2}$ & $4.84\!\times10^{-2}$ & $-1.47\!\times10^{-2}$ & $6.46\!\times10^{-3}$\\
 512   & 0.92793214 & $-7.21\!\times10^{-2}$ & $4.32\!\times10^{-2}$ & $-1.20\!\times10^{-2}$ & $6.37\!\times10^{-3}$\\
@@ -7700,7 +7762,8 @@ illustrating the rapid $q^{-\frac23N^3+\BigO(N^2)}$ growth.
 
 \subsection{A full norm transseries}
 
-The inverse report gives an all-orders expansion of $G$ in the differential algebra generated
+The inverse report gives an all-orders expansion of $\FabiusQuantile$ in the
+differential algebra generated
 by periodic saddle jets.  The exact operator \eqref{p4:eq:exact-operator} should transport that
 algebra to the norm spectrum without introducing any new transcendental data beyond the
 log-exponential cumulants.
@@ -7841,10 +7904,11 @@ as formalized.  A practical order is:
 \item \textbf{Completed.}  The derivative tiling has a public exact cell coordinate,
       endpoint/range lemmas, signed and absolute cellwise formulas, and signed midpoint
       corollary.
-\item \textbf{Absolute part completed.}  The normalized absolute law is an exact Borel
-      pushforward equality and has Banach-valued continuous-test forms.  The signed
-      finite-mixture identity is also formal for continuous Banach-valued tests and all
-      \(n\), but its simplified signed Rademacher Borel law remains open.
+\item \textbf{Absolute part and signed natural moments completed.}  The normalized absolute
+      law is an exact Borel pushforward equality and has Banach-valued continuous-test forms.
+      The signed finite-mixture identity is formal for continuous Banach-valued tests and all
+      \(n\); its Boolean-cube natural-moment identity and the exact even/positive-order odd
+      parity laws are also formal.  The simplified signed Rademacher Borel law remains open.
 \item \textbf{Still open beyond completed prerequisites.}  Use the all-\(p\ge0\)
       real-power moment theorem, midpoint signs, and existing pointwise bounds to derive
       \path{eLpNorm}, general rearrangement-invariant, total-variation, and exact

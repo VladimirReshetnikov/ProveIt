@@ -1,5 +1,23 @@
 # Spectra and arithmetic
 
+## Source-only merge status (2026-08-31)
+
+The canonical-notation integration changed the consolidated
+`Spectra_and_Arithmetic_Frontiers` source and eight standalone report sources
+without rebuilding their retained PDFs. Their earlier page, font, and build
+facts therefore describe the last validated renders, not the current TeX.
+The eight operational ledgers were deliberately left unchanged and each fails
+only its changed TeX row: `Automatic_Scale_Factorizations_Rvachev_2026-08-30`
+(1/21 pending), `Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30` (1/26),
+`Dyadic_Spectral_Divisors_and_Gamma_Duality` (1/3),
+`Fabius_Pascal_Frontiers_Report` (1/9),
+`Fabius_Rvachev_Carleman_Frontiers_2026-08-30` (1/21),
+`Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors` (1/14),
+`Fabius_Total_Positivity_Frontier_Report` (1/12), and
+`fabius_holonomic_frontiers_report` (1/26). Arrival ledgers remain immutable.
+PDF regeneration, validation-sidecar updates, and live-ledger refresh are
+explicitly deferred.
+
 ## Direct-directory intake: late 2026-08-30 batch
 
 Six tracked report directories arrived directly under `drafts/incoming/` in

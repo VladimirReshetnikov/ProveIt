@@ -74,7 +74,6 @@ SAFE_RENAMES = {
     "sgn": "Sign",
     "lcm": "LeastCommonMultiple",
     "ord": "OrderOperator",
-    "TV": "TotalVariationDistance",
     "vtwo": "TwoAdicValuation",
     "Law": "LawOperator",
     "Lop": "LaplaceTransformSymbol",
@@ -110,7 +109,6 @@ SAFE_LITERAL_RENAMES = (
     ("operator-diag", r"\\operatorname\s*\{\s*diag\s*\}", "DiagonalOperator"),
     ("operator-tr", r"\\operatorname\s*\{\s*tr\s*\}", "TraceOperator"),
     ("operator-rank", r"\\operatorname\s*\{\s*rank\s*\}", "RankOperator"),
-    ("operator-TV", r"\\operatorname\s*\{\s*TV\s*\}", "TotalVariationDistance"),
     ("operator-ord", r"\\operatorname\s*\{\s*ord\s*\}", "OrderOperator"),
     (
         "operator-binary-weight",
@@ -160,6 +158,8 @@ def collect(arguments: list[str], docs: Path, archive: Path) -> list[Path]:
         path = Path(raw).resolve()
         if not path.exists():
             raise FileNotFoundError(raw)
+        if is_under(path, archive):
+            raise ValueError(f"archive is excluded: {path}")
         candidates = path.rglob("*.tex") if path.is_dir() else [path]
         for candidate in candidates:
             candidate = candidate.resolve()
@@ -168,7 +168,10 @@ def collect(arguments: list[str], docs: Path, archive: Path) -> list[Path]:
             if not is_under(candidate, docs):
                 raise ValueError(f"outside docs tree: {candidate}")
             if is_under(candidate, archive):
-                raise ValueError(f"archive is excluded: {candidate}")
+                # A parent directory such as docs/ legitimately contains the
+                # excluded archive subtree.  Explicit archive arguments were
+                # rejected above; recursive discovery simply omits them.
+                continue
             if candidate.name == CANONICAL_INPUT:
                 continue
             found.add(candidate)

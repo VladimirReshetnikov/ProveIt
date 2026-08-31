@@ -1,7 +1,7 @@
 # Inverse and sampling
 
-Nine document bundles live in this theme, organized one level deeper by their
-principal overlap:
+Ten document bundles live in this theme. Nine are organized one level deeper
+by their principal overlap:
 
 - [`comb-interpolation/`](comb-interpolation/) — additive and geometric comb
   interpolation, quadrature, extrapolation, and stability;
@@ -12,21 +12,22 @@ principal overlap:
   nowhere-analytic inverse iterates and elementary-representation
   obstructions.
 
-The cross-cutting information-geometry intake now lives under
-[`../frontier-compilations/fabius_information_frontier/`](../frontier-compilations/fabius_information_frontier/),
-whose broader geometric-uniform scope is a better thematic fit. The
-inverse-iterate report here retains its explicit reconciliation link to the
-forward-iterate report under `representations/`.
+The cross-cutting information-geometry intake lives directly at
+[`fabius_information_frontier/`](fabius_information_frontier/). All ten
+documents remain in `inverse-and-sampling`: neighboring themes provide
+techniques or related forward results, but none is a better primary home. The
+inverse-iterate report retains its explicit reconciliation link to the forward
+iterate report under `representations/`.
 
 ## Source-only merge status (2026-08-31)
 
-The local canonical-notation integration changed eight living TeX roots in this
+The canonical-notation integration changed nine living TeX roots in this
 group. The remote reorganization supplied a synchronized TeX/PDF/ledger trio
 for `analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function`, so
 that package is not included in the stale-artifact table below.
-By explicit integration policy, none of their same-stem PDFs was rebuilt and
-none of the seven local operational ledgers that cover a changed root was
-refreshed. The remote's relinked 12-entry ledger for
+By explicit integration policy, none of the other same-stem PDFs was rebuilt;
+operational ledgers covering changed roots were not refreshed except as stated.
+The relinked 12-entry ledger for
 `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers` is safe
 to take unchanged and verifies 12/12 current files, but that integrity result
 does not make its retained PDF a rendering of the changed source.
@@ -43,6 +44,7 @@ historical artifacts, not claimed renderings of the current sources.
 | `comb-interpolation/geometric_comb_interpolation_report-3` | 2,736 | 36 pages | TeX/README/relocated-audit rows pending |
 | `comb-interpolation/geometric_comb_q_fabius_report` | 3,554 | 68 pages | TeX row pending rebuild |
 | `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic` | 1,742 | 26 pages | TeX row pending rebuild |
+| `fabius_information_frontier` | 2,137 | 30 pages | TeX and README rows pending rebuild |
 
 Package README edits that record this source-only state also make their own
 operational-ledger rows intentionally pending.  Arrival ledgers and historical
@@ -71,6 +73,20 @@ New standalone intake members:
   standalone pending post-publication claim-level reassessment and verification
   of its Lean crosswalk; manuscript theorem labels and the document's own
   formalization description do not independently establish current Lean
+  verification.
+
+- [`fabius_information_frontier/`](fabius_information_frontier/), *Exact
+  Information Geometry and New Frontiers for the Fabius--Rvachev System*
+  (retained submitted 30-page PDF; current 2,137-line TeX), was filed on
+  2026-08-30 from `fabius_information_frontier_report.zip` (outer SHA-256
+  `41f9aba6eb85bb173827f13cb6b7b1d54b7ea9346faf7c9e5b1af859bbd42ec7`)
+  and moved here from `frontier-compilations` in the latest thematic
+  reorganization. Its immutable 18-entry arrival ledger verified the submitted
+  payload and is preserved byte-for-byte. The operational ledger was not
+  refreshed after the source-only notation migration: its TeX and README rows
+  are pending and its other seventeen rows pass. The retained PDF was not
+  rebuilt from the current source. It remains an archival intake rather than a
+  claim-level acceptance; manuscript theorem labels do not establish Lean
   verification.
 
 - [`geometric_comb_q_fabius_report/`](comb-interpolation/geometric_comb_q_fabius_report/),
@@ -204,7 +220,7 @@ New standalone intake members:
   iterate claims remain paper-only.
 
 The inverse function's frontiers and the sampling/deconvolution circle of
-ideas, in three consolidated volumes and six retained standalone reports.
+ideas, in three consolidated volumes and seven retained standalone reports.
 
 Post-snapshot formal status: `QuarterCatalanGerm.lean` now proves that the
 distinguished rational quarter germ becomes the Catalan inverse of
@@ -362,7 +378,7 @@ reproduces its captured output byte for byte.  Original five-file hashes are
 preserved in `ARRIVAL_SHA256SUMS.txt`. The six-entry `SHA256SUMS.txt` was not
 refreshed after the source-only merge: its TeX and README rows are pending and
 the other four rows pass. The live union audit scans 615 Lean modules
-and 8,383 public declarations with zero documentation/header gaps.
+and 8,389 public declarations with zero documentation/header gaps.
 
 ## `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/`
 
