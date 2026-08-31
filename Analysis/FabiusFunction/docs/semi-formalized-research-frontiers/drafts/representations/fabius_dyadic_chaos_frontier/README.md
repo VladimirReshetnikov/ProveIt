@@ -1,6 +1,6 @@
 # Dyadic Sensitivity and Polynomial-Chaos Frontiers for the Fabius--Rvachev Law
 
-This archive is the reproducible source package for a 34-page repository-aware
+This archive is the reproducible source package for a 37-page repository-aware
 research report on a new orthogonal-chaos layer of the Fabius/Rvachev random
 series.
 
@@ -8,6 +8,8 @@ series.
 
 - `fabius_dyadic_chaos_frontiers.tex` - complete self-contained LaTeX source.
 - `fabius_dyadic_chaos_frontiers.pdf` - compiled A4 report.
+- `LEAN_CROSSWALK.md` - label-complete map from all 36 nonconjectural paper
+  results to the current Lean corpus, with exact remaining proof obligations.
 - `experiments.py` - deterministic, extensively commented exact and
   high-precision experiment driver.
 - `requirements.txt` - Python dependencies.
@@ -16,6 +18,8 @@ series.
 - `audit/CORPUS_AUDIT.md` - recursive repository audit and nonduplication
   boundary.
 - `audit/SOURCE_AUDIT.md` - source/literature roles and proof boundary.
+- `audit/POST_INTAKE_REVIEW.md` - repository-side mathematical corrections,
+  reproducibility replay, and formalization boundary.
 - `audit/corpus_manifest_2026-08-27.txt` - preserved recursive TeX path ledger.
 - `SHA256SUMS` - integrity hashes for all other files in the archive.
 
@@ -54,6 +58,21 @@ formalization.
 The novelty convention is repository-relative and is documented in `audit/`.
 Classical ingredients are explicitly separated from new deductions.
 
+## Proof-status convention
+
+The colored `P`, `I`, `C`, and `N` symbols in the report classify the
+human-readable manuscript: in particular, `P` means proved in the paper and
+`I` means imported into the paper. They are **not Lean status markers**.
+`LEAN_CROSSWALK.md` audits all 36 theorem/proposition/lemma/corollary labels.
+At the present repository state, none of those 36 results is formalized in
+Lean exactly as stated; the crosswalk distinguishes unformalized, partial,
+and near-complete formalization cores without upgrading any of them to a Lean
+theorem.
+
+For `thm:TM-corner`, Lean now contains the exact Boolean-cube, polynomial,
+dyadic-sign, and report-grid clauses over a more general algebraic target. The
+repeated `C^N` integral identity and one final report-shaped wrapper remain.
+
 ## Reproduce the numerical files
 
 From the archive root:
@@ -78,6 +97,20 @@ Minimum supported environment:
 The supplied outputs were regenerated with Python 3.13.5, mpmath 1.3.0, NumPy
 2.3.5, SciPy 1.17.0, and Matplotlib 3.10.8.
 
+The repository-side review replayed the experiment twice on 2026-08-30: once
+with exactly those recorded versions and once with the then-current compatible
+versions. Both runs exited successfully and generated the complete ten-data-
+file, twelve-figure-file payload. After normalizing line endings, seven of ten
+data files were byte-identical to the archive in both runs. The two Legendre
+tables differed only by floating-point evaluation drift, while the numerical
+summary changed only in the corresponding last-bit Parseval residual. Under
+the recorded versions, the largest probability difference was `1.45e-15`,
+and the largest Parseval quantity difference was `8.89e-16`. The six
+regenerated plots were visually indistinguishable from the archived plots.
+Thus the mathematical numerics reproduce to displayed precision, although
+renderer metadata and last-bit floating results are intentionally not claimed
+to be byte-reproducible across machines.
+
 ## Compile the report
 
 A current TeX Live installation is sufficient. From the archive root, run:
@@ -88,18 +121,26 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error \
 ```
 
 Equivalently, run `pdflatex` repeatedly until the table of contents and cross
-references stabilize. The supplied PDF was built with latexmk 4.86 and pdfTeX
-1.40.26 (TeX Live 2025/dev). Standard packages are used, with Libertinus fonts
-when available and Latin Modern as a fallback.
+references stabilize. The repository-side release PDF was rebuilt with three
+explicit `pdflatex` passes using MiKTeX-pdfTeX 4.26 (pdfTeX 1.40.29);
+`latexmk` was not available in that environment. Standard packages are used,
+with Libertinus fonts when available and Latin Modern as a fallback.
 
 ## Verification status
 
 - All theorem, equation, figure, and bibliography references resolve.
-- The final PDF has 34 A4 pages and embedded fonts.
-- The PDF was preflighted and rendered page-by-page at 180 dpi.
+- The final PDF has 37 A4 pages; every font is embedded and no Type 3 font is
+  present in either the report or its six vector figures.
+- The PDF was preflighted and rendered page-by-page at 140 dpi. Four complete
+  contact sheets from the penultimate pass were inspected, followed by fresh
+  final-pass renders of the two pages changed afterward and the mathematically
+  dense Mellin, phase, Thue--Morse, Lambert-W, and bibliography pages.
 - No clipping, overlapping text, broken glyphs, or black rendering artifacts
   were observed.
-- The experiment outputs were regenerated from a fresh run before packaging.
+- The experiment was replayed in two fresh trees. The six archived figure pairs
+  were regenerated from the recorded environment after selecting TrueType
+  output for the vector plots; the numerical data were retained where the
+  replay audit found only the documented last-bit platform drift.
 
 ## Integrity check
 
@@ -108,3 +149,6 @@ From the archive root:
 ```bash
 sha256sum -c SHA256SUMS
 ```
+
+The active ledger contains exactly 32 entries - every package file except
+`SHA256SUMS` itself - and verifies against the repository-normalized bytes.

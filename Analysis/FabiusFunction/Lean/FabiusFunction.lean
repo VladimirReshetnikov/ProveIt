@@ -130,6 +130,7 @@ import FabiusFunction.ThueMorseWalsh
 import FabiusFunction.ThueMorseComplexProductBridge
 import FabiusFunction.ThueMorseSparseMoments
 import FabiusFunction.ThueMorseMixedDifference
+import FabiusFunction.ThueMorseSymmetricDifference
 import FabiusFunction.ThueMorseAutocorrelation
 import FabiusFunction.ThueMorseOverlapFree
 import FabiusFunction.ThueMorseRecurrence
