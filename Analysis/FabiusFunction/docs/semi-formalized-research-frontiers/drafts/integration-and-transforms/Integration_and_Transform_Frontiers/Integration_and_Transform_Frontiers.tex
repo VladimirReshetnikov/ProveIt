@@ -7248,7 +7248,7 @@ reflection, and identify a law with Lebesgue measure having density
 \(\operatorname{ofReal}\circ f\) from an everywhere pointwise CDF derivative.  The last
 result assumes neither prior absolute continuity nor continuity of \(f\).
 
-The twenty-seven declarations in \path{GeometricUniformCDF.lean} are
+The thirty-one declarations in \path{GeometricUniformCDF.lean} are
 \nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformCDF},
 \nolinkurl{Fabius.ProbabilityRepresentation.monotone_geometricUniformCDF},
 \nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformCDF_nonneg},
@@ -7262,6 +7262,10 @@ The twenty-seven declarations in \path{GeometricUniformCDF.lean} are
 \nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformCDF_eq_integral},
 \nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformCDF_eq_intervalIntegral},
 \nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDensity},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDensity_zero},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDensity_nonpos_of_neg},
+\nolinkurl{Fabius.ProbabilityRepresentation.volume_withDensity_geometricUniformDensity_eq_zero_of_nonpos},
+\nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDistribution_ne_withDensity_geometricUniformDensity_of_nonpos},
 \nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformCDF_hasDerivAt},
 \nolinkurl{Fabius.ProbabilityRepresentation.deriv_geometricUniformCDF},
 \nolinkurl{Fabius.ProbabilityRepresentation.continuous_geometricUniformDensity},
@@ -7277,6 +7281,12 @@ The twenty-seven declarations in \path{GeometricUniformCDF.lean} are
 \nolinkurl{Fabius.ProbabilityRepresentation.contDiff_geometricUniformCDF}, and
 \nolinkurl{Fabius.ProbabilityRepresentation.contDiff_geometricUniformDensity}.
 The CDF definition and its monotonicity, bounds, and measurability are total in real \(q\).
+The four new diagnostic theorems state exactly that the selected total density formula is
+zero at \(q=0\), nonpositive for \(q<0\), and gives the zero
+\texttt{volume.withDensity} measure for every \(q\le0\); on the contraction range
+\(|q|<1\), that zero measure is not the geometric-uniform probability law.  They diagnose
+the selected formula and do not formalize the paper-level corrected signed-density
+replacement for nonpositive parameters.
 Continuity, reflection, and the midpoint identity hold for \(|q|<1\); its exterior values
 are formal for \(0\le q<1\).  Under \(0<q<1\), the two conditioning identities hold on
 all of \(\R\), the explicit formula is an everywhere pointwise derivative and the exact
@@ -7293,8 +7303,12 @@ and
 Thus the dyadic CDF and density identities used at the start of this report are now formal.
 
 The definition \nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDensity} is
-totalized, but its classical density and Radon--Nikodym interpretation are not formal here for
-\(q\le0\).  The pointwise phase-bearing characteristic-function prefix limit is formal;
+totalized, and its failure for \(q\le0\) is now formal rather than merely unproved: it is
+zero at \(q=0\), nonpositive for \(q<0\), and its \texttt{ofReal}-clamped
+\texttt{withDensity} measure is zero and therefore not \(\mu_q\) when \(|q|<1\).
+Lean formalization of the paper-level corrected signed-density replacement at zero and for
+negative ratios remains open.  The
+pointwise phase-bearing characteristic-function prefix limit is formal;
 \nolinkurl{geometricSincProduct} now has locally uniform convergence on \(\C\), pointwise
 multipliability and an exact \nolinkurl{HasProd} theorem, and entireness.  The named
 bridges \eqref{p4:eq:geometric-sinc-characteristic}--%

@@ -109,14 +109,20 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-30 inventory contains 603 modules and 8,213 lexically
+The post-merge 2026-08-30 checkpoint contained 603 modules and 8,213 lexically
 visible public declarations, with zero missing module headers and zero missing
-doc comments.  Relative to the preceding 602/8,207 baseline, the delta is
+doc comments.  Relative to the preceding 602/8,207 baseline, that delta was
 exactly four documented theorems in `GeometricReciprocalGamma.lean` and the two
 documented theorems in the new `GeometricSincCharacteristicFunction.lean`.
-The baseline records those zeroes, so every future source
-addition must preserve the full invariant rather than merely avoid worsening a
-historical backlog.
+
+The 2026-08-31 inventory still contains 603 modules and now contains 8,217
+lexically visible public declarations, again with zero missing module headers
+and zero missing doc comments.  The exact four-declaration delta consists of
+the documented zero-ratio, negative-ratio nonpositivity, nonpositive-ratio
+zero-`withDensity`, and probability-law nonidentity theorems in
+`GeometricUniformCDF.lean`.  The baseline records those zeroes, so every future
+source addition must preserve the full invariant rather than merely avoid
+worsening a historical backlog.
 
 ### What the review pass caught
 
