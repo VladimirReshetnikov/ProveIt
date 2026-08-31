@@ -29,7 +29,7 @@ and the floating-point replay is not independent symbolic verification.
 
 Formalization status
 --------------------
-The 1,462-line source and its current 21-page A4 PDF now crosswalk the exhaustive three-definition,
+The 1,555-line source and its current 21-page A4 PDF now crosswalk the exhaustive three-definition,
 thirty-three-theorem `PartitionDefect.lean` API.  That Lean module proves the
 finite positive-list defect decomposition, zero and sharp-equality
 classifiers, fixed-block lower bound, and first positive shell.  It does not

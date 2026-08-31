@@ -20,38 +20,46 @@ three direct `pdflatex` passes rebuilt the 19-page PDF without warnings,
 overfull boxes, or unresolved references, and every rebuilt page was rendered
 and visually inspected.
 
-A later source-only repository normalization replaced the bespoke preamble by
-the primary exposition's canonical A4, 27 mm, Libertinus preamble, corrected
-the PDF author metadata to match the title-page attribution, and removed an
-unsupported claim of symbolic verification.  It also moved the two
-quarantined statements into warning environments.  The report now contains 14
-nonconjectural labelled manuscript results, one live conjecture, and two
-explicit quarantine warnings.  The proposed Taylor-series trichotomy is
-nonexclusive at an `n = 1` interior dyadic point unless its third class
-excludes eventually-zero polynomial series.  The former tie-cancellation
-conjecture follows at manuscript level from the canonical quarter-point facts
-and the report's binary-transition lemma, so it is no longer presented as
-open.  The positive-iterate theorem for `n >= 2`, its finite-spine machinery,
-and its weighted set-partition estimates remain to be formalized in Lean.
-The separate `PartitionDefect.lean` module now completely formalizes the
-finite positive-list defect decomposition, zero/equality classification,
-fixed-block bound, and first shell; it does not supply the set-partition
-bridge, weighted Bell asymptotics, or iterate theorem.
+A later repository normalization replaced the bespoke preamble by the primary
+exposition's canonical A4, 27 mm, Libertinus preamble, corrected the PDF author
+metadata to match the title-page attribution, and removed an unsupported claim
+of symbolic verification.  Three serial `pdflatex` passes rebuilt that
+normalized checkpoint as a 21-page A4 PDF with embedded and subset fonts, no
+Type 3 font, no overfull box, and no unresolved reference, rerun request, or TeX
+error.  Every page was rendered and inspected, and generated `.aux`, `.log`,
+`.out`, and `.toc` files were removed afterward.
 
-The normalized source was then rebuilt from this directory with exactly these
-three serial passes:
+The merged source also incorporates a second proof pass.  It now contains 15
+nonconjectural labelled manuscript results and two conjecture environments.
+The Taylor-series alternatives are disjoint: the positive-radius class
+explicitly requires infinitely many nonzero coefficients, while the live
+classification conjecture is the zero-radius/eventually-zero dichotomy.  The
+former tie-cancellation conjecture is now a proved manuscript proposition.  At
+a tie, the earlier maximal orbit point is `1/4` or `3/4`, its successor is
+`5/72` or `67/72`, and along the explicit orders `m = 6ℓ + 4` the earlier
+spine vanishes while the later one has amplitude exactly `Up(1/9) ≥ 1/2`.
+The finite-spine expansion then gives the full derivative lower bound with
+constant `A_(k+1,n)/4` and zero Taylor radius at every tie point.  The
+supporting exact Lean anchors are `fabius_deriv_quarter`,
+`deriv_fabiusReal_one_sub`, `fabiusReal_quarter`, and
+`fabiusReal_three_quarters`; the tie proposition and its finite-spine
+conclusion are manuscript proofs, not Lean proofs.
 
-```text
-pdflatex -interaction=nonstopmode -halt-on-error fabius_iterates_nowhere_analytic.tex
-pdflatex -interaction=nonstopmode -halt-on-error fabius_iterates_nowhere_analytic.tex
-pdflatex -interaction=nonstopmode -halt-on-error fabius_iterates_nowhere_analytic.tex
-```
+The exact positive-list arithmetic of the partition defect--including its
+pairwise and triangular forms, zero-defect classification, sharp fixed-block
+minimum, equality profile, and first positive shell--is formalized in
+`PartitionDefect.lean`.  That module works for arbitrary positive block-size
+lists.  It does not supply the bridge from finite set partitions, the
+quadratic-scale factorization, weighted-defect decay, two-spine reduction,
+finite-spine expansion, orbit-weight analysis, analytic conclusion, or the
+positive-iterate theorem for `n >= 2`.
 
-The resulting 21-page PDF is A4, has embedded and subset Libertinus prose fonts
-and no Type 3 font, and has no overfull box, unresolved reference, rerun request,
-or TeX error.  The title/status page, contents continuation, both quarantine
-warnings, and final reference page were rendered and inspected.  Generated
-`.aux`, `.log`, `.out`, and `.toc` files were removed after that audit.
+After the second-proof-pass integration, exactly three serial `pdflatex`
+passes rebuilt the 1,555-line source as a 21-page A4 PDF.  The final pass has
+no TeX error, unresolved reference, rerun request, or overfull box; every font
+is embedded and subset, Libertinus is present, and no Type 3 font is used.
+Representative proof, status, and final pages were rendered and inspected,
+and the synchronized payload hashes were refreshed in `SHA256SUMS.txt`.
 
 ## Exact numerical replay
 
