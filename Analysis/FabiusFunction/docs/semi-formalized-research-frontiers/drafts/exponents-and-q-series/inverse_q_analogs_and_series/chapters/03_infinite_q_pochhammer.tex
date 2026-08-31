@@ -572,10 +572,36 @@ gives the logarithmic and constant terms.  At \(s=-1\), the residue of
 \]
 which yields the remaining coefficients, including the outer minus sign in
 \cref{eq:ip-qx-mellin}.  At negative odd integers below \(-1\), a trivial zero
-of \(\zeta(s+1)\) cancels the gamma pole.  Standard vertical bounds for
-\(\Gamma(s)\), the Riemann zeta function, and the Hurwitz zeta function bound
-the shifted contour by the next power of \(t\), uniformly for \(x\) on the
-stated compact sets.  This proves the sectorial Poincaré expansion.
+of \(\zeta(s+1)\) cancels the gamma pole.
+
+Here is the required uniform remainder estimate.  Fix a compact set
+\(K\Subset\{\Re x>0\}\), a closed subsector
+\(|\arg t|\leq\pi/2-\delta\), and a vertical line \(\Re s=\sigma\) avoiding
+the poles just listed.  Uniformly for \(x\in K\), Stirling's estimate and the
+standard polynomial vertical bounds for the two zeta functions give constants
+\(C,N\) such that
+\[
+ \left|\Gamma(\sigma+\ImaginaryUnit u)
+ \zeta(\sigma+1+\ImaginaryUnit u)
+ \zeta(\sigma+\ImaginaryUnit u,x)\right|
+ \leq C(1+|u|)^N\EulerE^{-\pi|u|/2}.
+\]
+For the chosen branch of \(t^{-s}\),
+\[
+ |t^{-(\sigma+\ImaginaryUnit u)}|
+ =|t|^{-\sigma}\EulerE^{u\arg t}
+ \leq |t|^{-\sigma}\EulerE^{(\pi/2-\delta)|u|}.
+\]
+Thus the integrand on the shifted vertical line is bounded by
+\[
+ C|t|^{-\sigma}(1+|u|)^N\EulerE^{-\delta|u|},
+\]
+which is integrable uniformly for \(x\in K\).  The same exponential factor
+makes the horizontal sides of the truncating rectangles tend to zero.  The
+shifted contour is therefore \(\BigO_K(|t|^{-\sigma})\).  Shifting
+successively past the displayed poles, and choosing \(\sigma\) strictly
+between the last retained pole and the next uncancelled pole, proves the
+asserted sectorial Poincaré remainder locally uniformly in \(x\).
 \end{proof}
 
 The specialization \(x=1\) has more structure than its power asymptotic:
@@ -818,6 +844,12 @@ product is defined.
 \label{thm:ip-radial-cyclotomic}
 Let \(\zeta\) be primitive of order \(d\), let \(|a|\leq\rho<1\), and put
 \(q=\zeta\EulerE^{-t}\), with \(t\to0\) in a closed subsector of \(\Re t>0\).
+All logarithms below are the holomorphic determinations obtained by
+continuation from \(a=0\); in particular,
+\[
+ \log(1-a^d)=-\sum_{\ell\geq1}\frac{a^{d\ell}}{\ell}
+ \qquad (|a|<1).
+\]
 Define
 \begin{align}
  A_\zeta(a)&=\frac{\Polylogarithm_2(a^d)}{d^2},
@@ -920,24 +952,83 @@ On the real radial branch \(q=-\EulerE^{-t}\), \(t\downarrow0\),
  +\BigO(X^{-7}).
  \label{eq:ip-minus-one-inverse}
 \end{align}
+Here the inverse formula is taken as
+\(y=(a;-\EulerE^{-t})_\infty\downarrow0\), equivalently \(X\to+\infty\).
 \end{corollary}
 
 \begin{proof}
-For \(d=2\), split the Lambert indices into even and odd classes.  Applying
-the Bernoulli expansion through fifth order and summing the resulting
-geometric derivatives gives the displayed rational coefficients; equivalently
-one may use the exact pairing
+Split the canonical Lambert logarithm into even and odd indices:
 \[
- (a;-\EulerE^{-t})_\infty
- =(a;\EulerE^{-2t})_\infty(-a\EulerE^{-t};\EulerE^{-2t})_\infty
+ \log(a;-\EulerE^{-t})_\infty
+ =-\sum_{m\geq1}\frac{a^m}{m(1-(-1)^m\EulerE^{-mt})}.
 \]
-and apply \cref{thm:ip-fixed-a-expansion} to both factors.  The odd powers
-shown are the terms that remain after cancellation.  Coefficient comparison
-in \(X=A_-/t+D_-t-E_-t^3+\BigO(t^5)\) gives the inverse coefficients, and the
-same derivative/Rouché estimate as in
-\cref{thm:ip-fixed-a-inverse} improves the forward remainder by two inverse
-powers.  The exclusion \(a=0\) is necessary: there the product is identically
-one and \(A_-=0\).
+For even indices use
+\[
+ \frac1{1-\EulerE^{-x}}
+ =\frac1x+\frac12+\frac{x}{12}-\frac{x^3}{720}
+ +\BigO(x^5),
+\]
+and for odd indices use
+\[
+ \frac1{1+\EulerE^{-x}}
+ =\frac12+\frac{x}{4}-\frac{x^3}{48}+\BigO(x^5).
+\]
+Only the even indices \(m=2r\) contribute a singular term, namely
+\[
+ -\sum_{r\geq1}\frac{a^{2r}}{2r}\frac1{2rt}
+ =-\frac{\Polylogarithm_2(a^2)}{4t}.
+\]
+The constant term is
+\[
+ -\frac12\sum_{m\geq1}\frac{a^m}{m}
+ =\frac12\log(1-a).
+\]
+The coefficient of \(t\) is
+\[
+ -\frac1{12}\sum_{r\geq1}a^{2r}
+ -\frac14\sum_{\substack{m\geq1\\m\ \mathrm{odd}}}a^m
+ =-\frac{a(a+3)}{12(1-a^2)}.
+\]
+Writing \(z=a^2\), the coefficient of \(t^3\) is
+\[
+ \frac1{180}\sum_{r\geq1}r^2z^r
+ +\frac1{48}\sum_{\substack{m\geq1\\m\ \mathrm{odd}}}m^2a^m.
+\]
+The elementary identities
+\[
+ \sum_{r\geq1}r^2z^r=\frac{z(1+z)}{(1-z)^3},
+ \qquad
+ \sum_{\substack{m\geq1\\m\ \mathrm{odd}}}m^2a^m
+ =\frac{a(1+a)}{(1-a)^3}
+ -\frac{4a^2(1+a^2)}{(1-a^2)^3}
+\]
+simplify this coefficient to
+\[
+ \frac{a(15a^4+4a^3+90a^2+4a+15)}{720(1-a^2)^3}=E_-.
+\]
+For fixed \(|a|<1\), the same finite-index/tail split used in the proof of
+\cref{thm:ip-radial-cyclotomic} justifies the expansions under the sum; the
+summed fifth-order remainders are \(\BigO(t^5)\).  This proves
+\cref{eq:ip-minus-one-forward} with every displayed coefficient.
+
+Now
+\[
+ X=\frac{A_-}{t}+D_-t-E_-t^3+\BigO(t^5).
+\]
+Substituting
+\(t=A_-/X+\alpha X^{-3}+\beta X^{-5}\) and comparing the coefficients of
+\(X^{-1}\) and \(X^{-3}\) gives
+\[
+ \alpha=D_-A_-^2,
+ \qquad
+ \beta=2D_-^2A_-^3-E_-A_-^4.
+\]
+The resulting residual is \(\BigO(X^{-5})\), whereas the derivative of the
+target equation is
+\(-A_-/t^2+\BigO(1)\asymp-X^2\).  The real mean-value theorem therefore
+improves the inverse error to \(\BigO(X^{-7})\), proving
+\cref{eq:ip-minus-one-inverse}.  The exclusion \(a=0\) is necessary: there
+the product is identically one and \(A_-=0\).
 \end{proof}
 
 \begin{proposition}[Fixed-level cyclotomic coalescence with winding]
@@ -995,8 +1086,19 @@ because
 \(d\) distinct roots of \(b^d=d^2L_\nu\).  Rouché's theorem on disjoint
 small circles about those roots supplies one zero on each circle for all
 sufficiently small \(t\).  The preceding converse estimate shows that every
-solution germ tending to zero lies on one of these circles.  This proves the
-exact germ count and both asymptotic relations.
+solution tending to zero lies on one of these circles.  Each circle contains
+one zero counted with multiplicity, so that zero is simple.  For every
+nonzero \(t\) in the subsector, the holomorphic implicit-function theorem
+therefore makes it a locally holomorphic function of the chosen coordinate
+\(\tau=t^{1/d}\).  The circles are fixed and pairwise disjoint, and each
+contains exactly one zero; uniqueness makes these local functions agree on
+overlaps and patch to \(d\) sectorial solution germs.  Conversely, any
+solution with \(a\to0\) has
+\[
+ b^d=d^2L_\nu+\LittleO(1),\qquad b=a/\tau,
+\]
+and hence eventually lies in exactly one of these circles.  This proves the
+exact germ count, its exhaustivity, and both asymptotic relations.
 
 Finally, exponentiating a lifted solution gives the raw equation.  Conversely,
 on a continuous raw solution branch the quantity

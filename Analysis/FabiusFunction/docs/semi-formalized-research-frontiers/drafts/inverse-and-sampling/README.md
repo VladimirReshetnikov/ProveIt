@@ -1,19 +1,37 @@
 # Inverse and sampling
 
+The nine document bundles in this theme are organized one level deeper by
+their principal overlap:
+
+- [`comb-interpolation/`](comb-interpolation/) — additive and geometric comb
+  interpolation, quadrature, extrapolation, and stability;
+- [`inverse-asymptotics-and-computability/`](inverse-asymptotics-and-computability/)
+  — inverse germs, endpoint asymptotics, self-sampling, effective moduli, and
+  certified computation;
+- [`analyticity-and-elementarity/`](analyticity-and-elementarity/) —
+  nowhere-analytic inverse iterates and elementary-representation
+  obstructions.
+
+All nine documents remain in `inverse-and-sampling`: neighboring themes
+provide techniques or related forward results, but none is a better primary
+home. In particular, the inverse-iterate report remains here while retaining
+its explicit reconciliation link to the forward-iterate report under
+`representations/`.
+
 New standalone intake members:
 
-- [`Non_Elementarity_of_the_Fabius_Function/`](Non_Elementarity_of_the_Fabius_Function/),
+- [`Non_Elementarity_of_the_Fabius_Function/`](analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function/),
   *The Fabius Function and Its Inverse are Not Elementary: Density of the
   Analytic Locus under Algebraic Branches and Inversion* (14 A4 pp; 1,068
   source lines at intake and 1,057 after the notation migration), was
   reclassified on 2026-08-31 from the former top-level
   `docs/Non_Elementarity_of_the_Fabius_Function/` pair through
-  `drafts/incoming/` and filed here without changing either submitted
+  `drafts/incoming/` and initially filed here without changing either submitted
   payload. The bare two-file package supplied no archive or checksum ledger.
   The intake hashes were PDF `ab722e11...` and TeX `3c3c2f48...`; the active
-  `SHA256SUMS` was refreshed after the post-publication semantic-notation
-  migration and verifies the current TeX/PDF pair. Its TeX source was already
-  LF, and its structurally readable, unencrypted PDF uses embedded/subset
+  repository-added `SHA256SUMS` was refreshed after the post-publication
+  semantic-notation migration and verifies the current TeX/PDF pair. Its TeX
+  source remains LF, and its structurally readable, unencrypted PDF uses embedded/subset
   fonts, includes Libertinus, and has no Type 3 font. The
   title and abstract place its forward/inverse non-elementarity and analytic-
   locus material with the inverse-function reports in this group. An older
@@ -25,7 +43,7 @@ New standalone intake members:
   formalization description do not independently establish current Lean
   verification.
 
-- [`geometric_comb_q_fabius_report/`](geometric_comb_q_fabius_report/),
+- [`geometric_comb_q_fabius_report/`](comb-interpolation/geometric_comb_q_fabius_report/),
   *Geometric-Comb Interpolation, Gaussian Pascal Transforms, and the
   Fabius--Rvachev Boundary Layer* (65 pp), arrived on 2026-08-30 from
   `geometric_comb_q_fabius_report.zip` (outer SHA-256
@@ -37,7 +55,7 @@ New standalone intake members:
   crosswalk; its formalization section is explicitly future work. Manuscript
   labels do not establish Lean verification.
 
-- [`geometric_comb_interpolation_report/`](geometric_comb_interpolation_report/),
+- [`geometric_comb_interpolation_report/`](comb-interpolation/geometric_comb_interpolation_report/),
   *Interpolation on a Geometric Comb* (34 pp), arrived on 2026-08-30 from
   `geometric_comb_interpolation_report_bundle.zip` (outer SHA-256
   `9a2e33f6a7dc3ac4c30b0da212349b9d91b1da6dd2fabacce14329a6458ade12`).
@@ -49,7 +67,7 @@ New standalone intake members:
   It remains standalone pending post-publication assessment and a Lean
   crosswalk; manuscript labels do not establish Lean verification.
 
-- [`geometric_comb_interpolation_report-3/`](geometric_comb_interpolation_report-3/),
+- [`geometric_comb_interpolation_report-3/`](comb-interpolation/geometric_comb_interpolation_report-3/),
   *Interpolation on a Geometric Comb: Lagrange Filters, Jackson--Newton
   Series, q-Analogues, and the Fabius--Rvachev Bridge* (36 pp), arrived on
   2026-08-30 from `geometric_comb_interpolation_report-3.zip` (outer SHA-256
@@ -64,7 +82,7 @@ New standalone intake members:
   and a claim-by-claim Lean crosswalk; manuscript labels do not establish
   Lean verification.
 
-- [`Inverse_Fabius_Computability_Report/`](Inverse_Fabius_Computability_Report/),
+- [`Inverse_Fabius_Computability_Report/`](inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report/),
   *Computability of the Inverse Fabius Function* (41 A4 pp, 2923 source
   lines after combining the parallel equality/rigidity and
   logarithmic-modulus post-publication branches; those branch checkpoints
@@ -102,7 +120,7 @@ New standalone intake members:
   embedded/subset fonts, includes Libertinus, and is Type-3-free; all five
   active checksum entries verify.
 
-- [`inverse_fabius_iterates_nowhere_analytic/`](inverse_fabius_iterates_nowhere_analytic/),
+- [`inverse_fabius_iterates_nowhere_analytic/`](analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Inverse
   Fabius Function* (24 A4 pp, 1730 source lines), arrived on 2026-08-30 from
   `inverse_fabius_iterates_nowhere_analytic.zip` (outer SHA-256
@@ -131,7 +149,7 @@ decomposition remains open.  Beyond the quarter specialization, the
 general-dyadic analytic/algebraic shadow, convergence and identification of
 the inverse Taylor series, and the Bell--Lagrange formula also remain open.
 
-## `Inverse_and_Sampling_Frontiers/`
+## `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers/`
 
 Consolidated (2026-08-28) from:
 
@@ -148,7 +166,7 @@ asset paths mechanically prefixed per part; no mathematical content
 altered) and their directories deleted; provenance with SHA-256 hashes
 is recorded in the volume itself, and git history is the archive.
 
-## `Dyadic_Comb_Frontiers/`
+## `comb-interpolation/Dyadic_Comb_Frontiers/`
 
 Editorially merged (2026-08-28) from the six dyadic-comb drafts of the
 second and third waves — three on comb sums/quadrature
@@ -202,7 +220,7 @@ deduplication record are Appendix E of the volume; every source's
 supporting files live under its `assets/`.  The absorbed draft
 directories are deleted; git history is the archive.
 
-## `Inverse_Endpoint_All_Orders/`
+## `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders/`
 
 Editorially merged (2026-08-28) from the three same-topic
 inverse-asymptotics drafts of the fourth, fifth, and sixth waves:

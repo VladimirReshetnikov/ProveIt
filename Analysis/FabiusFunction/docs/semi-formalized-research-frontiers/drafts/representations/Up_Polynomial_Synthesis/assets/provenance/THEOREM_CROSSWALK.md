@@ -30,15 +30,19 @@ assertion.
 
 Let `REP` denote
 `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/`.
-The L1--G4 paths in the key table are relative to `REP`; every other displayed
-path is repository-relative. The ten later reports are immutable legacy
-sources for this audit; their full baseline hashes are recorded in
+The L1--G4 paths in the key table are relative to `REP` at immutable
+pre-retirement commit `443793e846934e7363e314ea01129b9f50197a58`; they are
+historical source identities, not live navigation. Every other displayed path
+is repository-relative in the current tree. The ten later reports are
+immutable legacy sources for this audit; their full baseline hashes are recorded in
 `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Up_Polynomial_Synthesis/assets/provenance/SOURCE_SNAPSHOTS.md`.
 The three earlier polynomial packages were absorbed before the later-report
 consolidation; their retained payloads and historical hashes are under the
-canonical package's `assets/` directory.
+canonical package's `assets/` directory. The 113 selected payloads from L1--G4
+now have canonical destinations and live hashes in
+`assets/provenance/COMPANION_PAYLOADS.csv`.
 
-| Key | Legacy package or evidence source |
+| Key | Historical package or live evidence source |
 |---|---|
 | P1 | `Rvachev_Up_Polynomial_Representation_Package` (retained payload: `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Up_Polynomial_Synthesis/assets/Rvachev_Up_Polynomial_Representation_Package/`) |
 | P2 | `rvachev_up_polynomial_representation` (retained payload: `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Up_Polynomial_Synthesis/assets/rvachev_up_polynomial_representation/`) |
@@ -53,8 +57,8 @@ canonical package's `assets/` directory.
 | G2 | `Legendre_Rvachev_Closed_Loop_Report_v3/legendre_rvachev_closed_loop.tex` |
 | G3 | `Legendre_Rvachev_Closed_Loop_Report_v4/legendre_rvachev_closed_loop.tex` |
 | G4 | `Legendre_Rvachev_Self_Reconstruction/legendre_rvachev_self_reconstruction.tex` |
-| X1 | `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/Dyadic_Comb_Frontiers.tex` |
-| X2 | `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_and_Sampling_Frontiers/Inverse_and_Sampling_Frontiers.tex` |
+| X1 | `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/comb-interpolation/Dyadic_Comb_Frontiers/Dyadic_Comb_Frontiers.tex` |
+| X2 | `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers/Inverse_and_Sampling_Frontiers.tex` |
 
 Legacy theorem labels in the tables are exact labels from those source files.
 For P1--P3, whose original report TeX is no longer duplicated beside the

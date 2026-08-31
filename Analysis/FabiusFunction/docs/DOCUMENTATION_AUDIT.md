@@ -109,10 +109,10 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 615 modules and 8,383 lexically
+The post-merge 2026-08-31 inventory contains 615 modules and 8,385 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  Relative to the 610/8,318 activation checkpoint, the exact
-union adds four modules and 60 declarations.  The branch-point geometry and
+union adds five modules and 67 declarations.  The branch-point geometry and
 asymptotics leaves contribute 17 declarations for the one-sided vertical
 tangents and leading signed square-root laws of both real Lambert branches.
 The two Legendre--Gaunt modules contribute 25: four definitions and twelve
@@ -120,13 +120,16 @@ theorems in `LegendreGaunt.lean`, and one definition and eight theorems in
 `FabiusLegendreGaunt.lean`.  They add the executable rational triple-product
 and finite product-linearization core, then specialize it to full and even
 Rvachev coefficient sums for rational and real Legendre Gram entries.  The
-remaining eighteen declarations are three generalized spectral q-Pochhammer
-APIs, four density-diagnostic theorems, and eleven inverse-modulus strictness
-and equality refinements.  The baseline records the current inventory and
-those zeroes, so every future source addition must preserve the full invariant
-rather than merely avoid worsening a
-historical backlog.  Run the script for live numbers after merging concurrent
-source work.
+remaining twenty declarations are three generalized spectral q-Pochhammer
+APIs, four density-diagnostic theorems, the locally uniform real-frequency
+phase-prefix theorem and its compact-set uniform corollary in
+`GeometricSincCharacteristicFunction.lean`, and eleven inverse-modulus
+strictness and equality refinements.  The fifth module,
+`GeometricUniformMultisection.lean`, contributes two coordinate definitions
+and three fixed half/quarter multisection theorems.  The baseline records the
+current inventory and those zeroes, so every future source addition must preserve the
+full invariant rather than merely avoid worsening a historical backlog.  Run
+the script for live numbers after merging concurrent source work.
 
 ### What the review pass caught
 
