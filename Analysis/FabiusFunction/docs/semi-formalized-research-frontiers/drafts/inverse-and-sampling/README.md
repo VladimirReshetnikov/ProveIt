@@ -42,14 +42,15 @@ New standalone intake members:
   Lean verification.
 
 - [`Inverse_Fabius_Computability_Report/`](Inverse_Fabius_Computability_Report/),
-  *Computability of the Inverse Fabius Function* (34 pp after post-publication
+  *Computability of the Inverse Fabius Function* (35 pp after post-publication
   revision; 29 pp at intake), arrived on
   2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (outer SHA-256
   `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
   All five submitted payload hashes verified and every text payload was
   already LF. A post-publication claim-by-claim reassessment now crosswalks
-  the structural least-mass, inverse-gap, exact-supremum, subadditivity, and
-  effective-injectivity layer to compiler-validated
+  the strict interval-mass shape, complete endpoint equality locus, inverse-gap
+  rigidity, exact-supremum, subadditivity, and effective-injectivity layers to
+  compiler-validated
   [`InverseModulus.lean`](../../../../Lean/FabiusFunction/InverseModulus.lean).
   That module does not formalize the report's closed `Delta_r` bound,
   recursive-modulus packaging, tolerant-bisection realizer, sequential

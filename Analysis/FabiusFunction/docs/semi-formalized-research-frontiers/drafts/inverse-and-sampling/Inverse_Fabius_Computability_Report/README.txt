@@ -7,7 +7,7 @@ inverse_fabius_computability.tex
     Complete LaTeX source of the report.
 
 inverse_fabius_computability.pdf
-    Rendered 34-page report.
+    Rendered 35-page report.
 
 inverse_fabius_computability_experiments.py
     Exact-rational Python supplement.  It uses only the Python standard
@@ -34,11 +34,12 @@ the compiler-validated module:
 
     Analysis/FabiusFunction/Lean/FabiusFunction/InverseModulus.lean
 
-That module covers global fixed-length Fabius increments, reflection and
-one-sided shape, the least endpoint increment, constrained forward
-superadditivity, local and global inverse-gap bounds, global inverse
-subadditivity, attained exact unit-interval and totalized moduli, and the
-exact effective-injectivity threshold.
+That module covers global weak and maximal strict fixed-length Fabius-increment
+shape, reflection, the least endpoint increment and its complete equality
+locus, constrained forward superadditivity with exact equality cases, local and
+global inverse-gap bounds, unit-input inverse-gap rigidity, global inverse
+subadditivity, attained exact unit-interval and totalized moduli, and the exact
+effective-injectivity threshold.
 
 It does not cover the closed Delta_r lower bound, recursive-modulus packaging,
 tolerant bisection, sequential computability, the combined computable-real-
@@ -52,7 +53,7 @@ Build and validation
 The PDF was built with three direct pdfLaTeX passes.  The final log has no
 unresolved references, overfull boxes, or underfull-box warnings.  The PDF was
 checked with pdfinfo, pdftotext, font inspection, PyMuPDF preflight, and a full
-34-page Poppler render.
+35-page Poppler render.
 
 Reproduce the numerical supplement
 ----------------------------------
