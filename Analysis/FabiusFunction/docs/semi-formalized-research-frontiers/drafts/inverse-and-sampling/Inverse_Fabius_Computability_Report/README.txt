@@ -58,7 +58,7 @@ forward computability, strict density shape, the clamped inverse and its
 inverse identities/calculus, exact dyadic inverse evaluation, and the leading
 inverse endpoint equivalent.  The report names those exact declarations and
 keeps its remaining inverse-computability declarations unqualified and
-schematic.  The live union audit scans 596 Lean modules and 8,124 public
+schematic.  The live union audit scans 597 Lean modules and 8,131 public
 declarations with zero documentation/header gaps.  No unqualified worldwide
 novelty claim is made.
 

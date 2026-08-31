@@ -42,7 +42,9 @@ The report was checked against the live Lean source and the existing
 
 - Lean presently covers the finite algebra/evaluation layer: Pascal recursion,
   symmetry, the denominator-free factorial relation, the finite q-binomial
-  theorem, evaluation at q=1, and finite base reversal.
+  theorem, evaluation at q=1, finite base reversal, and all four Gaussian
+  coefficient values at q=-1 through `GaussianBinomialAtNegOne.lean` together
+  with the zero case reused from `QBinomialReciprocity.lean`.
 - The existing monograph already contains the Gaussian Bernoulli expansion and
   centering, the q=0 rectangular-partition formulas, reciprocity, cyclotomic
   factorization, the q-Lucas value at roots of unity, and the value at q=-1.
@@ -123,12 +125,20 @@ See `pdf_preflight.json` for the compact machine-readable record.
 ## Lean crosswalk
 
 The value half of the report's complete first-jet theorem at `q = -1` is now
-formalized in the stronger setting of an arbitrary commutative ring.  The
-even-row/odd-column zero follows from reciprocal symmetry in
-`FabiusFunction.QBinomialReciprocity`; the other three parity values and the
-paired even- and odd-length finite q-Pochhammer product identities live in
-`FabiusFunction.GaussianBinomialAtNegOne`, whose induction reuses that zero
-theorem.  The focused Lake target has been compiled successfully.
+formalized in the stronger setting of an arbitrary commutative ring. The
+exhaustive five-theorem surface of
+`FabiusFunction.GaussianBinomialAtNegOne` is
+`gaussianBinomial_neg_one_even_even`,
+`gaussianBinomial_neg_one_odd_even`,
+`gaussianBinomial_neg_one_odd_odd`,
+`finiteQPochhammerIn_neg_one_even`, and
+`finiteQPochhammerIn_neg_one_odd`. Together with the reused
+`gaussianBinomial_neg_one_even_odd_eq_zero` theorem from
+`FabiusFunction.QBinomialReciprocity`, these declarations give all four
+Gaussian parity values and the two companion finite-product identities. The
+Gaussian formulas are total in all natural row and column parameters,
+including columns above the row by zero extension. The focused Lake target has
+been compiled successfully.
 
 The first-derivative formulas and the resulting characteristic-zero
 simple-root theorem are not yet formalized.  The report's manuscript proof is

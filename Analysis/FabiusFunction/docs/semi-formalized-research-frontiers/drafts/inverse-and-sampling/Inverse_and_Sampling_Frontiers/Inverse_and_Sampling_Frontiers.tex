@@ -1,5 +1,5 @@
 \documentclass[11pt,oneside]{article}
-\usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
+\usepackage[a4paper,margin=26mm,headheight=22pt]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
@@ -1728,7 +1728,7 @@ from the anchor is claimed or used.
 
 \begin{obligation}[Algebraic inverse germ]
 \emph{Post-snapshot status, checked at source checkpoint
-\path{cd9086a80cbecefecb9bc1e00378d151061595e0}.}
+\path{6991eac74}.}
 The reusable formal root engine is now supplied by
 \path{ImplicitPowerSeries.lean}.  In particular,
 \nolinkurl{PowerSeries.Implicit.existsUnique_zeroConstant_root} applies to a
@@ -1741,10 +1741,17 @@ ring, \nolinkurl{Fabius.germPolynomial} builds $\mathcal A(z,Q)=\sum_j b_jQ^jD^{
 as a single application of the smoothing-operator calculus of
 \path{SmoothingOperatorInversion.lean} (the weights become the even series
 $\sum_j b_jQ^jt^{2j}$ over $R[[Q]]$ and the germ is that series acting on the jet
-through $D$), \nolinkurl{Fabius.constantCoeff_coeff_germPolynomial} reduces the germ to
-the jet at $Q=0$, and \nolinkurl{Fabius.germRoot} with \nolinkurl{Fabius.existsUnique_germRoot}
-instantiates the engine: for $b_0=1$, $J(0)=0$, and $J'(0)$ a unit there is exactly
-one zero-constant formal root $\Delta(Q)$.  The truncated display form of
+through $D$).
+\par\smallskip
+\noindent\begin{minipage}{\linewidth}
+The theorem \nolinkurl{Fabius.constantCoeff_coeff_germPolynomial} reduces the
+germ to the jet at $Q=0$, and \nolinkurl{Fabius.germRoot} with
+\nolinkurl{Fabius.existsUnique_germRoot} instantiates the engine: for $b_0=1$,
+$J(0)=0$, and $J'(0)$ a unit there is exactly one zero-constant formal root
+$\Delta(Q)$.
+\end{minipage}
+\par\smallskip
+The truncated display form of
 \eqref{p1:eq:Ar-def} is \nolinkurl{Fabius.germPolynomial\_eq\_sum}, and the first concrete
 instance is formal too: \nolinkurl{Fabius.dyadicGermTwo} is the unique formal root of
 $\mathcal A_2(z,Q)=z+4z^2-\tfrac49Q$ from \eqref{p1:eq:A2local}, with $J_2=z+4z^2$ entered
@@ -1766,6 +1773,51 @@ identifies it with the germ (\nolinkurl{Fabius.dyadicGermTwo\_eq\_binomial}), gi
 closed coefficient formula $[Q^n]\Delta_2=\tfrac18\binom{1/2}{n}(\tfrac{64}{9})^n$ for every $n\ge1$
 (\nolinkurl{Fabius.coeff\_dyadicGermTwo\_of\_pos}) --- the Taylor coefficients of the
 analytic branch.
+
+The parameter normalization is now explicit rather than implicit.
+\path{QuarterCatalanGerm.lean} proves the exact quadratic equation
+$\Delta_2+4\Delta_2^2=\tfrac49Q$
+(\nolinkurl{Fabius.dyadicGermTwo\_functionalEquation}) and the two-sided
+formal rescaling
+\[
+ \begin{aligned}
+ \operatorname{rescale}_{9/4}(\Delta_2)
+   &=\operatorname{QuadraticInverse.inverse}(4),\\
+ \Delta_2
+   &=\operatorname{rescale}_{4/9}
+      \bigl(\operatorname{QuadraticInverse.inverse}(4)\bigr),
+ \end{aligned}
+\]
+through
+\nolinkurl{Fabius.rescale\_dyadicGermTwo\_eq\_quadraticInverse} and
+\nolinkurl{Fabius.dyadicGermTwo\_eq\_rescale\_quadraticInverse}.  Consequently
+\[
+ [Q^{m+1}]\Delta_2
+   =\left(\frac49\right)^{m+1}(-4)^m C_m
+\]
+for every $m\ge0$
+(\nolinkurl{Fabius.coeff\_dyadicGermTwo\_succ}).  This closes the formal
+comparison with the Catalan quadratic inverse.  The actual smooth bridge is
+now delivered by \path{FabiusInverseQuarterJet.lean}.  For every $n\ge0$ it
+proves the centered all-orders jet identity
+\[
+ \left.\frac{d^n}{dt^n}
+   \left(\InvF\!\left(\frac5{72}+t\right)-\frac14\right)
+ \right|_{t=0}
+ =n!\,[X^n]\operatorname{QuadraticInverse.inverse}(4)
+\]
+(\nolinkurl{Fabius.iteratedDeriv\_centeredFabiusInv\_quarter\_eq\_quadraticInverse})
+and hence, for every $m\ge0$,
+\[
+ \InvF^{(m+1)}\!\left(\frac5{72}\right)
+   =(m+1)!(-4)^m C_m
+\]
+(\nolinkurl{Fabius.iteratedDeriv\_fabiusInv\_five\_seventy\_two\_succ}).
+The proof uses the exact smooth quarter jet, Fa\`a di Bruno, the local inverse
+identity, and the quadratic coefficient recurrence.  These are equalities of
+all derivatives, not a local analytic identity: they do not erase the known
+nonanalytic flat defect or supply a named theorem that its remainder is
+nonzero on every neighbourhood.
 
 The \emph{quantile layer} is now formal as far as the local data allow.
 \path{QuarterQuantile.lean} defines the candidate value
@@ -2698,15 +2750,27 @@ every neighborhood.
 \end{proof}
 
 \begin{resultbox}[Post-snapshot formalization boundary]
-At source checkpoint
-\path{cd9086a80cbecefecb9bc1e00378d151061595e0},
-\path{ImplicitPowerSeries.lean} proves only the generic unique formal-root
-statement.  It does not define $Q_{x_0}$, construct $S_{x_0}$, prove analytic
-convergence, identify the series with the Taylor germ of $F^{-1}$, establish
-the plateau/flat decomposition \eqref{p2:eq:G-shadow}, or prove any
-inverse-derivative or quantile consequence.  Thus
-\cref{p2:thm:algebraic-inverse-germ} remains unformalized in its full analytic
-conclusion.
+The generic unique-root engine is in \path{ImplicitPowerSeries.lean};
+\path{AlgebraicInverseGerm.lean},
+\path{AlgebraicInverseGermAnalytic.lean}, and
+\path{AlgebraicInverseGermBinomial.lean} instantiate it at the quarter jet,
+identify the positive square-root branch, and prove the all-orders binomial
+formal series.  \path{QuarterCatalanGerm.lean} now identifies that rational
+dyadic germ, after the exact $9/4$ parameter rescaling, with
+\nolinkurl{QuadraticInverse.inverse} at coefficient $4$ and gives its Catalan
+coefficients.  \path{FabiusInverseQuarterJet.lean} connects the same quadratic
+inverse to the actual bounded Fabius inverse, proving the full centered jet and
+the derivative formula \eqref{p2:eq:Catalan-derivatives}.  The finite-spline
+quarter quantile chain is separately closed by \path{QuarterQuantile.lean} and
+\path{QuarterCellEvaluation.lean}.
+
+At the quarter point, what remains unformalized is a named nonzero
+flat-remainder decomposition \eqref{p2:eq:G-shadow}; equality of all jets is
+strictly weaker than equality with the analytic shadow on a neighbourhood.
+In the full generality of \cref{p2:thm:algebraic-inverse-germ}, the
+general-dyadic analytic/algebraic shadow, a convergent-series identification
+with the actual inverse Taylor jet, and the Bell--Lagrange formula also remain
+unformalized.
 \end{resultbox}
 
 \begin{resultbox}[The paradox in its sharpest form]
@@ -4134,9 +4198,12 @@ The proofs are well suited to staged formalization.
 Proposed module & Principal declarations \\
 \midrule
 \texttt{DyadicInverseGerm.lean}
-& Post-snapshot status at checkpoint \texttt{cd9086a80}: define the finite dyadic jet polynomial; instantiate the delivered generic formal-root engine; prove the flat remainder; connect the chosen formal root to inverse derivatives. \\
+& Delivered formal core: \texttt{AlgebraicInverseGerm*.lean} constructs and identifies the quarter germ, \texttt{QuarterCatalanGerm.lean} proves its exact Catalan rescaling and coefficients, and \texttt{FabiusInverseQuarterJet.lean} proves the full actual inverse jet and Catalan derivative formula.  Still open: a named nonzero flat-remainder theorem; the general-dyadic analytic/algebraic shadow and convergence bridge; and the general-dyadic Bell--Lagrange formula. \\
 \texttt{InverseBellLagrange.lean}
-& Lagrange--B\"urmann coefficient formula, partial-Bell recurrence, rationality, and the Catalan quarter-point theorem. \\
+& Still open in general: the dyadic Lagrange--B\"urmann coefficient formula,
+partial-Bell recurrence, and rationality bridge.  The quarter Catalan
+specialization is already delivered by \texttt{QuarterCatalanGerm.lean} and
+\texttt{FabiusInverseQuarterJet.lean}. \\
 \texttt{RvachevAppell.lean}
 & Define $L,M,P_n,A_n$ as formal series; prove affine transport, Appell, mean-value, and Bernoulli refinement identities. \\
 \texttt{RvachevLogisticDual.lean}

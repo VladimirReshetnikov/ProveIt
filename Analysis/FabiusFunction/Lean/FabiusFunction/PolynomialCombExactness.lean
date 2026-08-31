@@ -52,10 +52,8 @@ theorem finite_support_comb (F : BoundedFabius) (hF : IsFabius F)
       _ = (2 : ℝ) ^ m := one_mul _
   constructor
   · rw [Int.ceil_le]
-    push_cast
     linarith
   · rw [Int.le_floor]
-    push_cast
     linarith
 
 /-- **Shifted dyadic exactness, polynomial form**: for every level

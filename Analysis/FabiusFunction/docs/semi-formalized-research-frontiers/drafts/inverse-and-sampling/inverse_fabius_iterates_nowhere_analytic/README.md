@@ -34,6 +34,22 @@ report: a uniform weighted-defect estimate, the correct outer-function
 neighborhood in the two-spine lemma, an empty-union-safe `n = 1` tie set, and
 the live `Monotonicity.lean` module name.
 
+The finite positive-list arithmetic beneath the manuscript defect is now
+exhaustively crosswalked to `PartitionDefect.lean`.  Its three definitions are
+`pairSum`, `blockPairDefect`, and `partitionDefect`; its thirty-three public
+theorems cover the unordered-pair/triangular identities, conventional defect
+formulas, excess decomposition, nonnegativity, fixed-block lower bound and
+sharp equality case, both zero classifiers, and the first positive shell.
+For a positive list of total `m` and length `k`, the formal layer proves
+
+`D(r) = (k-1)∑(r_i-1) + ∑_{i<j}(r_i-1)(r_j-1) ≥ (k-1)(m-k)`,
+
+the exact zero/equality classifications, and—when `2 ≤ k < m`—the sharp
+first-shell bound `D(r) ≥ m-2`.  It does not construct set partitions or prove
+the manuscript's quadratic `Q_m` factorization, weighted Bell estimate,
+two-spine reduction, finite spine expansion, or forward/inverse iterate
+theorems.  Those steps remain paper-only.
+
 The normalized report contains 19 nonconjectural labelled manuscript results,
 two live conjectures, and three numbered warning quarantines.  Former
 Conjecture 14.1 has a false inverse clause: the finite quadratic forward germ
@@ -122,7 +138,7 @@ and used local notation afterward.  Auxiliary build files are not part of the
 package.
 
 The checked final-source build completed exactly three strict serial passes and
-produced a 24-page A4 PDF.  Its final log has no warnings, errors, unresolved
+produced a 26-page A4 PDF.  Its final log has no warnings, errors, unresolved
 references, rerun requests, or overfull/underfull boxes.  All 24 font rows are
 embedded, subset Type 1 fonts; the prose rows are Libertinus, with no Type 3 or
 Latin Modern font.  Text extraction and a visual review of every rendered page

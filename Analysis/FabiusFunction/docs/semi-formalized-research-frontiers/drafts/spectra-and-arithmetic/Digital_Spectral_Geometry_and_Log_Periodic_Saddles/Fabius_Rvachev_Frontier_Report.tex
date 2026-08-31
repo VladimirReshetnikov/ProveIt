@@ -170,16 +170,16 @@ audit boundaries, numerical evidence, and conjectures.
 \end{abstract}
 
 \paragraph{Corpus audit.}
-The current live-corpus audit reads \textbf{187} prior \texttt{.tex} files,
-comprising \textbf{385506} source lines and \textbf{16569797} bytes, under
+The current live-corpus audit reads \textbf{188} prior \texttt{.tex} files,
+comprising \textbf{386822} source lines and \textbf{16641250} bytes, under
 \texttt{Analysis/FabiusFunction/docs} recursively; it excludes this newly
 filed package directory.  The raw-byte concatenated source digest, in
 lexicographic relative-path order, is
-\texttt{4b112efd7d4d6e331aec29e92ad413fafb62d71f5ceb69bbb527a9bb4f593f17}.
+\texttt{fcbf61d797f98e27877c3132e39161832d6523cb7708d07064e7b3793271b7cd}.
 The accompanying \texttt{repository\_audit.py} reproduces the file-by-file
 manifest and broad phrase-cluster screen in
 \texttt{repository\_audit.md}.  Every advertised contribution cluster has
-substantial prior textual overlap (between 24 and 87 prior TeX files).
+substantial prior textual overlap (between 24 and 88 prior TeX files).
 Accordingly, theorem labels below mean proofs internal to this report, not
 Lean formalization, and no ``new'' wording inherited from the arrival source
 is a repository-relative or worldwide priority claim.  Claim-by-claim
@@ -1390,6 +1390,38 @@ Euler's sine product and the substitution \(m=b^{n-1}k\) give
 \]
 which is \eqref{eq:base-b-count}.
 \end{proof}
+
+\begin{remark}[Exact Lean boundary for the finite base count]
+The arithmetic part of \eqref{eq:base-b-count}--\eqref{eq:digit-recovery}
+has a compiler-validated counterpart in
+\path{BaseDigitMultiplicity.lean}, including composite integer bases
+\(b\geq2\).  In the notation
+\[
+ A_b(N)=\sum_{n=1}^{N}\bigl(1+\nu_b(n)\bigr),
+\]
+the declarations
+\path{weightedScaleMultiplicity_const} and
+\path{weightedScaleMultiplicity_one_nat} identify the constant-weight
+scale count, while
+\path{sum_range_weightedScaleMultiplicity_of_log_lt},
+\path{sum_range_weightedScaleMultiplicity_log}, and
+\path{sum_range_div_pow_log_eq_self_add_tail} give its finite floor-sum
+forms.  Finally,
+\path{sub_one_mul_sum_padicValNat_succ_add_digitSum} proves
+\[
+ (b-1)A_b(N)+s_b(N)=bN,
+\]
+and \path{sum_range_padicValNat_succ_eq_sub_digitSum_div} gives the
+equivalent quotient formula.
+
+This closes the finite arithmetic only after the analytic zero count
+\(N_b(c_bN)\) has independently been identified with \(A_b(N)\).  The
+module does not define \(\Phi_b\), prove the canonical product, or establish
+the analytic collision order \(1+\nu_b(n)\).  Likewise,
+\path{SpectralZetaWeighted.lean} proves the real \(p\)-series identity for
+weights \(1+\nu_b(n)\), not the manuscript's complex meromorphic zeta
+identification or its cumulant and log-periodic consequences.
+\end{remark}
 
 \begin{corollary}[Base-\(b\) cumulants]
 Odd cumulants vanish, and

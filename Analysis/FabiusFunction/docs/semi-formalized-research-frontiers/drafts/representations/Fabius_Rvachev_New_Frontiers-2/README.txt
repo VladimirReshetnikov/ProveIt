@@ -13,13 +13,21 @@ superseded, generated, proved, numerical, and conjectural material.
 Main deliverables
 -----------------
 fabius_rvachev_new_frontiers.tex
-    Complete 37-page, 2,668-line LaTeX report.  The semantic merge retains
-    the canonical A4/27 mm/Libertinus preamble and incorporates the current
-    determinant/rational Lean crosswalk.
+    Complete 2,757-line A4/27 mm/Libertinus LaTeX report. The merged source
+    preserves the canonical preamble, vector-figure and claim-status
+    safeguards, retains
+    the current scalar-base-change Gram--Stieltjes and all-degree rational
+    native Jacobi boundaries while incorporating the detailed generic and
+    Legendre Gram-determinant Lean crosswalk. It now also inventories the exact
+    22-declaration executable rational Legendre coefficient/Gram API and the
+    eleven-theorem low-order values leaf, while keeping the remaining
+    paper-only boundary explicit.
 
 fabius_rvachev_new_frontiers.pdf
-    Rendered and visually inspected PDF, refreshed after the post-intake
-    formal crosswalk.
+    Current 38-page A4 rendering with embedded/subset fonts, Libertinus prose,
+    and no Type 3 fonts. It was rebuilt in exactly three strict passes against
+    the updated source and is synchronized with the PDF preflight and checksum
+    ledger.
 
 fabius_frontier_experiments.py
     Fully commented 580-line exact/high-precision experiment. It computes
@@ -40,10 +48,11 @@ data/jacobi_coefficients.csv
 data/pi_product_approximants.csv
     Jacobi-product and Christoffel approximants to pi.
 
-figures/*.pdf
-    Five one-page vector figures embedded in the report.  The publication run
-    writes embedded, subset CID TrueType fonts; none contains Type 3 fonts or
-    raster images.
+figures/*.pdf and figures/*.png
+    Five figures in dual format. The report embeds the cleaned one-page vector
+    PDFs: all of their fonts are embedded and subset, and none contains Type 3
+    fonts or raster images. The 2100 x 1260 PNG companions are preserved as
+    supplemental package artifacts but are not embedded in the report.
 
 CORPUS_AUDIT.md
     Scope, source strata, nonduplication method, and status boundary.
@@ -64,12 +73,17 @@ unchanged from the audited publication data.
 
 Rebuild the PDF
 ---------------
-Required: a reasonably complete TeX Live installation with pdflatex.
-From this directory:
+Required: a reasonably complete TeX Live installation with pdflatex and the
+Libertinus Type 1 packages. From this directory, the final publication build
+must run all three passes:
 
 pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_new_frontiers.tex
 pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_new_frontiers.tex
 pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_new_frontiers.tex
+
+After each rebuild, verify A4 page geometry, embedded/subset fonts, a positive
+Libertinus font count, no Type 3 fonts, and the final page count before
+refreshing the PDF preflight and checksum ledger.
 
 Re-run the numerical experiment
 -------------------------------
@@ -83,32 +97,61 @@ python fabius_frontier_experiments.py \
 A higher target degree requires rapidly increasing precision because the
 current monomial-basis recurrence is cancellation-prone.
 
-Verification performed
-----------------------
-* Clean, exactly three-pass, strict serial pdflatex build from the frozen final
-  source.  The third-pass log has no LaTeX or package warnings, unresolved
-  references, duplicate labels or destinations, or overfull boxes.  Its nine
-  benign underfull notices are confined to the narrow claim-status table on
-  page 6, whose readability was checked at full render size.
-* PDF preflight: 37 unencrypted A4 pages at 595.276 x 841.890 points, zero
-  rotation, and A4 MediaBox/CropBox/BleedBox/TrimBox/ArtBox on every page.
-  All 35 font rows are embedded and subset, Libertinus is present, and there
-  are no Type 3 or Latin Modern fonts.  The report and all five standalone
-  figure PDFs contain vector content and no raster images.
-* Layout-preserving text extraction produced 2,248 lines (129,168 bytes).
-  Whitespace-normalized text retains all 41 unique public Lean declaration
-  names inventoried in the report, including all 18 names in the new
-  determinant crosswalk.
-* All 37 pages were rendered and visually inspected in four contact sheets.
-  Pages 1, 6, 11, 12, 23, 33, and 37 were also checked at 150 dpi; all five
-  standalone figure PDFs were inspected together at full plot scale.
-* Python byte-compilation was rechecked.  The numerical program, CSV files,
-  figure PDFs, and publication log are byte-identical to the audited local
-  publication run, whose independent degree-24 smoke output matched the
-  publication exact-low-degree CSV byte for byte.
+The script writes CSV records with deterministic LF line endings and produces
+the five vector plot PDFs.  Refresh the supplemental PNG companions after a
+production run with:
+
+for figure in jacobi_coefficients pi_approximants pi_product_error \
+    scaled_jacobi_deficit zero_quantiles; do
+  pdftocairo -png -singlefile -r 300 \
+      "figures/${figure}.pdf" "figures/${figure}"
+done
+
+Historical verification
+-----------------------
+* The arrival/pre-normalization checkpoint used a clean latexmk build with no
+  unresolved references, duplicate labels, or overfull boxes. Its 37-page A4
+  PDF was unencrypted and text-based; the 10 Type 3 font rows inherited from
+  the then-current vector plots matched that checkpoint's recorded baseline.
+* The subsequent normalized local checkpoint used exactly three strict serial
+  pdflatex passes. Its 37-page A4 PDF had 35 embedded/subset font rows,
+  Libertinus prose, no Type 3 or Latin Modern fonts, and five vector-only
+  standalone figure PDFs. Layout-preserving text extraction retained all 41
+  public names then inventoried, including the 18-name determinant crosswalk.
+* The publication and normalized checkpoints were rendered and visually
+  inspected in contact sheets, with changed/status/figure/final pages also
+  checked at full-page resolution.
+* Python byte-compilation and an independent degree-24 smoke run succeeded.
+
+Current repository rebuild verification
+---------------------------------------
+* Clean strict serial pdflatex passes 1--3 produced 36, 38, and 38 pages.
+* The final unencrypted PDF has 38 A4 pages, zero rotation, and A4
+  MediaBox/CropBox/BleedBox/TrimBox/ArtBox on every page. All 35 font rows are
+  embedded and subset; five are Libertinus; there are no Latin Modern or Type
+  3 fonts and no raster images.
+* The final-pass log has no LaTeX/package warning, overfull box, TeX error,
+  unresolved reference/citation, duplicate label/destination, or rerun
+  request. Its nine benign underfull notices are confined to the narrow
+  claim-status table on page 6, which was checked at full render size.
+* Layout-preserving extraction produced 2,310 lines (135,546 bytes).
+  Whitespace-normalized PDF text contains all 74 public names across the seven
+  scalar-naturality, native rational Jacobi, generic/Legendre determinant,
+  executable rational, and low-order values modules inventoried in the report.
+* Pages 1, 6, 12, 16, 27, 34, and 38 were visually inspected at 120 dpi; the
+  title, corrected status table, rational crosswalk, vector figures,
+  formalization roadmap, and final references page are unclipped and readable.
+* The refreshed 20-entry checksum ledger includes all five PNG companions and
+  synchronizes the TeX, PDF, README, CORPUS_AUDIT, and pdf_preflight entries.
 
 Claim status
 ------------
+The arrival-time novelty screen was corrected after filing: the pinned
+canonical representation frontier already contained the Nevai-limit,
+J-fraction, Hankel, and Gauss--Padé program. Those strands are inherited
+overlap; see CORPUS_AUDIT.md. The package remains standalone pending a
+claim-by-claim deduplication.
+
 The report distinguishes:
 * results already present in the audited repository;
 * new proofs or finite identities developed in the report;

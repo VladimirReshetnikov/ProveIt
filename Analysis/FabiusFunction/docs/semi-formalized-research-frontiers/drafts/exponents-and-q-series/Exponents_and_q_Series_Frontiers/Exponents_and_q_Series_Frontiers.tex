@@ -4761,23 +4761,25 @@ requires \(q\ne0\); unlike the total cross identities, both quotients retain
 the strict triangular condition.
 
 The finite Cauchy companion is also complete.
-\path{QBinomialCauchy.lean} has exactly one public definition and four public
-theorems.  Its primary and reflected identities are
+\path{QBinomialCauchy.lean} has exactly one public definition and five public
+theorems, counting the compatibility spelling
+\lean{Fabius.finiteQPochhammerIn_mul_eq_sum_gaussianBinomial} of the primary
+identity.  Its primary and reflected identities are
 \begin{align*}
  (uv;q)_n
- &=\sum_{k=0}^{n}{n\brack k}_q (u;q)_k v^k(v;q)_{n-k},\\
- &=\sum_{k=0}^{n}{n\brack k}_q (v;q)_k v^{n-k}(u;q)_{n-k},
+ &=\sum_{k=0}^{n}\qbinom nkq (u;q)_k v^k(v;q)_{n-k},\\
+ &=\sum_{k=0}^{n}\qbinom nkq (v;q)_k v^{n-k}(u;q)_{n-k},
 \end{align*}
 namely \lean{Fabius.finite_qCauchy_identity} and
 \lean{Fabius.finite_qCauchy_identity_reflected}.  The definition
 \lean{Fabius.qBernsteinBasis} is
-\(B^{(q)}_{n,k}(x)={n\brack k}_q x^k(x;q)_{n-k}\), and
+\(B^{(q)}_{n,k}(x)=\qbinom nkq x^k(x;q)_{n-k}\), and
 \lean{Fabius.sum_qBernsteinBasis} proves
 \(\sum_{k=0}^{n}B^{(q)}_{n,k}(x)=1\).  Finally,
 \lean{Fabius.finite_qCauchy_second_identity} proves
 \[
  (ac;q)_n(bc;q)_n
- =\sum_{k=0}^{n}{n\brack k}_q
+ =\sum_{k=0}^{n}\qbinom nkq
  (a;q)_k(b;q)_k c^k(c;q)_{n-k}(abcq^k;q)_{n-k}.
 \]
 All parameters and degrees are arbitrary over every commutative ring.  These
@@ -4837,7 +4839,7 @@ commutative ring the remaining declarations prove
 and, for the geometric alphabet \(1,q,\ldots,q^n\),
 \[
  \left(\prod_{j=0}^{n}(1-q^jX)\right)
- \left(\sum_{k\geq0}{n+k\brack k}_qX^k\right)=1
+ \left(\sum_{k\geq0}\qbinom{n+k}{k}{q}X^k\right)=1
  \quad\text{in }R[[X]].
 \]
 These are formal power-series identities only.  Analytic evaluation and
@@ -5053,7 +5055,7 @@ denominator hypotheses and expose the first surviving mode.
 
 \item \path{QuarterCatalanGerm.lean} has two public definitions,
 \path{Fabius.quarterCatalanCoefficient} and
-\path{Fabius.quarterCatalanGermSeries}, and nine public theorems:
+\path{Fabius.quarterCatalanGermSeries}, and thirteen public theorems:
 \path{Fabius.quarterCatalanCoefficient_zero},
 \path{Fabius.quarterCatalanCoefficient_succ_eq_report},
 \path{Fabius.quarterCatalanGermSeries_coeff},
@@ -5061,10 +5063,28 @@ denominator hypotheses and expose the first surviving mode.
 \path{Fabius.quarterCatalanGermSeries_constantCoeff},
 \path{Fabius.quarterCatalanGermSeries_equation},
 \path{Fabius.powerSeries_quadratic_injectiveOn_zeroConstant},
-\path{Fabius.eq_quarterCatalanGermSeries_of_equation}, and
-\path{Fabius.existsUnique_quarterCatalanGermSeries}.  This is the unique
-zero-constant solution of \(D+4D^2=(4/9)X\) in \(\Q[[X]]\), with its complete
-coefficient formula, but no convergence or real-inverse identification.
+\path{Fabius.eq_quarterCatalanGermSeries_of_equation},
+\path{Fabius.existsUnique_quarterCatalanGermSeries},
+\path{Fabius.dyadicGermTwo_functionalEquation},
+\path{Fabius.rescale_dyadicGermTwo_eq_quadraticInverse},
+\path{Fabius.dyadicGermTwo_eq_rescale_quadraticInverse}, and
+\path{Fabius.coeff_dyadicGermTwo_succ}.  This is the unique zero-constant
+solution of \(D+4D^2=(4/9)X\) in \(\Q[[X]]\), with its complete coefficient
+formula and exact rescaling bridge to the distinguished dyadic germ and the
+quadratic inverse.  The separate downstream module
+\path{FabiusInverseQuarterJet.lean} has exactly two public theorems,
+\path{Fabius.iteratedDeriv_centeredFabiusInv_quarter_eq_quadraticInverse}
+and
+\path{Fabius.iteratedDeriv_fabiusInv_five_seventy_two_succ}.  They identify
+the full derivative jet of the actual centered Fabius inverse at
+\(5/72=F(1/4)\) with the factorial-scaled coefficients of the inverse of
+\(X+4X^2\), and hence prove
+\[
+ G^{(m+1)}(5/72)=(m+1)!(-4)^m C_m.
+\]
+This is an equality of smooth jets only: neither module proves convergence of
+the formal germ, equality with the inverse on a neighborhood, or analyticity
+at the quarter anchor.
 
 \item \path{QuarterCatalanRichardson.lean} has three public definitions,
 \path{Fabius.finiteRescaleFilter},
@@ -11716,9 +11736,9 @@ independent scale \(s=-q\), the definitions
 \lean{Fabius.qGaussianResidualCoeff} and
 \lean{Fabius.qGaussianReconstructionCoeff} have the closed forms
 \[
- C'_{n,k}=(-q)^{n-k}{n\brack k}_{q^2},
+ C'_{n,k}=(-q)^{n-k}\qbinom nk{q^2},
  \qquad
- B_{n,k}=q^{(n-k)^2}{n\brack k}_{q^2}
+ B_{n,k}=q^{(n-k)^2}\qbinom nk{q^2}
 \]
 by \lean{Fabius.qGaussianResidualCoeff_eq} and
 \lean{Fabius.qGaussianReconstructionCoeff_eq}.  These two definitions and

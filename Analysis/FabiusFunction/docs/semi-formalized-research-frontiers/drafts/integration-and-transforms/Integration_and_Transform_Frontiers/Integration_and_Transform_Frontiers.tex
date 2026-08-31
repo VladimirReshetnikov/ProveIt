@@ -685,47 +685,39 @@ diagonal, and positive subdiagonal, together with real-cast bridges, rational
 orthogonality, the determinant cross-ratio, and the centered three-term recurrence.
 The zero-based value \path{Fabius.rvachevJacobiSubdiagonalRat}~\(n\) is the conventional
 coefficient \(\beta_{n+1}\).  These adjugate-based definitions are noncomputable finite
-algebra and do not themselves evaluate the displayed report values \(H_4\) and
-\(\beta_4\); the downstream executable tranche below does.
-The two-definition, seven-theorem \path{FabiusLegendreHankelDeterminant.lean}
-inventory defines \path{Fabius.upLegendreGramMatrix} and
-\path{Fabius.upLegendreGramDet}; for \(F:\)\path{BoundedFabius} it proves the
-leading-coefficient determinant identity, the empty value, the consecutive Legendre
-leading-coefficient quotient, and the real \(\beta_{n+1}\) Gram-determinant
-cross-ratio without an \path{IsFabius} hypothesis.  The integral entry formula,
-strict positivity, and exact rational-cast bridge additionally assume
-\path{IsFabius F}.  This closes the determinant/cross-ratio component, not the
-finite Gaunt/Wigner entry expansion or rationality by that route.  Roots, Christoffel
-formulas, Gaussian quadrature, finite or infinite \(J\)-fraction/Pad\'e identification,
-and asymptotics
-remain outside this tranche.
-
-The downstream executable tranche comprises
-\path{LegendrePolynomialRational.lean} (exactly two public definitions and six public
-theorems), \path{FabiusLegendreRationalGram.lean} (three definitions and eleven
-theorems), and \path{FabiusLegendreRationalGramValues.lean} (eleven theorems).  Thus the
-complete seven-module finite-algebra inventory contains thirteen definitions and
-sixty-one theorems, seventy-four public declarations in all.  The first module gives
-executable rational Legendre coefficients.  The second gives executable rational Gram
-entries, matrices, and determinants; its rational determinant identity, \(D_0=1\),
-strict positivity, norm quotient, and zero-based Jacobi ratio are unconditional.  Only
-its entry, matrix, and determinant cast bridges require a
-\path{BoundedFabius} witness \(F\) and a proof \path{IsFabius F}.  The value module proves
-unconditionally that \path{Fabius.moment_four} is \(132809/32531625\), together with
+algebra; the separate executable values leaf now evaluates the displayed report values.
+The zero-definition, eleven-theorem
+\path{FabiusLegendreRationalGramValues.lean} inventory is
+\path{Fabius.moment_four},
+\path{Fabius.rvachevLegendreGramDetRat_one},
+\path{Fabius.rvachevLegendreGramDetRat_two},
+\path{Fabius.rvachevLegendreGramDetRat_three},
+\path{Fabius.rvachevLegendreGramDetRat_four},
+\path{Fabius.rvachevLegendreGramDetRat_five},
+\path{Fabius.rvachevOrthoNormRat_four},
+\path{Fabius.rvachevJacobiSubdiagonalRat_three},
+\path{Fabius.hankelRatio_four},
+\path{Fabius.integral_sq_upOrthoPolynomial_four}, and
+\path{Fabius.hankelRatio_four_div_three}.
+It gives the raw eighth moment (132809/32531625); rational Legendre Gram determinants
+of orders one through five
 \[
- (D_1,D_2,D_3,D_4,D_5)=
- \left(1,\frac19,\frac8{2025},\frac{39616}{602791875},
- \frac{16544275456}{27453718922765625}\right),
+ 1,\quad \frac19,\quad \frac8{2025},\quad
+ \frac{39616}{602791875},\quad
+ \frac{16544275456}{27453718922765625};
 \]
-and \(H_4=26727424/55791736875\).  The declaration
-\path{Fabius.rvachevJacobiSubdiagonalRat_three} gives the zero-based value
-\(\beta_4=835232/4640643\).
-Only its three real/integral consequences require a
-\path{BoundedFabius} witness \(F\) and a proof \path{IsFabius F}.  The finite
-Gaunt/Wigner entry expansion, roots, Christoffel reconstruction, quadrature,
-continued-fraction/Pad\'e theory, and asymptotics remain open.
-
-The \emph{moment/Laurent layer} is
+and the unconditional rational values
+\[
+ H_4=\frac{26727424}{55791736875},
+ \qquad
+ \beta_4=\frac{835232}{4640643},
+\]
+where the subdiagonal index is zero-based.  The last three theorems transport the fourth
+real Hankel ratio, its squared orthogonal-polynomial integral, and its quotient by the
+third ratio only for an input \(F\) of type \path{Fabius.BoundedFabius} with
+an \path{Fabius.IsFabius} certificate.  Roots, Christoffel formulas, Gaussian quadrature,
+Gaunt/Wigner/\(3j\) entry expansions, finite or infinite \(J\)-fraction/Pad\'e
+identification, and asymptotics remain outside this tranche.  The \emph{moment/Laurent layer} is
 now delivered on the symmetric side by
 \path{StieltjesMomentLaurent.lean}: for every real \(|z|>1\) and every \(N\),
 \(\int(z-x)^{-1}\dd\mu_{\Up}=\sum_{k<N}m_k\,z^{-(k+1)}+z^{-N}\int x^N(z-x)^{-1}\dd\mu_{\Up}\)
@@ -10304,32 +10296,19 @@ three-term recurrence from exactly the three nonzero minors of orders
 $n,n+1,n+2$.  These theorems are finite field algebra and assume neither a
 measure nor positivity.
 
-The six scalar-naturality theorems in \path{GramStieltjesNaturality.lean}, the
-two definitions plus seven theorems in \path{PolynomialMomentGramDeterminant.lean},
-the four definitions plus thirteen theorems in \path{RvachevRationalJacobi.lean}, and
-the two definitions plus seven theorems in
-\path{FabiusLegendreHankelDeterminant.lean}, together with the two definitions plus six
-theorems in \path{LegendrePolynomialRational.lean}, the three definitions plus eleven
-theorems in \path{FabiusLegendreRationalGram.lean}, and the eleven theorems in
-\path{FabiusLegendreRationalGramValues.lean}, now specialize this machinery through
-arbitrary coherent bases and then over \(\Q\) and the up-law Legendre basis.  This is an
-exhaustive seven-module inventory of thirteen definitions and sixty-one theorems,
-seventy-four declarations.  It
-proves positive rational determinants, monic coefficients, norms and subdiagonals;
-rational orthogonality; a zero diagonal; coherent-basis and Legendre determinant
-formulas; the determinant cross-ratios; the centered recurrence; and all stated
-real-cast bridges.  Its zero-based subdiagonal at index \(n\) is \(\beta_{n+1}\).
-The downstream value module names the unconditional exact evaluations
-\path{Fabius.moment_four} \(=132809/32531625\),
-\((D_1,D_2,D_3,D_4,D_5)=(1,1/9,8/2025,39616/602791875,
-16544275456/27453718922765625)\),
-\(H_4=26727424/55791736875\), and \(\beta_4=835232/4640643\) at zero-based
-index three.  Within the three downstream modules, the rational identities and values
-are unconditional; only the three Gram cast bridges and the three real/integral
-consequences require
-\path{BoundedFabius} and \path{IsFabius}.  The Gaunt/Wigner entry formula, roots,
-Christoffel reconstruction, quadrature, \(J\)-fraction, Pad\'e, and asymptotic theorems
-remain open.
+The six scalar-naturality theorems in \path{GramStieltjesNaturality.lean} and the
+four definitions plus thirteen theorems in \path{RvachevRationalJacobi.lean} now
+specialize this machinery over \(\Q\) at every degree.  The exhaustive 23-declaration
+inventory is recorded in the compilation status above.  The specialization proves
+positive rational determinants, monic coefficients, norms and subdiagonals; rational
+orthogonality; a zero diagonal; the determinant cross-ratio; the centered recurrence;
+and all real-cast bridges.  Its zero-based subdiagonal at index \(n\) is
+\(\beta_{n+1}\).  The separate eleven-theorem
+\path{FabiusLegendreRationalGramValues.lean} inventory recorded above evaluates
+\(H_4=26727424/55791736875\) and the zero-based
+\(\beta_4=835232/4640643\), including their real and integral transports under
+\path{BoundedFabius} plus \path{IsFabius}.  Root, quadrature, Christoffel,
+Gaunt/Wigner/\(3j\), \(J\)-fraction, Pad\'e, and asymptotic theorems remain open.
 
 The separate up-measure pipeline in \path{MomentHankelMatrix.lean},
 \path{MomentHankelValues.lean}, and the \path{OrthogonalPolynomial*.lean} modules now
@@ -15090,7 +15069,18 @@ support-free clamped theorem, are
 \path{Fabius.intervalIntegral_survival_smul_eq_integral_clamp},
 \path{Fabius.intervalIntegral_survival_smul_eq_integral_min_of_ae_mem_Icc}, and
 \path{Fabius.intervalIntegral_survival_smul_eq_integral_of_ae_mem_Icc} in
-\path{SurvivalLayerCake.lean}.
+\path{SurvivalLayerCake.lean}.  The complementary order-of-integration
+formulation is also formalized in \path{ProbabilityLaplaceMoments.lean}: its
+full and clipped finite-measure engines are
+\path{Fabius.integral_Icc_intervalIntegral_eq_intervalIntegral_smul_survival}
+and
+\path{Fabius.integral_Icc_intervalIntegral_min_eq_intervalIntegral_smul_survival},
+with Fabius specializations and the scalar wrappers
+\path{Fabius.ProbabilityRepresentation.intervalIntegral_mul_rvachevUp_eq_integral_Icc_intervalIntegral}
+and
+\path{Fabius.ProbabilityRepresentation.intervalIntegral_mul_rvachevUp_eq_integral_Icc_intervalIntegral_min}.
+Only Bochner integrability is required, so these declarations also cover real
+and complex kernels.
 \end{statusbox}
 
 \begin{proof}
@@ -15103,24 +15093,6 @@ By \eqref{p8:eq:up-survival},
 \]
 Taking \(x=1\) proves \eqref{p8:eq:survival-master}.
 \end{proof}
-
-\paragraph{Editorial Lean status (28 August 2026).}
-The full- and partial-endpoint identities \eqref{p8:eq:survival-master} and
-\eqref{p8:eq:survival-partial} are formalized in a
-strictly stronger Banach-valued family.  The full-endpoint theorem is
-\path{Fabius.ProbabilityRepresentation.integral_Icc_intervalIntegral_eq_intervalIntegral_smul_rvachevUp};
-its arbitrary compact-interval finite-measure engine is
-\path{Fabius.integral_Icc_intervalIntegral_eq_intervalIntegral_smul_survival}.
-The clipped finite-measure and Fabius declarations are
-\path{Fabius.integral_Icc_intervalIntegral_min_eq_intervalIntegral_smul_survival}
-and
-\path{Fabius.ProbabilityRepresentation.integral_Icc_intervalIntegral_min_eq_intervalIntegral_smul_rvachevUp}.
-Only Bochner integrability is assumed, so the family covers real and complex
-kernels.  The full- and partial-endpoint scalar wrappers
-\path{Fabius.ProbabilityRepresentation.intervalIntegral_mul_rvachevUp_eq_integral_Icc_intervalIntegral}
-and
-\path{Fabius.ProbabilityRepresentation.intervalIntegral_mul_rvachevUp_eq_integral_Icc_intervalIntegral_min}
-have exactly the orientations of the two displayed report identities.
 
 \begin{corollary}[Monomial antiderivatives]
 \label{p8:cor:monomial-partial}

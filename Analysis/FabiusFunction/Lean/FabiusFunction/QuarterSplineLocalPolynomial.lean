@@ -167,10 +167,16 @@ theorem thueMorsePowerSumRing_add_two_real (m : ℕ) :
         rw [hsym, Nat.cast_choose_two ℝ]
         push_cast
         ring
-      have hfour : (4 : ℝ) ^ m = (2 : ℝ) ^ m * (2 : ℝ) ^ m := by
+      have hfour : (4 : ℝ) ^ m = ((2 : ℝ) ^ m) ^ 2 := by
         calc
           (4 : ℝ) ^ m = ((2 : ℝ) * 2) ^ m := by norm_num
-          _ = (2 : ℝ) ^ m * (2 : ℝ) ^ m := by rw [mul_pow]
+          _ = ((2 : ℝ) ^ m) ^ 2 := by rw [mul_pow, pow_two]
+      have hpowTwo :
+          (2 : ℝ) ^ (m * 2) = ((2 : ℝ) ^ m) ^ 2 := by
+        rw [pow_mul]
+      have hpowThree :
+          (2 : ℝ) ^ (m * 3) = ((2 : ℝ) ^ m) ^ 3 := by
+        rw [pow_mul]
       rw [show m + 1 + 2 = m + 3 by omega,
         thueMorsePowerSumRing_succ (R := ℝ) m (m + 3),
         show m + 3 = (m + 2) + 1 by omega,
@@ -179,12 +185,10 @@ theorem thueMorsePowerSumRing_add_two_real (m : ℕ) :
         thueMorsePowerSumRing_self,
         thueMorsePowerSumRing_add_one_real, ih,
         Nat.choose_succ_self_right]
-      rw [hchooseThree, hchooseTwo, choose_succ_two,
+      rw [hchooseThree, hchooseTwo, choose_succ_two, pow_add, pow_succ,
         Nat.factorial_succ]
       push_cast
-      simp only [pow_add]
-      rw [hfour]
-      ring
+      ring_nf
 
 /-! ## A reusable degree-two residual extractor -/
 
@@ -267,17 +271,15 @@ theorem normalized_thueMorse_translated_power_sum_add_two
     push_cast
     ring
   rw [hsign, hpow, hfactorial, hchooseCast]
-  have hsignMulTwo : (-1 : ℝ) ^ (m * 2) = 1 := by
-    calc
-      (-1 : ℝ) ^ (m * 2) = ((-1 : ℝ) ^ 2) ^ m := by
-        rw [Nat.mul_comm, pow_mul]
-      _ = 1 := by norm_num
+  have hsignEven : (-1 : ℝ) ^ (m * 2) = 1 := by
+    rw [mul_comm, pow_mul]
+    norm_num
   have hm1 : (m : ℝ) + 1 ≠ 0 := by positivity
   have hm2 : (m : ℝ) + 2 ≠ 0 := by positivity
   have hfac : (m.factorial : ℝ) ≠ 0 := by positivity
   field_simp [hm1, hm2, hfac]
   ring_nf
-  rw [hsignMulTwo]
+  rw [hsignEven]
   ring
 
 /-! ## The quarter block and the half-cell endpoint -/
@@ -312,8 +314,7 @@ theorem normalized_quarter_thueMorse_block (m : ℕ) (z : ℝ) :
   have htwoAdd :
       (2 : ℝ) ^ (m + 2) = 4 * (2 : ℝ) ^ m := by
     rw [pow_add]
-    norm_num
-    ring
+    norm_num <;> ring
   have htwoDoubleOne :
       (2 : ℝ) ^ (2 * m + 1) = 2 * ((2 : ℝ) ^ m) ^ 2 := by
     rw [pow_add]
@@ -331,8 +332,7 @@ theorem normalized_quarter_thueMorse_block (m : ℕ) (z : ℝ) :
       congr 1
       omega
     rw [hdouble]
-    norm_num
-    ring
+    norm_num <;> ring
   have hfour : (4 : ℝ) ^ m = ((2 : ℝ) ^ m) ^ 2 := by
     calc
       (4 : ℝ) ^ m = ((2 : ℝ) * 2) ^ m := by norm_num
@@ -355,8 +355,7 @@ private theorem dyadic_quarterCellRadius_scale (m : ℕ) :
 private theorem dyadic_quarterAnchor_scale (m : ℕ) :
     (2 : ℝ) ^ (m + 2) * (1 / 4) = (2 : ℝ) ^ m := by
   rw [pow_add]
-  norm_num
-  ring
+  norm_num <;> ring
 
 private theorem quarter_range_length_of_mem_left_closed_right_open
     (m : ℕ) {z : ℝ}
@@ -466,11 +465,11 @@ theorem reportFiniteFabiusApproximant_quarter_eq_quadratic
       5 / 72 + z + 4 * z ^ 2 - (4 / 9) * ((4 : ℝ) ^ n)⁻¹ := by
   obtain ⟨m, rfl⟩ := Nat.exists_eq_add_of_le hn
   have hadd : 3 + m = m + 3 := by omega
-  have hsub' : m + 3 - 1 = m + 2 := by omega
+  have hsub : m + 3 - 1 = m + 2 := by omega
   have hz' :
       z ∈ Icc (-((2 : ℝ) ^ (m + 3))⁻¹) (((2 : ℝ) ^ (m + 3))⁻¹) := by
     simpa only [hadd] using hz
-  simpa only [reportFiniteFabiusApproximant, hadd, hsub'] using
+  simpa only [reportFiniteFabiusApproximant, hadd, hsub] using
     fabiusUniformSpline_quarter_eq_quadratic m hz'
 
 /-! ## The exact local polynomial and inverse transfer -/

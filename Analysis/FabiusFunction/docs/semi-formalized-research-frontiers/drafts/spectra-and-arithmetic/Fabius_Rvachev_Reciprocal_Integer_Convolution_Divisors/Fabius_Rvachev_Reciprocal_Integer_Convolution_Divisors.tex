@@ -94,7 +94,6 @@
   \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
 \newcommand{\leanevaltwo}[1]{%
   \nolinkurl{integral_eval}\texttt{\textsubscript{2}}\nolinkurl{#1}}
-
 \newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
 \newenvironment{boxedremark}{%
   \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
@@ -117,41 +116,22 @@
   belowskip=0.8em
 }
 
-% Document-specific settings, notation, and environments not present in the
-% shared canonical block.
-\allowdisplaybreaks
-\numberwithin{equation}{section}
+% Report-local notation not present in the shared preamble.
 \newcommand{\T}{\mathbb T}
 \newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Cov}{\operatorname{Cov}}
 \newcommand{\Law}{\operatorname{Law}}
 \newcommand{\TV}{\operatorname{TV}}
+\newcommand{\Lip}{\operatorname{Lip}}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\Bell}{\mathcal B}
+\newcommand{\cF}{\mathcal F}
 \newcommand{\D}{\mathcal D}
 \newcommand{\1}{\mathbf 1}
 
-\newenvironment{statusbox}[1]{%
-  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
-  \hrule\vspace{0.55em}\textbf{#1.}\ }{%
-  \vspace{0.55em}\hrule\end{minipage}\end{center}\smallskip}
-
-\lstdefinestyle{pythonstyle}{
-  language=Python,
-  basicstyle=\ttfamily\small,
-  backgroundcolor=\color{shadegray},
-  frame=single,
-  rulecolor=\color{rulegray},
-  columns=fullflexible,
-  keepspaces=true,
-  showstringspaces=false,
-  breaklines=true,
-  xleftmargin=0.6em,
-  xrightmargin=0.6em
-}
-
 \title{\bfseries Reciprocal-Integer Convolution Divisors of the Rvachev Law\\[0.35em]
 \large Arithmetic semigroups, singular-to-smooth parity, Thue--Morse quotients, zero zeta functions, and inverse-Fabius approximants}
-\author{Research report prepared from the \repo\ Fabius-function corpus}
+\author{Research report prepared from the \texttt{ProveIt} Fabius-function corpus}
 \date{30 August 2026}
 
 \begin{document}
@@ -210,14 +190,15 @@ scheme.  The report closes with conjectures on fractional regularity, complex-di
 expansions, dyadic arithmetic, Legendre transfer operators, general bases, and formalization.
 \end{abstract}
 
-\begin{statusbox}{Status and originality convention}
+\begin{boxedremark}
+\textbf{Status and originality convention.}
 Every statement labeled theorem, proposition, lemma, corollary, or identity is proved in
 this report, except when explicitly attributed to a cited source.  Every conjecture is
 visibly labeled.  ``New'' or ``frontier'' means that the result was not found in the audited
 30 August 2026 repository corpus or in the limited external literature search described
 in \cref{sec:audit}; it is not a claim of mathematical priority.  The arguments have not
 been peer reviewed or formally checked in Lean.
-\end{statusbox}
+\end{boxedremark}
 
 \tableofcontents
 \clearpage
@@ -1755,6 +1736,27 @@ removable zero-over-zero quotients;
 All exact polynomial calculations use Python integers.  Floating-point plots are diagnostic
 only and are not used as proofs.
 
+\subsection{Repository provenance and replay boundary}
+\label{sec:replay-boundary}
+
+The repository package was filed from the rootless archive
+\path{fabius_rvachev_frontier_report_2026-08-30-B.zip}, whose outer SHA-256 is
+\nolinkurl{cfae82f303c3740bd76673fed772b1f69b9fedb0a911505360c930db7cc5a13f}.
+This package-local normalization is anchored to the two repository merge parents
+\nolinkurl{563b90f25e0563cc521a53e9b478b667eaf3b694} and
+\nolinkurl{685e1963897b1ff2cff8f541e46218cf8d37405a}.  These hashes define a
+provenance boundary; they are not a claim that the numerical script was executed at either
+revision.  No experiment was executed during this source-only normalization.
+
+The group record in \path{../README.md} documents an earlier temp-isolated Python~3.12
+replay.  Four CSV files were byte-identical, the text summary was equivalent up to line
+endings, and \path{endpoint_profiles.csv} differed in 66 last-place fields, with maximum
+absolute difference $1.1102230246251565\times10^{-16}$.  All four PNG files showed layout
+drift between the unpinned packaged Matplotlib~3.10.8 and replayed Matplotlib~3.11.1
+(1475 versus 1476 pixels wide).  The experiment therefore supplies scientifically stable
+diagnostics, not a promise of byte-identical plots across Matplotlib versions.  The current
+writer fixes CSV line endings explicitly to LF, but the package still has no dependency lock.
+
 \subsection{Odd and even cascade behavior}
 
 At level $N$, spread each atom of $Z_{M,N}$ uniformly across one dyadic box of width
@@ -1836,7 +1838,7 @@ for every tested $0\le k\le10$, exactly as predicted by
 \subsection{Reproduction command}
 
 From the extracted archive directory, run
-\begin{lstlisting}[style=pythonstyle]
+\begin{lstlisting}[style=pseudo,language=Python,breaklines=true]
 python experiments.py --output-dir .
 \end{lstlisting}
 The script regenerates all four PNG figures and all CSV/text data files.  Its final exact
@@ -2062,6 +2064,27 @@ asymptotics and exact arithmetic self-similarity.
 \section{A formalization and research program}
 \label{sec:program}
 
+\subsection{Current exact Lean adjacency and the quotient-family boundary}
+
+At the merge-parent boundary above, two exact Lean modules are adjacent to this report's
+zero-divisor program.  In
+\path{Lean/FabiusFunction/GeneralizedZeroDivisor.lean},
+\lean{Fabius.generalizedRvachevProduct_eq_zero_iff_int} gives the arithmetic
+integer zero set for a generalized Rvachev product, while
+\lean{Fabius.analyticOrderAt_generalizedRvachevProduct_int} gives its exact
+order at every nonzero integer.  In
+\path{Lean/FabiusFunction/ReciprocalIntegerGammaZeros.lean},
+\lean{Fabius.geometricReciprocalGamma_inv_natCast_eq_zero_iff} identifies the
+zero set of the geometric reciprocal Gamma function at every reciprocal-integer base.
+
+These declarations are exact formal infrastructure, but they concern generalized Rvachev
+products and geometric reciprocal Gamma functions.  They do not formalize the extension of
+$Q_M=\Phi/\Phi(\mathord{\cdot}/M)$ through its removable singularities, its
+characteristic-function interpretation, the reciprocal-integer convolution-divisor
+classification, the quotient multiplicity formula, or the spectral zeta function in this
+report.  Those claims remain manuscript-level results; the following list is a proposed Lean
+development, not a crosswalk asserting that the quotient family is already formalized.
+
 \subsection{Lean-sized theorem units}
 
 The main arguments decompose naturally into formalization units:
@@ -2188,7 +2211,7 @@ convolution and makes the checks of \cref{thm:TM-quotient} fully integral.
 \section{Corpus coverage matrix}
 \label{app:corpus}
 
-\begin{longtable}{p{0.27\textwidth}p{0.30\textwidth}p{0.35\textwidth}}
+\begin{longtable}{@{}p{0.27\textwidth}p{0.30\textwidth}p{0.35\textwidth}@{}}
 \toprule
 Corpus component & Existing coverage used & Duplication avoided in this report\\
 \midrule
@@ -2216,14 +2239,14 @@ Frozen archive & Historical versions and provenance hashes & Used only to preven
 \section{Archive contents and file map}
 \label{app:file-map}
 
-The accompanying ZIP archive contains:
+The repository package contains:
 \begin{center}
-\begin{tabular}{ll}
+\begin{tabularx}{\textwidth}{@{}p{0.56\textwidth}X@{}}
 \toprule
 Path & Purpose\\
 \midrule
-\path{frontier_report.tex} & complete LaTeX source\\
-\path{frontier_report.pdf} & compiled report\\
+\path{Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors.tex} & complete LaTeX source\\
+\path{Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors.pdf} & compiled report\\
 \path{experiments.py} & commented reproducibility script\\
 \path{figures/*.png} & four figures used in the PDF\\
 \path{data/cascade_summary.csv} & finite-cascade maxima and $L^2$ energies\\
@@ -2233,8 +2256,9 @@ Path & Purpose\\
 \path{data/endpoint_profiles.csv} & plotted endpoint phase data\\
 \path{data/experiment_summary.txt} & exact-check summary\\
 \path{README.txt} & reproduction and compilation instructions\\
+\path{SHA256SUMS} & live repository payload ledger\\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{center}
 
 \begin{thebibliography}{99}

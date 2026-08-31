@@ -86,18 +86,32 @@ New standalone intake members:
 
 - [`inverse_fabius_iterates_nowhere_analytic/`](inverse_fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Inverse
-  Fabius Function* (23 pp), arrived on 2026-08-30 from
+  Fabius Function* (26 A4 pp, 1,765 source lines), arrived on 2026-08-30 from
   `inverse_fabius_iterates_nowhere_analytic.zip` (outer SHA-256
   `8b1c05d59e120ecd20d69cd5aeb0009639f2f3b9a6c9fef32bdf82270eee16bd`).
   All 13 submitted payload hashes verified; `spine_diagnostic.csv` was
   refreshed after CRLF-to-LF repository normalization. It remains standalone
   pending post-publication reconciliation with
   [`../representations/fabius_iterates_nowhere_analytic/`](../representations/fabius_iterates_nowhere_analytic/)
-  and a Lean crosswalk; its own status note says the principal claims have not
-  been translated into Lean.
+  and further Lean work. Its source now crosswalks the complete finite
+  positive-list defect API in `PartitionDefect.lean`, while the set-partition
+  bridge, weighted Bell/spine asymptotics, and principal forward/inverse
+  iterate claims remain paper-only.
 
 The inverse function's frontiers and the sampling/deconvolution circle of
 ideas, in three consolidated volumes and six retained standalone reports.
+
+Post-snapshot formal status: `QuarterCatalanGerm.lean` now proves that the
+distinguished rational quarter germ becomes the Catalan inverse of
+`X + 4 X²` under the exact `9/4` parameter rescaling, together with the reverse
+rescaling and every positive coefficient.  `FabiusInverseQuarterJet.lean`
+then connects that quadratic inverse to the actual smooth inverse: its full
+centered jet at `5/72 = F(1/4)` is the factorial-scaled Catalan coefficient
+sequence, so `G^(m+1)(5/72) = (m+1)! (-4)^m C_m`.  This is equality of all
+derivatives, not local analytic equality.  A named nonzero flat-remainder
+decomposition remains open.  Beyond the quarter specialization, the
+general-dyadic analytic/algebraic shadow, convergence and identification of
+the inverse Taylor series, and the Bell--Lagrange formula also remain open.
 
 ## `Inverse_and_Sampling_Frontiers/`
 
@@ -224,7 +238,7 @@ preserved in `ARRIVAL_SHA256SUMS.txt`; the current six-entry
 Filed 2026-08-30 from `inverse_fabius_iterates_nowhere_analytic.zip`
 (1,137,032 bytes; SHA-256
 `8b1c05d59e120ecd20d69cd5aeb0009639f2b3b9a6c9fef32bdf82270eee16bd`).
-This canonical 24-page A4/27 mm/Libertinus inverse-iterate companion derives
+This canonical 26-page A4/27 mm/Libertinus inverse-iterate companion derives
 nowhere analyticity and formal-radius transport from the corrected forward
 iterate report, then proves the affine but nonrepresenting center jet and the
 iterated endpoint obstruction.  The inverse-nowhere-analytic conclusion is

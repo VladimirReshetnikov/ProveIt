@@ -46,27 +46,78 @@ The report does not claim novelty for the following repository material:
   recent Legendre/Lagrange reconstruction loops;
 - the Cauchy-transform Laurent expansion and dyadic renormalization identity.
 
-## Main layer not found in the audited TeX corpus
+## Distinctive layer after overlap correction
 
-Targeted tree/search checks found no report-level treatment of the following
-combination:
+The arrival-time audit overstated the absence of native asymptotic and
+transform material. At the pinned checkpoint, the canonical representation
+frontier already contained the Nevai-limit, J-fraction, Hankel, and
+Gauss--Padé program. Those ingredients are inherited overlap. The filed
+report's useful combined layer consists of:
 
 - log-concavity of the up-law and the resulting Fabius Turán inequality;
-- native Szegő/Nevai/Rakhmanov asymptotics;
+- a single report connecting native Szegő/Rakhmanov consequences to the
+  already-recorded Nevai layer;
 - Christoffel reconstruction of `up` from rational moment matrices;
 - the central rational limit `N lambda_N(0) -> pi`;
 - the alternating Jacobi product
   `pi = 2 product beta_(2j)/beta_(2j-1)`;
 - its exact harmonic-mean relation to central Christoffel approximants;
-- the Gauss/J-fraction/Padé package for the native Cauchy transform;
+- an expanded Gauss/J-fraction/Padé presentation for the native Cauchy
+  transform, overlapping the canonical frontier;
 - the finite Legendre--Gaunt determinant formula recovering native Jacobi
-  coefficients and closing the spectral reconstruction circuit.
+coefficients and closing the spectral reconstruction circuit.
+
+Accordingly, this list is a disposition map rather than a claim that every
+ingredient was absent. The package remains standalone pending a
+claim-by-claim deduplication against the current representation volume.
 
 The recent Legendre reports solve a different problem: they expand the bump in
 classical Legendre polynomials and synthesize those polynomials from shifted
 copies of the bump.  The new report instead orthogonalizes against the measure
 `up(x) dx` itself and then connects that intrinsic system back to Legendre data
 through finite Gaunt matrices.
+
+## Post-snapshot Lean crosswalk
+
+The pinned audit and its corpus-relative novelty statements remain historical.
+The current repository has since added three executable-rational modules beside
+the generic moment-Gram and real Fabius--Legendre determinant layers:
+
+- `LegendrePolynomialRational.lean` contributes two public definitions and six
+  public theorems for executable rational Legendre coefficients, their
+  polynomial wrapper, exact degree and leading coefficient, nonvanishing and
+  consecutive-leading-coefficient quotient, and the real-cast bridge.
+- `FabiusLegendreRationalGram.lean` contributes three public definitions and
+  eleven public theorems for bounded rational entry sums, their finite matrix
+  and determinant, abstract-moment identifications, real-cast bridges,
+  determinant identity and positivity, and rational norm/Jacobi determinant
+  ratios.  Each of the three real-cast bridges assumes both `BoundedFabius`
+  and `IsFabius`; the finite rational identities do not.
+- `FabiusLegendreRationalGramValues.lean` contributes no definitions and exactly
+  eleven public theorems: `moment_four`,
+  `rvachevLegendreGramDetRat_one`, `rvachevLegendreGramDetRat_two`,
+  `rvachevLegendreGramDetRat_three`, `rvachevLegendreGramDetRat_four`,
+  `rvachevLegendreGramDetRat_five`, `rvachevOrthoNormRat_four`,
+  `rvachevJacobiSubdiagonalRat_three`, `hankelRatio_four`,
+  `integral_sq_upOrthoPolynomial_four`, and
+  `hankelRatio_four_div_three`.  They compute the raw eighth moment
+  `132809/32531625`; rational Legendre Gram determinants of orders one through
+  five `1`, `1/9`, `8/2025`, `39616/602791875`, and
+  `16544275456/27453718922765625`; the report norm
+  `H_4 = 26727424/55791736875`; and, at zero-based subdiagonal index three, the
+  conventional `beta_4 = 835232/4640643`.  The first eight rational computations
+  are unconditional.  The real Hankel-ratio value, squared-integral value, and
+  fourth/third Hankel-ratio quotient each require a `BoundedFabius` input and an
+  `IsFabius` certificate.
+
+Thus executable rational coefficient, entry, matrix, determinant, cast,
+positivity, norm-ratio, and Jacobi-ratio layers now have exact Lean
+counterparts, and the displayed `H_4` and `beta_4` now have named exact values.
+The finite Gaunt/Wigner/3j entry expansion and rationality by that route remain
+paper-only, as do Christoffel reconstruction, root results, quadrature, infinite
+Jacobi products, and asymptotics.  The report keeps the original 22-declaration
+coefficient/Gram inventory separate from the exhaustive eleven-theorem values
+inventory; neither duplicates the pre-existing generic and real module inventories.
 
 ## Status discipline
 

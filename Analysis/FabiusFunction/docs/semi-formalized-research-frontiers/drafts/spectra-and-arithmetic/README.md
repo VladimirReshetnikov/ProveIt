@@ -65,9 +65,9 @@ New standalone intake member:
 rootless `Fabius_Rvachev_Frontier_Report_Package.zip` on 2026-08-30. The
 title-based directory avoids collision with an unrelated q-series package
 that used the same generic report filename. Its delivered zero-file audit was
-replaced by a reproducible recursive audit of 187 prior TeX files (385,506
-lines and 16,569,797 bytes) excluding this package directory, with raw corpus
-digest `4b112efd7d4d6e331aec29e92ad413fafb62d71f5ceb69bbb527a9bb4f593f17`.
+replaced by a reproducible recursive audit of 188 prior TeX files (386,822
+lines and 16,641,250 bytes) excluding this package directory, with raw corpus
+digest `fcbf61d797f98e27877c3132e39161832d6523cb7708d07064e7b3793271b7cd`.
 Its
 failed numerical generation was repaired and rerun at 80-digit precision,
 producing all three optional figures and the generated tables. No theorem-
@@ -90,10 +90,9 @@ completely (18/18).
 
 New standalone intake member:
 [`Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/`](Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/),
-*Reciprocal-Integer Convolution Divisors of the Rvachev Law* (34 A4 pp,
-2303 source lines; with a 352-line exact/numerical experiment, six data files,
-four PNG figures, and a README), arrived from a rootless 14-file archive on
-2026-08-30.  The package's
+*Reciprocal-Integer Convolution Divisors of the Rvachev Law* (35 A4 pp,
+2327 source lines; with a 352-line exact/numerical experiment),
+arrived from a rootless 14-file archive on 2026-08-30.  The package's
 characteristic quotients
 `Q_M(z) = Phi(z) / Phi(z/M)` classify reciprocal-integer decompositions of
 the Rvachev law.  Its digit IFS and multiplicative cocycle lead to an exact
@@ -108,48 +107,40 @@ factors here do not conflict with that report's obstruction to identical
 convolution roots.  The report nevertheless shares foundational zero-count,
 Bernoulli/Bell, endpoint, and inverse-Fabius infrastructure with the
 consolidated corpus, so it remains separate pending a theorem-by-theorem
-crosswalk.  The rootless archive supplied no checksum ledger or dependency
-lock; the repository-generated `SHA256SUMS` covers every stored payload after
-five CSV files were normalized to LF.  The report now reproduces the primary
-document's canonical A4 package, theorem, macro, boxed-environment, and listing
-block verbatim apart from permitted metadata and running-head text; only the
-required local settings, eight notation commands, status box, and Python
-listing style follow it.  Exactly three strict serial `pdflatex` passes rebuilt
-the 34-page PDF.  All 34 pages were text-checked and representative theorem,
-figure, appendix-table, and bibliography pages were rendered visually.  All
-25 fonts are embedded and subset, six faces are Libertinus, and no Type 3 font
-is present.  A temp-isolated Python 3.13 replay with NumPy 2.5.2, Matplotlib
-3.11.1, and mpmath 1.4.1 regenerated every output: four CSVs were
-EOL-normalized exact, the text summary was byte-identical, and the endpoint CSV
-had only 65 last-place differences (maximum `1.11e-16`).  All four PNGs showed
-the expected unpinned-Matplotlib layout drift (1475 versus 1476 pixels wide),
-strengthening the case for a dependency lock.  Lean was not run.  Manuscript
-theorem labels do not imply Lean proof status.
+crosswalk. The rootless archive supplied no checksum ledger or dependency
+lock; the repository-generated 14-entry `SHA256SUMS` covers every stored
+payload after five CSV files were normalized to LF. The repair gives the
+report a title-derived source/PDF pair and canonical A4/27 mm/Libertinus
+styling; three final `pdflatex` passes produced a 35-page PDF with all fonts
+embedded and subset, no Type 3 font, and no overfull box. Key pages and every
+figure were inspected. A temp-isolated Python 3.12 replay regenerated every output: four
+CSVs were byte-identical, the text summary was EOL-equivalent, and the endpoint
+CSV had only 66 last-place differences (maximum `1.11e-16`).  All four PNGs
+showed the expected layout drift between the unpinned packaged Matplotlib
+3.10.8 and replayed 3.11.1 (1475 versus 1476 pixels wide), strengthening the
+case for a dependency lock. The report cites the adjacent exact
+`GeneralizedZeroDivisor` and `ReciprocalIntegerGammaZeros` APIs without
+claiming that the quotient-family results themselves are formalized.
+Manuscript theorem labels do not imply Lean proof status.
 
-New standalone intake member:
 [`Fabius_Total_Positivity_Frontier_Report/`](Fabius_Total_Positivity_Frontier_Report/),
 *Total Positivity and Cartwright Geometry in the Fabius--Rvachev Dyadic Sinc
-Product* (22 pp), arrived as a bare TeX/PDF/script package on 2026-08-30.
+Product* (24 pp), arrived as a bare TeX/PDF/script package on 2026-08-30.
 Its imaginary-square-root transform, Laguerre--Polya and multiplier-sequence
 structure, exact zero divisor and Thue--Morse sign interpolation, Cartwright
 geometry, and geometric-scale deformation extend the arithmetic/spectral
 Fourier-product theme. The package shipped no checksum ledger, README,
-environment pin, or captured run output. Its TeX also depends on four absent
-generated figure/table inputs, and the script's four CSV evidence tables were
-not delivered; exact arrival hashes and filenames are recorded in the global
-manifest. Its novelty screen is already stale at its pinned
+environment pin, or captured run output. The repository repair regenerated
+the four required figure/table inputs and four CSV evidence tables, normalized
+the source to A4/Libertinus, rebuilt the PDF in three passes, and added a live
+12-entry payload ledger; exact arrival hashes remain recorded in the global
+manifest.  The current source crosswalks the exact finite general-base digit
+count in `BaseDigitMultiplicity.lean` without promoting the analytic zero or
+sign claims. Its novelty screen is already stale at its pinned
 snapshot: matching Laguerre--Polya/PF-infinity/shifted-Jensen and zero-sign
 material appears in `Frontier_Compilations/`. It therefore remains standalone
 pending claim-by-claim crosswalk and deliberate deduplication. Its paper
-theorem labels do not by themselves assert Lean status, and its shipped Latin
-Modern source/PDF still needs canonical-preamble and Libertinus normalization
-in a later post-intake commit.  Its roadmap instruction to formalize the
-finite cumulative multiplicity-count/digit-sum arithmetic is now stale:
-BaseDigitMultiplicity.lean proves the cumulative floor-layer and base-b digit
-recovery formulas for every integer base greater than one, including composite
-bases and the zero endpoint.  That five-theorem arithmetic layer does not
-identify analytic zero orders or prove the report's sign interpolation, which
-remain part of the later claim-by-claim audit.
+theorem labels do not by themselves assert Lean status.
 
 Arithmetic and spectral structure of the Rvachev Fourier product,
 consolidated (2026-08-28) into the single volume

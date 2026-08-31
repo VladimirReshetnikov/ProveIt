@@ -149,7 +149,9 @@ forward-iterate report; this derived companion supplies the expanded formal-radi
 center-jet, and iterated-endpoint analysis.  A hostile repository review ported the
 forward report's uniform defect estimate, corrected two-spine hypothesis, literal
 $n=1$ empty tie set, and live module name.  The one-fold inverse analytic-locus and
-endpoint H\"older obstructions have exact Lean counterparts, but the forward and
+endpoint H\"older obstructions have exact Lean counterparts.  The finite positive-list
+defect arithmetic is also exhaustively formalized in \path{PartitionDefect.lean}, but
+the set-partition wrapper and weighted Bell/spine estimates are not.  The forward and
 inverse iterate theorems for $n\geq2$, formal-radius transport, iterated endpoint
 scale, and all report conjectures remain manuscript mathematics.  The numerical
 script reproduced all seven outputs byte-for-byte in a pinned environment; this
@@ -522,6 +524,67 @@ An equivalent and more transparent formula is
 Every summand is nonnegative.  Therefore $D(\pi)=0$ only in the two extremal cases:
 there is one block, or every block is a singleton.  These are exactly the two
 unbranched chain-rule spines.
+
+\paragraph{Lean crosswalk: the finite positive-list defect is complete.}
+\begingroup\small\sloppy
+The module \path{PartitionDefect.lean} has exactly three public definitions
+and thirty-three public theorems; the following inventory is exhaustive.
+Its list \(r=[r_1,\ldots,r_k]\) records positive block sizes, but it does not
+construct a set partition of \(\{1,\ldots,m\}\).
+\begin{itemize}[leftmargin=2em]
+ \item The three definitions are \path{pairSum}, \path{blockPairDefect}, and
+ \path{partitionDefect}.
+ \item The unordered-pair and triangular-number engine consists of
+ \path{pairSum_nil}, \path{pairSum_cons}, \path{pairSum_one},
+ \path{pairSum_add}, \path{pairSum_congr}, \path{pairSum_map},
+ \path{choose_add_two}, and \path{choose_list_sum_two}.
+ \item The conventional defect formulas, excess decomposition, and fixed-block
+ lower bound are
+ \path{blockPairDefect_eq_mul_sub_one},
+ \path{partitionDefect_eq_pairSum_mul_sub_one},
+ \path{partitionDefect_nonneg},
+ \path{choose_sum_two_eq_choose_length_add_sum_add_partitionDefect},
+ \path{partitionDefect_eq_choose_sum_sub_choose_length_sub_sum},
+ \path{length_le_sum_of_pos}, \path{sum_map_sub_one},
+ \path{pairSum_add_eq}, \path{pairSum_map_add_eq},
+ \path{partitionDefect_eq_linear_add_pairwise_excess},
+ \path{partitionDefect_lower_bound}, and
+ \path{partitionDefect_fixed_block_bound}.
+ \item The zero and sharp-equality classifiers are
+ \path{pairSum_eq_zero_iff_pairwise},
+ \path{blockPairDefect_eq_zero_iff},
+ \path{partitionDefect_eq_zero_iff},
+ \path{sub_one_mul_sub_one_eq_zero_iff},
+ \path{partitionDefect_eq_lower_bound_iff}, and
+ \path{partitionDefect_fixed_block_eq_iff}.
+ \item The first-positive-shell closure is
+ \path{add_sub_one_le_mul_of_pos},
+ \path{mul_eq_add_sub_one_iff},
+ \path{firstShell_le_fixedBlockProduct},
+ \path{fixedBlockProduct_eq_firstShell_iff},
+ \path{firstShell_le_partitionDefect},
+ \path{partitionDefect_eq_firstShell_iff}, and
+ \path{partitionDefect_twoBlock_firstShell}.
+\end{itemize}
+For positive entries the module proves
+\[
+ D(r)=(k-1)\sum_i(r_i-1)
+      +\sum_{i<j}(r_i-1)(r_j-1)
+ \ge (k-1)(m-k).
+\]
+It proves \(D(r)=0\) exactly when \(k\le1\) or every entry is one; equality
+in the fixed-\(m\), fixed-\(k\) bound exactly when every pair contains a
+singleton (equivalently at most one entry exceeds one); and, under precisely
+\(2\le k<m\), the first-shell bound \(D(r)\ge m-2\), with equality exactly at
+\(k=2\) or \(k=m-1\) together with that same one-nonsingleton condition.  The
+explicit profile \([m-1,1]\) attains the shell for \(m\ge3\).
+
+This closure does \emph{not} formalize the set-partition family \(\Pi_m\),
+the quadratic-scale factorization \eqref{eq:Q-factorization}, the weighted
+Bell sum \eqref{eq:defect-decay}, its asymptotics, the two-spine reduction,
+the finite spine expansion, or either the forward- or inverse-iterate theorem.
+Those steps remain paper-only.
+\endgroup
 
 Let $u(\pi)$ be the number of singleton blocks and let
 \begin{equation}

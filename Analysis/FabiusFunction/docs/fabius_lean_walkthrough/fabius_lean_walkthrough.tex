@@ -876,6 +876,24 @@ and their supremum equalities are
 contrapositive, and exact-threshold effective-injectivity forms.  This module
 does not supply recursive-modulus packaging or an inversion algorithm.
 
+The separate smooth bridge \nolinkurl{FabiusInverseQuarterJet.lean} identifies
+the complete inverse jet at the quarter anchor.  For
+\(G(y)=\operatorname{fabiusInv}(F,h_F,y)\),
+\[
+ \left.\frac{d^n}{dt^n}
+   \left(G\!\left(\frac5{72}+t\right)-\frac14\right)\right|_{t=0}
+ =n!\,[X^n]\bigl(\operatorname{QuadraticInverse.inverse}(4)\bigr),
+\]
+and hence
+\[
+ G^{(m+1)}(5/72)=(m+1)!(-4)^m C_m.
+\]
+The exact declarations are
+\nolinkurl{iteratedDeriv_centeredFabiusInv_quarter_eq_quadraticInverse} and
+\nolinkurl{iteratedDeriv_fabiusInv_five_seventy_two_succ}.  They prove
+equality of every derivative jet, not equality with an analytic function on
+a neighborhood or a named nonzero flat-remainder decomposition.
+
 Flatness of \(F\) becomes steepness of \(F^{-1}\).  Substituting
 \(x=F^{-1}(y)\) into the effective estimate gives, on the stated shrinking
 window,
@@ -905,6 +923,18 @@ interface are \nolinkurl{PowerSeries.Implicit.root},
 \nolinkurl{PowerSeries.Implicit.constantCoeff_root},
 \nolinkurl{PowerSeries.Implicit.eval_root}, and
 \nolinkurl{PowerSeries.Implicit.eq_root}.
+
+The specialization \nolinkurl{QuarterCatalanGerm.lean} has two public
+definitions and thirteen public theorems.  Besides the explicit unique
+zero-constant solution of \(D+4D^2=(4/9)X\), it proves that the distinguished
+\nolinkurl{dyadicGermTwo} obeys the same scaled equation.  The four bridge
+declarations are \nolinkurl{dyadicGermTwo_functionalEquation},
+\nolinkurl{rescale_dyadicGermTwo_eq_quadraticInverse},
+\nolinkurl{dyadicGermTwo_eq_rescale_quadraticInverse}, and
+\nolinkurl{coeff_dyadicGermTwo_succ}; rescaling by \(9/4\) gives
+\(\operatorname{QuadraticInverse.inverse}(4)\), and the degree-\((m+1)\)
+coefficient before that rescaling is
+\((4/9)^{m+1}(-4)^mC_m\).
 
 These declarations are formal algebra only.  They neither define the inverse
 frontier's \(\mathcal A_r\) or \(Q_{x_0}\), nor prove convergence or analyticity
@@ -1476,6 +1506,22 @@ This is
 \(\lvert q\rvert<1\), including \(q=0\) and negative \(q\), among all
 probability measures, with no support, density, or moment hypothesis.
 
+At the fixed dyadic ratios, \nolinkurl{GeometricUniformMultisection.lean}
+splits the coordinates into \nolinkurl{evenCoordinates} and
+\nolinkurl{oddCoordinates} and proves the pointwise identity
+\[
+ Y_{1/2}(\omega)=\frac23Y_{1/4}(\operatorname{evenCoordinates}\omega)
+ +\frac13Y_{1/4}(\operatorname{oddCoordinates}\omega).
+\]
+The theorems
+\nolinkurl{geometricUniformSeries_one_half_multisection},
+\nolinkurl{geometricUniformDistribution_one_half_multisection}, and
+\nolinkurl{geometricUniformDistribution_one_half_conv_one_quarter} transport
+this through the independent product map to the corresponding affine image
+and convolution laws.  This five-declaration leaf is the fixed normalized
+two-section result only; it does not assert a general-ratio multisection
+theorem.
+
 The finite-tail dictionary is already stronger than a characteristic-function-only
 statement: \nolinkurl{geometric_tail_dictionary_geometricUniform} packages finite
 measure, characteristic-function, MGF, and CGF factorizations.  The later
@@ -1698,6 +1744,17 @@ hidden in the proof.
 At \(q=1/2\), clearing powers of two turns many factors into Mersenne numbers.  This is why the Mersenne products introduced in \nolinkurl{Arithmetic.lean} reappear.
 
 The module defines a rational \nolinkurl{halfQBinomial} and proves its q-Pascal recurrence.  It then proves a finite q-binomial theorem by induction.  The induction step is not a black-box appeal to an imported polynomial theorem; it matches the precise normalization required downstream.  Summands are shifted and paired so the q-Pascal recurrence telescopes into the next product.
+
+\nolinkurl{QBinomialCauchy.lean} supplies the denominator-free finite
+q-Cauchy layer over every commutative ring.  Its five public theorem names are
+\nolinkurl{finite_qCauchy_identity}, the compatibility spelling
+\nolinkurl{finiteQPochhammerIn_mul_eq_sum_gaussianBinomial},
+\nolinkurl{finite_qCauchy_identity_reflected},
+\nolinkurl{sum_qBernsteinBasis}, and
+\nolinkurl{finite_qCauchy_second_identity}, with the single public definition
+\nolinkurl{qBernsteinBasis}.  All five theorems include degree zero,
+\(q=0\), roots of unity, positive characteristic, and zero divisors; none
+uses division, cancellation, or a nonvanishing hypothesis.
 
 \subsection{Why prove a specialized q-binomial theorem?}
 Mathlib contains general polynomial and combinatorial infrastructure, but a specialized theorem at \(q=1/2\) gives the repository:
@@ -2451,10 +2508,11 @@ unchanged and proves the exact declaration
 \[
  \begin{aligned}
  R_{r,n}(\lambda)
-   &=(-1)^r\left(\prod_{j=0}^{r}(\lambda+j)^{-1}\right)\\
+   &=(-1)^r\left(\prod_{j=0}^{r}(\lambda+j)^{-1}\right) \\
    &\quad{}\times \operatorname{factorialNormalize}
      \bigl(\operatorname{completeBellPolynomial}
-       (\kappa^{(r,\lambda)})\bigr)_n\,c_{r+1+n}(\lambda).
+       (\kappa^{(r,\lambda)})\bigr)_n \\
+   &\quad{}\times c_{r+1+n}(\lambda).
  \end{aligned}
 \]
 as \nolinkurl{fabiusPhaseLockedResidualTerm_eq_bell};
@@ -3481,12 +3539,14 @@ Reshetnikov quantity \(R_n\) & \nolinkurl{reshetnikov} & \nolinkurl{Arithmetic.l
 Generic continuous-CDF and density extraction & \nolinkurl{continuous_cdf_of_nullSingleton}, \nolinkurl{cdf_reflection_sub}, \nolinkurl{measure_eq_withDensity_of_cdf_hasDerivAt} & \nolinkurl{ContinuousCDF.lean} \\
 Affine independent-copy operator and uniqueness & \nolinkurl{affineIndependentCopyLaw}, \nolinkurl{affineIndependentCopyLaw_isProbabilityMeasure}, \nolinkurl{affineIndependentCopyLaw_eq_map_prod}, \nolinkurl{charFun_affineIndependentCopyLaw}, \nolinkurl{charFun_eq_mul_charFun_of_affineIndependentCopy_fixedPoint}, \nolinkurl{charFun_iterate_of_affineIndependentCopy_fixedPoint}, \nolinkurl{eq_of_charFun_affine_recurrence}, \nolinkurl{affineIndependentCopyLaw_fixedPoint_unique}, \nolinkurl{affineIndependentCopy_map_fixedPoint_unique} & \nolinkurl{AffineIndependentCopy.lean}; arbitrary measurable digit space and second-countable Borel real inner-product target, with completeness only for the three uniqueness declarations \\
 Geometric uniform law \(\mu_q\) & \nolinkurl{geometricUniformDistribution}, \nolinkurl{geometricUniformDistribution_selfSimilar}, \nolinkurl{geometricUniformDistribution_support_eq_Icc}, \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar} & \nolinkurl{GeometricUniformLaw.lean} and \nolinkurl{GeometricUniformUniqueness.lean}; the characterization holds for \(\lvert q\rvert<1\) without support, density, or moment assumptions \\
+Fixed half--quarter multisection & \nolinkurl{evenCoordinates}, \nolinkurl{oddCoordinates}, \nolinkurl{geometricUniformSeries_one_half_multisection}, \nolinkurl{geometricUniformDistribution_one_half_multisection}, \nolinkurl{geometricUniformDistribution_one_half_conv_one_quarter} & \nolinkurl{GeometricUniformMultisection.lean}; fixed normalized two-section only \\
 Geometric CDF \(F_q\) and density \(f_q\) & \nolinkurl{geometricUniformCDF}, \nolinkurl{geometricUniformDensity}, \nolinkurl{geometricUniformCDF_hasDerivAt}, \nolinkurl{geometricUniformDistribution_eq_withDensity}, \nolinkurl{contDiff_geometricUniformCDF}, \nolinkurl{contDiff_geometricUniformDensity} & \nolinkurl{GeometricUniformCDF.lean} \\
 Weighted-sum CDF and half-base bridges & \nolinkurl{weightedSumCDF}, \nolinkurl{weightedSumCDF_eq_geometricUniformCDF_one_half}, \nolinkurl{geometricUniformCDF_one_half_eq_fabiusReal}, \nolinkurl{geometricUniformDensity_one_half_eq_rvachevUp} & \nolinkurl{ProbabilityRepresentation.lean} \\
 Forward curvature profile & \nolinkurl{deriv_deriv_fabiusReal}, \nolinkurl{deriv_deriv_fabiusReal_eq_zero_iff} & \nolinkurl{Convexity.lean} \\
 Totalized inverse \(F^{-1}\) & \nolinkurl{fabiusInv}, \nolinkurl{fabiusOrderIso}, \nolinkurl{fabiusInv_differentiableAt_iff}, \nolinkurl{fabiusInv_contDiffAt_infty_iff} & \nolinkurl{FabiusInverse.lean} \\
 Inverse curvature & \nolinkurl{deriv_deriv_fabiusInv}, \nolinkurl{deriv_deriv_fabiusInv_half}, \nolinkurl{deriv_deriv_fabiusInv_eq_zero_iff}, \nolinkurl{strictConcaveOn_fabiusInv_firstHalf}, \nolinkurl{strictConvexOn_fabiusInv_secondHalf} & \nolinkurl{FabiusInverse.lean} \\
 Exact inverse modulus & \nolinkurl{fabiusIntervalMass}, \nolinkurl{abs_fabiusInv_sub_le}, \nolinkurl{sSup_abs_fabiusInv_sub_eq}, \nolinkurl{forall_abs_fabiusInv_sub_lt_iff} & \nolinkurl{InverseModulus.lean} \\
+Actual quarter inverse jet & \nolinkurl{iteratedDeriv_centeredFabiusInv_quarter_eq_quadraticInverse}, \nolinkurl{iteratedDeriv_fabiusInv_five_seventy_two_succ} & \nolinkurl{FabiusInverseQuarterJet.lean}; equality of jets, not local analytic equality \\
 Uniform spline \(S_p\) & \nolinkurl{fabiusUniformSpline} & \nolinkurl{FabiusUniformSpline.lean} and \nolinkurl{FabiusComputability.lean} \\
 Logarithmic profile & \nolinkurl{fabiusLogProfile} & \nolinkurl{FabiusLogScale.lean} \\
 Generic scaled power--exponential phases & \nolinkurl{principalPowerExponentialPhase}, \nolinkurl{lowerPowerExponentialPhase}, \nolinkurl{powerExponentialLambertEpsilon}, \nolinkurl{lowerPowerExponentialPhaseIntrinsicMain} & \nolinkurl{PowerExponentialLambert.lean}, \nolinkurl{PowerExponentialLambertCalculus.lean}, \nolinkurl{PowerExponentialLambertInverse.lean}, and \nolinkurl{PowerExponentialLambertAsymptotics.lean} \\
@@ -3546,7 +3606,9 @@ Module & Role in the development \\
 \nolinkurl{NowhereAnalytic.lean} & Exact real-analytic loci: off the closed transition supports and nowhere on them. \\
 \nolinkurl{FabiusInverse.lean} & Totalized inverse, order isomorphism on the unit interval, exact positive reciprocal derivative, exact global smoothness locus (continuity everywhere, but differentiability and every positive finite or \(C^\infty\) order exactly off the clamping endpoints), reciprocal-cubic second derivative, midpoint jet and interior curvature loci, strict closed-half curvature, and endpoint quotient/derivative blow-up. \\
 \nolinkurl{InverseModulus.lean} & Reflection and global one-sided shape of fixed-length Fabius increments, least endpoint mass, forward superadditivity, global inverse subadditivity, the attained exact totalized and unit-interval inverse moduli, and strict/closed/contrapositive/exact-threshold effective injectivity. \\
+\nolinkurl{FabiusInverseQuarterJet.lean} & Full smooth derivative jet of the centered inverse at \(5/72\), identified with the factorial-scaled coefficients of the quadratic compositional inverse; this is not a local analytic identity. \\
 \nolinkurl{ImplicitPowerSeries.lean} & Nonmonic complete-adic lifting and residue-class uniqueness, with arbitrary-base and zero-constant formal implicit-root specializations over power-series rings; it does not construct or analytically realize a Fabius inverse germ. \\
+\nolinkurl{QuarterCatalanGerm.lean} & The explicit scaled quarter Catalan formal germ, its functional equation and uniqueness, and the forward/reverse rescaling bridge from \nolinkurl{dyadicGermTwo} to \nolinkurl{QuadraticInverse.inverse}. \\
 \nolinkurl{InverseBranch.lean} & Analytic inverse theorem, analytic-density preservation for continuous right-inverse branches, and the complement-interior analyticity condition and conditional Lambert-branch criterion for \nolinkurl{IsElementaryOrInverse}. \\
 \nolinkurl{AlgebraicBranch.lean} & Algebraic-function branch interface used in non-elementarity arguments. \\
 \nolinkurl{ElementaryFunction.lean} & Formal expression language and semantics for elementary real functions. \\
@@ -3593,6 +3655,7 @@ Module & Role in the development \\
 \nolinkurl{ContinuousCDF.lean} & Generic continuity of atomless probability CDFs, reflection symmetry from measure invariance, and the theorem identifying any everywhere pointwise CDF derivative as the exact Lebesgue density without prior regularity or absolute continuity assumptions. \\
 \nolinkurl{AffineIndependentCopy.lean} & The affine independent-copy convolution operator, its probability and product-map forms, characteristic-function factorization and finite fixed-point iteration, and contractive uniqueness.  The digit space is arbitrary measurable, the target is second-countable Borel real inner-product, and completeness is confined to the three uniqueness declarations; \(\lvert q\rvert<1\) includes zero and negative scales without support, density, or moment hypotheses. \\
 \nolinkurl{GeometricUniformLaw.lean} & Named weights \((1-q)q^n\), their series and probability law, affine self-similarity, reflection, absolute continuity, null singletons, and exact range/support statements. \\
+\nolinkurl{GeometricUniformMultisection.lean} & Fixed normalized even/odd split of the half-ratio coordinate series into two independent quarter-ratio copies, with pointwise, product-map, and convolution forms. \\
 \nolinkurl{GeometricUniformUniqueness.lean} & Specializes the generic product-map theorem to prove \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar}: every probability solution of the geometric affine head--tail equation is \(\mu_q\) when \(\lvert q\rvert<1\), including \(q=0\) and negative \(q\), with no support, density, or moment assumption. \\
 \nolinkurl{GeometricSincFactorization.lean} & Closed characteristic function of the scaled uniform digit, exact closed-factor and phase-collapsed finite residual formulas for \(\lvert q\rvert<1\), pointwise convergence of the phase-bearing sinc prefixes, and the two dyadic weighted-sum wrappers. \\
 \nolinkurl{GeometricUniformCDF.lean} & The named \(F_q\) and explicit \(f_q\), conditioning and interval-integral equations, pointwise derivative and exact \nolinkurl{withDensity} law, continuity, reflection, exterior zeros, ordinary/topological support containments, compact support, and \(C^\infty\) regularity under their exact parameter hypotheses. \\
@@ -3613,6 +3676,7 @@ Module & Role in the development \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Finite q-binomial and Thue--Morse algebra}}\\[0.25em]
 \nolinkurl{HalfQBinomial.lean} & Exact q-binomial coefficients at q=1/2, q-Pascal recurrence, Mersenne normalization, and a finite q-binomial theorem. \\
+\nolinkurl{QBinomialCauchy.lean} & One q-Bernstein definition and five denominator-free finite q-Cauchy/q-Bernstein theorems over arbitrary commutative rings, including the compatibility alias \nolinkurl{finiteQPochhammerIn_mul_eq_sum_gaussianBinomial}. \\
 \nolinkurl{FabiusRawQBinomialFormula.lean} & Raw coefficient-valued finite q-binomial identity before scalar or analytic specialization. \\
 \nolinkurl{FabiusRawQBinomialScalar.lean} & Scalar evaluation of the raw finite identity. \\
 \nolinkurl{FabiusQBinomialFormula.lean} & Principal exact Thue--Morse/q-binomial formula for unrestricted natural parameters. \\
@@ -3821,10 +3885,11 @@ The \nolinkurl{ImplicitPowerSeries.lean} row and the generic formal-root
 discussion are a post-snapshot foundation checked at source checkpoint
 \nolinkurl{cd9086a80cbecefecb9bc1e00378d151061595e0} on 28 August 2026.
 The seven Lambert rows from \nolinkurl{LowerLambertW.lean} through
-\nolinkurl{PowerExponentialLambertFabius.lean} record the current-tree
-endpoint-continuity, exact-root, and intrinsic-asymptotic tranche described
-in Section~\ref{ch:kfold}; their stated open boundaries are part of
-the crosswalk.
+\nolinkurl{PowerExponentialLambertFabius.lean} record the post-snapshot
+endpoint-continuity, exact-root, and intrinsic-asymptotic tranche originating
+at source checkpoint \nolinkurl{925ca34a698cbd08703ec5d8abc65515730e30f6}
+and described in Section~\ref{ch:kfold}; their stated open boundaries are part
+of the crosswalk.
 The title-page pin and reproduction count continue to describe the older
 audited snapshot.
 \end{remark}

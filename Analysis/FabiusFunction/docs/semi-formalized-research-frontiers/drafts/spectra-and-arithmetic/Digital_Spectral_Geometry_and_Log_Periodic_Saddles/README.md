@@ -59,14 +59,43 @@ defect that its calculation actually establishes; and the false strict-
 curvature range was corrected after accounting for center flatness at
 `b = 2` and the exact plateau for `b > 2`.
 
+## Current Lean crosswalk: finite general-base multiplicities
+
+Write `ν_b(n) = max {h : b^h ∣ n}`,
+`A_b(N) = ∑_{n=1}^N (1 + ν_b(n))`, and let `s_b(N)` be the base-`b` digit
+sum. For composite `b`, `ν_b` is a scale-divisibility exponent, not an
+additive valuation; for example, `ν_6(2) + ν_6(3) = 0` but `ν_6(6) = 1`.
+
+| Lean declaration | Exact arithmetic content |
+| --- | --- |
+| `weightedScaleMultiplicity_const` | A constant layer weight `a` gives `W_{b,h ↦ a}(n) = (ν_b(n)+1) • a` in any additive commutative monoid. |
+| `weightedScaleMultiplicity_one_nat` | For natural-valued unit weights, `W_{b,1}(n) = ν_b(n)+1`. |
+| `sum_range_weightedScaleMultiplicity_of_log_lt` | A sufficiently tall finite layer sum equals `∑_{h=0}^{H-1} ⌊N/b^h⌋ • w_h`; all higher layers vanish. |
+| `sum_range_weightedScaleMultiplicity_log` | The same identity holds at the sharp height `⌊log_b N⌋`. |
+| `sum_range_div_pow_log_eq_self_add_tail` | The sharp floor sum separates as `N + ∑_{i=0}^L ⌊N/b^(i+1)⌋`, with the apparent last term equal to zero. |
+| `sub_one_mul_sum_padicValNat_succ_add_digitSum` | For every integer `b ≥ 2`, `(b-1)A_b(N) + s_b(N) = bN`, including `N=0`. |
+| `sum_range_padicValNat_succ_eq_sub_digitSum_div` | Equivalently, `A_b(N) = (bN-s_b(N))/(b-1)`. |
+
+Thus `BaseDigitMultiplicity.lean` closes the finite arithmetic in the
+report's `base-b-count` and `digit-recovery` equations once the analytic zero
+count has separately been identified with `A_b(N)`. It does not define the
+base-`b` canonical product or prove analytic zero collision orders.
+`ReciprocalIntegerGammaZeros.lean` represents the integer-base zero set but
+does not supply those orders. For real `s > 1`,
+`SpectralZetaWeighted.lean` proves the corresponding weighted `p`-series
+identity; it does not identify a complex meromorphic Riemann zeta function.
+The bundled canonical-product, analytic-order, cumulant, and log-periodic
+claims therefore remain manuscript-level outside the stated finite
+crosswalk.
+
 ## Audit and status boundary
 
 The delivered `repository_audit.md` had inspected zero TeX files. The repaired
 audit reads the repository recursively while excluding this newly filed
-package directory. Against the final merged corpus it reads 187 prior TeX
-files (385,506 lines; 16,569,797 bytes; raw-byte
+package directory. Against the final merged corpus it reads 188 prior TeX
+files (386,822 lines; 16,641,250 bytes; raw-byte
 concatenated SHA-256
-`4b112efd7d4d6e331aec29e92ad413fafb62d71f5ceb69bbb527a9bb4f593f17`).
+`fcbf61d797f98e27877c3132e39161832d6523cb7708d07064e7b3793271b7cd`).
 All six advertised contribution clusters have substantial prior textual
 overlap, and no theorem-level novelty is accepted on intake. The
 divisor/zeta/count/heat/cumulant spine specializes existing Exponents and
