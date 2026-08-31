@@ -1,0 +1,188 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\input{../../../../../fabius-notation.tex}
+\usepackage{booktabs,longtable,array,tabularx,multirow}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage[hypertexnames=false]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\graphicspath{
+  {assets/companion-evidence/fabius_dyadic_interpolation_report/figures/}
+  {assets/companion-evidence/fabius_interpolation_report/figures/}
+  {assets/companion-evidence/Fabius_Rvachev_Dyadic_Interpolation_Report/figures/}
+  {assets/companion-evidence/geometric_comb_interpolation_report/}
+  {assets/companion-evidence/geometric_comb_interpolation_report-3/figures/}
+  {assets/companion-evidence/geometric_comb_q_fabius_report/figures/}
+}
+
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{deepgreen}{RGB}{28,103,76}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=deepgreen,
+  urlcolor=linkblue,
+  pdftitle={Comb Interpolation and Sampling Frontiers for the Fabius--Rvachev System},
+  pdfsubject={Additive and geometric comb interpolation, exact quadrature, q-calculus, and Fabius--Rvachev sampling},
+  pdfkeywords={Fabius function, Rvachev up-function, additive comb, geometric comb, q-binomial, Jackson derivative, Thue-Morse, Euler-Maclaurin, Lagrange interpolation, Richardson extrapolation}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Comb-interpolation frontiers}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+\setlength{\emergencystretch}{3em}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+
+% ed.: shared-counter environments now use alias counters (aliascnt) so
+% cleveref prints each environment's own name; with the plain
+% \newtheorem{lemma}[theorem]{Lemma} pattern every \cref rendered as
+% "theorem", even for lemmas, corollaries, and remarks.
+\usepackage{aliascnt}
+\newcommand{\newsharedtheorem}[2]{%
+  \newaliascnt{#1}{theorem}%
+  \newtheorem{#1}[#1]{#2}%
+  \aliascntresetthe{#1}%
+}
+\newtheorem{theorem}{Theorem}[section]
+\newsharedtheorem{proposition}{Proposition}
+\newsharedtheorem{lemma}{Lemma}
+\newsharedtheorem{corollary}{Corollary}
+\newsharedtheorem{identity}{Identity}
+\newsharedtheorem{conjecture}{Conjecture}
+\newsharedtheorem{problem}{Problem}
+\newsharedtheorem{question}{Research question}
+\theoremstyle{definition}
+\newsharedtheorem{definition}{Definition}
+\newsharedtheorem{algorithm}{Algorithm}
+\newsharedtheorem{example}{Example}
+\newsharedtheorem{observation}{Numerical observation}
+\theoremstyle{remark}
+\newsharedtheorem{remark}{Remark}
+\newsharedtheorem{warning}{Warning}
+\crefname{conjecture}{conjecture}{conjectures}
+\Crefname{conjecture}{Conjecture}{Conjectures}
+\crefname{problem}{problem}{problems}
+\Crefname{problem}{Problem}{Problems}
+\crefname{question}{research question}{research questions}
+\Crefname{question}{Research question}{Research questions}
+\crefname{observation}{numerical observation}{numerical observations}
+\Crefname{observation}{Numerical observation}{Numerical observations}
+\crefname{identity}{identity}{identities}
+\Crefname{identity}{Identity}{Identities}
+\crefname{algorithm}{algorithm}{algorithms}
+\Crefname{algorithm}{Algorithm}{Algorithms}
+\crefname{warning}{warning}{warnings}
+\Crefname{warning}{Warning}{Warnings}
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\rise}[2]{#1^{\overline{#2}}}
+\newcommand{\stirlingfirst}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+\newcommand{\Dop}{\mathcal D}
+\newcommand{\Bell}{Y}
+\newcommand{\ThetaTM}{\Theta}
+\newcommand{\defect}{\mathcal R}
+\newcommand{\Frow}{\mathscr F}
+\newcommand{\ClampedDyadicSample}{D^{\mathrm{cl}}}
+\newcommand{\Lag}{\mathcal I}
+\newcommand{\Leb}{\mathscr L}
+\newcommand{\MM}{\mathsf M}
+\newcommand{\Hyp}{\mathsf H}
+\newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction/docs}}
+
+\newenvironment{statusbox}[1]{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \hrule\vspace{0.5em}\noindent\textbf{#1}\par\smallskip
+}{%
+  \vspace{0.5em}\hrule\end{minipage}\end{center}\smallskip
+}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{shadegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  breaklines=true,
+  xleftmargin=0.7em,
+  xrightmargin=0.7em,
+  aboveskip=0.8em,
+  belowskip=0.8em
+}
+
+
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\halfbinom}[2]{\GaussianBinomial{#1}{#2}{1/2}}
+\newcommand{\twobinom}[2]{\GaussianBinomial{#1}{#2}{2}}
+\newcommand{\App}{\mathcal A}
+\newcommand{\Interp}{\mathcal I}
+\newcommand{\GeomLeb}{\Lambda}
+\newcommand{\MGF}{\mathcal M}
+\newcommand{\PiN}{\Pi}
+\newcommand{\Gc}{\mathcal G}
+\newcommand{\Rc}{\mathcal R}
+\newcommand{\Ic}{\mathcal I}
+\newcommand{\Dc}{\mathcal D}
+\newcommand{\Cc}{\mathcal C}
+\newcommand{\Bc}{\mathcal B}
+\newcommand{\Thetaop}{\Theta}
+\newcommand{\Mellin}{\mathcal M}
+\newcommand{\Gop}{\mathcal G}
+\newcommand{\Iop}{\mathcal I}
+\newcommand{\Dq}{D_q}
+\newcommand{\Mq}{\mathsf M_q}
+\newcommand{\qfac}[2]{\left[#1\right]_{#2}!}
+
+\newenvironment{resultbox}
+{\par\medskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}\hrule\medskip}
+{\medskip\hrule\end{minipage}\end{center}\medskip}
+
+
+\title{\bfseries Comb Interpolation and Sampling Frontiers\\[0.4em]
+\large Additive and geometric combs in the Fabius--Rvachev system}
+\author{Consolidated frontier volume for Vladimir Reshetnikov's \texttt{ProveIt} project}
+\date{31 August 2026}
+
+\begin{document}
+\maketitle
+\input{chapters/00_scope_status}
+\clearpage
+\tableofcontents
+\clearpage
+\input{chapters/01_geometric_core}
+\input{chapters/02_geometric_extensions}
+\input{chapters/03_additive_dyadic}
+\appendix
+\input{chapters/90_reference_appendices}
+\input{chapters/98_provenance}
+\input{chapters/99_bibliography}
+\end{document}

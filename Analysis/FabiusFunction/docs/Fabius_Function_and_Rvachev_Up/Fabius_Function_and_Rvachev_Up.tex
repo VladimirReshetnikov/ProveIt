@@ -4447,6 +4447,11 @@ Let \(E\) be a real Banach space and let \(H:\RealNumbers\to E\) be continuous. 
  2^{-n}\sum_{k=0}^{2^n-1}
  \int_{-1}^{1}H\!\left(2^{T_n}\varepsilon_k\RvachevUp(y)\right)\Differential y,
                                                                \label{eq:rvachev-signed-mixture}\\
+ \int_{-1}^{1}H\!\left(2^{-T_n}\RvachevUp^{(n)}(x)\right)\Differential x
+ &=\frac12\left(
+   \int_{-1}^{1}H\!\left(\RvachevUp(y)\right)\Differential y
+   +\int_{-1}^{1}H\!\left(-\RvachevUp(y)\right)\Differential y\right)
+   \qquad(0<n),                                      \label{eq:rvachev-normalized-signed-test}\\
  \int_{-1}^{1}H\!\left(\left|\RvachevUp^{(n)}(x)\right|\right)\Differential x
  &=
  \int_{-1}^{1}H\!\left(2^{T_n}\RvachevUp(y)\right)\Differential y,
@@ -4456,25 +4461,45 @@ Let \(E\) be a real Banach space and let \(H:\RealNumbers\to E\) be continuous. 
  \int_{-1}^{1}H\!\left(\RvachevUp(y)\right)\Differential y.                    \label{eq:rvachev-normalized-test}
 \end{align}
 The signed formula is the exact \(2^n\)-term Thue--Morse mixture and includes order zero.
+The normalized signed half-mixture has the sharp hypothesis \(0<n\): at \(n=0\), its
+left side is the unsymmetrized original-profile integral
+\(\int_{-1}^{1}H(\RvachevUp(x))\Differential x\).
 
 Let \(\lambda_{[-1,1]}\) denote Lebesgue measure restricted to the closed interval
 \([-1,1]\), and let \(f_{\#}\mu\) denote the pushforward of \(\mu\) by \(f\).
-The normalized absolute identity is also proved as the exact equality of Borel measures
+The normalized absolute and positive-order signed identities are also proved as exact
+equalities of Borel measures:
 \begin{equation}
  \left(x\longmapsto
  2^{-T_n}\left|\RvachevUp^{(n)}(x)\right|\right)_{\#}\lambda_{[-1,1]}
  =
  \RvachevUp_{\#}\lambda_{[-1,1]}.                                \label{eq:rvachev-absolute-pushforward}
 \end{equation}
+For \(0<n\), the signed equality is
+\begin{equation}
+ \left(x\longmapsto2^{-T_n}\RvachevUp^{(n)}(x)\right)_{\#}\lambda_{[-1,1]}
+ =\frac12\left(
+   \RvachevUp_{\#}\lambda_{[-1,1]}
+   +\left(y\longmapsto-\RvachevUp(y)\right)_{\#}\lambda_{[-1,1]}\right).
+                                                               \label{eq:rvachev-signed-pushforward}
+\end{equation}
+Thus \eqref{eq:rvachev-normalized-signed-test} is a Banach-valued identity for continuous
+tests, whereas \eqref{eq:rvachev-signed-pushforward} is the scalar Borel distribution law.
+After normalizing restricted Lebesgue measure, the latter is precisely the law of an
+independent symmetric Rademacher sign times \(\RvachevUp(U)\).  At order zero the
+pushforward is instead the unsymmetrized \(\RvachevUp_{\#}\lambda_{[-1,1]}\).
 \end{theorem}
 
 \begin{proof}[Formal proof]
 Equations \eqref{eq:rvachev-signed-mixture}--\eqref{eq:rvachev-normalized-test}
-are \lean{intervalIntegral_comp_iteratedDeriv_rvachev},
+are, in order, \lean{intervalIntegral_comp_iteratedDeriv_rvachev},
+\lean{intervalIntegral_comp_normalized_iteratedDeriv_rvachev},
 \lean{intervalIntegral_comp_abs_iteratedDeriv_rvachev}, and
 \lean{intervalIntegral_comp_normalized_abs_iteratedDeriv_rvachev}.
 The pushforward equality \eqref{eq:rvachev-absolute-pushforward} is
-\lean{map_normalized_abs_iteratedDeriv_rvachev_restrict_Icc}.  These declarations are in
+\lean{map_normalized_abs_iteratedDeriv_rvachev_restrict_Icc}, and
+\eqref{eq:rvachev-signed-pushforward} is
+\lean{map_normalized_iteratedDeriv_rvachev_restrict_Icc}.  These declarations are in
 \path{RvachevDerivativeDistribution.lean}.
 \end{proof}
 
@@ -4533,18 +4558,22 @@ This is \lean{intervalIntegral_abs_iteratedDeriv_rvachev_rpow} in
 
 \begin{boxedremark}
 \textbf{Exact current boundary.}
-The signed API consists of the finite continuous-test-function mixture
-\eqref{eq:rvachev-signed-mixture} and the ordinary \(\NaturalNumbers\)-power formulas
+The signed API consists of the all-order finite continuous-test-function mixture
+\eqref{eq:rvachev-signed-mixture}, the positive-order normalized Banach-valued
+continuous-test identity \eqref{eq:rvachev-normalized-signed-test}, the positive-order
+Borel pushforward equality \eqref{eq:rvachev-signed-pushforward}, and the ordinary
+\(\NaturalNumbers\)-power formulas
 \eqref{eq:rvachev-signed-nat-moments}--\eqref{eq:rvachev-odd-nat-moments}.  The latter
 are distinct from the nonnegative-real \lean{Real.rpow} absolute moments in
-\eqref{eq:rvachev-rpow-moments}.  A separately packaged signed Borel pushforward law
-simplified to an independent Rademacher sign is not yet formalized.  Nor does the current module state
+\eqref{eq:rvachev-rpow-moments}.  The symmetric signed Borel law is therefore closed;
+its sharp \(0<n\) boundary preserves the unsymmetrized \(n=0\) profile.  The current module
+still does not state
 the \lean{eLpNorm} or general rearrangement-invariant norm ladder, the exact inverse-Fabius
 level sets, the beta-transform identities, or the later spectral layers.  Those claims
 remain in the research-frontier report.  Equation
 \eqref{eq:rvachev-absolute-pushforward} is the formal measure-theoretic base from which such
 absolute-value corollaries can subsequently be proved.  The exhaustive public surface of
-\path{RvachevDerivativeDistribution.lean} is one definition and sixteen theorems.
+\path{RvachevDerivativeDistribution.lean} is one definition and eighteen theorems.
 \end{boxedremark}
 
 \subsection{Effective flatness}
