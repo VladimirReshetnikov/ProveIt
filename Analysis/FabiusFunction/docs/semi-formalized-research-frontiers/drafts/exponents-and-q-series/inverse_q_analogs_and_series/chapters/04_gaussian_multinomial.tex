@@ -420,7 +420,7 @@ Then
   \frac{y}{\Phi_m'(\zeta)R_m(\zeta)}+\BigO(y^2).
 \]
 
-\begin{proposition}[Value and zero derivative at \(q=-1\)]
+\begin{proposition}[Value and derivative at \(q=-1\)]
 \label{prop:gq-minus-one}
 One has
 \[
@@ -457,6 +457,26 @@ In that case the quotient after removing the unique factor \(1+q\) has limit
 Because \(1+q\) has derivative one at \(-1\), this limit is exactly
 \(G_{2m,2r+1}'(-1)\).
 \end{proof}
+
+\begin{remark}[Exact Lean crosswalk]
+The four parity values are proved over every commutative ring by
+\lean{gaussianBinomial_neg_one_even_even},
+\lean{gaussianBinomial_neg_one_odd_even},
+\lean{gaussianBinomial_neg_one_odd_odd}, and
+\lean{gaussianBinomial_neg_one_even_odd_eq_zero}.  The displayed exceptional
+derivative is exactly
+\lean{gaussianBinomial_derivative_eval_neg_one_even_odd}.  Its companion
+\lean{gaussianBinomial_derivative_eval_neg_one_of_even_degree} gives the full
+even-degree reciprocity derivative law.  Finally,
+\lean{gaussianBinomial_even_odd_rootMultiplicity_int} and
+\lean{gaussianBinomial_even_odd_rootMultiplicity} prove that the alternating
+zero has multiplicity one when \(r<m\), respectively over \(\IntegerNumbers\)
+and over every characteristic-zero commutative ring.  These declarations
+belong to \path{GaussianBinomialAtNegOne.lean},
+\path{QBinomialReciprocity.lean}, and
+\path{GaussianBinomialAtNegOneDerivative.lean}; they do not assert the later
+all-cyclotomic square-freeness theorem.
+\end{remark}
 
 \section{The reciprocal and large-target inverse}
 \label{sec:gaussian-infinity}

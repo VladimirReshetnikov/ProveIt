@@ -172,15 +172,15 @@ not proof statuses.
 
 The extraction script deliberately generates the five canonical-disposition
 columns empty, because text matching cannot decide mathematical equivalence.
-In the checked snapshot those fields remain unpopulated in all \(260\) rows.
-Thus the ledger is already exhaustive as a source-result inventory, but its
-row-by-row editorial disposition audit is not yet mechanically closed.  A
-blank canonical label must therefore be read as \emph{awaiting recorded
-disposition}, never as \emph{false}, \emph{deleted}, or \emph{Lean-proved}.
-The regenerating audit is
-\lean{audit/extract_source_results.py}; regeneration must not overwrite
-reviewed disposition data without first preserving and rejoining those
-columns.
+The reviewed ledger is now mechanically closed: all \(260\) source rows have
+an explicit status and disposition.  Its status census is five
+\emph{Lean-proved}, \(143\) \emph{human-proved frontier result}, fifteen
+\emph{conjecture}, and \(97\) \emph{not applicable}.  The historical extractor
+\lean{audit/extract_source_results.py} requires a checkout of the six
+pre-retirement source packages at repository snapshot \texttt{f46e5d7f6}; it
+is not a current-tree regenerator after consolidation.  Any replay must write
+to a temporary file and preserve and rejoin the five reviewed editorial
+columns rather than overwrite the canonical ledger.
 
 \section{Notation and mandatory branch data}
 \label{sec:ref-notation}
@@ -355,7 +355,8 @@ formal surface has five principal islands:
   the geometric sinc characteristic-function identity, certified sinc and CDF
   tails, and an effective forward Fabius modulus;
 \item selected finite \(q\)-Pochhammer and Gaussian-polynomial identities,
-  including reciprocity and exact values at \(q=-1\);
+  including reciprocity, exact values and first derivatives at \(q=-1\), and
+  multiplicity one for the alternating zero over characteristic-zero rings;
 \item Bell/cumulant conversion and a quadratic asymptotic-inversion lemma;
 \item real Lambert-\(W\) branch-point geometry: the opposite vertical
   tangents and failure of finite differentiability, together with the signed
