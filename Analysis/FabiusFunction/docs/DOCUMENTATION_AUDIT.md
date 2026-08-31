@@ -109,19 +109,22 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 615 modules and 8,380 lexically
+The post-merge 2026-08-31 inventory contains 615 modules and 8,383 lexically
 visible public declarations, with zero missing module headers and zero missing
-doc comments.  It combines the activation, effective inverse-modulus,
-geometric-sinc, symmetric Thue--Morse, nonpositive-parameter CDF, expanded
-inverse-modulus, Lambert branch-point, Legendre--Gaunt, and fixed half--quarter
-multisection tranches.  Relative to the previous local 613/8,355 checkpoint,
-the two Legendre--Gaunt modules contribute 25 declarations: four definitions
-and twelve theorems in `LegendreGaunt.lean`, and one definition and eight
-theorems in `FabiusLegendreGaunt.lean`.  They add the executable rational
-triple-product and finite product-linearization core, then specialize it to
-full and even Rvachev coefficient sums for rational and real Legendre Gram
-entries.  Equivalently, the local `GeometricUniformMultisection.lean` leaf adds
-its two definitions and three theorems to the remote 614/8,375 inventory.  The
+doc comments.  Relative to the 610/8,318 activation checkpoint, the exact
+union adds five modules and 65 declarations.  The branch-point geometry and
+asymptotics leaves contribute 17 declarations for the one-sided vertical
+tangents and leading signed square-root laws of both real Lambert branches.
+The two Legendre--Gaunt modules contribute 25: four definitions and twelve
+theorems in `LegendreGaunt.lean`, and one definition and eight theorems in
+`FabiusLegendreGaunt.lean`.  They add the executable rational triple-product
+and finite product-linearization core, then specialize it to full and even
+Rvachev coefficient sums for rational and real Legendre Gram entries.  Three
+new generalized spectral q-Pochhammer theorems, four density-diagnostic
+theorems, and eleven inverse-modulus strictness and equality refinements add
+the remaining eighteen remote declarations.  The local
+`GeometricUniformMultisection.lean` leaf adds one module and five declarations:
+two definitions and three theorems for the fixed half--quarter split.  The
 baseline records the current inventory and those zeroes, so every future source
 addition must preserve the full invariant rather than merely avoid worsening a
 historical backlog.  Run the script for live numbers after merging concurrent

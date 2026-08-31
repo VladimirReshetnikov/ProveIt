@@ -9678,8 +9678,8 @@ with $\abs q^{-1}<1$ in place of $\abs q$.
 \end{proof}
 
 \paragraph{Lean boundary for \Cref{thm:qF-spectral}.}
-The current formal counterpart is the fixed dyadic inside specialization, not
-the whole theorem.  The module
+The current formal counterpart proves the general inside product, but not the
+whole compound theorem.  The module
 \path{RvachevPochhammerFactorization.lean} defines
 \path{complexQPochhammerInf} and proves its defining identity,
 multipliability, named product, and finite-prefix convergence through
@@ -9687,23 +9687,33 @@ multipliability, named product, and finite-prefix convergence through
 \path{multipliable_one_sub_mul_pow_complex},
 \path{hasProd_complexQPochhammerInf}, and
 \path{tendsto_finiteQPochhammerIn_complex}; the last three statements allow
-arbitrary complex $a$ and assume exactly $\lVert q\rVert<1$.  Its remaining
-two theorems,
-\path{rvachevFourierProduct_eq_tprod_complexQPochhammerInf} and
-\path{rvachevFourier_eq_tprod_complexQPochhammerInf}, fix the dyadic scale and
-hence the nome $1/4$, hold for every complex argument including at zero
-factors, and transfer the product to a bounded Fabius witness satisfying
-\path{IsFabius}.
+arbitrary complex $a$ and assume exactly $\lVert q\rVert<1$.
 
-In centered sinc coordinates, $t=4\pi z$ identifies this with the inside
-$q=1/2$ product.  In the uncentered MGF normalization of
+For arbitrary complex $q,z$ with $\lVert q\rVert<1$, the next three theorems,
+\path{summable_norm_sineTerm_qpow_pair},
+\path{geometricSincProduct_eq_tprod_pair}, and
+\path{geometricSincProduct_eq_tprod_complexQPochhammerInf}, prove absolute
+summability of the paired Euler perturbations, identify the scale--zero
+product, and justify the rearrangement
+\[
+ S_q(z)=\prod_{k\ge0}
+ \left(\frac{z^2}{(k+1)^2};q^2\right)_{\!\infty}.
+\]
+This is global in $z$, includes $q=0$, negative and nonreal contractions, and
+requires no nonvanishing premise.  The last two theorems,
+\path{rvachevFourierProduct_eq_tprod_complexQPochhammerInf} and
+\path{rvachevFourier_eq_tprod_complexQPochhammerInf}, specialize to dyadic
+scale and nome $1/4$ and transfer the product to a bounded Fabius witness
+satisfying \path{IsFabius}.
+
+In centered sinc coordinates, $t=4\pi z$ identifies the general theorem with
+the inside product.  In the uncentered MGF normalization of
 \eqref{eq:qF-spectral-inside}, the corresponding substitution is
 $t=4\pi\mathrm i z$: its Pochhammer product becomes $\Phi(z)$ and the retained
 phase gives $M_{1/2}(4\pi\mathrm i z)=\e^{2\pi\mathrm i z}\Phi(z)$.
 
-A separate sinc-product API now covers the general contracting parameter
-before the $q^2$-Pochhammer rearrangement.  For complex $q,z$ with
-$\lVert q\rVert<1$, the theorems
+The complementary sinc-product API supplies the analytic convergence layer.
+For complex $q,z$ with $\lVert q\rVert<1$, the theorems
 \path{hasProdLocallyUniformly_geometricSincProduct},
 \path{geometricSincProductFactors_multipliable},
 \path{hasProd_geometricSincProduct}, and
@@ -9720,12 +9730,11 @@ give
  =\e^{\mathrm i t/2}G_q(z_q(t))G_q(-z_q(t)),
 \]
 where $G_q(z)=\operatorname{geometricReciprocalGamma}(q,z)$.  This includes
-$q=0$ and negative contractions.  There is still no named centered
-or MGF bridge, no general inside identification with the $q^2$-Pochhammer
-double product, and no outside formula or zero--pole exchange; normal
-convergence of that double product and a packaged complex-$t$/full-prefix
-statement are likewise absent.  Thus \Cref{thm:qF-spectral} remains only
-partially formalized.
+$q=0$ and negative contractions.  Together these results close the general
+inside sinc--Pochhammer factorization.  There is still no named centered or
+MGF bridge, no outside formula or zero--pole exchange, and no packaged
+complex-$t$/full-prefix statement.  Thus \Cref{thm:qF-spectral} remains
+partial exactly at those wrappers and its outside-disk clause.
 
 \begin{remark}[The nome, and where the $q$-objects finally appear]\label{rem:qF-nome}
 The geometric ratio $q$ of the random series \eqref{eq:geometric-uniform-series}
@@ -11934,10 +11943,12 @@ specializations used for \((q;q)_\infty\) and \((-q;q)_\infty\) are strictly
 positive.  This real contractive-base product layer does not formalize the
 book's general complex analytic or basic-hypergeometric infinite-product
 theory.  The separate \texttt{RvachevPochhammerFactorization} module now
-defines the complex symbol and proves its pointwise convergence for every
-contracting complex nome, but its spectral sinc factorization fixes the nome
-to \(1/4\); it therefore does not close the book's general-parameter or
-normal-convergence claims.
+defines the complex symbol, proves its pointwise convergence for every
+contracting complex nome, and proves the global geometric-sinc spectral
+factorization for every strict complex contraction by an absolutely
+summable paired Euler product.  Only its final two Rvachev wrappers fix the
+nome to \(1/4\).  This closes the inside general-parameter product, but not
+the book's named centered/MGF wrappers or reciprocal outside-disk formula.
 
 The promoted, strengthened, and new finite-$q$ and weighted
 symmetric-function rows in this edition were statically checked against the
@@ -11957,7 +11968,7 @@ compatibility spelling of the primary identity;\\
 \path{QPochhammerElementaryIdentities.lean}: 13 theorems;\\
 \path{QBinomialReciprocity.lean}: four theorems;\\
 \path{GaussianBinomialAtNegOne.lean}: five theorems;\\
-\path{RvachevPochhammerFactorization.lean}: one definition and six theorems;\\
+\path{RvachevPochhammerFactorization.lean}: one definition and nine theorems;\\
 \path{GeometricCompleteHomogeneous.lean}: six theorems;\\
 \path{GeometricLagrangeCompleteHomogeneous.lean}: five theorems;\\
 \path{GeometricLagrangeQMoments.lean}: one definition and 37 theorems;\\
@@ -12021,20 +12032,26 @@ require \(q\ne0\); the two adjacent cross identities are total in all
 \(n,k\), including on and above the row boundary.
 
 \item \path{RvachevPochhammerFactorization.lean} has the one definition
-\path{Fabius.complexQPochhammerInf} and exactly six theorems:
+\path{Fabius.complexQPochhammerInf} and exactly nine theorems:
 \path{Fabius.complexQPochhammerInf_eq_tprod},
 \path{Fabius.multipliable_one_sub_mul_pow_complex},
 \path{Fabius.hasProd_complexQPochhammerInf},
 \path{Fabius.tendsto_finiteQPochhammerIn_complex},
+\path{Fabius.summable_norm_sineTerm_qpow_pair},
+\path{Fabius.geometricSincProduct_eq_tprod_pair},
+\path{Fabius.geometricSincProduct_eq_tprod_complexQPochhammerInf},
 \path{Fabius.rvachevFourierProduct_eq_tprod_complexQPochhammerInf}, and
 \path{Fabius.rvachevFourier_eq_tprod_complexQPochhammerInf}.  The complex
 symbol is total; its named convergence results require exactly
-\(\lVert q\rVert<1\).  The two product factorizations instead have the fixed
-nome \(1/4\), are global in the complex argument without a nonvanishing
-hypothesis, and the Fourier form assumes exactly a bounded Fabius witness and
-\path{IsFabius}.  Under \(t=4\pi z\), they give only the inside \(q=1/2\)
-centered specialization of \Cref{thm:qF-spectral}, not that theorem's
-general-parameter, reciprocal, or normal-convergence clauses.
+\(\lVert q\rVert<1\).  The next three results prove absolute summability of
+the paired Euler perturbations and, for every strict complex contraction,
+the global identity
+\(S_q(z)=\prod_{k\ge0}(z^2/(k+1)^2;q^2)_\infty\), without a nonvanishing
+hypothesis.  The last two wrappers have fixed nome \(1/4\), and the Fourier
+form assumes exactly a bounded Fabius witness and \path{IsFabius}.  Under
+\(t=4\pi z\), the arbitrary-contraction theorem closes the inside product in
+\Cref{thm:qF-spectral}; the centered/MGF wrappers and reciprocal outside-disk
+clause remain outside Lean.
 
 \item The final geometric-sinc tranche contributes four public theorems in
 \path{GeometricReciprocalGamma.lean}, namely
@@ -12777,11 +12794,15 @@ the general normalized analytic-germ uniqueness theorem}\\[2pt]
 \texttt{geometricSincProductFactors\_\allowbreak{}multipliable},
 \texttt{hasProd\_\allowbreak{}geometricSincProduct}, and
 \texttt{geometricSincProduct\_\allowbreak{}differentiable} from
-\texttt{GeometricReciprocalGamma}, plus the fixed-half-base
-\texttt{rvachevFourierProduct\_\allowbreak{}eq\_\allowbreak{}tprod\_\allowbreak{}complexQPochhammerInf}; general uncentered real-frequency sinc bridge and
-locally uniform entire $S_q$ are exact, but the centered/MGF
-$q^2$-Pochhammer rearrangement, reciprocal outside-disk formula, and normal
-double-product convergence are not packaged}\\[2pt]
+\texttt{GeometricReciprocalGamma}, together with
+\texttt{summable\_\allowbreak{}norm\_\allowbreak{}sineTerm\_\allowbreak{}qpow\_\allowbreak{}pair},
+\texttt{geometricSincProduct\_\allowbreak{}eq\_\allowbreak{}tprod\_\allowbreak{}pair}, and
+\texttt{geometricSincProduct\_\allowbreak{}eq\_\allowbreak{}tprod\_\allowbreak{}complexQPochhammerInf}
+from \texttt{RvachevPochhammerFactorization}; the general inside sinc bridge,
+locally uniform entire $S_q$, absolute paired-product summability, and
+$q^2$-Pochhammer rearrangement are exact, but the named centered/MGF wrappers,
+reciprocal outside-disk formula, and packaged compact-uniform full-prefix
+statement remain absent}\\[2pt]
 \Cref{thm:qF-moment-polynomial} & \statusnone & ---\\[2pt]
 \Cref{prop:qF-P-degree-sharp} & \statusnone & ---\\[2pt]
 \Cref{cor:qF-halfbase-dictionary} & \statuspartial &

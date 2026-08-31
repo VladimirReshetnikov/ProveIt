@@ -549,7 +549,8 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 `149332f9d`.
 
 Member: `Exponents_and_q_Series_Frontiers`
-(currently 237 pp, seven parts) — the
+(currently 237 A4 pp, seven parts; 16,240 source lines and a
+6,308,083-byte PDF) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -689,16 +690,19 @@ sixteenth wave's periodic-cocycle conjecture by Part VI's exact
 Gamma–zeta Laplace decomposition.  The eighth-wave fold also
 repaired the volume's part-boundary section numbering (Part II had
 rendered with `\appendix` letters G–N).  Supporting files under
-`assets/`, provenance with SHA-256 in the document itself.  For the
-spectral q²-Pochhammer theorem, the current Lean crosswalk remains
-deliberately partial. The newer sinc-product API does prove, for real
-`|q| < 1`, the uncentered real-frequency identity
+`assets/`, provenance with SHA-256 in the document itself.  For the spectral
+q²-Pochhammer theorem, the current Lean crosswalk proves the general inside
+product but remains partial at the surrounding wrappers.  The sinc-product
+API proves, for real `|q| < 1`, the uncentered real-frequency identity
 `φ_q(t) = exp(i t/2)·S_q((1-q)t/(2π))` and, for complex `‖q‖ < 1`, locally
-uniform convergence and entire-ness of `S_q(z) = ∏ sinc(πqⁿz)`. It does not
-package the centered/MGF q²-Pochhammer rearrangement, the reciprocal
-outside-disk formula, zero–pole exchange, or normal convergence of that
-double product; the older Pochhammer module itself still supplies only the
-inside `q = 1/2` Rvachev-product specialization under `t = 4πz`.
+uniform convergence and entire-ness of `S_q(z) = ∏ sinc(πqⁿz)`.  The
+Pochhammer module now proves absolute summability of the paired Euler
+perturbations and the global rearrangement
+`S_q(z) = ∏_k (z²/(k+1)²;q²)_∞` for every strict complex contraction,
+including `q = 0` and individual zero factors.  What remains outside Lean is
+the named centered/MGF packaging, the reciprocal outside-disk formula,
+zero–pole exchange, and a packaged compact-uniform theorem for the full
+phase-bearing characteristic prefixes.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.
 
@@ -778,7 +782,9 @@ matching `assets/` directories.
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Second member: `q_pochhammer_q_binomial_monograph/`
-(212 pp; A4 book class; rebuilt after the exact `q = -1` and geometric-sinc crosswalk updates) —
+(212 A4 pp; book class; 13,111 source lines and a 1,574,592-byte PDF;
+rebuilt after the exact `q = -1` and generalized sinc--Pochhammer crosswalk
+updates) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
@@ -804,8 +810,9 @@ partial, 129 with no counterpart, and 3 interface-only.  Within that
 exhaustive total, the 191-result core in Chapters 1–23 has 36 exact, 29
 partial, 123 with no counterpart, and 3 interface-only entries.  The later
 Chapter 24 Fabius bridge is included in the full ledger and crosswalked
-locally; in particular its general spectral Pochhammer theorem remains
-partial despite the now-formal inside `q = 1/2` specialization. The algebra of
+locally; its general inside spectral Pochhammer product is now formal for
+every strict complex contraction, while its named centered/MGF wrappers and
+reciprocal outside-disk clause keep the compound theorem partial. The algebra of
 q-shifted factorials now accounts for 3 exact, 1 partial, and 11
 unformalized results; the q-integer and Gaussian-coefficient chapter for
 3 exact, 2 partial, and 4 unformalized results. The finite
@@ -835,7 +842,7 @@ compatibility spelling of its primary identity),
 `QPochhammerElementaryIdentities.lean` (13 theorems),
 `QBinomialReciprocity.lean` (four theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems), and
-`RvachevPochhammerFactorization.lean` (one definition, six theorems).
+`RvachevPochhammerFactorization.lean` (one definition, nine theorems).
 The five `GaussianBinomialAtNegOne` theorems are
 `gaussianBinomial_neg_one_even_even`,
 `gaussianBinomial_neg_one_odd_even`,
@@ -863,8 +870,11 @@ genuine real infinite product `qPochhammerInf` and its contractive-base
 convergence/positivity layer, replacing the stale claim that every infinite
 q-Pochhammer in the development was merely a finite `Finset.range` product.
 The separate complex symbol now has its own contractive-nome convergence
-API; its Rvachev spectral factorization nevertheless fixes the nome to
-`1/4` and does not promote the general Chapter 24 theorem to exact.
+API.  Its spectral layer also proves the arbitrary-complex-contraction
+scale-by-zero product and its rearrangement as a `q²`-Pochhammer product;
+the two Rvachev wrappers specialize this result to nome `1/4`.  The compound
+Chapter 24 theorem remains partial only at its named centered/MGF wrappers
+and its reciprocal outside-disk formula.
 The complementary formal surfaces of
 `CompleteHomogeneousGenerating.lean` and
 `SymmetricFunctionGenerating.lean` prove both the finite elementary product
@@ -939,20 +949,27 @@ where `G_q(z) = geometricReciprocalGamma q z`.
 
 `RvachevPochhammerFactorization.lean` adds the exhaustive complex
 Pochhammer surface: the one definition `Fabius.complexQPochhammerInf` and
-the six theorems `Fabius.complexQPochhammerInf_eq_tprod`,
+the nine theorems `Fabius.complexQPochhammerInf_eq_tprod`,
 `Fabius.multipliable_one_sub_mul_pow_complex`,
 `Fabius.hasProd_complexQPochhammerInf`,
 `Fabius.tendsto_finiteQPochhammerIn_complex`,
+`Fabius.summable_norm_sineTerm_qpow_pair`,
+`Fabius.geometricSincProduct_eq_tprod_pair`,
+`Fabius.geometricSincProduct_eq_tprod_complexQPochhammerInf`,
 `Fabius.rvachevFourierProduct_eq_tprod_complexQPochhammerInf`, and
 `Fabius.rvachevFourier_eq_tprod_complexQPochhammerInf`.  The symbol is total;
 the named multipliability, product, and finite-prefix convergence theorems
-require exactly `‖q‖ < 1` and allow arbitrary complex `a`.  The two spectral
-theorems instead fix the dyadic scale and nome `1/4`, hold for every complex
-`z` including at zero factors, and the Fourier form assumes exactly a
-bounded Fabius witness satisfying `IsFabius`.  With `t = 4πz` this is the
-inside `q = 1/2` centered factorization only. The six-theorem sinc-product
-tranche above supplies the general-`q` uncentered real-frequency bridge and
-locally uniform entire `S_q`, but still no named centered or MGF wrapper, no
-general q²-Pochhammer rearrangement, no outside-disk reciprocal formula, and
-no packaged compact-uniform theorem for the full phase-bearing
+require exactly `‖q‖ < 1` and allow arbitrary complex `a`.  For every complex
+`q,z` with `‖q‖ < 1`, the next three results prove absolute summability of the
+paired Euler perturbations, identify `S_q(z)` with their product over
+`ℕ×ℕ`, and exchange the scale and zero indices to obtain
+`S_q(z) = ∏_k (z²/(k+1)²;q²)_∞`.  This includes `q = 0`, negative and
+nonreal contractions, and individual zero factors.  The final two theorems
+specialize to the dyadic scale and nome `1/4`; the Fourier form assumes
+exactly a bounded Fabius witness satisfying `IsFabius`.  With `t = 4πz`,
+the general factorization is the inside centered identity from the report.
+Together with the six-theorem locally uniform sinc-product tranche above,
+the inside analytic/product layer is closed.  There is still no named
+centered or MGF wrapper, no outside-disk reciprocal formula or zero--pole
+exchange, and no packaged compact-uniform theorem for the full phase-bearing
 characteristic-prefix sequence.

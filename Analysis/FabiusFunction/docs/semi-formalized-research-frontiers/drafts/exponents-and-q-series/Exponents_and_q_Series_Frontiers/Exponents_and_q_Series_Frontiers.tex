@@ -15248,26 +15248,37 @@ permits reordering, and the product over the scale index is a
 $q^2$-Pochhammer symbol.  Outside the disk, apply this to $1/C_{1/q}$.
 \end{proof}
 
-\begin{statusbox}{Lean crosswalk: general sinc bridge and fixed dyadic Pochhammer specialization}
+\begin{statusbox}{Lean crosswalk: general complex sinc--Pochhammer factorization}
 The current formal API does not prove the whole compound statement
 \cref{p7:thm:sinc-poch}.  It defines the complex symbol through
-\path{complexQPochhammerInf} and exposes exactly the six theorems
+\path{complexQPochhammerInf} and exposes exactly the nine theorems
 \path{complexQPochhammerInf_eq_tprod},
 \path{multipliable_one_sub_mul_pow_complex},
 \path{hasProd_complexQPochhammerInf},
 \path{tendsto_finiteQPochhammerIn_complex},
+\path{summable_norm_sineTerm_qpow_pair},
+\path{geometricSincProduct_eq_tprod_pair},
+\path{geometricSincProduct_eq_tprod_complexQPochhammerInf},
 \path{rvachevFourierProduct_eq_tprod_complexQPochhammerInf}, and
 \path{rvachevFourier_eq_tprod_complexQPochhammerInf} in
 \path{RvachevPochhammerFactorization.lean}.  The first three convergence
 results after the definitional equality allow arbitrary complex $a$ and
-require exactly $\lVert q\rVert<1$.  The spectral theorems themselves fix the
-dyadic scale and hence the nome $1/4$, and are global in $z\in\C$, including
-at individual zero factors; the Fourier-transform form additionally assumes
-a bounded Fabius witness satisfying \path{IsFabius}.
+require exactly $\lVert q\rVert<1$.  For arbitrary complex $q,z$ with
+$\lVert q\rVert<1$, the next three results prove absolute summability of the
+paired Euler perturbations, identify the geometric sinc product with the
+product indexed by scale--zero pairs, and justify the index exchange
+\[
+ S_q(z)=\prod_{k\ge0}
+ \left(\frac{z^2}{(k+1)^2};q^2\right)_{\!\infty}.
+\]
+The result includes $q=0$, negative and nonreal contractions, and every zero
+of an individual factor.  The final two theorems specialize it to dyadic
+scale and nome $1/4$; the Fourier-transform form additionally assumes a
+bounded Fabius witness satisfying \path{IsFabius}.
 
-Under $t=4\pi z$, the standalone Pochhammer-product theorem is exactly the
-inside $q=1/2$ specialization of \eqref{p7:eq:sinc-poch}.  A separate final
-sinc-product tranche now proves the general uncentered bridge.  For
+Under $t=4\pi z$, the general Pochhammer-product theorem is exactly the
+inside centered factorization in \eqref{p7:eq:sinc-poch}.  The complementary
+sinc-product tranche supplies the analytic convergence layer: for
 $q,z\in\C$, $\lVert q\rVert<1$, the four theorems
 \path{hasProdLocallyUniformly_geometricSincProduct},
 \path{geometricSincProductFactors_multipliable},
@@ -15290,13 +15301,12 @@ give
 \]
 including $q=0$ and negative contractions.
 
-There is still no named centered $\psi_q$ or MGF wrapper, no declaration
-identifying this sinc product with the general $q^2$-Pochhammer rearrangement,
-and no outside-$\abs q>1$ reciprocal formula or zero--pole exchange.  The
-normal convergence asserted for the Pochhammer double product and a packaged
-compact-uniform theorem for the full phase-bearing characteristic prefixes
-also remain outside the API.  Consequently the compound label
-\cref{p7:thm:sinc-poch} remains only partially formalized.
+There is still no named centered $\psi_q$ or MGF wrapper, no
+outside-$\abs q>1$ reciprocal formula or zero--pole exchange, and no packaged
+compact-uniform theorem for the full phase-bearing characteristic prefixes.
+Consequently the inside product identity is proved, while the compound label
+\cref{p7:thm:sinc-poch} remains partial exactly at those wrappers and the
+outside-disk clause.
 \end{statusbox}
 
 The nome is $q^2$, not $q$: centering makes every factor even, and evenness
@@ -16138,9 +16148,9 @@ simplex-volume stop-loss formula (upper cube constraints inactive under
 jets from the CDF pantograph equation, and the two-term asymptotic
 (Stirling, crude moment bounds, monotone bracketing) --- far lighter than the
 existing all-orders dyadic saddle machinery.  The reciprocal analytic
-tranche: the inverse product germ, the general-$q$ and outside-disk Euler
-rearrangements (the fixed inside $q=1/2$ rearrangement is now formalized in
-\path{RvachevPochhammerFactorization.lean}), the $L^2$ Laplace
+tranche: the inverse product germ and the outside-disk reciprocal Euler
+rearrangement (the general inside strict-complex-contraction rearrangement is
+now formalized in \path{RvachevPochhammerFactorization.lean}), the $L^2$ Laplace
 series, Hankel positivity and affine transport of determinants, and the
 quasi-definite orthogonal recurrence.  Suggested module names:
 \texttt{GeometricUniformSign}, \texttt{GeometricProuhet}, \texttt{TwoNomePartition},

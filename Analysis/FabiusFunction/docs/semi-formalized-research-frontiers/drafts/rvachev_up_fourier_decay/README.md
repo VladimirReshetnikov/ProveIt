@@ -1,29 +1,69 @@
 # Rvachev up-function Fourier decay
 
-The Fourier-decay corpus: eight independently written source documents on
-the decay envelope of the sinc product, two audits (the comparative audit
-of Documents 1-4 with the kappa-dictionary and feasibility list, and the
-second-wave audit of Documents 7-8 with the shell-adaptive gauge), the
-Gentle Guide popularization, and the original question document.
-This group predates the 2026-08-28 reorganization and its internal
-directory names are unchanged - the documents cross-reference each other
-by these names.
+This group has one canonical human-readable document:
 
-The formalization state of this corpus is tracked in the comparative
-audit's "Formalization targets, ordered by feasibility" subsection; as of
-2026-08-28 items 1-4 and 6 are done (item 4 via the kernel-checked
-Bernstein-certificate enclosure of rho_1).
+- [`Rvachev_Up_Fourier_Decay.tex`](Rvachev_Up_Fourier_Decay/Rvachev_Up_Fourier_Decay.tex) — editable source;
+- [`Rvachev_Up_Fourier_Decay.pdf`](Rvachev_Up_Fourier_Decay/Rvachev_Up_Fourier_Decay.pdf) — synchronized rendered article.
 
-**Deliberately not consolidated.** Unlike every other group (each merged
-into a single volume on 2026-08-28), this corpus is kept as separate
-documents on purpose: its structure is *audit evidence*. The eight
-source documents were written independently on the same question, and
-the two audits compare them **as** independent documents — their
-agreements and contradictions, which document proves what, and which
-claims survived scrutiny. Merging them into one volume would erase
-exactly the independence the audits certify, and the audits' internal
-references name the documents by their directory names. New readers
-should start with the two audits and the Gentle Guide, not with the
-source documents.
+The article is an editorial consolidation of the original 2018 question,
+eight successive reports, the comparative and second-wave audits, the Gentle
+Guide, and their useful computational evidence. It is not a mechanical
+concatenation: repeated derivations are stated once, notation is unified,
+missing arguments are supplied, contradictory claims are adjudicated, and the
+strongest correct versions are retained. Its source concordance and correction
+ledger record exactly what was taken from each predecessor.
 
-See [`../MANIFEST.md`](../MANIFEST.md) for the full member table.
+The principal additions include a corrected Gamma–Pochhammer tail, detailed
+proofs of the dyadic shell and fluctuation laws, the finite-*q* pressure
+spectrum, exact RMS and energy identities, the sharp Gelfond envelope,
+Lambert-*W* annular asymptotics, two valley regimes, the bounded-distortion
+obstruction, and an affirmative shell-adaptive analytic Cesaro gauge. The
+integer-ratio chapter strengthens the corpus with a global spectral
+*q*-Pochhammer factorization, arbitrary-radius zero extraction, exact *b*-adic
+ray laws, and the variance formula
+`σ_b² = (π²/12)(b + 1)/(b - 1)`.
+
+## Evidence and formalization status
+
+The document deliberately distinguishes:
+
+- self-contained exact proofs;
+- named classical analytic inputs whose hypotheses are exposed;
+- rigorous finite certificates and enclosures;
+- high-precision numerical evidence that is **not** an interval proof;
+- conjectural or still-unformalized frontier statements;
+- exact declarations present in the current Lean source tree.
+
+The appendix gives the human-readable/Lean parity ledger. A declaration named
+there is a source-level cross-reference, not by itself a claim that a fresh
+aggregate Lean build was run for this documentation change.
+
+## Historical sources
+
+The independent reports remain permanently recoverable at the immutable
+pre-consolidation commit
+[`2e3567feb14947ee3ebcdab11adca64e746ad26f`](https://github.com/VladimirReshetnikov/ProveIt/tree/2e3567feb14947ee3ebcdab11adca64e746ad26f/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay).
+The canonical article cites those immutable source paths. Their former live
+directories were retired after consolidation so readers cannot mistake a
+superseded report for the current result; Git history is the archive and still
+preserves the independence used by the audits.
+
+Useful audit programs and captured numerical data are retained under
+[`verification_scripts/`](verification_scripts/). Read its README before
+running anything: the scripts provide reproducible supporting evidence, but
+they do not convert floating-point output into a proof.
+
+## Building
+
+From `Rvachev_Up_Fourier_Decay/`, run exactly three passes:
+
+```text
+pdflatex -interaction=nonstopmode -halt-on-error Rvachev_Up_Fourier_Decay.tex
+pdflatex -interaction=nonstopmode -halt-on-error Rvachev_Up_Fourier_Decay.tex
+pdflatex -interaction=nonstopmode -halt-on-error Rvachev_Up_Fourier_Decay.tex
+```
+
+Only the `.tex` and synchronized `.pdf` are committed; LaTeX auxiliary files
+remain untracked.
+
+See [`../MANIFEST.md`](../MANIFEST.md) for the thematic draft inventory.

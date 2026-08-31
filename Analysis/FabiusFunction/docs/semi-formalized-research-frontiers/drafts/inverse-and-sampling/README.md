@@ -15,6 +15,29 @@ New standalone intake members:
   plot-font repair, and rebuild remain deliberately deferred.  The submitted
   PDF still uses Latin Modern and includes Type 3 plot-font rows.
 
+- [`Non_Elementarity_of_the_Fabius_Function/`](Non_Elementarity_of_the_Fabius_Function/),
+  *The Fabius Function and Its Inverse are Not Elementary: Density of the
+  Analytic Locus under Algebraic Branches and Inversion* (14 A4 pp; 1,068
+  source lines at intake and 1,057 after the notation migration), was
+  reclassified on 2026-08-31 from the former top-level
+  `docs/Non_Elementarity_of_the_Fabius_Function/` pair through
+  `drafts/incoming/` and filed here without changing either submitted
+  payload. The bare two-file package supplied no archive or checksum ledger.
+  The intake hashes were PDF `ab722e11...` and TeX `3c3c2f48...`; the active
+  `SHA256SUMS` was refreshed after the post-publication semantic-notation
+  migration and verifies the current TeX/PDF pair. Its TeX source was already
+  LF, and its structurally readable, unencrypted PDF uses embedded/subset
+  fonts, includes Libertinus, and has no Type 3 font. The
+  title and abstract place its forward/inverse non-elementarity and analytic-
+  locus material with the inverse-function reports in this group. An older
+  same-stem study remains under `docs/archive/standalone-studies/`, but neither
+  its TeX nor its PDF is byte-identical to this later expanded package; both
+  are preserved and any supersession decision is deferred. It remains
+  standalone pending post-publication claim-level reassessment and verification
+  of its Lean crosswalk; manuscript theorem labels and the document's own
+  formalization description do not independently establish current Lean
+  verification.
+
 - [`geometric_comb_q_fabius_report/`](geometric_comb_q_fabius_report/),
   *Geometric-Comb Interpolation, Gaussian Pascal Transforms, and the
   Fabius--Rvachev Boundary Layer* (68 A4 pp; 3,575-line TeX and 637-line
@@ -109,9 +132,9 @@ New standalone intake members:
   theorem, and precision asymptotics remain open Lean work. The `d_*` claim
   remains denominator-minimal only for the fixed dyadic proxy `2^{-r(n)}`, not
   the weaker target `1/n`. The synchronized 2,967-line source has SHA-256
-  `b8c5b5cc0aac752497fab8e8a1433971eb4fc74b4c33637115b00ca45143645a`, and
-  its 42-page A4 PDF has 711,377 bytes and SHA-256
-  `2dcf4b539c6b0ffbdda32e4de3a8b62f99bbaf5bc95d3436707f80031ea6989c`.
+  `7faf9f71ae8facf5c12d3b9aea15b4c44dee30b5d418df991d2abc6e481759ed`, and
+  its 42-page A4 PDF has 711,374 bytes and SHA-256
+  `5a9976f9ece840d1b8456b4ea3753c36e369cbade8caff1c04158cc7d33cff75`.
   The PDF was rebuilt in exactly three strict serial passes, with repaired
   author metadata, every font embedded/subset (22 fonts), Libertinus present,
   and no Type 3 fonts. The immutable five-entry arrival ledger verifies the
@@ -133,7 +156,7 @@ New standalone intake members:
   iterate claims remain paper-only.
 
 The inverse function's frontiers and the sampling/deconvolution circle of
-ideas, in three consolidated volumes and six retained standalone reports.
+ideas, in three consolidated volumes and seven retained standalone reports.
 
 Post-snapshot formal status: `QuarterCatalanGerm.lean` now proves that the
 distinguished rational quarter germ becomes the Catalan inverse of
@@ -253,9 +276,9 @@ bytes; SHA-256
 `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
 The current canonical 42-page A4/27 mm/Libertinus report uses the synchronized
 2,967-line source (SHA-256
-`b8c5b5cc0aac752497fab8e8a1433971eb4fc74b4c33637115b00ca45143645a`) and
-the 711,377-byte PDF (SHA-256
-`2dcf4b539c6b0ffbdda32e4de3a8b62f99bbaf5bc95d3436707f80031ea6989c`).
+`7faf9f71ae8facf5c12d3b9aea15b4c44dee30b5d418df991d2abc6e481759ed`) and
+the 711,374-byte PDF (SHA-256
+`5a9976f9ece840d1b8456b4ea3753c36e369cbade8caff1c04158cc7d33cff75`).
 It was rebuilt in exactly three strict serial passes with all 22 fonts
 embedded/subset, Libertinus present, and no Type 3 fonts.  The report gives
 self-contained proofs of the structural least-interval-mass and exact
@@ -274,8 +297,8 @@ inverse endpoint equivalent; explicit periodic and all-orders inverse
 reversion remain frontier-document results.  The exact-rational supplement
 reproduces its captured output byte for byte.  Original five-file hashes are
 preserved in `ARRIVAL_SHA256SUMS.txt`; the current six-entry
-`SHA256SUMS.txt` verifies 6/6.  The live union audit scans 611 Lean modules
-and 8,338 public declarations with zero documentation/header gaps.
+`SHA256SUMS.txt` verifies 6/6.  The live union audit scans 615 Lean modules
+and 8,383 public declarations with zero documentation/header gaps.
 
 ## `inverse_fabius_iterates_nowhere_analytic/`
 
