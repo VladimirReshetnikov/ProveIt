@@ -188,7 +188,7 @@ Let $V_0,V_1,\dots$ be independent random variables uniformly distributed on $[-
 \end{equation}
 has support $[-1,1]$ and density Rvachev's up-function $\RvachevUp$.  Its characteristic function, with the convention $\SincRad z=\sin z/z$, is
 \begin{equation}
- \widehat{\RvachevUp}(z)
+ \FourierAngular{\RvachevUp}(-z)
  =\prod_{j\ge0}\SincRad\!\left(\frac{z}{2^{j+1}}\right).
  \label{eq:up-transform}
 \end{equation}
@@ -204,7 +204,7 @@ For real $0<q<1$, define
 \end{equation}
 The coefficient sum is one, so $Y_q$ is again supported on $[-1,1]$.  Independence gives
 \begin{equation}
- \mathbb E\EulerE^{\ImaginaryUnit zY_q}
+ \Expectation\EulerE^{\ImaginaryUnit zY_q}
  =\prod_{j\ge0}\SincRad\bigl((1-q)q^jz\bigr).
  \label{eq:real-char}
 \end{equation}
@@ -226,7 +226,7 @@ The product in \cref{eq:Phi-def} converges locally uniformly on $\D\times\Comple
  \qquad
  \Phi(0,z)=\SincRad z,
  \qquad
- \Phi\left(\tfrac12,z\right)=\widehat{\RvachevUp}(z).
+ \Phi\left(\tfrac12,z\right)=\FourierAngular{\RvachevUp}(-z).
 \]
 \end{proposition}
 
@@ -496,7 +496,7 @@ the $1/k$ in $c_k\le\zeta(2)/(k\pi^{2k})$.  Summing
 nonresonant indices.
 
 Now suppose $d\mid k$, put $n=2k$ and $b=\omega/a$, and choose the cutoff
-$N=\lfloor\delta^{-1/2}\rfloor$.  Uniformly when $k\le N$,
+$N=\Floor{\delta^{-1/2}}$.  Uniformly when $k\le N$,
 \begin{align*}
  (1+b\delta)^n&=1+nb\delta+O(n^2\delta^2),\\
  \frac1{1-(1-\delta)^n}
@@ -1063,7 +1063,7 @@ The limiting entire function $\EulerE^{-A_\omega w^{2d}}$ has no zeros.  The zer
 
 For real $0<q<1$, the moment generating function of $Y_q$ is
 \begin{equation}
- M(q,t)=\mathbb E\EulerE^{tY_q}
+ M(q,t)=\Expectation\EulerE^{tY_q}
  =\Phi(q,\ImaginaryUnit t)
  =\prod_{j\ge0}
  \frac{\sinh((1-q)q^jt)}{(1-q)q^jt}.
@@ -1614,7 +1614,7 @@ after these reusable foundations.
 \item \textbf{Finite cyclic projection.}  Specialize the existing
 root-of-unity filter to
 \(
- d^{-1}\sum_{r<d}\omega^{2kr}=\mathbf1_{d\mid k}
+ d^{-1}\sum_{r<d}\omega^{2kr}=\IndicatorOf{d\mid k}
 \)
 and derive a finite-truncation version of \cref{eq:cyclic-projection}.
 \item \textbf{Analytic tails.}  Formalize the square-root cutoff proof of \cref{thm:two-term-radial}, including the finite phase separation and exponential tail bound.
@@ -1664,7 +1664,7 @@ $(1-\delta)^{2k}$ each contribute at most $Ck$ times a geometric majorant.
 This is the detailed justification of \cref{eq:nonres-uniform}; when $d=1$
 the nonresonant part is empty.
 
-For resonant $k$, the cutoff $N=\lfloor\delta^{-1/2}\rfloor$ is deliberately
+For resonant $k$, the cutoff $N=\Floor{\delta^{-1/2}}$ is deliberately
 smaller than the tempting scale $\delta^{-1}$.  On $k\le N$ the true expansion
 parameter $k\delta$ tends uniformly to zero, so Taylor's theorem with remainder
 gives \cref{eq:res-uniform}.  On $k>N$, geometric decay wins against every

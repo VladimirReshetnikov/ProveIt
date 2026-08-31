@@ -311,10 +311,10 @@ In particular, $\RvachevUp$ is even, strictly decreasing on $[0,1]$, and
 
 For $k\geq0$, put
 \begin{equation}
-  \eps_k=(-1)^{s_2(k)},
+  \eps_k=(-1)^{\BinaryDigitSum(k)},
   \label{eq:tm-sign}
 \end{equation}
-where $s_2(k)$ is the sum of the binary digits of $k$.  The signed global extension
+where $\BinaryDigitSum(k)$ is the sum of the binary digits of $k$.  The signed global extension
 $\ThetaF$ can be written blockwise as
 \begin{equation}
  \ThetaF(t)=\eps_k\,\RvachevUp\bigl(t-(2k+1)\bigr),
@@ -351,7 +351,7 @@ At the matched dyadic grid this becomes the exact Thue--Morse jet law
  F^{(m)}\!\left(\frac{a}{2^m}\right)
  =\begin{cases}
  0,&a\text{ even},\\
- Q_m\eps_{\lfloor a/2\rfloor},&a\text{ odd}.
+ Q_m\eps_{\Floor{a/2}},&a\text{ odd}.
  \end{cases}
  \label{eq:dyadic-jet}
 \end{equation}
@@ -1063,12 +1063,12 @@ No numerical experiment is used in the proof.  The accompanying script
 \subsection{Sinc-product reconstruction}
 
 With the Fourier convention
-$\widehat f(\xi)=\int_\RealNumbers f(t)e^{-2\pi i\xi t}\Differential t$, the Rvachev bump has product
+$\FourierTwoPi{f}(\xi)=\int_\RealNumbers f(t)e^{-2\pi i\xi t}\Differential t$, the Rvachev bump has product
 \begin{equation}
- \widehat\RvachevUp(\xi)
- =\prod_{j=0}^{\infty}\operatorname{sinc}
+ \FourierTwoPi{\RvachevUp}(\xi)
+ =\prod_{j=0}^{\infty}\SincRad
    \left(\frac{\pi\xi}{2^j}\right),
- \qquad \operatorname{sinc}(z)=\frac{\sin z}{z}.
+ \qquad \SincRad(z)=\frac{\sin z}{z}.
  \label{eq:sinc-product}
 \end{equation}
 The script truncates the product, applies an inverse FFT on a period larger than the

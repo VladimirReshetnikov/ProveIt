@@ -58,6 +58,10 @@
 \newcommand{\T}{\mathcal T}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\RR}{\mathcal R}
+% LOCAL-NON-FOURIER-HAT: \BaileyTransformedAlpha denotes the alpha component of the weak Bailey-lemma transformed pair.
+\newcommand{\BaileyTransformedAlpha}{\widehat{\alpha}}
+% LOCAL-NON-FOURIER-HAT: \BaileyTransformedBeta denotes the beta component of the weak Bailey-lemma transformed pair.
+\newcommand{\BaileyTransformedBeta}{\widehat{\beta}}
 
 \title{\bfseries A Proof-Oriented Guide to $q$-Series\\[0.35em]
 \large Shifted Factorials, Basic Hypergeometric Summation, Theta Products,\\
@@ -1043,11 +1047,11 @@ justifies differentiation term by term.
 \begin{lemma}[Poisson summation]\label{lem:poisson}
 For every Schwartz function $f:\RealNumbers\to\ComplexNumbers$, with Fourier transform
 \[
- \widehat f(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\,\Differential x,
+\FourierTwoPi{f}(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\,\Differential x,
 \]
 one has
 \begin{equation}\label{eq:poisson}
- \sum_{n\in\IntegerNumbers}f(n)=\sum_{k\in\IntegerNumbers}\widehat f(k).
+\sum_{n\in\IntegerNumbers}f(n)=\sum_{k\in\IntegerNumbers}\FourierTwoPi{f}(k).
 \end{equation}
 \end{lemma}
 
@@ -1059,11 +1063,11 @@ Fourier coefficient is
  \int_0^1P(x)\EulerE^{-2\pi\ImaginaryUnit kx}\,\Differential x
  &=\sum_{n\in\IntegerNumbers}\int_0^1f(x+n)\EulerE^{-2\pi\ImaginaryUnit kx}\,\Differential x\\
  &=\int_\RealNumbers f(u)\EulerE^{-2\pi\ImaginaryUnit ku}\,\Differential u
- =\widehat f(k),
+=\FourierTwoPi{f}(k),
 \end{align*}
 because $\EulerE^{2\pi\ImaginaryUnit kn}=1$. The Fourier coefficients decay faster
 than any power, so the Fourier series converges absolutely. Evaluating
-$P(x)=\sum_k\widehat f(k)\EulerE^{2\pi\ImaginaryUnit kx}$ at $x=0$ gives
+$P(x)=\sum_k\FourierTwoPi{f}(k)\EulerE^{2\pi\ImaginaryUnit kx}$ at $x=0$ gives
 \eqref{eq:poisson}.
 \end{proof}
 
@@ -1107,7 +1111,7 @@ Apply Poisson summation to
 $f(x)=\EulerE^{\pi\ImaginaryUnit\tau x^2+2\pi\ImaginaryUnit zx}$. By
 \cref{lem:gaussian-ft},
 \[
- \widehat f(k)=(-\ImaginaryUnit\tau)^{-1/2}
+\FourierTwoPi{f}(k)=(-\ImaginaryUnit\tau)^{-1/2}
  \EulerE^{-\pi\ImaginaryUnit(z-k)^2/\tau}.
 \]
 Therefore
@@ -1835,10 +1839,10 @@ which is precisely the Bailey-pair relation.
 
 \begin{corollary}[weak Bailey lemma]\label{cor:weak-bailey}
 If $(\alpha_n,\beta_n)$ is a Bailey pair relative to $a$, then so is
-$(\widehat\alpha_n,\widehat\beta_n)$, where
+$(\BaileyTransformedAlpha_n,\BaileyTransformedBeta_n)$, where
 \begin{align}
- \widehat\alpha_n&=a^nq^{n^2}\alpha_n,\label{eq:weak-alpha}\\
- \widehat\beta_n&=\sum_{j=0}^{n}
+\BaileyTransformedAlpha_n&=a^nq^{n^2}\alpha_n,\label{eq:weak-alpha}\\
+\BaileyTransformedBeta_n&=\sum_{j=0}^{n}
  \frac{a^jq^{j^2}}{(q)_{n-j}}\,\beta_j.
  \label{eq:weak-beta}
 \end{align}

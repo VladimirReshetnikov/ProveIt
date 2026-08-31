@@ -60,7 +60,6 @@
 \newcommand{\eps}{\varepsilon}
 \newcommand{\cL}{C_{\Lambda}}
 \newcommand{\He}{H}
-\newcommand{\1}{\mathbf{1}}
 
 
 \lstdefinestyle{pythonstyle}{
@@ -109,11 +108,11 @@ explicit martingale coupling, proving the universal convex-order flow
 $X_s\preceq_{\mathrm{cx}}X_r$.  The kernels are the increments of an
 inhomogeneous compound-Poisson subordinator with geometric jump law.
 
-Second, writing $q=e^{-\delta}$, we prove a full large-deviation principle at
+Second, writing $q=\EulerE^{-\delta}$, we prove a full large-deviation principle at
 speed $1/\delta$.  Its limiting scaled cumulant transform is
 \[
  \Lambda(\theta)=\int_0^\infty
-     \log\!\left(\frac{\sinh(\theta e^{-t})}{\theta e^{-t}}\right)\Differential t
+     \log\!\left(\frac{\sinh(\theta \EulerE^{-t})}{\theta \EulerE^{-t}}\right)\Differential t
  =\int_0^\theta\frac{\log(\sinh u/u)}{u}\Differential u,
 \]
 and the rate is $I=\Lambda^*$.  The finite-$q$ transform is an exact midpoint
@@ -233,7 +232,7 @@ and because its cumulant transform is controlled by Bernoulli numbers.
 \subsection{Random series, transforms, and fixed point}
 
 Let $U_0,U_1,\dots$ be independent variables with density
-$\frac12\1_{[-1,1]}$.  For $0<q<1$ define
+$\frac12\IndicatorOf{[-1,1]}$.  For $0<q<1$ define
 \begin{equation}
   X_q=(1-q)\sum_{j=0}^{\infty}q^jU_j.
   \label{eq:Xq}
@@ -252,10 +251,10 @@ where $X_q'$ is an independent copy.  We use
 with their continuous values at zero.  The characteristic and moment
 generating functions are
 \begin{align}
- \phi_q(t)&=\Expectation e^{itX_q}
+ \phi_q(t)&=\Expectation \EulerE^{itX_q}
    =\prod_{j=0}^{\infty}\SincRad\bigl((1-q)q^jt\bigr),
    \label{eq:cf}\\
- M_q(t)&=\Expectation e^{tX_q}
+ M_q(t)&=\Expectation \EulerE^{tX_q}
    =\prod_{j=0}^{\infty}\sinhc\bigl((1-q)q^jt\bigr).
    \label{eq:mgf}
 \end{align}
@@ -298,12 +297,12 @@ build the new parameter asymptotics.
 
 Set
 \begin{equation}
- q=e^{-\delta},\qquad \delta=-\log q.
+ q=\EulerE^{-\delta},\qquad \delta=-\log q.
  \label{eq:delta}
 \end{equation}
 Then
 \begin{equation}
- 1-q=\delta s_\delta e^{-\delta/2},
+ 1-q=\delta s_\delta \EulerE^{-\delta/2},
  \qquad
  s_\delta:=\frac{2\sinh(\delta/2)}{\delta}
  =1+\frac{\delta^2}{24}+\frac{\delta^4}{1920}+O(\delta^6).
@@ -516,20 +515,20 @@ The scaled cumulant generating function at large-deviation speed
 $1/\delta$ is
 \begin{equation}
  \Lambda_\delta(\theta)
- :=\delta\log\Expectation\exp\!\left(\frac{\theta X_{e^{-\delta}}}{\delta}\right).
+ :=\delta\log\Expectation\exp\!\left(\frac{\theta X_{\EulerE^{-\delta}}}{\delta}\right).
  \label{eq:scaled-cgf}
 \end{equation}
 Using \eqref{eq:sdelta}, the $j$th argument of $g$ is
 \[
- \frac{\theta(1-e^{-\delta})e^{-j\delta}}{\delta}
- =\theta s_\delta e^{-(j+1/2)\delta}.
+ \frac{\theta(1-\EulerE^{-\delta})\EulerE^{-j\delta}}{\delta}
+ =\theta s_\delta \EulerE^{-(j+1/2)\delta}.
 \]
 Hence the exact identity
 \begin{equation}
  \boxed{\quad
  \Lambda_\delta(\theta)
  =\delta\sum_{j=0}^{\infty}
- g\!\left(\theta s_\delta e^{-(j+1/2)\delta}\right).
+ g\!\left(\theta s_\delta \EulerE^{-(j+1/2)\delta}\right).
  \quad}
  \label{eq:midpoint-sum}
 \end{equation}
@@ -543,7 +542,7 @@ first correction is $O(\delta^2)$ rather than $O(\delta)$.
 Uniformly for $\theta$ in compact subsets of $\RealNumbers$,
 \begin{equation}
  \Lambda_\delta(\theta)\longrightarrow
- \Lambda(\theta):=\int_0^\infty g(\theta e^{-t})\Differential t
+ \Lambda(\theta):=\int_0^\infty g(\theta \EulerE^{-t})\Differential t
  =\int_0^\theta\frac{g(u)}{u}\Differential u.
  \label{eq:Lambda}
 \end{equation}
@@ -572,18 +571,18 @@ At the origin,
 
 \begin{proof}
 For bounded $\theta$, the summand in \eqref{eq:midpoint-sum} is smooth and
-bounded by $C\theta^2e^{-2t}$ after the identification
+bounded by $C\theta^2\EulerE^{-2t}$ after the identification
 $t=(j+1/2)\delta$.  Riemann-sum convergence is therefore uniform on compact
 $\theta$-sets and yields the first integral in \eqref{eq:Lambda}.  The change
-of variables $u=\theta e^{-t}$ yields the second.  Differentiation under the
+of variables $u=\theta \EulerE^{-t}$ yields the second.  Differentiation under the
 integral is justified by the same exponential envelope.  Since
 $g$ is the cumulant generating function of a nondegenerate uniform variable,
 $g''(u)>0$; therefore
 \[
- \Lambda''(\theta)=\int_0^\infty e^{-2t}g''(\theta e^{-t})\Differential t>0.
+ \Lambda''(\theta)=\int_0^\infty \EulerE^{-2t}g''(\theta \EulerE^{-t})\Differential t>0.
 \]
 The explicit formulas follow by differentiating the second integral.  Finally
-$g(\theta)=\theta-\log(2\theta)+O(e^{-2\theta})$ as
+$g(\theta)=\theta-\log(2\theta)+O(\EulerE^{-2\theta})$ as
 $\theta\to+\infty$, so $\Lambda'(\theta)=g(\theta)/\theta\to1$;
 oddness gives the lower endpoint.  Integrating \eqref{eq:logsinhc-series}
 termwise gives \eqref{eq:Lambda-Bernoulli}.
@@ -622,7 +621,7 @@ even powers of $\delta$.  The first two nontrivial terms are
 
 \begin{proof}
 For
-$f_{\delta,\theta}(t)=g(\theta s_\delta e^{-t})$, all derivatives decay
+$f_{\delta,\theta}(t)=g(\theta s_\delta \EulerE^{-t})$, all derivatives decay
 exponentially as $t\to\infty$, uniformly for $\theta$ in a compact set.
 The midpoint Euler--Maclaurin formula \cite{Olver} gives
 \begin{equation}
@@ -665,7 +664,7 @@ layer \cite{GasperRahman}.
 
 \begin{theorem}[Large-deviation principle]
 \label{thm:LDP}
-The family $X_{e^{-\delta}}$ satisfies a large-deviation principle on $\RealNumbers$
+The family $X_{\EulerE^{-\delta}}$ satisfies a large-deviation principle on $\RealNumbers$
 with speed $1/\delta$ and good rate function
 \begin{equation}
  I(x)=\sup_{\theta\in\RealNumbers}\{\theta x-\Lambda(\theta)\}.
@@ -693,7 +692,7 @@ The scaled logarithmic moment generating functions are exactly
 $\Lambda_\delta$ in \eqref{eq:scaled-cgf}, and
 \cref{thm:lambda-limit} gives pointwise convergence to the finite,
 differentiable function $\Lambda$ on all of $\RealNumbers$.  Since every
-$X_{e^{-\delta}}$ is supported on the common compact interval $[-1,1]$,
+$X_{\EulerE^{-\delta}}$ is supported on the common compact interval $[-1,1]$,
 exponential tightness is automatic.  The G\"artner--Ellis theorem \cite{Ellis1984,DemboZeitouni} therefore
 gives the LDP with Legendre transform \eqref{eq:rate-Legendre}.  Strict
 convexity and \eqref{eq:gradient-range} give the unique saddle and the
@@ -763,14 +762,14 @@ the fixed support boundary.
 
 For $u>0$,
 \begin{equation}
- g(u)=u-\log(2u)+\log(1-e^{-2u}).
+ g(u)=u-\log(2u)+\log(1-\EulerE^{-2u}).
  \label{eq:g-large}
 \end{equation}
 Define the convergent constant
 \begin{equation}
  \cL=
  \int_0^1\frac{\log(\sinh u/u)}{u}\Differential u-1
- +\int_1^\infty\frac{\log(1-e^{-2u})}{u}\Differential u.
+ +\int_1^\infty\frac{\log(1-\EulerE^{-2u})}{u}\Differential u.
  \label{eq:CLambda}
 \end{equation}
 Numerically,
@@ -786,11 +785,11 @@ As $\theta\to+\infty$,
  \Lambda(\theta)
  &=\theta-\frac12(\log\theta)^2
    -(\log2)\log\theta+\cL
-   +O\!\left(\frac{e^{-2\theta}}{\theta}\right),
+   +O\!\left(\frac{\EulerE^{-2\theta}}{\theta}\right),
  \label{eq:Lambda-large}\\
  1-\Lambda'(\theta)
  &=\frac{\log(2\theta)}{\theta}
-   +O\!\left(\frac{e^{-2\theta}}{\theta}\right).
+   +O\!\left(\frac{\EulerE^{-2\theta}}{\theta}\right).
  \label{eq:Lambda-prime-large}
 \end{align}
 Let $\eta=1-x\downarrow0$ and
@@ -801,7 +800,7 @@ Let $\eta=1-x\downarrow0$ and
 Then the exact saddle satisfies
 \begin{equation}
  \theta_{1-\eta}=\theta_0(\eta)
- \left(1+O\!\left(\frac{e^{-2\theta_0(\eta)}}{\log\theta_0(\eta)}\right)\right),
+ \left(1+O\!\left(\frac{\EulerE^{-2\theta_0(\eta)}}{\log\theta_0(\eta)}\right)\right),
  \label{eq:theta-Lambert-error}
 \end{equation}
 and, with $L_\eta=\log\theta_0(\eta)$,
@@ -817,17 +816,17 @@ and, with $L_\eta=\log\theta_0(\eta)$,
 Integrate \eqref{eq:g-large} from $1$ to $\theta$.  The elementary terms give
 $\theta-\frac12(\log\theta)^2-(\log2)\log\theta$, while the two convergent
 remainders combine exactly into \eqref{eq:CLambda}; the unintegrated tail is
-$O(e^{-2\theta}/\theta)$.  Dividing \eqref{eq:g-large} by $\theta$ gives
+$O(\EulerE^{-2\theta}/\theta)$.  Dividing \eqref{eq:g-large} by $\theta$ gives
 \eqref{eq:Lambda-prime-large}.
 
 The saddle equation becomes
 \begin{equation}
- \eta\theta=\log(2\theta)-\log(1-e^{-2\theta}).
+ \eta\theta=\log(2\theta)-\log(1-\EulerE^{-2\theta}).
  \label{eq:edge-saddle-exact}
 \end{equation}
 Dropping the exponentially small last term yields
 $\eta\theta=\log(2\theta)$, equivalent to
-$(-\eta\theta)e^{-\eta\theta}=-\eta/2$.  The diverging positive solution is
+$(-\eta\theta)\EulerE^{-\eta\theta}=-\eta/2$.  The diverging positive solution is
 \eqref{eq:theta-Lambert} on branch $W_{-1}$ \cite{Corless1996}.  A mean-value estimate in
 \eqref{eq:edge-saddle-exact} gives \eqref{eq:theta-Lambert-error}.  Finally
 substitute $x=1-\eta$, use
@@ -865,7 +864,7 @@ Set
 \end{equation}
 Then
 \begin{equation}
- \chi_q(t):=\Expectation e^{itZ_q}
+ \chi_q(t):=\Expectation \EulerE^{itZ_q}
  =\prod_{j\ge0}\SincRad(b_qq^jt).
  \label{eq:standardized-cf}
 \end{equation}
@@ -878,7 +877,7 @@ Let $\lambda_n(q)$ be the standardized cumulants of $Z_q$.  From
  \label{eq:lambda-q}\\
  &=\frac{3^m2^{3m-2}B_{2m}}{m}
    \frac{\sinh^m\delta}{\sinh(m\delta)},
- \qquad q=e^{-\delta}.
+ \qquad q=\EulerE^{-\delta}.
  \label{eq:lambda-delta}
 \end{align}
 Therefore $\lambda_{2m}=O(\delta^{m-1})$.  The first values are
@@ -895,7 +894,7 @@ Therefore $\lambda_{2m}=O(\delta^{m-1})$.  The first values are
 \subsection{Weighted Hermite polynomial}
 
 Let $H_n$ denote the probabilists' Hermite polynomials,
-$\phi(x)=(2\pi)^{-1/2}e^{-x^2/2}$, and let a multi-index
+$\phi(x)=(2\pi)^{-1/2}\EulerE^{-x^2/2}$, and let a multi-index
 $\bm{k}=(k_2,k_3,\ldots)$ have weight
 \begin{equation}
  \BinaryDigitSum(\bm{k})=\sum_{m\ge2}(m-1)k_m,
@@ -924,7 +923,7 @@ $c,C_L$ such that for $q_0\le q<1$,
 \begin{equation}
  |\chi_q(t)|\le
  \begin{cases}
-   e^{-ct^2},& |t|\le b_q^{-1},\\[1mm]
+   \EulerE^{-ct^2},& |t|\le b_q^{-1},\\[1mm]
    C_L\exp\!\left(-\dfrac{c}{1-q}\right)
    (1+b_q|t|)^{-L},& |t|\ge b_q^{-1}.
  \end{cases}
@@ -934,12 +933,12 @@ $c,C_L$ such that for $q_0\le q<1$,
 
 \begin{proof}
 Choose $c_0>0$ such that
-$|\SincRad u|\le e^{-c_0u^2}$ for $|u|\le1$.  If
+$|\SincRad u|\le \EulerE^{-c_0u^2}$ for $|u|\le1$.  If
 $|t|\le b_q^{-1}$, every factor lies in that range and
 \[
  |\chi_q(t)|\le
  \exp\left[-c_0b_q^2t^2\sum_{j\ge0}q^{2j}\right]
- =e^{-3c_0t^2}.
+ =\EulerE^{-3c_0t^2}.
 \]
 For $|t|>b_q^{-1}$, choose $n$ so that
 $b_qq^n|t|\le1<b_qq^{n-1}|t|$.  The product of factors with $j\ge n$ is at
@@ -948,7 +947,7 @@ most
  \exp\left[-c_0b_q^2t^2\frac{q^{2n}}{1-q^2}\right]
  \le \exp\left[-\frac{c_0q_0^2}{1-q^2}\right],
 \]
-which is bounded by $e^{-c/(1-q)}$.  On the far part of the tail, the first
+which is bounded by $\EulerE^{-c/(1-q)}$.  On the far part of the tail, the first
 $L$ factors also satisfy $|\SincRad u|\le|u|^{-1}$ and supply the stated
 polynomial decay.  The bounded transition interval is absorbed into $C_L$.
 \end{proof}
@@ -999,15 +998,15 @@ where, after decreasing $\alpha$ if necessary,
  \label{eq:logcf-remainder}
 \end{equation}
 The same small-argument inequality used in \cref{lem:sinc-tail} gives a
-uniform Gaussian envelope $|\chi_q(t)|\le e^{-ct^2}$ in this zone.
+uniform Gaussian envelope $|\chi_q(t)|\le \EulerE^{-ct^2}$ in this zone.
 
 Exponentiating \eqref{eq:logcf-expansion} and retaining all monomials of
 weight at most $R$ produces exactly the Fourier polynomial corresponding to
 \eqref{eq:edgeworth-polynomial}.  Standard estimates for the exponential
 remainder therefore give
 \begin{equation}
- \left|\chi_q(t)-e^{-t^2/2}\mathcal P_{R,q}(it)\right|
- \le C_R\delta^{R+1}(1+|t|^{M_R})e^{-ct^2},
+ \left|\chi_q(t)-\EulerE^{-t^2/2}\mathcal P_{R,q}(it)\right|
+ \le C_R\delta^{R+1}(1+|t|^{M_R})\EulerE^{-ct^2},
  \qquad |t|\le T_\delta,
  \label{eq:central-fourier-error}
 \end{equation}
@@ -1022,7 +1021,7 @@ $T_\delta<|t|\le b_q^{-1}$, the Gaussian part of
 \cref{lem:sinc-tail} is $O(\delta^N)$ for every $N$; the Gaussian--polynomial
 approximant has the same property.  On $|t|>b_q^{-1}$, take
 $L>r+1$ in \cref{lem:sinc-tail}; the contribution is
-$O(e^{-c/(1-q)})$ times a power of $b_q^{-1}$ and is again smaller than every
+$O(\EulerE^{-c/(1-q)})$ times a power of $b_q^{-1}$ and is again smaller than every
 power of $\delta$.  This proves \eqref{eq:Edgeworth-theorem}.
 \end{proof}
 
@@ -1075,7 +1074,7 @@ Substitute $x=\sigma_qz$ into \eqref{eq:I-center-series} and use
  +O\bigl(\delta^3(1+|z|^8)\bigr).
  \label{eq:rate-matching}
 \end{equation}
-The first exponential correction $e^{-\delta z^4/20}$ matches the leading
+The first exponential correction $\EulerE^{-\delta z^4/20}$ matches the leading
 Hermite term $-\delta H_4/20$ after the saddlepoint prefactor is expanded.
 The Gaussian moderate-deviation window suggested by the quartic term is
 \begin{equation}
@@ -1087,25 +1086,25 @@ polynomial becomes the stable description.
 
 \begin{principle}[Three nested regimes]
 \label{prin:three-regimes}
-As $q=e^{-\delta}\uparrow1$:
+As $q=\EulerE^{-\delta}\uparrow1$:
 \begin{enumerate}[label=(\roman*)]
 \item fixed standardized $z$ is governed by the differentiated Edgeworth
 series;
 \item $1\ll |z|\ll\delta^{-1/2}$ is governed by the Taylor expansion of
 $I(\sigma_qz)/\delta$ and its moderate-deviation resummations;
 \item fixed $x\in(-1,1)\setminus\{0\}$ is governed by
-$e^{-I(x)/\delta}$, with Lambert-$W_{-1}$ behavior as $x$ approaches the
+$\EulerE^{-I(x)/\delta}$, with Lambert-$W_{-1}$ behavior as $x$ approaches the
 support edge.
 \end{enumerate}
 \end{principle}
 
 \begin{conjecture}[Uniform sharp saddlepoint expansion]
 \label{conj:saddlepoint}
-For every compact $K\Subset(-1,1)$, the density of $X_{e^{-\delta}}$ has an
+For every compact $K\Subset(-1,1)$, the density of $X_{\EulerE^{-\delta}}$ has an
 all-orders expansion
 \begin{equation}
  f_{X_q}(x)\sim
- \frac{e^{-I(x)/\delta}}
+ \frac{\EulerE^{-I(x)/\delta}}
       {\sqrt{2\pi\delta\Lambda''(\theta_x)}}
  \left(1+\sum_{n\ge1}c_n(x)\delta^n\right),
  \qquad x\in K,
@@ -1202,12 +1201,12 @@ The two structural results are not special to the uniform law.
 
 \begin{proposition}[Seed-universal transform limit]
 \label{prop:general-seed-LDP}
-Let $V$ be bounded and let $K_V(\theta)=\log\Expectation e^{\theta V}$.  For
+Let $V$ be bounded and let $K_V(\theta)=\log\Expectation \EulerE^{\theta V}$.  For
 $X_q^{(V)}$ from \eqref{eq:general-seed},
 \begin{equation}
- \delta\log\Expectation\exp\!\left(\frac{\theta X_{e^{-\delta}}^{(V)}}{\delta}\right)
+ \delta\log\Expectation\exp\!\left(\frac{\theta X_{\EulerE^{-\delta}}^{(V)}}{\delta}\right)
  \longrightarrow
- \Lambda_V(\theta):=\int_0^\infty K_V(\theta e^{-t})\Differential t.
+ \Lambda_V(\theta):=\int_0^\infty K_V(\theta \EulerE^{-t})\Differential t.
  \label{eq:general-seed-Lambda}
 \end{equation}
 The same midpoint Euler--Maclaurin expansion holds with $g$ replaced by
@@ -1221,7 +1220,7 @@ The coefficient identity and martingale proof in \cref{sec:transport} do not
 use the distribution of the seed.  For the transform, the exact half-step
 calculation gives
 \[
- \delta\sum_{j\ge0}K_V(\theta s_\delta e^{-(j+1/2)\delta}),
+ \delta\sum_{j\ge0}K_V(\theta s_\delta \EulerE^{-(j+1/2)\delta}),
 \]
 and boundedness makes the Riemann-sum and Euler--Maclaurin arguments
 uniform.  G\"artner--Ellis applies under its standard regularity hypotheses.
@@ -1243,7 +1242,7 @@ zero lattice that controls the sinc-product Fourier theory.
 \begin{conjecture}[Endpoint transseries]
 Let $\eta=1-x$ and use the exact Lambert variable
 $\theta_0=-W_{-1}(-\eta/2)/\eta$.  The rate and saddle admit full transseries
-in inverse powers of $\theta_0$ and exponentials $e^{-2k\theta_0}$, with no
+in inverse powers of $\theta_0$ and exponentials $\EulerE^{-2k\theta_0}$, with no
 additional logarithmic scale after $\theta_0$ is adopted.  Matching this
 transseries to the finite-$q$ saddlepoint expansion should produce a uniform
 double-scaling theory when $\eta$ and $\delta$ tend to zero together.

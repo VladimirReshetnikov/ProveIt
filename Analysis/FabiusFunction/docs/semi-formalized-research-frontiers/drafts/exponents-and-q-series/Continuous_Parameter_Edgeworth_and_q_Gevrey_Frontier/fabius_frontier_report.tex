@@ -58,7 +58,6 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{example}[theorem]{Example}
 
-\newcommand{\cO}{\mathcal O}
 \newcommand{\phiN}{\varphi}
 \newcommand{\PhiN}{\Phi}
 \newcommand{\repo}{\textsc{ProveIt}}
@@ -252,9 +251,9 @@ The normalization is exact because
 \subsection{Smoothness and Fourier conventions}
 We use
 \begin{equation}\label{eq:fourier-convention}
- \widehat f(t)=\int_{\RealNumbers}\EulerE^{\ImaginaryUnit tx}f(x)\,\Differential x,
+ \FourierAngular{f}(-t)=\int_{\RealNumbers}\EulerE^{\ImaginaryUnit tx}f(x)\,\Differential x,
  \qquad
- f(x)=\frac1{2\pi}\int_{\RealNumbers}\EulerE^{-\ImaginaryUnit tx}\widehat f(t)\,\Differential t.
+ f(x)=\frac1{2\pi}\int_{\RealNumbers}\EulerE^{-\ImaginaryUnit tx}\FourierAngular{f}(-t)\,\Differential t.
 \end{equation}
 For every fixed \(h>0\), the product \eqref{eq:Psi-product} decays faster than every negative power, and therefore \(Z_h\) has a compactly supported \(C^\infty\) density \(f_h\) \cite{JessenWintner,Arias1982}.  A quantitative version is proved in \Cref{lem:sinc-envelope}.
 
@@ -301,7 +300,7 @@ Equivalently, for \(r=\EulerE^{-h}\),
  =\frac{B_{2m}}{2m}\,12^m2^{m-1}
   \frac{\sinh^m h}{\sinh(mh)}.}
 \end{equation}
-In particular, \(\lambda_{2m}(h)=\cO(h^{m-1})\) as \(h\downarrow0\).
+In particular, \(\lambda_{2m}(h)=\BigO(h^{m-1})\) as \(h\downarrow0\).
 \end{proposition}
 
 \begin{proof}
@@ -372,11 +371,11 @@ which is \eqref{eq:lambda-exponential}.  Apply \eqref{eq:bell-def} with \(z=h^2\
 The first cumulants, useful later, are
 \begin{align}
  \lambda_4(h)&=-\frac65\tanh h
- =-\frac65h+\frac25h^3-\frac4{25}h^5+\cO(h^7),\label{eq:lambda4}\\
+ =-\frac65h+\frac25h^3-\frac4{25}h^5+\BigO(h^7),\label{eq:lambda4}\\
  \lambda_6(h)&=\frac{192}{7}\frac{\sinh^3h}{\sinh3h}
- =\frac{64}{7}h^2-\frac{64}{7}h^4+\cO(h^6),\label{eq:lambda6}\\
+ =\frac{64}{7}h^2-\frac{64}{7}h^4+\BigO(h^6),\label{eq:lambda6}\\
  \lambda_8(h)&=-\frac{3456}{5}\frac{\sinh^4h}{\sinh4h}
- =-\frac{864}{5}h^3+\frac{1728}{5}h^5+\cO(h^7).\label{eq:lambda8}
+ =-\frac{864}{5}h^3+\frac{1728}{5}h^5+\BigO(h^7).\label{eq:lambda8}
 \end{align}
 
 \section{All-orders Edgeworth expansion in Schwartz seminorms}\label{sec:edgeworth}
@@ -450,7 +449,7 @@ For \(\AbsoluteValue u\le1\), the Taylor expansion of \(\log\SincRad u\) gives \
 
 For derivatives, differentiate a finite partial product and use Leibniz's rule.  Each differentiation replaces at most one sinc factor by a bounded derivative and contributes a scale \(a_hr^n\).  The sum of scales is
 \[
- \sum_{n\ge0}a_hr^n=\frac{a_h}{1-r}=\cO(h^{-1/2}).
+ \sum_{n\ge0}a_hr^n=\frac{a_h}{1-r}=\BigO(h^{-1/2}).
 \]
 Removing finitely many factors only changes the exponent in \eqref{eq:Psi-envelope} by a bounded amount.  Passing to the infinite product proves \eqref{eq:Psi-derivative-envelope}.
 
@@ -478,7 +477,7 @@ For \(\AbsoluteValue z\le\delta<\pi\), Taylor's theorem applied to \(\log\SincRa
 \[
  \sum_{n\ge0}(a_hr^n)^{2R+4}
  =\frac{a_h^{2R+4}}{1-r^{2R+4}}
- =\cO(h^{R+1}),
+ =\BigO(h^{R+1}),
 \]
 because \(a_h^2\asymp h\) and \(1-r^{2R+4}\asymp h\).  The retained coefficients are exactly the cumulants in \Cref{prop:exact-cumulants}.  Differentiation only lowers powers of \(t\) and changes the constant.
 \end{proof}
@@ -502,17 +501,17 @@ Choose a small \(\varepsilon>0\), depending on \(R,j,K\), and split the frequenc
 \]
 where \(0<\delta<1\) is fixed.
 
-On \(\mathcal Z_0\), \Cref{lem:cumulant-remainder} applies.  Each cumulant term with index \(m\) has formal parameter weight \(m-1\), because \(\lambda_{2m}(h)=\cO(h^{m-1})\).  Expanding the exponential in \eqref{eq:logpsi-trunc} and retaining all monomials of total weight at most \(R\) produces exactly \eqref{eq:approx-transform}.  Every omitted monomial has weight at least \(R+1\).  If \(\varepsilon\) is small enough that \(h\AbsoluteValue t^4=o(1)\) on \(\mathcal Z_0\), Taylor's formula for the exponential and \eqref{eq:rho-bound} yield, for every fixed derivative order \(q\),
+On \(\mathcal Z_0\), \Cref{lem:cumulant-remainder} applies.  Each cumulant term with index \(m\) has formal parameter weight \(m-1\), because \(\lambda_{2m}(h)=\BigO(h^{m-1})\).  Expanding the exponential in \eqref{eq:logpsi-trunc} and retaining all monomials of total weight at most \(R\) produces exactly \eqref{eq:approx-transform}.  Every omitted monomial has weight at least \(R+1\).  If \(\varepsilon\) is small enough that \(h\AbsoluteValue t^4=o(1)\) on \(\mathcal Z_0\), Taylor's formula for the exponential and \eqref{eq:rho-bound} yield, for every fixed derivative order \(q\),
 \begin{equation}\label{eq:central-transform-error}
  \AbsoluteValue{\partial_t^q(\Psi_h-A_{R,h})(t)}
  \le C h^{R+1}(1+\AbsoluteValue t)^M\EulerE^{-t^2/4}
  \qquad(t\in\mathcal Z_0),
 \end{equation}
-for some \(M=M(R,q)\).  The right side is integrable with norm \(\cO(h^{R+1})\).
+for some \(M=M(R,q)\).  The right side is integrable with norm \(\BigO(h^{R+1})\).
 
 On \(\mathcal Z_1\), \eqref{eq:S-gaussian} and \eqref{eq:Psi-derivative-envelope} give Gaussian decay \(\EulerE^{-ct^2}\).  The approximant \(A_{R,h}\) is a fixed-degree polynomial times \(\EulerE^{-t^2/2}\).  Therefore every differentiated \(L^1\) norm on \(\mathcal Z_1\) is
 \[
- \cO\!\left(\EulerE^{-c h^{-2\varepsilon}}\right)=\cO(h^N)
+ \BigO\!\left(\EulerE^{-c h^{-2\varepsilon}}\right)=\BigO(h^N)
 \]
 for every \(N\).
 
@@ -538,9 +537,9 @@ Expanding the exact-cumulant polynomial in powers of \(h\) gives
  &+h^2\left(\frac4{315}H_6(x)+\frac1{800}H_8(x)\right)\notag\\
  &+h^3\left(\frac1{60}H_4(x)-\frac3{700}H_8(x)
  -\frac1{1575}H_{10}(x)-\frac1{48000}H_{12}(x)\right)
- \Bigg]+\cO_{\mathcal S}(h^4).\label{eq:edgeworth-three-orders}
+ \Bigg]+\BigO_{\mathcal S}(h^4).\label{eq:edgeworth-three-orders}
 \end{align}
-Here \(\cO_{\mathcal S}\) means an error of that order in every fixed Schwartz seminorm.  The second-order terms are the familiar Bell combination
+Here \(\BigO_{\mathcal S}\) means an error of that order in every fixed Schwartz seminorm.  The second-order terms are the familiar Bell combination
 \[
  \frac{\lambda_6}{6!}H_6+\frac12\left(\frac{\lambda_4}{4!}\right)^2H_8,
 \]
@@ -563,9 +562,9 @@ Let \(F_h(x)=\Probability(Z_h\le x)\).  For every \(R\ge0\), uniformly in \(x\in
  H_{2\nu(\bm k)-1}(x)
  \prod_{m=2}^{R+1}\frac1{k_m!}
  \left(\frac{\lambda_{2m}(h)}{(2m)!}\right)^{k_m}
- +\cO(h^{R+1}).
+ +\BigO(h^{R+1}).
 \end{equation}
-The error remains \(\cO(h^{R+1})\) after multiplication by any fixed polynomial weight.
+The error remains \(\BigO(h^{R+1})\) after multiplication by any fixed polynomial weight.
 \end{corollary}
 
 Through second order,
@@ -573,7 +572,7 @@ Through second order,
  F_h(x)=\PhiN(x)+\phiN(x)\left[
  \frac{h}{20}H_3(x)
  -h^2\left(\frac4{315}H_5(x)+\frac1{800}H_7(x)\right)
- \right]+\cO_{\mathrm{weighted}}(h^3).
+ \right]+\BigO_{\mathrm{weighted}}(h^3).
 \end{equation}
 
 \subsection{Central Cornish--Fisher inversion}
@@ -582,7 +581,7 @@ Let \(Q_h(u)=F_h^{-1}(u)\), \(0<u<1\), and \(z=\PhiN^{-1}(u)\).  The inverse Fab
 \begin{theorem}[All-orders central quantile expansion]\label{thm:quantile-expansion}
 Fix \(0<\eta<1/2\) and \(R\ge1\).  Uniformly for \(u\in[\eta,1-\eta]\),
 \begin{equation}\label{eq:quantile-general}
- Q_h(u)=z+\sum_{n=1}^{R}h^nq_n(z)+\cO_{R,\eta}(h^{R+1}),
+ Q_h(u)=z+\sum_{n=1}^{R}h^nq_n(z)+\BigO_{R,\eta}(h^{R+1}),
  \qquad z=\PhiN^{-1}(u),
 \end{equation}
 where each \(q_n\) is an explicitly computable polynomial.  The first two are
@@ -649,11 +648,11 @@ For fixed \(t\), the scaled log moment generating function is
  =\frac{t^2}{2}
  +\frac1{b_h^2}\sum_{m\ge2}\frac{\lambda_{2m}(h)}{(2m)!}(tb_h)^{2m}.
 \]
-By \Cref{prop:exact-cumulants}, \(\lambda_{2m}(h)=\cO(h^{m-1})\), so the \(m\)-th correction is
+By \Cref{prop:exact-cumulants}, \(\lambda_{2m}(h)=\BigO(h^{m-1})\), so the \(m\)-th correction is
 \[
- \cO\bigl((hb_h^2)^{m-1}\bigr).
+ \BigO\bigl((hb_h^2)^{m-1}\bigr).
 \]
-The series is locally uniformly controlled because the largest individual moment-generating-function argument is \(\cO(\sqrt h\,b_h)\to0\).  Hence the scaled log MGF converges locally uniformly to \(t^2/2\).  The G\"artner--Ellis theorem \cite{DemboZeitouni} gives the LDP with Legendre transform \(x^2/2\).
+The series is locally uniformly controlled because the largest individual moment-generating-function argument is \(\BigO(\sqrt h\,b_h)\to0\).  Hence the scaled log MGF converges locally uniformly to \(t^2/2\).  The G\"artner--Ellis theorem \cite{DemboZeitouni} gives the LDP with Legendre transform \(x^2/2\).
 \end{proof}
 
 \subsection{The compact scale}
@@ -738,12 +737,12 @@ Set \(a=\sqrt6s\).  Since \(J'(a)=\ell(a)/a\), the saddle equation \(y=\Lambda'(
 The Taylor expansion
 \begin{equation}\label{eq:Lambda-series}
  \Lambda(s)=\frac{s^2}{2}-\frac{s^4}{20}+\frac4{315}s^6
- -\frac3{700}s^8+\frac{16}{9625}s^{10}+\cO(s^{12})
+ -\frac3{700}s^8+\frac{16}{9625}s^{10}+\BigO(s^{12})
 \end{equation}
 reuses exactly the Bernoulli coefficients that drive the Edgeworth expansion.  Series reversion gives
 \begin{equation}\label{eq:I-center-series}
  I(y)=\frac{y^2}{2}+\frac{y^4}{20}+\frac{23}{3150}y^6
- +\frac{11}{10500}y^8+\frac{821}{6063750}y^{10}+\cO(y^{12}).
+ +\frac{11}{10500}y^8+\frac{821}{6063750}y^{10}+\BigO(y^{12}).
 \end{equation}
 The positive quartic term shows how compact support makes deviations more expensive than Gaussian ones as soon as one leaves the infinitesimal center.
 
@@ -754,7 +753,7 @@ The parametric formula in \Cref{thm:rate-parametric} permits a precise edge anal
 \subsection{A renormalized Mellin constant}
 Use the standard Stieltjes convention
 \begin{equation}\label{eq:stieltjes-convention}
- \zeta(1+s)=\frac1s+\gamma-\gamma_1s+\cO(s^2).
+ \zeta(1+s)=\frac1s+\gamma-\gamma_1s+\BigO(s^2).
 \end{equation}
 Define
 \begin{equation}\label{eq:Cstar}
@@ -765,8 +764,8 @@ Define
 \begin{lemma}[Large-saddle expansion of \(J\)]\label{lem:J-asymptotic}
 As \(a\to+\infty\), with \(L=\log(2a)\),
 \begin{align}
- \ell(a)&=a-L+\cO(\EulerE^{-2a}),\label{eq:ell-large}\\
- J(a)&=a-\frac12L^2+\mathfrak C+\cO(\EulerE^{-2a}/a).\label{eq:J-large}
+ \ell(a)&=a-L+\BigO(\EulerE^{-2a}),\label{eq:ell-large}\\
+ J(a)&=a-\frac12L^2+\mathfrak C+\BigO(\EulerE^{-2a}/a).\label{eq:J-large}
 \end{align}
 \end{lemma}
 
@@ -787,12 +786,12 @@ The Mellin transform
 continues meromorphically to \(s=0\).  Using
 \[
  \Gamma(s)=\frac1s-\gamma+
- \left(\frac{\gamma^2}{2}+\frac{\pi^2}{12}\right)s+\cO(s^2)
+ \left(\frac{\gamma^2}{2}+\frac{\pi^2}{12}\right)s+\BigO(s^2)
 \]
 and \eqref{eq:stieltjes-convention},
 \begin{equation}\label{eq:mellin-finite-part}
  -\Gamma(s)\zeta(s+1)
- =-\frac1{s^2}+\mathfrak C+\cO(s).
+ =-\frac1{s^2}+\mathfrak C+\BigO(s).
 \end{equation}
 More explicitly, the finite part in \eqref{eq:mellin-finite-part} is the absolutely convergent quantity
 \begin{equation}\label{eq:Cstar-integral}
@@ -810,7 +809,7 @@ Indeed, for \(A>1\),
 Taking \(A=2a\) and subtracting \eqref{eq:Cstar-integral} leaves
 \[
  -\int_{2a}^\infty\frac{\log(1-\EulerE^{-x})}{x}\,\Differential x
- =\cO(\EulerE^{-2a}/a),
+ =\BigO(\EulerE^{-2a}/a),
 \]
 which proves \eqref{eq:J-large}.
 \end{proof}
@@ -839,7 +838,7 @@ Then
 \end{equation}
 More precisely, if \(a\) is the exact saddle determined by \eqref{eq:delta-a-exact}, then
 \begin{equation}\label{eq:edge-rate-a}
- I(y(a))=\frac12\log^2(2a)-\log(2a)-\mathfrak C+\cO(\EulerE^{-2a}).
+ I(y(a))=\frac12\log^2(2a)-\log(2a)-\mathfrak C+\BigO(\EulerE^{-2a}).
 \end{equation}
 \end{theorem}
 
@@ -856,9 +855,9 @@ For the exact equation, put \(L=\log(2a)\) and \(F(L)=L\EulerE^{-L}\).  Multiply
 \]
 If \(w=w(\delta)\), then \(F(w)=\delta/2\).  Since \(F'(u)=(1-u)\EulerE^{-u}\), the mean-value theorem and \(-\log(1-z)\asymp z\) yield
 \begin{equation}\label{eq:L-w-sharp}
- L-w=\cO\!\left(\frac{\EulerE^{-\EulerE^w}}{w}\right).
+ L-w=\BigO\!\left(\frac{\EulerE^{-\EulerE^w}}{w}\right).
 \end{equation}
-In particular \(w(L-w)=o(1)\), so substituting \(L=w+\cO(\EulerE^{-\EulerE^w}/w)\) into \eqref{eq:edge-rate-a} proves \eqref{eq:edge-rate-main}.
+In particular \(w(L-w)=o(1)\), so substituting \(L=w+\BigO(\EulerE^{-\EulerE^w}/w)\) into \eqref{eq:edge-rate-a} proves \eqref{eq:edge-rate-main}.
 \end{proof}
 
 \begin{remark}[A new three-way connection]
@@ -912,7 +911,7 @@ Parts (i) and (ii) are immediate from the equality \eqref{eq:up-exact-norm}.  If
 \[
  2^{n(n+1)/2}\le CA^n(n!)^s.
 \]
-The logarithm of the left side is \((\log2)n^2/2+\cO(n)\), whereas the right side has logarithm \(\cO(n\log n)\), a contradiction.  Finally
+The logarithm of the left side is \((\log2)n^2/2+\BigO(n)\), whereas the right side has logarithm \(\BigO(n\log n)\), a contradiction.  Finally
 \[
  M_n^{\RvachevUp}/M_{n-1}^{\RvachevUp}=2^n,
 \]
@@ -922,7 +921,7 @@ so \eqref{eq:up-carleman-sum} and the Denjoy--Carleman criterion prove nonquasia
 \begin{definition}[Quadratic \(q\)-Gevrey scale]
 In this report, a derivative weight with
 \[
- \log M_n=\frac{\log(1/q)}2n^2+\cO(n),\qquad 0<q<1,
+ \log M_n=\frac{\log(1/q)}2n^2+\BigO(n),\qquad 0<q<1,
 \]
 is called \emph{quadratic \(q\)-Gevrey}.  This terminology is descriptive and is not intended to replace other established \(q\)-Gevrey conventions.
 \end{definition}
@@ -962,14 +961,14 @@ For a weight \(M\), define its associated function
 For \(M_n^{\RvachevUp}=2^{n(n+1)/2}\), elementary optimization gives
 \begin{equation}\label{eq:omega-up}
  \omega_{M^{\RvachevUp}}(t)
- =\frac{(\log t)^2}{2\log2}-\frac12\log t+\cO(1),
+ =\frac{(\log t)^2}{2\log2}-\frac12\log t+\BigO(1),
  \qquad t\to\infty.
 \end{equation}
 Integration by parts and \eqref{eq:up-exact-norm} therefore imply a log-Gaussian Fourier envelope
 \begin{equation}\label{eq:fourier-from-carleman}
- \AbsoluteValue{\widehat\RvachevUp(\xi)}
+ \AbsoluteValue{\FourierAngular{\RvachevUp}(-\xi)}
  \le C\exp\!\left[-\frac{(\log(C'\AbsoluteValue\xi))^2}{2\log2}
- +\cO(\log\AbsoluteValue\xi)\right].
+ +\BigO(\log\AbsoluteValue\xi)\right].
 \end{equation}
 For \(h_a\), the coefficient \((2\log a)^{-1}\) replaces \((2\log2)^{-1}\).  The repository develops the Fourier envelope by product methods; the new point here is that the same quadratic law is precisely the associated function of the optimal Denjoy--Carleman class.  The derivative and Fourier pictures are Legendre dual.
 
@@ -1010,7 +1009,7 @@ At the seven levels \(u\in\{0.05,0.10,0.25,0.50,0.75,0.90,0.95\}\), the maximum 
 \label{tab:quantile-errors}
 \input{data/quantile_table.tex}
 \end{table}
-The second-order error behaves consistently with \(\cO(h^3)\), while the first-order error behaves as \(\cO(h^2)\).
+The second-order error behaves consistently with \(\BigO(h^3)\), while the first-order error behaves as \(\BigO(h^2)\).
 
 \subsection{Lambert--\texorpdfstring{$W$}{W} edge check}
 The exact parametric rate \eqref{eq:I-parametric} was compared with the edge form \eqref{eq:edge-rate-main}.  Here \(a\) is the saddle and \(\delta=1-y(a)/\sqrt6\).
@@ -1105,7 +1104,7 @@ for almost every \(x\), while exceptional recurrent orbits realize a nontrivial 
 \subsection{The overlapping phase \texorpdfstring{$1<a<2$}{1<a<2}}
 The exact norm formula uses disjoint cylinder supports and therefore stops at \(a=2\).  Fourier methods still give
 \[
- \log\Norm{h_a^{(n)}}_\infty\le\frac{\log a}{2}n^2+\cO_a(n\log n).
+ \log\Norm{h_a^{(n)}}_\infty\le\frac{\log a}{2}n^2+\BigO_a(n\log n).
 \]
 
 \begin{conjecture}[Sharp quadratic exponent under overlap]\label{conj:overlap-growth}
@@ -1186,7 +1185,7 @@ F_h(x)=\PhiN(x)+\phiN(x)\Bigg[&\frac h{20}H_3(x)
 -h^2\left(\frac4{315}H_5(x)+\frac1{800}H_7(x)\right)\notag\\
 &+h^3\left(-\frac1{60}H_3(x)+\frac3{700}H_7(x)
 +\frac1{1575}H_9(x)+\frac1{48000}H_{11}(x)\right)\Bigg]\notag\\
-&+\cO_{\mathrm{weighted}}(h^4).
+&+\BigO_{\mathrm{weighted}}(h^4).
 \end{align}
 
 \section{A coefficient-extraction form of the full Edgeworth series}\label{app:coefficient}
@@ -1223,7 +1222,7 @@ From \eqref{eq:log-sinh},
 This yields \eqref{eq:Lambda-series}.  To compute \(I\), solve \(y=\Lambda'(s)\) recursively:
 \begin{equation}\label{eq:s-of-y}
  s(y)=y+\frac15y^3+\frac{23}{525}y^5+\frac{22}{2625}y^7
- +\frac{821}{606375}y^9+\cO(y^{11}).
+ +\frac{821}{606375}y^9+\BigO(y^{11}).
 \end{equation}
 Substitution into \(I(y)=ys(y)-\Lambda(s(y))\) gives \eqref{eq:I-center-series}.
 

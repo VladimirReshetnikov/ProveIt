@@ -239,7 +239,7 @@ Archive and audit material & Provenance, superseded variants, and contradiction 
 The principal baseline established by this corpus includes:
 \begin{enumerate}
 \item the random-series and infinite-convolution construction of $\RvachevUp$;
-\item the exact Fourier product \(\widehat\RvachevUp(\xi)=\prod_{k\ge1}\SincRad(2^{-k}\xi)\);
+\item the exact angular-frequency Fourier product \(\FourierAngular{\RvachevUp}(\xi)=\prod_{k\ge1}\SincRad(2^{-k}\xi)\);
 \item exact rational values at dyadic arguments and executable recurrences;
 \item finite Thue--Morse and Gaussian $q$-binomial formulas;
 \item sharp endpoint asymptotics with periodic corrections;
@@ -358,7 +358,7 @@ their pinned novelty comparison.}
 
 For $a>0$, write
 \begin{equation}
- \beta_a(x):=\frac1{2a}\mathbf 1_{[-a,a]}(x).
+ \beta_a(x):=\frac1{2a}\IndicatorOf{[-a,a]}(x).
  \label{p1:eq:box}
 \end{equation}
 Let $U_1,U_2,\ldots$ be independent random variables uniformly distributed on $[-1,1]$, and define
@@ -394,16 +394,16 @@ This elementary identity is the source of every approximation theorem below.
 
 We use the Fourier convention
 \begin{equation}
- \widehat g(\xi)=\int_{\RealNumbers}g(x)\EulerE^{-\ImaginaryUnit x\xi}\Differential x,
+ \FourierAngular{g}(\xi)=\int_{\RealNumbers}g(x)\EulerE^{-\ImaginaryUnit x\xi}\Differential x,
  \qquad
  \SincRad z=\frac{\sin z}{z},\quad \SincRad0=1.
  \label{p1:eq:Fourier-convention}
 \end{equation}
 Then
 \begin{align}
- P_n(\xi):=\widehat p_n(\xi)
+ P_n(\xi):=\FourierAngular{p_n}(\xi)
   &=\prod_{k=1}^{n}\SincRad(2^{-k}\xi),\label{p1:eq:Pn}\\
- \Phi(\xi):=\widehat\RvachevUp(\xi)
+ \Phi(\xi):=\FourierAngular{\RvachevUp}(\xi)
   &=\prod_{k=1}^{\infty}\SincRad(2^{-k}\xi),\label{p1:eq:Phi}\\
  \Phi(\xi)&=P_n(\xi)\Phi(2^{-n}\xi).\label{p1:eq:Phi-factor}
 \end{align}
@@ -419,10 +419,10 @@ Consequently every approximation to $\RvachevUp$ immediately gives one for $F$ b
 
 Let
 \begin{equation}
- \ThueMorseSignSymbol_j:=(-1)^{s_2(j)},
+ \ThueMorseSignSymbol_j:=(-1)^{\BinaryDigitSum(j)},
  \label{p1:eq:TM-sign}
 \end{equation}
-where $s_2(j)$ is the binary digit sum.  The generalized Irwin--Hall formula for unequal dyadic boxes becomes a Thue--Morse spline.
+where $\BinaryDigitSum(j)$ is the binary digit sum.  The generalized Irwin--Hall formula for unequal dyadic boxes becomes a Thue--Morse spline.
 
 \begin{proposition}[Finite Thue--Morse box-spline formula]
 \label{p1:prop:TM-spline}
@@ -458,7 +458,7 @@ Now \(\prod_{k=1}^n2^{1-k}=2^{-\binom n2}\), the centering shift is
 \]
 is a bijection from subsets to $\{0,\ldots,2^n-1\}$.  It satisfies
 \(\sum_{k\in A}2^{1-k}=j(A)2^{1-n}\) and
-\((-1)^{|A|}=(-1)^{s_2(j(A))}\), proving \eqref{p1:eq:TM-spline}.  Differentiation gives \eqref{p1:eq:TM-spline-derivative}.
+\((-1)^{|A|}=(-1)^{\BinaryDigitSum(j(A))}\), proving \eqref{p1:eq:TM-spline}.  Differentiation gives \eqref{p1:eq:TM-spline-derivative}.
 \end{proof}
 
 \subsection{A saturated derivative plateau}
@@ -2035,8 +2035,8 @@ The recent Fourier-decay reports analyze
 \]
 along typical and exceptional rays.  The corrected approximants have transforms
 \begin{align}
- \widehat G_{n,r}(\xi)&=P_n(\xi)\widehat Q_r(2^{-n}\xi),\label{p1:eq:G-Fourier}\\
- \widehat H_{n,r}(\xi)&=P_n(\xi)\widehat L_r(2^{-n}\xi).
+ \FourierAngular{G_{n,r}}(\xi)&=P_n(\xi)\FourierAngular{Q_r}(2^{-n}\xi),\label{p1:eq:G-Fourier}\\
+ \FourierAngular{H_{n,r}}(\xi)&=P_n(\xi)\FourierAngular{L_r}(2^{-n}\xi).
  \label{p1:eq:H-Fourier}
 \end{align}
 Their low-frequency errors are controlled by moment matching, while their high-frequency behavior is inherited from the finite product $P_n$.  A two-parameter analysis in $n$ and $\xi$ could determine the largest frequency window on which the relative error remains small.  This is especially relevant because $\Phi$ has many exact zeros, so global relative error requires zero-aware normalization.
@@ -2299,9 +2299,9 @@ $\mu$ & Probability law with density $\RvachevUp$.\\
 $Y$ & Random series $\sum_{k\ge1}2^{-k}U_k$ with law $\mu$.\\
 $S_n$ & Finite prefix $\sum_{k=1}^n2^{-k}U_k$.\\
 $p_n$ & Density of $S_n$, a finite dyadic box spline.\\
-$\Phi$ & Infinite sinc product $\widehat\RvachevUp$.\\
-$P_n$ & Finite sinc product $\widehat p_n$.\\
-$\ThueMorseSignSymbol_j$ & Signed Thue--Morse value $(-1)^{s_2(j)}$.\\
+$\Phi$ & Infinite sinc product $\FourierAngularTransformOf{\RvachevUp}$.\\
+$P_n$ & Finite sinc product $\FourierAngularTransformOf{p_n}$.\\
+$\ThueMorseSignSymbol_j$ & Signed Thue--Morse value $(-1)^{\BinaryDigitSum(j)}$.\\
 $C_r$ & Exact derivative norm $2^{\binom{r+1}{2}}$.\\
 $x_r$ & Plateau center $-1+2^{-r}$.\\
 $J$ & Positive second-order potential for $\mu-\delta_0$.\\
@@ -2415,7 +2415,7 @@ G.~Gasper and M.~Rahman,
 \renewcommand{\headrulewidth}{0.4pt}
 \newcommand{\sgnPartx}{\Sign}
 \newcommand{\suppPartx}{\SupportOperator}
-\newcommand{\VarPartx}{\operatorname{Var}}
+\newcommand{\VarPartx}{\Variance}
 \newcommand{\vb}{\nu_b}
 \newcommand{\absPartx}[1]{\left\lvert #1\right\rvert}
 \newcommand{\Corpus}{\textsc{Corpus}}
@@ -2463,18 +2463,18 @@ the latest corrected statement was used whenever sibling drafts disagreed.
 The principal synthesis is that the canonical-product zero multiplicities of the
 Fourier transform
 \[
- \Phi(z)=\widehat\RvachevUp(z)=\prod_{h\ge0}\SincRad\!\left(\frac{\pi z}{2^h}\right)
+ \Phi(z)=\FourierTwoPi{\RvachevUp}(z)=\prod_{h\ge0}\SincRad\!\left(\frac{\pi z}{2^h}\right)
        =\prod_{n\ge1}\left(1-\frac{z^2}{n^2}\right)^{1+\nu_2(n)}
 \]
 form an arithmetic spectrum.  Its multiplicity function
 $a(n)=1+\nu_2(n)$ has Dirichlet series
 $\zeta(s)/(1-2^{-s})$, exact counting law
-$\sum_{n\le N}a(n)=2N-s_2(N)$, and a dense dyadic natural boundary in its
+$\sum_{n\le N}a(n)=2N-\BinaryDigitSum(N)$, and a dense dyadic natural boundary in its
 ordinary generating function.  These elementary facts organize several results
 which do not appear as a theorem package in the pinned corpus.
 
 First, the sign on the $N$th Fourier lobe is exactly the signed Thue--Morse bit
-$(-1)^{s_2(N)}$.  This pattern had been observed before; here it is made a direct
+$(-1)^{\BinaryDigitSum(N)}$.  This pattern had been observed before; here it is made a direct
 corollary of the exact zero count and is converted into an absolutely convergent
 Thue--Morse lobe decomposition of $\RvachevUp$ and all its derivatives.  Second, the
 zero multiplicity gives an exact Strang--Fix hierarchy: on the lattice
@@ -2598,11 +2598,11 @@ Let $U_1,U_2,\ldots$ be independent and uniform on $[-1,1]$, and set
 Then $Y$ is supported on $[-1,1]$ and has the even density $\RvachevUp$.  Under the
 Fourier convention
 \begin{equation}
- \widehat f(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\Differential x,      \label{p2:eq:fourier-conv}
+ \FourierTwoPi{f}(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\Differential x,      \label{p2:eq:fourier-conv}
 \end{equation}
 independence gives
 \begin{equation}
- \Phi(\xi):=\widehat\RvachevUp(\xi)
+ \Phi(\xi):=\FourierTwoPi{\RvachevUp}(\xi)
  =\prod_{h=0}^{\infty}\SincRad\!\left(\frac{\pi\xi}{2^h}\right),
  \qquad \SincRad z=\frac{\sin z}{z}.                          \label{p2:eq:Phi-sinc}
 \end{equation}
@@ -2652,12 +2652,12 @@ from the repository's moment recurrence.
 \label{p2:thm:spectrum-package}
 For $n\ge1$, let $a(n)=1+\nu_2(n)$.  Then:
 \begin{align}
- a(n)&=\sum_{h\ge0}\mathbf 1_{2^h\mid n},                  \label{p2:eq:a-divisor}\\
+ a(n)&=\sum_{h\ge0}\IndicatorOf{2^h\mid n},                  \label{p2:eq:a-divisor}\\
  \sum_{n\ge1}\frac{a(n)}{n^s}
    &=\frac{\zeta(s)}{1-2^{-s}},\qquad \Re s>1,             \label{p2:eq:D}\\
  A(N):=\sum_{n\le N}a(n)
    &=\sum_{h\ge0}\Floor{\frac{N}{2^h}}
-     =2N-s_2(N),                                           \label{p2:eq:AN}\\
+     =2N-\BinaryDigitSum(N),                                           \label{p2:eq:AN}\\
  \#\{n\le N:a(n)\ge r\}
    &=\Floor{\frac{N}{2^{r-1}}},                            \label{p2:eq:tail-count}\\
  \#\{n\le N:a(n)=r\}
@@ -2687,7 +2687,7 @@ summation by layers:
 \]
 The same layer count truncated at $N$ gives the first expression for $A(N)$.
 Legendre's digit-sum identity
-$\sum_{h\ge1}\Floor{N/2^h}=N-s_2(N)$ gives the last one.
+$\sum_{h\ge1}\Floor{N/2^h}=N-\BinaryDigitSum(N)$ gives the last one.
 The inequalities $a(n)\ge r$ and $2^{r-1}\mid n$ are equivalent, giving
 \eqref{p2:eq:tail-count}; subtraction gives \eqref{p2:eq:exact-count}.
 Multiplicativity follows because only the $2$-part contributes: if $(m,n)=1$,
@@ -2765,7 +2765,7 @@ This identity will control the geometry of every real lobe.
 
 Let
 \begin{equation}
- \varepsilon_n=(-1)^{s_2(n)},\qquad n\ge0,                 \label{p2:eq:eps}
+ \varepsilon_n=(-1)^{\BinaryDigitSum(n)},\qquad n\ge0,                 \label{p2:eq:eps}
 \end{equation}
 be the signed Thue--Morse sequence.
 
@@ -2779,8 +2779,8 @@ For every $n\ge1$,
 
 \begin{proof}
 Adding one to $n-1$ erases $\nu_2(n)$ trailing ones and creates one new one, so
-$s_2(n)=s_2(n-1)+1-\nu_2(n)$.  Hence
-$s_2(n-1)+s_2(n)\equiv1+\nu_2(n)=a(n)\pmod2$.
+$\BinaryDigitSum(n)=\BinaryDigitSum(n-1)+1-\nu_2(n)$.  Hence
+$\BinaryDigitSum(n-1)+\BinaryDigitSum(n)\equiv1+\nu_2(n)=a(n)\pmod2$.
 \end{proof}
 
 \subsection{Exact lobe signs}
@@ -2789,7 +2789,7 @@ $s_2(n-1)+s_2(n)\equiv1+\nu_2(n)=a(n)\pmod2$.
 \label{p2:thm:lobe-sign}
 For real $x\notin\IntegerNumbers$,
 \begin{equation}
- \sgnPartx\Phi(x)=(-1)^{s_2(\Floor{|x|})}
+ \sgnPartx\Phi(x)=(-1)^{\BinaryDigitSum(\Floor{|x|})}
              =\varepsilon_{\Floor{|x|}}.                  \label{p2:eq:lobe-sign}
 \end{equation}
 Equivalently, the signs of the consecutive positive-axis lobes of the infinite
@@ -2802,7 +2802,7 @@ exactly when $a(n)$ is odd.  Therefore, for $N<x<N+1$,
 \[
  \sgnPartx\Phi(x)=(-1)^{A(N)}.
 \]
-By \eqref{p2:eq:AN}, $A(N)=2N-s_2(N)$, whose parity is $s_2(N)$.  Evenness handles
+By \eqref{p2:eq:AN}, $A(N)=2N-\BinaryDigitSum(N)$, whose parity is $\BinaryDigitSum(N)$.  Evenness handles
 negative $x$.
 \end{proof}
 
@@ -2905,7 +2905,7 @@ The repository's Fourier-decay program studies the highly irregular envelope
 $M_n$.  The arithmetic spectrum explains why a single ``typical'' exponent cannot
 capture all subsequences: the inherited multiplicity at each endpoint varies
 with $\nu_2(n)$, while the lobe sign varies with the integrated parity
-$s_2(n)\bmod2$.
+$\BinaryDigitSum(n)\bmod2$.
 
 \section{Exact $2$-adic Strang--Fix hierarchy}
 \label{p2:sec:weighted}
@@ -2942,18 +2942,18 @@ Strang--Fix order
 Put $g_r(t)=t^r\RvachevUp(t)$.  Poisson summation for the $N^{-1}$-periodization gives
 \begin{equation}
  \mathcal P_{N,r}(x)=N\sum_{m\in\IntegerNumbers}
- \widehat g_r(mN)\EulerE^{2\pi\ImaginaryUnit mNx}.                        \label{p2:eq:poisson-weighted}
+ \FourierTwoPi{g_r}(mN)\EulerE^{2\pi\ImaginaryUnit mNx}.                        \label{p2:eq:poisson-weighted}
 \end{equation}
 Differentiating the Fourier transform,
 \begin{equation}
- \widehat g_r(\xi)=\frac{\Phi^{(r)}(\xi)}{(-2\pi\ImaginaryUnit)^r}.  \label{p2:eq:moment-fourier}
+ \FourierTwoPi{g_r}(\xi)=\frac{\Phi^{(r)}(\xi)}{(-2\pi\ImaginaryUnit)^r}.  \label{p2:eq:moment-fourier}
 \end{equation}
 For $m\ne0$, the zero at $mN$ has order
 \[
  a(mN)=1+\nu_2(mN)=1+q+\nu_2(m)\ge q+1.
 \]
 Hence $\Phi^{(r)}(mN)=0$ for $r\le q$.  Only $m=0$ remains in
-\eqref{p2:eq:poisson-weighted}, giving $N\widehat g_r(0)=N\mu_r$.
+\eqref{p2:eq:poisson-weighted}, giving $N\FourierTwoPi{g_r}(0)=N\mu_r$.
 At $r=q+1$, the Fourier coefficient with $m=1$ is nonzero because the zero at
 $N$ has exact order $q+1$.  Therefore the periodization cannot be constant.
 \end{proof}
@@ -3072,7 +3072,7 @@ Dirichlet series \eqref{p2:eq:Zphi-form}.
 
 \begin{remark}
 The pole at $s=1$ has residue $2$, agreeing with the exact zero count
-$A(N)=2N-s_2(N)$.  The imaginary lattice records the discrete scale invariance
+$A(N)=2N-\BinaryDigitSum(N)$.  The imaginary lattice records the discrete scale invariance
 which is invisible in the leading density but reappears as a periodic function
 of $\log_2$ scale.
 \end{remark}
@@ -3466,7 +3466,7 @@ error is already near the working evaluation floor.
 \subsection{Exact digital checks}
 
 For $N=0,1,\ldots,15$, the cumulative multiplicity
-$A(N)=2N-s_2(N)$ has parity
+$A(N)=2N-\BinaryDigitSum(N)$ has parity
 \[
  0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,
 \]
@@ -3479,11 +3479,11 @@ recurrences \eqref{p2:eq:a-rec} through $10^6$ without exception.
 
 The main identities can be checked without evaluating $\RvachevUp$ itself:
 \begin{enumerate}
-\item enumerate $a(n)=1+\nu_2(n)$ and compare partial sums with $2N-s_2(N)$;
+\item enumerate $a(n)=1+\nu_2(n)$ and compare partial sums with $2N-\BinaryDigitSum(N)$;
 \item compare $\sum_{n\le M}a(n)n^{-s}$ with
       $\zeta(s)/(1-2^{-s})$ for $\Re s>1$;
 \item evaluate $\Phi(x)$ by the sinc product and compare its sign with
-      $(-1)^{s_2(\Floor x)}$;
+      $(-1)^{\BinaryDigitSum(\Floor x)}$;
 \item compare the finite spectral series with $\zeta(s)[J]_{2^{-s}}$;
 \item evaluate $H(y)$ both by \eqref{p2:eq:H-direct} and by the residue expansion.
 \end{enumerate}
@@ -3547,8 +3547,8 @@ The results separate naturally into four dependency layers.
 
 Recommended first targets are
 \begin{align*}
- a(n)&=\sum_h\mathbf1_{2^h\mid n},\\
- \sum_{n\le N}a(n)&=2N-s_2(N),\\
+ a(n)&=\sum_h\IndicatorOf{2^h\mid n},\\
+ \sum_{n\le N}a(n)&=2N-\BinaryDigitSum(N),\\
  (-1)^{a(n)}&=\varepsilon_{n-1}\varepsilon_n,\\
  (-1)^{\sum_{n\le N}a(n)}&=\varepsilon_N.
 \end{align*}
@@ -3808,10 +3808,16 @@ V.~Reshetnikov,
 \renewcommand{\headrulewidth}{0.35pt}
 \renewcommand{\headrule}{\hbox to\headwidth{\color{rulegray}\leaders\hrule height \headrulewidth\hfill}}
 \newcommand{\sgnPartl}{\Sign}
-\newcommand{\VarPartl}{\operatorname{Var}}
-\newcommand{\bigOPartl}{\mathrm O}
-\newcommand{\smalloPartl}{\mathrm o}
+\newcommand{\VarPartl}{\Variance}
 \newcommand{\qbinomPartl}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
+% LOCAL-NON-FOURIER-HAT: \FactorizedTailExtrapolant denotes the logarithmic q-Richardson extrapolant of the omitted product tail T_N.
+\newcommand{\FactorizedTailExtrapolant}[2]{\widehat T_{#1,#2}}
+% LOCAL-NON-FOURIER-HAT: \FactorizedProductExtrapolant denotes the zero-preserving factorized extrapolant of the base-b sinc product.
+\newcommand{\FactorizedProductExtrapolant}[3]{\widehat P^{\mathrm{fac}}_{#1,#2,#3}}
+% LOCAL-NON-FOURIER-HAT: \DyadicFactorizedProductExtrapolant denotes the zero-preserving factorized extrapolant of the dyadic Fourier product Phi.
+\newcommand{\DyadicFactorizedProductExtrapolant}[2]{\widehat\Phi_{#1,#2}}
+% LOCAL-NON-FOURIER-HAT: \RelativeTailExtrapolant denotes the relative partial-tail extrapolant used to bracket the dyadic sinc tail.
+\newcommand{\RelativeTailExtrapolant}[2]{\widehat{\mathcal T}_{#1,#2}}
 \newcommand{\doi}[1]{\href{https://doi.org/#1}{doi:#1}}
 \newcommand{\repoPartl}{\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs}}
 \newcommand{\commitsha}{\nolinkurl{7f4e6e6fdd57f756f303b20f56b5382627e5e1d4}}
@@ -4193,11 +4199,11 @@ that obstruction without changing the transform where it was already defined.
 On $D_N$, let $\PrincipalLogarithm T_{N,j}$ be the normalized logarithms from
 \cref{p3:lem:zero-free-tail}.  Define
 \begin{align}
- \widehat T_{N,r}(t)
+ \FactorizedTailExtrapolant{N}{r}(t)
    &=\exp\!\left(\sum_{j=0}^{r}\lambda_{r,j}(q)\PrincipalLogarithm T_{N,j}(t)\right),
  \label{p3:eq:hat-tail}\\
- \widehat P^{\mathrm{fac}}_{b,N,r}(t)
-   &=P_{b,N}(t)\widehat T_{N,r}(t).
+ \FactorizedProductExtrapolant{b}{N}{r}(t)
+   &=P_{b,N}(t)\FactorizedTailExtrapolant{N}{r}(t).
  \label{p3:eq:hat-factorized}
 \end{align}
 \end{definition}
@@ -4208,19 +4214,19 @@ logarithmic expression is possible.
 \begin{theorem}[Zero-divisor-preserving continuation]\label{p3:thm:zero-preserving}
 For every $N,r\ge0$:
 \begin{enumerate}
-\item $\widehat P^{\mathrm{fac}}_{b,N,r}$ is holomorphic on $D_N$.
+\item $\FactorizedProductExtrapolant{b}{N}{r}$ is holomorphic on $D_N$.
 \item Wherever $P_{b,N}$ is nonzero, it agrees with the earlier multiplicative
       $q$-Richardson transform formed from $P_{b,N},\ldots,P_{b,N+r}$.
-\item $P_b$, $P_{b,N}$, and $\widehat P^{\mathrm{fac}}_{b,N,r}$ have exactly the same zero
+\item $P_b$, $P_{b,N}$, and $\FactorizedProductExtrapolant{b}{N}{r}$ have exactly the same zero
       divisor in $D_N$, including multiplicities.
 \item After cancellation of that common zero divisor, the quotient
-      $\widehat P^{\mathrm{fac}}_{b,N,r}/P_b$ extends to a holomorphic zero-free function on
+      $\FactorizedProductExtrapolant{b}{N}{r}/P_b$ extends to a holomorphic zero-free function on
       all of $D_N$.
 \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-The function $\widehat T_{N,r}$ is an exponential of a holomorphic function and is therefore
+The function $\FactorizedTailExtrapolant{N}{r}$ is an exponential of a holomorphic function and is therefore
 holomorphic and zero-free.  This proves the first assertion after multiplication by the
 finite prefix.
 
@@ -4232,11 +4238,11 @@ on the locally normalized branch.  Since $\sum_j\lambda_{r,j}=1$, the unfactored
 logarithm equals $\PrincipalLogarithm P_{b,N}+\sum_j\lambda_{r,j}\PrincipalLogarithm T_{N,j}$, proving agreement.
 
 By \cref{p3:lem:zero-free-tail}, both the exact tail $T_N$ and the extrapolated tail
-$\widehat T_{N,r}$ are zero-free in $D_N$.  Thus every zero of either full product comes
+$\FactorizedTailExtrapolant{N}{r}$ are zero-free in $D_N$.  Thus every zero of either full product comes
 from $P_{b,N}$ with unchanged multiplicity.  Finally,
 \[
- \frac{\widehat P^{\mathrm{fac}}_{b,N,r}}{P_b}
- =\frac{\widehat T_{N,r}}{T_N}
+ \frac{\FactorizedProductExtrapolant{b}{N}{r}}{P_b}
+ =\frac{\FactorizedTailExtrapolant{N}{r}}{T_N}
 \]
 after cancellation, and the right side is holomorphic and zero-free.
 \end{proof}
@@ -4252,7 +4258,7 @@ divisor visible at scale $N$; only the zero-free determinant tail is extrapolate
 \begin{theorem}[Exact zero-normalized logarithmic error]\label{p3:thm:exact-error}
 On $D_N$,
 \begin{equation}
- \frac{\widehat P^{\mathrm{fac}}_{b,N,r}(t)}{P_b(t)}
+ \frac{\FactorizedProductExtrapolant{b}{N}{r}(t)}{P_b(t)}
  =\exp(E_{N,r}(t))
  \label{p3:eq:quotient-error}
 \end{equation}
@@ -4270,7 +4276,7 @@ In particular,
  E_{N,r}(t)
  =(-1)^r\frac{q^{r(r+1)/2}\zeta(2r+2)}
  {(r+1)(1-q^{r+1})}u_N(t)^{2r+2}
- +\bigOPartl(u_N(t)^{2r+4}).
+ +\BigO(u_N(t)^{2r+4}).
  \label{p3:eq:leading-E}
 \end{equation}
 \end{theorem}
@@ -4284,7 +4290,7 @@ From \eqref{p3:eq:prefix-log-error}, the logarithm of the $j$th relative partial
 \]
 Weighting and using $\sum_j\lambda_{r,j}=1$ gives
 \[
- \PrincipalLogarithm\frac{\widehat T_{N,r}}{T_N}
+ \PrincipalLogarithm\frac{\FactorizedTailExtrapolant{N}{r}}{T_N}
  =\sum_{m\ge1}\frac{\zeta(2m)}{m(1-q^m)}u_N(t)^{2m}S_{r,m}(q).
 \]
 Insert \eqref{p3:eq:transformed-moments}.  The first $r$ powers vanish, and the remaining
@@ -4309,7 +4315,7 @@ Then on $|t|\le R$,
 \end{equation}
 Consequently,
 \begin{equation}
- \left|\frac{\widehat P^{\mathrm{fac}}_{b,N,r}}{P_b}-1\right|
+ \left|\frac{\FactorizedProductExtrapolant{b}{N}{r}}{P_b}-1\right|
  \le \EulerE^{B_{N,r}(R)}-1
  \label{p3:eq:relative-bound}
 \end{equation}
@@ -4332,7 +4338,7 @@ Then use $|\EulerE^z-1|\le\EulerE^{|z|}-1$.
 \begin{theorem}[Exact spectral-jet quotient]\label{p3:thm:jet-quotient}
 Let $t_0\in D_N$ be a zero of $P_b$ of multiplicity $\mu$.  Then
 \begin{equation}
- \frac{(\widehat P^{\mathrm{fac}}_{b,N,r})^{(\mu)}(t_0)}
+ \frac{(\FactorizedProductExtrapolant{b}{N}{r})^{(\mu)}(t_0)}
       {P_b^{(\mu)}(t_0)}
  =\exp(E_{N,r}(t_0)).
  \label{p3:eq:first-derivative-ratio}
@@ -4342,7 +4348,7 @@ zero-normalized germs is exactly $\exp(E_{N,r}(t))$.  Hence for every $k\ge1$,
 \begin{equation}
  \left(\frac{\Differential}{\Differential t}\right)^k
  \PrincipalLogarithm\!\left(
- \frac{\widehat P^{\mathrm{fac}}_{b,N,r}(t)/(t-t_0)^\mu}
+ \frac{\FactorizedProductExtrapolant{b}{N}{r}(t)/(t-t_0)^\mu}
       {P_b(t)/(t-t_0)^\mu}
  \right)
  =E_{N,r}^{(k)}(t)
@@ -4355,7 +4361,7 @@ in a neighborhood of $t_0$.
 Write $P_{b,N}(t)=(t-t_0)^\mu A(t)$ with $A(t_0)\ne0$.  Then
 \[
  P_b(t)=(t-t_0)^\mu A(t)T_N(t),\qquad
- \widehat P^{\mathrm{fac}}_{b,N,r}(t)=(t-t_0)^\mu A(t)\widehat T_{N,r}(t).
+ \FactorizedProductExtrapolant{b}{N}{r}(t)=(t-t_0)^\mu A(t)\FactorizedTailExtrapolant{N}{r}(t).
 \]
 Taking the first nonzero derivative gives the tail ratio; \cref{p3:thm:exact-error} identifies
 that ratio with $\exp(E_{N,r}(t_0))$.  Cancelling the complete common germ gives the stronger
@@ -4468,15 +4474,15 @@ where
 \end{equation}
 is analytic in a disk strictly larger than the unit disk.  In particular,
 \begin{equation}
- M_r(q,a)=A_r(q)\log\frac1{1-a}+\bigOPartl_{q,r}(1)
+ M_r(q,a)=A_r(q)\log\frac1{1-a}+\BigO_{q,r}(1)
  \qquad(a\uparrow1).
  \label{p3:eq:Mr-boundary}
 \end{equation}
 \end{lemma}
 
 \begin{proof}
-The factor $U_{r,m}(q)$ approaches one with error $\bigOPartl_{q,r}(q^m)$, while
-$\zeta(2m)-1=\bigOPartl(4^{-m})$.  Thus the coefficient in \eqref{p3:eq:Hr} decays
+The factor $U_{r,m}(q)$ approaches one with error $\BigO_{q,r}(q^m)$, while
+$\zeta(2m)-1=\BigO(4^{-m})$.  Thus the coefficient in \eqref{p3:eq:Hr} decays
 geometrically.  Splitting one from $\zeta(2m)U_{r,m}$ leaves the harmonic tail
 $\sum_{m\ge r+1}a^m/m$, which is the first two terms in \eqref{p3:eq:accelerated-M}.
 \end{proof}
@@ -4523,7 +4529,7 @@ Conversely, if the threshold fails, then $A_{r+2}(q)/A_r(q)=R_{r,\infty}(q)>1$.
 By \cref{p3:lem:boundary-decomp},
 \[
  M_r(q,a)-M_{r+2}(q,a)
- =\bigl(A_r(q)-A_{r+2}(q)\bigr)\log\frac1{1-a}+\bigOPartl(1),
+ =\bigl(A_r(q)-A_{r+2}(q)\bigr)\log\frac1{1-a}+\BigO(1),
 \]
 which tends to $-\infty$ as $a\uparrow1$.  Near $a=0$, the difference is positive because
 its leading term is the $a^{r+1}$ term present only in $M_r$.  Thus at least one crossing
@@ -4574,7 +4580,7 @@ binding constraint.  Solve $q^2+q-1\le0$ and use $q=b^{-2}$.
 For every $q\in(0,1)$, same-parity nesting is automatic from the finite order
 \begin{equation}
  r_*(q)=\max\!\left\{0,
- \left\lceil\frac{\log(1+q)}{-\log q}\right\rceil-1\right\}
+ \Ceiling{\frac{\log(1+q)}{-\log q}}-1\right\}
  \label{p3:eq:rstar}
 \end{equation}
 onward.
@@ -4614,10 +4620,10 @@ Put $n=r+1$ and $L=\log2$.  Then
 \begin{align}
  q_r
  &=1-\frac{L}{n}+\frac{L(L+1)}{2n^2}
-   -\frac{L(4L^2+15L+6)}{24n^3}+\bigOPartl(n^{-4}),
+   -\frac{L(4L^2+15L+6)}{24n^3}+\BigO(n^{-4}),
  \label{p3:eq:qr-asymptotic}\\
  b_r=q_r^{-1/2}
- &=1+\frac{L}{2n}+\frac{L(L-2)}{8n^2}+\bigOPartl(n^{-3}).
+ &=1+\frac{L}{2n}+\frac{L(L-2)}{8n^2}+\BigO(n^{-3}).
  \label{p3:eq:br-asymptotic}
 \end{align}
 \end{proposition}
@@ -4634,9 +4640,9 @@ The binomial expansion of $q^{-1/2}$ gives the second formula.
 \subsection{Normalization and integer zeros}
 
 Under the Fourier convention
-$\widehat f(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\Differential x$, write
+$\FourierTwoPi{f}(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\Differential x$, write
 \begin{equation}
- \Phi(x)=\widehat\RvachevUp(x)
+ \Phi(x)=\FourierTwoPi{\RvachevUp}(x)
  =\prod_{h=0}^{\infty}\SincRad(\pi x/2^h),
  \qquad \SincRad z=\frac{\sin z}{z}.
  \label{p3:eq:Phi}
@@ -4660,7 +4666,7 @@ Let
 Thus $\Phi=\Phi_N\mathcal T_N$ everywhere, and
 $\mathcal T_N=\Phi/\Phi_N$ only where $\Phi_N\ne0$.  The tail is zero-free and positive on
 $|x|<2^{N+1}$.  Define the factorized transforms
-$\widehat\Phi_{N,r}$ exactly as in \cref{p3:def:factorized}, using relative partial tails and
+$\DyadicFactorizedProductExtrapolant{N}{r}$ exactly as in \cref{p3:def:factorized}, using relative partial tails and
 the weights at $q=1/4$.
 
 \subsection{Two monotone zero-preserving chains}
@@ -4668,12 +4674,12 @@ the weights at $q=1/4$.
 \begin{theorem}[Dyadic nested brackets]\label{p3:thm:dyadic-chains}
 For every $N\ge0$ and every real $0<|x|<2^{N+1}$,
 \begin{equation}
- \widehat{\mathcal T}_{N,1}(x)
- <\widehat{\mathcal T}_{N,3}(x)<\cdots
+ \RelativeTailExtrapolant{N}{1}(x)
+ <\RelativeTailExtrapolant{N}{3}(x)<\cdots
  <\mathcal T_N(x)
- <\cdots<\widehat{\mathcal T}_{N,4}(x)
- <\widehat{\mathcal T}_{N,2}(x)
- <\widehat{\mathcal T}_{N,0}(x),
+ <\cdots<\RelativeTailExtrapolant{N}{4}(x)
+ <\RelativeTailExtrapolant{N}{2}(x)
+ <\RelativeTailExtrapolant{N}{0}(x),
  \label{p3:eq:tail-chains}
 \end{equation}
 with the evident finite interpretation.  On the whole interval $|x|<2^{N+1}$, including
@@ -4701,7 +4707,7 @@ preservation and its multiplicity statement follow from \cref{p3:thm:zero-preser
 Let $m\ne0$ be an integer with $|m|<2^{N+1}$, and put
 $\mu=1+\TwoAdicValuation(|m|)$.  Then
 \begin{equation}
- \frac{\widehat\Phi_{N,r}^{(\mu)}(m)}{\Phi^{(\mu)}(m)}
+ \frac{\DyadicFactorizedProductExtrapolant{N}{r}^{(\mu)}(m)}{\Phi^{(\mu)}(m)}
  =\exp\!\left((-1)^rM_r\!\left(\frac14,\frac{m^2}{2^{2N+2}}\right)\right).
  \label{p3:eq:dyadic-derivative-ratio}
 \end{equation}
@@ -4716,11 +4722,11 @@ it gives monotone finite-product approximants with an explicit nonasymptotic err
 \subsection{Exact preservation of Thue--Morse lobe signs}
 
 Choose $N$ so that a compact real interval lies inside $(-2^{N+1},2^{N+1})$.  All factorized
-tails are positive there.  Therefore the sign of every $\widehat\Phi_{N,r}$ is carried
+tails are positive there.  Therefore the sign of every $\DyadicFactorizedProductExtrapolant{N}{r}$ is carried
 entirely by the finite prefix $\Phi_N$, exactly as for $\Phi$.  In particular, on each lobe
 $(m,m+1)$,
 \begin{equation}
- \sgnPartl\widehat\Phi_{N,r}(x)=\sgnPartl\Phi(x)=(-1)^{\BinaryDigitSum(m)}.
+ \sgnPartl\DyadicFactorizedProductExtrapolant{N}{r}(x)=\sgnPartl\Phi(x)=(-1)^{\BinaryDigitSum(m)}.
  \label{p3:eq:TM-sign-preserved}
 \end{equation}
 Thus the extrapolation does not merely place zeros correctly; it preserves the automatic
@@ -5160,7 +5166,7 @@ D. Reidel, 1974.
 \renewcommand{\arraystretch}{1.13}
 \newcommand{\wtPartc}{\BinaryDigitSum}
 \newcommand{\suppPartc}{\SupportOperator}
-\newcommand{\VarPartc}{\operatorname{Var}}
+\newcommand{\VarPartc}{\Variance}
 \newcommand{\D}{\mathrm D}
 \newcommand{\Dyad}{\mathbb D_2}
 \newcommand{\Acard}{\mathcal A}
@@ -5261,7 +5267,7 @@ Reciprocal-moment Appell polynomials $\Acard_n^{[r]}$ then give finite exact for
 $\sum_k\Acard_n^{[r]}(k)U_r(x-k)=x^n$ for $n\le r$.  Their coefficients are explicit complete Bell polynomials in Bernoulli cumulants; their dyadic scale transport is governed by the Bernoulli-polynomial values $B_n(1/2)$; and, because $\Acard_n(x;Q)$ is polynomial in $Q=4^r$, the scale sequence obeys exact q-binomial finite-difference closures at $q=1/4$.
 
 Third, two independent obstructions exclude holonomicity.  The midpoint identity propagates nonanalyticity backward through the dyadic tent map, proving that $F$ is nonanalytic at every dyadic rational; the same mechanism gives dense nonanalytic sets for $F^{-1}$ and $\RvachevUp$.  Hence none is locally D-finite on any open interval.  Independently, the unbounded multiplicities
-$\OrderOperator_m\widehat\RvachevUp=1+\nu_2(|m|)$ rule out a polynomial-coefficient differential equation for the entire Fourier transform.  This implies non-D-finiteness of the moment generating functions, non-P-recursiveness of the moment sequences, and non-P-recursiveness of every fixed-$x$ Appell coefficient sequence.  Symbolic and high-precision numerical experiments accompany the proofs, and the fully commented Python program is included in the archive.
+$\OrderOperator_m\FourierTwoPi{\RvachevUp}=1+\nu_2(|m|)$ rule out a polynomial-coefficient differential equation for the entire Fourier transform.  This implies non-D-finiteness of the moment generating functions, non-P-recursiveness of the moment sequences, and non-P-recursiveness of every fixed-$x$ Appell coefficient sequence.  Symbolic and high-precision numerical experiments accompany the proofs, and the fully commented Python program is included in the archive.
 \end{abstract}
 
 \begin{tcolorbox}[colback=lightorange,colframe=conjorange,title=Priority and novelty disclaimer,fonttitle=\bfseries]
@@ -5290,7 +5296,7 @@ The repository already treats the following subjects in substantial depth:
 \begin{itemize}
 \item exact rational values $F(a/2^n)$, triangular recurrences, composition sums, q-Pochhammer symbols, Gaussian binomials, and coefficient extraction;
 \item Thue--Morse product identities, Prouhet cancellation, iterated prefix sums, finite convolution laws, and sharp convergence rates;
-\item the sinc and cosine products for $\widehat\RvachevUp$, Fourier decay, zero sets, and refined log-periodic asymptotics;
+\item the sinc and cosine products for $\FourierTwoPiTransformOf{\RvachevUp}$, Fourier decay, zero sets, and refined log-periodic asymptotics;
 \item lower-branch Lambert--W coordinates for $F(x)$ as $x\downarrow0$, periodic saddle jets, and all-orders Bell-polynomial contraction formulas;
 \item exact and asymptotic Lagrange interpolation, q-interpolation, and Richardson-type acceleration at dyadic scales;
 \item repeated-integration and finite-box-spline approximants to $\RvachevUp$, including exact tail replacement and quantitative error decompositions;
@@ -5351,7 +5357,7 @@ Differentiating the symmetry in \eqref{p4:eq:fabius-basic} gives the global inte
 \subsection{Probability, Fourier, and moments}
 Use the Fourier convention
 \begin{equation}
- \widehat f(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\Differential x.
+ \FourierTwoPi{f}(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\Differential x.
  \label{p4:eq:fourier-convention}
 \end{equation}
 Let $V_n$ be independent uniform variables on
@@ -5362,7 +5368,7 @@ $[-2^{-n-1},2^{-n-1}]$.  Then
 \end{equation}
 converges absolutely and has density $U$.  Therefore
 \begin{align}
- \widehat U(\xi)
+ \FourierTwoPi{U}(\xi)
  &=\prod_{n=0}^{\infty}
    \frac{\sin(\pi\xi/2^n)}{\pi\xi/2^n}
   =\prod_{n=0}^{\infty}\SincRad\!\left(\frac{\pi\xi}{2^n}\right),
@@ -5376,7 +5382,7 @@ The moment generating function is the entire even function
  \M_0(t)=\Expectation\EulerE^{tX}
  =\prod_{n=0}^{\infty}
    \frac{\sinh(t/2^{n+1})}{t/2^{n+1}}
- =\widehat U\!\left(\frac{\ImaginaryUnit t}{2\pi}\right).
+ =\FourierTwoPi{U}\!\left(\frac{\ImaginaryUnit t}{2\pi}\right).
  \label{p4:eq:mgf}
 \end{equation}
 
@@ -5669,8 +5675,8 @@ where every $F$ and derivative is evaluated at $z=\delta/2$.  Equation \eqref{p4
 \subsection{Box convolutions}
 For $a>0$ let
 \begin{equation}
- b_a(x)=\frac1{2a}\mathbf1_{[-a,a]}(x),
- \qquad \widehat b_a(\xi)=\frac{\sin(2\pi a\xi)}{2\pi a\xi}.
+ b_a(x)=\frac1{2a}\IndicatorOf{[-a,a]}(x),
+ \qquad \FourierTwoPi{b_a}(\xi)=\frac{\sin(2\pi a\xi)}{2\pi a\xi}.
  \label{p4:eq:box}
 \end{equation}
 Then
@@ -5682,7 +5688,7 @@ For $r\ge0$ define the normalized dilation
 \begin{equation}
  U_r(x)=2^{-r}U(2^{-r}x),
  \qquad \suppPartc U_r=[-2^r,2^r],
- \qquad \widehat U_r(\xi)=\widehat U(2^r\xi).
+ \qquad \FourierTwoPi{U_r}(\xi)=\FourierTwoPi{U}(2^r\xi).
  \label{p4:eq:Ur}
 \end{equation}
 Its first $r+1$ box factors form
@@ -5728,12 +5734,12 @@ Thus the universal part of the integer zero multiplicity is literally the moment
 \label{p4:prop:zero-multiplicity}
 For every nonzero integer $m$,
 \begin{equation}
- \OrderOperator_m\widehat U=1+\nu_2(|m|).
+ \OrderOperator_m\FourierTwoPi{U}=1+\nu_2(|m|).
  \label{p4:eq:zero-multiplicity}
 \end{equation}
 Consequently, for every nonzero $\ell\in\IntegerNumbers$,
 \begin{equation}
- \OrderOperator_\ell\widehat U_r=r+1+\nu_2(|\ell|).
+ \OrderOperator_\ell\FourierTwoPi{U_r}=r+1+\nu_2(|\ell|).
  \label{p4:eq:scaled-zero-multiplicity}
 \end{equation}
 \end{proposition}
@@ -5759,7 +5765,7 @@ The multiplicity formula is not used as a novelty claim by itself.  Its role her
 \subsection{Strang--Fix vanishing at every scale}
 Equation \eqref{p4:eq:scaled-zero-multiplicity} implies
 \begin{equation}
- \widehat U_r^{(j)}(\ell)=0,
+ \FourierTwoPi{U_r}^{(j)}(\ell)=0,
  \qquad \ell\in\IntegerNumbers\setminus\{0\},\quad 0\le j\le r.
  \label{p4:eq:strang-fix}
 \end{equation}
@@ -5785,7 +5791,7 @@ The left side is a smooth $1$-periodic function.  Its $\ell$th Fourier coefficie
 \begin{align*}
  \int_0^1\sum_k(x-k)^jU_r(x-k)\EulerE^{-2\pi\ImaginaryUnit\ell x}\Differential x
  &=\int_{\RealNumbers}y^jU_r(y)\EulerE^{-2\pi\ImaginaryUnit\ell y}\Differential y\\
- &=\frac{\widehat U_r^{(j)}(\ell)}{(-2\pi\ImaginaryUnit)^j}.
+ &=\frac{\FourierTwoPi{U_r}^{(j)}(\ell)}{(-2\pi\ImaginaryUnit)^j}.
 \end{align*}
 For $\ell\ne0$ this vanishes by \eqref{p4:eq:strang-fix}; at $\ell=0$ it is $\mu_j^{[r]}$.  Hence the periodic function is constant.
 \end{proof}
@@ -5937,7 +5943,7 @@ From \eqref{p4:eq:appell-generating} and \eqref{p4:eq:scaled-cumulants},
  \quad}
  \label{p4:eq:bell-appell}
 \end{equation}
-Thus, for fixed $n$, $\Acard_n(x;Q)$ is a polynomial in $Q$ of degree $\lfloor n/2\rfloor$.  This elementary observation is the source of the exact q-scale algebra in \cref{p4:sec:qscale}.
+Thus, for fixed $n$, $\Acard_n(x;Q)$ is a polynomial in $Q$ of degree $\Floor{n/2}$.  This elementary observation is the source of the exact q-scale algebra in \cref{p4:sec:qscale}.
 
 The first polynomials are
 \begin{align}
@@ -5982,7 +5988,7 @@ For every $n,r\ge0$,
   2^{(r+1)k}B_k\!\left(\frac12\right)
   \Acard_{n-k}^{[r]}(x)
  \label{p4:eq:bernoulli-transport}\\
- &=\sum_{j=0}^{\lfloor n/2\rfloor}
+ &=\sum_{j=0}^{\Floor{n/2}}
   \binom n{2j}c_{2j}2^{2jr}
   \Acard_{n-2j}^{[r]}(x).
  \label{p4:eq:bernoulli-transport-even}
@@ -6004,7 +6010,7 @@ This identity gives a direct, exact connection among the up-function, Bernoulli 
 \label{p4:sec:qscale}
 
 \subsection{Interpolation in the scale variable}
-Fix $n$ and put $d=\lfloor n/2\rfloor$.  Since $\Acard_n(x;Q)$ has degree at most $d$ in $Q$, any $d+1$ distinct scales determine it exactly.  Let
+Fix $n$ and put $d=\Floor{n/2}$.  Since $\Acard_n(x;Q)$ has degree at most $d$ in $Q$, any $d+1$ distinct scales determine it exactly.  Let
 \begin{equation}
  q=\frac14,
  \qquad Q_r=4^r=q^{-r}.
@@ -6034,7 +6040,7 @@ Thus the scale reconstruction is naturally expressed in the same Gaussian-binomi
 \subsection{Exact q-binomial annihilation}
 \begin{theorem}[Finite q-scale closure]
 \label{p4:thm:q-closure}
-Let $N=d+1=\lfloor n/2\rfloor+1$.  For every $r\ge0$,
+Let $N=d+1=\Floor{n/2}+1$.  For every $r\ge0$,
 \begin{equation}
  \boxed{\quad
  \sum_{j=0}^{N}(-1)^jq^{\binom j2}
@@ -6124,11 +6130,11 @@ The result is stronger than saying that the three functions are not elementary. 
 \subsection{The entire Fourier transform}
 \begin{theorem}[Unbounded zero multiplicity excludes D-finiteness]
 \label{p4:thm:fourier-nondfinite}
-The entire function $\widehat U$ is not D-finite over $\ComplexNumbers(z)$.
+The entire function $\FourierTwoPiTransformOf{U}$ is not D-finite over $\ComplexNumbers(z)$.
 \end{theorem}
 
 \begin{proof}
-Assume that $\widehat U$ satisfies an equation of order $m$ as in \eqref{p4:eq:Dfinite}.  Choose $N$ so large that $N+1\ge m$ and $2^N$ is not a zero of the leading polynomial $p_m$.  By \cref{p4:prop:zero-multiplicity}, $\widehat U$ has a zero of multiplicity $N+1$ at $2^N$, so its first $m$ initial derivatives vanish there.  Uniqueness at the ordinary point $2^N$ would force $\widehat U$ to vanish identically, contrary to $\widehat U(0)=1$.
+Assume that $\FourierTwoPiTransformOf{U}$ satisfies an equation of order $m$ as in \eqref{p4:eq:Dfinite}.  Choose $N$ so large that $N+1\ge m$ and $2^N$ is not a zero of the leading polynomial $p_m$.  By \cref{p4:prop:zero-multiplicity}, $\FourierTwoPiTransformOf{U}$ has a zero of multiplicity $N+1$ at $2^N$, so its first $m$ initial derivatives vanish there.  Uniqueness at the ordinary point $2^N$ would force $\FourierTwoPiTransformOf{U}$ to vanish identically, contrary to $\FourierTwoPi{U}(0)=1$.
 \end{proof}
 
 The proof is robust: any nonzero entire function with zeros of unbounded multiplicity outside a finite exceptional set is non-D-finite.
@@ -6142,7 +6148,7 @@ $\{\mu_{2n}^{[r]}\}_{n\ge0}$ is not P-recursive either.
 \end{corollary}
 
 \begin{proof}
-The linear substitution in \eqref{p4:eq:mgf} and dyadic scaling preserve D-finiteness, so D-finiteness of $\M_r$ would imply D-finiteness of $\widehat U$, contradicting \cref{p4:thm:fourier-nondfinite}.  A P-recursive moment sequence would have a D-finite exponential generating function.  For the even subsequence, suppose that $c_n=\mu_{2n}^{[r]}$ were P-recursive.  Termwise multiplication by the hypergeometric sequence $1/(2n)!$ preserves P-recursiveness (equivalently, D-finite ordinary generating functions are closed under Hadamard products), so
+The linear substitution in \eqref{p4:eq:mgf} and dyadic scaling preserve D-finiteness, so D-finiteness of $\M_r$ would imply D-finiteness of $\FourierTwoPiTransformOf{U}$, contradicting \cref{p4:thm:fourier-nondfinite}.  A P-recursive moment sequence would have a D-finite exponential generating function.  For the even subsequence, suppose that $c_n=\mu_{2n}^{[r]}$ were P-recursive.  Termwise multiplication by the hypergeometric sequence $1/(2n)!$ preserves P-recursiveness (equivalently, D-finite ordinary generating functions are closed under Hadamard products), so
 $H(z)=\sum_{n\ge0}\mu_{2n}^{[r]}z^n/(2n)!$ would be D-finite.  Since the odd moments vanish by symmetry, $\M_r(t)=H(t^2)$; closure under algebraic substitution would make $\M_r$ D-finite, again a contradiction.
 \end{proof}
 
@@ -6153,7 +6159,7 @@ $\{\Acard_n^{[r]}(x)\}_{n\ge0}$ is not P-recursive.
 \end{corollary}
 
 \begin{proof}
-Its exponential generating function is $G_{r,x}(t)=\EulerE^{xt}/\M_r(t)$.  The zeros of $\widehat U_r$ at $m/2^r$, $m\in\IntegerNumbers\setminus\{0\}$, become zeros of $\M_r$ at
+Its exponential generating function is $G_{r,x}(t)=\EulerE^{xt}/\M_r(t)$.  The zeros of $\FourierTwoPiTransformOf{U_r}$ at $m/2^r$, $m\in\IntegerNumbers\setminus\{0\}$, become zeros of $\M_r$ at
 \begin{equation}
  t=-\frac{2\pi\ImaginaryUnit m}{2^r}.
  \label{p4:eq:mgf-zeros}
@@ -6171,7 +6177,7 @@ The physical functions fail holonomicity because ordinary points would force ana
 \subsection{Reproducible implementation}
 The archive contains \texttt{frontier\_experiments.py}, a fully commented standalone program using mpmath, SymPy, NumPy, and Matplotlib.  It performs the following tasks:
 \begin{itemize}
-\item evaluates $\widehat U$ from the sinc product and $U$ from its period-two cosine series;
+\item evaluates $\FourierTwoPiTransformOf{U}$ from the sinc product and $U$ from its period-two cosine series;
 \item checks the midpoint identity at high precision;
 \item solves the inverse fixed-point equation and compares $E(\delta)$ with $F(\delta/2)/2$;
 \item computes exact dyadic endpoint values from the triangular recurrence using rational arithmetic;
@@ -6288,7 +6294,7 @@ The P-recursive corollaries then require the standard equivalence between recurr
 \label{p4:sec:open}
 
 \begin{frontieropenbox}[title=1. Differential transcendence]
-Non-D-finiteness excludes linear polynomial-coefficient differential equations but not nonlinear algebraic differential equations.  Determine whether $F$, $I$, $U$, $\widehat U$, or $\M_0$ is differentially algebraic over $\ComplexNumbers(x)$.  The infinite hierarchy of zero multiplicities and the dilation functional equations may provide a route to differential transcendence.
+Non-D-finiteness excludes linear polynomial-coefficient differential equations but not nonlinear algebraic differential equations.  Determine whether $F$, $I$, $U$, $\FourierTwoPiTransformOf{U}$, or $\M_0$ is differentially algebraic over $\ComplexNumbers(x)$.  The infinite hierarchy of zero multiplicities and the dilation functional equations may provide a route to differential transcendence.
 \end{frontieropenbox}
 
 \begin{frontieropenbox}[title=2. Convergence and resurgence of the inverse Lagrange--Bell coupling series]
@@ -6500,8 +6506,8 @@ C. R. Acad. Sci. Paris \textbf{33} (1851), 225.
 
 % extra macros for part 5
 \renewcommand{\headrulewidth}{0.4pt}
-\newcommand{\VarPartii}{\operatorname{Var}}
-\newcommand{\CovPartii}{\operatorname{Cov}}
+\newcommand{\VarPartii}{\Variance}
+\newcommand{\CovPartii}{\Covariance}
 \newcommand{\suppPartii}{\SupportOperator}
 \newcommand{\sgnPartii}{\Sign}
 \newcommand{\vtwoPartii}{v_2}
@@ -7169,30 +7175,30 @@ $\nu\mapsto\LawOperator(B_\tau+qZ)$ is a contraction with factor $q$.
 
 \subsection{Thue--Morse parity as Thorin-mass parity}
 
-Let $s_2(N)$ be the number of $1$'s in the binary expansion of $N$.
-Legendre's identity $v_2(N!)=N-s_2(N)$ gives
+Let $\BinaryDigitSum(N)$ be the number of $1$'s in the binary expansion of $N$.
+Legendre's identity $v_2(N!)=N-\BinaryDigitSum(N)$ gives
 \begin{equation}\label{p5:eq:cumulative-a}
- \sum_{m\le N}a_m=N+v_2(N!)=2N-s_2(N).
+ \sum_{m\le N}a_m=N+v_2(N!)=2N-\BinaryDigitSum(N).
 \end{equation}
 
 \begin{theorem}[Thue--Morse/Thorin parity law]\label{p5:thm:Thorin-parity}
 For every integer $N\ge1$,
 \begin{equation}\label{p5:eq:Thorin-parity}
  \boxed{
- (-1)^{U_1([1,N^2])}=(-1)^{s_2(N)}.}
+ (-1)^{U_1([1,N^2])}=(-1)^{\BinaryDigitSum(N)}.}
 \end{equation}
 Hence, for every positive noninteger $x$,
 \begin{equation}\label{p5:eq:lobe-Thorin}
  \boxed{
- \sgnPartii\Phi(x)=(-1)^{U_1([1,\lfloor x\rfloor^2])}.}
+ \sgnPartii\Phi(x)=(-1)^{U_1([1,\Floor{x}^2])}.}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
 By \cref{p5:eq:Thorin}, $U_1([1,N^2])=\sum_{m\le N}a_m$.
-Equation \cref{p5:eq:cumulative-a} has the same parity as $s_2(N)$.  The current
+Equation \cref{p5:eq:cumulative-a} has the same parity as $\BinaryDigitSum(N)$.  The current
 Fourier sign theorem gives
-$\sgnPartii\Phi(x)=(-1)^{s_2(\lfloor x\rfloor)}$ on each open lobe; substitution
+$\sgnPartii\Phi(x)=(-1)^{\BinaryDigitSum(\Floor{x})}$ on each open lobe; substitution
 proves \cref{p5:eq:lobe-Thorin}.
 \end{proof}
 
@@ -7927,7 +7933,7 @@ The later modules \path{ExponentialPartition.lean},
 \path{ExponentialBell.lean}, \path{MomentCumulantAlgebra.lean},
 \path{EndpointTransferPolynomials.lean}, and
 \path{PolynomialExpectationCumulant.lean} now formalize the finite algebraic
-core.  The first four work over every commutative \(\mathbb Q\)-algebra: they
+core.  The first four work over every commutative \(\RationalNumbers\)-algebra: they
 give the universal weighted-partition formula for an exponential coefficient
 and identify it with the recursive
 \path{SaddleExpansion.expCoeff} engine, then factorially normalize it
@@ -7936,7 +7942,7 @@ classical Bell recurrence and normalized inverse laws.  The endpoint module
 defines the exact \(P_r\), proves their recurrence, formal exponential identity,
 weighted-partition formula, first four values, and naturality under evaluation.
 The polynomial-integral module allows any coefficient semiring equipped with
-a ring homomorphism to \(\mathbb R\); it rewrites any support-integrable finite
+a ring homomorphism to \(\RealNumbers\); it rewrites any support-integrable finite
 polynomial integral as raw moments and then as a complete-Bell transform, with
 the exact zeroth-moment correction and a probability specialization.  These additions are
 present at integration checkpoint
@@ -8052,7 +8058,7 @@ PF$_\infty$ & Aissen--Schoenberg--Whitney characterization\\
 Jensen hierarchy & Jensen characterization of the Laguerre--P\'olya class\\
 Sub-Gaussianity & $\log(1+x)<x$; exact spectral sum $p_1=2\pi^2/9$\\
 Gamma dual & gamma Laplace transform; Tonelli; regrouping equal rates\\
-Thorin parity & $\sum_{m\le N}(1+v_2(m))=2N-s_2(N)$; existing lobe sign\\
+Thorin parity & $\sum_{m\le N}(1+v_2(m))=2N-\BinaryDigitSum(N)$; existing lobe sign\\
 Theta completion & dyadic heat equation; Jacobi theta transform; telescoping\\
 Mod-Gamma limit & exact negative-Laplace decomposition; periodicity of $R$\\
 Berry--Esseen & tilted independent digits; third-moment bound; variance asymptotic\\
@@ -8174,6 +8180,10 @@ current snapshot.
 \newcommand{\ThetaTM}{\Theta_{\!\mathrm{TM}}}
 \newcommand{\Bell}{\mathcal B}
 \newcommand{\Wiener}{\mathcal A}
+% LOCAL-NON-FOURIER-HAT: \RadialJetEstimator denotes the radial interpolation estimate of the endpoint coefficient function A_j.
+\newcommand{\RadialJetEstimator}[1]{\widehat A_{#1}}
+% LOCAL-NON-FOURIER-HAT: \TomographicCoefficientEstimator denotes the radial-angular tomography estimate of the Fourier coefficient c_k.
+\newcommand{\TomographicCoefficientEstimator}[1]{\widehat c_{#1}}
 \newcommand{\repoPartvv}{\textsc{ProveIt}}
 \newcommand{\statusprovedPartvv}{\textcolor{DarkGreen}{\textbf{proved here}}}
 \newcommand{\statusderived}{\textcolor{DeepBlue}{\textbf{derived from audited corpus inputs}}}
@@ -8388,7 +8398,7 @@ distribution function on $[0,1]$, and let
 with zero extension outside $[-1,1]$.  Under the Fourier convention used in the
 primary exposition,
 \begin{equation}
- \Phi(z)=\widehat\RvachevUp(z)
+ \Phi(z)=\FourierTwoPi{\RvachevUp}(z)
  =\prod_{h=0}^{\infty}\SincRad\!\left(\frac{\pi z}{2^h}\right),
  \qquad \SincRad w=\frac{\sin w}{w}.
  \label{p6:eq:up-product}
@@ -8423,7 +8433,7 @@ $\mathscr E$ subtracts the explicit nonperiodic main term from $\log F(x)$; its 
 formula is not needed for the extrapolation algebra.  The leading periodic coefficient has
 Fourier modes
 \begin{equation}
- \widehat A_0(k)
+ \FourierSeriesCoefficient{A_0}{k}
  =c_k=-\frac{\Gamma(-\chi_k)\zeta(1-\chi_k)}{L},
  \qquad
  \chi_k=\frac{2\pi\ImaginaryUnit k}{L},\qquad k\ne0.
@@ -9060,9 +9070,9 @@ coefficient built from $A_0$.
 For $\sigma\ge0$, let $\Wiener_\sigma$ be the weighted Wiener algebra of one-periodic
 Fourier series
 \[
- f(z)=\sum_{k\in\IntegerNumbers}\widehat f(k)\EulerE^{2\pi\ImaginaryUnit kz},
+ f(z)=\sum_{k\in\IntegerNumbers}\FourierSeriesCoefficient{f}{k}\EulerE^{2\pi\ImaginaryUnit kz},
  \qquad
- \|f\|_\sigma=\sum_{k\in\IntegerNumbers}|\widehat f(k)|\EulerE^{2\pi\sigma|k|}<\infty.
+ \|f\|_\sigma=\sum_{k\in\IntegerNumbers}|\FourierSeriesCoefficient{f}{k}|\EulerE^{2\pi\sigma|k|}<\infty.
 \]
 \end{definition}
 
@@ -9078,7 +9088,7 @@ $\|fg\|_\sigma\le\|f\|_\sigma\|g\|_\sigma$.
  \le\left(\frac{r}{\EulerE(\sigma-\tau)}\right)^r\|f\|_\sigma.
  \label{p6:eq:derivative-wiener}
 \end{equation}
-\item If $S_Kf=\sum_{|k|\le K}\widehat f(k)\EulerE^{2\pi\ImaginaryUnit kz}$, then
+\item If $S_Kf=\sum_{|k|\le K}\FourierSeriesCoefficient{f}{k}\EulerE^{2\pi\ImaginaryUnit kz}$, then
 \begin{equation}
  \sup_{|\Im z|\le\tau}|f(z)-S_Kf(z)|
  \le\EulerE^{-2\pi(\sigma-\tau)(K+1)}\|f\|_\sigma.
@@ -9155,7 +9165,7 @@ $1,q,\ldots,q^p$:
 \end{equation}
 Define
 \begin{equation}
- \widehat A_j(\theta)
+ \RadialJetEstimator{j}(\theta)
  =H^{-j}[t^j]\sum_{s=0}^{p}y_s\ell_s(t).
  \label{p6:eq:radial-jet-estimator}
 \end{equation}
@@ -9165,14 +9175,14 @@ Define
 If $r_s=0$, \eqref{p6:eq:radial-jet-estimator} recovers
 $A_0(\theta),\ldots,A_p(\theta)$ exactly.  In general,
 \begin{equation}
- |\widehat A_j(\theta)-A_j(\theta)|
+ |\RadialJetEstimator{j}(\theta)-A_j(\theta)|
  \le H^{-j}\sum_{s=0}^{p}
  \left|[t^j]\ell_s(t)\right||r_s|.
  \label{p6:eq:radial-jet-error}
 \end{equation}
 If $r_s=\BigO(H^{p+1}q^{s(p+1)})$ uniformly in phase, then
 \begin{equation}
- \widehat A_j(\theta)-A_j(\theta)=\BigO(H^{p+1-j}).
+ \RadialJetEstimator{j}(\theta)-A_j(\theta)=\BigO(H^{p+1-j}).
  \label{p6:eq:radial-jet-order}
 \end{equation}
 For $j=0$, the weights are exactly \eqref{p6:eq:q-richardson-weights}.
@@ -9262,7 +9272,7 @@ phase $r/d$.  Suppose the normalized endpoint residual has the uniform expansion
 $A_0\in\Wiener_\sigma$ for some $\sigma>0$.  For
 $|k|\le(d-1)/2$, the DFT of the radial estimates satisfies
 \begin{equation}
- \widehat c_{k}^{(d,p,n)}-c_k
+ \TomographicCoefficientEstimator{k}^{(d,p,n)}-c_k
  =\BigO(n^{-p-1})
  +\BigO\!\left(\EulerE^{-2\pi\sigma(d-|k|)}\right),
  \label{p6:eq:two-axis-error}
@@ -9375,7 +9385,7 @@ The angular part evaluates the actual truncated Gamma--zeta series for $A_0$.  T
 radial cancellation without silently importing unparsed formulas for the higher audited
 saddle coefficients, the program defines explicit smooth surrogate coefficients
 \[
- \widehat A_j(k)=0.2^j\left(1+\frac{k^2}{(j+1)^2}\right)c_k,
+ \FourierSeriesCoefficient{A_j}{k}=0.2^j\left(1+\frac{k^2}{(j+1)^2}\right)c_k,
  \qquad j\ge1.
 \]
 This surrogate has the same real symmetry and strip structure; it is not claimed to equal
@@ -9546,7 +9556,7 @@ the endpoint analytic inputs already present in the project.
 \section{Conclusion}
 
 The main structural discovery is not another isolated formula for $F$, $F^{-1}$, or
-$\widehat\RvachevUp$.  It is a reusable spectral calculus.
+$\FourierTwoPiTransformOf{\RvachevUp}$.  It is a reusable spectral calculus.
 
 A root of a shift polynomial represents an asymptotic geometric mode; multiplicity
 represents its polynomial decoration.  The standard $q$-Richardson row uses simple roots.
@@ -9756,7 +9766,7 @@ V. Reshetnikov,
 \begin{abstract}
 Let
 \[
- \Phi(z)=\widehat{\RvachevUp}(z)
+ \Phi(z)=\FourierTwoPi{\RvachevUp}(z)
  =\prod_{j=0}^{\infty}\SincRad\!\left(\frac{\pi z}{2^j}\right),
  \qquad \SincRad w=\frac{\sin w}{w}.
 \]
@@ -9768,7 +9778,7 @@ and proves
 \[
  \Phi(z)=\det(I-z^2D^{-2}),\qquad D\simeq N\oplus2D.
 \]
-The decomposition gives the exact positive zero count $2M-s_2(M)$, the spectral zeta function
+The decomposition gives the exact positive zero count $2M-\BinaryDigitSum(M)$, the spectral zeta function
 \[
  \zeta_D(s)=\frac{\zeta(s)}{1-2^{-s}},
 \]
@@ -9820,7 +9830,7 @@ Throughout this report, \emph{established baseline} means a statement already pr
 
 The main examples of statements that are \emph{not} claimed here as new are:
 \begin{enumerate}[label=(\roman*),leftmargin=2.1em]
-\item the infinite sinc product for $\widehat{\RvachevUp}$ and its dyadic scaling equation;
+\item the infinite sinc product for $\FourierTwoPiTransformOf{\RvachevUp}$ and its dyadic scaling equation;
 \item the canonical product
 \[
  \Phi(z)=\prod_{m=1}^{\infty}\left(1-\frac{z^2}{m^2}\right)^{1+\nu_2(m)};
@@ -9828,7 +9838,7 @@ The main examples of statements that are \emph{not} claimed here as new are:
 \item the assertion that the nonzero zeros are precisely the integers, with multiplicity $1+\nu_2(|m|)$;
 \item strict logarithmic concavity of $|\Phi|$ between consecutive zeros and the sign formula
 \[
- \sgnPartxx\Phi(x)=(-1)^{s_2(M)}\qquad(M<x<M+1);
+ \sgnPartxx\Phi(x)=(-1)^{\BinaryDigitSum(M)}\qquad(M<x<M+1);
 \]
 \item the existing moment/cumulant formulae for the Rvachev probability law;
 \item the base-$1/2$ $q$-Pochhammer and Gaussian-binomial formulae for exact dyadic values of the Fabius function;
@@ -9849,11 +9859,11 @@ The report proves: (a) a Fredholm determinant model with $D\simeq N\oplus2D$; (b
 
 Rvachev's up-function $\RvachevUp$ is the even $C^\infty$ density supported on $[-1,1]$ whose Fourier transform, under the convention
 \[
- \widehat f(z)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi i z x}\ddPartxx x,
+ \FourierTwoPi{f}(z)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi i z x}\ddPartxx x,
 \]
 is
 \begin{equation}\label{p7:eq:Phi-sinc}
- \Phi(z):=\widehat{\RvachevUp}(z)
+ \Phi(z):=\FourierTwoPi{\RvachevUp}(z)
  =\prod_{j=0}^{\infty}\SincRad\!\left(\frac{\pi z}{2^j}\right).
 \end{equation}
 The Fabius function $F$ is its affine cumulative twin; on the support one may write
@@ -9870,13 +9880,13 @@ A probability realization is useful.  If $U_0,U_1,\ldots$ are independent and un
 \begin{equation}\label{p7:eq:prob-sum}
  X=\sum_{j=0}^{\infty}2^{-j}U_j
 \end{equation}
-has density $\RvachevUp$ and characteristic function $\mathbb E\EulerE^{itX}=\Phi(t/(2\pi))$.
+has density $\RvachevUp$ and characteristic function $\Expectation\EulerE^{itX}=\Phi(t/(2\pi))$.
 
 \subsection{Thue--Morse and binary notation}
 
-For $n\ge0$, let $s_2(n)$ denote the sum of the binary digits of $n$, and put
+For $n\ge0$, let $\BinaryDigitSum(n)$ denote the sum of the binary digits of $n$, and put
 \begin{equation}\label{p7:eq:tm}
- \ThueMorseSignSymbol_n=(-1)^{s_2(n)}.
+ \ThueMorseSignSymbol_n=(-1)^{\BinaryDigitSum(n)}.
 \end{equation}
 The sequence satisfies $\ThueMorseSignSymbol_{2n}=\ThueMorseSignSymbol_n$ and $\ThueMorseSignSymbol_{2n+1}=-\ThueMorseSignSymbol_n$.  We write $\nu_2(m)$ for the exponent of $2$ in a positive integer $m$.
 
@@ -9998,7 +10008,7 @@ Thus the canonical zero multiplicity is exactly the spectral degeneracy of $D$. 
 
 Let
 \[
- A(M)=\RankOperator\mathbf 1_{[1,M]}(D)
+ A(M)=\RankOperator\IndicatorOf{[1,M]}(D)
  =\sum_{m=1}^{M}a_m
 \]
 count positive eigenvalues, including multiplicity.
@@ -10006,12 +10016,12 @@ count positive eigenvalues, including multiplicity.
 \begin{theorem}[Exact Weyl law with binary remainder]\label{p7:thm:counting}
 For every integer $M\ge0$,
 \begin{equation}\label{p7:eq:A-exact}
- \boxed{\ A(M)=\sum_{j=0}^{\infty}\left\lfloor\frac{M}{2^j}\right\rfloor
- =2M-s_2(M).\ }
+ \boxed{\ A(M)=\sum_{j=0}^{\infty}\Floor{\frac{M}{2^j}}
+ =2M-\BinaryDigitSum(M).\ }
 \end{equation}
-Consequently, with $M=\lfloor R\rfloor$, the number of nonzero zeros of $\Phi$ in $|z|\le R$, counted with multiplicity, is
+Consequently, with $M=\Floor{R}$, the number of nonzero zeros of $\Phi$ in $|z|\le R$, counted with multiplicity, is
 \begin{equation}\label{p7:eq:Nphi}
- \boxed{\ \mathcal N_\Phi(R)=4M-2s_2(M).\ }
+ \boxed{\ \mathcal N_\Phi(R)=4M-2\BinaryDigitSum(M).\ }
 \end{equation}
 \end{theorem}
 
@@ -10021,12 +10031,12 @@ Counting the pairs $(j,n)$ with $2^jn\le M$ gives the floor sum.  On the other h
  A(M)=M+\sum_{m=1}^{M}\nu_2(m)
  =M+\nu_2(M!).
 \]
-Legendre's binary formula $\nu_2(M!)=M-s_2(M)$ proves \cref{p7:eq:A-exact}.  The zeros are symmetric, so the disk count is twice $A(M)$.
+Legendre's binary formula $\nu_2(M!)=M-\BinaryDigitSum(M)$ proves \cref{p7:eq:A-exact}.  The zeros are symmetric, so the disk count is twice $A(M)$.
 \end{proof}
 
 The exact formula refines the linear Weyl term $A(M)\sim2M$ by a digit-sum fluctuation.  In particular,
 \begin{equation}\label{p7:eq:A-bounds}
- 2M-\lfloor\log_2M\rfloor-1\le A(M)\le2M-1
+ 2M-\Floor{\log_2M}-1\le A(M)\le2M-1
  \qquad(M\ge1).
 \end{equation}
 The recursions
@@ -10042,12 +10052,12 @@ follow immediately.
 \begin{corollary}[Spectral parity formula]\label{p7:cor:spectral-parity}
 For every $M\ge0$,
 \begin{equation}\label{p7:eq:spectral-parity}
- \boxed{\ (-1)^{\RankOperator\mathbf 1_{[1,M]}(D)}=(-1)^{A(M)}
- =(-1)^{s_2(M)}=\ThueMorseSignSymbol_M.\ }
+ \boxed{\ (-1)^{\RankOperator\IndicatorOf{[1,M]}(D)}=(-1)^{A(M)}
+ =(-1)^{\BinaryDigitSum(M)}=\ThueMorseSignSymbol_M.\ }
 \end{equation}
 Hence, for $M<x<M+1$,
 \[
- \sgnPartxx\Phi(x)=(-1)^{\RankOperator\mathbf 1_{[1,M]}(D)}=\ThueMorseSignSymbol_M.
+ \sgnPartxx\Phi(x)=(-1)^{\RankOperator\IndicatorOf{[1,M]}(D)}=\ThueMorseSignSymbol_M.
 \]
 \end{corollary}
 
@@ -10059,11 +10069,11 @@ The interval-sign theorem was already present in the Fourier corpus.  What is ne
 
 \subsection{Dyadic-block statistics}
 
-For uniform $M$ in $\{0,\ldots,2^n-1\}$, the random variable $s_2(M)$ is binomial $\operatorname{Bin}(n,1/2)$.  Thus
+For uniform $M$ in $\{0,\ldots,2^n-1\}$, the random variable $\BinaryDigitSum(M)$ is binomial $\operatorname{Bin}(n,1/2)$.  Thus
 \begin{equation}\label{p7:eq:block-mean}
  \frac1{2^n}\sum_{M=0}^{2^n-1}\bigl(2M-A(M)\bigr)=\frac n2,
  \qquad
- \operatorname{Var}(2M-A(M))=\frac n4.
+ \Variance(2M-A(M))=\frac n4.
 \end{equation}
 The de Moivre--Laplace theorem gives
 \begin{equation}\label{p7:eq:count-clt}
@@ -10098,7 +10108,7 @@ Write the tail spectrally:
  T_M=\sum_{j=0}^{\infty}4^{-j}
  \sum_{n>M/2^j}\frac1{n^2}.
 \]
-For $j\le\lfloor\log_2M\rfloor$, the inner tail is at most $2^j/M$; summing gives less than $2/M$.  For the remaining $j$, bound the inner sum by $\zeta(2)$ and the geometric tail by $2/M^2$.  If $|z|^2/m^2\le1/2$, then $|\log(1-w)|\le2|w|$, and summation proves \cref{p7:eq:det-tail}.
+For $j\le\Floor{\log_2M}$, the inner tail is at most $2^j/M$; summing gives less than $2/M$.  For the remaining $j$, bound the inner sum by $\zeta(2)$ and the geometric tail by $2/M^2$.  If $|z|^2/m^2\le1/2$, then $|\log(1-w)|\le2|w|$, and summation proves \cref{p7:eq:det-tail}.
 \end{proof}
 
 \section{Spectral zeta, determinant coefficients, and cumulants}
@@ -10187,7 +10197,7 @@ Coefficient comparison gives \cref{p7:eq:c-rec}.
 
 \subsection{A spectral interpretation of the known cumulants}
 
-Let $X$ be the centered random variable in \cref{p7:eq:prob-sum}.  Since $\mathbb E\EulerE^{itX}=\Phi(t/(2\pi))$, comparison of \cref{p7:eq:logPhi} with the cumulant expansion gives
+Let $X$ be the centered random variable in \cref{p7:eq:prob-sum}.  Since $\Expectation\EulerE^{itX}=\Phi(t/(2\pi))$, comparison of \cref{p7:eq:logPhi} with the cumulant expansion gives
 \begin{equation}\label{p7:eq:cumulants}
  \kappa_{2r}(X)=\frac{B_{2r}}{2r(1-4^{-r})},
  \qquad
@@ -10279,7 +10289,7 @@ The first Fourier coefficient in \cref{p7:eq:Ptheta} is
 with modulus $1.276446747088608\times10^{-6}$.  Thus the oscillation is small but exact.  It is not an error term: it is a Fourier series forced by the pole lattice of $\zeta_D$.
 
 \begin{remark}[Two kinds of self-similar fluctuation]
-The exact counting remainder $-s_2(M)$ is discontinuous and arithmetic.  The heat remainder $\Pcal_\Theta(\log_2(1/t))$ is smooth and analytic.  They are two transforms of the same dyadic spectral multiplicity: a sharp cutoff retains binary carries, whereas exponential smoothing turns the scale lattice into an analytic periodic wave.
+The exact counting remainder $-\BinaryDigitSum(M)$ is discontinuous and arithmetic.  The heat remainder $\Pcal_\Theta(\log_2(1/t))$ is smooth and analytic.  They are two transforms of the same dyadic spectral multiplicity: a sharp cutoff retains binary carries, whereas exponential smoothing turns the scale lattice into an analytic periodic wave.
 \end{remark}
 
 \section{Exact local jets at all integer zeros}
@@ -10415,10 +10425,10 @@ The integers $m$ and $2m$ have the same odd part, while their multiplicities dif
 
 \subsection{Thue--Morse signs of the leading jets}
 
-For $m>0$, write its odd part as $q=2k+1$.  The established interval-sign theorem gives $\sgnPartxx\Phi(q/2)=(-1)^{s_2(k)}$.  Hence
+For $m>0$, write its odd part as $q=2k+1$.  The established interval-sign theorem gives $\sgnPartxx\Phi(q/2)=(-1)^{\BinaryDigitSum(k)}$.  Hence
 \begin{equation}\label{p7:eq:jet-sign}
  \boxed{\ \sgnPartxx\Phi^{(1+\nu_2(m))}(m)
- =-(-1)^{s_2((q-1)/2)}.\ }
+ =-(-1)^{\BinaryDigitSum((q-1)/2)}.\ }
 \end{equation}
 Thus the leading Taylor coefficient at every positive zero is controlled by the Thue--Morse bit of half the predecessor of its odd part.
 
@@ -10504,9 +10514,9 @@ For $M\ge1$, define
 \end{equation}
 Put
 \[
- J=\lfloor\log_2M\rfloor,
+ J=\Floor{\log_2M},
  \qquad
- L_j=\left\lfloor\frac{M}{2^j}\right\rfloor.
+ L_j=\Floor{\frac{M}{2^j}}.
 \]
 
 \begin{theorem}[Finite multiscale factorization]\label{p7:thm:finite-E}
@@ -10517,7 +10527,7 @@ One has
 \end{equation}
 Its degree in $u$ is
 \begin{equation}\label{p7:eq:EM-degree}
- \deg_u\Ecal_M=A(M)=2M-s_2(M).
+ \deg_u\Ecal_M=A(M)=2M-\BinaryDigitSum(M).
 \end{equation}
 Writing
 \begin{equation}\label{p7:eq:EM-coeff-def}
@@ -10881,25 +10891,25 @@ For fixed $0<Q<1$, the nonzero zeros of $\Phi_Q$ are exactly
 \end{equation}
 with multiplicity $a_m=1+\nu_2(m)$.  Hence
 \begin{equation}\label{p7:eq:q-sign}
- \boxed{\ \sgnPartxx\Phi_Q(x)=(-1)^{s_2(M)}
+ \boxed{\ \sgnPartxx\Phi_Q(x)=(-1)^{\BinaryDigitSum(M)}
  \quad\text{for}\quad [M]_Q<x<[M+1]_Q.\ }
 \end{equation}
 If $Q=\EulerE^{-t}$, define
 \begin{equation}\label{p7:eq:MQ}
- M_Q(R)=\left\lfloor
+ M_Q(R)=\Floor{
  \frac2t\arsinh\!\left(R\sinh\frac t2\right)
- \right\rfloor.
+ }.
 \end{equation}
 Then the number of nonzero zeros in $|z|\le R$, counted with multiplicity, is
 \begin{equation}\label{p7:eq:q-zero-count}
  \boxed{\ \mathcal N_{\Phi_Q}(R)
- =4M_Q(R)-2s_2(M_Q(R)).\ }
+ =4M_Q(R)-2\BinaryDigitSum(M_Q(R)).\ }
 \end{equation}
 For fixed $Q<1$, $\mathcal N_{\Phi_Q}(R)=O(\log R)$ and $\Phi_Q$ has order zero.  The limit $Q\uparrow1$ is a singular transition to the linear zero growth and order one of $\Phi$.
 \end{theorem}
 
 \begin{proof}
-The sequence $[m]_Q$ is strictly increasing.  The product \cref{p7:eq:PhiQ} gives the zero set and multiplicities.  Crossing the first $M$ positive zeros changes sign by $(-1)^{A(M)}=(-1)^{s_2(M)}$.  Formula \cref{p7:eq:q-int-sinh} shows that $[m]_Q\le R$ exactly when
+The sequence $[m]_Q$ is strictly increasing.  The product \cref{p7:eq:PhiQ} gives the zero set and multiplicities.  Crossing the first $M$ positive zeros changes sign by $(-1)^{A(M)}=(-1)^{\BinaryDigitSum(M)}$.  Formula \cref{p7:eq:q-int-sinh} shows that $[m]_Q\le R$ exactly when
 \[
  m\le\frac2t\arsinh\!\left(R\sinh(t/2)\right),
 \]
@@ -10977,7 +10987,7 @@ One has
  \operatorname{mult}_{D_b}(m)&=1+\nu_b(m),\label{p7:eq:mb}\\
  \zeta_{D_b}(s)&=\frac{\zeta(s)}{1-b^{-s}},\label{p7:eq:zetab}\\
  A_b(M):=\sum_{m\le M}(1+\nu_b(m))
- &=\sum_{j\ge0}\left\lfloor\frac{M}{b^j}\right\rfloor
+ &=\sum_{j\ge0}\Floor{\frac{M}{b^j}}
  =\frac{bM-s_b(M)}{b-1}.\label{p7:eq:Ab}
 \end{align}
 For symmetric $q$-integers,
@@ -11000,7 +11010,7 @@ The associated $q$-Euler determinant is
 \begin{proof}
 All statements follow by splitting off the $j=0$ summand and relabeling $j\mapsto j-1$.  The digit formula uses
 \[
- \sum_{j\ge1}\left\lfloor\frac{M}{b^j}\right\rfloor
+ \sum_{j\ge1}\Floor{\frac{M}{b^j}}
  =\frac{M-s_b(M)}{b-1}.
 \]
 The $q$-scaling follows from $[bn]_Q=[b]_Q[n]_{Q^b}$.
@@ -11008,7 +11018,7 @@ The $q$-scaling follows from $[bn]_Q=[b]_Q[n]_{Q^b}$.
 
 The dyadic case is distinguished because the parity of \cref{p7:eq:Ab} collapses to
 \[
- (-1)^{A_2(M)}=(-1)^{s_2(M)},
+ (-1)^{A_2(M)}=(-1)^{\BinaryDigitSum(M)},
 \]
 which is exactly Thue--Morse.  Thus the Thue--Morse sign is not an accidental decoration: it is the parity character singled out by the base-$2$ spectral tower.
 
@@ -11061,7 +11071,7 @@ The new identities suggest several complementary algorithms:
 
 \subsection{Two independent appearances of $q$-binomial structure}
 
-The existing Fabius corpus derives base-$1/2$ Gaussian-binomial coefficients from finite dyadic coefficient extraction and exact values of $F$ at dyadic rationals.  The present report derives Gaussian-binomial coefficients from a different object: finite spectral determinants of the zero divisor of $\widehat\RvachevUp$.  The common mechanism is multiscale dyadic refinement:
+The existing Fabius corpus derives base-$1/2$ Gaussian-binomial coefficients from finite dyadic coefficient extraction and exact values of $F$ at dyadic rationals.  The present report derives Gaussian-binomial coefficients from a different object: finite spectral determinants of the zero divisor of $\FourierTwoPiTransformOf{\RvachevUp}$.  The common mechanism is multiscale dyadic refinement:
 \[
  \text{dyadic value formulas}
  \longleftarrow \text{refinement blocks}
@@ -11100,7 +11110,7 @@ The operator-theoretic presentation is conceptually compact, but a successful Le
 The most accessible statements are:
 \begin{enumerate}[leftmargin=2em]
 \item $a_m=1+\nu_2(m)$ and the recursions $a_{2m}=a_m+1$, $a_{2m+1}=1$;
-\item $\sum_{m\le M}a_m=2M-s_2(M)$;
+\item $\sum_{m\le M}a_m=2M-\BinaryDigitSum(M)$;
 \item the finite factorization \cref{p7:eq:finite-pch};
 \item the Gaussian-binomial coefficient formula \cref{p7:eq:CMk};
 \item the finite form of the single-factor identity \cref{p7:eq:single-qfactor};
@@ -11386,13 +11396,23 @@ Cambridge University Press, 2003.
 \newcommand{\ddPartll}{\,\mathrm{d}}
 \newcommand{\ePartll}{\mathrm{e}}
 \newcommand{\iiPartll}{\mathrm{i}}
-\newcommand{\RPartll}{\mathbb{R}}
-\newcommand{\CPartll}{\mathbb{C}}
-\newcommand{\NPartll}{\mathbb{N}}
-\newcommand{\ZPartll}{\mathbb{Z}}
-\newcommand{\QPartll}{\mathbb{Q}}
+\newcommand{\RPartll}{\RealNumbers}
+\newcommand{\CPartll}{\ComplexNumbers}
+\newcommand{\NPartll}{\NaturalNumbers}
+\newcommand{\ZPartll}{\IntegerNumbers}
+\newcommand{\QPartll}{\RationalNumbers}
 \newcommand{\absPartll}[1]{\left\lvert #1\right\rvert}
 \newcommand{\brak}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+% LOCAL-NON-FOURIER-HAT: \GeometricProductExtrapolant denotes the order-r q-Richardson extrapolant of the base-b finite sinc product.
+\newcommand{\GeometricProductExtrapolant}[3]{\widehat P_{#1;#2,#3}}
+% LOCAL-NON-FOURIER-HAT: \DyadicProductExtrapolant denotes the base-two specialization of the geometric product extrapolant.
+\newcommand{\DyadicProductExtrapolant}[2]{\widehat P_{#1,#2}}
+% LOCAL-NON-FOURIER-HAT: \PhaseLockedLogEstimator denotes the order-r phase-locked estimate of the endpoint logarithmic correction Psi.
+\newcommand{\PhaseLockedLogEstimator}[1]{\widehat\Psi_{#1}}
+% LOCAL-NON-FOURIER-HAT: \PhaseLockedExponentialEstimator denotes the exponential of the order-r phase-locked logarithmic estimate.
+\newcommand{\PhaseLockedExponentialEstimator}[1]{\widehat{\mathcal A}_{#1}}
+% LOCAL-NON-FOURIER-HAT: \PhaseLockedCoefficientEstimator denotes the coefficient A_s recovered from the order-r phase-locked estimate.
+\newcommand{\PhaseLockedCoefficientEstimator}[2]{\widehat A_{#1}^{(#2)}}
 \newcommand{\lambert}{W_{-1}}
 \newcommand{\repoPartll}{\textsc{ProveIt}}
 \newcommand{\statusprovedPartll}{\textcolor{darkgreen}{\textbf{proved here}}}
@@ -11537,11 +11557,11 @@ P_{b,N}(t)=\prod_{k=1}^{N}\SincRad\!\left(\frac{t}{b^k}\right).
 \end{equation}
 The dyadic case is $P=P_2$. In a common Fourier normalization for Rvachev's up-function,
 \begin{equation}
-\widehat{\RvachevUp}(\xi)=\prod_{h=0}^{\infty}\SincRad\!\left(\frac{\pi\xi}{2^h}\right)
+\FourierTwoPi{\RvachevUp}(\xi)=\prod_{h=0}^{\infty}\SincRad\!\left(\frac{\pi\xi}{2^h}\right)
 =\SincRad(\pi\xi)P_2(\pi\xi).
 \label{p8:eq:up-factor}
 \end{equation}
-Thus every result for $P_2$ immediately applies to the nontrivial tail of $\widehat{\RvachevUp}$.
+Thus every result for $P_2$ immediately applies to the nontrivial tail of $\FourierTwoPiTransformOf{\RvachevUp}$.
 
 Set
 \begin{equation}
@@ -11802,7 +11822,7 @@ This boundedness is not generic for high-order polynomial extrapolation. It is a
 
 Assume $\rho_N<\pi$ and $P_{b,N}(t)\ne0$. Define
 \begin{equation}
-\widehat P_{b;N,r}(t)
+\GeometricProductExtrapolant{b}{N}{r}(t)
 =\sgnPartll(P_{b,N}(t))
 \exp\!\left(\sum_{j=0}^{r}\lambda_{r,j}(q)
 \log|P_{b,N+j}(t)|\right).
@@ -11810,7 +11830,7 @@ Assume $\rho_N<\pi$ and $P_{b,N}(t)\ne0$. Define
 \end{equation}
 Equivalently,
 \begin{equation}
-|\widehat P_{b;N,r}(t)|
+|\GeometricProductExtrapolant{b}{N}{r}(t)|
 =\prod_{j=0}^{r}|P_{b,N+j}(t)|^{\lambda_{r,j}(q)}.
 \label{p8:eq:Phat-product}
 \end{equation}
@@ -11821,7 +11841,7 @@ Negative exponents are harmless because the relevant truncations are nonzero.
 Under the preceding hypotheses,
 \begin{align}
 E_{b;N,r}(t)
-&:=\log\frac{|\widehat P_{b;N,r}(t)|}{|P_b(t)|}
+&:=\log\frac{|\GeometricProductExtrapolant{b}{N}{r}(t)|}{|P_b(t)|}
 \label{p8:eq:E-def}\\
 &=\sum_{m=r+1}^{\infty}d_m(t)z_N^mS_{r,m}(q)
 \label{p8:eq:E-series}\\
@@ -11853,17 +11873,17 @@ The constant term survives because $S_{r,0}=1$, while the first $r$ powers vanis
 \label{p8:cor:brackets}
 For $t\ne0$ under the hypotheses of \cref{p8:thm:exact-rich-error},
 \begin{equation}
-|\widehat P_{b;N,2s+1}(t)|<|P_b(t)|<
-|\widehat P_{b;N,2s}(t)|
+|\GeometricProductExtrapolant{b}{N}{2s+1}(t)|<|P_b(t)|<
+|\GeometricProductExtrapolant{b}{N}{2s}(t)|
 \qquad(s\ge0).
 \label{p8:eq:bracket}
 \end{equation}
 Thus any two consecutive extrapolation levels give a certified enclosure of the infinite product. In particular,
 \begin{equation}
-\left|\log\frac{|\widehat P_{b;N,r}(t)|}{|P_b(t)|}\right|
+\left|\log\frac{|\GeometricProductExtrapolant{b}{N}{r}(t)|}{|P_b(t)|}\right|
 \le
-\left|\log\frac{|\widehat P_{b;N,r}(t)|}
-{|\widehat P_{b;N,r+1}(t)|}\right|
+\left|\log\frac{|\GeometricProductExtrapolant{b}{N}{r}(t)|}
+{|\GeometricProductExtrapolant{b}{N}{r+1}(t)|}\right|
 \label{p8:eq:aposteriori-log}
 \end{equation}
 whenever the two levels lie on opposite sides as in \cref{p8:eq:bracket}.
@@ -11910,7 +11930,7 @@ Let $a=(\rho_N/\pi)^2<1$. Then
 \end{equation}
 Consequently, for every fixed admissible pair $(t,N)$,
 \begin{equation}
-\widehat P_{b;N,r}(t)\longrightarrow P_b(t)
+\GeometricProductExtrapolant{b}{N}{r}(t)\longrightarrow P_b(t)
 \qquad(r\to\infty)
 \label{p8:eq:r-convergence}
 \end{equation}
@@ -11946,17 +11966,17 @@ Then
 R_{N,r}(t)=\sum_{j=0}^{r}\lambda_{r,j}(q)
 \log|P_{b,N+j}(t)|,
 \qquad
-\widehat P_{b;N,r}=\sgnPartll(P_{b,N})e^{R_{N,r}}.
+\GeometricProductExtrapolant{b}{N}{r}=\sgnPartll(P_{b,N})e^{R_{N,r}}.
 \label{p8:eq:rich-table-result}
 \end{equation}
 \end{algorithm}
 
 In multiplicative form,
 \begin{equation}
-|\widehat P_{b;N,s}|
+|\GeometricProductExtrapolant{b}{N}{s}|
 =\left(
-\frac{|\widehat P_{b;N+1,s-1}|}
-{|\widehat P_{b;N,s-1}|^{q^s}}
+\frac{|\GeometricProductExtrapolant{b}{N+1}{s-1}|}
+{|\GeometricProductExtrapolant{b}{N}{s-1}|^{q^s}}
 \right)^{1/(1-q^s)}.
 \label{p8:eq:multiplicative-recursion}
 \end{equation}
@@ -11966,13 +11986,13 @@ The logarithmic implementation is preferable because it avoids underflow in the 
 
 For $b=2$, $q=1/4$. The first transforms are
 \begin{align}
-|\widehat P_{N,1}|
+|\DyadicProductExtrapolant{N}{1}|
 &=|P_N|^{-1/3}|P_{N+1}|^{4/3},
 \label{p8:eq:r1-dyadic}\\
-|\widehat P_{N,2}|
+|\DyadicProductExtrapolant{N}{2}|
 &=|P_N|^{1/45}|P_{N+1}|^{-4/9}|P_{N+2}|^{64/45},
 \label{p8:eq:r2-dyadic}\\
-|\widehat P_{N,3}|
+|\DyadicProductExtrapolant{N}{3}|
 &=|P_N|^{-1/2835}|P_{N+1}|^{4/135}
 |P_{N+2}|^{-64/135}|P_{N+3}|^{4096/2835}.
 \label{p8:eq:r3-dyadic}
@@ -11987,15 +12007,15 @@ The exact tail coefficients and the data-driven transform can be combined.
 \label{p8:cor:hybrid}
 For $s\ge0$, define
 \begin{equation}
-\widehat P_{b;N,r}^{[s]}(t)
-=\widehat P_{b;N,r}(t)
+\GeometricProductExtrapolant{b}{N}{r}^{[s]}(t)
+=\GeometricProductExtrapolant{b}{N}{r}(t)
 \exp\!\left(-\sum_{m=r+1}^{r+s}
  d_m(t)z_N^mS_{r,m}(q)\right).
 \label{p8:eq:hybrid}
 \end{equation}
 Then
 \begin{equation}
-\log\frac{|\widehat P_{b;N,r}^{[s]}(t)|}{|P_b(t)|}
+\log\frac{|\GeometricProductExtrapolant{b}{N}{r}^{[s]}(t)|}{|P_b(t)|}
 =\sum_{m=r+s+1}^{\infty}d_m(t)z_N^mS_{r,m}(q),
 \label{p8:eq:hybrid-error}
 \end{equation}
@@ -12021,7 +12041,7 @@ Then \cref{p8:eq:E-series} is $E=\sum_{m\ge1}e_m^{(r)}z_N^m$. Exponentiation and
 \label{p8:thm:bell-relative}
 Under the hypotheses of \cref{p8:thm:exact-rich-error},
 \begin{equation}
-\frac{|\widehat P_{b;N,r}(t)|}{|P_b(t)|}
+\frac{|\GeometricProductExtrapolant{b}{N}{r}(t)|}{|P_b(t)|}
 =1+\sum_{n=r+1}^{\infty}
 \frac{1}{n!}
 \mathcal B_n\!\left(1!e_1^{(r)},2!e_2^{(r)},\ldots,n!e_n^{(r)}\right)z_N^n.
@@ -12029,7 +12049,7 @@ Under the hypotheses of \cref{p8:thm:exact-rich-error},
 \end{equation}
 In particular, because $e_1^{(r)}=\cdots=e_r^{(r)}=0$, the first relative-error coefficient equals the first logarithmic-error coefficient:
 \begin{equation}
-\frac{|\widehat P_{b;N,r}|}{|P_b|}-1
+\frac{|\GeometricProductExtrapolant{b}{N}{r}|}{|P_b|}-1
 =e_{r+1}^{(r)}z_N^{r+1}+O(z_N^{r+2}).
 \label{p8:eq:first-relative}
 \end{equation}
@@ -12058,7 +12078,7 @@ D^\ell\!\left(
 \sum_{j=0}^{r}\lambda_{r,j}\log|P_{b,N+j}(t)|
 -\log|P_b(t)|\right)
 =
-\sum_{m\ge\max(r+1,\lceil\ell/2\rceil)}
+\sum_{m\ge\max(r+1,\Ceiling{\ell/2})}
 \frac{\gamma_m(2m)_\ell t^{2m-\ell}}
 {1-q^m}z_N^mS_{r,m}(q).
 \label{p8:eq:derivative-error}
@@ -12076,9 +12096,9 @@ where the sign of $P_b$ is locally constant. Combining \cref{p8:eq:derivative-er
 
 \subsection{Application to interzero extrema}
 
-Between consecutive zeros of $\widehat{\RvachevUp}$, an extremum of its modulus satisfies
+Between consecutive zeros of $\FourierTwoPiTransformOf{\RvachevUp}$, an extremum of its modulus satisfies
 \begin{equation}
-\frac{\ddPartll}{\ddPartll\xi}\log|\widehat{\RvachevUp}(\xi)|=0.
+\frac{\ddPartll}{\ddPartll\xi}\log|\FourierTwoPi{\RvachevUp}(\xi)|=0.
 \label{p8:eq:peak-equation}
 \end{equation}
 \Cref{p8:eq:up-factor} separates the first sinc factor from $P_2(\pi\xi)$. Theorem~\ref{p8:thm:derivative-accel} gives a certified high-order approximation to the tail contribution in \cref{p8:eq:peak-equation}. This suggests a numerically stable alternative to multiplying many tiny sinc factors and then differentiating the product.
@@ -12088,10 +12108,10 @@ Between consecutive zeros of $\widehat{\RvachevUp}$, an extremum of its modulus 
 
 Let
 \begin{equation}
-\varepsilon_n=(-1)^{s_2(n)},
+\varepsilon_n=(-1)^{\BinaryDigitSum(n)},
 \label{p8:eq:epsilon}
 \end{equation}
-where $s_2(n)$ is the binary digit sum. The standard finite product identity
+where $\BinaryDigitSum(n)$ is the binary digit sum. The standard finite product identity
 \begin{equation}
 \sum_{n=0}^{2^N-1}\varepsilon_n z^n
 =\prod_{j=0}^{N-1}(1-z^{2^j})
@@ -12102,10 +12122,10 @@ where $s_2(n)$ is the binary digit sum. The standard finite product identity
 \label{p8:thm:lean-complex-block-transforms}
 For every $N\ge0$ and $u,a,\zeta\in\CPartll$,
 \begin{align}
- \sum_{n=0}^{2^N-1}u^{s_2(n)}\exp(n\zeta)
+ \sum_{n=0}^{2^N-1}u^{\BinaryDigitSum(n)}\exp(n\zeta)
  &=\prod_{j=0}^{N-1}\left(1+u\exp(2^j\zeta)\right),
  \label{p8:eq:lean-weighted-complex-block}\\
- \sum_{n=0}^{2^N-1}u^{s_2(n)}\exp(a+n\zeta)
+ \sum_{n=0}^{2^N-1}u^{\BinaryDigitSum(n)}\exp(a+n\zeta)
  &=\exp(a)\prod_{j=0}^{N-1}\left(1+u\exp(2^j\zeta)\right),
  \label{p8:eq:lean-weighted-complex-block-affine}\\
  \sum_{n=0}^{2^N-1}\varepsilon_n\exp(n\zeta)
@@ -12183,7 +12203,7 @@ which gives the result.
 \label{p8:cor:TM-accelerated}
 For $t\ne0$ and admissible $N$,
 \begin{equation}
-|\widehat P_{N,r}(t)|
+|\DyadicProductExtrapolant{N}{r}(t)|
 =\prod_{j=0}^{r}
 \left(
 2^{(N+j)(N+j-1)/2}|t|^{-(N+j)}|T_{N+j}(t)|
@@ -12205,7 +12225,7 @@ remain a route for further formal treatment.
 All values in this section were recomputed with 100 decimal digits. The reference value used 300 sinc factors; at the displayed precision its omitted tail is negligible relative to every table entry. We report absolute logarithmic error
 \[
 \varepsilon_{N,r}(t)=
-\left|\log|\widehat P_{N,r}(t)|-\log|P(t)|\right|,
+\left|\log|\DyadicProductExtrapolant{N}{r}(t)|-\log|P(t)|\right|,
 \]
 where $r=0$ denotes the raw truncation $P_N$.
 
@@ -12469,7 +12489,7 @@ analytic logarithm or an infinite-series convergence argument.
 \nolinkurl{bellComplete_completeHomogeneousBellInput} is the generic finite
 Bell identity, and
 \nolinkurl{completeHomogeneousEvalOn_eq_factorialNormalize_completeBellPolynomial}
-is its normalized form over a commutative $\mathbb Q$-algebra.
+is its normalized form over a commutative $\RationalNumbers$-algebra.
 \path{LambertPhaseLockedBell.lean} specializes this result through
 \nolinkurl{shiftedReciprocalPowerSum},
 \nolinkurl{shiftedReciprocalBellInput}, and
@@ -12492,7 +12512,7 @@ residual series and add no new asymptotic estimate.
 
 Define
 \begin{equation}
-\widehat\Psi_r(\lambda)
+\PhaseLockedLogEstimator{r}(\lambda)
 =\sum_{j=0}^{r}\omega_{r,j}(\lambda)Y(x_j(\lambda)).
 \label{p8:eq:Psi-hat}
 \end{equation}
@@ -12501,7 +12521,7 @@ Define
 \label{p8:thm:Psi-extraction}
 Assume the all-orders expansion \cref{p8:eq:endpoint-template} holds uniformly along a fixed compact phase set. Then, as $\lambda\to\infty$ with its fractional part fixed,
 \begin{align}
-\widehat\Psi_r(\lambda)-\Psi(\lambda)
+\PhaseLockedLogEstimator{r}(\lambda)-\Psi(\lambda)
 &\sim \frac{(-1)^r}{(\lambda)_{r+1}}
 \sum_{s=0}^{\infty}A_{r+1+s}(\lambda)
  h_s\!\left(\frac1\lambda,\ldots,\frac1{\lambda+r}\right)
@@ -12571,8 +12591,8 @@ row $r=0$ and the empty residual truncation $S_{\mathrm L}=0$.
 
 Exponentiating produces a multiplicative estimator of the periodic amplitude:
 \begin{equation}
-\widehat{\mathcal A}_r(\lambda)
-=\exp(\widehat\Psi_r(\lambda))
+\PhaseLockedExponentialEstimator{r}(\lambda)
+=\exp(\PhaseLockedLogEstimator{r}(\lambda))
 =\prod_{j=0}^{r}
 \left(\frac{F(x_j)}{\exp(\mathcal W_{\mathrm{MSE}}(x_j))}
 \right)^{\omega_{r,j}(\lambda)}.
@@ -12587,12 +12607,12 @@ not part of the closed Lean phase-extraction tranche.
 
 The same nodes can estimate $A_1,A_2,\ldots$ by differentiating the interpolating polynomial at $h=0$. If $\ell_j(h)$ is the Lagrange basis for $h_j$, then
 \begin{equation}
-\widehat A_s^{(r)}(\lambda)
+\PhaseLockedCoefficientEstimator{s}{r}(\lambda)
 =\frac1{s!}\sum_{j=0}^{r}\ell_j^{(s)}(0)Y(x_j),
 \qquad 0\le s\le r,
 \label{p8:eq:As-extractor}
 \end{equation}
-with $\widehat A_0^{(r)}=\widehat\Psi_r$. For $s=1$,
+with $\PhaseLockedCoefficientEstimator{0}{r}=\PhaseLockedLogEstimator{r}$. For $s=1$,
 \begin{equation}
 \ell_j'(0)
 =-\omega_{r,j}\sum_{\substack{0\le k\le r\\k\ne j}}(\lambda+k).
@@ -12614,7 +12634,7 @@ Unlike the geometric $q$-weights, the phase-locked weights grow polynomially in 
 Equivalently, if $J\sim\mathrm{Binomial}(r,1/2)$,
 \begin{equation}
 \kappa_r^{\mathrm L}(\lambda)
-=\frac{2^r}{r!}\mathbb E(\lambda+J)^r
+=\frac{2^r}{r!}\Expectation(\lambda+J)^r
 \sim_{\lambda\to\infty,\,r\,\mathrm{fixed}}\frac{2^r}{r!}\lambda^r.
 \label{p8:eq:lambert-condition-asymp}
 \end{equation}
@@ -12683,7 +12703,7 @@ The sinc scheme is unusually favorable because the geometric-node Lagrange weigh
 
 \subsection{Certified Fourier evaluation}
 
-Using \cref{p8:eq:up-factor}, compute the first factor exactly and bracket $P_2(\pi\xi)$ by consecutive transformed levels. This produces a certified enclosure for $|\widehat\RvachevUp(\xi)|$ away from zeros. Because the work is done in logarithms, the method remains usable deep in the log-normal decay regime where direct products underflow.
+Using \cref{p8:eq:up-factor}, compute the first factor exactly and bracket $P_2(\pi\xi)$ by consecutive transformed levels. This produces a certified enclosure for $|\FourierTwoPi{\RvachevUp}(\xi)|$ away from zeros. Because the work is done in logarithms, the method remains usable deep in the log-normal decay regime where direct products underflow.
 
 \subsection{Peak localization and envelope testing}
 
@@ -12734,7 +12754,7 @@ The sinc-side results are well suited to formalization because their analytic an
       factorially weighted Bell input attached to that reciprocal alphabet.
 \item \texttt{fabiusPhaseLockedReducedSample} and
       \texttt{fabiusPhaseLockedPeriodicEstimator}: the compiled forms of
-      $Y(x_j)$ and $\widehat\Psi_r$.
+      $Y(x_j)$ and $\PhaseLockedLogEstimator{r}$.
 \item \texttt{fabiusPhaseLockedResidualTerm} and
       \texttt{fabiusPhaseLockedResidualPartialSum}: the compiled individual
       and finite residual expressions in \eqref{p8:eq:Psi-full-error}.
@@ -12869,7 +12889,7 @@ Bell identity.  Its semiring-cleared theorem
 \nolinkurl{bellComplete_completeHomogeneousBellInput} avoids division, while
 \nolinkurl{completeHomogeneousEvalOn_eq_factorialNormalize_completeBellPolynomial}
 gives the factorially normalized report form over a commutative
-$\mathbb Q$-algebra.  Thus the preceding disclaimer remains specific to the
+$\RationalNumbers$-algebra.  Thus the preceding disclaimer remains specific to the
 generating-series module: neither module evaluates a formal series at an
 analytic argument or proves convergence.
 
@@ -12919,7 +12939,7 @@ Independently,
 \texttt{ExponentialBell.lean} identify the universal weighted-partition
 formula for an exponential coefficient with
 \texttt{SaddleExpansion.expCoeff} over every commutative
-\(\mathbb Q\)-algebra.  The later \texttt{MomentCumulantAlgebra.lean}
+\(\RationalNumbers\)-algebra.  The later \texttt{MomentCumulantAlgebra.lean}
 factorially normalizes the same engine into named complete-Bell and inverse
 moment--cumulant transforms, with the classical Bell recurrence and
 normalized inverse laws.  In particular, the coefficient mechanism behind
@@ -12927,7 +12947,7 @@ normalized inverse laws.  In particular, the coefficient mechanism behind
 \path{CompleteHomogeneousBell.lean}: the division-free complete-Bell identity
 uses the factorially weighted finite power sums, and
 \nolinkurl{completeHomogeneousEvalOn_eq_factorialNormalize_completeBellPolynomial}
-gives the normalized formula over a commutative $\mathbb Q$-algebra.  No
+gives the normalized formula over a commutative $\RationalNumbers$-algebra.  No
 analytic logarithm is used.  The geometric principal
 specialization and all finite geometric residual moments are therefore no
 longer formalization obligations.
@@ -13052,7 +13072,7 @@ The logarithmic construction is naturally local to a zero-free component. A glob
 
 \subsection{Direct formulas for the phase coefficients}
 
-The transformed moments \cref{p8:eq:lambert-moments} show exactly how $A_{r+1},A_{r+2},\ldots$ enter the extraction error. This invites an inverse problem: compute $\widehat\Psi_r$ and $\widehat A_s^{(r)}$ at many phases, then identify their Fourier coefficients in terms of the Gamma--zeta data already present in the endpoint theory.
+The transformed moments \cref{p8:eq:lambert-moments} show exactly how $A_{r+1},A_{r+2},\ldots$ enter the extraction error. This invites an inverse problem: compute $\PhaseLockedLogEstimator{r}$ and $\PhaseLockedCoefficientEstimator{s}{r}$ at many phases, then identify their Fourier coefficients in terms of the Gamma--zeta data already present in the endpoint theory.
 
 \subsection{A sign theory for Lambert corrections}
 
@@ -13249,7 +13269,7 @@ The numerical checks used arbitrary-precision arithmetic with the following dire
 \begin{align*}
 P_N(t)&=\prod_{k=1}^{N}\frac{\sin(t/2^k)}{t/2^k},\\
 P(t)&\approx\prod_{k=1}^{300}\frac{\sin(t/2^k)}{t/2^k},\\
-\log|\widehat P_{N,r}(t)|
+\log|\DyadicProductExtrapolant{N}{r}(t)|
 &=\sum_{j=0}^{r}\lambda_{r,j}(1/4)\log|P_{N+j}(t)|.
 \end{align*}
 At 100-digit working precision, the 300-factor reference tail is far below the displayed errors. Symbolic checks verified the moment identities through $r=8$ and multiple values of $m$ before the general proofs were written.
@@ -13322,7 +13342,7 @@ source TeX included in the repository as \texttt{Lacunary\_products.tex}.
 
 % extra macros for part 9
 \renewcommand{\headrulewidth}{0.4pt}
-\newcommand{\VarPartcc}{\operatorname{Var}}
+\newcommand{\VarPartcc}{\Variance}
 \newcommand{\suppPartcc}{\SupportOperator}
 \newcommand{\vtwoPartcc}{v_2}
 \newcommand{\wtPartcc}{\BinaryDigitSum}
@@ -13354,7 +13374,7 @@ which their distinctive material was merged.
 The principal new results, in the precise sense ``not found explicitly in the inspected
 corpus'', are as follows.  First, the Rvachev transform admits the $q$-Pochhammer product
 \[
- \widehat\RvachevUp(z)=\prod_{\ell\ge1}(z^2/\ell^2;1/4)_\infty
+ \FourierTwoPi{\RvachevUp}(z)=\prod_{\ell\ge1}(z^2/\ell^2;1/4)_\infty
                =\prod_{n\ge1}(1-z^2/n^2)^{\vtwoPartcc(n)+1},
 \]
 so its integer zero multiplicity is exactly $\vtwoPartcc(n)+1$.  A finite version has both a
@@ -13366,7 +13386,7 @@ $-\log\Theta(\EulerE^{-s})$.  Its Lambert-series coefficients satisfy
 \[
  -\log\Theta(\EulerE^{-s})
  =\sum_{n\ge1}\frac{2^{\vtwoPartcc(n)+1}-1}{n}\EulerE^{-ns}
- =\sum_{n\ge1}\frac{2^{\OrderOperator_{z=n}\widehat\RvachevUp}-1}{n}\EulerE^{-ns},
+ =\sum_{n\ge1}\frac{2^{\OrderOperator_{z=n}\FourierTwoPi{\RvachevUp}}-1}{n}\EulerE^{-ns},
 \]
 giving a direct spectral--endpoint dictionary.  Third, its Mellin transform is
 \[
@@ -13503,14 +13523,14 @@ Let $U_1,U_2,\ldots$ be independent $\operatorname{Unif}[0,1]$ variables and set
 has density $\RvachevUp$.  Consequently $Y$ is symmetric, $|Y|\le1$, and its Fourier transform
 under the convention
 \[
- \widehat f(z)=\int_\RealNumbers f(x)\EulerE^{-2\pi\ImaginaryUnit xz}\Differential x
+ \FourierTwoPi{f}(z)=\int_\RealNumbers f(x)\EulerE^{-2\pi\ImaginaryUnit xz}\Differential x
 \]
 is a characteristic function on the real axis.
 
 \subsection{Sinc product}
 Write $\SincRad w=\sin w/w$ with the removable value $1$ at $w=0$, and set
 \begin{equation}
- \Phi(z)=\widehat\RvachevUp(z).
+ \Phi(z)=\FourierTwoPi{\RvachevUp}(z).
 \end{equation}
 \statusE\ The exact product and refinement law are
 \begin{equation}
@@ -13758,7 +13778,7 @@ $\binom{2N-1}{2r-1}=\frac rN\binom{2N}{2r}$, gives
 \section{The binary specialization: a $2$-adic zero divisor}
 \label{p9:sec:zero-divisor}
 
-Set $q=1/4$.  Then $\Phi_{1/4}=\Phi=\widehat\RvachevUp$.
+Set $q=1/4$.  Then $\Phi_{1/4}=\Phi=\FourierTwoPiTransformOf{\RvachevUp}$.
 
 \begin{theorem}[Arithmetic canonical product]\label{p9:thm:arithmetic-product}
 \statusN\ The Rvachev transform has the genus-zero product
@@ -13809,7 +13829,7 @@ Consequently \eqref{p9:eq:q-log-full} at $q=1/4$ can be read directly from the z
 \end{corollary}
 
 \begin{proof}
-Since $\mu(n)=\sum_{j\ge0}\mathbf1_{2^j\mid n}$, Tonelli's theorem gives
+Since $\mu(n)=\sum_{j\ge0}\IndicatorOf{2^j\mid n}$, Tonelli's theorem gives
 \[
  \sum_n\mu(n)n^{-w}=\sum_{j\ge0}\sum_{2^j\mid n}n^{-w}
  =\zeta(w)\sum_{j\ge0}2^{-jw}.
@@ -13986,7 +14006,7 @@ Equivalently, the weighted zero-multiplicity Dirichlet series is
 \begin{proof}
 By \eqref{p9:eq:zero-mult}, $\mu(n)=\vtwoPartcc(n)+1$, so \eqref{p9:eq:a-mu} is
 \eqref{p9:eq:a-n}.  For the Dirichlet series, write
-$a(n)=\sum_{j\ge0}2^j\mathbf1_{2^j\mid n}$ and use Tonelli:
+$a(n)=\sum_{j\ge0}2^j\IndicatorOf{2^j\mid n}$ and use Tonelli:
 \[
  \sum_{n\ge1}a(n)n^{-w}
  =\zeta(w)\sum_{j\ge0}2^{j(1-w)}
@@ -14066,19 +14086,19 @@ Put
  \chi_k=\frac{2\pi\ImaginaryUnit k}{L},\qquad k\in\IntegerNumbers.                 \label{p9:eq:chi}
 \end{equation}
 We use the Fourier convention
-$P(u)=\sum_{k\in\IntegerNumbers}\widehat P(k)\EulerE^{2\pi\ImaginaryUnit ku}$.
+$P(u)=\sum_{k\in\IntegerNumbers}\FourierSeriesCoefficient{P}{k}\EulerE^{2\pi\ImaginaryUnit ku}$.
 
 \begin{theorem}[Mellin recovery of the full periodic spectrum]\label{p9:thm:P-Fourier}
 \statusE\ The periodic function in \eqref{p9:eq:Lambda-periodic} has
 \begin{equation}
  \boxed{
- \widehat P(k)=-\frac{\Gamma(-\chi_k)\zeta(1-\chi_k)}L,
+ \FourierSeriesCoefficient{P}{k}=-\frac{\Gamma(-\chi_k)\zeta(1-\chi_k)}L,
  \qquad k\ne0,}                                           \label{p9:eq:P-nonzero}
 \end{equation}
 which agrees with the nonzero-mode formula already established in the corpus.  Its mean is
 \begin{equation}
  \boxed{
- \widehat P(0)
+ \FourierSeriesCoefficient{P}{0}
  =-\frac L{12}
  -\frac1L\left(\frac{\pi^2}{12}-\gamma_1-\frac{\gamma^2}{2}\right),} \label{p9:eq:P-mean}
 \end{equation}
@@ -14087,7 +14107,7 @@ convention
 $\zeta(1+w)=w^{-1}+\gamma-\gamma_1w+\BigO(w^2)$.
 Numerically,
 \begin{equation}
- \widehat P(0)=-1.1090453654341866821907455547\ldots.       \label{p9:eq:P-mean-num}
+ \FourierSeriesCoefficient{P}{0}=-1.1090453654341866821907455547\ldots.       \label{p9:eq:P-mean-num}
 \end{equation}
 These coefficient formulas, including the mean, are established in the corpus (the mean is
 formalized there).  \statusN\ The corpus-relative novelty is the unified derivation below:
@@ -14131,14 +14151,14 @@ Hence
 \]
 The residue of $M(w)s^{-w}$ at zero is
 $(\log s)^2/(2L)-(\log s)/2+L/12+c_0/L$.  Comparing with
-\eqref{p9:eq:E-small} shows that this constant is $-\widehat P(0)$.
+\eqref{p9:eq:E-small} shows that this constant is $-\FourierSeriesCoefficient{P}{0}$.
 \end{proof}
 
 \begin{remark}[Why the oscillation is easy to miss]
 The first nonzero mode is tiny:
 \[
- |\widehat P(1)|=1.0627116252\ldots\times10^{-6},\qquad
- |\widehat P(2)|=6.6927864\ldots\times10^{-13}.
+ |\FourierSeriesCoefficient{P}{1}|=1.0627116252\ldots\times10^{-6},\qquad
+ |\FourierSeriesCoefficient{P}{2}|=6.6927864\ldots\times10^{-13}.
 \]
 Differentiation magnifies the first mode, but it is still small.  This explains why a
 non-periodic numerical fit can look excellent while being wrong at the sharp error scale.
@@ -14149,10 +14169,10 @@ Define
 \begin{equation}
  \Pi(u)=-\frac12-\frac{P'(u)}L.                             \label{p9:eq:Pi}
 \end{equation}
-Then $\widehat\Pi(0)=-1/2$, while for $k\ne0$,
+Then $\FourierSeriesCoefficient{\Pi}{0}=-1/2$, while for $k\ne0$,
 \begin{equation}
  \boxed{
- \widehat\Pi(k)=-\frac{\Gamma(1-\chi_k)\zeta(1-\chi_k)}L.} \label{p9:eq:Pi-Fourier}
+ \FourierSeriesCoefficient{\Pi}{k}=-\frac{\Gamma(1-\chi_k)\zeta(1-\chi_k)}L.} \label{p9:eq:Pi-Fourier}
 \end{equation}
 The first harmonic has magnitude $9.6331836245\ldots\times10^{-6}$.
 
@@ -14285,7 +14305,7 @@ existence and uniqueness of the saddle.  Also
 and
 $g'(t)=\bigl(\EulerE^t(t-1)+1\bigr)/(\EulerE^t-1)^2>0$ for $t>0$.
 Thus $A$ increases continuously from $0$ to infinity (for instance, the first
-$\lfloor\log_2s\rfloor$ summands are uniformly positive once $s$ is large), so
+$\Floor{\log_2s}$ summands are uniformly positive once $s$ is large), so
 \eqref{p9:eq:xc-def} has one solution.  Since $x=A(s)/s=\Expectation_sX$ decreases with $s$, one has
 $A(s)>1/L$ exactly when $x<x_c$.
 
@@ -14823,7 +14843,7 @@ $F$ & bounded Fabius distribution function\\
 $\RvachevUp$ & Rvachev's even compactly supported density\\
 $X$ & $\sum_{j\ge1}2^{-j}U_j$, supported on $[0,1]$\\
 $Y$ & $2X-1$, with density $\RvachevUp$\\
-$\Phi$ & $\widehat\RvachevUp$, the binary infinite sinc product\\
+$\Phi$ & $\FourierTwoPiTransformOf{\RvachevUp}$, the binary infinite sinc product\\
 $\varepsilon_n$ & signed Thue--Morse value $(-1)^{\wtPartcc(n)}$\\
 $\Theta(q)$ & Thue--Morse Mahler product $\sum\varepsilon_nq^n$\\
 $B,\Lambda$ & negative Laplace transform of $X$ and its logarithm\\
@@ -14902,8 +14922,8 @@ Advances in Computational Mathematics \textbf{5} (1996), 329--359.
 
 % extra macros for part 10
 \renewcommand{\headrulewidth}{0.4pt}
-\newcommand{\VarPartiii}{\operatorname{Var}}
-\newcommand{\CovPartiii}{\operatorname{Cov}}
+\newcommand{\VarPartiii}{\Variance}
+\newcommand{\CovPartiii}{\Covariance}
 \newcommand{\suppPartiii}{\SupportOperator}
 \newcommand{\wtPartiii}{\BinaryDigitSum}
 \newcommand{\LawPartiii}{\mathcal L}
@@ -15194,7 +15214,7 @@ Three tempting projects were rejected because they would duplicate the corpus to
 \begin{enumerate}
 \item We do not offer a thirteenth derivation of the leading Fourier decay
 \(
- \log|\widehat\RvachevUp(t)|\asymp-(\log|t|)^2/(2\log2)
+ \log|\FourierAngular{\RvachevUp}(t)|\asymp-(\log|t|)^2/(2\log2)
 \)
 with the known zero-set and limsup qualifications.  The live Fourier drafts compare precisely
 such arguments.
@@ -15575,9 +15595,9 @@ $V_j=2U_j-1\sim\mathrm{Unif}[-1,1]$, then
 \[
  Y_{1/2}=\sum_{j\ge0}2^{-j-1}V_j,
  \qquad
- \widehat u_{1/2}(t)=\prod_{j\ge1}\SincRad(t/2^j),
+ \CharacteristicFunction{Y_{1/2}}(t)=\prod_{j\ge1}\SincRad(t/2^j),
 \]
-which is Rvachev's normalized up-function.  The affine relation between densities is
+whose density is Rvachev's normalized up-function.  The affine relation between densities is
 \begin{equation}
  u_q(y)=\frac12 f_q\!\left(\frac{y+1}{2}\right),
  \qquad
@@ -15694,7 +15714,7 @@ The characteristic functions of $Z_q$ and $Y_q$ are
 \begin{align}
  \phi_q(t):=\Expectation\EulerE^{\ImaginaryUnit tZ_q}
  &=\prod_{j=0}^{\infty}\SincRad\!\left(\frac{cq^jt}{2}\right),  \label{p10:eq:phi-z}\\
- \widehat u_q(t)=\Expectation\EulerE^{\ImaginaryUnit tY_q}
+ \CharacteristicFunction{Y_q}(t)=\Expectation\EulerE^{\ImaginaryUnit tY_q}
  &=\prod_{j=0}^{\infty}\SincRad(cq^jt).                         \label{p10:eq:phi-y}
 \end{align}
 For every integer $N\ge1$ and every $t\ne0$,
@@ -16285,7 +16305,7 @@ By symmetry, the same law holds for $1-F_q(1-x)$.
 \begin{proof}
 For the upper bound, choose
 \[
- n_+(x)=\left\lfloor\frac{L+\log c}{a}\right\rfloor+1.
+ n_+(x)=\Floor{\frac{L+\log c}{a}}+1.
 \]
 Then $x\le cq^{n_+-1}$, so \eqref{p10:eq:simplex-volume} applies.  Taking logarithms gives
 \begin{equation}
@@ -16305,7 +16325,7 @@ Thus the right side of \eqref{p10:eq:upper-log} is
 
 For the lower bound, take
 \[
- n_-(x)=\left\lceil\frac{\log(2/x)}{a}\right\rceil.
+ n_-(x)=\Ceiling{\frac{\log(2/x)}{a}}.
 \]
 Then $q^{n_-}\le x/2$.  The ceiling relation also gives
 $q^{n_--1}>x/2$, so the largest threshold in the product event is at most
@@ -16437,7 +16457,7 @@ between geometric scales.
 
 \begin{theorem}[Reciprocal-integer multiplicities]
 \label{p10:thm:zero-multiplicity}
-Let $q=1/b$ with an integer $b\ge2$.  Then every nonzero zero of $\widehat u_q$ lies on the
+Let $q=1/b$ with an integer $b\ge2$.  Then every nonzero zero of $\CharacteristicFunction{Y_q}$ lies on the
 lattice
 \begin{equation}
  t=\frac{\pi N}{1-1/b},\qquad N\in\IntegerNumbers\setminus\{0\}.          \label{p10:eq:zero-lattice}
@@ -16469,7 +16489,7 @@ For the classical up-function $b=2$, the zeros are at $2\pi N$ in the convention
 \begin{proposition}[Generic simplicity criterion]
 \label{p10:prop:generic-zeros}
 If $q^d\notin\RationalNumbers$ for every integer $d\ge1$, then every nonzero zero of
-$\widehat u_q$ is simple.
+$\CharacteristicFunction{Y_q}$ is simple.
 \end{proposition}
 
 \begin{proof}
