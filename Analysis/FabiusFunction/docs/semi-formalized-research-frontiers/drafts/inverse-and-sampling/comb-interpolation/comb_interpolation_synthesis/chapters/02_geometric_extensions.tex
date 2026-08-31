@@ -1,0 +1,2869 @@
+\part{Analytic, probabilistic, and Mellin extensions}
+
+\section*{Editorial map of the independent extensions}
+\addcontentsline{toc}{section}{Editorial map of the independent extensions}
+The finite geometric-comb algebra is stated once in the preceding part. This part retains only the independent material not subsumed by that spine: confluent modal filters, regular variation, geometric-knot splines, geometric-uniform laws, Mellin symbols, superflat divergence, and the reciprocal Rvachev filter.
+
+\section{The Gaussian origin filter as a dilation polynomial}
+\label{g1:sec:operator}
+
+The preceding part derives the origin weights from geometric Lagrange
+interpolation.  The following compact operator form is the common engine for
+the extensions in this part.  For $0<q<1$ put
+\begin{align}
+ \lambda_{n,k}^{(q)}
+ &:={(-1)^{n-k}q^{\binom{n-k+1}{2}}
+       \over (q;q)_k(q;q)_{n-k}},
+ \qquad 0\le k\le n,
+ \label{g1:eq:lambda}\\
+ (\Gc_{n,q}f)(A)&:=\sum_{k=0}^n\lambda_{n,k}^{(q)}f(Aq^k).
+ \label{g1:eq:G-definition}
+\end{align}
+
+\begin{theorem}[Dilation-polynomial factorization]
+\label{g1:thm:operator-factorization}
+Let $(T_qf)(x)=f(qx)$.  Then
+\begin{align}
+ W_{n,q}(z):=\sum_{k=0}^n\lambda_{n,k}^{(q)}z^k
+ &=\prod_{j=1}^n{z-q^j\over1-q^j},
+ \label{g1:eq:row-polynomial}\\
+ \Gc_{n,q}=W_{n,q}(T_q)
+ &={1\over(q;q)_n}\prod_{j=1}^n(T_q-q^jI),
+ \label{g1:eq:operator-factorization}\\
+ \Gc_{0,q}=I,
+ \qquad
+ \Gc_{n,q}&={T_q-q^nI\over1-q^n}\Gc_{n-1,q}.
+ \label{g1:eq:operator-recursion}
+\end{align}
+Consequently the filter can be evaluated in place: starting with
+$y_k=f(Aq^k)$, at stage $j=1,\ldots,n$ replace
+\begin{equation}
+ y_k\longleftarrow{y_{k+1}-q^jy_k\over1-q^j}
+ \qquad(0\le k\le n-j).
+ \label{g1:eq:triangular-filter}
+\end{equation}
+The final entry is $(\Gc_{n,q}f)(A)$.
+\end{theorem}
+
+\begin{proof}
+The finite $q$-binomial theorem expands the product in
+\eqref{g1:eq:row-polynomial} and gives exactly the coefficients
+\eqref{g1:eq:lambda}.  Substituting the commuting operator $T_q$ for $z$
+proves the factorization; separating its last factor proves the recursion.
+Applied to the sample vector, that recursion is precisely the in-place update
+\eqref{g1:eq:triangular-filter}.
+\end{proof}
+
+\begin{corollary}[Exact power multiplier and all integer moments]
+\label{g1:cor:power-multiplier}
+For $A>0$ and a chosen branch of $A^\alpha,q^\alpha$,
+\begin{equation}
+ (\Gc_{n,q}x^\alpha)(A)
+ =A^\alpha W_{n,q}(q^\alpha)
+ =A^\alpha q^{\alpha n}{(q^{1-\alpha};q)_n\over(q;q)_n}.
+ \label{g1:eq:pure-power}
+\end{equation}
+In particular, for every $d\in\NaturalNumbers$,
+\begin{equation}
+ \sum_{k=0}^n\lambda_{n,k}^{(q)}(Aq^k)^d
+ =\begin{cases}
+  1,&d=0,\\
+  0,&1\le d\le n,\\
+  (-1)^nA^dq^{\binom{n+1}{2}}
+  \GaussianBinomial{d-1}{n}{q},&d\ge n+1.
+ \end{cases}
+ \label{g1:eq:all-moments}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The function $x^\alpha$ is an eigenfunction of $T_q$ with eigenvalue
+$q^\alpha$, so \eqref{g1:eq:row-polynomial} gives the first equality.
+Factoring $q^\alpha$ from every numerator factor gives the Pochhammer form.
+For integral $d$, its factors give the vanishing range; when $d\ge n+1$,
+reversing the factors and using the factorial definition of the Gaussian
+coefficient gives \eqref{g1:eq:all-moments}.
+\end{proof}
+
+\begin{theorem}[Exact analytic tail and reciprocal-$q$ majorant]
+\label{g1:thm:sharp-majorant}
+Let $f(z)=\sum_{m\ge0}a_mz^m$.  Formally, and analytically whenever the
+series is absolutely convergent,
+\begin{equation}
+ (\Gc_{n,q}f)(A)-f(0)
+ =(-1)^nq^{\binom{n+1}{2}}
+  \sum_{r\ge0}\GaussianBinomial{n+r}{n}{q}a_{n+1+r}A^{n+1+r}.
+ \label{g1:eq:exact-analytic-tail}
+\end{equation}
+If $|a_m|\le C R^{-m}$ and $t=|A|/R<1$, then
+\begin{equation}
+ \left|(\Gc_{n,q}f)(A)-f(0)\right|
+ \le Cq^{\binom{n+1}{2}}{t^{n+1}\over(t;q)_{n+1}}.
+ \label{g1:eq:sharp-majorant}
+\end{equation}
+This majorant is coefficientwise sharp: equality in the majorizing sum is
+attained when the relevant coefficients have the common phase and magnitudes
+$CR^{-m}$.
+\end{theorem}
+
+\begin{proof}
+Apply \eqref{g1:eq:all-moments} term by term and reindex $m=n+1+r$.
+Taking absolute values leaves the series
+\[
+ Cq^{\binom{n+1}{2}}t^{n+1}
+ \sum_{r\ge0}\GaussianBinomial{n+r}{n}{q}t^r.
+\]
+The reciprocal finite $q$-binomial theorem identifies the last sum with
+$(t;q)_{n+1}^{-1}$.  The asserted phase choice makes every triangle
+inequality an equality.
+\end{proof}
+
+\section{Confluent modal extrapolation}
+\label{g1:sec:modal}
+
+Ordinary polynomial cancellation assumes an integer-power Taylor expansion.
+Endpoint asymptotics in differential equations, Mellin analysis, and inverse
+special functions often contain fractional powers and logarithms.  The
+dilation-operator viewpoint gives the correct generalization immediately.
+
+\begin{definition}[Mode polynomial]
+Let $\alpha_1,\ldots,\alpha_J\in\ComplexNumbers$ have pairwise distinct spectral
+points $q^{\alpha_j}$, none equal to $1$, and let $m_1,\ldots,m_J\in\NaturalNumbers$, and put $N=\sum_jm_j$.  Define
+\begin{equation}
+ W_{\bm\alpha,\bm m}(z)
+ :=\prod_{j=1}^J
+ \left(\frac{z-q^{\alpha_j}}{1-q^{\alpha_j}}\right)^{m_j}
+ =\sum_{k=0}^Nw_kz^k,
+ \label{g1:eq:mode-polynomial}
+\end{equation}
+and
+\[
+ (\Rc_{\bm\alpha,\bm m}f)(x):=\sum_{k=0}^Nw_kf(q^kx).
+\]
+\end{definition}
+
+\begin{theorem}[Confluent annihilation]
+The filter \eqref{g1:eq:mode-polynomial} preserves constants and, for every
+$j$ and $0\le s<m_j$, annihilates
+\[
+ x^{\alpha_j}(\log x)^s.
+\]
+It is the unique filter of degree at most $N$ with these properties.
+\end{theorem}
+
+\begin{proof}
+For a general polynomial $W(z)=\sum_kw_kz^k$,
+\begin{align*}
+ \sum_kw_k(q^kx)^\alpha(\log(q^kx))^s
+ &=x^\alpha\sum_kw_kq^{k\alpha}
+   (\log x+k\log q)^s\\
+ &=x^\alpha(\log x+\partial_\alpha)^sW(q^\alpha).
+\end{align*}
+A zero of multiplicity $m_j$ at $q^{\alpha_j}$ makes the right side vanish for
+$s<m_j$.  The normalization $W(1)=1$ preserves constants.  Conversely, the
+annihilation equations imply zeros with the stated multiplicities; degree and
+normalization then force \eqref{g1:eq:mode-polynomial}.
+\end{proof}
+
+\begin{corollary}[Exact general multiplier]
+For any $\alpha\in\ComplexNumbers$ and $s\in\NaturalNumbers$,
+\begin{equation}
+ \Rc_{\bm\alpha,\bm m}
+ [x^\alpha(\log x)^s]
+ =x^\alpha(\log x+\partial_\alpha)^s
+  W_{\bm\alpha,\bm m}(q^\alpha).
+ \label{g1:eq:general-mode-multiplier}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Because $x^\alpha(\log x)^s=\partial_\alpha^s x^\alpha$ and the
+filter is a finite linear combination of dilations, differentiation in
+$\alpha$ commutes with the filter.  Apply the pure-power multiplier and
+expand $\partial_\alpha^s\!\left(x^\alpha
+W_{\bm\alpha,\bm m}(q^\alpha)\right)$ by writing
+$\partial_\alpha$ on $x^\alpha$ as multiplication by $\log x$.
+\end{proof}
+
+\begin{theorem}[Puiseux--log acceleration]
+Suppose, as $x\downarrow0$,
+\begin{equation}
+ f(x)=a_0+
+ \sum_{j=1}^J\sum_{s=0}^{m_j-1}
+ a_{j,s}x^{\alpha_j}(\log x)^s
+ +O\!\left(x^\beta(1+|\log x|^r)\right),
+ \label{g1:eq:puiseux-log-expansion}
+\end{equation}
+where $\Re\alpha_j>0$ and $\beta>0$.  Then
+\begin{equation}
+ (\Rc_{\bm\alpha,\bm m}f)(x)
+ =a_0+O\!\left(x^\beta(1+|\log x|^r)\right).
+ \label{g1:eq:puiseux-acceleration}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The finite sum of displayed modes is annihilated exactly.  For each fixed
+$k\le N$, replacing $x$ by $q^kx$ preserves the stated remainder order, with a
+constant depending on $q,k,\beta,r$.  Summing finitely many weighted remainders
+proves the assertion.
+\end{proof}
+
+\begin{remark}[Relation to Richardson extrapolation]
+This is geometric Richardson extrapolation in its natural spectral form.  The
+usual integer-power Gaussian filter corresponds to
+$\alpha_j=j$, $m_j=1$.  Repeated exponents handle logarithmic resonance without
+introducing derivative data at the nodes.
+\end{remark}
+
+\begin{problem}[Stability-optimal modal design]
+For a prescribed list of modes, \eqref{g1:eq:mode-polynomial} is algebraically
+forced at minimum degree.  If extra degrees of freedom are allowed, determine
+the polynomial $W$ with $W(1)=1$ and the required confluent zeros that minimizes
+$\sum_k|w_k|$, or a weighted noise norm adapted to the expected precision of
+$f(q^kx)$.  This is a finite convex optimization problem whose asymptotic
+structure appears unexplored in the Fabius/Rvachev setting.
+\end{problem}
+
+\section{Stability, boundary layers, and regular variation}
+\label{g1:sec:stability}
+
+\subsection{Exact total variation}
+
+Because the signs of \eqref{g1:eq:lambda} alternate, the total variation can be
+read from the row polynomial at $-1$.
+
+\begin{theorem}[Exact noise amplification]
+\label{g1:thm:row-norm}
+For $0<q<1$,
+\begin{equation}
+ K_n(q):=\sum_{k=0}^n|\lambda_{n,k}^{(q)}|
+ =\frac{(-q;q)_n}{(q;q)_n}
+ =\prod_{j=1}^n\frac{1+q^j}{1-q^j}.
+ \label{g1:eq:K-n}
+\end{equation}
+Consequently
+\begin{equation}
+ K_n(q)\uparrow K_\infty(q):=\frac{(-q;q)_\infty}{(q;q)_\infty}<\infty.
+ \label{g1:eq:K-infinity}
+\end{equation}
+If each sample has absolute error at most $\delta$, the extrapolated absolute
+error is at most $K_n(q)\delta$.
+\end{theorem}
+
+\begin{proof}
+Since
+$\Sign\lambda_{n,k}=(-1)^{n-k}$,
+\[
+ \sum_k|\lambda_{n,k}|=(-1)^n\sum_k\lambda_{n,k}(-1)^k
+ =(-1)^nW_{n,q}(-1).
+\]
+Substitute \eqref{g1:eq:row-polynomial}.  Monotone convergence of the positive
+product gives \eqref{g1:eq:K-infinity}.
+\end{proof}
+
+For reference,
+\[
+ K_\infty(1/4)\approx1.9692603537,
+ \qquad K_\infty(1/2)\approx8.2559879358,
+ \qquad K_\infty(3/4)\approx803.0132718.
+\]
+Thus the Fourier base $Q=1/4$ associated with dyadic Rvachev scaling is much
+better conditioned than a direct dyadic $q=1/2$ extrapolation.
+
+\subsection{The singular regime $q\uparrow1$}
+
+Two limits must be distinguished.  For fixed $n$,
+\begin{equation}
+ K_n(q)\sim\frac{2^n}{n!(1-q)^n}
+ \qquad(q\uparrow1).
+ \label{g1:eq:fixed-n-q1}
+\end{equation}
+If the order tends to infinity first, the growth is nonperturbative.
+
+\begin{theorem}[Modular asymptotic]
+Write $q=e^{-t}$ with $t\downarrow0$.  Then
+\begin{equation}
+ K_\infty(e^{-t})
+ \sim\frac{\sqrt t}{2\sqrt\pi}
+ \exp\!\left(\frac{\pi^2}{4t}\right).
+ \label{g1:eq:K-modular}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use
+$(-q;q)_\infty=(q^2;q^2)_\infty/(q;q)_\infty$, so
+\[
+ K_\infty(q)=\frac{(q^2;q^2)_\infty}{(q;q)_\infty^2}.
+\]
+The standard Dedekind-eta asymptotic
+\[
+ (e^{-t};e^{-t})_\infty
+ \sim\sqrt{\frac{2\pi}{t}}
+ \exp\!\left(-\frac{\pi^2}{6t}+\frac{t}{24}\right)
+\]
+applied at $t$ and $2t$ gives \eqref{g1:eq:K-modular}; the elementary exponential
+corrections cancel.
+\end{proof}
+
+The plot in \cref{g1:fig:stability} shows the practical consequence: ratios close
+to one are unsuitable for high-order accumulation-point extrapolation unless
+precision grows very rapidly.
+
+\subsection{The reversed-row boundary layer}
+
+Put $r=n-k$.  For fixed $r$,
+\begin{equation}
+ \lambda_{n,n-r}^{(q)}\longrightarrow
+ \beta_r^{(q)}:=
+ \frac{(-1)^rq^{\binom{r+1}{2}}}{(q;q)_\infty(q;q)_r}.
+ \label{g1:eq:beta}
+\end{equation}
+The limiting signed generating function is
+\begin{equation}
+ \sum_{r=0}^{\infty}\beta_r^{(q)}z^r
+ =\frac{(qz;q)_\infty}{(q;q)_\infty}.
+ \label{g1:eq:beta-generating}
+\end{equation}
+In particular, its mass is $1$ and its total variation is $K_\infty(q)$.
+
+\begin{theorem}[$\ell^1$ boundary-layer convergence]
+Extend the reversed row by zero for $r>n$.  Then
+\begin{equation}
+ \sum_{r=0}^{\infty}
+ \left|\lambda_{n,n-r}^{(q)}-\beta_r^{(q)}\right|
+ \longrightarrow0.
+ \label{g1:eq:l1-boundary}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Pointwise convergence follows from $(q;q)_{n-r}\to(q;q)_\infty$.  After
+multiplication by $(-1)^r$, all terms are nonnegative.  Their total masses are
+$K_n(q)$ and $K_\infty(q)$, respectively, and the former tends to the latter.
+Scheffe's lemma for counting measure gives convergence in $\ell^1$.
+\end{proof}
+
+This theorem explains the stability mechanism.  For large $n$, the effective
+weights sit a bounded number of steps behind the smallest node $Aq^n$; the
+large-node coefficients are superexponentially small.
+
+\subsection{Convergence for merely continuous data}
+
+Analyticity is not needed for consistency.
+
+\begin{theorem}[Continuous accumulation-point convergence]
+If $f$ is continuous on $[0,A]$, then
+\begin{equation}
+ (\Gc_{n,q}f)(A)\longrightarrow f(0).
+ \label{g1:eq:continuous-convergence}
+\end{equation}
+More quantitatively, if
+$\omega_f(\delta)=\sup_{0\le x\le\delta}|f(x)-f(0)|$, then for
+$1\le J\le n+1$,
+\begin{align}
+ |(\Gc_{n,q}f)(A)-f(0)|
+ &\le K_\infty(q)\,\omega_f(Aq^J)\notag\\
+ &\quad+\frac{2\|f\|_\infty J}{(q;q)_\infty^2}
+ q^{\binom{n-J+2}{2}}.
+ \label{g1:eq:modulus-bound}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Split the weighted sum into $k\ge J$ and $k<J$.  On the first part, every node
+is at most $Aq^J$, so the total is bounded by $K_n\omega_f(Aq^J)$.  On the
+second part,
+\[
+ |\lambda_{n,k}^{(q)}|
+ \le\frac{q^{\binom{n-k+1}{2}}}{(q;q)_\infty^2}
+ \le\frac{q^{\binom{n-J+2}{2}}}{(q;q)_\infty^2}.
+\]
+There are at most $J$ such terms, and
+$|f(Aq^k)-f(0)|\le2\|f\|_\infty$.  First fix $J$ and let $n\to\infty$, then let
+$J\to\infty$.
+\end{proof}
+
+\subsection{Regularly varying endpoint germs}
+
+A function $f$ is regularly varying at $0+$ with index $\alpha\in\RealNumbers$ if
+$f(tx)/f(t)\to x^\alpha$ as $t\downarrow0$ for every $x>0$, with $f$ eventually
+of one sign.  Standard background is in \cite{BinghamGoldieTeugels}.
+
+\begin{theorem}[Regular-variation transfer]
+Let $f$ be regularly varying at $0+$ with index $\alpha$.  Then, for fixed
+$A>0$,
+\begin{equation}
+ \frac{(\Gc_{n,q}f)(A)}{f(Aq^n)}
+ \longrightarrow C_q(\alpha):=
+ \frac{(q^{1-\alpha};q)_\infty}{(q;q)_\infty}.
+ \label{g1:eq:regular-variation}
+\end{equation}
+For a positive integer $\alpha=m$, the limit is zero because the numerator
+product contains the factor $1-q^0$.
+\end{theorem}
+
+\begin{proof}
+Reverse the row:
+\[
+ \frac{(\Gc_{n,q}f)(A)}{f(Aq^n)}
+ =\sum_{r=0}^n\lambda_{n,n-r}^{(q)}
+   \frac{f(Aq^{n-r})}{f(Aq^n)}.
+\]
+For fixed $r$, regular variation gives a limit $q^{-\alpha r}$, while
+\eqref{g1:eq:beta} gives the coefficient limit.  Potter bounds dominate the
+ratio by $Cq^{-(\alpha+\varepsilon)r}$ away from a finite initial segment; the
+factor $q^{r(r+1)/2}$ in $\beta_r$ makes the resulting series summable for every
+$\alpha$.  The finitely many terms corresponding to nodes bounded away from
+zero have superexponentially small coefficients.  Dominated convergence and
+\eqref{g1:eq:beta-generating} now give
+\[
+ \sum_{r\ge0}\beta_r^{(q)}q^{-\alpha r}
+ =\frac{(q^{1-\alpha};q)_\infty}{(q;q)_\infty}.
+\]
+\end{proof}
+
+For pure powers, \eqref{g1:eq:regular-variation} is already visible in the exact
+formula \eqref{g1:eq:pure-power}.  The theorem says that slowly varying factors do
+not change the limiting multiplier.
+
+\section{Smooth remainders and geometric-knot B-splines}
+\label{g1:sec:bspline}
+
+\subsection{Hermite--Genocchi representation}
+
+The exact Taylor tail is best for analytic data.  For finite smoothness, a
+divided-difference representation reveals positivity and sign.
+
+\begin{theorem}[Geometric Hermite--Genocchi remainder]
+Let $f\in C^{n+1}[0,A]$ and let
+$(T_*,T_0,\ldots,T_n)$ be uniformly distributed on the $(n+1)$-simplex,
+that is, Dirichlet with all parameters equal to $1$.  Put
+\begin{equation}
+ Y_{n,A,q}:=A\sum_{k=0}^nq^kT_k.
+ \label{g1:eq:Y-dirichlet}
+\end{equation}
+Then
+\begin{equation}
+ (\Gc_{n,q}f)(A)-f(0)
+ =\frac{(-1)^nA^{n+1}q^{\binom{n+1}{2}}}{(n+1)!}
+ \Expectation\bigl[f^{(n+1)}(Y_{n,A,q})\bigr].
+ \label{g1:eq:HG-remainder}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $I_nf$ be the interpolating polynomial through $A,Aq,\ldots,Aq^n$.
+The ordinary interpolation remainder at $0$ gives
+\begin{align*}
+ I_nf(0)-f(0)
+ &=(-1)^nA^{n+1}q^{\binom{n+1}{2}}
+ f[0,A,Aq,\ldots,Aq^n].
+\end{align*}
+The Hermite--Genocchi formula for a divided difference of order $n+1$ is
+\[
+ f[0,A,Aq,\ldots,Aq^n]
+ =\frac1{(n+1)!}
+ \Expectation f^{(n+1)}\!\left(A\sum_{k=0}^nq^kT_k\right).
+\]
+Since $I_nf(0)=(\Gc_{n,q}f)(A)$, the result follows.
+\end{proof}
+
+\begin{corollary}[Sharp derivative bound and sign]
+Under the hypotheses of the theorem,
+\begin{equation}
+ |(\Gc_{n,q}f)(A)-f(0)|
+ \le\frac{A^{n+1}q^{\binom{n+1}{2}}}{(n+1)!}
+ \|f^{(n+1)}\|_{L^\infty(0,A)}.
+ \label{g1:eq:smooth-bound}
+\end{equation}
+If $f^{(n+1)}$ has a fixed nonzero sign on $(0,A)$, then the remainder has the
+sign of $(-1)^nf^{(n+1)}$.
+\end{corollary}
+
+\begin{proof}
+The Hermite--Genocchi formula expresses the remainder as
+$(-1)^nA^{n+1}q^{\binom{n+1}{2}}/(n+1)!$ times an average of
+$f^{(n+1)}$ over points in $[0,A]$.  Taking absolute values gives the
+bound, while a fixed nonzero sign of the derivative fixes the sign of
+that average.
+\end{proof}
+
+\subsection{Peano kernel and a positive spline density}
+
+For $n\ge1$, define the Peano kernel
+\begin{equation}
+ K_{n,A,q}(t):=\frac1{n!}\sum_{k=0}^n
+ \lambda_{n,k}^{(q)}(Aq^k-t)_+^n,
+ \qquad 0\le t\le A.
+ \label{g1:eq:Peano-kernel}
+\end{equation}
+Then
+\[
+ (\Gc_{n,q}f)(A)-f(0)=\int_0^Af^{(n+1)}(t)K_{n,A,q}(t)\Differential t.
+\]
+Normalize it by
+\begin{equation}
+ B_{n,A,q}(t):=
+ \frac{(-1)^n(n+1)!}{A^{n+1}q^{\binom{n+1}{2}}}K_{n,A,q}(t).
+ \label{g1:eq:B-density}
+\end{equation}
+
+\begin{theorem}[Geometric-knot B-spline]
+The function $B_{n,A,q}$ is the probability density of
+$Y_{n,A,q}$ in \eqref{g1:eq:Y-dirichlet}.  In particular,
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item $B_{n,A,q}\ge0$ and is supported on $[0,A]$;
+\item $\int_0^AB_{n,A,q}(t)\Differential t=1$;
+\item it is the classical univariate B-spline associated with the knots
+$0,Aq^n,\ldots,Aq,A$, up to the displayed normalization;
+\item it is log-concave and hence unimodal on the interior of its support.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Comparing the Peano representation with \eqref{g1:eq:HG-remainder} for arbitrary
+continuous $f^{(n+1)}$ identifies the normalized kernel with the law of
+$Y_{n,A,q}$.  This is also the standard Curry--Schoenberg interpretation of a
+B-spline as the density of a Dirichlet average of its knots; see
+\cite{deBoor}.  Positivity, support, and normalization follow immediately.
+The uniform density on a simplex is log-concave, and linear images preserve
+log-concavity by the Prekopa theorem, proving the last assertion.
+\end{proof}
+
+\begin{remark}[Not the same as a ``quantum B-spline'']
+The density above is a classical B-spline whose knots happen to be geometric.
+It should be distinguished from the quantum B-splines of
+Simeonov--Goldman \cite{SimeonovGoldman}, where continuity conditions are
+formulated using $q$-derivatives.  The two theories meet through divided
+differences and Jackson calculus, but their definitions are different.  The
+geometric-knot density is the one canonically forced by the interpolation
+remainder in this report.
+\end{remark}
+
+\subsection{Exact moments}
+
+\begin{theorem}[Gaussian-binomial B-spline moments]
+For every $r\in\NaturalNumbers$,
+\begin{equation}
+ \Expectation Y_{n,A,q}^r
+ =\frac{r!(n+1)!}{(n+r+1)!}
+ A^r\GaussianBinomial{n+r}{n}{q}.
+ \label{g1:eq:Y-moments}
+\end{equation}
+Equivalently,
+\begin{equation}
+ \int_0^At^rB_{n,A,q}(t)\Differential t
+ =\frac{r!(n+1)!}{(n+r+1)!}
+ A^r\GaussianBinomial{n+r}{n}{q}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For a Dirichlet$(1,\ldots,1)$ vector with $n+2$ components,
+\[
+ \Expectation\left(\sum_i x_iT_i\right)^r
+ =\frac{r!(n+1)!}{(n+r+1)!}h_r(x_0,\ldots,x_{n+1}).
+\]
+Take the knots $0,A,Aq,\ldots,Aq^n$ and apply
+\eqref{gq:eq:h-principal}.
+\end{proof}
+
+Thus the Gaussian coefficient is not only an interpolation residual: it is the
+moment sequence of the positive Peano-kernel distribution after a simple beta
+normalization.
+
+\subsection{A $q$-Pochhammer scaling limit}
+
+The geometric B-spline has a nontrivial boundary-scale limit.  Let
+$E_*,E_0,E_1,\ldots$ be independent exponential random variables of mean $1$.
+
+\begin{theorem}[Scaling limit of the geometric B-spline]
+For fixed $0<q<1$,
+\begin{equation}
+ \frac{n+2}{A}Y_{n,A,q}
+ \xrightarrow{\ d\ }
+ Z_q:=\sum_{k=0}^{\infty}q^kE_k.
+ \label{g1:eq:Y-scaling-limit}
+\end{equation}
+The limit has moments and Laplace transform
+\begin{align}
+ \Expectation Z_q^r&=\frac{r!}{(q;q)_r},
+ \label{g1:eq:Z-moments}\\
+ \Expectation e^{-sZ_q}&=\frac1{(-s;q)_\infty},\qquad s\ge0.
+ \label{g1:eq:Z-Laplace}
+\end{align}
+For $y>0$ its density admits the absolutely convergent expansion
+\begin{equation}
+ p_q(y)=\frac1{(q;q)_\infty}
+ \sum_{k=0}^{\infty}
+ \frac{(-1)^kq^{\binom{k}{2}}}{(q;q)_k}
+ e^{-q^{-k}y}.
+ \label{g1:eq:Z-density}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use the exponential representation of a uniform Dirichlet vector:
+\[
+ (T_*,T_0,\ldots,T_n)
+ \overset d=
+ \frac{(E_*,E_0,\ldots,E_n)}{E_*+E_0+\cdots+E_n}.
+\]
+The denominator divided by $n+2$ converges almost surely to $1$, while
+$\sum_{k=0}^nq^kE_k$ converges almost surely and in every $L^r$ to $Z_q$.
+Slutsky's theorem proves \eqref{g1:eq:Y-scaling-limit}.  Independence gives
+\[
+ \Expectation e^{-sZ_q}=\prod_{k\ge0}(1+sq^k)^{-1}=(-s;q)_\infty^{-1}.
+\]
+Expanding $1/(t;q)_\infty=\sum_{r\ge0}t^r/(q;q)_r$ around $t=0$ and comparing
+moment-generating coefficients gives \eqref{g1:eq:Z-moments}.
+
+For the density, first decompose the finite product
+$\prod_{j=0}^{N}(1+sq^j)^{-1}$ into simple fractions.  Its coefficient at the
+pole $s=-q^{-k}$ is the finite version of
+\[
+ \frac1{(-s;q)_\infty}
+ =\sum_{k\ge0}
+ \frac{(-1)^kq^{\binom{k+1}{2}}}
+ {(q;q)_k(q;q)_\infty}\frac1{1+sq^k}.
+\]
+For $s\ge0$, the finite coefficients converge to the displayed coefficients
+and are dominated by a constant times
+$q^{\binom{k+1}{2}}/(q;q)_k$; dominated convergence therefore gives the
+infinite partial-fraction identity.  Termwise Laplace inversion gives
+\eqref{g1:eq:Z-density}.  For each $y>0$, the Gaussian factor in $k$ together with
+$e^{-q^{-k}y}$ gives absolute convergence and justifies the inversion.
+\end{proof}
+
+\begin{remark}
+The limit satisfies the perpetuity equation
+\[
+ Z_q\overset d=E_0+qZ_q',
+\]
+where $Z_q'$ is an independent copy.  The $q$-Pochhammer product is therefore
+both an interpolation object and the Laplace transform of the boundary-scale
+limit of the associated B-splines.
+\end{remark}
+
+\section{Geometric-uniform random sums and finite splines}
+\label{g1:sec:uniform-sums}
+
+\subsection{The generic law}
+
+Let $0<b<1$ and let $U_0,U_1,\ldots$ be independent uniforms on $[0,1]$.
+Define
+\begin{equation}
+ X_b:=(1-b)\sum_{j=0}^{\infty}b^jU_j.
+ \label{g1:eq:Xb}
+\end{equation}
+The weights sum to $1$, so $X_b\in[0,1]$.  Splitting off the first summand gives
+the distributional self-similarity
+\begin{equation}
+ X_b\overset d=(1-b)U_0+bX_b',
+ \label{g1:eq:Xb-selfsimilar}
+\end{equation}
+where $X_b'$ is an independent copy.  If $F_b$ is the distribution function,
+then
+\begin{equation}
+ F_b(x)=\int_0^1F_b\!\left(\frac{x-(1-b)u}{b}\right)\Differential u,
+ \label{g1:eq:Fb-integral}
+\end{equation}
+with the conventions $F_b=0$ to the left of $0$ and $F_b=1$ to the right of
+$1$.  At $b=1/2$, this is the Fabius distribution.
+
+\subsection{Finite generalized Irwin--Hall splines}
+
+Let
+\[
+ X_{b,N}:=(1-b)\sum_{j=0}^{N-1}b^jU_j,
+ \qquad a_j=(1-b)b^j.
+\]
+This is a convolution of uniforms on intervals of geometrically decreasing
+width.
+
+\begin{theorem}[Finite box-spline formula]
+For $N\ge1$, the density and distribution function of $X_{b,N}$ are
+\begin{align}
+ f_{b,N}(x)
+ &=\frac1{(N-1)!\prod_{j=0}^{N-1}a_j}
+ \sum_{\varepsilon\in\{0,1\}^N}
+ (-1)^{|\varepsilon|}
+ \left(x-\sum_{j=0}^{N-1}\varepsilon_ja_j\right)_+^{N-1},
+ \label{g1:eq:finite-density}\\
+ F_{b,N}(x)
+ &=\frac1{N!\prod_{j=0}^{N-1}a_j}
+ \sum_{\varepsilon\in\{0,1\}^N}
+ (-1)^{|\varepsilon|}
+ \left(x-\sum_{j=0}^{N-1}\varepsilon_ja_j\right)_+^N,
+ \label{g1:eq:finite-CDF}
+\end{align}
+where
+\begin{equation}
+ \prod_{j=0}^{N-1}a_j=(1-b)^Nb^{N(N-1)/2}.
+ \label{g1:eq:product-widths}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The density of a uniform on $[0,a]$ is
+$a^{-1}(H(x)-H(x-a))$, where $H$ is the Heaviside function.  Convolving $N$
+such factors and expanding the product of translation differences gives the
+alternating subset sum.  The $N$-fold convolution of $H$ is
+$x_+^{N-1}/(N-1)!$.  Integration gives the CDF, and
+\eqref{g1:eq:product-widths} is immediate.
+\end{proof}
+
+For a general $b$, the knots are subset sums of a geometric progression.  At
+the dyadic value they collapse to an arithmetic comb, and the coefficient sign
+is the Thue--Morse sign.
+
+\begin{corollary}[Dyadic Thue--Morse collapse]
+For $b=1/2$,
+\begin{equation}
+ F_{1/2,N}(x)
+ =\frac{2^{N(N+1)/2}}{N!}
+ \sum_{r=0}^{2^N-1}(-1)^{s_2(r)}
+ \left(x-\frac{r}{2^N}\right)_+^N,
+ \label{g1:eq:dyadic-finite-CDF}
+\end{equation}
+where $s_2(r)$ is the binary digit sum.
+\end{corollary}
+
+\begin{proof}
+Here $a_j=2^{-(j+1)}$.  Every subset sum is uniquely $r/2^N$, and the subset
+cardinality has the parity of $s_2(r)$.  The product of widths is
+$2^{-N(N+1)/2}$.
+\end{proof}
+
+This identity explains why a geometric collection of widths produces an
+arithmetic dyadic knot comb: binary representation converts subset selection
+into position on the uniform grid, while the inclusion--exclusion sign becomes
+the Thue--Morse sequence.
+
+\subsection{Convergence to the infinite law}
+
+The omitted tail is bounded deterministically:
+\[
+ 0\le X_b-X_{b,N}\le b^N.
+\]
+Hence
+\begin{equation}
+ F_b(x)\le F_{b,N}(x)\le F_b(x+b^N).
+ \label{g1:eq:CDF-sandwich}
+\end{equation}
+Because $F_b$ is continuous, $F_{b,N}\to F_b$ uniformly.  Thus the Fabius
+function is a uniform limit of explicitly known compactly supported splines
+whose coefficients are a Thue--Morse finite difference.
+
+\subsection{Centered law, Bernoulli cumulants, and sinc products}
+
+Put
+\begin{equation}
+ Z_b:=2X_b-1
+ =2(1-b)\sum_{j=0}^{\infty}b^j(U_j-1/2).
+ \label{g1:eq:Zb}
+\end{equation}
+Then $Z_b$ is symmetric and supported on $[-1,1]$.  Under the Fourier
+convention
+\[
+ \widehat u_b(z)=\Expectation e^{-2\pi izZ_b},
+\]
+its characteristic function is
+\begin{equation}
+ \widehat u_b(z)
+ =\prod_{j=0}^{\infty}
+ \SincRad\!\bigl(2\pi(1-b)b^jz\bigr),
+ \qquad \SincRad w:=\frac{\sin w}{w}.
+ \label{g1:eq:generic-sinc-product}
+\end{equation}
+At $b=1/2$, this is
+\begin{equation}
+ \widehat\RvachevUp(z)=\prod_{j=0}^{\infty}\SincRad(\pi z/2^j),
+ \label{g1:eq:up-sinc}
+\end{equation}
+which is the standard Rvachev product.
+
+The centered uniform on $[-1/2,1/2]$ has cumulants
+$\kappa_m=B_m/m$ for $m\ge2$, where $B_m$ are Bernoulli numbers and odd
+cumulants vanish.  Independence and scaling give the following explicit
+$q$-denominators.
+
+\begin{proposition}[Cumulants of the geometric-uniform law]
+For $m\ge1$,
+\begin{equation}
+ \kappa_{2m}(Z_b)
+ =\frac{[2(1-b)]^{2m}B_{2m}}
+ {2m(1-b^{2m})},
+ \qquad \kappa_{2m+1}(Z_b)=0.
+ \label{g1:eq:Zb-cumulants}
+\end{equation}
+Consequently every even moment is an explicit complete Bell polynomial in the
+numbers \eqref{g1:eq:Zb-cumulants}.
+\end{proposition}
+
+\begin{proof}
+Cumulants add under independent sums and scale homogeneously.  Therefore
+\[
+ \kappa_{2m}(Z_b)
+ =[2(1-b)]^{2m}\frac{B_{2m}}{2m}
+ \sum_{j\ge0}b^{2mj},
+\]
+and the geometric sum gives \eqref{g1:eq:Zb-cumulants}.
+\end{proof}
+
+The factors $1-b^{2m}$ are the simplest $q$-analog denominators.  In Fourier
+space the same even degree $2m$ is responsible for the squared interpolation
+base developed in \cref{g1:sec:fourier}.
+
+\section{Fabius and Rvachev functions at the flat boundary}
+\label{g1:sec:fabius}
+
+\subsection{Definitions and endpoint differential scaling}
+
+Let $F$ be the Fabius distribution function on $[0,1]$.  It is the CDF of
+$X_{1/2}$ and satisfies
+\begin{equation}
+ F(0)=0,\qquad F(1)=1,\qquad F(1-x)=1-F(x),
+ \label{g1:eq:F-symmetry}
+\end{equation}
+and, for $0\le x\le1/2$,
+\begin{equation}
+ F'(x)=2F(2x).
+ \label{g1:eq:F-DE}
+\end{equation}
+The compactly supported Rvachev function is related by
+\begin{equation}
+ \RvachevUp(x)=F(1-|x|),\qquad |x|\le1,
+ \label{g1:eq:Up-F}
+\end{equation}
+with $\RvachevUp(x)=0$ for $|x|\ge1$.  These normalizations agree with the primary
+Fabius/Rvachev literature \cite{Fabius1966,Rvachev1990,AriasDeReyna} and with
+the inspected ProveIt exposition \cite{ProveItFabius}.
+
+Repeated differentiation of \eqref{g1:eq:F-DE} gives the exact endpoint scaling.
+
+\begin{lemma}[Endpoint derivatives]
+For $m\ge1$ and $0\le x\le2^{-m}$,
+\begin{equation}
+ F^{(m)}(x)=2^{m(m+1)/2}F(2^mx).
+ \label{g1:eq:F-derivatives}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The case $m=1$ is \eqref{g1:eq:F-DE}.  If the result holds for $m$, then on
+$x\le2^{-(m+1)}$,
+\[
+ F^{(m+1)}(x)=2^{m(m+1)/2}2^mF'(2^mx)
+ =2^{m(m+1)/2+m+1}F(2^{m+1}x),
+\]
+which has exponent $(m+1)(m+2)/2$.
+\end{proof}
+
+\subsection{An exact boundary-comb identity}
+
+The smooth Peano remainder becomes self-similar when $f=F$.
+
+\begin{theorem}[Fabius boundary filter]
+Let $n\ge0$, $0<A\le2^{-(n+1)}$, and let
+$(T_*,T_0,\ldots,T_n)$ be uniform Dirichlet.  Put
+\begin{equation}
+ S_n:=\sum_{k=0}^n2^{-k}T_k\in[0,1].
+ \label{g1:eq:Sn}
+\end{equation}
+Then
+\begin{equation}
+ \sum_{k=0}^n\lambda_{n,k}^{(1/2)}F(A2^{-k})
+ =\frac{(-1)^n(2A)^{n+1}}{(n+1)!}
+ \Expectation F(2^{n+1}AS_n).
+ \label{g1:eq:F-boundary-filter}
+\end{equation}
+In particular, the left side has strict sign $(-1)^n$ and obeys
+\begin{equation}
+ 0<(-1)^n\sum_{k=0}^n\lambda_{n,k}^{(1/2)}F(A2^{-k})
+ \le\frac{(2A)^{n+1}}{(n+1)!}.
+ \label{g1:eq:F-boundary-bound}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply \eqref{g1:eq:HG-remainder} with $q=1/2$ and $f=F$.  Since $F(0)=0$,
+\[
+ \sum_k\lambda_{n,k}^{(1/2)}F(A2^{-k})
+ =\frac{(-1)^nA^{n+1}2^{-n(n+1)/2}}{(n+1)!}
+ \Expectation F^{(n+1)}(AS_n).
+\]
+The hypothesis on $A$ allows \eqref{g1:eq:F-derivatives} with $m=n+1$ throughout
+the support of $AS_n$.  The powers of $2$ reduce to $2^{n+1}$, giving
+\eqref{g1:eq:F-boundary-filter}.  The random argument lies in $[0,1]$, so
+$0\le F\le1$.  It is positive almost surely because $S_n>0$ almost surely,
+which gives strict sign and the bound.
+\end{proof}
+
+\begin{corollary}[Exact dyadic form]
+If $M\ge n+1$, then
+\begin{equation}
+ \sum_{k=0}^n\lambda_{n,k}^{(1/2)}F(2^{-(M+k)})
+ =\frac{(-1)^n2^{-(M-1)(n+1)}}{(n+1)!}
+ \Expectation F(2^{n+1-M}S_n).
+ \label{g1:eq:F-dyadic-filter}
+\end{equation}
+For $M=n+1$, the ratio of the absolute value to the upper bound is exactly
+$\Expectation F(S_n)$.
+\end{corollary}
+
+\begin{proof}
+Set $A=2^{-M}$ in \cref{g1:eq:F-boundary-filter}; the hypothesis
+$M\ge n+1$ is exactly the required boundary-range condition.  Then
+$(2A)^{n+1}=2^{-(M-1)(n+1)}$, proving the formula.  At $M=n+1$ the
+argument of $F$ is $S_n$, and division by the preceding theorem's upper
+bound leaves precisely $\Expectation F(S_n)$.
+\end{proof}
+
+Through \eqref{g1:eq:Up-F}, the same result is an identity on the left boundary of
+$\RvachevUp$:
+\begin{equation}
+ \sum_{k=0}^n\lambda_{n,k}^{(1/2)}
+ \RvachevUp(-1+A2^{-k})
+ =\frac{(-1)^n(2A)^{n+1}}{(n+1)!}
+ \Expectation F(2^{n+1}AS_n).
+ \label{g1:eq:Up-boundary-filter}
+\end{equation}
+Thus a signed combination of values of a nowhere-analytic $C^\infty$ function
+is represented by a positive expectation and has a completely determined
+sign.
+
+\subsection{The boundary B-spline and its $q$-exponential scale}
+
+The variable $S_n$ is $Y_{n,1,1/2}$ from \cref{g1:sec:bspline}.  Therefore
+\begin{equation}
+ (n+2)S_n\xrightarrow{d}Z_{1/2}
+ =\sum_{k\ge0}2^{-k}E_k,
+ \qquad
+ \Expectation e^{-sZ_{1/2}}=\frac1{(-s;1/2)_\infty}.
+ \label{g1:eq:Sn-limit}
+\end{equation}
+This identifies the random scale sampled by the normalized Fabius remainder.
+The typical size of $S_n$ is $2/(n+2)$, but its limiting rescaled distribution
+is not degenerate; it is the $q$-Pochhammer perpetuity in
+\eqref{g1:eq:Z-Laplace}.
+
+\subsection{Exact rational computation}
+
+All dyadic values of $F$ are rational.  A convenient triangular recurrence,
+also used in the linked monograph, is
+\begin{equation}
+ V_0=1,\qquad
+ V_m:=F(2^{-m})
+ =\frac{2^{-\binom m2}}{2^m-1}
+ \sum_{k=0}^{m-1}
+ \frac{2^{\binom k2}}{(m-k+1)!}V_k.
+ \label{g1:eq:V-recurrence}
+\end{equation}
+It begins
+\[
+ V_0=1,\quad V_1=\frac12,\quad V_2=\frac5{72},\quad
+ V_3=\frac1{288},\quad V_4=\frac{143}{2073600}.
+\]
+Because both \eqref{g1:eq:V-recurrence} and the dyadic weights
+$\lambda_{n,k}^{(1/2)}$ are rational, \eqref{g1:eq:F-dyadic-filter} can be checked
+with exact integer arithmetic.  The companion Python program does so before
+switching to multiprecision arithmetic for larger plotted orders.
+
+\section{Fourier-scale interpolation for the Rvachev function}
+\label{g1:sec:fourier}
+
+\subsection{The base-squaring principle}
+
+Let $\Phi$ be an even entire function normalized by $\Phi(0)=1$, and write
+\begin{equation}
+ \Phi(z)=\sum_{m=0}^{\infty}c_mz^{2m}.
+ \label{g1:eq:Phi-even}
+\end{equation}
+Fix a scale ratio $0<c<1$ and set
+\begin{equation}
+ Q:=c^2,\qquad H_z(t):=\Phi(z\sqrt t)
+ =\sum_{m=0}^{\infty}c_mz^{2m}t^m.
+ \label{g1:eq:Hzt}
+\end{equation}
+Evenness makes $H_z$ entire in $t$, independent of the choice of square root.
+Moreover
+\begin{equation}
+ H_z(Q^k)=\Phi(c^kz).
+ \label{g1:eq:scale-samples}
+\end{equation}
+Therefore geometric interpolation of Fourier scales $c^kz$ is interpolation on
+the comb $1,Q,Q^2,\ldots$, not on base $c$ itself.  In the dyadic Rvachev
+problem, $c=1/2$ and the interpolation base is $Q=1/4$.
+
+\subsection{Exact moment-flat filter}
+
+Let $\lambda_{n,k}^{(Q)}$ denote the origin weights with base $Q$.
+
+\begin{theorem}[Even-entire scale filter]
+For $H_z$ as in \eqref{g1:eq:Hzt},
+\begin{align}
+ \sum_{k=0}^n\lambda_{n,k}^{(Q)}\Phi(c^kz)
+ &=1+(-1)^nQ^{\binom{n+1}{2}}
+ \sum_{r=0}^{\infty}\GaussianBinomial{n+r}{n}{Q}
+ c_{n+1+r}z^{2n+2+2r}.
+ \label{g1:eq:even-entire-filter}
+\end{align}
+In particular, the residual has a zero of order at least $2n+2$ at $z=0$.
+\end{theorem}
+
+\begin{proof}
+Apply \eqref{g1:eq:exact-analytic-tail} to the entire function $H_z(t)$ at
+$A=1$ and base $Q$.
+\end{proof}
+
+For a characteristic function under the convention
+$\Phi(z)=\Expectation e^{-2\pi izX}$ with a symmetric random variable $X$,
+\begin{equation}
+ c_m=(-1)^m\frac{(2\pi)^{2m}\mu_{2m}}{(2m)!},
+ \qquad \mu_{2m}=\Expectation X^{2m}.
+ \label{g1:eq:Fourier-coeff-moments}
+\end{equation}
+Hence the first nonzero term of the filtered residual is always
+\begin{equation}
+ -Q^{\binom{n+1}{2}}
+ \frac{(2\pi z)^{2n+2}\mu_{2n+2}}{(2n+2)!}.
+ \label{g1:eq:leading-Fourier-residual}
+\end{equation}
+For real $z$ near zero this is negative, regardless of the parity of $n$.
+
+\subsection{Application to $\RvachevUp$}
+
+For the Rvachev function,
+\[
+ \Phi(z)=\widehat\RvachevUp(z)
+ =\prod_{j=0}^{\infty}\SincRad(\pi z/2^j).
+\]
+Taking $c=1/2$ and $Q=1/4$ in
+\eqref{g1:eq:even-entire-filter} gives an exact finite multiscale identity.  Its
+uniform sample-noise amplification is bounded by
+$K_\infty(1/4)\approx1.96926$, which is notably mild.
+
+More generally, the centered geometric-uniform density $u_b$ in
+\eqref{g1:eq:generic-sinc-product} has an even transform, and samples at scales
+$b^kz$ are governed by the interpolation base $Q=b^2$.  The cumulants
+\eqref{g1:eq:Zb-cumulants} determine the coefficients through Bell polynomials,
+so the filter simultaneously links Gaussian coefficients, Bernoulli numbers,
+Bell polynomials, and the infinite sinc product.
+
+\subsection{Entire Newton reconstruction of all scales}
+
+The finite filter recovers the constant term approximately.  The infinite
+Newton series reconstructs the complete scale function.
+
+\begin{theorem}[Scale reconstruction from a geometric sample ray]
+Let $\Phi$ be even entire, fix $z\in\ComplexNumbers$, and set $H_z$ by
+\eqref{g1:eq:Hzt}.  Then for every $t\in\ComplexNumbers$,
+\begin{equation}
+ \Phi(z\sqrt t)
+ =\sum_{j=0}^{\infty}
+ \frac{D_Q^jH_z(1)}{[j]_Q!}
+ \prod_{r=0}^{j-1}(t-Q^r),
+ \label{g1:eq:Phi-scale-Newton}
+\end{equation}
+locally uniformly in $t$.  Each coefficient is a finite linear combination of
+$\Phi(z),\Phi(cz),\ldots,\Phi(c^jz)$:
+\begin{equation}
+ \frac{D_Q^jH_z(1)}{[j]_Q!}
+ =\sum_{k=0}^j
+ \frac{(-1)^kQ^{-kj+\binom{k+1}{2}}}
+ {(Q;Q)_k(Q;Q)_{j-k}}\Phi(c^kz).
+ \label{g1:eq:Phi-scale-coeff}
+\end{equation}
+At $t=0$ this gives the exact infinite sum rule
+\begin{equation}
+ 1=\sum_{j=0}^{\infty}
+ \frac{(-1)^jQ^{\binom j2}}{[j]_Q!}D_Q^jH_z(1).
+ \label{g1:eq:Phi-scale-origin}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply the locally uniform Newton series
+\eqref{gq:eq:infinite-newton-series}, with coefficients given by
+\eqref{gq:eq:geometric-divided-difference}, to the entire function $H_z$
+at $A=1$ and base $Q$.  Evaluating that series at $t=0$ gives the final
+identity.
+\end{proof}
+
+This is a strong determinacy statement: at any fixed frequency $z$, the
+multiscale values on one geometric ray determine the transform at every complex
+scale parameter $t$.  For the Rvachev product, this turns the self-similar
+sample sequence into a complete Newton coordinate system.
+
+\section{Algorithms and numerical implementation}
+\label{g1:sec:algorithms}
+
+The formulas admit several computational realizations.  They should not be
+used interchangeably without regard to conditioning.
+
+\subsection{Barycentric interpolation away from zero}
+
+For an arbitrary target $x$, use the second barycentric formula
+\eqref{gq:eq:second-barycentric}.  The raw weights
+$b_{n,k}^{A,q}=1/d_{n,k}^{A,q}$ can span a large range, so in floating-point
+arithmetic they should be rescaled by a common factor.  Only their ratios enter
+the formula.  For large $n$, compute logarithms of absolute values from
+\eqref{gq:eq:barycentric-weight} and attach the sign $(-1)^k$.
+
+At a node, return the corresponding datum directly rather than evaluating a
+removable $0/0$ expression.
+
+\subsection{Newton--Horner evaluation}
+
+Once the coefficients
+$c_k=D_q^kf(A)/[k]_q!$ are known, evaluate
+\eqref{gq:eq:q-taylor-interpolant} in nested form:
+\begin{equation}
+ \Ic_nf(x)=c_0+(x-A)\bigl(c_1+(x-Aq)
+ (c_2+\cdots+(x-Aq^{n-1})c_n)\cdots\bigr).
+ \label{g1:eq:Newton-Horner}
+\end{equation}
+This uses $O(n)$ arithmetic per target.  Coefficients can be generated from
+samples by a divided-difference table or by
+\eqref{gq:eq:geometric-divided-difference}.
+
+\subsection{Origin extrapolation by factor recursion}
+
+For the special target $0$, the recursion \eqref{g1:eq:triangular-filter} is
+preferable to solving for an interpolating polynomial.  In pseudocode:
+
+\begin{algorithm}[Factorized geometric-comb filter]
+Given $y_k=f(Aq^k)$ for $0\le k\le n$:
+\begin{enumerate}[leftmargin=2em]
+\item Set \texttt{work[k] = y[k]}.
+\item For $j=1,\ldots,n$, replace
+\[
+ \texttt{work[k]}
+ \leftarrow
+ \frac{\texttt{work[k+1]}-q^j\texttt{work[k]}}{1-q^j},
+ \qquad 0\le k\le n-j.
+\]
+\item Return \texttt{work[0]}.
+\end{enumerate}
+\end{algorithm}
+
+The induced $\ell^\infty$ error factor of the $j$th stage is at most
+$(1+q^j)/(1-q^j)$; their product is exactly $K_n(q)$.  Thus the recursive
+algorithm exposes the same stability constant as the explicit row.
+
+\subsection{Exact dyadic arithmetic}
+
+When $q=1/2$ and all samples are rational, every weight is rational.  For the
+Fabius sequence, \eqref{g1:eq:V-recurrence} and the filter can therefore be
+implemented with arbitrary-precision integer fractions.  This is valuable for
+separating true cancellation from roundoff.  Numerators and denominators grow
+quickly, so the companion code uses exact fractions only for moderate order and
+switches to high-precision \texttt{mpmath} arithmetic for plots.
+
+\subsection{Precision budgeting}
+
+Suppose the desired absolute output accuracy is $\varepsilon$ and each sample
+is evaluated with absolute accuracy $\delta$.  A sufficient condition is
+\begin{equation}
+ \delta\le\frac{\varepsilon}{K_n(q)}.
+ \label{g1:eq:precision-budget}
+\end{equation}
+For fixed $q<1$, the right side remains comparable to $\varepsilon$ as
+$n\to\infty$.  Near $q=1$, \eqref{g1:eq:K-modular} shows that the required number
+of guard digits grows like
+\[
+ \frac{\pi^2}{4(-\log q)\log 10}
+\]
+in the infinite-order regime.  Relative precision is subtler: if the samples
+themselves are superflat, as for $F(2^{-m})$, a small absolute error may still
+be a large relative error.  Exact rational or ball arithmetic is preferable in
+that case.
+
+\section{Numerical experiments}
+\label{g1:sec:numerics}
+
+The file \texttt{geometric\_comb\_experiments.py} included in the archive
+reproduces all data and figures in this section.  It uses 140 decimal digits for
+alternating sums and exact rational arithmetic for the first dyadic Fabius
+checks.  The numerical experiments are confirmations of proved identities,
+not substitutes for proofs.
+
+\subsection{Moment cancellation and factor recursion}
+
+For $q=1/2$ and orders $1\le n\le20$, the script verifies
+\[
+ \sum_{k=0}^n\lambda_{n,k}^{(1/2)}2^{-kd}=0,
+ \qquad 1\le d\le n,
+\]
+and compares the first residual with
+$(-1)^n2^{-n(n+1)/2}$.  The largest observed canceled moment is at the level of
+$10^{-140}$, consistent with the working precision.  The direct weighted sum
+and the triangular factor recursion agree to the same scale on the
+nonpolynomial test function $e^x$.
+
+\subsection{Noise amplification}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{stability_growth.png}
+\caption{The infinite-order total variation
+$K_\infty(q)=(-q;q)_\infty/(q;q)_\infty$.  The vertical axis is logarithmic in
+base $10$.  Stability is excellent for small and moderate $q$ but deteriorates
+nonperturbatively as $q\uparrow1$.}
+\label{g1:fig:stability}
+\end{figure}
+
+The data file also compares $K_\infty(e^{-t})$ to the asymptotic
+\eqref{g1:eq:K-modular}.  For the plotted near-one values the relative difference
+is already below the displayed precision, reflecting the exponentially small
+modular correction.
+
+\subsection{Regular-variation constants}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{regular_variation_convergence.png}
+\caption{For pure powers $x^\alpha$ at $q=1/2$, the normalized exact multiplier
+$(q^{1-\alpha};q)_n/(q;q)_n$ converges geometrically to
+$C_q(\alpha)$.  The three exponents illustrate positive and negative limiting
+constants.}
+\label{g1:fig:regular-variation}
+\end{figure}
+
+For example,
+\begin{align*}
+ C_{1/2}(0.7)&\approx 0.2493175488440439431,\\
+ C_{1/2}(1.3)&\approx-0.1538705960439442305,\\
+ C_{1/2}(2.4)&\approx 0.2913748265379615867.
+\end{align*}
+At positive integer exponents the limit is exactly zero, in agreement with
+polynomial cancellation.
+
+\subsection{Exact Fabius boundary remainders}
+
+For $A=2^{-(n+1)}$, define
+\[
+ R_n:=\sum_{k=0}^n\lambda_{n,k}^{(1/2)}F(2^{-(n+1+k)}),
+ \qquad
+ B_n:=\frac{2^{-n(n+1)}}{(n+1)!}.
+\]
+The theorem gives $(-1)^nR_n>0$ and $|R_n|/B_n=\Expectation F(S_n)\in(0,1)$.  Exact
+fraction arithmetic produces the following decimal summary.
+
+\begin{table}[htbp]
+\centering
+\caption{Normalized exact dyadic Fabius boundary remainders.}
+\label{g1:tab:Fabius-remainders}
+\begin{tabular}{rcc}
+\toprule
+$n$ & sign of $R_n$ & $|R_n|/B_n$\\
+\midrule
+1  & $-$ & $0.500000000000$\\
+2  & $+$ & $0.392067901235$\\
+3  & $-$ & $0.285827999336$\\
+4  & $+$ & $0.204528650771$\\
+5  & $-$ & $0.146778506870$\\
+6  & $+$ & $0.106554660592$\\
+7  & $-$ & $0.078481279976$\\
+8  & $+$ & $0.058671832771$\\
+9  & $-$ & $0.044492131277$\\
+10 & $+$ & $0.034188031436$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{fabius_boundary_ratio.png}
+\caption{The normalized Fabius boundary remainder
+$|R_n|/B_n=\Expectation F(S_n)$ through order $36$.  The decrease is much slower than
+the already extracted factorial-supergeometric factor $B_n$; its finer
+asymptotics are posed as a conjecture in \cref{g1:sec:frontiers}.}
+\label{g1:fig:Fabius-ratio}
+\end{figure}
+
+\subsection{Reproducibility files}
+
+The script writes four CSV files:
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+File & Contents\\
+\midrule
+\texttt{moment\_checks.csv} & canceled moments and recursion comparison\\
+\texttt{stability\_growth.csv} & $K_\infty$, modular approximation, ratio\\
+\texttt{regular\_variation.csv} & finite multipliers and limiting constants\\
+\texttt{fabius\_boundary.csv} & exact rational filters, bounds, sign checks\\
+\bottomrule
+\end{tabular}
+\end{center}
+The archive includes these files and the three PNG figures, so the LaTeX source
+can be recompiled without rerunning Python.
+
+\section{Research frontiers and conjectures}
+\label{g1:sec:frontiers}
+
+\subsection{A local limit theorem for geometric B-splines}
+
+\cref{g1:eq:Y-scaling-limit} proves weak convergence.  The explicit spline and
+limit densities suggest a substantially stronger statement.
+
+\begin{conjecture}[Local density limit]
+For every fixed $0<q<1$ and compact interval $K\subset(0,\infty)$,
+\begin{equation}
+ \sup_{y\in K}
+ \left|
+ \frac{A}{n+2}B_{n,A,q}\!\left(\frac{Ay}{n+2}\right)-p_q(y)
+ \right|\longrightarrow0,
+ \label{g1:eq:local-density-conjecture}
+\end{equation}
+where $p_q$ is given by \eqref{g1:eq:Z-density}.  The convergence should extend to
+all derivatives on compact subsets of $(0,\infty)$ after the natural scaling.
+\end{conjecture}
+
+A proof might combine the exponential/Dirichlet representation with Fourier or
+Laplace inversion and uniform control of the denominator
+$(E_*+\cdots+E_n)/(n+2)$.  Such a theorem would turn finite interpolation
+kernels into quantitative approximations of a canonical $q$-exponential
+density.
+
+\subsection{Fabius--Dirichlet small-value asymptotics}
+
+Let
+\[
+ \rho_n:=\Expectation F(S_n)=\frac{|R_n|}{B_n}.
+\]
+The scaling limit $(n+2)S_n\Rightarrow Z_{1/2}$ suggests that $S_n$ is of order
+$1/n$, while the Fabius function has a logarithmic-square flatness scale at
+zero.  Random fluctuations of $Z_{1/2}$ should affect lower-order terms but not
+the leading quadratic logarithm.
+
+\begin{conjecture}[Leading decay of the normalized Fabius remainder]
+\begin{equation}
+ \log\rho_n
+ \sim-\frac{(\log n)^2}{2\log2}
+ \qquad(n\to\infty).
+ \label{g1:eq:Fabius-rho-conjecture}
+\end{equation}
+More precisely, the next terms should be obtainable by combining the sharp
+Lambert-$W$ endpoint expansion of $F$ developed elsewhere in the ProveIt
+project with the density \eqref{g1:eq:Z-density} and a Laplace saddle point.
+\end{conjecture}
+
+The experiment in \cref{g1:fig:Fabius-ratio} is consistent with a slowly
+converging logarithmic-square law, but orders below $40$ are far too small to
+distinguish the lower-order $\log n\log\log n$ and $\log n$ corrections.
+
+\subsection{Second-order regular variation}
+
+\cref{g1:eq:regular-variation} gives only the first boundary-layer limit.  If
+$f(x)=x^\alpha L(x)$ and $L$ belongs to a de Haan second-order class, one should
+be able to expand
+\[
+ \frac{(\Gc_{n,q}f)(A)}{f(Aq^n)}
+ =C_q(\alpha)+A_1(Aq^n)C_{q,1}(\alpha,\rho)+o(A_1(Aq^n)),
+\]
+where $A_1$ is the auxiliary function and the correction constant is a
+$q$-Mellin moment of the signed boundary layer $\beta_r^{(q)}$.  This would
+provide rigorous error estimators for nonanalytic asymptotic extrapolation.
+
+\begin{problem}[Second-order transfer theorem]
+Formulate minimal second-order regular-variation hypotheses and compute the
+correction constants explicitly from
+$(qz;q)_\infty/(q;q)_\infty$.  Treat the resonant integer cases, where
+$C_q(\alpha)=0$, separately; there the correction may become the leading term.
+\end{problem}
+
+\subsection{The double-scaling transition $q\uparrow1$, $n\to\infty$}
+
+The fixed-order behavior \eqref{g1:eq:fixed-n-q1} and infinite-order behavior
+\eqref{g1:eq:K-modular} do not commute.  A natural transition parameter is
+$n(1-q)$ or $nt$ when $q=e^{-t}$.
+
+\begin{problem}[Universal transition kernel]
+Determine asymptotics of the row polynomial, its total variation, and the
+Peano-kernel density when
+\[
+ n\to\infty,\qquad t\downarrow0,
+ \qquad nt\to\tau\in(0,\infty).
+\]
+One expects a continuum limit connecting geometric-comb extrapolation to
+confluent Hermite/Taylor extrapolation at $A$.  The relevant asymptotics should
+involve dilogarithms and a saddle point for finite $q$-products.
+\end{problem}
+
+\subsection{Optimal filters under analytic priors}
+
+The Gaussian filter is algebraically unique when exactly $n$ integer modes are
+canceled with $n+1$ samples.  With more samples than constraints, stability and
+bias can be traded.
+
+\begin{problem}[Minimax geometric extrapolation]
+Given $M>n$, choose weights on $A,Aq,\ldots,Aq^M$ that preserve constants and
+annihilate $x,\ldots,x^n$, while minimizing either total variation or the worst
+error over an analytic coefficient-majorant class.  Compare the optimizer with
+truncated, damped, and least-squares modifications of $W_{n,q}$.
+\end{problem}
+
+The problem is finite-dimensional and convex for total variation, but its
+large-$M,n$ structure is likely governed by weighted extremal polynomials on
+the spectral set $\{q^m:m\ge0\}$.
+
+\subsection{Inverse Fabius and nonlinear combs}
+
+The inverse Fabius function has endpoint behavior governed by asymptotic
+inversion and Lambert $W$, not a regular Taylor series.  A promising strategy is
+to choose a nonlinear sample comb $x_k$ so that the dominant inverse asymptotic
+modes become geometric in a transformed coordinate.  Confluent modal filters
+from \cref{g1:sec:modal} can then remove the leading Lambert-$W$ transseries terms.
+
+\begin{problem}[Lambert-adapted Newton coordinates]
+Find a coordinate $u=u(x)$ in which the inverse Fabius germ admits an expansion
+in modes $e^{-\alpha u}u^s$, construct the corresponding geometric Newton
+series, and determine whether its interpolation coefficients have a positive
+kernel or a controlled boundary layer analogous to \eqref{g1:eq:beta}.
+\end{problem}
+
+\subsection{Multivariate geometric combs}
+
+Tensor products immediately give interpolation on
+$\{A_1q_1^{k_1}\}\times\cdots\times\{A_dq_d^{k_d}\}$, with products of
+Gaussian rows.  More interesting are diagonal or simplex combs with a shared
+scale index, which interact with multivariate self-similar distributions and
+box splines.  The Dirichlet-average interpretation suggests that multivariate
+Peano kernels may again have positive probabilistic representations.
+
+\subsection{Formalization boundary and remaining roadmap}
+
+The live Lean corpus has moved beyond a roadmap for the elementary finite
+filter.  The modules \nolinkurl{FiniteQBinomialCore.lean},
+\nolinkurl{GeometricLagrangeQBinomial.lean},
+\nolinkurl{GeometricLagrangeQMoments.lean}, and
+\nolinkurl{GeometricLagrangeCompleteHomogeneous.lean} contain named theorems
+for finite $q$-products, Gaussian weights, cancellation/residual formulas, the
+complete-homogeneous specialization, and the exact finite row norm.
+\nolinkurl{LimitConditionNumber.lean} supplies the fixed-$q$ infinite-product
+limit, while the geometric-uniform and Rvachev modules named in the opening
+status box cover related probability and Fourier infrastructure.
+
+The report-specific obligations that remain are therefore narrower:
+\begin{enumerate}[leftmargin=2em]
+\item identify geometric divided differences with iterated Jackson derivatives
+under explicit field and differentiability hypotheses;
+\item construct the infinite Newton series and prove its local uniform
+convergence;
+\item formalize confluent spectral zeros and the Puiseux--log remainder bound;
+\item prove the reversed-row $\ell^1$ limit and the regular-variation transfer;
+\item add Hermite--Genocchi/Dirichlet-average infrastructure, the geometric-knot
+B-spline moments, and the perpetuity scaling limit;
+\item derive the Fabius boundary expectation and the entire scale-reconstruction
+theorem from the already formalized finite core.
+\end{enumerate}
+Until those items exist as checked declarations, the correspondingly labelled
+results here remain manuscript theorems.
+
+\section{Complementary Mellin and superflat theory}
+\subsection{A target on the same multiplicative line}
+
+A target $x=aq^\alpha$, where $\alpha$ need not be integral, preserves all
+$q$-structure.
+
+\begin{theorem}[Arbitrary geometric target]
+\label{g2:thm:general-target}
+Choose a branch of $q^\alpha$.  If $q^\alpha$ is not one of
+$1,q,\ldots,q^n$, then
+\begin{equation}
+ \ell_{n,j}(aq^\alpha)
+ =(-1)^{n-j}q^{\binom{n-j+1}{2}}
+ \frac{(q^{\alpha-n};q)_{n+1}}
+ {(1-q^{\alpha-j})(q;q)_j(q;q)_{n-j}}.
+ \label{g2:eq:general-target-cardinal}
+\end{equation}
+At $\alpha=j$ the singularity is removable and the value is $1$; at every
+other integral node it is $0$.  For $0<q<1$ and
+$\Re\alpha\to+\infty$, the weights tend to the zero-target row
+\begin{equation}
+ \lambda_{n,j}^{(q)}
+ =\ell_{n,j}(0)
+ =\frac{(-1)^{n-j}q^{\binom{n-j+1}{2}}}
+ {(q;q)_j(q;q)_{n-j}}.
+ \label{g2:eq:zero-target-row}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use
+$\ell_{n,j}(x)=\Omega_{n+1}(x)/((x-aq^j)\Omega'_{n+1}(aq^j))$,
+\eqref{gq:eq:nodal-polynomial} and \eqref{gq:eq:barycentric-weight}.  The product
+at the target is
+\[
+ \prod_{r=0}^n(q^\alpha-q^r)
+ =(-1)^{n+1}q^{\binom{n+1}{2}}(q^{\alpha-n};q)_{n+1}.
+\]
+Extracting $-q^j$ from $q^\alpha-q^j$ leaves exactly
+\eqref{g2:eq:general-target-cardinal}.  The limiting assertions follow directly
+from the product.
+\end{proof}
+
+\begin{remark}[$q$-gamma form]
+Since
+\[
+ (q^{\alpha-n};q)_{n+1}
+ =(1-q)^{n+1}\frac{\Gamma_q(\alpha+1)}{\Gamma_q(\alpha-n)},
+\]
+formula \eqref{g2:eq:general-target-cardinal} is meromorphic in $\alpha$ and can
+be rewritten entirely with $q$-gamma functions and the $q$-number
+$[\alpha-j]_q$.  This is the natural analytic continuation of the cardinal
+row, not merely a formal replacement of factorials by $q$-factorials.
+\end{remark}
+
+
+\section{Mellin symbols and exact residuals}
+\label{g2:sec:mellin}
+
+\subsection{Complex powers}
+
+The integer moment law in the source monograph is one specialization of a
+stronger identity.  Since dilations act diagonally on every chosen branch of
+$x^s$, the full spectral response is available at once.
+
+\begin{theorem}[Exact Mellin symbol]
+\label{g2:thm:mellin-symbol}
+Let $s\in\ComplexNumbers$, choose a branch of $a^s$ and $q^s$, and set
+\begin{equation}
+ M_{n,q}(s)=\sum_{k=0}^n\lambda_{n,k}^{(q)}q^{ks}.
+ \label{g2:eq:mellin-symbol-definition}
+\end{equation}
+Then
+\begin{align}
+ M_{n,q}(s)
+ &=\frac{\prod_{j=1}^n(q^s-q^j)}{(q;q)_n}
+ \label{g2:eq:mellin-product}\\
+ &=q^{ns}\frac{(q^{1-s};q)_n}{(q;q)_n}
+ \label{g2:eq:mellin-forward}\\
+ &=(-1)^nq^{\binom{n+1}{2}}
+   \frac{(q^{s-n};q)_n}{(q;q)_n}.
+ \label{g2:eq:mellin-reversed}
+\end{align}
+Equivalently,
+\begin{equation}
+ (\Gop_{n,q}x^s)(a)=a^sM_{n,q}(s).
+ \label{g2:eq:mellin-eigenvalue}
+\end{equation}
+The zeros at $s=1,\ldots,n$ are simple modulo the imaginary period
+$2\pi\ImaginaryUnit/\log q$.
+\end{theorem}
+
+\begin{proof}
+Evaluate \eqref{g1:eq:row-polynomial} at $z=q^s$.  Factoring $q^s$ from
+each factor gives \eqref{g2:eq:mellin-forward}; factoring $-q^j$ gives
+\eqref{g2:eq:mellin-reversed}.
+\end{proof}
+
+\begin{corollary}[Natural moments and the first residual]
+\label{g2:cor:integer-moments}
+For $d\in\NaturalNumbers$,
+\begin{equation}
+ \sum_{k=0}^n\lambda_{n,k}^{(q)}q^{kd}
+ =\begin{cases}
+ 1,&d=0,\\
+ 0,&1\le d\le n,\\
+ (-1)^nq^{\binom{n+1}{2}}\GaussianBinomial{d-1}{n}q,&d\ge n+1.
+ \end{cases}
+ \label{g2:eq:integer-moment-law}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The first two cases follow from the zeros in
+\eqref{g2:eq:mellin-product}.  For $d\ge n+1$,
+\[
+ (q^{d-n};q)_n=\frac{(q;q)_{d-1}}{(q;q)_{d-n-1}},
+\]
+and substitution into \eqref{g2:eq:mellin-reversed} gives the Gaussian
+coefficient.
+\end{proof}
+
+\begin{remark}[Fractional endpoint laws]
+For fixed $s$ with $\Re s>0$ and $s\notin\NaturalNumbers$,
+\begin{equation}
+ M_{n,q}(s)
+ \sim q^{ns}\frac{(q^{1-s};q)_\infty}{(q;q)_\infty}
+ \qquad(n\to\infty).
+ \label{g2:eq:fractional-asymptotic}
+\end{equation}
+Thus a fractional power $x^s$ is not annihilated, but its extrapolation error
+has a completely explicit geometric rate.  Integer powers are exceptional
+because the finite product terminates at an exact zero.
+\end{remark}
+
+\subsection{Logarithmic powers by spectral differentiation}
+
+Differentiate \eqref{g2:eq:mellin-eigenvalue} with respect to $s$.  This gives
+closed responses for singular terms common in endpoint asymptotics.
+
+\begin{proposition}[Powers times logarithms]
+\label{g2:prop:log-powers}
+For every integer $r\ge0$,
+\begin{equation}
+ \sum_{k=0}^n\lambda_{n,k}^{(q)}(aq^k)^s
+ \bigl(\log a+k\log q\bigr)^r
+ =\frac{\partial^r}{\partial s^r}\bigl(a^sM_{n,q}(s)\bigr).
+ \label{g2:eq:log-power-response}
+\end{equation}
+In particular, if $1\le d\le n$, then
+\begin{equation}
+ \sum_{k=0}^n\lambda_{n,k}^{(q)}(aq^k)^d\log(aq^k)
+ =a^dM_{n,q}'(d),
+ \label{g2:eq:first-log-response}
+\end{equation}
+where
+\begin{equation}
+ M_{n,q}'(d)
+ =(-1)^{d-1}(\log q)
+ q^{d(2n-d+1)/2}
+ \frac{(q;q)_{d-1}(q;q)_{n-d}}{(q;q)_n}.
+ \label{g2:eq:mellin-derivative-integer}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Termwise differentiation is legitimate because the sum is finite.  At
+$s=d$, the factor $q^s-q^d$ is the unique vanishing factor in
+\eqref{g2:eq:mellin-product}.  Differentiating that factor and splitting the
+remaining product below and above $d$ gives
+\begin{align*}
+ q^d\log q\prod_{\substack{1\le j\le n\\j\ne d}}(q^d-q^j)
+ &=(-1)^{d-1}(\log q)
+ q^{d(2n-d+1)/2}(q;q)_{d-1}(q;q)_{n-d}.
+\end{align*}
+Division by $(q;q)_n$ proves \eqref{g2:eq:mellin-derivative-integer}.
+\end{proof}
+
+\begin{remark}
+A filter that is exact on polynomials need not suppress logarithmic
+corrections attached to those powers.  Formula
+\eqref{g2:eq:mellin-derivative-integer} quantifies the leakage exactly.  Higher
+$s$-derivatives introduce finite sums of $q$-harmonic terms
+$(1-q^j)^{-r}$ and can be organized with complete Bell polynomials.
+\end{remark}
+
+\subsection{Mellin-transform interpretation}
+
+For a function on $(0,\infty)$ with Mellin transform
+\[
+ (\Mellin f)(z)=\int_0^\infty f(x)x^{z-1}\Differential x,
+\]
+one has
+\[
+ \Mellin[f(q^kx)](z)=q^{-kz}(\Mellin f)(z).
+\]
+Hence, on a common strip of convergence,
+\begin{equation}
+ \Mellin[\Gop_{n,q}f](z)=M_{n,q}(-z)(\Mellin f)(z).
+ \label{g2:eq:mellin-transform-multiplier}
+\end{equation}
+The geometric Lagrange filter is therefore a finite Mellin multiplier.  Its
+spectral zeros are the same integer moments that the interpolation formula
+annihilates in physical space.  This is the multiplicative analogue of an
+ordinary finite-difference stencil whose Fourier symbol has a prescribed zero
+at the origin.
+
+
+\subsection{The limits \texorpdfstring{$q\to1$}{q to 1} and \texorpdfstring{$q\to0$}{q to 0}}
+
+\begin{proposition}[Taylor limit]
+\label{g2:prop:taylor-limit}
+For fixed $k$, as $q\to1$,
+\[
+ D_q^kf(a)\longrightarrow f^{(k)}(a),
+ \qquad [k]_q!\longrightarrow k!,
+ \qquad \Phi_k(x)\longrightarrow(x-a)^k.
+\]
+Thus \eqref{gq:eq:q-taylor-interpolant} tends termwise to the ordinary Taylor
+polynomial about $a$.
+\end{proposition}
+
+\begin{proof}
+The first statement follows by repeated use of the standard Jackson derivative
+limit on a sufficiently differentiable function; the other two are immediate
+from their finite products.
+\end{proof}
+
+At the opposite endpoint, $D_0f(x)=(f(x)-f(0))/x$ is a tail-quotient operator.
+For $f(x)=\sum c_mx^m$,
+\[
+ \lim_{q\to0}\frac{D_q^kf(a)}{[k]_q!}
+ =\sum_{r\ge0}c_{k+r}a^r,
+ \qquad
+ \lim_{q\to0}\Phi_k(x)=
+ \begin{cases}
+ 1,&k=0,\\
+ (x-a)x^{k-1},&k\ge1.
+ \end{cases}
+\]
+The limiting expansion telescopes.  It is not Hermite interpolation at a
+multiple node: the geometric rates retain ordered information about how the
+nodes approach zero.  A genuine confluent theory requires a further
+renormalization and is listed as \Cref{g2:prob:q0-confluent}.
+
+\subsection{Neville, Richardson, and Romberg recurrences}
+
+\begin{theorem}[Geometric Neville recurrence]
+\label{g2:thm:neville}
+For $i,m\ge0$, let $P_{i,m}$ be the interpolant characterized by
+\[
+ P_{i,m}(aq^{i+r})=f(aq^{i+r})\qquad(0\le r\le m).
+\]
+Then
+\begin{equation}
+ P_{i,m}(x)=
+ \frac{(x-aq^{i+m})P_{i,m-1}(x)
+      -(x-aq^i)P_{i+1,m-1}(x)}
+      {aq^i-aq^{i+m}}.
+ \label{g2:eq:geometric-neville}
+\end{equation}
+At $x=0$, with $R_i^{(0)}=f(aq^i)$,
+\begin{equation}
+ R_i^{(m)}
+ =\frac{R_{i+1}^{(m-1)}-q^mR_i^{(m-1)}}{1-q^m},
+ \qquad
+ R_0^{(n)}=(\Gop_{n,q}f)(a).
+ \label{g2:eq:richardson-recurrence}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The numerator in \eqref{g2:eq:geometric-neville} has degree at most $m$ and takes
+the required values at both endpoint nodes and all shared interior nodes;
+uniqueness proves the formula.  Substitute $x=0$ and cancel $aq^i$.
+\end{proof}
+
+\begin{corollary}[Generalized Richardson cancellation]
+\label{g2:cor:richardson}
+Suppose approximations at scales $h_i=h_0r^i$ have an expansion
+\[
+ T(h)=L+c_1h^\rho+c_2h^{2\rho}+\cdots.
+\]
+Apply \eqref{g2:eq:richardson-recurrence} with $q=r^\rho$ to the data $T(h_i)$.
+After $n$ levels, the first $n$ error powers are annihilated exactly.  Romberg
+quadrature is the special case in which the trapezoidal error uses even powers
+and hence $q=r^2$.
+\end{corollary}
+
+\begin{proof}
+The recurrence is the degree-$n$ interpolation functional at the point
+$0$ on nodes $1,q,\ldots,q^n$.  It fixes the constant mode and annihilates
+$q^{ki}$ for $1\le k\le n$, equivalently the error modes
+$h^{k\rho}$.  Linearity therefore removes the first $n$ displayed error
+powers.  For the trapezoidal expansion only even powers occur, so replacing
+$r$ by $r^2$ gives the Romberg case.
+\end{proof}
+
+\begin{remark}
+This recurrence is often numerically preferable to forming the closed weights.
+It also explains the historical term ``deferred approach to the limit'': each
+new level eliminates one Mellin eigenmode of the asymptotic error.
+\end{remark}
+
+
+\section{Convergence at an accumulation point and divergence away from it}
+\label{g2:sec:superflat}
+
+\subsection{The zero row is a regular summability method}
+
+\begin{theorem}[Regularity at the accumulation point]
+\label{g2:thm:regular-summability}
+Let $0<q<1$ and let $y_k\to L$.  Then
+\begin{equation}
+ \sum_{k=0}^n\lambda_{n,k}^{(q)}y_k\longrightarrow L.
+ \label{g2:eq:regular-summability}
+\end{equation}
+Equivalently, if $f$ is continuous at $0$, the interpolating polynomial through
+$(aq^k,f(aq^k))$, $0\le k\le n$, satisfies
+\begin{equation}
+ (\Iop_nf)(0)\longrightarrow f(0).
+ \label{g2:eq:continuous-zero-convergence}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The rows reproduce constants by \eqref{g2:eq:integer-moment-law}; their
+$\ell^1$ norms are bounded by $K(q)$ by \Cref{g1:thm:row-norm}; and for each fixed
+$k$,
+\[
+ |\lambda_{n,k}^{(q)}|
+ =\frac{q^{\binom{n-k+1}{2}}}
+ {(q;q)_k(q;q)_{n-k}}\longrightarrow0.
+\]
+These are precisely the Toeplitz regularity conditions.  For completeness,
+subtract $L$, split the sum at a fixed $K$, make the tail small using the
+bounded row norm, and then let $n\to\infty$ in the finite head.
+\end{proof}
+
+\subsection{The limiting profile viewed from the finest tooth}
+
+Reindex the row by $r=n-k$.  For each fixed $r$,
+\begin{equation}
+ \lambda_{n,n-r}^{(q)}
+ \longrightarrow
+ \mu_r^{(q)}
+ :=\frac{(-1)^rq^{\binom{r+1}{2}}}
+ {(q;q)_\infty(q;q)_r}.
+ \label{g2:eq:limiting-row-profile}
+\end{equation}
+Euler's infinite theorem gives the generating function
+\begin{equation}
+ \sum_{r=0}^\infty\mu_r^{(q)}z^r
+ =\frac{(qz;q)_\infty}{(q;q)_\infty},
+ \qquad
+ \sum_{r=0}^\infty\mu_r^{(q)}=1.
+ \label{g2:eq:limiting-profile-generating}
+\end{equation}
+Thus the mass does not remain attached to any fixed physical node; it travels
+with the finest scale $aq^n$ and approaches a signed, absolutely summable
+profile in the reversed index.  This is the mechanism behind
+\Cref{g2:thm:regular-summability}.
+
+\subsection{Power, Puiseux, and logarithmic endpoint expansions}
+
+Suppose a germ has a convergent or asymptotic expansion
+\[
+ f(x)=L+\sum_{r}c_rx^{\alpha_r}(\log x)^{m_r},
+ \qquad \Re\alpha_r>0.
+\]
+Theorems \ref{g2:thm:mellin-symbol} and \ref{g2:prop:log-powers} give the filter of
+each term exactly.  In particular, a nonintegral leading exponent $\alpha$
+produces the rate $q^{n\alpha}$ times an explicit $q$-product, while an
+integral polynomial jet is deleted once $n$ reaches its degree.  The filter is
+therefore an endpoint asymptotic microscope: its decay rate distinguishes
+fractional regularity from an analytic integer jet.
+
+\begin{proposition}[A simple Hölder estimate]
+\label{g2:prop:holder-filter}
+If $|f(x)-f(0)|\le C|x|^\alpha$ on the comb, with $\alpha>0$, then
+\begin{equation}
+ |(\Gop_{n,q}f)(a)-f(0)|
+ \le C|a|^\alpha
+ \sum_{k=0}^n|\lambda_{n,k}^{(q)}|q^{k\alpha}.
+ \label{g2:eq:holder-bound}
+\end{equation}
+For fixed $q$ and $\alpha$, the right side is $O(q^{n\alpha})$.
+\end{proposition}
+
+\begin{proof}
+The first statement is the triangle inequality.  Reindex $r=n-k$.  Since
+$(q;q)_m\ge(q;q)_\infty$ for every $m$, one has
+\begin{align*}
+ q^{-n\alpha}
+ \sum_{k=0}^n|\lambda_{n,k}^{(q)}|q^{k\alpha}
+ &=\sum_{r=0}^n
+ \frac{q^{\binom{r+1}{2}-r\alpha}}
+ {(q;q)_{n-r}(q;q)_r}\\
+ &\le \frac1{(q;q)_\infty^2}
+ \sum_{r=0}^\infty q^{\binom{r+1}{2}-r\alpha}<\infty.
+\end{align*}
+The last series converges for every fixed $\alpha$ because its exponent is
+quadratic in $r$.  This uniform bound proves the stated $O(q^{n\alpha})$
+estimate.  Dominated convergence also gives the sharper limit
+\[
+ q^{-n\alpha}
+ \sum_{k=0}^n|\lambda_{n,k}^{(q)}|q^{k\alpha}
+ \longrightarrow
+ \sum_{r=0}^\infty|\mu_r^{(q)}|q^{-r\alpha}.
+\]
+\end{proof}
+
+\subsection{Superflat data force divergence off the comb}
+
+The favorable result at $0$ has a nearly opposite counterpart everywhere
+else.  It is useful to formulate it directly for data, without assuming that
+they initially came from a function.
+
+\begin{definition}
+A sequence $y_j\to L$ is \emph{$q$-superflat at its limit} if
+\begin{equation}
+ y_j-L=o(q^{mj})\qquad(j\to\infty)
+ \label{g2:eq:q-superflat}
+\end{equation}
+for every $m\in\NaturalNumbers$.
+\end{definition}
+
+\begin{theorem}[Exact convergence set for nontrivial superflat data]
+\label{g2:thm:superflat-divergence}
+Let $0<q<1$, $a\ne0$, and let $y_j\to L$ be $q$-superflat.  Assume
+$y_j\ne L$ for infinitely many $j$.  Let
+\begin{equation}
+ P_n(x)=\sum_{k=0}^n A_k\Phi_k(x)
+ \label{g2:eq:superflat-newton}
+\end{equation}
+be the polynomial interpolating $P_n(aq^j)=y_j$ for $0\le j\le n$.  Then
+\begin{equation}
+ \limsup_{k\to\infty}|A_k|^{1/k}=\infty.
+ \label{g2:eq:superexponential-A}
+\end{equation}
+Moreover:
+\begin{enumerate}
+\item $P_n(0)\to L$;
+\item for each $m\ge0$, $P_n(aq^m)=y_m$ once $n\ge m$;
+\item for every $x\in\ComplexNumbers\setminus(\{0\}\cup\{aq^m:m\ge0\})$, the increments
+      $A_n\Phi_n(x)$ fail to tend to zero, and the sequence $P_n(x)$ diverges;
+      indeed it is unbounded along a subsequence.
+\end{enumerate}
+Thus the convergence set is exactly the geometric comb together with its
+accumulation point.
+\end{theorem}
+
+\begin{proof}
+Subtract $L$; this changes only $A_0$ and reduces to $L=0$.  Suppose, contrary
+to \eqref{g2:eq:superexponential-A}, that $|A_k|\le CR^{-k}$ for some $R>0$.
+For every $0<r<R$, the estimate
+\[
+ \sup_{|z|\le r}|\Phi_k(z)|
+ \le r^k\prod_{j=0}^\infty(1+|a|q^j/r)
+\]
+shows that $g(z)=\sum_{k\ge0}A_k\Phi_k(z)$ is analytic on $|z|<R$.
+For every sufficiently large $j$, $|aq^j|<R$, and all terms with $k>j$
+vanish at $aq^j$.  Hence
+\[
+ g(aq^j)=P_j(aq^j)=y_j.
+\]
+If the first nonzero Taylor coefficient of $g$ at $0$ had order $m$, then
+$g(aq^j)/(aq^j)^m$ would tend to a nonzero constant.  This contradicts
+$q$-superflatness.  Therefore every Taylor coefficient vanishes, so $g$ is
+identically zero near $0$, contradicting the assumption that infinitely many
+$y_j$ are nonzero.  This proves \eqref{g2:eq:superexponential-A}.
+
+Assertion 1 is \Cref{g2:thm:regular-summability}, and assertion 2 is interpolation.
+For a point $x$ in assertion 3,
+\begin{equation}
+ \Phi_n(x)=x^n\prod_{r=0}^{n-1}\left(1-\frac{aq^r}{x}\right).
+ \label{g2:eq:basis-fixed-x}
+\end{equation}
+The infinite product tends to $(a/x;q)_\infty\ne0$, because $x$ is not a
+node.  Hence $|\Phi_n(x)|^{1/n}\to|x|>0$.  Together with
+\eqref{g2:eq:superexponential-A}, this implies
+\(
+ \limsup|A_n\Phi_n(x)|^{1/n}=\infty
+\); the increments do not tend to zero.  Finally,
+$|P_n-P_{n-1}|=|A_n\Phi_n|$ is unbounded along a subsequence, so at least one
+of each adjacent pair $P_n,P_{n-1}$ is unbounded along a subsequence.
+\end{proof}
+
+\begin{remark}[A precise geometric Runge phenomenon]
+This is not the classical Runge phenomenon caused by equispaced nodes on a
+fixed interval.  The comb is not dense away from $0$.  Superflat nonzero data
+cannot be the trace of a nonzero analytic germ at the accumulation point;
+the interpolation coefficients must therefore leave every exponential class.
+The instability is an analytic-continuation obstruction encoded in a
+Vandermonde problem.
+\end{remark}
+
+\begin{remark}[Derivative-enhanced interpolation]
+Adding finitely many Hermite conditions at any fixed collection of nonzero
+teeth does not remove the obstruction: an exponentially bounded coefficient
+sequence would still define an analytic germ with a superflat nonzero trace.
+A successful regularization must either change the approximation space, use a
+number of derivative conditions growing with $n$, or explicitly build
+flatness into the basis.  Rvachev atoms are natural candidates for the last
+option.
+\end{remark}
+
+
+\section{The geometric-uniform family}
+\label{g2:sec:geometric-uniform}
+
+\subsection{Probability law, support, and refinement}
+
+Let $U_0,U_1,\ldots$ be independent uniform random variables on $[0,1]$ and
+set
+\begin{equation}
+ X_q=(1-q)\sum_{j=0}^\infty q^jU_j,
+ \qquad 0<q<1.
+ \label{g2:eq:Xq-definition}
+\end{equation}
+This is a geometric member of the infinite-convolution class studied by
+Jessen and Wintner~\cite{JessenWintner1935}.  The coefficients are positive
+and sum to $1$, so $0\le X_q\le1$.  Reflection
+of every $U_j$ shows
+\begin{equation}
+ X_q\stackrel d=1-X_q.
+ \label{g2:eq:Xq-symmetry}
+\end{equation}
+Let $F_q(x)=\Probability(X_q\le x)$, extended by $0$ to $x\le0$ and by $1$ to
+$x\ge1$.  Removing the first coordinate gives the affine fixed-point law
+\begin{equation}
+ X_q\stackrel d=(1-q)U+qX_q',
+ \label{g2:eq:Xq-fixed-point}
+\end{equation}
+where $X_q'$ is an independent copy.  Consequently
+\begin{align}
+ F_q(x)
+ &=\int_0^1F_q\!\left(\frac{x-(1-q)u}{q}\right)\Differential u
+ \label{g2:eq:Fq-integral-equation}\\
+ &=\frac q{1-q}
+ \int_{(x-(1-q))/q}^{x/q}F_q(t)\Differential t.
+ \label{g2:eq:Fq-integral-equation-2}
+\end{align}
+Differentiation gives
+\begin{equation}
+ F_q'(x)=\frac{F_q(x/q)-F_q((x-(1-q))/q)}{1-q}.
+ \label{g2:eq:Fq-derivative}
+\end{equation}
+
+\begin{proposition}[Smooth compactly supported density]
+\label{g2:prop:uq-smooth}
+The centered random variable
+\begin{equation}
+ Z_q=2X_q-1=(1-q)\sum_{j=0}^\infty q^jV_j,
+ \qquad V_j\sim\operatorname{Unif}[-1,1],
+ \label{g2:eq:Zq-definition}
+\end{equation}
+has an even $C^\infty$ density $u_q$ supported on $[-1,1]$.  With the Fourier
+convention
+$\widehat f(\xi)=\int_\RealNumbers f(x)\EulerE^{-2\pi\ImaginaryUnit\xi x}\Differential x$,
+\begin{equation}
+ \widehat u_q(\xi)=\prod_{j=0}^\infty
+ \SincPi\!\left(2(1-q)q^j\xi\right),
+ \qquad
+ \SincPi(t)=\frac{\sin(\pi t)}{\pi t}.
+ \label{g2:eq:uq-fourier-product}
+\end{equation}
+Moreover
+\begin{equation}
+ u_q(z)=\frac12F_q'\!\left(\frac{z+1}{2}\right).
+ \label{g2:eq:uq-Fq-relation}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The characteristic function factors by independence and gives
+\eqref{g2:eq:uq-fourier-product}.  To see rapid decay, use
+$|\SincPi(t)|\le\min(1,1/(\pi|t|))$ on the first
+$N\asymp\log|\xi|/|\log q|$ factors.  The logarithm of the resulting product
+is $-c_q(\log|\xi|)^2+O_q(\log|\xi|)$, hence the product decreases faster than
+any inverse power.  Fourier inversion then gives a $C^\infty$ density.  The
+support and evenness follow from \eqref{g2:eq:Zq-definition}; the density change
+of variables gives \eqref{g2:eq:uq-Fq-relation}.
+\end{proof}
+
+\begin{remark}
+The repository's formal development treats a still broader geometric-uniform
+law, including negative ratios and uniqueness of the affine distributional
+fixed point.  The positive-ratio case above is the one naturally matched to a
+one-sided interpolation comb.
+\end{remark}
+
+\subsection{Moments and Bernoulli cumulants}
+
+Write
+\begin{equation}
+ \mu_n(q)=\Expectation X_q^n.
+ \label{g2:eq:muq-definition}
+\end{equation}
+
+\begin{theorem}[Moment recurrence]
+\label{g2:thm:moment-recurrence}
+The moments satisfy $\mu_0(q)=1$ and, for $n\ge1$,
+\begin{equation}
+ (1-q^n)\mu_n(q)
+ =\sum_{k=0}^{n-1}\binom nk
+ q^k(1-q)^{n-k}\frac{\mu_k(q)}{n-k+1}.
+ \label{g2:eq:general-moment-recurrence}
+\end{equation}
+At $q=1/2$ this reduces to
+\begin{equation}
+ (2^n-1)\mu_n(1/2)
+ =\sum_{k=0}^{n-1}\binom nk\frac{\mu_k(1/2)}{n-k+1}.
+ \label{g2:eq:dyadic-moment-recurrence}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Raise \eqref{g2:eq:Xq-fixed-point} to the $n$th power, expand, and use
+$\Expectation U^r=1/(r+1)$.  Move the $k=n$ term to the left.  At $q=1/2$ every factor
+$q^k(1-q)^{n-k}$ equals $2^{-n}$, and multiplication by $2^n$ gives
+\eqref{g2:eq:dyadic-moment-recurrence}.
+\end{proof}
+
+The centered moment generating function is
+\begin{equation}
+ \Mq(z)=\Expectation\EulerE^{zZ_q}
+ =\prod_{j=0}^\infty
+ \frac{\sinh((1-q)q^jz)}{(1-q)q^jz}.
+ \label{g2:eq:uq-mgf}
+\end{equation}
+Using
+\[
+ \log\frac{\sinh z}{z}
+ =\sum_{m\ge1}\frac{2^{2m-1}B_{2m}}{m(2m)!}z^{2m},
+\]
+we obtain the even cumulants
+\begin{equation}
+ \kappa_{2m}(Z_q)
+ =\frac{2^{2m}B_{2m}}{2m}
+   \frac{(1-q)^{2m}}{1-q^{2m}},
+ \qquad
+ \kappa_{2m+1}(Z_q)=0.
+ \label{g2:eq:uq-cumulants}
+\end{equation}
+Thus the same geometric series that produces the interpolation denominators
+also produces the cumulant denominators.  At $q=1/2$,
+\begin{equation}
+ \kappa_{2m}(Z_{1/2})
+ =\frac{B_{2m}}{2m(1-4^{-m})}.
+ \label{g2:eq:up-cumulants}
+\end{equation}
+Moments can be recovered from these cumulants by complete Bell polynomials,
+providing a second exact route parallel to \eqref{g2:eq:dyadic-moment-recurrence}.
+
+\subsection{The left boundary layer}
+
+For $0\le x\le1-q$, the second term in \eqref{g2:eq:Fq-derivative} vanishes, so
+\begin{equation}
+ F_q'(x)=\frac1{1-q}F_q(x/q).
+ \label{g2:eq:left-boundary-first}
+\end{equation}
+Iteration gives the geometric derivative tower.
+
+\begin{lemma}[Boundary derivative tower]
+\label{g2:lem:boundary-tower}
+If $m\ge1$ and $0\le x\le(1-q)q^{m-1}$, then
+\begin{equation}
+ F_q^{(m)}(x)
+ =(1-q)^{-m}q^{-\binom m2}F_q(x/q^m).
+ \label{g2:eq:boundary-derivative-tower}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Induct on $m$.  The case $m=1$ is
+\eqref{g2:eq:left-boundary-first}.  Differentiating the induction hypothesis
+contributes a factor $q^{-1}$, and the domain assumption ensures that the next
+use of \eqref{g2:eq:left-boundary-first} remains in the left boundary layer.
+\end{proof}
+
+\subsection{Comb samples are normalized moments}
+
+The ratio $q=1/2$ is geometrically critical: the first uniform block has
+length $1-q$, while the tail has length $q$, and these are equal exactly at
+$q=1/2$.  For every $q\le1/2$, however, the tooth $q^n$ still lies inside the
+$n$th iterated boundary layer, which is enough for the following formula.
+
+\begin{theorem}[Geometric comb--moment identity]
+\label{g2:thm:comb-moment}
+For $0<q\le1/2$ and every $n\ge0$,
+\begin{equation}
+ F_q(q^n)
+ =\frac{q^{\binom{n+1}{2}}}{(1-q)^n n!}\,\mu_n(q).
+ \label{g2:eq:comb-moment}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The case $n=0$ is $F_q(1)=1$.  For $n\ge1$, compact support and smoothness
+imply that $F_q$ and all its derivatives vanish at $0$.  Since
+$q^n\le(1-q)q^{n-1}$ when $q\le1/2$, Taylor's integral formula and
+\Cref{g2:lem:boundary-tower} give
+\begin{align*}
+ F_q(q^n)
+ &=\frac1{(n-1)!}\int_0^{q^n}(q^n-t)^{n-1}F_q^{(n)}(t)\Differential t\\
+ &=\frac{(1-q)^{-n}q^{-\binom n2}}{(n-1)!}
+   \int_0^{q^n}(q^n-t)^{n-1}F_q(t/q^n)\Differential t\\
+ &=\frac{q^{n^2-\binom n2}}{(1-q)^n(n-1)!}
+   \int_0^1(1-u)^{n-1}F_q(u)\Differential u.
+\end{align*}
+By Fubini,
+\[
+ \int_0^1(1-u)^{n-1}F_q(u)\Differential u
+ =\frac1n\Expectation(1-X_q)^n.
+\]
+Symmetry \eqref{g2:eq:Xq-symmetry} changes the last moment to $\mu_n(q)$, and
+$n^2-\binom n2=\binom{n+1}{2}$.
+\end{proof}
+
+\begin{remark}[What fails for $q>1/2$]
+The formula is not expected to survive unchanged.  The point $q^n$ lies beyond
+the pure left boundary layer, so the reflected term in
+\eqref{g2:eq:Fq-derivative} enters before the $n$th differentiation.  The
+resulting correction should be indexed by affine words recording boundary
+crossings.  Deriving a closed word-sum or automaton formula is
+\Cref{g2:prob:qgt-half}.
+\end{remark}
+
+\subsection{The classical Fabius and Rvachev normalizations}
+
+Put
+\[
+ F=F_{1/2},\qquad X=X_{1/2},\qquad u=u_{1/2}.
+\]
+Then $F$ is the bounded Fabius function.  On $0\le x\le1/2$,
+\[
+ F'(x)=2F(2x),
+ \qquad
+ F(1-x)=1-F(x).
+\]
+The centered density $u$ is Rvachev's up-function in the probability
+normalization.  From \eqref{g2:eq:uq-Fq-relation},
+\begin{equation}
+ u(z)=
+ \begin{cases}
+ F(z+1),&-1\le z\le0,\\
+ F(1-z),&0\le z\le1,\\
+ 0,&|z|\ge1.
+ \end{cases}
+ \label{g2:eq:up-Fabius-piecewise}
+\end{equation}
+Its Fourier transform is the canonical infinite sinc product
+\begin{equation}
+ \widehat u(\xi)=\prod_{j=0}^\infty\SincPi(\xi/2^j).
+ \label{g2:eq:up-fourier-classical}
+\end{equation}
+The construction and these identities agree with the classical treatments of
+Fabius~\cite{Fabius1966} and Arias de Reyna~\cite{Arias2017Definition}, and
+with the normalization used in the repository's primary exposition
+\cite{ProveItFabius}.
+
+Write $\mu_n:=\mu_n(1/2)$ and introduce the Mersenne product
+\begin{equation}
+ \mathfrak M_n:=\prod_{r=1}^n(2^r-1),
+ \qquad \mathfrak M_0:=1.
+ \label{g2:eq:mersenne-definition}
+\end{equation}
+
+\begin{proposition}[Mersenne form of the dyadic origin row]
+\label{g2:prop:dyadic-mersenne-row}
+For every $n\ge0$,
+\begin{align}
+ (1/2;1/2)_n
+ &=2^{-\binom{n+1}{2}}\mathfrak M_n,
+ \label{g2:eq:qpoch-mersenne}\\
+ \lambda_{n,k}^{(1/2)}
+ &=(-1)^{n-k}{2^{\binom{k+1}{2}}
+ \over\mathfrak M_k\mathfrak M_{n-k}}
+ \qquad(0\le k\le n).
+ \label{g2:eq:dyadic-lambda-mersenne}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+In the Pochhammer product, write
+$1-2^{-r}=2^{-r}(2^r-1)$ and multiply the powers $2^{-r}$ for
+$1\le r\le n$.  Substitution of that identity at $k$ and $n-k$ into
+\eqref{g1:eq:lambda} cancels the remaining powers of two and yields the
+second formula.
+\end{proof}
+
+
+\subsection{The endpoint extrapolant as a Mersenne--moment convolution}
+
+Let $P_n$ interpolate $F$ at
+$1,1/2,\ldots,2^{-n}$ and put $E_n=P_n(0)$.
+
+\begin{theorem}[Exact endpoint convolution]
+\label{g2:thm:fabius-endpoint-convolution}
+For every $n\ge0$,
+\begin{equation}
+ E_n
+ =\sum_{k=0}^n(-1)^{n-k}
+ \frac{2^k\mu_k}
+ {k!\,\mathfrak M_k\mathfrak M_{n-k}}.
+ \label{g2:eq:fabius-endpoint-convolution}
+\end{equation}
+The first values are
+\[
+ 1,\quad 0,\quad -\frac{13}{27},\quad \frac19,\quad
+ \frac{4418}{637875},\quad -\frac{3218}{1318275},\ldots.
+\]
+Despite the initially nonmonotone behavior, $E_n\to0$.
+\end{theorem}
+
+\begin{proof}
+Substitute \eqref{gq:eq:fabius-inverse-dyadic} and
+\eqref{g2:eq:dyadic-lambda-mersenne} into
+$E_n=\sum_k\lambda_{n,k}^{(1/2)}F(2^{-k})$.  The powers combine as
+$2^{\binom{k+1}{2}-\binom k2}=2^k$.  Convergence follows independently from
+\Cref{g2:thm:regular-summability}.
+\end{proof}
+
+The same mechanism yields a quantitative bound throughout the
+geometric-uniform family.
+
+\begin{theorem}[Quadratic endpoint bound]
+\label{g2:thm:quadratic-endpoint-bound}
+Let $0<q\le1/2$, and let $P_{n,q}$ interpolate $F_q$ at
+$1,q,\ldots,q^n$.  Then
+\begin{equation}
+ |P_{n,q}(0)|
+ \le
+ \frac{\exp((1-q)^{-1})}{(q;q)_\infty^2}
+ q^{\binom{n+1}{2}-\Floor{n^2/4}}.
+ \label{g2:eq:quadratic-endpoint-bound}
+\end{equation}
+In particular the convergence is at least as fast as
+$q^{n^2/4+O(n)}$, and hence faster than every fixed geometric rate.
+\end{theorem}
+
+\begin{proof}
+Use the exact sample formula \eqref{g2:eq:comb-moment}, the bound
+$0\le\mu_k(q)\le1$, and \eqref{g2:eq:zero-target-row}:
+\begin{align*}
+ |P_{n,q}(0)|
+ &\le\sum_{k=0}^n
+ \frac{q^{\binom{n-k+1}{2}+\binom{k+1}{2}}}
+ {(q;q)_k(q;q)_{n-k}}
+ \frac{(1-q)^{-k}}{k!}.
+\end{align*}
+The exponent is
+\[
+ \binom{n+1}{2}-k(n-k)
+ \ge\binom{n+1}{2}-\Floor{n^2/4}.
+\]
+Also $(q;q)_k,(q;q)_{n-k}\ge(q;q)_\infty$.  Extract the smallest power of
+$q$ and majorize the remaining sum by
+$\sum_{k\ge0}(1-q)^{-k}/k!=\exp((1-q)^{-1})$.
+\end{proof}
+
+\subsection{Newton coefficients as a Gaussian moment transform}
+
+Write the Newton form
+\begin{equation}
+ P_n(x)=\sum_{k=0}^n A_k\prod_{r=0}^{k-1}(x-2^{-r}).
+ \label{g2:eq:fabius-newton-form}
+\end{equation}
+The coefficient $A_k$ is independent of the final interpolation degree once
+the first $k+1$ nodes are present.
+
+\begin{theorem}[General geometric-uniform moment transform]
+\label{g2:thm:general-moment-transform}
+For $0<q\le1/2$, let $A_n(q)$ be the Newton coefficient for the data
+$F_q(1),F_q(q),\ldots$.  Then
+\begin{equation}
+ A_n(q)=\frac1{(q;q)_n}
+ \sum_{j=0}^n(-1)^j
+ \GaussianBinomial nj{q^{-1}}
+ \left(\frac q{1-q}\right)^j
+ \frac{\mu_j(q)}{j!}.
+ \label{g2:eq:general-Gaussian-moment-transform}
+\end{equation}
+The transform is triangular and invertible.  If
+$B_k=(q;q)_kA_k(q)$ and $Q=q^{-1}$, then
+\begin{equation}
+ \frac{\mu_n(q)}{n!}
+ =\left(\frac{1-q}{q}\right)^n
+ \sum_{k=0}^n(-1)^kQ^{\binom{n-k}{2}}
+ \GaussianBinomial nkQ B_k.
+ \label{g2:eq:inverse-Gaussian-moment-transform}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Insert \eqref{g2:eq:comb-moment} into the explicit divided difference
+\eqref{gq:eq:geometric-divided-difference} with $c=1$.  The powers simplify by
+\[
+ q^{-jn+\binom{j+1}{2}+\binom{j+1}{2}}(1-q)^{-j}
+ =q^{-j(n-j)}\left(\frac q{1-q}\right)^j,
+\]
+and reciprocity
+$q^{-j(n-j)}\GaussianBinomial njq=\GaussianBinomial nj{q^{-1}}$ proves
+\eqref{g2:eq:general-Gaussian-moment-transform}.
+For inversion, factor the transform into a diagonal matrix and the Gaussian
+Pascal matrix, and use the mutually inverse basis transforms in
+\Cref{gq:thm:gaussian-pascal-basis} with base $Q$; direct multiplication
+gives \eqref{g2:eq:inverse-Gaussian-moment-transform}.
+\end{proof}
+
+\begin{corollary}[Dyadic Gaussian and Mersenne forms]
+\label{g2:cor:dyadic-moment-transform}
+For the Fabius function,
+\begin{align}
+ A_n
+ &=\frac1{(1/2;1/2)_n}
+ \sum_{j=0}^n(-1)^j\GaussianBinomial nj2\frac{\mu_j}{j!}
+ \label{g2:eq:fabius-Gaussian-transform}\\
+ &=2^{\binom{n+1}{2}}
+ \sum_{j=0}^n
+ \frac{(-1)^j\mu_j}
+ {j!\,\mathfrak M_j\mathfrak M_{n-j}}.
+ \label{g2:eq:fabius-Mersenne-transform}
+\end{align}
+Moreover
+\begin{equation}
+ E_n-E_{n-1}=(-1)^n2^{-\binom n2}A_n
+ \qquad(n\ge1).
+ \label{g2:eq:endpoint-increment}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Set $q=1/2$ in \eqref{g2:eq:general-Gaussian-moment-transform}.  Then
+$q^{-1}=2$ and $q/(1-q)=1$.  Use
+\(
+ \GaussianBinomial nj2=\mathfrak M_n/(\mathfrak M_j\mathfrak M_{n-j})
+\)
+and \eqref{g2:eq:qpoch-mersenne} for the second form.  Finally, the difference
+between two successive Newton partial sums at zero is
+$A_n\Phi_n(0)=(-1)^n2^{-\binom n2}A_n$.
+\end{proof}
+
+\subsection{Generating-function factorization}
+
+Define
+\begin{equation}
+ B(z)=\sum_{r\ge0}\frac{z^r}{\mathfrak M_r}
+ =(-z/2;1/2)_\infty,
+ \qquad
+ H(z)=\sum_{r\ge0}\frac{(-1)^r\mu_r}{r!\,\mathfrak M_r}z^r.
+ \label{g2:eq:BH-generating}
+\end{equation}
+The equality for $B$ is Euler's infinite $q$-binomial theorem.  The two exact
+convolutions above are equivalent to
+\begin{align}
+ \sum_{n\ge0}2^{-\binom{n+1}{2}}A_nz^n
+ &=B(z)H(z),
+ \label{g2:eq:newton-generating-factorization}\\
+ \sum_{n\ge0}(-1)^nE_nz^n
+ &=B(z)H(2z).
+ \label{g2:eq:endpoint-generating-factorization}
+\end{align}
+These identities exhibit the Fabius Newton coefficients as a $q$-Borel-type
+transform of the moment generating function multiplied by a universal Euler
+product.  They may be useful for saddle-point analysis of $A_n$.
+
+\subsection{Exact divergence of the Fabius interpolants}
+
+The Fabius function is positive on $(0,1]$ and flat at $0$:
+$F(x)=o(x^m)$ for every $m$.  Therefore its dyadic samples satisfy the
+hypotheses of \Cref{g2:thm:superflat-divergence}.
+
+\begin{corollary}[Exact convergence set for Fabius comb interpolation]
+\label{g2:cor:fabius-convergence-set}
+Let $P_n$ interpolate $F$ at $1,1/2,\ldots,2^{-n}$.  Then
+\begin{equation}
+ P_n(x)\text{ converges as }n\to\infty
+ \quad\Longleftrightarrow\quad
+ x\in\{0,1,1/2,1/4,\ldots\}.
+ \label{g2:eq:fabius-convergence-set}
+\end{equation}
+At $0$ the limit is $0$ and obeys the quadratic bound
+\eqref{g2:eq:quadratic-endpoint-bound}; at a sampled point $2^{-m}$ the sequence
+is eventually equal to $F(2^{-m})$; at every other nonzero complex point it is
+unbounded along a subsequence.
+\end{corollary}
+
+\begin{proof}
+Apply \Cref{g2:thm:superflat-divergence} with $a=1$, $q=1/2$, and
+$y_j=F(2^{-j})$.
+\end{proof}
+
+\begin{corollary}[A rigorous upper scale for coefficient growth]
+\label{g2:cor:coefficient-upper}
+The Fabius Newton coefficients satisfy
+\begin{equation}
+ |A_n|\le2^{n^2/4+O(n)}.
+ \label{g2:eq:coefficient-upper}
+\end{equation}
+On the other hand, $\limsup|A_n|^{1/n}=\infty$.
+\end{corollary}
+
+\begin{proof}
+Combine \eqref{g2:eq:endpoint-increment} with the bounds for $E_n$ and $E_{n-1}$
+in \Cref{g2:thm:quadratic-endpoint-bound}.  The lower qualitative statement is
+part of \Cref{g2:thm:superflat-divergence}.
+\end{proof}
+
+\begin{conjecture}[Quadratic coefficient exponent]
+\label{g2:conj:quarter-exponent}
+For the Fabius coefficients in \eqref{g2:eq:fabius-newton-form},
+\begin{equation}
+ \lim_{n\to\infty}\frac{\log_2|A_n|}{n^2}=\frac14.
+ \label{g2:eq:quarter-exponent}
+\end{equation}
+More generally, for $0<q\le1/2$,
+\begin{equation}
+ \lim_{n\to\infty}
+ \frac{\log|A_n(q)|}{n^2\log(1/q)}=\frac14.
+ \label{g2:eq:quarter-exponent-general}
+\end{equation}
+A weaker and probably more robust version replaces the limit by a limsup.  The
+Gaussian coefficient in \eqref{g2:eq:general-Gaussian-moment-transform} is largest
+near $j=n/2$, where $q^{-j(n-j)}=q^{-n^2/4+O(1)}$; the open issue is to control
+alternating cancellation and the subquadratic moment factor.  The order-$80$
+companion computation recorded in
+\path{assets/companion-evidence/geometric_comb_interpolation_report-3/NUMERICAL_SUMMARY.txt}
+is consistent with
+\eqref{g2:eq:quarter-exponent}.
+\end{conjecture}
+
+
+\section{The Rvachev Fourier product through the same filter}
+\label{g2:sec:rvachev-filter}
+
+\subsection{Tail products along a geometric comb}
+
+Put
+\begin{equation}
+ s_q(\xi)=\SincPi(2(1-q)\xi),
+ \qquad
+ S_{q,k}(\xi)=\prod_{j=0}^{k-1}s_q(q^j\xi),
+ \quad S_{q,0}=1.
+ \label{g2:eq:prefix-products}
+\end{equation}
+The infinite product \eqref{g2:eq:uq-fourier-product} satisfies
+\begin{equation}
+ \widehat u_q(q^k\xi)
+ =\frac{\widehat u_q(\xi)}{S_{q,k}(\xi)}.
+ \label{g2:eq:tail-product-ratio}
+\end{equation}
+Thus values of $\widehat u_q$ on a geometric frequency comb are exactly the
+tails of its defining product.
+
+\begin{theorem}[Reciprocal sinc-product filter]
+\label{g2:thm:reciprocal-product}
+Let $0<q<1$ and suppose $\widehat u_q(\xi)\ne0$.  Define
+\begin{equation}
+ R_{n,q}(\xi)=\sum_{k=0}^n
+ \frac{\lambda_{n,k}^{(q)}}{S_{q,k}(\xi)}.
+ \label{g2:eq:reciprocal-approximant}
+\end{equation}
+Then
+\begin{equation}
+ R_{n,q}(\xi)\longrightarrow\frac1{\widehat u_q(\xi)}.
+ \label{g2:eq:reciprocal-limit}
+\end{equation}
+More precisely,
+\begin{equation}
+ \AbsoluteValue{R_{n,q}(\xi)-\frac1{\widehat u_q(\xi)}}
+ \le
+ \frac{q^{\binom{n+1}{2}}}{|\widehat u_q(\xi)|(q;q)_n}
+ \EulerE^{2\pi|\xi|}\frac{(2\pi|\xi|)^{n+1}}{(n+1)!}.
+ \label{g2:eq:reciprocal-error-bound}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply the geometric filter to the entire function of $t$
+\[
+ h_\xi(t)=\widehat u_q(t\xi)=\Expectation\EulerE^{-2\pi\ImaginaryUnit t\xi Z_q}.
+\]
+Since $h_\xi(0)=1$, \Cref{g2:thm:regular-summability} already gives
+$\sum_k\lambda_{n,k}h_\xi(q^k)\to1$.  By
+\eqref{g2:eq:tail-product-ratio}, this sum is
+$\widehat u_q(\xi)R_{n,q}(\xi)$, proving the limit.
+For the quantitative bound, the Taylor coefficients of $h_\xi$ satisfy
+$|c_m|\le(2\pi|\xi|)^m/m!$ because $|Z_q|\le1$.  Formula
+\eqref{g1:eq:exact-analytic-tail} with $A=1$ and
+$\GaussianBinomial{n+r}{n}q\le1/(q;q)_n$ gives
+\[
+ |\widehat u_q(\xi)R_{n,q}(\xi)-1|
+ \le\frac{q^{\binom{n+1}{2}}}{(q;q)_n}
+ \sum_{m=n+1}^\infty\frac{(2\pi|\xi|)^m}{m!}.
+\]
+The exponential-tail bound
+$\sum_{m\ge n+1}t^m/m!\le\EulerE^t t^{n+1}/(n+1)!$ completes the proof.
+\end{proof}
+
+\begin{remark}[Zeros and regularized reciprocals]
+The hypothesis excludes the union of zero lattices
+$2(1-q)q^j\xi\in\IntegerNumbers\setminus\{0\}$.  Near a zero, the individual prefix
+reciprocals are badly conditioned.  Multiplying by the known vanishing factor,
+or differentiating the filtered identity to reconstruct the finite part,
+should produce stable formulas for residues and zero multiplicities; see
+\Cref{g2:prob:zero-regularization}.
+\end{remark}
+
+\subsection{Moment interpretation of the residual}
+
+Expanding the characteristic function gives
+\begin{equation}
+ \widehat u_q(t\xi)
+ =\sum_{m=0}^\infty
+ \frac{(-2\pi\ImaginaryUnit\xi)^m}{m!}\Expectation Z_q^m\,t^m.
+ \label{g2:eq:uq-characteristic-series}
+\end{equation}
+Substitution into \eqref{g1:eq:exact-analytic-tail} expresses the error in
+\eqref{g2:eq:reciprocal-limit} as a Gaussian transform of the centered moments.
+Odd moments vanish, so the actual leading term is the first even degree above
+$n$.  The reciprocal product identity is therefore the Fourier counterpart of
+the Fabius moment transform: the same filter reads moments from the CDF comb
+and cancels moments in the characteristic-function comb.
+
+
+\subsection{The additive Thue--Morse companion}
+
+Let
+\begin{equation}
+ X^{(N)}=\sum_{j=1}^N2^{-j}U_j.
+ \label{g2:eq:finite-dyadic-sum}
+\end{equation}
+The CDF of a sum of independent uniforms with widths $w_j$ is a truncated-power
+spline.  For the dyadic widths, all subset sums form the uniform grid
+$m/2^N$ and their inclusion--exclusion signs become the Thue--Morse signs.
+Thus
+\begin{equation}
+ \Probability(X^{(N)}\le x)
+ =\frac{2^{N(N+1)/2}}{N!}
+ \sum_{m=0}^{2^N-1}(-1)^{s_2(m)}
+ \left(x-\frac{m}{2^N}\right)_+^N,
+ \label{g2:eq:thue-morse-spline-cdf}
+\end{equation}
+where $s_2(m)$ is the binary digit sum.  Differentiating gives the density with
+power $N-1$ and factor $(N-1)!^{-1}$.
+
+The Gaussian comb filter and the Thue--Morse spline are two different
+projections of the same hierarchy of scales:
+
+\begin{itemize}
+\item the Lagrange filter keeps the scale index $j$ and uses only $n+1$
+      multiplicative nodes $q^j$; Gaussian coefficients encode its exact
+      moment cancellations;
+\item the finite convolution expands all $2^N$ subsets of dyadic scales;
+      subset sums become additive knots and parity produces Thue--Morse
+      cancellation.
+\end{itemize}
+
+At $q=1/2$, the products $(1-2^{-j})$, the Mersenne factors $(2^j-1)$,
+Gaussian coefficients at bases $1/2$ and $2$, and the binary subset lattice
+all coexist.  This is why the Fabius/Rvachev system is not merely an example of
+the general geometric theory: it is the point at which multiplicative
+interpolation, additive splines, and binary arithmetic lock together exactly.
+
+
+\section{Research frontiers}
+\label{g2:sec:frontiers}
+
+The problems below are ordered from sharply formulated local questions to
+broader structural programs.  None is needed for the proved results.
+
+\subsection{Asymptotics of the Fabius Newton coefficients}
+
+\Cref{g2:conj:quarter-exponent} asks only for the leading quadratic exponent.  A
+more informative target is a saddle-point expansion of
+\eqref{g2:eq:fabius-Gaussian-transform} or
+\eqref{g2:eq:newton-generating-factorization}.  The Gaussian coefficient favors
+$j\approx n/2$, while $\mu_j/j!$ has its own lower-Lambert saddle and periodic
+correction.  The interaction should produce a two-scale saddle problem.
+
+\begin{problem}[Full coefficient asymptotic]
+\label{g2:prob:full-A-asymptotic}
+Determine functions $c_2,c_1,c_{\log}$ and a bounded oscillatory term
+$\Psi$ such that
+\begin{equation}
+ \log|A_n|
+ =c_2n^2+c_1n\log n+c_{\log}n
+ +\Psi(\vartheta_n)+o(1),
+ \label{g2:eq:full-A-asymptotic}
+\end{equation}
+with an explicit Lambert-type phase $\vartheta_n$.  Decide whether sign
+changes and near-cancellations are controlled by the same periodic function
+that occurs in the sharp Fabius endpoint asymptotic.
+\end{problem}
+
+A first rigorous step would be matching upper and lower bounds
+$2^{n^2/4+o(n^2)}$.  The upper bound is already in
+\Cref{g2:cor:coefficient-upper}; a lower bound must prevent exponential-scale
+cancellation in the alternating central block.
+
+\subsection{Boundary-crossing formulas for \texorpdfstring{$q>1/2$}{q greater than 1/2}}
+
+\begin{problem}[The supercritical comb-moment law]
+\label{g2:prob:qgt-half}
+For $1/2<q<1$, derive a closed formula for $F_q(q^n)$ in terms of moments and
+finite affine words generated by
+\[
+ x\mapsto x/q,
+ \qquad
+ x\mapsto(x-(1-q))/q.
+\]
+A satisfactory formula should specialize to \eqref{g2:eq:comb-moment} when no
+word crosses the reflected boundary, and should make the breakpoints in $q$
+explicit.
+\end{problem}
+
+The number of admissible boundary words may change when polynomial relations
+among $q$-powers are crossed.  This suggests a piecewise-algebraic structure
+related to beta-expansions, but with continuous uniform digits rather than
+Bernoulli digits.
+
+\subsection{Confluent limits and roots of unity}
+
+\begin{problem}[$q\to0$ confluent calculus]
+\label{g2:prob:q0-confluent}
+Find a renormalized cardinal and Newton basis whose $q\to0$ limit separates the
+infinitely many nodes collapsing at $0$.  Determine whether the correct limit
+is a triangular mixture of value, derivative, and tail-quotient functionals.
+\end{problem}
+
+\begin{problem}[Cyclotomic geometric interpolation]
+\label{g2:prob:roots-unity}
+When $q$ is a primitive $m$th root of unity, replace repeated nodes by a
+canonical Hermite data set and factor the resulting confluent Vandermonde
+matrix into cyclotomic analogues of $P_q$ and $D_{a,q}$.  The denominator-free
+operator
+$\prod_{j=1}^n(E_q-q^j)$ should survive as a periodic difference operator even
+when normalized Lagrange weights do not.
+\end{problem}
+
+These limits may connect the present theory to divided powers, quantum groups
+at roots of unity, and cyclic $q$-difference equations.
+
+\subsection{Regularization near Fourier zeros}
+
+\begin{problem}[Filtered finite parts at sinc zeros]
+\label{g2:prob:zero-regularization}
+Let $\xi_0$ be a zero of $\widehat u_q$ of known multiplicity $m$.  Construct
+from $R_{n,q}$ and its first $m$ derivatives a sequence converging to the
+finite part of $1/\widehat u_q$ at $\xi_0$, with a bound uniform in a shrinking
+neighborhood of the zero.
+\end{problem}
+
+Because every zero comes from explicit finite sinc factors, one can first
+divide out the known local factor and then apply the geometric filter to the
+nonvanishing tail.  The main issue is numerical cancellation when several
+zero lattices overlap, as they do extensively at $q=1/2$.
+
+\subsection{Exact Lebesgue functions below the finest node}
+
+For $x=aq^\alpha$ with real $\alpha>n$, the cardinal signs are
+$(-1)^{n-j}$, so the Lebesgue function is the explicit positive sum below.
+The formula extends continuously to $\alpha=n$, where the target is the finest
+node and the Lebesgue function equals $1$.
+\begin{equation}
+ \Lambda_n(aq^\alpha)=
+ (q^{\alpha-n};q)_{n+1}
+ \sum_{j=0}^n
+ \frac{q^{\binom{n-j+1}{2}}}
+ {(1-q^{\alpha-j})(q;q)_j(q;q)_{n-j}}.
+ \label{g2:eq:below-comb-lebesgue}
+\end{equation}
+At $\alpha=\infty$ it reduces to \eqref{g1:eq:K-n}.  It is natural to ask
+whether the finite sum has a single basic-hypergeometric closed form and
+whether $\Lambda_n$ is monotone on $[0,aq^n]$.
+
+\begin{conjecture}[Maximum below the comb]
+\label{g2:conj:below-comb-lebesgue}
+For $0<q<1$ and $a>0$,
+\begin{equation}
+ \max_{0\le x\le aq^n}\Lambda_n(x)=\Lambda_n(0)
+ =\frac{(-q;q)_n}{(q;q)_n}.
+ \label{g2:eq:below-comb-max}
+\end{equation}
+\end{conjecture}
+
+Low-degree symbolic and numerical checks support the claim, but a proof
+appears to require a variation-diminishing or total-positivity argument rather
+than termwise monotonicity.
+
+\subsection{Flatness-adapted approximation spaces}
+
+Polynomial interpolation fails off the comb for a structural reason.  The
+basis must be changed, not merely evaluated more accurately.  Classical
+geometric-knot spline constructions~\cite{KocakPhillips1994} provide one
+nearby approximation-theoretic model, while Rvachev atoms add exact
+$C^\infty$ compact support and endpoint flatness.
+
+\begin{problem}[Rvachev-preconditioned comb interpolation]
+\label{g2:prob:rvachev-preconditioned}
+Construct finite-dimensional spaces generated by scale-dependent Rvachev
+atoms, for example
+\[
+ u(2^jx-r),\qquad 0\le j\le n,
+\]
+that interpolate the Fabius dyadic data and incorporate endpoint flatness.
+Determine whether one can obtain convergence on $[0,1]$ while retaining exact
+rational or algebraic coefficient formulas.
+\end{problem}
+
+The Gaussian--Appell decoder \eqref{gq:eq:cardinal-up-decoder} supplies an exact
+preconditioner for each finite polynomial interpolant, but it cannot remove
+the divergence because it reproduces the same polynomial.  A genuinely new
+scheme must let the atom space grow in smoothness or scale, rather than merely
+re-expressing $\mathbb P_n$.
+
+\begin{problem}[Growing Hermite data]
+\label{g2:prob:growing-hermite}
+At the tooth $2^{-j}$, include derivatives through an order $r_j$ that grows
+with $j$.  Find the minimal growth of $r_j$ for which the Hermite interpolants
+can converge to $F$ on a nontrivial interval.  Relate the threshold to the
+sharp derivative and endpoint asymptotics of $F$.
+\end{problem}
+
+\subsection{Multivariate geometric meshes}
+
+Schoenberg's one-dimensional problem has a triangular-mesh extension due to
+Lee and Phillips~\cite{LeePhillips1988}.  The present operator and probability
+viewpoints suggest several further versions.
+
+\begin{problem}[Tensor and simplex filters]
+\label{g2:prob:multivariate}
+For nodes
+$(a_1q_1^{j_1},\ldots,a_dq_d^{j_d})$, develop tensor and total-degree
+Lagrange filters with explicit multivariate Mellin symbols.  On a simplex-like
+geometric mesh, identify the correct multivariate Gaussian coefficients and
+complete homogeneous residuals.  Apply them to joint geometric-uniform laws
+and tensor products of up-functions.
+\end{problem}
+
+The tensor case is immediate algebraically but may suffer severe anisotropic
+conditioning.  The simplex case should involve $q$-multinomial coefficients
+and may admit a probabilistic interpretation through flags of coordinate
+subspaces.
+
+\subsection{Adaptive ratios and asymptotic optimization}
+
+The exact error factors make ratio selection an optimization problem.  Small
+$q$ gives powerful Gaussian suppression but spreads the first nodes; $q$ near
+$1$ resolves a local germ but causes the condition number
+\eqref{g1:eq:K-modular} to explode.
+
+\begin{problem}[Optimal $q$ under noise]
+\label{g2:prob:optimal-q}
+Suppose the data $f(aq^k)$ have absolute or relative noise of known scale and
+$f$ belongs to a specified analytic, Gevrey, or endpoint-asymptotic class.
+Minimize a rigorous sum of truncation and amplified-noise bounds over both
+$q$ and $n$.  Determine whether the optimum has a universal scaling law as the
+noise tends to zero.
+\end{problem}
+
+For the Fabius function, the superflat signal and the large off-comb
+coefficients make this a nonstandard regularization problem; the optimum for
+evaluating $F(0)$ need not resemble the optimum for reconstructing $F(x)$ at
+$x>0$.
+
+\subsection{Formal verification roadmap}
+
+The finite algebra is particularly well suited to Lean because most identities
+can be stated over a commutative ring before any division is introduced.  A
+productive dependency order is:
+
+\begin{enumerate}
+\item prove the denominator-free nodal product and geometric Vandermonde
+      factorization;
+\item define the Gaussian Pascal matrix and prove the inverse basis pair of
+      \Cref{gq:thm:gaussian-pascal-basis};
+\item derive the barycentric denominator and general-target cardinal after
+      adding field hypotheses;
+\item define the dilation polynomial and prove the full polynomial identity
+      \eqref{g1:eq:row-polynomial};
+\item obtain natural moment annihilation by evaluation, then extend to the
+      analytic Mellin symbol in a complex-power layer;
+\item formalize Jackson divided differences first for polynomials, then for
+      functions with iterated $q$-derivatives;
+\item prove the row-norm identity and Toeplitz regularity using summable
+      reversed rows;
+\item reuse the repository's geometric-uniform law to prove
+      \eqref{g2:eq:comb-moment};
+\item instantiate at $q=1/2$ and connect to existing Fabius moments and
+      Mersenne products;
+\item formalize the superflat divergence theorem using a local power-series
+      contradiction;
+\item feed the existing sinc-product theorem through the analytic filter to
+      obtain \Cref{g2:thm:reciprocal-product}.
+\end{enumerate}
+
+The distinction between denominator-free polynomial statements and normalized
+field statements should be maintained throughout.  It will make the later
+root-of-unity and confluent developments substantially easier.
