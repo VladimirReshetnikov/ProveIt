@@ -224,12 +224,12 @@ group README on removal.
 
 ### Consistency audits
 
-The scripts under `scripts/` check the volumes and module documentation against
-the Lean corpus. `scripts/audit_all.sh` runs all four hard checks and exits
-nonzero if any hard check fails;
-run it before pushing any change that touches either side. The stale-claim and
-crosswalk-coverage surveys are advisory; the build-log checker is run
-separately after compiling a changed volume.
+The scripts under [`scripts/`](scripts/) check the volumes and module
+documentation against the Lean corpus. `scripts/audit_all.sh` runs all four
+hard checks and exits nonzero if any hard check fails; run it before pushing
+any change that touches either side. The stale-claim and crosswalk-coverage
+surveys are advisory; the build-log checker is run separately after compiling
+a changed volume.
 
 - `scripts/audit_facade_reachability.py` — every module on disk is reachable from the
   library root `FabiusFunction.lean`. A newly added leaf module that nothing

@@ -57,6 +57,7 @@ import FabiusFunction.WeightedUniformSupport
 import FabiusFunction.ContinuousCDF
 import FabiusFunction.AffineIndependentCopy
 import FabiusFunction.GeometricUniformLaw
+import FabiusFunction.GeometricUniformMultisection
 import FabiusFunction.GeometricUniformUniqueness
 import FabiusFunction.GeometricUniformCDF
 import FabiusFunction.Paper05442

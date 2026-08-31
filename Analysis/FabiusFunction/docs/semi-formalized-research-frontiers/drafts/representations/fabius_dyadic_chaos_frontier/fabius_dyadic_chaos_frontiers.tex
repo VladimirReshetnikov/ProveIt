@@ -6,6 +6,7 @@
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,tabularx,array,multirow}
 \usepackage{graphicx}
 \usepackage{enumitem}
@@ -69,31 +70,11 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
 \newcommand{\Corr}{\operatorname{Corr}}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\wt}{\operatorname{wt}}
-\newcommand{\upf}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
 \newcommand{\sech}{\operatorname{sech}}
-\newcommand{\sgn}{\operatorname{sgn}}
-\newcommand{\TV}{d_{\mathrm{TV}}}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
 \newcommand{\one}{\mathbf 1}
-\newcommand{\vtwo}{\nu_2}
 \newcommand{\falling}[2]{#1^{\underline{#2}}}
 \newcommand{\rising}[2]{#1^{\overline{#2}}}
-\newcommand{\qpoch}[2]{(#1;#1)_{#2}}
 \newcommand{\Bell}{\mathcal B}
 \newcommand{\Acal}{\mathcal A}
 \newcommand{\Hcal}{\mathcal H}
@@ -172,7 +153,7 @@ For the centered random series
  X=\sum_{j\ge1}2^{-j}V_j,\qquad V_j\stackrel{\rm iid}{\sim}
  \operatorname{Unif}[-1,1],
 \]
-we prove an explicit infinite Hoeffding decomposition of $\e^{tX}$.  The
+we prove an explicit infinite Hoeffding decomposition of $\EulerE^{tX}$.  The
 normalized variance of each component indexed by a finite set $S$ factorizes
 as $\prod_{j\in S}r(x_j)$, where $x_j=t2^{-j}$ and $r$ is the continuous
 extension of $x\coth x-1$ with $r(0)=0$.  Consequently the
@@ -316,7 +297,7 @@ The following facts are inputs from the repository and classical literature:
 \begin{resultbox}{Repository-relative theorem network}
 The proved contributions are:
 \begin{enumerate}
-\item an exact infinite Hoeffding decomposition of $\e^{tX}$ and all component
+\item an exact infinite Hoeffding decomposition of $\EulerE^{tX}$ and all component
       norms;
 \item a Poisson--binomial law for the active set and exact first/total Sobol
       indices;
@@ -357,9 +338,9 @@ $V_j=2U_{j-1}-1$ for $j\ge1$ and
  \qquad V_j\stackrel{\mathrm{iid}}{\sim}\operatorname{Unif}[-1,1].
  \label{eq:X-centered}
 \end{equation}
-Then $X$ has Rvachev density $\upf$ on $[-1,1]$, and
+Then $X$ has Rvachev density $\RvachevUp$ on $[-1,1]$, and
 \begin{equation}
- \upf(x)=F(1-|x|),\qquad F(y)=\upf(y-1),\qquad F'(y)=2\upf(2y-1)
+ \RvachevUp(x)=F(1-|x|),\qquad F(y)=\RvachevUp(y-1),\qquad F'(y)=2\RvachevUp(2y-1)
  \quad(0\le y\le1)
  \label{eq:F-up-bridge}
 \end{equation}
@@ -367,14 +348,14 @@ up to the repository's stated convention for the affine density/CDF bridge.
 We use the centered law because its independent coordinates and symmetry are
 transparent.
 
-For $x\in\C$, define
+For $x\in\ComplexNumbers$, define
 \begin{equation}
  m(x)=\frac{\sinh x}{x},\qquad m(0)=1.
  \label{eq:m-sinhc}
 \end{equation}
 The moment generating function of $X$ is
 \begin{equation}
- M(t)=\E\e^{tX}=\prod_{j\ge1}m(t2^{-j}).
+ M(t)=\Expectation\EulerE^{tX}=\prod_{j\ge1}m(t2^{-j}).
  \label{eq:M-product}
 \end{equation}
 The product converges locally uniformly and satisfies
@@ -382,7 +363,7 @@ The product converges locally uniformly and satisfies
  M(2t)=m(t)M(t).
  \label{eq:M-refinement}
 \end{equation}
-On the imaginary axis, $M(2\pi\ii z)$ becomes the repository's normalized
+On the imaginary axis, $M(2\pi\ImaginaryUnit z)$ becomes the repository's normalized
 infinite sinc product after the corresponding Fourier convention is applied.
 
 \subsection{Moments, cumulants, and Bell polynomials}
@@ -396,7 +377,7 @@ Write $\kappa_n$ for the cumulants of $X$.  The corpus gives
 \end{equation}
 where $B_n$ are Bernoulli numbers.  Hence
 \begin{equation}
- \E X^n=\Bell_n(\kappa_1,\ldots,\kappa_n),
+ \Expectation X^n=\Bell_n(\kappa_1,\ldots,\kappa_n),
  \label{eq:Bell-moments}
 \end{equation}
 with $\Bell_n$ the complete exponential Bell polynomial.  These formulae are
@@ -404,18 +385,18 @@ imported; below they become coefficients of sensitivity and chaos objects.
 
 \subsection{Product probability space and projections}
 
-Let $\Omega=[-1,1]^{\N}$ with product probability measure
-$\mu=\bigotimes_{j\ge1}(\dd v_j/2)$.  For each coordinate, let
+Let $\Omega=[-1,1]^{\NaturalNumbers}$ with product probability measure
+$\mu=\bigotimes_{j\ge1}(\Differential v_j/2)$.  For each coordinate, let
 \begin{equation}
- E_jf=\int_{-1}^1f(v_1,\ldots,v_{j-1},u,v_{j+1},\ldots)\frac{\dd u}{2},
+ E_jf=\int_{-1}^1f(v_1,\ldots,v_{j-1},u,v_{j+1},\ldots)\frac{\Differential u}{2},
  \qquad Q_j=I-E_j.
  \label{eq:coordinate-projections}
 \end{equation}
-For a finite set $S\subset\N$, let
-\(\mathcal F_S=\sigma(V_j:j\in S)\) and put
+For a finite set $S\subset\NaturalNumbers$, let
+\(\DyadicSigmaField_S=\sigma(V_j:j\in S)\) and put
 \begin{equation}
  Q_S=\prod_{j\in S}Q_j,
- \qquad E_{S^c}f=\E[f\mid\mathcal F_S],
+ \qquad E_{S^c}f=\Expectation[f\mid\DyadicSigmaField_S],
  \qquad f_S=Q_SE_{S^c}f.
  \label{eq:Hoeffding-component}
 \end{equation}
@@ -426,13 +407,13 @@ conditional-expectation definition makes the infinite product notation exact.
 The commuting orthogonal projections give the Hoeffding or functional-ANOVA
 expansion
 \begin{equation}
- f=\sum_{S\Subset\N}f_S,
+ f=\sum_{S\Subset\NaturalNumbers}f_S,
  \qquad
- \|f\|_2^2=\sum_{S\Subset\N}\|f_S\|_2^2,
+ \|f\|_2^2=\sum_{S\Subset\NaturalNumbers}\|f_S\|_2^2,
  \label{eq:Hoeffding-general}
 \end{equation}
-for $f\in L^2(\mu)$, with convergence in $L^2$.  Here $S\Subset\N$ means that
-$S$ is finite.  The empty component is $f_\varnothing=\E f$.
+for $f\in L^2(\mu)$, with convergence in $L^2$.  Here $S\Subset\NaturalNumbers$ means that
+$S$ is finite.  The empty component is $f_\varnothing=\Expectation f$.
 
 \begin{remark}
 The report uses the term \emph{digit} for the continuous independent
@@ -443,16 +424,16 @@ enter later through a Rademacher decomposition of each uniform coordinate.
 \section{Exact Hoeffding decomposition of the exponential observable}
 \label{sec:exponential-anova}
 
-Fix $t\in\R$ and write
+Fix $t\in\RealNumbers$ and write
 \begin{equation}
  x_j=ta_j=t2^{-j},
  \qquad
- Z_j(t)=\frac{\e^{x_jV_j}}{m(x_j)}-1.
+ Z_j(t)=\frac{\EulerE^{x_jV_j}}{m(x_j)}-1.
  \label{eq:Z-local}
 \end{equation}
-Then $\E Z_j(t)=0$ and
+Then $\Expectation Z_j(t)=0$ and
 \begin{equation}
- \e^{tX}=M(t)\prod_{j\ge1}\bigl(1+Z_j(t)\bigr).
+ \EulerE^{tX}=M(t)\prod_{j\ge1}\bigl(1+Z_j(t)\bigr).
  \label{eq:exp-centered-product}
 \end{equation}
 The next theorem turns this elementary product into the complete orthogonal
@@ -460,7 +441,7 @@ sensitivity decomposition.
 
 \begin{theorem}[Exact dyadic Hoeffding components; \statusP]
 \label{thm:exact-Hoeffding}
-For every finite $S\subset\N$, the Hoeffding component of $\e^{tX}$ indexed by
+For every finite $S\subset\NaturalNumbers$, the Hoeffding component of $\EulerE^{tX}$ indexed by
 $S$ is
 \begin{equation}
  H_S(t)=M(t)\prod_{j\in S}Z_j(t).
@@ -468,7 +449,7 @@ $S$ is
 \end{equation}
 The series
 \begin{equation}
- \e^{tX}=\sum_{S\Subset\N}H_S(t)
+ \EulerE^{tX}=\sum_{S\Subset\NaturalNumbers}H_S(t)
  \label{eq:exp-Hoeffding-sum}
 \end{equation}
 converges unconditionally in $L^2(\mu)$, its terms are mutually orthogonal, and
@@ -484,15 +465,15 @@ The empty product gives $H_\varnothing(t)=M(t)$.
 \end{theorem}
 
 \begin{proof}
-Let $\mathcal F_n=\sigma(V_1,\ldots,V_n)$ and
+Let $\DyadicSigmaField_n=\sigma(V_1,\ldots,V_n)$ and
 \[
  M_{>n}(t)=\prod_{j>n}m(x_j).
 \]
 The finite-prefix conditional expectation, including its indispensable tail
 normalization, is
 \[
- f_n:=\E[\e^{tX}\mid\mathcal F_n]
- =M_{>n}(t)\e^{t\sum_{j=1}^na_jV_j}
+ f_n:=\Expectation[\EulerE^{tX}\mid\DyadicSigmaField_n]
+ =M_{>n}(t)\EulerE^{t\sum_{j=1}^na_jV_j}
  =M(t)\prod_{j=1}^n(1+Z_j).
 \]
 Applying $E_j$ selects the constant term in coordinate $j$, while $Q_j$
@@ -502,7 +483,7 @@ $n$.
 
 For the infinite limit, first compute
 \begin{align*}
- \E Z_j^2
+ \Expectation Z_j^2
  &=\frac{m(2x_j)}{m(x_j)^2}-1\\
  &=\frac{m(2x_j)}{m(x_j)^2}-1=r(x_j),
 \end{align*}
@@ -517,12 +498,12 @@ The products in \eqref{eq:H-S} are orthogonal because every pair of distinct
 sets contains a coordinate occurring in only one product, and that coordinate
 has mean zero.  Their squared norms therefore sum to
 \[
- M(t)^2\sum_{S\Subset\N}\prod_{j\in S}r(x_j)
+ M(t)^2\sum_{S\Subset\NaturalNumbers}\prod_{j\in S}r(x_j)
  =M(t)^2\prod_{j\ge1}(1+r(x_j))<\infty.
 \]
 Thus the orthogonal series converges unconditionally in $L^2$.  Its prefix
 sums are the conditional expectations $f_n$, which converge in $L^2$ to
-$\e^{tX}$ by the $L^2$ martingale convergence theorem (and also pointwise by
+$\EulerE^{tX}$ by the $L^2$ martingale convergence theorem (and also pointwise by
 the convergent random series for $X$).  This proves the identity and the norm
 formula.
 \end{proof}
@@ -543,7 +524,7 @@ Then
 \end{equation}
 Consequently
 \begin{equation}
- \Var(\e^{tX})=M(t)^2\bigl(R(t)-1\bigr).
+ \Variance(\EulerE^{tX})=M(t)^2\bigl(R(t)-1\bigr).
  \label{eq:exp-variance}
 \end{equation}
 \end{corollary}
@@ -559,7 +540,7 @@ the variance.
 
 For $k\ge0$, define the unnormalized order-$k$ coefficient
 \begin{equation}
- A_k(t)=\sum_{\substack{S\Subset\N\\|S|=k}}
+ A_k(t)=\sum_{\substack{S\Subset\NaturalNumbers\\|S|=k}}
             \prod_{j\in S}r(t2^{-j}),
  \qquad A_0(t)=1,
  \label{eq:A-k-def}
@@ -588,7 +569,7 @@ and hence
 Moreover,
 \begin{equation}
  A_1(t)=\sum_{j\ge1}r(t2^{-j})
-       =t\frac{\dd}{\dd t}\log M(t).
+       =t\frac{\Differential}{\Differential t}\log M(t).
  \label{eq:A1-logM}
 \end{equation}
 \end{proposition}
@@ -601,7 +582,7 @@ Separate the $j=1$ factor after replacing $t$ by $2t$:
 \]
 Coefficient comparison gives \eqref{eq:A-refinement}.  Finally,
 \[
- x\frac{\dd}{\dd x}\log m(x)=x\coth x-1=r(x)\qquad(x\ne0),
+ x\frac{\Differential}{\Differential x}\log m(x)=x\coth x-1=r(x)\qquad(x\ne0),
 \]
 with both outer members extending to $0$ at the origin.  Termwise
 differentiation of the locally uniformly convergent product for $M$ gives
@@ -651,7 +632,7 @@ shift as in \cref{prop:chaos-refinement}.
 The local factor $r$ has a canonical conversion from odds to probability:
 \begin{equation}
  p(x)=\frac{r(x)}{1+r(x)}
- \quad(x\in\R),
+ \quad(x\in\RealNumbers),
  \qquad
  p(x)=1-\frac{\tanh x}{x}\quad(x\ne0),
  \qquad p(0)=0.
@@ -667,7 +648,7 @@ On the real line, define the continuously totalized hyperbolic quotient
  \tau(x)=\frac{\tanh x}{x}\quad(x\ne0).
 \]
 Then $m$, $\tau$, $r$, and $p$ are continuous even functions.  For every
-$x\in\R$,
+$x\in\RealNumbers$,
 \begin{align}
  m(0)&=\tau(0)=1,
  &r(0)&=p(0)=0,
@@ -738,24 +719,24 @@ Finiteness follows from $p(x)\le x^2/3$, proved below.
 
 \begin{theorem}[Variance shares are an active-set law; \statusP]
 \label{thm:active-set-law}
-For every finite set $S\subset\N$,
+For every finite set $S\subset\NaturalNumbers$,
 \begin{equation}
- \frac{\|H_S(t)\|_2^2}{\E\e^{2tX}}
- =\Prob\bigl(\{j:B_j(t)=1\}=S\bigr).
+ \frac{\|H_S(t)\|_2^2}{\Expectation\EulerE^{2tX}}
+ =\Probability\bigl(\{j:B_j(t)=1\}=S\bigr).
  \label{eq:energy-active-set}
 \end{equation}
 For $t\ne0$, the normalized nonconstant Hoeffding energy is therefore
 \begin{equation}
  \boxed{
- \frac{\|H_S(t)\|_2^2}{\Var(\e^{tX})}
- =\Prob\bigl(\{j:B_j(t)=1\}=S\mid K_t>0\bigr),
+ \frac{\|H_S(t)\|_2^2}{\Variance(\EulerE^{tX})}
+ =\Probability\bigl(\{j:B_j(t)=1\}=S\mid K_t>0\bigr),
  \quad S\ne\varnothing.}
  \label{eq:variance-active-conditioned}
 \end{equation}
 In particular, the order-$k$ variance share is
 \begin{equation}
- \frac{M(t)^2A_k(t)}{\Var(\e^{tX})}
- =\Prob(K_t=k\mid K_t>0).
+ \frac{M(t)^2A_k(t)}{\Variance(\EulerE^{tX})}
+ =\Probability(K_t=k\mid K_t>0).
  \label{eq:order-law}
 \end{equation}
 \end{theorem}
@@ -763,12 +744,12 @@ In particular, the order-$k$ variance share is
 \begin{proof}
 Since $p_j=r_j/(1+r_j)$ and $1-p_j=1/(1+r_j)$,
 \[
- \Prob(\{j:B_j=1\}=S)
+ \Probability(\{j:B_j=1\}=S)
  =\prod_{j\in S}\frac{r_j}{1+r_j}
   \prod_{j\notin S}\frac1{1+r_j}
  =\frac{\prod_{j\in S}r_j}{R(t)}.
 \]
-Use $\E\e^{2tX}=M(t)^2R(t)$ and \eqref{eq:H-S-norm}.  Conditioning away the
+Use $\Expectation\EulerE^{2tX}=M(t)^2R(t)$ and \eqref{eq:H-S-norm}.  Conditioning away the
 empty set and summing over $|S|=k$ prove the remaining identities.
 \end{proof}
 
@@ -777,16 +758,16 @@ empty set and summing over $|S|=k$ prove the remaining identities.
 The probability of no active digit is
 \begin{equation}
  \boxed{
- \Prob(K_t=0)=\frac1{R(t)}
+ \Probability(K_t=0)=\frac1{R(t)}
  =\frac{M(t)^2}{M(2t)}
  =\frac{M(t)}{m(t)}.}
  \label{eq:P0}
 \end{equation}
 Equivalently,
 \begin{equation}
- R(t)-1=\chi^2(\Prob_t\|\Prob),
+ R(t)-1=\chi^2(\Probability_t\|\Probability),
  \qquad
- \frac{\dd\Prob_t}{\dd\Prob}=\frac{\e^{tX}}{M(t)},
+ \frac{\Differential\Probability_t}{\Differential\Probability}=\frac{\EulerE^{tX}}{M(t)},
  \label{eq:chi-square}
 \end{equation}
 so the active-set law decomposes the chi-square divergence of the Esscher tilt
@@ -797,19 +778,19 @@ into orthogonal digit interactions.
 The first identity is the empty-set case of \cref{thm:active-set-law}; the
 other forms use \eqref{eq:R-two-forms}.  The chi-square identity is
 \[
- \E\left(\frac{\e^{tX}}{M(t)}-1\right)^2
+ \Expectation\left(\frac{\EulerE^{tX}}{M(t)}-1\right)^2
  =\frac{M(2t)}{M(t)^2}-1=R(t)-1.
 \]
 \end{proof}
 
 \subsection{Exact Sobol indices and finite-coordinate projections}
 
-For $f_t=\e^{tX}$, define the first-order and total-effect Sobol indices by
+For $f_t=\EulerE^{tX}$, define the first-order and total-effect Sobol indices by
 \begin{equation}
- S_j^{(1)}(t)=\frac{\|H_{\{j\}}(t)\|_2^2}{\Var(f_t)},
+ S_j^{(1)}(t)=\frac{\|H_{\{j\}}(t)\|_2^2}{\Variance(f_t)},
  \qquad
  S_j^{\mathrm T}(t)=
- \frac{\sum_{S\ni j}\|H_S(t)\|_2^2}{\Var(f_t)}.
+ \frac{\sum_{S\ni j}\|H_S(t)\|_2^2}{\Variance(f_t)}.
  \label{eq:Sobol-def}
 \end{equation}
 
@@ -821,19 +802,19 @@ For $t\ne0$,
  S_j^{(1)}(t)=\frac{r(t2^{-j})}{R(t)-1},
  \qquad
  S_j^{\mathrm T}(t)=
- \frac{p(t2^{-j})}{1-\Prob(K_t=0)}.}
+ \frac{p(t2^{-j})}{1-\Probability(K_t=0)}.}
  \label{eq:Sobol-closed}
 \end{equation}
-More generally, if $\mathcal F_m=\sigma(V_1,\ldots,V_m)$ and
+More generally, if $\DyadicSigmaField_m=\sigma(V_1,\ldots,V_m)$ and
 \begin{equation}
  R_m(t)=\prod_{j=1}^m\bigl(1+r(t2^{-j})\bigr),
  \label{eq:R-m}
 \end{equation}
 then
 \begin{align}
- \bigl\|\E[f_t\mid\mathcal F_m]\bigr\|_2^2&=M(t)^2R_m(t),
+ \bigl\|\Expectation[f_t\mid\DyadicSigmaField_m]\bigr\|_2^2&=M(t)^2R_m(t),
  \label{eq:projection-norm}\\
- \bigl\|f_t-\E[f_t\mid\mathcal F_m]\bigr\|_2^2
+ \bigl\|f_t-\Expectation[f_t\mid\DyadicSigmaField_m]\bigr\|_2^2
  &=M(t)^2\bigl(R(t)-R_m(t)\bigr).
  \label{eq:projection-error}
 \end{align}
@@ -845,7 +826,7 @@ The first-order formula is immediate.  For the total effect,
  \sum_{S\ni j}\prod_{i\in S}r_i
  =r_j\prod_{i\ne j}(1+r_i)=p_jR.
 \]
-Divide by $R-1$ and use $1-\Prob(K_t=0)=(R-1)/R$.
+Divide by $R-1$ and use $1-\Probability(K_t=0)=(R-1)/R$.
 Conditional expectation retains exactly the components with
 $S\subset\{1,\ldots,m\}$.  Orthogonality then gives
 \eqref{eq:projection-norm} and \eqref{eq:projection-error}.
@@ -855,7 +836,7 @@ $S\subset\{1,\ldots,m\}$.  Orthogonality then gives
 \centering
 \includegraphics[width=0.88\textwidth]{figures/chaos_order_distributions.pdf}
 \caption{Exact Poisson--binomial order weights
-$\Prob(K_t=k\mid K_t>0)$ for several values of $t$.  As $t$ increases, the
+$\Probability(K_t=k\mid K_t>0)$ for several values of $t$.  As $t$ increases, the
 interaction order translates roughly by $\log_2t$ rather than widening on a
 central-limit scale.}
 \label{fig:chaos-order}
@@ -928,12 +909,12 @@ and multiply by $a^2$; for $a=0$, both sides vanish identically.
 \label{thm:square-summable-activation-series}
 Let $I$ be an arbitrary index set and let $(w_i)_{i\in I}$ be a real family
 such that $\sum_{i\in I}w_i^2<\infty$, where the sum is the unconditional
-nonnegative sum.  The weights may be signed or zero.  For all $a,t\in\R$,
+nonnegative sum.  The weights may be signed or zero.  For all $a,t\in\RealNumbers$,
 \begin{equation}
  0\le p(at)\le \frac{t^2}{3}a^2.
  \label{eq:scaled-activation-budget}
 \end{equation}
-For every $t\in\R$, the activation family is genuinely summable and
+For every $t\in\RealNumbers$, the activation family is genuinely summable and
 \begin{equation}
  0\le D_w(t):=\sum_{i\in I}p(w_it)
  \le \frac{t^2}{3}\sum_{i\in I}w_i^2.
@@ -970,7 +951,7 @@ approximation or Taylor remainder is required.
 \label{cor:K-variance-bound}
 For all $t>0$,
 \begin{equation}
- \Var(K_t)=\sum_{j\ge1}p(t2^{-j})\bigl(1-p(t2^{-j})\bigr)
+ \Variance(K_t)=\sum_{j\ge1}p(t2^{-j})\bigl(1-p(t2^{-j})\bigr)
  \le\frac{22}{9}.
  \label{eq:K-var-bound}
 \end{equation}
@@ -978,7 +959,7 @@ For all $t>0$,
 
 \begin{proof}
 For $0<t<1$, use $p(x)\le x^2/3$ to obtain
-$\Var(K_t)\le\sum_jt^2/(3\cdot4^j)=t^2/9<1/9$.
+$\Variance(K_t)\le\sum_jt^2/(3\cdot4^j)=t^2/9<1/9$.
 For $t\ge1$, put $m=\lfloor\log_2t\rfloor$.  On $j\le m$ use
 $p(1-p)\le1-p\le2^j/t$; hence the sum is less than $2$.  On $j>m$, use
 $p(1-p)\le p\le t^2/(3\cdot4^j)$, whose tail is at most $4/9$.  The stated
@@ -995,23 +976,23 @@ local polynomial degree.  Let
  \label{eq:normalized-Legendre}
 \end{equation}
 so that $\{\ell_n\}_{n\ge0}$ is an orthonormal basis of
-$L^2([-1,1],\dd v/2)$.  Define the modified spherical-Bessel coefficient
+$L^2([-1,1],\Differential v/2)$.  Define the modified spherical-Bessel coefficient
 \begin{equation}
- i_n(x)=\frac12\int_{-1}^1\e^{xv}P_n(v)\dd v.
+ i_n(x)=\frac12\int_{-1}^1\EulerE^{xv}P_n(v)\Differential v.
  \label{eq:i-n}
 \end{equation}
 Thus $i_0(x)=m(x)$ and the classical plane-wave/Legendre expansion reads
 \begin{equation}
- \e^{xv}=\sum_{n\ge0}(2n+1)i_n(x)P_n(v)
+ \EulerE^{xv}=\sum_{n\ge0}(2n+1)i_n(x)P_n(v)
         =\sum_{n\ge0}\sqrt{2n+1}\,i_n(x)\ell_n(v).
  \label{eq:local-Legendre-expansion}
 \end{equation}
 
 For a finitely supported multi-index
-$\nu=(\nu_1,\nu_2,\ldots)\in\N_0^{(\N)}$, put
+$\nu=(\nu_1,\nu_2,\ldots)\in\NaturalNumbers^{(\NaturalNumbers)}$, put
 \begin{equation}
  \ell_\nu(V)=\prod_{j\ge1}\ell_{\nu_j}(V_j),
- \qquad \supp\nu=\{j:\nu_j>0\}.
+ \qquad \SupportOperator\nu=\{j:\nu_j>0\}.
  \label{eq:tensor-Legendre}
 \end{equation}
 
@@ -1053,7 +1034,7 @@ The convergence to $D(0,z)=z$ is uniform for $|z|\le1$.
 \begin{proof}
 Parseval applied to \eqref{eq:local-Legendre-expansion} gives
 \[
- m(2x)=\frac12\int_{-1}^1\e^{2xv}\dd v
+ m(2x)=\frac12\int_{-1}^1\EulerE^{2xv}\Differential v
  =\sum_{n\ge0}(2n+1)i_n(x)^2.
 \]
 Subtract the $n=0$ term and divide by $m(x)^2$.  This proves
@@ -1070,28 +1051,28 @@ unit disk.
 \label{thm:tensor-Legendre}
 The expansion
 \begin{equation}
- \e^{tX}=\sum_{\nu\in\N_0^{(\N)}}c_\nu(t)\ell_\nu(V)
+ \EulerE^{tX}=\sum_{\nu\in\NaturalNumbers^{(\NaturalNumbers)}}c_\nu(t)\ell_\nu(V)
  \label{eq:tensor-expansion}
 \end{equation}
 converges in $L^2$, with
 \begin{equation}
  \boxed{
  c_\nu(t)=M(t)
- \prod_{j\in\supp\nu}
+ \prod_{j\in\SupportOperator\nu}
  \frac{\sqrt{2\nu_j+1}\,i_{\nu_j}(x_j)}{i_0(x_j)}.}
  \label{eq:c-nu}
 \end{equation}
 For every finite $S$, summing the squared coefficients with support exactly
 $S$ recovers the Hoeffding component:
 \begin{equation}
- \sum_{\supp\nu=S}|c_\nu(t)|^2
+ \sum_{\SupportOperator\nu=S}|c_\nu(t)|^2
  =\|H_S(t)\|_2^2.
  \label{eq:support-Legendre-energy}
 \end{equation}
 For $t\ne0$, the normalized \emph{nonconstant} squared tensor coefficients are
 therefore generated by independent active indicators $B_j$ and, on active
 coordinates, independent marks $N_j$ with
-$\Prob(N_j=n\mid B_j=1)=q_n(x_j)$, conditioned on at least one activation.
+$\Probability(N_j=n\mid B_j=1)=q_n(x_j)$, conditioned on at least one activation.
 At zero local field the continuous convention is $N_j=1$; it is harmless
 because then $B_j=0$ almost surely.
 \end{theorem}
@@ -1100,20 +1081,20 @@ because then $B_j=0$ almost surely.
 Local Parseval is already established in \cref{prop:local-Parseval}.  Now fix
 $N$ and use the exactly normalized conditional expectation
 \[
- f_N=\E[\e^{tX}\mid\mathcal F_N]
- =M_{>N}(t)\prod_{j=1}^N\e^{x_jV_j}.
+ f_N=\Expectation[\EulerE^{tX}\mid\DyadicSigmaField_N]
+ =M_{>N}(t)\prod_{j=1}^N\EulerE^{x_jV_j}.
 \]
 Expanding these $N$ local factors by
 \eqref{eq:local-Legendre-expansion} gives a finite tensor expansion in each
 finite degree truncation; completeness and local Parseval give its $L^2$
 limit.  Since
 $M_{>N}(t)\prod_{j=1}^Ni_0(x_j)=M(t)$, its coefficient for every $\nu$ with
-$\supp\nu\subset\{1,\ldots,N\}$ is exactly \eqref{eq:c-nu}.
+$\SupportOperator\nu\subset\{1,\ldots,N\}$ is exactly \eqref{eq:c-nu}.
 
-The martingale $f_N$ converges in $L^2$ to $\e^{tX}$.  The nested finite tensor
+The martingale $f_N$ converges in $L^2$ to $\EulerE^{tX}$.  The nested finite tensor
 bases therefore yield \eqref{eq:tensor-expansion} and show that the coefficient
-squares sum to $\|\e^{tX}\|_2^2=M(2t)$.  A tensor coefficient lies in the
-Hoeffding subspace indexed by $S$ exactly when $\supp\nu=S$; Parseval inside
+squares sum to $\|\EulerE^{tX}\|_2^2=M(2t)$.  A tensor coefficient lies in the
+Hoeffding subspace indexed by $S$ exactly when $\SupportOperator\nu=S$; Parseval inside
 that closed subspace proves \eqref{eq:support-Legendre-energy}.  Dividing the
 local nonconstant energies by their sums gives the independent mark law, and
 \cref{thm:active-set-law} supplies the independent active indicators.
@@ -1134,7 +1115,7 @@ Let $u$ mark active-coordinate count and $z$ mark total Legendre degree.  The
 normalized second-moment generating product, for $|u|,|z|\le1$, is
 \begin{equation}
  \frac1{M(2t)}
- \sum_{\nu}|c_\nu(t)|^2u^{|\supp\nu|}z^{|\nu|_1}
+ \sum_{\nu}|c_\nu(t)|^2u^{|\SupportOperator\nu|}z^{|\nu|_1}
  =\prod_{j\ge1}\left[(1-p_j)+p_ju\,D_j(z)\right],
  \label{eq:joint-degree-product}
 \end{equation}
@@ -1159,7 +1140,7 @@ identified by
 \label{sec:smooth-bound}
 
 The exponential case is exactly factorized, but the dyadic geometry controls
-much more general nonlinear observables.  Let $g\colon[-1,1]\to\R$ and
+much more general nonlinear observables.  Let $g\colon[-1,1]\to\RealNumbers$ and
 $f(V)=g(X)$, with $X$ as in \eqref{eq:X-centered}.  Write $g_S$ for the
 Hoeffding component of $f$.
 
@@ -1178,7 +1159,7 @@ where $T'_j$ replaces $V_j$ by $V'_j$.
 \label{lem:replacement-norm}
 For every $h\in L^2(\sigma(V_j:j\in S))$,
 \begin{equation}
- \E\bigl|\Delta_Sh(V_S,V'_S)\bigr|^2
+ \Expectation\bigl|\Delta_Sh(V_S,V'_S)\bigr|^2
  =2^{|S|}\left\|\prod_{j\in S}Q_jh\right\|_2^2.
  \label{eq:replacement-norm}
 \end{equation}
@@ -1187,7 +1168,7 @@ For every $h\in L^2(\sigma(V_j:j\in S))$,
 \begin{proof}
 For one coordinate,
 \[
- \E|h(V)-h(V')|^2=2\E|h-\E h|^2=2\|Qh\|_2^2.
+ \Expectation|h(V)-h(V')|^2=2\Expectation|h-\Expectation h|^2=2\|Qh\|_2^2.
 \]
 Apply this identity successively to the coordinates in $S$.  At each step the
 replacement difference commutes with all projections in the other
@@ -1197,7 +1178,7 @@ $Q_j$.  Induction gives \eqref{eq:replacement-norm}.
 
 \begin{theorem}[Mixed-derivative interaction inequality; \statusP]
 \label{thm:smooth-interaction}
-Let $S\Subset\N$ with $|S|=k$, and suppose $g\in C^k([-1,1])$.  Then
+Let $S\Subset\NaturalNumbers$ with $|S|=k$, and suppose $g\in C^k([-1,1])$.  Then
 \begin{equation}
  \boxed{
  \|g_S\|_2^2
@@ -1207,7 +1188,7 @@ Let $S\Subset\N$ with $|S|=k$, and suppose $g\in C^k([-1,1])$.  Then
 \end{equation}
 Consequently, the total order-$k$ energy
 \begin{equation}
- \Ecal_k(g)=\sum_{\substack{S\Subset\N\\|S|=k}}\|g_S\|_2^2
+ \Ecal_k(g)=\sum_{\substack{S\Subset\NaturalNumbers\\|S|=k}}\|g_S\|_2^2
  \label{eq:E-k-general}
 \end{equation}
 satisfies
@@ -1224,13 +1205,13 @@ where $e_k$ is the $k$th elementary symmetric function.
 \begin{proof}
 Set
 \[
- h_S(v_S)=\E\left[g(X)\mid V_S=v_S\right].
+ h_S(v_S)=\Expectation\left[g(X)\mid V_S=v_S\right].
 \]
 Then $g_S=\prod_{j\in S}Q_jh_S$.  Differentiation under the expectation gives
 \begin{equation}
  \frac{\partial^kh_S}{\prod_{j\in S}\partial v_j}(v_S)
  =\left(\prod_{j\in S}a_j\right)
- \E\left[g^{(k)}(X)\mid V_S=v_S\right].
+ \Expectation\left[g^{(k)}(X)\mid V_S=v_S\right].
  \label{eq:mixed-derivative-h}
 \end{equation}
 Repeated use of the fundamental theorem of calculus over the rectangle with
@@ -1244,7 +1225,7 @@ By \cref{lem:replacement-norm},
 \begin{align*}
  \|g_S\|_2^2
  &\le2^{-k}\|g^{(k)}\|_\infty^2
-       \prod_{j\in S}a_j^2\E(V_j-V'_j)^2\\
+       \prod_{j\in S}a_j^2\Expectation(V_j-V'_j)^2\\
  &=2^{-k}\|g^{(k)}\|_\infty^2
        \prod_{j\in S}a_j^2\left(\frac23\right)^k,
 \end{align*}
@@ -1357,9 +1338,9 @@ most $d$ distinct indices, so no Hoeffding component of order above $d$ can
 occur.  If $|S|=d$, the only term involving every coordinate in $S$ is the
 multilinear term
 $d!\prod_{j\in S}a_jV_j$; every other term either omits an index or has total
-degree greater than $d$.  Since $\E V_j=0$, this multilinear term is already
+degree greater than $d$.  Since $\Expectation V_j=0$, this multilinear term is already
 pure in every coordinate.  Its squared norm is
-$(d!)^2\prod_{j\in S}a_j^2\E V_j^2=(d!)^2 3^{-d}\prod a_j^2$.
+$(d!)^2\prod_{j\in S}a_j^2\Expectation V_j^2=(d!)^2 3^{-d}\prod a_j^2$.
 Summing and using \cref{lem:geometric-e} proves the result.
 \end{proof}
 
@@ -1378,9 +1359,9 @@ For a finite $S$, write
 \begin{equation}
  X_{S^c}=\sum_{j\notin S}a_jV_j,
  \qquad
- m_r^{(S^c)}=\E X_{S^c}^r,
+ m_r^{(S^c)}=\Expectation X_{S^c}^r,
  \qquad
- \mu_r=\E V_1^r=\frac{1+(-1)^r}{2(r+1)}.
+ \mu_r=\Expectation V_1^r=\frac{1+(-1)^r}{2(r+1)}.
  \label{eq:tail-moments}
 \end{equation}
 
@@ -1413,7 +1394,7 @@ from Bernoulli numbers.
 \begin{proof}
 Condition on $V_S$ and expand by the multinomial theorem:
 \[
- \E[X^d\mid V_S]
+ \Expectation[X^d\mid V_S]
  =\sum_{|\alpha|\le d}
  \frac{d!\,m_{d-|\alpha|}^{(S^c)}}
       {(d-|\alpha|)!\prod_{j\in S}\alpha_j!}
@@ -1436,7 +1417,7 @@ For $g(x)=x^2$,
 For $g(x)=x^3$,
 \[
  g_{\{j\}}
- =a_j^3V_j^3+3a_jV_j\Var(X_{\{j\}^c}),
+ =a_j^3V_j^3+3a_jV_j\Variance(X_{\{j\}^c}),
 \]
 while for distinct $i,j$,
 \[
@@ -1550,7 +1531,7 @@ controls the remainder.
 \begin{corollary}[General geometric-$q$ leading law; \statusP]
 \label{cor:q-leading-general}
 For $X_q$ in \eqref{eq:X-q}, let $A_{q,k}(t)$ be the order-$k$ coefficient for
-$\e^{tX_q}$.  Then
+$\EulerE^{tX_q}$.  Then
 \begin{equation}
  \boxed{
  A_{q,k}(t)
@@ -1578,7 +1559,7 @@ power of $t$ by two, as predicted by the exact symmetric-sum calculation.}
 \label{cor:small-order-law}
 As $t\to0$,
 \begin{equation}
- \Prob(K_t=k\mid K_t>0)
+ \Probability(K_t=k\mid K_t>0)
  \sim 3^{2-k}E_k(1/4)t^{2k-2},
  \qquad k\ge1.
  \label{eq:small-conditioned-order}
@@ -1640,9 +1621,9 @@ The cumulant expansion of $\log M$ gives
 Odd terms vanish.  Exponentiating by the complete Bell-polynomial formula
 proves the result near the origin.  The displayed domains are the exact Taylor
 disks.  Indeed $\log R$ first meets a zero of
-$R(t)=m(t)/M(t)$ at $t=\pm\pi\ii$, whereas the apparent singularities of $R$
-at $t=\pm2\pi\ii$ are removable: the simple zeros of $m(t)$ and $M(t)$
-cancel.  At $t=\pm4\pi\ii$, $M(t)$ has two zero factors while $m(t)$ has only
+$R(t)=m(t)/M(t)$ at $t=\pm\pi\ImaginaryUnit$, whereas the apparent singularities of $R$
+at $t=\pm2\pi\ImaginaryUnit$ are removable: the simple zeros of $m(t)$ and $M(t)$
+cancel.  At $t=\pm4\pi\ImaginaryUnit$, $M(t)$ has two zero factors while $m(t)$ has only
 one, so $R$ has a pole.  Thus the logarithmic series has radius $\pi$, while
 the Taylor series for $R$ and $R-1$ have radius $4\pi$.
 \end{proof}
@@ -1661,7 +1642,7 @@ sensitivity and global Bernoulli-number moment arithmetic.
 
 The mean number of active coordinates is
 \begin{equation}
- \mu(t)=\E K_t=\sum_{j\ge1}p(t2^{-j}).
+ \mu(t)=\Expectation K_t=\sum_{j\ge1}p(t2^{-j}).
  \label{eq:mu-def}
 \end{equation}
 It is distinct from $A_1(t)=\sum r_j$: the former counts the Bernoulli active
@@ -1709,7 +1690,7 @@ argument with coordinates $(1-q)q^j$ gives the geometric-$q$ identities.
 
 \begin{proposition}[Geometric activation dimension; \statusP]
 \label{prop:geometric-activation-dimension}
-Let $q,t\in\R$ with $|q|<1$, and define
+Let $q,t\in\RealNumbers$ with $|q|<1$, and define
 \begin{equation}
  d_q(t)=\sum_{n\ge0}p\bigl(q^n(1-q)t\bigr).
  \label{eq:geometric-activation-dimension}
@@ -1805,7 +1786,7 @@ statement.  The centered geometric-uniform probability law introduced in
 totalized $\operatorname{tsum}$: no general summability or probability-law
 claim is made there, although degenerate parameters may still give a
 convergent series.  The report's separate identity
-$\mu(t)=\E K_t=\sum_{j\ge1}p(t2^{-j})$ still depends on the active-count
+$\mu(t)=\Expectation K_t=\sum_{j\ge1}p(t2^{-j})$ still depends on the active-count
 construction; the proposition above proves only the deterministic activation
 sum $d_{1/2}$.
 
@@ -1813,9 +1794,9 @@ sum $d_{1/2}$.
 
 Define, initially in their convergence strips,
 \begin{equation}
- \Mcal_p(s)=\int_0^\infty p(x)x^{s-1}\dd x,
+ \Mcal_p(s)=\int_0^\infty p(x)x^{s-1}\Differential x,
  \qquad
- \Ical_p(s)=\int_0^\infty p'(x)x^s\dd x.
+ \Ical_p(s)=\int_0^\infty p'(x)x^s\Differential x.
  \label{eq:Mellin-p-def}
 \end{equation}
 
@@ -1848,14 +1829,14 @@ line.
 \begin{proof}
 By \cref{lem:p-bounds}, $p(x)=O(x^2)$ at zero and $p(x)=1+O(x^{-1})$ at
 infinity, giving the strip $-2<\Re s<0$ for $\Mcal_p$.  Also
-$p'(x)=O(x)$ at zero and $p'(x)=x^{-2}+O(\e^{-2x}/x)$ at infinity, giving
+$p'(x)=O(x)$ at zero and $p'(x)=x^{-2}+O(\EulerE^{-2x}/x)$ at infinity, giving
 $-2<\Re s<1$ for $\Ical_p$.
 
 Put
-$J(s)=\int_0^\infty x^{s-1}\sech^2x\dd x$, which is holomorphic on the
+$J(s)=\int_0^\infty x^{s-1}\sech^2x\Differential x$, which is holomorphic on the
 half-plane $\Re s>0$.  The exponential expansion
 \[
- \sech^2x=4\sum_{n\ge1}(-1)^{n-1}n\e^{-2nx}
+ \sech^2x=4\sum_{n\ge1}(-1)^{n-1}n\EulerE^{-2nx}
 \]
 may be integrated term by term absolutely when $\Re s>2$, and there gives
 \[
@@ -1886,7 +1867,7 @@ $\Gamma(s)=(s-1)\Gamma(s-1)$ gives \eqref{eq:Mellin-p}.
 
 \subsection{The logarithmically periodic mean}
 
-For $\theta\in\R$, define the absolutely convergent renormalized sum
+For $\theta\in\RealNumbers$, define the absolutely convergent renormalized sum
 \begin{equation}
  P(\theta)=
  \sum_{k\le0}\left[p(2^{\theta-k})-1\right]
@@ -1898,7 +1879,7 @@ ends.
 
 \begin{theorem}[Exact dyadic phase expansion; \statusP]
 \label{thm:mu-phase}
-Let $t=2^{n+\theta}$ with $n\in\Z$, $0\le\theta<1$, and $t\ge1$.  Then
+Let $t=2^{n+\theta}$ with $n\in\IntegerNumbers$, $0\le\theta<1$, and $t\ge1$.  Then
 \begin{equation}
  \boxed{
  \mu(t)=n+P(\theta)+\varepsilon(t),
@@ -1949,7 +1930,7 @@ and set $\tau_n=2\pi n/L$.
 \label{thm:Q-Fourier}
 With the convention
 \begin{equation}
- Q(\theta)=\sum_{n\in\Z}\widehat Q(n)\e^{2\pi\ii n\theta},
+ Q(\theta)=\sum_{n\in\IntegerNumbers}\widehat Q(n)\EulerE^{2\pi\ImaginaryUnit n\theta},
  \label{eq:Q-Fourier-series}
 \end{equation}
 one has
@@ -1960,8 +1941,8 @@ one has
  \label{eq:Q0}\\
  \boxed{
  \widehat Q(n)
- =\frac{\Mcal_p^{\mathrm{cont}}(-\ii\tau_n)}{\log2}
- =\frac{\Ical_p(-\ii\tau_n)}{2\pi\ii n},
+ =\frac{\Mcal_p^{\mathrm{cont}}(-\ImaginaryUnit\tau_n)}{\log2}
+ =\frac{\Ical_p(-\ImaginaryUnit\tau_n)}{2\pi\ImaginaryUnit n},
  \qquad n\ne0.}
  \label{eq:Qn}
 \end{align}
@@ -1974,7 +1955,7 @@ Numerically,
  \widehat Q(0)&=-1.6404426943766166621038729\ldots,
  \label{eq:Q0-num}\\
  \widehat Q(1)&=
- (1.7087561142062823+1.3093920503208334\,\ii)10^{-6},
+ (1.7087561142062823+1.3093920503208334\,\ImaginaryUnit)10^{-6},
  \label{eq:Q1-num}\\
  2|\widehat Q(1)|&=4.3055104223684092\times10^{-6}.
  \label{eq:Q1-amplitude}
@@ -1986,19 +1967,19 @@ Differentiate \eqref{eq:P-theta} and unfold the logarithmic lattice.  For
 $n\ne0$,
 \begin{align*}
  \widehat{Q'}(n)
- &=\int_0^1L\sum_{k\in\Z}2^{\theta-k}
-   p'(2^{\theta-k})\e^{-2\pi\ii n\theta}\dd\theta\\
- &=\int_{-\infty}^{\infty}\e^yp'(\e^y)
-   \e^{-\ii\tau_ny}\dd y
- =\int_0^\infty p'(x)x^{-\ii\tau_n}\dd x
- =\Ical_p(-\ii\tau_n).
+ &=\int_0^1L\sum_{k\in\IntegerNumbers}2^{\theta-k}
+   p'(2^{\theta-k})\EulerE^{-2\pi\ImaginaryUnit n\theta}\Differential\theta\\
+ &=\int_{-\infty}^{\infty}\EulerE^yp'(\EulerE^y)
+   \EulerE^{-\ImaginaryUnit\tau_ny}\Differential y
+ =\int_0^\infty p'(x)x^{-\ImaginaryUnit\tau_n}\Differential x
+ =\Ical_p(-\ImaginaryUnit\tau_n).
 \end{align*}
-Since $\widehat{Q'}(n)=2\pi\ii n\widehat Q(n)$, the nonzero formula follows
+Since $\widehat{Q'}(n)=2\pi\ImaginaryUnit n\widehat Q(n)$, the nonzero formula follows
 from \cref{thm:Mellin-p}.
 
 For the mean, the Mellin transform of the harmonic sum is
 \begin{equation}
- \int_0^\infty\mu(t)t^{s-1}\dd t
+ \int_0^\infty\mu(t)t^{s-1}\Differential t
  =\frac{2^s}{1-2^s}\Mcal_p(s),
  \qquad -2<\Re s<0.
  \label{eq:Mellin-mu}
@@ -2019,7 +2000,7 @@ Also
 \]
 The double pole produces $\log_2t$, and its constant term is
 $c_0/\log2-1/2$, which simplifies to \eqref{eq:Q0}.
-Finally, Stirling's estimate for $\Gamma(-1-\ii\tau_n)$ in
+Finally, Stirling's estimate for $\Gamma(-1-\ImaginaryUnit\tau_n)$ in
 \eqref{eq:Mellin-p} gives exponential decay in $|n|$.  The numerical values
 were evaluated at 80 decimal digits by the accompanying program.
 \end{proof}
@@ -2041,7 +2022,7 @@ integer-valued phase law.
 
 For $\theta\in[0,1)$, let
 \begin{equation}
- p_{\theta,k}=p(2^{\theta-k}),\qquad k\in\Z,
+ p_{\theta,k}=p(2^{\theta-k}),\qquad k\in\IntegerNumbers,
  \label{eq:p-theta-k}
 \end{equation}
 and let $B_{\theta,k}$ be independent Bernoulli variables with these
@@ -2060,7 +2041,7 @@ probabilities $p_{\theta,k}$ are summable on $k\ge1$.
 Let $t=2^{n+\theta}$, $0\le\theta<1$, and $n\ge1$.  Then
 \begin{equation}
  \boxed{
- \TV\bigl(K_t-n,K_\theta\bigr)\le\frac2t.}
+ \TotalVariationDistance\bigl(K_t-n,K_\theta\bigr)\le\frac2t.}
  \label{eq:phase-TV}
 \end{equation}
 If $J_t$ denotes the variance-chaos order, that is,
@@ -2071,22 +2052,22 @@ If $J_t$ denotes the variance-chaos order, that is,
 then
 \begin{equation}
  \boxed{
- \TV\bigl(J_t-n,K_\theta\bigr)\le\frac4t.}
+ \TotalVariationDistance\bigl(J_t-n,K_\theta\bigr)\le\frac4t.}
  \label{eq:conditioned-phase-TV}
 \end{equation}
-For every $z\in\C^\times$, the limiting bilateral probability generating
+For every $z\in\ComplexNumbers^\times$, the limiting bilateral probability generating
 Laurent product is
 \begin{equation}
  \boxed{
- \E z^{K_\theta}
+ \Expectation z^{K_\theta}
  =\prod_{k\le0}\left[p_{\theta,k}+(1-p_{\theta,k})z^{-1}\right]
  \prod_{k\ge1}\left[(1-p_{\theta,k})+p_{\theta,k}z\right].}
  \label{eq:phase-pgf}
 \end{equation}
-Both products converge locally uniformly on $\C^\times$.
+Both products converge locally uniformly on $\ComplexNumbers^\times$.
 It has mean
 \begin{equation}
- \E K_\theta=P(\theta).
+ \Expectation K_\theta=P(\theta).
  \label{eq:phase-mean}
 \end{equation}
 \end{theorem}
@@ -2106,7 +2087,7 @@ The coupled variables differ only if some omitted coarse index $k\le-n$ has a
 deficit $B_{\theta,k}=0$.  By a union bound and
 $1-p(x)\le1/x$,
 \[
- \Prob(K_t-n\ne K_\theta)
+ \Probability(K_t-n\ne K_\theta)
  \le\sum_{k\le-n}(1-p_{\theta,k})
  \le\sum_{k\le-n}2^{k-\theta}=\frac2t.
 \]
@@ -2115,12 +2096,12 @@ This proves \eqref{eq:phase-TV}.
 Conditioning a law on an event of probability $1-\delta$ changes it by total
 variation exactly $\delta$.  Here
 \[
- \Prob(K_t=0)=\prod_{j\ge1}(1-p(t2^{-j}))
+ \Probability(K_t=0)=\prod_{j\ge1}(1-p(t2^{-j}))
  \le1-p(t/2)=\frac{\tanh(t/2)}{t/2}\le\frac2t.
 \]
 The triangle inequality yields \eqref{eq:conditioned-phase-TV}.
 The independent product \eqref{eq:phase-pgf} is immediate from
-\eqref{eq:K-theta}.  On compact subsets of $\C^\times$, its coarse-factor
+\eqref{eq:K-theta}.  On compact subsets of $\ComplexNumbers^\times$, its coarse-factor
 deviations are bounded by a constant times $1-p_{\theta,k}$ and its
 fine-factor deviations by a constant times $p_{\theta,k}$; their sums converge.
 This proves local uniform convergence.  Summing the expectations gives
@@ -2132,21 +2113,21 @@ precisely \eqref{eq:P-theta}.
 As $t\to\infty$, uniformly in the dyadic phase
 $\{\log_2t\}\in[0,1)$,
 \begin{equation}
- K_t=\log_2t+O_{\Prob}(1),
+ K_t=\log_2t+O_{\Probability}(1),
  \qquad
- J_t=\log_2t+O_{\Prob}(1).
+ J_t=\log_2t+O_{\Probability}(1).
  \label{eq:tight-order}
 \end{equation}
 Along each fixed phase $\theta$, every uniformly integrable family of powers
 of $K_{2^{n+\theta}}-n$ has its moment converge to the corresponding moment of
 $K_\theta$.  In particular,
 \begin{equation}
- \Var(K_{2^{n+\theta}})\longrightarrow\Var(K_\theta).
+ \Variance(K_{2^{n+\theta}})\longrightarrow\Variance(K_\theta).
  \label{eq:variance-phase-limit}
 \end{equation}
 More precisely, for $t=2^{n+\theta}$ with $n\ge1$,
 \begin{equation}
- 0\le \Var(K_\theta)-\Var(K_t)
+ 0\le \Variance(K_\theta)-\Variance(K_t)
  =\sum_{k\le-n}p_{\theta,k}(1-p_{\theta,k})
  \le\frac2t.
  \label{eq:variance-phase-tail}
@@ -2166,7 +2147,7 @@ in \cref{thm:phase-law}, subtracting $n$ does not change variance and the only
 terms missing from $K_t-n$ are the independent coarse deficits with $k\le-n$.
 Consequently
 \[
- \Var(K_\theta)-\Var(K_t)
+ \Variance(K_\theta)-\Variance(K_t)
  =\sum_{k\le-n}p_{\theta,k}(1-p_{\theta,k})
  \le\sum_{k\le-n}(1-p_{\theta,k})\le\frac2t,
 \]
@@ -2180,7 +2161,7 @@ $B_{\theta+1,k}$ as $B_{\theta,k-1}$ in \eqref{eq:K-theta} to obtain
 \begin{corollary}[Log-concavity and full support; \statusP]
 \label{cor:phase-logconcave}
 For every phase $\theta$, the mass function of $K_\theta$ is log-concave on
-$\Z$ and strictly positive at every integer.  Its set of modes is therefore a
+$\IntegerNumbers$ and strictly positive at every integer.  Its set of modes is therefore a
 nonempty finite interval of consecutive integers.
 \end{corollary}
 
@@ -2195,7 +2176,7 @@ For any prescribed integer, choose finitely many coarse deficits or fine
 activations producing it.  That finite pattern has positive probability, and
 the probability that no other tail event occurs is a positive convergent
 product because the relevant tail probabilities are summable.  Hence the
-support is all of $\Z$.  A log-concave sequence has a consecutive set of
+support is all of $\IntegerNumbers$.  A log-concave sequence has a consecutive set of
 maximizers; because this probability mass tends to zero in both tails, that
 set is nonempty and finite.  Log-concavity alone does not bound its length by
 two.
@@ -2215,8 +2196,8 @@ bound $2/t$.}
 
 Let
 \begin{equation}
- L_F(s)=\E\e^{-sY}
- =\prod_{j\ge1}\frac{1-\e^{-s/2^j}}{s/2^j},
+ L_F(s)=\Expectation\EulerE^{-sY}
+ =\prod_{j\ge1}\frac{1-\EulerE^{-s/2^j}}{s/2^j},
  \qquad s\ge0,
  \label{eq:Fabius-Laplace}
 \end{equation}
@@ -2231,15 +2212,15 @@ remainder.
 For $t>0$,
 \begin{equation}
  \boxed{
- \Prob(K_t=0)
- =\frac{2t}{1-\e^{-2t}}L_F(2t).}
+ \Probability(K_t=0)
+ =\frac{2t}{1-\EulerE^{-2t}}L_F(2t).}
  \label{eq:P0-Laplace}
 \end{equation}
 Equivalently,
 \begin{equation}
  \boxed{
- \log\Prob(K_t=0)
- =\log(2t)-\log(1-\e^{-2t})+\Lambda(2t).}
+ \log\Probability(K_t=0)
+ =\log(2t)-\log(1-\EulerE^{-2t})+\Lambda(2t).}
  \label{eq:logP0-Laplace}
 \end{equation}
 Thus every exact or asymptotic statement for the repository's negative
@@ -2252,10 +2233,10 @@ The Fabius law is symmetric: $Y\stackrel{\mathrm d}=1-Y$.  Therefore the
 centered variable $X=2Y-1$ also satisfies
 $X\stackrel{\mathrm d}=1-2Y$, and
 \[
- M(t)=\E\e^{tX}=\e^t\E\e^{-2tY}=\e^tL_F(2t).
+ M(t)=\Expectation\EulerE^{tX}=\EulerE^t\Expectation\EulerE^{-2tY}=\EulerE^tL_F(2t).
 \]
 Now use \eqref{eq:P0} and
-$m(t)=\sinh t/t=(\e^t-\e^{-t})/(2t)$.
+$m(t)=\sinh t/t=(\EulerE^t-\EulerE^{-t})/(2t)$.
 \end{proof}
 
 \begin{corollary}[Transported quadratic-log phase; \statusP+\statusI]
@@ -2270,11 +2251,11 @@ Suppose the repository decomposition is written in the normalization
 where $\Psi$ is one-periodic and $E(s)$ is the explicit exponentially small
 remainder supplied there.  Then
 \begin{align}
- \log\Prob(K_t=0)
+ \log\Probability(K_t=0)
  &=-\frac{(\log(2t))^2}{2\log2}
    +\frac32\log(2t)
    +\Psi(1+\log_2t)\\
- &\quad-\log(1-\e^{-2t})+E(2t).
+ &\quad-\log(1-\EulerE^{-2t})+E(2t).
  \label{eq:P0-transported-asymptotic}
 \end{align}
 In particular, the same log-periodic endpoint phase controls a concrete
@@ -2310,7 +2291,7 @@ uniform variable admits the independent sign--magnitude factorization
 This refines the continuous chaos into Walsh sign interactions and magnitude
 interactions.
 
-For $a\in\R$, let
+For $a\in\RealNumbers$, let
 \begin{equation}
  \Delta_a g(x)=g(x+a)-g(x-a).
  \label{eq:symmetric-difference}
@@ -2318,7 +2299,7 @@ For $a\in\R$, let
 
 \begin{theorem}[Continuous Thue--Morse corner identity; \statusP]
 \label{thm:TM-corner}
-Let $a_1,\ldots,a_N>0$, let $I\subset\R$ be an open interval containing
+Let $a_1,\ldots,a_N>0$, let $I\subset\RealNumbers$ be an open interval containing
 \[
  \left[x-\sum_{j=1}^Na_j,\ x+\sum_{j=1}^Na_j\right],
 \]
@@ -2330,7 +2311,7 @@ and suppose $g\in C^N(I)$.  Then
    g\left(x+\sum_{j=1}^Na_j\varepsilon_j\right)
  \label{eq:corner-sign-sum}\\
  &=\int_{-a_1}^{a_1}\cdots\int_{-a_N}^{a_N}
-   g^{(N)}(x+u_1+\cdots+u_N)\dd u_1\cdots\dd u_N.
+   g^{(N)}(x+u_1+\cdots+u_N)\Differential u_1\cdots\Differential u_N.
  \label{eq:corner-integral}
 \end{align}
 For the dyadic amplitudes $a_j=2^{-j}$,
@@ -2353,7 +2334,7 @@ polynomial of degree below $N$, while
 \begin{proof}
 Expanding the product of symmetric differences gives
 \eqref{eq:corner-sign-sum}.  The one-dimensional identity
-$g(x+a)-g(x-a)=\int_{-a}^ag'(x+u)\dd u$, iterated $N$ times, gives
+$g(x+a)-g(x-a)=\int_{-a}^ag'(x+u)\Differential u$, iterated $N$ times, gives
 \eqref{eq:corner-integral}.
 
 For dyadic amplitudes, write
@@ -2376,7 +2357,7 @@ $\prod_j2a_j=2^N2^{-N(N+1)/2}=2^{-N(N-1)/2}$.
 Condition on the magnitudes $U_1,\ldots,U_N$ and on a tail variable $Z$
 independent of the signs.  Then
 \begin{equation}
- \E_R\left[
+ \Expectation_R\left[
  g\left(Z+\sum_{j=1}^Na_jR_jU_j\right)
  \prod_{j=1}^NR_j\right]
  =2^{-N}\Delta_{a_1U_1}\cdots\Delta_{a_NU_N}g(Z).
@@ -2409,28 +2390,28 @@ decay.
 
 \begin{proposition}[Rodrigues bound for local coefficients; \statusP]
 \label{prop:Rodrigues-bound}
-For $n\ge0$ and $x\in\C$,
+For $n\ge0$ and $x\in\ComplexNumbers$,
 \begin{equation}
  i_n(x)=\frac{x^n}{2^{n+1}n!}
- \int_{-1}^1\e^{xv}(1-v^2)^n\dd v,
+ \int_{-1}^1\EulerE^{xv}(1-v^2)^n\Differential v,
  \label{eq:i-Rodrigues}
 \end{equation}
 and hence
 \begin{equation}
  \boxed{
- |i_n(x)|\le\e^{|x|}\frac{|x|^n}{(2n+1)!!}.}
+ |i_n(x)|\le\EulerE^{|x|}\frac{|x|^n}{(2n+1)!!}.}
  \label{eq:i-bound}
 \end{equation}
 \end{proposition}
 
 \begin{proof}
 Insert Rodrigues' formula
-$P_n(v)=(2^nn!)^{-1}\frac{\dd^n}{\dd v^n}(v^2-1)^n$ into
+$P_n(v)=(2^nn!)^{-1}\frac{\Differential^n}{\Differential v^n}(v^2-1)^n$ into
 \eqref{eq:i-n}.  Integrating by parts $n$ times produces
 \eqref{eq:i-Rodrigues}; all boundary terms vanish because $(1-v^2)^n$ has the
 required endpoint zeros.  Next,
 \[
- \int_{-1}^1(1-v^2)^n\dd v
+ \int_{-1}^1(1-v^2)^n\Differential v
  =\frac{2^{2n+1}(n!)^2}{(2n+1)!}.
 \]
 Using $(2n+1)!!=(2n+1)!/(2^nn!)$ gives \eqref{eq:i-bound}.
@@ -2440,7 +2421,7 @@ Using $(2n+1)!!=(2n+1)!/(2^nn!)$ gives \eqref{eq:i-bound}.
 \label{cor:Lambert-degree}
 Fix $x\ne0$ and define the exact envelope and its monotone-tail threshold by
 \begin{equation}
- b_n(x)=\e^{|x|}\frac{|x|^n}{(2n+1)!!},
+ b_n(x)=\EulerE^{|x|}\frac{|x|^n}{(2n+1)!!},
  \qquad
  N_x=\left\lceil\frac{|x|}{2}\right\rceil.
  \label{eq:degree-envelope}
@@ -2448,7 +2429,7 @@ Fix $x\ne0$ and define the exact envelope and its monotone-tail threshold by
 For every $\varepsilon>0$, define
 \begin{equation}
  n_\varepsilon(x)=
- \min\left\{n\in\N_0:n\ge N_x\ \text{and}\ b_n(x)\le\varepsilon\right\}.
+ \min\left\{n\in\NaturalNumbers:n\ge N_x\ \text{and}\ b_n(x)\le\varepsilon\right\}.
  \label{eq:n-epsilon-def}
 \end{equation}
 This set is nonempty, and the resulting cutoff is certified for the entire
@@ -2460,7 +2441,7 @@ tail:
 \end{equation}
 As $\varepsilon\downarrow0$, define
 \begin{equation}
- A_\varepsilon=\log\frac{\e^{|x|}}{\varepsilon}.
+ A_\varepsilon=\log\frac{\EulerE^{|x|}}{\varepsilon}.
  \label{eq:A-epsilon}
 \end{equation}
 The degree at which the envelope \eqref{eq:i-bound} reaches tolerance
@@ -2469,7 +2450,7 @@ $\varepsilon$ has the leading inversion
  \boxed{
  n_\varepsilon(x)
  \sim\frac{A_\varepsilon}
- {W_0\!\left(\dfrac{2A_\varepsilon}{\e|x|}\right)}.}
+ {W_0\!\left(\dfrac{2A_\varepsilon}{\EulerE|x|}\right)}.}
  \label{eq:Lambert-degree}
 \end{equation}
 Thus \eqref{eq:Lambert-degree} is an asymptotic initial guess for the exact,
@@ -2507,16 +2488,16 @@ this sandwiches the threshold sharply enough to give
 $F_x(n)=A_\varepsilon+O(\log n)$.  Stirling's formula gives
 \[
  \log\bigl((2n+1)!!\bigr)
- =n\log\frac{2n}{\e}+O(\log n).
+ =n\log\frac{2n}{\EulerE}+O(\log n).
 \]
 Therefore the exact minimal cutoff satisfies
 \[
- n\log\frac{2n}{\e|x|}=A_\varepsilon+O(\log n).
+ n\log\frac{2n}{\EulerE|x|}=A_\varepsilon+O(\log n).
 \]
-Solving the leading equation with $W_0(z)\e^{W_0(z)}=z$ yields
+Solving the leading equation with $W_0(z)\EulerE^{W_0(z)}=z$ yields
 \eqref{eq:Lambert-degree}.  Moreover, the derivative of
-$y\mapsto y\log(2y/(\e|x|))$ is
-$1+\log(2y/(\e|x|))\to\infty$.  Hence the $O(\log n)$ perturbation moves the
+$y\mapsto y\log(2y/(\EulerE|x|))$ is
+$1+\log(2y/(\EulerE|x|))\to\infty$.  Hence the $O(\log n)$ perturbation moves the
 inverse by $o(n)$ and does not affect the asymptotic ratio.
 \end{proof}
 
@@ -2551,7 +2532,7 @@ $p(x)\le x^2/3$.  If the sum is truncated after digit $J$, then
 
 \begin{corollary}[Certified dyadic activation truncation; \statusP]
 \label{cor:dyadic-activation-truncation}
-For every $t\in\R$ and integer $N\ge0$,
+For every $t\in\RealNumbers$ and integer $N\ge0$,
 \begin{equation}
  d_{1/2}(t)
  =\sum_{n=0}^{N-1}p\bigl(2^{-(n+1)}t\bigr)
@@ -2600,7 +2581,7 @@ The driver performs the following independent computations:
 \item local Legendre Parseval checks using modified spherical Bessel functions;
 \item exact rational evaluation of the monomial top energy
       \eqref{eq:dyadic-top-energy};
-\item independent comparison of the product formula for $\Prob(K_t=0)$ with
+\item independent comparison of the product formula for $\Probability(K_t=0)$ with
       the negative Fabius Laplace product \eqref{eq:P0-Laplace}.
 \end{enumerate}
 
@@ -2641,7 +2622,7 @@ Exact top energy $\Ecal_{10}(x^{10})$
 \label{tab:no-active}
 \begin{tabular}{@{}rrrr@{}}
 \toprule
-$t$ & $\Prob(K_t=0)$ & $\log\Prob(K_t=0)$ & absolute discrepancy \\
+$t$ & $\Probability(K_t=0)$ & $\log\Probability(K_t=0)$ & absolute discrepancy \\
 \midrule
 $1$   & $8.99201007738952\times10^{-1}$ & $-0.1062486791$ & $9.30\times10^{-26}$ \\
 $8$   & $8.24685731480165\times10^{-2}$ & $-2.4953379898$ & $8.53\times10^{-27}$ \\
@@ -2701,7 +2682,7 @@ coefficient ratio.
 \label{conj:differential-transcendence}
 For generic algebraic $z\ne0,1$, neither $t\mapsto\Ccal(t,z)$ nor
 $t\mapsto\sum_{j\ge1}p(t2^{-j})$ satisfies a nontrivial algebraic differential
-equation over $\C(t)$.
+equation over $\ComplexNumbers(t)$.
 \end{conjecture}
 
 The refinement equations
@@ -2766,7 +2747,7 @@ width and once in the Legendre degree cutoff.
 \begin{problem}[Optimal coefficient geometry]
 \label{prob:best-N}
 For fixed $t$, characterize the sets of multi-indices that capture a prescribed
-fraction of the variance of $\e^{tX}$ with the smallest cardinality.  Compare:
+fraction of the variance of $\EulerE^{tX}$ with the smallest cardinality.  Compare:
 \begin{enumerate}
 \item the exact probabilistic ranking generated by the independent marked law;
 \item downward-closed tensor index sets used in polynomial-chaos algorithms;
@@ -2938,13 +2919,13 @@ Square-summable activation series
 & $D_w(t)=\sum_i p(w_it)\le(t^2/3)\sum_iw_i^2$ and
 $D_w(t)/t^2\to\frac13\sum_iw_i^2$ \\
 Component
-& $H_S=M\prod_{j\in S}(\e^{x_jV_j}/m(x_j)-1)$ \\
+& $H_S=M\prod_{j\in S}(\EulerE^{x_jV_j}/m(x_j)-1)$ \\
 Component energy
 & $\|H_S\|_2^2=M^2\prod_{j\in S}r(x_j)$ \\
 Second-moment ratio
 & $R=M(2t)/M(t)^2=\prod_j(1+r_j)=m(t)/M(t)$ \\
 No-active atom
-& $\Prob(K_t=0)=1/R=M(t)/m(t)$ \\
+& $\Probability(K_t=0)=1/R=M(t)/m(t)$ \\
 Order product
 & $\Ccal(t,z)=\prod_j(1+zr_j)=\sum_kA_k(t)z^k$ \\
 Order refinement
@@ -2970,17 +2951,17 @@ Mellin transform
 Periodic mean
 & $\mu(t)=\log_2t+Q(\{\log_2t\})+O(t^{-1})$ \\
 Nonzero Fourier modes
-& $\widehat Q(n)=\Mcal_p^{\mathrm{cont}}(-2\pi\ii n/\log2)/\log2$ \\
+& $\widehat Q(n)=\Mcal_p^{\mathrm{cont}}(-2\pi\ImaginaryUnit n/\log2)/\log2$ \\
 Phase coupling
-& $\TV(K_t-\lfloor\log_2t\rfloor,K_\theta)\le2/t$ \\
+& $\TotalVariationDistance(K_t-\lfloor\log_2t\rfloor,K_\theta)\le2/t$ \\
 Laplace transfer
-& $\Prob(K_t=0)=2t(1-\e^{-2t})^{-1}L_F(2t)$ \\
+& $\Probability(K_t=0)=2t(1-\EulerE^{-2t})^{-1}L_F(2t)$ \\
 Thue--Morse corner
 & $\Delta_{2^{-1}}\cdots\Delta_{2^{-N}}g=(-1)^N\sum_{k<2^N}(-1)^{s_2(k)}g(\cdots)$ \\
 Legendre envelope
-& $|i_n(x)|\le\e^{|x|}|x|^n/(2n+1)!!$ \\
+& $|i_n(x)|\le\EulerE^{|x|}|x|^n/(2n+1)!!$ \\
 Lambert cutoff
-& $n_\varepsilon(x)\sim A_\varepsilon/W_0(2A_\varepsilon/(\e|x|))$ \\
+& $n_\varepsilon(x)\sim A_\varepsilon/W_0(2A_\varepsilon/(\EulerE|x|))$ \\
 \bottomrule
 \end{longtable}
 

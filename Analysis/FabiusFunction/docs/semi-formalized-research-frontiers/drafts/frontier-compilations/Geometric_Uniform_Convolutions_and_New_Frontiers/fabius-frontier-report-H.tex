@@ -31,6 +31,8 @@
 \rhead{\thepage}
 \setlength{\headheight}{14pt}
 
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -51,17 +53,7 @@
 \DeclareMathOperator{Li}{Li}
 \DeclareMathOperator{Res}{Res}
 \DeclareMathOperator{erfc}{erfc}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Pp}{\mathbb P}
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
 \newcommand{\eps}{\varepsilon}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\up}{\operatorname{up}}
-\newcommand{\tm}{\mathrm t}
 \newcommand{\Bell}{\mathcal B}
 \newcommand{\cP}{\mathcal P}
 \newcommand{\cA}{\mathcal A}
@@ -204,7 +196,7 @@ Define
 \end{align}
 Let
 \[
- F_q(x)=\Pp(V_q\le x),\qquad f_q=F_q',
+ F_q(x)=\Probability(V_q\le x),\qquad f_q=F_q',
 \]
 and let $u_q$ denote the density of $X_q$.  Distribution functions are extended by
 $F_q(x)=0$ for $x\le0$ and $F_q(x)=1$ for $x\ge1$.
@@ -223,7 +215,7 @@ The functions $F_q,f_q,u_q$ satisfy
 \begin{align}
  F_q(x)+F_q(1-x)&=1,\label{eq:Fsymmetry}\\
  f_q(x)&=\frac{F_q(x/q)-F_q((x-a)/q)}{a},\label{eq:fdifference}\\
- u_q(x)&=\frac1{2a}\int_{(x-a)/q}^{(x+a)/q}u_q(y)\dd y,\label{eq:urefinement}\\
+ u_q(x)&=\frac1{2a}\int_{(x-a)/q}^{(x+a)/q}u_q(y)\Differential y,\label{eq:urefinement}\\
  u_q'(x)&=\frac{u_q((x+a)/q)-u_q((x-a)/q)}{2aq}.
  \label{eq:uderivative}
 \end{align}
@@ -238,7 +230,7 @@ Moreover
  \label{eq:u-f-relation}
 \end{equation}
 At $q=a=\tfrac12$, $F_q$ is the classical Fabius function and $u_q$ is Rvachev's
-up-function in the normalization $\supp u_q=[-1,1]$.
+up-function in the normalization $\SupportOperator u_q=[-1,1]$.
 \end{proposition}
 
 \begin{proof}
@@ -252,22 +244,22 @@ $q=1/2$, equations \eqref{eq:Fsymmetry} and \eqref{eq:qfabius-left} become
 $F(x)+F(1-x)=1$ and $F'(x)=2F(2x)$ on $[0,1/2]$, while
 \eqref{eq:uderivative} becomes
 \[
- \up'(x)=2\bigl(\up(2x+1)-\up(2x-1)\bigr).
+ \RvachevUp'(x)=2\bigl(\RvachevUp(2x+1)-\RvachevUp(2x-1)\bigr).
 \]
 These equations and the endpoint normalization characterize the classical pair.
 \end{proof}
 
 \subsection{Fourier and Laplace products}
 
-With $\sinc z=\sin z/z$ and $\sinc0=1$,
+With $\SincRad z=\sin z/z$ and $\SincRad0=1$,
 \begin{align}
- \widehat u_q(t)&=\E e^{itX_q}
-   =\prod_{k=0}^{\infty}\sinc(aq^kt),
+ \widehat u_q(t)&=\Expectation e^{itX_q}
+   =\prod_{k=0}^{\infty}\SincRad(aq^kt),
  \label{eq:qfourier}\\
- M_q(t)&=\E e^{tV_q}
+ M_q(t)&=\Expectation e^{tV_q}
    =\prod_{k=0}^{\infty}\frac{e^{aq^kt}-1}{aq^kt},
  \label{eq:qmgf}\\
- L_q(s)&=\E e^{-sV_q}
+ L_q(s)&=\Expectation e^{-sV_q}
    =\prod_{k=0}^{\infty}\frac{1-e^{-aq^ks}}{aq^ks}.
  \label{eq:qlaplace}
 \end{align}
@@ -279,7 +271,7 @@ $[-1,1]$.
 \label{thm:smoothness}
 For every $q\in(0,1)$, the law of $X_q$ has a $C^\infty$ density $u_q$ supported on
 $[-1,1]$.  The density and all its derivatives vanish at $\pm1$.  Consequently
-$F_q\in C^\infty(\R)$ after constant extension outside $[0,1]$, and every derivative
+$F_q\in C^\infty(\RealNumbers)$ after constant extension outside $[0,1]$, and every derivative
 of positive order is flat at both endpoints.
 \end{theorem}
 
@@ -296,7 +288,7 @@ Taking logarithms and using $N=R/r+O(1)$ gives
  \log|\widehat u_q(t)|\le-\frac{R^2}{2r}+O_q(R).
  \label{eq:lognormal-fourier-bound}
 \end{equation}
-Hence $|t|^m\widehat u_q(t)\in L^1(\R)$ for every $m$.  Fourier inversion gives a
+Hence $|t|^m\widehat u_q(t)\in L^1(\RealNumbers)$ for every $m$.  Fourier inversion gives a
 $C^\infty$ density and permits termwise differentiation to all orders.  Since the
 random series lies in $[-1,1]$, this density has compact support; smooth extension by
 zero forces all endpoint jets to vanish.  Equation \eqref{eq:u-f-relation} transfers
@@ -350,12 +342,12 @@ For every integer $n\ge1$,
  u_q\!\left(q^{-n}\bigl(x+aQ_q(\boldsymbol\epsilon)\bigr)\right).
  \label{eq:qthue-derivative}
 \end{equation}
-At $q=1/2$, if $\tm_j=(-1)^{s_2(j)}$ is the $\{\pm1\}$ Thue--Morse sequence, this
+At $q=1/2$, if $\ThueMorseSignSymbol_j=(-1)^{s_2(j)}$ is the $\{\pm1\}$ Thue--Morse sequence, this
 reduces to
 \begin{equation}
- \up^{(n)}(x)=(-1)^n2^{n(n+1)/2}
- \sum_{j=0}^{2^n-1}\tm_j\,
- \up\bigl(2^nx+2j-(2^n-1)\bigr).
+ \RvachevUp^{(n)}(x)=(-1)^n2^{n(n+1)/2}
+ \sum_{j=0}^{2^n-1}\ThueMorseSignSymbol_j\,
+ \RvachevUp\bigl(2^nx+2j-(2^n-1)\bigr).
  \label{eq:classical-thue-derivative}
 \end{equation}
 \end{theorem}
@@ -444,9 +436,9 @@ The defining generating function of the complete Bell polynomials yields
 \end{proof}
 
 \begin{corollary}[Explicit centered Thue--Morse power sums]
-For the ordinary Thue--Morse signs $\tm_j=(-1)^{s_2(j)}$,
+For the ordinary Thue--Morse signs $\ThueMorseSignSymbol_j=(-1)^{s_2(j)}$,
 \begin{equation}
- \sum_{j=0}^{2^n-1}\tm_j\bigl(2j-(2^n-1)\bigr)^m
+ \sum_{j=0}^{2^n-1}\ThueMorseSignSymbol_j\bigl(2j-(2^n-1)\bigr)^m
  =(-1)^n2^{(n-1)m}S_{n,m}(1/2).
  \label{eq:centered-TM-sum}
 \end{equation}
@@ -494,7 +486,7 @@ rational functions of $q$ and Bernoulli numbers.
 \begin{proof}
 For $U\sim\mathrm{Unif}[-1,1]$,
 \[
- \log\E e^{tU}=\log\frac{\sinh t}{t},
+ \log\Expectation e^{tU}=\log\frac{\sinh t}{t},
 \]
 and \eqref{eq:logsinh-bernoulli} shows that
 $\kappa_{2m}(U)=2^{2m}B_{2m}/(2m)$.  Cumulants add under independence and scale
@@ -505,12 +497,12 @@ is precisely the complete Bell-polynomial identity.
 
 For example,
 \begin{align}
- \Var(V_q)&=\frac{a}{12(1+q)},\label{eq:Vvariance}\\
+ \Variance(V_q)&=\frac{a}{12(1+q)},\label{eq:Vvariance}\\
  \kappa_4(V_q)&=-\frac{a^4}{120(1-q^4)},\\
  \kappa_6(V_q)&=\frac{a^6}{252(1-q^6)}.
 \end{align}
 The moments also obey a triangular recurrence obtained directly from
-\eqref{eq:fixedpoints}.  If $m_n(q)=\E V_q^n$, then $m_0=1$ and
+\eqref{eq:fixedpoints}.  If $m_n(q)=\Expectation V_q^n$, then $m_0=1$ and
 \begin{equation}
  (1-q^n)m_n(q)=
  \sum_{j=0}^{n-1}\binom nj
@@ -522,7 +514,7 @@ For rational $q$, all moments are rational.
 \subsection{An Appell family that inverts geometric averaging}
 
 Classical Bernoulli polynomials invert averaging over one uniform random variable:
-$\E[B_n(x+Z)]=x^n$.  The entire geometric convolution has a natural analogue.
+$\Expectation[B_n(x+Z)]=x^n$.  The entire geometric convolution has a natural analogue.
 
 \begin{definition}[Geometric Bernoulli polynomials]
 Define $\Bell_{n,q}(x)$ by
@@ -540,9 +532,9 @@ power-series identity.
 \label{thm:geometric-Bernoulli}
 The polynomials $\Bell_{n,q}$ form an Appell sequence and satisfy
 \begin{align}
- \frac{\dd}{\dd x}\Bell_{n,q}(x)&=n\Bell_{n-1,q}(x),
+ \frac{\Differential}{\Differential x}\Bell_{n,q}(x)&=n\Bell_{n-1,q}(x),
  \label{eq:appell}\tag{A}\\
- \E\,\Bell_{n,q}(x+V_q)&=x^n,
+ \Expectation\,\Bell_{n,q}(x+V_q)&=x^n,
  \label{eq:averaging-inverse}\tag{B}\\
  \Bell_{n,q}(x+a)-\Bell_{n,q}(x)
  &=anq^{n-1}\Bell_{n-1,q}(x/q),
@@ -557,7 +549,7 @@ polynomial $B_n(x)$.
 \begin{proof}
 Equation \eqref{eq:appell} follows by differentiating
 \eqref{eq:geometric-Bernoulli-egf}.  Multiplying its generating function by
-$M_q(t)=\E e^{tV_q}$ proves \eqref{eq:averaging-inverse}.  The fixed-point product
+$M_q(t)=\Expectation e^{tV_q}$ proves \eqref{eq:averaging-inverse}.  The fixed-point product
 satisfies
 \[
  M_q(t)=\frac{e^{at}-1}{at}M_q(qt).
@@ -573,7 +565,7 @@ first uniform summand remains and the generating function becomes
 $te^{xt}/(e^t-1)$.
 \end{proof}
 
-Writing $y=x-1/2$, $\sigma_q^2=\Var(V_q)$, and $\kappa_{4,q}=\kappa_4(V_q)$ gives
+Writing $y=x-1/2$, $\sigma_q^2=\Variance(V_q)$, and $\kappa_{4,q}=\kappa_4(V_q)$ gives
 \begin{align}
  \Bell_{0,q}(x)&=1,\\
  \Bell_{1,q}(x)&=y,\\
@@ -586,7 +578,7 @@ is $y$ and whose higher arguments are the negatives of the centered cumulants of
 $V_q$.
 
 \begin{corollary}[Exact moment inversion]
-For $m_j(q)=\E V_q^j$,
+For $m_j(q)=\Expectation V_q^j$,
 \begin{equation}
  \sum_{j=0}^{n}\binom njm_j(q)\Bell_{n-j,q}(x)=x^n.
  \label{eq:moment-inversion}
@@ -663,7 +655,7 @@ In particular, $Y_q\Rightarrow N(0,1)$.
 \begin{proof}
 The logarithm of the characteristic function is
 \[
- \log\E e^{itY_q}=-\frac{t^2}{2}
+ \log\Expectation e^{itY_q}=-\frac{t^2}{2}
  +\sum_{m\ge2}\lambda_{2m}(q)\frac{(it)^{2m}}{(2m)!}.
 \]
 Use \eqref{eq:lambda4}--\eqref{eq:lambda6}, exponentiate through order $a^2$, and
@@ -671,7 +663,7 @@ Fourier-invert.  The $\lambda_4^2/2$ term produces $H_8/800$.  The product struc
 and the bound used in \cref{thm:smoothness}, after standardization, provide an
 integrable majorant outside a growing neighborhood of the origin; this makes the
 expansion uniform on compact $y$-sets.  Finally
-$\int_{-\infty}^y\phi(t)H_n(t)\dd t=-\phi(y)H_{n-1}(y)$ gives
+$\int_{-\infty}^y\phi(t)H_n(t)\Differential t=-\phi(y)H_{n-1}(y)$ gives
 \eqref{eq:edgeworth-cdf}.
 \end{proof}
 
@@ -698,12 +690,12 @@ corrections.}
 
 It is useful first to remove the harmless support normalization.  Define
 \begin{equation}
- \Psi_q(z)=\prod_{k=0}^{\infty}\sinc(q^kz).
+ \Psi_q(z)=\prod_{k=0}^{\infty}\SincRad(q^kz).
  \label{eq:Psiq}
 \end{equation}
 Then $\widehat u_q(t)=\Psi_q(at)$.  The zero multiset is
 \begin{equation}
- \mathcal Z_q=\{\,\pi n q^{-k}:n\in\Z\setminus\{0\},\ k\ge0\,\},
+ \mathcal Z_q=\{\,\pi n q^{-k}:n\in\IntegerNumbers\setminus\{0\},\ k\ge0\,\},
  \label{eq:zero-multiset}
 \end{equation}
 with multiplicity equal to the number of representations.
@@ -743,7 +735,7 @@ multiplicity $v_b(m)+1$ and there are no other zeros.
 \begin{proof}
 Euler's product gives
 \[
- \sinc(z/b^k)=\prod_{n=1}^{\infty}
+ \SincRad(z/b^k)=\prod_{n=1}^{\infty}
  \left(1-\frac{z^2}{\pi^2n^2b^{2k}}\right).
 \]
 A factor indexed by $(n,k)$ contributes to the zero $\pi m$ exactly when
@@ -831,7 +823,7 @@ For every $n\ge0$,
 \begin{proof}
 Since $S_b\overset d=U+b^{-1}S_b'$, conditioning on $U$ gives
 \[
- h_b(x)=\frac12\int_{b(x-1)}^{b(x+1)}h_b(y)\dd y,
+ h_b(x)=\frac12\int_{b(x-1)}^{b(x+1)}h_b(y)\Differential y,
 \]
 so
 \[
@@ -848,7 +840,7 @@ Put
 \[
  c_b=\frac{\pi}{b+1},\qquad
  \theta_b=\frac{\sin c_b}{c_b},\qquad
- T_b=\prod_{j=1}^{\infty}\sinc(c_b/b^j)>0.
+ T_b=\prod_{j=1}^{\infty}\SincRad(c_b/b^j)>0.
 \]
 Then, for every $m\ge0$,
 \begin{equation}
@@ -863,7 +855,7 @@ We have $\widehat h_b=\Psi_{1/b}$.  For $0\le j\le m$, the congruence
 $b^j\equiv(-1)^j\pmod{b+1}$ gives
 $|\sin(c_bb^j)|=\sin c_b$.  Hence
 \[
- \prod_{j=0}^{m}|\sinc(c_bb^j)|
+ \prod_{j=0}^{m}|\SincRad(c_bb^j)|
  =\theta_b^{m+1}b^{-m(m+1)/2}.
 \]
 The remaining factors are exactly $T_b$ after reindexing.
@@ -875,7 +867,7 @@ For every integer $b\ge2$ and every $1\le p\le\infty$,
 \begin{equation}
  \boxed{
  \lim_{n\to\infty}
- \frac{\log\|u_{1/b}^{(n)}\|_{L^p(\R)}}{n^2}
+ \frac{\log\|u_{1/b}^{(n)}\|_{L^p(\RealNumbers)}}{n^2}
  =\frac{\log b}{2}.}
  \label{eq:sharp-derivative-growth}
 \end{equation}
@@ -885,7 +877,7 @@ Equivalently,
 \]
 For the classical up-function,
 \begin{equation}
- \log_2\|\up^{(n)}\|_p=\frac{n^2}{2}+O_p(n).
+ \log_2\|\RvachevUp^{(n)}\|_p=\frac{n^2}{2}+O_p(n).
  \label{eq:up-derivative-growth}
 \end{equation}
 \end{theorem}
@@ -970,7 +962,7 @@ Define
 and the real-analytic $r$-periodic function
 \begin{equation}
  \cP_r(L)=
- -\frac1r\sum_{n\in\Z\setminus\{0\}}
+ -\frac1r\sum_{n\in\IntegerNumbers\setminus\{0\}}
  \frac{\Gamma(1+\chi_n)\zeta(1+\chi_n)}{\chi_n}
  e^{-\chi_nL}.
  \label{eq:periodic-P}
@@ -986,14 +978,14 @@ For
 \]
 its Mellin transform in $-1<\Re s<0$ is
 \begin{equation}
- g^*(s)=\int_0^\infty g(x)x^{s-1}\dd x
+ g^*(s)=\int_0^\infty g(x)x^{s-1}\Differential x
  =-\frac{\Gamma(1+s)\zeta(1+s)}s.
  \label{eq:mellin-kernel}
 \end{equation}
 Moreover,
 \begin{equation}
  \log H_q(z)=\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}
- g^*(s)\frac{z^{-s}}{1-e^{rs}}\dd s,
+ g^*(s)\frac{z^{-s}}{1-e^{rs}}\Differential s,
  \qquad -1<c<0.
  \label{eq:mellin-H}
 \end{equation}
@@ -1004,7 +996,7 @@ Differentiate $g$:
 $g'(x)=(e^x-1)^{-1}-x^{-1}$.  Integration by parts is legitimate in the stated
 strip and analytic continuation of the classical Bose integral gives
 \[
- \int_0^\infty g'(x)x^s\dd x=\Gamma(1+s)\zeta(1+s).
+ \int_0^\infty g'(x)x^s\Differential x=\Gamma(1+s)\zeta(1+s).
 \]
 This proves \eqref{eq:mellin-kernel}.  Mellin inversion applied to
 $\sum_{k\ge0}g(zq^k)$ introduces
@@ -1074,7 +1066,7 @@ The Mellin theorem concerns a transform.  To return to $F_q(x)$ for $x\downarrow
 write the inverse Laplace integral in the scaled variable $z=as$:
 \begin{equation}
  F_q(x)=\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}
- e^{(x/a)z}H_q(z)\frac{\dd z}{z}.
+ e^{(x/a)z}H_q(z)\frac{\Differential z}{z}.
  \label{eq:F-bromwich}
 \end{equation}
 The saddle itself drifts through the Mellin phase.  Define
@@ -1178,7 +1170,7 @@ At fixed $q$, omitting $\cP_r$ from \eqref{eq:F-lambert-skeleton} leaves a bound
 nonvanishing multiplicative ripple, so the phase-free direct formula is not an
 asymptotic equivalence in the strict ratio sense.  For the inverse function the same
 bounded logarithmic ripple shifts $L$ by only $O(1/L)$ because
-$\dd\log F_q/\dd\log x\sim\cA(L)\asymp L$.  Thus a phase-free inverse can still have
+$\Differential\log F_q/\Differential\log x\sim\cA(L)\asymp L$.  Thus a phase-free inverse can still have
 relative error tending to zero, but the phase enters the first genuinely high-accuracy
 correction.
 \end{remark}
@@ -1257,8 +1249,8 @@ The amplitude $z_0/z$ is expanded geometrically.  Exponentiating the higher term
 partial Bell polynomials; integrating replaces $\tau^{2m}$ by the Gaussian moment
 $(2m-1)!!$ and kills odd powers.  Since
 \[
- z^j\frac{\dd^j}{\dd z^j}
- =D(D-1)\cdots(D-j+1),\qquad D=\frac\dd{\dd L},
+ z^j\frac{\Differential^j}{\Differential z^j}
+ =D(D-1)\cdots(D-j+1),\qquad D=\frac\Differential{\Differential L},
 \]
 every coefficient is an explicit differential polynomial in $\cP_r$ and a rational
 function of $L$.  The accompanying Python implementation generates these corrections
@@ -1311,7 +1303,7 @@ necessary, and write its Legendre expansion
 \begin{equation}
  h_b(x)=\sum_{n\ge0}a_n^{(b)}P_n(x),
  \qquad
- a_n^{(b)}=\frac{2n+1}{2}\int_{-1}^1h_b(x)P_n(x)\dd x.
+ a_n^{(b)}=\frac{2n+1}{2}\int_{-1}^1h_b(x)P_n(x)\Differential x.
  \label{eq:legendre-expansion}
 \end{equation}
 Symmetry forces $a_{2n+1}^{(b)}=0$.  Standard repeated-integration estimates for
@@ -1411,7 +1403,7 @@ minor-arc component of local limit theorems for digital harmonic sums.
 
 For general $q$, the multiplicity function is
 \[
- m_q(z)=\#\{k\ge0:zq^k/\pi\in\Z\setminus\{0\}\}.
+ m_q(z)=\#\{k\ge0:zq^k/\pi\in\IntegerNumbers\setminus\{0\}\}.
 \]
 When $q^d=A/B$ is rational in lowest terms, the layers split into $d$ residue classes,
 each carrying a mixed $A$--$B$ valuation structure.
@@ -1427,7 +1419,7 @@ new automatic Dirichlet series occur when the numerator $A>1$.
 
 The averaging operator
 \[
- (T_qp)(x)=\E p(x+V_q)
+ (T_qp)(x)=\Expectation p(x+V_q)
 \]
 has inverse on polynomials given by $T_q^{-1}x^n=\Bell_{n,q}(x)$.  The fixed-point
 decomposition factors it as an infinite product of uniform-averaging operators.

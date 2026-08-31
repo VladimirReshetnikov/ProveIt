@@ -6,6 +6,7 @@
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\input{../../../../fabius-notation.tex}
 \usepackage{bm}
 \usepackage{booktabs,longtable,array,tabularx}
 \usepackage{graphicx}
@@ -67,28 +68,6 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\wt}{\operatorname{wt}_2}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\Li}{\operatorname{Li}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\sgn}{\operatorname{sgn}}
-\newcommand{\lcm}{\operatorname{lcm}}
-\newcommand{\vtwo}{v_2}
-\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
 \newcommand{\lean}[1]{%
   \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
@@ -123,11 +102,6 @@
 \newcommand{\eps}{\varepsilon}
 \newcommand{\id}{\operatorname{id}}
 \newcommand{\ord}{\operatorname{ord}}
-\newcommand{\TM}{\operatorname{TM}}
-\newcommand{\littleo}{o}
-\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
-\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
-\newcommand{\set}[1]{\left\{#1\right\}}
 \newcommand{\brak}[1]{\left[#1\right]}
 \newcommand{\paren}[1]{\left(#1\right)}
 \newcommand{\comp}{\mathbin{\circ}}
@@ -386,18 +360,18 @@ conclusion.
 
 \subsection{The Rvachev bump and the signed global extension}
 
-Let $\Up$ denote Rvachev's compactly supported $C^\infty$ function, normalized by
+Let $\RvachevUp$ denote Rvachev's compactly supported $C^\infty$ function, normalized by
 \[
- \supp\Up=[-1,1],\qquad \Up(0)=1,
+ \SupportOperator\RvachevUp=[-1,1],\qquad \RvachevUp(0)=1,
 \]
 and related to the bounded Fabius function by
 \begin{equation}
- \Up(t)=F(1-\abs t)\qquad(-1\leq t\leq1).
+ \RvachevUp(t)=F(1-\AbsoluteValue t)\qquad(-1\leq t\leq1).
  \label{eq:up-F}
 \end{equation}
-In particular, $\Up$ is even, strictly decreasing on $[0,1]$, and
+In particular, $\RvachevUp$ is even, strictly decreasing on $[0,1]$, and
 \begin{equation}
- \Up(\half)=F(\half)=\half.
+ \RvachevUp(\half)=F(\half)=\half.
  \label{eq:up-half}
 \end{equation}
 
@@ -409,13 +383,13 @@ For $k\geq0$, put
 where $s_2(k)$ is the sum of the binary digits of $k$.  The signed global extension
 $\ThetaF$ can be written blockwise as
 \begin{equation}
- \ThetaF(t)=\eps_k\,\Up\bigl(t-(2k+1)\bigr),
+ \ThetaF(t)=\eps_k\,\RvachevUp\bigl(t-(2k+1)\bigr),
  \qquad 2k\leq t\leq2k+2.
  \label{eq:theta-block}
 \end{equation}
 It agrees with $F$ on $[0,1]$, satisfies $\ThetaF'(t)=2\ThetaF(2t)$ globally, and obeys
 \begin{equation}
- \abs{\ThetaF(t)}\leq1.
+ \AbsoluteValue{\ThetaF(t)}\leq1.
  \label{eq:theta-bound}
 \end{equation}
 The translate signs in \eqref{eq:theta-block} are precisely the Thue--Morse signs.
@@ -435,7 +409,7 @@ $x\in(0,1)$,
 \end{equation}
 Consequently
 \begin{equation}
-  \abs{F^{(m)}(x)}\leq Q_m.
+  \AbsoluteValue{F^{(m)}(x)}\leq Q_m.
   \label{eq:F-derivative-bound}
 \end{equation}
 At the matched dyadic grid this becomes the exact Thue--Morse jet law
@@ -493,7 +467,7 @@ functions $f$ and $h$,
  f^{(|\pi|)}(h(x))\prod_{B\in\pi}h^{(|B|)}(x),
  \label{eq:faa-set-partitions}
 \end{equation}
-where $\Pi_m$ is the set of partitions of $\set{1,\ldots,m}$.  Even if
+where $\Pi_m$ is the set of partitions of $\SetOf{1,\ldots,m}$.  Even if
 $h^{(r)}(x)=0$ for all large $r$, partitions with many small blocks can survive.
 Similarly, even if the high derivatives of $f$ vanish at $h(x)$, the term
 $f'(h(x))h^{(m)}(x)$ survives.  There is no pointwise ``eventually zero jet''
@@ -662,14 +636,14 @@ those elements and partitioning them gives at most
 \end{equation}
 possibilities.  Also $s(\pi)\leq e$, while \eqref{eq:defect-e} gives
 $D(\pi)\geq e(3m/4-1)$.  For fixed $K$, the logarithm of the counting and weight
-factor is $\bigO(e\log m)$, whereas the negative dyadic exponent is
-$-\Omega(em)$.  Summing over $e$ therefore gives $\bigO(\rho^m)$ for some
+factor is $\BigO(e\log m)$, whereas the negative dyadic exponent is
+$-\Omega(em)$.  Summing over $e$ therefore gives $\BigO(\rho^m)$ for some
 $\rho<1$.
 
 Next consider partitions with $1\leq t\leq m/4$.  Choose the $t$ elements outside a
 largest block and partition them.  Up to harmless overcounting there are at most
 $m^t t^t$ choices, and $s(\pi)\leq t+1$.  By \eqref{eq:defect-t},
-$D(\pi)\geq t(3m/4-1)$.  The same comparison, $\bigO(t\log m)$ versus
+$D(\pi)\geq t(3m/4-1)$.  The same comparison, $\BigO(t\log m)$ versus
 $-\Omega(tm)$, gives another exponentially decaying sum.
 
 It remains to treat the middle region $e>m/4$ and $t>m/4$.  If $t\leq3m/4$, then
@@ -698,19 +672,19 @@ binary chain rule.
 
 \begin{lemma}[Two-spine reduction]
 \label{lem:two-spine}
-Let $f$ and $h$ be smooth near $x$, and put $y=h(x)$, $B=\abs{h'(x)}$.  Suppose
+Let $f$ and $h$ be smooth near $x$, and put $y=h(x)$, $B=\AbsoluteValue{h'(x)}$.  Suppose
 there are constants $H>0$ and $K\geq1$ such that
 \begin{align}
- \abs{f^{(r)}(y)}&\leq Q_r &&(r\geq1),
+ \AbsoluteValue{f^{(r)}(y)}&\leq Q_r &&(r\geq1),
  \label{eq:f-envelope}\\
- \abs{h^{(r)}(x)}&\leq KQ_rH^r &&(r\geq2).
+ \AbsoluteValue{h^{(r)}(x)}&\leq KQ_rH^r &&(r\geq2).
  \label{eq:h-envelope}
 \end{align}
 Then, with $L=\max(B,H)$,
 \begin{equation}
  (f\comp h)^{(m)}(x)
  =f'(y)h^{(m)}(x)+f^{(m)}(y)h'(x)^m
-  +\littleo(Q_mL^m)
+  +\LittleO(Q_mL^m)
  \quad(m\to\infty).
  \label{eq:two-spine}
 \end{equation}
@@ -727,7 +701,7 @@ corresponding term has absolute value at most
 \]
 where \cref{lem:Q-factorization} was used in the last step.  Summing and applying
 \cref{prop:defect-decay} bounds the entire remainder by
-$C_KQ_mL^m\rho_K^m=\littleo(Q_mL^m)$.
+$C_KQ_mL^m\rho_K^m=\LittleO(Q_mL^m)$.
 \end{proof}
 
 \begin{remark}[Why this lemma is composition-stable]
@@ -772,7 +746,7 @@ For each fixed $n\geq1$ and $x\in(0,1)$,
  G_n^{(m)}(x)
  =Q_m\left[
    \sum_{j=0}^{n-1}A_{j,n}B_j^m\ThetaF(2^m x_j)
-   +\littleo\bigl(H_n(x)^m\bigr)
+   +\LittleO\bigl(H_n(x)^m\bigr)
  \right]
  \qquad(m\to\infty).
  \label{eq:spine-expansion}
@@ -786,7 +760,7 @@ We induct on $n$.  For $n=1$, $x_0=x$, $A_{0,1}=B_0=H_1=1$, and
 Assume the formula for $G_j$.  It immediately supplies a global-in-order envelope at
 the fixed point $x$: there is $K\geq1$ such that
 \begin{equation}
- \abs{G_j^{(r)}(x)}\leq KQ_rH_j(x)^r\qquad(r\geq2).
+ \AbsoluteValue{G_j^{(r)}(x)}\leq KQ_rH_j(x)^r\qquad(r\geq2).
  \label{eq:Gj-envelope}
 \end{equation}
 Indeed the asymptotic gives the estimate for all sufficiently large $r$, and $K$ can
@@ -799,7 +773,7 @@ $f^{(m)}(x_j)=Q_m\ThetaF(2^m x_j)$, we obtain
  G_{j+1}^{(m)}(x)
  =a_jG_j^{(m)}(x)
   +Q_mB_j^m\ThetaF(2^m x_j)
-  +\littleo\bigl(Q_mH_{j+1}(x)^m\bigr),
+  +\LittleO\bigl(Q_mH_{j+1}(x)^m\bigr),
  \label{eq:spine-induction-step}
 \end{equation}
 where $H_{j+1}=\max(H_j,B_j)$.  Multiplication by $a_j$ changes every old suffix
@@ -811,7 +785,7 @@ $A_{j,j+1}=1$.  This is precisely \eqref{eq:spine-expansion} for $j+1$.
 Each summand in \eqref{eq:spine-expansion} corresponds to a chain-rule tree with one
 high-valence vertex, located at orbit level $j$, and unary vertices everywhere else.
 All trees with two or more genuinely branching vertices are swallowed by the
-$\littleo(H_n^m)$ remainder.  This is why ``spine'' is an apt name.
+$\LittleO(H_n^m)$ remainder.  This is why ``spine'' is an apt name.
 \end{remark}
 
 \section{Strict unimodality of the spine weights}
@@ -822,7 +796,7 @@ the same maximal exponential size.  The orbit dynamics show that this is excepti
 
 \begin{lemma}[Decreasing slope sequence]
 \label{lem:decreasing-slopes}
-Let $x\in(0,1)\setminus\set{\half}$.  Then the sequence
+Let $x\in(0,1)\setminus\SetOf{\half}$.  Then the sequence
 \begin{equation}
  a_0,a_1,a_2,\ldots
  \label{eq:a-decreasing}
@@ -839,7 +813,7 @@ half, giving the same conclusion.
 
 \begin{lemma}[Unique or adjacent double maximum]
 \label{lem:prefix-unimodal}
-For $x\in(0,1)\setminus\set{\half}$, the finite positive sequence
+For $x\in(0,1)\setminus\SetOf{\half}$, the finite positive sequence
 $B_0,\ldots,B_{n-1}$ is strictly log-concave in the ratio sense:
 \begin{equation}
  \frac{B_{j+1}}{B_j}=a_j
@@ -861,7 +835,7 @@ Because $F'$ rises strictly from $0$ to $2$ on $[0,\half]$, there is a unique
 $u\in(0,\half)$ with $F'(u)=1$.  Symmetry gives the only other solution $1-u$.
 For a fixed $n$, the tie set is therefore
 \begin{equation}
- T_n:=\bigcup_{k=0}^{n-2}G_k^{-1}\set{u,1-u}.
+ T_n:=\bigcup_{k=0}^{n-2}G_k^{-1}\SetOf{u,1-u}.
  \label{eq:tie-set}
 \end{equation}
 Each $G_k$ is a homeomorphism of $[0,1]$, so $T_n$ is finite, with at most
@@ -876,7 +850,7 @@ Let $\D_2$ denote the dyadic rationals in $(0,1)$.
 \label{lem:binary-transition}
 If $y\in(0,1)\setminus\D_2$, then there are infinitely many $m\geq1$ such that
 \begin{equation}
- \abs{\ThetaF(2^m y)}\geq\half.
+ \AbsoluteValue{\ThetaF(2^m y)}\geq\half.
  \label{eq:theta-recurrence}
 \end{equation}
 \end{lemma}
@@ -884,7 +858,7 @@ If $y\in(0,1)\setminus\D_2$, then there are infinitely many $m\geq1$ such that
 \begin{proof}
 Choose the nonterminating binary expansion
 \[
- y=0.b_1b_2b_3\cdots\quad(b_j\in\set{0,1}).
+ y=0.b_1b_2b_3\cdots\quad(b_j\in\SetOf{0,1}).
 \]
 Since $y$ is not dyadic, its digits are not eventually constant: eventual zeros give
 a terminating expansion, while eventual ones give the alternative expansion of a
@@ -896,12 +870,12 @@ Modulo $2$, the number $2^m y$ is
  b_m+0.b_{m+1}b_{m+2}\cdots.
 \]
 At a transition this lies in $[\half,\tfrac32]$.  By the block formula
-\eqref{eq:theta-block}, the centered argument of $\Up$ then lies in
-$[-\half,\half]$.  Since $\Up$ is even and decreasing on $[0,1]$,
+\eqref{eq:theta-block}, the centered argument of $\RvachevUp$ then lies in
+$[-\half,\half]$.  Since $\RvachevUp$ is even and decreasing on $[0,1]$,
 \eqref{eq:up-half} gives
 \[
- \abs{\ThetaF(2^m y)}
- =\Up(\text{centered argument})\geq\Up(\half)=\half.
+ \AbsoluteValue{\ThetaF(2^m y)}
+ =\RvachevUp(\text{centered argument})\geq\RvachevUp(\half)=\half.
 \]
 There are infinitely many such $m$.
 \end{proof}
@@ -918,7 +892,7 @@ Sturmian, or sparse-digit numbers.
 For fixed $n$, define
 \begin{equation}
  E_n:=(0,1)\setminus\left(
- \set{\half}\cup T_n\cup
+ \SetOf{\half}\cup T_n\cup
  \bigcup_{j=0}^{n-1}G_j^{-1}(\D_2)
  \right).
  \label{eq:En}
@@ -931,7 +905,7 @@ The tie set $T_n$ is finite.  Thus $E_n$ is co-countable and dense in $(0,1)$.
 Let $x\in E_n$, and let $j_*$ be the unique index for which
 $B_{j_*}=H_n(x)$.  There are infinitely many $m$ such that
 \begin{equation}
- \abs{G_n^{(m)}(x)}
+ \AbsoluteValue{G_n^{(m)}(x)}
  \geq c(x,n)Q_mH_n(x)^m
  \label{eq:dominant-lower-bound}
 \end{equation}
@@ -940,9 +914,9 @@ with a constant $c(x,n)>0$ independent of $m$.
 
 \begin{proof}
 Because $x\in E_n$, the orbit point $x_{j_*}$ is not dyadic.  By
-\cref{lem:binary-transition}, there is an infinite set $M\subset\N$ such that
+\cref{lem:binary-transition}, there is an infinite set $M\subset\NaturalNumbers$ such that
 \begin{equation}
- \abs{\ThetaF(2^m x_{j_*})}\geq\half
+ \AbsoluteValue{\ThetaF(2^m x_{j_*})}\geq\half
  \qquad(m\in M).
  \label{eq:dominant-theta}
 \end{equation}
@@ -961,7 +935,7 @@ $c(x,n)=A_{j_*,n}/4>0$.
 At every $x\in E_n$, \cref{prop:dominant-lower-bound} and $m!\leq m^m$ give along an
 infinite subsequence
 \begin{align}
- \left(\frac{\abs{G_n^{(m)}(x)}}{m!}\right)^{1/m}
+ \left(\frac{\AbsoluteValue{G_n^{(m)}(x)}}{m!}\right)^{1/m}
  &\geq c(x,n)^{1/m}H_n(x)
    \frac{Q_m^{1/m}}{(m!)^{1/m}}\\
  &\geq c(x,n)^{1/m}H_n(x)\frac{2^{(m+1)/2}}{m}
@@ -1213,7 +1187,7 @@ but no asymptotic claim is based on those finite-order data.
 No numerical experiment is used in any proof.  The accompanying commented script
 \path{numerical_experiments.py} performs four reproducible checks:
 \begin{enumerate}[label=(\roman*)]
- \item it reconstructs $\Up$ by an inverse FFT of the truncated sinc product;
+ \item it reconstructs $\RvachevUp$ by an inverse FFT of the truncated sinc product;
  \item it composes centered Taylor series to evaluate the full derivatives of $G_n$;
  \item it compares those derivatives with the finite spine sum in
  \eqref{eq:spine-expansion};
@@ -1225,17 +1199,17 @@ No numerical experiment is used in any proof.  The accompanying commented script
 \subsection{Sinc-product reconstruction}
 
 With the Fourier convention
-$\widehat f(\xi)=\int_\R f(t)e^{-2\pi i\xi t}\dd t$, the Rvachev bump has product
+$\widehat f(\xi)=\int_\RealNumbers f(t)e^{-2\pi i\xi t}\Differential t$, the Rvachev bump has product
 \begin{equation}
- \widehat\Up(\xi)
+ \widehat\RvachevUp(\xi)
  =\prod_{j=0}^{\infty}\operatorname{sinc}
    \left(\frac{\pi\xi}{2^j}\right),
  \qquad \operatorname{sinc}(z)=\frac{\sin z}{z}.
  \label{eq:sinc-product}
 \end{equation}
 The script truncates the product, applies an inverse FFT on a period larger than the
-support, normalizes at $\Up(0)=1$, and uses shape-preserving interpolation.  It then
-recovers $F(x)=\Up(x-1)$ on $(0,1)$ and the signed blocks in
+support, normalizes at $\RvachevUp(0)=1$, and uses shape-preserving interpolation.  It then
+recovers $F(x)=\RvachevUp(x-1)$ on $(0,1)$ and the signed blocks in
 \eqref{eq:theta-block}.
 
 \begin{figure}[htbp]
@@ -1347,7 +1321,7 @@ the weighted partition polynomial
 \end{equation}
 At $w=1$ this collapses toward familiar Bell refinements; at $w=1/2$ it is the exact
 suppression factor governing the present proof.  The Bernoulli-cumulant formulas for
-$\Up$ arise from logarithms of dyadic products, while \eqref{eq:defect-polynomial}
+$\RvachevUp$ arise from logarithms of dyadic products, while \eqref{eq:defect-polynomial}
 measures the combinatorics of composing the resulting quadratic-scale jets.  A
 $q$-Bell theory with $q=1/2$ may unify these two appearances.
 
@@ -1370,7 +1344,7 @@ orbit observable.
 \subsection{Infinite sinc products}
 
 The sinc product \eqref{eq:sinc-product} supplies the numerical representation used
-here and explains the exceptional smoothness of $\Up$.  The nowhere-analyticity
+here and explains the exceptional smoothness of $\RvachevUp$.  The nowhere-analyticity
 mechanism, however, is most transparent in physical space: dilation creates $Q_m$,
 block translation creates Thue--Morse signs, and binary transitions prevent the
 amplitude from becoming too small forever.  The Fourier and derivative pictures are
@@ -1400,7 +1374,7 @@ present report and could quantify the blow-up of $K_n'$ and its higher derivativ
 
 The Rvachev function admits rapidly convergent orthogonal-polynomial expansions, and
 the repository develops finite representations of polynomials by shifted copies of
-$\Up$.  Forward iterates become increasingly step-like about $1/2$ as $n$ grows, while
+$\RvachevUp$.  Forward iterates become increasingly step-like about $1/2$ as $n$ grows, while
 inverse iterates become increasingly flat in the center and increasingly steep near the
 endpoints.  Their Legendre coefficients should therefore have complementary two-scale
 regimes.  Nowhere analyticity rules out geometric coefficient decay strong enough to
@@ -1651,7 +1625,7 @@ python numerical_experiments.py \
   --max-order 22
 \end{lstlisting}
 The program requires Python 3, NumPy, SciPy, Matplotlib, and mpmath.  It performs consistency
-checks at $\Up(0)$, $\Up(1/2)$, $F(0)$, $F(1/2)$, and $F(1)$ before writing output.
+checks at $\RvachevUp(0)$, $\RvachevUp(1/2)$, $F(0)$, $F(1/2)$, and $F(1)$ before writing output.
 
 \section{Repository source map}
 \label{app:source-map}

@@ -1,0 +1,628 @@
+\part{Gaussian and multinomial \(q\)-analogs}
+
+\section{Polynomial structure and the positive real inverse}
+\label{sec:gaussian-polynomial}
+
+Fix integers \(0<k<n\), put \(b=n-k\), \(d=kb\), and write
+\[
+  G_{n,k}(q):=\GaussianBinomial{n}{k}{q}.
+\]
+Although the quotient in \cref{sec:normalizations} is useful away from roots
+of unity, the polynomial itself is the primary object.
+
+\begin{proposition}[Positive palindromic Gaussian polynomial]
+\label{prop:gq-positive-palindromic}
+The function \(G_{n,k}\) is a monic polynomial of degree \(d\), with
+nonnegative integer coefficients, constant coefficient one, and
+\[
+  G_{n,k}(q)=q^dG_{n,k}(q^{-1})\qquad(q\ne0).
+\]
+Its coefficient of \(q\) is one.
+\end{proposition}
+
+\begin{proof}
+The finite \(q\)-binomial recurrence is
+\[
+  G_{n,k}(q)
+  =G_{n-1,k}(q)+q^{n-k}G_{n-1,k-1}(q).
+\]
+It follows directly from the product quotient: after putting the two terms
+over the denominator
+\(\QPochhammer{q}{q}{k}\QPochhammer{q}{q}{n-k}\), the numerator becomes
+\[
+  \QPochhammer{q}{q}{n-1}\bigl((1-q^{n-k})+q^{n-k}(1-q^k)\bigr)
+  =\QPochhammer{q}{q}{n-1}(1-q^n).
+\]
+Starting from \(G_{m,0}=G_{m,m}=1\), the recurrence proves inductively that
+all coefficients are nonnegative integers.  The same induction gives degree
+\(k(n-k)\), monicity, and constant coefficient one.
+
+For reciprocity, replace \(q\) by \(q^{-1}\) in
+\[
+  G_{n,k}(q)=\prod_{j=1}^{k}\frac{1-q^{b+j}}{1-q^j}.
+\]
+Since \(1-q^{-m}=-q^{-m}(1-q^m)\), the signs cancel and the accumulated
+power is
+\[
+  -\sum_{j=1}^{k}(b+j)+\sum_{j=1}^{k}j=-kb=-d.
+\]
+Thus \(G_{n,k}(q^{-1})=q^{-d}G_{n,k}(q)\).
+Finally, the recurrence or the partition interpretation shows that the
+coefficient of \(q\) is one: there is exactly one partition of \(1\) in a
+nonempty \(k\times b\) rectangle.
+\end{proof}
+
+\begin{theorem}[Global positive-base inverse]
+\label{thm:gq-positive-inverse}
+The restriction of \(G_{n,k}\) to \([0,\infty)\) is a continuous strictly
+increasing bijection onto \([1,\infty)\).  Consequently, for every real
+\(y>1\) there is exactly one \(q>0\) satisfying \(G_{n,k}(q)=y\).
+\end{theorem}
+
+\begin{proof}
+Write \(G_{n,k}(q)=1+\sum_{r=1}^{d}p_rq^r\).  By
+\cref{prop:gq-positive-palindromic}, \(p_r\ge0\) and \(p_1=1\).  Hence
+\[
+  G_{n,k}'(q)=\sum_{r=1}^{d}rp_rq^{r-1}\ge1
+  \qquad(q\ge0).
+\]
+The function is therefore strictly increasing, starts at \(G_{n,k}(0)=1\),
+and tends to infinity because it is monic of positive degree.  Continuity and
+the intermediate value theorem give existence; strict increase gives
+uniqueness.
+\end{proof}
+
+\section{The inverse at \(q=0\)}
+\label{sec:gaussian-zero}
+
+Let \(p_{k,b}(r)\) denote the number of partitions of \(r\) whose Ferrers
+diagram fits in a \(k\times b\) rectangle.  The recurrence in the preceding
+proof gives the standard generating identity
+\[
+  G_{n,k}(q)=\sum_{r=0}^{d}p_{k,b}(r)q^r.
+\]
+In particular, \(p_{k,b}(0)=p_{k,b}(1)=1\).  Put
+\[
+  c_2=\mathbf 1_{k\ge2}+\mathbf 1_{b\ge2},
+  \qquad
+  c_3=\mathbf 1_{b\ge3}
+      +\mathbf 1_{k\ge2,\,b\ge2}
+      +\mathbf 1_{k\ge3}.
+\]
+These are exactly \(p_{k,b}(2)\) and \(p_{k,b}(3)\).
+
+\begin{theorem}[Gaussian reversion at zero]
+\label{thm:gq-zero-inverse}
+Let \(u=y-1\).  The positive inverse from
+\cref{thm:gq-positive-inverse} has the convergent local expansion
+\[
+  q=u-c_2u^2+(2c_2^2-c_3)u^3+\BigO(u^4).
+\]
+More generally,
+\[
+  [u^m]q(u)
+  =\frac1m[z^{m-1}]
+    \left(\frac{z}{G_{n,k}(z)-1}\right)^m
+  \qquad(m\ge1).
+\]
+\end{theorem}
+
+\begin{proof}
+Set \(F(z)=G_{n,k}(z)-1\).  Then \(F(0)=0\) and \(F'(0)=1\), so the
+analytic inverse function theorem gives a convergent inverse near zero.
+The Lagrange--Bürmann formula from
+\cref{thm:uq-analytic-lagrange} gives the coefficient identity.  For the
+first terms, substitute
+\[
+  u=q+c_2q^2+c_3q^3+\BigO(q^4),
+  \qquad
+  q=u+A u^2+B u^3+\BigO(u^4).
+\]
+Comparison of \(u^2\) and \(u^3\) gives \(A=-c_2\) and
+\(B=2c_2^2-c_3\).
+\end{proof}
+
+\section{Complete expansion and inversion at \(q=1\)}
+\label{sec:gaussian-one}
+
+Let
+\[
+  S_m(N):=\sum_{j=1}^{N}j^m,
+  \qquad
+  \Delta_m(n,k):=S_m(n)-S_m(k)-S_m(n-k).
+\]
+
+\begin{lemma}[The elementary Bernoulli factor]
+\label{lem:gq-bernoulli-factor}
+For \(|x|<2\pi\),
+\[
+  \log\frac{1-\EulerE^{-x}}{x}
+  =-\frac{x}{2}
+   +\sum_{r\ge1}\frac{B_{2r}}{2r(2r)!}x^{2r}.
+\]
+\end{lemma}
+
+\begin{proof}
+The generating function
+\[
+  \frac{x}{\EulerE^x-1}
+  =\sum_{m\ge0}B_m\frac{x^m}{m!}
+\]
+has nearest nonzero singularities at \(\pm2\pi\ImaginaryUnit\).  Therefore, for
+\(|x|<2\pi\),
+\[
+  \frac1{\EulerE^x-1}-\frac1x
+  =-\frac12+\sum_{r\ge1}B_{2r}\frac{x^{2r-1}}{(2r)!}.
+\]
+The left side is the derivative of
+\(\log((1-\EulerE^{-x})/x)\).  Termwise integration from \(0\) to \(x\)
+gives the formula; the integration constant is zero because the quotient
+tends to one.
+\end{proof}
+
+\begin{theorem}[Complete Gaussian logarithmic expansion]
+\label{thm:gq-one-log}
+Let \(q=\EulerE^{-t}\).  For \(|t|<2\pi/n\),
+\[
+  \log\frac{G_{n,k}(\EulerE^{-t})}{\binom nk}
+  =-\frac d2t
+   +\sum_{r\ge1}
+    \frac{B_{2r}\Delta_{2r}(n,k)}
+         {2r(2r)!}\,t^{2r}.
+\]
+If
+\[
+  \lambda_1=-\frac d2,\qquad
+  \lambda_{2r}=\frac{B_{2r}}{2r}\Delta_{2r}(n,k),
+  \qquad
+  \lambda_{2r+1}=0\quad(r\ge1),
+\]
+and the complete exponential Bell polynomials \(\mathcal B_m\) are defined by
+\[
+  \exp\left(\sum_{j\ge1}x_j\frac{z^j}{j!}\right)
+  =\sum_{m\ge0}\mathcal B_m(x_1,\ldots,x_m)\frac{z^m}{m!},
+\]
+then
+\[
+  G_{n,k}(\EulerE^{-t})
+  =\binom nk\sum_{m\ge0}
+    \mathcal B_m(\lambda_1,\ldots,\lambda_m)\frac{t^m}{m!}.
+\]
+\end{theorem}
+
+\begin{proof}
+Use
+\[
+  G_{n,k}(\EulerE^{-t})
+  =\prod_{j=1}^{k}
+    \frac{1-\EulerE^{-(b+j)t}}{1-\EulerE^{-jt}}.
+\]
+Apply \cref{lem:gq-bernoulli-factor} to every numerator and denominator.
+The logarithms of the scale factors \((b+j)/j\) sum to
+\(\log\binom nk\).  The linear difference is
+\[
+  \sum_{j=1}^{k}(b+j-j)=kb=d,
+\]
+and the even differences are precisely
+\(\Delta_{2r}(n,k)\).  Every factor expansion converges when
+\(|(b+j)t|<2\pi\); the sufficient common disk is \(|t|<2\pi/n\).
+Exponentiating the resulting series and invoking the defining generating
+identity for \(\mathcal B_m\) proves the second formula.
+\end{proof}
+
+\begin{corollary}[Literal Taylor coordinate \(h=q-1\)]
+\label{cor:gq-one-h}
+As \(h\to0\),
+\[
+  \frac{G_{n,k}(1+h)}{\binom nk}
+  =1+\frac d2h
+   +\frac{d(3d+n-5)}{24}h^2
+   +\frac{d(d-2)(d+n-3)}{48}h^3
+   +\BigO(h^4).
+\]
+\end{corollary}
+
+\begin{proof}
+In \cref{thm:gq-one-log}, substitute
+\[
+  t=-\log(1+h)=-h+\frac{h^2}{2}-\frac{h^3}{3}
+  +\BigO(h^4),
+\]
+use \(\Delta_2=d(n+1)\), and exponentiate through degree three.
+All discarded products have degree at least four.  Straight collection gives
+the displayed coefficients.
+\end{proof}
+
+Put \(v=\log(y/\binom nk)\).  The linear term in
+\cref{thm:gq-one-log} is nonzero.
+
+\begin{corollary}[Ordinary Gaussian inverse at \(q=1\)]
+\label{cor:gq-one-inverse}
+On the local branch through \(q=1\),
+\[
+  t=-\frac{2v}{d}
+    +\frac{\Delta_2}{3d^3}v^2
+    -\frac{\Delta_2^2}{9d^5}v^3
+    +\BigO(v^4),
+  \qquad q=\EulerE^{-t}.
+\]
+The coefficient of \(v^4\) is the first one involving \(\Delta_4\).
+\end{corollary}
+
+\begin{proof}
+Write
+\[
+  v=c_1t+c_2t^2+c_4t^4+\cdots,
+  \qquad c_1=-d/2,\quad c_2=\Delta_2/24.
+\]
+There is no cubic term.  Substituting
+\(t=Av+Bv^2+Cv^3+\cdots\) and comparing coefficients gives
+\[
+  A=c_1^{-1},\quad
+  B=-c_2c_1^{-3},\quad
+  C=2c_2^2c_1^{-5},
+\]
+which are the displayed values.  Since \(c_4\) first contributes in degree
+four, \(\Delta_4\) cannot occur earlier.
+\end{proof}
+
+\section{Centered palindromic inversion}
+\label{sec:centered-palindromic}
+
+The ordinary inverse above retains the deterministic reciprocity drift.  Once
+that drift is removed, \(q=1\) becomes a fold.
+
+\begin{theorem}[Centered palindromic inverse]
+\label{thm:gq-centered-palindromic}
+Let
+\[
+  P(q)=\sum_{j=0}^{D}c_jq^j
+\]
+be nonconstant, with \(c_j\ge0\), \(c_j=c_{D-j}\), and
+\(c_0=c_D>0\).  Define
+\[
+  H_P(t):=\EulerE^{Dt/2}\frac{P(\EulerE^{-t})}{P(1)}.
+\]
+Then \(H_P\) is even, \(H_P(0)=1\), strictly increases on
+\((0,\infty)\), and tends to infinity there.  For every \(h>1\), the equation
+\(H_P(t)=h\) therefore has exactly two real solutions
+\(t=\pm E_P(h)\).  At \(h=1\) the two branches meet in a square-root fold.
+\end{theorem}
+
+\begin{proof}
+Let \(X\) take value \(j\) with probability \(c_j/P(1)\), and set
+\(Z=X-D/2\).  Palindromy says \(Z\) and \(-Z\) have the same law.  Hence
+\[
+  H_P(t)=\Expectation(\EulerE^{-tZ})=\Expectation(\cosh(tZ)),
+\]
+which is even and equals one at zero.  For \(t>0\),
+\[
+  H_P'(t)=\Expectation\bigl(Z\sinh(tZ)\bigr)>0.
+\]
+Indeed, the integrand is nonnegative and is positive whenever \(Z\ne0\);
+the endpoint masses \(c_0=c_D>0\) ensure that this happens with positive
+probability.  Those same endpoints yield
+\[
+  H_P(t)\ge\frac{c_0}{P(1)}\EulerE^{Dt/2}\longrightarrow\infty.
+\]
+This proves the global branch count.
+
+Finally,
+\[
+  H_P(t)=1+\frac{\Expectation(Z^2)}2t^2+\BigO(t^4),
+\]
+and \(\Expectation(Z^2)>0\) by nondegeneracy.  Thus
+\[
+  t=\pm\sqrt{\frac{2(h-1)}{\Expectation(Z^2)}}\,
+  \bigl(1+\BigO(h-1)\bigr),
+\]
+which is exactly a square-root fold.
+\end{proof}
+
+Let \(\kappa_{2r}\) be the even cumulants of \(Z\), so that
+\[
+  u:=\log H_P(t)
+  =\frac{\kappa_2}{2!}t^2
+   +\frac{\kappa_4}{4!}t^4
+   +\frac{\kappa_6}{6!}t^6+\cdots.
+\]
+
+\begin{proposition}[Centered inverse through \(u^{5/2}\)]
+\label{prop:gq-centered-puiseux}
+As \(u\downarrow0\),
+\[
+  t=\pm\sqrt{\frac{2u}{\kappa_2}}
+  \left[
+    1-\frac{\kappa_4}{12\kappa_2^2}u
+    +\left(
+       \frac{7\kappa_4^2}{288\kappa_2^4}
+       -\frac{\kappa_6}{180\kappa_2^3}
+     \right)u^2
+    +\BigO(u^3)
+  \right].
+\]
+\end{proposition}
+
+\begin{proof}
+Put \(s=t^2\).  Then
+\[
+  u=As+Bs^2+Cs^3+\BigO(s^4),
+  \quad
+  A=\kappa_2/2,\ B=\kappa_4/24,\ C=\kappa_6/720.
+\]
+Substitute
+\[
+  t=(u/A)^{1/2}(1+\alpha u+\beta u^2+\BigO(u^3)).
+\]
+Comparison in \(u=At^2+Bt^4+Ct^6+\cdots\) gives
+\[
+  \alpha=-\frac{B}{2A^2},
+  \qquad
+  \beta=\frac{7B^2-4AC}{8A^4}.
+\]
+Inserting \(A,B,C\) yields the stated coefficients.  The two signs are the
+two branches supplied by \cref{thm:gq-centered-palindromic}.
+\end{proof}
+
+For \(P=G_{n,k}\), \cref{thm:gq-one-log} gives
+\[
+  \kappa_{2r}
+  =\frac{B_{2r}}{2r}\Delta_{2r}(n,k),
+  \qquad
+  \kappa_2=\frac{d(n+1)}{12}.
+\]
+Thus the centered Gaussian inverse is an explicit
+Bernoulli--Faulhaber Puiseux series.
+
+\section{Cyclotomic roots and the alternating base}
+\label{sec:gaussian-cyclotomic}
+
+\begin{theorem}[Square-free Gaussian covering]
+\label{thm:gq-square-free}
+The cyclotomic factorization is
+\[
+  G_{n,k}(q)=\prod_{m=2}^{n}\Phi_m(q)^{e_m},
+  \qquad
+  e_m=\left\lfloor\frac nm\right\rfloor
+      -\left\lfloor\frac km\right\rfloor
+      -\left\lfloor\frac{n-k}{m}\right\rfloor.
+\]
+Every \(e_m\) is either zero or one.  Consequently every complex zero of
+\(G_{n,k}\) is a simple root of unity, and the local inverse at a zero is an
+ordinary Taylor branch rather than a Puiseux branch of higher order.
+\end{theorem}
+
+\begin{proof}
+The factorization \(1-q^j=\prod_{m\mid j}\Phi_m(q)\) shows that the
+multiplicity of \(\Phi_m\) in \(\QPochhammer{q}{q}{N}\) is
+\(\lfloor N/m\rfloor\).
+Subtracting the denominator multiplicities proves the formula for \(e_m\).
+Write \(n=k+b\).  The elementary carry identity
+\[
+  \left\lfloor\frac{k+b}{m}\right\rfloor
+  -\left\lfloor\frac{k}{m}\right\rfloor
+  -\left\lfloor\frac{b}{m}\right\rfloor\in\{0,1\}
+\]
+proves square-freeness.  Distinct cyclotomic polynomials are coprime and each
+is separable over characteristic zero.  Thus every zero is simple.  The
+analytic inverse function theorem then supplies an ordinary local inverse.
+\end{proof}
+
+If \(\zeta\) is primitive of order \(m\) and \(e_m=1\), put
+\[
+  R_m(q):=\prod_{\substack{2\le r\le n\\r\ne m}}\Phi_r(q)^{e_r}.
+\]
+Then
+\[
+  G_{n,k}'(\zeta)=\Phi_m'(\zeta)R_m(\zeta)\ne0,
+  \qquad
+  q(y)=\zeta+
+  \frac{y}{\Phi_m'(\zeta)R_m(\zeta)}+\BigO(y^2).
+\]
+
+\begin{proposition}[Value and zero derivative at \(q=-1\)]
+\label{prop:gq-minus-one}
+One has
+\[
+  G_{n,k}(-1)=
+  \begin{cases}
+  0,&n\text{ even and }k\text{ odd},\\[0.25em]
+  \displaystyle
+  \binom{\lfloor n/2\rfloor}{\lfloor k/2\rfloor},
+  &\text{otherwise}.
+  \end{cases}
+\]
+In the zero case, writing \(n=2m\) and \(k=2r+1\),
+\[
+  G_{2m,2r+1}'(-1)=(m-r)\binom mr.
+\]
+\end{proposition}
+
+\begin{proof}
+Separate even and odd exponents in the product quotient and pair every
+vanishing factor \(1-q^{2s}\) with a factor \(1-q^2\).  Since
+\[
+  \lim_{q\to-1}\frac{1-q^{2s}}{1-q^2}=s,
+  \qquad
+  \lim_{q\to-1}(1-q^{2s+1})=2,
+\]
+the surviving factorial ratios reduce to the displayed binomial coefficient.
+When \(n\) is even and \(k\) odd, there is exactly one unpaired even numerator
+factor, so the value is zero.
+
+In that case the quotient after removing the unique factor \(1+q\) has limit
+\[
+  \frac{m!}{r!(m-r-1)!}=(m-r)\binom mr.
+\]
+Because \(1+q\) has derivative one at \(-1\), this limit is exactly
+\(G_{2m,2r+1}'(-1)\).
+\end{proof}
+
+\section{The reciprocal and large-target inverse}
+\label{sec:gaussian-infinity}
+\label{sec:gaussian-reciprocity}
+
+Write the small-\(Q\) expansion
+\[
+  G_{n,k}(Q)=1+Q+c_2Q^2+c_3Q^3+\BigO(Q^4)
+\]
+with the \(c_2,c_3\) of \cref{sec:gaussian-zero}, and choose a branch
+\(Y=y^{1/d}\).
+
+\begin{theorem}[Correct large-target Gaussian inverse]
+\label{thm:gq-large-inverse}
+On every branch for which \(Y\to\infty\),
+\begin{align*}
+  q={}&Y-\frac1d
+  +\left(\frac{d-1}{2d^2}-\frac{c_2}{d}\right)Y^{-1}\\
+  &+\left(
+    -\frac{(d-1)(d-2)}{3d^3}
+    +\frac{(d-2)c_2}{d^2}
+    -\frac{c_3}{d}
+  \right)Y^{-2}
+  +\BigO(Y^{-3}).
+\end{align*}
+\end{theorem}
+
+\begin{proof}
+Reciprocity gives
+\[
+  y=q^dG_{n,k}(q^{-1}).
+\]
+Set \(x=Y^{-1}\) and
+\[
+  q=Y(1+Ax+Bx^2+Cx^3+\BigO(x^4)).
+\]
+Then
+\[
+  q^{-1}
+  =x-Ax^2+(A^2-B)x^3+\BigO(x^4),
+\]
+and therefore
+\[
+  G_{n,k}(q^{-1})
+  =1+x+(c_2-A)x^2+
+   (A^2-B-2Ac_2+c_3)x^3+\BigO(x^4).
+\]
+Divide the equation by \(Y^d\) and take logarithms.  Comparing the
+coefficients of \(x,x^2,x^3\) in
+\[
+  0=d\log(1+Ax+Bx^2+Cx^3)
+    +\log G_{n,k}(q^{-1})
+\]
+gives successively
+\[
+  A=-\frac1d,\qquad
+  B=\frac{d-1}{2d^2}-\frac{c_2}{d},
+\]
+and
+\[
+  C=-\frac{(d-1)(d-2)}{3d^3}
+    +\frac{(d-2)c_2}{d^2}
+    -\frac{c_3}{d}.
+\]
+Multiplication by \(Y\) produces the displayed expansion and leaves a
+remainder of order \(Y^{-3}\).
+\end{proof}
+
+\begin{remark}
+Several source reports printed
+\(-{(d-1)(2d-1)}/{(3d^3)}
++{2c_2(d-1)}/{d^2}-{c_3}/{d}\) at order \(Y^{-2}\).
+The coefficient comparison above shows that expression is incorrect.  The
+correct coefficient vanishes in the expected low-degree special cases and is
+the one retained here.
+\end{remark}
+
+\section{Multinomial extension}
+\label{sec:qmultinomial}
+
+Let \(n_1+\cdots+n_s=n\), and set
+\[
+  M_{\bm n}(q)
+  :=\frac{\QPochhammer{q}{q}{n}}
+  {\QPochhammer{q}{q}{n_1}\cdots\QPochhammer{q}{q}{n_s}},
+  \qquad
+  D(\bm n):=\sum_{i<j}n_in_j,
+\]
+\[
+  \Delta_m(\bm n)
+  :=S_m(n)-\sum_{i=1}^{s}S_m(n_i).
+\]
+
+\begin{theorem}[Complete multinomial expansion at one]
+\label{thm:qm-one-log}
+For \(q=\EulerE^{-t}\) and \(|t|<2\pi/n\),
+\[
+  \log\frac{M_{\bm n}(\EulerE^{-t})}
+                {\binom{n}{n_1,\ldots,n_s}}
+  =-\frac{D(\bm n)}2t+
+   \sum_{r\ge1}
+   \frac{B_{2r}\Delta_{2r}(\bm n)}
+        {2r(2r)!}\,t^{2r}.
+\]
+After multiplication by \(\EulerE^{D(\bm n)t/2}\), the normalized polynomial is
+even and its inverse at the minimum has the two Puiseux branches of
+\cref{prop:gq-centered-puiseux}.
+\end{theorem}
+
+\begin{proof}
+Apply \cref{lem:gq-bernoulli-factor} to the numerator
+\(\QPochhammer{q}{q}{n}\) and every denominator
+\(\QPochhammer{q}{q}{n_i}\).  Constants give the ordinary multinomial
+coefficient and the power sums give \(\Delta_{2r}(\bm n)\).  The linear
+difference is
+\[
+  \frac12\left(n^2-\sum_i n_i^2\right)
+  =\sum_{i<j}n_in_j=D(\bm n).
+\]
+The coefficient distribution is palindromic with positive equal endpoints,
+so \cref{thm:gq-centered-palindromic,prop:gq-centered-puiseux} applies.
+\end{proof}
+
+\begin{theorem}[Cyclotomic carry and exact ramification]
+\label{thm:qm-carry}
+Let \(\zeta\) be a primitive \(m\)-th root of unity and write
+\(n_i=m\ell_i+r_i\) with \(0\le r_i<m\).  The multiplicity of \(\zeta\) as
+a zero of \(M_{\bm n}\) is
+\[
+  e_m
+  =\left\lfloor\frac nm\right\rfloor
+   -\sum_{i=1}^{s}\left\lfloor\frac{n_i}{m}\right\rfloor
+  =\left\lfloor\frac{r_1+\cdots+r_s}{m}\right\rfloor.
+\]
+Thus \(0\le e_m\le s-1\).  If \(e_m>0\), the inverse at target zero has
+exactly \(e_m\) local Puiseux determinations, counted with their choices of
+the \(e_m\)-th root.
+\end{theorem}
+
+\begin{proof}
+As in \cref{thm:gq-square-free}, cyclotomic factorization of each factorial
+gives the first expression.  Since
+\[
+  n=m\sum_i\ell_i+\sum_i r_i,
+\]
+substitution gives the residue-carry formula.  The residue sum lies between
+zero and \(s(m-1)\), proving \(e_m\le s-1\).
+
+Factor locally
+\[
+  M_{\bm n}(q)=(q-\zeta)^{e_m}U(q),
+  \qquad U(\zeta)\ne0.
+\]
+After choosing an analytic \(e_m\)-th root of \(U\) in a sufficiently small
+disk, the equation \(M_{\bm n}(q)=y\) is equivalent to
+\[
+  (q-\zeta)\,U(q)^{1/e_m}=\omega\,y^{1/e_m},
+\]
+where \(\omega\) runs through the \(e_m\)-th roots of unity.  The analytic
+inverse function theorem applies to the left side, whose derivative at
+\(\zeta\) is \(U(\zeta)^{1/e_m}\ne0\).  This produces precisely the stated
+Puiseux determinations.
+\end{proof}
+
+For \(s=2\), the carry count is at most one, recovering the square-free
+Gaussian case.  For many parts, the exact same cyclotomic mechanism produces
+higher ramification.  Centered inversion at \(q=1\) and cyclotomic inversion
+therefore represent genuinely different singular mechanisms even when they
+occur in the same polynomial family.

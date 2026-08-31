@@ -5,6 +5,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
+\input{../../../../fabius-notation.tex}
 \usepackage{bm}
 \usepackage{booktabs,longtable,array,tabularx}
 \usepackage{graphicx}
@@ -55,17 +56,7 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\C}{\mathbb{C}}
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\E}{\mathbb{E}}
-\newcommand{\Prob}{\mathbb{P}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\sgn}{\operatorname{sgn}}
-\newcommand{\sinc}{\operatorname{sinc}}
 \newcommand{\Fab}{\operatorname{Fab}}
-\newcommand{\upf}{\operatorname{up}}
 \newcommand{\Jcal}{\mathcal{J}}
 \newcommand{\Zcal}{\mathcal{Z}}
 \newcommand{\Kcal}{\mathcal{K}}
@@ -73,7 +64,6 @@
 \newcommand{\Iop}{\mathsf{I}}
 \newcommand{\Dop}{\mathsf{D}}
 \newcommand{\Wm}{W_{-1}}
-\newcommand{\poch}[2]{\left(#1\right)_{#2}}
 \newcommand{\statusP}{\textcolor{green!35!black}{\textbf{proved here}}}
 \newcommand{\statusC}{\textcolor{orange!70!black}{\textbf{conjectural}}}
 \newcommand{\statusN}{\textcolor{blue!55!black}{\textbf{numerical}}}
@@ -104,7 +94,7 @@ and one studies
  X_{q,\alpha}=(1-q)\sum_{n\ge0}q^nU_{\alpha,n},\qquad 0<q<1.
 \]
 The case \(\alpha=1\) is the geometric-uniform family already developed in
-the repository; \(q=1/2,\alpha=1\) is the normalized Rvachev \(\upf\) law.
+the repository; \(q=1/2,\alpha=1\) is the normalized Rvachev \(\RvachevUp\) law.
 The new parameter changes the one-step atom rather than merely the geometric
 scale.  It turns the sinc product into an infinite product of normalized
 Bessel functions and produces a continuous bridge among Bernoulli
@@ -193,11 +183,11 @@ General exponent sequences
 & fixed geometric scales applied to a beta/Jacobi continuum of atoms, including a sphere-dimension interpretation \\
 \addlinespace
 Bessel representations
-& Bessel formulas used to represent or transform the fixed \(\upf\) law
+& Bessel formulas used to represent or transform the fixed \(\RvachevUp\) law
 & a Bessel product that \emph{defines} a new probability family, with Rayleigh cumulants and Bessel-zero resonances \\
 \addlinespace
 Orthogonal polynomials
-& Legendre, native \(\upf\)-law, and Hermite limits for established laws
+& Legendre, native \(\RvachevUp\)-law, and Hermite limits for established laws
 & a two-parameter Gegenbauer/Jacobi-to-Hermite flow and a new small-\(\alpha\) turning phase \\
 \addlinespace
 Inverse endpoint asymptotics
@@ -237,7 +227,7 @@ Throughout the report,
  \qquad L:=\log\frac1q.
 \]
 The Fourier transform of a probability measure is its characteristic
-function \(\widehat\mu(t)=\E e^{itX}\).
+function \(\widehat\mu(t)=\Expectation e^{itX}\).
 
 \begin{definition}[Jacobi digit and Jacobi-digit cascade]
 Let \(U_\alpha\) have density
@@ -264,19 +254,19 @@ The series converges absolutely almost surely and \(|X_{q,\alpha}|\le1\).
 The affine variable \(V_\alpha=(1-U_\alpha)/2\) has the
 \(\operatorname{Beta}(\alpha,\alpha)\) distribution.  Moreover,
 \begin{equation}
- \E U_\alpha^{2m}=\frac{\poch{1/2}{m}}{\poch{\alpha+1/2}{m}},
+ \Expectation U_\alpha^{2m}=\frac{\RisingFactorial{1/2}{m}}{\RisingFactorial{\alpha+1/2}{m}},
  \qquad
- \E U_\alpha^{2m+1}=0,
+ \Expectation U_\alpha^{2m+1}=0,
  \label{eq:digit-even-moment}
 \end{equation}
 and, for \(p>-1\),
 \begin{equation}
- \E|U_\alpha|^p
+ \Expectation|U_\alpha|^p
  =\frac{\Gamma((p+1)/2)\Gamma(\alpha+1/2)}
  {\sqrt\pi\,\Gamma(\alpha+(p+1)/2)}.
  \label{eq:digit-absolute-moment}
 \end{equation}
-In particular, \(\Var(U_\alpha)=1/(2\alpha+1)\).
+In particular, \(\Variance(U_\alpha)=1/(2\alpha+1)\).
 \end{lemma}
 
 \begin{proof}
@@ -321,7 +311,7 @@ The exponent in \eqref{eq:digit-density} has a direct geometric meaning.
 \label{thm:spherical-realization}
 Let \(d\ge2\) be an integer and put \(\alpha=(d-1)/2\).  If
 \(\Omega_0,\Omega_1,\ldots\) are independent and uniform on the unit sphere
-\(S^{d-1}\subset\R^d\), define
+\(S^{d-1}\subset\RealNumbers^d\), define
 \begin{equation}
  \bm X_{q,d}:=a\sum_{n\ge0}q^n\Omega_n.
  \label{eq:vector-cascade}
@@ -329,8 +319,8 @@ Let \(d\ge2\) be an integer and put \(\alpha=(d-1)/2\).  If
 Then \(\bm X_{q,d}\) is rotationally invariant, and every coordinate has the
 law of \(X_{q,(d-1)/2}\).  Its support is the closed annulus
 \begin{equation}
- \supp(\bm X_{q,d})
- =\left\{x\in\R^d:
+ \SupportOperator(\bm X_{q,d})
+ =\left\{x\in\RealNumbers^d:
  \max(1-2q,0)\le\|x\|\le1\right\}.
  \label{eq:vector-support}
 \end{equation}
@@ -372,13 +362,13 @@ For \(d\ge2\), let
 \]
 Then
 \begin{align}
- \E\|\bm X_{q,d}\|^2&=S_2,\label{eq:radial-second}\\
- \E\|\bm X_{q,d}\|^4&=S_2^2+\frac2d(S_2^2-S_4).
+ \Expectation\|\bm X_{q,d}\|^2&=S_2,\label{eq:radial-second}\\
+ \Expectation\|\bm X_{q,d}\|^4&=S_2^2+\frac2d(S_2^2-S_4).
  \label{eq:radial-fourth}
 \end{align}
 In particular,
 \begin{equation}
- \Var(X_{q,\alpha})
+ \Variance(X_{q,\alpha})
  =\frac{1-q}{(1+q)(2\alpha+1)}.
  \label{eq:cascade-variance}
 \end{equation}
@@ -388,7 +378,7 @@ In particular,
 The mixed scalar products have zero expectation.  On squaring
 \(\|\sum b_n\Omega_n\|^2\), only identical unordered pairs survive in the
 fourth moment, and
-\(\E(\Omega_i\cdot\Omega_j)^2=1/d\).  This gives
+\(\Expectation(\Omega_i\cdot\Omega_j)^2=1/d\).  This gives
 \[
  S_2^2+4d^{-1}\sum_{i<j}b_i^2b_j^2
  =S_2^2+2d^{-1}(S_2^2-S_4).
@@ -421,7 +411,7 @@ The characteristic functions of the digit and cascade are
  \Jcal_{\alpha-1/2}(aq^nt).
  \label{eq:full-bessel-product}
 \end{align}
-The product converges normally on compact subsets of \(\C\) and is the unique
+The product converges normally on compact subsets of \(\ComplexNumbers\) and is the unique
 entire solution of the Mahler-type equation
 \begin{equation}
  \Phi(t)=\Jcal_{\nu}(at)\Phi(qt),\qquad \Phi(0)=1.
@@ -429,7 +419,7 @@ entire solution of the Mahler-type equation
 \end{equation}
 At \(\alpha=1\), this is the geometric sinc product already present in the
 repository; at \((q,\alpha)=(1/2,1)\), it is the Fourier transform of the
-normalized Rvachev \(\upf\) density.
+normalized Rvachev \(\RvachevUp\) density.
 \end{theorem}
 
 \begin{proof}
@@ -463,8 +453,8 @@ For each fixed \(q\in(0,1)\) and \(\alpha>0\),
 away from its zeros, with the left side interpreted as \(-\infty\) at a
 zero.  Consequently,
 \[
- f_{q,\alpha}\in C_c^\infty(\R),\qquad
- \supp(f_{q,\alpha})=[-1,1],
+ f_{q,\alpha}\in C_c^\infty(\RealNumbers),\qquad
+ \SupportOperator(f_{q,\alpha})=[-1,1],
 \]
 and \(f_{q,\alpha}(x)>0\) for \(-1<x<1\).  Every derivative is flat at both
 endpoints.
@@ -494,7 +484,7 @@ positive at \(x\).  Compact support plus smoothness implies endpoint
 flatness.
 \end{proof}
 
-The same argument in \(\R^d\) proves that the spherical random-flight law in
+The same argument in \(\RealNumbers^d\) proves that the spherical random-flight law in
 \cref{thm:spherical-realization} has a \(C^\infty\) density on its annular or
 ball support for every \(d\ge2\).
 
@@ -511,7 +501,7 @@ envelope obeys the quadratic logarithmic decay in
 \begin{theorem}[Log-concavity above the Rvachev parameter]
 \label{thm:log-concavity}
 For every \(q\in(0,1)\) and \(\alpha\ge1\), the density
-\(f_{q,\alpha}\) is log-concave on \(\R\).  Hence it is unimodal and its
+\(f_{q,\alpha}\) is log-concave on \(\RealNumbers\).  Hence it is unimodal and its
 superlevel sets are intervals.
 \end{theorem}
 
@@ -540,16 +530,16 @@ even moments.
 \label{thm:occupation-sum}
 For \(N\ge0\),
 \begin{equation}
- \frac{\E X_{q,\alpha}^{2N}}{(2N)!}
+ \frac{\Expectation X_{q,\alpha}^{2N}}{(2N)!}
  =\left(\frac{a^2}{4}\right)^N
  \sum_{\substack{k_0,k_1,\ldots\ge0\\k_0+k_1+\cdots=N}}
  \prod_{n=0}^{\infty}
- \frac{q^{2nk_n}}{k_n!\,\poch{\alpha+1/2}{k_n}}.
+ \frac{q^{2nk_n}}{k_n!\,\RisingFactorial{\alpha+1/2}{k_n}}.
  \label{eq:occupation-moment}
 \end{equation}
 Only finitely many \(k_n\) are nonzero in each summand.  Equivalently,
 \begin{equation}
- \sum_{N\ge0}\frac{\E X_{q,\alpha}^{2N}}{(2N)!}t^{2N}
+ \sum_{N\ge0}\frac{\Expectation X_{q,\alpha}^{2N}}{(2N)!}t^{2N}
  =\prod_{n\ge0}{}_0F_1\left(;\alpha+\frac12;
  \frac{a^2q^{2n}t^2}{4}\right).
  \label{eq:mgf-hypergeometric-product}
@@ -634,7 +624,7 @@ Taking a logarithm in \eqref{eq:bessel-hadamard} gives, near zero,
  \log\Jcal_\nu(t)=-\sum_{m\ge1}\frac{R_m(\nu)}m t^{2m}.
 \]
 Comparison with
-\(\log\E e^{itU}=\sum_r\kappa_r(U)(it)^r/r!\) yields
+\(\log\Expectation e^{itU}=\sum_r\kappa_r(U)(it)^r/r!\) yields
 \(\kappa_{2m}(U)=(-1)^{m+1}(2m)!R_m/m\).  Cumulants add over independent
 summands and scale by the corresponding power, so summing
 \(a^{2m}q^{2mn}\) proves \eqref{eq:master-cumulant}.
@@ -659,7 +649,7 @@ The first five nonzero digit cumulants, generated both from
 \label{cor:bell-moments}
 Let \(B_n\) denote the complete exponential Bell polynomial.  Then
 \begin{equation}
- \E X_{q,\alpha}^n
+ \Expectation X_{q,\alpha}^n
  =B_n\bigl(0,\kappa_2,0,\kappa_4,\ldots,\kappa_n\bigr),
  \label{eq:bell-moments}
 \end{equation}
@@ -674,7 +664,7 @@ The distributional fixed point also gives the positive recurrence
  (1-q^{2N})\mu_{2N}
  =\sum_{r=1}^{N}\binom{2N}{2r}
  a^{2r}q^{2N-2r}
- \frac{\poch{1/2}{r}}{\poch{\alpha+1/2}{r}}
+ \frac{\RisingFactorial{1/2}{r}}{\RisingFactorial{\alpha+1/2}{r}}
  \mu_{2N-2r}.
  \label{eq:positive-moment-recurrence}
 \end{equation}
@@ -784,7 +774,7 @@ For fixed \(\nu>-1/2\), define
  \mathcal E_\nu
  :=\left\{
  \left(\frac{j_{\nu,k}}{j_{\nu,\ell}}\right)^{1/d}:
- 1\le k<\ell,\ d\in\N
+ 1\le k<\ell,\ d\in\NaturalNumbers
  \right\}\subset(0,1).
  \label{eq:resonance-set}
 \end{equation}
@@ -846,7 +836,7 @@ This table is illustrative, not needed for the density proof.
 \label{cor:sign-count}
 Away from its zeros,
 \begin{equation}
- \sgn\widehat f_{q,\alpha}(t)
+ \Sign\widehat f_{q,\alpha}(t)
  =(-1)^{N_{q,\alpha}(|t|)},
  \label{eq:sign-zero-count}
 \end{equation}
@@ -907,7 +897,7 @@ and \(g(x)=q^{-1}f_{q,m}(x/q)\).  The fixed point is \(f_{q,m}=k_{a,m}*g\).
 
 \begin{theorem}[Finite higher-order refinement]
 \label{thm:higher-refinement}
-For every integer \(m\ge1\), in the classical sense on \(\R\),
+For every integer \(m\ge1\), in the classical sense on \(\RealNumbers\),
 \begin{equation}
 \boxed{
 \begin{aligned}
@@ -957,7 +947,7 @@ The first three equations are instructive.  For \(m=1\),
  \label{eq:m1-refinement}
 \end{equation}
 At \(q=a=1/2\), this is
-\(\upf'(x)=2[\upf(2x+1)-\upf(2x-1)]\).
+\(\RvachevUp'(x)=2[\RvachevUp(2x+1)-\RvachevUp(2x-1)]\).
 For \(m=2\),
 \begin{equation}
 \begin{aligned}
@@ -995,7 +985,7 @@ Let
 \begin{equation}
  D_{q,\alpha}:=1-X_{q,\alpha}\in[0,2],
  \qquad
- G_{q,\alpha}(x):=\Prob(D_{q,\alpha}\le x).
+ G_{q,\alpha}(x):=\Probability(D_{q,\alpha}\le x).
  \label{eq:endpoint-def}
 \end{equation}
 Since \(V_\alpha=(1-U_\alpha)/2\sim\operatorname{Beta}(\alpha,\alpha)\),
@@ -1040,13 +1030,13 @@ For \(0<x<2a\),
  \Dop^\alpha G(x)
  =\frac{\Gamma(2\alpha)}{\Gamma(\alpha)(2a)^\alpha}
  \sum_{r=0}^{\infty}
- \frac{\poch{\alpha}{r}\poch{1-\alpha}{r}}
+ \frac{\RisingFactorial{\alpha}{r}\RisingFactorial{1-\alpha}{r}}
  {r!(2a)^r}
  \Iop^r\!\left[G\left(\frac{\cdot}{q}\right)\right](x).}
  \label{eq:fractional-endpoint-equation}
 \end{equation}
 The series converges locally absolutely for \(x<2a\).  If
-\(\alpha=m\in\N\), it terminates after \(r=m-1\).  For \(\alpha=1\),
+\(\alpha=m\in\NaturalNumbers\), it terminates after \(r=m-1\).  For \(\alpha=1\),
 \begin{equation}
  G'(x)=\frac1{2a}G(x/q),\qquad 0<x<2a.
  \label{eq:uniform-endpoint-G}
@@ -1057,20 +1047,20 @@ The series converges locally absolutely for \(x<2a\).  If
 Expand the second factor in \eqref{eq:volterra-pantograph}:
 \[
  \left(1-\frac{x-y}{2a}\right)^{\alpha-1}
- =\sum_{r\ge0}\frac{\poch{1-\alpha}{r}}{r!(2a)^r}(x-y)^r.
+ =\sum_{r\ge0}\frac{\RisingFactorial{1-\alpha}{r}}{r!(2a)^r}(x-y)^r.
 \]
 On compact subintervals of \((0,2a)\), termwise integration is legitimate.
 The integral in the \(r\)-th term is
 \(\Gamma(\alpha+r)\Iop^{\alpha+r}[G(\cdot/q)]\).  Apply
 \(\Dop^\alpha\), use
-\(\Gamma(\alpha+r)=\Gamma(\alpha)\poch{\alpha}{r}\), and simplify the beta
+\(\Gamma(\alpha+r)=\Gamma(\alpha)\RisingFactorial{\alpha}{r}\), and simplify the beta
 constant.  For convergence, \(\Iop^rh=O(x^r/r!)\), while the Pochhammer
 coefficient grows only like \(r!/r\) up to a power; the resulting radius is
-\(2a\).  If \(\alpha=m\), \(\poch{1-m}{r}=0\) for \(r\ge m\).
+\(2a\).  If \(\alpha=m\), \(\RisingFactorial{1-m}{r}=0\) for \(r\ge m\).
 \end{proof}
 
 Under the common normalization
-\(\Fab(x)=\upf(x-1)\) on \([0,1]\), symmetry gives
+\(\Fab(x)=\RvachevUp(x-1)\) on \([0,1]\), symmetry gives
 \(G_{1/2,1}'(x)=\Fab(x)\), while \eqref{eq:uniform-endpoint-G} gives
 \(G_{1/2,1}'(x)=G_{1/2,1}(2x)\).  Hence
 \begin{equation}
@@ -1084,13 +1074,13 @@ extension of the local Fabius equation, not merely an analogy.
 
 The beta Laplace transform is
 \begin{equation}
- M_\alpha(s):=\E e^{-sV_\alpha}
+ M_\alpha(s):=\Expectation e^{-sV_\alpha}
  ={}_1F_1(\alpha;2\alpha;-s).
  \label{eq:beta-laplace}
 \end{equation}
 Therefore
 \begin{equation}
- \E e^{-sD_{q,\alpha}}
+ \Expectation e^{-sD_{q,\alpha}}
  =\prod_{n\ge0}M_\alpha(2aq^ns).
  \label{eq:endpoint-laplace-product}
 \end{equation}
@@ -1192,7 +1182,7 @@ More quantitatively,
 
 \begin{proof}
 Write \(D=\sum b_nV_n\), where \(b_n=2aq^n\).  Near zero, the beta CDF
-satisfies \(c_1y^\alpha\le\Prob(V\le y)\le c_2y^\alpha\).
+satisfies \(c_1y^\alpha\le\Probability(V\le y)\le c_2y^\alpha\).
 
 For an upper bound, choose \(N\) so that \(b_N\gtrsim x\).  The event
 \(D\le x\) implies \(V_n\le x/b_n\) for \(0\le n\le N\).  Independence gives
@@ -1240,7 +1230,7 @@ Monotonic inversion of \eqref{eq:small-ball-leading} gives
 \label{conj:lambert-transseries}
 Let \(s_x\) be the positive saddle satisfying
 \[
- \frac{d}{ds}\log\E e^{-sD_{q,\alpha}}+x=0,
+ \frac{d}{ds}\log\Expectation e^{-sD_{q,\alpha}}+x=0,
  \qquad T_x=\log(2as_x).
 \]
 Then
@@ -1295,12 +1285,12 @@ parameter in the \(W_1\) sense.
 \end{theorem}
 
 \begin{proof}
-Couple \(\varepsilon_n=\sgn(U_{\alpha,n})\).  By symmetry it is Rademacher,
+Couple \(\varepsilon_n=\Sign(U_{\alpha,n})\).  By symmetry it is Rademacher,
 and
 \[
- \E|X_{q,\alpha}-B_q|
- \le a\sum_{n\ge0}q^n\E(1-|U_\alpha|)
- =1-\E|U_\alpha|.
+ \Expectation|X_{q,\alpha}-B_q|
+ \le a\sum_{n\ge0}q^n\Expectation(1-|U_\alpha|)
+ =1-\Expectation|U_\alpha|.
 \]
 Use \eqref{eq:digit-absolute-moment} with \(p=1\).  The expansion follows by
 differentiating the logarithm of the gamma ratio at zero and using
@@ -1317,7 +1307,7 @@ value \(q=1/2\), the binary product identity
  \label{eq:cos-sinc-product}
 \end{equation}
 shows that the \(\alpha=0\) limit is uniform on \([-1,1]\), while
-\(\alpha=1\) is the Rvachev \(\upf\) law.
+\(\alpha=1\) is the Rvachev \(\RvachevUp\) law.
 
 \begin{figure}[H]
 \centering
@@ -1389,8 +1379,8 @@ Apply the Berry--Esseen theorem \cite{Petrov,BhattacharyaRao} to finite truncati
 pass to the limit.  The ratio of the weighted third absolute moment to the
 variance to the power \(3/2\) is
 \[
- \frac{\sum a^3q^{3n}\E|U|^3}
- {\left(\sum a^2q^{2n}\Var U\right)^{3/2}}
+ \frac{\sum a^3q^{3n}\Expectation|U|^3}
+ {\left(\sum a^2q^{2n}\Variance U\right)^{3/2}}
  =\rho_3(\alpha)\frac{(1-q^2)^{3/2}}{1-q^3}.
 \]
 The asymptotic order follows by expansion at \(q=1\).
@@ -1414,7 +1404,7 @@ If either \(q\uparrow1\) with \(\alpha\) bounded away from zero, or
 along every path with \((1-q)+\alpha^{-1}\to0\).  On bounded Fourier
 intervals,
 \begin{equation}
- \log\E e^{itZ_{q,\alpha}}
+ \log\Expectation e^{itZ_{q,\alpha}}
  =-\frac{t^2}{2}+\frac{\lambda_4t^4}{24}+O(t^6\lambda_6+t^8\lambda_4^2).
  \label{eq:mod-gaussian}
 \end{equation}
@@ -1850,7 +1840,7 @@ Hankel determinants amenable to symbolic computation.  Promising targets are:
  \item Christoffel-function estimates uniform in the Jacobi--Hermite corner;
  \item geometric-comb interpolation in the basis
        \(p_n^{(q,\alpha)}\), comparing Lebesgue constants with the existing
-       Legendre and native-\(\upf\) constructions; and
+       Legendre and native-\(\RvachevUp\) constructions; and
  \item a double-scaling universality regime in which
        \(n(1-q)\) and \(n/\alpha\) remain finite, potentially producing new
        transition kernels between Jacobi and Hermite asymptotics.

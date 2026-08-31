@@ -43,6 +43,8 @@
 \fancyhead[R]{\small \nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
 
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -55,28 +57,14 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\Z}{\mathbb{Z}}
 \newcommand{\T}{\mathbb{T}}
-\newcommand{\Up}{\operatorname{up}}
 \newcommand{\eps}{\varepsilon}
-\newcommand{\dd}{\,\mathrm{d}}
 \newcommand{\dist}{\operatorname{dist}}
 \newcommand{\osc}{\operatorname{osc}}
-\newcommand{\supp}{\operatorname{supp}}
 \newcommand{\id}{\operatorname{id}}
 \newcommand{\comp}{\mathbin{\circ}}
-\newcommand{\bigO}{O}
-\newcommand{\littleo}{o}
-\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
-\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
-\newcommand{\set}[1]{\left\{#1\right\}}
 \newcommand{\paren}[1]{\left(#1\right)}
 \newcommand{\brak}[1]{\left[#1\right]}
-\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
-\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
-\newcommand{\Fourier}{\mathcal{F}}
 \newcommand{\Roumieu}[1]{\mathcal{E}^{\{#1\}}}
 \newcommand{\Beurling}[1]{\mathcal{E}^{(#1)}}
 \newcommand{\DC}[1]{\mathcal{E}^{[#1]}}
@@ -123,7 +111,7 @@ discrete Legendre duality, Lambert--$W$ saddles, and Bell-edge frontiers}
 
 \begin{abstract}
 The exact derivative scale of the bounded Fabius function $F$ and the Rvachev
-up-function $\Up$ is
+up-function $\RvachevUp$ is
 \[
   W_n=2^{n(n+1)/2}.
 \]
@@ -133,9 +121,9 @@ and several other directions.  The present report isolates a regularity-theoreti
 layer that is not developed there in interval-uniform form.
 
 First, normalized derivatives $W_n^{-1}f^{(n)}$ obey a quantitative universal law
-on \emph{every} nondegenerate interval, for $f=F$ or $f=\Up$.  Their pushforward
+on \emph{every} nondegenerate interval, for $f=F$ or $f=\RvachevUp$.  Their pushforward
 measures converge in total variation, at rate $O(2^{-n}/|J|)$, to the symmetric law
-of $S\Up(Y)$, where $S$ is a Rademacher sign and $Y$ is uniform on $[-1,1]$.
+of $S\RvachevUp(Y)$, where $S$ is a Rademacher sign and $Y$ is uniform on $[-1,1]$.
 Consequently every sufficiently high derivative attains both sharp extrema
 $\pm W_n$ inside every interval; all local $L^p$ norms and signed moments have
 universal limits.
@@ -145,7 +133,7 @@ Second, with
   M_n=\frac{W_n}{n!}=\frac{2^{n(n+1)/2}}{n!},
 \]
 we obtain an exact local Denjoy--Carleman classification.  For any comparison
-weight $N$, membership of $F$ or $\Up$ in the Roumieu class $\mathcal E^{\{N\}}$
+weight $N$, membership of $F$ or $\RvachevUp$ in the Roumieu class $\mathcal E^{\{N\}}$
 is equivalent to exponential domination of $M$ by $N$, while Beurling membership
 is equivalent to strict exponential domination.  Thus $M$ is the critical local
 weight on every interval.  The class is nonquasianalytic and strongly
@@ -296,14 +284,14 @@ $\frac43 n^6 4^{-n}$; exact integer arithmetic through $n=120$ supports it.
 \subsection{Fabius, Rvachev, and Thue--Morse conventions}
 
 Let $F:[0,1]\to[0,1]$ be the bounded Fabius function and let
-$\Up:\R\to\R$ be the compactly supported Rvachev up-function, normalized by
+$\RvachevUp:\RealNumbers\to\RealNumbers$ be the compactly supported Rvachev up-function, normalized by
 \[
-  \supp\Up=[-1,1],\qquad \Up(0)=1,\qquad
-  \int_{-1}^{1}\Up(y)\dd y=1.
+  \SupportOperator\RvachevUp=[-1,1],\qquad \RvachevUp(0)=1,\qquad
+  \int_{-1}^{1}\RvachevUp(y)\Differential y=1.
 \]
 On the unit interval,
 \begin{equation}
-  F(x)=\Up(x-1),\qquad 0\le x\le1.
+  F(x)=\RvachevUp(x-1),\qquad 0\le x\le1.
   \label{eq:F-up-shift}
 \end{equation}
 The signed Thue--Morse sequence is
@@ -332,15 +320,15 @@ The exact cell map is
 It maps $[-1,1]$ affinely onto the $k$th cell of length $h_n$ in $[-1,1]$.
 The primary exposition proves the exact derivative cell identity
 \begin{equation}
-  \Up^{(n)}\bigl(c_{n,k}(y)\bigr)
-  =W_n\eps_k\Up(y).
+  \RvachevUp^{(n)}\bigl(c_{n,k}(y)\bigr)
+  =W_n\eps_k\RvachevUp(y).
   \label{eq:cell-identity}
 \end{equation}
 In particular,
 \begin{equation}
-  \norm{\Up^{(n)}}_{L^\infty([-1,1])}=W_n,
+  \Norm{\RvachevUp^{(n)}}_{L^\infty([-1,1])}=W_n,
   \qquad
-  \Up^{(n)}\bigl(c_{n,k}(0)\bigr)=W_n\eps_k.
+  \RvachevUp^{(n)}\bigl(c_{n,k}(0)\bigr)=W_n\eps_k.
   \label{eq:sharp-global}
 \end{equation}
 The shift \eqref{eq:F-up-shift} transfers these identities to $F$ on $[0,1]$.
@@ -363,7 +351,7 @@ Let $P(N)=\sum_{k=0}^{N-1}\eps_k$.  Then
 \end{equation}
 Consequently, for all integers $0\le a<b$,
 \begin{equation}
-  \abs{\sum_{k=a}^{b-1}\eps_k}\le2.
+  \AbsoluteValue{\sum_{k=a}^{b-1}\eps_k}\le2.
   \label{eq:block-discrepancy}
 \end{equation}
 Moreover, no three consecutive signs are equal.
@@ -381,10 +369,10 @@ three is impossible.
 
 We use
 \begin{equation}
-  \widehat f(\xi)=\int_{\R}f(t)e^{-2\pi i\xi t}\dd t.
+  \widehat f(\xi)=\int_{\RealNumbers}f(t)e^{-2\pi i\xi t}\Differential t.
   \label{eq:fourier-convention}
 \end{equation}
-For $\Phi=\widehat\Up$, the repository's product formula is
+For $\Phi=\widehat\RvachevUp$, the repository's product formula is
 \begin{equation}
   \Phi(\xi)=\prod_{j=0}^{\infty}
   \operatorname{sinc}\!\left(\frac{\pi\xi}{2^j}\right),
@@ -394,11 +382,11 @@ For $\Phi=\widehat\Up$, the repository's product formula is
 \end{equation}
 The exact cell formula also gives
 \begin{equation}
-  \norm{\Up^{(n)}}_{L^1(\R)}=W_n.
+  \Norm{\RvachevUp^{(n)}}_{L^1(\RealNumbers)}=W_n.
   \label{eq:l1-derivative}
 \end{equation}
-Indeed, on every cell the absolute value is $W_n\Up(y)$ and
-$\dd x=2^{-n}\dd y$; summing the $2^n$ cells uses $\int\Up=1$.
+Indeed, on every cell the absolute value is $W_n\RvachevUp(y)$ and
+$\Differential x=2^{-n}\Differential y$; summing the $2^n$ cells uses $\int\RvachevUp=1$.
 
 \section{A universal local law for high derivatives}
 \label{sec:local-law}
@@ -412,44 +400,44 @@ same limiting law, with an explicit total-variation error.
 Let $Y$ be uniform on $[-1,1]$ and let $S$ be independent with
 $\mathbb P(S=1)=\mathbb P(S=-1)=1/2$.  Define the probability measure
 \begin{equation}
-  \mu_*=\operatorname{Law}(S\Up(Y)).
+  \mu_*=\operatorname{Law}(S\RvachevUp(Y)).
   \label{eq:mu-star}
 \end{equation}
 Equivalently, for every bounded Borel function $H$,
 \begin{equation}
-  \int H(z)\dd\mu_*(z)
-  =\frac14\int_{-1}^{1}\bigl(H(\Up(y))+H(-\Up(y))\bigr)\dd y.
+  \int H(z)\Differential\mu_*(z)
+  =\frac14\int_{-1}^{1}\bigl(H(\RvachevUp(y))+H(-\RvachevUp(y))\bigr)\Differential y.
   \label{eq:mu-star-test}
 \end{equation}
 For a nondegenerate interval $J$ in the domain of $f$, where
-$f\in\{F,\Up\}$, let $\mu_{n,J}^{f}$ be the pushforward of normalized Lebesgue
+$f\in\{F,\RvachevUp\}$, let $\mu_{n,J}^{f}$ be the pushforward of normalized Lebesgue
 measure on $J$ by $W_n^{-1}f^{(n)}$.
 
 \begin{theorem}[Quantitative local Thue--Morse universality]
 \label{thm:local-universality}
-Let $f=\Up$ with $J\subseteq[-1,1]$, or $f=F$ with $J\subseteq[0,1]$.
+Let $f=\RvachevUp$ with $J\subseteq[-1,1]$, or $f=F$ with $J\subseteq[0,1]$.
 Assume $|J|>0$.  Then for every bounded Borel $H$,
 \begin{equation}
  \left|
-   \frac1{|J|}\int_J H\!\left(\frac{f^{(n)}(x)}{W_n}\right)\dd x
-   -\int H\dd\mu_*
+   \frac1{|J|}\int_J H\!\left(\frac{f^{(n)}(x)}{W_n}\right)\Differential x
+   -\int H\Differential\mu_*
  \right|
  \le
-  6\norm{H}_\infty\frac{h_n}{|J|}.
+  6\Norm{H}_\infty\frac{h_n}{|J|}.
  \label{eq:local-law-bound}
 \end{equation}
 Consequently,
 \begin{equation}
-  \norm{\mu_{n,J}^{f}-\mu_*}_{\TV}
+  \Norm{\mu_{n,J}^{f}-\mu_*}_{\TV}
   \le 6\frac{h_n}{|J|}
   =\frac{12}{2^n|J|},
   \label{eq:tv-bound}
 \end{equation}
-where $\|\nu\|_{\TV}=\sup_{\|H\|_\infty\le1}|\int H\dd\nu|$.
+where $\|\nu\|_{\TV}=\sup_{\|H\|_\infty\le1}|\int H\Differential\nu|$.
 \end{theorem}
 
 \begin{proof}
-It suffices to prove the assertion for $\Up$, because $F$ is its translate on
+It suffices to prove the assertion for $\RvachevUp$, because $F$ is its translate on
 $[0,1]$.  Decompose $J$ into the union of all complete level-$n$ cells contained in
 $J$ and at most two boundary fragments.  Let $q$ be the number of complete cells,
 let their consecutive index set be $K$, and let $r=|J|-qh_n$.  Then
@@ -457,17 +445,17 @@ $0\le r\le2h_n$.
 
 Put
 \[
- A_+=\int_{-1}^{1}H(\Up(y))\dd y,
+ A_+=\int_{-1}^{1}H(\RvachevUp(y))\Differential y,
  \qquad
- A_-=\int_{-1}^{1}H(-\Up(y))\dd y.
+ A_-=\int_{-1}^{1}H(-\RvachevUp(y))\Differential y.
 \]
 By \eqref{eq:cell-identity}, the contribution of the complete cells is
 \[
  I_K=\frac{h_n}{2}\sum_{k\in K}A_{\eps_k}.
 \]
-Since $q h_n\int H\dd\mu_*=qh_n(A_++A_-)/4$, their difference is
+Since $q h_n\int H\Differential\mu_*=qh_n(A_++A_-)/4$, their difference is
 \[
- I_K-qh_n\int H\dd\mu_*
+ I_K-qh_n\int H\Differential\mu_*
  =\frac{h_n}{4}\left(\sum_{k\in K}\eps_k\right)(A_+-A_-).
 \]
 By \cref{lem:tm-discrepancy}, its absolute value is at most
@@ -475,7 +463,7 @@ $2h_n\|H\|_\infty$.
 
 The integral on the boundary fragments has absolute value at most
 $r\|H\|_\infty$, while
-$r|\int H\dd\mu_*|\le r\|H\|_\infty$.  Thus replacing the fragments by their
+$r|\int H\Differential\mu_*|\le r\|H\|_\infty$.  Thus replacing the fragments by their
 limiting mass costs at most $2r\|H\|_\infty\le4h_n\|H\|_\infty$.
 Adding the two errors and dividing by $|J|$ proves \eqref{eq:local-law-bound}.
 Taking the supremum over $\|H\|_\infty\le1$ proves \eqref{eq:tv-bound}.
@@ -507,7 +495,7 @@ Thue--Morse signs.  Therefore
 \end{equation}
 and
 \begin{equation}
-  \norm{f^{(n)}}_{L^\infty(J)}=W_n,
+  \Norm{f^{(n)}}_{L^\infty(J)}=W_n,
   \qquad
   \osc_J f^{(n)}=2W_n.
   \label{eq:local-osc}
@@ -520,7 +508,7 @@ nondegenerate interval.
 At most two cells meeting $J$ fail to be complete, so the number $q$ of complete
 cells satisfies $q\ge |J|/h_n-2\ge3$.  A consecutive block of at least three
 Thue--Morse signs contains both signs by \cref{lem:tm-discrepancy}.  At the midpoint
-of a positive or negative cell, \eqref{eq:cell-identity} and $\Up(0)=1$ give the
+of a positive or negative cell, \eqref{eq:cell-identity} and $\RvachevUp(0)=1$ give the
 values $\pm W_n$.  The global bound \eqref{eq:sharp-global} shows that they are the
 extrema.
 \end{proof}
@@ -537,23 +525,23 @@ of order $2^{-n}$.
 For every $p>0$,
 \begin{equation}
  \lim_{n\to\infty}
- \frac{1}{|J|W_n^p}\int_J\abs{f^{(n)}(x)}^p\dd x
- =\frac12\int_{-1}^{1}\Up(y)^p\dd y.
+ \frac{1}{|J|W_n^p}\int_J\AbsoluteValue{f^{(n)}(x)}^p\Differential x
+ =\frac12\int_{-1}^{1}\RvachevUp(y)^p\Differential y.
  \label{eq:lp-limit}
 \end{equation}
 For $p=1$ this becomes
 \begin{equation}
-  \norm{f^{(n)}}_{L^1(J)}
+  \Norm{f^{(n)}}_{L^1(J)}
   =\frac{|J|}{2}W_n+O(h_nW_n).
   \label{eq:l1-local}
 \end{equation}
 More generally, for every integer $m\ge0$,
 \begin{equation}
  \lim_{n\to\infty}
- \frac{1}{|J|W_n^m}\int_J f^{(n)}(x)^m\dd x
+ \frac{1}{|J|W_n^m}\int_J f^{(n)}(x)^m\Differential x
  =\begin{cases}
   0,&m\text{ odd},\\[2mm]
-  \displaystyle\frac12\int_{-1}^{1}\Up(y)^m\dd y,&m\text{ even}.
+  \displaystyle\frac12\int_{-1}^{1}\RvachevUp(y)^m\Differential y,&m\text{ even}.
  \end{cases}
  \label{eq:signed-moment-limit}
 \end{equation}
@@ -563,15 +551,15 @@ the bounded test function.
 
 \begin{proof}
 Apply \cref{thm:local-universality} to $H(z)=|z|^p$ and $H(z)=z^m$ on
-$[-1,1]$.  For $p=1$, use $\int_{-1}^{1}\Up=1$.
+$[-1,1]$.  For $p=1$, use $\int_{-1}^{1}\RvachevUp=1$.
 \end{proof}
 
 \begin{corollary}[Exact local quadratic derivative order]
 \label{cor:local-order}
-For $f=F$ or $f=\Up$ and every nondegenerate interval $J$ in its domain,
+For $f=F$ or $f=\RvachevUp$ and every nondegenerate interval $J$ in its domain,
 \begin{equation}
  \lim_{n\to\infty}
- \frac{\log_2\norm{f^{(n)}}_{L^\infty(J)}}{n^2}
+ \frac{\log_2\Norm{f^{(n)}}_{L^\infty(J)}}{n^2}
  =\frac12.
  \label{eq:quadratic-order}
 \end{equation}
@@ -590,7 +578,7 @@ $\log_2W_n=n(n+1)/2$ for all sufficiently large $n$.
 Let $N=(N_n)_{n\ge0}$ be any positive sequence.  On a compact interval $J$, write
 $f\in\Roumieu{N}(J)$ when there exist $C,\rho>0$ such that
 \begin{equation}
-  \norm{f^{(n)}}_{L^\infty(J)}
+  \Norm{f^{(n)}}_{L^\infty(J)}
   \le C\rho^n n!N_n
   \qquad(n\ge0).
   \label{eq:roumieu-def}
@@ -611,7 +599,7 @@ Define the critical sequence
 
 \begin{theorem}[Exact local comparison against every weight]
 \label{thm:dc-classification}
-Let $f=F$ or $f=\Up$, and let $J$ be any nondegenerate compact interval in its
+Let $f=F$ or $f=\RvachevUp$, and let $J$ be any nondegenerate compact interval in its
 domain.  For every positive sequence $N$,
 \begin{align}
   f\in\Roumieu{N}(J)
@@ -633,7 +621,7 @@ $J$.
 \begin{proof}
 By \cref{cor:local-extrema},
 \[
-  \norm{f^{(n)}}_{L^\infty(J)}=W_n=n!M_n
+  \Norm{f^{(n)}}_{L^\infty(J)}=W_n=n!M_n
 \]
 for every sufficiently large $n$.  If \eqref{eq:roumieu-def} holds, division by
 $n!N_n$ and passage to $n$th roots gives the necessity of
@@ -665,7 +653,7 @@ one.
 
 \begin{corollary}[No finite Gevrey order on any interval]
 \label{cor:no-gevery}
-For every finite $s\ge1$, neither $F$ nor $\Up$ belongs locally on any nondegenerate
+For every finite $s\ge1$, neither $F$ nor $\RvachevUp$ belongs locally on any nondegenerate
 interval to the Gevrey class with derivative bounds $C\rho^n(n!)^s$.
 \end{corollary}
 
@@ -710,13 +698,13 @@ compact interval $J$, define
 \begin{equation}
   \tau_J(g;M)=
   \limsup_{n\to\infty}
-  \left(\frac{\norm{g^{(n)}}_{L^\infty(J)}}{n!M_n}\right)^{1/n}.
+  \left(\frac{\Norm{g^{(n)}}_{L^\infty(J)}}{n!M_n}\right)^{1/n}.
   \label{eq:carleman-type}
 \end{equation}
 Then $g\in\Roumieu{M}(J)$ exactly when $\tau_J(g;M)<\infty$, and
 $g\in\Beurling{M}(J)$ exactly when $\tau_J(g;M)=0$.  For the basic functions,
 \begin{equation}
-  \tau_J(F;M)=\tau_J(\Up;M)=1.
+  \tau_J(F;M)=\tau_J(\RvachevUp;M)=1.
   \label{eq:type-one}
 \end{equation}
 Thus every interval has the same exact Carleman type, even intervals adjacent to a
@@ -795,7 +783,7 @@ and $\binom{2n}{n}\le4^n$.
 \end{proof}
 
 \begin{remark}
-Nonquasianalyticity is consistent with the compact support of $\Up$.  Moderate
+Nonquasianalyticity is consistent with the compact support of $\RvachevUp$.  Moderate
 growth, by contrast, would require a uniform exponential control of
 $M_{j+k}/(M_jM_k)$; the quadratic exponent creates an unavoidable factor
 $2^{jk}$, so moderate growth fails by an exponentially widening margin.
@@ -943,7 +931,7 @@ The forward-iterate report proves the following dominant-spine lower bound.  For
 each fixed $r\ge1$, there is a co-countable dense set $E_r\subset(0,1)$ such that,
 for every $x\in E_r$, infinitely many $n$ satisfy
 \begin{equation}
-  \abs{G_r^{(n)}(x)}
+  \AbsoluteValue{G_r^{(n)}(x)}
   \ge c(x,r)W_n\mathcal H_r(x)^n,
   \qquad c(x,r)>0,\quad \mathcal H_r(x)>0.
   \label{eq:imported-spine}
@@ -973,11 +961,11 @@ Fix $r\ge1$.
 \item Their local quadratic derivative order is exactly $1/2$ in limsup:
 \begin{equation}
  \limsup_{n\to\infty}
- \frac{\log_2\norm{G_r^{(n)}}_{L^\infty(J)}}{n^2}
+ \frac{\log_2\Norm{G_r^{(n)}}_{L^\infty(J)}}{n^2}
  =\frac12,
  \qquad
  \limsup_{n\to\infty}
- \frac{\log_2\norm{H_r^{(n)}}_{L^\infty(K)}}{n^2}
+ \frac{\log_2\Norm{H_r^{(n)}}_{L^\infty(K)}}{n^2}
  =\frac12.
  \label{eq:iterate-quadratic-order}
 \end{equation}
@@ -993,7 +981,7 @@ $G_r\in\Roumieu{M}$ locally.  Suppose $G_r\in\Beurling{M}(J)$ for a
 nondegenerate interval $J$.  Choose $x\in E_r\cap\operatorname{int}J$.
 For every $\rho>0$ there would be $C_\rho$ such that
 \[
-  \abs{G_r^{(n)}(x)}\le C_\rho\rho^nW_n.
+  \AbsoluteValue{G_r^{(n)}(x)}\le C_\rho\rho^nW_n.
 \]
 Taking $\rho<\mathcal H_r(x)$ contradicts \eqref{eq:imported-spine} along its
 infinite subsequence.  This proves (i).
@@ -1028,7 +1016,7 @@ not the exact ordinary-exponential type
 \[
   \tau_J(G_r;M)=
   \limsup_n\left(
-  \frac{\norm{G_r^{(n)}}_{L^\infty(J)}}{W_n}
+  \frac{\Norm{G_r^{(n)}}_{L^\infty(J)}}{W_n}
   \right)^{1/n}.
 \]
 The spine theorem identifies the pointwise candidate
@@ -1061,7 +1049,7 @@ sum without discarding its orbit geometry.
 
 Using \eqref{eq:l1-derivative}, $n$ integrations by parts give
 \begin{equation}
-  \abs{\Phi(\xi)}
+  \AbsoluteValue{\Phi(\xi)}
   \le\frac{W_n}{(2\pi|\xi|)^n}
   =\frac{2^{n(n-1)/2}}{(\pi|\xi|)^n}.
   \label{eq:prefix-bound}
@@ -1069,7 +1057,7 @@ Using \eqref{eq:l1-derivative}, $n$ integrations by parts give
 Define the optimized derivative envelope
 \begin{equation}
   B_C(\xi)=
-  \inf_{n\in\N_0}
+  \inf_{n\in\NaturalNumbers_0}
   \frac{2^{n(n-1)/2}}{(\pi|\xi|)^n}.
   \label{eq:BC-def}
 \end{equation}
@@ -1080,7 +1068,7 @@ For $|\xi|\ge 1/(\pi\sqrt2)$, set
 \begin{equation}
   a(\xi)=\log_2(\pi|\xi|)+\frac12,
   \qquad
-  d(\xi)=\dist(a(\xi),\Z).
+  d(\xi)=\dist(a(\xi),\IntegerNumbers).
   \label{eq:a-d}
 \end{equation}
 Then every nearest integer to $a(\xi)$ is an optimizer in
@@ -1109,7 +1097,7 @@ where
  -\frac{(\log\pi+\tfrac12\log2)^2}{2\log2}
  \right),
  \label{eq:CC}\\
- P(a)&=2^{\dist(a,\Z)^2/2},
+ P(a)&=2^{\dist(a,\IntegerNumbers)^2/2},
  \qquad
  1\le P(a)\le2^{1/8}.
  \label{eq:periodic-factor}
@@ -1127,7 +1115,7 @@ Taking base-$2$ logarithms of the $n$th term in \eqref{eq:BC-def} gives
 The minimum over integers is therefore obtained at a nearest integer to $a$, and its
 value is \eqref{eq:BC-closed}.  Expanding $a^2$ in powers of $\log|\xi|$ yields
 \eqref{eq:BC-factor}--\eqref{eq:CC}.  Finally
-$0\le\dist(a,\Z)\le1/2$ gives \eqref{eq:periodic-factor}.
+$0\le\dist(a,\IntegerNumbers)\le1/2$ gives \eqref{eq:periodic-factor}.
 \end{proof}
 
 \begin{figure}[htbp]
@@ -1142,7 +1130,7 @@ $0\le\dist(a,\Z)\le1/2$ gives \eqref{eq:periodic-factor}.
 
 The repository's sharp Fourier theorem gives
 \begin{equation}
-  \abs{\Phi(\xi)}\le C E_{\kappa_\infty}(|\xi|),
+  \AbsoluteValue{\Phi(\xi)}\le C E_{\kappa_\infty}(|\xi|),
   \qquad
   \kappa_\infty=\frac32+\log_2\left(\frac{\pi}{\sqrt3}\right),
   \label{eq:sharp-fourier}
@@ -1166,21 +1154,21 @@ The exact derivative envelope has exponent $\kappa_C$.  Their difference is
 \label{thm:optimal-gain}
 There exists $C>0$ such that, for $|\xi|\ge1$,
 \begin{equation}
-  \abs{\Phi(\xi)}
+  \AbsoluteValue{\Phi(\xi)}
   \le C B_C(\xi)|\xi|^{-\delta}.
   \label{eq:gain-bound}
 \end{equation}
 The exponent $\delta$ is optimal: for every $\eta>0$ there is no constant $C_\eta$
 with
 \begin{equation}
-  \abs{\Phi(\xi)}
+  \AbsoluteValue{\Phi(\xi)}
   \le C_\eta B_C(\xi)|\xi|^{-\delta-\eta}
   \qquad(|\xi|\ge1).
   \label{eq:no-better-gain}
 \end{equation}
 Indeed, along \eqref{eq:peak-ray},
 \begin{equation}
- \frac{\abs{\Phi(\xi_k)}}
+ \frac{\AbsoluteValue{\Phi(\xi_k)}}
  {B_C(\xi_k)\xi_k^{-\delta}}
  =R_*>0
  \qquad(k\ge0),
@@ -1196,8 +1184,8 @@ Since the periodic factor $P$ in \eqref{eq:BC-factor} is bounded above and below
 
 For the peak ray, the sinc product factors exactly as
 \begin{equation}
- \abs{\Phi(2^k\tfrac23)}
- =\abs{\Phi(\tfrac23)}
+ \AbsoluteValue{\Phi(2^k\tfrac23)}
+ =\AbsoluteValue{\Phi(\tfrac23)}
  \left(\frac{3\sqrt3}{\pi}\right)^k
  2^{-k(k-1)/2-3k}.
  \label{eq:peak-factorization}
@@ -1412,7 +1400,7 @@ and
 \item The pure quadratic lattice transform satisfies, for $A>1$,
 \begin{equation}
  \inf_{n\ge0}\frac{b^{n(n-1)/2}}{A^n}
- =b^{-a_b^2/2+\dist(a_b,\Z)^2/2},
+ =b^{-a_b^2/2+\dist(a_b,\IntegerNumbers)^2/2},
  \qquad
  a_b=\log_b A+\frac12.
  \label{eq:b-lattice}
@@ -1622,7 +1610,7 @@ from complex extension or short-time Fourier data.
 \begin{conjecture}[A periodic ultradifferentiable wavefront profile]
 For compactly supported functions saturating the critical derivative sequence, the
 optimal logarithmic-Gaussian Fourier carrier admits a bounded one-periodic profile
-in $\log_2|\xi|$.  For $\Up$, the derivative-lattice profile $P$ and the sinc-product
+in $\log_2|\xi|$.  For $\RvachevUp$, the derivative-lattice profile $P$ and the sinc-product
 arithmetic profile combine multiplicatively, with the peak ray selecting a fixed
 phase.
 \end{conjecture}
@@ -1827,11 +1815,11 @@ both the exact $d=3$ candidate and the expected hierarchy in
 Let
 \[
   a_0=\log_2(2\pi/3)+\frac12,
-  \qquad d_0=\dist(a_0,\Z).
+  \qquad d_0=\dist(a_0,\IntegerNumbers).
 \]
 Then \eqref{eq:constant-peak-ratio} has the explicit value
 \begin{equation}
-  R_*=\abs{\Phi(2/3)}
+  R_*=\AbsoluteValue{\Phi(2/3)}
   \left(\frac23\right)^\delta
   2^{a_0^2/2-d_0^2/2}.
   \label{eq:Rstar}
