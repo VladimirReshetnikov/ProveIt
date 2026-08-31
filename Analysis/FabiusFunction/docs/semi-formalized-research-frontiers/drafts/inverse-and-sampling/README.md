@@ -351,7 +351,7 @@ Filed 2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (689,198
 bytes; SHA-256
 `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
 The current canonical source has 2,937 lines (SHA-256
-`3ee69aa0c27486d5005e4d5f8448b36a8133083c8b79df51e9d08a5af56880b5`).
+`a6932249804ea3fb07a08b09542e123bbbca23b76a29e13ef27c91aa902ffbe3`).
 The retained historical 42-page A4/27 mm/Libertinus PDF has 711,374 bytes
 (SHA-256
 `5a9976f9ece840d1b8456b4ea3753c36e369cbade8caff1c04158cc7d33cff75`).
@@ -376,7 +376,7 @@ reproduces its captured output byte for byte.  Original five-file hashes are
 preserved in `ARRIVAL_SHA256SUMS.txt`. The six-entry `SHA256SUMS.txt` was not
 refreshed after the source-only merge: its TeX and README rows are pending and
 the other four rows pass. The live union audit scans 615 Lean modules
-and 8,389 public declarations with zero documentation/header gaps.
+and 8,391 public declarations with zero documentation/header gaps.
 
 ## `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/`
 

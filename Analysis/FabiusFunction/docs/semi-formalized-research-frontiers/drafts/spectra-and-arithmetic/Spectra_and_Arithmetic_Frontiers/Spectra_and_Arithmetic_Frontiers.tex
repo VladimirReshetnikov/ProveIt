@@ -6361,16 +6361,18 @@ The current source file
 now formalizes the exact dyadic cell coordinate and tiling, every signed cell-midpoint value,
 the all-order signed finite-mixture identity for continuous tests with values in an arbitrary
 real Banach space, every signed natural-power moment through the exact Boolean-cube formula
-and its parity corollaries, the normalized absolute continuous-test identity, the equality of
-the two absolute Borel pushforward measures on Lebesgue measure restricted to \([-1,1]\), and
-every nonnegative real absolute moment.  This is a post-audit proof-status update; it does not
-alter the pinned novelty comparison above.
+and its parity corollaries, the positive-order normalized signed half-mixture for continuous
+Banach-valued tests, the normalized absolute continuous-test identity, the absolute and
+positive-order symmetric signed Borel pushforward equalities on Lebesgue measure restricted
+to \([-1,1]\), and every nonnegative real absolute moment.  This is a post-audit proof-status
+update; it does not alter the pinned novelty comparison above.
 
-The report as a whole is not thereby formalized.  In particular, the simplified signed
-Rademacher law as a Borel pushforward, the \path{eLpNorm} and general
+The report as a whole is not thereby formalized.  The signed Rademacher Borel law is now
+closed in symmetric half-mixture form, with the sharp hypothesis \(0<n\); the order-zero
+pushforward remains the unsymmetrized \(\RvachevUp\) law.  The \path{eLpNorm} and general
 rearrangement-invariant norm ladder, the explicit inverse-Fabius level-set laws, the beta
-transform and its asymptotics, and all spectral-moment, Hankel, q-Pearson, and
-q-binomial layers below remain without matching declarations.
+transform and its asymptotics, and all spectral-moment, Hankel, q-Pearson, and q-binomial
+layers below remain without matching declarations.
 \end{statusbox}
 
 \section{Normalization and established structural identities}
@@ -6534,8 +6536,8 @@ length-$2^n$ Thue--Morse block has sign $+1$ and half sign $-1$, proving
 \end{proof}
 
 \begin{statusbox}{Exact Lean parity for the distribution identities and signed moments}
-At the continuous-test level, Lean exposes the following all-order signed finite mixture,
-not yet its Rademacher Borel simplification.  If \(E\) is any real Banach space and
+At the continuous-test level, Lean exposes the following all-order signed finite mixture.
+If \(E\) is any real Banach space and
 \(H:\RealNumbers\to E\) is continuous, then for every \(n\ge0\),
 \begin{equation}
  \int_{-1}^{1}H\!\left(\RvachevUp^{(n)}(x)\right)\Differential x
@@ -6546,6 +6548,20 @@ not yet its Rademacher Borel simplification.  If \(E\) is any real Banach space 
 \end{equation}
 This is \path{intervalIntegral_comp_iteratedDeriv_rvachev}.  In particular, it includes the
 order-zero boundary without introducing a fictitious independent sign.
+
+For the sharp positive-order range \(0<n\), Lean also exposes the collapsed symmetric
+half-mixture
+\begin{equation}
+ \int_{-1}^{1}H\!\left(2^{-T_n}\RvachevUp^{(n)}(x)\right)\Differential x
+ =\frac12\left(
+   \int_{-1}^{1}H\!\left(\RvachevUp(y)\right)\Differential y
+   +\int_{-1}^{1}H\!\left(-\RvachevUp(y)\right)\Differential y\right).
+ \label{p4:eq:formal-normalized-signed-test}
+\end{equation}
+This is \path{intervalIntegral_comp_normalized_iteratedDeriv_rvachev}.  Its codomain may be
+any real Banach space, but its test function must be continuous.  The restriction \(0<n\)
+is essential: for \(n=0\) the left side is the unsymmetrized integral of
+\(H\circ\RvachevUp\), not the half-mixture.
 
 Specializing to \(H(t)=t^m\) and evaluating the Boolean-cube weight enumerator gives the
 separately named all-order identity, valid for every \(n,m\in\NaturalNumbers\),
@@ -6579,20 +6595,31 @@ The same Banach-valued continuous-test API proves
 These are \path{intervalIntegral_comp_abs_iteratedDeriv_rvachev} and
 \path{intervalIntegral_comp_normalized_abs_iteratedDeriv_rvachev}.
 
-More strongly on the absolute side, let
+At the Borel-measure level, let
 \(\lambda_I\) be Lebesgue measure restricted to \(I=[-1,1]\), and write
-\(f_{\#}\mu\) for pushforward.  Lean proves the literal Borel-measure equality
-\begin{equation}
+\(f_{\#}\mu\) for pushforward.  Lean proves the literal Borel-measure equalities
+\begin{align}
  \left(x\longmapsto2^{-T_n}\AbsoluteValue{\RvachevUp^{(n)}(x)}\right)_{\#}\lambda_I
- =\RvachevUp_{\#}\lambda_I.                                      \label{p4:eq:formal-absolute-pushforward}
-\end{equation}
-Its declaration is
-\path{map_normalized_abs_iteratedDeriv_rvachev_restrict_Icc}.  What is not yet a named
-theorem is the signed Borel pushforward simplified, for \(n\ge1\), to
-\(R\RvachevUp(U)\).  Thus \eqref{p4:eq:signed-equimeasurable} and the full Borel formulation of
-\eqref{p4:eq:H-signed} remain on the frontier even though
-\eqref{p4:eq:formal-signed-finite-mixture} is their exact continuous-test finite-cell
-precursor.
+ &=\RvachevUp_{\#}\lambda_I,
+                                      \label{p4:eq:formal-absolute-pushforward}\\
+ \left(x\longmapsto2^{-T_n}\RvachevUp^{(n)}(x)\right)_{\#}\lambda_I
+ &=\frac12\left(
+   \RvachevUp_{\#}\lambda_I+
+   \left(y\longmapsto-\RvachevUp(y)\right)_{\#}\lambda_I\right)
+   \qquad(0<n).                     \label{p4:eq:formal-signed-pushforward}
+\end{align}
+Their declarations are
+\path{map_normalized_abs_iteratedDeriv_rvachev_restrict_Icc} and
+\path{map_normalized_iteratedDeriv_rvachev_restrict_Icc}, respectively.  The second is a
+scalar Borel pushforward equality, not merely another continuous-test theorem: it carries
+all Borel distributional consequences.  Conversely,
+\eqref{p4:eq:formal-normalized-signed-test} is the directly exposed Banach-valued API.
+After normalizing \(\lambda_I\) to the uniform probability law, the pushforward equality is
+exactly \eqref{p4:eq:signed-equimeasurable}, equivalently the law of
+\(R\RvachevUp(U)\); Lean packages the symmetric measure mixture rather than introducing
+random variables \(R,U\).  At \(n=0\), the pushforward is instead the unsymmetrized
+\(\RvachevUp_{\#}\lambda_I\).  Thus the Rademacher Borel-law gap is closed without erasing
+the order-zero boundary.
 \end{statusbox}
 
 \begin{corollary}[All absolute moments and signed moments]
@@ -7904,11 +7931,13 @@ as formalized.  A practical order is:
 \item \textbf{Completed.}  The derivative tiling has a public exact cell coordinate,
       endpoint/range lemmas, signed and absolute cellwise formulas, and signed midpoint
       corollary.
-\item \textbf{Absolute part and signed natural moments completed.}  The normalized absolute
+\item \textbf{Absolute and signed distribution laws completed.}  The normalized absolute
       law is an exact Borel pushforward equality and has Banach-valued continuous-test forms.
       The signed finite-mixture identity is formal for continuous Banach-valued tests and all
-      \(n\); its Boolean-cube natural-moment identity and the exact even/positive-order odd
-      parity laws are also formal.  The simplified signed Rademacher Borel law remains open.
+      \(n\); for \(0<n\), both its normalized Banach-valued half-mixture and its symmetric
+      Borel pushforward equality are formal.  Its Boolean-cube natural-moment identity and
+      the exact even/positive-order odd parity laws are also formal.  At \(n=0\), the signed
+      law remains correctly unsymmetrized.
 \item \textbf{Still open beyond completed prerequisites.}  Use the all-\(p\ge0\)
       real-power moment theorem, midpoint signs, and existing pointwise bounds to derive
       \path{eLpNorm}, general rearrangement-invariant, total-variation, and exact
@@ -7951,8 +7980,8 @@ The most promising analytic next step is to identify the sinc-square measure ins
 Nevanlinna family.  On the formal side, the dyadic-cell and normalized absolute
 equimeasurability core is now complete.  The next compact targets are its
 \path{eLpNorm}/rearrangement-invariant and inverse-Fabius level-set consequences, followed
-by the beta-transform layer.  The signed Rademacher Borel simplification and every
-beta/spectral layer in this report remain frontier statements.
+by the beta-transform layer.  The signed Rademacher Borel law is now closed in symmetric
+half-mixture form; every beta/spectral layer in this report remains a frontier statement.
 
 \appendix
 
