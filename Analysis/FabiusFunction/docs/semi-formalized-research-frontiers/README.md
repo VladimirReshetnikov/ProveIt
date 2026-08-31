@@ -115,7 +115,7 @@ drafts verbatim with per-part label prefixes (the later second-wave
 integral-transforms arrival was folded into that volume the same way,
 as Part XII) — while the closely overlapping arrivals of waves two
 through six were merged **editorially** into additional volumes
-(`inverse-and-sampling/comb-interpolation/Dyadic_Comb_Frontiers/` and
+(`inverse-and-sampling/comb-interpolation/comb_interpolation_synthesis/` and
 `inverse-and-sampling/inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders/`,
 `representations/Up_Polynomial_Synthesis/`): shared theorems stated
 once with the best proof, unified notation, cross-source constants

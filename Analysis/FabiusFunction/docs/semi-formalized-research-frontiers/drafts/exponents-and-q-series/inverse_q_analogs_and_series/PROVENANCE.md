@@ -188,7 +188,7 @@ but its condensation, Gould--Hopper, polyharmonic, and natural-boundary
 programs are broader than inverse-q branch theory.  Likewise,
 `Exponents_and_q_Series_Frontiers/` owns the geometric-uniform/Fabius
 deformation and signed/reciprocal parameter-orbit program, and
-`inverse-and-sampling/geometric_comb_q_fabius_report/` owns the detailed
+`inverse-and-sampling/comb-interpolation/comb_interpolation_synthesis/` owns the detailed
 interpolation and stability theory behind the short geometric-comb application
 in Chapter 6.  These explicit boundaries prevent the six-source concordance
 from being misread as a claim to have absorbed those broader volumes.

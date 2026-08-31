@@ -1,0 +1,520 @@
+\section{Formula dictionary}
+\label{gq:app:formula-dictionary}
+
+This appendix collects the principal transforms in one place.  It is meant
+as a reference sheet rather than a substitute for the proofs.
+
+\subsection{General geometric comb}
+
+For $x_j=cq^j$, $0<q<1$, define
+\[
+ N_k(x)=\prod_{r=0}^{k-1}(x-cq^r),
+ \qquad
+ \omega_{n+1}(x)=N_{n+1}(x).
+\]
+Then
+\begin{longtable}{@{}p{0.28\textwidth}p{0.64\textwidth}@{}}
+\caption{Core geometric-comb formulas.}\label{gq:tab:formula-dictionary-general}\\
+\toprule
+Object & Formula\\
+\midrule
+\endfirsthead
+\toprule
+Object & Formula\\
+\midrule
+\endhead
+Newton/$q$-Pochhammer basis
+& $N_k(x)=(-c)^kq^{\binom k2}(x/c;q^{-1})_k$\\[4pt]
+Divided difference
+& $[f;c,\ldots,cq^k]=D_q^kf(c)/[k]_q!$\\[4pt]
+Explicit data transform
+& $c^{-k}\sum_{j=0}^k
+ (-1)^jq^{-jk+\binom{j+1}{2}}f(cq^j)/
+ ((q;q)_j(q;q)_{k-j})$\\[6pt]
+Monomial to Newton
+& $x^m=\sum_{k=0}^{m}c^{m-k}\GaussianBinomial{m}{k}{q}N_k(x)$\\[4pt]
+Newton to monomial
+& $N_k(x)=\sum_{m=0}^{k}(-1)^{k-m}c^{k-m}
+ q^{\binom{k-m}{2}}\GaussianBinomial{k}{m}{q}x^m$\\[6pt]
+Barycentric weight
+& $\lambda_{j,n}=c^{-n}(-1)^jq^{\binom{j+1}{2}-nj}/
+ ((q;q)_j(q;q)_{n-j})$\\[6pt]
+Accumulation weight
+& $\mu_{j,n}=(-1)^{n-j}q^{\binom{n-j+1}{2}}/
+ ((q;q)_j(q;q)_{n-j})$\\[6pt]
+Endpoint Lebesgue constant
+& $\Leb_n(0)=(-q;q)_n/(q;q)_n$\\[4pt]
+Global Lebesgue asymptotic
+& $\Leb_n^*\sim2(-q;q)_\infty q^{-\binom n2}/(\EulerE n)$\\[4pt]
+Monomial residual
+& $x^{n+1+r}-\Interp_nx^{n+1+r}
+ =N_{n+1}(x)h_r(x,c,cq,\ldots,cq^n)$\\[6pt]
+Geometric specialization
+& $h_r(c,cq,\ldots,cq^n)=c^r\GaussianBinomial{n+r}{n}{q}$\\[4pt]
+Jackson moment
+& $\int_0^cN_k(x)\,\Differential_qx=(-1)^kc^{k+1}
+ q^{\binom{k+1}{2}}/[k+1]_q$\\
+\bottomrule
+\end{longtable}
+
+\subsection{Half-base Fabius formulas}
+
+For $q=1/2$, $d_n=\Expectation X^n$, and $a_n=d_n/n!$,
+\begin{longtable}{@{}p{0.28\textwidth}p{0.64\textwidth}@{}}
+\caption{Fabius and Rvachev specialization.}\label{gq:tab:formula-dictionary-fabius}\\
+\toprule
+Object & Formula\\
+\midrule
+\endfirsthead
+\toprule
+Object & Formula\\
+\midrule
+\endhead
+Moment recurrence
+& $(2^n-1)a_n=\sum_{j<n}a_j/(n-j+1)!$\\[5pt]
+Rvachev half-moment
+& $d_n=n\int_0^1t^{n-1}\RvachevUp(t)\,\Differential t$\\[5pt]
+Inverse-dyadic value
+& $F(2^{-n})=2^{-\binom n2}a_n$\\[5pt]
+Newton coefficient
+& $\nu_k=(q;q)_k^{-1}\sum_{j=0}^k(-1)^j
+ \GaussianBinomial{k}{j}{q^{-1}}a_j$\\[6pt]
+Finite interpolant
+& $\Interp_nF(x)=\omega_{n+1}(x)(q;q)_n^{-1}
+ \sum_{j=0}^n(-1)^j\GaussianBinomial{n}{j}{q^{-1}}a_j/(x-q^j)$\\[7pt]
+Boundary residue generating function
+& $\sum_{n\ge0}R_nz^n=(qz;q)_\infty
+ \sum_{j\ge0}q^{\binom j2}a_jz^j/(q;q)_j$\\[7pt]
+Boundary bound
+& $|R_n|\le\EulerE(q;q)_\infty^{-2}q^{\Floor{n^2/4}}$\\[5pt]
+Fixed-jet bound
+& $|(\Interp_nF)^{(m)}(0)|\le
+ \EulerE m!\binom nm(q;q)_\infty^{-2}
+ q^{\Floor{n^2/4}-mn+\binom m2}$\\[7pt]
+Rvachev relation
+& $\RvachevUp(t)=F(1-|t|)$ and $\Interp_n\RvachevUp=1-\Interp_nF$
+ on the center-directed positive comb\\
+\bottomrule
+\end{longtable}
+
+\subsection{Atomic synthesis formulas}
+
+For a degree bound $n$, $h=2^{-n}$ and
+$K_n=\{-2^{n+1}+1,\ldots,2^{n+1}-1\}$,
+\begin{align}
+ \App p&=\MGF_u(D)^{-1}p
+ =\sum_{r\ge0}\frac{\gamma_{2r}}{(2r)!}p^{(2r)},
+ \label{gq:eq:dictionary-App}\\
+ p(x)&=h\sum_{k\in K_n}(\App p)(kh)u(x-kh),
+ \qquad \deg p\le n,
+ \label{gq:eq:dictionary-synthesis}\\
+ \ell_{j,n}(x)&=h\sum_{k\in K_n}
+ (\App\ell_{j,n})(kh)u(x-kh),
+ \label{gq:eq:dictionary-cardinal-synthesis}\\
+ (hB)D&=I_{n+1}.
+ \label{gq:eq:dictionary-right-inverse}
+\end{align}
+
+\section{Selected exact dyadic data}
+\label{gq:app:exact-data}
+
+\subsection{Moments and inverse-dyadic values}
+
+\begin{table}[htbp]
+\centering
+\caption{Regularized moments $a_n=d_n/n!$ and the corresponding values
+$F(2^{-n})=2^{-\binom n2}a_n$.}
+\label{gq:tab:exact-fabius-data}
+\small
+\begin{tabular}{@{}rll@{}}
+\toprule
+$n$ & $a_n$ & $F(2^{-n})$\\
+\midrule
+0 & $1$ & $1$\\
+1 & $1/2$ & $1/2$\\
+2 & $5/36$ & $5/72$\\
+3 & $1/36$ & $1/288$\\
+4 & $143/32400$ & $143/2073600$\\
+5 & $19/32400$ & $19/33177600$\\
+6 & $1153/17146080$ & $1153/561842749440$\\
+7 & $583/85730400$ & $583/179789679820800$\\
+8 & $1616353/2623350240000$
+  & $1616353/704200217922109440000$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{First geometric Newton coefficients}
+
+For
+\[
+ \Interp_nF(x)=\sum_{k=0}^n\nu_k
+ \prod_{r=0}^{k-1}(x-2^{-r}),
+\]
+the exact coefficients begin
+\begin{longtable}{@{}rl@{}}
+\caption{First exact half-base Newton coefficients.}
+\label{gq:tab:exact-newton-coefficients}\\
+\toprule
+$k$ & $\nu_k$\\
+\midrule
+\endfirsthead
+\toprule
+$k$ & $\nu_k$\\
+\midrule
+\endhead
+0 & $1$\\
+1 & $1$\\
+2 & $-26/27$\\
+3 & $-128/27$\\
+4 & $-4253248/637875$\\
+5 & $189673472/19774125$\\
+6 & $134859284873216/1648153544625$\\
+7 & $21867230161534976/209315500167375$\\
+8 & $-349286360632157831954432/204161105975753390625$\\
+\bottomrule
+\end{longtable}
+
+Large numerator and denominator sizes are not numerical artifacts; they are
+exact consequences of composing the Fabius moment recurrence with the
+reciprocal Gaussian transform.
+
+
+\section{Additional derivations}
+
+\subsection{Partial fractions for the $q$-exponential perpetuity}
+
+For completeness, consider
+\[
+ L_q(s)=\prod_{j=0}^{\infty}(1+sq^j)^{-1}.
+\]
+At the simple pole $s=-q^{-k}$, the coefficient of
+$(1+sq^k)^{-1}$ is
+\begin{align*}
+ c_k
+ &=\left[\prod_{j\ne k}(1-q^{j-k})\right]^{-1}\\
+ &=\frac{(-1)^kq^{k(k+1)/2}}{(q;q)_k(q;q)_\infty}.
+\end{align*}
+Indeed, the factors with $j<k$ give
+$(-1)^kq^{-k(k+1)/2}(q;q)_k$, and the factors with $j>k$ give
+$(q;q)_\infty$.  Since
+\[
+ \mathcal L^{-1}\left[\frac1{1+sq^k}\right](y)
+ =q^{-k}e^{-y/q^k},
+\]
+we recover \eqref{g1:eq:Z-density}.
+
+\subsection{Equivalence of the power formulas}
+
+For an integer $d=n+1+r$, \eqref{g1:eq:pure-power} and
+\eqref{g1:eq:all-moments} agree.  Indeed,
+\begin{align*}
+ q^{dn}\frac{(q^{1-d};q)_n}{(q;q)_n}
+ &=q^{(n+1+r)n}
+ \frac{\prod_{j=0}^{n-1}(1-q^{-n-r+j})}{(q;q)_n}\\
+ &=(-1)^nq^{\binom{n+1}{2}}
+ \frac{(q;q)_{n+r}}{(q;q)_n(q;q)_r}\\
+ &=(-1)^nq^{\binom{n+1}{2}}\GaussianBinomial{n+r}{n}{q}.
+\end{align*}
+This calculation is often useful when moving between Mellin exponents and
+integer Taylor moments.
+
+\subsection{A generating function for the smooth remainder on exponentials}
+
+Take $f(x)=e^{tx}$ in \eqref{g1:eq:HG-remainder}.  Using
+\eqref{g1:eq:Y-moments},
+\begin{align}
+ (\Gc_{n,q}e^{t\cdot})(A)-1
+ &=\frac{(-1)^nA^{n+1}q^{\binom{n+1}{2}}t^{n+1}}{(n+1)!}
+ \Expectation e^{tY_{n,A,q}}\notag\\
+ &=(-1)^nA^{n+1}q^{\binom{n+1}{2}}t^{n+1}
+ \sum_{r=0}^{\infty}
+ \frac{A^r\GaussianBinomial{n+r}{n}{q}}{(n+r+1)!}t^r.
+ \label{g1:eq:exp-remainder}
+\end{align}
+The same series follows from \eqref{g1:eq:exact-analytic-tail}.  The equality is a
+useful consistency check between the analytic-tail and B-spline pictures.
+
+
+\section{Selected finite identities}
+\label{g2:app:finite-identities}
+
+For quick reference, the principal finite formulas are collected here.
+
+\begin{align*}
+ \Omega_{n+1}(x)
+ &=x^{n+1}(a/x;q)_{n+1},\\[0.3em]
+ \Phi_k(x)
+ &=(-a)^kq^{\binom k2}(x/a;q^{-1})_k,\\[0.3em]
+ \Phi_k(aq^j)
+ &=(-a)^kq^{\binom k2}(q;q)_k\GaussianBinomial jkq,\\[0.3em]
+ \beta_{n,j}
+ &=\frac{(-1)^jq^{-jn+\binom{j+1}{2}}}
+ {a^n(q;q)_j(q;q)_{n-j}},\\[0.3em]
+ \lambda_{n,j}^{(q)}
+ &=\frac{(-1)^{n-j}q^{\binom{n-j+1}{2}}}
+ {(q;q)_j(q;q)_{n-j}},\\[0.3em]
+ \sum_{j=0}^n\lambda_{n,j}^{(q)}z^j
+ &=\frac{\prod_{r=1}^n(z-q^r)}{(q;q)_n},\\[0.3em]
+ f[a,aq,\ldots,aq^k]
+ &=\frac{D_q^kf(a)}{[k]_q!},\\[0.3em]
+ \sum_{j=0}^n|\lambda_{n,j}^{(q)}|
+ &=\frac{(-q;q)_n}{(q;q)_n},\\[0.3em]
+ M_{n,q}(s)
+ &=q^{ns}\frac{(q^{1-s};q)_n}{(q;q)_n},\\[0.3em]
+ F_q(q^n)
+ &=\frac{q^{\binom{n+1}{2}}}{(1-q)^nn!}\Expectation X_q^n
+ \quad(0<q\le1/2),\\[0.3em]
+ F(2^{-n})
+ &=2^{-\binom n2}\frac{\mu_n}{n!},\\[0.3em]
+ A_n
+ &=\frac1{(1/2;1/2)_n}
+ \sum_{j=0}^n(-1)^j\GaussianBinomial nj2\frac{\mu_j}{j!}.
+\end{align*}
+
+\section{Pseudocode for exact dyadic computation}
+\label{g2:app:pseudocode}
+
+The following high-level algorithm uses rational arithmetic throughout.
+
+\begin{lstlisting}[style=pythonstyle]
+mu[0] = 1
+M[0]  = 1
+for n = 1..N:
+    mu[n] = (sum_{k=0}^{n-1} binom(n,k)*mu[k]/(n-k+1)) / (2^n-1)
+    M[n]  = M[n-1]*(2^n-1)
+
+for n = 0..N:
+    Fdyadic[n] = 2^(-n*(n-1)/2) * mu[n] / n!
+    A[n] = 2^(n*(n+1)/2) *
+           sum_{j=0}^n (-1)^j * mu[j] / (j!*M[j]*M[n-j])
+    E[n] = sum_{j=0}^n (-1)^(n-j) * 2^j * mu[j]
+           / (j!*M[j]*M[n-j])
+\end{lstlisting}
+
+The attached Python implementation additionally verifies all transforms by
+independent formulas, evaluates Newton partial sums at rational targets, and
+computes the high-precision Fourier-product experiment.
+
+
+\section{Gamma-product calculations}
+\label{app:gamma}
+
+\subsection{Half-cell central cardinal (mode A)}
+In the scaled variable $y=Mx$ with interior nodes $1,\dots,M-1$ and
+$j=M/2$, at $y=\tfrac12$:
+$\prod_{k=1}^{M-1}\AbsoluteValue{k-\tfrac12}=\Gamma(M-\tfrac12)/\Gamma(\tfrac12)$;
+deleting the $j$ factor divides by $\AbsoluteValue{j-\tfrac12}=\tfrac M2-\tfrac12$,
+and the denominator of the cardinal is
+$(j-1)!\,(M-1-j)!=\Gamma(M/2)^{2}$, giving $A_M$ in
+\eqref{eq:A-mode}.  The weight ratio is
+$\bigl[\tfrac1{2M}(1-\tfrac1{2M})\bigr]/\tfrac14=(2M-1)/M^{2}=a_M$.
+Stirling gives $A_M\sim2^{M}/(\pi\sqrt2\,M)$.
+
+\subsection{Near-central boundary-node cardinal (mode B)}
+For $j=1$ at $y=(M+1)/2$ with $M=2K$:
+$\AbsoluteValue{\prod_{k=2}^{M-1}(y-k)}
+=\bigl[\Gamma(K-\tfrac12)/\Gamma(\tfrac12)\bigr]^{2}$
+(the products on the two sides of the half-integer are equal), and
+the denominator is $(M-2)!=\Gamma(M-1)$, giving $B_M$.  The weight
+ratio is
+$\bigl[(\tfrac12+\tfrac1{2M})(\tfrac12-\tfrac1{2M})\bigr]
+/\bigl[\tfrac1M(1-\tfrac1M)\bigr]=(M+1)/4=b_M$.  The duplication
+formula turns $B_M$ into
+$\dfrac{2^{2-M}}{\sqrt\pi}\,
+\dfrac{\Gamma((M-1)/2)}{\Gamma(M/2)}
+\sim2^{2-M}\sqrt{2/(\pi M)}$; equivalently
+$B_M=\binom{M-2}{M/2-1}\big/16^{\,M/2-1}$.
+
+\subsection{The one-third mode}
+At $y=M/3$ (dyadic $M$ is never divisible by $3$):
+$\prod_{k=1}^{M-1}(M/3-k)=\Gamma(M/3)/\Gamma(1-2M/3)$, and reflection
+gives $1/\AbsoluteValue{\Gamma(1-2M/3)}
+=\Gamma(2M/3)\AbsoluteValue{\sin(2\pi M/3)}/\pi
+=\tfrac{\sqrt3}{2\pi}\Gamma(2M/3)$.  Removing the central factor
+$\AbsoluteValue{M/3-M/2}=M/6$ and dividing by $\Gamma(M/2)^{2}$ gives
+\eqref{eq:one-third-mode}; the exponential part of the gamma ratio is
+$\exp\{M[\tfrac13\log\tfrac13+\tfrac23\log\tfrac23-\log\tfrac12]\}
+=\EulerE^{M(\log2-\Hyp(1/3))}$.
+
+\subsection{Full-comb central cardinal}
+For the full node set $0,\dots,M$ at $y=\tfrac12$, $j=M/2$:
+$\prod_{k=0}^{M}\AbsoluteValue{\tfrac12-k}
+=\tfrac12\,\Gamma(M+\tfrac12)/\Gamma(\tfrac12)$; deleting the
+central factor divides by $\AbsoluteValue{\tfrac12-\tfrac M2}=\tfrac{M-1}2$,
+and the denominator is
+$(M/2)!\,(M/2)!=\Gamma(\tfrac M2+1)^{2}$, giving
+\eqref{eq:full-central-cardinal}; Stirling's formula then yields
+$\AbsoluteValue{\ell_{M/2}(\tfrac1{2M})}\sim\sqrt2\,2^{M}/(\pi M^{2})$, whose
+square is \eqref{eq:hermite-square}.
+
+\section{Mode asymptotics}
+\label{app:mode-asymptotics}
+
+Stirling's expansion in logarithmic form,
+\begin{equation}
+ \log\Gamma(z)
+ =\Bigl(z-\tfrac12\Bigr)\log z-z+\tfrac12\log(2\pi)
+ +\sum_{r=1}^{R-1}\frac{B_{2r}}{2r(2r-1)\,z^{2r-1}}
+ +\BigO\bigl(z^{-2R+1}\bigr),
+ \label{eq:stirling}
+\end{equation}
+applied to \eqref{eq:A-mode}--\eqref{eq:B-mode} yields
+\begin{align}
+ \log A_M&=M\log2-\log M-\log(\pi\sqrt2)+\BigO(M^{-1}),\\
+ \log B_M&=-(M-2)\log2+\tfrac12\log\frac{2}{\pi M}+\BigO(M^{-1}),\\
+ \log a_M&=-\log(M/2)+\log\bigl(1-\tfrac1{2M}\bigr),
+ \qquad
+ \log b_M=\log(M/4)+\log\bigl(1+\tfrac1M\bigr),
+\end{align}
+which prove \cref{prop:balance-asymptotic}.  Retaining further
+Bernoulli terms and reverting with complete Bell polynomials yields
+the all-orders program \eqref{eq:balance-all-orders}.
+
+\section{Row reciprocity}
+\label{app:row-symmetry}
+
+With $A_m(z)=\sum_{k=0}^{M-1}F(k/M)z^{k}$ and
+$F((M-k)/M)=1-F(k/M)$,
+\begin{align}
+ z^{M}A_m(1/z)
+ &=\sum_{k=1}^{M}F\bigl((M-k)/M\bigr)z^{k}
+ =\sum_{k=1}^{M}\bigl(1-F(k/M)\bigr)z^{k}
+ =\frac{z(1-z^{M})}{1-z}-A_m(z)-z^{M},
+\end{align}
+which is \eqref{eq:AN-reciprocal}.  This exact reciprocity forces the
+palindromic structure of the low-level row numerators
+\eqref{eq:row-N1}--\eqref{eq:row-N3}.
+
+\section{Core algorithms}
+\label{app:algorithms}
+
+\begin{lstlisting}[style=pythonstyle,caption={Streaming the exact
+dyadic Fabius row (\cref{alg:stream}); \texttt{d} holds the exact
+Fabius-law moments of \eqref{eq:d-recurrence}.}]
+def fabius_row_exact(m):
+    M = 2**m
+    d = fabius_law_moments(m)          # Fractions d_0..d_m
+    S = [0]*(m+1)                      # signed prefix power sums
+    scale = Fraction(1, 2**(m*(m-1)//2) * factorial(m))
+    row = []
+    for a in range(M+1):
+        row.append(scale * sum(comb(m,j)*d[j]*S[m-j]
+                               for j in range(m+1)))
+        if a == M: break
+        eps = -1 if bin(a).count('1') % 2 else 1
+        S = [S[0]+eps] + [sum(comb(k,q)*S[q] for q in range(k+1))
+                          for k in range(1, m+1)]
+    return row
+\end{lstlisting}
+
+\begin{lstlisting}[style=pythonstyle,caption={Endpoint-flat
+interpolation in barycentric form (\cref{thm:factorization}).}]
+S = lambda r,x: (factorial(2*r+1)//(factorial(r)**2)
+                 * sum((-1)**k*comb(r,k)*x**(r+k+1)/(r+k+1)
+                       for k in range(r+1)))
+W = lambda r,x: (x*(1-x))**(r+1)
+g = [(F(x_j)-S(r,x_j))/W(r,x_j) for x_j in interior_nodes]
+w = [(-1)**(j-1)*comb(M-2,j-1) for j in range(1,M)]
+H = S(r,x) + W(r,x)*barycentric(x, interior_nodes, g, w)
+\end{lstlisting}
+
+The absorbed packages add the sparse-difference row generation
+($\BigO(mM)$), confluent divided differences for full-grid Hermite,
+weighted-Lebesgue scans, and all figure/table generation; the canonical entry points, dependencies, and replay commands are
+recorded in \nolinkurl{assets/README.md} and \nolinkurl{assets/VALIDATION.md}.
+
+
+\section{Status ledger}
+\label{gq:app:status-ledger}
+
+\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}
+>{\raggedright\arraybackslash}p{0.13\textwidth}
+>{\raggedright\arraybackslash}p{0.335\textwidth}
+>{\raggedright\arraybackslash}p{0.18\textwidth}@{}}
+\caption{Logical and formal status of the principal claims.  ``Paper proof''
+means a manuscript proof in this report, not a Lean declaration.}
+\label{gq:tab:status-ledger}\\
+\toprule
+Claim & Manuscript & Lean boundary & Location\\
+\midrule
+\endfirsthead
+\toprule
+Claim & Manuscript & Lean boundary & Location\\
+\midrule
+\endhead
+Newton/$q$-Pochhammer identification
+& Paper proof
+& Finite $q$-Pochhammer API exists; no report-specific $N_k$ theorem found
+& \Cref{gq:chap:q-newton}\\
+Iterated $D_q$ and divided differences
+& Paper proof
+& No one-to-one declaration found
+& \Cref{gq:thm:Dq-divided-difference}\\
+Gaussian Pascal basis pair
+& Paper proof
+& Gaussian reciprocity/inversion ingredients formalized; basis pair not packaged
+& \Cref{gq:thm:gaussian-pascal-basis}\\
+Complete-homogeneous monomial residual
+& Paper proof
+& Geometric residual moments formalized; arbitrary evaluation remainder not packaged
+& \Cref{gq:thm:monomial-residual}\\
+Analytic infinite Newton convergence
+& Paper proof
+& No one-to-one declaration found
+& \Cref{gq:thm:analytic-newton-convergence}\\
+Endpoint Lebesgue formula and limit
+& Paper proof
+& Exact finite rational $\ell^1$ identity formalized; real infinite-product limit not
+& \Cref{gq:thm:endpoint-lebesgue}\\
+Boundary profile and global Lebesgue asymptotic
+& Paper proof
+& No one-to-one declaration found
+& \Cref{gq:thm:lebesgue-profile,gq:thm:global-lebesgue}\\
+Newton--Jackson formula
+& Paper proof
+& No one-to-one declaration found
+& \Cref{gq:thm:jackson-newton-moments}\\
+Fabius half-base Gaussian transform
+& Paper proof
+& Inverse-dyadic moment and Gaussian ingredients formalized; transform not packaged
+& \Cref{gq:thm:fabius-gaussian-transform}\\
+Fabius residue and fixed-jet bounds
+& Paper proof
+& No one-to-one declarations found
+& \Cref{gq:thm:fabius-boundary-residue,gq:thm:fabius-fixed-jets}\\
+Fabius gap upper bound
+& Paper proof
+& No one-to-one declaration found
+& \Cref{gq:thm:fabius-gap-upper}\\
+Two-sided Fabius gap asymptotic
+& Conjecture
+& Unproved
+& \Cref{gq:conj:fabius-gap-asymptotic}\\
+Second-order Lebesgue expansion
+& Conjecture
+& Unproved
+& \Cref{gq:conj:second-order-lebesgue}\\
+Hermite saddle displacement
+& Conjecture
+& Unproved
+& \Cref{gq:conj:hermite-saddle}\\
+Dyadic fixed-radius $\RvachevUp$ synthesis
+& Paper proof
+& Directly formalized by
+  \path{normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp}
+& \Cref{gq:thm:up-polynomial-synthesis}\\
+Gaussian--Appell decoder/right inverse
+& Paper proof
+& Underlying Appell synthesis formalized; cardinal specialization and matrix package not found
+& \Cref{gq:thm:gaussian-Appell-decoder,gq:thm:gaussian-Appell-biorthogonality}\\
+Growing-order Hermite anchoring
+& Open problem
+& Unproved
+& \Cref{gq:prob:optimal-geometric-hermite}\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\backmatter
