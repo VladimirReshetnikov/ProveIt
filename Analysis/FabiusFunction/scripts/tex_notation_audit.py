@@ -72,6 +72,12 @@ SEMANTIC_LITERAL_PATTERNS = {
     r"\\(?:mathcal|mathrm)(?![A-Za-z@])\s*(?:\{\s*o\s*\}|o)(?![A-Za-z_])": (
         r"use \LittleO or \LittleOAt and state the limiting regime"
     ),
+    r"\\(?:mathcal|mathrm)(?![A-Za-z@])\s*(?:\{\s*[Oo]\s*\}|[Oo])"
+    r"\s*_(?:\{[^\n{}]*(?:\{[^\n{}]*\}[^\n{}]*)*\}|[A-Za-z0-9]+|\\[A-Za-z@]+)"
+    r"\s*(?:\\[!,;:]\s*)*(?:\\(?:left|bigl|Bigl|biggl|Biggl)\s*)?\(": (
+        r"scripted raw O/o followed by an argument requires classification; use "
+        r"\BigOAt or \LittleOAt and state the limiting regime"
+    ),
     r"\\operatorname\s*\{\s*sinc\s*\}": (
         r"classify the normalization and use \SincRad or \SincPi"
     ),
