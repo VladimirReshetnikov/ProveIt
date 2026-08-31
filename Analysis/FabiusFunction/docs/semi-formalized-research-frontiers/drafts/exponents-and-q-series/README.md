@@ -62,8 +62,8 @@ establish Lean verification.
 
 - [`inverse_q_analogs_and_series/`](inverse_q_analogs_and_series/),
   *Inverse q-Analogs and Their Series Expansions: A Branch-Aware,
-  Proof-Complete Synthesis*, is the canonical consolidation of the six former
-  inverse-q and forward-expansion packages.  Its
+  Proof-Complete Synthesis* (85 A4 pages), is the canonical consolidation of
+  the six former inverse-q and forward-expansion packages.  Its
   [`theorem_concordance.csv`](inverse_q_analogs_and_series/theorem_concordance.csv)
   accounts for all 260 source result environments, while
   [`PROVENANCE.md`](inverse_q_analogs_and_series/PROVENANCE.md) and
@@ -74,6 +74,8 @@ establish Lean verification.
   history.  The q-Pochhammer monograph remains the broad forward-theory
   reference, while `Cyclotomic_q_Fabius_Rvachev_Frontier/` retains the wider
   natural-boundary and blow-up program beyond this inverse-branch synthesis.
+  The three-pass build, clean-log, metadata/font, and all-page visual
+  publication gates passed on 2026-08-31.
 
 - [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](Cyclotomic_q_Fabius_Rvachev_Frontier/),
   *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
