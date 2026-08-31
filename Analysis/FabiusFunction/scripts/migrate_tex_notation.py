@@ -44,6 +44,15 @@ SAFE_RENAMES = {
     "up": "RvachevUp",
     "upf": "RvachevUp",
     "sincpi": "SincPi",
+    "sincp": "SincPi",
+    "sincpiPartc": "SincPi",
+    "sincPartx": "SincRad",
+    "sincPartl": "SincRad",
+    "sincPartii": "SincRad",
+    "sincPartxx": "SincRad",
+    "sincPartll": "SincRad",
+    "sincPartcc": "SincRad",
+    "sincPartvvv": "SincRad",
     "wt": "BinaryDigitSum",
     "e": "EulerE",
     "ee": "EulerE",
@@ -83,6 +92,9 @@ SAFE_RENAMES = {
     "Log": "PrincipalLogarithm",
     "defeq": "DefinitionEquals",
     "Fglobal": "FabiusGlobal",
+    "Fs": "FabiusGlobal",
+    "extF": "FabiusGlobal",
+    "Fext": "FabiusGlobal",
     "InvF": "FabiusClampedQuantile",
 }
 
@@ -222,6 +234,7 @@ def transform(
     sinc_normalization: str | None,
     thue_morse_symbol: bool,
     gaussian_binomial_three: bool,
+    ordinary_rising_poch: bool,
 ) -> tuple[str, dict[str, int], bool]:
     text, added = add_input(text, path, docs)
     renames = dict(SAFE_RENAMES)
@@ -234,6 +247,8 @@ def transform(
         renames["TM"] = "ThueMorseSignSymbol"
     if gaussian_binomial_three:
         renames["qbinom"] = "GaussianBinomial"
+    if ordinary_rising_poch:
+        renames["poch"] = "RisingFactorial"
     extra_names = set(renames) - set(SAFE_RENAMES)
     counts = {name: 0 for name in renames}
     output: list[str] = []
@@ -300,6 +315,11 @@ def main() -> int:
         action="store_true",
         help="semantically assert that qbinom already has three explicit arguments n, k, q",
     )
+    parser.add_argument(
+        "--ordinary-rising-poch",
+        action="store_true",
+        help="semantically assert that legacy two-argument poch denotes the ordinary rising factorial",
+    )
     args = parser.parse_args()
     docs, archive = repository_paths()
     try:
@@ -322,6 +342,7 @@ def main() -> int:
                 sinc_normalization=args.sinc_normalization,
                 thue_morse_symbol=args.thue_morse_symbol,
                 gaussian_binomial_three=args.gaussian_binomial_three,
+                ordinary_rising_poch=args.ordinary_rising_poch,
             )
         except ValueError as error:
             print(str(error), file=sys.stderr)
@@ -354,8 +375,10 @@ def main() -> int:
             print(f"  {count:6d}  \\sinc -> \\{target}")
         elif name in {"tm", "TM"}:
             print(f"  {count:6d}  \\{name} -> \\ThueMorseSignSymbol")
-        else:
+        elif name == "qbinom":
             print(f"  {count:6d}  \\qbinom -> \\GaussianBinomial")
+        else:
+            print(f"  {count:6d}  \\poch -> \\RisingFactorial")
     if not args.apply and changed:
         print("\ndry run only; rerun with --apply to write")
     return 0
