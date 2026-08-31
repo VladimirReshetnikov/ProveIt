@@ -2,6 +2,58 @@
 
 New standalone intake members:
 
+- [`Continuous_Parameter_Edgeworth_Large_Deviations_and_Quadratic_q_Gevrey_Regularity/`](Continuous_Parameter_Edgeworth_Large_Deviations_and_Quadratic_q_Gevrey_Regularity/),
+  *Continuous-Parameter Edgeworth Theory, Large Deviations, and Quadratic
+  q-Gevrey Regularity at the Fabius--Rvachev Frontier* (29 A4 pp, 1,387
+  main-source lines), arrived on 2026-08-30 in the bare generic wrapper
+  `Fabius_Rvachev_Frontier_Report_2026-08-30-G/` and was filed under this
+  title-derived collision-safe name. Its ledger covers all 19 non-ledger
+  payloads and now verifies after three CSV rows were refreshed for
+  CRLF-to-LF normalization. Its title and abstract concern
+  continuous-parameter Edgeworth and deviation regimes, Lambert endpoint
+  asymptotics, and quadratic-exponential Denjoy--Carleman regularity.
+
+- [`fabius_q_frontiers_report/`](fabius_q_frontiers_report/),
+  *Parameter-Flow, Gaussian, and Large-Deviation Frontiers for the
+  q-Fabius--Rvachev Family* (23 A4 pp, 1,506 source lines; with two scripts,
+  four CSV tables, two captured outputs, and four PDF/PNG figure pairs),
+  arrived as a bare directory. Its submitted ledger covers all 20 non-ledger
+  payloads and now verifies after four CSV entries were refreshed for
+  CRLF-to-LF normalization. All five delivered PDFs are readable and
+  unencrypted (27 pages total); its main report uses embedded Type-1 Latin
+  Modern fonts and remains later document-style work.
+
+- [`q-series-proof-oriented-article/`](q-series-proof-oriented-article/),
+  *A Proof-Oriented Guide to q-Series: Shifted Factorials, Basic
+  Hypergeometric Summation, Theta Products, Partitions, Bailey Pairs, and
+  Rogers--Ramanujan Theory* (39 letter-paper pp, 2,891 source lines), arrived
+  as a bare TeX/PDF directory without a ledger. The repository-generated
+  `SHA256SUMS` covers and verifies both delivered files; its TeX was
+  already LF.
+
+- [`q_series_from_first_principles/`](q_series_from_first_principles/),
+  *q-Series from First Principles: Products, Basic Hypergeometric Sums,
+  Theta Functions, Partitions, Bailey Pairs, and the Rogers--Ramanujan World*
+  (30 letter-paper pp, 1,548 source lines), likewise arrived as a bare
+  TeX/PDF directory without a ledger. The repository-generated
+  `SHA256SUMS` covers and verifies both delivered files; its TeX was
+  already LF.
+
+- [`q_series_monograph/`](q_series_monograph/),
+  *A Proof-Driven Guide to q-Series, Basic Hypergeometric Identities, Bailey
+  Chains, and Rogers--Ramanujan Theory* (1,915 source lines), arrived as a
+  source-only bare directory with neither PDF nor ledger. The generated
+  `SHA256SUMS` records the sole delivered TeX byte-for-byte. That source
+  contains an embedded carriage-return byte inside the apparent `\rho_2`
+  command at line 863; intake preserves and records the arrival defect rather
+  than silently repairing mathematical source.
+
+These five packages remain separate pending post-publication comparison,
+canonical document work, and Lean crosswalks. In particular, no semantic
+duplicate analysis of the three similarly scoped general q-series articles
+was performed during intake, and manuscript labels or numerical checks do not
+establish Lean verification.
+
 - [`inverse_q_analog_jet_atlas/`](inverse_q_analog_jet_atlas/),
   *An Inverse-Jet Atlas for q-Analogs: Multivariate Reversion, Singular
   Branches, and Asymptotics at q=0,1,-1, Roots of Unity, and q=±∞*

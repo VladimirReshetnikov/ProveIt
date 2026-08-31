@@ -1,5 +1,21 @@
 # Thue-Morse
 
+New standalone intake member:
+
+- [`Automatic_Scale_Factorizations_Rvachev_2026-08-30/`](Automatic_Scale_Factorizations_Rvachev_2026-08-30/),
+  *Automatic Scale Factorizations of the Rvachev Law* (22 A4 pp, 1,702
+  source lines; with a 473-line program, eight data outputs, and three
+  PDF/PNG figure pairs), arrived on 2026-08-30 as an already-unpacked bare
+  directory. Its submitted ledger covers all 21 non-ledger payloads; all
+  verified against the shipment representation, and six CSV entries were
+  refreshed after CRLF-to-LF repository normalization. The title and abstract
+  center on a Thue--Morse partition of the dyadic scales into two smooth
+  convolution factors, with q-Mahler, Mellin, moment, plateau, and endpoint
+  themes. It remains standalone pending post-publication claim review,
+  experiment assessment, semantic comparison, and a Lean crosswalk;
+  manuscript proof, novelty, and numerical labels do not establish Lean
+  verification.
+
 The Thue-Morse side of the corpus, consolidated (2026-08-28) into the
 single volume [`Thue_Morse_Atlas_and_Frontiers.tex`](Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex)
 ([PDF](Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.pdf),

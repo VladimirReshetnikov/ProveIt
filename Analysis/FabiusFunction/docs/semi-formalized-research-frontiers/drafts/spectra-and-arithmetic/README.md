@@ -1,5 +1,64 @@
 # Spectra and arithmetic
 
+New standalone intake members from the current archival batch:
+
+- [`Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30/`](Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30/),
+  *Dyadic Radon Profiles in the Fabius--Rvachev Web* (31 letter-paper pp,
+  2,064 source lines; with a 624-line program, ten data files, and four
+  PDF/PNG figure pairs), arrived on 2026-08-30 as an already-unpacked bare
+  directory. Its submitted ledger covers all 26 non-ledger payloads; nine
+  CSV entries were refreshed after CRLF-to-LF normalization and the complete
+  ledger now verifies. The title and abstract concern spectral reconstruction
+  of dyadic projection profiles, zero multiplicities, q-sampled cumulants,
+  automatic signs, Pascal factorizations, and exact cubature.
+
+- [`Fabius_Pascal_Frontiers_Report/`](Fabius_Pascal_Frontiers_Report/),
+  *Automatic Spectra, Exact Dyadic Cubature, and Probabilistic Duals in the
+  Pascal--Rvachev Hierarchy* (27 A4 pp, 1,943 source lines; with a 426-line
+  program, four CSV tables, and a captured numerical summary), arrived as a
+  nine-file bare directory. It supplied no checksum ledger or dependency
+  lock; the repository-added `SHA256SUMS` records and verifies all nine
+  payloads. The title and abstract concern higher-rank spectral signs and
+  Lambert series, dyadic cubature, Laguerre--Pólya/Pascal hierarchies, and
+  probabilistic spectral duals.
+
+- [`Fabius_Rvachev_Carleman_Frontiers_2026-08-30/`](Fabius_Rvachev_Carleman_Frontiers_2026-08-30/),
+  *Critical Ultradifferentiable Geometry of the Fabius--Rvachev System*
+  (24 A4 pp, 1,941 source lines; with a 544-line program, four CSV tables,
+  and five PDF/PNG figure pairs), arrived as an already-unpacked bare
+  directory. Its submitted 21-entry payload ledger now verifies after four
+  CSV entries were refreshed for CRLF-to-LF normalization. The title and
+  abstract extend the derivative spectrum into Denjoy--Carleman scales,
+  discrete Fourier duality, lattice corrections, Lambert-W saddles, and
+  Bell-edge behavior.
+
+- [`Dyadic_Spectral_Divisors_and_Gamma_Duality/`](Dyadic_Spectral_Divisors_and_Gamma_Duality/),
+  *Dyadic Spectral Divisors and Gamma Duality* (22 A4 pp, 1,301 source lines;
+  with a 379-line program, seven generated outputs, and three PDF/PNG figure
+  pairs), arrived in the generic bare wrapper
+  `Fabius_Rvachev_Frontier_Report-F/` and was filed under this title-derived
+  collision-safe name. Its submitted ledger covered only 3 of 19 payloads;
+  the expanded repository ledger records and verifies all 19. The title and
+  abstract concern the dyadic zero divisor, Laguerre--Pólya and non-holonomic
+  structure, reciprocal-base counting, heat traces, Gamma/Thorin duality, and
+  Lambert inversion.
+
+- [`fabius_holonomic_frontiers_report/`](fabius_holonomic_frontiers_report/),
+  *Holonomic Rank, Exact Overlaps, and Non-P-Recursiveness in the
+  Fabius--Rvachev System* (30 A4 pp, 2,279 source lines; with a 644-line
+  experiment, six CSV tables, a generated TeX fragment, a captured text
+  check, and five PDF/PNG figure pairs), arrived as a bare directory. Its
+  submitted ledger covers all 26 non-ledger payloads and now verifies after
+  six CSV entries were refreshed for CRLF-to-LF normalization. All six
+  delivered PDFs are readable and unencrypted (35 pages total), and the title
+  and abstract concern finite sinc-product differential rank, exact signed
+  overlaps, dyadic Thue--Morse/frequency spectra, and non-D-finiteness.
+
+These five packages remain standalone pending post-publication claim review,
+experiment assessment, semantic comparison, and Lean crosswalks. Manuscript
+result, proof, novelty, and numerical labels do not establish Lean
+verification.
+
 New standalone intake member:
 [`Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/`](Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/),
 *Reciprocal-Integer Convolution Divisors of the Rvachev Law* (32 pp),

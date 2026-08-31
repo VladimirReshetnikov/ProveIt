@@ -2,6 +2,19 @@
 
 New standalone intake members:
 
+- [`Geometric_Uniform_Convolutions_and_New_Frontiers/`](Geometric_Uniform_Convolutions_and_New_Frontiers/),
+  *Geometric Uniform Convolutions and New Frontiers around the
+  Fabius--Rvachev System*, arrived on 2026-08-30 as a bare, incomplete
+  one-file package containing 1,656 lines of LF TeX. No PDF, README,
+  checksum ledger, repository-metadata file, external code, data, or figures
+  was delivered, so the repository-generated ledger records only that TeX.
+  Its abstract says reproducible Python code accompanies the report, but none
+  is present. The source spans q-deformation, Thue--Morse differences,
+  Bell--Bernoulli calculus, Fourier-zero arithmetic, non-Gevrey growth, and
+  Lambert-W inversion. No compilation or mathematical assessment was
+  performed at intake; the missing PDF and companions remain explicit
+  follow-up work, and manuscript labels do not establish Lean verification.
+
 - [`fabius_information_frontier/`](fabius_information_frontier/),
   *Exact Information Geometry and New Frontiers for the Fabius--Rvachev
   System* (30 pp), arrived on 2026-08-30 from the rootless archive

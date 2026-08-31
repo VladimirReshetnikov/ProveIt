@@ -2,6 +2,46 @@
 
 New standalone intake members:
 
+- [`Jacobi_Digit_Fabius_Rvachev_Frontier_Report/`](Jacobi_Digit_Fabius_Rvachev_Frontier_Report/),
+  *Jacobi-Digit Deformations of the Fabius--Rvachev Law* (32 letter-paper pp,
+  2,134 source lines), arrived on 2026-08-30 as a bare directory. Its
+  submitted ledger covers and verifies all 38 non-ledger payloads, and all
+  text payloads are LF. The title and abstract concern beta/Jacobi digit
+  replacements, Bessel products, random-flight representations, cumulants,
+  orthogonal polynomials, and endpoint asymptotics.
+
+- [`Matrix_Dilated_Fabius_Rvachev_Frontier_Report/`](Matrix_Dilated_Fabius_Rvachev_Frontier_Report/),
+  *Matrix-Dilated Fabius--Rvachev Laws* (29 A4 pp, 2,018 source lines),
+  arrived as a bare directory. Its submitted ledger covers all 27 non-ledger
+  payloads and now verifies after seven CSV entries were refreshed for
+  CRLF-to-LF normalization. The title and abstract concern matrix-dilated
+  vector-digit laws, infinite box splines, self-affine zonoids, tensor
+  cumulants, and rotating-zonoid q-series.
+
+- [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/),
+  *Common-Digit Fabius Zonoids* (36 A4 pp, 2,096 main-source lines), arrived
+  as a bare directory. Its submitted ledger covers all 24 non-ledger
+  payloads and now verifies after six CSV entries were refreshed for
+  CRLF-to-LF normalization. The title and abstract concern common-digit
+  couplings across geometric parameters, zonoid supports,
+  hyperbolic-secant covariance geometry, Gaussian limits, and parameter jets.
+
+- [`fabius_dyadic_chaos_frontier/`](fabius_dyadic_chaos_frontier/),
+  *Dyadic Sensitivity and Polynomial-Chaos Frontiers for the
+  Fabius--Rvachev Law* (34 A4 pp, 2,694 source lines; with a 658-line
+  experiment, nine CSV tables, three audit files, and six PDF/PNG figure
+  pairs), arrived from `fabius_dyadic_chaos_frontier.zip` (outer SHA-256
+  `d57fd01c3991a6a7ecd6ba6e745729c745745d3265cb3cfd414aac1991b11b86`).
+  The archive passed CRC, structural, and path-safety checks; its ledger
+  covers all 30 payloads and now verifies after nine CSV rows were refreshed
+  for CRLF-to-LF normalization. All seven PDFs are readable and unencrypted
+  (40 pages total). Its title and abstract concern digit ANOVA, tensor
+  Legendre chaos, q-Pochhammer interaction bounds, and dyadic Mellin phases.
+
+These four reports remain standalone pending post-publication claim review,
+experiment assessment, semantic comparison, and Lean crosswalks. Manuscript
+labels and numerical outputs do not establish Lean verification.
+
 - [`Fabius_Zero_Bias_Frontier_Report/`](Fabius_Zero_Bias_Frontier_Report/),
   *Zero-Bias Towers and Spectral Peeling in the Fabius--Rvachev System*
   (26 pp), arrived on 2026-08-30 from
@@ -174,7 +214,7 @@ New standalone intake members:
   Poisson operators, martingales, nonreversibility certificate, scalar Stein
   kernel, and endpoint asymptotics extend the operator-representation theme.
 
-All six remain standalone pending deliberate consolidation and completion of
+All ten remain standalone pending deliberate consolidation and completion of
 their claim-by-claim Lean crosswalks; the determinant and exact-value sublayers
 just identified are the recorded partial crosswalk for
 `Fabius_Rvachev_New_Frontiers-2/`.
