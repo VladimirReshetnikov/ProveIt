@@ -235,6 +235,17 @@ theorem hasDerivAt_tanh (x : ℝ) :
   simp only [Pi.div_apply]
   field_simp [(Real.cosh_pos x).ne']
 
+/-- The continuous totalization `tanhDiv` is exactly the divided slope of
+hyperbolic tangent at the origin. -/
+theorem tanhDiv_eq_dslope : tanhDiv = dslope Real.tanh 0 := by
+  funext x
+  rcases eq_or_ne x 0 with rfl | hx
+  · simp only [tanhDiv_zero, dslope_same]
+    simpa using (hasDerivAt_tanh 0).deriv.symm
+  · rw [tanhDiv_of_ne_zero hx, dslope_of_ne Real.tanh hx,
+      slope_def_field]
+    simp
+
 /-- Hyperbolic tangent is nonnegative on the nonnegative half-line. -/
 theorem tanh_nonneg_of_nonneg {x : ℝ} (hx : 0 ≤ x) :
     0 ≤ Real.tanh x := by

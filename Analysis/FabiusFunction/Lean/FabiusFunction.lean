@@ -94,6 +94,7 @@ import FabiusFunction.SinhDivBernoulliLog
 import FabiusFunction.HyperbolicActivation
 import FabiusFunction.ActivationSeries
 import FabiusFunction.ActivationAsymptotics
+import FabiusFunction.ActivationTaylor
 import FabiusFunction.ActivationSeriesAsymptotics
 import FabiusFunction.GeometricActivationDimension
 import FabiusFunction.GeometricActivationAsymptotics
