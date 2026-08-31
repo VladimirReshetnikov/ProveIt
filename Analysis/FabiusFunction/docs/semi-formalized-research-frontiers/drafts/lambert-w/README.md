@@ -20,7 +20,7 @@ Four independently written article packages arrived together on
 consolidated volume:
 
 Member: `Lambert_W_Guide/` — *The Lambert W Function: A Real-Variable
-Guide* (61 pp, consolidated edition).  The most complete of the four
+Guide* (62 pp, consolidated edition).  The most complete of the four
 treatments forms the body; the unique layers of the other three (the
 complete power-tower convergence theorem, inverse-Taylor corrections,
 the branch-exchange involution, the transcendence theorem, a
@@ -77,6 +77,38 @@ API is `deriv_lowerLambertW_hasDerivAt`,
 `strictConcaveOn_lowerLambertW_right`.  Thus `W₋₁''` changes sign exactly at
 `-2e⁻²`, with strict convexity on `[-1/e,-2e⁻²]` and strict concavity on
 `[-2e⁻²,0)`.
+
+The one-sided branch-point geometry package is
+`LambertWBranchPointGeometry.lean`.  Its exhaustive eight-theorem surface is
+`tendsto_deriv_principalLambertW_branchPoint_atTop`,
+`tendsto_deriv_lowerLambertW_branchPoint_atBot`,
+`tendsto_principalLambertW_secantSlope_branchPoint_atTop`,
+`tendsto_lowerLambertW_secantSlope_branchPoint_atBot`,
+`principalLambertW_not_differentiableWithinAt_branchPoint`,
+`lowerLambertW_not_differentiableWithinAt_branchPoint`,
+`principalLambertW_not_differentiableAt_branchPoint`, and
+`lowerLambertW_not_differentiableAt_branchPoint`.  As the input approaches
+`-exp(-1)` from the right, the principal derivative and endpoint secant slope
+tend to `+∞`, while their lower-branch counterparts tend to `-∞`.  Hence
+neither branch has a finite right derivative there, and neither totalized
+branch is differentiable at the branch point.
+
+The leading square-root package is
+`LambertWBranchPointAsymptotics.lean`.  Its exhaustive public surface is the
+definition `lambertWBranchPointScale` and the eight theorems
+`lambertWBranchPointScale_pos`, `lambertWBranchPointScale_sq`,
+`tendsto_principalLambertW_add_one_sq_div_branchPoint`,
+`tendsto_lowerLambertW_add_one_sq_div_branchPoint`,
+`principalLambertW_add_one_sq_isEquivalent_branchPoint`,
+`lowerLambertW_add_one_sq_isEquivalent_branchPoint`,
+`principalLambertW_add_one_isEquivalent_branchPoint`, and
+`lowerLambertW_add_one_isEquivalent_branchPoint`.  The positive scale is
+`sqrt(2 exp(1) (z + exp(-1)))`; its square is exactly
+`2 exp(1) (z + exp(-1))` to the right of the branch point.  For both branches,
+`(W(z)+1)^2 / (z+exp(-1)) → 2 exp(1)`, equivalently the squared displacement is
+asymptotic to that exact linear normalization.  The signed leading laws are
+`W₀(z)+1 ~ lambertWBranchPointScale(z)` and
+`W₋₁(z)+1 ~ -lambertWBranchPointScale(z)` from the right.
 
 The scaled integer-power profile package lives in
 `PowerExponentialLambert.lean`, `PowerExponentialLambertCalculus.lean`,
@@ -154,9 +186,12 @@ through the peak.  For the principal phase, the same module exports
 `strictConvexOn_fabiusPrincipalLambertPhase` on the whole closed half-line
 ending at `exp(-1)/log 2`, including negative inputs and zero.
 
-Still open in Lean are both branch-point vertical-tangent limits and the
-Puiseux package.  No derivative at the branch point is claimed, and the
-generic square-root threshold/shape package remains open as stated above.
+The branch-point results do not assign either branch a finite derivative at
+the endpoint.  Still open in Lean are an `O(z + exp(-1))` remainder after the
+signed leading square-root term, a convergent signed Puiseux expansion and its
+higher coefficients, named generic/Fabius phase wrappers for the derivative,
+secant, and square-root endpoint laws, and the generic square-root
+threshold/shape package stated above.
 
 For the Fabius endpoint observable itself,
 `FabiusLambertPhaseLockedPullback.lean`,

@@ -1470,6 +1470,18 @@ If \(0\le q<1\), including \(q=0\), its exterior values are
  \qquad F_q(x)=1\quad(x\ge1).                              \label{eq:geometric-cdf-tails}
 \end{equation}
 
+The totalized quotient in \eqref{eq:geometric-uniform-cdf-density} has a sharp
+parameter defect outside the positive-ratio range.  Lean proves
+\[
+ f_0(x)=0,\qquad q<0\Longrightarrow f_q(x)\le0.
+\]
+Consequently, for every \(q\le0\), clamping this selected formula by
+\(\operatorname{ofReal}\) gives the zero \texttt{withDensity} measure.  When also
+\(|q|<1\), that measure cannot equal the probability law \(\mu_q\).  This is a
+formal nonidentity result for the displayed total formula, not a denial of the
+already proved absolute continuity of \(\mu_q\); an exact Lean theorem for the
+paper-level corrected signed-ratio density at negative \(q\) remains open.
+
 For \(0<q<1\), conditioning on the head coordinate gives, for every real \(x\),
 \begin{align}
  F_q(x)
@@ -1584,7 +1596,8 @@ The generic CDF mechanisms are
 \lean{measure_eq_withDensity_of_cdf_hasDerivAt} in
 \path{ContinuousCDF.lean}.
 
-The exact named interface in \path{GeometricUniformCDF.lean} consists of
+The exact thirty-one-declaration interface in
+\path{GeometricUniformCDF.lean} consists of
 \lean{ProbabilityRepresentation.geometricUniformCDF},
 \lean{ProbabilityRepresentation.monotone_geometricUniformCDF},
 \lean{ProbabilityRepresentation.geometricUniformCDF_nonneg},
@@ -1598,6 +1611,10 @@ The exact named interface in \path{GeometricUniformCDF.lean} consists of
 \lean{ProbabilityRepresentation.geometricUniformCDF_eq_integral},
 \lean{ProbabilityRepresentation.geometricUniformCDF_eq_intervalIntegral},
 \lean{ProbabilityRepresentation.geometricUniformDensity},
+\lean{ProbabilityRepresentation.geometricUniformDensity_zero},
+\lean{ProbabilityRepresentation.geometricUniformDensity_nonpos_of_neg},
+\lean{ProbabilityRepresentation.volume_withDensity_geometricUniformDensity_eq_zero_of_nonpos},
+\lean{ProbabilityRepresentation.geometricUniformDistribution_ne_withDensity_geometricUniformDensity_of_nonpos},
 \lean{ProbabilityRepresentation.geometricUniformCDF_hasDerivAt},
 \lean{ProbabilityRepresentation.deriv_geometricUniformCDF},
 \lean{ProbabilityRepresentation.continuous_geometricUniformDensity},
@@ -1625,9 +1642,12 @@ dyadic support corollary is \lean{weightedSumDistribution_support_eq_Icc}.
 
 The remaining boundary is parameter-sensitive.  Although \(\mu_q\) is absolutely continuous
 throughout \(|q|<1\), the displayed total function \(f_q\) is identified as its
-Radon--Nikodym density only for \(0<q<1\); no such interpretation is claimed here at
-\(q=0\) or for negative \(q\).  The positive-ratio \(C^\infty\) theorem is proved by the
-real-space derivative refinement.  The phase-bearing general-\(q\) sinc prefixes and their
+Radon--Nikodym density only for \(0<q<1\).  At \(q=0\) it is identically zero, and for
+negative \(q\) it is nonpositive; hence its \(\operatorname{ofReal}\)-clamped measure is
+zero for every \(q\le0\) and is formally unequal to \(\mu_q\) on the contraction range.
+An exact Lean theorem for the paper-level corrected signed-ratio density remains open.  The positive-ratio
+\(C^\infty\) theorem is proved by the real-space derivative refinement.  The
+phase-bearing general-\(q\) sinc prefixes and their
 pointwise characteristic-function limit are formal; the pure complex sinc product now has
 named locally uniform convergence, pointwise \lean{HasProd}, and entireness, and the two
 identities above close its characteristic-function and reciprocal-Gamma bridges.  A named
@@ -4563,14 +4583,24 @@ the open interval, not finite derivatives at \(0\) or \(1\).
 
 The exact uniform modulus of this clamped inverse is now separated from the
 differential theory in \path{InverseModulus.lean}.  Its exhaustive public surface is one
-definition, \lean{fabiusIntervalMass}, and twenty theorems:
+definition, \lean{fabiusIntervalMass}, and thirty-one theorems:
 \lean{fabiusIntervalMass_reflect},
+\lean{fabiusIntervalMass_eq_zero_of_add_nonpos},
+\lean{fabiusIntervalMass_eq_zero_of_one_le},
 \lean{monotoneOn_fabiusIntervalMass_firstHalf},
 \lean{antitoneOn_fabiusIntervalMass_secondHalf},
-\lean{fabiusReal_sub_le_sub}, \lean{fabiusReal_add_le},
+\lean{strictMonoOn_fabiusIntervalMass_firstHalf},
+\lean{strictAntiOn_fabiusIntervalMass_secondHalf},
+\lean{fabiusReal_sub_le_sub},
+\lean{fabiusReal_lt_fabiusIntervalMass_of_mem_Ioo},
+\lean{fabiusIntervalMass_eq_fabiusReal_iff},
+\lean{fabiusReal_sub_lt_sub}, \lean{fabiusReal_sub_eq_sub_iff},
+\lean{fabiusReal_add_le}, \lean{fabiusReal_add_eq_iff},
 \lean{fabiusInv_sub_le_sub_of_mem_Icc},
+\lean{fabiusInv_sub_eq_sub_iff_of_mem_Icc},
 \lean{fabiusInv_sub_le_sub_of_le}, \lean{fabiusInv_sub_le_sub},
 \lean{fabiusInv_add_le}, \lean{abs_fabiusInv_sub_le},
+\lean{abs_fabiusInv_sub_eq_iff_of_mem_Icc},
 \lean{dist_fabiusInv_le}, \lean{fabiusInv_min_one},
 \lean{isGreatest_abs_fabiusInv_sub}, \lean{sSup_abs_fabiusInv_sub_eq},
 \lean{isGreatest_abs_fabiusInv_sub_Icc},
@@ -4580,12 +4610,18 @@ definition, \lean{fabiusIntervalMass}, and twenty theorems:
 \lean{fabiusReal_le_abs_sub_of_le_abs_fabiusInv_sub}, and
 \lean{forall_abs_fabiusInv_sub_lt_iff}.
 For every nonnegative interval length, the mass increment is reflection-invariant,
-increases toward the centered interval, and then decreases.  The resulting endpoint
-minimum gives the ordered and order-free inverse-gap bounds, subadditivity, absolute and
-metric self-moduli, saturation at one, and attained exact \path{IsGreatest}/\path{sSup}
-moduli over both all real inputs and unit-interval inputs.  The final four theorems are the
-strict and closed effective-injectivity bounds, their contrapositive separation form, and
-the exact uniform strict-threshold biconditional.  This structural API does not claim the
+vanishes on either constant tail, increases toward the centered interval, and then
+decreases.  When \(0<h\le1\), the maximal support-meeting branches
+\([-h,(1-h)/2]\) and \([(1-h)/2,1]\) are strict.  On the unit
+interval, the endpoint minimum has exact strict-interior and degenerate/endpoint equality
+loci, and constrained superadditivity has its complete equality classification.  The
+resulting ordered and order-free inverse-gap bounds include complete ordered and absolute
+equality loci on \([0,1]\), while the clamped tails deliberately preclude a global equality
+claim.  Subadditivity, absolute and metric self-moduli, saturation at one, and attained
+exact \path{IsGreatest}/\path{sSup} moduli hold over all real inputs and unit-interval
+inputs.  The final four theorems are the strict and closed effective-injectivity bounds,
+their contrapositive separation form, and the exact uniform strict-threshold
+biconditional.  This structural API does not claim the
 computability report's closed \(\Delta_r\) lower bound, recursive-modulus packaging,
 tolerant bisection realizer, sequential computability, combined computable-real-function
 theorem, or bit-complexity estimate.
@@ -5589,6 +5625,81 @@ This is the strict-degree case of
 the monomial statement used internally is
 \lean{thueMorsePowerSum_eq_zero_of_lt}.
 \end{proof}
+
+The arbitrary-step centered version is packaged in
+\path{ThueMorseSymmetricDifference.lean}.  If an additive commutative group
+\(V\) acts additively on \(P\), the values lie in an additive commutative
+group \(A\), \(a_i\in V\) are half-steps, and \(s\) is a finite set of
+indices, then \lean{symmetricMixedDifference} is the ordinary mixed
+difference with full steps \(-2a_i\), evaluated at the result of the action
+of \(\sum_{i\in s}a_i\) on \(x\).  Its exact symmetric Boolean-cube expansion is
+\[
+ \sum_{t\subseteq s}(-1)^{|t|}\mathbin{\boldsymbol\cdot}
+ f\!\left(\left(\sum_{i\in s}a_i-2\sum_{i\in t}a_i\right)+_{\!v} x\right),
+\]
+where the bold dot denotes the integer action on \(A\), and \(+_{\!v}\) denotes
+the additive action on \(P\).  No distinctness
+assumption is imposed on the half-step values.
+
+Over a commutative ring, if \(p\) has degree at most \(|s|\), the same
+operator applied to \(p\) is
+\[
+ [X^{|s|}]p\; |s|!\prod_{i\in s}(2a_i).
+\]
+Thus every polynomial of degree below \(|s|\) is annihilated, including the
+zero-polynomial/empty-support boundary expressed in Lean with
+\nolinkurl{Polynomial.degree}, and the first surviving monomial has the
+sign-free value \(|s|!\prod_{i\in s}(2a_i)\).
+
+For the dyadic half-steps \(2^jh\), write the resulting operator as
+\(D_m(h;f,x)\).  Over a characteristic-zero field, the exact increasing-grid
+form is
+\[
+ D_m(2^{-m};f,x)
+ =\sum_{n<2^m}(-1)^m\varepsilon_n\mathbin{\boldsymbol\cdot}
+ f\!\left(x-(1-2^{-m})+2n2^{-m}\right).
+\]
+This includes \(m=0\).  At positive order \(N=m+1\), the full grid point is
+\[
+ x-(1-2^{-(m+1)})+\frac{n}{2^m},
+\]
+with sign \((-1)^N\varepsilon_n\); its varying term is \(n/2^m\), and its
+mesh spacing is \(1/2^m\).
+
+The module's complete public surface is exactly two definitions and eleven
+theorems:
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.07\textwidth} >{\raggedright\arraybackslash}p{0.50\textwidth} >{\raggedright\arraybackslash}p{0.36\textwidth}@{}}
+\toprule
+No. & Declaration & Formal content \\
+\midrule
+\endfirsthead
+\toprule
+No. & Declaration & Formal content \\
+\midrule
+\endhead
+1 & \lean{symmetricMixedDifference} & Centered operator from arbitrary half-steps. \\
+2 & \lean{symmetricMixedDifference_empty} & Empty operator equals evaluation at the center. \\
+3 & \lean{symmetricMixedDifference_singleton} & One factor is \(f(a_i+_{\!v} x)-f((-a_i)+_{\!v} x)\). \\
+4 & \lean{symmetricMixedDifference_insert} & Insert recurrence; only the index must be new. \\
+5 & \lean{symmetricMixedDifference_eq_sum_powerset_smul} & Exact symmetric Boolean-cube expansion. \\
+6 & \lean{symmetricMixedDifference_polynomial_eq_coeff_card} & Degree-\(|s|\) coefficient extraction over a commutative ring. \\
+7 & \lean{symmetricMixedDifference_polynomial_of_degree_lt} & Sharp cancellation below \(|s|\), including the zero boundary. \\
+8 & \lean{symmetricMixedDifference_pow_card} & Sign-free first surviving monomial value. \\
+9 & \lean{symmetricDyadicMixedDifference} & Dyadic half-step specialization. \\
+10 & \lean{symmetricDyadicMixedDifference_zero} & Zeroth dyadic operator equals evaluation. \\
+11 & \lean{symmetricDyadicMixedDifference_eq_sum_thueMorseSign_smul} & Centered dyadic Thue--Morse block over additive groups. \\
+12 & \lean{symmetricDyadicMixedDifference_inv_two_pow_eq_sum_thueMorseSign_smul} & Increasing affine grid over a characteristic-zero field, including \(m=0\). \\
+13 & \lean{symmetricDyadicMixedDifference_inv_two_pow_succ_eq_sum_thueMorseSign_smul} & Positive-order grid term \(n/2^m\) (mesh \(1/2^m\)). \\
+\bottomrule
+\end{longtable}
+
+This closes the symmetric-cube, polynomial cancellation/top-value, and exact
+affine-grid clauses of the continuous-chaos report's Thue--Morse corner
+theorem.  It does \emph{not} prove that report's repeated-integral equality
+under \(C^N\) hypotheses; that analytic clause and a single report-shaped
+wrapper remain.  The report's following Walsh conditional-expectation
+corollary also still needs its sign--magnitude probability construction,
+conditioning argument, and \(2^{-N}\) normalization.
 
 The finite block polynomial packages the same signs without introducing an analytic
 exponential identity:
@@ -8994,8 +9105,136 @@ The derivative witness and pointwise formula are
 \path{LambertBranchDichotomy.lean}.
 
 The strict-shape theorems include the finite branch point by continuity; they do not give
-a derivative or a second derivative there.  A branch-point vertical-tangent limit and a
-Puiseux expansion remain outside the proved API.
+a derivative or a second derivative there.  The later branch-point leaves close the
+one-sided vertical geometry and the first square-root term, as follows.
+
+\subsubsection{Branch-point vertical geometry and leading square-root law}
+Put
+\begin{equation}
+ b=-\exp(-1),\qquad \Delta(z)=z-b=z+\exp(-1),\qquad
+ \mathcal S(z)=\sqrt{2\exp(1)\bigl(z+\exp(-1)\bigr)}.
+ \label{eq:lambert-branch-point-scale}
+\end{equation}
+Every limit in this paragraph is one-sided, with \(z\downarrow b\), equivalently along
+the filter of points strictly to the right of \(b\).  The two interior derivatives and
+the two endpoint secant slopes satisfy
+\begin{align}
+ W_0'(z)&\longrightarrow+\infty,
+ &W_{-1}'(z)&\longrightarrow-\infty,
+                                                        \label{eq:lambert-branch-derivative-limits}\\
+ \frac{W_0(z)+1}{z+\exp(-1)}&\longrightarrow+\infty,
+ &\frac{W_{-1}(z)+1}{z+\exp(-1)}&\longrightarrow-\infty.
+                                                        \label{eq:lambert-branch-secant-limits}
+\end{align}
+Thus neither branch has a finite right derivative at \(b\): formally, each fails
+\(\operatorname{DifferentiableWithinAt}\) on the right-hand set \((b,\infty)\).
+Moreover, each totalized real branch fails to be differentiable at \(b\) as an
+all-real function.
+
+The proof of \eqref{eq:lambert-branch-derivative-limits} keeps the inverse derivative in
+the nonsingular form
+\[
+ W_j'(z)=\frac{1}{\exp(W_j(z))(W_j(z)+1)}.
+\]
+Endpoint continuity gives \(W_j(z)\to-1\).  On the principal branch the denominator
+therefore tends to zero through positive values, while on the lower branch it tends to
+zero through negative values; inversion gives the two signed infinite limits.  Principal
+concavity gives \(W_0'(z)\le (W_0(z)-W_0(b))/(z-b)\), and lower convexity on the first
+shape interval gives
+\((W_{-1}(z)-W_{-1}(b))/(z-b)\le W_{-1}'(z)\).  These inequalities transfer the
+derivative limits to \eqref{eq:lambert-branch-secant-limits}.  Mathlib's one-sided
+derivative-divergence obstruction then rules out a finite right derivative; ordinary
+differentiability would imply that forbidden within-set differentiability.
+
+The exact eight-theorem crosswalk for this geometry layer is:
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.48\textwidth}
+                         >{\raggedright\arraybackslash}p{0.46\textwidth}@{}}
+\toprule
+Declaration in \path{LambertWBranchPointGeometry.lean} & Formal content\\
+\midrule
+\endfirsthead
+\toprule
+Declaration in \path{LambertWBranchPointGeometry.lean} & Formal content\\
+\midrule
+\endhead
+\lean{tendsto_deriv_principalLambertW_branchPoint_atTop} & Principal derivative tends to \(+\infty\) from the right.\\
+\lean{tendsto_deriv_lowerLambertW_branchPoint_atBot} & Lower derivative tends to \(-\infty\) from the right.\\
+\lean{tendsto_principalLambertW_secantSlope_branchPoint_atTop} & Principal endpoint secant slope tends to \(+\infty\).\\
+\lean{tendsto_lowerLambertW_secantSlope_branchPoint_atBot} & Lower endpoint secant slope tends to \(-\infty\).\\
+\lean{principalLambertW_not_differentiableWithinAt_branchPoint} & No finite principal right derivative on \(\operatorname{Ioi}(b)\).\\
+\lean{lowerLambertW_not_differentiableWithinAt_branchPoint} & No finite lower right derivative on \(\operatorname{Ioi}(b)\).\\
+\lean{principalLambertW_not_differentiableAt_branchPoint} & The totalized principal branch is not differentiable at \(b\).\\
+\lean{lowerLambertW_not_differentiableAt_branchPoint} & The totalized lower branch is not differentiable at \(b\).\\
+\bottomrule
+\end{longtable}
+
+For the first-order asymptotics, the forward map
+\(\phi(w)=w\exp w\) has a double contact at \(w=-1\).  A
+punctured-neighborhood L'H\^opital calculation gives the limit
+\begin{equation}
+ \frac{\phi(w)+\exp(-1)}{(w+1)^2}
+ \longrightarrow\frac{\exp(-1)}2
+ \qquad(w\to-1,\ w\ne-1).                                \label{eq:lambert-forward-quadratic-ratio}
+\end{equation}
+Indeed, after differentiating numerator and denominator, the quotient reduces away
+from \(-1\) to \(\exp(w)/2\).  Composing with either branch, using
+\(W_j(z)\exp(W_j(z))=z\), and then inverting the nonzero limit proves
+\begin{equation}
+ \frac{(W_j(z)+1)^2}{z+\exp(-1)}\longrightarrow2\exp(1),
+ \qquad j\in\{0,-1\}.                                    \label{eq:lambert-branch-squared-ratio}
+\end{equation}
+Equivalently, each squared displacement is asymptotic to
+\(2\exp(1)(z+\exp(-1))\).  Finally, the strict signs
+\(W_0(z)+1>0\) and \(W_{-1}(z)+1<0\) select the two square roots:
+\begin{equation}
+ W_0(z)+1\sim +\mathcal S(z),
+ \qquad
+ W_{-1}(z)+1\sim -\mathcal S(z)
+ \qquad(z\downarrow-\exp(-1)).                            \label{eq:lambert-branch-signed-sqrt}
+\end{equation}
+
+The public inventory of \path{LambertWBranchPointAsymptotics.lean} is exactly one
+noncomputable definition and eight theorems:
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.48\textwidth}
+                         >{\raggedright\arraybackslash}p{0.46\textwidth}@{}}
+\toprule
+Declaration & Formal content\\
+\midrule
+\endfirsthead
+\toprule
+Declaration & Formal content\\
+\midrule
+\endhead
+\lean{lambertWBranchPointScale} & Definition of the exact scale \(\sqrt{2\exp(1)(z+\exp(-1))}\).\\
+\lean{lambertWBranchPointScale_pos} & Positivity of the scale for \(b<z\).\\
+\lean{lambertWBranchPointScale_sq} & Exact square identity \(\mathcal S(z)^2=2\exp(1)(z+\exp(-1))\) for \(b<z\).\\
+\lean{tendsto_principalLambertW_add_one_sq_div_branchPoint} & Principal squared-ratio limit \eqref{eq:lambert-branch-squared-ratio}.\\
+\lean{tendsto_lowerLambertW_add_one_sq_div_branchPoint} & Lower squared-ratio limit \eqref{eq:lambert-branch-squared-ratio}.\\
+\lean{principalLambertW_add_one_sq_isEquivalent_branchPoint} & Principal squared-displacement asymptotic equivalence.\\
+\lean{lowerLambertW_add_one_sq_isEquivalent_branchPoint} & Lower squared-displacement asymptotic equivalence.\\
+\lean{principalLambertW_add_one_isEquivalent_branchPoint} & The signed \(+\mathcal S\) principal law in \eqref{eq:lambert-branch-signed-sqrt}.\\
+\lean{lowerLambertW_add_one_isEquivalent_branchPoint} & The signed \(-\mathcal S\) lower law in \eqref{eq:lambert-branch-signed-sqrt}.\\
+\bottomrule
+\end{longtable}
+
+The dependency order is exact.  \path{PrincipalLambertW.lean} imports
+\path{LowerLambertW.lean}; \path{LambertBranchDichotomy.lean} imports the principal
+leaf; \path{LambertWCurvature.lean} imports that pair layer;
+\path{LambertWBranchPointGeometry.lean} imports the curvature leaf; and
+\path{LambertWBranchPointAsymptotics.lean} imports the geometry leaf together with
+Mathlib's specific-asymptotics and L'H\^opital modules.  The umbrella facade lists
+\path{LambertWCurvature.lean}, \path{LambertWBranchPointGeometry.lean}, and
+\path{LambertWBranchPointAsymptotics.lean} in this dependency order before the scaled
+power--exponential leaves.
+
+This is a current-tree addendum compiled on 30 August 2026: its inventory is exactly
+eight geometry theorems and one asymptotic definition plus eight asymptotic theorems,
+with private proof helpers excluded.  No aggregate commit hash is attributed to it.
+The result is only the leading square-root, or first Puiseux, equivalence.  An
+\(O(\Delta)\) remainder, higher coefficients, and a convergent or full Puiseux expansion
+remain open.  There are also no named generic power--exponential or Fabius endpoint
+vertical-tangent/secant/asymptotic wrappers yet, and the generic
+\(m\mathbin{\pm}\sqrt m\) threshold and shape layer remains open.
 
 \begin{corollary}[Solution of the saddle equation]
 \label{thm:tm-lambert-lambda}
@@ -9437,7 +9676,9 @@ The exact Lean crosswalk is \lean{powerExponentialLambertEpsilon},
 \(\epsilon\)-form with an \(o(1)\) remainder.  A cleaned formula in
 \(\log(A/x)\), further logarithmic terms, and a full series are not part of this package.
 The separate interior curvature formula \eqref{eq:power-exponential-phase-curvature} does
-not supply a branch-point vertical-tangent limit or a Puiseux expansion.
+not itself supply named generic-phase branch-point vertical-tangent, secant-slope, or
+leading square-root wrappers; the raw-branch results above have not yet been transported
+through the scaled coordinate.
 
 For the classical parameters \((m,A,\beta)=(1,1,L)\), the principal root is
 \lean{fabiusPrincipalLambertPhase} and the lower root is \lean{fabiusLambertPhase}.
@@ -10515,8 +10756,11 @@ That rule explains several choices made above:
       second-countable real inner-product target.  Its
       \path{GeometricUniformUniqueness.lean} specialization characterizes the named law,
       including \(q=0\) and negative \(q\), without support, density, or moment assumptions.
-      The selected density has no proved interpretation here at \(q=0\) or
-      negative \(q\).  \path{GeometricSincFactorization.lean} gives the exact finite
+      The selected total density is instead proved zero at \(q=0\), nonpositive for
+      negative \(q\), and to have zero clamped \texttt{withDensity} measure for
+      \(q\le0\), which cannot represent \(\mu_q\) on the nonpositive contraction range.
+      Only formalization of the paper-level sign-corrected density remains open.
+      \path{GeometricSincFactorization.lean} gives the exact finite
       residual sinc factorization and pointwise phase-bearing prefix limit for every
       \(|q|<1\), with dyadic wrappers.  The pure rescaled sinc product now has named
       locally uniform convergence, pointwise \lean{Multipliable}/\lean{HasProd}, and
@@ -11218,7 +11462,7 @@ Dyadic and \(q\)-binomial formulas &
 \path{FabiusDiscreteLimitToeplitz.lean},
 \path{FabiusDiscreteLimitIntegration.lean}\\
 Thue--Morse algebra, finite complex transforms, prefixes, disc series, and
-ring-valued Prouhet identities &
+ring-valued Prouhet identities, including centered symmetric mixed differences &
 \path{ThueMorseBitSupport.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseBooleanCube.lean}, \path{ThueMorseComplexExponential.lean},
 \path{ThueMorseGenerating.lean},
@@ -11226,6 +11470,8 @@ ring-valued Prouhet identities &
 \path{ThueMorseInfiniteProduct.lean}, \path{ThueMorseDiscSeries.lean},
 \path{ThueMorseNaturalBoundary.lean},
 \path{ThueMorseExponential.lean}, \path{ThueMorseApproximation.lean},
+\path{ThueMorseMixedDifference.lean},
+\path{ThueMorseSymmetricDifference.lean},
 \path{ThueMorseSparseProuhet.lean}, \path{PaperKFoldThueMorse.lean}\\
 Endpoint asymptotics &
 \path{NegativeLaplace.lean}, \path{NegativeLaplaceVertical.lean},
@@ -11237,7 +11483,9 @@ Endpoint asymptotics &
 \path{PowerExponentialLambertInverse.lean},
 \path{PowerExponentialLambertAsymptotics.lean},
 \path{PowerExponentialLambertFabius}\texttt{.lean}, \path{FabiusLambertPhase.lean},
-\path{LambertWCurvature.lean}, \path{PowerExponentialLambertCurvature.lean},
+\path{LambertWCurvature.lean}, \path{LambertWBranchPointGeometry.lean},
+\path{LambertWBranchPointAsymptotics.lean},
+\path{PowerExponentialLambertCurvature.lean},
 \path{PowerExponentialLambertFabiusCurvature.lean},
 \path{FabiusLambertSaddle.lean}, \path{LambertPhaseLockedRichardson.lean},
 \path{FabiusSharpLambertMain.lean},
@@ -11474,10 +11722,20 @@ formula.
 \texttt{FabiusLambertPhaseExtractionBell.lean}.  The declarations cited in the text
 are exact finite algebraic rewrites and add no convergence, sign, or asymptotic
 estimate; no aggregate commit hash is attributed to this later tranche here.
-\newblock The generic three-theorem continuous-CDF bridge, the two-definition/twenty-five-
-theorem geometric-uniform CDF and smooth-density interface, the half-base Fabius/Rvachev
-bridges, and the one-definition/eight-theorem formal implicit-root engine are included in
-compiler-validated checkpoint \texttt{e6f535e5d}.  The latter is generic nonmonic Hensel
+\newblock The still later current-tree Lambert branch-point tranche, compiled
+30 August 2026, consists of \texttt{LambertWBranchPointGeometry.lean} and
+\texttt{LambertWBranchPointAsymptotics.lean}.  Its exact public inventory is eight
+theorems and, respectively, one noncomputable definition plus eight theorems.  The
+declaration-by-declaration crosswalk above is not attributed to an aggregate commit
+hash; it closes the leading raw-branch geometry and square-root law only, with the
+stated remainder, higher-series, wrapper, and generic-shape boundaries left open.
+\newblock The generic three-theorem continuous-CDF bridge, the then
+two-definition/twenty-five-theorem geometric-uniform CDF and smooth-density interface,
+the half-base Fabius/Rvachev bridges, and the one-definition/eight-theorem formal
+implicit-root engine are included in compiler-validated checkpoint
+\texttt{e6f535e5d}.  The CDF module's four later nonpositive-parameter diagnostics,
+which bring its current surface to two definitions and twenty-nine theorems, are
+inventoried above.  The latter engine is generic nonmonic Hensel
 lifting over complete adic commutative rings and supplies no concrete inverse-Fabius germ
 or analytic-convergence theorem.
 \newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/e6f535e5d/Analysis/FabiusFunction}.

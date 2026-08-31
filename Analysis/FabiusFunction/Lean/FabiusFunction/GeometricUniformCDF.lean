@@ -10,6 +10,9 @@ For `|q| < 1`, let `F_q` be the CDF of the random series with weights
 On the probability range `0 ≤ q < 1` it proves the exact exterior values.
 For `0 < q < 1` it then derives the conditioning integral, its ordinary
 interval-integral form, and the resulting continuous nonnegative density.
+For `q ≤ 0`, it proves that the same totalized density formula is zero or
+nonpositive, so its `ENNReal.ofReal` clamp gives the zero measure rather than
+the geometric-uniform probability law on the contraction range.
 -/
 
 open MeasureTheory ProbabilityTheory Set
@@ -245,6 +248,53 @@ its density interpretation below requires `0 < q < 1`. -/
 def geometricUniformDensity (q x : ℝ) : ℝ :=
   (geometricUniformCDF q (x / q) -
     geometricUniformCDF q ((x - (1 - q)) / q)) / (1 - q)
+
+/-- At ratio zero, totalized field division makes the selected density
+formula identically zero. -/
+@[simp] theorem geometricUniformDensity_zero (x : ℝ) :
+    geometricUniformDensity 0 x = 0 := by
+  simp [geometricUniformDensity]
+
+/-- For a negative ratio, reversing the affine CDF interval makes the
+selected total density formula nonpositive. -/
+theorem geometricUniformDensity_nonpos_of_neg
+    {q : ℝ} (hq : q < 0) (x : ℝ) :
+    geometricUniformDensity q x ≤ 0 := by
+  rw [geometricUniformDensity]
+  apply div_nonpos_of_nonpos_of_nonneg
+  · apply sub_nonpos.mpr
+    apply monotone_geometricUniformCDF q
+    exact (div_le_div_right_of_neg hq).2 (by linarith)
+  · linarith
+
+/-- For every nonpositive ratio, clamping the selected density formula with
+`ENNReal.ofReal` produces the zero measure. -/
+@[simp] theorem volume_withDensity_geometricUniformDensity_eq_zero_of_nonpos
+    {q : ℝ} (hq : q ≤ 0) :
+    (volume : Measure ℝ).withDensity
+        (fun x => ENNReal.ofReal (geometricUniformDensity q x)) = 0 := by
+  have hfun : (fun x => ENNReal.ofReal (geometricUniformDensity q x)) = 0 := by
+    funext x
+    apply ENNReal.ofReal_eq_zero.mpr
+    rcases lt_or_eq_of_le hq with hqneg | rfl
+    · exact geometricUniformDensity_nonpos_of_neg hqneg x
+    · exact (geometricUniformDensity_zero x).le
+  rw [hfun, withDensity_zero]
+
+/-- On the nonpositive contraction range, the selected total density formula
+cannot represent the geometric-uniform probability law: its `withDensity`
+measure is zero. -/
+theorem geometricUniformDistribution_ne_withDensity_geometricUniformDensity_of_nonpos
+    {q : ℝ} (hq : |q| < 1) (hq0 : q ≤ 0) :
+    geometricUniformDistribution q ≠
+      (volume : Measure ℝ).withDensity
+        (fun x => ENNReal.ofReal (geometricUniformDensity q x)) := by
+  letI : IsProbabilityMeasure (geometricUniformDistribution q) :=
+    geometricUniformDistribution_isProbabilityMeasure hq
+  intro heq
+  rw [volume_withDensity_geometricUniformDensity_eq_zero_of_nonpos hq0] at heq
+  have huniv := congrArg (fun μ : Measure ℝ => μ Set.univ) heq
+  simp at huniv
 
 /-- For `0 < q < 1`, the geometric-uniform CDF has derivative
 `geometricUniformDensity q` at every real point. -/

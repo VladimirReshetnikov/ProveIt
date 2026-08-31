@@ -859,6 +859,89 @@ at both ends, by
 \nolinkurl{tendsto_deriv_fabiusInv_atTop_at_one_left}.  These are one-sided
 limits through \((0,1)\), not derivative values at the clamping points.
 
+\subsection{Effective dyadic continuity of the noncomputable inverse}
+
+\nolinkurl{FabiusInverseEffectiveContinuity.lean} supplies an explicit
+primitive-recursive modulus for the totalized inverse.  Its two
+natural-valued denominators are
+\[
+ D_{\mathrm{fac}}(r)=2^{\binom{r+1}{2}}(r+1)!,
+ \qquad
+ D_{\Delta}(r)=2^{\binom{r+1}{2}}(r+1)^{r+1}.
+\]
+The first is defined recursively and then identified with the displayed
+factorial form; the second is the elementary box-event denominator from the
+inverse-computability report.  Both functions are primitive recursive and
+\(D_{\mathrm{fac}}(r)\le D_{\Delta}(r)\) for every \(r\).
+
+Fix \(F\) of type \nolinkurl{BoundedFabius} and let \(h_F\) witness
+\nolinkurl{IsFabius} \(F\).  Only the sharp one-term recurrence estimate
+requires \(r>0\):
+\[
+ \frac{1}{
+   2^{\binom r2}(r+1)!(2^r-1)}
+ \le F(2^{-r}).
+\]
+The consequences are total in \(r\), including \(r=0\):
+\[
+ D_{\mathrm{fac}}(r)^{-1}\le F(2^{-r}),
+ \qquad
+ D_{\Delta}(r)^{-1}\le F(2^{-r}).
+\]
+For every real \(u,v\), either denominator \(D\) gives the strict and closed
+inverse moduli
+\[
+\begin{aligned}
+ |u-v|<D(r)^{-1}
+   &\Longrightarrow |F^{-1}(u)-F^{-1}(v)|<2^{-r},\\
+ |u-v|\le D(r)^{-1}
+   &\Longrightarrow |F^{-1}(u)-F^{-1}(v)|\le2^{-r}.
+\end{aligned}
+\]
+Here \(F^{-1}\) means the globally clamped \nolinkurl{fabiusInv}, so no
+unit-interval hypothesis is placed on \(u\) or \(v\).  Taking the stronger
+factorial denominator at \(r=n\), and using \(n<2^n\), proves
+\nolinkurl{fabiusInv_effectivelyUniformContinuous}, namely
+\nolinkurl{EffectivelyUniformContinuous} for that totalized inverse, in the
+repository's positive-precision reciprocal convention.
+
+The module's exhaustive public inventory is two definitions and twelve
+theorems:
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.07\textwidth} >{\raggedright\arraybackslash}p{0.53\textwidth} >{\raggedright\arraybackslash}p{0.33\textwidth}@{}}
+\toprule
+No. & Declaration & Formal content \\
+\midrule
+\endfirsthead
+\toprule
+No. & Declaration & Formal content \\
+\midrule
+\endhead
+1 & \nolinkurl{inverseFabiusFactorialDenominator} & Recursive natural-valued factorial denominator. \\
+2 & \nolinkurl{inverseFabiusFactorialDenominator_eq} & Closed form \(D_{\mathrm{fac}}(r)\). \\
+3 & \nolinkurl{inverseFabiusFactorialDenominator_primrec} & Primitive recursiveness of \(D_{\mathrm{fac}}\). \\
+4 & \nolinkurl{inverseFabiusDeltaDenominator} & Natural-valued report denominator \(D_{\Delta}\). \\
+5 & \nolinkurl{inverseFabiusDeltaDenominator_primrec} & Primitive recursiveness of \(D_{\Delta}\). \\
+6 & \nolinkurl{fabiusReal_inverse_two_pow_one_term_lower_bound} & One-term endpoint bound, under \(h_F\) and \(r>0\). \\
+7 & \nolinkurl{inv_inverseFabiusFactorialDenominator_le_fabiusReal} & Factorial reciprocal bound for every \(r\), under \(h_F\). \\
+8 & \nolinkurl{inverseFabiusFactorialDenominator_le_deltaDenominator} & \(D_{\mathrm{fac}}(r)\le D_{\Delta}(r)\), with no Fabius hypothesis. \\
+9 & \nolinkurl{inv_inverseFabiusDeltaDenominator_le_fabiusReal} & Report reciprocal bound for every \(r\), under \(h_F\). \\
+10 & \nolinkurl{abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_factorialDenominator} & Strict factorial-threshold modulus for all real inputs. \\
+11 & \nolinkurl{abs_fabiusInv_sub_le_inverse_two_pow_of_le_factorialDenominator} & Closed factorial-threshold modulus for all real inputs. \\
+12 & \nolinkurl{abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_deltaDenominator} & Strict report-threshold modulus for all real inputs. \\
+13 & \nolinkurl{abs_fabiusInv_sub_le_inverse_two_pow_of_le_deltaDenominator} & Closed report-threshold modulus for all real inputs. \\
+14 & \nolinkurl{fabiusInv_effectivelyUniformContinuous} & Effective uniform continuity with witness \(D_{\mathrm{fac}}(n)\). \\
+\bottomrule
+\end{longtable}
+
+The boundary is important.  The two denominator definitions and their
+primitive-recursion proofs are executable, but \nolinkurl{fabiusInv} itself
+is still a \emph{noncomputable} order-isomorphism inverse.  An effective
+modulus alone is not a name-producing algorithm.  This module proves neither
+\nolinkurl{SequentiallyComputable} nor a combined
+\nolinkurl{IsComputableRealFunction} theorem for the inverse, and it supplies
+no logarithmic selector \(r(n)\), exact least/ceiling denominator, tolerant
+bisection realizer, or input-bit complexity bound.
+
 \subsection{Generic formal implicit roots versus inverse-Fabius germs}
 \nolinkurl{ImplicitPowerSeries.lean} isolates a purely formal root engine.
 \nolinkurl{FormalImplicitRoot.existsUnique_isRoot_sub_mem} lifts a simple
@@ -1429,9 +1512,14 @@ For the geometric weights \(w_n(q)=(1-q)q^n\), write \(\mu_q\) for the law,
   \frac{F_q(x/q)-F_q((x-(1-q))/q)}{1-q}.
 \]
 The Lean definition \nolinkurl{geometricUniformDensity q} is total in \(q\),
-but only \(0<q<1\) gives this classical density interpretation: at \(q=0\)
-field division is totalized, while for \(q<0\) the affine event inequality is
-reversed.
+but only \(0<q<1\) gives this classical density interpretation.  The formal
+boundary is now exact: at \(q=0\) the selected quotient is identically zero,
+whereas for \(q<0\) it is nonpositive because the affine CDF interval reverses.
+Thus its \nolinkurl{ENNReal.ofReal} clamp gives the zero
+\nolinkurl{withDensity} measure for every \(q\le0\), and that measure is
+provably not \(\mu_q\) when also \(\lvert q\rvert<1\).  This does not contradict
+the absolute continuity of the law; an exact Lean theorem for the paper-level
+corrected signed-ratio density at negative \(q\) remains open.
 The single theorem in \nolinkurl{GeometricUniformUniqueness.lean} specializes
 the generic product-map theorem to the already proved head--tail identity:
 \[
@@ -1541,7 +1629,8 @@ all-real bridges
 \]
 Accordingly the dyadic smoothing, interval-integral, continuity, exterior-value,
 and reflection proofs now route through the reusable half-base API.  There is still no
-separately named centered random variable or general-\(q\) centered density.  The finite
+Lean formalization of the paper-level corrected signed-ratio density for negative \(q\), separately named centered
+random variable, or general-\(q\) centered density.  The finite
 MGF/CGF dictionary and pointwise sinc-prefix limit above also stop short of explicit
 Bernoulli-cumulant and Bell-moment evaluations, their asymptotics, and log-concavity or
 shape-transition theorems.
@@ -3052,8 +3141,137 @@ its right, and zero exactly there.  Consequently
 \nolinkurl{strictConcaveOn_lowerLambertW_right} proves strict concavity on
 \([-2e^{-2},0)\).  These are regular-interior derivative results plus shape
 theorems that include the finite branch point and shared inflection endpoint;
-the lower domain remains open at zero.  No branch-point derivative,
-vertical-tangent limit, or Puiseux expansion is asserted.
+the lower domain remains open at zero.
+
+The next two raw-branch leaves resolve the formerly open branch-point
+geometry.  Write
+\[
+ b=-\exp(-1),\qquad \Delta(z)=z-b=z+\exp(-1),\qquad
+ \mathcal S(z)=\sqrt{2\exp(1)\bigl(z+\exp(-1)\bigr)}.
+\]
+All limits here use the right-hand filter \(z\downarrow b\).  The compiled
+statements are
+\[
+ \operatorname{deriv}W_0(z)\longrightarrow+\infty,
+ \qquad
+ \operatorname{deriv}W_{-1}(z)\longrightarrow-\infty,
+\]
+and, for the secants drawn from the common endpoint \((b,-1)\),
+\[
+ \frac{W_0(z)+1}{z+\exp(-1)}\longrightarrow+\infty,
+ \qquad
+ \frac{W_{-1}(z)+1}{z+\exp(-1)}\longrightarrow-\infty.
+\]
+In particular neither branch has a finite right derivative: both fail
+
+\begin{center}
+\(\operatorname{DifferentiableWithinAt}_{\mathbb R}
+  (W_j,\operatorname{Ioi}(b),b)\).
+\end{center}
+
+The two totalized all-real branch functions also fail
+
+\begin{center}
+\(\operatorname{DifferentiableAt}_{\mathbb R}(W_j,b)\).
+\end{center}
+
+The human proof follows the source layering.  Endpoint continuity gives
+\(W_j(z)\to-1\), and the inverse derivative is
+\[
+ \frac{1}{\exp(W_j(z))(W_j(z)+1)}.
+\]
+Its denominator tends to zero from above on the principal branch and from
+below on the lower branch, giving the two signed infinite derivative limits.
+Principal concavity bounds its endpoint secant from below by the moving
+derivative; lower convexity on the left shape interval bounds its endpoint
+secant from above by the moving derivative.  Those inequalities force the
+same signed limits for the secants.  A standard one-sided derivative-divergence
+lemma rules out a finite within-set derivative, and ordinary differentiability
+would imply that prohibited right-hand differentiability.
+
+The complete public surface of
+\nolinkurl{LambertWBranchPointGeometry.lean} is exactly these eight theorems:
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.51\textwidth}
+                         >{\raggedright\arraybackslash}p{0.43\textwidth}@{}}
+\toprule
+Declaration & Formal content \\
+\midrule
+\endfirsthead
+\toprule
+Declaration & Formal content \\
+\midrule
+\endhead
+\nolinkurl{tendsto_deriv_principalLambertW_branchPoint_atTop} & Principal derivative tends to \(+\infty\) from the right. \\
+\nolinkurl{tendsto_deriv_lowerLambertW_branchPoint_atBot} & Lower derivative tends to \(-\infty\) from the right. \\
+\nolinkurl{tendsto_principalLambertW_secantSlope_branchPoint_atTop} & Principal endpoint secant slope tends to \(+\infty\). \\
+\nolinkurl{tendsto_lowerLambertW_secantSlope_branchPoint_atBot} & Lower endpoint secant slope tends to \(-\infty\). \\
+\nolinkurl{principalLambertW_not_differentiableWithinAt_branchPoint} & No finite principal right derivative on \(\operatorname{Ioi}(b)\). \\
+\nolinkurl{lowerLambertW_not_differentiableWithinAt_branchPoint} & No finite lower right derivative on \(\operatorname{Ioi}(b)\). \\
+\nolinkurl{principalLambertW_not_differentiableAt_branchPoint} & The totalized principal branch is not differentiable at \(b\). \\
+\nolinkurl{lowerLambertW_not_differentiableAt_branchPoint} & The totalized lower branch is not differentiable at \(b\). \\
+\bottomrule
+\end{longtable}
+
+The asymptotic leaf proves the first square-root term.  For the forward map
+\(\phi(w)=w\exp w\), one application of L'H\^opital's rule gives
+\[
+ \frac{\phi(w)+\exp(-1)}{(w+1)^2}
+ \longrightarrow\frac{\exp(-1)}2
+ \qquad(w\to-1,\ w\ne-1),
+\]
+because the differentiated quotient cancels to \(\exp(w)/2\) away from
+\(-1\).  Composing with each branch, rewriting
+\(W_j(z)\exp(W_j(z))=z\), and inverting the nonzero limit yields
+\[
+ \frac{(W_j(z)+1)^2}{z+\exp(-1)}\longrightarrow2\exp(1),
+ \qquad j\in\{0,-1\}.
+\]
+Thus both squared displacements are asymptotic to
+\(2\exp(1)(z+\exp(-1))\).  The branch signs select the square root, with no
+sign ambiguity:
+\[
+ W_0(z)+1\sim+\mathcal S(z),
+ \qquad
+ W_{-1}(z)+1\sim-\mathcal S(z)
+ \qquad(z\downarrow b).
+\]
+
+The complete public inventory of
+\nolinkurl{LambertWBranchPointAsymptotics.lean} is one noncomputable
+definition and eight theorems:
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.51\textwidth}
+                         >{\raggedright\arraybackslash}p{0.43\textwidth}@{}}
+\toprule
+Declaration & Formal content \\
+\midrule
+\endfirsthead
+\toprule
+Declaration & Formal content \\
+\midrule
+\endhead
+\nolinkurl{lambertWBranchPointScale} & Definition of \(\sqrt{2\exp(1)(z+\exp(-1))}\). \\
+\nolinkurl{lambertWBranchPointScale_pos} & Positivity for \(b<z\). \\
+\nolinkurl{lambertWBranchPointScale_sq} & Exact scale-square identity for \(b<z\). \\
+\nolinkurl{tendsto_principalLambertW_add_one_sq_div_branchPoint} & Principal squared-ratio limit \(2\exp(1)\). \\
+\nolinkurl{tendsto_lowerLambertW_add_one_sq_div_branchPoint} & Lower squared-ratio limit \(2\exp(1)\). \\
+\nolinkurl{principalLambertW_add_one_sq_isEquivalent_branchPoint} & Principal squared-displacement equivalence. \\
+\nolinkurl{lowerLambertW_add_one_sq_isEquivalent_branchPoint} & Lower squared-displacement equivalence. \\
+\nolinkurl{principalLambertW_add_one_isEquivalent_branchPoint} & Signed principal equivalence to \(+\mathcal S\). \\
+\nolinkurl{lowerLambertW_add_one_isEquivalent_branchPoint} & Signed lower equivalence to \(-\mathcal S\). \\
+\bottomrule
+\end{longtable}
+
+This closes only the leading square-root (first Puiseux) equivalence.  No
+\(O(\Delta)\) remainder, higher coefficient, or convergent/full Puiseux
+expansion has been proved.  Named endpoint derivative, secant, and
+square-root wrappers for the generic power--exponential phases or their
+Fabius specializations also remain open, as does the generic
+\(m\mathbin{\pm}\sqrt m\) threshold/sign/shape layer.
+These two leaves are a current-tree tranche compiled on 30 August 2026:
+the inventory is exactly eight public geometry theorems and one public
+asymptotic definition plus eight public asymptotic theorems, excluding
+private proof helpers.  They are recorded without inventing an aggregate
+commit hash and are not attributed to the older title-page snapshot.
 
 The reusable layer treats
 \[
@@ -3113,8 +3331,10 @@ The declarations are
 This generic result is intentionally only the intrinsic two-term
 \(\epsilon\)-expansion with \(o(1)\) remainder.  A cleaned
 \(L=\log(A/x)\) formula, additional terms or a complete series, a
-branch-point vertical-tangent limit, and a Puiseux expansion remain outside
-this tranche.
+named generic-phase branch-point vertical-tangent/secant wrapper, and a
+transported leading square-root law remain outside this tranche.  The raw
+branch-point statements above do not by themselves create those scaled
+phase wrappers.
 
 The separate \nolinkurl{PowerExponentialLambertCurvature.lean} does supply
 the generic regular-interior second derivative.  If \(\lambda\) denotes
@@ -3179,9 +3399,9 @@ for every \(x<P\),
 \[
 \begin{aligned}
  \lambda_0'(x)
-   &= \frac{1}{e^{W_0(-x\log2)}(W_0(-x\log2)+1)}, \\
+   &=\frac{1}{e^{W_0(-x\log2)}(W_0(-x\log2)+1)},\\
  \lambda_0''(x)
-   &= \frac{(\log2)e^{-2W_0(-x\log2)}(W_0(-x\log2)+2)}
+   &=\frac{(\log2)e^{-2W_0(-x\log2)}(W_0(-x\log2)+2)}
            {(W_0(-x\log2)+1)^3}>0.
 \end{aligned}
 \]
@@ -3228,7 +3448,23 @@ branches, then
 \nolinkurl{PowerExponentialLambertInverse.lean}, and
 \nolinkurl{PowerExponentialLambertAsymptotics.lean} add continuity,
 classification, and asymptotics in that order.
-\nolinkurl{LambertWCurvature.lean} is the raw branch curvature leaf;
+\nolinkurl{PrincipalLambertW.lean} itself imports
+\nolinkurl{LowerLambertW.lean};
+\nolinkurl{LambertBranchDichotomy.lean} imports the principal leaf; and
+\nolinkurl{LambertWCurvature.lean} imports that pair layer.
+\nolinkurl{LambertWBranchPointGeometry.lean} then imports exactly the raw
+curvature leaf, and
+\nolinkurl{LambertWBranchPointAsymptotics.lean} imports the geometry leaf
+together with Mathlib's specific-asymptotics and L'H\^opital modules.  Thus
+the raw dependency order is
+\[
+ \begin{gathered}
+ \text{lower}\longrightarrow\text{principal}\longrightarrow
+ \text{branch dichotomy}\longrightarrow\text{curvature}\\
+ {}\longrightarrow\text{branch-point geometry}\longrightarrow
+ \text{branch-point asymptotics}.
+ \end{gathered}
+\]
 \nolinkurl{PowerExponentialLambertCurvature.lean} imports the generic
 calculus layer and contains only the four branch-generic second-derivative
 declarations above.  The non-curvature Fabius bridge imports the asymptotic
@@ -3236,7 +3472,11 @@ layer together with the older generalized-coordinate and Fabius saddle
 modules, while
 \nolinkurl{PowerExponentialLambertFabiusCurvature.lean} imports that bridge
 and both curvature leaves.  The umbrella \nolinkurl{FabiusFunction.lean}
-exposes all three new curvature modules.  These lemmas support the corrected
+lists \nolinkurl{LambertWCurvature.lean},
+\nolinkurl{LambertWBranchPointGeometry.lean}, and
+\nolinkurl{LambertWBranchPointAsymptotics.lean} consecutively in dependency
+order before the generic power--exponential leaves; it also exposes the two
+scaled curvature modules.  These lemmas support the corrected
 comparisons in both the k-fold project and the principal Fabius saddle
 analysis.
 
@@ -3812,7 +4052,7 @@ Reshetnikov quantity \(R_n\) & \nolinkurl{reshetnikov} & \nolinkurl{Arithmetic.l
 Generic continuous-CDF and density extraction & \nolinkurl{continuous_cdf_of_nullSingleton}, \nolinkurl{cdf_reflection_sub}, \nolinkurl{measure_eq_withDensity_of_cdf_hasDerivAt} & \nolinkurl{ContinuousCDF.lean} \\
 Affine independent-copy operator and uniqueness & \nolinkurl{affineIndependentCopyLaw}, \nolinkurl{affineIndependentCopyLaw_isProbabilityMeasure}, \nolinkurl{affineIndependentCopyLaw_eq_map_prod}, \nolinkurl{charFun_affineIndependentCopyLaw}, \nolinkurl{charFun_eq_mul_charFun_of_affineIndependentCopy_fixedPoint}, \nolinkurl{charFun_iterate_of_affineIndependentCopy_fixedPoint}, \nolinkurl{eq_of_charFun_affine_recurrence}, \nolinkurl{affineIndependentCopyLaw_fixedPoint_unique}, \nolinkurl{affineIndependentCopy_map_fixedPoint_unique} & \nolinkurl{AffineIndependentCopy.lean}; arbitrary measurable digit space and second-countable Borel real inner-product target, with completeness only for the three uniqueness declarations \\
 Geometric uniform law \(\mu_q\) & \nolinkurl{geometricUniformDistribution}, \nolinkurl{geometricUniformDistribution_selfSimilar}, \nolinkurl{geometricUniformDistribution_support_eq_Icc}, \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar} & \nolinkurl{GeometricUniformLaw.lean} and \nolinkurl{GeometricUniformUniqueness.lean}; the characterization holds for \(\lvert q\rvert<1\) without support, density, or moment assumptions \\
-Geometric CDF \(F_q\) and density \(f_q\) & \nolinkurl{geometricUniformCDF}, \nolinkurl{geometricUniformDensity}, \nolinkurl{geometricUniformCDF_hasDerivAt}, \nolinkurl{geometricUniformDistribution_eq_withDensity}, \nolinkurl{contDiff_geometricUniformCDF}, \nolinkurl{contDiff_geometricUniformDensity} & \nolinkurl{GeometricUniformCDF.lean} \\
+Geometric CDF \(F_q\) and density \(f_q\) & \nolinkurl{geometricUniformCDF}, \nolinkurl{geometricUniformDensity}, \nolinkurl{geometricUniformDensity_zero}, \nolinkurl{geometricUniformDensity_nonpos_of_neg}, \nolinkurl{volume_withDensity_geometricUniformDensity_eq_zero_of_nonpos}, \nolinkurl{geometricUniformDistribution_ne_withDensity_geometricUniformDensity_of_nonpos}, \nolinkurl{geometricUniformCDF_hasDerivAt}, \nolinkurl{geometricUniformDistribution_eq_withDensity}, \nolinkurl{contDiff_geometricUniformCDF}, \nolinkurl{contDiff_geometricUniformDensity} & \nolinkurl{GeometricUniformCDF.lean} \\
 Weighted-sum CDF and half-base bridges & \nolinkurl{weightedSumCDF}, \nolinkurl{weightedSumCDF_eq_geometricUniformCDF_one_half}, \nolinkurl{geometricUniformCDF_one_half_eq_fabiusReal}, \nolinkurl{geometricUniformDensity_one_half_eq_rvachevUp} & \nolinkurl{ProbabilityRepresentation.lean} \\
 Totalized activation kernel \(p\) & \nolinkurl{activationProbability}, \nolinkurl{tanhDiv_eq_dslope}, \nolinkurl{activationProbability_le_min_one_sq_div_three}, \nolinkurl{activationProbability_mul_le_quadratic}, \nolinkurl{tendsto_activationProbability_mul_div_sq} & \nolinkurl{HyperbolicActivation.lean}, \nolinkurl{ActivationSeries.lean}, and \nolinkurl{ActivationAsymptotics.lean} \\
 Finite activation Taylor jet & \nolinkurl{tanh_sub_taylor_nine_isBigO}, \nolinkurl{activationProbability_sub_taylor_eight_isBigO}, \nolinkurl{activationProbability_sub_taylor_eight_isBigO_pow} & \nolinkurl{ActivationTaylor.lean}; exact degree-nine \(\tanh\) and degree-eight \(p\) polynomials with respective \(O(\lVert x\rVert^{11})\) and \(O(\lVert x\rVert^{10})\) remainders, plus the equivalent \(O(x^{10})\) activation form \\
@@ -3824,6 +4064,8 @@ Inverse curvature & \nolinkurl{deriv_deriv_fabiusInv}, \nolinkurl{deriv_deriv_fa
 Uniform spline \(S_p\) & \nolinkurl{fabiusUniformSpline} & \nolinkurl{FabiusUniformSpline.lean} and \nolinkurl{FabiusComputability.lean} \\
 Logarithmic profile & \nolinkurl{fabiusLogProfile} & \nolinkurl{FabiusLogScale.lean} \\
 Real Lambert-branch curvature & \nolinkurl{deriv_deriv_principalLambertW}, \nolinkurl{deriv_deriv_lowerLambertW}, the lower sign iff family, \nolinkurl{strictConcaveOn_principalLambertW}, \nolinkurl{strictConvexOn_lowerLambertW_left}, \nolinkurl{strictConcaveOn_lowerLambertW_right} & \nolinkurl{LambertWCurvature.lean}; exact regular-domain second derivatives, with shape theorems including the branch point and inflection while the lower domain stays open at zero \\
+Real Lambert branch-point vertical geometry & \nolinkurl{tendsto_deriv_principalLambertW_branchPoint_atTop}, \nolinkurl{tendsto_deriv_lowerLambertW_branchPoint_atBot}, the two \nolinkurl{secantSlope_branchPoint} limits, and the four \nolinkurl{not_differentiable} endpoint theorems & \nolinkurl{LambertWBranchPointGeometry.lean}; exactly eight theorems giving signed right-hand derivative/secant blow-up, failure of finite right derivatives, and failure of full differentiability \\
+Real Lambert leading branch-point asymptotics & \nolinkurl{lambertWBranchPointScale}, the two squared-ratio limits, the two squared equivalences, and \nolinkurl{principalLambertW_add_one_isEquivalent_branchPoint}, \nolinkurl{lowerLambertW_add_one_isEquivalent_branchPoint} & \nolinkurl{LambertWBranchPointAsymptotics.lean}; one definition and eight theorems, with signed \(+\sqrt{2e\Delta}\) and \(-\sqrt{2e\Delta}\) laws only \\
 Generic scaled power--exponential phases & \nolinkurl{principalPowerExponentialPhase}, \nolinkurl{lowerPowerExponentialPhase}, \nolinkurl{powerExponentialLambertEpsilon}, \nolinkurl{lowerPowerExponentialPhaseIntrinsicMain}, \nolinkurl{deriv_principalPowerExponentialPhase_hasDerivAt}, \nolinkurl{deriv_deriv_principalPowerExponentialPhase}, \nolinkurl{deriv_lowerPowerExponentialPhase_hasDerivAt}, \nolinkurl{deriv_deriv_lowerPowerExponentialPhase} & \nolinkurl{PowerExponentialLambert.lean}, \nolinkurl{PowerExponentialLambertCalculus.lean}, \nolinkurl{PowerExponentialLambertInverse.lean}, \nolinkurl{PowerExponentialLambertAsymptotics.lean}, and \nolinkurl{PowerExponentialLambertCurvature.lean}; generic curvature sign/threshold/shape packages remain open \\
 Classical principal/lower Lambert reference coordinates & \nolinkurl{fabiusPrincipalLambertPhase}, \nolinkurl{fabiusLambertPhase} & \nolinkurl{PowerExponentialLambertFabius.lean} and \nolinkurl{FabiusLambertSaddle.lean} \\
 Fabius Lambert-phase curvature & \nolinkurl{fabiusLambertInflectionInput}, \nolinkurl{deriv_deriv_fabiusLambertPhase_eq_zero_iff}, \nolinkurl{strictConvexOn_fabiusLambertPhase_left}, \nolinkurl{strictConcaveOn_fabiusLambertPhase_right}, \nolinkurl{strictConvexOn_fabiusPrincipalLambertPhase} & \nolinkurl{PowerExponentialLambertFabiusCurvature.lean}; exact lower inflection and principal global-\nolinkurl{Iic} convexity \\
@@ -3881,6 +4123,7 @@ Module & Role in the development \\
 \nolinkurl{SharpFlatness.lean} & Factorial-strengthened endpoint power bounds for \(F\) and \(\Up\). \\
 \nolinkurl{NowhereAnalytic.lean} & Exact real-analytic loci: off the closed transition supports and nowhere on them. \\
 \nolinkurl{FabiusInverse.lean} & Totalized inverse, order isomorphism on the unit interval, exact positive reciprocal derivative, exact global smoothness locus (continuity everywhere, but differentiability and every positive finite or \(C^\infty\) order exactly off the clamping endpoints), reciprocal-cubic second derivative, midpoint jet and interior curvature loci, strict closed-half curvature, and endpoint quotient/derivative blow-up. \\
+\nolinkurl{FabiusInverseEffectiveContinuity.lean} & Exhaustive two-definition/twelve-theorem effective inverse-continuity layer: primitive-recursive factorial and report denominators, recurrence and endpoint-mass lower bounds, strict and closed global inverse moduli, and \nolinkurl{EffectivelyUniformContinuous}; the inverse remains noncomputable and no sequential realizer or combined computable-function theorem is supplied. \\
 \nolinkurl{ImplicitPowerSeries.lean} & Nonmonic complete-adic lifting and residue-class uniqueness, with arbitrary-base and zero-constant formal implicit-root specializations over power-series rings; it does not construct or analytically realize a Fabius inverse germ. \\
 \nolinkurl{InverseBranch.lean} & Analytic inverse theorem, analytic-density preservation for continuous right-inverse branches, and the complement-interior analyticity condition and conditional Lambert-branch criterion for \nolinkurl{IsElementaryOrInverse}. \\
 \nolinkurl{AlgebraicBranch.lean} & Algebraic-function branch interface used in non-elementarity arguments. \\
@@ -3932,7 +4175,7 @@ Module & Role in the development \\
 \nolinkurl{GeometricSincFactorization.lean} & Closed characteristic function of the scaled uniform digit, exact closed-factor and phase-collapsed finite residual formulas for \(\lvert q\rvert<1\), pointwise convergence of the phase-bearing sinc prefixes, and the two dyadic weighted-sum wrappers. \\
 \nolinkurl{GeometricReciprocalGamma.lean} & Locally uniform convergence, pointwise multipliability and \nolinkurl{HasProd}, and entireness of the geometric sinc product, together with its reciprocal-Gamma reflection factorization. \\
 \nolinkurl{GeometricSincCharacteristicFunction.lean} & The two exact phase-bearing bridges from the geometric-uniform characteristic function to the rescaled geometric sinc product and to the paired reciprocal-Gamma factors for every real \(\lvert q\rvert<1\), including zero and negative ratios. \\
-\nolinkurl{GeometricUniformCDF.lean} & The named \(F_q\) and explicit \(f_q\), conditioning and interval-integral equations, pointwise derivative and exact \nolinkurl{withDensity} law, continuity, reflection, exterior zeros, ordinary/topological support containments, compact support, and \(C^\infty\) regularity under their exact parameter hypotheses. \\
+\nolinkurl{GeometricUniformCDF.lean} & The named \(F_q\) and explicit \(f_q\), conditioning and interval-integral equations, pointwise derivative and exact positive-ratio \nolinkurl{withDensity} law, continuity, reflection, exterior zeros, ordinary/topological support containments, compact support, and \(C^\infty\) regularity under their exact parameter hypotheses.  It also proves that the selected total formula is zero at \(q=0\), nonpositive for \(q<0\), yields the zero clamped measure for \(q\le0\), and cannot represent \(\mu_q\) on the nonpositive contraction range. \\
 \nolinkurl{HyperbolicActivation.lean} & Four definitions and 58 theorems forming the totalized real hyperbolic-sinc, \nolinkurl{tanhDiv}, activation-odds, and activation-probability dictionary, with continuity, parity, positivity, exact odds bridges, global elementary bounds, and the canonical identification \nolinkurl{tanhDiv_eq_dslope}. \\
 \nolinkurl{ActivationTaylor.lean} & Three theorems: the exact degree-nine Taylor polynomial of \(\tanh\) with \(O(\lVert x\rVert^{11})\) remainder, the induced degree-eight activation-probability polynomial with \(O(\lVert x\rVert^{10})\) remainder, and its equivalent \(O(x^{10})\) form. \\
 \nolinkurl{ActivationSeries.lean} & Three theorems: the rescaled pointwise quadratic budget, genuine summability for arbitrary-index square-summable signed real weights, and the corresponding global \nolinkurl{tsum} budget. \\
@@ -4105,6 +4348,8 @@ Module & Role in the development \\
 \nolinkurl{LowerLambertW.lean} & Correctly defined lower Lambert branch, endpoint-inclusive continuity on \([-\exp(-1),0)\), smooth-interior calculus, divergence at zero, and intrinsic two-term small-argument expansion. \\
 \nolinkurl{PrincipalLambertW.lean} & Principal real branch, endpoint-inclusive continuity on \([-\exp(-1),\infty)\), smooth-interior calculus, unit derivative at zero, and \(W_0(z)\sim z\). \\
 \nolinkurl{LambertWCurvature.lean} & Nonsingular raw-branch second derivatives; principal strict concavity on its closed natural domain; and the lower branch's exact inflection, left strict convexity, and right strict concavity. \\
+\nolinkurl{LambertWBranchPointGeometry.lean} & Exactly eight theorems: signed right-hand derivative blow-up, signed endpoint-secant blow-up, failure of finite right differentiability, and failure of full differentiability for both totalized real branches. \\
+\nolinkurl{LambertWBranchPointAsymptotics.lean} & One noncomputable scale definition and eight theorems: positivity and square of \(\sqrt{2\exp(1)(z+\exp(-1))}\), two squared-ratio limits, two squared equivalences, and the signed principal/lower leading square-root equivalents. \\
 \nolinkurl{PowerExponentialLambert.lean} & Definitions and exact solve laws for the principal and lower inverses of \(A\lambda^m e^{-\beta\lambda}\). \\
 \nolinkurl{PowerExponentialLambertCalculus.lean} & Interior derivative and order laws, plus full-domain continuity of both scaled phases through their common finite branch point. \\
 \nolinkurl{PowerExponentialLambertCurvature.lean} & Four regular-interior derivative-of-derivative and exact second-derivative declarations for the two generic scaled phases; no generic sign, threshold, or shape package. \\
@@ -4115,7 +4360,7 @@ Module & Role in the development \\
 \nolinkurl{PaperKFoldThueMorse.lean} & Aggregator separating exact results, repaired statements, and formal counterexamples. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Top-level packaging}}\\[0.25em]
-\nolinkurl{FabiusFunction.lean} & Umbrella import exposing the two paper audits, generic Volterra calculus and exact Fabius primitive ladders, shape and inverse/non-elementarity theory, computability, negative-Laplace and all-order/closed-form saddle APIs, raw and scaled Lambert curvature, k-fold audit, and Legendre developments. \\
+\nolinkurl{FabiusFunction.lean} & Umbrella import exposing the two paper audits, generic Volterra calculus and exact Fabius primitive ladders, shape and inverse/non-elementarity theory, computability, negative-Laplace and all-order/closed-form saddle APIs, raw Lambert curvature and branch-point geometry/asymptotics, scaled Lambert curvature, k-fold audit, and Legendre developments. \\
 \addlinespace[0.45em]
 \bottomrule
 \end{longtable}
@@ -4180,9 +4425,18 @@ crosswalk.  The three added rows
 curvature tranche, compiled 30 Aug 2026.  They are recorded
 declaration-by-declaration without a fabricated checkpoint or aggregate
 hash.  This tranche closes raw-branch curvature, the four generic
-second-derivative formulas, and the nineteen-declaration Fabius leaf; it
-does not close branch-point vertical-tangent limits, Puiseux expansions, or
-generic phase threshold and shape theorems.
+second-derivative formulas, and the nineteen-declaration Fabius leaf.
+The two additional rows
+\nolinkurl{LambertWBranchPointGeometry.lean} and
+\nolinkurl{LambertWBranchPointAsymptotics.lean} are the later current-tree
+branch-point tranche, also compiled 30 Aug 2026 and likewise recorded
+without a fabricated checkpoint or aggregate hash.  Their exact public
+inventory is eight theorems and, respectively, one definition plus eight
+theorems.  They close the raw signed derivative/secant limits,
+non-differentiability, squared-ratio limits, and leading signed square-root
+equivalences.  They do not close \(O(\Delta)\) remainders, higher or
+convergent/full Puiseux expansions, generic/Fabius endpoint wrappers, or
+the generic \(m\mathbin{\pm}\sqrt m\) threshold and shape layer.
 The seven activation rows and the finite-Taylor and square-summable discussions in
 Section~\ref{ch:probability} record source checkpoint
 \nolinkurl{a345425d21d90e680bf15e34093af42c69c08a83}, published 31 August
@@ -4196,7 +4450,7 @@ rebuilt the modified hyperbolic-activation dependency and exited zero.  Direct
 Lean audits of the previously recorded new or refactored declarations,
 \nolinkurl{tanhDiv_eq_dslope}, and all three finite-Taylor theorems reported exactly
 \nolinkurl{propext}, \nolinkurl{Classical.choice}, and \nolinkurl{Quot.sound}
-for each.  Static inspection found all 610 modules
+for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  No aggregate facade build is
 claimed for this checkpoint.

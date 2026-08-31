@@ -15092,9 +15092,13 @@ no support, absolute continuity, density, or moments.  The corollary
 \path{GeometricUniformUniqueness.lean} therefore characterizes the named geometric-uniform
 law by its displayed affine independent-copy equation throughout that full parameter range.
 
-The definition of \path{geometricUniformDensity} is total, but no density formula or
-Radon--Nikodym interpretation is claimed here for \(q\le0\).  Fixed-point uniqueness is now
-the direct theorem \path{eq_geometricUniformDistribution_of_selfSimilar}, valid for every
+The definition of \path{geometricUniformDensity} is total, and the formal API now diagnoses
+its nonpositive-parameter failure exactly: it is zero at \(q=0\), nonpositive for \(q<0\),
+and its \path{ENNReal.ofReal}-clamped \path{withDensity} measure is zero, hence not the
+geometric-uniform probability law when \(|q|<1\).  Lean formalization of the paper-level
+corrected signed-density replacement for \(q\le0\) remains open.  Fixed-point uniqueness is
+now the direct theorem
+\path{eq_geometricUniformDistribution_of_selfSimilar}, valid for every
 \(|q|<1\), including negative \(q\) and \(q=0\).  The definitions
 \path{geometricUniformStieltjesDomain},
 \path{geometricUniformStieltjesTransform}, and
@@ -15462,7 +15466,7 @@ measure with Lebesgue measure having density \(\operatorname{ofReal}\circ f\) fr
 everywhere pointwise CDF derivative; it assumes neither prior absolute continuity nor
 continuity of \(f\).
 
-The twenty-seven declarations in \path{GeometricUniformCDF.lean} are
+The thirty-one declarations in \path{GeometricUniformCDF.lean} are
 \path{geometricUniformCDF},
 \path{monotone_geometricUniformCDF},
 \path{geometricUniformCDF_nonneg},
@@ -15476,6 +15480,10 @@ The twenty-seven declarations in \path{GeometricUniformCDF.lean} are
 \path{geometricUniformCDF_eq_integral},
 \path{geometricUniformCDF_eq_intervalIntegral},
 \path{geometricUniformDensity},
+\path{geometricUniformDensity_zero},
+\path{geometricUniformDensity_nonpos_of_neg},
+\path{volume_withDensity_geometricUniformDensity_eq_zero_of_nonpos},
+\path{geometricUniformDistribution_ne_withDensity_geometricUniformDensity_of_nonpos},
 \path{geometricUniformCDF_hasDerivAt},
 \path{deriv_geometricUniformCDF},
 \path{continuous_geometricUniformDensity},
@@ -15491,7 +15499,12 @@ The twenty-seven declarations in \path{GeometricUniformCDF.lean} are
 \path{contDiff_geometricUniformCDF}, and
 \path{contDiff_geometricUniformDensity}.
 The CDF definition and its monotonicity, range bounds, and measurability are total in real
-\(q\).  Continuity, reflection, and midpoint use \(|q|<1\); the two CDF tails use
+\(q\).  The four nonpositive-parameter diagnostics prove respectively that the selected
+density formula is zero at \(q=0\), nonpositive for \(q<0\), gives the zero
+\path{volume.withDensity} measure for \(q\le0\), and differs from the probability law when
+also \(|q|<1\).  They do not formalize the paper-level corrected signed-density replacement.
+Continuity, reflection, and
+midpoint use \(|q|<1\); the two CDF tails use
 \(0\le q<1\); every declaration from conditioning through the classical density,
 support, and smoothness layer uses \(0<q<1\).  In
 \path{ProbabilityRepresentation.lean}, the additional exact all-real bridges are
@@ -15580,8 +15593,11 @@ in the proposition is formalized for \(0\le q<1\) by
 \path{geometricUniformCDF_one_of_one_le}.  Uniqueness is supplied separately and directly
 by \path{eq_geometricUniformDistribution_of_selfSimilar} for every \(|q|<1\), including
 negative \(q\) and \(q=0\); it requires no support, density, or moment hypothesis on the
-competing probability law.  The classical density interpretation has not been extended to
-the selected totalized \(q\le0\) formula.  Also separately,
+competing probability law.  The selected totalized \(q\le0\) formula cannot have the
+classical density interpretation: it is now proved to fail, since it is
+zero at \(q=0\), nonpositive for \(q<0\), and its clamped \path{withDensity} measure is
+zero rather than the probability law.  Lean formalization of the paper-level corrected
+signed-density construction for nonpositive parameters remains open.  Also separately,
 \path{GeometricUniformCauchy.lean} gives the exact-support transform DDE and adjacent
 Cauchy-power hierarchy for every nonzero \(|q|<1\); those declarations do not formalize
 the characteristic-function product or the real-space density-derivative hierarchy below.
@@ -16887,9 +16903,13 @@ stronger pointwise form where applicable, by \path{WeightedUniformSeries.lean},
 \path{AffineIndependentCopy.lean} and its specialization
 \path{GeometricUniformUniqueness.lean}.  This includes law reflection, independent-copy affine
 refinement, absolute continuity, null singletons, exact support, the named CDF and both
-conditioning integrals, its explicit Radon--Nikodym density, compact support, and
-\(C^\infty\) regularity, as well as fixed-point uniqueness for every real \(|q|<1\), with
-\(q=0\) and negative contractions included and no support, density, or moment assumptions.
+conditioning integrals and, for \(0<q<1\), its explicit Radon--Nikodym density, compact
+support, and \(C^\infty\) regularity, as well as fixed-point uniqueness for every real
+\(|q|<1\), with \(q=0\) and negative contractions included and no support, density, or
+moment assumptions.  The selected density formula is separately proved zero at \(q=0\),
+nonpositive for \(q<0\), and measure-theoretically invalid throughout the nonpositive
+contraction range; Lean formalization of its paper-level corrected signed-density replacement
+remains open.
 The live \path{GeometricUniformDictionary.lean} and
 \path{GeometricSincFactorization.lean} now complete item 5 in finite-residual and pointwise
 \path{Tendsto} form for every \(|q|<1\), including exact dyadic wrappers.  For

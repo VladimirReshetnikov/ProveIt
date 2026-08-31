@@ -3415,6 +3415,75 @@ expanded inclusion--exclusion form is
 The polynomial and exponential specializations recover the Prouhet and
 moment layers formalized earlier.
 
+\path{ThueMorseSymmetricDifference.lean} now supplies the centered
+arbitrary-step companion.  Its \lean{Fabius.symmetricMixedDifference} uses
+half-steps \(a_i\): the corresponding single factor is
+\(f(a_i+_{\!v}x)-f((-a_i)+_{\!v}x)\), where \(+_{\!v}\) is the additive
+action, and the full operator is the ordinary mixed
+difference with steps \(-2a_i\) based at the upper cube corner.  The general
+layer assumes only additive commutative groups and an additive action,
+permits repeated half-step values, and expands over the exact symmetric
+Boolean cube.
+
+Over a commutative ring, a polynomial \(p\) of degree at most \(|s|\) is
+reduced to
+\[
+ [X^{|s|}]p\;|s|!\prod_{i\in s}(2a_i).
+\]
+Degree below \(|s|\) is annihilated, with the degree-valued theorem retaining
+the zero-polynomial/empty-support boundary, and the first surviving monomial
+has the displayed sign-free top factor.  For dyadic half-steps the
+group-valued block is a signed Thue--Morse sum.  If the argument is a
+characteristic-zero field, the increasing-grid specialization is exact for
+every \(m\), including \(m=0\):
+\[
+ D_m(2^{-m};f,x)
+ =\sum_{n<2^m}(-1)^m\eps_n\mathbin{\boldsymbol\cdot}
+   f\!\left(x-(1-2^{-m})+2n2^{-m}\right).
+\]
+At positive order \(N=m+1\), the full grid point is
+\[
+ x-(1-2^{-(m+1)})+\frac{n}{2^m};
+\]
+its varying term is \(n/2^m\), and its mesh spacing is \(1/2^m\).
+
+The module's exhaustive public surface is two definitions and eleven
+theorems:
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.07\textwidth} >{\raggedright\arraybackslash}p{0.54\textwidth} >{\raggedright\arraybackslash}p{0.32\textwidth}@{}}
+\toprule
+No. & Declaration & Formal content \\
+\midrule
+\endfirsthead
+\toprule
+No. & Declaration & Formal content \\
+\midrule
+\endhead
+1 & \lean{Fabius.symmetricMixedDifference} & Centered arbitrary-half-step definition. \\
+2 & \lean{Fabius.symmetricMixedDifference_empty} & Empty operator. \\
+3 & \lean{Fabius.symmetricMixedDifference_singleton} & One centered factor. \\
+4 & \lean{Fabius.symmetricMixedDifference_insert} & Insert recurrence; half-step values may repeat. \\
+5 & \lean{Fabius.symmetricMixedDifference_eq_sum_powerset_smul} & Symmetric Boolean-cube expansion. \\
+6 & \lean{Fabius.symmetricMixedDifference_polynomial_eq_coeff_card} & Sharp coefficient extraction over a commutative ring. \\
+7 & \lean{Fabius.symmetricMixedDifference_polynomial_of_degree_lt} & Cancellation below the support size. \\
+8 & \lean{Fabius.symmetricMixedDifference_pow_card} & First surviving monomial value. \\
+9 & \lean{Fabius.symmetricDyadicMixedDifference} & Dyadic centered definition. \\
+10 & \lean{Fabius.symmetricDyadicMixedDifference_zero} & Zeroth dyadic operator. \\
+11 & \lean{Fabius.symmetricDyadicMixedDifference_eq_sum_thueMorseSign_smul} & Centered dyadic Thue--Morse block. \\
+12 & \lean{Fabius.symmetricDyadicMixedDifference_inv_two_pow_eq_sum_thueMorseSign_smul} & Increasing affine grid, including order zero. \\
+13 & \lean{Fabius.symmetricDyadicMixedDifference_inv_two_pow_succ_eq_sum_thueMorseSign_smul} & Positive-order grid term \(n/2^m\) (mesh \(1/2^m\)). \\
+\bottomrule
+\end{longtable}
+
+This algebraic module does not prove the next multiple-integral corollary.
+More precisely, it closes the Boolean-cube, arbitrary-step polynomial
+extraction/cancellation/top-value, and exact affine-grid clauses of the
+continuous-chaos report's Thue--Morse corner theorem, but not that theorem's
+repeated-integral identity under its \(C^N\) hypotheses.  The report theorem
+therefore remains near-complete rather than fully formalized; a final
+analytic bridge and report-shaped wrapper remain.  Its following Walsh
+conditional-expectation corollary also still lacks the sign--magnitude
+probability construction, conditioning, and \(2^{-N}\) normalization.
+
 \subsection{Exact multiple-integral remainder}
 
 \begin{corollary}[Integral cubature formula]
@@ -6696,6 +6765,7 @@ Module & Contents \\
 \path{ThueMorseWalsh.lean} & All-ones digit patterns and masked two-power sums, \(\eps\) as a Walsh character, character orthogonality on the block, the one-point Walsh spectrum. \\
 \path{ThueMorseSparseMoments.lean} & The atlas's all-sparse-moments formula on the submask cube (\cref{p1:cor:all-sparse-moments}), as the \(S=J(n)\) instance of the arbitrary-support composition of \path{ThueMorseMoments.lean}. \\
 \path{ThueMorseMixedDifference.lean} & The dyadic mixed-difference operator and the finite-difference factorization for arbitrary functions from an additive commutative monoid into an additive commutative group, with the powerset expansion. \\
+\path{ThueMorseSymmetricDifference.lean} & Exhaustive two-definition/eleven-theorem centered companion: arbitrary half-steps and the symmetric Boolean cube, sharp commutative-ring polynomial extraction/cancellation/top value, the centered dyadic block, and both characteristic-zero increasing-grid forms.  It does not supply the repeated-integral clause of the continuous-chaos report. \\
 \path{ThueMorseAutocorrelation.lean} & Finite autocorrelation recursion in exact integer form along \emph{any even} window, \(R_{2K}(2r)=2R_K(r)\) and \(R_{2K}(2r+1)=-(R_K(r)+R_K(r+1))\), with the dyadic layer \(A_m(k)=R_{2^m}(k)\) as its power-of-two case: zero-shift value, trivial bound, closed values at shifts one and two, and the normalized limits at shifts zero, one and two. \\
 \path{ThueMorseOverlapFree.lean} & Thue's overlap-freeness theorem with cube-freeness, the attained critical exponent two, the alphabet-free implication ``overlap-free \(\Rightarrow\) not eventually periodic'', and constructive complement and reversal closure of the factor language. \\
 \path{ThueMorseRecurrence.lean} & Full block-concatenation laws for weight and bit, all two-letter factors in every fourteen-letter window, uniform recurrence with an explicit linear bound. \\
@@ -6886,7 +6956,7 @@ Proposed module & Main declarations \\
 \path{ThueMorseMultinomial.lean} & Frobenius factorization and \(O_r(n)=r^{\wt(n)}\).  \emph{Delivered} (via Kummer's criterion rather than Frobenius). \\
 \path{ThueMorseBooleanMobius.lean} & Submask incidence algebra and inverse parity matrix.  \emph{Delivered} (poset form; the matrix form is its row-by-row reading). \\
 \path{ThueMorseGeneratingProduct.lean} & \(P_m\), cyclotomic multiplicities, Mahler equations.  \emph{Delivered} (\path{ThueMorseBlockAlgebra.lean}, \path{ThueMorseMahler.lean}). \\
-\path{ThueMorseProuhetMoments.lean} & Difference operators, all moments, centered parity.  \emph{Delivered} (\path{ThueMorseMoments.lean}, \path{ThueMorseMixedDifference.lean}). \\
+\path{ThueMorseProuhetMoments.lean} & Difference operators, all moments, centered parity.  \emph{Delivered} (\path{ThueMorseMoments.lean}, \path{ThueMorseMixedDifference.lean}, \path{ThueMorseSymmetricDifference.lean}). \\
 \path{ThueMorseSparseProuhet.lean} & Arbitrary Pascal-support products and sparse moments.  \emph{Delivered} (plus \path{ThueMorseSparseMoments.lean}). \\
 \path{ThueMorseFormalSeriesF2.lean} & Artin--Schreier equation and explicit solution.  \emph{Delivered} (\path{ThueMorseArtinSchreier.lean}, with uniqueness and the integer lift). \\
 \path{ThueMorseFourier.lean} & Finite DFT, Walsh transform, product-to-sum identities.  \emph{Delivered} across \path{ThueMorseComplexExponential.lean}, \path{ThueMorseComplexProductBridge.lean}, \path{ThueMorseFourier.lean}, \path{ThueMorseSineProduct.lean}, \path{LacunaryProductToSum.lean}, \path{LacunaryProductToSumCosine.lean}, and \path{ThueMorseFourierInversion.lean}: the raw weighted and signed exponential transforms for every complex parameter and affine translate, the total complex half-angle and sinc normalizations, the Walsh and Riesz factorizations, the affine real sine and cosine forms, both real lacunary product-to-sum identities, and Fourier inversion are formal.  Only direct arbitrary-complex declarations in the two rescaled product-to-sum forms remain unbundled. \\

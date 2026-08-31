@@ -109,10 +109,17 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-Taylor 2026-08-31 inventory contains 610 modules and 8,318 lexically
+The post-merge 2026-08-31 inventory contains 614 modules and 8,375 lexically
 visible public declarations, with zero missing module headers and zero missing
-doc comments.  This snapshot includes the new `ActivationTaylor.lean` module
-and the reusable divided-slope bridge in `HyperbolicActivation.lean`.  The
+doc comments.  Relative to the 610/8,333 inverse-modulus checkpoint, this union
+adds four modules and 42 declarations.  The branch-point geometry and
+asymptotics leaves contribute 17 declarations for the one-sided vertical
+tangents and leading signed square-root laws of both real Lambert branches.
+The two Legendre--Gaunt modules contribute the other 25: four definitions and
+twelve theorems in `LegendreGaunt.lean`, and one definition and eight theorems
+in `FabiusLegendreGaunt.lean`.  They add the executable rational triple-product
+and finite product-linearization core, then specialize it to full and even
+Rvachev coefficient sums for rational and real Legendre Gram entries.  The
 baseline records the current inventory and those zeroes, so every future source
 addition must preserve the full invariant rather than merely avoid worsening a
 historical backlog.  Run the script for live numbers after merging concurrent

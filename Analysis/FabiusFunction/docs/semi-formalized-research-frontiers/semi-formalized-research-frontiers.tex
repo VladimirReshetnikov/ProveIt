@@ -315,8 +315,12 @@ bounded Fabius function and the affine Rvachev bump.  A generic characteristic-f
 argument now proves uniqueness for contractive affine independent-copy equations in complete
 second-countable real inner-product spaces; in particular, the named geometric law is the
 unique probability solution of its refinement equation for \(|q|<1\), including \(q=0\)
-and negative \(q\), with no support, density, or moment hypothesis.  The negative- and
-zero-parameter density interpretation remains open.  Write
+and negative \(q\), with no support, density, or moment hypothesis.  The selected total
+density formula is now diagnosed exactly on the nonpositive side: it is identically zero
+at \(q=0\) and nonpositive for \(q<0\), so its \texttt{ofReal}-clamped
+\texttt{withDensity} measure is zero and cannot equal the geometric-uniform probability law
+when \(|q|<1\) and \(q\le0\).  Lean formalization of the paper-level corrected
+signed-density replacement for that parameter range remains open.  Write
 \(S_q(z)=\operatorname{geometricSincProduct}(q,z)\),
 \(G_q(z)=\operatorname{geometricReciprocalGamma}(q,z)\), and
 \(z_q(t)=(1-q)t/(2\pi)\).  The formal API now proves, for every real
@@ -435,6 +439,42 @@ Finite complex Thue--Morse block transforms &
 \nolinkurl{sum_range_two_pow_thueMorseSign_cexp},
 \nolinkurl{sum_range_two_pow_thueMorseSign_cexp_affine} &
 \nolinkurl{ThueMorseComplexExponential.lean} \\
+Centered mixed differences and symmetric Thue--Morse blocks (exactly two
+definitions and eleven theorems).  The arbitrary-half-step layer uses
+additive commutative groups and an additive action, permits repeated values,
+and gives the empty, singleton, insert, and powerset laws. &
+\nolinkurl{symmetricMixedDifference},
+\nolinkurl{symmetricMixedDifference_empty},
+\nolinkurl{symmetricMixedDifference_singleton},
+\nolinkurl{symmetricMixedDifference_insert},
+\nolinkurl{symmetricMixedDifference_eq_sum_powerset_smul} &
+\nolinkurl{ThueMorseSymmetricDifference.lean} \\
+\emph{Same surface, polynomial layer.}  Over a commutative ring, for a
+polynomial of degree at most \(|s|\), it extracts the degree-\(|s|\)
+coefficient with sign-free factor
+\(|s|!\prod_{i\in s}(2a_i)\), annihilates lower degree including the
+zero-polynomial/empty-support boundary, and evaluates the first surviving
+power. &
+\nolinkurl{symmetricMixedDifference_polynomial_eq_coeff_card},
+\nolinkurl{symmetricMixedDifference_polynomial_of_degree_lt},
+\nolinkurl{symmetricMixedDifference_pow_card} &
+\emph{same module} \\
+\emph{Same surface, dyadic layer and report boundary.}  The dyadic block is
+group-valued.  Its increasing-grid wrappers use a characteristic-zero field:
+the all-order form, including \(m=0\), has points
+\(x-(1-2^{-m})+2n2^{-m}\).  At positive order \(N=m+1\), the full point is
+\(x-(1-2^{-(m+1)})+n/2^m\); its varying term is \(n/2^m\), its mesh spacing
+is \(1/2^m\), and its complement sign is \((-1)^N\).  This closes the
+Boolean-cube, polynomial, and affine-grid clauses of the continuous-chaos
+report's Thue--Morse corner theorem, but not its repeated-integral equality
+under \(C^N\) hypotheses; the following Walsh conditional-expectation
+corollary also remains outside this module. &
+\nolinkurl{symmetricDyadicMixedDifference},
+\nolinkurl{symmetricDyadicMixedDifference_zero},
+\nolinkurl{symmetricDyadicMixedDifference_eq_sum_thueMorseSign_smul},
+\nolinkurl{symmetricDyadicMixedDifference_inv_two_pow_eq_sum_thueMorseSign_smul},
+\nolinkurl{symmetricDyadicMixedDifference_inv_two_pow_succ_eq_sum_thueMorseSign_smul} &
+\emph{same module} \\
 Generic weighted uniform series and laws &
 \nolinkurl{uniformProduct_map_of_ae_head_tail_recursion},
 \nolinkurl{weightedUniformSeries_map},
@@ -695,6 +735,75 @@ asymptotics remain open. &
 \nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmicDelta} &
 \nolinkurl{FabiusInverseLogarithmicModulus.lean} \\
 Lower-Lambert coordinate & \nolinkurl{fabiusLambertPhase} & \nolinkurl{FabiusLambertSaddle.lean} \\
+Raw real Lambert curvature (the first 13 declarations of the exact 36-name
+curvature inventory).  For \(z>-e^{-1}\), the principal branch has the
+nonsingular formula
+\(W''=-e^{-2W}(W+2)/(W+1)^3\), hence \(W_0''(0)=-2\) and strict concavity
+on the closed domain \([-e^{-1},\infty)\).  Lower-branch calculus and all
+three sign equivalences assume exactly \(z\in(-e^{-1},0)\); the unique zero is
+\(-2e^{-2}\), with strict convexity on
+\([-e^{-1},-2e^{-2}]\) and strict concavity on
+\([-2e^{-2},0)\).  The endpoint-inclusive shape results do not assert a
+branch-point derivative, vertical-tangent limit, or Puiseux law. &
+\nolinkurl{deriv_principalLambertW},
+\nolinkurl{deriv_principalLambertW_hasDerivAt},
+\nolinkurl{deriv_deriv_principalLambertW},
+\nolinkurl{deriv_deriv_principalLambertW_zero},
+\nolinkurl{deriv_deriv_principalLambertW_neg},
+\nolinkurl{strictConcaveOn_principalLambertW},
+\nolinkurl{deriv_lowerLambertW_hasDerivAt},
+\nolinkurl{deriv_deriv_lowerLambertW},
+\nolinkurl{deriv_deriv_lowerLambertW_pos_iff},
+\nolinkurl{deriv_deriv_lowerLambertW_neg_iff},
+\nolinkurl{deriv_deriv_lowerLambertW_eq_zero_iff},
+\nolinkurl{strictConvexOn_lowerLambertW_left},
+\nolinkurl{strictConcaveOn_lowerLambertW_right} &
+\nolinkurl{LambertWCurvature.lean} \\
+Generic scaled power--exponential curvature (four declarations).  Write \(P\)
+for the power--exponential peak at parameters \(m,A,\beta\).
+If \(m\in\N\setminus\{0\}\), \(A>0\), \(\beta>0\), and \(0<x<P\), both
+inverse branches satisfy
+\(\lambda''=\lambda\bigl(m-(m-\beta\lambda)^2\bigr)/
+\bigl(x^2(m-\beta\lambda)^3\bigr)\).  No generic square-root threshold,
+sign, inflection, or global shape theorem is claimed. &
+\nolinkurl{deriv_principalPowerExponentialPhase_hasDerivAt},
+\nolinkurl{deriv_deriv_principalPowerExponentialPhase},
+\nolinkurl{deriv_lowerPowerExponentialPhase_hasDerivAt},
+\nolinkurl{deriv_deriv_lowerPowerExponentialPhase} &
+\nolinkurl{PowerExponentialLambertCurvature.lean} \\
+Fabius Lambert curvature (one definition and eighteen theorems, completing
+the 36-name inventory).  Put \(L=\log2\),
+\(x_*=2e^{-2}/L\), and \(P=e^{-1}/L\).  On \(0<x<P\), the lower phase has
+\(\lambda(x_*)=2/L\),
+\(\lambda''=L\lambda^2(2-L\lambda)/
+\bigl(x^2(1-L\lambda)^3\bigr)\), sign equivalences on either side of \(x_*\),
+and its unique zero there; its exact shape domains are
+\(\operatorname{Ioc}(0,x_*)\) and \(\operatorname{Icc}(x_*,P)\).
+The principal affine-\(W_0\) identity is global; continuity and strict
+convexity hold on \(\operatorname{Iic}(P)\), while first and second calculus
+and positivity assume \(x<P\), with \(\lambda_0''(0)=2L\).  This
+specialization adds no branch-point derivative, vertical-tangent limit, or
+Puiseux expansion. &
+\nolinkurl{fabiusLambertInflectionInput},
+\nolinkurl{fabiusLambertInflectionInput_mem_Ioo},
+\nolinkurl{fabiusLambertPhase_inflectionInput},
+\nolinkurl{deriv_deriv_fabiusLambertPhase},
+\nolinkurl{deriv_deriv_fabiusLambertPhase_pos_iff},
+\nolinkurl{deriv_deriv_fabiusLambertPhase_neg_iff},
+\nolinkurl{deriv_deriv_fabiusLambertPhase_eq_zero_iff},
+\nolinkurl{deriv_deriv_fabiusLambertPhase_inflectionInput},
+\nolinkurl{strictConvexOn_fabiusLambertPhase_left},
+\nolinkurl{strictConcaveOn_fabiusLambertPhase_right},
+\nolinkurl{fabiusPrincipalLambertPhase_eq_principalLambertW},
+\nolinkurl{fabiusPrincipalLambertPhase_continuousOn_Iic},
+\nolinkurl{fabiusPrincipalLambertPhase_hasDerivAt},
+\nolinkurl{deriv_fabiusPrincipalLambertPhase},
+\nolinkurl{deriv_fabiusPrincipalLambertPhase_hasDerivAt},
+\nolinkurl{deriv_deriv_fabiusPrincipalLambertPhase},
+\nolinkurl{deriv_deriv_fabiusPrincipalLambertPhase_pos},
+\nolinkurl{deriv_deriv_fabiusPrincipalLambertPhase_zero},
+\nolinkurl{strictConvexOn_fabiusPrincipalLambertPhase} &
+\nolinkurl{PowerExponentialLambertFabiusCurvature.lean} \\
 All-orders saddle expansion & saddle mass/log coefficient declarations & \nolinkurl{FabiusFullAsymptoticExpansion.lean} and related modules \\
 \bottomrule
 \end{longtable}
@@ -724,9 +833,13 @@ prefixes are formal, with exact dyadic wrappers.  The defining products for
 \(z_q(t)=(1-q)t/(2\pi)\), the exact named bridges give
 \(\phi_q(t)=e^{\ii t/2}S_q(z_q(t))
 =e^{\ii t/2}G_q(z_q(t))G_q(-z_q(t))\) throughout \(|q|<1\), including zero
-and negative ratios.  What remains here is the density interpretation at \(q=0\) and at
-negative \(q\), a named compact-uniform theorem for the full phase-bearing characteristic
-prefixes, rapid decay and Fourier inversion, named centered/MGF packaging, a closed
+and negative ratios.  The selected total density formula is formally zero at \(q=0\),
+nonpositive for negative ratios, and gives the zero \texttt{withDensity} measure throughout
+\(q\le0\), hence not the probability law on the nonpositive contraction range.  What
+remains here is Lean formalization of the paper-level corrected signed-density construction
+for \(q\le0\), a named
+compact-uniform theorem for the full phase-bearing characteristic prefixes, rapid decay and
+Fourier inversion, named centered/MGF packaging, a closed
 higher-derivative hierarchy and endpoint-flatness wrappers, shape theorems, further
 transforms, and explicit Bernoulli-cumulant/Bell-moment formulas and asymptotics.  Finite
 characteristic-function, MGF, and CGF tail factorizations are already part of the geometric
@@ -791,8 +904,12 @@ subset.  Among the obligations retained here are generic moment-matrix consequen
 arbitrary-family Toeplitz wording, generic Gaussian coefficient bounds, and the geometric-
 \(q\) Fourier, centered-family, higher-derivative, endpoint-flatness, shape,
 transform, and moment/cumulant layers beyond the formalized CDF and positive-ratio
-smooth-density API.  The explicit density's interpretation at zero and negative parameters
-is also not supplied by that API.  The probability-law fixed point, by contrast, is now
+smooth-density API.  The same API now proves that the selected total density formula is
+zero at \(q=0\), nonpositive for negative \(q\), and has zero clamped
+\texttt{withDensity} measure for \(q\le0\), which cannot represent \(\mu_q\) on the
+nonpositive contraction range.  Only formalization of the paper-level sign-corrected
+density remains open.  The
+probability-law fixed point, by contrast, is now
 unique under the exact contractive hypotheses recorded below, the phase-bearing sinc
 prefix has a formal pointwise limit, and the oriented Cauchy-transform DDE and
 adjacent-power hierarchy are formal for nonzero contractions.  The latter should not be
@@ -1656,6 +1773,17 @@ statements are
 \lean{geometricUniformCDF_zero_of_nonpos} and
 \lean{geometricUniformCDF_one_of_one_le}.
 
+The four nonpositive-parameter diagnostic declarations are
+\lean{geometricUniformDensity_zero},
+\lean{geometricUniformDensity_nonpos_of_neg},
+\lean{volume_withDensity_geometricUniformDensity_eq_zero_of_nonpos}, and
+\lean{geometricUniformDistribution_ne_withDensity_geometricUniformDensity_of_nonpos}.
+They state respectively that the selected total formula is identically zero at \(q=0\), is
+nonpositive for every \(q<0\), produces the zero \texttt{withDensity} measure for every
+\(q\le0\), and differs from \(\mu_q\) whenever additionally \(|q|<1\).  These are
+diagnostic theorems about the selected formula, not a Lean formalization of the paper-level
+corrected signed-density replacement for nonpositive parameters.
+
 For \(0<q<1\), the refinement, density, and derivative declarations are
 \lean{geometricUniformCDF_eq_integral},
 \lean{geometricUniformCDF_eq_intervalIntegral},
@@ -1690,9 +1818,12 @@ Fabius representative, and
 \textbf{Remaining geometric-\(q\) frontier.}
 The promotion is deliberately not read past its hypotheses.  The law \(\mu_q\) is absolutely
 continuous for every \(|q|<1\), but the selected total function \(f_q\) is proved to be its
-Radon--Nikodym density only when \(0<q<1\); its density interpretation at \(q=0\) and at
-negative \(q\) remains open in this interface.  The following report layers also remain in
-the research quarantine:
+Radon--Nikodym density only when \(0<q<1\).  Its behavior for \(q\le0\) is not open:
+\(f_0=0\), \(f_q\le0\) for \(q<0\), and
+\(\operatorname{Leb}.\mathrm{withDensity}(\operatorname{ofReal}\circ f_q)=0\), which is
+not \(\mu_q\) on the nonpositive contraction range.  Lean formalization of the paper-level
+corrected signed-density construction for \(q=0\) and negative \(q\) remains in the research
+quarantine, together with:
 \begin{itemize}
 \item a named compact-uniform theorem for the full phase-bearing characteristic prefixes,
       beyond both the formal pointwise characteristic-prefix limit and the locally uniform
@@ -3577,7 +3708,8 @@ as a Lebesgue Radon--Nikodym density;
 \cref{integration:sec:weighted-naturality}.\\
 \path{GeometricUniformCDF.lean} &
 The named geometric CDF and density API: continuity and reflection for \(|q|<1\), tails for
-\(0\le q<1\), and, for \(0<q<1\), conditioning and interval-integral refinement,
+\(0\le q<1\), the exact zero/nonpositive/zero-measure/nonidentity diagnosis for the selected
+formula when \(q\le0\), and, for \(0<q<1\), conditioning and interval-integral refinement,
 everywhere differentiation, nonnegativity, symmetry, compact support, the exact
 \texttt{withDensity} identity, and real-space \(C^\infty\) regularity;
 \cref{integration:sec:weighted-naturality}.\\
@@ -3948,10 +4080,11 @@ pointwise multipliability and an exact \texttt{HasProd} theorem, and entireness.
 \(z_q(t)=(1-q)t/(2\pi)\), exact named bridges prove
 \(\phi_q(t)=e^{\ii t/2}S_q(z_q(t))
 =e^{\ii t/2}G_q(z_q(t))G_q(-z_q(t))\) throughout \(|q|<1\), including
-zero and negative ratios.  The zero/negative parameter density interpretation, a named
-compact-uniform theorem for the full phase-bearing characteristic prefixes, general-\(q\)
-rapid decay and Fourier inversion, centered/MGF package, closed higher-derivative and
-endpoint-flatness wrappers, shape, further transforms, and explicit
+zero and negative ratios.  Failure of the selected total density formula on \(q\le0\) is
+formal; Lean formalization of the paper-level corrected signed-density replacement, a named compact-uniform
+theorem for the full phase-bearing characteristic prefixes, general-\(q\) rapid decay and
+Fourier inversion, centered/MGF package, closed higher-derivative and endpoint-flatness
+wrappers, shape, further transforms, and explicit
 Bernoulli-cumulant/Bell-moment formulas and asymptotics remain outside the formal boundary.
 In contrast, the finite residual sinc formula, pointwise characteristic-prefix limit,
 locally uniform complex sinc product, exact infinite characteristic/Gamma bridges, generic
@@ -15318,17 +15451,28 @@ transport from $x=2^{-t}$ to the full limit $x\downarrow0$. & \Formalized\\
 
 The structural uniform-modulus layer is the exhaustive public surface of
 \path{InverseModulus.lean}: one definition,
-\path{Fabius.fabiusIntervalMass}, and twenty theorems,
+\path{Fabius.fabiusIntervalMass}, and thirty-one theorems,
 \path{Fabius.fabiusIntervalMass_reflect},
+\path{Fabius.fabiusIntervalMass_eq_zero_of_add_nonpos},
+\path{Fabius.fabiusIntervalMass_eq_zero_of_one_le},
 \path{Fabius.monotoneOn_fabiusIntervalMass_firstHalf},
 \path{Fabius.antitoneOn_fabiusIntervalMass_secondHalf},
+\path{Fabius.strictMonoOn_fabiusIntervalMass_firstHalf},
+\path{Fabius.strictAntiOn_fabiusIntervalMass_secondHalf},
 \path{Fabius.fabiusReal_sub_le_sub},
+\path{Fabius.fabiusReal_lt_fabiusIntervalMass_of_mem_Ioo},
+\path{Fabius.fabiusIntervalMass_eq_fabiusReal_iff},
+\path{Fabius.fabiusReal_sub_lt_sub},
+\path{Fabius.fabiusReal_sub_eq_sub_iff},
 \path{Fabius.fabiusReal_add_le},
+\path{Fabius.fabiusReal_add_eq_iff},
 \path{Fabius.fabiusInv_sub_le_sub_of_mem_Icc},
+\path{Fabius.fabiusInv_sub_eq_sub_iff_of_mem_Icc},
 \path{Fabius.fabiusInv_sub_le_sub_of_le},
 \path{Fabius.fabiusInv_sub_le_sub},
 \path{Fabius.fabiusInv_add_le},
 \path{Fabius.abs_fabiusInv_sub_le},
+\path{Fabius.abs_fabiusInv_sub_eq_iff_of_mem_Icc},
 \path{Fabius.dist_fabiusInv_le},
 \path{Fabius.fabiusInv_min_one},
 \path{Fabius.isGreatest_abs_fabiusInv_sub},
@@ -15340,12 +15484,18 @@ The structural uniform-modulus layer is the exhaustive public surface of
 \path{Fabius.fabiusReal_le_abs_sub_of_le_abs_fabiusInv_sub}, and
 \path{Fabius.forall_abs_fabiusInv_sub_lt_iff}.
 For nonnegative length the fixed-length Fabius increment is reflection-invariant,
-increases toward the centered interval, and then decreases.  The endpoint minimum yields
-the ordered and order-free inverse-gap bounds, subadditivity, absolute and metric
-self-moduli, saturation at one, and attained exact \path{IsGreatest}/\path{sSup} moduli
-globally and on the unit interval.  The final four declarations are the strict and closed
-effective-injectivity bounds, their contrapositive separation form, and the uniform
-strict-threshold biconditional.  This module does not supply the report's closed
+vanishes on either constant tail, increases toward the centered interval, and then
+decreases; for \(0<h\le1\), the maximal support-meeting branches
+\([-h,(1-h)/2]\) and \([(1-h)/2,1]\) are strict.  On the unit interval, the endpoint
+minimum has exact strict-interior and degenerate/endpoint equality loci, and constrained
+superadditivity has its full equality classification.  The ordered and order-free
+inverse-gap bounds include complete ordered and absolute equality loci on \([0,1]\), while
+the global clamped tails deliberately remain outside that equality classification.
+Subadditivity, absolute and metric self-moduli, saturation at one, and attained exact
+\path{IsGreatest}/\path{sSup} moduli hold globally and on the unit interval.  The final
+four declarations are the strict and closed effective-injectivity bounds, their
+contrapositive separation form, and the uniform strict-threshold biconditional.  This
+module does not supply the report's closed
 \(\Delta_r\) lower bound, recursive-modulus wrapper, tolerant-bisection realizer,
 sequential computability theorem, combined computable-real-function theorem, or input-bit
 asymptotics.

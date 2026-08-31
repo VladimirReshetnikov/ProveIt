@@ -42,6 +42,8 @@ import FabiusFunction.LowerLambertW
 import FabiusFunction.GeneralizedLambertCoordinate
 import FabiusFunction.LambertBranchDichotomy
 import FabiusFunction.LambertWCurvature
+import FabiusFunction.LambertWBranchPointGeometry
+import FabiusFunction.LambertWBranchPointAsymptotics
 import FabiusFunction.PowerExponentialLambert
 import FabiusFunction.PowerExponentialLambertCalculus
 import FabiusFunction.PowerExponentialLambertCurvature
@@ -380,8 +382,10 @@ import FabiusFunction.PeriodicRegularity
 import FabiusFunction.LaplacePeriodicSecondOrder
 import FabiusFunction.FabiusTranslatedLegendreSeries
 import FabiusFunction.FabiusLegendreLeastSquares
+import FabiusFunction.LegendreGaunt
 import FabiusFunction.FabiusLegendreEnergy
 import FabiusFunction.FabiusLegendreRationalEnergy
+import FabiusFunction.FabiusLegendreGaunt
 import FabiusFunction.FabiusSquareEnergyFourier
 import FabiusFunction.FabiusLegendreTranslateBlocks
 import FabiusFunction.FabiusLegendreTranslateSeries

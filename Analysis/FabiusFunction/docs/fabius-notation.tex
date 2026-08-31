@@ -1,0 +1,134 @@
+% Canonical mathematical notation for active FabiusFunction LaTeX documents.
+%
+% This file is intentionally a plain TeX input rather than a LaTeX package.
+% Every standalone document loads it by an explicit path relative to that
+% document's directory; included fragments inherit the definitions from their
+% root document.  Keep this file independent of document layout and metadata.
+%
+% Contract:
+%   * one command has one mathematical meaning throughout the active corpus;
+%   * names encode semantic roles rather than a document-local choice of letter;
+%   * visually similar but differently normalized objects have different print;
+%   * every command below is defined normatively in the notation catalogue.
+%
+% The active corpus excludes docs/archive/.  Historical sources may retain
+% their original notation only inside an explicitly labelled quotation.
+
+\makeatletter
+\@ifundefined{mathbb}{%
+  \PackageError{fabius-notation}{The amssymb package must be loaded first}%
+    {Load amsmath and amssymb before inputting fabius-notation.tex.}%
+}{}
+\@ifundefined{operatorname}{%
+  \PackageError{fabius-notation}{The amsmath package must be loaded first}%
+    {Load amsmath before inputting fabius-notation.tex.}%
+}{}
+\makeatother
+
+% Version stamp used by the catalogue and by static audits.
+\newcommand{\FabiusNotationVersion}{2026-08-31}
+
+% Number systems.  NaturalNumbers is explicitly the nonnegative convention.
+\newcommand{\NaturalNumbers}{\mathbb{N}_{0}}
+\newcommand{\PositiveIntegers}{\mathbb{N}_{>0}}
+\newcommand{\IntegerNumbers}{\mathbb{Z}}
+\newcommand{\RationalNumbers}{\mathbb{Q}}
+\newcommand{\RealNumbers}{\mathbb{R}}
+\newcommand{\ComplexNumbers}{\mathbb{C}}
+\newcommand{\ExtendedRealNumbers}{\overline{\mathbb{R}}}
+
+% The three principal Fabius--Rvachev functions.  Subscripts are deliberate:
+% a bare F and a calligraphic F have several unrelated uses in the corpus.
+\newcommand{\FabiusBounded}{F_{\mathrm{bd}}}
+\newcommand{\FabiusGlobal}{F_{\mathrm{gl}}}
+\newcommand{\FabiusQuantile}{Q_{F}}
+\newcommand{\FabiusClampedQuantile}{Q_{F}^{\mathrm{cl}}}
+\newcommand{\RvachevUp}{\operatorname{up}}
+
+% Constants, elementary operators, and delimiters.
+\newcommand{\EulerE}{\mathrm{e}}
+\newcommand{\ImaginaryUnit}{\mathrm{i}}
+\newcommand{\Differential}{\mathop{}\!\mathrm{d}}
+\newcommand{\AbsoluteValue}[1]{\left\lvert #1\right\rvert}
+\newcommand{\Norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\Floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\Ceiling}[1]{\left\lceil #1\right\rceil}
+\newcommand{\FractionalPart}[1]{\left\{#1\right\}}
+\newcommand{\PositivePart}[1]{\left(#1\right)_{+}}
+\newcommand{\IndicatorOf}[1]{\mathbf{1}_{#1}}
+\newcommand{\SetOf}[1]{\left\{#1\right\}}
+\newcommand{\InnerProduct}[1]{\left\langle #1\right\rangle}
+\newcommand{\CardinalityOf}[1]{\left\lvert #1\right\rvert}
+\newcommand{\DefinitionEquals}{\mathrel{\coloneqq}}
+\newcommand{\Sign}{\operatorname{sgn}}
+\newcommand{\IdentityOperator}{\operatorname{id}}
+\newcommand{\SpanOperator}{\operatorname{span}}
+\newcommand{\TraceOperator}{\operatorname{tr}}
+\newcommand{\RankOperator}{\operatorname{rank}}
+\newcommand{\DiagonalOperator}{\operatorname{diag}}
+\newcommand{\ResidueOperator}{\operatorname*{Res}}
+\newcommand{\LeastCommonMultiple}{\operatorname{lcm}}
+\newcommand{\OrderOperator}{\operatorname{ord}}
+\newcommand{\PrincipalLogarithm}{\operatorname{Log}}
+\newcommand{\FallingFactorial}[2]{\left(#1\right)^{\underline{#2}}}
+\newcommand{\RisingFactorial}[2]{\left(#1\right)^{\overline{#2}}}
+
+% Support, topology, convolution, and metric notation.
+\newcommand{\SupportOperator}{\operatorname{supp}}
+\newcommand{\SupportOf}[1]{\SupportOperator\!\left(#1\right)}
+\newcommand{\TopologicalSupportOf}[1]{\operatorname{tsupp}\!\left(#1\right)}
+\newcommand{\Convolution}{\mathbin{*}}
+\newcommand{\MetricDistance}{\operatorname{dist}}
+\newcommand{\TotalVariationDistance}{d_{\mathrm{TV}}}
+
+% Probability.  Equality and convergence in law are not metric distance.
+\newcommand{\Probability}{\mathbb{P}}
+\newcommand{\Expectation}{\mathbb{E}}
+\newcommand{\Variance}{\operatorname{Var}}
+\newcommand{\Covariance}{\operatorname{Cov}}
+\newcommand{\LawOperator}{\operatorname{Law}}
+\newcommand{\LawOf}[1]{\LawOperator\!\left(#1\right)}
+\newcommand{\EqualInLaw}{\mathrel{\overset{\mathrm{law}}{=}}}
+\newcommand{\ConvergesInLaw}{\mathrel{\xrightarrow{\mathrm{law}}}}
+
+% Fourier and integral transforms.  The printed labels expose normalization.
+% FourierTwoPi uses exp(-2*pi*i*x*xi); FourierAngular uses exp(-i*x*omega).
+\newcommand{\FourierTwoPi}[1]{\widehat{#1}_{\,2\pi}}
+\newcommand{\FourierAngular}[1]{\widehat{#1}_{\,\mathrm{ang}}}
+\newcommand{\LaplaceTransformSymbol}{\mathcal{L}}
+\newcommand{\MellinTransformSymbol}{\mathcal{M}}
+\newcommand{\LaplaceTransformOf}[1]{\LaplaceTransformSymbol\!\left[#1\right]}
+\newcommand{\MellinTransformOf}[1]{\MellinTransformSymbol\!\left[#1\right]}
+\newcommand{\MomentGeneratingFunction}[1]{M_{#1}}
+\newcommand{\CharacteristicFunction}[1]{\varphi_{#1}}
+
+% The two standard sinc functions must never share one symbol.
+\newcommand{\SincRad}{\operatorname{sinc}_{\mathrm{rad}}}
+\newcommand{\SincPi}{\operatorname{sinc}_{\pi}}
+
+% Binary arithmetic and Thue--Morse notation.
+\newcommand{\BinaryDigitSum}{\operatorname{wt}_{2}}
+\newcommand{\ThueMorseSignSymbol}{\varepsilon}
+\newcommand{\ThueMorseSign}[1]{\varepsilon_{#1}}
+\newcommand{\PadicValuation}[1]{\nu_{#1}}
+\newcommand{\TwoAdicValuation}{\nu_{2}}
+
+% q-series notation.  Every base is an explicit argument.
+\newcommand{\QPochhammer}[3]{\left(#1;#2\right)_{#3}}
+\newcommand{\GaussianBinomial}[3]{%
+  \genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}%
+}
+\newcommand{\QInteger}[2]{\left[#1\right]_{#2}}
+
+% Named special functions.
+\newcommand{\Polylogarithm}{\operatorname{Li}}
+\newcommand{\LambertW}{W}
+\newcommand{\GammaFunction}{\Gamma}
+\newcommand{\RiemannZeta}{\zeta}
+
+% Asymptotics.  BigO and LittleO are operator tokens for existing formula
+% grammar; prefer the At forms so that the limiting regime is printed.
+\newcommand{\BigO}{\mathcal{O}}
+\newcommand{\LittleO}{o}
+\newcommand{\BigOAt}[2]{\mathcal{O}_{#2}\!\left(#1\right)}
+\newcommand{\LittleOAt}[2]{o_{#2}\!\left(#1\right)}
