@@ -1,0 +1,1301 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=28mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalise]{cleveref}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{url}
+\usepackage{bm}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!45!black,
+  citecolor=green!35!black,
+  urlcolor=blue!55!black,
+  pdftitle={Dyadic Spectral Divisors and Gamma Duality},
+  pdfauthor={OpenAI GPT-5.6 Pro}
+}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Fabius--Rvachev frontier report}
+\fancyhead[R]{\thepage}
+\setlength{\headheight}{14pt}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{problem}[theorem]{Problem}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{experiment}[theorem]{Numerical experiment}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\PF}{\mathrm{PF}_{\infty}}
+\newcommand{\LP}{\mathcal{LP}}
+\newcommand{\LPI}{\mathcal{LP}\!\operatorname{-I}}
+\newcommand{\ThetaB}{\Theta_b}
+\newcommand{\Hb}{\mathcal H_b}
+\newcommand{\Cb}{C_b}
+\newcommand{\Pb}{P_b}
+\newcommand{\Qb}{Q_b}
+\newcommand{\vb}{\nu_b}
+\newcommand{\repo}{\texttt{ProveIt}}
+
+\definecolor{shade}{RGB}{246,248,250}
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{shade},
+  frame=single,
+  breaklines=true,
+  showstringspaces=false,
+  columns=fullflexible
+}
+
+\title{\bfseries Dyadic Spectral Divisors and Gamma Duality\\[0.35em]
+\large New Laguerre--P\'olya, non-holonomic, heat-trace, and Thorin frontiers for the Fabius and Rvachev functions}
+\author{Research report prepared from the \repo\ documentation corpus}
+\date{30 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The current \repo\ corpus already contains a very broad formal and semi-formal theory of the Fabius function, its inverse, Rvachev's compactly supported up-function, Thue--Morse identities, dyadic arithmetic, geometric-
+\(q\) laws, infinite sinc products, Lambert-
+\(W\) endpoint asymptotics, Legendre expansions, and Bell--Bernoulli moment algebra.  This report deliberately starts from a narrow piece of that established theory---the exact integer-zero divisor of the Rvachev Fourier product---and follows consequences that are absent from the current primary and frontier volumes.
+
+The main new results are as follows.  First, the Rvachev Fourier transform is placed in the Laguerre--P\'olya class, while a square-root moment transform belongs to the type-I subclass.  Its normalized even moments therefore form a P\'olya-frequency sequence of infinite order, all shifted Jensen polynomials are hyperbolic, every derivative of the Fourier transform has only real zeros, and the moments satisfy a new sharp two-sided Tur\'an hierarchy.  Second, the unbounded dyadic zero multiplicities prove that the Fourier transform and its moment transform are not D-finite; consequently the exact even-moment sequence is not P-recursive.  Third, reciprocal-integer bases are treated uniformly: the products are Cartwright-class entire functions whose exact zero counts contain base-
+\(b\) digit sums.
+
+A second chain of results gives a probabilistic spectral dual.  The logarithmic derivative of the moment transform is a Stieltjes transform, its logarithm is a complete Bernstein function, and every negative power is the Laplace transform of an explicit generalized gamma convolution with a purely atomic Thorin measure.  Its L\'evy density is controlled by an arithmetic heat trace.  Mellin inversion gives the heat trace's complete algebraic and log-periodic skeleton.  Jacobi inversion then supplies an \emph{exact} beyond-all-orders remainder, not merely an asymptotic estimate.  Laplace transformation of this identity yields an exact modular-dual formula for the infinite sinc moment product; the exponentially small factor is the generating product for partitions into powers of \(b\).  The leading heat defect has an explicit lower-Lambert-
+\(W\) inverse, creating a new bridge to the inverse-Fabius asymptotic machinery.
+
+All claims marked ``Theorem'' or ``Corollary'' are proved in the report.  Conjectures are isolated in a separate section.  A commented Python program reproduces exact moment tables, Jensen-root checks, periodic Fourier coefficients, and the heat/modular-dual numerical validations.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+
+\section{Corpus audit, scope, and novelty boundary}
+
+\subsection{Documents examined}
+
+The source audit used the live documentation tree under \cite{ReshetnikovRepo}
+\begin{center}
+\small\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs}.
+\end{center}
+The principal TeX artifacts are:
+\begin{enumerate}[leftmargin=2em]
+  \item \texttt{Fabius\_Function\_and\_Rvachev\_Up.tex}, the approximately ten-thousand-line primary exposition of the formally verified development;
+  \item \texttt{semi-formalized-research-frontiers.tex}, the approximately fifteen-thousand-line frontier volume that consolidates the former subdirectory notebooks into six thematic syntheses;
+  \item {\small\texttt{FabiusFunction\_Mathematical\_Glossary.tex}}, with its terminology and notation crosswalk;
+  \item \texttt{Non\_Elementarity\_of\_the\_Fabius\_Function.tex};
+  \item \texttt{fabius\_lean\_walkthrough.tex};
+  \item the TeX audit artifacts, source-paper drafts, and archived predecessor reports used by the consolidation provenance map.
+\end{enumerate}
+The consolidated frontier volume explicitly states that it merges every mathematical document formerly stored below its subdirectory into six non-duplicative thematic syntheses, while retaining provenance and a formalization boundary.  Accordingly, the audit treated the consolidated volume as the authoritative mathematical union and used the archived files primarily to check provenance and avoid resurrecting superseded formulations.  Here ``new'' means absent from that live corpus; it is not a claim of literature-wide priority without a dedicated historical priority study.
+
+\subsection{Established inputs reused here}
+
+Only the following repository results are taken as inputs; classical background on Fabius and Rvachev functions is in \cite{Fabius1966,Rvachev1990,Arias2017,Arias2018}.
+\begin{enumerate}[leftmargin=2em]
+  \item The Fourier normalization
+  \begin{equation}\label{eq:Phi-definition}
+    \Phi(\xi)=\widehat{\Up}(\xi)
+      =\int_{-1}^{1}e^{-2\pi i\xi x}\Up(x)\,\dd x
+      =\prod_{j=0}^{\infty}\sinc\!\left(\frac{\pi\xi}{2^j}\right),
+      \qquad \sinc z=\frac{\sin z}{z}.
+  \end{equation}
+  \item The exact integer-zero multiplicity
+  \begin{equation}\label{eq:repo-multiplicity}
+    \ord_{\xi=m}\Phi=1+v_2(|m|),\qquad m\in\Z\setminus\{0\}.
+  \end{equation}
+  \item The probability model
+  \begin{equation}\label{eq:random-X}
+    X=\sum_{j=0}^{\infty}\frac{U_j}{2^{j+1}},
+    \qquad U_j\stackrel{\mathrm{iid}}{\sim}\operatorname{Unif}[-1,1],
+  \end{equation}
+  whose density is \(\Up\) on \([-1,1]\).
+  \item The repository's moment/Bernoulli algebra, q-Pochhammer factorization, Thue--Morse lobe-sign theorem, endpoint asymptotics, and Lambert-
+  \(W\) inverse machinery, used only for comparison and future-transfer remarks.
+\end{enumerate}
+No theorem below is presented as formally verified in Lean.  The report follows the repository's own rule: a mathematical proof in a frontier document is not a promoted formal theorem.
+
+\subsection{Non-duplication matrix}
+
+\begin{longtable}{@{}L{0.31\textwidth}L{0.23\textwidth}L{0.39\textwidth}@{}}
+\toprule
+Topic & Status in current corpus & Status in this report \\
+\midrule
+\endhead
+Exact integer zeros and multiplicities of \(\Phi\) & Formalized primary input & Reused, not claimed as new \\
+Complex q-Pochhammer factorization of \(\Phi\) & Formalized primary input & Reused for comparison \\
+Thue--Morse sign on Fourier lobes & Formalized primary input & Recovered as a consistency corollary \\
+Laguerre--P\'olya class and derivative real-rootedness & No matching treatment found & New theorem chain \\
+P\'olya-frequency moments and Jensen hyperbolicity & No matching treatment found & New theorem chain \\
+D-finiteness/P-recursiveness obstruction & Explicitly listed as frontier & New proof and generalization \\
+Cartwright classification & No matching treatment found & New consequence of support and divisor \\
+Complete Bernstein and Thorin/GGC duality & No matching treatment found & New probabilistic construction \\
+Arithmetic heat trace and Malmsten integral & Explicitly listed as frontier & New exact Mellin/Jacobi theory \\
+Modular-dual lacunary partition product & No matching treatment found & New exact identity \\
+\bottomrule
+\end{longtable}
+
+\section{Normalization and reciprocal-integer-base family}
+
+\subsection{The dyadic law and its \texorpdfstring{base-\(b\)}{base-b} analogue}
+
+For an integer \(b\ge2\), define
+\begin{equation}\label{eq:Phi-b}
+  \Phi_b(\xi):=\prod_{j=0}^{\infty}\sinc\!\left(\frac{\pi\xi}{b^j}\right).
+\end{equation}
+This is the Fourier transform of
+\begin{equation}\label{eq:Xb}
+  X_b:=\sum_{j=0}^{\infty}\frac{U_j}{2b^j},
+  \qquad
+  \operatorname{supp}(X_b)=
+  \left[-\frac{b}{2(b-1)},\frac{b}{2(b-1)}\right].
+\end{equation}
+The dyadic case \(b=2\) is exactly \eqref{eq:Phi-definition} and \eqref{eq:random-X}.
+
+Let
+\begin{equation}\label{eq:db}
+  \nu_b(m):=\max\{k\ge0:b^k\mid m\},
+  \qquad d_b(m):=1+\nu_b(m),\qquad m\ge1.
+\end{equation}
+For composite \(b\), \(\nu_b\) is a whole-base divisibility exponent, not a prime-adic valuation.
+
+\begin{proposition}[Arithmetic canonical product]\label{prop:canonical}
+For every integer \(b\ge2\),
+\begin{equation}\label{eq:canonical-Phi-b}
+  \Phi_b(z)=\prod_{m=1}^{\infty}
+  \left(1-\frac{z^2}{m^2}\right)^{d_b(m)},
+\end{equation}
+locally uniformly on \(\C\).  Hence the nonzero zeros are precisely the signed integers and
+\begin{equation}\label{eq:order-db}
+  \ord_{z=\pm m}\Phi_b=d_b(m).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Euler's product
+\(
+\sinc(\pi w)=\prod_{n\ge1}(1-w^2/n^2)
+\)
+gives
+\[
+  \Phi_b(z)=\prod_{j\ge0}\prod_{n\ge1}
+  \left(1-\frac{z^2}{b^{2j}n^2}\right).
+\]
+A positive integer \(m\) occurs as \(b^jn\) exactly for
+\(j=0,1,\ldots,\nu_b(m)\).  Regrouping therefore gives \eqref{eq:canonical-Phi-b}.  The regrouping is legitimate because
+\[
+ \sum_{m\ge1}\frac{d_b(m)}{m^2}
+ =\frac{\zeta(2)}{1-b^{-2}}<\infty.
+\]
+The multiplicity statement follows immediately.
+\end{proof}
+
+\subsection{The square-root moment transform}
+
+Because \(\Phi_b\) is even, the expression
+\begin{equation}\label{eq:A-b}
+  A_b(z):=\Phi_b\!\left(\frac{i\sqrt z}{\pi}\right)
+\end{equation}
+is single-valued and entire.  Equivalently,
+\begin{align}
+  A_b(z)
+  &=\prod_{j=0}^{\infty}
+    \frac{\sinh(\sqrt z/b^j)}{\sqrt z/b^j}
+    \label{eq:A-scale-product}\\
+  &=\prod_{m=1}^{\infty}
+    \left(1+\frac{z}{\pi^2m^2}\right)^{d_b(m)}.
+    \label{eq:A-spectral-product}
+\end{align}
+For \(b=2\), if \(\mu_{2n}:=\E[X^{2n}]\), then
+\begin{equation}\label{eq:a-moment}
+  A_2(z)=\E e^{2\sqrt z X}
+  =\sum_{n=0}^{\infty}a_nz^n,
+  \qquad a_n=\frac{4^n\mu_{2n}}{(2n)!}.
+\end{equation}
+The normalization removes all powers of \(\pi\): every \(a_n\) is rational.
+
+\section{Laguerre--P\'olya structure, total positivity, and Jensen hyperbolicity}
+
+\subsection{Real-rooted entire functions}
+
+\begin{theorem}[Laguerre--P\'olya classification]\label{thm:LP}
+For every integer \(b\ge2\):
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+  \item \(\Phi_b\) belongs to the Laguerre--P\'olya class \(\LP\).
+  \item \(A_b\) belongs to the type-I Laguerre--P\'olya class \(\LPI\).
+  \item Every derivative \(\Phi_b^{(r)}\) and \(A_b^{(r)}\) has only real zeros.
+  \item The zeros of successive derivatives interlace in the usual weak sense; after common multiplicity factors are removed, the interlacing is strict.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Truncate \eqref{eq:canonical-Phi-b} at \(m\le M\).  The resulting polynomial has only real zeros, and the products converge locally uniformly because
+\(\sum d_b(m)m^{-2}<\infty\).  Thus \(\Phi_b\) is a locally uniform limit of real-rooted polynomials and belongs to \(\LP\); see \cite{Levin1996} for the standard Laguerre--P\'olya framework.
+
+Likewise, truncations of \eqref{eq:A-spectral-product} have only negative zeros.  The summability of
+\(d_b(m)/(\pi^2m^2)\) puts \(A_b\) in the canonical type-I form.  Closure of \(\LP\) under differentiation proves the real-zero statement.  Interlacing follows by applying Rolle's theorem to finite truncations and passing to the locally uniform limit, with repeated zeros carried through their common factors.
+\end{proof}
+
+\begin{remark}
+The conclusion is stronger than the already known location and multiplicity of the zeros of \(\Phi\).  It controls the zeros of \emph{every} Fourier derivative.  In particular, no derivative creates a nonreal zero pair.
+\end{remark}
+
+\subsection{P\'olya-frequency moments}
+
+Recall that a sequence \((c_n)_{n\ge0}\) is a P\'olya-frequency sequence of infinite order if every minor of the Toeplitz matrix
+\((c_{j-i})_{i,j\ge0}\), with \(c_k=0\) for \(k<0\), is nonnegative.
+
+\begin{theorem}[Total nonnegativity of normalized moments]\label{thm:PF}
+For every integer \(b\ge2\), the coefficient sequence
+\begin{equation}
+  A_b(z)=\sum_{n\ge0}a_n^{(b)}z^n
+\end{equation}
+belongs to \(\PF\).  In particular, all Toeplitz minors are nonnegative and
+\begin{equation}\label{eq:ordinary-turan}
+  \bigl(a_n^{(b)}\bigr)^2\ge a_{n-1}^{(b)}a_{n+1}^{(b)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The Aissen--Edrei--Schoenberg--Whitney characterization \cite{Aissen1951,Aissen1952} says that a nonnegative sequence is \(\PF\) precisely when its generating function has the form
+\[
+ Cz^me^{\gamma z}
+ \frac{\prod_i(1+\alpha_i z)}{\prod_j(1-\beta_jz)},
+ \qquad \alpha_i,\beta_j,\gamma\ge0,
+ \quad \sum_i\alpha_i+\sum_j\beta_j<\infty.
+\]
+Equation \eqref{eq:A-spectral-product} has this form with \(C=1\), \(m=0\), \(\gamma=0\), no \(\beta_j\), and with
+\(d_b(m)\) copies of \(\alpha=(\pi^2m^2)^{-1}\).  The required sum is finite.
+\end{proof}
+
+\begin{corollary}[Variation-diminishing moment transform]\label{cor:variation}
+Convolution by the sequence \((a_n^{(b)})\) cannot increase the number of sign changes of a finitely supported real sequence.  Thus the normalized Rvachev moment kernel is a discrete variation-diminishing operator.
+\end{corollary}
+
+\subsection{All shifted Jensen polynomials}
+
+Put
+\begin{equation}\label{eq:gamma-n}
+  \gamma_n^{(b)}:=n!a_n^{(b)}=A_b^{(n)}(0)
+\end{equation}
+and define the shifted Jensen polynomial
+\begin{equation}\label{eq:Jensen}
+  J_{d,n}^{(b)}(x):=
+  \sum_{j=0}^{d}\binom dj\gamma_{n+j}^{(b)}x^j.
+\end{equation}
+
+\begin{theorem}[Jensen hyperbolicity hierarchy]\label{thm:Jensen}
+For all integers \(b\ge2\), \(d\ge1\), and \(n\ge0\), the polynomial
+\(J_{d,n}^{(b)}\) has only real negative zeros.
+\end{theorem}
+
+\begin{proof}
+The derivative \(A_b^{(n)}\) is in \(\LP\) by \cref{thm:LP}.  Jensen's characterization of the Laguerre--P\'olya class (in the modern Jensen-polynomial formulation, see \cite{GORZ2019}) therefore makes its degree-
+\(d\) Jensen polynomial hyperbolic.  Formula \eqref{eq:Jensen} has strictly positive coefficients, so a real zero cannot be nonnegative.  Hence every zero is negative.
+\end{proof}
+
+\begin{corollary}[Strong Tur\'an inequality]\label{cor:strong-turan}
+For \(n\ge1\),
+\begin{equation}\label{eq:strong-turan-a}
+  \bigl(a_n^{(b)}\bigr)^2>
+  \frac{n+1}{n}a_{n-1}^{(b)}a_{n+1}^{(b)}.
+\end{equation}
+In the dyadic case this becomes the new two-sided moment inequality
+\begin{equation}\label{eq:moment-two-sided}
+  \frac{2n-1}{2n+1}
+  <\frac{\mu_{2n}^2}{\mu_{2n-2}\mu_{2n+2}}<1,
+  \qquad n\ge1.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Apply the strict Laguerre inequality
+\[
+  \bigl(f'(0)\bigr)^2-f(0)f''(0)>0
+\]
+to \(f=A_b^{(n-1)}\).  Strictness holds because \(A_b^{(n-1)}\) has real zeros and is not an exponential.  In terms of \(\gamma_n=n!a_n\), this is
+\(\gamma_n^2>\gamma_{n-1}\gamma_{n+1}\), which rearranges to \eqref{eq:strong-turan-a}.
+
+Using \eqref{eq:a-moment}, the lower inequality is exactly
+\[
+ \frac{\mu_{2n}^2}{\mu_{2n-2}\mu_{2n+2}}
+ >\frac{n+1}{n}
+   \frac{(2n)!^2}{(2n-2)!(2n+2)!}
+ =\frac{2n-1}{2n+1}.
+\]
+The upper inequality is the strict log-convexity of the moment sequence,
+obtained from Cauchy--Schwarz applied to
+\(|X|^{n-1}\) and \(|X|^{n+1}\).  Equality would force \(|X|\) to be almost surely constant, which is false for the up-density.
+\end{proof}
+
+\begin{experiment}[Jensen roots]
+The accompanying program constructs exact rational coefficients and computes roots at 70 digits.  The largest observed imaginary part in the grid
+\(d\in\{2,4,6,8,10\}\), \(n\in\{0,3,6\}\) is zero at the working precision.
+\begin{center}
+\input{generated/jensen_table.tex}
+\end{center}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.86\textwidth]{figures/jensen_roots.pdf}
+\caption{Selected shifted Jensen roots.  The horizontal coordinate is compressed logarithmically; all roots are negative, in agreement with \cref{thm:Jensen}.}
+\label{fig:jensen-roots}
+\end{figure}
+\end{experiment}
+
+\section{Bernoulli, Bell, and symmetric-function formulas}
+
+\subsection{Spectral power sums}
+
+\begin{proposition}[Valuation Dirichlet series]\label{prop:Dirichlet}
+For \(\Re s>1\),
+\begin{equation}\label{eq:Dirichlet-db}
+  \sum_{m=1}^{\infty}\frac{d_b(m)}{m^s}
+  =\frac{\zeta(s)}{1-b^{-s}}.
+\end{equation}
+Consequently, if
+\begin{equation}\label{eq:prb}
+  p_r^{(b)}:=\sum_{m=1}^{\infty}
+  \frac{d_b(m)}{\pi^{2r}m^{2r}},
+\end{equation}
+then
+\begin{equation}\label{eq:pr-zeta}
+  p_r^{(b)}=
+  \frac{\zeta(2r)}{\pi^{2r}(1-b^{-2r})}.
+\end{equation}
+For \(b=2\),
+\begin{equation}\label{eq:pr-Bernoulli}
+  p_r^{(2)}=
+  \frac{(-1)^{r+1}2^{4r-1}B_{2r}}
+       {(2r)!(2^{2r}-1)}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Since
+\(
+\nu_b(m)=\sum_{j\ge1}\mathbf 1_{b^j\mid m}
+\),
+absolute convergence gives
+\[
+ \sum_{m\ge1}\frac{\nu_b(m)}{m^s}
+ =\sum_{j\ge1}\sum_{n\ge1}\frac1{(b^jn)^s}
+ =\zeta(s)\frac{b^{-s}}{1-b^{-s}}.
+\]
+Adding \(\zeta(s)\) proves \eqref{eq:Dirichlet-db}; Euler's evaluation of \(\zeta(2r)\) gives \eqref{eq:pr-Bernoulli}.
+\end{proof}
+
+\subsection{Newton recurrence and Bell polynomial}
+
+Taking logarithms in \eqref{eq:A-spectral-product} gives, for \(|z|<\pi^2\),
+\begin{equation}\label{eq:logA-series}
+  \log A_b(z)=\sum_{r=1}^{\infty}
+  \frac{(-1)^{r-1}}{r}p_r^{(b)}z^r.
+\end{equation}
+Differentiation yields the exact Newton recurrence
+\begin{equation}\label{eq:Newton-recurrence}
+  n a_n^{(b)}=
+  \sum_{r=1}^{n}(-1)^{r-1}p_r^{(b)}a_{n-r}^{(b)},
+  \qquad a_0^{(b)}=1.
+\end{equation}
+Equivalently, with \(B_n\) the complete exponential Bell polynomial,
+\begin{equation}\label{eq:Bell-form}
+ a_n^{(b)}=\frac1{n!}
+ B_n\!\left(p_1^{(b)},-1!p_2^{(b)},2!p_3^{(b)},\ldots,
+ (-1)^{n-1}(n-1)!p_n^{(b)}\right).
+\end{equation}
+The elementary-symmetric determinant is
+\begin{equation}\label{eq:Newton-determinant}
+  a_n^{(b)}=\frac1{n!}
+  \det\begin{pmatrix}
+  p_1&1&0&\cdots&0\\
+  p_2&p_1&2&\cdots&0\\
+  p_3&p_2&p_1&\ddots&\vdots\\
+  \vdots&\vdots&\ddots&\ddots&n-1\\
+  p_n&p_{n-1}&\cdots&p_2&p_1
+  \end{pmatrix},
+\end{equation}
+where \(p_r=p_r^{(b)}\).
+
+\begin{remark}
+The repository already contains extensive Bell--Bernoulli moment algebra.  The new feature here is the interpretation of exactly the same coefficients as elementary symmetric functions of the arithmetic spectrum
+\[
+ \left\{\frac1{\pi^2m^2}\text{ repeated }d_b(m)\text{ times}\right\},
+\]
+which is what makes total positivity and Jensen hyperbolicity automatic.
+\end{remark}
+
+\begin{experiment}[Exact dyadic moments]
+The first values generated by \eqref{eq:Newton-recurrence} are:
+\begin{center}
+\resizebox{\textwidth}{!}{\input{generated/moment_table.tex}}
+\end{center}
+The values \(\mu_2=1/9\), \(\mu_4=19/675\), and
+\(\mu_6=583/59535\) agree with the independent probabilistic recurrences in the existing corpus.
+\end{experiment}
+
+\section{Non-holonomicity and non-P-recursive moments}
+
+\subsection{A zero-multiplicity obstruction}
+
+\begin{lemma}[Multiplicity bound for D-finite entire functions]\label{lem:Dfinite-multiplicity}
+Let \(f\not\equiv0\) be an entire solution of
+\begin{equation}\label{eq:Dfinite-ode}
+  P_r(z)f^{(r)}(z)+P_{r-1}(z)f^{(r-1)}(z)+\cdots+P_0(z)f(z)=0,
+\end{equation}
+where \(P_r\not\equiv0\) is a polynomial.  At every point
+\(z_0\) with \(P_r(z_0)\ne0\), the multiplicity of a zero of \(f\) is at most \(r-1\).
+\end{lemma}
+
+\begin{proof}
+If \(f\) vanished to order at least \(r\) at an ordinary point \(z_0\), then
+\(f(z_0)=\cdots=f^{(r-1)}(z_0)=0\).  Equation \eqref{eq:Dfinite-ode} gives
+\(f^{(r)}(z_0)=0\).  Differentiating the equation repeatedly then forces every derivative of \(f\) at \(z_0\) to vanish, contradicting \(f\not\equiv0\).
+\end{proof}
+
+\begin{theorem}[Non-D-finiteness]\label{thm:nonDfinite}
+For every integer \(b\ge2\), neither \(\Phi_b\) nor \(A_b\) is D-finite over \(\C(z)\).
+\end{theorem}
+
+\begin{proof}
+At \(m=b^k\), \cref{prop:canonical} gives
+\[
+  \ord_{z=m}\Phi_b=1+\nu_b(b^k)=k+1.
+\]
+The multiplicities are unbounded.  If \(\Phi_b\) satisfied an equation of order \(r\), all but finitely many of these zeros would be ordinary points of that equation, contradicting \cref{lem:Dfinite-multiplicity}.  The zeros of \(A_b\) at
+\(-\pi^2b^{2k}\) have the same unbounded multiplicities, so the identical argument applies.
+\end{proof}
+
+\begin{corollary}[The moments are not P-recursive]\label{cor:notPrecursive}
+The coefficient sequence \((a_n^{(b)})_{n\ge0}\) is not P-recursive.  In particular, the Rvachev even moments \((\mu_{2n})_{n\ge0}\) are not P-recursive.
+\end{corollary}
+
+\begin{proof}
+A power series is D-finite if and only if its coefficient sequence is P-recursive \cite{Stanley1980}.  Thus the first assertion follows from \cref{thm:nonDfinite}.  In the dyadic case
+\(a_n=4^n\mu_{2n}/(2n)!\).  Multiplication or division by this nonzero hypergeometric factor converts a polynomial-coefficient recurrence into another one after denominators are cleared.  Hence P-recursiveness of one sequence would imply that of the other.
+\end{proof}
+
+\begin{corollary}[Non-D-finite Thorin transforms]\label{cor:negative-power-nondfinite}
+For every \(t>0\), the germ \(A_b(z)^{-t}\) is not D-finite.
+\end{corollary}
+
+\begin{proof}
+For integral \(t\), the continuation has poles at every
+\(-\pi^2m^2\); for nonintegral \(t\), it has branch singularities there.  A D-finite germ has only finitely many finite singular points, all among the roots of a leading polynomial.  The infinite singular set is therefore impossible.
+\end{proof}
+
+\section{Cartwright class and digital zero counts}
+
+\begin{theorem}[Cartwright classification]\label{thm:Cartwright}
+For every integer \(b\ge2\), \(\Phi_b\) is a Cartwright-class entire function of exact exponential type
+\begin{equation}\label{eq:type}
+  \tau_b=\frac{\pi b}{b-1}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The random variable \(X_b\) in \eqref{eq:Xb} has support
+\([-R_b,R_b]\) with \(R_b=b/[2(b-1)]\).  Its Fourier--Laplace transform therefore has exponential type at most
+\(2\pi R_b=\pi b/(b-1)\).  The support reaches arbitrarily close to both endpoints, so the type is exact; equivalently, one can evaluate
+\(\Phi_b(iy)=\E e^{2\pi yX_b}\) and use a fixed positive mass in
+\((R_b-\varepsilon,R_b]\).  On the real axis every sinc factor has modulus at most one, hence
+\(|\Phi_b(x)|\le1\) and
+\[
+ \int_{\R}\frac{\log^+|\Phi_b(x)|}{1+x^2}\,\dd x=0.
+\]
+This is the Cartwright condition; standard entire-function background is in \cite{Levin1996}.
+\end{proof}
+
+Let \(s_b(N)\) denote the sum of the base-\(b\) digits of \(N\).
+
+\begin{proposition}[Exact digital zero count]\label{prop:zero-count}
+The total multiplicity of the positive zeros \(1,2,\ldots,N\) is
+\begin{equation}\label{eq:positive-count}
+  M_b(N):=\sum_{m=1}^{N}d_b(m)
+  =\frac{bN-s_b(N)}{b-1}.
+\end{equation}
+Consequently, the number of nonzero zeros in \(|z|\le R\), counted with multiplicity, is
+\begin{equation}\label{eq:total-count}
+  n_b(R)=
+  \frac{2\bigl(b\lfloor R\rfloor-s_b(\lfloor R\rfloor)\bigr)}{b-1}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:count-asym}
+  n_b(R)=\frac{2b}{b-1}R+O(\log R),
+\end{equation}
+whose leading density equals \(2\tau_b/\pi\), as predicted by Cartwright theory.
+\end{proposition}
+
+\begin{proof}
+Using \(\nu_b(m)=\sum_{j\ge1}\mathbf1_{b^j\mid m}\),
+\[
+ M_b(N)=N+\sum_{j\ge1}\left\lfloor\frac{N}{b^j}\right\rfloor.
+\]
+The standard base-
+\(b\) digit identity
+\(
+\sum_{j\ge1}\lfloor N/b^j\rfloor=(N-s_b(N))/(b-1)
+\)
+gives \eqref{eq:positive-count}; reflection gives \eqref{eq:total-count}.
+\end{proof}
+
+\begin{remark}[Thue--Morse consistency]
+For \(b=2\),
+\(
+M_2(N)=2N-s_2(N)
+\), so
+\[
+ (-1)^{M_2(N)}=(-1)^{s_2(N)}.
+\]
+Since \(\Phi(0)>0\), the sign of \(\Phi\) on the lobe
+\((N,N+1)\) is therefore the Thue--Morse sign.  This recovers, but does not duplicate as a novelty claim, the repository's formalized lobe-sign theorem.
+\end{remark}
+
+\section{Complete Bernstein structure and a Thorin gamma dual}
+
+\subsection{Stieltjes logarithmic derivative}
+
+\begin{theorem}[Stieltjes and complete Bernstein structure]\label{thm:Bernstein}
+For \(z>0\),
+\begin{equation}\label{eq:Stieltjes-logderivative}
+  \frac{A_b'(z)}{A_b(z)}
+  =\sum_{m=1}^{\infty}\frac{d_b(m)}{z+\pi^2m^2}.
+\end{equation}
+Thus \(A_b'/A_b\) is a Stieltjes function and \(\log A_b\) is a complete Bernstein function on \((0,\infty)\).
+\end{theorem}
+
+\begin{proof}
+Logarithmic differentiation of \eqref{eq:A-spectral-product} is justified locally uniformly away from the negative zeros and gives \eqref{eq:Stieltjes-logderivative}.  It is the Stieltjes transform of the positive discrete measure
+\begin{equation}\label{eq:spectral-measure}
+  \rho_b:=\sum_{m\ge1}d_b(m)\,\delta_{\pi^2m^2}.
+\end{equation}
+A nonnegative function vanishing at zero whose derivative is Stieltjes is a complete Bernstein function; alternatively, sum the elementary complete Bernstein functions
+\(d_b(m)\log(1+z/(\pi^2m^2))\); see \cite{Schilling2012}.
+\end{proof}
+
+\subsection{Generalized gamma convolution}
+
+\begin{theorem}[Thorin spectral law]\label{thm:GGC}
+For every \(t>0\), \(A_b(z)^{-t}\) is the Laplace transform of the almost surely finite random series
+\begin{equation}\label{eq:Ybt}
+  Y_{b,t}:=\sum_{m=1}^{\infty}G_{m,t},
+  \qquad
+  G_{m,t}\sim\operatorname{Gamma}
+  \bigl(td_b(m),\text{ rate }\pi^2m^2\bigr),
+\end{equation}
+with independent summands.  Hence \(Y_{b,t}\) is a generalized gamma convolution with Thorin measure
+\begin{equation}\label{eq:Thorin-measure}
+  U_{b,t}=t\sum_{m=1}^{\infty}d_b(m)\,\delta_{\pi^2m^2}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The Laplace transform of a gamma variable of shape \(\alpha\) and rate \(\lambda\) is
+\((1+z/\lambda)^{-\alpha}\).  Independence and \eqref{eq:A-spectral-product} give
+\[
+ \E e^{-zY_{b,t}}
+ =\prod_{m\ge1}\left(1+\frac{z}{\pi^2m^2}\right)^{-td_b(m)}
+ =A_b(z)^{-t}.
+\]
+Moreover,
+\[
+ \E Y_{b,t}=t\sum_{m\ge1}\frac{d_b(m)}{\pi^2m^2}
+ =t\,p_1^{(b)}<\infty,
+\]
+so the nonnegative series is finite almost surely.  The product is exactly the canonical Thorin representation in the theory of generalized gamma convolutions \cite{Bondesson1992,James2008}.
+\end{proof}
+
+\begin{corollary}[Cumulants]\label{cor:GGC-cumulants}
+The cumulants of \(Y_{b,t}\) are
+\begin{equation}\label{eq:GGC-cumulants}
+  \kappa_r(Y_{b,t})=t(r-1)!p_r^{(b)}.
+\end{equation}
+For \(b=2\),
+\begin{equation}
+  \E Y_{2,t}=\frac{2t}{9},
+  \qquad
+  \operatorname{Var}(Y_{2,t})=\frac{8t}{675}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Use \eqref{eq:logA-series} in
+\(
+\log\E e^{sY_{b,t}}=-t\log A_b(-s)
+\)
+and compare with the cumulant series.
+\end{proof}
+
+\begin{corollary}[Scale self-decomposition]\label{cor:selfdecomp}
+Let
+\begin{equation}
+  S(z):=\frac{\sinh\sqrt z}{\sqrt z}.
+\end{equation}
+Then
+\begin{equation}\label{eq:A-renewal}
+  A_b(z)=S(z)A_b(z/b^2).
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:Y-selfdecomp}
+  Y_{b,t}\stackrel{d}{=}Z_t+b^{-2}Y_{b,t}',
+\end{equation}
+where \(Y_{b,t}'\) is an independent copy and
+\begin{equation}
+  \E e^{-zZ_t}=S(z)^{-t}
+  =\prod_{n\ge1}\left(1+\frac{z}{\pi^2n^2}\right)^{-t}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Separate the \(j=0\) factor in \eqref{eq:A-scale-product}; then interpret the factors as Laplace transforms.
+\end{proof}
+
+\section{The arithmetic heat trace}
+
+\subsection{Definition, q-renewal, and Malmsten representation}
+
+Define
+\begin{equation}\label{eq:Theta-definition}
+  \Theta_b(x):=\sum_{m=1}^{\infty}d_b(m)e^{-\pi^2m^2x},
+  \qquad x>0,
+\end{equation}
+and the ordinary positive theta tail
+\begin{equation}
+  \vartheta_+(x):=\sum_{n=1}^{\infty}e^{-\pi^2n^2x}.
+\end{equation}
+
+\begin{proposition}[Exact theta renewal]\label{prop:theta-renewal}
+For every \(x>0\),
+\begin{equation}\label{eq:Theta-theta-sum}
+  \Theta_b(x)=\sum_{j=0}^{\infty}\vartheta_+(b^{2j}x),
+\end{equation}
+and hence
+\begin{equation}\label{eq:Theta-q-difference}
+  \Theta_b(x)-\Theta_b(b^2x)=\vartheta_+(x).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Use
+\(d_b(m)=\sum_{j\ge0}\mathbf1_{b^j\mid m}\), then set \(m=b^jn\).  All terms are nonnegative, so Tonelli's theorem applies.
+\end{proof}
+
+\begin{proposition}[Malmsten--L\'evy integral]\label{prop:Malmsten}
+For \(z\ge0\),
+\begin{align}
+  \frac{A_b'(z)}{A_b(z)}
+  &=\int_0^{\infty}e^{-zx}\Theta_b(x)\,\dd x,
+  \label{eq:logderivative-heat}\\
+  \log A_b(z)
+  &=\int_0^{\infty}\bigl(1-e^{-zx}\bigr)
+    \frac{\Theta_b(x)}{x}\,\dd x.
+  \label{eq:Malmsten}
+\end{align}
+Thus the L\'evy density of \(Y_{b,t}\) is
+\begin{equation}\label{eq:Levy-density}
+  \ell_{b,t}(x)=\frac{t}{x}\Theta_b(x).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Insert
+\(
+(z+\lambda)^{-1}=\int_0^\infty e^{-(z+\lambda)x}\dd x
+\)
+in \eqref{eq:Stieltjes-logderivative}.  Integrating from \(0\) to \(z\), or using
+\(
+\log(1+z/\lambda)=\int_0^\infty(1-e^{-zx})e^{-\lambda x}\dd x/x
+\), gives \eqref{eq:Malmsten}.
+\end{proof}
+
+\subsection{Mellin transform and log-periodic skeleton}
+
+\begin{theorem}[Mellin transform]\label{thm:Mellin-Theta}
+For \(\Re s>1/2\),
+\begin{equation}\label{eq:Mellin-Theta}
+  \int_0^{\infty}x^{s-1}\Theta_b(x)\,\dd x
+  =\Gamma(s)\pi^{-2s}\frac{\zeta(2s)}{1-b^{-2s}}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Termwise Mellin transformation of \eqref{eq:Theta-definition} gives
+\[
+ \Gamma(s)\pi^{-2s}\sum_{m\ge1}\frac{d_b(m)}{m^{2s}},
+\]
+and \cref{prop:Dirichlet} completes the proof.
+\end{proof}
+
+Put \(L=\log b\) and
+\begin{equation}\label{eq:sk}
+  s_k:=\frac{\pi ik}{L},\qquad k\in\Z\setminus\{0\}.
+\end{equation}
+Define
+\begin{equation}\label{eq:ck}
+  c_{b,k}:=
+  \frac{\Gamma(s_k)\pi^{-2s_k}\zeta(2s_k)}{2L},
+\end{equation}
+and the absolutely convergent one-periodic Fourier series
+\begin{equation}\label{eq:P-b}
+  P_b(u):=2\Re\sum_{k=1}^{\infty}c_{b,k}e^{2\pi iku}.
+\end{equation}
+Absolute convergence follows from the exponential decay of \(\Gamma(i y)\).
+
+\begin{theorem}[Complete algebraic/log-periodic skeleton]\label{thm:heat-skeleton}
+As \(x\downarrow0\), for every \(N>0\),
+\begin{equation}\label{eq:heat-asymptotic}
+ \Theta_b(x)=\mathcal H_b(x)+O_N(x^N),
+\end{equation}
+where
+\begin{equation}\label{eq:Hb}
+\boxed{
+ \mathcal H_b(x)=
+ \frac{b}{2(b-1)\sqrt{\pi x}}
+ -\frac{\log(1/x)}{4\log b}
+ -\frac14+\frac{\gamma-2\log2}{4\log b}
+ +P_b\!\left(\frac{\log(1/x)}{2\log b}\right).
+}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Mellin inversion of \eqref{eq:Mellin-Theta} starts on a vertical line; the harmonic-sum methodology is standard \cite{Flajolet1995}.
+\(\Re s>1/2\).  The integrand has:
+\begin{itemize}
+  \item a simple pole at \(s=1/2\), with residue
+  \(b/[2(b-1)\sqrt\pi]\);
+  \item a double pole at \(s=0\);
+  \item simple poles at \(s=s_k\), \(k\ne0\), from
+  \(1-b^{-2s}=0\).
+\end{itemize}
+The poles of \(\Gamma(s)\) at negative integers are canceled by the trivial zeros of \(\zeta(2s)\).  Near zero,
+\begin{equation}\label{eq:Mellin-zero-expansion}
+ \Gamma(s)\pi^{-2s}\frac{\zeta(2s)}{1-b^{-2s}}
+ =-\frac1{4L}\frac1{s^2}
+ +\left[-\frac14+\frac{\gamma-2\log2}{4L}\right]\frac1s+O(1).
+\end{equation}
+Multiplication by \(x^{-s}\) supplies the logarithmic term in \eqref{eq:Hb}.  The nonzero imaginary poles supply \eqref{eq:P-b}.  Shifting the contour arbitrarily far left gives \(O_N(x^N)\), since no further poles remain and \(\Gamma(s)\) decays exponentially on vertical lines.
+\end{proof}
+
+\begin{experiment}[Periodic coefficients]
+\begin{center}
+\input{generated/heat_coefficients_table.tex}
+\end{center}
+For \(b=2\), the first harmonic has amplitude about
+\(2|c_{2,1}|=2.23\times10^{-3}\), while the second is already of order
+\(10^{-6}\).  This explains the nearly sinusoidal graph in \cref{fig:heat-periodic}.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.86\textwidth]{figures/heat_trace_periodic_b2.pdf}
+\caption{Directly summed dyadic heat trace after removal of the elementary terms, compared with the Fourier series \(P_2\).}
+\label{fig:heat-periodic}
+\end{figure}
+\end{experiment}
+
+\subsection{Exact beyond-all-orders remainder}
+
+The all-orders estimate in \cref{thm:heat-skeleton} conceals a simpler exact identity.
+
+\begin{theorem}[Jacobi-dual transseries]\label{thm:exact-heat-remainder}
+For every \(x>0\),
+\begin{equation}\label{eq:exact-heat-remainder}
+\boxed{
+ \Theta_b(x)=\mathcal H_b(x)
+ -\frac1{\sqrt{\pi x}}
+  \sum_{j=1}^{\infty}b^j
+  \sum_{n=1}^{\infty}
+  \exp\!\left(-\frac{b^{2j}n^2}{x}\right).
+}
+\end{equation}
+In particular, \(\Theta_b(x)<\mathcal H_b(x)\) for every \(x>0\), and
+\begin{equation}\label{eq:leading-flat}
+ \mathcal H_b(x)-\Theta_b(x)
+ \sim\frac{b}{\sqrt{\pi x}}e^{-b^2/x}
+ \qquad(x\downarrow0).
+\end{equation}
+More precisely, the relative error in \eqref{eq:leading-flat} is
+\(O(e^{-c_b/x})\), where
+\begin{equation}
+  c_b=\min\{3b^2,b^4-b^2\}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Jacobi inversion gives
+\begin{equation}\label{eq:Jacobi-positive}
+ \vartheta_+(x)=
+ \frac1{2\sqrt{\pi x}}-\frac12
+ +\frac1{\sqrt{\pi x}}
+  \sum_{n=1}^{\infty}e^{-n^2/x}.
+\end{equation}
+A direct calculation from \eqref{eq:Hb}, using the one-periodicity of \(P_b\), shows
+\begin{equation}
+ \mathcal H_b(x)-\mathcal H_b(b^2x)
+ =\frac1{2\sqrt{\pi x}}-\frac12.
+\end{equation}
+Let \(R_b=\Theta_b-\mathcal H_b\).  Combining this identity with
+\eqref{eq:Theta-q-difference} and \eqref{eq:Jacobi-positive} gives
+\begin{equation}\label{eq:R-renewal}
+ R_b(x)-R_b(b^2x)=
+ \frac1{\sqrt{\pi x}}\sum_{n\ge1}e^{-n^2/x}.
+\end{equation}
+Replace \(x\) by \(x/b^2\) and iterate toward zero:
+\[
+ R_b(x)=R_b(x/b^{2J})-
+ \frac1{\sqrt{\pi x}}
+ \sum_{j=1}^{J}b^j\sum_{n\ge1}e^{-b^{2j}n^2/x}.
+\]
+By \cref{thm:heat-skeleton}, \(R_b(y)\to0\) faster than every power as
+\(y\downarrow0\).  Letting \(J\to\infty\) proves \eqref{eq:exact-heat-remainder}.  The leading term is \((j,n)=(1,1)\); the next exponential action is
+\(\min(4b^2,b^4)\), giving the stated relative error.
+\end{proof}
+
+\begin{corollary}[Lower-Lambert inversion of the heat defect]\label{cor:Lambert-heat}
+Let
+\begin{equation}
+  \Delta_b(x):=\mathcal H_b(x)-\Theta_b(x).
+\end{equation}
+For any asymptotic inverse branch as \(r\downarrow0\),
+\begin{equation}\label{eq:Lambert-heat-inverse}
+  \Delta_b^{-1}(r)
+  \sim
+  \frac{2b^2}{-W_{-1}(-2\pi r^2)}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Square \eqref{eq:leading-flat} and put \(y=2b^2/x\):
+\[
+ r^2\sim\frac{b^2}{\pi x}e^{-2b^2/x}
+ =\frac{y}{2\pi}e^{-y}.
+\]
+The relevant large positive solution is
+\(y\sim-W_{-1}(-2\pi r^2)\), using the lower real branch described in \cite{Corless1996}.
+\end{proof}
+
+\begin{remark}
+The same lower Lambert branch governs the inverse-Fabius endpoint theory, but it arises here from a different mechanism: Jacobi-dual exponential action rather than the original Fabius saddle.  This provides a concrete route for transferring the repository's Lambert phase and phase-locked extrapolation machinery to spectral heat defects.
+\end{remark}
+
+\begin{experiment}[Exact closure]
+The table compares direct summation, the skeleton, and the exact dual remainder.
+\begin{center}
+\resizebox{\textwidth}{!}{\input{generated/heat_validation_table.tex}}
+\end{center}
+The transformed remainder in \cref{fig:heat-remainder} approaches \(b^2\), as forced by \eqref{eq:leading-flat}.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.86\textwidth]{figures/heat_trace_remainder_scale.pdf}
+\caption{The exact remainder has first action \(b^2/x\).  The dashed levels are the proven limits \(4\) and \(9\).}
+\label{fig:heat-remainder}
+\end{figure}
+\end{experiment}
+
+\section{Exact modular duality for the infinite sinc moment product}
+
+\subsection{Laplace transform of the heat identity}
+
+Set
+\begin{equation}\label{eq:B-constant}
+ B_b:=-\frac14+\frac{\gamma-2\log2}{4\log b}.
+\end{equation}
+The Laplace transform of \eqref{eq:exact-heat-remainder} can be evaluated term by term.  The elementary integrals are
+\begin{align}
+ \int_0^\infty e^{-zx}x^{-1/2}\,\dd x&=\sqrt\pi z^{-1/2},\\
+ \int_0^\infty e^{-zx}\log(1/x)\,\dd x&=\frac{\log z+\gamma}{z},\\
+ \int_0^\infty x^{-1/2}e^{-zx-a^2/x}\,\dd x
+ &=\sqrt{\frac\pi z}\,e^{-2a\sqrt z}.
+\end{align}
+For \(s_k\) from \eqref{eq:sk}, define
+\begin{equation}\label{eq:qbk}
+  q_{b,k}:=-c_{b,k}\Gamma(-s_k)
+\end{equation}
+and
+\begin{equation}\label{eq:Qb}
+  Q_b(v):=2\Re\sum_{k=1}^{\infty}q_{b,k}e^{2\pi ikv}.
+\end{equation}
+This Fourier series is absolutely convergent.
+
+\begin{theorem}[Exact modular-dual formula]\label{thm:modular-dual}
+There exists a real constant \(C_b\) such that, for every \(z>0\),
+\begin{equation}\label{eq:modular-dual}
+\boxed{\begin{aligned}
+ \log A_b(z)
+ &=\frac{b}{b-1}\sqrt z
+ -\frac{(\log z)^2}{8\log b}
+ -\left(\frac14+\frac{\log2}{2\log b}\right)\log z\\
+ &\quad+C_b
+ +Q_b\!\left(\frac{\log z}{2\log b}\right)
+ -\sum_{j=1}^{\infty}\log\!\left(1-e^{-2b^j\sqrt z}\right).
+\end{aligned}}
+\end{equation}
+One rapidly convergent definition of the constant is
+\begin{equation}\label{eq:Cb-definition}
+ C_b=\log A_b(1)-\frac{b}{b-1}-Q_b(0)
+ +\sum_{j=1}^{\infty}\log(1-e^{-2b^j}).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:logderivative-heat}, Laplace transformation of the skeleton in
+\eqref{eq:Hb} gives
+\begin{align*}
+ \frac{\dd}{\dd z}\log A_b(z)
+ &=\frac{b}{2(b-1)}z^{-1/2}
+ -\frac{\log z+\gamma}{4(\log b)z}
+ +\frac{B_b}{z}\\
+ &\quad+2\Re\sum_{k\ge1}c_{b,k}\Gamma(1-s_k)z^{s_k-1}\\
+ &\quad-z^{-1/2}\sum_{j\ge1}
+ \frac{b^j}{e^{2b^j\sqrt z}-1}.
+\end{align*}
+Integrating in \(z\) gives the first line of \eqref{eq:modular-dual}; the logarithmic coefficient simplifies because
+\[
+ B_b-\frac{\gamma}{4\log b}
+ =-\frac14-\frac{\log2}{2\log b}.
+\]
+Furthermore,
+\(
+\Gamma(1-s_k)/s_k=-\Gamma(-s_k)
+\), producing \eqref{eq:qbk}.  Finally,
+\[
+ \frac{\dd}{\dd z}
+ \left[-\log(1-e^{-2a\sqrt z})\right]
+ =-\frac{a}{\sqrt z\,(e^{2a\sqrt z}-1)}.
+\]
+Thus the last derivative integrates to the lacunary logarithmic product.  The remaining integration constant is fixed at \(z=1\), giving \eqref{eq:Cb-definition}.
+\end{proof}
+
+\subsection{A partition product hidden in the sinc product}
+
+Let \(q=e^{-2\sqrt z}\).  The final factor in \eqref{eq:modular-dual} exponentiates to
+\begin{equation}\label{eq:lacunary-partition}
+  \prod_{j=1}^{\infty}(1-q^{b^j})^{-1}.
+\end{equation}
+This is the ordinary generating function for partitions into parts from
+\(\{b,b^2,b^3,\ldots\}\).  In the dyadic case it is the binary-partition product with the part \(1\) omitted.  Hence the Rvachev moment product has an exact modular dual in which an infinite sinc convolution is paired with a lacunary partition product.
+
+\begin{corollary}[Large-\(z\) transseries]\label{cor:large-z}
+Uniformly for \(z\to+\infty\),
+\begin{align}
+ \log A_b(z)
+ &=\frac{b}{b-1}\sqrt z
+ -\frac{(\log z)^2}{8\log b}
+ -\left(\frac14+\frac{\log2}{2\log b}\right)\log z
+ +C_b\\
+ &\quad+Q_b\!\left(\frac{\log z}{2\log b}\right)
+ +e^{-2b\sqrt z}+O(e^{-4b\sqrt z}+e^{-2b^2\sqrt z}).
+ \label{eq:large-z-transseries}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+Expand the last logarithm in \eqref{eq:modular-dual} as
+\(-\log(1-w)=w+O(w^2)\).  The first action is \(j=1\), with
+\(w=e^{-2b\sqrt z}\).
+\end{proof}
+
+\begin{experiment}[Modular-dual identity]
+\begin{center}
+\resizebox{\textwidth}{!}{\input{generated/large_z_identity_table.tex}}
+\end{center}
+The constants used in the numerical implementation are
+\begin{center}
+\input{generated/large_z_constants_table.tex}
+\end{center}
+Agreement is limited only by the requested working precision.
+\end{experiment}
+
+\section{Consequences for computation and approximation}
+
+\subsection{Certified Stieltjes--Pad\'e control}
+
+Because \(A_b'/A_b\) is a Stieltjes function, its diagonal and subdiagonal Pad\'e approximants have negative real poles and positive residues, and they form the classical alternating upper/lower bounds on the positive axis.  This yields a new certified route to the saddle equations that occur in the Fabius endpoint theory:
+\begin{enumerate}[leftmargin=2em]
+  \item compute the exact rational coefficients \(p_r^{(b)}\) from Bernoulli numbers;
+  \item form Stieltjes Pad\'e approximants to \(A_b'/A_b\);
+  \item integrate the rational bounds to bracket \(\log A_b\);
+  \item transfer the bounds through the monotone saddle map and, when needed, through the lower Lambert branch.
+\end{enumerate}
+Unlike an unconstrained power-series Pad\'e computation, every approximant respects the correct negative spectral axis.
+
+\subsection{Moment cones and Legendre expansions}
+
+Every even Legendre coefficient of \(\Up\) is a finite rational linear combination of
+\(\mu_0,\mu_2,\ldots,\mu_{2n}\).  The \(\PF\) constraints and the Jensen hyperbolicity hierarchy therefore place the admissible moment vectors in a nested family of explicit determinantal cones.  This does not by itself determine the sign of each Legendre coefficient, but it supplies:
+\begin{itemize}
+  \item rigorous conditioning inequalities for the moment-to-Legendre triangular transform;
+  \item determinant certificates that can accompany the repository's exact Legendre-energy calculations;
+  \item hyperbolic-polynomial barriers for moment truncation and rational reconstruction.
+\end{itemize}
+A promising next step is to combine these cones with the existing shifted-up synthesis of Legendre polynomials.
+
+\subsection{Inverse-Fabius transfer}
+
+The new formulas enter inverse-Fabius analysis in three ways.
+\begin{enumerate}[leftmargin=2em]
+  \item \cref{cor:Lambert-heat} gives a second, independent lower-
+  \(W\) inversion problem with the same logarithmic anatomy as the endpoint inverse of \(F\).
+  \item The exact periodic functions \(P_b\) and \(Q_b\) have period
+  \(2\log b\) in the raw logarithmic variable, reflecting the quadratic spectral lift
+  \(m\mapsto\pi^2m^2\).  They can be treated by the repository's phase-locked Richardson filters after a period rescaling.
+  \item The Stieltjes bounds above can replace floating-point evaluation of the sinc product in saddle iterations by certified rational inequalities.
+\end{enumerate}
+
+\section{Conjectures and frontier problems}
+
+\begin{conjecture}[Differential transcendence]\label{conj:difftrans}
+For every integer \(b\ge2\), the functions \(\Phi_b\) and \(A_b\) are differentially transcendental over \(\C(z)\).
+\end{conjecture}
+
+\noindent
+\emph{Evidence.}  \cref{thm:nonDfinite} excludes linear differential equations.  The exact divisor has unbounded arithmetic multiplicities, while the scale relation
+\(A_b(z)=S(z)A_b(z/b^2)\) couples differential and Mahler-type structures.  Non-D-finiteness alone is not enough---for example, some familiar meromorphic functions are differentially algebraic---so a proof will require a genuinely nonlinear obstruction, perhaps through Nevanlinna theory for differential equations with a prescribed divisor.
+
+\begin{conjecture}[Strict total positivity after forced zeros]\label{conj:strictPF}
+Every Toeplitz minor of \((a_n^{(b)})\) that is not forced to vanish by the zero convention \(a_n=0\) for \(n<0\) is strictly positive.
+\end{conjecture}
+
+\noindent
+Finite truncations have strictly positive spectral parameters, but repeated zeros in the generating polynomial make a direct limiting argument delicate.  A proof would strengthen variation diminution to strict sign-regularity.
+
+\begin{conjecture}[Hermite universality of Jensen polynomials]\label{conj:Hermite}
+For each fixed degree \(d\), an affine normalization of
+\(J_{d,n}^{(2)}\) converges coefficientwise to the degree-
+\(d\) Hermite polynomial as \(n\to\infty\).
+\end{conjecture}
+
+\noindent
+The repository's all-order endpoint asymptotics should give the required regular expansion of
+\(\log\gamma_n\).  Establishing the Griffin--Ono--Rolen--Zagier hypotheses \cite{GORZ2019} would convert the exact hyperbolicity theorem into a universal limiting shape theorem.
+
+\begin{conjecture}[Closed form for \(C_b\)]\label{conj:Cb}
+The constant \(C_b\) in \eqref{eq:modular-dual} can be expressed using a base-
+\(b\) Glaisher--Kinkelin/Barnes-type constant and elementary combinations of
+\(\log b\), \(\log(2\pi)\), and zeta derivatives at zero.
+\end{conjecture}
+
+\noindent
+The double Mellin pole explains the quadratic logarithm, while \(C_b\) is the finite part left by the same spectral determinant.  A zeta-regularized determinant of the spectral multiset
+\[
+ \bigl\{\pi^2m^2:m\ge1,\ \text{with multiplicity }d_b(m)\bigr\}
+\]
+is the natural candidate.
+
+\begin{problem}[Nonintegral geometric bases]
+For real \(\beta>1\), the same summable real-zero product and compact-support argument already show that
+\[
+ \Phi_\beta(z)=\prod_{j\ge0}\sinc(\pi z/\beta^j)
+\]
+belongs to the Laguerre--P\'olya and Cartwright classes.  Classify instead its D-finiteness, zero-collision multiplicities, exact counting fluctuations, and heat-trace periodicity.  The zero set is the union \(\{\pm n\beta^j\}\), and collisions depend on multiplicative relations among powers of \(\beta\).  The integer-base proof by unbounded multiplicity no longer applies generically.
+\end{problem}
+
+\begin{problem}[Orthogonal-polynomial asymptotics]
+Use the known endpoint flatness of \(\Up\) to place it precisely in the Szeg\H{o} class and determine the first correction to the Jacobi recurrence coefficients.  The log-squared endpoint profile suggests a slowly varying, non-Fisher--Hartwig correction rather than a pure power law.
+\end{problem}
+
+\begin{problem}[Lean formalization]
+A realistic formalization sequence is:
+\begin{enumerate}[leftmargin=2em]
+  \item derive \eqref{eq:canonical-Phi-b} from the existing sinc canonical product and weighted-scale multiplicity API;
+  \item prove the D-finite multiplicity lemma in an abstract analytic ODE setting;
+  \item formalize \eqref{eq:Dirichlet-db} and the exact digital count;
+  \item define \(\Theta_b\), prove \eqref{eq:Theta-theta-sum}, and import a Jacobi theta transformation;
+  \item prove the exact remainder \eqref{eq:exact-heat-remainder};
+  \item formalize the Stieltjes/Laplace identities and the gamma-series probability construction.
+\end{enumerate}
+The LP/PF/Jensen portion will require more library infrastructure than the heat-trace and non-D-finite portions.
+\end{problem}
+
+\section{Summary of the new theorem network}
+
+The report's deductions can be read as two interacting chains.
+
+\medskip
+\noindent\textbf{Entire-function chain:}
+\[
+\begin{gathered}
+\text{integer divisor}
+\Longrightarrow \LP/\LPI
+\Longrightarrow \PF\text{ moments}\\
+\Longrightarrow \text{Jensen hyperbolicity}
+\Longrightarrow \text{Tur\'an inequalities}.
+\end{gathered}
+\]
+while the same unbounded multiplicities imply
+\[
+\text{integer divisor}
+\Longrightarrow \text{non-D-finite}
+\Longrightarrow \text{non-P-recursive moments}.
+\]
+
+\medskip
+\noindent\textbf{Spectral-probability chain:}
+\[
+\begin{gathered}
+\frac{A_b'}{A_b}\text{ Stieltjes}
+\Longrightarrow \log A_b\text{ complete Bernstein}\\
+\Longrightarrow A_b^{-t}\text{ GGC}
+\Longrightarrow \Theta_b\text{ L\'evy heat trace}.
+\end{gathered}
+\]
+Then
+\[
+\begin{gathered}
+\Theta_b\text{ Mellin poles}
+\Longrightarrow \text{log-periodic skeleton}\\
+\overset{\text{Jacobi}}{\Longrightarrow}
+\text{exact flat remainder}
+\overset{\text{Laplace}}{\Longrightarrow}
+\text{lacunary partition duality}.
+\end{gathered}
+\]
+These results are structurally compatible with the repository's q-series, Bell--Bernoulli, Thue--Morse, Lambert--\(W\), inverse-Fabius, and Legendre programs, but they are not restatements of the current documents.
+
+\appendix
+\section{Reproducibility}
+
+The archive contains \texttt{numerical\_experiments.py}.  From the report directory, run
+\begin{lstlisting}[style=pythonstyle]
+python numerical_experiments.py --precision 75 --moments 28
+latexmk -pdf -interaction=nonstopmode fabius_frontier_report.tex
+\end{lstlisting}
+The program writes exact tables to \texttt{generated/} and figures to
+\texttt{figures/}.  The exact arithmetic uses \texttt{sympy.Rational}; no decimal reconstruction is used for the moment table.  Heat sums and periodic coefficients use arbitrary-precision \texttt{mpmath}.  The modular-dual and Jacobi identities are checked by evaluating both independently computed sides.
+
+\section{Selected numerical constants}
+
+The first dyadic periodic coefficients are
+\[
+\begin{aligned}
+ |c_{2,1}|&\approx1.11534751852\times10^{-3},&
+ |c_{2,2}|&\approx1.22755013029\times10^{-6},\\
+ |c_{2,3}|&\approx1.06068491216\times10^{-9}.&&
+\end{aligned}
+\]
+The modular-dual constants begin
+\[
+ C_2\approx-1.80219254599413199161,
+ \qquad
+ C_3\approx-1.32007399170670549526.
+\]
+These decimal values are diagnostics, not definitions; \eqref{eq:Cb-definition} is the mathematical definition used in the report.
+
+\begingroup
+\small
+\begin{thebibliography}{99}
+
+\bibitem{Aissen1951}
+M.~Aissen, A.~Edrei, I.~J.~Schoenberg, and A.~Whitney,
+\newblock On the generating functions of totally positive sequences,
+\newblock \emph{Proc. Natl. Acad. Sci. USA} \textbf{37} (1951), 303--307.
+
+\bibitem{Aissen1952}
+M.~Aissen, A.~Edrei, I.~J.~Schoenberg, and A.~Whitney,
+\newblock On the generating functions of totally positive sequences I,
+\newblock \emph{J. Analyse Math.} \textbf{2} (1952), 93--103.
+
+\bibitem{Arias2017}
+J.~Arias de Reyna,
+\newblock An infinitely differentiable function with compact support: definition and properties,
+\newblock arXiv:1702.05442 (English translation of the 1982 article).
+
+\bibitem{Arias2018}
+J.~Arias de Reyna,
+\newblock Arithmetic of the Fabius function,
+\newblock \emph{Integers} \textbf{18} (2018), A51; arXiv:1702.06487.
+
+\bibitem{Bondesson1992}
+L.~Bondesson,
+\newblock \emph{Generalized Gamma Convolutions and Related Classes of Distributions and Densities},
+\newblock Lecture Notes in Statistics 76, Springer, 1992.
+
+\bibitem{Corless1996}
+R.~M.~Corless, G.~H.~Gonnet, D.~E.~G.~Hare, D.~J.~Jeffrey, and D.~E.~Knuth,
+\newblock On the Lambert \(W\) function,
+\newblock \emph{Adv. Comput. Math.} \textbf{5} (1996), 329--359.
+
+\bibitem{Fabius1966}
+J.~Fabius,
+\newblock A probabilistic example of a nowhere analytic \(C^\infty\)-function,
+\newblock \emph{Z. Wahrscheinlichkeitstheorie verw. Gebiete} \textbf{5} (1966), 173--174.
+
+\bibitem{Flajolet1995}
+P.~Flajolet, X.~Gourdon, and P.~Dumas,
+\newblock Mellin transforms and asymptotics: harmonic sums,
+\newblock \emph{Theoret. Comput. Sci.} \textbf{144} (1995), 3--58.
+
+\bibitem{GORZ2019}
+M.~J.~Griffin, K.~Ono, L.~Rolen, and D.~Zagier,
+\newblock Jensen polynomials for the Riemann zeta function and other sequences,
+\newblock \emph{Proc. Natl. Acad. Sci. USA} \textbf{116} (2019), 11103--11110.
+
+\bibitem{James2008}
+L.~F.~James, B.~Roynette, and M.~Yor,
+\newblock Generalized gamma convolutions, Dirichlet means, Thorin measures, with explicit examples,
+\newblock \emph{Probability Surveys} \textbf{5} (2008), 346--415.
+
+\bibitem{Levin1996}
+B.~Ya.~Levin,
+\newblock \emph{Lectures on Entire Functions},
+\newblock Translations of Mathematical Monographs 150, American Mathematical Society, 1996.
+
+\bibitem{ReshetnikovRepo}
+V.~Reshetnikov,
+\newblock \emph{ProveIt: Analysis/FabiusFunction},
+\newblock Lean 4 formal development and documentation corpus,
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction}.
+
+\bibitem{Rvachev1990}
+V.~A.~Rvachev,
+\newblock Compactly supported solutions of functional-differential equations and their applications,
+\newblock \emph{Russian Math. Surveys} \textbf{45} (1990), no.~1, 87--120.
+
+\bibitem{Schilling2012}
+R.~L.~Schilling, R.~Song, and Z.~Vondra\v{c}ek,
+\newblock \emph{Bernstein Functions: Theory and Applications}, second edition,
+\newblock De Gruyter Studies in Mathematics 37, 2012.
+
+\bibitem{Stanley1980}
+R.~P.~Stanley,
+\newblock Differentiably finite power series,
+\newblock \emph{European J. Combin.} \textbf{1} (1980), 175--188.
+
+\end{thebibliography}
+\endgroup
+
+\end{document}
