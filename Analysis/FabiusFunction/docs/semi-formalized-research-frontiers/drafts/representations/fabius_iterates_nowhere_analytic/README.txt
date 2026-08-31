@@ -27,6 +27,16 @@ REPOSITORY_AUDIT.md; other environments should be checked numerically, not by
 requiring identical hashes.  No numerical result is a premise of the proof,
 and the floating-point replay is not independent symbolic verification.
 
+Formalization status
+--------------------
+The 1,462-line source and its current 21-page A4 PDF now crosswalk the exhaustive three-definition,
+thirty-three-theorem `PartitionDefect.lean` API.  That Lean module proves the
+finite positive-list defect decomposition, zero and sharp-equality
+classifiers, fixed-block lower bound, and first positive shell.  It does not
+construct set partitions, prove the weighted Bell sum or its asymptotics, or
+prove nowhere analyticity for any positive compositional iterate; those
+manuscript steps remain paper-only.
+
 Compile the report
 ------------------
 Run exactly three serial passes from this directory:

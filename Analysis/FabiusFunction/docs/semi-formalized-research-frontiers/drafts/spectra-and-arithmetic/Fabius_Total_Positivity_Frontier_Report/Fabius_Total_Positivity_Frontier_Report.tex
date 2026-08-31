@@ -317,6 +317,27 @@ The zero-order argument is unchanged.  Moreover,
 the standard base-$b$ digit-sum form of Legendre's formula.  Adding $N$ gives \eqref{eq:b-count}; parity gives \eqref{eq:b-sign}.
 \end{proof}
 
+\paragraph{Lean status: finite arithmetic only.}
+The five public theorems of \path{BaseDigitMultiplicity.lean} give an
+exhaustive machine-checked closure of the finite counting identity behind
+\eqref{eq:b-count}.  They are
+\path{sum_range_weightedScaleMultiplicity_of_log_lt},
+\path{sum_range_weightedScaleMultiplicity_log},
+\path{sum_range_div_pow_log_eq_self_add_tail},
+\path{sub_one_mul_sum_padicValNat_succ_add_digitSum}, and
+\path{sum_range_padicValNat_succ_eq_sub_digitSum_div}.  For every natural
+base \(b>1\), including composite \(b\), and every \(N\in\N\), including
+\(N=0\), the last two respectively prove the additive identity
+\[
+ (b-1)\sum_{n=1}^{N}\bigl(1+\nu_b(n)\bigr)+s_b(N)=bN
+\]
+and its quotient form \eqref{eq:b-count}; the first three supply the sharp
+finite logarithmic truncation and floor-sum decomposition used in that proof.
+This module does \emph{not} identify \(1+\nu_b(n)\) with an analytic zero
+order of \(\Phi_b\), construct or prove convergence of
+\eqref{eq:base-b-product}, or prove the zero set or sign law
+\eqref{eq:b-sign}.  Those analytic steps remain paper-only.
+
 \section{Laguerre--Pólya structure from an arbitrary scale alphabet}\label{sec:LP}
 
 The dyadic theorem is best understood as a specialization of a more general construction.
@@ -876,7 +897,12 @@ The shortest route into Lean is modular.
 \item Formalize the Euler product \eqref{eq:sinh-product} and the double-product rearrangement \eqref{eq:H-double-product} under absolute local convergence.
 \item Define finite spectral alphabets, prove total nonnegativity by products of bidiagonal Toeplitz matrices, and pass to limits one fixed minor at a time.
 \item Import or prove the finite Pólya--Schur criterion needed for Jensen polynomials; the full classification theorem is not necessary if one works through finite truncations and Hurwitz limits.
-\item Formalize the zero multiplicity and Legendre digit-sum identity.  The sign interpolation theorem then requires only continuity and parity of zero crossings.
+\item The finite general-base multiplicity sum and digit-sum identity are now
+formalized by the five-theorem API in \path{BaseDigitMultiplicity.lean}, for
+all \(b>1\) and \(N\ge0\).  Still formalize the analytic identification of
+those arithmetic multiplicities with zero orders; the sign interpolation
+then additionally requires product convergence, the exact zero set,
+continuity, and parity of zero crossings.
 \item Formalize the exact coefficient recurrence \eqref{eq:a-recurrence}; it is algebraic once the logarithmic series is available.
 \end{enumerate}
 These items are substantially more tractable than formalizing the local central limit theorem.  The root limit can initially be recorded as an analytic theorem with a separate probability module.
@@ -977,6 +1003,7 @@ Statement & Status & Basis \\
 Zero multiplicity $\nu_2(N)+1$ & Proved & Direct factor count.\\
 Exact count $2N-s_2(N)$ & Proved & Legendre digit-sum identity.\\
 Thue--Morse sign interpolation & Proved & Parity of cumulative multiplicity.\\
+Finite base-$b$ multiplicity/digit identity & Lean-proved arithmetic & \path{BaseDigitMultiplicity.lean}; every $b>1$ and $N\ge0$, with no analytic zero or sign claim.\\
 Laguerre--Pólya type I & Proved & Genus-zero positive product.\\
 PF$_\infty$ moments & Proved & Bidiagonal factorization / AESW.\\
 Multiplier sequence & Proved & Pólya--Schur.\\

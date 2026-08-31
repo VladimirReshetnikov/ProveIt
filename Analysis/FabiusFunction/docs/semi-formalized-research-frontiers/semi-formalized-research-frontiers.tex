@@ -3554,8 +3554,9 @@ monic rational orthogonal polynomials, positive rational norms, a zero diagonal,
 rational subdiagonals, their real-cast comparisons, the determinant cross-ratio, and the
 centered rational recurrence in every degree.  The zero-based subdiagonal at index $n$ is
 the conventional $\beta_{n+1}$.  The rational definitions are noncomputable finite
-objects; no explicit $H_4$ or $\beta_4$ value, evaluator, root, Christoffel, quadrature,
-continued-fraction, Pad\'e, or asymptotic theorem is asserted.\\
+objects; the separate executable values leaf below supplies the explicit $H_4$ and
+$\beta_4$ evaluations.  Root, Christoffel, quadrature, continued-fraction, Pad\'e, and
+asymptotic theorems remain open.\\
 \path{PolynomialMomentGramDeterminant.lean} &
 Exactly two public definitions,
 \lean{polynomialCoefficientMatrix} and \lean{polynomialMomentGramMatrix}, and seven public
@@ -3642,6 +3643,32 @@ and is positive; its exact ratios give the rational norm and zero-based
 \(\beta_{n+1}\), with the latter prefactor \(((n+1)/(2n+1))^2\).  No
 Gaunt/Wigner/$3j$ entry expansion, Christoffel reconstruction, root or quadrature theorem,
 infinite Jacobi product/continued fraction, or asymptotic result is asserted.\\
+\path{FabiusLegendreRationalGramValues.lean} &
+Zero public definitions and exactly eleven public theorems:
+\lean{moment_four},
+\lean{rvachevLegendreGramDetRat_one},
+\lean{rvachevLegendreGramDetRat_two},
+\lean{rvachevLegendreGramDetRat_three},
+\lean{rvachevLegendreGramDetRat_four},
+\lean{rvachevLegendreGramDetRat_five},
+\lean{rvachevOrthoNormRat_four},
+\lean{rvachevJacobiSubdiagonalRat_three},
+\lean{hankelRatio_four},
+\lean{integral_sq_upOrthoPolynomial_four}, and
+\lean{hankelRatio_four_div_three}.
+They compute the raw eighth moment as $132809/32531625$ and the order-one through
+order-five rational Legendre Gram determinants as
+$1$, $1/9$, $8/2025$, $39616/602791875$, and
+$16544275456/27453718922765625$.  They then give
+$H_4=\lean{rvachevOrthoNormRat}(4)=26727424/55791736875$ and, with the Lean
+subdiagonal index zero-based,
+$\beta_4=\lean{rvachevJacobiSubdiagonalRat}(3)=835232/4640643$.
+These first eight computations are unconditional over $\Q$.  The final three theorems
+transport the norm to the real Hankel ratio, its squared orthogonal-polynomial integral,
+and the quotient of the fourth and third real Hankel ratios only for
+$F:\lean{BoundedFabius}$ together with $h_F:\lean{IsFabius}\,F$.
+No Gaunt/Wigner/$3j$ entry expansion, Christoffel reconstruction, root or quadrature
+theorem, infinite Jacobi product/continued fraction, or asymptotic result is asserted.\\
 \path{FractionalVolterra.lean}, \path{FractionalVolterraSemigroup.lean} &
 The total real-order Gamma-normalized operator, its unconditional endpoint/locality/scalar,
 order-one, and positive-natural-order rules, and its positive-order ordered-endpoint

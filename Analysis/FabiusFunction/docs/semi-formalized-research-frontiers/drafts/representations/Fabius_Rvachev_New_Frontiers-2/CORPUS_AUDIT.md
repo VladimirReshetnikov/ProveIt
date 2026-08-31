@@ -80,7 +80,7 @@ through finite Gaunt matrices.
 ## Post-snapshot Lean crosswalk
 
 The pinned audit and its corpus-relative novelty statements remain historical.
-The current repository has since added two executable-rational modules beside
+The current repository has since added three executable-rational modules beside
 the generic moment-Gram and real Fabius--Legendre determinant layers:
 
 - `LegendrePolynomialRational.lean` contributes two public definitions and six
@@ -93,14 +93,31 @@ the generic moment-Gram and real Fabius--Legendre determinant layers:
   determinant identity and positivity, and rational norm/Jacobi determinant
   ratios.  Each of the three real-cast bridges assumes both `BoundedFabius`
   and `IsFabius`; the finite rational identities do not.
+- `FabiusLegendreRationalGramValues.lean` contributes no definitions and exactly
+  eleven public theorems: `moment_four`,
+  `rvachevLegendreGramDetRat_one`, `rvachevLegendreGramDetRat_two`,
+  `rvachevLegendreGramDetRat_three`, `rvachevLegendreGramDetRat_four`,
+  `rvachevLegendreGramDetRat_five`, `rvachevOrthoNormRat_four`,
+  `rvachevJacobiSubdiagonalRat_three`, `hankelRatio_four`,
+  `integral_sq_upOrthoPolynomial_four`, and
+  `hankelRatio_four_div_three`.  They compute the raw eighth moment
+  `132809/32531625`; rational Legendre Gram determinants of orders one through
+  five `1`, `1/9`, `8/2025`, `39616/602791875`, and
+  `16544275456/27453718922765625`; the report norm
+  `H_4 = 26727424/55791736875`; and, at zero-based subdiagonal index three, the
+  conventional `beta_4 = 835232/4640643`.  The first eight rational computations
+  are unconditional.  The real Hankel-ratio value, squared-integral value, and
+  fourth/third Hankel-ratio quotient each require a `BoundedFabius` input and an
+  `IsFabius` certificate.
 
 Thus executable rational coefficient, entry, matrix, determinant, cast,
 positivity, norm-ratio, and Jacobi-ratio layers now have exact Lean
-counterparts.  The finite Gaunt/Wigner/3j entry expansion and rationality by
-that route remain paper-only, as do Christoffel reconstruction, root results,
-quadrature, infinite Jacobi products, and asymptotics.  The report's dedicated
-API inventory names all 22 new declarations once; it does not duplicate the
-pre-existing generic and real module inventories.
+counterparts, and the displayed `H_4` and `beta_4` now have named exact values.
+The finite Gaunt/Wigner/3j entry expansion and rationality by that route remain
+paper-only, as do Christoffel reconstruction, root results, quadrature, infinite
+Jacobi products, and asymptotics.  The report keeps the original 22-declaration
+coefficient/Gram inventory separate from the exhaustive eleven-theorem values
+inventory; neither duplicates the pre-existing generic and real module inventories.
 
 ## Status discipline
 

@@ -13,12 +13,13 @@ superseded, generated, proved, numerical, and conjectural material.
 Main deliverables
 -----------------
 fabius_rvachev_new_frontiers.tex
-    Complete 2692-line A4/Libertinus LaTeX report. The merged source preserves
+    Complete 2728-line A4/Libertinus LaTeX report. The merged source preserves
     the current scalar-base-change Gram--Stieltjes and all-degree rational
     native Jacobi boundaries while incorporating the detailed generic and
     Legendre Gram-determinant Lean crosswalk. It now also inventories the exact
-    22-declaration executable rational Legendre coefficient/Gram API and keeps
-    the remaining paper-only boundary explicit.
+    22-declaration executable rational Legendre coefficient/Gram API and the
+    eleven-theorem low-order values leaf, while keeping the remaining
+    paper-only boundary explicit.
 
 fabius_rvachev_new_frontiers.pdf
     Current 38-page A4 rendering with embedded/subset fonts, Libertinus prose,
@@ -122,6 +123,9 @@ Current repository rebuild verification
 * Exactly three strict pdflatex passes after the source and figure repair.
 * 38 A4 pages; Libertinus present; every font embedded and subset; no Type 3.
 * No overfull box, TeX error, unresolved reference, citation, or rerun request.
+* Whitespace-normalized PDF text contains all 51 public names in the generic
+  determinant, Legendre determinant, executable rational, and values
+  crosswalks.
 * The refreshed 20-entry checksum ledger includes all five PNG companions and
   synchronizes the TeX, PDF, README, CORPUS_AUDIT, and pdf_preflight entries.
 

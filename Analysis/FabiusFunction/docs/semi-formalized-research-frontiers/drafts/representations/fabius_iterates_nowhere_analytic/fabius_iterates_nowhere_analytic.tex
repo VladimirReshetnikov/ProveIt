@@ -439,6 +439,65 @@ Every summand is nonnegative.  Therefore $D(\pi)=0$ only in the two extremal cas
 there is one block, or every block is a singleton.  These are exactly the two
 unbranched chain-rule spines.
 
+\paragraph{Lean crosswalk: the finite positive-list defect is complete.}
+The module \path{PartitionDefect.lean} has exactly three public definitions
+and thirty-three public theorems; the following inventory is exhaustive.
+Its list \(r=[r_1,\ldots,r_k]\) records positive block sizes, but it does not
+construct a set partition of \(\{1,\ldots,m\}\).
+\begin{itemize}[leftmargin=2em]
+ \item The three definitions are \path{pairSum}, \path{blockPairDefect}, and
+ \path{partitionDefect}.
+ \item The unordered-pair and triangular-number engine consists of
+ \path{pairSum_nil}, \path{pairSum_cons}, \path{pairSum_one},
+ \path{pairSum_add}, \path{pairSum_congr}, \path{pairSum_map},
+ \path{choose_add_two}, and \path{choose_list_sum_two}.
+ \item The conventional defect formulas, excess decomposition, and fixed-block
+ lower bound are
+ \path{blockPairDefect_eq_mul_sub_one},
+ \path{partitionDefect_eq_pairSum_mul_sub_one},
+ \path{partitionDefect_nonneg},
+ \path{choose_sum_two_eq_choose_length_add_sum_add_partitionDefect},
+ \path{partitionDefect_eq_choose_sum_sub_choose_length_sub_sum},
+ \path{length_le_sum_of_pos}, \path{sum_map_sub_one},
+ \path{pairSum_add_eq}, \path{pairSum_map_add_eq},
+ \path{partitionDefect_eq_linear_add_pairwise_excess},
+ \path{partitionDefect_lower_bound}, and
+ \path{partitionDefect_fixed_block_bound}.
+ \item The zero and sharp-equality classifiers are
+ \path{pairSum_eq_zero_iff_pairwise},
+ \path{blockPairDefect_eq_zero_iff},
+ \path{partitionDefect_eq_zero_iff},
+ \path{sub_one_mul_sub_one_eq_zero_iff},
+ \path{partitionDefect_eq_lower_bound_iff}, and
+ \path{partitionDefect_fixed_block_eq_iff}.
+ \item The first-positive-shell closure is
+ \path{add_sub_one_le_mul_of_pos},
+ \path{mul_eq_add_sub_one_iff},
+ \path{firstShell_le_fixedBlockProduct},
+ \path{fixedBlockProduct_eq_firstShell_iff},
+ \path{firstShell_le_partitionDefect},
+ \path{partitionDefect_eq_firstShell_iff}, and
+ \path{partitionDefect_twoBlock_firstShell}.
+\end{itemize}
+For positive entries the module proves
+\[
+ D(r)=(k-1)\sum_i(r_i-1)
+      +\sum_{i<j}(r_i-1)(r_j-1)
+ \ge (k-1)(m-k).
+\]
+It proves \(D(r)=0\) exactly when \(k\le1\) or every entry is one; equality
+in the fixed-\(m\), fixed-\(k\) bound exactly when every pair contains a
+singleton (equivalently at most one entry exceeds one); and, under precisely
+\(2\le k<m\), the first-shell bound \(D(r)\ge m-2\), with equality exactly at
+\(k=2\) or \(k=m-1\) together with that same one-nonsingleton condition.  The
+explicit profile \([m-1,1]\) attains the shell for \(m\ge3\).
+
+This closure does \emph{not} formalize the set-partition family \(\Pi_m\),
+the quadratic-scale factorization \eqref{eq:Q-factorization}, the weighted
+Bell sum \eqref{eq:defect-decay}, its asymptotics, the two-spine reduction,
+the finite spine expansion, or the positive-iterate theorem.  Those steps
+remain paper-only.
+
 Let $u(\pi)$ be the number of singleton blocks and let
 \begin{equation}
  s(\pi):=k-u(\pi)
@@ -1174,10 +1233,13 @@ $x$ away from orbit tie surfaces.
 
 A Lean formalization can be modular.
 \begin{enumerate}[label=\arabic*.]
- \item Define $Q_m$ and prove the algebraic identity
- \eqref{eq:Q-factorization} for finite set partitions.
- \item Formalize the two extremal partitions and the defect-zero classification.
- \item Replace the asymptotic counting proof initially by a stronger but simpler
+ \item \textbf{Completed:} \path{PartitionDefect.lean} supplies the exhaustive
+ positive-list algebra, including decomposition, zero classification, the sharp
+ fixed-block bound and equality profile, and the first positive shell.
+ \item Bridge finite set partitions to their positive block-size lists, define
+ $Q_m$, and prove \eqref{eq:Q-factorization}; neither the set-partition bridge nor
+ this quadratic-scale identity is supplied by the list module.
+ \item Replace the paper's weighted Bell-counting argument initially by a stronger but simpler
  explicit estimate sufficient for $\littleo(1)$.
  \item Use the existing iterated-derivative and bounded-derivative APIs for $F$.
  \item Prove the spine expansion by induction on the fixed iterate count.
@@ -1332,6 +1394,8 @@ directly connected to the proof are:
  for the primary exposition;
  \item \path{GlobalExtension.lean}
  and \path{BoundedDerivatives.lean} in \path{Lean/FabiusFunction/} for the derivative atlas;
+ \item \path{PartitionDefect.lean} in \path{Lean/FabiusFunction/} for the
+ exhaustive three-definition, thirty-three-theorem positive-list defect layer;
  \item \path{Convexity.lean}, \path{Monotonicity.lean}, and the order-isomorphism
  modules for the orbit dynamics;
  \item \path{OriginalPaperSupplement.lean} and \path{NowhereAnalytic.lean} for the

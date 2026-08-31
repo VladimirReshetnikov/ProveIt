@@ -2,6 +2,79 @@
 
 New standalone intake members:
 
+- [`inverse_q_analog_jet_atlas/`](inverse_q_analog_jet_atlas/),
+  *An Inverse-Jet Atlas for q-Analogs: Multivariate Reversion, Singular
+  Branches, and Asymptotics at q=0,1,-1, Roots of Unity, and q=±∞*
+  (72 pp), arrived on 2026-08-30 from
+  `inverse_q_analog_jet_atlas_2026-08-30.zip` (outer SHA-256
+  `9c9a0353eb355e6defb87845c4a2a79d85c537fe5a6c38c5473f9d3d56448ead`).
+  The rootless archive supplied five non-ledger payloads plus
+  `SHA256SUMS.txt`; all five submitted payload hashes verified, and all five
+  text members were already LF. Its title and abstract place its inverse-jet
+  treatment of finite and infinite q-Pochhammer products, Gaussian and
+  q-multinomial coefficients, q-special functions, singular bases, roots of
+  unity, and the Fabius--Rvachev effective geometric base beside the existing
+  inverse-q reports in this group. It remains standalone pending
+  post-publication comparison and deliberate consolidation, plus a Lean
+  crosswalk; manuscript classifications and symbolic/numerical checks do not
+  establish Lean verification.
+
+- [`inverse_q_analog_functions_report/`](inverse_q_analog_functions_report/),
+  *Inverse Functions of q-Pochhammer Symbols, Gaussian Coefficients, and
+  Related q-Analogues: Branch Geometry, Local Reversion, Singular Limits, and
+  Computation* (59 pp), arrived on 2026-08-30 from
+  `inverse_q_analog_functions_report.zip` (outer SHA-256
+  `19cc7da37f71ddbbc0c46b91c55c23059a1e305500260bd0a306394f4c21f4de`).
+  The archive supplied nine payloads but no checksum ledger; the
+  repository-generated `SHA256SUMS` records and verifies all nine, and all five
+  text payloads were already LF. None of its nine payload hashes matches any
+  of the 48 payloads in the three previously filed inverse-q report wrappers.
+  Its finite and infinite q-Pochhammer, Gaussian, q-gamma/q-beta,
+  q-exponential, normalized q-polylogarithm, and basic hypergeometric inverse
+  branches nevertheless place it beside those reports. All four delivered
+  PDFs are structurally readable and unencrypted (62 pages total). It remains
+  standalone pending post-publication semantic comparison, deliberate
+  consolidation, and a Lean crosswalk; manuscript classifications and
+  numerical evidence do not establish Lean verification.
+
+- [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](Cyclotomic_q_Fabius_Rvachev_Frontier/),
+  *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
+  Product* (25 pp), arrived on 2026-08-30 from
+  `Cyclotomic_q_Fabius_Rvachev_Frontier.zip` (outer SHA-256
+  `029da7d9ec96a0b2e5c4164c37f2b361dd015112bd0c6237263e3c538c5b0f64`).
+  All 22 submitted payload hashes verified; five CSV entries were refreshed
+  after CRLF-to-LF repository normalization. Its title and abstract place its
+  radial root-of-unity expansions, claimed natural-boundary theorem,
+  cyclotomic blow-ups, Bell/moment condensation, and inverse branches beside
+  the consolidated q-series frontier. It remains standalone pending the
+  required post-publication claim-level comparison and a Lean crosswalk;
+  manuscript labels and numerical evidence do not establish Lean verification.
+
+- [`inverse_q_analogs_extended_report/`](inverse_q_analogs_extended_report/),
+  *Inverse q-Analogs in All Parameters* (104 pp), arrived on 2026-08-30 from
+  `inverse_q_analogs_all_parameters_report.zip` (outer SHA-256
+  `0263542a7a6a50459eeb0359015b4086245e7311528e80e3875657529825669f`).
+  All 26 submitted payload hashes verified; seven CSV entries were refreshed
+  after CRLF-to-LF normalization. Its README identifies it as an extension of
+  the filed inverse-q drafts, covering regular, singular, endpoint,
+  cyclotomic, and multivariate parameter inversion and Fabius--Rvachev
+  parameter recovery. It remains standalone pending post-publication
+  comparison and deliberate consolidation with both inverse-q siblings, plus
+  a Lean crosswalk; manuscript labels and numerical checks do not establish
+  Lean verification.
+
+- [`inverse_q_analogs_report-2/`](inverse_q_analogs_report-2/),
+  *Inverse Functions of q-Pochhammer Symbols, Gaussian Coefficients, and
+  Related q-Analogs* (59 pp), arrived on 2026-08-30 from
+  `inverse_q_analogs_report_bundle.zip` (outer SHA-256
+  `82ab1dc2cbdd4e69d638cfc045d9ca331e8152e1faeba763732fa9231578b875`).
+  It was given a collision-safe suffix because `inverse_q_analogs_report/`
+  already exists. All five submitted payload hashes verified, every text
+  payload was already LF, and none matches the existing report byte-for-byte.
+  It remains standalone pending post-publication semantic deduplication and a
+  Lean crosswalk; manuscript classifications and numerical checks do not
+  establish Lean verification.
+
 - [`Fabius_Rvachev_Frontier_Report/`](Fabius_Rvachev_Frontier_Report/),
 *Negative Parameters, Reciprocal Bases, and the Gaussian Boundary* (26 pp),
 arrived on 2026-08-30 with all 13 payload checksums verified.  It develops
@@ -34,14 +107,20 @@ performed.
 
 - [`q_pochhammer_q_binomial_expansions_report/`](q_pochhammer_q_binomial_expansions_report/),
   *Local, Boundary, and Reciprocal Expansions of q-Pochhammer Symbols,
-  Gaussian Coefficients, and Related q-Analogues* (56 pp), arrived on
+  Gaussian Coefficients, and Related q-Analogues* (currently 57 pp and 2,777
+  source lines; delivered baseline 56 pp and 2,708 source lines), arrived on
   2026-08-30 from `q_pochhammer_q_binomial_expansions_report.zip` (outer
   SHA-256
   `e8c6e5be4512abc0bacfd904e3f0027b35fd5e47e916a6ad11cc76b2893b3a07`).
   All five entries in the submitted `MANIFEST.sha256` verified and every text
-  payload was already LF. It remains standalone pending post-publication
-  assessment, claim-by-claim consolidation, and a Lean crosswalk; manuscript
-  labels do not establish Lean verification.
+  payload was already LF. A post-publication update added the exact
+  commutative-ring Lean crosswalk for all four Gaussian values at `q = -1`
+  and both companion finite-product identities, then refreshed the paired PDF
+  and checksum ledger. The derivative half of the report's first-jet theorem
+  and its characteristic-zero simple-root consequence remain unformalized.
+  The report remains standalone pending claim-by-claim consolidation;
+  manuscript labels do not establish Lean verification beyond the named
+  crosswalk.
 
 - [`Fabius_Flat_Parameter_Response_Dynamics/`](Fabius_Flat_Parameter_Response_Dynamics/),
   *Flat Parameter Fronts, q-Susceptibility, and Smooth Dynamics* (23 pp),
@@ -578,7 +657,7 @@ matching `assets/` directories.
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Second member: `q_pochhammer_q_binomial_monograph/`
-(210 pp; A4 book class) —
+(211 pp; A4 book class; rebuilt after the exact `q = -1` crosswalk update) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
@@ -599,10 +678,10 @@ Chern–Dilcher–Jiu deleted-singularity identity and Ramanujan's ₁ψ₁
 verified numerically to 30 digits; one dominated-convergence majorant
 repaired with an `% ed.:` note).
 
-Its current formalization ledger has 248 labelled results: 41 exact, 74
-partial, 130 with no counterpart, and 3 interface-only.  Within that
-exhaustive total, the 191-result core in Chapters 1–23 has 35 exact, 29
-partial, 124 with no counterpart, and 3 interface-only entries.  The later
+Its current formalization ledger has 248 labelled results: 42 exact, 74
+partial, 129 with no counterpart, and 3 interface-only.  Within that
+exhaustive total, the 191-result core in Chapters 1–23 has 36 exact, 29
+partial, 123 with no counterpart, and 3 interface-only entries.  The later
 Chapter 24 Fabius bridge is included in the full ledger and crosswalked
 locally; in particular its general spectral Pochhammer theorem remains
 partial despite the now-formal inside `q = 1/2` specialization. The algebra of
@@ -612,7 +691,8 @@ unformalized results; the q-integer and Gaussian-coefficient chapter for
 q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
 unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
 unformalized results; and the basic-hypergeometric chapter for 1 exact, 0
-partial, and 8 unformalized results. The exact rows include the primary and
+partial, and 8 unformalized results. The cyclotomic chapter now has 1 exact,
+0 partial, and 8 unformalized results. The exact rows include the primary and
 second q-Cauchy identities, both weighted-Pascal recurrences,
 elementary--complete orthogonality, and weighted symmetric-function inversion.
 Their adjacent strengthenings are recorded human-readably in the monograph:
@@ -632,8 +712,20 @@ compatibility spelling of its primary identity),
 `QDifferenceAnnihilation.lean` (four theorems),
 `QBinomialInversionSpecializations.lean` (two definitions, four theorems),
 `QPochhammerElementaryIdentities.lean` (13 theorems),
-`QBinomialReciprocity.lean` (four theorems), and
+`QBinomialReciprocity.lean` (four theorems),
+`GaussianBinomialAtNegOne.lean` (five theorems), and
 `RvachevPochhammerFactorization.lean` (one definition, six theorems).
+The five `GaussianBinomialAtNegOne` theorems are
+`gaussianBinomial_neg_one_even_even`,
+`gaussianBinomial_neg_one_odd_even`,
+`gaussianBinomial_neg_one_odd_odd`,
+`finiteQPochhammerIn_neg_one_even`, and
+`finiteQPochhammerIn_neg_one_odd`. The first three together with the reused
+`gaussianBinomial_neg_one_even_odd_eq_zero` theorem from
+`QBinomialReciprocity` prove the monograph's complete `q = -1` value formula
+over every commutative ring, for all natural parameters including above-row
+zero extension. The `q`-Lucas theorem used by the printed proof remains
+unformalized; the status promotion concerns the corollary's exact statement.
 The q-difference annihilation row is exact through
 `qDifference_sum_eval₂_eq_zero_of_degree_lt`, with the stronger
 characteristic-polynomial, all-moment, and scalar-extension top-coefficient

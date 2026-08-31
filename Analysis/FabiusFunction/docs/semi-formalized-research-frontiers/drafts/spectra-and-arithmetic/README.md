@@ -37,7 +37,7 @@ Manuscript theorem labels do not imply Lean proof status.
 
 [`Fabius_Total_Positivity_Frontier_Report/`](Fabius_Total_Positivity_Frontier_Report/),
 *Total Positivity and Cartwright Geometry in the Fabius--Rvachev Dyadic Sinc
-Product* (23 pp), arrived as a bare TeX/PDF/script package on 2026-08-30.
+Product* (24 pp), arrived as a bare TeX/PDF/script package on 2026-08-30.
 Its imaginary-square-root transform, Laguerre--Polya and multiplier-sequence
 structure, exact zero divisor and Thue--Morse sign interpolation, Cartwright
 geometry, and geometric-scale deformation extend the arithmetic/spectral
@@ -46,7 +46,9 @@ environment pin, or captured run output. The repository repair regenerated
 the four required figure/table inputs and four CSV evidence tables, normalized
 the source to A4/Libertinus, rebuilt the PDF in three passes, and added a live
 12-entry payload ledger; exact arrival hashes remain recorded in the global
-manifest. Its novelty screen is already stale at its pinned
+manifest.  The current source crosswalks the exact finite general-base digit
+count in `BaseDigitMultiplicity.lean` without promoting the analytic zero or
+sign claims. Its novelty screen is already stale at its pinned
 snapshot: matching Laguerre--Polya/PF-infinity/shifted-Jensen and zero-sign
 material appears in `Frontier_Compilations/`. It therefore remains standalone
 pending claim-by-claim crosswalk and deliberate deduplication. Its paper

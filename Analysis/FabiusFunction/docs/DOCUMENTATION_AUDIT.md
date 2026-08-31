@@ -109,7 +109,7 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-30 inventory contains 587 modules and 8,022 lexically
+The post-merge 2026-08-30 inventory contains 592 modules and 8,089 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  The baseline records those zeroes, so every future source
 addition must preserve the full invariant rather than merely avoid worsening a

@@ -14,7 +14,7 @@ New standalone intake members:
 
 - [`fabius_iterates_nowhere_analytic/`](fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Fabius
-  Function* (20 A4 pp, 1398 source lines; with a 469-line numerical
+  Function* (21 A4 pp, 1462 source lines; with a 469-line numerical
   diagnostic), arrived on 2026-08-30 with all 14 submitted payload checksums
   verified. The repaired package has an exhaustive 15-entry live ledger; the
   single CSV entry was refreshed after deterministic LF normalization. A
@@ -35,7 +35,7 @@ New standalone intake members:
   empty-union-safe definition of the `n = 1` tie set.  It also corrected the
   landing source map's nonexistent `StrictMonotonicity.lean` to the live
   `Monotonicity.lean`. Three direct `pdflatex` passes then rebuilt a clean
-  canonical A4/27 mm/Libertinus 20-page PDF with no Type 3 fonts, and every
+  canonical A4/27 mm/Libertinus 21-page PDF with no Type 3 fonts, and every
   page was rendered again. The shipped command also
   reproduced all six numerical outputs byte-for-byte in a recovered,
   fully-pinned Ubuntu/Python environment.  The companion
@@ -88,7 +88,7 @@ New standalone intake members:
   The original 29-page Letter/Type-3 rendering remains recoverable from the
   recorded arrival commit and archive SHA-256.
 - [`Fabius_Rvachev_New_Frontiers-2/`](Fabius_Rvachev_New_Frontiers-2/),
-  *Fabius--Rvachev New Frontiers* (38 A4 pp, 2692 source lines), arrived on
+  *Fabius--Rvachev New Frontiers* (38 A4 pp, 2728 source lines), arrived on
   2026-08-30 from a rootless
   archive with all 15 arrival payload checksums verified. Its native up-law
   orthogonal polynomials, Jacobi and Christoffel reconstruction, rational

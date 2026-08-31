@@ -1522,9 +1522,9 @@ the positive squared norm, zero diagonal, and positive subdiagonal, as well as
 the real-cast bridges, rational orthogonality, determinant cross-ratio, and
 centered recurrence.  Its zero-based \path{rvachevJacobiSubdiagonalRat} at
 index \(n\) is the report's conventional \(\beta_{n+1}\).  The definitions are
-noncomputable adjugate-based finite algebra, not an evaluator: no named theorem
-evaluates the report's displayed \(H_4\) or \(\beta_4\) fraction.  Nor does this
-tranche prove roots, Christoffel formulas, second-kind polynomials, Gaussian
+noncomputable adjugate-based finite algebra; the separate executable values leaf
+below now evaluates the report's displayed \(H_4\) and \(\beta_4\) fractions.
+The combined tranche still proves no roots, Christoffel formulas, second-kind polynomials, Gaussian
 quadrature, continued-fraction/Pad\'e identification or convergence, central
 products, or Szeg\H{o}/Nevai/Rakhmanov asymptotics.
 
@@ -1569,6 +1569,37 @@ and gives exact norm and zero-based \(\beta_{n+1}\) determinant ratios, the latt
 factor \(((n+1)/(2n+1))^2\).  This does not supply a Gaunt/Wigner/\(3j\) entry expansion,
 Christoffel reconstruction, roots, quadrature, an infinite Jacobi product/continued
 fraction, or asymptotics.
+
+The exact values leaf \path{FabiusLegendreRationalGramValues.lean} has zero public
+definitions and exactly eleven public theorems:
+\path{moment_four},
+\path{rvachevLegendreGramDetRat_one},
+\path{rvachevLegendreGramDetRat_two},
+\path{rvachevLegendreGramDetRat_three},
+\path{rvachevLegendreGramDetRat_four},
+\path{rvachevLegendreGramDetRat_five},
+\path{rvachevOrthoNormRat_four},
+\path{rvachevJacobiSubdiagonalRat_three},
+\path{hankelRatio_four},
+\path{integral_sq_upOrthoPolynomial_four}, and
+\path{hankelRatio_four_div_three}.
+The first theorem computes the raw eighth moment as \(132809/32531625\).  The next five
+compute the order-one through order-five rational Legendre Gram determinants as
+\(1\), \(1/9\), \(8/2025\), \(39616/602791875\), and
+\(16544275456/27453718922765625\).  The next two give the report values
+\[
+ H_4=\frac{26727424}{55791736875},
+ \qquad
+ \beta_4=\frac{835232}{4640643},
+\]
+with the subdiagonal index zero-based.  Those eight rational computations have no
+analytic input.  Each of the three real/integral transports requires an input
+an input \(F\) of type \path{BoundedFabius} together with a certificate
+\(h_F\) of type \path{IsFabius}; they identify the
+real fourth Hankel ratio, its squared orthogonal-polynomial integral, and its quotient
+by the third ratio.  This closes the displayed low-order values, not the finite
+Gaunt/Wigner/\(3j\) entry expansion, Christoffel reconstruction, root or quadrature
+theory, infinite Jacobi products/continued fractions, or asymptotics.
 \end{remark}
 
 \subsection{Exact coefficients and numerical evidence}
@@ -1888,14 +1919,16 @@ delivered by \path{OrthogonalPolynomialGramBridge.lean}.  In addition,
 \path{LegendrePolynomialRational.lean},
 \path{GramStieltjesNaturality.lean}, \path{RvachevRationalJacobi.lean}, and
 \path{FabiusLegendreHankelDeterminant.lean}, and
-\path{FabiusLegendreRationalGram.lean} deliver polynomial-basis determinant
+\path{FabiusLegendreRationalGram.lean} and
+\path{FabiusLegendreRationalGramValues.lean} deliver polynomial-basis determinant
 transport, scalar naturality, the all-degree centered rational determinants,
 polynomial coefficients, norms, zero diagonal, positive subdiagonals,
 determinant cross-ratio, orthogonality, recurrence, real-cast bridges, and the
 ordinary-Legendre coefficient and real/executable rational Gram-determinant
-specializations.  The zero-based rational subdiagonal
-at index \(n\) is \(\beta_{n+1}\); this is exact finite algebra, not a native
-evaluator for the displayed \(H_4\) or \(\beta_4\) fractions.  Item 6's
+specializations, including the exact displayed
+\(H_4=26727424/55791736875\) and zero-based
+\(\beta_4=835232/4640643\).  The rational subdiagonal at index \(n\) is
+\(\beta_{n+1}\).  Item 6's
 second-kind polynomials, complete finite convergents, and Gaussian error
 theorem and item 7's asymptotics remain open.
 \end{problem}

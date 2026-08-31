@@ -49,15 +49,17 @@ New standalone intake members:
 
 - [`inverse_fabius_iterates_nowhere_analytic/`](inverse_fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Inverse
-  Fabius Function* (23 pp), arrived on 2026-08-30 from
+  Fabius Function* (24 A4 pp, 1730 source lines), arrived on 2026-08-30 from
   `inverse_fabius_iterates_nowhere_analytic.zip` (outer SHA-256
   `8b1c05d59e120ecd20d69cd5aeb0009639f2f3b9a6c9fef32bdf82270eee16bd`).
   All 13 submitted payload hashes verified; `spine_diagnostic.csv` was
   refreshed after CRLF-to-LF repository normalization. It remains standalone
   pending post-publication reconciliation with
   [`../representations/fabius_iterates_nowhere_analytic/`](../representations/fabius_iterates_nowhere_analytic/)
-  and a Lean crosswalk; its own status note says the principal claims have not
-  been translated into Lean.
+  and further Lean work. Its source now crosswalks the complete finite
+  positive-list defect API in `PartitionDefect.lean`, while the set-partition
+  bridge, weighted Bell/spine asymptotics, and principal forward/inverse
+  iterate claims remain paper-only.
 
 The inverse function's frontiers and the sampling/deconvolution circle of
 ideas, in two consolidated volumes.

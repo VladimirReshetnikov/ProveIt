@@ -22,12 +22,12 @@ The report proves:
 
    but it does not represent the function on any neighborhood.
 
-The report also records conjectures and future directions involving tied orbit spines, weighted Bell/partition polynomials, nested Lambert-W endpoint phases, Legendre approximation, general q-atomic functions, and Lean formalization.
+The report also records conjectures and future directions involving tied orbit spines, weighted Bell/partition polynomials, nested Lambert-W endpoint phases, Legendre approximation, general q-atomic functions, and Lean formalization.  Its 1,730-line source now crosswalks the exhaustive three-definition, thirty-three-theorem `PartitionDefect.lean` API: the finite positive-list defect decomposition, zero/equality classification, fixed-block lower bound, and first positive shell are Lean-proved.  The set-partition bridge, weighted Bell sum and asymptotics, spine reduction, and forward/inverse iterate theorems remain paper-only.
 
 ## Files
 
 - `inverse_fabius_iterates_nowhere_analytic.tex` — complete LaTeX source.
-- `inverse_fabius_iterates_nowhere_analytic.pdf` — rendered 23-page report.
+- `inverse_fabius_iterates_nowhere_analytic.pdf` — rendered 24-page A4 report with the canonical Libertinus styling.
 - `numerical_experiments.py` — fully commented deterministic numerical checks.
 - `figures/` — figures embedded in the report.
 - `numerical_output/spine_diagnostic.csv` — forward and inverse Taylor diagnostics through order 22.
@@ -39,14 +39,18 @@ No numerical experiment is used as a premise of the proof.
 
 ## Rebuild the PDF
 
-A recent TeX Live installation with `latexmk` is sufficient:
+A recent TeX Live installation is sufficient.  Run exactly three serial
+passes from this directory:
 
 ```bash
-latexmk -pdf -interaction=nonstopmode -halt-on-error \
-  inverse_fabius_iterates_nowhere_analytic.tex
+pdflatex -interaction=nonstopmode -halt-on-error inverse_fabius_iterates_nowhere_analytic.tex
+pdflatex -interaction=nonstopmode -halt-on-error inverse_fabius_iterates_nowhere_analytic.tex
+pdflatex -interaction=nonstopmode -halt-on-error inverse_fabius_iterates_nowhere_analytic.tex
 ```
 
-The source expects the included `figures/` directory to remain beside the `.tex` file.
+The source expects the included `figures/` directory to remain beside the
+`.tex` file.  Inspect the rendered PDF, then remove `.aux`, `.log`, `.out`,
+and `.toc` sidecars before committing the source/PDF pair.
 
 ## Reproduce the numerical diagnostics
 

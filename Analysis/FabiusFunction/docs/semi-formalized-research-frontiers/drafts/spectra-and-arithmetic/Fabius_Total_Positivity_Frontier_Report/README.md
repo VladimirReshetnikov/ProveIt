@@ -29,10 +29,13 @@ layer, while zero-count and sign material appears elsewhere in that volume.
 The report therefore remains standalone pending a claim-by-claim crosswalk and
 deliberate deduplication; paper theorem labels do not imply Lean status.
 
-The source now selects Libertinus and uses the repository's A4, 27 mm
-geometry. The normalized report was rebuilt with exactly three strict
-`pdflatex` passes and is 23 pages. Its log has no errors, unresolved
+The 1,076-line source now selects Libertinus and uses the repository's A4,
+27 mm geometry. The normalized report was rebuilt with exactly three strict
+`pdflatex` passes and is 24 pages. Its log has no errors, unresolved
 cross-references, rerun request, or overfull box; every PDF font is embedded
 and subset, Libertinus is present, and no Type 3 font remains. The live
 12-entry payload ledger covers the source, PDF, script, README, three PNG
-figures, generated TeX table, and four CSV evidence tables.
+figures, generated TeX table, and four CSV evidence tables.  The exact
+five-theorem `BaseDigitMultiplicity.lean` crosswalk closes the finite
+general-base digit count only; analytic zero order, product convergence, and
+the sign law remain paper-level claims.

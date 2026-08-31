@@ -678,10 +678,39 @@ diagonal, and positive subdiagonal, together with real-cast bridges, rational
 orthogonality, the determinant cross-ratio, and the centered three-term recurrence.
 The zero-based value \path{Fabius.rvachevJacobiSubdiagonalRat}~\(n\) is the conventional
 coefficient \(\beta_{n+1}\).  These adjugate-based definitions are noncomputable finite
-algebra, not an evaluator: in particular the displayed report values for \(H_4\) and
-\(\beta_4\) are not named Lean evaluations.  Roots, Christoffel formulas, Gaussian
-quadrature, finite or infinite \(J\)-fraction/Pad\'e identification, and asymptotics
-remain outside this tranche.  The \emph{moment/Laurent layer} is
+algebra; the separate executable values leaf now evaluates the displayed report values.
+The zero-definition, eleven-theorem
+\path{FabiusLegendreRationalGramValues.lean} inventory is
+\path{Fabius.moment_four},
+\path{Fabius.rvachevLegendreGramDetRat_one},
+\path{Fabius.rvachevLegendreGramDetRat_two},
+\path{Fabius.rvachevLegendreGramDetRat_three},
+\path{Fabius.rvachevLegendreGramDetRat_four},
+\path{Fabius.rvachevLegendreGramDetRat_five},
+\path{Fabius.rvachevOrthoNormRat_four},
+\path{Fabius.rvachevJacobiSubdiagonalRat_three},
+\path{Fabius.hankelRatio_four},
+\path{Fabius.integral_sq_upOrthoPolynomial_four}, and
+\path{Fabius.hankelRatio_four_div_three}.
+It gives the raw eighth moment (132809/32531625); rational Legendre Gram determinants
+of orders one through five
+\[
+ 1,\quad \frac19,\quad \frac8{2025},\quad
+ \frac{39616}{602791875},\quad
+ \frac{16544275456}{27453718922765625};
+\]
+and the unconditional rational values
+\[
+ H_4=\frac{26727424}{55791736875},
+ \qquad
+ \beta_4=\frac{835232}{4640643},
+\]
+where the subdiagonal index is zero-based.  The last three theorems transport the fourth
+real Hankel ratio, its squared orthogonal-polynomial integral, and its quotient by the
+third ratio only for an input \(F\) of type \path{Fabius.BoundedFabius} with
+an \path{Fabius.IsFabius} certificate.  Roots, Christoffel formulas, Gaussian quadrature,
+Gaunt/Wigner/\(3j\) entry expansions, finite or infinite \(J\)-fraction/Pad\'e
+identification, and asymptotics remain outside this tranche.  The \emph{moment/Laurent layer} is
 now delivered on the symmetric side by
 \path{StieltjesMomentLaurent.lean}: for every real \(|z|>1\) and every \(N\),
 \(\int(z-x)^{-1}\dd\mu_{\Up}=\sum_{k<N}m_k\,z^{-(k+1)}+z^{-N}\int x^N(z-x)^{-1}\dd\mu_{\Up}\)
@@ -10260,8 +10289,12 @@ inventory is recorded in the compilation status above.  The specialization prove
 positive rational determinants, monic coefficients, norms and subdiagonals; rational
 orthogonality; a zero diagonal; the determinant cross-ratio; the centered recurrence;
 and all real-cast bridges.  Its zero-based subdiagonal at index \(n\) is
-\(\beta_{n+1}\).  It neither evaluates the report's \(H_4\) or \(\beta_4\) fractions in
-Lean nor supplies root, quadrature, \(J\)-fraction, Pad\'e, or asymptotic theorems.
+\(\beta_{n+1}\).  The separate eleven-theorem
+\path{FabiusLegendreRationalGramValues.lean} inventory recorded above evaluates
+\(H_4=26727424/55791736875\) and the zero-based
+\(\beta_4=835232/4640643\), including their real and integral transports under
+\path{BoundedFabius} plus \path{IsFabius}.  Root, quadrature, Christoffel,
+Gaunt/Wigner/\(3j\), \(J\)-fraction, Pad\'e, and asymptotic theorems remain open.
 
 The separate up-measure pipeline in \path{MomentHankelMatrix.lean},
 \path{MomentHankelValues.lean}, and the \path{OrthogonalPolynomial*.lean} modules now

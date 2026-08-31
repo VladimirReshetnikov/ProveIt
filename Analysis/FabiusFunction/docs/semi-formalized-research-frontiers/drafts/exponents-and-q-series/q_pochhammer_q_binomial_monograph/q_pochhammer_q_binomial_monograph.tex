@@ -4714,6 +4714,21 @@ For $0\le k\le n$,
 Apply \Cref{thm:q-lucas} with $d=2$.  Write $n=2a+b$ and $k=2r+s$, where $b,s\in\{0,1\}$.  Since $\Qbinom bs{-1}$ is $1$ when $s\le b$ and $0$ otherwise, the three cases follow.
 \end{proof}
 
+\begin{remark}[Exact Lean crosswalk]
+The three binomial-valued parity cases are respectively
+\lean{Fabius.gaussianBinomial_neg_one_even_even},
+\lean{Fabius.gaussianBinomial_neg_one_odd_even}, and
+\lean{Fabius.gaussianBinomial_neg_one_odd_odd} in
+\path{GaussianBinomialAtNegOne.lean}.  Together with
+\lean{Fabius.gaussianBinomial_neg_one_even_odd_eq_zero} from
+\path{QBinomialReciprocity.lean}, they prove exactly the displayed value
+formula over every commutative ring.  All four declarations are total in
+$a,b\in\N$: when a column lies above its row, the recursive Gaussian
+coefficient and the ordinary binomial coefficient both use their zero
+extensions.  This exact crosswalk is independent of the proof through
+$q$-Lucas; \Cref{thm:q-lucas} itself remains unformalized.
+\end{remark}
+
 \section{Cyclic sieving for subsets}
 
 A triple $(X,C,F(q))$, where a finite cyclic group $C=\angles c$ acts on a finite set $X$ and $F(q)\in\Z[q]$, exhibits the \emph{cyclic sieving phenomenon} when
@@ -11832,10 +11847,10 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 248 labelled results, 41 are \statusexact, 74 are \statuspartial,
-130 are \statusnone, and 3 are \statusna.
-Within that exhaustive total, the 191-result Chapters~1--23 core has 35
-\statusexact, 29 \statuspartial, 124 \statusnone, and 3 \statusna{} entries.
+Of the 248 labelled results, 42 are \statusexact, 74 are \statuspartial,
+129 are \statusnone, and 3 are \statusna.
+Within that exhaustive total, the 191-result Chapters~1--23 core has 36
+\statusexact, 29 \statuspartial, 123 \statusnone, and 3 \statusna{} entries.
 The formalized part is concentrated exactly where the Fabius development
 needed it: the finite Gaussian-coefficient core, the geometric Lagrange and
 filter calculus, half-base and Thue--Morse cancellation, and the geometric
@@ -11871,8 +11886,9 @@ contracting complex nome, but its spectral sinc factorization fixes the nome
 to \(1/4\); it therefore does not close the book's general-parameter or
 normal-convergence claims.
 
-The promoted, strengthened, and new weighted symmetric-function rows in this
-edition were statically checked against the complete public declaration lists:
+The promoted, strengthened, and new finite-$q$ and weighted
+symmetric-function rows in this edition were statically checked against the
+complete public declaration lists:
 \begin{center}
 \small
 \path{QBinomialCauchy.lean}: one definition and five theorems, including the
@@ -11887,6 +11903,7 @@ compatibility spelling of the primary identity;\\
 \path{QBinomialInversionSpecializations.lean}: two definitions and four theorems;\\
 \path{QPochhammerElementaryIdentities.lean}: 13 theorems;\\
 \path{QBinomialReciprocity.lean}: four theorems;\\
+\path{GaussianBinomialAtNegOne.lean}: five theorems;\\
 \path{RvachevPochhammerFactorization.lean}: one definition and six theorems;\\
 \path{GeometricCompleteHomogeneous.lean}: six theorems;\\
 \path{GeometricLagrangeCompleteHomogeneous.lean}: five theorems;\\
@@ -11909,6 +11926,21 @@ semifield.  The two \(q=-1\) consequences are universal commutative-ring
 identities, transported from the integer Gaussian polynomial, and the
 even-row odd-column statement includes columns above the row by zero
 extension.
+
+\item The five theorems of \path{GaussianBinomialAtNegOne.lean} are
+\path{Fabius.gaussianBinomial_neg_one_even_even},
+\path{Fabius.gaussianBinomial_neg_one_odd_even},
+\path{Fabius.gaussianBinomial_neg_one_odd_odd},
+\path{Fabius.finiteQPochhammerIn_neg_one_even}, and
+\path{Fabius.finiteQPochhammerIn_neg_one_odd}.  The first three, together
+with
+\path{Fabius.gaussianBinomial_neg_one_even_odd_eq_zero} from
+\path{QBinomialReciprocity.lean}, give all four parity cases of
+\Cref{cor:qminusone} exactly.  Every identity uses only a commutative ring;
+the Gaussian formulas are total in all natural parameters, including
+columns above the row by zero extension, and the last two theorems give the
+paired even- and odd-length finite $q$-Pochhammer products without any
+domain, characteristic, or nonvanishing assumption.
 
 \item The 13 theorems of
 \path{QPochhammerElementaryIdentities.lean} are
@@ -12104,7 +12136,7 @@ The $q$-gamma and $q$-beta functions & 0 & 0 & 8 & 0\\
 Jacobi's triple product & 0 & 0 & 8 & 0\\
 Partitions and product--sum identities & 0 & 0 & 4 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 1 & 0 & 6 & 0\\
-Cyclotomic factorization and congruences & 0 & 0 & 9 & 0\\
+Cyclotomic factorization and congruences & 1 & 0 & 8 & 0\\
 Negative upper indices and geometric Newton interpolation & 0 & 2 & 7 & 0\\
 Central $q$-binomial sums and Lambert series & 0 & 0 & 7 & 0\\
 Asymptotic regimes and Bernoulli expansions & 0 & 0 & 8 & 0\\
@@ -12114,7 +12146,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 45 & 6 & 0\\
 \midrule
-\textbf{Total} & 41 & 74 & 130 & 3\\
+\textbf{Total} & 42 & 74 & 129 & 3\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -12373,7 +12405,14 @@ monoid carrying the module structure}\\[2pt]
 \Cref{cor:q-catalan} & \statusnone & ---\\[2pt]
 \Cref{lem:root-block} & \statusnone & ---\\[2pt]
 \Cref{thm:q-lucas} & \statusnone & ---\\[2pt]
-\Cref{cor:qminusone} & \statusnone & ---\\[2pt]
+\Cref{cor:qminusone} & \statusexact &
+\texttt{gaussianBinomial\_\allowbreak{}neg\_\allowbreak{}one\_\allowbreak{}even\_\allowbreak{}even},
+\texttt{gaussianBinomial\_\allowbreak{}neg\_\allowbreak{}one\_\allowbreak{}odd\_\allowbreak{}even},
+\texttt{gaussianBinomial\_\allowbreak{}neg\_\allowbreak{}one\_\allowbreak{}odd\_\allowbreak{}odd},
+\texttt{gaussianBinomial\_\allowbreak{}neg\_\allowbreak{}one\_\allowbreak{}even\_\allowbreak{}odd\_\allowbreak{}eq\_\allowbreak{}zero}\newline
+{\footnotesize\texttt{GaussianBinomialAtNegOne};
+\texttt{QBinomialReciprocity}; arbitrary commutative ring, all four parity
+classes, including total above-row zero extension}\\[2pt]
 \Cref{thm:csp-subsets} & \statusnone & ---\\[2pt]
 \Cref{thm:q-babbage} & \statusnone & ---\\[2pt]
 \Cref{cor:babbage-derivative} & \statusnone & ---\\[2pt]

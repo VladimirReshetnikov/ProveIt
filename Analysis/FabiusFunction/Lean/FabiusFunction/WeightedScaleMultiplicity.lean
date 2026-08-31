@@ -19,6 +19,8 @@ commutative monoid and is independent of divisibility.
 Specializing the height to `padicValNat b n` gives
 `weightedScaleMultiplicity b w n`.  The main consequences are:
 
+* constant weights collapse to one scalar multiple, with unit natural weight
+  giving the exact layer count `padicValNat b n + 1`;
 * multiplication by `b ^ k` exposes the first `k` layers and shifts the
   remaining weights;
 * a bounded multiplicity is exactly a sum over the powers `b ^ h` dividing
@@ -107,6 +109,22 @@ weight records one more than the usual multiplicity. -/
 def weightedScaleMultiplicity {M : Type*} [AddCommMonoid M]
     (b : ℕ) (w : ℕ → M) (n : ℕ) : M :=
   inclusivePrefixSum w (padicValNat b n)
+
+/-- A constant weight is repeated once for every layer
+`0, …, padicValNat b n`. -/
+@[simp]
+theorem weightedScaleMultiplicity_const
+    {M : Type*} [AddCommMonoid M] (b n : ℕ) (a : M) :
+    weightedScaleMultiplicity b (fun _ ↦ a) n =
+      (padicValNat b n + 1) • a := by
+  simp [weightedScaleMultiplicity, inclusivePrefixSum]
+
+/-- Unit `ℕ`-valued weights count those layers. -/
+@[simp]
+theorem weightedScaleMultiplicity_one_nat (b n : ℕ) :
+    weightedScaleMultiplicity b (fun _ ↦ (1 : ℕ)) n =
+      padicValNat b n + 1 := by
+  simp
 
 /-- Multiplication by `b ^ k` exposes the first `k` weight layers and shifts
 the weights of all layers already present in `n`.

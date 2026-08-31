@@ -32,7 +32,11 @@ excludes eventually-zero polynomial series.  The former tie-cancellation
 conjecture follows at manuscript level from the canonical quarter-point facts
 and the report's binary-transition lemma, so it is no longer presented as
 open.  The positive-iterate theorem for `n >= 2`, its finite-spine machinery,
-and its partition estimates remain to be formalized in Lean.
+and its weighted set-partition estimates remain to be formalized in Lean.
+The separate `PartitionDefect.lean` module now completely formalizes the
+finite positive-list defect decomposition, zero/equality classification,
+fixed-block bound, and first shell; it does not supply the set-partition
+bridge, weighted Bell asymptotics, or iterate theorem.
 
 The normalized source was then rebuilt from this directory with exactly these
 three serial passes:
@@ -43,7 +47,7 @@ pdflatex -interaction=nonstopmode -halt-on-error fabius_iterates_nowhere_analyti
 pdflatex -interaction=nonstopmode -halt-on-error fabius_iterates_nowhere_analytic.tex
 ```
 
-The resulting 20-page PDF is A4, has embedded and subset Libertinus prose fonts
+The resulting 21-page PDF is A4, has embedded and subset Libertinus prose fonts
 and no Type 3 font, and has no overfull box, unresolved reference, rerun request,
 or TeX error.  The title/status page, contents continuation, both quarantine
 warnings, and final reference page were rendered and inspected.  Generated
