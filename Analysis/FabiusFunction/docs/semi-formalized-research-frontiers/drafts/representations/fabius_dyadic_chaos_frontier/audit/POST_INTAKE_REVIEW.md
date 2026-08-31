@@ -90,8 +90,8 @@ follows.
 
 ## Lean boundary
 
-`../LEAN_CROSSWALK.md` contains every one of the 36 nonconjectural report
-labels exactly once: 12 theorems, 7 propositions, 3 lemmas, and 14
+`../LEAN_CROSSWALK.md` contains every one of the 40 nonconjectural report
+labels exactly once: 13 theorems, 8 propositions, 3 lemmas, and 16
 corollaries. It also inventories the 3 conjectures and 4 open problems.
 
 At the start of this review, no report result was a Lean theorem exactly as
@@ -113,6 +113,60 @@ complete because the manuscript theorem also states the repeated-integral
 identity under `C^N` hypotheses. That analytic clause and a final
 report-shaped wrapper remain; the displayed decreasing-weight reindexing is
 no longer a gap.
+
+A subsequent integration completed and focused-built
+`FabiusFunction.HyperbolicActivation`,
+`FabiusFunction.ActivationAsymptotics`, and
+`FabiusFunction.GeometricActivationDimension`. The first module exposes four
+definitions and 57 public theorem declarations for the real totalized
+hyperbolic sinc, totalized `tanh(x)/x`, activation odds and probability,
+their continuity/parity/sign algebra, and the global activation bounds. The
+second proves the exact punctured limit `p(x)/x^2 -> 1/3`. The third exposes
+two definitions and 29 public theorem declarations for geometric activation
+sums, their summability and exact and simplified geometric budgets under
+`|q|<1`, positivity, refinement, certified finite-prefix enclosures, and the
+dyadic effective dimension with its exact `t^2/(9*4^N)` tail certificate.
+
+### Verified Lean source milestone
+
+The activation formalization is source-verified at commit
+`7c8d1f1d65ed1255f6264d306d45f8dad2b03ea5`.  Each focused target was built
+with `LAKE_JOBS=1` in a separate invocation from the final contents of that
+module and its project dependencies:
+
+| Target | Exact command | Exit code | Warnings |
+| --- | --- | ---: | ---: |
+| Hyperbolic activation kernels | `lake build +FabiusFunction.HyperbolicActivation` | `0` | `0` |
+| Sharp activation asymptotics | `lake build +FabiusFunction.ActivationAsymptotics` | `0` | `0` |
+| Geometric and dyadic activation dimension | `lake build +FabiusFunction.GeometricActivationDimension` | `0` | `0` |
+
+An exhaustive direct-Lean axiom audit covered all 87 public theorem
+declarations exactly once.  A subsequent proof-only simplification changed
+two of those declarations, and both were re-audited after the change.  Every
+reported dependency is in the standard set `propext`, `Classical.choice`, and
+`Quot.sound`; no declaration depends on `sorryAx` or a project-defined axiom.
+Static audits also found 6 public definitions and 87 public theorems, all 93
+with directly attached nonempty docstrings and facade reachability, with no
+forbidden placeholder or duplicate declaration.
+
+This evidence is deliberately scoped: it establishes successful focused
+compilation and axiom cleanliness of the Lean source at the cited commit.  It
+does not claim a fresh aggregate `lake build +FabiusFunction`.  The report
+build, PDF preflight, full render inspection, and artifact-ledger verification
+are separate evidence recorded below.
+
+The report therefore includes four new statement-exact results whose every
+clause is covered by those compiled declarations. The original
+`lem:p-bounds` remains Partial solely because its Taylor jet through
+`O(x^10)` is absent. The original `prop:mu-refinement` remains Partial because
+its Bernoulli power-series coefficients and convergence radii are absent. The
+generic Lean definition is total in `q` through Mathlib's real-`tsum`
+convention. The condition `|q|<1` is the uniform, nondegenerate convergence
+regime proved by the API; without it no general summability is promised,
+although degenerate parameters may still converge. Only the report's
+`0<q<1` range has the centered geometric-uniform probability-law meaning. The
+deterministic activation sum is not identified with `E K_t` until the
+active-count object is formalized.
 
 ## Numerical replay
 
@@ -166,14 +220,21 @@ the displayed mathematical precision, not byte-for-byte renderer identity.
 
 The replayed figures were promoted after setting Matplotlib's PDF and
 PostScript font types to 42.  Every font in all six vector figures is now an
-embedded CID TrueType font, with no Type 3 rows.  The report was then rebuilt
-with three explicit `pdflatex` passes into a 37-page A4 PDF.  Its final log has
-no unresolved reference or citation, package warning, overfull or underfull
-box, or fatal error; all 35 font rows are embedded and none is Type 3.  The
-whole document was rendered at 140 dpi.  Four contact sheets from the
-penultimate pass were inspected, and the two pages changed afterward were
-rendered again from the final PDF; focused inspection also covered the Mellin,
-phase, Thue--Morse, Lambert-W, package-table, and bibliography pages.
+embedded CID TrueType font, with no Type 3 rows.  Following the activation-
+dimension integration, the report was rebuilt with three explicit `pdflatex`
+passes into a 39-page A4 PDF.  Its final log has no unresolved reference or
+citation, package warning, overfull or underfull box, or fatal error; all 35
+font rows are embedded and none is Type 3.  The final document was rendered at
+120 dpi and inspected in four contact sheets.  The new totalized-activation,
+sharp-coefficient, geometric-dimension, and certified-tail pages were also
+inspected individually at full rendered resolution, including the page break
+across the tail proof.  No clipping, collision, broken glyph, or black-render
+artifact was found.
+
+The final artifact is an unencrypted PDF 1.5 file of 937,524 bytes with
+SHA-256
+`aaabd9f99b8d61878ba9aa98db58352a6ebc371df2dcccf38a4b6ddff489ce1f`.
+All four new result titles are extractable from it exactly once.
 
 After the build-only temporary files were removed, `SHA256SUMS` was
 regenerated over exactly 32 non-ledger package files. Every entry was then

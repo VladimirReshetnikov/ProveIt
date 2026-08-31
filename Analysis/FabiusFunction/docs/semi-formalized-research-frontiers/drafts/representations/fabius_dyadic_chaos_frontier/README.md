@@ -1,6 +1,6 @@
 # Dyadic Sensitivity and Polynomial-Chaos Frontiers for the Fabius--Rvachev Law
 
-This archive is the reproducible source package for a 37-page repository-aware
+This archive is the reproducible source package for a repository-aware
 research report on a new orthogonal-chaos layer of the Fabius/Rvachev random
 series.
 
@@ -8,7 +8,7 @@ series.
 
 - `fabius_dyadic_chaos_frontiers.tex` - complete self-contained LaTeX source.
 - `fabius_dyadic_chaos_frontiers.pdf` - compiled A4 report.
-- `LEAN_CROSSWALK.md` - label-complete map from all 36 nonconjectural paper
+- `LEAN_CROSSWALK.md` - label-complete map from all 40 nonconjectural paper
   results to the current Lean corpus, with exact remaining proof obligations.
 - `experiments.py` - deterministic, extensively commented exact and
   high-precision experiment driver.
@@ -61,13 +61,36 @@ Classical ingredients are explicitly separated from new deductions.
 ## Proof-status convention
 
 The colored `P`, `I`, `C`, and `N` symbols in the report classify the
-human-readable manuscript: in particular, `P` means proved in the paper and
-`I` means imported into the paper. They are **not Lean status markers**.
-`LEAN_CROSSWALK.md` audits all 36 theorem/proposition/lemma/corollary labels.
-At the present repository state, none of those 36 results is formalized in
-Lean exactly as stated; the crosswalk distinguishes unformalized, partial,
-and near-complete formalization cores without upgrading any of them to a Lean
-theorem.
+human-readable manuscript: `P` means proved in the report and `I` means
+imported into the report. They are **not Lean status markers**.
+
+`LEAN_CROSSWALK.md` audits all 40 labeled
+theorem/proposition/lemma/corollary statements. The maintained report now
+contains four deliberately statement-exact, compiler-backed results: the
+totalized activation dictionary, the sharp local quadratic coefficient, the
+geometric activation-dimension proposition, and the certified dyadic
+prefix/tail corollary. The remaining status counts are 12 Unformalized, 21
+Partial, and 3 Near-complete.
+
+Two older compound statements have improved without becoming Complete.
+`lem:p-bounds` is Partial because all its order and global quadratic bounds,
+including sharpness of the coefficient `1/3`, are formalized, while its Taylor
+expansion through `O(x^10)` is not. `prop:mu-refinement` is Partial because its
+dyadic and geometric definitions, summability, refinements, positivity,
+prefix decompositions, and tail estimates are formalized, while its Bernoulli
+power series and radius statements are not.
+
+`FabiusFunction.HyperbolicActivation` has an exhaustive public surface of four
+definitions and 57 theorems; `FabiusFunction.ActivationAsymptotics` adds the
+exact punctured limit proving quadratic sharpness; and
+`FabiusFunction.GeometricActivationDimension` has two definitions and 29
+theorems. The first two modules are real-valued: they do not identify their
+totalized `realSinhc` with the separate complex sinc APIs. The geometric module
+proves a uniform, nondegenerate convergence theory under `|q|<1`. Outside that
+range no general summability is promised and the definition retains Mathlib's
+totalized real-`tsum` semantics, although degenerate parameters may still give
+a convergent series. Its negative-`q` results are algebraic and are not claims
+about the report's geometric-uniform probability law, which assumes `0<q<1`.
 
 For `thm:TM-corner`, Lean now contains the exact Boolean-cube, polynomial,
 dyadic-sign, and report-grid clauses over a more general algebraic target. The
@@ -129,12 +152,12 @@ with Libertinus fonts when available and Latin Modern as a fallback.
 ## Verification status
 
 - All theorem, equation, figure, and bibliography references resolve.
-- The final PDF has 37 A4 pages; every font is embedded and no Type 3 font is
+- The final PDF has 39 A4 pages. Every font is embedded and no Type 3 font is
   present in either the report or its six vector figures.
-- The PDF was preflighted and rendered page-by-page at 140 dpi. Four complete
-  contact sheets from the penultimate pass were inspected, followed by fresh
-  final-pass renders of the two pages changed afterward and the mathematically
-  dense Mellin, phase, Thue--Morse, Lambert-W, and bibliography pages.
+- The final PDF was preflighted and rendered page-by-page at 120 dpi. Four
+  complete contact sheets were inspected, followed by full-resolution checks
+  of the new totalized-activation, sharp-coefficient, geometric-dimension, and
+  certified-tail pages, including the tail proof across its page break.
 - No clipping, overlapping text, broken glyphs, or black rendering artifacts
   were observed.
 - The experiment was replayed in two fresh trees. The six archived figure pairs
