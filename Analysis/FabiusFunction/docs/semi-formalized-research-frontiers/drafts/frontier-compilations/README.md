@@ -113,7 +113,7 @@ proved wholesale by this arithmetic module.
   a Lean crosswalk; manuscript labels do not establish Lean verification.
 
 The broad multi-topic "collected new results" report series,
-consolidated (2026-08-28) into the 272-page single volume
+consolidated (2026-08-28) into the 274-page single volume
 [`Frontier_Compilations/`](Frontier_Compilations/): ten absorbed reports,
 displayed as ten outer parts.
 

@@ -1461,20 +1461,43 @@ and the phase-bearing prefix obtained by deleting the residual factor
 in real \(q\).  Thus the contraction-range result includes \(q=0\) and negative
 ratios; at \(q=1/2\) it has exact wrappers for the classical weighted-sum law.
 
-The six-declaration inventory is
+The six-declaration inventory of \nolinkurl{GeometricSincFactorization.lean} is
 \nolinkurl{charFun_geometricUniformDigit},
 \nolinkurl{charFun_geometricUniformDistribution_prefix},
 \nolinkurl{charFun_geometricUniformDistribution_prefix_sinc},
 \nolinkurl{tendsto_prefix_sinc_charFun},
 \nolinkurl{charFun_weightedSumDistribution_prefix_sinc}, and
 \nolinkurl{tendsto_prefix_sinc_charFun_weightedSumDistribution}.
-This is pointwise prefix convergence.  The existing
-\nolinkurl{geometricSincProduct} already packages the same sinc factors, after frequency
-rescaling, as a \nolinkurl{tprod}; what is missing is a named characteristic-function
-bridge to it (or an explicit \nolinkurl{HasProd} theorem) and compact-uniform convergence
-of the characteristic prefixes.  Rapid-decay bounds, Fourier inversion, a named centered family, explicit Bernoulli-cumulant and
-Bell-moment formulas and asymptotics, further transform formulas, and shape theory remain
-separate targets.
+This is pointwise prefix convergence.  The four new public theorems attached to
+\nolinkurl{geometricSincProduct} in \nolinkurl{GeometricReciprocalGamma.lean} are
+\nolinkurl{hasProdLocallyUniformly_geometricSincProduct},
+\nolinkurl{geometricSincProductFactors_multipliable},
+\nolinkurl{hasProd_geometricSincProduct}, and
+\nolinkurl{geometricSincProduct_differentiable}.  For complex \(q\) with
+\(\lVert q\rVert<1\), they prove locally uniform convergence on \(\C\) of the defining
+sinc products, pointwise multipliability and the exact \nolinkurl{HasProd} identity, and
+entireness.  Write \(S_q(z)\) for
+\nolinkurl{geometricSincProduct q z}.
+
+The new zero-definition, two-theorem module
+\nolinkurl{GeometricSincCharacteristicFunction.lean} consists exactly of
+\nolinkurl{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct} and
+\nolinkurl{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma}.
+Write \(G_q(z)\) for \nolinkurl{geometricReciprocalGamma q z}, and put
+\[
+ z_q(t)=\frac{(1-q)t}{2\pi}.
+\]
+For every real \(\lvert q\rvert<1\) and \(t\in\R\), including \(q=0\) and negative
+ratios, these theorems give the exact identities
+\[
+ \phi_q(t)=e^{\ii t/2}S_q\bigl(z_q(t)\bigr)
+ =e^{\ii t/2}G_q\bigl(z_q(t)\bigr)G_q\bigl(-z_q(t)\bigr).
+\]
+The locally uniform theorem concerns \(S_q\) as a complex-variable sinc product; there is
+still no named compact-uniform theorem for the full phase-bearing characteristic prefixes.
+Rapid-decay bounds, Fourier inversion, a named centered family or MGF wrapper, explicit
+Bernoulli-cumulant and Bell-moment formulas and asymptotics, further transform formulas,
+and shape theory remain separate targets.
 
 The definition of \(F_q\), together with its monotonicity, range bounds, and
 measurability, is total in real \(q\).  If \(\lvert q\rvert<1\), then \(F_q\)
@@ -2986,12 +3009,13 @@ API rather than restricting the generic positive-input formula.  Globally,
 \]
 for every \(x<P\),
 \[
- \lambda_0'(x)=
- \frac{1}{e^{W_0(-x\log2)}(W_0(-x\log2)+1)},
- \qquad
- \lambda_0''(x)=
- \frac{(\log2)e^{-2W_0(-x\log2)}(W_0(-x\log2)+2)}
-      {(W_0(-x\log2)+1)^3}>0.
+\begin{aligned}
+ \lambda_0'(x)
+   &= \frac{1}{e^{W_0(-x\log2)}(W_0(-x\log2)+1)}, \\
+ \lambda_0''(x)
+   &= \frac{(\log2)e^{-2W_0(-x\log2)}(W_0(-x\log2)+2)}
+           {(W_0(-x\log2)+1)^3}>0.
+\end{aligned}
 \]
 In particular \(\lambda_0''(0)=2\log2\), and the phase is strictly convex
 on the full endpoint-inclusive half-line \((-\infty,P]\), including all
@@ -3690,6 +3714,8 @@ Module & Role in the development \\
 \nolinkurl{GeometricUniformLaw.lean} & Named weights \((1-q)q^n\), their series and probability law, affine self-similarity, reflection, absolute continuity, null singletons, and exact range/support statements. \\
 \nolinkurl{GeometricUniformUniqueness.lean} & Specializes the generic product-map theorem to prove \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar}: every probability solution of the geometric affine head--tail equation is \(\mu_q\) when \(\lvert q\rvert<1\), including \(q=0\) and negative \(q\), with no support, density, or moment assumption. \\
 \nolinkurl{GeometricSincFactorization.lean} & Closed characteristic function of the scaled uniform digit, exact closed-factor and phase-collapsed finite residual formulas for \(\lvert q\rvert<1\), pointwise convergence of the phase-bearing sinc prefixes, and the two dyadic weighted-sum wrappers. \\
+\nolinkurl{GeometricReciprocalGamma.lean} & Locally uniform convergence, pointwise multipliability and \nolinkurl{HasProd}, and entireness of the geometric sinc product, together with its reciprocal-Gamma reflection factorization. \\
+\nolinkurl{GeometricSincCharacteristicFunction.lean} & The two exact phase-bearing bridges from the geometric-uniform characteristic function to the rescaled geometric sinc product and to the paired reciprocal-Gamma factors for every real \(\lvert q\rvert<1\), including zero and negative ratios. \\
 \nolinkurl{GeometricUniformCDF.lean} & The named \(F_q\) and explicit \(f_q\), conditioning and interval-integral equations, pointwise derivative and exact \nolinkurl{withDensity} law, continuity, reflection, exterior zeros, ordinary/topological support containments, compact support, and \(C^\infty\) regularity under their exact parameter hypotheses. \\
 \nolinkurl{ProbabilityRepresentation.lean} & Product measure on \([0,1]^{\N}\), weighted coordinate sum, self-similarity, and exact CDF/\(\Up\) identifications.  Its dyadic CDF smoothing, continuity, exterior-value, and reflection proofs are half-base specializations of \nolinkurl{GeometricUniformCDF.lean}; it also identifies \(F_{1/2}\) with every bounded Fabius function and \(f_{1/2}(x)\) with \(2\Up(2x-1)\). \\
 \nolinkurl{WeakConvergence.lean} & Characteristic-function convergence, Lévy continuity, bounded-continuous test convergence, positivity on every open set meeting \((-1,1)\), and exact limiting-measure support \([-1,1]\). \\

@@ -1,5 +1,6 @@
 import FabiusFunction.ScaledInfiniteProducts
 import FabiusFunction.IntegerZeroAnalyticOrder
+import Mathlib.Algebra.Group.Ext
 import Mathlib.Analysis.Meromorphic.Order
 import Mathlib.Analysis.SpecialFunctions.Gamma.Beta
 
@@ -223,6 +224,46 @@ theorem geometricGamma_mahler (q z : ℂ) (hq : ‖q‖ < 1) :
 noncomputable def geometricSincProduct (q z : ℂ) : ℂ :=
   ∏' n : ℕ, complexSinc (Real.pi * (q ^ n * z))
 
+/-- The products defining `geometricSincProduct q` converge locally
+uniformly on the complex plane whenever `q` is a strict contraction. -/
+theorem hasProdLocallyUniformly_geometricSincProduct
+    (q : ℂ) (hq : ‖q‖ < 1) :
+    HasProdLocallyUniformly
+      (fun (n : ℕ) (z : ℂ) ↦ complexSinc (Real.pi * (q ^ n * z)))
+      (geometricSincProduct q) := by
+  have hscale : Summable fun n : ℕ ↦ ‖(Real.pi : ℂ) * q ^ n‖ := by
+    simpa only [norm_mul] using
+      (summable_norm_qpow q hq).mul_left ‖(Real.pi : ℂ)‖
+  have hprod := hasProdLocallyUniformly_scaled complexSinc
+    (fun n : ℕ ↦ (Real.pi : ℂ) * q ^ n) hscale
+    complexSinc_sub_one_isBigO complexSinc_differentiable.continuous
+  have hmonoid :
+      instCommCStarAlgebraComplex.toCommRing.toCommMonoid =
+        Complex.commRing.toCommMonoid := by
+    apply CommMonoid.ext
+    rfl
+  rw [hmonoid] at hprod
+  change HasProdLocallyUniformly
+    (fun (n : ℕ) (z : ℂ) ↦ complexSinc (Real.pi * (q ^ n * z)))
+    (fun z : ℂ ↦ ∏' n : ℕ, complexSinc (Real.pi * (q ^ n * z)))
+  simpa only [smul_eq_mul, mul_assoc] using hprod
+
+/-- The factors defining the geometric sinc product are genuinely
+multipliable whenever `q` is a strict contraction. -/
+theorem geometricSincProductFactors_multipliable
+    (q z : ℂ) (hq : ‖q‖ < 1) :
+    Multipliable fun n : ℕ ↦ complexSinc (Real.pi * (q ^ n * z)) := by
+  exact (hasProdLocallyUniformly_geometricSincProduct q hq).hasProd
+    (x := z) |>.multipliable
+
+/-- The defining sinc factors have product `geometricSincProduct q z` for
+every contracting geometric ratio. -/
+theorem hasProd_geometricSincProduct
+    (q z : ℂ) (hq : ‖q‖ < 1) :
+    HasProd (fun n : ℕ ↦ complexSinc (Real.pi * (q ^ n * z)))
+      (geometricSincProduct q z) := by
+  exact (hasProdLocallyUniformly_geometricSincProduct q hq).hasProd
+
 /-- Reflection of the reciprocal-Gamma product is the geometric sinc
 product. -/
 theorem geometricReciprocalGamma_mul_neg
@@ -237,6 +278,19 @@ theorem geometricReciprocalGamma_mul_neg
   intro n
   rw [show q ^ n * -z = -(q ^ n * z) by ring,
     shiftedReciprocalGamma_mul_neg]
+
+/-- The geometric sinc product is an entire function for every strict
+contraction `q`. -/
+theorem geometricSincProduct_differentiable
+    (q : ℂ) (hq : ‖q‖ < 1) :
+    Differentiable ℂ (geometricSincProduct q) := by
+  have heq : geometricSincProduct q = fun z : ℂ ↦
+      geometricReciprocalGamma q z * geometricReciprocalGamma q (-z) := by
+    funext z
+    exact (geometricReciprocalGamma_mul_neg q z hq).symm
+  rw [heq]
+  exact (geometricReciprocalGamma_differentiable q hq).mul
+    ((geometricReciprocalGamma_differentiable q hq).comp (by fun_prop))
 
 /-! ## Dyadic specialization and the Rvachev bridge -/
 
