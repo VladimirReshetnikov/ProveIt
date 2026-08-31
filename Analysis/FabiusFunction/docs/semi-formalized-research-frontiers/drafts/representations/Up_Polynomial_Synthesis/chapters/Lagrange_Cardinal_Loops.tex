@@ -2,6 +2,17 @@
 % Appendix~\ref{sec:provenance-poly}.  All notation is normalized to the
 % moment/deconvolution pair of the parent volume.
 
+% LOCAL-NON-FOURIER-HAT: \AugmentedEvaluationMatrix denotes the endpoint-basis evaluation matrix augmented by one endpoint atom
+\newcommand{\AugmentedEvaluationMatrix}{\widehat U}
+% LOCAL-NON-FOURIER-HAT: \AugmentedCoefficientMatrix denotes the endpoint-basis coefficient matrix augmented by one endpoint atom
+\newcommand{\AugmentedCoefficientMatrix}{\widehat B}
+% LOCAL-NON-FOURIER-HAT: \OmittedMatrixIndex denotes an omitted row or column index in a maximal matrix minor
+\newcommand{\OmittedMatrixIndex}[1]{\widehat{#1}}
+% LOCAL-NON-FOURIER-HAT: \LiftedCoefficientProjector denotes the coefficient-space lift of the polynomial interpolation projector
+\newcommand{\LiftedCoefficientProjector}[2]{\widehat{\mathcal P}_{#1}^{(#2)}}
+% LOCAL-NON-FOURIER-HAT: \LiftedCoefficientDetail denotes the detail operator obtained from consecutive lifted coefficient projectors
+\newcommand{\LiftedCoefficientDetail}[2]{\widehat\Delta_{#1}^{(#2)}}
+
 \section{Lagrange cardinal synthesis and exact interpolation loops}
 \label{sec:lagrange-loops}
 
@@ -360,17 +371,17 @@ Transport the endpoint basis $\mathcal B_d$ of
 \cref{thm:endpoint-basis} from $[0,1]$ to $[-1,1]$ and denote its
 $d+2$ normalized atoms by $\Phi_0,\ldots,\Phi_{d+1}$.  Let
 \[
- \widehat U_{ir}=\Phi_r(x_i)
+ \AugmentedEvaluationMatrix_{ir}=\Phi_r(x_i)
 \]
-and let $\widehat B$ contain the unique endpoint-basis coordinates of the
-cardinals.  Then $\widehat U\widehat B=I_{d+1}$.
+and let $\AugmentedCoefficientMatrix$ contain the unique endpoint-basis coordinates of the
+cardinals.  Then $\AugmentedEvaluationMatrix\AugmentedCoefficientMatrix=I_{d+1}$.
 
-For $0\le r\le d+1$, delete column $r$ from $\widehat U$ and row $r$ from
-$\widehat B$, and set
+For $0\le r\le d+1$, delete column $r$ from $\AugmentedEvaluationMatrix$ and row $r$ from
+$\AugmentedCoefficientMatrix$, and set
 \begin{equation}
- v_r=(-1)^r\det\widehat U_{\widehat r},
+ v_r=(-1)^r\det\AugmentedEvaluationMatrix_{\OmittedMatrixIndex{r}},
  \qquad
- \zeta_r=(-1)^r\det\widehat B_{\widehat r}.
+ \zeta_r=(-1)^r\det\AugmentedCoefficientMatrix_{\OmittedMatrixIndex{r}}.
  \label{eq:lag-cofactor-vectors}
 \end{equation}
 
@@ -378,14 +389,14 @@ $\widehat B$, and set
 \label{thm:lag-rank-one}
 The cofactor vectors satisfy
 \begin{equation}
- \widehat Uv=0,
- \qquad \zeta^T\widehat B=0,
+ \AugmentedEvaluationMatrix v=0,
+ \qquad \zeta^T\AugmentedCoefficientMatrix=0,
  \qquad \zeta^Tv=1,
  \label{eq:lag-cofactor-null}
 \end{equation}
 and
 \begin{equation}
- \boxed{I_{d+2}-\widehat B\widehat U=v\zeta^T.}
+ \boxed{I_{d+2}-\AugmentedCoefficientMatrix\AugmentedEvaluationMatrix=v\zeta^T.}
  \label{eq:lag-rank-one}
 \end{equation}
 For $a\in\RealNumbers^{d+2}$ put
@@ -404,20 +415,20 @@ if $\zeta^Ta=0$.
 
 \begin{proof}
 Alternating maximal minors give a right-null vector of a full-row-rank
-matrix, hence $\widehat Uv=0$; applied to $\widehat B^T$ they give
-$\zeta^T\widehat B=0$.  Cauchy--Binet and
-$\widehat U\widehat B=I$ yield
+matrix, hence $\AugmentedEvaluationMatrix v=0$; applied to $\AugmentedCoefficientMatrix^T$ they give
+$\zeta^T\AugmentedCoefficientMatrix=0$.  Cauchy--Binet and
+$\AugmentedEvaluationMatrix\AugmentedCoefficientMatrix=I$ yield
 \[
- 1=\sum_r\det\widehat U_{\widehat r}
-       \det\widehat B_{\widehat r}=\zeta^Tv.
+ 1=\sum_r\det\AugmentedEvaluationMatrix_{\OmittedMatrixIndex{r}}
+       \det\AugmentedCoefficientMatrix_{\OmittedMatrixIndex{r}}=\zeta^Tv.
 \]
-The complementary idempotent $I-\widehat B\widehat U$ has rank one, range
-$\ker\widehat U=\SpanOperator\{v\}$, and left range
-$\ker\widehat B^T=\SpanOperator\{\zeta\}$.  The normalization
+The complementary idempotent $I-\AugmentedCoefficientMatrix\AugmentedEvaluationMatrix$ has rank one, range
+$\ker\AugmentedEvaluationMatrix=\SpanOperator\{v\}$, and left range
+$\ker\AugmentedCoefficientMatrix^T=\SpanOperator\{\zeta\}$.  The normalization
 $\zeta^Tv=1$ proves \eqref{eq:lag-rank-one}.
 
 The endpoint coefficient vector of $I_XF_a$ is
-$\widehat B\widehat Ua$.  Subtracting it from $a$ and applying
+$\AugmentedCoefficientMatrix\AugmentedEvaluationMatrix a$.  Subtracting it from $a$ and applying
 \eqref{eq:lag-rank-one} proves \eqref{eq:lag-functional-ghost}.  The ghost is
 nonpolynomial: if it belonged to $\PiD$, its $d+1$ nodal zeros would make it
 zero, contradicting $v\ne0$ and independence of the endpoint basis.  Thus the
@@ -437,13 +448,13 @@ nodes.
 The square matrix
 \begin{equation}
  \mathcal M_X=
- \begin{pmatrix}\widehat U\\ \zeta^T\end{pmatrix}
+ \begin{pmatrix}\AugmentedEvaluationMatrix\\ \zeta^T\end{pmatrix}
  \in\RealNumbers^{(d+2)\times(d+2)}
  \label{eq:lag-square-completion}
 \end{equation}
 is invertible and
 \begin{equation}
- \boxed{\widehat B=\mathcal M_X^{-1}
+ \boxed{\AugmentedCoefficientMatrix=\mathcal M_X^{-1}
  \begin{pmatrix}I_{d+1}\\0\end{pmatrix}.}
  \label{eq:lag-square-inverse}
 \end{equation}
@@ -470,12 +481,12 @@ normalizations.
 
 \begin{proof}
 If $\mathcal M_Xa=0$, then $\zeta^Ta=0$, so $F_a$ is a polynomial of degree
-at most $d$.  The equation $\widehat Ua=0$ says that this polynomial has the
+at most $d$.  The equation $\AugmentedEvaluationMatrix a=0$ says that this polynomial has the
 $d+1$ distinct zeros $x_j$, hence it is zero.  Independence of the endpoint
 atoms gives $a=0$, proving invertibility.  The two identities
-$\widehat U\widehat B=I$ and $\zeta^T\widehat B=0$ are exactly
+$\AugmentedEvaluationMatrix\AugmentedCoefficientMatrix=I$ and $\zeta^T\AugmentedCoefficientMatrix=0$ are exactly
 \[
- \mathcal M_X\widehat B=\begin{pmatrix}I\\0\end{pmatrix},
+ \mathcal M_X\AugmentedCoefficientMatrix=\begin{pmatrix}I\\0\end{pmatrix},
 \]
 which proves \eqref{eq:lag-square-inverse}.
 
@@ -510,16 +521,16 @@ For all $0\le q,r\le s$,
 \end{equation}
 The lifted coefficient operators
 \begin{equation}
- \widehat{\mathcal P}_q^{(s)}:=E_sI_qT_s
+ \LiftedCoefficientProjector{q}{s}:=E_sI_qT_s
  \label{eq:lag-lifted-projector}
 \end{equation}
 satisfy the same multiplication law and
-$\RankOperator\widehat{\mathcal P}_q^{(s)}=d_q+1$.  Hence the details
+$\RankOperator\LiftedCoefficientProjector{q}{s}=d_q+1$.  Hence the details
 \begin{equation}
- \widehat\Delta_0^{(s)}=\widehat{\mathcal P}_0^{(s)},
+ \LiftedCoefficientDetail{0}{s}=\LiftedCoefficientProjector{0}{s},
  \qquad
- \widehat\Delta_q^{(s)}=
- \widehat{\mathcal P}_q^{(s)}-\widehat{\mathcal P}_{q-1}^{(s)}
+ \LiftedCoefficientDetail{q}{s}=
+ \LiftedCoefficientProjector{q}{s}-\LiftedCoefficientProjector{q-1}{s}
  \quad(q\ge1)
  \label{eq:lag-lifted-details}
 \end{equation}
@@ -534,7 +545,7 @@ so $I_rI_qf=I_qf$.  This proves \eqref{eq:lag-projector-semilattice}.
 
 Since $I_rT_s$ takes values in $\Pi_{d_s}$,
 \[
- \widehat{\mathcal P}_q^{(s)}\widehat{\mathcal P}_r^{(s)}
+ \LiftedCoefficientProjector{q}{s}\LiftedCoefficientProjector{r}{s}
  =E_sI_q(T_sE_s)I_rT_s
  =E_sI_qI_rT_s.
 \]

@@ -139,7 +139,7 @@ factorization
 where $R_m$ is the $2m$-power-biased radius $|Y|$ and $B_m$ is the first
 coordinate of a uniform point of the sphere $S^{2m}$.  If
 \[
- H(z)=\widehat{\RvachevUp}(\ImaginaryUnit\sqrt z/\pi),
+ H(z)=\FourierTwoPi{\RvachevUp}(\ImaginaryUnit\sqrt z/\pi),
 \]
 then every normalized derivative $H^{(m)}(z)/H^{(m)}(0)$ is exactly the
 square-moment generating transform of $Y^{\langle m\rangle}$.  Consequently,
@@ -165,7 +165,7 @@ $\nu_2(N)+1$.  Every tower step removes exactly one inherited order, and at the
 first nonzero level the released value has a closed product formula whose sign
 is
 \(
-(-1)^{\nu_2(N)+2+s_2((u-1)/2)}
+(-1)^{\nu_2(N)+2+\BinaryDigitSum((u-1)/2)}
 \), where $u$ is the odd part of $N$.  Thus the Thue--Morse sequence controls
 not merely signs between zeros, but the first value exposed after a multiple
 zero is differentiated away.
@@ -344,10 +344,10 @@ The Rvachev law is $q=1/2$ after the harmless reindexing in
 
 Using the repository's Fourier convention
 \(
- \widehat{\RvachevUp}(z)=\int\RvachevUp(x)\EulerE^{-2\pi\ImaginaryUnit zx}\Differential x
+ \FourierTwoPi{\RvachevUp}(z)=\int\RvachevUp(x)\EulerE^{-2\pi\ImaginaryUnit zx}\Differential x
 \), define
 \begin{equation}
- H(z)=\widehat{\RvachevUp}\!\left(\frac{\ImaginaryUnit\sqrt z}{\pi}\right)
+ H(z)=\FourierTwoPi{\RvachevUp}\!\left(\frac{\ImaginaryUnit\sqrt z}{\pi}\right)
  =\prod_{j=0}^{\infty}
    \frac{\sinh(2^{-j}\sqrt z)}{2^{-j}\sqrt z}
  =\sum_{n=0}^{\infty}\frac{4^n\mu_{2n}}{(2n)!}z^n.  \label{eq:H-def}
@@ -394,9 +394,9 @@ derivatives are exponentially small.  With
 \end{equation}
 the Fourier coefficients of $\Psi$ are
 \begin{equation}
- \widehat\Psi(0)=0,
+ \FourierSeriesCoefficient{\Psi}{0}=0,
  \qquad
- \widehat\Psi(k)
+ \FourierSeriesCoefficient{\Psi}{k}
  =-\frac{\Gamma(-\chi_k)\zeta(1-\chi_k)}{L}
  \quad(k\ne0).                                     \label{eq:Psi-Fourier}
 \end{equation}
@@ -435,7 +435,7 @@ iterated without recentering.
 
 For $U\sim\operatorname{Unif}[-1,1]$, direct integration gives
 \begin{equation}
- f_{U^z}(u)=\frac34(1-u^2)\mathbf 1_{[-1,1]}(u),          \label{eq:uniform-z-density}
+ f_{U^z}(u)=\frac34(1-u^2)\IndicatorOf{[-1,1]}(u),          \label{eq:uniform-z-density}
 \end{equation}
 or, equivalently,
 \begin{equation}
@@ -574,7 +574,7 @@ For $m\ge1$, define the $2m$-power-biased radius $R_m$ by
 \end{equation}
 Let $B_m$ be independent of $R_m$ and have density
 \begin{equation}
- b_m(u)=c_m(1-u^2)^{m-1}\mathbf 1_{[-1,1]}(u),
+ b_m(u)=c_m(1-u^2)^{m-1}\IndicatorOf{[-1,1]}(u),
  \qquad
  c_m=\frac{\Gamma(m+1/2)}{\sqrt\pi\,\Gamma(m)}.    \label{eq:Bm-density}
 \end{equation}
@@ -784,7 +784,7 @@ and define the nonzero odd-tail product
 \begin{equation}
  A_u=\prod_{\ell=1}^{\infty}
      \SincRad\!\left(\frac{\pi u}{2^\ell}\right)
-     =\widehat{\RvachevUp}(u/2).                           \label{eq:Au}
+     =\FourierTwoPi{\RvachevUp}(u/2).                           \label{eq:Au}
 \end{equation}
 The sign law already present in the repository gives
 \begin{equation}
@@ -880,7 +880,7 @@ a later derivative level.
 
 \begin{proposition}[Closed inherited-divisor count]
 \label{prop:divisor-count}
-Let $M=\lfloor K/2^m\rfloor$.  Then
+Let $M=\Floor{K/2^m}$.  Then
 \begin{equation}
  \boxed{D_m(K)=2M-\BinaryDigitSum(M).}                          \label{eq:Dm-formula}
 \end{equation}
@@ -930,13 +930,13 @@ then the first released value is
  =(-1)^r\varepsilon_{b,N}
    \frac{r!(2r-1)!!}{\mu^{(b)}_{2r}t_{b,N}^{2r}}A_{b,u}.       \label{eq:baseb-release}
 \end{equation}
-Moreover, with $M=\lfloor K/b^m\rfloor$ and $s_b(M)$ the base-$b$ digit sum,
+Moreover, with $M=\Floor{K/b^m}$ and $s_b(M)$ the base-$b$ digit sum,
 \begin{equation}
  D_{b,m}(K)
  =\frac{bM-s_b(M)}{b-1}.                            \label{eq:baseb-divisor}
 \end{equation}
 The proof repeats the dyadic argument; the identity
-$\sum_{j\ge1}\lfloor M/b^j\rfloor=(M-s_b(M))/(b-1)$ replaces Legendre's
+$\sum_{j\ge1}\Floor{M/b^j}=(M-s_b(M))/(b-1)$ replaces Legendre's
 binary formula.
 
 \section{Occupancy calculus and the $q$-Pochhammer layer}
@@ -1119,7 +1119,7 @@ Under the power-biased law \eqref{eq:power-radius}, for every
 $\varepsilon>0$,
 \[
  \Probability(R_m\le1-\varepsilon)
- =\frac{\Expectation[|W|^{2m}\mathbf 1_{\{|W|\le1-\varepsilon\}}]}{m_{2m}}
+ =\frac{\Expectation[|W|^{2m}\IndicatorOf{|W|\le1-\varepsilon}]}{m_{2m}}
  \longrightarrow0.
 \]
 Indeed, compare the numerator with a fixed positive amount of mass in

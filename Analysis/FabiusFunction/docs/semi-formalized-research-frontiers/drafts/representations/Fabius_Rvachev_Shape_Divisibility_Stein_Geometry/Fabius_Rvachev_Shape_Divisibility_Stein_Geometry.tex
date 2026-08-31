@@ -714,7 +714,7 @@ This is the natural bridge from the sinc product to finite Thue--Morse sign sums
 \begin{lemma}[Entire zero divisibility]\label{lem:zero-divisibility}
 Let $\mu$ be a compactly supported probability measure on $\RealNumbers$.  If
 $\mu=\nu^{*r}$ for an integer $r\ge2$, then $\nu$ is compactly supported and every
-zero of the entire characteristic function $\widehat\mu$ has multiplicity
+zero of the entire characteristic function $\CharacteristicFunction{\mu}$ has multiplicity
 divisible by $r$.
 \end{lemma}
 
@@ -726,7 +726,7 @@ $M$.  This contradicts compact support of $\mu$.  The lower tail is identical, s
 $\nu$ has compact support.
 
 Both characteristic functions therefore extend to entire functions, and the real
-identity $\widehat\mu=\widehat\nu^{\,r}$ extends to $\ComplexNumbers$.  At every zero, the order
+identity $\CharacteristicFunction{\mu}=\CharacteristicFunction{\nu}^{\,r}$ extends to $\ComplexNumbers$.  At every zero, the order
 of the right-hand side is $r$ times an integer.
 \end{proof}
 
@@ -791,9 +791,9 @@ there is a partition of the multiset
 \]
 into $A\sqcup B$ such that
 \[
- \widehat\alpha(\xi)=\prod_{(m,j)\in A}
+ \CharacteristicFunction{\alpha}(\xi)=\prod_{(m,j)\in A}
  \cos\!\left(\frac{\pi\xi}{2^m}\right),\qquad
- \widehat\beta(\xi)=\prod_{(m,j)\in B}
+ \CharacteristicFunction{\beta}(\xi)=\prod_{(m,j)\in B}
  \cos\!\left(\frac{\pi\xi}{2^m}\right).
 \]
 \end{conjecture}
@@ -983,7 +983,7 @@ weighted Fabius integrals at dyadic endpoints.  Applying that calculus to
 of the same dyadic-rationality conclusion in the earlier Stein--Koopman report.
 
 \begin{corollary}[Dyadic rationality of the Stein kernel]\label{cor:tau-dyadic}
-If $x\in(-1,1)$ is dyadic rational, then $\tau(x)\in\mathbb{Q}$.
+If $x\in(-1,1)$ is dyadic rational, then $\tau(x)\in\RationalNumbers$.
 \end{corollary}
 \Status{\ProvedHere{} from imported dyadic integration theorems; overlapping the
 earlier Stein--Koopman report}
@@ -1895,7 +1895,7 @@ from the repository's geometric-family volume.
 \subsection{Half-line marginals}
 For completeness, write
 \[
- H(x)=\int_{\RealNumbers}\mathbf 1_{\{t\le x\}}p(t)\,dt.
+ H(x)=\int_{\RealNumbers}\IndicatorOf{t\le x}p(t)\,dt.
 \]
 The set $\{(x,t):t\le x\}$ is convex, so its indicator is log-concave in the
 extended-value convention.  The product with $p(t)$ is log-concave in $(x,t)$.

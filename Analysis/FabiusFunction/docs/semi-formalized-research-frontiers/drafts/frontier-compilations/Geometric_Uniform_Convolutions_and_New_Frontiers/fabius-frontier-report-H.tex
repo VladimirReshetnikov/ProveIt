@@ -253,7 +253,7 @@ These equations and the endpoint normalization characterize the classical pair.
 
 With $\SincRad z=\sin z/z$ and $\SincRad0=1$,
 \begin{align}
- \widehat u_q(t)&=\Expectation e^{itX_q}
+ \CharacteristicFunction{X_q}(t)&=\Expectation e^{itX_q}
    =\prod_{k=0}^{\infty}\SincRad(aq^kt),
  \label{eq:qfourier}\\
  M_q(t)&=\Expectation e^{tV_q}
@@ -263,7 +263,7 @@ With $\SincRad z=\sin z/z$ and $\SincRad0=1$,
    =\prod_{k=0}^{\infty}\frac{1-e^{-aq^ks}}{aq^ks}.
  \label{eq:qlaplace}
 \end{align}
-Each product converges locally uniformly.  In particular, $\widehat u_q$ is entire of
+Each product converges locally uniformly.  In particular, $\CharacteristicFunction{X_q}$ is entire of
 exponential type at most one, as it must be for a distribution supported on
 $[-1,1]$.
 
@@ -277,18 +277,18 @@ of positive order is flat at both endpoints.
 
 \begin{proof}
 Put $T=a|t|$ and $R=\log T$.  For $T\ge1$, choose
-$N=\lfloor R/r\rfloor+1$.  For $0\le k<N$, $Tq^k\ge1$, and therefore
+$N=\Floor{R/r}+1$.  For $0\le k<N$, $Tq^k\ge1$, and therefore
 \[
- |\widehat u_q(t)|
+ |\CharacteristicFunction{X_q}(t)|
  \le\prod_{k=0}^{N-1}\frac1{Tq^k}
  =T^{-N}q^{-N(N-1)/2}.
 \]
 Taking logarithms and using $N=R/r+O(1)$ gives
 \begin{equation}
- \log|\widehat u_q(t)|\le-\frac{R^2}{2r}+O_q(R).
+ \log|\CharacteristicFunction{X_q}(t)|\le-\frac{R^2}{2r}+O_q(R).
  \label{eq:lognormal-fourier-bound}
 \end{equation}
-Hence $|t|^m\widehat u_q(t)\in L^1(\RealNumbers)$ for every $m$.  Fourier inversion gives a
+Hence $|t|^m\CharacteristicFunction{X_q}(t)\in L^1(\RealNumbers)$ for every $m$.  Fourier inversion gives a
 $C^\infty$ density and permits termwise differentiation to all orders.  Since the
 random series lies in $[-1,1]$, this density has compact support; smooth extension by
 zero forces all endpoint jets to vanish.  Equation \eqref{eq:u-f-relation} transfers
@@ -342,7 +342,7 @@ For every integer $n\ge1$,
  u_q\!\left(q^{-n}\bigl(x+aQ_q(\boldsymbol\epsilon)\bigr)\right).
  \label{eq:qthue-derivative}
 \end{equation}
-At $q=1/2$, if $\ThueMorseSignSymbol_j=(-1)^{s_2(j)}$ is the $\{\pm1\}$ Thue--Morse sequence, this
+At $q=1/2$, if $\ThueMorseSignSymbol_j=(-1)^{\BinaryDigitSum(j)}$ is the $\{\pm1\}$ Thue--Morse sequence, this
 reduces to
 \begin{equation}
  \RvachevUp^{(n)}(x)=(-1)^n2^{n(n+1)/2}
@@ -436,7 +436,7 @@ The defining generating function of the complete Bell polynomials yields
 \end{proof}
 
 \begin{corollary}[Explicit centered Thue--Morse power sums]
-For the ordinary Thue--Morse signs $\ThueMorseSignSymbol_j=(-1)^{s_2(j)}$,
+For the ordinary Thue--Morse signs $\ThueMorseSignSymbol_j=(-1)^{\BinaryDigitSum(j)}$,
 \begin{equation}
  \sum_{j=0}^{2^n-1}\ThueMorseSignSymbol_j\bigl(2j-(2^n-1)\bigr)^m
  =(-1)^n2^{(n-1)m}S_{n,m}(1/2).
@@ -693,7 +693,7 @@ It is useful first to remove the harmless support normalization.  Define
  \Psi_q(z)=\prod_{k=0}^{\infty}\SincRad(q^kz).
  \label{eq:Psiq}
 \end{equation}
-Then $\widehat u_q(t)=\Psi_q(at)$.  The zero multiset is
+Then $\CharacteristicFunction{X_q}(t)=\Psi_q(at)$.  The zero multiset is
 \begin{equation}
  \mathcal Z_q=\{\,\pi n q^{-k}:n\in\IntegerNumbers\setminus\{0\},\ k\ge0\,\},
  \label{eq:zero-multiset}
@@ -702,14 +702,14 @@ with multiplicity equal to the number of representations.
 
 \begin{proposition}[Arithmetic dichotomy for zero collisions]
 All nonzero zeros of $\Psi_q$ are simple if and only if
-$q^d\notin\mathbb Q$ for every integer $d\ge1$.  If $q^d\in\mathbb Q$ for some
+$q^d\notin\RationalNumbers$ for every integer $d\ge1$.  If $q^d\in\RationalNumbers$ for some
 $d\ge1$, then $\Psi_q$ has infinitely many multiple zeros.
 \end{proposition}
 
 \begin{proof}
 Two factors share a zero exactly when
 $nq^{-k}=mq^{-\ell}$ for nonzero integers $m,n$ and $k\ne\ell$.  This is equivalent to
-$q^{|k-\ell|}\in\mathbb Q$.  One collision can be multiplied by arbitrary nonzero
+$q^{|k-\ell|}\in\RationalNumbers$.  One collision can be multiplied by arbitrary nonzero
 integers, yielding infinitely many.
 \end{proof}
 
@@ -764,7 +764,7 @@ Consequently, for $|z|<\pi$,
 \end{corollary}
 
 \begin{proof}
-Since $v_b(m)+1=\sum_{k\ge0}\mathbf1_{b^k\mid m}$,
+Since $v_b(m)+1=\sum_{k\ge0}\IndicatorOf{b^k\mid m}$,
 \[
  \sum_{m\ge1}\frac{v_b(m)+1}{m^s}
  =\sum_{k\ge0}\sum_{n\ge1}(b^kn)^{-s}.
@@ -844,14 +844,14 @@ Put
 \]
 Then, for every $m\ge0$,
 \begin{equation}
- \left|\widehat h_b(c_bb^m)\right|
+ \left|\CharacteristicFunction{S_b}(c_bb^m)\right|
  =T_b\theta_b^{m+1}b^{-m(m+1)/2}.
  \label{eq:resonant-fourier}
 \end{equation}
 \end{lemma}
 
 \begin{proof}
-We have $\widehat h_b=\Psi_{1/b}$.  For $0\le j\le m$, the congruence
+We have $\CharacteristicFunction{S_b}=\Psi_{1/b}$.  For $0\le j\le m$, the congruence
 $b^j\equiv(-1)^j\pmod{b+1}$ gives
 $|\sin(c_bb^j)|=\sin c_b$.  Hence
 \[
@@ -887,7 +887,7 @@ The upper bound for $p=\infty$ follows from \cref{lem:derivative-upper}; compact
 support then gives the same logarithmic upper bound for every $p$.  For the lower
 bound, Fourier transformation gives
 \[
- |t|^n|\widehat h_b(t)|=|\widehat{h_b^{(n)}}(t)|
+ |t|^n|\CharacteristicFunction{S_b}(t)|=|\FourierAngular{h_b^{(n)}}(-t)|
  \le\|h_b^{(n)}\|_1.
 \]
 Choose $t=c_bb^n$ in \eqref{eq:resonant-fourier}.  Its logarithm is
@@ -1329,7 +1329,7 @@ $|a_n|\le C^k n^{-k+O(1)}\max_{j\le k}\|h_b^{(j)}\|$; the exact polynomial facto
 $n$ do not affect the leading log-squared term.  By
 \cref{thm:sharp-derivative-growth}, the derivative contribution is
 $\exp((\log b)k^2/2+O_b(k))$.  Choosing
-$k=\lfloor\log n/\log b\rfloor$ yields \eqref{eq:legendre-upper}; tracking the
+$k=\Floor{\log n/\log b}$ yields \eqref{eq:legendre-upper}; tracking the
 variable-$k$ constants in the Legendre estimate gives the displayed secondary term.
 \end{proof}
 
