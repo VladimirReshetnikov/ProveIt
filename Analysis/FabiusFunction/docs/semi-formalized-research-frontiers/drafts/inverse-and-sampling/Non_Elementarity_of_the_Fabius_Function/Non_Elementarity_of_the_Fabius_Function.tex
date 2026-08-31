@@ -38,6 +38,8 @@
 \fancyhead[L]{\small The Fabius function and its inverse are not elementary}
 \fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
+% Canonical project-wide mathematical notation.
+\input{../fabius-notation.tex}
 \renewcommand{\headrulewidth}{0.4pt}
 
 \titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
@@ -63,19 +65,6 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\supp}{\operatorname{supp}}
 \newcommand{\Elem}{\mathcal E}
 \newcommand{\An}{\mathcal A}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
@@ -125,7 +114,7 @@ which we prove in the form we need it and no stronger:
 
 \begin{center}
 \emph{the set of points at which an elementary function is real analytic is a
-dense open subset of $\R$.}
+dense open subset of $\RealNumbers$.}
 \end{center}
 
 Density cannot in general be replaced by analyticity everywhere:
@@ -161,31 +150,31 @@ analytic inverse theorem is the implicit function theorem already in hand.
 
 \subsection{The two inputs}
 
-Write $\An(f)=\{x\in\R : f \text{ is real analytic at } x\}$ for the
-\emph{analytic locus} of $f\colon\R\to\R$.  The proof combines one negative
+Write $\An(f)=\{x\in\RealNumbers : f \text{ is real analytic at } x\}$ for the
+\emph{analytic locus} of $f\colon\RealNumbers\to\RealNumbers$.  The proof combines one negative
 fact about the Fabius function with one positive fact about elementary
 functions.
 
 \begin{theorem}[Nowhere analyticity; already formalized]\label{thm:nowhere}
 Let $F$ be the Fabius function, extended by $0$ to the left of $0$ and by $1$
-to the right of $1$.  Then $\An(F)=\R\setminus[0,1]$.  In particular $F$ is
+to the right of $1$.  Then $\An(F)=\RealNumbers\setminus[0,1]$.  In particular $F$ is
 real analytic at no point of $[0,1]$, endpoints included.
 \end{theorem}
 
 This is the unnumbered corollary to equation~(24) of Arias de Reyna,
 \emph{Arithmetic of the Fabius function} (arXiv:1702.06487v3), transferred
-from Rvachev's $\Up$ to $F$ and completed at the right endpoint; in the
+from Rvachev's $\RvachevUp$ to $F$ and completed at the right endpoint; in the
 repository it is \texttt{Fabius.canonical\_fabius\_analyticAt\_iff} in the
 module \texttt{FabiusFunction.NowhereAnalytic}.  Nothing in the present
 document reproves it.
 
 \begin{theorem}[Density of the analytic locus]\label{thm:density}
-If $f\colon\R\to\R$ is elementary, then $\An(f)$ is a dense open subset
-of~$\R$.
+If $f\colon\RealNumbers\to\RealNumbers$ is elementary, then $\An(f)$ is a dense open subset
+of~$\RealNumbers$.
 \end{theorem}
 
 \begin{corollary}[Main result]\label{cor:main}
-Let $U\subseteq[0,1]$ have nonempty interior and let $g\colon\R\to\R$ be
+Let $U\subseteq[0,1]$ have nonempty interior and let $g\colon\RealNumbers\to\RealNumbers$ be
 elementary.  Then $g$ and $F$ do not agree on $U$.  In particular there is no
 elementary function that agrees with $F$ on $(0,1)$, and $F$ itself is not
 elementary.
@@ -214,7 +203,7 @@ finite table of values.
 \begin{boxedremark}
 Corollary~\ref{cor:main} is the strengthened form used here of the assertion
 ``the Fabius function is not elementary'', and it is strictly stronger than the bare
-non-elementarity of $F$ as a function on $\R$.  The bare statement leaves
+non-elementarity of $F$ as a function on $\RealNumbers$.  The bare statement leaves
 open the possibility that some elementary function agrees with $F$ on all of
 $(0,1)$ and differs from it outside; Corollary~\ref{cor:main} rules that out, and rules
 it out on every subinterval.
@@ -239,7 +228,7 @@ trigonometric functions and their inverses by finitely many applications of
 the field operations and composition.  Formally:
 
 \begin{definition}[Elementary functions]\label{def:elem}
-The class $\Elem$ of \emph{elementary functions} $\R\to\R$ is the smallest
+The class $\Elem$ of \emph{elementary functions} $\RealNumbers\to\RealNumbers$ is the smallest
 class of functions such that
 \begin{enumerate}
 \item every constant function $x\mapsto c$ lies in $\Elem$, and the identity
@@ -247,7 +236,7 @@ class of functions such that
 \item if $f,g\in\Elem$ then $x\mapsto f(x)+g(x)$, $x\mapsto f(x)g(x)$ and
       $x\mapsto -f(x)$ lie in $\Elem$;
 \item if $f\in\Elem$ then $x\mapsto f(x)^{-1}$ lies in $\Elem$;
-\item if $f\in\Elem$ and $r\in\R$ then $x\mapsto f(x)^r$ lies in $\Elem$;
+\item if $f\in\Elem$ and $r\in\RealNumbers$ then $x\mapsto f(x)^r$ lies in $\Elem$;
 \item if $f\in\Elem$ then each of
       $\exp\circ f$, $\log\circ f$, $\sin\circ f$, $\cos\circ f$,
       $\arcsin\circ f$, $\arctan\circ f$ lies in $\Elem$.
@@ -277,12 +266,12 @@ Consequently $\Elem$ contains every function one expects: differences
 $f-g=f+(-g)$, quotients $f/g=f\cdot g^{-1}$, natural powers, all polynomial
 and rational functions, $\sqrt{\cdot}$ and the $n$-th roots,
 the absolute value $|x|=\sqrt{x^2}$, the tangent $\sin/\cos$, the hyperbolic
-functions $\sinh x=(\e^x-\e^{-x})/2$, $\cosh$, $\tanh$, the arccosine
+functions $\sinh x=(\EulerE^x-\EulerE^{-x})/2$, $\cosh$, $\tanh$, the arccosine
 $\pi/2-\arcsin$, and the inverse hyperbolic sine
 $\operatorname{arsinh}x=\log\bigl(x+\sqrt{1+x^2}\bigr)$.
 
 \paragraph{Total functions and junk values.}
-Every member of $\Elem$ is a \emph{total} function $\R\to\R$.  This is a
+Every member of $\Elem$ is a \emph{total} function $\RealNumbers\to\RealNumbers$.  This is a
 deliberate choice, and it is the choice that makes Corollary~\ref{cor:main} strongest.
 The formalization inherits \texttt{Mathlib}'s conventions
 \[
@@ -335,7 +324,7 @@ plausible substitute.
 
 $\Elem$ contains Mathlib's total real-power representatives of the principal
 $n$-th roots on $[0,\infty)$ for positive $n$ and, by
-Warning~\ref{warn:oddroot}, the classical odd-root functions on all of $\R$.
+Warning~\ref{warn:oddroot}, the classical odd-root functions on all of $\RealNumbers$.
 It is not, as defined, closed under passage
 to an arbitrary algebraic function: Definition~\ref{def:elem} has no clause
 producing a continuous branch of $P(x,y)=0$ for a polynomial $P$ with
@@ -394,7 +383,7 @@ an algebraic differential equation.
 
 Each generator of Definition~\ref{def:elem} is real analytic away from a finite set of
 arguments.  All of these facts are in \texttt{Mathlib}, most of them in the
-form ``$C^n$ for every $n$ in $\N\cup\{\infty,\omega\}$''; specializing to the
+form ``$C^n$ for every $n$ in $\NaturalNumbers\cup\{\infty,\omega\}$''; specializing to the
 analytic exponent $\omega$ and applying \texttt{ContDiffAt.analyticAt}
 converts them to the statements below.
 
@@ -402,10 +391,10 @@ converts them to the statements below.
 \leavevmode
 \begin{enumerate}
 \item $\exp$, $\sin$, $\cos$ and $\arctan$ are real analytic at every point
-      of $\R$.
+      of $\RealNumbers$.
 \item $\log$ is real analytic at every $x\ne 0$ --- at negative arguments as
       well, because $\log$ is even under the convention $\log x=\log|x|$.
-\item For each fixed $r\in\R$, the function $x\mapsto x^{r}$ is real analytic
+\item For each fixed $r\in\RealNumbers$, the function $x\mapsto x^{r}$ is real analytic
       at every $x\ne 0$; at negative $x$ this uses the identity
       $x^{r}=|x|^{r}\cos(\pi r)$.
 \item $\arcsin$ is real analytic at every $x\notin\{-1,1\}$; outside
@@ -419,7 +408,7 @@ The bad sets are sets of \emph{values} of the inner function, not sets of
 points of the domain --- $\{0\}$ for the reciprocal, the logarithm and a real
 power, $\{-1,1\}$ for the arcsine, and $\varnothing$ for the rest.  This is
 the shape the induction consumes, and it is why Lemma~\ref{lem:key} below is stated
-with a finite set $B\subseteq\R$ of forbidden values.
+with a finite set $B\subseteq\RealNumbers$ of forbidden values.
 \end{remark}
 
 \section{Density of the analytic locus}\label{sec:density}
@@ -427,7 +416,7 @@ with a finite set $B\subseteq\R$ of forbidden values.
 \subsection{Openness}
 
 \begin{lemma}\label{lem:open}
-For every $f\colon\R\to\R$ the set $\An(f)$ is open.
+For every $f\colon\RealNumbers\to\RealNumbers$ the set $\An(f)$ is open.
 \end{lemma}
 
 \begin{proof}
@@ -449,7 +438,7 @@ constant, hence analytic anyway.  Separating the two cases is exactly the
 isolated-zeros theorem.
 
 \begin{lemma}[Key lemma]\label{lem:key}
-Let $f,g\colon\R\to\R$ and let $B\subseteq\R$ be finite.  Suppose $\An(f)$ is
+Let $f,g\colon\RealNumbers\to\RealNumbers$ and let $B\subseteq\RealNumbers$ be finite.  Suppose $\An(f)$ is
 dense and $g$ is analytic at every $y\notin B$.  Then $\An(g\circ f)$ is
 dense.
 \end{lemma}
@@ -472,7 +461,7 @@ on some punctured neighbourhood of $x_0$.  Thus for each of the finitely many
 $c\in B$ there is a punctured neighbourhood of $x_0$ on which $f\ne c$.
 Intersecting these finitely many punctured neighbourhoods with the punctured
 neighbourhood $V\setminus\{x_0\}$ leaves a punctured neighbourhood of $x_0$,
-which is nonempty because $\R$ has no isolated points.  Any point $t$ of it
+which is nonempty because $\RealNumbers$ has no isolated points.  Any point $t$ of it
 satisfies $t\in U$, $f$ analytic at $t$, and $f(t)\notin B$; hence $g$ is
 analytic at $f(t)$ and $g\circ f$ is analytic at $t$.
 \end{proof}
@@ -497,7 +486,7 @@ well.
 Openness of $\An(f)$ is Lemma~\ref{lem:open} and holds for every $f$.  Density is
 proved by induction on the derivation of $f$ in Definition~\ref{def:elem}.
 
-\emph{Constants and the identity.}  Here $\An(f)=\R$.
+\emph{Constants and the identity.}  Here $\An(f)=\RealNumbers$.
 
 \emph{Sums and products.}  If $\An(f)$ and $\An(g)$ are dense then so is
 $\An(f)\cap\An(g)$, because a finite intersection of dense open sets is dense.
@@ -514,16 +503,16 @@ $\log$, and for $y\mapsto y^{r}$; and $B=\{-1,1\}$ for $\arcsin$.
 \end{proof}
 
 \begin{remark}[Sharpness]
-Density cannot be strengthened to ``$\An(f)=\R$'': the elementary functions
+Density cannot be strengthened to ``$\An(f)=\RealNumbers$'': the elementary functions
 $x\mapsto x^{-1}$, $x\mapsto|x|$ and $x\mapsto\arcsin x$ have analytic loci
-$\R\setminus\{0\}$, $\R\setminus\{0\}$ and $\R\setminus\{-1,1\}$.  Nor can
+$\RealNumbers\setminus\{0\}$, $\RealNumbers\setminus\{0\}$ and $\RealNumbers\setminus\{-1,1\}$.  Nor can
 ``dense open'' be strengthened to ``open with finite complement'': the
 elementary function $x\mapsto (\sin x)^{-1}$ omits the infinite discrete set
-$\pi\Z$.  What density does give for free is that the complement is closed
+$\pi\IntegerNumbers$.  What density does give for free is that the complement is closed
 and nowhere dense, being the complement of a dense open set.  It need not be
 \emph{discrete}, and one more reciprocal settles that: $x\mapsto(\sin(1/x))^{-1}$
 is elementary --- it is \texttt{IsElementary.id.inv.sin.inv} --- and its
-analytic locus omits every $1/(k\pi)$ with $k\in\Z\setminus\{0\}$, together
+analytic locus omits every $1/(k\pi)$ with $k\in\IntegerNumbers\setminus\{0\}$, together
 with $0$, where the function is not even continuous.  Those points accumulate
 at $0$.  So ``nowhere dense'' is the correct description of the exceptional
 set and cannot be improved to ``discrete''.
@@ -532,7 +521,7 @@ set and cannot be improved to ``discrete''.
 \section[Algebraic branches]{Algebraic functions over the elementary functions}\label{sec:algebraic}
 
 Definition~\ref{def:elem} reaches principal $n$-th roots on nonnegative inputs
-for positive $n$, and classical odd roots on all of $\R$, but not a general
+for positive $n$, and classical odd roots on all of $\RealNumbers$, but not a general
 algebraic function.  This section removes that restriction.  It does so without
 enlarging $\Elem$, for a reason worth stating: an algebraic clause inside the
 inductive definition would cost Proposition~\ref{prop:comp}.  Composing a
@@ -542,7 +531,7 @@ and elementary functions need not be --- $x\mapsto x^{-1}$ is not.  Rather than
 weaken the closure theorem, we prove the conclusion directly.
 
 \begin{theorem}[Branches of polynomial equations]\label{thm:algebraic}
-Let $U\subseteq\R$ be open, let $a_0,\dots,a_n$ be real analytic on $U$ with
+Let $U\subseteq\RealNumbers$ be open, let $a_0,\dots,a_n$ be real analytic on $U$ with
 $a_n$ nowhere zero on $U$, and let $y$ be continuous on $U$ with
 \[
   \sum_{i=0}^{n} a_i(x)\,y(x)^i \;=\; 0 \qquad (x\in U).
@@ -551,7 +540,7 @@ Then $y$ is real analytic at some point of every nonempty open subset of $U$.
 \end{theorem}
 
 Density is again the right conclusion, and for the same kind of reason as
-before: $y=|\cdot|$ is a continuous branch of $y^2-x^2=0$ on all of $\R$, with
+before: $y=|\cdot|$ is a continuous branch of $y^2-x^2=0$ on all of $\RealNumbers$, with
 $a_0=-x^2$, $a_1=0$, $a_2=1$, and it is not analytic at the origin.
 
 \begin{proofidea}
@@ -573,8 +562,8 @@ open set disjoint from $V$ is disjoint from $\overline V$ and hence contained
 in $W$.  The set $W$ absorbs the \emph{interior} of the degenerate locus
 $\{g=0\}$; what the argument gives up is the boundary $\partial V\cap U$, and
 that is exactly why the conclusion is density rather than analyticity
-everywhere.  For $y=|\cdot|$ the degenerate locus is $\{0\}$, so $V=\R
-\setminus\{0\}$, $\overline V=\R$, $W=\varnothing$, and the origin is conceded
+everywhere.  For $y=|\cdot|$ the degenerate locus is $\{0\}$, so $V=\RealNumbers
+\setminus\{0\}$, $\overline V=\RealNumbers$, $W=\varnothing$, and the origin is conceded
 to the splitting step --- correctly, since $|\cdot|$ is not analytic there.
 
 The induction terminates because the degree drops.  Its base case $n=0$ is
@@ -583,7 +572,7 @@ coefficient hypothesis says $a_0(x)\ne0$, so the region is empty.
 
 The implicit function step is \texttt{Mathlib}'s
 \path{ContDiffAt.implicitFunction}, which is stated for every smoothness
-exponent in $\N\cup\{\infty,\omega\}$; instantiating at $\omega$ and converting
+exponent in $\NaturalNumbers\cup\{\infty,\omega\}$; instantiating at $\omega$ and converting
 with \path{ContDiffAt.analyticAt} gives an analytic implicit function
 theorem.  Its one nontrivial hypothesis, invertibility of the partial
 derivative as a continuous linear map, is discharged in one variable by
@@ -613,7 +602,7 @@ version with global hypotheses would be much weaker than it looks.  For the
 standard Bring equation $y^5-y-x=0$, a global continuous branch would be a
 continuous right inverse of $h(w)=w^5-w$.  Such a right inverse is injective;
 its image is an interval, and $h(y(x))=x$ forces that image to be unbounded in
-both directions, hence all of $\R$.  It would therefore force $h$ itself to be
+both directions, hence all of $\RealNumbers$.  It would therefore force $h$ itself to be
 injective, a contradiction.  The localized statement nevertheless reaches
 the positive real branch over $(0,1)$, an algebraic function not expressible by
 radicals.
@@ -629,7 +618,7 @@ covered only when it can be presented in one of the two forms.
 \section{The inverse, and why inverting cannot help}\label{sec:inverse}
 
 $F$ is a homeomorphism of $[0,1]$ onto itself, so it has a continuous inverse.
-We write $F^{-1}\colon\R\to\R$ for the formal development's clamped
+We write $F^{-1}\colon\RealNumbers\to\RealNumbers$ for the formal development's clamped
 totalization: the inverse on $[0,1]$, the constant $0$ on $(-\infty,0]$, and
 the constant $1$ on $[1,\infty)$.  Everything above concerned $F$; this
 section treats that totalization, and then closes the class under the
@@ -663,7 +652,7 @@ at~$x_0$.
 
 \begin{theorem}\label{thm:invnowhere}
 $F^{-1}$ is real analytic at no point of $[0,1]$; its analytic locus is
-exactly $\R\setminus[0,1]$.
+exactly $\RealNumbers\setminus[0,1]$.
 \end{theorem}
 
 \begin{proofidea}
@@ -744,7 +733,7 @@ reading --- there is no open set on which to test.
 
 The conclusion is ``analytic somewhere in $U$'', not ``analytic on $U$'', and
 that is not slack in the argument: the real cube root is a continuous right
-inverse of the entire function $x\mapsto x^3$ on all of $\R$ and is not
+inverse of the entire function $x\mapsto x^3$ on all of $\RealNumbers$ and is not
 analytic at the origin.  In the formalization the right inverse has to be
 written $t\mapsto(t/|t|)\,|t|^{1/3}$, since \texttt{Real.rpow} makes
 $(-8)^{1/3}=1$ (Warning~\ref{warn:oddroot}); that this signed form really does
@@ -763,14 +752,14 @@ $g\in\Elem^{-1}$.
 
 Two features of the rule are deliberate, and the Lambert $W$ function shows
 why each is needed.  It is local in $U$: $W$ satisfies its defining identity
-$W(y)\e^{W(y)}=y$ only on $[-1/\e,\infty)$, so a rule demanding a global
+$W(y)\EulerE^{W(y)}=y$ only on $[-1/\EulerE,\infty)$, so a rule demanding a global
 identity would not reach it.  And it asks for analyticity on the
 \emph{interior} of the complement rather than at every point outside $U$: the
-branch point $-1/\e$ sits on the boundary of the natural $U=(-1/\e,\infty)$,
+branch point $-1/\EulerE$ sits on the boundary of the natural $U=(-1/\EulerE,\infty)$,
 and $W$ is certainly not analytic there.  Dropping that boundary costs
 nothing, since the boundary of an open set is nowhere dense, and for $W$ the
 constant extension then satisfies the analyticity clause on all of
-$(-\infty,-1/\e)$.
+$(-\infty,-1/\EulerE)$.
 
 The Lean result is a conditional criterion for any supplied total function
 satisfying these hypotheses.  Since \texttt{Mathlib} does not define $W$, the
@@ -947,7 +936,7 @@ $F$ is not elementary
 General open subset of $[0,1]$
   & \path{not_isElementary_eqOn}
   & \path{NotElementary} \\
-Rvachev's $\Up$ and the signed extension
+Rvachev's $\RvachevUp$ and the signed extension
   & \path{rvachev_not_isElementary}, \path{extendedFabius_not_isElementary}
   & \path{NotElementary} \\
 \bottomrule
@@ -965,7 +954,7 @@ infrastructure that the argument consumes.
 \item \texttt{AnalyticAt.eventually\_eq\_zero\_or\_eventually\_ne\_zero} and
       its two-function form: the isolated-zeros theorem for a function of one
       variable over a nontrivially normed field, which is what powers
-      Lemma~\ref{lem:key}.  It applies verbatim to $f\colon\R\to\R$.
+      Lemma~\ref{lem:key}.  It applies verbatim to $f\colon\RealNumbers\to\RealNumbers$.
 \item \texttt{isOpen\_analyticAt}: the analytic locus is open, which is
       Lemma~\ref{lem:open} verbatim.  (The pointwise form, analyticity propagating
       from a point to a neighbourhood, is
@@ -973,8 +962,8 @@ infrastructure that the argument consumes.
       set-level statement.)
 \item \texttt{ContDiffAt.analyticAt} together with the family of
       \texttt{contDiffAt\_\ldots} lemmas stated for exponents in
-      $\N\cup\{\infty,\omega\}$: this is how Lemma~\ref{lem:generators} is
-      obtained, including the two facts that are otherwise awkward over $\R$,
+      $\NaturalNumbers\cup\{\infty,\omega\}$: this is how Lemma~\ref{lem:generators} is
+      obtained, including the two facts that are otherwise awkward over $\RealNumbers$,
       namely analyticity of $\arctan$ everywhere and of $\arcsin$ off
       $\{\pm1\}$.
 \item \texttt{ContDiffAt.implicitFunction}, instantiated at the analytic
@@ -999,7 +988,7 @@ development contains no \texttt{sorry}, no \texttt{axiom} and no
 
 \subsection{Why smoothness cannot decide the question}
 
-The Fabius function is $C^\infty$ on $\R$, and its derivatives satisfy the
+The Fabius function is $C^\infty$ on $\RealNumbers$, and its derivatives satisfy the
 exact self-similar relation $F'(x)=2F(2x)$ on $[0,1/2]$.  Any proof of
 non-elementarity must therefore distinguish $F$ from the elementary functions
 by a property strictly finer than differentiability of every order.  Real
@@ -1021,8 +1010,8 @@ Smoothness separates neither of them from $\Elem$; analyticity separates both.
 
 \Cref{thm:nowhere} includes the endpoints $0$ and $1$, where $F$ is flat to
 infinite order.  It is worth recording that Corollary~\ref{cor:main} does \emph{not}
-need them.  A set that is open in $\R$ and contained in $[0,1]$ is
-automatically contained in $(0,1)$ --- an $\R$-open set containing $0$
+need them.  A set that is open in $\RealNumbers$ and contained in $[0,1]$ is
+automatically contained in $(0,1)$ --- an $\RealNumbers$-open set containing $0$
 contains negative numbers --- so the witness produced by
 \Cref{thm:density} is always an interior point, and the endpoint case of
 \Cref{thm:nowhere} is never mathematically reached.  (The proof term still
@@ -1030,10 +1019,10 @@ cites it: the applications call \texttt{fabius\_not\_analyticAt}, which is the
 combined statement over all of $[0,1]$ and case-splits on the endpoint
 internally.)  The same is true if one reads ``open''
 in the relative topology of $[0,1]$: a nonempty relatively open subset still
-contains a nonempty $\R$-open subinterval of $(0,1)$.
+contains a nonempty $\RealNumbers$-open subinterval of $(0,1)$.
 
 What the endpoints do buy is exactness.  $\An(F)$ is precisely
-$\R\setminus[0,1]$: outside the unit interval $F$ is locally constant, hence
+$\RealNumbers\setminus[0,1]$: outside the unit interval $F$ is locally constant, hence
 analytic, so the nowhere-analytic locus is as large as it can be and no
 larger.
 
