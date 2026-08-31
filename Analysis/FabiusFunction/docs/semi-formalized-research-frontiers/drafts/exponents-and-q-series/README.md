@@ -4,59 +4,70 @@ New standalone intake members:
 
 - [`fabius_q_frontiers_report/`](fabius_q_frontiers_report/),
   *Parameter-Flow, Gaussian, and Large-Deviation Frontiers for the
-  q-Fabius--Rvachev Family* (23 A4 pp, 1,506 source lines; with two scripts,
+  q-Fabius--Rvachev Family* (23 pages and 1,506 source lines at arrival;
+  current 22-page A4 PDF and 1,492-line source; with two scripts,
   four CSV tables, two captured outputs, and four PDF/PNG figure pairs),
   arrived as a bare directory in direct-arrival commit
   `8a184546747082cbd92ad4675fb61981c6b8c3b6`; no archive or outer hash was
-  supplied. Its submitted ledger covers all 20 non-ledger payloads and now
-  verifies after four CSV entries were refreshed for CRLF-to-LF
-  normalization. All five delivered PDFs are readable and unencrypted (27
-  pages total); its main report uses embedded Type-1 Latin Modern fonts and
-  remains later document-style work.
+  supplied. Its submitted ledger covers all 20 non-ledger payloads and was
+  refreshed after four CSV entries received CRLF-to-LF normalization. The
+  later strict rebuild replaced the main TeX/PDF pair; the refreshed 20-entry
+  operational ledger verifies every current payload. The five current PDFs
+  are readable and unencrypted (26 pages total), and the rebuilt main report
+  is A4/Libertinus with embedded Type-1 fonts and no Type 3 fonts.
 
 - [`Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/`](Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/),
   *Continuous-Parameter Edgeworth Theory, Large Deviations, and Quadratic
-  q-Gevrey Regularity at the Fabius--Rvachev Frontier* (29 A4 pp, 1,387
-  main-source lines), arrived on 2026-08-30 in direct-arrival commit
+  q-Gevrey Regularity at the Fabius--Rvachev Frontier* (29 A4 pp and 1,387
+  main-source lines at arrival; current source: 1,372 lines, SHA-256
+  `1b205a58d084e1d40fd85caf1b26298a772a7b86b9f9a7806b0cd63c5865dd45`),
+  arrived on 2026-08-30 in direct-arrival commit
   `52179f63fe955a64508915eedaa560de9f3056da` under the bare generic wrapper
   `Fabius_Rvachev_Frontier_Report_2026-08-30-G/` and was filed under this
   title-derived collision-safe name. Its manifest covers the full delivery,
-  and its 19-entry checksum ledger now verifies after three CSV rows were
-  refreshed for CRLF-to-LF normalization. Its title and abstract concern
+  and its 19-entry checksum ledger preserves the normalized package inventory.
+  The current 29-page A4 PDF was rebuilt from the final source in three strict
+  passes. Because that rebuild also adjusted the TeX preamble, both changed
+  hashes were refreshed; the 19-entry ledger verifies 19/19. Its title and abstract concern
   continuous-parameter Edgeworth and deviation regimes, Lambert endpoint
   asymptotics, and quadratic-exponential Denjoy--Carleman regularity.
 
 - [`q-series-proof-oriented-article/`](q-series-proof-oriented-article/),
   *A Proof-Oriented Guide to q-Series: Shifted Factorials, Basic
   Hypergeometric Summation, Theta Products, Partitions, Bailey Pairs, and
-  Rogers--Ramanujan Theory* (retained 39-page letter-paper PDF; 2,891 source
-  lines at arrival and 2,872 after the current source-only merge), arrived as
+  Rogers--Ramanujan Theory* (2,891 source lines at arrival; current 39-page A4
+  PDF and 2,876-line source), arrived as
   a bare TeX/PDF directory in direct-arrival commit
   `1360db6064c676f83bceb23bece5ed304dd09ce8` without an archive, outer hash,
-  or ledger. The repository-generated two-entry `SHA256SUMS` still verifies
-  the retained PDF, but its TeX row is pending after the source-only merge;
-  the TeX was already LF.
+  or ledger. The current PDF was rebuilt from the final source in three strict
+  passes; the refreshed repository-generated `SHA256SUMS` verifies both the
+  current TeX and its synchronized PDF. The TeX was already LF.
 
 - [`q_series_from_first_principles/`](q_series_from_first_principles/),
   *q-Series from First Principles: Products, Basic Hypergeometric Sums,
   Theta Functions, Partitions, Bailey Pairs, and the Rogers--Ramanujan World*
-  (30 letter-paper pp, 1,548 source lines), likewise arrived as a bare
+  (30 letter-paper pages and 1,548 source lines at arrival; current 28-page A4
+  PDF and source:
+  1,540 lines, SHA-256
+  `926a3dca0877e6c4dbdfed407003dfa3d1553556b9c32b134363b8bca95e648f`),
+  likewise arrived as a bare
   TeX/PDF directory in direct-arrival commit
   `c167e550348bfb33b4297684100d55dfb48b8c1a` without an archive, outer hash,
-  or ledger. The repository-generated `SHA256SUMS` covers and verifies both
-  delivered files; its TeX was already LF.
+  or ledger. The current PDF was rebuilt from the final source in three strict
+  passes; the refreshed repository-generated `SHA256SUMS` verifies both the
+  current TeX and its synchronized PDF. Its TeX was already LF.
 
 - [`q_series_monograph/`](q_series_monograph/),
   *A Proof-Driven Guide to q-Series, Basic Hypergeometric Identities, Bailey
-  Chains, and Rogers--Ramanujan Theory* (1,915 source lines at arrival and
-  1,906 after the current source-only merge), arrived as a source-only bare
+  Chains, and Rogers--Ramanujan Theory* (1,915 source lines at arrival; current
+  27-page A4 PDF and 1,910-line source), arrived as a source-only bare
   directory in direct-arrival commit
   `1f0f98390d551725fc7d2274638dbd7de86ee346` with neither PDF nor ledger.
   Intake repaired the carriage-return (CR) corruption in the intended `\rho_2`
   token at line 863 and added a one-entry repository `SHA256SUMS` for the sole
-  delivered TeX. The package remains source-only: no PDF or auxiliary package
-  was delivered or produced, and the ledger's sole TeX row is pending after
-  the current source edit.
+  delivered TeX. A 27-page A4 PDF was subsequently produced from the final
+  source in three strict passes. The expanded two-entry ledger now covers and
+  verifies both the current TeX and its synchronized PDF.
 
 These five packages remain separate pending post-publication comparison,
 canonical document work, and Lean crosswalks. In particular, no semantic
@@ -77,7 +88,7 @@ establish Lean verification.
   preserve package-, result-, archive-, and asset-level provenance.  Unique
   reproducibility assets live under `assets/`; the superseded layouts remain
   recoverable from the pinned pre-retirement Git revision and repository
-  history.  The retained canonical PDF is the validated 85-page publication
+  history.  The current canonical PDF is the validated 85-page publication
   artifact.  The q-Pochhammer monograph remains the broad forward-theory
   reference, while `Cyclotomic_q_Fabius_Rvachev_Frontier/` retains the wider
   natural-boundary and blow-up program beyond this inverse-branch synthesis.
@@ -86,7 +97,7 @@ establish Lean verification.
 
 - [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](Cyclotomic_q_Fabius_Rvachev_Frontier/),
   *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
-  Product* (25 pp at arrival; retained 29-page A4 main PDF and current
+  Product* (25 pp at arrival; current 28-page A4 main PDF and
   1,873-line source),
   arrived on 2026-08-30 from
   `Cyclotomic_q_Fabius_Rvachev_Frontier.zip` (outer SHA-256
@@ -98,16 +109,17 @@ establish Lean verification.
   the consolidated q-series frontier. A post-publication revision crosswalks
   the global geometric-sinc q-Pochhammer factorization while leaving the
   cyclotomic asymptotic and natural-boundary layers manuscript-only. The
-  22-entry active ledger now passes 21/22 rows: only the current TeX row is
-  pending after the source-only merge. The retained five PDFs have 33 pages in
-  total (29 main plus four one-page figures). The main report still
-  uses Latin Modern rather than the house Libertinus face and retains nine
-  embedded/subset Type-3 figure-font rows; the standalone figures contain nine
-  more. Font normalization remains deferred.
+  current PDF was rebuilt after the source-only checkpoint. The refreshed
+  22-entry active ledger now verifies 22/22 current payloads.
+  The five current PDFs have 32 pages in total (28 main plus four one-page
+  figures). The rebuilt main report uses the house Libertinus face with
+  embedded Type-1 fonts and no Type 3 fonts.
 
 - [`Fabius_Rvachev_Frontier_Report/`](Fabius_Rvachev_Frontier_Report/),
 *Negative Parameters, Reciprocal Bases, and the Gaussian Boundary* (26 pp),
-arrived on 2026-08-30 with all 13 payload checksums verified.  It develops
+arrived on 2026-08-30 with all 13 payload checksums verified. Its current
+26-page A4 PDF was rebuilt from the final source; the refreshed operational
+ledger verifies all thirteen current payloads. It develops
 negative-parameter affine transport, reciprocal-base digit reversal,
 multisection, shape theory, and the Gaussian boundary for geometric-uniform
 laws.  Because much of that subject already appears in Part VII of the
@@ -117,12 +129,13 @@ theorem labels do not by themselves assert Lean formalization.
 
 - [`Fabius_Flat_Parameter_Response_Dynamics/`](Fabius_Flat_Parameter_Response_Dynamics/),
   *Flat Parameter Fronts, q-Susceptibility, and Smooth Dynamics* (26 A4 pp;
-  1,944-line TeX and 519-line deterministic exact/Monte-Carlo program), was
+  1,890-line TeX and 519-line deterministic exact/Monte-Carlo program), was
   filed on 2026-08-30 from `fabius_frontier_report_2026.zip` (803,598 bytes;
   SHA-256
   `afdcf522589a7baad82c81a527c02dcc09e58455ab14c57a9c492e65563c647e`).
-  Its immutable 13-entry arrival ledger verifies 13/13 and the exhaustive
-  current ledger verifies 17/17. The pinned replay reproduced the two exact
+  Its immutable 13-entry arrival ledger verifies 13/13. The current PDF was
+  rebuilt from the final source, and the refreshed 17-entry operational ledger
+  verifies 17/17. The pinned replay reproduced the two exact
   algebra tables, common-random-number table, and two figures byte-for-byte;
   the two Monte-Carlo tables differed only at documented last-bit levels far
   below their sampling errors. A hostile review repaired the conditional-law
@@ -473,9 +486,10 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 `149332f9d`.
 
 Member: `Exponents_and_q_Series_Frontiers`
-(retained pre-update PDF: 236 A4 pp; current merged TeX: 16,237 lines
-across seven parts; PDF rebuild pending; both parent ledgers verify the current
-source and retained PDF without asserting that the PDF was rebuilt) — the
+(current synchronized PDF: 237 A4 pp; current merged TeX: 16,235 lines,
+SHA-256 `96a367de3454770c53b5c2b543404c9a78bb5e73b1f5c9234309f369502671b8`,
+across seven parts; the PDF was rebuilt from this source in three strict
+passes, and both refreshed parent ledgers verify every current row) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -707,9 +721,10 @@ matching `assets/` directories.
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Second member: `q_pochhammer_q_binomial_monograph/`
-(212-page last validated A4 PDF; book class; the current source-only merge is
-13,119 lines while the retained PDF is 1,576,424 bytes; the PDF was not
-rebuilt after the merged sinc--Pochhammer crosswalk update) —
+(213-page current A4 PDF; book class; the current source is
+13,117 lines with SHA-256
+`69da4656233255c345ac323ff35c2d15c1f374fadf5a8657e89a2f33292ddf0d`;
+the 1,582,997-byte PDF was rebuilt from that source in three strict passes) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
