@@ -20,7 +20,7 @@ Four independently written article packages arrived together on
 consolidated volume:
 
 Member: `Lambert_W_Guide/` — *The Lambert W Function: A Real-Variable
-Guide* (60 pp, consolidated edition).  The most complete of the four
+Guide* (61 pp, consolidated edition).  The most complete of the four
 treatments forms the body; the unique layers of the other three (the
 complete power-tower convergence theorem, inverse-Taylor corrections,
 the branch-exchange involution, the transcendence theorem, a
@@ -60,12 +60,31 @@ dichotomy**: every real solution of `w·e^w = z` is `W₀(z)` or `W₋₁(z)`
 (`Fabius.eq_principalLambertW_or_eq_lowerLambertW`) — the guide's
 two-branch inversion statement, kernel-verified.
 
+The exact raw second-order package is `LambertWCurvature.lean`.  Its
+principal API is `deriv_principalLambertW`,
+`deriv_principalLambertW_hasDerivAt`,
+`deriv_deriv_principalLambertW`,
+`deriv_deriv_principalLambertW_zero`,
+`deriv_deriv_principalLambertW_neg`, and
+`strictConcaveOn_principalLambertW`; in particular, `W₀''(0) = -2` and
+`W₀` is strictly concave on the full closed domain `[-1/e, ∞)`.  The lower
+API is `deriv_lowerLambertW_hasDerivAt`,
+`deriv_deriv_lowerLambertW`,
+`deriv_deriv_lowerLambertW_pos_iff`,
+`deriv_deriv_lowerLambertW_neg_iff`,
+`deriv_deriv_lowerLambertW_eq_zero_iff`, and
+`strictConvexOn_lowerLambertW_left`/
+`strictConcaveOn_lowerLambertW_right`.  Thus `W₋₁''` changes sign exactly at
+`-2e⁻²`, with strict convexity on `[-1/e,-2e⁻²]` and strict concavity on
+`[-2e⁻²,0)`.
+
 The scaled integer-power profile package lives in
 `PowerExponentialLambert.lean`, `PowerExponentialLambertCalculus.lean`,
 `PowerExponentialLambertInverse.lean`,
 `PowerExponentialLambertAsymptotics.lean`, and
-`PowerExponentialLambertFabius.lean`.  For nonzero natural power and positive
-amplitude/rate it gives both real phases, endpoint-inclusive solve laws,
+`PowerExponentialLambertFabius.lean`.  Its second-order companion is
+`PowerExponentialLambertCurvature.lean`.  For nonzero natural power and
+positive amplitude/rate it gives both real phases, endpoint-inclusive solve laws,
 exact branch images, interior derivatives and signs, and two-sided `InvOn`
 laws.  The normalized argument is continuous
 (`powerExponentialLambertArgument_continuous`), the principal phase is
@@ -78,6 +97,18 @@ exact solution iff through the peak, and
 `principalPowerExponentialPhase_ne_lowerPowerExponentialPhase` makes the two
 roots distinct strictly below it.  This does not classify additional
 negative roots possible for even powers.
+
+On the common smooth interval `(0,peak)`, the curvature companion proves
+`deriv_principalPowerExponentialPhase_hasDerivAt`,
+`deriv_deriv_principalPowerExponentialPhase`,
+`deriv_lowerPowerExponentialPhase_hasDerivAt`, and
+`deriv_deriv_lowerPowerExponentialPhase`.  For either phase `lambda`, the
+exact formula is
+`lambda * (m - (m - beta*lambda)^2) /
+(x^2 * (m - beta*lambda)^3)`.  This generic module is formula-only: the
+sign/zero thresholds `beta*lambda₀ = m - sqrt(m)` and
+`beta*lambda₋₁ = m + sqrt(m)`, together with the resulting generic strict
+shape theorems, remain open Lean work.
 
 At zero, `principalPowerExponentialPhase_isEquivalent_rpow` identifies the
 principal root equivalent `(x/A)^(1/m)`, while
@@ -98,8 +129,34 @@ continuity in `fabiusPrincipalLambertPhase_continuousOn_Icc` and
 identified with `fabiusLambertPhase` by
 `lowerPowerExponentialPhase_one_one_log_two`.
 
-Still open in Lean are the raw-branch second derivatives and curvature
-package, both branch-point vertical-tangent limits, and the Puiseux package.
+`PowerExponentialLambertFabiusCurvature.lean` closes the classical curvature
+specialization.  It defines
+`fabiusLambertInflectionInput = 2*exp(-2)/log 2`;
+`fabiusLambertInflectionInput_mem_Ioo` proves that this lies strictly below
+the peak, and `fabiusLambertPhase_inflectionInput` gives the lower phase
+there as `2/log 2`.  The module also gives
+`deriv_deriv_fabiusLambertPhase`,
+`deriv_deriv_fabiusLambertPhase_pos_iff`,
+`deriv_deriv_fabiusLambertPhase_neg_iff`,
+`deriv_deriv_fabiusLambertPhase_eq_zero_iff`, and
+`deriv_deriv_fabiusLambertPhase_inflectionInput`, and proves
+`strictConvexOn_fabiusLambertPhase_left` on the positive interval through
+the inflection and `strictConcaveOn_fabiusLambertPhase_right` from there
+through the peak.  For the principal phase, the same module exports
+`fabiusPrincipalLambertPhase_eq_principalLambertW`,
+`fabiusPrincipalLambertPhase_continuousOn_Iic`,
+`fabiusPrincipalLambertPhase_hasDerivAt`,
+`deriv_fabiusPrincipalLambertPhase`,
+`deriv_fabiusPrincipalLambertPhase_hasDerivAt`,
+`deriv_deriv_fabiusPrincipalLambertPhase`,
+`deriv_deriv_fabiusPrincipalLambertPhase_pos`,
+`deriv_deriv_fabiusPrincipalLambertPhase_zero`, and
+`strictConvexOn_fabiusPrincipalLambertPhase` on the whole closed half-line
+ending at `exp(-1)/log 2`, including negative inputs and zero.
+
+Still open in Lean are both branch-point vertical-tangent limits and the
+Puiseux package.  No derivative at the branch point is claimed, and the
+generic square-root threshold/shape package remains open as stated above.
 
 For the Fabius endpoint observable itself,
 `FabiusLambertPhaseLockedPullback.lean`,
