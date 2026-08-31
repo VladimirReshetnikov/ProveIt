@@ -37,7 +37,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 LEAN = os.path.normpath(os.path.join(
-    HERE, '..', '..', 'Lean', 'FabiusFunction'))
+    HERE, '..', '..', '..', 'Lean', 'FabiusFunction'))
 
 DECL = re.compile(
     r'^(?:@\[[^\]]*\]\s*)?'

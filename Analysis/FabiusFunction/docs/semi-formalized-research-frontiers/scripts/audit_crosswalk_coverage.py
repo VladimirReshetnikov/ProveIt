@@ -25,7 +25,7 @@ import re
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DRAFTS = os.path.join(HERE, 'drafts')
+DRAFTS = os.path.join(os.path.dirname(HERE), 'drafts')
 
 ENV = re.compile(
     r'\\begin\{(theorem|proposition|lemma|corollary)\}'

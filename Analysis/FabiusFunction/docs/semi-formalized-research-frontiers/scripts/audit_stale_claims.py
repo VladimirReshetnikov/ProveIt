@@ -24,7 +24,7 @@ correct.  Every hit needs reading.  Exit status is always 0.
 import io, os, re
 from pathlib import Path
 
-FRONTIER_ROOT = Path(__file__).resolve().parent
+FRONTIER_ROOT = Path(__file__).resolve().parent.parent
 FABIUS_ROOT = FRONTIER_ROOT.parent.parent
 DOCS = FRONTIER_ROOT
 LEAN = FABIUS_ROOT / 'Lean' / 'FabiusFunction'

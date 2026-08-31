@@ -14,7 +14,7 @@ gate a commit alongside `audit_crosswalk_names.py`.
 import io, os, re, sys
 from pathlib import Path
 
-FRONTIER_ROOT = Path(__file__).resolve().parent
+FRONTIER_ROOT = Path(__file__).resolve().parent.parent
 FABIUS_ROOT = FRONTIER_ROOT.parent.parent
 ROOT = FABIUS_ROOT / 'Lean'
 PKG = os.path.join(ROOT, 'FabiusFunction')
