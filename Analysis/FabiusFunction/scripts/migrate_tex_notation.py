@@ -81,6 +81,8 @@ SAFE_RENAMES = {
     "Id": "IdentityOperator",
     "Log": "PrincipalLogarithm",
     "defeq": "DefinitionEquals",
+    "Fglobal": "FabiusGlobal",
+    "InvF": "FabiusClampedQuantile",
 }
 
 DOCUMENTCLASS_RE = re.compile(r"(?m)^[^%\n]*\\documentclass(?:\[[^]]*\])?\{")
@@ -201,7 +203,13 @@ def add_input(text: str, path: Path, docs: Path) -> tuple[str, bool]:
     return "".join(lines), True
 
 
-def transform(text: str, path: Path, docs: Path) -> tuple[str, dict[str, int], bool]:
+def transform(
+    text: str,
+    path: Path,
+    docs: Path,
+    *,
+    replace_global_fabius: bool,
+) -> tuple[str, dict[str, int], bool]:
     text, added = add_input(text, path, docs)
     counts = {name: 0 for name in SAFE_RENAMES}
     output: list[str] = []
@@ -218,6 +226,18 @@ def transform(text: str, path: Path, docs: Path) -> tuple[str, dict[str, int], b
             pattern = re.compile(r"\\" + re.escape(old) + r"(?![A-Za-z@])")
             code, substitutions = pattern.subn(r"\\" + new, code)
             counts[old] += substitutions
+        if replace_global_fabius:
+            for pattern in (
+                r"\\mathcal\s*\{\s*F\s*\}",
+                r"\\mathcal\s+F(?![A-Za-z@])",
+                r"\\widetilde\s*\{\s*F\s*\}",
+                r"\\widetilde\s+F(?![A-Za-z@])",
+            ):
+                code, substitutions = re.subn(pattern, r"\\FabiusGlobal", code)
+                if substitutions:
+                    counts["FabiusGlobal-literal"] = (
+                        counts.get("FabiusGlobal-literal", 0) + substitutions
+                    )
         output.append(code + comment)
     return "".join(output), {k: v for k, v in counts.items() if v}, added
 
@@ -236,6 +256,11 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("paths", nargs="+", help="explicit files/directories below docs")
     parser.add_argument("--apply", action="store_true", help="write transformed files")
+    parser.add_argument(
+        "--replace-global-fabius",
+        action="store_true",
+        help="semantically assert that literal mathcal/tilde F denotes FabiusGlobal",
+    )
     args = parser.parse_args()
     docs, archive = repository_paths()
     try:
@@ -250,7 +275,12 @@ def main() -> int:
     for path in files:
         original, encoding = read_exact(path)
         try:
-            migrated, counts, input_added = transform(original, path, docs)
+            migrated, counts, input_added = transform(
+                original,
+                path,
+                docs,
+                replace_global_fabius=args.replace_global_fabius,
+            )
         except ValueError as error:
             print(str(error), file=sys.stderr)
             return 2
@@ -259,7 +289,7 @@ def main() -> int:
         changed += 1
         roots_updated += int(input_added)
         for name, count in counts.items():
-            total[name] += count
+            total[name] = total.get(name, 0) + count
         action = "WRITE" if args.apply else "WOULD WRITE"
         print(f"{action} {path.relative_to(docs).as_posix()}")
         if args.apply:
@@ -271,7 +301,11 @@ def main() -> int:
     print(f"root imports added  : {roots_updated}")
     print("token/definition rewrites:")
     for name, count in sorted(total.items(), key=lambda item: (-item[1], item[0])):
-        if count:
+        if not count:
+            continue
+        if name == "FabiusGlobal-literal":
+            print(f"  {count:6d}  literal mathcal/tilde F -> \\FabiusGlobal")
+        else:
             print(f"  {count:6d}  \\{name} -> \\{SAFE_RENAMES[name]}")
     if not args.apply and changed:
         print("\ndry run only; rerun with --apply to write")
