@@ -1,0 +1,29 @@
+Build and validation record
+===========================
+
+Report: Automatic Scale Factorizations of the Rvachev Law
+Date: 2026-08-30
+Audited repository revision: 201f210d992878d66bea0e15eab5246e59355bed
+
+LaTeX build command:
+  latexmk -pdf -interaction=nonstopmode -halt-on-error automatic_scale_factorizations.tex
+
+Result:
+  SUCCESS
+  PDF pages: 22
+  LaTeX unresolved-reference/citation warnings: 0
+  Overfull/underfull box warnings: 0
+  All PDF fonts are embedded.
+
+Numerical experiment command:
+  python3 thue_morse_factors.py
+
+Selected high-precision checks:
+  |phi_+(z) phi_-(z) - phi_up(z)|          = 2.134e-81
+  plus q-Mahler residual                   = 4.218e-81
+  minus q-Mahler residual                  = 1.055e-81
+  Mellin check error at s=-3/2             = approximately 8e-23
+  Mellin check error at s=-1.4+0.3i        = approximately 3e-27
+
+The Monte Carlo density figure uses 500,000 coupled samples and 45 dyadic scales.
+Numerical experiments illustrate but do not replace the analytical proofs in the report.

@@ -2,6 +2,53 @@
 
 New standalone intake members:
 
+- [`fabius_dyadic_chaos_frontier/`](fabius_dyadic_chaos_frontier/),
+  *Dyadic Sensitivity and Polynomial-Chaos Frontiers for the
+  Fabius--Rvachev Law* (34 pp), arrived in
+  `fabius_dyadic_chaos_frontier.zip` (outer SHA-256
+  `d57fd01c3991a6a7ecd6ba6e745729c745745d3265cb3cfd414aac1991b11b86`).
+  The archive had one safe top-level wrapper and all thirty submitted
+  non-ledger checksums verified before extraction.  Nine CSV entries and
+  their ledger hashes were then normalized from CRLF to repository LF.
+  All seven delivered PDFs are structurally readable and unencrypted
+  (40 pages total).
+
+  The report's Hoeffding/functional-ANOVA decomposition, active-digit law,
+  tensor-Legendre marks, smooth-observable interaction bounds,
+  q-binomial/Gaussian limit, periodic effective dimension, phase limit,
+  negative-Laplace bridge, and Thue--Morse corner make it an orthogonal-chaos
+  representation member.  It remains standalone pending post-publication
+  theorem comparison, experiment assessment, and a Lean crosswalk.  Quick
+  intake did not render pages, rebuild TeX, replay the experiment, or validate
+  the mathematical claims; manuscript result labels do not establish Lean
+  proof status.
+
+- [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/),
+  the 36-page *Common-Digit Fabius Zonoids* bundle committed directly to
+  `incoming/` by `fef364bfd162f80919cd77b808530dd0734f1cb1`.
+  All 24 non-ledger payloads are covered by its submitted ledger; six CSV
+  hashes were refreshed after repository CRLF-to-LF normalization.
+
+- [`Jacobi_Digit_Fabius_Rvachev_Frontier_Report/`](Jacobi_Digit_Fabius_Rvachev_Frontier_Report/),
+  the 32-page *Jacobi-Digit Deformations of the Fabius--Rvachev Law* bundle
+  from `92c9909242ed6a2ab51d68ed816d1aa2a5339719`.  Every one of its 38
+  submitted payload hashes verified without normalization.
+
+- [`Matrix_Dilated_Fabius_Rvachev_Frontier_Report/`](Matrix_Dilated_Fabius_Rvachev_Frontier_Report/),
+  the 29-page *Matrix-Dilated Fabius--Rvachev Laws* bundle from
+  `8a184546747082cbd92ad4675fb61981c6b8c3b6`.  Its complete 27-entry
+  ledger now records the LF repository bytes; seven CSV entries changed only
+  by line-ending normalization.
+
+These were already-extracted tracked directories, not archives, so no outer
+ZIP hashes exist.  The common-digit and matrix-dilated manuscripts are related
+multivariate/zonoid lifts, but no substantive payload was an exact duplicate
+of an existing draft; semantic consolidation is deferred to the post-
+publication assessment.  Every PDF in the three deliveries was structurally
+readable and unencrypted.  No page rendering, experiment replay, TeX rebuild,
+claim audit, or Lean build was part of this quick intake, and manuscript
+result labels do not establish Lean proof status.
+
 - [`Fabius_Zero_Bias_Frontier_Report/`](Fabius_Zero_Bias_Frontier_Report/),
   *Zero-Bias Towers and Spectral Peeling in the Fabius--Rvachev System*
   (26 pp), arrived on 2026-08-30 from
@@ -77,7 +124,7 @@ New standalone intake members:
   Libertinus prose, incomplete PDF metadata, and Type-3 plot fonts remain
   explicit post-intake normalization work.
 - [`Fabius_Rvachev_New_Frontiers-2/`](Fabius_Rvachev_New_Frontiers-2/),
-  *Fabius--Rvachev New Frontiers* (36 pp; 2619 source lines after the
+  *Fabius--Rvachev New Frontiers* (37 pp; 2639 source lines after the
   2026-08-30 formal crosswalk, 2539 at landing), arrived on
   2026-08-30 from a
   rootless archive with all 15 payload checksums verified. Its native up-law
@@ -118,8 +165,16 @@ New standalone intake members:
   Gaunt/Wigner/`3j` entry formula, entry
   rationality by that route, and Christoffel reconstruction remain outside
   this closure; `rvachevTranslateGram` is the distinct unweighted Gram kernel
-  of shifted-up atoms.  The refreshed 36-page A4/Libertinus PDF matches the
-  2619-line source; its 10 Type-3 font rows are the unchanged embedded-plot
+  of shifted-up atoms.  The downstream executable modules
+  `LegendrePolynomialRational.lean` (2 definitions + 6 theorems),
+  `FabiusLegendreRationalGram.lean` (3 + 11), and
+  `FabiusLegendreRationalGramValues.lean` (0 + 11) bring the complete
+  seven-module finite-algebra inventory to 13 definitions and 61 theorems.
+  They supply executable rational Legendre coefficients and Gram determinants,
+  including the exact `H_4` and zero-based `beta_4` values, without closing the
+  Gaunt/Wigner entry route or the remaining analytic program.  The refreshed
+  37-page A4/Libertinus PDF matches the 2639-line source; its 10 Type-3 font rows
+  are the unchanged embedded-plot
   baseline, and all 15 entries in the active payload ledger verify.
 - [`Fabius_Stein_Koopman_Frontier_Report/`](Fabius_Stein_Koopman_Frontier_Report/),
   *Dyadic Stein--Koopman and q-Oscillator Calculus for the Fabius--Rvachev
@@ -135,7 +190,7 @@ Other paper theorem labels do not by themselves assert Lean status.
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
-[`Representation_Frontiers/`](Representation_Frontiers/) (299 pp;
+[`Representation_Frontiers/`](Representation_Frontiers/) (300 pp;
 eight parts):
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform

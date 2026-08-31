@@ -2,6 +2,87 @@
 
 New standalone intake members:
 
+- [`fabius_q_frontiers_report/`](fabius_q_frontiers_report/),
+  the 23-page *Parameter-Flow, Gaussian, and Large-Deviation Frontiers for the
+  q-Fabius--Rvachev Family* bundle from direct-arrival commit
+  `8a184546747082cbd92ad4675fb61981c6b8c3b6`.  Its twenty non-ledger
+  payloads remain completely covered; four CSV hashes were refreshed after
+  repository CRLF-to-LF normalization.
+
+- [`Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/`](Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/)
+  is the title-derived filing of incoming wrapper
+  `Fabius_Rvachev_Frontier_Report_2026-08-30-G/` from
+  `52179f63fe955a64508915eedaa560de9f3056da`.  Its 29-page report and
+  supporting payload are completely described by the submitted manifest and
+  19-entry checksum ledger; three CSV hashes were refreshed for LF storage.
+
+- [`q_series_from_first_principles/`](q_series_from_first_principles/)
+  contains the 30-page *q-Series from First Principles* TeX/PDF pair from
+  `c167e550348bfb33b4297684100d55dfb48b8c1a`.  The repository-generated
+  `SHA256SUMS` records both delivered files.
+
+- [`q_series_monograph/`](q_series_monograph/) contains the source-only
+  *A Proof-Driven Guide to q-Series, Basic Hypergeometric Identities, Bailey
+  Chains, and Rogers--Ramanujan Theory* from
+  `1f0f98390d551725fc7d2274638dbd7de86ee346`.  Intake repaired one corrupt
+  control byte in the intended `\rho_2` command and added a one-entry
+  `SHA256SUMS`; no PDF or auxiliary package was delivered.
+
+- [`q-series-proof-oriented-article/`](q-series-proof-oriented-article/)
+  contains the 39-page *A Proof-Oriented Guide to q-Series* TeX/PDF pair from
+  `1360db6064c676f83bceb23bece5ed304dd09ce8`; the repository-generated
+  ledger covers both files.
+
+These five reports arrived as already-extracted tracked directories, not ZIP
+archives, so no outer archive hashes exist.  The eleven delivered PDFs
+contain 128 pages in total and are structurally readable and unencrypted.
+The parameter-flow and Edgeworth reports substantially overlap each other;
+the three general q-series guides also have parallel proof architectures and
+intersect the existing q-Pochhammer/q-binomial monograph.  They remain
+separate pending the required post-publication claim comparison.  This quick
+intake did not render pages, rebuild TeX, replay computations, validate the
+mathematics, or run Lean;
+manuscript theorem/proof labels do not establish Lean proof status.
+
+- [`inverse_q_analog_jet_atlas/`](inverse_q_analog_jet_atlas/),
+  *An Inverse-Jet Atlas for q-Analogs: Multivariate Reversion, Singular
+  Branches, and Asymptotics at q=0,1,-1, Roots of Unity, and q=±∞*
+  (72 pp), arrived on 2026-08-30 from
+  `inverse_q_analog_jet_atlas_2026-08-30.zip` (outer SHA-256
+  `9c9a0353eb355e6defb87845c4a2a79d85c537fe5a6c38c5473f9d3d56448ead`).
+  The rootless archive supplied five non-ledger payloads plus
+  `SHA256SUMS.txt`; all five submitted payload hashes verified, and all five
+  text members were already LF. Its title and abstract place its inverse-jet
+  treatment of finite and infinite q-Pochhammer products, Gaussian and
+  q-multinomial coefficients, q-special functions, singular bases, roots of
+  unity, and the Fabius--Rvachev effective geometric base beside the existing
+  inverse-q reports in this group. It remains standalone pending
+  post-publication comparison and deliberate consolidation, plus a Lean
+  crosswalk; manuscript classifications and symbolic/numerical checks do not
+  establish Lean verification. Its Libertinus/Type-1-only report is letter
+  paper rather than A4, so page-size normalization remains deferred.
+
+- [`inverse_q_analog_functions_report/`](inverse_q_analog_functions_report/),
+  *Inverse Functions of q-Pochhammer Symbols, Gaussian Coefficients, and
+  Related q-Analogues: Branch Geometry, Local Reversion, Singular Limits, and
+  Computation* (59 pp), arrived on 2026-08-30 from
+  `inverse_q_analog_functions_report.zip` (outer SHA-256
+  `19cc7da37f71ddbbc0c46b91c55c23059a1e305500260bd0a306394f4c21f4de`).
+  The archive supplied nine payloads but no checksum ledger; the
+  repository-generated `SHA256SUMS` records and verifies all nine, and all five
+  text payloads were already LF. None of its nine payload hashes matches any
+  of the 48 payloads in the three previously filed inverse-q report wrappers.
+  Its finite and infinite q-Pochhammer, Gaussian, q-gamma/q-beta,
+  q-exponential, normalized q-polylogarithm, and basic hypergeometric inverse
+  branches nevertheless place it beside those reports. All four delivered
+  PDFs are structurally readable and unencrypted (62 pages total). It remains
+  standalone pending post-publication semantic comparison, deliberate
+  consolidation, and a Lean crosswalk; manuscript classifications and
+  numerical evidence do not establish Lean verification. The A4 main report
+  uses Libertinus but inherits six embedded/subset Type-3 rows from the three
+  vector figures (twelve Type-3 rows across all four PDFs); a Type-3-free
+  rebuild and refreshed checksums remain deferred.
+
 - [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](Cyclotomic_q_Fabius_Rvachev_Frontier/),
   *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
   Product* (25 pp), arrived on 2026-08-30 from
@@ -14,6 +95,9 @@ New standalone intake members:
   the consolidated q-series frontier. It remains standalone pending the
   required post-publication claim-level comparison and a Lean crosswalk;
   manuscript labels and numerical evidence do not establish Lean verification.
+  The submitted 25-page A4 report uses Latin Modern rather than the house
+  Libertinus face and retains nine embedded/subset Type-3 figure-font rows;
+  normalization is deferred so that the verified arrival payload stays intact.
 
 - [`inverse_q_analogs_extended_report/`](inverse_q_analogs_extended_report/),
   *Inverse q-Analogs in All Parameters* (104 pp), arrived on 2026-08-30 from
@@ -26,7 +110,9 @@ New standalone intake members:
   parameter recovery. It remains standalone pending post-publication
   comparison and deliberate consolidation with both inverse-q siblings, plus
   a Lean crosswalk; manuscript labels and numerical checks do not establish
-  Lean verification.
+  Lean verification. Its 104-page main report is letter paper and retains
+  twelve embedded/subset Type-3 figure-font rows; those are disclosed
+  post-intake normalization debts, not canonical rendering choices.
 
 - [`inverse_q_analogs_report-2/`](inverse_q_analogs_report-2/),
   *Inverse Functions of q-Pochhammer Symbols, Gaussian Coefficients, and
@@ -38,7 +124,9 @@ New standalone intake members:
   payload was already LF, and none matches the existing report byte-for-byte.
   It remains standalone pending post-publication semantic deduplication and a
   Lean crosswalk; manuscript classifications and numerical checks do not
-  establish Lean verification.
+  establish Lean verification. Its 59-page PDF is letter paper and uses Latin
+  Modern rather than Libertinus (with no Type-3 fonts), so page/font
+  normalization remains deferred.
 
 - [`Fabius_Rvachev_Frontier_Report/`](Fabius_Rvachev_Frontier_Report/),
 *Negative Parameters, Reciprocal Bases, and the Gaussian Boundary* (26 pp),
@@ -72,7 +160,7 @@ performed.
 
 - [`q_pochhammer_q_binomial_expansions_report/`](q_pochhammer_q_binomial_expansions_report/),
   *Local, Boundary, and Reciprocal Expansions of q-Pochhammer Symbols,
-  Gaussian Coefficients, and Related q-Analogues* (56 pp), arrived on
+  Gaussian Coefficients, and Related q-Analogues* (57 pp), arrived on
   2026-08-30 from `q_pochhammer_q_binomial_expansions_report.zip` (outer
   SHA-256
   `e8c6e5be4512abc0bacfd904e3f0027b35fd5e47e916a6ad11cc76b2893b3a07`).
@@ -615,7 +703,7 @@ matching `assets/` directories.
 `Signed_Reciprocal_q_Fabius_Frontiers/` were merged editorially as the
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
-Second member: `q_pochhammer_q_binomial_monograph/` (201 pp, book class) —
+Second member: `q_pochhammer_q_binomial_monograph/` (202 pp, book class) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
@@ -636,15 +724,15 @@ Chern–Dilcher–Jiu deleted-singularity identity and Ramanujan's ₁ψ₁
 verified numerically to 30 digits; one dominated-convergence majorant
 repaired with an `% ed.:` note).
 
-Its current formalization ledger covers the 183-result core in Chapters
-1–23: 34 exact, 24 partial, 122 with no counterpart, and 3 interface-only.
+Its current formalization ledger covers the 184-result core in Chapters
+1–23: 35 exact, 24 partial, 122 with no counterpart, and 3 interface-only.
 The later Chapter 24 Fabius bridge is crosswalked locally and is outside
 those aggregate counts; in particular its general spectral Pochhammer
 theorem remains partial despite the now-formal inside `q = 1/2`
 specialization. The algebra of
 q-shifted factorials now accounts for 3 exact, 1 partial, and 11
 unformalized results; the q-integer and Gaussian-coefficient chapter for
-2 exact, 2 partial, and 4 unformalized results. The finite
+3 exact, 2 partial, and 4 unformalized results. The finite
 q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
 unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
 unformalized results; the basic-hypergeometric chapter for 1 exact, 0
@@ -665,7 +753,8 @@ theorems), `FiniteTriangularTransform.lean` (one definition, one theorem),
 `SymmetricFunctionGenerating.lean` (two definitions, six theorems), as well
 as `QDifferenceAnnihilation.lean` (four theorems) and
 `QBinomialInversionSpecializations.lean` (two definitions, four theorems),
-`QPochhammerElementaryIdentities.lean` (13 theorems), and
+`QPochhammerElementaryIdentities.lean` (13 theorems),
+`QBinomialReciprocity.lean` (four theorems), and
 `RvachevPochhammerFactorization.lean` (one definition, six theorems).
 The chapter's alternating sums, both weighted-subset conventions,
 named module-valued inversion iff, and both kernel orthogonalities are exact.

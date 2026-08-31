@@ -1,0 +1,104 @@
+Inverse q-analog jet atlas: reproducibility audit
+mpmath precision: 80 decimal digits
+SymPy version: 1.14.0
+mpmath version: 1.3.0
+
+===============================================================================
+1. Finite q-Pochhammer criticality at q=-1
+===============================================================================
+For each n, the table checks P_q(-1)=0 at the predicted nontrivial critical parameter and compares the exact logarithmic second derivative.
+n= 3, a*= -1/3, P(-1)=32/27, P'(-1)=0, (log P)''=0, predicted=0, P'''(-1)=8/9
+n= 4, a*=  1/3, P(-1)=64/81, P'(-1)=0, (log P)''=-9/8, predicted=-9/8, P'''(-1)=128/27
+n= 5, a*= -1/5, P(-1)=3456/3125, P'(-1)=0, (log P)''=-25/72, predicted=-25/72, P'''(-1)=3744/625
+n= 6, a*=  1/5, P(-1)=13824/15625, P'(-1)=0, (log P)''=-25/18, predicted=-25/18, P'''(-1)=42624/3125
+n= 7, a*= -1/7, P(-1)=884736/823543, P'(-1)=0, (log P)''=-49/72, predicted=-49/72, P'''(-1)=1769472/117649
+n= 8, a*=  1/7, P(-1)=5308416/5764801, P'(-1)=0, (log P)''=-245/144, predicted=-245/144, P'''(-1)=21897216/823543
+n= 9, a*= -1/9, P(-1)=409600000/387420489, P'(-1)=0, (log P)''=-81/80, predicted=-81/80, P'''(-1)=1208320000/43046721
+n=10, a*=  1/9, P(-1)=3276800000/3486784401, P'(-1)=0, (log P)''=-81/40, predicted=-81/40, P'''(-1)=16875520000/387420489
+
+Exceptional exact identity:
+(−1/3;q)_3 − 32/27 = 4*(q + 1)**3/27
+
+===============================================================================
+2. Cyclotomic multiplicities and carry counts
+===============================================================================
+Gaussian exponents e_d are always 0 or 1:
+  [ 8 choose 3 ]_q: {2: 1, 4: 1, 6: 1, 7: 1, 8: 1}
+  [ 12 choose 5 ]_q: {2: 1, 3: 1, 4: 1, 6: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1}
+  [ 17 choose 7 ]_q: {4: 1, 8: 1, 11: 1, 12: 1, 13: 1, 14: 1, 15: 1, 16: 1, 17: 1}
+q-multinomial exponents can exceed one:
+  parts=[2, 2, 2], d=3, residues=[2, 2, 2], exponent=2, carry=2
+  parts=[4, 4, 4, 4], d=5, residues=[4, 4, 4, 4], exponent=3, carry=3
+  parts=[1, 1, 1, 1, 1], d=2, residues=[1, 1, 1, 1, 1], exponent=2, carry=2
+Leading coefficient of [n]_q! at q=-1:
+  n=2: multiplicity=1, coefficient=1, predicted=1
+  n=3: multiplicity=1, coefficient=1, predicted=1
+  n=4: multiplicity=2, coefficient=2, predicted=2
+  n=5: multiplicity=2, coefficient=2, predicted=2
+  n=6: multiplicity=3, coefficient=6, predicted=6
+  n=7: multiplicity=3, coefficient=6, predicted=6
+  n=8: multiplicity=4, coefficient=24, predicted=24
+Simple zero of a Gaussian polynomial at q=-1:
+  n=4: G'(-1)=(m-r) binom(m,r) verified for all odd k
+  n=6: G'(-1)=(m-r) binom(m,r) verified for all odd k
+  n=8: G'(-1)=(m-r) binom(m,r) verified for all odd k
+  n=10: G'(-1)=(m-r) binom(m,r) verified for all odd k
+  n=12: G'(-1)=(m-r) binom(m,r) verified for all odd k
+
+===============================================================================
+3. Fixed-target inverse of (a;q)_infinity as q -> 1
+===============================================================================
+The reported approximation uses five algebraic terms.  The final column scales the error by eps^6; bounded values are consistent with a remainder O(eps^6).
+target=0.3, L=1.2039728043259359926
+  eps=    0.05 exact=0.057837874659563224136869019514406 approx=0.057837874674787518370265133014052 error=-1.5224294e-11 error/eps^6=-0.000974354830937
+  eps=   0.025 exact=0.029502894288037898153569925075047 approx=0.029502894288267999862853650189207 error=-2.3010171e-13 error/eps^6=-0.000942496601226
+  eps=  0.0125 exact=0.014899767427602331403625454690893 approx=0.014899767427605874723639736779478 error=-3.54332e-15 error/eps^6=-0.000928860081824
+target=0.7, L=0.35667494393873237891
+  eps=    0.05 exact=0.017317779611500584042281192609874 approx=0.017317779622409865071609872276715 error=-1.0909281e-11 error/eps^6=-0.000698193985877
+  eps=   0.025 exact=0.008786715237021034679854781190061 approx=0.008786715237191576277176510692603 error=-1.705416e-13 error/eps^6=-0.00069853838263
+  eps=  0.0125 exact=0.004425750114534269713697372775011 approx=0.0044257501145369351016374097363785 error=-2.6653879e-15 error/eps^6=-0.000698715456153
+
+===============================================================================
+4. q-gamma expansion at q=e^{-eps} -> 1
+===============================================================================
+c1(x) = -(x - 2)*(x - 1)/4
+c2(x) = (x - 2)*(x - 1)*(2*x + 3)/144
+c4(x) = -(x - 2)*(x - 1)*(6*x**3 + 3*x**2 + 7*x + 15)/86400
+Numerical residual after c1 eps + c2 eps^2, divided by eps^4:
+x=0.5, predicted c4=-0.000173611111111111
+  eps=0.08 scaled=-0.000173593476537727944
+  eps=0.04 scaled=-0.000173606702051472797
+  eps=0.02 scaled=-0.000173610008743275947
+x=0.7, predicted c4=-0.000105751388888889
+  eps=0.08 scaled=-0.000105740932498957258
+  eps=0.04 scaled=-0.000105748774568895809
+  eps=0.02 scaled=-0.000105750735371886296
+x=1.3, predicted c4=0.000102938888888889
+  eps=0.08 scaled=0.000102928458208277761
+  eps=0.04 scaled=0.000102936280978699881
+  eps=0.02 scaled=0.000102938236904028068
+x=2.5, predicted c4=-0.00125868055555556
+  eps=0.08 scaled=-0.00125833123087174605
+  eps=0.04 scaled=-0.00125859320525831054
+  eps=0.02 scaled=-0.00125865871686241775
+x=4.2, predicted c4=-0.0441505777777778
+  eps=0.08 scaled=-0.0441087602213344758
+  eps=0.04 scaled=-0.0441401142405586472
+  eps=0.02 scaled=-0.0441479613202554879
+
+===============================================================================
+5. Centered Gaussian square-root inverse
+===============================================================================
+n=8, k=3, kappa2=45/4, kappa4=-513/8, kappa6=47295/28
+u=0.01 exact eps=0.04218150310657489919102100767 Puiseux=0.04218150310711066006226107483 error=-5.357608712e-13
+u=0.0025 exact eps=0.02108407632802159148972440216 Puiseux=0.02108407632802577892991952044 error=-4.187440195e-15
+u=0.000625 exact eps=0.01054120369576148328339910703 Puiseux=0.01054120369576151600130412449 error=-3.271790502e-17
+
+===============================================================================
+6. q-beta critical curve at q=1
+===============================================================================
+linear coefficient b1(x,y) = (x*y - 1)/2
+quadratic coefficient b2(x,y) = -(x**2*y + x*y**2 - x*y - 1)/24
+on xy=1: b2(x,1/x) = -(x - 1)**2/(24*x)
+
+All exact assertions passed.
