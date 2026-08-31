@@ -1,5 +1,5 @@
 FABIUS--RVACHEV NEW FRONTIERS
-=============================
+-----------------------------
 
 Repository snapshot audited
 ---------------------------
@@ -13,27 +13,23 @@ superseded, generated, proved, numerical, and conjectural material.
 Main deliverables
 -----------------
 fabius_rvachev_new_frontiers.tex
-    Current 2,783-line, 110,157-byte A4/27 mm/Libertinus LaTeX report,
-    SHA-256 00172d9b3e787e3483b4a9aa027d3834fd5ea390313cf4b2917fdfa577450b2b.
-    The merge-resolved source
-    preserves the canonical preamble, vector-figure and claim-status
-    safeguards, retains
-    the current scalar-base-change Gram--Stieltjes and all-degree rational
-    native Jacobi boundaries while incorporating the detailed generic and
-    Legendre Gram-determinant Lean crosswalk. It now inventories all 99 public
-    names across nine relevant modules: the 22-declaration executable rational
-    Legendre coefficient/Gram API, the eleven-theorem low-order values leaf,
-    and the new 25-declaration generic/up-law finite Gaunt tranche.  The report
-    distinguishes the now-formal rational Gaunt integral, product
-    linearization, and Gram-entry sums from the still-unformalized Wigner 3j
-    identification and factorial closed form, and keeps every remaining
-    paper-only boundary explicit.
+    Frozen post-union source: 2,863 lines, 115,122 bytes, SHA-256
+    4eeea1a1cbe5497e6db3424a0c185f3a3be750f5816b22be5e7baed091753455.
+    It preserves the canonical
+    preamble, cleaned-vector-figure and claim-status safeguards, the
+    scalar-base-change Gram--Stieltjes and all-degree rational native Jacobi
+    boundaries, and the detailed generic/Legendre determinant and finite-Gaunt
+    crosswalk.  Its target inventory is all 99 public names across nine modules,
+    including the 25-declaration generic/up-law finite Gaunt tranche.  The
+    source is synchronized with the final post-union PDF described below.
 
 fabius_rvachev_new_frontiers.pdf
-    Last validated 39-page A4 rendering with embedded/subset fonts, Libertinus
-    prose, and no Type 3 fonts. It was rebuilt in exactly three strict passes
-    against the preceding source checkpoint; it has not yet been regenerated
-    from the current merge-resolved source.
+    Final synchronized post-union artifact: 41 A4 pages, 780,141 bytes,
+    SHA-256 9871ac93cce5d8ee1aa48e946f46dc2e19865fb33a1d2e3b9b8be01360318901.
+    Exactly three strict serial passes from the frozen 2,863-line source
+    produced 39, 41, and 41 pages.  The report embeds the five cleaned vector
+    PDF figures.  Earlier 39-page and 41-page checkpoints remain recorded below
+    as historical evidence.
 
 fabius_frontier_experiments.py
     Fully commented 580-line exact/high-precision experiment. It computes
@@ -65,13 +61,12 @@ CORPUS_AUDIT.md
 
 pdf_preflight.json
     PDF structural, geometry, font, text, build-log, and visual preflight for
-    the last validated render, plus the current uncompiled-source fingerprint.
+    the synchronized final post-union render, with historical checkpoints
+    retained explicitly.
 
 SHA256SUMS.txt
-    Current package payload ledger. All rows verify the current source and
-    metadata together with the retained historical PDF. This is an integrity
-    check, not a claim that the PDF was rendered from the current TeX; the
-    source/PDF rebuild remains pending.
+    Final 20-payload inventory ledger.  Its fixed historical payload scope is
+    preserved, every row is current, and all 20 entries verify.
 
 Numerical publication run
 -------------------------
@@ -120,6 +115,34 @@ for figure in jacobi_coefficients pi_approximants pi_product_error \
       "figures/${figure}.pdf" "figures/${figure}"
 done
 
+Final post-union verification
+-----------------------------
+* The frozen 2,863-line, 115,122-byte source has SHA-256
+  4eeea1a1cbe5497e6db3424a0c185f3a3be750f5816b22be5e7baed091753455.
+  Exactly three halted serial pdflatex passes exited zero and produced 39, 41,
+  and 41 pages.
+* The final 780,141-byte PDF has SHA-256
+  9871ac93cce5d8ee1aa48e946f46dc2e19865fb33a1d2e3b9b8be01360318901.
+  It is unencrypted PDF 1.5 with 41 zero-rotation A4 pages and A4 MediaBox,
+  CropBox, BleedBox, TrimBox, and ArtBox values on every page.
+* All 35 font rows are embedded and subset; five are Libertinus.  There are no
+  Latin Modern or Type 3 fonts and no raster images.  The five embedded plot
+  PDFs and five supplemental PNG companions retain their audited provenance.
+* The final-pass log has no LaTeX/package warning, TeX error, unresolved
+  reference/citation, duplicate label/destination, rerun request, or overfull
+  box.  Its nine benign underfull notices are confined to the narrow
+  claim-status table on page 7, which was inspected at full render size.
+* Layout-preserving extraction produced 2,475 lines (144,752 bytes).  It
+  contains all 99 public names across the nine inventoried modules, including
+  all 25 generic/up-law finite Gaunt declarations.  The Gaunt formulas and
+  nonclaim boundaries pass line-wrap-tolerant extraction checks.
+* Pages 16--18, 21--31, and 36--38
+  were visually inspected.  All five vector figures render cleanly on pages
+  17, 22, 29 (two figures), and 30, with intact axes, legends, captions, and
+  curves.
+* The refreshed fixed-scope checksum ledger verifies all 20 payloads and the
+  publication log remains preserved.
+
 Historical verification
 -----------------------
 * The arrival/pre-normalization checkpoint used a clean latexmk build with no
@@ -136,8 +159,8 @@ Historical verification
   checked at full-page resolution.
 * Python byte-compilation and an independent degree-24 smoke run succeeded.
 
-Last validated repository rebuild
----------------------------------
+Historical 39-page cleaned-vector repository rebuild
+----------------------------------------------------
 * Clean strict serial pdflatex passes 1--3 produced 37, 39, and 39 pages.
 * The final unencrypted PDF has 39 A4 pages, zero rotation, and A4
   MediaBox/CropBox/BleedBox/TrimBox/ArtBox on every page. All 35 font rows are
@@ -155,11 +178,26 @@ Last validated repository rebuild
 * Pages 1, 7, 11, 13, 14, 25, 27, 34, 35, and 39 were visually inspected; the title,
   corrected status table, complete rational/Gaunt crosswalk, vector figures,
   formalization roadmap, and final references page are unclipped and readable.
-* At that checkpoint, the 20-entry checksum ledger included all five PNG
-  companions and synchronized the TeX, PDF, README, CORPUS_AUDIT, and
-  pdf_preflight entries. The current merge-resolved TeX is not synchronized
-  with that PDF. The source-only refresh records both as distinct verified
-  payloads; the next rebuild must synchronize them and refresh those rows.
+* At that checkpoint, the refreshed 20-entry checksum ledger included all five
+  PNG companions and synchronized the TeX, PDF, README, CORPUS_AUDIT, and
+  pdf_preflight entries.
+
+Separate 41-page Gaunt checkpoint
+---------------------------------
+* A later local checkpoint used a frozen 2,864-line source, SHA-256
+  1befebaf2f38048a0a1f8ae1a42476da6c8d05173b4651f4f10c0a96888c5f2e,
+  and exactly three halted pdflatex passes to produce a 41-page A4 PDF,
+  SHA-256 8f859f73bbaaf212a004278f8b3035d6f6add5a5de8deeb0bc3360ae9bb73446.
+* That checkpoint embedded the five PNG plot companions, had 23 embedded and
+  subset font rows including five Libertinus rows and no Type 3 fonts, retained
+  all 76 focused declaration names (the prior 51 plus all 25 Gaunt names), and
+  passed its then-current 20-entry ledger.
+* Its status/crosswalk/Gaunt/reference/plot pages 2, 7, 13--14, 17, 22--23,
+  25--27, 29--30, 37, and 41 were inspected, including all five plot placements
+  on pages 17, 23, 29, 30, and 30.
+* This is historical evidence only.  The current package retains the cleaned
+  vector-PDF figure provenance.  It is superseded as the current artifact by
+  the synchronized final post-union verification recorded above.
 
 Claim status
 ------------

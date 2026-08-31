@@ -128,21 +128,23 @@ strictness and equality refinements.  The fifth module,
 `GeometricUniformMultisection.lean`, contributes two coordinate definitions
 and three fixed half/quarter multisection theorems.  The baseline records the
 current inventory after the subsequent three-theorem signed natural-moment
-addition and the two positive-order signed distribution theorems
-`intervalIntegral_comp_normalized_iteratedDeriv_rvachev` (the Banach-valued
-continuous-test half-mixture) and
-`map_normalized_iteratedDeriv_rvachev_restrict_Icc` (the restricted-Lebesgue
-Borel pushforward) in `RvachevDerivativeDistribution.lean`, together with the
-all-depth `generalizedRvachevProduct_two_pow_mul` shift--refinement theorem in
-`WeightLinearityProducts.lean`.  It records those zeroes, so every future
-source addition must preserve the
+addition to `RvachevDerivativeDistribution.lean`, the all-depth
+`generalizedRvachevProduct_two_pow_mul` shift--refinement theorem in
+`WeightLinearityProducts.lean`, and the two positive-order signed-distribution
+theorems `intervalIntegral_comp_normalized_iteratedDeriv_rvachev` and
+`map_normalized_iteratedDeriv_rvachev_restrict_Icc`.  The last pair gives the
+exact symmetric half-mixture first against continuous Banach-valued tests and
+then as a Borel pushforward equality.  The baseline records those zeroes, so
+every future source addition must preserve the
 full invariant rather than merely avoid worsening a historical backlog.  Run
 the script for live numbers after merging concurrent source work.
 
-The documentation merge itself was validated source-only at the user's
-request.  Its merged TeX sources are newer than the selected committed PDFs;
-those PDFs remain potentially stale until the next required three-pass
-Libertinus rebuild.
+The documentation merge was initially validated source-only.  The three
+changed publication roots were subsequently rebuilt from their final merged
+TeX sources in three strict serial pdfLaTeX passes each.  The resulting primary,
+canonical-frontier, and filed New Frontiers PDFs contain 164, 236, and 41 A4
+pages, respectively; all fonts are embedded and subset, no Type 3 font remains,
+and the filed package's 20-entry ledger verifies 20/20.
 
 ### What the review pass caught
 
