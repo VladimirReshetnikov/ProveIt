@@ -1364,7 +1364,10 @@ For every $N\ge0$, phase $\theta$, and polynomial $p$ of degree at most $N$,
  u_b\!\left(\frac{k+\theta}{b^N}\right).
  \label{is:p3:eq:base-b-self-sampling}
 \end{equation}
-Moreover, averaging the $b^s$ phases $a/b^s$ gives the level-$N+s$ rule and is the unique full DFT filter annihilating every nonzero residue modulo $b^s$.
+Moreover, averaging the $b^s$ phases $a/b^s$ gives the level-$N+s$ rule and is
+the unique normalized full DFT filter: among coefficient vectors $(c_a)$ with
+$\sum_a c_a=1$, it is the only one annihilating every nonzero residue modulo
+$b^s$.
 \end{theorem}
 
 \begin{proof}
@@ -1383,8 +1386,9 @@ polynomials.
 For the phase refinement, average the rules with phases $a/b^s$.  Writing
 $r=b^sk+a$ identifies their nodes bijectively with $r/b^{N+s}$, and the
 averaged coefficient is $b^{-(N+s)}$; the result is exactly the level-$N+s$
-rule.  Finally, weights $c_a$ annihilate every nonzero residue precisely when
-their $b^s$-point discrete Fourier transform is $(1,0,\ldots,0)$.  Fourier
+rule.  Finally, normalized weights $c_a$ with $\sum_a c_a=1$ annihilate every
+nonzero residue precisely when their $b^s$-point discrete Fourier transform is
+$(1,0,\ldots,0)$.  Fourier
 inversion gives $c_a=b^{-s}$ for every $a$, proving uniqueness.
 \end{proof}
 

@@ -11,9 +11,9 @@
 \subsection{A general inverse perturbation theorem}
 
 The first new step is abstract.  It is useful well beyond the Fabius function.
-Let $q=1/4$ and abbreviate $Q_n=q^n$.  From \eqref{is:p1:eq:forward-prefix-expansion},
+Let $q=1/4$ and abbreviate $\varepsilon_n=q^n$.  From \eqref{is:p1:eq:forward-prefix-expansion},
 \begin{equation}
- \Fn(x)=F(x)+\sum_{j=1}^{J-1}a_j(x)Q_n^j+\BigO(Q_n^J),
+ \Fn(x)=F(x)+\sum_{j=1}^{J-1}a_j(x)\varepsilon_n^j+\BigO(\varepsilon_n^J),
  \qquad
  a_j(x)=(-1)^jb_jF^{(2j)}(x).
  \label{is:p1:eq:an-def}
@@ -25,8 +25,8 @@ Fix $0<\eta<1/2$ and an integer $J\ge1$.  There exist smooth functions
 $c_1,\ldots,c_{J-1}$ on $[\eta,1-\eta]$ such that
 \begin{equation}
  \boxed{
- \Gn(y)=\FabiusQuantile(y)+\sum_{j=1}^{J-1}c_j(y)Q_n^j
- +\BigO_{\eta,J}(Q_n^J)}
+ \Gn(y)=\FabiusQuantile(y)+\sum_{j=1}^{J-1}c_j(y)\varepsilon_n^j
+ +\BigO_{\eta,J}(\varepsilon_n^J)}
  \label{is:p1:eq:Gn-expansion}
 \end{equation}
 uniformly for $y\in[\eta,1-\eta]$.  Put $x=\FabiusQuantile(y)$ and
@@ -54,25 +54,25 @@ so the inverse branch $\Gn$ exists there.
 
 Write $x=\FabiusQuantile(y)$ and use the finite ansatz
 \[
- \delta_n^{[J]}(y):=\sum_{m=1}^{J-1}c_m(y)Q_n^m.
+ \delta_n^{[J]}(y):=\sum_{m=1}^{J-1}c_m(y)\varepsilon_n^m.
 \]
 Substitute $x+\delta_n^{[J]}$ into the finite expansion
-\eqref{is:p1:eq:an-def}.  The coefficient of $Q_n^m$ in
+\eqref{is:p1:eq:an-def}.  The coefficient of $\varepsilon_n^m$ in
 $F(x+\delta_n^{[J]})-F(x)$ is
 \[
  F'(x)c_m+\frac1{m!}\sum_{k=2}^{m}F^{(k)}(x)
  \mathcal B_{m,k}(1!c_1,2!c_2,\ldots).
 \]
-The coefficient of $Q_n^{m-j}$ in $a_j(x+\delta_n)$ is the corresponding
+The coefficient of $\varepsilon_n^{m-j}$ in $a_j(x+\delta_n)$ is the corresponding
 second Bell sum in \eqref{is:p1:eq:Bell-inverse-recursion}.  Solving the resulting
 triangular equation for $c_m$ gives the formula.  Taylor's theorem with a
 uniform remainder shows that
-$\Fn(x+\delta_n^{[J]})=y+\BigO_{\eta,J}(Q_n^J)$.
+$\Fn(x+\delta_n^{[J]})=y+\BigO_{\eta,J}(\varepsilon_n^J)$.
 The uniform positive lower bound for $(\Fn)'$ then converts this residual in
 the function value into
-$\Gn(y)=x+\delta_n^{[J]}(y)+\BigO_{\eta,J}(Q_n^J)$, proving the claimed
+$\Gn(y)=x+\delta_n^{[J]}(y)+\BigO_{\eta,J}(\varepsilon_n^J)$, proving the claimed
 finite-order expansion without assuming convergence of an infinite series in
-$Q_n$.
+$\varepsilon_n$.
 \end{proof}
 
 \subsection{The first two quantile corrections}
@@ -1356,7 +1356,7 @@ spatial variable.
 For $n\ge0$, $0\le k<2^n$, and $-1\le y\le1$, put
 \[
  c_{n,k}(y):=-1+\frac{2k+1+y}{2^n},
- \qquad S_n:=2^{\binom{n+1}{2}},
+ \qquad \mathcal D_n:=2^{\binom{n+1}{2}},
 \]
 and let $\BinaryDigitSum(k)$ be the binary digit sum.
 
@@ -1364,18 +1364,18 @@ and let $\BinaryDigitSum(k)$ be the binary digit sum.
 \label{rvd:thm:derivative-distribution}
 The $n$th derivative of the Rvachev function $u$ satisfies
 \begin{equation}
- u^{(n)}(c_{n,k}(y))=S_n(-1)^{\BinaryDigitSum(k)}u(y).
+ u^{(n)}(c_{n,k}(y))=\mathcal D_n(-1)^{\BinaryDigitSum(k)}u(y).
  \label{rvd:eq:cell-tiling}
 \end{equation}
 Consequently, for every continuous real- or Banach-valued test function $H$,
 \begin{equation}
- \int_{-1}^{1}H\!\left(S_n^{-1}|u^{(n)}(x)|\right)\Differential x
+ \int_{-1}^{1}H\!\left(\mathcal D_n^{-1}|u^{(n)}(x)|\right)\Differential x
  =\int_{-1}^{1}H(u(y))\Differential y.
  \label{rvd:eq:absolute-law}
 \end{equation}
 For $n\ge1$ the signed normalized law is the symmetric half-mixture
 \begin{equation}
- \int_{-1}^{1}H\!\left(S_n^{-1}u^{(n)}(x)\right)\Differential x
+ \int_{-1}^{1}H\!\left(\mathcal D_n^{-1}u^{(n)}(x)\right)\Differential x
  =\frac12\int_{-1}^{1}\bigl(H(u(y))+H(-u(y))\bigr)\Differential y.
  \label{rvd:eq:signed-law}
 \end{equation}
@@ -1383,14 +1383,14 @@ Equivalently, these are equalities of Borel pushforward measures under
 Lebesgue measure restricted to $[-1,1]$.  In particular, for $m\in\NaturalNumbers$,
 \begin{equation}
  \int_{-1}^{1}(u^{(n)}(x))^m\Differential x
- =2^{-n}(1+(-1)^m)^nS_n^m
+ =2^{-n}(1+(-1)^m)^n\mathcal D_n^m
   \int_{-1}^{1}u(y)^m\Differential y,
  \label{rvd:eq:signed-moments}
 \end{equation}
 and, for every real $p\ge0$,
 \begin{equation}
  \int_{-1}^{1}|u^{(n)}(x)|^p\Differential x
- =S_n^p\int_{-1}^{1}u(y)^p\Differential y.
+ =\mathcal D_n^p\int_{-1}^{1}u(y)^p\Differential y.
  \label{rvd:eq:absolute-moments}
 \end{equation}
 \end{theorem}
@@ -1403,7 +1403,7 @@ substituting $x=c_{n,k}(y)$ therefore gives
 \[
  \int_{-1}^{1}H(u^{(n)}(x))\Differential x
  =2^{-n}\sum_{k=0}^{2^n-1}
-   \int_{-1}^{1}H\!\left(S_n(-1)^{\BinaryDigitSum(k)}u(y)\right)\Differential y.
+   \int_{-1}^{1}H\!\left(\mathcal D_n(-1)^{\BinaryDigitSum(k)}u(y)\right)\Differential y.
 \]
 Taking absolute values erases every sign, and the $2^n$ equal summands cancel
 the Jacobian, proving \eqref{rvd:eq:absolute-law}.  For $n\ge1$, toggling the

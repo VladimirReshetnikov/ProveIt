@@ -1,6 +1,6 @@
 # Lean crosswalk for the canonical inverse-Fabius synthesis
 
-This document records the source-level Lean correspondence for the 194 immutable source-result rows in theorem_concordance.csv and for three post-snapshot strengthenings added directly to the canonical volume.
+This document records the source-level Lean correspondence for the 194 immutable source-result rows in theorem_concordance.csv and for five post-snapshot results added directly to the canonical volume.
 
 ## Evidence boundary
 
@@ -24,12 +24,12 @@ The first ten columns of theorem_concordance.csv remain field-for-field identica
 
 | Source package | Rows | Lean-proved | Human-proved | Conjecture | Open problem | Not applicable |
 |---|---:|---:|---:|---:|---:|---:|
-| Inverse_and_Sampling_Frontiers | 83 | 6 | 54 | 2 | 10 | 11 |
+| Inverse_and_Sampling_Frontiers | 83 | 5 | 55 | 2 | 10 | 11 |
 | Inverse_Endpoint_All_Orders | 29 | 1 | 20 | 6 | 0 | 2 |
 | Inverse_Fabius_Computability_Report | 40 | 14 | 16 | 1 | 4 | 5 |
 | inverse_fabius_iterates_nowhere_analytic | 24 | 2 | 17 | 1 | 1 | 3 |
 | Non_Elementarity_of_the_Fabius_Function | 18 | 14 | 1 | 0 | 0 | 3 |
-| **Total** | **194** | **37** | **108** | **10** | **15** | **24** |
+| **Total** | **194** | **36** | **109** | **10** | **15** | **24** |
 
 The high human-proved count is intentional. In particular, a full forward asymptotic expansion composed with F inverse is not an explicit all-orders inverse reversion theorem, and a formal Catalan or Richardson identity is not an analytic asymptotic for the actual finite-prefix quantiles.
 
@@ -57,7 +57,7 @@ Important non-identity mappings are:
 | p1:thm:quantile-elasticity | ao:thm:elasticity | Two-term result absorbed into the all-orders elasticity theorem. |
 | p1:thm:all-orders-endpoint-recursion | ao:thm:all-orders | The triangular recursion is part of the stronger canonical theorem. |
 | p2:thm:algebraic-inverse-germ | is:p2:thm:algebraic-inverse-germ | The full reduced-dyadic algebraic shadow and nonzero flat-remainder theorem is retained; its general form remains outside Lean. |
-| p2:thm:Catalan-quarter | is:p2:thm:Catalan-quarter | The complete quarter-point theorem is retained explicitly; its exact Lean derivative formula is recorded in the CSV. |
+| p2:thm:Catalan-quarter | is:p2:thm:Catalan-quarter | The complete quarter-point theorem is retained explicitly. Lean proves its all-order derivative formula, but not every clause of the packaged theorem, so the source row is human-proved. |
 | p3:conj:positive-extremality | is:p3:prob:sparse-positive-phase | Corrected and demoted from an unsupported extremality conjecture to a sparse positive-filter design problem. |
 | p3:conj:quantile-phase-locking | is:p3:prob:quantile-endpoint-alias | Corrected and demoted to the missing uniform endpoint/alias matching problem. |
 | p3:conj:primitive-rules | none | Retired as vacuous: least-common-denominator normalization already forces primitive integer weights. |
@@ -67,13 +67,12 @@ The four unlabelled source obligations are marked not applicable and point to th
 
 ## Exact declaration index
 
-The table below is generated from the 37 Lean-proved concordance rows. Declaration names are fully qualified.
+The table below is generated from the 36 Lean-proved concordance rows. Declaration names are fully qualified.
 
 | Source key | Canonical label | Lean module | Principal declaration |
 |---|---|---|---|
 | Inverse_and_Sampling_Frontiers:p1:lem:filter-moments | is:p1:lem:filter-moments | FabiusFunction.GeometricLagrangeQMoments | Fabius.quarterGeometricLagrangeQMoment_eq_residual_qBinomial |
 | Inverse_and_Sampling_Frontiers:p1:thm:quarter-exact | is:p1:thm:quarter-exact | FabiusFunction.QuarterQuantile | Fabius.quarterQuantile_eq |
-| Inverse_and_Sampling_Frontiers:p2:thm:Catalan-quarter | is:p2:thm:Catalan-quarter | FabiusFunction.FabiusInverseQuarterJet | Fabius.iteratedDeriv_fabiusInv_five_seventy_two_succ |
 | Inverse_and_Sampling_Frontiers:p3:thm:self-sampling | is:p3:thm:self-sampling | FabiusFunction.PolynomialCombExactness | Fabius.integral_polynomial_mul_rvachevUp_eq_dyadic_tsum |
 | Inverse_and_Sampling_Frontiers:p3:prop:half-integer-sign | is:p3:prop:half-integer-sign | FabiusFunction.ThueMorseLobeSign | Fabius.rvachevFourierProduct_eq_thueMorse_sign_mul_norm |
 | Inverse_and_Sampling_Frontiers:p3:lem:phi-half-lower | is:p3:lem:phi-half-lower | FabiusFunction.SincProductPositive | Fabius.four_ninths_lt_re_rvachevFourierProduct_half |
@@ -91,7 +90,7 @@ The table below is generated from the 37 Lean-proved concordance rows. Declarati
 | Inverse_Fabius_Computability_Report:thm:reciprocal-modulus | co:thm:reciprocal-modulus | FabiusFunction.FabiusInverseLogarithmicModulus | Fabius.fabiusInv_effectivelyUniformContinuous_logarithmicDelta |
 | Inverse_Fabius_Computability_Report:lem:flatness-upper | co:lem:flatness-upper | FabiusFunction.SharpFlatness | Fabius.fabiusReal_le_two_pow_div_factorial_mul_pow |
 | Inverse_Fabius_Computability_Report:thm:no-holder | co:thm:no-holder | FabiusFunction.FabiusInverseAsymptotic | Fabius.not_exists_fabiusInv_le_const_mul_rpow_near_zero |
-| Inverse_Fabius_Computability_Report:cor:sub-holder | co:cor:sub-holder | FabiusFunction.FabiusInverseAsymptotic | Fabius.fabiusInv_isLittleO_negLog_rpow_at_zero_right |
+| Inverse_Fabius_Computability_Report:cor:sub-holder | co:cor:sub-holder | FabiusFunction.FabiusInverseAsymptotic | Fabius.tendsto_fabiusInv_div_rpow_atTop_at_zero_right |
 | Non_Elementarity_of_the_Fabius_Function:thm:nowhere | ne:thm:nowhere | FabiusFunction.NowhereAnalytic | Fabius.canonical_fabius_analyticAt_iff |
 | Non_Elementarity_of_the_Fabius_Function:thm:density | ne:thm:density | FabiusFunction.ElementaryFunction | Fabius.IsElementary.dense_analyticLocus |
 | Non_Elementarity_of_the_Fabius_Function:cor:main | ne:cor:main | FabiusFunction.NotElementary | Fabius.canonical_fabius_not_isElementary_eqOn_of_interior_nonempty |
@@ -102,21 +101,25 @@ The table below is generated from the 37 Lean-proved concordance rows. Declarati
 | Non_Elementarity_of_the_Fabius_Function:cor:algebraic | ne:cor:algebraic | FabiusFunction.NotElementary | Fabius.not_algebraicBranch_eqOn |
 | Non_Elementarity_of_the_Fabius_Function:thm:ift | ne:thm:ift | FabiusFunction.InverseBranch | Fabius.analyticAt_of_rightInverse |
 | Non_Elementarity_of_the_Fabius_Function:thm:invnowhere | ne:thm:invnowhere | FabiusFunction.InverseNotElementary | Fabius.analyticLocus_fabiusInv |
-| Non_Elementarity_of_the_Fabius_Function:cor:invmain | ne:cor:invmain | FabiusFunction.InverseNotElementary | Fabius.canonical_fabiusInv_not_isElementary_on_Ioo |
+| Non_Elementarity_of_the_Fabius_Function:cor:invmain | ne:cor:invmain | FabiusFunction.InverseNotElementary | Fabius.not_eqOn_fabiusInv_of_dense_analyticLocus |
 | Non_Elementarity_of_the_Fabius_Function:thm:invbranch | ne:thm:invbranch | FabiusFunction.InverseBranch | Fabius.analyticDenseOn_of_rightInverse |
 | Non_Elementarity_of_the_Fabius_Function:thm:plusdense | ne:thm:plusdense | FabiusFunction.InverseBranch | Fabius.IsElementaryOrInverse.dense_analyticLocus |
 | Non_Elementarity_of_the_Fabius_Function:cor:plusmain | ne:cor:plusmain | FabiusFunction.InverseNotElementary | Fabius.not_isElementaryOrInverse_eqOn_fabiusInv |
 | inverse_fabius_iterates_nowhere_analytic:prop:fixed-k-minimum | ii:prop:fixed-k-minimum | FabiusFunction.PartitionDefect | Fabius.partitionDefect_fixed_block_eq_iff |
 | inverse_fabius_iterates_nowhere_analytic:prop:first-shell | ii:prop:first-shell | FabiusFunction.PartitionDefect | Fabius.partitionDefect_eq_firstShell_iff |
 
-Several paper rows contain multiple clauses. For those rows, the principal declaration above is accompanied in the same module by the remaining exact clauses, and the CSV disposition note names that split. The important cases are:
+Several paper rows contain multiple clauses. For those rows, the principal declaration above belongs to the following explicit finite family; the CSV repeats the exact family at the source-row level.
 
-- Density shape: strictMonoOn_deriv_fabiusReal_Icc is accompanied by strictAntiOn_deriv_fabiusReal_Icc and derivative reflection.
-- Least interval mass: fabiusIntervalMass_eq_fabiusReal_iff is accompanied by the strict first- and second-half interval-mass theorems.
-- Exact inverse modulus: sSup_abs_fabiusInv_sub_eq is accompanied by the pointwise gap, ordered-gap, subadditivity, and equality declarations.
-- Effective injectivity: the strict theorem has closed-threshold and contrapositive companions.
-- Dense analytic locus: IsElementary.dense_analyticLocus is accompanied by the generic isOpen_analyticLocus theorem.
-- Expanded elementary-plus-inverse exclusion: the recorded inverse declaration has a forward companion in InverseNotElementary.
+- Quarter-scale filter moments: `Fabius.geometricLagrangeQMoment_zero`, `Fabius.quarterGeometricLagrangeQMoment_eq_zero`, and `Fabius.quarterGeometricLagrangeQMoment_eq_residual_qBinomial` prove normalization, the cancelled range, and every residual moment.
+- Density shape: `Fabius.strictMonoOn_deriv_fabiusReal_Icc`, `Fabius.strictAntiOn_deriv_fabiusReal_Icc`, and `Fabius.deriv_fabiusReal_one_sub` prove the two strict branches and reflection.
+- Least interval mass: `Fabius.fabiusIntervalMass_reflect`, `Fabius.fabiusIntervalMass_eq_zero_of_add_nonpos`, `Fabius.fabiusIntervalMass_eq_zero_of_one_le`, `Fabius.strictMonoOn_fabiusIntervalMass_firstHalf`, `Fabius.strictAntiOn_fabiusIntervalMass_secondHalf`, `Fabius.fabiusReal_sub_le_sub`, `Fabius.fabiusIntervalMass_eq_fabiusReal_iff`, and `Fabius.fabiusReal_sub_eq_sub_iff` prove the global shape, minimum, and both equality formulations.
+- Global increment shape: `Fabius.monotoneOn_fabiusIntervalMass_firstHalf`, `Fabius.antitoneOn_fabiusIntervalMass_secondHalf`, `Fabius.fabiusReal_add_le`, and `Fabius.fabiusReal_add_eq_iff` prove the half-line shape, constrained superadditivity, and its equality locus.
+- Exact inverse modulus: `Fabius.sSup_abs_fabiusInv_sub_Icc_eq`, `Fabius.sSup_abs_fabiusInv_sub_eq`, `Fabius.fabiusInv_min_one`, `Fabius.abs_fabiusInv_sub_le`, `Fabius.fabiusInv_sub_le_sub`, `Fabius.fabiusInv_add_le`, `Fabius.fabiusInv_sub_eq_sub_iff_of_mem_Icc`, and `Fabius.abs_fabiusInv_sub_eq_iff_of_mem_Icc` prove the two exact suprema, saturation, pointwise and order-free gap inequalities, subadditivity, and equality loci.
+- Effective injectivity: `Fabius.abs_fabiusInv_sub_lt_of_abs_sub_lt_fabiusReal`, `Fabius.abs_fabiusInv_sub_le_of_abs_sub_le_fabiusReal`, and `Fabius.fabiusReal_le_abs_sub_of_le_abs_fabiusInv_sub` prove the strict, closed, and contrapositive forms.
+- Closed dyadic modulus: `Fabius.abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_deltaDenominator` is the exact source theorem, and `Fabius.abs_fabiusInv_sub_le_inverse_two_pow_of_le_deltaDenominator` is the documented closed-boundary strengthening.
+- Endpoint non-Hölder behavior: `Fabius.not_exists_fabiusInv_le_const_mul_rpow_near_zero` gives the zero-endpoint obstruction, `Fabius.tendsto_one_sub_fabiusInv_div_one_sub_rpow_atTop_at_one_left` gives its reflected endpoint-one form, and `Fabius.tendsto_fabiusInv_div_rpow_atTop_at_zero_right` together with `Fabius.sSup_abs_fabiusInv_sub_Icc_eq` gives the exact-modulus quotient divergence.
+- Inverse nonrepresentability: `Fabius.not_eqOn_fabiusInv_of_dense_analyticLocus` together with `Fabius.IsElementary.dense_analyticLocus` proves the arbitrary nonempty-interior-set statement; `Fabius.canonical_fabiusInv_not_isElementary_on_Ioo` is its canonical-interval specialization.
+- Fixed-block partition defect: `Fabius.partitionDefect_fixed_block_bound` and `Fabius.partitionDefect_fixed_block_eq_iff` prove the sharp minimum and complete equality profile.
 
 ## Formal kernels of stronger human-proved results
 
@@ -134,7 +137,7 @@ deliberately blank in the concordance.
 
 ## Post-source strengthenings
 
-Three results were added directly to the canonical synthesis after the immutable source snapshot. They therefore have no concordance rows and do not change the 194-row source totals.
+Five result labels were added directly to the canonical synthesis after the immutable source snapshot. They therefore have no concordance rows and do not change the 194-row source totals. Three are Lean-proved, one is human-proved, and one is an open problem.
 
 ### Exact Lean strengthening: derivative distributions
 
@@ -151,11 +154,17 @@ The formal theorem family proves:
 
 This result is not Appell biorthogonality. Its test function is applied to the value of an iterated derivative. It does not prove an integral pairing of an iterated derivative with an Appell polynomial in the spatial variable.
 
-### New human-proved strengthenings
+### Other exact Lean additions
 
-The finite-product loss lemma `is:p3:lem:finite-product-loss` gives the exact elementary lower bound used to pass from finite sinc products to the positive half-frequency estimate. Its canonical proof is complete, but there is no named Lean declaration with that statement.
+The complete geometric residual theorem `is:p2:thm:geometric-lagrange-residual` is represented by `Fabius.sum_geometricLagrangeWeight_mul_pow_of_pos` in `FabiusFunction.GeometricResidualMoments`, together with `Fabius.completeHomogeneousEval_geometric` for the complete-homogeneous-polynomial form. For the paper's real hypothesis `0 < q < 1`, the required injectivity of the finite node family `j ↦ q^j` is immediate. These declarations cover both displayed residual forms and the vanishing range encoded by the Gaussian binomial.
 
-The base-b density proposition `is:p3:prop:base-b-density` constructs the compactly supported smooth density, proves its normalization, symmetry, dilation law, and Fourier product, and thereby closes the analytic existence gap in the source base-b extension. `FabiusFunction.GeometricScaleProducts` formalizes the abstract geometric-product renormalization mechanism, but it does not construct this density or prove the proposition's full analytic statement. The proposition is therefore a human-proved frontier result.
+The finite-product loss lemma `is:p3:lem:finite-product-loss` is exactly the initial-segment Weierstrass inequality `Fabius.one_sub_sum_range_le_prod_range_one_sub` in `FabiusFunction.WeierstrassProductBound`, instantiated with the range of length `J + 1`.
+
+### Human-proved addition and new open problem
+
+The base-b density proposition `is:p3:prop:base-b-density` constructs a nonnegative compactly supported smooth density, proves its Fourier product, total mass, exact support, and infinite-convolution interpretation, and thereby closes the analytic existence gap in the source base-b extension. `FabiusFunction.GeometricScaleProducts` formalizes the abstract geometric-product renormalization mechanism, but it does not construct this density or prove the proposition's full analytic statement. The proposition is therefore a human-proved frontier result.
+
+The dyadic singularity atlas `is:p2:prob:dyadic-singularity-atlas` is explicitly an open problem asking for a recursive classification beyond the proved quarter- and eighth-point models.
 
 ## Principal formalization boundaries
 

@@ -23,11 +23,41 @@ whose special case is formalized is not labelled Lean-proved unless the
 specialization and all of its hypotheses match exactly.
 
 At the source snapshot recorded in the concordance, the resulting
-classification is \(37\) Lean-proved rows, \(108\) human-proved frontier
+classification is \(36\) Lean-proved rows, \(109\) human-proved frontier
 rows, \(10\) conjectures, \(15\) open problems, and \(24\) nonassertoric
 rows, for \(194\) rows in all.  These are source-result counts, not counts of
 distinct canonical theorem environments: deduplication may send several
 source rows to one stronger surviving result.
+
+The normalization in the shifted self-sampling theorem is matched exactly by
+the Lean declaration
+\texttt{Fabius.integral\_polynomial\_mul\_rvachevUp\_eq\_dyadic\_tsum}
+in \texttt{FabiusFunction.PolynomialCombExactness}.  It has the same
+whole-line integral, dyadic mesh factor, arbitrary real phase, polynomial
+degree bound, sampling nodes, and Rvachev-density weights; compact support
+reduces its integral to \([-1,1]\).  Thus no informal rescaling bridge is
+being hidden in the Lean-proved classification.
+
+Five canonical results were added after the immutable source snapshot and
+therefore do not alter the \(194\)-row totals.  Three are Lean-proved:
+the derivative-distribution theorem, the complete geometric-Lagrange residual
+theorem (by
+\texttt{Fabius.sum\_geometricLagrangeWeight\_mul\_pow\_of\_pos} and
+\texttt{Fabius.completeHomogeneousEval\_geometric}), and the finite-product
+loss lemma (by
+\texttt{Fabius.one\_sub\_sum\_range\_le\_prod\_range\_one\_sub}).
+The base-\(b\) density proposition is a new human-proved strengthening, and
+the dyadic singularity atlas is explicitly an open problem.  All five
+dispositions and their exact formalization boundaries are recorded in the
+Lean crosswalk.
+
+The source theorem \cref{is:p2:thm:Catalan-quarter} illustrates why the count
+uses whole-statement rather than partial-clause certification.  The declaration
+\texttt{Fabius.iteratedDeriv\_fabiusInv\_five\_seventy\_two\_succ}
+formalizes its all-order Catalan derivative formula, but not the packaged
+quarter jet, quadratic algebraic shadow, and large-order asymptotic as one
+finite exact family.  The complete canonical theorem therefore remains
+human-proved.
 
 \subsection{Partial formalizations are recorded as partial}
 
