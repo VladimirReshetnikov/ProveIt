@@ -662,11 +662,14 @@ For $p\in\NaturalNumbers$,
 \end{equation}
 where
 \begin{equation}
+\begin{aligned}
  H_{m,p}(a)
- =\sum_{j=0}^{\Floor{m/2}}\binom m{2j}c_j
- \sum_{r=0}^{p}\binom pr a^{p-r}
- \sum_{s=0}^{m-2j}\binom{m-2j}{s}2^{s}(-1)^{m-2j-s}\,
- \frac{B_{r+s+1}(M-a)-B_{r+s+1}(1)}{r+s+1}.
+ &=\sum_{j=0}^{\Floor{m/2}}\binom m{2j}c_j
+   \sum_{r=0}^{p}\binom pr a^{p-r} \\
+ &\quad\times
+   \sum_{s=0}^{m-2j}\binom{m-2j}{s}2^{s}(-1)^{m-2j-s}
+   \frac{B_{r+s+1}(M-a)-B_{r+s+1}(1)}{r+s+1}.
+\end{aligned}
  \label{eq:Hnp}
 \end{equation}
 \end{theorem}
@@ -1143,8 +1146,11 @@ exact rational number computable from the level-$(2r-1)$ comb.
 \begin{proof}
 Solve \eqref{eq:odd-defect-series} for $D(m+1)$ with $m=2r-1$; the
 prefactor is
-$(-1)^{(m+1)/2}(2\pi)^{m+1}2^{m(m+1)}/(2\,m!)
-=(-1)^{r}2^{(m+1)^2}\pi^{m+1}/(2\,m!)$.  The defect on the right of
+\[
+ \frac{(-1)^{(m+1)/2}(2\pi)^{m+1}2^{m(m+1)}}{2\,m!}
+ =\frac{(-1)^{r}2^{(m+1)^2}\pi^{m+1}}{2\,m!}.
+\]
+The defect on the right of
 \eqref{eq:odd-defect-series} is rational by
 \cref{thm:bernoulli-TM} and \eqref{eq:Ip}.
 \end{proof}
@@ -2501,7 +2507,10 @@ certificates.
 
 The error at dyadic resolution $M=2^{m}$ has the exact separated
 finite-rank form
-$\sum_{r\le d+1}\fall d{r-1}\,B_r(\theta)\,2^{-mr}/r!$\,: phase
+\[
+ \sum_{r\le d+1}\frac{\fall d{r-1}}{r!}\,B_r(\theta)\,2^{-mr}.
+\]
+Thus phase
 acts on the Bernoulli basis while each resolution step scales the
 $r$th mode by $2^{-r}$ (a Ruffa layer by $1-2^{r}$ at the fine mesh),
 so phase filters and resolution filters commute and can be designed
@@ -2794,9 +2803,9 @@ one has
  Q_{\bm M,\bm\theta,\bm p}^{(d)}
  &=\prod_{j=1}^d\left(I_{p_j}+\mathcal P_{p_j,M_j}(\theta_j)\right),
  \label{eq:tensor-product-correction}\\
- \boxed{I_{\bm p}^{(d)}
- &=\prod_{j=1}^d\left(Q_{M_j,\theta_j,p_j}
- -\mathcal P_{p_j,M_j}(\theta_j)\right).}
+ &\boxed{\displaystyle I_{\bm p}^{(d)}
+ =\prod_{j=1}^d\left(Q_{M_j,\theta_j,p_j}
+ -\mathcal P_{p_j,M_j}(\theta_j)\right)}
  \label{eq:tensor-exact-moment}
 \end{align}
 By linearity the same anisotropic rule integrates every polynomial times
@@ -3472,11 +3481,14 @@ $I_p,\dots,I_{p+n-1}$, Bernoulli numbers, and elementary symmetric
 polynomials.  The corresponding full-support Rvachev sums close in
 the moment basis alone: for $m\ge p+n-1$,
 \begin{equation}
- h^{n}\sum_{k=-M}^{M}\binom{M-k+n-1}{n-1}(kh)^{p}\,\RvachevUp(kh)
- =\frac{1}{(n-1)!}
- \sum_{i=0}^{n-1}(-1)^{i}
- e_{\,n-1-i}\bigl(1{+}h,\dots,1{+}(n{-}1)h\bigr)\,
- \mu_{p+i},
+\begin{aligned}
+ &h^{n}\sum_{k=-M}^{M}
+   \binom{M-k+n-1}{n-1}(kh)^{p}\,\RvachevUp(kh) \\
+ &\qquad=\frac{1}{(n-1)!}
+   \sum_{i=0}^{n-1}(-1)^{i}
+   e_{\,n-1-i}\bigl(1{+}h,\dots,1{+}(n{-}1)h\bigr)\,
+   \mu_{p+i}.
+\end{aligned}
  \label{eq:iter-up-moments}
 \end{equation}
 with $\mu_{2r}=c_r$, $\mu_{2r+1}=0$, by
@@ -3979,8 +3991,12 @@ exact endpoint derivative growing almost like $2^{M}$.
 
 \begin{conjecture}[Fabius Runge divergence]
 \label{conj:runge-divergence}
-$\Norm{F-P_{2^{m}}}_\infty\to\infty$; more strongly,
-$\tfrac1M\log_2\Norm{F-P_M}_\infty\to1$ along dyadic $M$, possibly
+\[
+ \Norm{F-P_{2^{m}}}_\infty\longrightarrow\infty;
+ \qquad
+ \frac1M\log_2\Norm{F-P_M}_\infty\longrightarrow1.
+\]
+The stronger limit is asserted along dyadic $M$, possibly
 with a subexponential, dyadically oscillatory correction.
 \end{conjecture}
 
