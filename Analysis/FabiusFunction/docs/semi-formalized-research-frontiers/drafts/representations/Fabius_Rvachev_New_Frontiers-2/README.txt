@@ -13,18 +13,22 @@ superseded, generated, proved, numerical, and conjectural material.
 Main deliverables
 -----------------
 fabius_rvachev_new_frontiers.tex
-    Complete 2,757-line A4/27 mm/Libertinus LaTeX report. The merged source
+    Complete 2,827-line A4/27 mm/Libertinus LaTeX report. The merged source
     preserves the canonical preamble, vector-figure and claim-status
     safeguards, retains
     the current scalar-base-change Gram--Stieltjes and all-degree rational
     native Jacobi boundaries while incorporating the detailed generic and
-    Legendre Gram-determinant Lean crosswalk. It now also inventories the exact
-    22-declaration executable rational Legendre coefficient/Gram API and the
-    eleven-theorem low-order values leaf, while keeping the remaining
+    Legendre Gram-determinant Lean crosswalk. It now inventories all 99 public
+    names across nine relevant modules: the 22-declaration executable rational
+    Legendre coefficient/Gram API, the eleven-theorem low-order values leaf,
+    and the new 25-declaration generic/up-law finite Gaunt tranche.  The report
+    distinguishes the now-formal rational Gaunt integral, product
+    linearization, and Gram-entry sums from the still-unformalized Wigner 3j
+    identification and factorial closed form, and keeps every remaining
     paper-only boundary explicit.
 
 fabius_rvachev_new_frontiers.pdf
-    Current 38-page A4 rendering with embedded/subset fonts, Libertinus prose,
+    Current 39-page A4 rendering with embedded/subset fonts, Libertinus prose,
     and no Type 3 fonts. It was rebuilt in exactly three strict passes against
     the updated source and is synchronized with the PDF preflight and checksum
     ledger.
@@ -125,21 +129,22 @@ Historical verification
 
 Current repository rebuild verification
 ---------------------------------------
-* Clean strict serial pdflatex passes 1--3 produced 36, 38, and 38 pages.
-* The final unencrypted PDF has 38 A4 pages, zero rotation, and A4
+* Clean strict serial pdflatex passes 1--3 produced 37, 39, and 39 pages.
+* The final unencrypted PDF has 39 A4 pages, zero rotation, and A4
   MediaBox/CropBox/BleedBox/TrimBox/ArtBox on every page. All 35 font rows are
   embedded and subset; five are Libertinus; there are no Latin Modern or Type
   3 fonts and no raster images.
 * The final-pass log has no LaTeX/package warning, overfull box, TeX error,
   unresolved reference/citation, duplicate label/destination, or rerun
   request. Its nine benign underfull notices are confined to the narrow
-  claim-status table on page 6, which was checked at full render size.
-* Layout-preserving extraction produced 2,310 lines (135,546 bytes).
-  Whitespace-normalized PDF text contains all 74 public names across the seven
+  claim-status table on page 7, which was checked at full render size.
+* Layout-preserving extraction produced 2,363 lines (139,178 bytes).
+  Whitespace-normalized PDF text contains all 99 public names across the nine
   scalar-naturality, native rational Jacobi, generic/Legendre determinant,
-  executable rational, and low-order values modules inventoried in the report.
-* Pages 1, 6, 12, 16, 27, 34, and 38 were visually inspected at 120 dpi; the
-  title, corrected status table, rational crosswalk, vector figures,
+  executable rational, low-order values, and finite Gaunt modules inventoried
+  in the report.
+* Pages 1, 7, 11, 13, 14, 25, 27, 34, 35, and 39 were visually inspected; the title,
+  corrected status table, complete rational/Gaunt crosswalk, vector figures,
   formalization roadmap, and final references page are unclipped and readable.
 * The refreshed 20-entry checksum ledger includes all five PNG companions and
   synchronizes the TeX, PDF, README, CORPUS_AUDIT, and pdf_preflight entries.
@@ -159,6 +164,14 @@ The report distinguishes:
   verifying their hypotheses for the up-law;
 * high-precision observations; and
 * explicitly labeled conjectures.
+
+The post-snapshot Lean layer now proves executable rational Gaunt coefficients,
+their real integral casts, finite Legendre product linearization, parity and
+triangle-support zeros, and the finite rational and real up-law Gram-entry
+sums.  It does not yet identify those integrals with Wigner 3j symbols or prove
+the Wigner factorial form.  Christoffel reconstruction, root results,
+quadrature, Pade identification, infinite Jacobi products, and the report's
+asymptotic claims remain outside Lean.
 
 "New" means not found in the audited repository snapshot.  It is not a claim
 of worldwide priority.

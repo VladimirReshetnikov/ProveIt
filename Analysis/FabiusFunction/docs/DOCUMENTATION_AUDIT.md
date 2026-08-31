@@ -109,22 +109,23 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 613 modules and 8,355 lexically
+The post-merge 2026-08-31 inventory contains 615 modules and 8,380 lexically
 visible public declarations, with zero missing module headers and zero missing
-doc comments.  This snapshot includes the two Lambert branch-point leaves, the
-activation-analysis family, the effective inverse-modulus pair, the geometric
-sinc characteristic bridge, the symmetric Thue--Morse difference module, the
-four nonpositive-parameter diagnostics in `GeometricUniformCDF.lean`, the
-expanded strictness and equality API in `InverseModulus.lean`, and the local
-half--quarter multisection leaf.  Relative to the 610-module/8,318-declaration
-activation checkpoint, the exact delta is three modules and 37 declarations:
-17 branch-point declarations, four density-diagnostic theorems, eleven
-inverse-modulus refinements, and the five documented declarations in
-`GeometricUniformMultisection.lean` (`evenCoordinates`, `oddCoordinates`, and
-the three half--quarter multisection laws).  The baseline records the current
-inventory and those zeroes, so every future source addition must preserve the
-full invariant rather than merely avoid worsening a historical backlog.  Run
-the script for live numbers after merging concurrent source work.
+doc comments.  It combines the activation, effective inverse-modulus,
+geometric-sinc, symmetric Thue--Morse, nonpositive-parameter CDF, expanded
+inverse-modulus, Lambert branch-point, Legendre--Gaunt, and fixed half--quarter
+multisection tranches.  Relative to the previous local 613/8,355 checkpoint,
+the two Legendre--Gaunt modules contribute 25 declarations: four definitions
+and twelve theorems in `LegendreGaunt.lean`, and one definition and eight
+theorems in `FabiusLegendreGaunt.lean`.  They add the executable rational
+triple-product and finite product-linearization core, then specialize it to
+full and even Rvachev coefficient sums for rational and real Legendre Gram
+entries.  Equivalently, the local `GeometricUniformMultisection.lean` leaf adds
+its two definitions and three theorems to the remote 614/8,375 inventory.  The
+baseline records the current inventory and those zeroes, so every future source
+addition must preserve the full invariant rather than merely avoid worsening a
+historical backlog.  Run the script for live numbers after merging concurrent
+source work.
 
 ### What the review pass caught
 

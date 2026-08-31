@@ -3237,6 +3237,103 @@ The block is defined directly as a polynomial.  These declarations do not
 formalize its finite up-translate realization, the separate Fourier-product
 or infinite-sinc integral for this energy, or rationality of its partial sums.
 
+\subsection{Executable Gaunt coefficients and finite up-law Gram entries}
+
+The later finite Gaunt tranche gives an independent, entrywise bridge from
+rational Legendre algebra to the up-law Gram matrix.  In
+\nolinkurl{LegendreGaunt.lean}, define
+\[
+ \mu_n^{\Q}=\begin{cases}2/(n+1),&n\text{ even},\\0,&n\text{ odd},\end{cases}
+ \qquad
+ G_{ijk}=\int_{-1}^{1}P_i(x)P_j(x)P_k(x)\,\dd x,
+\]
+and let \(G_{ijk}^{\Q}\) be the bounded triple coefficient sum obtained by
+expanding the three rational Legendre polynomials and evaluating the monomial
+moment \(\mu_{a+b+c}^{\Q}\).  The four exact definitions are
+\nolinkurl{legendreLebesgueMomentRat},
+\nolinkurl{legendreGauntRat},
+\nolinkurl{legendreGaunt}, and
+\nolinkurl{legendreProductLinearizationCoeffRat}, with the last equal to
+\((2k+1)G_{ijk}^{\Q}/2\).
+
+The module's complete twelve-theorem inventory is
+\nolinkurl{legendreLebesgueMomentRat_even},
+\nolinkurl{legendreLebesgueMomentRat_odd},
+\nolinkurl{legendreLebesgueMomentRat_cast},
+\nolinkurl{legendreGauntRat_eq_momentFunctional},
+\nolinkurl{legendreGauntRat_cast},
+\nolinkurl{legendreGauntRat_swap_left},
+\nolinkurl{legendreGauntRat_swap_right},
+\nolinkurl{legendrePolynomial_mul_eq_sum_gaunt},
+\nolinkurl{legendrePolynomialRat_mul_eq_sum_gaunt},
+\nolinkurl{legendreGauntRat_eq_zero_of_odd_sum},
+\nolinkurl{legendreGauntRat_eq_zero_of_add_lt}, and
+\nolinkurl{legendreGauntRat_eq_zero_of_triangle_violation}.
+Thus, for every \(i,j\in\N\), both coefficient fields satisfy the exact
+finite linearization
+\[
+ P_iP_j=\sum_{k=0}^{i+j}\frac{2k+1}{2}G_{ijk}P_k,
+\]
+where the real coefficient is the cast of its executable rational version.
+The two swap theorems generate full symmetry.  Odd \(i+j+k\), or violation
+of any triangle inequality, forces the rational Gaunt coefficient to vanish.
+
+The proof uses only finite algebra and ordinary Legendre orthogonality.
+Integrating \(x^n\) over the symmetric interval gives the displayed rational
+moment.  Expanding the three finite polynomials proves that the bounded triple
+sum is their rational moment functional, and casting term by term identifies
+it with the real triple integral.  Since \(\deg(P_iP_j)\le i+j\), its finite
+Fourier--Legendre projection is exact; the norm
+\(\int_{-1}^{1}P_k^2=2/(2k+1)\) gives the normalization.  Injectivity of
+\(\Q[X]\to\R[X]\) reflects the real identity back to rational polynomials.
+Parity makes the triple product odd when the index sum is odd.  If
+\(i+j<k\), the exact product expansion contains only degrees below \(k\), so
+orthogonality kills its pairing with \(P_k\); symmetry handles the other two
+triangle violations.
+
+The companion \nolinkurl{FabiusLegendreGaunt.lean} has the single definition
+\nolinkurl{canonicalRvachevFullLegendreCoefficientRat}.  It inserts zero at
+odd indices and at \(2r\) returns
+\nolinkurl{canonicalRvachevLegendreCoefficientRat}\((r)\).  Its complete
+eight-theorem inventory is
+\nolinkurl{canonicalRvachevFullLegendreCoefficientRat_even},
+\nolinkurl{canonicalRvachevFullLegendreCoefficientRat_odd},
+\nolinkurl{canonicalRvachevFullLegendreCoefficientRat_cast},
+\nolinkurl{canonicalRvachevFullLegendreCoefficientRat_eq_normalized_moment},
+\nolinkurl{rvachevLegendreGramEntryRat_eq_sum_full_gaunt},
+\nolinkurl{rvachevLegendreGramEntryRat_eq_sum_gaunt},
+\nolinkurl{rvachevLegendreGramMatrixRat_apply_eq_sum_gaunt}, and
+\nolinkurl{upLegendreGramMatrix_apply_eq_sum_gaunt}.
+
+The normalized-moment theorem says
+\[
+ C_k^{\Q}=\frac{2k+1}{2}
+   \operatorname{moment}_{\mathrm{up}}^{\Q}(P_k^{\Q}).
+\]
+Applying that functional to the finite product linearization proves
+\[
+ \mathcal G_{ij}^{\Q}
+  =\sum_{k=0}^{i+j}C_k^{\Q}G_{ijk}^{\Q}
+  =\sum_{r=0}^{\lfloor(i+j)/2\rfloor}
+     c_r^{\Q}G_{ij,2r}^{\Q}.
+\]
+The second equality deletes the zero odd terms and reindexes \(k=2r\); the
+rational matrix theorem is this same formula at finite indices.  For every
+bounded Fabius representative \(F\) satisfying \nolinkurl{IsFabius F}, the
+coefficient and Gaunt cast bridges give
+the real entry formula
+\[
+ \mathcal G_{ij}^{(n)}(F)
+  =\sum_{r=0}^{\lfloor(i+j)/2\rfloor}
+     c_r(F)G_{ij,2r}.
+\]
+Every sum is finite, so no infinite Legendre series is interchanged with an
+integral.  This closes the finite Gaunt entry expansion and its rational
+realization.  It does not identify \(G_{ijk}\) with a Wigner \(3j\) symbol,
+prove the associated factorial formula, positivity or converse support, or
+develop roots, Christoffel reconstruction, quadrature, Pad\'e approximation,
+asymptotics, or an infinite expansion.
+
 \subsection{Computational significance}
 The exact coefficient theorem gives a certified way to produce rational polynomial approximants.  The least-squares theorem certifies optimality in \(L^2\), while uniform convergence certifies pointwise approximation.  This is a rare combination:
 \begin{itemize}
@@ -4589,6 +4686,8 @@ Module & Role in the development \\
 \nolinkurl{FabiusTranslatedLegendreSeries.lean} & Affine translation to the signed Fabius function and monomial expansion of the translated series. \\
 \nolinkurl{FabiusLegendreLeastSquares.lean} & Pythagorean identity and unique least-squares optimality of finite Legendre truncations. \\
 \nolinkurl{FabiusLegendreEnergy.lean} & Polynomial-form Legendre blocks, their complete orthogonality, full coefficient Parseval identity, exact shifted coefficient-energy tails in \nolinkurl{HasSum} and \nolinkurl{tsum} form, and the real-variable Legendre series for \(\int_0^1F(t)^2\,dt\).  Finite up-translate realization, Fourier/sinc energy formulas, and rationality of partial sums remain outside the module. \\
+\nolinkurl{LegendreGaunt.lean} & Four definitions and twelve theorems: executable rational symmetric-interval moments and Gaunt triple sums, their real-integral cast, finite real and rational product linearizations, symmetry, and parity/triangle support zeros. \\
+\nolinkurl{FabiusLegendreGaunt.lean} & One definition and eight theorems: the full rational Rvachev--Legendre coefficient sequence and exact full/even finite Gaunt expansions of rational entries, rational matrices, and real up-law Gram entries. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{K-fold Thue--Morse audit and auxiliary asymptotics}}\\[0.25em]
 \nolinkurl{ThueMorseApproximation.lean} & Exact identification of corrected grid samples with moving-center step approximants and pointwise convergence, including the endpoint. \\

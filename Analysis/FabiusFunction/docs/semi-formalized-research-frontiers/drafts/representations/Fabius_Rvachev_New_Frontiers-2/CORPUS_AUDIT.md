@@ -80,7 +80,7 @@ through finite Gaunt matrices.
 ## Post-snapshot Lean crosswalk
 
 The pinned audit and its corpus-relative novelty statements remain historical.
-The current repository has since added three executable-rational modules beside
+The current repository has since added five executable-rational modules beside
 the generic moment-Gram and real Fabius--Legendre determinant layers:
 
 - `LegendrePolynomialRational.lean` contributes two public definitions and six
@@ -109,15 +109,33 @@ the generic moment-Gram and real Fabius--Legendre determinant layers:
   are unconditional.  The real Hankel-ratio value, squared-integral value, and
   fourth/third Hankel-ratio quotient each require a `BoundedFabius` input and an
   `IsFabius` certificate.
+- `LegendreGaunt.lean` contributes four public definitions and twelve public
+  theorems.  It defines executable rational Lebesgue moments, rational and real
+  Legendre Gaunt coefficients, and rational product-linearization
+  coefficients; proves the moment and integral cast bridges, symmetry, exact
+  finite product linearization over both the rationals and reals, and the
+  necessary odd-sum and strict-triangle-violation zeros.
+- `FabiusLegendreGaunt.lean` contributes one public definition and eight public
+  theorems.  It extends the even rational Rvachev--Legendre coefficients by
+  proved odd zeros, identifies the full coefficient with its normalized
+  rational moment, proves full and even-indexed finite Gaunt sums for every
+  executable rational Gram entry and matrix entry, and casts the entry formula
+  to the real up-law Gram matrix under `BoundedFabius` and `IsFabius`.
 
 Thus executable rational coefficient, entry, matrix, determinant, cast,
-positivity, norm-ratio, and Jacobi-ratio layers now have exact Lean
-counterparts, and the displayed `H_4` and `beta_4` now have named exact values.
-The finite Gaunt/Wigner/3j entry expansion and rationality by that route remain
-paper-only, as do Christoffel reconstruction, root results, quadrature, infinite
-Jacobi products, and asymptotics.  The report keeps the original 22-declaration
-coefficient/Gram inventory separate from the exhaustive eleven-theorem values
-inventory; neither duplicates the pre-existing generic and real module inventories.
+positivity, norm-ratio, Jacobi-ratio, finite Gaunt-integral, product-
+linearization, and Gaunt-sum Gram-entry layers now have exact Lean
+counterparts, and the displayed `H_4` and `beta_4` have named exact values.  The
+Gaunt modules establish rationality by an executable finite triple sum and cast
+it to the real integral; they do not identify that integral with a Wigner `3j`
+symbol, prove the Wigner factorial formula, prove the converse of the parity
+and triangle support conditions, or prove positivity on admissible triples.
+Christoffel reconstruction, root results, quadrature, Padé identification,
+infinite Jacobi products, and asymptotics remain paper-only.  The report keeps
+the original 22-declaration coefficient/Gram inventory, exhaustive eleven-
+theorem values inventory, and new 25-declaration Gaunt inventory separate from
+the pre-existing generic and real module inventories; together the nine
+inventoried modules expose 99 public names.
 
 ## Status discipline
 

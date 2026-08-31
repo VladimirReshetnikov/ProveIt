@@ -247,8 +247,10 @@ searches.  That audit found pre-existing Nevai-limit, $J$-fraction, Hankel, and
 Gauss--Pad\'e programs in the canonical representation frontier.  It found no
 matching report-level result for the log-concavity of $\Up$, the rational
 Christoffel limits and alternating Jacobi product for $\pi$, or the finite
-Gaunt/Wigner entry expansion. The determinant change-of-basis and Jacobi
-cross-ratio are now formalized downstream. ``New'' therefore applies only to the
+Gaunt/Wigner entry expansion. The determinant change-of-basis, Jacobi
+cross-ratio, and equivalent finite rational Gaunt-sum entry expansion are now
+formalized downstream; the Wigner/$3j$ identification and its factorial closed
+form are not. ``New'' therefore applies only to the
 non-overlapping claims relative to this repository snapshot, not to the whole
 package and not as a claim of worldwide priority.  Every imported fact, new
 proof, standard external theorem, numerical observation, and conjecture is
@@ -386,8 +388,11 @@ Legendre Gram determinant, executable rational data, and Jacobi cross-ratio
  & Exact Lean counterpart & \path{FabiusLegendreHankelDeterminant.lean};
    \path{FabiusLegendreRationalGram.lean};
    \path{FabiusLegendreRationalGramValues.lean} \\
-Finite Gaunt/Wigner entry expansion
- & New finite identity here & Existing exact Legendre coefficients \\
+Finite Gaunt integral, product linearization, and rational Gram-entry sum
+ & Exact Lean counterpart & \path{LegendreGaunt.lean};
+   \path{FabiusLegendreGaunt.lean} \\
+Wigner $3j$ identification and factorial closed form
+ & Report-level formula & Not represented in the current Lean API \\
 Monotone $\beta_n$, precise log-square rate
  & Conjectural & Exact checks and 4,800-digit computation through $n=200$ \\
 \bottomrule
@@ -717,6 +722,8 @@ $\pi_n$ by induction.
 \end{proof}
 
 \begin{remark}[Current Lean boundary and complete declaration inventory]
+The nine modules inventoried in this remark expose exactly 99 public names:
+18 definitions and 81 theorems.  Each name appears once in the inventory below.
 The scalar-base-change module \path{GramStieltjesNaturality.lean} contains zero
 public definitions and exactly six public theorems:
 \path{momentPairing_map}, \path{map_gramStieltjesNumerator},
@@ -869,14 +876,66 @@ ratio, its squared monic-orthogonal-polynomial integral against
 \path{rvachevMeasure}, and the quotient of the fourth and third real Hankel
 ratios with those exact values.
 
-This closure does \emph{not} formalize the finite Gaunt integral
-\cref{eq:gaunt-integral}, the finite matrix identity
-\cref{eq:finite-gaunt-matrix}, or the Wigner/\(3j\)-symbol factorial form
-\cref{eq:wigner-factorial}.  Entry
-rationality is now formalized through the executable coefficient--moment double
-sum, but rationality by the Gaunt/Wigner route remains paper-only.  Christoffel
-reconstruction, root results, quadrature, infinite Jacobi products, and
-asymptotics also remain paper-only.  Finally, the existing
+The current finite Gaunt tranche adds two exhaustive APIs.  The generic module
+\path{LegendreGaunt.lean} has four public definitions,
+\path{legendreLebesgueMomentRat}, \path{legendreGauntRat},
+\path{legendreGaunt}, and \path{legendreProductLinearizationCoeffRat}, and
+exactly twelve public theorems:
+\path{legendreLebesgueMomentRat_even},
+\path{legendreLebesgueMomentRat_odd},
+\path{legendreLebesgueMomentRat_cast},
+\path{legendreGauntRat_eq_momentFunctional},
+\path{legendreGauntRat_cast},
+\path{legendreGauntRat_swap_left},
+\path{legendreGauntRat_swap_right},
+\path{legendrePolynomial_mul_eq_sum_gaunt},
+\path{legendrePolynomialRat_mul_eq_sum_gaunt},
+\path{legendreGauntRat_eq_zero_of_odd_sum},
+\path{legendreGauntRat_eq_zero_of_add_lt}, and
+\path{legendreGauntRat_eq_zero_of_triangle_violation}.
+It defines the Lebesgue moments on \([-1,1]\), an executable bounded rational
+triple coefficient sum, its real interval integral, and the normalized product
+coefficient.  The cast theorems identify the rational sums with the real
+integrals.  The two product theorems give exact finite Legendre linearization
+over both \(\R\) and \(\Q\); symmetry, odd-total-degree vanishing, and every
+strict triangle-violation zero are proved rather than imposed in the
+definition.
+
+The up-law specialization \path{FabiusLegendreGaunt.lean} has one public
+definition, \path{canonicalRvachevFullLegendreCoefficientRat}, and exactly
+eight public theorems:
+\path{canonicalRvachevFullLegendreCoefficientRat_even},
+\path{canonicalRvachevFullLegendreCoefficientRat_odd},
+\path{canonicalRvachevFullLegendreCoefficientRat_cast},
+\path{canonicalRvachevFullLegendreCoefficientRat_eq_normalized_moment},
+\path{rvachevLegendreGramEntryRat_eq_sum_full_gaunt},
+\path{rvachevLegendreGramEntryRat_eq_sum_gaunt},
+\path{rvachevLegendreGramMatrixRat_apply_eq_sum_gaunt}, and
+\path{upLegendreGramMatrix_apply_eq_sum_gaunt}.
+The full coefficient sequence inserts the proved odd zeros into the canonical
+even sequence and is the normalized rational Rvachev moment of the
+corresponding Legendre polynomial.  Every executable rational Gram entry is
+then a finite full Gaunt sum, equivalently the even-indexed sum
+\[
+ \sum_{r=0}^{\lfloor(i+j)/2\rfloor}
+ c_r\,\mathrm{legendreGauntRat}(i,j,2r),
+\]
+with entrywise rational-matrix and real-integral forms.  The real form assumes
+a \path{BoundedFabius} representative and its \path{IsFabius} certificate;
+the rational identities are unconditional.  Thus the integral on the
+left-hand side of \cref{eq:gaunt-integral}, finite truncation,
+product-linearization, rationality, and Gram-entry content underlying
+\cref{eq:finite-gaunt-matrix} now have exact Lean counterparts without
+expanding an infinite series under an integral.
+
+Lean does \emph{not} identify \path{legendreGaunt} with a Wigner \(3j\)
+symbol, prove the equality to twice its square in
+\cref{eq:gaunt-integral}, or prove the factorial closed form
+\cref{eq:wigner-factorial}.  It also proves only the necessary parity and
+triangle-support zeros, not their converse or positivity on admissible
+triples.  Christoffel reconstruction, root results, quadrature, infinite
+Jacobi products, Pad\'e identification, and asymptotics remain paper-only.
+Finally, the existing
 \path{rvachevTranslateGram} is a different object: it pairs shifted-up atoms
 under unweighted interval integration, whereas \path{upLegendreGramMatrix} and
 its rational executable counterpart pair ordinary polynomials under the up-law
@@ -1777,8 +1836,11 @@ rational-cast companion
 \path{rvachevJacobiSubdiagonalRat_cast_eq_upLegendreGramDet_ratio} use index $k\ge0$
 for the conventional coefficient $\beta_{k+1}$; replacing $k$ by $n-1$ gives
 exactly \eqref{eq:beta-gaunt-determinants}.  Their proof is the displayed
-$G=C^{\mathsf T}HC$ determinant argument and does not pass through the still-open
-Gaunt/Wigner entry expansion.  The determinant identity, $D_0=1$, the
+$G=C^{\mathsf T}HC$ determinant argument and does not depend on the separately
+formalized finite Gaunt entry expansion.  The latter is supplied by
+\path{LegendreGaunt.lean} and \path{FabiusLegendreGaunt.lean}; only its
+Wigner/\(3j\) identification and factorial closed form remain outside Lean.
+The determinant identity, $D_0=1$, the
 leading-coefficient quotient, and the real Gram cross-ratio hold for every
 \path{BoundedFabius}; entry-as-integral, strict positivity, and the rational-cast
 bridge require \path{IsFabius}.  Without Hankel nonvanishing, the generic and real
@@ -1788,8 +1850,9 @@ The executable rational continuation catalogued in
 \cref{sec:native-op} computes the same finite Legendre entries directly from
 rational coefficients and moments, casts its matrix and determinant to these
 real objects, and proves the corresponding rational norm and zero-based Jacobi
-determinant ratios.  This route is coefficientwise and does not use
-\cref{eq:gaunt-integral,eq:finite-gaunt-matrix,eq:wigner-factorial}.
+determinant ratios.  The newer Gaunt modules prove that this entry is also the
+finite rational Gaunt sum and cast that formula to the real up-law Gram matrix.
+Neither route uses the Wigner identity or \cref{eq:wigner-factorial}.
 \end{remark}
 
 A low-degree check is instructive.  From the moments,
@@ -2408,8 +2471,11 @@ coefficients, norms, zero diagonal, positive subdiagonals, determinant cross-rat
 orthogonality, centered recurrence, and real-cast bridges, with zero-based index
 \(n\) corresponding to \(\beta_{n+1}\).  The polynomial change-of-basis and Legendre
 specializations catalogued there now formalize
-\cref{eq:legendre-hankel,eq:beta-gaunt-determinants}, without formalizing the
-Gaunt/Wigner entry expansion.  The remaining formalization sequence is:
+\cref{eq:legendre-hankel,eq:beta-gaunt-determinants}.  The subsequent modules
+\path{LegendreGaunt.lean} and \path{FabiusLegendreGaunt.lean} formalize the
+finite integral, product-linearization, rational Gaunt-sum, and up-law
+Gram-entry layers; the Wigner/\(3j\) identification and factorial formula remain
+outside Lean.  The remaining formalization sequence is:
 \begin{enumerate}
 \item \textbf{Finite algebra:} the determinant change-of-basis and
       \cref{eq:legendre-hankel,eq:beta-gaunt-determinants} are supplied by
@@ -2422,9 +2488,13 @@ Gaunt/Wigner entry expansion.  The remaining formalization sequence is:
       Formalize the remaining
       \cref{eq:inverse-hankel-christoffel,eq:monic-center-product,%
 eq:orthonormal-center-product,eq:harmonic-mean}.  These need only finite
-      linear algebra and the existing positivity and rational-native APIs.  Separately,
-      formalize \cref{eq:gaunt-integral,eq:finite-gaunt-matrix,eq:wigner-factorial}
-      if an entrywise Gaunt/\(3j\)-symbol realization is desired.
+      linear algebra and the existing positivity and rational-native APIs.  The
+      finite Gaunt integral and rational matrix-entry realization are already
+      supplied by \path{LegendreGaunt.lean} and
+      \path{FabiusLegendreGaunt.lean}.  Formalize only the remaining Wigner
+      identity in \cref{eq:gaunt-integral} and the factorial form
+      \cref{eq:wigner-factorial} if an explicit \(3j\)-symbol realization is
+      desired.
 \item \textbf{Quadrature and rational approximation:} define second-kind
       polynomials, prove \cref{eq:pade-exact-error}, and derive the Gaussian
       weights and exactness theorem.
