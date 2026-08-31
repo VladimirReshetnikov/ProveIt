@@ -93,9 +93,6 @@
 \crefname{warning}{warning}{warnings}
 \Crefname{warning}{Warning}{Warnings}
 
-\newcommand{\eps}{\varepsilon}
-\newcommand{\fall}[2]{#1^{\underline{#2}}}
-\DeclareMathOperator{\ord}{ord}
 \newcommand{\Bell}{Y}
 \newcommand{\ThetaTM}{\Theta}
 \newcommand{\MM}{\mathsf M}
@@ -154,7 +151,7 @@ is $M=2^{d}$.  Moment deconvolution
 $Q=\MM_u(MD)^{-1}P$ gives a global cardinal identity; on one cell its
 $2M$ active atoms collapse, because the complete dyadic alias
 nullspace is governed by the $q$-integer/cyclotomic annihilator
-$A_d(z)=\prod_{m=1}^{d}[2^{m}]_z$ of degree $2M-d-2$.  The one-cell
+$A_d(z)=\prod_{m=1}^{d}\QInteger{2^{m}}{z}$ of degree $2M-d-2$.  The one-cell
 up-spline space therefore has exact dimension $d+2$; a proved endpoint
 basis represents every $P\in\PiD$ by $d+2$ common-scale atoms; no
 fixed dictionary of nontrivial affine up-atoms spanning $\PiD$ can do
@@ -191,7 +188,7 @@ $\BigO(d)$ field elements with $(2m+1)$-local evaluation.  Its
 real-space face is a ghost-atom antiderivative calculus and the exact
 dyadic derivative stencil
 $D^{d}\,u\bigl((x-c)/2^{d}h\bigr)
-=h^{-d}2^{-\binom d2}\sum_k\eps_k\,u(\cdots)$ --- Thue--Morse signs,
+=h^{-d}2^{-\binom d2}\sum_k\ThueMorseSign{k}\,u(\cdots)$ --- Thue--Morse signs,
 the convolution inverse of the ladder's binary-partition weights.
 
 \emph{Combined results.}  The dictionary bound sharpens the ladder
@@ -265,9 +262,9 @@ its claim boundary is recorded after \cref{thm:scale-classification}.
 
 \subsection*{Notation}
 
-$u=\RvachevUp$ as in the corpus; $\widehat f(\xi)=\int f\,\EulerE^{-2\pi\ImaginaryUnit\xi x}\Differential x$;
-$\widehat u(\xi)=\prod_{j\ge0}\SincPi(\xi/2^{j})$ with
-$\ord_{\xi=n}\widehat u=1+\TwoAdicValuation(n)$ at nonzero integers $n$.  The
+$u=\RvachevUp$ as in the corpus; $\FourierTwoPi{f}(\xi)=\int f\,\EulerE^{-2\pi\ImaginaryUnit\xi x}\Differential x$;
+$\FourierTwoPi{u}(\xi)=\prod_{j\ge0}\SincPi(\xi/2^{j})$ with
+$\OrderOperator_{\xi=n}\FourierTwoPi{u}=1+\TwoAdicValuation(n)$ at nonzero integers $n$.  The
 normalized Fabius function on the unit interval is
 $\FabiusBounded(t):=u(1-t)$ for $0\le t\le1$; hence
 $u(x)=\FabiusBounded(1-|x|)$ on $[-1,1]$.  Where an endpoint estimate evaluates
@@ -305,11 +302,11 @@ $1/\MM_u(z)=\sum_r\gamma_rz^{r}/r!$ with
 odd coefficients zero, and
 $\gamma_r=\Bell_r(-\kappa_1,\dots,-\kappa_r)$ (complete Bell
 polynomials in the negated cumulants).  Thue--Morse signs are
-$\eps_r=(-1)^{\BinaryDigitSum(r)}$, the finite product is
-$\ThetaTM_m(z)=\prod_{j<m}(1-z^{2^{j}})=\sum_{r<2^{m}}\eps_rz^{r}$,
+$\ThueMorseSign{r}=(-1)^{\BinaryDigitSum(r)}$, the finite product is
+$\ThetaTM_m(z)=\prod_{j<m}(1-z^{2^{j}})=\sum_{r<2^{m}}\ThueMorseSign{r}z^{r}$,
 and $p_m(N)$ denotes the restricted binary partition numbers
 \eqref{eq:pm-def}.  $\PiD$ is the space of real polynomials of degree
-at most $d$, and $[q]_z=(1-z^{q})/(1-z)$ the $q$-integer.
+at most $d$, and $\QInteger{q}{z}=(1-z^{q})/(1-z)$ the $q$-integer.
 
 \section{The synthesis problem and its boundary conditions}
 \label{sec:problem}
@@ -369,7 +366,7 @@ where the translated functions are \emph{polynomials} and the
 up-values are scalar weights.  Here the translated and dilated copies
 of $u$ are the functions and polynomial data become their amplitudes.
 Two other imported facts do heavy work below: the exact integer zero
-orders of $\widehat u$, and the corpus's non-elementarity theorem,
+orders of $\FourierTwoPi{u}$, and the corpus's non-elementarity theorem,
 which implies that no nonzero affine copy of $u$ agrees with a
 polynomial on any open subinterval of the interior of its support ---
 the fact that converts dimension \emph{bounds} into dimension
@@ -410,7 +407,7 @@ volume:
 \begin{equation}
  \ThetaTM_m(z)=\prod_{j=0}^{m-1}\bigl(1-z^{2^{j}}\bigr),
  \qquad
- A_d(z)=\prod_{m=1}^{d}[2^{m}]_z
+ A_d(z)=\prod_{m=1}^{d}\QInteger{2^{m}}{z}
  =\prod_{m=1}^{d}\frac{1-z^{2^{m}}}{1-z},
  \qquad
  \frac{1}{\ThetaTM_m(z)}=\sum_{N\ge0}p_m(N)z^{N}.
@@ -432,7 +429,7 @@ $k_j\in\NaturalNumbers$; equivalently \eqref{eq:three-products} holds, and
 \label{prop:tm-green}
 The partition sequence is the causal convolution inverse of the
 signed Thue--Morse block:
-$\sum_{r}\eps_r\,p_m(N-r)=\delta_{N0}$, i.e.\
+$\sum_{r}\ThueMorseSign{r}\,p_m(N-r)=\delta_{N0}$, i.e.\
 $\bigl[\prod_{j<m}(I-S^{2^{j}})\bigr]p_m=\delta_0$ for the backward
 shift $S$.  Moreover $p_m(N)$ is a quasipolynomial in $N$ of degree
 $m-1$ and period dividing $2^{m-1}$, with residue-independent leading
@@ -482,7 +479,7 @@ $\{0,\dots,2^{m}-1\}$.
 \begin{proof}
 The roots of $z^{2^{\ell-1}}+1$ are the $\omega^{j}$ with
 $\TwoAdicValuation(j)=d-\ell$, required with multiplicity $d-\ell+1$; since
-$[2^{m}]_z=\prod_{\ell\le m}(z^{2^{\ell-1}}+1)$, the multiplicities
+$\QInteger{2^{m}}{z}=\prod_{\ell\le m}(z^{2^{\ell-1}}+1)$, the multiplicities
 telescope to \eqref{eq:A-cyclotomic}.  Degree and mass follow by
 summing $2^{m}-1$ and multiplying $2^{m}$; the coefficient statement
 is the expansion of the product of uniform blocks, each log-concave,
@@ -494,7 +491,7 @@ the polynomiality certificate:
 \begin{equation}
  A_d(z)\,(z-1)^{d+1}
  =(-1)^{d+1}(1-z)\,\ThetaTM_d\bigl(z^{2}\bigr)
- =(-1)^{d+1}(1-z)\sum_{r=0}^{M-1}\eps_r\,z^{2r}.
+ =(-1)^{d+1}(1-z)\sum_{r=0}^{M-1}\ThueMorseSign{r}\,z^{2r}.
  \label{eq:TM-factor}
 \end{equation}
 
@@ -507,7 +504,7 @@ for $\rho>0$ by
 \begin{equation}
  \psi_{\rho,k}(t)=\frac1\rho\,u\!\left(\frac{t-k}{\rho}\right),
  \qquad
- \widehat{\psi_{\rho,k}}(\xi)=\EulerE^{-2\pi\ImaginaryUnit k\xi}\,\widehat u(\rho\xi),
+ \FourierTwoPi{\psi_{\rho,k}}(\xi)=\EulerE^{-2\pi\ImaginaryUnit k\xi}\,\FourierTwoPi{u}(\rho\xi),
  \label{eq:psi-def}
 \end{equation}
 supported on $[k-\rho,k+\rho]$ with unit integral.
@@ -527,9 +524,9 @@ order.
 
 \begin{proof}
 The $n$-th Fourier coefficient of the periodized sum is
-$\widehat u(\rho n)$, which vanishes for all $n\ne0$ iff $\rho n$ is
+$\FourierTwoPi{u}(\rho n)$, which vanishes for all $n\ne0$ iff $\rho n$ is
 always a nonzero integer, i.e.\ $\rho\in\PositiveIntegers$.  For integer $\rho$ and
-$n\ne0$, $\ord_{\xi=n}\widehat u(\rho\,\cdot)
+$n\ne0$, $\OrderOperator_{\xi=n}\FourierTwoPi{u}(\rho\,\cdot)
 =1+\TwoAdicValuation(\rho)+\TwoAdicValuation(n)$, minimal at odd $n$; the classical
 Strang--Fix equivalence \cite{StrangFix1973,Jia1998} gives order
 $\TwoAdicValuation(\rho)$.
@@ -574,9 +571,9 @@ a locally finite sum.
 Apply Poisson summation to $x\mapsto Q(x)\psi_0(t-x+\cdot)$ --- i.e.\
 to $f_t(x)=Q(x)\frac1Mu((t-x)/M)$, which is $C_c^\infty$.  The
 zero-frequency term is the stated average.  Each nonzero Fourier
-sample $\widehat{f_t}(n)$ is a combination of derivatives of
-$\widehat u(M\xi)$ through order $d$ at $\xi=n$, and
-$\ord=1+\TwoAdicValuation(Mn)=d+1+\TwoAdicValuation(n)>d$, so every alias vanishes.  Evenness
+sample $\FourierTwoPi{f_t}(n)$ is a combination of derivatives of
+$\FourierTwoPi{u}(M\xi)$ through order $d$ at $\xi=n$, and
+$\OrderOperator=1+\TwoAdicValuation(Mn)=d+1+\TwoAdicValuation(n)>d$, so every alias vanishes.  Evenness
 of $u$ turns the average into $\MM_u(MD)Q$.
 \end{proof}
 
@@ -648,7 +645,7 @@ span, with $A_d$ the annihilator of
 The Fourier transform of the twisted comb
 $\sum_kk^{s}\omega^{jk}\delta_k$ is carried, with derivatives through
 order $s$, by the coset $j/M+\IntegerNumbers$; there the multiplier
-$\widehat u(M\xi)$ vanishes to order
+$\FourierTwoPi{u}(M\xi)$ vanishes to order
 $1+\TwoAdicValuation(j+Mn)=1+\TwoAdicValuation(j)>s$, since $0<j<M$.  Independence is the
 confluent Vandermonde theorem for the distinct roots
 $\omega^{j}$ with multiplicities $\TwoAdicValuation(j)+1$; the count is
@@ -833,7 +830,7 @@ $\BigO(d^{2}+(J+d)^{2})$.
 \end{algorithm}
 
 For $P\in\IntegerNumbers[t]$ the denominators of all $b_k$ divide
-$\operatorname{lcm}(\operatorname{den}\gamma_0,\dots,
+$\LeastCommonMultiple (\operatorname{den}\gamma_0,\dots,
 \operatorname{den}\gamma_d)$ (the recurrence is integral), and the
 raw amplitudes $b_k/M$ add only the dyadic factor.
 
@@ -891,7 +888,7 @@ center ($q_j$ multiplies $\psi_{-M+1+j}$), and set
  \mathfrak C_d(q)
  =\bigl[A_d(E)\,\Delta^{d+1}q\bigr]_{-M+1}
  \overset{\eqref{eq:TM-factor}}{=}
- (-1)^{d+1}\sum_{r=0}^{M-1}\eps_r\,
+ (-1)^{d+1}\sum_{r=0}^{M-1}\ThueMorseSign{r}\,
  \bigl(q_{2r}-q_{2r+1}\bigr).
  \label{eq:certificate-functional}
 \end{equation}
@@ -936,7 +933,7 @@ the absolutely convergent odd-frequency series
  \mathcal E_d(t)=
  -\frac{(d+1)!}{(2\pi\ImaginaryUnit)^{d+1}}
  \sum_{\substack{n\in\IntegerNumbers\\ n\ \mathrm{odd}}}
- \frac{\widehat u(n/2)}{n^{d+1}}\,\EulerE^{2\pi\ImaginaryUnit nt},
+ \frac{\FourierTwoPi{u}(n/2)}{n^{d+1}}\,\EulerE^{2\pi\ImaginaryUnit nt},
  \;}
  \qquad
  \mathcal E_d\bigl(t+\tfrac12\bigr)=-\mathcal E_d(t);
@@ -958,11 +955,11 @@ is the defect coordinate of an arbitrary synthesis.
 \begin{proof}
 In the Poisson expansion of $S_m$, even nonzero frequencies die
 (zero order $1+\TwoAdicValuation(Mn)>m$) and at odd $n$ only the leading jet of
-$\widehat u(M\xi)$ survives; by the corpus's leading-jet formula it
-equals $-m!\,\widehat u(n/2)/n^{m}$, giving
+$\FourierTwoPi{u}(M\xi)$ survives; by the corpus's leading-jet formula it
+equals $-m!\,\FourierTwoPi{u}(n/2)/n^{m}$, giving
 \eqref{eq:defect-series}.  Odd-frequency support gives the
 half-period antisymmetry, and nonvanishing follows from
-$\widehat u(n/2)\ne0$ for odd $n$.  $\mathcal E_d$ itself is
+$\FourierTwoPi{u}(n/2)\ne0$ for odd $n$.  $\mathcal E_d$ itself is
 \emph{not} in $V_d$ (else $t^{d+1}\in V_d$, contradicting
 $V_d\cap\RealNumbers[t]=\PiD$); the corrected $\mathcal D_d=S_m-(\mathcal
 P-t^{m})$ is, since $\mathcal P-t^{m}\in\PiD$.  Its certificate value
@@ -1003,14 +1000,14 @@ For every $d\ge0$ and $t\in\RealNumbers$,
 
 \begin{proof}
 Both sides are the odd-frequency alias series with leading jets of
-$\widehat u$ at the order-$(d{+}1)$ zeros: the companion volume's
+$\FourierTwoPi{u}$ at the order-$(d{+}1)$ zeros: the companion volume's
 first-failure theorem gives
 \[
  Q_{d,d+1}(\theta)-\mu_{d+1}
  =-\Bigl(-\frac1{2\pi\ImaginaryUnit}\Bigr)^{d+1}
  \frac{(d+1)!}{2^{d(d+1)}}
  \sum_{\ell\ \mathrm{odd}}
- \frac{\widehat u(\AbsoluteValue\ell/2)}{\ell^{\,d+1}}\,
+ \frac{\FourierTwoPi{u}(\AbsoluteValue\ell/2)}{\ell^{\,d+1}}\,
  \EulerE^{2\pi\ImaginaryUnit\ell\theta},
 \]
 and comparing with \eqref{eq:defect-series} term by term (the
@@ -1029,7 +1026,7 @@ the quarter-shift superconvergence at odd level.
 
 \emph{Special values.}  For odd $d$, evaluation at $t=0$ gives, with
 the spectral Dirichlet series
-$D(s)=\sum_{q\ \mathrm{odd}}\widehat u(q/2)\,q^{-s}$ of the companion
+$D(s)=\sum_{q\ \mathrm{odd}}\FourierTwoPi{u}(q/2)\,q^{-s}$ of the companion
 volume,
 \begin{equation}
  \mathcal E_d(0)
@@ -1064,7 +1061,7 @@ $\mathcal E_3(0)=2^{12}\cdot\bigl(-\tfrac{23}{5529600}\bigr)
 Beyond $t\in\{0,\tfrac14,\tfrac12,\tfrac34\}$, the values
 $\mathcal E_d(a/2^{s})$ are character-twisted versions of $D(d+1)$
 (finite combinations of
-$\sum_{q\ \mathrm{odd}}\widehat u(q/2)\chi(q)q^{-(d+1)}$ over
+$\sum_{q\ \mathrm{odd}}\FourierTwoPi{u}(q/2)\chi(q)q^{-(d+1)}$ over
 $2^{s}$-periodic characters $\chi$).  Do they admit closed forms in
 Fabius values, finite Thue--Morse sums, or $q$-binomial data, as the
 principal value \eqref{eq:defect-value-D} does?  This refines the
@@ -1299,7 +1296,7 @@ collars}
 \begin{proposition}[Derivative ladder, Wronskian, interpolation]
 \label{prop:ladder-structure}
 On $[a,b]$,
-$\Psi_{n,h}^{(k)}=\fall nk\,h^{-k}\,\Psi_{n-k,h}$; the Wronskian is
+$\Psi_{n,h}^{(k)}=\FallingFactorial{n}{k}\,h^{-k}\,\Psi_{n-k,h}$; the Wronskian is
 constant,
 $W(\Psi_{0,h},\dots,\Psi_{d,h})=h^{-d(d+1)/2}\prod_{n\le d}n!$; and
 for distinct nodes $x_0,\dots,x_d\in[a,b]$,
@@ -1454,12 +1451,12 @@ $m=2^{\nu}q$ with $q$ odd,
  \sum_{k\in\IntegerNumbers}A^{(m)}_L(k)\,u\!\left(\frac{t-k}{m}\right)-t^{L}
  =\frac{(-1)^{L+1}L!}{(2\pi\ImaginaryUnit)^{L}}
  \sum_{\substack{n\in\IntegerNumbers\\ n\ \mathrm{odd}}}
- \frac{\widehat u(qn/2)}{n^{L}}\,\EulerE^{-2\pi\ImaginaryUnit nt},
+ \frac{\FourierTwoPi{u}(qn/2)}{n^{L}}\,\EulerE^{-2\pi\ImaginaryUnit nt},
  \label{eq:general-defect}
 \end{equation}
-nonzero because $\widehat u(q/2)\ne0$: an odd factor $q$ in the ratio
-replaces the half-integer values $\widehat u(n/2)$ by
-$\widehat u(qn/2)$ --- the arithmetic face of the odd-overscaling
+nonzero because $\FourierTwoPi{u}(q/2)\ne0$: an odd factor $q$ in the ratio
+replaces the half-integer values $\FourierTwoPi{u}(n/2)$ by
+$\FourierTwoPi{u}(qn/2)$ --- the arithmetic face of the odd-overscaling
 phenomenon of \cref{conj:odd-dim}.
 
 \subsection{The physical-scale interval algorithm}
@@ -1526,12 +1523,12 @@ dyadic derivative stencil:
  \boxed{\;
  D^{\,d}\,U_{2^{d}h,\,c}(x)
  =h^{-d}\,2^{-\binom d2}
- \sum_{k=0}^{2^{d}-1}\eps_k\,
+ \sum_{k=0}^{2^{d}-1}\ThueMorseSign{k}\,
  U_{h,\;c+(2k-(2^{d}-1))h}(x),
  \;}
  \label{eq:tm-stencil}
 \end{equation}
-with the signed Thue--Morse signs $\eps_k$: each differentiation
+with the signed Thue--Morse signs $\ThueMorseSign{k}$: each differentiation
 doubles the leaves and appends a binary digit carrying the sign, the
 chain-rule factors multiplying to $h^{-d}2^{-\binom d2}$.  Together
 with \cref{thm:iterated-J} this closes a perfect duality:
@@ -1542,7 +1539,7 @@ a coarse atom into a block weighted by the Thue--Morse signs
 themselves --- the two convolution inverses of one stencil, realized
 by up-atoms at dyadic scales.  The Gaussian-binomial deformation
 $\prod_{j<d}(1-yq^{j})
-=\sum_r(-1)^{r}q^{\binom r2}\genfrac{[}{]}{0pt}{}{d}{r}_q y^{r}$
+=\sum_r(-1)^{r}q^{\binom r2}\GaussianBinomial{d}{r}{q}\,y^{r}$
 suggests geometrically scaled stencils
 (\cref{q:qgeometric}).
 
@@ -1614,7 +1611,7 @@ Support overhang & $[a-(d+1)h,\;b+(2M-1)h]$, knob $J$
 Certificate / defect & one-scalar Thue--Morse test; explicit
  $\mathcal D_d$ & exactness by construction (blocks \emph{are}
  $G_n$)\\
-Discrete engine & alias annihilator $A_d=\prod[2^{m}]_z$
+Discrete engine & alias annihilator $A_d=\prod\QInteger{2^{m}}{z}$
  & Green inverse $1/\ThetaTM_{m}$, weights $p_m(N)$\\
 \bottomrule
 \end{tabularx}
@@ -1732,7 +1729,7 @@ scheme.
 \subsection{Base \texorpdfstring{$b$}{b} and
 \texorpdfstring{$q$}{q}-ary ladders}
 Both engines are dyadic only through the zero set of
-$\widehat u$.  For an integer base $b\ge2$, the compactly supported
+$\FourierTwoPi{u}$.  For an integer base $b\ge2$, the compactly supported
 density with transform $\prod_{j\ge0}\SincPi(\xi/b^{j})$ supports the
 same two constructions --- dictionary scale $b^{d}$, and ladders
 weighted by $b$-ary restricted partition numbers
@@ -1911,7 +1908,7 @@ imaginary poles of $1/\MM_u$).
 Is there a nonstationary atomic family with geometrically varying
 scales whose exact derivative/reproduction stencils have Gaussian
 binomial coefficients $(-1)^{r}q^{\binom r2}
-\genfrac{[}{]}{0pt}{}{d}{r}_q$, interacting at $q=2$ with the
+\GaussianBinomial{d}{r}{q}$, interacting at $q=2$ with the
 Rvachev refinement equation and degenerating at $q\to1$ to ordinary
 finite differences?  (This subsumes the base-$b$ question of
 \cref{sec:extensions} on the stencil side.)

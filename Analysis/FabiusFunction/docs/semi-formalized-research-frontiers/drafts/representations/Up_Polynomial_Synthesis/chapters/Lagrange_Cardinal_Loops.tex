@@ -75,7 +75,7 @@ the $d$ nodes with $x_j$ omitted.
 For every $0\le j\le d$ and every $t\in\RealNumbers$,
 \begin{align}
  (\mathscr D_u\ell_j)(t)
- &=\sum_{r=0}^{\lfloor d/2\rfloor}
+ &=\sum_{r=0}^{\Floor{d/2}}
    \gamma_{2r}\frac{\ell_j^{(2r)}(t)}{(2r)!}
  \label{eq:lag-derivative-amplitude}\\
  &=\lambda_j\sum_{n=0}^{d}(-1)^{d-n}e_{d-n}^{(j)}\Gd_n(t).
@@ -137,7 +137,7 @@ Consequently
 \end{equation}
 and
 \[
- \operatorname{rank}\mathcal P_X=\operatorname{tr}\mathcal P_X=d+1.
+ \RankOperator\mathcal P_X=\TraceOperator\mathcal P_X=d+1.
 \]
 Its characteristic polynomial and synthesis intertwining law are
 \begin{equation}
@@ -231,7 +231,7 @@ The sign obstruction has a quantitative form.  For a row-unital right
 inverse $E$ of a nonnegative row-stochastic matrix $A$, write
 \[
  V(E)=\max_k\sum_j|E_{kj}|,\qquad
- \operatorname{TV}(a,b)=\tfrac12\|a-b\|_1.
+ \TotalVariationDistance(a,b)=\tfrac12\|a-b\|_1.
 \]
 
 \begin{theorem}[Decoder variation and the Lebesgue barrier]
@@ -240,7 +240,7 @@ If $AE=I$ and $E\bm1=\bm1$, then for distinct rows $i,j$,
 \begin{equation}
  \boxed{
  V(E)\ge\frac{2}{\|A_{i,:}-A_{j,:}\|_1}
- =\frac1{\operatorname{TV}(A_{i,:},A_{j,:})}.}
+ =\frac1{\TotalVariationDistance(A_{i,:},A_{j,:})}.}
  \label{eq:lag-TV-lower}
 \end{equation}
 Some row of $E$ has total negative mass at least
@@ -514,7 +514,7 @@ The lifted coefficient operators
  \label{eq:lag-lifted-projector}
 \end{equation}
 satisfy the same multiplication law and
-$\operatorname{rank}\widehat{\mathcal P}_q^{(s)}=d_q+1$.  Hence the details
+$\RankOperator\widehat{\mathcal P}_q^{(s)}=d_q+1$.  Hence the details
 \begin{equation}
  \widehat\Delta_0^{(s)}=\widehat{\mathcal P}_0^{(s)},
  \qquad
@@ -624,7 +624,7 @@ write
  =\sum_{s=0}^{d+1}g_sx^s,
  \label{eq:lag-q-product}\\
  g_s&=(-1)^{d+1-s}q^{\binom{d+1-s}{2}}
- \genfrac{[}{]}{0pt}{}{d+1}{s}_q.
+ \GaussianBinomial{d+1}{s}{q}.
  \label{eq:lag-q-coeff}
 \end{align}
 Synthetic division gives
@@ -638,7 +638,7 @@ Synthetic division gives
 and
 \begin{equation}
  (\Omega_{d+1}^{(q)})'(q^j)=(-1)^j
- q^{jd-j(j+1)/2}(q;q)_j(q;q)_{d-j}.
+ q^{jd-j(j+1)/2}\QPochhammer{q}{q}{j}\QPochhammer{q}{q}{d-j}.
  \label{eq:lag-q-denominator}
 \end{equation}
 For the literal up-function realization below, specialize to
@@ -658,7 +658,7 @@ $j$th geometric-node cardinal is
 \end{equation}
 Thus a Gaussian-binomial row from node geometry is convolved, finitely, with
 the Rvachev--Appell row from moment deconvolution.  The separate dyadic
-annihilator $\prod_{r=1}^{d}[2^r]_z$ controls compression of the resulting
+annihilator $\prod_{r=1}^{d}\QInteger{2^r}{z}$ controls compression of the resulting
 atom row; it is not the same $q$-product.
 \end{proposition}
 
@@ -703,7 +703,7 @@ One has
 The raw two-atom amplitude map
 \[
  \mathsf T=
- \operatorname{diag}(D_0,\ldots,D_d)\mathsf A^{-1}
+ \DiagonalOperator(D_0,\ldots,D_d)\mathsf A^{-1}
 \]
 therefore satisfies
 \begin{equation}
@@ -827,7 +827,7 @@ real axis would be analytic through an endpoint, impossible for a nonzero
 compactly supported function that is flat there.  Hence the limsup is one.
 \end{proof}
 
-Using the constant-extension convention for $F$ from the parent notation, put
+Using the constant-extension convention for $\FabiusBounded$ from the parent notation, put
 \[
  \delta_d=(d+2)2^{-d}=2^{-t_d},
  \qquad t_d=d-\log_2(d+2).
@@ -879,7 +879,7 @@ extension.  Hence in every degree
 $|P(x)|\le \FabiusBounded(\delta_d)\|a\|_1$; taking the supremum proves
 \eqref{eq:lag-endpoint-amplitude}.  The established endpoint law
 \[
- -\log \FabiusBounded(2^{-t})=\frac{\log2}{2}t^2+o(t^2)
+ -\log \FabiusBounded(2^{-t})=\frac{\log2}{2}t^2+\LittleO(t^2)
  \qquad(t\to\infty)
 \]
 is equation \texttt{dyadic-quadratic-law} in
@@ -887,7 +887,7 @@ is equation \texttt{dyadic-quadratic-law} in
 kernel-verified as \path{fabiusLogProfile_normalized_tendsto} in
 \path{FabiusLogSquaredAsymptotic.lean}.  This law
 and $t_d/d\to1$ now give \eqref{eq:lag-quadratic-amplitude}.  A factor $2^d$
-adds only $d\log2=o(d^2)$ to the logarithm.
+adds only $d\log2=\LittleO(d^2)$ to the logarithm.
 \end{proof}
 
 \subsection{Denominator support on an equispaced grid}
@@ -898,7 +898,7 @@ put $x_j=-1+2j/d$ for $0\le j\le d$.  Define
  \mathcal P_d=
  \{p\text{ prime}:p\le d+1\}
  \cup
- \bigcup_{1\le r\le\lfloor d/2\rfloor}
+ \bigcup_{1\le r\le\Floor{d/2}}
  \{p\text{ prime}:p\mid 2^{2r}-1\}.
  \label{eq:lag-prime-set}
 \end{equation}
