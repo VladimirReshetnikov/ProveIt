@@ -1,7 +1,7 @@
 # Inverse and sampling
 
-The nine document bundles in this theme are organized one level deeper by
-their principal overlap:
+Nine document bundles live in this theme, organized one level deeper by their
+principal overlap:
 
 - [`comb-interpolation/`](comb-interpolation/) — additive and geometric comb
   interpolation, quadrature, extrapolation, and stability;
@@ -12,11 +12,41 @@ their principal overlap:
   nowhere-analytic inverse iterates and elementary-representation
   obstructions.
 
-All nine documents remain in `inverse-and-sampling`: neighboring themes
-provide techniques or related forward results, but none is a better primary
-home. In particular, the inverse-iterate report remains here while retaining
-its explicit reconciliation link to the forward-iterate report under
-`representations/`.
+The cross-cutting information-geometry intake now lives under
+[`../frontier-compilations/fabius_information_frontier/`](../frontier-compilations/fabius_information_frontier/),
+whose broader geometric-uniform scope is a better thematic fit. The
+inverse-iterate report here retains its explicit reconciliation link to the
+forward-iterate report under `representations/`.
+
+## Source-only merge status (2026-08-31)
+
+The local canonical-notation integration changed eight living TeX roots in this
+group. The remote reorganization supplied a synchronized TeX/PDF/ledger trio
+for `analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function`, so
+that package is not included in the stale-artifact table below.
+By explicit integration policy, none of their same-stem PDFs was rebuilt and
+none of the seven local operational ledgers that cover a changed root was
+refreshed. The remote's relinked 12-entry ledger for
+`inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers` is safe
+to take unchanged and verifies 12/12 current files, but that integrity result
+does not make its retained PDF a rendering of the changed source.
+The PDFs and their page/font/build facts below are therefore retained
+historical artifacts, not claimed renderings of the current sources.
+
+| Root report | Current TeX lines | Retained PDF | Operational-ledger status |
+|---|---:|---:|---|
+| `comb-interpolation/Dyadic_Comb_Frontiers` | 5,648 | 66 pages | no live root-pair ledger |
+| `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders` | 1,979 | 23 pages | no live root-pair ledger |
+| `inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report` | 2,937 | 42 pages | TeX row pending rebuild |
+| `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers` | 6,608 | 100 pages | remote relinked ledger passes; PDF remains historical |
+| `comb-interpolation/geometric_comb_interpolation_report` | 2,360 | 32 pages | TeX row pending rebuild |
+| `comb-interpolation/geometric_comb_interpolation_report-3` | 2,736 | 36 pages | TeX/README/relocated-audit rows pending |
+| `comb-interpolation/geometric_comb_q_fabius_report` | 3,554 | 68 pages | TeX row pending rebuild |
+| `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic` | 1,742 | 26 pages | TeX row pending rebuild |
+
+Package README edits that record this source-only state also make their own
+operational-ledger rows intentionally pending.  Arrival ledgers and historical
+PDF hashes remain immutable and are not affected by this note.
 
 New standalone intake members:
 
@@ -66,39 +96,49 @@ New standalone intake members:
   manuscript labels do not establish Lean verification.
 
 - [`geometric_comb_interpolation_report/`](comb-interpolation/geometric_comb_interpolation_report/),
-  *Interpolation on a Geometric Comb* (34 pp), arrived on 2026-08-30 from
-  `geometric_comb_interpolation_report_bundle.zip` (outer SHA-256
-  `9a2e33f6a7dc3ac4c30b0da212349b9d91b1da6dd2fabacce14329a6458ade12`).
-  All 11 submitted payload hashes verified; four CSV entries were refreshed
-  after CRLF-to-LF repository normalization. Its arbitrary-ratio interpolation
-  layer belongs beside `Dyadic_Comb_Frontiers/` and cross-links to the finite
-  q-Lagrange/Gaussian row in
+  *Interpolation on a Geometric Comb* (retained 32-page A4 PDF; current
+  2,360-line TeX), is the canonical A4/27 mm/Libertinus edition of the report
+  filed on 2026-08-30.
+  The source archive is no longer available in the repository, but its
+  preserved 11-entry arrival ledger records the arrival state. The 17-entry
+  operational ledger was intentionally not refreshed after the source-only
+  merge: its TeX and README rows are pending and the other 15 rows pass. A
+  pinned CPython 3.13.14 replay reproduced all four
+  CSV tables and three PNG figures byte-for-byte. Its 37 nonconjectural
+  manuscript results, two conjectures, and five problems were hostile-audited;
+  no fatal counterexample was found, the perpetuity-density proof was hardened,
+  and the Lean crosswalk now distinguishes exact finite q-Lagrange/Gaussian
+  infrastructure from the report-level interpolation and asymptotic claims.
+  Its arbitrary-ratio interpolation layer belongs beside
+  `Dyadic_Comb_Frontiers/` and cross-links to the finite q-Lagrange/Gaussian row in
   [`../exponents-and-q-series/q_pochhammer_q_binomial_monograph/`](../exponents-and-q-series/q_pochhammer_q_binomial_monograph/).
-  It remains standalone pending post-publication assessment and a Lean
-  crosswalk; manuscript labels do not establish Lean verification.
+  The retained PDF was built in exactly three strict passes with
+  embedded/subset fonts and no Type 3 fonts at the preceding checkpoint; it
+  was not rebuilt from the current source. Manuscript labels do not establish
+  Lean verification.
 
 - [`geometric_comb_interpolation_report-3/`](comb-interpolation/geometric_comb_interpolation_report-3/),
   *Interpolation on a Geometric Comb: Lagrange Filters, Jackson--Newton
-  Series, q-Analogues, and the Fabius--Rvachev Bridge* (36 pp), arrived on
-  2026-08-30 from `geometric_comb_interpolation_report-3.zip` (outer SHA-256
+  Series, q-Analogues, and the Fabius--Rvachev Bridge*, is a distinct 36-page
+  A4 intake filed from
+  `geometric_comb_interpolation_report-3.zip` (1,296,171 bytes; SHA-256
   `89c9de31b9b78b614c13d5a3ff24ae41b73ef6704a9daef77ba724b396e90fa0`).
-  All 20 submitted payload hashes verified; four CSV entries were refreshed
-  after CRLF-to-LF repository normalization. This is a distinct later
-  arrival, not a byte duplicate of `geometric_comb_interpolation_report/`,
-  and no submitted payload hash matches either existing geometric-comb report.
-  It is filed in a collision-safe wrapper without superseding either package.
-  The A4 report retains 11 embedded Type-3 plot-font rows. It remains
-  unreviewed pending post-publication reconciliation with the earlier report
-  and a claim-by-claim Lean crosswalk; manuscript labels do not establish
-  Lean verification.
+  Its submitted 20-entry ledger is preserved as arrival provenance. After
+  four CSV files were normalized from CRLF to LF, the operational ledger was
+  expanded to 25 entries. It was intentionally not refreshed after the later
+  source-only notation migration and thematic relocation: its TeX, README,
+  and intake-audit rows are pending and the other 22 rows pass. The current
+  TeX has 2,736 lines; the retained 36-page
+  submitted PDF was not rebuilt. This is not a reship of the neighboring comb
+  report: none of their non-ledger payload hashes coincide. In accordance
+  with the incoming-archive gate, replay, hostile claim audit, dependency
+  pinning, canonical-preamble normalization, rebuild, and page-by-page visual
+  audit are deliberately deferred until after this archival checkpoint is
+  committed and pushed.
 
 - [`Inverse_Fabius_Computability_Report/`](inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report/),
-  *Computability of the Inverse Fabius Function* (41 A4 pp, 2923 source
-  lines after combining the parallel equality/rigidity and
-  logarithmic-modulus post-publication branches; those branch checkpoints
-  were 39 pp and 2801 lines and 39 pp and 2743 lines, respectively, after
-  the common 37 pp and 2621 lines and earlier 34 pp and 2446 lines; 29 pp
-  and 2157 lines at intake), arrived on
+  *Computability of the Inverse Fabius Function* (retained 42-page A4 PDF;
+  current 2,937-line source), arrived on
   2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (outer SHA-256
   `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
   All five submitted payload hashes verified and every text payload was

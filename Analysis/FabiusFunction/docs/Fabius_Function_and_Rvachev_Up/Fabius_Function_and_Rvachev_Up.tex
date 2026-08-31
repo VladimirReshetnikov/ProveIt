@@ -3091,17 +3091,20 @@ the Rvachev product and the Fourier transform gives the final assertion.
 \lean{geometricSincProduct_eq_tprod_complexQPochhammerInf},
 \lean{rvachevFourierProduct_eq_tprod_complexQPochhammerInf}, and
 \lean{rvachevFourier_eq_tprod_complexQPochhammerInf}.
-The three convergence declarations after the definitional equality require
-exactly \(\lVert q\rVert<1\).  Under the same strict-contraction hypothesis,
-the next three declarations prove absolute summability of the paired Euler
-perturbations, the paired-index product, and
-\eqref{eq:geometric-complex-qpochhammer}; no nonvanishing premise is used.
-The final two declarations fix the dyadic scale and hence the Pochhammer nome
-\(1/4\); the Fourier-transform form assumes exactly a bounded witness and
-\lean{IsFabius}.  These results do not name the frontier's centered
-\(\psi_q\) or \(M_q\), prove the outside \(\lvert q\rvert>1\) reciprocal
-formula or zero--pole exchange, or supply a named local-uniform/normal-
-convergence theorem for the Pochhammer-product right-hand side.
+The three symbol-convergence declarations after the defining equality, and the
+three new geometric-sinc declarations, require exactly \(\lVert q\rVert<1\).
+The latter three formalize, in order, the displayed absolute-summability
+argument, the flattened paired Euler product, and
+\eqref{eq:geometric-complex-qpochhammer}.  The final two declarations fix the
+dyadic scale and hence the Pochhammer nome \(1/4\); their complex argument is
+unrestricted, and the Fourier-transform form assumes exactly a bounded witness
+and \lean{IsFabius}.  These declarations do not classify the Pochhammer zero
+lattice or its multiplicities, construct a reciprocal zero--pole
+factorization, derive spectral-zeta, Mellin, or logarithmic-derivative
+consequences, prove local-uniform or normal convergence of the rearranged
+Pochhammer product or joint holomorphy in \(q\), name the frontier's centered
+\(\psi_q\) or \(M_q\), or supply an outside \(\lVert q\rVert>1\) reciprocal
+formula.
 \end{proof}
 
 The exponent in the canonical product has a finite, base-generic double-counting
@@ -11385,11 +11388,12 @@ Here the arbitrary-\(F\) formula inherits totalized division from the generic th
 entry-as-integral theorem, strict positivity \(D_n>0\), and identification with the real cast
 of the exact rational Rvachev subdiagonal each additionally require
 \(h_F:\lean{IsFabius}\,F\).  Under that hypothesis positivity removes the singular case and
-the cross-ratio is a genuine Jacobi formula.  Those two modules themselves do not prove
-individual Gram entries by a finite Gaunt expansion or entry rationality by that route;
-the two downstream Gaunt modules inventoried below do.  A Wigner or \(3j\)-symbol
-identification, factorial closed form, Christoffel reconstruction, and infinite Jacobi
-product remain absent.  Also,
+the cross-ratio is a genuine Jacobi formula.  This determinant module does not itself
+expand individual Gram entries.  The finite rational Gaunt expansion and entry
+rationality are supplied by \path{LegendreGaunt.lean} and
+\path{FabiusLegendreGaunt.lean} below.  Identification with Wigner \(3j\) symbols,
+a factorial closed form, Christoffel reconstruction, and an infinite Jacobi product
+remain outside the current surface.  Also,
 \lean{rvachevTranslateGram} is a different object: it pairs shifted-up atoms under
 unweighted interval integration, whereas \lean{upLegendreGramMatrix} pairs polynomials under
 the up-law moment functional.
@@ -11422,30 +11426,29 @@ two theorems express the exact rational squared norm and the zero-based
 \lean{rvachevJacobiSubdiagonalRat}\((n)=\beta_{n+1}\) as consecutive rational Legendre
 Gram-determinant ratios, with the latter carrying the factor
 \(((n+1)/(2n+1))^2\).  Thus the executable coefficient, entry, matrix, determinant,
-cast, positivity, norm-ratio, and Jacobi-ratio layer is formalized.  No finite
-Gaunt expansion is supplied by this module itself.  The downstream modules below supply
-the finite Gaunt formulas; a Wigner/\(3j\) or factorial closed form, Christoffel
-reconstruction, root or quadrature theorem, infinite Jacobi product or continued
-fraction, and asymptotics remain outside this layer.
+cast, positivity, norm-ratio, and Jacobi-ratio layer is formalized.  The next two
+modules now give a second, finite triple-product expansion of the same entries.  They do
+not identify the Gaunt integrals with Wigner \(3j\) symbols or prove the corresponding
+factorial formula, Christoffel reconstruction, root or quadrature theorems, infinite
+Jacobi products or continued fractions, Pad\'e theory, or asymptotics.
 
-The first downstream module, \path{LegendreGaunt.lean}, has exactly four public
-definitions:
-\lean{legendreLebesgueMomentRat},
-\lean{legendreGauntRat},
-\lean{legendreGaunt}, and
-\lean{legendreProductLinearizationCoeffRat}.
-For \(n\in\NaturalNumbers\), the first definition is \(2/(n+1)\) when \(n\) is even and
-zero when \(n\) is odd.  For \(i,j,k\in\NaturalNumbers\), the next three definitions are,
-respectively, the bounded rational coefficient--moment sum for \(P_iP_jP_k\), the real
-integral
+The generic finite Gaunt layer begins with the executable rational moment
 \[
- G_{ijk}=\int_{-1}^{1}P_i(x)P_j(x)P_k(x)\,\Differential x,
+ \mu_n^{\RationalNumbers}=\begin{cases}2/(n+1),&n\ \text{even},\\0,&n\ \text{odd},\end{cases}
 \]
-and the rational product-linearization coefficient
-\[
- L_{ijk}=\frac{2k+1}{2}\,\lean{legendreGauntRat}(i,j,k).
-\]
-Its exactly twelve public theorems are
+and defines
+\begin{align*}
+ G_{ijk}^{\RationalNumbers}
+   &=\sum_{a=0}^{i}\sum_{b=0}^{j}\sum_{c=0}^{k}
+      [X^a]P_i^{\RationalNumbers}\,[X^b]P_j^{\RationalNumbers}\,
+      [X^c]P_k^{\RationalNumbers}\,\mu_{a+b+c}^{\RationalNumbers},\\
+ G_{ijk}&=\int_{-1}^{1}P_i(x)P_j(x)P_k(x)\,\Differential x,\\
+ L_{ijk}^{\RationalNumbers}&=\frac{2k+1}{2}G_{ijk}^{\RationalNumbers}.
+\end{align*}
+These are respectively \lean{legendreLebesgueMomentRat},
+\lean{legendreGauntRat}, \lean{legendreGaunt}, and
+\lean{legendreProductLinearizationCoeffRat}.  The exhaustive twelve-theorem
+surface of \path{LegendreGaunt.lean} is
 \lean{legendreLebesgueMomentRat_even},
 \lean{legendreLebesgueMomentRat_odd},
 \lean{legendreLebesgueMomentRat_cast},
@@ -11458,24 +11461,38 @@ Its exactly twelve public theorems are
 \lean{legendreGauntRat_eq_zero_of_odd_sum},
 \lean{legendreGauntRat_eq_zero_of_add_lt}, and
 \lean{legendreGauntRat_eq_zero_of_triangle_violation}.
-They prove the even and odd moment formulas, identify the real cast with
-\(\int_{-1}^{1}x^n\,\Differential x\), identify the triple sum with the rational moment
-functional and its real cast with \(G_{ijk}\), and prove the displayed first-two and
-last-two index symmetries.  Over both \(\RealNumbers[X]\) and
-\(\RationalNumbers[X]\), they give the exact finite identity
+Here is the complete proof at the mathematical level.  Integration of a monomial on the
+symmetric interval gives \(2/(n+1)\) in even degree and zero in odd degree; this proves
+the cast identity for \(\mu_n^{\RationalNumbers}\).  Expanding each rational Legendre polynomial in
+its finitely many monomials and distributing the three finite sums identifies
+\(G_{ijk}^{\RationalNumbers}\) with the rational moment functional of
+\(P_i^{\RationalNumbers}P_j^{\RationalNumbers}P_k^{\RationalNumbers}\).  The monomial cast identity and finite linearity of the
+integral then give \((G_{ijk}^{\RationalNumbers}:\RealNumbers)=G_{ijk}\).  Since
+\(\deg(P_iP_j)\le i+j\), finite Fourier--Legendre projection is exact and orthogonality
+gives
 \[
- P_iP_j=\sum_{k=0}^{i+j}L_{ijk}P_k.
+ P_iP_j=\sum_{k=0}^{i+j}L_{ijk}^{\RationalNumbers}P_k
 \]
-The only public hypotheses are \(\operatorname{Odd}(i+j+k)\) for the parity zero,
-\(i+j<k\) for the one-sided degree zero, and
-\(i+j<k\lor i+k<j\lor j+k<i\) for the triangle-violation zero.  All four definitions
-and the other nine theorems are total at arbitrary natural indices.  The module proves
-no converse support theorem, Wigner/\(3j\) identification, factorial closed form,
-positivity theorem, or asymptotic claim.
+over \(\RealNumbers\).  Injectivity of the coefficientwise cast
+\(\RationalNumbers[X]\to\RealNumbers[X]\) reflects the same identity to
+\(\RationalNumbers[X]\).  Commutativity of the triple product proves the two swap
+laws.  If \(i+j+k\) is odd, parity makes the integrand odd, so reflection of the
+symmetric interval forces its integral, and hence the rational coefficient, to vanish.
+If \(i+j<k\), exact projection writes \(P_iP_j\) using only degrees below \(k\), so
+orthogonality kills its pairing with \(P_k\).  The two swap laws reduce either other
+strict triangle violation to this case.  Thus the executable triple sum, both finite
+linearizations, the symmetries, and the necessary support zeros are all unconditional
+finite theorems for natural indices.
 
-The second downstream module, \path{FabiusLegendreGaunt.lean}, has exactly one public
-definition,
-\lean{canonicalRvachevFullLegendreCoefficientRat}, and exactly eight public theorems:
+The up-law specialization uses one additional definition,
+\lean{canonicalRvachevFullLegendreCoefficientRat}:
+\[
+ C_k^{\RationalNumbers}=\begin{cases}
+   c_{k/2}^{\RationalNumbers},&2\mid k,\\
+   0,&2\nmid k.
+ \end{cases}
+\]
+Its exhaustive eight-theorem surface in \path{FabiusLegendreGaunt.lean} is
 \lean{canonicalRvachevFullLegendreCoefficientRat_even},
 \lean{canonicalRvachevFullLegendreCoefficientRat_odd},
 \lean{canonicalRvachevFullLegendreCoefficientRat_cast},
@@ -11484,37 +11501,38 @@ definition,
 \lean{rvachevLegendreGramEntryRat_eq_sum_gaunt},
 \lean{rvachevLegendreGramMatrixRat_apply_eq_sum_gaunt}, and
 \lean{upLegendreGramMatrix_apply_eq_sum_gaunt}.
-The definition equals \lean{canonicalRvachevLegendreCoefficientRat}\((k/2)\) when
-\(2\mid k\) and zero otherwise; hence its value at \(2n\) is the canonical even
-coefficient and its value at \(2n+1\) is zero.  Write \(c_k^{\mathrm{full}}\) for this
-definition and \(M_{\mathbb Q}\) for
-\lean{momentFunctional}\((\lean{rvachevRawMomentRat},\mathord{-})\).  Unconditionally
-in \(k\), the normalized-moment theorem states
+The even and odd definitions immediately prove the first two laws.  Existing exact
+Rvachev--Legendre coefficient formulas identify the real cast of
+\(C_k^{\RationalNumbers}\) with the
+full analytic coefficient for every bounded Fabius representative \(F\) satisfying
+\lean{IsFabius F}, and identify its rational value with the normalized up-moment
+of \(P_k^{\RationalNumbers}\):
 \[
- c_k^{\mathrm{full}}=\frac{2k+1}{2}\,M_{\mathbb Q}(P_k).
+ C_k^{\RationalNumbers}=\frac{2k+1}{2}\,
+ \mathcal L_{\RvachevUp}^{\RationalNumbers}(P_k^{\RationalNumbers}).
 \]
-For arbitrary natural \(i,j\), write \(H_{ij}^{\mathbb Q}\) for the rational Gram
-entry, \(c_r\) for the canonical even coefficient, and \(G_{ijk}^{\mathbb Q}\) for
-the rational Gaunt coefficient.  The two entry formulas are exactly
+Applying the rational moment functional to the finite product linearization and
+substituting this normalization yields
 \[
- H_{ij}^{\mathbb Q}=\sum_{k=0}^{i+j}c_k^{\mathrm{full}}G_{ijk}^{\mathbb Q}
+ \mathcal G_{ij}^{\RationalNumbers}
+ =\sum_{k=0}^{i+j} C_k^{\RationalNumbers}G_{ijk}^{\RationalNumbers}
+ =\sum_{r=0}^{\lfloor(i+j)/2\rfloor}
+    c_r^{\RationalNumbers}G_{ij,2r}^{\RationalNumbers}.
 \]
-and, after deleting the zero odd terms,
+The second equality simply deletes the zero odd terms and reindexes \(k=2r\); the matrix
+theorem is the same formula at finite indices.  Casting the finite sum, using the two cast
+bridges term by term, gives
 \[
- H_{ij}^{\mathbb Q}=\sum_{r=0}^{\lfloor(i+j)/2\rfloor}c_rG_{ij,2r}^{\mathbb Q}.
+ \mathcal G_{ij}^{(n)}(F)
+ =\sum_{r=0}^{\lfloor(i+j)/2\rfloor}
+    c_r(F)G_{ij,2r}
 \]
-The rational matrix-entry theorem gives the second formula for every
-\(i,j:\lean{Fin}\,n\).  Only
-\lean{canonicalRvachevFullLegendreCoefficientRat_cast} and
-\lean{upLegendreGramMatrix_apply_eq_sum_gaunt} require
-\(F:\lean{BoundedFabius}\) and \(h_F:\lean{IsFabius}\,F\): the former identifies the
-cast with \lean{rvachevFullLegendreCoefficient}\((F,k)\), while the latter replaces the
-rational coefficient and Gaunt term in the even finite sum by
-\lean{rvachevLegendreCoefficient}\((F,r)\) and
-\lean{legendreGaunt}\((i,j,2r)\).  The other six theorems are unconditional finite
-identities.  This module makes no Wigner/\(3j\) or factorial claim, interchanges no
-infinite Legendre series with integration, and proves no Christoffel reconstruction or
-new positivity or asymptotic result.
+under \(h_F\).  Every interchange here is finite: no infinite Legendre series is moved
+through an integral.  This completes the finite Gaunt expansion and rationality-by-Gaunt
+route for every Gram entry.  Neither module identifies \(G_{ijk}\) with a Wigner \(3j\)
+symbol, proves the associated factorial formula, positivity or converse support, or
+develops roots, Christoffel reconstruction, quadrature, Pad\'e approximation,
+asymptotics, or an infinite expansion.
 
 The low-order computation leaf \path{FabiusLegendreRationalGramValues.lean} has zero public
 definitions and exactly eleven public theorems:
@@ -11549,11 +11567,11 @@ zero-based.  Each of the final three transport
 theorems---the real Hankel-ratio value, its squared-orthogonal-polynomial integral, and
 the identity \(H_4/H_3=\beta_4\)---requires both
 \(F:\lean{BoundedFabius}\) and \(h_F:\lean{IsFabius}\,F\).  Thus the displayed norm and
-subdiagonal are now named exact Lean evaluations.  This values leaf itself contains no
-Gaunt entry expansion; the two preceding Gaunt modules supply the finite formulas.  A
-Wigner/\(3j\) or factorial closed form, Christoffel reconstruction, root and quadrature
-theory, infinite Jacobi products or continued fractions, and asymptotics remain outside
-the combined layer.
+subdiagonal are now named exact Lean evaluations.  This values leaf itself does not derive
+the general entry formula, but the two Gaunt modules above now do.  Wigner \(3j\)
+identification and its factorial formula, Christoffel reconstruction, root and quadrature
+theory, infinite Jacobi products or continued fractions, Pad\'e theory, and asymptotics
+remain outside the current surface.
 
 This closure does not supply a complex logarithmic fixed point, complex order,
 pointwise or nontangential Sokhotski--Plemelj limits, a principal-value Hilbert-transform
