@@ -4,7 +4,7 @@ COMPUTABILITY OF THE INVERSE FABIUS FUNCTION
 SOURCE-ONLY MERGE STATUS (2026-08-31)
 -------------------------------------
 The current TeX has 2937 lines and SHA-256
-9945b23025006337e87001332db7a1141896b2f29f0d715fa85261682a6b0397.
+3ee69aa0c27486d5005e4d5f8448b36a8133083c8b79df51e9d08a5af56880b5.
 The retained 42-page PDF was not rebuilt after the notation migration and is
 not claimed to be synchronized with that source.  SHA256SUMS.txt was
 intentionally not refreshed: its TeX row and this README row are pending,
