@@ -131,8 +131,7 @@ declarations: two first-derivative formulas at `q = -1` and two simple-root
 multiplicity theorems.  Three signed-power moment theorems in
 `RvachevDerivativeDistribution.lean` give the exact Boolean-cube formula and
 its even-moment and positive-order odd-moment corollaries.  The baseline records
-the current inventory
-and those zeroes, so every future source addition must preserve the full
+the current inventory and those zeroes, so every future source addition must preserve the full
 invariant rather than merely avoid worsening a historical backlog.  Run the
 script for live numbers after merging concurrent source work.
 
