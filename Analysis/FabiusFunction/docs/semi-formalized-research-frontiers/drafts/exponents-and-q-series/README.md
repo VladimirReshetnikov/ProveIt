@@ -503,7 +503,7 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 `149332f9d`.
 
 Member: `Exponents_and_q_Series_Frontiers`
-(currently 234 pp, seven parts) — the
+(currently 235 pp, seven parts) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -642,11 +642,15 @@ Gamma–zeta Laplace decomposition.  The eighth-wave fold also
 repaired the volume's part-boundary section numbering (Part II had
 rendered with `\appendix` letters G–N).  Supporting files under
 `assets/`, provenance with SHA-256 in the document itself.  For the
-spectral q²-Pochhammer theorem, the current Lean crosswalk is deliberately
-partial: under `t = 4πz` it proves the inside `q = 1/2` Rvachev-product
-specialization, not the general-`q` characteristic/MGF identity, the
-reciprocal outside-disk formula, zero–pole exchange, or local-uniform/normal
-convergence.
+spectral q²-Pochhammer theorem, the current Lean crosswalk remains
+deliberately partial. The newer sinc-product API does prove, for real
+`|q| < 1`, the uncentered real-frequency identity
+`φ_q(t) = exp(i t/2)·S_q((1-q)t/(2π))` and, for complex `‖q‖ < 1`, locally
+uniform convergence and entire-ness of `S_q(z) = ∏ sinc(πqⁿz)`. It does not
+package the centered/MGF q²-Pochhammer rearrangement, the reciprocal
+outside-disk formula, zero–pole exchange, or normal convergence of that
+double product; the older Pochhammer module itself still supplies only the
+inside `q = 1/2` Rvachev-product specialization under `t = 4πz`.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.
 
@@ -726,7 +730,7 @@ matching `assets/` directories.
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Second member: `q_pochhammer_q_binomial_monograph/`
-(211 pp; A4 book class; rebuilt after the exact `q = -1` crosswalk update) —
+(212 pp; A4 book class; rebuilt after the exact `q = -1` and geometric-sinc crosswalk updates) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
@@ -854,6 +858,23 @@ raw closed-factor form `_prefix`) — the finite half of Part IV's master
 factorization `F̂ₙ = Φ·A(2⁻ⁿs)` at `q = 1/2` and of Part VI's `ĥ_a`
 sinc products at `q = 1/a`, kernel-verified.
 
+The final analytic bridge consists of exactly six new public theorems. For
+complex `q,z` with `‖q‖ < 1`, writing
+`S_q(z) = geometricSincProduct q z = ∏_{n≥0} sinc(πqⁿz)`, the four theorems
+`Fabius.hasProdLocallyUniformly_geometricSincProduct`,
+`Fabius.geometricSincProductFactors_multipliable`,
+`Fabius.hasProd_geometricSincProduct`, and
+`Fabius.geometricSincProduct_differentiable` give locally uniform product
+convergence, genuine pointwise `Multipliable` and `HasProd` witnesses with
+that exact value, and entire-ness. For real `|q| < 1`, `t ∈ ℝ`, and
+`z_q(t) = (1-q)t/(2π)`, including `q = 0` and negative contractions,
+`Fabius.charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct`
+and
+`Fabius.charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma`
+give
+`φ_q(t) = exp(i t/2)·S_q(z_q(t)) = exp(i t/2)·G_q(z_q(t))·G_q(-z_q(t))`,
+where `G_q(z) = geometricReciprocalGamma q z`.
+
 `RvachevPochhammerFactorization.lean` adds the exhaustive complex
 Pochhammer surface: the one definition `Fabius.complexQPochhammerInf` and
 the six theorems `Fabius.complexQPochhammerInf_eq_tprod`,
@@ -867,5 +888,9 @@ require exactly `‖q‖ < 1` and allow arbitrary complex `a`.  The two spectral
 theorems instead fix the dyadic scale and nome `1/4`, hold for every complex
 `z` including at zero factors, and the Fourier form assumes exactly a
 bounded Fabius witness satisfying `IsFabius`.  With `t = 4πz` this is the
-inside `q = 1/2` centered factorization only; it supplies neither a named
-general-`q` characteristic bridge nor compact-uniform convergence.
+inside `q = 1/2` centered factorization only. The six-theorem sinc-product
+tranche above supplies the general-`q` uncentered real-frequency bridge and
+locally uniform entire `S_q`, but still no named centered or MGF wrapper, no
+general q²-Pochhammer rearrangement, no outside-disk reciprocal formula, and
+no packaged compact-uniform theorem for the full phase-bearing
+characteristic-prefix sequence.
