@@ -15242,7 +15242,7 @@ permits reordering, and the product over the scale index is a
 $q^2$-Pochhammer symbol.  Outside the disk, apply this to $1/C_{1/q}$.
 \end{proof}
 
-\begin{statusbox}{Lean crosswalk: general contracting Pochhammer factorization}
+\begin{statusbox}{Lean crosswalk: general complex sinc--Pochhammer factorization}
 The current formal API does not prove the whole compound statement
 \cref{p7:thm:sinc-poch}.  It defines the complex symbol through
 \path{complexQPochhammerInf} and exposes exactly the nine theorems
@@ -15264,10 +15264,10 @@ and, for every complex $q,z$ with $\lVert q\rVert<1$, the global identity
  S_q(z)=\prod_{k\ge0}
  \left(\frac{z^2}{(k+1)^2};q^2\right)_\infty .
 \]
-They include $q=0$ and all individual zero factors.  The final two spectral
-theorems specialize this result to the dyadic scale and nome $1/4$; the
-Fourier-transform form additionally assumes a bounded Fabius witness
-satisfying \path{IsFabius}.
+They include $q=0$, negative and nonreal contractions, and all individual
+zero factors.  The final two spectral theorems specialize this result to the
+dyadic scale and nome $1/4$; the Fourier-transform form additionally assumes
+a bounded Fabius witness satisfying \path{IsFabius}.
 
 After the substitution $z=(1-q)t/(2\pi)$, the general product theorem gives
 the Pochhammer-product part of the inside formula

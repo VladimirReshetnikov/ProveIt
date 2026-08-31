@@ -135,6 +135,11 @@ source addition must preserve the
 full invariant rather than merely avoid worsening a historical backlog.  Run
 the script for live numbers after merging concurrent source work.
 
+The documentation merge itself was validated source-only at the user's
+request.  Its merged TeX sources are newer than the selected committed PDFs;
+those PDFs remain potentially stale until the next required three-pass
+Libertinus rebuild.
+
 ### What the review pass caught
 
 Both waves paired each documenting agent with an independent auditor, and that
