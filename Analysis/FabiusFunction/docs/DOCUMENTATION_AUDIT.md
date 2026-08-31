@@ -143,10 +143,12 @@ must preserve the full invariant rather than merely avoid worsening a
 historical backlog.  Run the script for live numbers after merging concurrent
 source work.
 
-The documentation merge itself was validated source-only at the user's
-request.  Its merged TeX sources are newer than the selected committed PDFs;
-those PDFs remain potentially stale until the next required three-pass
-Libertinus rebuild.
+The documentation merge was initially validated source-only.  The three
+changed publication roots were subsequently rebuilt from their final merged
+TeX sources in three strict serial pdfLaTeX passes each.  The resulting primary,
+canonical-frontier, and filed New Frontiers PDFs contain 164, 236, and 41 A4
+pages, respectively; all fonts are embedded and subset, no Type 3 font remains,
+and the filed package's 20-entry ledger verifies 20/20.
 
 ### What the review pass caught
 

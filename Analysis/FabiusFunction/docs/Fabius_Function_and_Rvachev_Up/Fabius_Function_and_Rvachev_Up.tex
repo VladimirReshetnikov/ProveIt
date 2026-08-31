@@ -4447,11 +4447,6 @@ Let \(E\) be a real Banach space and let \(H:\RealNumbers\to E\) be continuous. 
  2^{-n}\sum_{k=0}^{2^n-1}
  \int_{-1}^{1}H\!\left(2^{T_n}\varepsilon_k\RvachevUp(y)\right)\Differential y,
                                                                \label{eq:rvachev-signed-mixture}\\
- \int_{-1}^{1}H\!\left(2^{-T_n}\RvachevUp^{(n)}(x)\right)\Differential x
- &=\frac12\left(
-   \int_{-1}^{1}H\!\left(\RvachevUp(y)\right)\Differential y
-   +\int_{-1}^{1}H\!\left(-\RvachevUp(y)\right)\Differential y\right)
-   \qquad(0<n),                                      \label{eq:rvachev-normalized-signed-test}\\
  \int_{-1}^{1}H\!\left(\left|\RvachevUp^{(n)}(x)\right|\right)\Differential x
  &=
  \int_{-1}^{1}H\!\left(2^{T_n}\RvachevUp(y)\right)\Differential y,
@@ -4461,46 +4456,51 @@ Let \(E\) be a real Banach space and let \(H:\RealNumbers\to E\) be continuous. 
  \int_{-1}^{1}H\!\left(\RvachevUp(y)\right)\Differential y.                    \label{eq:rvachev-normalized-test}
 \end{align}
 The signed formula is the exact \(2^n\)-term Thue--Morse mixture and includes order zero.
-The normalized signed half-mixture has the sharp hypothesis \(0<n\): at \(n=0\), its
-left side is the unsymmetrized original-profile integral
-\(\int_{-1}^{1}H(\RvachevUp(x))\Differential x\).
+For every positive order \(0<n\), sharp signed normalization collapses that finite
+mixture to the symmetric half-mixture
+\begin{equation}
+ \int_{-1}^{1}H\!\left(2^{-T_n}\RvachevUp^{(n)}(x)\right)\Differential x
+ =\frac12\left(
+   \int_{-1}^{1}H\!\left(\RvachevUp(y)\right)\Differential y
+   +\int_{-1}^{1}H\!\left(-\RvachevUp(y)\right)\Differential y
+  \right).                                             \label{eq:rvachev-normalized-signed-test}
+\end{equation}
+The restriction \(0<n\) is essential: at order zero the normalized signed profile is
+the unsymmetrized function \(\RvachevUp\).
 
 Let \(\lambda_{[-1,1]}\) denote Lebesgue measure restricted to the closed interval
 \([-1,1]\), and let \(f_{\#}\mu\) denote the pushforward of \(\mu\) by \(f\).
-The normalized absolute and positive-order signed identities are also proved as exact
-equalities of Borel measures:
+The normalized absolute identity is proved as the exact equality of Borel measures
 \begin{equation}
  \left(x\longmapsto
  2^{-T_n}\left|\RvachevUp^{(n)}(x)\right|\right)_{\#}\lambda_{[-1,1]}
  =
  \RvachevUp_{\#}\lambda_{[-1,1]}.                                \label{eq:rvachev-absolute-pushforward}
 \end{equation}
-For \(0<n\), the signed equality is
+For \(0<n\), the normalized signed identity is likewise the exact Borel pushforward law
 \begin{equation}
- \left(x\longmapsto2^{-T_n}\RvachevUp^{(n)}(x)\right)_{\#}\lambda_{[-1,1]}
+ \left(x\longmapsto
+ 2^{-T_n}\RvachevUp^{(n)}(x)\right)_{\#}\lambda_{[-1,1]}
  =\frac12\left(
    \RvachevUp_{\#}\lambda_{[-1,1]}
-   +\left(y\longmapsto-\RvachevUp(y)\right)_{\#}\lambda_{[-1,1]}\right).
-                                                               \label{eq:rvachev-signed-pushforward}
+   +\left(y\longmapsto-\RvachevUp(y)\right)_{\#}\lambda_{[-1,1]}
+  \right).                                             \label{eq:rvachev-normalized-signed-pushforward}
 \end{equation}
-Thus \eqref{eq:rvachev-normalized-signed-test} is a Banach-valued identity for continuous
-tests, whereas \eqref{eq:rvachev-signed-pushforward} is the scalar Borel distribution law.
-After normalizing restricted Lebesgue measure, the latter is precisely the law of an
-independent symmetric Rademacher sign times \(\RvachevUp(U)\).  At order zero the
-pushforward is instead the unsymmetrized \(\RvachevUp_{\#}\lambda_{[-1,1]}\).
 \end{theorem}
 
 \begin{proof}[Formal proof]
 Equations \eqref{eq:rvachev-signed-mixture}--\eqref{eq:rvachev-normalized-test}
-are, in order, \lean{intervalIntegral_comp_iteratedDeriv_rvachev},
-\lean{intervalIntegral_comp_normalized_iteratedDeriv_rvachev},
+are \lean{intervalIntegral_comp_iteratedDeriv_rvachev},
 \lean{intervalIntegral_comp_abs_iteratedDeriv_rvachev}, and
 \lean{intervalIntegral_comp_normalized_abs_iteratedDeriv_rvachev}.
-The pushforward equality \eqref{eq:rvachev-absolute-pushforward} is
-\lean{map_normalized_abs_iteratedDeriv_rvachev_restrict_Icc}, and
-\eqref{eq:rvachev-signed-pushforward} is
-\lean{map_normalized_iteratedDeriv_rvachev_restrict_Icc}.  These declarations are in
-\path{RvachevDerivativeDistribution.lean}.
+The positive-order half-mixture \eqref{eq:rvachev-normalized-signed-test} is
+\lean{intervalIntegral_comp_normalized_iteratedDeriv_rvachev}.
+The pushforward equalities \eqref{eq:rvachev-absolute-pushforward} and
+\eqref{eq:rvachev-normalized-signed-pushforward} are respectively
+\lean{map_normalized_abs_iteratedDeriv_rvachev_restrict_Icc} and
+\lean{map_normalized_iteratedDeriv_rvachev_restrict_Icc}.  Both signed
+half-mixture declarations assume exactly \(0<n\); the absolute declarations include
+order zero.  All six declarations are in \path{RvachevDerivativeDistribution.lean}.
 \end{proof}
 
 \begin{corollary}[All signed natural-power moments]
@@ -4558,16 +4558,15 @@ This is \lean{intervalIntegral_abs_iteratedDeriv_rvachev_rpow} in
 
 \begin{boxedremark}
 \textbf{Exact current boundary.}
-The signed API consists of the all-order finite continuous-test-function mixture
-\eqref{eq:rvachev-signed-mixture}, the positive-order normalized Banach-valued
-continuous-test identity \eqref{eq:rvachev-normalized-signed-test}, the positive-order
-Borel pushforward equality \eqref{eq:rvachev-signed-pushforward}, and the ordinary
+The signed API consists of the finite continuous-test-function mixture
+\eqref{eq:rvachev-signed-mixture}, the positive-order normalized symmetric
+half-mixture in continuous-test and Borel-pushforward form
+\eqref{eq:rvachev-normalized-signed-test} and
+\eqref{eq:rvachev-normalized-signed-pushforward}, and the ordinary
 \(\NaturalNumbers\)-power formulas
-\eqref{eq:rvachev-signed-nat-moments}--\eqref{eq:rvachev-odd-nat-moments}.  The latter
-are distinct from the nonnegative-real \lean{Real.rpow} absolute moments in
-\eqref{eq:rvachev-rpow-moments}.  The symmetric signed Borel law is therefore closed;
-its sharp \(0<n\) boundary preserves the unsymmetrized \(n=0\) profile.  The current module
-still does not state
+\eqref{eq:rvachev-signed-nat-moments}--\eqref{eq:rvachev-odd-nat-moments}.
+The natural-power formulas are distinct from the nonnegative-real \lean{Real.rpow}
+absolute moments in \eqref{eq:rvachev-rpow-moments}.  The current module does not state
 the \lean{eLpNorm} or general rearrangement-invariant norm ladder, the exact inverse-Fabius
 level sets, the beta-transform identities, or the later spectral layers.  Those claims
 remain in the research-frontier report.  Equation
@@ -5246,9 +5245,9 @@ Assume only that \(Z^n\) is integrable for
 \(\kappa=\mathcal K(m)\).  Then
 \begin{align}
  \int_\Omega p_\varphi(Z(\omega))\,\Differential\mu(\omega)
-  &=\sum_{n\in\SupportOperator(p)}\varphi(p_n)m_n,
+   &=\sum_{n\in\SupportOperator(p)}\varphi(p_n)m_n,
                                                                \label{eq:polynomial-integral-moments}\\
-  &=\sum_{n\in\SupportOperator(p)}
+   &=\sum_{n\in\SupportOperator(p)}
        \varphi(p_n)\mathcal B(\kappa)_n
        +\varphi(p_0)(m_0-1).                                \label{eq:polynomial-integral-cumulants}
 \end{align}
@@ -7051,7 +7050,7 @@ denominator on the full range and the effective lower bound
 literal divergence theorem
 \lean{tendsto_qConditionNumberLimit_atTop_at_one_left}.  The actual infinite
 Rvachev sinc-product instantiation, at the quarter base and at a generic
-complex squared base under finite-node injectivity, is now the exact theorem
+complex squared base under finite-node injectivity, is now exactly
 \cref{thm:rvachev-gaussian-filter}.  What remains in the research-frontier
 volume is the different finite-prefix problem for \(P_{b,n}\): its quotient
 and Bell-coefficient package, the analytic sign and remainder/bracketing
@@ -11387,6 +11386,51 @@ quotient
 This module proves finite rational coefficient algebra only; it contains no root,
 Christoffel, quadrature, orthogonality, or asymptotic theorem.
 
+The companion \path{LegendreGaunt.lean} turns those coefficients into an executable
+triple-product layer.  Its exactly four public definitions are
+\lean{legendreLebesgueMomentRat},
+\lean{legendreGauntRat},
+\lean{legendreGaunt}, and
+\lean{legendreProductLinearizationCoeffRat}.  Its exactly twelve public theorems are
+\lean{legendreLebesgueMomentRat_even},
+\lean{legendreLebesgueMomentRat_odd},
+\lean{legendreLebesgueMomentRat_cast},
+\lean{legendreGauntRat_eq_momentFunctional},
+\lean{legendreGauntRat_cast},
+\lean{legendreGauntRat_swap_left},
+\lean{legendreGauntRat_swap_right},
+\lean{legendrePolynomial_mul_eq_sum_gaunt},
+\lean{legendrePolynomialRat_mul_eq_sum_gaunt},
+\lean{legendreGauntRat_eq_zero_of_odd_sum},
+\lean{legendreGauntRat_eq_zero_of_add_lt}, and
+\lean{legendreGauntRat_eq_zero_of_triangle_violation}.
+The executable moments are \(2/(n+1)\) at even \(n\) and zero at odd \(n\); combining
+them with three finite rational Legendre coefficient arrays gives
+\lean{legendreGauntRat}.  Its cast is exactly the real interval integral
+\[
+ \lean{legendreGaunt}(i,j,k)
+ =\int_{-1}^{1}P_i(x)P_j(x)P_k(x)\Differential x.
+\]
+The two swap theorems generate the usual permutation symmetry, and the normalized
+coefficient \((2k+1)\lean{legendreGauntRat}(i,j,k)/2\) gives exact finite product
+linearizations of \(P_iP_j\) over the rational and real coefficient fields.  An odd sum
+\(i+j+k\), or any strict triangle violation, forces the rational Gaunt coefficient to
+vanish.  These are necessary support restrictions only: no converse or nonvanishing
+theorem is asserted.  The module also proves no identification of the integral with
+twice a squared Wigner \(3j\) symbol, no Wigner factorial formula, and no nonnegativity
+deduced from such a formula.
+
+At the proof level, monomial integration on the symmetric interval gives the displayed
+even/odd moments.  Expanding the three rational Legendre polynomials into their finite
+coefficient arrays then identifies the triple sum with the rational moment functional,
+and finite linearity plus the monomial cast gives the real integral.  Since
+\(\deg(P_iP_j)\leq i+j\), finite Fourier--Legendre projection and orthogonality give the
+real product linearization; injectivity of the coefficientwise cast
+\(\RationalNumbers[X]\to\RealNumbers[X]\) reflects it back to rational polynomials.
+Commutativity gives the two swaps, odd reflection gives the parity zero, and
+orthogonality beyond degree \(i+j\), followed by the swaps, gives all three strict
+triangle zeros.
+
 \path{FabiusLegendreHankelDeterminant.lean} specializes this calculation to the ordinary
 Legendre family and the up-law moments.  It has exactly two public definitions,
 \lean{upLegendreGramMatrix} and \lean{upLegendreGramDet}, and exactly seven public theorems:
@@ -11455,81 +11499,24 @@ two theorems express the exact rational squared norm and the zero-based
 \lean{rvachevJacobiSubdiagonalRat}\((n)=\beta_{n+1}\) as consecutive rational Legendre
 Gram-determinant ratios, with the latter carrying the factor
 \(((n+1)/(2n+1))^2\).  Thus the executable coefficient, entry, matrix, determinant,
-cast, positivity, norm-ratio, and Jacobi-ratio layer is formalized.  The next two
-modules now give a second, finite triple-product expansion of the same entries.  They do
-not identify the Gaunt integrals with Wigner \(3j\) symbols or prove the corresponding
-factorial formula, Christoffel reconstruction, root or quadrature theorems, infinite
-Jacobi products or continued fractions, Pad\'e theory, or asymptotics.
+cast, positivity, norm-ratio, and Jacobi-ratio layer is formalized.  Its finite Gaunt
+entry representation is supplied by the next companion module; Wigner/\(3j\),
+the corresponding factorial formula, Christoffel reconstruction, root or quadrature
+theory, infinite Jacobi products or continued fractions, Pad\'e theory, and asymptotics
+remain open.
 
-The generic finite Gaunt layer begins with the executable rational moment
-\[
- \mu_n^{\RationalNumbers}=\begin{cases}2/(n+1),&n\ \text{even},\\0,&n\ \text{odd},\end{cases}
-\]
-and defines
-\begin{align*}
- G_{ijk}^{\RationalNumbers}
-   &=\sum_{a=0}^{i}\sum_{b=0}^{j}\sum_{c=0}^{k}
-      [X^a]P_i^{\RationalNumbers}\,[X^b]P_j^{\RationalNumbers}\,
-      [X^c]P_k^{\RationalNumbers}\,\mu_{a+b+c}^{\RationalNumbers},\\
- G_{ijk}&=\int_{-1}^{1}P_i(x)P_j(x)P_k(x)\,\Differential x,\\
- L_{ijk}^{\RationalNumbers}&=\frac{2k+1}{2}G_{ijk}^{\RationalNumbers}.
-\end{align*}
-These are respectively \lean{legendreLebesgueMomentRat},
-\lean{legendreGauntRat}, \lean{legendreGaunt}, and
-\lean{legendreProductLinearizationCoeffRat}.  The exhaustive twelve-theorem
-surface of \path{LegendreGaunt.lean} is
-\lean{legendreLebesgueMomentRat_even},
-\lean{legendreLebesgueMomentRat_odd},
-\lean{legendreLebesgueMomentRat_cast},
-\lean{legendreGauntRat_eq_momentFunctional},
-\lean{legendreGauntRat_cast},
-\lean{legendreGauntRat_swap_left},
-\lean{legendreGauntRat_swap_right},
-\lean{legendrePolynomial_mul_eq_sum_gaunt},
-\lean{legendrePolynomialRat_mul_eq_sum_gaunt},
-\lean{legendreGauntRat_eq_zero_of_odd_sum},
-\lean{legendreGauntRat_eq_zero_of_add_lt}, and
-\lean{legendreGauntRat_eq_zero_of_triangle_violation}.
-Here is the complete proof at the mathematical level.  Integration of a monomial on the
-symmetric interval gives \(2/(n+1)\) in even degree and zero in odd degree; this proves
-the cast identity for \(\mu_n^{\RationalNumbers}\).  Expanding each rational Legendre polynomial in
-its finitely many monomials and distributing the three finite sums identifies
-\(G_{ijk}^{\RationalNumbers}\) with the rational moment functional of
-\(P_i^{\RationalNumbers}P_j^{\RationalNumbers}P_k^{\RationalNumbers}\).  The monomial cast identity and finite linearity of the
-integral then give \((G_{ijk}^{\RationalNumbers}:\RealNumbers)=G_{ijk}\).  Since
-\(\deg(P_iP_j)\le i+j\), finite Fourier--Legendre projection is exact and orthogonality
-gives
-\[
- P_iP_j=\sum_{k=0}^{i+j}L_{ijk}^{\RationalNumbers}P_k
-\]
-over \(\RealNumbers\).  Injectivity of the coefficientwise cast
-\(\RationalNumbers[X]\to\RealNumbers[X]\) reflects the same identity to
-\(\RationalNumbers[X]\).  Commutativity of the triple product proves the two swap
-laws.  If \(i+j+k\) is odd, parity makes the integrand odd, so reflection of the
-symmetric interval forces its integral, and hence the rational coefficient, to vanish.
-If \(i+j<k\), exact projection writes \(P_iP_j\) using only degrees below \(k\), so
-orthogonality kills its pairing with \(P_k\).  The two swap laws reduce either other
-strict triangle violation to this case.  Thus the executable triple sum, both finite
-linearizations, the symmetries, and the necessary support zeros are all unconditional
-finite theorems for natural indices.
-
-The up-law specialization uses one additional definition,
-\lean{canonicalRvachevFullLegendreCoefficientRat}:
-\[
- C_k^{\RationalNumbers}=\begin{cases}
-   c_{k/2}^{\RationalNumbers},&2\mid k,\\
-   0,&2\nmid k.
- \end{cases}
-\]
-Its exhaustive eight-theorem surface in \path{FabiusLegendreGaunt.lean} is
+\path{FabiusLegendreGaunt.lean} has exactly one public definition,
+\lean{canonicalRvachevFullLegendreCoefficientRat}, and exactly eight public theorems:
 \lean{canonicalRvachevFullLegendreCoefficientRat_even},
 \lean{canonicalRvachevFullLegendreCoefficientRat_odd},
 \lean{canonicalRvachevFullLegendreCoefficientRat_cast},
 \lean{canonicalRvachevFullLegendreCoefficientRat_eq_normalized_moment},
 \lean{rvachevLegendreGramEntryRat_eq_sum_full_gaunt},
 \lean{rvachevLegendreGramEntryRat_eq_sum_gaunt},
-\lean{rvachevLegendreGramMatrixRat_apply_eq_sum_gaunt}, and
+\begin{samepage}
+\mbox{\lean{rvachevLegendreGramMatrixRat_apply_eq_sum_gaunt}}, and
 \lean{upLegendreGramMatrix_apply_eq_sum_gaunt}.
+\end{samepage}
 The even and odd definitions immediately prove the first two laws.  Existing exact
 Rvachev--Legendre coefficient formulas identify the real cast of
 \(C_k^{\RationalNumbers}\) with the
@@ -11556,12 +11543,22 @@ bridges term by term, gives
  =\sum_{r=0}^{\Floor{(i+j)/2}}
     c_r(F)G_{ij,2r}
 \]
-under \(h_F\).  Every interchange here is finite: no infinite Legendre series is moved
-through an integral.  This completes the finite Gaunt expansion and rationality-by-Gaunt
-route for every Gram entry.  Neither module identifies \(G_{ijk}\) with a Wigner \(3j\)
-symbol, proves the associated factorial formula, positivity or converse support, or
-develops roots, Christoffel reconstruction, quadrature, Pad\'e approximation,
-asymptotics, or an infinite expansion.
+The rational matrix-entry theorem gives the second formula for every
+\(i,j:\lean{Fin}\,n\).  Only
+\lean{canonicalRvachevFullLegendreCoefficientRat_cast} and
+\lean{upLegendreGramMatrix_apply_eq_sum_gaunt} require
+\(F:\lean{BoundedFabius}\) and \(h_F:\lean{IsFabius}\,F\): the former identifies the
+cast with \lean{rvachevFullLegendreCoefficient}\((F,k)\), while the latter replaces the
+rational coefficient and Gaunt term in the even finite sum by
+\lean{rvachevLegendreCoefficient}\((F,r)\) and
+\lean{legendreGaunt}\((i,j,2r)\).  The other six theorems are unconditional finite
+identities.  Together with \path{LegendreGaunt.lean}, these theorems close the finite
+Gaunt-integral/product-linearization layer and the finite Rvachev Gram-entry expansion.
+They prove no Wigner/\(3j\) identification or factorial formula, no nonnegativity by that
+route or converse support theorem, no infinite Legendre-series/integral interchange or
+infinite expansion, no root or quadrature theorem, no Christoffel reconstruction or
+Pad\'e approximation, and no named values for the individual entries of the displayed
+low-order \(G_3\).
 
 The low-order computation leaf \path{FabiusLegendreRationalGramValues.lean} has zero public
 definitions and exactly eleven public theorems:
@@ -11596,11 +11593,11 @@ zero-based.  Each of the final three transport
 theorems---the real Hankel-ratio value, its squared-orthogonal-polynomial integral, and
 the identity \(H_4/H_3=\beta_4\)---requires both
 \(F:\lean{BoundedFabius}\) and \(h_F:\lean{IsFabius}\,F\).  Thus the displayed norm and
-subdiagonal are now named exact Lean evaluations.  This values leaf itself does not derive
-the general entry formula, but the two Gaunt modules above now do.  Wigner \(3j\)
-identification and its factorial formula, Christoffel reconstruction, root and quadrature
-theory, infinite Jacobi products or continued fractions, Pad\'e theory, and asymptotics
-remain outside the current surface.
+subdiagonal are now named exact Lean evaluations.  The separate Gaunt modules close the
+finite entry expansion, but this values leaf supplies no named evaluation of the displayed
+\(G_3\) entries.  Wigner/\(3j\) identification and its factorial formula, Christoffel
+reconstruction, roots and quadrature, infinite Jacobi products or continued fractions,
+Pad\'e theory, and asymptotics remain open.
 
 This closure does not supply a complex logarithmic fixed point, complex order,
 pointwise or nontangential Sokhotski--Plemelj limits, a principal-value Hilbert-transform
@@ -11681,9 +11678,9 @@ renormalization, Laurent/Herglotz/inversion layers, initial Jacobi data, and fin
 \path{GramStieltjesNaturality.lean}, \path{RvachevRationalJacobi.lean},
 \path{PolynomialMomentGramDeterminant.lean},
 \path{LegendrePolynomialRational.lean},
+\path{LegendreGaunt.lean},
 \path{FabiusLegendreHankelDeterminant.lean},
 \path{FabiusLegendreRationalGram.lean},
-\path{LegendreGaunt.lean},
 \path{FabiusLegendreGaunt.lean},
 \path{FabiusLegendreRationalGramValues.lean},
 \path{EarlyApproximants.lean},
