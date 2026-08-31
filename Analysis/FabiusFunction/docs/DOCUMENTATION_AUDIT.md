@@ -109,12 +109,15 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 612 modules and 8,335 lexically
+The post-merge 2026-08-31 inventory contains 612 modules and 8,339 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  This snapshot includes the branch-point geometry and
 asymptotics leaves, the activation-analysis family, the effective inverse
-modulus pair, the geometric sinc characteristic bridge, and the symmetric
-Thue--Morse difference module.  The
+modulus pair, the geometric sinc characteristic bridge, the symmetric
+Thue--Morse difference module, and the four nonpositive-parameter diagnostics
+in `GeometricUniformCDF.lean`.  Relative to the 610/8,318 merge base, the exact
+delta is two modules and 21 declarations: 17 branch-point declarations and the
+four density-diagnostic theorems.  The
 baseline records the current inventory and those zeroes, so every future source
 addition must preserve the full invariant rather than merely avoid worsening a
 historical backlog.  Run the script for live numbers after merging concurrent
