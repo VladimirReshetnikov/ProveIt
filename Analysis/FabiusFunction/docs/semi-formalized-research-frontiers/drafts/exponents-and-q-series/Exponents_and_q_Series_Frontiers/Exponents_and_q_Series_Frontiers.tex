@@ -10960,9 +10960,32 @@ At $a=2$, \eqref{p6:eq:ha-fq} becomes the repository bridge
 For general $a$, the source's first-order equation therefore supplies a density-
 level refinement equation and a compactly supported $C^\infty$ package for the
 entire geometric-$q$ family.  The current formalization contains the weighted
-uniform law, support, smoothness, and the binary bridge; the general-$q$ Fourier
-product, derivative hierarchy, plateau geometry, cumulants, and uniqueness are
-listed as frontier obligations.  The next sections address several of those
+uniform law, support, smoothness, and the binary bridge, and it now closes the
+uncentered general-$q$ Fourier product.  For $q,z\in\C$ with
+$\lVert q\rVert<1$, writing
+$S_q(z)=\prod_{n\ge0}\sinc(\pi q^nz)$, the theorems
+\path{hasProdLocallyUniformly_geometricSincProduct},
+\path{geometricSincProductFactors_multipliable},
+\path{hasProd_geometricSincProduct}, and
+\path{geometricSincProduct_differentiable} give locally uniform product
+convergence, genuine pointwise \path{Multipliable} and \path{HasProd} witnesses,
+and entire-ness.  For real $\abs q<1$, $t\in\R$, and
+$z_q(t)=(1-q)t/(2\pi)$, including $q=0$ and negative contractions,
+\path{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct}
+and
+\path{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma}
+give
+\[
+\begin{aligned}
+ \phi_q(t)
+   &=\e^{\ii t/2}S_q(z_q(t)) \\
+   &=\e^{\ii t/2}G_q(z_q(t))G_q(-z_q(t)), \\
+ G_q(z)&=\operatorname{geometricReciprocalGamma}(q,z).
+\end{aligned}
+\]
+A separately named centered and $h_a$-scaled Fourier wrapper, the derivative
+hierarchy, plateau geometry, cumulants, and uniqueness remain the frontier
+obligations relevant here.  The next sections address several of those
 obligations on paper.
 
 \subsection{Log-concavity and the overlapping regime}
@@ -15166,7 +15189,7 @@ permits reordering, and the product over the scale index is a
 $q^2$-Pochhammer symbol.  Outside the disk, apply this to $1/C_{1/q}$.
 \end{proof}
 
-\begin{statusbox}{Lean crosswalk: the fixed dyadic inside specialization}
+\begin{statusbox}{Lean crosswalk: general sinc bridge and fixed dyadic Pochhammer specialization}
 The current formal API does not prove the whole compound statement
 \cref{p7:thm:sinc-poch}.  It defines the complex symbol through
 \path{complexQPochhammerInf} and exposes exactly the six theorems
@@ -15183,13 +15206,38 @@ dyadic scale and hence the nome $1/4$, and are global in $z\in\C$, including
 at individual zero factors; the Fourier-transform form additionally assumes
 a bounded Fabius witness satisfying \path{IsFabius}.
 
-Under $t=4\pi z$, the standalone-product theorem is exactly the inside
-$q=1/2$ specialization of \eqref{p7:eq:sinc-poch}.  The general real
-$\abs q<1$ identity, a named bridge to $\psi_q$ or $M_q$, the outside
-$\abs q>1$ reciprocal formula and zero--pole exchange, and the asserted
-local-uniform/normal convergence are not declarations of this module.
-Consequently the full label \cref{p7:thm:sinc-poch} remains only partially
-formalized.
+Under $t=4\pi z$, the standalone Pochhammer-product theorem is exactly the
+inside $q=1/2$ specialization of \eqref{p7:eq:sinc-poch}.  A separate final
+sinc-product tranche now proves the general uncentered bridge.  For
+$q,z\in\C$, $\lVert q\rVert<1$, the four theorems
+\path{hasProdLocallyUniformly_geometricSincProduct},
+\path{geometricSincProductFactors_multipliable},
+\path{hasProd_geometricSincProduct}, and
+\path{geometricSincProduct_differentiable} give locally uniform convergence,
+pointwise \path{Multipliable}/\path{HasProd}, and entire-ness for
+$S_q(z)=\prod_{n\ge0}\sinc(\pi q^nz)$.  For real $\abs q<1$, $t\in\R$, and
+$z_q(t)=(1-q)t/(2\pi)$, the declarations
+\path{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct}
+and
+\path{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma}
+give
+\[
+\begin{aligned}
+ \phi_q(t)
+   &=\e^{\ii t/2}S_q(z_q(t)) \\
+   &=\e^{\ii t/2}G_q(z_q(t))G_q(-z_q(t)), \\
+ G_q(z)&=\operatorname{geometricReciprocalGamma}(q,z),
+\end{aligned}
+\]
+including $q=0$ and negative contractions.
+
+There is still no named centered $\psi_q$ or MGF wrapper, no declaration
+identifying this sinc product with the general $q^2$-Pochhammer rearrangement,
+and no outside-$\abs q>1$ reciprocal formula or zero--pole exchange.  The
+normal convergence asserted for the Pochhammer double product and a packaged
+compact-uniform theorem for the full phase-bearing characteristic prefixes
+also remain outside the API.  Consequently the compound label
+\cref{p7:thm:sinc-poch} remains only partially formalized.
 \end{statusbox}
 
 The nome is $q^2$, not $q$: centering makes every factor even, and evenness

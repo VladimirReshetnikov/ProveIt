@@ -121,13 +121,15 @@
 \small Human-readable guide to Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Repository source snapshot: 25 August 2026\\
 \small base commit \nolinkurl{eaea1b9afe2b7ff0b7dd880bd1710e303dec6d80};
-Volterra addenda \nolinkurl{3da579387}, \nolinkurl{e109088ed}}
+Volterra addenda \nolinkurl{3da579387}, \nolinkurl{e109088ed};\\
+\small activation-series and finite-Taylor addendum
+\nolinkurl{a345425d21d90e680bf15e34093af42c69c08a83}}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-The Fabius function is a classical example of a smooth function with an elementary-looking self-similarity law and unexpectedly rich arithmetic, Fourier-analytic, probabilistic, and asymptotic structure.  Vladimir Reshetnikov's \texttt{ProveIt} repository contains a large Lean~4 development that formalizes both of Juan Arias de Reyna's 2017 papers on the function, proves the existence and uniqueness of a canonical bounded solution, constructs its signed global extension, verifies exact evaluation algorithms at dyadic rationals, develops moment and denominator theory, reconstructs Rvachev's Fourier characterization, and goes substantially beyond the papers through q-binomial identities, discrete-limit theorems, sharp shape and inverse theory, computability, non-elementarity results, corrected saddle-point asymptotics, and Legendre expansions.
+The Fabius function is a classical example of a smooth function with an elementary-looking self-similarity law and unexpectedly rich arithmetic, Fourier-analytic, probabilistic, and asymptotic structure.  Vladimir Reshetnikov's \texttt{ProveIt} repository contains a large Lean~4 development that formalizes both of Juan Arias de Reyna's 2017 papers on the function, proves the existence and uniqueness of a canonical bounded solution, constructs its signed global extension, verifies exact evaluation algorithms at dyadic rationals, develops moment and denominator theory, reconstructs Rvachev's Fourier characterization, and goes substantially beyond the papers through q-binomial identities, discrete-limit theorems, sharp shape and inverse theory, finite activation Taylor jets, square-summable activation asymptotics, computability, non-elementarity results, corrected saddle-point asymptotics, and Legendre expansions.
 
 This document is a proof-oriented walkthrough of that codebase.  Its aim is not to restate every declaration in source order.  Instead, it explains why the development is split into its present modules, which dependencies are mathematically essential, which are merely packaging dependencies, and how the principal proofs are made acceptable to Lean.  Particular attention is paid to the two parallel foundations of the project---exact rational arithmetic and analysis under an abstract \nolinkurl{IsFabius} specification---and to the bridge that identifies them.  The discussion also records source corrections that become unavoidable in a formal proof, recurring proof-engineering idioms, recommended reading paths, and practical advice for extending the library.
 \end{abstract}
@@ -1578,9 +1580,14 @@ For the geometric weights \(w_n(q)=(1-q)q^n\), write \(\mu_q\) for the law,
   \frac{F_q(x/q)-F_q((x-(1-q))/q)}{1-q}.
 \]
 The Lean definition \nolinkurl{geometricUniformDensity q} is total in \(q\),
-but only \(0<q<1\) gives this classical density interpretation: at \(q=0\)
-field division is totalized, while for \(q<0\) the affine event inequality is
-reversed.
+but only \(0<q<1\) gives this classical density interpretation.  The formal
+boundary is now exact: at \(q=0\) the selected quotient is identically zero,
+whereas for \(q<0\) it is nonpositive because the affine CDF interval reverses.
+Thus its \nolinkurl{ENNReal.ofReal} clamp gives the zero
+\nolinkurl{withDensity} measure for every \(q\le0\), and that measure is
+provably not \(\mu_q\) when also \(\lvert q\rvert<1\).  This does not contradict
+the absolute continuity of the law; an exact Lean theorem for the paper-level
+corrected signed-ratio density at negative \(q\) remains open.
 The single theorem in \nolinkurl{GeometricUniformUniqueness.lean} specializes
 the generic product-map theorem to the already proved head--tail identity:
 \[
@@ -1628,20 +1635,43 @@ and the phase-bearing prefix obtained by deleting the residual factor
 in real \(q\).  Thus the contraction-range result includes \(q=0\) and negative
 ratios; at \(q=1/2\) it has exact wrappers for the classical weighted-sum law.
 
-The six-declaration inventory is
+The six-declaration inventory of \nolinkurl{GeometricSincFactorization.lean} is
 \nolinkurl{charFun_geometricUniformDigit},
 \nolinkurl{charFun_geometricUniformDistribution_prefix},
 \nolinkurl{charFun_geometricUniformDistribution_prefix_sinc},
 \nolinkurl{tendsto_prefix_sinc_charFun},
 \nolinkurl{charFun_weightedSumDistribution_prefix_sinc}, and
 \nolinkurl{tendsto_prefix_sinc_charFun_weightedSumDistribution}.
-This is pointwise prefix convergence.  The existing
-\nolinkurl{geometricSincProduct} already packages the same sinc factors, after frequency
-rescaling, as a \nolinkurl{tprod}; what is missing is a named characteristic-function
-bridge to it (or an explicit \nolinkurl{HasProd} theorem) and compact-uniform convergence
-of the characteristic prefixes.  Rapid-decay bounds, Fourier inversion, a named centered family, explicit Bernoulli-cumulant and
-Bell-moment formulas and asymptotics, further transform formulas, and shape theory remain
-separate targets.
+This is pointwise prefix convergence.  The four new public theorems attached to
+\nolinkurl{geometricSincProduct} in \nolinkurl{GeometricReciprocalGamma.lean} are
+\nolinkurl{hasProdLocallyUniformly_geometricSincProduct},
+\nolinkurl{geometricSincProductFactors_multipliable},
+\nolinkurl{hasProd_geometricSincProduct}, and
+\nolinkurl{geometricSincProduct_differentiable}.  For complex \(q\) with
+\(\lVert q\rVert<1\), they prove locally uniform convergence on \(\C\) of the defining
+sinc products, pointwise multipliability and the exact \nolinkurl{HasProd} identity, and
+entireness.  Write \(S_q(z)\) for
+\nolinkurl{geometricSincProduct q z}.
+
+The new zero-definition, two-theorem module
+\nolinkurl{GeometricSincCharacteristicFunction.lean} consists exactly of
+\nolinkurl{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct} and
+\nolinkurl{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma}.
+Write \(G_q(z)\) for \nolinkurl{geometricReciprocalGamma q z}, and put
+\[
+ z_q(t)=\frac{(1-q)t}{2\pi}.
+\]
+For every real \(\lvert q\rvert<1\) and \(t\in\R\), including \(q=0\) and negative
+ratios, these theorems give the exact identities
+\[
+ \phi_q(t)=e^{\ii t/2}S_q\bigl(z_q(t)\bigr)
+ =e^{\ii t/2}G_q\bigl(z_q(t)\bigr)G_q\bigl(-z_q(t)\bigr).
+\]
+The locally uniform theorem concerns \(S_q\) as a complex-variable sinc product; there is
+still no named compact-uniform theorem for the full phase-bearing characteristic prefixes.
+Rapid-decay bounds, Fourier inversion, a named centered family or MGF wrapper, explicit
+Bernoulli-cumulant and Bell-moment formulas and asymptotics, further transform formulas,
+and shape theory remain separate targets.
 
 The definition of \(F_q\), together with its monotonicity, range bounds, and
 measurability, is total in real \(q\).  If \(\lvert q\rvert<1\), then \(F_q\)
@@ -1683,10 +1713,177 @@ all-real bridges
 \]
 Accordingly the dyadic smoothing, interval-integral, continuity, exterior-value,
 and reflection proofs now route through the reusable half-base API.  There is still no
-separately named centered random variable or general-\(q\) centered density.  The finite
+Lean formalization of the paper-level corrected signed-ratio density for negative \(q\), separately named centered
+random variable, or general-\(q\) centered density.  The finite
 MGF/CGF dictionary and pointwise sinc-prefix limit above also stop short of explicit
 Bernoulli-cumulant and Bell-moment evaluations, their asymptotics, and log-concavity or
 shape-transition theorems.
+
+\subsection{Activation Taylor jets, square-summability, and effective dimension}
+The post-snapshot activation layer begins with four total real functions in
+\nolinkurl{HyperbolicActivation.lean}.  Of these, the local activation
+probability
+\[
+ p(x):=\operatorname{activationProbability}(x)
+ =1-\frac{\tanh x}{x}\quad(x\ne0),\qquad p(0)=0,
+\]
+is continuous, even, nonnegative, strictly positive exactly away from zero,
+and globally satisfies
+\[
+ 0\le p(x)<1,
+ \qquad
+ p(x)\le\min\left(1,\frac{x^2}{3}\right).
+\]
+The totalized quotient \nolinkurl{tanhDiv} supplies the value at the origin;
+the proof never treats a removable singularity as an ordinary quotient.
+The identity \nolinkurl{tanhDiv_eq_dslope} makes that totalization canonical:
+as functions,
+\[
+ \operatorname{tanhDiv}
+ = \operatorname{dslope}(\tanh,0).
+\]
+Thus the value at zero is the ordinary divided-slope value selected by the
+derivative of \(\tanh\), rather than an unrelated convention added merely to
+make the quotient total.
+
+The short module \nolinkurl{ActivationSeries.lean} extracts the rescaled
+one-coordinate estimate as
+\nolinkurl{activationProbability_mul_le_quadratic}:
+\[
+ p(at)\le \frac{t^2}{3}a^2\qquad(a,t\in\R).
+\]
+For an arbitrary index type \(I\) and real family \(w:I\to\R\) with
+\(\sum_i w_i^2<\infty\), the declarations
+\nolinkurl{summable_activationProbability_mul_of_summable_sq} and
+\nolinkurl{tsum_activationProbability_mul_le} then prove genuine summability
+for every \(t\) and the global budget
+\[
+ D_w(t):=\sum_{i\in I}p(w_it)
+ \le \frac{t^2}{3}\sum_{i\in I}w_i^2.
+\]
+Here \(D_w\) is only convenient notation in this guide, not a named Lean
+definition.  No ambient countability, positivity, or \(\ell^1\) hypothesis is
+imposed: the \nolinkurl{Summable} hypothesis itself carries the required
+countable support, and weights may be signed or zero.
+
+The asymptotic half of the argument deliberately does not manufacture a
+Taylor remainder.  In \nolinkurl{ActivationAsymptotics.lean}, one
+l'Hopital step applied to
+\((x-\tanh x)/x^3\) proves
+\nolinkurl{tendsto_activationProbability_div_sq}; its derivative quotient is
+\((\operatorname{tanhDiv}x)^2/3\).  Composition with a nonzero dilation,
+together with the identically-zero case, yields
+\nolinkurl{tendsto_activationProbability_mul_div_sq}:
+\[
+ \lim_{\substack{t\to0\\t\ne0}}\frac{p(at)}{t^2}=\frac{a^2}{3}
+ \qquad(a\in\R).
+\]
+Thus the statement explicitly includes \(a=0\), which is essential for sparse
+weight families.
+
+There is now also a separate finite Taylor theorem.  It is stronger in local
+information than the quadratic limit, but it is not used to prove that limit.
+
+\begin{theorem}[Exact finite activation Taylor jet]
+As \(x\to0\),
+\[
+ \tanh x
+ =x-\frac{x^3}{3}+\frac{2x^5}{15}-\frac{17x^7}{315}
+   +\frac{62x^9}{2835}+O\!\left(\lVert x\rVert^{11}\right),
+\]
+and
+\[
+ p(x)
+ =\frac{x^2}{3}-\frac{2x^4}{15}+\frac{17x^6}{315}
+   -\frac{62x^8}{2835}+O\!\left(\lVert x\rVert^{10}\right).
+\]
+Because the exponent is even, the second remainder is equivalently
+\(O(x^{10})\).  These are respectively
+\nolinkurl{tanh_sub_taylor_nine_isBigO},
+\nolinkurl{activationProbability_sub_taylor_eight_isBigO}, and
+\nolinkurl{activationProbability_sub_taylor_eight_isBigO_pow} in
+\nolinkurl{ActivationTaylor.lean}.
+\end{theorem}
+
+\begin{proofidea}
+The proof first obtains analyticity of real \(\tanh\) from the analytic
+\(\sinh\) and \(\cosh\), using positivity of \(\cosh\) to justify division.
+Rather than repeatedly differentiating a quotient, it differentiates the
+identity \(\tanh x\,\cosh x=\sinh x\) with the iterated Leibniz rule.  At the
+origin this gives the derivative table, in orders zero through ten,
+\[
+ (0,1,0,-2,0,16,0,-272,0,7936,0).
+\]
+The analytic partial-sum remainder theorem then gives the degree-nine
+\(O(\lVert x\rVert^{11})\) formula for \(\tanh\).  On a punctured
+neighborhood, the defining identity \(p(x)=1-\tanh(x)/x\) divides that
+remainder by \(x\); the already-totalized values patch the statement at
+\(x=0\).  Finally, evenness of the tenth power converts the norm-power
+majorant to the ordinary \(x^{10}\) form.  This finite derivative-table route
+is independent of the one-step l'Hopital proof above: either theorem can be
+used without importing the proof architecture of the other.
+\end{proofidea}
+
+For \(t\ne0\), the same global estimate gives
+\[
+ 0\le\frac{p(w_it)}{t^2}\le\frac{w_i^2}{3}.
+\]
+The right side is both the pointwise limit and a summable majorant.  Tannery's
+theorem therefore gives, in
+\nolinkurl{tendsto_tsum_activationProbability_mul_div_sq} from
+\nolinkurl{ActivationSeriesAsymptotics.lean},
+\[
+ \boxed{
+ \lim_{\substack{t\to0\\t\ne0}}\frac{D_w(t)}{t^2}
+ =\frac13\sum_{i\in I}w_i^2.}
+\]
+This fork-and-join proof is useful Lean architecture: the non-asymptotic
+summability module stays independent of l'Hopital and Tannery, while the
+asymptotic module reuses its exact majorant.
+
+The geometric specialization is intentionally thin.  The structural module
+\nolinkurl{GeometricActivationDimension.lean} defines
+\[
+ d_q(t):=\sum_{n\ge0}p\bigl(q^n(1-q)t\bigr)
+\]
+as \nolinkurl{geometricActivationDimension q t}, and its dyadic specialization
+as \nolinkurl{dyadicEffectiveDimension t}.  The reusable theorem
+\nolinkurl{hasSum_normalizedGeometricWeight_sq} records genuine convergence
+and the exact value
+\[
+ \sum_{n\ge0}\bigl(q^n(1-q)\bigr)^2=\frac{1-q}{1+q}
+ \qquad(|q|<1).
+\]
+Specializing the square-summable theorem gives
+\nolinkurl{tendsto_geometricActivationDimension_div_sq} and
+\nolinkurl{tendsto_dyadicEffectiveDimension_div_sq} in
+\nolinkurl{GeometricActivationAsymptotics.lean}:
+\[
+ \boxed{
+ \lim_{\substack{t\to0\\t\ne0}}\frac{d_q(t)}{t^2}
+ =\frac{1-q}{3(1+q)},
+ \qquad
+ \lim_{\substack{t\to0\\t\ne0}}\frac{d_{1/2}(t)}{t^2}=\frac19.}
+\]
+The analytic range \(\lvert q\rvert<1\) includes negative ratios.  These are deterministic
+activation-sum identities.  The frontier report's positive-weight active-count
+interpretation uses \(0<q<1\), and the formal declarations construct no
+Bernoulli family and assert no identity \(d_{1/2}(t)=\E K_t\).  The exact
+quadratic limits themselves do not supply Taylor coefficients.  A sharp finite
+jet is now formalized independently as above, while an all-order Bernoulli
+coefficient formula and a theorem identifying its exact radius of convergence
+remain separate targets.
+
+At source checkpoint
+\nolinkurl{a345425d21d90e680bf15e34093af42c69c08a83}, the seven modules
+\nolinkurl{HyperbolicActivation}, \nolinkurl{ActivationTaylor},
+\nolinkurl{ActivationSeries},
+\nolinkurl{ActivationAsymptotics},
+\nolinkurl{ActivationSeriesAsymptotics},
+\nolinkurl{GeometricActivationDimension}, and
+\nolinkurl{GeometricActivationAsymptotics} expose an exhaustive combined
+surface of six definitions and 99 theorems, 105 documented declarations in
+all.
 
 \subsection{Finite convolution measures}
 A formal convolution proof must verify that every measure involved is finite, usually a probability measure.  The source defines the elementary measures, proves their support and total mass, and then uses induction to show the convolution remains a probability measure.  Associativity is applied only after the necessary sigma-finiteness or finiteness instances are in scope.
@@ -3206,12 +3403,13 @@ API rather than restricting the generic positive-input formula.  Globally,
 \]
 for every \(x<P\),
 \[
- \lambda_0'(x)=
- \frac{1}{e^{W_0(-x\log2)}(W_0(-x\log2)+1)},
- \qquad
- \lambda_0''(x)=
- \frac{(\log2)e^{-2W_0(-x\log2)}(W_0(-x\log2)+2)}
-      {(W_0(-x\log2)+1)^3}>0.
+\begin{aligned}
+ \lambda_0'(x)
+   &= \frac{1}{e^{W_0(-x\log2)}(W_0(-x\log2)+1)}, \\
+ \lambda_0''(x)
+   &= \frac{(\log2)e^{-2W_0(-x\log2)}(W_0(-x\log2)+2)}
+           {(W_0(-x\log2)+1)^3}>0.
+\end{aligned}
 \]
 In particular \(\lambda_0''(0)=2\log2\), and the phase is strictly convex
 on the full endpoint-inclusive half-line \((-\infty,P]\), including all
@@ -3677,6 +3875,50 @@ The original Rvachev paper is represented by two parallel paths:
 \]
 Their principal modules are \nolinkurl{OriginalUniqueness.lean}, \nolinkurl{FourierProduct.lean}, \nolinkurl{ProbabilityRepresentation.lean}, \nolinkurl{WeakConvergence.lean}, and \nolinkurl{StepApproximationLimit.lean}.  \nolinkurl{OriginalPaperSupplement.lean} adds the remaining numbered theorems and prose claims.
 
+\subsection{Activation spine}
+The activation development consists of one local Taylor branch and a small
+square-summable fork-and-join graph:
+\[
+\begin{gathered}
+\text{\texttt{HyperbolicActivation}}
+\longrightarrow
+\text{\texttt{ActivationTaylor}},\\[2mm]
+\text{\texttt{HyperbolicActivation}}
+\longrightarrow
+\left\{
+\begin{array}{c}
+\text{\texttt{ActivationSeries}}\\
+\text{\texttt{ActivationAsymptotics}}
+\end{array}
+\right.\\[2mm]
+\left\{
+\begin{array}{c}
+\text{\texttt{ActivationSeries}}\\
+\text{\texttt{ActivationAsymptotics}}
+\end{array}
+\right.
+\longrightarrow
+\text{\texttt{ActivationSeriesAsymptotics}},\\[2mm]
+\text{\texttt{ActivationSeries}}
+\longrightarrow
+\text{\texttt{GeometricActivationDimension}},\\[2mm]
+\left\{
+\begin{array}{c}
+\text{\texttt{ActivationSeriesAsymptotics}}\\
+\text{\texttt{GeometricActivationDimension}}
+\end{array}
+\right.
+\longrightarrow
+\text{\texttt{GeometricActivationAsymptotics}}.
+\end{gathered}
+\]
+The Taylor branch is a local analytic development and terminates on its own.
+Of the remaining two branches, the first contains global comparison and
+summability and the second contains the one-coordinate punctured limit.
+Tannery joins those two interfaces only after both are available.  Geometric
+algebra stays in the structural module, so the final asymptotic specialization
+contains almost no repeated series computation.
+
 \subsection{Asymptotic spine}
 The sharp endpoint proof has the following high-level flow:
 \[
@@ -3797,8 +4039,12 @@ Generic continuous-CDF and density extraction & \nolinkurl{continuous_cdf_of_nul
 Affine independent-copy operator and uniqueness & \nolinkurl{affineIndependentCopyLaw}, \nolinkurl{affineIndependentCopyLaw_isProbabilityMeasure}, \nolinkurl{affineIndependentCopyLaw_eq_map_prod}, \nolinkurl{charFun_affineIndependentCopyLaw}, \nolinkurl{charFun_eq_mul_charFun_of_affineIndependentCopy_fixedPoint}, \nolinkurl{charFun_iterate_of_affineIndependentCopy_fixedPoint}, \nolinkurl{eq_of_charFun_affine_recurrence}, \nolinkurl{affineIndependentCopyLaw_fixedPoint_unique}, \nolinkurl{affineIndependentCopy_map_fixedPoint_unique} & \nolinkurl{AffineIndependentCopy.lean}; arbitrary measurable digit space and second-countable Borel real inner-product target, with completeness only for the three uniqueness declarations \\
 Geometric uniform law \(\mu_q\) & \nolinkurl{geometricUniformDistribution}, \nolinkurl{geometricUniformDistribution_selfSimilar}, \nolinkurl{geometricUniformDistribution_support_eq_Icc}, \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar} & \nolinkurl{GeometricUniformLaw.lean} and \nolinkurl{GeometricUniformUniqueness.lean}; the characterization holds for \(\lvert q\rvert<1\) without support, density, or moment assumptions \\
 Fixed half--quarter multisection & \nolinkurl{evenCoordinates}, \nolinkurl{oddCoordinates}, \nolinkurl{geometricUniformSeries_one_half_multisection}, \nolinkurl{geometricUniformDistribution_one_half_multisection}, \nolinkurl{geometricUniformDistribution_one_half_conv_one_quarter} & \nolinkurl{GeometricUniformMultisection.lean}; fixed normalized two-section only \\
-Geometric CDF \(F_q\) and density \(f_q\) & \nolinkurl{geometricUniformCDF}, \nolinkurl{geometricUniformDensity}, \nolinkurl{geometricUniformCDF_hasDerivAt}, \nolinkurl{geometricUniformDistribution_eq_withDensity}, \nolinkurl{contDiff_geometricUniformCDF}, \nolinkurl{contDiff_geometricUniformDensity} & \nolinkurl{GeometricUniformCDF.lean} \\
+Geometric CDF \(F_q\) and density \(f_q\) & \nolinkurl{geometricUniformCDF}, \nolinkurl{geometricUniformDensity}, \nolinkurl{geometricUniformDensity_zero}, \nolinkurl{geometricUniformDensity_nonpos_of_neg}, \nolinkurl{volume_withDensity_geometricUniformDensity_eq_zero_of_nonpos}, \nolinkurl{geometricUniformDistribution_ne_withDensity_geometricUniformDensity_of_nonpos}, \nolinkurl{geometricUniformCDF_hasDerivAt}, \nolinkurl{geometricUniformDistribution_eq_withDensity}, \nolinkurl{contDiff_geometricUniformCDF}, \nolinkurl{contDiff_geometricUniformDensity} & \nolinkurl{GeometricUniformCDF.lean} \\
 Weighted-sum CDF and half-base bridges & \nolinkurl{weightedSumCDF}, \nolinkurl{weightedSumCDF_eq_geometricUniformCDF_one_half}, \nolinkurl{geometricUniformCDF_one_half_eq_fabiusReal}, \nolinkurl{geometricUniformDensity_one_half_eq_rvachevUp} & \nolinkurl{ProbabilityRepresentation.lean} \\
+Totalized activation kernel \(p\) & \nolinkurl{activationProbability}, \nolinkurl{tanhDiv_eq_dslope}, \nolinkurl{activationProbability_le_min_one_sq_div_three}, \nolinkurl{activationProbability_mul_le_quadratic}, \nolinkurl{tendsto_activationProbability_mul_div_sq} & \nolinkurl{HyperbolicActivation.lean}, \nolinkurl{ActivationSeries.lean}, and \nolinkurl{ActivationAsymptotics.lean} \\
+Finite activation Taylor jet & \nolinkurl{tanh_sub_taylor_nine_isBigO}, \nolinkurl{activationProbability_sub_taylor_eight_isBigO}, \nolinkurl{activationProbability_sub_taylor_eight_isBigO_pow} & \nolinkurl{ActivationTaylor.lean}; exact degree-nine \(\tanh\) and degree-eight \(p\) polynomials with respective \(O(\lVert x\rVert^{11})\) and \(O(\lVert x\rVert^{10})\) remainders, plus the equivalent \(O(x^{10})\) activation form \\
+Square-summable activation series \(D_w\) & \nolinkurl{summable_activationProbability_mul_of_summable_sq}, \nolinkurl{tsum_activationProbability_mul_le}, \nolinkurl{tendsto_tsum_activationProbability_mul_div_sq} & \nolinkurl{ActivationSeries.lean} and \nolinkurl{ActivationSeriesAsymptotics.lean}; \(D_w\) is guide notation, not a Lean definition \\
+Geometric and dyadic activation dimensions & \nolinkurl{geometricActivationDimension}, \nolinkurl{dyadicEffectiveDimension}, \nolinkurl{hasSum_normalizedGeometricWeight_sq}, \nolinkurl{tendsto_geometricActivationDimension_div_sq}, \nolinkurl{tendsto_dyadicEffectiveDimension_div_sq} & \nolinkurl{GeometricActivationDimension.lean} and \nolinkurl{GeometricActivationAsymptotics.lean} \\
 Forward curvature profile & \nolinkurl{deriv_deriv_fabiusReal}, \nolinkurl{deriv_deriv_fabiusReal_eq_zero_iff} & \nolinkurl{Convexity.lean} \\
 Totalized inverse \(F^{-1}\) & \nolinkurl{fabiusInv}, \nolinkurl{fabiusOrderIso}, \nolinkurl{fabiusInv_differentiableAt_iff}, \nolinkurl{fabiusInv_contDiffAt_infty_iff} & \nolinkurl{FabiusInverse.lean} \\
 Inverse curvature & \nolinkurl{deriv_deriv_fabiusInv}, \nolinkurl{deriv_deriv_fabiusInv_half}, \nolinkurl{deriv_deriv_fabiusInv_eq_zero_iff}, \nolinkurl{strictConcaveOn_fabiusInv_firstHalf}, \nolinkurl{strictConvexOn_fabiusInv_secondHalf} & \nolinkurl{FabiusInverse.lean} \\
@@ -3922,7 +4168,16 @@ Module & Role in the development \\
 \nolinkurl{GeometricUniformMultisection.lean} & Fixed normalized even/odd split of the half-ratio coordinate series into two independent quarter-ratio copies, with pointwise, product-map, and convolution forms. \\
 \nolinkurl{GeometricUniformUniqueness.lean} & Specializes the generic product-map theorem to prove \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar}: every probability solution of the geometric affine head--tail equation is \(\mu_q\) when \(\lvert q\rvert<1\), including \(q=0\) and negative \(q\), with no support, density, or moment assumption. \\
 \nolinkurl{GeometricSincFactorization.lean} & Closed characteristic function of the scaled uniform digit, exact closed-factor and phase-collapsed finite residual formulas for \(\lvert q\rvert<1\), pointwise convergence of the phase-bearing sinc prefixes, and the two dyadic weighted-sum wrappers. \\
-\nolinkurl{GeometricUniformCDF.lean} & The named \(F_q\) and explicit \(f_q\), conditioning and interval-integral equations, pointwise derivative and exact \nolinkurl{withDensity} law, continuity, reflection, exterior zeros, ordinary/topological support containments, compact support, and \(C^\infty\) regularity under their exact parameter hypotheses. \\
+\nolinkurl{GeometricReciprocalGamma.lean} & Locally uniform convergence, pointwise multipliability and \nolinkurl{HasProd}, and entireness of the geometric sinc product, together with its reciprocal-Gamma reflection factorization. \\
+\nolinkurl{GeometricSincCharacteristicFunction.lean} & The two exact phase-bearing bridges from the geometric-uniform characteristic function to the rescaled geometric sinc product and to the paired reciprocal-Gamma factors for every real \(\lvert q\rvert<1\), including zero and negative ratios. \\
+\nolinkurl{GeometricUniformCDF.lean} & The named \(F_q\) and explicit \(f_q\), conditioning and interval-integral equations, pointwise derivative and exact positive-ratio \nolinkurl{withDensity} law, continuity, reflection, exterior zeros, ordinary/topological support containments, compact support, and \(C^\infty\) regularity under their exact parameter hypotheses.  It also proves that the selected total formula is zero at \(q=0\), nonpositive for \(q<0\), yields the zero clamped measure for \(q\le0\), and cannot represent \(\mu_q\) on the nonpositive contraction range. \\
+\nolinkurl{HyperbolicActivation.lean} & Four definitions and 58 theorems forming the totalized real hyperbolic-sinc, \nolinkurl{tanhDiv}, activation-odds, and activation-probability dictionary, with continuity, parity, positivity, exact odds bridges, global elementary bounds, and the canonical identification \nolinkurl{tanhDiv_eq_dslope}. \\
+\nolinkurl{ActivationTaylor.lean} & Three theorems: the exact degree-nine Taylor polynomial of \(\tanh\) with \(O(\lVert x\rVert^{11})\) remainder, the induced degree-eight activation-probability polynomial with \(O(\lVert x\rVert^{10})\) remainder, and its equivalent \(O(x^{10})\) form. \\
+\nolinkurl{ActivationSeries.lean} & Three theorems: the rescaled pointwise quadratic budget, genuine summability for arbitrary-index square-summable signed real weights, and the corresponding global \nolinkurl{tsum} budget. \\
+\nolinkurl{ActivationAsymptotics.lean} & Two punctured-neighborhood theorems: the sharp coefficient \(1/3\) proved by one l'Hopital step, and its all-real scaled form \(a^2/3\), including \(a=0\). \\
+\nolinkurl{ActivationSeriesAsymptotics.lean} & One arbitrary-index Tannery theorem identifying the exact quadratic coefficient of every square-summable activation series; the global majorant equals the limiting \(\ell^2\) coefficient, so no Taylor remainder is used. \\
+\nolinkurl{GeometricActivationDimension.lean} & Two definitions and 30 theorems: geometric/dyadic activation sums, genuine summability, global budgets, positivity and parity, refinement and finite-prefix/tail certificates, and the exact \nolinkurl{HasSum} of the squared normalized geometric weights. \\
+\nolinkurl{GeometricActivationAsymptotics.lean} & Two thin specializations of the generic Tannery theorem, giving coefficient \((1-q)/(3(1+q))\) for \(\lvert q\rvert<1\) and the dyadic value \(1/9\). \\
 \nolinkurl{ProbabilityRepresentation.lean} & Product measure on \([0,1]^{\N}\), weighted coordinate sum, self-similarity, and exact CDF/\(\Up\) identifications.  Its dyadic CDF smoothing, continuity, exterior-value, and reflection proofs are half-base specializations of \nolinkurl{GeometricUniformCDF.lean}; it also identifies \(F_{1/2}\) with every bounded Fabius function and \(f_{1/2}(x)\) with \(2\Up(2x-1)\). \\
 \nolinkurl{WeakConvergence.lean} & Characteristic-function convergence, Lévy continuity, bounded-continuous test convergence, positivity on every open set meeting \((-1,1)\), and exact limiting-measure support \([-1,1]\). \\
 \nolinkurl{StepMeasureBridge.lean} & Relates discrete/step approximants to their associated finite measures. \\
@@ -4177,6 +4432,25 @@ the exact endpoint-mass ceiling, tolerant bisection, sequential computability,
 combined computable-real-function theorem, and input-bit asymptotics remain
 outside that leaf.  No aggregate checkpoint is fabricated for this merged
 surface.
+The seven activation rows and the finite-Taylor and square-summable discussions in
+Section~\ref{ch:probability} record source checkpoint
+\nolinkurl{a345425d21d90e680bf15e34093af42c69c08a83}, published 31 August
+2026.  Serialized \nolinkurl{LAKE_JOBS=1} focused builds of
+\nolinkurl{ActivationSeries}, \nolinkurl{ActivationAsymptotics},
+\nolinkurl{GeometricActivationDimension},
+\nolinkurl{ActivationSeriesAsymptotics}, and
+\nolinkurl{GeometricActivationAsymptotics} all exited zero without diagnostics.
+The final \nolinkurl{lake build +FabiusFunction.ActivationTaylor} target also
+rebuilt the modified hyperbolic-activation dependency and exited zero.  Direct
+Lean audits of the previously recorded new or refactored declarations,
+\nolinkurl{tanhDiv_eq_dslope}, and all three finite-Taylor theorems reported exactly
+\nolinkurl{propext}, \nolinkurl{Classical.choice}, and \nolinkurl{Quot.sound}
+for each.  Static inspection found all 611 modules
+below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
+the 105 activation declarations documented.  The merged census adds the
+five-declaration \nolinkurl{GeometricUniformMultisection.lean} leaf (the two
+coordinate definitions and three half--quarter laws).  No aggregate facade
+build is claimed for this checkpoint.
 The title-page pin and reproduction count continue to describe the older
 audited snapshot.
 \end{remark}

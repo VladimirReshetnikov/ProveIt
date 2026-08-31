@@ -3,9 +3,9 @@
 Target: `Analysis/FabiusFunction/docs/**/*.tex`, excluding this newly filed package directory.
 
 - TeX files read: **188**
-- Total source lines: **388265**
-- Total source bytes: **16718131**
-- Concatenated-corpus SHA-256: `85aef1b1e9db41e6e73dd4290ad6b96eb9321fbc8529c103be9de505809c2a10`
+- Total source lines: **389651**
+- Total source bytes: **16788437**
+- Concatenated-corpus SHA-256: `89123f8f7dbe881cc3682754d7638ad508b0e72f8457f5ca4e389a9e3c6db019`
 
 The corpus digest hashes raw file bytes concatenated in lexicographic relative-path order.
 Phrase clusters are a broad overlap screen, not a decision procedure for mathematical equivalence
@@ -384,7 +384,7 @@ Matched **37** prior TeX files:
 
 ### `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
 
-- SHA-256: `c4db92c21907898ec9a3ea888f3d7833c05b3bb7b9b23746bb6eabfc83f21374`
+- SHA-256: `45ee295add37135e39c297be36db469ed80623d9dd8157a8de75051402baedc0`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
 - Structural headings:
   - section: Historical note and scope
@@ -405,6 +405,7 @@ Matched **37** prior TeX files:
   - subsection: An infinite weighted sum of uniforms
   - subsection: Generic weighted laws and support-free quantile transport
   - subsection: The normalized geometric family
+  - subsection: Sharp activation probabilities, finite Taylor jets, and square-summable fields
   - subsection: Finite atomic laws and weak convergence
   - subsection: Combinatorial step functions and the half-weight convention
   - subsection: Centered finite splines and an explicit error bound
@@ -3007,7 +3008,7 @@ Matched **37** prior TeX files:
 
 ### `fabius_lean_walkthrough/fabius_lean_walkthrough.tex`
 
-- SHA-256: `2e33e1b7b4f4828d59516762224ac2b62b8d5b46bfe0e2f869e03f1b47803c42`
+- SHA-256: `ae3b4cc6420e26cdcccca61f7cfe338d5ae8caa29d0fb3ec313e977859ee90dd`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle
 - Structural headings:
   - section: Scope and conventions
@@ -3095,6 +3096,7 @@ Matched **37** prior TeX files:
   - section: Finite convolutions, probability, and approximation}\label{ch:probability
   - subsection: The probabilistic representation
   - subsection: The reusable affine-law, geometric CDF, and density layer
+  - subsection: Activation Taylor jets, square-summability, and effective dimension
   - subsection: Finite convolution measures
   - subsection: Weak convergence
   - subsection: Step approximants
@@ -3218,6 +3220,7 @@ Matched **37** prior TeX files:
   - subsection: Core spine
   - subsection: Arithmetic spine
   - subsection: Original-paper spine
+  - subsection: Activation spine
   - subsection: Asymptotic spine
   - section: Paper theorem map}\label{app:paper-map
   - subsection: Arias de Reyna, arXiv:1702.05442
@@ -3499,7 +3502,7 @@ Matched **37** prior TeX files:
 
 ### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Exponents_and_q_Series_Frontiers/Exponents_and_q_Series_Frontiers.tex`
 
-- SHA-256: `9dbdfd2ad84b66485f2fa2f30a3b7a010546dd923e29f20436369903f1e719c1`
+- SHA-256: `bea208ae2c0dfa6f6989de24c1c2a2aca039dda7cd598d69439d52c73c2700e4`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle; Integer-base atomic family
 - Structural headings:
   - section: Provenance
@@ -4882,7 +4885,7 @@ Matched **37** prior TeX files:
 
 ### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/q_pochhammer_q_binomial_monograph/q_pochhammer_q_binomial_monograph.tex`
 
-- SHA-256: `d0a5e191015c37cf82a492b436ef69ef8bdfdd78d189dd9f80a565ff67181f34`
+- SHA-256: `8f1369e8926db76aa7546a3ee0ecd0c3e2d4c6dff101355d770171c893201470`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Integer-base atomic family
 - Structural headings:
   - chapter: Abstract
@@ -5126,7 +5129,7 @@ Matched **37** prior TeX files:
 
 ### `semi-formalized-research-frontiers/drafts/frontier-compilations/Frontier_Compilations/Frontier_Compilations.tex`
 
-- SHA-256: `7e437b6fe47a46d56ddb7a7b3b98f54892a347745f9a9a734f5de431c9066d54`
+- SHA-256: `ba83ac3253d66ba8c8d762fe59f132850cbb0737f6ab5662ceefd35bd34ced86`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle; Integer-base atomic family
 - Structural headings:
   - part: #1}
@@ -5648,6 +5651,7 @@ Matched **37** prior TeX files:
   - subsection: Deliberate exclusions
   - subsection: The transverse direction
   - section: The geometric \texorpdfstring{$q$}{q}-Fabius--Rvachev family
+  - subsection: Activation Taylor jets, square-summability, and effective dimension
   - subsection: Recovery of the classical functions
   - subsection: Distributional refinement
   - section: Infinite sinc products and smooth compact support
@@ -5804,7 +5808,7 @@ Matched **37** prior TeX files:
 
 ### `semi-formalized-research-frontiers/drafts/integration-and-transforms/Integration_and_Transform_Frontiers/Integration_and_Transform_Frontiers.tex`
 
-- SHA-256: `7bf2543dc8e03018ea5593d43daf154995fc029c6e944ff4b2aba18dd28daf32`
+- SHA-256: `c9be7d5f0d5c7c794fa0653ec149ede1a88eeb8ce835e5e2bfd525cea93f1356`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
 - Structural headings:
   - section: Provenance
@@ -9206,7 +9210,7 @@ Matched **37** prior TeX files:
 
 ### `semi-formalized-research-frontiers/drafts/representations/fabius_dyadic_chaos_frontier/fabius_dyadic_chaos_frontiers.tex`
 
-- SHA-256: `c5488ef45977281907989229b56efc29360868130191fe117af7072130a6f7c3`
+- SHA-256: `3ff13b907faf7d2000ad6c218c8eb8f3468ed9750e32ceb2e31eb21cbe713fe5`
 - Phrase clusters: Exact digit-sum zero count; Phase-locked Lambert-W saddle
 - Structural headings:
   - section: Scope, corpus audit, and contribution boundary
@@ -10823,7 +10827,7 @@ Matched **37** prior TeX files:
 
 ### `semi-formalized-research-frontiers/semi-formalized-research-frontiers.tex`
 
-- SHA-256: `db88215ca917b6fd77297c986eb40ae15149d58a25ec766b06afd8c60a658ff7`
+- SHA-256: `e4bb4db39c0a6c73ea3c915d9feee78221ba24daf9ef4a2ca00d0572643276aa`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle
 - Structural headings:
   - section: Consolidation map and reading conventions

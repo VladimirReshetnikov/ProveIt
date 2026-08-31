@@ -92,6 +92,13 @@ import FabiusFunction.SaddleLogExpansionPowerSeries
 import FabiusFunction.CenteredMomentCumulants
 import FabiusFunction.CenteredMomentParity
 import FabiusFunction.SinhDivBernoulliLog
+import FabiusFunction.HyperbolicActivation
+import FabiusFunction.ActivationSeries
+import FabiusFunction.ActivationAsymptotics
+import FabiusFunction.ActivationTaylor
+import FabiusFunction.ActivationSeriesAsymptotics
+import FabiusFunction.GeometricActivationDimension
+import FabiusFunction.GeometricActivationAsymptotics
 import FabiusFunction.ReciprocalExponentialGenerating
 import FabiusFunction.RvachevMomentAppell
 import FabiusFunction.ImplicitPowerSeries
@@ -335,6 +342,7 @@ import FabiusFunction.LeadingJet
 import FabiusFunction.IntegerZeroAnalyticOrder
 import FabiusFunction.ScaledInfiniteProducts
 import FabiusFunction.GeometricReciprocalGamma
+import FabiusFunction.GeometricSincCharacteristicFunction
 import FabiusFunction.DyadicGammaOrder
 import FabiusFunction.ReciprocalIntegerGammaZeros
 import FabiusFunction.SincPrefixBound

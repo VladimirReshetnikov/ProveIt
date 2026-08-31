@@ -1,6 +1,6 @@
 # Dyadic Sensitivity and Polynomial-Chaos Frontiers for the Fabius--Rvachev Law
 
-This archive is the reproducible source package for a 37-page repository-aware
+This archive is the reproducible source package for a repository-aware
 research report on a new orthogonal-chaos layer of the Fabius/Rvachev random
 series.
 
@@ -8,7 +8,7 @@ series.
 
 - `fabius_dyadic_chaos_frontiers.tex` - complete self-contained LaTeX source.
 - `fabius_dyadic_chaos_frontiers.pdf` - compiled A4 report.
-- `LEAN_CROSSWALK.md` - label-complete map from all 36 nonconjectural paper
+- `LEAN_CROSSWALK.md` - label-complete map from all 41 nonconjectural paper
   results to the current Lean corpus, with exact remaining proof obligations.
 - `experiments.py` - deterministic, extensively commented exact and
   high-precision experiment driver.
@@ -50,6 +50,9 @@ It develops and proves:
 9. an exact transfer between the no-active atom and the negative Fabius Laplace
    product;
 10. a Thue--Morse mixed-difference corner and a Lambert-W tensor-degree cutoff.
+11. an arbitrary-index square-summable activation theorem, including its
+    global quadratic budget, exact Tannery limit, and sharp geometric and
+    dyadic specializations.
 
 Conjectures and future directions cover phase-mode uniqueness, strict
 log-concavity, differential transcendence, the full geometric-q phase diagram,
@@ -62,13 +65,52 @@ Classical ingredients are explicitly separated from new deductions.
 ## Proof-status convention
 
 The colored `P`, `I`, `C`, and `N` symbols in the report classify the
-human-readable manuscript: in particular, `P` means proved in the paper and
-`I` means imported into the paper. They are **not Lean status markers**.
-`LEAN_CROSSWALK.md` audits all 36 theorem/proposition/lemma/corollary labels.
-At the present repository state, none of those 36 results is formalized in
-Lean exactly as stated; the crosswalk distinguishes unformalized, partial,
-and near-complete formalization cores without upgrading any of them to a Lean
-theorem.
+human-readable manuscript: `P` means proved in the report and `I` means
+imported into the report. They are **not Lean status markers**.
+
+`LEAN_CROSSWALK.md` audits all 41 labeled
+theorem/proposition/lemma/corollary statements. The maintained report now
+contains six statement-exact, compiler-backed results: the totalized
+activation dictionary, the activation-bounds lemma including its finite Taylor
+jet, the sharp local quadratic coefficient, the geometric
+activation-dimension proposition, the certified dyadic prefix/tail corollary,
+and the square-summable activation-series theorem. The remaining status counts
+are 12 Unformalized, 20 Partial, and 3 Near-complete.
+
+The older compound statement `lem:p-bounds` is now Complete.  The divided-slope
+bridge is `Fabius.tanhDiv_eq_dslope`; the finite analytic calculation is
+`Fabius.tanh_sub_taylor_nine_isBigO`; and the report's activation expansion is
+formalized in the canonical norm-power form by
+`Fabius.activationProbability_sub_taylor_eight_isBigO` and in the literal
+`O(x^10)` form by
+`Fabius.activationProbability_sub_taylor_eight_isBigO_pow`.
+`prop:mu-refinement` remains Partial: its dyadic and geometric definitions,
+summability, refinements, positivity, prefix decompositions, and tail estimates
+are formalized, but its all-order Bernoulli power series, convergence-radius
+statements, and active-count expectation bridge are not.
+
+The current activation tranche is source-verified at commit
+`a345425d21d90e680bf15e34093af42c69c08a83`. Its seven modules expose an
+exhaustive public surface of 6 definitions and 99 theorems, or 105 public
+declarations: `HyperbolicActivation` (4+58), `ActivationTaylor` (0+3),
+`ActivationSeries` (0+3), `ActivationAsymptotics` (0+2),
+`ActivationSeriesAsymptotics` (0+1), `GeometricActivationDimension` (2+30),
+and `GeometricActivationAsymptotics` (0+2). The earlier `7c8d1f1...`
+checkpoint remains a narrower historical milestone rather than the provenance
+of these new results.
+
+The generic series theorem permits an arbitrary index type and signed or zero
+real weights, provided their squares are summable. Under that hypothesis its
+activation series is genuinely summable; it is not an appeal to Mathlib's
+totalized fallback `tsum`. All quotient limits are punctured at zero. The
+geometric API proves a uniform, nondegenerate convergence theory under
+`|q|<1`; negative-`q` statements are deterministic algebraic generalizations,
+while the report's active-count probability interpretation assumes `0<q<1`.
+No theorem identifies the deterministic dyadic sum with `E K_t`, and the
+all-order Bernoulli series and radius theorems, active-count expectation
+bridge, and q-binomial chaos coefficient remain outside this activation
+milestone.  The proved finite Taylor jet does not imply any of those stronger
+claims.
 
 For `thm:TM-corner`, Lean now contains the exact Boolean-cube, polynomial,
 dyadic-sign, and report-grid clauses over a more general algebraic target. The
@@ -130,14 +172,20 @@ are used, with Libertinus fonts when available and Latin Modern as a fallback.
 ## Verification status
 
 - All theorem, equation, figure, and bibliography references resolve.
-- The final PDF has 37 A4 pages; every font is embedded and no Type 3 font is
+- The final PDF has 40 A4 pages and is an unencrypted 819,265-byte PDF 1.5
+  artifact. Every font is embedded and no Type 3 font is
   present in either the report or its six vector figures.
-- Every one of the final PDF's 37 pages was rendered at 140 dpi, and four
-  complete final-pass contact sheets were inspected. Focused final renders of
-  the title, Thue--Morse, Lambert-W, archive-manifest, and bibliography pages
-  were also inspected.
+- The final PDF was preflighted and all 40 pages were rendered at 120 dpi.
+  Four complete contact sheets were inspected, followed by full-resolution
+  checks of pages 12--13, 22--23, and 36--38: the scaled and square-summable
+  limits, the geometric/dyadic sharp coefficients, the conclusion, status
+  matrix, and formula atlas.
 - No clipping, overlapping text, broken glyphs, or black rendering artifacts
   were observed.
+- The exact five appended compiler-backed result headings audited during the
+  PDF release are each extractable once when matched with their theorem number
+  and class. The report SHA-256 is
+  `0be7f0943e8d5fb795878aa0b3ecb21af25680155ad214ee2f1598de50e705ea`.
 - The experiment was replayed in two fresh trees. The six archived figure pairs
   were regenerated from the recorded environment after selecting TrueType
   output for the vector plots; the numerical data were retained where the
@@ -174,7 +222,7 @@ line endings; `SHA256SUMS` is the authoritative current-package ledger.
 After that intake checkpoint was published, the repository-side review
 replayed the numerical program, repaired the six vector figures to remove
 Type 3 fonts, corrected the manuscript's proof and status boundaries, added
-the label-complete Lean crosswalk, and rebuilt the 37-page report in exactly
-three explicit `pdflatex` passes.  The details and remaining formalization
+the label-complete Lean crosswalk, and rebuilt the 40-page report in exactly
+three explicit `pdflatex` passes. The details and remaining formalization
 obligations are recorded in `audit/POST_INTAKE_REVIEW.md` and
 `LEAN_CROSSWALK.md`.

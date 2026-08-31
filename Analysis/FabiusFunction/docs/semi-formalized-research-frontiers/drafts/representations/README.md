@@ -4,8 +4,9 @@ New standalone intake members:
 
 - [`fabius_dyadic_chaos_frontier/`](fabius_dyadic_chaos_frontier/),
   *Dyadic Sensitivity and Polynomial-Chaos Frontiers for the
-  Fabius--Rvachev Law* (34 pp at arrival; current 37-page A4,
-  2,869-line repository-reviewed report), arrived in
+  Fabius--Rvachev Law* (34 A4 pp and 2,694 source lines at arrival; now 40 A4
+  pp and 3,172 source lines after repair and activation-series integration),
+  arrived in
   `fabius_dyadic_chaos_frontier.zip` (outer SHA-256
   `d57fd01c3991a6a7ecd6ba6e745729c745745d3265cb3cfd414aac1991b11b86`).
   The archive had one safe top-level wrapper and all thirty submitted
@@ -24,19 +25,25 @@ New standalone intake members:
   mode-set, Thue--Morse-domain, and Lambert-cutoff statements; replayed the
   deterministic experiment in the recorded and a newer compatible
   environment; and rebuilt the figures and report without Type 3 fonts.  The
-  current seven PDFs comprise 43 pages: a 37-page A4 report and six one-page
+  current seven PDFs comprise 46 pages: a 40-page A4 report and six one-page
   vector figures.  The active 33-entry checksum ledger covers every current
-  non-ledger file.
+  non-ledger file, including the preserved immutable arrival ledger
+  `fabius_dyadic_chaos_frontier/SHA256SUMS.arrival.txt`.
 
   The [label-complete Lean crosswalk](fabius_dyadic_chaos_frontier/LEAN_CROSSWALK.md)
-  inventories all 36 nonconjectural report results.  None is yet formalized
-  exactly as stated.  `ThueMorseSymmetricDifference.lean` supplies two
-  definitions and eleven theorems covering the Boolean-cube, polynomial,
-  dyadic-sign, and exact report-grid algebraic clauses of `thm:TM-corner`;
-  its repeated `C^N` integral clause and final report-shaped wrapper remain.
-  The package remains standalone only pending
-  broader claim comparison and deliberate editorial integration; manuscript
-  result labels do not establish Lean proof status.
+  inventories all 41 nonconjectural report results: 12 Unformalized, 20
+  Partial, 3 Near-complete, and 6 Complete.  The six statement-exact Lean
+  results cover the totalized activation dictionary, scaled sharp local
+  coefficient, the finite activation Taylor jet through (O(x^{10})),
+  arbitrary-index square-summable activation budget and Tannery limit,
+  geometric/dyadic activation dimension with sharp coefficient, and certified
+  dyadic truncation.  Their current source provenance is commit
+  `a345425d21d90e680bf15e34093af42c69c08a83`, whose seven activation modules
+  expose 6 definitions and 99 theorems, or 105 public declarations.  The
+  focused-built symmetric
+  Thue--Morse module separately supplies the exact algebraic and report-grid
+  clauses of `thm:TM-corner`; its repeated `C^N` integral clause remains.
+  Paper markers still record manuscript provenance rather than Lean status.
 
 - [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/),
   the 36-page *Common-Digit Fabius Zonoids* bundle committed directly to

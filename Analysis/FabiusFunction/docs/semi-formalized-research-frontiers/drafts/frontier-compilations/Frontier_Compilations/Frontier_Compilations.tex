@@ -14987,6 +14987,7 @@ block.  Finally, we give a phase-preserving Lagrange/Richardson filter for asymp
 remainders whose coefficients are periodic in a lower-Lambert phase, together with a
 Fourier phase-averaging filter and exact Lambert-$W$ node construction.
 
+\pagebreak[4]
 The weighted-law, CDF, and affine fixed-point portion of the post-snapshot Lean audit,
 checked at compiled source checkpoint
 \path{d312c0603}, now supplies the generic continuous-linear naturality,
@@ -15002,17 +15003,40 @@ Fabius function and the density with the affine Rvachev up-function.  A new gene
 affine-independent-copy API proves probability fixed-point uniqueness on every complete
 second-countable real inner-product target for a measurable digit map and \(|q|<1\), and its
 geometric corollary characterizes this report's law even at \(q=0\) and negative \(q\), with
-no support, density, or moment assumptions.  A later mainline tranche, rechecked in the
+no support, density, or moment assumptions.
+
+A later mainline tranche, rechecked in the
 current combined full-facade build, gives the phase-bearing sinc prefixes an exact finite
 residual formula and proves their pointwise convergence to the characteristic function for
-every \(|q|<1\).  Independently, for every nonzero such \(q\), direct named Cauchy-transform
-and adjacent-power refinement equations hold off the exact support.  The existing
-\path{geometricSincProduct} packages the same sinc factors,
-after frequency rescaling, as a \path{tprod}; a named characteristic-function bridge to it
-(or explicit \path{HasProd} theorem), compact-uniform convergence of the characteristic
-prefixes, the report's rapid-decay and inversion proof, explicit Bernoulli-cumulant/Bell-moment formulas and
+every \(|q|<1\).  The latest analytic tranche now closes the corresponding named product
+bridge.  For \(q,z\in\C\), \(\lVert q\rVert<1\), write \(S_q(z)\) for
+\path{geometricSincProduct} applied to \(q,z\).  Then
+\(S_q(z)=\prod_{n\ge0}\sinc(\pi q^nz)\) has locally uniform
+product convergence, genuine pointwise multipliability and \path{HasProd}, and is entire, by
+\path{hasProdLocallyUniformly_geometricSincProduct},
+\path{geometricSincProductFactors_multipliable},
+\path{hasProd_geometricSincProduct}, and
+\path{geometricSincProduct_differentiable}.  For real \(|q|<1\), including \(q=0\) and
+negative contractions, and \(t\in\R\), putting \(z_q(t)=(1-q)t/(2\pi)\) gives the exact formula
+\(\phi_q(t)=\e^{\ii t/2}S_q(z_q(t))=\e^{\ii t/2}G_q(z_q(t))G_q(-z_q(t))\), where
+\(G_q(z)\) denotes \path{geometricReciprocalGamma} applied to \(q,z\), through
+\path{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct} and
+\path{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma}.
+Independently, for every nonzero such \(q\), direct named Cauchy-transform and adjacent-power
+refinement equations hold off the exact support.  A packaged compact-uniform theorem for the
+full phase-bearing characteristic prefixes, a named centered wrapper, the report's
+rapid-decay and inversion proof, explicit Bernoulli-cumulant/Bell-moment formulas and
 asymptotics, further transforms, higher-derivative and endpoint-flatness wrappers, and shape
 theory remain outside that promotion.
+
+The post-snapshot activation tranche is a separate real, totalized hyperbolic kernel rather
+than an identification with the complex sinc product.  It proves the sharp local coefficient
+\(p(x)/x^2\to1/3\), the finite \(\tanh\) and activation Taylor jets through the displayed
+orders, the arbitrary-index square-summable activation budget and its sharp Tannery limit,
+and the geometric and dyadic effective-dimension specializations.  The positive-weight
+active-count interpretation remains restricted to \(0<q<1\); the formal geometric activation
+identities are deterministic and include negative \(q\), with no Bernoulli-family or
+expectation bridge claimed.
 
 The word \emph{new} is used only in a corpus-relative sense: these statements were not found
 in the 57 TeX sources inspected in the specified repository snapshot.  No claim of global
@@ -15059,6 +15083,10 @@ the midpoint value for \(|q|<1\); exterior CDF values for \(0\le q<1\); and, for
 pointwise derivative, the resulting Radon--Nikodym identity, density symmetry and compact
 support, and \(C^\infty\) regularity.  \path{ProbabilityRepresentation.lean} supplies the
 all-real \(q=1/2\) Fabius-CDF and Rvachev-density bridges.
+\end{boxedremark}
+
+\begin{boxedremark}
+\textbf{Post-snapshot formal status (continued).}
 
 The new module \path{AffineIndependentCopy.lean} adds one definition and eight theorems:
 the affine independent-copy law, probability preservation, its equality with the direct
@@ -15073,9 +15101,13 @@ no support, absolute continuity, density, or moments.  The corollary
 \path{GeometricUniformUniqueness.lean} therefore characterizes the named geometric-uniform
 law by its displayed affine independent-copy equation throughout that full parameter range.
 
-The definition of \path{geometricUniformDensity} is total, but no density formula or
-Radon--Nikodym interpretation is claimed here for \(q\le0\).  Fixed-point uniqueness is now
-the direct theorem \path{eq_geometricUniformDistribution_of_selfSimilar}, valid for every
+The definition of \path{geometricUniformDensity} is total, and the formal API now diagnoses
+its nonpositive-parameter failure exactly: it is zero at \(q=0\), nonpositive for \(q<0\),
+and its \path{ENNReal.ofReal}-clamped \path{withDensity} measure is zero, hence not the
+geometric-uniform probability law when \(|q|<1\).  Lean formalization of the paper-level
+corrected signed-density replacement for \(q\le0\) remains open.  Fixed-point uniqueness is
+now the direct theorem
+\path{eq_geometricUniformDistribution_of_selfSimilar}, valid for every
 \(|q|<1\), including negative \(q\) and \(q=0\).  The definitions
 \path{geometricUniformStieltjesDomain},
 \path{geometricUniformStieltjesTransform}, and
@@ -15088,13 +15120,26 @@ bridge, named unit Stieltjes DDE, and both canonical complex-slit adjacent-order
 are direct theorems of \path{CauchyTransform.lean}.
 
 The finite characteristic-function residual formula and its pointwise prefix limit are now
-formal.  Still frontier are the named characteristic-function bridge to the existing
-\path{geometricSincProduct}
-\path{tprod} (or explicit \path{HasProd} theorem) and compact-uniform convergence beyond
-the formal pointwise phase-bearing sinc-prefix limit, the rapid-decay bound and Fourier inversion
-route, a closed higher-derivative refinement and endpoint-flatness wrapper, the shape
-transition, further transforms, and explicit Bernoulli-cumulant/Bell-moment formulas and
-asymptotics.  The geometric tail dictionary already gives finite characteristic-function,
+formal, and the product target is no longer merely a total \path{tprod}.  For
+\(q,z\in\C\) with \(\lVert q\rVert<1\), the four declarations
+\path{hasProdLocallyUniformly_geometricSincProduct},
+\path{geometricSincProductFactors_multipliable},
+\path{hasProd_geometricSincProduct}, and
+\path{geometricSincProduct_differentiable} prove locally uniform convergence of
+\(S_q(z)=\prod_{n\ge0}\sinc(\pi q^nz)\), its genuine pointwise product, and entire-ness.
+For real \(|q|<1\), \(t\in\R\), and \(z_q(t)=(1-q)t/(2\pi)\), including \(q=0\) and negative
+ratios, \path{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct} and
+\path{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma} give
+\[
+ \phi_q(t)=\e^{\ii t/2}S_q(z_q(t))
+ =\e^{\ii t/2}G_q(z_q(t))G_q(-z_q(t)).
+\]
+Here \(G_q(z)\) denotes \path{geometricReciprocalGamma} applied to \(q,z\).
+Still frontier are a packaged compact-uniform theorem for the full phase-bearing
+characteristic prefixes and a named centered wrapper, the rapid-decay bound and Fourier
+inversion route, a closed higher-derivative refinement and endpoint-flatness wrapper, the
+shape transition, further transforms, and explicit Bernoulli-cumulant/Bell-moment formulas
+and asymptotics.  The geometric tail dictionary already gives finite characteristic-function,
 MGF, and CGF tail factorizations.  The closed density hierarchy here is distinct from the
 proved Cauchy-power hierarchy.
 \end{boxedremark}
@@ -15396,10 +15441,31 @@ The digit formula holds for every real \(q\).  For every \(|q|<1\), \(m\in\N\), 
 \]
 and the phase-bearing prefix without the residual converges pointwise to \(\phi_q(t)\).
 This includes \(q=0\) and negative \(q\); the last two declarations are exact
-\(q=1/2\) wrappers for the classical weighted-sum law.  The existing
-\path{geometricSincProduct} packages the same factors, after frequency rescaling, as a
-\path{tprod}; no named characteristic-function bridge to it (or explicit \path{HasProd}
-theorem) or uniform-on-compacts version of the characteristic-prefix convergence is asserted.
+\(q=1/2\) wrappers for the classical weighted-sum law.
+
+The four new public theorems in \path{GeometricReciprocalGamma.lean} are
+\path{hasProdLocallyUniformly_geometricSincProduct},
+\path{geometricSincProductFactors_multipliable},
+\path{hasProd_geometricSincProduct}, and
+\path{geometricSincProduct_differentiable}.  For \(q,z\in\C\), \(\lVert q\rVert<1\), write
+\(S_q(z)\) for \path{geometricSincProduct} applied to \(q,z\).  They state that
+\[
+ S_q(z)=\prod_{n\ge0}\sinc(\pi q^nz)
+\]
+is a locally uniformly convergent product, has genuine pointwise \path{Multipliable} and
+\path{HasProd} witnesses with that exact value, and is entire.  The zero-definition,
+two-theorem module \path{GeometricSincCharacteristicFunction.lean} contains exactly
+\path{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct} and
+\path{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma}.  For real
+\(|q|<1\), \(t\in\R\), and \(z_q(t)=(1-q)t/(2\pi)\), they assert the following, where
+\(G_q(z)\) denotes \path{geometricReciprocalGamma} applied to \(q,z\):
+\[
+ \phi_q(t)=\e^{\ii t/2}S_q(z_q(t))
+ =\e^{\ii t/2}G_q(z_q(t))G_q(-z_q(t)).
+\]
+The range again includes \(q=0\) and negative contractions.  No named centered wrapper or
+uniform-on-compacts theorem for the full phase-bearing characteristic-prefix sequence is
+asserted.
 
 The three generic real-CDF declarations in \path{ContinuousCDF.lean} are
 \path{continuous_cdf_of_nullSingleton},
@@ -15409,7 +15475,7 @@ measure with Lebesgue measure having density \(\operatorname{ofReal}\circ f\) fr
 everywhere pointwise CDF derivative; it assumes neither prior absolute continuity nor
 continuity of \(f\).
 
-The twenty-seven declarations in \path{GeometricUniformCDF.lean} are
+The thirty-one declarations in \path{GeometricUniformCDF.lean} are
 \path{geometricUniformCDF},
 \path{monotone_geometricUniformCDF},
 \path{geometricUniformCDF_nonneg},
@@ -15423,6 +15489,10 @@ The twenty-seven declarations in \path{GeometricUniformCDF.lean} are
 \path{geometricUniformCDF_eq_integral},
 \path{geometricUniformCDF_eq_intervalIntegral},
 \path{geometricUniformDensity},
+\path{geometricUniformDensity_zero},
+\path{geometricUniformDensity_nonpos_of_neg},
+\path{volume_withDensity_geometricUniformDensity_eq_zero_of_nonpos},
+\path{geometricUniformDistribution_ne_withDensity_geometricUniformDensity_of_nonpos},
 \path{geometricUniformCDF_hasDerivAt},
 \path{deriv_geometricUniformCDF},
 \path{continuous_geometricUniformDensity},
@@ -15438,13 +15508,71 @@ The twenty-seven declarations in \path{GeometricUniformCDF.lean} are
 \path{contDiff_geometricUniformCDF}, and
 \path{contDiff_geometricUniformDensity}.
 The CDF definition and its monotonicity, range bounds, and measurability are total in real
-\(q\).  Continuity, reflection, and midpoint use \(|q|<1\); the two CDF tails use
+\(q\).  The four nonpositive-parameter diagnostics prove respectively that the selected
+density formula is zero at \(q=0\), nonpositive for \(q<0\), gives the zero
+\path{volume.withDensity} measure for \(q\le0\), and differs from the probability law when
+also \(|q|<1\).  They do not formalize the paper-level corrected signed-density replacement.
+Continuity, reflection, and
+midpoint use \(|q|<1\); the two CDF tails use
 \(0\le q<1\); every declaration from conditioning through the classical density,
 support, and smoothness layer uses \(0<q<1\).  In
 \path{ProbabilityRepresentation.lean}, the additional exact all-real bridges are
 \path{weightedSumCDF_eq_geometricUniformCDF_one_half},
 \path{geometricUniformCDF_one_half_eq_fabiusReal}, and
 \path{geometricUniformDensity_one_half_eq_rvachevUp}.
+
+\subsection{Activation Taylor jets, square-summability, and effective dimension}
+The activation development is a separate real-valued layer.  It must not be conflated with
+the complex sinc product above: its local kernel is the totalized hyperbolic quotient
+\[
+ p(x):=\operatorname{activationProbability}(x)
+ =1-\frac{\tanh x}{x}\quad(x\ne0),\qquad p(0)=0.
+\]
+The module \path{HyperbolicActivation.lean} proves continuity, evenness, positivity exactly
+off zero, and the global estimate
+\[
+ 0\le p(x)<1,\qquad p(x)\le\min\left(1,\frac{x^2}{3}\right).
+\]
+The totalized \path{tanhDiv} is identified with the divided slope of \(\tanh\), so no
+ordinary quotient at the removable origin is being used.
+
+The seven-module activation tranche has six definitions and ninety-nine theorems.  Its
+finite local and series results are the exact declarations
+\path{tanh_sub_taylor_nine_isBigO},
+\path{activationProbability_sub_taylor_eight_isBigO},
+\path{activationProbability_sub_taylor_eight_isBigO_pow},
+\path{summable_activationProbability_mul_of_summable_sq},
+\path{tsum_activationProbability_mul_le},
+\path{tendsto_activationProbability_div_sq},
+\path{tendsto_activationProbability_mul_div_sq}, and
+\path{tendsto_tsum_activationProbability_mul_div_sq}.  Thus the displayed finite jet is
+\[
+ p(x)=\frac{x^2}{3}-\frac{2x^4}{15}+\frac{17x^6}{315}
+      -\frac{62x^8}{2835}+O(\lVert x\rVert^{10}),
+\]
+while the sharp punctured-neighborhood limit is \(p(x)/x^2\to1/3\).  For an arbitrary
+index type and real weights with \(\sum_iw_i^2<\infty\), the activation sum is genuinely
+summable and
+\[
+ \sum_i p(w_i t)\le \frac{t^2}{3}\sum_iw_i^2,
+ \qquad
+ \frac{\sum_i p(w_i t)}{t^2}\longrightarrow
+ \frac13\sum_iw_i^2\quad(t\to0,\ t\ne0).
+\]
+
+The geometric module defines
+\[
+ d_q(t):=\sum_{n\ge0}p\bigl(q^n(1-q)t\bigr).
+\]
+For \(\lvert q\rvert<1\), it proves genuine summability, refinement and finite-prefix/tail
+certificates, the bound
+\[
+ d_q(t)\le\frac{(1-q)t^2}{3(1+q)},
+\]
+and the sharp limit \(d_q(t)/t^2\to(1-q)/(3(1+q))\); at \(q=1/2\), the dyadic limit is
+\(1/9\).  Negative \(q\) belongs to this deterministic analytic range.  The report's
+positive-weight active-count reading is restricted to \(0<q<1\): no Bernoulli family or
+expectation bridge is asserted by these declarations.
 
 \subsection{Recovery of the classical functions}
 
@@ -15527,8 +15655,11 @@ in the proposition is formalized for \(0\le q<1\) by
 \path{geometricUniformCDF_one_of_one_le}.  Uniqueness is supplied separately and directly
 by \path{eq_geometricUniformDistribution_of_selfSimilar} for every \(|q|<1\), including
 negative \(q\) and \(q=0\); it requires no support, density, or moment hypothesis on the
-competing probability law.  The classical density interpretation has not been extended to
-the selected totalized \(q\le0\) formula.  Also separately,
+competing probability law.  The selected totalized \(q\le0\) formula cannot have the
+classical density interpretation: it is now proved to fail, since it is
+zero at \(q=0\), nonpositive for \(q<0\), and its clamped \path{withDensity} measure is
+zero rather than the probability law.  Lean formalization of the paper-level corrected
+signed-density construction for nonpositive parameters remains open.  Also separately,
 \path{GeometricUniformCauchy.lean} gives the exact-support transform DDE and adjacent
 Cauchy-power hierarchy for every nonzero \(|q|<1\); those declarations do not formalize
 the characteristic-function product or the real-space density-derivative hierarchy below.
@@ -15613,13 +15744,25 @@ formalization frontier independently of this Fourier proof:
 \path{contDiff_geometricUniformDensity} give \(C^\infty\) regularity.  The centered law and
 density are not separately named.  For the uncentered law, however,
 \path{GeometricSincFactorization.lean} proves the exact finite residual formula and
-pointwise convergence of the phase-bearing sinc prefixes for every \(|q|<1\); removing the
-limiting phase gives the paper-level centered product, while
-\path{geometricSincProduct} packages the same factors after frequency rescaling as a
-\path{tprod}.  There is not yet a named centered wrapper, a named characteristic-function
-bridge to that product (or explicit \path{HasProd} theorem), or compact-uniform convergence
-theorem for the characteristic prefixes.  The rapid bound \eqref{p10:eq:rapid-bound} and the absolutely convergent
-Fourier-inversion formulas for higher derivatives have not been formalized.
+pointwise convergence of the phase-bearing sinc prefixes for every \(|q|<1\).  The four
+theorems \path{hasProdLocallyUniformly_geometricSincProduct},
+\path{geometricSincProductFactors_multipliable},
+\path{hasProd_geometricSincProduct}, and
+\path{geometricSincProduct_differentiable} now prove, for complex
+\(\lVert q\rVert<1\), that
+\(S_q(z)=\prod_{n\ge0}\sinc(\pi q^nz)\) converges locally uniformly, has the named
+pointwise product witnesses, and is entire.  For real \(|q|<1\), \(t\in\R\), and
+\(z_q(t)=(1-q)t/(2\pi)\), the two exact bridges
+\path{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct} and
+\path{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma} give
+\(\phi_q(t)=\e^{\ii t/2}S_q(z_q(t))
+=\e^{\ii t/2}G_q(z_q(t))G_q(-z_q(t))\), where \(G_q(z)\) denotes
+\path{geometricReciprocalGamma} applied to \(q,z\).  The equality includes \(q=0\) and
+negative \(q\).
+There is not yet a named centered wrapper or a packaged compact-uniform theorem for the full
+phase-bearing characteristic prefixes.  The rapid bound \eqref{p10:eq:rapid-bound} and the
+absolutely convergent Fourier-inversion formulas for higher derivatives have not been
+formalized.
 
 \begin{remark}[Relation to the existing Fourier-decay campaign]
 Bound \eqref{p10:eq:rapid-bound} is intentionally elementary.  Optimizing $N$ as a function of
@@ -16822,16 +16965,32 @@ stronger pointwise form where applicable, by \path{WeightedUniformSeries.lean},
 \path{AffineIndependentCopy.lean} and its specialization
 \path{GeometricUniformUniqueness.lean}.  This includes law reflection, independent-copy affine
 refinement, absolute continuity, null singletons, exact support, the named CDF and both
-conditioning integrals, its explicit Radon--Nikodym density, compact support, and
-\(C^\infty\) regularity, as well as fixed-point uniqueness for every real \(|q|<1\), with
-\(q=0\) and negative contractions included and no support, density, or moment assumptions.
+conditioning integrals and, for \(0<q<1\), its explicit Radon--Nikodym density, compact
+support, and \(C^\infty\) regularity, as well as fixed-point uniqueness for every real
+\(|q|<1\), with \(q=0\) and negative contractions included and no support, density, or
+moment assumptions.  The selected density formula is separately proved zero at \(q=0\),
+nonpositive for \(q<0\), and measure-theoretically invalid throughout the nonpositive
+contraction range; Lean formalization of its paper-level corrected signed-density replacement
+remains open.
 The live \path{GeometricUniformDictionary.lean} and
 \path{GeometricSincFactorization.lean} now complete item 5 in finite-residual and pointwise
-\path{Tendsto} form for every \(|q|<1\), including exact dyadic wrappers, while
-\path{geometricSincProduct} packages the same factors after frequency rescaling as a
-\path{tprod}.  A named characteristic-function bridge to that product (or explicit
-\path{HasProd} theorem), compact-uniform convergence of the characteristic prefixes, and
-quantitative Fourier estimates remain in the analysis layer.
+\path{Tendsto} form for every \(|q|<1\), including exact dyadic wrappers.  For
+\(q,z\in\C\), \(\lVert q\rVert<1\), the further declarations
+\path{hasProdLocallyUniformly_geometricSincProduct},
+\path{geometricSincProductFactors_multipliable},
+\path{hasProd_geometricSincProduct}, and
+\path{geometricSincProduct_differentiable} prove locally uniform convergence, pointwise
+\path{Multipliable}/\path{HasProd}, and entire-ness for
+\(S_q(z)=\prod_{n\ge0}\sinc(\pi q^nz)\).  For real \(|q|<1\), \(t\in\R\), and
+\(z_q(t)=(1-q)t/(2\pi)\), the theorems
+\path{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct} and
+\path{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma} give
+\(\phi_q(t)=\e^{\ii t/2}S_q(z_q(t))
+=\e^{\ii t/2}G_q(z_q(t))G_q(-z_q(t))\), where \(G_q(z)\) denotes
+\path{geometricReciprocalGamma} applied to \(q,z\).  The equality includes \(q=0\) and
+negative contractions.
+A named centered wrapper, packaged compact-uniform convergence of the full phase-bearing
+characteristic prefixes, and quantitative Fourier estimates remain in the analysis layer.
 The distinct oriented Cauchy-transform DDE and adjacent-power hierarchy are now formal in
 \path{GeometricUniformCauchy.lean}; they are separate from the characteristic-function
 product and real-space density-derivative hierarchies.

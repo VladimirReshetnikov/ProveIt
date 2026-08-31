@@ -49,7 +49,7 @@ audited packages, without wholesale textual duplication.
   in Lean.
 
 The broad multi-topic "collected new results" report series,
-consolidated (2026-08-28) into the 272-page single volume
+consolidated (2026-08-28) into the 275-page single volume
 [`Frontier_Compilations/`](Frontier_Compilations/): ten absorbed reports,
 displayed as ten outer parts.
 
@@ -177,5 +177,40 @@ first exact Jacobi data.  Root location or simplicity, Gaussian/Lobatto
 quadrature, finite or infinite Jacobi/Stieltjes-fraction identification, and
 convergence remain open.  This status update does not alter the absorbed
 reports or their recorded provenance hashes.
+
+## Activation, sinc, and CDF status freeze
+
+The post-snapshot activation tranche is a separate real, totalized hyperbolic
+kernel, not a complex-sinc identification.  At source checkpoint
+`a345425d21d90e680bf15e34093af42c69c08a83`, its seven modules expose six
+definitions and 99 theorems: the totalized activation dictionary, the finite
+Taylor jet, the arbitrary-index square-summable budget and sharp Tannery limit,
+and the geometric/dyadic effective-dimension bounds and asymptotics.  The local
+coefficient is `activationProbability x / x^2 -> 1/3`, and the geometric
+coefficient is `(1-q)/(3*(1+q))` for `|q| < 1`.  Negative `q` is included in
+these deterministic identities; the report's positive-weight active-count
+interpretation is restricted to `0 < q < 1`, with no Bernoulli-family or
+expectation bridge asserted.
+
+The sinc union is now exact at both levels: the four product declarations in
+`GeometricReciprocalGamma.lean` give locally uniform complex product
+convergence, genuine `Multipliable`/`HasProd` witnesses, and entire-ness for
+`|q| < 1`; the two declarations in
+`GeometricSincCharacteristicFunction.lean` identify the real geometric-law
+characteristic function with the phase-bearing rescaled product and the paired
+geometric reciprocal-Gamma product, including `q = 0` and negative `q`.  A
+centered wrapper and compact-uniform convergence of the full phase-bearing
+prefixes remain open.
+
+The CDF union is parameter-scoped.  `GeometricUniformCDF.lean` has 31 public
+declarations: its CDF definition and basic order/measurability facts are total
+in real `q`; continuity, reflection, and midpoint use `|q| < 1`; exterior tails
+use `0 <= q < 1`; and conditioning, the classical nonnegative density,
+Radon--Nikodym identity, compact support, and `C^infty` regularity use
+`0 < q < 1`.  The nonpositive diagnostics show that the selected totalized
+density is zero or nonpositive and its clamped `withDensity` measure is zero,
+so the paper-level corrected signed-density construction remains open, even
+though fixed-point uniqueness for the probability law is proved for every
+`|q| < 1`.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.
