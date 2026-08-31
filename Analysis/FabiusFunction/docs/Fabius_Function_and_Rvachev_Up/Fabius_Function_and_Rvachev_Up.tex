@@ -2856,7 +2856,7 @@ standalone Rvachev product, so for every \(z\in\ComplexNumbers\)
 Moreover \(G_{\rm dy}\) vanishes precisely at the negative integers.  For every
 \(n\ge1\),
 \begin{align}
- \operatorname{ord}_{z=-n}G_{\rm dy}(z)&=1+\TwoAdicValuation(n),       \label{eq:dyadic-reciprocal-gamma-order}\\
+ \OrderOperator_{z=-n}G_{\rm dy}(z)&=1+\TwoAdicValuation(n),       \label{eq:dyadic-reciprocal-gamma-order}\\
  \operatorname{mord}_{z=-n}\Gamma_{\rm dy}(z)&=-(1+\TwoAdicValuation(n)).
                                                                   \label{eq:dyadic-gamma-pole-order}
 \end{align}
@@ -2971,7 +2971,7 @@ first-jet and Thue--Morse Gamma-tower tranche in two further modules.
 \lean{tendsto_Gamma_inv_div_add_nat}.  For every \(r\in\NaturalNumbers\), they identify
 \[
  \left(\Gamma^{-1}\right)'(-r)=(-1)^r r!,\qquad
- \operatorname{ord}_{-r}\Gamma^{-1}=1,
+ \OrderOperator_{-r}\Gamma^{-1}=1,
  \qquad
  \frac{\Gamma(s)^{-1}}{s+r}\longrightarrow(-1)^r r!
  \quad(s\to-r,\ s\ne-r),
@@ -3318,7 +3318,7 @@ Combining the germ factorization, the nonzero unit, and
 \eqref{eq:factored-leading-jet} gives the exact complex multiplicity and its
 entire leading jet:
 \begin{align}
- \operatorname{ord}_{z=m}\Phi(z)&=d_m,                             \label{eq:integer-zero-complex-order}\\
+ \OrderOperator_{z=m}\Phi(z)&=d_m,                             \label{eq:integer-zero-complex-order}\\
  \Phi^{(j)}(m)&=0 &&(0\le j<d_m),                                  \label{eq:integer-zero-lower-jets}\\
  \Phi^{(d_m)}(m)
    &=-\frac{d_m!\,\Phi(q_m/2)}{m^{d_m}}\ne0.                       \label{eq:integer-zero-leading-jet}
@@ -5163,7 +5163,7 @@ Let \(\Omega\) be a measurable space, let \(\mu\) be any measure on it, let
 \(Z:\Omega\to\RealNumbers\).  For \(p\in S[X]\), write
 \[
  p_n=[X^n]p,\qquad
- p_\varphi(x)=\sum_{n\in\operatorname{supp}(p)}\varphi(p_n)x^n,
+ p_\varphi(x)=\sum_{n\in\SupportOperator(p)}\varphi(p_n)x^n,
  \qquad
  m_n=\operatorname{moment}_\mu(Z;n).
 \]
@@ -5171,13 +5171,13 @@ Here \(\operatorname{moment}_\mu\) uses Mathlib's totalized Bochner-integral
 convention; whenever \(Z^n\) is integrable it is the ordinary integral
 \(\int_\Omega Z(\omega)^n\,\Differential\mu(\omega)\).
 Assume only that \(Z^n\) is integrable for
-\(n\in\operatorname{supp}(p)\), and put
+\(n\in\SupportOperator(p)\), and put
 \(\kappa=\mathcal K(m)\).  Then
 \begin{align}
  \int_\Omega p_\varphi(Z(\omega))\,\Differential\mu(\omega)
-   &=\sum_{n\in\operatorname{supp}(p)}\varphi(p_n)m_n,
+  &=\sum_{n\in\SupportOperator(p)}\varphi(p_n)m_n,
                                                                \label{eq:polynomial-integral-moments}\\
-   &=\sum_{n\in\operatorname{supp}(p)}
+  &=\sum_{n\in\SupportOperator(p)}
        \varphi(p_n)\mathcal B(\kappa)_n
        +\varphi(p_0)(m_0-1).                                \label{eq:polynomial-integral-cumulants}
 \end{align}

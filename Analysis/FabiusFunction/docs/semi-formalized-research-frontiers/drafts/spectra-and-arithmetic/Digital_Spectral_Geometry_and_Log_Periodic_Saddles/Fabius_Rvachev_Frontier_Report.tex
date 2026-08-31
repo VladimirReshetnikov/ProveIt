@@ -98,9 +98,6 @@
 }
 
 % Document-specific notation not present in the shared canonical block.
-\newcommand{\upf}{\Up}
-\DeclareMathOperator{\Res}{Res}
-\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
 \newcommand{\fracpart}[1]{\left\{#1\right\}}
 
 \title{\bfseries Digital Spectral Geometry and Log-Periodic Saddles\\[0.35em]
@@ -258,7 +255,7 @@ In particular, for \(0\leq x\leq\frac12\),
 
 \begin{proof}
 The random series gives \eqref{eq:Phi-def}.  For \(|z|\) large, take
-\(N=\floor{\log_2|z|}-2\).  Since
+\(N=\Floor{\log_2|z|}-2\).  Since
 \[
  \left|\SincRad\!\left(\frac z{2^n}\right)\right|
  \leq \min\!\left(1,\frac{2^n}{|z|}\EulerE^{|\Im z|/2^n}\right),
@@ -437,8 +434,8 @@ For every integer \(M\geq1\),
 \end{equation}
 More generally,
 \[
- N(R)=2\floor{\frac{R}{2\pi}}
-      -s_2\!\left(\floor{\frac{R}{2\pi}}\right).
+ N(R)=2\Floor{\frac{R}{2\pi}}
+      -s_2\!\left(\Floor{\frac{R}{2\pi}}\right).
 \]
 Therefore
 \begin{equation}
@@ -780,7 +777,7 @@ In particular, there are no algebraic inverse powers of \(t\):
 \end{theorem}
 
 \begin{proof}
-Write \(\log_2t=N+\theta\), with \(N=\floor{\log_2t}\).  For \(n\leq N\),
+Write \(\log_2t=N+\theta\), with \(N=\Floor{\log_2t}\).  For \(n\leq N\),
 \[
  f(t/2^n)
  =\frac{t}{2^n}
@@ -1365,7 +1362,7 @@ Euler's sine product and the substitution \(m=b^{n-1}k\) give
 \eqref{eq:base-b-zeta}.  Finally,
 \[
  N_b(c_bM)
- =M+\sum_{j\geq1}\floor{\frac M{b^j}}
+ =M+\sum_{j\geq1}\Floor{\frac M{b^j}}
  =M+\frac{M-s_b(M)}{b-1},
 \]
 which is \eqref{eq:base-b-count}.
@@ -1803,7 +1800,7 @@ For completeness, for \(0<c<1\),
 \]
 For \(0<x<1\), closing to the right and accounting for orientation gives
 \[
- -\sum_{n\geq1}\Res_{s=n}
+ -\sum_{n\geq1}\ResidueOperator_{s=n}
  \frac{\pi x^s}{s\sin\pi s}
  =-\sum_{n\geq1}\frac{(-1)^n}{n}x^n
  =\log(1+x).
