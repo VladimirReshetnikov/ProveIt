@@ -171,15 +171,19 @@ rational Thue--Morse splines $S_N$ satisfying the global certificate
 $\lvert S_N-F\rvert\le 2^{-N}$.  Thus $F$ can be evaluated at a rational point
 to any requested precision by a finite integer computation.  Second, the
 Fabius density is symmetric and strictly unimodal.  It follows that among all
-subintervals of $[0,1]$ of a fixed length $h$, an endpoint interval has the
-least Fabius mass:
+subintervals of $[0,1]$ of a fixed nonzero length $h$, exactly the endpoint
+interval starts minimize the Fabius mass:
 \[
   \min_{0\le x\le1-h}\bigl(F(x+h)-F(x)\bigr)=F(h).
 \]
-Consequently the exact modulus of continuity of the inverse is itself:
+More precisely, equality holds only for $x=0$ or $x=1-h$ (these coincide when
+$h=1$); for $h=0$ every admissible start is degenerate.  Consequently the
+inverse-gap bound also has a complete equality classification, not merely a
+sharp endpoint witness.  The exact modulus of continuity of the inverse is the
+inverse itself, with the natural saturation at unit input distance:
 \[
-  \sup_{\lvert u-v\rvert\le\eta}\lvert G(u)-G(v)\rvert
-  =G\bigl(\min(\eta,1)\bigr).
+  \sup_{\substack{u,v\in[0,1]\\\lvert u-v\rvert\le\eta}}
+  \lvert G(u)-G(v)\rvert=G(\min(\eta,1)).
 \]
 This identity reduces effective continuity to a positive lower bound for
 $F(h)$.  A direct box event in the defining random series gives, for every
@@ -221,10 +225,13 @@ fixed-length Fabius-increment inequality, the exact inverse modulus, and the
 closed elementary modulus were absent under the formulations used here.
 
 A post-publication Lean development now formalizes three layers.  The structural
-inverse-modulus layer in
-\path{Analysis/FabiusFunction/Lean/FabiusFunction/InverseModulus.lean} proves
-the global shape of fixed-length increments, the endpoint lower bound,
-inverse-gap inequalities, attained exact moduli, and the exact
+inverse-modulus layer lives in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/InverseModulus.lean}.  It
+proves the global weak shape and maximal strict branches of fixed-length
+Fabius increments, the endpoint lower bound and complete equality locus,
+constrained forward superadditivity with its equality cases, local and global
+inverse-gap inequalities, unit-interval inverse-gap rigidity, global inverse
+subadditivity, attained exact moduli on both $[0,1]$ and $\R$, and the exact
 effective-injectivity threshold.  The downstream module
 \path{Analysis/FabiusFunction/Lean/FabiusFunction/FabiusInverseEffectiveContinuity.lean}
 proves a one-term recurrence lower bound stronger than the elementary
@@ -325,7 +332,9 @@ The argument is organized so that every hidden effectiveness issue is exposed.
 Thue--Morse truncated-power formula.  At rational inputs it is rational, and
 its error from $F$ is at most $2^{-N}$.
 \item \textbf{Effective injectivity.}  Symmetric unimodality shows that an
-interval of geometric length $h$ has probability mass at least $F(h)$.
+interval of geometric length $h$ has probability mass at least $F(h)$;
+strict radial unimodality shows that equality occurs only for a degenerate
+interval or an endpoint interval.
 A direct event gives the computable lower bound $F(2^{-r})\ge\Delta_r$.
 \item \textbf{Uniform continuity.}  Effective injectivity of $F$ becomes an
 effective modulus for $G$.  In fact the ordinary modulus of $G$ is exactly
@@ -413,14 +422,18 @@ This report supplies that information in two forms:
  F(x+h)-F(x)&\ge F(h),\label{eq:gap-interval-preview}\\
  F(2^{-r})&\ge\Delta_r.\label{eq:gap-delta-preview}
 \end{align}
-The first is exact and geometric; the second is elementary and recursive.
+The first is exact and geometric.  For $0<h\le1$, equality in the first bound
+occurs exactly at $x=0$ or $x=1-h$; in the equivalent form
+$F(b)-F(a)=F(b-a)$ the complete alternatives are $a=b$, $a=0$, or $b=1$.
+The second bound is elementary and recursive.
 Together with the existing forward evaluator they close both clauses of the
 requested definition.
 
 The historical statement above remains about the pinned snapshot.  In the
 current post-publication development, \path{InverseModulus.lean} formally
-proves the first inequality and its exact transfer through the clamped inverse,
-including sharpness and attainment.
+proves the first inequality, its complete equality locus, and its exact
+transfer through the clamped inverse, including rigidity, sharpness, and
+attainment.
 \path{FabiusInverseEffectiveContinuity.lean} formally proves the second
 \emph{inequality} by a stronger one-term recurrence estimate and packages a
 simple primitive-recursive reciprocal modulus.
@@ -719,8 +732,27 @@ of the tail, and integer arithmetic.  It is not numerically sharp, but
 largest orders for computability purposes.
 
 The numerical conclusion of \cref{lem:box-event} is now Lean-formalized, but
-by a different and stronger route.  The exact inverse-dyadic recurrence gives
-the one-term estimate
+by a different and stronger route.  Here is the complete recurrence argument.
+Let $a_0=1$ and use the repository's exact inverse-dyadic identities
+\[
+ a_r=
+ \frac{\displaystyle\sum_{0\le k<r}a_k/(r-k+1)!}{2^r-1}
+ \quad(r\ge1),
+ \qquad
+ F(2^{-r})=2^{-\binom r2}a_r.
+\]
+Every $a_k$ is positive.  Retaining only the $k=0$ summand therefore gives
+\[
+ a_r\ge\frac{1}{(r+1)!(2^r-1)},
+ \qquad
+ F(2^{-r})\ge
+ \frac{1}{2^{\binom r2}(r+1)!(2^r-1)}
+ \quad(r\ge1).
+\]
+Since $2^r-1\le2^r$ and
+$\binom r2+r=\binom{r+1}{2}$, taking the larger denominator yields the
+first inequality below; the exceptional index $r=0$ is simply $F(1)=1$.
+Thus for every $r\ge0$,
 \begin{equation}\label{eq:factorial-endpoint-lower}
  F(2^{-r})\ge
  \frac{1}{2^{\binom{r+1}{2}}(r+1)!}
@@ -728,13 +760,42 @@ the one-term estimate
  \frac{1}{2^{\binom{r+1}{2}}(r+1)^{r+1}}
  =\Delta_r.
 \end{equation}
+Indeed, $(r+1)!\le(r+1)^{r+1}$ proves the second inequality after
+multiplication by the positive power of two and reversal under reciprocation.
+
+For the executable arithmetic, write
+\[
+ d_{\mathrm{fac}}(r):=2^{\binom{r+1}{2}}(r+1)!,
+ \qquad
+ d_{\Delta}(r):=2^{\binom{r+1}{2}}(r+1)^{r+1}=\Delta_r^{-1}.
+\]
+Lean defines the first denominator by primitive recursion,
+\[
+ d_{\mathrm{fac}}(0)=1,
+ \qquad
+ d_{\mathrm{fac}}(r+1)
+ =d_{\mathrm{fac}}(r)\,2^{r+1}(r+2).
+\]
+Induction, using
+$\binom{r+2}{2}=\binom{r+1}{2}+r+1$, proves the displayed closed form.
+The recursive clause uses only successor, multiplication, and exponentiation,
+so $d_{\mathrm{fac}}$ is primitive recursive.  Likewise
+$\binom{r+1}{2}=r(r+1)/2$, and primitive-recursive closure under successor,
+multiplication, natural-number division, and exponentiation proves that
+$d_{\Delta}$ is primitive recursive.  Finally
+$d_{\mathrm{fac}}(r)\le d_{\Delta}(r)$ is exactly the factorial--power
+inequality above, and positivity reverses this comparison between their
+reciprocals.
+
 The declarations
 \path{Fabius.fabiusReal_inverse_two_pow_one_term_lower_bound},
 \path{Fabius.inv_inverseFabiusFactorialDenominator_le_fabiusReal}, and
 \path{Fabius.inv_inverseFabiusDeltaDenominator_le_fabiusReal} certify this
 chain.  They do not formalize the event in
 \eqref{eq:box-restrictions}, its containment, or its product probability;
-that probabilistic proof remains report-level.
+that probabilistic proof remains report-level.  The argument in this paragraph
+uses only the already formalized dyadic recurrence and therefore preserves the
+distinction between the two proof routes.
 
 \subsection{Strict monotonicity from the random series}
 
@@ -829,49 +890,74 @@ value is unchanged if either or both endpoints are included.  In particular,
 We therefore continue to call $M_h(x)$ an interval mass, while
 \eqref{eq:interval-mass} fixes the canonical CDF convention.
 
-\begin{theorem}[Endpoint intervals have least Fabius mass]\label{thm:least-mass}
+\begin{theorem}[Strict interval-mass shape and exact minimizers]
+\label{thm:least-mass}
 For every $0\le h\le1$,
 \begin{equation}\label{eq:least-mass}
  \min_{0\le x\le1-h}\bigl(F(x+h)-F(x)\bigr)=F(h).
 \end{equation}
-More precisely, when $0<h<1$, $M_h$ is increasing on
-$[0,(1-h)/2]$, symmetric about $(1-h)/2$, and decreasing on
-$[(1-h)/2,1-h]$.  Here ``increasing'' and ``decreasing'' are understood in
-the non-strict sense.  Its two endpoint values are equal to $F(h)$.
+If $0<h\le1$ and $m=(1-h)/2$, then the globally extended increment $M_h$ is
+strictly increasing on $[-h,m]$, symmetric about $m$, and strictly decreasing
+on $[m,1]$; outside $[-h,1]$ it is identically zero.  On the admissible-start
+interval $0\le x\le1-h$ one has the boundary-safe equality law
+\begin{equation}\label{eq:least-mass-equality}
+ M_h(x)=F(h)
+ \quad\Longleftrightarrow\quad
+ h=0\ \text{or}\ x=0\ \text{or}\ x=1-h.
+\end{equation}
+Equivalently, whenever $0\le a\le b\le1$,
+\begin{equation}\label{eq:least-mass-equality-ab}
+ F(b-a)=F(b)-F(a)
+ \quad\Longleftrightarrow\quad
+ a=b\ \text{or}\ a=0\ \text{or}\ b=1.
+\end{equation}
+Thus every genuinely interior interval $0<a<b<1$ has strictly more Fabius
+mass than an endpoint interval of the same length.  At $h=1$ the two endpoint
+formulas coincide at the single admissible start $x=0$.
 \end{theorem}
 
 \begin{proof}
-The cases $h=0$ and $h=1$ are immediate.  Suppose $0<h<1$.  Reflection gives
+The case $h=0$ gives $M_0\equiv0$, so suppose $0<h\le1$ and put
+$m=(1-h)/2$.  Reflection gives
 \begin{align*}
  M_h(1-h-x)
  &=F(1-x)-F(1-h-x)\\
  &=(1-F(x))-(1-F(x+h))=M_h(x),
 \end{align*}
-so $M_h$ is symmetric about $(1-h)/2$.
+so $M_h$ is symmetric about $m$.
 
-For $0\le x\le(1-h)/2$, compute
+Consider $-h<x<m$.  Then $0<x+h<1$.  If $x\le0$, the constant left tail gives
+$p(x)=0$, whereas strict positivity on the open support gives $p(x+h)>0$.
+If $x>0$, compute
 \begin{equation}\label{eq:distance-comparison}
  \left(x+h-\frac12\right)^2-
  \left(x-\frac12\right)^2
- =h(2x+h-1)\le0.
+ =h(2x+h-1)<0.
 \end{equation}
-Thus $x+h$ is at least as close to $1/2$ as $x$ is.  By the unimodality in
-\cref{prop:density-shape}, $p(x+h)\ge p(x)$, and hence
+Thus $x+h$ is strictly closer to $1/2$ than $x$ is.  The strict radial
+unimodality in \cref{prop:density-shape} again gives $p(x+h)>p(x)$.  Hence
 \begin{equation}\label{eq:M-derivative}
- M_h'(x)=p(x+h)-p(x)\ge0.
+ M_h'(x)=p(x+h)-p(x)>0
+ \qquad(-h<x<m).
 \end{equation}
-The function $M_h$ is differentiable, so the mean-value theorem makes it
-nondecreasing on the first half of its domain.  The reflection identity then
-makes it nonincreasing on the second half.  Finally,
+The mean-value theorem makes $M_h$ strictly increasing on the closed interval
+$[-h,m]$.  Reflection makes it strictly decreasing on $[m,1]$.  The clamped
+tails of $F$ give $M_h=0$ to the left of $-h$ and to the right of $1$; this is
+why the global half-line shape is only non-strict, whereas the two finite
+branches above are maximally strict.
+
+Finally,
 \[
- M_h(0)=F(h)-F(0)=F(h),
+ M_h(0)=F(h)-F(0)=F(h)
+ \quad\text{and}\quad
+ M_h(1-h)=F(1)-F(1-h)=F(h).
 \]
-and
-\[
- M_h(1-h)=F(1)-F(1-h)=1-\bigl(1-F(h)\bigr)=F(h).
-\]
-Consequently every admissible increment is at least $F(h)$ and both endpoint
-increments attain that value.
+If $0<x<1-h$, compare $x$ strictly with $0$ on the left branch when $x\le m$,
+and compare it strictly with $1-h$ on the right branch when $m<x$.  In either
+case $M_h(x)>F(h)$.  This proves the minimum and the complete equality locus
+\eqref{eq:least-mass-equality}.  Substituting $h=b-a$ and $x=a$ gives
+\eqref{eq:least-mass-equality-ab}; its diagonal alternative $a=b$ is exactly
+the degenerate case $h=0$.
 \end{proof}
 
 \begin{corollary}[Global increment shape and constrained superadditivity]
@@ -885,6 +971,12 @@ and nonincreasing on the complementary half-line.  Consequently, whenever
 $a,b\ge0$ and $a+b\le1$,
 \begin{equation}\label{eq:fabius-superadditive}
  F(a)+F(b)\le F(a+b).
+\end{equation}
+Its complete equality locus is
+\begin{equation}\label{eq:fabius-superadditive-equality}
+ F(a)+F(b)=F(a+b)
+ \quad\Longleftrightarrow\quad
+ a=0\ \text{or}\ b=0\ \text{or}\ a+b=1.
 \end{equation}
 \end{corollary}
 
@@ -903,15 +995,20 @@ from $a$ to $a+b$: its length is $b$, so
 \[
  F(b)\le F(a+b)-F(a).
 \]
-Rearranging proves the claim.
+ Rearranging proves the inequality.  Equality is exactly the equality case of
+ \cref{thm:least-mass} for the interval $[a,a+b]$: its three alternatives are
+ $a=a+b$, $a=0$, and $a+b=1$, and the first is equivalent to $b=0$.
 \end{proof}
 
 \begin{remark}[A general principle]\label{rem:general-principle}
-The proof used only that a probability density on $[0,1]$ is symmetric and
-unimodal.  Hence \cref{thm:least-mass} holds for every continuous symmetric
-unimodal distribution, with strictness adjusted when the density has plateaus.
-The Fabius system is special not because the geometric lemma is exotic, but
-because $F(h)$ has unusually rich exact arithmetic and endpoint asymptotics.
+The lower bound used only that a probability density on $[0,1]$ is symmetric
+and unimodal.  Hence the minimum-value part of \cref{thm:least-mass} holds for
+every continuous symmetric unimodal distribution.  The endpoint-only equality
+locus uses the genuinely stronger hypothesis that the density decreases
+strictly with distance from the midpoint; plateaus can create additional
+minimizers.  The Fabius system is special not because the geometric lemma is
+exotic, but because $F(h)$ has unusually rich exact arithmetic and endpoint
+asymptotics.
 \end{remark}
 
 \subsection{The inverse's modulus is the inverse itself}
@@ -951,6 +1048,22 @@ and
  \InvT(x+y)\le\InvT(x)+\InvT(y)
  \qquad(x,y\in\R).
 \end{equation}
+On the unit interval the ordered-gap equality cases are exactly
+\begin{equation}\label{eq:inverse-gap-equality}
+ G(v)-G(u)=G(v-u)
+ \quad\Longleftrightarrow\quad
+ u=v\ \text{or}\ u=0\ \text{or}\ v=1
+ \qquad(0\le u\le v\le1).
+\end{equation}
+Equivalently, without ordering the inputs,
+\begin{equation}\label{eq:absolute-inverse-gap-equality}
+ \abs{G(u)-G(v)}=G(\abs{u-v})
+ \quad\Longleftrightarrow\quad
+ u=v\ \text{or}\ u\in\{0,1\}\ \text{or}\ v\in\{0,1\}
+ \qquad(u,v\in[0,1]).
+\end{equation}
+These two equality classifications are intentionally unit-domain statements:
+the constant tails of $\InvT$ create additional configurations on $\R$.
 \end{theorem}
 
 \begin{proof}
@@ -974,6 +1087,17 @@ Removing the temporary ordering assumption gives
  \abs{G(c)-G(d)}\le G(\abs{c-d})
  \qquad(c,d\in[0,1]).
 \end{equation}
+The same argument records equality.  Under $c\le d$, equality in the inverse
+gap is equivalent, after applying the strictly increasing $F$, to equality in
+\eqref{eq:mass-gap-proof}.  By \eqref{eq:least-mass-equality-ab}, this says
+\[
+ a=b,\qquad a=0,\qquad\text{or}\qquad b=1.
+\]
+Because $a=G(c)$ and $b=G(d)$ and $F,G$ are inverse order isomorphisms, these
+alternatives are respectively $c=d$, $c=0$, and $d=1$.  This proves
+\eqref{eq:inverse-gap-equality}.  Applying it after ordering $c,d$ proves
+\eqref{eq:absolute-inverse-gap-equality}; reversing the order exchanges the
+left and right endpoint alternatives.
 
 Now put $c=\Clamp(u)$ and $d=\Clamp(v)$.  Projection onto $[0,1]$ is
 nonexpansive and has diameter one, so
@@ -1103,7 +1227,20 @@ with declaration
 \path{Fabius.abs_fabiusInv_sub_le_inverse_two_pow_of_le_factorialDenominator}
 is its stronger factorial-denominator companion.  Thus the strict and closed
 input/output boundaries are separately available rather than recovered by an
-unstated limiting argument.
+unstated limiting argument.  Their common proof is direct.  Let $d$ be either
+$d_{\mathrm{fac}}(r)$ or $d_{\Delta}(r)$.  The recurrence argument above gives
+$d^{-1}\le F(2^{-r})$.  Hence
+\[
+ \abs{u-v}<d^{-1}
+ \quad\Longrightarrow\quad
+ \abs{u-v}<F(2^{-r})
+ \quad\Longrightarrow\quad
+ \abs{\InvT(u)-\InvT(v)}<2^{-r}
+\]
+by strict effective injectivity.  Replacing both strict inequalities by weak
+ones and using its closed-threshold companion proves the two closed versions.
+This proves all four formal dyadic implications without a limiting argument;
+only the choice of denominator distinguishes the factorial and Delta forms.
 
 \begin{theorem}[Reciprocal modulus required by the definition]\label{thm:reciprocal-modulus}
 For $n\ge1$, let $r(n)$ be the least positive integer with $2^{r(n)}>n$ and
@@ -1146,9 +1283,19 @@ The Lean development uses the stronger one-line witness
 \]
 which is no larger than $d_0(n)$.  The theorem
 \path{Fabius.fabiusInv_effectivelyUniformContinuous} proves
-\texttt{EffectivelyUniformContinuous} for the totalized inverse directly
-from this primitive-recursive witness and $n<2^n$.  Thus effective uniform
-continuity itself is formalized.  The downstream
+\texttt{EffectivelyUniformContinuous} for the totalized inverse as follows.
+The recurrence above makes $d_{\mathrm{fac}}$ primitive recursive and positive.
+For $n\ge1$, the strict factorial implication gives
+\[
+ \abs{u-v}<\frac1{d_{\mathrm{fac}}(n)}
+ \quad\Longrightarrow\quad
+ \abs{\InvT(u)-\InvT(v)}<2^{-n}.
+\]
+The elementary inequality $n<2^n$ between positive integers reverses under
+reciprocation, so $2^{-n}<1/n$.  Chaining these inequalities is precisely the
+reciprocal convention in \cref{def:euc}; $d_{\mathrm{fac}}(0)=1$ supplies the
+harmless zeroth value.  Thus effective uniform continuity itself is
+formalized.  The downstream
 \path{FabiusInverseLogarithmicModulus.lean} now also formalizes the smaller
 choice $r(n)$ in \cref{thm:reciprocal-modulus}.  Its declaration
 \path{Fabius.inverseFabiusLogarithmicOrder_isLeast} identifies the least order,
@@ -1574,8 +1721,9 @@ $f$, and strict monotonicity, so it carries over verbatim.
 \end{proof}
 
 For the Fabius function, \cref{thm:least-mass} identifies the best possible
-choice $\alpha_p=F(2^{-p})$, while \cref{lem:box-event} supplies a closed
-lower substitute requiring no invocation of the exact dyadic evaluator.
+choice $\alpha_p=F(2^{-p})$; its minimizing intervals are exactly the left and
+right endpoint intervals.  The box event in \cref{lem:box-event} supplies a
+closed lower substitute requiring no invocation of the exact dyadic evaluator.
 
 \section{Analytic consequences of the exact modulus}
 
@@ -1814,9 +1962,9 @@ also verifies exactly that
  \min_x\bigl(S_8(x+1/8)-S_8(x)\bigr)
  =S_8(1/8)=\frac{455}{131072},
 \]
-with minimizers $x=0$ and $x=7/8$.  This finite-convolution experiment mirrors
-\cref{thm:least-mass}; the theorem itself is the continuous unimodality
-argument, not a grid inference.
+with minimizers $x=0$ and $x=7/8$.  This finite-convolution experiment
+reproduces the complete continuous minimizer locus in \cref{thm:least-mass};
+the theorem itself is the strict unimodality argument, not a grid inference.
 
 \subsection{What the code deliberately does not claim}
 
@@ -1899,8 +2047,9 @@ Thue--Morse spline is a natural next step.
 
 \subsection{Total positivity, unimodality, and interval masses}
 
-The least-mass theorem used only symmetric unimodality, while several corpus
-reports investigate stronger total-positivity and variation-diminishing
+The least-mass lower bound uses only symmetric unimodality; its exact
+endpoint-only equality locus uses strict radial unimodality.  Several corpus
+reports investigate still stronger total-positivity and variation-diminishing
 properties.  If a stronger kernel theorem is established, it may control not
 only one interval mass but higher finite differences and multidimensional
 quantile maps.  The computability proof therefore isolates a low-order shadow
@@ -1938,10 +2087,11 @@ The structural part of \cref{sec:exact-modulus} now lives in
 \path{Analysis/FabiusFunction/Lean/FabiusFunction/InverseModulus.lean}.
 \end{center}
 It imports \path{FabiusInverse.lean} and deliberately remains independent of
-the heavier random-series and computable-analysis interfaces.  Its complete
-public theorem surface was compiler-checked as one focused target; each theorem
-uses only the standard logical principles already present in its dependencies.
-The declaration-level correspondence is as follows.
+the heavier random-series and computable-analysis interfaces.  All thirty-two
+public declarations (one definition and thirty-one theorems) were
+compiler-checked as one focused target; each theorem uses only the standard
+logical principles already present in its dependencies.  The declaration-level
+correspondence is as follows.
 
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.31\textwidth}>{\raggedright\arraybackslash}p{0.60\textwidth}@{}}
 \toprule
@@ -1954,20 +2104,40 @@ The fixed-length increment $M_h(x)=F(x+h)-F(x)$ &
 Reflection $M_h(1-h-x)=M_h(x)$ &
 \path{Fabius.fabiusIntervalMass_reflect}.\\
 \addlinespace
+The zero tails $M_h(x)=0$ when $x+h\le0$ or $1\le x$, for $h\ge0$ &
+\path{Fabius.fabiusIntervalMass_eq_zero_of_add_nonpos} and
+\path{Fabius.fabiusIntervalMass_eq_zero_of_one_le}.\\
+\addlinespace
 Global left-half monotonicity and right-half antitonicity &
 \path{Fabius.monotoneOn_fabiusIntervalMass_firstHalf} and
-\path{Fabius.antitoneOn_fabiusIntervalMass_secondHalf}.  These formal
-half-line statements strengthen the interval-restricted shape in
-\cref{thm:least-mass}.\\
+\path{Fabius.antitoneOn_fabiusIntervalMass_secondHalf}.  These are the weak
+half-line statements that include the clamped zero tails.\\
+\addlinespace
+Maximal strict branches $[-h,(1-h)/2]$ and $[(1-h)/2,1]$ for $0<h\le1$ &
+\path{Fabius.strictMonoOn_fabiusIntervalMass_firstHalf} and
+\path{Fabius.strictAntiOn_fabiusIntervalMass_secondHalf}.\\
 \addlinespace
 Least endpoint increment $F(b-a)\le F(b)-F(a)$ &
 \path{Fabius.fabiusReal_sub_le_sub}.\\
 \addlinespace
+Strict interior increment $F(h)<M_h(x)$ and exact endpoint starts &
+\path{Fabius.fabiusReal_lt_fabiusIntervalMass_of_mem_Ioo} and
+\path{Fabius.fabiusIntervalMass_eq_fabiusReal_iff}.\\
+\addlinespace
+Strict interior interval inequality and complete equality law
+\eqref{eq:least-mass-equality-ab} &
+\path{Fabius.fabiusReal_sub_lt_sub} and
+\path{Fabius.fabiusReal_sub_eq_sub_iff}.\\
+\addlinespace
 Constrained forward superadditivity \eqref{eq:fabius-superadditive} &
-\path{Fabius.fabiusReal_add_le}.\\
+\path{Fabius.fabiusReal_add_le}, with equality classification
+\eqref{eq:fabius-superadditive-equality} in
+\path{Fabius.fabiusReal_add_eq_iff}.\\
 \addlinespace
 Ordered inverse gap on $[0,1]$ &
-\path{Fabius.fabiusInv_sub_le_sub_of_mem_Icc}.\\
+\path{Fabius.fabiusInv_sub_le_sub_of_mem_Icc}, with exact equality cases
+\eqref{eq:inverse-gap-equality} in
+\path{Fabius.fabiusInv_sub_eq_sub_iff_of_mem_Icc}.\\
 \addlinespace
 Ordered inverse gap including clamped tails, and its order-free strengthening
 \eqref{eq:inverse-gap-bound} &
@@ -1979,7 +2149,9 @@ Global inverse subadditivity \eqref{eq:inverse-subadditive} &
 \addlinespace
 Absolute and metric pointwise modulus \eqref{eq:absolute-inverse-gap-bound} &
 \path{Fabius.abs_fabiusInv_sub_le} and
-\path{Fabius.dist_fabiusInv_le}.\\
+\path{Fabius.dist_fabiusInv_le}; the complete unit-input equality locus
+\eqref{eq:absolute-inverse-gap-equality} is
+\path{Fabius.abs_fabiusInv_sub_eq_iff_of_mem_Icc}.\\
 \addlinespace
 The saturation identity $\InvT(\min(\eta,1))=\InvT(\eta)$ &
 \path{Fabius.fabiusInv_min_one}.\\
@@ -2004,9 +2176,12 @@ Exact strict-threshold biconditional \eqref{eq:exact-strict-threshold} &
 \bottomrule
 \end{longtable}
 
-The formal least-mass API is intentionally expressed as an inequality plus
-explicit endpoint attainment rather than through a separate minimum operator.
-The \texttt{IsGreatest} declarations record both the sharp upper bound and an
+The formal least-mass API deliberately separates four reusable layers: the
+global weak shape, the maximal strict branches, the lower bound, and the
+complete equality locus.  The inverse equality theorems remain restricted to
+unit inputs because the clamped tails add straddling-tail equality cases and
+make the endpoint alternatives order-dependent globally.  The
+\texttt{IsGreatest} declarations record both the sharp upper bound and an
 extremizing pair; the \texttt{sSup} equalities are immediate corollaries.  The
 totalized formal theorem returns \texttt{fabiusInv ... eta}, which is literally
 the report's $G(\min(\eta,1))$ because \texttt{fabiusInv} is already clamped.
@@ -2405,7 +2580,7 @@ The inverse Fabius function is computable in precisely the two-part sense
 requested.  The effective-uniform-continuity clause follows from the exact
 geometric identity
 \[
- \omega_G(\eta)=G(\eta),
+  \omega_G(\eta)=G(\min(\eta,1)),
 \]
 combined with the closed positive lower bound
 \[
@@ -2424,10 +2599,11 @@ asymptotics into sharp continuity-modulus asymptotics.  The same proof covers
 the inverse on $[0,1]$ and the canonical clamped totalization on all of
 $\R$.
 
-Conceptually, the decisive bridge is simple: for a symmetric unimodal density,
-endpoint intervals have the least mass.  In the Fabius setting that shape fact
-connects probability, computable analysis, exact dyadic arithmetic, and
-inverse asymptotics.  It is also the part most likely to generalize beyond the
+Conceptually, the decisive bridge is simple: weak symmetric unimodality makes
+endpoint intervals minimize mass, while strict radial unimodality identifies
+every equality case.  In the Fabius setting that sharpened shape fact connects
+probability, computable analysis, exact dyadic arithmetic, and inverse
+asymptotics.  It is also the part most likely to generalize beyond the
 particular atomic function studied here.
 
 The current Lean boundary cuts through the two clauses of computability.
@@ -2522,9 +2698,10 @@ strict increase of $F$ & Proved in \cref{prop:density-shape} from imported
 Fabius identities.\\
 \addlinespace
 Least fixed-length increment $F(h)$ & Symmetric unimodality of $p$ & Human
-proof in \cref{thm:least-mass}; reflection, global non-strict shape, and the
-lower bound are formalized in \path{InverseModulus.lean}.  Exact names appear
-in \cref{sec:lean-status}.\\
+proof in \cref{thm:least-mass}; reflection, global weak shape, maximal strict
+branches, the lower bound, and the complete degenerate/endpoint equality locus
+are formalized in \path{InverseModulus.lean}.  Exact names appear in
+\cref{sec:lean-status}.\\
 \addlinespace
 Exact inverse modulus $G(\eta)$ & Least interval mass and inverse identities &
 Human proof in \cref{thm:exact-inverse-modulus}; attained maxima and exact
@@ -2610,11 +2787,13 @@ computable-real-function packaging.\\
 continuity, interior derivatives, curvature, and endpoint steepness.\\
 \addlinespace
 \path{InverseModulus.lean} & Post-snapshot formalization of fixed-length
-Fabius increments, their global unimodal shape, the least endpoint increment,
-constrained forward superadditivity, local and global inverse-gap inequalities,
-global inverse subadditivity, absolute and metric pointwise moduli, attained
-exact unit-interval and totalized suprema, and the exact effective-injectivity
-threshold.  Exact declaration names appear in \cref{sec:lean-status}.\\
+Fabius increments, their global weak and maximal strict shapes, the least
+endpoint increment and complete equality locus, constrained forward
+superadditivity with equality cases, local and global inverse-gap inequalities,
+unit-input inverse-gap rigidity, global inverse subadditivity, absolute and
+metric pointwise moduli, attained exact unit-interval and totalized suprema, and
+the exact effective-injectivity threshold.  Exact declaration names appear in
+\cref{sec:lean-status}.\\
 \addlinespace
 \path{FabiusInverseEffectiveContinuity.lean} & Post-snapshot formalization of
 the recurrence-derived factorial endpoint lower bound, the exact numerical
