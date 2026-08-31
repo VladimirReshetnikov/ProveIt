@@ -32,4 +32,11 @@ The script is deterministic. It performs FFT inversion of the exact infinite sin
 
 ## Integrity
 
-`MANIFEST.txt` lists the distributed files. `SHA256SUMS` records the SHA-256 hash of every other distributed file and verifies the current package. The report states precisely which claims are proved, which are numerical checks, and which are conjectural. Novelty assertions are relative to the audited repository corpus, not claims of global publication priority.
+`MANIFEST.txt` lists the distributed files. The current source has SHA-256
+`1b205a58d084e1d40fd85caf1b26298a772a7b86b9f9a7806b0cd63c5865dd45`,
+and its synchronized PDF has SHA-256
+`e58548ebb28e613b493fe090271c86242a4c311536ddbbeb7317f91ab2283e77`.
+`SHA256SUMS` records and verifies all 19 current payloads. The report states
+precisely which claims are proved, which are numerical checks, and which are
+conjectural. Novelty assertions are relative to the audited repository corpus,
+not claims of global publication priority.

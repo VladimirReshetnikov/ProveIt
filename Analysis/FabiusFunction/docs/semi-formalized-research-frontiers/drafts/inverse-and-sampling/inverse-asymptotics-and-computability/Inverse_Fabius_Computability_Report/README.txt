@@ -6,9 +6,9 @@ SOURCE-ONLY MERGE STATUS (2026-08-31)
 The current TeX has 2937 lines and SHA-256
 a6932249804ea3fb07a08b09542e123bbbca23b76a29e13ef27c91aa902ffbe3.
 The retained 42-page PDF was not rebuilt after the notation migration and is
-not claimed to be synchronized with that source.  SHA256SUMS.txt was
-intentionally not refreshed: its TeX row and this README row are pending,
-while its other four rows pass.  Later uses of "synchronized", "current", or
+not claimed to be synchronized with that source.  The refreshed six-entry
+SHA256SUMS.txt verifies the current source/README and the retained PDF as
+distinct payloads; it does not assert render synchronization. Later uses of "synchronized", "current", or
 "final" in historical build notes refer to the preceding checkpoint.
 
 Contents
@@ -34,8 +34,9 @@ ARRIVAL_SHA256SUMS.txt
     Immutable five-file ledger for the delivered payload.
 
 SHA256SUMS.txt
-    Six-entry operational ledger from the preceding checkpoint (the ledger
-    itself is intentionally not self-hashed); TeX and README rows are pending.
+    Refreshed six-entry operational payload ledger (the ledger itself is
+    intentionally not self-hashed); all six rows verify, while the PDF remains
+    the explicitly retained historical render described above.
 
 Arrival provenance
 ------------------
