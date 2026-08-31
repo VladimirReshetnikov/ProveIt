@@ -106,7 +106,7 @@ Historical verification
 -----------------------
 * Clean latexmk build with no unresolved references, duplicate labels, or
   overfull boxes.
-* PDF preflight: 36 A4 pages, unencrypted, text-based, no warnings; Libertinus
+* PDF preflight: 37 A4 pages, unencrypted, text-based, no warnings; Libertinus
   prose is embedded and the 10 Type-3 font rows inherited from the vector plot
   payloads match the pre-update baseline.
 * All 36 pages of the preceding revision were rendered to PNG and visually

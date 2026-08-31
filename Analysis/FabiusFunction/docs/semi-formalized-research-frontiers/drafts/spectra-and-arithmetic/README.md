@@ -1,6 +1,65 @@
 # Spectra and arithmetic
 
-New standalone intake members:
+## Direct-directory intake: late 2026-08-30 batch
+
+Six tracked report directories arrived directly under `drafts/incoming/` in
+`origin/main`, without ZIP archives or outer archive hashes.  They were moved
+here in the quick intake phase and kept as separate manuscripts; the arrival
+commits remain their byte-level provenance.  Internal checksum ledgers were
+verified against the submitted bytes, then refreshed only where Git's
+repository policy had normalized CSV files from CRLF to LF.  Repository
+ledgers were added where the delivery was incomplete.  All delivered PDFs in
+this batch passed a structural `pdfinfo` read and were unencrypted; this was
+not a visual review, experiment replay, TeX rebuild, mathematical audit, or
+Lean verification.
+
+- [`Automatic_Scale_Factorizations_Rvachev_2026-08-30/`](Automatic_Scale_Factorizations_Rvachev_2026-08-30/)
+  contains the 22-page *Automatic Scale Factorizations of the Rvachev Law*
+  bundle from arrival commit `8a184546747082cbd92ad4675fb61981c6b8c3b6`.
+  Six CSV hashes were refreshed for LF storage, and the JSON summary received
+  its missing final newline; all 21 non-ledger payloads are covered.
+
+- [`Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30/`](Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30/)
+  contains the 31-page *Dyadic Radon Profiles in the Fabius--Rvachev Web*
+  bundle from `03b2f61889674f7d64ac86d3233236f5fa7ce660`.  Its 26-entry
+  ledger now records the repository-normalized bytes; nine CSV entries
+  changed only by CRLF-to-LF normalization.
+
+- [`Fabius_Pascal_Frontiers_Report/`](Fabius_Pascal_Frontiers_Report/)
+  contains the 27-page *Automatic Spectra, Exact Dyadic Cubature, and
+  Probabilistic Duals in the Pascal--Rvachev Hierarchy* bundle from
+  `8a184546747082cbd92ad4675fb61981c6b8c3b6`.  The delivery had no checksum
+  file, so the repository-generated `SHA256SUMS` covers all nine payloads.
+
+- [`fabius_holonomic_frontiers_report/`](fabius_holonomic_frontiers_report/)
+  contains the 30-page *Holonomic Rank, Exact Overlaps, and
+  Non-P-Recursiveness* bundle from
+  `6d6737530ec541196c506f95ec20a701a29872b3`.  Six CSV hashes in its
+  otherwise complete 26-entry ledger were refreshed for LF storage.
+
+- [`Fabius_Rvachev_Carleman_Frontiers_2026-08-30/`](Fabius_Rvachev_Carleman_Frontiers_2026-08-30/)
+  contains the 24-page *Critical Ultradifferentiable Geometry of the
+  Fabius--Rvachev System* bundle from
+  `92c9909242ed6a2ab51d68ed816d1aa2a5339719`.  Four CSV hashes in its
+  complete 21-entry ledger were refreshed for LF storage.
+
+- [`Dyadic_Spectral_Divisors_and_Gamma_Duality/`](Dyadic_Spectral_Divisors_and_Gamma_Duality/)
+  is the title-derived filing of the generic incoming wrapper
+  `Fabius_Rvachev_Frontier_Report-F/` from
+  `d4605275f58f648ebcdeb74bc2ef5e4983abb6f0`.  The submitted three-entry
+  ledger verifies exactly but is incomplete; the added
+  `ARRIVAL_SHA256SUMS` covers all twenty delivered files, including that
+  original ledger.
+
+These reports overlap one another and the consolidated spectra volume in
+zero-divisor arithmetic, Pascal/valuation profiles, derivative growth,
+Laguerre--Polya and Pólya-frequency structure, holonomicity, and
+non-P-recursiveness.  That claim-level comparison is intentionally deferred
+until after publication.  A theorem label, proof in prose, symbolic
+calculation, or numerical check in any manuscript does not imply that the
+claim has been proved in Lean.
+
+New standalone intake member:
 [`Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/`](Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/),
 *Reciprocal-Integer Convolution Divisors of the Rvachev Law* (35 A4 pp,
 2328 source lines; with a 352-line exact/numerical experiment),

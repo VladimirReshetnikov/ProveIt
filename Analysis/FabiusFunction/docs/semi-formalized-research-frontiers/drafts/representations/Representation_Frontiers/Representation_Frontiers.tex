@@ -1502,6 +1502,21 @@ definitions and exactly six public theorems:
 ring level; the normalized-polynomial and Jacobi-quotient results use fields.
 All six are finite algebra, with no measure, positivity, or convergence.
 
+The coherent-basis module \path{PolynomialMomentGramDeterminant.lean} has two
+public definitions, \path{polynomialCoefficientMatrix} and
+\path{polynomialMomentGramMatrix}, and seven public theorems: the two entry formulas,
+\path{polynomialMomentGramMatrix_eq_transpose_mul_hankel_mul},
+\path{polynomialMomentGramMatrix_det_eq_coefficient_det_sq_mul},
+\path{polynomialCoefficientMatrix_det_eq_prod_coeff},
+\path{polynomialMomentGramMatrix_det_eq_prod_coeff_sq_mul}, and
+\path{gramStieltjesJacobiSubdiagonal_eq_polynomialMomentGramMatrix_det_ratio}.
+Thus a degree-coherent family satisfies \(G_n=C_n^{\mathsf T}H_nC_n\), with determinant
+equal to the monomial Hankel determinant times the squared product of its diagonal
+coefficients, and nonzero diagonal coefficients transport the finite Jacobi cross-ratio.
+The coefficient matrix and entry formula are semiring-level; the Gram matrix and
+congruence are commutative-semiring-level; determinants are commutative-ring-level; and
+the quotient is field-level.
+
 The rational specialization \path{RvachevRationalJacobi.lean} has exactly four
 public definitions---\path{rvachevHankelDetRat},
 \path{rvachevOrthoPolynomialRat}, \path{rvachevOrthoNormRat}, and

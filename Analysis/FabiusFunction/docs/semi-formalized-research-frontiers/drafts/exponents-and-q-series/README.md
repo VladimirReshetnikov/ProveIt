@@ -2,6 +2,48 @@
 
 New standalone intake members:
 
+- [`fabius_q_frontiers_report/`](fabius_q_frontiers_report/),
+  the 23-page *Parameter-Flow, Gaussian, and Large-Deviation Frontiers for the
+  q-Fabius--Rvachev Family* bundle from direct-arrival commit
+  `8a184546747082cbd92ad4675fb61981c6b8c3b6`.  Its twenty non-ledger
+  payloads remain completely covered; four CSV hashes were refreshed after
+  repository CRLF-to-LF normalization.
+
+- [`Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/`](Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/)
+  is the title-derived filing of incoming wrapper
+  `Fabius_Rvachev_Frontier_Report_2026-08-30-G/` from
+  `52179f63fe955a64508915eedaa560de9f3056da`.  Its 29-page report and
+  supporting payload are completely described by the submitted manifest and
+  19-entry checksum ledger; three CSV hashes were refreshed for LF storage.
+
+- [`q_series_from_first_principles/`](q_series_from_first_principles/)
+  contains the 30-page *q-Series from First Principles* TeX/PDF pair from
+  `c167e550348bfb33b4297684100d55dfb48b8c1a`.  The repository-generated
+  `SHA256SUMS` records both delivered files.
+
+- [`q_series_monograph/`](q_series_monograph/) contains the source-only
+  *A Proof-Driven Guide to q-Series, Basic Hypergeometric Identities, Bailey
+  Chains, and Rogers--Ramanujan Theory* from
+  `1f0f98390d551725fc7d2274638dbd7de86ee346`.  Intake repaired one corrupt
+  control byte in the intended `\rho_2` command and added a one-entry
+  `SHA256SUMS`; no PDF or auxiliary package was delivered.
+
+- [`q-series-proof-oriented-article/`](q-series-proof-oriented-article/)
+  contains the 39-page *A Proof-Oriented Guide to q-Series* TeX/PDF pair from
+  `1360db6064c676f83bceb23bece5ed304dd09ce8`; the repository-generated
+  ledger covers both files.
+
+These five reports arrived as already-extracted tracked directories, not ZIP
+archives, so no outer archive hashes exist.  The eleven delivered PDFs
+contain 128 pages in total and are structurally readable and unencrypted.
+The parameter-flow and Edgeworth reports substantially overlap each other;
+the three general q-series guides also have parallel proof architectures and
+intersect the existing q-Pochhammer/q-binomial monograph.  They remain
+separate pending the required post-publication claim comparison.  This quick
+intake did not render pages, rebuild TeX, replay computations, validate the
+mathematics, or run Lean;
+manuscript theorem/proof labels do not establish Lean proof status.
+
 - [`inverse_q_analog_jet_atlas/`](inverse_q_analog_jet_atlas/),
   *An Inverse-Jet Atlas for q-Analogs: Multivariate Reversion, Singular
   Branches, and Asymptotics at q=0,1,-1, Roots of Unity, and q=±∞*
@@ -17,7 +59,8 @@ New standalone intake members:
   inverse-q reports in this group. It remains standalone pending
   post-publication comparison and deliberate consolidation, plus a Lean
   crosswalk; manuscript classifications and symbolic/numerical checks do not
-  establish Lean verification.
+  establish Lean verification. Its Libertinus/Type-1-only report is letter
+  paper rather than A4, so page-size normalization remains deferred.
 
 - [`inverse_q_analog_functions_report/`](inverse_q_analog_functions_report/),
   *Inverse Functions of q-Pochhammer Symbols, Gaussian Coefficients, and
@@ -35,7 +78,10 @@ New standalone intake members:
   PDFs are structurally readable and unencrypted (62 pages total). It remains
   standalone pending post-publication semantic comparison, deliberate
   consolidation, and a Lean crosswalk; manuscript classifications and
-  numerical evidence do not establish Lean verification.
+  numerical evidence do not establish Lean verification. The A4 main report
+  uses Libertinus but inherits six embedded/subset Type-3 rows from the three
+  vector figures (twelve Type-3 rows across all four PDFs); a Type-3-free
+  rebuild and refreshed checksums remain deferred.
 
 - [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](Cyclotomic_q_Fabius_Rvachev_Frontier/),
   *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
@@ -49,6 +95,9 @@ New standalone intake members:
   the consolidated q-series frontier. It remains standalone pending the
   required post-publication claim-level comparison and a Lean crosswalk;
   manuscript labels and numerical evidence do not establish Lean verification.
+  The submitted 25-page A4 report uses Latin Modern rather than the house
+  Libertinus face and retains nine embedded/subset Type-3 figure-font rows;
+  normalization is deferred so that the verified arrival payload stays intact.
 
 - [`inverse_q_analogs_extended_report/`](inverse_q_analogs_extended_report/),
   *Inverse q-Analogs in All Parameters* (104 pp), arrived on 2026-08-30 from
@@ -61,7 +110,9 @@ New standalone intake members:
   parameter recovery. It remains standalone pending post-publication
   comparison and deliberate consolidation with both inverse-q siblings, plus
   a Lean crosswalk; manuscript labels and numerical checks do not establish
-  Lean verification.
+  Lean verification. Its 104-page main report is letter paper and retains
+  twelve embedded/subset Type-3 figure-font rows; those are disclosed
+  post-intake normalization debts, not canonical rendering choices.
 
 - [`inverse_q_analogs_report-2/`](inverse_q_analogs_report-2/),
   *Inverse Functions of q-Pochhammer Symbols, Gaussian Coefficients, and
@@ -73,7 +124,9 @@ New standalone intake members:
   payload was already LF, and none matches the existing report byte-for-byte.
   It remains standalone pending post-publication semantic deduplication and a
   Lean crosswalk; manuscript classifications and numerical checks do not
-  establish Lean verification.
+  establish Lean verification. Its 59-page PDF is letter paper and uses Latin
+  Modern rather than Libertinus (with no Type-3 fonts), so page/font
+  normalization remains deferred.
 
 - [`Fabius_Rvachev_Frontier_Report/`](Fabius_Rvachev_Frontier_Report/),
 *Negative Parameters, Reciprocal Bases, and the Gaussian Boundary* (26 pp),

@@ -1,0 +1,2891 @@
+
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{newtxtext,newtxmath}
+\usepackage[final]{microtype}
+\usepackage{geometry}
+\geometry{letterpaper,margin=0.92in,headheight=14pt}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{url}
+\usepackage{needspace}
+
+\definecolor{linkblue}{RGB}{28,67,112}
+\definecolor{citegreen}{RGB}{35,92,66}
+\definecolor{shade}{RGB}{245,247,249}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=citegreen,
+  urlcolor=linkblue,
+  pdftitle={A Proof-Oriented Guide to q-Series},
+  pdfsubject={q-Pochhammer symbols, basic hypergeometric series, theta products, partitions, Bailey pairs, and Rogers-Ramanujan theory}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small A Proof-Oriented Guide to $q$-Series}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+\allowdisplaybreaks[2]
+\setlength{\parindent}{1.25em}
+\setlength{\parskip}{0.15em}
+\setlist{itemsep=0.25em,topsep=0.35em}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{identity}[theorem]{Identity}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\F}{\mathbb F}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\Res}{\operatorname*{Res}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\qbinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
+\newcommand{\Qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\J}{\mathcal J}
+\newcommand{\T}{\mathcal T}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\RR}{\mathcal R}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\defeq}{\mathrel{:=}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\DeclareMathOperator{\Li}{Li}
+
+\title{\bfseries A Proof-Oriented Guide to $q$-Series\\[0.35em]
+\large Shifted Factorials, Basic Hypergeometric Summation, Theta Products,\\
+Partitions, Bailey Pairs, and Rogers--Ramanujan Theory}
+\author{}
+\date{August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This article develops, from first principles, the network of ideas represented in the supplied source archive: $q$-Pochhammer symbols, Gaussian binomial coefficients, basic hypergeometric series, terminating and bilateral summations, Jacobi and Watson product identities, theta and eta functions, partition generating functions, sums of squares, Bailey pairs, the Rogers--Ramanujan identities and continued fraction, and the endpoint cases of the Andrews--Gordon identities. The emphasis is proof architecture. A small number of reusable mechanisms---coefficient recurrences, Euler telescoping, analytic continuation, lattice dissection, Jacobi's triple product, and Bailey's lemma---are proved carefully and then applied repeatedly.
+
+Every result designated as a theorem, proposition, lemma, corollary, or identity below is accompanied by a complete proof. The final source atlas records several additional Rogers--Ramanujan--Slater identities contained in the archive; those entries are explicitly presented as a bibliographic and computational map rather than as premises in the proved theorem sequence. This distinction keeps the logical status of every formula visible.
+\end{abstract}
+
+\begin{center}
+\fcolorbox{black!25}{shade}{\parbox{0.92\textwidth}{
+\textbf{Standing convention.} Unless a statement is explicitly finite or formal, $q\in\C$ and $0<|q|<1$. Parameters are assumed to avoid displayed denominator zeros. Equalities first proved in a domain of absolute convergence extend meromorphically wherever both sides are defined.
+}}
+\end{center}
+
+\tableofcontents
+\clearpage
+
+\section{Scope, convergence, and notation}
+
+The subject of $q$-series is held together by a simple tension. Finite identities are polynomial or rational algebra, but their most useful consequences arise after a limit turns them into analytic identities. It is therefore worth fixing the analytic rules before manipulating the symbols.
+
+\subsection{Infinite products}
+
+For a sequence $(u_j)_{j\ge0}$ with $\sum_j|u_j|<\infty$, the product $\prod_{j\ge0}(1+u_j)$ converges. It is nonzero exactly when no factor vanishes. Indeed, after omitting finitely many terms we may assume $|u_j|\le \frac12$; then
+\[
+ \log(1+u_j)=u_j+\bigO(|u_j|^2)
+\]
+for a consistently chosen local logarithm, so the logarithmic series converges absolutely up to a convergent correction. Applying this with $u_j=-a q^j$ proves local uniform convergence of the basic products used below.
+
+\begin{definition}[$q$-shifted factorial]
+For $n\in\N_0$ set
+\[
+ (a;q)_n\defeq\prod_{j=0}^{n-1}(1-aq^j),\qquad (a;q)_0=1,
+\]
+and set
+\[
+ (a;q)_\infty\defeq\prod_{j=0}^{\infty}(1-aq^j).
+\]
+Multiple parameters are abbreviated by
+\[
+ (a_1,\ldots,a_r;q)_n\defeq\prod_{j=1}^{r}(a_j;q)_n,
+\]
+with the same convention at $n=\infty$.
+\end{definition}
+
+Local uniform convergence in $a$ makes $(a;q)_\infty$ an entire function of $a$. Its zeros are the simple points $a=q^{-j}$, $j\ge0$. The identity
+\begin{equation}\label{eq:tail-factor}
+ (a;q)_\infty=(a;q)_n(aq^n;q)_\infty
+\end{equation}
+is immediate by splitting the product.
+
+For negative indices we require the shift law to remain valid.
+
+\begin{definition}[negative index]
+For $m\ge1$ define
+\[
+ (a;q)_{-m}\defeq\frac{1}{(aq^{-m};q)_m}.
+\]
+\end{definition}
+
+\begin{lemma}[shift, reversal, and negative-index formulas]\label{lem:pochhammer-calculus}
+For integers for which the expressions are defined,
+\begin{align}
+ (a;q)_{m+n}&=(a;q)_m(aq^m;q)_n,\label{eq:shift-law}\\
+ (a;q)_n&=(-a)^nq^{\binom n2}(q^{1-n}/a;q)_n,\label{eq:reversal-law}\\
+ (a;q)_{-n}&=\frac{(-q/a)^nq^{\binom n2}}{(q/a;q)_n}\qquad(n\ge0).\label{eq:negative-law}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+For nonnegative $m,n$, \eqref{eq:shift-law} is obtained by splitting the factors with indices $0,\ldots,m+n-1$ at $m$; the negative-index definition is exactly the unique extension preserving the same law. For \eqref{eq:reversal-law}, factor $-aq^j$ from each term:
+\[
+ \prod_{j=0}^{n-1}(1-aq^j)
+ =(-a)^nq^{0+1+\cdots+(n-1)}
+   \prod_{j=0}^{n-1}(1-a^{-1}q^{-j}).
+\]
+Reversing the last product gives $(q^{1-n}/a;q)_n$. Finally,
+\[
+ (aq^{-n};q)_n=(-a)^nq^{-n(n+1)/2}(q/a;q)_n,
+\]
+so inversion yields \eqref{eq:negative-law}.
+\end{proof}
+
+\subsection{Formal versus analytic identities}
+
+An identity between formal power series in $q$ means equality coefficient by coefficient; for any fixed coefficient, only finitely many factors or summands contribute. This interpretation is particularly convenient for partition generating functions. Analytically, all rearrangements below are justified either by finiteness or by absolute convergence. A recurring estimate is
+\[
+ |(a;q)_n|\le \prod_{j\ge0}(1+|a||q|^j),\qquad
+ |(q;q)_n|\ge \prod_{j\ge1}(1-|q|^j)>0,
+\]
+which gives uniform bounds in $n$ when $a$ ranges over a compact set.
+
+\section{Gaussian binomial coefficients}
+
+\begin{definition}
+For integers $n\ge0$ and $k\in\Z$, define
+\[
+ \qbinom nk\defeq
+ \begin{cases}
+ \dfrac{(q;q)_n}{(q;q)_k(q;q)_{n-k}},&0\le k\le n,\\[0.8em]
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+\end{definition}
+
+Despite the quotient notation, $\qbinom nk$ is a polynomial in $q$ with nonnegative integer coefficients. This will follow both algebraically and combinatorially.
+
+\begin{proposition}[Pascal recurrences and symmetry]\label{prop:q-pascal}
+For $n\ge1$,
+\begin{align}
+ \qbinom nk&=\qbinom{n-1}k+q^{n-k}\qbinom{n-1}{k-1},\label{eq:qpascal1}\\
+ \qbinom nk&=q^k\qbinom{n-1}k+\qbinom{n-1}{k-1},\label{eq:qpascal2}\\
+ \qbinom nk&=\qbinom n{n-k}.\label{eq:q-symmetry}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Symmetry is immediate from the definition. For \eqref{eq:qpascal1}, put the two terms over the common denominator $(q;q)_k(q;q)_{n-k}$:
+\begin{align*}
+ \qbinom{n-1}k+q^{n-k}\qbinom{n-1}{k-1}
+ &=\frac{(q;q)_{n-1}}{(q;q)_k(q;q)_{n-k}}
+   \bigl((1-q^{n-k})+q^{n-k}(1-q^k)\bigr)\\
+ &=\frac{(q;q)_{n-1}(1-q^n)}{(q;q)_k(q;q)_{n-k}}
+ =\qbinom nk.
+\end{align*}
+Equation \eqref{eq:qpascal2} follows from \eqref{eq:qpascal1} by replacing $k$ with $n-k$ and using symmetry.
+\end{proof}
+
+\begin{theorem}[finite $q$-binomial theorem]\label{thm:finite-q-binomial}
+For $n\ge0$,
+\begin{equation}\label{eq:finite-q-binomial}
+ (z;q)_n=\sum_{k=0}^{n}(-1)^kq^{\binom k2}\qbinom nk z^k.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:finite-plus-binomial}
+ \prod_{j=0}^{n-1}(1+zq^j)=
+ \sum_{k=0}^{n}q^{\binom k2}\qbinom nk z^k.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+We induct on $n$. The case $n=0$ is $1=1$. Multiplying the induction hypothesis by $1-zq^n$, the coefficient of $z^k$ becomes
+\begin{align*}
+ (-1)^kq^{\binom k2}\qbinom nk
+ +(-1)^kq^nq^{\binom{k-1}2}\qbinom n{k-1}
+ &=(-1)^kq^{\binom k2}
+   \left(\qbinom nk+q^{n+1-k}\qbinom n{k-1}\right)\\
+ &=(-1)^kq^{\binom k2}\qbinom{n+1}k
+\end{align*}
+by \eqref{eq:qpascal1}. This proves \eqref{eq:finite-q-binomial}; replacing $z$ by $-z$ gives \eqref{eq:finite-plus-binomial}.
+\end{proof}
+
+\begin{theorem}[reciprocal finite $q$-binomial theorem]\label{thm:reciprocal-finite}
+For $n\ge0$ and $|z|<1$,
+\begin{equation}\label{eq:reciprocal-finite}
+ \frac{1}{(z;q)_{n+1}}=
+ \sum_{k=0}^{\infty}\qbinom{n+k}{k}z^k.
+\end{equation}
+The equality also holds formally in $z$.
+\end{theorem}
+
+\begin{proof}
+Let $F_n(z)$ denote the series on the right. From \eqref{eq:qpascal2},
+\begin{align*}
+ F_n(z)
+ &=\sum_{k\ge0}\left(q^k\qbinom{n+k-1}{k}
+      +\qbinom{n+k-1}{k-1}\right)z^k\\
+ &=F_{n-1}(qz)+zF_n(z).
+\end{align*}
+Thus $(1-z)F_n(z)=F_{n-1}(qz)$. Since $F_0(z)=\sum_{k\ge0}z^k=(1-z)^{-1}$, induction gives
+\[
+ F_n(z)=\frac{1}{(1-z)(1-qz)\cdots(1-q^nz)}.
+\]
+\end{proof}
+
+\begin{theorem}[$q$-Vandermonde convolution]\label{thm:q-vandermonde}
+For nonnegative integers $m,n,r$,
+\begin{equation}\label{eq:q-vandermonde}
+ \Qbinom{m+n}{r}{q}
+ =\sum_{k\in\Z}q^{k(m-r+k)}
+   \Qbinom{m}{r-k}{q}\Qbinom nkq.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:q-vandermonde-alt}
+ \Qbinom{m+n}{r}{q}
+ =\sum_{k\in\Z}q^{(m-k)(r-k)}
+   \Qbinom mkq\Qbinom n{r-k}q.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Expand the same product in two ways. By \eqref{eq:finite-plus-binomial},
+\[
+ \prod_{j=0}^{m+n-1}(1+zq^j)
+ =\sum_r q^{\binom r2}\Qbinom{m+n}{r}{q}z^r.
+\]
+Split the product after $m$ factors. The second block is
+\[
+ \prod_{j=m}^{m+n-1}(1+zq^j)
+ =\sum_k q^{\binom k2+mk}\Qbinom nkq z^k.
+\]
+The coefficient of $z^r$ in the product of the two blocks is therefore
+\[
+ \sum_k q^{\binom{r-k}2+\binom k2+mk}
+ \Qbinom m{r-k}q\Qbinom nkq.
+\]
+Dividing by $q^{\binom r2}$ gives \eqref{eq:q-vandermonde}, because
+\[
+ \binom{r-k}{2}+\binom{k}{2}+mk-\binom r2=k(m-r+k).
+\]
+The alternate form follows by replacing $k$ with $r-k$ and interchanging the two blocks.
+\end{proof}
+
+\begin{proposition}[partitions in a rectangle]\label{prop:rectangle}
+The coefficient of $q^N$ in $\Qbinom{m+n}{m}{q}$ is the number of partitions of $N$ whose Ferrers diagram fits in an $m\times n$ rectangle.
+\end{proposition}
+
+\begin{proof}
+Let $P_{m,n}(q)$ be the generating polynomial for such diagrams. Separate diagrams according as the bottom row has length $n$. Those without a full bottom row fit in an $m\times(n-1)$ rectangle; after deleting a full bottom row from the others, one obtains a diagram in an $(m-1)\times n$ rectangle and removes weight $n$. Hence
+\[
+ P_{m,n}=P_{m,n-1}+q^nP_{m-1,n},
+ \qquad P_{0,n}=P_{m,0}=1.
+\]
+The polynomial $\Qbinom{m+n}{m}{q}$ satisfies the same recurrence by \eqref{eq:qpascal1}, with the same boundary values. Induction on $m+n$ proves equality.
+\end{proof}
+
+\section{The infinite q-binomial theorem and Euler's expansions}
+
+\begin{theorem}[infinite $q$-binomial theorem]\label{thm:q-binomial}
+For $|z|<1$,
+\begin{equation}\label{eq:q-binomial}
+ \sum_{n=0}^{\infty}\frac{(a;q)_n}{(q;q)_n}z^n
+ =\frac{(az;q)_\infty}{(z;q)_\infty}.
+\end{equation}
+The convergence is locally uniform in $(a,z)$ on compact subsets of $\C\times\{|z|<1\}$.
+\end{theorem}
+
+\begin{proof}
+Write
+\[
+ F(z)=\sum_{n\ge0}c_nz^n,
+ \qquad c_n=\frac{(a;q)_n}{(q;q)_n}.
+\]
+The coefficient relation
+\[
+ (1-q^n)c_n=(1-aq^{n-1})c_{n-1}\qquad(n\ge1)
+\]
+is equivalent to the functional equation
+\begin{equation}\label{eq:qbin-functional}
+ (1-z)F(z)=(1-az)F(qz),\qquad F(0)=1.
+\end{equation}
+Conversely, comparison of coefficients in \eqref{eq:qbin-functional} determines every $c_n$ from $c_0$, so the analytic solution is unique. The product
+\[
+ P(z)=\frac{(az;q)_\infty}{(z;q)_\infty}
+\]
+satisfies the same equation, because
+\[
+ P(qz)=\frac{(aqz;q)_\infty}{(qz;q)_\infty}
+ =\frac{1-z}{1-az}P(z),
+\]
+and $P(0)=1$. Thus $F=P$. Local uniform convergence of the series follows from the ratio test uniformly on compact subsets of $|z|<1$.
+\end{proof}
+
+\begin{corollary}[Euler's two expansions]\label{cor:euler-expansions}
+For $|z|<1$,
+\begin{align}
+ \frac1{(z;q)_\infty}&=\sum_{n=0}^{\infty}\frac{z^n}{(q;q)_n},\label{eq:euler-first}\\
+ (z;q)_\infty&=\sum_{n=0}^{\infty}
+ \frac{(-1)^nq^{\binom n2}}{(q;q)_n}z^n.\label{eq:euler-second}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+Set $a=0$ in \eqref{eq:q-binomial} to obtain \eqref{eq:euler-first}. Next replace $z$ in \eqref{eq:q-binomial} by $z/a$ and let $a\to\infty$. For fixed $n$, the reversal formula gives
+\[
+ (a;q)_n(z/a)^n\longrightarrow(-1)^nq^{\binom n2}z^n,
+\]
+while the product side tends to $(z;q)_\infty$. The passage to the limit is locally uniform for $z$ in a fixed disk: after $|a|$ is large, the summands are bounded by a constant times $|z|^n|q|^{\binom n2}/|(q;q)_n|$, a summable majorant. This proves \eqref{eq:euler-second}.
+\end{proof}
+
+\begin{corollary}[a useful logarithmic expansion]\label{cor:log-pochhammer}
+If $|a|<1$, then
+\begin{equation}\label{eq:log-pochhammer}
+ \log(a;q)_\infty=-\sum_{m=1}^{\infty}\frac{a^m}{m(1-q^m)}.
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:log-derivative}
+ a\frac{\partial}{\partial a}\log(a;q)_\infty
+ =-\sum_{m=1}^{\infty}\frac{a^m}{1-q^m}
+ =-\sum_{j=0}^{\infty}\frac{aq^j}{1-aq^j}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Use $\log(1-w)=-\sum_{m\ge1}w^m/m$ and absolute convergence to interchange the two sums:
+\[
+ \sum_{j\ge0}\log(1-aq^j)
+ =-\sum_{j\ge0}\sum_{m\ge1}\frac{a^mq^{jm}}m
+ =-\sum_{m\ge1}\frac{a^m}{m(1-q^m)}.
+\]
+Termwise differentiation is justified on compact subsets of $|a|<1$. Expanding $(1-aq^j)^{-1}$ as a geometric series gives the second form.
+\end{proof}
+
+\section{Basic hypergeometric series}
+
+\begin{definition}
+The basic hypergeometric series is
+\begin{equation}\label{eq:rphis-def}
+ {}_r\phi_s\!\left[
+ \begin{matrix}a_1,\ldots,a_r\\ b_1,\ldots,b_s\end{matrix};q,z\right]
+ =\sum_{n=0}^{\infty}
+ \frac{(a_1,\ldots,a_r;q)_n}{(q,b_1,\ldots,b_s;q)_n}
+ \left((-1)^nq^{\binom n2}\right)^{1+s-r}z^n.
+\end{equation}
+A factor $q^{-N}$ among the numerator parameters terminates the series at $n=N$.
+\end{definition}
+
+For ${}_2\phi_1$ and ${}_3\phi_2$ the extra power in \eqref{eq:rphis-def} is $1$, so their terms have the same shape as classical hypergeometric terms with rising factorials replaced by $q$-shifted factorials.
+
+\begin{theorem}[Heine's transformation]\label{thm:heine}
+Initially for $|b|<1$ and $|z|<1$,
+\begin{equation}\label{eq:heine}
+ {}_2\phi_1\!\left[\begin{matrix}a,b\\c\end{matrix};q,z\right]
+ =\frac{(b,az;q)_\infty}{(c,z;q)_\infty}
+ {}_2\phi_1\!\left[\begin{matrix}c/b,z\\az\end{matrix};q,b\right].
+\end{equation}
+The identity then extends meromorphically in the parameters.
+\end{theorem}
+
+\begin{proof}
+From \eqref{eq:tail-factor},
+\[
+ \frac{(b;q)_n}{(c;q)_n}
+ =\frac{(b;q)_\infty}{(c;q)_\infty}
+  \frac{(cq^n;q)_\infty}{(bq^n;q)_\infty}.
+\]
+Apply the $q$-binomial theorem to the last ratio:
+\[
+ \frac{(cq^n;q)_\infty}{(bq^n;q)_\infty}
+ =\sum_{m\ge0}\frac{(c/b;q)_m}{(q;q)_m}(bq^n)^m.
+\]
+Absolute convergence for $|b|,|z|<1$ permits interchange of summation. Hence
+\begin{align*}
+ {}_2\phi_1\!\left[\begin{matrix}a,b\\c\end{matrix};q,z\right]
+ &=\frac{(b;q)_\infty}{(c;q)_\infty}
+ \sum_{m\ge0}\frac{(c/b;q)_m}{(q;q)_m}b^m
+ \sum_{n\ge0}\frac{(a;q)_n}{(q;q)_n}(zq^m)^n\\
+ &=\frac{(b;q)_\infty}{(c;q)_\infty}
+ \sum_{m\ge0}\frac{(c/b;q)_m}{(q;q)_m}b^m
+ \frac{(azq^m;q)_\infty}{(zq^m;q)_\infty}\\
+ &=\frac{(b,az;q)_\infty}{(c,z;q)_\infty}
+ \sum_{m\ge0}\frac{(c/b,z;q)_m}{(q,az;q)_m}b^m,
+\end{align*}
+which is \eqref{eq:heine}. Both sides are meromorphic functions of the parameters, so analytic continuation gives the stated extension.
+\end{proof}
+
+\begin{theorem}[$q$-Gauss summation]\label{thm:q-gauss}
+If $|c/(ab)|<1$, then
+\begin{equation}\label{eq:q-gauss}
+ {}_2\phi_1\!\left[\begin{matrix}a,b\\c\end{matrix};q,\frac{c}{ab}\right]
+ =\frac{(c/a,c/b;q)_\infty}{(c,c/(ab);q)_\infty}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Put $z=c/(ab)$ in Heine's transformation. Since $az=c/b$, one numerator parameter on the transformed series cancels its denominator parameter, leaving
+\[
+ \sum_{n\ge0}\frac{(z;q)_n}{(q;q)_n}b^n
+ =\frac{(bz;q)_\infty}{(b;q)_\infty}
+ =\frac{(c/a;q)_\infty}{(b;q)_\infty}
+\]
+by the $q$-binomial theorem. Multiplication by Heine's prefactor yields \eqref{eq:q-gauss}.
+\end{proof}
+
+\begin{corollary}[$q$-Chu--Vandermonde]\label{cor:q-chu}
+For $N\in\N_0$,
+\begin{equation}\label{eq:q-chu}
+ {}_2\phi_1\!\left[\begin{matrix}q^{-N},a\\c\end{matrix};q,
+ \frac{cq^N}{a}\right]
+ =\frac{(c/a;q)_N}{(c;q)_N}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Take $b=q^{-N}$ in \eqref{eq:q-gauss}. The series terminates, so no convergence restriction on its argument is needed. The product quotient reduces by \eqref{eq:tail-factor}:
+\[
+ \frac{(c/a,cq^N;q)_\infty}{(c,cq^N/a;q)_\infty}
+ =\frac{(c/a;q)_N}{(c;q)_N}.
+\]
+\end{proof}
+
+\begin{remark}[the classical limit]
+If $q\to1^-$ and parameters are written as $a=q^\alpha$, then
+\[
+ \frac{(q^\alpha;q)_n}{(1-q)^n}\longrightarrow(\alpha)_n,
+\]
+where the expression on the right is the ordinary rising factorial. With the appropriate balancing of arguments, the preceding identities therefore tend to their classical binomial, Gauss, and Chu--Vandermonde analogues. The limit follows factor by factor from
+$1-q^{\alpha+j}\sim(1-q)(\alpha+j)$.
+\end{remark}
+
+
+\section{Euler telescoping and terminating balanced sums}
+
+The finite summations in the archive can be proved without guessing an antiderivative term by term. Euler's elementary product identity packages the antiderivative into two multiplicative sequences.
+
+\begin{lemma}[Euler's telescoping lemma]\label{lem:euler-telescoping}
+Let $u_k,v_k,w_k$ be sequences satisfying $w_k=u_k-v_k$, and assume the denominators below are nonzero. Then
+\begin{equation}\label{eq:euler-telescoping}
+ \sum_{k=0}^{N}\frac{w_k}{w_0}
+ \frac{u_0u_1\cdots u_{k-1}}{v_1v_2\cdots v_k}
+ =\frac{u_0}{w_0}
+ \left(
+ \frac{u_1u_2\cdots u_N}{v_1v_2\cdots v_N}
+ -\frac{v_0}{u_0}
+ \right).
+\end{equation}
+Empty products are $1$.
+\end{lemma}
+
+\begin{proof}
+For $k\ge1$,
+\begin{align*}
+ \frac{w_k}{w_0}\frac{u_0\cdots u_{k-1}}{v_1\cdots v_k}
+ &=\frac{u_0}{w_0}
+ \left(\frac{u_1\cdots u_k}{v_1\cdots v_k}
+       -\frac{u_1\cdots u_{k-1}}{v_1\cdots v_{k-1}}\right).
+\end{align*}
+The $k=0$ term is
+\[
+ 1=\frac{u_0}{w_0}\left(1-\frac{v_0}{u_0}\right).
+\]
+Summing telescopes to \eqref{eq:euler-telescoping}.
+\end{proof}
+
+\subsection{The q-Pfaff--Saalsch\"utz sum}
+
+\begin{lemma}[the elementary cubic certificate]\label{lem:pfaff-certificate}
+For nonzero parameters and integers $n,k$, put $Q=q^n$ and $X=q^k$. Then
+\begin{align}
+ &(1-cQ)\left(1-\frac{abX}{cQ}\right)
+ \left(1-\frac1{qQ}\right)\frac{cQ}{ab}
+ +\left(1-\frac{cQ}{a}\right)
+  \left(1-\frac{cQ}{b}\right)
+  \left(1-\frac{X}{qQ}\right)\notag\\
+ &\quad=(1-cQ)\left(1-\frac{c}{abq}\right)(1-X)
+ +\frac{cQ}{ab}(1-a)(1-b)
+  \left(1-\frac{X}{qQ}\right).
+\label{eq:pfaff-certificate}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+Both sides are affine polynomials in $X$. After putting them over the common denominator $abq$, their constant coefficients are, on both sides,
+\[
+ \frac{-Qacq-Qbcq+Qc^2+Qcq+abq-c}{abq},
+\]
+and their coefficients of $X$ are, on both sides,
+\[
+ \frac{Qabcq-Qc^2-abc-abq+ac+bc}{abq}.
+\]
+Thus the two affine polynomials agree identically.
+\end{proof}
+
+\begin{theorem}[$q$-Pfaff--Saalsch\"utz]\label{thm:q-pfaff}
+For $N\in\N_0$,
+\begin{equation}\label{eq:q-pfaff}
+ {}_3\phi_2\!\left[
+ \begin{matrix}a,b,q^{-N}\\c,abq^{1-N}/c\end{matrix};q,q\right]
+ =\frac{(c/a,c/b;q)_N}{(c,c/(ab);q)_N}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Divide the summand by the right-hand side and define, for $0\le k\le n$,
+\begin{equation}\label{eq:pfaff-F}
+ F(n,k)=
+ \frac{(c,c/(ab);q)_n}{(c/a,c/b;q)_n}
+ \frac{(a,b,q^{-n};q)_k}{(q,c,abq^{1-n}/c;q)_k}q^k,
+\end{equation}
+and put $F(n,k)=0$ outside this range. We prove that
+$\sum_kF(n,k)$ is independent of $n$.
+
+Fix $n$ and define
+\begin{align*}
+ u_k&=(1-aq^k)(1-bq^k)(1-q^{-n-1+k}),\\
+ v_k&=(1-cq^{k-1})(1-abq^{-n+k}/c)(1-q^k),\\
+ w_k&=u_k-v_k.
+\end{align*}
+Using \cref{lem:pfaff-certificate}, with $Q=q^n$ and $X=q^k$, one obtains
+\begin{align}
+ w_k&=\frac{abq^{-n+k}}{c}
+ \left[
+ (1-cq^n)\left(1-\frac{c}{abq}\right)(1-q^k)
+ +\frac{cq^n}{ab}(1-a)(1-b)(1-q^{-n+k-1})
+ \right],\label{eq:pfaff-wk}\\
+ w_0&=(1-a)(1-b)(1-q^{-n-1}).\label{eq:pfaff-w0}
+\end{align}
+A direct use of $(x;q)_{m+1}=(1-xq^m)(x;q)_m$ in \eqref{eq:pfaff-F}, followed by \eqref{eq:pfaff-certificate}, gives
+\begin{align}
+ F(n+1,k)-F(n,k)
+ &=C_n\frac{w_k}{w_0}
+   \frac{u_0u_1\cdots u_{k-1}}{v_1v_2\cdots v_k},
+ \label{eq:pfaff-difference}\\
+ C_n&=-\frac{c(1-a)(1-b)q^n(c,c/(ab);q)_n}
+ {ab(c/a,c/b;q)_{n+1}}.
+\end{align}
+For completeness, the product quotient in \eqref{eq:pfaff-difference} is
+\[
+ \frac{(a,b,q^{-n-1};q)_k}
+ {(c,abq^{1-n}/c,q;q)_k};
+\]
+substitution of \eqref{eq:pfaff-wk} reduces \eqref{eq:pfaff-difference} exactly to the difference of the two expressions \eqref{eq:pfaff-F}. Thus no summation identity has been used in obtaining the certificate.
+
+Now $u_{n+1}=0$ and $v_0=0$. Euler's lemma with upper index $n+1$ therefore gives
+\[
+ \sum_{k=0}^{n+1}\frac{w_k}{w_0}
+ \frac{u_0\cdots u_{k-1}}{v_1\cdots v_k}=0.
+\]
+After summing \eqref{eq:pfaff-difference} over $k$, we get
+\[
+ \sum_kF(n+1,k)=\sum_kF(n,k).
+\]
+At $n=0$, only $k=0$ occurs and $F(0,0)=1$. Hence the normalized sum is $1$ for every $n$, which is exactly \eqref{eq:q-pfaff}.
+\end{proof}
+
+\subsection{Jackson's terminating very-well-poised sum}
+
+The next identity is often written as a terminating balanced very-well-poised ${}_8\phi_7$ sum. We give the expanded form because it displays the factor that makes the series very well poised.
+
+\begin{lemma}[Jackson's rational certificate]\label{lem:jackson-rational}
+For indeterminates $A,B,C,D,E,F$ for which the displayed rational functions are defined,
+\begingroup
+\small
+\begin{align}
+&1-
+ \frac{(1-B)(1-C)(1-D)(1-E)(1-F)(1-A^3/(BCDEF))}
+ {(1-A/B)(1-A/C)(1-A/D)(1-A/E)(1-A/F)(1-BCDEF/A^2)}
+ \notag\\
+&=\frac{(1-A)(1-D)(1-A^2/(BCDE))(1-A^2/(BCDF))
+ (1-A^2/(BDEF))(1-A^2/(CDEF))}
+ {(1-A/B)(1-A/C)(1-A/E)(1-A/F)
+ (1-A^2/(BCDEF))(1-A^3/(BCD^2EF))}
+ \notag\\
+&\quad\times\left[
+ 1-
+ \frac{(1-A/(BD))(1-A/(CD))(1-A/(DE))(1-A/(DF))
+ (1-A^2/(BCDEF))(1-A^3/(BCDEF))}
+ {(1-1/D)(1-A/D)(1-A^2/(BCDE))(1-A^2/(BCDF))
+ (1-A^2/(BDEF))(1-A^2/(CDEF))}
+ \right].
+\label{eq:jackson-rational}
+\end{align}
+\endgroup
+\end{lemma}
+
+\begin{proof}
+This is a rational identity, so it suffices to clear the product of all displayed denominator factors. After doing so, expand each factor as $1$ minus its monomial. Terms may be grouped by the exponent of $F^{-1}$; the coefficients of $F^0,F^{-1},F^{-2}$ on the two sides agree separately. More explicitly, after multiplying additionally by $A^6B^2C^2D^4E^2F^2$ to remove negative exponents, subtraction of the right-hand side from the left-hand side has every monomial coefficient equal to zero. This finite coefficient check proves the identity over the polynomial ring
+$\Z[A,B,C,D,E,F]$, and division by the common denominator proves
+\eqref{eq:jackson-rational} wherever defined. Appendix~\ref{app:certificate} gives a literal symbolic verification of the same clearing-denominators argument.
+\end{proof}
+
+\begin{theorem}[Jackson's terminating ${}_8\phi_7$ summation]\label{thm:jackson-8phi7}
+For $N\in\N_0$,
+\begin{align}
+&\sum_{k=0}^{N}
+ \frac{1-aq^{2k}}{1-a}
+ \frac{(a,b,c,d,a^2q^{N+1}/(bcd),q^{-N};q)_k}
+ {(q,aq/b,aq/c,aq/d,bcdq^{-N}/a,aq^{N+1};q)_k}q^k
+ \notag\\
+&\qquad=
+ \frac{(aq,aq/(bc),aq/(bd),aq/(cd);q)_N}
+ {(aq/b,aq/c,aq/d,aq/(bcd);q)_N}.
+\label{eq:jackson-8phi7}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Let $F(n,k)$ be the $k$th summand divided by the product on the right of \eqref{eq:jackson-8phi7}; explicitly,
+\begin{align*}
+ F(n,k)&=
+ \frac{(aq/b,aq/c,aq/d,aq/(bcd);q)_n}
+ {(aq,aq/(bc),aq/(bd),aq/(cd);q)_n}
+ \frac{1-aq^{2k}}{1-a}q^k\\
+ &\quad\times
+ \frac{(a,b,c,d,a^2q^{n+1}/(bcd),q^{-n};q)_k}
+ {(q,aq/b,aq/c,aq/d,bcdq^{-n}/a,aq^{n+1};q)_k}.
+\end{align*}
+As before, extend it by zero outside $0\le k\le n$. Define
+\begin{align*}
+ u_k={}&(1-aq^k)(1-bq^k)(1-cq^k)(1-dq^k)
+ \left(1-\frac{a^2q^{n+k+1}}{bcd}\right)(1-q^{-n-1+k}),\\
+ v_k={}&\left(1-\frac{aq^k}{b}\right)
+ \left(1-\frac{aq^k}{c}\right)
+ \left(1-\frac{aq^k}{d}\right)
+ \left(1-\frac{bcdq^{-n+k-1}}a\right)
+ (1-aq^{n+k+1})(1-q^k),\\
+ w_k={}&u_k-v_k.
+\end{align*}
+Then $u_{n+1}=0$, $v_0=0$, and
+\[
+ w_0=(1-a)(1-b)(1-c)(1-d)
+ \left(1-\frac{a^2q^{n+1}}{bcd}\right)(1-q^{-n-1}).
+\]
+Apply \cref{lem:jackson-rational} with
+\[
+ A=aq^{2k},\quad B=\frac{aq^k}{b},\quad
+ C=\frac{aq^k}{c},\quad D=aq^{n+k+1},\quad
+ E=\frac{aq^k}{d},\quad F=q^k.
+\]
+After cancellation it yields
+\begin{align}
+ w_k={}&\frac{1-aq^{2k}}{1-a^2q^{2n+2}/(bcd)}
+ \frac{q^k}{aq^{n+1}}\,\mathcal B_{n,k},\label{eq:jackson-w}\\
+\mathcal B_{n,k}={}&
+ (1-q^{-n-1})(1-aq^{n+1}/b)(1-aq^{n+1}/c)(1-aq^{n+1}/d)
+ \notag\\
+&\times(1-bcdq^{-n+k-1}/a)(1-a^2q^{n+k+1}/(bcd))
+ \frac{aq^{n+1}}{bcd}\notag\\
+&+(1-q^{-n+k-1})(1-aq^{n+k+1})
+ (1-aq^{n+1}/(bc))(1-aq^{n+1}/(bd))\notag\\
+&\times(1-aq^{n+1}/(cd))(1-a^2q^{n+1}/(bcd)).
+\label{eq:jackson-B}
+\end{align}
+On the other hand, taking the ratio of successive shifted factorials in the explicit definition of $F$ gives
+\begin{equation}\label{eq:jackson-difference}
+ F(n+1,k)-F(n,k)
+ =D_n\frac{w_k}{w_0}
+ \frac{u_0u_1\cdots u_{k-1}}{v_1v_2\cdots v_k},
+\end{equation}
+where
+\begin{align*}
+D_n={}&
+ \frac{(aq/b,aq/c,aq/d,aq/(bcd);q)_n}
+ {(aq,aq/(bc),aq/(bd),aq/(cd);q)_{n+1}}\\
+&\times\bigl[-aq^{n+1}(1-b)(1-c)(1-d)
+ (1-a^2q^{2n+2}/(bcd))\bigr].
+\end{align*}
+To verify \eqref{eq:jackson-difference}, expand the product quotient into shifted factorials and substitute \eqref{eq:jackson-w}--\eqref{eq:jackson-B}; the two summands in $\mathcal B_{n,k}$ are precisely the two terms produced by $F(n+1,k)-F(n,k)$. Thus \eqref{eq:jackson-difference} is an explicit finite algebraic certificate.
+
+Euler's telescoping lemma now gives
+\[
+ \sum_{k=0}^{n+1}\frac{w_k}{w_0}
+ \frac{u_0\cdots u_{k-1}}{v_1\cdots v_k}=0
+\]
+because $u_{n+1}=v_0=0$. Summing \eqref{eq:jackson-difference} shows that $\sum_kF(n,k)$ is constant in $n$. It equals $1$ at $n=0$, proving \eqref{eq:jackson-8phi7}.
+\end{proof}
+
+\begin{corollary}[terminating very-well-poised ${}_6\phi_5$]\label{cor:terminating-6phi5}
+For $N\in\N_0$,
+\begin{align}
+&\sum_{k=0}^{N}\frac{1-aq^{2k}}{1-a}
+ \frac{(a,b,c,q^{-N};q)_k}
+ {(q,aq/b,aq/c,aq^{N+1};q)_k}
+ \left(\frac{aq^{N+1}}{bc}\right)^k\notag\\
+&\qquad=\frac{(aq,aq/(bc);q)_N}{(aq/b,aq/c;q)_N}.
+\label{eq:terminating-6phi5}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+Let $d\to\infty$ in \eqref{eq:jackson-8phi7}. For fixed $k$,
+\[
+ \frac{(d;q)_k}{(aq/d;q)_k}d^{-k}
+ \longrightarrow(-1)^kq^{\binom k2},
+\]
+and the factors containing $a^2q^{N+1}/(bcd)$ tend to $1$, whereas
+\[
+ (bcdq^{-N}/a;q)_k^{-1}d^k
+ \longrightarrow
+ \frac{(-a)^kq^{Nk-\binom k2}}{(bc)^k}.
+\]
+Their product, together with the explicit $q^k$, tends to
+$(aq^{N+1}/(bc))^k$. The finite sum permits termwise passage to the limit; the product side has the stated limit.
+\end{proof}
+
+\section{Bilateral summation: Ramanujan's 1-psi-1 sum}
+
+\begin{definition}
+For an integer $n$, use the negative-index definition of shifted factorials and set
+\[
+ {}_1\psi_1\!\left[\begin{matrix}a\\b\end{matrix};q,z\right]
+ =\sum_{n\in\Z}\frac{(a;q)_n}{(b;q)_n}z^n.
+\]
+The negative tail has the useful form
+\begin{equation}\label{eq:negative-tail}
+ \frac{(a;q)_{-m}}{(b;q)_{-m}}z^{-m}
+ =\left(\frac ba\right)^m
+ \frac{(q/b;q)_m}{(q/a;q)_m}z^{-m}
+ \qquad(m\ge1).
+\end{equation}
+Thus the bilateral series converges absolutely in the annulus
+$|b/a|<|z|<1$.
+\end{definition}
+
+\begin{theorem}[Ramanujan's ${}_1\psi_1$ summation]\label{thm:1psi1}
+If $|b/a|<|z|<1$, then
+\begin{equation}\label{eq:1psi1}
+ \sum_{n\in\Z}\frac{(a;q)_n}{(b;q)_n}z^n
+ =\frac{(q,b/a,az,q/(az);q)_\infty}
+ {(b,q/a,z,b/(az);q)_\infty}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+We first prove the identity at the infinite sequence $b=q^{K+1}$, $K\in\N_0$. In that case the terms with $n<-K$ vanish. Put $n=j-K$ and use the shift law:
+\begin{align*}
+ \sum_{n\in\Z}\frac{(a;q)_n}{(q^{K+1};q)_n}z^n
+ &=z^{-K}\frac{(a;q)_{-K}}{(q^{K+1};q)_{-K}}
+ \sum_{j\ge0}\frac{(aq^{-K};q)_j}{(q;q)_j}z^j\\
+ &=z^{-K}\frac{(q;q)_K}{(aq^{-K};q)_K}
+ \frac{(azq^{-K};q)_\infty}{(z;q)_\infty}.
+\end{align*}
+The finite reversal formulas
+\begin{align*}
+ (aq^{-K};q)_K&=(-a)^Kq^{-K(K+1)/2}(q/a;q)_K,\\
+ (azq^{-K};q)_K&=(-az)^Kq^{-K(K+1)/2}(q/(az);q)_K
+\end{align*}
+reduce this to
+\[
+ \frac{(q;q)_K}{(q/a;q)_K}
+ \frac{(az;q)_\infty}{(z;q)_\infty}(q/(az);q)_K.
+\]
+By splitting infinite products, this is exactly the right-hand side of \eqref{eq:1psi1} with $b=q^{K+1}$.
+
+Now fix $a,z$ with $|z|<1$. The positive tail is locally uniformly analytic in $b$ near $0$. By \eqref{eq:negative-tail},
+\[
+ \left(\frac ba\right)^m(q/b;q)_m
+ =a^{-m}\prod_{j=1}^{m}(b-q^j),
+\]
+so each negative-tail term is a polynomial in $b$ divided by the fixed factor $(q/a;q)_m z^m$. On every disk $|b|\le r<|az|$ these terms have a geometric majorant. Hence the left side is analytic in $b$ near $0$; the product side is analytic there as well. Since they agree at $b=q^{K+1}$ and these points accumulate at $0$, the identity theorem proves equality near $0$. Both sides are meromorphic functions of $b$, and analytic continuation through the connected domain $|b/a|<|z|$, away from their common discrete poles, proves \eqref{eq:1psi1} in the full annulus.
+\end{proof}
+
+
+\section{Jacobi's triple product and Watson's quintuple product}
+
+\subsection{A finite identity and its limit}
+
+\begin{lemma}[finite Cauchy form]\label{lem:finite-cauchy}
+For $N\in\N_0$ and $z\ne0$,
+\begin{equation}\label{eq:finite-cauchy}
+ (z;q)_N(q/z;q)_N
+ =\sum_{k=-N}^{N}(-1)^kq^{\binom k2}z^k
+   \Qbinom{2N}{N+k}{q}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Expand each factor by the finite $q$-binomial theorem:
+\begin{align*}
+ (z;q)_N&=\sum_{i=0}^N(-1)^iq^{\binom i2}\Qbinom Niq z^i,\\
+ (q/z;q)_N&=\sum_{j=0}^N(-1)^jq^{\binom j2+j}\Qbinom Njq z^{-j}.
+\end{align*}
+For a fixed power $z^k$ put $i=j+k$. Its coefficient is
+\[
+ (-1)^kq^{\binom k2}
+ \sum_jq^{j(j+k)}\Qbinom N{j+k}q\Qbinom Njq.
+\]
+Use \eqref{eq:q-vandermonde} with $m=n=N$ and $r=N-k$:
+\[
+ \Qbinom{2N}{N-k}q
+ =\sum_jq^{j(j+k)}\Qbinom N{N-k-j}q\Qbinom Njq
+ =\sum_jq^{j(j+k)}\Qbinom N{j+k}q\Qbinom Njq.
+\]
+Finally $\Qbinom{2N}{N-k}q=\Qbinom{2N}{N+k}q$ by symmetry.
+\end{proof}
+
+\begin{theorem}[Jacobi triple product]\label{thm:jtp}
+For $z\ne0$,
+\begin{equation}\label{eq:jtp}
+ \J(z;q)\defeq(q,z,q/z;q)_\infty
+ =\sum_{k\in\Z}(-1)^kq^{\binom k2}z^k.
+\end{equation}
+The bilateral series converges absolutely and locally uniformly on $\C^\times$.
+\end{theorem}
+
+\begin{proof}
+For fixed $k$,
+\[
+ \Qbinom{2N}{N+k}q
+ =\frac{(q;q)_{2N}}{(q;q)_{N+k}(q;q)_{N-k}}
+ \longrightarrow\frac1{(q;q)_\infty}.
+\]
+Moreover these Gaussian coefficients are uniformly bounded in $N,k$: their numerators are bounded in modulus by $\prod_{j\ge1}(1+|q|^j)$ and both denominator products are bounded away from zero by $\prod_{j\ge1}(1-|q|^j)$. Thus the terms in \eqref{eq:finite-cauchy} are dominated, on each compact annulus in $z$, by a constant times
+\[
+ |q|^{k(k-1)/2}|z|^k,
+\]
+whose bilateral sum converges. Dominated convergence gives
+\[
+ (z;q)_\infty(q/z;q)_\infty
+ =\frac1{(q;q)_\infty}
+ \sum_{k\in\Z}(-1)^kq^{\binom k2}z^k.
+\]
+Multiplication by $(q;q)_\infty$ proves \eqref{eq:jtp}.
+\end{proof}
+
+\begin{proposition}[quasi-periodicity and inversion]\label{prop:J-quasi}
+For every $r\in\Z$,
+\begin{align}
+ \J(q^rz;q)&=(-1)^rq^{-r(r-1)/2}z^{-r}\J(z;q),\label{eq:J-quasi}\\
+ \J(q/z;q)&=\J(z;q).\label{eq:J-inversion}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Shifting the summation index in \eqref{eq:jtp} gives
+\[
+ \J(qz;q)=-z^{-1}\J(z;q).
+\]
+Iteration proves \eqref{eq:J-quasi} for positive $r$, and solving the same relation backward proves it for negative $r$. Inversion follows immediately from the product definition by interchanging the factors $(z;q)_\infty$ and $(q/z;q)_\infty$.
+\end{proof}
+
+\begin{corollary}[Euler's pentagonal number theorem]\label{cor:pentagonal}
+\begin{equation}\label{eq:pentagonal}
+ (q;q)_\infty
+ =\sum_{n\in\Z}(-1)^nq^{n(3n-1)/2}
+ =1+\sum_{n=1}^\infty(-1)^n
+ \left(q^{n(3n-1)/2}+q^{n(3n+1)/2}\right).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+In \eqref{eq:jtp} replace the base by $q^3$ and put $z=q$. The product is
+\[
+ (q,q^2,q^3;q^3)_\infty=(q;q)_\infty,
+\]
+and the exponent in the $n$th term is
+$3\binom n2+n=n(3n-1)/2$. Pairing the terms with indices $n$ and $-n$ gives the second form.
+\end{proof}
+
+\subsection{The quintuple product}
+
+The quintuple product is not a mysterious second product theorem: it follows from two triple products followed by a residue-class dissection.
+
+\begin{theorem}[Watson's quintuple product]\label{thm:qpi}
+For $z\ne0$,
+\begin{align}
+ &(q,-z,-q/z;q)_\infty(qz^2,q/z^2;q^2)_\infty\notag\\
+ &\qquad=\sum_{n\in\Z}(-1)^n
+ q^{n(3n-1)/2}z^{3n}(1+zq^n).
+\label{eq:qpi}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+By the triple product,
+\begin{align*}
+ \J(-z;q)&=\sum_{r\in\Z}q^{r(r-1)/2}z^r,\\
+ \J(qz^2;q^2)&=\sum_{s\in\Z}(-1)^sq^{s^2}z^{2s}.
+\end{align*}
+The left side of \eqref{eq:qpi}, multiplied by $(q^2;q^2)_\infty$, is
+$\J(-z;q)\J(qz^2;q^2)$. The coefficient of $z^m$ in this product is
+\begin{align}
+ q^{m(m-1)/2}\sum_{s\in\Z}(-1)^s
+ q^{3s^2+(1-2m)s}
+ &=q^{m(m-1)/2}\J(q^{4-2m};q^6).
+\label{eq:qpi-coeff}
+\end{align}
+Put $Q=q^6$. If $m=3n$, quasi-periodicity gives
+\[
+ \J(q^{4-6n};q^6)
+ =(-1)^nq^{-3n^2+n}\J(q^4;q^6)
+ =(-1)^nq^{-3n^2+n}(q^2;q^2)_\infty.
+\]
+Inserted into \eqref{eq:qpi-coeff}, this becomes
+\[
+ (-1)^nq^{n(3n-1)/2}(q^2;q^2)_\infty.
+\]
+If $m=3n+1$, then similarly
+\[
+ \J(q^{2-6n};q^6)
+ =(-1)^nq^{-3n^2-n}\J(q^2;q^6),
+\]
+and $\J(q^2;q^6)=(q^2;q^2)_\infty$, so the coefficient is
+\[
+ (-1)^nq^{n(3n+1)/2}(q^2;q^2)_\infty.
+\]
+Finally, if $m=3n+2$, then $q^{4-2m}=q^{-6n}=Q^{-n}$ and
+$\J(Q^{-n};Q)=0$, because $\J(1;Q)$ contains the factor $1-1$ and
+\eqref{eq:J-quasi} transports that zero to every integral power of $Q$.
+
+Thus, after division by $(q^2;q^2)_\infty$, only powers $z^{3n}$ and
+$z^{3n+1}$ remain, with coefficients
+\[
+ (-1)^nq^{n(3n-1)/2},\qquad
+ (-1)^nq^{n(3n+1)/2},
+\]
+respectively. Factoring the first coefficient gives exactly the right side of
+\eqref{eq:qpi}.
+\end{proof}
+
+\begin{remark}
+The proof exposes a general method. A product of Jacobi factors becomes a multidimensional lattice sum; extracting one monomial coefficient leaves another Jacobi factor; its zeros and quasi-periodicity enforce congruence restrictions. This is the one-dimensional shadow of the root-system product identities of Macdonald.
+\end{remark}
+
+
+\section{Theta functions, Ramanujan's theta function, and lattice dissection}
+
+Throughout this section let $\tau$ lie in the upper half-plane, put
+\[
+ q=\e^{\pi\ii\tau},\qquad \zeta=\e^{2\pi\ii z},
+\]
+and use the principal branch of $(-\ii\tau)^{1/2}$.
+
+\begin{definition}[Jacobi theta functions]
+\begin{align}
+ \vartheta_3(z\mid\tau)&=\sum_{n\in\Z}
+   \e^{\pi\ii n^2\tau+2\pi\ii nz}
+   =\sum_{n\in\Z}q^{n^2}\zeta^n,\label{eq:theta3-def}\\
+ \vartheta_4(z\mid\tau)&=\sum_{n\in\Z}
+   (-1)^n\e^{\pi\ii n^2\tau+2\pi\ii nz},\label{eq:theta4-def}\\
+ \vartheta_2(z\mid\tau)&=\sum_{n\in\Z}
+   \e^{\pi\ii(n+1/2)^2\tau+2\pi\ii(n+1/2)z}.\label{eq:theta2-def}
+\end{align}
+\end{definition}
+
+Normal convergence on compact subsets of $\C\times\{\operatorname{Im}\tau>0\}$ permits termwise differentiation.
+
+\begin{proposition}[product forms]\label{prop:theta-products}
+\begin{align}
+ \vartheta_3(z\mid\tau)
+ &=(q^2,-q\zeta,-q/\zeta;q^2)_\infty,\label{eq:theta3-product}\\
+ \vartheta_4(z\mid\tau)
+ &=(q^2,q\zeta,q/\zeta;q^2)_\infty,\label{eq:theta4-product}\\
+ \vartheta_2(z\mid\tau)
+ &=q^{1/4}\zeta^{1/2}
+   (q^2,-q^2\zeta,-\zeta^{-1};q^2)_\infty.\label{eq:theta2-product}
+\end{align}
+In particular,
+\begin{align}
+ \vartheta_2(0\mid\tau)
+ &=2q^{1/4}(q^2;q^2)_\infty(-q^2;q^2)_\infty^2,\label{eq:theta2-null}\\
+ \vartheta_3(0\mid\tau)
+ &=(q^2;q^2)_\infty(-q;q^2)_\infty^2,\label{eq:theta3-null}\\
+ \vartheta_4(0\mid\tau)
+ &=(q^2;q^2)_\infty(q;q^2)_\infty^2.\label{eq:theta4-null}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Apply the triple product with base $q^2$. For \eqref{eq:theta3-product} use $z$ there equal to $-q\zeta$:
+\[
+ (-1)^n(q^2)^{\binom n2}(-q\zeta)^n=q^{n^2}\zeta^n.
+\]
+Using $q\zeta$ instead gives \eqref{eq:theta4-product}. Finally,
+\[
+ \vartheta_2(z\mid\tau)
+ =q^{1/4}\zeta^{1/2}\sum_{n\in\Z}q^{n(n+1)}\zeta^n,
+\]
+and the triple product with argument $-q^2\zeta$ gives
+\eqref{eq:theta2-product}. At $z=0$ note that
+\[
+ (-1;q^2)_\infty=2(-q^2;q^2)_\infty,
+\]
+which yields the null-value formulas.
+\end{proof}
+
+\begin{proposition}[heat equation]\label{prop:theta-heat}
+Each $\vartheta_j$ satisfies
+\begin{equation}\label{eq:heat-equation}
+ \frac{\partial\vartheta_j}{\partial\tau}
+ =\frac{1}{4\pi\ii}\frac{\partial^2\vartheta_j}{\partial z^2}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For a term $\e^{\pi\ii(n+\alpha)^2\tau+2\pi\ii(n+\alpha)z}$,
+differentiation in $\tau$ multiplies by $\pi\ii(n+\alpha)^2$, while
+two differentiations in $z$ multiply by $-4\pi^2(n+\alpha)^2$.
+Since $-4\pi^2/(4\pi\ii)=\pi\ii$, the terms agree. Normal convergence
+justifies differentiation term by term.
+\end{proof}
+
+\subsection{Poisson summation and modular inversion}
+
+\begin{lemma}[Poisson summation]\label{lem:poisson}
+For every Schwartz function $f:\R\to\C$, with Fourier transform
+\[
+ \widehat f(\xi)=\int_{\R}f(x)\e^{-2\pi\ii x\xi}\,\dd x,
+\]
+one has
+\begin{equation}\label{eq:poisson}
+ \sum_{n\in\Z}f(n)=\sum_{k\in\Z}\widehat f(k).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The periodization $P(x)=\sum_{n\in\Z}f(x+n)$ and all its derivatives
+converge uniformly. It is a smooth $1$-periodic function. Its $k$th
+Fourier coefficient is
+\begin{align*}
+ \int_0^1P(x)\e^{-2\pi\ii kx}\,\dd x
+ &=\sum_{n\in\Z}\int_0^1f(x+n)\e^{-2\pi\ii kx}\,\dd x\\
+ &=\int_\R f(u)\e^{-2\pi\ii ku}\,\dd u
+ =\widehat f(k),
+\end{align*}
+because $\e^{2\pi\ii kn}=1$. The Fourier coefficients decay faster
+than any power, so the Fourier series converges absolutely. Evaluating
+$P(x)=\sum_k\widehat f(k)\e^{2\pi\ii kx}$ at $x=0$ gives
+\eqref{eq:poisson}.
+\end{proof}
+
+\begin{lemma}[Fourier transform of the complex Gaussian]\label{lem:gaussian-ft}
+If $\operatorname{Im}\tau>0$, then
+\begin{equation}\label{eq:gaussian-ft}
+ \int_\R \e^{\pi\ii\tau x^2+2\pi\ii ux}\,\dd x
+ =(-\ii\tau)^{-1/2}\e^{-\pi\ii u^2/\tau}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For $\tau=\ii t$, $t>0$, and real $u$, complete the square and use the
+ordinary Gaussian integral; this gives
+$t^{-1/2}\e^{-\pi u^2/t}$. Both sides of \eqref{eq:gaussian-ft} are
+entire in $u$ and holomorphic in $\tau$ on the upper half-plane. The
+identity theorem first extends the formula to complex $u$, then to all
+$\tau$ in the connected upper half-plane. The branch is fixed by
+$(-\ii\cdot\ii t)^{1/2}=t^{1/2}$.
+\end{proof}
+
+\begin{theorem}[Jacobi imaginary transformation]\label{thm:theta-modular}
+For $\operatorname{Im}\tau>0$,
+\begin{equation}\label{eq:theta3-modular}
+ \vartheta_3\!\left(\frac z\tau\middle|-\frac1\tau\right)
+ =(-\ii\tau)^{1/2}\e^{\pi\ii z^2/\tau}\vartheta_3(z\mid\tau).
+\end{equation}
+At $z=0$,
+\begin{align}
+ \vartheta_2(0\mid-1/\tau)&=(-\ii\tau)^{1/2}\vartheta_4(0\mid\tau),
+ \label{eq:theta2-modular}\\
+ \vartheta_3(0\mid-1/\tau)&=(-\ii\tau)^{1/2}\vartheta_3(0\mid\tau),
+ \label{eq:theta3-null-modular}\\
+ \vartheta_4(0\mid-1/\tau)&=(-\ii\tau)^{1/2}\vartheta_2(0\mid\tau).
+ \label{eq:theta4-modular}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Apply Poisson summation to
+$f(x)=\e^{\pi\ii\tau x^2+2\pi\ii zx}$. By
+\cref{lem:gaussian-ft},
+\[
+ \widehat f(k)=(-\ii\tau)^{-1/2}
+ \e^{-\pi\ii(z-k)^2/\tau}.
+\]
+Therefore
+\[
+ \vartheta_3(z\mid\tau)
+ =(-\ii\tau)^{-1/2}\e^{-\pi\ii z^2/\tau}
+ \vartheta_3\!\left(\frac z\tau\middle|-\frac1\tau\right),
+\]
+which is \eqref{eq:theta3-modular}. Setting $z=0$ gives
+\eqref{eq:theta3-null-modular}.
+
+For the shifted Gaussian $f(x)=\e^{\pi\ii\tau(x+1/2)^2}$, a translation
+by $1/2$ multiplies its $k$th Fourier transform by
+$\e^{\pi\ii k}=(-1)^k$. Poisson summation consequently gives
+\[
+ \vartheta_2(0\mid\tau)
+ =(-\ii\tau)^{-1/2}\vartheta_4(0\mid-1/\tau),
+\]
+which is \eqref{eq:theta4-modular}. Replacing $\tau$ by $-1/\tau$ in
+this equation and using the chosen square-root branch yields
+\eqref{eq:theta2-modular}.
+\end{proof}
+
+\subsection{Dedekind's eta function}
+
+\begin{definition}
+\begin{equation}\label{eq:eta-def}
+ \eta(\tau)=\e^{\pi\ii\tau/12}
+ \prod_{n=1}^\infty(1-\e^{2\pi\ii n\tau})
+ =q^{1/12}(q^2;q^2)_\infty.
+\end{equation}
+\end{definition}
+
+\begin{theorem}[theta--eta product and modular transformations]\label{thm:eta}
+One has
+\begin{align}
+ \vartheta_2(0\mid\tau)\vartheta_3(0\mid\tau)
+ \vartheta_4(0\mid\tau)&=2\eta(\tau)^3,\label{eq:theta-eta}\\
+ \eta(\tau+1)&=\e^{\pi\ii/12}\eta(\tau),\label{eq:eta-T}\\
+ \eta(-1/\tau)&=(-\ii\tau)^{1/2}\eta(\tau).\label{eq:eta-S}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Multiply \eqref{eq:theta2-null}--\eqref{eq:theta4-null}. The factors
+outside $(q^2;q^2)_\infty^3$ reduce to $1$, since
+\[
+ (-q;q^2)_\infty(q;q^2)_\infty=(q^2;q^4)_\infty
+\]
+and
+\[
+ (-q^2;q^2)_\infty=\frac{(q^4;q^4)_\infty}{(q^2;q^2)_\infty},
+ \qquad
+ (q^2;q^2)_\infty=(q^2;q^4)_\infty(q^4;q^4)_\infty.
+\]
+Thus the product is
+$2q^{1/4}(q^2;q^2)_\infty^3=2\eta(\tau)^3$, proving
+\eqref{eq:theta-eta}.
+
+Equation \eqref{eq:eta-T} follows directly from the definition:
+the infinite product depends only on $\e^{2\pi\ii\tau}$, while the
+prefactor acquires $\e^{\pi\ii/12}$. For inversion, apply
+\eqref{eq:theta2-modular}--\eqref{eq:theta4-modular} to
+\eqref{eq:theta-eta}:
+\[
+ \eta(-1/\tau)^3=(-\ii\tau)^{3/2}\eta(\tau)^3.
+\]
+The quotient
+\[
+ h(\tau)=\frac{\eta(-1/\tau)}
+ {(-\ii\tau)^{1/2}\eta(\tau)}
+\]
+is holomorphic and takes values among the cube roots of unity, hence is
+constant. At $\tau=\ii$ the transformation fixes $\tau$ and the
+principal square root equals $1$, so $h(\ii)=1$. This proves
+\eqref{eq:eta-S}.
+\end{proof}
+
+\subsection{Ramanujan's general theta function}
+
+\begin{definition}
+For $|ab|<1$, Ramanujan's general theta function is
+\begin{equation}\label{eq:ramanujan-f}
+ f(a,b)=\sum_{n\in\Z}
+ a^{n(n+1)/2}b^{n(n-1)/2}.
+\end{equation}
+\end{definition}
+
+\begin{proposition}[Ramanujan's product]\label{prop:ramanujan-product}
+\begin{equation}\label{eq:ramanujan-product}
+ f(a,b)=(-a,-b,ab;ab)_\infty.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+In the triple product put the base equal to $ab$ and the argument equal
+to $-a$. Its $n$th summand is
+\[
+ (-1)^n(ab)^{\binom n2}(-a)^n
+ =a^{n(n+1)/2}b^{n(n-1)/2},
+\]
+and the product is $(-a,-b,ab;ab)_\infty$.
+\end{proof}
+
+\subsection{Schr\"oter's lattice-dissection formula}
+
+For $|Q|<1$ define
+\[
+ \T(x;Q)=\sum_{n\in\Z}Q^{n^2}x^n.
+\]
+
+\begin{theorem}[Schr\"oter dissection]\label{thm:schroeter}
+Let $a,b$ be positive integers and assume all series converge
+absolutely. Then
+\begin{align}
+ \T(x;q^a)\T(y;q^b)
+ &=\sum_{k=0}^{a+b-1}y^kq^{bk^2}
+ \T(xyq^{2bk};q^{a+b})\notag\\
+ &\qquad\qquad\times
+ \T(y^ax^{-b}q^{2abk};q^{ab(a+b)}).
+\label{eq:schroeter}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Expand the left side as a sum over $(n,m)\in\Z^2$. Partition the lattice
+according to the unique residue $k\in\{0,\ldots,a+b-1\}$ for which
+\[
+ m-n=k+(a+b)s
+\]
+with $s\in\Z$. The change of variables
+\[
+ n=r-bs,\qquad m=k+r+as
+\]
+is a bijection from $\Z^2$ onto the lattice points in the $k$th class.
+It gives
+\begin{align*}
+ x^ny^m&=y^k(xy)^r(y^ax^{-b})^s,\\
+ an^2+bm^2
+ &=(a+b)r^2+2bkr+bk^2
+   +ab(a+b)s^2+2abks.
+\end{align*}
+Consequently the sum over $r$ is
+$\T(xyq^{2bk};q^{a+b})$, the sum over $s$ is
+$\T(y^ax^{-b}q^{2abk};q^{ab(a+b)})$, and the remaining factor is
+$y^kq^{bk^2}$. Absolute convergence justifies the rearrangement.
+\end{proof}
+
+\begin{remark}
+The proof is a Smith-normal-form argument in disguise. The congruence
+$m-n\bmod a+b$ labels cosets of a sublattice, while the variables
+$r,s$ diagonalize the quadratic form $an^2+bm^2$. Many theta
+``addition formulas'' are obtained by choosing $a,b,x,y$ and then
+translating the resulting $\T$ functions into $\vartheta_j$ or
+Ramanujan's $f(a,b)$.
+\end{remark}
+
+
+\section{Partitions and the combinatorics of products}\label{sec:partitions}
+
+The algebraic factors that occur in hypergeometric summation also encode
+elementary choices in partitions.  This interpretation is especially clean
+in the ring $\Z[[q]]$, where no analytic convergence is needed.
+
+\begin{definition}
+A \emph{partition} of $n$ is a weakly decreasing finite sequence of positive
+integers with sum $n$.  Let $p(n)$ denote the number of partitions of $n$,
+with $p(0)=1$ and $p(n)=0$ for $n<0$.
+\end{definition}
+
+\begin{theorem}[Euler's partition product]\label{thm:partition-product}
+As an identity of formal power series,
+\begin{equation}\label{eq:partition-product}
+ \sum_{n\ge0}p(n)q^n=\frac1{(q;q)_\infty}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For each possible part size $j$, the geometric series
+\[
+ 1+q^j+q^{2j}+\cdots=\frac1{1-q^j}
+\]
+records the multiplicity of the part $j$.  Multiplying over $j\ge1$ makes
+one independent choice of every multiplicity.  The resulting monomial has
+degree equal to the sum of the selected parts, and every partition appears
+exactly once.  For the coefficient of $q^N$, factors with $j>N$ can only
+contribute their constant term, so the infinite formal product is
+well-defined.
+\end{proof}
+
+\begin{theorem}[distinct parts and odd parts]\label{thm:distinct-odd}
+The number of partitions of $n$ into distinct parts equals the number of
+partitions of $n$ into odd parts.  Their common generating function is
+\begin{equation}\label{eq:distinct-odd}
+ (-q;q)_\infty
+ =\prod_{j\ge1}(1+q^j)
+ =\frac1{(q;q^2)_\infty}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The product $\prod_{j\ge1}(1+q^j)$ permits each part $j$ either zero or one
+time, hence counts partitions into distinct parts.  Algebraically,
+\[
+ 1+q^j=\frac{1-q^{2j}}{1-q^j},
+\]
+and therefore
+\[
+ \prod_{j\ge1}(1+q^j)
+ =\frac{(q^2;q^2)_\infty}{(q;q)_\infty}
+ =\frac1{\prod_{j\ge1}(1-q^{2j-1})}
+ =\frac1{(q;q^2)_\infty}.
+\]
+The last product allows arbitrary multiplicities of odd parts, proving the
+claim coefficient by coefficient.
+\end{proof}
+
+\begin{theorem}[Durfee-square decomposition]\label{thm:durfee}
+One has
+\begin{equation}\label{eq:durfee}
+ \frac1{(q;q)_\infty}
+ =\sum_{r=0}^{\infty}\frac{q^{r^2}}{(q;q)_r^2}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Draw the Ferrers diagram of a partition.  Its Durfee square is the largest
+square anchored at the upper-left corner; suppose its side length is $r$.
+The square contributes $q^{r^2}$.  The cells to its right form a partition
+with at most $r$ parts, while the cells below it form a partition whose
+largest part is at most $r$.  Both classes have generating function
+$1/(q;q)_r$: conjugating Ferrers diagrams interchanges ``at most $r$ parts''
+and ``largest part at most $r$''.  Thus partitions with Durfee side $r$ have
+generating function $q^{r^2}/(q;q)_r^2$.  Every partition has a unique
+Durfee square, so summing over $r$ gives \eqref{eq:durfee}.
+\end{proof}
+
+\begin{corollary}[Euler's pentagonal recurrence]\label{cor:partition-recurrence}
+For $n\ge1$,
+\begin{equation}\label{eq:partition-recurrence}
+ p(n)=\sum_{m\ge1}(-1)^{m-1}
+ \left(
+ p\!\left(n-\frac{m(3m-1)}2\right)
+ +p\!\left(n-\frac{m(3m+1)}2\right)
+ \right),
+\end{equation}
+where terms with negative arguments are zero.
+\end{corollary}
+
+\begin{proof}
+Multiply \eqref{eq:partition-product} by the pentagonal expansion
+\eqref{eq:pentagonal}:
+\[
+ \left(\sum_{n\ge0}p(n)q^n\right)
+ \left(\sum_{m\in\Z}(-1)^mq^{m(3m-1)/2}\right)=1.
+\]
+For $n\ge1$, the coefficient of $q^n$ is zero.  Isolate the $m=0$ term and
+pair $m$ with $-m$ to obtain \eqref{eq:partition-recurrence}.
+\end{proof}
+
+\begin{remark}
+The finite rectangle interpretation of Gaussian coefficients proved in
+\cref{prop:rectangle} is the finite ancestor of these products.
+Letting either side of the rectangle tend to infinity gives
+$1/(q;q)_r$; letting both tend to infinity gives
+\eqref{eq:partition-product}.
+\end{remark}
+
+
+\section{Theta series and representations by squares}\label{sec:squares}
+
+For $s\ge1$, let
+\[
+ r_s(n)=\#\{(x_1,\ldots,x_s)\in\Z^s:x_1^2+\cdots+x_s^2=n\}.
+\]
+Then, formally and analytically for $|q|<1$,
+\begin{equation}\label{eq:rs-theta}
+ \left(\sum_{m\in\Z}q^{m^2}\right)^s
+ =\sum_{n\ge0}r_s(n)q^n.
+\end{equation}
+We give complete proofs of Jacobi's formulas for $s=2$ and $s=4$.
+
+\subsection{Two squares via unique factorization in the Gaussian integers}
+
+Define the real Dirichlet character modulo $4$ by
+\[
+ \chi_4(d)=
+ \begin{cases}
+  0,&2\mid d,\\
+  1,&d\equiv1\pmod4,\\
+ -1,&d\equiv3\pmod4.
+ \end{cases}
+\]
+
+\begin{lemma}[Gaussian unique factorization]\label{lem:gaussian-ufd}
+The ring $\Z[\ii]$ is a Euclidean domain for the norm
+$N(x+\ii y)=x^2+y^2$, and hence a unique-factorization domain.
+For a rational prime $p$:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $2=-\ii(1+\ii)^2$;
+\item if $p\equiv3\pmod4$, then $p$ is irreducible in $\Z[\ii]$;
+\item if $p\equiv1\pmod4$, then
+      $p=\pi\bar\pi$ for a Gaussian prime $\pi$, unique up to multiplication
+      by a unit and conjugation.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Given $\alpha,\beta\in\Z[\ii]$ with $\beta\ne0$, choose a Gaussian integer
+$q$ by rounding the real and imaginary parts of $\alpha/\beta$ to nearest
+integers.  Then
+\[
+ N(\alpha/\beta-q)\le \frac12,
+ \qquad
+ N(\alpha-q\beta)<N(\beta).
+\]
+Thus Euclidean division holds.  The standard Euclidean algorithm gives
+greatest common divisors and B\'ezout identities.  In a Euclidean domain,
+every nonzero nonunit factors into irreducibles by descent of the norm, and
+Euclid's lemma follows from B\'ezout; consequently factorization is unique
+up to order and the units $\{\pm1,\pm\ii\}$.
+
+Part (i) is direct.  Suppose $p\equiv3\pmod4$ and $p=\alpha\beta$ with
+both factors nonunits.  Norms are positive integers whose product is $p^2$,
+so $N(\alpha)=p$.  This would give $p=x^2+y^2$.  Squares modulo $4$ are
+$0$ or $1$, so such a sum cannot be $3$ modulo $4$.  Hence $p$ is
+irreducible.
+
+Now let $p\equiv1\pmod4$.  Wilson's theorem and pairing $j$ with $p-j$
+give
+\[
+ -1\equiv(p-1)!
+ \equiv(-1)^{(p-1)/2}\left(\left(\frac{p-1}{2}\right)!\right)^2
+ \equiv t^2\pmod p
+\]
+for $t=((p-1)/2)!$, because $(p-1)/2$ is even.  Therefore
+$p\mid(t+\ii)(t-\ii)$ in $\Z[\ii]$.  The element $p$ cannot be irreducible:
+otherwise it would be prime and would divide one factor, which is
+impossible because neither the real coordinate $t$ nor the imaginary
+coordinate $1$ is divisible by $p$.  Hence $p=\pi\rho$ with nonunits
+$\pi,\rho$.  Norms force $N(\pi)=N(\rho)=p$, and from
+$p=\pi\rho=\bar\pi\,\bar\rho$ uniqueness shows that $\rho$ is associated
+to $\bar\pi$.  This also proves the asserted uniqueness.
+\end{proof}
+
+\begin{theorem}[Jacobi's two-square theorem]\label{thm:two-square}
+For every $n\ge1$,
+\begin{equation}\label{eq:two-square}
+ r_2(n)=4\sum_{d\mid n}\chi_4(d).
+\end{equation}
+Equivalently, if
+\[
+ n=2^a\prod_{j=1}^{u}p_j^{\alpha_j}
+       \prod_{\ell=1}^{v}r_\ell^{\beta_\ell},
+ \qquad
+ p_j\equiv1\pmod4,\quad r_\ell\equiv3\pmod4,
+\]
+then $r_2(n)=0$ if some $\beta_\ell$ is odd, and otherwise
+\[
+ r_2(n)=4\prod_{j=1}^{u}(\alpha_j+1).
+\]
+\end{theorem}
+
+\begin{proof}
+A representation $n=x^2+y^2$ is the same thing as a Gaussian integer
+$z=x+\ii y$ of norm $n$.  By \cref{lem:gaussian-ufd}, the prime
+factorization of such a $z$ has the following form.  The prime above $2$
+is fixed up to a unit.  A prime $r_\ell\equiv3\pmod4$ is self-conjugate and
+contributes $r_\ell^{2e}$ to a norm, so $\beta_\ell$ must be even and then
+the exponent of $r_\ell$ in $z$ is forced to be $\beta_\ell/2$.  For
+$p_j=\pi_j\bar\pi_j$, the exponent of $\pi_j$ in $z$ can be any
+$e_j\in\{0,\ldots,\alpha_j\}$, while the exponent of $\bar\pi_j$ is
+$\alpha_j-e_j$.  Finally there are four choices of unit.  Unique
+factorization shows that these choices give all $z$ without duplication.
+This proves the product formula.
+
+The divisor sum is multiplicative.  Its local factor at $2$ is $1$; at
+$p_j\equiv1\pmod4$ it is $\alpha_j+1$; and at
+$r_\ell\equiv3\pmod4$ it is
+\[
+ 1-1+1-\cdots+(-1)^{\beta_\ell},
+\]
+which is $0$ for odd $\beta_\ell$ and $1$ for even $\beta_\ell$.
+Multiplication proves \eqref{eq:two-square}.
+\end{proof}
+
+\begin{corollary}[Lambert-series form]\label{cor:two-square-lambert}
+\begin{equation}\label{eq:two-square-lambert}
+ \left(\sum_{m\in\Z}q^{m^2}\right)^2
+ =1+4\sum_{d=1}^{\infty}\chi_4(d)\frac{q^d}{1-q^d}
+ =1+4\sum_{j=0}^{\infty}(-1)^j
+       \frac{q^{2j+1}}{1-q^{2j+1}}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+By \eqref{eq:rs-theta} and \cref{thm:two-square}, the coefficient of $q^n$
+on the first Lambert series is
+$4\sum_{d\mid n}\chi_4(d)$.  Since $\chi_4$ vanishes on even integers and
+equals $(-1)^j$ at $2j+1$, the second form follows.
+\end{proof}
+
+\subsection{Four squares from the triple product}
+
+The following proof is especially instructive: it extracts a divisor sum
+from the Jacobi triple product by differentiation, a parity dissection,
+and logarithmic differentiation.
+
+\begin{theorem}[Jacobi's four-square theorem]\label{thm:four-square}
+For every $n\ge1$,
+\begin{equation}\label{eq:four-square}
+ r_4(n)=8\sum_{\substack{d\mid n\\4\nmid d}}d.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply the triple product \eqref{eq:jtp} with base $x$ and parameter
+$a^2x$, and multiply by $a$.  This gives
+\begin{equation}\label{eq:four-square-start}
+ (a-a^{-1})\prod_{\nu\ge1}
+ (1-a^2x^\nu)(1-a^{-2}x^\nu)(1-x^\nu)
+ =
+ \sum_{m\in\Z}(-1)^ma^{2m+1}x^{m(m+1)/2}.
+\end{equation}
+Both sides and their $a$-derivatives converge locally uniformly on compact
+annuli avoiding $a=0$.  Differentiate at $a=1$ and divide by $2$:
+\begin{equation}\label{eq:jacobi-cube}
+ (x;x)_\infty^3
+ =\frac12\sum_{m\in\Z}(-1)^m(2m+1)x^{m(m+1)/2}.
+\end{equation}
+Squaring and separating the pairs $(m,n)$ according as $m+n$ is even or
+odd yields
+\begin{align*}
+ (x;x)_\infty^6
+ =\frac14\biggl\{
+ &\sum_{m\equiv n\ (2)}(2m+1)(2n+1)
+     x^{(m^2+n^2+m+n)/2}\\
+ -&\sum_{m\not\equiv n\ (2)}(2m+1)(2n+1)
+     x^{(m^2+n^2+m+n)/2}
+ \biggr\}.
+\end{align*}
+In the first sum put
+$r=(m+n)/2$, $s=(m-n)/2$; in the second put
+$r=(m-n-1)/2$, $s=(m+n+1)/2$.  These are bijective integral changes of
+variables in their respective parity classes.  Direct substitution shows
+that the two sums coalesce:
+\begin{equation}\label{eq:four-square-coalesce}
+ (x;x)_\infty^6
+ =\frac12\sum_{r,s\in\Z}
+ \bigl((2r+1)^2-(2s)^2\bigr)x^{r^2+s^2+r}.
+\end{equation}
+Let $D=x\,d/dx$.  Equation \eqref{eq:four-square-coalesce} becomes
+\begin{equation}\label{eq:four-square-D}
+ (x;x)_\infty^6
+ =\frac12\left[
+ A(x)(1+4D)B(x)-B(x)\,4D A(x)
+ \right],
+\end{equation}
+where
+\[
+ A(x)=\sum_{s\in\Z}x^{s^2},\qquad
+ B(x)=\sum_{r\in\Z}x^{r^2+r}.
+\]
+The triple product gives
+\begin{align}
+ A(x)&=\prod_{\nu\ge1}
+ (1+x^{2\nu-1})^2(1-x^{2\nu}),\label{eq:A-product}\\
+ B(x)&=2\prod_{\nu\ge1}
+ (1+x^{2\nu})^2(1-x^{2\nu}).\label{eq:B-product}
+\end{align}
+Substitute these products into \eqref{eq:four-square-D} and evaluate the
+derivatives logarithmically.  The terms coming from
+$D\log(1-x^{2\nu})$ cancel, leaving
+\begin{align}
+ (x;x)_\infty^6
+ &=
+ \prod_{\nu\ge1}
+ (1+x^{2\nu-1})^2(1+x^{2\nu})^2(1-x^{2\nu})^2
+ \notag\\
+ &\quad\times
+ \left[
+ 1-8\sum_{\nu\ge1}\left(
+ \frac{(2\nu-1)x^{2\nu-1}}{1+x^{2\nu-1}}
+ -\frac{2\nu x^{2\nu}}{1+x^{2\nu}}
+ \right)
+ \right].\label{eq:four-square-logdiff}
+\end{align}
+For clarity, this last simplification uses only
+\[
+ D\log(1+x^j)=\frac{j x^j}{1+x^j},
+ \qquad
+ D\log(1-x^j)=-\frac{j x^j}{1-x^j};
+\]
+substitution into \eqref{eq:four-square-D} gives
+\eqref{eq:four-square-logdiff} term by term.
+
+Now
+\[
+ \prod_{\nu\ge1}(1+x^\nu)^4(1-x^\nu)^2
+ =
+ \prod_{\nu\ge1}
+ (1+x^{2\nu-1})^2(1+x^{2\nu})^2(1-x^{2\nu})^2.
+\]
+Dividing \eqref{eq:four-square-logdiff} by this product gives
+\begin{equation}\label{eq:four-square-quotient}
+ \prod_{\nu\ge1}\left(\frac{1-x^\nu}{1+x^\nu}\right)^4
+ =
+ 1-8\sum_{\nu\ge1}\left(
+ \frac{(2\nu-1)x^{2\nu-1}}{1+x^{2\nu-1}}
+ -\frac{2\nu x^{2\nu}}{1+x^{2\nu}}
+ \right).
+\end{equation}
+Another specialization of the triple product is
+\[
+ \prod_{\nu\ge1}\frac{1-x^\nu}{1+x^\nu}
+ =\sum_{m\in\Z}(-1)^m x^{m^2}.
+\]
+Replace $x$ by $-x$ in \eqref{eq:four-square-quotient}.  Since
+\[
+ \frac{2\nu x^{2\nu}}{1+x^{2\nu}}
+ =\frac{2\nu x^{2\nu}}{1-x^{2\nu}}
+  -\frac{4\nu x^{4\nu}}{1-x^{4\nu}},
+\]
+the odd-index terms together with the first term on the right here form
+$\sum_{j\ge1}j x^j/(1-x^j)$.  Hence
+\begin{equation}\label{eq:four-square-lambert}
+ \left(\sum_{m\in\Z}x^{m^2}\right)^4
+ =
+ 1+8\sum_{\substack{j\ge1\\4\nmid j}}
+ \frac{j x^j}{1-x^j}.
+\end{equation}
+The coefficient of $x^n$ on the right is
+$8\sum_{d\mid n,\,4\nmid d}d$, while the coefficient on the left is
+$r_4(n)$ by \eqref{eq:rs-theta}.  This proves \eqref{eq:four-square}.
+\end{proof}
+
+\begin{remark}
+The two-square proof is arithmetic and the four-square proof is analytic,
+but both end in Lambert series.  The common pattern is that theta
+coefficients become divisor sums after a product identity has exposed
+geometric denominators.
+\end{remark}
+
+
+\section{Bailey pairs: inversion, transformation, and chains}\label{sec:bailey}
+
+In this section only, we often suppress the fixed base and write
+$(a)_n=(a;q)_n$ and $(a,b)_n=(a;q)_n(b;q)_n$.
+
+\begin{definition}[Bailey pair]\label{def:bailey-pair}
+Two sequences $(\alpha_n)_{n\ge0}$ and $(\beta_n)_{n\ge0}$ form a
+\emph{Bailey pair relative to $a$} if
+\begin{equation}\label{eq:bailey-pair}
+ \beta_n=\sum_{r=0}^{n}
+ \frac{\alpha_r}{(q)_{n-r}(aq)_{n+r}}
+ \qquad(n\ge0).
+\end{equation}
+\end{definition}
+
+The relation is triangular, so either sequence determines the other.
+The following explicit inverse is useful both conceptually and
+computationally.
+
+\begin{lemma}[finite annihilation]\label{lem:finite-annihilation}
+If $N\ge1$ and $P(X)$ is a polynomial of degree at most $N-1$, then
+\begin{equation}\label{eq:finite-annihilation}
+ \sum_{k=0}^{N}
+ \frac{(-1)^kq^{\binom{k}{2}}P(q^{-k})}
+ {(q)_k(q)_{N-k}}=0.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+By linearity it suffices to take $P(X)=X^\ell$ with
+$0\le\ell\le N-1$.  The finite $q$-binomial theorem gives
+\[
+ \sum_{k=0}^{N}
+ \frac{(-1)^kq^{\binom{k}{2}}q^{-\ell k}}
+ {(q)_k(q)_{N-k}}
+ =\frac{(q^{-\ell};q)_N}{(q;q)_N}=0,
+\]
+because the numerator contains the factor
+$1-q^{-\ell}q^\ell=0$.
+\end{proof}
+
+\begin{theorem}[Bailey inversion]\label{thm:bailey-inversion}
+The relation \eqref{eq:bailey-pair} is equivalent to
+\begin{equation}\label{eq:bailey-inversion}
+ \alpha_n=(1-aq^{2n})\sum_{j=0}^{n}
+ \frac{(aq)_{n+j-1}(-1)^{n-j}q^{\binom{n-j}{2}}}
+ {(q)_{n-j}}\,\beta_j,
+\end{equation}
+where at $n=0$ the right side is interpreted as $\beta_0$.
+\end{theorem}
+
+\begin{proof}
+Substitute \eqref{eq:bailey-pair} into the right side and interchange the
+two finite sums.  The coefficient of $\alpha_r$ is
+\begin{align*}
+ C_{n,r}
+ &=(1-aq^{2n})\sum_{j=r}^{n}
+ \frac{(aq)_{n+j-1}(-1)^{n-j}q^{\binom{n-j}{2}}}
+ {(q)_{n-j}(q)_{j-r}(aq)_{j+r}}.
+\end{align*}
+Put $N=n-r$ and $k=n-j$.  If $N\ge1$, cancellation of shifted
+factorials gives
+\begin{equation}\label{eq:bailey-inverse-coeff}
+ C_{n,r}=(1-aq^{2n})\sum_{k=0}^{N}
+ \frac{(-1)^kq^{\binom{k}{2}}
+ (aq^{n+r+1-k};q)_{N-1}}
+ {(q)_k(q)_{N-k}}.
+\end{equation}
+The product in the numerator is a polynomial of degree $N-1$ in
+$q^{-k}$, so \cref{lem:finite-annihilation} makes
+\eqref{eq:bailey-inverse-coeff} zero.  If $N=0$, the only term is
+$j=n=r$, and
+\[
+ C_{n,n}=(1-aq^{2n})\frac{(aq)_{2n-1}}{(aq)_{2n}}=1.
+\]
+Thus the substituted right side equals $\alpha_n$.  Conversely, the two
+triangular matrices are mutual inverses, so \eqref{eq:bailey-inversion}
+implies \eqref{eq:bailey-pair}.
+\end{proof}
+
+\begin{corollary}[the unit Bailey pair]\label{cor:unit-bailey}
+Relative to $a$, the sequence $\beta_n^{(0)}=\delta_{n,0}$ has companion
+\[
+ \alpha_0^{(0)}=1,\qquad
+ \alpha_n^{(0)}
+ =(-1)^nq^{\binom n2}
+ \frac{(1-aq^{2n})(aq)_{n-1}}{(q)_n}
+ \quad(n\ge1).
+\]
+\end{corollary}
+
+\begin{proof}
+Put $\beta_0=1$ and $\beta_j=0$ for $j>0$ in
+\eqref{eq:bailey-inversion}.
+\end{proof}
+
+\subsection{Bailey's lemma}
+
+\begin{theorem}[Bailey's lemma]\label{thm:bailey-lemma}
+Suppose $(\alpha_n,\beta_n)$ is a Bailey pair relative to $a$, and put
+\[
+ A=\frac{aq}{\rho_1\rho_2}.
+\]
+Define
+\begin{align}
+ \alpha_n'
+ &=
+ \frac{(\rho_1,\rho_2)_n A^n}
+ {(aq/\rho_1,aq/\rho_2)_n}\,\alpha_n,
+ \label{eq:bailey-alpha-prime}\\
+ \beta_n'
+ &=
+ \sum_{j=0}^{n}
+ \frac{(\rho_1,\rho_2)_j(A)_{n-j}A^j}
+ {(q)_{n-j}(aq/\rho_1,aq/\rho_2)_n}\,\beta_j.
+ \label{eq:bailey-beta-prime}
+\end{align}
+Then $(\alpha_n',\beta_n')$ is another Bailey pair relative to $a$.
+\end{theorem}
+
+\begin{proof}
+Insert \eqref{eq:bailey-pair} into \eqref{eq:bailey-beta-prime} and
+interchange the finite sums.  For fixed $r$, write $j=r+k$ and
+$N=n-r$.  The coefficient of $\alpha_r$ becomes
+\begin{align}
+ &\frac{(\rho_1,\rho_2)_rA^r}
+ {(aq/\rho_1,aq/\rho_2)_n(aq)_{2r}}
+ \sum_{k=0}^{N}
+ \frac{(\rho_1q^r,\rho_2q^r)_k(A)_{N-k}A^k}
+ {(q)_k(q)_{N-k}(aq^{2r+1})_k}.
+ \label{eq:bailey-inner}
+\end{align}
+We evaluate the finite sum.  The elementary reversal formula gives
+\begin{equation}\label{eq:bailey-reversal}
+ \frac{(A)_{N-k}}{(q)_{N-k}}
+ =
+ \frac{(A)_N}{(q)_N}
+ \frac{(q^{-N})_k}{(q^{1-N}/A)_k}
+ \left(\frac qA\right)^k.
+\end{equation}
+Set
+\[
+ x=\rho_1q^r,\qquad y=\rho_2q^r,\qquad c=aq^{2r+1}.
+\]
+Then $A=c/(xy)$.  Substitution of \eqref{eq:bailey-reversal} turns the
+sum in \eqref{eq:bailey-inner} into
+\[
+ \frac{(A)_N}{(q)_N}
+ {}_3\phi_2\!\left[
+ \begin{matrix}x,y,q^{-N}\\c,q^{1-N}/A\end{matrix};q,q
+ \right].
+\]
+The $q$-Pfaff--Saalsch\"utz sum \eqref{eq:q-pfaff} evaluates this as
+\begin{equation}\label{eq:bailey-inner-eval}
+ \frac{(c/x,c/y)_N}{(q)_N(c)_N}.
+\end{equation}
+Using
+\[
+ (aq/\rho_i)_n=(aq/\rho_i)_r(aq^{r+1}/\rho_i)_N
+\]
+and
+\[
+ (aq)_{2r}(aq^{2r+1})_N=(aq)_{n+r},
+\]
+the product of the prefactor in \eqref{eq:bailey-inner} and
+\eqref{eq:bailey-inner-eval} is
+\[
+ \frac{1}{(q)_{n-r}(aq)_{n+r}}
+ \frac{(\rho_1,\rho_2)_rA^r}
+ {(aq/\rho_1,aq/\rho_2)_r}
+ =
+ \frac{\alpha_r'/\alpha_r}{(q)_{n-r}(aq)_{n+r}}.
+\]
+Therefore
+\[
+ \beta_n'=\sum_{r=0}^{n}
+ \frac{\alpha_r'}{(q)_{n-r}(aq)_{n+r}},
+\]
+which is precisely the Bailey-pair relation.
+\end{proof}
+
+\begin{corollary}[weak Bailey lemma]\label{cor:weak-bailey}
+If $(\alpha_n,\beta_n)$ is a Bailey pair relative to $a$, then so is
+$(\widehat\alpha_n,\widehat\beta_n)$, where
+\begin{align}
+ \widehat\alpha_n&=a^nq^{n^2}\alpha_n,\label{eq:weak-alpha}\\
+ \widehat\beta_n&=\sum_{j=0}^{n}
+ \frac{a^jq^{j^2}}{(q)_{n-j}}\,\beta_j.
+ \label{eq:weak-beta}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+Let $\rho_1,\rho_2\to\infty$ in \cref{thm:bailey-lemma}.  For fixed $n$,
+\[
+ (\rho;q)_n=(-\rho)^nq^{\binom n2}\bigl(1+O(\rho^{-1})\bigr).
+\]
+Consequently the multiplier in \eqref{eq:bailey-alpha-prime} tends to
+$a^nq^{n^2}$, while each summand in \eqref{eq:bailey-beta-prime} tends
+to the corresponding summand in \eqref{eq:weak-beta}.  All sums are
+finite, so passage to the limit is immediate.
+\end{proof}
+
+\begin{theorem}[limiting Bailey transform]\label{thm:limiting-bailey}
+Whenever the displayed series converge absolutely,
+\begin{equation}\label{eq:limiting-bailey}
+ \sum_{n=0}^{\infty}a^nq^{n^2}\beta_n
+ =
+ \frac1{(aq;q)_\infty}
+ \sum_{n=0}^{\infty}a^nq^{n^2}\alpha_n.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Substitute \eqref{eq:bailey-pair} on the left and interchange sums:
+\[
+ \sum_{r\ge0}\alpha_r
+ \sum_{m\ge0}
+ \frac{a^{r+m}q^{(r+m)^2}}
+ {(q)_m(aq)_{m+2r}}.
+\]
+Set $x=aq^{2r+1}$.  The inner sum is
+\begin{align*}
+ \frac{a^rq^{r^2}}{(aq)_{2r}}
+ \sum_{m\ge0}
+ \frac{x^mq^{m(m-1)}}{(q)_m(x)_m}.
+\end{align*}
+The limit $A,B\to\infty$ in the $q$-Gauss sum
+\cref{thm:q-gauss}, with its argument specialized to $x/(AB)$, gives
+\begin{equation}\label{eq:gauss-infinite-limit}
+ \sum_{m\ge0}\frac{x^mq^{m(m-1)}}{(q)_m(x)_m}
+ =\frac1{(x)_\infty}.
+\end{equation}
+Indeed, $(A)_m(B)_m(x/(AB))^m\to x^mq^{m(m-1)}$, and the product side
+of $q$-Gauss tends to $1/(x)_\infty$; dominated convergence follows
+first for $|x|$ small and the result then extends analytically.
+Since
+\[
+ (aq)_{2r}(aq^{2r+1})_\infty=(aq)_\infty,
+\]
+the inner sum equals $a^rq^{r^2}/(aq)_\infty$.  Substitution proves
+\eqref{eq:limiting-bailey}.
+\end{proof}
+
+\begin{remark}
+Bailey's lemma is not a mysterious ``identity generator.''  Its proof is
+a matrix multiplication in which the inner matrix entry is exactly a
+terminating $q$-Pfaff--Saalsch\"utz sum.  The weak lemma is a parameter
+limit, and the limiting transform is a conjugate matrix evaluation by
+$q$-Gauss.
+\end{remark}
+
+
+\section{The Rogers--Ramanujan identities and continued fraction}
+\label{sec:rogers-ramanujan}
+
+Apply the weak Bailey lemma once to the unit pair of
+\cref{cor:unit-bailey}.  We obtain a Bailey pair relative to $a$ with
+\begin{equation}\label{eq:rr-bailey-pair}
+ \beta_n^{(1)}=\frac1{(q)_n},
+ \qquad
+ \alpha_n^{(1)}=a^nq^{n^2}\alpha_n^{(0)}.
+\end{equation}
+Applying \cref{thm:limiting-bailey} to this new pair gives the master
+identity
+\begin{equation}\label{eq:rr-master}
+ \sum_{n\ge0}\frac{a^nq^{n^2}}{(q)_n}
+ =
+ \frac1{(aq)_\infty}
+ \sum_{n\ge0}a^{2n}q^{2n^2}\alpha_n^{(0)}.
+\end{equation}
+
+\begin{theorem}[Rogers--Ramanujan identities]\label{thm:rr}
+For $|q|<1$,
+\begin{align}
+ \sum_{n=0}^{\infty}\frac{q^{n^2}}{(q;q)_n}
+ &=
+ \frac1{(q,q^4;q^5)_\infty},
+ \label{eq:rr-first}\\
+ \sum_{n=0}^{\infty}\frac{q^{n^2+n}}{(q;q)_n}
+ &=
+ \frac1{(q^2,q^3;q^5)_\infty}.
+ \label{eq:rr-second}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Set $a=1$ in \eqref{eq:rr-master}.  For $n\ge1$,
+\[
+ \alpha_n^{(0)}
+ =(-1)^nq^{\binom n2}(1+q^n),
+\]
+and therefore
+\begin{align*}
+ \sum_{n\ge0}q^{2n^2}\alpha_n^{(0)}
+ &=1+\sum_{n\ge1}(-1)^n
+ q^{(5n^2-n)/2}(1+q^n)\\
+ &=\sum_{m\in\Z}(-1)^m q^{m(5m-1)/2}.
+\end{align*}
+The second line pairs the terms $m=n$ and $m=-n$.  Jacobi's triple
+product with base $q^5$ and parameter $q^2$ gives
+\[
+ \sum_{m\in\Z}(-1)^m q^{m(5m-1)/2}
+ =(q^2,q^3,q^5;q^5)_\infty.
+\]
+Dividing by $(q;q)_\infty$ cancels the residue classes
+$0,2,3\pmod5$ and proves \eqref{eq:rr-first}.
+
+Now set $a=q$.  Since
+\[
+ (q^2;q)_\infty=\frac{(q;q)_\infty}{1-q},
+ \qquad
+ (q^2;q)_{n-1}=\frac{(q;q)_n}{1-q},
+\]
+the right side of \eqref{eq:rr-master} becomes
+\[
+ \frac1{(q;q)_\infty}
+ \sum_{n\ge0}(-1)^nq^{(5n^2+3n)/2}(1-q^{2n+1}).
+\]
+Pairing the first term with the index $m=-n$ and the second with
+$m=n+1$ rewrites the numerator as
+\[
+ \sum_{m\in\Z}(-1)^m q^{m(5m-3)/2}.
+\]
+The triple product, now with base $q^5$ and parameter $q$, evaluates it
+as $(q,q^4,q^5;q^5)_\infty$.  Cancellation against
+$(q;q)_\infty$ proves \eqref{eq:rr-second}.
+\end{proof}
+
+\begin{corollary}[partition forms]\label{cor:rr-partitions}
+For every $N\ge0$:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item the number of partitions of $N$ with successive parts differing by
+      at least $2$ equals the number with all parts congruent to
+      $1$ or $4$ modulo $5$;
+\item the number of partitions of $N$ with successive parts differing by
+      at least $2$ and with no part $1$ equals the number with all parts
+      congruent to $2$ or $3$ modulo $5$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+For a partition with exactly $n$ parts and adjacent differences at least
+$2$, subtract the staircase
+\[
+ (2n-1,2n-3,\ldots,3,1).
+\]
+The remaining sequence is a partition into at most $n$ nonnegative parts,
+with generating function $1/(q;q)_n$, while the staircase has weight
+$n^2$.  This gives the series in \eqref{eq:rr-first}.  If the smallest
+part is at least $2$, subtract
+$(2n,2n-2,\ldots,4,2)$, of weight $n^2+n$, giving the series in
+\eqref{eq:rr-second}.  The products on the right permit arbitrary
+multiplicities of parts in the indicated residue classes.  Equality of
+coefficients proves both assertions.
+\end{proof}
+
+\subsection{The continued fraction}
+
+Put
+\begin{equation}\label{eq:Fk}
+ F_k(q)=\sum_{n=0}^{\infty}\frac{q^{n^2+kn}}{(q;q)_n}
+ \qquad(k\ge0).
+\end{equation}
+
+\begin{lemma}[Rogers recurrence]\label{lem:rogers-recurrence}
+For every $k\ge0$,
+\begin{equation}\label{eq:rogers-recurrence}
+ F_k=F_{k+1}+q^{k+1}F_{k+2}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Subtract the defining series:
+\begin{align*}
+ F_k-F_{k+1}
+ &=\sum_{n\ge1}
+ \frac{q^{n^2+kn}(1-q^n)}{(q;q)_n}\\
+ &=\sum_{n\ge1}\frac{q^{n^2+kn}}{(q;q)_{n-1}}.
+\end{align*}
+Putting $m=n-1$ changes the exponent to
+$m^2+(k+2)m+k+1$, which proves \eqref{eq:rogers-recurrence}.
+\end{proof}
+
+\begin{theorem}[Rogers--Ramanujan continued fraction]\label{thm:rrcf}
+For $0<q<1$,
+\begin{align}
+ \frac{F_1(q)}{F_0(q)}
+ &=
+ \cfrac{1}{1+\cfrac{q}{1+\cfrac{q^2}{1+\cfrac{q^3}{1+\ddots}}}},
+ \label{eq:rrcf-series}\\
+ \RR(q)
+ \defeq q^{1/5}\frac{F_1(q)}{F_0(q)}
+ &=
+ q^{1/5}
+ \frac{(q,q^4;q^5)_\infty}{(q^2,q^3;q^5)_\infty}.
+ \label{eq:rrcf-product}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Let $R_k=F_{k+1}/F_k$.  Every $F_k$ is positive for $0<q<1$, and
+\cref{lem:rogers-recurrence} gives
+\[
+ R_k=\frac1{1+q^{k+1}R_{k+1}}.
+\]
+Moreover $F_k=1+O(q^k)$ as $k\to\infty$: indeed, with
+$c_q=(q;q)_\infty>0$,
+\[
+ 0<F_k-1
+ \le c_q^{-1}\sum_{n\ge1}q^{n^2+kn}\longrightarrow0.
+\]
+Thus $R_k\to1$.  Iterating the last recurrence backward produces the
+continued fraction in \eqref{eq:rrcf-series}.  To justify the limiting
+process explicitly, the maps
+$T_k(x)=1/(1+q^{k+1}x)$ send $[0,1]$ into itself and have derivative at
+most $q^{k+1}$.  Replacing a remote tail by any other value in $[0,1]$
+therefore changes the value at the top by at most
+$\prod_{j=1}^{N}q^j=q^{N(N+1)/2}$, which tends to zero.
+
+Finally, \cref{thm:rr} identifies $F_0$ and $F_1$ with their products.
+Taking their ratio proves \eqref{eq:rrcf-product}.
+\end{proof}
+
+
+\section{Bailey chains and the endpoint Andrews--Gordon identities}
+\label{sec:andrews-gordon}
+
+Repeated application of \cref{cor:weak-bailey} produces a Bailey chain.
+The endpoint cases of the Andrews--Gordon identities require no
+additional transformation.
+
+\begin{lemma}[iterated weak chain]\label{lem:iterated-chain}
+Let $t\ge1$.  Starting from the unit Bailey pair and applying the weak
+Bailey lemma $t$ times, then applying the limiting Bailey transform, gives
+\begin{align}
+&\sum_{N_1\ge N_2\ge\cdots\ge N_t\ge0}
+ \frac{a^{N_1+\cdots+N_t}
+ q^{N_1^2+\cdots+N_t^2}}
+ {(q)_{N_1-N_2}\cdots(q)_{N_{t-1}-N_t}(q)_{N_t}}
+ \notag\\
+&\qquad=
+ \frac1{(aq)_\infty}
+ \sum_{n\ge0}a^{(t+1)n}q^{(t+1)n^2}\alpha_n^{(0)}.
+\label{eq:iterated-chain}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+After one weak step, $\beta_n^{(1)}=1/(q)_n$.  Induction in
+\eqref{eq:weak-beta} shows that after $t$ steps,
+\[
+ \beta_n^{(t)}
+ =
+ \sum_{n\ge N_2\ge\cdots\ge N_t\ge0}
+ \frac{a^{N_2+\cdots+N_t}q^{N_2^2+\cdots+N_t^2}}
+ {(q)_{n-N_2}\cdots(q)_{N_{t-1}-N_t}(q)_{N_t}},
+\]
+with the evident interpretation when $t=1$.  At the same time,
+$\alpha_n^{(t)}=a^{tn}q^{tn^2}\alpha_n^{(0)}$.  Substitute these two
+expressions into \eqref{eq:limiting-bailey} and rename its outer index
+$n$ as $N_1$.
+\end{proof}
+
+\begin{theorem}[endpoint Andrews--Gordon identities]
+\label{thm:ag-endpoints}
+Let $k\ge2$ and put $N_j=n_j+n_{j+1}+\cdots+n_{k-1}$.  Then
+\begin{align}
+&\sum_{n_1,\ldots,n_{k-1}\ge0}
+ \frac{q^{N_1^2+\cdots+N_{k-1}^2}}
+ {(q;q)_{n_1}\cdots(q;q)_{n_{k-1}}}
+ =
+ \frac{(q^k,q^{k+1},q^{2k+1};q^{2k+1})_\infty}
+ {(q;q)_\infty},
+ \label{eq:ag-endpoint-k}\\
+&\sum_{n_1,\ldots,n_{k-1}\ge0}
+ \frac{q^{N_1^2+\cdots+N_{k-1}^2+N_1+\cdots+N_{k-1}}}
+ {(q;q)_{n_1}\cdots(q;q)_{n_{k-1}}}
+ =
+ \frac{(q,q^{2k},q^{2k+1};q^{2k+1})_\infty}
+ {(q;q)_\infty}.
+ \label{eq:ag-endpoint-1}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Set $t=k-1$ in \eqref{eq:iterated-chain}.  First take $a=1$.  As in the
+proof of the first Rogers--Ramanujan identity, the numerator series on
+the right becomes
+\begin{align*}
+ 1+\sum_{n\ge1}(-1)^n
+ q^{kn^2+\binom n2}(1+q^n)
+ &=
+ \sum_{m\in\Z}(-1)^m
+ q^{((2k+1)m^2-m)/2}\\
+ &=(q^k,q^{k+1},q^{2k+1};q^{2k+1})_\infty
+\end{align*}
+by the triple product with base $q^{2k+1}$ and parameter $q^k$.
+The substitutions $n_j=N_j-N_{j+1}$, with $N_k=0$, transform the left
+side of \eqref{eq:iterated-chain} into that of
+\eqref{eq:ag-endpoint-k}.
+
+Next take $a=q$.  The factor $(1-q)$ from
+$1/(q^2;q)_\infty$ cancels the denominator $1-q$ in
+$\alpha_n^{(0)}$, and the numerator becomes
+\begin{align*}
+ \sum_{n\ge0}(-1)^n
+ q^{((2k+1)n^2+(2k-1)n)/2}(1-q^{2n+1})
+ &=
+ \sum_{m\in\Z}(-1)^m
+ q^{((2k+1)m^2+(2k-1)m)/2}\\
+ &=(q,q^{2k},q^{2k+1};q^{2k+1})_\infty.
+\end{align*}
+For the first equality, pair the two terms indexed by $n$ with the
+bilateral indices $m=n$ and $m=-n-1$; the last equality is the triple
+product with parameter $q^{2k}$.  On the left,
+$a^{N_1+\cdots+N_{k-1}}$ supplies the linear exponent in
+\eqref{eq:ag-endpoint-1}.  The same difference substitution completes
+the proof.
+\end{proof}
+
+\begin{remark}
+For $k=2$, \eqref{eq:ag-endpoint-k} and
+\eqref{eq:ag-endpoint-1} are exactly the two Rogers--Ramanujan
+identities.  The interior Andrews--Gordon identities insert the linear
+tail $N_i+\cdots+N_{k-1}$ for $1<i<k$.  Their standard Bailey-lattice
+proof requires one additional change-of-parameter step; the endpoint
+chain above isolates the part of the theory that follows solely from
+the weak lemma proved here.
+\end{remark}
+
+
+\section{A source atlas of further product identities}
+\label{sec:atlas}
+
+Everything through \cref{sec:andrews-gordon} belongs to the proved theorem
+sequence.  The purpose of the present section is different: it gives a
+normalized map of additional formulas appearing in the supplied archive and
+places them in the Rogers--Ramanujan--Slater landscape.  The displayed
+relations in this section are therefore \emph{source records}, not results used
+as premises elsewhere in this article.  They were transcribed independently
+from the PDF and notebook copies, normalized to the notation of
+\cref{sec:partitions}, and checked by exact coefficient arithmetic through
+$q^{100}$ as described in \cref{sec:verification}.  Such a finite check is a
+strong guard against transcription errors but is not a proof of an infinite
+identity.  Published proof routes run through Bailey pairs, constant-term
+methods, dissections, and modular forms; useful historical guides are
+Slater's list and its expanded modern survey
+\cite{Slater1952,McLaughlinSillsZimmer}.
+
+\subsection{Bailey's modulus-9 trio}
+
+The archive records
+\begin{align*}
+ \sum_{n\ge0}
+ \frac{q^{3n^2}(q;q)_{3n}}
+ {(q^3;q^3)_n(q^3;q^3)_{2n}}
+ &\mathrel{\stackrel{\rm archive}{=}}
+ \frac{(q^4,q^5,q^9;q^9)_\infty}{(q^3;q^3)_\infty},
+ \tag{B9.1}\label{eq:atlas-b9-1}\\
+ \sum_{n\ge0}
+ \frac{q^{3n^2+3n}(q;q)_{3n}(1-q^{3n+2})}
+ {(q^3;q^3)_n(q^3;q^3)_{2n+1}}
+ &\mathrel{\stackrel{\rm archive}{=}}
+ \frac{(q^2,q^7,q^9;q^9)_\infty}{(q^3;q^3)_\infty},
+ \tag{B9.2}\label{eq:atlas-b9-2}\\
+ \sum_{n\ge0}
+ \frac{q^{3n^2+3n}(q;q)_{3n+1}}
+ {(q^3;q^3)_n(q^3;q^3)_{2n+1}}
+ &\mathrel{\stackrel{\rm archive}{=}}
+ \frac{(q,q^8,q^9;q^9)_\infty}{(q^3;q^3)_\infty}.
+ \tag{B9.3}\label{eq:atlas-b9-3}
+\end{align*}
+The common denominator $(q^3;q^3)_\infty$ makes these naturally
+three-dissected objects.  On the product side, the surviving residue pairs are
+$\{4,5\}$, $\{2,7\}$, and $\{1,8\}$ modulo $9$.
+
+\subsection{Dyson's modulus-27 quartet}
+
+A second family in the archive is
+\begin{align*}
+ 1+\sum_{n\ge1}
+ \frac{q^{n^2}(q^3;q^3)_{n-1}}
+ {(q;q)_n(q;q)_{2n-1}}
+ &\mathrel{\stackrel{\rm archive}{=}}
+ \frac{(q^{12},q^{15},q^{27};q^{27})_\infty}
+ {(q;q)_\infty},
+ \tag{D27.1}\label{eq:atlas-d27-1}\\
+ \sum_{n\ge0}
+ \frac{q^{n^2+n}(q^3;q^3)_n}
+ {(q;q)_n(q;q)_{2n+1}}
+ &\mathrel{\stackrel{\rm archive}{=}}
+ \frac{(q^9;q^9)_\infty}{(q;q)_\infty},
+ \tag{D27.2}\label{eq:atlas-d27-2}\\
+ \sum_{n\ge0}
+ \frac{q^{n^2+2n}(q^3;q^3)_n}
+ {(q;q)_n(q;q)_{2n+2}}
+ &\mathrel{\stackrel{\rm archive}{=}}
+ \frac{(q^6,q^{21},q^{27};q^{27})_\infty}
+ {(q;q)_\infty},
+ \tag{D27.3}\label{eq:atlas-d27-3}\\
+ \sum_{n\ge0}
+ \frac{q^{n^2+3n}(q^3;q^3)_n}
+ {(q;q)_n(q;q)_{2n+2}}
+ &\mathrel{\stackrel{\rm archive}{=}}
+ \frac{(q^3,q^{24},q^{27};q^{27})_\infty}
+ {(q;q)_\infty}.
+ \tag{D27.4}\label{eq:atlas-d27-4}
+\end{align*}
+Here the numerator products select complementary residue pairs modulo $27$;
+the second identity is exceptional in collapsing to the simpler modulus-$9$
+product $(q^9;q^9)_\infty$.
+
+\subsection{Rogers's modulus-14 trio}
+
+The three recorded modulus-$14$ identities are
+\begin{align*}
+ \sum_{n\ge0}\frac{q^{n^2}}
+ {(q;q)_n(q;q^2)_n}
+ &\mathrel{\stackrel{\rm archive}{=}}
+ \frac{(q^6,q^8,q^{14};q^{14})_\infty}{(q;q)_\infty},
+ \tag{R14.1}\label{eq:atlas-r14-1}\\
+ \sum_{n\ge0}\frac{q^{n^2+n}}
+ {(q;q)_n(q;q^2)_{n+1}}
+ &\mathrel{\stackrel{\rm archive}{=}}
+ \frac{(q^4,q^{10},q^{14};q^{14})_\infty}{(q;q)_\infty},
+ \tag{R14.2}\label{eq:atlas-r14-2}\\
+ \sum_{n\ge0}\frac{q^{n^2+2n}}
+ {(q;q)_n(q;q^2)_{n+1}}
+ &\mathrel{\stackrel{\rm archive}{=}}
+ \frac{(q^2,q^{12},q^{14};q^{14})_\infty}{(q;q)_\infty}.
+ \tag{R14.3}\label{eq:atlas-r14-3}
+\end{align*}
+The mixed bases $q$ and $q^2$ on the series side foreshadow an even--odd
+dissection; the three product sides retain the symmetric pairs
+$\{6,8\}$, $\{4,10\}$, and $\{2,12\}$ modulo $14$.
+
+\subsection{Rogers--Selberg and Jackson--Slater records}
+
+The Rogers--Selberg family in the archive is
+\begin{align*}
+ \sum_{n\ge0}\frac{q^{2n^2}}
+ {(q^2;q^2)_n(-q;q)_{2n}}
+ &\mathrel{\stackrel{\rm archive}{=}}
+ \frac{(q^3,q^4,q^7;q^7)_\infty}{(q^2;q^2)_\infty},
+ \tag{RS.1}\label{eq:atlas-rs-1}\\
+ \sum_{n\ge0}\frac{q^{2n^2+2n}}
+ {(q^2;q^2)_n(-q;q)_{2n}}
+ &\mathrel{\stackrel{\rm archive}{=}}
+ \frac{(q^2,q^5,q^7;q^7)_\infty}{(q^2;q^2)_\infty},
+ \tag{RS.2}\label{eq:atlas-rs-2}\\
+ \sum_{n\ge0}\frac{q^{2n^2+2n}}
+ {(q^2;q^2)_n(-q;q)_{2n+1}}
+ &\mathrel{\stackrel{\rm archive}{=}}
+ \frac{(q,q^6,q^7;q^7)_\infty}{(q^2;q^2)_\infty}.
+ \tag{RS.3}\label{eq:atlas-rs-3}
+\end{align*}
+The extra Jackson--Slater entry is
+\begin{align*}
+ \sum_{n\ge0}\frac{q^{2n^2}}{(q;q)_{2n}}
+ &\mathrel{\stackrel{\rm archive}{=}}
+ \frac{(q,q^7,q^8;q^8)_\infty
+       (q^6,q^{10};q^{16})_\infty}
+ {(q;q)_\infty}.
+ \tag{JS}\label{eq:atlas-js}
+\end{align*}
+The latter is a useful reminder that a single Rogers--Ramanujan-type product
+need not live at one modulus: the right side has simultaneous moduli $8$ and
+$16$.
+
+\subsection{Fine's eta-quotient Lambert series}
+
+The final isolated record is Fine's equation
+\begin{align*}
+ &\frac{(q^2;q^2)_\infty(q^3;q^3)_\infty
+        (q^8;q^8)_\infty(q^{12};q^{12})_\infty}
+       {(q;q)_\infty(q^{24};q^{24})_\infty}
+ \mathrel{\stackrel{\rm archive}{=}}
+ 1+\sum_{k\ge1}
+ \frac{q^k(1+q^{4k})(1+q^{6k})}{1+q^{12k}}.
+ \tag{F}\label{eq:atlas-fine}
+\end{align*}
+Unlike the preceding unilateral hypergeometric sums, the right side is a
+Lambert-type series.  Expanding $(1+q^{12k})^{-1}$ geometrically exposes an
+arithmetic convolution, while the left side is an eta quotient after the
+substitution $q=\e^{2\pi\ii\tau}$.
+
+\subsection{Borwein sign patterns: corrected modern status}
+\label{subsec:borwein-status}
+
+The finite product in the archive can be written
+\begin{equation}\label{eq:borwein-polynomial}
+ P_n(q)=\prod_{\substack{1\le j\le3n\\3\nmid j}}(1-q^j)
+ =\frac{(q;q)_{3n}}{(q^3;q^3)_n}.
+\end{equation}
+The equality is immediate: $(q;q)_{3n}$ contains every factor
+$1-q^j$ for $1\le j\le3n$, and division by $(q^3;q^3)_n$ removes exactly
+the factors whose index is divisible by $3$.
+
+Write the three-dissection
+\begin{equation}\label{eq:borwein-dissection}
+ P_n(q)=A_n(q^3)-qB_n(q^3)-q^2C_n(q^3).
+\end{equation}
+The First Borwein Conjecture asserted coefficientwise nonnegativity of
+$A_n,B_n,C_n$; the Second asserted the analogous sign pattern for
+$P_n(q)^2$.  The terminology in the supplied MathWorld snapshot is now
+historical: Wang proved the First Conjecture, and Wang--Krattenthaler gave a
+new proof of the First together with a proof of the Second
+\cite{Wang2022,WangKrattenthaler2022}.  Their cubic analogue is only partially
+proved in that work.  Recent Borwein-type research continues to distinguish
+proved quadratic statements from open or partially proved higher-power
+patterns \cite{BerkovichDhar2024}.  This status correction matters when older
+reference pages are used as a source corpus.
+
+\subsection{Crosswalk from the supplied archive to this article}
+
+The archive contains $48$ files.  Many topics occur twice, as a rendered PDF
+reference page and as a Wolfram notebook containing the same formulas or
+computations.  The following crosswalk groups all files by mathematical role.
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.22\textwidth}
+                  >{\raggedright\arraybackslash}p{0.39\textwidth}
+                  >{\raggedright\arraybackslash}p{0.31\textwidth}}
+\toprule
+\textbf{Archive group} & \textbf{Files represented} &
+\textbf{Treatment in this article}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Archive group} & \textbf{Files represented} &
+\textbf{Treatment in this article}\\
+\midrule
+\endhead
+\midrule
+\multicolumn{3}{r}{\emph{Continued on the next page}}\\
+\endfoot
+\bottomrule
+\endlastfoot
+Shifted factorials and Gaussian coefficients &
+Four files: \emph{$q$-Pochhammer Symbol}; \emph{$q$-Binomial
+Coefficient} (PDF and notebook); \emph{$q$-Vandermonde Sum}. &
+\Cref{lem:pochhammer-calculus,thm:finite-q-binomial,thm:reciprocal-finite,thm:q-vandermonde,prop:rectangle}.\\[0.25em]
+Basic hypergeometric notation and finite summation &
+Seven files: \emph{$q$-Hypergeometric Function} (PDF and notebook);
+\emph{$q$-Saalschutz Sum}; \emph{Jackson's Identity};
+\emph{Dougall--Ramanujan Identity}; \emph{$q$-Series Identities}
+(PDF and notebook). &
+\Cref{thm:q-binomial,thm:heine,thm:q-gauss,cor:q-chu,thm:q-pfaff,thm:jackson-8phi7,thm:1psi1}; the Dougall--Ramanujan page is placed in the
+bilateral/very-well-poised extension path.\\[0.25em]
+Jacobi and Watson products &
+Four files: \emph{Jacobi Triple Product} and \emph{Quintuple Product
+Identity}, each as PDF and notebook. &
+Complete finite-to-infinite proof in \cref{thm:jtp}; complete coefficient
+dissection proof in \cref{thm:qpi}.\\[0.25em]
+Theta and eta functions &
+Eight files: \emph{Jacobi Theta Functions}, \emph{Dedekind Eta Function},
+\emph{Ramanujan Theta Functions}, and \emph{Schroeter's Formula}, each as
+PDF and notebook. &
+Product forms, heat equation, Poisson/modular transformations, eta
+relations, Ramanujan's $f(a,b)$, and Schroeter's lattice dissection in
+\cref{thm:theta-modular,thm:eta,prop:ramanujan-product,thm:schroeter}.\\[0.25em]
+Partitions and pentagonal numbers &
+Six files: \emph{Partition Function P}, \emph{Partition Function Q}, and
+\emph{Pentagonal Number Theorem}, each as PDF and notebook. &
+\Cref{cor:pentagonal,thm:partition-product,thm:distinct-odd,thm:durfee,cor:partition-recurrence}.\\[0.25em]
+Sums of squares &
+Two files: \emph{Sum of Squares Function} as PDF and notebook. &
+Independent complete proofs of the two-square and four-square formulas in
+\cref{thm:two-square,thm:four-square}.\\[0.25em]
+Rogers--Ramanujan and Andrews--Gordon &
+Four files: \emph{Rogers--Ramanujan Identities};
+\emph{Rogers--Ramanujan Continued Fraction} (PDF and notebook);
+\emph{Andrews--Gordon Identity}. &
+Bailey-pair derivation, partition interpretation, continued fraction, and
+endpoint Andrews--Gordon identities in
+\cref{sec:bailey,sec:rogers-ramanujan,sec:andrews-gordon}.\\[0.25em]
+Additional Rogers--Ramanujan--Slater families &
+Twelve files: the Bailey modulus $9$, Dyson modulus $27$, Rogers modulus
+$14$, Rogers--Selberg, Jackson--Slater, and Fine entries, each as PDF and
+notebook. &
+Normalized source records \eqref{eq:atlas-b9-1}--\eqref{eq:atlas-fine} and
+exact truncation checks in \cref{sec:verification}.\\[0.25em]
+Borwein sign patterns &
+One file: \emph{Borwein Conjectures}. &
+Definition \eqref{eq:borwein-polynomial} and the corrected literature status
+in \cref{subsec:borwein-status}.\\
+\end{longtable}
+\endgroup
+
+
+\section{Exact computational verification as finite algebra}
+\label{sec:verification}
+
+Numerical evaluation at a floating-point value of $q$ is a poor way to check
+$q$-identities: products can converge slowly and alternating expressions can
+lose many digits.  Formal coefficient arithmetic avoids both problems.
+The key observation is elementary but decisive.
+
+\begin{proposition}[truncation principle]\label{prop:truncation}
+Let $(e_j)_{j\ge1}$ be any sequence of integers, and suppose the formal
+product
+\[
+ F(q)=\prod_{j\ge1}(1-q^j)^{e_j}
+\]
+is interpreted in $\Z[[q]]$.  For every $N\ge0$,
+\begin{equation}\label{eq:truncation-product}
+ F(q)\equiv\prod_{j=1}^{N}(1-q^j)^{e_j}
+ \pmod{q^{N+1}}.
+\end{equation}
+More generally, if $S(q)=\sum_{n\ge0}S_n(q)$ and the $q$-adic valuations
+$\nu_q(S_n)$ tend to infinity, then
+\begin{equation}\label{eq:truncation-series}
+ S(q)\equiv\sum_{\nu_q(S_n)\le N}S_n(q)
+ \pmod{q^{N+1}}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For $j>N$, both $(1-q^j)^{e_j}$ and its inverse power expansion have
+constant term $1$ and no nonconstant term of degree at most $N$; hence each
+such factor is congruent to $1$ modulo $q^{N+1}$.  Multiplying these
+congruences proves \eqref{eq:truncation-product}.  For
+\eqref{eq:truncation-series}, every omitted summand is divisible by
+$q^{N+1}$ by definition of the valuation.  At any fixed degree only finitely
+many summands remain, so addition in the formal power-series ring is
+legitimate.
+\end{proof}
+
+Every product in \cref{sec:atlas} is a quotient of products of factors
+$1-q^d$.  Negative exponents are expanded by
+\[
+ (1-q^d)^{-r}=\sum_{m\ge0}\binom{m+r-1}{r-1}q^{dm}
+ \qquad(r\in\N),
+\]
+and the series sides have quadratic valuations.  Consequently the first
+$N+1$ coefficients can be computed with integer arrays of length $N+1$;
+there is no roundoff and no uncomputed tail can influence the result.
+
+\begin{table}[htbp]
+\centering
+\caption{Independent exact checks of the archival source records.}
+\label{tab:coefficient-checks}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Family & Number of identities & Degrees compared & First discrepancy\\
+\midrule
+Bailey modulus $9$ & $3$ & $0\le d\le100$ & none\\
+Dyson modulus $27$ & $4$ & $0\le d\le100$ & none\\
+Rogers modulus $14$ & $3$ & $0\le d\le100$ & none\\
+Rogers--Selberg & $3$ & $0\le d\le100$ & none\\
+Jackson--Slater & $1$ & $0\le d\le100$ & none\\
+Fine & $1$ & $0\le d\le100$ & none\\
+\midrule
+Total & $15$ & $1515$ coefficient equalities & none\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The phrase ``coefficient equality'' in the last row counts one comparison
+for each identity and each of the $101$ degrees.  It should not be mistaken
+for a proof: an infinite identity can agree to arbitrarily high finite order
+and eventually fail.  Its role is quality control.  In contrast, the same
+kind of finite exact arithmetic \emph{is} a proof when a preceding argument
+supplies a finite degree bound, as in the cleared rational certificate of
+\cref{lem:jackson-rational}.
+
+
+\section{Synthesis and further directions}
+\label{sec:synthesis}
+
+The material in the archive is best understood not as a list of isolated
+formulas but as a dependency graph.
+
+\begin{enumerate}[label=\arabic*.]
+\item The shifted factorial and the two finite $q$-binomial theorems provide
+      the local algebra.  Their recurrences simultaneously encode polynomial
+      identities and partitions in a rectangle.
+\item Limits of finite identities produce Euler's expansions and the infinite
+      $q$-binomial theorem.  Parameter insertion and analytic continuation
+      then lead to Heine, $q$-Gauss, $q$-Chu--Vandermonde, and Ramanujan's
+      bilateral ${}_1\psi_1$.
+\item Euler telescoping converts balanced terminating summations into finite
+      rational certificates.  The $q$-Pfaff--Saalsch\"utz sum is then the
+      exact matrix entry needed in Bailey's lemma.
+\item Jacobi's triple product translates between theta sums and infinite
+      products.  Congruence dissections yield the quintuple product and
+      Schr\"oter's formula; coefficient extraction yields partition and
+      sums-of-squares identities.
+\item Bailey inversion, Bailey's lemma, and the limiting transform turn one
+      elementary unit pair into the Rogers--Ramanujan identities and an
+      infinite endpoint Andrews--Gordon hierarchy.
+\end{enumerate}
+
+Several natural continuations lie just beyond the boundary chosen here.
+The interior Andrews--Gordon identities require a change-of-parameter step in
+the Bailey lattice; bilateral Bailey lemmas connect directly to
+${}_6\psi_6$ and Dougall--Ramanujan summations; the Askey--Wilson integral
+places these series inside the theory of orthogonal polynomials; and root
+system analogues replace one-dimensional Jacobi factors by higher-rank
+constant-term identities.  On the arithmetic side, eta quotients such as
+Fine's equation invite modular-form proofs with explicit Sturm bounds, while
+Borwein-type sign patterns demand coefficientwise positivity rather than
+merely analytic equality.  Standard entry points for these extensions are
+\cite{Andrews1986,GasperRahman,AndrewsAskeyRoy,DLMF17}.
+
+The recurring methodological lesson is that a $q$-identity should be studied
+at three levels at once: finite algebra, analytic limit, and coefficient
+combinatorics.  A proof is usually shortest when it moves deliberately among
+these levels instead of remaining confined to one notation.
+
+
+\clearpage
+\appendix
+
+\section{Literal verification of Jackson's rational certificate}
+\label{app:certificate}
+
+The following SymPy program constructs the two sides of
+\eqref{eq:jackson-rational} as exact rational functions, clears their common
+denominator through \texttt{together}, and verifies that the resulting
+numerator is the zero polynomial.  No floating-point operation or random
+specialization is involved.
+
+\begingroup
+\scriptsize
+\begin{verbatim}
+import sympy as sp
+
+A, B, C, D, E, F = sp.symbols("A B C D E F")
+
+def p(*xs):
+    return sp.prod(1 - x for x in xs)
+
+lhs = 1 - p(
+    B, C, D, E, F, A**3/(B*C*D*E*F)
+) / p(
+    A/B, A/C, A/D, A/E, A/F, B*C*D*E*F/A**2
+)
+
+outer = p(
+    A, D,
+    A**2/(B*C*D*E), A**2/(B*C*D*F),
+    A**2/(B*D*E*F), A**2/(C*D*E*F)
+) / p(
+    A/B, A/C, A/E, A/F,
+    A**2/(B*C*D*E*F), A**3/(B*C*D**2*E*F)
+)
+
+inner = p(
+    A/(B*D), A/(C*D), A/(D*E), A/(D*F),
+    A**2/(B*C*D*E*F), A**3/(B*C*D*E*F)
+) / p(
+    1/D, A/D,
+    A**2/(B*C*D*E), A**2/(B*C*D*F),
+    A**2/(B*D*E*F), A**2/(C*D*E*F)
+)
+
+numerator, denominator = sp.together(
+    lhs - outer*(1 - inner)
+).as_numer_denom()
+
+assert sp.expand(numerator) == 0
+assert denominator != 0
+\end{verbatim}
+\endgroup
+
+Because all operations occur in the rational-function field
+$\Q(A,B,C,D,E,F)$, the assertion proves the formal rational identity.  The
+usual specialization principle then gives the identity for all parameter
+values at which the original denominators are nonzero.
+
+
+\section{Core exact-arithmetic checker for product identities}
+\label{app:checker}
+
+The following compact program is the engine used for
+\cref{tab:coefficient-checks}.  It implements multiplication modulo
+$q^{N+1}$, finite or infinite $q$-Pochhammer products, and reciprocals of
+linear factors.  Formula-specific drivers are direct translations of the
+fifteen displays in \cref{sec:atlas}; one representative comparison is shown
+at the end.
+
+\begingroup
+\scriptsize
+\begin{verbatim}
+N = 100
+
+
+def add(a, b):
+    return [a[i] + b[i] for i in range(N + 1)]
+
+
+def mul(a, b):
+    c = [0] * (N + 1)
+    for i, x in enumerate(a):
+        if x == 0:
+            continue
+        for j, y in enumerate(b[:N + 1 - i]):
+            if y:
+                c[i + j] += x * y
+    return c
+
+
+def monomial(k, value=1):
+    a = [0] * (N + 1)
+    if k <= N:
+        a[k] = value
+    return a
+
+
+ONE = monomial(0)
+
+
+def linear(d, plus=False, inverse=False):
+    # (1 + q^d) or (1 - q^d), optionally inverted.
+    a = [0] * (N + 1)
+    a[0] = 1
+    if inverse:
+        ratio = -1 if plus else 1
+        for t in range(1, N // d + 1):
+            a[t * d] = ratio**t
+    elif d <= N:
+        a[d] = 1 if plus else -1
+    return a
+
+
+def poch(r, step, count=None, inverse=False, plus=False):
+    # (plus ? -q^r : q^r; q^step)_count, truncated at q^(N+1).
+    out = ONE
+    if count is None:
+        degrees = range(r, N + 1, step)
+    else:
+        degrees = (r + step * j for j in range(count))
+    for d in degrees:
+        if d > N:
+            break
+        out = mul(out, linear(d, plus, inverse))
+    return out
+
+
+def shifted(exp, factors):
+    out = monomial(exp)
+    for args in factors:
+        out = mul(out, poch(*args))
+    return out
+
+
+def sum_by_valuation(builder, valuation):
+    out = [0] * (N + 1)
+    n = 0
+    while valuation(n) <= N:
+        out = add(out, builder(n))
+        n += 1
+    return out
+
+
+# Bailey modulus 9, first identity.
+series_side = sum_by_valuation(
+    lambda n: shifted(3*n*n, [
+        (1, 1, 3*n, False, False),
+        (3, 3, n,   True,  False),
+        (3, 3, 2*n, True,  False),
+    ]),
+    lambda n: 3*n*n,
+)
+
+product_side = ONE
+for residue in (4, 5, 9):
+    product_side = mul(product_side, poch(residue, 9))
+product_side = mul(product_side, poch(3, 3, None, True))
+
+assert series_side == product_side
+\end{verbatim}
+\endgroup
+
+The remaining drivers differ only in the exponent shift and in the finite
+factor list.  In particular, the denominator $(-q;q)_m$ is represented by
+\texttt{poch(1, 1, m, True, True)}, and Fine's factor
+$(1+q^{12k})^{-1}$ by \texttt{linear(12*k, True, True)}.
+
+
+\section*{Bibliographic note}
+\addcontentsline{toc}{section}{Bibliographic note}
+
+The article was written against the supplied collection of MathWorld PDF
+snapshots and Wolfram notebooks, but proofs were reconstructed from the
+underlying mathematics rather than copied from the reference pages.  The
+books and papers below provide historical provenance, broader transformation
+theory, and routes to identities intentionally left in the source atlas.
+
+\begin{thebibliography}{99}
+
+\bibitem{AndrewsPartitions}
+G. E. Andrews,
+\emph{The Theory of Partitions},
+Encyclopedia of Mathematics and its Applications, Vol. 2,
+Addison--Wesley, 1976; Cambridge University Press reprint, 1998.
+
+\bibitem{Andrews1986}
+G. E. Andrews,
+\emph{$q$-Series: Their Development and Application in Analysis, Number
+Theory, Combinatorics, Physics, and Computer Algebra},
+CBMS Regional Conference Series in Mathematics, Vol. 66,
+American Mathematical Society, 1986.
+
+\bibitem{Andrews1984}
+G. E. Andrews,
+``Multiple series Rogers--Ramanujan type identities,''
+\emph{Pacific Journal of Mathematics} \textbf{114} (1984), 267--283,
+\url{https://doi.org/10.2140/pjm.1984.114.267}.
+
+\bibitem{AndrewsAskeyRoy}
+G. E. Andrews, R. Askey, and R. Roy,
+\emph{Special Functions},
+Encyclopedia of Mathematics and its Applications, Vol. 71,
+Cambridge University Press, 1999.
+
+\bibitem{Bailey1947}
+W. N. Bailey,
+``Some identities in combinatory analysis,''
+\emph{Proceedings of the London Mathematical Society} (2)
+\textbf{49} (1947), 421--435.
+
+\bibitem{Bailey1949}
+W. N. Bailey,
+``Identities of the Rogers--Ramanujan type,''
+\emph{Proceedings of the London Mathematical Society} (2)
+\textbf{50} (1949), 1--10.
+
+\bibitem{BerkovichDhar2024}
+A. Berkovich and A. Dhar,
+``New Borwein-type conjectures,''
+\emph{Experimental Mathematics}, published online 2025;
+\href{https://arxiv.org/abs/2407.13788}{arXiv:2407.13788}.
+
+\bibitem{BerndtIII}
+B. C. Berndt,
+\emph{Ramanujan's Notebooks, Part III},
+Springer, 1991.
+
+\bibitem{BhatnagarEuler}
+G. Bhatnagar,
+``In praise of an elementary identity of Euler,''
+\href{https://arxiv.org/abs/1102.0659}{arXiv:1102.0659}, 2011.
+
+\bibitem{CarlitzSubbarao}
+L. Carlitz and M. V. Subbarao,
+``A simple proof of the quintuple product identity,''
+\emph{Proceedings of the American Mathematical Society}
+\textbf{32} (1972), 42--44.
+
+\bibitem{DLMF17}
+NIST Digital Library of Mathematical Functions,
+Chapter 17, ``$q$-Hypergeometric and Related Functions,''
+\url{https://dlmf.nist.gov/17}, accessed August 2026.
+
+\bibitem{Fine1988}
+N. J. Fine,
+\emph{Basic Hypergeometric Series and Applications},
+Mathematical Surveys and Monographs, Vol. 27,
+American Mathematical Society, 1988.
+
+\bibitem{GasperRahman}
+G. Gasper and M. Rahman,
+\emph{Basic Hypergeometric Series}, 2nd ed.,
+Encyclopedia of Mathematics and its Applications, Vol. 96,
+Cambridge University Press, 2004.
+
+\bibitem{HardyWright}
+G. H. Hardy and E. M. Wright,
+\emph{An Introduction to the Theory of Numbers}, 6th ed.,
+Oxford University Press, 2008.
+
+\bibitem{Hirschhorn1987}
+M. D. Hirschhorn,
+``A simple proof of Jacobi's four-square theorem,''
+\emph{Proceedings of the American Mathematical Society}
+\textbf{101} (1987), 436--438,
+\url{https://doi.org/10.1090/S0002-9939-1987-0908644-9}.
+
+\bibitem{McLaughlinSillsZimmer}
+J. Mc Laughlin, A. V. Sills, and P. Zimmer,
+``Rogers--Ramanujan--Slater type identities,''
+\emph{Electronic Journal of Combinatorics}, Dynamic Survey DS15,
+first published 2012, updated survey edition,
+\url{https://doi.org/10.37236/36}.
+
+\bibitem{Slater1952}
+L. J. Slater,
+``Further identities of the Rogers--Ramanujan type,''
+\emph{Proceedings of the London Mathematical Society} (2)
+\textbf{54} (1952), 147--167,
+\url{https://doi.org/10.1112/plms/s2-54.2.147}.
+
+\bibitem{Wang2022}
+C. Wang,
+``An analytic proof of the Borwein Conjecture,''
+\emph{Advances in Mathematics} \textbf{394} (2022), Article 108028,
+54 pp.,
+\url{https://doi.org/10.1016/j.aim.2021.108028}.
+
+\bibitem{WangKrattenthaler2022}
+C. Wang and C. Krattenthaler,
+``An asymptotic approach to Borwein-type sign pattern theorems,''
+\href{https://arxiv.org/abs/2201.12415}{arXiv:2201.12415}, 2022.
+
+\bibitem{SourceArchive}
+Wolfram Research and E. W. Weisstein,
+MathWorld reference pages and companion Wolfram notebooks on $q$-series,
+partitions, theta functions, and Rogers--Ramanujan identities,
+compiled in the supplied \nolinkurl{q.zip} archive, August 2026.
+
+\end{thebibliography}
+
+\end{document}

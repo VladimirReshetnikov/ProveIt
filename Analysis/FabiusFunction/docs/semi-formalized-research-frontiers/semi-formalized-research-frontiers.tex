@@ -3553,10 +3553,11 @@ four public definitions,
 monic rational orthogonal polynomials, positive rational norms, a zero diagonal, positive
 rational subdiagonals, their real-cast comparisons, the determinant cross-ratio, and the
 centered rational recurrence in every degree.  The zero-based subdiagonal at index $n$ is
-the conventional $\beta_{n+1}$.  The rational definitions are noncomputable finite
-objects; the separate executable values leaf below supplies the explicit $H_4$ and
-$\beta_4$ evaluations.  Root, Christoffel, quadrature, continued-fraction, Pad\'e, and
-asymptotic theorems remain open.\\
+the conventional $\beta_{n+1}$.  These four rational definitions are noncomputable finite
+objects, not native-code evaluators, and do not themselves evaluate $H_4$ or $\beta_4$;
+the downstream executable tranche and its values leaf do so without changing this
+all-degree interface.  This module proves no root, Christoffel, quadrature,
+continued-fraction, Pad\'e, or asymptotic theorem.\\
 \path{PolynomialMomentGramDeterminant.lean} &
 Exactly two public definitions,
 \lean{polynomialCoefficientMatrix} and \lean{polynomialMomentGramMatrix}, and seven public
@@ -3667,6 +3668,9 @@ These first eight computations are unconditional over $\Q$.  The final three the
 transport the norm to the real Hankel ratio, its squared orthogonal-polynomial integral,
 and the quotient of the fourth and third real Hankel ratios only for
 $F:\lean{BoundedFabius}$ together with $h_F:\lean{IsFabius}\,F$.
+Together with the preceding five finite-algebra modules, these two modules complete a
+seven-module inventory of thirteen public definitions and sixty-one public theorems,
+hence seventy-four public declarations.
 No Gaunt/Wigner/$3j$ entry expansion, Christoffel reconstruction, root or quadrature
 theorem, infinite Jacobi product/continued fraction, or asymptotic result is asserted.\\
 \path{FractionalVolterra.lean}, \path{FractionalVolterraSemigroup.lean} &
