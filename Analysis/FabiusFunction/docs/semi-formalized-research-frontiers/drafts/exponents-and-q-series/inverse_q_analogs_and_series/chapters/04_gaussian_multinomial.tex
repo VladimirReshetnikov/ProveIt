@@ -83,11 +83,11 @@ proof gives the standard generating identity
 \]
 In particular, \(p_{k,b}(0)=p_{k,b}(1)=1\).  Put
 \[
-  c_2=\mathbf 1_{k\ge2}+\mathbf 1_{b\ge2},
+  c_2=\IndicatorOf{k\ge2}+\IndicatorOf{b\ge2},
   \qquad
-  c_3=\mathbf 1_{b\ge3}
-      +\mathbf 1_{k\ge2,\,b\ge2}
-      +\mathbf 1_{k\ge3}.
+  c_3=\IndicatorOf{b\ge3}
+      +\IndicatorOf{k\ge2,\,b\ge2}
+      +\IndicatorOf{k\ge3}.
 \]
 These are exactly \(p_{k,b}(2)\) and \(p_{k,b}(3)\).
 
@@ -387,9 +387,9 @@ The cyclotomic factorization is
 \[
   G_{n,k}(q)=\prod_{m=2}^{n}\Phi_m(q)^{e_m},
   \qquad
-  e_m=\left\lfloor\frac nm\right\rfloor
-      -\left\lfloor\frac km\right\rfloor
-      -\left\lfloor\frac{n-k}{m}\right\rfloor.
+  e_m=\Floor{\frac nm}
+      -\Floor{\frac km}
+      -\Floor{\frac{n-k}{m}}.
 \]
 Every \(e_m\) is either zero or one.  Consequently every complex zero of
 \(G_{n,k}\) is a simple root of unity, and the local inverse at a zero is an
@@ -399,13 +399,13 @@ ordinary Taylor branch rather than a Puiseux branch of higher order.
 \begin{proof}
 The factorization \(1-q^j=\prod_{m\mid j}\Phi_m(q)\) shows that the
 multiplicity of \(\Phi_m\) in \(\QPochhammer{q}{q}{N}\) is
-\(\lfloor N/m\rfloor\).
+\(\Floor{N/m}\).
 Subtracting the denominator multiplicities proves the formula for \(e_m\).
 Write \(n=k+b\).  The elementary carry identity
 \[
-  \left\lfloor\frac{k+b}{m}\right\rfloor
-  -\left\lfloor\frac{k}{m}\right\rfloor
-  -\left\lfloor\frac{b}{m}\right\rfloor\in\{0,1\}
+  \Floor{\frac{k+b}{m}}
+  -\Floor{\frac{k}{m}}
+  -\Floor{\frac{b}{m}}\in\{0,1\}
 \]
 proves square-freeness.  Distinct cyclotomic polynomials are coprime and each
 is separable over characteristic zero.  Thus every zero is simple.  The
@@ -432,7 +432,7 @@ One has
   \begin{cases}
   0,&n\text{ even and }k\text{ odd},\\[0.25em]
   \displaystyle
-  \binom{\lfloor n/2\rfloor}{\lfloor k/2\rfloor},
+  \binom{\Floor{n/2}}{\Floor{k/2}},
   &\text{otherwise}.
   \end{cases}
 \]
@@ -642,9 +642,9 @@ primitive \(m\)-th root of unity, and write
 a zero of \(M_{\bm n}\) is
 \[
   e_m
-  =\left\lfloor\frac nm\right\rfloor
-   -\sum_{i=1}^{s}\left\lfloor\frac{n_i}{m}\right\rfloor
-  =\left\lfloor\frac{r_1+\cdots+r_s}{m}\right\rfloor.
+  =\Floor{\frac nm}
+   -\sum_{i=1}^{s}\Floor{\frac{n_i}{m}}
+  =\Floor{\frac{r_1+\cdots+r_s}{m}}.
 \]
 Thus \(0\le e_m\le s-1\).  If \(e_m>0\), the inverse at target zero has
 exactly \(e_m\) local Puiseux determinations, counted with their choices of

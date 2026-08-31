@@ -70,6 +70,7 @@
 
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
 \newcommand{\FreeIDParameterSet}{\mathcal{I}_{\mathrm{free}}}
+\newcommand{\SturmPositiveRoot}[1]{s_{#1}}
 \newcommand{\lean}[1]{%
   \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
 \newcommand{\leanevaltwo}[1]{%
@@ -460,7 +461,7 @@ Exact simplification gives
 D_3(s)=\frac{P_{30}(s)}{
 11802415625(1+s)^6(1+s^2)^3(1-s+s^2)(1+s+s^2)^4(1+s+s^2+s^3+s^4)^2},
 \end{equation}
-where \(P_{30}\in\mathbb Z[s]\) is listed in Appendix~\ref{app:P30}. The denominator is positive on \((0,1)\).
+where \(P_{30}\in\IntegerNumbers[s]\) is listed in Appendix~\ref{app:P30}. The denominator is positive on \((0,1)\).
 
 Let \(\alpha\) be the largest root of \(P_{30}\) in \((0,1)\). Exact
 Sturm-sequence computations isolate it in
@@ -940,7 +941,7 @@ Thus every denominator is cyclotomic: its complex zeros are roots of unity other
 \begin{proposition}[Cyclotomic denominator control]\label{prop:cyclotomic}
 For fixed \(n\), the variance-normalized moment, free cumulant \(c_{2n}(s)\), and Boolean cumulant belong to
 \begin{equation}\label{eq:qring}
-\mathbb Q\bigl[s,[2]_s^{-1},[3]_s^{-1},\ldots,[n]_s^{-1}\bigr].
+\RationalNumbers\bigl[s,[2]_s^{-1},[3]_s^{-1},\ldots,[n]_s^{-1}\bigr].
 \end{equation}
 In particular, they have no pole on the positive real interval \(0<s<1\).
 \end{proposition}
@@ -1172,17 +1173,17 @@ The coefficients are as follows.
 
 The three positive roots are isolated in the rational intervals
 \begin{align*}
-\frac{6261}{1486660088}&<s_1<\frac{7013}{1665220763},\\
-\frac{17338229}{3019459543}&<s_2<\frac{18557046}{3231717013},\\
-\frac{385546279}{1406842461}&<s_3<\frac{219810848}{802080713}.
+\frac{6261}{1486660088}&<\SturmPositiveRoot{1}<\frac{7013}{1665220763},\\
+\frac{17338229}{3019459543}&<\SturmPositiveRoot{2}<\frac{18557046}{3231717013},\\
+\frac{385546279}{1406842461}&<\SturmPositiveRoot{3}<\frac{219810848}{802080713}.
 \end{align*}
 Numerically,
 \begin{align*}
-s_1&=0.000004211453613733039418535107394599646153802598\ldots,\\
-s_2&=0.005742163043778858179021510344163665436168765139\ldots,\\
-s_3&=0.274050783714581103197636083256401808258849748968\ldots.
+\SturmPositiveRoot{1}&=0.000004211453613733039418535107394599646153802598\ldots,\\
+\SturmPositiveRoot{2}&=0.005742163043778858179021510344163665436168765139\ldots,\\
+\SturmPositiveRoot{3}&=0.274050783714581103197636083256401808258849748968\ldots.
 \end{align*}
-An exact Sturm sequence gives three roots in \((0,1)\), no root in \((1/11,s_3^-)\), exactly one in the displayed interval for \(s_3\), and none between its right endpoint and \(1\).
+An exact Sturm sequence gives three roots in \((0,1)\), no root in \((1/11,\SturmPositiveRoot{3}^-)\), exactly one in the displayed interval for \(\SturmPositiveRoot{3}\), and none between its right endpoint and \(1\).
 
 
 \section{Additional finite-level polynomials}

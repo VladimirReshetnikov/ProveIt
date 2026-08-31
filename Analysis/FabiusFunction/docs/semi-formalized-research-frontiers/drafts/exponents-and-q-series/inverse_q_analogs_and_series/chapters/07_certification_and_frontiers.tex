@@ -2,6 +2,11 @@
 % accompanied by a proof; conjectures are confined to the final frontier
 % section and include explicit proof obligations.
 
+% LOCAL-NON-FOURIER-HAT: \CertifiedEnclosureCenter denotes a certified numerical enclosure center approximating the exact quantity supplied as the argument.
+\newcommand{\CertifiedEnclosureCenter}[1]{\widehat{#1}}
+% LOCAL-NON-FOURIER-HAT: \FormalGevreySeriesSymbol denotes a formal Gevrey series before Borel transformation, not a Fourier transform.
+\newcommand{\FormalGevreySeriesSymbol}[1]{\widehat{#1}}
+
 \part{Certification and research frontiers}
 
 \section{Branch-aware numerical certification}
@@ -344,10 +349,10 @@ Suppose validated bounds
  E:=\frac1{12}\sum_kM_k.
 \]
 Suppose outward-rounded arithmetic provides
-\(\widehat Q\in\ComplexNumbers\) and \(\varepsilon_Q\ge0\) with
-\(\lvert Q-\widehat Q\rvert\le\varepsilon_Q\).  If the closed disk
+\(\CertifiedEnclosureCenter{Q}\in\ComplexNumbers\) and \(\varepsilon_Q\ge0\) with
+\(\lvert Q-\CertifiedEnclosureCenter{Q}\rvert\le\varepsilon_Q\).  If the closed disk
 \[
- \left\{z:\left\lvert z-\frac{\widehat Q}{2\pi\ImaginaryUnit}\right\rvert
+\left\{z:\left\lvert z-\frac{\CertifiedEnclosureCenter{Q}}{2\pi\ImaginaryUnit}\right\rvert
        \le\frac{E+\varepsilon_Q}{2\pi}\right\}
 \]
 contains exactly one integer \(n\), then \(f\) has exactly \(n\) zeros in
@@ -466,7 +471,7 @@ exactly when \(N<x\), is unchanged when \(N=x\), and increases when \(N>x\).
 If \(A\lvert t\rvert>1/2\), its unique minimizing index is \(N=0\).  If
 \(A\lvert t\rvert=1/2\), the minimizing indices are \(0\) and \(1\).  If
 \(A\lvert t\rvert<1/2\) and \(x\notin\NaturalNumbers\), the unique minimizing index is
-\(\lceil x\rceil\); if \(x\in\NaturalNumbers\), the minimizing indices are \(x\) and
+\(\Ceiling{x}\); if \(x\in\NaturalNumbers\), the minimizing indices are \(x\) and
 \(x+1\).
 \end{proposition}
 
@@ -870,7 +875,7 @@ Let \(\zeta\) be a primitive \(m\)-th root of unity and, for
 absolutely convergent series
 \[
  L_a(t)
-  =\PrincipalLogarithm(a;\zeta e^{-t})_\infty
+  =\PrincipalLogarithm(a;\zeta \EulerE^{-t})_\infty
   =-\sum_{r=1}^{\infty}
      \frac{a^r}{r(1-\zeta^re^{-rt})}.
 \]
@@ -884,12 +889,12 @@ The singular action and constant term forced by this normalization are
    -\sum_{\substack{r\ge1\\m\nmid r}}
       \frac{a^r}{r(1-\zeta^r)}.
 \]
-A formal series \(\widehat R(t)=\sum_{n\ge0}c_nt^n\) is
+A formal series \(\FormalGevreySeriesSymbol{R}(t)=\sum_{n\ge0}c_nt^n\) is
 \emph{Gevrey one} here if
 \(\lvert c_n\rvert\le CA^n n!\) for some \(C,A>0\).  Its formal Borel
 transform is
 \[
- \mathscr B\widehat R(\xi)
+\mathscr B\FormalGevreySeriesSymbol{R}(\xi)
   =\sum_{n\ge0}\frac{c_{n+1}}{n!}\xi^n;
 \]
 the constant \(c_0\) is carried separately by Borel--Laplace summation.

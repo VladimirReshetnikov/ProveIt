@@ -651,7 +651,7 @@ The threshold $q=1/2$ is geometrically natural: below it, the first interval is 
 
 Define the centered density $h_q(x)=g_q(x+1/2)$ and the normalized interval density
 \[
- u_a(x)=\frac{1}{2a}\mathbf 1_{[-a,a]}(x),
+ u_a(x)=\frac{1}{2a}\IndicatorOf{[-a,a]}(x),
  \qquad a_n=\frac{1-q}{2}q^n.
 \]
 Then
@@ -768,12 +768,12 @@ The product \cref{eq:entire-Cq} converges locally uniformly to an even entire fu
  \rho_{n,k}=c_qkq^{-n},
  \qquad n\ge0,\quad k\ge1.
 \end{equation}
-A nonzero zero is simple whenever it has a unique representation in \cref{eq:zeros}.  In particular, if $q^d\notin\mathbb Q$ for every integer $d\ge1$, all nonzero zeros are simple.
+A nonzero zero is simple whenever it has a unique representation in \cref{eq:zeros}.  In particular, if $q^d\notin\RationalNumbers$ for every integer $d\ge1$, all nonzero zeros are simple.
 \end{theorem}
 
 \begin{proof}
 On compact sets, $\SincRad w=1-w^2/6+O(w^4)$ and $\sum q^{2n}<\infty$, so the infinite-product criterion gives local uniform convergence.  The zeros of the $n$-th factor are exactly \cref{eq:zeros}.  A collision
-$kq^{-n}=\ell q^{-m}$ with $m\ne n$ implies $q^{m-n}=\ell/k\in\mathbb Q$.
+$kq^{-n}=\ell q^{-m}$ with $m\ne n$ implies $q^{m-n}=\ell/k\in\RationalNumbers$.
 \end{proof}
 
 Define the positive-zero spectral zeta function, with multiplicities, by
@@ -820,7 +820,7 @@ This packages the Bernoulli cumulants and the sinc zeros into the same object: t
 \begin{theorem}[universal positive-zero density]\label{thm:zero-count-general}
 Let $N_q^+(R)$ count positive zeros up to $R$, with multiplicity.  Then
 \begin{equation}\label{eq:zero-count-floor}
- N_q^+(R)=\sum_{n\ge0}\left\lfloor\frac{R}{c_q}q^n\right\rfloor
+ N_q^+(R)=\sum_{n\ge0}\Floor{\frac{R}{c_q}q^n}
  =\frac{R}{2\pi}+O_q(\log R).
 \end{equation}
 The leading density $1/(2\pi)$ is independent of $q$.
@@ -863,7 +863,7 @@ At the lattice endpoint $R=c_BM$,
 \begin{equation}\label{eq:digit-count}
  \boxed{\quad
  N_{1/B}^+(c_BM)
- =\sum_{j\ge0}\left\lfloor\frac{M}{B^j}\right\rfloor
+ =\sum_{j\ge0}\Floor{\frac{M}{B^j}}
  =\frac{BM-s_B(M)}{B-1}.
  \quad}
 \end{equation}
@@ -872,7 +872,7 @@ At the lattice endpoint $R=c_BM$,
 \begin{proof}
 The zero $c_BkB^n$ equals $c_BM$ precisely when $k=M/B^n$ is a positive integer, which occurs for $0\le n\le v_B(M)$.  This proves the multiplicity and product.  The Dirichlet series is \cref{eq:spectral-zeta} after removing the factor $c_B^{-s}$.  Finally, the classical base-$B$ digit-sum identity
 \[
- \sum_{j\ge1}\left\lfloor\frac{M}{B^j}\right\rfloor
+ \sum_{j\ge1}\Floor{\frac{M}{B^j}}
  =\frac{M-s_B(M)}{B-1}
 \]
 becomes \cref{eq:digit-count} after adding the $j=0$ term.
@@ -880,12 +880,12 @@ becomes \cref{eq:digit-count} after adding the $j=0$ term.
 
 For $B=2$, $c_B=4\pi$ and
 \begin{equation}\label{eq:binary-zero-count}
- N_{1/2}^+(4\pi M)=2M-s_2(M).
+ N_{1/2}^+(4\pi M)=2M-\BinaryDigitSum(M).
 \end{equation}
 The binary digit sum therefore sits directly in the zero geometry of the Fabius--Rvachev characteristic function.
 
 \begin{corollary}[spectral reconstruction of the Thue--Morse sign]\label{cor:tm-spectral}
-Let $\tau_M=(-1)^{s_2(M)}$ be the $\{\pm1\}$ Thue--Morse sequence.  Then
+Let $\tau_M=(-1)^{\BinaryDigitSum(M)}$ be the $\{\pm1\}$ Thue--Morse sequence.  Then
 \begin{equation}\label{eq:tm-zero-parity}
  \boxed{\quad
  \tau_M=(-1)^{N_{1/2}^+(4\pi M)}.
@@ -1005,7 +1005,7 @@ The first normalized polynomials are
 \begin{conjecture}[positive integral moment polynomials]\label{conj:moment-polynomial}
 For every $n\ge1$,
 \begin{equation}\label{eq:Q-positive}
- Q_n(r)\in\mathbb Z_{>0}[r],
+ Q_n(r)\in\IntegerNumbers_{>0}[r],
  \qquad
  \deg Q_n=\binom n2,
 \end{equation}
@@ -1177,10 +1177,10 @@ Let
  \chi_k=\frac{2\pi i k}{L}.
 \]
 For every nonzero integer $k$, the Fourier coefficient
-$\widehat P_q(k)=\int_0^1P_q(u)e^{-2\pi iku}\Differential u$ is
+$\FourierSeriesCoefficient{P_q}{k}=\int_0^1P_q(u)e^{-2\pi iku}\Differential u$ is
 \begin{equation}\label{eq:Pq-fourier}
  \boxed{\quad
- \widehat P_q(k)=-\frac1L\Gamma(-\chi_k)\zeta(1-\chi_k).
+ \FourierSeriesCoefficient{P_q}{k}=-\frac1L\Gamma(-\chi_k)\zeta(1-\chi_k).
  \quad}
 \end{equation}
 In particular, $P_q$ is nonconstant for every $0<q<1$.
@@ -1198,7 +1198,7 @@ The poles of the geometric factor $1/(1-q^{-s})$ at $s=\chi_k$ generate the Four
 
 The coefficient decays exponentially in $|k|$ by Stirling's formula, so $P_q$ is real analytic.  Its first-harmonic amplitude is
 \begin{equation}\label{eq:first-harmonic-amplitude}
- 2|\widehat P_q(1)|
+ 2|\FourierSeriesCoefficient{P_q}{1}|
  =\frac2L\left|\Gamma\!\left(-\frac{2\pi i}{L}\right)
  \zeta\!\left(1-\frac{2\pi i}{L}\right)\right|.
 \end{equation}
@@ -1214,9 +1214,9 @@ It becomes extremely small as $q\uparrow1$, but it never vanishes.
 The numerical experiment computes \cref{eq:Pq-def} directly and compares the first three discrete Fourier coefficients with \cref{eq:Pq-fourier}.  The largest absolute discrepancy in the tested table is $1.42\times10^{-16}$.  For reference,
 \[
 \begin{aligned}
- |\widehat P_{1/3}(1)|&=1.0468623\times10^{-4},&
- |\widehat P_{1/2}(1)|&=1.0627109\times10^{-6},\\
- |\widehat P_{0.7}(1)|&=2.9676846\times10^{-12}.&&
+ |\FourierSeriesCoefficient{P_{1/3}}{1}|&=1.0468623\times10^{-4},&
+ |\FourierSeriesCoefficient{P_{1/2}}{1}|&=1.0627109\times10^{-6},\\
+ |\FourierSeriesCoefficient{P_{0.7}}{1}|&=2.9676846\times10^{-12}.&&
 \end{aligned}
 \]
 
@@ -1356,7 +1356,7 @@ The following projects appear both high-value and realistically attackable.
 
 \begin{enumerate}
   \item \textbf{Moment-polynomial positivity.}  Prove \cref{conj:moment-polynomial}; search for a set-partition, increasing-tree, or major-index model for $Q_n$.
-  \item \textbf{Zero-collision classification.}  If $q^d=a/b\in\mathbb Q$ for a minimal $d$, classify all collisions by residue classes of the scale index modulo $d$, and derive the resulting multiplicity Dirichlet series.
+  \item \textbf{Zero-collision classification.}  If $q^d=a/b\in\RationalNumbers$ for a minimal $d$, classify all collisions by residue classes of the scale index modulo $d$, and derive the resulting multiplicity Dirichlet series.
   \item \textbf{Legendre double scaling.}  Prove \cref{conj:legendre-heat} with Hilb asymptotics and the LDP.  Then compute the first correction from $\lambda_4$ and the amplitude variation.
   \item \textbf{A genuine spectral operator.}  Realize $C_q$ as a Fredholm or zeta-regularized determinant of a dilation-tree operator.
 \end{enumerate}
@@ -1364,7 +1364,7 @@ The following projects appear both high-value and realistically attackable.
 \subsection{Additional long-range conjectures}
 
 \begin{conjecture}[uniform periodic transseries]\label{conj:uniform-transseries}
-For $q$ in every compact subset of $(0,1)$, the endpoint saddle expansion \cref{eq:all-order-endpoint} is Gevrey-1 uniformly in $q$, with Borel singularities determined by adjacent complex saddles and the pole lattice $2\pi i\mathbb Z/L$.
+For $q$ in every compact subset of $(0,1)$, the endpoint saddle expansion \cref{eq:all-order-endpoint} is Gevrey-1 uniformly in $q$, with Borel singularities determined by adjacent complex saddles and the pole lattice $2\pi i\IntegerNumbers/L$.
 \end{conjecture}
 
 \begin{conjecture}[spectral rigidity]\label{conj:spectral-rigidity}
@@ -1403,7 +1403,7 @@ The two convergent sums in \cref{eq:Pq-def} are evaluated directly and then disc
 
 \subsection{Moment polynomials}
 
-The recurrence \cref{eq:P-recurrence} is implemented directly in the polynomial ring $\mathbb Q[r]$, avoiding rational-function simplification.  Integrality, positivity, full coefficient support, and triangular degree are checked through $n=30$.  Full coefficients through $n=20$ are included as CSV.
+The recurrence \cref{eq:P-recurrence} is implemented directly in the polynomial ring $\RationalNumbers[r]$, avoiding rational-function simplification.  Integrality, positivity, full coefficient support, and triangular degree are checked through $n=30$.  Full coefficients through $n=20$ are included as CSV.
 
 \subsection{Generated files}
 
@@ -1446,7 +1446,7 @@ The exact periodic decomposition \cref{eq:Lambda-periodic} shows that the reposi
 \begin{center}
 \begin{tabular}{rrr}
 \toprule
-$q$ & $|\widehat P_q(1)|$ & $2|\widehat P_q(1)|$\\
+$q$ & $|\FourierSeriesCoefficient{P_q}{1}|$ & $2|\FourierSeriesCoefficient{P_q}{1}|$\\
 \midrule
 $1/3$ & $1.0468623258\times10^{-4}$ & $2.0937246516\times10^{-4}$\\
 $1/2$ & $1.0627108821\times10^{-6}$ & $2.1254217642\times10^{-6}$\\

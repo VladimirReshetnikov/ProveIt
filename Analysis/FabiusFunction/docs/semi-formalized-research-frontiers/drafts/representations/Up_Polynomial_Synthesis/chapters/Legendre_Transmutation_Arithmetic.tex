@@ -1,6 +1,11 @@
 % ed.: Unique operator, parity, determinant, asymptotic, and arithmetic
 % material consolidated from the four Legendre--Rvachev reports.
 
+% LOCAL-NON-FOURIER-HAT: \MonicDeconvolvedLegendre denotes the monic normalization of the deconvolved Legendre polynomial
+\newcommand{\MonicDeconvolvedLegendre}[1]{\widehat Q_{#1}^{-}}
+% LOCAL-NON-FOURIER-HAT: \GenericMonicOrthogonalPolynomial denotes the generic monic orthogonal polynomial used in the Favard recurrence
+\newcommand{\GenericMonicOrthogonalPolynomial}[1]{\widehat Q_{#1}}
+
 \section{Legendre operator transmutation, parity, and arithmetic}
 \label{sec:legendre-transmutation}
 
@@ -56,19 +61,19 @@ that
 \[
  \langle f,g\rangle_-=\int f(x)g(x)\Differential\rho(x)
 \]
-for all polynomials.  Moreover, if $\widehat Q_n^-$ denotes the monic
+for all polynomials.  Moreover, if $\MonicDeconvolvedLegendre{n}$ denotes the monic
 normalization, then
 \begin{align}
- \widehat Q_2^-&=x^2-\frac49,&
- \widehat Q_3^-&=x^3-\frac{14}{15}x,\notag\\
- \widehat Q_4^-&=x^4-\frac{32}{21}x^2+\frac{1072}{4725},
+ \MonicDeconvolvedLegendre{2}&=x^2-\frac49,&
+ \MonicDeconvolvedLegendre{3}&=x^3-\frac{14}{15}x,\notag\\
+ \MonicDeconvolvedLegendre{4}&=x^4-\frac{32}{21}x^2+\frac{1072}{4725},
  \label{eq:leg2-low-monic-Q}
 \end{align}
 and
 \begin{equation}
- \boxed{\widehat Q_4^-
- =x\widehat Q_3^--\frac{62}{105}\widehat Q_2^-
- -\frac8{225}\widehat Q_0^-.}
+ \boxed{\MonicDeconvolvedLegendre{4}
+ =x\MonicDeconvolvedLegendre{3}-\frac{62}{105}\MonicDeconvolvedLegendre{2}
+ -\frac8{225}\MonicDeconvolvedLegendre{0}.}
  \label{eq:leg2-favard-defect}
 \end{equation}
 Thus the scalar three-term Favard recurrence fails already at degree four,
@@ -92,8 +97,8 @@ $\mathscr D_u=\sum_r\gamma_rD^r/r!$ to $P_2,P_3,P_4$ and dividing by their
 leading coefficients gives \eqref{eq:leg2-low-monic-Q}.  Substitution and
 collection of powers proves \eqref{eq:leg2-favard-defect}.  A monic
 parity-alternating scalar orthogonal sequence would have
-$\widehat Q_{n+1}=x\widehat Q_n-\lambda_n\widehat Q_{n-1}$; the nonzero
-$\widehat Q_0$ term is impossible.
+$\GenericMonicOrthogonalPolynomial{n+1}=x\GenericMonicOrthogonalPolynomial{n}-\lambda_n\GenericMonicOrthogonalPolynomial{n-1}$; the nonzero
+$\GenericMonicOrthogonalPolynomial{0}$ term is impossible.
 \end{proof}
 
 There is no contradiction between this proposition and

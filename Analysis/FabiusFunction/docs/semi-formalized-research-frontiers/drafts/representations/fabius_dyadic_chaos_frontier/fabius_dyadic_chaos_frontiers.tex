@@ -72,7 +72,6 @@
 
 \newcommand{\Corr}{\operatorname{Corr}}
 \newcommand{\sech}{\operatorname{sech}}
-\newcommand{\one}{\mathbf 1}
 \newcommand{\falling}[2]{#1^{\underline{#2}}}
 \newcommand{\rising}[2]{#1^{\overline{#2}}}
 \newcommand{\Bell}{\mathcal B}
@@ -84,6 +83,9 @@
 \newcommand{\Ecal}{\mathcal E}
 \newcommand{\Kcal}{\mathcal K}
 \newcommand{\Sset}{\mathsf S}
+% LOCAL-NON-FOURIER-HAT: \OmittedSymmetricArgument denotes the variable deleted from a symmetric-polynomial argument list
+\newcommand{\OmittedSymmetricArgument}[1]{\widehat{#1}}
+\newcommand{\InteractionPowerSum}[1]{s_{#1}}
 \newcommand{\statusP}{\textcolor{deepgreen}{\textbf{P}}}
 \newcommand{\statusI}{\textcolor{deepblue}{\textbf{I}}}
 \newcommand{\statusC}{\textcolor{purple}{\textbf{C}}}
@@ -189,7 +191,7 @@ $(1-q)/(3(1+q))$ for $|q|<1$, with dyadic value $1/9$.
 We also derive a two-variable chaos product, Bell-polynomial formulae for its
 coefficients, a $q$-binomial small-parameter expansion, and a Mellin analysis
 of the effective interaction order.  At large $t$ that order is not governed
-by a central limit theorem: after centering by $\lfloor\log_2t\rfloor$ it
+by a central limit theorem: after centering by $\Floor{\log_2t}$ it
 converges along dyadic phases to an explicit integer-valued law, while its mean
 has a real-analytic logarithmically periodic correction.  The no-active-digit
 atom is identified exactly with the negative Fabius Laplace product, thereby
@@ -593,7 +595,7 @@ differentiation of the locally uniformly convergent product for $M$ gives
 
 Put
 \begin{equation}
- s_\ell(t)=\sum_{j\ge1}r(t2^{-j})^\ell,
+ \InteractionPowerSum{\ell}(t)=\sum_{j\ge1}r(t2^{-j})^\ell,
  \qquad \ell\ge1.
  \label{eq:power-sums}
 \end{equation}
@@ -604,13 +606,13 @@ Absolute convergence follows from $r(x)=O(x^2)$ at zero.
 For every $k\ge1$,
 \begin{equation}
  \boxed{
- A_k(t)=\frac1{k!}\Bell_k\bigl(s_1(t),-1!s_2(t),
- \ldots,(-1)^{k-1}(k-1)!s_k(t)\bigr).}
+ A_k(t)=\frac1{k!}\Bell_k\bigl(\InteractionPowerSum{1}(t),-1!\InteractionPowerSum{2}(t),
+ \ldots,(-1)^{k-1}(k-1)!\InteractionPowerSum{k}(t)\bigr).}
  \label{eq:A-Bell}
 \end{equation}
 The power sums obey
 \begin{equation}
- s_\ell(2t)=s_\ell(t)+r(t)^\ell.
+ \InteractionPowerSum{\ell}(2t)=\InteractionPowerSum{\ell}(t)+r(t)^\ell.
  \label{eq:s-refinement}
 \end{equation}
 \end{proposition}
@@ -960,7 +962,7 @@ For all $t>0$,
 \begin{proof}
 For $0<t<1$, use $p(x)\le x^2/3$ to obtain
 $\Variance(K_t)\le\sum_jt^2/(3\cdot4^j)=t^2/9<1/9$.
-For $t\ge1$, put $m=\lfloor\log_2t\rfloor$.  On $j\le m$ use
+For $t\ge1$, put $m=\Floor{\log_2t}$.  On $j\le m$ use
 $p(1-p)\le1-p\le2^j/t$; hence the sum is less than $2$.  On $j>m$, use
 $p(1-p)\le p\le t^2/(3\cdot4^j)$, whose tail is at most $4/9$.  The stated
 uniform bound follows.
@@ -1517,7 +1519,7 @@ $a^kt^{2k}e_k(q_1,q_2,\ldots)=a^kt^{2k}E_k(Q)$ by
 At relative order $t^2$, exactly one selected factor contributes its $b$ term.
 The required symmetric sum is
 \[
- T_k=\sum_jq_j^2e_{k-1}(q_1,\ldots,\widehat{q_j},\ldots).
+ T_k=\sum_jq_j^2e_{k-1}(q_1,\ldots,\OmittedSymmetricArgument{q_j},\ldots).
 \]
 Multiplying $e_1e_k$ and separating whether the index from $e_1$ already
 belongs to the $k$-set gives
@@ -1930,17 +1932,17 @@ and set $\tau_n=2\pi n/L$.
 \label{thm:Q-Fourier}
 With the convention
 \begin{equation}
- Q(\theta)=\sum_{n\in\IntegerNumbers}\widehat Q(n)\EulerE^{2\pi\ImaginaryUnit n\theta},
+ Q(\theta)=\sum_{n\in\IntegerNumbers}\FourierSeriesCoefficient{Q}{n}\EulerE^{2\pi\ImaginaryUnit n\theta},
  \label{eq:Q-Fourier-series}
 \end{equation}
 one has
 \begin{align}
  \boxed{
- \widehat Q(0)
+ \FourierSeriesCoefficient{Q}{0}
  =\frac{11}{6}+\frac{\gamma-12\log A}{\log2},}
  \label{eq:Q0}\\
  \boxed{
- \widehat Q(n)
+ \FourierSeriesCoefficient{Q}{n}
  =\frac{\Mcal_p^{\mathrm{cont}}(-\ImaginaryUnit\tau_n)}{\log2}
  =\frac{\Ical_p(-\ImaginaryUnit\tau_n)}{2\pi\ImaginaryUnit n},
  \qquad n\ne0.}
@@ -1952,12 +1954,12 @@ The coefficients decay exponentially; in particular the Fourier series and
 all its termwise derivatives converge absolutely in a complex strip.
 Numerically,
 \begin{align}
- \widehat Q(0)&=-1.6404426943766166621038729\ldots,
+ \FourierSeriesCoefficient{Q}{0}&=-1.6404426943766166621038729\ldots,
  \label{eq:Q0-num}\\
- \widehat Q(1)&=
+ \FourierSeriesCoefficient{Q}{1}&=
  (1.7087561142062823+1.3093920503208334\,\ImaginaryUnit)10^{-6},
  \label{eq:Q1-num}\\
- 2|\widehat Q(1)|&=4.3055104223684092\times10^{-6}.
+ 2|\FourierSeriesCoefficient{Q}{1}|&=4.3055104223684092\times10^{-6}.
  \label{eq:Q1-amplitude}
 \end{align}
 \end{theorem}
@@ -1966,7 +1968,7 @@ Numerically,
 Differentiate \eqref{eq:P-theta} and unfold the logarithmic lattice.  For
 $n\ne0$,
 \begin{align*}
- \widehat{Q'}(n)
+ \FourierSeriesCoefficient{Q'}{n}
  &=\int_0^1L\sum_{k\in\IntegerNumbers}2^{\theta-k}
    p'(2^{\theta-k})\EulerE^{-2\pi\ImaginaryUnit n\theta}\Differential\theta\\
  &=\int_{-\infty}^{\infty}\EulerE^yp'(\EulerE^y)
@@ -1974,7 +1976,7 @@ $n\ne0$,
  =\int_0^\infty p'(x)x^{-\ImaginaryUnit\tau_n}\Differential x
  =\Ical_p(-\ImaginaryUnit\tau_n).
 \end{align*}
-Since $\widehat{Q'}(n)=2\pi\ImaginaryUnit n\widehat Q(n)$, the nonzero formula follows
+Since $\FourierSeriesCoefficient{Q'}{n}=2\pi\ImaginaryUnit n\FourierSeriesCoefficient{Q}{n}$, the nonzero formula follows
 from \cref{thm:Mellin-p}.
 
 For the mean, the Mellin transform of the harmonic sum is
@@ -2318,11 +2320,11 @@ For the dyadic amplitudes $a_j=2^{-j}$,
 \begin{equation}
  \boxed{
  \Delta_{2^{-1}}\cdots\Delta_{2^{-N}}g(x)
- =(-1)^N\sum_{k=0}^{2^N-1}(-1)^{s_2(k)}
+ =(-1)^N\sum_{k=0}^{2^N-1}(-1)^{\BinaryDigitSum(k)}
  g\left(x-(1-2^{-N})+\frac{k}{2^{N-1}}\right),}
  \label{eq:TM-corner}
 \end{equation}
-where $s_2(k)$ is the binary digit sum.  Hence the corner annihilates every
+where $\BinaryDigitSum(k)$ is the binary digit sum.  Hence the corner annihilates every
 polynomial of degree below $N$, while
 \begin{equation}
  \Delta_{2^{-1}}\cdots\Delta_{2^{-N}}x^N
@@ -2344,7 +2346,7 @@ $k=\sum_{j=1}^Nb_j2^{N-j}$.  Then
  \sum_{j=1}^N2^{-j}\varepsilon_j
  =-(1-2^{-N})+\frac{k}{2^{N-1}},
  \qquad
- \prod_{j=1}^N\varepsilon_j=(-1)^N(-1)^{s_2(k)}.
+ \prod_{j=1}^N\varepsilon_j=(-1)^N(-1)^{\BinaryDigitSum(k)}.
 \]
 This proves \eqref{eq:TM-corner}.  If $\deg g<N$, then $g^{(N)}=0$ in
 \eqref{eq:corner-integral}.  For $g(x)=x^N$, the integrand is $N!$ and the
@@ -2423,7 +2425,7 @@ Fix $x\ne0$ and define the exact envelope and its monotone-tail threshold by
 \begin{equation}
  b_n(x)=\EulerE^{|x|}\frac{|x|^n}{(2n+1)!!},
  \qquad
- N_x=\left\lceil\frac{|x|}{2}\right\rceil.
+ N_x=\Ceiling{\frac{|x|}{2}}.
  \label{eq:degree-envelope}
 \end{equation}
 For every $\varepsilon>0$, define
@@ -2594,9 +2596,9 @@ The driver performs the following independent computations:
 \toprule
 Quantity & Computed value \\
 \midrule
-$\widehat Q(0)$
+$\FourierSeriesCoefficient{Q}{0}$
 & $-1.6404426943766166621038729159$ \\
-$2|\widehat Q(1)|$
+$2|\FourierSeriesCoefficient{Q}{1}|$
 & $4.30551042236840917\times10^{-6}$ \\
 Maximum direct/Fourier error for $Q$ on the plotted grid
 & $5.8207661\times10^{-11}$ \\
@@ -2931,7 +2933,7 @@ Order product
 Order refinement
 & $A_k(2t)=A_k(t)+r(t)A_{k-1}(t)$ \\
 Power-sum Bell form
-& $A_k=k!^{-1}\Bell_k(s_1,-1!s_2,\ldots,(-1)^{k-1}(k-1)!s_k)$ \\
+& $A_k=k!^{-1}\Bell_k(\InteractionPowerSum{1},-1!\InteractionPowerSum{2},\ldots,(-1)^{k-1}(k-1)!\InteractionPowerSum{k})$ \\
 Legendre coefficient
 & $c_\nu=M\prod_{\nu_j>0}\sqrt{2\nu_j+1}\,i_{\nu_j}(x_j)/i_0(x_j)$ \\
 Continuous degree mark
@@ -2951,13 +2953,13 @@ Mellin transform
 Periodic mean
 & $\mu(t)=\log_2t+Q(\{\log_2t\})+O(t^{-1})$ \\
 Nonzero Fourier modes
-& $\widehat Q(n)=\Mcal_p^{\mathrm{cont}}(-2\pi\ImaginaryUnit n/\log2)/\log2$ \\
+& $\FourierSeriesCoefficient{Q}{n}=\Mcal_p^{\mathrm{cont}}(-2\pi\ImaginaryUnit n/\log2)/\log2$ \\
 Phase coupling
-& $\TotalVariationDistance(K_t-\lfloor\log_2t\rfloor,K_\theta)\le2/t$ \\
+& $\TotalVariationDistance(K_t-\Floor{\log_2t},K_\theta)\le2/t$ \\
 Laplace transfer
 & $\Probability(K_t=0)=2t(1-\EulerE^{-2t})^{-1}L_F(2t)$ \\
 Thue--Morse corner
-& $\Delta_{2^{-1}}\cdots\Delta_{2^{-N}}g=(-1)^N\sum_{k<2^N}(-1)^{s_2(k)}g(\cdots)$ \\
+& $\Delta_{2^{-1}}\cdots\Delta_{2^{-N}}g=(-1)^N\sum_{k<2^N}(-1)^{\BinaryDigitSum(k)}g(\cdots)$ \\
 Legendre envelope
 & $|i_n(x)|\le\EulerE^{|x|}|x|^n/(2n+1)!!$ \\
 Lambert cutoff

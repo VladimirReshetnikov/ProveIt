@@ -49,6 +49,10 @@
 \newtheorem{remark}[theorem]{Remark}
 
 \newcommand{\CT}{\operatorname{CT}}
+% LOCAL-NON-FOURIER-HAT: \BaileyTransformedAlpha denotes the alpha component of the Bailey-chain transformed pair.
+\newcommand{\BaileyTransformedAlpha}{\widehat{\alpha}}
+% LOCAL-NON-FOURIER-HAT: \BaileyTransformedBeta denotes the beta component of the Bailey-chain transformed pair.
+\newcommand{\BaileyTransformedBeta}{\widehat{\beta}}
 
 \title{\textbf{A Proof-Driven Guide to $q$-Series,\\Basic Hypergeometric Identities, Bailey Chains,\\and Rogers--Ramanujan Theory}\\[0.7em]
 \large A unified article based on the supplied $q$-series archive and classical primary literature}
@@ -842,8 +846,8 @@ which is the required Bailey-pair relation.
 \begin{corollary}[Bailey-chain step]\label{cor:baileychain}
 If $(\alpha,\beta)$ is a Bailey pair relative to $a$, then so is
 \begin{align}
-\widehat\alpha_n&=a^nq^{n^2}\alpha_n,\label{eq:chainalpha}\\
-\widehat\beta_n&=\sum_{j=0}^n
+\BaileyTransformedAlpha_n&=a^nq^{n^2}\alpha_n,\label{eq:chainalpha}\\
+\BaileyTransformedBeta_n&=\sum_{j=0}^n
 \frac{a^jq^{j^2}}{(q;q)_{n-j}}\beta_j.
 \label{eq:chainbeta}
 \end{align}
@@ -869,15 +873,15 @@ Under absolute convergence,
 \end{corollary}
 \begin{proof}
 Apply the chain step and write the defining Bailey relation for
-$(\widehat\alpha,\widehat\beta)$ at index $N$.  Let $N\to\infty$.  From
+$(\BaileyTransformedAlpha,\BaileyTransformedBeta)$ at index $N$.  Let $N\to\infty$.  From
 \eqref{eq:chainbeta},
 \[
-\widehat\beta_N\longrightarrow
+\BaileyTransformedBeta_N\longrightarrow
 \frac1{(q;q)_\infty}\sum_{j\ge0}a^jq^{j^2}\beta_j.
 \]
 From the Bailey-pair relation,
 \[
-\widehat\beta_N\longrightarrow
+\BaileyTransformedBeta_N\longrightarrow
 \frac1{(q;q)_\infty(aq;q)_\infty}
 \sum_{r\ge0}a^rq^{r^2}\alpha_r.
 \]
@@ -950,8 +954,8 @@ For $|q|<1$,
 Start with the unit Bailey pair \cref{cor:unitpair}.  Apply one Bailey-chain
 step.  Because the original $\beta$ is $\delta_{n,0}$, the new pair has
 \[
-\widehat\beta_n=\frac1{(q;q)_n},\qquad
-\widehat\alpha_n=a^nq^{n^2}\alpha_n^{\mathrm{unit}}(a).
+\BaileyTransformedBeta_n=\frac1{(q;q)_n},\qquad
+\BaileyTransformedAlpha_n=a^nq^{n^2}\alpha_n^{\mathrm{unit}}(a).
 \]
 Apply the weak Bailey lemma to this pair:
 \begin{equation}\label{eq:RRmaster}
@@ -1196,14 +1200,14 @@ parity-sensitive Bailey step; it is discussed in \cref{sec:extensions}.
 \begin{definition}[Fourier transform]
 For a Schwartz function $f\colon\RealNumbers\to\ComplexNumbers$, use the normalization
 \[
-\widehat f(\xi)=\int_{-\infty}^{\infty}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\,dx.
+\FourierTwoPi{f}(\xi)=\int_{-\infty}^{\infty}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\,\Differential x.
 \]
 \end{definition}
 
 \begin{theorem}[Poisson summation]\label{thm:poisson}
 For every Schwartz function $f$,
 \begin{equation}\label{eq:poisson}
-\sum_{n\in\IntegerNumbers}f(n)=\sum_{m\in\IntegerNumbers}\widehat f(m).
+\sum_{n\in\IntegerNumbers}f(n)=\sum_{m\in\IntegerNumbers}\FourierTwoPi{f}(m).
 \end{equation}
 Both sums converge absolutely.
 \end{theorem}
@@ -1217,7 +1221,7 @@ convergent on compact sets.  Thus $P_f$ is a smooth $1$-periodic function.
 Its $m$th Fourier coefficient is, after an absolutely convergent interchange,
 \[
 \int_0^1P_f(x)\EulerE^{-2\pi\ImaginaryUnit mx}\,dx
-=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit mx}\,dx=\widehat f(m).
+=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit mx}\,\Differential x=\FourierTwoPi{f}(m).
 \]
 Repeated integration by parts shows that these coefficients decay faster
 than any power of $|m|$, so the Fourier series converges absolutely and

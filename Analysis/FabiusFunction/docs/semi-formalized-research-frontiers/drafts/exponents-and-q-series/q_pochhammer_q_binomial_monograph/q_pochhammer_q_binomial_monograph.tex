@@ -119,11 +119,9 @@
 \newcommand{\ph}{\varphi}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\F}{\mathbb F}
-\newcommand{\OO}{\mathcal O}
 \newcommand{\inv}{\operatorname{inv}}
 \newcommand{\area}{\operatorname{area}}
 \newcommand{\ch}{\operatorname{ch}}
-\newcommand{\one}{\mathbf 1}
 \newcommand{\qbase}{\;q}
 \newcommand{\lean}[1]{%
   \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
@@ -929,9 +927,9 @@ The combinatorial meaning of $X$ will be established in \Cref{chap:combinatorics
 \begin{theorem}[Mean and variance]\label{thm:qbinom-moments}
 For the preceding distribution,
 \[
- \mathbb E X=\frac{k(n-k)}2,
+ \Expectation X=\frac{k(n-k)}2,
  \qquad
- \operatorname{Var}(X)=\frac{k(n-k)(n+1)}{12}.
+ \Variance(X)=\frac{k(n-k)(n+1)}{12}.
 \]
 Equivalently,
 \[
@@ -941,7 +939,7 @@ Equivalently,
 \end{theorem}
 
 \begin{proof}
-The palindromic identity $c_j=c_{D-j}$ immediately gives $\mathbb EX=D/2$ and the derivative formula.
+The palindromic identity $c_j=c_{D-j}$ immediately gives $\Expectation X=D/2$ and the derivative formula.
 
 For the variance, use the moment-generating function
 \[
@@ -1595,8 +1593,8 @@ product and elementary--complete reciprocity.
 There is also a finite-family analytic companion.  The sole public theorem
 \lean{completeHomogeneousEvalOn_isBigO_pow} in
 \path{CompleteHomogeneousAsymptotics.lean} transfers coordinatewise
-\(\mathcal O(g)\) bounds through every fixed degree \(r\): the corresponding
-complete homogeneous evaluation is \(\mathcal O(g^r)\).  It includes degree zero
+\(\BigO{g}\) bounds through every fixed degree \(r\): the corresponding
+complete homogeneous evaluation is \(\BigO{g^r}\).  It includes degree zero
 and requires no nonvanishing assumption on \(g\).  This asymptotic bound does
 not evaluate either formal series at \(z\), establish its convergence, or
 close the analytic clause of the labelled theorem.
@@ -2165,7 +2163,7 @@ The recurrence of \Cref{prop:rogers-szego-recurrence} moves the argument, from
 $z$ to $qz$; the one above does not.  It is therefore a three-term recurrence
 in the index $n$ alone, of the shape familiar from orthogonal polynomial
 sequences, and it evaluates $H_0,H_1,\ldots,H_N$ at a fixed numerical $z$ in
-$\OO(N)$ ring operations, without ever forming the Gaussian coefficients.  At
+$\BigO(N)$ ring operations, without ever forming the Gaussian coefficients.  At
 $q=0$ every $\GaussianBinomial{n}{k}{q}$ equals $1$ by \Cref{prop:extreme-specializations},
 the recurrence becomes $H_{n+1}=(1+z)H_n-zH_{n-1}$, and its solution is the
 geometric sum $1+z+\cdots+z^{n}$, as it must be.
@@ -2631,7 +2629,7 @@ Let $r\ge1$ and let $\alpha_1,\dots,\alpha_r,\beta_1,\dots,\beta_{r-1}\in\Comple
 \[
  \beta_j\notin\{0,-1,-2,\dots\}\qquad(1\le j\le r-1).
 \]
-For $0<q<1$ let $q^{c}=e^{c\log q}$ with the real logarithm.  Then there is $q_0\in(0,1)$ such that for $q_0<q<1$ no denominator factor of
+For $0<q<1$ let $q^{c}=\EulerE^{c\log q}$ with the real logarithm.  Then there is $q_0\in(0,1)$ such that for $q_0<q<1$ no denominator factor of
 \[
  \mathscr H_q(z)\DefinitionEquals
  {}_r\phi_{r-1}\!\left[
@@ -2693,19 +2691,19 @@ By \Cref{prop:classical-poch-limit} the $i$th numerator factor tends to $(\alpha
 \]
 
 \emph{Step 3: two elementary estimates.}
-Put $t=-\log q>0$, so that $q^{w}=e^{-wt}$, and set $h(u)=1-e^{-ut}$ for $u\ge0$.
+Put $t=-\log q>0$, so that $q^{w}=\EulerE^{-wt}$, and set $h(u)=1-\EulerE^{-ut}$ for $u\ge0$.
 \begin{enumerate}[label=\textup{(\alph*)}]
 \item If $w=\sigma+i\tau$ with $\sigma>0$, then
 \[
- h(\sigma)\le\AbsoluteValue{1-e^{-wt}}\le h(\sigma)+\AbsoluteValue\tau\,t .
+ h(\sigma)\le\AbsoluteValue{1-\EulerE^{-wt}}\le h(\sigma)+\AbsoluteValue\tau\,t .
 \]
-Indeed, with $\varrho=e^{-\sigma t}\in(0,1)$ and $\phi=-\tau t$,
-$\AbsoluteValue{1-\varrho e^{i\phi}}^2=(1-\varrho)^2+2\varrho(1-\cos\phi)$.  Discarding the nonnegative second term gives the lower bound; using $1-\cos\phi\le\phi^2/2$ and $\varrho\le1$ gives $\AbsoluteValue{1-\varrho e^{i\phi}}^2\le(1-\varrho)^2+(\tau t)^2\le\bigl((1-\varrho)+\AbsoluteValue\tau t\bigr)^2$.
+Indeed, with $\varrho=\EulerE^{-\sigma t}\in(0,1)$ and $\phi=-\tau t$,
+$\AbsoluteValue{1-\varrho \EulerE^{i\phi}}^2=(1-\varrho)^2+2\varrho(1-\cos\phi)$.  Discarding the nonnegative second term gives the lower bound; using $1-\cos\phi\le\phi^2/2$ and $\varrho\le1$ gives $\AbsoluteValue{1-\varrho \EulerE^{i\phi}}^2\le(1-\varrho)^2+(\tau t)^2\le\bigl((1-\varrho)+\AbsoluteValue\tau t\bigr)^2$.
 \item $h$ is increasing and concave on $[0,\infty)$ with $h(0)=0$, so $u\mapsto h(u)/u$ is nonincreasing and therefore
 \[
  \frac{h(v)}{h(u)}\le\max\Bigl(1,\frac vu\Bigr)\qquad(u,v>0).
 \]
-Moreover $e^{ut}\ge1+ut$ gives $h(u)\ge ut/(1+ut)$, that is, $h(u)^{-1}\le(ut)^{-1}+1$.
+Moreover $\EulerE^{ut}\ge1+ut$ gives $h(u)\ge ut/(1+ut)$, that is, $h(u)^{-1}\le(ut)^{-1}+1$.
 \end{enumerate}
 
 \emph{Step 4: a majorant uniform in $q$ and in $\AbsoluteValue z\le\rho$.}
@@ -2722,25 +2720,25 @@ and for $m\ge m_0$ and every $t>0$, Step 3 gives
   +\AbsoluteValue{\Im\alpha_i}t\Bigl(\frac1{\gamma_it}+1\Bigr)
  \le1+\frac{6K}m+Kt,
 \]
-because $\max(1,\sigma_i/\gamma_i)\le1+\AbsoluteValue{\Re\alpha_i-\Re\beta_i}/\gamma_i\le1+4K/m$ and $\AbsoluteValue{\Im\alpha_i}/\gamma_i\le2K/m$.  Put $C=6rK$, fix $\rho\in(0,1)$, choose $t_1>0$ with $e^{rKt_1}\le\rho^{-1/2}$, and set $\theta=\rho^{1/2}<1$.  For $\AbsoluteValue z\le\rho$, $0<t\le t_1$ and $m\ge m_0$,
+because $\max(1,\sigma_i/\gamma_i)\le1+\AbsoluteValue{\Re\alpha_i-\Re\beta_i}/\gamma_i\le1+4K/m$ and $\AbsoluteValue{\Im\alpha_i}/\gamma_i\le2K/m$.  Put $C=6rK$, fix $\rho\in(0,1)$, choose $t_1>0$ with $\EulerE^{rKt_1}\le\rho^{-1/2}$, and set $\theta=\rho^{1/2}<1$.  For $\AbsoluteValue z\le\rho$, $0<t\le t_1$ and $m\ge m_0$,
 \[
  \AbsoluteValue{\frac{T_{m+1}(q)}{T_m(q)}}
  \le\rho\Bigl(1+\frac{6K}m+Kt_1\Bigr)^{r}
- \le\rho\,e^{rKt_1}e^{C/m}
- \le\theta\,e^{C/m}.
+ \le\rho\,\EulerE^{rKt_1}\EulerE^{C/m}
+ \le\theta\,\EulerE^{C/m}.
 \]
 Multiplying these bounds and using $\sum_{m=m_0}^{n-1}m^{-1}\le1+\log(n/m_0)$,
 \[
- \AbsoluteValue{T_n(q)}\le\AbsoluteValue{T_{m_0}(q)}\,\theta^{\,n-m_0}\,e^{C}\Bigl(\frac n{m_0}\Bigr)^{C}
+ \AbsoluteValue{T_n(q)}\le\AbsoluteValue{T_{m_0}(q)}\,\theta^{\,n-m_0}\,\EulerE^{C}\Bigl(\frac n{m_0}\Bigr)^{C}
  \qquad(n>m_0).
 \]
 By Step 2 the finitely many functions $T_0,\dots,T_{m_0}$ converge as $q\to1^-$, hence are bounded, say by $B$, on some interval $(q_1,1)$; the bound is uniform in $\AbsoluteValue z\le\rho$ because $T_n(q)$ is $z^n$ times a function of $q$ alone.  Therefore, with
 \[
  M_n\DefinitionEquals B\ \ (n\le m_0),
  \qquad
- M_n\DefinitionEquals B\,e^{C}m_0^{-C}\,n^{C}\theta^{\,n-m_0}\ \ (n>m_0),
+ M_n\DefinitionEquals B\,\EulerE^{C}m_0^{-C}\,n^{C}\theta^{\,n-m_0}\ \ (n>m_0),
 \]
-one has $\AbsoluteValue{T_n(q)}\le M_n$ for all $n\ge0$, all $\AbsoluteValue z\le\rho$ and all $q$ with $\max\bigl(q_0,q_1,e^{-t_1}\bigr)<q<1$, while $\sum_{n\ge0}M_n<\infty$ because $\theta<1$ dominates the polynomial factor $n^{C}$.
+one has $\AbsoluteValue{T_n(q)}\le M_n$ for all $n\ge0$, all $\AbsoluteValue z\le\rho$ and all $q$ with $\max\bigl(q_0,q_1,\EulerE^{-t_1}\bigr)<q<1$, while $\sum_{n\ge0}M_n<\infty$ because $\theta<1$ dominates the polynomial factor $n^{C}$.
 
 \emph{Step 5: interchange.}
 The series $\sum_nT_n(q)$ is dominated by the summable sequence $(M_n)$ uniformly in $q$, so it converges uniformly in $q$ on that interval; each term has the limit $t_n$ by Step 2.  Dominated convergence with respect to counting measure (Tannery's theorem) therefore gives
@@ -3697,15 +3695,15 @@ After $t=u/n$, dominated convergence gives $n^xB(x,n)\to\int_0^\infty u^{x-1}\Eu
 \[
  n^xB(x,n)=\int_0^n u^{x-1}\left(1-\frac un\right)^{n-1}\Differential u.
 \]
-For $n\ge2$, its integrand is dominated uniformly in $x$ by $u^{\delta-1}$ on $(0,1]$ and by $e^{-u/2}$ on $[1,\infty)$.  More explicitly, after extending the kernel by $0$ for $u>n$,
+For $n\ge2$, its integrand is dominated uniformly in $x$ by $u^{\delta-1}$ on $(0,1]$ and by $\EulerE^{-u/2}$ on $[1,\infty)$.  More explicitly, after extending the kernel by $0$ for $u>n$,
 \[
  \sup_{\delta\le x\le1}
  \left|u^{x-1}\left(1-\frac un\right)_{+}^{n-1}
-       -u^{x-1}e^{-u}\right|
+       -u^{x-1}\EulerE^{-u}\right|
  \longrightarrow0
 \]
 for every $u>0$, while this supremum is bounded by an integrable
-multiple of $u^{\delta-1}\mathbf 1_{(0,1]}(u)+e^{-u/2}\mathbf 1_{[1,\infty)}(u)$.
+multiple of $u^{\delta-1}\IndicatorOf{(0,1]}(u)+\EulerE^{-u/2}\IndicatorOf{[1,\infty)}(u)$.
 The dominated convergence theorem therefore gives
 \[
  \sup_{\delta\le x\le1}
@@ -5583,13 +5581,13 @@ A $q$-analogue should explain both the deformation near $q=1$ and behavior far f
 
 Let the Bernoulli numbers be defined by
 \[
- \frac{x}{e^x-1}=\sum_{r=0}^{\infty}B_r\frac{x^r}{r!}.
+ \frac{x}{\EulerE^x-1}=\sum_{r=0}^{\infty}B_r\frac{x^r}{r!}.
 \]
 
 \begin{lemma}[The basic logarithmic expansion]\label{lem:basic-bernoulli-log}
 As $x\to0$,
 \[
- \log\frac{1-e^{-x}}x
+ \log\frac{1-\EulerE^{-x}}x
  =-\frac x2+
  \sum_{r=1}^{\infty}
  \frac{B_{2r}}{2r(2r)!}x^{2r}.
@@ -5601,12 +5599,12 @@ The series converges for $\AbsoluteValue x<2\pi$.
 \begin{proof}
 Differentiate the left side:
 \[
- \frac{\Differential}{\Differential x}\log\frac{1-e^{-x}}x
- =\frac1{e^x-1}-\frac1x.
+ \frac{\Differential}{\Differential x}\log\frac{1-\EulerE^{-x}}x
+ =\frac1{\EulerE^x-1}-\frac1x.
 \]
 By the Bernoulli generating function,
 \[
- \frac1{e^x-1}-\frac1x
+ \frac1{\EulerE^x-1}-\frac1x
  =-\frac12+\sum_{r=1}^{\infty}
  B_{2r}\frac{x^{2r-1}}{(2r)!}.
 \]
@@ -5614,9 +5612,9 @@ Integrate term by term and use the value $0$ at $x=0$.  The nearest nonzero sing
 \end{proof}
 
 \begin{theorem}[Bernoulli expansion of a Gaussian coefficient]\label{thm:gaussian-bernoulli}
-Let $0\le k\le n$, put $D=k(n-k)$, and set $q=e^{-t}$.  As $t\to0$,
+Let $0\le k\le n$, put $D=k(n-k)$, and set $q=\EulerE^{-t}$.  As $t\to0$,
 \begin{align}
- \log\frac{\GaussianBinomial{n}{k}{e^{-t}}}{\binom nk}
+ \log\frac{\GaussianBinomial{n}{k}{\EulerE^{-t}}}{\binom nk}
  =-&\frac D2t
  +\sum_{r=1}^{\infty}
  \frac{B_{2r}t^{2r}}{2r(2r)!}
@@ -5630,13 +5628,13 @@ For fixed $n,k$, the displayed series converges whenever $\AbsoluteValue t<2\pi/
 \begin{proof}
 From the product formula,
 \begin{align*}
- \GaussianBinomial{n}{k}{e^{-t}}
+ \GaussianBinomial{n}{k}{\EulerE^{-t}}
  &=\prod_{j=1}^{k}
- \frac{1-e^{-(n-k+j)t}}{1-e^{-jt}}\\
+ \frac{1-\EulerE^{-(n-k+j)t}}{1-\EulerE^{-jt}}\\
  &=\binom nk
  \prod_{j=1}^{k}
- \frac{(1-e^{-(n-k+j)t})/((n-k+j)t)}
-      {(1-e^{-jt})/(jt)}.
+ \frac{(1-\EulerE^{-(n-k+j)t})/((n-k+j)t)}
+      {(1-\EulerE^{-jt})/(jt)}.
 \end{align*}
 Take logarithms and apply \Cref{lem:basic-bernoulli-log} to every factor.  The linear term is
 \[
@@ -5654,7 +5652,7 @@ Let $S_m(N)=\sum_{j=1}^{N}j^{m}$ denote the $m$th power sum.  For every integer 
 \]
 Applied with $m=2r$ to the inner sum of \eqref{eq:gaussian-bernoulli}, and with $m=1$ to the sum $\sum_{j=1}^{k}\bigl((n-k+j)-j\bigr)=\sum_{j=1}^{k}(n-k)$ that produced the linear term in the proof of \Cref{thm:gaussian-bernoulli}, this turns the expansion into
 \[
- \log\frac{\GaussianBinomial{n}{k}{e^{-t}}}{\binom nk}
+ \log\frac{\GaussianBinomial{n}{k}{\EulerE^{-t}}}{\binom nk}
  =-\frac t2\bigl(S_1(n)-S_1(k)-S_1(n-k)\bigr)
  +\sum_{r=1}^{\infty}\frac{B_{2r}t^{2r}}{2r(2r)!}
  \bigl(S_{2r}(n)-S_{2r}(k)-S_{2r}(n-k)\bigr),
@@ -5682,7 +5680,7 @@ the value used in \Cref{cor:gaussian-first-asymptotic} below.
 \begin{corollary}[First terms]\label{cor:gaussian-first-asymptotic}
 With $D=k(n-k)$,
 \begin{align}
- \GaussianBinomial{n}{k}{e^{-t}}
+ \GaussianBinomial{n}{k}{\EulerE^{-t}}
  &=\binom nk
  \exp\left(
  -\frac D2t+\frac{D(n+1)}{24}t^2+O(t^4)
@@ -5708,12 +5706,12 @@ Since $B_2/(2\cdot2!)=1/24$, the logarithmic formula follows.  Expanding the exp
 \end{proof}
 
 \begin{remark}[Reciprocity and centering]
-The factor $e^{-Dt/2}$ is forced by reciprocity:
+The factor $\EulerE^{-Dt/2}$ is forced by reciprocity:
 \[
- \GaussianBinomial{n}{k}{e^{-t}}
- =e^{-Dt}\GaussianBinomial{n}{k}{e^t}.
+ \GaussianBinomial{n}{k}{\EulerE^{-t}}
+ =\EulerE^{-Dt}\GaussianBinomial{n}{k}{\EulerE^t}.
 \]
-Therefore the centered quantity $e^{Dt/2}\GaussianBinomial{n}{k}{e^{-t}}$ is an even analytic function of $t$.  This explains, before any calculation, why all odd powers beyond the linear term vanish from the logarithm.
+Therefore the centered quantity $\EulerE^{Dt/2}\GaussianBinomial{n}{k}{\EulerE^{-t}}$ is an even analytic function of $t$.  This explains, before any calculation, why all odd powers beyond the linear term vanish from the logarithm.
 \end{remark}
 
 \section{Fixed \texorpdfstring{$q$}{q} and growing parameters}
@@ -5798,9 +5796,9 @@ For the error term, let $M\ge0$.  By the elementary product estimate,
  \le\exp\Bigl(\frac{\AbsoluteValue q^{\,M+1}}{1-\AbsoluteValue q}\Bigr)-1
  \le C_q\AbsoluteValue q^{\,M+1},
  \qquad
- C_q=\frac{e^{1/(1-\AbsoluteValue q)}}{1-\AbsoluteValue q},
+ C_q=\frac{\EulerE^{1/(1-\AbsoluteValue q)}}{1-\AbsoluteValue q},
 \]
-since $\AbsoluteValue q^{\,M+1}/(1-\AbsoluteValue q)\le1/(1-\AbsoluteValue q)$ and $e^x-1\le xe^{x_0}$ for
+since $\AbsoluteValue q^{\,M+1}/(1-\AbsoluteValue q)\le1/(1-\AbsoluteValue q)$ and $\EulerE^x-1\le xe^{x_0}$ for
 $0\le x\le x_0$.  Moreover
 \[
  \AbsoluteValue{(q^{M+1};q)_\infty}
@@ -5940,7 +5938,7 @@ When only a numerical value is required, one should not first expand the polynom
  \left[\log\bigl(-\operatorname{expm1}((n-k+j)\log q)\bigr)
       -\log\bigl(-\operatorname{expm1}(j\log q)\bigr)\right],
 \]
-where \texttt{expm1} avoids cancellation in $e^x-1$.  For exact symbolic work, the Pascal algorithm or the cyclotomic factorization is preferable.
+where \texttt{expm1} avoids cancellation in $\EulerE^x-1$.  For exact symbolic work, the Pascal algorithm or the cyclotomic factorization is preferable.
 \end{remark}
 
 \section{A factorization algorithm}
@@ -6673,9 +6671,9 @@ The identity uses only $n+1$ geometrically spaced nodes.  The price for this com
 
 \section{The Thue--Morse product}
 
-For a nonnegative integer $r$, let $s_2(r)$ be the sum of the binary digits of $r$ and put
+For a nonnegative integer $r$, let $\BinaryDigitSum(r)$ be the sum of the binary digits of $r$ and put
 \[
- \tau_r:=(-1)^{s_2(r)}.
+ \tau_r:=(-1)^{\BinaryDigitSum(r)}.
 \]
 This is the signed Thue--Morse sequence.
 
@@ -6738,7 +6736,7 @@ This proves \eqref{eq:thue-morse-moments}.  Apply it termwise to the polynomial 
 \end{proof}
 
 \begin{corollary}[Equal power sums]\label{cor:thue-morse-prouhet-partition}
-Partition $\{0,1,\ldots,2^n-1\}$ according to the parity of $s_2(r)$.  The two classes have equal sums of $d$th powers for every $0\le d<n$.
+Partition $\{0,1,\ldots,2^n-1\}$ according to the parity of $\BinaryDigitSum(r)$.  The two classes have equal sums of $d$th powers for every $0\le d<n$.
 \end{corollary}
 
 \begin{proof}
@@ -6752,7 +6750,7 @@ There are two complementary exact functionals of order $n$:
 \begin{align*}
  \sum_{k=0}^{n}(-1)^k2^{-\binom k2}\GaussianBinomial{n}{k}{1/2}p(-2^k)
  &=\mathfrak m_n[X^n]p,\\
- \sum_{r=0}^{2^n-1}(-1)^{s_2(r)}p(r)
+ \sum_{r=0}^{2^n-1}(-1)^{\BinaryDigitSum(r)}p(r)
  &=(-1)^n2^{\binom n2}n![X^n]p,
 \end{align*}
 valid for $\deg p\le n$.  The first uses a Gaussian row on a geometric grid; the second uses uniform signs generated by binary digits on an arithmetic grid.
@@ -6784,7 +6782,7 @@ Let $0<q<1$, let $U_0,U_1,\ldots$ be independent random variables uniformly dist
 \begin{theorem}[Convergence, support, symmetry, and self-similarity]\label{thm:geometric-uniform-basic}
 The series \eqref{eq:geometric-uniform-series} converges absolutely for every outcome and satisfies $0\le X_q\le1$.  Its topological support is $[0,1]$, and
 \begin{equation}\label{eq:geometric-uniform-mean-symmetry}
- \mathbb E X_q=\frac12,
+ \Expectation X_q=\frac12,
  \qquad
  X_q\overset{d}=1-X_q.
 \end{equation}
@@ -6792,7 +6790,7 @@ If $X_q'$ is an independent copy of $X_q$, then
 \begin{equation}\label{eq:geometric-uniform-fixed-point}
  X_q\overset{d}=(1-q)U_0+qX_q'.
 \end{equation}
-Consequently its distribution function $F_q(x)=\mathbb P(X_q\le x)$ satisfies
+Consequently its distribution function $F_q(x)=\Probability(X_q\le x)$ satisfies
 \begin{equation}\label{eq:geometric-uniform-cdf-equation}
  F_q(x)=\int_0^1
  F_q\!\left(\frac{x-(1-q)u}{q}\right)\,du,
@@ -6816,7 +6814,7 @@ Every $x\in[0,1]$ belongs to the support: if all of the first $N$ variables lie 
 
 Linearity of expectation and the geometric sum give
 \[
- \mathbb EX_q=(1-q)\sum_{j\ge0}q^j\mathbb EU_j
+ \Expectation X_q=(1-q)\sum_{j\ge0}q^j\Expectation U_j
  =\frac{1-q}{2}\frac1{1-q}=\frac12.
 \]
 Since $1-U_j$ are again independent uniform variables,
@@ -6825,7 +6823,7 @@ Since $1-U_j$ are again independent uniform variables,
 \]
 has the same distribution as $X_q$.  Splitting off the first term and reindexing the tail proves \eqref{eq:geometric-uniform-fixed-point}.  Conditioning on $U_0=u$ then gives
 \[
- \mathbb P((1-q)u+qX_q'\le x)
+ \Probability((1-q)u+qX_q'\le x)
  =F_q\!\left(\frac{x-(1-q)u}{q}\right),
 \]
 and integration over $u\in[0,1]$ proves \eqref{eq:geometric-uniform-cdf-equation}.
@@ -6845,8 +6843,8 @@ Use the entire function
 \begin{theorem}[Characteristic function]\label{thm:geometric-uniform-characteristic}
 For real $t$,
 \begin{equation}\label{eq:geometric-uniform-characteristic}
- \varphi_q(t):=\mathbb E\,e^{itX_q}
- =e^{it/2}\prod_{j=0}^{\infty}
+ \varphi_q(t):=\Expectation\,\EulerE^{itX_q}
+ =\EulerE^{it/2}\prod_{j=0}^{\infty}
  \SincRad\!\left(\frac{(1-q)q^jt}{2}\right).
 \end{equation}
 The product converges uniformly on compact subsets of the complex $t$-plane and therefore defines an entire function.
@@ -6855,11 +6853,11 @@ The product converges uniformly on compact subsets of the complex $t$-plane and 
 \begin{proof}
 For a uniform variable $U$ on $[0,1]$ and any complex $s$,
 \[
- \mathbb Ee^{sU}=\int_0^1e^{su}\,du
- =e^{s/2}\frac{\sinh(s/2)}{s/2}.
+ \Expectation \EulerE^{sU}=\int_0^1\EulerE^{su}\,du
+ =\EulerE^{s/2}\frac{\sinh(s/2)}{s/2}.
 \]
 At $s=ita$ this becomes
-$e^{ita/2}\SincRad(at/2)$.  Independence gives the finite product for the partial sum.  The phases combine because
+$\EulerE^{ita/2}\SincRad(at/2)$.  Independence gives the finite product for the partial sum.  The phases combine because
 $\sum_{j\ge0}(1-q)q^j=1$.
 
 For compact $t$-sets, the arguments of the sinc factors are $O(q^j)$.  Since
@@ -6905,11 +6903,11 @@ nevertheless exact subclaims, not merely dyadic specializations.
 
 Let $Y_q=X_q-1/2$.  We use Bernoulli numbers in the convention
 \begin{equation}\label{eq:bernoulli-convention-fabius}
- \frac{z}{e^z-1}=\sum_{m=0}^{\infty}B_m\frac{z^m}{m!}.
+ \frac{z}{\EulerE^z-1}=\sum_{m=0}^{\infty}B_m\frac{z^m}{m!}.
 \end{equation}
 The cumulants $\kappa_m(Y_q)$ are defined by
 \[
- \log\mathbb Ee^{tY_q}
+ \log\Expectation \EulerE^{tY_q}
  =\sum_{m\ge1}\kappa_m(Y_q)\frac{t^m}{m!}
 \]
 near $t=0$.
@@ -6923,7 +6921,7 @@ All odd cumulants of $Y_q$ vanish, and for $m\ge1$,
 \end{equation}
 Equivalently,
 \begin{equation}\label{eq:q-cumulant-log-mgf}
- \log\mathbb Ee^{tY_q}
+ \log\Expectation \EulerE^{tY_q}
  =\sum_{m=1}^{\infty}
    \frac{B_{2m}}{2m(2m)!}
    \frac{(1-q)^{2m}}{1-q^{2m}}t^{2m}
@@ -6934,7 +6932,7 @@ for $t$ in a neighborhood of $0$.
 \begin{proof}
 For $U$ uniform on $[0,1]$,
 \[
- \mathbb Ee^{t(U-1/2)}
+ \Expectation \EulerE^{t(U-1/2)}
  =\frac{\sinh(t/2)}{t/2}.
 \]
 Differentiating the logarithm gives
@@ -6976,16 +6974,16 @@ The polynomials $\mathcal B_n(x_1,\ldots,x_n)$ are defined by
 Let $\kappa_r=\kappa_r(Y_q)$, with the values in
 \Cref{thm:q-cumulants-uniform}.  Then
 \begin{equation}\label{eq:centered-moments-bell}
- \mathbb E(Y_q^n)=\mathcal B_n(\kappa_1,\ldots,\kappa_n).
+ \Expectation(Y_q^n)=\mathcal B_n(\kappa_1,\ldots,\kappa_n).
 \end{equation}
 The moments can also be generated recursively from $\mu_0=1$ by
 \begin{equation}\label{eq:moment-cumulant-recurrence}
  \mu_n=\sum_{r=1}^{n}\binom{n-1}{r-1}\kappa_r\mu_{n-r},
- \qquad \mu_n:=\mathbb E(Y_q^n).
+ \qquad \mu_n:=\Expectation(Y_q^n).
 \end{equation}
 Finally,
 \begin{equation}\label{eq:raw-moments-from-centered}
- \mathbb E(X_q^n)=\sum_{j=0}^{n}\binom nj2^{j-n}\mu_j.
+ \Expectation(X_q^n)=\sum_{j=0}^{n}\binom nj2^{j-n}\mu_j.
 \end{equation}
 \end{corollary}
 
@@ -6993,7 +6991,7 @@ Finally,
 The moment generating function is the exponential of the cumulant generating function.  Comparing it with the defining identity
 \eqref{eq:complete-bell-definition} proves \eqref{eq:centered-moments-bell}.  If
 $M(t)=\sum\mu_nt^n/n!$ and $K(t)=\sum\kappa_rt^r/r!$, then
-$M=e^K$ and $M'=K'M$.  Comparing the coefficient of $t^{n-1}$ gives
+$M=\EulerE^K$ and $M'=K'M$.  Comparing the coefficient of $t^{n-1}$ gives
 \eqref{eq:moment-cumulant-recurrence}.  The last formula is the binomial expansion of $(Y_q+1/2)^n$.
 \end{proof}
 
@@ -7038,7 +7036,7 @@ In particular, for every $M\ge0$,
 \end{theorem}
 
 \begin{proof}
-The phase $e^{it/2}$ has absolute value $1$, and
+The phase $\EulerE^{it/2}$ has absolute value $1$, and
 $\AbsoluteValue{\SincRad u}\le\min(1,1/\AbsoluteValue u)$.  Choose
 \[
  N=\Floor{L/b}+1.
@@ -7058,7 +7056,7 @@ $N\ge L/b$ and $N-1\ge L/b-1$, so
 \]
 This proves \eqref{eq:log-gaussian-fourier-bound}.
 
-After the change of variables $L=\log(A t)$, the right side is a Gaussian in $L$ multiplied by $e^{L/2}$.  It therefore dominates every negative power of $t$.  More explicitly, for each $M$ the exponent
+After the change of variables $L=\log(A t)$, the right side is a Gaussian in $L$ multiplied by $\EulerE^{L/2}$.  It therefore dominates every negative power of $t$.  More explicitly, for each $M$ the exponent
 $-L^2/(2b)+(M+3/2)L$ tends to $-\infty$ quadratically, which proves integrability of $\AbsoluteValue t^M\varphi_q(t)$.
 \end{proof}
 
@@ -7066,7 +7064,7 @@ $-L^2/(2b)+(M+3/2)L$ tends to $-\infty$ quadratically, which proves integrabilit
 For every $0<q<1$, the distribution of $X_q$ has a $C^\infty$ density $f_q$ supported on $[0,1]$.  For every $m\ge0$,
 \begin{equation}\label{eq:geometric-uniform-density-fourier}
  f_q^{(m)}(x)
- =\frac1{2\pi}\int_{\RealNumbers}(-it)^m e^{-itx}\varphi_q(t)\,dt.
+ =\frac1{2\pi}\int_{\RealNumbers}(-it)^m \EulerE^{-itx}\varphi_q(t)\,dt.
 \end{equation}
 All derivatives of $f_q$ vanish at the endpoints $0$ and $1$.
 \end{theorem}
@@ -7074,10 +7072,10 @@ All derivatives of $f_q$ vanish at the endpoints $0$ and $1$.
 \begin{proof}
 By \Cref{thm:geometric-uniform-fourier-decay}, $t^m\varphi_q(t)$ is integrable for every $m$.  Fourier inversion for a finite measure with integrable characteristic function gives the density
 \[
- f_q(x)=\frac1{2\pi}\int_{\RealNumbers}e^{-itx}\varphi_q(t)\,dt.
+ f_q(x)=\frac1{2\pi}\int_{\RealNumbers}\EulerE^{-itx}\varphi_q(t)\,dt.
 \]
 For completeness, one may obtain this directly by convolving the distribution with a centered Gaussian of variance $\varepsilon$: its density is the inverse transform of
-$\varphi_q(t)e^{-\varepsilon t^2/2}$.  Dominated convergence as
+$\varphi_q(t)\EulerE^{-\varepsilon t^2/2}$.  Dominated convergence as
 $\varepsilon\downarrow0$ yields the displayed $f_q$ uniformly.  Against every compactly supported continuous test function, the Gaussian convolutions converge both to integration against $f_q$ and weakly to the original measure; hence that measure has density $f_q$.
 
 Because $t^m\varphi_q(t)$ is integrable, differentiation under the integral is justified by dominated convergence and gives \eqref{eq:geometric-uniform-density-fourier}.  Thus $f_q\in C^\infty(\RealNumbers)$.  The random variable is supported on $[0,1]$, so the density is zero on the two open complementary half-lines.  Smoothness then forces every derivative to have value $0$ at both boundary points.
@@ -7143,7 +7141,7 @@ and its Fourier transform is the corresponding finite product in
 \end{theorem}
 
 \begin{proof}
-The density of $c_jU_j$ is $c_j^{-1}\one_{[0,c_j]}$, so $f_{\mathbf c}$ is the convolution
+The density of $c_jU_j$ is $c_j^{-1}\IndicatorOf{[0,c_j]}$, so $f_{\mathbf c}$ is the convolution
 of $N$ box densities and, for $s>0$, its Laplace transform is
 \[
  \prod_{j=0}^{N-1}\frac{1-\EulerE^{-c_js}}{c_js},
@@ -7162,7 +7160,7 @@ Laplace transform proves \eqref{eq:general-uniform-spline}, and piecewise polyno
 immediate from the truncated-power representation.
 
 Since $(U_0,\ldots,U_{N-1})$ is uniform on the cube,
-$V_{\mathbf c}(t)=\mathbb P\bigl(S_{\mathbf c}\le t\bigr)
+$V_{\mathbf c}(t)=\Probability\bigl(S_{\mathbf c}\le t\bigr)
 =\int_{-\infty}^{t}f_{\mathbf c}(x)\Differential x$.  The sum in
 \eqref{eq:general-uniform-spline} is finite, so it may be integrated term by term, and
 \[
@@ -7180,7 +7178,7 @@ For the integer weights $c_j=2^{\,n-j}$, $1\le j\le n$ --- that is, $2^n$ times 
 half-base weights $a_{j-1}=2^{-j}$ of \eqref{eq:finite-geometric-uniform-sum} at $q=1/2$
 --- the map $A\mapsto r=\sum_{j\in A}2^{\,n-j}$ is binary expansion, hence a bijection
 from the subsets of $\SetOf{1,\ldots,n}$ onto $\SetOf{0,1,\ldots,2^n-1}$ with
-$\AbsoluteValue A=s_2(r)$; consequently $(-1)^{\AbsoluteValue A}=\tau_r$ and
+$\AbsoluteValue A=\BinaryDigitSum(r)$; consequently $(-1)^{\AbsoluteValue A}=\tau_r$ and
 $\prod_{j=1}^{n}c_j=2^{\binom n2}$, so \eqref{eq:weighted-cube-cut} becomes
 \begin{equation}\label{eq:dyadic-cube-cut}
  V_{\mathbf c}(t)=\frac{2^{-\binom n2}}{n!}\sum_{r=0}^{2^n-1}\tau_r\,(t-r)_+^{\,n}.
@@ -7197,7 +7195,7 @@ At $q=1/2$,
 \begin{equation}\label{eq:dyadic-thue-morse-spline}
  f_{1/2,N}(x)
  =\frac{2^{\binom{N+1}{2}}}{(N-1)!}
- \sum_{r=0}^{2^N-1}(-1)^{s_2(r)}
+ \sum_{r=0}^{2^N-1}(-1)^{\BinaryDigitSum(r)}
  \left(x-\frac r{2^N}\right)_+^{N-1}.
 \end{equation}
 Thus, after translating by the mean $(1-2^{-N})/2$, the inverse Fourier transform of the $N$th partial sinc product is a Thue--Morse signed spline on the dyadic grid.
@@ -7214,7 +7212,7 @@ Every subset $A$ corresponds to a binary word $(\varepsilon_0,\ldots,\varepsilon
  =\sum_{j=0}^{N-1}\varepsilon_j2^{-j-1}.
 \]
 Reversing the order of the bits identifies this number with $r/2^N$ for a unique
-$0\le r<2^N$, while $\AbsoluteValue A$ and $s_2(r)$ have the same parity.  Substitute these facts into \eqref{eq:finite-uniform-spline}.
+$0\le r<2^N$, while $\AbsoluteValue A$ and $\BinaryDigitSum(r)$ have the same parity.  Substitute these facts into \eqref{eq:finite-uniform-spline}.
 \end{proof}
 
 % ed.: PLACEMENT: chap:geometric-uniform-fabius, section ``Finite spline
@@ -7266,7 +7264,7 @@ uniform on $[0,1]$ independent of the copy $X_q'$.  Conditionally on $X_q'=y$ th
 $X_q$ is uniform on $[qy,\,qy+1-q]$, whose density is the constant $1/(1-q)$; averaging
 over $y$ gives
 \begin{equation}\label{eq:density-as-probability}
- f_q(x)=\frac1{1-q}\,\mathbb P\bigl(x-(1-q)\le qX_q'\le x\bigr)
+ f_q(x)=\frac1{1-q}\,\Probability\bigl(x-(1-q)\le qX_q'\le x\bigr)
 \end{equation}
 for almost every $x$, hence for every $x$: the left side is continuous by
 \Cref{thm:geometric-uniform-smooth-density} and the right side is continuous because
@@ -7343,7 +7341,7 @@ normalization $\RvachevUp(0)=1$.
 
 Set $q=1/2$, write $X=X_{1/2}$, and let
 \[
- F(x):=\mathbb P(X\le x),
+ F(x):=\Probability(X\le x),
 \]
 extended by $F(x)=0$ for $x\le0$ and $F(x)=1$ for $x\ge1$.
 
@@ -7364,8 +7362,8 @@ Together with $F(0)=0$, $F(1)=1$, and symmetry, this is the standard Fabius func
 \begin{proof}
 Smoothness follows from \Cref{thm:geometric-uniform-smooth-density}.  Since $X$ has no atoms and $X\overset d=1-X$,
 \[
- F(1-x)=\mathbb P(1-X\le1-x)
- =\mathbb P(X\ge x)=1-F(x),
+ F(1-x)=\Probability(1-X\le1-x)
+ =\Probability(X\ge x)=1-F(x),
 \]
 which proves \eqref{eq:fabius-symmetry}.
 
@@ -7392,9 +7390,9 @@ $\int_{\RealNumbers}\RvachevUp(y)\,dy=1$.
 
 \begin{theorem}[Infinite sinc product and the up equation]\label{thm:up-sinc-product}
 With the Fourier convention
-$\widehat g(t)=\int_{\RealNumbers}e^{ity}g(y)\,dy$,
+$\FourierAngular{g}(-t)=\int_{\RealNumbers}\EulerE^{\ImaginaryUnit ty}g(y)\,\Differential y$,
 \begin{equation}\label{eq:up-sinc-product}
- \widehat{\RvachevUp}(t)
+ \FourierAngular{\RvachevUp}(-t)
  =\prod_{k=1}^{\infty}\SincRad\!\left(\frac{t}{2^k}\right).
 \end{equation}
 Moreover,
@@ -7413,7 +7411,7 @@ $Y=2X-1$.  Writing $V_j=2U_j-1$, we have independent uniform variables on $[-1,1
 \]
 The characteristic function of $V_j$ is $\SincRad t$.  Independence therefore gives
 \[
- \mathbb Ee^{itY}
+ \Expectation \EulerE^{itY}
  =\prod_{j=0}^{\infty}\SincRad(t/2^{j+1}),
 \]
 which is \eqref{eq:up-sinc-product}.
@@ -7476,7 +7474,7 @@ For $\AbsoluteValue y\le1$,
 \end{equation}
 and in particular, for $0\le t\le1$,
 \begin{equation}\label{eq:up-survival}
- \RvachevUp(t)=1-F(t)=\mathbb P(X\ge t).
+ \RvachevUp(t)=1-F(t)=\Probability(X\ge t).
 \end{equation}
 \end{proposition}
 
@@ -7491,24 +7489,24 @@ $\RvachevUp(-y)=\tfrac12f((1-y)/2)=\tfrac12f((1+y)/2)=\RvachevUp(y)$;
 thus $\RvachevUp$ is even and \eqref{eq:up-tail-reflection} holds on all of
 $[-1,1]$.  Finally, for $0\le t\le1$ the symmetry \eqref{eq:fabius-symmetry} turns
 $F(1-t)$ into $1-F(t)$, and $X$ has a density, so
-$1-F(t)=\mathbb P(X>t)=\mathbb P(X\ge t)$.
+$1-F(t)=\Probability(X>t)=\Probability(X\ge t)$.
 \end{proof}
 
 % ---- merged block M02 ----
 \begin{corollary}[Tail form of the moments]\label{cor:up-moments}
 For every $n\ge1$,
 \begin{equation}\label{eq:up-moment-integral}
- \mathbb EX^n=n\int_0^1t^{n-1}\RvachevUp(t)\,\Differential t.
+ \Expectation X^n=n\int_0^1t^{n-1}\RvachevUp(t)\,\Differential t.
 \end{equation}
 \end{corollary}
 
 \begin{proof}
 Since $X\ge0$, Tonelli's theorem applied to the nonnegative integrand
-$nt^{n-1}\one_{\{t<X\}}$ gives
+$nt^{n-1}\IndicatorOf{\SetOf{t<X}}$ gives
 \[
- \mathbb EX^n
- =\mathbb E\int_0^Xnt^{n-1}\,\Differential t
- =\int_0^1nt^{n-1}\mathbb P(X\ge t)\,\Differential t,
+ \Expectation X^n
+ =\Expectation\int_0^Xnt^{n-1}\,\Differential t
+ =\int_0^1nt^{n-1}\Probability(X\ge t)\,\Differential t,
 \]
 because $0\le X\le1$.  Now apply \eqref{eq:up-survival}.
 \end{proof}
@@ -7546,7 +7544,7 @@ Write
  \Lambda(z)\DefinitionEquals\int_0^1\EulerE^{zu}\,\Differential u=\frac{\EulerE^z-1}{z},
  \qquad\Lambda(0)\DefinitionEquals1,
 \end{equation}
-an entire function with $\Lambda(z)=\sum_{r\ge0}z^r/(r+1)!$ and $\Lambda(z)=1+\OO(z)$ at the
+an entire function with $\Lambda(z)=\sum_{r\ge0}z^r/(r+1)!$ and $\Lambda(z)=1+\BigO(z)$ at the
 origin, whose zeros are exactly the points $2\pi\mathrm ik$ with $k\in\IntegerNumbers\setminus\SetOf{0}$; in
 particular $\Lambda$ has no zero in the disc $\AbsoluteValue z<2\pi$.  For $q\in\ComplexNumbers$ with $\AbsoluteValue q<1$ set
 \begin{equation}\label{eq:geometric-uniform-mgf-def}
@@ -7578,18 +7576,18 @@ coefficients, its poles are roots of unity, and it is regular on the open unit d
 \item for real $0<q<1$ the function $\mathcal A_q$ is the moment generating function of
 $X_q$:
 \begin{equation}\label{eq:mgf-product}
- \mathcal A_q(z)=\mathbb E\,\EulerE^{zX_q}
+ \mathcal A_q(z)=\Expectation\,\EulerE^{zX_q}
  =\prod_{j=0}^{\infty}\Lambda\bigl((1-q)q^jz\bigr),
  \qquad
- \alpha^{(q)}_n=\frac{\mathbb EX_q^{\,n}}{n!},
+ \alpha^{(q)}_n=\frac{\Expectation X_q^{\,n}}{n!},
 \end{equation}
 and $\varphi_q(t)=\mathcal A_q(it)$ for every real $t$.
 \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-(i)  On a compact set $K\subset\ComplexNumbers$ the arguments $(1-q)q^jz$ are $\OO(\AbsoluteValue q^j)$ uniformly,
-and $\Lambda(w)-1=\OO(w)$ near the origin, so
+(i)  On a compact set $K\subset\ComplexNumbers$ the arguments $(1-q)q^jz$ are $\BigO(\AbsoluteValue q^j)$ uniformly,
+and $\Lambda(w)-1=\BigO(w)$ near the origin, so
 $\sum_{j\ge0}\sup_{z\in K}\AbsoluteValue{\Lambda((1-q)q^jz)-1}$ is dominated by a constant multiple of
 $\sum_{j\ge0}\AbsoluteValue q^j<\infty$.  The standard criterion for infinite products gives locally
 uniform convergence to an entire function, and every factor equals $1$ at $z=0$.
@@ -7619,11 +7617,11 @@ poles lie among the zeros of $\prod_{j=1}^{n}(1-q^j)$, all of which are roots of
 none of those lies in $\AbsoluteValue q<1$.
 
 (iv)  Let $0<q<1$.  By \Cref{thm:geometric-uniform-basic} we have $0\le X_q\le1$, so
-$\mathbb EX_q^{\,n}\le1$ and $\sum_n\AbsoluteValue z^n\mathbb EX_q^{\,n}/n!\le\EulerE^{\AbsoluteValue z}$; hence
-$z\mapsto\mathbb E\EulerE^{zX_q}$ is entire and term-by-term integration is legitimate.  For the
+$\Expectation X_q^{\,n}\le1$ and $\sum_n\AbsoluteValue z^n\Expectation X_q^{\,n}/n!\le\EulerE^{\AbsoluteValue z}$; hence
+$z\mapsto\Expectation\EulerE^{zX_q}$ is entire and term-by-term integration is legitimate.  For the
 truncation $X_{q,N}$ of \eqref{eq:finite-geometric-uniform-sum}, independence gives
 \[
- \mathbb E\EulerE^{zX_{q,N}}
+ \Expectation\EulerE^{zX_{q,N}}
  =\prod_{j=0}^{N-1}\int_0^1\EulerE^{z(1-q)q^ju}\,\Differential u
  =\prod_{j=0}^{N-1}\Lambda\bigl((1-q)q^jz\bigr).
 \]
@@ -7631,7 +7629,7 @@ By \eqref{eq:finite-uniform-tail-bound}, $0\le X_q-X_{q,N}\le q^N$ pointwise, so
 $\EulerE^{zX_{q,N}}\to\EulerE^{zX_q}$ uniformly on the sample space while remaining bounded by
 $\EulerE^{\AbsoluteValue z}$; dominated convergence identifies the limit with $\mathcal A_q(z)$ and proves
 \eqref{eq:mgf-product}.  Substituting $z=it$ reproduces $\varphi_q$, and comparison of Taylor
-coefficients gives $\alpha^{(q)}_n=\mathbb EX_q^{\,n}/n!$.
+coefficients gives $\alpha^{(q)}_n=\Expectation X_q^{\,n}/n!$.
 \end{proof}
 
 \begin{remark}[Dilation, refinement, Mahler]\label{rem:mgf-names}
@@ -7655,7 +7653,7 @@ clearing of the denominators is \Cref{def:qF-moment-polynomial}.
 \begin{corollary}[The half-base moment generating function]\label{lem:fabius-moment-dilation}
 \index{Fabius function!moment generating function}
 Write $X\DefinitionEquals X_{1/2}$, $\mathcal A\DefinitionEquals\mathcal A_{1/2}$ and
-$\alpha_n\DefinitionEquals\alpha^{(1/2)}_n=\mathbb EX^n/n!$.  Then $\mathcal A$ is entire,
+$\alpha_n\DefinitionEquals\alpha^{(1/2)}_n=\Expectation X^n/n!$.  Then $\mathcal A$ is entire,
 $\mathcal A(it)=\varphi_{1/2}(t)$,
 \begin{align}
  \mathcal A(z)&=\prod_{j=1}^{\infty}\Lambda\!\left(\frac z{2^j}\right),
@@ -7700,10 +7698,10 @@ Recurrence \eqref{eq:fabius-coefficient-recurrence} gives
  \alpha_4=\tfrac{143}{32400},\quad
  \alpha_5=\tfrac{19}{32400},
 \]
-equivalently $\mathbb EX^2=2!\,\alpha_2=5/18$ and $\mathbb EX^4=4!\,\alpha_4=143/1350$.
+equivalently $\Expectation X^2=2!\,\alpha_2=5/18$ and $\Expectation X^4=4!\,\alpha_4=143/1350$.
 These agree with the cumulant route of
 \Cref{cor:geometric-uniform-moments,cor:halfbase-cumulants}: for instance
-$\kappa_2(Y_{1/2})=B_2/(2\cdot3)=1/36$, so $\mathbb EX^2=\tfrac1{36}+\tfrac14=\tfrac5{18}$.
+$\kappa_2(Y_{1/2})=B_2/(2\cdot3)=1/36$, so $\Expectation X^2=\tfrac1{36}+\tfrac14=\tfrac5{18}$.
 
 By \Cref{thm:fabius-half-moment} below, $F(2^{-n})=2^{-\binom n2}\alpha_n$, so the same
 six rationals are the first inverse-dyadic values of the Fabius function:
@@ -7760,7 +7758,7 @@ and $\binom{m+1}{2}+m+1=\binom{m+2}{2}$.  Since $F(0)=0$, evaluating
 For every $n\ge0$,
 \begin{equation}\label{eq:fabius-half-moment}
  F\bigl(2^{-n}\bigr)=2^{-\binom n2}\alpha_n
- =\frac{\mathbb EX^n}{n!\,2^{\binom n2}} .
+ =\frac{\Expectation X^n}{n!\,2^{\binom n2}} .
 \end{equation}
 \end{theorem}
 
@@ -7789,7 +7787,7 @@ By \Cref{prop:up-tail}, $F(u)=\RvachevUp(1-u)$ for $0\le u\le1$; substituting
 $t=1-u$ and applying \Cref{cor:up-moments},
 \[
  \frac1{(n-1)!}\int_0^1t^{n-1}\RvachevUp(t)\,\Differential t
- =\frac{\mathbb EX^n}{n\,(n-1)!}
+ =\frac{\Expectation X^n}{n\,(n-1)!}
  =\alpha_n. \qedhere
 \]
 \end{proof}
@@ -7812,13 +7810,13 @@ $t=1-u$ and applying \Cref{cor:up-moments},
 \index{cube!simplex section of}
 Let $0<q<1$ and $n\ge0$.  Then
 \begin{equation}\label{eq:inverse-power-inequality}
- F_q\bigl(q^n\bigr)\le\frac{q^{\binom{n+1}{2}}}{(1-q)^n\,n!}\,\mathbb E\bigl(X_q^{\,n}\bigr),
+ F_q\bigl(q^n\bigr)\le\frac{q^{\binom{n+1}{2}}}{(1-q)^n\,n!}\,\Expectation\bigl(X_q^{\,n}\bigr),
 \end{equation}
 with equality for every $n$ if and only if $q\le1/2$; for $q>1/2$ and $n\ge1$ the
 inequality is strict.  Thus, for $0<q\le1/2$,
 \begin{equation}\label{eq:inverse-power-values}
  F_q\bigl(q^n\bigr)
- =\frac{q^{\binom{n+1}{2}}}{(1-q)^n\,n!}\,\mathbb E\bigl(X_q^{\,n}\bigr)
+ =\frac{q^{\binom{n+1}{2}}}{(1-q)^n\,n!}\,\Expectation\bigl(X_q^{\,n}\bigr)
  =\frac{q^{\binom{n+1}{2}}}{(1-q)^n}\,\alpha^{(q)}_n ,
 \end{equation}
 with $\alpha^{(q)}_n$ as in \eqref{eq:geometric-uniform-mgf-def}, and
@@ -7854,9 +7852,9 @@ cube, and so does a neighbourhood of it, of positive volume.  Averaging
 \eqref{eq:simplex-bound} over $y$ with $t=q^n(1-y)$ and using
 $1-X_q\overset d=X_q$ from \eqref{eq:geometric-uniform-mean-symmetry},
 \[
- F_q(q^n)\le\frac{q^{\,n^2}\,\mathbb E\bigl[(1-X_q)^n\bigr]}
+ F_q(q^n)\le\frac{q^{\,n^2}\,\Expectation\bigl[(1-X_q)^n\bigr]}
                  {n!\,(1-q)^nq^{\binom n2}}
- =\frac{q^{\,n^2-\binom n2}}{n!\,(1-q)^n}\,\mathbb E\bigl(X_q^{\,n}\bigr),
+ =\frac{q^{\,n^2-\binom n2}}{n!\,(1-q)^n}\,\Expectation\bigl(X_q^{\,n}\bigr),
 \]
 and $n^2-\binom n2=\binom{n+1}{2}$; this is \eqref{eq:inverse-power-inequality}.
 
@@ -7865,8 +7863,8 @@ $t\le q^n=q\cdot q^{\,n-1}\le(1-q)q^{\,n-1}$, so \eqref{eq:simplex-bound} is an 
 almost surely and \eqref{eq:inverse-power-values} follows.  If $q>1/2$ and $n\ge1$, then
 $(1-q)q^{\,n-1}<q^n$ and
 \[
- \mathbb P\bigl(t>(1-q)q^{\,n-1}\bigr)
- =\mathbb P\Bigl(1-X_q'>\frac{1-q}q\Bigr)>0,
+ \Probability\bigl(t>(1-q)q^{\,n-1}\bigr)
+ =\Probability\Bigl(1-X_q'>\frac{1-q}q\Bigr)>0,
 \]
 because $(1-q)/q<1$ and $1-X_q'$ has support $[0,1]$ by
 \Cref{thm:geometric-uniform-basic}; on that event \eqref{eq:simplex-bound} is strict, and
@@ -7911,11 +7909,11 @@ rational.
 
 \begin{proof}
 Cumulants of order $r\ge2$ are translation invariant, so $X=Y_{1/2}+1/2$ has
-$\kappa_1(X)=\mathbb EX=1/2$ by \eqref{eq:geometric-uniform-mean-symmetry} and
+$\kappa_1(X)=\Expectation X=1/2$ by \eqref{eq:geometric-uniform-mean-symmetry} and
 $\kappa_r(X)=\kappa_r$ for $r\ge2$.  The moment generating function is the exponential of
 the cumulant generating function, so the defining identity
 \eqref{eq:complete-bell-definition} gives
-$\mathbb E(X^n)=\mathcal B_n(\kappa_1,\ldots,\kappa_n)$, exactly as in the proof of
+$\Expectation(X^n)=\mathcal B_n(\kappa_1,\ldots,\kappa_n)$, exactly as in the proof of
 \Cref{cor:geometric-uniform-moments} but for the uncentred variable; now apply
 \eqref{eq:fabius-half-moment}.  The second expression is the explicit expansion of
 $\mathcal B_n$ obtained by multiplying out $\exp\bigl(\sum_r\kappa_rt^r/r!\bigr)$, and the
@@ -8189,7 +8187,7 @@ coefficients are precisely the Thue--Morse power sums, and which bridges $\mathc
 its own dilate: that bridge is the hypothesis \eqref{eq:general-bridge} of
 \Cref{thm:gaussian-coefficient-transfer} at $q=1/2$, where $q^{-k}=2^k$.  Throughout,
 $\mathcal A\DefinitionEquals\mathcal A_{1/2}$, $\alpha_n\DefinitionEquals\alpha^{(1/2)}_n$ and
-$\tau_r=(-1)^{s_2(r)}$.
+$\tau_r=(-1)^{\BinaryDigitSum(r)}$.
 
 For $k\ge0$ put
 \begin{equation}\label{eq:Psi-k-definition}
@@ -8289,7 +8287,7 @@ Multiplying by $\EulerE^{-2^kz}$ and applying \eqref{eq:psi-positive-form} prove
 function $\sum_{d\ge0}T_{k,d}(0)z^d/d!$, so comparing the coefficient of $z^{m+k}$ gives
 the first equality in \eqref{eq:psi-coefficient-dictionary}.  For the second, note that
 $2^k-1-r$ is the bitwise complement of $r$ in $k$ binary digits, whence
-$s_2(2^k-1-r)=k-s_2(r)$ and $\tau_{2^k-1-r}=(-1)^k\tau_r$; replacing $r$ by $2^k-1-r$ in
+$\BinaryDigitSum(2^k-1-r)=k-\BinaryDigitSum(r)$ and $\tau_{2^k-1-r}=(-1)^k\tau_r$; replacing $r$ by $2^k-1-r$ in
 $T_{k,d}(0)=\sum_r\tau_r(r-2^k)^d$ therefore gives
 $T_{k,d}(0)=(-1)^{d+k}\widetilde T_{k,d}(1)$.  Alternatively, the second equality is
 \eqref{eq:Psi-coefficients} at $\theta=1$, where the factor $\EulerE^{(1-\theta)z}$ is $1$.
@@ -8321,7 +8319,7 @@ For every $n\ge0$ and every $\theta\in\ComplexNumbers$,
  a_n=\frac{(-1)^n}{\mathfrak m_n}
  \sum_{k=0}^{n}
  \frac{\GaussianBinomial{n}{k}{1/2}}{4^{\binom k2}(n+k)!}
- \sum_{r=0}^{2^k-1}(-1)^{s_2(r)}(r+\theta)^{\,n+k}.\;}
+ \sum_{r=0}^{2^k-1}(-1)^{\BinaryDigitSum(r)}(r+\theta)^{\,n+k}.\;}
 \end{equation}
 Every inner power sum depends on $\theta$; the total does not.
 \end{theorem}
@@ -8365,12 +8363,12 @@ in agreement with the value produced by \eqref{eq:fabius-coefficient-recurrence}
 \begin{theorem}[Inverse-dyadic values of the Fabius function]\label{thm:fabius-inverse-dyadic}
 \index{Fabius function!closed formula at $2^{-n}$}
 % ed.: this theorem formerly restated the moment evaluation
-% ed.: $F(2^{-n})=\mathbb E(X^n)/(n!\,2^{\binom n2})$ and proved it by the
+% ed.: $F(2^{-n})=\Expectation(X^n)/(n!\,2^{\binom n2})$ and proved it by the
 % ed.: cube cut.  Both are now \Cref{thm:fabius-half-moment}, which also
 % ed.: carries the derivative-iterate proof; only the closed form is stated
 % ed.: here.
 By \Cref{thm:fabius-half-moment}, $F(2^{-n})=2^{-\binom n2}a_n$ with
-$a_n=\mathbb E(X^n)/n!$.  Consequently, for every $n\ge0$ and every
+$a_n=\Expectation(X^n)/n!$.  Consequently, for every $n\ge0$ and every
 $\theta\in\ComplexNumbers$,
 
 \begin{equation}\label{eq:fabius-inverse-dyadic-closed}
@@ -8379,7 +8377,7 @@ $\theta\in\ComplexNumbers$,
  =\frac{(-1)^n}{2^{\,n^2}\left(\frac12;\frac12\right)_n}
  \sum_{k=0}^{n}
  \frac{\GaussianBinomial{n}{k}{1/2}}{4^{\binom k2}(n+k)!}
- \sum_{r=0}^{2^k-1}(-1)^{s_2(r)}(r+\theta)^{\,n+k}.\;}
+ \sum_{r=0}^{2^k-1}(-1)^{\BinaryDigitSum(r)}(r+\theta)^{\,n+k}.\;}
 \end{equation}
 \end{theorem}
 
@@ -8434,7 +8432,7 @@ Thue--Morse block.
 For integers $m,k,d\ge0$ and $\theta\in\ComplexNumbers$ define the \emph{long} Thue--Morse block
 \begin{equation}\label{eq:fabius-long-block}
  T_{m;k,d}(\theta)\DefinitionEquals\sum_{r=0}^{m2^k-1}\tau_r\,\bigl(r-m2^k+\theta\bigr)^d,
- \qquad \tau_r=(-1)^{s_2(r)},
+ \qquad \tau_r=(-1)^{\BinaryDigitSum(r)},
 \end{equation}
 an empty sum being $0$; thus $T_{0;k,d}=0$ and $T_{1;k,d}=T_{k,d}$ is the centred
 power sum of \eqref{eq:thue-morse-power-sums}.
@@ -8461,7 +8459,7 @@ with $0\le m\le2^n$,
  \sum_{r=0}^{m2^k-1}\tau_r\,\bigl(r-m2^k+\theta\bigr)^{\,n+k}.
 \end{equation}
 In particular $\mathcal N_n(\theta)=\mathfrak m_n\alpha_n$ for every $\theta$, where
-$\alpha_n=\mathbb EX^n/n!$ is the coefficient called $a_n$ in
+$\alpha_n=\Expectation X^n/n!$ is the coefficient called $a_n$ in
 \Cref{thm:dyadic-gaussian-thue-morse}, and the case $m=1$ reads
 \begin{equation}\label{eq:fabius-centered-formula}
  F\bigl(2^{-n}\bigr)
@@ -8490,7 +8488,7 @@ $F(1)=1$.  Assume $n\ge1$.
 \end{equation}
 so that $\mathcal P_1=\mathcal A$ and, by \eqref{eq:geometric-uniform-mgf-def},
 \begin{equation}\label{eq:fabius-numerator-moment}
- p_{m,n}=\frac1{n!}\sum_{h=0}^{m-1}\tau_h\,\mathbb E\,(X+m-h-1)^n .
+ p_{m,n}=\frac1{n!}\sum_{h=0}^{m-1}\tau_h\,\Expectation\,(X+m-h-1)^n .
 \end{equation}
 We claim that
 \begin{equation}\label{eq:fabius-dyadic-moment}
@@ -8509,9 +8507,9 @@ By \eqref{eq:fabius-scaled-split}, $X=X_{1/2,n}+2^{-n}X'$ with $X'$ an independe
 copy of $X$, so conditioning on $X'$ and using $x\mapsto2^{-n}(m-x)$,
 \[
  F\!\left(\frac m{2^n}\right)
- =\mathbb E\Bigl[F_{1/2,n}\bigl(2^{-n}(m-X')\bigr)\Bigr]
+ =\Expectation\Bigl[F_{1/2,n}\bigl(2^{-n}(m-X')\bigr)\Bigr]
  =\frac{2^{\binom{n+1}{2}-n^2}}{n!}
-  \sum_{r=0}^{2^n-1}\tau_r\,\mathbb E\bigl[(m-r-X')_+^{\,n}\bigr],
+  \sum_{r=0}^{2^n-1}\tau_r\,\Expectation\bigl[(m-r-X')_+^{\,n}\bigr],
 \]
 the factor $2^{-n\cdot n}$ coming from the $n$th power of $2^{-n}$.  Since
 $0\le X'\le1$ and $m\le2^n$, a term with $r\ge m$ has $m-r-X'\le0$ and drops out,
@@ -8520,8 +8518,8 @@ $\binom{n+1}{2}-n^2=-\binom n2$ and $1-X'\overset d=X$ from
 \eqref{eq:geometric-uniform-mean-symmetry},
 \[
  F\!\left(\frac m{2^n}\right)
- =\frac{2^{-\binom n2}}{n!}\sum_{r=0}^{m-1}\tau_r\,\mathbb E\,(m-r-X')^n
- =\frac{2^{-\binom n2}}{n!}\sum_{r=0}^{m-1}\tau_r\,\mathbb E\,(X+m-r-1)^n,
+ =\frac{2^{-\binom n2}}{n!}\sum_{r=0}^{m-1}\tau_r\,\Expectation\,(m-r-X')^n
+ =\frac{2^{-\binom n2}}{n!}\sum_{r=0}^{m-1}\tau_r\,\Expectation\,(X+m-r-1)^n,
 \]
 which is \eqref{eq:fabius-dyadic-moment} by \eqref{eq:fabius-numerator-moment}.  At
 $m=1$ this is \Cref{thm:fabius-half-moment} again, since $p_{1,n}=\alpha_n$.
@@ -8588,7 +8586,7 @@ unchanged.  Hence $\mathcal N_{m,n}(\theta)=\mathcal N_{m,n}(0)$ for every $\the
 
 \emph{Consistency with the raw form.}  For $m=1$ the two normalizations are exchanged
 by digit complementation.  Substituting $r\mapsto2^k-1-r$ in the inner sum of
-$\mathcal N_n(1-\theta)$ and using $s_2(2^k-1-r)=k-s_2(r)$, hence
+$\mathcal N_n(1-\theta)$ and using $\BinaryDigitSum(2^k-1-r)=k-\BinaryDigitSum(r)$, hence
 $\tau_{2^k-1-r}=(-1)^k\tau_r$, together with
 $(2^k-1-r)-2^k+(1-\theta)=-(r+\theta)$, gives
 \[
@@ -8755,7 +8753,7 @@ for
 $n=1,\ldots,10$, peaking at $n=3$ and decreasing thereafter, and other choices of
 $\theta$ alter these ratios only by a bounded factor.  The digits are lost within a
 single block, in the alternating Thue--Morse power sum: for $k=n$ the largest summand
-exceeds $\sum_{r<2^{k}}(-1)^{s_2(r)}(r+\theta)^{\,n+k}$ by a factor $4.8$ at $n=4$,
+exceeds $\sum_{r<2^{k}}(-1)^{\BinaryDigitSum(r)}(r+\theta)^{\,n+k}$ by a factor $4.8$ at $n=4$,
 $5.2\cdot10^{3}$ at $n=8$, $3.9\cdot10^{6}$ at $n=10$ and $2.9\cdot10^{10}$ at $n=12$,
 and this ratio grows without bound.  For numerical work the triangular recursion
 \eqref{eq:fabius-coefficient-recurrence} is preferable: it delivers $a_n$, hence
@@ -8968,17 +8966,17 @@ the integral being absolutely convergent.
 
 \begin{proof}
 Let $Y=2X-1$, whose density is $\RvachevUp$ and whose Fourier transform is
-$\widehat{\RvachevUp}(t)=\prod_{k\ge1}\SincRad(t/2^k)$ by
-\Cref{thm:up-sinc-product}.  Since $\widehat{\RvachevUp}(t)=\EulerE^{-it}\varphi_{1/2}(2t)$,
+$\FourierAngular{\RvachevUp}(-t)=\prod_{k\ge1}\SincRad(t/2^k)$ by
+\Cref{thm:up-sinc-product}.  Since $\FourierAngular{\RvachevUp}(-t)=\EulerE^{-\ImaginaryUnit t}\varphi_{1/2}(2t)$,
 \Cref{thm:geometric-uniform-fourier-decay} shows that
-$\widehat{\RvachevUp}$ is integrable, and indeed decays faster than every
+$\FourierAngular{\RvachevUp}(-\,\cdot\,)$ is integrable, and indeed decays faster than every
 negative power of $t$.  Fourier inversion and evenness of $\RvachevUp$ give
 \[
- \RvachevUp(y)=\frac1{2\pi}\int_{\RealNumbers}\EulerE^{-ity}\widehat{\RvachevUp}(t)\,\Differential t
- =\frac1\pi\int_0^{\infty}\widehat{\RvachevUp}(t)\cos(ty)\,\Differential t .
+\RvachevUp(y)=\frac1{2\pi}\int_{\RealNumbers}\EulerE^{-\ImaginaryUnit ty}\FourierAngular{\RvachevUp}(-t)\,\Differential t
+=\frac1\pi\int_0^{\infty}\FourierAngular{\RvachevUp}(-t)\cos(ty)\,\Differential t .
 \]
 Because $\RvachevUp$ is a probability density and is symmetric,
-$F(x)=\mathbb P(Y\le2x-1)=\tfrac12+\int_0^{2x-1}\RvachevUp(y)\,\Differential y$ for
+$F(x)=\Probability(Y\le2x-1)=\tfrac12+\int_0^{2x-1}\RvachevUp(y)\,\Differential y$ for
 $0\le x\le1$.  Integrating the last display in $y$ over $[0,2x-1]$ and interchanging the
 order of integration, which is permitted by absolute convergence, replaces
 $\cos(ty)$ by $\sin((2x-1)t)/t$ and proves \eqref{eq:fabius-fourier-formula}.
@@ -8999,7 +8997,7 @@ cancellation in the sinc integral.  At $x=1/4$, for instance, numerical evaluati
 \index{Thue--Morse sequence!radix generalization}
 \index{root of unity!as a digit weight}
 
-The signs $\tau_r=(-1)^{s_2(r)}$ are the case $b=2$, $\omega=-1$ of a roots-of-unity construction available in every radix.  Separating the radix from the special real signs that exist only at $b=2$ shows which half of \Cref{thm:thue-morse-product,thm:thue-morse-moments} comes from binary digits and which half comes from having a digit expansion at all.
+The signs $\tau_r=(-1)^{\BinaryDigitSum(r)}$ are the case $b=2$, $\omega=-1$ of a roots-of-unity construction available in every radix.  Separating the radix from the special real signs that exist only at $b=2$ shows which half of \Cref{thm:thue-morse-product,thm:thue-morse-moments} comes from binary digits and which half comes from having a digit expansion at all.
 
 For $b\ge2$ let $s_b(r)$ denote the sum of the base-$b$ digits of $r$, and for $\omega\in\ComplexNumbers$ put
 \begin{equation}\label{eq:radix-b-signs}
@@ -9072,7 +9070,7 @@ Hence $G_j'(0)=b^j\sum_{a<b}a\omega^a=b^{\,j+1}/(\omega-1)$, so each $G_j$ has a
  =\prod_{j=0}^{k-1}\frac{b^{\,j+1}}{\omega-1}
  =\frac{b^{\,k(k+1)/2}}{(\omega-1)^k}.
 \]
-Multiplying by $\EulerE^{\theta z}=1+\OO(z)$ changes neither the order of the zero nor the coefficient of $z^k$.  Comparing the coefficients of $z^m/m!$ for $0\le m\le k$ gives \eqref{eq:radix-b-lower} and \eqref{eq:radix-b-top}.
+Multiplying by $\EulerE^{\theta z}=1+\BigO(z)$ changes neither the order of the zero nor the coefficient of $z^k$.  Comparing the coefficients of $z^m/m!$ for $0\le m\le k$ gives \eqref{eq:radix-b-lower} and \eqref{eq:radix-b-top}.
 
 For \eqref{eq:radix-b-functional}, expand $q(X)\DefinitionEquals p(\alpha+\beta X)=\sum_{m=0}^{k}\gamma_mX^m$, a polynomial of degree at most $k$ with $\gamma_k=\beta^k[X^k]p$.  Applying \eqref{eq:radix-b-lower} with $\theta=0$ to each $m<k$ and \eqref{eq:radix-b-top} to $m=k$ leaves only the term $\gamma_k$.
 \end{proof}
@@ -9110,7 +9108,7 @@ the Mersenne product $\mathfrak m_n$ at $b=2$.  When $b$ is a prime power the sa
 \[
  Y_b\DefinitionEquals\sum_{j\ge1}b^{-j}V_j=\frac{X_{1/b}}{b-1},
  \qquad
- a^{(b)}_n\DefinitionEquals\frac{\mathbb E\bigl(Y_b^{\,n}\bigr)}{n!},
+ a^{(b)}_n\DefinitionEquals\frac{\Expectation\bigl(Y_b^{\,n}\bigr)}{n!},
 \]
 with $V_1,V_2,\ldots$ independent and uniform on $[0,1]$, so that $Y_2=X$ and $a^{(2)}_n=a_n$.  Everything in \Cref{lem:fabius-moment-dilation,lem:thue-morse-dilation-bridge} runs verbatim with $2$ replaced by $b$: the moment generating function satisfies $A_b(bz)=\Phi(z)A_b(z)$, and $\Psi^{(b)}_k(z)=\EulerE^{-z}\prod_{j<k}\Phi\bigl(-b^{\,j}z\bigr)$ satisfies the bridge relation \eqref{eq:general-bridge} at $q=1/b$, since then $q^{-k}=b^{\,k}$.  Expanding $\prod_{j<k}\bigl(1-\EulerE^{-b^{j}z}\bigr)$ over subsets and applying \Cref{thm:gaussian-coefficient-transfer} together with \Cref{cor:transfer-translation} gives, for every $\theta\in\ComplexNumbers$,
 \begin{equation}\label{eq:radix-b-coefficient-formula}
@@ -9123,13 +9121,13 @@ where $\mathcal B^{(b)}_k$ is the set of $r=\sum_{j<k}\varepsilon_jb^{\,j}$ with
 
 \emph{What is genuinely rigid is the passage from coefficients to values.}  The simplex cut in the proof of \Cref{thm:fabius-inverse-dyadic} uses only $b^{\,n-j}\ge1$ and a threshold at most $1$, so it survives at every radix:
 \[
- \mathbb P\bigl(Y_b\le b^{-n}\bigr)
- =\frac{\mathbb E\bigl[(1-Y_b)^n\bigr]}{n!\;b^{\binom n2}} .
+ \Probability\bigl(Y_b\le b^{-n}\bigr)
+ =\frac{\Expectation\bigl[(1-Y_b)^n\bigr]}{n!\;b^{\binom n2}} .
 \]
-Turning the right-hand side into the single moment $\mathbb E\bigl(Y_b^{\,n}\bigr)$ uses the reflection $1-Y_b\overset d=Y_b$.  But $Y_b$ has support $[0,1/(b-1)]$ while $1-Y_b$ has support $[1-1/(b-1),1]$, and these agree only when $1/(b-1)=1$.  Only at $b=2$, where the geometric mass $\sum_{j\ge1}b^{-j}$ is exactly $1$ and $Y_2=X_{1/2}$ is symmetric about $1/2$ by \eqref{eq:geometric-uniform-mean-symmetry}, does \eqref{eq:radix-b-coefficient-formula} evaluate a distribution function.  For $b\ge3$ one still gets every value, since
+Turning the right-hand side into the single moment $\Expectation\bigl(Y_b^{\,n}\bigr)$ uses the reflection $1-Y_b\overset d=Y_b$.  But $Y_b$ has support $[0,1/(b-1)]$ while $1-Y_b$ has support $[1-1/(b-1),1]$, and these agree only when $1/(b-1)=1$.  Only at $b=2$, where the geometric mass $\sum_{j\ge1}b^{-j}$ is exactly $1$ and $Y_2=X_{1/2}$ is symmetric about $1/2$ by \eqref{eq:geometric-uniform-mean-symmetry}, does \eqref{eq:radix-b-coefficient-formula} evaluate a distribution function.  For $b\ge3$ one still gets every value, since
 \[
  F_{1/b}\bigl((b-1)b^{-n}\bigr)
- =\mathbb P\bigl(Y_b\le b^{-n}\bigr)
+ =\Probability\bigl(Y_b\le b^{-n}\bigr)
  =\frac1{b^{\binom n2}}\sum_{m=0}^{n}(-1)^m\binom nm\frac{m!}{n!}\,a^{(b)}_m\cdot n!\Big/n!,
 \]
 a binomial combination of $a^{(b)}_0,\ldots,a^{(b)}_n$ rather than the single coefficient $a^{(b)}_n$.  The $q$-binomial and the digital ingredients are therefore automatic at every radix; what singles out $b=2$ is the one normalization in which the dilation factor of \eqref{eq:geometric-uniform-fixed-point}, the digit alphabet of the refinement factor, and the right endpoint of the support all agree.
@@ -9366,7 +9364,7 @@ is a finite identity between rational numbers, proved in polynomial rings and fo
 power series over $\RationalNumbers$; none of them uses a convergence hypothesis, and each survives
 mapping into an arbitrary commutative $\RationalNumbers$-algebra, exactly as in
 \Cref{rem:denominator-free-reversed}.  Analysis enters at precisely two points: the
-identification of $\mathcal A$ with $\mathbb E\EulerE^{zX}$ in
+identification of $\mathcal A$ with $\Expectation\EulerE^{zX}$ in
 \Cref{thm:geometric-uniform-mgf}, and \Cref{thm:fabius-half-moment}, which converts the
 formal coefficient $\alpha_n$ into the value $F(2^{-n})$.  Every closed formula above is
 the algebraic core composed with that single analytic bridge.  The formalization status
@@ -9398,7 +9396,7 @@ Then
  \qquad
  M_{-a}(t)=\EulerE^{-\beta_at}M_a(\lambda_at).
 \end{equation}
-Consequently $\mathbb EX_{-a}=\tfrac12$ and $X_{-a}\overset d=1-X_{-a}$, and the
+Consequently $\Expectation X_{-a}=\tfrac12$ and $X_{-a}\overset d=1-X_{-a}$, and the
 topological support of $X_{-a}$ is the interval
 \begin{equation}\label{eq:qF-negative-support}
  \Bigl[-\frac a{1-a},\ \frac1{1-a}\Bigr].
@@ -9432,7 +9430,7 @@ increasing affine map carries the support onto its image, so the support of
 $X_{-a}$ is $[-\beta_a,\lambda_a-\beta_a]$, and
 $\lambda_a-\beta_a=\frac{(1+a)-a}{1-a}=\frac1{1-a}$, which is
 \eqref{eq:qF-negative-support}.  Finally
-$\mathbb EX_{-a}=\tfrac{\lambda_a}2-\beta_a=\frac{(1+a)-2a}{2(1-a)}=\tfrac12$,
+$\Expectation X_{-a}=\tfrac{\lambda_a}2-\beta_a=\frac{(1+a)-2a}{2(1-a)}=\tfrac12$,
 and, using $\lambda_a-1-\beta_a=\beta_a$,
 \[
  1-X_{-a}\overset d=1-\lambda_aX_a+\beta_a
@@ -9537,7 +9535,7 @@ $a_n(q)=d_n(q)/n!$.
 % ed.: at the origin together with $M_q(0)=1$ --- is now stated explicitly in
 % ed.: \Cref{thm:qF-germ-uniqueness}.
 The symbol $M_q$ is used in two senses.  For real $q$ with $\AbsoluteValue q<1$ it is a
-genuine moment generating function and $d_n(q)=\mathbb EX_q^n$.  For $\AbsoluteValue q>1$
+genuine moment generating function and $d_n(q)=\Expectation X_q^n$.  For $\AbsoluteValue q>1$
 there is no underlying random variable, and $d_n(q)$ are merely normalized
 Taylor coefficients.  What is common to both regimes is \eqref{eq:mgf-refinement},
 and therefore also \eqref{eq:q-moment-recurrence}: the derivation of the
@@ -9941,7 +9939,7 @@ $B_4/4!$, $B_6/6!$, $B_8/8!$.
 
 % ---- merged block B22 ----
 % ed.: the incoming item stated two identities, of which the second,
-% ed.: $F(2^{-n})=2^{-\binom n2}\mathbb EX^n/n!$, is \eqref{eq:fabius-half-moment}
+% ed.: $F(2^{-n})=2^{-\binom n2}\Expectation X^n/n!$, is \eqref{eq:fabius-half-moment}
 % ed.: of \Cref{thm:fabius-half-moment}; only the first is new and only it is kept
 % ed.: here.  The general-$q$ display \eqref{eq:qF-endpoint-poch} is
 % ed.: \eqref{eq:inverse-power-values} rewritten through \Cref{def:qF-moment-polynomial},
@@ -10082,7 +10080,7 @@ since $\IntegerNumbers[u]$ is an integral domain and $(u;u)_{n-k}\ne0$, cancelli
 \end{proof}
 
 \begin{example}[A primitive root of unity]\label{ex:gaussian-root-of-unity}
-Let $a=e^{2\pi i/3}$, so $(a;a)_3=(1-a)(1-a^2)(1-a^3)=0$ while $(a;a)_2=3$.  The quotient $\GaussianBinomial{6}{3}{q}$ at $q=a$ displays $0/0$, but the polynomial value is unambiguous: $G_{6,3}(a)=2$, in agreement with the $q$-Lucas congruence of \Cref{chap:cyclotomic}.  Identity \eqref{eq:universal-full-factorial} reads $0=0\cdot0\cdot2$, and it is true.  For a nondegenerate instance take $n=5$, $k=2$: here $G_{5,2}(a)=1$ and \eqref{eq:universal-short-factorial} reads $(a;a)_2\cdot1=(a^4;a)_2$, both sides equal to $3$.
+Let $a=\EulerE^{2\pi i/3}$, so $(a;a)_3=(1-a)(1-a^2)(1-a^3)=0$ while $(a;a)_2=3$.  The quotient $\GaussianBinomial{6}{3}{q}$ at $q=a$ displays $0/0$, but the polynomial value is unambiguous: $G_{6,3}(a)=2$, in agreement with the $q$-Lucas congruence of \Cref{chap:cyclotomic}.  Identity \eqref{eq:universal-full-factorial} reads $0=0\cdot0\cdot2$, and it is true.  For a nondegenerate instance take $n=5$, $k=2$: here $G_{5,2}(a)=1$ and \eqref{eq:universal-short-factorial} reads $(a;a)_2\cdot1=(a^4;a)_2$, both sides equal to $3$.
 \end{example}
 
 \begin{remark}
@@ -10465,12 +10463,12 @@ attached.
 \index{Appell sequence!Fabius moments}
 For $n\ge0$ and $\theta\in\ComplexNumbers$ put
 \begin{equation}\label{eq:fabius-shift-polynomial}
- \mathfrak a_n(\theta)\DefinitionEquals\mathbb E\,(X+\theta)^n
- =\sum_{j=0}^{n}\binom nj\,\mathbb EX^{\,n-j}\,\theta^{\,j},
+ \mathfrak a_n(\theta)\DefinitionEquals\Expectation\,(X+\theta)^n
+ =\sum_{j=0}^{n}\binom nj\,\Expectation X^{\,n-j}\,\theta^{\,j},
 \end{equation}
 a monic polynomial of degree $n$ with
 \[
- \mathfrak a_n(0)=\mathbb EX^n=n!\,\alpha_n
+ \mathfrak a_n(0)=\Expectation X^n=n!\,\alpha_n
 \]
 and exponential generating function
 \[
@@ -10498,7 +10496,7 @@ Write $y_+\DefinitionEquals\max(y,0)$.  For every $n\ge1$ and every real $t$,
 \begin{equation}\label{eq:fabius-spline-expectation}
  F\!\left(\frac t{2^n}\right)
  =\frac{2^{-\binom n2}}{n!}\sum_{r=0}^{2^n-1}\tau_r\,
-   \mathbb E\bigl(t-r-X\bigr)_+^{\,n}.
+   \Expectation\bigl(t-r-X\bigr)_+^{\,n}.
 \end{equation}
 \end{lemma}
 
@@ -10508,8 +10506,8 @@ $2^nX=\sum_{j=1}^{n}c_jV_j+X'$ with $c_j=2^{\,n-j}$, with $V_1,\ldots,V_n$ indep
 and uniform on $[0,1]$, and with $X'$ independent of them and distributed as $X$.  Since
 $(V_1,\ldots,V_n)$ is uniform on the unit cube, conditioning on $X'$ gives
 \[
- \mathbb P\bigl(2^nX\le t\mid X'\bigr)
- =\mathbb P\Bigl(\sum_{j=1}^{n}c_jV_j\le t-X'\;\Big|\;X'\Bigr)
+ \Probability\bigl(2^nX\le t\mid X'\bigr)
+ =\Probability\Bigl(\sum_{j=1}^{n}c_jV_j\le t-X'\;\Big|\;X'\Bigr)
  =V_{\mathbf c}\bigl(t-X'\bigr),
 \]
 where $V_{\mathbf c}$ is the weighted cube cut \eqref{eq:weighted-cube-cut}.  For the
@@ -10552,8 +10550,8 @@ If $r\ge m+1$, then $t-r-X\le m+\theta-(m+1)=\theta-1<0$ and the term vanishes.
 If $r\le m-1$, then $t-r-X\ge m+\theta-(m-1)-1=\theta\ge0$, so the positive part is
 inactive and
 \[
- \mathbb E\bigl(m+\theta-r-X\bigr)_+^{\,n}
- =\mathbb E\bigl((1-X)+m-r-1+\theta\bigr)^{n}
+ \Expectation\bigl(m+\theta-r-X\bigr)_+^{\,n}
+ =\Expectation\bigl((1-X)+m-r-1+\theta\bigr)^{n}
  =\mathfrak a_n\bigl(m-r-1+\theta\bigr),
 \]
 because $1-X\overset d=X$ by \eqref{eq:geometric-uniform-mean-symmetry}.  These terms
@@ -10561,13 +10559,13 @@ contribute the sum in \eqref{eq:fabius-dyadic-cell}.
 
 There remains the term $r=m$, which occurs in the range $0\le r\le2^n-1$ precisely when
 $m\le2^n-1$.  In that case its contribution is
-$\tau_m\,2^{-\binom n2}\mathbb E(\theta-X)_+^{\,n}/n!$.  Apply
+$\tau_m\,2^{-\binom n2}\Expectation(\theta-X)_+^{\,n}/n!$.  Apply
 \Cref{lem:fabius-spline-expectation} once more, now at $t=\theta$: since
 $0\le\theta<1$, every index $r\ge1$ gives $\theta-r-X\le\theta-1<0$ and drops out, so
 only $r=0$ survives and
 \begin{equation}\label{eq:fabius-cell-residual-term}
  F\!\left(\frac{\theta}{2^n}\right)
- =\frac{2^{-\binom n2}}{n!}\,\mathbb E\bigl(\theta-X\bigr)_+^{\,n} .
+ =\frac{2^{-\binom n2}}{n!}\,\Expectation\bigl(\theta-X\bigr)_+^{\,n} .
 \end{equation}
 The $r=m$ term is therefore $\tau_m F(\theta/2^n)$, which is the first summand of
 \eqref{eq:fabius-dyadic-cell}.
@@ -10626,7 +10624,7 @@ hence
  \theta_{j-1}=\frac{b_j+\theta_j}2
  \qquad(j\ge1),
 \end{equation}
-the middle relation because appending a digit $0$ leaves $s_2$ unchanged and appending
+the middle relation because appending a digit $0$ leaves $\BinaryDigitSum$ unchanged and appending
 a digit $1$ raises it by one.
 
 
@@ -10665,8 +10663,8 @@ rational one \eqref{eq:fabius-dyadic-value}, which applies only at dyadic argume
 Formula \eqref{eq:fabius-digit-appell} is a third, and it is the only one that is
 simultaneously exact, elementary, and valid at every argument.  Its cost structure is
 also different from both.  The $j$th term needs the moments
-$\mathbb EX^0,\ldots,\mathbb EX^j$, which \eqref{eq:fabius-coefficient-recurrence}
-produces through $\mathbb EX^n=n!\,\alpha_n$ at one rational division each; the
+$\Expectation X^0,\ldots,\Expectation X^j$, which \eqref{eq:fabius-coefficient-recurrence}
+produces through $\Expectation X^n=n!\,\alpha_n$ at one rational division each; the
 accuracy is governed by the superfactorial
 weight $2^{-\binom N2}/N!$ of \eqref{eq:fabius-digit-residual}, which is
 $7.8\cdot10^{-21}$ at $N=10$ and $2.6\cdot10^{-76}$ at $N=20$, uniformly in $x$; and
@@ -10708,7 +10706,7 @@ Let $0<q<1$ and $N\ge1$, and put
 \begin{equation}\label{eq:midpoint-truncation-def}
  X_{q,N}^{\mathrm{mid}}\DefinitionEquals X_{q,N}+\tfrac12q^N,
  \qquad
- F_{q,N}^{\mathrm{mid}}(x)\DefinitionEquals\mathbb P\bigl(X_{q,N}^{\mathrm{mid}}\le x\bigr)
+ F_{q,N}^{\mathrm{mid}}(x)\DefinitionEquals\Probability\bigl(X_{q,N}^{\mathrm{mid}}\le x\bigr)
   =F_{q,N}\bigl(x-\tfrac12q^N\bigr).
 \end{equation}
 At the half base write $S_p\DefinitionEquals F^{\mathrm{mid}}_{1/2,p}$.  Then:
@@ -10717,7 +10715,7 @@ At the half base write $S_p\DefinitionEquals F^{\mathrm{mid}}_{1/2,p}$.  Then:
 \begin{equation}\label{eq:midpoint-spline}
  S_p(x)=\frac{2^{-\binom p2}}{p!}
   \sum_{r=0}^{2^p-1}\tau_r\bigl(2^px-\tfrac12-r\bigr)_+^{\,p},
-  \qquad \tau_r=(-1)^{s_2(r)};
+ \qquad \tau_r=(-1)^{\BinaryDigitSum(r)};
 \end{equation}
 \item for every $N\ge2$,
 \begin{equation}\label{eq:midpoint-rate}
@@ -10743,7 +10741,7 @@ whereas the right-hand side of \eqref{eq:midpoint-rate} would be $1/36<5/72$.
 \begin{proof}
 \emph{(i).}  By \Cref{rem:dyadic-cube-cut} with $n=p$, the weights $c_j=2^{\,p-j}$
 are $2^p$ times the half-base weights $a_{j-1}=2^{-j}$, so
-$V_{\mathbf c}(t)=\mathbb P\bigl(2^pX_{1/2,p}\le t\bigr)=F_{1/2,p}\bigl(2^{-p}t\bigr)$
+$V_{\mathbf c}(t)=\Probability\bigl(2^pX_{1/2,p}\le t\bigr)=F_{1/2,p}\bigl(2^{-p}t\bigr)$
 and \eqref{eq:dyadic-cube-cut} reads
 \[
  F_{1/2,p}\bigl(2^{-p}t\bigr)
@@ -10758,38 +10756,38 @@ $X_q$; at $q=1/2$ this is \eqref{eq:fabius-scaled-split} after scaling.  Write
 $Y\DefinitionEquals X_{q,N}$, let $g_{q,N}$ be its density
 (\Cref{thm:finite-uniform-spline}), and put
 \[
- H_q(u)\DefinitionEquals\one_{[1/2,\infty)}(u)-F_q(u),
+ H_q(u)\DefinitionEquals\IndicatorOf{[1/2,\infty)}(u)-F_q(u),
 \]
 which vanishes for $u<0$ and for $u>1$.  Conditioning on $Y$,
 \[
- F_q(x)=\mathbb E\Bigl[F_q\bigl(q^{-N}(x-Y)\bigr)\Bigr],
+ F_q(x)=\Expectation\Bigl[F_q\bigl(q^{-N}(x-Y)\bigr)\Bigr],
  \qquad
  F^{\mathrm{mid}}_{q,N}(x)
- =\mathbb P\bigl(Y\le x-\tfrac12q^N\bigr)
- =\mathbb E\Bigl[\one_{[1/2,\infty)}\bigl(q^{-N}(x-Y)\bigr)\Bigr],
+ =\Probability\bigl(Y\le x-\tfrac12q^N\bigr)
+ =\Expectation\Bigl[\IndicatorOf{[1/2,\infty)}\bigl(q^{-N}(x-Y)\bigr)\Bigr],
 \]
 so, substituting $u=q^{-N}(x-y)$,
 \begin{equation}\label{eq:midpoint-error-integral}
  F^{\mathrm{mid}}_{q,N}(x)-F_q(x)
- =\mathbb E\Bigl[H_q\bigl(q^{-N}(x-Y)\bigr)\Bigr]
+ =\Expectation\Bigl[H_q\bigl(q^{-N}(x-Y)\bigr)\Bigr]
  =q^N\int_0^1g_{q,N}\bigl(x-q^Nu\bigr)H_q(u)\Differential u .
 \end{equation}
 
-\emph{The two moments of $H_q$.}  Since $\mathbb EX_q=\int_0^1(1-F_q)$ and
-$\mathbb EX_q=1/2$ by \eqref{eq:geometric-uniform-mean-symmetry},
+\emph{The two moments of $H_q$.}  Since $\Expectation X_q=\int_0^1(1-F_q)$ and
+$\Expectation X_q=1/2$ by \eqref{eq:geometric-uniform-mean-symmetry},
 \begin{equation}\label{eq:midpoint-H-moment-zero}
  \int_0^1H_q(u)\Differential u=\tfrac12-\int_0^1F_q(u)\Differential u
- =\tfrac12-\bigl(1-\mathbb EX_q\bigr)=0 .
+ =\tfrac12-\bigl(1-\Expectation X_q\bigr)=0 .
 \end{equation}
-Integrating by parts, $\int_0^1uF_q(u)\Differential u=\tfrac12-\tfrac12\mathbb EX_q^2$, whence
+Integrating by parts, $\int_0^1uF_q(u)\Differential u=\tfrac12-\tfrac12\Expectation X_q^2$, whence
 \[
  \int_0^1\bigl(u-\tfrac12\bigr)H_q(u)\Differential u
  =\int_{1/2}^1\bigl(u-\tfrac12\bigr)\Differential u-\int_0^1\bigl(u-\tfrac12\bigr)F_q(u)\Differential u
- =\tfrac12\mathbb EX_q^2-\tfrac18
- =\tfrac12\operatorname{Var}(X_q).
+ =\tfrac12\Expectation X_q^2-\tfrac18
+ =\tfrac12\Variance(X_q).
 \]
 By \eqref{eq:q-cumulants-uniform} at $m=1$, with $B_2=1/6$,
-$\operatorname{Var}(X_q)=\kappa_2(Y_q)=(1-q)/\bigl(12(1+q)\bigr)$, so
+$\Variance(X_q)=\kappa_2(Y_q)=(1-q)/\bigl(12(1+q)\bigr)$, so
 \begin{equation}\label{eq:midpoint-H-moment-one}
  \int_0^1\bigl(u-\tfrac12\bigr)H_q(u)\Differential u=\frac{1-q}{24(1+q)} .
 \end{equation}
@@ -10890,7 +10888,7 @@ $\sup_x\AbsoluteValue{F_{1/2,N}-F}=2^{-N}$, while
 $\sup_x\AbsoluteValue{S_N-F}=\tfrac194^{-N}$.  The mechanism is visible in
 \eqref{eq:midpoint-error-integral}: the shift $\tfrac12q^N$ is exactly the one
 that makes the kernel $H_q$ have vanishing mean, after which only its first
-moment $\tfrac12\operatorname{Var}(X_q)$ survives.  The same identity shows why no
+moment $\tfrac12\Variance(X_q)$ survives.  The same identity shows why no
 further shift helps: the next obstruction is the second moment of $H_q$, which
 cannot be removed by a translation.
 % ed.: the exact half-base values $\sup_x\abs{S_p-F}=\tfrac194^{-p}$ were
@@ -11271,15 +11269,15 @@ decoupling $U\ne V$ permitted by \Cref{thm:gaussian-coefficient-transfer}.
 \index{Appell polynomial!Fabius moments}
 For $n\ge0$ and $\theta\in\ComplexNumbers$ put
 \begin{equation}\label{eq:fabius-appell-def}
- A_n(\theta)\DefinitionEquals\mathbb E\,(X+\theta)^n
- =\sum_{j=0}^{n}\binom nj\,\mathbb EX^{\,n-j}\,\theta^{\,j},
+ A_n(\theta)\DefinitionEquals\Expectation\,(X+\theta)^n
+ =\sum_{j=0}^{n}\binom nj\,\Expectation X^{\,n-j}\,\theta^{\,j},
 \end{equation}
 a monic polynomial of degree $n$ in $\theta$ with
-$A_n(0)=\mathbb EX^n=n!\,\alpha_n$.  Since $0\le X\le1$, the exchange of
+$A_n(0)=\Expectation X^n=n!\,\alpha_n$.  Since $0\le X\le1$, the exchange of
 expectation and summation in
 \begin{equation}\label{eq:fabius-appell-egf}
  \sum_{n\ge0}A_n(\theta)\frac{z^n}{n!}
- =\mathbb E\,\EulerE^{z(X+\theta)}
+ =\Expectation\,\EulerE^{z(X+\theta)}
  =\EulerE^{\theta z}\,\mathcal A(z)
 \end{equation}
 is legitimate for every $z\in\ComplexNumbers$, by \eqref{eq:mgf-product} at $q=1/2$.  The
@@ -11308,9 +11306,9 @@ expanding the product of the two exponential series gives the translation law.
 For the reflection, \eqref{eq:geometric-uniform-mean-symmetry} at $q=1/2$ gives
 $1-X\overset d=X$, whence
 \[
- A_n(-1-\theta)=\mathbb E\,(X-1-\theta)^n
- =(-1)^n\mathbb E\,(1-X+\theta)^n
- =(-1)^n\mathbb E\,(X+\theta)^n. \qedhere
+ A_n(-1-\theta)=\Expectation\,(X-1-\theta)^n
+ =(-1)^n\Expectation\,(1-X+\theta)^n
+ =(-1)^n\Expectation\,(X+\theta)^n. \qedhere
 \]
 \end{proof}
 
@@ -11485,7 +11483,7 @@ For every $n\ge1$ and every real $t$ with $0\le t\le2^n$,
 \begin{equation}\label{eq:fabius-real-spline}
  F\!\left(\frac t{2^n}\right)
  =\frac{2^{-\binom n2}}{n!}
-  \sum_{r=0}^{2^n-1}\tau_r\,\mathbb E\bigl(t-r-X\bigr)_+^{\,n},
+  \sum_{r=0}^{2^n-1}\tau_r\,\Expectation\bigl(t-r-X\bigr)_+^{\,n},
 \end{equation}
 where $y_+=\max(y,0)$.
 \end{lemma}
@@ -11493,7 +11491,7 @@ where $y_+=\max(y,0)$.
 \begin{proof}
 By \eqref{eq:fabius-scaled-split} we may write $X=X_{1/2,n}+2^{-n}X'$ with $X'$
 an independent copy of $X$, so conditioning on $X'$ gives
-$F(y)=\mathbb E\bigl[F_{1/2,n}(y-2^{-n}X')\bigr]$ for every real $y$, where
+$F(y)=\Expectation\bigl[F_{1/2,n}(y-2^{-n}X')\bigr]$ for every real $y$, where
 $F_{1/2,n}$ is the distribution function of the truncation
 \eqref{eq:finite-geometric-uniform-sum} at $q=1/2$.  Integrating
 \eqref{eq:dyadic-thue-morse-spline} term by term, with
@@ -11524,17 +11522,17 @@ $r\ge1$ in the sum for $t=\theta$ has $\theta-r-X\le\theta-1<0$ and drops out,
 leaving
 \[
  F\!\left(\frac{\theta}{2^n}\right)
- =\frac{2^{-\binom n2}}{n!}\,\mathbb E(\theta-X)_+^{\,n}.
+ =\frac{2^{-\binom n2}}{n!}\,\Expectation(\theta-X)_+^{\,n}.
 \]
 In the sum for $t=1+\theta$ a term with $r\ge2$ has $1+\theta-r-X\le\theta-1<0$
 and drops out; the term $r=0$ has $1+\theta-X\ge\theta\ge0$, so its positive part
 is the plain power, and $1-X\overset d=X$ by
 \eqref{eq:geometric-uniform-mean-symmetry} turns
-$\mathbb E(1+\theta-X)^n$ into $\mathbb E(X+\theta)^n=A_n(\theta)$; the term
-$r=1$ carries $\tau_1=-1$ and contributes $-\mathbb E(\theta-X)_+^{\,n}$.  Hence
+$\Expectation(1+\theta-X)^n$ into $\Expectation(X+\theta)^n=A_n(\theta)$; the term
+$r=1$ carries $\tau_1=-1$ and contributes $-\Expectation(\theta-X)_+^{\,n}$.  Hence
 \[
  F\!\left(\frac{1+\theta}{2^n}\right)
- =\frac{2^{-\binom n2}}{n!}\Bigl(A_n(\theta)-\mathbb E(\theta-X)_+^{\,n}\Bigr),
+ =\frac{2^{-\binom n2}}{n!}\Bigl(A_n(\theta)-\Expectation(\theta-X)_+^{\,n}\Bigr),
 \]
 and adding the two displays proves \eqref{eq:fabius-local-reduction}.
 \end{proof}
@@ -11580,7 +11578,7 @@ $\theta_{j-1}=\theta_j/2$, hence
 $\theta_{j-1}/2^{\,j-1}=\theta_j/2^{\,j}$ and $R_{j-1}=R_j$, which is also the
 $j$th term of \eqref{eq:fabius-digit-appell}, namely $0$.
 
-If $b_j=1$ then $m_j=2m_{j-1}+1$, so $s_2(m_j)=s_2(m_{j-1})+1$ and
+If $b_j=1$ then $m_j=2m_{j-1}+1$, so $\BinaryDigitSum(m_j)=\BinaryDigitSum(m_{j-1})+1$ and
 $\tau_{m_j}=-\tau_{m_{j-1}}$, while
 $\theta_{j-1}/2^{\,j-1}=(1+\theta_j)/2^{\,j}$.  Therefore
 \[
@@ -11596,7 +11594,7 @@ over $j=1,\ldots,N$ telescopes to $R_0-R_N=S_N(x)$, which is the first half of
 
 For the bound, $0\le\theta_N<1$ and $F$ is nondecreasing, so
 $F(\theta_N/2^N)\le F(2^{-N})=2^{-\binom N2}\alpha_N$ by
-\Cref{thm:fabius-half-moment}, and $\alpha_N=\mathbb EX^N/N!\le1/N!$ because
+\Cref{thm:fabius-half-moment}, and $\alpha_N=\Expectation X^N/N!\le1/N!$ because
 $0\le X\le1$.  This bound is independent of $x$ and tends to $0$, so
 $S_N\to F$ uniformly on $[0,1)$ and \eqref{eq:fabius-digit-appell} holds.  The
 convergence is absolute because $0\le X+\theta_j<2$ gives
@@ -11734,7 +11732,7 @@ $q$-Babbage & $\GaussianBinomial{an}{bn}{q}\equiv\GaussianBinomial{a}{b}{q^{n^2}
 Negative upper index & $\GaussianBinomial{-m}{k}{q}=(-1)^kq^{-mk-\binom k2}\GaussianBinomial{m+k-1}{k}{q}$ & \Cref{prop:negative-gaussian}\\[1pt]
 Geometric Newton basis & $P(x)=\sum_kc_k(-1)^kq^{\binom k2}(x;q^{-1})_k$ & \Cref{thm:geometric-newton}\\[1pt]
 Central reduction & $\GaussianBinomial{2k}{k}{q^2}/(-q;q)_{2k}=(q;q^2)_k/(q^2;q^2)_k$ & \Cref{lem:central-reduction}\\[1pt]
-Bernoulli expansion & All-orders expansion of $\log(\GaussianBinomial{n}{k}{e^{-t}}/\binom nk)$ & \Cref{thm:gaussian-bernoulli}\\
+Bernoulli expansion & All-orders expansion of $\log(\GaussianBinomial{n}{k}{\EulerE^{-t}}/\binom nk)$ & \Cref{thm:gaussian-bernoulli}\\
 \bottomrule
 \end{longtable}
 \normalsize

@@ -95,6 +95,7 @@
 \newcommand{\Agen}{\mathcal A}
 \newcommand{\Zspec}{\mathcal Z}
 \newcommand{\Mellin}{\mathcal M}
+\newcommand{\ConstantWeightSequence}{\boldsymbol{1}}
 \newcommand{\lean}[1]{%
   \ifmmode\text{\texttt{\detokenize{#1}}}\else\nolinkurl{#1}\fi}
 
@@ -657,7 +658,7 @@ over $h\le\TwoAdicValuation(m)$, so it is nonzero exactly when some $a_h$ with $
 
 At the \emph{constant} weight the sharper integer-indexed form remains available:
 \lean{Fabius.analyticOrderAt\_generalizedRvachevProduct\_one} reads
-$\OrderOperator_{z=m}\Phi_{\mathbf1}=m_{\mathbf1}(\lvert m\rvert)$ for every nonzero integer $m$, chaining
+$\OrderOperator_{z=m}\Phi_{\ConstantWeightSequence}=m_{\ConstantWeightSequence}(\lvert m\rvert)$ for every nonzero integer $m$, chaining
 \lean{Fabius.analyticOrderAt\_rvachevFourierProduct\_int} (\path{IntegerZeroAnalyticOrder.lean})
 with the exponent identity.  The spectral zeta \eqref{p1:eq:zeta-a} is now
 formalized as well, in \path{SpectralZetaWeighted.lean}, for real $s>1$ and at an
@@ -717,7 +718,7 @@ For $N=\sum_{j\ge0}b_j(N)2^j$, define the tail weights
 For every positive integer $N$,
 \begin{align}
  M_a(N)
- &=\sum_{h\ge0}a_h\left\lfloor\frac{N}{2^h}\right\rfloor,
+ &=\sum_{h\ge0}a_h\Floor{\frac{N}{2^h}},
  \label{p1:eq:M-floor}\\
  &=N A(1/2)-\rho_a(N),
  \qquad
@@ -734,12 +735,12 @@ strictly more general than \eqref{p1:eq:M-floor}.  The defect form \eqref{p1:eq:
 now formalized as well, in \path{DigitDefectCounting.lean}: with $A(1/2)=\sum_h a_h2^{-h}$
 (\lean{Fabius.dyadicWeightValue}) and $\rho_a(N)=\sum_h a_h\{N/2^h\}$
 (\lean{Fabius.dyadicDefect}), the identity
-$\sum_h a_h\lfloor N/2^h\rfloor=N\,A(1/2)-\rho_a(N)$ holds under the single hypothesis that
+$\sum_h a_h\Floor{N/2^h}=N\,A(1/2)-\rho_a(N)$ holds under the single hypothesis that
 $\sum_h|a_h|2^{-h}$ converges
 (\lean{Fabius.tsum\_mul\_natCast\_div\_two\_pow\_defect}), and the cumulative reading is
 \lean{Fabius.sum\_range\_weightedScaleMultiplicity\_real}.  Boundedness of $a$ is not needed:
 since $\{N/2^h\}\le N/2^h$, the same summability dominates both series.  At $a_h\equiv1$ the
-identity reduces to Legendre's $\sum_h\lfloor N/2^h\rfloor=2N-s_2(N)$, carried as a regression
+identity reduces to Legendre's $\sum_h\Floor{N/2^h}=2N-\BinaryDigitSum(N)$, carried as a regression
 test (\lean{Fabius.sum\_range\_div\_two\_pow\_add\_digitSum}, \lean{Fabius.dyadicDefect\_one}).  The
 per-scale digit expansion $\{N/2^h\}=\sum_{j<h}b_j(N)2^{\,j-h}$ that the bit form
 \eqref{p1:eq:M-bit} rests on is also formal
@@ -757,7 +758,7 @@ $\rho_a(N)=\sum_j b_j(N)\tau_j(a)$ is
 itself is \lean{Fabius.sum\_range\_weightedScaleMultiplicity\_bit}.  The exchange needs no
 Fubini on a triangular index set: only finitely many digits of $N$ are nonzero, so a fixed
 window reduces it to a finite sum of convergent series.  As a regression test the module
-re-derives $\sum_j b_j(N)=s_2(N)$ from the new machinery and lands it on the corpus's
+re-derives $\sum_j b_j(N)=\BinaryDigitSum(N)$ from the new machinery and lands it on the corpus's
 audited Legendre count (\lean{Fabius.tsum\_testBit\_eq\_digitSum}).
 \end{theorem}
 
@@ -773,7 +774,7 @@ absolute convergence permits exchanging the sums and yields \eqref{p1:eq:M-bit}.
 \end{proof}
 
 For $a_h\equiv1$, one has $A(1/2)=2$ and $\tau_j=1$, recovering the audited identity
-$M_a(N)=2N-s_2(N)$.  For general $a$, the ordinary binary weight is replaced by a weighted
+$M_a(N)=2N-\BinaryDigitSum(N)$.  For general $a$, the ordinary binary weight is replaced by a weighted
 suffix transform of the exponent sequence.
 
 \subsection{Lobe signs and generalized Thue--Morse characters}
@@ -785,7 +786,7 @@ remaining factors are positive.  Hence
  \label{p1:eq:lobe-sign-count}
 \end{equation}
 Modulo two,
-$\lfloor N/2^h\rfloor\equiv b_h(N)$, so the sign is a digit character.
+$\Floor{N/2^h}\equiv b_h(N)$, so the sign is a digit character.
 
 \begin{theorem}[Generalized lobe sign]
 \label{p1:thm:lobe-sign}
@@ -796,7 +797,7 @@ Put $\bar a_h=a_h\bmod2$ and
 \end{equation}
 Then, away from the integer zeros,
 \begin{equation}
- \boxed{\qquad \Sign\Phi_a(x)=\varepsilon_a(\lfloor x\rfloor).\qquad}
+ \boxed{\qquad \Sign\Phi_a(x)=\varepsilon_a(\Floor{x}).\qquad}
  \label{p1:eq:sign-master}
 \end{equation}
 Moreover $\varepsilon_a$ is a $2$-automatic sequence if and only if the parity word
@@ -837,16 +838,16 @@ the meaning of the word, not proved.  The constant weight is recorded as a guard
 kernel finite, while the corpus's \lean{Fabius.thueMorseSign\_not\_eventually\_periodic} says the \emph{sign}
 sequence is not eventually periodic --- the criterion constrains the weight word, not the
 character.  The sign law \eqref{p1:eq:sign-master} splits in two, and its arithmetic
-half --- the observation, made here in one line, that $\lfloor N/2^h\rfloor\equiv b_h(N)$
+half --- the observation, made here in one line, that $\Floor{N/2^h}\equiv b_h(N)$
 modulo two, so that the exponent \eqref{p1:eq:lobe-sign-count} is a digit character ---
 is formal in \path{DigitCharacterCongruence.lean}:
 \[
-  M_a(N)=\sum_h a_h\Bigl\lfloor\frac{N}{2^h}\Bigr\rfloor
+  M_a(N)=\sum_h a_h\Floor{\frac{N}{2^h}}
   \;\equiv\;\sum_{h\in\SupportOperator_2(N)}a_h\pmod 2,
   \qquad\text{hence}\quad(-1)^{M_a(N)}=\varepsilon_a(N)
 \]
 (\lean{Fabius.sum\_div\_two\_pow\_mul\_mod\_two}, \lean{Fabius.neg\_one\_pow\_sum\_div\_two\_pow}); the bridge is simply that
-the $h$-th bit of $N$ \emph{is} $\lfloor N/2^h\rfloor\bmod2$, and at the constant weight the
+the $h$-th bit of $N$ \emph{is} $\Floor{N/2^h}\bmod2$, and at the constant weight the
 statement becomes Legendre's count read modulo two
 (\lean{Fabius.neg\_one\_pow\_sum\_div\_two\_pow\_const\_one}).  The analytic half is formal as
 well, in \path{LobeSignLaw.lean}, so \eqref{p1:eq:lobe-sign-count} and \eqref{p1:eq:sign-master}
@@ -875,17 +876,17 @@ point is closed by a
 separate lemma (\lean{Fabius.canonicalRealProduct\_zero\_eq\_one}) rather than by the theorem
 above.  Negative arguments are carried by evenness of $\Phi_a$
 (\lean{Fabius.generalizedRvachevProduct\_neg}, \path{LobeSignNegative.lean}), and there the law
-reads $\varepsilon_a(\lfloor\lvert x\rvert\rfloor)$ rather than $\varepsilon_a(\lfloor x\rfloor)$:
+reads $\varepsilon_a(\Floor{\AbsoluteValue{x}})$ rather than $\varepsilon_a(\Floor{x})$:
 on $-(N+1)<x<-N$ the reflected point lies in the lobe $(N,N+1)$, so the sign is
-$\varepsilon_a(N)$, while $\lfloor x\rfloor=-(N+1)$ is not even a natural number.  We write
-$\lfloor x\rfloor$ because we have $x\ge0$ in mind.
+$\varepsilon_a(N)$, while $\Floor{x}=-(N+1)$ is not even a natural number.  We write
+$\Floor{x}$ because we have $x\ge0$ in mind.
 
 Assembled, these pieces give the law on the whole axis with no hypothesis at all, in
 \path{LobeSignComplete.lean}:
 \[
  \Psi_a(x)=0
  \quad\text{or}\quad
- 0<\varepsilon_a\bigl(\lfloor\lvert x\rvert\rfloor\bigr)\,\Psi_a(x),
+ 0<\varepsilon_a\bigl(\Floor{\AbsoluteValue{x}}\bigr)\,\Psi_a(x),
  \qquad x\in\RealNumbers
 \]
 (\lean{Fabius.parityCharacter\_mul\_canonicalRealProduct\_dichotomy}), the first alternative
@@ -1356,9 +1357,9 @@ which proves \eqref{p1:eq:Rrm-bound}.
 \label{p1:cor:integer-brackets}
 If the coefficients are nonnegative integers, then for any odd $r_-$ and even $r_+$,
 \begin{equation}
- \left\lceil\mathcal R_{r_-,m}[A]\right\rceil
+ \Ceiling{\mathcal R_{r_-,m}[A]}
  \le a_0\le
- \left\lfloor\mathcal R_{r_+,m}[A]\right\rfloor.
+ \Floor{\mathcal R_{r_+,m}[A]}.
  \label{p1:eq:integer-brackets}
 \end{equation}
 Once the two rounded endpoints coincide, $a_0$ has been recovered with a proof certificate.
@@ -1801,10 +1802,10 @@ recovers the existing \lean{Fabius.norm\_rvachevFourierProduct\_le\_one} from
 The sharpness of the factor estimate is the whole difficulty and is worth recording, since the
 obvious routes all fail: any constant $C>1$ in $\lVert\SincPi w\rVert\le Ce^{\lVert w\rVert}$
 compounds to $C^{\sum_ha_h}$ across the factors and diverges whenever the weight has infinite
-total mass.  Writing $\sin$ as a difference of exponentials gives $e^{3\lVert w\rVert}$, which
+total mass.  Writing $\sin$ as a difference of exponentials gives $\EulerE^{3\lVert w\rVert}$, which
 would inflate the type threefold.  The constant $1$ comes from comparing the sine series
 termwise against the hyperbolic sine, $\lVert\sin w\rVert\le\sinh\lVert w\rVert$, followed by
-$\sinh t\le te^t$ --- which is $1-2t\le e^{-2t}$ rearranged.
+$\sinh t\le te^t$ --- which is $1-2t\le \EulerE^{-2t}$ rearranged.
 
 The spectral zeta \eqref{p1:eq:ZP} \emph{is} formalized, in \path{NewtonSpectralZeta.lean},
 and it is exactly the composite of two identities already in hand: the general-weight zeta
@@ -1827,7 +1828,7 @@ probabilistic model, and is proved in \path{GeneralizedSincZeta.lean}: on the ce
 $z^{2r}$ in $-\log\Phi_a$ is therefore $\zeta(2r)A_a(4^{-r})/r$, which is
 \eqref{p1:eq:kappaP} with the random variable removed; what is still missing is the
 identification of $\Phi_a$ as a characteristic function of $X_a$, not any further analysis.  At
-the constant weight $A_{\mathbf1}(4^{-r})=4^r/(4^r-1)$ and the display is the corpus's existing
+the constant weight $A_{\ConstantWeightSequence}(4^{-r})=4^r/(4^r-1)$ and the display is the corpus's existing
 \path{SincZetaDyadic.lean}.
 
 Reaching the general weight needed one new tool, and it is reusable.  The pair form of $\Phi_a$
@@ -2437,9 +2438,9 @@ identification of $P_d(h)$ with the relevant binomial coefficient is not itself
 formalized.  This parity sequence is periodic, hence the Fourier-lobe sign sequence of $\Psi_d$ is
 $2$-automatic by \cref{p1:thm:lobe-sign}.  More precisely, among a complete sufficiently
 long binary block of values of $h-1$, the forced one-bits of $d$ reduce the density by a
-factor $2^{-s_2(d)}$.  That density count is now formal: for $d<2^m$,
+factor $2^{-\BinaryDigitSum(d)}$.  That density count is now formal: for $d<2^m$,
 \[
-  \#\{\,n<2^m:\ d\ \text{a binary submask of}\ n\,\}\;=\;2^{\,m-s_2(d)}
+  \#\{\,n<2^m:\ d\ \text{a binary submask of}\ n\,\}\;=\;2^{\,m-\BinaryDigitSum(d)}
 \]
 (\lean{Fabius.card\_filter\_bitSupport\_subset}, \lean{DigitalDensity.lean}), and combining it
 with the Lucas criterion gives the same count for the odd binomial coefficients across a
@@ -2456,7 +2457,7 @@ Let
 \]
 Then
 \begin{equation}
- \omega_d(L)=2^{-s_2(d)}L+\BigO_d(1).
+ \omega_d(L)=2^{-\BinaryDigitSum(d)}L+\BigO_d(1).
  \label{p1:eq:Pd-prouhet-density}
 \end{equation}
 The length-$2^L$ lobe-sign block attached to $P_d$ annihilates every power of degree
@@ -2475,7 +2476,7 @@ $\omega(d,L)=\#\{n<L:\binom{n}{d}\ \text{odd}\}$
 \lean{Fabius.submaskCount\_eq\_card\_filter\_odd\_choose}), one has the
 two-sided bound
 \[
-  \bigl\lvert\,2^{s_2(d)}\,\omega(d,L)-L\,\bigr\rvert\;\le\;2^{m}
+  \bigl\lvert\,2^{\BinaryDigitSum(d)}\,\omega(d,L)-L\,\bigr\rvert\;\le\;2^{m}
   \qquad\text{whenever}\ d<2^{m}
 \]
 (\lean{Fabius.abs\_two\_pow\_weight\_mul\_submaskCount\_sub\_le}), valid
@@ -2483,12 +2484,12 @@ for \emph{every} $L$, not merely along complete blocks; taking $m=d$
 makes the constant depend on $d$ alone
 (\lean{Fabius.abs\_two\_pow\_weight\_mul\_submaskCount\_sub\_le\_self}).
 Dividing by $L$ gives the density itself as a limit,
-$\omega(d,L)/L\to2^{-s_2(d)}$
+$\omega(d,L)/L\to2^{-\BinaryDigitSum(d)}$
 (\lean{Fabius.tendsto\_card\_filter\_odd\_choose\_div\_atTop}).  The
 mechanism is periodicity: all bits of $d$ lie below $m$, so adding a
 multiple of $2^{m}$ leaves the submask condition unchanged
 (\lean{Fabius.bitSupport\_subset\_two\_pow\_mul\_add\_iff}), and the count
-over $[0,L)$ splits into $\lfloor L/2^{m}\rfloor$ full blocks --- each
+over $[0,L)$ splits into $\Floor{L/2^{m}}$ full blocks --- each
 counted exactly by \lean{Fabius.card\_filter\_bitSupport\_subset} --- plus
 a partial block dominated by a full one.  What still stands between
 this and \eqref{p1:eq:Pd-prouhet-density} as stated is only the
@@ -2498,7 +2499,7 @@ as the remaining informal step.
 
 \begin{proof}
 In each block of $2^k$ consecutive values of $h-1$, where $k$ exceeds the binary length of
-$d$, precisely $2^{k-s_2(d)}$ numbers contain all one-bits of $d$.  Partial end blocks account
+$d$, precisely $2^{k-\BinaryDigitSum(d)}$ numbers contain all one-bits of $d$.  Partial end blocks account
 for the bounded error.  The Prouhet statement is \cref{p1:thm:general-prouhet}.
 \end{proof}
 
@@ -2589,7 +2590,7 @@ For each fixed bounded interval of $y$ values,
 \end{align}
 where the implied constant is universal.  Away from any shrinking neighborhood of the two
 endpoints, $f_d$ converges uniformly to the box density
-$\mathbf1_{[-1/2,1/2]}$.  This is \statusproved.
+$\IndicatorOf{[-1/2,1/2]}$.  This is \statusproved.
 \end{theorem}
 
 \begin{proof}
@@ -2610,7 +2611,7 @@ assertion.
 
 \begin{theorem}[Exact $L^1$ identity and transport bounds]
 \label{p1:thm:global-box-distance}
-Let $b(x)=\mathbf1_{[-1/2,1/2]}(x)$.  Then
+Let $b(x)=\IndicatorOf{[-1/2,1/2]}(x)$.  Then
 \begin{equation}
  \boxed{
  \|f_d-b\|_{L^1(\RealNumbers)}
@@ -3120,7 +3121,7 @@ A dependency-aware order is as follows.
 \item Define exponent prefixes and prove
       $m_a(n)=\sum_{h\le\nu_2(n)}a_h$ for finite products.
 \item Prove the finite zero-count identity
-      $M_a(N)=\sum_ha_h\lfloor N/2^h\rfloor$ and the binary defect
+      $M_a(N)=\sum_ha_h\Floor{N/2^h}$ and the binary defect
       \eqref{p1:eq:M-bit}.
 \item Define the generalized sign character and prove
       \eqref{p1:eq:kernel-shift}; formalize the automaticity equivalence for eventually
@@ -3512,11 +3513,6 @@ GitHub repository, pinned in this report at commit
 
 
 % extra macros for part 2
-\newcommand{\ePartx}{\mathrm{e}}
-\newcommand{\iiPartx}{\mathrm{i}}
-\newcommand{\RPartx}{\mathbb{R}}
-\newcommand{\CPartx}{\mathbb{C}}
-\newcommand{\NPartx}{\mathbb{N}}
 \newcommand{\D}{\mathrm{D}}
 
 % ed.: restore arabic section numbering after Part I's appendices
@@ -3744,37 +3740,37 @@ Define
  P_{b,n}(\xi)=\prod_{\nu=1}^{n}\SincRad(\xi/b^\nu).
  \label{p2:eq:products}
 \end{equation}
-The convergence is locally uniform in \(\CPartx\), since
+The convergence is locally uniform in \(\ComplexNumbers\), since
 \(1-\SincRad(\xi/b^\nu)=O(b^{-2\nu})\) on compact sets.
 
 Let
 \begin{equation}
- h_{b,\nu}(x)=\frac{b^\nu}{2}\,\mathbf 1_{[-b^{-\nu},b^{-\nu}]}(x),
+ h_{b,\nu}(x)=\frac{b^\nu}{2}\,\IndicatorOf{[-b^{-\nu},b^{-\nu}]}(x),
  \qquad
  u_{b,n}=h_{b,1}*\cdots*h_{b,n}.
  \label{p2:eq:boxes}
 \end{equation}
 With the Fourier convention
 \[
- \widehat f(\xi)=\int_{\RPartx}f(x)\ePartx^{-\iiPartx\xi x}\,dx,
+ \FourierAngular{f}(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-\ImaginaryUnit\xi x}\,\Differential x,
  \qquad
- f(x)=\frac1{2\pi}\int_{\RPartx}\widehat f(\xi)\ePartx^{\iiPartx\xi x}\,d\xi,
+ f(x)=\frac1{2\pi}\int_{\RealNumbers}\FourierAngular{f}(\xi)\EulerE^{\ImaginaryUnit\xi x}\,\Differential\xi,
 \]
-we have \(\widehat h_{b,\nu}(\xi)=\SincRad(\xi/b^\nu)\), hence
+we have \(\FourierAngular{h_{b,\nu}}(\xi)=\SincRad(\xi/b^\nu)\), hence
 \begin{equation}
- \widehat{u_{b,n}}=P_{b,n}.
+\FourierAngular{u_{b,n}}=P_{b,n}.
  \label{p2:eq:finiteFT}
 \end{equation}
 The infinite convolution \(u_b=*_{\nu\geq1}h_{b,\nu}\) is a probability density
-supported on \([-1/(b-1),1/(b-1)]\), and \(\widehat u_b=P_b\). The product
-decays faster than every power, so \(u_b\in C_c^\infty(\RPartx)\). At \(b=2\),
+supported on \([-1/(b-1),1/(b-1)]\), and \(\FourierAngular{u_b}=P_b\). The product
+decays faster than every power, so \(u_b\in C_c^\infty(\RealNumbers)\). At \(b=2\),
 \(u_2\) is the normalized Rvachev up-function.
 
 \subsection{The finite Thue--Morse derivative comb}
 
 The bridge to the signed Thue--Morse sequence is already part of the repository
 background, but the exact normalization is useful for what follows. Write
-\(t_k=(-1)^{s_2(k)}\), where \(s_2(k)\) is the binary digit sum.
+\(t_k=(-1)^{\BinaryDigitSum(k)}\), where \(\BinaryDigitSum(k)\) is the binary digit sum.
 
 \begin{proposition}[distributional Thue--Morse comb]
 For \(n\geq1\),
@@ -3789,12 +3785,12 @@ For \(n\geq1\),
 \begin{proof}
 For \(a>0\),
 \[
- \D\left(\frac1{2a}\mathbf1_{[-a,a]}\right)
+ \D\left(\frac1{2a}\IndicatorOf{[-a,a]}\right)
  =\frac1{2a}(\delta_{-a}-\delta_a).
 \]
 Differentiate every factor in \eqref{p2:eq:boxes}. Choosing the right endpoint in
 the \(j\)-th factor contributes one minus sign. If the choices are encoded by
-the binary digits of \(k\), the coefficient is \((-1)^{s_2(k)}\), while the
+the binary digits of \(k\), the coefficient is \((-1)^{\BinaryDigitSum(k)}\), while the
 location is
 \[
  -\sum_{j=1}^n2^{-j}+2\sum_{j=1}^n\varepsilon_j2^{-j}
@@ -3829,7 +3825,7 @@ ordinary analytic function of \(z\).
 \begin{theorem}[exact tail factorization]
 \label{p2:thm:tailfactor}
 The function \(\Phi_b\) is analytic in \(\AbsoluteValue z<\pi^2b^2\), meromorphic in
-\(\CPartx\), and has its nearest singularity to the origin at \(z=\pi^2b^2\). For
+\(\ComplexNumbers\), and has its nearest singularity to the origin at \(z=\pi^2b^2\). For
 every \(n\geq0\),
 \begin{equation}
  P_{b,n}(\xi)=P_b(\xi)\Phi_b(q^n\xi^2).
@@ -3852,7 +3848,7 @@ Cancel the first \(n\) factors in \(P_b/P_{b,n}\) and write \(\nu=n+\ell\):
  =\Phi_b(q^n\xi^2).
 \]
 The zeros of \(\SincRad(b^{-\ell}\sqrt z)\) occur at
-\(z=\pi^2k^2b^{2\ell}\), \(k\in\mathbb Z\setminus\{0\}\). The nearest is
+\(z=\pi^2k^2b^{2\ell}\), \(k\in\IntegerNumbers\setminus\{0\}\). The nearest is
 \(\pi^2b^2\). Splitting off the \(\ell=1\) factor and reindexing proves
 \eqref{p2:eq:PhiFunctional}.
 \end{proof}
@@ -4494,7 +4490,7 @@ and the normalized error has the explicit limit
  q^{-(m+1)n}\bigl(U_{b;m,n}-u_b\bigr)
  \longrightarrow
  -q^{\binom{m+1}{2}}\alpha_{m+1}(b)u_b^{(2m+2)}
- \quad\text{in }C^s(\RPartx).
+ \quad\text{in }C^s(\RealNumbers).
  \label{p2:eq:errorprofile}
 \end{equation}
 \end{theorem}
@@ -4521,14 +4517,14 @@ already exact.
 \label{p2:thm:moments}
 For every \(m,n\geq0\) and every integer \(0\leq\ell\leq2m\),
 \begin{equation}
- \int_{\RPartx}x^\ell U_{b;m,n}(x)\,dx
- =\int_{\RPartx}x^\ell u_b(x)\,dx.
+ \int_{\RealNumbers}x^\ell U_{b;m,n}(x)\,dx
+ =\int_{\RealNumbers}x^\ell u_b(x)\,dx.
  \label{p2:eq:momentmatch}
 \end{equation}
 All odd moments vanish by symmetry. The first missed even moment is known
 exactly:
 \begin{equation}
- \int_{\RPartx}x^{2m+2}\bigl(U_{b;m,n}(x)-u_b(x)\bigr)\,dx
+ \int_{\RealNumbers}x^{2m+2}\bigl(U_{b;m,n}(x)-u_b(x)\bigr)\,dx
  =-(2m+2)!\,q^{\binom{m+1}{2}}
  \alpha_{m+1}(b)q^{(m+1)n}.
  \label{p2:eq:firstmomenterror}
@@ -4537,10 +4533,10 @@ exactly:
 
 \begin{proof}
 By \eqref{p2:eq:exacterror},
-\(\widehat U_{b;m,n}-\widehat u_b\) has a zero of order at least \(2m+2\) at
+\(\FourierAngular{U_{b;m,n}}-\FourierAngular{u_b}\) has a zero of order at least \(2m+2\) at
 \(\xi=0\). Since
 \[
- \widehat f^{(\ell)}(0)=(-\iiPartx)^\ell\int x^\ell f(x)\,dx,
+ \FourierAngular{f}^{(\ell)}(0)=(-\ImaginaryUnit)^\ell\int x^\ell f(x)\,\Differential x,
 \]
 all moments through degree \(2m+1\) agree. Symmetry handles every odd degree.
 The coefficient of \(\xi^{2m+2}\) in the Fourier error is
@@ -5578,12 +5574,12 @@ Approximants to Rvachev's Up-Function}
 \begin{abstract}
 Let
 \[
- \Phi(\xi)=\widehat{\RvachevUp}(\xi)
+ \Phi(\xi)=\FourierTwoPi{\RvachevUp}(\xi)
  =\prod_{j=0}^{\infty}\SincRad\!\left(\frac{\pi\xi}{2^j}\right),
  \qquad \SincRad z=\frac{\sin z}{z},
 \]
 under the Fourier convention
-$\widehat f(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\Differential x$.
+$\FourierTwoPi{f}(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\Differential x$.
 This report studies the inverse transforms $p_n$ of the first $n$ factors.
 They are nonstationary dyadic box splines: compactly supported, nonnegative,
 even, log-concave, piecewise polynomial of degree $n-1$, and $C^{n-2}$.
@@ -5674,25 +5670,25 @@ experiments are used as verification, never as a substitute for proof.
 
 We use
 \begin{equation}
- \widehat f(\xi)=\int_{\RealNumbers} f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\Differential x,
+ \FourierTwoPi{f}(\xi)=\int_{\RealNumbers} f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\Differential x,
  \qquad
- f(x)=\int_{\RealNumbers}\widehat f(\xi)\EulerE^{2\pi\ImaginaryUnit x\xi}\Differential\xi.
+ f(x)=\int_{\RealNumbers}\FourierTwoPi{f}(\xi)\EulerE^{2\pi\ImaginaryUnit x\xi}\Differential\xi.
  \label{p3:eq:fourier-convention}
 \end{equation}
 For $a>0$, define the centered uniform density
 \begin{equation}
- u_a(x)=\frac{1}{2a}\mathbf 1_{[-a,a]}(x).
+ u_a(x)=\frac{1}{2a}\IndicatorOf{[-a,a]}(x).
  \label{p3:eq:uniform-density}
 \end{equation}
 Then
 \begin{equation}
- \widehat{u_a}(\xi)=\SincRad(2\pi a\xi).
+ \FourierTwoPi{u_a}(\xi)=\SincRad(2\pi a\xi).
  \label{p3:eq:uniform-transform}
 \end{equation}
 Rvachev's normalized up-function is the even $C^\infty$ probability density on
 $[-1,1]$ whose transform is
 \begin{equation}
- \Phi(\xi)=\widehat\RvachevUp(\xi)
+ \Phi(\xi)=\FourierTwoPi{\RvachevUp}(\xi)
  =\prod_{j=0}^{\infty}\SincRad\!\left(\frac{\pi\xi}{2^j}\right).
  \label{p3:eq:infinite-product}
 \end{equation}
@@ -5751,11 +5747,11 @@ and all-order acceleration.
 
 Write
 \begin{equation}
- \tau_k=(-1)^{s_2(k)},
+ \tau_k=(-1)^{\BinaryDigitSum(k)},
  \label{p3:eq:tm-sign}
 \end{equation}
-where $s_2(k)$ is the binary digit sum.  For $m=0$, the convention
-$y_+^0=\mathbf 1_{(0,\infty)}(y)$ is used away from knots.
+where $\BinaryDigitSum(k)$ is the binary digit sum.  For $m=0$, the convention
+$y_+^0=\IndicatorOf{(0,\infty)}(y)$ is used away from knots.
 
 \begin{theorem}[Exact truncated-power formula]
 \label{p3:thm:truncated-power}
@@ -5818,7 +5814,7 @@ Set
 Inside the support, \cref{p3:eq:truncated-power} becomes
 \begin{equation}
  p_n(x)=\frac{2^{-(n-1)(n-2)/2}}{(n-1)!}
- \sum_{0\le k\le\lfloor y\rfloor}\tau_k(y-k)^{n-1}.
+ \sum_{0\le k\le\Floor{y}}\tau_k(y-k)^{n-1}.
  \label{p3:eq:scaled-cell-formula}
 \end{equation}
 This has several immediate consequences.
@@ -5886,7 +5882,7 @@ For every $n\ge1$:
 \item $p_n(x)=1$ for $|x|\le\delta_n$;
 \item for $n\ge2$,
 \begin{equation}
- \sum_{m\in\mathbb Z}p_n(x-m)=1,
+ \sum_{m\in\IntegerNumbers}p_n(x-m)=1,
  \qquad
  p_n(x)+p_n(1-x)=1\quad(0\le x\le1).
  \label{p3:eq:partition-unity}
@@ -5914,7 +5910,7 @@ Let $v_2(k)$ denote the exponent of $2$ in a nonzero integer $k$.
 
 \begin{proposition}[Exact zero multiplicities]
 \label{p3:prop:zero-multiplicity}
-For $k\in\mathbb Z\setminus\{0\}$,
+For $k\in\IntegerNumbers\setminus\{0\}$,
 \begin{equation}
  \OrderOperator_{\xi=k}\Phi_n
  =1+\min\{v_2(k),n-1\}.
@@ -6399,7 +6395,7 @@ The associated positive approximant is
  &=p_n*\mathcal L(\delta_nY_Q)
  =\sum_{j=1}^{J}w_j\bigl(p_n*u_{\delta_n\sqrt{z_j}}\bigr),
  \label{p3:eq:gQ-spatial}\\
- \widehat g_{n,Q}(\xi)
+ \FourierTwoPi{g_{n,Q}}(\xi)
  &=\Phi_n(\xi)\sum_{j=1}^{J}w_j
  \SincRad(2\pi\delta_n\sqrt{z_j}\,\xi).
  \label{p3:eq:gQ-fourier}
@@ -6990,7 +6986,7 @@ The repeated-integration approximants $f_n$ to Rvachev's up-function
 differ from the limit, on the Fourier side, by an exact dilation of a
 single universal meromorphic transfer function
 $A(z)=\SincRad z/\Phi(z)=\prod_{m\ge1}(1-z^2/(\pi^2m^2))^{1-\TwoAdicValuation(m)}$:
-$\widehat{f_n}=\Phi\cdot A(2^{-n}t)$.  The valuation-weighted divisor
+$\FourierAngular{f_n}=\Phi\cdot A(2^{-n}t)$.  The valuation-weighted divisor
 of $A$ yields digit-sum zero counts, a Thue--Morse sign law, the exact
 Taylor radius $4\pi$ with dominant-pole coefficient asymptotics and an
 arithmetic Darboux hierarchy, the complete finite/limit
@@ -7047,14 +7043,14 @@ are compared as quadratures of three different laws.
 
 \emph{Convention.}  This part uses radian frequency,
 \begin{equation}
- \widehat g(t)=\int_{\RealNumbers}g(x)\EulerE^{-\ImaginaryUnit tx}\Differential x,
+ \FourierAngular{g}(t)=\int_{\RealNumbers}g(x)\EulerE^{-\ImaginaryUnit tx}\Differential x,
  \qquad
  \SincRad z=\begin{cases}\sin z/z,&z\ne0,\\1,&z=0,\end{cases}
  \label{p4:eq:w-fourier-convention}
 \end{equation}
 so that
 \begin{equation}
- \Phi(t):=\widehat{\RvachevUp}(t)=\prod_{k=1}^{\infty}\SincRad\!\left(\frac{t}{2^k}\right),
+ \Phi(t):=\FourierAngular{\RvachevUp}(t)=\prod_{k=1}^{\infty}\SincRad\!\left(\frac{t}{2^k}\right),
  \qquad \Phi(0)=1,
  \label{p4:eq:w-phi-def}
 \end{equation}
@@ -7070,14 +7066,14 @@ frequency-normalized product at one half.
 
 \subsection{Recursion, box splines, and the head--tail model}
 
-With $f_0=\tfrac12\mathbf 1_{(-1,1)}$, the recursive integration scheme
+With $f_0=\tfrac12\IndicatorOf{(-1,1)}$, the recursive integration scheme
 \begin{equation}
  f_n(x)=2\int_{-1}^{x}\bigl(f_{n-1}(2t+1)-f_{n-1}(2t-1)\bigr)\Differential t
  =\int_{2x-1}^{2x+1}f_{n-1}(t)\Differential t
  \label{p4:eq:w-recursion}
 \end{equation}
 produces compactly supported piecewise-polynomial probability densities
-converging to $\RvachevUp$.  Writing $\beta_a=\tfrac1{2a}\mathbf 1_{[-a,a]}$ for
+converging to $\RvachevUp$.  Writing $\beta_a=\tfrac1{2a}\IndicatorOf{[-a,a]}$ for
 the centered uniform density and unrolling the recursion,
 \begin{equation}
  f_n=\beta_{2^{-1}}*\beta_{2^{-2}}*\cdots*\beta_{2^{-n}}*\beta_{2^{-n}}
@@ -7104,9 +7100,9 @@ point of view drives the entire part.
 
 \subsection{Finite products and the master factorization}
 
-With $P_n(t)=\prod_{k=1}^{n}\SincRad(t/2^k)=\widehat{p_n}(t)$,
+With $P_n(t)=\prod_{k=1}^{n}\SincRad(t/2^k)=\FourierAngular{p_n}(t)$,
 \begin{equation}
- F_n(t):=\widehat{f_n}(t)=P_n(t)\SincRad(ht),
+ F_n(t):=\FourierAngular{f_n}(t)=P_n(t)\SincRad(ht),
  \qquad
  \Phi(t)=P_n(t)\,\Phi(ht).
  \label{p4:eq:w-two-products}
@@ -7281,15 +7277,15 @@ transforms, and its cumulative parity is a digit sum.
 
 \begin{theorem}[Digital divisor laws]
 \label{p4:thm:w-digital}
-Let $s_2(M)$ be the binary digit sum.  Then
+Let $\BinaryDigitSum(M)$ be the binary digit sum.  Then
 \begin{equation}
  \sum_{m=1}^{M}\OrderOperator_{\pi m}A
  =\sum_{m=1}^{M}\bigl(1-\TwoAdicValuation(m)\bigr)
- =M-\TwoAdicValuation(M!)=s_2(M),
+ =M-\TwoAdicValuation(M!)=\BinaryDigitSum(M),
  \label{p4:eq:w-digit-sum}
 \end{equation}
 the total pole multiplicity on $\{\pi,\ldots,M\pi\}$ is
-$\lceil M/2\rceil-s_2(M)$, and the divisor has the Lambert and Dirichlet
+$\Ceiling{M/2}-\BinaryDigitSum(M)$, and the divisor has the Lambert and Dirichlet
 series
 \begin{equation}
 \begin{gathered}
@@ -7305,11 +7301,11 @@ series
 \end{theorem}
 
 \begin{proof}
-Legendre's formula $\TwoAdicValuation(M!)=M-s_2(M)$ gives \eqref{p4:eq:w-digit-sum}; the
+Legendre's formula $\TwoAdicValuation(M!)=M-\BinaryDigitSum(M)$ gives \eqref{p4:eq:w-digit-sum}; the
 pole count is
-$\sum_{m\le M}\max\{\TwoAdicValuation(m)-1,0\}=\sum_{j\ge2}\lfloor M/2^j\rfloor
-=\TwoAdicValuation(M!)-\lfloor M/2\rfloor$.  Since
-$\TwoAdicValuation(m)=\sum_{j\ge1}\mathbf 1_{2^j\mid m}$, summation in $m$ gives both
+$\sum_{m\le M}\max\{\TwoAdicValuation(m)-1,0\}=\sum_{j\ge2}\Floor{M/2^j}
+=\TwoAdicValuation(M!)-\Floor{M/2}$.  Since
+$\TwoAdicValuation(m)=\sum_{j\ge1}\IndicatorOf{2^j\mid m}$, summation in $m$ gives both
 series, using $\sum_m\TwoAdicValuation(m)m^{-s}=\zeta(s)/(2^s-1)$.
 \end{proof}
 
@@ -7317,7 +7313,7 @@ series, using $\sum_m\TwoAdicValuation(m)m^{-s}=\zeta(s)/(2^s-1)$.
 \label{p4:cor:w-tm-sign}
 For every integer $M\ge0$ and every real $x\in(\pi M,\pi(M+1))$,
 \begin{equation}
- \Sign A(x)=(-1)^{s_2(M)}.
+ \Sign A(x)=(-1)^{\BinaryDigitSum(M)}.
  \label{p4:eq:w-tm-sign}
 \end{equation}
 \end{corollary}
@@ -7325,7 +7321,7 @@ For every integer $M\ge0$ and every real $x\in(\pi M,\pi(M+1))$,
 \begin{proof}
 $A>0$ near $0$; crossing $\pi m$ flips the sign according to the parity of
 the signed order $1-\TwoAdicValuation(m)$ (poles flip parity exactly as zeros do), and
-the cumulative parity through $M$ is $s_2(M)$ by \eqref{p4:eq:w-digit-sum}.
+the cumulative parity through $M$ is $\BinaryDigitSum(M)$ by \eqref{p4:eq:w-digit-sum}.
 \end{proof}
 
 The Thue--Morse sequence thus appears twice in the theory of the same
@@ -7338,7 +7334,7 @@ Fourier correction.
  \centering
  \includegraphics[width=0.94\textwidth]{assets/rvachev_fourier_frontier_report/numerical_output/divisor_arithmetic.png}
  \caption{The signed divisor order $1-\TwoAdicValuation(m)$ and its cumulative sum,
- which coincides exactly with the binary digit sum $s_2(M)$.}
+ which coincides exactly with the binary digit sum $\BinaryDigitSum(M)$.}
  \label{p4:fig:w-divisor-arithmetic}
 \end{figure}
 
@@ -7516,8 +7512,8 @@ Let $m\in\IntegerNumbers\setminus\{0\}$ and $v=\TwoAdicValuation(|m|)$.  Then
 $\OrderOperator_{2\pi m}\Phi=v+1$, while
 \begin{equation}
  \OrderOperator_{2\pi m}F_n
- =\min(n,v+1)+\mathbf 1_{v\ge n-1}
- =\min(v+1,n-1)+2\cdot\mathbf 1_{v\ge n-1}
+ =\min(n,v+1)+\IndicatorOf{v\ge n-1}
+ =\min(v+1,n-1)+2\cdot\IndicatorOf{v\ge n-1}
  =\begin{cases}
  v+1,&v\le n-2,\\
  n+1,&v\ge n-1.
@@ -7633,7 +7629,7 @@ kernel $K_n$ with $f_n=\RvachevUp*K_n$, and none $L_n$ with $\RvachevUp=f_n*L_n$
 \end{theorem}
 
 \begin{proof}
-The first identity forces $\widehat{K_n}(t)=A(2^{-n}t)$ everywhere by
+The first identity forces $\FourierAngular{K_n}(t)=A(2^{-n}t)$ everywhere by
 meromorphic continuation; the transform of a compactly supported
 distribution is entire and that of a finite measure is bounded on $\RealNumbers$,
 while $A(2^{-n}t)$ has a real pole at $4\pi2^n$.  The reverse identity
@@ -7740,7 +7736,7 @@ digits.
 
 \subsection{Sobolev expansions, energies, and monotonicity}
 
-Since $\widehat{\RvachevUp^{(2j)}}=(-1)^jt^{2j}\Phi$, the $p=2$ case transfers to
+Since $\FourierAngular{\RvachevUp^{(2j)}}=(-1)^jt^{2j}\Phi$, the $p=2$ case transfers to
 physical space: for every fixed real $s\ge0$ and $J\ge1$, with
 $a_j=(-1)^j\rho_j$,
 \begin{equation}
@@ -7906,7 +7902,7 @@ $\psi_\nu(z)=\int\EulerE^{-\ImaginaryUnit zx}\Differential\nu(x)$, define
 \begin{equation}
  g_{n,\nu}=p_n*(D_h\nu),
  \qquad
- \widehat{g_{n,\nu}}(t)=P_n(t)\,\psi_\nu(2^{-n}t),
+ \FourierAngular{g_{n,\nu}}(t)=P_n(t)\,\psi_\nu(2^{-n}t),
  \label{p4:eq:w-closure}
 \end{equation}
 where $D_h$ scales by $h=2^{-n}$.  The original spline is
@@ -7924,7 +7920,7 @@ If $\int x^k\Differential\nu=\Expectation X^k$ for $0\le k\le2M-1$ and
 $c_M=\frac{(-1)^M}{(2M)!}\bigl(\int x^{2M}\Differential\nu-\Expectation X^{2M}\bigr)\ne0$,
 then for every $s\ge0$, $1\le p\le\infty$,
 \begin{equation}
- 4^{Mn}\bigl(\widehat{g_{n,\nu}}-\Phi\bigr)
+ 4^{Mn}\bigl(\FourierAngular{g_{n,\nu}}-\Phi\bigr)
  \longrightarrow c_M\,t^{2M}\Phi(t)
  \qquad\text{in }L^p_s(\RealNumbers),
  \label{p4:eq:w-closure-limit}
@@ -8127,7 +8123,7 @@ lobes, symbolic verification of every quadrature rule; figures and CSV
 audit artifacts) and
 \nolinkurl{assets/rvachev_fourier_frontier_report/} (exact coefficients
 through order $50$, functional-identity checks, divisor partial sums
-against $s_2$, finite multiplicity tables, $100$-digit quadrature of
+against $\BinaryDigitSum$, finite multiplicity tables, $100$-digit quadrature of
 $I_n$ against the closed form, rational verification of the dyadic
 closures; figures, coefficient CSV, and text summary).  Both scripts
 regenerate every figure and table from scratch
@@ -8298,9 +8294,9 @@ The proved contribution is the following linked package.
 
 Throughout the report,
 \begin{equation}
- \widehat f(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-\ImaginaryUnit\xi x}\Differential x,
+ \FourierAngular{f}(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-\ImaginaryUnit\xi x}\Differential x,
  \qquad
- f(x)=\frac1{2\pi}\int_{\RealNumbers}\widehat f(\xi)\EulerE^{\ImaginaryUnit\xi x}\Differential\xi.
+ f(x)=\frac1{2\pi}\int_{\RealNumbers}\FourierAngular{f}(\xi)\EulerE^{\ImaginaryUnit\xi x}\Differential\xi.
  \label{p5:eq:fourier}
 \end{equation}
 The sinc function is entire after filling the removable singularity:
@@ -8360,7 +8356,7 @@ All laws are symmetric and have mean zero.
 
 The density of $2^{-j}V_j$ is
 \begin{equation}
- b_j(x)=2^{j-1}\mathbf 1_{[-2^{-j},2^{-j}]}(x),
+ b_j(x)=2^{j-1}\IndicatorOf{[-2^{-j},2^{-j}]}(x),
  \label{p5:eq:boxes}
 \end{equation}
 so
@@ -8677,7 +8673,7 @@ For $0\le x\le\eps_N$, \eqref{p5:eq:plateau} gives $u_N(x)=1\ge u(x)$, with equa
  u_N(x)-u(x)=-d_{N-1}(2x-1).
  \label{p5:eq:error-cdf-identity}
 \end{equation}
-By \eqref{p5:eq:cdf-sign}, the right side is positive for $x<1/2$, zero at $1/2$, and negative for $x>1/2$.  For $a_N\le x<1$, $u_N(x)=0<u(x)$.  Evenness completes the proof.  For $N=1$, the same conclusion follows directly from $u_1=\mathbf1_{[-1/2,1/2]}$.
+By \eqref{p5:eq:cdf-sign}, the right side is positive for $x<1/2$, zero at $1/2$, and negative for $x>1/2$.  For $a_N\le x<1$, $u_N(x)=0<u(x)$.  Evenness completes the proof.  For $N=1$, the same conclusion follows directly from $u_1=\IndicatorOf{[-1/2,1/2]}$.
 \end{proof}
 
 \begin{corollary}
@@ -9481,7 +9477,7 @@ Conjectured $W_p$ & $W_p\sim4^{-N}J_p^{1/p}/18$ for fixed finite $p$.\\
 
 The first approximant is
 \[
- u_1=\mathbf1_{[-1/2,1/2]}.
+ u_1=\IndicatorOf{[-1/2,1/2]}.
 \]
 The CDF difference still has one positive maximum at $1/2$, but the reduction through $X_{N-1}$ would require the degenerate stage $X_0=0$.  Directly,
 \[
@@ -9679,8 +9675,6 @@ V. Reshetnikov et al.,
 \definecolor{newgold}{RGB}{252,247,227}
 \definecolor{conjrose}{RGB}{252,236,239}
 \newcommand{\Fup}{\operatorname{Fup}}
-\newcommand{\Hh}{\widehat h}
-\newcommand{\1}{\mathbf 1}
 \newcommand{\diam}{\operatorname{diam}}
 \newcommand{\LipVI}{\operatorname{Lip}}
 \newcommand{\DF}{D_{\!F}}
@@ -9753,7 +9747,7 @@ $\RvachevUp$ as the principal example.  This report supplies a mathematically ed
 English translation of the chapter's surviving material and expands it in the
 notation of the current \repo\ documentation.  The central family is
 \[
-  \widehat h_a(\xi)=\prod_{j\ge 1}\SincRad(2\pi a^{-j}\xi),\qquad a>1,
+  \FourierTwoPi{h_a}(\xi)=\prod_{j\ge 1}\SincRad(2\pi a^{-j}\xi),\qquad a>1,
 \]
 where $\SincRad z=\sin z/z$.  It interpolates between the critical binary atom
 $h_2=\RvachevUp$ and, for $a>2$, a class of $C^\infty$ functions that are locally
@@ -9998,8 +9992,8 @@ polynomial on a depth-$r$ gap has signed leading coefficient
 $(-1)^{N_+(\omega)}a^{(r+1)(r+2)/2}/(2^{r+1}r!)$.
 
 \item \newflag\ (Fifteenth wave.)  The source's $\Fup_1$ identity begins the
-classical hierarchy $\widehat{\Fup_n}(t/2\pi)=\SincRad(t2^{-n-1})^{\,n}\,
-\widehat\RvachevUp\bigl(t2^{-n}/2\pi\bigr)$: $\RvachevUp$ is reconstructed from $\Fup_n$ by
+classical hierarchy $\FourierTwoPi{\Fup_n}(t/2\pi)=\SincRad(t2^{-n-1})^{\,n}\,
+\FourierTwoPi{\RvachevUp}\bigl(t2^{-n}/2\pi\bigr)$: $\RvachevUp$ is reconstructed from $\Fup_n$ by
 an exact triangular mask of $n(n+1)/2$ dyadic averaging steps, every cumulant
 of $\Fup_n$ is closed, and the standardized hierarchy is asymptotically
 Gaussian with Berry--Esseen rate $O(n^{-1/2})$ and all standardized cumulants
@@ -10131,9 +10125,9 @@ cross-comparison stated in this report.  The package includes
 
 We follow the repository convention
 \begin{equation}\label{p6:eq:fourier-convention}
- \widehat f(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\,\Differential x,
+ \FourierTwoPi{f}(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\,\Differential x,
  \qquad
- f(x)=\int_{\RealNumbers}\widehat f(\xi)\EulerE^{2\pi\ImaginaryUnit x\xi}\,\Differential\xi,
+ f(x)=\int_{\RealNumbers}\FourierTwoPi{f}(\xi)\EulerE^{2\pi\ImaginaryUnit x\xi}\,\Differential\xi,
 \end{equation}
 whenever both integrals are classical.  Also
 \[
@@ -10184,7 +10178,7 @@ local and universal and is still computationally tractable.
 A degree-$n$ compact spline is an $(n+1)$-fold convolution of interval
 indicators.  The source's decisive step is to continue this construction
 indefinitely.  Let $u_{\alpha}$ denote the probability density
-$(2\alpha)^{-1}\1_{[-\alpha,\alpha]}$.  For positive numbers
+$(2\alpha)^{-1}\IndicatorOf{[-\alpha,\alpha]}$.  For positive numbers
 $\alpha_k\downarrow0$ with $\sum_k\alpha_k<\infty$, the infinite convolution
 \[
  \varphi_{\boldsymbol\alpha}
@@ -10192,7 +10186,7 @@ $\alpha_k\downarrow0$ with $\sum_k\alpha_k<\infty$, the infinite convolution
 \]
 has Fourier transform
 \begin{equation}\label{p6:eq:general-sinc-product}
- \widehat\varphi_{\boldsymbol\alpha}(\xi)
+ \FourierTwoPi{\varphi_{\boldsymbol\alpha}}(\xi)
  =\prod_{k=1}^{\infty}\SincRad(2\pi\alpha_k\xi).
 \end{equation}
 The summability of the half-widths gives compact support in
@@ -10200,7 +10194,7 @@ $[-\sum_k\alpha_k,\sum_k\alpha_k]$; sufficiently rapid decay of the product
 gives $C^\infty$ smoothness.  The simplest self-similar choice is
 $\alpha_k=2^{-k}$, and the source denotes the resulting atom by $\RvachevUp$:
 \begin{equation}\label{p6:eq:up-fourier-product}
- \widehat\RvachevUp(\xi)=\prod_{k=1}^{\infty}\SincRad(2\pi2^{-k}\xi).
+ \FourierTwoPi{\RvachevUp}(\xi)=\prod_{k=1}^{\infty}\SincRad(2\pi2^{-k}\xi).
 \end{equation}
 
 The historical motivation described in the source is geometric.  A compactly
@@ -10232,7 +10226,7 @@ A nonzero compactly supported solution of
 \end{equation}
 is called an \emph{atomic function} associated with $(P,R,\lambda)$.
 Here we take $D=(2\pi\ImaginaryUnit)^{-1}\Differential/\Differential x$, so that
-$\widehat{Df}(\xi)=\xi\widehat f(\xi)$.
+$\FourierTwoPi{Df}(\xi)=\xi\FourierTwoPi{f}(\xi)$.
 \end{definition}
 
 Put
@@ -10364,7 +10358,7 @@ source's order of terms.  Equivalently,
 \end{equation}
 The integral-one solution is
 \begin{equation}\label{p6:eq:ha-fourier}
- \widehat h_a(\xi)=\Phi_a(\xi)
+ \FourierTwoPi{h_a}(\xi)=\Phi_a(\xi)
  :=\prod_{j=1}^{\infty}\SincRad(2\pi a^{-j}\xi).
 \end{equation}
 The critical value is $h_2=\RvachevUp$.
@@ -10512,7 +10506,7 @@ At $a=2$ the central gap collapses.  The source defines
 \begin{equation}\label{p6:eq:up-def-again}
  \RvachevUp=h_2,
  \qquad
- \widehat\RvachevUp(\xi)=\prod_{j\ge1}\SincRad(2\pi2^{-j}\xi),
+ \FourierTwoPi{\RvachevUp}(\xi)=\prod_{j\ge1}\SincRad(2\pi2^{-j}\xi),
 \end{equation}
 with
 \begin{equation}\label{p6:eq:up-diffeq}
@@ -10690,7 +10684,7 @@ it rewrites
 \]
 Define $\Fup_1$ by the Fourier transform
 \begin{equation}\label{p6:eq:Fup1}
- \widehat{\Fup_1}(t/2\pi)=
+ \FourierTwoPi{\Fup_1}(t/2\pi)=
  \left(\SincRad(t/4)\right)^2
  \prod_{j\ge3}\SincRad(t2^{-j}).
 \end{equation}
@@ -10712,7 +10706,7 @@ one-parameter ladder.  In the source's angular variable, put
 \end{equation}
 and define $G_n$ for $n\ge0$ by
 \begin{equation}\label{p6:eq:Gn-hat}
- \widehat G_n(t/2\pi)=H(t)\,\SincRad\bigl(t2^{-(n+1)}\bigr).
+ \FourierTwoPi{G_n}(t/2\pi)=H(t)\,\SincRad\bigl(t2^{-(n+1)}\bigr).
 \end{equation}
 Then $G_0=\RvachevUp$ and $G_1=\Fup_1$.
 
@@ -10732,9 +10726,9 @@ and the support radius of $G_n$ is $\tfrac12+2^{-(n+1)}$.  Moreover,
 
 \begin{proof}
 The halving identity $\SincRad(t2^{-n})=\cos(t2^{-(n+1)})\SincRad(t2^{-(n+1)})$
-gives $\widehat G_{n-1}(t/2\pi)=\cos(t2^{-(n+1)})\,\widehat G_n(t/2\pi)$,
+gives $\FourierTwoPi{G_{n-1}}(t/2\pi)=\cos(t2^{-(n+1)})\,\FourierTwoPi{G_n}(t/2\pi)$,
 which is \eqref{p6:eq:Gn-recursion}.  Pointwise
-$\widehat G_n(t/2\pi)\to H(t)$, and $H$ is the transform of the density of
+$\FourierTwoPi{G_n}(t/2\pi)\to H(t)$, and $H$ is the transform of the density of
 $\sum_{j\ge2}2^{-j}U_j=X_2/2$, namely $2\RvachevUp(2x)$.  Since $|t|^mH(t)$ is
 integrable and the products are dominated by finitely many common factors,
 dominated Fourier inversion gives $C^m$ convergence.  The support radius is the
@@ -10754,9 +10748,9 @@ A second canonical continuation (fifteenth wave) is the historically standard
 hierarchy, which piles the redistributed multiplicity onto a single scale
 instead of sliding one factor.  In the source's angular variable, define
 \begin{equation}\label{p6:eq:Fupn-def}
- \widehat{\Fup_n}(t/2\pi)
+ \FourierTwoPi{\Fup_n}(t/2\pi)
  =\SincRad\bigl(t2^{-n-1}\bigr)^{\,n}\,
-  \widehat\RvachevUp\bigl(t2^{-n}/2\pi\bigr),
+  \FourierTwoPi{\RvachevUp}\bigl(t2^{-n}/2\pi\bigr),
  \qquad \Fup_0=\RvachevUp,
 \end{equation}
 which reduces to \eqref{p6:eq:Fup1} at $n=1$.  Probabilistically, $\Fup_n$ is
@@ -10775,8 +10769,8 @@ $[-1,1]$, so
 \label{p6:thm:fupn-reconstruction}
 For every $n\ge0$,
 \begin{equation}\label{p6:eq:fupn-fourier-reconstruction}
- \widehat\RvachevUp(t/2\pi)
- =\widehat{\Fup_n}(t/2\pi)
+ \FourierTwoPi{\RvachevUp}(t/2\pi)
+ =\FourierTwoPi{\Fup_n}(t/2\pi)
  \prod_{r=2}^{n+1}\cos\bigl(t2^{-r}\bigr)^{\,r-1}.
 \end{equation}
 Equivalently, with $N_n=n(n+1)/2$, the function $\RvachevUp$ is the average of the
@@ -10785,13 +10779,13 @@ $\sum_{r=2}^{n+1}\sum_{s=1}^{r-1}\varepsilon_{r,s}2^{-r}$,
 $\varepsilon_{r,s}\in\{\pm1\}$.  Letting $n\to\infty$ recovers the infinite
 cosine-multiplicity factorization
 \begin{equation}\label{p6:eq:cosine-multiplicity}
- \widehat\RvachevUp(t/2\pi)=\prod_{r=2}^{\infty}\cos\bigl(t2^{-r}\bigr)^{\,r-1}.
+ \FourierTwoPi{\RvachevUp}(t/2\pi)=\prod_{r=2}^{\infty}\cos\bigl(t2^{-r}\bigr)^{\,r-1}.
 \end{equation}
 \end{theorem}
 
 \begin{proof}
 By \eqref{p6:eq:Fupn-def},
-$\widehat\RvachevUp/\widehat{\Fup_n}
+$\FourierTwoPi{\RvachevUp}/\FourierTwoPi{\Fup_n}
 =\prod_{j=1}^{n}\SincRad(t2^{-j})/\SincRad(t2^{-n-1})$ at matched arguments.
 Iterating the halving identity
 $\SincRad(t2^{-j})=\bigl[\prod_{r=j+1}^{n+1}\cos(t2^{-r})\bigr]
@@ -10800,7 +10794,7 @@ multiplicity $r-1$, which proves
 \eqref{p6:eq:fupn-fourier-reconstruction}; expanding every cosine as a
 two-point averaging multiplier gives the translate form.  The infinite product
 \eqref{p6:eq:cosine-multiplicity} follows because
-$\widehat{\Fup_n}(t/2\pi)\to1$ locally uniformly.
+$\FourierTwoPi{\Fup_n}(t/2\pi)\to1$ locally uniformly.
 \end{proof}
 
 \begin{theorem}[Exact cumulants and central-limit regime]
@@ -10881,7 +10875,7 @@ arbitrary algebraic order, after any fixed number of differentiations.
 \begin{proof}[Proof (condensed from the revised fifteenth wave)]
 Rescale to $V_n=2^{n+1}Z_n=2X_2+U_1+\cdots+U_n$, $s_n^2=(3n+4)/9$, so
 $W_n=V_n/s_n$ has characteristic function
-$\chi_n(t)=\widehat\RvachevUp\bigl(2t/(2\pi s_n)\bigr)\SincRad(t/s_n)^n$ in the volume's
+$\chi_n(t)=\FourierTwoPi{\RvachevUp}\bigl(2t/(2\pi s_n)\bigr)\SincRad(t/s_n)^n$ in the volume's
 convention.  Fix $0<\delta<\pi/2$.  On $|t|\le\delta s_n$ the cumulant series
 converges, $|\lambda_{2m,n}|\le C_mn^{1-m}$, and
 $|\SincRad u|\le\EulerE^{-c_\delta u^2}$ for $|u|\le\delta$, so truncating the
@@ -10889,7 +10883,7 @@ exponential of the cumulant series at total weight
 $\sum(m-1)k_m\le R$ leaves an error
 $\le C_Rn^{-R-1}(1+|t|^{M_R})\EulerE^{-ct^2}$, integrable against every fixed
 $|t|^r$.  On $|t|>\delta s_n$, substituting $u=t/s_n$ and using
-$|\widehat\RvachevUp|\le1$, $\max_{\delta\le|u|\le A}|\SincRad u|<1$, and
+$|\FourierTwoPi{\RvachevUp}|\le1$, $\max_{\delta\le|u|\le A}|\SincRad u|<1$, and
 $|\SincRad u|\le|u|^{-1}$ beyond a fixed $A>1$ makes
 $\int_{|t|>\delta s_n}|t|^r|\chi_n|$ exponentially small in $n$, as is the
 tail of the Gaussian--polynomial approximant.  Hence
@@ -11453,8 +11447,8 @@ For every $a\ge2$, $p>0$, and $n\ge0$,
 \end{equation}
 so the characteristic function factors exactly,
 \begin{equation}\label{p6:eq:energy-charfun}
- \widehat\mu_{a,n,p}(t)
- =\widehat\mu_{a,0,p}\bigl(t/a^{n}\bigr)
+ \FourierAngular{\mu_{a,n,p}}(t)
+ =\FourierAngular{\mu_{a,0,p}}\bigl(t/a^{n}\bigr)
  \prod_{j=1}^{n}\cos\bigl(t/a^{j}\bigr),
 \end{equation}
 and the digit coupling gives
@@ -11527,7 +11521,7 @@ and their ratio recovers the dimension $D_a=\log2/\log a$ of the
 nonanalytic locus: a compactly supported $C^\infty$ function carries the
 information dimension of its singular set in the exact entropy budget of
 its derivative energies.  At criticality,
-$\widehat\mu_{2,n,p}(t)\to\SincRad t$ by the classical cosine
+$\FourierAngular{\mu_{2,n,p}}(t)\to\SincRad t$ by the classical cosine
 product: the same binary product that turns Thue--Morse differences into
 derivatives turns every normalized derivative energy into the uniform law.
 \end{remark}
@@ -11552,8 +11546,8 @@ representing measure for a scaled Stieltjes--Wigert moment problem.
 \subsection{The spectral probability law and its moments}
 
 In the source's angular variable, let $T_a$ have the symmetric probability
-density $|\widehat h_a(t/2\pi)|^2/I_a$ with
-$I_a=\int_\RealNumbers|\widehat h_a(t/2\pi)|^2\Differential t=2\pi\|h_a\|_2^2$, and put
+density $|\FourierTwoPi{h_a}(t/2\pi)|^2/I_a$ with
+$I_a=\int_\RealNumbers|\FourierTwoPi{h_a}(t/2\pi)|^2\Differential t=2\pi\|h_a\|_2^2$, and put
 $Z_a=T_a^2$.
 
 \begin{theorem}[General-base spectral moments]\label{p6:thm:spectral-moments}
@@ -11567,7 +11561,7 @@ For every $a\ge2$ and $n\ge0$,
 
 \begin{proof}
 Parseval converts frequency moments into derivative energies,
-$\int t^{2n}|\widehat h_a(t/2\pi)|^2\Differential t=2\pi\|h_a^{(n)}\|_2^2$, and the
+$\int t^{2n}|\FourierTwoPi{h_a}(t/2\pi)|^2\Differential t=2\pi\|h_a^{(n)}\|_2^2$, and the
 $p=2$ case of \cref{p6:thm:equimeasurability} gives
 $\|h_a^{(n)}\|_2^2/\|h_a\|_2^2
 =C_{a,n}^2(2/a)^n=a^{n(n+2)}/2^n$.
@@ -11598,7 +11592,7 @@ exact $q$-Pearson scale equations,
  \qquad
  w_{\mathrm{ln}}(a^2z)=\frac1{2az}\,w_{\mathrm{ln}}(z),
 \end{equation}
-(the spectral one from $\widehat h_a$'s one-step refinement, written in the
+(the spectral one from $\FourierTwoPi{h_a}$'s one-step refinement, written in the
 angular variable), and the shared moment functional has closed Hankel
 determinants and monic orthogonal polynomials:
 \begin{gather}
@@ -11968,8 +11962,12 @@ rotates the weight to $\vartheta_3(\theta/2,q)$, centred at $\theta=0$.
 \end{proposition}
 
 \begin{proof}
-The monomial Gram matrix of the weight is its Fourier coefficient sequence
-$\widehat\Theta_a(j-k)=(-1)^{j-k}q^{(j-k)^2}$, which by
+The monomial Gram matrix of the weight is its normalized $2\pi$-periodic Fourier
+coefficient sequence
+$\FourierSeriesCoefficientAtPeriod{\Theta_a}{j-k}{2\pi}
+\DefinitionEquals(2\pi)^{-1}\int_0^{2\pi}\Theta_a(\theta)
+\EulerE^{-\ImaginaryUnit(j-k)\theta}\Differential\theta
+=(-1)^{j-k}q^{(j-k)^2}$, which by
 \cref{p6:thm:derivative-gram} is the Gram matrix of the raw tower; a
 stationary positive definite kernel determines its closed span up to
 canonical unitary equivalence, and the equivalence matches the two
@@ -12114,7 +12112,7 @@ of $Z_a$ from \cref{p6:thm:spectral-moments}.
 Let $a\ge2$ and $\Upsilon_{a,n}=P_{a,n}(\mathcal L)h_a$ with $P_{a,n}$ the
 monic polynomials \eqref{p6:eq:sw-op}.  Then:
 \begin{enumerate}
-\item $\widehat{\Upsilon_{a,n}}(t)=P_{a,n}(t^2)\,\widehat h_a(t)$, and each
+\item $\FourierAngular{\Upsilon_{a,n}}(t)=P_{a,n}(t^2)\,\FourierAngular{h_a}(t)$, and each
 $\Upsilon_{a,n}$ is $C^\infty$ with support in $[-b_a,b_a]$;
 \item the family $\{\Upsilon_{a,n}\}_{n\ge0}$ is orthogonal in $L^2(\RealNumbers)$,
 with
@@ -12241,7 +12239,7 @@ $\det E_N^{\mathrm{jet}}=\|h_a\|_2^{2(N+1)}\Delta_N$.
 Finally, the second-order statistics of $X_a$ close at the origin.  Let
 $\operatorname{acf}_a=h_a*h_a$, the density of the sum of two independent
 copies of $X_a$; since $h_a$ is even, it is also the autocorrelation of
-$h_a$, with $\widehat{\operatorname{acf}_a}=\widehat h_a^{\;2}$.
+$h_a$, with $\FourierAngular{\operatorname{acf}_a}=\FourierAngular{h_a}^{\;2}$.
 
 \begin{theorem}[Autocorrelation germ]\label{p6:thm:acf-germ}
 For $a\ge2$ and $n\ge0$, all odd derivatives of $\operatorname{acf}_a$
@@ -12259,7 +12257,7 @@ convergence zero.
 \begin{proof}
 Fourier inversion gives
 $\operatorname{acf}_a^{(2n)}(0)
-=(-1)^n(2\pi)^{-1}\int t^{2n}|\widehat h_a(t)|^2\Differential t
+=(-1)^n(2\pi)^{-1}\int t^{2n}|\FourierAngular{h_a}(t)|^2\Differential t
 =(-1)^n\|h_a^{(n)}\|_2^2$ and $\operatorname{acf}_a(0)=\|h_a\|_2^2$; the
 moment value is \cref{p6:thm:spectral-moments}.  The $2n$th Taylor
 coefficient thus grows like $a^{n^2}$ against $(2n)!=\EulerE^{\BigO(n\log n)}$,
@@ -12287,7 +12285,7 @@ bounded one is the subject of \cref{p6:conj:spectral-null-modes}.
 \centering
 \includegraphics[width=0.92\textwidth]{assets/Atomic_Functions_Beyond_Dyadic_Expanded/figures/orthogonal_derivative_ladder_a_2_6.png}
 \caption{The first four normalized spectral modes
-$P_{a,n}(t^2)\widehat h_a(t)$ of the differential ladder at $a=2.6$,
+$P_{a,n}(t^2)\FourierAngular{h_a}(t)$ of the differential ladder at $a=2.6$,
 displayed against $\log(t^2)$ (\cref{p6:thm:sw-ladder}).  Their numerical
 Gram matrix is the identity to the precision recorded in the package's
 \texttt{orthogonal\_ladder\_validation\_a\_2\_6.csv}.}
@@ -12374,7 +12372,7 @@ Moreover,
 
 \begin{proof}
 The density of $a^{-j}U_j$ is
-$(a^j/2)\1_{[-a^{-j},a^{-j}]}$.  Repeated integration of the signed endpoint
+$(a^j/2)\IndicatorOf{[-a^{-j},a^{-j}]}$.  Repeated integration of the signed endpoint
 representation of an interval indicator gives
 \eqref{p6:eq:finite-spline-formula}.  Splitting
 $X_a=\sum_{j=1}^{N}a^{-j}U_j+a^{-N}X_a'$ gives
@@ -12657,7 +12655,7 @@ $\min(2\eps,\ell)$.
 \begin{theorem}[Exact tube formula and Minkowski non-measurability]
 \label{p6:thm:tube-formula}
 Let $a>2$ and $0<2\eps<\ell_0$, and put
-$N(\eps)=\bigl\lfloor\log_a\bigl(\ell_0/(2\eps)\bigr)\bigr\rfloor$.  Then
+$N(\eps)=\Floor{\log_a\bigl(\ell_0/(2\eps)\bigr)}$.  Then
 \begin{equation}\label{p6:eq:exact-tube}
  V_a(\eps)=2\eps\bigl(2^{N(\eps)+1}-1\bigr)
  +\frac{\ell_0\,(2/a)^{N(\eps)+1}}{1-2/a}.
@@ -12731,7 +12729,7 @@ so that
 \begin{equation}\label{p6:eq:degree-moments}
  \Expectation N_a=\frac2{a-2},
  \qquad
- \operatorname{Var}(N_a)=\frac{2a}{(a-2)^2}.
+ \Variance(N_a)=\frac{2a}{(a-2)^2}.
 \end{equation}
 With $p_a=(a-2)/a$, as $a\downarrow2$,
 \begin{equation}\label{p6:eq:degree-critical-limit}
@@ -12746,7 +12744,7 @@ The total length of the depth-$r$ gaps is $2^r\ell_0a^{-r}$; dividing by
 $2b_a=2/(a-1)$ gives \eqref{p6:eq:degree-geometric}, a geometric law on $\NaturalNumbers$
 with success parameter $p_a$, whence \eqref{p6:eq:degree-moments}.  For the
 limit,
-$\Probability(p_aN_a>x)=(1-p_a)^{\lfloor x/p_a\rfloor+1}\to\EulerE^{-x}$ for every
+$\Probability(p_aN_a>x)=(1-p_a)^{\Floor{x/p_a}+1}\to\EulerE^{-x}$ for every
 $x>0$, and $p_a\sim(a-2)/2$.
 \end{proof}
 
@@ -12960,7 +12958,7 @@ For $a>2$, with $p_a=1-2/a$:
 \item $\Probability(\mathcal J_a=\mathcal J_r)=p_a(2/a)^r$ and
 $\Probability(\mathcal J_a\ge\mathcal J_r)=(2/a)^r$; inverting the quadratic
 gives the exact staircase tail
-$\Probability(\mathcal J_a\ge x)=(2/a)^{\lceil\nu_a(x)\rceil}$ with
+$\Probability(\mathcal J_a\ge x)=(2/a)^{\Ceiling{\nu_a(x)}}$ with
 $\nu_a(x)=\bigl(-\beta+\sqrt{\beta^2+4\alpha(\log x-\gamma)}\bigr)/
 (2\alpha)$, hence the same log-Weibull envelope
 \eqref{p6:eq:jet-log-weibull} and the same moment dichotomy as $A$.
@@ -13192,7 +13190,7 @@ separate research direction.
 
 Let $t=2\pi|\xi|$ and, for $t\ge a$, put
 \[
- N=\lfloor\log_a t\rfloor.
+ N=\Floor{\log_a t}.
 \]
 For $1\le j\le N$, the elementary estimate
 $|\SincRad(t a^{-j})|\le a^j/t$ gives
@@ -13713,7 +13711,7 @@ Let
 \label{p6:thm:general-fourier-modes}
 For every $a>1$ and every $k\ne0$,
 \begin{equation}\label{p6:eq:general-gamma-zeta}
- \widehat\Psi_a(k)=\int_0^1\Psi_a(x)\,\EulerE^{-2\pi\ImaginaryUnit kx}\Differential x
+ \FourierSeriesCoefficient{\Psi_a}{k}=\int_0^1\Psi_a(x)\,\EulerE^{-2\pi\ImaginaryUnit kx}\Differential x
  =-\frac{\Gamma(-\chi_k)\,\zeta(1-\chi_k)}{\log a}.
 \end{equation}
 The coefficients decay exponentially in $|k|$, so $P_a$ is real analytic; and
@@ -14075,7 +14073,7 @@ by $-1$, in typical-point statistics.
 For each $a\ge2$, the representing measure of
 \cref{p6:thm:spectral-moments} has a Nevanlinna--Pick parameter in the
 indeterminate scaled Stieltjes--Wigert problem admitting an explicit
-Mellin-product representation in terms of $\widehat h_a$; after the scaling
+Mellin-product representation in terms of $\FourierAngular{h_a}$; after the scaling
 $z\mapsto2z/a$ it should depend real analytically on $a$ away from the
 critical endpoint, with a controlled limit as $a\downarrow2$.  A first step
 is to compute the Cauchy transform of the spectral density at negative
@@ -14167,7 +14165,7 @@ indeterminate (\cref{p6:thm:acf-germ}) --- contains a nonzero
 in $\log_az$: an explicit $G_a\ne0$ with
 $\int_0^\infty z^nG_a(z)\,\Differential\rho_{\mathrm{sp}}(z)=0$ for all $n\ge0$.
 The $q$-Pearson scale equation \eqref{p6:eq:q-pearson} is the natural
-route; transported through the Fourier multiplier $\widehat h_a$, such a
+route; transported through the Fourier multiplier $\FourierAngular{h_a}$, such a
 mode would describe explicitly what the derivative tower misses inside its
 cyclic subspace (expanded fourteenth-wave edition).
 \end{conjecture}
@@ -14272,7 +14270,7 @@ of the binary sinc product and increasing the multiplicity of a smaller-scale
 sinc.  A systematic hierarchy should index multiplicity vectors
 $\boldsymbol m=(m_1,m_2,\ldots)$ with finite deviation from $(1,1,\ldots)$:
 \[
- \widehat H_{\boldsymbol m}(\xi)
+ \FourierTwoPi{H_{\boldsymbol m}}(\xi)
  =\prod_{j\ge1}\SincRad(2\pi2^{-j}\xi)^{m_j}.
 \]
 Cosine identities then relate neighboring vectors by finite shift averages.
