@@ -646,6 +646,38 @@ least/ceiling denominator, tolerant bisection, or input-bit asymptotics. &
 \nolinkurl{abs_fabiusInv_sub_le_inverse_two_pow_of_le_deltaDenominator},
 \nolinkurl{fabiusInv_effectivelyUniformContinuous} &
 \nolinkurl{FabiusInverseEffectiveContinuity.lean} \\
+Logarithmic reciprocal inverse continuity (three definitions and fifteen
+theorems).  The primitive-recursive selector is
+\(r_{\log}(n)=\operatorname{Nat.log2}(n)+1\); for \(n>0\) it is the least
+natural \(r\) with \(n<2^r\) and satisfies \(r_{\log}(n)\le n\).  The
+factorial and Delta denominators take value \(1\) at zero, compose their
+dyadic predecessors with \(r_{\log}\) at positive inputs, are primitive
+recursive, and retain the factorial-to-Delta comparison.  For either
+denominator, strict and closed input thresholds both give strict inverse error
+below \(1/n\), and each denominator separately witnesses
+\nolinkurl{EffectivelyUniformContinuous}.  The exact endpoint-mass ceiling
+denominator, tolerant bisection, \nolinkurl{SequentiallyComputable}, the
+combined \nolinkurl{IsComputableRealFunction} theorem, and input-bit
+asymptotics remain open. &
+\nolinkurl{inverseFabiusLogarithmicOrder},
+\nolinkurl{inverseFabiusLogarithmicFactorialDenominator},
+\nolinkurl{inverseFabiusLogarithmicDeltaDenominator};
+\nolinkurl{inverseFabiusLogarithmicOrder_eq_succ_log2},
+\nolinkurl{inverseFabiusLogarithmicOrder_primrec},
+\nolinkurl{inverseFabiusLogarithmicOrder_isLeast},
+\nolinkurl{inverseFabiusLogarithmicOrder_le_self},
+\nolinkurl{inverseFabiusLogarithmicFactorialDenominator_of_pos},
+\nolinkurl{inverseFabiusLogarithmicDeltaDenominator_of_pos},
+\nolinkurl{inverseFabiusLogarithmicFactorialDenominator_primrec},
+\nolinkurl{inverseFabiusLogarithmicDeltaDenominator_primrec},
+\nolinkurl{inverseFabiusLogarithmicFactorialDenominator_le_deltaDenominator},
+\nolinkurl{abs_fabiusInv_sub_lt_inv_nat_of_lt_logarithmicFactorialDenominator},
+\nolinkurl{abs_fabiusInv_sub_lt_inv_nat_of_le_logarithmicFactorialDenominator},
+\nolinkurl{abs_fabiusInv_sub_lt_inv_nat_of_lt_logarithmicDeltaDenominator},
+\nolinkurl{abs_fabiusInv_sub_lt_inv_nat_of_le_logarithmicDeltaDenominator},
+\nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmic},
+\nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmicDelta} &
+\nolinkurl{FabiusInverseLogarithmicModulus.lean} \\
 Lower-Lambert coordinate & \nolinkurl{fabiusLambertPhase} & \nolinkurl{FabiusLambertSaddle.lean} \\
 All-orders saddle expansion & saddle mass/log coefficient declarations & \nolinkurl{FabiusFullAsymptoticExpansion.lean} and related modules \\
 \bottomrule

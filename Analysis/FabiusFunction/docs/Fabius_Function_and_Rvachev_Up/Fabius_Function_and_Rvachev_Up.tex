@@ -4323,6 +4323,63 @@ theorem, and therefore no combined \lean{IsComputableRealFunction} result.  It a
 does not construct a logarithmic scale selector \(r(n)\), an exact least or ceiling
 denominator, or an input-bit complexity estimate.
 
+\subsection{Logarithmic reciprocal continuity of the inverse}
+\label{sec:fabius-inverse-logarithmic-continuity}
+
+The downstream module \path{FabiusInverseLogarithmicModulus.lean} replaces the
+coarse choice \(r=n\) by the primitive-recursive selector
+
+\begin{equation}
+ r_{\log}(n)=\operatorname{Nat.log2}(n)+1.                \label{eq:inverse-logarithmic-order}
+\end{equation}
+
+This is \lean{inverseFabiusLogarithmicOrder}; its equation, primitive
+recursiveness, least-order property for \(n>0\), and bound \(r_{\log}(n)\le n\)
+are respectively
+\lean{inverseFabiusLogarithmicOrder_eq_succ_log2},
+\lean{inverseFabiusLogarithmicOrder_primrec},
+\lean{inverseFabiusLogarithmicOrder_isLeast}, and
+\lean{inverseFabiusLogarithmicOrder_le_self}.  In particular, for \(n>0\), it
+is exactly the least natural \(r\) satisfying \(n<2^r\).
+
+The definitions \lean{inverseFabiusLogarithmicFactorialDenominator} and
+\lean{inverseFabiusLogarithmicDeltaDenominator} take value \(1\) at zero and,
+for \(n>0\), are \(D_{\mathrm{fac}}(r_{\log}(n))\) and
+\(D_{\Delta}(r_{\log}(n))\).  The positive-input equations are
+\lean{inverseFabiusLogarithmicFactorialDenominator_of_pos} and
+\lean{inverseFabiusLogarithmicDeltaDenominator_of_pos}; primitive recursiveness
+is proved by
+\lean{inverseFabiusLogarithmicFactorialDenominator_primrec} and
+\lean{inverseFabiusLogarithmicDeltaDenominator_primrec}, and their pointwise
+comparison is
+\lean{inverseFabiusLogarithmicFactorialDenominator_le_deltaDenominator}.
+
+For either logarithmic denominator \(d\) and every \(n>0\), both boundary forms
+are available:
+\begin{equation}
+ |u-v|<d(n)^{-1}\Longrightarrow |I(u)-I(v)|<\frac1n,
+ \qquad
+ |u-v|\le d(n)^{-1}\Longrightarrow |I(u)-I(v)|<\frac1n.  \label{eq:inverse-logarithmic-moduli}
+\end{equation}
+The factorial declarations are
+\lean{abs_fabiusInv_sub_lt_inv_nat_of_lt_logarithmicFactorialDenominator} and
+\lean{abs_fabiusInv_sub_lt_inv_nat_of_le_logarithmicFactorialDenominator}; the
+Delta declarations are
+\lean{abs_fabiusInv_sub_lt_inv_nat_of_lt_logarithmicDeltaDenominator} and
+\lean{abs_fabiusInv_sub_lt_inv_nat_of_le_logarithmicDeltaDenominator}.  The
+closed input threshold still gives a strict final output because
+\(2^{-r_{\log}(n)}<1/n\).  Finally,
+\lean{fabiusInv_effectivelyUniformContinuous_logarithmic} and
+\lean{fabiusInv_effectivelyUniformContinuous_logarithmicDelta} separately
+package the factorial and report-exact Delta witnesses for
+\lean{EffectivelyUniformContinuous}.
+
+This is the exhaustive public surface of the module: three definitions and
+fifteen theorems.  It does not construct the exact endpoint-mass ceiling
+denominator or a tolerant-bisection realizer, and it makes no
+\lean{SequentiallyComputable}, combined \lean{IsComputableRealFunction}, or
+input-bit asymptotic claim.
+
 \subsection{Precise non-elementarity}
 
 The inductive predicate \lean{IsElementary} contains constants and the identity and is
@@ -10697,6 +10754,7 @@ Global derivatives, value distributions, and flatness &
 Analyticity, inverse, effective inverse continuity, elementary obstruction &
 \path{NowhereAnalytic.lean}, \path{FabiusInverse.lean}, \path{InverseModulus.lean},
 \path{FabiusInverseEffectiveContinuity.lean},
+\path{FabiusInverseLogarithmicModulus.lean},
 \path{InverseMidpointDefect.lean},
 \path{ElementaryFunction.lean}, \path{NotElementary.lean},
 \path{InverseBranch.lean}, \path{InverseNotElementary.lean}\\

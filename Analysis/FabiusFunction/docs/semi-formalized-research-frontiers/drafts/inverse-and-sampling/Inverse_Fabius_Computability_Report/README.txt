@@ -4,12 +4,12 @@ COMPUTABILITY OF THE INVERSE FABIUS FUNCTION
 Contents
 --------
 inverse_fabius_computability.tex
-    Complete 2621-line LaTeX source of the report.  Its latest source update
-    crosswalks the effective-continuity formalization described below.
+    Complete 2743-line LaTeX source of the report.  Its latest synchronized
+    update adds the logarithmic reciprocal-modulus crosswalk described below.
 
 inverse_fabius_computability.pdf
-    Current 37-page A4 report, rebuilt from the 2621-line source in exactly
-    three serial pdfLaTeX passes after the effective-continuity crosswalk.
+    Current 39-page A4 report, produced from the 2743-line source in exactly
+    three serial pdfLaTeX passes.
 
 inverse_fabius_computability_experiments.py
     Exact-rational Python supplement.  It uses only the Python standard
@@ -20,7 +20,8 @@ numerical_output.txt
     Captured output from the Python supplement with its default arguments.
 
 SHA256SUMS.txt
-    SHA-256 digests of the preceding files and this README.
+    SHA-256 digests for the current built package revision.  All five entries
+    verify against the live payloads.
 
 Repository snapshot
 -------------------
@@ -53,23 +54,35 @@ factorial-denominator inverse moduli, primitive recursiveness of both explicit
 denominator sequences, and EffectivelyUniformContinuous for the totalized
 inverse with the simple r=n factorial-denominator witness.
 
+The logarithmic refinement is exhaustively crosswalked to all eighteen public
+declarations (three definitions and fifteen theorems) in:
+
+    Analysis/FabiusFunction/Lean/FabiusFunction/FabiusInverseLogarithmicModulus.lean
+
+That module defines the primitive-recursive least order r(n), proves its
+binary-length and least-order characterizations and r(n) <= n, composes both
+the Delta and stronger factorial denominators with r(n), proves both composed
+denominators primitive recursive, supplies strict and closed-input reciprocal
+moduli, and packages EffectivelyUniformContinuous with either witness.  The
+Delta package is the exact d(n), d(0)=1 construction stated in the report.
+
 The random-series box-event proof itself is not formalized: Lean proves its
-numerical conclusion through the stronger recurrence route.  The logarithmic
-r(n) modulus, exact ceiling denominator d_* and its qualified fixed-target
-minimality, tolerant bisection, sequential computability, the combined
-computable-real-function theorem, and input-bit asymptotics remain open Lean
-work.  The report retains their complete human proofs and imported-source
-qualifications.  The scope correction for d_* remains in force: it is
+numerical conclusion through the stronger recurrence route.  The exact
+ceiling denominator d_* and its qualified fixed-target minimality, tolerant
+bisection, sequential computability, the combined computable-real-function
+theorem, and input-bit asymptotics remain open Lean work.  The report retains
+their complete human proofs and imported-source qualifications.  The scope
+correction for d_* remains in force: it is
 denominator-minimal for the fixed dyadic proxy 2^{-r(n)}, not for the weaker
 target tolerance 1/n.
 
 Render and ledger status
 ------------------------
-The 2621-line source was rebuilt in exactly three serial pdfLaTeX passes as a
-37-page A4 PDF.  The rendered metadata now includes the formerly blank author
-field; all fonts are embedded and subset, Libertinus is present, and no Type 3
-font is used.  References, layout, and the complete render were inspected,
-auxiliary files were removed, and the active checksum ledger was refreshed.
+The 2743-line source and 39-page A4 PDF are synchronized after exactly three
+serial pdfLaTeX passes.  The final log has no TeX errors, unresolved references,
+rerun request, or overfull box.  All fonts are embedded/subset, Libertinus is
+present, no Type 3 font is used, representative pages were inspected, and all
+five active checksum entries verify.
 
 Reproduce the numerical supplement
 ----------------------------------
