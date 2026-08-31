@@ -6,6 +6,7 @@
 \usepackage{microtype}
 \usepackage[a4paper,margin=28mm]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
+\input{../../../../fabius-notation.tex}
 \usepackage{bm}
 \usepackage{booktabs,longtable,array}
 \usepackage{enumitem}
@@ -35,29 +36,12 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{example}[theorem]{Example}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\N}{\mathbb N}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Pp}{\mathbb P}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\Law}{\mathcal L}
-\newcommand{\wt}{\operatorname{wt}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\sgn}{\operatorname{sgn}}
-\newcommand{\supp}{\operatorname{supp}}
 \newcommand{\cump}{\kappa}
-\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
-\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
 \newcommand{\bracket}[2]{\left[#1\right]_{#2}}
-\newcommand{\qbinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
 \newcommand{\doteqL}{\mathrel{\stackrel{\mathrm d}=}}
 \newcommand{\PhiN}{\Phi}
 \newcommand{\phiN}{\varphi}
 \newcommand{\eps}{\varepsilon}
-\newcommand{\BigO}{\mathcal O}
 
 \title{\textbf{Negative Parameters, Reciprocal Bases, and the Gaussian Boundary}\\[2mm]
 \large New frontier results for the geometric-uniform, Fabius, inverse-Fabius, Rvachev, Thue--Morse, sinc-product, and Bell--Bernoulli framework}
@@ -95,7 +79,7 @@ total function at \(q<0\) is the \emph{negative} of the Radon--Nikodym density. 
 \(q=-1/2\) one obtains
 \[
  F_{-1/2}(x)=F\!\left(\frac{x+1}{3}\right),\qquad
- g_{-1/2}(x)=\frac23\Up\!\left(\frac{2x-1}{3}\right),\qquad
+ g_{-1/2}(x)=\frac23\RvachevUp\!\left(\frac{2x-1}{3}\right),\qquad
  Q_{-1/2}(u)=3F^{-1}(u)-1,
 \]
 which transports the complete Lambert--\(W_{-1}\), Legendre, and Thue--Morse derivative
@@ -152,7 +136,7 @@ We use without reproving every foundational layer already organized in the repos
 \item exact support for the geometric law;
 \item smoothness and the density formula for \(0<q<1\);
 \item the half-base bridge
-      \(F_{1/2}=F\) and \(f_{1/2}(x)=2\Up(2x-1)\);
+      \(F_{1/2}=F\) and \(f_{1/2}(x)=2\RvachevUp(2x-1)\);
 \item the Bernoulli/Bell, $q$-binomial, sinc-product, Legendre, and Lambert--\(W\)
       toolkits developed there.
 \end{enumerate}
@@ -171,7 +155,7 @@ CDF, quantile, support and smooth density.  The repository's selected total func
 proved to equal minus the density when \(q<0\). \\
 Centered transport & Complete coupling, characteristic-function, entropy, \(L^p\),
 Sobolev, Legendre and endpoint-asymptotic transport. \\
-Dyadic negative base & Exact formulas in terms of \(F\), \(F^{-1}\), and \(\Up\), plus
+Dyadic negative base & Exact formulas in terms of \(F\), \(F^{-1}\), and \(\RvachevUp\), plus
 transferred Thue--Morse derivative peaks and Lambert--\(W_{-1}\) phase. \\
 Shape & Log-concavity for all real \(\lvert q\rvert<1\); exact central plateau for
 \(0\le \lvert q\rvert<1/2\), with negative-base interval and height in closed form. \\
@@ -207,18 +191,18 @@ which is the source of the negative-parameter duality.
 
 Write
 \[
- F_q(x)=\Pp(X_q\le x),
+ F_q(x)=\Probability(X_q\le x),
  \qquad
- \psi_q(t)=\E e^{itY_q},
+ \psi_q(t)=\Expectation e^{itY_q},
  \qquad
- \sinc z=\begin{cases}\sin z/z,&z\ne0,\\1,&z=0.\end{cases}
+ \SincRad z=\begin{cases}\sin z/z,&z\ne0,\\1,&z=0.\end{cases}
 \]
 Independence gives the centered infinite sinc product
 \begin{equation}
  \psi_q(t)=\prod_{n=0}^{\infty}
- \sinc\!\left(\frac{(1-q)q^nt}{2}\right).             \label{eq:psi-product}
+ \SincRad\!\left(\frac{(1-q)q^nt}{2}\right).             \label{eq:psi-product}
 \end{equation}
-The signs of the individual arguments disappear because \(\sinc\) is even, but the
+The signs of the individual arguments disappear because \(\SincRad\) is even, but the
 factor \(1-q\) remains and will encode the affine stretch between \(q=r\) and \(q=-r\).
 
 \subsection{The affine fixed point}
@@ -233,9 +217,9 @@ assumption.  In the positive range, \(X_r\) is supported on \([0,1]\).  At \(r=1
 \begin{equation}
  F_{1/2}=F,
  \qquad
- g_{1/2}(x)=2\Up(2x-1),                                \label{eq:half-bridge}
+ g_{1/2}(x)=2\RvachevUp(2x-1),                                \label{eq:half-bridge}
 \end{equation}
-where \(F\) is the bounded Fabius function and \(\Up\) is the Rvachev up-function.
+where \(F\) is the bounded Fabius function and \(\RvachevUp\) is the Rvachev up-function.
 
 \subsection{$q$-brackets, Bernoulli cumulants, and Bell polynomials}
 
@@ -253,7 +237,7 @@ when \(q\ne1\), with the continuous value \([m]_1=m\).  We use the Bernoulli con
 \end{equation}
 The complete exponential Bell polynomial \(\mathcal B_n\) converts cumulants to moments:
 \begin{equation}
- \E Z^n=\mathcal B_n\bigl(\cump_1(Z),\ldots,\cump_n(Z)\bigr). \label{eq:bell-moment}
+ \Expectation Z^n=\mathcal B_n\bigl(\cump_1(Z),\ldots,\cump_n(Z)\bigr). \label{eq:bell-moment}
 \end{equation}
 
 \section{Negative parameters: an exact affine duality}
@@ -307,7 +291,7 @@ Let
  \qquad
  u_r=\frac{1}{1-r}.                                      \label{eq:negative-support}
 \end{equation}
-Then \(\supp(X_{-r})=[\ell_r,u_r]\), and for every real \(x\),
+Then \(\SupportOperator(X_{-r})=[\ell_r,u_r]\), and for every real \(x\),
 \begin{equation}
  \boxed{
  F_{-r}(x)=F_r\!\left(\frac12+\frac{x-1/2}{c_r}\right).}
@@ -341,12 +325,12 @@ the CDF interval.  The next result resolves the open interpretation exactly.
 For \(0<\lvert q\rvert<1\), the law of \(X_q\) has density
 \begin{equation}
  g_q(x)=\frac{1}{1-q}\,
- \Pp\bigl(x-(1-q)\le qX_q'\le x\bigr),                  \label{eq:density-probability}
+ \Probability\bigl(x-(1-q)\le qX_q'\le x\bigr),                  \label{eq:density-probability}
 \end{equation}
 where \(X_q'\) is an independent copy.  Equivalently,
 \begin{equation}
  \boxed{
- g_q(x)=\sgn(q)\,\widetilde f_q(x).}                     \label{eq:density-sign}
+ g_q(x)=\Sign(q)\,\widetilde f_q(x).}                     \label{eq:density-sign}
 \end{equation}
 Thus for \(-1<q<0\), the repository's selected total function is not a probability
 density but its negative.  In particular it integrates to \(-1\), while \(g_q\ge0\)
@@ -375,7 +359,7 @@ For \(0<r<1\),
  g_{-r}(x)=\frac1{c_r}\,
  g_r\!\left(\frac12+\frac{x-1/2}{c_r}\right).}           \label{eq:negative-density}
 \end{equation}
-Consequently \(g_{-r}\in C_c^\infty(\R)\), with support \([\ell_r,u_r]\), and
+Consequently \(g_{-r}\in C_c^\infty(\RealNumbers)\), with support \([\ell_r,u_r]\), and
 \begin{equation}
  g_{-r}^{(k)}(x)=c_r^{-(k+1)}
  g_r^{(k)}\!\left(\frac12+\frac{x-1/2}{c_r}\right).      \label{eq:negative-derivative}
@@ -390,8 +374,8 @@ affine pushforward.  The derivative formula follows by the chain rule.
 \begin{corollary}[Norm and entropy transport]\label{cor:norm-entropy}
 For \(1\le p\le\infty\) and \(k\ge0\),
 \begin{equation}
- \norm{g_{-r}^{(k)}}_p
- =c_r^{1/p-k-1}\norm{g_r^{(k)}}_p,                        \label{eq:sobolev-scaling}
+ \Norm{g_{-r}^{(k)}}_p
+ =c_r^{1/p-k-1}\Norm{g_r^{(k)}}_p,                        \label{eq:sobolev-scaling}
 \end{equation}
 with \(1/\infty=0\).  The differential entropy satisfies
 \begin{equation}
@@ -415,8 +399,8 @@ For all real \(t\),
 \end{equation}
 Equivalently,
 \begin{equation}
- \prod_{n\ge0}\sinc\!\left(\frac{(1+r)r^nt}{2}\right)
- =\prod_{n\ge0}\sinc\!\left(\frac{(1-r)r^nc_rt}{2}\right).
+ \prod_{n\ge0}\SincRad\!\left(\frac{(1+r)r^nt}{2}\right)
+ =\prod_{n\ge0}\SincRad\!\left(\frac{(1-r)r^nc_rt}{2}\right).
 \end{equation}
 \end{corollary}
 
@@ -435,12 +419,12 @@ Set \(r=1/2\).  Then \(c_r=3\), \(\ell_r=-1\), and \(u_r=2\).
 For every real \(x\) and every \(0<u<1\),
 \begin{align}
  F_{-1/2}(x)&=F\!\left(\frac{x+1}{3}\right),              \label{eq:negative-dyadic-cdf}\\
- g_{-1/2}(x)&=\frac23\Up\!\left(\frac{2x-1}{3}\right),  \label{eq:negative-dyadic-density}\\
+ g_{-1/2}(x)&=\frac23\RvachevUp\!\left(\frac{2x-1}{3}\right),  \label{eq:negative-dyadic-density}\\
  Q_{-1/2}(u)&=3F^{-1}(u)-1.                               \label{eq:negative-dyadic-quantile}
 \end{align}
 The support is \([-1,2]\).  The source-selected total function satisfies
 \begin{equation}
- \widetilde f_{-1/2}(x)=-\frac23\Up\!\left(\frac{2x-1}{3}\right). \label{eq:negative-dyadic-selected}
+ \widetilde f_{-1/2}(x)=-\frac23\RvachevUp\!\left(\frac{2x-1}{3}\right). \label{eq:negative-dyadic-selected}
 \end{equation}
 \end{theorem}
 
@@ -458,16 +442,16 @@ its asymptotics is automatically an exact formula for the negative dyadic quanti
 
 The frontier corpus proves the sharp Rvachev derivative identities
 \begin{equation}
- \norm{\Up^{(m)}}_\infty=2^{\binom{m+1}{2}},
+ \Norm{\RvachevUp^{(m)}}_\infty=2^{\binom{m+1}{2}},
  \qquad
- \Up^{(m)}(c_{m,j})=(-1)^{\wt(j)}2^{\binom{m+1}{2}},       \label{eq:up-peaks-baseline}
+ \RvachevUp^{(m)}(c_{m,j})=\ThueMorseSign{j}2^{\binom{m+1}{2}},       \label{eq:up-peaks-baseline}
 \end{equation}
 where
 \begin{equation}
  c_{m,j}=-1+2^{-m}+j2^{1-m},
  \qquad 0\le j<2^m.                                      \label{eq:cmj}
 \end{equation}
-It also proves higher-order flatness at this grid: \(\Up^{(k)}(c_{m,j})=0\) for
+It also proves higher-order flatness at this grid: \(\RvachevUp^{(k)}(c_{m,j})=0\) for
 \(k>m\).  Transport gives a new negative-base atlas.
 
 \begin{corollary}[Negative dyadic Thue--Morse atlas]\label{cor:negative-thue-morse}
@@ -479,9 +463,9 @@ Define
 Then
 \begin{align}
  g_{-1/2}^{(m)}(x_{m,j})
- &=(-1)^{\wt(j)}
+ &=\ThueMorseSign{j}
    \left(\frac23\right)^{m+1}2^{\binom{m+1}{2}},          \label{eq:negative-peak-values}\\
- \norm{g_{-1/2}^{(m)}}_\infty
+ \Norm{g_{-1/2}^{(m)}}_\infty
  &=\frac{2^{\binom{m+1}{2}+m+1}}{3^{m+1}},               \label{eq:negative-peak-norm}\\
  g_{-1/2}^{(k)}(x_{m,j})&=0\qquad(k>m).                   \label{eq:negative-flatness}
 \end{align}
@@ -493,7 +477,7 @@ Thus the same Thue--Morse signs occur on a grid whose spacing is stretched from
 From \cref{eq:negative-dyadic-density},
 \[
  g_{-1/2}^{(m)}(x)=\left(\frac23\right)^{m+1}
- \Up^{(m)}\!\left(\frac{2x-1}{3}\right).
+ \RvachevUp^{(m)}\!\left(\frac{2x-1}{3}\right).
 \]
 Set \((2x-1)/3=c_{m,j}\) and use \cref{eq:up-peaks-baseline} and the higher-flatness
 result.
@@ -503,7 +487,7 @@ result.
 
 Suppose the even Legendre expansion on \([-1,1]\) is
 \begin{equation}
- \Up(t)=\sum_{n=0}^{\infty}b_nP_{2n}(t)                   \label{eq:up-legendre}
+ \RvachevUp(t)=\sum_{n=0}^{\infty}b_nP_{2n}(t)                   \label{eq:up-legendre}
 \end{equation}
 in \(L^2\), or in any stronger mode established for the coefficient sequence.  Then the
 negative dyadic density has the immediate expansion
@@ -563,7 +547,7 @@ simpler:
 \subsection{Log-concavity for all real parameters}
 
 \begin{definition}
-A probability measure \(\mu\) on \(\R\) is log-concave if for nonempty compact sets
+A probability measure \(\mu\) on \(\RealNumbers\) is log-concave if for nonempty compact sets
 \(A,B\) and \(0<\theta<1\),
 \[
  \mu(\theta A+(1-\theta)B)
@@ -575,7 +559,7 @@ set, with the usual extended-value convention.
 
 \begin{theorem}[Log-concavity of the geometric-uniform family]\label{thm:logconcavity}
 For every real \(q\) with \(\lvert q\rvert<1\), the law of \(X_q\) is log-concave.  For
-\(q\ne0\), its smooth density \(g_q\) is log-concave on \(\R\); at \(q=0\), the density
+\(q\ne0\), its smooth density \(g_q\) is log-concave on \(\RealNumbers\); at \(q=0\), the density
 is \(\mathbf 1_{[0,1]}\), which is log-concave in the extended sense.
 \end{theorem}
 
@@ -616,7 +600,7 @@ When \(a>\beta-\alpha\), this is a nondegenerate interval.
 \begin{proof}
 Conditioning on \(Y\),
 \[
- f_X(x)=\frac1a\Pp(x-a\le Y\le x).
+ f_X(x)=\frac1a\Probability(x-a\le Y\le x).
 \]
 For \(x\in[\beta,\alpha+a]\), one has \(x\ge\beta\) and \(x-a\le\alpha\), so the event
 contains the whole support of \(Y\) and has probability one.
@@ -781,7 +765,7 @@ For an integer \(N\ge1\), define the normalized finite law
 \begin{equation}
  X_{q,N}=\frac1{[N]_q}\sum_{n=0}^{N-1}q^nU_n,             \label{eq:finite-Xq}
 \end{equation}
-whenever \([N]_q\ne0\).  The coefficients sum to one, so \(\E X_{q,N}=1/2\).  At
+whenever \([N]_q\ne0\).  The coefficients sum to one, so \(\Expectation X_{q,N}=1/2\).  At
 \(q=1\), the continuous extension is the arithmetic mean \(N^{-1}\sum U_n\).
 
 \begin{theorem}[Finite reciprocal-base duality]\label{thm:reciprocal-duality}
@@ -838,11 +822,11 @@ The reciprocal identity is \cref{thm:reciprocal-duality}.  Since \(\lvert p\rver
 \begin{proposition}[Exponential coupling rate]\label{prop:finite-rate}
 For \(0\le p<1\), there is a common-digit coupling such that
 \begin{equation}
- \abs{X_{p,N}-X_p}\le p^N\qquad\text{almost surely}.      \label{eq:positive-finite-rate}
+ \AbsoluteValue{X_{p,N}-X_p}\le p^N\qquad\text{almost surely}.      \label{eq:positive-finite-rate}
 \end{equation}
 For \(p=-r\), \(0<r<1\), and even \(N\), there is a coupling such that
 \begin{equation}
- \abs{X_{-r,N}-X_{-r}}\le c_rr^N.                         \label{eq:negative-finite-rate}
+ \AbsoluteValue{X_{-r,N}-X_{-r}}\le c_rr^N.                         \label{eq:negative-finite-rate}
 \end{equation}
 Hence the same bounds hold for the \(W_\infty\) Wasserstein distance.
 \end{proposition}
@@ -885,7 +869,7 @@ For every admissible \(q,N\),
 \end{equation}
 Consequently
 \begin{equation}
- \E X_{q,N}^k=
+ \Expectation X_{q,N}^k=
  \mathcal B_k\!\left(
  u_1,
  u_2\frac{[N]_{q^2}}{[N]_q^2},\ldots,
@@ -922,7 +906,7 @@ $q$-identities.
 
 For \(-1<q<1\),
 \begin{equation}
- \sigma_q^2=\Var(X_q)
+ \sigma_q^2=\Variance(X_q)
  =\frac{(1-q)^2}{12(1-q^2)}
  =\frac{1-q}{12(1+q)}.                                    \label{eq:variance-q}
 \end{equation}
@@ -946,9 +930,9 @@ From \cref{eq:variance-q}, \(\sigma_{-r}=c_r\sigma_r\).  Divide
 
 The centered characteristic function of \(Z_r\) has the useful normalized product
 \begin{equation}
- \Psi_r(t)=\E e^{itZ_r}
+ \Psi_r(t)=\Expectation e^{itZ_r}
  =\prod_{n=0}^{\infty}
- \sinc\!\left(\sqrt{3(1-r^2)}\,r^nt\right).              \label{eq:standardized-sinc}
+ \SincRad\!\left(\sqrt{3(1-r^2)}\,r^nt\right).              \label{eq:standardized-sinc}
 \end{equation}
 
 \subsection{A quantitative central limit theorem}
@@ -959,7 +943,7 @@ Berry--Esseen inequality for independent, non-identically distributed summands. 
 for \(0<r<1\),
 \begin{equation}
  \boxed{
- \sup_{x\in\R}\abs{\Pp(Z_r\le x)-\PhiN(x)}
+ \sup_{x\in\RealNumbers}\AbsoluteValue{\Probability(Z_r\le x)-\PhiN(x)}
  \le
  C_{\mathrm{BE}}\frac{3\sqrt3}{4}
  \frac{(1-r^2)^{3/2}}{1-r^3}.}                            \label{eq:BE-bound}
@@ -980,19 +964,19 @@ and the right side of \cref{eq:BE-bound} is
 Write \(Y_q=\sum_{n\ge0}a_{n,q}V_n\) with
 \(a_{n,q}=(1-q)q^n\) and \(r=\lvert q\rvert\).  Since
 \[
- \E\abs{V_n}^3=\frac1{32},
+ \Expectation\AbsoluteValue{V_n}^3=\frac1{32},
  \qquad
- \Var(V_n)=\frac1{12},
+ \Variance(V_n)=\frac1{12},
 \]
 we have
 \begin{align*}
- \sum_{n\ge0}\abs{a_{n,q}}^3&=\frac{\abs{1-q}^3}{1-r^3},\\
+ \sum_{n\ge0}\AbsoluteValue{a_{n,q}}^3&=\frac{\AbsoluteValue{1-q}^3}{1-r^3},\\
  \sum_{n\ge0}a_{n,q}^2&=\frac{(1-q)^2}{1-r^2}.
 \end{align*}
 The Berry--Esseen Lyapunov ratio is therefore
 \begin{align*}
- \frac{\sum_n\E\abs{a_{n,q}V_n}^3}
- {\left(\sum_n\Var(a_{n,q}V_n)\right)^{3/2}}
+ \frac{\sum_n\Expectation\AbsoluteValue{a_{n,q}V_n}^3}
+ {\left(\sum_n\Variance(a_{n,q}V_n)\right)^{3/2}}
  &=\frac{(1/32)}{(1/12)^{3/2}}
    \frac{(1-r^2)^{3/2}}{1-r^3}\\
  &=\frac{3\sqrt3}{4}\frac{(1-r^2)^{3/2}}{1-r^3}.
@@ -1042,7 +1026,7 @@ negative law has the same standardized distribution.  Factoring
 \begin{corollary}[First correction to Gaussian moments]\label{cor:moment-correction}
 For every fixed integer \(m\ge2\),
 \begin{align}
- \E Z_r^{2m}
+ \Expectation Z_r^{2m}
  &=(2m-1)!!
  +\binom{2m}{4}(2m-5)!!\,\lambda_4(r)
  +\BigO((1-r)^2)                                          \label{eq:moment-correction-1}\\
@@ -1068,7 +1052,7 @@ two fourth cumulants.  Insert \cref{eq:lambda4}.
 \subsection{Quartic characteristic correction}
 
 \begin{theorem}[First mod-Gaussian-type correction]\label{thm:quartic-correction}
-For every fixed \(T>0\), uniformly for \(\abs t\le T\),
+For every fixed \(T>0\), uniformly for \(\AbsoluteValue t\le T\),
 \begin{equation}
  \boxed{
  \log\Psi_r(t)
@@ -1087,15 +1071,15 @@ Consequently, for every fixed real \(t\),
 \begin{proof}
 Use \cref{eq:standardized-sinc} and the local expansion
 \[
- \log\sinc z=-\frac{z^2}{6}-\frac{z^4}{180}+\BigO(z^6).
+ \log\SincRad z=-\frac{z^2}{6}-\frac{z^4}{180}+\BigO(z^6).
 \]
 For \(z_n=\sqrt{3(1-r^2)}r^nt\),
 \begin{align*}
  \sum_{n\ge0}z_n^2&=3t^2,\\
  \sum_{n\ge0}z_n^4&=9t^4\frac{(1-r^2)^2}{1-r^4}
  =9t^4\frac{1-r^2}{1+r^2},\\
- \sum_{n\ge0}\abs{z_n}^6
- &=27\abs t^6\frac{(1-r^2)^3}{1-r^6}
+ \sum_{n\ge0}\AbsoluteValue{z_n}^6
+ &=27\AbsoluteValue t^6\frac{(1-r^2)^3}{1-r^6}
  =\BigO_T((1-r)^2).
 \end{align*}
 For \(r\) close enough to one, all \(z_n\) lie in a fixed neighborhood where the
@@ -1114,7 +1098,7 @@ cumulant expansion predicts
 \end{equation}
 and
 \begin{equation}
- \Pp(Z_r\le z)=\PhiN(z)
+ \Probability(Z_r\le z)=\PhiN(z)
  -\frac{\lambda_4(r)}{24}H_3(z)\phiN(z)
  +\BigO((1-r)^2).                                         \label{eq:formal-edgeworth-cdf}
 \end{equation}
@@ -1130,9 +1114,9 @@ The second-order term is the standard Bell--Hermite combination of
 \end{conjecture}
 
 \begin{conjecture}[Entropy deficit]\label{conj:entropy-deficit}
-Let \(D(\Law(Z_r)\Vert N(0,1))\) be relative entropy.  Then
+Let \(D(\LawOperator(Z_r)\Vert N(0,1))\) be relative entropy.  Then
 \begin{equation}
- D(\Law(Z_r)\Vert N(0,1))
+ D(\LawOperator(Z_r)\Vert N(0,1))
  =\frac{\lambda_4(r)^2}{48}+o((1-r)^2)
  =\frac{3}{100}(1-r)^2+o((1-r)^2).                        \label{eq:entropy-deficit}
 \end{equation}
@@ -1144,7 +1128,7 @@ Equivalently,
 
 The coefficient \(1/48\) follows formally by inserting
 \(f/\phiN=1+(\lambda_4/24)H_4+\cdots\) into relative entropy and using
-\(\E_{\phiN}H_4^2=4!\).  A proof should combine the uniform Edgeworth expansion with
+\(\Expectation_{\phiN}H_4^2=4!\).  A proof should combine the uniform Edgeworth expansion with
 tail control supplied by log-concavity.
 
 \section{Numerical experiments}
@@ -1155,8 +1139,8 @@ The accompanying script \texttt{numerical\_experiments.py} uses NumPy, SciPy, an
 Matplotlib with seed \texttt{20260830}.  It truncates \cref{eq:Xq-def} only after the
 deterministic tail bound
 \begin{equation}
- \abs{(1-q)\sum_{n\ge N}q^nU_n}
- \le\frac{\abs{1-q}\abs q^N}{1-\abs q}                  \label{eq:numerical-tail}
+ \AbsoluteValue{(1-q)\sum_{n\ge N}q^nU_n}
+ \le\frac{\AbsoluteValue{1-q}\AbsoluteValue q^N}{1-\AbsoluteValue q}                  \label{eq:numerical-tail}
 \end{equation}
 falls below the requested tolerance.  The coupling checks are stronger than Monte Carlo
 comparisons: reflected or reversed digits make the asserted equality exact, so the
@@ -1222,7 +1206,7 @@ asymptotic calculus.  The crucial analytic estimate is uniform control of
 
 For fixed \(0<r<1\), the negative Laplace transform of \(X_r\) is
 \begin{equation}
- \E e^{-sX_r}
+ \Expectation e^{-sX_r}
  =\prod_{n\ge0}
  \frac{1-e^{-(1-r)r^ns}}{(1-r)r^ns}.                      \label{eq:general-laplace-product}
 \end{equation}
@@ -1271,8 +1255,8 @@ symmetric functions give Gaussian-binomial expressions.
 \begin{problem}[A probability proof of a full Gaussian-binomial reciprocity package]
 Construct natural random variables or random polynomials whose elementary-symmetric
 statistics of the finite geometric weights recover
-\(\qbinom{N}{k}_q\), and derive
-\(\qbinom{N}{k}_{1/q}=q^{-k(N-k)}\qbinom{N}{k}_q\) directly from digit reversal.  Then seek
+\(\GaussianBinomial{N}{k}{q}\), and derive
+\(\GaussianBinomial{N}{k}{1/q}=q^{-k(N-k)}\GaussianBinomial{N}{k}{q}\) directly from digit reversal.  Then seek
 mixed Bell/Gaussian identities obtained by converting between power sums and elementary
 symmetric functions.
 \end{problem}
@@ -1288,7 +1272,7 @@ to the existing Lean development:
       \(\mu_{-r}=T_{r*}\mu_r\);
 \item prove the CDF, quantile, support, and smooth-density transports;
 \item replace the negative-parameter density ambiguity by the sign-corrected theorem
-      \(g_q=\sgn(q)\widetilde f_q\);
+      \(g_q=\Sign(q)\widetilde f_q\);
 \item formalize the residue-class multiplication law and its characteristic-function
       corollary;
 \item prove finite reciprocal-base duality by coefficient extensionality and list

@@ -50,6 +50,15 @@ RETIRED_COMMANDS = {
     "upf": "RvachevUp",
     "sinc": "SincRad or SincPi",
     "sincpi": "SincPi",
+    "sincp": "SincPi",
+    "sincpiPartc": "SincPi",
+    "sincPartx": "SincRad",
+    "sincPartl": "SincRad",
+    "sincPartii": "SincRad",
+    "sincPartxx": "SincRad",
+    "sincPartll": "SincRad",
+    "sincPartcc": "SincRad",
+    "sincPartvvv": "SincRad",
     "wt": "BinaryDigitSum",
     "tm": "ThueMorseSignSymbol or ThueMorseSign",
     "TM": "ThueMorseSignSymbol or ThueMorseSign",
@@ -94,6 +103,9 @@ RETIRED_COMMANDS = {
     "Log": "PrincipalLogarithm",
     "defeq": "DefinitionEquals",
     "Fglobal": "FabiusGlobal",
+    "Fs": "FabiusGlobal",
+    "extF": "FabiusGlobal",
+    "Fext": "FabiusGlobal",
     "InvF": "FabiusClampedQuantile or FabiusQuantile",
 }
 
@@ -105,7 +117,8 @@ SEMANTIC_COMMANDS = {
     "FourierTwoPi", "FourierAngular", "LaplaceTransformOf",
     "MellinTransformOf", "BinaryDigitSum", "ThueMorseSign",
     "GaussianBinomial", "QPochhammer", "QInteger", "MetricDistance",
-    "EqualInLaw", "ConvergesInLaw",
+    "EqualInLaw", "ConvergesInLaw", "DyadicSigmaField",
+    "DecayOptimizationObjective", "LinearizedDecayObjective",
 }
 
 DECL_RE = re.compile(

@@ -36,6 +36,8 @@
 \setcounter{secnumdepth}{3}
 \allowdisplaybreaks
 
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
@@ -48,17 +50,7 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\E}{\mathbb E}
-\newcommand{\N}{\mathbb N}
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\dd}{\,\mathrm d}
 \newcommand{\ord}{\operatorname{ord}}
-\newcommand{\sgn}{\operatorname{sgn}}
-\newcommand{\Li}{\operatorname{Li}}
 \newcommand{\PF}{\mathrm{PF}_{\infty}}
 \newcommand{\LP}{\mathcal{LP}}
 \newcommand{\LPI}{\mathcal{LP}\!\operatorname{-I}}
@@ -131,21 +123,21 @@ Only the following repository results are taken as inputs; classical background 
 \begin{enumerate}[leftmargin=2em]
   \item The Fourier normalization
   \begin{equation}\label{eq:Phi-definition}
-    \Phi(\xi)=\widehat{\Up}(\xi)
-      =\int_{-1}^{1}e^{-2\pi i\xi x}\Up(x)\,\dd x
-      =\prod_{j=0}^{\infty}\sinc\!\left(\frac{\pi\xi}{2^j}\right),
-      \qquad \sinc z=\frac{\sin z}{z}.
+    \Phi(\xi)=\widehat{\RvachevUp}(\xi)
+      =\int_{-1}^{1}e^{-2\pi i\xi x}\RvachevUp(x)\,\Differential x
+      =\prod_{j=0}^{\infty}\SincRad\!\left(\frac{\pi\xi}{2^j}\right),
+      \qquad \SincRad z=\frac{\sin z}{z}.
   \end{equation}
   \item The exact integer-zero multiplicity
   \begin{equation}\label{eq:repo-multiplicity}
-    \ord_{\xi=m}\Phi=1+v_2(|m|),\qquad m\in\Z\setminus\{0\}.
+    \ord_{\xi=m}\Phi=1+v_2(|m|),\qquad m\in\IntegerNumbers\setminus\{0\}.
   \end{equation}
   \item The probability model
   \begin{equation}\label{eq:random-X}
     X=\sum_{j=0}^{\infty}\frac{U_j}{2^{j+1}},
     \qquad U_j\stackrel{\mathrm{iid}}{\sim}\operatorname{Unif}[-1,1],
   \end{equation}
-  whose density is \(\Up\) on \([-1,1]\).
+  whose density is \(\RvachevUp\) on \([-1,1]\).
   \item The repository's moment/Bernoulli algebra, q-Pochhammer factorization, Thue--Morse lobe-sign theorem, endpoint asymptotics, and Lambert-
   \(W\) inverse machinery, used only for comparison and future-transfer remarks.
 \end{enumerate}
@@ -177,7 +169,7 @@ Modular-dual lacunary partition product & No matching treatment found & New exac
 
 For an integer \(b\ge2\), define
 \begin{equation}\label{eq:Phi-b}
-  \Phi_b(\xi):=\prod_{j=0}^{\infty}\sinc\!\left(\frac{\pi\xi}{b^j}\right).
+  \Phi_b(\xi):=\prod_{j=0}^{\infty}\SincRad\!\left(\frac{\pi\xi}{b^j}\right).
 \end{equation}
 This is the Fourier transform of
 \begin{equation}\label{eq:Xb}
@@ -201,7 +193,7 @@ For every integer \(b\ge2\),
   \Phi_b(z)=\prod_{m=1}^{\infty}
   \left(1-\frac{z^2}{m^2}\right)^{d_b(m)},
 \end{equation}
-locally uniformly on \(\C\).  Hence the nonzero zeros are precisely the signed integers and
+locally uniformly on \(\ComplexNumbers\).  Hence the nonzero zeros are precisely the signed integers and
 \begin{equation}\label{eq:order-db}
   \ord_{z=\pm m}\Phi_b=d_b(m).
 \end{equation}
@@ -210,7 +202,7 @@ locally uniformly on \(\C\).  Hence the nonzero zeros are precisely the signed i
 \begin{proof}
 Euler's product
 \(
-\sinc(\pi w)=\prod_{n\ge1}(1-w^2/n^2)
+\SincRad(\pi w)=\prod_{n\ge1}(1-w^2/n^2)
 \)
 gives
 \[
@@ -242,9 +234,9 @@ is single-valued and entire.  Equivalently,
     \left(1+\frac{z}{\pi^2m^2}\right)^{d_b(m)}.
     \label{eq:A-spectral-product}
 \end{align}
-For \(b=2\), if \(\mu_{2n}:=\E[X^{2n}]\), then
+For \(b=2\), if \(\mu_{2n}:=\Expectation[X^{2n}]\), then
 \begin{equation}\label{eq:a-moment}
-  A_2(z)=\E e^{2\sqrt z X}
+  A_2(z)=\Expectation e^{2\sqrt z X}
   =\sum_{n=0}^{\infty}a_nz^n,
   \qquad a_n=\frac{4^n\mu_{2n}}{(2n)!}.
 \end{equation}
@@ -489,7 +481,7 @@ If \(f\) vanished to order at least \(r\) at an ordinary point \(z_0\), then
 \end{proof}
 
 \begin{theorem}[Non-D-finiteness]\label{thm:nonDfinite}
-For every integer \(b\ge2\), neither \(\Phi_b\) nor \(A_b\) is D-finite over \(\C(z)\).
+For every integer \(b\ge2\), neither \(\Phi_b\) nor \(A_b\) is D-finite over \(\ComplexNumbers(z)\).
 \end{theorem}
 
 \begin{proof}
@@ -532,11 +524,11 @@ For every integer \(b\ge2\), \(\Phi_b\) is a Cartwright-class entire function of
 The random variable \(X_b\) in \eqref{eq:Xb} has support
 \([-R_b,R_b]\) with \(R_b=b/[2(b-1)]\).  Its Fourier--Laplace transform therefore has exponential type at most
 \(2\pi R_b=\pi b/(b-1)\).  The support reaches arbitrarily close to both endpoints, so the type is exact; equivalently, one can evaluate
-\(\Phi_b(iy)=\E e^{2\pi yX_b}\) and use a fixed positive mass in
+\(\Phi_b(iy)=\Expectation e^{2\pi yX_b}\) and use a fixed positive mass in
 \((R_b-\varepsilon,R_b]\).  On the real axis every sinc factor has modulus at most one, hence
 \(|\Phi_b(x)|\le1\) and
 \[
- \int_{\R}\frac{\log^+|\Phi_b(x)|}{1+x^2}\,\dd x=0.
+ \int_{\RealNumbers}\frac{\log^+|\Phi_b(x)|}{1+x^2}\,\Differential x=0.
 \]
 This is the Cartwright condition; standard entire-function background is in \cite{Levin1996}.
 \end{proof}
@@ -628,13 +620,13 @@ with independent summands.  Hence \(Y_{b,t}\) is a generalized gamma convolution
 The Laplace transform of a gamma variable of shape \(\alpha\) and rate \(\lambda\) is
 \((1+z/\lambda)^{-\alpha}\).  Independence and \eqref{eq:A-spectral-product} give
 \[
- \E e^{-zY_{b,t}}
+ \Expectation e^{-zY_{b,t}}
  =\prod_{m\ge1}\left(1+\frac{z}{\pi^2m^2}\right)^{-td_b(m)}
  =A_b(z)^{-t}.
 \]
 Moreover,
 \[
- \E Y_{b,t}=t\sum_{m\ge1}\frac{d_b(m)}{\pi^2m^2}
+ \Expectation Y_{b,t}=t\sum_{m\ge1}\frac{d_b(m)}{\pi^2m^2}
  =t\,p_1^{(b)}<\infty,
 \]
 so the nonnegative series is finite almost surely.  The product is exactly the canonical Thorin representation in the theory of generalized gamma convolutions \cite{Bondesson1992,James2008}.
@@ -647,7 +639,7 @@ The cumulants of \(Y_{b,t}\) are
 \end{equation}
 For \(b=2\),
 \begin{equation}
-  \E Y_{2,t}=\frac{2t}{9},
+  \Expectation Y_{2,t}=\frac{2t}{9},
   \qquad
   \operatorname{Var}(Y_{2,t})=\frac{8t}{675}.
 \end{equation}
@@ -656,7 +648,7 @@ For \(b=2\),
 \begin{proof}
 Use \eqref{eq:logA-series} in
 \(
-\log\E e^{sY_{b,t}}=-t\log A_b(-s)
+\log\Expectation e^{sY_{b,t}}=-t\log A_b(-s)
 \)
 and compare with the cumulant series.
 \end{proof}
@@ -676,7 +668,7 @@ Consequently,
 \end{equation}
 where \(Y_{b,t}'\) is an independent copy and
 \begin{equation}
-  \E e^{-zZ_t}=S(z)^{-t}
+  \Expectation e^{-zZ_t}=S(z)^{-t}
   =\prod_{n\ge1}\left(1+\frac{z}{\pi^2n^2}\right)^{-t}.
 \end{equation}
 \end{corollary}
@@ -719,11 +711,11 @@ Use
 For \(z\ge0\),
 \begin{align}
   \frac{A_b'(z)}{A_b(z)}
-  &=\int_0^{\infty}e^{-zx}\Theta_b(x)\,\dd x,
+  &=\int_0^{\infty}e^{-zx}\Theta_b(x)\,\Differential x,
   \label{eq:logderivative-heat}\\
   \log A_b(z)
   &=\int_0^{\infty}\bigl(1-e^{-zx}\bigr)
-    \frac{\Theta_b(x)}{x}\,\dd x.
+    \frac{\Theta_b(x)}{x}\,\Differential x.
   \label{eq:Malmsten}
 \end{align}
 Thus the L\'evy density of \(Y_{b,t}\) is
@@ -735,11 +727,11 @@ Thus the L\'evy density of \(Y_{b,t}\) is
 \begin{proof}
 Insert
 \(
-(z+\lambda)^{-1}=\int_0^\infty e^{-(z+\lambda)x}\dd x
+(z+\lambda)^{-1}=\int_0^\infty e^{-(z+\lambda)x}\Differential x
 \)
 in \eqref{eq:Stieltjes-logderivative}.  Integrating from \(0\) to \(z\), or using
 \(
-\log(1+z/\lambda)=\int_0^\infty(1-e^{-zx})e^{-\lambda x}\dd x/x
+\log(1+z/\lambda)=\int_0^\infty(1-e^{-zx})e^{-\lambda x}\Differential x/x
 \), gives \eqref{eq:Malmsten}.
 \end{proof}
 
@@ -748,7 +740,7 @@ in \eqref{eq:Stieltjes-logderivative}.  Integrating from \(0\) to \(z\), or usin
 \begin{theorem}[Mellin transform]\label{thm:Mellin-Theta}
 For \(\Re s>1/2\),
 \begin{equation}\label{eq:Mellin-Theta}
-  \int_0^{\infty}x^{s-1}\Theta_b(x)\,\dd x
+  \int_0^{\infty}x^{s-1}\Theta_b(x)\,\Differential x
   =\Gamma(s)\pi^{-2s}\frac{\zeta(2s)}{1-b^{-2s}}.
 \end{equation}
 \end{theorem}
@@ -763,7 +755,7 @@ and \cref{prop:Dirichlet} completes the proof.
 
 Put \(L=\log b\) and
 \begin{equation}\label{eq:sk}
-  s_k:=\frac{\pi ik}{L},\qquad k\in\Z\setminus\{0\}.
+  s_k:=\frac{\pi ik}{L},\qquad k\in\IntegerNumbers\setminus\{0\}.
 \end{equation}
 Define
 \begin{equation}\label{eq:ck}
@@ -936,9 +928,9 @@ Set
 \end{equation}
 The Laplace transform of \eqref{eq:exact-heat-remainder} can be evaluated term by term.  The elementary integrals are
 \begin{align}
- \int_0^\infty e^{-zx}x^{-1/2}\,\dd x&=\sqrt\pi z^{-1/2},\\
- \int_0^\infty e^{-zx}\log(1/x)\,\dd x&=\frac{\log z+\gamma}{z},\\
- \int_0^\infty x^{-1/2}e^{-zx-a^2/x}\,\dd x
+ \int_0^\infty e^{-zx}x^{-1/2}\,\Differential x&=\sqrt\pi z^{-1/2},\\
+ \int_0^\infty e^{-zx}\log(1/x)\,\Differential x&=\frac{\log z+\gamma}{z},\\
+ \int_0^\infty x^{-1/2}e^{-zx-a^2/x}\,\Differential x
  &=\sqrt{\frac\pi z}\,e^{-2a\sqrt z}.
 \end{align}
 For \(s_k\) from \eqref{eq:sk}, define
@@ -975,7 +967,7 @@ One rapidly convergent definition of the constant is
 By \eqref{eq:logderivative-heat}, Laplace transformation of the skeleton in
 \eqref{eq:Hb} gives
 \begin{align*}
- \frac{\dd}{\dd z}\log A_b(z)
+ \frac{\Differential}{\Differential z}\log A_b(z)
  &=\frac{b}{2(b-1)}z^{-1/2}
  -\frac{\log z+\gamma}{4(\log b)z}
  +\frac{B_b}{z}\\
@@ -993,7 +985,7 @@ Furthermore,
 \Gamma(1-s_k)/s_k=-\Gamma(-s_k)
 \), producing \eqref{eq:qbk}.  Finally,
 \[
- \frac{\dd}{\dd z}
+ \frac{\Differential}{\Differential z}
  \left[-\log(1-e^{-2a\sqrt z})\right]
  =-\frac{a}{\sqrt z\,(e^{2a\sqrt z}-1)}.
 \]
@@ -1055,7 +1047,7 @@ Unlike an unconstrained power-series Pad\'e computation, every approximant respe
 
 \subsection{Moment cones and Legendre expansions}
 
-Every even Legendre coefficient of \(\Up\) is a finite rational linear combination of
+Every even Legendre coefficient of \(\RvachevUp\) is a finite rational linear combination of
 \(\mu_0,\mu_2,\ldots,\mu_{2n}\).  The \(\PF\) constraints and the Jensen hyperbolicity hierarchy therefore place the admissible moment vectors in a nested family of explicit determinantal cones.  This does not by itself determine the sign of each Legendre coefficient, but it supplies:
 \begin{itemize}
   \item rigorous conditioning inequalities for the moment-to-Legendre triangular transform;
@@ -1079,7 +1071,7 @@ The new formulas enter inverse-Fabius analysis in three ways.
 \section{Conjectures and frontier problems}
 
 \begin{conjecture}[Differential transcendence]\label{conj:difftrans}
-For every integer \(b\ge2\), the functions \(\Phi_b\) and \(A_b\) are differentially transcendental over \(\C(z)\).
+For every integer \(b\ge2\), the functions \(\Phi_b\) and \(A_b\) are differentially transcendental over \(\ComplexNumbers(z)\).
 \end{conjecture}
 
 \noindent
@@ -1119,13 +1111,13 @@ is the natural candidate.
 \begin{problem}[Nonintegral geometric bases]
 For real \(\beta>1\), the same summable real-zero product and compact-support argument already show that
 \[
- \Phi_\beta(z)=\prod_{j\ge0}\sinc(\pi z/\beta^j)
+ \Phi_\beta(z)=\prod_{j\ge0}\SincRad(\pi z/\beta^j)
 \]
 belongs to the Laguerre--P\'olya and Cartwright classes.  Classify instead its D-finiteness, zero-collision multiplicities, exact counting fluctuations, and heat-trace periodicity.  The zero set is the union \(\{\pm n\beta^j\}\), and collisions depend on multiplicative relations among powers of \(\beta\).  The integer-base proof by unbounded multiplicity no longer applies generically.
 \end{problem}
 
 \begin{problem}[Orthogonal-polynomial asymptotics]
-Use the known endpoint flatness of \(\Up\) to place it precisely in the Szeg\H{o} class and determine the first correction to the Jacobi recurrence coefficients.  The log-squared endpoint profile suggests a slowly varying, non-Fisher--Hartwig correction rather than a pure power law.
+Use the known endpoint flatness of \(\RvachevUp\) to place it precisely in the Szeg\H{o} class and determine the first correction to the Jacobi recurrence coefficients.  The log-squared endpoint profile suggests a slowly varying, non-Fisher--Hartwig correction rather than a pure power law.
 \end{problem}
 
 \begin{problem}[Lean formalization]

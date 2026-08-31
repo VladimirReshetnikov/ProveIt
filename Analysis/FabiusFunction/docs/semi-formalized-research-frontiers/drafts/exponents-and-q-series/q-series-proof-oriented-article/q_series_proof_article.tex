@@ -4,6 +4,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\input{../../../../fabius-notation.tex}
 \usepackage{newtxtext,newtxmath}
 \usepackage[final]{microtype}
 \usepackage{geometry}
@@ -52,31 +53,12 @@
 \newtheorem{example}[theorem]{Example}
 \newtheorem{remark}[theorem]{Remark}
 
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\R}{\mathbb R}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\N}{\mathbb N}
 \newcommand{\F}{\mathbb F}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\Res}{\operatorname*{Res}}
 \newcommand{\ord}{\operatorname{ord}}
-\newcommand{\sgn}{\operatorname{sgn}}
-\newcommand{\qbinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
-\newcommand{\Qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
 \newcommand{\J}{\mathcal J}
 \newcommand{\T}{\mathcal T}
-\newcommand{\dd}{\,\mathrm d}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\RR}{\mathcal R}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\defeq}{\mathrel{:=}}
-\newcommand{\abs}[1]{\left|#1\right|}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
-\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
-\DeclareMathOperator{\Li}{Li}
 
 \title{\bfseries A Proof-Oriented Guide to $q$-Series\\[0.35em]
 \large Shifted Factorials, Basic Hypergeometric Summation, Theta Products,\\
@@ -95,7 +77,7 @@ Every result designated as a theorem, proposition, lemma, corollary, or identity
 
 \begin{center}
 \fcolorbox{black!25}{shade}{\parbox{0.92\textwidth}{
-\textbf{Standing convention.} Unless a statement is explicitly finite or formal, $q\in\C$ and $0<|q|<1$. Parameters are assumed to avoid displayed denominator zeros. Equalities first proved in a domain of absolute convergence extend meromorphically wherever both sides are defined.
+\textbf{Standing convention.} Unless a statement is explicitly finite or formal, $q\in\ComplexNumbers$ and $0<|q|<1$. Parameters are assumed to avoid displayed denominator zeros. Equalities first proved in a domain of absolute convergence extend meromorphically wherever both sides are defined.
 }}
 \end{center}
 
@@ -110,22 +92,22 @@ The subject of $q$-series is held together by a simple tension. Finite identitie
 
 For a sequence $(u_j)_{j\ge0}$ with $\sum_j|u_j|<\infty$, the product $\prod_{j\ge0}(1+u_j)$ converges. It is nonzero exactly when no factor vanishes. Indeed, after omitting finitely many terms we may assume $|u_j|\le \frac12$; then
 \[
- \log(1+u_j)=u_j+\bigO(|u_j|^2)
+ \log(1+u_j)=u_j+\BigO(|u_j|^2)
 \]
 for a consistently chosen local logarithm, so the logarithmic series converges absolutely up to a convergent correction. Applying this with $u_j=-a q^j$ proves local uniform convergence of the basic products used below.
 
 \begin{definition}[$q$-shifted factorial]
-For $n\in\N_0$ set
+For $n\in\NaturalNumbers$ set
 \[
- (a;q)_n\defeq\prod_{j=0}^{n-1}(1-aq^j),\qquad (a;q)_0=1,
+ (a;q)_n\DefinitionEquals\prod_{j=0}^{n-1}(1-aq^j),\qquad (a;q)_0=1,
 \]
 and set
 \[
- (a;q)_\infty\defeq\prod_{j=0}^{\infty}(1-aq^j).
+ (a;q)_\infty\DefinitionEquals\prod_{j=0}^{\infty}(1-aq^j).
 \]
 Multiple parameters are abbreviated by
 \[
- (a_1,\ldots,a_r;q)_n\defeq\prod_{j=1}^{r}(a_j;q)_n,
+ (a_1,\ldots,a_r;q)_n\DefinitionEquals\prod_{j=1}^{r}(a_j;q)_n,
 \]
 with the same convention at $n=\infty$.
 \end{definition}
@@ -141,7 +123,7 @@ For negative indices we require the shift law to remain valid.
 \begin{definition}[negative index]
 For $m\ge1$ define
 \[
- (a;q)_{-m}\defeq\frac{1}{(aq^{-m};q)_m}.
+ (a;q)_{-m}\DefinitionEquals\frac{1}{(aq^{-m};q)_m}.
 \]
 \end{definition}
 
@@ -180,9 +162,9 @@ which gives uniform bounds in $n$ when $a$ ranges over a compact set.
 \section{Gaussian binomial coefficients}
 
 \begin{definition}
-For integers $n\ge0$ and $k\in\Z$, define
+For integers $n\ge0$ and $k\in\IntegerNumbers$, define
 \[
- \qbinom nk\defeq
+ \GaussianBinomial{n}{k}{q}\DefinitionEquals
  \begin{cases}
  \dfrac{(q;q)_n}{(q;q)_k(q;q)_{n-k}},&0\le k\le n,\\[0.8em]
  0,&\text{otherwise}.
@@ -190,25 +172,25 @@ For integers $n\ge0$ and $k\in\Z$, define
 \]
 \end{definition}
 
-Despite the quotient notation, $\qbinom nk$ is a polynomial in $q$ with nonnegative integer coefficients. This will follow both algebraically and combinatorially.
+Despite the quotient notation, $\GaussianBinomial{n}{k}{q}$ is a polynomial in $q$ with nonnegative integer coefficients. This will follow both algebraically and combinatorially.
 
 \begin{proposition}[Pascal recurrences and symmetry]\label{prop:q-pascal}
 For $n\ge1$,
 \begin{align}
- \qbinom nk&=\qbinom{n-1}k+q^{n-k}\qbinom{n-1}{k-1},\label{eq:qpascal1}\\
- \qbinom nk&=q^k\qbinom{n-1}k+\qbinom{n-1}{k-1},\label{eq:qpascal2}\\
- \qbinom nk&=\qbinom n{n-k}.\label{eq:q-symmetry}
+ \GaussianBinomial{n}{k}{q}&=\GaussianBinomial{n-1}{k}{q}+q^{n-k}\GaussianBinomial{n-1}{k-1}{q},\label{eq:qpascal1}\\
+ \GaussianBinomial{n}{k}{q}&=q^k\GaussianBinomial{n-1}{k}{q}+\GaussianBinomial{n-1}{k-1}{q},\label{eq:qpascal2}\\
+ \GaussianBinomial{n}{k}{q}&=\GaussianBinomial{n}{n-k}{q}.\label{eq:q-symmetry}
 \end{align}
 \end{proposition}
 
 \begin{proof}
 Symmetry is immediate from the definition. For \eqref{eq:qpascal1}, put the two terms over the common denominator $(q;q)_k(q;q)_{n-k}$:
 \begin{align*}
- \qbinom{n-1}k+q^{n-k}\qbinom{n-1}{k-1}
+ \GaussianBinomial{n-1}{k}{q}+q^{n-k}\GaussianBinomial{n-1}{k-1}{q}
  &=\frac{(q;q)_{n-1}}{(q;q)_k(q;q)_{n-k}}
    \bigl((1-q^{n-k})+q^{n-k}(1-q^k)\bigr)\\
  &=\frac{(q;q)_{n-1}(1-q^n)}{(q;q)_k(q;q)_{n-k}}
- =\qbinom nk.
+ =\GaussianBinomial{n}{k}{q}.
 \end{align*}
 Equation \eqref{eq:qpascal2} follows from \eqref{eq:qpascal1} by replacing $k$ with $n-k$ and using symmetry.
 \end{proof}
@@ -216,23 +198,23 @@ Equation \eqref{eq:qpascal2} follows from \eqref{eq:qpascal1} by replacing $k$ w
 \begin{theorem}[finite $q$-binomial theorem]\label{thm:finite-q-binomial}
 For $n\ge0$,
 \begin{equation}\label{eq:finite-q-binomial}
- (z;q)_n=\sum_{k=0}^{n}(-1)^kq^{\binom k2}\qbinom nk z^k.
+ (z;q)_n=\sum_{k=0}^{n}(-1)^kq^{\binom k2}\GaussianBinomial{n}{k}{q} z^k.
 \end{equation}
 Equivalently,
 \begin{equation}\label{eq:finite-plus-binomial}
  \prod_{j=0}^{n-1}(1+zq^j)=
- \sum_{k=0}^{n}q^{\binom k2}\qbinom nk z^k.
+ \sum_{k=0}^{n}q^{\binom k2}\GaussianBinomial{n}{k}{q} z^k.
 \end{equation}
 \end{theorem}
 
 \begin{proof}
 We induct on $n$. The case $n=0$ is $1=1$. Multiplying the induction hypothesis by $1-zq^n$, the coefficient of $z^k$ becomes
 \begin{align*}
- (-1)^kq^{\binom k2}\qbinom nk
- +(-1)^kq^nq^{\binom{k-1}2}\qbinom n{k-1}
+ (-1)^kq^{\binom k2}\GaussianBinomial{n}{k}{q}
+ +(-1)^kq^nq^{\binom{k-1}2}\GaussianBinomial{n}{k-1}{q}
  &=(-1)^kq^{\binom k2}
-   \left(\qbinom nk+q^{n+1-k}\qbinom n{k-1}\right)\\
- &=(-1)^kq^{\binom k2}\qbinom{n+1}k
+   \left(\GaussianBinomial{n}{k}{q}+q^{n+1-k}\GaussianBinomial{n}{k-1}{q}\right)\\
+ &=(-1)^kq^{\binom k2}\GaussianBinomial{n+1}{k}{q}
 \end{align*}
 by \eqref{eq:qpascal1}. This proves \eqref{eq:finite-q-binomial}; replacing $z$ by $-z$ gives \eqref{eq:finite-plus-binomial}.
 \end{proof}
@@ -241,7 +223,7 @@ by \eqref{eq:qpascal1}. This proves \eqref{eq:finite-q-binomial}; replacing $z$ 
 For $n\ge0$ and $|z|<1$,
 \begin{equation}\label{eq:reciprocal-finite}
  \frac{1}{(z;q)_{n+1}}=
- \sum_{k=0}^{\infty}\qbinom{n+k}{k}z^k.
+ \sum_{k=0}^{\infty}\GaussianBinomial{n+k}{k}{q}z^k.
 \end{equation}
 The equality also holds formally in $z$.
 \end{theorem}
@@ -250,8 +232,8 @@ The equality also holds formally in $z$.
 Let $F_n(z)$ denote the series on the right. From \eqref{eq:qpascal2},
 \begin{align*}
  F_n(z)
- &=\sum_{k\ge0}\left(q^k\qbinom{n+k-1}{k}
-      +\qbinom{n+k-1}{k-1}\right)z^k\\
+ &=\sum_{k\ge0}\left(q^k\GaussianBinomial{n+k-1}{k}{q}
+      +\GaussianBinomial{n+k-1}{k-1}{q}\right)z^k\\
  &=F_{n-1}(qz)+zF_n(z).
 \end{align*}
 Thus $(1-z)F_n(z)=F_{n-1}(qz)$. Since $F_0(z)=\sum_{k\ge0}z^k=(1-z)^{-1}$, induction gives
@@ -263,15 +245,15 @@ Thus $(1-z)F_n(z)=F_{n-1}(qz)$. Since $F_0(z)=\sum_{k\ge0}z^k=(1-z)^{-1}$, induc
 \begin{theorem}[$q$-Vandermonde convolution]\label{thm:q-vandermonde}
 For nonnegative integers $m,n,r$,
 \begin{equation}\label{eq:q-vandermonde}
- \Qbinom{m+n}{r}{q}
- =\sum_{k\in\Z}q^{k(m-r+k)}
-   \Qbinom{m}{r-k}{q}\Qbinom nkq.
+ \GaussianBinomial{m+n}{r}{q}
+ =\sum_{k\in\IntegerNumbers}q^{k(m-r+k)}
+   \GaussianBinomial{m}{r-k}{q}\GaussianBinomial{n}{k}{q}.
 \end{equation}
 Equivalently,
 \begin{equation}\label{eq:q-vandermonde-alt}
- \Qbinom{m+n}{r}{q}
- =\sum_{k\in\Z}q^{(m-k)(r-k)}
-   \Qbinom mkq\Qbinom n{r-k}q.
+ \GaussianBinomial{m+n}{r}{q}
+ =\sum_{k\in\IntegerNumbers}q^{(m-k)(r-k)}
+   \GaussianBinomial{m}{k}{q}\GaussianBinomial{n}{r-k}{q}.
 \end{equation}
 \end{theorem}
 
@@ -279,17 +261,17 @@ Equivalently,
 Expand the same product in two ways. By \eqref{eq:finite-plus-binomial},
 \[
  \prod_{j=0}^{m+n-1}(1+zq^j)
- =\sum_r q^{\binom r2}\Qbinom{m+n}{r}{q}z^r.
+ =\sum_r q^{\binom r2}\GaussianBinomial{m+n}{r}{q}z^r.
 \]
 Split the product after $m$ factors. The second block is
 \[
  \prod_{j=m}^{m+n-1}(1+zq^j)
- =\sum_k q^{\binom k2+mk}\Qbinom nkq z^k.
+ =\sum_k q^{\binom k2+mk}\GaussianBinomial{n}{k}{q} z^k.
 \]
 The coefficient of $z^r$ in the product of the two blocks is therefore
 \[
  \sum_k q^{\binom{r-k}2+\binom k2+mk}
- \Qbinom m{r-k}q\Qbinom nkq.
+ \GaussianBinomial{m}{r-k}{q}\GaussianBinomial{n}{k}{q}.
 \]
 Dividing by $q^{\binom r2}$ gives \eqref{eq:q-vandermonde}, because
 \[
@@ -299,7 +281,7 @@ The alternate form follows by replacing $k$ with $r-k$ and interchanging the two
 \end{proof}
 
 \begin{proposition}[partitions in a rectangle]\label{prop:rectangle}
-The coefficient of $q^N$ in $\Qbinom{m+n}{m}{q}$ is the number of partitions of $N$ whose Ferrers diagram fits in an $m\times n$ rectangle.
+The coefficient of $q^N$ in $\GaussianBinomial{m+n}{m}{q}$ is the number of partitions of $N$ whose Ferrers diagram fits in an $m\times n$ rectangle.
 \end{proposition}
 
 \begin{proof}
@@ -308,7 +290,7 @@ Let $P_{m,n}(q)$ be the generating polynomial for such diagrams. Separate diagra
  P_{m,n}=P_{m,n-1}+q^nP_{m-1,n},
  \qquad P_{0,n}=P_{m,0}=1.
 \]
-The polynomial $\Qbinom{m+n}{m}{q}$ satisfies the same recurrence by \eqref{eq:qpascal1}, with the same boundary values. Induction on $m+n$ proves equality.
+The polynomial $\GaussianBinomial{m+n}{m}{q}$ satisfies the same recurrence by \eqref{eq:qpascal1}, with the same boundary values. Induction on $m+n$ proves equality.
 \end{proof}
 
 \section{The infinite q-binomial theorem and Euler's expansions}
@@ -319,7 +301,7 @@ For $|z|<1$,
  \sum_{n=0}^{\infty}\frac{(a;q)_n}{(q;q)_n}z^n
  =\frac{(az;q)_\infty}{(z;q)_\infty}.
 \end{equation}
-The convergence is locally uniform in $(a,z)$ on compact subsets of $\C\times\{|z|<1\}$.
+The convergence is locally uniform in $(a,z)$ on compact subsets of $\ComplexNumbers\times\{|z|<1\}$.
 \end{theorem}
 
 \begin{proof}
@@ -460,7 +442,7 @@ by the $q$-binomial theorem. Multiplication by Heine's prefactor yields \eqref{e
 \end{proof}
 
 \begin{corollary}[$q$-Chu--Vandermonde]\label{cor:q-chu}
-For $N\in\N_0$,
+For $N\in\NaturalNumbers$,
 \begin{equation}\label{eq:q-chu}
  {}_2\phi_1\!\left[\begin{matrix}q^{-N},a\\c\end{matrix};q,
  \frac{cq^N}{a}\right]
@@ -549,7 +531,7 @@ Thus the two affine polynomials agree identically.
 \end{proof}
 
 \begin{theorem}[$q$-Pfaff--Saalsch\"utz]\label{thm:q-pfaff}
-For $N\in\N_0$,
+For $N\in\NaturalNumbers$,
 \begin{equation}\label{eq:q-pfaff}
  {}_3\phi_2\!\left[
  \begin{matrix}a,b,q^{-N}\\c,abq^{1-N}/c\end{matrix};q,q\right]
@@ -642,12 +624,12 @@ For indeterminates $A,B,C,D,E,F$ for which the displayed rational functions are 
 
 \begin{proof}
 This is a rational identity, so it suffices to clear the product of all displayed denominator factors. After doing so, expand each factor as $1$ minus its monomial. Terms may be grouped by the exponent of $F^{-1}$; the coefficients of $F^0,F^{-1},F^{-2}$ on the two sides agree separately. More explicitly, after multiplying additionally by $A^6B^2C^2D^4E^2F^2$ to remove negative exponents, subtraction of the right-hand side from the left-hand side has every monomial coefficient equal to zero. This finite coefficient check proves the identity over the polynomial ring
-$\Z[A,B,C,D,E,F]$, and division by the common denominator proves
+$\IntegerNumbers[A,B,C,D,E,F]$, and division by the common denominator proves
 \eqref{eq:jackson-rational} wherever defined. Appendix~\ref{app:certificate} gives a literal symbolic verification of the same clearing-denominators argument.
 \end{proof}
 
 \begin{theorem}[Jackson's terminating ${}_8\phi_7$ summation]\label{thm:jackson-8phi7}
-For $N\in\N_0$,
+For $N\in\NaturalNumbers$,
 \begin{align}
 &\sum_{k=0}^{N}
  \frac{1-aq^{2k}}{1-a}
@@ -733,7 +715,7 @@ because $u_{n+1}=v_0=0$. Summing \eqref{eq:jackson-difference} shows that $\sum_
 \end{proof}
 
 \begin{corollary}[terminating very-well-poised ${}_6\phi_5$]\label{cor:terminating-6phi5}
-For $N\in\N_0$,
+For $N\in\NaturalNumbers$,
 \begin{align}
 &\sum_{k=0}^{N}\frac{1-aq^{2k}}{1-a}
  \frac{(a,b,c,q^{-N};q)_k}
@@ -766,7 +748,7 @@ $(aq^{N+1}/(bc))^k$. The finite sum permits termwise passage to the limit; the p
 For an integer $n$, use the negative-index definition of shifted factorials and set
 \[
  {}_1\psi_1\!\left[\begin{matrix}a\\b\end{matrix};q,z\right]
- =\sum_{n\in\Z}\frac{(a;q)_n}{(b;q)_n}z^n.
+ =\sum_{n\in\IntegerNumbers}\frac{(a;q)_n}{(b;q)_n}z^n.
 \]
 The negative tail has the useful form
 \begin{equation}\label{eq:negative-tail}
@@ -782,16 +764,16 @@ $|b/a|<|z|<1$.
 \begin{theorem}[Ramanujan's ${}_1\psi_1$ summation]\label{thm:1psi1}
 If $|b/a|<|z|<1$, then
 \begin{equation}\label{eq:1psi1}
- \sum_{n\in\Z}\frac{(a;q)_n}{(b;q)_n}z^n
+ \sum_{n\in\IntegerNumbers}\frac{(a;q)_n}{(b;q)_n}z^n
  =\frac{(q,b/a,az,q/(az);q)_\infty}
  {(b,q/a,z,b/(az);q)_\infty}.
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-We first prove the identity at the infinite sequence $b=q^{K+1}$, $K\in\N_0$. In that case the terms with $n<-K$ vanish. Put $n=j-K$ and use the shift law:
+We first prove the identity at the infinite sequence $b=q^{K+1}$, $K\in\NaturalNumbers$. In that case the terms with $n<-K$ vanish. Put $n=j-K$ and use the shift law:
 \begin{align*}
- \sum_{n\in\Z}\frac{(a;q)_n}{(q^{K+1};q)_n}z^n
+ \sum_{n\in\IntegerNumbers}\frac{(a;q)_n}{(q^{K+1};q)_n}z^n
  &=z^{-K}\frac{(a;q)_{-K}}{(q^{K+1};q)_{-K}}
  \sum_{j\ge0}\frac{(aq^{-K};q)_j}{(q;q)_j}z^j\\
  &=z^{-K}\frac{(q;q)_K}{(aq^{-K};q)_K}
@@ -823,47 +805,47 @@ so each negative-tail term is a polynomial in $b$ divided by the fixed factor $(
 \subsection{A finite identity and its limit}
 
 \begin{lemma}[finite Cauchy form]\label{lem:finite-cauchy}
-For $N\in\N_0$ and $z\ne0$,
+For $N\in\NaturalNumbers$ and $z\ne0$,
 \begin{equation}\label{eq:finite-cauchy}
  (z;q)_N(q/z;q)_N
  =\sum_{k=-N}^{N}(-1)^kq^{\binom k2}z^k
-   \Qbinom{2N}{N+k}{q}.
+   \GaussianBinomial{2N}{N+k}{q}.
 \end{equation}
 \end{lemma}
 
 \begin{proof}
 Expand each factor by the finite $q$-binomial theorem:
 \begin{align*}
- (z;q)_N&=\sum_{i=0}^N(-1)^iq^{\binom i2}\Qbinom Niq z^i,\\
- (q/z;q)_N&=\sum_{j=0}^N(-1)^jq^{\binom j2+j}\Qbinom Njq z^{-j}.
+ (z;q)_N&=\sum_{i=0}^N(-1)^iq^{\binom i2}\GaussianBinomial{N}{i}{q} z^i,\\
+ (q/z;q)_N&=\sum_{j=0}^N(-1)^jq^{\binom j2+j}\GaussianBinomial{N}{j}{q} z^{-j}.
 \end{align*}
 For a fixed power $z^k$ put $i=j+k$. Its coefficient is
 \[
  (-1)^kq^{\binom k2}
- \sum_jq^{j(j+k)}\Qbinom N{j+k}q\Qbinom Njq.
+ \sum_jq^{j(j+k)}\GaussianBinomial{N}{j+k}{q}\GaussianBinomial{N}{j}{q}.
 \]
 Use \eqref{eq:q-vandermonde} with $m=n=N$ and $r=N-k$:
 \[
- \Qbinom{2N}{N-k}q
- =\sum_jq^{j(j+k)}\Qbinom N{N-k-j}q\Qbinom Njq
- =\sum_jq^{j(j+k)}\Qbinom N{j+k}q\Qbinom Njq.
+ \GaussianBinomial{2N}{N-k}{q}
+ =\sum_jq^{j(j+k)}\GaussianBinomial{N}{N-k-j}{q}\GaussianBinomial{N}{j}{q}
+ =\sum_jq^{j(j+k)}\GaussianBinomial{N}{j+k}{q}\GaussianBinomial{N}{j}{q}.
 \]
-Finally $\Qbinom{2N}{N-k}q=\Qbinom{2N}{N+k}q$ by symmetry.
+Finally $\GaussianBinomial{2N}{N-k}{q}=\GaussianBinomial{2N}{N+k}{q}$ by symmetry.
 \end{proof}
 
 \begin{theorem}[Jacobi triple product]\label{thm:jtp}
 For $z\ne0$,
 \begin{equation}\label{eq:jtp}
- \J(z;q)\defeq(q,z,q/z;q)_\infty
- =\sum_{k\in\Z}(-1)^kq^{\binom k2}z^k.
+ \J(z;q)\DefinitionEquals(q,z,q/z;q)_\infty
+ =\sum_{k\in\IntegerNumbers}(-1)^kq^{\binom k2}z^k.
 \end{equation}
-The bilateral series converges absolutely and locally uniformly on $\C^\times$.
+The bilateral series converges absolutely and locally uniformly on $\ComplexNumbers^\times$.
 \end{theorem}
 
 \begin{proof}
 For fixed $k$,
 \[
- \Qbinom{2N}{N+k}q
+ \GaussianBinomial{2N}{N+k}{q}
  =\frac{(q;q)_{2N}}{(q;q)_{N+k}(q;q)_{N-k}}
  \longrightarrow\frac1{(q;q)_\infty}.
 \]
@@ -875,13 +857,13 @@ whose bilateral sum converges. Dominated convergence gives
 \[
  (z;q)_\infty(q/z;q)_\infty
  =\frac1{(q;q)_\infty}
- \sum_{k\in\Z}(-1)^kq^{\binom k2}z^k.
+ \sum_{k\in\IntegerNumbers}(-1)^kq^{\binom k2}z^k.
 \]
 Multiplication by $(q;q)_\infty$ proves \eqref{eq:jtp}.
 \end{proof}
 
 \begin{proposition}[quasi-periodicity and inversion]\label{prop:J-quasi}
-For every $r\in\Z$,
+For every $r\in\IntegerNumbers$,
 \begin{align}
  \J(q^rz;q)&=(-1)^rq^{-r(r-1)/2}z^{-r}\J(z;q),\label{eq:J-quasi}\\
  \J(q/z;q)&=\J(z;q).\label{eq:J-inversion}
@@ -899,7 +881,7 @@ Iteration proves \eqref{eq:J-quasi} for positive $r$, and solving the same relat
 \begin{corollary}[Euler's pentagonal number theorem]\label{cor:pentagonal}
 \begin{equation}\label{eq:pentagonal}
  (q;q)_\infty
- =\sum_{n\in\Z}(-1)^nq^{n(3n-1)/2}
+ =\sum_{n\in\IntegerNumbers}(-1)^nq^{n(3n-1)/2}
  =1+\sum_{n=1}^\infty(-1)^n
  \left(q^{n(3n-1)/2}+q^{n(3n+1)/2}\right).
 \end{equation}
@@ -922,7 +904,7 @@ The quintuple product is not a mysterious second product theorem: it follows fro
 For $z\ne0$,
 \begin{align}
  &(q,-z,-q/z;q)_\infty(qz^2,q/z^2;q^2)_\infty\notag\\
- &\qquad=\sum_{n\in\Z}(-1)^n
+ &\qquad=\sum_{n\in\IntegerNumbers}(-1)^n
  q^{n(3n-1)/2}z^{3n}(1+zq^n).
 \label{eq:qpi}
 \end{align}
@@ -931,13 +913,13 @@ For $z\ne0$,
 \begin{proof}
 By the triple product,
 \begin{align*}
- \J(-z;q)&=\sum_{r\in\Z}q^{r(r-1)/2}z^r,\\
- \J(qz^2;q^2)&=\sum_{s\in\Z}(-1)^sq^{s^2}z^{2s}.
+ \J(-z;q)&=\sum_{r\in\IntegerNumbers}q^{r(r-1)/2}z^r,\\
+ \J(qz^2;q^2)&=\sum_{s\in\IntegerNumbers}(-1)^sq^{s^2}z^{2s}.
 \end{align*}
 The left side of \eqref{eq:qpi}, multiplied by $(q^2;q^2)_\infty$, is
 $\J(-z;q)\J(qz^2;q^2)$. The coefficient of $z^m$ in this product is
 \begin{align}
- q^{m(m-1)/2}\sum_{s\in\Z}(-1)^s
+ q^{m(m-1)/2}\sum_{s\in\IntegerNumbers}(-1)^s
  q^{3s^2+(1-2m)s}
  &=q^{m(m-1)/2}\J(q^{4-2m};q^6).
 \label{eq:qpi-coeff}
@@ -984,23 +966,23 @@ The proof exposes a general method. A product of Jacobi factors becomes a multid
 
 Throughout this section let $\tau$ lie in the upper half-plane, put
 \[
- q=\e^{\pi\ii\tau},\qquad \zeta=\e^{2\pi\ii z},
+ q=\EulerE^{\pi\ImaginaryUnit\tau},\qquad \zeta=\EulerE^{2\pi\ImaginaryUnit z},
 \]
-and use the principal branch of $(-\ii\tau)^{1/2}$.
+and use the principal branch of $(-\ImaginaryUnit\tau)^{1/2}$.
 
 \begin{definition}[Jacobi theta functions]
 \begin{align}
- \vartheta_3(z\mid\tau)&=\sum_{n\in\Z}
-   \e^{\pi\ii n^2\tau+2\pi\ii nz}
-   =\sum_{n\in\Z}q^{n^2}\zeta^n,\label{eq:theta3-def}\\
- \vartheta_4(z\mid\tau)&=\sum_{n\in\Z}
-   (-1)^n\e^{\pi\ii n^2\tau+2\pi\ii nz},\label{eq:theta4-def}\\
- \vartheta_2(z\mid\tau)&=\sum_{n\in\Z}
-   \e^{\pi\ii(n+1/2)^2\tau+2\pi\ii(n+1/2)z}.\label{eq:theta2-def}
+ \vartheta_3(z\mid\tau)&=\sum_{n\in\IntegerNumbers}
+   \EulerE^{\pi\ImaginaryUnit n^2\tau+2\pi\ImaginaryUnit nz}
+   =\sum_{n\in\IntegerNumbers}q^{n^2}\zeta^n,\label{eq:theta3-def}\\
+ \vartheta_4(z\mid\tau)&=\sum_{n\in\IntegerNumbers}
+   (-1)^n\EulerE^{\pi\ImaginaryUnit n^2\tau+2\pi\ImaginaryUnit nz},\label{eq:theta4-def}\\
+ \vartheta_2(z\mid\tau)&=\sum_{n\in\IntegerNumbers}
+   \EulerE^{\pi\ImaginaryUnit(n+1/2)^2\tau+2\pi\ImaginaryUnit(n+1/2)z}.\label{eq:theta2-def}
 \end{align}
 \end{definition}
 
-Normal convergence on compact subsets of $\C\times\{\operatorname{Im}\tau>0\}$ permits termwise differentiation.
+Normal convergence on compact subsets of $\ComplexNumbers\times\{\operatorname{Im}\tau>0\}$ permits termwise differentiation.
 
 \begin{proposition}[product forms]\label{prop:theta-products}
 \begin{align}
@@ -1031,7 +1013,7 @@ Apply the triple product with base $q^2$. For \eqref{eq:theta3-product} use $z$ 
 Using $q\zeta$ instead gives \eqref{eq:theta4-product}. Finally,
 \[
  \vartheta_2(z\mid\tau)
- =q^{1/4}\zeta^{1/2}\sum_{n\in\Z}q^{n(n+1)}\zeta^n,
+ =q^{1/4}\zeta^{1/2}\sum_{n\in\IntegerNumbers}q^{n(n+1)}\zeta^n,
 \]
 and the triple product with argument $-q^2\zeta$ gives
 \eqref{eq:theta2-product}. At $z=0$ note that
@@ -1045,105 +1027,105 @@ which yields the null-value formulas.
 Each $\vartheta_j$ satisfies
 \begin{equation}\label{eq:heat-equation}
  \frac{\partial\vartheta_j}{\partial\tau}
- =\frac{1}{4\pi\ii}\frac{\partial^2\vartheta_j}{\partial z^2}.
+ =\frac{1}{4\pi\ImaginaryUnit}\frac{\partial^2\vartheta_j}{\partial z^2}.
 \end{equation}
 \end{proposition}
 
 \begin{proof}
-For a term $\e^{\pi\ii(n+\alpha)^2\tau+2\pi\ii(n+\alpha)z}$,
-differentiation in $\tau$ multiplies by $\pi\ii(n+\alpha)^2$, while
+For a term $\EulerE^{\pi\ImaginaryUnit(n+\alpha)^2\tau+2\pi\ImaginaryUnit(n+\alpha)z}$,
+differentiation in $\tau$ multiplies by $\pi\ImaginaryUnit(n+\alpha)^2$, while
 two differentiations in $z$ multiply by $-4\pi^2(n+\alpha)^2$.
-Since $-4\pi^2/(4\pi\ii)=\pi\ii$, the terms agree. Normal convergence
+Since $-4\pi^2/(4\pi\ImaginaryUnit)=\pi\ImaginaryUnit$, the terms agree. Normal convergence
 justifies differentiation term by term.
 \end{proof}
 
 \subsection{Poisson summation and modular inversion}
 
 \begin{lemma}[Poisson summation]\label{lem:poisson}
-For every Schwartz function $f:\R\to\C$, with Fourier transform
+For every Schwartz function $f:\RealNumbers\to\ComplexNumbers$, with Fourier transform
 \[
- \widehat f(\xi)=\int_{\R}f(x)\e^{-2\pi\ii x\xi}\,\dd x,
+ \widehat f(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\,\Differential x,
 \]
 one has
 \begin{equation}\label{eq:poisson}
- \sum_{n\in\Z}f(n)=\sum_{k\in\Z}\widehat f(k).
+ \sum_{n\in\IntegerNumbers}f(n)=\sum_{k\in\IntegerNumbers}\widehat f(k).
 \end{equation}
 \end{lemma}
 
 \begin{proof}
-The periodization $P(x)=\sum_{n\in\Z}f(x+n)$ and all its derivatives
+The periodization $P(x)=\sum_{n\in\IntegerNumbers}f(x+n)$ and all its derivatives
 converge uniformly. It is a smooth $1$-periodic function. Its $k$th
 Fourier coefficient is
 \begin{align*}
- \int_0^1P(x)\e^{-2\pi\ii kx}\,\dd x
- &=\sum_{n\in\Z}\int_0^1f(x+n)\e^{-2\pi\ii kx}\,\dd x\\
- &=\int_\R f(u)\e^{-2\pi\ii ku}\,\dd u
+ \int_0^1P(x)\EulerE^{-2\pi\ImaginaryUnit kx}\,\Differential x
+ &=\sum_{n\in\IntegerNumbers}\int_0^1f(x+n)\EulerE^{-2\pi\ImaginaryUnit kx}\,\Differential x\\
+ &=\int_\RealNumbers f(u)\EulerE^{-2\pi\ImaginaryUnit ku}\,\Differential u
  =\widehat f(k),
 \end{align*}
-because $\e^{2\pi\ii kn}=1$. The Fourier coefficients decay faster
+because $\EulerE^{2\pi\ImaginaryUnit kn}=1$. The Fourier coefficients decay faster
 than any power, so the Fourier series converges absolutely. Evaluating
-$P(x)=\sum_k\widehat f(k)\e^{2\pi\ii kx}$ at $x=0$ gives
+$P(x)=\sum_k\widehat f(k)\EulerE^{2\pi\ImaginaryUnit kx}$ at $x=0$ gives
 \eqref{eq:poisson}.
 \end{proof}
 
 \begin{lemma}[Fourier transform of the complex Gaussian]\label{lem:gaussian-ft}
 If $\operatorname{Im}\tau>0$, then
 \begin{equation}\label{eq:gaussian-ft}
- \int_\R \e^{\pi\ii\tau x^2+2\pi\ii ux}\,\dd x
- =(-\ii\tau)^{-1/2}\e^{-\pi\ii u^2/\tau}.
+ \int_\RealNumbers \EulerE^{\pi\ImaginaryUnit\tau x^2+2\pi\ImaginaryUnit ux}\,\Differential x
+ =(-\ImaginaryUnit\tau)^{-1/2}\EulerE^{-\pi\ImaginaryUnit u^2/\tau}.
 \end{equation}
 \end{lemma}
 
 \begin{proof}
-For $\tau=\ii t$, $t>0$, and real $u$, complete the square and use the
+For $\tau=\ImaginaryUnit t$, $t>0$, and real $u$, complete the square and use the
 ordinary Gaussian integral; this gives
-$t^{-1/2}\e^{-\pi u^2/t}$. Both sides of \eqref{eq:gaussian-ft} are
+$t^{-1/2}\EulerE^{-\pi u^2/t}$. Both sides of \eqref{eq:gaussian-ft} are
 entire in $u$ and holomorphic in $\tau$ on the upper half-plane. The
 identity theorem first extends the formula to complex $u$, then to all
 $\tau$ in the connected upper half-plane. The branch is fixed by
-$(-\ii\cdot\ii t)^{1/2}=t^{1/2}$.
+$(-\ImaginaryUnit\cdot\ImaginaryUnit t)^{1/2}=t^{1/2}$.
 \end{proof}
 
 \begin{theorem}[Jacobi imaginary transformation]\label{thm:theta-modular}
 For $\operatorname{Im}\tau>0$,
 \begin{equation}\label{eq:theta3-modular}
  \vartheta_3\!\left(\frac z\tau\middle|-\frac1\tau\right)
- =(-\ii\tau)^{1/2}\e^{\pi\ii z^2/\tau}\vartheta_3(z\mid\tau).
+ =(-\ImaginaryUnit\tau)^{1/2}\EulerE^{\pi\ImaginaryUnit z^2/\tau}\vartheta_3(z\mid\tau).
 \end{equation}
 At $z=0$,
 \begin{align}
- \vartheta_2(0\mid-1/\tau)&=(-\ii\tau)^{1/2}\vartheta_4(0\mid\tau),
+ \vartheta_2(0\mid-1/\tau)&=(-\ImaginaryUnit\tau)^{1/2}\vartheta_4(0\mid\tau),
  \label{eq:theta2-modular}\\
- \vartheta_3(0\mid-1/\tau)&=(-\ii\tau)^{1/2}\vartheta_3(0\mid\tau),
+ \vartheta_3(0\mid-1/\tau)&=(-\ImaginaryUnit\tau)^{1/2}\vartheta_3(0\mid\tau),
  \label{eq:theta3-null-modular}\\
- \vartheta_4(0\mid-1/\tau)&=(-\ii\tau)^{1/2}\vartheta_2(0\mid\tau).
+ \vartheta_4(0\mid-1/\tau)&=(-\ImaginaryUnit\tau)^{1/2}\vartheta_2(0\mid\tau).
  \label{eq:theta4-modular}
 \end{align}
 \end{theorem}
 
 \begin{proof}
 Apply Poisson summation to
-$f(x)=\e^{\pi\ii\tau x^2+2\pi\ii zx}$. By
+$f(x)=\EulerE^{\pi\ImaginaryUnit\tau x^2+2\pi\ImaginaryUnit zx}$. By
 \cref{lem:gaussian-ft},
 \[
- \widehat f(k)=(-\ii\tau)^{-1/2}
- \e^{-\pi\ii(z-k)^2/\tau}.
+ \widehat f(k)=(-\ImaginaryUnit\tau)^{-1/2}
+ \EulerE^{-\pi\ImaginaryUnit(z-k)^2/\tau}.
 \]
 Therefore
 \[
  \vartheta_3(z\mid\tau)
- =(-\ii\tau)^{-1/2}\e^{-\pi\ii z^2/\tau}
+ =(-\ImaginaryUnit\tau)^{-1/2}\EulerE^{-\pi\ImaginaryUnit z^2/\tau}
  \vartheta_3\!\left(\frac z\tau\middle|-\frac1\tau\right),
 \]
 which is \eqref{eq:theta3-modular}. Setting $z=0$ gives
 \eqref{eq:theta3-null-modular}.
 
-For the shifted Gaussian $f(x)=\e^{\pi\ii\tau(x+1/2)^2}$, a translation
+For the shifted Gaussian $f(x)=\EulerE^{\pi\ImaginaryUnit\tau(x+1/2)^2}$, a translation
 by $1/2$ multiplies its $k$th Fourier transform by
-$\e^{\pi\ii k}=(-1)^k$. Poisson summation consequently gives
+$\EulerE^{\pi\ImaginaryUnit k}=(-1)^k$. Poisson summation consequently gives
 \[
  \vartheta_2(0\mid\tau)
- =(-\ii\tau)^{-1/2}\vartheta_4(0\mid-1/\tau),
+ =(-\ImaginaryUnit\tau)^{-1/2}\vartheta_4(0\mid-1/\tau),
 \]
 which is \eqref{eq:theta4-modular}. Replacing $\tau$ by $-1/\tau$ in
 this equation and using the chosen square-root branch yields
@@ -1154,8 +1136,8 @@ this equation and using the chosen square-root branch yields
 
 \begin{definition}
 \begin{equation}\label{eq:eta-def}
- \eta(\tau)=\e^{\pi\ii\tau/12}
- \prod_{n=1}^\infty(1-\e^{2\pi\ii n\tau})
+ \eta(\tau)=\EulerE^{\pi\ImaginaryUnit\tau/12}
+ \prod_{n=1}^\infty(1-\EulerE^{2\pi\ImaginaryUnit n\tau})
  =q^{1/12}(q^2;q^2)_\infty.
 \end{equation}
 \end{definition}
@@ -1165,8 +1147,8 @@ One has
 \begin{align}
  \vartheta_2(0\mid\tau)\vartheta_3(0\mid\tau)
  \vartheta_4(0\mid\tau)&=2\eta(\tau)^3,\label{eq:theta-eta}\\
- \eta(\tau+1)&=\e^{\pi\ii/12}\eta(\tau),\label{eq:eta-T}\\
- \eta(-1/\tau)&=(-\ii\tau)^{1/2}\eta(\tau).\label{eq:eta-S}
+ \eta(\tau+1)&=\EulerE^{\pi\ImaginaryUnit/12}\eta(\tau),\label{eq:eta-T}\\
+ \eta(-1/\tau)&=(-\ImaginaryUnit\tau)^{1/2}\eta(\tau).\label{eq:eta-S}
 \end{align}
 \end{theorem}
 
@@ -1187,21 +1169,21 @@ $2q^{1/4}(q^2;q^2)_\infty^3=2\eta(\tau)^3$, proving
 \eqref{eq:theta-eta}.
 
 Equation \eqref{eq:eta-T} follows directly from the definition:
-the infinite product depends only on $\e^{2\pi\ii\tau}$, while the
-prefactor acquires $\e^{\pi\ii/12}$. For inversion, apply
+the infinite product depends only on $\EulerE^{2\pi\ImaginaryUnit\tau}$, while the
+prefactor acquires $\EulerE^{\pi\ImaginaryUnit/12}$. For inversion, apply
 \eqref{eq:theta2-modular}--\eqref{eq:theta4-modular} to
 \eqref{eq:theta-eta}:
 \[
- \eta(-1/\tau)^3=(-\ii\tau)^{3/2}\eta(\tau)^3.
+ \eta(-1/\tau)^3=(-\ImaginaryUnit\tau)^{3/2}\eta(\tau)^3.
 \]
 The quotient
 \[
  h(\tau)=\frac{\eta(-1/\tau)}
- {(-\ii\tau)^{1/2}\eta(\tau)}
+ {(-\ImaginaryUnit\tau)^{1/2}\eta(\tau)}
 \]
 is holomorphic and takes values among the cube roots of unity, hence is
-constant. At $\tau=\ii$ the transformation fixes $\tau$ and the
-principal square root equals $1$, so $h(\ii)=1$. This proves
+constant. At $\tau=\ImaginaryUnit$ the transformation fixes $\tau$ and the
+principal square root equals $1$, so $h(\ImaginaryUnit)=1$. This proves
 \eqref{eq:eta-S}.
 \end{proof}
 
@@ -1210,7 +1192,7 @@ principal square root equals $1$, so $h(\ii)=1$. This proves
 \begin{definition}
 For $|ab|<1$, Ramanujan's general theta function is
 \begin{equation}\label{eq:ramanujan-f}
- f(a,b)=\sum_{n\in\Z}
+ f(a,b)=\sum_{n\in\IntegerNumbers}
  a^{n(n+1)/2}b^{n(n-1)/2}.
 \end{equation}
 \end{definition}
@@ -1235,7 +1217,7 @@ and the product is $(-a,-b,ab;ab)_\infty$.
 
 For $|Q|<1$ define
 \[
- \T(x;Q)=\sum_{n\in\Z}Q^{n^2}x^n.
+ \T(x;Q)=\sum_{n\in\IntegerNumbers}Q^{n^2}x^n.
 \]
 
 \begin{theorem}[Schr\"oter dissection]\label{thm:schroeter}
@@ -1252,16 +1234,16 @@ absolutely. Then
 \end{theorem}
 
 \begin{proof}
-Expand the left side as a sum over $(n,m)\in\Z^2$. Partition the lattice
+Expand the left side as a sum over $(n,m)\in\IntegerNumbers^2$. Partition the lattice
 according to the unique residue $k\in\{0,\ldots,a+b-1\}$ for which
 \[
  m-n=k+(a+b)s
 \]
-with $s\in\Z$. The change of variables
+with $s\in\IntegerNumbers$. The change of variables
 \[
  n=r-bs,\qquad m=k+r+as
 \]
-is a bijection from $\Z^2$ onto the lattice points in the $k$th class.
+is a bijection from $\IntegerNumbers^2$ onto the lattice points in the $k$th class.
 It gives
 \begin{align*}
  x^ny^m&=y^k(xy)^r(y^ax^{-b})^s,\\
@@ -1289,7 +1271,7 @@ Ramanujan's $f(a,b)$.
 
 The algebraic factors that occur in hypergeometric summation also encode
 elementary choices in partitions.  This interpretation is especially clean
-in the ring $\Z[[q]]$, where no analytic convergence is needed.
+in the ring $\IntegerNumbers[[q]]$, where no analytic convergence is needed.
 
 \begin{definition}
 A \emph{partition} of $n$ is a weakly decreasing finite sequence of positive
@@ -1381,7 +1363,7 @@ Multiply \eqref{eq:partition-product} by the pentagonal expansion
 \eqref{eq:pentagonal}:
 \[
  \left(\sum_{n\ge0}p(n)q^n\right)
- \left(\sum_{m\in\Z}(-1)^mq^{m(3m-1)/2}\right)=1.
+ \left(\sum_{m\in\IntegerNumbers}(-1)^mq^{m(3m-1)/2}\right)=1.
 \]
 For $n\ge1$, the coefficient of $q^n$ is zero.  Isolate the $m=0$ term and
 pair $m$ with $-m$ to obtain \eqref{eq:partition-recurrence}.
@@ -1400,11 +1382,11 @@ $1/(q;q)_r$; letting both tend to infinity gives
 
 For $s\ge1$, let
 \[
- r_s(n)=\#\{(x_1,\ldots,x_s)\in\Z^s:x_1^2+\cdots+x_s^2=n\}.
+ r_s(n)=\#\{(x_1,\ldots,x_s)\in\IntegerNumbers^s:x_1^2+\cdots+x_s^2=n\}.
 \]
 Then, formally and analytically for $|q|<1$,
 \begin{equation}\label{eq:rs-theta}
- \left(\sum_{m\in\Z}q^{m^2}\right)^s
+ \left(\sum_{m\in\IntegerNumbers}q^{m^2}\right)^s
  =\sum_{n\ge0}r_s(n)q^n.
 \end{equation}
 We give complete proofs of Jacobi's formulas for $s=2$ and $s=4$.
@@ -1422,12 +1404,12 @@ Define the real Dirichlet character modulo $4$ by
 \]
 
 \begin{lemma}[Gaussian unique factorization]\label{lem:gaussian-ufd}
-The ring $\Z[\ii]$ is a Euclidean domain for the norm
-$N(x+\ii y)=x^2+y^2$, and hence a unique-factorization domain.
+The ring $\IntegerNumbers[\ImaginaryUnit]$ is a Euclidean domain for the norm
+$N(x+\ImaginaryUnit y)=x^2+y^2$, and hence a unique-factorization domain.
 For a rational prime $p$:
 \begin{enumerate}[label=\textup{(\roman*)}]
-\item $2=-\ii(1+\ii)^2$;
-\item if $p\equiv3\pmod4$, then $p$ is irreducible in $\Z[\ii]$;
+\item $2=-\ImaginaryUnit(1+\ImaginaryUnit)^2$;
+\item if $p\equiv3\pmod4$, then $p$ is irreducible in $\IntegerNumbers[\ImaginaryUnit]$;
 \item if $p\equiv1\pmod4$, then
       $p=\pi\bar\pi$ for a Gaussian prime $\pi$, unique up to multiplication
       by a unit and conjugation.
@@ -1435,7 +1417,7 @@ For a rational prime $p$:
 \end{lemma}
 
 \begin{proof}
-Given $\alpha,\beta\in\Z[\ii]$ with $\beta\ne0$, choose a Gaussian integer
+Given $\alpha,\beta\in\IntegerNumbers[\ImaginaryUnit]$ with $\beta\ne0$, choose a Gaussian integer
 $q$ by rounding the real and imaginary parts of $\alpha/\beta$ to nearest
 integers.  Then
 \[
@@ -1447,7 +1429,7 @@ Thus Euclidean division holds.  The standard Euclidean algorithm gives
 greatest common divisors and B\'ezout identities.  In a Euclidean domain,
 every nonzero nonunit factors into irreducibles by descent of the norm, and
 Euclid's lemma follows from B\'ezout; consequently factorization is unique
-up to order and the units $\{\pm1,\pm\ii\}$.
+up to order and the units $\{\pm1,\pm\ImaginaryUnit\}$.
 
 Part (i) is direct.  Suppose $p\equiv3\pmod4$ and $p=\alpha\beta$ with
 both factors nonunits.  Norms are positive integers whose product is $p^2$,
@@ -1463,7 +1445,7 @@ give
  \equiv t^2\pmod p
 \]
 for $t=((p-1)/2)!$, because $(p-1)/2$ is even.  Therefore
-$p\mid(t+\ii)(t-\ii)$ in $\Z[\ii]$.  The element $p$ cannot be irreducible:
+$p\mid(t+\ImaginaryUnit)(t-\ImaginaryUnit)$ in $\IntegerNumbers[\ImaginaryUnit]$.  The element $p$ cannot be irreducible:
 otherwise it would be prime and would divide one factor, which is
 impossible because neither the real coordinate $t$ nor the imaginary
 coordinate $1$ is divisible by $p$.  Hence $p=\pi\rho$ with nonunits
@@ -1492,7 +1474,7 @@ then $r_2(n)=0$ if some $\beta_\ell$ is odd, and otherwise
 
 \begin{proof}
 A representation $n=x^2+y^2$ is the same thing as a Gaussian integer
-$z=x+\ii y$ of norm $n$.  By \cref{lem:gaussian-ufd}, the prime
+$z=x+\ImaginaryUnit y$ of norm $n$.  By \cref{lem:gaussian-ufd}, the prime
 factorization of such a $z$ has the following form.  The prime above $2$
 is fixed up to a unit.  A prime $r_\ell\equiv3\pmod4$ is self-conjugate and
 contributes $r_\ell^{2e}$ to a norm, so $\beta_\ell$ must be even and then
@@ -1515,7 +1497,7 @@ Multiplication proves \eqref{eq:two-square}.
 
 \begin{corollary}[Lambert-series form]\label{cor:two-square-lambert}
 \begin{equation}\label{eq:two-square-lambert}
- \left(\sum_{m\in\Z}q^{m^2}\right)^2
+ \left(\sum_{m\in\IntegerNumbers}q^{m^2}\right)^2
  =1+4\sum_{d=1}^{\infty}\chi_4(d)\frac{q^d}{1-q^d}
  =1+4\sum_{j=0}^{\infty}(-1)^j
        \frac{q^{2j+1}}{1-q^{2j+1}}.
@@ -1549,13 +1531,13 @@ $a^2x$, and multiply by $a$.  This gives
  (a-a^{-1})\prod_{\nu\ge1}
  (1-a^2x^\nu)(1-a^{-2}x^\nu)(1-x^\nu)
  =
- \sum_{m\in\Z}(-1)^ma^{2m+1}x^{m(m+1)/2}.
+ \sum_{m\in\IntegerNumbers}(-1)^ma^{2m+1}x^{m(m+1)/2}.
 \end{equation}
 Both sides and their $a$-derivatives converge locally uniformly on compact
 annuli avoiding $a=0$.  Differentiate at $a=1$ and divide by $2$:
 \begin{equation}\label{eq:jacobi-cube}
  (x;x)_\infty^3
- =\frac12\sum_{m\in\Z}(-1)^m(2m+1)x^{m(m+1)/2}.
+ =\frac12\sum_{m\in\IntegerNumbers}(-1)^m(2m+1)x^{m(m+1)/2}.
 \end{equation}
 Squaring and separating the pairs $(m,n)$ according as $m+n$ is even or
 odd yields
@@ -1575,7 +1557,7 @@ variables in their respective parity classes.  Direct substitution shows
 that the two sums coalesce:
 \begin{equation}\label{eq:four-square-coalesce}
  (x;x)_\infty^6
- =\frac12\sum_{r,s\in\Z}
+ =\frac12\sum_{r,s\in\IntegerNumbers}
  \bigl((2r+1)^2-(2s)^2\bigr)x^{r^2+s^2+r}.
 \end{equation}
 Let $D=x\,d/dx$.  Equation \eqref{eq:four-square-coalesce} becomes
@@ -1587,8 +1569,8 @@ Let $D=x\,d/dx$.  Equation \eqref{eq:four-square-coalesce} becomes
 \end{equation}
 where
 \[
- A(x)=\sum_{s\in\Z}x^{s^2},\qquad
- B(x)=\sum_{r\in\Z}x^{r^2+r}.
+ A(x)=\sum_{s\in\IntegerNumbers}x^{s^2},\qquad
+ B(x)=\sum_{r\in\IntegerNumbers}x^{r^2+r}.
 \]
 The triple product gives
 \begin{align}
@@ -1642,7 +1624,7 @@ Dividing \eqref{eq:four-square-logdiff} by this product gives
 Another specialization of the triple product is
 \[
  \prod_{\nu\ge1}\frac{1-x^\nu}{1+x^\nu}
- =\sum_{m\in\Z}(-1)^m x^{m^2}.
+ =\sum_{m\in\IntegerNumbers}(-1)^m x^{m^2}.
 \]
 Replace $x$ by $-x$ in \eqref{eq:four-square-quotient}.  Since
 \[
@@ -1653,7 +1635,7 @@ Replace $x$ by $-x$ in \eqref{eq:four-square-quotient}.  Since
 the odd-index terms together with the first term on the right here form
 $\sum_{j\ge1}j x^j/(1-x^j)$.  Hence
 \begin{equation}\label{eq:four-square-lambert}
- \left(\sum_{m\in\Z}x^{m^2}\right)^4
+ \left(\sum_{m\in\IntegerNumbers}x^{m^2}\right)^4
  =
  1+8\sum_{\substack{j\ge1\\4\nmid j}}
  \frac{j x^j}{1-x^j}.
@@ -1968,12 +1950,12 @@ and therefore
  \sum_{n\ge0}q^{2n^2}\alpha_n^{(0)}
  &=1+\sum_{n\ge1}(-1)^n
  q^{(5n^2-n)/2}(1+q^n)\\
- &=\sum_{m\in\Z}(-1)^m q^{m(5m-1)/2}.
+ &=\sum_{m\in\IntegerNumbers}(-1)^m q^{m(5m-1)/2}.
 \end{align*}
 The second line pairs the terms $m=n$ and $m=-n$.  Jacobi's triple
 product with base $q^5$ and parameter $q^2$ gives
 \[
- \sum_{m\in\Z}(-1)^m q^{m(5m-1)/2}
+ \sum_{m\in\IntegerNumbers}(-1)^m q^{m(5m-1)/2}
  =(q^2,q^3,q^5;q^5)_\infty.
 \]
 Dividing by $(q;q)_\infty$ cancels the residue classes
@@ -1993,7 +1975,7 @@ the right side of \eqref{eq:rr-master} becomes
 Pairing the first term with the index $m=-n$ and the second with
 $m=n+1$ rewrites the numerator as
 \[
- \sum_{m\in\Z}(-1)^m q^{m(5m-3)/2}.
+ \sum_{m\in\IntegerNumbers}(-1)^m q^{m(5m-3)/2}.
 \]
 The triple product, now with base $q^5$ and parameter $q$, evaluates it
 as $(q,q^4,q^5;q^5)_\infty$.  Cancellation against
@@ -2063,7 +2045,7 @@ For $0<q<1$,
  \cfrac{1}{1+\cfrac{q}{1+\cfrac{q^2}{1+\cfrac{q^3}{1+\ddots}}}},
  \label{eq:rrcf-series}\\
  \RR(q)
- \defeq q^{1/5}\frac{F_1(q)}{F_0(q)}
+ \DefinitionEquals q^{1/5}\frac{F_1(q)}{F_0(q)}
  &=
  q^{1/5}
  \frac{(q,q^4;q^5)_\infty}{(q^2,q^3;q^5)_\infty}.
@@ -2164,7 +2146,7 @@ the right becomes
  1+\sum_{n\ge1}(-1)^n
  q^{kn^2+\binom n2}(1+q^n)
  &=
- \sum_{m\in\Z}(-1)^m
+ \sum_{m\in\IntegerNumbers}(-1)^m
  q^{((2k+1)m^2-m)/2}\\
  &=(q^k,q^{k+1},q^{2k+1};q^{2k+1})_\infty
 \end{align*}
@@ -2180,7 +2162,7 @@ $\alpha_n^{(0)}$, and the numerator becomes
  \sum_{n\ge0}(-1)^n
  q^{((2k+1)n^2+(2k-1)n)/2}(1-q^{2n+1})
  &=
- \sum_{m\in\Z}(-1)^m
+ \sum_{m\in\IntegerNumbers}(-1)^m
  q^{((2k+1)m^2+(2k-1)m)/2}\\
  &=(q,q^{2k},q^{2k+1};q^{2k+1})_\infty.
 \end{align*}
@@ -2356,7 +2338,7 @@ The final isolated record is Fine's equation
 Unlike the preceding unilateral hypergeometric sums, the right side is a
 Lambert-type series.  Expanding $(1+q^{12k})^{-1}$ geometrically exposes an
 arithmetic convolution, while the left side is an eta quotient after the
-substitution $q=\e^{2\pi\ii\tau}$.
+substitution $q=\EulerE^{2\pi\ImaginaryUnit\tau}$.
 
 \subsection{Borwein sign patterns: corrected modern status}
 \label{subsec:borwein-status}
@@ -2478,7 +2460,7 @@ product
 \[
  F(q)=\prod_{j\ge1}(1-q^j)^{e_j}
 \]
-is interpreted in $\Z[[q]]$.  For every $N\ge0$,
+is interpreted in $\IntegerNumbers[[q]]$.  For every $N\ge0$,
 \begin{equation}\label{eq:truncation-product}
  F(q)\equiv\prod_{j=1}^{N}(1-q^j)^{e_j}
  \pmod{q^{N+1}}.
@@ -2506,7 +2488,7 @@ Every product in \cref{sec:atlas} is a quotient of products of factors
 $1-q^d$.  Negative exponents are expanded by
 \[
  (1-q^d)^{-r}=\sum_{m\ge0}\binom{m+r-1}{r-1}q^{dm}
- \qquad(r\in\N),
+ \qquad(r\in\NaturalNumbers),
 \]
 and the series sides have quadratic valuations.  Consequently the first
 $N+1$ coefficients can be computed with integer arrays of length $N+1$;
@@ -2641,7 +2623,7 @@ assert denominator != 0
 \endgroup
 
 Because all operations occur in the rational-function field
-$\Q(A,B,C,D,E,F)$, the assertion proves the formal rational identity.  The
+$\RationalNumbers(A,B,C,D,E,F)$, the assertion proves the formal rational identity.  The
 usual specialization principle then gives the identity for all parameter
 values at which the original denominators are nonzero.
 

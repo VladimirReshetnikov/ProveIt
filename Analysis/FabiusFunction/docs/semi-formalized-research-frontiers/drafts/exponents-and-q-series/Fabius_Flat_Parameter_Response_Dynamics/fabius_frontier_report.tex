@@ -6,6 +6,7 @@
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,tabularx,array}
 \usepackage{graphicx}
 \usepackage{xcolor}
@@ -57,25 +58,8 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\N}{\mathbb N}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\Up}{\operatorname{up}}
 \newcommand{\Lip}{\operatorname{Lip}}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
 \newcommand{\flatremainder}{\operatorname{Flat}}
-\newcommand{\qint}[2]{[#1]_{#2}}
 \newcommand{\statusproved}{\textsc{Proved here}}
 \newcommand{\statusexisting}{\textsc{Existing repository input}}
 \newcommand{\statusnumerical}{\textsc{Numerical check}}
@@ -140,7 +124,7 @@ computed; a tempting alternating-sign pattern is shown to fail at degree \(16\).
 The third direction treats composition dynamics.  Using the already established strict
 convexity of \(F\), the exact midpoint--endpoint transfer, and the complete affine midpoint
 jet, we construct a unique global \(C^\infty\) diffeomorphism
-\(\Theta:(0,1)\to\R\) satisfying
+\(\Theta:(0,1)\to\RealNumbers\) satisfying
 \[
  \Theta(F(x))=2\Theta(x),\qquad
  \Theta(F^{-1}(x))=\tfrac12\Theta(x),\qquad
@@ -149,7 +133,7 @@ jet, we construct a unique global \(C^\infty\) diffeomorphism
 The coordinate differs from \(x-1/2\) by a nonzero flat function.  Consequently inverse
 iterates have the beyond-all-orders expansion
 \[
- F^{-n}(x)=\frac12+2^{-n}\Theta(x)+\bigO_{x,N}(2^{-Nn})
+ F^{-n}(x)=\frac12+2^{-n}\Theta(x)+\BigO_{x,N}(2^{-Nn})
  \quad\text{for every }N,
 \]
 with no intermediate algebraic correction terms.  Finally, the known quadratic endpoint law
@@ -280,9 +264,9 @@ Let \((U_j)_{j\ge0}\) be independent \(\operatorname{Unif}[0,1]\) random variabl
  Z_q=X_q-\frac12.
  \label{eq:q-law}
 \end{equation}
-The weights sum to one, so \(X_q\in[0,1]\) and \(\E X_q=1/2\).  We write
+The weights sum to one, so \(X_q\in[0,1]\) and \(\Expectation X_q=1/2\).  We write
 \[
- F_q(x)=\Prob(X_q\le x),\qquad f_q(x)=F_q'(x).
+ F_q(x)=\Probability(X_q\le x),\qquad f_q(x)=F_q'(x).
 \]
 At \(q=1/2\), \(F_{1/2}=F\) is the bounded Fabius function and \(f_{1/2}=F'\) is the affine
 copy of Rvachev's bump.
@@ -295,7 +279,7 @@ The independent-copy decomposition
 gives
 \begin{align}
  F_q(x)
- &=\int_0^1F_q\!\left(\frac{x-(1-q)u}{q}\right)\dd u,
+ &=\int_0^1F_q\!\left(\frac{x-(1-q)u}{q}\right)\Differential u,
  \label{eq:q-cdf-integral}\\
  f_q(x)
  &=\frac{F_q(x/q)-F_q((x-(1-q))/q)}{1-q}.
@@ -303,9 +287,9 @@ gives
 \end{align}
 We use the centered characteristic function
 \begin{equation}
- \Phi_q(t)=\E\e^{\ii tZ_q}
- =\prod_{j\ge0}\sinc\!\left(\frac{c_j(q)t}{2}\right),
- \qquad \sinc z=\frac{\sin z}{z}.
+ \Phi_q(t)=\Expectation\EulerE^{\ImaginaryUnit tZ_q}
+ =\prod_{j\ge0}\SincRad\!\left(\frac{c_j(q)t}{2}\right),
+ \qquad \SincRad z=\frac{\sin z}{z}.
  \label{eq:centered-sinc-product}
 \end{equation}
 
@@ -323,16 +307,16 @@ The map
 \[
  (q,x)\longmapsto f_q(x)
 \]
-is \(C^\infty\) on \((0,1)\times\R\).  More quantitatively, for every compact
-\(K\Subset(0,1)\) and every \(a,b,N\in\N\),
+is \(C^\infty\) on \((0,1)\times\RealNumbers\).  More quantitatively, for every compact
+\(K\Subset(0,1)\) and every \(a,b,N\in\NaturalNumbers\),
 \begin{equation}
- \sup_{q\in K}\sup_{t\in\R}
+ \sup_{q\in K}\sup_{t\in\RealNumbers}
  (1+|t|)^N
  \left|\partial_q^a\partial_t^b\Phi_q(t)\right|<\infty.
  \label{eq:uniform-schwartz}
 \end{equation}
 Consequently \(q\mapsto f_q\) is \(C^\infty\) as a map from \((0,1)\) into every
-\(C^m(\R)\), and all parameter derivatives are supported in \([0,1]\).
+\(C^m(\RealNumbers)\), and all parameter derivatives are supported in \([0,1]\).
 \end{theorem}
 
 \begin{proof}
@@ -351,12 +335,12 @@ coupling.
 
 For the stronger density statement, first use the finite products
 \(
- \Phi_{q,M}(t)=\prod_{j<M}\sinc(c_j(q)t/2).
+ \Phi_{q,M}(t)=\prod_{j<M}\SincRad(c_j(q)t/2).
 \)
 Every mixed derivative is a finite Leibniz sum.  A differentiated factor grows at most
 polynomially in \(|t|\), while an undifferentiated factor satisfies
 \[
- \left|\sinc\!\left(\frac{c_j(q)t}{2}\right)\right|
+ \left|\SincRad\!\left(\frac{c_j(q)t}{2}\right)\right|
  \le \min\left(1,\frac{2}{c_j(q)|t|}\right).
 \]
 Choose an arbitrarily long fixed prefix.  In a term containing \(a\) parameter derivatives
@@ -368,7 +352,7 @@ prefix are summable by \eqref{eq:weight-derivative-sum}.  The resulting bounds a
 \(M\), so the products and all derivatives converge normally, proving
 \eqref{eq:uniform-schwartz}.
 
-The Fourier transform of \(f_q\) is \(\e^{\ii t/2}\Phi_q(t)\).  Fourier inversion, with
+The Fourier transform of \(f_q\) is \(\EulerE^{\ImaginaryUnit t/2}\Phi_q(t)\).  Fourier inversion, with
 arbitrary powers of \(t\) allowed by \eqref{eq:uniform-schwartz}, permits differentiation in
 both \(q\) and \(x\) under the integral.  This proves joint \(C^\infty\) regularity.  Since
 \(F_q\) is identically zero to the left of zero and identically one to the right of one for
@@ -453,7 +437,7 @@ Nevertheless \(\Delta\) is strictly positive immediately outside the plateau.  T
 \item \((q,x)\mapsto f_q(x)\) is not real analytic at any point of the two fronts;
 \item for every fixed \(x\in(0,1)\), the section \(q\mapsto f_q(x)\) is not real analytic at
 \(q_c=\min(x,1-x)\);
-\item the \(C^\infty(\R)\)-valued map \(q\mapsto f_q\) is not real analytic at any
+\item the \(C^\infty(\RealNumbers)\)-valued map \(q\mapsto f_q\) is not real analytic at any
 \(q\in(0,1/2]\).
 \end{enumerate}
 \end{theorem}
@@ -532,10 +516,10 @@ Define
 
 \begin{theorem}[Pathwise linear response]
 \label{thm:pathwise-response}
-For every \(\varphi\in C^1(\R)\) whose derivative is bounded,
+For every \(\varphi\in C^1(\RealNumbers)\) whose derivative is bounded,
 \begin{equation}
- \left.\frac{\dd}{\dd q}\E\varphi(X_q)\right|_{q=1/2}
- =\E\bigl[\varphi'(X)V\bigr].
+ \left.\frac{\Differential}{\Differential q}\Expectation\varphi(X_q)\right|_{q=1/2}
+ =\Expectation\bigl[\varphi'(X)V\bigr].
  \label{eq:pathwise-response}
 \end{equation}
 There is a unique compactly supported smooth signed density
@@ -546,7 +530,7 @@ There is a unique compactly supported smooth signed density
 representing this functional, and its cumulative response
 \begin{equation}
  G(x)=\left.\partial_qF_q(x)\right|_{q=1/2}
-      =\int_{-\infty}^{x}\rho(t)\dd t
+      =\int_{-\infty}^{x}\rho(t)\Differential t
  \label{eq:G-def}
 \end{equation}
 satisfies
@@ -554,7 +538,7 @@ satisfies
  G(1-x)=-G(x),\qquad \rho(1-x)=\rho(x),
  \label{eq:tangent-symmetry}\\
  \int\rho=0,
- \qquad \int\left(x-\frac12\right)\rho(x)\dd x=0,
+ \qquad \int\left(x-\frac12\right)\rho(x)\Differential x=0,
  \qquad \rho\!\left(\frac12\right)=4.
  \label{eq:tangent-normalizations}
 \end{gather}
@@ -581,14 +565,14 @@ Let \(\mathcal M_0\) be the space of finite signed measures of total mass zero a
 moment, equipped with the Kantorovich--Rubinstein norm
 \begin{equation}
  \|\eta\|_{\mathrm{KR}}
- =\sup\left\{\left|\int\phi\dd\eta\right|:
+ =\sup\left\{\left|\int\phi\Differential\eta\right|:
  \phi(0)=0,\ \Lip(\phi)\le1\right\}.
  \label{eq:KR}
 \end{equation}
 For \(0<q<1\), define
 \begin{equation}
  \langle\phi,R_q\eta\rangle
- =\int_0^1\int\phi((1-q)u+qx)\dd\eta(x)\dd u.
+ =\int_0^1\int\phi((1-q)u+qx)\Differential\eta(x)\Differential u.
  \label{eq:Rq}
 \end{equation}
 
@@ -603,7 +587,7 @@ Let \(\mu_q\) be the law of \(X_q\), and define the source functional
 \begin{equation}
  \langle\phi,\sigma_q\rangle
  =\int_0^1\int
- \phi'((1-q)u+qx)(x-u)\dd\mu_q(x)\dd u.
+ \phi'((1-q)u+qx)(x-u)\Differential\mu_q(x)\Differential u.
  \label{eq:sigmaq}
 \end{equation}
 Then the parameter derivative \(\nu_q=\partial_q\mu_q\) is the unique zero-mass solution of
@@ -624,7 +608,7 @@ with convergence in \(\|\cdot\|_{\mathrm{KR}}\).
 \begin{proof}
 If \(\Lip(\phi)\le1\), then
 \(
- x\mapsto\int_0^1\phi((1-q)u+qx)\dd u
+ x\mapsto\int_0^1\phi((1-q)u+qx)\Differential u
 \)
 has Lipschitz constant at most \(q\).  This proves \eqref{eq:Rq-contraction}.  Differentiate
 the fixed-point identity \(\mu_q=R_q\mu_q\): the derivative hitting the measure gives
@@ -661,8 +645,8 @@ from \(u\) to \(v=2x-u\), gives the following.
 With \(F,G,f,\rho\) extended by their natural constant or zero tails,
 \begin{equation}
  \boxed{\displaystyle
- G(x)=\int_{2x-1}^{2x}G(v)\dd v
-      +4\int_{2x-1}^{2x}(x-v)f(v)\dd v.}
+ G(x)=\int_{2x-1}^{2x}G(v)\Differential v
+      +4\int_{2x-1}^{2x}(x-v)f(v)\Differential v.}
  \label{eq:G-refinement}
 \end{equation}
 The source can be written without \(f\) as
@@ -687,11 +671,11 @@ For
 one has \(\partial_qA|_{q=1/2}=4(u-x)\).  Differentiating
 \eqref{eq:q-cdf-integral} gives
 \[
- G(x)=\int_0^1G(2x-u)\dd u
-      +4\int_0^1(u-x)f(2x-u)\dd u,
+ G(x)=\int_0^1G(2x-u)\Differential u
+      +4\int_0^1(u-x)f(2x-u)\Differential u,
 \]
 which is \eqref{eq:G-refinement}.  Integration by parts in the source and the half-base CDF
-identity \(F(x)=\int_{2x-1}^{2x}F(v)\dd v\) give \eqref{eq:G-source-F}.  Leibniz's rule and
+identity \(F(x)=\int_{2x-1}^{2x}F(v)\Differential v\) give \eqref{eq:G-source-F}.  Leibniz's rule and
 \(
  F(2x)-F(2x-1)=f(x)/2
 \)
@@ -709,13 +693,13 @@ At \(x=1/2\), the boundary values of \(f\) vanish and \(G(0)=G(1)=0\); hence
 \label{prop:velocity-field}
 Let
 \(
- b(x)=\E[V\mid X=x]
+ b(x)=\Expectation[V\mid X=x]
 \)
 be any regular conditional version.  On \((0,1)\),
 \begin{equation}
  b(x)f(x)=-G(x),
  \qquad
- \rho(x)=-\frac{\dd}{\dd x}\bigl(b(x)f(x)\bigr),
+ \rho(x)=-\frac{\Differential}{\Differential x}\bigl(b(x)f(x)\bigr),
  \qquad
  b(1-x)=-b(x).
  \label{eq:velocity-form}
@@ -727,9 +711,9 @@ conditional parameter velocity \(b\).
 \begin{proof}
 For a smooth compactly supported test function,
 \[
- \int\varphi(x)\rho(x)\dd x
- =\E[\varphi'(X)V]
- =\int\varphi'(x)b(x)f(x)\dd x.
+ \int\varphi(x)\rho(x)\Differential x
+ =\Expectation[\varphi'(X)V]
+ =\int\varphi'(x)b(x)f(x)\Differential x.
 \]
 Hence \(\rho=-(bf)'\) in distributions.  Both sides are smooth in the interior.  Integration
 from the left endpoint, where \(bf\) and \(G\) vanish, gives \(bf=-G\).  Reflection of
@@ -750,8 +734,8 @@ For every real or complex \(t\),
 \begin{equation}
  \dot\Phi(t):=\left.\partial_q\Phi_q(t)\right|_{q=1/2}
  =\sum_{j\ge0}d_j\frac t2\,
- \sinc'\!\left(\frac{t}{2^{j+2}}\right)
- \prod_{k\ne j}\sinc\!\left(\frac{t}{2^{k+2}}\right),
+ \SincRad'\!\left(\frac{t}{2^{j+2}}\right)
+ \prod_{k\ne j}\SincRad\!\left(\frac{t}{2^{k+2}}\right),
  \label{eq:marked-sinc}
 \end{equation}
 where \(d_j\) is given by \eqref{eq:dj}.  Off the zero set of \(\Phi\), this is equivalently
@@ -765,19 +749,19 @@ where \(d_j\) is given by \eqref{eq:dj}.  Off the zero set of \(\Phi\), this is 
 \end{equation}
 The apparent poles in \eqref{eq:log-sinc-response} are removable after multiplication by
 \(\Phi\), as certified by the entire expression \eqref{eq:marked-sinc}.  The noncentered
-Fourier transform is \(\widehat\rho(t)=\e^{\ii t/2}\dot\Phi(t)\).
+Fourier transform is \(\widehat\rho(t)=\EulerE^{\ImaginaryUnit t/2}\dot\Phi(t)\).
 \end{theorem}
 
 \begin{proof}
 Differentiate the normally convergent product \eqref{eq:centered-sinc-product}.  The logarithmic
-form uses \(\sinc'(z)/\sinc(z)=\cot z-z^{-1}\).
+form uses \(\SincRad'(z)/\SincRad(z)=\cot z-z^{-1}\).
 \end{proof}
 
 \subsection{Closed cumulants and first moment jets}
 
 Let \(B_r\) denote the Bernoulli numbers with \(B_1=-1/2\), and let
 \[
- \qint{r}{q}=\frac{1-q^r}{1-q}
+ \QInteger{r}{q}=\frac{1-q^r}{1-q}
 \]
 be the \(q\)-integer.
 
@@ -787,7 +771,7 @@ For \(r\ge2\), the centered cumulants of \(Z_q\) are
 \begin{equation}
  \kappa_r(q)
  =\frac{B_r}{r}\frac{(1-q)^r}{1-q^r}
- =\frac{B_r}{r}\frac{(1-q)^{r-1}}{\qint{r}{q}}.
+ =\frac{B_r}{r}\frac{(1-q)^{r-1}}{\QInteger{r}{q}}.
  \label{eq:q-cumulant}
 \end{equation}
 At the Fabius point,
@@ -813,7 +797,7 @@ Cumulants add under independence and scale homogeneously, so summing
 give the remaining formulas.
 \end{proof}
 
-Let \(\mu_n(q)=\E Z_q^n\), \(\mu_n=\mu_n(1/2)\), and
+Let \(\mu_n(q)=\Expectation Z_q^n\), \(\mu_n=\mu_n(1/2)\), and
 \(\dot\mu_n=\partial_q\mu_n(q)|_{1/2}\).
 
 \begin{corollary}[Bell moment response]
@@ -849,7 +833,7 @@ The first values are
 \begin{proof}
 If
 \(
- M_q(z)=\E\e^{zZ_q}=\exp K_q(z),
+ M_q(z)=\Expectation\EulerE^{zZ_q}=\exp K_q(z),
 \)
 then \(\partial_qM_q=M_q\partial_qK_q\).  Comparing exponential generating coefficients
 gives \eqref{eq:moment-response}.
@@ -888,7 +872,7 @@ of two in addition to \((2^r-1)^{s+1}\).
 Let \(P_k\) be the ordinary Legendre polynomial and
 \(P_k^*(x)=P_k(2x-1)\).  Orthogonality on \([0,1]\) gives
 \[
- \int_0^1P_k^*(x)P_\ell^*(x)\dd x=\frac{\delta_{k\ell}}{2k+1}.
+ \int_0^1P_k^*(x)P_\ell^*(x)\Differential x=\frac{\delta_{k\ell}}{2k+1}.
 \]
 Since \(\rho\) is symmetric about \(1/2\), only even degrees occur.
 
@@ -920,14 +904,14 @@ The first coefficients are
  a_{12}&=\frac{10886281949792992}{31325448671141625}.
  \label{eq:first-legendre-coeffs}
 \end{align}
-Moreover \(a_{2n}=\bigO_A(n^{-A})\) for every \(A>0\).
+Moreover \(a_{2n}=\BigO_A(n^{-A})\) for every \(A>0\).
 \end{theorem}
 
 \begin{proof}
 Orthogonality gives
 \[
- a_k=(2k+1)\int_0^1\rho(x)P_k(2x-1)\dd x
- =(2k+1)\left.\partial_q\E P_k(2Z_q)\right|_{q=1/2}.
+ a_k=(2k+1)\int_0^1\rho(x)P_k(2x-1)\Differential x
+ =(2k+1)\left.\partial_q\Expectation P_k(2Z_q)\right|_{q=1/2}.
 \]
 Expanding the polynomial proves \eqref{eq:legendre-coeff-formula}.  Rationality follows from
 \cref{cor:moment-response}.  The density and all its derivatives vanish at the endpoints, so
@@ -1016,8 +1000,8 @@ The function \(r\) is odd and nonzero; for \(y>0\), \(r(y)>0\).
 
 \begin{proof}
 Equation \eqref{eq:g-fixed} gives \(r(\delta)=F(g(\delta))/2\) for \(\delta\ge0\).  Endpoint
-flatness says \(F(t)=\smallo(t^N)\) as \(t\downarrow0\) for every \(N\), while
-\(g(\delta)=\bigO(\delta)\).  Hence \(r\) is flat from the right, and oddness gives the full
+flatness says \(F(t)=\LittleO(t^N)\) as \(t\downarrow0\) for every \(N\), while
+\(g(\delta)=\BigO(\delta)\).  Hence \(r\) is flat from the right, and oddness gives the full
 statement.  Positivity follows from \(F(t)>0\) for \(t>0\).
 \end{proof}
 
@@ -1052,17 +1036,17 @@ Write \(g(y)=\lambda y+r(y)\).  Shrink the neighborhood so that
  =y+\sum_{k=0}^{n-1}\lambda^{-k-1}r(g^k(y)).
  \label{eq:koenigs-telescope}
 \end{equation}
-Because \(r(z)=\bigO(z^N)\) for every \(N\), choose \(N\) so that \(a^N<\lambda\).  The
+Because \(r(z)=\BigO(z^N)\) for every \(N\), choose \(N\) so that \(a^N<\lambda\).  The
 series is uniformly convergent.  Differentiating its terms and using the chain rule gives the
 same geometric majorants for every derivative order after increasing \(N\); hence convergence
 is in \(C^\infty\).  The functional equation follows by shifting the limit.  For each fixed
-\(N\), the infinite series in \eqref{eq:koenigs-telescope} is \(\bigO(y^N)\), proving
+\(N\), the infinite series in \eqref{eq:koenigs-telescope} is \(\BigO(y^N)\), proving
 flatness.  Since \(\theta'(0)=1\), it is locally invertible.  If \(\widetilde\theta\) is another
 normalized solution, then
 \[
  \widetilde\theta(y)
  =\lambda^{-n}\widetilde\theta(g^n(y))
- =\lambda^{-n}g^n(y)+\smallo(1),
+ =\lambda^{-n}g^n(y)+\LittleO(1),
 \]
 so it equals the limit.
 \end{proof}
@@ -1073,7 +1057,7 @@ so it equals the limit.
 \label{thm:global-theta}
 There is a unique \(C^\infty\) increasing diffeomorphism
 \begin{equation}
- \Theta:(0,1)\longrightarrow\R
+ \Theta:(0,1)\longrightarrow\RealNumbers
  \label{eq:theta-domain}
 \end{equation}
 with
@@ -1126,12 +1110,12 @@ limit after a finite initial segment.
 
 The image is an open interval containing zero.  It is invariant under multiplication by two
 because \(\Theta(F(x))=2\Theta(x)\).  Since it contains both positive and negative values, it
-must be all of \(\R\).  Reflection and local uniqueness give oddness.  Global uniqueness
+must be all of \(\RealNumbers\).  Reflection and local uniqueness give oddness.  Global uniqueness
 follows from
 \[
  \widetilde\Theta(x)
  =2^n\widetilde\Theta(Q^n(x))
- =2^n(Q^n(x)-p)+\smallo(1).
+ =2^n(Q^n(x)-p)+\LittleO(1).
 \]
 Flatness is the local conclusion of \cref{lem:flat-koenigs}; flatness of the inverse follows
 by composition.  The remainder is not identically zero because that would make \(F\) exactly
@@ -1151,7 +1135,7 @@ For every \(x\in(0,1)\) and \(n\ge0\),
 For every integer \(N\ge2\),
 \begin{equation}
  \boxed{\displaystyle
- Q^n(x)=\frac12+2^{-n}\Theta(x)+\bigO_{x,N}(2^{-Nn})
+ Q^n(x)=\frac12+2^{-n}\Theta(x)+\BigO_{x,N}(2^{-Nn})
  \qquad(n\to\infty).}
  \label{eq:inverse-beyond-all-orders}
 \end{equation}
@@ -1161,7 +1145,7 @@ correction is beyond all orders in the contraction scale.
 
 \begin{proof}
 Equation \eqref{eq:exact-iterates-theta} is iteration of the conjugacy.  Since
-\(\Theta^{-1}(t)-p-t\) is flat, it is \(\bigO(t^N)\) for every \(N\).  Substitute
+\(\Theta^{-1}(t)-p-t\) is flat, it is \(\BigO(t^N)\) for every \(N\).  Substitute
 \(t=2^{-n}\Theta(x)\).
 \end{proof}
 
@@ -1222,7 +1206,7 @@ Put
 \end{equation}
 Equation \eqref{eq:dyadic-leading-input} is equivalent to
 \begin{equation}
- -\log F(\e^{-s})=a s^2(1+\smallo(1))
+ -\log F(\EulerE^{-s})=a s^2(1+\LittleO(1))
  \qquad(s\to\infty).
  \label{eq:endpoint-s-law}
 \end{equation}
@@ -1257,14 +1241,14 @@ and satisfies the exact B\"ottcher-type equation
 Moreover, for every fixed \(x\in(0,p)\),
 \begin{equation}
  -\log F^n(x)
- =2L\exp\bigl(2^nB(x)+\smallo(1)\bigr),
+ =2L\exp\bigl(2^nB(x)+\LittleO(1)\bigr),
  \label{eq:double-exp-log}
 \end{equation}
 or equivalently
 \begin{equation}
  \boxed{\displaystyle
  F^n(x)=
- \exp\left\{-2L\exp\bigl(2^nB(x)+\smallo(1)\bigr)\right\}.}
+ \exp\left\{-2L\exp\bigl(2^nB(x)+\LittleO(1)\bigr)\right\}.}
  \label{eq:double-exponential-orbit}
 \end{equation}
 The right-endpoint statement follows by replacing \(x\) with \(1-x\).
@@ -1293,7 +1277,7 @@ The tail identity
  2^nB(x)-z_n
  =\sum_{k=n}^{\infty}2^{n-k-1}\varepsilon(x_k)
 \]
-tends to zero.  Therefore \(z_n=2^nB(x)+\smallo(1)\), which gives
+tends to zero.  Therefore \(z_n=2^nB(x)+\LittleO(1)\), which gives
 \eqref{eq:double-exp-log} and \eqref{eq:double-exponential-orbit}.  Positivity follows because
 \(z_n\to+\infty\); if \(B(x)=0\), the tail identity would instead force \(z_n\to0\).
 \end{proof}
@@ -1305,7 +1289,7 @@ invariant along each orbit.  In the linear coordinate, invariance becomes period
 
 \begin{theorem}[Dynamical one-periodic factor]
 \label{thm:dynamical-periodic}
-Define, for \(u\in\R\),
+Define, for \(u\in\RealNumbers\),
 \begin{equation}
  \mathcal P_{\mathrm{dyn}}(u)
  =2^{-u}B\!\left(\Theta^{-1}(-2^u)\right).
@@ -1372,7 +1356,7 @@ weight near \(q=1/2\) is approximately \(2^{-32}\), far below the sampling resol
 
 For even \(m\), \cref{thm:pathwise-response} gives
 \begin{equation}
- \dot\mu_m=m\E[Z^{m-1}V].
+ \dot\mu_m=m\Expectation[Z^{m-1}V].
  \label{eq:mc-moment-estimator}
 \end{equation}
 The table compares exact values with the Monte Carlo estimator.  The quoted uncertainty is one
@@ -1451,7 +1435,7 @@ The map
 \[
  q\longmapsto f_q
 \]
-is real analytic as a map into \(C^\infty(\R)\) on \((1/2,1)\).  On \((0,1/2]\), the flat
+is real analytic as a map into \(C^\infty(\RealNumbers)\) on \((1/2,1)\).  On \((0,1/2]\), the flat
 fronts of \cref{thm:flat-fronts} are the complete obstruction to such function-space
 analyticity.
 \end{conjecture}
@@ -1492,7 +1476,7 @@ the Gamma--zeta Fourier coefficients of the repository's endpoint periodic funct
 One route is to insert the sharp endpoint expansion into the cocycle
 \(z(F(x))-2z(x)\), sum it along the orbit as in \eqref{eq:B-series}, and then convert the orbit
 phase to the global coordinate \(u=\log_2[-\Theta(x)]\).  The resulting Fourier transform
-should contain small divisors of the simple form \(2^{1-2\pi \ii k/\log2}-1\), but the exact
+should contain small divisors of the simple form \(2^{1-2\pi \ImaginaryUnit k/\log2}-1\), but the exact
 normalization depends on the lower-Lambert displacement.
 
 \subsection{A \texorpdfstring{\(q\)}{q}-family of global dynamical coordinates}
@@ -1574,7 +1558,7 @@ The new results divide naturally into formalization tranches.
 as uniformly convergent series.
 \item Establish the pathwise test-function formula
 \(
- \partial_q\E\varphi(X_q)=\E[\varphi'(X_q)\partial_qX_q].
+ \partial_q\Expectation\varphi(X_q)=\Expectation[\varphi'(X_q)\partial_qX_q].
 \)
 \item Differentiate the affine independent-copy fixed point and package
 \cref{thm:susceptibility} in the zero-mass Kantorovich--Rubinstein space.
@@ -1617,7 +1601,7 @@ corollaries.
 inverse midpoint.
 \item Formalize the flat contraction lemma \cref{lem:flat-koenigs}, first in a local
 one-dimensional real setting.
-\item Globalize by finite inverse iteration and prove image \(\R\), uniqueness, reflection, and
+\item Globalize by finite inverse iteration and prove image \(\RealNumbers\), uniqueness, reflection, and
 the limit formula.
 \item Deduce exact iterate conjugacy and the beyond-all-orders estimate.
 \item Convert the endpoint quadratic law into the cocycle series \eqref{eq:B-series} and the

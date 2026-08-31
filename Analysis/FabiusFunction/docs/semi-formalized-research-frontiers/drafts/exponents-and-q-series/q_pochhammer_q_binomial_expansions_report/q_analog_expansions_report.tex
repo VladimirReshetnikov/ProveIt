@@ -3,6 +3,7 @@
 \usepackage[T1]{fontenc}
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{amsmath,amssymb,mathtools,amsthm}
+\input{../../../../fabius-notation.tex}
 \usepackage{bm}
 \usepackage{booktabs,longtable,array}
 \usepackage{enumitem}
@@ -40,36 +41,14 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\Li}{\operatorname{Li}}
 \newcommand{\ord}{\operatorname{ord}}
-\newcommand{\Res}{\operatorname{Res}}
-\newcommand{\diag}{\operatorname{diag}}
 \newcommand{\cothh}{\operatorname{coth}}
 \newcommand{\fall}[1]{^{\underline{#1}}}
 \newcommand{\rising}[1]{^{\overline{#1}}}
-\newcommand{\qbinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
-\newcommand{\qbinombase}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
 \newcommand{\qmultinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
-\newcommand{\poch}[3]{(#1;#2)_{#3}}
-\newcommand{\qpoch}[2]{(#1;q)_{#2}}
 \newcommand{\Bell}{\mathcal Y}
 \newcommand{\Thetaop}{\vartheta}
 \newcommand{\eps}{\varepsilon}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\littleo}{o}
-\newcommand{\defeq}{\mathrel{:=}}
-\newcommand{\abs}[1]{\lvert#1\rvert}
-\newcommand{\norm}[1]{\lVert#1\rVert}
-\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
-\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
 
 \lstset{
   basicstyle=\ttfamily\small,
@@ -101,7 +80,7 @@ unit circle; Laurent expansions at the point $q=\infty$ for finite objects; and
 generalized power or transseries expansions when a parameter coalesces with a
 zero of the product.  This distinction prevents several common but consequential
 confusions, such as treating $(q;q)_\infty$ as analytic at $q=1$, or speaking of
-an unrenormalized infinite product at $\abs q>1$.
+an unrenormalized infinite product at $\AbsoluteValue q>1$.
 
 For finite shifted factorials we give all-order expansions both with a fixed
 parameter $a$ and in the classical scaling $a=q^\alpha$.  For Gaussian and
@@ -163,7 +142,7 @@ General roots of unity & Cyclotomic order, carry criterion, and all Taylor jets 
 Infinite product near $q=1$ & Polylogarithmic expansion for fixed $a$; Mellin expansion for $a=q^x$ & Asymptotic\\
 $q$-gamma and $q$-beta & Explicit all-order logarithmic expansions & Asymptotic\\
 Root-of-unity radial limit & Cyclic-dilogarithm leading factor and all coefficient sums & Asymptotic\\
-Double scaling & All-order expansion for $q=\e^{-\tau/N}$ and $k=\alpha N$ & Asymptotic, uniform on compact parameter sets\\
+Double scaling & All-order expansion for $q=\EulerE^{-\tau/N}$ and $k=\alpha N$ & Asymptotic, uniform on compact parameter sets\\
 Research programme & Uniform resonant scaling, higher cyclotomic jets, resurgence, formal verification & Conjectural / proposed\\
 \bottomrule
 \end{longtable}
@@ -180,15 +159,15 @@ The phrase ``expand at $q=q_0$'' hides several inequivalent operations.
 Throughout the report they are kept separate.
 
 \begin{enumerate}[label=\textup{(\roman*)}]
-\item A finite shifted factorial $\qpoch an$ and a Gaussian coefficient
-      $\qbinom nk$ are polynomials in $q$.  They therefore possess ordinary,
+\item A finite shifted factorial $\QPochhammer{a}{q}{n}$ and a Gaussian coefficient
+      $\GaussianBinomial{n}{k}{q}$ are polynomials in $q$.  They therefore possess ordinary,
       globally convergent Taylor series at every finite $q_0$.  The logarithm
       of such a polynomial is only local and is unavailable at a zero.
-\item An infinite product $\qpoch a\infty$ is naturally defined for
-      $\abs q<1$.  The points $q=1$ and the other points of the unit circle are
+\item An infinite product $\QPochhammer{a}{q}{\infty}$ is naturally defined for
+      $\AbsoluteValue q<1$.  The points $q=1$ and the other points of the unit circle are
       boundary points, not ordinary Taylor centers.  The appropriate objects
       are sectorial asymptotic expansions, often with exponentials such as
-      $\exp(-\Li_2(a)/t)$ and, in resonant cases, powers and logarithms of
+      $\exp(-\Polylogarithm_2(a)/t)$ and, in resonant cases, powers and logarithms of
       $t=-\log q$.
 \item A finite polynomial has a Laurent expansion at the point $q=\infty$ on
       the Riemann sphere.  Reciprocity makes this expansion a reversed copy of
@@ -208,15 +187,15 @@ can be continued through the proposed center.
 
 \section{Notation}
 
-For $n\in\N_0$,
+For $n\in\NaturalNumbers$,
 \[
- \qpoch an=\prod_{j=0}^{n-1}(1-aq^j),
+ \QPochhammer{a}{q}{n}=\prod_{j=0}^{n-1}(1-aq^j),
  \qquad
- \qpoch a\infty=\prod_{j=0}^{\infty}(1-aq^j)\quad(\abs q<1),
+ \QPochhammer{a}{q}{\infty}=\prod_{j=0}^{\infty}(1-aq^j)\quad(\AbsoluteValue q<1),
 \]
 and
 \[
- \qbinom nk=\frac{(q;q)_n}{(q;q)_k(q;q)_{n-k}}
+ \GaussianBinomial{n}{k}{q}=\frac{(q;q)_n}{(q;q)_k(q;q)_{n-k}}
  \qquad(0\le k\le n),
 \]
 where the quotient is understood as its polynomial continuation.  We write
@@ -229,19 +208,19 @@ where the quotient is understood as its polynomial continuation.  We write
 \]
 The Bernoulli numbers and polynomials use the convention
 \[
- \frac{z\e^{xz}}{\e^z-1}
+ \frac{z\EulerE^{xz}}{\EulerE^z-1}
  =\sum_{r=0}^{\infty}B_r(x)\frac{z^r}{r!},
  \qquad B_r=B_r(0),
 \]
 so $B_1=-1/2$.  The polylogarithm is
 \(
-\Li_s(z)=\sum_{m\ge1}z^m/m^s
+\Polylogarithm_s(z)=\sum_{m\ge1}z^m/m^s
 \)
 in its initial disk and by analytic continuation elsewhere.
 
 Two local coordinates will recur:
 \[
- q=\e^{-t},\qquad t=-\log q,
+ q=\EulerE^{-t},\qquad t=-\log q,
  \qquad\text{and}\qquad h=q-1.
 \]
 The logarithmic coordinate $t$ exposes reciprocity and Bernoulli structure;
@@ -281,19 +260,19 @@ This is the defining generating function of the complete exponential Bell
 polynomials after substituting $x_j=\kappa_j$.
 \end{proof}
 
-Let $\Thetaop=q\frac{\dd}{\dd q}$.  Since $q=\e^{-t}$,
+Let $\Thetaop=q\frac{\Differential}{\Differential q}$.  Since $q=\EulerE^{-t}$,
 \[
- \frac{\dd}{\dd t}F(\e^{-t})=-\Thetaop F(q).
+ \frac{\Differential}{\Differential t}F(\EulerE^{-t})=-\Thetaop F(q).
 \]
 Ordinary derivatives at $q=1$ can be recovered from logarithmic-coordinate
 derivatives by
 \begin{equation}\label{eq:stirling-coordinate}
  F^{(r)}(1)
  =\sum_{j=0}^{r}s(r,j)(-1)^j
- \left.\frac{\dd^j}{\dd t^j}F(\e^{-t})\right|_{t=0},
+ \left.\frac{\Differential^j}{\Differential t^j}F(\EulerE^{-t})\right|_{t=0},
 \end{equation}
 where $s(r,j)$ are the signed Stirling numbers of the first kind.  Indeed,
-$q^r\frac{\dd^r}{\dd q^r}=\Thetaop(\Thetaop-1)\cdots(\Thetaop-r+1)$.
+$q^r\frac{\Differential^r}{\Differential q^r}=\Thetaop(\Thetaop-1)\cdots(\Thetaop-r+1)$.
 Formula~\eqref{eq:stirling-coordinate}, together with
 \cref{lem:bell-exp}, is an all-order converter between a compact cumulant-like
 expansion in $t$ and a literal Taylor series in $q-1$.
@@ -306,7 +285,7 @@ expansion in $t$ and a literal Taylor series in $q-1$.
 Let $P(q)$ be holomorphic near $q_0$ and suppose $P(q_0)\ne0$.  Put
 \[
  \lambda_r(q_0)=
- \left.\frac{\dd^r}{\dd q^r}\log P(q)\right|_{q=q_0}.
+ \left.\frac{\Differential^r}{\Differential q^r}\log P(q)\right|_{q=q_0}.
 \]
 Then
 \[
@@ -324,18 +303,18 @@ Apply \cref{lem:bell-exp} to $F(h)=P(q_0+h)$.
 For the finite shifted factorial, logarithmic differentiation may be performed
 factor by factor:
 \begin{equation}\label{eq:finite-poc-logder}
- \frac{\dd}{\dd q}\log\qpoch an
+ \frac{\Differential}{\Differential q}\log\QPochhammer{a}{q}{n}
  =-\sum_{j=1}^{n-1}\frac{ajq^{j-1}}{1-aq^j}.
 \end{equation}
 Higher derivatives are rational functions with possible poles only at zeros of
-the product.  A useful diagonal form follows from $\Thetaop=q\dd/\dd q$:
+the product.  A useful diagonal form follows from $\Thetaop=q\Differential/\Differential q$:
 \begin{equation}\label{eq:euler-logder}
- \Thetaop^r\log\qpoch an
+ \Thetaop^r\log\QPochhammer{a}{q}{n}
  =-\sum_{m\ge1}a^m m^{r-1}
    \sum_{j=0}^{n-1}j^r q^{jm}
  \qquad(r\ge1),
 \end{equation}
-initially when every $\abs{aq^j}<1$ and elsewhere by analytic continuation.
+initially when every $\AbsoluteValue{aq^j}<1$ and elsewhere by analytic continuation.
 The finite geometric power sum in~\eqref{eq:euler-logder} can be reduced to a
 rational function of $q^m$ or to Eulerian polynomials.
 
@@ -349,11 +328,11 @@ of unity, where several factors may vanish simultaneously.
 Fix $n\ge1$, $q_0\ne0$, and $a\ne1$.  Let
 \[
  J=\{j\in\{1,\ldots,n-1\}: aq_0^j=1\},
- \qquad r=\abs J.
+ \qquad r=\AbsoluteValue J.
 \]
 Then
 \[
- \qpoch an=C(a,q_0,n)(q-q_0)^r\bigl(1+\bigO(q-q_0)\bigr),
+ \QPochhammer{a}{q}{n}=C(a,q_0,n)(q-q_0)^r\bigl(1+\BigO(q-q_0)\bigr),
 \]
 where
 \begin{equation}\label{eq:poc-resonant-leading}
@@ -368,8 +347,8 @@ After extracting the displayed power, all further coefficients follow from
 \begin{proof}
 For $j\in J$,
 \[
- 1-aq^j=-ajq_0^{j-1}(q-q_0)+\bigO((q-q_0)^2)
-        =-\frac{j}{q_0}(q-q_0)+\bigO((q-q_0)^2).
+ 1-aq^j=-ajq_0^{j-1}(q-q_0)+\BigO((q-q_0)^2)
+        =-\frac{j}{q_0}(q-q_0)+\BigO((q-q_0)^2).
 \]
 Multiplying these $r$ linear factors and evaluating every other factor at
 $q_0$ gives~\eqref{eq:poc-resonant-leading}.  The quotient by
@@ -378,7 +357,7 @@ applies.
 \end{proof}
 
 \begin{remark}
-If $a=1$, the factor with $j=0$ vanishes identically and $\qpoch 1n=0$ for all
+If $a=1$, the factor with $j=0$ vanishes identically and $\QPochhammer{1}{q}{n}=0$ for all
 $q$ and all $n\ge1$.  The important object $(q;q)_n$ is different: its first
 parameter varies with $q$ and is treated by the scaled analysis in
 \cref{chap:qone-finite}.
@@ -388,16 +367,16 @@ parameter varies with $q$ and is treated by the scaled analysis in
 
 The polynomial factorization
 \begin{equation}\label{eq:cyclotomic-factor}
- \qbinom nk=\prod_{d=1}^{n}\Phi_d(q)^{e_d(n,k)},
+ \GaussianBinomial{n}{k}{q}=\prod_{d=1}^{n}\Phi_d(q)^{e_d(n,k)},
  \qquad
- e_d(n,k)=\floor{\frac nd}-\floor{\frac kd}
-          -\floor{\frac{n-k}{d}},
+ e_d(n,k)=\Floor{\frac nd}-\Floor{\frac kd}
+          -\Floor{\frac{n-k}{d}},
 \end{equation}
 has $e_d(n,k)\in\{0,1\}$.  It is therefore an optimal local representation at
 roots of unity.
 
 \begin{proposition}[Regular Taylor jets of a Gaussian polynomial]\label{prop:gaussian-regular-jet}
-If $G_{n,k}(q)=\qbinom nk$ and $G_{n,k}(q_0)\ne0$, then
+If $G_{n,k}(q)=\GaussianBinomial{n}{k}{q}$ and $G_{n,k}(q_0)\ne0$, then
 \[
  \left(\log G_{n,k}\right)^{(r)}(q_0)
  =\sum_{d:e_d(n,k)=1}
@@ -425,29 +404,29 @@ is useful for perturbing terminating basic hypergeometric identities whose
 parameters are not integral powers of $q$.
 
 \begin{theorem}[Fixed-$a$ finite shifted factorial]\label{thm:fixed-a-finite}
-Let $n\ge1$, $q=\e^{-t}$, and initially assume $\abs a<1$.  Then, near $t=0$,
+Let $n\ge1$, $q=\EulerE^{-t}$, and initially assume $\AbsoluteValue a<1$.  Then, near $t=0$,
 \begin{equation}\label{eq:fixed-a-finite-log}
- \log\qpoch a n
+ \log\QPochhammer{a}{q}{n}
  =n\log(1-a)+
- \sum_{r\ge1}(-1)^{r+1}S_r(n-1)\Li_{1-r}(a)\frac{t^r}{r!}.
+ \sum_{r\ge1}(-1)^{r+1}S_r(n-1)\Polylogarithm_{1-r}(a)\frac{t^r}{r!}.
 \end{equation}
 The identity extends analytically in $a$ to every local domain avoiding the
-zeros of $\qpoch an$ at $q=1$.  The ordinary coefficients of $\qpoch an$ are
+zeros of $\QPochhammer{a}{q}{n}$ at $q=1$.  The ordinary coefficients of $\QPochhammer{a}{q}{n}$ are
 the Bell polynomials in
 \[
- \kappa_r=(-1)^{r+1}S_r(n-1)\Li_{1-r}(a).
+ \kappa_r=(-1)^{r+1}S_r(n-1)\Polylogarithm_{1-r}(a).
 \]
 \end{theorem}
 
 \begin{proof}
-For $\abs a<1$,
+For $\AbsoluteValue a<1$,
 \[
- \log(1-a\e^{-jt})
- =-\sum_{m\ge1}\frac{a^m}{m}\e^{-jmt}.
+ \log(1-a\EulerE^{-jt})
+ =-\sum_{m\ge1}\frac{a^m}{m}\EulerE^{-jmt}.
 \]
 Expanding the exponential and summing over $0\le j<n$ gives
 \begin{align*}
- \log\qpoch an
+ \log\QPochhammer{a}{q}{n}
  &=-\sum_{m\ge1}\frac{a^m}{m}
    \sum_{j=0}^{n-1}\sum_{r\ge0}\frac{(-jmt)^r}{r!}\\
  &=n\log(1-a)+
@@ -462,12 +441,12 @@ result is a local analytic identity.  Analytic continuation in $a$ and
 
 The first terms are
 \begin{align}
- \log\frac{\qpoch an}{(1-a)^n}
+ \log\frac{\QPochhammer{a}{q}{n}}{(1-a)^n}
  &=\frac{n(n-1)}2\frac{a}{1-a}t
  -\frac{n(n-1)(2n-1)}{12}\frac{a}{(1-a)^2}t^2
  \notag\\
  &\quad+\frac{n^2(n-1)^2}{24}
- \frac{a(1+a)}{(1-a)^3}t^3+\bigO(t^4).
+ \frac{a(1+a)}{(1-a)^3}t^3+\BigO(t^4).
  \label{eq:fixed-a-first}
 \end{align}
 These terms already show why the fixed-$a$ and $a=q^\alpha$ limits must not be
@@ -477,7 +456,7 @@ singular as $a\to1$.
 \section{The classical scaling $a=q^\alpha$}
 
 \begin{theorem}[Finite scaled shifted factorial]\label{thm:scaled-finite}
-Let $q=\e^{-t}$ and suppose none of
+Let $q=\EulerE^{-t}$ and suppose none of
 $\alpha,\alpha+1,\ldots,\alpha+n-1$ is zero.  Define
 \[
  A_r(\alpha,n)=\sum_{j=0}^{n-1}(\alpha+j)^r
@@ -485,7 +464,7 @@ $\alpha,\alpha+1,\ldots,\alpha+n-1$ is zero.  Define
 \]
 Then
 \begin{equation}\label{eq:scaled-finite-log}
- \poch{q^\alpha}{q}{n}
+ \QPochhammer{q^\alpha}{q}{n}
  =t^n(\alpha)_n
  \exp\left(
  -\frac{A_1(\alpha,n)}2t
@@ -494,7 +473,7 @@ Then
  \right).
 \end{equation}
 For fixed $\alpha,n$ the logarithmic series converges in every disk satisfying
-$\abs{(\alpha+j)t}<2\pi$ for $0\le j<n$.  As a formal expansion it remains
+$\AbsoluteValue{(\alpha+j)t}<2\pi$ for $0\le j<n$.  As a formal expansion it remains
 valid after algebraic continuation, provided resonant zero factors are first
 extracted.
 \end{theorem}
@@ -502,11 +481,11 @@ extracted.
 \begin{proof}
 The elementary identity
 \begin{equation}\label{eq:basic-one-factor}
- 1-\e^{-x}
+ 1-\EulerE^{-x}
  =x\exp\left(-\frac x2+
    \sum_{r\ge1}\frac{B_{2r}}{2r(2r)!}x^{2r}\right)
 \end{equation}
-holds for $\abs x<2\pi$.  Apply it to
+holds for $\AbsoluteValue x<2\pi$.  Apply it to
 $x=(\alpha+j)t$ and multiply over $0\le j<n$.  The product of the linear
 factors is $t^n(\alpha)_n$, and the sums of powers are precisely
 $A_r(\alpha,n)$.
@@ -518,14 +497,14 @@ Since
 [n]_q!=(q;q)_n/(1-q)^n
 \), one obtains
 \begin{equation}\label{eq:qfactorial-qone}
- \log\frac{[n]_{\e^{-t}}!}{n!}
+ \log\frac{[n]_{\EulerE^{-t}}!}{n!}
  =-\frac{n(n-1)}4t+
  \sum_{r\ge1}\frac{B_{2r}}{2r(2r)!}
  \bigl(S_{2r}(n)-n\bigr)t^{2r}.
 \end{equation}
 For a single $q$-number,
 \begin{equation}\label{eq:qnumber-qone}
- [x]_{\e^{-t}}
+ [x]_{\EulerE^{-t}}
  =x\exp\left(
  -\frac{x-1}{2}t+
  \sum_{r\ge1}\frac{B_{2r}(x^{2r}-1)}{2r(2r)!}t^{2r}
@@ -543,13 +522,13 @@ The basic Bernoulli formula in the source monograph is recalled here only to
 make the later coefficient machinery self-contained.
 
 \begin{theorem}[Complete Gaussian expansion]\label{thm:gaussian-complete}
-Let $q=\e^{-t}$, $0\le k\le n$, and $D=k(n-k)$.  Then
+Let $q=\EulerE^{-t}$, $0\le k\le n$, and $D=k(n-k)$.  Then
 \begin{equation}\label{eq:gaussian-log-all}
- \log\frac{\qbinombase nk{\e^{-t}}}{\binom nk}
+ \log\frac{\GaussianBinomial{n}{k}{\EulerE^{-t}}}{\binom nk}
  =-\frac D2t+
  \sum_{r\ge1}\frac{B_{2r}\Delta_{2r}(n,k)}{2r(2r)!}t^{2r}.
 \end{equation}
-For fixed $n,k$ this converges when $\abs t<2\pi/n$.  If
+For fixed $n,k$ this converges when $\AbsoluteValue t<2\pi/n$.  If
 \[
  \kappa_1=-\frac D2,
  \qquad
@@ -559,7 +538,7 @@ For fixed $n,k$ this converges when $\abs t<2\pi/n$.  If
 \]
 then the literal coefficient expansion is
 \begin{equation}\label{eq:gaussian-bell}
- \qbinombase nk{\e^{-t}}
+ \GaussianBinomial{n}{k}{\EulerE^{-t}}
  =\binom nk\sum_{j\ge0}
  \Bell_j(\kappa_1,\ldots,\kappa_j)\frac{t^j}{j!}.
 \end{equation}
@@ -568,9 +547,9 @@ then the literal coefficient expansion is
 \begin{proof}
 Use the product
 \[
- \qbinombase nk{\e^{-t}}
+ \GaussianBinomial{n}{k}{\EulerE^{-t}}
  =\prod_{j=1}^{k}
- \frac{1-\e^{-(n-k+j)t}}{1-\e^{-jt}},
+ \frac{1-\EulerE^{-(n-k+j)t}}{1-\EulerE^{-jt}},
 \]
 apply~\eqref{eq:basic-one-factor}, and collect power sums.  The linear
 difference is $D$ and the even difference is
@@ -582,13 +561,13 @@ $\Delta_{2r}(n,k)$.  Bell exponentiation gives
 
 Reciprocity gives
 \[
- \qbinombase nk{\e^{-t}}
- =\e^{-Dt}\qbinombase nk{\e^{t}}.
+ \GaussianBinomial{n}{k}{\EulerE^{-t}}
+ =\EulerE^{-Dt}\GaussianBinomial{n}{k}{\EulerE^{t}}.
 \]
 Therefore
 \begin{equation}\label{eq:centered-gaussian}
  C_{n,k}(t)=
- \e^{Dt/2}\frac{\qbinombase nk{\e^{-t}}}{\binom nk}
+ \EulerE^{Dt/2}\frac{\GaussianBinomial{n}{k}{\EulerE^{-t}}}{\binom nk}
 \end{equation}
 is an even analytic function.  Put
 \[
@@ -602,7 +581,7 @@ Then
  \notag\\
  &\quad+
    \left(c_6+c_2c_4+\frac{c_2^3}{6}\right)t^6
-   +\bigO(t^8).                                      \label{eq:centered-through-six}
+   +\BigO(t^8).                                      \label{eq:centered-through-six}
 \end{align}
 The needed Faulhaber differences factor as
 \begin{align}
@@ -626,12 +605,12 @@ polynomials in $n$ and $D$.
 \begin{corollary}[Literal Taylor series in $h=q-1$]\label{cor:qminusone-coordinate}
 As $h\to0$,
 \begin{align}
- \frac{\qbinombase nk{1+h}}{\binom nk}
+ \frac{\GaussianBinomial{n}{k}{1+h}}{\binom nk}
  &=1+\frac D2h+
  \frac{D(3D+n-5)}{24}h^2
  \notag\\
  &\quad+
- \frac{D(D-2)(D+n-3)}{48}h^3+\bigO(h^4).
+ \frac{D(D-2)(D+n-3)}{48}h^3+\BigO(h^4).
  \label{eq:gaussian-h-first}
 \end{align}
 Every later coefficient is obtained mechanically from
@@ -641,7 +620,7 @@ Stirling conversion~\eqref{eq:stirling-coordinate}.
 
 \begin{proof}
 Substitute
-$t=-h+h^2/2-h^3/3+\bigO(h^4)$ into
+$t=-h+h^2/2-h^3/3+\BigO(h^4)$ into
 \eqref{eq:gaussian-log-all} and exponentiate.
 \end{proof}
 
@@ -650,9 +629,9 @@ $t=-h+h^2/2-h^3/3+\bigO(h^4)$ into
 Let $X_{n,k}$ be the inversion number of a uniformly random binary word with
 $k$ ones and $n-k$ zeros.  Its probability generating function is
 \[
- \mathbb E(q^{X_{n,k}})=\frac{\qbinom nk}{\binom nk}.
+ \mathbb E(q^{X_{n,k}})=\frac{\GaussianBinomial{n}{k}{q}}{\binom nk}.
 \]
-Putting $q=\e^s$ in~\eqref{eq:gaussian-log-all} therefore gives all cumulants.
+Putting $q=\EulerE^s$ in~\eqref{eq:gaussian-log-all} therefore gives all cumulants.
 
 \begin{corollary}[Exact inversion cumulants]\label{cor:inversion-cumulants}
 The odd centered cumulants vanish, and
@@ -691,7 +670,7 @@ Define
 \]
 The same proof gives
 \begin{equation}\label{eq:qmult-qone}
- \log\frac{\qmultinom{n}{n_1,\ldots,n_s}\big|_{q=\e^{-t}}}
+ \log\frac{\qmultinom{n}{n_1,\ldots,n_s}\big|_{q=\EulerE^{-t}}}
  {\binom{n}{n_1,\ldots,n_s}}
  =-\frac{D(\bm n)}2t+
  \sum_{r\ge1}\frac{B_{2r}\Delta_{2r}(\bm n)}{2r(2r)!}t^{2r}.
@@ -706,7 +685,7 @@ number of a uniformly random multiset permutation.
 
 For $n\ge1$,
 \[
- \qpoch an=(1-a)\prod_{j=1}^{n-1}(1-aq^j).
+ \QPochhammer{a}{q}{n}=(1-a)\prod_{j=1}^{n-1}(1-aq^j).
 \]
 Every coefficient therefore has a direct restricted-partition meaning.
 
@@ -715,11 +694,11 @@ For $r\ge0$ define
 \[
  d_{n,r}(a)=
  \sum_{\substack{J\subseteq\{1,\ldots,n-1\}\\\sum_{j\in J}j=r}}
- (-a)^{\abs J}.
+ (-a)^{\AbsoluteValue J}.
 \]
 Then
 \begin{equation}\label{eq:qzero-poc-exact}
- \qpoch an=(1-a)\sum_{r=0}^{n(n-1)/2}d_{n,r}(a)q^r.
+ \QPochhammer{a}{q}{n}=(1-a)\sum_{r=0}^{n(n-1)/2}d_{n,r}(a)q^r.
 \end{equation}
 For fixed $r$, $d_{n,r}(a)$ stabilizes once $n>r$ to
 \[
@@ -728,25 +707,25 @@ For fixed $r$, $d_{n,r}(a)$ stabilizes once $n>r$ to
 \]
 and hence
 \begin{equation}\label{eq:qzero-poc-infinite}
- \qpoch a\infty=(1-a)\sum_{r\ge0}d_r(a)q^r.
+ \QPochhammer{a}{q}{\infty}=(1-a)\sum_{r\ge0}d_r(a)q^r.
 \end{equation}
 \end{theorem}
 
 \begin{proof}
 Expand the finite product by choosing either $1$ or $-aq^j$ from each
 factor.  A choice of indices is a subset $J$ and contributes
-$(-a)^{\abs J}q^{\sum J}$.  Factors with index at least $n$ cannot affect a
+$(-a)^{\AbsoluteValue J}q^{\sum J}$.  Factors with index at least $n$ cannot affect a
 coefficient of degree below $n$, which proves stabilization and the infinite
 identity.
 \end{proof}
 
 The beginning of the stable expansion is
 \begin{align}
- \frac{\qpoch a\infty}{1-a}
+ \frac{\QPochhammer{a}{q}{\infty}}{1-a}
  &=1-aq-aq^2+a(a-1)q^3+a(a-1)q^4
  \notag\\
  &\quad+a(2a-1)q^5-a(a-1)^2q^6
- -a(a^2-3a+1)q^7+\bigO(q^8).
+ -a(a^2-3a+1)q^7+\BigO(q^8).
  \label{eq:qzero-poc-first}
 \end{align}
 The finite product has the same terms through $q^R$ whenever $n>R$.
@@ -754,16 +733,16 @@ The finite product has the same terms through $q^R$ whenever $n>R$.
 \begin{corollary}[Reciprocal product and unrestricted partitions]
 For $a\ne1$,
 \begin{equation}\label{eq:qzero-reciprocal-poc}
- \frac1{\qpoch a\infty}
+ \frac1{\QPochhammer{a}{q}{\infty}}
  =\frac1{1-a}\sum_{r\ge0}
  \left(\sum_{\lambda\vdash r}a^{\ell(\lambda)}\right)q^r.
 \end{equation}
 In particular,
 \begin{align*}
- \frac1{\qpoch a\infty}
+ \frac1{\QPochhammer{a}{q}{\infty}}
  =\frac1{1-a}\bigl(&1+aq+a(a+1)q^2
  +a(a^2+a+1)q^3\\
- &+a(a^3+a^2+2a+1)q^4+\bigO(q^5)\bigr).
+ &+a(a^3+a^2+2a+1)q^4+\BigO(q^5)\bigr).
 \end{align*}
 \end{corollary}
 
@@ -776,7 +755,7 @@ number of parts.
 Two familiar resonant specializations deserve separate mention:
 \begin{align}
  (q;q)_\infty
- &=\sum_{m\in\Z}(-1)^m q^{m(3m-1)/2}
+ &=\sum_{m\in\IntegerNumbers}(-1)^m q^{m(3m-1)/2}
  =1-q-q^2+q^5+q^7-q^{12}-q^{15}+\cdots,\label{eq:pentagonal}\\
  \frac1{(q;q)_\infty}&=\sum_{r\ge0}p(r)q^r.\label{eq:partition-generating}
 \end{align}
@@ -790,12 +769,12 @@ moves with $q$.
 \label{thm:qzero-gaussian}
 Let $D=k(n-k)$.  Then
 \begin{equation}\label{eq:qzero-gaussian}
- \qbinom nk=\sum_{r=0}^{D}p_{k,n-k}(r)q^r,
+ \GaussianBinomial{n}{k}{q}=\sum_{r=0}^{D}p_{k,n-k}(r)q^r,
 \end{equation}
 where $p_{u,v}(r)$ is the number of partitions of $r$ fitting in a
 $u\times v$ rectangle.  Consequently,
 \[
- [q^r]\qbinom nk=p(r)
+ [q^r]\GaussianBinomial{n}{k}{q}=p(r)
  \qquad\text{whenever}\qquad r\le\min(k,n-k).
 \]
 The coefficients are palindromic:
@@ -811,7 +790,7 @@ rectangle proves palindromicity.
 
 Thus, if the rectangle is sufficiently large,
 \[
- \qbinom nk=1+q+2q^2+3q^3+5q^4+7q^5+11q^6+\cdots
+ \GaussianBinomial{n}{k}{q}=1+q+2q^2+3q^3+5q^4+7q^5+11q^6+\cdots
 \]
 for as many initial terms as fit.  This observation is often more useful than
 a quotient expansion: it gives coefficients exactly and certifies their
@@ -839,7 +818,7 @@ All three series converge absolutely.  Expanding
 $(1-q^m)^{-1}=\sum_{r\ge0}q^{mr}$ gives a convergent generalized series whose
 logarithmic support lies in
 \[
- \{m(x+r):m\ge1,r\ge0\}\cup\N.
+ \{m(x+r):m\ge1,r\ge0\}\cup\NaturalNumbers.
 \]
 For rational $x$ this is a Puiseux series; for irrational $x$ it is naturally
 a Hahn-type generalized power series.  In particular, the contributions from the two primitive generators of the
@@ -871,15 +850,15 @@ Absolute convergence follows from $0<q<1$ and $x>0$.
 \begin{theorem}[Exact base reversal]\label{thm:poc-infinity}
 For $a\ne0$ and $n\ge0$,
 \begin{equation}\label{eq:poc-reciprocity}
- \qpoch an=(-a)^nq^{\binom n2}\poch{a^{-1}}{q^{-1}}{n}.
+ \QPochhammer{a}{q}{n}=(-a)^nq^{\binom n2}\QPochhammer{a^{-1}}{q^{-1}}{n}.
 \end{equation}
 Consequently, with $p=q^{-1}$,
 \begin{align}
- \qpoch an
+ \QPochhammer{a}{q}{n}
  &=(1-a)(-a)^{n-1}q^{\binom n2}
  \Bigl(1-a^{-1}p-a^{-1}p^2
  \notag\\
- &\hspace{7em}+(a^{-2}-a^{-1})p^3+\bigO(p^4)\Bigr),
+ &\hspace{7em}+(a^{-2}-a^{-1})p^3+\BigO(p^4)\Bigr),
  \label{eq:poc-infinity-first}
 \end{align}
 provided $n>3$; for smaller $n$ the series truncates in the evident way.
@@ -898,21 +877,21 @@ $(-1)^j$, and the leading phase is $(-1)^{\binom n2}$.  Thus $+\infty$ and
 $-\infty$ are not distinct complex singularities, but they are distinct real
 asymptotic rays.
 
-The ordinary infinite product does not converge for $\abs q>1$.  There is,
+The ordinary infinite product does not converge for $\AbsoluteValue q>1$.  There is,
 however, a canonical renormalized finite-product limit.
 
 \begin{corollary}[Renormalized product outside the unit disk]
-If $\abs q>1$ and $a\ne0$, then
+If $\AbsoluteValue q>1$ and $a\ne0$, then
 \begin{equation}\label{eq:outside-renormalization}
  \lim_{n\to\infty}
- \frac{\qpoch an}{(-a)^nq^{\binom n2}}
- =\poch{a^{-1}}{q^{-1}}{\infty}.
+ \frac{\QPochhammer{a}{q}{n}}{(-a)^nq^{\binom n2}}
+ =\QPochhammer{a^{-1}}{q^{-1}}{\infty}.
 \end{equation}
 \end{corollary}
 
 \begin{proof}
 Use~\eqref{eq:poc-reciprocity}; the product on the right converges because
-$\abs{q^{-1}}<1$.
+$\AbsoluteValue{q^{-1}}<1$.
 \end{proof}
 
 \section{Gaussian and multinomial reciprocity}
@@ -921,7 +900,7 @@ $\abs{q^{-1}}<1$.
 \label{thm:gaussian-infinity}
 With $D=k(n-k)$,
 \begin{equation}\label{eq:gaussian-reciprocity}
- \qbinom nk=q^D\qbinombase nk{q^{-1}}
+ \GaussianBinomial{n}{k}{q}=q^D\GaussianBinomial{n}{k}{q^{-1}}
  =q^D\sum_{r=0}^{D}p_{k,n-k}(r)q^{-r}.
 \end{equation}
 Thus the expansion at infinity begins
@@ -930,7 +909,7 @@ Thus the expansion at infinity begins
 \]
 for as long as $r\le\min(k,n-k)$.  Along the negative real ray,
 \begin{equation}\label{eq:gaussian-minus-infinity}
- \qbinombase nk{-R}
+ \GaussianBinomial{n}{k}{-R}
  =(-1)^D R^D\sum_{r=0}^{D}(-1)^r p_{k,n-k}(r)R^{-r}.
 \end{equation}
 \end{theorem}
@@ -965,8 +944,8 @@ These are the simplest instances of the same reciprocal principle.
 
 Pairing even and odd exponents gives the exact value
 \begin{equation}\label{eq:poc-minus-one-value}
- \qpoch a n\big|_{q=-1}
- =(1-a)^{\ceil{n/2}}(1+a)^{\floor{n/2}}.
+ \QPochhammer{a}{q}{n}\big|_{q=-1}
+ =(1-a)^{\Ceiling{n/2}}(1+a)^{\Floor{n/2}}.
 \end{equation}
 In particular, for every $m\geq0$,
 \begin{equation}\label{eq:poc-minus-one-paired}
@@ -984,17 +963,17 @@ is valid in an arbitrary commutative ring and is the proof formalized by
 When $a\ne\pm1$, the first derivative follows from
 \eqref{eq:finite-poc-logder}.  Writing $n=2m$ or $2m+1$ gives
 \begin{align}
- \left.\frac{\dd}{\dd q}\log\qpoch a{2m}\right|_{q=-1}
+ \left.\frac{\Differential}{\Differential q}\log\QPochhammer{a}{q}{2m}\right|_{q=-1}
  &=\frac{am((2m-1)a-1)}{1-a^2},\label{eq:poc-minus-one-even-der}\\
- \left.\frac{\dd}{\dd q}\log\qpoch a{2m+1}\right|_{q=-1}
+ \left.\frac{\Differential}{\Differential q}\log\QPochhammer{a}{q}{2m+1}\right|_{q=-1}
  &=\frac{am(1+(2m+1)a)}{1-a^2}.\label{eq:poc-minus-one-odd-der}
 \end{align}
 Higher derivatives are supplied by \cref{thm:regular-bell}.  If $a=-1$,
 the odd-index factors vanish and
 \begin{equation}\label{eq:a-minus-one-resonance}
  (-1;q)_n
- =2^{\ceil{n/2}}(2\floor{n/2}-1)!!
- (q+1)^{\floor{n/2}}\bigl(1+\bigO(q+1)\bigr),
+ =2^{\Ceiling{n/2}}(2\Floor{n/2}-1)!!
+ (q+1)^{\Floor{n/2}}\bigl(1+\BigO(q+1)\bigr),
 \end{equation}
 where $(-1)!!=1$.  The specialization $a=1$ is identically zero for $n\ge1$.
 
@@ -1007,13 +986,13 @@ The $q$-integer satisfies
 \]
 and its first nonzero term is
 \[
- [2r]_q=r(q+1)+\bigO((q+1)^2).
+ [2r]_q=r(q+1)+\BigO((q+1)^2).
 \]
 It follows that
 \begin{equation}\label{eq:qfactorial-minus-one}
  [n]_q!
- =\floor{n/2}!\,(q+1)^{\floor{n/2}}
- \bigl(1+\bigO(q+1)\bigr).
+ =\Floor{n/2}!\,(q+1)^{\Floor{n/2}}
+ \bigl(1+\BigO(q+1)\bigr).
 \end{equation}
 This formula is a convenient way to evaluate factorial quotients at $-1$
 without ever forming a numerical $0/0$.
@@ -1029,38 +1008,38 @@ Assume $0\leq k\leq n$ and write
 \]
 If $(\eps,\delta)\ne(0,1)$, then
 \begin{align}
- \qbinom nk\bigg|_{q=-1}&=\binom ab,\label{eq:minus-one-value-nonzero}\\
- \left.\frac{\dd}{\dd q}\qbinom nk\right|_{q=-1}
+ \GaussianBinomial{n}{k}{q}\bigg|_{q=-1}&=\binom ab,\label{eq:minus-one-value-nonzero}\\
+ \left.\frac{\Differential}{\Differential q}\GaussianBinomial{n}{k}{q}\right|_{q=-1}
  &=-\frac{k(n-k)}2\binom ab.\label{eq:minus-one-der-nonzero}
 \end{align}
 If $n=2a$ and $k=2b+1$, then
 \begin{align}
- \qbinom{2a}{2b+1}\bigg|_{q=-1}&=0,\label{eq:minus-one-value-zero}\\
- \left.\frac{\dd}{\dd q}\qbinom{2a}{2b+1}\right|_{q=-1}
+ \GaussianBinomial{2a}{2b+1}{q}\bigg|_{q=-1}&=0,\label{eq:minus-one-value-zero}\\
+ \left.\frac{\Differential}{\Differential q}\GaussianBinomial{2a}{2b+1}{q}\right|_{q=-1}
  &=(a-b)\binom ab
  =a\binom{a-1}{b}.                                  \label{eq:minus-one-der-zero}
 \end{align}
 Thus every zero at $-1$ among these admissible Gaussian coefficients is
-simple over $\Z$, and therefore after base change to any field of
+simple over $\IntegerNumbers$, and therefore after base change to any field of
 characteristic zero.  After reduction modulo a prime, the displayed nonzero
 integer slope can vanish, so simplicity in positive characteristic is a
 separate question.
 \end{theorem}
 
 \begin{proof}
-Here is a denominator-free proof of the values.  Work first over $\Z$, put
-$G_{n,k}=\qbinom nk|_{q=-1}$ and extend the Gaussian triangle by zero outside
+Here is a denominator-free proof of the values.  Work first over $\IntegerNumbers$, put
+$G_{n,k}=\GaussianBinomial{n}{k}{q}|_{q=-1}$ and extend the Gaussian triangle by zero outside
 $0\leq k\leq n$.  Reciprocity has the polynomial form
-$\qbinom nk=q^{k(n-k)}\qbinombase{n}{k}{q^{-1}}$.  In an even row and an
+$\GaussianBinomial{n}{k}{q}=q^{k(n-k)}\GaussianBinomial{n}{k}{q^{-1}}$.  In an even row and an
 admissible odd column the exponent $k(n-k)$ is odd, so evaluation at $q=-1$ gives
 $G_{2a,2b+1}=-G_{2a,2b+1}$; the value is an integer, hence it is zero.
-Transport along the canonical homomorphism $\Z\to R$ gives the same vanishing
+Transport along the canonical homomorphism $\IntegerNumbers\to R$ gives the same vanishing
 identity in every commutative ring $R$, including rings with $2$-torsion.
 
 Now use the denominator-free alternate $q$-Pascal recurrence
 \[
- \qbinom{n+1}{k+1}
- =q^{k+1}\qbinom n{k+1}+\qbinom nk.
+ \GaussianBinomial{n+1}{k+1}{q}
+ =q^{k+1}\GaussianBinomial{n}{k+1}{q}+\GaussianBinomial{n}{k}{q}.
 \]
 Suppose the even row $2a$ has
 $G_{2a,2b}=\binom ab$ and $G_{2a,2b+1}=0$.  The two intervening odd-row
@@ -1083,7 +1062,7 @@ in~\eqref{eq:qfactorial-minus-one}.
 
 Assume first that the value is nonzero.  The degree is
 $D=k(n-k)$, which is even in precisely these parity cases.  Reciprocity gives
-$G(q)=q^DG(q^{-1})$ for $G(q)=\qbinom nk$.  Differentiating and setting
+$G(q)=q^DG(q^{-1})$ for $G(q)=\GaussianBinomial{n}{k}{q}$.  Differentiating and setting
 $q=-1$ yields
 \[
  G'(-1)=-DG(-1)-G'(-1),
@@ -1149,7 +1128,7 @@ missing slope.  The two mechanisms together determine the entire first jet.
 Let $\zeta$ be a primitive $m$th root of unity.  From
 \eqref{eq:cyclotomic-factor},
 \begin{equation}\label{eq:root-order}
- \ord_{q=\zeta}\qbinom nk=e_m(n,k)\in\{0,1\}.
+ \ord_{q=\zeta}\GaussianBinomial{n}{k}{q}=e_m(n,k)\in\{0,1\}.
 \end{equation}
 Write $n=am+r$ and $k=bm+s$ with $0\le r,s<m$.  A one-line floor calculation
 shows
@@ -1161,8 +1140,8 @@ and $n-k$ are added in base $m$.
 
 The $q$-Lucas value is
 \begin{equation}\label{eq:q-lucas-root}
- \qbinom nk\bigg|_{q=\zeta}
- =\binom ab\qbinombase rs\zeta,
+ \GaussianBinomial{n}{k}{q}\bigg|_{q=\zeta}
+ =\binom ab\GaussianBinomial{r}{s}{\zeta},
 \end{equation}
 where the right side is zero when $s>r$.
 
@@ -1171,7 +1150,7 @@ where the right side is zero when $s>r$.
 \begin{theorem}[Cyclotomic jet algorithm]\label{thm:cyclotomic-jets}
 Let
 \[
- G(q)=\qbinom nk,
+ G(q)=\GaussianBinomial{n}{k}{q},
  \qquad e=e_m(n,k),
  \qquad H(q)=\frac{G(q)}{(q-\zeta)^e}.
 \]
@@ -1179,11 +1158,11 @@ Then $H$ is holomorphic and nonzero at $\zeta$.  More explicitly,
 \begin{equation}\label{eq:root-H}
  H(q)=
  \left(\frac{\Phi_m(q)}{q-\zeta}\right)^e
- \prod_{\substack{d\ne m\\e_d(n,k)=1}}\Phi_d(q).
+ \prod_{\substack{d\ne m\\EulerE_d(n,k)=1}}\Phi_d(q).
 \end{equation}
 If
 \(
-\lambda_r=(\dd^r/\dd q^r)\log H(q)|_{q=\zeta}
+\lambda_r=(\Differential^r/\Differential q^r)\log H(q)|_{q=\zeta}
 \), then
 \begin{equation}\label{eq:root-jet-bell}
  G(q)=(q-\zeta)^eH(\zeta)
@@ -1193,7 +1172,7 @@ If
 In particular, if $e=1$,
 \begin{equation}\label{eq:root-leading-derivative}
  G'(\zeta)=\Phi_m'(\zeta)
- \prod_{\substack{d\ne m\\e_d(n,k)=1}}\Phi_d(\zeta).
+ \prod_{\substack{d\ne m\\EulerE_d(n,k)=1}}\Phi_d(\zeta).
 \end{equation}
 \end{theorem}
 
@@ -1205,37 +1184,37 @@ Apply \cref{thm:regular-bell} to $H$ and restore the extracted factor.
 
 This is an exact finite algorithm: determine the selected cyclotomic factors
 from floor functions, differentiate their logarithms symbolically or in the
-number field $\Q(\zeta)$, and evaluate Bell polynomials.  It avoids unstable
+number field $\RationalNumbers(\zeta)$, and evaluate Bell polynomials.  It avoids unstable
 cancellation in a quotient of factorials and works to arbitrary order.
 
 \chapter{Infinite shifted factorials as $q\to1$}\label{chap:infinite-qone}
 
 \section{Fixed $a$: the polylogarithmic expansion}
 
-For $\abs q<1$ and $\abs a<1$, the Lambert representation is
+For $\AbsoluteValue q<1$ and $\AbsoluteValue a<1$, the Lambert representation is
 \begin{equation}\label{eq:lambert-log-poc}
- \log\qpoch a\infty
+ \log\QPochhammer{a}{q}{\infty}
  =-\sum_{m\ge1}\frac{a^m}{m(1-q^m)}.
 \end{equation}
 It is the natural starting point because the singularity as $q\to1$ is
 isolated in the elementary kernel $(1-q^m)^{-1}$.
 
 \begin{theorem}[Fixed-parameter all-order expansion]\label{thm:infinite-fixed-a}
-Let $q=\e^{-t}$ with $t\to0$ in a closed subsector of $\Re t>0$.  Uniformly for
-$\abs a\le\rho<1$,
+Let $q=\EulerE^{-t}$ with $t\to0$ in a closed subsector of $\Re t>0$.  Uniformly for
+$\AbsoluteValue a\le\rho<1$,
 \begin{equation}\label{eq:infinite-fixed-a}
- \log\poch a{\e^{-t}}\infty
- \sim-\frac{\Li_2(a)}{t}+\frac12\log(1-a)
+ \log\QPochhammer{a}{\EulerE^{-t}}{\infty}
+ \sim-\frac{\Polylogarithm_2(a)}{t}+\frac12\log(1-a)
  -\sum_{r\ge1}\frac{B_{2r}}{(2r)!}
-   \Li_{2-2r}(a)t^{2r-1}.
+   \Polylogarithm_{2-2r}(a)t^{2r-1}.
 \end{equation}
 Equivalently,
 \begin{equation}\label{eq:infinite-fixed-a-product}
- \poch a{\e^{-t}}\infty
- \sim (1-a)^{1/2}\exp\left(-\frac{\Li_2(a)}t
+ \QPochhammer{a}{\EulerE^{-t}}{\infty}
+ \sim (1-a)^{1/2}\exp\left(-\frac{\Polylogarithm_2(a)}t
  \right)
  \exp\left(-\sum_{r\ge1}\frac{B_{2r}}{(2r)!}
- \Li_{2-2r}(a)t^{2r-1}\right).
+ \Polylogarithm_{2-2r}(a)t^{2r-1}\right).
 \end{equation}
 After the dominant exponential and square-root factor are removed, every
 ordinary coefficient follows from complete Bell polynomials.
@@ -1244,29 +1223,29 @@ ordinary coefficient follows from complete Bell polynomials.
 \begin{proof}
 Use
 \[
- \frac1{1-\e^{-x}}
+ \frac1{1-\EulerE^{-x}}
  =\frac1x+\frac12+
  \sum_{r=1}^{N-1}\frac{B_{2r}}{(2r)!}x^{2r-1}+R_N(x)
 \]
 in~\eqref{eq:lambert-log-poc}.  The first three kinds of terms sum to
-$-\Li_2(a)/t$, $\tfrac12\log(1-a)$, and the displayed polylogarithms.
-For the remainder, split the $m$-sum at $m\le\abs t^{-1}$.  On the first part,
-Taylor's theorem and $\abs a\le\rho$ give
+$-\Polylogarithm_2(a)/t$, $\tfrac12\log(1-a)$, and the displayed polylogarithms.
+For the remainder, split the $m$-sum at $m\le\AbsoluteValue t^{-1}$.  On the first part,
+Taylor's theorem and $\AbsoluteValue a\le\rho$ give
 \(
-\sum \rho^m m^{2N-2}\abs t^{2N-1}=\bigO(\abs t^{2N-1})
+\sum \rho^m m^{2N-2}\AbsoluteValue t^{2N-1}=\BigO(\AbsoluteValue t^{2N-1})
 \).
-The tail is exponentially small in $1/\abs t$ because of $\rho^m$.  This proves
+The tail is exponentially small in $1/\AbsoluteValue t$ because of $\rho^m$.  This proves
 the uniform Poincare expansion.
 \end{proof}
 
 The first correction is
 \[
- -\frac{t}{12}\Li_0(a)
+ -\frac{t}{12}\Polylogarithm_0(a)
  =-\frac{t}{12}\frac{a}{1-a},
 \]
 and the next nonzero logarithmic correction is
 \[
- +\frac{t^3}{720}\Li_{-2}(a)
+ +\frac{t^3}{720}\Polylogarithm_{-2}(a)
  =\frac{t^3}{720}\frac{a(1+a)}{(1-a)^3}.
 \]
 The absence of even positive powers is a property of the fixed-$a$ regime; it
@@ -1281,16 +1260,16 @@ absolutely convergent product of dressed gamma factors
 
 \section{The coalescing parameter $a=q^x$}
 
-The substitution $a=\e^{-xt}$ lies outside every compact set
-$\abs a\le\rho<1$.  The singularity of $\Li_2(a)$ at $a=1$ interacts with
+The substitution $a=\EulerE^{-xt}$ lies outside every compact set
+$\AbsoluteValue a\le\rho<1$.  The singularity of $\Polylogarithm_2(a)$ at $a=1$ interacts with
 $t\to0$, producing powers of $t$ and $\log t$ governed by the gamma function.
 
 \begin{theorem}[Mellin expansion of $(q^x;q)_\infty$]
 \label{thm:qx-infinite}
-Let $\Re x>0$ and $q=\e^{-t}$, where $t\to0$ in a closed subsector of
-$\abs{\arg t}<\pi/2$.  Then
+Let $\Re x>0$ and $q=\EulerE^{-t}$, where $t\to0$ in a closed subsector of
+$\AbsoluteValue{\arg t}<\pi/2$.  Then
 \begin{align}
- \log\poch{q^x}{q}\infty
+ \log\QPochhammer{q^x}{q}{\infty}
  \sim{}&-\frac{\pi^2}{6t}
  +\left(\frac12-x\right)\log t
  +\frac12\log(2\pi)-\log\Gamma(x)
@@ -1307,9 +1286,9 @@ $\Re x>0$.
 \begin{proof}
 For $\Re s>1$, Mellin inversion of the exponential in the Lambert series gives
 \begin{equation}\label{eq:qx-mellin}
- \log\poch{\e^{-xt}}{\e^{-t}}\infty
- =-\frac1{2\pi\ii}\int_{c-\ii\infty}^{c+\ii\infty}
- \Gamma(s)\zeta(s+1)\zeta(s,x)t^{-s}\dd s,
+ \log\QPochhammer{\EulerE^{-xt}}{\EulerE^{-t}}{\infty}
+ =-\frac1{2\pi\ImaginaryUnit}\int_{c-\ImaginaryUnit\infty}^{c+\ImaginaryUnit\infty}
+ \Gamma(s)\zeta(s+1)\zeta(s,x)t^{-s}\Differential s,
  \qquad c>1.
 \end{equation}
 The pole at $s=1$ contributes $-\pi^2/(6t)$.  At $s=0$ there is a double pole.
@@ -1324,7 +1303,7 @@ At $s=-1$, the residue of $\Gamma$ and the values
 $\zeta(0)=-1/2$, $\zeta(-1,x)=-B_2(x)/2$ yield $B_2(x)t/4$.
 At $s=-2r$, $r\ge1$, use
 \[
- \Res_{s=-2r}\Gamma(s)=\frac1{(2r)!},
+ \ResidueOperator_{s=-2r}\Gamma(s)=\frac1{(2r)!},
  \quad
  \zeta(1-2r)=-\frac{B_{2r}}{2r},
  \quad
@@ -1357,7 +1336,7 @@ For $x=2$,
  +\frac{13}{24}t-\frac1{24}t^2+\cdots,
 \]
 which agrees term by term with subtracting
-$\log(1-\e^{-t})$ from~\eqref{eq:eta-algebraic}.
+$\log(1-\EulerE^{-t})$ from~\eqref{eq:eta-algebraic}.
 \end{example}
 
 \chapter{The $q$-gamma, $q$-beta, and $q$-polygamma functions}\label{chap:qgamma-exp}
@@ -1370,16 +1349,16 @@ For $0<q<1$,
 \]
 Combining \cref{thm:qx-infinite} with
 \[
- \log\frac{1-\e^{-t}}t
+ \log\frac{1-\EulerE^{-t}}t
  =-\frac t2+\sum_{r\ge1}\frac{B_{2r}}{2r(2r)!}t^{2r}
 \]
 gives the following explicit expansion.
 
 \begin{theorem}[All-order $q\to1$ expansion of $\Gamma_q$]
 \label{thm:qgamma-all}
-For $\Re x>0$ and $q=\e^{-t}$,
+For $\Re x>0$ and $q=\EulerE^{-t}$,
 \begin{align}
- \log\Gamma_{\e^{-t}}(x)
+ \log\Gamma_{\EulerE^{-t}}(x)
  \sim{}&\log\Gamma(x)+\frac{(x-1)(2-x)}4t
  \notag\\
  &+\sum_{r\ge1}\frac{B_{2r}}{2r(2r)!}
@@ -1387,12 +1366,12 @@ For $\Re x>0$ and $q=\e^{-t}$,
  \label{eq:qgamma-all}
 \end{align}
 The expansion is locally uniform on compact subsets of $\Re x>0$ and in closed
-subsectors of $\abs{\arg t}<\pi/2$.
+subsectors of $\AbsoluteValue{\arg t}<\pi/2$.
 \end{theorem}
 
 \begin{proof}
 Subtract~\eqref{eq:qx-infinite} from its $x=1$ specialization and add
-$(1-x)\log(1-\e^{-t})$.  The $t^{-1}$, $\log(2\pi)$, and logarithmic terms
+$(1-x)\log(1-\EulerE^{-t})$.  The $t^{-1}$, $\log(2\pi)$, and logarithmic terms
 cancel.  The linear coefficient simplifies to
 \[
  \frac1{24}-\frac{B_2(x)}4-\frac{1-x}{2}
@@ -1409,11 +1388,11 @@ The first terms are
  \notag\\
  &+\frac1{24}\left(1-x+\frac{B_3(x)}3\right)t^2
  -\frac1{2880}\left(1-x+\frac{B_5(x)}5\right)t^4
- +\bigO(t^6).                                      \label{eq:qgamma-first}
+ +\BigO(t^6).                                      \label{eq:qgamma-first}
 \end{align}
 For $x=3$, this reduces to
 \[
- \log\Gamma_q(3)=\log(1+\e^{-t})
+ \log\Gamma_q(3)=\log(1+\EulerE^{-t})
  =\log2-\frac t2+\frac{t^2}{8}-\frac{t^4}{192}+\cdots,
 \]
 providing an exact consistency check.
@@ -1426,7 +1405,7 @@ half-plane.
 \begin{corollary}[Expansion of the $q$-digamma function]
 Let $\psi_q(x)=\partial_x\log\Gamma_q(x)$.  Then
 \begin{align}
- \psi_{\e^{-t}}(x)
+ \psi_{\EulerE^{-t}}(x)
  \sim{}&\psi(x)+\frac{3-2x}{4}t
  \notag\\
  &+\sum_{r\ge1}\frac{B_{2r}}{2r(2r)!}
@@ -1450,7 +1429,7 @@ B_q(x,y)=\Gamma_q(x)\Gamma_q(y)/\Gamma_q(x+y)
 \]
 Then
 \begin{equation}\label{eq:qbeta-all}
- \log\frac{B_{\e^{-t}}(x,y)}{B(x,y)}
+ \log\frac{B_{\EulerE^{-t}}(x,y)}{B(x,y)}
  \sim\bigl(c_1(x)+c_1(y)-c_1(x+y)\bigr)t
  +\sum_{r\ge1}
  \bigl(c_{2r}(x)+c_{2r}(y)-c_{2r}(x+y)\bigr)t^{2r}.
@@ -1470,18 +1449,18 @@ Dedekind eta modularity gives an exact completion of
 \begin{theorem}[Exact modular completion]\label{thm:eta-exact}
 For $t>0$,
 \begin{equation}\label{eq:eta-exact}
- (\e^{-t};\e^{-t})_\infty
+ (\EulerE^{-t};\EulerE^{-t})_\infty
  =\sqrt{\frac{2\pi}{t}}
  \exp\left(-\frac{\pi^2}{6t}+\frac{t}{24}\right)
- (\e^{-4\pi^2/t};\e^{-4\pi^2/t})_\infty.
+ (\EulerE^{-4\pi^2/t};\EulerE^{-4\pi^2/t})_\infty.
 \end{equation}
 In particular, truncating after the displayed elementary factor incurs a
-relative error $\bigO(\e^{-4\pi^2/t})$.
+relative error $\BigO(\EulerE^{-4\pi^2/t})$.
 \end{theorem}
 
 \begin{proof}
-Apply $\eta(-1/\tau)=\sqrt{-\ii\tau}\,\eta(\tau)$ with
-$\tau=\ii t/(2\pi)$ and use
+Apply $\eta(-1/\tau)=\sqrt{-\ImaginaryUnit\tau}\,\eta(\tau)$ with
+$\tau=\ImaginaryUnit t/(2\pi)$ and use
 $\eta(\tau)=q^{1/24}(q;q)_\infty$.
 \end{proof}
 
@@ -1490,7 +1469,7 @@ vanishes: the remainder is not zero, but beyond all orders.
 
 \section{The eta product on the negative real ray}
 
-Let $x=\e^{-t}$.  Separating even and odd indices gives
+Let $x=\EulerE^{-t}$.  Separating even and odd indices gives
 \begin{equation}\label{eq:negative-eta-dissection}
  (-x;-x)_\infty
  =\frac{(x^2;x^2)_\infty^3}
@@ -1505,17 +1484,17 @@ For $t>0$, set
 Q_c=\exp(-c\pi^2/t)
 \).  Then
 \begin{equation}\label{eq:negative-eta-exact}
- (-\e^{-t};-\e^{-t})_\infty
+ (-\EulerE^{-t};-\EulerE^{-t})_\infty
  =\sqrt{\frac{\pi}{t}}
  \exp\left(-\frac{\pi^2}{24t}+\frac{t}{24}\right)
  \frac{(Q_2;Q_2)_\infty^3}{(Q_4;Q_4)_\infty(Q_1;Q_1)_\infty}.
 \end{equation}
 Consequently,
 \begin{equation}\label{eq:negative-eta-leading}
- (-\e^{-t};-\e^{-t})_\infty
+ (-\EulerE^{-t};-\EulerE^{-t})_\infty
  =\sqrt{\frac{\pi}{t}}
  \exp\left(-\frac{\pi^2}{24t}+\frac{t}{24}\right)
- \left(1+\bigO(\e^{-\pi^2/t})\right).
+ \left(1+\BigO(\EulerE^{-\pi^2/t})\right).
 \end{equation}
 \end{theorem}
 
@@ -1536,8 +1515,8 @@ Substitute the three modular completions and simplify the elementary factors.
 
 Let $h,m$ be coprime, $m>0$, and
 \[
- \tau=\frac hm+\frac{\ii t}{2\pi},
- \qquad q=\e^{2\pi\ii\tau}=\e^{2\pi\ii h/m}\e^{-t}.
+ \tau=\frac hm+\frac{\ImaginaryUnit t}{2\pi},
+ \qquad q=\EulerE^{2\pi\ImaginaryUnit\tau}=\EulerE^{2\pi\ImaginaryUnit h/m}\EulerE^{-t}.
 \]
 Choose integers $a,b$ such that
 \(
@@ -1545,25 +1524,25 @@ Choose integers $a,b$ such that
 \), and let
 \(
 \gamma=\begin{psmallmatrix}a&b\\m&-h\end{psmallmatrix}
-\in\mathrm{SL}_2(\Z)
+\in\mathrm{SL}_2(\IntegerNumbers)
 \).  Dedekind eta transformation gives the exact identity
 \begin{equation}\label{eq:general-cusp-exact}
  (q;q)_\infty
- =\e^{-\pi\ii\tau/12}\,
+ =\EulerE^{-\pi\ImaginaryUnit\tau/12}\,
  \epsilon(\gamma)^{-1}(m\tau-h)^{-1/2}
- \e^{\pi\ii\gamma\tau/12}
- \bigl(\e^{2\pi\ii\gamma\tau};
-       \e^{2\pi\ii\gamma\tau}\bigr)_\infty,
+ \EulerE^{\pi\ImaginaryUnit\gamma\tau/12}
+ \bigl(\EulerE^{2\pi\ImaginaryUnit\gamma\tau};
+       \EulerE^{2\pi\ImaginaryUnit\gamma\tau}\bigr)_\infty,
 \end{equation}
 where $\epsilon(\gamma)$ is the eta multiplier and a consistent square-root
 branch is understood.  Since
 \[
- \gamma\tau=\frac am+\frac{2\pi\ii}{m^2t}.
+ \gamma\tau=\frac am+\frac{2\pi\ImaginaryUnit}{m^2t}.
 \]
 After the chosen Bezout relation is used, the final product differs from one by
-$\bigO(\e^{-4\pi^2/(m^2t)})$.  In particular,
+$\BigO(\EulerE^{-4\pi^2/(m^2t)})$.  In particular,
 \begin{equation}\label{eq:general-cusp-magnitude}
- \abs{(q;q)_\infty}
+ \AbsoluteValue{(q;q)_\infty}
  \sim\sqrt{\frac{2\pi}{mt}}
  \exp\left(-\frac{\pi^2}{6m^2t}+\frac{t}{24}\right).
 \end{equation}
@@ -1574,17 +1553,17 @@ The cases $m=1$ and $m=2$ reproduce
 
 For
 \[
- \Theta(z;q)=\sum_{n\in\Z}q^{n(n-1)/2}z^n,
- \qquad z=\e^u,
+ \Theta(z;q)=\sum_{n\in\IntegerNumbers}q^{n(n-1)/2}z^n,
+ \qquad z=\EulerE^u,
 \]
 completion of the square and Poisson summation give, for $t>0$,
 \begin{equation}\label{eq:theta-poisson}
- \Theta(\e^u;\e^{-t})
+ \Theta(\EulerE^u;\EulerE^{-t})
  =\sqrt{\frac{2\pi}{t}}
  \exp\left(\frac{(u+t/2)^2}{2t}\right)
- \sum_{k\in\Z}
+ \sum_{k\in\IntegerNumbers}
  \exp\left(-\frac{2\pi^2k^2}{t}
- +\frac{2\pi\ii k(u+t/2)}{t}\right).
+ +\frac{2\pi\ImaginaryUnit k(u+t/2)}{t}\right).
 \end{equation}
 This is an exact transseries rather than a merely formal power expansion.  Its
 dominant exponential changes when $u$ crosses Stokes lines, and multiplication
@@ -1597,11 +1576,11 @@ three infinite $q$-Pochhammer factors.
 
 Let $\zeta$ be a primitive $m$th root of unity and approach it radially by
 \[
- q=\zeta\e^{-t},
+ q=\zeta\EulerE^{-t},
  \qquad t\to0,
  \qquad \Re t>0.
 \]
-For fixed $\abs a<1$, the Lambert series can be separated into indices divisible
+For fixed $\AbsoluteValue a<1$, the Lambert series can be separated into indices divisible
 by $m$ and indices not divisible by $m$.  The former create the singular
 dilogarithmic scale; the latter are regular but remember the phase $\zeta$.
 
@@ -1616,7 +1595,7 @@ For $m=1$ the empty product is one.
 Define rational functions
 \begin{equation}\label{eq:eulerian-rational}
  \mathcal E_j(u)=
- \left(u\frac{\dd}{\dd u}\right)^j\frac1{1-u}.
+ \left(u\frac{\Differential}{\Differential u}\right)^j\frac1{1-u}.
 \end{equation}
 Thus
 \[
@@ -1626,16 +1605,16 @@ Thus
  \quad
  \mathcal E_2(u)=\frac{u(1+u)}{(1-u)^3},
 \]
-and $\mathcal E_j(u)=\Li_{-j}(u)$ for $j\ge1$, interpreted as a rational
+and $\mathcal E_j(u)=\Polylogarithm_{-j}(u)$ for $j\ge1$, interpreted as a rational
 function when $u\ne1$.
 
 \begin{theorem}[All-order fixed-$a$ root-of-unity expansion]
 \label{thm:root-fixed-a}
-Let $\abs a\le\rho<1$ and let $\zeta$ be primitive of order $m$.  Then, uniformly
+Let $\AbsoluteValue a\le\rho<1$ and let $\zeta$ be primitive of order $m$.  Then, uniformly
 for $a$ in that disk and for $t$ in a closed subsector of $\Re t>0$,
 \begin{align}
- \log\poch a{\zeta\e^{-t}}\infty
- \sim{}&-\frac{\Li_2(a^m)}{m^2t}
+ \log\QPochhammer{a}{\zeta\EulerE^{-t}}{\infty}
+ \sim{}&-\frac{\Polylogarithm_2(a^m)}{m^2t}
  +\frac12\log(1-a^m)-\frac1m\log D_\zeta(a)
  \notag\\
  &+\sum_{j\ge1}C_j(a,\zeta)t^j,                  \label{eq:root-fixed-a}
@@ -1648,7 +1627,7 @@ where
  a^r r^{j-1}\mathcal E_j(\zeta^r)
  \notag\\
  &-\frac{B_{j+1}m^{j-1}}{(j+1)!}
- \Li_{1-j}(a^m).                                  \label{eq:root-Cj}
+ \Polylogarithm_{1-j}(a^m).                                  \label{eq:root-Cj}
 \end{align}
 All coefficient sums converge absolutely.  For $m=1$, the first line involving
 $D_\zeta$ is empty and~\eqref{eq:root-fixed-a} reduces to
@@ -1658,25 +1637,25 @@ $D_\zeta$ is empty and~\eqref{eq:root-fixed-a} reduces to
 \begin{proof}
 Start from
 \[
- L(t)=-\sum_{r\ge1}\frac{a^r}{r(1-\zeta^r\e^{-rt})}.
+ L(t)=-\sum_{r\ge1}\frac{a^r}{r(1-\zeta^r\EulerE^{-rt})}.
 \]
 When $r=m\ell$, expand
 \[
- \frac1{1-\e^{-m\ell t}}
+ \frac1{1-\EulerE^{-m\ell t}}
  =\frac1{m\ell t}+\frac12+
  \sum_{j\ge1}\frac{B_{j+1}}{(j+1)!}(m\ell t)^j.
 \]
 The singular, constant, and $t^j$ contributions are respectively
 \[
- -\frac{\Li_2(a^m)}{m^2t},
+ -\frac{\Polylogarithm_2(a^m)}{m^2t},
  \qquad
  \frac1{2m}\log(1-a^m),
  \qquad
- -\frac{B_{j+1}m^{j-1}}{(j+1)!}\Li_{1-j}(a^m)t^j.
+ -\frac{B_{j+1}m^{j-1}}{(j+1)!}\Polylogarithm_{1-j}(a^m)t^j.
 \]
 For $m\nmid r$, the dilation identity
 \[
- \frac1{1-u\e^{-x}}
+ \frac1{1-u\EulerE^{-x}}
  =\sum_{j\ge0}\frac{(-x)^j}{j!}\mathcal E_j(u)
 \]
 gives the first sum in~\eqref{eq:root-Cj}.  Its constant term is
@@ -1701,20 +1680,20 @@ Adding the constant from the divisible indices gives the constant in
 
 For the remainder estimate, choose $\delta>0$ smaller than the distance from
 $0$ to every singularity of
-$x\mapsto(1-u\e^{-x})^{-1}$ with
+$x\mapsto(1-u\EulerE^{-x})^{-1}$ with
 $u\in\{\zeta,\ldots,\zeta^{m-1}\}$, and also choose $\delta<2\pi$ for the
 resonant Bernoulli expansion.  Split the Lambert sum at
-$r\le\delta/\abs t$.  On this first range the relevant Taylor remainders are
+$r\le\delta/\AbsoluteValue t$.  On this first range the relevant Taylor remainders are
 uniformly bounded by a polynomial in $r$ times the requested power of $t$.
-On the complementary range, $\rho^r=\bigO(\exp(-c/\abs t))$ for some $c>0$,
+On the complementary range, $\rho^r=\BigO(\exp(-c/\AbsoluteValue t))$ for some $c>0$,
 so the tail is smaller than every algebraic power of $t$.  This is the same
 small-range/exponentially-small-tail argument as in
 \cref{thm:infinite-fixed-a}.
 \end{proof}
 
 \begin{remark}[Normalization used in the roots-of-unity literature]
-If one writes $q=\zeta\e^{-\eps/m}$ instead, then $t=\eps/m$ and the leading
-term becomes $-\Li_2(a^m)/(m\eps)$.  This is the normalization commonly used
+If one writes $q=\zeta\EulerE^{-\eps/m}$ instead, then $t=\eps/m$ and the leading
+term becomes $-\Polylogarithm_2(a^m)/(m\eps)$.  This is the normalization commonly used
 in radial asymptotics of Nahm sums.  The cyclic factor
 $D_\zeta(a)^{-1/m}$ is exactly the finite root-of-unity datum that survives
 after the singular dilogarithm is removed; compare
@@ -1727,19 +1706,19 @@ Formula~\eqref{eq:root-Cj} is already computationally explicit.  For example,
 \begin{align*}
  C_1={}&
  \sum_{m\nmid r}a^r\frac{\zeta^r}{(1-\zeta^r)^2}
- -\frac1{12}\Li_0(a^m),\\
+ -\frac1{12}\Polylogarithm_0(a^m),\\
  C_2={}&-\frac12
  \sum_{m\nmid r}a^r r
  \frac{\zeta^r(1+\zeta^r)}{(1-\zeta^r)^3},
 \end{align*}
 where the $B_3$ contribution vanishes.  The sums may be reduced to finite
-linear combinations of $\Li_{1-j}(a\zeta^s)$ by discrete Fourier analysis.
+linear combinations of $\Polylogarithm_{1-j}(a\zeta^s)$ by discrete Fourier analysis.
 Keeping the residue-class sums is often numerically better conditioned and
 makes the distinction between resonant and nonresonant indices transparent.
 
 \section{Coalescence and why a second scaling is necessary}
 
-The hypothesis $\abs a\le\rho<1$ excludes $a\to\zeta^{-r}$, where one of the
+The hypothesis $\AbsoluteValue a\le\rho<1$ excludes $a\to\zeta^{-r}$, where one of the
 finite cyclic factors vanishes.  It also excludes the eta specialization
 $a=q$, for which $a^m\to1$.  In those regimes the dilogarithm in
 \eqref{eq:root-fixed-a} develops a logarithmic singularity that must be combined
@@ -1780,12 +1759,12 @@ Expanding gives
  \log e_q(x)
  ={}&x+\frac{x^2}{4}h+
  \left(\frac{x^2}{8}+\frac{x^3}{9}\right)h^2
- +\frac{x^2(9x^2+16x+9)}{144}h^3+\bigO(h^4),
+ +\frac{x^2(9x^2+16x+9)}{144}h^3+\BigO(h^4),
  \label{eq:eq-first}\\
  \log E_q(x)
  ={}&x-\frac{x^2}{4}h+
  \left(-\frac{x^2}{8}+\frac{x^3}{9}\right)h^2
- -\frac{x^2(9x^2-16x+9)}{144}h^3+\bigO(h^4).
+ -\frac{x^2(9x^2-16x+9)}{144}h^3+\BigO(h^4).
  \label{eq:Eq-first}
 \end{align}
 Bell exponentiation converts these logarithmic formulae to expansions of the
@@ -1799,53 +1778,53 @@ $e_q$.
 
 \section{The $q$-difference operator as an operator-valued $q$-number}
 
-Let $\Theta_x=x\frac{\dd}{\dd x}$.  For $q=\e^{-t}$,
+Let $\Theta_x=x\frac{\Differential}{\Differential x}$.  For $q=\EulerE^{-t}$,
 \begin{equation}\label{eq:qderivative-operator}
  D_qf(x)=\frac{f(x)-f(qx)}{(1-q)x}
- =x^{-1}\frac{1-\e^{-t\Theta_x}}{1-\e^{-t}}f(x)
- =x^{-1}[\Theta_x]_{\e^{-t}}f(x).
+ =x^{-1}\frac{1-\EulerE^{-t\Theta_x}}{1-\EulerE^{-t}}f(x)
+ =x^{-1}[\Theta_x]_{\EulerE^{-t}}f(x).
 \end{equation}
 Using~\eqref{eq:qnumber-qone} with the scalar $x$ replaced by the commuting
 operator $\Theta_x$ gives an all-order expansion.  The first terms are
 \begin{align}
- D_{\e^{-t}}
+ D_{\EulerE^{-t}}
  =x^{-1}\Bigl[&\Theta_x
  -\frac{t}{2}\Theta_x(\Theta_x-1)
  +\frac{t^2}{12}\Theta_x(\Theta_x-1)(2\Theta_x-1)
  \notag\\
  &-\frac{t^3}{24}\Theta_x^2(\Theta_x-1)^2
- +\bigO(t^4)\Bigr].                                \label{eq:qderivative-first}
+ +\BigO(t^4)\Bigr].                                \label{eq:qderivative-first}
 \end{align}
-Since $x^{-1}\Theta_x=\dd/\dd x$, the first term is the classical derivative.
+Since $x^{-1}\Theta_x=\Differential/\Differential x$, the first term is the classical derivative.
 Formula~\eqref{eq:qderivative-first} is valid on polynomials as a finite
 operator identity and on analytic functions under the usual local convergence
 conditions.
 
 \section{Jackson integration by Euler--Maclaurin}
 
-For $q=\e^{-t}$,
+For $q=\EulerE^{-t}$,
 \[
- \int_0^a f(x)\dd_qx
- =(1-\e^{-t})a\sum_{n\ge0}\e^{-nt}f(a\e^{-nt}).
+ \int_0^a f(x)\Differential_qx
+ =(1-\EulerE^{-t})a\sum_{n\ge0}\EulerE^{-nt}f(a\EulerE^{-nt}).
 \]
-Put $g(s)=a\e^{-s}f(a\e^{-s})$.  Suppose that $f$ is sufficiently smooth on
+Put $g(s)=a\EulerE^{-s}f(a\EulerE^{-s})$.  Suppose that $f$ is sufficiently smooth on
 $[0,a]$ and that the transformed derivatives of $g$ required below are
 integrable and decay at infinity.  Euler--Maclaurin then gives
 \begin{align}
  t\sum_{n\ge0}g(nt)
- \sim\int_0^\infty g(s)\dd s+\frac t2g(0)
+ \sim\int_0^\infty g(s)\Differential s+\frac t2g(0)
  -\sum_{r\ge1}\frac{B_{2r}t^{2r}}{(2r)!}g^{(2r-1)}(0).
  \label{eq:jackson-em}
 \end{align}
-Multiplication by $(1-\e^{-t})/t$ yields
+Multiplication by $(1-\EulerE^{-t})/t$ yields
 \begin{align}
- \int_0^a f(x)\dd_{\e^{-t}}x
- ={}&\int_0^a f(x)\dd x
- +\frac t2\left(af(a)-\int_0^a f(x)\dd x\right)
+ \int_0^a f(x)\Differential_{\EulerE^{-t}}x
+ ={}&\int_0^a f(x)\Differential x
+ +\frac t2\left(af(a)-\int_0^a f(x)\Differential x\right)
  \notag\\
  &+t^2\left(
  \frac{a^2f'(a)}{12}-\frac{af(a)}6
- +\frac16\int_0^a f(x)\dd x\right)+\bigO(t^3).
+ +\frac16\int_0^a f(x)\Differential x\right)+\BigO(t^3).
  \label{eq:jackson-first}
 \end{align}
 The full expansion is an explicit endpoint differential series.  It provides a
@@ -1872,7 +1851,7 @@ limit is
  \beta_1,\ldots,\beta_{r-1}
  \end{matrix};z\right].
 \]
-Let $\theta=z\frac{\dd}{\dd z}$ and define the polynomial
+Let $\theta=z\frac{\Differential}{\Differential z}$ and define the polynomial
 \begin{align}
  P_{2s}(X)=\sum_{i=1}^{r}
  \frac{B_{2s+1}(\alpha_i+X)-B_{2s+1}(\alpha_i)}{2s+1}
@@ -1890,7 +1869,7 @@ Let
 \[
  A=\sum_{i=1}^{r}\alpha_i-\sum_{j=1}^{r}\beta_j.
 \]
-Then, coefficientwise in $z$ and asymptotically as $q=\e^{-t}\to1$,
+Then, coefficientwise in $z$ and asymptotically as $q=\EulerE^{-t}\to1$,
 \begin{equation}\label{eq:hypergeom-operator}
  F_q(z)\sim
  \exp\left(
@@ -1927,7 +1906,7 @@ Since $P_2(n)=An(n-1)+Bn$, expansion of the operator exponential gives
  \notag\\
  &+\frac{t^2}{24}
  \left((3A^2+A)\theta^2+(B-A)\theta\right)F(z)
- +\bigO(t^3).                                      \label{eq:hypergeom-second}
+ +\BigO(t^3).                                      \label{eq:hypergeom-second}
 \end{align}
 If $A=0$, the entire first-order correction vanishes.  If also $B=0$, the
 expansion starts at order $t^4$ in the logarithmic operator and at order $t^4$
@@ -1958,7 +1937,7 @@ procedure is therefore:
 \item compare the local valuations and extract the resulting power of
       $q-\zeta$ (negative powers signal an actual pole rather than a removable
       singularity);
-\item evaluate the regular nonzero quotient in $\Q(\zeta)$;
+\item evaluate the regular nonzero quotient in $\RationalNumbers(\zeta)$;
 \item use Bell polynomials for its higher jet and then sum the finitely many
       terms whenever the complete terminating expression is regular.
 \end{enumerate}
@@ -1976,7 +1955,7 @@ The convergent fixed-$n$ expansion~\eqref{eq:gaussian-log-all} has radius
 $2\pi/n$ in $t$.  It is therefore not uniform when $n\to\infty$.  The natural
 transition coordinate is
 \[
- q=\e^{-\tau/N},
+ q=\EulerE^{-\tau/N},
  \qquad k=\alpha N,
  \qquad 0<\alpha<1,
 \]
@@ -1985,8 +1964,8 @@ coefficient ($\tau\to0$) and a genuinely dilogarithmic $q$-deformation.
 
 Define
 \begin{equation}\label{eq:I-tau}
- I_\tau(\beta)=\int_0^\beta\log(1-\e^{-\tau x})\dd x
- =\frac{\Li_2(\e^{-\beta\tau})-\pi^2/6}{\tau}.
+ I_\tau(\beta)=\int_0^\beta\log(1-\EulerE^{-\tau x})\Differential x
+ =\frac{\Polylogarithm_2(\EulerE^{-\beta\tau})-\pi^2/6}{\tau}.
 \end{equation}
 
 \section{A finite $q$-factorial with a moving endpoint}
@@ -1994,16 +1973,16 @@ Define
 \begin{theorem}[All-order moving-endpoint expansion]
 \label{thm:moving-qfactorial}
 Fix $\tau>0$ and $\beta>0$, and let $\beta N$ be integral.  With
-$q=\e^{-\tau/N}$,
+$q=\EulerE^{-\tau/N}$,
 \begin{align}
  \log(q;q)_{\beta N}
  \sim{}&N I_\tau(\beta)
- +\frac12\log\left(\frac{2\pi N(1-\e^{-\beta\tau})}{\tau}\right)
+ +\frac12\log\left(\frac{2\pi N(1-\EulerE^{-\beta\tau})}{\tau}\right)
  +\frac{\tau}{24N}\cothh\left(\frac{\beta\tau}{2}\right)
  \notag\\
  &+\sum_{r\ge2}
  \frac{B_{2r}\tau^{2r-1}}{(2r)!N^{2r-1}}
- \Li_{2-2r}(\e^{-\beta\tau}).                    \label{eq:moving-qfactorial}
+ \Polylogarithm_{2-2r}(\EulerE^{-\beta\tau}).                    \label{eq:moving-qfactorial}
 \end{align}
 The expansion is uniform when $(\beta,\tau)$ ranges over a compact subset of
 $(0,\infty)^2$.  After the $N^{-1}$ term, only odd powers of $N^{-1}$ occur.
@@ -2012,9 +1991,9 @@ $(0,\infty)^2$.  After the $N^{-1}$ term, only odd powers of $N^{-1}$ occur.
 \begin{proof}
 Write
 \[
- \log(1-\e^{-\tau x})=\log(\tau x)+g(\tau x),
+ \log(1-\EulerE^{-\tau x})=\log(\tau x)+g(\tau x),
  \qquad
- g(u)=\log\frac{1-\e^{-u}}u.
+ g(u)=\log\frac{1-\EulerE^{-u}}u.
 \]
 Then
 \begin{align*}
@@ -2041,7 +2020,7 @@ $\tau\cothh(\beta\tau/2)/24$.  For $r\ge2$,
 $H^{(2r-1)}(0)=0$ and
 \[
  H^{(2r-1)}(\beta)
- =\tau^{2r-1}\Li_{2-2r}(\e^{-\beta\tau})
+ =\tau^{2r-1}\Polylogarithm_{2-2r}(\EulerE^{-\beta\tau})
  -\frac{(2r-2)!}{\beta^{2r-1}}.
 \]
 The rational endpoint term cancels the Stirling term, leaving exactly the
@@ -2054,9 +2033,9 @@ Euler--Maclaurin bounds prove the stated uniformity.
 Define the deformed entropy
 \begin{align}
  \Phi(\alpha,\tau)
- &\defeq I_\tau(1)-I_\tau(\alpha)-I_\tau(1-\alpha)\notag\\
- &=\frac{\Li_2(\e^{-\tau})-\Li_2(\e^{-\alpha\tau})
- -\Li_2(\e^{-(1-\alpha)\tau})+\pi^2/6}{\tau}.
+ &\DefinitionEquals I_\tau(1)-I_\tau(\alpha)-I_\tau(1-\alpha)\notag\\
+ &=\frac{\Polylogarithm_2(\EulerE^{-\tau})-\Polylogarithm_2(\EulerE^{-\alpha\tau})
+ -\Polylogarithm_2(\EulerE^{-(1-\alpha)\tau})+\pi^2/6}{\tau}.
  \label{eq:deformed-entropy}
 \end{align}
 Also put
@@ -2065,22 +2044,22 @@ Also put
  \cothh\left(\frac{\beta\tau}{2}\right),\label{eq:A1-double}\\
  A_{2r-1}(\beta;\tau)&=
  \frac{B_{2r}\tau^{2r-1}}{(2r)!}
- \Li_{2-2r}(\e^{-\beta\tau})\qquad(r\ge2).
+ \Polylogarithm_{2-2r}(\EulerE^{-\beta\tau})\qquad(r\ge2).
  \label{eq:Ar-double}
 \end{align}
 
-\begin{corollary}[All-order double scaling of $\qbinom Nk$]
+\begin{corollary}[All-order double scaling of $\GaussianBinomial{N}{k}{q}$]
 \label{cor:double-gaussian}
 Let $k=\alpha N$ be integral, with $(\alpha,\tau)$ in a compact subset of
 $(0,1)\times(0,\infty)$.  Then
 \begin{align}
- \log\qbinombase N{\alpha N}{\e^{-\tau/N}}
+ \log\GaussianBinomial{N}{\alpha N}{\EulerE^{-\tau/N}}
  \sim{}&N\Phi(\alpha,\tau)
  -\frac12\log\frac{2\pi N}{\tau}
  \notag\\
  &+\frac12\log
- \frac{1-\e^{-\tau}}
- {(1-\e^{-\alpha\tau})(1-\e^{-(1-\alpha)\tau})}
+ \frac{1-\EulerE^{-\tau}}
+ {(1-\EulerE^{-\alpha\tau})(1-\EulerE^{-(1-\alpha)\tau})}
  \notag\\
  &+\sum_{r\ge1}\frac{
  A_{2r-1}(1;\tau)-A_{2r-1}(\alpha;\tau)
@@ -2107,9 +2086,9 @@ The next is
 \begin{equation}\label{eq:double-third-correction}
  -\frac{\tau^3}{720N^3}
  \left[
- \Li_{-2}(\e^{-\tau})-
- \Li_{-2}(\e^{-\alpha\tau})-
- \Li_{-2}(\e^{-(1-\alpha)\tau})
+ \Polylogarithm_{-2}(\EulerE^{-\tau})-
+ \Polylogarithm_{-2}(\EulerE^{-\alpha\tau})-
+ \Polylogarithm_{-2}(\EulerE^{-(1-\alpha)\tau})
  \right].
 \end{equation}
 
@@ -2140,12 +2119,12 @@ Let $\alpha_1+\cdots+\alpha_s=1$ with every $\alpha_i>0$ and
 $n_i=\alpha_iN$ integral.  The same subtraction gives
 \begin{align}
  \log\qmultinom{N}{\alpha_1N,\ldots,\alpha_sN}
- \bigg|_{q=\e^{-\tau/N}}
+ \bigg|_{q=\EulerE^{-\tau/N}}
  \sim{}&N\left(I_\tau(1)-\sum_{i=1}^{s}I_\tau(\alpha_i)\right)
  \notag\\
  &+\frac{1-s}{2}\log\frac{2\pi N}{\tau}
- +\frac12\log\frac{1-\e^{-\tau}}
- {\prod_i(1-\e^{-\alpha_i\tau})}
+ +\frac12\log\frac{1-\EulerE^{-\tau}}
+ {\prod_i(1-\EulerE^{-\alpha_i\tau})}
  \notag\\
  &+\sum_{r\ge1}\frac{
  A_{2r-1}(1;\tau)-\sum_iA_{2r-1}(\alpha_i;\tau)}
@@ -2168,7 +2147,7 @@ formalization and exact computation:
 
 \begin{enumerate}[label=\textup{(\alph*)}]
 \item finite power sums and Bernoulli polynomials;
-\item cyclotomic factorization over $\Z[q]$;
+\item cyclotomic factorization over $\IntegerNumbers[q]$;
 \item logarithmic derivatives of nonvanishing polynomials;
 \item complete Bell polynomials or the equivalent triangular recurrence;
 \item exact rational or cyclotomic-number arithmetic.
@@ -2226,7 +2205,7 @@ checks.
       expressions to polynomials in $n$ and $D=k(n-k)$.
 \item It expands $\prod_{j\ge1}(1-aq^j)$ through a requested degree and verifies
       the weighted distinct-partition coefficients at $q=0$.
-\item It constructs every $\qbinom nk$ with $0\le k\le n\le20$ by Pascal
+\item It constructs every $\GaussianBinomial{n}{k}{q}$ with $0\le k\le n\le20$ by Pascal
       recursion, checks the normalized $q=1$ expansion through fourth order,
       and checks both formulas in \cref{thm:gaussian-minus-one-jet}.  Each suite
       covers all 230 index pairs and passes exactly.
@@ -2277,7 +2256,7 @@ The experiments suggest the following implementation discipline.
       \texttt{log1p}; use \texttt{expm1} for $1-q^j$.
 \item Near a root of unity, cancel cyclotomic zero factors symbolically before
       floating-point evaluation.
-\item At $\abs q>1$, reverse the base and remove the explicit power of $q$
+\item At $\AbsoluteValue q>1$, reverse the base and remove the explicit power of $q$
       before evaluation.
 \item Choose the truncation order asymptotically: terms of a divergent
       Bernoulli series should be stopped near their least magnitude, not at a
@@ -2300,14 +2279,14 @@ $q=1$~\cite{ArdehaliRosengren}.
 
 \begin{conjecture}[Uniform cyclic-gamma normal form]\label{conj:uniform-root}
 Let $\zeta$ be primitive of order $m$, let
-$q=\zeta\e^{-t}$, and let
+$q=\zeta\EulerE^{-t}$, and let
 $a=a(t)$ satisfy
 \(
-1-a(t)^m=\bigO(t^\sigma)
+1-a(t)^m=\BigO(t^\sigma)
 \)
 for a fixed $\sigma>0$.  After extracting an explicit product of
 \begin{enumerate}[label=\textup{(\roman*)}]
-\item $\exp(-\Li_2(a^m)/(m^2t))$,
+\item $\exp(-\Polylogarithm_2(a^m)/(m^2t))$,
 \item a cyclic quantum dilogarithm,
 \item finitely many ordinary gamma factors in the scaled variable
       $(1-a^m)/t$, and
@@ -2316,7 +2295,7 @@ for a fixed $\sigma>0$.  After extracting an explicit product of
 there is a single coefficient expansion, uniform for the scaled variable in
 compact subsets of a cut plane, that reduces to
 \eqref{eq:root-fixed-a} when $(1-a^m)/t\to\infty$ and to the shifted
-root-of-unity expansion when $(1-a^m)/t=\bigO(1)$.
+root-of-unity expansion when $(1-a^m)/t=\BigO(1)$.
 \end{conjecture}
 
 A proof should follow from residue-class dissection plus an exact
@@ -2336,8 +2315,8 @@ Fix $m$, a primitive $m$th root $\zeta$, residues
 $0\le r,s<m$, and a jet order $J$.  Write $n=am+r$ and $k=bm+s$.  After
 extracting the possible simple factor $q-\zeta$ and the natural leading
 $q$-Lucas factor, the first $J$ normalized Taylor coefficients of
-$\qbinom nk$ at $q=\zeta$ are polynomials in $a$ and $b$ with coefficients in
-$\Q(\zeta)$, of degree bounded linearly in $J$.
+$\GaussianBinomial{n}{k}{q}$ at $q=\zeta$ are polynomials in $a$ and $b$ with coefficients in
+$\RationalNumbers(\zeta)$, of degree bounded linearly in $J$.
 \end{conjecture}
 
 Block the factorial products into intervals of length $m$.  Each block has a
@@ -2352,8 +2331,8 @@ $n$.
 compact sets.  The same Euler--Maclaurin derivation should extend to complex
 $\tau$ wherever the segments
 $\{\beta\tau:0\le\beta\le1\}$ arising in the endpoint integrals avoid the
-nonzero lattice $2\pi\ii\Z$.  Natural limiting cuts are therefore the imaginary
-rays beginning at $\pm2\pi\ii$ (or at $\pm2\pi\ii/\beta$ for an individual
+nonzero lattice $2\pi\ImaginaryUnit\IntegerNumbers$.  Natural limiting cuts are therefore the imaginary
+rays beginning at $\pm2\pi\ImaginaryUnit$ (or at $\pm2\pi\ImaginaryUnit/\beta$ for an individual
 endpoint parameter $\beta$).  For finite $N$, zeros and poles occur at rational
 points corresponding to roots of unity; as $N$ grows, these points become
 dense along the limiting cuts.  A worthwhile next step is a uniform theorem on
@@ -2430,9 +2409,9 @@ every resonant one.  At $q=0$, the same products become weighted partition
 generators; at infinity, reciprocity reverses those coefficients.  Cyclotomic
 factorization is the correct coordinate system at roots of unity.
 
-Second, the coordinate $q=\e^{-t}$ linearizes the multiplicative geometry near
+Second, the coordinate $q=\EulerE^{-t}$ linearizes the multiplicative geometry near
 $q=1$.  Bernoulli numbers enter through the universal factor
-$1-\e^{-x}$, power sums record finite endpoints, and polylogarithms record
+$1-\EulerE^{-x}$, power sums record finite endpoints, and polylogarithms record
 infinite Lambert sums.  Bell polynomials then convert logarithmic data into
 ordinary coefficients.  This single scheme covers finite shifted factorials,
 Gaussian and multinomial coefficients, $q$-gamma and $q$-beta functions, and
@@ -2444,7 +2423,7 @@ while residue-class splitting produces cyclic quantum dilogarithms.  The
 boundary between fixed and coalescing parameters is the main remaining
 uniformity problem.
 
-Finally, the scale $q=\e^{-\tau/N}$ shows how fixed-degree perturbation theory
+Finally, the scale $q=\EulerE^{-\tau/N}$ shows how fixed-degree perturbation theory
 merges with large combinatorial systems.  Its all-order odd inverse-power
 expansion is both a $q$-analogue of Stirling's formula and a dilogarithmic
 large-deviation expansion.  Together with the exact cyclotomic jets, it offers
@@ -2504,7 +2483,7 @@ Let $s(m,r)$ denote the signed Stirling number of the first kind, determined by
 \]
 If
 \[
- F(\e^{-t})=\sum_{r\ge0}a_r\frac{t^r}{r!},
+ F(\EulerE^{-t})=\sum_{r\ge0}a_r\frac{t^r}{r!},
  \qquad q=1+h,
 \]
 then
@@ -2538,17 +2517,17 @@ The first three Faulhaber differences are
 Consequently, for the centered normalized coefficient
 \[
  H_{n,k}(t)=
- \e^{Dt/2}\frac{\qbinombase nk{\e^{-t}}}{\binom nk},
+ \EulerE^{Dt/2}\frac{\GaussianBinomial{n}{k}{\EulerE^{-t}}}{\binom nk},
 \]
 we have
 \begin{align*}
  \log H_{n,k}(t)
  ={}&\frac{\Delta_2}{24}t^2
      -\frac{\Delta_4}{2880}t^4
-     +\frac{\Delta_6}{181440}t^6+\bigO(t^8),\\
+     +\frac{\Delta_6}{181440}t^6+\BigO(t^8),\\
  H_{n,k}(t)
  ={}&1+A_2t^2+\bigl(A_4+\tfrac12A_2^2\bigr)t^4\\
- &\quad+\bigl(A_6+A_2A_4+\tfrac16A_2^3\bigr)t^6+\bigO(t^8),
+ &\quad+\bigl(A_6+A_2A_4+\tfrac16A_2^3\bigr)t^6+\BigO(t^8),
 \end{align*}
 where
 \[
@@ -2559,14 +2538,14 @@ where
 
 In the literal coordinate $h=q-1$, the uncentered normalized polynomial has
 \begin{align}
- \frac{\qbinombase nk{1+h}}{\binom nk}
+ \frac{\GaussianBinomial{n}{k}{1+h}}{\binom nk}
  ={}&1+\frac D2h
  +\frac{D(3D+n-5)}{24}h^2
  +\frac{D(D-2)(D+n-3)}{48}h^3\notag\\
  &+\frac{D}{5760}\Bigl(
  15D^3+30D^2n-150D^2+5Dn^2-168Dn+487D\notag\\
  &\hspace{7.1em}{}-2n^3-4n^2+218n-500
- \Bigr)h^4+\bigO(h^5).
+ \Bigr)h^4+\BigO(h^5).
  \label{eq:gaussian-h-four}
 \end{align}
 Formula~\eqref{eq:gaussian-h-four} follows mechanically from
@@ -2582,7 +2561,7 @@ The weighted distinct-partition expansion gives
 \begin{align*}
  (aq;q)_\infty={}&1-aq-aq^2+a(a-1)q^3+a(a-1)q^4\\
  &+a(2a-1)q^5-a(a-1)^2q^6-a(a^2-3a+1)q^7\\
- &-a(a-1)(2a-1)q^8+\bigO(q^9).
+ &-a(a-1)(2a-1)q^8+\BigO(q^9).
 \end{align*}
 Multiplication by $1-a$ gives the corresponding expansion of
 $(a;q)_\infty$.  The coefficient of $q^r$ is already stable in the finite
@@ -2591,7 +2570,7 @@ product $(aq;q)_{n-1}$ when $n>r$.
 At $a=1$, Euler's pentagonal cancellation turns the table into
 \[
  (q;q)_\infty
- =1-q-q^2+q^5+q^7+\bigO(q^{12}).
+ =1-q-q^2+q^5+q^7+\BigO(q^{12}).
 \]
 At $a=-1$, it gives the generating product for partitions into distinct parts,
 \[
@@ -2624,7 +2603,7 @@ python q_expansion_experiments.py
 The program performs the following independent checks.
 
 \begin{enumerate}[label=\textup{(\roman*)}]
-\item It constructs $\qbinom nk$ over $\Z[q]$ by the $q$-Pascal recurrence,
+\item It constructs $\GaussianBinomial{n}{k}{q}$ over $\IntegerNumbers[q]$ by the $q$-Pascal recurrence,
       checks the normalized expansion at $q=1$ through fourth order, and checks
       the value and derivative formula at $q=-1$, in each case for all
       $0\le k\le n\le20$.
@@ -2688,7 +2667,7 @@ Finite, resonant $q=q_0$
  & Extract $(q-q_0)^\nu$
  & Nonvanishing-factor logarithmic derivatives\\
 $q\to1$, fixed degree
- & $q=\e^{-t}$; divide by the classical limit
+ & $q=\EulerE^{-t}$; divide by the classical limit
  & Bernoulli numbers and Faulhaber differences\\
 $q\to0$
  & None
@@ -2700,15 +2679,15 @@ Finite root of unity
  & Extract the cyclotomic zero
  & Cyclotomic exponents, residue classes, Bell recurrence\\
 Infinite $q\to1$, fixed $a$
- & Remove $\exp(-\Li_2(a)/t)$
+ & Remove $\exp(-\Polylogarithm_2(a)/t)$
  & Lambert series and polylogarithms\\
 Infinite $q\to1$, $a=q^x$
  & Remove exponential, power, and gamma factors
  & Mellin residues and Bernoulli polynomials\\
 Radial root of unity
- & Remove $\exp(-\Li_2(a^m)/(m^2t))$
+ & Remove $\exp(-\Polylogarithm_2(a^m)/(m^2t))$
  & Resonant residue class plus cyclic dilogarithm\\
-$q=\e^{-\tau/N}$
+$q=\EulerE^{-\tau/N}$
  & Remove the order-$N$ dilogarithmic action
  & Singular Euler--Maclaurin; odd powers of $N^{-1}$\\
 \bottomrule

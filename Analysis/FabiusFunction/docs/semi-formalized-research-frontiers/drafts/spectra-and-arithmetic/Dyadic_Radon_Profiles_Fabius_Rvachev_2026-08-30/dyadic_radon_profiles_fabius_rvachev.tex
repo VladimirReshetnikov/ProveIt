@@ -46,6 +46,8 @@
 \setcounter{tocdepth}{2}
 \setcounter{secnumdepth}{3}
 
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -60,30 +62,8 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{caution}[theorem]{Caution}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\supp}{\operatorname{supp}}
 \newcommand{\ord}{\operatorname{ord}}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sincp}{\operatorname{sinc}_{\pi}}
-\newcommand{\vtwo}{\nu_2}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
 \newcommand{\Bell}{\mathcal B}
-\newcommand{\bigO}{\mathrm O}
-\newcommand{\smallo}{\mathrm o}
-\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
-\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
-\newcommand{\abs}[1]{\left|#1\right|}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 \newcommand{\New}{\textcolor{darkgreen}{\textsf{\textbf{[N]}}}}
 \newcommand{\Imported}{\textcolor{navy}{\textsf{\textbf{[I]}}}}
 \newcommand{\Evidence}{\textcolor{gold}{\textsf{\textbf{[E]}}}}
@@ -156,7 +136,7 @@ $\sum_hc_h2^{-h}<\infty$, let
 where the $X_{h,\ell}$ are independent centered Rvachev variables.  Its
 Fourier transform is
 \[
- \Psi_c(t)=\prod_{j\ge0}\sincp(t/2^j)^{a_j},
+ \Psi_c(t)=\prod_{j\ge0}\SincPi(t/2^j)^{a_j},
  \qquad a_j=\sum_{h\le j}c_h,
 \]
 and the zero at any integer of $2$-adic valuation $v$ has multiplicity
@@ -260,7 +240,7 @@ The report does \emph{not} relabel the following as new:
 \item Bernoulli cumulants, complete Bell-polynomial moments, Appell
       deconvolution, and polynomial synthesis by shifted up-functions;
 \item the canonical infinite sinc product, integer zero multiplicities
-      $1+\vtwo(n)$, arithmetic rays, spectral determinants, and Fourier-decay
+      $1+\TwoAdicValuation(n)$, arithmetic rays, spectral determinants, and Fourier-decay
       analyses;
 \item the Pascal--Rvachev product hierarchy, its existing zero divisor,
       generalized spectral signs, spectral zeta function, endpoint saddle, and
@@ -320,7 +300,7 @@ are labelled \Evidence; conjectures and research problems are labelled
 
 Define the normalized sinc function
 \begin{equation}
- \sincp z:=\frac{\sin(\pi z)}{\pi z},\qquad \sincp0=1.
+ \SincPi z:=\frac{\sin(\pi z)}{\pi z},\qquad \SincPi0=1.
  \label{eq:sinc-normalized}
 \end{equation}
 Let $U_0,U_1,\ldots$ be independent random variables uniformly distributed on
@@ -329,12 +309,12 @@ $[-1/2,1/2]$, and put
  X:=\sum_{j=0}^{\infty}2^{-j}U_j.
  \label{eq:rank-one-series}
 \end{equation}
-The series converges absolutely and $|X|\le1$.  We use $\Up$ for its density.
+The series converges absolutely and $|X|\le1$.  We use $\RvachevUp$ for its density.
 This is the centered Rvachev up-law in the normalization of the repository.
 Its characteristic function in the $2\pi$ Fourier convention is
 \begin{equation}
- \Phi(t):=\E\e^{2\pi\ii tX}
- =\prod_{j=0}^{\infty}\sincp(t/2^j).
+ \Phi(t):=\Expectation\EulerE^{2\pi\ImaginaryUnit tX}
+ =\prod_{j=0}^{\infty}\SincPi(t/2^j).
  \label{eq:rank-one-Phi}
 \end{equation}
 The density is even, nonnegative, $C^\infty$, supported on $[-1,1]$, and flat
@@ -345,7 +325,7 @@ at both endpoints.
 Let $F:[0,1]\to[0,1]$ be the standard Fabius function and let
 $I=F^{-1}$.  With
 \begin{equation}
- G(x):=\Prob(X\le x),\qquad -1\le x\le1,
+ G(x):=\Probability(X\le x),\qquad -1\le x\le1,
 \end{equation}
 we have the exact coordinate relation
 \begin{equation}
@@ -353,7 +333,7 @@ we have the exact coordinate relation
  \label{eq:CDF-Fabius}
 \end{equation}
 Indeed, differentiating the right-hand side and using the two halves of the
-Fabius dilation equation gives $G'(x)=\Up(x)$, while both sides vanish at
+Fabius dilation equation gives $G'(x)=\RvachevUp(x)$, while both sides vanish at
 $x=-1$.
 
 \begin{proposition}[\Imported\ Inverse-Fabius quantile coordinate]
@@ -373,7 +353,7 @@ The quantile of $G(x)=F((x+1)/2)$ is $G^{-1}(v)=2I(v)-1$.
 
 The moment generating function is
 \begin{equation}
- M_X(z)=\E\e^{zX}
+ M_X(z)=\Expectation\EulerE^{zX}
  =\prod_{j=0}^{\infty}
    \frac{\sinh(z/2^{j+1})}{z/2^{j+1}}.
  \label{eq:rank-one-mgf}
@@ -421,7 +401,7 @@ The deterministic bound in \eqref{eq:support-budget} makes
 \eqref{eq:Yc} absolutely convergent for every point in the underlying product
 space.  If only finitely many $c_h$ are nonzero, the law is the ordinary Radon
 projection of the product density
-$\prod_{h,\ell}\Up(x_{h,\ell})$ along the coefficient vector whose entries are
+$\prod_{h,\ell}\RvachevUp(x_{h,\ell})$ along the coefficient vector whose entries are
 $2^{-h}$.  For infinitely many occupied shells it is the compatible
 projective limit of those finite-dimensional Radon projections.  This is the
 reason for the terminology.
@@ -447,9 +427,9 @@ Let $c$ be a dyadic direction profile.  Then:
       compact support.
 \item Its characteristic function is
 \begin{equation}
- \Psi_c(t):=\E\e^{2\pi\ii tY_c}
+ \Psi_c(t):=\Expectation\EulerE^{2\pi\ImaginaryUnit tY_c}
  =\prod_{h\ge0}\Phi(t/2^h)^{c_h}
- =\prod_{j\ge0}\sincp(t/2^j)^{a_j}.
+ =\prod_{j\ge0}\SincPi(t/2^j)^{a_j}.
  \label{eq:Psi-profile}
 \end{equation}
 \item The generating functions satisfy the first triangular integration law
@@ -476,7 +456,7 @@ $\mathcal L(R)$ preserves $C^\infty$ regularity and nonnegativity.
 
 Independence gives the first product in \eqref{eq:Psi-profile}.  Substitute
 \eqref{eq:rank-one-Phi} and collect the factor
-$\sincp(t/2^j)$: it occurs once for every outer shell $h\le j$, with total
+$\SincPi(t/2^j)$: it occurs once for every outer shell $h\le j$, with total
 multiplicity $a_j$.  Finally,
 \[
  A(q)=\sum_{j\ge0}\sum_{h\le j}c_hq^j
@@ -515,7 +495,7 @@ tail.
 The classical up-law is $c=(1,0,0,\ldots)$, so $a_j=1$.  If $c_h=1$ for every
 $h$, then $a_j=j+1$, $S_c=2$, and
 \[
- \Psi_c(t)=\prod_{j\ge0}\sincp(t/2^j)^{j+1}.
+ \Psi_c(t)=\prod_{j\ge0}\SincPi(t/2^j)^{j+1}.
 \]
 More generally, choosing
 $c_h=(h+1)^d-h^d$ gives $a_j=(j+1)^d$ and produces the full hierarchy of
@@ -527,8 +507,8 @@ logarithmic Fourier orders treated in \cref{sec:fourier-envelope}.
 
 \subsection{Multiplicity as a second triangular integration}
 
-For $n\in\Z\setminus\{0\}$ write $v=\vtwo(|n|)$.  A factor
-$\sincp(t/2^j)$ vanishes at $t=n$ exactly when $j\le v$, and then the zero is
+For $n\in\IntegerNumbers\setminus\{0\}$ write $v=\TwoAdicValuation(|n|)$.  A factor
+$\SincPi(t/2^j)$ vanishes at $t=n$ exactly when $j\le v$, and then the zero is
 simple.
 
 \begin{theorem}[\New\ Integer-zero profile]
@@ -575,7 +555,7 @@ The direction profile is recovered from the integer-zero multiplicities by
 Consequently, a sequence $(m_v)_{v\ge0}$ occurs as the integer-zero profile of
 a dyadic Radon projection if and only if
 \begin{equation}
- \Delta^2m_v\in\Z_{\ge0}
+ \Delta^2m_v\in\IntegerNumbers_{\ge0}
  \quad\text{for every }v,
  \qquad
  \sum_{v\ge0}(\Delta^2m_v)2^{-v}<\infty.
@@ -628,7 +608,7 @@ invariant; it is a complete coordinate system for this projection cone.
 For $\Re s$ sufficiently large,
 \begin{equation}
  \mathcal Z_c(s)
- :=\sum_{n=1}^{\infty}\frac{m_{\vtwo(n)}}{n^s}
+ :=\sum_{n=1}^{\infty}\frac{m_{\TwoAdicValuation(n)}}{n^s}
  =\zeta(s)\frac{C(2^{-s})}{1-2^{-s}}.
  \label{eq:zero-zeta}
 \end{equation}
@@ -653,7 +633,7 @@ Now substitute \eqref{eq:M-C}.
 \begin{remark}[Complex dyadic dimensions]
 If $C(q)$ extends meromorphically and has a pole of order $d$ at $q=1$, then
 \eqref{eq:zero-zeta} places a lattice of poles of order $d+1$ at
-$2^{-s}=1$, namely $s=2\pi\ii k/\log2$, subject only to explicit numerator
+$2^{-s}=1$, namely $s=2\pi\ImaginaryUnit k/\log2$, subject only to explicit numerator
 cancellation.  Hence the same direction series controls both the integer zero
 divisor and the familiar dyadic complex-frequency lattice of endpoint and
 heat-trace analyses.
@@ -715,7 +695,7 @@ It is finite because $\sum_hc_h4^{-h}\le\sum_hc_h2^{-h}$.
 The shifted cumulant-ratio sequence is the Hausdorff moment sequence of
 $\mu_c$:
 \begin{equation}
- R_{n+1}(c)=\int_0^1x^n\dd\mu_c(x),
+ R_{n+1}(c)=\int_0^1x^n\Differential\mu_c(x),
  \qquad n\ge0.
  \label{eq:Hausdorff-moment}
 \end{equation}
@@ -750,7 +730,7 @@ Applying $\Delta$ in $n$ multiplies each atom by $4^{-h}-1$; iterating gives
 \eqref{eq:complete-monotonicity}.  For any vector $(u_0,\ldots,u_N)$,
 \[
  \sum_{i,j=0}^Nu_iu_jR_{i+j+1}
- =\int_0^1\left(\sum_{i=0}^Nu_ix^i\right)^2\dd\mu_c(x)\ge0,
+ =\int_0^1\left(\sum_{i=0}^Nu_ix^i\right)^2\Differential\mu_c(x)\ge0,
 \]
 which proves Hankel positivity and \eqref{eq:log-convexity}.  For finite
 support, the moment matrix is a Vandermonde--diagonal--Vandermonde transpose
@@ -825,13 +805,13 @@ Set
 \label{cor:Bell-moments}
 For every $n\ge0$,
 \begin{equation}
- \E Y_c^n
+ \Expectation Y_c^n
  =\Bell_n\bigl(K_1(c),\ldots,K_n(c)\bigr).
  \label{eq:Bell-profile-moments}
 \end{equation}
 In particular, every moment is an explicit polynomial in the finite sample set
 \[
- C(4^{-1}),C(4^{-2}),\ldots,C(4^{-\floor{n/2}}).
+ C(4^{-1}),C(4^{-2}),\ldots,C(4^{-\Floor{n/2}}).
 \]
 If $c$ has finite support, all moments are rational.
 \end{corollary}
@@ -847,7 +827,7 @@ profile makes each $C(4^{-r})$ rational.
 Assume for this subsection that $S_c=1$, so $g_c$ is supported on $[-1,1]$.
 Define
 \begin{equation}
- \Lambda_n(c):=\int_{-1}^{1}P_n(x)g_c(x)\dd x=\E P_n(Y_c).
+ \Lambda_n(c):=\int_{-1}^{1}P_n(x)g_c(x)\Differential x=\Expectation P_n(Y_c).
  \label{eq:Legendre-observable}
 \end{equation}
 The coefficient of $P_n$ in the Legendre expansion of $g_c$ is
@@ -858,7 +838,7 @@ $(2n+1)\Lambda_n(c)/2$.
 For every $n\ge0$,
 \begin{equation}
  \Lambda_n(c)
- =2^{-n}\sum_{k=0}^{\floor{n/2}}(-1)^k
+ =2^{-n}\sum_{k=0}^{\Floor{n/2}}(-1)^k
  \frac{(2n-2k)!}{k!(n-k)!(n-2k)!}
  \Bell_{n-2k}\bigl(K_1(c),\ldots,K_{n-2k}(c)\bigr).
  \label{eq:Legendre-Bell-q}
@@ -871,7 +851,7 @@ $C(4^{-r})$.
 \begin{proof}
 Use the explicit monomial expansion
 \[
- P_n(x)=2^{-n}\sum_{k=0}^{\floor{n/2}}(-1)^k
+ P_n(x)=2^{-n}\sum_{k=0}^{\Floor{n/2}}(-1)^k
  \frac{(2n-2k)!}{k!(n-k)!(n-2k)!}x^{n-2k}
 \]
 and substitute \eqref{eq:Bell-profile-moments}.  Symmetry gives the vanishing
@@ -905,7 +885,7 @@ For $N\ge0$ and $t\in(N,N+1)$,
 \begin{equation}
  \operatorname{sgn}\Psi_c(t)
  =\varepsilon_c(N)
- :=(-1)^{\sum_{j\ge0}a_j\floor{N/2^j}}
+ :=(-1)^{\sum_{j\ge0}a_j\Floor{N/2^j}}
  =(-1)^{\sum_{j\ge0}\alpha_jb_j(N)}.
  \label{eq:sign-formula}
 \end{equation}
@@ -925,11 +905,11 @@ For $|z|<1$ the infinite generating function converges to
 \end{theorem}
 
 \begin{proof}
-The factor $\sincp(t/2^j)$ crosses one simple zero at every positive multiple
+The factor $\SincPi(t/2^j)$ crosses one simple zero at every positive multiple
 of $2^j$, so its sign on $(N,N+1)$ is
-$(-1)^{\floor{N/2^j}}$.  Multiplying with exponent $a_j$ gives the first
+$(-1)^{\Floor{N/2^j}}$.  Multiplying with exponent $a_j$ gives the first
 formula.  Modulo two,
-$\floor{N/2^j}\equiv b_j(N)$, proving the digit formula.
+$\Floor{N/2^j}\equiv b_j(N)$, proving the digit formula.
 
 Every $N<2^M$ has a unique binary expansion.  Expanding the product in
 \eqref{eq:sign-polynomial} and choosing either $1$ or the monomial from each
@@ -1052,14 +1032,14 @@ can be read directly from $a_j$.
 For an integer $d\ge0$,
 \begin{equation}
  \sum_{j=0}^{H}(j+1)^d(H-j)
- =\frac{H^{d+2}}{(d+1)(d+2)}+\bigO_d(H^{d+1}).
+ =\frac{H^{d+2}}{(d+1)(d+2)}+\BigO_d(H^{d+1}).
  \label{eq:weighted-triangle}
 \end{equation}
 \end{lemma}
 
 \begin{proof}
 After dividing by $H^{d+2}$, the sum is a Riemann sum for
-$\int_0^1u^d(1-u)\dd u=1/((d+1)(d+2))$.  Euler--Maclaurin or elementary
+$\int_0^1u^d(1-u)\Differential u=1/((d+1)(d+2))$.  Euler--Maclaurin or elementary
 power-sum estimates give the stated error.
 \end{proof}
 
@@ -1067,7 +1047,7 @@ power-sum estimates give the stated error.
 \label{thm:Fourier-envelope}
 Assume that for some integer $d\ge0$ and $A>0$,
 \begin{equation}
- a_j=A(j+1)^d+\bigO((j+1)^{d-1}),
+ a_j=A(j+1)^d+\BigO((j+1)^{d-1}),
  \label{eq:a-regular-growth}
 \end{equation}
 where for $d=0$ the condition means $a_j=A+o(1)$.  Then
@@ -1086,40 +1066,40 @@ The limsup is attained along the rational dyadic ray
 \end{theorem}
 
 \begin{proof}
-Put $L=\log2$ and $H=\floor{\log_2x}$.  For $0\le j\le H$ we have
+Put $L=\log2$ and $H=\Floor{\log_2x}$.  For $0\le j\le H$ we have
 $x/2^j\ge1$ and
 \[
- |\sincp(x/2^j)|
+ |\SincPi(x/2^j)|
  \le\frac{2^j}{\pi x}.
 \]
 Discarding the tail factors, whose moduli are at most one, gives
 \begin{align*}
  \log|\Psi_c(x)|
- &\le-\sum_{j=0}^{H}a_j(\log x-jL)+\bigO\!\left(\sum_{j=0}^{H}a_j\right)\\
- &=-AL\sum_{j=0}^{H}(j+1)^d(H-j)+\bigO_d(H^{d+1})\\
- &=-\frac{AL}{(d+1)(d+2)}H^{d+2}+\bigO_d(H^{d+1}).
+ &\le-\sum_{j=0}^{H}a_j(\log x-jL)+\BigO\!\left(\sum_{j=0}^{H}a_j\right)\\
+ &=-AL\sum_{j=0}^{H}(j+1)^d(H-j)+\BigO_d(H^{d+1})\\
+ &=-\frac{AL}{(d+1)(d+2)}H^{d+2}+\BigO_d(H^{d+1}).
 \end{align*}
-Since $\log x=HL+\bigO(1)$, this proves the upper bound in
+Since $\log x=HL+\BigO(1)$, this proves the upper bound in
 \eqref{eq:sharp-envelope}.
 
 For $x_H=2^H/3$ and $j\le H$, put $k=H-j$.  Because
-$\abs{\sin(\pi2^k/3)}=\sqrt3/2$,
+$\AbsoluteValue{\sin(\pi2^k/3)}=\sqrt3/2$,
 \begin{equation}
- \log\abs{\sincp(2^k/3)}
+ \log\AbsoluteValue{\SincPi(2^k/3)}
  =-kL+\log\frac{3\sqrt3}{2\pi}.
  \label{eq:ray-factor}
 \end{equation}
 Hence the head of the product is
 \[
- -AL\sum_{j=0}^{H}(j+1)^d(H-j)+\bigO_d(H^{d+1}).
+ -AL\sum_{j=0}^{H}(j+1)^d(H-j)+\BigO_d(H^{d+1}).
 \]
 For the tail $j>H$, use
-$\log\sincp y=-\pi^2y^2/6+\bigO(y^4)$ near zero.  Since
-$a_j=\bigO(j^d)$,
+$\log\SincPi y=-\pi^2y^2/6+\BigO(y^4)$ near zero.  Since
+$a_j=\BigO(j^d)$,
 \[
- \sum_{j>H}a_j\abs{\log\sincp(2^{H-j}/3)}
- =\bigO_d\!\left(\sum_{r\ge1}(H+r)^d4^{-r}\right)
- =\bigO_d(H^d).
+ \sum_{j>H}a_j\AbsoluteValue{\log\SincPi(2^{H-j}/3)}
+ =\BigO_d\!\left(\sum_{r\ge1}(H+r)^d4^{-r}\right)
+ =\BigO_d(H^d).
 \]
 Thus the upper main term is attained along \eqref{eq:sharp-ray}, and division
 by $(\log x_H)^{d+2}$ proves the equality.
@@ -1161,14 +1141,14 @@ control the logarithmic envelope.
 For $r\ge1$, define the Pascal--Rvachev product
 \begin{equation}
  \Phi_r(t):=
- \prod_{j=0}^{\infty}\sincp(t/2^j)^{\binom{j}{r-1}},
+ \prod_{j=0}^{\infty}\SincPi(t/2^j)^{\binom{j}{r-1}},
  \label{eq:Pascal-product}
 \end{equation}
 with the convention $\binom{j}{r-1}=0$ when $j<r-1$.  The audited corpus
 already develops its support, smooth density, refinement ladder, zero
 multiplicity
 \begin{equation}
- \ord_{t=n}\Phi_r(t)=\binom{\vtwo(|n|)+1}{r},
+ \ord_{t=n}\Phi_r(t)=\binom{\TwoAdicValuation(|n|)+1}{r},
  \label{eq:Pascal-zero-imported}
 \end{equation}
 and many arithmetic and asymptotic consequences.  The following theorem gives
@@ -1277,18 +1257,18 @@ results.  Here the zero-profile classification supplies the exact degree for
 \emph{every} dyadic Radon profile without repeating a rank-by-rank argument.
 Use the Fourier transform
 \begin{equation}
- \widehat f(\xi)=\int_{\R}f(x)\e^{-2\pi\ii\xi x}\dd x.
+ \widehat f(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit\xi x}\Differential x.
 \end{equation}
 Since $g_c$ is even, $\widehat g_c=\Psi_c$.
 
 \begin{theorem}[\New\ Uniform profile cubature]
 \label{thm:profile-cubature}
 Fix $H\ge0$, put $Q=2^H$, and assume $m_H\ge1$.  For every phase
-$\theta\in\R$ and every polynomial $p$ of degree strictly less than $m_H$,
+$\theta\in\RealNumbers$ and every polynomial $p$ of degree strictly less than $m_H$,
 \begin{equation}
  \boxed{
- \int_{\R}p(x)g_c(x)\dd x
- =\frac1Q\sum_{k\in\Z}
+ \int_{\RealNumbers}p(x)g_c(x)\Differential x
+ =\frac1Q\sum_{k\in\IntegerNumbers}
  p\!\left(\frac{k+\theta}{Q}\right)
  g_c\!\left(\frac{k+\theta}{Q}\right).}
  \label{eq:profile-cubature}
@@ -1301,10 +1281,10 @@ hold for every phase $\theta$.
 \begin{proof}
 For $p(x)=x^j$, Poisson summation on the shifted lattice gives
 \begin{equation}
- \frac1Q\sum_{k\in\Z}
+ \frac1Q\sum_{k\in\IntegerNumbers}
  p\!\left(\frac{k+\theta}{Q}\right)
  g_c\!\left(\frac{k+\theta}{Q}\right)
- =\sum_{n\in\Z}\e^{2\pi\ii n\theta}
+ =\sum_{n\in\IntegerNumbers}\EulerE^{2\pi\ImaginaryUnit n\theta}
  \widehat{x^jg_c}(Qn).
  \label{eq:Poisson-profile}
 \end{equation}
@@ -1313,10 +1293,10 @@ $\widehat{x^jg_c}(\xi)$ is the $j$th derivative of $\Psi_c(\xi)$.  For
 $n\ne0$,
 \[
  \ord_{\xi=Qn}\Psi_c
- =m_{H+\vtwo(|n|)}\ge m_H.
+ =m_{H+\TwoAdicValuation(|n|)}\ge m_H.
 \]
 Hence all nonconstant Fourier modes vanish when $j<m_H$.  The constant mode is
-$\int x^jg_c(x)\dd x$.  Linearity gives \eqref{eq:profile-cubature}.  Compact
+$\int x^jg_c(x)\Differential x$.  Linearity gives \eqref{eq:profile-cubature}.  Compact
 support makes the sum finite; $g_c\ge0$ gives positivity.
 
 For $j=m_H$, the Fourier coefficient at $n=1$ is proportional to
@@ -1341,12 +1321,12 @@ are interpreted as zero.
 
 Let
 \begin{equation}
- M_c(z):=\E\e^{zY_c}
+ M_c(z):=\Expectation\EulerE^{zY_c}
 \end{equation}
 be the profile moment generating function.  Define the monic Appell sequence
 $\mathcal A_{c,n}$ by
 \begin{equation}
- \frac{\e^{xz}}{M_c(z)}
+ \frac{\EulerE^{xz}}{M_c(z)}
  =\sum_{n=0}^{\infty}\mathcal A_{c,n}(x)\frac{z^n}{n!}.
  \label{eq:profile-Appell}
 \end{equation}
@@ -1357,12 +1337,12 @@ cumulants \eqref{eq:cumulant-sampling}.
 \label{prop:profile-Appell}
 For every $n\ge0$,
 \begin{equation}
- \E\,\mathcal A_{c,n}(x+Y_c)=x^n.
+ \Expectation\,\mathcal A_{c,n}(x+Y_c)=x^n.
  \label{eq:Appell-deconvolution}
 \end{equation}
 If $n<m_H$, then for every phase $\theta$,
 \begin{equation}
- x^n=\frac1Q\sum_{k\in\Z}
+ x^n=\frac1Q\sum_{k\in\IntegerNumbers}
  \mathcal A_{c,n}\!\left(x+\frac{k+\theta}{Q}\right)
  g_c\!\left(\frac{k+\theta}{Q}\right).
  \label{eq:Appell-comb-reconstruction}
@@ -1432,8 +1412,8 @@ $W_{-1}$ of Lambert's function.
 
 Let $D:=1+X=2I(V)$ and define
 \begin{equation}
- L_1(s):=\E\e^{-sD}
- =\int_0^1\e^{-2sI(v)}\dd v.
+ L_1(s):=\Expectation\EulerE^{-sD}
+ =\int_0^1\EulerE^{-2sI(v)}\Differential v.
  \label{eq:L1-inverse}
 \end{equation}
 
@@ -1441,7 +1421,7 @@ Let $D:=1+X=2I(V)$ and define
 \label{prop:Laplace-profile}
 For $s\ge0$,
 \begin{equation}
- L_c(s):=\E\e^{-sD_c}
+ L_c(s):=\Expectation\EulerE^{-sD_c}
  =\prod_{h\ge0}L_1(2^{-h}s)^{c_h}.
  \label{eq:Laplace-profile}
 \end{equation}
@@ -1473,11 +1453,11 @@ special binomial form, is the true invariant.
 \begin{conjecture}[\Conj\ Profile Lambert transseries]
 \label{conj:Lambert-profile}
 Assume
-$a_j=A(j+1)^d+\bigO((j+1)^{d-1})$ with $A>0$.  There exist a positive constant
+$a_j=A(j+1)^d+\BigO((j+1)^{d-1})$ with $A>0$.  There exist a positive constant
 $\gamma_c$, a degree-$(d+2)$ polynomial $P_c$, and bounded periodic coefficient
 functions such that, as $x\downarrow0$, the endpoint probability
 \begin{equation}
- H_c(x):=\Prob(S_c-Y_c\le x)
+ H_c(x):=\Probability(S_c-Y_c\le x)
 \end{equation}
 has an all-orders transseries organized by
 \begin{equation}
@@ -1491,7 +1471,7 @@ with leading structure
  =P_c(\Lambda_c(x))
  +\Lambda_c(x)^d
    \Omega_c(\log_2\Lambda_c(x))
- +\bigO\!\left(\Lambda_c(x)^{d-1}\log\Lambda_c(x)\right).
+ +\BigO\!\left(\Lambda_c(x)^{d-1}\log\Lambda_c(x)\right).
  \label{eq:profile-Lambert-conjecture}
 \end{equation}
 The leading coefficient of $P_c$ depends only on $A$ and $d$; lower
@@ -1636,7 +1616,7 @@ Let
 be the characteristic function of a compactly supported projection of
 independent up-laws, with positive coefficients $\lambda$ and integer
 multiplicities $r_\lambda$.  Suppose every nonzero integer is a zero and its
-multiplicity depends only on $\vtwo(n)$.  After a common rescaling, every
+multiplicity depends only on $\TwoAdicValuation(n)$.  After a common rescaling, every
 $\lambda$ is a dyadic power and $\Theta=\Psi_c$ for a unique profile $c$.
 \end{conjecture}
 
@@ -1851,7 +1831,7 @@ image is convex, hence the whole interval.  Because the product up-measure has
 support $K_c$, the push-forward support is $L_c(K_c)$.
 
 For smoothness, if $h_0$ is occupied, remove one coordinate at that scale.  If
-$\rho_{h_0}(x)=2^{h_0}\Up(2^{h_0}x)$, then
+$\rho_{h_0}(x)=2^{h_0}\RvachevUp(2^{h_0}x)$, then
 $g_c=\rho_{h_0}*\nu$ for a compactly supported probability measure $\nu$.
 Every derivative is
 $g_c^{(r)}=\rho_{h_0}^{(r)}*\nu$, proving global $C^\infty$ regularity and
@@ -1920,7 +1900,7 @@ For every profile,
  R_2&\le R_1,\\
  R_3-2R_2+R_1&\ge0,\\
  R_1R_3-R_2^2&\ge0,\\
- \det\begin{pmatrix}R_1&R_2&R_3\\R_2&R_3&R_4\\R_3&R_4&R_5\end{pmatrix}&\ge0.
+ \det\begin{pmatrix}R_1&R_2&R_3\\RealNumbers_2&R_3&R_4\\RealNumbers_3&R_4&R_5\end{pmatrix}&\ge0.
 \end{align*}
 These are necessary conditions for any proposed even-cumulant sequence to come
 from a dyadic Radon profile.  They are not sufficient unless the representing

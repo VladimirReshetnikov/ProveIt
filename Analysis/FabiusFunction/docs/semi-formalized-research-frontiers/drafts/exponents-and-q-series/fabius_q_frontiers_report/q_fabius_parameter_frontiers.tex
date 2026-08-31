@@ -6,6 +6,7 @@
 \usepackage{microtype}
 \usepackage[a4paper,margin=28mm,headheight=15pt]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
+\input{../../../../fabius-notation.tex}
 \usepackage{bm}
 \usepackage{booktabs,longtable,tabularx,array}
 \usepackage{enumitem}
@@ -54,27 +55,13 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{example}[theorem]{Example}
 
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\E}{\mathbb{E}}
-\newcommand{\Pp}{\mathbb{P}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\Law}{\operatorname{Law}}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\sinc}{\operatorname{sinc}}
 \newcommand{\sinhc}{\operatorname{sinhc}}
-\newcommand{\Up}{\operatorname{up}}
 \newcommand{\cx}{\preceq_{\mathrm{cx}}}
-\newcommand{\dd}{\,\mathrm{d}}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\cL}{C_{\Lambda}}
 \newcommand{\He}{H}
-\newcommand{\wt}{\operatorname{wt}}
 \newcommand{\1}{\mathbf{1}}
 
-\DeclareMathOperator{\Li}{Li}
-\DeclareMathOperator{\sgn}{sgn}
 
 \lstdefinestyle{pythonstyle}{
   language=Python,
@@ -103,7 +90,7 @@ Let $U_0,U_1,\ldots$ be independent $\operatorname{Unif}[-1,1]$ variables and
   X_q=(1-q)\sum_{j\ge0}q^jU_j,\qquad 0<q<1.
 \]
 At $q=1/2$ the density of $X_q$ is the standard centered Rvachev
-$\Up$-function, and hence lies on the usual Fabius--Rvachev bridge.  The
+$\RvachevUp$-function, and hence lies on the usual Fabius--Rvachev bridge.  The
 current ProveIt corpus already contains an extensive theory of this family:
 its infinite-sinc transform, Bernoulli cumulants, $q$-Pochhammer
 factorizations, parameter limits, fixed-base endpoint asymptotics, finite
@@ -126,8 +113,8 @@ Second, writing $q=e^{-\delta}$, we prove a full large-deviation principle at
 speed $1/\delta$.  Its limiting scaled cumulant transform is
 \[
  \Lambda(\theta)=\int_0^\infty
-     \log\!\left(\frac{\sinh(\theta e^{-t})}{\theta e^{-t}}\right)\dd t
- =\int_0^\theta\frac{\log(\sinh u/u)}{u}\dd u,
+     \log\!\left(\frac{\sinh(\theta e^{-t})}{\theta e^{-t}}\right)\Differential t
+ =\int_0^\theta\frac{\log(\sinh u/u)}{u}\Differential u,
 \]
 and the rate is $I=\Lambda^*$.  The finite-$q$ transform is an exact midpoint
 Riemann sum.  Midpoint Euler--Maclaurin therefore yields an all-orders
@@ -190,7 +177,7 @@ Exponent- and $q$-series frontiers, Parts VI--VII
 & The geometric family, infinite sinc products, exact Bernoulli cumulants,
 $q$-Pochhammer structure, quantitative $q\uparrow1$ Gaussian convergence, and
 the first characteristic correction
-& A complete continuous-parameter Edgeworth hierarchy, uniform on $\R$ and
+& A complete continuous-parameter Edgeworth hierarchy, uniform on $\RealNumbers$ and
 after arbitrary fixed derivatives \\
 \addlinespace
 Finite-sinc transport, Part V
@@ -251,7 +238,7 @@ $\frac12\1_{[-1,1]}$.  For $0<q<1$ define
   X_q=(1-q)\sum_{j=0}^{\infty}q^jU_j.
   \label{eq:Xq}
 \end{equation}
-The series converges absolutely almost surely, $\E X_q=0$, and
+The series converges absolutely almost surely, $\Expectation X_q=0$, and
 $|X_q|\le1$.  Its distribution is the unique compactly supported solution of
 \begin{equation}
   X_q\overset{d}= (1-q)U+qX_q',
@@ -259,22 +246,22 @@ $|X_q|\le1$.  Its distribution is the unique compactly supported solution of
 \end{equation}
 where $X_q'$ is an independent copy.  We use
 \[
- \sinc z=\frac{\sin z}{z},\qquad
+ \SincRad z=\frac{\sin z}{z},\qquad
  \sinhc z=\frac{\sinh z}{z},
 \]
 with their continuous values at zero.  The characteristic and moment
 generating functions are
 \begin{align}
- \phi_q(t)&=\E e^{itX_q}
-   =\prod_{j=0}^{\infty}\sinc\bigl((1-q)q^jt\bigr),
+ \phi_q(t)&=\Expectation e^{itX_q}
+   =\prod_{j=0}^{\infty}\SincRad\bigl((1-q)q^jt\bigr),
    \label{eq:cf}\\
- M_q(t)&=\E e^{tX_q}
+ M_q(t)&=\Expectation e^{tX_q}
    =\prod_{j=0}^{\infty}\sinhc\bigl((1-q)q^jt\bigr).
    \label{eq:mgf}
 \end{align}
 At $q=1/2$ the first product is
-$\prod_{k\ge1}\sinc(t/2^k)$, the standard Fourier transform of the centered
-Rvachev $\Up$-function.  Thus $X_{1/2}$ is exactly the centered up-law; the
+$\prod_{k\ge1}\SincRad(t/2^k)$, the standard Fourier transform of the centered
+Rvachev $\RvachevUp$-function.  Thus $X_{1/2}$ is exactly the centered up-law; the
 usual piecewise shift/reflection relation then connects its density to the
 Fabius function \cite{Fabius1966,Rvachev1990,Arias2018}.
 
@@ -299,7 +286,7 @@ the even cumulants of $U$ and $X_q$ are
 \end{align}
 In particular
 \begin{equation}
- \sigma_q^2:=\Var(X_q)=\frac{1-q}{3(1+q)}.
+ \sigma_q^2:=\Variance(X_q)=\frac{1-q}{3(1+q)}.
  \label{eq:variance}
 \end{equation}
 The moments are complete Bell polynomials in the cumulants \cite{Comtet}, so every even
@@ -353,7 +340,7 @@ Write
 
 \begin{theorem}[Parameter-flow kernel]
 \label{thm:kernel}
-For $0<r<s<1$, define a probability mass function on $\N_0$ by
+For $0<r<s<1$, define a probability mass function on $\NaturalNumbers$ by
 \begin{equation}
  p_{r,s}(0)=\frac{1-s}{1-r},\qquad
  p_{r,s}(k)=\frac{(s-r)(1-s)}{1-r}s^{k-1},\quad k\ge1.
@@ -409,7 +396,7 @@ upper parameter gives
 Consequently
 \begin{equation}
  P_{r,s}(z)=
- \exp\left\{\int_r^s\sum_{k\ge1}u^{k-1}(z^k-1)\dd u\right\}.
+ \exp\left\{\int_r^s\sum_{k\ge1}u^{k-1}(z^k-1)\Differential u\right\}.
  \label{eq:compound-poisson-pgf}
 \end{equation}
 
@@ -417,10 +404,10 @@ Consequently
 \label{prop:subordinator}
 There exists an increasing process $(N_q)_{0<q<1}$ with independent
 increments such that $N_s-N_r$ has law $p_{r,s}$.  At parameter value $u$,
-jumps occur with total intensity $(1-u)^{-1}\dd u$, and conditional on a
+jumps occur with total intensity $(1-u)^{-1}\Differential u$, and conditional on a
 jump the size has geometric law
 \begin{equation}
- \Pp\{J=k\mid u\}=(1-u)u^{k-1},\qquad k\ge1.
+ \Probability\{J=k\mid u\}=(1-u)u^{k-1},\qquad k\ge1.
  \label{eq:geometric-jumps}
 \end{equation}
 \end{proposition}
@@ -428,7 +415,7 @@ jump the size has geometric law
 \begin{proof}
 Equation \eqref{eq:compound-poisson-pgf} is the L\'evy--Khintchine formula
 for an inhomogeneous compound-Poisson process with jump intensity measure
-$u^{k-1}\dd u$ at size $k$.  Summing over $k$ gives total rate
+$u^{k-1}\Differential u$ at size $k$.  Summing over $k$ gives total rate
 $\sum_{k\ge1}u^{k-1}=(1-u)^{-1}$, and normalization gives
 \eqref{eq:geometric-jumps}.
 \end{proof}
@@ -460,7 +447,7 @@ Then
 \begin{equation}
  Y_{r,s}\overset d=X_r^{(V)},
  \qquad
- \E\!\left[Y_{r,s}\mid V_0,V_1,\ldots\right]=X_s^{(V)}.
+ \Expectation\!\left[Y_{r,s}\mid V_0,V_1,\ldots\right]=X_s^{(V)}.
  \label{eq:martingale-coupling}
 \end{equation}
 Consequently
@@ -477,7 +464,7 @@ as the original iid sequence, hence the conditional-on-$N=n$ variable in
 Conditioning instead on the entire environment and using Tonelli's theorem
 for the absolutely summable coefficients gives
 \begin{align*}
- \E[Y_{r,s}\mid(V_j)_{j\ge0}]
+ \Expectation[Y_{r,s}\mid(V_j)_{j\ge0}]
  &=\sum_{n\ge0}p_{r,s}(n)\sum_{j\ge0}a_j(r)V_{j+n}\\
  &=\sum_{k\ge0}\left(\sum_{n=0}^{k}p_{r,s}(n)a_{k-n}(r)\right)V_k\\
  &=\sum_{k\ge0}a_k(s)V_k
@@ -486,20 +473,20 @@ for the absolutely summable coefficients gives
 where the penultimate equality is \eqref{eq:coefficient-convolution}.
 Therefore $X_s^{(V)}$ is the conditional expectation of a variable having
 law $X_r^{(V)}$.  Jensen's inequality yields
-$\E\Phi(X_s^{(V)})\le\E\Phi(X_r^{(V)})$ for every convex $\Phi$ for which
+$\Expectation\Phi(X_s^{(V)})\le\Expectation\Phi(X_r^{(V)})$ for every convex $\Phi$ for which
 the expectations exist, which is exactly convex order.
 \end{proof}
 
 \begin{corollary}[Stop-loss and moment inequalities]
 \label{cor:stoploss}
-For $0<r<s<1$ and every $t\in\R$,
+For $0<r<s<1$ and every $t\in\RealNumbers$,
 \begin{equation}
- \E(X_s-t)_+\le \E(X_r-t)_+.
+ \Expectation(X_s-t)_+\le \Expectation(X_r-t)_+.
  \label{eq:stoploss}
 \end{equation}
 If the seed is centered and has finite variance, then
 \begin{equation}
- \Var(X_q^{(V)})=\Var(V)\frac{1-q}{1+q},
+ \Variance(X_q^{(V)})=\Variance(V)\frac{1-q}{1+q},
  \label{eq:general-variance}
 \end{equation}
 and this variance is strictly decreasing unless $V$ is degenerate.  All
@@ -529,7 +516,7 @@ The scaled cumulant generating function at large-deviation speed
 $1/\delta$ is
 \begin{equation}
  \Lambda_\delta(\theta)
- :=\delta\log\E\exp\!\left(\frac{\theta X_{e^{-\delta}}}{\delta}\right).
+ :=\delta\log\Expectation\exp\!\left(\frac{\theta X_{e^{-\delta}}}{\delta}\right).
  \label{eq:scaled-cgf}
 \end{equation}
 Using \eqref{eq:sdelta}, the $j$th argument of $g$ is
@@ -553,11 +540,11 @@ first correction is $O(\delta^2)$ rather than $O(\delta)$.
 
 \begin{theorem}[Limiting scaled cumulant transform]
 \label{thm:lambda-limit}
-Uniformly for $\theta$ in compact subsets of $\R$,
+Uniformly for $\theta$ in compact subsets of $\RealNumbers$,
 \begin{equation}
  \Lambda_\delta(\theta)\longrightarrow
- \Lambda(\theta):=\int_0^\infty g(\theta e^{-t})\dd t
- =\int_0^\theta\frac{g(u)}{u}\dd u.
+ \Lambda(\theta):=\int_0^\infty g(\theta e^{-t})\Differential t
+ =\int_0^\theta\frac{g(u)}{u}\Differential u.
  \label{eq:Lambda}
 \end{equation}
 The function $\Lambda$ is even, real analytic, and strictly convex, with
@@ -569,7 +556,7 @@ The function $\Lambda$ is even, real analytic, and strictly convex, with
  \frac{\theta\coth\theta-
        \log(\sinh\theta/\theta)-1}{\theta^2}>0,
  \label{eq:Lambda-second}\\
- \Lambda'(\R)&=(-1,1).
+ \Lambda'(\RealNumbers)&=(-1,1).
  \label{eq:gradient-range}
 \end{align}
 At the origin,
@@ -593,7 +580,7 @@ integral is justified by the same exponential envelope.  Since
 $g$ is the cumulant generating function of a nondegenerate uniform variable,
 $g''(u)>0$; therefore
 \[
- \Lambda''(\theta)=\int_0^\infty e^{-2t}g''(\theta e^{-t})\dd t>0.
+ \Lambda''(\theta)=\int_0^\infty e^{-2t}g''(\theta e^{-t})\Differential t>0.
 \]
 The explicit formulas follow by differentiating the second integral.  Finally
 $g(\theta)=\theta-\log(2\theta)+O(e^{-2\theta})$ as
@@ -605,11 +592,11 @@ termwise gives \eqref{eq:Lambda-Bernoulli}.
 \subsection{All-orders midpoint Euler--Maclaurin expansion}
 
 Let $B_n(x)$ be the Bernoulli polynomials and let
-$D=\theta\frac{\dd}{\dd\theta}$ be the Euler operator.
+$D=\theta\frac{\Differential}{\Differential\theta}$ be the Euler operator.
 
 \begin{theorem}[All-order midpoint expansion]
 \label{thm:midpoint-EM}
-For every integer $N\ge1$ and every compact $K\subset\R$,
+For every integer $N\ge1$ and every compact $K\subset\RealNumbers$,
 \begin{align}
  \Lambda_\delta(\theta)
  &=\Lambda(\theta s_\delta)
@@ -640,7 +627,7 @@ exponentially as $t\to\infty$, uniformly for $\theta$ in a compact set.
 The midpoint Euler--Maclaurin formula \cite{Olver} gives
 \begin{equation}
  \delta\sum_{j\ge0}f_{\delta,\theta}((j+1/2)\delta)
- =\int_0^\infty f_{\delta,\theta}(t)\dd t
+ =\int_0^\infty f_{\delta,\theta}(t)\Differential t
  -\sum_{m=1}^{N-1}
    \frac{B_{2m}(1/2)}{(2m)!}\delta^{2m}
    f_{\delta,\theta}^{(2m-1)}(0)
@@ -678,10 +665,10 @@ layer \cite{GasperRahman}.
 
 \begin{theorem}[Large-deviation principle]
 \label{thm:LDP}
-The family $X_{e^{-\delta}}$ satisfies a large-deviation principle on $\R$
+The family $X_{e^{-\delta}}$ satisfies a large-deviation principle on $\RealNumbers$
 with speed $1/\delta$ and good rate function
 \begin{equation}
- I(x)=\sup_{\theta\in\R}\{\theta x-\Lambda(\theta)\}.
+ I(x)=\sup_{\theta\in\RealNumbers}\{\theta x-\Lambda(\theta)\}.
  \label{eq:rate-Legendre}
 \end{equation}
 The function $I$ is even, strictly convex on $(-1,1)$, satisfies $I(0)=0$,
@@ -705,7 +692,7 @@ Then
 The scaled logarithmic moment generating functions are exactly
 $\Lambda_\delta$ in \eqref{eq:scaled-cgf}, and
 \cref{thm:lambda-limit} gives pointwise convergence to the finite,
-differentiable function $\Lambda$ on all of $\R$.  Since every
+differentiable function $\Lambda$ on all of $\RealNumbers$.  Since every
 $X_{e^{-\delta}}$ is supported on the common compact interval $[-1,1]$,
 exponential tightness is automatic.  The G\"artner--Ellis theorem \cite{Ellis1984,DemboZeitouni} therefore
 gives the LDP with Legendre transform \eqref{eq:rate-Legendre}.  Strict
@@ -718,7 +705,7 @@ $\theta-\Lambda(\theta)\to\infty$ by the asymptotic expansion proved in
 
 Thus for regular sets $A$ the logarithmic probability scale is
 \begin{equation}
- \Pp\{X_q\in A\}
+ \Probability\{X_q\in A\}
  =\exp\left[-\frac{\inf_{x\in A}I(x)+o(1)}{-\log q}\right].
  \label{eq:LDP-heuristic}
 \end{equation}
@@ -782,8 +769,8 @@ For $u>0$,
 Define the convergent constant
 \begin{equation}
  \cL=
- \int_0^1\frac{\log(\sinh u/u)}{u}\dd u-1
- +\int_1^\infty\frac{\log(1-e^{-2u})}{u}\dd u.
+ \int_0^1\frac{\log(\sinh u/u)}{u}\Differential u-1
+ +\int_1^\infty\frac{\log(1-e^{-2u})}{u}\Differential u.
  \label{eq:CLambda}
 \end{equation}
 Numerically,
@@ -878,8 +865,8 @@ Set
 \end{equation}
 Then
 \begin{equation}
- \chi_q(t):=\E e^{itZ_q}
- =\prod_{j\ge0}\sinc(b_qq^jt).
+ \chi_q(t):=\Expectation e^{itZ_q}
+ =\prod_{j\ge0}\SincRad(b_qq^jt).
  \label{eq:standardized-cf}
 \end{equation}
 Let $\lambda_n(q)$ be the standardized cumulants of $Z_q$.  From
@@ -911,7 +898,7 @@ Let $H_n$ denote the probabilists' Hermite polynomials,
 $\phi(x)=(2\pi)^{-1/2}e^{-x^2/2}$, and let a multi-index
 $\bm{k}=(k_2,k_3,\ldots)$ have weight
 \begin{equation}
- \wt(\bm{k})=\sum_{m\ge2}(m-1)k_m,
+ \BinaryDigitSum(\bm{k})=\sum_{m\ge2}(m-1)k_m,
  \qquad
  |\bm{k}|_*=\sum_{m\ge2}mk_m.
  \label{eq:edgeworth-weight}
@@ -919,7 +906,7 @@ $\bm{k}=(k_2,k_3,\ldots)$ have weight
 For $R\ge0$ define
 \begin{equation}
  \mathcal E_{R,q}(x)=
- \sum_{\wt(\bm{k})\le R}
+ \sum_{\BinaryDigitSum(\bm{k})\le R}
  H_{2|\bm{k}|_*}(x)
  \prod_{m\ge2}\frac1{k_m!}
  \left(\frac{\lambda_{2m}(q)}{(2m)!}\right)^{k_m}.
@@ -947,7 +934,7 @@ $c,C_L$ such that for $q_0\le q<1$,
 
 \begin{proof}
 Choose $c_0>0$ such that
-$|\sinc u|\le e^{-c_0u^2}$ for $|u|\le1$.  If
+$|\SincRad u|\le e^{-c_0u^2}$ for $|u|\le1$.  If
 $|t|\le b_q^{-1}$, every factor lies in that range and
 \[
  |\chi_q(t)|\le
@@ -962,7 +949,7 @@ most
  \le \exp\left[-\frac{c_0q_0^2}{1-q^2}\right],
 \]
 which is bounded by $e^{-c/(1-q)}$.  On the far part of the tail, the first
-$L$ factors also satisfy $|\sinc u|\le|u|^{-1}$ and supply the stated
+$L$ factors also satisfy $|\SincRad u|\le|u|^{-1}$ and supply the stated
 polynomial decay.  The bounded transition interval is absorbed into $C_L$.
 \end{proof}
 
@@ -973,10 +960,10 @@ polynomial decay.  The bounded transition interval is absorbed into $C_L$.
 Let $f_q$ be the density of $Z_q$.  For every pair of nonnegative integers
 $R$ and $r$, there exist $q_{R,r}<1$ and $C_{R,r}<\infty$ such that
 \begin{equation}
- \sup_{x\in\R}
+ \sup_{x\in\RealNumbers}
  \left|
  f_q^{(r)}(x)-
- \frac{\dd^r}{\dd x^r}
+ \frac{\Differential^r}{\Differential x^r}
  \bigl[\phi(x)\mathcal E_{R,q}(x)\bigr]
  \right|
  \le C_{R,r}\,\delta^{R+1},
@@ -1192,7 +1179,7 @@ a diagnostic; nonnegativity is proved exactly by the martingale coupling in
 
 The standardized density is computed from
 \[
- f_q(x)=\frac1\pi\int_0^\infty\chi_q(t)\cos(tx)\dd t.
+ f_q(x)=\frac1\pi\int_0^\infty\chi_q(t)\cos(tx)\Differential t.
 \]
 The product is truncated only after the first omitted argument is below
 $10^{-10}$, and the quadratic logarithmic tail is inserted analytically.  A
@@ -1215,12 +1202,12 @@ The two structural results are not special to the uniform law.
 
 \begin{proposition}[Seed-universal transform limit]
 \label{prop:general-seed-LDP}
-Let $V$ be bounded and let $K_V(\theta)=\log\E e^{\theta V}$.  For
+Let $V$ be bounded and let $K_V(\theta)=\log\Expectation e^{\theta V}$.  For
 $X_q^{(V)}$ from \eqref{eq:general-seed},
 \begin{equation}
- \delta\log\E\exp\!\left(\frac{\theta X_{e^{-\delta}}^{(V)}}{\delta}\right)
+ \delta\log\Expectation\exp\!\left(\frac{\theta X_{e^{-\delta}}^{(V)}}{\delta}\right)
  \longrightarrow
- \Lambda_V(\theta):=\int_0^\infty K_V(\theta e^{-t})\dd t.
+ \Lambda_V(\theta):=\int_0^\infty K_V(\theta e^{-t})\Differential t.
  \label{eq:general-seed-Lambda}
 \end{equation}
 The same midpoint Euler--Maclaurin expansion holds with $g$ replaced by
@@ -1277,7 +1264,7 @@ A change of local model, and possibly a Stokes transition, should occur.
 The exact shift subordinator invites several extensions.
 
 \begin{problem}[Metric contraction along $q$]
-For which probability metrics $d$ does the map $q\mapsto\Law(X_q)$ admit a
+For which probability metrics $d$ does the map $q\mapsto\LawOperator(X_q)$ admit a
 closed differential law or sharp contraction coefficient?  Convex order
 settles all stop-loss functionals, while the corpus settles several metrics
 along finite truncations; the parameter analogue for Wasserstein,
@@ -1287,7 +1274,7 @@ Zolotarev, entropy, and Fisher metrics remains open.
 \begin{conjecture}[Strict stop-loss interior]
 For the uniform seed and $0<r<s<1$,
 \[
- \E(X_s-t)_+<\E(X_r-t)_+
+ \Expectation(X_s-t)_+<\Expectation(X_r-t)_+
 \]
 for every $t\in(-1,1)$.  More generally, the difference should be strictly unimodal in $t$
 and inherit a total-positivity property from the random-shift kernel.
