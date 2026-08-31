@@ -6,6 +6,7 @@
 \usepackage{microtype}
 \usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
+\input{../../../../fabius-notation.tex}
 \usepackage{bm}
 \usepackage{booktabs,tabularx,longtable,array,multirow}
 \usepackage{graphicx}
@@ -88,25 +89,11 @@
   title={\bfseries Conjectural frontier}, #1
 }
 
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\C}{\mathbb{C}}
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\E}{\mathbb{E}}
-\newcommand{\Prob}{\mathbb{P}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
 \newcommand{\Vol}{\operatorname{Vol}}
-\newcommand{\supp}{\operatorname{supp}}
 \newcommand{\diam}{\operatorname{diam}}
 \newcommand{\sech}{\operatorname{sech}}
-\newcommand{\sinc}{\operatorname{sinc}}
 \newcommand{\atanh}{\operatorname{artanh}}
-\newcommand{\sgn}{\operatorname{sgn}}
-\newcommand{\dd}{\,\mathrm{d}}
-\newcommand{\ii}{\mathrm{i}}
-\newcommand{\e}{\mathrm{e}}
 \newcommand{\cP}{\mathcal{P}}
-\newcommand{\cF}{\mathcal{F}}
 \newcommand{\cL}{\mathcal{L}}
 \newcommand{\cZ}{\mathcal{Z}}
 \newcommand{\vct}[1]{\boldsymbol{#1}}
@@ -115,8 +102,8 @@
 \newcommand{\statusinput}{\textcolor{deepblue}{\textbf{repository input}}}
 \newcommand{\statusconj}{\textcolor{deepred}{\textbf{conjecture}}}
 
-\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
-\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\AbsoluteValue}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\Norm}{\lVert}{\rVert}
 \DeclarePairedDelimiter{\ip}{\langle}{\rangle}
 \allowdisplaybreaks
 \graphicspath{{generated/}}
@@ -192,7 +179,7 @@ The same kernel is the normalized Szeg\H{o} kernel on the disk.  It yields exact
 \]
 where $\mu_{2m}=|E_{2m}|$ and $\mu_{2m+1}=0$ are the moments of the hyperbolic-secant law.
 
-All joint cumulants are explicit Bernoulli rational functions.  Hyperbolic translation $u\mapsto T+u$ suppresses every cumulant of order $m>2$ at rate $\e^{-(m-2)T}$, proving convergence to the stationary Gaussian process with covariance $\sech(u-v)$ and providing a Bell-partition expansion beyond Wick's rule.  Divided-difference confluence gives the exact support volume of the parameter jet
+All joint cumulants are explicit Bernoulli rational functions.  Hyperbolic translation $u\mapsto T+u$ suppresses every cumulant of order $m>2$ at rate $\EulerE^{-(m-2)T}$, proving convergence to the stationary Gaussian process with covariance $\sech(u-v)$ and providing a Bell-partition expansion beyond Wick's rule.  Divided-difference confluence gives the exact support volume of the parameter jet
 \[
   (X_q,X_q',X_q''/2!,\ldots,X_q^{(d-1)}/(d-1)!)
 \]
@@ -266,32 +253,32 @@ The reflection $U_n\mapsto1-U_n$ gives
   X_q\ \stackrel{d}{=}\ 1-X_q.
   \label{eq:marginal-symmetry}
 \end{equation}
-In particular $\E X_q=1/2$.  Direct summation gives
+In particular $\Expectation X_q=1/2$.  Direct summation gives
 \begin{equation}
-  \Var(X_q)
+  \Variance(X_q)
    =\frac1{12}(1-q)^2\sum_{n\ge0}q^{2n}
    =\frac{1-q}{12(1+q)}.
   \label{eq:var-Xq}
 \end{equation}
 
-For $z\in\C$, write $\sinc z=\sin z/z$ with $\sinc0=1$.  The characteristic function is
+For $z\in\ComplexNumbers$, write $\SincRad z=\sin z/z$ with $\SincRad0=1$.  The characteristic function is
 \begin{equation}
  \phi_q(t)
- =\exp(\ii t/2)\prod_{n\ge0}
-   \sinc\!\left(\frac{t(1-q)q^n}{2}\right).
+ =\exp(\ImaginaryUnit t/2)\prod_{n\ge0}
+   \SincRad\!\left(\frac{t(1-q)q^n}{2}\right).
  \label{eq:marginal-sinc}
 \end{equation}
 This is the familiar infinite sinc product.  The repository develops its special $q=1/2$ behavior and its relation to the Fourier transform of Rvachev's up-function in detail.
 
 \subsection{Fabius normalization at \texorpdfstring{$q=1/2$}{q=1/2}}
 
-Let $F_q(x)=\Prob(X_q\le x)$ and let $f_q$ denote its density.  Under the normalization used in the repository,
+Let $F_q(x)=\Probability(X_q\le x)$ and let $f_q$ denote its density.  Under the normalization used in the repository,
 \begin{equation}
   F_{1/2}=F,
 \end{equation}
 where $F$ is the Fabius function on $[0,1]$~\cite{Fabius1966,Arias2017,Arias2018}.  Equivalently, if $Y=2X_{1/2}-1$, then $Y$ has Rvachev up-density on $[-1,1]$, and
 \begin{equation}
-  f_{1/2}(x)=2\,\operatorname{up}(2x-1).
+  f_{1/2}(x)=2\,\RvachevUp(2x-1).
 \end{equation}
 This convention will matter in \cref{sec:copula}: the quantile $F_{1/2}^{-1}$ is precisely the inverse Fabius function.
 
@@ -299,7 +286,7 @@ This convention will matter in \cref{sec:copula}: the quantile $F_{1/2}^{-1}$ is
 
 Let $B_m^+$ denote the Bernoulli convention with $B_1^+=1/2$ and $B_m^+=B_m$ for $m\ne1$.  Since
 \[
- \log\E\e^{tU_0}=\log\frac{\e^t-1}{t}
+ \log\Expectation\EulerE^{tU_0}=\log\frac{\EulerE^t-1}{t}
   =\sum_{m\ge1}\frac{B_m^+}{m}\frac{t^m}{m!},
 \]
 the $m$th cumulant of $U_0$ is $B_m^+/m$.  Additivity and homogeneity of cumulants yield
@@ -337,15 +324,15 @@ The deterministic support candidate is the convergent Minkowski sum
    =\left\{\sum_{n\ge0}u_nv_n:0\le u_n\le1\right\}.
   \label{eq:zonoid}
 \end{equation}
-Here convergence is in Hausdorff distance because $\sum_n\norm{v_n}<\infty$.
+Here convergence is in Hausdorff distance because $\sum_n\Norm{v_n}<\infty$.
 
 \begin{theorem}[Common-digit support zonoid]
 \label{thm:support-zonoid}
-For \eqref{eq:ordered-q}, $\supp(\vct X_Q)=Z_Q$.  The set $Z_Q$ is a compact, convex, full-dimensional zonoid contained in $[0,1]^d$, centrally symmetric about $(1/2,\ldots,1/2)$.
+For \eqref{eq:ordered-q}, $\SupportOperator(\vct X_Q)=Z_Q$.  The set $Z_Q$ is a compact, convex, full-dimensional zonoid contained in $[0,1]^d$, centrally symmetric about $(1/2,\ldots,1/2)$.
 \end{theorem}
 
 \begin{proof}
-The product measure on $[0,1]^{\N_0}$ has full support.  The map
+The product measure on $[0,1]^{\NaturalNumbers}$ has full support.  The map
 $\vct u\mapsto\sum_nu_nv_n$ is continuous for the product topology restricted through the summable coefficient bound, so the support of its pushforward is the image of the product support, namely \eqref{eq:zonoid}.  Compactness and convexity follow from Hausdorff limits of finite zonotopes.  Since $\sum_nv_n=(1,\ldots,1)$, replacing every $u_n$ by $1-u_n$ reflects the set through its stated center.
 
 It remains to prove nonempty interior.  The first $d$ generators form a matrix with determinant
@@ -362,12 +349,12 @@ Thus the finite partial sum generated by $v_0,\ldots,v_{d-1}$ already contains a
 
 \begin{theorem}[Joint characteristic function]
 \label{thm:joint-char}
-For $t=(t_1,\ldots,t_d)\in\R^d$,
+For $t=(t_1,\ldots,t_d)\in\RealNumbers^d$,
 \begin{equation}
  \Phi_Q(t)
- =\exp\!\left(\frac{\ii}{2}\sum_{j=1}^dt_j\right)
+ =\exp\!\left(\frac{\ImaginaryUnit}{2}\sum_{j=1}^dt_j\right)
   \prod_{n=0}^{\infty}
-  \sinc\!\left(\frac12\sum_{j=1}^dt_j(1-q_j)q_j^n\right).
+  \SincRad\!\left(\frac12\sum_{j=1}^dt_j(1-q_j)q_j^n\right).
  \label{eq:joint-sinc}
 \end{equation}
 Its real zero set is exactly the locally finite union of affine-through-the-origin hyperplanes
@@ -380,7 +367,7 @@ Its real zero set is exactly the locally finite union of affine-through-the-orig
 
 \begin{proof}
 Independence gives one uniform characteristic factor for each $n$.  Their phase factors multiply to
-$\exp(\ii t\cdot\sum_nv_n/2)=\exp(\ii\sum_jt_j/2)$, proving \eqref{eq:joint-sinc}.  For fixed $t$, the arguments in the tail are exponentially small and their squares are summable.  Since $\log\sinc z=-z^2/6+O(z^4)$ near zero, the tail product converges to a nonzero number.  Therefore the product vanishes precisely when one finite factor vanishes, giving \eqref{eq:zero-hyperplanes}.
+$\exp(\ImaginaryUnit t\cdot\sum_nv_n/2)=\exp(\ImaginaryUnit\sum_jt_j/2)$, proving \eqref{eq:joint-sinc}.  For fixed $t$, the arguments in the tail are exponentially small and their squares are summable.  Since $\log\SincRad z=-z^2/6+O(z^4)$ near zero, the tail product converges to a nonzero number.  Therefore the product vanishes precisely when one finite factor vanishes, giving \eqref{eq:zero-hyperplanes}.
 \end{proof}
 
 \begin{remark}
@@ -393,7 +380,7 @@ This turns multivariate Fourier decay into a problem about dominance and cancell
 
 \subsection{All mixed cumulants}
 
-For a multi-index $\alpha=(\alpha_1,\ldots,\alpha_d)\in\N_0^d\setminus\{0\}$, set $|\alpha|=\sum_j\alpha_j$.  Let $\kappa_\alpha(\vct X_Q)$ denote the joint cumulant in which coordinate $j$ occurs $\alpha_j$ times.
+For a multi-index $\alpha=(\alpha_1,\ldots,\alpha_d)\in\NaturalNumbers^d\setminus\{0\}$, set $|\alpha|=\sum_j\alpha_j$.  Let $\kappa_\alpha(\vct X_Q)$ denote the joint cumulant in which coordinate $j$ occurs $\alpha_j$ times.
 
 \begin{theorem}[Mixed Bernoulli cumulant formula]
 \label{thm:mixed-cumulants}
@@ -419,7 +406,7 @@ Joint cumulants add over independent $n$, and the remaining sum is geometric.  S
 
 Formula \eqref{eq:mixed-cumulant} is already a complete symbolic engine.  If $i_1,\ldots,i_m\in\{1,\ldots,d\}$ and $\cP([m])$ denotes the set of set partitions, then
 \begin{equation}
-  \E\prod_{a=1}^mX_{q_{i_a}}
+  \Expectation\prod_{a=1}^mX_{q_{i_a}}
    =\sum_{\pi\in\cP([m])}\prod_{B\in\pi}
       \kappa\bigl(X_{q_{i_a}}:a\in B\bigr).
   \label{eq:multivariate-bell}
@@ -430,9 +417,9 @@ Thus every mixed moment is a finite Bell-partition expression in rational functi
 
 \begin{theorem}[Regularity and shape]
 \label{thm:density-regularity}
-The law of $\vct X_Q$ has a density $f_Q\in C_c^\infty(\R^d)$ supported on $Z_Q$.  Every derivative of $f_Q$ vanishes on $\partial Z_Q$.  Moreover,
+The law of $\vct X_Q$ has a density $f_Q\in C_c^\infty(\RealNumbers^d)$ supported on $Z_Q$.  Every derivative of $f_Q$ vanishes on $\partial Z_Q$.  Moreover,
 \begin{equation}
-  \norm{f_Q}_{\infty}
+  \Norm{f_Q}_{\infty}
   \le
   \frac{1}{\displaystyle
     \prod_{i=1}^d(1-q_i)
@@ -441,7 +428,7 @@ The law of $\vct X_Q$ has a density $f_Q\in C_c^\infty(\R^d)$ supported on $Z_Q$
 \end{equation}
 The measure is log-concave and associated: for bounded coordinatewise nondecreasing $A,B$,
 \begin{equation}
-  \Cov(A(\vct X_Q),B(\vct X_Q))\ge0.
+  \Covariance(A(\vct X_Q),B(\vct X_Q))\ge0.
   \label{eq:association}
 \end{equation}
 \end{theorem}
@@ -449,7 +436,7 @@ The measure is log-concave and associated: for bounded coordinatewise nondecreas
 \begin{proof}
 The sum of the first $d$ digit vectors has the uniform density on the parallelepiped generated by $v_0,\ldots,v_{d-1}$, with essential supremum equal to the reciprocal of \eqref{eq:first-block-det}.  Convolution with the remaining probability measure cannot increase the $L^\infty$ norm, proving \eqref{eq:density-bound}.
 
-For smoothness, partition arbitrarily many generators into disjoint blocks of $d$ consecutive vectors.  Every block matrix is nonsingular, because after factoring positive row and column powers it is again a Vandermonde matrix.  For one such block, at least one scalar product $t\cdot v_n$ is bounded below by a block-dependent positive constant times $\norm t$; hence its characteristic product is $O(\norm t^{-1})$.  Using $M$ disjoint blocks gives $\Phi_Q(t)=O_M(\norm t^{-M})$ for every $M$.  Fourier inversion then gives $f_Q\in C_c^\infty$.  Since every derivative is continuous on all of $\R^d$ and is zero in the exterior of $Z_Q$, it is zero on the boundary as well.
+For smoothness, partition arbitrarily many generators into disjoint blocks of $d$ consecutive vectors.  Every block matrix is nonsingular, because after factoring positive row and column powers it is again a Vandermonde matrix.  For one such block, at least one scalar product $t\cdot v_n$ is bounded below by a block-dependent positive constant times $\Norm t$; hence its characteristic product is $O(\Norm t^{-1})$.  Using $M$ disjoint blocks gives $\Phi_Q(t)=O_M(\Norm t^{-M})$ for every $M$.  Fourier inversion then gives $f_Q\in C_c^\infty$.  Since every derivative is continuous on all of $\RealNumbers^d$ and is zero in the exterior of $Z_Q$, it is zero on the boundary as well.
 
 Each finite digit projection is the linear image of a uniform measure on a cube, hence log-concave by Pr\'ekopa's theorem~\cite{Prekopa}; log-concavity is preserved under weak limits.  Finally every coordinate $X_{q_j}$ is an increasing function of every independent $U_n$.  The Harris association inequality for product measures gives \eqref{eq:association} for finite truncations, and bounded convergence passes it to the limit.
 \end{proof}
@@ -469,7 +456,7 @@ The standard zonotope formula~\cite{Shephard,GoverKrikorian} gives
 \begin{equation}
   \Vol_d Z_Q^{(N)}
    =\sum_{0\le n_1<\cdots<n_d\le N}
-      \abs{\det[v_{n_1}\ \cdots\ v_{n_d}]}.
+      \AbsoluteValue{\det[v_{n_1}\ \cdots\ v_{n_d}]}.
   \label{eq:finite-zono-volume}
 \end{equation}
 For ordered positive $q_i$, every displayed determinant has the same sign.  Factoring the rows gives
@@ -551,7 +538,7 @@ The product has a particularly transparent $q$-analog form for a hyperbolic arit
 \[
   q_j=\tanh(u_0+(j-1)h),\qquad h>0,
 \]
-and put $Q=\e^{-2h}$.  Then \cref{thm:exact-volume} and the hyperbolic subtraction law give
+and put $Q=\EulerE^{-2h}$.  Then \cref{thm:exact-volume} and the hyperbolic subtraction law give
 \begin{equation}
  \Vol Z_Q
   =\prod_{k=1}^{d-1}\tanh(kh)^{d-k}
@@ -578,7 +565,7 @@ Using $(-Q;Q)_\infty=(Q^2;Q^2)_\infty/(Q;Q)_\infty$ and the modular asymptotic o
   \rho(h)
    =\sqrt{\frac{2\pi}{h}}\,
      \exp\!\left(-\frac{\pi^2}{8h}\right)
-     \left(1+O(\e^{-\pi^2/h})\right).
+     \left(1+O(\EulerE^{-\pi^2/h})\right).
   \label{eq:rho-small-h}
 \end{equation}
 Thus dense hyperbolic sampling drives high-dimensional support volume down at a modularly controlled exponential rate.  The still subtler small-$h$ expansion of $C(h)$ leads naturally to $q$-Barnes and MacMahon-type products; see \cref{question:q-barnes}.
@@ -591,7 +578,7 @@ Thus dense hyperbolic sampling drives high-dimensional support volume down at a 
 
 The mixed cumulant formula at total order two gives
 \begin{equation}
-  K_X(q,r):=\Cov(X_q,X_r)
+  K_X(q,r):=\Covariance(X_q,X_r)
    =\frac{(1-q)(1-r)}{12(1-qr)}.
   \label{eq:cov-X}
 \end{equation}
@@ -672,7 +659,7 @@ Define the standardized process
 For distinct nodes $q_1,\ldots,q_m$ and a further $q$, let
 \[
   \widehat Y_q=\operatorname*{argmin}_{Z\in\operatorname{span}(Y_{q_1},\ldots,Y_{q_m})}
-      \E(Y_q-Z)^2
+      \Expectation(Y_q-Z)^2
 \]
 denote the best linear predictor in $L^2$.
 
@@ -680,8 +667,8 @@ denote the best linear predictor in $L^2$.
 \label{thm:prediction-error}
 One has
 \begin{equation}
- \inf_{\beta\in\R^m}
-   \E\left(Y_q-\sum_{j=1}^m\beta_jY_{q_j}\right)^2
+ \inf_{\beta\in\RealNumbers^m}
+   \Expectation\left(Y_q-\sum_{j=1}^m\beta_jY_{q_j}\right)^2
   =\prod_{j=1}^m
     \left(\frac{q-q_j}{1-qq_j}\right)^2.
  \label{eq:prediction-error}
@@ -711,7 +698,7 @@ The identity has a useful interpretation: the deterministic volume of the entire
 Let
 \begin{equation}
   \epsilon_n=\sqrt{12}\,(U_n-1/2),
-  \qquad \E\epsilon_n=0,\quad\E\epsilon_n^2=1.
+  \qquad \Expectation\epsilon_n=0,\quad\Expectation\epsilon_n^2=1.
   \label{eq:epsilon}
 \end{equation}
 Then
@@ -734,7 +721,7 @@ More generally, set
 \end{equation}
 Although $G$ is not Gaussian, its covariance kernel is exactly
 \begin{equation}
-  \E\bigl[G(z)\overline{G(w)}\bigr]=\frac1{1-z\bar w}.
+  \Expectation\bigl[G(z)\overline{G(w)}\bigr]=\frac1{1-z\bar w}.
   \label{eq:szego-covariance}
 \end{equation}
 For complex nodes $z_1,\ldots,z_d$, the normalized Gram determinant is
@@ -810,7 +797,7 @@ These tail sums are the successive vertices of the boundary obtained by ordering
 
 \subsection{Exact log-periodic modulation}
 
-For $x=q^{m+\theta}$ with $m\in\N_0$ and $0\le\theta\le1$, linear interpolation gives
+For $x=q^{m+\theta}$ with $m\in\NaturalNumbers$ and $0\le\theta\le1$, linear interpolation gives
 \begin{equation}
  g_{q,r}(x)
   =r^m\left[
@@ -835,7 +822,7 @@ This is an exact discrete-scale oscillation, not merely an endpoint asymptotic.
 
 Integrating the trapezoids gives
 \begin{align}
- \int_0^1g_{q,r}(x)\dd x
+ \int_0^1g_{q,r}(x)\Differential x
  &=\frac12\sum_{m\ge0}(q^m-q^{m+1})(r^m+r^{m+1})\\
  &=\frac{(1-q)(1+r)}{2(1-qr)}.
  \label{eq:g-integral}
@@ -873,9 +860,9 @@ Using \eqref{eq:epsilon}, put $q=\tanh u$ in \eqref{eq:Y-feature} and write
 \end{equation}
 Then
 \begin{equation}
-  \E Y_u=0,
+  \Expectation Y_u=0,
   \qquad
-  \E(Y_uY_v)=\sech(u-v).
+  \Expectation(Y_uY_v)=\sech(u-v).
   \label{eq:sech-covariance}
 \end{equation}
 Thus $Y_u$ is stationary at second order.  It is not strictly stationary: for example,
@@ -888,7 +875,7 @@ which varies with $u$.
 
 With the convention
 \[
-  K(h)=\int_{\R}\e^{\ii\omega h}s(\omega)\dd\omega,
+  K(h)=\int_{\RealNumbers}\EulerE^{\ImaginaryUnit\omega h}s(\omega)\Differential\omega,
 \]
 the Fourier transform of $\sech h$ gives the spectral density
 \begin{equation}
@@ -920,7 +907,7 @@ For $u_1,\ldots,u_m>0$,
         {1-\prod_{j=1}^m\tanh u_j}.
  \label{eq:hyperbolic-cumulant}
 \end{equation}
-Let $u_j=T+t_j$, put $a_j=\e^{-2t_j}$ and $z=\e^{-2T}$.  Then the same cumulant has the exact finite symmetric-polynomial form
+Let $u_j=T+t_j$, put $a_j=\EulerE^{-2t_j}$ and $z=\EulerE^{-2T}$.  Then the same cumulant has the exact finite symmetric-polynomial form
 \begin{equation}
  \kappa(Y_{T+t_1},\ldots,Y_{T+t_m})
   =\kappa_m(\epsilon_0)
@@ -949,9 +936,9 @@ In particular, uniformly for $(t_1,\ldots,t_m)$ in compact sets,
 \begin{equation}
  \kappa(Y_{T+t_1},\ldots,Y_{T+t_m})
   =\kappa_m(\epsilon_0)
-   \frac{2^{m-1}\e^{-(m-2)T-\sum_jt_j}}
-        {\sum_j\e^{-2t_j}}
-    \left(1+O(\e^{-4T})\right).
+   \frac{2^{m-1}\EulerE^{-(m-2)T-\sum_jt_j}}
+        {\sum_j\EulerE^{-2t_j}}
+    \left(1+O(\EulerE^{-4T})\right).
  \label{eq:cumulant-leading-asymptotic}
 \end{equation}
 For one time this reduces to
@@ -967,7 +954,7 @@ All higher cumulants vanish as $q\uparrow1$, at an explicitly graded rate.
 
 \begin{theorem}[Gaussianization by hyperbolic translation]
 \label{thm:gaussianization}
-For $T>0$, define the shifted process on a fixed compact interval $I\subset\R$ by
+For $T>0$, define the shifted process on a fixed compact interval $I\subset\RealNumbers$ by
 \begin{equation}
   Z_T(t)=Y_{T+t},\qquad t\in I.
 \end{equation}
@@ -979,24 +966,24 @@ For every finite $k\ge0$, as $T\to\infty$,
 \end{equation}
 where $G$ is the centered stationary Gaussian process with covariance
 \begin{equation}
-  \E(G(s)G(t))=\sech(s-t).
+  \Expectation(G(s)G(t))=\sech(s-t).
   \label{eq:Gaussian-sech}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
 For finitely many evaluation points and derivatives, $Z_T$ is a triangular-array sum of the bounded independent variables $\epsilon_n$.  Differentiating the coefficient
-$c_n(u)=\sech u\tanh^nu$ a fixed number of times produces $c_n(u)$ times a polynomial in $n\sech^2u/\tanh u$ and bounded hyperbolic functions.  Uniformly for $t\in I$, its largest absolute coefficient is $O_k(\e^{-T})$: the elementary bound $n^a\e^{-cn\e^{-2T}}=O_a(\e^{2aT})$ is exactly canceled by the derivative factors $\e^{-2aT}$, leaving the leading $\sech(T+t)$.
+$c_n(u)=\sech u\tanh^nu$ a fixed number of times produces $c_n(u)$ times a polynomial in $n\sech^2u/\tanh u$ and bounded hyperbolic functions.  Uniformly for $t\in I$, its largest absolute coefficient is $O_k(\EulerE^{-T})$: the elementary bound $n^a\EulerE^{-cn\EulerE^{-2T}}=O_a(\EulerE^{2aT})$ is exactly canceled by the derivative factors $\EulerE^{-2aT}$, leaving the leading $\sech(T+t)$.
 
 The covariance matrices are independent of $T$ and are obtained by differentiating $\sech(s-t)$.  The maximal coefficient tends to zero, so the multivariate Lindeberg theorem proves joint Gaussian convergence for every finite derivative-evaluation family~\cite{Billingsley}.  Tightness follows from the exact derivative variance bounds
 \begin{equation}
-  \E\abs{Y_u^{(a)}}^2=|E_{2a}|
+  \Expectation\AbsoluteValue{Y_u^{(a)}}^2=|E_{2a}|
   \label{eq:derivative-variance-preview}
 \end{equation}
 proved in \cref{sec:euler}, and the $L^2$ increment estimate
 \[
-  \E\abs{Y_{u+h}^{(a)}-Y_u^{(a)}}^2
-   \le |h|^2\sup_v\E\abs{Y_v^{(a+1)}}^2.
+  \Expectation\AbsoluteValue{Y_{u+h}^{(a)}-Y_u^{(a)}}^2
+   \le |h|^2\sup_v\Expectation\AbsoluteValue{Y_v^{(a+1)}}^2.
 \]
 Kolmogorov's criterion applied successively to derivatives gives tightness in $C^k(I)$.  Finite-dimensional convergence and tightness complete the proof.
 \end{proof}
@@ -1007,26 +994,26 @@ The covariance is already stationary for every $T$; translation does not change 
 
 \subsection{Bell partitions beyond Wick's rule}
 
-Let $2p$ time points $t_1,\ldots,t_{2p}$ be fixed.  The moment--cumulant formula and \eqref{eq:cumulant-leading-asymptotic} show that pair partitions survive at order one, a single four-block contributes at order $\e^{-2T}$, and every remaining partition contributes $O(\e^{-4T})$.  If $\mathfrak M(S)$ denotes pairings of a finite even set $S$ and
+Let $2p$ time points $t_1,\ldots,t_{2p}$ be fixed.  The moment--cumulant formula and \eqref{eq:cumulant-leading-asymptotic} show that pair partitions survive at order one, a single four-block contributes at order $\EulerE^{-2T}$, and every remaining partition contributes $O(\EulerE^{-4T})$.  If $\mathfrak M(S)$ denotes pairings of a finite even set $S$ and
 \begin{equation}
  C_4(t_i,t_j,t_k,t_\ell)
   =-\frac{48}{5}\,
-    \frac{\e^{-(t_i+t_j+t_k+t_\ell)}}
-         {\e^{-2t_i}+\e^{-2t_j}+\e^{-2t_k}+\e^{-2t_\ell}},
+    \frac{\EulerE^{-(t_i+t_j+t_k+t_\ell)}}
+         {\EulerE^{-2t_i}+\EulerE^{-2t_j}+\EulerE^{-2t_k}+\EulerE^{-2t_\ell}},
  \label{eq:C4-leading}
 \end{equation}
 then
 \begin{align}
- \E\prod_{a=1}^{2p}Y_{T+t_a}
+ \Expectation\prod_{a=1}^{2p}Y_{T+t_a}
  &=\sum_{M\in\mathfrak M([2p])}
     \prod_{\{i,j\}\in M}\sech(t_i-t_j)
  \notag\\
- &\quad+\e^{-2T}
+ &\quad+\EulerE^{-2T}
   \sum_{\substack{B\subset[2p]\\|B|=4}}
     C_4(t_B)
     \sum_{M\in\mathfrak M([2p]\setminus B)}
       \prod_{\{i,j\}\in M}\sech(t_i-t_j)
-  +O(\e^{-4T}).
+  +O(\EulerE^{-4T}).
  \label{eq:bell-wick-correction}
 \end{align}
 The error is uniform on compact time sets.  This formula is an explicit Bell-polynomial deformation of Wick's theorem.  Higher corrections are generated mechanically by blocks of sizes $4,6,8,\ldots$ using \eqref{eq:cumulant-elementary-symmetric}.
@@ -1050,13 +1037,13 @@ The stationary covariance \eqref{eq:sech-covariance} contains more arithmetic st
 \end{equation}
 Differentiating the covariance gives
 \begin{equation}
-  \E\bigl[Y_u^{(a)}Y_v^{(b)}\bigr]
+  \Expectation\bigl[Y_u^{(a)}Y_v^{(b)}\bigr]
    =(-1)^b\sech^{(a+b)}(u-v).
   \label{eq:derivative-covariance}
 \end{equation}
 At one point,
 \begin{equation}
-  \Var(Y_u^{(m)})=|E_{2m}|,
+  \Variance(Y_u^{(m)})=|E_{2m}|,
   \label{eq:euler-derivative-variance}
 \end{equation}
 which justifies \eqref{eq:derivative-variance-preview}.
@@ -1129,7 +1116,7 @@ Let $p_n$ be the monic orthogonal polynomial sequence for the probability densit
 \end{equation}
 Their norms are
 \begin{equation}
-  \int_{\R}p_m(\omega)p_n(\omega)s(\omega)\dd\omega
+  \int_{\RealNumbers}p_m(\omega)p_n(\omega)s(\omega)\Differential\omega
    =(n!)^2\delta_{mn}.
   \label{eq:MP-norms}
 \end{equation}
@@ -1142,7 +1129,7 @@ Define real differential-operator polynomials $Q_n(D)$ by
   \qquad Q_{n+1}(D)=DQ_n(D)+n^2Q_{n-1}(D).
   \label{eq:Q-recurrence}
 \end{equation}
-Equivalently, $Q_n(D)=\ii^np_n(-\ii D)$.  The first operators are
+Equivalently, $Q_n(D)=\ImaginaryUnit^np_n(-\ImaginaryUnit D)$.  The first operators are
 \begin{align}
  Q_0&=1,&
  Q_1&=D,&
@@ -1162,14 +1149,14 @@ For every fixed $u$, define
 \end{equation}
 Then
 \begin{equation}
-  \E[Z_m(u)Z_n(u)]=\delta_{mn}.
+  \Expectation[Z_m(u)Z_n(u)]=\delta_{mn}.
   \label{eq:innovation-orthonormality}
 \end{equation}
 Thus each successive normalized derivative jet has linear innovation variance one.  The variables are generally not independent, because the underlying process is non-Gaussian at finite $u$.
 \end{theorem}
 
 \begin{proof}
-In the spectral representation, $Q_n(D)$ has multiplier $\ii^np_n(\omega)$.  Formula \eqref{eq:MP-norms} gives zero covariance for unequal degrees and variance $(n!)^2$ for degree $n$.  Division by $n!$ proves \eqref{eq:innovation-orthonormality}.
+In the spectral representation, $Q_n(D)$ has multiplier $\ImaginaryUnit^np_n(\omega)$.  Formula \eqref{eq:MP-norms} gives zero covariance for unequal degrees and variance $(n!)^2$ for degree $n$.  Division by $n!$ proves \eqref{eq:innovation-orthonormality}.
 \end{proof}
 
 \begin{provedbox}
@@ -1220,7 +1207,7 @@ For distinct nodes $q_1,\ldots,q_d$, let $T_Q$ be the Newton divided-difference 
 \end{equation}
 Its determinant is
 \begin{equation}
-  \abs{\det T_Q}
+  \AbsoluteValue{\det T_Q}
    =\frac1{\prod_{i<j}(q_j-q_i)}.
   \label{eq:newton-det}
 \end{equation}
@@ -1231,7 +1218,7 @@ As all nodes tend to $q$, the transformed common-digit vector tends samplewise a
 For $0<q<1$,
 \begin{equation}
  \boxed{
-  \Vol_d\supp J_d(q)
+  \Vol_d\SupportOperator J_d(q)
    =(1-q^2)^{-\binom d2}.}
  \label{eq:jet-volume}
 \end{equation}
@@ -1259,7 +1246,7 @@ silently extending \eqref{eq:jet-volume} beyond its valid chamber.
 \begin{example}
 At the Fabius parameter $q=1/2$,
 \begin{equation}
-  \Vol\supp J_d(1/2)
+  \Vol\SupportOperator J_d(1/2)
    =\left(\frac43\right)^{\binom d2}.
   \label{eq:Fabius-jet-volume}
 \end{equation}
@@ -1280,7 +1267,7 @@ Its dimension is $d=\sum_am_a$.
 The support of \eqref{eq:multi-jet} has volume
 \begin{equation}
  \boxed{
- \Vol\supp\mathcal J
+ \Vol\SupportOperator\mathcal J
   =\frac{\displaystyle
      \prod_{1\le a<b\le s}
        \left(\dfrac{p_b-p_a}{1-p_ap_b}\right)^{m_am_b}}
@@ -1353,7 +1340,7 @@ Let $f_{q,r}$ be the $C_c^\infty$ density of $(X_q,X_r)$ and define shifted Lege
 \end{equation}
 They satisfy
 \[
-  \int_0^1\mathcal P_m(x)\mathcal P_n(x)\dd x
+  \int_0^1\mathcal P_m(x)\mathcal P_n(x)\Differential x
     =\frac{\delta_{mn}}{2m+1}.
 \]
 Therefore
@@ -1365,7 +1352,7 @@ Therefore
 \end{equation}
 where
 \begin{equation}
-  L_{mn}(q,r)=\E[\mathcal P_m(X_q)\mathcal P_n(X_r)].
+  L_{mn}(q,r)=\Expectation[\mathcal P_m(X_q)\mathcal P_n(X_r)].
   \label{eq:Lmn}
 \end{equation}
 Every coefficient is an exact rational function of $q,r$: expand the two polynomials and evaluate each mixed monomial by \eqref{eq:multivariate-bell}.  Central symmetry implies
@@ -1373,7 +1360,7 @@ Every coefficient is an exact rational function of $q,r$: expand the two polynom
   L_{mn}(q,r)=0\qquad\text{when }m+n\text{ is odd}.
   \label{eq:Legendre-parity}
 \end{equation}
-Since the zero extension of $f_{q,r}$ is $C^\infty$ on $\R^2$, repeated integration by parts with the Legendre Sturm--Liouville operator gives, for every $A>0$,
+Since the zero extension of $f_{q,r}$ is $C^\infty$ on $\RealNumbers^2$, repeated integration by parts with the Legendre Sturm--Liouville operator gives, for every $A>0$,
 \begin{equation}
   |L_{mn}(q,r)|\le C_A(1+m+n)^{-A}.
   \label{eq:Legendre-decay}
@@ -1432,7 +1419,7 @@ This is formally standard, but the exact support lens makes the transformed supp
 \end{align}
 Then
 \begin{equation}
-  \supp(c_{q,r})
+  \SupportOperator(c_{q,r})
    =\{(u,v)\in[0,1]^2:v_-(u)\le v\le v_+(u)\}.
   \label{eq:copula-support}
 \end{equation}
@@ -1475,7 +1462,7 @@ For $v_n$ from \eqref{eq:vector-law},
 More generally, for every jet order $k$,
 \begin{equation}
  \sum_{n=0}^{2^m-1}\tau_n\frac{a_n^{(k)}(q)}{k!}
-  =\frac1{k!}\frac{\dd^k}{\dd q^k}
+  =\frac1{k!}\frac{\Differential^k}{\Differential q^k}
     \left[(1-q)\prod_{j=0}^{m-1}(1-q^{2^j})\right].
  \label{eq:TM-jet-filter}
 \end{equation}
@@ -1531,9 +1518,9 @@ For $d=3$, the optimizer is $(0,L/2,L)$.
 \begin{proof}
 The function $\log\tanh x$ is strictly concave on $(0,\infty)$ because
 \begin{equation}
-  \frac{\dd}{\dd x}\log\tanh x=\frac{2}{\sinh2x},
+  \frac{\Differential}{\Differential x}\log\tanh x=\frac{2}{\sinh2x},
   \qquad
-  \frac{\dd^2}{\dd x^2}\log\tanh x
+  \frac{\Differential^2}{\Differential x^2}\log\tanh x
    =-\frac{4\cosh2x}{\sinh^22x}<0.
 \end{equation}
 Thus $\Psi$ is concave and is strictly concave modulo common translation.  It tends to $-\infty$ at collisions.  Translation invariance lets us place $u_1=0$; if $u_d<L$, dilating all gaps increases every pair distance and therefore increases $\Psi$, so $u_d=L$.  Strict concavity on this affine slice gives uniqueness.  Reflection about $L/2$ preserves the objective, so uniqueness forces \eqref{eq:design-symmetry}.  Differentiation gives \eqref{eq:design-equilibrium}.  The $d=3$ claim follows from symmetry.
@@ -1622,7 +1609,7 @@ versus the exact $64/27=2.370370370370370$, a relative error of $1.36\times10^{-
 
 \subsection{Gaussianization rates}
 
-The exact cumulants \eqref{eq:Yq-cumulant} were compared with their leading hyperbolic asymptotics.  At $T=3$, the ratios exact/leading are $0.99999386$ for order four and $0.99995699$ for order eight.  This rapid agreement reflects the absence of an $\e^{-2T}$ correction inside the individual cumulant formula \eqref{eq:cumulant-elementary-symmetric}; after the leading factor, the first denominator correction is $\e^{-4T}$.
+The exact cumulants \eqref{eq:Yq-cumulant} were compared with their leading hyperbolic asymptotics.  At $T=3$, the ratios exact/leading are $0.99999386$ for order four and $0.99995699$ for order eight.  This rapid agreement reflects the absence of an $\EulerE^{-2T}$ correction inside the individual cumulant formula \eqref{eq:cumulant-elementary-symmetric}; after the leading factor, the first denominator correction is $\EulerE^{-4T}$.
 
 \begin{compbox}
 The numerical files preserve more digits than the rounded tables in the PDF.  In particular:
@@ -1665,14 +1652,14 @@ For $z\in\mathbb D$, define the complex geometric-uniform variable
   X_z=(1-z)\sum_{n\ge0}z^nU_n.
   \label{eq:complex-X}
 \end{equation}
-A $d$-tuple has a real zonoid support in $\C^d\cong\R^{2d}$.  Its covariance Gram matrix is still governed by the Szeg\H{o} kernel, but real $2d$-volume involves $2d\times2d$ minors rather than the complex $d\times d$ determinant.
+A $d$-tuple has a real zonoid support in $\ComplexNumbers^d\cong\RealNumbers^{2d}$.  Its covariance Gram matrix is still governed by the Szeg\H{o} kernel, but real $2d$-volume involves $2d\times2d$ minors rather than the complex $d\times d$ determinant.
 
 \begin{conjecture}[Complex Pick-zonoid correspondence]
 \label{conj:complex-zonoid}
 The intrinsic volumes of the complex common-digit support can be expressed through finite sums of principal minors of normalized Pick matrices and products of pseudohyperbolic distances.  On conjugation-stable node sets, the top real volume should factor into a Pick determinant times an explicit phase/orientation correction.
 \end{conjecture}
 
-The natural language is exterior algebra over $\R$ applied to Hardy kernel vectors.  The exact real identity \eqref{eq:support-correlation} is the rank-one boundary case of this proposed theory.
+The natural language is exterior algebra over $\RealNumbers$ applied to Hardy kernel vectors.  The exact real identity \eqref{eq:support-correlation} is the rank-one boundary case of this proposed theory.
 
 \subsection{Sharp ray-wise decay of the joint sinc product}
 
@@ -1717,7 +1704,7 @@ at the saddle relevant to small deviations: the extra $+1$ comes from the simple
 As $x\downarrow0$,
 \begin{equation}
 \begin{split}
- \log\Prob(S_{m,q}\le x)
+ \log\Probability(S_{m,q}\le x)
   ={}&-\frac{L^2}{2\lambda}
    -\frac{m+1}{\lambda}L\log L
    +A_{m,q}L+B_{m,q}(\log L)^2\\
@@ -1740,7 +1727,7 @@ For fixed $r>1/2$, the curves \eqref{eq:inverse-Fabius-copula-boundary} admit en
 
 This should produce explicit asymptotics for conditional extreme events such as
 \[
-  \Prob(X_r\le y\mid X_{1/2}=x)
+  \Probability(X_r\le y\mid X_{1/2}=x)
 \]
 in boundary layers where $x,y\downarrow0$ together.
 
@@ -1750,7 +1737,7 @@ in boundary layers where $x,y\downarrow0$ together.
 \label{question:design-limit}
 As $d\to\infty$ with $u_i\in[0,L]$ chosen by \cref{thm:unique-design}, what is the limiting empirical measure?  Does it have an explicit density solving
 \begin{equation}
-  \int_0^L\log\tanh|u-v|\dd\mu(v)=\text{constant}
+  \int_0^L\log\tanh|u-v|\Differential\mu(v)=\text{constant}
   \label{eq:equilibrium-potential}
 \end{equation}
 on its support, and what are the endpoint spacings?
@@ -1840,7 +1827,7 @@ This appendix isolates the exact algebra needed in \cref{sec:volume}.
 
 \subsection{Zonotope minors}
 
-For vectors $g_1,\ldots,g_M\in\R^d$, the zonotope
+For vectors $g_1,\ldots,g_M\in\RealNumbers^d$, the zonotope
 \[
   Z=\sum_{k=1}^M[0,g_k]
 \]
@@ -1848,7 +1835,7 @@ has volume
 \begin{equation}
   \Vol_dZ
    =\sum_{1\le i_1<\cdots<i_d\le M}
-      \abs{\det[g_{i_1}\ \cdots\ g_{i_d}]}.
+      \AbsoluteValue{\det[g_{i_1}\ \cdots\ g_{i_d}]}.
   \label{eq:appendix-zonotope}
 \end{equation}
 One proof decomposes a generic zonotope into half-open parallelotopes indexed by bases of the associated vector matroid~\cite{Shephard}.  Degenerate configurations follow by continuity.  Formula \eqref{eq:appendix-zonotope} is often called Shephard's volume formula.
@@ -1911,7 +1898,7 @@ Then \eqref{eq:mixed-cumulant} gives the block weight
 \end{equation}
 The exact moment is
 \begin{equation}
-  \E\prod_{a=1}^mX_{q_{i_a}}
+  \Expectation\prod_{a=1}^mX_{q_{i_a}}
     =\sum_{\pi\in\cP([m])}\prod_{B\in\pi}W(B).
   \label{eq:colored-Bell}
 \end{equation}
@@ -1935,27 +1922,27 @@ Choose disjoint blocks
   B_\ell=\{N_\ell,N_\ell+1,\ldots,N_\ell+d-1\},
   \qquad \ell=1,\ldots,M.
 \]
-Let $V_\ell$ be the $d\times d$ matrix with columns $v_n$, $n\in B_\ell$.  It is invertible.  Hence for every $t\in\R^d$,
+Let $V_\ell$ be the $d\times d$ matrix with columns $v_n$, $n\in B_\ell$.  It is invertible.  Hence for every $t\in\RealNumbers^d$,
 \begin{equation}
   \max_{n\in B_\ell}|t\cdot v_n|
-   \ge\frac{\sigma_{\min}(V_\ell)}{\sqrt d}\norm t.
+   \ge\frac{\sigma_{\min}(V_\ell)}{\sqrt d}\Norm t.
   \label{eq:block-projection}
 \end{equation}
-Since $|\sinc x|\le\min(1,1/|x|)$, the product of characteristic factors over block $B_\ell$ is at most
+Since $|\SincRad x|\le\min(1,1/|x|)$, the product of characteristic factors over block $B_\ell$ is at most
 \begin{equation}
-  \frac{C_\ell}{1+\norm t}.
+  \frac{C_\ell}{1+\Norm t}.
   \label{eq:block-decay}
 \end{equation}
 All other factors have modulus at most one.  Multiplying \eqref{eq:block-decay} over $M$ blocks gives
 \begin{equation}
-  |\Phi_Q(t)|\le C_M(1+\norm t)^{-M}.
+  |\Phi_Q(t)|\le C_M(1+\Norm t)^{-M}.
   \label{eq:rapid-decay}
 \end{equation}
 Because $M$ is arbitrary, $t^\beta\Phi_Q(t)$ is integrable for every multi-index $\beta$.  Fourier inversion then yields a globally $C^\infty$ density, and differentiation under the integral gives
 \begin{equation}
   \partial^\beta f_Q(x)
-   =(2\pi)^{-d}\int_{\R^d}
-      (-\ii t)^\beta\e^{-\ii t\cdot x}\Phi_Q(t)\dd t.
+   =(2\pi)^{-d}\int_{\RealNumbers^d}
+      (-\ImaginaryUnit t)^\beta\EulerE^{-\ImaginaryUnit t\cdot x}\Phi_Q(t)\Differential t.
   \label{eq:density-derivative-Fourier}
 \end{equation}
 This proof is robust under replacement of uniform digits by any compactly supported digit law whose characteristic function has a first-order decay direction after a full-rank block.

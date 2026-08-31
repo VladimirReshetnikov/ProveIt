@@ -6,6 +6,7 @@
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,tabularx,array,multirow}
 \usepackage{graphicx}
 \usepackage{caption}
@@ -95,37 +96,14 @@
   \vspace{0.55em}\hrule\end{minipage}\end{center}\smallskip
 }
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\E}{\mathbb E}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\upf}{\operatorname{up}}
-\newcommand{\sincpi}{\operatorname{sinc}_{\pi}}
 \newcommand{\MM}{\mathsf M}
 \newcommand{\Dscr}{\mathscr D_u}
 \newcommand{\PiE}{\Pi^{\mathrm e}}
-\newcommand{\Span}{\operatorname{span}}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\rank}{\operatorname{rank}}
-\newcommand{\diag}{\operatorname{diag}}
 \newcommand{\tr}{\operatorname{tr}}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
-\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
-\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
 \newcommand{\inner}[2]{\left\langle#1,#2\right\rangle}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
-\newcommand{\vtwo}{\nu_2}
 \newcommand{\one}{\mathbf 1}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction/docs}}
 \DeclareMathOperator{\ord}{ord}
-\DeclareMathOperator{\Res}{Res}
 
 \title{\bfseries Legendre--Rvachev Self-Reconstruction on $[-1,1]$\\[0.45em]
 \large Finite literal-shift synthesis, orthogonal atom blocks,\\
@@ -138,7 +116,7 @@ and quarter-grid lifting identities}
 \maketitle
 
 \begin{abstract}
-Let $u=\upf$ be Rvachev's even $C^\infty$ probability density supported on
+Let $u=\RvachevUp$ be Rvachev's even $C^\infty$ probability density supported on
 $[-1,1]$.  The current \texttt{ProveIt} corpus contains two apparently opposite
 constructions: every polynomial on a compact interval can be synthesized
 exactly from finitely many translates of $u$, while $u$ itself has an absolutely
@@ -163,17 +141,17 @@ Each finite translate train is exactly the orthogonal mode $u_nP_{2n}$.
 Consequently the self-reconstruction is an orthogonal decomposition into
 finite cancellation blocks, with exact Pythagorean tails and a hierarchy of
 Sturm--Liouville energies.  In particular, if
-$A_2=\int_0^1F(x)^2\dd x$, then
+$A_2=\int_0^1F(x)^2\Differential x$, then
 \[
  A_2=\sum_{n=0}^{\infty}\frac{u_n^2}{4n+1}
  =\frac1{2\pi}\int_0^\infty
  \prod_{r=1}^{\infty}
- \left(\frac{\sin(t/2^r)}{t/2^r}\right)^2\dd t,
+ \left(\frac{\sin(t/2^r)}{t/2^r}\right)^2\Differential t,
 \]
 a positive series with exact rational partial sums; numerically
 $A_2\approx0.40443676798398526$.
 
-The lattices $4^n\Z^{-1}$ are nested.  Comparing two admissible lattices gives
+The lattices $4^n\IntegerNumbers^{-1}$ are nested.  Comparing two admissible lattices gives
 an explicit finite null train
 \[
  \sum_{|k|<2rm}\bigl(1-r\one_{r\mid k}\bigr)
@@ -190,7 +168,7 @@ nonanalyticity of $u$ sharpens the existing non-flattening theorem.  If
 $c_n^{(0)}=u_nQ_{2n}(0)/4^n$ is the repeated central-atom coefficient, then
 \[
  \limsup_{n\to\infty}
- \frac{|c_n^{(0)}|^{1/n}}{n^2}=\frac1{\pi^2\e^2}.
+ \frac{|c_n^{(0)}|^{1/n}}{n^2}=\frac1{\pi^2\EulerE^2}.
 \]
 Thus the canonical atomwise coefficients are superexponential along a
 subsequence even though the resulting orthogonal blocks tend rapidly to zero.
@@ -370,8 +348,8 @@ Editorial update (2026-08-30): the focused-build module
 \path{isLeast_rvachevCombExactThrough_even}.  Universal exactness means
 exactness at every real shift for every real polynomial of natural degree at
 most \(d\), with a nonzero natural mesh \(M\).  The classification is exactly
-\(d\le\vtwo(M)\), equivalently \(2^d\mid M\); a monomial of degree
-\(\vtwo(M)+1\) fails at some real shift; and \(2^d\) is the least universally
+\(d\le\TwoAdicValuation(M)\), equivalently \(2^d\mid M\); a monomial of degree
+\(\TwoAdicValuation(M)+1\) fails at some real shift; and \(2^d\) is the least universally
 exact mesh.  The even-degree specialization makes \(4^N\) least for the
 \emph{whole} polynomial space through degree \(2N\).  It does not assert
 minimality for one Legendre polynomial, one fixed \(S_N\), or any
@@ -508,8 +486,8 @@ the entire repository for the precise formulas introduced below.
 Status & Mathematical content\\
 \midrule
 Imported &
-$\widehat u(\xi)=\prod_{j\ge0}\sincpi(\xi/2^j)$,
-$\ord_{\xi=m}\widehat u=1+\vtwo(m)$, the MGF and cumulants, rational moments,
+$\widehat u(\xi)=\prod_{j\ge0}\SincPi(\xi/2^j)$,
+$\ord_{\xi=m}\widehat u=1+\TwoAdicValuation(m)$, the MGF and cumulants, rational moments,
 and exact dyadic values.\\
 Imported &
 Exact polynomial synthesis at any admissible dyadic oversampling ratio,
@@ -536,7 +514,7 @@ General interlevel null trains, the quarter-grid refinement cocycle, and an
 exact lifting decomposition of successive fixed-scale coefficient vectors.\\
 New here, corpus-relative &
 Even-projector dual-frame trace identities and the sharp root-limsup law
-$\limsup |c_n^{(0)}|^{1/n}/n^2=(\pi^2\e^2)^{-1}$.\\
+$\limsup |c_n^{(0)}|^{1/n}/n^2=(\pi^2\EulerE^2)^{-1}$.\\
 \bottomrule
 \end{tabularx}
 \caption{Status of the principal results.}
@@ -548,31 +526,31 @@ $\limsup |c_n^{(0)}|^{1/n}/n^2=(\pi^2\e^2)^{-1}$.\\
 
 \subsection{Normalization and Fourier product}
 
-Let $u=\upf$ be the unique even nonnegative $C^\infty$ function such that
+Let $u=\RvachevUp$ be the unique even nonnegative $C^\infty$ function such that
 \begin{equation}
- \supp u=[-1,1],\qquad u(0)=1,\qquad
+ \SupportOperator u=[-1,1],\qquad u(0)=1,\qquad
  u'(x)=2u(2x+1)-2u(2x-1).
  \label{eq:up-dde}
 \end{equation}
 The chosen normalization also gives
 \begin{equation}
- \int_{-1}^{1}u(x)\dd x=1.
+ \int_{-1}^{1}u(x)\Differential x=1.
  \label{eq:up-probability}
 \end{equation}
 With
 \(
- \widehat f(\xi)=\int_{\R}f(x)e^{-2\pi\ii x\xi}\dd x
+ \widehat f(\xi)=\int_{\RealNumbers}f(x)e^{-2\pi\ImaginaryUnit x\xi}\Differential x
 \),
 \begin{equation}
  \widehat u(\xi)=
- \prod_{j=0}^{\infty}\sincpi(\xi/2^j),
+ \prod_{j=0}^{\infty}\SincPi(\xi/2^j),
  \qquad
- \sincpi(t)=\frac{\sin(\pi t)}{\pi t}.
+ \SincPi(t)=\frac{\sin(\pi t)}{\pi t}.
  \label{eq:fourier-product}
 \end{equation}
 Every nonzero integer zero has the exact multiplicity
 \begin{equation}
- \ord_{\xi=m}\widehat u(\xi)=1+\vtwo(m).
+ \ord_{\xi=m}\widehat u(\xi)=1+\TwoAdicValuation(m).
  \label{eq:zero-order}
 \end{equation}
 These multiplicities are the source of the sharp dyadic reproduction order.
@@ -587,8 +565,8 @@ then
 \end{equation}
 has density $u$.  Hence the moment generating function is
 \begin{equation}
- \MM(z)=\E e^{zZ}
- =\int_{-1}^{1}e^{zx}u(x)\dd x
+ \MM(z)=\Expectation e^{zZ}
+ =\int_{-1}^{1}e^{zx}u(x)\Differential x
  =\prod_{j=1}^{\infty}\frac{\sinh(z/2^j)}{z/2^j}.
  \label{eq:mgf}
 \end{equation}
@@ -650,8 +628,8 @@ result is the following.
 
 \begin{theorem}[Exact literal-shift synthesis; imported]
 \label{thm:generic-synthesis}
-Let $p$ be a polynomial of degree at most $d$.  If $m\in\N$ satisfies
-$\vtwo(m)\ge d$, put $p^\sharp=\Dscr p$.  Then, for $-1\le x\le1$,
+Let $p$ be a polynomial of degree at most $d$.  If $m\in\NaturalNumbers$ satisfies
+$\TwoAdicValuation(m)\ge d$, put $p^\sharp=\Dscr p$.  Then, for $-1\le x\le1$,
 \begin{equation}
  \boxed{
  p(x)=\frac1m\sum_{|k|<2m}p^\sharp(k/m)u(x-k/m).}
@@ -669,7 +647,7 @@ zero multiplicity \eqref{eq:zero-order} is at least $d+1$, so all distributional
 derivatives through degree $d$ vanish.  Compact support reduces the globally
 locally finite train to the displayed finite range on $[-1,1]$.  The leading
 coefficient of a degree-$d$ polynomial shows why the condition
-$\vtwo(m)\ge d$ is sharp within this stationary Poisson-synthesis scheme.
+$\TwoAdicValuation(m)\ge d$ is sharp within this stationary Poisson-synthesis scheme.
 \end{proof}
 
 The focused-build declaration \path{isLeast_rvachevCombExactThrough} now
@@ -698,21 +676,21 @@ Because $\Dscr$ contains only even derivatives,
 There are several useful finite forms.  Directly from
 \eqref{eq:deconvolution},
 \begin{equation}
- Q_d(x)=\sum_{r=0}^{\floor{d/2}}
+ Q_d(x)=\sum_{r=0}^{\Floor{d/2}}
  \frac{\beta_{2r}}{(2r)!}P_d^{(2r)}(x).
  \label{eq:Q-derivative}
 \end{equation}
 Using
 $P_d^{(2r)}=(4r-1)!!\,C_{d-2r}^{2r+1/2}$ gives
 \begin{equation}
- Q_d(x)=\sum_{r=0}^{\floor{d/2}}
+ Q_d(x)=\sum_{r=0}^{\Floor{d/2}}
  \frac{\beta_{2r}(4r-1)!!}{(2r)!}
  C_{d-2r}^{2r+1/2}(x).
  \label{eq:Q-gegenbauer}
 \end{equation}
 Alternatively, applying $\Dscr x^j=A_j(x)$ to the standard power expansion,
 \begin{equation}
- Q_d(x)=2^{-d}\sum_{r=0}^{\floor{d/2}}(-1)^r
+ Q_d(x)=2^{-d}\sum_{r=0}^{\Floor{d/2}}(-1)^r
  \frac{(2d-2r)!}{r!(d-r)!(d-2r)!}A_{d-2r}(x).
  \label{eq:Q-appell}
 \end{equation}
@@ -784,7 +762,7 @@ Then \eqref{eq:Pd-synthesis} becomes
 \end{equation}
 The grids are nested:
 \begin{equation}
- \frac1{m_n}\Z\subset\frac1{m_{n+1}}\Z,
+ \frac1{m_n}\IntegerNumbers\subset\frac1{m_{n+1}}\IntegerNumbers,
  \qquad m_{n+1}=4m_n.
  \label{eq:nested-grids}
 \end{equation}
@@ -800,11 +778,11 @@ The canonical expansion in the repository is
 \begin{equation}
  u(x)=\sum_{n=0}^{\infty}u_nP_{2n}(x),
  \qquad
- u_n=\frac{4n+1}{2}\int_{-1}^{1}u(x)P_{2n}(x)\dd x.
+ u_n=\frac{4n+1}{2}\int_{-1}^{1}u(x)P_{2n}(x)\Differential x.
  \label{eq:legendre-series}
 \end{equation}
 It converges absolutely and uniformly on $[-1,1]$.  If
-$\mu_{2j}=\int x^{2j}u(x)\dd x$, then
+$\mu_{2j}=\int x^{2j}u(x)\Differential x$, then
 \begin{equation}
  u_n=\frac{4n+1}{2^{2n+1}}
  \sum_{j=0}^{n}(-1)^{n+j}
@@ -876,7 +854,7 @@ train is retained as one block.
 \begin{proof}
 Equation \eqref{eq:block-mode} is
 \eqref{eq:even-P-synthesis} multiplied by $u_n$.  Since
-$\norm{P_j}_{L^\infty[-1,1]}\le1$ and the imported expansion satisfies
+$\Norm{P_j}_{L^\infty[-1,1]}\le1$ and the imported expansion satisfies
 $\sum|u_n|<\infty$, the Weierstrass test proves the stated block convergence.
 \end{proof}
 
@@ -960,13 +938,13 @@ For $n,m\ge0$,
 \end{equation}
 Consequently,
 \begin{equation}
- \norm{u-S_N}_2^2
+ \Norm{u-S_N}_2^2
  =\sum_{n>N}\frac{2u_n^2}{4n+1},
  \label{eq:exact-L2-tail}
 \end{equation}
 and
 \begin{equation}
- \norm{u}_2^2=\sum_{n=0}^{\infty}\frac{2u_n^2}{4n+1}.
+ \Norm{u}_2^2=\sum_{n=0}^{\infty}\frac{2u_n^2}{4n+1}.
  \label{eq:parseval-up}
 \end{equation}
 \end{theorem}
@@ -975,7 +953,7 @@ and
 By \eqref{eq:block-mode}, $B_n=u_nP_{2n}$ on the interval.  Legendre
 orthogonality gives
 \[
- \int_{-1}^{1}P_{2n}(x)P_{2m}(x)\dd x
+ \int_{-1}^{1}P_{2n}(x)P_{2m}(x)\Differential x
  =\delta_{nm}\frac{2}{4n+1}.
 \]
 This proves \eqref{eq:block-orthogonality}.  The exact tail and Parseval
@@ -998,7 +976,7 @@ cross-scale Gram matrices:
  \boxed{
  \sum_{|k|<2m_n}\sum_{|\ell|<2m_m}
  a_{n,k}a_{m,\ell}
- \int_{-1}^{1}u(x-k/m_n)u(x-\ell/m_m)\dd x
+ \int_{-1}^{1}u(x-k/m_n)u(x-\ell/m_m)\Differential x
  =\delta_{nm}\frac{2u_n^2}{4n+1}.}
  \label{eq:atom-gram}
 \end{equation}
@@ -1023,7 +1001,7 @@ For $f\in L^2[-1,1]$, define
 \begin{theorem}[Exact atomized spectral details; new here]
 \label{thm:detail-atomization}
 Each $\Delta_n$ is the orthogonal rank-one projector onto
-$\Span\{P_{2n}\}$ and admits the finite atom realization
+$\SpanOperator\{P_{2n}\}$ and admits the finite atom realization
 \begin{equation}
  \boxed{
  (\Delta_nf)(x)=\frac{4n+1}{2m_n}\inner{f}{P_{2n}}
@@ -1070,10 +1048,10 @@ On $[-1,1]$ the usual Fabius function and the even up-function are related by
 \end{equation}
 Define
 \begin{equation}
- A_2:=\int_0^1F(t)^2\dd t.
+ A_2:=\int_0^1F(t)^2\Differential t.
  \label{eq:A2-def}
 \end{equation}
-Then $\norm{u}_2^2=2A_2$.
+Then $\Norm{u}_2^2=2A_2$.
 
 \begin{theorem}[Positive rational Legendre series for the energy; new here]
 \label{thm:A2-series}
@@ -1082,11 +1060,11 @@ The Fabius square energy has the exact representations
  A_2&=\boxed{\displaystyle\sum_{n=0}^{\infty}\frac{u_n^2}{4n+1}}
  \label{eq:A2-legendre}\\
  &=\int_0^\infty
- \prod_{j=0}^{\infty}\sincpi^2(\xi/2^j)\dd\xi
+ \prod_{j=0}^{\infty}\SincPi^2(\xi/2^j)\Differential\xi
  \label{eq:A2-fourier}\\
  &=\frac1{2\pi}\int_0^\infty
  \prod_{r=1}^{\infty}
- \left(\frac{\sin(t/2^r)}{t/2^r}\right)^2\dd t.
+ \left(\frac{\sin(t/2^r)}{t/2^r}\right)^2\Differential t.
  \label{eq:A2-sinc}
 \end{align}
 Every partial sum in \eqref{eq:A2-legendre} is a positive rational number and
@@ -1099,7 +1077,7 @@ Divide \eqref{eq:parseval-up} by two and use \eqref{eq:F-up}; this gives
 \eqref{eq:un-dyadic}.  Parseval's theorem for the Fourier convention
 \eqref{eq:fourier-product} gives
 \[
- \norm{u}_2^2=\int_{\R}|\widehat u(\xi)|^2\dd\xi.
+ \Norm{u}_2^2=\int_{\RealNumbers}|\widehat u(\xi)|^2\Differential\xi.
 \]
 Evenness and division by two yield \eqref{eq:A2-fourier}.  Finally substitute
 $t=2\pi\xi$.
@@ -1175,7 +1153,7 @@ eliminates cancellation from the approximation error.
 
 Let
 \begin{equation}
- \mathcal Lf=-\frac{\dd}{\dd x}\left((1-x^2)f'(x)\right).
+ \mathcal Lf=-\frac{\Differential}{\Differential x}\left((1-x^2)f'(x)\right).
  \label{eq:legendre-operator}
 \end{equation}
 Then
@@ -1192,21 +1170,21 @@ natural Legendre boundary condition.
 \label{thm:derivative-energies}
 For $n,m\ge0$,
 \begin{equation}
- \int_{-1}^{1}(1-x^2)B_n'(x)B_m'(x)\dd x
+ \int_{-1}^{1}(1-x^2)B_n'(x)B_m'(x)\Differential x
  =\delta_{nm}\lambda_n\frac{2u_n^2}{4n+1}.
  \label{eq:block-derivative-orthogonality}
 \end{equation}
 More generally, for every real $s\ge0$ for which the spectral norm is defined,
 \begin{equation}
  \boxed{
- \norm{(I+\mathcal L)^{s/2}u}_2^2
+ \Norm{(I+\mathcal L)^{s/2}u}_2^2
  =\sum_{n=0}^{\infty}(1+\lambda_n)^s
  \frac{2u_n^2}{4n+1}.}
  \label{eq:spectral-sobolev}
 \end{equation}
 In particular,
 \begin{equation}
- \int_{-1}^{1}(1-x^2)|u'(x)|^2\dd x
+ \int_{-1}^{1}(1-x^2)|u'(x)|^2\Differential x
  =\sum_{n=0}^{\infty}\lambda_n\frac{2u_n^2}{4n+1}.
  \label{eq:first-derivative-energy}
 \end{equation}
@@ -1252,7 +1230,7 @@ Then \cref{thm:generic-synthesis} says $T_mF_mp=p$.
 \begin{theorem}[Interlevel polynomial null train; new here]
 \label{thm:interlevel-null}
 Let $p$ have degree at most $d$, put $Q=\Dscr p$, and suppose both $m$ and
-$rm$ are admissible, i.e. $\vtwo(m),\vtwo(rm)\ge d$.  Then
+$rm$ are admissible, i.e. $\TwoAdicValuation(m),\TwoAdicValuation(rm)\ge d$.  Then
 \begin{equation}
  \boxed{
  \frac1{rm}\sum_{|k|<2rm}
@@ -1450,7 +1428,7 @@ Multiplying \eqref{eq:Pd-synthesis} by $P_j$ and integrating gives, for
 $j\ge0$,
 \begin{equation}
  \frac1{2^d}\sum_{|k|<2^{d+1}}Q_d(k/2^d)
- \int_{-1}^{1}u(x-k/2^d)P_j(x)\dd x
+ \int_{-1}^{1}u(x-k/2^d)P_j(x)\Differential x
  =\delta_{dj}\frac{2}{2d+1}.
  \label{eq:mode-biorthogonality}
 \end{equation}
@@ -1472,7 +1450,7 @@ Define
 \end{equation}
 It is the kernel of the orthogonal projector onto
 \begin{equation}
- E_N=\Span\{P_0,P_2,\ldots,P_{2N}\}.
+ E_N=\SpanOperator\{P_0,P_2,\ldots,P_{2N}\}.
  \label{eq:EN}
 \end{equation}
 If $K_d$ denotes the full Christoffel--Darboux kernel through degree $d$, then
@@ -1541,7 +1519,7 @@ All inner products are over $[-1,1]$.
 Write \eqref{eq:dual-frame-projector} as
 $\PiE_N=\sum_k g_k\otimes\psi_k$.  The trace of a rank-one operator
 $g\otimes\psi$ is $\inner{\psi}{g}$, while
-$\tr\PiE_N=\rank\PiE_N=N+1$, proving \eqref{eq:trace-identity}.  Expanding the
+$\tr\PiE_N=\RankOperator\PiE_N=N+1$, proving \eqref{eq:trace-identity}.  Expanding the
 Hilbert--Schmidt norm gives the double sum in \eqref{eq:HS-identity}; an
 orthogonal projector has squared Hilbert--Schmidt norm equal to its rank.
 \end{proof}
@@ -1558,23 +1536,23 @@ Legendre analysis Gram matrix.
 
 Let
 \begin{equation}
- C=\MM(\pi\ii)
+ C=\MM(\pi\ImaginaryUnit)
  =\prod_{j=1}^{\infty}\frac{\sin(\pi/2^j)}{\pi/2^j}.
  \label{eq:C-constant}
 \end{equation}
-The nearest poles of $1/\MM$ are $\pm2\pi\ii$.  The recent repository loop
+The nearest poles of $1/\MM$ are $\pm2\pi\ImaginaryUnit$.  The recent repository loop
 report derives
 \begin{equation}
  Q_{2n}(0)=
  \frac{2(-1)^n}{C}\frac{(4n)!}{(2n)!(4\pi)^{2n}}
- \left(1+\frac{2\pi^2}{4n-1}+\bigO(n^{-2})\right).
+ \left(1+\frac{2\pi^2}{4n-1}+\BigO(n^{-2})\right).
  \label{eq:Q0-asymptotic}
 \end{equation}
 In particular,
 \begin{equation}
- \abs{Q_{2n}(0)}^{1/(2n)}\sim\frac{2n}{\pi\e},
+ \AbsoluteValue{Q_{2n}(0)}^{1/(2n)}\sim\frac{2n}{\pi\EulerE},
  \qquad
- \frac{\abs{Q_{2n}(0)}^{1/n}}{n^2}\to\frac{4}{\pi^2\e^2}.
+ \frac{\AbsoluteValue{Q_{2n}(0)}^{1/n}}{n^2}\to\frac{4}{\pi^2\EulerE^2}.
  \label{eq:Q0-root}
 \end{equation}
 The same report proves that
@@ -1614,7 +1592,7 @@ For the coefficient \eqref{eq:central-coefficient},
 \begin{equation}
  \boxed{
  \limsup_{n\to\infty}
- \frac{|c_n^{(0)}|^{1/n}}{n^2}=\frac1{\pi^2\e^2}.}
+ \frac{|c_n^{(0)}|^{1/n}}{n^2}=\frac1{\pi^2\EulerE^2}.}
  \label{eq:central-root}
 \end{equation}
 If
@@ -1626,7 +1604,7 @@ If
 is the raw coefficient variation of the $n$th block, then
 \begin{equation}
  \limsup_{n\to\infty}\frac{V_n^{1/n}}{n^2}
- \ge\frac1{\pi^2\e^2}.
+ \ge\frac1{\pi^2\EulerE^2}.
  \label{eq:variation-lower}
 \end{equation}
 \end{theorem}
@@ -1638,7 +1616,7 @@ From \eqref{eq:central-coefficient},
  =|u_n|^{1/n}
  \frac{|Q_{2n}(0)|^{1/n}}{4n^2}.
 \]
-The second factor tends to $(\pi^2\e^2)^{-1}$ by
+The second factor tends to $(\pi^2\EulerE^2)^{-1}$ by
 \eqref{eq:Q0-root}; the first has limsup one by
 \cref{lem:un-root}.  This proves \eqref{eq:central-root}.  Since the $k=0$
 term occurs in the absolute sum defining $V_n$, $V_n\ge|c_n^{(0)}|$.
@@ -1650,7 +1628,7 @@ $n^2/(\pi^2e^2)$.  Thus the canonical coefficient rows are superexponential
 along a subsequence, while their synthesized functions have
 $L^2$ norm
 \begin{equation}
- \norm{B_n}_2=|u_n|\sqrt{\frac{2}{4n+1}}\longrightarrow0.
+ \Norm{B_n}_2=|u_n|\sqrt{\frac{2}{4n+1}}\longrightarrow0.
  \label{eq:block-small}
 \end{equation}
 The closed loop is therefore an extreme cancellation mechanism.
@@ -1687,11 +1665,11 @@ resulting block size.  The rigorous asymptotic statement is
 \subsection{\texorpdfstring{Lambert-$W$}{Lambert-W} threshold}
 
 Solving the leading relation
-$|Q_{2n}(0)|\asymp(2n/(\pi\e))^{2n}$ for the first index at which it exceeds
+$|Q_{2n}(0)|\asymp(2n/(\pi\EulerE))^{2n}$ for the first index at which it exceeds
 $X$ gives the imported threshold
 \begin{equation}
  n_Q(X)=\frac{\log X}
- {2W\!\left(\log X/(\pi\e)\right)}+\bigO(1).
+ {2W\!\left(\log X/(\pi\EulerE)\right)}+\BigO(1).
  \label{eq:Q-threshold}
 \end{equation}
 Here the principal branch $W$ appears because one inverts factorial growth.
@@ -1829,7 +1807,7 @@ Away from a possible sparse set of near-cancellation indices, the coefficients
 $u_n$ obey a dyadic saddle asymptotic of the form
 \begin{equation}
  \log|u_n|=-\frac{(\log n)^2}{2\log2}
- +\bigO(\log n\log\log n),
+ +\BigO(\log n\log\log n),
  \label{eq:legendre-saddle-conj}
 \end{equation}
 with a bounded or slowly varying log-periodic correction inherited from the
@@ -1844,12 +1822,12 @@ flat endpoint layer.  It would turn the root-limsup theorem
 
 \begin{conjecture}[Exterior side-lobe explosion]
 \label{conj:side-lobes}
-Extend the finite train $B_n$ from \eqref{eq:block-def} to all of $\R$ by the
+Extend the finite train $B_n$ from \eqref{eq:block-def} to all of $\RealNumbers$ by the
 same formula and call it $\widetilde B_n$.  Although
 $\widetilde B_n=u_nP_{2n}$ on $[-1,1]$, conjecturally
 \begin{equation}
- \frac{\norm{\widetilde B_n}_{L^2(\R\setminus[-1,1])}}
- {\norm{B_n}_{L^2[-1,1]}}\longrightarrow\infty.
+ \frac{\Norm{\widetilde B_n}_{L^2(\RealNumbers\setminus[-1,1])}}
+ {\Norm{B_n}_{L^2[-1,1]}}\longrightarrow\infty.
  \label{eq:side-lobe-conj}
 \end{equation}
 A stronger version predicts superexponential growth along a subsequence.
@@ -1895,7 +1873,7 @@ provide invariant constraints for this optimization.
 \label{conj:A2-irrational}
 The constant
 \(
- A_2=\int_0^1F(x)^2\dd x
+ A_2=\int_0^1F(x)^2\Differential x
 \)
 is irrational.
 \end{conjecture}
@@ -2005,9 +1983,9 @@ for the sharp central law is the standard implication from geometric Legendre co
 
 The requested finite representation is completely explicit.  For degree $d$,
 one applies the reciprocal moment operator $\Dscr=\MM(D)^{-1}$ to $P_d$,
-samples the resulting polynomial $Q_d$ at the grid $2^{-d}\Z$, and attaches
+samples the resulting polynomial $Q_d$ at the grid $2^{-d}\IntegerNumbers$, and attaches
 those samples to finitely many literal translates of $u$.  For the even modes
-in the canonical expansion, the grids are $4^{-n}\Z$ and nest by quarter-grid
+in the canonical expansion, the grids are $4^{-n}\IntegerNumbers$ and nest by quarter-grid
 refinement.
 
 Substitution closes the loop exactly, but its correct unit is a finite
@@ -2065,7 +2043,7 @@ $0\le a\le2^n$, the finite formula
 \begin{equation}
  F(a/2^n)=\frac{2^{-n(n+1)/2}}{n!}
  \sum_{j=0}^{a-1}(-1)^{s_2(j)}
- \sum_{r=0}^{\floor{n/2}}
+ \sum_{r=0}^{\Floor{n/2}}
  \binom{n}{2r}\mu_{2r}(2a-2j-1)^{n-2r},
  \label{eq:dyadic-F}
 \end{equation}

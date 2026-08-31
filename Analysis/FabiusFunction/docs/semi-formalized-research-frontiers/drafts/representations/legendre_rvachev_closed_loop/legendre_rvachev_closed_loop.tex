@@ -6,6 +6,7 @@
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,array,tabularx,multirow}
 \usepackage{graphicx}
 \usepackage{caption}
@@ -79,32 +80,10 @@
 \crefname{identity}{identity}{identities}
 \Crefname{identity}{Identity}{Identities}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\E}{\mathbb E}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sincpi}{\operatorname{sinc}_{\pi}}
 \newcommand{\MM}{\mathsf M}
 \newcommand{\Dscr}{\mathscr D_u}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
 \newcommand{\eps}{\varepsilon}
-\newcommand{\vtwo}{\nu_2}
-\newcommand{\Span}{\operatorname{span}}
-\newcommand{\rank}{\operatorname{rank}}
 \newcommand{\tr}{\operatorname{tr}}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\diag}{\operatorname{diag}}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
-\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
-\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction/docs}}
 \DeclareMathOperator{\ord}{ord}
 
@@ -141,7 +120,7 @@ dual translated moments, rational spectral sum rules, and log-square decay}
 \maketitle
 
 \begin{abstract}
-Let $u=\Up$ be Rvachev's even $C^\infty$ probability density supported on
+Let $u=\RvachevUp$ be Rvachev's even $C^\infty$ probability density supported on
 $[-1,1]$, and let $P_\ell$ be the Legendre polynomial normalized by
 $P_\ell(1)=1$.  The repository already proves exact reproduction of every
 polynomial by a finite local sum of shifted or shifted-and-dilated copies of
@@ -156,13 +135,13 @@ by that closure.
 
 Put
 \[
- \MM_u(z)=\int_{-1}^{1}\e^{zx}u(x)\dd x
+ \MM_u(z)=\int_{-1}^{1}\EulerE^{zx}u(x)\Differential x
  =\prod_{j\ge1}\frac{\sinh(z/2^j)}{z/2^j},
  \qquad
  \Dscr=\MM_u(D)^{-1},
  \qquad Q_\ell=\Dscr P_\ell.
 \]
-For any integer $M$ with $\vtwo(M)\ge\ell$,
+For any integer $M$ with $\TwoAdicValuation(M)\ge\ell$,
 \[
  P_\ell(x)=\frac1M\sum_{|k|<2M}Q_\ell(k/M)u(x-k/M),
  \qquad -1\le x\le1.
@@ -187,13 +166,13 @@ proves that a flattened atom series is not absolute or unconditional.
 
 The principal new structure here is a dual translated-moment kernel
 \[
- \Lambda_m(c)=\frac{2m+1}{2}\int_{-1}^{1}u(x-c)P_m(x)\dd x.
+ \Lambda_m(c)=\frac{2m+1}{2}\int_{-1}^{1}u(x-c)P_m(x)\Differential x.
 \]
 It is compactly supported and smooth, satisfies
 $\Lambda_{2n}(0)=u_n$, and has the spherical-Bessel representation
 \[
- \Lambda_m(c)=(2m+1)(-\ii)^m\int_{\R}
- \widehat u(\xi)j_m(2\pi\xi)\e^{2\pi\ii\xi c}\dd\xi.
+ \Lambda_m(c)=(2m+1)(-\ImaginaryUnit)^m\int_{\RealNumbers}
+ \widehat u(\xi)j_m(2\pi\xi)\EulerE^{2\pi\ImaginaryUnit\xi c}\Differential\xi.
 \]
 The finite Legendre synthesis and this dual analysis obey exact dyadic
 biorthogonality:
@@ -221,9 +200,9 @@ bound
  \exp\!\left(-\frac{(\log n)^2}{2\log2}\right)
 \]
 for an explicit finite $\sigma$.  Exact arithmetic through $n=80$ suggests
-the new conjecture $\vtwo(u_n)=-1$ for every $n$, while moments through
+the new conjecture $\TwoAdicValuation(u_n)=-1$ for every $n$, while moments through
 $\mu_{160}$ suggest
-$\vtwo(\mu_{2m}-1)=3+\vtwo(m)$.  All numerical and symbolic experiments are
+$\TwoAdicValuation(\mu_{2m}-1)=3+\TwoAdicValuation(m)$.  All numerical and symbolic experiments are
 reproducible from the accompanying commented Python program.
 \end{abstract}
 
@@ -261,8 +240,8 @@ finite shifted-up representation of $p$ on a compact interval.  This is a
 Strang--Fix phenomenon whose exact order is controlled by the integer-zero
 multiplicities
 \[
- \ord_{\xi=k}\widehat u(\xi)=1+\vtwo(k)
- \qquad(k\in\Z\setminus\{0\}).
+ \ord_{\xi=k}\widehat u(\xi)=1+\TwoAdicValuation(k)
+ \qquad(k\in\IntegerNumbers\setminus\{0\}).
 \]
 
 Second, $u$ itself has a canonical orthogonal expansion in the even Legendre
@@ -336,24 +315,24 @@ and dyadically modulated sharp asymptotics for the Legendre coefficients. \\
 
 \subsection{The up density, Fourier transform, and probability model}
 
-Let $u=\Up$ be the unique even nonnegative $C^\infty$ function supported on
+Let $u=\RvachevUp$ be the unique even nonnegative $C^\infty$ function supported on
 $[-1,1]$, normalized by
 \[
- \int_{-1}^{1}u(x)\dd x=1,
+ \int_{-1}^{1}u(x)\Differential x=1,
  \qquad u(0)=1.
 \]
 We use the repository's Fourier convention
 \[
- \widehat f(\xi)=\int_{\R}f(x)\e^{-2\pi\ii\xi x}\dd x.
+ \widehat f(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit\xi x}\Differential x.
 \]
 Then
 \begin{equation}
- \widehat u(\xi)=\prod_{j=0}^{\infty}\sincpi(\xi/2^j),
+ \widehat u(\xi)=\prod_{j=0}^{\infty}\SincPi(\xi/2^j),
  \qquad
- \sincpi(t)=\frac{\sin(\pi t)}{\pi t}.
+ \SincPi(t)=\frac{\sin(\pi t)}{\pi t}.
  \label{eq:fourier-product}
 \end{equation}
-The zero at a nonzero integer $k$ has exact order $1+\vtwo(k)$.
+The zero at a nonzero integer $k$ has exact order $1+\TwoAdicValuation(k)$.
 Equivalently, if $V_j$ are independent uniform random variables on $[-1,1]$,
 then
 \begin{equation}
@@ -371,14 +350,14 @@ where $V$ is uniform on $[-1,1]$ and $Z'$ is an independent copy of $Z$.
 
 The moment generating function is
 \begin{equation}
- \MM_u(z)=\E\e^{zZ}
- =\int_{-1}^{1}\e^{zx}u(x)\dd x
+ \MM_u(z)=\Expectation\EulerE^{zZ}
+ =\int_{-1}^{1}\EulerE^{zx}u(x)\Differential x
  =\prod_{j\ge1}\frac{\sinh(z/2^j)}{z/2^j}.
  \label{eq:mgf}
 \end{equation}
 Write
 \[
- \mu_r=\E Z^r,
+ \mu_r=\Expectation Z^r,
  \qquad
  \MM_u(z)=\sum_{r\ge0}\mu_r\frac{z^r}{r!}.
 \]
@@ -440,13 +419,13 @@ Bernoulli numbers and rational node coordinates.  The first even values are
 
 The Legendre polynomials satisfy
 \begin{equation}
- \int_{-1}^{1}P_m(x)P_n(x)\dd x=\frac{2}{2n+1}\delta_{mn},
- \qquad \norm{P_n}_{L^\infty[-1,1]}=1.
+ \int_{-1}^{1}P_m(x)P_n(x)\Differential x=\frac{2}{2n+1}\delta_{mn},
+ \qquad \Norm{P_n}_{L^\infty[-1,1]}=1.
  \label{eq:legendre-orthogonality}
 \end{equation}
 Their Jacobi derivative formula is
 \begin{equation}
- \frac{\dd^s}{\dd x^s}P_n(x)
+ \frac{\Differential^s}{\Differential x^s}P_n(x)
  =2^{-s}\frac{(n+s)!}{n!}P_{n-s}^{(s,s)}(x),
  \qquad 0\le s\le n.
  \label{eq:legendre-jacobi-derivative}
@@ -458,7 +437,7 @@ At the endpoint,
 \end{equation}
 Finally, with $j_n$ denoting the spherical Bessel function,
 \begin{equation}
- \int_{-1}^{1}P_n(x)\e^{-\ii tx}\dd x=2(-\ii)^n j_n(t).
+ \int_{-1}^{1}P_n(x)\EulerE^{-\ImaginaryUnit tx}\Differential x=2(-\ImaginaryUnit)^n j_n(t).
  \label{eq:legendre-bessel}
 \end{equation}
 These normalizations fix all signs in the dual kernel developed later.
@@ -473,7 +452,7 @@ The polynomial-synthesis volume proves the following physical-scale form.
 \begin{theorem}[Exact unit-radius polynomial synthesis; imported]
 \label{thm:general-synthesis}
 Let $p$ be a polynomial of degree at most $d$, and let $M$ be a positive
-integer satisfying $\vtwo(M)\ge d$.  Then, for every $x\in[-1,1]$,
+integer satisfying $\TwoAdicValuation(M)\ge d$.  Then, for every $x\in[-1,1]$,
 \begin{equation}
  p(x)=\frac1M\sum_{|k|<2M}(\Dscr p)(k/M)u(x-k/M).
  \label{eq:general-unit-radius}
@@ -486,7 +465,7 @@ function $u$.
 Use spacing $h=M^{-1}$ and radius-to-spacing ratio $M$, so the physical atom
 radius is one.  Poisson summation separates the zero-frequency polynomial
 moment from aliases at nonzero integers.  The exact zero multiplicity
-$1+\vtwo(k)$ annihilates every alias derivative through degree $d$, while
+$1+\TwoAdicValuation(k)$ annihilates every alias derivative through degree $d$, while
 $\MM_u(D)^{-1}$ reverses the zero-frequency convolution by the up law.  On
 $[-1,1]$, the formal endpoint centers $k=\pm2M$ contribute only values at or
 outside the support boundary and vanish, leaving \eqref{eq:general-unit-radius}.
@@ -509,7 +488,7 @@ For $\ell\ge0$, define
 
 \begin{theorem}[Finite shifted-up representation of $P_\ell$]
 \label{thm:legendre-synthesis}
-Let $M$ be a positive integer with $\vtwo(M)\ge\ell$.  Then
+Let $M$ be a positive integer with $\TwoAdicValuation(M)\ge\ell$.  Then
 \begin{equation}
  \boxed{
  P_\ell(x)=\frac1M\sum_{|k|<2M}
@@ -543,13 +522,13 @@ For every $\ell\ge0$,
 \begin{equation}
  \boxed{
  Q_\ell(x)=
- \sum_{r=0}^{\floor{\ell/2}}
+ \sum_{r=0}^{\Floor{\ell/2}}
  \frac{\gamma_{2r}}{(2r)!}
  \frac{(\ell+2r)!}{2^{2r}\ell!}
  P_{\ell-2r}^{(2r,2r)}(x).}
  \label{eq:Q-jacobi}
 \end{equation}
-Consequently $Q_\ell\in\Q[x]$ and
+Consequently $Q_\ell\in\RationalNumbers[x]$ and
 \begin{equation}
  Q_\ell(-x)=(-1)^\ell Q_\ell(x).
  \label{eq:Q-parity}
@@ -681,7 +660,7 @@ Then
  \qquad M-\ell-1\le k\le M.
  \label{eq:compressed-coeffs}
 \end{equation}
-All operations are exact in $\Q$.
+All operations are exact in $\RationalNumbers$.
 \end{algorithm}
 
 The price of linear atom count is a dilation of order $2^\ell$ and substantial
@@ -697,7 +676,7 @@ The canonical repository expansion is
 \begin{equation}
  u(x)=\sum_{n=0}^{\infty}u_nP_{2n}(x),
  \qquad
- u_n=\frac{4n+1}{2}\int_{-1}^{1}u(x)P_{2n}(x)\dd x.
+ u_n=\frac{4n+1}{2}\int_{-1}^{1}u(x)P_{2n}(x)\Differential x.
  \label{eq:canonical-expansion}
 \end{equation}
 It converges absolutely and uniformly on $[-1,1]$.  Expanding $P_{2n}$ in
@@ -709,7 +688,7 @@ monomials gives the exact moment formula
  \frac{(2n+2s)!}{(n-s)!(n+s)!(2s)!}\,\mu_{2s}.}
  \label{eq:un-moments}
 \end{equation}
-Thus $u_n\in\Q$.
+Thus $u_n\in\RationalNumbers$.
 
 \begin{center}
 \small
@@ -747,10 +726,10 @@ sum is retained as one block.
 Substitute \eqref{eq:P2n-atomization} into
 \eqref{eq:canonical-expansion}.  The $n$th finite inner sum is exactly
 $P_{2n}(x)$, so its full block is $u_nP_{2n}(x)$.  Since
-$\norm{P_{2n}}_\infty=1$ and the canonical expansion is absolutely uniformly
+$\Norm{P_{2n}}_\infty=1$ and the canonical expansion is absolutely uniformly
 convergent,
 \[
- \sum_{n\ge0}\norm{u_nP_{2n}}_\infty=\sum_{n\ge0}|u_n|<\infty.
+ \sum_{n\ge0}\Norm{u_nP_{2n}}_\infty=\sum_{n\ge0}|u_n|<\infty.
 \]
 \end{proof}
 
@@ -791,7 +770,7 @@ $2N+2$, again at the price of dilation by $4^N$ and much larger cancellation.
 The adjacent Lagrange-loop report analyzes the repeated central copy $u(x)$ in
 \eqref{eq:block-loop}.  With
 \begin{equation}
- C_*=\MM_u(\pi\ii)
+ C_*=\MM_u(\pi\ImaginaryUnit)
  =\prod_{j\ge1}\frac{\sin(\pi/2^j)}{\pi/2^j},
  \label{eq:Cstar}
 \end{equation}
@@ -799,12 +778,12 @@ it proves
 \begin{equation}
  Q_{2n}(0)=
  \frac{2(-1)^n}{C_*}\frac{(4n)!}{(2n)!(4\pi)^{2n}}
- \left(1+\frac{2\pi^2}{4n-1}+\bigO(n^{-2})\right).
+ \left(1+\frac{2\pi^2}{4n-1}+\BigO(n^{-2})\right).
  \label{eq:Q0-asymptotic}
 \end{equation}
 In particular,
 \begin{equation}
- |Q_{2n}(0)|^{1/(2n)}\sim\frac{2n}{\pi\e}.
+ |Q_{2n}(0)|^{1/(2n)}\sim\frac{2n}{\pi\EulerE}.
  \label{eq:Q0-root}
 \end{equation}
 The same report proves that
@@ -836,11 +815,11 @@ the Legendre coefficients of a shifted up-atom.
 
 \begin{definition}[Translated Legendre analysis kernel]
 \label{def:Lambda}
-For $m\ge0$ and $c\in\R$, define
+For $m\ge0$ and $c\in\RealNumbers$, define
 \begin{equation}
  \boxed{
  \Lambda_m(c):=\frac{2m+1}{2}
- \int_{-1}^{1}u(x-c)P_m(x)\dd x.}
+ \int_{-1}^{1}u(x-c)P_m(x)\Differential x.}
  \label{eq:Lambda-def}
 \end{equation}
 \end{definition}
@@ -851,12 +830,12 @@ For $m\ge0$ and $c\in\R$, define
 \label{prop:Lambda-basic}
 For every $m\ge0$:
 \begin{enumerate}
-  \item $\Lambda_m\in C_c^\infty(\R)$ and
-        $\supp\Lambda_m\subseteq[-2,2]$;
+  \item $\Lambda_m\in C_c^\infty(\RealNumbers)$ and
+        $\SupportOperator\Lambda_m\subseteq[-2,2]$;
   \item if $Z$ has density $u$, then
   \begin{equation}
    \Lambda_m(c)=\frac{2m+1}{2}\,
-   \E\!\left[P_m(c+Z)\mathbf1_{\{|c+Z|\le1\}}\right];
+   \Expectation\!\left[P_m(c+Z)\mathbf1_{\{|c+Z|\le1\}}\right];
    \label{eq:Lambda-probability}
   \end{equation}
   \item
@@ -893,19 +872,19 @@ larger family of translated Legendre moments.
 
 \begin{theorem}[Fourier--Bessel representation of $\Lambda_m$; new here]
 \label{thm:Lambda-bessel}
-For all $m\ge0$ and $c\in\R$,
+For all $m\ge0$ and $c\in\RealNumbers$,
 \begin{equation}
  \boxed{
- \Lambda_m(c)=(2m+1)(-\ii)^m
- \int_{\R}\widehat u(\xi)j_m(2\pi\xi)
- \e^{2\pi\ii\xi c}\dd\xi.}
+ \Lambda_m(c)=(2m+1)(-\ImaginaryUnit)^m
+ \int_{\RealNumbers}\widehat u(\xi)j_m(2\pi\xi)
+ \EulerE^{2\pi\ImaginaryUnit\xi c}\Differential\xi.}
  \label{eq:Lambda-bessel}
 \end{equation}
 In particular,
 \begin{equation}
  \boxed{
  u_n=(4n+1)(-1)^n
- \int_{\R}\widehat u(\xi)j_{2n}(2\pi\xi)\dd\xi.}
+ \int_{\RealNumbers}\widehat u(\xi)j_{2n}(2\pi\xi)\Differential\xi.}
  \label{eq:un-bessel}
 \end{equation}
 \end{theorem}
@@ -914,7 +893,7 @@ In particular,
 The Fourier transform of $\chi_m$ is, by
 \eqref{eq:legendre-bessel},
 \[
- \widehat\chi_m(\xi)=2(-\ii)^m j_m(2\pi\xi).
+ \widehat\chi_m(\xi)=2(-\ImaginaryUnit)^m j_m(2\pi\xi).
 \]
 Since $\Lambda_m=(2m+1)(u*\chi_m)/2$, Fourier inversion gives
 \eqref{eq:Lambda-bessel}.  Set $c=0$ and $m=2n$ to obtain
@@ -930,25 +909,25 @@ $u_n$.
 
 \begin{proposition}[Dyadic rationality of the dual samples; new here]
 \label{prop:Lambda-rational}
-If $c$ is dyadic rational, then $\Lambda_m(c)\in\Q$ for every $m$.
+If $c$ is dyadic rational, then $\Lambda_m(c)\in\RationalNumbers$ for every $m$.
 \end{proposition}
 
 \begin{proof}
 After $x=c+y$,
 \[
  \Lambda_m(c)=\frac{2m+1}{2}
- \int_{[-1,1]\cap[-1-c,1-c]}u(y)P_m(y+c)\dd y.
+ \int_{[-1,1]\cap[-1-c,1-c]}u(y)P_m(y+c)\Differential y.
 \]
 The endpoints are dyadic.  Expand $P_m(y+c)$ into powers of $y$.  The
 repository's exact dyadic primitive calculus expresses every truncated moment
-$\int_a^b y^r u(y)\dd y$ at dyadic endpoints in rational Fabius/up values and
+$\int_a^b y^r u(y)\Differential y$ at dyadic endpoints in rational Fabius/up values and
 rational polynomial factors.  Hence the displayed finite linear combination
 is rational.
 \end{proof}
 
 The accompanying code does not need to evaluate $u$ to compute the later
 connection coefficients; it integrates the corresponding clipped Legendre
-polynomials exactly in $\Q$.
+polynomials exactly in $\RationalNumbers$.
 
 \section{Exact dyadic spectral biorthogonality}
 \label{sec:biorthogonality}
@@ -965,7 +944,7 @@ Let $d\ge0$, $M=2^d$, $0\le\ell\le d$, and $m\ge0$.  Then
  \label{eq:biorthogonality}
 \end{equation}
 More generally, the same identity holds for any positive integer $M$ with
-$\vtwo(M)\ge\ell$.
+$\TwoAdicValuation(M)\ge\ell$.
 \end{theorem}
 
 \begin{proof}
@@ -1000,7 +979,7 @@ where the central term vanishes automatically in the odd--odd block.
 
 Let
 \[
- \mathcal K_M=\{k\in\Z:|k|<2M\}.
+ \mathcal K_M=\{k\in\IntegerNumbers:|k|<2M\}.
 \]
 For $0\le m,\ell\le d$, define
 \begin{equation}
@@ -1025,7 +1004,7 @@ Consequently
  \qquad
  (\Pi^{(d)})^2=\Pi^{(d)},
  \qquad
- \rank\Pi^{(d)}=\tr\Pi^{(d)}=d+1.
+ \RankOperator\Pi^{(d)}=\tr\Pi^{(d)}=d+1.
  \label{eq:spectral-projector}
 \end{equation}
 The even and odd Legendre modes form independent parity blocks.
@@ -1092,7 +1071,7 @@ $k/M\pm1$.
 
 \begin{theorem}[Reverse local-Legendre closure; new here]
 \label{thm:reverse-loop}
-If $\vtwo(M)\ge\ell$, then on $[-1,1]$,
+If $\TwoAdicValuation(M)\ge\ell$, then on $[-1,1]$,
 \begin{equation}
  \boxed{
  P_\ell(x)=\sum_{r=0}^{\infty}u_rH_{\ell r}^{(M)}(x).}
@@ -1119,7 +1098,7 @@ Project the local expansion against a global Legendre mode.  Define
 \begin{equation}
  \boxed{
  C_{m,r}(c)=\frac{2m+1}{2}
- \int_{I(c)}P_m(x)P_{2r}(x-c)\dd x.}
+ \int_{I(c)}P_m(x)P_{2r}(x-c)\Differential x.}
  \label{eq:Cmr-def}
 \end{equation}
 For rational $c$, this is rational because it is the integral of a polynomial
@@ -1149,7 +1128,7 @@ most two, and $\sum_r|u_r|<\infty$.
 
 \subsection{Arithmetic spectral closure}
 
-For $\vtwo(M)\ge\ell$, define
+For $\TwoAdicValuation(M)\ge\ell$, define
 \begin{equation}
  \boxed{
  T_{m\ell r}^{(M)}=
@@ -1161,7 +1140,7 @@ Every $T_{m\ell r}^{(M)}$ is rational.
 \begin{theorem}[Infinite rational spectral identities; new here]
 \label{thm:rational-spectral-closure}
 For every $m,\ell\ge0$ and every admissible $M$ with
-$\vtwo(M)\ge\ell$,
+$\TwoAdicValuation(M)\ge\ell$,
 \begin{equation}
  \boxed{
  \delta_{m\ell}=\sum_{r=0}^{\infty}u_rT_{m\ell r}^{(M)}.}
@@ -1252,7 +1231,7 @@ in the accompanying CSV file are computed in exact rational arithmetic.}
 
 \subsection{Infinite Legendre coefficient sum rules}
 
-The up-function is $C^\infty$ on $\R$ and vanishes outside $[-1,1]$.
+The up-function is $C^\infty$ on $\RealNumbers$ and vanishes outside $[-1,1]$.
 Therefore
 \begin{equation}
  u^{(s)}(1)=u^{(s)}(-1)=0
@@ -1268,7 +1247,7 @@ finite number of times.
 For every integer $s\ge0$,
 \begin{equation}
  \boxed{
- \sum_{r\ge\ceil{s/2}}u_r
+ \sum_{r\ge\Ceiling{s/2}}u_r
  \frac{(2r+s)!}{2^ss!(2r-s)!}=0.}
  \label{eq:flatness-sum-rules}
 \end{equation}
@@ -1302,7 +1281,7 @@ The finite synthesis formula itself can be differentiated exactly.
 
 \begin{theorem}[Boundary jets of the finite atom block; new here]
 \label{thm:boundary-jets}
-Let $\vtwo(M)\ge\ell$.  For every $s\ge0$,
+Let $\TwoAdicValuation(M)\ge\ell$.  For every $s\ge0$,
 \begin{equation}
  \boxed{
  \frac1M\sum_{|k|<2M}Q_\ell(k/M)u^{(s)}(1-k/M)
@@ -1403,7 +1382,7 @@ Using $j_m(t)=\sqrt{\pi/(2t)}J_{m+1/2}(t)$ yields
 Stirling's formula, uniformly for $|t|\le m/2$, makes the right side at most
 $C_1q^m$ for some $q<1$.  The global bound follows directly from
 \eqref{eq:legendre-bessel} and $|P_m(x)|\le1$:
-$2|j_m(t)|\le\int_{-1}^{1}|P_m(x)|\dd x\le2$.
+$2|j_m(t)|\le\int_{-1}^{1}|P_m(x)|\Differential x\le2$.
 \end{proof}
 
 \subsection{The tail integral}
@@ -1412,7 +1391,7 @@ $2|j_m(t)|\le\int_{-1}^{1}|P_m(x)|\dd x\le2$.
 \label{lem:tail-bound}
 Let $a=\log2$ and $\kappa>1$.  For all sufficiently large $X$,
 \begin{equation}
- \int_X^\infty E_\kappa(x)\dd x
+ \int_X^\infty E_\kappa(x)\Differential x
  \le
  \frac{a}{\log X+(\kappa-1)a}
  X^{1-\kappa}
@@ -1425,7 +1404,7 @@ Let $a=\log2$ and $\kappa>1$.  For all sufficiently large $X$,
 Put $t=\log x$.  The integral becomes
 \[
  \int_{\log X}^{\infty}
- \exp\!\left(-\frac{t^2}{2a}-(\kappa-1)t\right)\dd t.
+ \exp\!\left(-\frac{t^2}{2a}-(\kappa-1)t\right)\Differential t.
 \]
 The exponent's negative logarithm is convex with derivative
 $t/a+\kappa-1$.  Its tangent at $t_0=\log X$ is a lower bound, so integration
@@ -1465,21 +1444,21 @@ Use \eqref{eq:un-bessel} and split the integral at
 \]
 On $|\xi|\le X_n$, the Bessel argument satisfies
 $|2\pi\xi|\le n=(2n)/2$, so \cref{lem:bessel-suppression} with $m=2n$ gives
-an inner contribution $\bigO(n^2q^{2n})$ after accounting for interval length
+an inner contribution $\BigO(n^2q^{2n})$ after accounting for interval length
 and the prefactor $4n+1$.
 
 On the complement, use $|j_{2n}|\le1$ and the Fourier envelope
 \eqref{eq:fourier-envelope}:
 \[
  |u_n|\le C_2n^2q^{2n}
- +C_3n\int_{X_n}^{\infty}E_{\kappa_\infty}(x)\dd x.
+ +C_3n\int_{X_n}^{\infty}E_{\kappa_\infty}(x)\Differential x.
 \]
 Apply \cref{lem:tail-bound}.  Since
 $\log X_n=\log n-\log(2\pi)$,
 \begin{align*}
  &nX_n^{1-\kappa_\infty}
  \exp\!\left(-\frac{(\log X_n)^2}{2\log2}\right)\\
- &\qquad=\bigO\!\left(
+ &\qquad=\BigO\!\left(
  n^{2-\kappa_\infty+\log_2(2\pi)}
  \exp\!\left(-\frac{(\log n)^2}{2\log2}\right)
  \right).
@@ -1509,13 +1488,13 @@ consistent with a dyadic modulation inherited from the Fourier lobes.}
 
 \subsection{A proved unit theorem for the moments}
 
-All rational numbers in this subsection are viewed inside $\Q_2$.
+All rational numbers in this subsection are viewed inside $\RationalNumbers_2$.
 
 \begin{theorem}[Every even up-moment is a two-adic unit; new elementary proof]
 \label{thm:moment-units}
 For every $m\ge0$,
 \begin{equation}
- \vtwo(\mu_{2m})=0,
+ \TwoAdicValuation(\mu_{2m})=0,
  \qquad
  \mu_{2m}\equiv1\pmod2.
  \label{eq:moment-unit}
@@ -1539,12 +1518,12 @@ Division by the odd unit $4^m-1$ preserves the congruence.
 Exact computation of \eqref{eq:moment-recurrence} through $m=80$ gives the
 stronger pattern
 \begin{equation}
- \vtwo(\mu_{2m}-1)=3+\vtwo(m).
+ \TwoAdicValuation(\mu_{2m}-1)=3+\TwoAdicValuation(m).
  \label{eq:moment-congruence-pattern}
 \end{equation}
 Independently, the exact moment formula \eqref{eq:un-moments} gives
 \begin{equation}
- \vtwo(u_n)=-1
+ \TwoAdicValuation(u_n)=-1
  \qquad(0\le n\le80).
  \label{eq:un-v2-data}
 \end{equation}
@@ -1556,7 +1535,7 @@ coefficients vanishes.
 \label{conj:moment-congruence}
 For every $m\ge1$,
 \begin{equation}
- \boxed{\vtwo(\mu_{2m}-1)=3+\vtwo(m).}
+ \boxed{\TwoAdicValuation(\mu_{2m}-1)=3+\TwoAdicValuation(m).}
  \label{eq:conj-moment}
 \end{equation}
 \end{conjecture}
@@ -1565,7 +1544,7 @@ For every $m\ge1$,
 \label{conj:half-integrality}
 For every $n\ge0$,
 \begin{equation}
- \boxed{\vtwo(u_n)=-1.}
+ \boxed{\TwoAdicValuation(u_n)=-1.}
  \label{eq:conj-half-integrality}
 \end{equation}
 Equivalently, $2u_n$ is a two-adic unit.  In particular $u_n\ne0$ for every
@@ -1577,8 +1556,8 @@ formula for $P_{2n}$ modulo two, because its coefficients have large powers of
 two in their denominators.  Promising approaches include a two-adic analysis
 of the generating function
 \[
- \E(1-2tZ+t^2)^{-1/2}
- =\sum_{n\ge0}\E[P_n(Z)]t^n,
+ \Expectation(1-2tZ+t^2)^{-1/2}
+ =\sum_{n\ge0}\Expectation[P_n(Z)]t^n,
 \]
 or a filtration that combines \cref{conj:moment-congruence} with the exact
 Kummer valuations of the Legendre coefficients.
@@ -1721,8 +1700,8 @@ that those columns are intended to invert.
 \label{prob:diagonal-scaling}
 Find positive row and column weights that minimize
 \[
- \norm{D_1A^{(d)}D_2}_2
- \norm{D_2^{-1}L^{(d)}D_1^{-1}}_2
+ \Norm{D_1A^{(d)}D_2}_2
+ \Norm{D_2^{-1}L^{(d)}D_1^{-1}}_2
 \]
 subject to exact biorthogonality.  Determine whether the optimal condition
 grows subfactorially, and compare literal, oversampled, and compressed atom
@@ -1767,15 +1746,15 @@ The repository uses $W_{-1}$ to invert the small-argument endpoint relation of
 the Fabius function and the principal branch $W$ to locate thresholds at which
 factorial reciprocal-MGF coefficients dominate prescribed tolerances.  In the
 present setting, the asymptotic
-$|Q_{2n}(0)|^{1/(2n)}\sim2n/(\pi\e)$ implies that the degree at which the
+$|Q_{2n}(0)|^{1/(2n)}\sim2n/(\pi\EulerE)$ implies that the degree at which the
 central atom coefficient reaches size $X$ is governed to first order by
 inverting
 \[
- 2n\log\!\left(\frac{2n}{\pi\e}\right)\asymp\log X,
+ 2n\log\!\left(\frac{2n}{\pi\EulerE}\right)\asymp\log X,
 \]
 thus
 \begin{equation}
- n\asymp\frac{\log X}{2W(\log X/(\pi\e))}.
+ n\asymp\frac{\log X}{2W(\log X/(\pi\EulerE))}.
  \label{eq:Lambert-threshold}
 \end{equation}
 A sharper threshold must combine this factorial growth with the log-square and
@@ -1851,7 +1830,7 @@ If
 then the exact monomial form of $Q_\ell$ is
 \begin{equation}
  Q_\ell(x)=\sum_{j=0}^{\ell}p_{\ell,j}
- \sum_{r=0}^{\floor{j/2}}
+ \sum_{r=0}^{\Floor{j/2}}
  \binom{j}{2r}\gamma_{2r}x^{j-2r}.
  \label{eq:Q-monomial}
 \end{equation}
@@ -1859,7 +1838,7 @@ For rational $c$, the code evaluates
 \begin{equation}
  C_{m,r}(c)=\frac{2m+1}{2}
  \int_{\max(-1,c-1)}^{\min(1,c+1)}
- P_m(x)P_{2r}(x-c)\dd x
+ P_m(x)P_{2r}(x-c)\Differential x
  \label{eq:C-code}
 \end{equation}
 by exact polynomial multiplication and antiderivatives.

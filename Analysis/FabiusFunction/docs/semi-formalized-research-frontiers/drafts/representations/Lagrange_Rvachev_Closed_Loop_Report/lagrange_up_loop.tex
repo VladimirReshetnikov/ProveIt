@@ -6,6 +6,7 @@
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,array,tabularx}
 \usepackage{graphicx}
 \usepackage{caption}
@@ -62,24 +63,6 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\diag}{\operatorname{diag}}
-\newcommand{\Span}{\operatorname{span}}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\littleo}{o}
-\newcommand{\vtwo}{v_2}
 \newcommand{\Bell}{\mathcal B}
 \newcommand{\cD}{\mathcal D}
 \newcommand{\cE}{\mathcal E}
@@ -91,7 +74,6 @@
 \newcommand{\PiD}{\Pi_d}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\rhozero}{\rho_{\!*}}
-\newcommand{\pospart}[1]{\left(#1\right)_{+}}
 
 \newenvironment{resultbox}{%
   \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
@@ -124,7 +106,7 @@
 \maketitle
 
 \begin{abstract}
-Let $u=\Up$ be Rvachev's compactly supported $C^\infty$ function on
+Let $u=\RvachevUp$ be Rvachev's compactly supported $C^\infty$ function on
 $[-1,1]$, normalized by $\int u=1$, and let $F$ be the Fabius function.
 This report gives two explicit representations of every Lagrange cardinal
 polynomial on $[-1,1]$ by finitely many affine copies of $u$.
@@ -199,7 +181,7 @@ polynomials
  \label{eq:lagrange-cardinal}
 \end{equation}
 \item Represent each $L_j$ exactly on $[-1,1]$ by finitely many affine
-copies of $u=\Up$.
+copies of $u=\RvachevUp$.
 \item Insert those finite representations into an infinite polynomial
 representation of $u$ and analyze the resulting self-referential limit.
 \end{enumerate}
@@ -282,18 +264,18 @@ literature.
 \section{Fabius--Rvachev background}
 
 \subsection{The up-function, the Fabius function, and the sinc product}
-Let $u=\Up$ be the unique normalized compactly supported solution of
+Let $u=\RvachevUp$ be the unique normalized compactly supported solution of
 \begin{equation}
  u'(x)=2\bigl(u(2x+1)-u(2x-1)\bigr),
- \qquad \supp u=[-1,1],
- \qquad \int_{\R}u(x)\dd x=1.
+ \qquad \SupportOperator u=[-1,1],
+ \qquad \int_{\RealNumbers}u(x)\Differential x=1.
  \label{eq:up-fde}
 \end{equation}
 It is even, nonnegative, and $C^\infty$.  In the angular-frequency Fourier
 convention,
 \begin{equation}
  \widehat u(\omega)
- =\int_{\R}u(x)\e^{-\ii\omega x}\dd x
+ =\int_{\RealNumbers}u(x)\EulerE^{-\ImaginaryUnit\omega x}\Differential x
  =\prod_{j=1}^{\infty}
    \frac{\sin(\omega/2^j)}{\omega/2^j}.
  \label{eq:up-fourier-product}
@@ -324,7 +306,7 @@ transparent.
 \subsection{Moments, Bernoulli cumulants, and Bell polynomials}
 Define
 \begin{equation}
- M(z)=\E\e^{zZ}
+ M(z)=\Expectation\EulerE^{zZ}
  =\prod_{j=1}^{\infty}
    \frac{\sinh(z/2^j)}{z/2^j}
  =\sum_{r=0}^{\infty}\mu_r\frac{z^r}{r!}.
@@ -378,16 +360,16 @@ Python code.
 \subsection{The moment Appell family and its inverse}
 Define the Appell polynomials
 \begin{equation}
- G_n(y)=\E(y-Z)^n
+ G_n(y)=\Expectation(y-Z)^n
  =M(D_y)y^n
  =\sum_{r=0}^{n}\binom nr\mu_r y^{n-r}.
  \label{eq:G-def}
 \end{equation}
-Because $Z$ is symmetric, $M(D_y)y^n=\E(y+Z)^n=\E(y-Z)^n$.
+Because $Z$ is symmetric, $M(D_y)y^n=\Expectation(y+Z)^n=\Expectation(y-Z)^n$.
 The exponential generating function and Appell derivative law are
 \begin{equation}
  \sum_{n=0}^{\infty}G_n(y)\frac{z^n}{n!}
- =\e^{yz}M(z),
+ =\EulerE^{yz}M(z),
  \qquad
  G_n'(y)=nG_{n-1}(y).
  \label{eq:G-egf}
@@ -424,12 +406,12 @@ that drives the Lagrange synthesis.
 \subsection{One causal integration}
 Let
 \begin{equation}
- (Jf)(x)=\int_{-\infty}^{x}f(t)\dd t.
+ (Jf)(x)=\int_{-\infty}^{x}f(t)\Differential t.
  \label{eq:J-def}
 \end{equation}
 
 \begin{lemma}[Causal dyadic integration]
-For every $x\in\R$,
+For every $x\in\RealNumbers$,
 \begin{equation}
  Ju(x)=\sum_{k=0}^{\infty}
  u\!\left(\frac{x-(2k+1)}2\right).
@@ -478,7 +460,7 @@ holds for $m$.  Integrating one scaled summand and applying
 \eqref{eq:J-one} gives
 \begin{align*}
  &\int_{-\infty}^{y}
- u\!\left(\frac{t-(2^m-1+2N)}{2^m}\right)\dd t\\
+ u\!\left(\frac{t-(2^m-1+2N)}{2^m}\right)\Differential t\\
  &\qquad=2^m\sum_{k\ge0}
  u\!\left(
  \frac{y-(2^{m+1}-1+2(N+2^mk))}{2^{m+1}}
@@ -504,7 +486,7 @@ and the Thue--Morse/q-product layer of the repository.
 For $y\ge1$, the entire support of $u$ lies below $y$, so
 \begin{equation}
  J^{n+1}u(y)
- =\frac1{n!}\int_{-1}^{1}(y-t)^n u(t)\dd t
+ =\frac1{n!}\int_{-1}^{1}(y-t)^n u(t)\Differential t
  =\frac{G_n(y)}{n!}.
  \label{eq:tail-moment}
 \end{equation}
@@ -731,7 +713,7 @@ amplitudes are
 \begin{equation}
  \bm A=\mathsf T_\Xi\bm f,
  \qquad
- \mathsf T_\Xi=\diag(D_0,\ldots,D_d)\mathsf A_\Xi^{-1}.
+ \mathsf T_\Xi=\DiagonalOperator(D_0,\ldots,D_d)\mathsf A_\Xi^{-1}.
  \label{eq:sample-to-atom}
 \end{equation}
 
@@ -802,9 +784,9 @@ $a_{nj}$.
 \end{enumerate}
 \end{algorithm}
 
-A straightforward implementation costs $\bigO(d^3)$ arithmetic operations
+A straightforward implementation costs $\BigO(d^3)$ arithmetic operations
 for all $d+1$ cardinals.  Product trees or prefix/suffix elementary-symmetric
-updates reduce the structured part to $\bigO(d^2)$.  For rational nodes all
+updates reduce the structured part to $\BigO(d^2)$.  For rational nodes all
 operations can be exact.  Floating-point computation should use high
 precision because the anchor $-2$ lies outside the interpolation interval
 and the factors $D_n$ grow superexponentially in $n$.
@@ -827,7 +809,7 @@ for the moment-generating function in \eqref{eq:mgf}.  Define
 The common-scale reproduction theorem from
 \cite{UpPolynomialSynthesis} states
 \begin{equation}
- P(t)=\frac1H\sum_{k\in\Z}Q(k)
+ P(t)=\frac1H\sum_{k\in\IntegerNumbers}Q(k)
  u\!\left(\frac{t-k}{H}\right).
  \label{eq:global-common}
 \end{equation}
@@ -856,9 +838,9 @@ All $2H=2^{d+1}$ atoms have the same dilation $2H$ in the $x$ variable.
 The scale $H=2^d$ is minimal among positive integer cardinal scales.  In the
 angular-frequency convention of \eqref{eq:up-fourier-product}, the minimum
 multiplicity of a lattice zero $\widehat u(2\pi H\ell)$ over
-$\ell\in\Z\setminus\{0\}$ is $\vtwo(H)+1$.  Reproduction of all polynomials
+$\ell\in\IntegerNumbers\setminus\{0\}$ is $\TwoAdicValuation(H)+1$.  Reproduction of all polynomials
 through degree $d$ requires multiplicity at least $d+1$, hence
-$\vtwo(H)\ge d$ and the smallest integer choice is $H=2^d$.  This is a sharp
+$\TwoAdicValuation(H)\ge d$ and the smallest integer choice is $H=2^d$.  This is a sharp
 Strang--Fix phenomenon, consistent with the classical shift-invariant
 framework \cite{deBoorDeVoreRon1994,Zakharov2020}.
 
@@ -948,7 +930,7 @@ Let
  \label{eq:cheb-lobatto}
 \end{equation}
 with the usual interpretation for $d=0$.  Their Lebesgue constants satisfy
-$\Lambda_d=\bigO(\log d)$.  If $E_d(f)$ denotes best uniform polynomial
+$\Lambda_d=\BigO(\log d)$.  If $E_d(f)$ denotes best uniform polynomial
 approximation error, then
 \begin{equation}
  \|f-I_df\|_\infty\le(1+\Lambda_d)E_d(f).
@@ -956,7 +938,7 @@ approximation error, then
 \end{equation}
 Because $u\in C^\infty[-1,1]$, Jackson estimates give, for every $r$,
 \begin{equation}
- E_d(u)=\bigO_r(d^{-r}).
+ E_d(u)=\BigO_r(d^{-r}).
  \label{eq:Jackson-up}
 \end{equation}
 
@@ -1031,7 +1013,7 @@ not expect a stable, normally convergent cutoff-independent limit.
 
 \subsection{A compactly supported smooth extension operator}
 The right-hand side of \eqref{eq:Lj-up} makes sense globally and is
-$C_c^\infty(\R)$.  Let $\widetilde L_j$ denote that global atom sum.  Then
+$C_c^\infty(\RealNumbers)$.  Let $\widetilde L_j$ denote that global atom sum.  Then
 \begin{equation}
  \widetilde L_j|_{[-1,1]}=L_j.
  \label{eq:global-extension}
@@ -1043,7 +1025,7 @@ For nodal data $\bm f=(f_0,\ldots,f_d)^{\mathsf T}$, define
  \label{eq:extension-operator}
 \end{equation}
 This is a compactly supported $C^\infty$ cardinal extension.  Equivalently,
-define $\cE_d:\Pi_d\to C_c^\infty(\R)$ by
+define $\cE_d:\Pi_d\to C_c^\infty(\RealNumbers)$ by
 $\cE_dp=\widetilde{\cE}_d(p(\xi_0),\ldots,p(\xi_d))^{\mathsf T}$.
 If $R$ denotes restriction to $[-1,1]$ and $I_d$ polynomial interpolation,
 then
@@ -1063,7 +1045,7 @@ $u$ is even, its Fourier--Legendre expansion has the form
 \begin{equation}
  u(x)=\sum_{m=0}^{\infty}\lambda_{2m}P_{2m}(x),
  \qquad
- \lambda_{2m}=\frac{4m+1}{2}\int_{-1}^{1}u(x)P_{2m}(x)\dd x.
+ \lambda_{2m}=\frac{4m+1}{2}\int_{-1}^{1}u(x)P_{2m}(x)\Differential x.
  \label{eq:Legendre-series}
 \end{equation}
 The primary repository exposition proves absolute and uniform convergence
@@ -1224,7 +1206,7 @@ $10^4$.
 \section{Structural analysis of the closed loop}
 
 \subsection{Finite-rank conjugacy}
-Let $\cS_d:\Pi_d\to C_c^\infty(\R)$ denote the global ladder extension
+Let $\cS_d:\Pi_d\to C_c^\infty(\RealNumbers)$ denote the global ladder extension
 \begin{equation}
  (\cS_dp)(x)=\sum_{n=0}^{d}
  D_n[y^n]M(D_y)^{-1}p(y-2)\,U_n(x).
@@ -1263,7 +1245,7 @@ More precisely, Stirling--Barnes asymptotics give
 \begin{equation}
  \log\|\mathsf T_\Xi\|_2
  \ge \frac{\log2}{6}d^2+\frac12d\log d
- -\left(\frac{\log2}{6}+\frac34\right)d+\bigO(\log d).
+ -\left(\frac{\log2}{6}+\frac34\right)d+\BigO(\log d).
  \label{eq:T-lower-asymptotic}
 \end{equation}
 No choice of interpolation nodes can make the raw ladder transform uniformly
@@ -1306,7 +1288,7 @@ More strongly, $|\lambda_{2m}P_{2m}(-2)|$ is unbounded along a subsequence.
 \end{theorem}
 
 \begin{proof}
-If $|\lambda_{2m}|=\bigO(\rho^{-2m})$ for some $\rho>1$, then the Legendre
+If $|\lambda_{2m}|=\BigO(\rho^{-2m})$ for some $\rho>1$, then the Legendre
 series converges normally in every smaller Bernstein ellipse and defines an
 analytic continuation of $u$.  Since $u$ is nowhere analytic on its support
 \cite{ReshetnikovPrimary}, no such $\rho$ exists.  Fix
@@ -1353,9 +1335,9 @@ $|\lambda_{2N}|\le(4N+1)/2$.  Thus the Legendre coefficients are at most
 polynomially large, while nonanalyticity implies
 $\limsup_{N\to\infty}|\lambda_{2N}|^{1/(2N)}=1$; otherwise an exponentially
 decaying coefficient bound would give analytic continuation.  Hence
-$\log|\lambda_{2N}|=\littleo(N)$ along the limsup subsequence.  Stirling's
-formula gives $\log(2N)!=\bigO(N\log N)$ and
-$\log\binom{4N}{2N}=\bigO(N)$.  The sole quadratic term in
+$\log|\lambda_{2N}|=\LittleO(N)$ along the limsup subsequence.  Stirling's
+formula gives $\log(2N)!=\BigO(N\log N)$ and
+$\log\binom{4N}{2N}=\BigO(N)$.  The sole quadratic term in
 \eqref{eq:top-amplitude} is
 \[
  \binom{2N+1}{2}\log2=(2N^2+N)\log2.
@@ -1400,7 +1382,7 @@ there.  Hence it cannot agree with $u$ on a nonempty interval.
 \begin{proof}
 Since $|Z|\le1$,
 \[
- |G_n(z+2)|=|\E(z+2-Z)^n|
+ |G_n(z+2)|=|\Expectation(z+2-Z)^n|
  \le(|z+2|+1)^n.
 \]
 Choose $\eps>0$ with $4+\eps<R$.  On $|z|\le1+\eps$ the right-hand side is
@@ -1430,7 +1412,7 @@ than only the qualitative limsup used above.
 Equation \eqref{eq:F-transfer-ratio} turns a two-ray endpoint ratio into a
 moment ratio.  Since
 \begin{equation}
- G_n(y)=\int_{-1}^{1}(y-t)^n u(t)\dd t,
+ G_n(y)=\int_{-1}^{1}(y-t)^n u(t)\Differential t,
  \qquad y\in[1,3],
  \label{eq:G-integral}
 \end{equation}
@@ -1438,7 +1420,7 @@ the dominant contribution for large $n$ comes from $t=-1$.  Writing
 $t=-1+s$ and $a=y+1$ gives, to first Laplace order,
 \begin{equation}
  G_n(y)\approx a^n\int_0^{\delta}
- \exp\!\left(-\frac{n}{a}s\right)F(s)\dd s.
+ \exp\!\left(-\frac{n}{a}s\right)F(s)\Differential s.
  \label{eq:G-Laplace-heuristic}
 \end{equation}
 The small-$s$ logarithm of $F$ has a quadratic logarithmic leading term and
@@ -1455,7 +1437,7 @@ exponent gives the saddle scale
 This complements the lower-branch $W_{-1}$ coordinate used when inverting
 $F$ at a small value.  For the next statement write
 \begin{equation}
- \mathcal L_F(c)=\int_0^1 \e^{-cs}F(s)\dd s,
+ \mathcal L_F(c)=\int_0^1 \EulerE^{-cs}F(s)\Differential s,
  \qquad c>0.
  \label{eq:local-Laplace-F}
 \end{equation}
@@ -1471,7 +1453,7 @@ $W_0(n\log2/(y+1))$ and $W_0(n\log2/2)$.  The leading term has the form
  \log\frac{G_n(y)}{G_n(1)}
  =n\log\frac{y+1}{2}
  +\log\frac{\mathcal L_F(n/(y+1))}{\mathcal L_F(n/2)}
- +\littleo(1),
+ +\LittleO(1),
  \label{eq:transfer-conjectural}
 \end{equation}
 with explicit Bell-polynomial corrections.  Through
@@ -1485,7 +1467,7 @@ pairs of adjacent dyadic Fabius rays.
 If all nodes are rational, then every $L_j^{(q)}(-2)$ is rational and every
 $\gamma_{2s}$ is rational, so \eqref{eq:anj-even} gives
 \begin{equation}
- a_{nj}\in\Q.
+ a_{nj}\in\RationalNumbers.
  \label{eq:rational-amplitudes}
 \end{equation}
 This extends the rational coefficient phenomenon of the common-scale
@@ -1658,7 +1640,7 @@ is modest compared with the universal normalization growth predicted by
 \centering
 \includegraphics[width=0.82\textwidth]{sample_to_atom_norm.pdf}
 \caption{Norm of the raw sample-to-atom transform
-$\diag(D_n)\mathsf A_\Xi^{-1}$.  The roughly quadratic curve on the log
+$\DiagonalOperator(D_n)\mathsf A_\Xi^{-1}$.  The roughly quadratic curve on the log
 scale is intrinsic to the dyadic ladder.}
 \label{fig:sample-atom-norm}
 \end{figure}
@@ -1735,7 +1717,7 @@ basis and may reveal a more stable coefficient geometry.
 
 \begin{problem}[Optimal diagonal renormalization]
 Find diagonal weights $w_n$ minimizing the worst-case condition number of
-$\diag(w_n)\mathsf A_\Xi^{-1}$ over node sets or over Chebyshev/Fekete node
+$\DiagonalOperator(w_n)\mathsf A_\Xi^{-1}$ over node sets or over Chebyshev/Fekete node
 families.  Determine whether a Bernoulli--Bell or Lambert-based weight can
 reduce the quadratic-exponential growth to ordinary exponential growth.
 \end{problem}
@@ -1930,7 +1912,7 @@ Russian Mathematical Surveys \textbf{45} (1990), no.~1, 87--120.
 
 \bibitem{deBoorDeVoreRon1994}
 C.~de Boor, R.~A.~DeVore, and A.~Ron,
-\emph{Approximation from shift-invariant subspaces of $L_2(\R^d)$},
+\emph{Approximation from shift-invariant subspaces of $L_2(\RealNumbers^d)$},
 Transactions of the American Mathematical Society \textbf{341} (1994),
 787--806.
 

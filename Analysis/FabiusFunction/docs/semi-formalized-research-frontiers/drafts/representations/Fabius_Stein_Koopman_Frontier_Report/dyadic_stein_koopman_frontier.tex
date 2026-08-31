@@ -6,6 +6,7 @@
 \usepackage{microtype}
 \usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs}
+\input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,tabularx,array,multirow}
 \usepackage{graphicx}
 \usepackage{xcolor}
@@ -87,21 +88,9 @@
   boxrule=0.8pt,arc=2pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
   title=\textbf{#1},fonttitle=\bfseries}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\N}{\mathbb N}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Pp}{\mathbb P}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\upf}{\operatorname{up}}
+\newcommand{\Probability}{\mathbb P}
 \newcommand{\Lip}{\operatorname{Lip}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
 \newcommand{\tr}{\operatorname{tr}}
-\newcommand{\diag}{\operatorname{diag}}
-\newcommand{\Span}{\operatorname{span}}
 \newcommand{\Acal}{\mathcal A}
 \newcommand{\Pcal}{\mathcal P}
 \newcommand{\Scal}{\mathcal S}
@@ -110,8 +99,6 @@
 \newcommand{\Hcal}{\mathcal H}
 \newcommand{\PiD}{\Pi}
 \newcommand{\BigO}{\mathcal O}
-\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
-\newcommand{\qpoch}[3]{(#1;#2)_{#3}}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction/docs}}
 
 \crefname{theorem}{theorem}{theorems}
@@ -165,7 +152,7 @@ The centered Rvachev law is the stationary distribution of the affine smoothing 
  X_{k+1}=\frac{X_k+U_{k+1}}2,
  \qquad U_k\sim\operatorname{Unif}[-1,1].
 \]
-The repository already develops its reciprocal-moment Appell polynomials, Bernoulli cumulants, exact dyadic arithmetic, sinc products, and all-orders inverse-Fabius endpoint asymptotics. This report shows that these ingredients fit a previously unexploited dynamical framework. The inverse-moment Appell polynomial of degree $n$ is an exact Koopman eigenfunction with eigenvalue $2^{-n}$. From this one obtains explicit polynomial spectral projectors, dual eigendistributions $\upf^{(n)}$, closed Poisson and resolvent formulae, a $q$-Weyl commutation relation, and the transfer determinant
+The repository already develops its reciprocal-moment Appell polynomials, Bernoulli cumulants, exact dyadic arithmetic, sinc products, and all-orders inverse-Fabius endpoint asymptotics. This report shows that these ingredients fit a previously unexploited dynamical framework. The inverse-moment Appell polynomial of degree $n$ is an exact Koopman eigenfunction with eigenvalue $2^{-n}$. From this one obtains explicit polynomial spectral projectors, dual eigendistributions $\RvachevUp^{(n)}$, closed Poisson and resolvent formulae, a $q$-Weyl commutation relation, and the transfer determinant
 \[
  \det(I-zP\vert_{\Pi_d})=(z;1/2)_{d+1}.
 \]
@@ -175,14 +162,14 @@ The stationary fixed-point equation also supplies a Stein operator $I-P$ whose d
 \[
  \Scal f=f'(x)-f\!\left(\frac{x+1}{2}\right)+f\!\left(\frac{x-1}{2}\right)
 \]
-is the weak adjoint of Rvachev's differential-dilation equation. Polynomial and exponential eigenmodes generate exact martingales. Their lag correlations reveal genuine time asymmetry: $\E[\Acal_2(Y)\Acal_4(Y)]=-128/33075$, giving distinct forward and reverse one-step correlations and hence a rigorous nonreversibility certificate. A general factorization proves that every nontrivial affine-uniform chain with $0<|r|<1$ is nonreversible.
+is the weak adjoint of Rvachev's differential-dilation equation. Polynomial and exponential eigenmodes generate exact martingales. Their lag correlations reveal genuine time asymmetry: $\Expectation[\Acal_2(Y)\Acal_4(Y)]=-128/33075$, giving distinct forward and reverse one-step correlations and hence a rigorous nonreversibility certificate. A general factorization proves that every nontrivial affine-uniform chain with $0<|r|<1$ is nonreversible.
 
 A second strand derives the classical scalar Stein kernel directly from the Fabius function:
 \[
  \tau(x)=
  \frac{|x|F((1-|x|)/2)+2F((1-|x|)/4)}{F(1-|x|)}.
 \]
-It has exact rational values at dyadic points, an inverse-Fabius integral representation, and Bell--Bernoulli Appell moments $\E[\tau(Y)\Acal_n(Y)]=\kappa_{n+2}/(n+1)$. Combining this exact formula with the repository's phase-aware inverse asymptotics yields
+It has exact rational values at dyadic points, an inverse-Fabius integral representation, and Bell--Bernoulli Appell moments $\Expectation[\tau(Y)\Acal_n(Y)]=\kappa_{n+2}/(n+1)$. Combining this exact formula with the repository's phase-aware inverse asymptotics yields
 \[
  \tau(1-G(y))=G(y)\left[
  \frac1\rho+\frac{(\Psi'(\theta)-1)/\log2-1}{\rho^2}
@@ -212,11 +199,11 @@ The audit used three layers.
 
 The present report treats the following as imported repository inputs rather than new claims:
 \begin{itemize}
-\item the definitions and normalization dictionary for the bounded Fabius distribution $F$, the compact Rvachev density $\upf$, and the signed global extension;
+\item the definitions and normalization dictionary for the bounded Fabius distribution $F$, the compact Rvachev density $\RvachevUp$, and the signed global extension;
 \item the random-uniform series, moment generating function, Bernoulli cumulants, infinite sinc product, exact dyadic values, and Thue--Morse derivative formulas;
 \item the inverse-moment Rvachev--Appell family
 \(
- \e^{xt}/M(t)=\sum_{n\ge0}\Acal_n(x)t^n/n!
+ \EulerE^{xt}/M(t)=\sum_{n\ge0}\Acal_n(x)t^n/n!
 \), its Bell--Bernoulli recurrence, parity, and exact deconvolution identity \cite{ProveItInverse};
 \item the general geometric-$q$ moment and Appell families, reciprocal-$q$ deconvolution, Gaussian-binomial interpolation, finite sinc products, and positive/signed approximation results \cite{ProveItQ};
 \item the lower-Lambert phase, Gamma--zeta periodic fluctuation, all-orders endpoint expansion for $F$ and $G=F^{-1}$, and the two-term inverse elasticity;
@@ -267,7 +254,7 @@ Let $F:[0,1]\to[0,1]$ be the standard bounded Fabius distribution, characterized
 \end{equation}
 with $F(0)=0$ and $F(1)=1$. Rvachev's compactly supported density is
 \begin{equation}
- u(x):=\upf(x)=F(1-|x|)\mathbf 1_{[-1,1]}(x).
+ u(x):=\RvachevUp(x)=F(1-|x|)\mathbf 1_{[-1,1]}(x).
  \label{eq:up-F}
 \end{equation}
 It is even, nonnegative, $C^\infty$, flat at $\pm1$, and has total mass one. Its differential-dilation equation is
@@ -279,12 +266,12 @@ It is even, nonnegative, $C^\infty$, flat at $\pm1$, and has total mass one. Its
 Let $U_1,U_2,\ldots$ be independent $\operatorname{Unif}[-1,1]$ variables. The centered Rvachev random variable is
 \begin{equation}
  Y=\sum_{j=1}^{\infty}2^{-j}U_j,
- \qquad \Pp(Y\in\dd x)=u(x)\dd x.
+ \qquad \Probability(Y\in\Differential x)=u(x)\Differential x.
  \label{eq:Y-series}
 \end{equation}
 Its moment generating function and cumulant generating function are
 \begin{align}
- M(t)&=\E\e^{tY}
+ M(t)&=\Expectation\EulerE^{tY}
  =\prod_{j=1}^{\infty}\frac{\sinh(t/2^j)}{t/2^j},
  \label{eq:M-product}\\
  K(t)&=\log M(t)
@@ -293,7 +280,7 @@ Its moment generating function and cumulant generating function are
  \kappa_{2m}=\frac{2^{2m-1}B_{2m}}{m(4^m-1)}.
  \label{eq:cumulants}
 \end{align}
-On the imaginary axis, $M(2\pi\ii\xi)$ is the repository's infinite sinc product. Thus the moment, Fourier, and dyadic scaling pictures are restrictions of one entire function.
+On the imaginary axis, $M(2\pi\ImaginaryUnit\xi)$ is the repository's infinite sinc product. Thus the moment, Fourier, and dyadic scaling pictures are restrictions of one entire function.
 
 The series splits after its first digit:
 \begin{equation}
@@ -308,7 +295,7 @@ where the $Y$ and $U$ on the right are independent.
 
 The repository defines the reciprocal-moment Appell polynomials by
 \begin{equation}
- \frac{\e^{xt}}{M(t)}
+ \frac{\EulerE^{xt}}{M(t)}
  =\sum_{n=0}^{\infty}\Acal_n(x)\frac{t^n}{n!}.
  \label{eq:Appell-gen}
 \end{equation}
@@ -318,12 +305,12 @@ They satisfy
  \qquad
  \Acal_n(-x)=(-1)^n\Acal_n(x),
  \qquad
- \E\Acal_n(Y)=\delta_{n0},
+ \Expectation\Acal_n(Y)=\delta_{n0},
  \label{eq:Appell-basic}
 \end{equation}
 and the exact deconvolution law
 \begin{equation}
- \int_{-1}^{1}\Acal_n(x-y)u(y)\dd y=x^n.
+ \int_{-1}^{1}\Acal_n(x-y)u(y)\Differential y=x^n.
  \label{eq:Appell-deconv}
 \end{equation}
 The first nontrivial members are
@@ -354,7 +341,7 @@ The stationary series is
 \end{equation}
 For $0<r<1$ it is supported on $[-1,1]$; at $r=1/2$ it is exactly $Y$. Write $\pi_r$ for its law and
 \begin{equation}
- (P_rf)(x)=\frac12\int_{-1}^{1}f(rx+(1-r)v)\dd v
+ (P_rf)(x)=\frac12\int_{-1}^{1}f(rx+(1-r)v)\Differential v
  \label{eq:Pr}
 \end{equation}
 for the Markov/Koopman operator acting on observables.
@@ -373,7 +360,7 @@ Consequently $\pi_r$ is the unique stationary law with finite $p$th moment, and 
 Couple $X\sim\mu$ and $Z\sim\nu$ optimally and use the same innovations in both chains. Their difference after one step is exactly $r(X-Z)$; iteration gives \eqref{eq:Wp-contract}. Uniqueness follows by applying the bound to two stationary laws.
 \end{proof}
 
-Let $M_r(t)=\E\e^{tY_r}$ and $m_r(t)=\E\e^{t(1-r)U}$. Stationarity is equivalent to the exact cocycle
+Let $M_r(t)=\Expectation\EulerE^{tY_r}$ and $m_r(t)=\Expectation\EulerE^{t(1-r)U}$. Stationarity is equivalent to the exact cocycle
 \begin{equation}
  M_r(t)=M_r(rt)m_r(t),
  \qquad
@@ -412,18 +399,18 @@ For every $n\ge0$,
 \end{equation}
 Equivalently, for the stationary chain,
 \begin{equation}
- \E[\Acal_n(X_k)\mid X_0=x]=r^{nk}\Acal_n(x).
+ \Expectation[\Acal_n(X_k)\mid X_0=x]=r^{nk}\Acal_n(x).
  \label{eq:conditional-eigen}
 \end{equation}
 In the Rvachev case $r=1/2$, the complete polynomial spectrum is $1,2^{-1},2^{-2},\ldots$.
 \end{theorem}
 
 \begin{proof}
-Let $m_\xi(t)=\E\e^{t\xi}$. Stationarity gives $M(t)=M(rt)m_\xi(t)$. Apply $P_r$ to the generating function:
+Let $m_\xi(t)=\Expectation\EulerE^{t\xi}$. Stationarity gives $M(t)=M(rt)m_\xi(t)$. Apply $P_r$ to the generating function:
 \begin{align*}
- P_r\left(\frac{\e^{tx}}{M(t)}\right)
- &=\frac{\e^{rtx}m_\xi(t)}{M(t)}
- =\frac{\e^{rtx}}{M(rt)}\\
+ P_r\left(\frac{\EulerE^{tx}}{M(t)}\right)
+ &=\frac{\EulerE^{rtx}m_\xi(t)}{M(t)}
+ =\frac{\EulerE^{rtx}}{M(rt)}\\
  &=\sum_{n\ge0}\Acal_n(x)\frac{(rt)^n}{n!}.
 \end{align*}
 Coefficient comparison proves \eqref{eq:koopman-eigen}; iteration proves \eqref{eq:conditional-eigen}.
@@ -444,7 +431,7 @@ Every $p\in\Pi_d$ has the unique expansion
  p(x)=\sum_{n=0}^{d}\Lcal_n(p)\Acal_n(x),
  \qquad
  \boxed{\displaystyle
- \Lcal_n(p)=\frac1{n!}\E\bigl[p^{(n)}(Y_r)\bigr].}
+ \Lcal_n(p)=\frac1{n!}\Expectation\bigl[p^{(n)}(Y_r)\bigr].}
  \label{eq:spectral-coordinate}
 \end{equation}
 Hence
@@ -463,7 +450,7 @@ Write $p=\sum c_m\Acal_m$. By the Appell derivative law,
  \Acal_m^{(n)}=\frac{m!}{(m-n)!}\Acal_{m-n}
  \quad(m\ge n).
 \]
-Taking expectation under $\pi_r$ kills every positive-degree Appell polynomial, so $\E p^{(n)}(Y_r)=n!c_n$. The remaining statements follow from \cref{thm:koopman-eigen}.
+Taking expectation under $\pi_r$ kills every positive-degree Appell polynomial, so $\Expectation p^{(n)}(Y_r)=n!c_n$. The remaining statements follow from \cref{thm:koopman-eigen}.
 \end{proof}
 
 \begin{corollary}[A Legendre--Appell spectral bridge]
@@ -474,7 +461,7 @@ For the Legendre polynomial $P_m^{\mathrm{Leg}}$,
  =\sum_{n=0}^{m}c_{m,n}^{(r)}\Acal_n^{(r)}(x),
  \qquad
  c_{m,n}^{(r)}=\frac{(2n-1)!!}{n!}
- \E\!\left[C_{m-n}^{n+1/2}(Y_r)\right],
+ \Expectation\!\left[C_{m-n}^{n+1/2}(Y_r)\right],
  \label{eq:legendre-appell}
 \end{equation}
 where $C_j^\lambda$ is the Gegenbauer polynomial and $(-1)!!=1$. Only terms with $m-n$ even survive. Therefore
@@ -554,7 +541,7 @@ For every integer $N\ge0$,
 \begin{equation}
  \boxed{\displaystyle
  (P_r+D)^N
- =\sum_{j=0}^{N}\qbinom{N}{j}{r}
+ =\sum_{j=0}^{N}\GaussianBinomial{N}{j}{r}
  P_r^{N-j}D^j.}
  \label{eq:qbinomial-operator}
 \end{equation}
@@ -563,7 +550,7 @@ The identity holds on polynomials and on every smooth class on which the display
 
 \begin{proof}
 If operators $A,B$ satisfy $BA=qAB$, the standard induction behind the finite $q$-binomial theorem gives
-$(A+B)^N=\sum_j\qbinom{N}{j}{q}A^{N-j}B^j$.
+$(A+B)^N=\sum_j\GaussianBinomial{N}{j}{q}A^{N-j}B^j$.
 Take $A=P_r$ and $B=D$.
 \end{proof}
 
@@ -609,8 +596,8 @@ in the spectral/formal functional calculus on polynomials.
 \begin{proof}
 Differentiate the generating function with respect to $t$:
 \[
- \partial_t\frac{\e^{xt}}{M_r(t)}
- =\bigl(x-K_r'(t)\bigr)\frac{\e^{xt}}{M_r(t)}.
+ \partial_t\frac{\EulerE^{xt}}{M_r(t)}
+ =\bigl(x-K_r'(t)\bigr)\frac{\EulerE^{xt}}{M_r(t)}.
 \]
 Since $D$ acts on the generating function as multiplication by $t$, coefficient comparison gives the raising law. The commutator $[D,R_r]=[D,x]=I$. The relation $P_rR_r=rR_rP_r$ follows on each basis vector from \cref{thm:koopman-eigen}. The number-operator identities are then immediate.
 \end{proof}
@@ -630,7 +617,7 @@ On $\Pi_d$,
 \begin{align}
  \det\bigl(I-zP_r\vert_{\Pi_d}\bigr)
  &=\prod_{n=0}^{d}(1-zr^n)
- =\qpoch{z}{r}{d+1},
+ =\QPochhammer{z}{r}{d+1},
  \label{eq:finite-det}\\
  \tr\bigl(P_r^k\vert_{\Pi_d}\bigr)
  &=\sum_{n=0}^{d}r^{nk}
@@ -639,9 +626,9 @@ On $\Pi_d$,
 \end{align}
 The determinant has the Gaussian-binomial expansion
 \begin{equation}
- \qpoch{z}{r}{d+1}
+ \QPochhammer{z}{r}{d+1}
  =\sum_{j=0}^{d+1}(-1)^jr^{\binom j2}
- \qbinom{d+1}{j}{r}z^j.
+ \GaussianBinomial{d+1}{j}{r}z^j.
  \label{eq:finite-det-qbinom}
 \end{equation}
 For $|z|$ sufficiently small,
@@ -711,14 +698,14 @@ For $|r|<1$, $P_r$ extends to a normal trace-class operator on $\Hcal_r^{\mathrm
  \tr(P_r^k)&=\frac1{1-r^k},
  \label{eq:Fock-trace}\\
  \det(I-zP_r)&=\prod_{n=0}^{\infty}(1-zr^n)
- =\qpoch{z}{r}{\infty}.
+ =\QPochhammer{z}{r}{\infty}.
  \label{eq:Fock-det}
 \end{align}
-On the centered subspace $c_0=0$, the determinant is $\qpoch{zr}{r}{\infty}$.
+On the centered subspace $c_0=0$, the determinant is $\QPochhammer{zr}{r}{\infty}$.
 \end{theorem}
 
 \begin{proof}
-Under the coefficient isometry to $\ell^2(\N_0)$, $P_r$ is the diagonal operator $\diag(1,r,r^2,\ldots)$. Its singular values are $1,|r|,|r|^2,\ldots$, whose sum is finite. The trace and Fredholm determinant are therefore the displayed convergent sums and products.
+Under the coefficient isometry to $\ell^2(\NaturalNumbers)$, $P_r$ is the diagonal operator $\DiagonalOperator(1,r,r^2,\ldots)$. Its singular values are $1,|r|,|r|^2,\ldots$, whose sum is finite. The trace and Fredholm determinant are therefore the displayed convergent sums and products.
 \end{proof}
 
 \begin{cautionbox}[Natural versus engineered spectrum]
@@ -735,14 +722,14 @@ For the target law $\pi_r$, define
  \Kcal_r f:=(I-P_r)f.
  \label{eq:fixed-Stein}
 \end{equation}
-Stationarity gives $\E_{\pi_r}\Kcal_rf=0$.
+Stationarity gives $\Expectation_{\pi_r}\Kcal_rf=0$.
 
 \begin{theorem}[Fixed-point Stein characterization]
 \label{thm:Stein-characterization}
 Let $\mu$ be a probability law with finite first moment. The following are equivalent:
 \begin{enumerate}[label=(\roman*)]
 \item $\mu=\pi_r$;
-\item $\int(I-P_r)f\dd\mu=0$ for every bounded Lipschitz $f$;
+\item $\int(I-P_r)f\Differential\mu=0$ for every bounded Lipschitz $f$;
 \item $\mu P_r=\mu$.
 \end{enumerate}
 \end{theorem}
@@ -782,7 +769,7 @@ The common-innovation coupling gives $\Lip(P_r^kh)\le|r|^k\Lip(h)$. The geometri
 Define the fixed-point Stein discrepancy
 \begin{equation}
  \Delta_r(\mu):=
- \sup_{\Lip(f)\le1}\left|\int(I-P_r)f\dd\mu\right|.
+ \sup_{\Lip(f)\le1}\left|\int(I-P_r)f\Differential\mu\right|.
  \label{eq:Stein-discrepancy}
 \end{equation}
 
@@ -865,7 +852,7 @@ At $r=1/2$ this becomes
 \label{thm:differential-Stein}
 For every sufficiently regular $f$,
 \begin{equation}
- \E\Scal_rf(Y_r)=0.
+ \Expectation\Scal_rf(Y_r)=0.
  \label{eq:S-identity}
 \end{equation}
 On Appell eigenmodes,
@@ -879,7 +866,7 @@ In particular, $\Scal_r$ annihilates constants and affine functions.
 \end{theorem}
 
 \begin{proof}
-Stationarity gives $\E(I-P_r)g(Y_r)=0$ with $g=f'$. For the lowering law, use $D\Acal_n=n\Acal_{n-1}$ and $P_r\Acal_{n-1}=r^{n-1}\Acal_{n-1}$.
+Stationarity gives $\Expectation(I-P_r)g(Y_r)=0$ with $g=f'$. For the lowering law, use $D\Acal_n=n\Acal_{n-1}$ and $P_r\Acal_{n-1}=r^{n-1}\Acal_{n-1}$.
 \end{proof}
 
 The affine kernel means that \eqref{eq:S-identity} alone is not a full characterization without additional moment or normalization conditions. The fixed-point operator $I-P_r$ is the cleaner characterizing Stein operator; $\Scal_r$ is the better bridge to the differential equation and Appell ladder.
@@ -890,8 +877,8 @@ The affine kernel means that \eqref{eq:S-identity} alone is not a full character
 \label{thm:adjoint-DDE}
 For a compactly supported smooth density $v$, the identity
 \begin{equation}
- \int_{\R}\Scal f(x)v(x)\dd x=0
- \quad\text{for all }f\in C_c^\infty(\R)
+ \int_{\RealNumbers}\Scal f(x)v(x)\Differential x=0
+ \quad\text{for all }f\in C_c^\infty(\RealNumbers)
  \label{eq:weak-Stein}
 \end{equation}
 is equivalent to
@@ -930,7 +917,7 @@ is a martingale with respect to the natural filtration. In the dyadic case this 
 \begin{proof}
 By \cref{thm:koopman-eigen},
 \[
- \E[M_{k+1}^{(n)}\mid X_k]
+ \Expectation[M_{k+1}^{(n)}\mid X_k]
  =r^{-n(k+1)}P_r\Acal_n(X_k)
  =r^{-nk}\Acal_n(X_k).
 \]
@@ -951,9 +938,9 @@ is a martingale. Its Taylor coefficients in $t$ are the martingales \eqref{eq:po
 \begin{proof}
 Put $s=r^{-(k+1)}t$. The MGF cocycle $M(s)=M(rs)m_\xi(s)$ gives
 \[
- \E[Z_{k+1}(t)\mid X_k]
- =\frac{\e^{rsX_k}m_\xi(s)}{M(s)}
- =\frac{\e^{r^{-k}tX_k}}{M(r^{-k}t)}.
+ \Expectation[Z_{k+1}(t)\mid X_k]
+ =\frac{\EulerE^{rsX_k}m_\xi(s)}{M(s)}
+ =\frac{\EulerE^{r^{-k}tX_k}}{M(r^{-k}t)}.
 \]
 Expansion of \eqref{eq:Appell-gen} gives the coefficient statement.
 \end{proof}
@@ -964,7 +951,7 @@ For imaginary $t$, the denominator is the Rvachev sinc product. Hence the reposi
 
 Define
 \begin{equation}
- G_{mn}^{(r)}:=\E\bigl[\Acal_m^{(r)}(Y_r)\Acal_n^{(r)}(Y_r)\bigr].
+ G_{mn}^{(r)}:=\Expectation\bigl[\Acal_m^{(r)}(Y_r)\Acal_n^{(r)}(Y_r)\bigr].
  \label{eq:Gram}
 \end{equation}
 The bivariate generating function is immediate but highly useful.
@@ -989,10 +976,10 @@ Multiply the two Appell generating functions and take expectation. Parity follow
 \label{thm:lag-correlations}
 For a stationary chain and $k\ge0$,
 \begin{align}
- \E\bigl[\Acal_m(X_0)\Acal_n(X_k)\bigr]
+ \Expectation\bigl[\Acal_m(X_0)\Acal_n(X_k)\bigr]
  &=r^{nk}G_{mn}^{(r)},
  \label{eq:forward-lag}\\
- \E\bigl[\Acal_n(X_0)\Acal_m(X_k)\bigr]
+ \Expectation\bigl[\Acal_n(X_0)\Acal_m(X_k)\bigr]
  &=r^{mk}G_{mn}^{(r)}.
  \label{eq:reverse-lag}
 \end{align}
@@ -1019,10 +1006,10 @@ For $r=1/2$,
 \end{equation}
 Therefore at lag one,
 \begin{align}
- \E[\Acal_2(X_0)\Acal_4(X_1)]
+ \Expectation[\Acal_2(X_0)\Acal_4(X_1)]
  &=-\frac8{33075},
  \label{eq:forward-witness}\\
- \E[\Acal_4(X_0)\Acal_2(X_1)]
+ \Expectation[\Acal_4(X_0)\Acal_2(X_1)]
  &=-\frac{32}{33075},
  \label{eq:reverse-witness}\\
  \text{forward}-\text{reverse}
@@ -1040,7 +1027,7 @@ is not reversible. Equivalently, its Koopman operator is not self-adjoint on $L^
 \end{theorem}
 
 \begin{proof}
-For a reversible stationary chain, $\E[f(X_0)g(X_1)]=\E[g(X_0)f(X_1)]$ for all square-integrable $f,g$. Equations \eqref{eq:forward-witness} and \eqref{eq:reverse-witness} contradict this with $f=\Acal_2$ and $g=\Acal_4$.
+For a reversible stationary chain, $\Expectation[f(X_0)g(X_1)]=\Expectation[g(X_0)f(X_1)]$ for all square-integrable $f,g$. Equations \eqref{eq:forward-witness} and \eqref{eq:reverse-witness} contradict this with $f=\Acal_2$ and $g=\Acal_4$.
 \end{proof}
 
 This also explains why the Appell eigenfunctions are not mutually orthogonal in the natural stationary inner product. A self-adjoint operator with distinct real eigenvalues would have orthogonal eigenspaces, whereas $G_{24}\ne0$ couples the eigenvalues $r^2$ and $r^4$.
@@ -1080,13 +1067,13 @@ Equation \eqref{eq:G24-factor} gives $G_{24}^{(r)}<0$. By \cref{thm:lag-correlat
 
 For a centered density $u$ on $[-1,1]$, the canonical one-dimensional Stein kernel is
 \begin{equation}
- \tau(x)=\frac1{u(x)}\int_x^1 y u(y)\dd y,
+ \tau(x)=\frac1{u(x)}\int_x^1 y u(y)\Differential y,
  \qquad -1<x<1.
  \label{eq:Stein-kernel-def}
 \end{equation}
 It satisfies
 \begin{equation}
- \E[Yf(Y)]=\E[\tau(Y)f'(Y)]
+ \Expectation[Yf(Y)]=\Expectation[\tau(Y)f'(Y)]
  \label{eq:classical-Stein}
 \end{equation}
 for smooth $f$. In the Rvachev case, evenness gives $\tau(-x)=\tau(x)$.
@@ -1095,9 +1082,9 @@ for smooth $f$. In the Rvachev case, evenness gives $\tau(-x)=\tau(x)$.
 \label{lem:F-primitives}
 For $0\le q\le1$,
 \begin{align}
- \int_0^qF(s)\dd s&=F(q/2),
+ \int_0^qF(s)\Differential s&=F(q/2),
  \label{eq:F-primitive0}\\
- \int_0^q sF(s)\dd s&=qF(q/2)-2F(q/4).
+ \int_0^q sF(s)\Differential s&=qF(q/2)-2F(q/4).
  \label{eq:F-primitive1}
 \end{align}
 \end{lemma}
@@ -1135,8 +1122,8 @@ Every dyadic value $\tau(1-a/2^N)$ is rational whenever the corresponding Fabius
 \begin{proof}
 For $x=1-q\ge0$, substitute $s=1-y$ in \eqref{eq:Stein-kernel-def} and use $u(y)=F(1-y)$:
 \[
- \int_{1-q}^{1}yu(y)\dd y
- =\int_0^q(1-s)F(s)\dd s.
+ \int_{1-q}^{1}yu(y)\Differential y
+ =\int_0^q(1-s)F(s)\Differential s.
 \]
 Apply \cref{lem:F-primitives} and divide by $u(1-q)=F(q)$. Evenness gives the global formula. The special values use $F(1/2)=1/2$, $F(1/4)=5/72$, and $F(1/8)=1/288$.
 \end{proof}
@@ -1155,7 +1142,7 @@ For $0<y<1$ and $q=G(y)$,
  \tau(1-G(y))
  =G(y)-\frac{G(y)^2}{2}
  -\frac1y\int_0^y
- \left(G(v)-\frac{G(v)^2}{2}\right)\dd v.}
+ \left(G(v)-\frac{G(v)^2}{2}\right)\Differential v.}
  \label{eq:tau-quantile}
 \end{equation}
 \end{theorem}
@@ -1163,8 +1150,8 @@ For $0<y<1$ and $q=G(y)$,
 \begin{proof}
 Let $H(s)=s-s^2/2$. The numerator in \eqref{eq:tau-q} is
 \[
- \int_0^q(1-s)F(s)\dd s
- =H(q)F(q)-\int_0^qH(s)F'(s)\dd s.
+ \int_0^q(1-s)F(s)\Differential s
+ =H(q)F(q)-\int_0^qH(s)F'(s)\Differential s.
 \]
 Use $v=F(s)$ in the last integral and $F(q)=y$; then divide by $y$.
 \end{proof}
@@ -1178,20 +1165,20 @@ Equation \eqref{eq:tau-quantile} turns endpoint information about $G$ into endpo
 For $t$ near zero,
 \begin{equation}
  \boxed{\displaystyle
- \E\left[\tau(Y)\frac{\e^{tY}}{M(t)}\right]
+ \Expectation\left[\tau(Y)\frac{\EulerE^{tY}}{M(t)}\right]
  =\frac{K'(t)}t.}
  \label{eq:tau-EGF}
 \end{equation}
 Consequently, for every $n\ge0$,
 \begin{equation}
  \boxed{\displaystyle
- \E[\tau(Y)\Acal_n(Y)]
+ \Expectation[\tau(Y)\Acal_n(Y)]
  =\frac{\kappa_{n+2}}{n+1}.}
  \label{eq:tau-Appell-moment}
 \end{equation}
 For $n=2m$ this is
 \begin{equation}
- \E[\tau(Y)\Acal_{2m}(Y)]
+ \Expectation[\tau(Y)\Acal_{2m}(Y)]
  =\frac{2^{2m+1}B_{2m+2}}
  {(m+1)(2m+1)(4^{m+1}-1)},
  \label{eq:tau-Bernoulli}
@@ -1200,12 +1187,12 @@ and the odd moments vanish.
 \end{theorem}
 
 \begin{proof}
-Apply the classical Stein identity \eqref{eq:classical-Stein} to $f(y)=\e^{ty}/M(t)$. The left side is $M'(t)/M(t)=K'(t)$; the right side is $t$ times the expectation in \eqref{eq:tau-EGF}. Expand both sides in powers of $t$ and compare coefficients. Insert \eqref{eq:cumulants} for \eqref{eq:tau-Bernoulli}.
+Apply the classical Stein identity \eqref{eq:classical-Stein} to $f(y)=\EulerE^{ty}/M(t)$. The left side is $M'(t)/M(t)=K'(t)$; the right side is $t$ times the expectation in \eqref{eq:tau-EGF}. Expand both sides in powers of $t$ and compare coefficients. Insert \eqref{eq:cumulants} for \eqref{eq:tau-Bernoulli}.
 \end{proof}
 
 The case $n=0$ gives
 \begin{equation}
- \E\tau(Y)=\kappa_2=\Var(Y)=\frac19,
+ \Expectation\tau(Y)=\kappa_2=\Variance(Y)=\frac19,
  \label{eq:mean-tau}
 \end{equation}
 as expected. Higher coefficients show that the scalar Stein kernel is an exact Bernoulli probe of the nonorthogonal Appell basis.
@@ -1245,14 +1232,14 @@ Define
 \end{equation}
 If $q=G(y)$, integration by parts in \eqref{eq:F-primitive0} gives
 \begin{equation}
- R(G(y))=G(y)-\frac1y\int_0^yG(v)\dd v.
+ R(G(y))=G(y)-\frac1y\int_0^yG(v)\Differential v.
  \label{eq:R-inverse}
 \end{equation}
-Write $q(T)=G(\e^{-T})$ and $E(T)=\mathcal E(\e^{-T})$. Since $q'(T)=-E(T)q(T)$,
+Write $q(T)=G(\EulerE^{-T})$ and $E(T)=\mathcal E(\EulerE^{-T})$. Since $q'(T)=-E(T)q(T)$,
 \begin{equation}
  \frac{R(q(T))}{q(T)}
- =1-\int_0^\infty \e^{-s}
- \exp\!\left(-\int_0^sE(T+a)\dd a\right)\dd s.
+ =1-\int_0^\infty \EulerE^{-s}
+ \exp\!\left(-\int_0^sE(T+a)\Differential a\right)\Differential s.
  \label{eq:Watson-exact}
 \end{equation}
 
@@ -1276,10 +1263,10 @@ Therefore
 \end{lemma}
 
 \begin{proof}
-In \eqref{eq:Watson-exact}, the weight $\e^{-s}$ localizes $s$ to a bounded range. On such ranges, \eqref{eq:elasticity-input} implies
+In \eqref{eq:Watson-exact}, the weight $\EulerE^{-s}$ localizes $s$ to a bounded range. On such ranges, \eqref{eq:elasticity-input} implies
 $E(T+s)=E(T)+\BigO((1+\log\rho)/\rho^3)$ uniformly. Replacing the inner integral by $sE(T)$ changes the integral by the stated error. The remaining elementary integral is
 \[
- 1-\int_0^\infty\e^{-(1+E(T))s}\dd s
+ 1-\int_0^\infty\EulerE^{-(1+E(T))s}\Differential s
  =\frac{E(T)}{1+E(T)}
  =E(T)-E(T)^2+\BigO(E(T)^3).
 \]
@@ -1336,7 +1323,7 @@ Define the exact lower-Lambert coordinate
 \begin{equation}
  \lambda(q):=-\frac1L W_{-1}(-Lq),
  \qquad
- q=\lambda(q)\e^{-L\lambda(q)}=\lambda(q)2^{-\lambda(q)}.
+ q=\lambda(q)\EulerE^{-L\lambda(q)}=\lambda(q)2^{-\lambda(q)}.
  \label{eq:lambda-q}
 \end{equation}
 The repository's phase matching gives $\lambda(G(y))=\rho+\BigO(1)$.
@@ -1523,10 +1510,10 @@ For every $0<|r|<1$, there exists a canonical scale of analytic or Gevrey spaces
 \end{enumerate}
 \end{conjecture}
 
-A plausible norm should balance derivative growth against the endpoint saddle and should make the coefficient functional $p\mapsto\E p^{(n)}(Y_r)/n!$ continuous with explicit $n$-dependence.
+A plausible norm should balance derivative growth against the endpoint saddle and should make the coefficient functional $p\mapsto\Expectation p^{(n)}(Y_r)/n!$ continuous with explicit $n$-dependence.
 
 \begin{problem}[Natural $L^2$ spectrum and pseudospectrum]
-Determine the full spectrum of $P_{1/2}$ on $L^2(u\dd x)$ and quantify the norms of the finite-degree spectral projectors \eqref{eq:projector-dual}. The nonzero off-diagonal Gram entries imply potentially large eigenbasis condition numbers. Relate their growth to the repository's Legendre, Lagrange, and shifted-$u$ synthesis matrices.
+Determine the full spectrum of $P_{1/2}$ on $L^2(u\Differential x)$ and quantify the norms of the finite-degree spectral projectors \eqref{eq:projector-dual}. The nonzero off-diagonal Gram entries imply potentially large eigenbasis condition numbers. Relate their growth to the repository's Legendre, Lagrange, and shifted-$u$ synthesis matrices.
 \end{problem}
 
 \subsection{A full Stein-kernel transseries}
@@ -1656,7 +1643,7 @@ The repository already formalizes the Rvachev moment/Appell family and a substan
 \begin{enumerate}
 \item \textbf{Polynomial affine operator.} Define $P_r$ on polynomials by integrating a polynomial against the uniform moment functional. Prove degree preservation and $DP_r=rP_rD$ by coefficient arithmetic.
 \item \textbf{MGF coefficient identity.} Avoid analytic convergence initially: encode $M(t)=M(rt)m(t)$ as a formal power-series identity and derive $P_r\Acal_n=r^n\Acal_n$ coefficientwise.
-\item \textbf{Spectral coordinates.} Formalize $\E\Acal_n=\delta_{n0}$ and the triangular derivative formula, then prove \eqref{eq:spectral-coordinate} by polynomial induction.
+\item \textbf{Spectral coordinates.} Formalize $\Expectation\Acal_n=\delta_{n0}$ and the triangular derivative formula, then prove \eqref{eq:spectral-coordinate} by polynomial induction.
 \item \textbf{$q$-commuting powers.} Reuse the existing Gaussian-binomial theorem to prove \eqref{eq:qbinomial-operator}; the only new input is the commutation relation.
 \item \textbf{Finite determinant.} In the Appell basis, the matrix is diagonal. The determinant theorem reduces to the existing finite $q$-Pochhammer product.
 \item \textbf{Poisson and martingale laws.} These are finite sums and one-step conditional expectations once the eigenvalue theorem is available.
@@ -1726,11 +1713,11 @@ Object & Formula \\
 \midrule
 \endhead
 Stationary series & $Y_r=(1-r)\sum_{j\ge0}r^jU_{j+1}$ \\
-Markov operator & $(P_rf)(x)=\frac12\int_{-1}^1f(rx+(1-r)v)\dd v$ \\
+Markov operator & $(P_rf)(x)=\frac12\int_{-1}^1f(rx+(1-r)v)\Differential v$ \\
 MGF cocycle & $M_r(t)=M_r(rt)\sinh((1-r)t)/((1-r)t)$ \\
-Appell EGF & $\e^{xt}/M_r(t)=\sum\Acal_n^{(r)}(x)t^n/n!$ \\
+Appell EGF & $\EulerE^{xt}/M_r(t)=\sum\Acal_n^{(r)}(x)t^n/n!$ \\
 Koopman eigenvalue & $P_r\Acal_n^{(r)}=r^n\Acal_n^{(r)}$ \\
-Spectral coordinate & $\Lcal_n(p)=\E p^{(n)}(Y_r)/n!$ \\
+Spectral coordinate & $\Lcal_n(p)=\Expectation p^{(n)}(Y_r)/n!$ \\
 Dual eigen-distribution & $P_r^*u_r^{(n)}=r^nu_r^{(n)}$ \\
 Commutation & $DP_r=rP_rD$, $P_rR_r=rR_rP_r$ \\
 Number operator & $N_r=R_rD$, $P_r=r^{N_r}$ \\
@@ -1740,10 +1727,10 @@ Fixed-point Stein operator & $\Kcal_r=I-P_r$ \\
 Differential Stein operator & $\Scal_r=(I-P_r)D$ \\
 Stein discrepancy & $(1-|r|)W_1\le\Delta_r\le(1+|r|)W_1$ \\
 Polynomial martingale & $r^{-nk}\Acal_n(X_k)$ \\
-Lag correlation & $\E[\Acal_m(X_0)\Acal_n(X_k)]=r^{nk}G_{mn}$ \\
+Lag correlation & $\Expectation[\Acal_m(X_0)\Acal_n(X_k)]=r^{nk}G_{mn}$ \\
 Gram EGF & $\sum G_{mn}s^mt^n/(m!n!)=M_r(s+t)/(M_r(s)M_r(t))$ \\
 Rvachev Stein kernel & $\tau(1-q)=((1-q)F(q/2)+2F(q/4))/F(q)$ \\
-Kernel Appell moment & $\E[\tau(Y)\Acal_n(Y)]=\kappa_{n+2}/(n+1)$ \\
+Kernel Appell moment & $\Expectation[\tau(Y)\Acal_n(Y)]=\kappa_{n+2}/(n+1)$ \\
 Endpoint equivalent & $\tau(1-q)\sim q/\lambda(q)$ \\
 \bottomrule
 \end{longtable}
