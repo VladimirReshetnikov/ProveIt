@@ -1,4 +1,5 @@
 import FabiusFunction.GlobalBounds
+import FabiusFunction.ThueMorseBooleanCube
 import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.MeasureTheory.Measure.HasOuterApproxClosed
@@ -25,6 +26,9 @@ absolute-moment and rearrangement-invariant norm identities.
 * `abs_iteratedDeriv_rvachev_cell` removes the Thue--Morse sign.
 * `intervalIntegral_comp_iteratedDeriv_rvachev` is the signed finite-mixture
   identity for Banach-valued continuous test functions.
+* `intervalIntegral_iteratedDeriv_rvachev_pow` gives every signed natural
+  moment in a single all-order Boolean-cube formula; its even and positive-
+  order odd corollaries are the report's parity laws.
 * `intervalIntegral_comp_abs_iteratedDeriv_rvachev` is the Banach-valued
   continuous-test-function distribution identity.
 * `intervalIntegral_comp_normalized_abs_iteratedDeriv_rvachev` is its
@@ -227,6 +231,97 @@ theorem intervalIntegral_comp_iteratedDeriv_rvachev
             H (2 ^ (n + 1).choose 2 * (-1 : ℝ) ^ binaryWeight k *
               rvachevUp F y) := by
       rw [smul_sum]
+
+/-- **All signed natural moments, including derivative order zero.**  The
+`m`-th signed moment of the `n`-th derivative is the base moment multiplied
+by the sharp derivative scale and by the Boolean-cube weight enumerator
+`(1 + (-1) ^ m) ^ n`.
+
+This formula deliberately keeps the factor `0 ^ 0` when `n = 0` and `m` is
+odd.  Lean's convention `0 ^ 0 = 1` then gives the original signed moment,
+whereas every positive derivative order has vanishing odd moments. -/
+theorem intervalIntegral_iteratedDeriv_rvachev_pow
+    (F : BoundedFabius) (hF : IsFabius F) (n m : ℕ) :
+    (∫ x in (-1 : ℝ)..1, (iteratedDeriv n (rvachevUp F) x) ^ m) =
+      ((2 : ℝ) ^ n)⁻¹ * (1 + (-1 : ℝ) ^ m) ^ n *
+        ((2 : ℝ) ^ (n + 1).choose 2) ^ m *
+          ∫ y in (-1 : ℝ)..1, (rvachevUp F y) ^ m := by
+  have h := intervalIntegral_comp_iteratedDeriv_rvachev F hF
+    (fun t : ℝ ↦ t ^ m) (continuous_id.pow m) n
+  calc
+    (∫ x in (-1 : ℝ)..1, (iteratedDeriv n (rvachevUp F) x) ^ m) =
+        ((2 : ℝ) ^ n)⁻¹ *
+          ∑ k ∈ range (2 ^ n),
+            ∫ y in (-1 : ℝ)..1,
+              (2 ^ (n + 1).choose 2 * (-1 : ℝ) ^ binaryWeight k *
+                rvachevUp F y) ^ m := by
+      simpa only [smul_eq_mul] using h
+    _ = ((2 : ℝ) ^ n)⁻¹ *
+        ∑ k ∈ range (2 ^ n),
+          ((2 : ℝ) ^ (n + 1).choose 2) ^ m *
+            (((-1 : ℝ) ^ m) ^ binaryWeight k) *
+              ∫ y in (-1 : ℝ)..1, (rvachevUp F y) ^ m := by
+      congr 1
+      apply sum_congr rfl
+      intro k _hk
+      have hsign :
+          (((-1 : ℝ) ^ binaryWeight k) ^ m) =
+            ((-1 : ℝ) ^ m) ^ binaryWeight k := by
+        simp only [← pow_mul, Nat.mul_comm]
+      calc
+        (∫ y in (-1 : ℝ)..1,
+            (2 ^ (n + 1).choose 2 * (-1 : ℝ) ^ binaryWeight k *
+              rvachevUp F y) ^ m) =
+            ∫ y in (-1 : ℝ)..1,
+              (((2 : ℝ) ^ (n + 1).choose 2) ^ m *
+                (((-1 : ℝ) ^ m) ^ binaryWeight k)) *
+                  (rvachevUp F y) ^ m := by
+          apply intervalIntegral.integral_congr
+          intro y _hy
+          change
+            (2 ^ (n + 1).choose 2 * (-1 : ℝ) ^ binaryWeight k *
+                rvachevUp F y) ^ m =
+              (((2 : ℝ) ^ (n + 1).choose 2) ^ m *
+                (((-1 : ℝ) ^ m) ^ binaryWeight k)) *
+                  (rvachevUp F y) ^ m
+          rw [mul_pow, mul_pow, hsign]
+        _ = ((2 : ℝ) ^ (n + 1).choose 2) ^ m *
+              (((-1 : ℝ) ^ m) ^ binaryWeight k) *
+                ∫ y in (-1 : ℝ)..1, (rvachevUp F y) ^ m := by
+          exact intervalIntegral.integral_const_mul _ _
+    _ = ((2 : ℝ) ^ n)⁻¹ *
+        (((2 : ℝ) ^ (n + 1).choose 2) ^ m *
+          (∑ k ∈ range (2 ^ n), ((-1 : ℝ) ^ m) ^ binaryWeight k) *
+            ∫ y in (-1 : ℝ)..1, (rvachevUp F y) ^ m) := by
+      rw [← sum_mul, ← mul_sum]
+    _ = ((2 : ℝ) ^ n)⁻¹ * (1 + (-1 : ℝ) ^ m) ^ n *
+        ((2 : ℝ) ^ (n + 1).choose 2) ^ m *
+          ∫ y in (-1 : ℝ)..1, (rvachevUp F y) ^ m := by
+      rw [sum_pow_binaryWeight_eq_one_add_pow]
+      ring
+
+/-- Every even signed natural moment of an iterated Rvachev derivative is
+the corresponding base moment multiplied by the sharp scale to that power.
+This includes derivative order zero and moment order zero. -/
+theorem intervalIntegral_iteratedDeriv_rvachev_pow_of_even
+    (F : BoundedFabius) (hF : IsFabius F) (n m : ℕ) (hm : Even m) :
+    (∫ x in (-1 : ℝ)..1, (iteratedDeriv n (rvachevUp F) x) ^ m) =
+      ((2 : ℝ) ^ (n + 1).choose 2) ^ m *
+        ∫ y in (-1 : ℝ)..1, (rvachevUp F y) ^ m := by
+  rw [intervalIntegral_iteratedDeriv_rvachev_pow F hF n m,
+    Even.neg_one_pow hm]
+  norm_num
+
+/-- Every odd signed natural moment of a positive-order iterated Rvachev
+derivative vanishes.  The positive-order hypothesis is essential: at order
+zero the formula reduces to the generally nonzero base odd moment. -/
+theorem intervalIntegral_iteratedDeriv_rvachev_pow_eq_zero_of_odd
+    (F : BoundedFabius) (hF : IsFabius F) (n m : ℕ) (hn : 0 < n)
+    (hm : Odd m) :
+    (∫ x in (-1 : ℝ)..1, (iteratedDeriv n (rvachevUp F) x) ^ m) = 0 := by
+  rw [intervalIntegral_iteratedDeriv_rvachev_pow F hF n m,
+    Odd.neg_one_pow hm]
+  simp [Nat.ne_of_gt hn]
 
 /-- **Continuous-test-function derivative distribution identity.**  For any
 continuous function with values in a real Banach space, integrating it against
