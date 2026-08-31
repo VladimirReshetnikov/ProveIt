@@ -464,7 +464,7 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 `149332f9d`.
 
 Member: `Exponents_and_q_Series_Frontiers`
-(retained pre-update PDF: 236 A4 pp; current merged TeX: 16,239 lines
+(retained pre-update PDF: 236 A4 pp; current merged TeX: 16,237 lines
 across seven parts; PDF rebuild pending, with both parent ledgers refreshed for
 the current source and retained PDF) — the
 2026-08-28 consolidation of the two former drafts (Part I:
