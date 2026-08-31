@@ -31,18 +31,15 @@ RESULT_KINDS = (
     "algorithm",
     "example",
     "obligation",
+    "warning",
 )
 BEGIN_RE = re.compile(
     r"\\begin\{(?P<kind>" + "|".join(RESULT_KINDS) + r")\}"
-    r"(?:\[(?P<title>.*?)\])?",
-    re.DOTALL,
 )
 LABEL_RE = re.compile(r"\\label\{([^}]+)\}")
 PROOF_RE = re.compile(r"\\begin\{(?:proof|proofidea)\}")
 SECTION_RE = re.compile(
-    r"\\(?P<level>part|chapter|section|subsection)\*?"
-    r"\{(?P<title>.*?)\}",
-    re.DOTALL,
+    r"\\(?P<level>part|chapter|section|subsection)\*?\s*\{"
 )
 
 AUDIT_DIR = Path(__file__).resolve().parent
@@ -51,20 +48,33 @@ PIN_FILE = AUDIT_DIR / "SOURCE_REVISION"
 CANONICAL_CONCORDANCE = CANONICAL_ROOT / "theorem_concordance.csv"
 REPOSITORY_SOURCE_ROOT = Path(
     "Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/"
-    "drafts/inverse-and-sampling/inverse-asymptotics-and-computability"
+    "drafts/inverse-and-sampling"
 )
 SOURCES = (
     (
         "Inverse_and_Sampling_Frontiers",
-        "Inverse_and_Sampling_Frontiers/Inverse_and_Sampling_Frontiers.tex",
+        "inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers/"
+        "Inverse_and_Sampling_Frontiers.tex",
     ),
     (
         "Inverse_Endpoint_All_Orders",
-        "Inverse_Endpoint_All_Orders/Inverse_Endpoint_All_Orders.tex",
+        "inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders/"
+        "Inverse_Endpoint_All_Orders.tex",
     ),
     (
         "Inverse_Fabius_Computability_Report",
-        "Inverse_Fabius_Computability_Report/inverse_fabius_computability.tex",
+        "inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report/"
+        "inverse_fabius_computability.tex",
+    ),
+    (
+        "Non_Elementarity_of_the_Fabius_Function",
+        "analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function/"
+        "Non_Elementarity_of_the_Fabius_Function.tex",
+    ),
+    (
+        "inverse_fabius_iterates_nowhere_analytic",
+        "analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/"
+        "inverse_fabius_iterates_nowhere_analytic.tex",
     ),
 )
 SOURCE_FIELDS = (
@@ -97,15 +107,69 @@ def line_number(text: str, offset: int) -> int:
     return text.count("\n", 0, offset) + 1
 
 
+def balanced_contents(
+    text: str, opening: int, left: str, right: str, display_source: str
+) -> tuple[str, int]:
+    """Return a balanced TeX argument and the offset immediately after it.
+
+    A non-greedy regular expression truncates a section title with nested
+    braces at the first closing brace.  This deliberately small scanner is
+    sufficient for ordinary TeX arguments: it respects nesting and ignores
+    escaped delimiters.
+    """
+
+    if opening >= len(text) or text[opening] != left:
+        raise ValueError(
+            f"{display_source}:{line_number(text, opening)}: expected {left!r}"
+        )
+    depth = 1
+    index = opening + 1
+    while index < len(text):
+        character = text[index]
+        if character == "\\":
+            index += 2
+            continue
+        if character == left:
+            depth += 1
+        elif character == right:
+            depth -= 1
+            if depth == 0:
+                return text[opening + 1 : index], index + 1
+        index += 1
+    raise ValueError(
+        f"{display_source}:{line_number(text, opening)}: "
+        f"unclosed balanced argument beginning with {left!r}"
+    )
+
+
+def result_title(text: str, offset: int, display_source: str) -> str:
+    index = offset
+    while index < len(text) and text[index].isspace():
+        index += 1
+    if index < len(text) and text[index] == "[":
+        title, _ = balanced_contents(text, index, "[", "]", display_source)
+        return one_line(title)
+    return ""
+
+
+def section_marks(text: str, display_source: str) -> list[tuple[int, str, str]]:
+    marks: list[tuple[int, str, str]] = []
+    for match in SECTION_RE.finditer(text):
+        title, _ = balanced_contents(
+            text, match.end() - 1, "{", "}", display_source
+        )
+        marks.append((match.start(), match.group("level"), one_line(title)))
+    return marks
+
+
 def current_section(
-    matches: list[re.Match[str]], offset: int
+    marks: list[tuple[int, str, str]], offset: int
 ) -> tuple[str, str]:
     path: dict[str, str] = {}
-    for match in matches:
-        if match.start() >= offset:
+    for start, level, title in marks:
+        if start >= offset:
             break
-        level = match.group("level")
-        path[level] = one_line(match.group("title"))
+        path[level] = title
         if level == "part":
             path.pop("chapter", None)
             path.pop("section", None)
@@ -127,7 +191,7 @@ def inventory_text(
     text: str, package: str, relative: str, display_source: str
 ) -> list[dict[str, str]]:
     results = list(BEGIN_RE.finditer(text))
-    sections = list(SECTION_RE.finditer(text))
+    sections = section_marks(text, display_source)
     ordinals: Counter[str] = Counter()
     rows: list[dict[str, str]] = []
     for index, match in enumerate(results):
@@ -157,7 +221,7 @@ def inventory_text(
             "source_line": str(line_number(text, match.start())),
             "source_label": label,
             "source_kind": kind,
-            "source_title": one_line(match.group("title") or ""),
+            "source_title": result_title(text, match.end(), display_source),
             "source_chapter": chapter,
             "source_section_path": section_path,
             "source_proof_present": "yes" if proof_present else "no",
