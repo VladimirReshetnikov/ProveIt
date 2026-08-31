@@ -8395,8 +8395,59 @@ right-continuity and full-domain continuity on \([-\e^{-1},\infty)\), namely
 point \(0\), that module also proves
 \(\operatorname{deriv}W_0(0)=1\) and \(W_0(z)\sim z\), through
 \lean{deriv_principalLambertW_zero} and \lean{principalLambertW_isEquivalent_zero}.
-These endpoint-continuity declarations do not assert a derivative at the branch point, a
-vertical-tangent limit, a second-derivative or curvature law, or a Puiseux expansion there.
+These endpoint-continuity declarations do not assert a derivative at the branch point.
+On the principal open domain, the nonsingular first-derivative identity is
+\begin{equation}
+ W_0'(z)=
+ \left[\e^{W_0(z)}\bigl(W_0(z)+1\bigr)\right]^{-1},
+ \qquad z>-\e^{-1}.                                      \label{eq:principal-lambert-derivative}
+\end{equation}
+The exact curvature formula is proved for both real branches.  If \(j=0\) and
+\(z>-\e^{-1}\), or if \(j=-1\) and
+\(-\e^{-1}<z<0\), then
+\begin{equation}
+ W_j''(z)=
+ -\frac{\e^{-2W_j(z)}\bigl(W_j(z)+2\bigr)}
+        {\bigl(W_j(z)+1\bigr)^3}.                          \label{eq:raw-lambert-curvature}
+\end{equation}
+For the principal branch this is strictly negative everywhere on the open domain,
+\(W_0''(0)=-2\), and \(W_0\) is strictly concave on the full closed natural domain
+\([-\e^{-1},\infty)\).  The nonsingular first-derivative identity, second-derivative
+witness and formula, zero value, strict negativity, and strict concavity are respectively
+\lean{deriv_principalLambertW},
+\lean{deriv_principalLambertW_hasDerivAt},
+\lean{deriv_deriv_principalLambertW},
+\lean{deriv_deriv_principalLambertW_zero},
+\lean{deriv_deriv_principalLambertW_neg}, and
+\lean{strictConcaveOn_principalLambertW} in
+\path{LambertWCurvature.lean}.
+
+For the lower branch, put \(z_*=-2\e^{-2}\), so that
+\(W_{-1}(z_*)=-2\).  Within \((-\e^{-1},0)\),
+\begin{equation}
+ \begin{aligned}
+ W_{-1}''(z)>0&\iff z<z_*,\\
+ W_{-1}''(z)=0&\iff z=z_*,\\
+ W_{-1}''(z)<0&\iff z_*<z.
+ \end{aligned}                                             \label{eq:lower-lambert-curvature-sign}
+\end{equation}
+Consequently \(W_{-1}\) is strictly convex on
+\([-\e^{-1},z_*]\) and strictly concave on \([z_*,0)\).
+The derivative witness and pointwise formula are
+\lean{deriv_lowerLambertW_hasDerivAt} and
+\lean{deriv_deriv_lowerLambertW}; the three equivalences are
+\lean{deriv_deriv_lowerLambertW_pos_iff},
+\lean{deriv_deriv_lowerLambertW_eq_zero_iff}, and
+\lean{deriv_deriv_lowerLambertW_neg_iff}; and the strict-shape statements are
+\lean{strictConvexOn_lowerLambertW_left} and
+\lean{strictConcaveOn_lowerLambertW_right}, all in
+\path{LambertWCurvature.lean}.  The special value is
+\lean{lowerLambertW_neg_two_mul_exp} in
+\path{LambertBranchDichotomy.lean}.
+
+The strict-shape theorems include the finite branch point by continuity; they do not give
+a derivative or a second derivative there.  A branch-point vertical-tangent limit and a
+Puiseux expansion remain outside the proved API.
 
 \begin{corollary}[Solution of the saddle equation]
 \label{thm:tm-lambert-lambda}
@@ -8791,6 +8842,25 @@ interior \(0<x<P_{m,A,\beta}\), the two roots are unequal by
 \path{PowerExponentialLambertInverse.lean}.  The nonnegativity assumption on \(\mu\) is
 essential: for even \(m\), negative inputs can create additional positive profile values.
 
+On that same strict profile-value interval, both inverse branches have the exact second
+derivative
+\begin{equation}
+ \lambda_j''(x)=
+ \frac{\lambda_j(x)
+   \left[m-\bigl(m-\beta\lambda_j(x)\bigr)^2\right]}
+ {x^2\bigl(m-\beta\lambda_j(x)\bigr)^3},
+ \qquad j\in\{0,-1\}.                                    \label{eq:power-exponential-phase-curvature}
+\end{equation}
+The corresponding derivative witnesses are
+\lean{deriv_principalPowerExponentialPhase_hasDerivAt} and
+\lean{deriv_lowerPowerExponentialPhase_hasDerivAt}; the pointwise identities are
+\lean{deriv_deriv_principalPowerExponentialPhase} and
+\lean{deriv_deriv_lowerPowerExponentialPhase}, all in
+\path{PowerExponentialLambertCurvature.lean}.
+That generic module stops at the exact formula: it does not yet package the
+thresholds \(m\mathbin{\pm}\sqrt m\), their zero/sign classifications, or
+generic strict-convexity and strict-concavity corollaries.
+
 The compiled small-input package uses the intrinsic positive scale
 \begin{equation}
  \epsilon_{m,A,\beta}(x)
@@ -8817,8 +8887,9 @@ The exact Lean crosswalk is \lean{powerExponentialLambertEpsilon},
 \lean{lowerPowerExponentialPhase_sub_intrinsicMain_tendsto_zero} in
 \path{PowerExponentialLambertAsymptotics.lean}.  This generic theorem stops at the intrinsic
 \(\epsilon\)-form with an \(o(1)\) remainder.  A cleaned formula in
-\(\log(A/x)\), further logarithmic terms or a full series, and branch-point Puiseux,
-vertical-tangent, second-derivative, or curvature statements are not part of this package.
+\(\log(A/x)\), further logarithmic terms, and a full series are not part of this package.
+The separate interior curvature formula \eqref{eq:power-exponential-phase-curvature} does
+not supply a branch-point vertical-tangent limit or a Puiseux expansion.
 
 For the classical parameters \((m,A,\beta)=(1,1,L)\), the principal root is
 \lean{fabiusPrincipalLambertPhase} and the lower root is \lean{fabiusLambertPhase}.
@@ -8877,7 +8948,70 @@ claims are \lean{fabiusLambertPhase_strictAntiOn}, \lean{fabiusLambertPhase_imag
 \path{FabiusLambertSaddle.lean}; the derivative witness is
 \lean{fabiusLambertPhase_hasDerivAt}, and pointwise continuity is
 \lean{fabiusLambertPhase_continuousAt}.
-At the small-argument endpoint \(x=0\), the exact phase and its reciprocal have the limits
+
+The full curvature profile is also exact.  Define
+\begin{equation}
+ x_*:=\frac{2\e^{-2}}L.                                    \label{eq:fabius-lambert-inflection-input}
+\end{equation}
+Then \(0<x_*<\e^{-1}/L\), \(\lambda(x_*)=2/L\), and for
+\(0<x<\e^{-1}/L\),
+\begin{equation}
+ \lambda''(x)=
+ \frac{L\lambda(x)^2\bigl(2-L\lambda(x)\bigr)}
+ {x^2\bigl(1-L\lambda(x)\bigr)^3}.                        \label{eq:fabius-lambert-curvature}
+\end{equation}
+Moreover,
+\begin{equation}
+ \begin{aligned}
+ \lambda''(x)>0&\iff x<x_*,\\
+ \lambda''(x)=0&\iff x=x_*,\\
+ \lambda''(x)<0&\iff x_*<x.
+ \end{aligned}                                             \label{eq:fabius-lambert-curvature-sign}
+\end{equation}
+Thus the lower phase is strictly convex on \((0,x_*]\) and strictly concave on
+\([x_*,\e^{-1}/L]\).  In Lean, \(x_*\) is
+\lean{fabiusLambertInflectionInput}; its domain membership and phase value are
+\lean{fabiusLambertInflectionInput_mem_Ioo} and
+\lean{fabiusLambertPhase_inflectionInput}.  The second derivative, its three sign loci,
+its exact zero, and the two strict-shape statements are respectively
+\lean{deriv_deriv_fabiusLambertPhase},
+\lean{deriv_deriv_fabiusLambertPhase_pos_iff},
+\lean{deriv_deriv_fabiusLambertPhase_eq_zero_iff},
+\lean{deriv_deriv_fabiusLambertPhase_neg_iff},
+\lean{deriv_deriv_fabiusLambertPhase_inflectionInput},
+\lean{strictConvexOn_fabiusLambertPhase_left}, and
+\lean{strictConcaveOn_fabiusLambertPhase_right} in
+\path{PowerExponentialLambertFabiusCurvature.lean}.
+
+The principal Fabius phase has a complementary global result.  For every real \(x\),
+\begin{equation}
+ \lambda_0(x)=-\frac{W_0(-Lx)}L.                           \label{eq:fabius-principal-lambert-affine}
+\end{equation}
+It is continuous on \((-\infty,\e^{-1}/L]\); for every \(x<\e^{-1}/L\),
+\begin{align}
+ \lambda_0'(x)
+ &=\left[\e^{W_0(-Lx)}\bigl(W_0(-Lx)+1\bigr)\right]^{-1},
+                                                               \label{eq:fabius-principal-lambert-derivative}\\
+ \lambda_0''(x)
+ &=\frac{L\e^{-2W_0(-Lx)}\bigl(W_0(-Lx)+2\bigr)}
+ {\bigl(W_0(-Lx)+1\bigr)^3}>0.                              \label{eq:fabius-principal-lambert-curvature}
+\end{align}
+In particular \(\lambda_0''(0)=2L\), and \(\lambda_0\) is strictly convex on the whole
+closed half-line \((-\infty,\e^{-1}/L]\).  The exact affine formula and continuity theorem
+are \lean{fabiusPrincipalLambertPhase_eq_principalLambertW} and
+\lean{fabiusPrincipalLambertPhase_continuousOn_Iic}.  The first-derivative witness and
+identity are \lean{fabiusPrincipalLambertPhase_hasDerivAt} and
+\lean{deriv_fabiusPrincipalLambertPhase}; the second-derivative witness, identity,
+positivity, zero value, and whole-half-line strict convexity are
+\lean{deriv_fabiusPrincipalLambertPhase_hasDerivAt},
+\lean{deriv_deriv_fabiusPrincipalLambertPhase},
+\lean{deriv_deriv_fabiusPrincipalLambertPhase_pos},
+\lean{deriv_deriv_fabiusPrincipalLambertPhase_zero}, and
+\lean{strictConvexOn_fabiusPrincipalLambertPhase}, all in
+\path{PowerExponentialLambertFabiusCurvature.lean}.
+
+Returning to the lower phase, at the small-argument endpoint \(x=0\), the phase and its
+reciprocal have the exact limits
 \begin{equation}
  \lambda(x)\longrightarrow+\infty,
  \qquad \lambda(x)^{-1}\longrightarrow0
@@ -10498,6 +10632,8 @@ Endpoint asymptotics &
 \path{PowerExponentialLambertInverse.lean},
 \path{PowerExponentialLambertAsymptotics.lean},
 \path{PowerExponentialLambertFabius}\texttt{.lean}, \path{FabiusLambertPhase.lean},
+\path{LambertWCurvature.lean}, \path{PowerExponentialLambertCurvature.lean},
+\path{PowerExponentialLambertFabiusCurvature.lean},
 \path{FabiusLambertSaddle.lean}, \path{LambertPhaseLockedRichardson.lean},
 \path{FabiusSharpLambertMain.lean},
 \path{FabiusWikipediaMain.lean},
