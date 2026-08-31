@@ -109,21 +109,18 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 610 modules and 8,333 lexically
+The post-Gaunt 2026-08-31 inventory contains 612 modules and 8,358 lexically
 visible public declarations, with zero missing module headers and zero missing
-doc comments.  This snapshot includes the expanded strictness and equality API
-in `InverseModulus.lean`, the seven-module activation tranche and finite Taylor
-jet in `ActivationTaylor.lean`, and the reusable divided-slope bridge in
-`HyperbolicActivation.lean`.  Relative to the activation checkpoint's
-610/8,318 tree, the density-diagnostic delta consists of the documented
-zero-ratio, negative-ratio nonpositivity, nonpositive-ratio zero-`withDensity`,
-and probability-law nonidentity theorems in `GeometricUniformCDF.lean`; the
-remaining eleven declarations are the disjoint strictness and equality
-refinements in `InverseModulus.lean`.  The baseline records the current
-inventory and those zeroes, so every future source addition must preserve the
-full invariant rather than merely avoid worsening a
-historical backlog.  Run the script for live numbers after merging concurrent
-source work.
+doc comments.  Relative to the 610/8,333 inverse-modulus checkpoint, the two
+new Legendre--Gaunt modules contribute exactly 25 documented declarations:
+four definitions and twelve theorems in `LegendreGaunt.lean`, and one
+definition and eight theorems in `FabiusLegendreGaunt.lean`.  They add the
+executable rational triple-product and finite product-linearization core, then
+specialize it to full and even Rvachev coefficient sums for rational and real
+Legendre Gram entries.  The baseline records the current inventory and those
+zeroes, so every future source addition must preserve the full invariant rather
+than merely avoid worsening a historical backlog.  Run the script for live
+numbers after merging concurrent source work.
 
 ### What the review pass caught
 

@@ -380,8 +380,10 @@ import FabiusFunction.PeriodicRegularity
 import FabiusFunction.LaplacePeriodicSecondOrder
 import FabiusFunction.FabiusTranslatedLegendreSeries
 import FabiusFunction.FabiusLegendreLeastSquares
+import FabiusFunction.LegendreGaunt
 import FabiusFunction.FabiusLegendreEnergy
 import FabiusFunction.FabiusLegendreRationalEnergy
+import FabiusFunction.FabiusLegendreGaunt
 import FabiusFunction.FabiusSquareEnergyFourier
 import FabiusFunction.FabiusLegendreTranslateBlocks
 import FabiusFunction.FabiusLegendreTranslateSeries
