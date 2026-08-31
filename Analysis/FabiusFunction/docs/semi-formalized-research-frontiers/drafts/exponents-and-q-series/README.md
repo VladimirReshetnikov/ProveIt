@@ -29,11 +29,13 @@ New standalone intake members:
 - [`q-series-proof-oriented-article/`](q-series-proof-oriented-article/),
   *A Proof-Oriented Guide to q-Series: Shifted Factorials, Basic
   Hypergeometric Summation, Theta Products, Partitions, Bailey Pairs, and
-  Rogers--Ramanujan Theory* (39 letter-paper pp, 2,891 source lines), arrived
-  as a bare TeX/PDF directory in direct-arrival commit
+  Rogers--Ramanujan Theory* (retained 39-page letter-paper PDF; 2,891 source
+  lines at arrival and 2,872 after the current source-only merge), arrived as
+  a bare TeX/PDF directory in direct-arrival commit
   `1360db6064c676f83bceb23bece5ed304dd09ce8` without an archive, outer hash,
-  or ledger. The repository-generated `SHA256SUMS` covers and verifies both
-  delivered files; its TeX was already LF.
+  or ledger. The repository-generated two-entry `SHA256SUMS` still verifies
+  the retained PDF, but its TeX row is pending after the source-only merge;
+  the TeX was already LF.
 
 - [`q_series_from_first_principles/`](q_series_from_first_principles/),
   *q-Series from First Principles: Products, Basic Hypergeometric Sums,
@@ -46,13 +48,15 @@ New standalone intake members:
 
 - [`q_series_monograph/`](q_series_monograph/),
   *A Proof-Driven Guide to q-Series, Basic Hypergeometric Identities, Bailey
-  Chains, and Rogers--Ramanujan Theory* (1,915 source lines), arrived as a
-  source-only bare directory in direct-arrival commit
+  Chains, and Rogers--Ramanujan Theory* (1,915 source lines at arrival and
+  1,906 after the current source-only merge), arrived as a source-only bare
+  directory in direct-arrival commit
   `1f0f98390d551725fc7d2274638dbd7de86ee346` with neither PDF nor ledger.
   Intake repaired the carriage-return (CR) corruption in the intended `\rho_2`
   token at line 863 and added a one-entry repository `SHA256SUMS` for the sole
   delivered TeX. The package remains source-only: no PDF or auxiliary package
-  was delivered or produced.
+  was delivered or produced, and the ledger's sole TeX row is pending after
+  the current source edit.
 
 These five packages remain separate pending post-publication comparison,
 canonical document work, and Lean crosswalks. In particular, no semantic
@@ -73,9 +77,8 @@ establish Lean verification.
   preserve package-, result-, archive-, and asset-level provenance.  Unique
   reproducibility assets live under `assets/`; the superseded layouts remain
   recoverable from the pinned pre-retirement Git revision and repository
-  history.  The canonical master remains source-only with no PDF; its stated
-  publication gate is deferred by user request.  The q-Pochhammer monograph
-  remains the broad forward-theory
+  history.  The retained canonical PDF is the validated 85-page publication
+  artifact.  The q-Pochhammer monograph remains the broad forward-theory
   reference, while `Cyclotomic_q_Fabius_Rvachev_Frontier/` retains the wider
   natural-boundary and blow-up program beyond this inverse-branch synthesis.
   The three-pass build, clean-log, metadata/font, and all-page visual
@@ -83,7 +86,8 @@ establish Lean verification.
 
 - [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](Cyclotomic_q_Fabius_Rvachev_Frontier/),
   *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
-  Product* (25 pp at arrival; currently 29 A4 pp and 1,896 source lines),
+  Product* (25 pp at arrival; retained 29-page A4 main PDF and current
+  1,873-line source),
   arrived on 2026-08-30 from
   `Cyclotomic_q_Fabius_Rvachev_Frontier.zip` (outer SHA-256
   `029da7d9ec96a0b2e5c4164c37f2b361dd015112bd0c6237263e3c538c5b0f64`).
@@ -93,9 +97,10 @@ establish Lean verification.
   cyclotomic blow-ups, Bell/moment condensation, and inverse branches beside
   the consolidated q-series frontier. A post-publication revision crosswalks
   the global geometric-sinc q-Pochhammer factorization while leaving the
-  cyclotomic asymptotic and natural-boundary layers manuscript-only; the
-  refreshed active ledger verifies all 22 payloads. The current five PDFs have
-  33 pages in total (29 main plus four one-page figures). The main report still
+  cyclotomic asymptotic and natural-boundary layers manuscript-only. The
+  22-entry active ledger now passes 21/22 rows: only the current TeX row is
+  pending after the source-only merge. The retained five PDFs have 33 pages in
+  total (29 main plus four one-page figures). The main report still
   uses Latin Modern rather than the house Libertinus face and retains nine
   embedded/subset Type-3 figure-font rows; the standalone figures contain nine
   more. Font normalization remains deferred.
@@ -469,8 +474,8 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 
 Member: `Exponents_and_q_Series_Frontiers`
 (retained pre-update PDF: 236 A4 pp; current merged TeX: 16,237 lines
-across seven parts; PDF rebuild pending, with both parent ledgers refreshed for
-the current source and retained PDF) — the
+across seven parts; PDF rebuild pending; both parent ledgers verify the current
+source and retained PDF without asserting that the PDF was rebuilt) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -703,7 +708,7 @@ volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Second member: `q_pochhammer_q_binomial_monograph/`
 (212-page last validated A4 PDF; book class; the current source-only merge is
-13,121 lines while the retained PDF is 1,576,424 bytes; the PDF was not
+13,119 lines while the retained PDF is 1,576,424 bytes; the PDF was not
 rebuilt after the merged sinc--Pochhammer crosswalk update) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
