@@ -16,11 +16,12 @@ effective dimension of the centered geometric-uniform law,
 `geometricActivationDimension q t = ∑' n, activationProbability (q ^ n * ((1 - q) * t))`.
 
 The definition is total in `q`, using Mathlib's convention that the `tsum` of
-a nonsummable real family is zero.  Thus only `|q| < 1` carries the intended
-convergent-series meaning; the refinement and quantitative estimates use that
-hypothesis, and probability-law applications normally further assume
-`0 ≤ q < 1`.  At `q = 1 / 2` it is exactly the dyadic effective dimension
-from the Fabius/Rvachev active-digit law.
+a nonsummable real family is zero.  The hypothesis `|q| < 1` is the uniform,
+nondegenerate convergence regime used below; without it no general summability
+is promised, although degenerate cases may still converge.  Probability-law
+applications normally further assume `0 ≤ q < 1`.  At `q = 1 / 2` this is
+exactly the dyadic effective dimension from the Fabius/Rvachev active-digit
+law.
 -/
 
 open scoped BigOperators
@@ -38,16 +39,11 @@ dependence on the lattice index separated as a power of `q ^ 2`. -/
 theorem activationProbability_pow_mul_le (q t : ℝ) (n : ℕ) :
     activationProbability (q ^ n * t) ≤
       (t ^ 2 / 3) * (q ^ 2) ^ n := by
-  have hpow : (q ^ n) ^ 2 = (q ^ 2) ^ n := by
-    calc
-      (q ^ n) ^ 2 = q ^ (n * 2) := (pow_mul q n 2).symm
-      _ = q ^ (2 * n) := by rw [Nat.mul_comm]
-      _ = (q ^ 2) ^ n := pow_mul q 2 n
   calc
     activationProbability (q ^ n * t) ≤ (q ^ n * t) ^ 2 / 3 :=
       activationProbability_le_sq_div_three _
     _ = (t ^ 2 / 3) * (q ^ 2) ^ n := by
-      rw [mul_pow, hpow]
+      rw [mul_pow, pow_right_comm q n 2]
       ring
 
 /-- Activation probabilities sampled at `q ^ n * t` form a summable series
@@ -85,8 +81,9 @@ theorem tsum_activationProbability_pow_mul_le
 /-! ## The normalized geometric effective dimension -/
 
 /-- The effective activation dimension for normalized geometric weights
-`(1 - q) * q ^ n`.  Outside the summable range `|q| < 1`, this retains only
-the ambient totalized-`tsum` meaning. -/
+`(1 - q) * q ^ n`.  The results below use the uniform convergence regime
+`|q| < 1`; outside it this definition retains the ambient totalized-`tsum`
+meaning, even though some degenerate parameter choices remain summable. -/
 noncomputable def geometricActivationDimension (q t : ℝ) : ℝ :=
   ∑' n : ℕ, activationProbability (q ^ n * ((1 - q) * t))
 
@@ -241,11 +238,6 @@ theorem geometricActivationDimension_tail_le
     {q : ℝ} (hq : |q| < 1) (t : ℝ) (N : ℕ) :
     geometricActivationDimension q (q ^ N * t) ≤
       ((1 - q) * t ^ 2 / (3 * (1 + q))) * (q ^ 2) ^ N := by
-  have hpow : (q ^ N) ^ 2 = (q ^ 2) ^ N := by
-    calc
-      (q ^ N) ^ 2 = q ^ (N * 2) := (pow_mul q N 2).symm
-      _ = q ^ (2 * N) := by rw [Nat.mul_comm]
-      _ = (q ^ 2) ^ N := pow_mul q 2 N
   calc
     geometricActivationDimension q (q ^ N * t) ≤
         (1 - q) * (q ^ N * t) ^ 2 / (3 * (1 + q)) :=
@@ -253,7 +245,7 @@ theorem geometricActivationDimension_tail_le
         hq (q ^ N * t)
     _ = ((1 - q) * t ^ 2 / (3 * (1 + q))) *
         (q ^ 2) ^ N := by
-      rw [mul_pow, hpow]
+      rw [mul_pow, pow_right_comm q N 2]
       ring
 
 /-- Every finite prefix underestimates the full convergent geometric
