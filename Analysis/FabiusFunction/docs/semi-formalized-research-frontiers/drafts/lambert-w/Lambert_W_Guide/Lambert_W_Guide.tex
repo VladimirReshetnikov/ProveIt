@@ -626,19 +626,28 @@ relations that involve both branches at once.
 \subsection{First and second derivatives}
 
 \begin{theorem}[Derivative formulas]\label{thm:derivatives}
-At every real point where \(W_k(x)\neq-1\),
+For the principal branch assume \(x>-1/\ee\), and for the lower real
+branch assume \(-1/\ee<x<0\).  On these respective smooth real domains,
 \begin{align}
  W_k'(x)
-   &=\frac{1}{\ee^{W_k(x)}(1+W_k(x))}
-     =\frac{W_k(x)}{x(1+W_k(x))},\label{eq:firstder}\\
+   &=\frac{1}{\ee^{W_k(x)}(1+W_k(x))},\label{eq:firstder}\\
  W_k''(x)
    &=-\frac{\ee^{-2W_k(x)}(W_k(x)+2)}
-              {(1+W_k(x))^3}\label{eq:secondder-exp}\\
+              {(1+W_k(x))^3}.\label{eq:secondder-exp}
+\end{align}
+If in addition \(x\neq0\), these may be rewritten as
+\begin{align}
+ W_k'(x)
+   &=\frac{W_k(x)}{x(1+W_k(x))},\label{eq:firstder-x}\\
+ W_k''(x)
    &=-\frac{W_k(x)^2(W_k(x)+2)}
               {x^2(1+W_k(x))^3}.\label{eq:secondder}
 \end{align}
-The second forms are interpreted by limits at \(x=0\) on the principal
-branch.  In particular, \(\Wz'(0)=1\) and \(\Wz''(0)=-2\).
+At the regular principal-branch point \(x=0\), stated separately rather
+than through an expression with a zero denominator,
+\[
+ \Wz'(0)=1,\qquad \Wz''(0)=-2.
+\]
 \end{theorem}
 
 \begin{proof}
@@ -646,9 +655,8 @@ Write \(w=W_k(x)\).  Differentiating \(w\ee^w=x\) gives
 \[
  \ee^w(1+w)w'=1,
 \]
-which proves the first expression in \eqref{eq:firstder}.  Since
-\(\ee^{-w}=w/x\), the second expression follows when \(xw\neq0\), and then
-extends by continuity wherever appropriate.
+which proves \eqref{eq:firstder}.  Since \(\ee^{-w}=w/x\) when
+\(x\neq0\), this also proves \eqref{eq:firstder-x}.
 
 Now regard \(w'\) as a function of \(w\):
 \[
@@ -661,9 +669,11 @@ Differentiate with respect to \(w\), then multiply by \(w'\):
            \frac{\ee^{-w}}{1+w}
      =-\frac{\ee^{-2w}(w+2)}{(1+w)^3}.
 \]
-Substituting \(\ee^{-w}=w/x\) proves \eqref{eq:secondder}.
-The limits at zero follow either from these formulas or from the power series
-proved in \cref{sec:maclaurin}.
+When \(x\neq0\), substituting \(\ee^{-w}=w/x\) proves
+\eqref{eq:secondder}.
+At \(x=0\) on the principal branch, \(w=0\), so the exponential-denominator
+formulas give the two stated values directly; they also follow from the power
+series proved in \cref{sec:maclaurin}.
 \end{proof}
 
 \begin{corollary}[Monotonicity recovered from the derivative]
@@ -682,16 +692,40 @@ positive sign on the principal branch and negative sign on the
 nonprincipal branch.  The remaining factors tend to nonzero finite values.
 \end{proof}
 
-\begin{remark}[Formalized first-order calculus]
+\begin{remark}[Formalized real-branch curvature]
 The first-derivative identities and their strict signs on the two branch
 interiors are formalized in \path{PrincipalLambertW.lean} and
 \path{LowerLambertW.lean}; the scaled power--exponential specializations are
 in \path{PowerExponentialLambertCalculus.lean}.  The endpoint identity
-\(\Wz'(0)=1\) is \path{deriv_principalLambertW_zero}.  The two
-vertical-tangent limits above, the second-derivative formulas
-\eqref{eq:secondder-exp}--\eqref{eq:secondder} (including
-\(\Wz''(0)=-2\)), and the full curvature classification below are not yet
-packaged as Lean declarations.
+\(\Wz'(0)=1\) is \path{deriv_principalLambertW_zero}.
+
+The complete raw second-order package is now
+\path{LambertWCurvature.lean}.  On the open principal domain,
+\path{deriv_principalLambertW},
+\path{deriv_principalLambertW_hasDerivAt}, and
+\path{deriv_deriv_principalLambertW} give the nonsingular exponential forms
+in \eqref{eq:firstder} and \eqref{eq:secondder-exp};
+\path{deriv_deriv_principalLambertW_zero} gives \(\Wz''(0)=-2\), and
+\path{deriv_deriv_principalLambertW_neg} gives strict negativity.
+The theorem \path{strictConcaveOn_principalLambertW} strengthens the open
+interval statement below to strict concavity on the full closed domain
+\([-1/\ee,\infty)\).
+
+For the lower branch, \path{deriv_lowerLambertW_hasDerivAt} and
+\path{deriv_deriv_lowerLambertW} give the exact second derivative on
+\((-1/\ee,0)\).  The declarations
+\path{deriv_deriv_lowerLambertW_pos_iff},
+\path{deriv_deriv_lowerLambertW_neg_iff}, and
+\path{deriv_deriv_lowerLambertW_eq_zero_iff} give its complete sign and
+unique-zero classification at \(-2/\ee^2\).  Finally,
+\path{strictConvexOn_lowerLambertW_left} proves strict convexity on
+\([-1/\ee,-2/\ee^2]\), and
+\path{strictConcaveOn_lowerLambertW_right} proves strict concavity on
+\([-2/\ee^2,0)\).
+
+The two branch-point vertical-tangent limits above are still not packaged as
+Lean declarations, and neither is the square-root Puiseux package of
+\cref{sec:branchpoint}.
 \end{remark}
 
 \begin{theorem}[Concavity and the inflection point]\label{thm:curvature}
@@ -777,7 +811,7 @@ For nonzero \(x\) and \(W\), the relative condition number is
 \end{equation}
 
 \begin{proof}
-Insert \eqref{eq:firstder} into the definition of relative condition number.
+Insert \eqref{eq:firstder-x} into the definition of relative condition number.
 \end{proof}
 
 Thus both real branches are badly conditioned near \(-1/\ee\), where
@@ -2800,6 +2834,25 @@ inside the value interval the alternatives are distinct, by
 nonnegativity restriction is essential when even \(m\) permits additional
 negative roots.
 
+One further differentiation is formalized in
+\path{PowerExponentialLambertCurvature.lean}.  For either
+\(k\in\{0,-1\}\) and every \(0<x<P_{m,A,\beta}\), it gives
+\begin{equation}\label{eq:power-exponential-phase-second-derivative}
+ \lambda_k''(x)
+ =\frac{\lambda_k(x)
+   \left[m-\bigl(m-\beta\lambda_k(x)\bigr)^2\right]}
+ {x^2\bigl(m-\beta\lambda_k(x)\bigr)^3}.
+\end{equation}
+The derivative witnesses are
+\path{deriv_principalPowerExponentialPhase_hasDerivAt} and
+\path{deriv_lowerPowerExponentialPhase_hasDerivAt}; the corresponding exact
+formulas are \path{deriv_deriv_principalPowerExponentialPhase} and
+\path{deriv_deriv_lowerPowerExponentialPhase}.  This generic module is
+deliberately formula-only.  The sign and zero classifications at
+\(\beta\lambda_0=m-\sqrt{m}\) and
+\(\beta\lambda_{-1}=m+\sqrt{m}\), and the resulting generic strict-shape
+theorems, are not yet packaged as Lean declarations.
+
 The current zero-endpoint asymptotic package is exactly
 \path{PowerExponentialLambertAsymptotics.lean}.  It proves
 \path{principalPowerExponentialPhase_isEquivalent_rpow}, namely
@@ -2837,6 +2890,58 @@ Fabius phase is asymptotic to \(x\) at zero, while
 \path{lowerPowerExponentialPhase_one_one_log_two} in
 \path{PowerExponentialLambertFabius}\texttt{.lean} identifies the lower generic phase
 exactly with the Fabius lower-Lambert phase.
+
+The separate specialization
+\path{PowerExponentialLambertFabiusCurvature.lean} packages the complete
+classical curvature geometry.  Put
+\[
+ L=\log2,\qquad P=\frac{\ee^{-1}}L,
+ \qquad x_*=\frac{2\ee^{-2}}L.
+\]
+The definition \path{fabiusLambertInflectionInput} is \(x_*\),
+\path{fabiusLambertInflectionInput_mem_Ioo} proves \(0<x_*<P\), and
+\path{fabiusLambertPhase_inflectionInput} gives
+\(\lambda_{-1}(x_*)=2/L\).  On \(0<x<P\),
+\path{deriv_deriv_fabiusLambertPhase} states
+\begin{equation}\label{eq:fabius-lower-phase-second-derivative}
+ \lambda_{-1}''(x)
+ =\frac{L\lambda_{-1}(x)^2\bigl(2-L\lambda_{-1}(x)\bigr)}
+ {x^2\bigl(1-L\lambda_{-1}(x)\bigr)^3}.
+\end{equation}
+The declarations \path{deriv_deriv_fabiusLambertPhase_pos_iff},
+\path{deriv_deriv_fabiusLambertPhase_neg_iff}, and
+\path{deriv_deriv_fabiusLambertPhase_eq_zero_iff} say respectively that its
+sign is positive for \(x<x_*\), negative for \(x_*<x\), and zero exactly at
+\(x=x_*\); the named zero is
+\path{deriv_deriv_fabiusLambertPhase_inflectionInput}.  Consequently
+\path{strictConvexOn_fabiusLambertPhase_left} gives strict convexity on
+\((0,x_*]\), while \path{strictConcaveOn_fabiusLambertPhase_right} gives
+strict concavity on \([x_*,P]\).
+
+The principal specialization is global to the left of the peak, not merely
+restricted to positive profile inputs.  The bridge
+\path{fabiusPrincipalLambertPhase_eq_principalLambertW} is
+\[
+ \lambda_0(x)=-\frac1L\Wz(-Lx).
+\]
+The declarations \path{fabiusPrincipalLambertPhase_continuousOn_Iic},
+\path{fabiusPrincipalLambertPhase_hasDerivAt}, and
+\path{deriv_fabiusPrincipalLambertPhase} give continuity on
+\((-\infty,P]\) and first-order calculus on \((-\infty,P)\).
+The derivative witness
+\path{deriv_fabiusPrincipalLambertPhase_hasDerivAt} and exact formula
+\path{deriv_deriv_fabiusPrincipalLambertPhase} give, for \(x<P\),
+\begin{equation}\label{eq:fabius-principal-phase-second-derivative}
+ \lambda_0''(x)
+ =L\frac{\ee^{-2\Wz(-Lx)}\bigl(\Wz(-Lx)+2\bigr)}
+          {\bigl(\Wz(-Lx)+1\bigr)^3}>0.
+\end{equation}
+Strict positivity is
+\path{deriv_deriv_fabiusPrincipalLambertPhase_pos}, the regular value
+\(\lambda_0''(0)=2L\) is
+\path{deriv_deriv_fabiusPrincipalLambertPhase_zero}, and
+\path{strictConvexOn_fabiusPrincipalLambertPhase} proves strict convexity on
+the whole closed half-line \((-\infty,P]\).
 \end{remark}
 
 \subsection{An exponential equal to an affine function}
@@ -4155,8 +4260,16 @@ Definition & \(W_k(x)\ee^{W_k(x)}=x\).\\
 Real domains & \(W_0:[-1/\ee,\infty)\to[-1,\infty)\), increasing;
 \(W_{-1}:[-1/\ee,0)\to(-\infty,-1]\), decreasing.\\
 \addlinespace
-Derivative & \(W_k'(x)=W_k(x)/\{x[1+W_k(x)]\}\), with the limiting value
-\(W_0'(0)=1\).\\
+Derivative & On \(W_0\) for \(x>-1/\ee\), and on \(W_{-1}\) for
+\(-1/\ee<x<0\),
+\(W_k'(x)=\ee^{-W_k(x)}/[1+W_k(x)]\).  When \(x\neq0\), this is also
+\(W_k(x)/\{x[1+W_k(x)]\}\); separately, \(W_0'(0)=1\).\\
+\addlinespace
+Second derivative & On the same smooth domains,
+\(W_k''(x)=-\ee^{-2W_k(x)}[W_k(x)+2]/[1+W_k(x)]^3\).  When
+\(x\neq0\), this is also
+\(-W_k(x)^2[W_k(x)+2]/\{x^2[1+W_k(x)]^3\}\); separately,
+\(W_0''(0)=-2\).\\
 \addlinespace
 Antiderivative &
 \(\int W_k(x)\dd x=\ee^{W_k(x)}[W_k(x)^2-W_k(x)+1]+C\).\\
