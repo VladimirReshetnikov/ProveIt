@@ -122,7 +122,7 @@ Only the following repository results are taken as inputs; classical background 
 \begin{enumerate}[leftmargin=2em]
   \item The Fourier normalization
   \begin{equation}\label{eq:Phi-definition}
-    \Phi(\xi)=\widehat{\RvachevUp}(\xi)
+    \Phi(\xi)=\FourierTwoPi{\RvachevUp}(\xi)
       =\int_{-1}^{1}e^{-2\pi i\xi x}\RvachevUp(x)\,\Differential x
       =\prod_{j=0}^{\infty}\SincRad\!\left(\frac{\pi\xi}{2^j}\right),
       \qquad \SincRad z=\frac{\sin z}{z}.
@@ -543,7 +543,7 @@ The total multiplicity of the positive zeros \(1,2,\ldots,N\) is
 Consequently, the number of nonzero zeros in \(|z|\le R\), counted with multiplicity, is
 \begin{equation}\label{eq:total-count}
   n_b(R)=
-  \frac{2\bigl(b\lfloor R\rfloor-s_b(\lfloor R\rfloor)\bigr)}{b-1}.
+  \frac{2\bigl(b\Floor{R}-s_b(\Floor{R})\bigr)}{b-1}.
 \end{equation}
 In particular,
 \begin{equation}\label{eq:count-asym}
@@ -555,12 +555,12 @@ whose leading density equals \(2\tau_b/\pi\), as predicted by Cartwright theory.
 \begin{proof}
 Using \(\nu_b(m)=\sum_{j\ge1}\mathbf1_{b^j\mid m}\),
 \[
- M_b(N)=N+\sum_{j\ge1}\left\lfloor\frac{N}{b^j}\right\rfloor.
+ M_b(N)=N+\sum_{j\ge1}\Floor{\frac{N}{b^j}}.
 \]
 The standard base-
 \(b\) digit identity
 \(
-\sum_{j\ge1}\lfloor N/b^j\rfloor=(N-s_b(N))/(b-1)
+\sum_{j\ge1}\Floor{N/b^j}=(N-s_b(N))/(b-1)
 \)
 gives \eqref{eq:positive-count}; reflection gives \eqref{eq:total-count}.
 \end{proof}
@@ -568,10 +568,12 @@ gives \eqref{eq:positive-count}; reflection gives \eqref{eq:total-count}.
 \begin{remark}[Thue--Morse consistency]
 For \(b=2\),
 \(
-M_2(N)=2N-s_2(N)
+M_2(N)=2N-\BinaryDigitSum(N)
 \), so
 \[
- (-1)^{M_2(N)}=(-1)^{s_2(N)}.
+ (-1)^{M_2(N)}=\ThueMorseSign{N},
+ \qquad
+ \ThueMorseSign{N}=(-1)^{\BinaryDigitSum(N)}.
 \]
 Since \(\Phi(0)>0\), the sign of \(\Phi\) on the lobe
 \((N,N+1)\) is therefore the Thue--Morse sign.  This recovers, but does not duplicate as a novelty claim, the repository's formalized lobe-sign theorem.
@@ -640,7 +642,7 @@ For \(b=2\),
 \begin{equation}
   \Expectation Y_{2,t}=\frac{2t}{9},
   \qquad
-  \operatorname{Var}(Y_{2,t})=\frac{8t}{675}.
+  \Variance(Y_{2,t})=\frac{8t}{675}.
 \end{equation}
 \end{corollary}
 

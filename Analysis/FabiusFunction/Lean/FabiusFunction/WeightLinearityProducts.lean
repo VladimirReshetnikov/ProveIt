@@ -202,7 +202,7 @@ theorem summable_shiftExponent_iterate (a : ℕ → ℕ)
 sequence.  Dilating by `2 ^ m` exposes exactly the first `m` layers and
 shifts the remaining exponent sequence by `m`:
 
-`Φ_a(2^m z) = (∏ h < m, sinc(π · 2^(m-h) z)^(a h)) · Φ_{S^m a}(z)`.
+`Φ_a(2^m z) = (∏ h < m, complexSinc(π · 2^(m-h) z)^(a h)) · Φ_{S^m a}(z)`.
 
 The statement is total in `m`; at `m = 0` the finite product is empty and
 the identity reduces to `Φ_a(z) = Φ_a(z)`. -/

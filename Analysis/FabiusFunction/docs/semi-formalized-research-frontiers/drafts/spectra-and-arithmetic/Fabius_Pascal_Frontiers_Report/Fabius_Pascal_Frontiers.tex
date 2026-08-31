@@ -372,7 +372,7 @@ defines
 \end{equation}
 Let
 \begin{equation}\label{eq:Pr}
- P_r:=2^{\lceil\log_2r\rceil},\qquad B_r:=2^{P_r}.
+ P_r:=2^{\Ceiling{\log_2r}},\qquad B_r:=2^{P_r}.
 \end{equation}
 Lucas's theorem implies that $j\mapsto\sigma_{r,j}$ is periodic with period
 $P_r$, and at least one entry per period is $-1$.  The generating function is
@@ -741,7 +741,7 @@ The constant coefficient is $m_{r,j}$.
 \begin{proof}
 Apply Poisson summation to $g_j(t)=t^jf_r(t)$ on the lattice $Q^{-1}\IntegerNumbers$.
 Our Fourier convention gives
-$\widehat g_j(\xi)=\Phi_r^{(j)}(\xi)/(-2\pi\ImaginaryUnit)^j$.
+$\FourierTwoPi{g_j}(\xi)=\Phi_r^{(j)}(\xi)/(-2\pi\ImaginaryUnit)^j$.
 At $\xi=0$ this is $\int t^jf_r(t)\Differential t=m_{r,j}$.
 \end{proof}
 

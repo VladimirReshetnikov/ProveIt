@@ -49,8 +49,6 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{status}[theorem]{Status note}
 
-\DeclareMathOperator{\ord}{ord}
-\DeclareMathOperator{\dist}{dist}
 \newcommand{\D}{\mathbb D}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\om}{\omega}
@@ -95,7 +93,7 @@ The dyadic Rvachev up-function has Fourier transform
 \]
 
 For a primitive $m$th root of unity $\omega$ and
-\(d=\ord(\omega^2)=m/\gcd(m,2)\), we derive the radial expansion
+\(d=\OrderOperator_{\mathrm{mult}}(\omega^2)=m/\gcd(m,2)\), we derive the radial expansion
 \[
  \log\Phi(\omega(1-\delta),z)
  =-\frac{\mathscr A_\omega(z)}{\delta}+\mathscr B_\omega(z)+O(\delta),
@@ -385,7 +383,7 @@ Fix a primitive $m$th root
 \end{equation}
 and write
 \begin{equation}
- d=\ord(\omega^2)=\frac{m}{\gcd(m,2)},
+ d=\OrderOperator_{\mathrm{mult}}(\omega^2)=\frac{m}{\gcd(m,2)},
  \qquad
  a_\omega=1-\omega.
  \label{eq:d-a}
@@ -1611,7 +1609,7 @@ general root-of-unity filter is available as \path|Fabius.sum_pow_eq_ite| and
 \path|Fabius.sum_pow_mul_inv_pow_eq_ite|.  Thus the remaining roadmap begins
 after these reusable foundations.
 \begin{enumerate}[label=\arabic*.]
-\item \textbf{Finite algebra.}  Formalize $d=\ord(\omega^2)$, the resonant/nonresonant split, and the exact first two coefficients of \cref{eq:res-exp}.
+\item \textbf{Finite algebra.}  Formalize $d=\OrderOperator_{\mathrm{mult}}(\omega^2)$, the resonant/nonresonant split, and the exact first two coefficients of \cref{eq:res-exp}.
 \item \textbf{Formal power series.}  Prove the coefficient identity \cref{eq:Ln} in a Laurent-series ring; Bell exponentiation is already well suited to existing combinatorial infrastructure.
 \item \textbf{Finite cyclic projection.}  Specialize the existing
 root-of-unity filter to
