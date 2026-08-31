@@ -1,0 +1,1119 @@
+% Editorial bootstrap from the immutable source revision.
+% This file is canonical and may be edited independently.
+
+\part{Inverse Iterates and Their Taylor Obstructions}
+
+
+% Source fragment: Inverse iterates; prefix ii.
+\section{Statement of the problem and strengthened results}
+\label{ii:sec:statement}
+
+The bounded Fabius function is the unique smooth increasing bijection
+$F\colon[0,1]\to[0,1]$ satisfying
+\begin{equation}
+ F(0)=0,\qquad F(1-x)=1-F(x),\qquad F'(x)=2F(2x)
+ \quad(0\leq x\leq\half),
+ \label{ii:eq:basic-F}
+\end{equation}
+with the usual constant continuation outside $[0,1]$ when the bounded totalization is
+used.  Put
+\begin{equation}
+ I:=F^{-1},\qquad G_n:=F^{\comp n},\qquad K_n:=I^{\comp n},
+ \qquad G_0=K_0=\id.
+ \label{ii:eq:iterates}
+\end{equation}
+Associativity of composition gives the exact inverse identity
+\begin{equation}
+ K_n=G_n^{-1},\qquad G_n=K_n^{-1}.
+ \label{ii:eq:iterate-inverse-identity}
+\end{equation}
+The inverse is $C^\infty$ on $(0,1)$, though it has singular endpoint slopes.
+
+\begin{theorem}[Main theorem: inverse iterates are nowhere analytic]
+\label{ii:thm:inverse-main}
+For every integer $n\geq1$, the $n$-fold inverse iterate
+\[
+ K_n=I^{\comp n}
+\]
+is not real analytic at any point of $[0,1]$.
+\end{theorem}
+
+\begin{proof}
+First let $y\in(0,1)$ and put $x=K_n(y)$.  The derivative formula
+\eqref{ii:eq:inverse-iterate-derivative} gives $K_n'(y)>0$.  If $K_n$ were
+analytic at $y$, the analytic inverse-function theorem would make its local
+inverse $G_n$ analytic at $x$, contradicting \Cref{ii:thm:main}.  At $0$,
+the totalized $K_n$ is identically zero on a left-hand interval.  An analytic
+germ there would therefore vanish on a two-sided neighbourhood by the
+identity theorem, contradicting strict increase on $(0,1)$.  Reflection,
+$K_n(1-y)=1-K_n(y)$, gives the same contradiction at $1$.
+\end{proof}
+
+The proof yields a stronger statement about formal Taylor series.  For a smooth
+function $h$ near $x$, write
+\[
+ R_h(x):=\rad\sum_{m\geq0}\frac{h^{(m)}(x)}{m!}z^m
+\]
+for the radius of convergence of its formal Taylor series; the series need not
+represent $h$ even when this radius is positive.
+
+\begin{theorem}[Co-countable zero-radius set for inverse iterates]
+\label{ii:thm:inverse-strong}
+For each fixed $n\geq1$ there exists a co-countable dense set
+$Y_n\subset(0,1)$ such that
+\begin{equation}
+ R_{K_n}(y)=0,
+ \qquad
+ \limsup_{m\to\infty}
+ \left(\frac{|K_n^{(m)}(y)|}{m!}\right)^{1/m}=+\infty
+ \quad(y\in Y_n).
+ \label{ii:eq:inverse-zero-radius}
+\end{equation}
+More precisely, one may take $Y_n=G_n(E_n)$, where the explicit co-countable dense set
+$E_n$ is defined in \eqref{ii:eq:En} from forward orbit arithmetic.
+\end{theorem}
+
+\begin{proof}
+Take the co-countable dense set $E_n$ of \eqref{ii:eq:En} and put
+$Y_n=G_n(E_n)$.  The homeomorphism $G_n:(0,1)\to(0,1)$ preserves density and
+sends the countable complement of $E_n$ to the countable complement of
+$Y_n$.  For $y=G_n(x)$ with $x\in E_n$, \Cref{ii:thm:strong} gives
+$R_{G_n}(x)=0$, and the formal-reversion theorem
+\Cref{ii:thm:formal-reversion} gives $R_{K_n}(y)=0$.  The displayed limsup is
+then exactly the Cauchy--Hadamard formula.  The spine estimate establishing
+the premise is proved in \Cref{ii:sec:proof-main}.
+\end{proof}
+
+The exceptional points are genuine and instructive.
+
+\begin{theorem}[Affine but nonrepresenting center jet]
+\label{ii:thm:center-jet}
+For every $n\geq1$,
+\begin{equation}
+ K_n(\half)=\half,\qquad K_n'(\half)=2^{-n},\qquad
+ K_n^{(m)}(\half)=0\quad(m\geq2).
+ \label{ii:eq:center-jet}
+\end{equation}
+Thus the Taylor series of $K_n$ at $1/2$ is an affine polynomial of infinite radius,
+but it does not agree with $K_n$ on any neighborhood.
+\end{theorem}
+
+\begin{proof}
+The exact centre derivatives are
+$F(\half)=\half$, $F'(\half)=2$, and $F^{(m)}(\half)=0$ for $m\ge2$.
+Writing $\mathsf T_{\half}[G_n]$ for the formal Taylor series at the centre,
+formal composition gives
+$\mathsf T_{\half}[G_n](h)=\half+2^nh$.  Its unique formal compositional inverse
+is $\half+2^{-n}h$, which proves all three derivative identities for $K_n$.
+If that affine Taylor series represented $K_n$ on a neighbourhood, then
+$K_n$ would be analytic there, contrary to \Cref{ii:thm:inverse-main}.
+\end{proof}
+
+The forward theorem needed for the proof is itself stronger than nowhere analyticity.
+
+\begin{theorem}[Forward engine theorem]
+\label{ii:thm:main}
+For every integer $n\geq1$, $G_n=F^{\comp n}$ is not real analytic at any point of
+$[0,1]$.
+\end{theorem}
+
+\begin{proof}
+For the co-countable dense set $E_n$ in \eqref{ii:eq:En}, the finite spine
+expansion \Cref{ii:thm:spine-expansion}, strict ratio unimodality
+\Cref{ii:lem:prefix-unimodal}, the binary-transition lemma
+\Cref{ii:lem:binary-transition}, and the defect bound
+\Cref{ii:prop:defect-decay} give the dominant-spine estimate
+\Cref{ii:prop:dominant-lower-bound}.  Hence \Cref{ii:thm:strong} gives zero
+Taylor radius at every point of $E_n$.  Were $G_n$ analytic at any point of
+$[0,1]$, its power series would represent it throughout a neighbourhood;
+that neighbourhood meets the dense set $E_n$, a contradiction.  This also
+covers the endpoints because every endpoint neighbourhood meets $(0,1)$.
+\end{proof}
+
+\begin{theorem}[Forward co-countable zero-radius set]
+\label{ii:thm:strong}
+Fix $n\geq1$.  There exists a co-countable dense set $E_n\subset(0,1)$ such that, for
+every $x\in E_n$,
+\begin{equation}
+ \limsup_{m\to\infty}
+ \left(\frac{|G_n^{(m)}(x)|}{m!}\right)^{1/m}=+\infty.
+ \label{ii:eq:infinite-limsup}
+\end{equation}
+Consequently $R_{G_n}(x)=0$ for every $x\in E_n$.
+\end{theorem}
+
+\begin{proof}
+The set $E_n$ in \eqref{ii:eq:En} is co-countable and dense because it removes
+only one point, a finite tie set, and finitely many homeomorphic preimages of
+the countable dyadic set.  At $x\in E_n$, the dominant-spine lower bound
+\Cref{ii:prop:dominant-lower-bound} holds for infinitely many $m$:
+\[
+ |G_n^{(m)}(x)|\ge c(x,n)Q_mH_n(x)^m,
+ \qquad Q_m=2^{m(m+1)/2}.
+\]
+Since $m!\le m^m$, taking $m$-th roots gives
+\[
+ \left(\frac{|G_n^{(m)}(x)|}{m!}\right)^{1/m}
+ \ge c(x,n)^{1/m}H_n(x)\frac{2^{(m+1)/2}}m\longrightarrow\infty
+\]
+along that subsequence.  Cauchy--Hadamard now gives $R_{G_n}(x)=0$.
+\end{proof}
+
+The logical order of the report is deliberate.  We first establish the forward engine
+by a derivative-spine argument.  We then transfer both nonanalyticity and zero Taylor
+radius through local inversion.  The endpoint and center analyses are treated
+separately because the inverse is not a local diffeomorphism at the endpoints and
+because the center has a convergent but nonrepresenting Taylor series.
+
+% Source fragment: Inverse iterates; prefix ii.
+\section{Why a direct dyadic-jet induction fails}
+
+It is useful to see the obstruction before introducing the cure.  For two smooth
+functions $f$ and $h$,
+\begin{equation}
+ (f\comp h)^{(m)}(x)
+ =\sum_{\pi\in\Pi_m}
+ f^{(|\pi|)}(h(x))\prod_{B\in\pi}h^{(|B|)}(x),
+ \label{ii:eq:faa-set-partitions}
+\end{equation}
+where $\Pi_m$ is the set of partitions of $\SetOf{1,\ldots,m}$.  Even if
+$h^{(r)}(x)=0$ for all large $r$, partitions with many small blocks can survive.
+Similarly, even if the high derivatives of $f$ vanish at $h(x)$, the term
+$f'(h(x))h^{(m)}(x)$ survives.  There is no pointwise ``eventually zero jet''
+induction for $F^{\comp n}$.
+
+At the opposite extreme, a crude absolute-value bound on \eqref{ii:eq:faa-set-partitions}
+introduces Bell numbers.  Since the number of partitions is superexponential on an
+ordinary exponential scale, such a bound loses the delicate comparison with $Q_m$.
+The correct normalization must exploit the quadratic exponent in $Q_m$, not merely
+count partitions.  This leads to the defect below.
+
+\section{The dyadic defect of a Fa\`a di Bruno partition}
+\label{ii:sec:defect}
+
+Let $\pi\in\Pi_m$ have $k=|\pi|$ blocks of sizes
+$r_1,\ldots,r_k$, so $r_1+\cdots+r_k=m$.  Define
+\begin{equation}
+ D(\pi):=\binom m2-\binom k2-\sum_{i=1}^k\binom{r_i}{2}.
+ \label{ii:eq:defect}
+\end{equation}
+An equivalent and more transparent formula is
+\begin{equation}
+ D(\pi)=\sum_{1\leq i<j\leq k}(r_ir_j-1).
+ \label{ii:eq:defect-pairs}
+\end{equation}
+Every summand is nonnegative.  Therefore $D(\pi)=0$ only in the two extremal cases:
+there is one block, or every block is a singleton.  These are exactly the two
+unbranched chain-rule spines.
+
+\paragraph{Lean crosswalk: the finite positive-list defect is complete.}
+\begingroup\small\sloppy
+The module \path{PartitionDefect.lean} has exactly three public definitions
+and thirty-three public theorems; the following inventory is exhaustive.
+Its list \(r=[r_1,\ldots,r_k]\) records positive block sizes, but it does not
+construct a set partition of \(\{1,\ldots,m\}\).
+\begin{itemize}[leftmargin=2em]
+ \item The three definitions are \path{pairSum}, \path{blockPairDefect}, and
+ \path{partitionDefect}.
+ \item The unordered-pair and triangular-number engine consists of
+ \path{pairSum_nil}, \path{pairSum_cons}, \path{pairSum_one},
+ \path{pairSum_add}, \path{pairSum_congr}, \path{pairSum_map},
+ \path{choose_add_two}, and \path{choose_list_sum_two}.
+ \item The conventional defect formulas, excess decomposition, and fixed-block
+ lower bound are
+ \path{blockPairDefect_eq_mul_sub_one},
+ \path{partitionDefect_eq_pairSum_mul_sub_one},
+ \path{partitionDefect_nonneg},
+ \path{choose_sum_two_eq_choose_length_add_sum_add_partitionDefect},
+ \path{partitionDefect_eq_choose_sum_sub_choose_length_sub_sum},
+ \path{length_le_sum_of_pos}, \path{sum_map_sub_one},
+ \path{pairSum_add_eq}, \path{pairSum_map_add_eq},
+ \path{partitionDefect_eq_linear_add_pairwise_excess},
+ \path{partitionDefect_lower_bound}, and
+ \path{partitionDefect_fixed_block_bound}.
+ \item The zero and sharp-equality classifiers are
+ \path{pairSum_eq_zero_iff_pairwise},
+ \path{blockPairDefect_eq_zero_iff},
+ \path{partitionDefect_eq_zero_iff},
+ \path{sub_one_mul_sub_one_eq_zero_iff},
+ \path{partitionDefect_eq_lower_bound_iff}, and
+ \path{partitionDefect_fixed_block_eq_iff}.
+ \item The first-positive-shell closure is
+ \path{add_sub_one_le_mul_of_pos},
+ \path{mul_eq_add_sub_one_iff},
+ \path{firstShell_le_fixedBlockProduct},
+ \path{fixedBlockProduct_eq_firstShell_iff},
+ \path{firstShell_le_partitionDefect},
+ \path{partitionDefect_eq_firstShell_iff}, and
+ \path{partitionDefect_twoBlock_firstShell}.
+\end{itemize}
+For positive entries the module proves
+\[
+ D(r)=(k-1)\sum_i(r_i-1)
+      +\sum_{i<j}(r_i-1)(r_j-1)
+ \ge (k-1)(m-k).
+\]
+It proves \(D(r)=0\) exactly when \(k\le1\) or every entry is one; equality
+in the fixed-\(m\), fixed-\(k\) bound exactly when every pair contains a
+singleton (equivalently at most one entry exceeds one); and, under precisely
+\(2\le k<m\), the first-shell bound \(D(r)\ge m-2\), with equality exactly at
+\(k=2\) or \(k=m-1\) together with that same one-nonsingleton condition.  The
+explicit profile \([m-1,1]\) attains the shell for \(m\ge3\).
+
+This closure does \emph{not} formalize the set-partition family \(\Pi_m\),
+the quadratic-scale factorization \eqref{ii:eq:Q-factorization}, the weighted
+Bell sum \eqref{ii:eq:defect-decay}, its asymptotics, the two-spine reduction,
+the finite spine expansion, or either the forward- or inverse-iterate theorem.
+Those steps remain paper-only.
+\endgroup
+
+Let $u(\pi)$ be the number of singleton blocks and let
+\begin{equation}
+ s(\pi):=k-u(\pi)
+ \label{ii:eq:s-nonsingleton}
+\end{equation}
+be the number of non-singleton blocks.
+
+\begin{lemma}[Quadratic-scale factorization]
+\label{ii:lem:Q-factorization}
+For every partition $\pi\in\Pi_m$,
+\begin{equation}
+ \frac{Q_k\prod_{r_i\geq2}Q_{r_i}}{Q_m}
+ =2^{s(\pi)-D(\pi)}.
+ \label{ii:eq:Q-factorization}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Using $\log_2Q_r=r(r+1)/2$ and omitting singleton blocks from the product,
+\begin{align*}
+ 2\log_2\frac{Q_k\prod_{r_i\ge2}Q_{r_i}}{Q_m}
+ &=k(k+1)+\sum_{r_i\ge2}r_i(r_i+1)-m(m+1)\\
+ &=k^2+s(\pi)+\sum_{r_i\ge2}r_i^2-m^2.
+\end{align*}
+On the other hand, expanding \eqref{ii:eq:defect} gives
+\[
+ 2D(\pi)=m^2-k^2+s(\pi)-\sum_{r_i\ge2}r_i^2.
+\]
+Subtracting proves \eqref{ii:eq:Q-factorization}.
+\end{proof}
+
+The next proposition is the combinatorial engine.  Its role is stronger than saying
+that each nonextremal partition has positive defect: it shows that the sum over all
+of them is still exponentially small.
+
+\begin{proposition}[Weighted defect decay]
+\label{ii:prop:defect-decay}
+For each fixed $K>0$ there exist constants $C_K>0$ and $\rho_K\in(0,1)$ such that
+\begin{equation}
+ \sum_{\substack{\pi\in\Pi_m\\1<|\pi|<m}}
+   (2K)^{s(\pi)}2^{-D(\pi)}
+ \leq C_K\rho_K^m
+ \qquad(m\geq2).
+ \label{ii:eq:defect-decay}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+We give the full counting argument because this is the point at which a naive Bell
+number estimate fails.
+
+Write $k=|\pi|$, let
+\begin{equation}
+ e:=m-k
+ \label{ii:eq:excess}
+\end{equation}
+be the total block excess over singletons, and let $r_{\max}=m-t$ be the largest block
+size.  Convexity of $r\mapsto\binom r2$ shows that, for fixed $m$ and $k$, the defect
+is minimized by one block of size $m-k+1$ and $k-1$ singleton blocks.  Hence
+\begin{equation}
+ D(\pi)\geq e(k-1)=e(m-e-1).
+ \label{ii:eq:defect-e}
+\end{equation}
+The contribution between a largest block and all other blocks gives the second bound
+\begin{equation}
+ D(\pi)\geq (m-t)t-(k-1)\geq t(m-t-1).
+ \label{ii:eq:defect-t}
+\end{equation}
+
+First consider partitions with $1\leq e\leq m/4$.  Their non-singleton blocks contain
+at most $2e$ elements, because the number of such blocks is at most $e$.  Choosing
+those elements and partitioning them gives at most
+\begin{equation}
+  (2e+1)m^{2e}(2e)^{2e}
+ \label{ii:eq:count-near-singletons}
+\end{equation}
+possibilities.  Also $s(\pi)\leq e$, while \eqref{ii:eq:defect-e} gives
+$D(\pi)\geq e(3m/4-1)$.  Uniformly for $1\leq e\leq m/4$, the base-two logarithm
+of the counting and weight factor is at most
+\[
+ \log_2(2e+1)+4e\log_2m+e\log_2\max(1,2K).
+\]
+For fixed $K$ this is at most $em/4$ once $m$ is large enough, whereas the
+negative defect exponent is at most $-e(3m/4-1)$.  Thus the $e$-th contribution
+is at most $2^{-em/3}$ after enlarging the threshold once more, uniformly in
+$e$.  The resulting geometric sum is $\BigO(2^{-m/3})$.
+
+Next consider partitions with $1\leq t\leq m/4$.  Choose the $t$ elements outside a
+largest block and partition them.  Up to harmless overcounting there are at most
+$m^t t^t$ choices, and $s(\pi)\leq t+1$.  By \eqref{ii:eq:defect-t},
+$D(\pi)\geq t(3m/4-1)$.  The same explicit estimate as above, now with $t$ in
+place of $e$ (and one harmless extra factor $\max(1,2K)$), bounds the $t$-th
+contribution by $2^{-tm/3}$ for all sufficiently large $m$, uniformly for
+$1\leq t\leq m/4$.  Its sum is again exponentially small.
+
+It remains to treat the middle region $e>m/4$ and $t>m/4$.  If $t\leq3m/4$, then
+\eqref{ii:eq:defect-t} gives $D(\pi)\geq c_1m^2$ for all sufficiently large $m$ and an
+absolute $c_1>0$.  Suppose instead that $t>3m/4$, so every block has size less than
+$m/4$.  If $k>m/4$, then \eqref{ii:eq:defect-e} gives
+$D(\pi)\geq c_2m^2$.  If $k\leq m/4$, then
+\begin{align*}
+ D(\pi)
+ &=\sum_{i<j}r_ir_j-\binom k2\\
+ &=\frac{m^2-\sum_i r_i^2}{2}-\binom k2
+ >\frac{3m^2}{8}-\frac{m^2}{32}
+ =\frac{11m^2}{32}.
+\end{align*}
+In the middle region, the total number of partitions is at most $m^m$ and the weight
+$(2K)^{s(\pi)}$ is at most $\max(1,2K)^m$.  Both are overwhelmed by
+$2^{-c m^2}$.  Combining the three regions proves \eqref{ii:eq:defect-decay}, after
+increasing $C_K$ to cover the finitely many small values of $m$.
+\end{proof}
+
+\section{A two-spine composition lemma}
+\label{ii:sec:two-spine}
+
+The weighted defect estimate converts Fa\`a di Bruno's formula into an asymptotically
+binary chain rule.
+
+\begin{lemma}[Two-spine reduction]
+\label{ii:lem:two-spine}
+Let $h$ be smooth near $x$, let $f$ be smooth near $y=h(x)$, and put
+$B=\AbsoluteValue{h'(x)}$.  Suppose
+there are constants $H>0$ and $K\geq1$ such that
+\begin{align}
+ \AbsoluteValue{f^{(r)}(y)}&\leq Q_r &&(r\geq1),
+ \label{ii:eq:f-envelope}\\
+ \AbsoluteValue{h^{(r)}(x)}&\leq KQ_rH^r &&(r\geq2).
+ \label{ii:eq:h-envelope}
+\end{align}
+Then, with $L=\max(B,H)$,
+\begin{equation}
+ (f\comp h)^{(m)}(x)
+ =f'(y)h^{(m)}(x)+f^{(m)}(y)h'(x)^m
+  +\LittleO(Q_mL^m)
+ \quad(m\to\infty).
+ \label{ii:eq:two-spine}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+In \eqref{ii:eq:faa-set-partitions}, remove the one-block partition and the all-singleton
+partition.  They give exactly the two displayed terms.  For any remaining partition
+$\pi$ with $k$ blocks, $u$ singleton blocks, and $s=k-u$ non-singleton blocks, the
+corresponding term has absolute value at most
+\[
+ Q_k B^u\prod_{r_i\ge2}(KQ_{r_i}H^{r_i})
+ \leq Q_mL^m(2K)^s2^{-D(\pi)},
+\]
+where \cref{ii:lem:Q-factorization} was used in the last step.  Summing and applying
+\cref{ii:prop:defect-decay} bounds the entire remainder by
+$C_KQ_mL^m\rho_K^m=\LittleO(Q_mL^m)$.
+\end{proof}
+
+\begin{remark}[Why this lemma is composition-stable]
+The estimate does not require analyticity, Gevrey bounds of factorial type, or a
+closed formula for every Bell polynomial.  It uses only the exact quadratic dyadic
+scale $Q_r$ and an ordinary exponential envelope $H^r$ for the inner derivatives.
+The conclusion has the same form, so it can be iterated a fixed number of times.
+\end{remark}
+
+\section[The orbit-spine asymptotic for compositional iterates]{The orbit-spine asymptotic for $F^{\comp n}$}
+\label{ii:sec:spines}
+
+Fix $x\in(0,1)$ and $n\geq1$.  Define the finite orbit
+\begin{equation}
+  x_j:=G_j(x)=F^{\comp j}(x),\qquad 0\leq j\leq n-1,
+  \label{ii:eq:orbit}
+\end{equation}
+and the local slopes
+\begin{equation}
+  a_j:=F'(x_j)>0.
+  \label{ii:eq:slopes}
+\end{equation}
+The prefix and suffix weights are
+\begin{align}
+ B_0&:=1,
+ &B_j&:=\prod_{r=0}^{j-1}a_r=G_j'(x)\quad(j\geq1),
+ \label{ii:eq:prefix}\\
+ A_{j,n}&:=\prod_{r=j+1}^{n-1}a_r,
+ &&0\leq j<n,
+ \label{ii:eq:suffix}
+\end{align}
+where empty products equal $1$.  Finally set
+\begin{equation}
+ H_n(x):=\max_{0\leq j<n}B_j.
+ \label{ii:eq:Hn}
+\end{equation}
+
+\begin{theorem}[Finite spine expansion]
+\label{ii:thm:spine-expansion}
+For each fixed $n\geq1$ and $x\in(0,1)$,
+\begin{equation}
+ G_n^{(m)}(x)
+ =Q_m\left[
+   \sum_{j=0}^{n-1}A_{j,n}B_j^m\ThetaF(2^m x_j)
+   +\LittleO\bigl(H_n(x)^m\bigr)
+ \right]
+ \qquad(m\to\infty).
+ \label{ii:eq:spine-expansion}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+We induct on $n$.  For $n=1$, $x_0=x$, $A_{0,1}=B_0=H_1=1$, and
+\eqref{ii:eq:spine-expansion} is exactly \eqref{ii:eq:derivative-atlas}.
+
+Assume the formula for $G_j$.  It immediately supplies a global-in-order envelope at
+the fixed point $x$: there is $K\geq1$ such that
+\begin{equation}
+ \AbsoluteValue{G_j^{(r)}(x)}\leq KQ_rH_j(x)^r\qquad(r\geq2).
+ \label{ii:eq:Gj-envelope}
+\end{equation}
+Indeed the asymptotic gives the estimate for all sufficiently large $r$, and $K$ can
+be enlarged to absorb the finitely many remaining orders.
+
+Apply \cref{ii:lem:two-spine} with $f=F$ and $h=G_j$.  Since
+$h(x)=x_j$, $h'(x)=B_j$, $f'(x_j)=a_j$, and
+$f^{(m)}(x_j)=Q_m\ThetaF(2^m x_j)$, we obtain
+\begin{equation}
+ G_{j+1}^{(m)}(x)
+ =a_jG_j^{(m)}(x)
+  +Q_mB_j^m\ThetaF(2^m x_j)
+  +\LittleO\bigl(Q_mH_{j+1}(x)^m\bigr),
+ \label{ii:eq:spine-induction-step}
+\end{equation}
+where $H_{j+1}=\max(H_j,B_j)$.  Multiplication by $a_j$ changes every old suffix
+factor $A_{i,j}$ into $A_{i,j+1}$, while the new term has suffix factor
+$A_{j,j+1}=1$.  This is precisely \eqref{ii:eq:spine-expansion} for $j+1$.
+\end{proof}
+
+\begin{remark}[Combinatorial interpretation]
+Each summand in \eqref{ii:eq:spine-expansion} corresponds to a chain-rule tree with one
+high-valence vertex, located at orbit level $j$, and unary vertices everywhere else.
+All trees with two or more genuinely branching vertices are swallowed by the
+$\LittleO(H_n^m)$ remainder.  This is why ``spine'' is an apt name.
+\end{remark}
+
+\section{Strict unimodality of the spine weights}
+\label{ii:sec:unimodality}
+
+The finite sum in \eqref{ii:eq:spine-expansion} could still cancel if several $B_j$ have
+the same maximal exponential size.  The orbit dynamics show that this is exceptional.
+
+\begin{lemma}[Decreasing slope sequence]
+\label{ii:lem:decreasing-slopes}
+Let $x\in(0,1)\setminus\SetOf{\half}$.  Then the sequence
+\begin{equation}
+ a_0,a_1,a_2,\ldots
+ \label{ii:eq:a-decreasing}
+\end{equation}
+is strictly decreasing.
+\end{lemma}
+
+\begin{proof}
+If $x<\half$, then \eqref{ii:eq:left-orbit} says $x_{j+1}<x_j<\half$.  Since $F'$ is
+strictly increasing on the left half, $a_{j+1}=F'(x_{j+1})<F'(x_j)=a_j$.
+If $x>\half$, then $x_{j+1}>x_j>\half$ and $F'$ is strictly decreasing on the right
+half, giving the same conclusion.
+\end{proof}
+
+\begin{lemma}[Unique or adjacent double maximum]
+\label{ii:lem:prefix-unimodal}
+For $x\in(0,1)\setminus\SetOf{\half}$, the finite positive sequence
+$B_0,\ldots,B_{n-1}$ is strictly log-concave in the ratio sense:
+\begin{equation}
+ \frac{B_{j+1}}{B_j}=a_j
+ \quad\text{is strictly decreasing in }j.
+ \label{ii:eq:ratio-decreasing}
+\end{equation}
+Hence its maximum is unique unless $a_k=1$ for some $0\leq k<n-1$; in that case the
+only maximizers are the adjacent pair $B_k=B_{k+1}$.
+\end{lemma}
+
+\begin{proof}
+Equation \eqref{ii:eq:ratio-decreasing} follows from \eqref{ii:eq:prefix} and
+\cref{ii:lem:decreasing-slopes}.  A positive finite sequence whose successive ratios
+strictly decrease first rises while the ratio exceeds $1$, possibly has one flat step
+when the ratio equals $1$, and then falls.  The conclusion follows.
+\end{proof}
+
+Because $F'$ rises strictly from $0$ to $2$ on $[0,\half]$, there is a unique
+$u\in(0,\half)$ with $F'(u)=1$.  Symmetry gives the only other solution $1-u$.
+For a fixed $n$, the tie set is therefore
+\begin{equation}
+ T_n:=\bigcup_{\substack{k\geq0\\k+1<n}}
+ G_k^{-1}\!\left(\SetOf{u,1-u}\right).
+ \label{ii:eq:tie-set}
+\end{equation}
+Thus $T_1=\varnothing$.  Each $G_k$ is a homeomorphism of $[0,1]$, so in
+general $T_n$ is finite, with at most $2(n-1)$ points.
+
+\section{Binary transitions force recurrent large amplitudes}
+\label{ii:sec:binary}
+
+Let $\D_2$ denote the dyadic rationals in $(0,1)$.
+
+\begin{lemma}[Binary-transition lemma]
+\label{ii:lem:binary-transition}
+If $y\in(0,1)\setminus\D_2$, then there are infinitely many $m\geq1$ such that
+\begin{equation}
+ \AbsoluteValue{\ThetaF(2^m y)}\geq\half.
+ \label{ii:eq:theta-recurrence}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Choose the nonterminating binary expansion
+\[
+ y=0.b_1b_2b_3\cdots\quad(b_j\in\SetOf{0,1}).
+\]
+Since $y$ is not dyadic, its digits are not eventually constant: eventual zeros give
+a terminating expansion, while eventual ones give the alternative expansion of a
+dyadic rational.  Hence there are infinitely many transitions
+$b_m\neq b_{m+1}$.
+
+Modulo $2$, the number $2^m y$ is
+\[
+ b_m+0.b_{m+1}b_{m+2}\cdots.
+\]
+At a transition this lies in $[\half,\tfrac32]$.  By the block formula
+\eqref{ii:eq:theta-block}, the centered argument of $\RvachevUp$ then lies in
+$[-\half,\half]$.  Since $\RvachevUp$ is even and decreasing on $[0,1]$,
+\eqref{ii:eq:up-half} gives
+\[
+ \AbsoluteValue{\ThetaF(2^m y)}
+ =\RvachevUp(\text{centered argument})\geq\RvachevUp(\half)=\half.
+\]
+There are infinitely many such $m$.
+\end{proof}
+
+\begin{remark}
+The lemma uses only adjacent binary digit changes, not equidistribution or normality.
+It therefore applies to every non-dyadic point, including highly non-generic automatic,
+Sturmian, or sparse-digit numbers.
+\end{remark}
+
+\section{Proof of the zero-radius theorem}
+\label{ii:sec:proof-main}
+
+For fixed $n$, define
+\begin{equation}
+ E_n:=(0,1)\setminus\left(
+ \SetOf{\half}\cup T_n\cup
+ \bigcup_{j=0}^{n-1}G_j^{-1}(\D_2)
+ \right).
+ \label{ii:eq:En}
+\end{equation}
+Every $G_j$ is a homeomorphism, so each preimage $G_j^{-1}(\D_2)$ is countable.
+The tie set $T_n$ is finite.  Thus $E_n$ is co-countable and dense in $(0,1)$.
+
+\begin{proposition}[Dominant-spine lower bound]
+\label{ii:prop:dominant-lower-bound}
+Let $x\in E_n$, and let $j_*$ be the unique index for which
+$B_{j_*}=H_n(x)$.  There are infinitely many $m$ such that
+\begin{equation}
+ \AbsoluteValue{G_n^{(m)}(x)}
+ \geq c(x,n)Q_mH_n(x)^m
+ \label{ii:eq:dominant-lower-bound}
+\end{equation}
+with a constant $c(x,n)>0$ independent of $m$.
+\end{proposition}
+
+\begin{proof}
+Because $x\in E_n$, the orbit point $x_{j_*}$ is not dyadic.  By
+\cref{ii:lem:binary-transition}, there is an infinite set $M\subset\NaturalNumbers$ such that
+\begin{equation}
+ \AbsoluteValue{\ThetaF(2^m x_{j_*})}\geq\half
+ \qquad(m\in M).
+ \label{ii:eq:dominant-theta}
+\end{equation}
+For every $j\neq j_*$, put $r_j=B_j/H_n(x)<1$.  Divide
+\eqref{ii:eq:spine-expansion} by $Q_mH_n(x)^m$.  Along $M$, the dominant summand has
+absolute value at least $A_{j_*,n}/2$, while the sum of all other spines is bounded by
+\[
+ \sum_{j\neq j_*}A_{j,n}r_j^m\longrightarrow0.
+\]
+The normalized remainder also tends to zero.  Therefore, for all sufficiently large
+$m\in M$, the normalized absolute value is at least $A_{j_*,n}/4$.  We may take
+$c(x,n)=A_{j_*,n}/4>0$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{ii:thm:strong}]
+At every $x\in E_n$, \cref{ii:prop:dominant-lower-bound} and $m!\leq m^m$ give along an
+infinite subsequence
+\begin{align}
+ \left(\frac{\AbsoluteValue{G_n^{(m)}(x)}}{m!}\right)^{1/m}
+ &\geq c(x,n)^{1/m}H_n(x)
+   \frac{Q_m^{1/m}}{(m!)^{1/m}}\\
+ &\geq c(x,n)^{1/m}H_n(x)\frac{2^{(m+1)/2}}{m}
+ \longrightarrow+\infty.
+ \label{ii:eq:root-divergence}
+\end{align}
+This proves \eqref{ii:eq:infinite-limsup}.  The Cauchy--Hadamard formula then gives zero
+radius of convergence for the Taylor series at $x$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{ii:thm:main}]
+Suppose $G_n$ were real analytic at some $p\in[0,1]$.  Real analyticity is a local open
+property: there would be a radius $r>0$ such that $G_n$ is represented by a convergent
+power series throughout $(p-r,p+r)$, and hence is analytic at every point of that
+interval.  The interval intersects $(0,1)$ in a nonempty open set, even when $p$ is an
+endpoint.  Since $E_n$ is dense, choose
+$x\in E_n\cap(p-r,p+r)$.  This contradicts the zero Taylor radius at $x$ established
+in \cref{ii:thm:strong}.
+\end{proof}
+
+\section{The inverse-iterate theorem}
+\label{ii:sec:inverse-transfer}
+
+\subsection{Interior diffeomorphism structure}
+
+Let $I=F^{-1}$.  Since $F'(x)>0$ for $0<x<1$, every $G_n$ is a strictly increasing
+$C^\infty$ diffeomorphism of $(0,1)$ onto itself, and its inverse is $K_n$.  For
+$y\in(0,1)$ and $x=K_n(y)$,
+\begin{equation}
+ K_n'(y)=\frac{1}{G_n'(x)}
+ =\prod_{j=0}^{n-1}\frac{1}{F'(F^{\comp j}(x))}>0.
+ \label{ii:eq:inverse-iterate-derivative}
+\end{equation}
+Equivalently, writing $y_j=I^{\comp j}(y)$,
+\begin{equation}
+ K_n'(y)=\prod_{j=0}^{n-1} I'(y_j).
+ \label{ii:eq:inverse-product-slope}
+\end{equation}
+
+\begin{proof}[First proof of \cref{ii:thm:inverse-main} on $(0,1)$]
+Suppose $K_n$ were real analytic at some $y_0\in(0,1)$.  Its derivative is nonzero by
+\eqref{ii:eq:inverse-iterate-derivative}.  The real-analytic inverse-function theorem then
+makes its local inverse $G_n$ analytic at $x_0=K_n(y_0)$, contradicting
+\cref{ii:thm:main}.
+\end{proof}
+
+This short argument proves local nonrepresentability, but it does not yet say whether
+the formal Taylor series of $K_n$ converges to some unrelated analytic germ.  Formal
+reversion settles that stronger question.
+
+\subsection{Formal-radius invariance under local inversion}
+
+\begin{theorem}[Positive convergence radius is invariant under formal reversion]
+\label{ii:thm:formal-reversion}
+Let $g$ and $k$ be $C^\infty$ local inverses near $x_0$ and $y_0=g(x_0)$, with
+$g'(x_0)\ne0$.  Then
+\begin{equation}
+ R_g(x_0)>0\quad\Longleftrightarrow\quad R_k(y_0)>0.
+ \label{ii:eq:radius-invariance}
+\end{equation}
+Consequently $R_g(x_0)=0$ if and only if $R_k(y_0)=0$.
+\end{theorem}
+
+\begin{proof}
+Translate the centers and write the formal Taylor series as
+\[
+ \mathsf T_g(z)=a_1z+a_2z^2+\cdots,
+ \qquad
+ \mathsf T_k(w)=b_1w+b_2w^2+\cdots,
+ \qquad a_1b_1=1.
+\]
+Differentiating the smooth identities $g\comp k=\id$ and $k\comp g=\id$ to every
+finite order gives the formal composition identities
+\begin{equation}
+ \mathsf T_g\comp\mathsf T_k=w,
+ \qquad
+ \mathsf T_k\comp\mathsf T_g=z.
+ \label{ii:eq:formal-inverse-identities}
+\end{equation}
+Thus the two formal Taylor series are the unique formal compositional inverses
+of one another.
+
+Assume $R_k(y_0)>0$.  Then $\mathsf T_k$ defines an analytic germ with nonzero linear
+coefficient.  By the analytic inverse-function theorem it has a convergent analytic
+inverse germ.  The Taylor series of that inverse is the unique formal inverse of
+$\mathsf T_k$, hence equals $\mathsf T_g$.  Therefore $R_g(x_0)>0$.  Interchanging $g$
+and $k$ proves the converse.
+\end{proof}
+
+\begin{corollary}[Transport of the zero-versus-positive Taylor-radius locus]
+\label{ii:cor:radius-transport}
+For every $n\geq1$ and $x\in(0,1)$,
+\begin{equation}
+ R_{K_n}(G_n(x))=0\quad\Longleftrightarrow\quad R_{G_n}(x)=0.
+ \label{ii:eq:radius-transport}
+\end{equation}
+The same equivalence holds with ``$=0$'' replaced by ``$>0$''.
+\end{corollary}
+
+\begin{proof}[Proof of \cref{ii:thm:inverse-strong}]
+Let $E_n$ be the co-countable dense set in \eqref{ii:eq:En} and define
+\begin{equation}
+ Y_n:=G_n(E_n).
+ \label{ii:eq:Yn}
+\end{equation}
+Because $G_n$ is a homeomorphism, $Y_n$ is dense.  Its complement is the image under
+$G_n$ of the countable set $(0,1)\setminus E_n$, so $Y_n$ is co-countable.  If
+$y=G_n(x)$ with $x\in E_n$, then $R_{G_n}(x)=0$ by \cref{ii:thm:strong};
+\cref{ii:thm:formal-reversion} gives $R_{K_n}(y)=0$.  The Cauchy--Hadamard formula is
+exactly the limsup assertion in \eqref{ii:eq:inverse-zero-radius}.
+\end{proof}
+
+The theorem gives a second proof of interior nowhere analyticity: an analytic point has
+an open analytic neighborhood, but every nonempty open interval meets the dense set
+$Y_n$ on which the Taylor radius is zero.
+
+\subsection{Endpoint obstruction and iterated inverse asymptotics}
+\label{ii:sec:endpoint-inverse}
+
+There is an elementary endpoint obstruction even before using the sharp asymptotic.
+Since $F'(0)=0$,
+\begin{equation}
+ \frac{F(x)}{x}\longrightarrow0\qquad(x\downarrow0).
+ \label{ii:eq:F-over-x-zero}
+\end{equation}
+Writing $y=F(x)$ gives
+\begin{equation}
+ \frac{I(y)}{y}=\frac{x}{F(x)}\longrightarrow+\infty.
+ \label{ii:eq:I-over-y-infinite}
+\end{equation}
+Moreover $F(x)<x$ on $(0,1/2)$, so $I(y)>y$ there and therefore
+$K_n(y)\geq I(y)$.  Hence
+\begin{equation}
+ \frac{K_n(y)}{y}\longrightarrow+\infty.
+ \label{ii:eq:Kn-no-derivative}
+\end{equation}
+Thus $K_n$ has no finite right derivative at $0$ and cannot be analytic there.
+The symmetry $I(1-y)=1-I(y)$, inherited by every iterate, gives the same conclusion at
+$1$.  Together with the interior proof, this completes \cref{ii:thm:inverse-main} under
+either the one-sided or totalized endpoint convention.
+
+The repository's formally backed endpoint theorem yields substantially more.  Put
+$L=\log2$.  Its quadratic logarithmic law is
+\begin{equation}
+ -\log F(x)\sim\frac{(\log(1/x))^2}{2L}
+ \qquad(x\downarrow0).
+ \label{ii:eq:quadratic-endpoint-law}
+\end{equation}
+
+\begin{theorem}[Iterated inverse endpoint scale]
+\label{ii:thm:iterated-endpoint}
+For each fixed $n\geq1$, as $y\downarrow0$,
+\begin{equation}
+ -\log K_n(y)
+ \sim c_n\bigl(\log(1/y)\bigr)^{2^{-n}},
+ \qquad
+ c_n=(2\log2)^{1-2^{-n}}.
+ \label{ii:eq:iterated-inverse-endpoint}
+\end{equation}
+Consequently, for every $\alpha>0$,
+\begin{equation}
+ \frac{K_n(y)}{y^\alpha}\longrightarrow+\infty.
+ \label{ii:eq:not-holder}
+\end{equation}
+Thus $K_n$ is not H\"older continuous of any positive order at either endpoint.
+\end{theorem}
+
+\begin{proof}
+For $y\downarrow0$, let $T_0=\log(1/y)$ and recursively put
+$T_j=\log(1/K_j(y))$.  If $u=I(v)$, then $v=F(u)$, so
+\eqref{ii:eq:quadratic-endpoint-law} gives
+\begin{equation}
+ \log(1/u)\sim\sqrt{2L\log(1/v)}.
+ \label{ii:eq:one-inverse-log}
+\end{equation}
+Hence $T_{j+1}\sim\sqrt{2LT_j}$.  Induction gives
+\[
+ T_n\sim c_n T_0^{2^{-n}},
+ \qquad c_{n+1}=\sqrt{2Lc_n},\quad c_0=1.
+\]
+Solving the constant recursion yields
+$c_n=(2L)^{1/2+1/4+\cdots+1/2^n}=(2L)^{1-2^{-n}}$, proving
+\eqref{ii:eq:iterated-inverse-endpoint}.  Since $T_n=o(T_0)$,
+\[
+ \log\frac{K_n(y)}{y^\alpha}=\alpha T_0-T_n\longrightarrow+\infty,
+\]
+which proves \eqref{ii:eq:not-holder}.  Reflection gives the endpoint $1$.
+\end{proof}
+
+The sharper repository expansion inserts a lower-branch Lambert--$W$ phase and a tiny
+period-one ripple.  Iterating that full expansion should produce a hierarchy of nested
+Lambert phases; the coarse law above is the exact leading scale and is all that is
+needed for the regularity theorem.
+
+\subsection{The fixed center: a convergent Taylor series that fails to represent}
+
+The proof of \Cref{ii:thm:center-jet} was placed with its statement.  Its
+conclusion is worth emphasizing: the entire nonlinear remainder is flat at
+the centre but nonzero on every punctured neighbourhood.
+
+\subsection{No local elementary representation}
+
+The repository's non-elementarity development proves that every function in its
+formal elementary real-variable class has a dense open analytic locus.
+
+\begin{corollary}[Local non-elementarity]
+\label{ii:cor:non-elementary}
+Fix $n\geq1$.  No elementary function in the repository's class can agree with
+$K_n=I^{\comp n}$ on a subset of $(0,1)$ having nonempty interior.  The same statement
+holds for $G_n=F^{\comp n}$.
+\end{corollary}
+
+\begin{proof}
+Agreement on an open interval with a function having a dense analytic locus would make
+the corresponding iterate analytic at some point of that interval, contrary to
+\cref{ii:thm:inverse-main,ii:thm:main}.
+\end{proof}
+
+\subsection{What formal reversion does and does not preserve}
+
+The forward lower bound on $E_n$ has the explicit superfactorial scale
+\begin{equation}
+ |G_n^{(m)}(x)|\geq cQ_mH_n(x)^m
+ \quad\text{for infinitely many }m,
+ \qquad Q_m=2^{m(m+1)/2}.
+ \label{ii:eq:forward-growth-restated}
+\end{equation}
+Formal reversion proves zero radius for the inverse Taylor series, but by itself it does
+not identify a comparable pointwise leading term for $K_n^{(m)}$.  The inverse Bell
+polynomials contain additional cancellation.  A direct inverse-spine asymptotic is
+therefore a genuine next problem, not an automatic corollary.  The numerical section
+suggests that the inverse Taylor roots grow even faster at the chosen diagnostic point,
+but no asymptotic claim is based on those finite-order data.
+
+% Source fragment: Inverse iterates; prefix ii.
+\section{Conjectures and research directions}
+\label{ii:sec:future}
+
+The main theorem is complete, but it leaves a structured exceptional countable set on
+which the formal Taylor series may converge without representing the function.  The
+formal-radius transport theorem shows that the inverse classification is exactly the
+homeomorphic image of the forward positive-radius locus.  Of the five submitted
+conjecture environments, only two remain live manuscript conjectures.  Three are
+retained as explicit warning records: one has a false inverse clause, one is already
+proved from exact quarter-point facts, and one duplicates the corrected forward
+report's sole live conjecture.  Neither live conjecture has an exact proved Lean
+counterpart.
+
+\begin{warning}[Former Conjecture 14.1 has a false inverse clause]
+\label{ii:warn:trichotomy}
+The submitted statement first proposed that the positive-radius locus of $G_n$ is
+precisely its eventually-zero-jet locus, then claimed that
+\cref{ii:thm:formal-reversion} gives the same eventual-zero classification for $K_n$.
+The second clause is false: formal reversion preserves convergence, not polynomiality.
+At $x=1/4$ the exact forward Taylor germ is
+\[
+ \mathsf T_{1/4}[F](z)=\frac5{72}+z+4z^2,
+\]
+because $F'(1/4)=1$, $F''(1/4)=8$, and all higher derivatives vanish.  At
+$y=F(1/4)=5/72$, the inverse Taylor germ therefore solves $w=z+4z^2$ and is
+\[
+ z=\frac{\sqrt{1+16w}-1}{8},
+\]
+an infinite convergent series.  Thus $K_1=I$ has positive Taylor radius at $5/72$
+without an eventually-zero jet.  The forward-only assertion remains a plausible open
+classification problem, especially for $n\geq2$, but no inverse eventual-zero
+equivalence is asserted here.
+\end{warning}
+
+The center is exceptional in both directions because its forward and inverse formal
+series are affine.  At noncentral dyadic points for $n=1$, however, finite nonlinear
+forward Taylor polynomials revert to infinite convergent inverse series, exactly as the
+quarter-point example shows.
+
+\begin{warning}[Former Conjecture 14.2 is already discharged]
+\label{ii:warn:ties}
+The submitted tie-cancellation statement is not a live conjecture.  If
+$x\in T_n$, the tied adjacent weights satisfy $a_k=1$.  Strict monotonicity of $F'$,
+together with $F'(1/4)=F'(3/4)=1$, forces
+$x_k\in\{1/4,3/4\}$.  Hence
+$x_{k+1}=F(x_k)\in\{5/72,67/72\}$.  The first orbit point is dyadic, so
+$\ThetaF(2^m x_k)=0$ for every sufficiently large $m$ by
+\eqref{ii:eq:dyadic-jet}; the second is non-dyadic, so
+\cref{ii:lem:binary-transition} supplies infinitely many $m$ with
+$\AbsoluteValue{\ThetaF(2^m x_{k+1})}\geq1/2$.  Since the fixed suffix coefficient
+$A_{k+1,n}$ is positive, along that subsequence the surviving tied spine term has
+absolute value at least $(A_{k+1,n}/2)H_n(x)^m$.  Thus persistent cancellation is
+already excluded by exact quarter-point facts and the binary-transition lemma; no
+additional Thue--Morse correlation conjecture remains.
+\end{warning}
+
+\begin{conjecture}[Direct inverse-spine asymptotic]
+\label{ii:conj:inverse-spine}
+For $y=G_n(x)$ away from an explicit countable exceptional set, the derivatives of
+$K_n$ admit an asymptotic expansion on the same universal quadratic scale $Q_m$,
+\[
+ K_n^{(m)}(y)=Q_m\left[
+   \sum_{j=0}^{n-1}\widetilde A_{j,n}(x)
+   \widetilde B_j(x)^m\Theta(2^m x_j)
+   +o(\widetilde H_n(x)^m)
+ \right],
+\]
+with computable inverse prefix weights $\widetilde B_j$ obtained from the forward
+slopes and with a unique dominant term off finite tie surfaces.
+\end{conjecture}
+
+The implicit identity $G_n\comp K_n=\id$ and the same partition defect provide a
+plausible route, but one must control the recursive inverse Bell polynomials without
+assuming the desired envelope.  A proof would upgrade abstract zero-radius transport
+to explicit derivative lower bounds for the inverse iterates.  The finite-order replay
+does not establish the displayed scale, weights, exceptional set, or remainder.
+
+\begin{warning}[Former Conjecture 14.4 duplicates the forward report]
+\label{ii:warn:defect-duplicate}
+The submitted statement that, for every fixed $z>0$, the weighted partition sums
+\[
+ \sum_{\substack{\pi\in\Pi_m\\1<|\pi|<m}}z^{s(\pi)}2^{-D(\pi)}
+\]
+admit a full asymptotic expansion whose leading term comes from the two first-defect
+shells: one block of size $2$ with the rest singleton, and one block of size $m-1$ with
+one singleton is exactly Conjecture 14.3 of the corrected forward-iterate report.
+It remains open manuscript mathematics there, with no exact Lean counterpart, but it
+is not a second independent inverse-iterate conjecture.  A sharp version would give an
+explicit two-spine rate and the first correction term for both forward and prospective
+inverse spines.
+\end{warning}
+
+\begin{conjecture}[Nested Lambert phase law]
+\label{ii:conj:nested-lambert}
+The repository's all-orders endpoint expansion for $I$ can be iterated a fixed number
+of times to produce an all-orders transseries for $K_n$ whose coefficient functions are
+smooth and periodic in a hierarchy of nested lower-branch Lambert phases.  The leading
+term is \eqref{ii:eq:iterated-inverse-endpoint}, and each iteration transports rather than
+erases the dyadic periodic ripple.
+\end{conjecture}
+
+This all-orders claim is not implied by the proved leading scale, has not been tested by
+the interior Taylor-reversion experiment, and has no exact Lean counterpart.
+
+\subsection{Promising formalization route}
+
+A Lean formalization can be modular.
+\begin{enumerate}[label=\arabic*.]
+ \item Define $Q_m$ and formalize the partition defect and the exact factorization
+ \eqref{ii:eq:Q-factorization}.
+ \item Prove a sufficiently explicit weighted defect bound for finite set partitions.
+ \item Use the existing derivative atlas and bounded-derivative API to formalize the
+ two-spine reduction and the fixed-$n$ orbit-spine induction.
+ \item Reuse strict monotonicity, convexity, and order-isomorphism modules to prove the
+ finite tie-set and dense dominant-amplitude statements.
+ \item Finish the forward theorem with the existing power-series radius and analytic-at
+ infrastructure.
+ \item Formalize the purely algebraic uniqueness of the compositional inverse of a
+ formal power series with invertible linear coefficient.
+ \item Combine the analytic inverse-function theorem with formal-series convergence to
+ prove \cref{ii:thm:formal-reversion} and transport $E_n$ to $Y_n$.
+ \item Import the formal quadratic endpoint law and prove the elementary induction for
+ \cref{ii:thm:iterated-endpoint}.
+\end{enumerate}
+The formal-reversion layer should be reusable well beyond the Fabius development.
+
+\subsection{Generalization to other atomic functions}
+
+The proof abstracts beyond the classical dyadic case.  Suppose a smooth increasing map
+$f$ has derivatives
+\begin{equation}
+ f^{(m)}(x)=q^{\binom{m+1}{2}}\Phi(q^m x),
+ \label{ii:eq:q-atomic-derivatives}
+\end{equation}
+for some $q>1$, with bounded $\Phi$, recurrent nonvanishing along a dense set of
+$q$-adic orbits, and monotone orbit slopes yielding a unique dominant prefix.  The same
+partition calculation replaces $2^{-D(\pi)}$ by $q^{-D(\pi)}$.  Once forward iterates
+are controlled, \cref{ii:thm:formal-reversion} automatically transfers every zero-radius
+statement to inverse iterates.  This suggests a general theorem for invertible
+Rvachev-type distribution functions and multiscale refinable maps.
+
+\section{Summary of the proof mechanism}
+
+The complete argument can be compressed into the following chain.
+\begin{enumerate}[label=\arabic*.]
+ \item Exact differentiation gives
+ $F^{(m)}=Q_m\Theta\comp(2^m\cdot)$ with
+ $Q_m=2^{m(m+1)/2}$ and $|\Theta|\leq1$.
+ \item In Fa\`a di Bruno's set-partition formula, every non-spine partition has a
+ positive quadratic defect $D(\pi)$.
+ \item The weighted sum of all non-spine partitions is exponentially small despite
+ Bell-number multiplicity.
+ \item Hence, after division by $Q_m$, the derivative $G_n^{(m)}$ is asymptotic to a
+ finite sum of orbit spines:
+ \
+ \[
+   A_{j,n}B_j^m\Theta(2^m x_j),\qquad 0\leq j<n.
+ \]
+ \item Away from a finite tie set, monotone orbit dynamics makes one $B_j$ uniquely
+ maximal; away from countably many dyadic orbit preimages, binary transitions keep its
+ amplitude at least $1/2$ infinitely often.
+ \item Therefore $R_{G_n}(x)=0$ on a co-countable dense set $E_n$, and $G_n$ is nowhere
+ analytic.
+ \item Smooth local inverse Taylor series are unique formal compositional inverses.
+ Positive convergence radius is invariant under reversion.
+ \item Thus $R_{K_n}(y)=0$ on the co-countable dense set $Y_n=G_n(E_n)$, and no interior
+ point of $K_n$ can be analytic.
+ \item At the endpoints, $K_n(y)/y^\alpha\to\infty$ for every $\alpha>0$; hence endpoint
+ analyticity is impossible.  At the center, the Taylor series is affine but does not
+ represent the function.
+\end{enumerate}
+This proves \cref{ii:thm:inverse-main,ii:thm:inverse-strong} and explains why finite
+self-composition cannot regularize either the Fabius function or its inverse.
+
+\appendix
+
+\section{Auxiliary details on the partition defect}
+\label{ii:app:defect}
+
+This appendix records two identities useful for sharpening
+\cref{ii:prop:defect-decay}.
+
+\begin{proposition}[Exact minimum at fixed block count]
+\label{ii:prop:fixed-k-minimum}
+Among partitions of $m$ with $k$ blocks,
+\begin{equation}
+ \min D(\pi)=(k-1)(m-k).
+ \label{ii:eq:fixed-k-minimum}
+\end{equation}
+Equality holds exactly when one block has size $m-k+1$ and every other block is a
+singleton.
+\end{proposition}
+
+\begin{proof}
+For fixed $m,k$, formula \eqref{ii:eq:defect} shows that minimizing $D$ is equivalent to
+maximizing $\sum_i\binom{r_i}{2}$.  Strict convexity of $r\mapsto\binom r2$ transfers
+one unit from a smaller nonsingleton block to a larger block and increases the sum.
+Iteration leaves one large block and $k-1$ singletons.  Direct substitution gives
+\eqref{ii:eq:fixed-k-minimum}.
+\end{proof}
+
+\begin{proposition}[First defect shell]
+\label{ii:prop:first-shell}
+For $m\geq3$, the least positive defect is $m-2$.  It occurs for exactly two block-size
+profiles:
+\begin{equation}
+ (2,1,\ldots,1)
+ \qquad\text{and}\qquad
+ (m-1,1).
+ \label{ii:eq:first-shell}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+From \eqref{ii:eq:fixed-k-minimum}, the least positive value over $2\leq k\leq m-1$ is
+\[
+ \min_{2\leq k\leq m-1}(k-1)(m-k)=m-2,
+\]
+attained only at $k=2$ and $k=m-1$.  The equality classification in
+\cref{ii:prop:fixed-k-minimum} gives the two profiles.
+\end{proof}
+
+This identifies the candidate leading correction to the spine sum.  At the
+near-singleton end, choose one pair and leave all other elements singleton; at the
+near-giant end, choose the singleton outside a block of size $m-1$.  Both carry the
+same dyadic penalty $2^{-(m-2)}$, but their derivative coefficients and orbit factors
+are different.  A refined expansion should sum these shells before estimating the
+higher-defect remainder.

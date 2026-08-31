@@ -1,0 +1,767 @@
+% Editorial bootstrap from the immutable source revision.
+% This file is canonical and may be edited independently.
+
+\part{Analyticity and Obstructions to Totalized Elementary Expressions}
+
+
+% Source fragment: Non-elementarity; prefix ne.
+\section{Statement}
+
+\subsection{The two inputs}
+
+Write $\An(f)=\{x\in\RealNumbers : f \text{ is real analytic at } x\}$ for the
+\emph{analytic locus} of $f\colon\RealNumbers\to\RealNumbers$.  The proof combines one negative
+fact about the Fabius function with one positive fact about the explicitly
+defined totalized elementary-expression class introduced below.  Throughout
+this chapter, ``elementary'' is shorthand for that class; it is not a claim
+about an unspecified larger differential-field convention.
+
+\begin{theorem}[Nowhere analyticity; already formalized]\label{ne:thm:nowhere}
+Let $F$ be the Fabius function, extended by $0$ to the left of $0$ and by $1$
+to the right of $1$.  Then $\An(F)=\RealNumbers\setminus[0,1]$.  In particular $F$ is
+real analytic at no point of $[0,1]$, endpoints included.
+\end{theorem}
+
+\begin{proof}
+On $(0,1)$ this is the case $n=1$ of the forward-engine theorem
+\Cref{ii:thm:main}; its complete derivative-spine proof is given in
+\Cref{ii:sec:spines,ii:sec:proof-main}.  It remains only to account for the
+totalization and the endpoints.  The function is constant, hence analytic,
+on each component of $\RealNumbers\setminus[0,1]$.  If it were analytic at
+$0$, its analytic germ would agree with the zero function on a left-hand
+interval.  The identity theorem for real power series would then make it zero
+on a two-sided neighbourhood of $0$, contrary to strict increase on
+$[0,1]$.  At $1$ the same argument, applied to $1-F$, uses the constant
+right-hand continuation.  Thus precisely the points outside $[0,1]$ are
+analytic points.
+\end{proof}
+
+This is the unnumbered corollary to equation~(24) of Arias de Reyna,
+\emph{Arithmetic of the Fabius function} (arXiv:1702.06487v3), transferred
+from Rvachev's $\RvachevUp$ to $F$ and completed at the right endpoint.  The
+same statement is machine checked as
+\texttt{Fabius.canonical\_fabius\_analyticAt\_iff} in the module
+\texttt{FabiusFunction.NowhereAnalytic}; the proof above records the human
+argument and points to the full spine estimate used in its interior step.
+
+\begin{theorem}[Density of the analytic locus]\label{ne:thm:density}
+If $f\in\Elem$, then $\An(f)$ is a dense open subset of~$\RealNumbers$.
+\end{theorem}
+
+\begin{proof}
+Openness is \Cref{ne:lem:open}.  For density, induct on the derivation in
+\Cref{ne:def:elem}.  Constants and the identity are analytic everywhere.
+Finite intersections of dense open sets are dense, so sums, products, and
+negation preserve the assertion.  For every unary constructor,
+\Cref{ne:lem:generators} gives a finite set of exceptional input values and
+\Cref{ne:lem:key} proves that composing with that constructor preserves a
+dense analytic locus.  These are exactly the constructors of
+\Cref{ne:def:elem}, completing the induction.  The expanded case-by-case
+version appears in \Cref{ne:sec:density}.
+\end{proof}
+
+\begin{corollary}[Main result]\label{ne:cor:main}
+Let $U\subseteq[0,1]$ have nonempty interior and let $g\in\Elem$.  Then $g$
+and $F$ do not agree on $U$.  In particular no member of the totalized
+expression class $\Elem$ agrees with $F$ on $(0,1)$.
+\end{corollary}
+
+\begin{proof}
+By \Cref{ne:thm:density} the set $\An(g)$ is dense, so it meets the nonempty open
+set $\operatorname{int}U$; pick $x\in\operatorname{int}U\cap\An(g)$.  If $g$
+and $F$ agreed on $U$ they would have the same germ at $x$, because
+$\operatorname{int}U$ is a neighbourhood of $x$ contained in $U$; analyticity
+at a point depends only on the germ, so $F$ would be analytic at $x\in[0,1]$,
+contradicting \Cref{ne:thm:nowhere}.
+\end{proof}
+
+\begin{remark}
+Hypothesising nonempty \emph{interior} rather than openness costs nothing in
+the proof and buys a little: $U$ may be a closed interval, or an interval with
+a nowhere dense closed set removed, or any set that is merely fat somewhere.
+(Removing \emph{all} the rationals would not do: the irrationals in an
+interval have empty interior, and the hypothesis genuinely fails.)
+What cannot be weakened is fatness itself: on a finite set an elementary
+function certainly can agree with $F$, since a polynomial interpolates any
+finite table of values.
+\end{remark}
+
+\begin{boxedremark}
+Corollary~\ref{ne:cor:main} is the strengthened form used here of the assertion
+``the Fabius function is not elementary'', and it is strictly stronger than the bare
+non-elementarity of $F$ as a function on $\RealNumbers$.  The bare statement leaves
+open the possibility that some elementary function agrees with $F$ on all of
+$(0,1)$ and differs from it outside; Corollary~\ref{ne:cor:main} rules that out, and rules
+it out on every subinterval.
+\end{boxedremark}
+
+\begin{remark}
+Only a very weak consequence of \Cref{ne:thm:density} is actually used: that an
+elementary function is analytic at \emph{at least one} point of every nonempty
+open set.  Density is nevertheless the statement one must prove, because it is
+the statement that survives the induction: ``analytic somewhere'' is not
+preserved by intersection, whereas ``dense open'' is.
+\end{remark}
+
+\section{The totalized elementary-expression class}\label{ne:sec:elem}
+
+\subsection{Definition}
+
+For the theorem to have an exact scope, we fix a concrete grammar of total
+real functions.  It contains the usual real expressions built from constants,
+the identity, field operations, fixed powers, exponentials, logarithms, and
+the listed trigonometric functions wherever those expressions are classically
+defined.  It does not silently include arbitrary algebraic branches or
+arbitrary interleaved algebraic--exponential--logarithmic towers; the precise
+extensions proved later are stated separately.
+
+\begin{definition}[Totalized elementary-expression class]\label{ne:def:elem}
+The class $\Elem$ of \emph{totalized elementary expressions}
+$\RealNumbers\to\RealNumbers$ is the smallest
+class of functions such that
+\begin{enumerate}
+\item every constant function $x\mapsto c$ lies in $\Elem$, and the identity
+      $x\mapsto x$ lies in $\Elem$;
+\item if $f,g\in\Elem$ then $x\mapsto f(x)+g(x)$, $x\mapsto f(x)g(x)$ and
+      $x\mapsto -f(x)$ lie in $\Elem$;
+\item if $f\in\Elem$ then $x\mapsto f(x)^{-1}$ lies in $\Elem$;
+\item if $f\in\Elem$ and $r\in\RealNumbers$ then $x\mapsto f(x)^r$ lies in $\Elem$;
+\item if $f\in\Elem$ then each of
+      $\exp\circ f$, $\log\circ f$, $\sin\circ f$, $\cos\circ f$,
+      $\arcsin\circ f$, $\arctan\circ f$ lies in $\Elem$.
+\end{enumerate}
+\end{definition}
+
+Two features of Definition~\ref{ne:def:elem} deserve comment.
+
+\paragraph{Composition is a theorem, not an axiom.}
+Definition~\ref{ne:def:elem} contains no clause ``$f,g\in\Elem\Rightarrow f\circ
+g\in\Elem$''.  It does not need one.
+
+\begin{proposition}\label{ne:prop:comp}
+$\Elem$ is closed under composition.
+\end{proposition}
+
+\begin{proof}
+Induct on the derivation of the outer function $f$.  Every clause of
+Definition~\ref{ne:def:elem} commutes with precomposition by a fixed $g$: the constant
+$x\mapsto c$ composed with $g$ is again that constant; the identity composed
+with $g$ is $g$ itself, which is elementary by hypothesis; and
+$(f_1+f_2)\circ g=(f_1\circ g)+(f_2\circ g)$, $(\exp\circ f)\circ
+g=\exp\circ(f\circ g)$, and likewise for every remaining clause.
+\end{proof}
+
+Consequently $\Elem$ contains every function one expects: differences
+$f-g=f+(-g)$, quotients $f/g=f\cdot g^{-1}$, natural powers, all polynomial
+and rational functions, $\sqrt{\cdot}$ and the $n$-th roots,
+the absolute value $|x|=\sqrt{x^2}$, the tangent $\sin/\cos$, the hyperbolic
+functions $\sinh x=(\EulerE^x-\EulerE^{-x})/2$, $\cosh$, $\tanh$, the arccosine
+$\pi/2-\arcsin$, and the inverse hyperbolic sine
+$\operatorname{arsinh}x=\log\bigl(x+\sqrt{1+x^2}\bigr)$.
+
+\paragraph{Total functions and junk values.}
+Every member of $\Elem$ is a \emph{total} function $\RealNumbers\to\RealNumbers$.  This is a
+deliberate choice, and it is the choice that makes Corollary~\ref{ne:cor:main} strongest.
+The formalization inherits \texttt{Mathlib}'s conventions
+\[
+  0^{-1}=0,\qquad \log x=\log|x|,\qquad \log 0=0,\qquad
+  0^{r}=0\ \ (r\ne 0),\qquad 0^{0}=1,
+\]
+\[
+  x^{r}=|x|^{r}\cos(\pi r)\ \ (x<0),\qquad
+  \arcsin x=\pm\tfrac{\pi}{2}\ \ (\pm x\ge 1),
+\]
+so that clauses (3)--(5) of Definition~\ref{ne:def:elem} never fail to produce a function.
+
+\begin{boxedremark}
+One might worry that junk values weaken the theorem, by admitting
+``elementary'' functions that are not classically elementary.  They do the
+opposite.  Admitting more functions into $\Elem$ makes the assertion ``$g\in
+\Elem$ and $g=F$ on $U$'' easier to satisfy, hence its refutation
+stronger.  And nothing is lost in the other direction: if a classical
+elementary expression is well formed at every point of an open set $U$ --- no
+vanishing denominator, no nonpositive logarithm, no real power of a
+nonpositive base, no arcsine of a value outside $[-1,1]$ --- then on $U$ it
+agrees pointwise with the total function produced by the same derivation,
+since on $U$ the junk values are never consulted.  So every such classical
+elementary function on $U$ is the restriction to $U$ of a member of $\Elem$,
+and Corollary~\ref{ne:cor:main} applies to it.
+\end{boxedremark}
+
+\begin{warning}[Odd roots need a different derivation]\label{ne:warn:oddroot}
+The condition ``no real power of a nonpositive base'' in the box above cannot
+be dropped, and it is the one place where the total-function convention bites.
+\texttt{Mathlib}'s $x^{r}$ at a negative base is $|x|^{r}\cos(\pi r)$, so
+$(-8)^{1/3}=2\cos(\pi/3)=1$, whereas the classical real cube root of $-8$
+is~$-2$.  The clause $x\mapsto f(x)^{r}$ of Definition~\ref{ne:def:elem} therefore supplies
+the $n$-th roots only on $[0,\infty)$.
+
+Nothing is lost, because the classical real odd root is in $\Elem$ by a
+\emph{different} derivation,
+\[
+  x\ \longmapsto\ \frac{x}{|x|}\cdot|x|^{1/n},
+\]
+which uses only division, the absolute value and a real power, and which
+evaluates to $0$ at $x=0$ under the same conventions.  This is
+\texttt{IsElementary.signedRpow}, and
+\texttt{Fabius.signedRoot\_pow} verifies formally that for odd $n$ its $n$-th
+power is the identity, so it really is the real $n$-th root and not merely a
+plausible substitute.
+\end{warning}
+
+\subsection{What is not claimed}\label{ne:sec:notclaimed}
+
+$\Elem$ contains Mathlib's total real-power representatives of the principal
+$n$-th roots on $[0,\infty)$ for positive $n$ and, by
+Warning~\ref{ne:warn:oddroot}, the classical odd-root functions on all of $\RealNumbers$.
+It is not, as defined, closed under passage
+to an arbitrary algebraic function: Definition~\ref{ne:def:elem} has no clause
+producing a continuous branch of $P(x,y)=0$ for a polynomial $P$ with
+elementary coefficients whose Galois group is not solvable, and Liouville's
+differential-field definition of ``elementary'' does admit such branches.
+Section~\ref{ne:sec:algebraic} closes that gap, not by enlarging $\Elem$ but by
+proving the conclusion of Corollary~\ref{ne:cor:main} directly for such branches.
+What remains genuinely outside the result is stated there.
+
+Two smaller gaps are worth naming here.
+
+The first is that $\Elem$ is a class of \emph{total} functions, so a classical
+elementary expression enters it only through a derivation whose junk values
+are never consulted on the region of interest; Warning~\ref{ne:warn:oddroot}
+records the one place where the obvious derivation is the wrong one.
+
+The second concerns variable exponents.  Definition~\ref{ne:def:elem}
+provides $x\mapsto f(x)^r$ for a \emph{fixed} real $r$, and
+\texttt{IsElementary.rpow\_of\_pos} supplies $f^g$ whenever the base $f$ is
+positive \emph{at every real} --- which covers $(1+x^2)^{\sin x}$ and any base
+that is everywhere positive (no uniform lower bound is needed), but not
+$x\mapsto x^x$, whose base is positive only on $(0,\infty)$.  That case is
+handled instead by the region statement below.
+
+The sign of an everywhere nonvanishing base is not an obstruction.
+\texttt{Mathlib}'s $x^y$ is sign-dependent at a
+negative base --- there $x^y=|x|^y\cos(\pi y)$ --- but a single elementary
+formula covers both signs at once,
+\[
+  f^{g}\;=\;\exp(\log f\cdot g)\cdot
+           \cos\!\Bigl(g\pi\cdot\tfrac{1-f/|f|}{2}\Bigr),
+\]
+since $(1-f/|f|)/2$ is the indicator of $f<0$, making the cosine $\cos 0=1$
+where $f>0$ and $\cos(g\pi)$ where $f<0$; no absolute value is needed inside
+the logarithm because \texttt{Mathlib} already sets $\log x=\log|x|$.  This is
+\texttt{IsElementary.rpow\_of\_ne\_zero}, and it needs only that the base never
+vanishes.  This is a sufficient uniform closure rule, not a claim that every
+power whose base has a zero is non-elementary: fixed natural powers are
+already covered by other constructors.  At
+$f(x)=0$ the conventions $0^r=0$ for $r\ne0$ and $0^0=1$ are discontinuous in
+the exponent, so the nonvanishing formula does not extend uniformly there.
+Nothing is lost for Corollary~\ref{ne:cor:main}, and this is
+formalized rather than asserted: \texttt{Fabius.eqOn\_rpow\_of\_pos}
+states that on any set where the base is positive, $f^{g}$ agrees pointwise
+with $\exp(\log f\cdot g)$, which is a member of $\Elem$ whenever $f$ and $g$
+are.  Since Corollary~\ref{ne:cor:main} already rules out agreement on \emph{every}
+nonempty open subset of $[0,1]$, and the base of a classical
+variable-exponent expression is positive wherever the expression is well
+formed, such an expression is excluded too.
+
+We also make no claim about elementary functions of a complex variable, and
+none about the closely related but distinct question of whether $F$ satisfies
+an algebraic differential equation.
+
+\section{Analyticity of the generators}
+
+Each generator of Definition~\ref{ne:def:elem} is real analytic away from a finite set of
+arguments.  All of these facts are in \texttt{Mathlib}, most of them in the
+form ``$C^n$ for every $n$ in $\NaturalNumbers\cup\{\infty,\omega\}$''; specializing to the
+analytic exponent $\omega$ and applying \texttt{ContDiffAt.analyticAt}
+converts them to the statements below.
+
+\begin{lemma}\label{ne:lem:generators}
+\leavevmode
+\begin{enumerate}
+\item $\exp$, $\sin$, $\cos$ and $\arctan$ are real analytic at every point
+      of $\RealNumbers$.
+\item $\log$ is real analytic at every $x\ne 0$ --- at negative arguments as
+      well, because $\log$ is even under the convention $\log x=\log|x|$.
+\item For each fixed $r\in\RealNumbers$, the function $x\mapsto x^{r}$ is real analytic
+      at every $x\ne 0$; at negative $x$ this uses the identity
+      $x^{r}=|x|^{r}\cos(\pi r)$.
+\item $\arcsin$ is real analytic at every $x\notin\{-1,1\}$; outside
+      $[-1,1]$ it is locally constant.
+\item $x\mapsto x^{-1}$ is real analytic at every $x\ne 0$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+The four entire generators in (1) have convergent Taylor series at every real
+centre.  On either component of $\RealNumbers\setminus\{0\}$ the totalized
+logarithm is $\log|x|$, hence is analytic, proving (2).  For fixed $r$, on
+$(0,\infty)$ the power is $\exp(r\log x)$, while on $(-\infty,0)$ it is the
+constant multiple $\cos(\pi r)\exp(r\log(-x))$; this proves (3), including
+the cases where the constant multiple vanishes.  On $(-1,1)$, $\arcsin$ is
+analytic because its derivative $(1-x^2)^{-1/2}$ is analytic and it has the
+usual convergent local primitive; on each exterior component the chosen
+totalization is constant.  Only $\pm1$ remain exceptional, proving (4).
+Finally $x\mapsto x^{-1}$ is represented near every nonzero centre by the
+convergent geometric series
+\[
+ \frac1x=\frac1a\sum_{m\ge0}\left(-\frac{x-a}{a}\right)^m
+ \qquad(|x-a|<|a|),
+\]
+which proves (5).
+\end{proof}
+
+\begin{remark}
+The bad sets are sets of \emph{values} of the inner function, not sets of
+points of the domain --- $\{0\}$ for the reciprocal, the logarithm and a real
+power, $\{-1,1\}$ for the arcsine, and $\varnothing$ for the rest.  This is
+the shape the induction consumes, and it is why Lemma~\ref{ne:lem:key} below is stated
+with a finite set $B\subseteq\RealNumbers$ of forbidden values.
+\end{remark}
+
+\section{Density of the analytic locus}\label{ne:sec:density}
+
+\subsection{Openness}
+
+\begin{lemma}\label{ne:lem:open}
+For every $f\colon\RealNumbers\to\RealNumbers$ the set $\An(f)$ is open.
+\end{lemma}
+
+\begin{proof}
+Analyticity at $x$ means that $f$ agrees near $x$ with the sum of a
+convergent power series; that series then converges on a whole ball around
+$x$ and, after a change of origin, represents $f$ near every point of that
+ball.  So $\An(f)$ contains a neighbourhood of each of its points.
+\end{proof}
+
+\subsection{The unary step}
+
+The following lemma is where the argument is actually made.  Recall the shape
+of the difficulty.  If $f$ is analytic on a dense open set and $g$ is analytic
+everywhere except at finitely many values, one would like to say that
+$g\circ f$ is analytic wherever $f$ is analytic and $f(x)$ avoids the bad
+values.  That set need not be dense: consider $f\equiv 0$ and $g(y)=y^{-1}$.
+What saves the statement is that in that degenerate case $g\circ f$ is
+constant, hence analytic anyway.  Separating the two cases is exactly the
+isolated-zeros theorem.
+
+\begin{lemma}[Key lemma]\label{ne:lem:key}
+Let $f,g\colon\RealNumbers\to\RealNumbers$ and let $B\subseteq\RealNumbers$ be finite.  Suppose $\An(f)$ is
+dense and $g$ is analytic at every $y\notin B$.  Then $\An(g\circ f)$ is
+dense.
+\end{lemma}
+
+\begin{proof}
+Let $U$ be a nonempty open set; we must produce a point of $U\cap\An(g\circ
+f)$.  Since $\An(f)$ is dense there is $x_0\in U\cap\An(f)$, and by
+Lemma~\ref{ne:lem:open} the set $V=U\cap\An(f)$ is an open neighbourhood of $x_0$.
+Distinguish two cases.
+
+\emph{Case 1: $f$ is constant equal to some $c\in B$ on a neighbourhood of
+$x_0$.}  Then $g\circ f$ equals the constant $g(c)$ on that neighbourhood, so
+$g\circ f$ is analytic at $x_0$ itself, and $x_0\in U$.
+
+\emph{Case 2: for no $c\in B$ is $f$ eventually equal to $c$ near $x_0$.}  Fix
+$c\in B$.  The function $f-c$ is analytic at $x_0$, so by the isolated-zeros
+theorem for analytic functions of one real variable, either $f-c$ vanishes
+identically near $x_0$ --- excluded in this case --- or $f-c$ is nonvanishing
+on some punctured neighbourhood of $x_0$.  Thus for each of the finitely many
+$c\in B$ there is a punctured neighbourhood of $x_0$ on which $f\ne c$.
+Intersecting these finitely many punctured neighbourhoods with the punctured
+neighbourhood $V\setminus\{x_0\}$ leaves a punctured neighbourhood of $x_0$,
+which is nonempty because $\RealNumbers$ has no isolated points.  Any point $t$ of it
+satisfies $t\in U$, $f$ analytic at $t$, and $f(t)\notin B$; hence $g$ is
+analytic at $f(t)$ and $g\circ f$ is analytic at $t$.
+\end{proof}
+
+\begin{remark}
+The case distinction is not an artefact of the write-up.  Without it the lemma
+is false as stated, for the naive reason above.  What makes the two cases
+exhaustive is the isolated-zeros theorem, applied to $f-c$: an analytic germ
+either vanishes identically or vanishes nowhere on some punctured
+neighbourhood.  A merely $C^\infty$ inner function admits neither
+alternative --- it can equal $c$ on a sequence accumulating at $x_0$ without
+being constant there --- so analyticity of $f$, and not just smoothness, is
+what the step consumes.  Within the induction of this section it is the only
+place where a theorem of substance about real analytic functions is used;
+\Cref{ne:sec:algebraic,ne:sec:inverse} call on the implicit function theorem as
+well.
+\end{remark}
+
+\subsection{The induction}
+
+\begin{proof}[Proof of \Cref{ne:thm:density}]
+Openness of $\An(f)$ is Lemma~\ref{ne:lem:open} and holds for every $f$.  Density is
+proved by induction on the derivation of $f$ in Definition~\ref{ne:def:elem}.
+
+\emph{Constants and the identity.}  Here $\An(f)=\RealNumbers$.
+
+\emph{Sums and products.}  If $\An(f)$ and $\An(g)$ are dense then so is
+$\An(f)\cap\An(g)$, because a finite intersection of dense open sets is dense.
+Analyticity is preserved by sums and products pointwise, so
+$\An(f)\cap\An(g)\subseteq\An(f+g)$ and likewise for $fg$; a superset of a
+dense set is dense.
+
+\emph{Negation.}  $\An(f)\subseteq\An(-f)$.
+
+\emph{The unary clauses.}  Apply Lemma~\ref{ne:lem:key} with the pair $(f,g)$ and the
+finite bad set $B$ read off from Lemma~\ref{ne:lem:generators}: $B=\varnothing$ for
+$\exp$, $\sin$, $\cos$, $\arctan$; $B=\{0\}$ for $y\mapsto y^{-1}$, for
+$\log$, and for $y\mapsto y^{r}$; and $B=\{-1,1\}$ for $\arcsin$.
+\end{proof}
+
+\begin{remark}[Sharpness]
+Density cannot be strengthened to ``$\An(f)=\RealNumbers$'': the elementary functions
+$x\mapsto x^{-1}$, $x\mapsto|x|$ and $x\mapsto\arcsin x$ have analytic loci
+$\RealNumbers\setminus\{0\}$, $\RealNumbers\setminus\{0\}$ and $\RealNumbers\setminus\{-1,1\}$.  Nor can
+``dense open'' be strengthened to ``open with finite complement'': the
+elementary function $x\mapsto (\sin x)^{-1}$ omits the infinite discrete set
+$\pi\IntegerNumbers$.  What density does give for free is that the complement is closed
+and nowhere dense, being the complement of a dense open set.  It need not be
+\emph{discrete}, and one more reciprocal settles that: $x\mapsto(\sin(1/x))^{-1}$
+is elementary --- it is \texttt{IsElementary.id.inv.sin.inv} --- and its
+analytic locus omits every $1/(k\pi)$ with $k\in\IntegerNumbers\setminus\{0\}$, together
+with $0$, where the function is not even continuous.  Those points accumulate
+at $0$.  So ``nowhere dense'' is the correct description of the exceptional
+set and cannot be improved to ``discrete''.
+\end{remark}
+
+\section[Algebraic branches]{Algebraic functions over the elementary functions}\label{ne:sec:algebraic}
+
+Definition~\ref{ne:def:elem} reaches principal $n$-th roots on nonnegative inputs
+for positive $n$, and classical odd roots on all of $\RealNumbers$, but not a general
+algebraic function.  This section removes that restriction.  It does so without
+enlarging $\Elem$, for a reason worth stating: an algebraic clause inside the
+inductive definition would cost Proposition~\ref{ne:prop:comp}.  Composing a
+branch $y$ with an elementary $h$ produces a branch over the coefficients
+$a_i\circ h$, but it is a \emph{continuous} branch only if $h$ is continuous,
+and elementary functions need not be --- $x\mapsto x^{-1}$ is not.  Rather than
+weaken the closure theorem, we prove the conclusion directly.
+
+\begin{theorem}[Branches of polynomial equations]\label{ne:thm:algebraic}
+Let $U\subseteq\RealNumbers$ be open, let $a_0,\dots,a_n$ be real analytic on $U$ with
+$a_n$ nowhere zero on $U$, and let $y$ be continuous on $U$ with
+\[
+  \sum_{i=0}^{n} a_i(x)\,y(x)^i \;=\; 0 \qquad (x\in U).
+\]
+Then $y$ is real analytic at some point of every nonempty open subset of $U$.
+\end{theorem}
+
+Density is again the right conclusion, and for the same kind of reason as
+before: $y=|\cdot|$ is a continuous branch of $y^2-x^2=0$ on all of $\RealNumbers$, with
+$a_0=-x^2$, $a_1=0$, $a_2=1$, and it is not analytic at the origin.
+
+\begin{proof}
+The implicit function theorem applies only where $\partial P/\partial y\ne 0$,
+and the classical way to control the locus where it vanishes is the
+discriminant.  \texttt{Mathlib} has no usable discriminant theory ---
+\texttt{Polynomial.discr} carries no bridge to separability, and there is no
+continuity of roots in the coefficients --- so we induct on the degree
+instead, which needs neither.
+
+Write $g$ for $\partial P/\partial y$ evaluated along the branch and split
+$U$ into $V=\{x\in U: g(x)\ne0\}$, which is open, and
+$W=U\setminus\overline V$, which is also open.  On $V$ the implicit function
+theorem applies directly.  On $W$ we have $g\equiv 0$, so $y$ satisfies the
+\emph{derivative} equation, of degree $n-1$, whose leading coefficient
+$n\,a_n$ is still nowhere zero; the inductive hypothesis applies to it.
+Finally $V$ together with a dense subset of $W$ is dense in $U$, because an
+open set disjoint from $V$ is disjoint from $\overline V$ and hence contained
+in $W$.  The set $W$ absorbs the \emph{interior} of the degenerate locus
+$\{g=0\}$; what the argument gives up is the boundary $\partial V\cap U$, and
+that is exactly why the conclusion is density rather than analyticity
+everywhere.  For $y=|\cdot|$ the degenerate locus is $\{0\}$, so $V=\RealNumbers
+\setminus\{0\}$, $\overline V=\RealNumbers$, $W=\varnothing$, and the origin is conceded
+to the splitting step --- correctly, since $|\cdot|$ is not analytic there.
+
+The induction terminates because the degree drops.  Its base case $n=0$ is
+vacuous rather than positive: the equation reads $a_0(x)=0$ while the leading
+coefficient hypothesis says $a_0(x)\ne0$, so the region is empty.
+
+The implicit function step is \texttt{Mathlib}'s
+\path{ContDiffAt.implicitFunction}, which is stated for every smoothness
+exponent in $\NaturalNumbers\cup\{\infty,\omega\}$; instantiating at $\omega$ and converting
+with \path{ContDiffAt.analyticAt} gives an analytic implicit function
+theorem.  Its one nontrivial hypothesis, invertibility of the partial
+derivative as a continuous linear map, is discharged in one variable by
+\path{HasDerivAt.hasFDerivAt_equiv} together with uniqueness of the
+Fréchet derivative.
+\end{proof}
+
+\begin{corollary}\label{ne:cor:algebraic}
+Let $U\subseteq[0,1]$ be nonempty and open, let $a_0,\dots,a_n\in\Elem$,
+let $a_n$ vanish nowhere \emph{on $U$}, and let $y$ be continuous \emph{on
+$U$} with $\sum_{i\le n}a_i(x)y(x)^i=0$ for every $x\in U$.  Then $y$ does not
+agree with the Fabius function on $U$; in particular not on $(0,1)$.
+\end{corollary}
+
+\begin{proof}
+Each $a_i$ has dense open analytic locus by \Cref{ne:thm:density}.  The
+intersection $W$ of the $n+1$ of them is a finite intersection of dense open
+sets, hence dense and open, so $U\cap W$ is nonempty and open, and
+\Cref{ne:thm:algebraic} applies to it: $y$ is analytic at some $x\in U\cap
+W\subseteq U$.  Now argue as in Corollary~\ref{ne:cor:main}.
+\end{proof}
+
+\begin{boxedremark}
+Every hypothesis on the branch in Corollary~\ref{ne:cor:algebraic} is confined to
+$U$, and that is what makes the corollary say what one wants it to say.  A
+version with global hypotheses would be much weaker than it looks.  For the
+standard Bring equation $y^5-y-x=0$, a global continuous branch would be a
+continuous right inverse of $h(w)=w^5-w$.  Such a right inverse is injective;
+its image is an interval, and $h(y(x))=x$ forces that image to be unbounded in
+both directions, hence all of $\RealNumbers$.  It would therefore force $h$ itself to be
+injective, a contradiction.  The localized statement nevertheless reaches
+the positive real branch over $(0,1)$, an algebraic function not expressible by
+radicals.
+
+The corollary is genuinely stronger than Corollary~\ref{ne:cor:main} in that
+direction, and independent of it in the other: it says nothing about $\exp$ or
+$\log$ of an algebraic function, because it is a single algebraic step over
+elementary coefficients rather than a closure.  A tower that interleaves
+algebraic extensions with exponentials and logarithms at several levels is
+covered only when it can be presented in one of the two forms.
+\end{boxedremark}
+
+\section{The inverse, and why inverting cannot help}\label{ne:sec:inverse}
+
+$F$ is a homeomorphism of $[0,1]$ onto itself, so it has a continuous inverse.
+We write $F^{-1}\colon\RealNumbers\to\RealNumbers$ for the formal development's clamped
+totalization: the inverse on $[0,1]$, the constant $0$ on $(-\infty,0]$, and
+the constant $1$ on $[1,\infty)$.  Everything above concerned $F$; this
+section treats that totalization, and then closes the class under the
+admissible inverse-branch rule.
+
+In the formalization this function is \texttt{Fabius.fabiusInv}, defined by
+\texttt{Set.IccExtend} of the order isomorphism.  The extension is continuous,
+so nothing is hidden in the gluing; its constant tails are what the endpoint
+half of \Cref{ne:thm:invnowhere} exploits.
+
+\subsection{A right inverse is an implicit branch}
+
+The observation that organizes this section is that no new analysis is
+needed.  The equation
+\[
+  h\bigl(g(x)\bigr)=x
+\]
+says exactly that $g$ is a continuous branch of $P(x,z)=h(z)-x=0$, an implicit
+equation whose partial derivative in $z$ is $h'$.  So the analytic implicit
+function theorem quoted in \Cref{ne:sec:algebraic} --- already proved there, for
+an unrelated purpose --- delivers the analytic inverse function theorem with
+nothing further to check.
+
+\begin{theorem}[Analytic inverse function theorem]\label{ne:thm:ift}
+If $h$ is analytic at $g(x_0)$ with $h'(g(x_0))\ne0$, $g$ is continuous at
+$x_0$, and $h\circ g$ is the identity near $x_0$, then $g$ is analytic
+at~$x_0$.
+\end{theorem}
+
+\begin{proof}
+Set $H(x,z)=h(z)-x$.  It is analytic near $(x_0,g(x_0))$, satisfies
+$H(x_0,g(x_0))=0$, and has
+$\partial_zH(x_0,g(x_0))=h'(g(x_0))\ne0$.  The analytic implicit-function
+theorem therefore gives an analytic function $\widetilde g$ near $x_0$ with
+$h(\widetilde g(x))=x$ and $\widetilde g(x_0)=g(x_0)$.  After shrinking the
+neighbourhood, $h$ is one-to-one near $g(x_0)$ by the ordinary inverse-function
+theorem; continuity of $g$ keeps $g(x)$ in that same neighbourhood.  The two
+right inverses must then agree, $g=\widetilde g$, so $g$ is analytic at $x_0$.
+\end{proof}
+
+\subsection{The inverse of the Fabius function}
+
+\begin{theorem}\label{ne:thm:invnowhere}
+$F^{-1}$ is real analytic at no point of $[0,1]$; its analytic locus is
+exactly $\RealNumbers\setminus[0,1]$.
+\end{theorem}
+
+\begin{proof}
+In the interior, run \Cref{ne:thm:ift} backwards.  If $F^{-1}$ is analytic at
+$y_0\in(0,1)$ then $F$, being its inverse near that point, is analytic at
+$F^{-1}(y_0)\in(0,1)$ --- provided $(F^{-1})'(y_0)\ne0$.  It has no critical
+point anywhere in the interior.  This is the one place where $F'$ enters at
+all --- everywhere else
+$F$ is used through its continuity and through its failure to be analytic ---
+and what is needed of it is only that $F'>0$ on $(0,1)$.  Given that, the easy
+half of the inverse function theorem --- the half that assumes the inverse
+already exists --- yields
+ \[
+   (F^{-1})'(y)=\frac{1}{F'\bigl(F^{-1}(y)\bigr)}\qquad(0<y<1),
+ \]
+ a nonzero real number.  The core inverse module formalizes this reciprocal
+ derivative, its strict positivity, and the stronger fact that $F^{-1}$ is
+ $C^\infty$ throughout $(0,1)$.  \Cref{ne:thm:nowhere} then supplies the
+ contradiction.
+
+The direction deserves to be stated, because the shorter route is circular.
+Differentiating $F^{-1}\circ F=\mathrm{id}$ to obtain
+$(F^{-1})'\bigl(F(x)\bigr)\cdot F'(x)=1$ presupposes that $F^{-1}$ is
+differentiable, which is exactly what is at issue; strict positivity of $F'$
+is what supplies it.
+
+At the endpoints the argument is different, and simpler.  $F^{-1}$ is
+identically $0$ to the left of $0$; an analytic germ agreeing with $0$ on a
+set with an accumulation point vanishes identically, so $F^{-1}$ would vanish
+just to the right of $0$ as well, contradicting strict monotonicity.
+Symmetrically at $1$.
+\end{proof}
+
+\begin{corollary}\label{ne:cor:invmain}
+No member of $\Elem$ agrees with $F^{-1}$ on any subset of $[0,1]$ with
+nonempty interior; in particular the restriction of $F^{-1}$ to $(0,1)$ has
+no representative in this totalized expression class.
+\end{corollary}
+
+\begin{proof}
+If a member $g$ of $\Elem$ agreed with $F^{-1}$ on a set $U\subseteq[0,1]$
+having nonempty interior, density in \Cref{ne:thm:density} would provide
+$y\in\operatorname{int}U$ at which $g$ is analytic.  Equality on the
+neighbourhood $\operatorname{int}U$ gives $g$ and $F^{-1}$ the same germ at
+$y$, making $F^{-1}$ analytic there and contradicting
+\Cref{ne:thm:invnowhere}.
+\end{proof}
+
+\begin{boxedremark}
+One might have hoped that inverting improves matters.  $F$ is flat to infinite
+order at the endpoints, so $F^{-1}$ is steep there, and steepness is not
+obviously an obstruction to being elementary --- the signed real cube root
+$x\mapsto (x/|x|)|x|^{1/3}$ is steep at the origin and perfectly elementary.
+\Cref{ne:thm:invnowhere} says the hope
+is misplaced, and the reason is structural rather than quantitative: analytic
+functions are closed under inversion wherever the derivative survives, so an
+analytic inverse would hand analyticity straight back.
+\end{boxedremark}
+
+\subsection{Closing the class under inversion}
+
+Nothing about the argument was special to $F$.  The same reasoning shows that
+the invariant of \Cref{ne:thm:density} survives the admissible inverse-branch rule
+below.
+
+\begin{theorem}[Dense analytic locus of a right inverse]\label{ne:thm:invbranch}
+Let $f$ be analytic on a dense subset of $\RealNumbers$, and let $g$ be
+continuous on a nonempty open set $U$ with $f(g(y))=y$ there.  Then
+$\An(g)\cap U$ is relatively open and dense in $U$.
+\end{theorem}
+
+\begin{proof}
+Relative openness follows from \Cref{ne:lem:open}; we prove density.  Let
+$I\subseteq U$ be any nonempty open interval.  The right-inverse identity
+makes $g$ injective on $I$.  A continuous injective real function on an
+interval is strictly monotone, so $J=g(I)$ is a nonempty open interval and
+$g:I\to J$ is a homeomorphism.  Moreover $f|_J$ is its inverse and is
+therefore injective.
+
+The open set $J$ meets the dense analytic locus of $f$.  Choose a nonempty
+open interval $V\subseteq J$ on which $f$ is analytic.  Since $f$ is
+injective on $J$, it is not constant on $V$.  Hence the analytic function
+$f'$ is not identically zero on $V$; by the isolated-zero theorem, some
+$z\in V$ satisfies $f'(z)\ne0$.  Put $y=f(z)\in I$.  Near $y$ we have
+$f\circ g=\id$, and $g(y)=z$; \Cref{ne:thm:ift} shows that $g$ is analytic at
+$y$.  Thus every nonempty open interval in $U$ meets $\An(g)$, as required.
+\end{proof}
+
+Applied to every nonempty open subset at once, this says that a continuous
+inverse branch is analytic on a relatively dense subset of its domain, and the
+domain need not be open: \texttt{analyticDenseOn\_of\_rightInverse}.  For a
+domain with empty interior the statement is vacuous, which is the correct
+reading --- there is no open set on which to test.
+
+The conclusion is ``analytic somewhere in $U$'', not ``analytic on $U$'', and
+that is not slack in the argument: the real cube root is a continuous right
+inverse of the entire function $x\mapsto x^3$ on all of $\RealNumbers$ and is not
+analytic at the origin.  In the formalization the right inverse has to be
+written $t\mapsto(t/|t|)\,|t|^{1/3}$, since \texttt{Real.rpow} makes
+$(-8)^{1/3}=1$ (Warning~\ref{ne:warn:oddroot}); that this signed form really does
+cube back to $t$ is \texttt{Fabius.signedRoot\_pow}.  Critical points of $f$
+do produce singularities of the inverse.  It is the same phenomenon that made
+density, rather than analyticity everywhere, the right invariant in
+\Cref{ne:thm:density}.
+
+\begin{definition}\label{ne:def:elemplus}
+$\Elem^{-1}$ is the smallest class containing $\Elem$, closed under the
+operations of Definition~\ref{ne:def:elem}, and closed under the following rule: if
+$f\in\Elem^{-1}$, $U$ is open, $g$ is continuous on $U$ with $f(g(y))=y$ for
+$y\in U$, and $g$ is analytic on the interior of the complement of $U$, then
+$g\in\Elem^{-1}$.
+\end{definition}
+
+Two features of the rule are deliberate, and the Lambert $W$ function shows
+why each is needed.  It is local in $U$: $W$ satisfies its defining identity
+$W(y)\EulerE^{W(y)}=y$ only on $[-1/\EulerE,\infty)$, so a rule demanding a global
+identity would not reach it.  And it asks for analyticity on the
+\emph{interior} of the complement rather than at every point outside $U$: the
+branch point $-1/\EulerE$ sits on the boundary of the natural $U=(-1/\EulerE,\infty)$,
+and $W$ is certainly not analytic there.  Dropping that boundary costs
+nothing, since the boundary of an open set is nowhere dense, and for $W$ the
+constant extension then satisfies the analyticity clause on all of
+$(-\infty,-1/\EulerE)$.
+
+The Lean result is a conditional criterion for any supplied total function
+satisfying these hypotheses.  Since \texttt{Mathlib} does not define $W$, the
+formalization neither constructs a standard real branch nor verifies a
+particular totalization of it.
+
+That clause is a condition on the chosen extension of the branch past $U$, not
+a fact that comes for free.  Extension by a constant always meets it, and that
+is the honest reading of the rule: a branch is admitted together with a
+declaration of how it is continued.  Other conventions also meet it without
+being constant --- \texttt{Mathlib} sets $\log y=\log|y|$, which is analytic
+off the origin.  At the other extreme $U=\emptyset$ reduces the clause to
+``$g$ is entire'', so the rule also adjoins every everywhere-analytic
+function; harmlessly, since those already have dense analytic locus, which is
+all the invariant asks.  Inversion may be applied at any depth: to members of
+$\Elem$, to branches of those, and so on without limit.
+
+One asymmetry with $\Elem$ deserves stating, since \Cref{ne:sec:elem} made a
+point of it.  Composition is a \emph{theorem} for $\Elem$
+(Proposition~\ref{ne:prop:comp}), proved by inducting on the derivation of the
+outer function, because every clause of Definition~\ref{ne:def:elem} commutes with
+precomposition.  That induction does not replay for $\Elem^{-1}$: the inverse
+clause does not commute with precomposition, since $g$ being a branch of
+$f(z)=x$ says nothing about $g\circ h$ being a branch of anything.  So
+$\Elem^{-1}$ is not claimed to be closed under composition, and
+\Cref{ne:thm:plusdense} does not need it --- the induction there is over the
+derivation, and every clause of Definition~\ref{ne:def:elemplus} preserves dense
+analyticity on its own.
+
+\begin{theorem}\label{ne:thm:plusdense}
+Every member of $\Elem^{-1}$ is analytic on a dense set.
+\end{theorem}
+
+\begin{proof}
+Induction.  The elementary generators are \Cref{ne:thm:density}; the operations
+are as in \Cref{ne:sec:density}; and the inverse rule splits on whether the test
+set meets $U$.  Given a nonempty open $B$: if $B\cap U\ne\emptyset$ then
+\Cref{ne:thm:invbranch} applies to the nonempty open set $B\cap U$ and produces a
+point of $B$ at which $g$ is analytic; and if $B\cap U=\emptyset$ then
+$B\subseteq U^{\mathsf c}$, so
+$B\subseteq\operatorname{int}(U^{\mathsf c})$ because $B$ is open, and every
+point of $B$ will do by the rule's analyticity clause.
+\end{proof}
+
+\begin{corollary}\label{ne:cor:plusmain}
+Neither $F$ nor $F^{-1}$ agrees with any member of $\Elem^{-1}$ on any subset
+of $[0,1]$ with nonempty interior.  In particular neither is representable on
+$(0,1)$ by elementary functions, elementary operations, and any finite tower
+of totalized inverse branches satisfying Definition~\ref{ne:def:elemplus}.
+\end{corollary}
+
+\begin{proof}
+Let $h\in\Elem^{-1}$ and suppose it agrees with either $F$ or $F^{-1}$ on a
+set $U\subseteq[0,1]$ with nonempty interior.  By
+\Cref{ne:thm:plusdense}, $\An(h)$ is dense, hence meets
+$\operatorname{int}U$.  At such a point the agreement gives equal germs, so
+the corresponding Fabius function would be analytic there, contradicting
+\Cref{ne:thm:nowhere} or \Cref{ne:thm:invnowhere}.
+\end{proof}
+
+\begin{boxedremark}
+It is worth being explicit about what Corollary~\ref{ne:cor:plusmain} does and does
+not rest on.  The inverse need not be two-sided: a continuous right inverse on
+an open set is enough.  On the other hand, the conditional Lambert-$W$
+constructor also requires the chosen totalization to be analytic on the
+interior of that open set's complement.  The branch-domain boundary is
+deliberately excluded from this side condition.  Because \texttt{Mathlib} does
+not define $W$, the formalization neither constructs a standard real branch
+nor verifies any particular totalization.
+\end{boxedremark}
