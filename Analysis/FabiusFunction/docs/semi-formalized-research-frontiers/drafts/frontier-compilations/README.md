@@ -2,6 +2,24 @@
 
 New standalone intake members:
 
+- [`Geometric_Uniform_Convolutions_and_New_Frontiers/`](Geometric_Uniform_Convolutions_and_New_Frontiers/)
+  is the title-derived filing of the generic source-only wrapper
+  `drafts/incoming/fabius-frontier-report-H/`, committed directly by
+  `8a184546747082cbd92ad4675fb61981c6b8c3b6`.  The delivery consists of a
+  single TeX manuscript, *Geometric Uniform Convolutions and New Frontiers
+  around the Fabius--Rvachev System*: no PDF, README, code, figures, captured
+  output, checksum file, or archive was supplied.  Quick intake repaired three
+  form-feed control bytes that had replaced the backslash in `\frac`
+  commands and added a repository-generated one-entry `SHA256SUMS`.
+
+  Its q-deformed derivative formulas, Gaussian/Edgeworth layer,
+  valuation-weighted zeros, non-Gevrey growth, and periodic Lambert endpoint
+  program overlap several same-batch reports and the consolidated corpus.
+  The source remains standalone pending post-publication compilation,
+  claim-by-claim comparison, and a Lean crosswalk.  Nothing in the intake
+  establishes that the TeX compiles or that any manuscript theorem is proved
+  in Lean.
+
 - [`fabius_information_frontier/`](fabius_information_frontier/),
   *Exact Information Geometry and New Frontiers for the Fabius--Rvachev
   System* (30 pp), arrived on 2026-08-30 from the rootless archive

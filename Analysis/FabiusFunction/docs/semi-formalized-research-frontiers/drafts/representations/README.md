@@ -2,6 +2,32 @@
 
 New standalone intake members:
 
+- [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/),
+  the 36-page *Common-Digit Fabius Zonoids* bundle committed directly to
+  `incoming/` by `fef364bfd162f80919cd77b808530dd0734f1cb1`.
+  All 24 non-ledger payloads are covered by its submitted ledger; six CSV
+  hashes were refreshed after repository CRLF-to-LF normalization.
+
+- [`Jacobi_Digit_Fabius_Rvachev_Frontier_Report/`](Jacobi_Digit_Fabius_Rvachev_Frontier_Report/),
+  the 32-page *Jacobi-Digit Deformations of the Fabius--Rvachev Law* bundle
+  from `92c9909242ed6a2ab51d68ed816d1aa2a5339719`.  Every one of its 38
+  submitted payload hashes verified without normalization.
+
+- [`Matrix_Dilated_Fabius_Rvachev_Frontier_Report/`](Matrix_Dilated_Fabius_Rvachev_Frontier_Report/),
+  the 29-page *Matrix-Dilated Fabius--Rvachev Laws* bundle from
+  `8a184546747082cbd92ad4675fb61981c6b8c3b6`.  Its complete 27-entry
+  ledger now records the LF repository bytes; seven CSV entries changed only
+  by line-ending normalization.
+
+These were already-extracted tracked directories, not archives, so no outer
+ZIP hashes exist.  The common-digit and matrix-dilated manuscripts are related
+multivariate/zonoid lifts, but no substantive payload was an exact duplicate
+of an existing draft; semantic consolidation is deferred to the post-
+publication assessment.  Every PDF in the three deliveries was structurally
+readable and unencrypted.  No page rendering, experiment replay, TeX rebuild,
+claim audit, or Lean build was part of this quick intake, and manuscript
+result labels do not establish Lean proof status.
+
 - [`Fabius_Zero_Bias_Frontier_Report/`](Fabius_Zero_Bias_Frontier_Report/),
   *Zero-Bias Towers and Spectral Peeling in the Fabius--Rvachev System*
   (26 pp), arrived on 2026-08-30 from
