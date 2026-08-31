@@ -12,11 +12,15 @@ use ``--list`` to print the individual findings.
 ``--strict`` turns findings into a failing CI-style gate.  ``--json`` emits the
 same information as machine-readable JSON.  Paths may be supplied explicitly
 for focused migration work; explicit archive paths are still rejected.
+``--semantic`` adds the deliberately broader source-review gate for raw hats,
+delimiters, number systems, indicators, digit sums, and asymptotic operators.
+Those findings require classification rather than blind replacement.
 
 Examples::
 
     python Analysis/FabiusFunction/scripts/tex_notation_audit.py
     python Analysis/FabiusFunction/scripts/tex_notation_audit.py --strict
+    python Analysis/FabiusFunction/scripts/tex_notation_audit.py --semantic --strict
     python Analysis/FabiusFunction/scripts/tex_notation_audit.py --json report.json
     python Analysis/FabiusFunction/scripts/tex_notation_audit.py Analysis/FabiusFunction/docs/foo.tex
 """
@@ -35,6 +39,44 @@ from typing import Iterable
 
 
 CANONICAL_INPUT = "fabius-notation.tex"
+HISTORICAL_NOTATION_MARKER = "HISTORICAL-NOTATION-SCOPE"
+
+# Broader recurring spellings whose meaning must be classified during the
+# semantic source pass.  This is intentionally opt-in: the ordinary strict gate
+# remains a fast check for already-retired aliases and contract violations.
+SEMANTIC_LITERAL_PATTERNS = {
+    r"\\(?:widehat|hat)(?![A-Za-z@])": (
+        r"raw hat requires classification; use \FourierTwoPi or \FourierAngular "
+        r"for a Fourier transform, or declare the non-Fourier accent locally"
+    ),
+    r"\\lfloor(?![A-Za-z@])": r"use \Floor after checking the enclosed expression",
+    r"\\lceil(?![A-Za-z@])": r"use \Ceiling after checking the enclosed expression",
+    r"\\(?:mathbf|mathbb)\s*\{\s*1\s*\}": (
+        r"raw bold one requires classification; use \IndicatorOf for an indicator "
+        r"or declare a constant-one function locally"
+    ),
+    r"\\mathbb\s*\{\s*(?:N|Z|Q|R|C)\s*\}": (
+        r"use the explicit canonical number-system command and classify whether "
+        r"natural numbers include zero"
+    ),
+    r"(?<![A-Za-z\\])s\s*_\s*(?:\{\s*2\s*\}|2)": (
+        r"raw s_2 requires classification; use \BinaryDigitSum for the binary "
+        r"digit-sum function or declare another local sequence"
+    ),
+    r"\\(?:mathcal|mathrm)\s*\{\s*O\s*\}": (
+        r"use \BigO or \BigOAt and state the limiting regime"
+    ),
+    r"\\(?:mathcal|mathrm)\s*\{\s*o\s*\}": (
+        r"use \LittleO or \LittleOAt and state the limiting regime"
+    ),
+    r"\\operatorname\s*\{\s*sinc\s*\}": (
+        r"classify the normalization and use \SincRad or \SincPi"
+    ),
+    r"\\mathbb\s*\{\s*P\s*\}": r"use \Probability for probability",
+    r"\\mathbb\s*\{\s*E\s*\}": r"use \Expectation for expectation",
+    r"\\operatorname\s*\{\s*Var\s*\}": r"use \Variance for probability variance",
+    r"\\operatorname\s*\{\s*Cov\s*\}": r"use \Covariance for probability covariance",
+}
 
 # Commands whose old names either hide semantics or have incompatible
 # definitions in the active corpus.  The replacement column is intentionally
@@ -226,14 +268,33 @@ def input_targets(text: str) -> list[str]:
     return [match.group(1).strip() for match in INPUT_RE.finditer(text)]
 
 
-def audit_file(path: Path, docs: Path) -> tuple[dict, list[Finding], Counter[str]]:
+def audit_file(
+    path: Path,
+    docs: Path,
+    *,
+    semantic: bool = False,
+) -> tuple[dict, list[Finding], Counter[str]]:
     raw = path.read_text(encoding="utf-8-sig")
     code = strip_comments(raw)
     rel = relative(path, docs)
     canonical_source = rel == CANONICAL_INPUT
+    catalogue_source = rel.startswith("FabiusFunction_Mathematical_Notation_Catalogue/")
+    historical_source = rel.startswith("papers/")
+    historical_scope = HISTORICAL_NOTATION_MARKER in raw
     root = bool(DOCUMENTCLASS_RE.search(code))
     findings: list[Finding] = []
     commands = Counter(match.group("name") for match in COMMAND_RE.finditer(code))
+
+    if historical_source and not historical_scope:
+        findings.append(Finding(
+            rel,
+            1,
+            "historical-scope-marker",
+            (
+                f"historical paper transcription lacks the exact "
+                f"{HISTORICAL_NOTATION_MARKER} preamble marker"
+            ),
+        ))
 
     canonical_mentions = sum(
         1 for target in input_targets(code)
@@ -335,6 +396,16 @@ def audit_file(path: Path, docs: Path) -> tuple[dict, list[Finding], Counter[str
                     f"literal shared operator; {message}",
                 ))
 
+    if semantic and not canonical_source and not catalogue_source and not historical_scope:
+        for pattern, message in SEMANTIC_LITERAL_PATTERNS.items():
+            for match in re.finditer(pattern, code):
+                findings.append(Finding(
+                    rel,
+                    line_number(code, match.start()),
+                    "semantic-literal",
+                    message,
+                ))
+
     digest = hashlib.sha256(raw.encode("utf-8-sig")).hexdigest()
     info = {
         "path": rel,
@@ -343,6 +414,7 @@ def audit_file(path: Path, docs: Path) -> tuple[dict, list[Finding], Counter[str
         "lines": raw.count("\n") + (0 if raw.endswith("\n") else 1),
         "standalone": root,
         "canonicalInputCount": canonical_mentions,
+        "historicalNotationScope": historical_scope,
         "inputTargets": input_targets(code),
     }
     return info, findings, commands
@@ -370,6 +442,11 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("paths", nargs="*", help="focused files/directories below docs")
     parser.add_argument("--strict", action="store_true", help="exit 1 when any finding exists")
+    parser.add_argument(
+        "--semantic",
+        action="store_true",
+        help="also flag raw recurring notation that requires semantic classification",
+    )
     parser.add_argument("--list", action="store_true", help="print every finding")
     parser.add_argument("--json", metavar="PATH", help="write the full report as JSON")
     args = parser.parse_args()
@@ -385,7 +462,7 @@ def main() -> int:
     findings: list[Finding] = []
     commands: Counter[str] = Counter()
     for path in files:
-        info, file_findings, file_commands = audit_file(path, docs)
+        info, file_findings, file_commands = audit_file(path, docs, semantic=args.semantic)
         file_info.append(info)
         findings.extend(file_findings)
         commands.update(file_commands)
@@ -394,9 +471,10 @@ def main() -> int:
     finding_counts = Counter(item.code for item in findings)
     roots = sum(bool(item["standalone"]) for item in file_info)
     report = {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "notationVersion": "2026-08-31",
         "scope": "Analysis/FabiusFunction/docs/**/*.tex excluding docs/archive/**",
+        "semanticMode": args.semantic,
         "inventory": {
             "files": len(file_info),
             "standalone": roots,
