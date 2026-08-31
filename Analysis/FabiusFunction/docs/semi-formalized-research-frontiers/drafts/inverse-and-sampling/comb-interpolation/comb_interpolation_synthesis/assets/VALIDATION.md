@@ -62,12 +62,12 @@ rewritten. They do not certify the current canonical payloads.
   curated declaration name occurs in its nominated module. It does not invoke
   Lean, compare theorem types, or claim that the one curated row is a complete
   census of current formal results.
-- The final source has 189 lines, 6,755 bytes, and SHA-256
-  `7b8f2c5ea27e0559e858f84cbe84542f43184785b8d64ffcc75013482411a0a5`.
+- The final source has 188 lines, 6,722 bytes, and SHA-256
+  `92878edbef877a5e121c96cc80a003bd2137150550c8e05b5cd970ecefe6b248`.
 - Exactly three strict, serial pdfLaTeX passes were run from the final source.
   All three exited successfully; no later TeX pass was run.
-- The final PDF has 155 pages, 2,447,377 bytes, and SHA-256
-  `d6b6e1e87ac27be902eff9ab258f162f3dd57b5b39ce44753f075e81ab1a765c`.
+- The final PDF has 155 pages, 2,448,906 bytes, and SHA-256
+  `d1f89b005bcae9afc9c70b4ccce632aa8c665ed68e98bacb2ff96827dd427095`.
   Every page is 595.276 by 841.89 points (A4), has rotation zero and identical
   MediaBox, CropBox, BleedBox, TrimBox, and ArtBox values, and contains
   extractable text.
@@ -76,7 +76,7 @@ rewritten. They do not certify the current canonical payloads.
   title, subject, and keyword metadata.
 - The final log contains no TeX error, undefined reference or citation, rerun
   request, duplicate destination, or overfull box. It contains 36 benign
-  package warnings (24 hyperref, 11 caption, and one amsmath) and five
+  package warnings (24 hyperref, 11 caption, and one amsmath) and six
   underfull boxes; all affected layouts were included in the visual review.
 - All 155 pages were rendered and reviewed in five contact sheets. Pages 1,
   91, 109, 145, and 155 were additionally inspected at full size; no clipping,
