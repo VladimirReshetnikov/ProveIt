@@ -2,6 +2,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb,mathtools,amsthm}
+\input{../../../../fabius-notation.tex}
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage[final]{microtype}
 \usepackage[letterpaper,margin=0.90in,headheight=15pt]{geometry}
@@ -85,37 +86,15 @@
 \let\cl@warning\@empty
 \makeatother
 
-\newcommand{\C}{\mathbb C}
-\newcommand{\R}{\mathbb R}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\N}{\mathbb N}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\Li}{\operatorname{Li}}
 \newcommand{\Disc}{\operatorname{Disc}}
-\newcommand{\Res}{\operatorname{Res}}
-\newcommand{\Log}{\operatorname{Log}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\E}{\mathbb E}
-\newcommand{\diag}{\operatorname{diag}}
 \newcommand{\ord}{\operatorname{ord}}
-\newcommand{\qbinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
-\newcommand{\Qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
 \newcommand{\qmulti}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
-\newcommand{\poch}[3]{(#1;#2)_{#3}}
 \newcommand{\Aq}{\mathcal A_q}
 \newcommand{\PhiC}{\Phi}
 \newcommand{\statusproved}{\textcolor{provedgreen}{\textsc{proved}}}
 \newcommand{\statusnumerical}{\textcolor{numericalblue}{\textsc{symbolic/numerical}}}
 \newcommand{\statusconjectural}{\textcolor{conjectureorange}{\textsc{conjectural}}}
-\newcommand{\abs}[1]{\left|#1\right|}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\bigO}{\mathcal O}
 \newcommand{\ind}{\mathbf{1}}
-\newcommand{\smallo}{o}
 
 \lstdefinestyle{pythonstyle}{
   language=Python,
@@ -154,7 +133,7 @@ Puiseux inverses, logarithmic inverses, and multiscale inverses are treated in
 one framework.
 
 Several results appear to be new within the audited repository corpus.  For the
-finite product \(P_n(a,q)=\poch aqn\), the nontrivial parameter for which
+finite product \(P_n(a,q)=\QPochhammer{a}{q}{n}\), the nontrivial parameter for which
 \(q=-1\) becomes critical is exactly
 \[
  a_* = \frac1{n-1} \quad(n\text{ even}),
@@ -164,7 +143,7 @@ finite product \(P_n(a,q)=\poch aqn\), the nontrivial parameter for which
 For every \(n\ge4\) this produces a quadratic fold and hence two square-root
 inverse branches.  The sole low-order exception is the exact cubic identity
 \[
- \poch{-1/3}{q}{3}=\frac{32}{27}+\frac4{27}(q+1)^3,
+ \QPochhammer{-1/3}{q}{3}=\frac{32}{27}+\frac4{27}(q+1)^3,
 \]
 which gives three cube-root branches without a remainder.  At arbitrary roots
 of unity we express the ramification order by cyclotomic multiplicity.  A
@@ -173,19 +152,19 @@ Gaussian polynomial is square-free because each multiplicity is \(0\) or
 residue-carry count.  In particular,
 \[
  [n]_q! = \lfloor n/2\rfloor!\,(q+1)^{\lfloor n/2\rfloor}
-       (1+\bigO(q+1))
+       (1+\BigO(q+1))
 \]
 near \(q=-1\), so its inverse has a precisely normalized higher Puiseux branch.
 
 For the infinite product we derive a fixed-target double-scaling inverse that
 is distinct from the usual fixed-argument \(q\to1\) expansion.  If
-\((a;\e^{-\varepsilon})_\infty=\e^{-L}\), with \(L>0\) fixed, then
+\((a;\EulerE^{-\varepsilon})_\infty=\EulerE^{-L}\), with \(L>0\) fixed, then
 \[
 \begin{aligned}
  a={}&L\varepsilon-\frac{L(L+2)}4\varepsilon^2
  +\frac{L(L^2+9L+12)}{72}\varepsilon^3 \\
  &-\frac{L(L^3+4L^2+12L+24)}{576}\varepsilon^4
- +\bigO(\varepsilon^5).
+ +\BigO(\varepsilon^5).
 \end{aligned}
 \]
 An arbitrary-order recurrence is supplied.  For \(q\)-gamma we obtain an
@@ -269,7 +248,7 @@ logarithmic inversion.  An inverse without these data is normally ambiguous.
 
 The variable
 \[
- q=\e^{-\varepsilon}
+ q=\EulerE^{-\varepsilon}
 \]
 is used near \(q=1\).  It preserves reciprocal symmetry: \(q\mapsto q^{-1}\)
 becomes \(\varepsilon\mapsto-\varepsilon\).  Near infinity we use
@@ -328,7 +307,7 @@ These identities are also condition-number formulas.  A relative condition
 number for recovering \(p\) from \(y\) is
 \[
  \kappa_{p\leftarrow y}=
- \abs{\frac{y}{pF_p}},
+ \AbsoluteValue{\frac{y}{pF_p}},
 \]
 when \(pyF_p\ne0\).  It diverges at a fold and therefore predicts the
 transition from Taylor to Puiseux inversion.
@@ -336,7 +315,7 @@ transition from Taylor to Puiseux inversion.
 \section{The inverse Riemann surface}
 For a fixed auxiliary parameter the analytic curve
 \[
- \mathscr R_F=\{(p,y)\in\C^2:F(p)=y\}
+ \mathscr R_F=\{(p,y)\in\ComplexNumbers^2:F(p)=y\}
 \]
 projects to the target plane.  Away from critical values the projection is a
 covering.  Loops in the punctured target plane permute the sheets; this
@@ -350,7 +329,7 @@ Real branches are labelled by their monotonicity interval.  Complex branches
 are labelled by a germ at a regular point and a homotopy class of continuation
 path.  Near a ramification point of order \(m\), branches are indexed by
 \(
- \omega_m^j=\exp(2\pi\ii j/m),\ 0\le j<m
+ \omega_m^j=\exp(2\pi\ImaginaryUnit j/m),\ 0\le j<m
 \).
 Near infinity, a chosen branch of \(y^{1/m}\) is always stated explicitly.
 
@@ -449,7 +428,7 @@ with \(m\ge2\).  Set
 \begin{equation}
  p_j(y)=p_0+\omega_m^j\xi
  -\frac{c_{m+1}}{mc_m}\omega_m^{2j}\xi^2
- +\bigO(\xi^3),
+ +\BigO(\xi^3),
  \qquad 0\le j<m.
  \label{eq:generic-puiseux}
 \end{equation}
@@ -478,7 +457,7 @@ proved later.
 \section{Essential and logarithmic inversion}
 At \(q=1\), infinite products often have the form
 \[
- \log F(\e^{-\varepsilon})=-\frac{A}{\varepsilon}+B-C\varepsilon+
+ \log F(\EulerE^{-\varepsilon})=-\frac{A}{\varepsilon}+B-C\varepsilon+
  D\varepsilon^3+\cdots.
 \]
 Let \(X=-\log y+B\).  Then
@@ -489,7 +468,7 @@ Let \(X=-\log y+B\).  Then
  \label{eq:essential-reversion-template}
 \end{equation}
 with signs adjusted to the chosen forward convention.  Exponentiating gives
-\(q=\e^{-\varepsilon}\).  If \(\varepsilon\) also occurs inside a logarithm,
+\(q=\EulerE^{-\varepsilon}\).  If \(\varepsilon\) also occurs inside a logarithm,
 Lambert \(W\) or transseries rather than a pure inverse-power series appears.
 
 \section{Newton polygons for multiple small scales}
@@ -508,16 +487,16 @@ particularly important double-scaling example: the correct balance is
 \chapter{Simultaneous inversion and Good's multivariate formula}
 
 \section{Square systems}
-Let \(\bm F:\C^r\to\C^r\) and suppose
+Let \(\bm F:\ComplexNumbers^r\to\ComplexNumbers^r\) and suppose
 \(\det D\bm F(\bm p_0)\ne0\).  Then \(\bm p=\bm G(\bm y)\) exists locally and
 \[
  D\bm G=(D\bm F)^{-1}.
 \]
 For example, recovering \((a,q)\) from two measurements
 \[
- y_1=\poch aqn,
+ y_1=\QPochhammer{a}{q}{n},
  \qquad
- y_2=\poch{aq^s}{q}{m}
+ y_2=\QPochhammer{aq^s}{q}{m}
 \]
 is locally possible precisely when the two logarithmic sensitivity vectors are
 not parallel.  This replaces the underdetermined scalar inverse by an
@@ -562,15 +541,15 @@ remainder bounds are enclosed.
 \chapter{Inversion in the argument}
 
 \section{Forward algebra and logarithmic derivatives}
-For \(n\in\N\), set
+For \(n\in\NaturalNumbers\), set
 \[
- P_n(a,q)=\poch aqn=\prod_{j=0}^{n-1}(1-aq^j),
+ P_n(a,q)=\QPochhammer{a}{q}{n}=\prod_{j=0}^{n-1}(1-aq^j),
  \qquad P_0=1.
 \]
 The finite \(q\)-binomial theorem gives
 \begin{equation}
  P_n(a,q)=\sum_{m=0}^n(-1)^m q^{\binom m2}
- \qbinom nm a^m.
+ \GaussianBinomial{n}{m}{q} a^m.
  \label{eq:finite-p-in-a}
 \end{equation}
 Whenever no factor vanishes,
@@ -587,7 +566,7 @@ function of finite geometric power sums.
 \section{The branch issuing from \(a=0\)}
 Let \(s=1-y\).  From \cref{eq:finite-p-in-a},
 \[
- s=[n]_q a-q\qbinom n2a^2+q^3\qbinom n3a^3+\cdots,
+ s=[n]_q a-q\GaussianBinomial{n}{2}{q}a^2+q^3\GaussianBinomial{n}{3}{q}a^3+\cdots,
 \]
 where \([n]_q=(1-q^n)/(1-q)\).  Applying
 \cref{eq:inverse-first3} gives the following useful seed branch.
@@ -596,11 +575,11 @@ where \([n]_q=(1-q^n)/(1-q)\).  Applying
 If \([n]_q\ne0\), the branch satisfying \(a(1)=0\) is
 \begin{align}
  a={}&\frac{s}{[n]_q}
- +\frac{q\qbinom n2}{[n]_q^3}s^2 \notag \\
+ +\frac{q\GaussianBinomial{n}{2}{q}}{[n]_q^3}s^2 \notag \\
  &+\left(
- \frac{2q^2\qbinom n2^2}{[n]_q^5}
- -\frac{q^3\qbinom n3}{[n]_q^4}
- \right)s^3+\bigO(s^4).
+ \frac{2q^2\GaussianBinomial{n}{2}{q}^2}{[n]_q^5}
+ -\frac{q^3\GaussianBinomial{n}{3}{q}}{[n]_q^4}
+ \right)s^3+\BigO(s^4).
  \label{eq:a-inverse-near-zero}
 \end{align}
 To arbitrary order,
@@ -635,7 +614,7 @@ Consequently the branch through \(a_j=q^{-j}\) begins
 \begin{equation}
  a(y)=q^{-j}+
  \frac{(-1)^{j+1}q^{j(j-1)/2}}
- {(q;q)_j(q;q)_{n-1-j}}\,y+\bigO(y^2).
+ {(q;q)_j(q;q)_{n-1-j}}\,y+\BigO(y^2).
  \label{eq:inverse-at-geometric-zero}
 \end{equation}
 \end{theorem}
@@ -676,12 +655,12 @@ zero.
 Let \(N=\binom n2\).  The two leading powers of \cref{eq:finite-p-in-a} are
 \[
  P_n(a,q)=(-1)^nq^Na^n
- +(-1)^{n-1}q^{(n-1)(n-2)/2}[n]_q a^{n-1}+\bigO(a^{n-2}).
+ +(-1)^{n-1}q^{(n-1)(n-2)/2}[n]_q a^{n-1}+\BigO(a^{n-2}).
 \]
 Hence, for a chosen \(n\)-th root
 \(t=(y/((-1)^nq^N))^{1/n}\),
 \begin{equation}
- a=t+\frac{[n]_q}{nq^{n-1}}+\bigO(t^{-1}).
+ a=t+\frac{[n]_q}{nq^{n-1}}+\BigO(t^{-1}).
  \label{eq:a-inverse-infinity}
 \end{equation}
 There are \(n\) branches, obtained by multiplying \(t\) by the \(n\)-th roots
@@ -700,7 +679,7 @@ The coefficient of \(q^r\) in the normalized product is the finite subset sum
 \begin{equation}
  [q^r]\frac{P_n(a,q)}{1-a}
  =\sum_{\substack{S\subseteq\{1,\ldots,n-1\}\\sum_{j\in S}j=r}}
- (-a)^{\abs S}.
+ (-a)^{\AbsoluteValue S}.
  \label{eq:subset-small-q}
 \end{equation}
 This supplies all forward and inverse coefficients without differentiation.
@@ -709,15 +688,15 @@ For \(n\ge2\) and \(a\notin\{0,1\}\), put
 \[
  r=\frac{(1-a)-y}{a(1-a)}.
 \]
-The leading relation is \(r=q+\bigO(q^2)\), so the base inverse is ordinary.
+The leading relation is \(r=q+\BigO(q^2)\), so the base inverse is ordinary.
 
 \begin{proposition}[\statusproved\ Small-base inverse through cubic order]
 For the branch \(q\to0\),
 \[
 \begin{array}{rll}
  n=2:&q=r,&\text{exactly},\\[0.25em]
- n=3:&q=r-r^2+(2+a)r^3+\bigO(r^4),&\\[0.25em]
- n\ge4:&q=r-r^2+(1+a)r^3+\bigO(r^4).&
+ n=3:&q=r-r^2+(2+a)r^3+\BigO(r^4),&\\[0.25em]
+ n\ge4:&q=r-r^2+(1+a)r^3+\BigO(r^4).&
 \end{array}
 \]
 All later coefficients are obtained by applying the triangular reversion
@@ -725,9 +704,9 @@ recurrence to \cref{eq:subset-small-q}.
 \end{proposition}
 \begin{proof}
 For \(n=3\),
-\(r=q+q^2-aq^3+\bigO(q^4)\).  For \(n\ge4\), the subsets contributing through
+\(r=q+q^2-aq^3+\BigO(q^4)\).  For \(n\ge4\), the subsets contributing through
 degree three give
-\(r=q+q^2+(1-a)q^3+\bigO(q^4)\).  Reversion proves the formulas.
+\(r=q+q^2+(1-a)q^3+\BigO(q^4)\).  Reversion proves the formulas.
 \end{proof}
 
 The excluded cases are structural, not removable bookkeeping.  At \(a=0\),
@@ -735,15 +714,15 @@ The excluded cases are structural, not removable bookkeeping.  At \(a=0\),
 For \(n=1\), the product is independent of \(q\).
 
 \section{The logarithmic jet at \(q=1\)}
-Set \(q=\e^{-\varepsilon}\), and let
+Set \(q=\EulerE^{-\varepsilon}\), and let
 \(S_m(n)=\sum_{j=0}^{n-1}j^m\).  For \(|a|<1\), expansion of each logarithm and
 interchange of finite sums gives
 \begin{theorem}[\statusproved\ Complete finite-product jet at \(q=1\)]
 \begin{equation}
- \log P_n(a,\e^{-\varepsilon})
+ \log P_n(a,\EulerE^{-\varepsilon})
  =n\log(1-a)+\sum_{m\ge1}
  \frac{(-1)^{m+1}}{m!}
- \Li_{1-m}(a)S_m(n)\varepsilon^m.
+ \Polylogarithm_{1-m}(a)S_m(n)\varepsilon^m.
  \label{eq:finite-q1-logjet}
 \end{equation}
 The identity extends by analytic continuation in \(a\) on any simply connected
@@ -752,8 +731,8 @@ domain avoiding the moving zero set.
 \begin{proof}
 Use
 \[
- \log(1-a\e^{-j\varepsilon})
- =-\sum_{r\ge1}\frac{a^r}{r}\e^{-jr\varepsilon}
+ \log(1-a\EulerE^{-j\varepsilon})
+ =-\sum_{r\ge1}\frac{a^r}{r}\EulerE^{-jr\varepsilon}
 \]
 and expand the exponential.  The coefficient of \(\varepsilon^m\) is
 \(-1)^{m+1}\sum_r a^rr^{m-1}S_m(n)/m!\), which is the displayed
@@ -764,15 +743,15 @@ Let
 \[
  w=\log\frac{y}{(1-a)^n}=c_1\varepsilon+c_2\varepsilon^2+c_3\varepsilon^3+\cdots,
  \qquad
- c_m=\frac{(-1)^{m+1}}{m!}\Li_{1-m}(a)S_m(n).
+ c_m=\frac{(-1)^{m+1}}{m!}\Polylogarithm_{1-m}(a)S_m(n).
 \]
 If \(c_1=S_1(n)a/(1-a)\ne0\), then
 \begin{equation}
  \varepsilon=
  \frac{w}{c_1}-\frac{c_2}{c_1^3}w^2
  +\left(\frac{2c_2^2}{c_1^5}-\frac{c_3}{c_1^4}\right)w^3
- +\bigO(w^4),
- \qquad q=\e^{-\varepsilon}.
+ +\BigO(w^4),
+ \qquad q=\EulerE^{-\varepsilon}.
  \label{eq:finite-q1-base-inverse}
 \end{equation}
 The formula is uniform on compact auxiliary-parameter sets on which \(c_1\)
@@ -785,7 +764,7 @@ Let
  a_0=1-y^{1/n},
 \]
 with a chosen branch of the \(n\)-th root.  Solving
-\(P_n(a(\varepsilon),\e^{-\varepsilon})=y\) using
+\(P_n(a(\varepsilon),\EulerE^{-\varepsilon})=y\) using
 \cref{eq:finite-q1-logjet} gives the following mixed jet.
 
 \begin{theorem}[\statusproved\ Fixed-target argument inverse near \(q=1\)]
@@ -794,7 +773,7 @@ If \(a_0\ne1\), then
  a(\varepsilon)={}&a_0+\frac{n-1}{2}a_0\varepsilon \notag \\
  &+\frac{a_0(n-1)
  \bigl(2n-4-3a_0(n-1)\bigr)}{24(1-a_0)}\varepsilon^2
- +\bigO(\varepsilon^3).
+ +\BigO(\varepsilon^3).
  \label{eq:finite-a-q1-mixed}
 \end{align}
 The higher coefficients are rational functions of \(a_0,n\) generated
@@ -884,7 +863,7 @@ multiplication gives \cref{eq:exact-cubic-minus-one}.
 Let \(y_*=P_n(a_*,-1)\).  For \(n\ge4\), put \(L_2\) equal to the appropriate
 quantity in \cref{eq:L2-even,eq:L2-odd}.  The two branches are
 \begin{equation}
- q=-1\pm\sqrt{\frac{2(y-y_*)}{y_*L_2}}+\bigO(y-y_*).
+ q=-1\pm\sqrt{\frac{2(y-y_*)}{y_*L_2}}+\BigO(y-y_*).
  \label{eq:minus-one-fold-inverse}
 \end{equation}
 Since \(y_*>0\) and \(L_2<0\), the two nearby real branches occur for
@@ -906,19 +885,19 @@ factors vanish at \(q=-1\).  Let \(m=\lfloor n/2\rfloor\).  Then
 \begin{equation}
  (-1;q)_n=
  2^{\lceil n/2\rceil}(2m-1)!!\,(q+1)^m
- \bigl(1+\bigO(q+1)\bigr).
+ \bigl(1+\BigO(q+1)\bigr).
  \label{eq:minus-one-a-minus-one}
 \end{equation}
 Consequently the inverse at target zero has \(m\) Puiseux branches,
 \[
  q=-1+\omega_m^j
  \left(\frac{y}{2^{\lceil n/2\rceil}(2m-1)!!}\right)^{1/m}
- +\bigO(y^{2/m}).
+ +\BigO(y^{2/m}).
 \]
 \end{theorem}
 \begin{proof}
 For odd \(j=2r-1\),
-\(1+q^j=(2r-1)(q+1)+\bigO((q+1)^2)\).  Every even factor, including \(j=0\),
+\(1+q^j=(2r-1)(q+1)+\BigO((q+1)^2)\).  Every even factor, including \(j=0\),
 tends to \(2\).  Multiply the leading factors.
 \end{proof}
 
@@ -956,7 +935,7 @@ Thus infinity is an ordinary point after the ramified coordinate
 \begin{theorem}[\statusproved\ First large-base inverse terms]
 On any chosen \(N\)-th-root branch,
 \begin{equation}
- q=Y+\frac1{aN}+\bigO(Y^{-1}),
+ q=Y+\frac1{aN}+\BigO(Y^{-1}),
  \qquad
  Y=\left(\frac{y}{C(a)}\right)^{1/N}.
  \label{eq:p-large-q-inverse}
@@ -966,7 +945,7 @@ near infinity on the corresponding sheet.
 \end{theorem}
 \begin{proof}
 The product in \cref{eq:p-reciprocal-factorization} equals
-\(1-a^{-1}q^{-1}+\bigO(q^{-2})\).  Put \(q=Y+c+\bigO(Y^{-1})\).  Comparing the
+\(1-a^{-1}q^{-1}+\BigO(q^{-2})\).  Put \(q=Y+c+\BigO(Y^{-1})\).  Comparing the
 coefficient of \(Y^{-1}\) in
 \((q/Y)^N(1-a^{-1}q^{-1}+\cdots)=1\) gives \(Nc-a^{-1}=0\).
 \end{proof}
@@ -988,12 +967,12 @@ small-base subset-sum machinery and prevents catastrophic cancellation.
 \chapter{Order inversion, multiple arguments, and mixed recovery}
 
 \section{Complex order}
-For \(0<\abs q<1\), define
+For \(0<\AbsoluteValue q<1\), define
 \begin{equation}
  (a;q)_\alpha=\frac{(a;q)_\infty}{(aq^\alpha;q)_\infty},
  \label{eq:complex-order}
 \end{equation}
-with a chosen branch of \(q^\alpha=\e^{\alpha\Log q}\).  Its Lambert-series
+with a chosen branch of \(q^\alpha=\EulerE^{\alpha\PrincipalLogarithm q}\).  Its Lambert-series
 form is
 \begin{equation}
  \log(a;q)_\alpha
@@ -1005,7 +984,7 @@ form is
 On every domain of absolute convergence,
 \begin{equation}
  \partial_\alpha^m\log(a;q)_\alpha
- =(\Log q)^m\sum_{r\ge1}
+ =(\PrincipalLogarithm q)^m\sum_{r\ge1}
  \frac{r^{m-1}a^rq^{\alpha r}}{1-q^r},
  \qquad m\ge1.
  \label{eq:alpha-derivatives}
@@ -1019,34 +998,34 @@ If the first derivative is nonzero, every coefficient of the local inverse
 \(\alpha(y)\) follows from \cref{eq:LB} and \cref{eq:alpha-derivatives}.  If it
 vanishes, the first nonzero higher Lambert sum determines a Puiseux branch.
 The branch also depends on the logarithm used in \(q^\alpha\); shifting
-\(\Log q\) by \(2\pi\ii\) changes the global order covering.
+\(\PrincipalLogarithm q\) by \(2\pi\ImaginaryUnit\) changes the global order covering.
 
 \section{Near \(q=1\): Bernoulli-polynomial order jet}
 The generating identity
 \begin{equation}
- \frac{1-\e^{-\alpha x}}{1-\e^{-x}}
+ \frac{1-\EulerE^{-\alpha x}}{1-\EulerE^{-x}}
  =\sum_{j\ge0}
  \frac{B_{j+1}(1)-B_{j+1}(1-\alpha)}{(j+1)!}x^j
  \label{eq:bernoulli-ratio}
 \end{equation}
 gives, for fixed \(|a|<1\),
 \begin{equation}
- \log(a;\e^{-\varepsilon})_\alpha
+ \log(a;\EulerE^{-\varepsilon})_\alpha
  =-\sum_{j\ge0}
  \frac{B_{j+1}(1)-B_{j+1}(1-\alpha)}{(j+1)!}
- \Li_{1-j}(a)\varepsilon^j.
+ \Polylogarithm_{1-j}(a)\varepsilon^j.
  \label{eq:complex-order-q1}
 \end{equation}
 The leading term is \(\alpha\log(1-a)\), as required.  If the target \(y\) is
 fixed and
 \[
- \alpha_0=\frac{\Log y}{\Log(1-a)},
+ \alpha_0=\frac{\PrincipalLogarithm y}{\PrincipalLogarithm(1-a)},
 \]
 then, provided the chosen logarithms are consistent,
 \begin{equation}
  \alpha(\varepsilon)=\alpha_0-
- \frac{\alpha_0(\alpha_0-1)\Li_0(a)}{2\Log(1-a)}\varepsilon
- +\bigO(\varepsilon^2).
+ \frac{\alpha_0(\alpha_0-1)\Polylogarithm_0(a)}{2\PrincipalLogarithm(1-a)}\varepsilon
+ +\BigO(\varepsilon^2).
  \label{eq:alpha-inverse-q1}
 \end{equation}
 The coefficient is valid for complex \(\alpha_0\); no integrality is used.
@@ -1113,7 +1092,7 @@ Let \(s=1-y\).  Reversion gives
  &+(1-q)\left(
  \frac{2q^2}{(1+q)^2}
  -\frac{q^3}{(1+q)(1+q+q^2)}\right)s^3
- +\bigO(s^4).
+ +\BigO(s^4).
  \label{eq:infinite-a-near-zero}
 \end{align}
 The arbitrary coefficient is again
@@ -1129,7 +1108,7 @@ The zeros are \(a_m=q^{-m}\), \(m\ge0\), and are simple when \(q\) is not a
 root of unity.  The finite-product calculation passes to the limit.
 
 \begin{theorem}[\statusproved\ Exact derivative at every infinite-product zero]
-For \(0<\abs q<1\) and \(m\ge0\),
+For \(0<\AbsoluteValue q<1\) and \(m\ge0\),
 \begin{equation}
  \left.\partial_a(a;q)_\infty\right|_{a=q^{-m}}
  =(-1)^{m+1}q^{-m(m-1)/2}(q;q)_m(q;q)_\infty.
@@ -1139,7 +1118,7 @@ Thus
 \[
  a(y)=q^{-m}+
  \frac{(-1)^{m+1}q^{m(m-1)/2}}
- {(q;q)_m(q;q)_\infty}y+\bigO(y^2)
+ {(q;q)_m(q;q)_\infty}y+\BigO(y^2)
 \]
 on the branch through \(q^{-m}\).
 \end{theorem}
@@ -1163,7 +1142,7 @@ Then
 \begin{equation}
  \Aq(y)=1-\frac{y}{(q;q)_\infty}
  +L_1(q)\left(\frac{y}{(q;q)_\infty}\right)^2
- +\bigO(y^3).
+ +\BigO(y^3).
  \label{eq:principal-inverse-zero-target}
 \end{equation}
 Higher coefficients are polynomials in the Lambert sums
@@ -1192,29 +1171,29 @@ coincide with those of every finite product of order at least four.  With
 \]
 we therefore have
 \begin{equation}
- q=r-r^2+(1+a)r^3+\bigO(r^4).
+ q=r-r^2+(1+a)r^3+\BigO(r^4).
  \label{eq:infinite-base-zero-inverse}
 \end{equation}
 All orders follow from the subset-sum expansion over positive integers:
 \[
  [q^N]\frac{(a;q)_\infty}{1-a}
- =\sum_{\substack{S\subset\N_{>0}\text{ finite}\\sum S=N}}(-a)^{\abs S}.
+ =\sum_{\substack{S\subset\PositiveIntegers\text{ finite}\\sum S=N}}(-a)^{\AbsoluteValue S}.
 \]
 This is a weighted distinct-partition polynomial in \(a\).
 
 \section{Fixed argument and the essential singularity at \(q=1\)}
-For fixed \(|a|<1\), set \(q=\e^{-\varepsilon}\).  The Lambert series
+For fixed \(|a|<1\), set \(q=\EulerE^{-\varepsilon}\).  The Lambert series
 \[
  \log(a;q)_\infty=-\sum_{r\ge1}\frac{a^r}{r(1-q^r)}
 \]
-and the Bernoulli expansion of \((1-\e^{-x})^{-1}\) give
+and the Bernoulli expansion of \((1-\EulerE^{-x})^{-1}\) give
 \begin{theorem}[\statusproved\ McIntosh-type logarithmic expansion]
 \begin{equation}
- \log(a;\e^{-\varepsilon})_\infty
- =-\frac{\Li_2(a)}{\varepsilon}
+ \log(a;\EulerE^{-\varepsilon})_\infty
+ =-\frac{\Polylogarithm_2(a)}{\varepsilon}
  +\frac12\log(1-a)
  -\sum_{m\ge1}\frac{B_{2m}}{(2m)!}
- \Li_{2-2m}(a)\varepsilon^{2m-1}.
+ \Polylogarithm_{2-2m}(a)\varepsilon^{2m-1}.
  \label{eq:infinite-q1-forward}
 \end{equation}
 The equality is interpreted as an asymptotic expansion in sectors avoiding the
@@ -1223,7 +1202,7 @@ Stokes directions and the singularities of the chosen polylogarithm branches.
 \begin{proof}
 Insert
 \[
- \frac1{1-\e^{-x}}=\frac1x+\frac12+
+ \frac1{1-\EulerE^{-x}}=\frac1x+\frac12+
  \sum_{m\ge1}\frac{B_{2m}}{(2m)!}x^{2m-1}
 \]
 into the Lambert series and sum powers of \(r\) as polylogarithms.  Standard
@@ -1234,10 +1213,10 @@ classical asymptotic mechanism developed by McIntosh \cite{McIntosh1999}.
 
 For \(a\in(0,1)\), write
 \[
- A=\Li_2(a),
+ A=\Polylogarithm_2(a),
  \qquad B=\frac12\log(1-a),
- \qquad C=\frac1{12}\Li_0(a),
- \qquad E=\frac1{720}\Li_{-2}(a),
+ \qquad C=\frac1{12}\Polylogarithm_0(a),
+ \qquad E=\frac1{720}\Polylogarithm_{-2}(a),
 \]
 and \(X=-\log y+B\).  Then \(y\to0^+\) corresponds to \(X\to\infty\), and
 reversion of \cref{eq:infinite-q1-forward} gives
@@ -1245,8 +1224,8 @@ reversion of \cref{eq:infinite-q1-forward} gives
  \varepsilon=
  \frac{A}{X}+\frac{A^2C}{X^3}
  +\frac{2A^3C^2-A^4E}{X^5}
- +\bigO(X^{-7}),
- \qquad q=\e^{-\varepsilon}.
+ +\BigO(X^{-7}),
+ \qquad q=\EulerE^{-\varepsilon}.
  \label{eq:infinite-base-q1-inverse}
 \end{equation}
 This is the base inverse on the branch approaching \(q=1^-\).  Other complex
@@ -1285,7 +1264,7 @@ Let \(L=-\log y\), with \(L>0\), and seek
 \begin{theorem}[\statusproved\ Five-term fixed-target inverse]
 The principal solution of
 \[
- (a;\e^{-\varepsilon})_\infty=\e^{-L}
+ (a;\EulerE^{-\varepsilon})_\infty=\EulerE^{-L}
 \]
 has the expansion
 \begin{align}
@@ -1294,7 +1273,7 @@ has the expansion
  +\frac{L(L^2+9L+12)}{72}\varepsilon^3 \notag \\
  &-\frac{L(L^3+4L^2+12L+24)}{576}\varepsilon^4 \notag \\
  &-\frac{L(31L^4-75L^3-800L^2-720)}{86400}\varepsilon^5
- +\bigO(\varepsilon^6).
+ +\BigO(\varepsilon^6).
  \label{eq:double-scaling-five}
 \end{align}
 Every \(A_m(L)\) is a polynomial in \(L\) with rational coefficients and a
@@ -1303,8 +1282,8 @@ factor \(L\).
 \begin{proof}
 Start from the exact Lambert series
 \[
- \log(a;\e^{-\varepsilon})_\infty
- =-\sum_{r\ge1}\frac{a^r}{r(1-\e^{-r\varepsilon})}.
+ \log(a;\EulerE^{-\varepsilon})_\infty
+ =-\sum_{r\ge1}\frac{a^r}{r(1-\EulerE^{-r\varepsilon})}.
 \]
 Insert the Bernoulli expansion of the denominator and the ansatz for \(a\).
 At coefficient \(\varepsilon^{m-1}\), the new unknown \(A_m\) occurs only in
@@ -1330,9 +1309,9 @@ computation is finite and exact.
 \end{algorithm}
 
 \section{Complex targets and logarithm branches}
-For a complex target \(y\ne0\), choose \(L=-\Log y\).  Each logarithm branch
+For a complex target \(y\ne0\), choose \(L=-\PrincipalLogarithm y\).  Each logarithm branch
 produces a formal double-scaling branch.  The condition \(a\to0\) selects the
-same local balance, but different values \(L+2\pi\ii k\) lead to different
+same local balance, but different values \(L+2\pi\ImaginaryUnit k\) lead to different
 complex sheets.  Coalescence occurs at \(L=0\), where the fixed target is
 \(y=1\) and the leading coefficient vanishes; a new Newton polygon is then
 required.
@@ -1346,8 +1325,8 @@ For \((a;q)_\alpha\) as in \cref{eq:complex-order}, suppose
  \frac{1-q^{\alpha r}}{1-q^r}
  =(1-q^{\alpha r})(1+q^r+q^{2r}+\cdots).
 \]
-Unless \(\alpha\in\N\), the expansion at \(q=0\) belongs to the generalized
-power semigroup generated by \(1\) and \(\alpha\), not to \(\C[[q]]\).  If
+Unless \(\alpha\in\NaturalNumbers\), the expansion at \(q=0\) belongs to the generalized
+power semigroup generated by \(1\) and \(\alpha\), not to \(\ComplexNumbers[[q]]\).  If
 \(0<\Re\alpha<1\), the first order-dependent correction is \(q^\alpha\); if
 \(\Re\alpha>1\), the first correction is \(q\) and is independent of
 \(\alpha\), while order dependence enters later.
@@ -1377,15 +1356,15 @@ Put \(\alpha=n+\eta\).  From \cref{eq:alpha-derivatives},
 \begin{align}
  \log(a;q)_{n+\eta}
  ={}&\log(a;q)_n
- +\eta(\Log q)\sum_{r\ge1}
+ +\eta(\PrincipalLogarithm q)\sum_{r\ge1}
  \frac{a^rq^{nr}}{1-q^r} \notag \\
- &+\frac{\eta^2}{2}(\Log q)^2\sum_{r\ge1}
- \frac{ra^rq^{nr}}{1-q^r}+\bigO(\eta^3).
+ &+\frac{\eta^2}{2}(\PrincipalLogarithm q)^2\sum_{r\ge1}
+ \frac{ra^rq^{nr}}{1-q^r}+\BigO(\eta^3).
  \label{eq:order-near-integer}
 \end{align}
 This supplies a series in the order parameter itself and a local inverse
 \(\eta(y)\).  It is preferable to finite differencing integer products because
-it retains exact branch information through \(\Log q\).
+it retains exact branch information through \(\PrincipalLogarithm q\).
 
 \part{Gaussian coefficients and palindromic \(q\)-polynomials}
 
@@ -1394,7 +1373,7 @@ it retains exact branch information through \(\Log q\).
 \section{Restricted partitions at zero base}
 For \(0<k<n\), let
 \[
- G_{n,k}(q)=\qbinom nk,
+ G_{n,k}(q)=\GaussianBinomial{n}{k}{q},
  \qquad b=n-k,
  \qquad d=kb.
 \]
@@ -1417,7 +1396,7 @@ These are the numbers of rectangle-compatible partitions of \(2\) and \(3\).
 \begin{theorem}[\statusproved\ Gaussian inverse at \(q=0\)]
 For every \(0<k<n\),
 \begin{equation}
- q=u-c_2u^2+(2c_2^2-c_3)u^3+\bigO(u^4).
+ q=u-c_2u^2+(2c_2^2-c_3)u^3+\BigO(u^4).
  \label{eq:gaussian-q0-inverse}
 \end{equation}
 More generally,
@@ -1440,21 +1419,21 @@ Using
 \[
  G_{n,k}(q)=\prod_{j=1}^k\frac{1-q^{b+j}}{1-q^j}
 \]
-and \(q=\e^{-\varepsilon}\), define
+and \(q=\EulerE^{-\varepsilon}\), define
 \[
  \Delta_m=S_m(n)-S_m(k)-S_m(b),
  \qquad S_m(N)=\sum_{j=1}^{N}j^m.
 \]
 The elementary expansion
 \[
- \log\frac{1-\e^{-x}}x
+ \log\frac{1-\EulerE^{-x}}x
  =-\frac x2+\sum_{r\ge1}
  \frac{B_{2r}}{2r(2r)!}x^{2r}
 \]
 yields
 \begin{theorem}[\statusproved\ Complete Gaussian logarithmic jet]
 \begin{equation}
- \log G_{n,k}(\e^{-\varepsilon})
+ \log G_{n,k}(\EulerE^{-\varepsilon})
  =\log\binom nk-\frac d2\varepsilon
  +\sum_{r\ge1}
  \frac{B_{2r}\Delta_{2r}}{2r(2r)!}\varepsilon^{2r}.
@@ -1476,8 +1455,8 @@ For \(0<k<n\),
  \varepsilon=-\frac{2v}{d}
  +\frac{\Delta_2}{3d^3}v^2
  -\frac{\Delta_2^2}{9d^5}v^3
- +\bigO(v^4),
- \qquad q=\e^{-\varepsilon}.
+ +\BigO(v^4),
+ \qquad q=\EulerE^{-\varepsilon}.
  \label{eq:gaussian-q1-inverse}
 \end{equation}
 The coefficient of \(v^4\) is the first one involving \(\Delta_4\).
@@ -1507,8 +1486,8 @@ with \(P\) nonconstant.  Define a random variable \(X\) by
 For real \(\varepsilon\), set
 \begin{equation}
  H_P(\varepsilon)=
- \frac{\e^{D\varepsilon/2}P(\e^{-\varepsilon})}{P(1)}
- =\E\e^{-\varepsilon(X-D/2)}.
+ \frac{\EulerE^{D\varepsilon/2}P(\EulerE^{-\varepsilon})}{P(1)}
+ =\Expectation\EulerE^{-\varepsilon(X-D/2)}.
  \label{eq:centered-palindromic}
 \end{equation}
 
@@ -1522,16 +1501,16 @@ equation \(H_P(\varepsilon)=h\) has exactly two real solutions
 \begin{proof}
 Let \(Z=X-D/2\).  Symmetry gives \(Z\overset d=-Z\), hence
 \[
- H_P(\varepsilon)=\E\cosh(\varepsilon Z).
+ H_P(\varepsilon)=\Expectation\cosh(\varepsilon Z).
 \]
 It is even and at least one.  For \(\varepsilon>0\),
 \[
- H_P'(\varepsilon)=\E[Z\sinh(\varepsilon Z)]>0,
+ H_P'(\varepsilon)=\Expectation[Z\sinh(\varepsilon Z)]>0,
 \]
 because \(z\sinh(\varepsilon z)\ge0\) and the nonconstant polynomial makes it
 positive with nonzero probability.  Since \(c_0=c_D>0\), the endpoint terms
 force exponential growth.  Finally,
-\(H_P(\varepsilon)=1+\Var(X)\varepsilon^2/2+\cdots\), so the local inverse is
+\(H_P(\varepsilon)=1+\Variance(X)\varepsilon^2/2+\cdots\), so the local inverse is
 square-root.
 \end{proof}
 
@@ -1557,7 +1536,7 @@ Reversion in \(\varepsilon^2\) gives
  &\qquad+
  \left(\frac{7\kappa_4^2}{288\kappa_2^4}
        -\frac{\kappa_6}{180\kappa_2^3}\right)u^2
- +\bigO(u^3)
+ +\BigO(u^3)
  \Biggr].
  \label{eq:centered-puiseux}
 \end{align}
@@ -1622,7 +1601,7 @@ Then
 \begin{equation}
  G_{n,k}'(\zeta)=\Phi_m'(\zeta)R_m(\zeta)\ne0,
  \qquad
- q(y)=\zeta+\frac{y}{\Phi_m'(\zeta)R_m(\zeta)}+\bigO(y^2).
+ q(y)=\zeta+\frac{y}{\Phi_m'(\zeta)R_m(\zeta)}+\BigO(y^2).
  \label{eq:gaussian-root-inverse}
 \end{equation}
 Thus Gaussian root-of-unity inverses are ordinary.  Higher Puiseux behavior at
@@ -1649,7 +1628,7 @@ If \(n=2m\) and \(k=2r+1\), with \(0\le r<m\), then
 \end{equation}
 Hence
 \[
- q=-1+\frac{y}{(m-r)\binom mr}+\bigO(y^2)
+ q=-1+\frac{y}{(m-r)\binom mr}+\BigO(y^2)
 \]
 for the inverse branch through the alternating zero.
 \end{theorem}
@@ -1698,7 +1677,7 @@ with \(c_2,c_3\) as in \cref{eq:c2c3-rectangle}, and put
 \begin{align}
  q={}&Y-\frac1d
  +\left(\frac{d-1}{2d^2}-\frac{c_2}{d}\right)Y^{-1}
- +\bigO(Y^{-2}).
+ +\BigO(Y^{-2}).
  \label{eq:gaussian-large-q}
 \end{align}
 The coefficient of \(Y^{-2}\) is
@@ -1728,7 +1707,7 @@ For \(0<q<1\), define
  {\Gamma_q(\beta+1)\Gamma_q(\alpha-\beta+1)}.
  \label{eq:continuous-gaussian}
 \end{equation}
-It agrees with \(\qbinom nk\) at integers.  Let \(\psi_q\) denote the
+It agrees with \(\GaussianBinomial{n}{k}{q}\) at integers.  Let \(\psi_q\) denote the
 \(q\)-digamma function.  Then
 \begin{align}
  \partial_\alpha\log\mathcal G_q
@@ -1763,10 +1742,10 @@ identity proves the midpoint statement.
 
 Near \(q=1\), the q-gamma expansion derived later implies
 \begin{equation}
- \log\mathcal G_{\e^{-\varepsilon}}(\alpha,\beta)
+ \log\mathcal G_{\EulerE^{-\varepsilon}}(\alpha,\beta)
  =\log\frac{\Gamma(\alpha+1)}
  {\Gamma(\beta+1)\Gamma(\alpha-\beta+1)}
- -\frac{\beta(\alpha-\beta)}2\varepsilon+\bigO(\varepsilon^2).
+ -\frac{\beta(\alpha-\beta)}2\varepsilon+\BigO(\varepsilon^2).
  \label{eq:continuous-gaussian-q1}
 \end{equation}
 Hence the base inverse is ordinary whenever
@@ -1830,14 +1809,14 @@ different singular mechanisms at different targets.
 For \(q\ne1\), define
 \[
  [x]_q=\frac{1-q^x}{1-q},
- \qquad q^x=\e^{x\Log q}.
+ \qquad q^x=\EulerE^{x\PrincipalLogarithm q}.
 \]
 Inversion in \(x\) is elementary once a logarithm branch is chosen:
 \begin{equation}
- x=\frac{\Log\bigl(1-(1-q)y\bigr)}{\Log q}.
+ x=\frac{\PrincipalLogarithm\bigl(1-(1-q)y\bigr)}{\PrincipalLogarithm q}.
  \label{eq:qnumber-x-inverse}
 \end{equation}
-The branch points are inherited from both logarithms.  When \(x=m\in\N\),
+The branch points are inherited from both logarithms.  When \(x=m\in\NaturalNumbers\),
 inversion in \(q\) is algebraic because
 \[
  [m]_q=1+q+\cdots+q^{m-1}
@@ -1847,16 +1826,16 @@ At \(q=0\), let \(u=y-1\).  Then
 \[
 \begin{array}{rll}
  m=2:&q=u,&\text{exactly},\\
- m=3:&q=u-u^2+2u^3+\bigO(u^4),&\\
- m\ge4:&q=u-u^2+u^3+\bigO(u^4).&
+ m=3:&q=u-u^2+2u^3+\BigO(u^4),&\\
+ m\ge4:&q=u-u^2+u^3+\BigO(u^4).&
 \end{array}
 \]
-At \(q=\e^{-\varepsilon}\to1\),
+At \(q=\EulerE^{-\varepsilon}\to1\),
 \begin{align}
- [x]_{\e^{-\varepsilon}}={}&x+
+ [x]_{\EulerE^{-\varepsilon}}={}&x+
  \frac{x(1-x)}2\varepsilon
  +\frac{x(2x^2-3x+1)}{12}\varepsilon^2 \notag \\
- &-\frac{x^2(x-1)^2}{24}\varepsilon^3+\bigO(\varepsilon^4).
+ &-\frac{x^2(x-1)^2}{24}\varepsilon^3+\BigO(\varepsilon^4).
  \label{eq:qnumber-q1}
 \end{align}
 Thus, for \(x\notin\{0,1\}\),
@@ -1864,7 +1843,7 @@ Thus, for \(x\notin\{0,1\}\),
  \varepsilon=
  \frac{2(y-x)}{x(1-x)}
  +\frac{2(2x-1)}{3x^2(x-1)^2}(y-x)^2
- +\bigO((y-x)^3).
+ +\BigO((y-x)^3).
  \label{eq:qnumber-q1-inverse}
 \end{equation}
 The values \(x=0\) and \(x=1\) are unidentifiable because the q-number is
@@ -1888,34 +1867,34 @@ Let
 \]
 At zero base,
 \begin{equation}
- [n]_q!=1+(n-1)q+\frac{(n-2)(n+1)}2q^2+\bigO(q^3).
+ [n]_q!=1+(n-1)q+\frac{(n-2)(n+1)}2q^2+\BigO(q^3).
  \label{eq:qfactorial-zero}
 \end{equation}
 For \(n\ge2\) and \(u=y-1\),
 \begin{equation}
  q=\frac{u}{n-1}
- -\frac{(n-2)(n+1)}{2(n-1)^3}u^2+\bigO(u^3).
+ -\frac{(n-2)(n+1)}{2(n-1)^3}u^2+\BigO(u^3).
  \label{eq:qfactorial-zero-inverse}
 \end{equation}
 
 \begin{theorem}[\statusproved\ Exact alternating ramification of q-factorials]
 Let \(m=\lfloor n/2\rfloor\).  Then
 \begin{equation}
- [n]_q!=m!\,(q+1)^m\bigl(1+\bigO(q+1)\bigr)
+ [n]_q!=m!\,(q+1)^m\bigl(1+\BigO(q+1)\bigr)
  \qquad(q\to-1).
  \label{eq:qfactorial-minus-one}
 \end{equation}
 Hence the inverse at target zero is
 \begin{equation}
  q=-1+\omega_m^j\left(\frac{y}{m!}\right)^{1/m}
- +\bigO(y^{2/m}),
+ +\BigO(y^{2/m}),
  \qquad 0\le j<m.
  \label{eq:qfactorial-minus-one-inverse}
 \end{equation}
 \end{theorem}
 \begin{proof}
 Exactly the even q-numbers vanish.  For \(j=2r\),
-\([2r]_q=r(q+1)+\bigO((q+1)^2)\), while every odd q-number tends to \(1\).
+\([2r]_q=r(q+1)+\BigO((q+1)^2)\), while every odd q-number tends to \(1\).
 Multiplying \(r=1,\ldots,m\) proves the result.
 \end{proof}
 
@@ -1930,12 +1909,12 @@ Thus q-factorials supply arbitrarily high root-of-unity inverse ramification.
 
 At infinity, with \(N=\binom n2\),
 \[
- [n]_q!=q^N\left(1+\frac{n-1}{q}+\bigO(q^{-2})\right),
+ [n]_q!=q^N\left(1+\frac{n-1}{q}+\BigO(q^{-2})\right),
 \]
 so, on a chosen root branch,
 \begin{equation}
- q=y^{1/N}-\frac{n-1}{N}+\bigO(y^{-1/N})
- =y^{1/N}-\frac2n+\bigO(y^{-1/N}).
+ q=y^{1/N}-\frac{n-1}{N}+\BigO(y^{-1/N})
+ =y^{1/N}-\frac2n+\BigO(y^{-1/N}).
  \label{eq:qfactorial-infinity-inverse}
 \end{equation}
 
@@ -1968,7 +1947,7 @@ Thus \(\Gamma_q\) has the same two-branch real argument geometry as the ordinary
 gamma function: its logarithm is strictly convex and has one minimum.
 
 \section{All-order algebraic expansion at \(q=1\)}
-Set \(q=\e^{-\varepsilon}\).  The following coefficient functions are
+Set \(q=\EulerE^{-\varepsilon}\).  The following coefficient functions are
 polynomials in \(x\):
 \begin{align}
  c_1(x)&=-\frac{(x-1)(x-2)}4, \label{eq:qgamma-c1}\\
@@ -1982,7 +1961,7 @@ polynomials in \(x\):
 \begin{theorem}[\statusproved\ q-gamma expansion and odd-power cancellation]
 Uniformly for \(x\) in compact subsets of the positive half-plane,
 \begin{equation}
- \log\Gamma_{\e^{-\varepsilon}}(x)
+ \log\Gamma_{\EulerE^{-\varepsilon}}(x)
  \sim \log\Gamma(x)+c_1(x)\varepsilon
  +\sum_{r\ge1}c_{2r}(x)\varepsilon^{2r}.
  \label{eq:qgamma-expansion}
@@ -1998,7 +1977,7 @@ No odd algebraic power beyond \(\varepsilon^1\) occurs.  In particular,
 Subtract \(\log\Gamma(x)\) from the logarithm of the functional equation.  By
 \cref{eq:qnumber-q1},
 \begin{equation}
- \log\frac{[x]_{\e^{-\varepsilon}}}{x}
+ \log\frac{[x]_{\EulerE^{-\varepsilon}}}{x}
  =-\frac{x-1}{2}\varepsilon
  +\sum_{r\ge1}\frac{B_{2r}(x^{2r}-1)}{2r(2r)!}
  \varepsilon^{2r}.
@@ -2008,7 +1987,7 @@ If \(C_m(x)\) is the coefficient of \(\varepsilon^m\) in the left side of
 \cref{eq:qgamma-expansion}, then
 \[
  C_m(x+1)-C_m(x)=[\varepsilon^m]
- \log\frac{[x]_{\e^{-\varepsilon}}}{x},
+ \log\frac{[x]_{\EulerE^{-\varepsilon}}}{x},
  \qquad C_m(1)=0.
 \]
 The Bernoulli identity
@@ -2028,8 +2007,8 @@ Since \(c_1(x)\ne0\), the branch \(q\to1\) is ordinary:
 \begin{equation}
  \varepsilon=\frac{v}{c_1}
  -\frac{c_2}{c_1^3}v^2
- +\frac{2c_2^2}{c_1^5}v^3+\bigO(v^4),
- \qquad q=\e^{-\varepsilon}.
+ +\frac{2c_2^2}{c_1^5}v^3+\BigO(v^4),
+ \qquad q=\EulerE^{-\varepsilon}.
  \label{eq:qgamma-base-inverse}
 \end{equation}
 At \(x=1\) and \(x=2\), \(\Gamma_q(x)\equiv1\), so no local base inverse
@@ -2059,14 +2038,14 @@ positive real argument inverse.
 
 Differentiating \cref{eq:qgamma-expansion} gives
 \begin{equation}
- \psi_{\e^{-\varepsilon}}(x)
+ \psi_{\EulerE^{-\varepsilon}}(x)
  \sim\psi(x)+c_1'(x)\varepsilon+
  \sum_{r\ge1}c_{2r}'(x)\varepsilon^{2r}.
  \label{eq:qdigamma-q1}
 \end{equation}
 For a fixed target and an ordinary inverse-digamma point \(x_0\),
 \[
- x=x_0-\frac{c_1'(x_0)}{\psi'(x_0)}\varepsilon+\bigO(\varepsilon^2).
+ x=x_0-\frac{c_1'(x_0)}{\psi'(x_0)}\varepsilon+\BigO(\varepsilon^2).
 \]
 For base inversion at fixed \(x\), the linear coefficient
 \[
@@ -2075,8 +2054,8 @@ For base inversion at fixed \(x\), the linear coefficient
 vanishes only at \(x=3/2\).  Since
 \(c_2'(3/2)=-1/288\), this point has a square-root base inverse:
 \begin{equation}
- \psi_{\e^{-\varepsilon}}(3/2)-\psi(3/2)
- =-\frac{\varepsilon^2}{288}+\bigO(\varepsilon^4).
+ \psi_{\EulerE^{-\varepsilon}}(3/2)-\psi(3/2)
+ =-\frac{\varepsilon^2}{288}+\BigO(\varepsilon^4).
  \label{eq:qdigamma-critical}
 \end{equation}
 All other fixed positive \(x\) have an ordinary base inverse at \(q=1\).
@@ -2104,8 +2083,8 @@ reciprocal of the displayed difference.
 \section{Base expansion and the curve \(xy=1\)}
 Combining three copies of \cref{eq:qgamma-expansion} gives
 \begin{equation}
- \log\frac{B_{\e^{-\varepsilon}}(x,y)}{B(x,y)}
- =b_1(x,y)\varepsilon+b_2(x,y)\varepsilon^2+\bigO(\varepsilon^4),
+ \log\frac{B_{\EulerE^{-\varepsilon}}(x,y)}{B(x,y)}
+ =b_1(x,y)\varepsilon+b_2(x,y)\varepsilon^2+\BigO(\varepsilon^4),
  \label{eq:qbeta-q1}
 \end{equation}
 where
@@ -2136,18 +2115,18 @@ unless \(x=1\).  The identity at \((1,1)\) follows from
 
 If \(v=\log(B_q/B)\), then off the critical curve
 \[
- \varepsilon=\frac{v}{b_1}-\frac{b_2}{b_1^3}v^2+\bigO(v^3).
+ \varepsilon=\frac{v}{b_1}-\frac{b_2}{b_1^3}v^2+\BigO(v^3).
 \]
 On \(xy=1\), \(x\ne1\),
 \[
- \varepsilon=\pm\sqrt{\frac{v}{b_2}}+\bigO(v).
+ \varepsilon=\pm\sqrt{\frac{v}{b_2}}+\BigO(v).
 \]
 For the real branch \(0<q<1\), retain the sign with \(\varepsilon>0\).
 
 \chapter{Euler q-exponentials, basic hypergeometric series, and theta products}
 
 \section{Euler q-exponentials reduce exactly to Pochhammer inversion}
-For \(0<\abs q<1\), use the conventions
+For \(0<\AbsoluteValue q<1\), use the conventions
 \[
  e_q(z)=\frac1{(z;q)_\infty},
  \qquad
@@ -2168,9 +2147,9 @@ with a transformed target.
 
 Near \(z=0\), \cref{eq:infinite-a-near-zero} immediately gives
 \[
- e_q^{-1}(1+s)=(1-q)s+\bigO(s^2),
+ e_q^{-1}(1+s)=(1-q)s+\BigO(s^2),
  \qquad
- E_q^{-1}(1+s)=(1-q)s+\bigO(s^2),
+ E_q^{-1}(1+s)=(1-q)s+\BigO(s^2),
 \]
 with different higher coefficients because one target is reciprocated and the
 other argument is negated.
@@ -2200,7 +2179,7 @@ singularity is incorrectly reported as an inverse branch point.
 
 \section{Parameter inversion near a truncation locus}
 Write \(a_i=q^{-N}(1+\eta)\).  The factor \((a_i;q)_n\) contains one small term
-when \(n>N\), so the tail of the hypergeometric series is \(\bigO(\eta)\).
+when \(n>N\), so the tail of the hypergeometric series is \(\BigO(\eta)\).
 At \(\eta=0\), the function is a polynomial \(F_N(z)\).  If
 \(\partial_\eta F\ne0\), \(\eta\) has an ordinary inverse at fixed \(z\).  If
 that derivative vanishes at a root or critical point of \(F_N\), the joint
@@ -2214,10 +2193,10 @@ Use
  \vartheta(z;q)=(z;q)_\infty(q/z;q)_\infty(q;q)_\infty.
  \label{eq:multiplicative-theta}
 \end{equation}
-For fixed \(0<\abs q<1\), its zeros \(z=q^m\), \(m\in\Z\), are simple.  Hence
+For fixed \(0<\AbsoluteValue q<1\), its zeros \(z=q^m\), \(m\in\IntegerNumbers\), are simple.  Hence
 the argument inverse at target zero is ordinary on every sheet:
 \[
- z=q^m+\frac{y}{\partial_z\vartheta(q^m;q)}+\bigO(y^2).
+ z=q^m+\frac{y}{\partial_z\vartheta(q^m;q)}+\BigO(y^2).
 \]
 The quasi-periodicity
 \(
@@ -2228,7 +2207,7 @@ transports the derivative normalization from one zero to all others.
 Base inversion is more delicate.  Near \(q=0\), the Laurent/Fourier series gives
 an ordinary or Puiseux jet according to the first nonzero q-power.  Near
 \(q=1\), modular transformation produces exponential scales
-\(\e^{-\pi^2/\varepsilon}\), so a complete inverse is a transseries rather than
+\(\EulerE^{-\pi^2/\varepsilon}\), so a complete inverse is a transseries rather than
 a Bernoulli power series.  The dominant exponential is inverted by a logarithm
 or Lambert \(W\); the modular images determine the Stokes corrections.
 
@@ -2246,10 +2225,10 @@ reciprocal two-branch geometry.
 \chapter{An effective geometric base for the Rvachev infinite sinc product}
 
 \section{A one-parameter compactly supported convolution family}
-Let \(\operatorname{sinc}z=\sin z/z\), and for \(0<q<1\) define
+Let \(\SincRad z=\sin z/z\), and for \(0<q<1\) define
 \begin{equation}
  \widehat U_q(t)=\prod_{j\ge0}
- \operatorname{sinc}\bigl((1-q)q^jt\bigr).
+ \SincRad\bigl((1-q)q^jt\bigr).
  \label{eq:geometric-sinc-family}
 \end{equation}
 Probabilistically, this is the characteristic function of the sum of
@@ -2257,7 +2236,7 @@ independent centered uniform random variables whose half-widths are
 \((1-q)q^j\).  Their widths sum to one, so the corresponding density is
 supported on \([-1,1]\).  At \(q=1/2\),
 \[
- \widehat U_{1/2}(t)=\prod_{r\ge1}\operatorname{sinc}(t/2^r),
+ \widehat U_{1/2}(t)=\prod_{r\ge1}\SincRad(t/2^r),
 \]
 which is the standard infinite sinc product underlying the Rvachev up-function,
 up to Fourier-transform normalization.  Its cumulative form is correspondingly
@@ -2267,7 +2246,7 @@ corpus.
 \section{Cumulants and a globally identifiable base}
 Euler's sine product gives
 \[
- \log\operatorname{sinc}z
+ \log\SincRad z
  =-\sum_{m\ge1}\frac{\zeta(2m)}{m\pi^{2m}}z^{2m}.
 \]
 Therefore
@@ -2308,7 +2287,7 @@ Thus if an observed normalized cumulant ratio is
 \(R_m=1/(2^{2m}-1)+\delta\), its effective-base inverse is
 \begin{equation}
  q=\frac12-
- \frac{(2^{2m}-1)^2}{4m(2^{2m}-2)}\delta+\bigO(\delta^2).
+ \frac{(2^{2m}-1)^2}{4m(2^{2m}-2)}\delta+\BigO(\delta^2).
  \label{eq:effective-dyadic-base}
 \end{equation}
 This gives a direct inverse bridge between Fabius--Rvachev moment data and the
@@ -2340,7 +2319,7 @@ regular:
 Regime & Forward coordinate & Inverse coordinate \\
 \midrule
 \(q\approx0\) & \(q\) or \(q^{1/s}\) & ordinary/Puiseux series \\
-\(q\approx1\) & \(\varepsilon=-\Log q\) & logarithmic target \(w=\Log(y/y_0)\) \\
+\(q\approx1\) & \(\varepsilon=-\PrincipalLogarithm q\) & logarithmic target \(w=\PrincipalLogarithm(y/y_0)\) \\
 \(q\approx-1\) & \(h=q+1\) & \(h=(y-y_0)^{1/m}v\) \\
 root \(\zeta\) & \(h=q-\zeta\) & cyclotomic multiplicity coordinate \\
 \(q\approx\infty\) & \(Q=q^{-1}\) & \(Y=y^{1/D}\), then Laurent reversion \\
@@ -2593,7 +2572,7 @@ Recovered variable & Base point & Type & Leading coordinate/criterion \\
 \(a\sim(y/((-1)^nq^{\binom n2}))^{1/n}\) \\
 \(q\) & \(q=0\) & Taylor & normalized target \(r\),
 \cref{eq:subset-small-q} \\
-\(q\) & \(q=1\) & Taylor & \(\varepsilon=-\Log q\), logarithmic target
+\(q\) & \(q=1\) & Taylor & \(\varepsilon=-\PrincipalLogarithm q\), logarithmic target
 \(w\) \\
 \(q\) & \(q=-1,a=a_*\) & square-root & fold for \(n\ge4\) \\
 \(q\) & \(q=-1,n=3,a=-1/3\) & cubic root & exact
@@ -2641,7 +2620,7 @@ For \(w=c_1z+c_2z^2+c_3z^3+c_4z^4+\cdots\),
  z={}&\frac{w}{c_1}-\frac{c_2}{c_1^3}w^2
  +\frac{2c_2^2-c_1c_3}{c_1^5}w^3 \\
  &+\frac{-5c_2^3+5c_1c_2c_3-c_1^2c_4}{c_1^7}w^4
- +\bigO(w^5).
+ +\BigO(w^5).
 \end{align*}
 For implementation, the recurrence in Part I avoids expression swell from
 closed Bell-polynomial formulas.
@@ -2656,7 +2635,7 @@ and \(\xi=((y-y_0)/A)^{1/2}\), then
 \[
  z=\pm\xi-\frac{B}{2A}\xi^2
  \pm\left(\frac{5B^2}{8A^2}-\frac{C}{2A}\right)\xi^3
- +\bigO(\xi^4).
+ +\BigO(\xi^4).
 \]
 The signs on odd powers follow the selected square-root sheet.
 
@@ -2679,7 +2658,7 @@ then
  -\frac{c_1^3(D-1)(2D-1)}{3D^3}
  +\frac{2c_1c_2(D-1)}{D^2}
  -\frac{c_3}{D}
- \right)Y^{-2}+\bigO(Y^{-3}).
+ \right)Y^{-2}+\BigO(Y^{-3}).
 \end{align*}
 This single template yields
 \cref{eq:p-large-q-inverse,eq:gaussian-large-q,eq:qfactorial-infinity-inverse}.

@@ -5,6 +5,7 @@
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,array,tabularx,multirow}
 \usepackage{graphicx}
 \usepackage{caption}
@@ -92,30 +93,8 @@
 \crefname{warning}{warning}{warnings}
 \Crefname{warning}{Warning}{Warnings}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sincpi}{\operatorname{sinc}_{\pi}}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
 \newcommand{\eps}{\varepsilon}
-\newcommand{\vtwo}{\nu_2}
-\newcommand{\wt}{s_2}
 \newcommand{\fall}[2]{#1^{\underline{#2}}}
-\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
-\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
-\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
-\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\Span}{\operatorname{span}}
 \DeclareMathOperator{\ord}{ord}
 \newcommand{\Bell}{Y}
 \newcommand{\ThetaTM}{\Theta}
@@ -158,7 +137,7 @@ operator transmutation, and self-reconstruction}
 
 \begin{abstract}
 \noindent
-Let $u=\Up$ be Rvachev's even $C^\infty$ probability density supported
+Let $u=\RvachevUp$ be Rvachev's even $C^\infty$ probability density supported
 on $[-1,1]$.  This volume consolidates thirteen independently developed
 frontier reports: three exact-polynomial synthesis packages, six
 Lagrange--Rvachev cardinal-loop packages, and four Legendre--Rvachev
@@ -181,7 +160,7 @@ basis represents every $P\in\PiD$ by $d+2$ common-scale atoms; no
 fixed dictionary of nontrivial affine up-atoms spanning $\PiD$ can do
 better; and an output-sensitive algorithm with Bernoulli differential
 symbol $H_d(z)=(z/2\sinh(z/2))^{d}/\MM_u(z)$ computes the coefficients
-in $\bigO(d^{2})$ exact operations.  Polynomiality of an arbitrary
+in $\BigO(d^{2})$ exact operations.  Polynomiality of an arbitrary
 local up-spline is decided by a \emph{single scalar}, which after one
 finite difference becomes a signed Thue--Morse block sum; the
 one-dimensional nonpolynomial defect has an explicit odd-frequency
@@ -205,10 +184,10 @@ operator for polynomial data.
 \emph{The oversampled lattice.}  A third construction detaches the
 dictionary from its special lattice: the reproduction order of the
 translate system at radius-to-spacing ratio $m$ is exactly
-$\vtwo(m)$, the physical scale is free, and an explicit interval
+$\TwoAdicValuation(m)$, the physical scale is free, and an explicit interval
 algorithm produces, for any prescribed atom radius $\rho$, an exact
 plateau supported in $[A-2\rho,B+2\rho]$ described by only
-$\bigO(d)$ field elements with $(2m+1)$-local evaluation.  Its
+$\BigO(d)$ field elements with $(2m+1)$-local evaluation.  Its
 real-space face is a ghost-atom antiderivative calculus and the exact
 dyadic derivative stencil
 $D^{d}\,u\bigl((x-c)/2^{d}h\bigr)
@@ -286,24 +265,24 @@ its claim boundary is recorded after \cref{thm:scale-classification}.
 
 \subsection*{Notation}
 
-$u=\Up$ as in the corpus; $\widehat f(\xi)=\int f\,\e^{-2\pi\ii\xi x}\dd x$;
-$\widehat u(\xi)=\prod_{j\ge0}\sincpi(\xi/2^{j})$ with
-$\ord_{\xi=n}\widehat u=1+\vtwo(n)$ at nonzero integers $n$.  The
+$u=\RvachevUp$ as in the corpus; $\widehat f(\xi)=\int f\,\EulerE^{-2\pi\ImaginaryUnit\xi x}\Differential x$;
+$\widehat u(\xi)=\prod_{j\ge0}\SincPi(\xi/2^{j})$ with
+$\ord_{\xi=n}\widehat u=1+\TwoAdicValuation(n)$ at nonzero integers $n$.  The
 normalized Fabius function on the unit interval is
-$F(t):=u(1-t)$ for $0\le t\le1$; hence
-$u(x)=F(1-|x|)$ on $[-1,1]$.  Where an endpoint estimate evaluates
-$F(t)$ for $t\ge1$, we use the explicit constant-extension convention
-$F(t)=1$.  The
+$\FabiusBounded(t):=u(1-t)$ for $0\le t\le1$; hence
+$u(x)=\FabiusBounded(1-|x|)$ on $[-1,1]$.  Where an endpoint estimate evaluates
+$\FabiusBounded(t)$ for $t\ge1$, we use the explicit constant-extension convention
+$\FabiusBounded(t)=1$.  The
 probability model is $Z=\sum_{j\ge1}2^{-j}V_j$, $V_j$ i.i.d.\ uniform
 on $[-1,1]$, with density $u$, moment generating function
-$\MM_u(z)=\E\,\e^{zZ}=\prod_{j\ge1}\frac{\sinh(z/2^{j})}{z/2^{j}}$,
+$\MM_u(z)=\Expectation\,\EulerE^{zZ}=\prod_{j\ge1}\frac{\sinh(z/2^{j})}{z/2^{j}}$,
 even moments $\mu_{2r}$ ($\mu_2=\tfrac19$, $\mu_4=\tfrac{19}{675}$,
 $\mu_6=\tfrac{583}{59535}$, \dots), and cumulants
 $\kappa_{2m}=B_{2m}/\bigl(2m(1-4^{-m})\bigr)$.  Two dual Appell
 families recur:
 \begin{equation}
  \begin{aligned}
- G_n(y)&:=\E\,(y-Z)^{n}=\MM_u(D)\,y^{n}
+ G_n(y)&:=\Expectation\,(y-Z)^{n}=\MM_u(D)\,y^{n}
  =\sum_{r}\binom nr\mu_r\,y^{n-r},\\
  \Gd_n(y)&:=\MM_u(D)^{-1}y^{n}
  =\sum_{r}\binom nr\gamma_r\,y^{n-r},
@@ -326,7 +305,7 @@ $1/\MM_u(z)=\sum_r\gamma_rz^{r}/r!$ with
 odd coefficients zero, and
 $\gamma_r=\Bell_r(-\kappa_1,\dots,-\kappa_r)$ (complete Bell
 polynomials in the negated cumulants).  Thue--Morse signs are
-$\eps_r=(-1)^{\wt(r)}$, the finite product is
+$\eps_r=(-1)^{\BinaryDigitSum(r)}$, the finite product is
 $\ThetaTM_m(z)=\prod_{j<m}(1-z^{2^{j}})=\sum_{r<2^{m}}\eps_rz^{r}$,
 and $p_m(N)$ denotes the restricted binary partition numbers
 \eqref{eq:pm-def}.  $\PiD$ is the space of real polynomials of degree
@@ -335,7 +314,7 @@ at most $d$, and $[q]_z=(1-z^{q})/(1-z)$ the $q$-integer.
 \section{The synthesis problem and its boundary conditions}
 \label{sec:problem}
 
-Given $p\in\R[x]$ of degree at most $d$ and a nondegenerate interval
+Given $p\in\RealNumbers[x]$ of degree at most $d$ and a nondegenerate interval
 $[a,b]$, we seek a \emph{finite} functional identity
 \begin{equation}
  p(x)=\sum_{r=1}^{N}c_r\,
@@ -348,7 +327,7 @@ facts frame every construction.
 
 \emph{(i) Globality is impossible; locality is the right question.}
 Every finite sum \eqref{eq:general-problem} is compactly supported,
-so no nonzero polynomial admits a global identity on $\R$; the
+so no nonzero polynomial admits a global identity on $\RealNumbers$; the
 achievable object is an exact \emph{window} --- polynomial on
 $[a,b]$, smoothly decaying to zero outside a finite support.
 
@@ -380,7 +359,7 @@ boundary truncation (the ladder route of \cref{sec:ladder}).
 Within the corpus, the nonduplication boundary is sharp: the audited
 inverse/sampling volume proves the \emph{opposite orientation}
 \begin{equation}
- x^{n}=2^{-N}\sum_{k\in\Z}
+ x^{n}=2^{-N}\sum_{k\in\IntegerNumbers}
  \Gd_n\!\left(x-\frac{k+\theta}{2^{N}}\right)
  u\!\left(\frac{k+\theta}{2^{N}}\right)
  \qquad(n\le N),
@@ -406,8 +385,8 @@ The two families \eqref{eq:appell-pair} are formal inverses:
 $\MM_u(D)\Gd_n=y^{n}$ and $\MM_u(D)^{-1}G_n=y^{n}$, both operators
 triangular with unit diagonal on polynomials.  Their generating
 functions are
-$\sum_nG_n(y)t^{n}/n!=\e^{yt}\MM_u(t)$ and
-$\sum_n\Gd_n(y)t^{n}/n!=\e^{yt}/\MM_u(t)$; both satisfy the Appell
+$\sum_nG_n(y)t^{n}/n!=\EulerE^{yt}\MM_u(t)$ and
+$\sum_n\Gd_n(y)t^{n}/n!=\EulerE^{yt}/\MM_u(t)$; both satisfy the Appell
 derivative ladder $G_n'=nG_{n-1}$, $\Gd_n'=n\Gd_{n-1}$; and their
 coefficient sequences $(\mu_r)$, $(\gamma_r)$ are mutually inverse
 under binomial convolution, with
@@ -441,7 +420,7 @@ volume:
 \begin{definition}[Restricted binary partitions]
 \label{def:pm}
 $p_m(N)$ counts representations $N=\sum_{j=0}^{m-1}2^{j}k_j$ with
-$k_j\in\N_0$; equivalently \eqref{eq:three-products} holds, and
+$k_j\in\NaturalNumbers$; equivalently \eqref{eq:three-products} holds, and
 \begin{equation}
  p_m(N)=p_{m-1}(N)+p_m\bigl(N-2^{m-1}\bigr),
  \qquad p_m(N<0)=0,\quad p_m(0)=p_m(1)=1.
@@ -459,11 +438,11 @@ shift $S$.  Moreover $p_m(N)$ is a quasipolynomial in $N$ of degree
 $m-1$ and period dividing $2^{m-1}$, with residue-independent leading
 term
 \begin{equation}
- p_m(N)=\frac{N^{m-1}}{(m-1)!\,2^{m(m-1)/2}}+\bigO(N^{m-2});
+ p_m(N)=\frac{N^{m-1}}{(m-1)!\,2^{m(m-1)/2}}+\BigO(N^{m-2});
  \label{eq:pm-asymptotic}
 \end{equation}
 hence the normalized weights $w_{n,N}=n!\,2^{n(n+1)/2}p_{n+1}(N)$ are
-\emph{monic} degree-$n$ quasipolynomials, $w_{n,N}=N^{n}+\bigO(N^{n-1})$.
+\emph{monic} degree-$n$ quasipolynomials, $w_{n,N}=N^{n}+\BigO(N^{n-1})$.
 \end{proposition}
 
 \begin{proof}
@@ -472,7 +451,7 @@ $\ThetaTM_m(z)\cdot\ThetaTM_m(z)^{-1}=1$ read coefficientwise.  The
 generating function is rational with all poles at $2^{m-1}$-th roots
 of unity, giving the quasipolynomial form; the pole at $z=1$ has
 order $m$ with
-$\ThetaTM_m(z)=2^{m(m-1)/2}(1-z)^{m}(1+\bigO(1-z))$, whose
+$\ThetaTM_m(z)=2^{m(m-1)/2}(1-z)^{m}(1+\BigO(1-z))$, whose
 $(1-z)^{-m}$ coefficient $\binom{N+m-1}{m-1}$ gives
 \eqref{eq:pm-asymptotic}.
 \end{proof}
@@ -484,9 +463,9 @@ construction), $A_d$ \emph{applies} them after removing the pole
 
 \begin{theorem}[$q$-integer and cyclotomic factorization]
 \label{thm:A-factor}
-With $M=2^{d}$ and $\omega=\e^{2\pi\ii/M}$,
+With $M=2^{d}$ and $\omega=\EulerE^{2\pi\ImaginaryUnit/M}$,
 \begin{equation}
- A_d(z)=\prod_{j=1}^{M-1}\bigl(z-\omega^{j}\bigr)^{\vtwo(j)+1}
+ A_d(z)=\prod_{j=1}^{M-1}\bigl(z-\omega^{j}\bigr)^{\TwoAdicValuation(j)+1}
  =\prod_{\ell=1}^{d}\bigl(z^{2^{\ell-1}}+1\bigr)^{\,d-\ell+1},
  \label{eq:A-cyclotomic}
 \end{equation}
@@ -502,7 +481,7 @@ $\{0,\dots,2^{m}-1\}$.
 
 \begin{proof}
 The roots of $z^{2^{\ell-1}}+1$ are the $\omega^{j}$ with
-$\vtwo(j)=d-\ell$, required with multiplicity $d-\ell+1$; since
+$\TwoAdicValuation(j)=d-\ell$, required with multiplicity $d-\ell+1$; since
 $[2^{m}]_z=\prod_{\ell\le m}(z^{2^{\ell-1}}+1)$, the multiplicities
 telescope to \eqref{eq:A-cyclotomic}.  Degree and mass follow by
 summing $2^{m}-1$ and multiplying $2^{m}$; the coefficient statement
@@ -528,7 +507,7 @@ for $\rho>0$ by
 \begin{equation}
  \psi_{\rho,k}(t)=\frac1\rho\,u\!\left(\frac{t-k}{\rho}\right),
  \qquad
- \widehat{\psi_{\rho,k}}(\xi)=\e^{-2\pi\ii k\xi}\,\widehat u(\rho\xi),
+ \widehat{\psi_{\rho,k}}(\xi)=\EulerE^{-2\pi\ImaginaryUnit k\xi}\,\widehat u(\rho\xi),
  \label{eq:psi-def}
 \end{equation}
 supported on $[k-\rho,k+\rho]$ with unit integral.
@@ -538,10 +517,10 @@ supported on $[k-\rho,k+\rho]$ with unit integral.
 
 \begin{theorem}[Scale classification]
 \label{thm:scale-classification}
-The integer translates $\{\psi_{\rho,k}\}_{k\in\Z}$ form a partition
-of unity iff $\rho\in\N_{>0}$; for positive integer $\rho$ the Strang--Fix
+The integer translates $\{\psi_{\rho,k}\}_{k\in\IntegerNumbers}$ form a partition
+of unity iff $\rho\in\PositiveIntegers$; for positive integer $\rho$ the Strang--Fix
 polynomial reproduction order of the system is exactly
-$\vtwo(\rho)$.  Hence the smallest ratio reproducing all of $\PiD$ is
+$\TwoAdicValuation(\rho)$.  Hence the smallest ratio reproducing all of $\PiD$ is
 $\rho=2^{d}$, and odd overscaling ($\rho=2^{d}q$, $q$ odd) buys no
 order.
 \end{theorem}
@@ -549,11 +528,11 @@ order.
 \begin{proof}
 The $n$-th Fourier coefficient of the periodized sum is
 $\widehat u(\rho n)$, which vanishes for all $n\ne0$ iff $\rho n$ is
-always a nonzero integer, i.e.\ $\rho\in\N$.  For integer $\rho$ and
+always a nonzero integer, i.e.\ $\rho\in\NaturalNumbers$.  For integer $\rho$ and
 $n\ne0$, $\ord_{\xi=n}\widehat u(\rho\,\cdot)
-=1+\vtwo(\rho)+\vtwo(n)$, minimal at odd $n$; the classical
+=1+\TwoAdicValuation(\rho)+\TwoAdicValuation(n)$, minimal at odd $n$; the classical
 Strang--Fix equivalence \cite{StrangFix1973,Jia1998} gives order
-$\vtwo(\rho)$.
+$\TwoAdicValuation(\rho)$.
 \end{proof}
 
 The exact Lean anchor for the natural-mesh universal slice is
@@ -567,8 +546,8 @@ The focused build exports that one definition and the seven theorems
 \path{isLeast_rvachevCombExactThrough}, and
 \path{isLeast_rvachevCombExactThrough_even}.  They prove, for nonzero natural
 $M$, that shifted-comb exactness at every real shift for every real polynomial
-of degree at most $d$ is equivalent to $d\le\vtwo(M)$, equivalently
-$2^d\mid M$; the monomial of degree $\vtwo(M)+1$ fails at some shift; and
+of degree at most $d$ is equivalent to $d\le\TwoAdicValuation(M)$, equivalently
+$2^d\mid M$; the monomial of degree $\TwoAdicValuation(M)+1$ fails at some shift; and
 $2^d$ is the least such universal mesh, with $4^N$ least for the complete
 space through degree $2N$.  This does \emph{not} formalize the full theorem
 above for arbitrary real $\rho$, the Strang--Fix equivalence as such, an
@@ -583,8 +562,8 @@ Fix henceforth $M=2^{d}$ and $\psi_k=\psi_{M,k}$.
 \label{lem:poisson-collapse}
 For every $Q\in\PiD$,
 \begin{equation}
- \sum_{k\in\Z}Q(k)\,\psi_k(t)
- =\int_{-1}^{1}Q(t-My)\,u(y)\dd y
+ \sum_{k\in\IntegerNumbers}Q(k)\,\psi_k(t)
+ =\int_{-1}^{1}Q(t-My)\,u(y)\Differential y
  =\MM_u(MD)\,Q(t),
  \label{eq:poisson-collapse}
 \end{equation}
@@ -597,7 +576,7 @@ to $f_t(x)=Q(x)\frac1Mu((t-x)/M)$, which is $C_c^\infty$.  The
 zero-frequency term is the stated average.  Each nonzero Fourier
 sample $\widehat{f_t}(n)$ is a combination of derivatives of
 $\widehat u(M\xi)$ through order $d$ at $\xi=n$, and
-$\ord=1+\vtwo(Mn)=d+1+\vtwo(n)>d$, so every alias vanishes.  Evenness
+$\ord=1+\TwoAdicValuation(Mn)=d+1+\TwoAdicValuation(n)>d$, so every alias vanishes.  Evenness
 of $u$ turns the average into $\MM_u(MD)Q$.
 \end{proof}
 
@@ -615,9 +594,9 @@ For $P\in\PiD$ let
 a terminating series.  Then
 \begin{equation}
  \boxed{\;
- P(t)=\frac1M\sum_{k\in\Z}Q(k)\,
+ P(t)=\frac1M\sum_{k\in\IntegerNumbers}Q(k)\,
  u\!\left(\frac{t-k}{M}\right),
- \qquad t\in\R,
+ \qquad t\in\RealNumbers,
  \;}
  \label{eq:global-synthesis}
 \end{equation}
@@ -631,7 +610,7 @@ On $\PiD$ the constant-coefficient operator $\MM_u(MD)$ is unipotent
 triangular in degree, so its inverse is the displayed terminating series.
 Apply \cref{lem:poisson-collapse} to this $Q$:
 \[
- \frac1M\sum_{k\in\Z}Q(k)u\!\left(\frac{t-k}{M}\right)
+ \frac1M\sum_{k\in\IntegerNumbers}Q(k)u\!\left(\frac{t-k}{M}\right)
  =\MM_u(MD)Q(t)=P(t).
 \]
 For $P(t)=t^n$, the defining Appell identity
@@ -650,15 +629,15 @@ dimension is exponentially smaller.
 
 \begin{theorem}[Complete dyadic alias family]
 \label{thm:alias-family}
-Let $\omega=\e^{2\pi\ii/M}$.  For every $1\le j<M$ and
-$0\le s\le\vtwo(j)$,
+Let $\omega=\EulerE^{2\pi\ImaginaryUnit/M}$.  For every $1\le j<M$ and
+$0\le s\le\TwoAdicValuation(j)$,
 \begin{equation}
- \sum_{k\in\Z}k^{s}\,\omega^{jk}\,\psi_k(t)=0
- \qquad(t\in\R),
+ \sum_{k\in\IntegerNumbers}k^{s}\,\omega^{jk}\,\psi_k(t)=0
+ \qquad(t\in\RealNumbers),
  \label{eq:alias-zero}
 \end{equation}
 and these
-$N_d^{\rm rel}:=\sum_{j=1}^{M-1}(\vtwo(j)+1)=2M-d-2$ relations are
+$N_d^{\rm rel}:=\sum_{j=1}^{M-1}(\TwoAdicValuation(j)+1)=2M-d-2$ relations are
 linearly independent on any $N_d^{\rm rel}$ consecutive integers.  The solution
 space of the recurrence $A_d(E)n=0$ (shift $E$) is exactly their
 span, with $A_d$ the annihilator of
@@ -668,21 +647,21 @@ span, with $A_d$ the annihilator of
 \begin{proof}
 The Fourier transform of the twisted comb
 $\sum_kk^{s}\omega^{jk}\delta_k$ is carried, with derivatives through
-order $s$, by the coset $j/M+\Z$; there the multiplier
+order $s$, by the coset $j/M+\IntegerNumbers$; there the multiplier
 $\widehat u(M\xi)$ vanishes to order
-$1+\vtwo(j+Mn)=1+\vtwo(j)>s$, since $0<j<M$.  Independence is the
+$1+\TwoAdicValuation(j+Mn)=1+\TwoAdicValuation(j)>s$, since $0<j<M$.  Independence is the
 confluent Vandermonde theorem for the distinct roots
-$\omega^{j}$ with multiplicities $\vtwo(j)+1$; the count is
+$\omega^{j}$ with multiplicities $\TwoAdicValuation(j)+1$; the count is
 $\sum_{r<d}2^{d-r-1}(r+1)=2M-d-2$.
 \end{proof}
 
 \begin{theorem}[Exact local dimension]
 \label{thm:local-dim}
-Let $V_d=\Span\{\psi_k|_{[0,1]}:-M+1\le k\le M\}$.  Then
+Let $V_d=\SpanOperator\{\psi_k|_{[0,1]}:-M+1\le k\le M\}$.  Then
 \begin{equation}
  \boxed{\;\dim V_d=d+2,
  \qquad
- V_d\cap\R[t]=\PiD.\;}
+ V_d\cap\RealNumbers[t]=\PiD.\;}
  \label{eq:local-dim}
 \end{equation}
 The kernel of the synthesis map
@@ -698,7 +677,7 @@ $\dim V_d\ge d+1$; and since some active atom (e.g.\ $\psi_0$) is not
 polynomial on $(0,1)$ --- the non-elementarity import of
 \cref{sec:problem} --- the containment is strict, forcing $d+2$.  If
 $V_d$ contained a polynomial outside $\PiD$, then
-$V_d\subseteq\R[t]$ would make every atom polynomial, the same
+$V_d\subseteq\RealNumbers[t]$ would make every atom polynomial, the same
 contradiction; and a kernel larger than the recurrence space would
 push $\dim V_d$ below $d+2$.
 \end{proof}
@@ -718,7 +697,7 @@ the dimension is insufficient; with $N=d+1$, containment of the
 $(d+1)$-dimensional $\PiD|_I$ forces equality of spans, making every
 $f_r|_I$ polynomial --- impossible.  For genericity, the union over
 all $\le(d+1)$-subsets of (proper) subspaces
-$\Span\{f_r\}\cap\PiD$ is a finite union of proper subspaces, of
+$\SpanOperator\{f_r\}\cap\PiD$ is a finite union of proper subspaces, of
 measure zero in coefficient space.
 \end{proof}
 
@@ -806,7 +785,7 @@ $g_r=(A_d(E)Q)(K+r)$,
 \begin{equation}
  \boxed{\;
  g_r=A_d(1)\,\bigl[H_d(D)P\bigr]\!\left(r-\frac d2\right)
- \qquad(r\in\Z).
+ \qquad(r\in\IntegerNumbers).
  \;}
  \label{eq:g-fast}
 \end{equation}
@@ -814,17 +793,17 @@ $g_r=(A_d(E)Q)(K+r)$,
 
 \begin{proof}
 By \cref{thm:A-factor}, $a_\ell/A_d(1)$ is the law of
-$L=\sum_mU_m$, so $(A_d(E)Q)(x)=A_d(1)\,\E\,Q(x+L)$.  Centering $L$
+$L=\sum_mU_m$, so $(A_d(E)Q)(x)=A_d(1)\,\Expectation\,Q(x+L)$.  Centering $L$
 at its mean $N_d^{\rm rel}/2$ and using
 $K+N_d^{\rm rel}/2=-d/2$,
 \[
  g_r=A_d(1)\Bigl[
- \E\,\e^{(L-N_d^{\rm rel}/2)D}\;\MM_u(MD)^{-1}P
+ \Expectation\,\EulerE^{(L-N_d^{\rm rel}/2)D}\;\MM_u(MD)^{-1}P
  \Bigr]\!\left(r-\tfrac d2\right),
 \]
 and the two product formulas
 \begin{gather*}
- \E\,\e^{z(L-N_d^{\rm rel}/2)}
+ \Expectation\,\EulerE^{z(L-N_d^{\rm rel}/2)}
  =\prod_{m=1}^{d}\frac{\sinh(2^{m-1}z)}{2^{m}\sinh(z/2)},
  \\
  \MM_u(Mz)=\MM_u(z)\prod_{r=0}^{d-1}\frac{\sinh(2^{r}z)}{2^{r}z}
@@ -846,14 +825,14 @@ $G=H_d(D)P$; compute only $a_0,\dots,a_{d+1}$ of $A_d$ by truncated
 sliding-window convolution of the uniform blocks; set
 $g_r=A_d(1)\,G(r-d/2)$ for $0\le r\le d+1$; solve the unit-diagonal
 triangular system $g_r=\sum_{s\le r}a_{r-s}b_s$ forward; output
-\eqref{eq:endpoint-rep}.  Total cost: $\bigO(d^{2})$ exact rational
-operations and $\bigO(d)$ stored rationals --- polynomial in the
+\eqref{eq:endpoint-rep}.  Total cost: $\BigO(d^{2})$ exact rational
+operations and $\BigO(d)$ stored rationals --- polynomial in the
 output, not exponential in the scale.  On $J$ cells the same
 procedure with $r\le J+d$ yields the multi-cell basis below at cost
-$\bigO(d^{2}+(J+d)^{2})$.
+$\BigO(d^{2}+(J+d)^{2})$.
 \end{algorithm}
 
-For $P\in\Z[t]$ the denominators of all $b_k$ divide
+For $P\in\IntegerNumbers[t]$ the denominators of all $b_k$ divide
 $\operatorname{lcm}(\operatorname{den}\gamma_0,\dots,
 \operatorname{den}\gamma_d)$ (the recurrence is integral), and the
 raw amplitudes $b_k/M$ add only the dyadic factor.
@@ -863,10 +842,10 @@ raw amplitudes $b_k/M$ add only the dyadic factor.
 \begin{theorem}[Multi-cell dimension and basis]
 \label{thm:multicell}
 For $J\ge1$, the space
-$V_{d,J}=\Span\{\psi_k|_{[0,J]}:-M+1\le k\le J+M-1\}$ has
+$V_{d,J}=\SpanOperator\{\psi_k|_{[0,J]}:-M+1\le k\le J+M-1\}$ has
 \begin{equation}
  \dim V_{d,J}=J+d+1,
- \qquad V_{d,J}\cap\R[t]=\PiD,
+ \qquad V_{d,J}\cap\RealNumbers[t]=\PiD,
  \label{eq:multicell-dim}
 \end{equation}
 with the $J+d+1$ consecutive centers $M-d-1,\dots,M+J-1$ as a basis.
@@ -888,7 +867,7 @@ $\dim\le J+2M-1-N_d^{\rm rel}=J+d+1$; the first-cell endpoint basis plus the
 atoms centered at $M+1,\dots,M+J-1$ are triangularly independent
 (each new atom vanishes on $[0,r]$ and not immediately to the right),
 giving equality.  A polynomial in $V_{d,J}$ restricts on the first
-cell into $V_d\cap\R[t]=\PiD$.  Recurrence elimination leaves exactly
+cell into $V_d\cap\RealNumbers[t]=\PiD$.  Recurrence elimination leaves exactly
 the stated centers; the affine substitution gives
 \eqref{eq:physical}.
 \end{proof}
@@ -955,9 +934,9 @@ the absolutely convergent odd-frequency series
 \begin{equation}
  \boxed{\;
  \mathcal E_d(t)=
- -\frac{(d+1)!}{(2\pi\ii)^{d+1}}
- \sum_{\substack{n\in\Z\\ n\ \mathrm{odd}}}
- \frac{\widehat u(n/2)}{n^{d+1}}\,\e^{2\pi\ii nt},
+ -\frac{(d+1)!}{(2\pi\ImaginaryUnit)^{d+1}}
+ \sum_{\substack{n\in\IntegerNumbers\\ n\ \mathrm{odd}}}
+ \frac{\widehat u(n/2)}{n^{d+1}}\,\EulerE^{2\pi\ImaginaryUnit nt},
  \;}
  \qquad
  \mathcal E_d\bigl(t+\tfrac12\bigr)=-\mathcal E_d(t);
@@ -967,7 +946,7 @@ a cosine series for odd $d$, a sine series for even $d$.  The
 canonical local defect is
 $\mathcal D_d(t):=t^{d+1}+\mathcal E_d(t)\in V_d$, and
 \begin{equation}
- V_d=\PiD\oplus\Span\{\mathcal D_d\},
+ V_d=\PiD\oplus\SpanOperator\{\mathcal D_d\},
  \qquad
  c_{\mathrm{def}}(q)
  =\frac{\mathfrak C_d(q)}{A_d(1)\,(d+1)!}
@@ -978,14 +957,14 @@ is the defect coordinate of an arbitrary synthesis.
 
 \begin{proof}
 In the Poisson expansion of $S_m$, even nonzero frequencies die
-(zero order $1+\vtwo(Mn)>m$) and at odd $n$ only the leading jet of
+(zero order $1+\TwoAdicValuation(Mn)>m$) and at odd $n$ only the leading jet of
 $\widehat u(M\xi)$ survives; by the corpus's leading-jet formula it
 equals $-m!\,\widehat u(n/2)/n^{m}$, giving
 \eqref{eq:defect-series}.  Odd-frequency support gives the
 half-period antisymmetry, and nonvanishing follows from
 $\widehat u(n/2)\ne0$ for odd $n$.  $\mathcal E_d$ itself is
 \emph{not} in $V_d$ (else $t^{d+1}\in V_d$, contradicting
-$V_d\cap\R[t]=\PiD$); the corrected $\mathcal D_d=S_m-(\mathcal
+$V_d\cap\RealNumbers[t]=\PiD$); the corrected $\mathcal D_d=S_m-(\mathcal
 P-t^{m})$ is, since $\mathcal P-t^{m}\in\PiD$.  Its certificate value
 is that of the sequence $k^{d+1}$, i.e.\ $A_d(1)(d+1)!\ne0$, so
 $\mathcal D_d\notin\PiD$ and \eqref{eq:defect-coordinate} follows
@@ -1002,7 +981,7 @@ up to an explicit constant, the degree-$(m{+}1)$ error of the
 companion volume \emph{Dyadic-Comb Frontiers}, where
 \[
  Q_{m,p}(\theta)
- =2^{-m}\sum_{k\in\Z}
+ =2^{-m}\sum_{k\in\IntegerNumbers}
  \bigl(2^{-m}(k+\theta)\bigr)^{p}\,
  u\bigl(2^{-m}(k+\theta)\bigr)
 \]
@@ -1011,12 +990,12 @@ odd-alias leading jets.
 
 \begin{theorem}[Defect--quadrature duality]
 \label{thm:defect-duality}
-For every $d\ge0$ and $t\in\R$,
+For every $d\ge0$ and $t\in\RealNumbers$,
 \begin{equation}
  \boxed{\;
  \mathcal E_d(t)
  =(-1)^{d+1}\,2^{\,d(d+1)}\,
- \Bigl(Q_{d,d+1}(t)-\int_{-1}^{1}x^{d+1}u(x)\dd x\Bigr).
+ \Bigl(Q_{d,d+1}(t)-\int_{-1}^{1}x^{d+1}u(x)\Differential x\Bigr).
  \;}
  \label{eq:defect-duality}
 \end{equation}
@@ -1028,11 +1007,11 @@ $\widehat u$ at the order-$(d{+}1)$ zeros: the companion volume's
 first-failure theorem gives
 \[
  Q_{d,d+1}(\theta)-\mu_{d+1}
- =-\Bigl(-\frac1{2\pi\ii}\Bigr)^{d+1}
+ =-\Bigl(-\frac1{2\pi\ImaginaryUnit}\Bigr)^{d+1}
  \frac{(d+1)!}{2^{d(d+1)}}
  \sum_{\ell\ \mathrm{odd}}
- \frac{\widehat u(\abs\ell/2)}{\ell^{\,d+1}}\,
- \e^{2\pi\ii\ell\theta},
+ \frac{\widehat u(\AbsoluteValue\ell/2)}{\ell^{\,d+1}}\,
+ \EulerE^{2\pi\ImaginaryUnit\ell\theta},
 \]
 and comparing with \eqref{eq:defect-series} term by term (the
 $(-1)^{d+1}$ absorbs the sign of $(-1)^{-(d+1)}$) gives
@@ -1055,10 +1034,10 @@ volume,
 \begin{equation}
  \mathcal E_d(0)
  =(-1)^{(d-1)/2}\,
- \frac{2\,(d+1)!}{(2\pi)^{d+1}}\;D(d+1)\in\Q,
+ \frac{2\,(d+1)!}{(2\pi)^{d+1}}\;D(d+1)\in\RationalNumbers,
  \label{eq:defect-value-D}
 \end{equation}
-rational because $D(2r)/\pi^{2r}\in\Q$ is proved there.  The proved
+rational because $D(2r)/\pi^{2r}\in\RationalNumbers$ is proved there.  The proved
 exact values $D(2),\dots,D(8)$ yield
 \begin{equation}
  \boxed{\;
@@ -1116,7 +1095,7 @@ u\bigl(\tfrac{x-c-h(2k+1)}{2h}\bigr)$.
 
 \begin{proof}
 By the refinement derivative,
-$\tfrac{\dd}{\dd x}u\bigl(\tfrac{x-(2k+1)}2\bigr)
+$\tfrac{\Differential}{\Differential x}u\bigl(\tfrac{x-(2k+1)}2\bigr)
 =u(x-2k)-u(x-2k-2)$; the locally finite series telescopes to $u(x)$,
 and both sides vanish for $x\ll0$.
 \end{proof}
@@ -1145,7 +1124,7 @@ $c+h(2^{m+1}-1+2(N+2^{m}k))$, so the new multiplicity is
 $\sum_{k\ge0}p_m(N'-2^{m}k)=p_{m+1}(N')$ --- exactly the recurrence
 \eqref{eq:pm-def} --- while the prefactor gains $2^{m}h$.  The
 support bookkeeping is immediate from
-$\supp u_{\rho,c'}=[c'-\rho,c'+\rho]$.
+$\SupportOperator u_{\rho,c'}=[c'-\rho,c'+\rho]$.
 \end{proof}
 
 The weights are thus the Green sequence of
@@ -1165,7 +1144,7 @@ G_n\!\bigl(\frac{x-c}{h}\bigr)$, with $G_n$ the moment Appell family
 
 \begin{proof}
 $J^{n+1}u_{h,c}(x)=\frac1{n!}\int(x-t)^{n}u\bigl(\tfrac{t-c}h\bigr)
-\dd t$ over the full support once $x\ge c+h$; substitute $t=c+hz$.
+\Differential t$ over the full support once $x\ge c+h$; substitute $t=c+hz$.
 \end{proof}
 
 Combining \cref{thm:iterated-J,lem:tail} at order $m=n+1$ gives the
@@ -1182,7 +1161,7 @@ degrees simultaneously:
 
 \begin{theorem}[Exact finite polynomial window]
 \label{thm:finite-window}
-Let $a<b$, $L=b-a$, $h>0$, $K=\ceil{L/(2h)}$, and for $n\ge0$
+Let $a<b$, $L=b-a$, $h>0$, $K=\Ceiling{L/(2h)}$, and for $n\ge0$
 \begin{equation}
  \boxed{\;
  \Psi_{n,h}(x)
@@ -1265,7 +1244,7 @@ $\alpha_n=n!\,2^{n(n+1)/2}b_n$.  For monomials the coefficients are
 closed Bernoulli--Bell forms: $p(x)=(x-a)^{m}$ has
 $b_n=h^{m}\binom mn\,\Gd_{m-n}(-1)$.  Everything is rational for
 rational data, affine-covariant, and computable in
-$\bigO(d^{2}+dK)$ exact operations.
+$\BigO(d^{2}+dK)$ exact operations.
 \end{theorem}
 
 \begin{proof}
@@ -1346,11 +1325,11 @@ $y_i=(x_i-a+h)/h$.
 The map $E_{d,a,b,h}\colon p\mapsto\sum_{n,N}\alpha_{n,N}(p)\,
 u\bigl((x-C_{n,N})/2^{n+1}h\bigr)$, with centers
 $C_{n,N}=a+h(2^{n+1}-2+2N)$, is a linear injection
-$\PiD\to C_c^\infty(\R)$ that restricts to the identity on
+$\PiD\to C_c^\infty(\RealNumbers)$ that restricts to the identity on
 $[a,b]$ --- an explicit compactly supported smooth extension operator
 for polynomial data, flat at its outer support endpoints, with
 \begin{equation}
- \supp E_{d,a,b,h}\,p\subseteq
+ \SupportOperator E_{d,a,b,h}\,p\subseteq
  \bigl[a-2h,\;a+h(2^{d+2}-2+2K)\bigr]
  \subset\bigl[a-2h,\;b+2^{d+2}h\bigr).
  \label{eq:support}
@@ -1374,10 +1353,10 @@ inclusion in \eqref{eq:support}.
 \label{thm:collar}
 For any collar $\rho>0$, the choice $h=\rho/2^{d+2}$ gives an exact
 window supported in $[a-\rho,\,b+\rho]$ with at most
-$(d+1)\bigl(1+\ceil{2^{d+1}L/\rho}\bigr)$ atoms.  Conversely the
+$(d+1)\bigl(1+\Ceiling{2^{d+1}L/\rho}\bigr)$ atoms.  Conversely the
 sparse $h=L/2$ choice has linear atom count $2d+2$ but an
 exponentially long one-sided scale ladder,
-$\supp\subseteq[a-L,\;a+2^{d+1}L]$.  A reflected anticausal train
+$\SupportOperator\subseteq[a-L,\;a+2^{d+1}L]$.  A reflected anticausal train
 (right-tail integration $J_+$) mirrors the overhang, and orientations
 may be mixed degree by degree, since any sequence of monic
 degree-$n$ blocks remains a triangular basis.
@@ -1423,12 +1402,12 @@ ladder of \cref{sec:ladder}, and the exact dyadic derivative stencil.
 
 \begin{lemma}[Twisted Poisson identity]
 \label{lem:twisted-poisson}
-For $m\in\N_{>0}$, $t\in\R$, $z\in\C$, with
+For $m\in\PositiveIntegers$, $t\in\RealNumbers$, $z\in\ComplexNumbers$, with
 $\MM_u$ the moment generating function,
 \begin{equation}
- \sum_{k\in\Z}\e^{kz}\,u\!\left(\frac{t-k}{m}\right)
- =m\sum_{n\in\Z}\e^{(z-2\pi\ii n)t}\,
- \MM_u\!\bigl(-mz+2\pi\ii mn\bigr),
+ \sum_{k\in\IntegerNumbers}\EulerE^{kz}\,u\!\left(\frac{t-k}{m}\right)
+ =m\sum_{n\in\IntegerNumbers}\EulerE^{(z-2\pi\ImaginaryUnit n)t}\,
+ \MM_u\!\bigl(-mz+2\pi\ImaginaryUnit mn\bigr),
  \label{eq:twisted-poisson}
 \end{equation}
 both sides entire in $z$.
@@ -1436,12 +1415,12 @@ both sides entire in $z$.
 
 \begin{proof}
 Poisson summation for the smooth compactly supported
-$x\mapsto\e^{zx}u((t-x)/m)$, whose $n$-th Fourier coefficient is
-$m\,\e^{(z-2\pi\ii n)t}\MM_u(-mz+2\pi\ii mn)$.
+$x\mapsto\EulerE^{zx}u((t-x)/m)$, whose $n$-th Fourier coefficient is
+$m\,\EulerE^{(z-2\pi\ImaginaryUnit n)t}\MM_u(-mz+2\pi\ImaginaryUnit mn)$.
 \end{proof}
 
 At a nonzero frequency $n$, the alias factor vanishes at $z=0$ to
-order $1+\vtwo(mn)\ge\vtwo(m)+1$.  Dividing
+order $1+\TwoAdicValuation(mn)\ge\TwoAdicValuation(m)+1$.  Dividing
 \eqref{eq:twisted-poisson} by $m\MM_u(mz)$ and comparing Taylor
 coefficients gives, in one stroke, the general-ratio version of the
 global synthesis: with the scaled deconvolution Appell samples
@@ -1452,30 +1431,30 @@ global synthesis: with the scaled deconvolution Appell samples
  \frac1{\MM_u(mz)}=\sum_n\beta^{(m)}_n\frac{z^{n}}{n!},
  \label{eq:scaled-appell}
 \end{equation}
-one has, for every $m\in\N_{>0}$ and $0\le r\le\vtwo(m)$,
+one has, for every $m\in\PositiveIntegers$ and $0\le r\le\TwoAdicValuation(m)$,
 \begin{equation}
- t^{\,r}=\sum_{k\in\Z}A^{(m)}_r(k)\,
+ t^{\,r}=\sum_{k\in\IntegerNumbers}A^{(m)}_r(k)\,
  u\!\left(\frac{t-k}{m}\right)
- \qquad(t\in\R),
+ \qquad(t\in\RealNumbers),
  \label{eq:general-reproduction}
 \end{equation}
-locally finite, and the order $\vtwo(m)$ is \emph{sharp}
+locally finite, and the order $\TwoAdicValuation(m)$ is \emph{sharp}
 (\cref{thm:scale-classification}); the same argument works for any
 $C_c^\infty$ generator of unit mass whose transform vanishes to
 order $d+1$ at the nonzero dual lattice.  The probabilistic content
 of the deconvolution is exact:
 $q^{\sharp}=\MM_u(mD)^{-1}q$ is the unique polynomial with
-$\E\,q^{\sharp}(t+mZ)=q(t)$ --- the coefficients undo smoothing by a
+$\Expectation\,q^{\sharp}(t+mZ)=q(t)$ --- the coefficients undo smoothing by a
 random up-distributed displacement.
 
-The first failure at degree $L=\vtwo(m)+1$ generalizes the defect
+The first failure at degree $L=\TwoAdicValuation(m)+1$ generalizes the defect
 series \eqref{eq:defect-series} beyond dyadic ratios: for
 $m=2^{\nu}q$ with $q$ odd,
 \begin{equation}
- \sum_{k\in\Z}A^{(m)}_L(k)\,u\!\left(\frac{t-k}{m}\right)-t^{L}
- =\frac{(-1)^{L+1}L!}{(2\pi\ii)^{L}}
- \sum_{\substack{n\in\Z\\ n\ \mathrm{odd}}}
- \frac{\widehat u(qn/2)}{n^{L}}\,\e^{-2\pi\ii nt},
+ \sum_{k\in\IntegerNumbers}A^{(m)}_L(k)\,u\!\left(\frac{t-k}{m}\right)-t^{L}
+ =\frac{(-1)^{L+1}L!}{(2\pi\ImaginaryUnit)^{L}}
+ \sum_{\substack{n\in\IntegerNumbers\\ n\ \mathrm{odd}}}
+ \frac{\widehat u(qn/2)}{n^{L}}\,\EulerE^{-2\pi\ImaginaryUnit nt},
  \label{eq:general-defect}
 \end{equation}
 nonzero because $\widehat u(q/2)\ne0$: an odd factor $q$ in the ratio
@@ -1487,13 +1466,13 @@ phenomenon of \cref{conj:odd-dim}.
 
 Affine reduction makes the lattice fully physical: for
 $p\in\PiD$, an interval $I=[A,B]$, an origin $x_0$, a spacing $h>0$,
-and any ratio $m$ with $\vtwo(m)\ge d$ (canonically $m=2^{d}$), put
+and any ratio $m$ with $\TwoAdicValuation(m)\ge d$ (canonically $m=2^{d}$), put
 $\rho=mh$ and
 $p^{\sharp}_\rho=\MM_u(\rho D)^{-1}p$.  Then
 \begin{equation}
  \boxed{\;
  p(x)=\frac1m
- \sum_{k=\ceil{(A-x_0)/h-m}}^{\floor{(B-x_0)/h+m}}
+ \sum_{k=\Ceiling{(A-x_0)/h-m}}^{\Floor{(B-x_0)/h+m}}
  p^{\sharp}_\rho(x_0+kh)\,
  u\!\left(\frac{x-x_0-kh}{\rho}\right)
  \qquad(x\in[A,B]),
@@ -1501,15 +1480,15 @@ $p^{\sharp}_\rho=\MM_u(\rho D)^{-1}p$.  Then
  \label{eq:interval-algorithm}
 \end{equation}
 a finite $C^\infty$ plateau supported in $[A-2\rho,\,B+2\rho]$ with
-at most $\floor{m((B-A)/\rho+2)}+1$ atoms, rational for rational
+at most $\Floor{m((B-A)/\rho+2)}+1$ atoms, rational for rational
 data, matching \emph{every} endpoint jet of $p$ (all derivatives
 agree on the interior; take one-sided limits).  Two practical
 features distinguish it from both normal forms above: the
-representation is determined by $\bigO(d)$ field elements (the
+representation is determined by $\BigO(d)$ field elements (the
 polynomial $p^{\sharp}_\rho$ and the lattice parameters), however
 long the interval; and evaluation at a point touches at most
 $2m+1$ atoms.  The atom count
-$2^{d}(B-A)/\rho+2^{d+1}+\bigO(1)$ exposes the radius--density
+$2^{d}(B-A)/\rho+2^{d+1}+\BigO(1)$ exposes the radius--density
 tradeoff: shrinking the support collar costs interior atoms, and the
 $2^{d+1}$ boundary-overlap term never disappears --- the lattice-side
 counterpart of the ladder's collar--atom law
@@ -1572,14 +1551,14 @@ suggests geometrically scaled stencils
 Truncating the Fourier product at $N$ factors gives the
 piecewise-polynomial generator $u_N$ (an $N$-fold uniform
 convolution, support radius $1-2^{-N}$), whose lattice has exact
-reproduction degree $\min(N-1,\vtwo(m))$, whose cumulants obey the
+reproduction degree $\min(N-1,\TwoAdicValuation(m))$, whose cumulants obey the
 exact truncation law
 $\kappa^{(N)}_{2r}=(1-2^{-2rN})\,\kappa_{2r}$, and whose Appell
 coefficients converge to the up-versions at the dyadic rate
 \begin{equation}
  A^{(m)}_{r,N}=A^{(m)}_r
  +\binom r2\kappa_2m^{2}\,2^{-2N}A^{(m)}_{r-2}
- +\bigO_{r,m}\bigl(2^{-4N}\bigr):
+ +\BigO_{r,m}\bigl(2^{-4N}\bigr):
  \label{eq:finite-appell}
 \end{equation}
 exact spline plateaux of any prescribed finite order, converging
@@ -1606,8 +1585,8 @@ Arithmetically, every reduced cumulant $\kappa_{2r}$ has \emph{odd}
 denominator (the single factor of two in the reduced denominator of
 $B_{2r}$ cancels against $2^{2r-1}/r$), which yields explicit
 $2$-adic denominator bounds for all output coefficients: for data in
-$2^{-s}\Z[1/O]$ ($O$ odd) the coefficients lie in
-$2^{-[s(d+1)+d+\nu]}\Z[1/O']$, all further growth odd
+$2^{-s}\IntegerNumbers[1/O]$ ($O$ odd) the coefficients lie in
+$2^{-[s(d+1)+d+\nu]}\IntegerNumbers[1/O']$, all further growth odd
 (\cref{q:odd-denominator}).
 
 \section{Dictionary versus ladder, and the minimal atom count}
@@ -1627,7 +1606,7 @@ Scales used & one: $2^{d}h$ & $d+1$: $2h,4h,\dots,2^{d+1}h$\\
 Atoms for $\PiD$, one cell & $d+2$ (optimal for fixed dictionaries)
  & $2d+2$ (two per degree, equal amplitudes per block)\\
 Coefficients & recurrence residual / $H_d(D)$ symbol,
- $\bigO(d^{2})$ & triangular Appell transform, $\bigO(d^{2})$\\
+ $\BigO(d^{2})$ & triangular Appell transform, $\BigO(d^{2})$\\
 Uniqueness & unique in the endpoint basis
  & unique in the block basis\\
 Support overhang & $[a-(d+1)h,\;b+(2M-1)h]$, knob $J$
@@ -1646,8 +1625,8 @@ identity ($\ThetaTM$ against its causal inverse), and the two
 coefficient calculi are the two members of the Appell pair
 \eqref{eq:appell-pair}.  The oversampled lattice of
 \cref{sec:lattice} is the third normal form, extremal in a third
-sense: many atoms ($2^{d}(B-A)/\rho+2^{d+1}+\bigO(1)$) but an
-$\bigO(d)$-element \emph{description} with $2m+1$-local
+sense: many atoms ($2^{d}(B-A)/\rho+2^{d+1}+\BigO(1)$) but an
+$\BigO(d)$-element \emph{description} with $2m+1$-local
 evaluation, a free physical scale, and full endpoint-jet matching
 --- with the ghost-antiderivative route as its sparse, per-stage
 adaptable variant.  The comparison also settles more of the
@@ -1702,7 +1681,7 @@ making $2d+2$ minimal \emph{in that class}.
 \begin{remark}[Strang--Fix reconciliation]
 There is no tension with the classical no-go: a single fixed-scale
 integer-shift $u$-system reproduces only constants globally
-(\cref{thm:scale-classification} at $\vtwo(\rho)=0$).  Both
+(\cref{thm:scale-classification} at $\TwoAdicValuation(\rho)=0$).  Both
 constructions bypass it lawfully --- the dictionary by paying scale
 ($\rho=2^{d}$ restores order $d$ globally before localizing), the
 ladder by paying scales \emph{and} asking only for a window (boundary
@@ -1724,18 +1703,18 @@ For $\rho=2^{d}q$ with $q$ odd, reproduction order stays $d$
 larger annihilator
 $A_{\rho,d}(z)=\prod_{r=0}^{d}\bigl(z^{\rho/2^{r}}-1\bigr)/(z-1)$ of
 degree $2\rho-q-d-1$, from the coset multiplicities
-$1+\min\{\vtwo(j),d\}$; the one-cell dimension is
+$1+\min\{\TwoAdicValuation(j),d\}$; the one-cell dimension is
 $\le q+d+1$, conjecturally with equality
 (\cref{conj:odd-dim}): each odd factor buys $q-1$ extra
 \emph{defect} directions and no polynomial order.
 
 \subsection{Tensor products and multivariate compression}
-On a box in $\R^{s}$, both constructions tensorize: coordinatewise
+On a box in $\RealNumbers^{s}$, both constructions tensorize: coordinatewise
 degrees $(d_1,\dots,d_s)$ cost $\prod_j(d_j+2)$ dictionary atoms or
 $\prod_j2(d_j+1)$ ladder atoms, exactly on the tensor polynomial
 space.  For \emph{total} degree $d$ the tensor counts far exceed
 $\binom{d+s}s$; a multivariate alias-ideal compression (the analogue
-of \cref{thm:alias-family} for $\Z^{s}$-cosets) is an attractive
+of \cref{thm:alias-family} for $\IntegerNumbers^{s}$-cosets) is an attractive
 frontier problem.
 
 \subsection{Hermite jet stitching and analytic data}
@@ -1754,7 +1733,7 @@ scheme.
 \texorpdfstring{$q$}{q}-ary ladders}
 Both engines are dyadic only through the zero set of
 $\widehat u$.  For an integer base $b\ge2$, the compactly supported
-density with transform $\prod_{j\ge0}\sincpi(\xi/b^{j})$ supports the
+density with transform $\prod_{j\ge0}\SincPi(\xi/b^{j})$ supports the
 same two constructions --- dictionary scale $b^{d}$, and ladders
 weighted by $b$-ary restricted partition numbers
 $[z^{N}]\prod_{j<m}(1-z^{b^{j}})^{-1}$ whenever the derivative
@@ -1809,7 +1788,7 @@ exactly $q+d+1$.
 \begin{conjecture}[Bit growth]
 \label{conj:bit-growth}
 The lowest-terms numerators and denominators of the endpoint
-coefficients of $t^{d}$ have bit length $\bigO(d^{2})$.  (Plausible
+coefficients of $t^{d}$ have bit length $\BigO(d^{2})$.  (Plausible
 since $\log A_d(1)=\Theta(d^{2})$ and all operator series are
 Bernoulli-rational; cancellation makes a proof nontrivial.)
 \end{conjecture}
@@ -1877,11 +1856,11 @@ Mahler-type functional equations.
 (i) There is a length threshold $L_d$ such that any exact one-scale
 lattice representation of a degree-$d$ polynomial on an interval of
 length $\ge L_dh$, with no atom identically zero there, forces
-$\vtwo(m)\ge d$: long plateaux cannot beat the stationary binary
+$\TwoAdicValuation(m)\ge d$: long plateaux cannot beat the stationary binary
 order by boundary engineering.  (ii) For intervals comparable to the
 atom radius and bounded support enlargement, every one-scale exact
 representation of all of $\PiD$ needs $\Omega(2^{d})$ atoms in the
-worst case, making the canonical $2^{d+1}+\bigO(1)$ boundary count
+worst case, making the canonical $2^{d+1}+\BigO(1)$ boundary count
 order-optimal.  (The fixed-dictionary count of
 \cref{prop:fixed-lower} bounds \emph{dimension}; these bound
 \emph{lattice atom numbers}.)
@@ -1919,7 +1898,7 @@ dividing $2^{2j}-1$ and Bernoulli numerators).
 \label{q:appell-endpoint}
 In the boundary scaling $u=1+\delta_d$ with
 $\delta_d2^{d}/d$ bounded away from $0$ and $\infty$, the dominant
-saddle $z_d$ of $\Gd_d(u)=[z^{d}]d!\,\e^{uz}/\MM_u(z)$ should obey
+saddle $z_d$ of $\Gd_d(u)=[z^{d}]d!\,\EulerE^{uz}/\MM_u(z)$ should obey
 $d=\delta_dz_d+\log_2z_d+\Theta(1)$, and the full expansion should
 carry a nonconstant one-periodic lower-Lambert phase --- the
 polynomial-synthesis face of the corpus's Fabius endpoint machinery
@@ -1969,8 +1948,8 @@ now largely in the library ---
 \nolinkurl{Fabius.tsum_shifted_monomial_eq_integral_real}
 (\nolinkurl{MonomialCombExactness.lean}) kernel-verifies the dual
 (quadrature) face
-$\sum_{k}(\theta+k)^{p}\Up(2^{-m}(\theta+k))
-=\int x^{p}\Up(2^{-m}x)\dd x$ for every real shift and $p\le m$,
+$\sum_{k}(\theta+k)^{p}\RvachevUp(2^{-m}(\theta+k))
+=\int x^{p}\RvachevUp(2^{-m}x)\Differential x$ for every real shift and $p\le m$,
 via Schwartz-class Poisson summation with the nonzero aliases killed
 by the integer-zero-order theorem
 (\nolinkurl{MonomialCombAlias.lean}); what remains for (4)/(9) is
@@ -1991,12 +1970,12 @@ atom counts remain outside it.
 
 Truncations of the fast symbol (acting on degrees shown):
 \[
- H_0=1,\quad H_1=1+\bigO(z^{2}),\quad
- H_2=1-\tfrac5{36}z^{2}+\bigO(z^{4}),
+ H_0=1,\quad H_1=1+\BigO(z^{2}),\quad
+ H_2=1-\tfrac5{36}z^{2}+\BigO(z^{4}),
 \]
 \[
- H_3=1-\tfrac{13}{72}z^{2}+\bigO(z^{4}),\quad
- H_4=1-\tfrac29z^{2}+\tfrac{857}{32400}z^{4}+\bigO(z^{6});
+ H_3=1-\tfrac{13}{72}z^{2}+\BigO(z^{4}),\quad
+ H_4=1-\tfrac29z^{2}+\tfrac{857}{32400}z^{4}+\BigO(z^{6});
 \]
 low annihilator coefficients $(a_0,\dots,a_{d+1})$:
 $(1,1,0)$, $(1,2,2,2)$, $(1,3,5,7,8)$, $(1,4,9,16,24,32)$,
@@ -2013,7 +1992,7 @@ blocks & $\Psi_{n,h}
 =n!2^{n(n+1)/2}\sum_{N\le K}p_{n+1}(N)\,
 u\bigl((x-C_{n,N})/2^{n+1}h\bigr)$\\
 centers/scales & $C_{n,N}=a+h(2^{n+1}-2+2N)$,\quad $2^{n+1}h$,\quad
-$K=\ceil{(b-a)/2h}$\\
+$K=\Ceiling{(b-a)/2h}$\\
 coordinates & $b_n=\sum_r\gamma_rh^{n+r}p^{(n+r)}(a-h)/(n!\,r!)$\\
 amplitudes & $\alpha_{n,N}=n!2^{n(n+1)/2}b_np_{n+1}(N)$\\
 support & $[a-2h,\;a+h(2^{d+2}-2+2K)]$\\
@@ -2061,11 +2040,11 @@ with figures, classical Rvachev bibliography. \\
 SHA in \nolinkurl{assets/SHA256SUMS-absorbed.txt})
 & The oversampled lattice of \cref{sec:lattice}: twisted Poisson
 identity, general-ratio reproduction with sharp order
-$\vtwo(m)$ and the general first-defect series
+$\TwoAdicValuation(m)$ and the general first-defect series
 \eqref{eq:general-defect}, probabilistic deconvolution
 characterization, the physical-scale interval algorithm with
 truncation indices, support/atom-count bounds, jet matching,
-compressed $\bigO(d)$ description and $(2m+1)$-locality; the
+compressed $\BigO(d)$ description and $(2m+1)$-locality; the
 ghost-atom antiderivative calculus and the Thue--Morse derivative
 stencil \eqref{eq:tm-stencil}; finite sinc-prefix generators with
 the exact cumulant truncation law; generator-independent theorem;
@@ -2176,7 +2155,7 @@ calculus (the third exact-polynomial source's up-Appell family
 $A^{(m)}_r(u)=m^{r-1}\Gd_r(u/m)$ is the same deconvolution family in
 a scaled normalization --- verified on $P_2,P_4$), the Thue--Morse
 products, the sharp-order statement (that source's exact
-stationary order $\vtwo(m)$ is
+stationary order $\TwoAdicValuation(m)$ is
 \cref{thm:scale-classification}), rationality and affine covariance,
 tensor products (that source adds per-coordinate ratios),
 extension-operator remarks, conditioning warnings, and the Lean
@@ -2220,7 +2199,7 @@ compact support,
 
 \bibitem{Rvachev1977}
 V.~A.~Rvachev,
-\newblock On approximation by means of the function $\Up(x)$,
+\newblock On approximation by means of the function $\RvachevUp(x)$,
 \newblock \emph{Doklady Akademii Nauk SSSR} \textbf{233} (1977),
 no.~2, 295--296.
 
@@ -2266,7 +2245,7 @@ shift-invariant spaces,
 \bibitem{deBoorDeVoreRon1994}
 C.~de~Boor, R.~A.~DeVore, and A.~Ron,
 \newblock Approximation from shift-invariant subspaces of
-$L_2(\R^{d})$,
+$L_2(\RealNumbers^{d})$,
 \newblock \emph{Transactions of the American Mathematical Society}
 \textbf{341} (1994), 787--806.
 

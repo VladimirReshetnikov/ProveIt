@@ -2,6 +2,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb,mathtools,amsthm}
+\input{../../../../fabius-notation.tex}
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage[final]{microtype}
 \usepackage[letterpaper,margin=0.88in,headheight=15pt]{geometry}
@@ -64,36 +65,12 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{computationalresult}[theorem]{Computational result}
 
-\newcommand{\C}{\mathbb C}
-\newcommand{\R}{\mathbb R}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\N}{\mathbb N}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\Li}{\operatorname{Li}}
 \newcommand{\Disc}{\operatorname{Disc}}
-\newcommand{\Res}{\operatorname{Res}}
-\newcommand{\Log}{\operatorname{Log}}
-\newcommand{\sgn}{\operatorname{sgn}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\diag}{\operatorname{diag}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\qbinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
-\newcommand{\Qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
 \newcommand{\qmultinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
-\newcommand{\poch}[3]{(#1;#2)_{#3}}
 \newcommand{\Aq}{\mathcal A_q}
 \newcommand{\statusproved}{\textcolor{provedgreen}{\textsc{proved}}}
 \newcommand{\statusnumerical}{\textcolor{numericalblue}{\textsc{symbolic/numerical}}}
 \newcommand{\statusconjectural}{\textcolor{conjectureorange}{\textsc{conjectural}}}
-\newcommand{\abs}[1]{\left|#1\right|}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
-\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
-\newcommand{\angles}[1]{\left\langle#1\right\rangle}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\PhiC}{\Phi}
 \newcommand{\Bcal}{\mathcal B}
@@ -169,13 +146,13 @@ For the infinite product on a radial path \(q=\zeta e^{-t}\), \(\zeta^m=1\),
 \(|a|<1\), we derive
 \[
  \log(a;\zeta e^{-t})_\infty
- =-\frac{\Li_2(a^m)}{m^2t}+C_\zeta(a)-\Dcal_\zeta(a)t+O(t^2),
+ =-\frac{\Polylogarithm_2(a^m)}{m^2t}+C_\zeta(a)-\Dcal_\zeta(a)t+O(t^2),
 \]
 with explicit convergent series for \(C_\zeta\) and \(\Dcal_\zeta\), and revert
 it to
 \[
  t=\frac{A}{X}+\frac{\Dcal_\zeta A^2}{X^3}+O(X^{-4}),
- \qquad A=\frac{\Li_2(a^m)}{m^2},\quad X=-\log y+C_\zeta(a).
+ \qquad A=\frac{\Polylogarithm_2(a^m)}{m^2},\quad X=-\log y+C_\zeta(a).
 \]
 The cases \(q\to1\) and \(q\to-1\) receive higher-order real formulas.  A
 second, nonuniform regime \(a=q^x\) produces logarithmic corrections and a
@@ -211,8 +188,8 @@ Finally, the random series
 contains the Rvachev law at \(q=1/2\).  Its variance recovers the deformation
 parameter exactly:
 \[
- \Var X_q=\frac{1-q}{3(1+q)},
- \qquad q=\frac{1-3\Var X_q}{1+3\Var X_q}.
+ \Variance X_q=\frac{1-q}{3(1+q)},
+ \qquad q=\frac{1-3\Variance X_q}{1+3\Variance X_q}.
 \]
 All even cumulants give independent monotone inverse observables.  The
 accompanying Python program regenerates the symbolic tables, numerical checks,
@@ -261,7 +238,7 @@ We use
  (a;q)_\infty=\prod_{j=0}^{\infty}(1-aq^j),\quad |q|<1,
 \]
 \[
- \qbinom nk=\frac{(q;q)_n}{(q;q)_k(q;q)_{n-k}},
+ \GaussianBinomial{n}{k}{q}=\frac{(q;q)_n}{(q;q)_k(q;q)_{n-k}},
  \qquad
  [x]_q=\frac{1-q^x}{1-q}.
 \]
@@ -317,10 +294,10 @@ together with a specified real interval or complex continuation path.
 \end{definition}
 
 \section{Real branches and complex coverings}
-If \(F\colon I\to\R\) is continuous and strictly monotone, it has one ordinary
+If \(F\colon I\to\RealNumbers\) is continuous and strictly monotone, it has one ordinary
 real inverse on \(F(I)\).  In the complex plane the natural object is instead
 \[
- \mathscr R_F=\{(p,y)\in\C^2:F(p)=y\},
+ \mathscr R_F=\{(p,y)\in\ComplexNumbers^2:F(p)=y\},
 \]
 projected to the \(y\)-plane.  At a regular point \(F_p\ne0\), the projection
 is locally biholomorphic.  A point with \(F_p=0\) creates a branch value; a loop
@@ -352,7 +329,7 @@ If the Jacobian
 is nonsingular, then \(\bm p\) is a locally analytic function of \(\bm y\).
 The first-order sensitivity is
 \[
- \dd\bm p=J(\bm p)^{-1}\dd\bm y.
+ \Differential\bm p=J(\bm p)^{-1}\Differential\bm y.
 \]
 If \(J\) is singular, either identifiability fails or a fractional-power
 inverse must be used after resolving the singularity.
@@ -375,9 +352,9 @@ distance to the critical value; near a cusp it vanishes faster.
 For a scalar inverse \(p=G(y)\), define the absolute and relative condition
 numbers
 \[
- \kappa_{\rm abs}=\abs{G'(y)}=\frac1{\abs{F'(p)}},
+ \kappa_{\rm abs}=\AbsoluteValue{G'(y)}=\frac1{\AbsoluteValue{F'(p)}},
  \qquad
- \kappa_{\rm rel}=\abs{\frac{y}{pF'(p)}}.
+ \kappa_{\rm rel}=\AbsoluteValue{\frac{y}{pF'(p)}}.
 \]
 A large condition number is not a defect in an algorithm; it is an intrinsic
 property of the inverse problem.  The right numerical response is to change
@@ -429,12 +406,12 @@ recursively.
 If \(y-y_0=u/\phi(u)\), with \(\phi(0)\ne0\), then
 \[
  u=\sum_{n\ge1}\frac{(y-y_0)^n}{n!}
- \left[\frac{\dd^{n-1}}{\dd u^{n-1}}\phi(u)^n\right]_{u=0}.
+ \left[\frac{\Differential^{n-1}}{\Differential u^{n-1}}\phi(u)^n\right]_{u=0}.
 \]
 More generally, for analytic \(H\),
 \[
  H(u(y))=H(0)+\sum_{n\ge1}\frac{(y-y_0)^n}{n!}
- \left[\frac{\dd^{n-1}}{\dd u^{n-1}}
+ \left[\frac{\Differential^{n-1}}{\Differential u^{n-1}}
  H'(u)\phi(u)^n\right]_{u=0}.
 \]
 This is often the cleanest route when a \(q\)-product factors into a simple
@@ -496,7 +473,7 @@ with \(\phi_i(\bm0)\ne0\).  Good's formula \cite{Good1960} states that for a
 formal power series \(H\),
 \[
  H(\bm w(\bm z))
- =\sum_{\bm n\in\N^d}\bm z^{\bm n}
+ =\sum_{\bm n\in\NaturalNumbers^d}\bm z^{\bm n}
  [\bm x^{\bm n}]
  H(\bm x)\prod_{i=1}^d\phi_i(\bm x)^{n_i}
  \det\left(\delta_{ij}-\frac{x_j}{\phi_i(\bm x)}
@@ -738,20 +715,20 @@ expand this discriminant.
 \section{The inverse jet at \texorpdfstring{\(a=0\)}{a=0}}
 The finite \(q\)-binomial theorem gives
 \begin{equation}\label{eq:finite-qpoch-qbinom}
- (a;q)_n=\sum_{r=0}^{n}(-a)^rq^{\binom r2}\qbinom nr.
+ (a;q)_n=\sum_{r=0}^{n}(-a)^rq^{\binom r2}\GaussianBinomial{n}{r}{q}.
 \end{equation}
 Let \(u=1-y\), and assume \([n]_q\ne0\).  Reversion of
 \[
- u=[n]_qa-q\qbinom n2a^2+q^3\qbinom n3a^3-\cdots
+ u=[n]_qa-q\GaussianBinomial{n}{2}{q}a^2+q^3\GaussianBinomial{n}{3}{q}a^3-\cdots
 \]
 gives the explicit connection between inverse Pochhammer coefficients and
 Gaussian coefficients:
 \begin{align}
  a={}&\frac{u}{[n]_q}
- +\frac{q\qbinom n2}{[n]_q^3}u^2 \notag\\
+ +\frac{q\GaussianBinomial{n}{2}{q}}{[n]_q^3}u^2 \notag\\
  &+\left(
- \frac{2q^2\qbinom n2^2}{[n]_q^5}
- -\frac{q^3\qbinom n3}{[n]_q^4}
+ \frac{2q^2\GaussianBinomial{n}{2}{q}^2}{[n]_q^5}
+ -\frac{q^3\GaussianBinomial{n}{3}{q}}{[n]_q^4}
  \right)u^3+O(u^4).
  \label{eq:argument-inverse-at-zero}
 \end{align}
@@ -762,7 +739,7 @@ All higher terms are obtained from the Bell recursion in
 \label{thm:argument-all-order}
 Let
 \[
- b_r=(-1)^{r+1}q^{\binom r2}\qbinom nr,
+ b_r=(-1)^{r+1}q^{\binom r2}\GaussianBinomial{n}{r}{q},
  \qquad
  u=\sum_{r\ge1}b_ra^r.
 \]
@@ -810,7 +787,7 @@ congruent to \(r\pmod m\).  Its multiplicity is
 \[
  \nu_r(n,m)=
  \begin{cases}
- 1+\floor{(n-1-r)/m},&0\le r<\min(m,n),\\
+ 1+\Floor{(n-1-r)/m},&0\le r<\min(m,n),\\
  0,&r\ge n.
  \end{cases}
 \]
@@ -846,7 +823,7 @@ At \(q=1\),
 \]
 At \(q=-1\), put
 \[
- E=\ceil{n/2},\qquad O=\floor{n/2}.
+ E=\Ceiling{n/2},\qquad O=\Floor{n/2}.
 \]
 Then
 \begin{equation}\label{eq:qminus1-argument}
@@ -955,14 +932,14 @@ From
 \[
  \log(1-ae^{-x})
  =\log(1-a)+\sum_{r\ge1}
- \frac{(-1)^{r+1}}{r!}\Li_{1-r}(a)x^r,
+ \frac{(-1)^{r+1}}{r!}\Polylogarithm_{1-r}(a)x^r,
 \]
 we obtain the exact formal jet
 \begin{equation}\label{eq:finite-q1-forward}
  \log\frac{(a;e^{-t})_n}{(1-a)^n}
  =\sum_{r\ge1}A_rt^r,
  \qquad
- A_r=\frac{(-1)^{r+1}}{r!}\Li_{1-r}(a)S_r(n).
+ A_r=\frac{(-1)^{r+1}}{r!}\Polylogarithm_{1-r}(a)S_r(n).
 \end{equation}
 When \(A_1\ne0\), let
 \[
@@ -985,7 +962,7 @@ of \(a-1\) and \(q-1\).
 At \(q=-1\), recall
 \[
  F_n(a,-1)=(1-a)^E(1+a)^O,
- \quad E=\ceil{n/2},\quad O=\floor{n/2}.
+ \quad E=\Ceiling{n/2},\quad O=\Floor{n/2}.
 \]
 Evaluating \eqref{eq:qpoch-q-logderivative} gives
 \begin{equation}\label{eq:qminus1-logderivative}
@@ -1113,7 +1090,7 @@ The critical locus is the rational equation
 \]
 after cancellation of any factors vanishing at \(a^m=1\).  Multiplication by
 \(\prod_j(1-a\zeta^j)\) shows that it is algebraic over the cyclotomic field
-\(\Q(\zeta)\).
+\(\RationalNumbers(\zeta)\).
 
 \begin{researchproblem}
 Classify the critical parameters \(a\) and their degeneracy at every primitive
@@ -1168,8 +1145,8 @@ argument inverse of \((b;q)_\infty=z\).  Then
 \begin{theorem}[\statusproved\ Exact order inverse]
 Every order branch satisfying \((a;q)_\alpha=y\) is of the form
 \begin{equation}\label{eq:order-inverse-exact}
- \alpha=\frac{\Log(\Aq((a;q)_\infty/y)/a)+2\pi\ii k}{\Log q},
- \qquad k\in\Z,
+ \alpha=\frac{\PrincipalLogarithm(\Aq((a;q)_\infty/y)/a)+2\pi\ImaginaryUnit k}{\PrincipalLogarithm q},
+ \qquad k\in\IntegerNumbers,
 \end{equation}
 with compatible logarithm and \(\Aq\) sheets.
 \end{theorem}
@@ -1355,15 +1332,15 @@ Let \(q=e^{-t}\), \(t\downarrow0\), and keep \(|a|<1\) fixed.  Expanding
 expansion \cite{McIntosh1999,BanerjeeWilkerson}
 \begin{equation}\label{eq:fixed-a-q1}
  \log(a;e^{-t})_\infty
- =-\frac{\Li_2(a)}{t}+\frac12\log(1-a)
- -\sum_{r\ge1}\frac{B_{2r}}{(2r)!}\Li_{2-2r}(a)t^{2r-1}.
+ =-\frac{\Polylogarithm_2(a)}{t}+\frac12\log(1-a)
+ -\sum_{r\ge1}\frac{B_{2r}}{(2r)!}\Polylogarithm_{2-2r}(a)t^{2r-1}.
 \end{equation}
 Thus
 \[
- A=\Li_2(a),\quad
- D=\frac{\Li_0(a)}{12},\quad
- E=\frac{\Li_{-2}(a)}{720},\quad
- F=\frac{\Li_{-4}(a)}{30240}
+ A=\Polylogarithm_2(a),\quad
+ D=\frac{\Polylogarithm_0(a)}{12},\quad
+ E=\frac{\Polylogarithm_{-2}(a)}{720},\quad
+ F=\frac{\Polylogarithm_{-4}(a)}{30240}
 \]
 in \eqref{eq:large-log-reversion}.  With
 \[
@@ -1379,7 +1356,7 @@ the base inverse is
 \end{align}
 For real \(0<a<1\), \(y\downarrow0\) and all displayed quantities are real.
 For complex \(a\), this formula labels branches through the choices of
-\(\Li_2\), \(\log(1-a)\), and \(\log y\).
+\(\Polylogarithm_2\), \(\log(1-a)\), and \(\log y\).
 
 \section{The nonuniform scaling \texorpdfstring{\(a=q^x\)}{a=q^x}}
 When \(a\to1\) together with \(q\to1\), the fixed-\(a\) expansion is not
@@ -1428,7 +1405,7 @@ Alternatively, split the Lambert series into even and odd indices.  For
 \(|a|<1\), one obtains
 \begin{equation}\label{eq:qminus1-infinite-forward}
  \log(a;-e^{-t})_\infty
- =-\frac{\Li_2(a^2)}{4t}+\frac12\log(1-a)
+ =-\frac{\Polylogarithm_2(a^2)}{4t}+\frac12\log(1-a)
  -\frac{a(a+3)}{12(1-a^2)}t+O(t^3).
 \end{equation}
 The constant term simplifies nontrivially: the even-index contribution is
@@ -1439,7 +1416,7 @@ The constant term simplifies nontrivially: the even-index contribution is
 \begin{theorem}[\statusproved\ Real radial inverse at \(-1\)]
 For real \(|a|<1\), let \(y=(a;-e^{-t})_\infty\), and set
 \[
- A=\frac{\Li_2(a^2)}4,
+ A=\frac{\Polylogarithm_2(a^2)}4,
  \quad C=\frac12\log(1-a),
  \quad D=\frac{a(a+3)}{12(1-a^2)},
  \quad X=-\log y+C.
@@ -1482,11 +1459,11 @@ Both series converge absolutely for \(|a|<1\).
 For \(|a|<1\),
 \begin{equation}\label{eq:cyclotomic-forward}
  \log(a;\zeta e^{-t})_\infty
- =-\frac{\Li_2(a^m)}{m^2t}+C_\zeta(a)-\Dcal_\zeta(a)t+O(t^2).
+ =-\frac{\Polylogarithm_2(a^m)}{m^2t}+C_\zeta(a)-\Dcal_\zeta(a)t+O(t^2).
 \end{equation}
 Let
 \[
- A=\frac{\Li_2(a^m)}{m^2},
+ A=\frac{\Polylogarithm_2(a^m)}{m^2},
  \qquad X=-\log y+C_\zeta(a).
 \]
 On a branch for which \(X\to\infty\),
@@ -1501,7 +1478,7 @@ For \(r=ms\), expand
  \frac1{1-e^{-rt}}=\frac1{rt}+\frac12+\frac{rt}{12}+O(t^3).
 \]
 The singular sum is
-\(-\Li_2(a^m)/(m^2t)\); its constant and linear pieces give the first terms in
+\(-\Polylogarithm_2(a^m)/(m^2t)\); its constant and linear pieces give the first terms in
 \eqref{eq:cyclotomic-C} and \eqref{eq:cyclotomic-D}.  For \(m\nmid r\),
 \[
  \frac1{1-\zeta^re^{-rt}}
@@ -1541,18 +1518,18 @@ divergent finite-product growth.  For the first choice, \(Q=q^{-1}\to0\), and
 \((a;q)_\infty\) at \(q=\infty\) without specifying such a normalization.
 
 \section{Stokes data and continuation paths}
-The leading action \(A=\Li_2(a^m)/m^2\) can rotate across a Stokes line, and
+The leading action \(A=\Polylogarithm_2(a^m)/m^2\) can rotate across a Stokes line, and
 \(C_\zeta(a)\) changes by logarithmic monodromy when \(a\) crosses the branch
-set of \(\Li_2(a^m)\).  Consequently, two radial inverse expansions with the
+set of \(\Polylogarithm_2(a^m)\).  Consequently, two radial inverse expansions with the
 same formal powers may represent different analytic sheets.  A robust complex
 algorithm stores the branch-state tuple
 \[
- (\zeta,m,\arg t,\Log y,\Log(1-a^m))
+ (\zeta,m,\arg t,\PrincipalLogarithm y,\PrincipalLogarithm(1-a^m))
 \]
 as part of every continuation record.
 
 \begin{conjecture}[\statusconjectural\ Cyclotomic resurgent inverse]
-After removal of the action \(\Li_2(a^m)/(m^2t)\), every radial branch of
+After removal of the action \(\Polylogarithm_2(a^m)/(m^2t)\), every radial branch of
 \((a;q)_\infty\) admits a resurgent transseries whose perturbative coefficients
 belong to the differential algebra generated by cyclotomic Lambert sums,
 polylogarithms, and cyclic quantum dilogarithms.  Its inverse transseries is
@@ -1567,7 +1544,7 @@ composition.
 \section{The global positive branch}
 For \(0<k<n\), the Gaussian coefficient
 \[
- G_{n,k}(q)=\qbinom nk
+ G_{n,k}(q)=\GaussianBinomial{n}{k}{q}
 \]
 is a polynomial with nonnegative integer coefficients, constant term one, and
 degree
@@ -1582,7 +1559,7 @@ The global positive-inverse theorem therefore applies.
 
 \begin{theorem}[\statusproved\ Unique positive Gaussian base]
 For every \(0<k<n\) and every \(y>1\), there exists exactly one \(q>0\) such
-that \(\qbinom nk=y\).  The solution depends analytically on \(y\) away from
+that \(\GaussianBinomial{n}{k}{q}=y\).  The solution depends analytically on \(y\) away from
 critical values in the complex extension.
 \end{theorem}
 
@@ -1644,7 +1621,7 @@ In particular,
 \[
  P_2=D(n+1),
  \qquad
- \Var J=\frac{D(n+1)}{12}.
+ \Variance J=\frac{D(n+1)}{12}.
 \]
 
 Let
@@ -1714,7 +1691,7 @@ taking the limit gives the coefficient
 Let \(\zeta\) be primitive of order \(m\).  The exponent of \(\Phi_m(q)\) in a
 Gaussian coefficient is
 \begin{equation}\label{eq:gaussian-cyclotomic-valuation}
- \nu_m(n,k)=\floor{n/m}-\floor{k/m}-\floor{(n-k)/m}.
+ \nu_m(n,k)=\Floor{n/m}-\Floor{k/m}-\Floor{(n-k)/m}.
 \end{equation}
 This number is either zero or one.  It equals one precisely when adding the
 least residues of \(k\) and \(n-k\) modulo \(m\) produces a carry.  Equivalently,
@@ -1727,7 +1704,7 @@ if
 then a forced zero occurs exactly when \(s>r\).  The value in the no-carry case
 is
 \[
- \Qbinom nk\zeta=\binom ab\Qbinom rs\zeta.
+ \GaussianBinomial{n}{k}{\zeta}=\binom ab\GaussianBinomial{r}{s}{\zeta}.
 \]
 
 \begin{corollary}[\statusproved\ Every forced cyclotomic zero is simple]
@@ -1740,7 +1717,7 @@ Hence the inverse near target zero is an ordinary Taylor branch, not a
 fractional-power branch.
 \end{corollary}
 \begin{proof}
-In \((q;q)_r\), the exponent of \(\Phi_m\) is \(\floor{r/m}\).  Taking the
+In \((q;q)_r\), the exponent of \(\Phi_m\) is \(\Floor{r/m}\).  Taking the
 difference in the Gaussian quotient gives \eqref{eq:gaussian-cyclotomic-valuation}.
 The floor identity restricts it to zero or one.  Since cyclotomic polynomials
 have simple roots over characteristic zero, valuation one gives a nonzero
@@ -1797,7 +1774,7 @@ The continuous Gaussian coefficient is
  \Bcal_q(z,w)=
  \frac{\Gamma_q(z+1)}{\Gamma_q(w+1)\Gamma_q(z-w+1)}.
 \end{equation}
-It agrees with \(\qbinom nk\) at integers.  Its logarithmic derivatives are
+It agrees with \(\GaussianBinomial{n}{k}{q}\) at integers.  Its logarithmic derivatives are
 \begin{align}
  \partial_z\log\Bcal_q(z,w)
  &=\psi_q(z+1)-\psi_q(z-w+1),
@@ -1924,16 +1901,16 @@ Let
 \]
 with \(n\to\infty\).  Euler--Maclaurin applied to the product gives
 \begin{equation}\label{eq:gaussian-double-scaling}
- \frac1n\log\qbinom n{\rho n}
+ \frac1n\log\GaussianBinomial{n}{\rho n}{q}
  \longrightarrow
  \Phi(\rho,\tau),
 \end{equation}
 where
 \begin{equation}\label{eq:dilog-rate}
  \Phi(\rho,\tau)=\frac1\tau\left[
- \frac{\pi^2}{6}+\Li_2(e^{-\tau})
- -\Li_2(e^{-\rho\tau})
- -\Li_2(e^{-(1-\rho)\tau})
+ \frac{\pi^2}{6}+\Polylogarithm_2(e^{-\tau})
+ -\Polylogarithm_2(e^{-\rho\tau})
+ -\Polylogarithm_2(e^{-(1-\rho)\tau})
  \right].
 \end{equation}
 The rate is symmetric under \(\rho\leftrightarrow1-\rho\) and has a unique
@@ -2029,10 +2006,10 @@ For fixed \(q\notin\{0,1\}\),
 \[
  [x]_q=\frac{1-q^x}{1-q}=y
 \]
-is elementary to invert, but multivalued over \(\C\):
+is elementary to invert, but multivalued over \(\ComplexNumbers\):
 \begin{equation}\label{eq:qnumber-x-inverse}
- x=\frac{\Log(1-(1-q)y)+2\pi\ii k}{\Log q},
- \qquad k\in\Z.
+ x=\frac{\PrincipalLogarithm(1-(1-q)y)+2\pi\ImaginaryUnit k}{\PrincipalLogarithm q},
+ \qquad k\in\IntegerNumbers.
 \end{equation}
 The denominator also depends on the chosen logarithm of \(q\).  For real
 \(q>0\), \(q\ne1\), and a positive logarithm branch, the real inverse is
@@ -2157,7 +2134,7 @@ with \(s=\log(y/n!)\),
 \section{Cyclotomic Puiseux inverses of the factorial}
 Let \(\zeta\ne1\) be primitive of order \(m\), and put
 \[
- \nu=\floor{n/m}.
+ \nu=\Floor{n/m}.
 \]
 Exactly the factors \([m]_q,[2m]_q,\ldots,[\nu m]_q\) vanish at \(\zeta\), each
 simply.  Therefore
@@ -2592,7 +2569,7 @@ Many \(q\)-orthogonal polynomials satisfy a three-term recurrence
 where \(\lambda\) may be \(q\) or a shape parameter.  A simple zero
 \(x_j(\lambda)\) obeys
 \[
- \frac{\dd x_j}{\dd\lambda}
+ \frac{\Differential x_j}{\Differential\lambda}
  =-\frac{\partial_\lambda p_n(x_j;\lambda)}
  {\partial_xp_n(x_j;\lambda)}.
 \]
@@ -2684,9 +2661,9 @@ Let \(U_0,U_1,\ldots\) be independent uniform random variables on
 The weights are positive and sum to one, so \(X_q\in[-1,1]\).  Its
 characteristic function is
 \begin{equation}\label{eq:atomic-characteristic}
- \widehat u_q(t)=\mathbb E e^{\ii tX_q}
- =\prod_{j=0}^{\infty}\sinc\bigl((1-q)q^jt\bigr),
- \qquad \sinc z=\frac{\sin z}{z}.
+ \widehat u_q(t)=\mathbb E e^{\ImaginaryUnit tX_q}
+ =\prod_{j=0}^{\infty}\SincRad\bigl((1-q)q^jt\bigr),
+ \qquad \SincRad z=\frac{\sin z}{z}.
 \end{equation}
 The product decays faster than every negative power on the real axis, and
 therefore \(X_q\) has a compactly supported \(C^\infty\) density \(u_q\).
@@ -2696,7 +2673,7 @@ The distributional identity
 \]
 with an independent copy \(X_q'\) yields the refinement equation
 \begin{equation}\label{eq:atomic-refinement}
- \widehat u_q(t)=\sinc((1-q)t)\widehat u_q(qt).
+ \widehat u_q(t)=\SincRad((1-q)t)\widehat u_q(qt).
 \end{equation}
 
 At \(q=1/2\), the weights are \(2^{-j-1}\), and \(u_{1/2}\) is the standard
@@ -2727,7 +2704,7 @@ parameter inverses are part of the same theory developed earlier.
 \begin{theorem}[\statusproved\ Exact variance inverse]
 The variance and its inverse are
 \begin{equation}\label{eq:atomic-variance-inverse}
- V(q)=\Var X_q=\frac{1-q}{3(1+q)},
+ V(q)=\Variance X_q=\frac{1-q}{3(1+q)},
  \qquad
  q=\frac{1-3V}{1+3V}.
 \end{equation}
@@ -2735,9 +2712,9 @@ In particular, the Rvachev value \(q=1/2\) is characterized by
 \(V=1/9\).
 \end{theorem}
 \begin{proof}
-Use \(\Var U=1/3\) and sum the geometric series of squared weights:
+Use \(\Variance U=1/3\) and sum the geometric series of squared weights:
 \[
- \Var X_q=\frac13(1-q)^2\sum_{j\ge0}q^{2j}
+ \Variance X_q=\frac13(1-q)^2\sum_{j\ge0}q^{2j}
  =\frac{1-q}{3(1+q)}.
 \]
 Solving the resulting linear-fractional equation gives the inverse.
@@ -2808,7 +2785,7 @@ support scale is unknown.
 \section{Conditioning}
 From \eqref{eq:atomic-variance-inverse},
 \[
- \frac{\dd q}{\dd V}=-\frac6{(1+3V)^2}.
+ \frac{\Differential q}{\Differential V}=-\frac6{(1+3V)^2}.
 \]
 Absolute recovery remains regular throughout \(0<V<1/3\).  The relative
 condition number diverges as \(q\downarrow0\), because relative error in a
@@ -2876,7 +2853,7 @@ be inverted to estimate \(q\) from a nearly Gaussian observed profile.
 At the exact Rvachev member, \(q=1/2\), the moment and cumulant identities give
 an overdetermined set of checks:
 \[
- \Var X_{1/2}=\frac19,
+ \Variance X_{1/2}=\frac19,
  \qquad
  \gamma_2(X_{1/2})=-\frac{18}{25},
 \]
@@ -2954,7 +2931,7 @@ For the larger family
  X_{q,c,\mu}=\mu+c\sum_{j\ge0}q^jU_j,
 \]
 the first moment, variance, and kurtosis form a globally injective coordinate
-system on \(\mu\in\R\), \(c>0\), \(0<q<1\).  The explicit inverse consists of
+system on \(\mu\in\RealNumbers\), \(c>0\), \(0<q<1\).  The explicit inverse consists of
 translation from the mean, \(q\) from \eqref{eq:kurtosis-q-inverse}, and
 \(c\) from the variance.
 \end{conjecture}
@@ -2994,12 +2971,12 @@ For \(0\le a<1\),
 \end{equation}
 Indeed, \(-\log(1-x)\le x/(1-x)\), and the remaining geometric sum gives the
 right-hand side.  The same argument applies to absolute values when
-\(\abs{a q^N}<1\).  Thus a requested forward tolerance can be converted into a
+\(\AbsoluteValue{a q^N}<1\).  Thus a requested forward tolerance can be converted into a
 certified truncation index before inversion begins.
 
 For Gaussian coefficients, the product quotient
 \[
- \qbinom nk=\prod_{j=1}^{k}\frac{1-q^{n-k+j}}{1-q^j}
+ \GaussianBinomial{n}{k}{q}=\prod_{j=1}^{k}\frac{1-q^{n-k+j}}{1-q^j}
 \]
 is stable in logarithmic form away from roots of unity.  Near \(q=1\), use the
 analytic function
@@ -3008,7 +2985,7 @@ analytic function
 \]
 and write
 \begin{equation}\label{eq:stable-gaussian-q1}
- \log\qbinom nk
+ \log\GaussianBinomial{n}{k}{q}
  =\log\binom nk+
  \sum_{j=1}^{k}
  \left[
@@ -3046,12 +3023,12 @@ quadratic convergence because the derivative vanishes.
 Suppose a nonzero target \(y\) is to be matched by a product-like function
 \(F(p)\).  On a chosen logarithm sheet define
 \[
- h(p)=\Log F(p)-\Log y.
+ h(p)=\PrincipalLogarithm F(p)-\PrincipalLogarithm y.
 \]
 Then logarithmic Newton is
 \begin{equation}\label{eq:log-newton}
  p_{r+1}=p_r-\frac{h(p_r)}{h'(p_r)}
- =p_r-\frac{\Log(F(p_r)/y)}{F'(p_r)/F(p_r)}.
+ =p_r-\frac{\PrincipalLogarithm(F(p_r)/y)}{F'(p_r)/F(p_r)}.
 \end{equation}
 It avoids overflow and measures relative rather than absolute error.  For the
 finite Pochhammer base inverse,
@@ -3091,7 +3068,7 @@ For several auxiliary parameters, replace the numerator by
 \(y'-\sum_jF_{\lambda_j}\lambda_j'\).  A practical branch tracker uses one
 Runge--Kutta or Taylor predictor for \eqref{eq:continuation-ode}, followed by a
 Newton corrector at the new value of \(s\).  The step size is reduced when
-\(\abs{F_p}\) decreases or the Newton correction becomes a substantial
+\(\AbsoluteValue{F_p}\) decreases or the Newton correction becomes a substantial
 fraction of the predicted displacement.
 
 A logarithm or argument used in the forward function must be unwrapped
@@ -3129,11 +3106,11 @@ but monotonicity supplies the proof.
 Let \(f\) be differentiable on an interval \(I\), suppose \(f(p)=y\) has a
 solution \(p\in I\), and assume
 \[
- \inf_{x\in I}\abs{f'(x)}\ge m>0.
+ \inf_{x\in I}\AbsoluteValue{f'(x)}\ge m>0.
 \]
 Then every approximation \(p_0\in I\) satisfies
 \begin{equation}\label{eq:residual-root-bound}
- \abs{p-p_0}\le\frac{\abs{f(p_0)-y}}m.
+ \AbsoluteValue{p-p_0}\le\frac{\AbsoluteValue{f(p_0)-y}}m.
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -3161,20 +3138,20 @@ The following elementary Rouch\'e test certifies one local inverse sheet.
 
 \begin{theorem}[\statusproved\ One-zero disk]\label{thm:one-zero-disk}
 Let \(F\) be holomorphic on the closed disk
-\(\abs{p-p_0}\le r\).  Suppose
+\(\AbsoluteValue{p-p_0}\le r\).  Suppose
 \[
- \sup_{\abs{p-p_0}\le r}\abs{F''(p)}\le M
+ \sup_{\AbsoluteValue{p-p_0}\le r}\AbsoluteValue{F''(p)}\le M
 \]
 and
 \begin{equation}\label{eq:rouche-certificate}
- \abs{F(p_0)-y}+\frac12Mr^2<\abs{F'(p_0)}r.
+ \AbsoluteValue{F(p_0)-y}+\frac12Mr^2<\AbsoluteValue{F'(p_0)}r.
 \end{equation}
 Then \(F(p)-y\) has exactly one zero, counted with multiplicity, in the disk.
 \end{theorem}
 \begin{proof}
 Taylor's formula with an integral remainder bounds
 \[
- \abs{F(p)-F(p_0)-F'(p_0)(p-p_0)}\le\frac12Mr^2
+ \AbsoluteValue{F(p)-F(p_0)-F'(p_0)(p-p_0)}\le\frac12Mr^2
 \]
 on the boundary.  By \eqref{eq:rouche-certificate}, the difference between
 \(F(p)-y\) and \(F'(p_0)(p-p_0)\) is smaller than the latter.  Rouch\'e's
@@ -3190,7 +3167,7 @@ For finite products, algebraic singularities can be found before numerical
 continuation.  The critical-value polynomial is
 \[
  \Delta_n(q,y)=
- \Res_a\bigl((a;q)_n-y,\partial_a(a;q)_n\bigr).
+ \ResidueOperator_a\bigl((a;q)_n-y,\partial_a(a;q)_n\bigr).
 \]
 Its zeros are precisely the finite branch values, with multiplicities.  A
 subresultant sequence is usually preferable to expanding the full determinant.
@@ -3229,7 +3206,7 @@ A continuous interpolation in the order or in the Gaussian parameters is a
 branch-finding device; the original problem may still require an integer.
 Suppose an interpolated inverse gives \(x_*\) with an error bound \(\eta<1/2\).
 There is then at most one candidate integer \(m\) with
-\(\abs{m-x_*}\le\eta\).  Evaluate the exact recurrence at that candidate to
+\(\AbsoluteValue{m-x_*}\le\eta\).  Evaluate the exact recurrence at that candidate to
 certify it.
 
 For finite products,
@@ -3238,10 +3215,10 @@ For finite products,
 \]
 For Gaussian coefficients,
 \begin{equation}\label{eq:gaussian-ratio-discrete}
- \frac{\qbinom{n+1}{k}}{\qbinom nk}
+ \frac{\GaussianBinomial{n+1}{k}{q}}{\GaussianBinomial{n}{k}{q}}
  =\frac{1-q^{n+1}}{1-q^{n+1-k}},
  \qquad
- \frac{\qbinom n{k+1}}{\qbinom nk}
+ \frac{\GaussianBinomial{n}{k+1}{q}}{\GaussianBinomial{n}{k}{q}}
  =\frac{1-q^{n-k}}{1-q^{k+1}}.
 \end{equation}
 These ratios permit exact or interval comparisons without constructing large
@@ -3256,7 +3233,7 @@ SymPy for exact rational and polynomial identities, mpmath at eighty decimal
 digits for transcendental evaluations, and NumPy/Matplotlib for tabulation and
 figures.  It deliberately separates three kinds of evidence:
 \begin{enumerate}[label=(\roman*)]
-\item exact symbolic identities, simplified over \(\Q\) or \(\Q[a,q]\);
+\item exact symbolic identities, simplified over \(\RationalNumbers\) or \(\RationalNumbers[a,q]\);
 \item asymptotic residuals computed at increasing precision and decreasing
       endpoint parameter;
 \item plots intended to reveal geometry, but never used as proofs.
@@ -3351,7 +3328,7 @@ cubically over the sampled range.  The exact identities
 inverse normal forms.
 
 \section{Gaussian inverse jets}
-The program tests five distinct base regimes for \(\qbinom83\): ordinary
+The program tests five distinct base regimes for \(\GaussianBinomial{8}{3}{q}\): ordinary
 reversion at zero, Bernoulli reversion at one, the nonzero and zero branches at
 minus one, and reciprocal reversion at infinity.  Representative errors are
 shown in \Cref{tab:gaussian-jet-errors}.  Their purpose is not to optimize each
@@ -3360,7 +3337,7 @@ forward evaluator.
 
 \begin{table}[H]
 \centering
-\caption{Representative truncated inverse-jet errors for \(\qbinom83\).}
+\caption{Representative truncated inverse-jet errors for \(\GaussianBinomial{8}{3}{q}\).}
 \label{tab:gaussian-jet-errors}
 \begin{tabular}{@{}lrr@{}}
 \toprule
@@ -3459,10 +3436,10 @@ the least active exponent\\
 \((a;q)_\infty\) & \(a\) & \(a=1\) & ordinary series in
 \(y/(q;q)_\infty\)\\
 \((a;q)_\infty\) & \(q\) & \(\zeta e^{-t}\) & reciprocal-log series
-\(t\sim \Li_2(a^m)/(m^2X)\)\\
-\(\qbinom nk\) & \(q\) & \(q=0\) & \(q=(y-1)+O((y-1)^2)\)\\
-\(\qbinom nk\) & \(q\) & \(q=1\) & \(\log q\sim2\log(y/\binom nk)/[k(n-k)]\)\\
-\(\qbinom nk\) & \(q\) & \(q=\infty\) & reciprocal of the \(q=0\) inverse
+\(t\sim \Polylogarithm_2(a^m)/(m^2X)\)\\
+\(\GaussianBinomial{n}{k}{q}\) & \(q\) & \(q=0\) & \(q=(y-1)+O((y-1)^2)\)\\
+\(\GaussianBinomial{n}{k}{q}\) & \(q\) & \(q=1\) & \(\log q\sim2\log(y/\binom nk)/[k(n-k)]\)\\
+\(\GaussianBinomial{n}{k}{q}\) & \(q\) & \(q=\infty\) & reciprocal of the \(q=0\) inverse
 of \(y/q^{k(n-k)}\)\\
 continuous Gaussian & upper & finite point & inverse \(q\)-digamma difference;
 strictly increasing on the real principal domain\\
@@ -3530,12 +3507,12 @@ before applying a multivariate Newton method, quotient out translations,
 scalings, reciprocal symmetries, and parameter permutations analytically.
 
 \section{A worked cyclotomic recovery example}
-Let \(q=\zeta e^{-t}\), where \(\zeta=e^{2\pi\ii/3}\), and suppose \(a\) is
-known with \(\abs a<1\).  For a very small observed product \(y\), define
+Let \(q=\zeta e^{-t}\), where \(\zeta=e^{2\pi\ImaginaryUnit/3}\), and suppose \(a\) is
+known with \(\AbsoluteValue a<1\).  For a very small observed product \(y\), define
 \[
- A=\frac{\Li_2(a^3)}9,
+ A=\frac{\Polylogarithm_2(a^3)}9,
  \qquad
- X=-\Log y+C_\zeta(a).
+ X=-\PrincipalLogarithm y+C_\zeta(a).
 \]
 The two-term initializer is
 \[
@@ -3689,7 +3666,7 @@ For fixed positive \(q\), the continuous interpolation
 \(\Bcal_q(z,w)\) separates the analytic branch problem from the integer
 constraint.  The discrete inverse asks for all integer pairs \((n,k)\) with
 \[
- \qbinom nk=y.
+ \GaussianBinomial{n}{k}{q}=y.
 \]
 Symmetry forces \((n,k)\leftrightarrow(n,n-k)\), and special bases can create
 additional coincidences.
@@ -3697,7 +3674,7 @@ additional coincidences.
 \begin{conjecture}[\statusconjectural\ Generic discrete uniqueness]
 Fix a transcendental real \(q>0\), \(q\ne1\).  Equality
 \[
- \qbinom nk=\qbinom{n'}{k'}
+ \GaussianBinomial{n}{k}{q}=\GaussianBinomial{n'}{k'}{q}
 \]
 for nontrivial indices implies
 \((n',k')=(n,k)\) or \((n,n-k)\).
@@ -3931,10 +3908,10 @@ With \(q=e^t\),
 and
 \begin{equation}\label{eq:qpoch-log-t-derivatives}
  \partial_t^r\log(a;e^t)_n\big|_{t=0}
- =-\Li_{1-r}(a)\sum_{j=0}^{n-1}j^r,
+ =-\Polylogarithm_{1-r}(a)\sum_{j=0}^{n-1}j^r,
  \qquad r\ge1.
 \end{equation}
-Since \(\Li_{1-r}(a)\) is rational in \(a\) for integer \(r\ge1\), the full
+Since \(\Polylogarithm_{1-r}(a)\) is rational in \(a\) for integer \(r\ge1\), the full
 \(q=1\) inverse jet is generated by Bernoulli power sums and rational
 functions.
 
@@ -4030,7 +4007,7 @@ the fixed-\(a\) restriction begins cubically.
 
 \section{Radial root-of-unity decomposition}
 Let \(q=\zeta e^{-t}\), with \(\zeta\) primitive of order \(m\), and
-\(\abs a<1\).  Starting from
+\(\AbsoluteValue a<1\).  Starting from
 \[
  \log(a;q)_\infty=-\sum_{r\ge1}\frac{a^r}{r(1-q^r)},
 \]
@@ -4041,7 +4018,7 @@ split the sum according to \(m\mid r\).  If \(r=m\ell\), then
 \]
 The divisible terms therefore contribute
 \[
- -\frac{\Li_2(a^m)}{m^2t}
+ -\frac{\Polylogarithm_2(a^m)}{m^2t}
  +\frac1{2m}\log(1-a^m)
  -\frac{a^m}{12(1-a^m)}t+O(t^3).
 \]
@@ -4063,13 +4040,13 @@ Combining both classes yields
   \frac{a^r\zeta^r}{(1-\zeta^r)^2}.
  \label{eq:Dzeta-appendix}
 \end{align}
-The sums converge absolutely for \(\abs a<1\).  The inverse follows from
+The sums converge absolutely for \(\AbsoluteValue a<1\).  The inverse follows from
 \eqref{eq:reciprocal-log-reversion}.
 
 \section{Gaussian cumulants at \texorpdfstring{\(q=1\)}{q=1}}
 For \(q=e^t\), write
 \[
- \log\frac{\qbinom nk}{\binom nk}
+ \log\frac{\GaussianBinomial{n}{k}{q}}{\binom nk}
  =\sum_{j=1}^{k}
  \left[
   \log\frac{e^{(n-k+j)t}-1}{(n-k+j)t}
@@ -4084,7 +4061,7 @@ Using
 \]
 gives
 \begin{equation}\label{eq:gaussian-cumulant-full}
- \log\frac{\qbinom nk}{\binom nk}
+ \log\frac{\GaussianBinomial{n}{k}{q}}{\binom nk}
  =\frac{k(n-k)}2t+
  \sum_{r\ge1}\frac{B_{2r}P_{2r}(n,k)}{2r(2r)!}t^{2r}.
 \end{equation}
@@ -4125,7 +4102,7 @@ inverse-branch record contains
 \item the parameter coordinate used, such as \(t=\log q\);
 \item a base point and continuation path identifier;
 \item winding numbers for every logarithm that enters the forward function;
-\item the nearest critical value and an estimate of \(1/\abs{F_p}\);
+\item the nearest critical value and an estimate of \(1/\AbsoluteValue{F_p}\);
 \item a residual in both the original and logarithmic equations;
 \item a status flag: asymptotic initializer, Newton-converged, interval
 certified, or formally proved.
@@ -4135,8 +4112,8 @@ sheets are indistinguishable to downstream code.
 
 \section{Precision management}
 Near a simple critical point, the inverse condition behaves like
-\(\abs{y-y_*}^{-1/2}\); near an order-\(m\) point, like
-\(\abs{y-y_*}^{-(m-1)/m}\).  The working precision should therefore be raised
+\(\AbsoluteValue{y-y_*}^{-1/2}\); near an order-\(m\) point, like
+\(\AbsoluteValue{y-y_*}^{-(m-1)/m}\).  The working precision should therefore be raised
 before the target enters the critical neighborhood.  For a product evaluated
 as a logarithmic sum, add guard digits for cancellation among summands and for
 exponentiating the final logarithm.
@@ -4144,7 +4121,7 @@ exponentiating the final logarithm.
 A practical adaptive rule is
 \[
  P_{\rm work}=P_{\rm goal}
- +\ceil{-\log_{10}\abs{F_p}}
+ +\Ceiling{-\log_{10}\AbsoluteValue{F_p}}
  +P_{\rm cancel}+P_{\rm safety},
 \]
 where \(P_{\rm cancel}\) is estimated from the ratio between the sum of

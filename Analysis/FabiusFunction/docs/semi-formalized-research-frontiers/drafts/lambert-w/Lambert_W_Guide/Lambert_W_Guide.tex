@@ -97,24 +97,10 @@
 \crefname{warning}{branch warning}{branch warnings}
 \Crefname{warning}{Branch warning}{Branch warnings}
 
-\newcommand{\W}{W}
-\newcommand{\Wz}{W_0}
-\newcommand{\Wm}{W_{-1}}
-\newcommand{\ee}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Log}{\operatorname{Log}}
-\newcommand{\Res}{\operatorname{Res}}
-\newcommand{\sgn}{\operatorname{sgn}}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\littleo}{o}
+\newcommand{\Wz}{\LambertW_{0}}
+\newcommand{\Wm}{\LambertW_{-1}}
 \newcommand{\stirling}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
-\newcommand{\abs}[1]{\left|#1\right|}
-\newcommand{\set}[1]{\left\{#1\right\}}
 \newcommand{\brak}[1]{\left(#1\right)}
-\newcommand{\dd}{\,\mathrm d}
 
 \lstdefinestyle{pythonstyle}{
   language=Python,
@@ -140,7 +126,7 @@ Asymptotics, Bounds, Approximations, and Computation\\[0.5em]
 
 \begin{abstract}
 The Lambert \(W\) function is the inverse of the elementary-looking map
-\(w\mapsto w\ee^w\).  It is the natural language for equations in which an
+\(w\mapsto w\EulerE^w\).  It is the natural language for equations in which an
 unknown occurs both outside and inside an exponential.  This article develops
 the function from first principles, at a level intended to be accessible after
 a standard sophomore course in calculus and a first course in proof.  Special
@@ -197,8 +183,8 @@ Elementary algebra teaches us how to undo addition, multiplication, integer
 powers, and exponentials.  Difficulty appears when the unknown occupies two
 different roles at once.  For example,
 \[
-   y\ee^y=7,\qquad
-   \ee^{3t}=5t+2,\qquad
+   y\EulerE^y=7,\qquad
+   \EulerE^{3t}=5t+2,\qquad
    s+\log s=10
 \]
 cannot generally be solved by a finite combination of the usual elementary
@@ -208,13 +194,13 @@ inverse.
 \begin{definition}[Lambert \(W\) function]
 A value \(w\) of the Lambert \(W\) function at \(z\) is any solution of
 \begin{equation}\label{eq:defining}
-       w\ee^w=z.
+       w\EulerE^w=z.
 \end{equation}
 Thus
 \[
-       w=W(z)\quad\Longleftrightarrow\quad w\ee^w=z.
+       w=W(z)\quad\Longleftrightarrow\quad w\EulerE^w=z.
 \]
-Because the complex exponential is periodic and the map \(w\mapsto w\ee^w\)
+Because the complex exponential is periodic and the map \(w\mapsto w\EulerE^w\)
 is not one-to-one, \(W\) has branches.  The branches are denoted \(W_k\),
 where \(k\in\mathbb Z\).  On the real line only \(W_0\) and \(W_{-1}\) can
 take real values.
@@ -227,14 +213,14 @@ has been selected, every manipulation must be checked against
 
 \subsection{A first numerical example}
 
-The equation \(w\ee^w=1\) has a unique real solution
+The equation \(w\EulerE^w=1\) has a unique real solution
 \[
       \Omega:=W_0(1)=0.567143290409783872999968\ldots,
 \]
 sometimes called the \emph{omega constant}.  Indeed,
-\(\Omega\ee^\Omega=1\), or equivalently \(\Omega=\ee^{-\Omega}\).
+\(\Omega\EulerE^\Omega=1\), or equivalently \(\Omega=\EulerE^{-\Omega}\).
 The number is not mysterious once one sees it as the fixed point of
-\(w\mapsto \ee^{-w}\).
+\(w\mapsto \EulerE^{-w}\).
 
 \subsection{Reading guide and prerequisites}
 
@@ -248,8 +234,8 @@ methods are developed from the mean value theorem and elementary logarithm
 inequalities.
 
 Throughout, \(\log\) means the real natural logarithm when its argument is
-positive.  The complex principal logarithm is written \(\Log\).  At the point
-\(-1/\ee\), both real branches equal \(-1\).  The notation
+positive.  The complex principal logarithm is written \(\PrincipalLogarithm\).  At the point
+\(-1/\EulerE\), both real branches equal \(-1\).  The notation
 \(\Wm(0)=-\infty\) is occasionally useful as an \emph{extended} endpoint
 convention, but \(\Wm(0)\) is not a finite real number.
 
@@ -257,24 +243,24 @@ convention, but \(\Wm(0)\) is not a finite real number.
 
 Everything begins with the graph of
 \[
-       f(w)=w\ee^w.
+       f(w)=w\EulerE^w.
 \]
 Its derivative and second derivative are
 \[
-       f'(w)=\ee^w(1+w),\qquad
-       f''(w)=\ee^w(2+w).
+       f'(w)=\EulerE^w(1+w),\qquad
+       f''(w)=\EulerE^w(2+w).
 \]
 The derivative vanishes only at \(w=-1\), where
 \[
-       f(-1)=-\frac1\ee.
+       f(-1)=-\frac1\EulerE.
 \]
 
 \begin{theorem}[Real branches, domains, and ranges]\label{thm:realbranches}
-The real solutions of \(w\ee^w=x\) are as follows.
+The real solutions of \(w\EulerE^w=x\) are as follows.
 \begin{enumerate}[label=\textup{(\roman*)}]
-\item If \(x<-1/\ee\), there is no real solution.
-\item If \(x=-1/\ee\), there is one real solution, \(w=-1\).
-\item If \(-1/\ee<x<0\), there are exactly two real solutions:
+\item If \(x<-1/\EulerE\), there is no real solution.
+\item If \(x=-1/\EulerE\), there is one real solution, \(w=-1\).
+\item If \(-1/\EulerE<x<0\), there are exactly two real solutions:
 \[
   \Wz(x)\in(-1,0),\qquad \Wm(x)\in(-\infty,-1).
 \]
@@ -283,17 +269,17 @@ The real solutions of \(w\ee^w=x\) are as follows.
 \end{enumerate}
 More precisely,
 \[
- \Wz:[-1/\ee,\infty)\longrightarrow[-1,\infty)
+ \Wz:[-1/\EulerE,\infty)\longrightarrow[-1,\infty)
 \]
 is a strictly increasing bijection, while
 \[
- \Wm:[-1/\ee,0)\longrightarrow(-\infty,-1]
+ \Wm:[-1/\EulerE,0)\longrightarrow(-\infty,-1]
 \]
 is a strictly decreasing bijection.
 \end{theorem}
 
 \begin{proof}
-Because \(\ee^w>0\), the sign of \(f(w)=w\ee^w\) is the sign of \(w\).
+Because \(\EulerE^w>0\), the sign of \(f(w)=w\EulerE^w\) is the sign of \(w\).
 Moreover,
 \[
  f'(w)<0\quad(w<-1),\qquad f'(w)>0\quad(w>-1).
@@ -301,21 +287,21 @@ Moreover,
 Thus \(f\) is strictly decreasing on \((-\infty,-1]\) and strictly
 increasing on \([-1,\infty)\).  The endpoint limits are
 \[
- \lim_{w\to-\infty}w\ee^w=0^-,
- \quad f(-1)=-1/\ee,\quad f(0)=0,\quad
- \lim_{w\to\infty}w\ee^w=\infty.
+ \lim_{w\to-\infty}w\EulerE^w=0^-,
+ \quad f(-1)=-1/\EulerE,\quad f(0)=0,\quad
+ \lim_{w\to\infty}w\EulerE^w=\infty.
 \]
 Consequently the restriction of \(f\) to \([-1,\infty)\) maps that interval
-bijectively onto \([-1/\ee,\infty)\), and its inverse is \(\Wz\).  The
+bijectively onto \([-1/\EulerE,\infty)\), and its inverse is \(\Wz\).  The
 restriction to \((-\infty,-1]\) maps that interval bijectively, with reversed
-orientation, onto \([-1/\ee,0)\), and its inverse is \(\Wm\).  The listed
+orientation, onto \([-1/\EulerE,0)\), and its inverse is \(\Wm\).  The listed
 numbers of solutions follow immediately.
 \end{proof}
 
 \begin{remark}[Formalized real-branch package]
 The project records the exact nonpositive principal-branch image
 \[
- \Wz\bigl([-1/\ee,0]\bigr)=[-1,0]
+ \Wz\bigl([-1/\EulerE,0]\bigr)=[-1,0]
 \]
 as \path{principalLambertW_image_Icc} in
 \path{PrincipalLambertW.lean}.  Together with the lower-branch image and
@@ -343,35 +329,35 @@ leading square-root layers recorded in
 \includegraphics[width=.82\textwidth]{real_branches.pdf}
 \caption{The principal branch \(\Wz\) and the nonprincipal real branch
 \(\Wm\).  They meet at the square-root branch point
-\((-1/\ee,-1)\).}
+\((-1/\EulerE,-1)\).}
 \label{fig:realbranches}
 \end{figure}
 
 \begin{warning}[The subscript matters]\label{warn:branch}
-For \(-1/\ee<x<0\), the notation \(W(x)\) is incomplete unless the branch is
+For \(-1/\EulerE<x<0\), the notation \(W(x)\) is incomplete unless the branch is
 understood.  For example,
 \[
  \Wz(-0.1)\approx-0.1118326,\qquad
  \Wm(-0.1)\approx-3.5771521.
 \]
-Both numbers satisfy \(w\ee^w=-0.1\).
+Both numbers satisfy \(w\EulerE^w=-0.1\).
 \end{warning}
 
 \begin{corollary}[Branch-aware inverse identities]\label{cor:inverse}
 For real \(a\),
 \[
- \Wz(a\ee^a)=a\quad\text{when }a\geq-1,
+ \Wz(a\EulerE^a)=a\quad\text{when }a\geq-1,
 \]
 and
 \[
- \Wm(a\ee^a)=a\quad\text{when }a\leq-1.
+ \Wm(a\EulerE^a)=a\quad\text{when }a\leq-1.
 \]
 At \(a=-1\), both formulas hold.
 \end{corollary}
 
 \begin{proof}
 The first statement says that \(\Wz\) undoes the restriction of
-\(f(a)=a\ee^a\) to \([-1,\infty)\); the second says the same about the
+\(f(a)=a\EulerE^a\) to \([-1,\infty)\); the second says the same about the
 restriction to \((-\infty,-1]\).  This is precisely
 \cref{thm:realbranches}.
 \end{proof}
@@ -379,14 +365,14 @@ restriction to \((-\infty,-1]\).  This is precisely
 \begin{example}[A useful logarithmic identity]\label{ex:xlogx}
 Let \(x>0\).  Taking \(a=\log x\) in \cref{cor:inverse} gives
 \[
- \Wz(x\log x)=\log x\quad\text{if }x\geq\ee^{-1},
+ \Wz(x\log x)=\log x\quad\text{if }x\geq\EulerE^{-1},
 \]
 whereas
 \[
- \Wm(x\log x)=\log x\quad\text{if }0<x\leq\ee^{-1}.
+ \Wm(x\log x)=\log x\quad\text{if }0<x\leq\EulerE^{-1}.
 \]
 The same expression \(x\log x\) therefore selects different inverse branches
-on opposite sides of \(x=\ee^{-1}\).
+on opposite sides of \(x=\EulerE^{-1}\).
 \end{example}
 
 \section{Elementary identities and transformations}\label{sec:identities}
@@ -394,17 +380,17 @@ on opposite sides of \(x=\ee^{-1}\).
 Let \(w=W_k(x)\) on any branch on which the displayed quantities are defined.
 The defining equation immediately yields
 \begin{equation}\label{eq:basicidentities}
- \ee^w=\frac{x}{w},\qquad
- \ee^{-w}=\frac{w}{x},\qquad
- \log\abs{x}=w+\log\abs{w}
+ \EulerE^w=\frac{x}{w},\qquad
+ \EulerE^{-w}=\frac{w}{x},\qquad
+ \log\AbsoluteValue{x}=w+\log\AbsoluteValue{w}
 \end{equation}
 for real \(x\neq0\).  The last identity is often more stable numerically than
-\(w\ee^w=x\), because it avoids overflow and underflow.
+\(w\EulerE^w=x\), because it avoids overflow and underflow.
 
 \begin{proposition}[An addition identity]\label{prop:addition}
 Suppose \(a=W_j(x)\), \(b=W_\ell(y)\), and \(a,b,ab\neq0\).  Then
 \begin{equation}\label{eq:addition}
- (a+b)\ee^{a+b}
+ (a+b)\EulerE^{a+b}
    =xy\left(\frac1a+\frac1b\right).
 \end{equation}
 Consequently
@@ -415,9 +401,9 @@ for whichever branch \(m\) contains the value \(a+b\).
 \end{proposition}
 
 \begin{proof}
-Since \(\ee^a=x/a\) and \(\ee^b=y/b\),
+Since \(\EulerE^a=x/a\) and \(\EulerE^b=y/b\),
 \[
- (a+b)\ee^{a+b}
+ (a+b)\EulerE^{a+b}
  =(a+b)\frac{x}{a}\frac{y}{b}
  =xy\frac{a+b}{ab}
  =xy\left(\frac1a+\frac1b\right).
@@ -432,14 +418,14 @@ inverse function cannot determine a branch merely by algebra.
 
 For \(t\in\mathbb R\), define
 \[
-       \omega(t):=\Wz(\ee^t).
+       \omega(t):=\Wz(\EulerE^t).
 \]
 Then \(\omega(t)>0\) and
 \begin{equation}\label{eq:omega}
        \omega(t)+\log\omega(t)=t.
 \end{equation}
 Conversely, a positive solution of \eqref{eq:omega} is \(\omega(t)\).
-This reparametrization is valuable when \(\ee^t\) is too large to store.
+This reparametrization is valuable when \(\EulerE^t\) is too large to store.
 
 There is an equally natural two-branch negative analogue.  For \(u\geq1\),
 the equation
@@ -448,13 +434,13 @@ the equation
 \end{equation}
 has two positive solutions, one in \((0,1]\) and one in \([1,\infty)\):
 \[
- v_0(u)=-\Wz(-\ee^{-u}),\qquad
- v_1(u)=-\Wm(-\ee^{-u}).
+ v_0(u)=-\Wz(-\EulerE^{-u}),\qquad
+ v_1(u)=-\Wm(-\EulerE^{-u}).
 \]
 
 \begin{proof}
-Writing \(w=-v\) in \(w\ee^w=-\ee^{-u}\) gives
-\(v\ee^{-v}=\ee^{-u}\).  Taking logarithms gives
+Writing \(w=-v\) in \(w\EulerE^w=-\EulerE^{-u}\) gives
+\(v\EulerE^{-v}=\EulerE^{-u}\).  Taking logarithms gives
 \(v-\log v=u\).  The function \(v-\log v\) decreases on \((0,1]\),
 increases on \([1,\infty)\), and has minimum \(1\) at \(v=1\), so the two
 solutions and their locations follow.
@@ -463,32 +449,32 @@ solutions and their locations follow.
 
 \section{Exact relations between the two real branches}\label{sec:pairing}
 
-On the interval \((-1/\ee,0)\), the two real branches are not independent.
-They are the two preimages of the same number under \(w\mapsto w\ee^w\).
+On the interval \((-1/\EulerE,0)\), the two real branches are not independent.
+They are the two preimages of the same number under \(w\mapsto w\EulerE^w\).
 The following parametrization describes the pair exactly and, in particular,
 places Bernoulli numbers naturally into the theory.
 
 \begin{theorem}[Exact branch-pair parametrization]\label{thm:pairing}
-Let \(x\in(-1/\ee,0)\), and define the positive branch gap
+Let \(x\in(-1/\EulerE,0)\), and define the positive branch gap
 \begin{equation}\label{eq:branchgap}
        \Delta=\Wz(x)-\Wm(x)>0.
 \end{equation}
 Then
 \begin{align}
- \Wz(x)&=-\frac{\Delta}{\ee^\Delta-1},
+ \Wz(x)&=-\frac{\Delta}{\EulerE^\Delta-1},
  \label{eq:W0-gap}\\
- \Wm(x)&=-\frac{\Delta}{1-\ee^{-\Delta}}
-       =-\frac{\Delta\ee^\Delta}{\ee^\Delta-1},
+ \Wm(x)&=-\frac{\Delta}{1-\EulerE^{-\Delta}}
+       =-\frac{\Delta\EulerE^\Delta}{\EulerE^\Delta-1},
  \label{eq:Wm-gap}\\
- x&=-\frac{\Delta}{\ee^\Delta-1}
-       \exp\left(-\frac{\Delta}{\ee^\Delta-1}\right).
+ x&=-\frac{\Delta}{\EulerE^\Delta-1}
+       \exp\left(-\frac{\Delta}{\EulerE^\Delta-1}\right).
  \label{eq:x-gap}
 \end{align}
 Conversely, every \(\Delta>0\) inserted into these formulas produces one
-and only one \(x\in(-1/\ee,0)\), with the displayed values equal to
+and only one \(x\in(-1/\EulerE,0)\), with the displayed values equal to
 \(\Wz(x)\) and \(\Wm(x)\).
 
-Equivalently, if \(t=\ee^\Delta>1\), then
+Equivalently, if \(t=\EulerE^\Delta>1\), then
 \begin{align}
  \Wz(x)&=-\frac{\log t}{t-1},&
  \Wm(x)&=-\frac{t\log t}{t-1},
@@ -500,43 +486,43 @@ Equivalently, if \(t=\ee^\Delta>1\), then
 
 \begin{proof}
 Put \(a=\Wz(x)\) and \(b=\Wm(x)\).  Then
-\(a-b=\Delta\), and the equality \(a\ee^a=b\ee^b=x\) gives
+\(a-b=\Delta\), and the equality \(a\EulerE^a=b\EulerE^b=x\) gives
 \[
-       \frac{a}{b}=\ee^{b-a}=\ee^{-\Delta}.
+       \frac{a}{b}=\EulerE^{b-a}=\EulerE^{-\Delta}.
 \]
-Thus \(a=b\ee^{-\Delta}\), and subtraction yields
+Thus \(a=b\EulerE^{-\Delta}\), and subtraction yields
 \[
- \Delta=a-b=b(\ee^{-\Delta}-1).
+ \Delta=a-b=b(\EulerE^{-\Delta}-1).
 \]
 Solving first for \(b\), and then for \(a\), proves
 \eqref{eq:W0-gap} and \eqref{eq:Wm-gap}.  Substitution into
-\(x=a\ee^a\) proves \eqref{eq:x-gap}.  Replacing
-\(\ee^\Delta\) by \(t\) gives \eqref{eq:t-pair-W} and
+\(x=a\EulerE^a\) proves \eqref{eq:x-gap}.  Replacing
+\(\EulerE^\Delta\) by \(t\) gives \eqref{eq:t-pair-W} and
 \eqref{eq:t-pair-x}.
 
 It remains to justify the converse and the stated range of \(x\).  For
-\(\Delta>0\), the elementary inequality \(\ee^\Delta>1+\Delta\)
+\(\Delta>0\), the elementary inequality \(\EulerE^\Delta>1+\Delta\)
 gives
 \[
-       -1<-\frac{\Delta}{\ee^\Delta-1}<0.
+       -1<-\frac{\Delta}{\EulerE^\Delta-1}<0.
 \]
 Also
 \[
- -\frac{\Delta}{1-\ee^{-\Delta}}<-1,
+ -\frac{\Delta}{1-\EulerE^{-\Delta}}<-1,
 \]
-because \(1-\ee^{-\Delta}<\Delta\).  The two displayed numbers have
+because \(1-\EulerE^{-\Delta}<\Delta\).  The two displayed numbers have
 positive gap \(\Delta\), and direct substitution shows that their products
 with their exponentials are equal.  Their common value is therefore in
-\((-1/\ee,0)\) by \cref{thm:realbranches}, and the branch ranges identify
+\((-1/\EulerE,0)\) by \cref{thm:realbranches}, and the branch ranges identify
 them uniquely as \(W_0\) and \(W_{-1}\).  This also proves that every
 \(\Delta>0\) gives exactly one paired input.
 \end{proof}
 
 \begin{corollary}[Exact symmetric identities]\label{cor:pair-symmetric}
-For \(-1/\ee<x<0\), with \(\Delta\) as in
+For \(-1/\EulerE<x<0\), with \(\Delta\) as in
 \eqref{eq:branchgap},
 \begin{align}
- \frac{\Wm(x)}{\Wz(x)}&=\ee^\Delta,
+ \frac{\Wm(x)}{\Wz(x)}&=\EulerE^\Delta,
  \label{eq:pair-ratio}\\
  \Wz(x)+\Wm(x)&=-\Delta\coth\left(\frac\Delta2\right),
  \label{eq:pair-sum}\\
@@ -556,9 +542,9 @@ The ratio follows immediately from
 \eqref{eq:W0-gap}--\eqref{eq:Wm-gap}.  Adding and multiplying those
 formulas, and using
 \[
- \coth(y)=\frac{\ee^{2y}+1}{\ee^{2y}-1},
+ \coth(y)=\frac{\EulerE^{2y}+1}{\EulerE^{2y}-1},
  \qquad
- 4\sinh^2(y)=\ee^{2y}-2+\ee^{-2y},
+ 4\sinh^2(y)=\EulerE^{2y}-2+\EulerE^{-2y},
 \]
 gives \eqref{eq:pair-sum} and \eqref{eq:pair-product}.
 
@@ -573,7 +559,7 @@ proves the sum inequality.
 
 The Bernoulli numbers \(B_n\) are defined by the generating function
 \begin{equation}\label{eq:bernoulli-gen}
-       \frac{z}{\ee^z-1}
+       \frac{z}{\EulerE^z-1}
        =\sum_{n=0}^{\infty}B_n\frac{z^n}{n!},
        \qquad |z|<2\pi.
 \end{equation}
@@ -605,20 +591,20 @@ More compactly,
 The first formula in \eqref{eq:pair-Bernoulli-general} is
 \eqref{eq:W0-gap} together with \eqref{eq:bernoulli-gen}.  The identity
 \[
-       \frac{\Delta}{1-\ee^{-\Delta}}
-       =\Delta+\frac{\Delta}{\ee^\Delta-1}
+       \frac{\Delta}{1-\EulerE^{-\Delta}}
+       =\Delta+\frac{\Delta}{\EulerE^\Delta-1}
 \]
 gives the second.  Substitution of the first Bernoulli numbers gives the
 expanded forms.  The convergence radius is \(2\pi\), because the nearest
-nonzero zeros of \(\ee^z-1\) are \(z=\pm2\pi\ii\).
+nonzero zeros of \(\EulerE^z-1\) are \(z=\pm2\pi\ImaginaryUnit\).
 \end{proof}
 
 \begin{remark}
 The gap variable \(\Delta\) is different from the square-root variable used
 near the branch point in \cref{sec:branchpoint}.  They are asymptotically
 equivalent up to a factor: by \eqref{eq:branchdifference},
-\(\Delta\sim2\sqrt{2(1+\ee x)}\).  The square-root variable is best for
-evaluating a single branch near \(-1/\ee\); the gap variable is best for
+\(\Delta\sim2\sqrt{2(1+\EulerE x)}\).  The square-root variable is best for
+evaluating a single branch near \(-1/\EulerE\); the gap variable is best for
 relations that involve both branches at once.
 \end{remark}
 
@@ -627,13 +613,13 @@ relations that involve both branches at once.
 \subsection{First and second derivatives}
 
 \begin{theorem}[Derivative formulas]\label{thm:derivatives}
-For the principal branch assume \(x>-1/\ee\), and for the lower real
-branch assume \(-1/\ee<x<0\).  On these respective smooth real domains,
+For the principal branch assume \(x>-1/\EulerE\), and for the lower real
+branch assume \(-1/\EulerE<x<0\).  On these respective smooth real domains,
 \begin{align}
  W_k'(x)
-   &=\frac{1}{\ee^{W_k(x)}(1+W_k(x))},\label{eq:firstder}\\
+   &=\frac{1}{\EulerE^{W_k(x)}(1+W_k(x))},\label{eq:firstder}\\
  W_k''(x)
-   &=-\frac{\ee^{-2W_k(x)}(W_k(x)+2)}
+   &=-\frac{\EulerE^{-2W_k(x)}(W_k(x)+2)}
               {(1+W_k(x))^3}.\label{eq:secondder-exp}
 \end{align}
 If in addition \(x\neq0\), these may be rewritten as
@@ -652,25 +638,25 @@ than through an expression with a zero denominator,
 \end{theorem}
 
 \begin{proof}
-Write \(w=W_k(x)\).  Differentiating \(w\ee^w=x\) gives
+Write \(w=W_k(x)\).  Differentiating \(w\EulerE^w=x\) gives
 \[
- \ee^w(1+w)w'=1,
+ \EulerE^w(1+w)w'=1,
 \]
-which proves \eqref{eq:firstder}.  Since \(\ee^{-w}=w/x\) when
+which proves \eqref{eq:firstder}.  Since \(\EulerE^{-w}=w/x\) when
 \(x\neq0\), this also proves \eqref{eq:firstder-x}.
 
 Now regard \(w'\) as a function of \(w\):
 \[
-       w'=\frac{\ee^{-w}}{1+w}.
+       w'=\frac{\EulerE^{-w}}{1+w}.
 \]
 Differentiate with respect to \(w\), then multiply by \(w'\):
 \[
- w''=\left(-\frac{\ee^{-w}}{1+w}
-           -\frac{\ee^{-w}}{(1+w)^2}\right)
-           \frac{\ee^{-w}}{1+w}
-     =-\frac{\ee^{-2w}(w+2)}{(1+w)^3}.
+ w''=\left(-\frac{\EulerE^{-w}}{1+w}
+           -\frac{\EulerE^{-w}}{(1+w)^2}\right)
+           \frac{\EulerE^{-w}}{1+w}
+     =-\frac{\EulerE^{-2w}(w+2)}{(1+w)^3}.
 \]
-When \(x\neq0\), substituting \(\ee^{-w}=w/x\) proves
+When \(x\neq0\), substituting \(\EulerE^{-w}=w/x\) proves
 \eqref{eq:secondder}.
 At \(x=0\) on the principal branch, \(w=0\), so the exponential-denominator
 formulas give the two stated values directly; they also follow from the power
@@ -678,11 +664,11 @@ series proved in \cref{sec:maclaurin}.
 \end{proof}
 
 \begin{corollary}[Monotonicity recovered from the derivative]
-On \((-1/\ee,\infty)\), \(\Wz'(x)>0\).  On
-\((-1/\ee,0)\), \(\Wm'(x)<0\).  Moreover,
+On \((-1/\EulerE,\infty)\), \(\Wz'(x)>0\).  On
+\((-1/\EulerE,0)\), \(\Wm'(x)<0\).  Moreover,
 \[
- \lim_{x\downarrow-1/\ee}\Wz'(x)=+\infty,\qquad
- \lim_{x\downarrow-1/\ee}\Wm'(x)=-\infty.
+ \lim_{x\downarrow-1/\EulerE}\Wz'(x)=+\infty,\qquad
+ \lim_{x\downarrow-1/\EulerE}\Wm'(x)=-\infty.
 \]
 \end{corollary}
 
@@ -710,19 +696,19 @@ in \eqref{eq:firstder} and \eqref{eq:secondder-exp};
 \path{deriv_deriv_principalLambertW_neg} gives strict negativity.
 The theorem \path{strictConcaveOn_principalLambertW} strengthens the open
 interval statement below to strict concavity on the full closed domain
-\([-1/\ee,\infty)\).
+\([-1/\EulerE,\infty)\).
 
 For the lower branch, \path{deriv_lowerLambertW_hasDerivAt} and
 \path{deriv_deriv_lowerLambertW} give the exact second derivative on
-\((-1/\ee,0)\).  The declarations
+\((-1/\EulerE,0)\).  The declarations
 \path{deriv_deriv_lowerLambertW_pos_iff},
 \path{deriv_deriv_lowerLambertW_neg_iff}, and
 \path{deriv_deriv_lowerLambertW_eq_zero_iff} give its complete sign and
-unique-zero classification at \(-2/\ee^2\).  Finally,
+unique-zero classification at \(-2/\EulerE^2\).  Finally,
 \path{strictConvexOn_lowerLambertW_left} proves strict convexity on
-\([-1/\ee,-2/\ee^2]\), and
+\([-1/\EulerE,-2/\EulerE^2]\), and
 \path{strictConcaveOn_lowerLambertW_right} proves strict concavity on
-\([-2/\ee^2,0)\).
+\([-2/\EulerE^2,0)\).
 
 The raw one-sided endpoint limits, their secant forms, and the resulting
 failure of finite differentiability are now packaged in
@@ -733,11 +719,11 @@ appear in \cref{rem:formal-branchpoint-crosswalk}.
 
 \begin{theorem}[Concavity and the inflection point]\label{thm:curvature}
 The principal branch \(\Wz\) is strictly concave on
-\((-1/\ee,\infty)\).  The branch \(\Wm\) is
+\((-1/\EulerE,\infty)\).  The branch \(\Wm\) is
 \begin{itemize}
-\item strictly convex on \((-1/\ee,-2/\ee^2)\),
-\item has an inflection point at \(x=-2/\ee^2\), where \(\Wm(x)=-2\),
-\item strictly concave on \((-2/\ee^2,0)\).
+\item strictly convex on \((-1/\EulerE,-2/\EulerE^2)\),
+\item has an inflection point at \(x=-2/\EulerE^2\), where \(\Wm(x)=-2\),
+\item strictly concave on \((-2/\EulerE^2,0)\).
 \end{itemize}
 \end{theorem}
 
@@ -748,7 +734,7 @@ For \(\Wz\), one has \(w>-1\), hence \(w+2>0\) and
 For \(\Wm\), one has \(w<-1\), so \((1+w)^3<0\).  If \(-2<w<-1\), then
 \(w+2>0\), and \eqref{eq:secondder-exp} gives \(w''>0\).  If \(w<-2\),
 then \(w+2<0\), and \(w''<0\).  The value \(w=-2\) corresponds to
-\(x=w\ee^w=-2/\ee^2\).  The branch is decreasing, so the stated
+\(x=w\EulerE^w=-2/\EulerE^2\).  The branch is decreasing, so the stated
 \(x\)-intervals follow.
 \end{proof}
 
@@ -764,8 +750,8 @@ Define polynomials \(P_n\) by
 \]
 Then, for every \(n\geq1\),
 \begin{equation}\label{eq:higherder}
- \frac{\dd^n}{\dd x^n}W_k(x)
- =\frac{\ee^{-nW_k(x)}P_n(W_k(x))}
+ \frac{\Differential^n}{\Differential x^n}W_k(x)
+ =\frac{\EulerE^{-nW_k(x)}P_n(W_k(x))}
         {(1+W_k(x))^{2n-1}}.
 \end{equation}
 The first polynomials are
@@ -783,16 +769,16 @@ The formula for \(n=1\) is \eqref{eq:firstder}.  Assume
 \eqref{eq:higherder} holds for \(n\), and differentiate it first with
 respect to \(w\):
 \[
- \frac{\dd}{\dd w}
- \left(\frac{\ee^{-nw}P_n(w)}{(1+w)^{2n-1}}\right)
+ \frac{\Differential}{\Differential w}
+ \left(\frac{\EulerE^{-nw}P_n(w)}{(1+w)^{2n-1}}\right)
  =
- \frac{\ee^{-nw}}{(1+w)^{2n}}
+ \frac{\EulerE^{-nw}}{(1+w)^{2n}}
  \left((1+w)P_n'(w)-(nw+3n-1)P_n(w)\right).
 \]
 Multiplication by
-\(\dd w/\dd x=\ee^{-w}/(1+w)\) yields
+\(\Differential w/\Differential x=\EulerE^{-w}/(1+w)\) yields
 \[
- \frac{\ee^{-(n+1)w}P_{n+1}(w)}
+ \frac{\EulerE^{-(n+1)w}P_{n+1}(w)}
  {(1+w)^{2n+1}},
 \]
 which is \eqref{eq:higherder} with \(n+1\).  The displayed polynomials follow
@@ -809,15 +795,15 @@ suggests
 For nonzero \(x\) and \(W\), the relative condition number is
 \begin{equation}\label{eq:condition}
  \kappa_{\mathrm{rel}}(x)
- =\abs{\frac{xW'(x)}{W(x)}}
- =\frac1{\abs{1+W(x)}}.
+ =\AbsoluteValue{\frac{xW'(x)}{W(x)}}
+ =\frac1{\AbsoluteValue{1+W(x)}}.
 \end{equation}
 
 \begin{proof}
 Insert \eqref{eq:firstder-x} into the definition of relative condition number.
 \end{proof}
 
-Thus both real branches are badly conditioned near \(-1/\ee\), where
+Thus both real branches are badly conditioned near \(-1/\EulerE\), where
 \(W=-1\).  By contrast, \(\kappa_{\mathrm{rel}}\to0\) both as
 \(x\to+\infty\) on \(\Wz\) and as \(x\to0^-\) on \(\Wm\).  This distinction
 is important: the branch point is intrinsically sensitive, while the
@@ -829,8 +815,8 @@ in a relative sense.
 
 The substitution
 \[
-       w=W_k(x),\qquad x=w\ee^w,\qquad
-       \dd x=\ee^w(1+w)\dd w
+       w=W_k(x),\qquad x=w\EulerE^w,\qquad
+       \Differential x=\EulerE^w(1+w)\Differential w
 \]
 turns many apparently non-elementary integrals into an exponential times a
 polynomial.
@@ -838,41 +824,41 @@ polynomial.
 \begin{theorem}[Two basic antiderivatives]\label{thm:antiderivatives}
 On any interval contained in a differentiable branch,
 \begin{align}
- \int W_k(x)\dd x
-   &=\ee^{W_k(x)}
+ \int W_k(x)\Differential x
+   &=\EulerE^{W_k(x)}
        \left(W_k(x)^2-W_k(x)+1\right)+C\label{eq:intW}\\
    &=x\left(W_k(x)-1+\frac1{W_k(x)}\right)+C,\label{eq:intW-x}
 \end{align}
 where the second form is used away from \(x=0\).  Also, away from \(x=0\),
 \begin{equation}\label{eq:intWoverx}
- \int\frac{W_k(x)}x\dd x
+ \int\frac{W_k(x)}x\Differential x
     =W_k(x)+\frac12W_k(x)^2+C.
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-With \(x=w\ee^w\),
+With \(x=w\EulerE^w\),
 \[
- \int W_k(x)\dd x
- =\int w\ee^w(1+w)\dd w
- =\int (w+w^2)\ee^w\dd w.
+ \int W_k(x)\Differential x
+ =\int w\EulerE^w(1+w)\Differential w
+ =\int (w+w^2)\EulerE^w\Differential w.
 \]
 Direct differentiation shows that
 \[
- \frac{\dd}{\dd w}
- \left[\ee^w(w^2-w+1)\right]
- =\ee^w(w+w^2),
+ \frac{\Differential}{\Differential w}
+ \left[\EulerE^w(w^2-w+1)\right]
+ =\EulerE^w(w+w^2),
 \]
-which proves \eqref{eq:intW}.  Since \(\ee^w=x/w\), it also proves
+which proves \eqref{eq:intW}.  Since \(\EulerE^w=x/w\), it also proves
 \eqref{eq:intW-x}.  Furthermore,
 \[
- \frac{\dd x}{x}=\frac{1+w}{w}\dd w,
+ \frac{\Differential x}{x}=\frac{1+w}{w}\Differential w,
 \]
 and therefore
 \[
- \int\frac{W_k(x)}x\dd x
- =\int w\frac{1+w}{w}\dd w
- =\int(1+w)\dd w
+ \int\frac{W_k(x)}x\Differential x
+ =\int w\frac{1+w}{w}\Differential w
+ =\int(1+w)\Differential w
  =w+\frac12w^2+C.
 \]
 \end{proof}
@@ -880,8 +866,8 @@ and therefore
 \begin{corollary}[Two branch-dependent definite integrals]\label{cor:defints}
 The two real branches give
 \begin{align}
- \int_{-1/\ee}^{0}\Wz(x)\dd x&=1-\frac3\ee,\label{eq:defintW0}\\
- \int_{-1/\ee}^{0}\Wm(x)\dd x&=-\frac3\ee.\label{eq:defintWm}
+ \int_{-1/\EulerE}^{0}\Wz(x)\Differential x&=1-\frac3\EulerE,\label{eq:defintW0}\\
+ \int_{-1/\EulerE}^{0}\Wm(x)\Differential x&=-\frac3\EulerE.\label{eq:defintWm}
 \end{align}
 Both integrals are improper only in the harmless sense that
 \(\Wm(x)\to-\infty\) at \(0\); the second integral nevertheless converges.
@@ -889,15 +875,15 @@ Both integrals are improper only in the harmless sense that
 
 \begin{proof}
 Use the antiderivative
-\(F(w)=\ee^w(w^2-w+1)\).  On the principal branch,
+\(F(w)=\EulerE^w(w^2-w+1)\).  On the principal branch,
 \(w\) runs from \(-1\) to \(0\), so
 \[
- F(0)-F(-1)=1-\frac3\ee.
+ F(0)-F(-1)=1-\frac3\EulerE.
 \]
 On the nonprincipal branch, \(w\) runs from \(-1\) to \(-\infty\).
-Since \(\ee^w\) decreases faster than every polynomial grows,
+Since \(\EulerE^w\) decreases faster than every polynomial grows,
 \(\lim_{w\to-\infty}F(w)=0\).  Hence the integral is
-\(0-3/\ee\).
+\(0-3/\EulerE\).
 \end{proof}
 
 \subsection{A finite formula for polynomial moments}
@@ -912,9 +898,9 @@ For \(a\neq0\) and an integer \(q\geq0\), define
 \begin{lemma}\label{lem:exp-poly}
 For \(a\neq0\) and \(q\geq0\),
 \[
-       \frac{\dd}{\dd w}
-       \left(\ee^{aw}Q_q^{(a)}(w)\right)
-       =\ee^{aw}w^q.
+       \frac{\Differential}{\Differential w}
+       \left(\EulerE^{aw}Q_q^{(a)}(w)\right)
+       =\EulerE^{aw}w^q.
 \]
 \end{lemma}
 
@@ -937,8 +923,8 @@ cancels with the corresponding term of the first sum.
 Let \(m,n\) be nonnegative integers, put \(a=m+1\) and \(q=m+n\).
 Then
 \begin{equation}\label{eq:momentformula}
- \int x^m W_k(x)^n\dd x
- =\ee^{aW_k(x)}
+ \int x^m W_k(x)^n\Differential x
+ =\EulerE^{aW_k(x)}
  \left(
   Q_q^{(a)}(W_k(x))
   +Q_{q+1}^{(a)}(W_k(x))
@@ -950,11 +936,11 @@ nonnegative integer power of \(W_k(x)\) has an elementary expression in
 \end{theorem}
 
 \begin{proof}
-With \(x=w\ee^w\),
+With \(x=w\EulerE^w\),
 \[
- x^mW_k(x)^n\dd x
- =w^{m+n}\ee^{mw}\ee^w(1+w)\dd w
- =\ee^{aw}(w^q+w^{q+1})\dd w.
+ x^mW_k(x)^n\Differential x
+ =w^{m+n}\EulerE^{mw}\EulerE^w(1+w)\Differential w
+ =\EulerE^{aw}(w^q+w^{q+1})\Differential w.
 \]
 Apply \cref{lem:exp-poly} to the two terms.
 \end{proof}
@@ -973,12 +959,12 @@ the real or complex power and generally lead to incomplete gamma functions.
 The same substitution also evaluates a continuous family of improper
 integrals.  Recall
 \[
- \Gamma(s)=\int_0^\infty t^{s-1}\ee^{-t}\dd t
+ \Gamma(s)=\int_0^\infty t^{s-1}\EulerE^{-t}\Differential t
  \quad(s>0),
 \]
 and define the upper incomplete gamma integral by
 \[
- \Gamma(s,c)=\int_c^\infty t^{s-1}\ee^{-t}\dd t
+ \Gamma(s,c)=\int_c^\infty t^{s-1}\EulerE^{-t}\Differential t
  \quad(c>0).
 \]
 Because the latter integral starts at a positive number, it converges for
@@ -990,7 +976,7 @@ Let \(\alpha,\beta\in\mathbb R\).
 \begin{enumerate}[label=\textup{(\roman*)}]
 \item If \(\beta>1\) and \(\alpha-\beta>-1\), then
 \begin{align}
- \int_0^\infty \frac{\Wz(x)^\alpha}{x^\beta}\dd x
+ \int_0^\infty \frac{\Wz(x)^\alpha}{x^\beta}\Differential x
  &=\frac{\Gamma(\alpha-\beta+1)}
        {(\beta-1)^{\alpha-\beta+1}}
   +\frac{\Gamma(\alpha-\beta+2)}
@@ -1002,8 +988,8 @@ Let \(\alpha,\beta\in\mathbb R\).
 \end{align}
 \item If \(\beta>-1\), then
 \begin{align}
- &\int_{-1/\ee}^{0}
-   [-\Wm(x)]^\alpha(-x)^\beta\dd x\notag\\
+ &\int_{-1/\EulerE}^{0}
+   [-\Wm(x)]^\alpha(-x)^\beta\Differential x\notag\\
  &\qquad=
  \frac{\Gamma(\alpha+\beta+2,\beta+1)}
       {(\beta+1)^{\alpha+\beta+2}}
@@ -1013,11 +999,11 @@ Let \(\alpha,\beta\in\mathbb R\).
 \end{align}
 Equivalently, using the incomplete-gamma recurrence,
 \begin{equation}\label{eq:mellin-Wm-simple}
- \int_{-1/\ee}^{0}
-   [-\Wm(x)]^\alpha(-x)^\beta\dd x
+ \int_{-1/\EulerE}^{0}
+   [-\Wm(x)]^\alpha(-x)^\beta\Differential x
  =\frac{\alpha\,\Gamma(\alpha+\beta+1,\beta+1)}
        {(\beta+1)^{\alpha+\beta+2}}
-  +\frac{\ee^{-(\beta+1)}}{\beta+1}.
+  +\frac{\EulerE^{-(\beta+1)}}{\beta+1}.
 \end{equation}
 \end{enumerate}
 \end{theorem}
@@ -1026,13 +1012,13 @@ Equivalently, using the incomplete-gamma recurrence,
 For part (i), put \(w=\Wz(x)\).  As \(x\) runs from \(0\) to
 \(\infty\), \(w\) runs from \(0\) to \(\infty\), and
 \[
- x=w\ee^w,\qquad \dd x=\ee^w(1+w)\dd w.
+ x=w\EulerE^w,\qquad \Differential x=\EulerE^w(1+w)\Differential w.
 \]
 Consequently, with \(c=\beta-1>0\) and
 \(\nu=\alpha-\beta>-1\),
 \begin{align*}
- \int_0^\infty \frac{\Wz(x)^\alpha}{x^\beta}\dd x
- &=\int_0^\infty w^\nu(1+w)\ee^{-cw}\dd w\\
+ \int_0^\infty \frac{\Wz(x)^\alpha}{x^\beta}\Differential x
+ &=\int_0^\infty w^\nu(1+w)\EulerE^{-cw}\Differential w\\
  &=\frac{\Gamma(\nu+1)}{c^{\nu+1}}
    +\frac{\Gamma(\nu+2)}{c^{\nu+2}}.
 \end{align*}
@@ -1044,20 +1030,20 @@ needed for convergence at \(w=0\) and at \(w=\infty\).
 For part (ii), put \(y=-\Wm(x)\).  Then \(y\) runs from \(1\) to
 \(\infty\),
 \[
-       x=-y\ee^{-y},\qquad
-       \dd x=(y-1)\ee^{-y}\dd y.
+       x=-y\EulerE^{-y},\qquad
+       \Differential x=(y-1)\EulerE^{-y}\Differential y.
 \]
 Writing \(p=\alpha+\beta\) and \(c=\beta+1>0\), we obtain
 \begin{align*}
- \int_{-1/\ee}^{0}[-\Wm(x)]^\alpha(-x)^\beta\dd x
- &=\int_1^\infty y^p(y-1)\ee^{-cy}\dd y\\
+ \int_{-1/\EulerE}^{0}[-\Wm(x)]^\alpha(-x)^\beta\Differential x
+ &=\int_1^\infty y^p(y-1)\EulerE^{-cy}\Differential y\\
  &=\int_1^\infty
-   \left(y^{p+1}-y^p\right)\ee^{-cy}\dd y.
+   \left(y^{p+1}-y^p\right)\EulerE^{-cy}\Differential y.
 \end{align*}
 In each term let \(t=cy\).  This gives \eqref{eq:mellin-Wm}.
 Finally, integration by parts proves
 \[
-       \Gamma(s+1,c)=s\Gamma(s,c)+c^s\ee^{-c},
+       \Gamma(s+1,c)=s\Gamma(s,c)+c^s\EulerE^{-c},
 \]
 and substitution with \(s=\alpha+\beta+1\) gives
 \eqref{eq:mellin-Wm-simple}.
@@ -1067,7 +1053,7 @@ and substitution with \(s=\alpha+\beta+1\) gives
 Taking \((\alpha,\beta)=(1,3/2)\) in
 \eqref{eq:mellin-W0-simple} gives the attractive identity
 \begin{equation}\label{eq:classic-mellin-example}
-       \int_0^\infty\frac{\Wz(x)}{x\sqrt{x}}\dd x
+       \int_0^\infty\frac{\Wz(x)}{x\sqrt{x}}\Differential x
        =2\sqrt{2\pi}.
 \end{equation}
 It is an exact evaluation of an integral whose integrand contains a
@@ -1085,7 +1071,7 @@ Let \(x_0\) be a point on a branch \(W_k\), and let
 \begin{equation}\label{eq:generalTaylor}
  W_k(x)=w_0+
  \sum_{n=1}^{\infty}
- \frac{\ee^{-nw_0}P_n(w_0)}
+ \frac{\EulerE^{-nw_0}P_n(w_0)}
       {n!(1+w_0)^{2n-1}}(x-x_0)^n,
 \end{equation}
 where the polynomials \(P_n\) are those of
@@ -1095,8 +1081,8 @@ where the polynomials \(P_n\) are those of
 
 \begin{proof}
 The inverse function theorem gives a differentiable, in fact analytic, local
-inverse of \(w\ee^w\) at \(w_0\), because
-\(\ee^{w_0}(1+w_0)\neq0\).  Taylor's formula therefore applies, and
+inverse of \(w\EulerE^w\) at \(w_0\), because
+\(\EulerE^{w_0}(1+w_0)\neq0\).  Taylor's formula therefore applies, and
 \cref{thm:higherder} supplies its coefficients.
 \end{proof}
 
@@ -1104,11 +1090,11 @@ inverse of \(w\ee^w\) at \(w_0\), because
 At \(x_0=1\), \(w_0=\Omega\).  The first two terms are
 \[
  W_0(1+h)=\Omega+
- \frac{\ee^{-\Omega}}{1+\Omega}h
- -\frac{\ee^{-2\Omega}(\Omega+2)}
-        {2(1+\Omega)^3}h^2+\bigO(h^3).
+ \frac{\EulerE^{-\Omega}}{1+\Omega}h
+ -\frac{\EulerE^{-2\Omega}(\Omega+2)}
+        {2(1+\Omega)^3}h^2+\BigO(h^3).
 \]
-Since \(\ee^{-\Omega}=\Omega\), every coefficient can be written as a
+Since \(\EulerE^{-\Omega}=\Omega\), every coefficient can be written as a
 rational function of \(\Omega\).
 \end{example}
 
@@ -1141,12 +1127,12 @@ In particular, for integers \(m\geq1\) and \(n\geq m\),
 
 The defining equation for \(W\) can be written
 \[
-       W=x\ee^{-W}.
+       W=x\EulerE^{-W}.
 \]
-Thus \(\phi(t)=\ee^{-t}\).
+Thus \(\phi(t)=\EulerE^{-t}\).
 
 \begin{theorem}[Maclaurin series and powers]\label{thm:maclaurin}
-For \(\abs{x}<1/\ee\),
+For \(\AbsoluteValue{x}<1/\EulerE\),
 \begin{equation}\label{eq:Wseries}
  \boxed{\displaystyle
  \Wz(x)=\sum_{n=1}^{\infty}
@@ -1164,15 +1150,15 @@ Consequently
 \begin{equation}\label{eq:derivatives-zero}
        \Wz^{(n)}(0)=(-n)^{n-1}\qquad(n\geq1).
 \end{equation}
-The radius of convergence is exactly \(1/\ee\).
+The radius of convergence is exactly \(1/\EulerE\).
 \end{theorem}
 
 \begin{proof}
 Apply \eqref{eq:lagrange-power} with
-\(\phi(t)=\ee^{-t}\):
+\(\phi(t)=\EulerE^{-t}\):
 \[
  [x^n]W(x)^m
- =\frac{m}{n}[t^{n-m}]\ee^{-nt}
+ =\frac{m}{n}[t^{n-m}]\EulerE^{-nt}
  =\frac{m}{n}\frac{(-n)^{n-m}}{(n-m)!}.
 \]
 This proves \eqref{eq:Wpower-series}, and \(m=1\) gives
@@ -1186,15 +1172,15 @@ Let
 Then
 \[
  \frac{a_{n+1}}{a_n}
- =\left(1+\frac1n\right)^{n-1}\longrightarrow\ee.
+ =\left(1+\frac1n\right)^{n-1}\longrightarrow\EulerE.
 \]
-The ratio test therefore gives radius \(1/\ee\).  Within that disk, the
-series produced by Lagrange inversion satisfies \(W=x\ee^{-W}\) and has
+The ratio test therefore gives radius \(1/\EulerE\).  Within that disk, the
+series produced by Lagrange inversion satisfies \(W=x\EulerE^{-W}\) and has
 \(W(0)=0\).  The local inverse is unique, so it is the principal branch.
 \end{proof}
 
 \begin{remark}[What the radius means]
-The nearest singularity to the origin is the branch point \(-1/\ee\).
+The nearest singularity to the origin is the branch point \(-1/\EulerE\).
 The coefficient calculation detects exactly that distance without requiring
 us to know the complex geometry in advance.
 \end{remark}
@@ -1207,22 +1193,22 @@ Let
 \]
 A direct calculation gives
 \begin{equation}\label{eq:termratio}
- \abs{\frac{T_{n+1}(x)}{T_n(x)}}
- =\abs{x}\left(1+\frac1n\right)^{n-1}
- <\ee\abs{x}.
+ \AbsoluteValue{\frac{T_{n+1}(x)}{T_n(x)}}
+ =\AbsoluteValue{x}\left(1+\frac1n\right)^{n-1}
+ <\EulerE\AbsoluteValue{x}.
 \end{equation}
 
 \begin{theorem}[Geometric tail bound]\label{thm:taylortail}
-If \(\abs{x}<1/\ee\), \(q=\ee\abs{x}<1\), and
+If \(\AbsoluteValue{x}<1/\EulerE\), \(q=\EulerE\AbsoluteValue{x}<1\), and
 \(S_N(x)=\sum_{n=1}^NT_n(x)\), then
 \begin{equation}\label{eq:tailbound}
- \abs{\Wz(x)-S_N(x)}
- \leq\frac{\abs{T_{N+1}(x)}}{1-q}.
+ \AbsoluteValue{\Wz(x)-S_N(x)}
+ \leq\frac{\AbsoluteValue{T_{N+1}(x)}}{1-q}.
 \end{equation}
-If \(0\leq x\leq1/\ee\), the terms alternate with decreasing magnitudes, so
+If \(0\leq x\leq1/\EulerE\), the terms alternate with decreasing magnitudes, so
 the sharper estimate
 \begin{equation}\label{eq:alternatingtail}
- \abs{\Wz(x)-S_N(x)}\leq\abs{T_{N+1}(x)}
+ \AbsoluteValue{\Wz(x)-S_N(x)}\leq\AbsoluteValue{T_{N+1}(x)}
 \end{equation}
 holds, and the error has the sign of \(T_{N+1}(x)\).
 \end{theorem}
@@ -1232,33 +1218,33 @@ Equation \eqref{eq:termratio} shows that every successive magnitude in the
 tail is at most \(q\) times the preceding magnitude.  Summing the resulting
 geometric majorant proves \eqref{eq:tailbound}.  For \(x\geq0\), the factor
 \((-n)^{n-1}\) makes the signs alternate.  The same ratio is at most \(1\)
-on \(0\leq x\leq1/\ee\), so the alternating-series theorem proves
+on \(0\leq x\leq1/\EulerE\), so the alternating-series theorem proves
 \eqref{eq:alternatingtail}.
 \end{proof}
 
 For negative \(x\), every nonzero term in \eqref{eq:Wseries} is negative.
-At the endpoint \(x=-1/\ee\), the series still converges absolutely.  One
+At the endpoint \(x=-1/\EulerE\), the series still converges absolutely.  One
 way to see this without invoking the full Stirling formula is Raabe's test:
 if
 \[
- b_n=\frac{n^{n-1}}{n!\ee^n},
+ b_n=\frac{n^{n-1}}{n!\EulerE^n},
 \]
 then
 \[
  \log\frac{b_n}{b_{n+1}}
  =1-(n-1)\log\left(1+\frac1n\right)
- =\frac{3}{2n}+\bigO(n^{-2}).
+ =\frac{3}{2n}+\BigO(n^{-2}).
 \]
-Hence \(b_n/b_{n+1}=1+3/(2n)+\bigO(n^{-2})\), and Raabe's test applies
-because \(3/2>1\).  Moreover, for every \(x\in[-1/\ee,0]\), the magnitude
+Hence \(b_n/b_{n+1}=1+3/(2n)+\BigO(n^{-2})\), and Raabe's test applies
+because \(3/2>1\).  Moreover, for every \(x\in[-1/\EulerE,0]\), the magnitude
 of the \(n\)-th term is at most \(b_n\).  The Weierstrass \(M\)-test
 therefore gives uniform convergence on this closed interval.  The sum is
-continuous there, agrees with \(W_0\) on \((-1/\ee,0]\), and hence agrees at
+continuous there, agrees with \(W_0\) on \((-1/\EulerE,0]\), and hence agrees at
 the left endpoint by continuity.  Consequently
 \[
  \sum_{n=1}^{\infty}
- \frac{(-n)^{n-1}}{n!}\left(-\frac1\ee\right)^n
- =\Wz(-1/\ee)=-1.
+ \frac{(-n)^{n-1}}{n!}\left(-\frac1\EulerE\right)^n
+ =\Wz(-1/\EulerE)=-1.
 \]
 The one-sided branch-point continuity used in this endpoint argument is now
 available as \path{principalLambertW_continuousWithinAt_branchPoint}; that
@@ -1274,7 +1260,7 @@ Define
 Then
 \[
  T(x)=\sum_{n=1}^{\infty}\frac{n^{n-1}}{n!}x^n,
- \qquad T=x\ee^T.
+ \qquad T=x\EulerE^T.
 \]
 The coefficient \(n^{n-1}\) counts rooted labelled trees on \(n\) vertices.
 
@@ -1303,7 +1289,7 @@ It remains only to compare coefficients: \eqref{eq:treefunction} and
 coefficient for \(n^{n-1}\) labelled objects.
 \end{proof}
 
-There is also a structural explanation of \(T=x\ee^T\).  A rooted labelled
+There is also a structural explanation of \(T=x\EulerE^T\).  A rooted labelled
 tree consists of a root together with an unordered set of rooted labelled
 trees attached to it.  In the language of exponential generating functions,
 an unordered labelled set contributes an exponential, giving
@@ -1312,7 +1298,7 @@ an unordered labelled set contributes an exponential, giving
 
 \section{The square-root expansion at the branch point}\label{sec:branchpoint}
 
-Ordinary Taylor series fail at \(x=-1/\ee\): from the right the principal
+Ordinary Taylor series fail at \(x=-1/\EulerE\): from the right the principal
 derivative diverges to \(+\infty\), the lower derivative diverges to
 \(-\infty\), and neither branch has a finite right derivative there.  The
 correct local variable is a square root.
@@ -1323,18 +1309,18 @@ Put
 \]
 Then
 \[
- \ee x=(-1+s)\ee^s,
+ \EulerE x=(-1+s)\EulerE^s,
 \]
 and expansion at \(s=0\) gives
 \begin{equation}\label{eq:p-s-relation}
- 2(1+\ee x)
+ 2(1+\EulerE x)
  =\sum_{m=2}^{\infty}\frac{2(m-1)}{m!}s^m
  =s^2+\frac23s^3+\frac14s^4+\frac1{15}s^5+\cdots.
 \end{equation}
 Define the \emph{signed} square-root coordinates
 \begin{equation}\label{eq:signedp}
- p_0(x)=+\sqrt{2(1+\ee x)},\qquad
- p_{-1}(x)=-\sqrt{2(1+\ee x)}.
+ p_0(x)=+\sqrt{2(1+\EulerE x)},\qquad
+ p_{-1}(x)=-\sqrt{2(1+\EulerE x)}.
 \end{equation}
 
 \begin{theorem}[Unified Puiseux expansion]\label{thm:puiseux}
@@ -1347,7 +1333,7 @@ Its first terms are
 \begin{align}
  S(p)={}&p-\frac13p^2+\frac{11}{72}p^3-\frac{43}{540}p^4
        +\frac{769}{17280}p^5-\frac{221}{8505}p^6
-       +\bigO(p^7).\label{eq:puiseux-series}
+       +\BigO(p^7).\label{eq:puiseux-series}
 \end{align}
 Thus the same series describes both real branches: only the sign of \(p\)
 changes.
@@ -1383,11 +1369,11 @@ Here is an explicit recurrence that makes the final sentence of the proof
 algorithmic.  Write
 \[
  S(p)=\sum_{n\geq1}a_np^n,\qquad
- \ee^{-S(p)}=\sum_{n\geq0}b_np^n.
+ \EulerE^{-S(p)}=\sum_{n\geq0}b_np^n.
 \]
 Differentiating the defining relation gives
 \[
-       S(p)S'(p)=p\ee^{-S(p)}.
+       S(p)S'(p)=p\EulerE^{-S(p)}.
 \]
 Consequently
 \begin{align}
@@ -1400,7 +1386,7 @@ Consequently
 \end{align}
 
 \begin{proof}
-The identity \(B'=-S'B\), where \(B=\ee^{-S}\), gives
+The identity \(B'=-S'B\), where \(B=\EulerE^{-S}\), gives
 \eqref{eq:brec} by comparing the coefficient of \(p^{n-1}\).
 The coefficient of \(p^n\) in \(SS'=pB\) is
 \[
@@ -1414,16 +1400,16 @@ remaining terms to the other side gives \eqref{eq:arec}.
 
 Let
 \[
-       q=\sqrt{2(1+\ee x)}\geq0.
+       q=\sqrt{2(1+\EulerE x)}\geq0.
 \]
 Then \(p_0=q\) and \(p_{-1}=-q\).  Therefore
 \begin{align}
  \Wz(x)-\Wm(x)
- &=2q+\frac{11}{36}q^3+\frac{769}{8640}q^5+\bigO(q^7),
+ &=2q+\frac{11}{36}q^3+\frac{769}{8640}q^5+\BigO(q^7),
  \label{eq:branchdifference}\\
  \frac{\Wz(x)+\Wm(x)}2
  &=-1-\frac13q^2-\frac{43}{540}q^4
-   -\frac{221}{8505}q^6+\bigO(q^8).
+   -\frac{221}{8505}q^6+\BigO(q^8).
  \label{eq:branchmean}
 \end{align}
 The branch difference contains only odd powers, while the branch mean
@@ -1433,13 +1419,13 @@ subtracting \(S(q)\) and \(S(-q)\).
 The leading term gives the especially useful equivalence
 \begin{equation}\label{eq:branchleading}
  W_{0,-1}(x)
- =-1\mathbin{\pm}\sqrt{2\ee\left(x+\frac1\ee\right)}
- +\bigO\left(x+\frac1\ee\right),
+ =-1\mathbin{\pm}\sqrt{2\EulerE\left(x+\frac1\EulerE\right)}
+ +\BigO\left(x+\frac1\EulerE\right),
 \end{equation}
 where the plus sign is for \(W_0\).  It also explains the vertical tangents:
 \[
- \Wz'(x)\sim\frac{\ee}{q},\qquad
- \Wm'(x)\sim-\frac{\ee}{q}.
+ \Wz'(x)\sim\frac{\EulerE}{q},\qquad
+ \Wm'(x)\sim-\frac{\EulerE}{q}.
 \]
 
 \begin{remark}[Compiled Lean branch-point crosswalk]
@@ -1462,11 +1448,11 @@ of ordinary differentiability of the totalized functions is
 The companion \path{LambertWBranchPointAsymptotics.lean} has one definition
 and eight theorems.  The definition
 \path{lambertWBranchPointScale} is
-\(q(x)=\sqrt{2\ee(x+\ee^{-1})}\), with
+\(q(x)=\sqrt{2\EulerE(x+\EulerE^{-1})}\), with
 \path{lambertWBranchPointScale_pos} and
 \path{lambertWBranchPointScale_sq} recording its positivity and exact
 square.  The two limits of the squared displacement divided by
-\(x+\ee^{-1}\) are
+\(x+\EulerE^{-1}\) are
 \path{tendsto_principalLambertW_add_one_sq_div_branchPoint} and
 \path{tendsto_lowerLambertW_add_one_sq_div_branchPoint}; their asymptotic
 equivalence forms are
@@ -1476,14 +1462,14 @@ equivalence forms are
 \path{lowerLambertW_add_one_isEquivalent_branchPoint} give precisely
 \[
  \Wz(x)+1\sim q(x),\qquad \Wm(x)+1\sim-q(x)
- \quad(x\downarrow-1/\ee).
+ \quad(x\downarrow-1/\EulerE).
 \]
 
 This formalizes the signed leading equivalent, but not the stronger
-\(\bigO(x+\ee^{-1})\) remainder in \eqref{eq:branchleading}, any displayed
+\(\BigO(x+\EulerE^{-1})\) remainder in \eqref{eq:branchleading}, any displayed
 higher coefficient in \eqref{eq:puiseux-series}, the recurrences
 \eqref{eq:brec}--\eqref{eq:arec}, or convergence of the complete series in
-\cref{thm:puiseux}.  The derivative equivalents \(W_k'\sim\pm\ee/q\) shown
+\cref{thm:puiseux}.  The derivative equivalents \(W_k'\sim\pm\EulerE/q\) shown
 above are also stronger than the compiled divergence statements.  Finally,
 the generic power--exponential and classical Fabius phase wrappers, together
 with their peak-threshold vertical-tangent and square-root corollaries,
@@ -1511,12 +1497,12 @@ the nonprincipal branch.}
 
 A second useful parametrization is
 \begin{equation}\label{eq:tparamx}
-       x=-\ee^{-1-t^2/2}.
+       x=-\EulerE^{-1-t^2/2}.
 \end{equation}
 Choose \(t>0\) for \(W_0\) and \(t<0\) for \(W_{-1}\).  If
 \(W=-1+u\), then the defining equation becomes
 \[
-       (1-u)\ee^u=\ee^{-t^2/2},
+       (1-u)\EulerE^u=\EulerE^{-t^2/2},
 \]
 or
 \begin{equation}\label{eq:t-u-relation}
@@ -1526,7 +1512,7 @@ The right side begins with \(u^2/2\), so another inverse-series calculation
 gives
 \begin{equation}\label{eq:tseries}
  W=-1+t-\frac13t^2+\frac1{36}t^3+\frac1{270}t^4
-      +\frac1{4320}t^5-\frac1{17010}t^6+\bigO(t^7).
+      +\frac1{4320}t^5-\frac1{17010}t^6+\BigO(t^7).
 \end{equation}
 The proof is identical in structure to that of
 \cref{thm:puiseux}: the signed analytic square root of
@@ -1552,9 +1538,9 @@ The two unbounded real limits are
 They are governed by the same algebra.  The first approximation follows by
 taking logarithms:
 \[
-       W+\log\abs W=\log\abs x.
+       W+\log\AbsoluteValue W=\log\AbsoluteValue x.
 \]
-If \(\abs W\) is large, then \(W\) is approximately \(\log\abs x\), and a
+If \(\AbsoluteValue W\) is large, then \(W\) is approximately \(\log\AbsoluteValue x\), and a
 second approximation subtracts the logarithm of that first approximation.
 
 \subsection{Unsigned Stirling numbers}
@@ -1631,8 +1617,8 @@ one has, for every fixed \(N\geq1\),
 \begin{equation}\label{eq:fullasym}
  W(x)=L_1-L_2+
  \sum_{n=1}^{N}\frac{\mathcal P_n(L_2)}{L_1^n}
- +\bigO\left(
- \frac{L_2^{N+1}}{\abs{L_1}^{N+1}}
+ +\BigO\left(
+ \frac{L_2^{N+1}}{\AbsoluteValue{L_1}^{N+1}}
  \right).
 \end{equation}
 Equivalently, the formal complete expansion is
@@ -1660,7 +1646,7 @@ For the principal positive branch,
 For the negative branch, \(\log(-x)=W+\log(-W)\); because \(L_1<0\),
 factoring \(-L_1\) from \(-W\) gives exactly the same equation.  Hence
 \begin{equation}\label{eq:vimplicit}
-       \tau=1-\ee^{-v}+\sigma v.
+       \tau=1-\EulerE^{-v}+\sigma v.
 \end{equation}
 
 Apply Lagrange inversion to the inverse of the right side:
@@ -1668,26 +1654,26 @@ Apply Lagrange inversion to the inverse of the right side:
  v
  &=\sum_{m=1}^{\infty}\frac{\tau^m}{m}
  [t^{m-1}]
- \left(\frac{t}{1-\ee^{-t}+\sigma t}\right)^m\notag\\
+ \left(\frac{t}{1-\EulerE^{-t}+\sigma t}\right)^m\notag\\
  &=\sum_{m=1}^{\infty}\sum_{k=0}^{\infty}
  \frac{(-1)^k}{m}
  \binom{m+k-1}{k}\sigma^k\tau^m
  [t^{m-1}]
- \left(\frac{t}{1-\ee^{-t}}\right)^{m+k}.
+ \left(\frac{t}{1-\EulerE^{-t}}\right)^{m+k}.
  \label{eq:asym-lagrange}
 \end{align}
 We claim that
 \begin{equation}\label{eq:keycoeff-asym}
  [t^{m-1}]
- \left(\frac{t}{1-\ee^{-t}}\right)^{m+k}
+ \left(\frac{t}{1-\EulerE^{-t}}\right)^{m+k}
  =\frac{k!}{(m+k-1)!}\stirling{m+k}{k+1}.
 \end{equation}
 To prove it, write the coefficient as a formal residue:
 \[
- \Res_{t=0}\frac{t^k}{(1-\ee^{-t})^{m+k}}\dd t.
+ \ResidueOperator_{t=0}\frac{t^k}{(1-\EulerE^{-t})^{m+k}}\Differential t.
 \]
-Make the substitution \(z=1-\ee^{-t}\), so
-\(t=-\log(1-z)\) and \(\dd t=\dd z/(1-z)\).  The residue becomes the
+Make the substitution \(z=1-\EulerE^{-t}\), so
+\(t=-\log(1-z)\) and \(\Differential t=\Differential z/(1-z)\).  The residue becomes the
 coefficient of \(z^{m+k-1}\) in
 \[
        \frac{[-\log(1-z)]^k}{1-z}.
@@ -1714,7 +1700,7 @@ Finally, the implicit function in \eqref{eq:vimplicit} has derivative \(1\)
 with respect to \(v\) at \((v,\sigma,\tau)=(0,0,0)\).  Hence \(v\) is
 analytic in \((\sigma,\tau)\) near the origin.  Its Taylor remainder after
 total degree \(N\) is
-\(\bigO((|\sigma|+|\tau|)^{N+1})\).  In both limits,
+\(\BigO((|\sigma|+|\tau|)^{N+1})\).  In both limits,
 \(\sigma\to0\), \(\tau\to0\), and
 \(|\tau|=L_2/|L_1|\) eventually dominates \(|\sigma|\).  This proves the
 remainder estimate in \eqref{eq:fullasym}.
@@ -1728,7 +1714,7 @@ For \(x\to+\infty\), set \(A=\log x\) and \(B=\log A\).  Then
  +\frac{B(-2+B)}{2A^2}
  +\frac{B(6-9B+2B^2)}{6A^3}\notag\\
  &+\frac{B(-12+36B-22B^2+3B^3)}{12A^4}
- +\bigO\left(\frac{B^5}{A^5}\right).
+ +\BigO\left(\frac{B^5}{A^5}\right).
  \label{eq:asymW0explicit}
 \end{align}
 
@@ -1742,7 +1728,7 @@ Since \(L_1=-\eta\),
  +\frac{B(B-2)}{2\eta^2}
  -\frac{B(2B^2-9B+6)}{6\eta^3}\notag\\
  &+\frac{B(3B^3-22B^2+36B-12)}{12\eta^4}
- +\bigO\left(\frac{B^5}{\eta^5}\right).
+ +\BigO\left(\frac{B^5}{\eta^5}\right).
  \label{eq:asymWmexplicit}
 \end{align}
 
@@ -1808,14 +1794,14 @@ is forced at \(x=0\).
 \end{theorem}
 
 \begin{proof}
-Let \(w=\Wz(x)\geq0\), so \(x=w\ee^w\).  The elementary inequality
-\(1-\ee^{-w}\leq w\) is equivalent both to
+Let \(w=\Wz(x)\geq0\), so \(x=w\EulerE^w\).  The elementary inequality
+\(1-\EulerE^{-w}\leq w\) is equivalent both to
 \[
        \frac{x}{1+x}\leq w
 \]
 and to
 \[
-       \ee^w\leq1+x,
+       \EulerE^w\leq1+x,
 \]
 the latter being \(w\leq\log(1+x)\).  Finally
 \(\log(1+x)\leq x\) is \cref{lem:logineq}.
@@ -1825,25 +1811,25 @@ The first rational lower bound is also the \([1/1]\) Pade approximant of
 \(\Wz\) at the origin.  Its role is therefore both analytic and numerical.
 
 \begin{theorem}[Logarithmic bounds for large positive arguments]\label{thm:W0logbounds}
-Let \(x>\ee\), \(L=\log x>1\).  Then
+Let \(x>\EulerE\), \(L=\log x>1\).  Then
 \begin{equation}\label{eq:W0logbounds}
  L-\log L
  <\Wz(x)
  <L-\log(L-\log L)
  <L.
 \end{equation}
-At \(x=\ee\), the first lower bound is an equality:
-\(\Wz(\ee)=1\).
+At \(x=\EulerE\), the first lower bound is an equality:
+\(\Wz(\EulerE)=1\).
 \end{theorem}
 
 \begin{proof}
-The function \(f(w)=w\ee^w\) is increasing for \(w>0\).  Since
+The function \(f(w)=w\EulerE^w\) is increasing for \(w>0\).  Since
 \[
-       L\ee^L=Lx>x,
+       L\EulerE^L=Lx>x,
 \]
 we have \(W_0(x)<L\).  Put \(a=L-\log L>0\).  Then
 \[
-       a\ee^a
+       a\EulerE^a
        =(L-\log L)\frac{x}{L}
        =x\left(1-\frac{\log L}{L}\right)<x,
 \]
@@ -1873,11 +1859,11 @@ follows immediately from the fact that \(g\) is decreasing.
 \subsection{Bounds on the negative part of the principal branch}
 
 \begin{theorem}[Two square-root bounds and a linear bound]\label{thm:W0negativebounds}
-For \(-1/\ee<x<0\),
+For \(-1/\EulerE<x<0\),
 \begin{equation}\label{eq:W0negativebounds}
- -1+\sqrt{1+\ee x}
+ -1+\sqrt{1+\EulerE x}
  <\Wz(x)
- <-1+\sqrt{2(1+\ee x)},
+ <-1+\sqrt{2(1+\EulerE x)},
 \end{equation}
 and also
 \begin{equation}\label{eq:W0xbound}
@@ -1889,28 +1875,28 @@ The first lower bound becomes exact at both endpoints in the limiting sense.
 \begin{proof}
 Write \(w=-1+s\) with \(0<s<1\).  Then
 \[
-       1+\ee x=1+(s-1)\ee^s.
+       1+\EulerE x=1+(s-1)\EulerE^s.
 \]
 The lower inequality is equivalent to
 \[
-       s^2>1+(s-1)\ee^s.
+       s^2>1+(s-1)\EulerE^s.
 \]
 Since \(s-1<0\), this in turn is equivalent to
-\(1+s<\ee^s\), which is strict for \(s>0\).
+\(1+s<\EulerE^s\), which is strict for \(s>0\).
 
 For the upper square-root bound, define
 \[
- H(s)=2[1-(1-s)\ee^s]-s^2.
+ H(s)=2[1-(1-s)\EulerE^s]-s^2.
 \]
 Then \(H(0)=0\) and
 \[
-       H'(s)=2s(\ee^s-1)>0
+       H'(s)=2s(\EulerE^s-1)>0
 \]
 for \(s>0\).  Thus
-\(s^2<2(1+\ee x)\), proving the upper bound.
+\(s^2<2(1+\EulerE x)\), proving the upper bound.
 
-Finally \(x=w\ee^w\).  Since \(w<0\) and \(0<\ee^w<1\), multiplication of
-the negative number \(w\) by \(\ee^w\) moves it toward zero, so \(w<x\).
+Finally \(x=w\EulerE^w\).  Since \(w<0\) and \(0<\EulerE^w<1\), multiplication of
+the negative number \(w\) by \(\EulerE^w\) moves it toward zero, so \(w<x\).
 \end{proof}
 
 Near \(x=0\), the bound \(W_0(x)<x\) is much sharper than the upper
@@ -1927,7 +1913,7 @@ For \(u>0\),
 \begin{equation}\label{eq:chatzbound}
  \boxed{\displaystyle
  -1-\sqrt{2u}-u
- <\Wm(-\ee^{-1-u})
+ <\Wm(-\EulerE^{-1-u})
  <-1-\sqrt{2u}-\frac23u.}
 \end{equation}
 \end{theorem}
@@ -1935,11 +1921,11 @@ For \(u>0\),
 \begin{proof}
 Write
 \[
-       \Wm(-\ee^{-1-u})=-1-v,\qquad v>0.
+       \Wm(-\EulerE^{-1-u})=-1-v,\qquad v>0.
 \]
 The defining equation gives
 \[
-       (1+v)\ee^{-v}=\ee^{-u},
+       (1+v)\EulerE^{-v}=\EulerE^{-u},
 \]
 hence
 \begin{equation}\label{eq:u-v}
@@ -1951,9 +1937,9 @@ The desired inequalities are equivalent to
 \end{equation}
 
 For the upper bound, \(v-u=\log(1+v)\).  Put
-\(t=\log(1+v)>0\), so \(v=\ee^t-1\) and
-\(u=\ee^t-1-t\).  The strict exponential inequality
-\(\ee^t>1+t+t^2/2\) gives
+\(t=\log(1+v)>0\), so \(v=\EulerE^t-1\) and
+\(u=\EulerE^t-1-t\).  The strict exponential inequality
+\(\EulerE^t>1+t+t^2/2\) gives
 \[
        t<\sqrt{2u},
 \]
@@ -1964,9 +1950,9 @@ It is therefore enough to square.  The required inequality is equivalent to
 \[
        (v+2t)^2>18u.
 \]
-Substituting \(v=\ee^t-1\) and \(u=\ee^t-1-t\), define
+Substituting \(v=\EulerE^t-1\) and \(u=\EulerE^t-1-t\), define
 \[
- F(t)=(\ee^t-1+2t)^2-18(\ee^t-1-t).
+ F(t)=(\EulerE^t-1+2t)^2-18(\EulerE^t-1-t).
 \]
 A direct differentiation gives
 \[
@@ -1974,7 +1960,7 @@ A direct differentiation gives
 \]
 and
 \[
-       F^{(4)}(t)=4\ee^t(t+4\ee^t-1)>0\qquad(t>0).
+       F^{(4)}(t)=4\EulerE^t(t+4\EulerE^t-1)>0\qquad(t>0).
 \]
 Successive integrations from \(0\) show
 \(F'''(t)>0\), then \(F''(t)>0\), then \(F'(t)>0\), and finally
@@ -1989,7 +1975,7 @@ With \(u=-1-\log(-x)>0\), define
 \end{equation}
 Then
 \begin{equation}\label{eq:Wm-midpoint-error}
-       \abs{\Wm(x)-A_{-1}(x)}<\frac{u}{6}.
+       \AbsoluteValue{\Wm(x)-A_{-1}(x)}<\frac{u}{6}.
 \end{equation}
 \end{corollary}
 
@@ -2008,13 +1994,13 @@ especially effective near \(u=0\), which is the branch point.}
 
 A simpler square-root consequence, useful when only \(x\) is available, is
 \[
-       \Wm(x)<-1-\sqrt{2(1+\ee x)}.
+       \Wm(x)<-1-\sqrt{2(1+\EulerE x)}.
 \]
 Indeed, with \(w=-1-v\),
 \[
- v^2-2[1-(1+v)\ee^{-v}]
+ v^2-2[1-(1+v)\EulerE^{-v}]
 \]
-has derivative \(2v(1-\ee^{-v})>0\) and vanishes at \(v=0\).
+has derivative \(2v(1-\EulerE^{-v})>0\) and vanishes at \(v=0\).
 
 \subsection{Bounds for \texorpdfstring{\(W_{-1}\)}{W-1} near zero}
 
@@ -2022,7 +2008,7 @@ The preceding \(u\)-bounds capture the branch point.  A different pair
 captures the logarithmic singularity.
 
 \begin{theorem}[Near-zero logarithmic bounds]\label{thm:Wmzerobounds}
-Let \(-1/\ee<x<0\), and put
+Let \(-1/\EulerE<x<0\), and put
 \[
        \eta=\log\frac1{-x}>1.
 \]
@@ -2091,12 +2077,12 @@ with \(Q_s(0)=1\).  Solving the resulting linear coefficient equations for
 \begin{proposition}[Orders of contact]\label{prop:pade-errors}
 At the origin,
 \begin{align}
- \Wz(x)-R_{1,1}(x)&=\frac12x^3+\bigO(x^4),\\
- \Wz(x)-R_{2,2}(x)&=\frac{17}{72}x^5+\bigO(x^6),\\
- \Wz(x)-R_{3,3}(x)&=\frac{13489}{122400}x^7+\bigO(x^8).
+ \Wz(x)-R_{1,1}(x)&=\frac12x^3+\BigO(x^4),\\
+ \Wz(x)-R_{2,2}(x)&=\frac{17}{72}x^5+\BigO(x^6),\\
+ \Wz(x)-R_{3,3}(x)&=\frac{13489}{122400}x^7+\BigO(x^8).
 \end{align}
 None of these three rational functions has a pole on the real domain
-\([-1/\ee,\infty)\) of \(\Wz\).
+\([-1/\EulerE,\infty)\) of \(\Wz\).
 \end{proposition}
 
 \begin{proof}
@@ -2107,14 +2093,14 @@ of the quadratic denominator in \(R_{2,2}\) are
 \[
        \frac{-7\pm\sqrt{19}}5,
 \]
-and both are less than \(-1/\ee\).
+and both are less than \(-1/\EulerE\).
 
 For the cubic denominator, write
 \[
        D(x)=665x^3+3579x^2+3756x+1020.
 \]
-The exponential series gives \(\ee>8/3\), hence
-\(-1/\ee>-3/8\).  On \([-3/8,\infty)\), the quadratic
+The exponential series gives \(\EulerE>8/3\), hence
+\(-1/\EulerE>-3/8\).  On \([-3/8,\infty)\), the quadratic
 \[
        \frac{D'(x)}3=665x^2+2386x+1252
 \]
@@ -2124,7 +2110,7 @@ that interval, and
 \[
        D(-3/8)=\frac{40821}{512}>0.
 \]
-It follows that \(D(x)>0\) for every \(x\geq-1/\ee\).  Hence the cubic
+It follows that \(D(x)>0\) for every \(x\geq-1/\EulerE\).  Hence the cubic
 approximant has no pole on the principal real domain.
 \end{proof}
 
@@ -2133,7 +2119,7 @@ approximant has no pole on the principal real domain.
 \includegraphics[width=.78\textwidth]{pade_errors.pdf}
 \caption{Absolute errors of three diagonal Pade approximants.  Their main
 advantage over a Taylor polynomial is sensible behavior beyond the disk
-\(\abs{x}<1/\ee\).}
+\(\AbsoluteValue{x}<1/\EulerE\).}
 \label{fig:pade}
 \end{figure}
 
@@ -2202,7 +2188,7 @@ A calculation gives
 \]
 
 \begin{theorem}[Euler continued fraction for \(W_0\)]\label{thm:eulerW}
-For \(\abs{x}<1/\ee\),
+For \(\AbsoluteValue{x}<1/\EulerE\),
 \begin{equation}\label{eq:eulerW}
  \boxed{\displaystyle
  \Wz(x)=
@@ -2218,7 +2204,7 @@ The convergents are exactly the partial sums of the Maclaurin series.
 \begin{proof}
 Apply \cref{lem:euler-cf} with \(c_0=0\) and the displayed ratios.
 Each convergent equals a Maclaurin partial sum, and those partial sums
-converge to \(\Wz(x)\) for \(\abs{x}<1/\ee\).
+converge to \(\Wz(x)\) for \(\AbsoluteValue{x}<1/\EulerE\).
 \end{proof}
 
 \begin{literaturenote}
@@ -2239,22 +2225,22 @@ formula that applies to every branch.
 \subsection{A local contour representation for all branches}
 
 \begin{theorem}[Inverse-function residue formula]\label{thm:contour-all}
-Let \(z\) be a regular value of \(f(\zeta)=\zeta\ee^\zeta\), and let
+Let \(z\) be a regular value of \(f(\zeta)=\zeta\EulerE^\zeta\), and let
 \(\Gamma_k\) be a small positively oriented contour enclosing the one simple
 root \(\zeta=W_k(z)\) and no other root of \(f(\zeta)=z\).  Then, for every
 integer \(m\geq0\),
 \begin{equation}\label{eq:contour-all}
  W_k(z)^m
- =\frac{1}{2\pi\ii}\int_{\Gamma_k}
- \frac{\zeta^m\ee^\zeta(1+\zeta)}
-      {\zeta\ee^\zeta-z}\dd\zeta.
+ =\frac{1}{2\pi\ImaginaryUnit}\int_{\Gamma_k}
+ \frac{\zeta^m\EulerE^\zeta(1+\zeta)}
+      {\zeta\EulerE^\zeta-z}\Differential\zeta.
 \end{equation}
 For \(m=1\), this is an integral representation of \(W_k(z)\) itself.
 \end{theorem}
 
 \begin{proof}
 The denominator has a simple zero at \(\zeta=W_k(z)\), because
-\(f'(\zeta)=\ee^\zeta(1+\zeta)\neq0\) at a regular value.  The residue of the
+\(f'(\zeta)=\EulerE^\zeta(1+\zeta)\neq0\) at a regular value.  The residue of the
 integrand there is
 \[
  \frac{\zeta^m f'(\zeta)}{f'(\zeta)}
@@ -2273,12 +2259,12 @@ Corless~\cite{kalugin2012}.
 
 For \(0<v<\pi\), define
 \begin{equation}\label{eq:av}
-       a(v)=v\ee^{-v\cot v}\csc v.
+       a(v)=v\EulerE^{-v\cot v}\csc v.
 \end{equation}
 
 \begin{lemma}[Properties of \(a(v)\)]\label{lem:av}
 The function \(a\) is strictly increasing and maps \((0,\pi)\) onto
-\((1/\ee,\infty)\).  Moreover,
+\((1/\EulerE,\infty)\).  Moreover,
 \begin{equation}\label{eq:aderivative}
  \frac{v a'(v)}{a(v)}
  =1-2v\cot v+v^2\csc^2v
@@ -2294,7 +2280,7 @@ Taking logarithms of \eqref{eq:av} and differentiating gives
 which is \eqref{eq:aderivative}.  Its final expression is positive.
 
 As \(v\to0\), the expansions
-\(\sin v\sim v\) and \(v\cot v\to1\) give \(a(v)\to1/\ee\).
+\(\sin v\sim v\) and \(v\cot v\to1\) give \(a(v)\to1/\EulerE\).
 As \(v\to\pi^-\), one has \(\csc v\to+\infty\) and
 \(-v\cot v\to+\infty\), so \(a(v)\to\infty\).  Strict monotonicity now gives
 the claimed range.
@@ -2303,69 +2289,69 @@ the claimed range.
 Why does this function appear?  On the upper edge of the principal branch
 cut, write
 \[
-       W_0(-a+\ii0)=u+\ii v,\qquad 0<v<\pi.
+       W_0(-a+\ImaginaryUnit0)=u+\ImaginaryUnit v,\qquad 0<v<\pi.
 \]
-The condition that \((u+\ii v)\ee^{u+\ii v}\) be negative real forces
+The condition that \((u+\ImaginaryUnit v)\EulerE^{u+\ImaginaryUnit v}\) be negative real forces
 \[
        u=-v\cot v,
 \]
 and its real value is
 \[
-       -v\ee^{-v\cot v}\csc v=-a(v).
+       -v\EulerE^{-v\cot v}\csc v=-a(v).
 \]
-Thus \(v\) parametrizes the entire cut from \(-1/\ee\) to \(-\infty\).
+Thus \(v\) parametrizes the entire cut from \(-1/\EulerE\) to \(-\infty\).
 
 \begin{theorem}[Stieltjes and logarithmic integrals]\label{thm:stieltjes}
-For \(z\in\mathbb C\setminus(-\infty,-1/\ee]\),
+For \(z\in\mathbb C\setminus(-\infty,-1/\EulerE]\),
 \begin{align}
  W_0'(z)
- &=\frac1\pi\int_0^\pi\frac{\dd v}{z+a(v)},\label{eq:Wprime-stieltjes}\\
+ &=\frac1\pi\int_0^\pi\frac{\Differential v}{z+a(v)},\label{eq:Wprime-stieltjes}\\
  W_0(z)
  &=\frac1\pi\int_0^\pi
-   \Log\left(1+\frac{z}{a(v)}\right)\dd v,\label{eq:W-log-integral}\\
+   \PrincipalLogarithm\left(1+\frac{z}{a(v)}\right)\Differential v,\label{eq:W-log-integral}\\
  W_0(z)
  &=\frac{z}{\pi}\int_0^\pi
- \frac{(1-v\cot v)^2+v^2}{z+a(v)}\dd v.
+ \frac{(1-v\cot v)^2+v^2}{z+a(v)}\Differential v.
  \label{eq:W-stieltjes}
 \end{align}
-For real \(z>-1/\ee\), all three integrals are real and the ordinary real
+For real \(z>-1/\EulerE\), all three integrals are real and the ordinary real
 logarithm may be used in \eqref{eq:W-log-integral}.
 \end{theorem}
 
 \begin{proof}
 We first prove \eqref{eq:Wprime-stieltjes}.  Let
 \(F(z)=W_0'(z)\).  It is analytic off the cut, behaves as
-\(\bigO(1/z)\) at infinity, and has an integrable inverse-square-root
-singularity at \(-1/\ee\).  On the upper edge of the cut,
+\(\BigO(1/z)\) at infinity, and has an integrable inverse-square-root
+singularity at \(-1/\EulerE\).  On the upper edge of the cut,
 \[
-       W_0(-a(v)+\ii0)=-v\cot v+\ii v.
+       W_0(-a(v)+\ImaginaryUnit0)=-v\cot v+\ImaginaryUnit v.
 \]
 Differentiating with respect to \(v\), while
 \(z=-a(v)\), gives
 \[
- F(-a(v)+\ii0)
- =-\frac{(-v\cot v)'+\ii}{a'(v)}.
+ F(-a(v)+\ImaginaryUnit0)
+ =-\frac{(-v\cot v)'+\ImaginaryUnit}{a'(v)}.
 \]
 The lower boundary value is its complex conjugate.  Hence the jump is
 \begin{equation}\label{eq:Fjump}
-       F_+-F_-=-\frac{2\ii}{a'(v)}.
+       F_+-F_-=-\frac{2\ImaginaryUnit}{a'(v)}.
 \end{equation}
 
 Apply Cauchy's formula on a large keyhole contour surrounding the cut.
 The outer circle contributes zero in the limit because
-\(F(z)=\bigO(1/z)\); a small circle around the branch point contributes zero
+\(F(z)=\BigO(1/z)\); a small circle around the branch point contributes zero
 because its length is order \(r\) and \(F\) is order \(r^{-1/2}\).
 The two sides of the cut therefore give
 \[
- F(z)=\frac1{2\pi\ii}
- \int_{-\infty}^{-1/\ee}
- \frac{F_+(t)-F_-(t)}{t-z}\dd t.
+ F(z)=\frac1{2\pi\ImaginaryUnit}
+ \int_{-\infty}^{-1/\EulerE}
+ \frac{F_+(t)-F_-(t)}{t-z}\Differential t.
 \]
-Set \(t=-a(v)\).  As \(t\) runs from \(-\infty\) to \(-1/\ee\),
+Set \(t=-a(v)\).  As \(t\) runs from \(-\infty\) to \(-1/\EulerE\),
 \(v\) runs from \(\pi\) to \(0\).  Using \eqref{eq:Fjump}, the integral
 becomes
 \[
-       F(z)=\frac1\pi\int_0^\pi\frac{\dd v}{z+a(v)},
+       F(z)=\frac1\pi\int_0^\pi\frac{\Differential v}{z+a(v)},
 \]
 as claimed.
 
@@ -2374,29 +2360,29 @@ Since \(W_0(0)=0\), and since differentiation under the integral is justified
 on compact subsets away from the cut,
 \[
  W_0(z)=\frac1\pi\int_0^\pi
- \left(\int_0^z\frac{\dd s}{s+a(v)}\right)\dd v
+ \left(\int_0^z\frac{\Differential s}{s+a(v)}\right)\Differential v
  =\frac1\pi\int_0^\pi
- \Log\left(1+\frac{z}{a(v)}\right)\dd v.
+ \PrincipalLogarithm\left(1+\frac{z}{a(v)}\right)\Differential v.
 \]
 This proves \eqref{eq:W-log-integral}.
 
 Finally let
-\(h(v)=\Log(1+z/a(v))\).  The boundary term
+\(h(v)=\PrincipalLogarithm(1+z/a(v))\).  The boundary term
 \([vh(v)]_0^\pi\) vanishes: the factor \(v\) handles \(v=0\), and
 \(a(v)\to\infty\) handles \(v=\pi\).  Integration by parts gives
 \[
- \int_0^\pi h(v)\dd v
- =z\int_0^\pi\frac{v a'(v)}{a(v)[z+a(v)]}\dd v.
+ \int_0^\pi h(v)\Differential v
+ =z\int_0^\pi\frac{v a'(v)}{a(v)[z+a(v)]}\Differential v.
 \]
 Insert \eqref{eq:aderivative} to obtain \eqref{eq:W-stieltjes}.
 \end{proof}
 
 \begin{corollary}[Alternating signs of all principal-branch derivatives]
-For every integer \(n\geq0\) and every real \(x>-1/\ee\),
+For every integer \(n\geq0\) and every real \(x>-1/\EulerE\),
 \begin{equation}\label{eq:complete-monotone}
  (-1)^n W_0^{(n+1)}(x)
  =\frac{n!}{\pi}\int_0^\pi
- \frac{\dd v}{[x+a(v)]^{n+1}}>0.
+ \frac{\Differential v}{[x+a(v)]^{n+1}}>0.
 \end{equation}
 Thus \(W_0'\) is completely monotone: \(W_0'>0\),
 \(W_0''<0\), \(W_0'''>0\), and so on.
@@ -2404,18 +2390,18 @@ Thus \(W_0'\) is completely monotone: \(W_0'>0\),
 
 \begin{proof}
 Differentiate \eqref{eq:Wprime-stieltjes} \(n\) times under the integral.
-For \(x>-1/\ee\), \cref{lem:av} gives \(x+a(v)>0\), so the integrand on
+For \(x>-1/\EulerE\), \cref{lem:av} gives \(x+a(v)>0\), so the integrand on
 the right of \eqref{eq:complete-monotone} is positive.
 \end{proof}
 
 This all-orders sign property is special to the principal branch.  It cannot
 extend to \(W_{-1}\), whose second derivative changes sign at
-\(-2/\ee^2\) by \cref{thm:curvature}.
+\(-2/\EulerE^2\) by \cref{thm:curvature}.
 
 \begin{corollary}[An integral for rooted-tree numbers]\label{cor:tree-integral}
 For every integer \(m\geq1\),
 \begin{equation}\label{eq:tree-integral}
- \frac1\pi\int_0^\pi a(v)^{-m}\dd v
+ \frac1\pi\int_0^\pi a(v)^{-m}\Differential v
  =\frac{m^{m-1}}{(m-1)!}.
 \end{equation}
 \end{corollary}
@@ -2434,13 +2420,13 @@ Expanding the logarithm in \eqref{eq:W-log-integral} and using
 \eqref{eq:tree-integral} gives a second proof of the Maclaurin series:
 \[
  \frac1\pi\int_0^\pi\sum_{m\geq1}
- \frac{(-1)^{m-1}}m\frac{z^m}{a(v)^m}\dd v
+ \frac{(-1)^{m-1}}m\frac{z^m}{a(v)^m}\Differential v
  =
  \sum_{m\geq1}\frac{(-m)^{m-1}}{m!}z^m.
 \]
 This identity ties together three representations that at first seem
 unrelated: rooted labelled trees, a branch-cut parametrization, and the
-inverse of \(w\ee^w\).
+inverse of \(w\EulerE^w\).
 
 
 \section{Numerical evaluation}\label{sec:numerics}
@@ -2462,38 +2448,38 @@ Let \(r=W_k(x)\), let \(\widehat w\) be an approximation on the same real
 inverse interval, and let \(I\) be the closed interval joining \(r\) and
 \(\widehat w\).  If \(I\) does not contain \(-1\), put
 \[
-       m_I=\min_{t\in I}\abs{\ee^t(1+t)}.
+       m_I=\min_{t\in I}\AbsoluteValue{\EulerE^t(1+t)}.
 \]
 Then
 \begin{equation}\label{eq:residual-bound}
- \abs{\widehat w-r}
+ \AbsoluteValue{\widehat w-r}
  \leq
- \frac{\abs{\widehat w\ee^{\widehat w}-x}}{m_I}.
+ \frac{\AbsoluteValue{\widehat w\EulerE^{\widehat w}-x}}{m_I}.
 \end{equation}
 For \(x\neq0\), an overflow-resistant alternative uses
 \[
-       G_x(w)=w+\log\abs w-\log\abs x.
+       G_x(w)=w+\log\AbsoluteValue w-\log\AbsoluteValue x.
 \]
 If, in addition, \(I\) avoids zero and
 \[
-       \mu_I=\min_{t\in I}\abs{1+1/t}>0,
+       \mu_I=\min_{t\in I}\AbsoluteValue{1+1/t}>0,
 \]
 then
 \begin{equation}\label{eq:log-residual-bound}
-       \abs{\widehat w-r}
-       \leq\frac{\abs{G_x(\widehat w)}}{\mu_I}.
+       \AbsoluteValue{\widehat w-r}
+       \leq\frac{\AbsoluteValue{G_x(\widehat w)}}{\mu_I}.
 \end{equation}
 \end{theorem}
 
 \begin{proof}
 Apply the mean value theorem to
-\(f(t)=t\ee^t-x\):
+\(f(t)=t\EulerE^t-x\):
 \[
  f(\widehat w)-f(r)
  =f'(\xi)(\widehat w-r)
 \]
 for some \(\xi\in I\).  Since \(f(r)=0\) and
-\(\abs{f'(\xi)}\geq m_I\), \eqref{eq:residual-bound} follows.
+\(\AbsoluteValue{f'(\xi)}\geq m_I\), \eqref{eq:residual-bound} follows.
 The proof of \eqref{eq:log-residual-bound} is identical, using
 \(G_x(r)=0\) and \(G_x'(t)=1+1/t\).
 \end{proof}
@@ -2507,13 +2493,13 @@ coordinate in that regime.
 
 For
 \[
-       f_x(w)=w\ee^w-x,
+       f_x(w)=w\EulerE^w-x,
 \]
 Newton's method is
 \begin{equation}\label{eq:newton-original}
  w^+
- =w-\frac{w\ee^w-x}{\ee^w(1+w)}
- =\frac{w^2+x\ee^{-w}}{1+w}.
+ =w-\frac{w\EulerE^w-x}{\EulerE^w(1+w)}
+ =\frac{w^2+x\EulerE^{-w}}{1+w}.
 \end{equation}
 Halley's method is
 \begin{equation}\label{eq:halley}
@@ -2521,7 +2507,7 @@ Halley's method is
  =w-\frac{2f_x(w)f_x'(w)}
           {2f_x'(w)^2-f_x(w)f_x''(w)},
  \qquad
- f_x''(w)=\ee^w(w+2).
+ f_x''(w)=\EulerE^w(w+2).
 \end{equation}
 
 \begin{theorem}[Local orders of convergence]\label{thm:newton-halley-orders}
@@ -2529,9 +2515,9 @@ Let \(r\) be a simple root of a three-times continuously differentiable
 function \(f\), so \(f(r)=0\) and \(f'(r)\neq0\).  If \(w=r+e\) is
 sufficiently close to \(r\), Newton's method has
 \[
-       e^+=\frac{f''(r)}{2f'(r)}e^2+\bigO(e^3),
+       e^+=\frac{f''(r)}{2f'(r)}e^2+\BigO(e^3),
 \]
-while Halley's method has \(e^+=\bigO(e^3)\).  Applied to the Lambert
+while Halley's method has \(e^+=\BigO(e^3)\).  Applied to the Lambert
 equation away from \(r=-1\), Newton is locally quadratic and Halley locally
 cubic.
 \end{theorem}
@@ -2539,15 +2525,15 @@ cubic.
 \begin{proof}
 Write \(a=f'(r)\), \(b=f''(r)\), \(c=f'''(r)\).  Taylor expansion gives
 \[
- f(r+e)=ae+\frac b2e^2+\frac c6e^3+\bigO(e^4),
+ f(r+e)=ae+\frac b2e^2+\frac c6e^3+\BigO(e^4),
 \]
 \[
- f'(r+e)=a+be+\frac c2e^2+\bigO(e^3).
+ f'(r+e)=a+be+\frac c2e^2+\BigO(e^3).
 \]
 Division yields
 \[
        \frac{f(r+e)}{f'(r+e)}
-       =e-\frac{b}{2a}e^2+\bigO(e^3),
+       =e-\frac{b}{2a}e^2+\BigO(e^3),
 \]
 which proves the Newton formula.
 
@@ -2556,28 +2542,28 @@ For Halley, substitute the same expansions into
        \frac{2ff'}{2(f')^2-ff''}.
 \]
 Both numerator and denominator have the same relative linear term, so their
-quotient is \(e+\bigO(e^3)\); the \(e^2\) term cancels.  Subtracting this
-correction from \(e\) leaves \(\bigO(e^3)\).
+quotient is \(e+\BigO(e^3)\); the \(e^2\) term cancels.  Subtracting this
+correction from \(e\) leaves \(\BigO(e^3)\).
 \end{proof}
 
 The root at the common branch point is not simple:
-\(f'(-1)=0\).  One should return \(-1\) exactly when \(x=-1/\ee\), or use
+\(f'(-1)=0\).  One should return \(-1\) exactly when \(x=-1/\EulerE\), or use
 the square-root expansion for nearby inputs.
 
 \subsection{Logarithmic Newton iteration}
 
 For nonzero \(x\), solve instead
 \[
-       G_x(w)=w+\log\abs w-\log\abs x=0.
+       G_x(w)=w+\log\AbsoluteValue w-\log\AbsoluteValue x=0.
 \]
 Newton's formula simplifies to
 \begin{equation}\label{eq:lognewton}
  \boxed{\displaystyle
  N_x(w)=\frac{w}{1+w}
- \left(1+\log\abs{\frac{x}{w}}\right).}
+ \left(1+\log\AbsoluteValue{\frac{x}{w}}\right).}
 \end{equation}
 This form is central in guaranteed high-precision algorithms because it
-avoids forming \(\ee^w\).
+avoids forming \(\EulerE^w\).
 
 We first prove a global one-step ordering theorem.
 
@@ -2592,7 +2578,7 @@ Let \(r=W_k(x)\), and suppose \(w\) has the same sign as \(x\).
 
 \begin{proof}
 Put \(t=r/w>0\).  Since
-\(\log\abs x=r+\log\abs r\), direct algebra gives the exact identities
+\(\log\AbsoluteValue x=r+\log\AbsoluteValue r\), direct algebra gives the exact identities
 \begin{align}
  N_x(w)-w
  &=\frac{w}{1+w}\left[w(t-1)+\log t\right],
@@ -2636,11 +2622,11 @@ For a real input in the stated branch domain, choose
 \begin{equation}\label{eq:globalstarts}
  w_0=
  \begin{cases}
-  x/(1+x),&k=0,\quad 0<x<\ee,\\
-  \log x-\log\log x,&k=0,\quad x\geq\ee,\\
-  x,&k=0,\quad -1/\ee<x<0,\\
+  x/(1+x),&k=0,\quad 0<x<\EulerE,\\
+  \log x-\log\log x,&k=0,\quad x\geq\EulerE,\\
+  x,&k=0,\quad -1/\EulerE<x<0,\\
   -1-\sqrt{2u}-u,&k=-1,\quad
-       -1/\ee<x<0,\quad u=-1-\log(-x).
+       -1/\EulerE<x<0,\quad u=-1-\log(-x).
  \end{cases}
 \end{equation}
 Then \(w_{n+1}=N_x(w_n)\) is well defined, remains on the selected branch
@@ -2648,13 +2634,13 @@ interval, is monotone, and converges to \(W_k(x)\).
 \end{theorem}
 
 \begin{proof}
-For \(0<x<\ee\), \cref{thm:W0positivebounds} gives
+For \(0<x<\EulerE\), \cref{thm:W0positivebounds} gives
 \(0<w_0<W_0(x)\), so case (i) of
-\cref{thm:lognewton-order} applies.  For \(x>\ee\),
-\cref{thm:W0logbounds} gives the same ordering; at \(x=\ee\), the start is
+\cref{thm:lognewton-order} applies.  For \(x>\EulerE\),
+\cref{thm:W0logbounds} gives the same ordering; at \(x=\EulerE\), the start is
 the exact value \(1\).
 
-For \(-1/\ee<x<0\) on \(W_0\), \eqref{eq:W0xbound} gives
+For \(-1/\EulerE<x<0\) on \(W_0\), \eqref{eq:W0xbound} gives
 \(-1<W_0(x)<w_0=x<0\), so case (ii) applies.  On \(W_{-1}\),
 \cref{thm:chatzbound} gives
 \(w_0<W_{-1}(x)<-1\), so case (iii) applies.
@@ -2664,9 +2650,9 @@ limit \(\ell\) in the same interval.  Continuity gives
 \(N_x(\ell)=\ell\).  Since \(\ell\neq0,-1\), this fixed-point equation
 reduces to
 \[
-       \log\abs{x/\ell}=\ell,
+       \log\AbsoluteValue{x/\ell}=\ell,
 \]
-or \(x=\ell\ee^\ell\).  Uniqueness on the selected inverse interval gives
+or \(x=\ell\EulerE^\ell\).  Uniqueness on the selected inverse interval gives
 \(\ell=W_k(x)\).
 \end{proof}
 
@@ -2675,7 +2661,7 @@ Let \(r=W_k(x)\neq-1,0\), and let \(e_n=w_n-r\) for the logarithmic Newton
 iteration.  Then
 \begin{equation}\label{eq:lognewton-error}
  e_{n+1}
- =-\frac{1}{2r(1+r)}e_n^2+\bigO(e_n^3).
+ =-\frac{1}{2r(1+r)}e_n^2+\BigO(e_n^3).
 \end{equation}
 \end{corollary}
 
@@ -2701,8 +2687,8 @@ For ordinary floating-point work, the following strategy is robust.
 Given a real \(x\) and branch \(k\in\{0,-1\}\):
 \begin{enumerate}
 \item Reject inputs outside the branch domain.  Return \(-1\) exactly at
-\(x=-1/\ee\), and return \(0\) for \(W_0(0)\).
-\item If \(1+\ee x\) is tiny, evaluate the signed Puiseux series
+\(x=-1/\EulerE\), and return \(0\) for \(W_0(0)\).
+\item If \(1+\EulerE x\) is tiny, evaluate the signed Puiseux series
 \eqref{eq:puiseux-series}.
 \item If \(k=0\) and \(|x|\) is small, use the Maclaurin series or a Pade
 approximant.
@@ -2743,8 +2729,8 @@ Regime & Recommended representation & Natural small parameter\\
 \midrule
 \(W_0\), \(x\approx0\) &
 Maclaurin series or Pade approximant & \(x\)\\
-Either branch, \(x\approx-1/\ee\) &
-signed Puiseux series & \(p=\pm\sqrt{2(1+\ee x)}\)\\
+Either branch, \(x\approx-1/\EulerE\) &
+signed Puiseux series & \(p=\pm\sqrt{2(1+\EulerE x)}\)\\
 \(W_0\), \(x\gg1\) &
 logarithmic asymptotic series & \((\log\log x)/\log x\)\\
 \(W_{-1}\), \(x\to0^-\) &
@@ -2766,7 +2752,7 @@ used where it is well conditioned.
 
 The main skill is to isolate an expression of the form
 \[
-       Y\ee^Y=Z.
+       Y\EulerE^Y=Z.
 \]
 Branch selection is then decided by the allowable range of the original
 unknown, not by algebra alone.
@@ -2781,7 +2767,7 @@ Let \(a,b,c\in\mathbb R\), with \(ab\neq0\), and seek \(x>0\) satisfying
 Every real solution is
 \begin{equation}\label{eq:axblogx}
        x=\frac ba\,
-       W_k\left(\frac ab\ee^{c/b}\right),
+       W_k\left(\frac ab\EulerE^{c/b}\right),
 \end{equation}
 where a real branch is chosen so that the right side is positive.
 \end{theorem}
@@ -2789,12 +2775,12 @@ where a real branch is chosen so that the right side is positive.
 \begin{proof}
 Rearrange and exponentiate:
 \[
-       x=\ee^{c/b}\ee^{-(a/b)x}.
+       x=\EulerE^{c/b}\EulerE^{-(a/b)x}.
 \]
 Therefore
 \[
        \frac abx\exp\left(\frac abx\right)
-       =\frac ab\ee^{c/b}.
+       =\frac ab\EulerE^{c/b}.
 \]
 Apply a real branch of \(W\), then multiply by \(b/a\).
 Every reversible step preserves all positive solutions.
@@ -2804,17 +2790,17 @@ Two important special cases are
 \[
        x+\log x=c
        \quad\Longrightarrow\quad
-       x=W_0(\ee^c),
+       x=W_0(\EulerE^c),
 \]
 and
 \begin{equation}\label{eq:xminuslogx}
        x-\log x=c
        \quad\Longrightarrow\quad
-       x=-W_k(-\ee^{-c}).
+       x=-W_k(-\EulerE^{-c}).
 \end{equation}
 For \(c>1\), \eqref{eq:xminuslogx} has two positive solutions:
-\(-W_0(-\ee^{-c})\in(0,1)\) and
-\(-W_{-1}(-\ee^{-c})\in(1,\infty)\).  At \(c=1\), they coalesce at
+\(-W_0(-\EulerE^{-c})\in(0,1)\) and
+\(-W_{-1}(-\EulerE^{-c})\in(1,\infty)\).  At \(c=1\), they coalesce at
 \(x=1\).  This is exactly the two-branch geometry of
 \cref{eq:vminuslogv}.
 
@@ -2824,7 +2810,7 @@ For \(c>1\), \eqref{eq:xminuslogx} has two positive solutions:
 Let \(p\neq0\), \(q\neq0\), and suppose a consistent real \(p\)-th root of
 \(A\) has been selected.  Solutions of
 \[
-       x^p\ee^{qx}=A
+       x^p\EulerE^{qx}=A
 \]
 that are compatible with that root are
 \begin{equation}\label{eq:xpowerexp}
@@ -2835,7 +2821,7 @@ that are compatible with that root are
 
 \begin{proof}
 Taking the selected \(p\)-th root gives
-\(x\ee^{(q/p)x}=A^{1/p}\).  Multiplication by \(q/p\) produces the defining
+\(x\EulerE^{(q/p)x}=A^{1/p}\).  Multiplication by \(q/p\) produces the defining
 Lambert equation.  Conversely, substitution verifies every value in
 \eqref{eq:xpowerexp}.
 \end{proof}
@@ -2845,11 +2831,11 @@ must be treated separately, and each resulting Lambert argument may itself
 admit two real branches.
 
 \begin{remark}[Endpoint-safe integer-power inverse package]
-For \(m\in\N\setminus\{0\}\), \(A>0\), and \(\beta>0\), the project sets
+For \(m\in\NaturalNumbers\setminus\{0\}\), \(A>0\), and \(\beta>0\), the project sets
 \[
- S_{m,A,\beta}(t)=At^m\ee^{-\beta t},
+ S_{m,A,\beta}(t)=At^m\EulerE^{-\beta t},
  \qquad
- P_{m,A,\beta}=A\left(\frac m\beta\ee^{-1}\right)^m
+ P_{m,A,\beta}=A\left(\frac m\beta\EulerE^{-1}\right)^m
 \]
 and defines principal and lower Lambert phases \(\lambda_0\) and
 \(\lambda_{-1}\).  Their exact endpoint-inclusive images are
@@ -2931,7 +2917,7 @@ No cleaned normalization in \(L=\log(A/x)\), nor a full generic asymptotic
 series, is claimed by that module.
 
 At \((m,A,\beta)=(1,1,\log2)\), the profile is
-\(t2^{-t}\), its peak is \(\ee^{-1}/\log2\), and the principal specialization
+\(t2^{-t}\), its peak is \(\EulerE^{-1}/\log2\), and the principal specialization
 is \path{fabiusPrincipalLambertPhase}.  The exact two-root equivalence and
 strict interior distinctness become
 \path{fabiusSaddle_eq_iff_eq_principal_or_eq_lower} and
@@ -2949,8 +2935,8 @@ The separate specialization
 \path{PowerExponentialLambertFabiusCurvature.lean} packages the complete
 classical curvature geometry.  Put
 \[
- L=\log2,\qquad P=\frac{\ee^{-1}}L,
- \qquad x_*=\frac{2\ee^{-2}}L.
+ L=\log2,\qquad P=\frac{\EulerE^{-1}}L,
+ \qquad x_*=\frac{2\EulerE^{-2}}L.
 \]
 The definition \path{fabiusLambertInflectionInput} is \(x_*\),
 \path{fabiusLambertInflectionInput_mem_Ioo} proves \(0<x_*<P\), and
@@ -2987,7 +2973,7 @@ The derivative witness
 \path{deriv_deriv_fabiusPrincipalLambertPhase} give, for \(x<P\),
 \begin{equation}\label{eq:fabius-principal-phase-second-derivative}
  \lambda_0''(x)
- =L\frac{\ee^{-2\Wz(-Lx)}\bigl(\Wz(-Lx)+2\bigr)}
+ =L\frac{\EulerE^{-2\Wz(-Lx)}\bigl(\Wz(-Lx)+2\bigr)}
           {\bigl(\Wz(-Lx)+1\bigr)^3}>0.
 \end{equation}
 Strict positivity is
@@ -3003,7 +2989,7 @@ the whole closed half-line \((-\infty,P]\).
 \begin{theorem}\label{thm:exp-affine}
 Let \(\alpha\beta\neq0\).  Every solution of
 \begin{equation}\label{eq:exp-affine}
-       \ee^{\alpha x}=\beta x+\gamma
+       \EulerE^{\alpha x}=\beta x+\gamma
 \end{equation}
 is
 \begin{equation}\label{eq:exp-affine-sol}
@@ -3012,7 +2998,7 @@ is
    -\frac1\alpha
  W_k\left(
   -\frac{\alpha}{\beta}
-  \ee^{-\alpha\gamma/\beta}
+  \EulerE^{-\alpha\gamma/\beta}
  \right).}
 \end{equation}
 Real solutions correspond exactly to real branches available at the
@@ -3023,7 +3009,7 @@ displayed argument.
 Set \(y=\beta x+\gamma\), so \(x=(y-\gamma)/\beta\).  Equation
 \eqref{eq:exp-affine} becomes
 \[
-       \ee^{\alpha(y-\gamma)/\beta}=y.
+       \EulerE^{\alpha(y-\gamma)/\beta}=y.
 \]
 Multiplying by \(\exp(-\alpha y/\beta)\) and then by
 \(-\alpha/\beta\) gives
@@ -3031,13 +3017,13 @@ Multiplying by \(\exp(-\alpha y/\beta)\) and then by
  \left(-\frac{\alpha y}{\beta}\right)
  \exp\left(-\frac{\alpha y}{\beta}\right)
  =
- -\frac{\alpha}{\beta}\ee^{-\alpha\gamma/\beta}.
+ -\frac{\alpha}{\beta}\EulerE^{-\alpha\gamma/\beta}.
 \]
 Apply \(W_k\), solve for \(y\), and then for \(x\).
 \end{proof}
 
 \begin{example}
-The equation \(\ee^x=3x\) has argument \(-1/3\in(-1/\ee,0)\), so it has
+The equation \(\EulerE^x=3x\) has argument \(-1/3\in(-1/\EulerE,0)\), so it has
 two positive solutions:
 \[
        x=-W_0(-1/3),\qquad x=-W_{-1}(-1/3).
@@ -3057,26 +3043,26 @@ Their number is:
 \begin{itemize}
 \item one if \(A>1\);
 \item one if \(A=1\), namely \(x=1\);
-\item two if \(\ee^{-1/\ee}<A<1\);
-\item one double minimum solution if \(A=\ee^{-1/\ee}\), namely
-\(x=\ee^{-1}\);
-\item none if \(0<A<\ee^{-1/\ee}\).
+\item two if \(\EulerE^{-1/\EulerE}<A<1\);
+\item one double minimum solution if \(A=\EulerE^{-1/\EulerE}\), namely
+\(x=\EulerE^{-1}\);
+\item none if \(0<A<\EulerE^{-1/\EulerE}\).
 \end{itemize}
 \end{theorem}
 
 \begin{proof}
-Put \(y=\log x\), so \(x=\ee^y\).  Taking logarithms of \(x^x=A\) gives
+Put \(y=\log x\), so \(x=\EulerE^y\).  Taking logarithms of \(x^x=A\) gives
 \[
-       y\ee^y=\log A.
+       y\EulerE^y=\log A.
 \]
 Thus \(y=W_k(\log A)\), proving \eqref{eq:xtox}.  If \(\log A>0\), only
-\(W_0\) is real.  If \(-1/\ee<\log A<0\), both \(W_0\) and \(W_{-1}\)
-are real.  At \(\log A=-1/\ee\), they meet.  Below that value no real branch
+\(W_0\) is real.  If \(-1/\EulerE<\log A<0\), both \(W_0\) and \(W_{-1}\)
+are real.  At \(\log A=-1/\EulerE\), they meet.  Below that value no real branch
 exists.
 
 For a direct calculus check, the derivative of
 \(\log(x^x)=x\log x\) is \(1+\log x\), so \(x^x\) has its positive minimum
-at \(x=\ee^{-1}\), with value \(\ee^{-1/\ee}\).
+at \(x=\EulerE^{-1}\), with value \(\EulerE^{-1/\EulerE}\).
 \end{proof}
 
 \subsection{Fixed points of exponentiation}
@@ -3095,7 +3081,7 @@ satisfies
 Taking logarithms gives \(\log y=y\log x\).  Set
 \(z=-y\log x\).  Then
 \[
-       z\ee^z=(-y\log x)\ee^{-y\log x}
+       z\EulerE^z=(-y\log x)\EulerE^{-y\log x}
              =(-y\log x)\frac1y
              =-\log x.
 \]
@@ -3104,9 +3090,9 @@ Thus \(z=W_k(-\log x)\), which gives
 \end{proof}
 
 For \(0<x<1\), the argument \(-\log x\) is positive and there is one positive
-fixed point.  For \(1<x<\ee^{1/\ee}\), the argument lies in
-\((-1/\ee,0)\), so there are two positive fixed points.  At
-\(x=\ee^{1/\ee}\), they merge at \(y=\ee\).  This statement concerns
+fixed point.  For \(1<x<\EulerE^{1/\EulerE}\), the argument lies in
+\((-1/\EulerE,0)\), so there are two positive fixed points.  At
+\(x=\EulerE^{1/\EulerE}\), they merge at \(y=\EulerE\).  This statement concerns
 solutions of the fixed-point equation; convergence of the iterated power
 tower is a separate dynamical question.
 
@@ -3115,15 +3101,15 @@ tower is a separate dynamical question.
 \begin{theorem}\label{thm:planckmax}
 Let \(n>1\).  The function
 \[
-       F_n(x)=\frac{x^n}{\ee^x-1},\qquad x>0,
+       F_n(x)=\frac{x^n}{\EulerE^x-1},\qquad x>0,
 \]
 has a unique critical point, which is its global maximum, at
 \begin{equation}\label{eq:planckmax}
-       x_n=n+W_0(-n\ee^{-n}).
+       x_n=n+W_0(-n\EulerE^{-n}).
 \end{equation}
 The second real branch gives
 \[
-       n+W_{-1}(-n\ee^{-n})=0,
+       n+W_{-1}(-n\EulerE^{-n})=0,
 \]
 the boundary point rather than an interior maximum.
 \end{theorem}
@@ -3132,23 +3118,23 @@ the boundary point rather than an interior maximum.
 Logarithmic differentiation gives
 \[
  \frac{F_n'(x)}{F_n(x)}
- =\frac nx-\frac{\ee^x}{\ee^x-1}.
+ =\frac nx-\frac{\EulerE^x}{\EulerE^x-1}.
 \]
 A critical point satisfies
 \[
-       n(\ee^x-1)=x\ee^x,
+       n(\EulerE^x-1)=x\EulerE^x,
 \]
 or
 \[
-       (n-x)\ee^x=n.
+       (n-x)\EulerE^x=n.
 \]
 Put \(y=x-n\).  Then
 \[
-       y\ee^y=-n\ee^{-n},
+       y\EulerE^y=-n\EulerE^{-n},
 \]
-so \(x=n+W_k(-n\ee^{-n})\).  Since \(-n\leq-1\),
+so \(x=n+W_k(-n\EulerE^{-n})\).  Since \(-n\leq-1\),
 \cref{cor:inverse} gives
-\(W_{-1}(-n\ee^{-n})=-n\), hence the boundary value \(x=0\).
+\(W_{-1}(-n\EulerE^{-n})=-n\), hence the boundary value \(x=0\).
 The principal value lies in \((-1,0)\), so
 \(x_n\in(n-1,n)\).
 
@@ -3167,7 +3153,7 @@ regimes, and reliable initial values for computation.
 
 Consider
 \begin{equation}\label{eq:mm-ode}
-       \frac{\dd S}{\dd t}
+       \frac{\Differential S}{\Differential t}
        =-\frac{V_{\max}S}{K_M+S},
        \qquad S(0)=S_0>0.
 \end{equation}
@@ -3186,7 +3172,7 @@ The solution is
 \begin{proof}
 Separate variables:
 \[
-       \left(1+\frac{K_M}{S}\right)\dd S=-V_{\max}\dd t.
+       \left(1+\frac{K_M}{S}\right)\Differential S=-V_{\max}\Differential t.
 \]
 Integration and the initial condition give
 \[
@@ -3200,7 +3186,7 @@ Put \(y=S/K_M\) and \(y_0=S_0/K_M\).  Constants involving
 \]
 Exponentiation gives
 \[
-       y\ee^y
+       y\EulerE^y
        =y_0\exp\left(y_0-\frac{V_{\max}t}{K_M}\right).
 \]
 The right side is positive, so the only real branch is \(W_0\), proving
@@ -3218,7 +3204,7 @@ Let \(I_S>0\) be the saturation current, \(R_S>0\) the series resistance,
 and \(nV_T>0\) the thermal-voltage scale.  The Shockley law and the circuit
 voltage relation are
 \[
-       I=I_S\left(\ee^{V_D/(nV_T)}-1\right),
+       I=I_S\left(\EulerE^{V_D/(nV_T)}-1\right),
        \qquad V=V_D+IR_S.
 \]
 
@@ -3260,7 +3246,7 @@ Consider
 \end{equation}
 
 \begin{theorem}\label{thm:dde}
-Exponential modes \(y(t)=\ee^{\lambda t}\) have exponents
+Exponential modes \(y(t)=\EulerE^{\lambda t}\) have exponents
 \begin{equation}\label{eq:dde-spectrum}
        \lambda_k=\frac1\tau W_k(a\tau),
        \qquad k\in\mathbb Z.
@@ -3270,19 +3256,19 @@ Exponential modes \(y(t)=\ee^{\lambda t}\) have exponents
 \begin{proof}
 Substitution gives
 \[
-       \lambda\ee^{\lambda t}
-       =a\ee^{\lambda(t-\tau)},
+       \lambda\EulerE^{\lambda t}
+       =a\EulerE^{\lambda(t-\tau)},
 \]
-so \(\lambda=a\ee^{-\lambda\tau}\).  Hence
+so \(\lambda=a\EulerE^{-\lambda\tau}\).  Hence
 \[
-       (\lambda\tau)\ee^{\lambda\tau}=a\tau,
+       (\lambda\tau)\EulerE^{\lambda\tau}=a\tau,
 \]
 and \eqref{eq:dde-spectrum} follows.
 \end{proof}
 
 Here the infinitely many complex branches are not optional decoration:
 they form the characteristic spectrum.  If
-\(-1/\ee<a\tau<0\), the two real branches give two real characteristic
+\(-1/\EulerE<a\tau<0\), the two real branches give two real characteristic
 exponents in addition to the complex ones.
 
 \subsection{The final-size equation of an epidemic model}
@@ -3299,7 +3285,7 @@ Assume \(R_0>0\).  Every positive algebraic solution is
 \begin{equation}\label{eq:sir-sol}
        s_\infty
        =-\frac1{R_0}
-       W_k(-R_0s_0\ee^{-R_0}).
+       W_k(-R_0s_0\EulerE^{-R_0}).
 \end{equation}
 The physically admissible branch must also satisfy
 \(s_\infty\leq s_0\) and the assumptions under which
@@ -3309,12 +3295,12 @@ The physically admissible branch must also satisfy
 \begin{proof}
 Exponentiating \eqref{eq:sir} gives
 \[
-       s_\infty=s_0\ee^{-R_0}\ee^{R_0s_\infty}.
+       s_\infty=s_0\EulerE^{-R_0}\EulerE^{R_0s_\infty}.
 \]
 Thus
 \[
- (-R_0s_\infty)\ee^{-R_0s_\infty}
- =-R_0s_0\ee^{-R_0},
+ (-R_0s_\infty)\EulerE^{-R_0s_\infty}
+ =-R_0s_0\EulerE^{-R_0},
 \]
 which proves \eqref{eq:sir-sol}.
 \end{proof}
@@ -3323,7 +3309,7 @@ When two real branches are available, one may be a mathematically valid but
 physically inadmissible root.  For example, if \(s_0=1\) and \(R_0>1\),
 the identity
 \[
-       W_{-1}(-R_0\ee^{-R_0})=-R_0
+       W_{-1}(-R_0\EulerE^{-R_0})=-R_0
 \]
 gives \(s_\infty=1\), the no-outbreak root, while \(W_0\) gives the smaller
 nontrivial root.  Initial conditions and model interpretation decide which
@@ -3335,25 +3321,25 @@ The rough relation
 \[
        n\approx\frac{x}{\log x}
 \]
-arises when inverting the prime number theorem.  For \(n\geq\ee\), solving
+arises when inverting the prime number theorem.  For \(n\geq\EulerE\), solving
 the equality exactly and selecting its large solution gives
 \begin{equation}\label{eq:primeinverse}
        x=-nW_{-1}(-1/n).
 \end{equation}
 
 \begin{proof}
-Put \(y=\log x\), so \(x=\ee^y\).  The equation
+Put \(y=\log x\), so \(x=\EulerE^y\).  The equation
 \(x/\log x=n\) becomes
 \[
-       \frac{\ee^y}{y}=n,
+       \frac{\EulerE^y}{y}=n,
 \]
 or
 \[
-       (-y)\ee^{-y}=-\frac1n.
+       (-y)\EulerE^{-y}=-\frac1n.
 \]
 The large solution has \(y>1\), so \(-y<-1\), which selects \(W_{-1}\):
 \(y=-W_{-1}(-1/n)\).  Exponentiating and using
-\(\ee^{-W(z)}=W(z)/z\) gives
+\(\EulerE^{-W(z)}=W(z)/z\) gives
 \(x=-nW_{-1}(-1/n)\).
 \end{proof}
 
@@ -3375,7 +3361,7 @@ The archive paper by Visser develops this viewpoint for bounds on the
 For positive arguments it is sometimes better to expand the Wright omega
 function
 \[
-       \omega(t)=W_0(\ee^t)
+       \omega(t)=W_0(\EulerE^t)
 \]
 than to expand \(W_0(x)\) directly.  Its defining equation
 \[
@@ -3383,14 +3369,14 @@ than to expand \(W_0(x)\) directly.  Its defining equation
 \]
 has no exponentially large quantity.
 
-\begin{theorem}[Expansion centered at \(x=\ee\)]\label{thm:omega-e-series}
-Let \(h=\log x-1\).  For \(x>0\) sufficiently close to \(\ee\),
+\begin{theorem}[Expansion centered at \(x=\EulerE\)]\label{thm:omega-e-series}
+Let \(h=\log x-1\).  For \(x>0\) sufficiently close to \(\EulerE\),
 \begin{align}
  W_0(x)
  ={}&1+\frac h2+\frac{h^2}{16}
  -\frac{h^3}{192}-\frac{h^4}{3072}
  +\frac{13h^5}{61440}
- +\bigO(h^6).\label{eq:omega-e-series}
+ +\BigO(h^6).\label{eq:omega-e-series}
 \end{align}
 \end{theorem}
 
@@ -3417,7 +3403,7 @@ archive, is useful when an application supplies \(\log x\) directly.  Its
 nonprincipal real analogue is not an ordinary Taylor series at the common
 endpoint: if
 \[
-       \nu(\eta)=-W_{-1}(-\ee^{-\eta}),
+       \nu(\eta)=-W_{-1}(-\EulerE^{-\eta}),
 \]
 then \(\nu-\log\nu=\eta\) and the derivative with respect to \(\nu\)
 vanishes at \((\eta,\nu)=(1,1)\).  The correct local expansion is therefore
@@ -3431,17 +3417,17 @@ but the main ideas follow directly from the defining map.
 
 \subsection{Local branches and the critical value}
 
-The complex derivative of \(f(w)=w\ee^w\) is
+The complex derivative of \(f(w)=w\EulerE^w\) is
 \[
-       f'(w)=\ee^w(1+w).
+       f'(w)=\EulerE^w(1+w).
 \]
 Thus \(w=-1\) is the only finite critical point, and its critical value is
-\(-1/\ee\).  At every other preimage \(w_*\), the complex inverse function
+\(-1/\EulerE\).  At every other preimage \(w_*\), the complex inverse function
 theorem gives a unique analytic local branch through \(w_*\).  Near
-\(-1/\ee\), the same calculation as in \cref{sec:branchpoint} gives the
+\(-1/\EulerE\), the same calculation as in \cref{sec:branchpoint} gives the
 complex square-root coordinate
 \[
-       p=\sqrt{2(1+\ee z)}.
+       p=\sqrt{2(1+\EulerE z)}.
 \]
 
 At \(z=0\), the principal branch is regular and satisfies \(W_0(0)=0\).
@@ -3450,21 +3436,21 @@ logarithmic branching.
 
 \subsection{Indexing and the all-branch asymptotic expansion}
 
-For nonzero \(z\), choose a determination of \(\Log z\) and define
+For nonzero \(z\), choose a determination of \(\PrincipalLogarithm z\) and define
 \[
-       L_{1,k}=\Log z+2\pi\ii k,\qquad
-       L_{2,k}=\Log L_{1,k}.
+       L_{1,k}=\PrincipalLogarithm z+2\pi\ImaginaryUnit k,\qquad
+       L_{2,k}=\PrincipalLogarithm L_{1,k}.
 \]
-For large \(\abs{k}\), a solution is close to
+For large \(\AbsoluteValue{k}\), a solution is close to
 \(L_{1,k}-L_{2,k}\).  The standard indexing \(W_k\) is chosen so that
 \begin{equation}\label{eq:complex-leading}
-       W_k(z)=L_{1,k}-L_{2,k}+\littleo(1)
-       \qquad(\abs{k}\to\infty),
+       W_k(z)=L_{1,k}-L_{2,k}+\LittleO(1)
+       \qquad(\AbsoluteValue{k}\to\infty),
 \end{equation}
 with consistent continuation away from branch cuts.
 
 \begin{theorem}[Complex all-branch expansion]\label{thm:complex-asym}
-Whenever \(\abs{L_{1,k}}\to\infty\) while the logarithms are chosen
+Whenever \(\AbsoluteValue{L_{1,k}}\to\infty\) while the logarithms are chosen
 consistently,
 \begin{equation}\label{eq:complex-asym}
  W_k(z)\sim L_{1,k}-L_{2,k}
@@ -3478,12 +3464,12 @@ with the same Stirling polynomials \(\mathcal P_n\) as in
 \begin{proof}
 The complex equation is
 \[
-       W+\Log W=L_{1,k}.
+       W+\PrincipalLogarithm W=L_{1,k}.
 \]
 Set \(W=L_{1,k}-L_{2,k}+v\).  On a neighborhood where the logarithms are
 consistent, exactly the algebra of \cref{thm:fullasym} gives
 \[
-       \tau=1-\ee^{-v}+\sigma v,\qquad
+       \tau=1-\EulerE^{-v}+\sigma v,\qquad
        \sigma=1/L_{1,k},\quad \tau=L_{2,k}/L_{1,k}.
 \]
 The Lagrange-inversion calculation and coefficient identity are algebraic
@@ -3491,7 +3477,7 @@ and remain valid over \(\mathbb C\).  This proves
 \eqref{eq:complex-asym}.
 \end{proof}
 
-This proof also shows that, for sufficiently large \(\abs{k}\), there is a
+This proof also shows that, for sufficiently large \(\AbsoluteValue{k}\), there is a
 solution near \(L_{1,k}-L_{2,k}\): the implicit function theorem solves for
 \(v\) when \(\sigma\) and \(\tau\) are small.  Hence a nonzero complex
 argument has infinitely many Lambert values.
@@ -3503,7 +3489,7 @@ Every regular complex branch satisfies
        W_k'(z)=\frac{W_k(z)}{z[1+W_k(z)]}.
 \]
 For a positive real \(x\), complex conjugation preserves
-\(w\ee^w=x\).  Consistency with the asymptotic indexing gives
+\(w\EulerE^w=x\).  Consistency with the asymptotic indexing gives
 \[
        W_{-k}(x)=\overline{W_k(x)}.
 \]
@@ -3511,7 +3497,7 @@ Thus nonreal values occur in conjugate pairs.
 
 \begin{literaturenote}
 Under the standard DLMF convention, \(W_0\) is analytic on
-\(\mathbb C\setminus(-\infty,-1/\ee]\); the other branches are organized
+\(\mathbb C\setminus(-\infty,-1/\EulerE]\); the other branches are organized
 with cuts associated with the negative real axis and the logarithmic point
 at zero.  Exact boundary labels require care because approaching a cut from
 above or below can change the branch index.  The foundational paper of
@@ -3555,7 +3541,7 @@ Closed forms in biochemical kinetics, including integrated
 Michaelis--Menten equations; see \cref{thm:mm}.\\
 \addlinespace
 Chatzigeorgiou (2013)~\cite{chatzigeorgiou2013} &
-Elementary bounds for \(W_{-1}(-\ee^{-1-u})\).  A self-contained proof and
+Elementary bounds for \(W_{-1}(-\EulerE^{-1-u})\).  A self-contained proof and
 a midpoint error estimate appear in
 \cref{thm:chatzbound,cor:Wm-midpoint}.\\
 \addlinespace
@@ -3608,17 +3594,17 @@ five decisions.
 
 \begin{enumerate}[label=\textbf{Step \arabic*.},leftmargin=*]
 \item \textbf{Count the real solutions before choosing a symbol.}
-For \(-1/\ee<x<0\), there are two values.  The value in \((-1,0)\) is
+For \(-1/\EulerE<x<0\), there are two values.  The value in \((-1,0)\) is
 \(W_0(x)\); the value in \(( -\infty,-1)\) is \(W_{-1}(x)\).
 
 \item \textbf{Use the coordinate adapted to the endpoint.}
 Near \(x=0\), use the Maclaurin series for \(W_0\).  Near the common branch
 point, use the signed square-root coordinate
-\(p=\pm\sqrt{2(1+\ee x)}\).  At the unbounded ends, use logarithmic
+\(p=\pm\sqrt{2(1+\EulerE x)}\).  At the unbounded ends, use logarithmic
 coordinates.
 
 \item \textbf{Keep branch qualifications in inverse identities.}
-The equation \(W(w\ee^w)=w\) is true only on the inverse interval belonging
+The equation \(W(w\EulerE^w)=w\) is true only on the inverse interval belonging
 to the selected branch.  This is exactly analogous to the restricted ranges
 used for inverse trigonometric functions.
 
@@ -3631,7 +3617,7 @@ real-variable procedure.
 \item \textbf{Expect most algebraic identities to be branch-independent,
 but most inequalities to be branch-dependent.}
 The derivative, antiderivative, contour, and asymptotic calculations begin
-from \(w\ee^w=x\) and therefore apply on every regular branch.  Monotonicity,
+from \(w\EulerE^w=x\) and therefore apply on every regular branch.  Monotonicity,
 curvature, signs, and bounds depend on the range of the selected inverse.
 \end{enumerate}
 
@@ -3662,38 +3648,38 @@ completely.
 \begin{theorem}[Exact real power-tower interval]\label{cmp:thm:powertower}
 For \(a>0\), the sequence of finite towers converges if and only if
 \begin{equation}\label{cmp:eq:tower-interval}
- \ee^{-\ee}\le a\le\ee^{1/\ee},
+ \EulerE^{-\EulerE}\le a\le\EulerE^{1/\EulerE},
 \end{equation}
 and throughout this interval its limit is
 \(h=-W_0(-\log a)/\log a\) (with \(h=1\) at \(a=1\)).  For
-\(1<a<\ee^{1/\ee}\), the second real branch \(W_{-1}\) gives another positive
+\(1<a<\EulerE^{1/\EulerE}\), the second real branch \(W_{-1}\) gives another positive
 solution of \(h=a^h\), which is repelling and is not the limit of the finite
 towers.
 \end{theorem}
 
 \begin{proof}[Proof (monograph treatment)]
 At a fixed point of \(g(x)=a^x\), \(g'(h)=h\log a=\log h\), so local
-attraction requires \(1/\ee<h<\ee\); mapping the endpoints through
+attraction requires \(1/\EulerE<h<\EulerE\); mapping the endpoints through
 \(a=h^{1/h}\) produces \eqref{cmp:eq:tower-interval}.  For
-\(1<a\le\ee^{1/\ee}\), \(h^{1/h}\) increases on \([1,\ee]\), so there is a
-unique fixed point \(h\in[1,\ee]\), and since \(a\le h\) and \(g\) is
+\(1<a\le\EulerE^{1/\EulerE}\), \(h^{1/h}\) increases on \([1,\EulerE]\), so there is a
+unique fixed point \(h\in[1,\EulerE]\), and since \(a\le h\) and \(g\) is
 increasing with \(g([a,h])\subseteq[a,h]\), the towers increase to \(h\)
-(including the neutral endpoint \(a=\ee^{1/\ee}\)).  For
-\(\ee^{-\ee}\le a<1\), \(g\) is decreasing: the odd and even subsequences
+(including the neutral endpoint \(a=\EulerE^{1/\EulerE}\)).  For
+\(\EulerE^{-\EulerE}\le a<1\), \(g\) is decreasing: the odd and even subsequences
 are monotone with limits \(p\le h\le q\) forming a two-cycle
 \(p=g(q)\), \(q=g(p)\).  Writing \(u=-\log p\), \(v=-\log q\), a nontrivial
-two-cycle forces \(A:=-\log a=u\ee^v=v\ee^u\), hence, with \(r=u/v>1\),
+two-cycle forces \(A:=-\log a=u\EulerE^v=v\EulerE^u\), hence, with \(r=u/v>1\),
 \[
  A=\frac{r\log r}{r-1}\,r^{1/(r-1)},
 \]
 whose logarithm is strictly increasing in \(\log r\) (this reduces to
-\(2\sinh(s/2)>s\)) with infimum \(1\); so \(A>\ee\), contradicting
-\(A\le\ee\).  Hence \(p=q=h\), including the neutral endpoint
-\(a=\ee^{-\ee}\).  Outside the interval no convergence occurs: for
-\(a>\ee^{1/\ee}\) there is no fixed point, and for \(0<a<\ee^{-\ee}\) the
-unique fixed point has \(\abs{g'(h)}>1\) and the injectivity of \(g\)
+\(2\sinh(s/2)>s\)) with infimum \(1\); so \(A>\EulerE\), contradicting
+\(A\le\EulerE\).  Hence \(p=q=h\), including the neutral endpoint
+\(a=\EulerE^{-\EulerE}\).  Outside the interval no convergence occurs: for
+\(a>\EulerE^{1/\EulerE}\) there is no fixed point, and for \(0<a<\EulerE^{-\EulerE}\) the
+unique fixed point has \(\AbsoluteValue{g'(h)}>1\) and the injectivity of \(g\)
 prevents the iterates from reaching it exactly.  The \(W_{-1}\) fixed point
-\(H>\ee\) has \(g'(H)=\log H>1\).
+\(H>\EulerE\) has \(g'(H)=\log H>1\).
 \end{proof}
 
 The companion equation \(x^y=y^x\) (fourth treatment): for positive
@@ -3701,9 +3687,9 @@ The companion equation \(x^y=y^x\) (fourth treatment): for positive
 \begin{equation}\label{cmp:eq:xyyx}
  y=-\frac1aW_k(-a),
 \end{equation}
-one branch reproducing \(y=x\) and, for \(0<a<1/\ee\), the other giving the
+one branch reproducing \(y=x\) and, for \(0<a<1/\EulerE\), the other giving the
 nontrivial partner (e.g.\ \(x=2\), \(y=4\)); the branches merge at
-\(x=y=\ee\).
+\(x=y=\EulerE\).
 
 \subsection{Fixed-point, Schr\"oder, and inverse-Taylor methods}
 
@@ -3714,26 +3700,26 @@ Two evaluation methods complement the monotone Newton theory of
 \label{cmp:prop:fixed-point}
 The iteration \(w_{n+1}=\log(x/w_n)\) has fixed points exactly at the
 nonzero branch values, with multiplier \(-1/W\) there.  It is locally
-attracting exactly when \(\abs W>1\).  Thus the principal iteration attracts
-only for \(x>\ee\), while the lower one attracts throughout
-\(-1/\ee<x<0\).  Contraction fails at \(W_0(\ee)=1\) and at the branch point.
+attracting exactly when \(\AbsoluteValue W>1\).  Thus the principal iteration attracts
+only for \(x>\EulerE\), while the lower one attracts throughout
+\(-1/\EulerE<x<0\).  Contraction fails at \(W_0(\EulerE)=1\) and at the branch point.
 Where the iteration converges, its rate is only linear.
 \end{proposition}
 
 \begin{theorem}[Inverse-Taylor (Schr\"oder-type) corrections; monograph
 treatment]\label{cmp:thm:inverse-taylor}
-Let \(y\ne-1\) approximate a branch value, \(z_0=y\ee^y\), and
+Let \(y\ne-1\) approximate a branch value, \(z_0=y\EulerE^y\), and
 \(\Delta=x-z_0\).  Then
 \begin{equation}\label{cmp:eq:schroeder}
- W(x)=y+\frac{\ee^{-y}}{1+y}\Delta
- -\frac{\ee^{-2y}(y+2)}{2(1+y)^3}\Delta^2
- +\frac{\ee^{-3y}(2y^2+8y+9)}{6(1+y)^5}\Delta^3
- +\bigO(\Delta^4),
+ W(x)=y+\frac{\EulerE^{-y}}{1+y}\Delta
+ -\frac{\EulerE^{-2y}(y+2)}{2(1+y)^3}\Delta^2
+ +\frac{\EulerE^{-3y}(2y^2+8y+9)}{6(1+y)^5}\Delta^3
+ +\BigO(\Delta^4),
 \end{equation}
 the coefficients being \(W^{(j)}(z_0)/j!\) from
 \cref{thm:higherder}.  The linear truncation is exactly Newton's method for
-\(w\ee^w=x\); truncation after \(\Delta^m\) turns an error
-\(\varepsilon=y-W(x)\) into \(\bigO(\varepsilon^{m+1})\).  The quadratic
+\(w\EulerE^w=x\); truncation after \(\Delta^m\) turns an error
+\(\varepsilon=y-W(x)\) into \(\BigO(\varepsilon^{m+1})\).  The quadratic
 truncation costs little more than Newton and gives third-order local
 accuracy; the powers of \((1+y)^{-1}\) warn against poor seeds near the
 branch point.
@@ -3741,7 +3727,7 @@ branch point.
 
 Convenient global seeds for one or two corrections (monograph treatment):
 \(y_0=\log(1+x)\) for \(W_0\), \(x>0\) (an upper bound by
-\cref{thm:W0positivebounds}); \(y_0=x\) for \(W_0\) on \((-1/\ee,0)\);
+\cref{thm:W0positivebounds}); \(y_0=x\) for \(W_0\) on \((-1/\EulerE,0)\);
 \(y_0=-T-\log T\) with \(T=\log(1/(-x))\) for \(W_{-1}\); and the Puiseux
 or logarithmic expansions at the ends.
 
@@ -3752,37 +3738,37 @@ explicit.
 
 \begin{itemize}
 \item\textbf{Branch-exchange involution.}  For \(0<t\le1\),
-\(\sigma(t)=-W_{-1}(-t\ee^{-t})\ge1\) satisfies
-\(t\ee^{-t}=\sigma(t)\ee^{-\sigma(t)}\), and
-\(s\mapsto-W_0(-s\ee^{-s})\) inverts it: the two real branches encode the
-two inverse sides of the unimodal map \(q\mapsto q\ee^{-q}\).  (The exact
+\(\sigma(t)=-W_{-1}(-t\EulerE^{-t})\ge1\) satisfies
+\(t\EulerE^{-t}=\sigma(t)\EulerE^{-\sigma(t)}\), and
+\(s\mapsto-W_0(-s\EulerE^{-s})\) inverts it: the two real branches encode the
+two inverse sides of the unimodal map \(q\mapsto q\EulerE^{-q}\).  (The exact
 pair parametrization of \cref{sec:pairing} is the same involution in the
 gap coordinate \(\Delta\).)
-\item\textbf{Scaling.}  If \(w=W_k(x)\) and \(n\in\N\), then
+\item\textbf{Scaling.}  If \(w=W_k(x)\) and \(n\in\NaturalNumbers\), then
 \[
- (nw)\ee^{nw}=\frac{nx^n}{w^{\,n-1}},
+ (nw)\EulerE^{nw}=\frac{nx^n}{w^{\,n-1}},
  \qquad\text{so}\qquad
  nW_k(x)=W_\ell\!\left(\frac{nx^n}{W_k(x)^{n-1}}\right)
 \]
 on the branch containing the value; similarly for complex \(\alpha\) with
 consistent powers.
-\item\textbf{Fixed points of \(W\).}  \(W_k(z)=z\) forces \(z\ee^z=z\),
-i.e.\ \(z=0\) or \(z=2\pi\ii n\); on the real principal branch the only
+\item\textbf{Fixed points of \(W\).}  \(W_k(z)=z\) forces \(z\EulerE^z=z\),
+i.e.\ \(z=0\) or \(z=2\pi\ImaginaryUnit n\); on the real principal branch the only
 fixed point is \(0\).
 \item\textbf{Unwinding.}  The frequently written identity
-\(W_k(z)=\Log z-\Log W_k(z)+2\pi\ii m\) carries a mandatory integer \(m\)
+\(W_k(z)=\PrincipalLogarithm z-\PrincipalLogarithm W_k(z)+2\pi\ImaginaryUnit m\) carries a mandatory integer \(m\)
 recording the logarithm discrepancy; on the real branches with absolute
-values, \(W+\log\abs W=\log\abs x\) holds unambiguously.
+values, \(W+\log\AbsoluteValue W=\log\AbsoluteValue x\) holds unambiguously.
 \item\textbf{Closed Puiseux coefficients.}  Writing the branch-point
 relation as \(u=q\,u/G(u)\) with
-\(G(u)=u\sqrt{2\bigl(1+(u-1)\ee^u\bigr)/u^2}\), Lagrange inversion gives
+\(G(u)=u\sqrt{2\bigl(1+(u-1)\EulerE^u\bigr)/u^2}\), Lagrange inversion gives
 the coefficients of the unified series \(S\) of \cref{thm:puiseux} in
 closed form,
 \begin{equation}\label{cmp:eq:puiseux-lagrange}
  a_n=\frac1n\,[t^{n-1}]\left(\frac t{G(t)}\right)^{\!n}.
 \end{equation}
-\item\textbf{Monodromy.}  Circling once around \(-1/\ee\) changes
-\(p=\sqrt{2(1+\ee z)}\) to \(-p\) and interchanges the two local sheets ---
+\item\textbf{Monodromy.}  Circling once around \(-1/\EulerE\) changes
+\(p=\sqrt{2(1+\EulerE z)}\) to \(-p\) and interchanges the two local sheets ---
 on the real side, exactly \(W_0\leftrightarrow W_{-1}\) (third treatment).
 \end{itemize}
 
@@ -3794,13 +3780,13 @@ If \(z\ne0\) is algebraic, every value \(W_k(z)\) is transcendental.
 
 \begin{proof}
 If \(w=W_k(z)\) were algebraic (and nonzero, since \(z\ne0\)), then
-Lindemann--Weierstrass makes \(\ee^w\) transcendental, contradicting
-\(\ee^w=z/w\) algebraic.
+Lindemann--Weierstrass makes \(\EulerE^w\) transcendental, contradicting
+\(\EulerE^w=z/w\) algebraic.
 \end{proof}
 
 In particular the omega constant \(\Omega=W_0(1)\) is transcendental.
 Values at transcendental arguments may still be algebraic --- e.g.\
-\(W_0(\ee)=1\) and every manufactured value \(W_k(a\ee^a)=a\).
+\(W_0(\EulerE)=1\) and every manufactured value \(W_k(a\EulerE^a)=a\).
 
 \subsection{A practitioner's toolkit}
 
@@ -3818,71 +3804,71 @@ away from \(q=0\), \(w=-1\) (with the limiting value
 the branch-point factor \((1+w)^{-1}\).
 \item\textbf{Differentiate in \(w\), not in \(x\).}  For differentiable
 \(H\),
-\(\tfrac{\dd}{\dd x}H(W(x))=H'(W(x))\,\ee^{-W(x)}/(1+W(x))\); computing
-\(\dd H/\dd w\) first usually avoids nested quotient rules.
-\item\textbf{Parametrize by \(w\).}  The substitution \(x=w\ee^w\) traces
+\(\tfrac{\Differential}{\Differential x}H(W(x))=H'(W(x))\,\EulerE^{-W(x)}/(1+W(x))\); computing
+\(\Differential H/\Differential w\) first usually avoids nested quotient rules.
+\item\textbf{Parametrize by \(w\).}  The substitution \(x=w\EulerE^w\) traces
 each real branch with no numerical inversion (\(w\ge-1\) for \(W_0\),
 \(w\le-1\) for \(W_{-1}\)); a conjectured inequality
 \(A(x)\le W_0(x)\le B(x)\) becomes the inverse-free statement
-\(A(w\ee^w)\le w\le B(w\ee^w)\).
+\(A(w\EulerE^w)\le w\le B(w\EulerE^w)\).
 \end{itemize}
 
 Floating-point hazards (monograph and fourth treatments): near the branch
-point, never form \(1+\ee x\) by naive subtraction when \(x\) is given as
-\(-1/\ee+h\) --- compute \(p=\sqrt{2\ee h}\) from \(h\) directly or use
+point, never form \(1+\EulerE x\) by naive subtraction when \(x\) is given as
+\(-1/\EulerE+h\) --- compute \(p=\sqrt{2\EulerE h}\) from \(h\) directly or use
 fused operations; for inputs so extreme that \(x\) overflows or underflows,
-carry \(\log\abs x\) and use the logarithmic Newton map
+carry \(\log\AbsoluteValue x\) and use the logarithmic Newton map
 \eqref{eq:loginput-newton}; and prefer the residual
-\(w+\log\abs w-\log\abs x\) to \(w\ee^w-x\) as a stopping test.
+\(w+\log\AbsoluteValue w-\log\AbsoluteValue x\) to \(w\EulerE^w-x\) as a stopping test.
 
 \subsection{Further worked applications}
 
 \begin{itemize}
 \item\textbf{Optimal patch residence (marginal value theorem).}  With gain
-\(G(t)=A(1-\ee^{-bt})\) and travel time \(\tau\), the rate-maximizing
-residence time solves \(\ee^{bt}=1+b(t+\tau)\), and with \(y=1+b(t+\tau)>1\),
+\(G(t)=A(1-\EulerE^{-bt})\) and travel time \(\tau\), the rate-maximizing
+residence time solves \(\EulerE^{bt}=1+b(t+\tau)\), and with \(y=1+b(t+\tau)>1\),
 \begin{equation}\label{cmp:eq:patch}
- t_*=\frac{-W_{-1}(-\ee^{-1-b\tau})-1-b\tau}{b}:
+ t_*=\frac{-W_{-1}(-\EulerE^{-1-b\tau})-1-b\tau}{b}:
 \end{equation}
 the principal branch would give negative residence time --- a clean case
 where omitting \(W_{-1}\) loses the only admissible solution
 \cite{lehtonen2016}.
-\item\textbf{Wien displacement.}  Maximizing \(x^5/(\ee^x-1)\) gives
-\((5-x)\ee^x=5\), so \(x_*=5+W_0(-5\ee^{-5})\approx4.9651142317\); the
+\item\textbf{Wien displacement.}  Maximizing \(x^5/(\EulerE^x-1)\) gives
+\((5-x)\EulerE^x=5\), so \(x_*=5+W_0(-5\EulerE^{-5})\approx4.9651142317\); the
 lower branch returns the boundary root \(x=0\) via
-\(W_{-1}(-5\ee^{-5})=-5\).  (Compare \cref{thm:planckmax} with \(n=5\).)
+\(W_{-1}(-5\EulerE^{-5})=-5\).  (Compare \cref{thm:planckmax} with \(n=5\).)
 \item\textbf{Fall time with linear drag.}  From
-\(s(t)=v_\infty[t-(1-\ee^{-\gamma t})/\gamma]\) and
+\(s(t)=v_\infty[t-(1-\EulerE^{-\gamma t})/\gamma]\) and
 \(A=1+\gamma s/v_\infty\ge1\),
-\(t=[A+W_0(-\ee^{-A})]/\gamma\); the lower branch gives the negative-time
+\(t=[A+W_0(-\EulerE^{-A})]/\gamma\); the lower branch gives the negative-time
 root of the extended equation.
 \item\textbf{Schwarzschild tortoise coordinate.}  Inverting
 \(r_*=r+2M\log(r/2M-1)\) for \(r>2M\):
 \begin{equation}\label{cmp:eq:tortoise}
- r=2M\left[1+W_0\!\bigl(\ee^{\,r_*/(2M)-1}\bigr)\right],
+ r=2M\left[1+W_0\!\bigl(\EulerE^{\,r_*/(2M)-1}\bigr)\right],
 \end{equation}
 with the Wright omega form avoiding overflow for large \(r_*\).
 \item\textbf{Prime counting.}  From \(p_n>n\log n\), inverting
 \(u\log u\) gives
-\(\pi(x)<x/W_0(x)=\ee^{W_0(x)}\) for \(x\ge2\), and
+\(\pi(x)<x/W_0(x)=\EulerE^{W_0(x)}\) for \(x\ge2\), and
 \(\pi(x)\sim x/W_0(x)\) restates the prime number theorem; the \(n\)th-prime
 scale inversion is \eqref{eq:primeinverse}.
 \end{itemize}
 
 Every application above reduces to one of three normal forms (fourth
-treatment): \((ax+b)\ee^{cx+d}=r\), solved by \(W\) directly;
+treatment): \((ax+b)\EulerE^{cx+d}=r\), solved by \(W\) directly;
 \(x+\log x=c\), natural for \(W_0\)/Wright omega; and \(x-\log x=c\), the
 two-branch inversion of \cref{eq:vminuslogv}.  Recognizing the form matters
 more than any single formula.
 
 \subsection{Generalizations and open directions}
 
-The \emph{\(r\)-Lambert function} solves \(w\ee^w+rw=z\)
+The \emph{\(r\)-Lambert function} solves \(w\EulerE^w+rw=z\)
 \cite{mezobaricz2017}; it has
-\(W_r'(z)=\bigl[\ee^{W_r}(1+W_r)+r\bigr]^{-1}\), and its branch points are
-images of the critical points \(\ee^w(1+w)+r=0\), themselves expressible by
+\(W_r'(z)=\bigl[\EulerE^{W_r}(1+W_r)+r\bigr]^{-1}\), and its branch points are
+images of the critical points \(\EulerE^w(1+w)+r=0\), themselves expressible by
 ordinary \(W\).  More generally, equations
-\(\ee^x\prod_i(x-t_i)/\prod_j(x-s_j)=a\) define generalized Lambert
+\(\EulerE^x\prod_i(x-t_i)/\prod_j(x-s_j)=a\) define generalized Lambert
 functions; the practical diagnostic is that ordinary \(W\) applies exactly
 when all appearances of the unknown gather into a single affine factor times
 the exponential of an affine factor (\cref{thm:exp-affine}), and otherwise a
@@ -3936,14 +3922,14 @@ On the analytic side, the downstream modules
 endpoint remainder with the growing reciprocal row: for every fixed row
 order \(r\) and residual depth \(S\), the periodic estimator minus its first
 \(S\) exact residuals differs from the periodic endpoint term by
-\(\bigO(\lambda^{-r-1-S})\), and it converges to the corresponding periodic
+\(\BigO(\lambda^{-r-1-S})\), and it converges to the corresponding periodic
 value along every integer phase ray.  This is a finite Poincar\'e statement,
 and the Bell conversion is likewise an exact finite rewrite.  Neither gives
 convergence of an infinite residual series, a multiplicative relative-error
 hierarchy, a derivative extractor, uniformity in growing row order or
 residual depth, or the outstanding sign control for those extensions.  The
 two-term inversion
-\(\log(1/G^{-1}(y))=\sqrt{2L\log(1/y)}-\tfrac12\log\log(1/y)+\bigO(1)\)
+\(\log(1/G^{-1}(y))=\sqrt{2L\log(1/y)}-\tfrac12\log\log(1/y)+\BigO(1)\)
 proved there is precisely the leading behavior of \(-W_{-1}\) in the
 logarithmic regime of \cref{sec:asymptotics}, and the fixed-point/cocycle
 structure behind those expansions is the \(v-\log v=u\) geometry of
@@ -3965,18 +3951,18 @@ power series; no question of numerical convergence is involved.
 
 For a Laurent series \(A(t)=\sum_{j\in\mathbb Z}a_jt^j\), define
 \[
-       \Res_{t=0} A(t)\dd t=a_{-1}.
+       \ResidueOperator_{t=0} A(t)\Differential t=a_{-1}.
 \]
 Two elementary rules will be used.
 
 \begin{lemma}[Derivative and substitution rules]\label{lem:formal-residue}
 Let \(A(t)\) be a formal Laurent series.
 \begin{enumerate}[label=\textup{(\roman*)}]
-\item \(\Res A'(t)\dd t=0\).
+\item \(\ResidueOperator A'(t)\Differential t=0\).
 \item If \(y=y(x)=c_1x+c_2x^2+\cdots\) with \(c_1\neq0\), then
 \begin{equation}\label{eq:formal-change}
-       \Res_{x=0}A(y(x))y'(x)\dd x
-       =\Res_{y=0}A(y)\dd y.
+       \ResidueOperator_{x=0}A(y(x))y'(x)\Differential x
+       =\ResidueOperator_{y=0}A(y)\Differential y.
 \end{equation}
 \end{enumerate}
 \end{lemma}
@@ -3989,15 +3975,15 @@ For (ii), linearity reduces the proof to \(A(y)=y^m\).  If \(m\neq-1\),
 then
 \[
        y(x)^m y'(x)
-       =\frac1{m+1}\frac{\dd}{\dd x}y(x)^{m+1},
+       =\frac1{m+1}\frac{\Differential}{\Differential x}y(x)^{m+1},
 \]
-whose residue is zero by part (i); the residue of \(y^m\dd y\) is also zero.
+whose residue is zero by part (i); the residue of \(y^m\Differential y\) is also zero.
 If \(m=-1\), write \(y(x)=c_1x[1+xB(x)]\).  Then
 \[
        \frac{y'(x)}{y(x)}
-       =\frac1x+\frac{\dd}{\dd x}\log[1+xB(x)],
+       =\frac1x+\frac{\Differential}{\Differential x}\log[1+xB(x)],
 \]
-so its residue is \(1\), exactly the residue of \(\dd y/y\).  This proves
+so its residue is \(1\), exactly the residue of \(\Differential y/y\).  This proves
 the substitution rule term by term.
 \end{proof}
 
@@ -4015,23 +4001,23 @@ Let \(H\) be a formal power series and \(n\geq1\).  Coefficient extraction
 is a residue:
 \begin{equation}\label{eq:coeff-residue}
        [x^n]H(y(x))
-       =\Res_{x=0}\frac{H(y(x))}{x^{n+1}}\dd x.
+       =\ResidueOperator_{x=0}\frac{H(y(x))}{x^{n+1}}\Differential x.
 \end{equation}
 From \eqref{eq:appendix-implicit},
 \[
        x=\frac{y}{\phi(y)},
        \qquad
-       \dd x=\frac{\phi(y)-y\phi'(y)}{\phi(y)^2}\dd y.
+       \Differential x=\frac{\phi(y)-y\phi'(y)}{\phi(y)^2}\Differential y.
 \]
 The substitution rule of \cref{lem:formal-residue} therefore changes
 \eqref{eq:coeff-residue} into
 \begin{align}
  [x^n]H(y(x))
- &=\Res_{y=0}
+ &=\ResidueOperator_{y=0}
  \left[
  \frac{H(y)\phi(y)^n}{y^{n+1}}
  -\frac{H(y)\phi(y)^{n-1}\phi'(y)}{y^n}
- \right]\dd y.
+ \right]\Differential y.
  \label{eq:lagrange-mid}
 \end{align}
 Now differentiate
@@ -4040,17 +4026,17 @@ Now differentiate
 \]
 Its residue is zero, so
 \begin{align*}
- 0={}&\Res_{y=0}\left[
+ 0={}&\ResidueOperator_{y=0}\left[
  \frac{H'(y)\phi(y)^n}{y^n}
  +n\frac{H(y)\phi(y)^{n-1}\phi'(y)}{y^n}
  -n\frac{H(y)\phi(y)^n}{y^{n+1}}
- \right]\dd y.
+ \right]\Differential y.
 \end{align*}
 Rearranging and comparing with \eqref{eq:lagrange-mid} gives
 \[
  [x^n]H(y(x))
- =\frac1n\Res_{y=0}
-       \frac{H'(y)\phi(y)^n}{y^n}\dd y
+ =\frac1n\ResidueOperator_{y=0}
+       \frac{H'(y)\phi(y)^n}{y^n}\Differential y
  =\frac1n[y^{n-1}]H'(y)\phi(y)^n.
 \]
 This is \eqref{eq:lagrange}.  Taking \(H(y)=y^m\) gives
@@ -4093,7 +4079,7 @@ the closed formula is usually more informative than a decimal expansion.
 
 \subsection{Signed branch-point coefficients}
 
-With \(p=\pm\sqrt{2(1+\ee x)}\), write
+With \(p=\pm\sqrt{2(1+\EulerE x)}\), write
 \[
        W=-1+\sum_{n\geq1}a_np^n.
 \]
@@ -4127,7 +4113,7 @@ The recurrence in \cref{thm:higherder} begins
 Consequently
 \[
  W_k^{(n)}(x)
- =\frac{\ee^{-nW_k(x)}P_n(W_k(x))}
+ =\frac{\EulerE^{-nW_k(x)}P_n(W_k(x))}
        {[1+W_k(x)]^{2n-1}}.
 \]
 This form avoids differentiating an increasingly complicated quotient from
@@ -4176,26 +4162,26 @@ These exercises review the main ideas without requiring complex analysis.
 
 \subsection*{Problems}
 \begin{enumerate}[label=\textbf{P\arabic*.},leftmargin=*]
-\item Prove that the equation \(w\ee^w=-1/10\) has exactly two real
+\item Prove that the equation \(w\EulerE^w=-1/10\) has exactly two real
 solutions, and locate each one in an interval of length \(1\).
 
-\item Let \(a\geq-1\).  Prove \(W_0(a\ee^a)=a\).  Let \(a\leq-1\).
-Prove \(W_{-1}(a\ee^a)=a\).  Explain why the branch restrictions cannot be
+\item Let \(a\geq-1\).  Prove \(W_0(a\EulerE^a)=a\).  Let \(a\leq-1\).
+Prove \(W_{-1}(a\EulerE^a)=a\).  Explain why the branch restrictions cannot be
 removed.
 
 \item Solve \(x+2\log x=5\) for \(x>0\).
 
 \item Evaluate
-\(\displaystyle\int_{-1/\ee}^{0}W_{-1}(x)\dd x\).
+\(\displaystyle\int_{-1/\EulerE}^{0}W_{-1}(x)\Differential x\).
 
 \item Show directly from the defining equation that
 \[
-       \frac{\dd}{\dd x}\ee^{W_0(x)}
+       \frac{\Differential}{\Differential x}\EulerE^{W_0(x)}
        =\frac1{1+W_0(x)}
-       \qquad(x>-1/\ee).
+       \qquad(x>-1/\EulerE).
 \]
 
-\item For \(-1/\ee<x<0\), prove
+\item For \(-1/\EulerE<x<0\), prove
 \(W_0(x)+W_{-1}(x)<-2\) without differentiating either branch.
 
 \item Determine the number of positive real solutions of \(x^x=A\) for
@@ -4203,57 +4189,57 @@ removed.
 
 \item Derive the first three nonconstant terms in the expansion of
 \(W_0(x)\) at \(x=0\) by substituting
-\(W_0(x)=a_1x+a_2x^2+a_3x^3+\bigO(x^4)\) into the defining equation.
+\(W_0(x)=a_1x+a_2x^2+a_3x^3+\BigO(x^4)\) into the defining equation.
 
-\item Let \(x>\ee\), \(L=\log x\).  Prove that
+\item Let \(x>\EulerE\), \(L=\log x\).  Prove that
 \(L-\log L<W_0(x)<L\).
 
 \item Suppose an approximation \(w\) to a selected real Lambert value
 satisfies \(w\neq0,-1\).  Derive one logarithmic Newton step without using
-\(\ee^w\).
+\(\EulerE^w\).
 \end{enumerate}
 
 \subsection*{Solutions}
 \begin{enumerate}[label=\textbf{S\arabic*.},leftmargin=*]
-\item Since \(-1/\ee<-1/10<0\), \cref{thm:realbranches} gives exactly two
+\item Since \(-1/\EulerE<-1/10<0\), \cref{thm:realbranches} gives exactly two
 solutions.  On \((-1,0)\),
-\((-1)\ee^{-1}<-1/10<0\), so the principal solution lies in \((-1,0)\).
+\((-1)\EulerE^{-1}<-1/10<0\), so the principal solution lies in \((-1,0)\).
 For the lower branch,
-\[-4\ee^{-4}\approx-0.0733>-0.1,
-  \qquad -3\ee^{-3}\approx-0.1494<-0.1.
+\[-4\EulerE^{-4}\approx-0.0733>-0.1,
+  \qquad -3\EulerE^{-3}\approx-0.1494<-0.1.
 \]
-Because \(w\ee^w\) is decreasing on \(( -\infty,-1)\), the second solution
+Because \(w\EulerE^w\) is decreasing on \(( -\infty,-1)\), the second solution
 lies in \((-4,-3)\).
 
-\item The map \(w\mapsto w\ee^w\) is one-to-one from \([-1,\infty)\) onto
-\([-1/\ee,\infty)\), so its inverse there sends \(a\ee^a\) back to \(a\).
+\item The map \(w\mapsto w\EulerE^w\) is one-to-one from \([-1,\infty)\) onto
+\([-1/\EulerE,\infty)\), so its inverse there sends \(a\EulerE^a\) back to \(a\).
 This is \(W_0\).  The same argument on \(( -\infty,-1]\), where the map is
-one-to-one onto \([-1/\ee,0)\), gives the \(W_{-1}\) identity.  Without the
-range restriction, an input in \((-1/\ee,0)\) has two preimages, so a single
+one-to-one onto \([-1/\EulerE,0)\), gives the \(W_{-1}\) identity.  Without the
+range restriction, an input in \((-1/\EulerE,0)\) has two preimages, so a single
 inverse formula cannot select both.
 
 \item Divide by \(2\): \(x/2+\log x=5/2\).  Exponentiation gives
-\(x\ee^{x/2}=\ee^{5/2}\).  Hence
+\(x\EulerE^{x/2}=\EulerE^{5/2}\).  Hence
 \[
-       \frac{x}{2}\ee^{x/2}=\frac12\ee^{5/2},
+       \frac{x}{2}\EulerE^{x/2}=\frac12\EulerE^{5/2},
        \qquad
-       x=2W_0\left(\frac12\ee^{5/2}\right).
+       x=2W_0\left(\frac12\EulerE^{5/2}\right).
 \]
 The argument is positive, so only \(W_0\) is real.
 
-\item By \eqref{eq:defintWm}, the answer is \(-3/\ee\).  Directly, put
+\item By \eqref{eq:defintWm}, the answer is \(-3/\EulerE\).  Directly, put
 \(w=W_{-1}(x)\).  Then \(w\) runs from \(-1\) to \(-\infty\), and
 \[
- \int w\ee^w(1+w)\dd w
- =\left[\ee^w(w^2-w+1)\right]_{-1}^{-\infty}
- =-\frac3\ee.
+ \int w\EulerE^w(1+w)\Differential w
+ =\left[\EulerE^w(w^2-w+1)\right]_{-1}^{-\infty}
+ =-\frac3\EulerE.
 \]
 
 \item Differentiate and use \eqref{eq:firstder}:
 \[
- \frac{\dd}{\dd x}\ee^{W_0(x)}
- =\ee^{W_0(x)}W_0'(x)
- =\ee^{W_0(x)}\frac{\ee^{-W_0(x)}}{1+W_0(x)}.
+ \frac{\Differential}{\Differential x}\EulerE^{W_0(x)}
+ =\EulerE^{W_0(x)}W_0'(x)
+ =\EulerE^{W_0(x)}\frac{\EulerE^{-W_0(x)}}{1+W_0(x)}.
 \]
 The factors cancel.
 
@@ -4264,32 +4250,32 @@ The factors cancel.
 \(y\sinh y\), so \(y\coth y>1\).  The sum is therefore less than \(-2\).
 
 \item Put \(u=\log x\).  Then \(x^x=A\) becomes
-\(u\ee^u=\log A\), so
+\(u\EulerE^u=\log A\), so
 \[
        x=\exp[W_k(\log A)].
 \]
 If \(A>1\), then \(\log A>0\) and there is one solution, from \(W_0\).
 If \(A=1\), the positive solution is \(x=1\).  If
-\(\ee^{-1/\ee}<A<1\), then \(-1/\ee<\log A<0\) and there are two
+\(\EulerE^{-1/\EulerE}<A<1\), then \(-1/\EulerE<\log A<0\) and there are two
 solutions, from \(W_0\) and \(W_{-1}\).  If
-\(A=\ee^{-1/\ee}\), the two coalesce at \(x=\ee^{-1}\).  If
-\(0<A<\ee^{-1/\ee}\), there is no positive real solution.
+\(A=\EulerE^{-1/\EulerE}\), the two coalesce at \(x=\EulerE^{-1}\).  If
+\(0<A<\EulerE^{-1/\EulerE}\), there is no positive real solution.
 
-\item Expand \(\ee^W=1+W+W^2/2+\bigO(x^3)\).  Then
+\item Expand \(\EulerE^W=1+W+W^2/2+\BigO(x^3)\).  Then
 \[
- W\ee^W=W+W^2+\frac12W^3+\bigO(x^4).
+ W\EulerE^W=W+W^2+\frac12W^3+\BigO(x^4).
 \]
 Substitution gives
 \[
  a_1x+(a_2+a_1^2)x^2+
- (a_3+2a_1a_2+a_1^3/2)x^3+\bigO(x^4)=x.
+ (a_3+2a_1a_2+a_1^3/2)x^3+\BigO(x^4)=x.
 \]
 Thus \(a_1=1\), \(a_2=-1\), and \(a_3=3/2\).
 
-\item Since \(L\ee^L=Lx>x\) and \(w\ee^w\) is increasing for
+\item Since \(L\EulerE^L=Lx>x\) and \(w\EulerE^w\) is increasing for
 \(w>0\), one has \(W_0(x)<L\).  Put \(a=L-\log L\).  Then
 \[
-       a\ee^a=x\left(1-\frac{\log L}{L}\right)<x,
+       a\EulerE^a=x\left(1-\frac{\log L}{L}\right)<x,
 \]
 so the same monotonicity gives \(a<W_0(x)\).
 
@@ -4309,31 +4295,31 @@ This is \eqref{eq:lognewton}.
 Topic & Formula and branch condition\\
 \midrule
 \endhead
-Definition & \(W_k(x)\ee^{W_k(x)}=x\).\\
+Definition & \(W_k(x)\EulerE^{W_k(x)}=x\).\\
 \addlinespace
-Real domains & \(W_0:[-1/\ee,\infty)\to[-1,\infty)\), increasing;
-\(W_{-1}:[-1/\ee,0)\to(-\infty,-1]\), decreasing.\\
+Real domains & \(W_0:[-1/\EulerE,\infty)\to[-1,\infty)\), increasing;
+\(W_{-1}:[-1/\EulerE,0)\to(-\infty,-1]\), decreasing.\\
 \addlinespace
-Derivative & On \(W_0\) for \(x>-1/\ee\), and on \(W_{-1}\) for
-\(-1/\ee<x<0\),
-\(W_k'(x)=\ee^{-W_k(x)}/[1+W_k(x)]\).  When \(x\neq0\), this is also
+Derivative & On \(W_0\) for \(x>-1/\EulerE\), and on \(W_{-1}\) for
+\(-1/\EulerE<x<0\),
+\(W_k'(x)=\EulerE^{-W_k(x)}/[1+W_k(x)]\).  When \(x\neq0\), this is also
 \(W_k(x)/\{x[1+W_k(x)]\}\); separately, \(W_0'(0)=1\).\\
 \addlinespace
 Second derivative & On the same smooth domains,
-\(W_k''(x)=-\ee^{-2W_k(x)}[W_k(x)+2]/[1+W_k(x)]^3\).  When
+\(W_k''(x)=-\EulerE^{-2W_k(x)}[W_k(x)+2]/[1+W_k(x)]^3\).  When
 \(x\neq0\), this is also
 \(-W_k(x)^2[W_k(x)+2]/\{x^2[1+W_k(x)]^3\}\); separately,
 \(W_0''(0)=-2\).\\
 \addlinespace
 Antiderivative &
-\(\int W_k(x)\dd x=\ee^{W_k(x)}[W_k(x)^2-W_k(x)+1]+C\).\\
+\(\int W_k(x)\Differential x=\EulerE^{W_k(x)}[W_k(x)^2-W_k(x)+1]+C\).\\
 \addlinespace
 Maclaurin &
-\(W_0(x)=\sum_{n\geq1}(-n)^{n-1}x^n/n!\), \(|x|<1/\ee\).\\
+\(W_0(x)=\sum_{n\geq1}(-n)^{n-1}x^n/n!\), \(|x|<1/\EulerE\).\\
 \addlinespace
 Branch point &
 \(W_{0,-1}(x)=-1+p-p^2/3+11p^3/72-\cdots\),
-\(p=\pm\sqrt{2(1+\ee x)}\).\\
+\(p=\pm\sqrt{2(1+\EulerE x)}\).\\
 \addlinespace
 Large \(W_0\) &
 \(W_0(x)=L_1-L_2+L_2/L_1+\cdots\),
@@ -4344,14 +4330,14 @@ Small-negative \(W_{-1}\) & Same coefficient formula with
 \addlinespace
 Exact branch pair &
 If \(\Delta=W_0-W_{-1}\), then
-\(W_0=-\Delta/(\ee^\Delta-1)\) and
-\(W_{-1}=-\Delta/(1-\ee^{-\Delta})\).\\
+\(W_0=-\Delta/(\EulerE^\Delta-1)\) and
+\(W_{-1}=-\Delta/(1-\EulerE^{-\Delta})\).\\
 \addlinespace
 Logarithmic Newton &
 \(w^+=\dfrac{w}{1+w}\left(1+\log\left|x/w\right|\right)\).\\
 \addlinespace
 Residual certificate &
-\(|w-W_k(x)|\leq|w\ee^w-x|/\min_I|\ee^t(1+t)|\), provided the interval
+\(|w-W_k(x)|\leq|w\EulerE^w-x|/\min_I|\EulerE^t(1+t)|\), provided the interval
 \(I\) between \(w\) and the root avoids \(-1\).\\
 \bottomrule
 \end{longtable}
@@ -4372,17 +4358,17 @@ before merging.
 Topic & Status across the four treatments\\
 \midrule
 \endhead
-Real branches, domains, curvature, inflection of \(\Wm\) at \(-2/\ee^2\) &
+Real branches, domains, curvature, inflection of \(\Wm\) at \(-2/\EulerE^2\) &
 All four, identical statements and proofs.\\
 \addlinespace
 Derivative polynomials \(P_n\) with recurrence
 \(P_{n+1}=(1+w)P_n'-(nw+3n-1)P_n\) &
 All four; tables agree through \(P_5=24w^4+192w^3+622w^2+974w+625\).\\
 \addlinespace
-Maclaurin \((-n)^{n-1}/n!\), radius \(1/\ee\), tree function, Cayley &
+Maclaurin \((-n)^{n-1}/n!\), radius \(1/\EulerE\), tree function, Cayley &
 All four; the spine adds the endpoint convergence via Raabe.\\
 \addlinespace
-Signed Puiseux series at \(-1/\ee\) &
+Signed Puiseux series at \(-1/\EulerE\) &
 All four; coefficients agree through \(a_9=226287557/37623398400\);
 the fourth treatment adds the closed Lagrange form
 \eqref{cmp:eq:puiseux-lagrange}.\\
@@ -4537,3 +4523,4 @@ doi:10.3390/math6040056.
 \end{thebibliography}
 
 \end{document}
+\input{../../../../fabius-notation.tex}

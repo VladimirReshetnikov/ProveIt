@@ -6,6 +6,7 @@
 \usepackage{microtype}
 \usepackage[a4paper,margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\input{../../../../fabius-notation.tex}
 \usepackage{bm}
 \usepackage{booktabs,longtable,array}
 \usepackage{graphicx}
@@ -57,31 +58,12 @@
 {\begin{center}\begin{minipage}{0.94\textwidth}\hrule\vspace{0.45em}
 \noindent\textbf{#1.}\ }{\vspace{0.45em}\hrule\end{minipage}\end{center}}
 
-\newcommand{\Up}{\operatorname{up}}
 \newcommand{\M}{M_u}
 \newcommand{\Dscr}{\mathscr D_u}
 \newcommand{\Lscr}{\mathscr L_u}
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\N}{\mathbb N}
-\newcommand{\E}{\mathbb E}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\e}{\mathrm e}
-\newcommand{\sincpi}{\operatorname{sinc}_{\pi}}
-\newcommand{\Span}{\operatorname{span}}
-\newcommand{\diag}{\operatorname{diag}}
-\newcommand{\rank}{\operatorname{rank}}
 \newcommand{\tr}{\operatorname{tr}}
-\newcommand{\Id}{\operatorname{Id}}
 \newcommand{\ord}{\operatorname{ord}}
-\newcommand{\wt}{\operatorname{wt}}
-\newcommand{\abs}[1]{\left|#1\right|}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 \newcommand{\inner}[2]{\left\langle #1,#2\right\rangle}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
 \newcommand{\rev}{\operatorname{rev}}
 
 \lstdefinestyle{pythonstyle}{
@@ -105,7 +87,7 @@ and transmuted spectral geometry}
 \maketitle
 
 \begin{abstract}
-Let $u=\Up$ denote Rvachev's compactly supported $C^\infty$ atomic function,
+Let $u=\RvachevUp$ denote Rvachev's compactly supported $C^\infty$ atomic function,
 normalized as an even probability density on $[-1,1]$.  The repository under
 study contains two ingredients that naturally point toward a closed loop: an
 exact finite representation of every polynomial by shifted copies of $u$, and
@@ -259,20 +241,20 @@ determinant, yielding a common-scale loop convergent in $C^\infty$.
 
 \subsection{Normalization and Fourier product}
 
-Let $u=\Up$ be the even $C^\infty$ function supported on $[-1,1]$, normalized
+Let $u=\RvachevUp$ be the even $C^\infty$ function supported on $[-1,1]$, normalized
 by
 \[
- u(0)=1,\qquad \int_{-1}^{1}u(x)\dd x=1.
+ u(0)=1,\qquad \int_{-1}^{1}u(x)\Differential x=1.
 \]
 With the Fourier convention
 \[
- \widehat f(\xi)=\int_{\R}f(x)\e^{-2\pi\ii\xi x}\dd x,
+ \widehat f(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit\xi x}\Differential x,
 \]
 its transform is
 \begin{equation}
  \widehat u(\xi)=\prod_{j=0}^{\infty}
- \sincpi\!\left(\frac{\xi}{2^j}\right),
- \qquad \sincpi(t)=\frac{\sin(\pi t)}{\pi t}.
+ \SincPi\!\left(\frac{\xi}{2^j}\right),
+ \qquad \SincPi(t)=\frac{\sin(\pi t)}{\pi t}.
  \label{eq:fourier-product}
 \end{equation}
 At a nonzero integer $m$,
@@ -303,7 +285,7 @@ put
 \end{equation}
 Then $Z$ has density $u$.  Its moment generating function is
 \begin{equation}
- \M(z)=\E\e^{zZ}
+ \M(z)=\Expectation\EulerE^{zZ}
  =\prod_{j=1}^{\infty}\frac{\sinh(z/2^j)}{z/2^j}
  =\sum_{r=0}^{\infty}\mu_r\frac{z^r}{r!}.
  \label{eq:mgf}
@@ -364,25 +346,25 @@ The monomial images
 \end{equation}
 form an Appell family with generating function
 \begin{equation}
- \sum_{n\ge0}A_n(x)\frac{z^n}{n!}=\frac{\e^{xz}}{\M(z)}.
+ \sum_{n\ge0}A_n(x)\frac{z^n}{n!}=\frac{\EulerE^{xz}}{\M(z)}.
  \label{eq:appell-egf}
 \end{equation}
 
 The probability representation supplies a useful interpretation.  For every
 polynomial $f$,
 \begin{equation}
- (\M(D)f)(x)=\E f(x+Z).
+ (\M(D)f)(x)=\Expectation f(x+Z).
  \label{eq:translation-expectation}
 \end{equation}
 Hence $q=\Dscr p$ is characterized by the exact deconvolution equation
 \begin{equation}
- \E q(x+Z)=p(x).
+ \Expectation q(x+Z)=p(x).
  \label{eq:prob-deconv}
 \end{equation}
 
 \subsection{Thue--Morse and q-integer products}
 
-Let $\varepsilon_j=(-1)^{\wt(j)}$ be the Thue--Morse signs.  The finite Prouhet
+Let $\varepsilon_j=(-1)^{\BinaryDigitSum(j)}$ be the Thue--Morse signs.  The finite Prouhet
 product is
 \begin{equation}
  \Theta_m(z)=\prod_{j=0}^{m-1}(1-z^{2^j})
@@ -424,7 +406,7 @@ The physical-lattice form of the repository's synthesis theorem is as follows
 For every $p\in\Pi_d$,
 \begin{equation}
  \boxed{
- p(x)=\frac1M\sum_{k\in\Z}q(k/M)u(x-k/M),\qquad x\in\R.}
+ p(x)=\frac1M\sum_{k\in\IntegerNumbers}q(k/M)u(x-k/M),\qquad x\in\RealNumbers.}
  \label{eq:physical-synthesis}
 \end{equation}
 The sum is locally finite.  On $[-1,1]$ it reduces to
@@ -437,7 +419,7 @@ The sum is locally finite.  On $[-1,1]$ it reduces to
 \begin{proof}[Scaling check]
 The normalized-cell formula in the repository is
 \[
- P(t)=\frac1M\sum_{k\in\Z}Q(k)u\!\left(\frac{t-k}{M}\right),
+ P(t)=\frac1M\sum_{k\in\IntegerNumbers}Q(k)u\!\left(\frac{t-k}{M}\right),
  \qquad Q=\M(MD)^{-1}P.
 \]
 Apply it to $P(t)=p(t/M)$ and put $t=Mx$.  Since $D_t=M^{-1}D_x$,
@@ -457,18 +439,18 @@ For the normalized one-cell atoms
  \label{eq:cell-atoms}
 \end{equation}
 only the $2M$ centers $-M+1\le k\le M$ are active.  The repository proves that
-the integer-translate system at ratio $\rho\in\N$ has exact polynomial
+the integer-translate system at ratio $\rho\in\NaturalNumbers$ has exact polynomial
 reproduction order $\nu_2(\rho)$.  Thus $M=2^d$ is the smallest integer ratio
 reproducing all of $\Pi_d$.
 
 Set
 \begin{equation}
- V_d=\Span\{\psi_k|_{[0,1]}:-M+1\le k\le M\}.
+ V_d=\SpanOperator\{\psi_k|_{[0,1]}:-M+1\le k\le M\}.
  \label{eq:Vd}
 \end{equation}
 Then
 \begin{equation}
- \dim V_d=d+2,\qquad V_d\cap\R[t]=\Pi_d.
+ \dim V_d=d+2,\qquad V_d\cap\RealNumbers[t]=\Pi_d.
  \label{eq:local-dimension}
 \end{equation}
 The $d+2$ rightmost atoms
@@ -489,14 +471,14 @@ The quotient $V_d/\Pi_d$ is one-dimensional.  A canonical representative is
 \end{equation}
 where
 \begin{equation}
- \mathcal E_d(t)=-\frac{(d+1)!}{(2\pi\ii)^{d+1}}
- \sum_{\substack{n\in\Z\\ n\ \mathrm{odd}}}
- \frac{\widehat u(n/2)}{n^{d+1}}\e^{2\pi\ii nt}.
+ \mathcal E_d(t)=-\frac{(d+1)!}{(2\pi\ImaginaryUnit)^{d+1}}
+ \sum_{\substack{n\in\IntegerNumbers\\ n\ \mathrm{odd}}}
+ \frac{\widehat u(n/2)}{n^{d+1}}\EulerE^{2\pi\ImaginaryUnit nt}.
  \label{eq:defect-series}
 \end{equation}
 Thus
 \begin{equation}
- V_d=\Pi_d\oplus\Span\{\mathcal D_d\}.
+ V_d=\Pi_d\oplus\SpanOperator\{\mathcal D_d\}.
  \label{eq:defect-split}
 \end{equation}
 For odd $d$, $\mathcal E_d$ is a cosine series; for even $d$, it is a sine
@@ -538,7 +520,7 @@ All coefficients are rational.  The first examples are
 \end{align}
 The probabilistic characterization \eqref{eq:prob-deconv} becomes
 \begin{equation}
- \E Q_n(x+Z)=P_n(x).
+ \Expectation Q_n(x+Z)=P_n(x).
  \label{eq:Q-probability}
 \end{equation}
 
@@ -610,7 +592,7 @@ will retain the same raw atom count while enforcing reflection symmetry.
 Evenness gives
 \begin{equation}
  u(x)=\sum_{n=0}^{\infty}u_nP_{2n}(x),\qquad
- u_n=\frac{4n+1}{2}\int_{-1}^{1}u(x)P_{2n}(x)\dd x.
+ u_n=\frac{4n+1}{2}\int_{-1}^{1}u(x)P_{2n}(x)\Differential x.
  \label{eq:legendre-series}
 \end{equation}
 The repository proves absolute and uniform convergence and supplies the exact
@@ -652,7 +634,7 @@ is retained as one block.
 
 \begin{proof}
 The inner sum, including $4^{-n}$, is exactly $P_{2n}(x)$.  Hence the $n$th
-block is $u_nP_{2n}(x)$.  Since $\norm{P_m}_{\infty}\le1$ and
+block is $u_nP_{2n}(x)$.  Since $\Norm{P_m}_{\infty}\le1$ and
 $\sum_n|u_n|<\infty$, the Weierstrass test applies.
 \end{proof}
 
@@ -698,12 +680,12 @@ using the factorial asymptotic
 \begin{equation}
  Q_{2n}(0)=\frac{2(-1)^n}{C}
  \frac{(4n)!}{(2n)!(4\pi)^{2n}}
- \left(1+\frac{2\pi^2}{4n-1}+\bigO(n^{-2})\right),
+ \left(1+\frac{2\pi^2}{4n-1}+\BigO(n^{-2})\right),
  \label{eq:Q0-asymptotic}
 \end{equation}
 where
 \[
- C=\M(\pi\ii)=\prod_{j\ge1}\frac{\sin(\pi/2^j)}{\pi/2^j}.
+ C=\M(\pi\ImaginaryUnit)=\prod_{j\ge1}\frac{\sin(\pi/2^j)}{\pi/2^j}.
 \]
 Thus \eqref{eq:block-loop} is a convergent series of exact cancellation
 blocks, not an unconditionally convergent series indexed by individual atoms.
@@ -725,14 +707,14 @@ Put
 \end{equation}
 For polynomials define
 \begin{equation}
- \inner{f}{g}_u=\int_{-1}^{1}(Tf)(x)(Tg)(x)\dd x.
+ \inner{f}{g}_u=\int_{-1}^{1}(Tf)(x)(Tg)(x)\Differential x.
  \label{eq:pullback-inner}
 \end{equation}
 Since $T$ is injective on polynomials, this is positive definite.  If $Z_1,Z_2$
 are independent copies of \eqref{eq:random-series}, then
 \begin{equation}
  \inner{f}{g}_u
- =\int_{-1}^{1}\E f(x+Z_1)\,\E g(x+Z_2)\dd x.
+ =\int_{-1}^{1}\Expectation f(x+Z_1)\,\Expectation g(x+Z_2)\Differential x.
  \label{eq:pullback-probabilistic}
 \end{equation}
 
@@ -771,7 +753,7 @@ with termination on each polynomial.
 \label{prop:no-scalar-weight}
 The pullback inner product cannot be represented in the form
 \[
- \inner{f}{g}_u=\int f(x)g(x)\dd\rho(x)
+ \inner{f}{g}_u=\int f(x)g(x)\Differential\rho(x)
 \]
 for any finite signed measure $\rho$ having all polynomial moments.
 \end{proposition}
@@ -780,9 +762,9 @@ for any finite signed measure $\rho$ having all polynomial moments.
 Multiplication by $x$ is symmetric for every scalar moment form.  Here
 $Tx=x$ and $T(x^2)=x^2+\mu_2=x^2+1/9$, so
 \[
- \inner{x}{x}_u=\int_{-1}^{1}x^2\dd x=\frac23,
+ \inner{x}{x}_u=\int_{-1}^{1}x^2\Differential x=\frac23,
  \qquad
- \inner{1}{x^2}_u=\int_{-1}^{1}\left(x^2+\frac19\right)\dd x=\frac89.
+ \inner{1}{x^2}_u=\int_{-1}^{1}\left(x^2+\frac19\right)\Differential x=\frac89.
 \]
 The two quantities differ, proving the claim.
 \end{proof}
@@ -868,7 +850,7 @@ Then
 Moreover,
 \begin{equation}
  \inner{f}{\Lscr g}_u=\inner{\Lscr f}{g}_u
- \qquad(f,g\in\R[x]).
+ \qquad(f,g\in\RealNumbers[x]).
  \label{eq:Lu-symmetric}
 \end{equation}
 Although $\Lscr$ is formally of infinite differential order, it is locally
@@ -974,7 +956,7 @@ problem in \cref{sec:frontiers}.
 
 Fix a cutoff $N$ and use the common physical lattice
 \begin{equation}
- M=4^N,\qquad \mathcal K_M=\{k\in\Z:|k|<2M\}.
+ M=4^N,\qquad \mathcal K_M=\{k\in\IntegerNumbers:|k|<2M\}.
  \label{eq:common-lattice}
 \end{equation}
 Put
@@ -985,8 +967,8 @@ Put
 \end{equation}
 and
 \begin{equation}
- G_{k\ell}=\int_{-1}^{1}\phi_k(x)\phi_\ell(x)\dd x,
- \qquad H=\diag(h_0,h_2,\ldots,h_{2N}).
+ G_{k\ell}=\int_{-1}^{1}\phi_k(x)\phi_\ell(x)\Differential x,
+ \qquad H=\DiagonalOperator(h_0,h_2,\ldots,h_{2N}).
  \label{eq:G-H}
 \end{equation}
 The literal synthesis theorem is
@@ -1003,9 +985,9 @@ The synthesis matrix satisfies
  \boxed{D^{\mathsf T}GD=H.}
  \label{eq:DtGD}
 \end{equation}
-Consequently, for every $c\in\R^{N+1}$,
+Consequently, for every $c\in\RealNumbers^{N+1}$,
 \begin{equation}
- \norm{\sum_{n=0}^{N}c_nP_{2n}}_{L^2[-1,1]}^2
+ \Norm{\sum_{n=0}^{N}c_nP_{2n}}_{L^2[-1,1]}^2
  =c^{\mathsf T}Hc=(Dc)^{\mathsf T}G(Dc).
  \label{eq:energy-isometry}
 \end{equation}
@@ -1015,14 +997,14 @@ Consequently, for every $c\in\R^{N+1}$,
 The $(m,n)$ entry of $D^{\mathsf T}GD$ is
 \[
  \int_{-1}^{1}\left(\sum_kD_{km}\phi_k\right)
- \left(\sum_\ell D_{\ell n}\phi_\ell\right)\dd x
- =\int_{-1}^{1}P_{2m}P_{2n}\dd x=h_{2n}\delta_{mn}.
+ \left(\sum_\ell D_{\ell n}\phi_\ell\right)\Differential x
+ =\int_{-1}^{1}P_{2m}P_{2n}\Differential x=h_{2n}\delta_{mn}.
 \]
 \end{proof}
 
 Define the continuous analysis matrix
 \begin{equation}
- B_{jk}=\frac1{h_{2j}}\int_{-1}^{1}P_{2j}(x)\phi_k(x)\dd x,
+ B_{jk}=\frac1{h_{2j}}\int_{-1}^{1}P_{2j}(x)\phi_k(x)\Differential x,
  \qquad j\ge0.
  \label{eq:B-analysis}
 \end{equation}
@@ -1033,7 +1015,7 @@ For every $j\ge0$ and $0\le n\le N$,
 \begin{equation}
  \boxed{
  \frac1{Mh_{2j}}\sum_{k\in\mathcal K_M}Q_{2n}(k/M)
- \int_{-1}^{1}P_{2j}(x)u(x-k/M)\dd x=\delta_{jn}.}
+ \int_{-1}^{1}P_{2j}(x)u(x-k/M)\Differential x=\delta_{jn}.}
  \label{eq:biorthogonality}
 \end{equation}
 Equivalently, $BD=I$ on the first $N+1$ columns.
@@ -1081,7 +1063,7 @@ positive definite Gram matrix.
 A scalar trace identity follows from $BD=I$:
 \begin{equation}
  \frac1M\sum_{k\in\mathcal K_M}\int_{-1}^{1}u(x-k/M)
- \left[\sum_{n=0}^{N}\frac{Q_{2n}(k/M)P_{2n}(x)}{h_{2n}}\right]\dd x=N+1.
+ \left[\sum_{n=0}^{N}\frac{Q_{2n}(k/M)P_{2n}(x)}{h_{2n}}\right]\Differential x=N+1.
  \label{eq:trace-integral}
 \end{equation}
 
@@ -1130,14 +1112,14 @@ is positive semidefinite of rank $N+1$.
 Substitute the literal atomizations of $P_{2n}(x)$ and $P_{2n}(y)$ into
 \eqref{eq:even-kernel} and interchange finite sums.  In matrix form,
 $\mathsf C=DH^{-1}D^{\mathsf T}$, so it is positive semidefinite.  Since $D$
-has full column rank, $\rank\mathsf C=N+1$.
+has full column rank, $\RankOperator\mathsf C=N+1$.
 \end{proof}
 
 For any $f\in L^2[-1,1]$, the projection factors as
 \begin{align}
  (\Pi_N^+f)(x)=\frac1{M^2}\sum_{k,\ell\in\mathcal K_M}
  &u(x-k/M)\widetilde K_N^+(k/M,\ell/M)\notag\\
- &\times\int_{-1}^{1}u(y-\ell/M)f(y)\dd y.
+ &\times\int_{-1}^{1}u(y-\ell/M)f(y)\Differential y.
  \label{eq:two-sided-projection}
 \end{align}
 Thus even Legendre projection is atom analysis, a finite positive kernel, and
@@ -1442,7 +1424,7 @@ cannot vanish.
 For every $N\ge0$,
 \begin{equation}
  \boxed{
- \Pi_{2N}^{+}=\Span\{S_0^{(N)},\ldots,S_N^{(N)}\}.}
+ \Pi_{2N}^{+}=\SpanOperator\{S_0^{(N)},\ldots,S_N^{(N)}\}.}
  \label{eq:central-basis}
 \end{equation}
 Hence, for every $0\le m\le N$, there are unique rational coefficients
@@ -1614,7 +1596,7 @@ $C^\infty[-1,1]$.
 For every pair of nonnegative integers $r,L$,
 \begin{equation}
  \boxed{
- \norm{u-S_N}_{C^r[-1,1]}=\bigO_{r,L}(N^{-L}).}
+ \Norm{u-S_N}_{C^r[-1,1]}=\BigO_{r,L}(N^{-L}).}
  \label{eq:Cinfty-rate}
 \end{equation}
 Consequently the symmetric atomizations
@@ -1625,28 +1607,28 @@ Consequently the symmetric atomizations
 Let $\mathcal L=-D(1-x^2)D$.  Repeated self-adjointness gives, for
 $\ell\ge1$ and $s\ge0$,
 \begin{equation}
- \int_{-1}^{1}u(x)P_\ell(x)\dd x
+ \int_{-1}^{1}u(x)P_\ell(x)\Differential x
  =\frac1{[\ell(\ell+1)]^s}
- \int_{-1}^{1}(\mathcal L^su)(x)P_\ell(x)\dd x.
+ \int_{-1}^{1}(\mathcal L^su)(x)P_\ell(x)\Differential x.
  \label{eq:coeff-integration}
 \end{equation}
 All boundary terms vanish because of the factor $1-x^2$; moreover $u$ and all
 its derivatives are continuous and flat at $\pm1$.  Since
-$\norm{P_\ell}_\infty\le1$, the coefficient in degree $2n$ satisfies
+$\Norm{P_\ell}_\infty\le1$, the coefficient in degree $2n$ satisfies
 \[
- u_n=\bigO_s(n^{1-2s}).
+ u_n=\BigO_s(n^{1-2s}).
 \]
 For fixed $r$,
 \begin{equation}
- \norm{P_\ell^{(r)}}_\infty=P_\ell^{(r)}(1)
+ \Norm{P_\ell^{(r)}}_\infty=P_\ell^{(r)}(1)
  =\frac{(\ell+r)!}{2^rr!(\ell-r)!}
- =\bigO_r(\ell^{2r}).
+ =\BigO_r(\ell^{2r}).
  \label{eq:Legendre-derivative-bound}
 \end{equation}
 Therefore
 \[
- \sum_{n>N}|u_n|\norm{P_{2n}^{(r)}}_\infty
- =\bigO_{r,s}\left(\sum_{n>N}n^{1-2s+2r}\right).
+ \sum_{n>N}|u_n|\Norm{P_{2n}^{(r)}}_\infty
+ =\BigO_{r,s}\left(\sum_{n>N}n^{1-2s+2r}\right).
 \]
 Choosing $s$ arbitrarily large proves \eqref{eq:Cinfty-rate}.  Each central
 atomization equals $S_N$ identically, so the same estimate applies.
@@ -1818,7 +1800,7 @@ $n=20$.
 
 High-precision numerical roots locate the first conjugate quartet near
 \begin{equation}
- \pm1.58181382985647\ \pm\ 0.189564695738147\,\ii.
+ \pm1.58181382985647\ \pm\ 0.189564695738147\,\ImaginaryUnit.
  \label{eq:Q12-quartet}
 \end{equation}
 Exact nonreal-root counts for $n=12,\ldots,20$ are
@@ -1866,8 +1848,8 @@ Then
 \end{equation}
 Set
 \begin{equation}
- \mathcal G_N=\int_{-1}^{1}\mathbf S_N(x)\mathbf S_N(x)^{\mathsf T}\dd x,
- \qquad H_N^+=\diag(h_0,h_2,\ldots,h_{2N}).
+ \mathcal G_N=\int_{-1}^{1}\mathbf S_N(x)\mathbf S_N(x)^{\mathsf T}\Differential x,
+ \qquad H_N^+=\DiagonalOperator(h_0,h_2,\ldots,h_{2N}).
  \label{eq:central-Gram}
 \end{equation}
 
@@ -1888,7 +1870,7 @@ The $L^2$-dual functions to the central pairs are
 \end{equation}
 and satisfy
 \begin{equation}
- \int_{-1}^{1}\eta_r^{(N)}(x)\mathcal S_s^{(N)}(x)\dd x=\delta_{rs}.
+ \int_{-1}^{1}\eta_r^{(N)}(x)\mathcal S_s^{(N)}(x)\Differential x=\delta_{rs}.
  \label{eq:central-dual-biorth}
 \end{equation}
 Finally, the even projection kernel has the pair-minimal factorization

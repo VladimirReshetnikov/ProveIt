@@ -61,20 +61,6 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\N}{\mathbb N}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sincpi}{\operatorname{sinc}_{\pi}}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\vtwo}{\nu_2}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
 \newcommand{\PiD}{\Pi_d}
 \newcommand{\calD}{\mathscr D_u}
 \newcommand{\Lag}{\mathcal I}
@@ -82,7 +68,6 @@
 \newcommand{\Synth}{\mathcal R}
 \newcommand{\Anal}{\mathcal A}
 \newcommand{\Leb}{\Lambda}
-\newcommand{\bigO}{\mathcal O}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction/docs}}
 
 \lstdefinestyle{pythonstyle}{
@@ -100,7 +85,7 @@
 }
 
 \title{\bfseries Closing the Lagrange--Rvachev Loop\\[0.4em]
-\large Exact finite synthesis of Lagrange cardinals by shifted \(\operatorname{up}\)-functions,\\
+\large Exact finite synthesis of Lagrange cardinals by shifted \(\RvachevUp\)-functions,\\
 perfect-reconstruction projectors, and multiresolution self-expansions}
 \author{Research report prepared for Vladimir Reshetnikov's \texttt{ProveIt} project}
 \date{29 August 2026\\
@@ -110,10 +95,10 @@ perfect-reconstruction projectors, and multiresolution self-expansions}
 \maketitle
 
 \begin{abstract}
-Let \(u=\Up\) be Rvachev's even \(C^\infty\) probability density supported on
+Let \(u=\RvachevUp\) be Rvachev's even \(C^\infty\) probability density supported on
 \([-1,1]\), with moment-generating function
 \[
- M(z)=\int_{\R}\e^{zx}u(x)\,\dd x
+ M(z)=\int_{\RealNumbers}\EulerE^{zx}u(x)\,\Differential x
  =\prod_{r\ge1}\frac{\sinh(z/2^r)}{z/2^r}.
 \]
 The current \texttt{ProveIt} corpus already contains a sharp Strang--Fix/Appell
@@ -189,7 +174,7 @@ following strands were treated as established inputs:
 \item the dyadic-comb volume, especially the documented Runge instability of
       global equispaced interpolation and the stable local alternatives;
 \item the current \emph{Up Polynomial Synthesis} report, especially exact
-      polynomial reproduction, the sharp order \(\vtwo(m)\), the
+      polynomial reproduction, the sharp order \(\TwoAdicValuation(m)\), the
       \(q\)-integer/cyclotomic alias annihilator, and the \(d+2\)-atom endpoint
       basis.
 \end{itemize}
@@ -236,25 +221,25 @@ No claim of priority over unpublished work is intended.
 \subsection{Fourier and moment generating functions}
 We use the Fourier convention
 \begin{equation}
- \widehat f(\xi)=\int_{\R}f(x)\e^{-2\pi\ii x\xi}\,\dd x.
+ \widehat f(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\,\Differential x.
  \label{eq:fourier}
 \end{equation}
-For \(u=\Up\),
+For \(u=\RvachevUp\),
 \begin{equation}
  \widehat u(\xi)=\prod_{r=0}^{\infty}
- \sincpi\!\left(\frac{\xi}{2^r}\right),
+ \SincPi\!\left(\frac{\xi}{2^r}\right),
  \qquad
- \sincpi(t)=\frac{\sin(\pi t)}{\pi t},
+ \SincPi(t)=\frac{\sin(\pi t)}{\pi t},
  \label{eq:sinc-prod}
 \end{equation}
 and
 \begin{equation}
- \operatorname{ord}_{\xi=n}\widehat u=1+\vtwo(n),\qquad n\in\Z\setminus\{0\}.
+ \operatorname{ord}_{\xi=n}\widehat u=1+\TwoAdicValuation(n),\qquad n\in\IntegerNumbers\setminus\{0\}.
  \label{eq:zero-order}
 \end{equation}
 The moment-generating function is
 \begin{equation}
- M(z)=\int_{\R}\e^{zx}u(x)\,\dd x
+ M(z)=\int_{\RealNumbers}\EulerE^{zx}u(x)\,\Differential x
  =\prod_{r=1}^{\infty}\frac{\sinh(z/2^r)}{z/2^r}.
  \label{eq:mgf}
 \end{equation}
@@ -271,7 +256,7 @@ Thus \(\kappa_2=1/9\), \(\kappa_4=-2/225\), and so forth.
 \subsection{The inverse smoothing operator}
 On polynomials define
 \begin{equation}
- \calD:=M(D)^{-1},\qquad D=\frac{\dd}{\dd x}.
+ \calD:=M(D)^{-1},\qquad D=\frac{\Differential}{\Differential x}.
  \label{eq:deconv-def}
 \end{equation}
 Because sufficiently high derivatives of a polynomial vanish, this is a finite
@@ -305,19 +290,19 @@ This is the exact Bell--Bernoulli coefficient engine needed below.
 \subsection{Repository input: affine polynomial synthesis}
 The current synthesis report proves the following sharp statement.  Let \(p\) be a
 polynomial, choose a lattice step \(h>0\), an integer ratio \(m>0\), and physical
-atom radius \(\rho=mh\).  If \(\deg p\le\vtwo(m)\), then with
+atom radius \(\rho=mh\).  If \(\deg p\le\TwoAdicValuation(m)\), then with
 \begin{equation}
  p_\rho^\sharp=M(\rho D)^{-1}p
  \label{eq:psharp}
 \end{equation}
 one has the global locally finite identity
 \begin{equation}
- p(x)=\frac1m\sum_{k\in\Z}
+ p(x)=\frac1m\sum_{k\in\IntegerNumbers}
  p_\rho^\sharp(x_0+kh)
  u\!\left(\frac{x-x_0-kh}{\rho}\right).
  \label{eq:repo-synthesis}
 \end{equation}
-The exact stationary reproduction degree is \(\vtwo(m)\); therefore the smallest
+The exact stationary reproduction degree is \(\TwoAdicValuation(m)\); therefore the smallest
 positive integer ratio that reproduces every degree-\(d\) polynomial is
 \begin{equation}
  m=2^d.
@@ -362,10 +347,10 @@ Thus a degree-\(d\) cardinal is a finite linear combination of at most
 \begin{proof}
 Apply the repository synthesis formula \eqref{eq:repo-synthesis} with
 \(p=\ell_{j,d}\), \(x_0=0\), \(\rho=1\), \(m=2^d\), and
-\(h=1/m\).  Since \(\vtwo(m)=d\), the degree hypothesis is exact, and
+\(h=1/m\).  Since \(\TwoAdicValuation(m)=d\), the degree hypothesis is exact, and
 \(p_\rho^\sharp=\calD p\).  This gives the global locally finite identity
 \[
- \ell_{j,d}(x)=\frac1m\sum_{k\in\Z}
+ \ell_{j,d}(x)=\frac1m\sum_{k\in\IntegerNumbers}
  (\calD\ell_{j,d})(k/m)u(x-k/m).
 \]
 The support of the \(k\)-th atom is
@@ -396,7 +381,7 @@ Substitute \eqref{eq:deconv-deriv} into \eqref{eq:pure-shift}.
 
 \begin{corollary}[Arithmetic and reflection]
 \label{cor:arith-reflect}
-If all \(\tau_j\in\Q\), then every \(c_{j,k}^{(d)}\in\Q\).  If the node set is
+If all \(\tau_j\in\RationalNumbers\), then every \(c_{j,k}^{(d)}\in\RationalNumbers\).  If the node set is
 symmetric, \(\tau_{d-j}=-\tau_j\), then
 \begin{equation}
  c_{d-j,-k}^{(d)}=c_{j,k}^{(d)}.
@@ -477,10 +462,10 @@ be the polynomial interpolant.  For a function \(f\), let
 \end{equation}
 Let
 \begin{equation}
- K_d=\{k\in\Z:|k|<2m\},\qquad m=2^d.
+ K_d=\{k\in\IntegerNumbers:|k|<2m\},\qquad m=2^d.
  \label{eq:Kd}
 \end{equation}
-Define the analysis matrix \(A_d\in\R^{K_d\times(d+1)}\) by
+Define the analysis matrix \(A_d\in\RealNumbers^{K_d\times(d+1)}\) by
 \begin{equation}
  (A_d)_{k j}=\frac1m(\calD\ell_{j,d})(k/m),
  \label{eq:A-matrix}
@@ -595,7 +580,7 @@ looks only at the atom coefficients.
 \label{thm:no-hidden-error}
 For every \(f\in C[-1,1]\),
 \begin{equation}
- \norm{f-T_df}_\infty=\norm{f-I_df}_\infty.
+ \Norm{f-T_df}_\infty=\Norm{f-I_df}_\infty.
  \label{eq:same-error}
 \end{equation}
 Moreover \(T_d\) and \(I_d\) have exactly the same operator norm and hence the
@@ -622,7 +607,7 @@ operator.
 
 \begin{corollary}[Stable interpolation transfers verbatim]
 \label{cor:stable-transfer}
-If \(I_du\to u\) in a norm \(\norm{\cdot}_X\), then the finite shifted-up sums
+If \(I_du\to u\) in a norm \(\Norm{\cdot}_X\), then the finite shifted-up sums
 \(T_du\) converge to \(u\) in exactly the same norm and with exactly the same
 error sequence.
 \end{corollary}
@@ -797,14 +782,14 @@ nodes of level \(n+1\).  The degree is \(N_n=2^n\).
 Since \(u\in C^\infty[-1,1]\), standard Chebyshev interpolation estimates imply
 that, for every fixed \(r>0\),
 \begin{equation}
- \norm{u-T_nu}_\infty=\bigO_r(N_n^{-r}).
+ \Norm{u-T_nu}_\infty=\BigO_r(N_n^{-r}).
  \label{eq:superalg}
 \end{equation}
 Thus \cref{thm:self-mra} supplies a superalgebraically convergent self-up series.
 The detail blocks obey
 \begin{equation}
- \norm{\Delta_nu}_\infty
- \le \norm{u-T_nu}_\infty+\norm{u-T_{n-1}u}_\infty,
+ \Norm{\Delta_nu}_\infty
+ \le \Norm{u-T_nu}_\infty+\Norm{u-T_{n-1}u}_\infty,
  \label{eq:detail-error}
 \end{equation}
 so they decay superalgebraically as well.
@@ -841,7 +826,7 @@ form a basis, and every \(P\in\Pi_d\) has a unique representation
  u\!\left(\frac{t-k}{M}\right),\qquad0\le t\le1.
  \label{eq:endpoint-basis}
 \end{equation}
-The repository gives both a recurrence elimination and an \(\bigO(d^2)\)
+The repository gives both a recurrence elimination and an \(\BigO(d^2)\)
 output-sensitive algorithm for the \(b_k\), using the cyclotomic annihilator and a
 Bernoulli differential symbol.
 
@@ -884,7 +869,7 @@ constraint.  Closing the Lagrange loop selects that polynomial hyperplane.
 \subsection{Lagrange versus Rvachev--Appell coordinates}
 The centered Rvachev--Appell polynomials in the repository are generated by
 \begin{equation}
- \frac{\e^{xz}}{M(z)}=\sum_{n\ge0}\mathcal A_n(x)\frac{z^n}{n!}.
+ \frac{\EulerE^{xz}}{M(z)}=\sum_{n\ge0}\mathcal A_n(x)\frac{z^n}{n!}.
  \label{eq:appell-egf}
 \end{equation}
 They are the centered form of the Kabaya--Iri scaling polynomials studied in the
@@ -914,7 +899,7 @@ controlled by binary dilation:
 \begin{itemize}
 \item geometric Lagrange denominators factor into \(q\)-Pochhammer symbols at
       \(q=1/2\) or \(1/4\);
-\item the up Fourier zeros have multiplicity \(1+\vtwo(n)\), so the alias
+\item the up Fourier zeros have multiplicity \(1+\TwoAdicValuation(n)\), so the alias
       annihilator factors into dyadic \(q\)-integers;
 \item eliminating the exponentially many pure-shift coefficients uses precisely
       that cyclotomic/\(q\)-integer annihilator.
@@ -939,7 +924,7 @@ As a map from sampled function values to the reconstructed function on
 \([-1,1]\), the loop is simply \(I_d\).  Hence its external condition number in
 \(L^\infty\) is governed by the ordinary Lebesgue function
 \begin{equation}
- \lambda_d(x)=\sum_{j=0}^d\abs{\ell_{j,d}(x)},
+ \lambda_d(x)=\sum_{j=0}^d\AbsoluteValue{\ell_{j,d}(x)},
  \qquad
  \Leb_d=\max_{x\in[-1,1]}\lambda_d(x).
  \label{eq:lebesgue}
@@ -954,10 +939,10 @@ be essential.  The inverse moment operator \(\calD\) amplifies high derivatives 
 high-degree cardinals, and the pure-shift channel is massively redundant.
 Therefore
 \begin{equation}
- \norm{A_d}\,\norm{R_d}
+ \Norm{A_d}\,\Norm{R_d}
  \label{eq:internal-bound}
 \end{equation}
-can be far larger than \(\norm{I_d}\).  The compressed \(d+2\)-atom basis reduces
+can be far larger than \(\Norm{I_d}\).  The compressed \(d+2\)-atom basis reduces
 dimension but may itself have large signed coefficients; the repository explicitly
 flags scale optimization and conditioning as open problems.
 
@@ -973,7 +958,7 @@ The accompanying script
 check of the degree-two formulas.  It computes all polynomial/Appell coefficients
 with exact rational arithmetic.  It then evaluates \(u\) from the Fourier inversion
 \begin{equation}
- u(x)=2\int_0^\infty\widehat u(\xi)\cos(2\pi\xi x)\,\dd\xi
+ u(x)=2\int_0^\infty\widehat u(\xi)\cos(2\pi\xi x)\,\Differential\xi
  \label{eq:fourier-inversion}
 \end{equation}
 using a 50-factor sinc product and intervalwise quadrature through frequency 40.
@@ -986,8 +971,8 @@ For nodes \(-1,0,1\), \(m=4\), and the 15 nontrivial shifts
 \toprule
 Quantity & observed value\\
 \midrule
-\(\norm{S_2A_2-I_3}_\infty\) & \(6.25\times10^{-10}\)\\
-\(\norm{(A_2S_2)^2-A_2S_2}_\infty\) & \(1.21\times10^{-9}\)\\
+\(\Norm{S_2A_2-I_3}_\infty\) & \(6.25\times10^{-10}\)\\
+\(\Norm{(A_2S_2)^2-A_2S_2}_\infty\) & \(1.21\times10^{-9}\)\\
 max error for \(\ell_-\) on 65 grid points & \(3.24\times10^{-10}\)\\
 max error for \(\ell_0\) on 65 grid points & \(2.35\times10^{-10}\)\\
 max error for \(\ell_+\) on 65 grid points & \(3.24\times10^{-10}\)\\
@@ -1155,7 +1140,7 @@ The Bell coefficient corollary is finite polynomial algebra.
 
 \subsection{Matrix perfect reconstruction}
 After defining the finite index set \(K_d\), package \(A_d\) and \(S_d\) as
-matrices over \(\R\).  The proof of \(S_dA_d=1\) is pointwise cardinal evaluation.
+matrices over \(\RealNumbers\).  The proof of \(S_dA_d=1\) is pointwise cardinal evaluation.
 Idempotence of \(A_dS_d\) is then one line of matrix algebra.
 
 \subsection{Nested projector algebra}
@@ -1237,10 +1222,10 @@ The central source for the synthesis input is the current file
 \path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Up_Polynomial_Synthesis/Up_Polynomial_Synthesis.tex}.
 \end{center}
 At the pinned commit it contains, among other results: the exact stationary
-reproduction order \(\vtwo(m)\); the canonical minimum \(m=2^d\); Appell moment
+reproduction order \(\TwoAdicValuation(m)\); the canonical minimum \(m=2^d\); Appell moment
 deconvolution; the complete dyadic alias nullspace generated by a product of
 dyadic \(q\)-integers; the exact one-cell dimension \(d+2\); the unique right
-endpoint basis; an \(\bigO(d^2)\) output-sensitive coefficient algorithm; and a
+endpoint basis; an \(\BigO(d^2)\) output-sensitive coefficient algorithm; and a
 Thue--Morse derivative stencil.  The present report uses these as inputs and adds
 the Lagrange-cardinal and projector structures.
 
@@ -1323,3 +1308,4 @@ SIAM, Philadelphia, 2013.
 \end{thebibliography}
 
 \end{document}
+\input{../../../../fabius-notation.tex}

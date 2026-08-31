@@ -5,6 +5,7 @@
 \usepackage{microtype}
 \usepackage[margin=1.05in]{geometry}
 \usepackage{amsmath,amssymb,mathtools,amsthm}
+\input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,array,tabularx}
 \usepackage{enumitem}
 \usepackage{xcolor}
@@ -47,16 +48,7 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 
-\newcommand{\qpoch}[2]{(#1;#2)}
-\newcommand{\qbinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\N}{\mathbb N}
-\newcommand{\C}{\mathbb C}
-\newcommand{\R}{\mathbb R}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
 \newcommand{\CT}{\operatorname{CT}}
-\newcommand{\Res}{\operatorname{Res}}
 \DeclareMathOperator{\ord}{ord}
 
 \title{\textbf{A Proof-Driven Guide to $q$-Series,\\Basic Hypergeometric Identities, Bailey Chains,\\and Rogers--Ramanujan Theory}\\[0.7em]
@@ -99,7 +91,7 @@ Bailey lattices, parity restrictions, and coefficient-sign problems.
 \section{How the source material is organized here}
 
 The archive mixes several conventions: some files use $q$ for the nome
-$\e^{\pi i\tau}$, others use $q=\e^{2\pi i\tau}$; some suppress the base in
+$\EulerE^{\pi i\tau}$, others use $q=\EulerE^{2\pi i\tau}$; some suppress the base in
 $(a;q)_n$; and the normalization of ${}_r\phi_s$ is not uniform.  We use one
 convention throughout and translate all identities into it before proving
 them.  The resulting dependency graph is
@@ -133,7 +125,7 @@ expression has a removable singularity, the value is understood by a limit.
 \section{$q$-shifted factorials and Gaussian coefficients}
 
 \begin{definition}[$q$-shifted factorial]
-For $n\in\N_0$ and a base $q$, put
+For $n\in\NaturalNumbers$ and a base $q$, put
 \[
 (a;q)_0=1,\qquad (a;q)_n=\prod_{j=0}^{n-1}(1-aq^j),
 \]
@@ -158,7 +150,7 @@ All three follow directly by rearranging their finite products.
 \begin{lemma}[Convergence of the infinite product]\label{lem:prodconv}
 Let $|q|<1$.  The product $(a;q)_\infty$ converges locally uniformly as a
 function of $a$, hence defines an entire function of $a$.  It vanishes exactly
-at $a=q^{-m}$, $m\in\N_0$, with simple zeros when $q\ne0$.
+at $a=q^{-m}$, $m\in\NaturalNumbers$, with simple zeros when $q\ne0$.
 \end{lemma}
 \begin{proof}
 On a compact set $|a|\le M$,
@@ -172,7 +164,7 @@ factors are nonzero, and the vanishing factor is linear in $a$.
 \begin{definition}[Gaussian coefficient]
 For $0\le k\le n$ define
 \[
-\qbinom nk=\frac{(q;q)_n}{(q;q)_k(q;q)_{n-k}},
+\GaussianBinomial{n}{k}{q}=\frac{(q;q)_n}{(q;q)_k(q;q)_{n-k}},
 \]
 and set it equal to $0$ outside this range.
 \end{definition}
@@ -180,8 +172,8 @@ and set it equal to $0$ outside this range.
 \begin{proposition}[Pascal recurrences]\label{prop:qpascal}
 For $n\ge0$ and all integers $k$,
 \begin{align}
-\qbinom{n+1}k&=\qbinom nk+q^{n+1-k}\qbinom n{k-1},\label{eq:pascal1}\\
-\qbinom{n+1}k&=q^k\qbinom nk+\qbinom n{k-1}.\label{eq:pascal2}
+\GaussianBinomial{n+1}{k}{q}&=\GaussianBinomial{n}{k}{q}+q^{n+1-k}\GaussianBinomial{n}{k-1}{q},\label{eq:pascal1}\\
+\GaussianBinomial{n+1}{k}{q}&=q^k\GaussianBinomial{n}{k}{q}+\GaussianBinomial{n}{k-1}{q}.\label{eq:pascal2}
 \end{align}
 \end{proposition}
 \begin{proof}
@@ -192,11 +184,11 @@ $(q;q)_k(q;q)_{n+1-k}$, the numerator in \eqref{eq:pascal1} is
 =(q;q)_n(1-q^{n+1}).
 \]
 This is $(q;q)_{n+1}$.  The second recurrence follows in the same way, or from
-the first after the symmetry $\qbinom nk=\qbinom n{n-k}$.
+the first after the symmetry $\GaussianBinomial{n}{k}{q}=\GaussianBinomial{n}{n-k}{q}$.
 \end{proof}
 
 \begin{remark}[Combinatorial meaning]
-When $q$ is a prime power, $\qbinom nk$ counts the $k$-dimensional subspaces of
+When $q$ is a prime power, $\GaussianBinomial{n}{k}{q}$ counts the $k$-dimensional subspaces of
 $\mathbb F_q^n$.  As a polynomial in an indeterminate $q$, it is also the
 rank-generating function of partitions whose Ferrers diagrams fit inside a
 $k\times(n-k)$ rectangle.  Neither interpretation is needed for the analytic
@@ -207,9 +199,9 @@ natural.
 \section{The finite and infinite $q$-binomial theorems}
 
 \begin{theorem}[Finite $q$-binomial theorem]\label{thm:finiteqbt}
-For every $n\in\N_0$,
+For every $n\in\NaturalNumbers$,
 \begin{equation}\label{eq:finiteqbt}
-(z;q)_n=\sum_{k=0}^n(-1)^kq^{\binom k2}\qbinom nk z^k.
+(z;q)_n=\sum_{k=0}^n(-1)^kq^{\binom k2}\GaussianBinomial{n}{k}{q} z^k.
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -217,7 +209,7 @@ The assertion is clear for $n=0$.  If it holds for $n$, multiply by
 $1-zq^n$.  The coefficient of
 $(-1)^kq^{\binom k2}z^k$ in the resulting expression is
 \[
-\qbinom nk+q^{n+1-k}\qbinom n{k-1}=\qbinom{n+1}k
+\GaussianBinomial{n}{k}{q}+q^{n+1-k}\GaussianBinomial{n}{k-1}{q}=\GaussianBinomial{n+1}{k}{q}
 \]
 by \eqref{eq:pascal1}.  This proves the induction step.
 \end{proof}
@@ -226,7 +218,7 @@ by \eqref{eq:pascal1}.  This proves the induction step.
 For $0\le k\le n$,
 \[
 \sum_{0\le j_1<\cdots<j_k<n}q^{j_1+\cdots+j_k}
-=q^{\binom k2}\qbinom nk.
+=q^{\binom k2}\GaussianBinomial{n}{k}{q}.
 \]
 \end{corollary}
 \begin{proof}
@@ -240,7 +232,7 @@ If $|q|<1$ and $|z|<1$, then
 \sum_{n=0}^{\infty}\frac{(a;q)_n}{(q;q)_n}z^n
 =\frac{(az;q)_\infty}{(z;q)_\infty}.
 \end{equation}
-The identity also holds coefficientwise in $\C[a,q][[z]]$.
+The identity also holds coefficientwise in $\ComplexNumbers[a,q][[z]]$.
 \end{theorem}
 \begin{proof}
 Let
@@ -290,7 +282,7 @@ limit may be taken termwise.  The same argument is valid coefficientwise.
 For an integer $m\ge0$ and $|z|<1$,
 \[
 \frac1{(z;q)_{m+1}}=
-\sum_{n=0}^{\infty}\qbinom{m+n}{n}z^n.
+\sum_{n=0}^{\infty}\GaussianBinomial{m+n}{n}{q}z^n.
 \]
 \end{corollary}
 \begin{proof}
@@ -298,14 +290,14 @@ Apply \eqref{eq:qbt} with $a=q^{m+1}$.  The product quotient is
 $1/(z;q)_{m+1}$, and
 \[
 \frac{(q^{m+1};q)_n}{(q;q)_n}
-=\frac{(q;q)_{m+n}}{(q;q)_m(q;q)_n}=\qbinom{m+n}{n}.
+=\frac{(q;q)_{m+n}}{(q;q)_m(q;q)_n}=\GaussianBinomial{m+n}{n}{q}.
 \]
 \end{proof}
 
 \begin{lemma}[Finite Cauchy augmentation]\label{lem:cauchyaug}
 For $n\ge0$,
 \begin{equation}\label{eq:cauchyaug}
-(xy;q)_n=\sum_{k=0}^n\qbinom nk(x;q)_k y^k(y;q)_{n-k}.
+(xy;q)_n=\sum_{k=0}^n\GaussianBinomial{n}{k}{q}(x;q)_k y^k(y;q)_{n-k}.
 \end{equation}
 \end{lemma}
 \begin{proof}
@@ -387,7 +379,7 @@ by \cref{thm:qbt}.  Multiplying by Heine's prefactor yields
 \end{proof}
 
 \begin{corollary}[First terminating $q$-Vandermonde sum]\label{cor:qvand1}
-For $N\in\N_0$,
+For $N\in\NaturalNumbers$,
 \begin{equation}\label{eq:qvand1}
 {}_2\phi_1\!\left(\begin{matrix}q^{-N},b\\c\end{matrix};q,
 \frac{cq^N}{b}\right)
@@ -404,7 +396,7 @@ convergence restriction on its argument remains.  On the product side,
 \end{proof}
 
 \begin{proposition}[Second terminating $q$-Vandermonde sum]\label{prop:qvand2}
-For $N\in\N_0$,
+For $N\in\NaturalNumbers$,
 \begin{equation}\label{eq:qvand2}
 {}_2\phi_1\!\left(\begin{matrix}q^{-N},b\\c\end{matrix};q,q\right)
 =b^N\frac{(c/b;q)_N}{(c;q)_N}.
@@ -440,17 +432,17 @@ of the second $q$-Vandermonde formula.)
 \section{A finite Rogers product lemma and $q$-Pfaff--Saalsch\"utz}
 
 \begin{lemma}[Rogers finite product lemma]\label{lem:rogersfinite}
-For $n\in\N_0$,
+For $n\in\NaturalNumbers$,
 \begin{equation}\label{eq:rogersfinite}
 (at;q)_n(bt;q)_n
-=\sum_{k=0}^n\qbinom nk(a;q)_k(b;q)_k t^k
+=\sum_{k=0}^n\GaussianBinomial{n}{k}{q}(a;q)_k(b;q)_k t^k
 (t;q)_{n-k}(abtq^k;q)_{n-k}.
 \end{equation}
 \end{lemma}
 \begin{proof}
 Put
 \[
-S_{n,k}=\qbinom nk(a;q)_k(b;q)_k t^k
+S_{n,k}=\GaussianBinomial{n}{k}{q}(a;q)_k(b;q)_k t^k
 (t;q)_{n-k}(abtq^k;q)_{n-k},
 \qquad R_n=\sum_{k=0}^n S_{n,k}.
 \]
@@ -499,7 +491,7 @@ $R_n=(at;q)_n(bt;q)_n$.
 \end{proof}
 
 \begin{theorem}[$q$-Pfaff--Saalsch\"utz summation]\label{thm:qps}
-For $n\in\N_0$,
+For $n\in\NaturalNumbers$,
 \begin{equation}\label{eq:qps}
 {}_3\phi_2\!\left(
 \begin{matrix}a,b,q^{-n}\\c,abq^{1-n}/c\end{matrix};q,q\right)
@@ -512,7 +504,7 @@ Multiply \eqref{eq:qps} by $(c;q)_n(c/(ab);q)_n$.  In its $k$th summand use
 $(abq^{1-n}/c;q)_k$.  All signs and powers of $q$ cancel, and the summand
 becomes
 \[
-\qbinom nk(a;q)_k(b;q)_k\left(\frac{c}{ab}\right)^k
+\GaussianBinomial{n}{k}{q}(a;q)_k(b;q)_k\left(\frac{c}{ab}\right)^k
 (c/(ab);q)_{n-k}(cq^k;q)_{n-k}.
 \]
 Consequently the denominator-cleared identity is exactly
@@ -533,29 +525,29 @@ reorganizing the source archive.
 \begin{theorem}[Jacobi triple product]\label{thm:jtp}
 For $|q|<1$ and $z\ne0$,
 \begin{equation}\label{eq:jtp-plus}
-\sum_{n\in\Z}q^{\binom n2}z^n
+\sum_{n\in\IntegerNumbers}q^{\binom n2}z^n
 =(q;q)_\infty(-z;q)_\infty(-q/z;q)_\infty.
 \end{equation}
 Equivalently,
 \begin{equation}\label{eq:jtp-j}
  j(z;q):=(q,z,q/z;q)_\infty
- =\sum_{n\in\Z}(-1)^nq^{\binom n2}z^n.
+ =\sum_{n\in\IntegerNumbers}(-1)^nq^{\binom n2}z^n.
 \end{equation}
-Both bilateral series converge normally on compact annuli in $\C^\times$.
+Both bilateral series converge normally on compact annuli in $\ComplexNumbers^\times$.
 \end{theorem}
 \begin{proof}
 Put
 \[
 F(z)=(-z;q)_\infty(-q/z;q)_\infty.
 \]
-It is analytic on $\C^\times$ and has a normally convergent Laurent expansion
-$F(z)=\sum_{n\in\Z}c_nz^n$.  Directly from the products,
+It is analytic on $\ComplexNumbers^\times$ and has a normally convergent Laurent expansion
+$F(z)=\sum_{n\in\IntegerNumbers}c_nz^n$.  Directly from the products,
 \[
 F(qz)=\frac{1+z^{-1}}{1+z}F(z)=z^{-1}F(z).
 \]
 Comparing Laurent coefficients gives
 $c_{n+1}=q^n c_n$, hence
-$c_n=q^{\binom n2}c_0$ for every $n\in\Z$.
+$c_n=q^{\binom n2}c_0$ for every $n\in\IntegerNumbers$.
 
 It remains to determine $c_0$.  Euler's expansion \eqref{eq:euler2} gives
 \[
@@ -582,7 +574,7 @@ $-z$ gives \eqref{eq:jtp-j}.
 \begin{corollary}[Euler pentagonal theorem]\label{cor:pentagonal}
 For $|q|<1$,
 \begin{equation}\label{eq:pentagonal}
-(q;q)_\infty=\sum_{n\in\Z}(-1)^nq^{n(3n-1)/2}.
+(q;q)_\infty=\sum_{n\in\IntegerNumbers}(-1)^nq^{n(3n-1)/2}.
 \end{equation}
 \end{corollary}
 \begin{proof}
@@ -594,7 +586,7 @@ $3\binom n2+n=n(3n-1)/2$.
 \begin{theorem}[Jacobi quintuple product]\label{thm:qpp}
 For $|q|<1$ and $z\ne0$,
 \begin{align}
-&\sum_{n\in\Z}q^{n(3n-1)/2}z^{3n}(1-zq^n)\label{eq:qpp}\\
+&\sum_{n\in\IntegerNumbers}q^{n(3n-1)/2}z^{3n}(1-zq^n)\label{eq:qpp}\\
 &\qquad=(q,z,q/z;q)_\infty
 (qz^2,q/z^2;q^2)_\infty.\notag
 \end{align}
@@ -609,7 +601,7 @@ The product gives the functional equation
 \[
 P(qz)=q^{-1}z^{-3}P(z).
 \]
-If $P(z)=\sum_{m\in\Z}c_mz^m$, then
+If $P(z)=\sum_{m\in\IntegerNumbers}c_mz^m$, then
 \begin{equation}\label{eq:qpp-rec}
 c_{m+3}=q^{m+1}c_m.
 \end{equation}
@@ -617,22 +609,22 @@ Thus it is enough to determine $c_0,c_1,c_2$.
 
 Using the two triple-product series,
 \[
-j(z;q)=\sum_{r\in\Z}(-1)^rq^{r(r-1)/2}z^r,
+j(z;q)=\sum_{r\in\IntegerNumbers}(-1)^rq^{r(r-1)/2}z^r,
 \qquad
-j(qz^2;q^2)=\sum_{s\in\Z}(-1)^sq^{s^2}z^{2s}.
+j(qz^2;q^2)=\sum_{s\in\IntegerNumbers}(-1)^sq^{s^2}z^{2s}.
 \]
 Consequently
 \begin{align*}
 c_0&=\frac1{(q^2;q^2)_\infty}
- \sum_{s\in\Z}(-1)^sq^{3s^2+s}=1,\\
+ \sum_{s\in\IntegerNumbers}(-1)^sq^{3s^2+s}=1,\\
 c_1&=-\frac1{(q^2;q^2)_\infty}
- \sum_{s\in\Z}(-1)^sq^{3s^2-s}=-1.
+ \sum_{s\in\IntegerNumbers}(-1)^sq^{3s^2-s}=-1.
 \end{align*}
 Both evaluations are Euler's pentagonal theorem with base $q^2$, with
 $s\mapsto-s$ in the first.  Finally,
 \[
 c_2=\frac1{(q^2;q^2)_\infty}
- \sum_{s\in\Z}(-1)^sq^{3s^2-3s+1}=0,
+ \sum_{s\in\IntegerNumbers}(-1)^sq^{3s^2-3s+1}=0,
 \]
 because the terms indexed by $s$ and $1-s$ cancel.  The recurrence
 \eqref{eq:qpp-rec} now gives
@@ -640,7 +632,7 @@ because the terms indexed by $s$ and $1-s$ cancel.  The recurrence
 c_{3n}=q^{n(3n-1)/2},\qquad
 c_{3n+1}=-q^{n(3n+1)/2},\qquad c_{3n+2}=0,
 \]
-for all $n\in\Z$.  This is exactly the Laurent series on the left of
+for all $n\in\IntegerNumbers$.  This is exactly the Laurent series on the left of
 \eqref{eq:qpp}.
 \end{proof}
 
@@ -686,7 +678,7 @@ $q^n$ for $n>0$ and isolating $p(n)$ gives \eqref{eq:pentrec}.
 \end{proof}
 
 \begin{proposition}[Partitions in a rectangle]\label{prop:rectangle}
-The coefficient of $q^m$ in $\qbinom{r+s}{r}$ is the number of partitions of
+The coefficient of $q^m$ in $\GaussianBinomial{r+s}{r}{q}$ is the number of partitions of
 $m$ having at most $r$ parts, each at most $s$.
 \end{proposition}
 \begin{proof}
@@ -699,7 +691,7 @@ each at most $s-1$.  Hence
 G_{r,s}=G_{r-1,s}+q^rG_{r,s-1},
 \]
 with $G_{0,s}=G_{r,0}=1$.  By \eqref{eq:pascal2}, the Gaussian coefficient
-$\qbinom{r+s}{r}$ satisfies the same recurrence and boundary values.
+$\GaussianBinomial{r+s}{r}{q}$ satisfies the same recurrence and boundary values.
 \end{proof}
 
 \begin{remark}
@@ -734,7 +726,7 @@ By linearity it is enough to take $P(x)=x^m$, $0\le m<N$.  Put $r=N-h$.
 The left-hand side becomes
 \[
 \frac{q^{mN}}{(q;q)_N}
-\sum_{r=0}^N(-1)^rq^{\binom r2}\qbinom Nr q^{-mr}
+\sum_{r=0}^N(-1)^rq^{\binom r2}\GaussianBinomial{N}{r}{q} q^{-mr}
 =\frac{q^{mN}(q^{-m};q)_N}{(q;q)_N}
 \]
 by the finite $q$-binomial theorem.  Since $0\le m<N$, the product
@@ -974,7 +966,7 @@ is
 \begin{align*}
 1+\sum_{n\ge1}(-1)^n
 \left(q^{(5n^2-n)/2}+q^{(5n^2+n)/2}\right)
-&=\sum_{m\in\Z}(-1)^mq^{m(5m-1)/2}\\
+&=\sum_{m\in\IntegerNumbers}(-1)^mq^{m(5m-1)/2}\\
 &=(q^2,q^3,q^5;q^5)_\infty,
 \end{align*}
 where the last equality is Jacobi's triple product with base $q^5$ and
@@ -993,7 +985,7 @@ Since $(q^2;q)_\infty=(q;q)_\infty/(1-q)$, the right-hand side of
 \eqref{eq:RRmaster} is
 \[
 \frac1{(q;q)_\infty}
-\sum_{m\in\Z}(-1)^mq^{m(5m+3)/2}.
+\sum_{m\in\IntegerNumbers}(-1)^mq^{m(5m+3)/2}.
 \]
 Indeed, expanding $1-q^{2n+1}$ supplies the nonnegative and negative halves
 of the bilateral sum, with the second term corresponding to $m=-n-1$.
@@ -1114,7 +1106,7 @@ unit alpha by $q^{k(n^2+n)}$.  Since
 $(q^2;q)_\infty=(q;q)_\infty/(1-q)$, the result is
 \begin{align*}
 \frac1{(q;q)_\infty}
-\sum_{m\in\Z}(-1)^m
+\sum_{m\in\IntegerNumbers}(-1)^m
 q^{((2k+1)m^2+(2k-1)m)/2}.
 \end{align*}
 The negative half is obtained from the term containing
@@ -1155,7 +1147,7 @@ while $\widetilde\alpha_0=1$.  The remaining $i-2$ chain steps and the weak
 limit multiply this by $q^{(i-1)n^2}$.  Since
 $c+i-1=k$, the resulting one-sided sum is the two halves of
 \begin{equation}\label{eq:AGbilateral}
-\sum_{m\in\Z}(-1)^m
+\sum_{m\in\IntegerNumbers}(-1)^m
 q^{((2k+1)m^2+(2k-2i+1)m)/2}.
 \end{equation}
 Therefore the multiple sum equals \eqref{eq:AGbilateral} divided by
@@ -1203,30 +1195,30 @@ parity-sensitive Bailey step; it is discussed in \cref{sec:extensions}.
 \section{Poisson summation and theta transformations}
 
 \begin{definition}[Fourier transform]
-For a Schwartz function $f\colon\R\to\C$, use the normalization
+For a Schwartz function $f\colon\RealNumbers\to\ComplexNumbers$, use the normalization
 \[
-\widehat f(\xi)=\int_{-\infty}^{\infty}f(x)\e^{-2\pi\ii x\xi}\,dx.
+\widehat f(\xi)=\int_{-\infty}^{\infty}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\,dx.
 \]
 \end{definition}
 
 \begin{theorem}[Poisson summation]\label{thm:poisson}
 For every Schwartz function $f$,
 \begin{equation}\label{eq:poisson}
-\sum_{n\in\Z}f(n)=\sum_{m\in\Z}\widehat f(m).
+\sum_{n\in\IntegerNumbers}f(n)=\sum_{m\in\IntegerNumbers}\widehat f(m).
 \end{equation}
 Both sums converge absolutely.
 \end{theorem}
 \begin{proof}
 Periodize $f$:
 \[
-P_f(x)=\sum_{n\in\Z}f(x+n).
+P_f(x)=\sum_{n\in\IntegerNumbers}f(x+n).
 \]
 Schwartz decay makes this series, and every termwise derivative, uniformly
 convergent on compact sets.  Thus $P_f$ is a smooth $1$-periodic function.
 Its $m$th Fourier coefficient is, after an absolutely convergent interchange,
 \[
-\int_0^1P_f(x)\e^{-2\pi\ii mx}\,dx
-=\int_{\R}f(x)\e^{-2\pi\ii mx}\,dx=\widehat f(m).
+\int_0^1P_f(x)\EulerE^{-2\pi\ImaginaryUnit mx}\,dx
+=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit mx}\,dx=\widehat f(m).
 \]
 Repeated integration by parts shows that these coefficients decay faster
 than any power of $|m|$, so the Fourier series converges absolutely and
@@ -1236,18 +1228,18 @@ uniformly to $P_f$.  Evaluating it at $x=0$ gives \eqref{eq:poisson}.
 \begin{lemma}[Fourier transform of a Gaussian]\label{lem:gaussianFT}
 For $t>0$,
 \begin{equation}\label{eq:gaussianFT}
-\int_{\R}\e^{-\pi t x^2}\e^{-2\pi\ii x\xi}\,dx
-=t^{-1/2}\e^{-\pi\xi^2/t}.
+\int_{\RealNumbers}\EulerE^{-\pi t x^2}\EulerE^{-2\pi\ImaginaryUnit x\xi}\,dx
+=t^{-1/2}\EulerE^{-\pi\xi^2/t}.
 \end{equation}
 \end{lemma}
 \begin{proof}
 For $t=1$, let the integral be $G(\xi)$.  Differentiating under the integral
 and integrating by parts gives
 $G'(\xi)=-2\pi\xi G(\xi)$.  Hence
-$G(\xi)=G(0)\e^{-\pi\xi^2}$.  The classical polar-coordinate computation
+$G(\xi)=G(0)\EulerE^{-\pi\xi^2}$.  The classical polar-coordinate computation
 \[
-G(0)^2=\iint_{\R^2}\e^{-\pi(x^2+y^2)}\,dx\,dy
-=2\pi\int_0^\infty r\e^{-\pi r^2}\,dr=1
+G(0)^2=\iint_{\RealNumbers^2}\EulerE^{-\pi(x^2+y^2)}\,dx\,dy
+=2\pi\int_0^\infty r\EulerE^{-\pi r^2}\,dr=1
 \]
 shows $G(0)=1$.  Scaling $x\mapsto x/\sqrt t$ proves
 \eqref{eq:gaussianFT}.
@@ -1255,27 +1247,27 @@ shows $G(0)=1$.  Scaling $x\mapsto x/\sqrt t$ proves
 
 For $\tau$ in the upper half-plane define
 \begin{align*}
-\vartheta_2(\tau)&=\sum_{n\in\Z}\e^{\pi\ii\tau(n+1/2)^2},\\
-\vartheta_3(\tau)&=\sum_{n\in\Z}\e^{\pi\ii\tau n^2},\\
-\vartheta_4(\tau)&=\sum_{n\in\Z}(-1)^n\e^{\pi\ii\tau n^2}.
+\vartheta_2(\tau)&=\sum_{n\in\IntegerNumbers}\EulerE^{\pi\ImaginaryUnit\tau(n+1/2)^2},\\
+\vartheta_3(\tau)&=\sum_{n\in\IntegerNumbers}\EulerE^{\pi\ImaginaryUnit\tau n^2},\\
+\vartheta_4(\tau)&=\sum_{n\in\IntegerNumbers}(-1)^n\EulerE^{\pi\ImaginaryUnit\tau n^2}.
 \end{align*}
-We take $(-\ii\tau)^{1/2}$ to be the holomorphic square root that is positive
-for $\tau=\ii t$, $t>0$.
+We take $(-\ImaginaryUnit\tau)^{1/2}$ to be the holomorphic square root that is positive
+for $\tau=\ImaginaryUnit t$, $t>0$.
 
 \begin{theorem}[Theta inversion]\label{thm:thetaS}
 For $\operatorname{Im}\tau>0$,
 \begin{align}
-\vartheta_3(-1/\tau)&=(-\ii\tau)^{1/2}\vartheta_3(\tau),\label{eq:theta3S}\\
-\vartheta_2(-1/\tau)&=(-\ii\tau)^{1/2}\vartheta_4(\tau),\label{eq:theta2S}\\
-\vartheta_4(-1/\tau)&=(-\ii\tau)^{1/2}\vartheta_2(\tau).\label{eq:theta4S}
+\vartheta_3(-1/\tau)&=(-\ImaginaryUnit\tau)^{1/2}\vartheta_3(\tau),\label{eq:theta3S}\\
+\vartheta_2(-1/\tau)&=(-\ImaginaryUnit\tau)^{1/2}\vartheta_4(\tau),\label{eq:theta2S}\\
+\vartheta_4(-1/\tau)&=(-\ImaginaryUnit\tau)^{1/2}\vartheta_2(\tau).\label{eq:theta4S}
 \end{align}
 \end{theorem}
 \begin{proof}
-First set $\tau=\ii t$, $t>0$.  Apply Poisson summation to
-$f(x)=\e^{-\pi t x^2}$ and use \eqref{eq:gaussianFT}:
+First set $\tau=\ImaginaryUnit t$, $t>0$.  Apply Poisson summation to
+$f(x)=\EulerE^{-\pi t x^2}$ and use \eqref{eq:gaussianFT}:
 \[
-\sum_{n\in\Z}\e^{-\pi t n^2}
-=t^{-1/2}\sum_{m\in\Z}\e^{-\pi m^2/t}.
+\sum_{n\in\IntegerNumbers}\EulerE^{-\pi t n^2}
+=t^{-1/2}\sum_{m\in\IntegerNumbers}\EulerE^{-\pi m^2/t}.
 \]
 This is \eqref{eq:theta3S} on the positive imaginary axis.  Applying Poisson
 summation to $f(x+1/2)$ introduces the Fourier factor $(-1)^m$ and gives
@@ -1287,7 +1279,7 @@ half-plane.
 \end{proof}
 
 \begin{proposition}[Theta products]\label{prop:thetaproducts}
-Put $Q=\e^{\pi\ii\tau}$.  Then
+Put $Q=\EulerE^{\pi\ImaginaryUnit\tau}$.  Then
 \begin{align}
 \vartheta_2(\tau)&=2Q^{1/4}
 \prod_{n=1}^{\infty}(1-Q^{2n})(1+Q^{2n})^2,\label{eq:theta2prod}\\
@@ -1312,8 +1304,8 @@ is \eqref{eq:theta2prod}.
 \begin{definition}[Dedekind eta]
 For $\operatorname{Im}\tau>0$,
 \[
-\eta(\tau)=\e^{\pi\ii\tau/12}
-\prod_{n=1}^{\infty}(1-\e^{2\pi\ii n\tau}).
+\eta(\tau)=\EulerE^{\pi\ImaginaryUnit\tau/12}
+\prod_{n=1}^{\infty}(1-\EulerE^{2\pi\ImaginaryUnit n\tau}).
 \]
 \end{definition}
 
@@ -1325,7 +1317,7 @@ For $\operatorname{Im}\tau>0$,
 \end{lemma}
 \begin{proof}
 Multiply the three product formulas in \cref{prop:thetaproducts}.  With
-$q=Q^2=\e^{2\pi\ii\tau}$, the extra factors besides
+$q=Q^2=\EulerE^{2\pi\ImaginaryUnit\tau}$, the extra factors besides
 $2q^{1/8}(q;q)_\infty^3$ cancel because
 \[
 (-q;q)_\infty(q;q^2)_\infty
@@ -1337,20 +1329,20 @@ Since $\eta(\tau)^3=q^{1/8}(q;q)_\infty^3$, the result follows.
 \begin{theorem}[Eta transformations]\label{thm:eta-transform}
 For $\operatorname{Im}\tau>0$,
 \begin{align}
-\eta(\tau+1)&=\e^{\pi\ii/12}\eta(\tau),\label{eq:etaT}\\
-\eta(-1/\tau)&=(-\ii\tau)^{1/2}\eta(\tau).
+\eta(\tau+1)&=\EulerE^{\pi\ImaginaryUnit/12}\eta(\tau),\label{eq:etaT}\\
+\eta(-1/\tau)&=(-\ImaginaryUnit\tau)^{1/2}\eta(\tau).
 \label{eq:etaS}
 \end{align}
 \end{theorem}
 \begin{proof}
 Equation \eqref{eq:etaT} follows directly from the definition, since the
 infinite product is unchanged and the leading exponential is multiplied by
-$\e^{\pi\ii/12}$.
+$\EulerE^{\pi\ImaginaryUnit/12}$.
 
 For inversion, combine \eqref{eq:eta-theta} with the three theta
 transformations.  Their product gives
 \[
-\eta(-1/\tau)^3=(-\ii\tau)^{3/2}\eta(\tau)^3.
+\eta(-1/\tau)^3=(-\ImaginaryUnit\tau)^{3/2}\eta(\tau)^3.
 \]
 Thus the quotient of the two sides of \eqref{eq:etaS} is a holomorphic
 cube root of unity, hence constant.  On the positive imaginary axis all
@@ -1359,43 +1351,43 @@ constant is $1$.
 \end{proof}
 
 \begin{theorem}[Exact modular form of $(q;q)_\infty$]\label{thm:qpoch-asymp}
-Let $t>0$ and $q=\e^{-t}$.  Then
+Let $t>0$ and $q=\EulerE^{-t}$.  Then
 \begin{equation}\label{eq:qpoch-exact}
 (q;q)_\infty
 =\sqrt{\frac{2\pi}{t}}
 \exp\!\left(-\frac{\pi^2}{6t}+\frac{t}{24}\right)
-\bigl(\e^{-4\pi^2/t};\e^{-4\pi^2/t}\bigr)_\infty.
+\bigl(\EulerE^{-4\pi^2/t};\EulerE^{-4\pi^2/t}\bigr)_\infty.
 \end{equation}
 Consequently, as $t\to0^+$,
 \begin{align}
 (q;q)_\infty
 &=\sqrt{\frac{2\pi}{t}}
 \exp\!\left(-\frac{\pi^2}{6t}+\frac{t}{24}\right)
-\left(1+O(\e^{-4\pi^2/t})\right),\label{eq:qpoch-asymp}\\
+\left(1+O(\EulerE^{-4\pi^2/t})\right),\label{eq:qpoch-asymp}\\
 \log(q;q)_\infty
 &=-\frac{\pi^2}{6t}+\frac12\log\frac{2\pi}{t}
-+\frac{t}{24}+O(\e^{-4\pi^2/t}).\label{eq:logqpoch}
++\frac{t}{24}+O(\EulerE^{-4\pi^2/t}).\label{eq:logqpoch}
 \end{align}
 \end{theorem}
 \begin{proof}
-Put $\tau=\ii t/(2\pi)$.  From the definition,
+Put $\tau=\ImaginaryUnit t/(2\pi)$.  From the definition,
 \[
-\eta(\tau)=\e^{-t/24}(\e^{-t};\e^{-t})_\infty.
+\eta(\tau)=\EulerE^{-t/24}(\EulerE^{-t};\EulerE^{-t})_\infty.
 \]
 The eta inversion formula gives
 \[
-\eta\!\left(\frac{\ii t}{2\pi}\right)
+\eta\!\left(\frac{\ImaginaryUnit t}{2\pi}\right)
 =\sqrt{\frac{2\pi}{t}}\,
-\eta\!\left(\frac{2\pi\ii}{t}\right).
+\eta\!\left(\frac{2\pi\ImaginaryUnit}{t}\right).
 \]
 Expanding the eta function on the right yields
 \[
-\eta\!\left(\frac{2\pi\ii}{t}\right)
-=\e^{-\pi^2/(6t)}
-(\e^{-4\pi^2/t};\e^{-4\pi^2/t})_\infty.
+\eta\!\left(\frac{2\pi\ImaginaryUnit}{t}\right)
+=\EulerE^{-\pi^2/(6t)}
+(\EulerE^{-4\pi^2/t};\EulerE^{-4\pi^2/t})_\infty.
 \]
 Combining these identities proves \eqref{eq:qpoch-exact}.  The remaining
-product differs from $1$ by $O(\e^{-4\pi^2/t})$; taking a logarithm preserves
+product differs from $1$ by $O(\EulerE^{-4\pi^2/t})$; taking a logarithm preserves
 that error order and gives \eqref{eq:qpoch-asymp}--\eqref{eq:logqpoch}.
 \end{proof}
 
@@ -1417,17 +1409,17 @@ are defined.
 \begin{theorem}[Ramanujan's ${}_1\psi_1$ sum]\label{thm:1psi1}
 If $|q|<1$ and $|b/a|<|z|<1$, then
 \begin{equation}\label{eq:1psi1}
-\sum_{n\in\Z}\frac{(a;q)_n}{(b;q)_n}z^n
+\sum_{n\in\IntegerNumbers}\frac{(a;q)_n}{(b;q)_n}z^n
 =\frac{(q,b/a,az,q/(az);q)_\infty}
 {(b,q/a,z,b/(az);q)_\infty}.
 \end{equation}
 \end{theorem}
 \begin{proof}
-We first prove the formula for $b=q^{m+1}$, $m\in\N_0$.  For these values,
+We first prove the formula for $b=q^{m+1}$, $m\in\NaturalNumbers$.  For these values,
 terms with $n<-m$ vanish, because the denominator has a pole.  Put $n=k-m$.
 Then
 \begin{align*}
-\sum_{n\in\Z}\frac{(a;q)_n}{(q^{m+1};q)_n}z^n
+\sum_{n\in\IntegerNumbers}\frac{(a;q)_n}{(q^{m+1};q)_n}z^n
 &=z^{-m}\frac{(a;q)_{-m}}{(q^{m+1};q)_{-m}}
 \sum_{k=0}^{\infty}
 \frac{(aq^{-m};q)_k}{(q;q)_k}z^k\\
@@ -1494,7 +1486,7 @@ finite continuants converge to $F_1/F_0$.
 \begin{proposition}[Coefficientwise passage to infinite products]\label{prop:coefflimit}
 Let $P_N(q)$ be a sequence of polynomials such that, for every fixed degree
 $d$, the coefficients of $q^0,\ldots,q^d$ stabilize as $N\to\infty$.  Then
-$P_N$ has a well-defined coefficientwise limit in $\C[[q]]$.  If in addition
+$P_N$ has a well-defined coefficientwise limit in $\ComplexNumbers[[q]]$.  If in addition
 $P_N\to P$ locally uniformly on $|q|<1$, the formal limit is the Taylor series
 of $P$.
 \end{proposition}
@@ -1521,7 +1513,7 @@ Define the finite product
 P_n(q)=\frac{(q;q)_{3n}}{(q^3;q^3)_n}
 =\prod_{j=1}^n(1-q^{3j-2})(1-q^{3j-1}).
 \end{equation}
-There are unique polynomials $A_n,B_n,C_n\in\Z[x]$ such that
+There are unique polynomials $A_n,B_n,C_n\in\IntegerNumbers[x]$ such that
 \begin{equation}\label{eq:borweindissection}
 P_n(q)=A_n(q^3)-qB_n(q^3)-q^2C_n(q^3).
 \end{equation}
@@ -1813,13 +1805,13 @@ $(a;q)_n$ & finite $q$-shifted factorial
 $\prod_{j=0}^{n-1}(1-aq^j)$\\
 $(a;q)_\infty$ & convergent infinite shifted factorial for $|q|<1$\\
 $(a_1,\ldots,a_r;q)_n$ & product of shifted factorials with a common base\\
-$\qbinom nk$ & Gaussian or $q$-binomial coefficient\\
+$\GaussianBinomial{n}{k}{q}$ & Gaussian or $q$-binomial coefficient\\
 ${}_r\phi_s$ & unilateral basic hypergeometric series in the normalization of
 \cref{thm:heine}\\
 ${}_1\psi_1$ & bilateral basic hypergeometric series\\
 $j(z;q)$ & Jacobi product $(q,z,q/z;q)_\infty$\\
 $\vartheta_2,\vartheta_3,\vartheta_4$ & Jacobi theta constants with nome
-$\e^{\pi i\tau}$\\
+$\EulerE^{\pi i\tau}$\\
 $\eta(\tau)$ & Dedekind eta function\\
 $(\alpha,\beta)$ relative to $a$ & Bailey pair satisfying
 \eqref{eq:baileypair}\\

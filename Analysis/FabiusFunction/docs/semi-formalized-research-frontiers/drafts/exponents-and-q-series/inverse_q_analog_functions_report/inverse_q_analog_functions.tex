@@ -5,6 +5,7 @@
 \usepackage[final]{microtype}
 \usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs}
+\input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,tabularx,array,multirow}
 \usepackage{graphicx,float}
 \usepackage{xcolor}
@@ -79,27 +80,11 @@
   columns=fullflexible
 }
 
-\newcommand{\C}{\mathbb C}
-\newcommand{\R}{\mathbb R}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
 \newcommand{\D}{\mathbb D}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\Li}{\operatorname{Li}}
-\newcommand{\Res}{\operatorname*{Res}}
 \newcommand{\Disc}{\operatorname{Disc}}
 \newcommand{\ord}{\operatorname{ord}}
-\newcommand{\sgn}{\operatorname{sgn}}
-\newcommand{\Log}{\operatorname{Log}}
 \newcommand{\polylog}{\operatorname{Li}}
-\newcommand{\qbinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
-\newcommand{\qbinomQ}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
-\newcommand{\poch}[2]{(#1;#2)}
 \newcommand{\fall}[2]{(#1;#2)}
-\newcommand{\abs}[1]{\lvert #1\rvert}
-\newcommand{\norm}[1]{\lVert #1\rVert}
-\newcommand{\defeq}{\mathrel{:=}}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\branch}{\mathscr B}
 \newcommand{\crit}{\mathscr C}
@@ -126,7 +111,7 @@ This report develops the complementary \emph{inverse} theory.  Given a level
 \(Y\), we solve, branch by branch, equations such as
 \[
  (a;q)_n=Y,\qquad (a;q)_\infty=Y,
- \qquad \qbinom nk=Y,
+ \qquad \GaussianBinomial{n}{k}{q}=Y,
  \qquad \Gamma_q(x)=Y,
 \]
 not only for the displayed argument but also for the base \(q\), a continuous
@@ -231,7 +216,7 @@ Regime & regular coordinate & typical inverse scale\\
 \midrule
 \(q\to0\) & \(q\) & Taylor or generalized Puiseux\\
 \(q\to1^-\) & \(t=-\log q\) & Taylor in a logarithmic level\\
-\(q\to-1\) radially & \(q=-\e^{-t}\) & Taylor in \(1/\log Y\)\\
+\(q\to-1\) radially & \(q=-\EulerE^{-t}\) & Taylor in \(1/\log Y\)\\
 \(q\to\pm\infty\) & \(z=1/q\) & Laurent--Puiseux in \(Y^{-1/d}\)\\
 \(a\to\infty\), finite order & \(1/a\) & Laurent--Puiseux\\
 \(a\to-\infty\), infinite order & \(L=\log(-a)\) & square root of \(\log Y\)\\
@@ -308,7 +293,7 @@ Fa\`a di Bruno polynomials.
 For products, it is usually more stable to set \(G=\log F\) and solve
 \(G=\log Y\).  Newton's correction then becomes
 \[
- \Delta z=-\frac{G(z)-\Log Y}{G_z(z)},
+ \Delta z=-\frac{G(z)-\PrincipalLogarithm Y}{G_z(z)},
 \]
 which avoids underflow when \(F\) is exponentially small.
 
@@ -383,7 +368,7 @@ If instead \(\log F(z)\sim Cz^2\), then the inverse scale is
 
 Throughout this chapter
 \[
- P_n(a;q)\defeq(a;q)_n=\prod_{j=0}^{n-1}(1-aq^j),\qquad n\ge1.
+ P_n(a;q)\DefinitionEquals(a;q)_n=\prod_{j=0}^{n-1}(1-aq^j),\qquad n\ge1.
 \]
 Unless explicitly specialized, \(q\ne0\).
 
@@ -405,12 +390,12 @@ model of the general two-sheeted branching at a real critical point.
 
 The finite \(q\)-binomial theorem gives
 \begin{equation}\label{eq:finite-qbinomial-a}
- (a;q)_n=\sum_{r=0}^{n}(-1)^r q^{\binom r2}\qbinom nr a^r.
+ (a;q)_n=\sum_{r=0}^{n}(-1)^r q^{\binom r2}\GaussianBinomial{n}{r}{q} a^r.
 \end{equation}
 Set
 \[
- A=[n]_q,\quad B=q\qbinom n2,\quad C=q^3\qbinom n3,
- \quad D=q^6\qbinom n4,\quad E=q^{10}\qbinom n5.
+ A=[n]_q,\quad B=q\GaussianBinomial{n}{2}{q},\quad C=q^3\GaussianBinomial{n}{3}{q},
+ \quad D=q^6\GaussianBinomial{n}{4}{q},\quad E=q^{10}\GaussianBinomial{n}{5}{q}.
 \]
 
 \begin{theorem}[Fifth-order inverse at \(a=0\)]\label{thm:finite-a-zero-inverse}
@@ -593,10 +578,10 @@ expansion yields, for \(n\ge5\),
 For smaller \(n\), terms are retained only until a missing factor
 \((1-aq^j)\) first contributes.
 
-Near \(q=1\), put \(q=\e^{-t}\) and choose an \(n\)-th root
+Near \(q=1\), put \(q=\EulerE^{-t}\) and choose an \(n\)-th root
 \(r=Y^{1/n}\), so \(a_0=1-r\).  If \(r\ne0\), then
 \begin{align}
- a(Y;\e^{-t})={}&a_0+\frac{n-1}{2}a_0t\notag\\
+ a(Y;\EulerE^{-t})={}&a_0+\frac{n-1}{2}a_0t\notag\\
  &+\frac{a_0(n-1)\{2n-4-3a_0(n-1)\}}
  {24(1-a_0)}t^2+O(t^3).
 \label{eq:a-cross-q1}
@@ -678,25 +663,25 @@ For arbitrary \(n\), the exact coefficient engine is
 \begin{equation}\label{eq:qzero-subset-coeff}
  [q^m]\frac{P_n(a;q)}{1-a}
  =\sum_{r\ge0}(-a)^r
- \#\{S\subseteq\{1,\ldots,n-1\}:\abs S=r,\ \sum_{s\in S}s=m\}.
+ \#\{S\subseteq\{1,\ldots,n-1\}:\AbsoluteValue S=r,\ \sum_{s\in S}s=m\}.
 \end{equation}
 Inserting these coefficients into \eqref{eq:universal-reversion-five}
 produces the short-order corrections automatically.
 
 \section{All-order logarithmic expansion and inverse at \texorpdfstring{$q=1$}{q=1}}
 
-Put \(q=\e^{-t}\) and choose a branch of the logarithm.  For fixed \(a\)
+Put \(q=\EulerE^{-t}\) and choose a branch of the logarithm.  For fixed \(a\)
 with \(a\notin[1,\infty)\),
 \begin{equation}\label{eq:single-factor-taylor}
- \log(1-a\e^{-x})
+ \log(1-a\EulerE^{-x})
  =\log(1-a)+\sum_{r\ge1}\frac{(-1)^{r+1}}{r!}
- \Li_{1-r}(a)x^r.
+ \Polylogarithm_{1-r}(a)x^r.
 \end{equation}
 Let
 \[
  S_r(n)=\sum_{j=0}^{n-1}j^r,
  \qquad
- K_r(a,n)=(-1)^{r+1}\Li_{1-r}(a)S_r(n).
+ K_r(a,n)=(-1)^{r+1}\Polylogarithm_{1-r}(a)S_r(n).
 \]
 
 \begin{theorem}[Logarithmic \(q=1\) inverse]\label{thm:finite-qone-inverse}
@@ -707,7 +692,7 @@ Let
 If \(K_1\ne0\), then the branch \(q\to1\) is obtained from
 \begin{equation}\label{eq:t-u-allorders}
  u=\sum_{r\ge1}\frac{K_r}{r!}t^r,
- \qquad q=\e^{-t},
+ \qquad q=\EulerE^{-t},
 \end{equation}
 and begins
 \begin{align}
@@ -728,7 +713,7 @@ For \(n\ge2\) and \(a\ne0,1\),
 Substitute \(x=jt\) in \eqref{eq:single-factor-taylor} and sum over
 \(0\le j<n\), proving \eqref{eq:t-u-allorders}.  Reversion gives
 \eqref{eq:finite-qone-t-inverse}.  The expression for \(K_1\) uses
-\(\Li_0(a)=a/(1-a)\) and \(S_1(n)=\binom n2\).
+\(\Polylogarithm_0(a)=a/(1-a)\) and \(S_1(n)=\binom n2\).
 \end{proof}
 
 The use of \(t=-\log q\), rather than \(q-1\), is not cosmetic.  It makes
@@ -739,11 +724,11 @@ from exponent combinatorics, and extends directly to the infinite product.
 
 The forward classical limit
 \[
- G_n(x,t)=\frac{(\e^{-xt};\e^{-t})_n}{(1-\e^{-t})^n}\longrightarrow(x)_n
+ G_n(x,t)=\frac{(\EulerE^{-xt};\EulerE^{-t})_n}{(1-\EulerE^{-t})^n}\longrightarrow(x)_n
 \]
 contains a previously hidden inverse transition.  The elementary expansion
 \[
- \log\frac{1-\e^{-z t}}{zt}
+ \log\frac{1-\EulerE^{-z t}}{zt}
  =-\frac{zt}{2}+\sum_{m\ge1}
  \frac{B_{2m}}{2m(2m)!}z^{2m}t^{2m}
 \]
@@ -860,7 +845,7 @@ coefficient has a much more rigid \(q=-1\) theory, developed in
 
 \chapter{The infinite \texorpdfstring{$q$}{q}-Pochhammer inverse}
 
-For \(0<\abs q<1\), define
+For \(0<\AbsoluteValue q<1\), define
 \[
  P_\infty(a;q)=(a;q)_\infty=\prod_{j=0}^\infty(1-aq^j).
 \]
@@ -917,9 +902,9 @@ exceed one and the product diverges; a quantitative form follows next.
 
 \section{Large negative \texorpdfstring{$a$}{a} and log-periodic inversion}
 
-Set \(q=\e^{-\tau}\), \(\tau>0\), and \(a=-x\), \(x>0\).  Write uniquely
+Set \(q=\EulerE^{-\tau}\), \(\tau>0\), and \(a=-x\), \(x>0\).  Write uniquely
 \[
- x=q^{-m}r,\qquad m\in\N_0,\qquad 1\le r<q^{-1},
+ x=q^{-m}r,\qquad m\in\NaturalNumbers,\qquad 1\le r<q^{-1},
 \]
 or equivalently \(L=\log x=m\tau+\rho\), \(0\le\rho<\tau\).  Splitting the
 product at \(j=m\) gives the exact identity
@@ -930,7 +915,7 @@ product at \(j=m\) gives the exact identity
 Define
 \begin{equation}\label{eq:Psi-definition}
  \Psi_q(\rho)=
- \log\!\left[(-\e^\rho;q)_\infty(-q\e^{-\rho};q)_\infty\right]
+ \log\!\left[(-\EulerE^\rho;q)_\infty(-q\EulerE^{-\rho};q)_\infty\right]
  -\frac\rho2-\frac{\rho^2}{2\tau}.
 \end{equation}
 
@@ -938,8 +923,8 @@ Define
 The function \(\Psi_q\) extends to a smooth \(\tau\)-periodic function, and
 as \(L\to+\infty\),
 \begin{equation}\label{eq:negative-a-log-growth}
- \log(-\e^L;q)_\infty
- =\frac{L^2}{2\tau}+\frac L2+\Psi_q(L\bmod\tau)+O(\e^{-L}).
+ \log(-\EulerE^L;q)_\infty
+ =\frac{L^2}{2\tau}+\frac L2+\Psi_q(L\bmod\tau)+O(\EulerE^{-L}).
 \end{equation}
 Consequently, if \(Y=(-x;q)_\infty\to\infty\), put
 \[
@@ -958,7 +943,7 @@ Then the inverse satisfies
 \begin{proof}
 In \eqref{eq:negative-a-exact-split}, replace the finite product
 \((-q/r;q)_m\) by \((-q/r;q)_\infty\); the omitted tail is
-\(1+O(q^m)=1+O(\e^{-L})\).  Since \(m=(L-\rho)/\tau\), elementary algebra
+\(1+O(q^m)=1+O(\EulerE^{-L})\).  Since \(m=(L-\rho)/\tau\), elementary algebra
 gives
 \[
  m\rho+\frac{\tau m(m+1)}2
@@ -966,7 +951,7 @@ gives
 \]
 This proves \eqref{eq:negative-a-log-growth}.  Under
 \(\rho\mapsto\rho+\tau\), the product inside the logarithm changes by the
-factor \(\e^{\rho+\tau}\); the two subtracted quadratic terms change by the
+factor \(\EulerE^{\rho+\tau}\); the two subtracted quadratic terms change by the
 same amount, proving periodicity.  Complete the square in
 \eqref{eq:negative-a-log-growth} and expand the positive square root.  The
 phase correction is only \(O(R^{-1})\), so replacing the exact phase by
@@ -995,13 +980,13 @@ The Lambert-series identity
 \end{equation}
 permits a uniform treatment of \(q=1,-1\), and every root of unity.  Let
 \(\zeta\) be a primitive \(d\)-th root and put
-\(q=\zeta\e^{-t}\), \(t\to0^+\).  Assume \(\abs a<1\), so all rearrangements
+\(q=\zeta\EulerE^{-t}\), \(t\to0^+\).  Assume \(\AbsoluteValue a<1\), so all rearrangements
 are absolutely convergent.
 
 \begin{theorem}[Radial root-of-unity expansion]\label{thm:radial-root-unity}
 Define
 \begin{align}
- A_d(a)&=\frac1{d^2}\Li_2(a^d),\label{eq:Ad}\\
+ A_d(a)&=\frac1{d^2}\Polylogarithm_2(a^d),\label{eq:Ad}\\
  C_{d,\zeta}(a)
  &=\frac1{2d}\log(1-a^d)
  -\sum_{\substack{m\ge1\\d\nmid m}}
@@ -1014,12 +999,12 @@ Define
 \end{align}
 Then
 \begin{equation}\label{eq:root-unity-radial-expansion}
- \log(a;\zeta\e^{-t})_\infty
+ \log(a;\zeta\EulerE^{-t})_\infty
  =-\frac{A_d(a)}{t}+C_{d,\zeta}(a)
  +T_{d,\zeta}(a)t+O(t^2).
 \end{equation}
 If \(A_d(a)\ne0\), set
-\(X=-\Log Y+C_{d,\zeta}(a)\) and
+\(X=-\PrincipalLogarithm Y+C_{d,\zeta}(a)\) and
 \(c_{d,\zeta}=-T_{d,\zeta}\).  The radial inverse begins
 \begin{equation}\label{eq:root-unity-radial-inverse}
  t=\frac{A_d}{X}+\frac{A_d^2c_{d,\zeta}}{X^3}+O(X^{-4}).
@@ -1030,11 +1015,11 @@ If \(A_d(a)\ne0\), set
 Split \eqref{eq:lambert-log-poch} into multiples \(m=d\ell\) and
 nonmultiples.  For the multiples, use
 \[
- \frac1{1-\e^{-d\ell t}}
+ \frac1{1-\EulerE^{-d\ell t}}
  =\frac1{d\ell t}+\frac12+\frac{d\ell t}{12}+O(t^3).
 \]
 The three resulting sums are respectively
-\(-\Li_2(a^d)/(d^2t)\), \((2d)^{-1}\log(1-a^d)\), and
+\(-\Polylogarithm_2(a^d)/(d^2t)\), \((2d)^{-1}\log(1-a^d)\), and
 \(-a^dt/[12(1-a^d)]\).  For \(d\nmid m\), expand the denominator
 analytically at \(t=0\); its first derivative is
 \(-m\zeta^m/(1-\zeta^m)^2\), producing the second sums in
@@ -1048,15 +1033,15 @@ analytically at \(t=0\); its first derivative is
 For \(d=1\), \(\zeta=1\), the theorem gives the familiar
 polylogarithmic expansion, here extended far enough to invert:
 \begin{align}
- \log(a;\e^{-t})_\infty
- ={}&-\frac{\Li_2(a)}t+\frac12\log(1-a)
+ \log(a;\EulerE^{-t})_\infty
+ ={}&-\frac{\Polylogarithm_2(a)}t+\frac12\log(1-a)
  -\frac{a}{12(1-a)}t\notag\\
  &+\frac{a(1+a)}{720(1-a)^3}t^3+O(t^5).
 \label{eq:qone-infinite-forward}
 \end{align}
 Let
 \[
- A=\Li_2(a),\quad c=\frac{a}{12(1-a)},\quad
+ A=\Polylogarithm_2(a),\quad c=\frac{a}{12(1-a)},\quad
  d=\frac{a(1+a)}{720(1-a)^3},\quad
  X=-\log Y+\frac12\log(1-a).
 \]
@@ -1064,7 +1049,7 @@ Then
 \begin{equation}\label{eq:qone-infinite-inverse}
  t=\frac AX+\frac{A^2c}{X^3}
  +\frac{2A^3c^2-A^4d}{X^5}+O(X^{-7}),
- \qquad q=\e^{-t}.
+ \qquad q=\EulerE^{-t}.
 \end{equation}
 For \(0<a<1\), this is a real inverse as \(Y\downarrow0\).
 
@@ -1072,8 +1057,8 @@ For \(0<a<1\), this is a real inverse as \(Y\downarrow0\).
 
 For \(d=2\), \(\zeta=-1\), the constants simplify:
 \begin{align}
- \log(a;-\e^{-t})_\infty
- ={}&-\frac{\Li_2(a^2)}{4t}+\frac12\log(1-a)
+ \log(a;-\EulerE^{-t})_\infty
+ ={}&-\frac{\Polylogarithm_2(a^2)}{4t}+\frac12\log(1-a)
  -\frac{a(a+3)}{12(1-a^2)}t\notag\\
  &+\frac{a(15a^4+4a^3+90a^2+4a+15)}
  {720(1-a^2)^3}t^3+O(t^5).
@@ -1081,7 +1066,7 @@ For \(d=2\), \(\zeta=-1\), the constants simplify:
 \end{align}
 The odd powers arise from separating even and odd Lambert indices.  With
 \[
- A_-=\frac14\Li_2(a^2),\quad
+ A_-=\frac14\Polylogarithm_2(a^2),\quad
  c_-=\frac{a(a+3)}{12(1-a^2)},\quad
  d_-=\frac{a(15a^4+4a^3+90a^2+4a+15)}{720(1-a^2)^3},
 \]
@@ -1089,7 +1074,7 @@ and the same \(X=-\log Y+\tfrac12\log(1-a)\),
 \begin{equation}\label{eq:qminusone-inverse}
  t=\frac{A_-}{X}+\frac{A_-^2c_-}{X^3}
  +\frac{2A_-^3c_-^2-A_-^4d_-}{X^5}+O(X^{-7}),
- \qquad q=-\e^{-t}.
+ \qquad q=-\EulerE^{-t}.
 \end{equation}
 This is the first nontrivial real root-of-unity inverse treated beyond
 \(q=1\) in the present atlas.
@@ -1106,9 +1091,9 @@ and then evaluate the inverse series in the bounded variable
 
 \section{Complex branch remarks}
 
-For a complex target, \(X=-\Log Y+C\) in
+For a complex target, \(X=-\PrincipalLogarithm Y+C\) in
 \eqref{eq:root-unity-radial-inverse} depends on the logarithm branch.  Each
-addition of \(2\pi\ii\) to \(\Log Y\) produces a different asymptotic sheet.
+addition of \(2\pi\ImaginaryUnit\) to \(\PrincipalLogarithm Y\) produces a different asymptotic sheet.
 The root-of-unity point is therefore an essential accumulation point of
 inverse branches, not an isolated algebraic branch point.  Sectorial error
 bounds can be obtained by keeping \(t\) in a cone where
@@ -1118,14 +1103,14 @@ bounds can be obtained by keeping \(t\) in a cone where
 
 \section{Complex order}
 
-Fix a branch of \(\Log q\), with \(0<\abs q<1\), and define
+Fix a branch of \(\PrincipalLogarithm q\), with \(0<\AbsoluteValue q<1\), and define
 \begin{equation}\label{eq:complex-order-definition}
  (a;q)_\alpha=\frac{(a;q)_\infty}{(aq^\alpha;q)_\infty},
- \qquad q^\alpha=\e^{\alpha\Log q}.
+ \qquad q^\alpha=\EulerE^{\alpha\PrincipalLogarithm q}.
 \end{equation}
-This agrees with the finite product when \(\alpha\in\N_0\).  On a
+This agrees with the finite product when \(\alpha\in\NaturalNumbers\).  On a
 simply connected logarithmic domain satisfying
-\(\abs a<1\) and \(\abs{aq^\alpha}<1\), the convergent Lambert
+\(\AbsoluteValue a<1\) and \(\AbsoluteValue{aq^\alpha}<1\), the convergent Lambert
 representation is
 \begin{equation}\label{eq:complex-order-lambert}
  \log(a;q)_\alpha
@@ -1137,14 +1122,14 @@ poles and carrying compatible logarithm branches.
 
 \begin{theorem}[Local inverse in the order]\label{thm:order-local-inverse}
 Fix \(\alpha_0\) away from the poles of \((a;q)_\alpha\), assume
-\(Y_0=(a;q)_{\alpha_0}\ne0\) and \(\abs{a q^{\alpha_0}}<1\) so that the
+\(Y_0=(a;q)_{\alpha_0}\ne0\) and \(\AbsoluteValue{a q^{\alpha_0}}<1\) so that the
 Lambert cumulants below converge, put \(s=\alpha-\alpha_0\), and
 \[
- u=\Log(Y/Y_0).
+ u=\PrincipalLogarithm(Y/Y_0).
 \]
 Define
 \begin{equation}\label{eq:lambda-order}
- \lambda_r=(\Log q)^r\sum_{m\ge1}
+ \lambda_r=(\PrincipalLogarithm q)^r\sum_{m\ge1}
  \frac{m^{r-1}a^m q^{m\alpha_0}}{1-q^m},\qquad r\ge1.
 \end{equation}
 Then
@@ -1173,19 +1158,19 @@ Use the local quotient
  {(a q^{\alpha_0+s};q)_\infty}.
 \]
 Its logarithm is a normally convergent Lambert series under the stated
-hypothesis.  Expanding \(q^{ms}=\exp(ms\Log q)\) and interchanging the
+hypothesis.  Expanding \(q^{ms}=\exp(ms\PrincipalLogarithm q)\) and interchanging the
 sums gives \eqref{eq:order-forward-local}.  Apply
 \eqref{eq:universal-reversion-five}, or
 \cref{thm:puiseux-normal} in the degenerate case.
 \end{proof}
 
-At \(\alpha_0=0\), provided \(\abs a<1\), \(Y_0=1\) and
+At \(\alpha_0=0\), provided \(\AbsoluteValue a<1\), \(Y_0=1\) and
 \[
- \lambda_r=(\Log q)^r\sum_{m\ge1}\frac{m^{r-1}a^m}{1-q^m}.
+ \lambda_r=(\PrincipalLogarithm q)^r\sum_{m\ge1}\frac{m^{r-1}a^m}{1-q^m}.
 \]
 Thus the inverse order is governed by a hierarchy of Lambert series.  At a
 positive integer \(N\), the same formula simply inserts \(q^{mN}\); the
-series then converges rapidly whenever \(\abs{a q^N}<1\).
+series then converges rapidly whenever \(\AbsoluteValue{a q^N}<1\).
 
 \section{The endpoint \texorpdfstring{$\alpha\to+\infty$}{alpha to infinity}}
 
@@ -1211,7 +1196,7 @@ As \(R\to1\),
 \end{align}
 and therefore
 \begin{align}
- \alpha=\frac1{\Log q}\bigg[&\Log\frac{(1-q)r}{a}
+ \alpha=\frac1{\PrincipalLogarithm q}\bigg[&\PrincipalLogarithm\frac{(1-q)r}{a}
  -\frac{r}{1+q}\notag\\
  &+\frac{3q^2+q+1}{2(1+q)^2(1+q+q^2)}r^2+O(r^3)\bigg].
 \label{eq:alpha-endpoint-inverse}
@@ -1222,7 +1207,7 @@ approaches \((a;q)_\infty\).
 
 \begin{proof}
 Revert the Taylor series of \(e_q(b)-1\), then use
-\(\alpha=\Log(b/a)/\Log q\).  Expanding the logarithm of
+\(\alpha=\PrincipalLogarithm(b/a)/\PrincipalLogarithm q\).  Expanding the logarithm of
 \eqref{eq:b-from-r} gives \eqref{eq:alpha-endpoint-inverse}.
 \end{proof}
 
@@ -1235,7 +1220,7 @@ small parameter \(b\) by \(q\).  This is precisely the mechanism in
 The denominator in \eqref{eq:complex-order-definition} vanishes when
 \[
  aq^{\alpha_0+j}=1,
- \qquad j\in\N_0.
+ \qquad j\in\NaturalNumbers.
 \]
 Suppose only one factor vanishes and the numerator does not.  If
 \[
@@ -1249,7 +1234,7 @@ Hence the inverse at large level is an ordinary reciprocal expansion,
 \begin{equation}\label{eq:order-pole-inverse}
  \alpha=\alpha_0+\frac{(a;q)_\infty}{D_jY}+O(Y^{-2}).
 \end{equation}
-For a fixed base \(0<\abs q<1\), distinct denominator factors cannot
+For a fixed base \(0<\AbsoluteValue q<1\), distinct denominator factors cannot
 collide.  Under continuation of the base toward a root of unity, however,
 several factors may coalesce; the pole order then increases and the inverse
 scale becomes \(Y^{-1/m}\).  Thus the order variable exhibits the same
@@ -1262,26 +1247,26 @@ Consider the two-base symbol
 \[
  F(\beta)=(a;q^\beta)_\alpha.
 \]
-Fixing a branch of \(\Log q\), set \(Q=q^\beta\).  Every inverse result in
+Fixing a branch of \(\PrincipalLogarithm q\), set \(Q=q^\beta\).  Every inverse result in
 the base \(Q\) immediately gives
 \begin{equation}\label{eq:beta-reduction}
- \beta=\frac{\Log Q}{\Log q}.
+ \beta=\frac{\PrincipalLogarithm Q}{\PrincipalLogarithm q}.
 \end{equation}
 This simple reduction is preferable to differentiating a nested exponential.
 For direct sensitivity calculations,
 \[
  \frac{d}{d\beta}\log(a;q^\beta)_n
- =-(\Log q)\sum_{j=1}^{n-1}
+ =-(\PrincipalLogarithm q)\sum_{j=1}^{n-1}
  \frac{ajq^{\beta j}}{1-aq^{\beta j}},
 \]
 which is the \(q\)-derivative formula
 \eqref{eq:q-log-derivative} multiplied by the Jacobian
-\(Q\Log q\).
+\(Q\PrincipalLogarithm q\).
 
 More generally, for a signed product
 \[
  \mathcal P(q)=\prod_{\nu=1}^{r}(a_\nu;q)_{\alpha_\nu}^{\sigma_\nu},
- \qquad \sigma_\nu\in\Z,
+ \qquad \sigma_\nu\in\IntegerNumbers,
 \]
 all logarithmic cumulants add.  Thus the local inverse coefficients are
 obtained by replacing every \(K_r\), \(\lambda_r\), or Lambert coefficient
@@ -1293,7 +1278,7 @@ products without a new inversion proof.
 
 Let \(0<k<n\) and
 \[
- G_{n,k}(q)=\qbinom nk
+ G_{n,k}(q)=\GaussianBinomial{n}{k}{q}
  =\prod_{j=1}^{k}\frac{1-q^{n-k+j}}{1-q^j}.
 \]
 It is a palindromic polynomial of degree
@@ -1365,13 +1350,13 @@ is unbounded is a well-posed combinatorial problem discussed in
 
 \section{Expansion at \texorpdfstring{$q=1$}{q=1}}
 
-Put \(q=\e^t\), and let
+Put \(q=\EulerE^t\), and let
 \[
  u=\log\frac{Y}{\binom nk}.
 \]
 From
 \[
- \log\frac{\e^{zt}-1}{zt}
+ \log\frac{\EulerE^{zt}-1}{zt}
  =\frac{zt}{2}+\sum_{r\ge1}
  \frac{B_{2r}}{2r(2r)!}z^{2r}t^{2r},
 \]
@@ -1402,7 +1387,7 @@ The quadratic coefficient in \eqref{eq:qbin-cumulant} is
 \]
 There is no cubic term.  Revert
 \(u=(d/2)t+d(n+1)t^2/24+O(t^4)\), then expand
-\(q=\e^t\).
+\(q=\EulerE^t\).
 \end{proof}
 
 For \(0<q<1\), the theorem's variable \(t=\log q\) is negative.
@@ -1532,14 +1517,14 @@ where
 \begin{equation}\label{eq:qgamma-definition}
  \Gamma_q(z)=(1-q)^{1-z}\frac{(q;q)_\infty}{(q^z;q)_\infty}.
 \end{equation}
-At integral \(x=n,y=k\), \(\mathcal C_q(n,k)=\qbinom nk\).
+At integral \(x=n,y=k\), \(\mathcal C_q(n,k)=\GaussianBinomial{n}{k}{q}\).
 
 \section{The \texorpdfstring{$q\to1$}{q to 1} bridge}
 
 A standard fixed-argument expansion, obtainable from Euler--Maclaurin or the
 asymptotics of Moak and McIntosh \cite{Moak1984,McIntosh1999}, is
 \begin{align}
- \log\Gamma_{\e^{-t}}(z)
+ \log\Gamma_{\EulerE^{-t}}(z)
  ={}&\log\Gamma(z)
  -\frac{(z-1)(z-2)}4t\notag\\
  &+\frac{(z-2)(z-1)(2z+3)}{144}t^2+O(t^3),
@@ -1553,7 +1538,7 @@ first cumulants as the integer Gaussian polynomial.
 Let
 \[
  d=y(x-y),\qquad
- u=\log\frac{\mathcal C_{\e^{-t}}(x,y)}{\binom{x}{y}},
+ u=\log\frac{\mathcal C_{\EulerE^{-t}}(x,y)}{\binom{x}{y}},
  \qquad
  \binom{x}{y}=\frac{\Gamma(x+1)}{\Gamma(y+1)\Gamma(x-y+1)}.
 \]
@@ -1593,7 +1578,7 @@ For fixed \(y>0\), \(x\mapsto\mathcal C_q(x,y)\) is strictly increasing on
  \mathcal C_q(y,y)=1,
  \qquad
  \lim_{x\to\infty}\mathcal C_q(x,y)
- =L_q(y)\defeq\frac{(q^{y+1};q)_\infty}{(q;q)_\infty}
+ =L_q(y)\DefinitionEquals\frac{(q^{y+1};q)_\infty}{(q;q)_\infty}
  =\frac1{(1-q)^y\Gamma_q(y+1)}.
 \end{equation}
 Thus it has a unique real inverse for \(1<Y<L_q(y)\).
@@ -1875,7 +1860,7 @@ If \((x-1)(x-2)\ne0\), inversion at \(q=\infty\) therefore begins
 \end{equation}
 followed by generalized corrections inherited from
 \eqref{eq:qgamma-small-q-log}.  For negative or complex large \(q\), a
-branch of \(q^x\) and \(\Log q\) must be fixed, and the inverse is sectorial.
+branch of \(q^x\) and \(\PrincipalLogarithm q\) must be fixed, and the inverse is sectorial.
 
 \section{Inverse \texorpdfstring{$q$}{q}-beta functions}
 
@@ -1946,7 +1931,7 @@ scales when an exponent crosses an integer threshold.
 
 \section{The \texorpdfstring{$q$}{q}-number and its exact inverse in the exponent}
 
-For a fixed branch of \(q^x=\exp(x\Log q)\), define
+For a fixed branch of \(q^x=\exp(x\PrincipalLogarithm q)\), define
 \begin{equation}\label{eq:q-number-definition}
  [x]_q=\frac{1-q^x}{1-q},\qquad q\ne1,
  \qquad [x]_1=x.
@@ -1954,11 +1939,11 @@ For a fixed branch of \(q^x=\exp(x\Log q)\), define
 The inverse with respect to \(x\) is elementary but multivalued.
 
 \begin{theorem}[Exact exponent inverse of the \(q\)-number]\label{thm:q-number-x-inverse}
-Fix \(q\in\C\setminus\{0,1\}\), a branch of \(\Log q\), and a branch of the
+Fix \(q\in\ComplexNumbers\setminus\{0,1\}\), a branch of \(\PrincipalLogarithm q\), and a branch of the
 logarithm at \(1-(1-q)Y\).  Every compatible local inverse branch is
 \begin{equation}\label{eq:q-number-exact-x-inverse}
- x=\frac{\Log\bigl(1-(1-q)Y\bigr)+2\pi \ii \ell}{\Log q},
- \qquad \ell\in\Z.
+ x=\frac{\PrincipalLogarithm\bigl(1-(1-q)Y\bigr)+2\pi \ImaginaryUnit \ell}{\PrincipalLogarithm q},
+ \qquad \ell\in\IntegerNumbers.
 \end{equation}
 For positive \(q\ne1\) and real levels for which the logarithm is real, the
 real branch is obtained by \(\ell=0\).
@@ -1972,7 +1957,7 @@ level equation.
 \end{proof}
 
 This formula is a useful model for parameterwise branch accounting.  Changing
-\(\ell\) changes the inverse sheet, while changing the branch of \(\Log q\)
+\(\ell\) changes the inverse sheet, while changing the branch of \(\PrincipalLogarithm q\)
 changes the ambient definition of the forward function itself.
 
 Put \(\eps=1-q\).  Expansion of the exact inverse gives, uniformly for \(Y\)
@@ -1988,21 +1973,21 @@ is already nonlinear in the prescribed level.
 
 The other endpoint regimes are singular.  For fixed \(Y\ne1\),
 \begin{equation}\label{eq:q-number-x-qzero}
- x=\frac{\Log(1-Y)}{\Log q}
-   +O\!\left(\frac{q}{\Log q}\right),\qquad q\to0,
+ x=\frac{\PrincipalLogarithm(1-Y)}{\PrincipalLogarithm q}
+   +O\!\left(\frac{q}{\PrincipalLogarithm q}\right),\qquad q\to0,
 \end{equation}
 so all finite nonunit levels are compressed toward \(x=0\).  As
 \(q\to\infty\) in a fixed sector,
 \begin{equation}\label{eq:q-number-x-qinfty}
- x=1+\frac{\Log Y}{\Log q}
-   +O\!\left(\frac1{q\Log q}\right).
+ x=1+\frac{\PrincipalLogarithm Y}{\PrincipalLogarithm q}
+   +O\!\left(\frac1{q\PrincipalLogarithm q}\right).
 \end{equation}
 The points \(x=0\) and \(x=1\) are therefore the two endpoint condensers for
 base degeneration.
 
 \section{Inverse in the base for integral exponent}
 
-For \(n\in\N\), \(n\ge2\),
+For \(n\in\NaturalNumbers\), \(n\ge2\),
 \begin{equation}\label{eq:q-integer-polynomial}
  [n]_q=1+q+\cdots+q^{n-1}
 \end{equation}
@@ -2030,7 +2015,7 @@ problem.  If \(0<\Re x<1\), then
  q\sim (1-Y)^{1/x}.
 \end{equation}
 If \(\Re x>1\), the ordinary term \(q\) leads and \(q\sim Y-1\), but the
-correction \(q^x\) creates a nonintegral transseries whenever \(x\notin\N\).
+correction \(q^x\) creates a nonintegral transseries whenever \(x\notin\NaturalNumbers\).
 This elementary example explains why a uniform ``Taylor series in \(q\)'' is
 not available for all continuous parameters.
 
@@ -2087,7 +2072,7 @@ two real tails, whereas when \(d\) is odd it has one.
 
 \section{Jackson's two \texorpdfstring{$q$}{q}-exponentials and their inverses}
 
-For \(\abs q<1\), let
+For \(\AbsoluteValue q<1\), let
 \begin{equation}\label{eq:q-exponentials}
  e_q(z)=\frac1{(z;q)_\infty},
  \qquad
@@ -2110,10 +2095,10 @@ At \(q=0\) the inverses collapse to elementary functions:
  E_0(z)=1+z,\quad E_0^{-1}(Y)=Y-1.
 \end{equation}
 At fixed \(q\), it is often better to invert the logarithmic level
-\(L=\Log Y\).  One has
+\(L=\PrincipalLogarithm Y\).  One has
 \begin{align}
- \Log e_q(z)&=\sum_{m\ge1}\frac{z^m}{m(1-q^m)},\label{eq:log-eq}\\
- \Log E_q(z)&=\sum_{m\ge1}\frac{(-1)^{m+1}z^m}{m(1-q^m)}.
+ \PrincipalLogarithm e_q(z)&=\sum_{m\ge1}\frac{z^m}{m(1-q^m)},\label{eq:log-eq}\\
+ \PrincipalLogarithm E_q(z)&=\sum_{m\ge1}\frac{(-1)^{m+1}z^m}{m(1-q^m)}.
  \label{eq:log-Eq}
 \end{align}
 The universal formula \eqref{eq:lagrange-inverse} therefore gives all local
@@ -2124,7 +2109,7 @@ The classical limit is regular only after scaling the argument.  Set
 \begin{equation}\label{eq:scaled-qexp-inverse-def}
  e_q(\eps z_e)=Y,
  \qquad E_q(\eps z_E)=Y,
- \qquad L=\Log Y.
+ \qquad L=\PrincipalLogarithm Y.
 \end{equation}
 Direct inversion of \eqref{eq:log-eq}--\eqref{eq:log-Eq} gives
 \begin{align}
@@ -2153,11 +2138,11 @@ chosen.
 \section{A normalized \texorpdfstring{$q$}{q}-polylogarithm family}
 
 The inverse theory of a whole class of Lambert-series analogues can be
-presented at once.  For \(0<q<1\), \(s\in\C\), and \(\abs z<1\), define
+presented at once.  For \(0<q<1\), \(s\in\ComplexNumbers\), and \(\AbsoluteValue z<1\), define
 \begin{equation}\label{eq:q-polylog-normalized}
  \mathcal L_{s,q}(z)=\sum_{m\ge1}\frac{z^m}{[m]_q^s}.
 \end{equation}
-At \(q=1\) this is \(\Li_s(z)\); at \(q=0\) it is \(z/(1-z)\) for every
+At \(q=1\) this is \(\Polylogarithm_s(z)\); at \(q=0\) it is \(z/(1-z)\) for every
 \(s\).  The case \(s=1\) is a normalized Jackson-type logarithm.
 
 \begin{proposition}[Local inverse in \(z\)]\label{prop:qpolylog-z-inverse}
@@ -2186,15 +2171,15 @@ Since
 we obtain
 \begin{equation}\label{eq:qpolylog-near-one}
  \mathcal L_{s,1-\eps}(z)
- =\Li_s(z)+\frac{s\eps}{2}\bigl(\Li_{s-1}(z)-\Li_s(z)\bigr)
+ =\Polylogarithm_s(z)+\frac{s\eps}{2}\bigl(\Polylogarithm_{s-1}(z)-\Polylogarithm_s(z)\bigr)
  +O(\eps^2).
 \end{equation}
-If \(z_0\) is a regular branch of \(\Li_s^{-1}(Y)\), then
+If \(z_0\) is a regular branch of \(\Polylogarithm_s^{-1}(Y)\), then
 \begin{equation}\label{eq:qpolylog-inverse-near-one}
  z=z_0-\frac{s\eps z_0}{2}
- \left(1-\frac{Y}{\Li_{s-1}(z_0)}\right)+O(\eps^2).
+ \left(1-\frac{Y}{\Polylogarithm_{s-1}(z_0)}\right)+O(\eps^2).
 \end{equation}
-For \(s=1\), \(z_0=1-\e^{-Y}\), giving a fully elementary classical
+For \(s=1\), \(z_0=1-\EulerE^{-Y}\), giving a fully elementary classical
 anchor.
 
 There are also useful global parameter inverses.
@@ -2203,10 +2188,10 @@ There are also useful global parameter inverses.
 Let \(0<z<1\).
 \begin{enumerate}[label=\textup{(\roman*)}]
 \item If \(s>0\), then \(q\mapsto\mathcal L_{s,q}(z)\) is strictly decreasing
-on \((0,1)\), from \(z/(1-z)\) to \(\Li_s(z)\).  Hence each intermediate
+on \((0,1)\), from \(z/(1-z)\) to \(\Polylogarithm_s(z)\).  Hence each intermediate
 level has a unique base inverse.
 \item If \(0<q<1\), then \(s\mapsto\mathcal L_{s,q}(z)\) is strictly
-decreasing on \(\R\), and tends to \(z\) as \(s\to+\infty\).  Its upper
+decreasing on \(\RealNumbers\), and tends to \(z\) as \(s\to+\infty\).  Its upper
 endpoint inverse satisfies
 \begin{equation}\label{eq:qpolylog-s-inverse}
  s=\frac{\log\{z^2/(Y-z)\}}{\log[2]_q}+o(1),
@@ -2413,7 +2398,7 @@ applies to the reduced polynomial.
 has an algebraic reciprocal scale such as \eqref{eq:rphis-lower-pole-inverse}.
 \item Infinitely many terms are coherently singular.  The radial asymptotic is
 usually exponential in \(1/t\), \(q=\zeta e^{-t}\), and inversion takes the
-logarithmic form \(t\asymp A/\Log Y\).  Cyclic quantum dilogarithms and
+logarithmic form \(t\asymp A/\PrincipalLogarithm Y\).  Cyclic quantum dilogarithms and
 root-of-unity Pochhammer asymptotics provide the forward coefficients in this
 case; see \cite{Kopp2025,Fantini2025} for related modern contexts.
 \end{enumerate}
@@ -2502,7 +2487,7 @@ For a scalar inverse \(F(z)=Y\), define the local relative condition number
 \end{equation}
 when \(zY\ne0\).  At a critical point of multiplicity \(m-1\),
 \(z-z_c\asymp(Y-Y_c)^{1/m}\), so the absolute derivative of the inverse
-diverges like \(\abs{Y-Y_c}^{1/m-1}\).  Near an endpoint saturation
+diverges like \(\AbsoluteValue{Y-Y_c}^{1/m-1}\).  Near an endpoint saturation
 \(Y-L\asymp q^\alpha\), the inverse in \(\alpha\) has derivative
 \begin{equation}\label{eq:endpoint-condition}
  \frac{d\alpha}{dY}\asymp\frac1{(Y-L)\log q},
@@ -2544,7 +2529,7 @@ stable in the selected regime.
 For products with very large or very small magnitude, solve the logarithmic
 equation
 \begin{equation}\label{eq:logarithmic-residual}
- G(z)=\Log F(z)-\Log Y=0
+ G(z)=\PrincipalLogarithm F(z)-\PrincipalLogarithm Y=0
 \end{equation}
 instead of subtracting two nearly equal huge numbers.  The branch of the
 logarithm must be continued consistently.
@@ -2578,7 +2563,7 @@ Given a level \(Y\), parameters, and a desired branch:
 \item Identify the nearest regular point, zero, critical point, endpoint, root
 of unity, or infinite regime.
 \item Select the corresponding coordinate: \(Y-Y_0\), a fractional power,
-\(-\Log q\), \(1/q\), \(q^\alpha\), or \(1/\Log Y\).
+\(-\PrincipalLogarithm q\), \(1/q\), \(q^\alpha\), or \(1/\PrincipalLogarithm Y\).
 \item Evaluate the derived asymptotic expansion to obtain a branch-labelled
 seed.
 \item Evaluate products through logarithmic sums and Gaussian polynomials
@@ -2606,7 +2591,7 @@ with an interval bound on \(F'\).
  \includegraphics[width=0.92\textwidth]{log_periodic_correction.pdf}
  \caption{Bounded log-periodic correction in the large-negative-\(a\)
  asymptotic of \((a;q)_\infty\).  The period in \(\log(-a)\) is
- \(\abs{\log q}\), so the inverse carries a small periodic modulation on top
+ \(\AbsoluteValue{\log q}\), so the inverse carries a small periodic modulation on top
  of its square-root logarithmic scale.}
  \label{fig:log-periodic-correction}
 \end{figure}
@@ -2655,7 +2640,7 @@ validated numerics, or a sharply defined analytic program.
 \section{Generic critical geometry of finite Pochhammer maps}
 
 \begin{conjecture}[Generic simplicity in the base]\label{conj:generic-simple-qcritical}
-Fix \(n\ge3\).  Outside a proper algebraic subset of \(a\in\C\), every finite
+Fix \(n\ge3\).  Outside a proper algebraic subset of \(a\in\ComplexNumbers\), every finite
 critical point of \(q\mapsto(a;q)_n\) is simple and distinct critical points
 have distinct critical values.  Equivalently, the level polynomial has only
 simple ramification away from the explicit collision loci forced by
@@ -2707,7 +2692,7 @@ transseries in odd and even powers of \(X^{-1}\),
 \begin{equation}\label{eq:rootunity-inverse-conjectural}
  t\sim\frac{A_d(a)}{X}
  \left(1+\sum_{m\ge1}\frac{P_m(a,\zeta)}{X^m}\right),
- \qquad X=-\Log Y+C_d(a,\zeta),
+ \qquad X=-\PrincipalLogarithm Y+C_d(a,\zeta),
 \end{equation}
 whose coefficients lie in the differential field generated by polylogarithms
 of \(a^d\) and finite cyclic dilogarithmic sums.  Stokes jumps act by explicit
@@ -2722,8 +2707,8 @@ transforms under compositional inversion.
 \section{Large-argument log-periodic inversion}
 
 \begin{conjecture}[Full log-periodic inverse expansion]
-Let \(0<q<1\), \(\tau=\abs{\log q}\), \(a=-\e^L\), and
-\(R=\sqrt{2\tau\,\Log Y}\).  The asymptotic inverse of
+Let \(0<q<1\), \(\tau=\AbsoluteValue{\log q}\), \(a=-\EulerE^L\), and
+\(R=\sqrt{2\tau\,\PrincipalLogarithm Y}\).  The asymptotic inverse of
 \((a;q)_\infty=Y\) has a complete expansion
 \begin{equation}\label{eq:logperiodic-full-conjecture}
  L=R-\frac{\tau}{2}
@@ -2751,7 +2736,7 @@ switches.
 \label{prob:inverse-partition-coefficients}
 In a stable rectangle, write
 \begin{equation}\label{eq:inverse-gaussian-coeffs}
- q=\sum_{m\ge1}d_m\left(\qbinom nk-1\right)^m.
+ q=\sum_{m\ge1}d_m\left(\GaussianBinomial{n}{k}{q}-1\right)^m.
 \end{equation}
 Determine the sign pattern, integrality properties, exact combinatorial model,
 and asymptotic growth of \(d_m\).  In the unrestricted stable range the first
@@ -2852,8 +2837,8 @@ Forward family & active regime & forward normal form & inverse coordinate\\
 \((a;q)_\infty\) in \(q\) & \(q=\zeta e^{-t}\) & \(\log Y\sim-A/t+C\) & \(t\sim A/(-\log Y+C)\)\\
 \((a;q)_\infty\) in \(a<0\) & \(a\to-\infty\) & \(\log Y\sim L^2/(2|\log q|)\) & \(L\sim\sqrt{2|\log q|\log Y}\)\\
 \((a;q)_\alpha\) in \(\alpha\) & \(\alpha\to\infty\) & \(Y-Y_\infty\sim Cq^\alpha\) & \(\alpha\sim\log(Y-Y_\infty)/\log q\)\\
-\(\qbinom nk\) in \(q\) & \(q\to0\) & \(Y-1\sim q\) & ordinary reversion\\
-\(\qbinom nk\) in \(q\) & \(q\to1\) & \(\log(Y/\binom nk)\sim c(q-1)\) & logarithmic level\\
+\(\GaussianBinomial{n}{k}{q}\) in \(q\) & \(q\to0\) & \(Y-1\sim q\) & ordinary reversion\\
+\(\GaussianBinomial{n}{k}{q}\) in \(q\) & \(q\to1\) & \(\log(Y/\binom nk)\sim c(q-1)\) & logarithmic level\\
 \(\Gamma_q(x)\) in \(x\) & minimum & \(Y-Y_*\sim c(x-x_*)^2\) & square root\\
 \(B_q(a,s-a)\) in \(a\) & center minimum & \(\log(Y/Y_*)\sim c(a-s/2)^2\) & square root\\
 \(e_q((1-q)z)\) in \(z\) & \(q\to1\) & \(\log Y\sim z\) & Taylor about \(\log Y\)\\
@@ -2891,7 +2876,7 @@ The inverse theory of \(q\)-analogues is not a collection of unrelated
 special-function inverses.  It is organized by a small number of normal forms:
 regular Taylor reversion, algebraic Puiseux ramification, reciprocal inversion
 at poles, logarithmic endpoint saturation, Laurent--Puiseux inversion at
-infinity, and \(1/\Log Y\) inversion at radial essential singularities.  The
+infinity, and \(1/\PrincipalLogarithm Y\) inversion at radial essential singularities.  The
 finite Pochhammer symbol realizes all algebraic forms; the infinite symbol
 adds logarithmic ends and log-periodicity; Gaussian coefficients add
 positivity and cyclotomic cancellations; \(q\)-gamma and \(q\)-beta add

@@ -6,6 +6,7 @@
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,tabularx,array,multirow}
 \usepackage{graphicx}
 \usepackage{caption}
@@ -98,31 +99,9 @@
   belowskip=0.8em
 }
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\E}{\mathbb E}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\diag}{\operatorname{diag}}
-\newcommand{\Span}{\operatorname{span}}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
 \newcommand{\eps}{\varepsilon}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
-\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
-\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction/docs}}
 \newcommand{\commit}{\nolinkurl{b863b90ee74ec0405af2d67ad04c61824c3aea00}}
-\DeclareMathOperator{\Res}{Res}
-\DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\capop}{cap}
 
 \title{\bfseries Fabius--Rvachev New Frontiers\\[0.45em]
@@ -135,20 +114,20 @@ rational products for $\pi$, Gauss--Pad\'e structure, and Legendre--Gaunt determ
 \maketitle
 
 \begin{abstract}
-Let $F$ denote the bounded Fabius function and let $w=\Up$ be Rvachev's even
+Let $F$ denote the bounded Fabius function and let $w=\RvachevUp$ be Rvachev's even
 $C^\infty$ probability density supported on $[-1,1]$.  The current
 \texttt{ProveIt} corpus already develops exact dyadic arithmetic, the
 Thue--Morse and infinite-sinc descriptions, moment recurrences, Bell--Bernoulli
 formulae, Lambert-$W$ endpoint asymptotics, polynomial synthesis by translates
-of $\Up$, and Fourier--Legendre expansions.  This report audits that corpus and
+of $\RvachevUp$, and Fourier--Legendre expansions.  This report audits that corpus and
 then develops a partly overlapping layer around the intrinsic convex and
 spectral geometry of the probability measure
 \[
-  \dd\mu(x)=\Up(x)\dd x.
+  \Differential\mu(x)=\RvachevUp(x)\Differential x.
 \]
 
 First, $\mu$ is an infinite convolution of centered uniform laws.  Closure of
-log-concavity under convolution and weak limits therefore proves that $\Up$,
+log-concavity under convolution and weak limits therefore proves that $\RvachevUp$,
 and hence $F$ on $[0,1]$, is log-concave.  Combining this with
 $F'(x)=2F(2x)$ gives the new Tur\'an inequality
 \[
@@ -167,16 +146,16 @@ Classical OPRL theory then yields
  \beta_n\longrightarrow\frac14,
  \qquad
  \frac1n\sum_{\pi_n(\xi)=0}\delta_\xi
-   \Longrightarrow \frac{\dd x}{\pi\sqrt{1-x^2}},
+   \Longrightarrow \frac{\Differential x}{\pi\sqrt{1-x^2}},
 \]
 together with strong norm, ratio, and determinant asymptotics.  The associated
 Christoffel function reconstructs the bump pointwise:
 \[
- \Up(x)=\lim_{N\to\infty}
+ \RvachevUp(x)=\lim_{N\to\infty}
  \frac{N\lambda_N(x)}{\pi\sqrt{1-x^2}},\qquad -1<x<1.
 \]
 Because every moment is rational, $\lambda_N(0)$ is rational; since
-$\Up(0)=1$, this gives the canonical rational limit
+$\RvachevUp(0)=1$, this gives the canonical rational limit
 \[
   N\lambda_N(0)\longrightarrow\pi.
 \]
@@ -193,7 +172,7 @@ Gauss rules and the diagonal Pad\'e approximants of the Cauchy transform.
 Finally, the repository's exact Legendre coefficients give a finite
 Legendre--Gaunt Gram matrix whose determinants recover the $\beta_n$; this
 closes a new exact circuit from dyadic Fabius values through Wigner $3j$
-coefficients to $\pi$ and back to $\Up$ in a single exact circuit.
+coefficients to $\pi$ and back to $\RvachevUp$ in a single exact circuit.
 
 A fully commented Python program in the archive computes exact initial data and
 4,800-digit data through $\beta_{200}$.  It finds strict increase toward
@@ -216,7 +195,7 @@ Legendre/Lagrange reports were close-read; generated tables and superseded
 siblings were cross-checked through their manifests and targeted formula
 searches.  That audit found pre-existing Nevai-limit, $J$-fraction, Hankel, and
 Gauss--Pad\'e programs in the canonical representation frontier.  It found no
-matching report-level result for the log-concavity of $\Up$, the rational
+matching report-level result for the log-concavity of $\RvachevUp$, the rational
 Christoffel limits and alternating Jacobi product for $\pi$, or the finite
 Gaunt/Wigner entry expansion. The determinant change-of-basis and Jacobi
 cross-ratio are now formalized downstream. ``New'' therefore applies only to the
@@ -228,13 +207,13 @@ marked according to its status.
 
 \begin{statusbox}{Important statements developed or assembled here}
 \begin{enumerate}
-\item $\Up$ and $F|_{[0,1]}$ are log-concave; hence a dyadic Tur\'an inequality,
+\item $\RvachevUp$ and $F|_{[0,1]}$ are log-concave; hence a dyadic Tur\'an inequality,
       strong discrete convexity of $-\log F(2^{-n})$, and convexity of the
       inverse in logarithmic probability coordinates.
 \item The native up-law Jacobi coefficients satisfy $\beta_n\to1/4$; zeros
       converge to the arcsine law; the moment Hankel determinants have a sharp
       capacity-scale asymptotic with an explicit Fabius--Szeg\H{o} constant.
-\item Christoffel functions reconstruct $\Up$ from exact rational moment
+\item Christoffel functions reconstruct $\RvachevUp$ from exact rational moment
       matrices, and $N\lambda_N(0)\to\pi$ through rational numbers.
 \item $\pi=2\prod_{j\ge1}\beta_{2j}/\beta_{2j-1}$, with an exact harmonic-mean
       relation between its partial products and the Christoffel approximants.
@@ -279,7 +258,7 @@ claims explicitly corrected in the canonical exposition.
 The following list is a compressed dependency map, not a substitute for the
 repository's much longer crosswalk.
 \begin{itemize}
-\item The bounded CDF $F$, the signed/global variants, the even bump $\Up$, the
+\item The bounded CDF $F$, the signed/global variants, the even bump $\RvachevUp$, the
       refinement and differential equations, support, smoothness, endpoint
       flatness, and partition-of-unity identities.
 \item The weighted-uniform random series, finite convolutions, Fourier and MGF
@@ -292,8 +271,8 @@ repository's much longer crosswalk.
       with the small-argument endpoint law and its Lambert-$W$ inversion.
 \item $q$-Pochhammer and Gaussian-binomial identities, geometric Richardson
       filters, and several exact finite interpolation/sampling mechanisms.
-\item Fourier--Legendre expansions of $\Up$, finite synthesis of polynomials by
-      shifted copies of $\Up$, and the resulting blockwise Legendre--Rvachev
+\item Fourier--Legendre expansions of $\RvachevUp$, finite synthesis of polynomials by
+      shifted copies of $\RvachevUp$, and the resulting blockwise Legendre--Rvachev
       self-reconstruction.
 \item Native orthogonal-polynomial data: exact moments and positive Hankel
       matrices, together with an all-degree exact rational layer for Hankel
@@ -316,10 +295,10 @@ be read subject to this corrected crosswalk.
 
 \subsection{Why this direction avoids duplication}
 The recent Legendre reports solve a different closure problem.  They begin
-with an exact expansion of $\Up$ in the \emph{classical} Legendre basis and
+with an exact expansion of $\RvachevUp$ in the \emph{classical} Legendre basis and
 replace each Legendre polynomial by a finite train of translated up-functions.
 Here we instead orthogonalize polynomials against the \emph{native measure}
-$\Up(x)\dd x$.  The resulting Jacobi matrix is an invariant of the probability
+$\RvachevUp(x)\Differential x$.  The resulting Jacobi matrix is an invariant of the probability
 law itself.  It remembers all rational moments, controls Gaussian quadrature
 and Pad\'e approximation, and has a universal large-degree limit fixed by the
 support.  The two viewpoints meet only later, through the finite Gaunt matrix
@@ -337,7 +316,7 @@ Statement & Status & Main input \\
 \midrule
 Uniform-series law, rational moments, endpoint log-square law
  & Repository baseline & Canonical exposition and formal moment modules \\
-$\Up$ and $F$ are log-concave
+$\RvachevUp$ and $F$ are log-concave
  & New proof here & Convolution/weak-limit closure of log-concavity \\
 Dyadic Tur\'an inequality and action curvature
  & New theorem here & Log-concavity plus $F'(x)=2F(2x)$ \\
@@ -345,10 +324,10 @@ $\beta_n\to1/4$, arcsine zeros
  & New application here & Rakhmanov/regular OPRL theory \\
 Fabius--Szeg\H{o} norm constant
  & New application here & Strong Szeg\H{o} norm asymptotics \\
-Christoffel reconstruction of $\Up$
+Christoffel reconstruction of $\RvachevUp$
  & New application here & M\'at\'e--Nevai--Totik/Totik asymptotics \\
 Rational limits to $\pi$
- & New corollary here & $\Up(0)=1$ and rational moments \\
+ & New corollary here & $\RvachevUp(0)=1$ and rational moments \\
 Alternating Jacobi product for $\pi$
  & New theorem here & Strong Szeg\H{o} center asymptotic \\
 Gauss--Pad\'e package
@@ -388,14 +367,14 @@ and obeys
 \end{equation}
 with the usual reflected form on the other half.  Rvachev's bump is
 \begin{equation}
- \Up(y)=F(1-\abs y),\qquad \abs y\le1,
+ \RvachevUp(y)=F(1-\AbsoluteValue y),\qquad \AbsoluteValue y\le1,
  \label{eq:up-fold}
 \end{equation}
 and vanishes outside $[-1,1]$.  It is even, $C^\infty$, positive on
 $(-1,1)$, flat at the endpoints, and normalized by
 \begin{equation}
- \int_{-1}^{1}\Up(x)\dd x=1,
- \qquad \Up(0)=1.
+ \int_{-1}^{1}\RvachevUp(x)\Differential x=1,
+ \qquad \RvachevUp(0)=1.
  \label{eq:up-normalization}
 \end{equation}
 
@@ -404,13 +383,13 @@ The centered random variable
  Y=2X-1=\sum_{n=0}^{\infty}2^{-n}\left(U_n-\tfrac12\right)
  \label{eq:Y-random}
 \end{equation}
-has density $\Up$.  Indeed, the density of $X$ is $F'(x)$; for $-1<y<0$,
+has density $\RvachevUp$.  Indeed, the density of $X$ is $F'(x)$; for $-1<y<0$,
 \[
- \frac12F'\!\left(\frac{y+1}{2}\right)=F(y+1)=\Up(y),
+ \frac12F'\!\left(\frac{y+1}{2}\right)=F(y+1)=\RvachevUp(y),
 \]
 and symmetry gives the positive half.  Thus throughout the report
 \begin{equation}
- \dd\mu(x)=\Up(x)\dd x
+ \Differential\mu(x)=\RvachevUp(x)\Differential x
  \label{eq:mu-def}
 \end{equation}
 is both a compactly supported probability measure and an infinite convolution
@@ -419,7 +398,7 @@ of centered uniforms.
 \subsection{MGF, cumulants, and rational moments}
 The moment-generating function of $Y$ is the entire product
 \begin{equation}
- M(z)=\int_{-1}^{1}\e^{zx}\dd\mu(x)
+ M(z)=\int_{-1}^{1}\EulerE^{zx}\Differential\mu(x)
  =\prod_{j=1}^{\infty}\frac{\sinh(z/2^j)}{z/2^j}.
  \label{eq:mgf-product}
 \end{equation}
@@ -435,7 +414,7 @@ all odd cumulants vanish and
 Consequently every moment is rational and can be written as a complete Bell
 polynomial in the Bernoulli cumulants.  For the even moments
 \begin{equation}
- c_n=m_{2n}=\int_{-1}^{1}x^{2n}\Up(x)\dd x,
+ c_n=m_{2n}=\int_{-1}^{1}x^{2n}\RvachevUp(x)\Differential x,
  \qquad m_{2n+1}=0,
  \label{eq:moments}
 \end{equation}
@@ -465,7 +444,7 @@ invariant form,
 \end{equation}
 Therefore
 \begin{equation}
- -\log\Up(1-\eps)\sim\frac{\log^2(1/\eps)}{2\log2}
+ -\log\RvachevUp(1-\eps)\sim\frac{\log^2(1/\eps)}{2\log2}
  \qquad (\eps\downarrow0),
  \label{eq:up-endpoint-log-square}
 \end{equation}
@@ -491,7 +470,7 @@ in the sense of weak convergence of the finite convolutions.
 \begin{theorem}[Log-concavity of the up law]
 \label{thm:up-logconcave}
 The probability measure $\mu$ is log-concave.  Its continuous density
-$\Up$ is log-concave on $\R$ in the extended sense, and strictly positive on
+$\RvachevUp$ is log-concave on $\RealNumbers$ in the extended sense, and strictly positive on
 $(-1,1)$.  Consequently $F$ is log-concave on $[0,1]$.
 \end{theorem}
 
@@ -502,8 +481,8 @@ implies that convolution preserves log-concavity.  Hence every finite
 convolution $\mu_N=\nu_0*\cdots*\nu_N$ is log-concave.  The class of
 log-concave probability measures is closed under weak convergence, so the weak
 limit $\mu$ is log-concave.  Since $\mu$ has the continuous full-dimensional
-density $\Up$ on its support, that density is log-concave.  Finally,
-\cref{eq:up-fold} gives $F(x)=\Up(x-1)$ for $0\le x\le1$, and translations
+density $\RvachevUp$ on its support, that density is log-concave.  Finally,
+\cref{eq:up-fold} gives $F(x)=\RvachevUp(x-1)$ for $0\le x\le1$, and translations
 preserve log-concavity.
 \end{proof}
 
@@ -610,7 +589,7 @@ coordinate.
 \label{thm:log-quantile-convex}
 The function
 \begin{equation}
- q(s)=F^{-1}(\e^{-s}),\qquad s>0,
+ q(s)=F^{-1}(\EulerE^{-s}),\qquad s>0,
  \label{eq:log-quantile}
 \end{equation}
 is decreasing and convex.
@@ -619,7 +598,7 @@ is decreasing and convex.
 \begin{proof}
 Set $h(x)=\log F(x)$.  By \cref{thm:up-logconcave}, $h$ is increasing and
 concave.  The inverse of an increasing concave function is increasing and
-convex.  Thus $h^{-1}(t)=F^{-1}(\e^t)$ is convex in $t<0$.  Composing with the
+convex.  Thus $h^{-1}(t)=F^{-1}(\EulerE^t)$ is convex in $t<0$.  Composing with the
 affine map $t=-s$ preserves convexity and reverses monotonicity.
 \end{proof}
 
@@ -634,7 +613,7 @@ explicit error bar cannot be globally faithful.
 \label{sec:native-op}
 
 The classical Legendre polynomials are orthogonal for Lebesgue measure on
-$[-1,1]$.  The probability density $w=\Up$ defines a second, intrinsic
+$[-1,1]$.  The probability density $w=\RvachevUp$ defines a second, intrinsic
 orthogonal system.  It is this system, rather than the Legendre expansion of
 $w$ itself, that carries the moment problem, Gaussian quadrature, and the
 continued fraction of the Cauchy transform.
@@ -642,7 +621,7 @@ continued fraction of the Cauchy transform.
 \subsection{Hankel determinants, norms, and Jacobi coefficients}
 Write
 \begin{equation}
- m_k=\int_{-1}^{1}x^k w(x)\dd x,
+ m_k=\int_{-1}^{1}x^k w(x)\Differential x,
  \qquad
  \Delta_N=\det\bigl[m_{j+k}\bigr]_{j,k=0}^{N-1},
  \qquad \Delta_0=1.
@@ -653,7 +632,7 @@ only finitely many roots, while $w$ is positive throughout $(-1,1)$.  Hence
 there is a unique monic polynomial $\pi_n$ of degree $n$ orthogonal to all
 lower powers.  Put
 \begin{equation}
- H_n=\int_{-1}^{1}\pi_n(x)^2w(x)\dd x.
+ H_n=\int_{-1}^{1}\pi_n(x)^2w(x)\Differential x.
  \label{eq:monic-norm}
 \end{equation}
 The standard Gram-determinant argument gives
@@ -679,10 +658,10 @@ rational.
 \end{proposition}
 
 \begin{proof}
-The recurrence \cref{eq:moment-recurrence} gives $m_k\in\Q$.  Thus
-$\Delta_n\in\Q$.  Positivity makes every division in
+The recurrence \cref{eq:moment-recurrence} gives $m_k\in\RationalNumbers$.  Thus
+$\Delta_n\in\RationalNumbers$.  Positivity makes every division in
 \cref{eq:norm-hankel-ratio,eq:monic-recurrence} legitimate, proving
-$H_n,\beta_n\in\Q$.  Starting from $1,x$ in
+$H_n,\beta_n\in\RationalNumbers$.  Starting from $1,x$ in
 \cref{eq:monic-recurrence} then proves coefficientwise rationality of
 $\pi_n$ by induction.
 \end{proof}
@@ -712,7 +691,7 @@ four public definitions---\path{rvachevHankelDetRat},
 \path{rvachevJacobiSubdiagonalRat_pos},
 \path{rvachevJacobiSubdiagonalRat_eq_det_ratio}, and
 \path{rvachevOrthoPolynomialRat_three_term}.  Together they give, at every
-degree over \(\Q\), positive \(\Delta_n\), every coefficient of monic \(\pi_n\),
+degree over \(\RationalNumbers\), positive \(\Delta_n\), every coefficient of monic \(\pi_n\),
 positive \(H_n\), a zero diagonal, positive subdiagonals, exact rational
 orthogonality, the Hankel cross-ratio, the centered recurrence, and all real-cast
 bridges.  The definition \path{rvachevJacobiSubdiagonalRat} is zero-based:
@@ -798,7 +777,7 @@ moments.  It therefore closes entrywise rationality without invoking a Gaunt exp
 for a \path{BoundedFabius} input together with its \path{IsFabius} certificate, the entry,
 matrix, and determinant cast to their analytic up-law counterparts.  The finite rational
 identities themselves require no such analytic input.  The
-determinant is strictly positive over \(\Q\), so the rational norm and zero-based Jacobi
+determinant is strictly positive over \(\RationalNumbers\), so the rational norm and zero-based Jacobi
 cross-ratios are genuine rather than merely totalized identities.  These definitions give
 an exact evaluator route to \(H_4\) and \(\beta_4\).
 
@@ -868,8 +847,8 @@ This is an unusually rigid situation.  The infinite Jacobi matrix
  \label{eq:jacobi-matrix}
 \end{equation}
 has algebraic entries, while its spectral measure at the first basis vector
-is the non-elementary $C^\infty$ law $w(x)\dd x$.  Thus the analytic
-complexity of $\Up$ is encoded in the asymptotic arrangement of exact rational
+is the non-elementary $C^\infty$ law $w(x)\Differential x$.  Thus the analytic
+complexity of $\RvachevUp$ is encoded in the asymptotic arrangement of exact rational
 numbers $\beta_n$.
 
 \subsection{Low-degree certificates}
@@ -938,12 +917,12 @@ For every $n\ge0$ the following procedures agree.
       of the monic $\pi_n$.
 \item Once $\pi_n$ is known, use the norm-producing moment
       \begin{equation}
-       H_n=\int x^n\pi_n(x)w(x)\dd x
+       H_n=\int x^n\pi_n(x)w(x)\Differential x
        \label{eq:norm-producing-moment}
       \end{equation}
       and then $\beta_n=H_n/H_{n-1}$.
 \end{enumerate}
-Method 3 uses only $\bigO(n^2)$ coefficient operations through degree $n$.
+Method 3 uses only $\BigO(n^2)$ coefficient operations through degree $n$.
 \end{proposition}
 
 \begin{proof}
@@ -967,10 +946,10 @@ the real Hankel and squared-integral forms of \(H_4\), and the real Hankel-ratio
 quotient form of \(\beta_4\) as named exact theorems.  Lean still does not
 package all three procedures as one general algorithm, prove their operational
 equivalence exactly as this proposition states it, or certify the
-\(\bigO(n^2)\) operation count.
+\(\BigO(n^2)\) operation count.
 
 The third engine is numerically preferable to expanding
-$\int\pi_n^2\dd\mu$, but it remains severely ill-conditioned in ordinary
+$\int\pi_n^2\Differential\mu$, but it remains severely ill-conditioned in ordinary
 floating-point arithmetic.  Section~\ref{sec:numerics} describes the
 high-precision safeguards used here.
 
@@ -984,14 +963,14 @@ Lambert-$W$/log-square endpoint analysis into global spectral information.
 \subsection{Verification of the Szeg\H{o} condition}
 For an absolutely continuous measure on $[-1,1]$, the Szeg\H{o} condition is
 \begin{equation}
- \int_{-1}^{1}\frac{\log w(x)}{\sqrt{1-x^2}}\dd x>-\infty.
+ \int_{-1}^{1}\frac{\log w(x)}{\sqrt{1-x^2}}\Differential x>-\infty.
  \label{eq:szego-condition}
 \end{equation}
 Only the two endpoints require attention.
 
 \begin{theorem}[The up-law is in the Szeg\H{o} class]
 \label{thm:up-szego}
-The density $w=\Up$ satisfies \cref{eq:szego-condition}.
+The density $w=\RvachevUp$ satisfies \cref{eq:szego-condition}.
 \end{theorem}
 
 \begin{proof}
@@ -1008,14 +987,14 @@ $1-(1-t)^2=t(2-t)\asymp t$.  Hence the negative part of the endpoint
 integral is bounded by a constant multiple of
 \begin{equation}
  \int_0^\varepsilon
-   \frac{1+\log^2(1/t)}{\sqrt t}\dd t<\infty.
+   \frac{1+\log^2(1/t)}{\sqrt t}\Differential t<\infty.
  \label{eq:szego-endpoint-integral}
 \end{equation}
 Evenness handles $x=-1$.
 \end{proof}
 
 The same proof reveals a useful threshold: any endpoint law
-$-\log w(1-t)=\bigO(t^{-\alpha})$ satisfies the Szeg\H{o} condition when
+$-\log w(1-t)=\BigO(t^{-\alpha})$ satisfies the Szeg\H{o} condition when
 $\alpha<1/2$.  The Fabius logarithmic square is much smaller than every such
 power, despite infinite flatness.
 
@@ -1052,7 +1031,7 @@ Let
  \label{eq:joukowski}
 \end{equation}
 where the square root is chosen so that $\sqrt{z^2-1}\sim z$ at infinity.
-Then, locally uniformly on $\C\setminus[-1,1]$,
+Then, locally uniformly on $\ComplexNumbers\setminus[-1,1]$,
 \begin{equation}
  \frac{\pi_{n+1}(z)}{\pi_n(z)}\longrightarrow\frac{\Phi(z)}2.
  \label{eq:ratio-asymptotic}
@@ -1061,7 +1040,7 @@ If $x_{n,1}<\cdots<x_{n,n}$ are the zeros of $\pi_n$, then
 \begin{equation}
  \frac1n\sum_{j=1}^{n}\delta_{x_{n,j}}
  \Longrightarrow
- \frac{\dd x}{\pi\sqrt{1-x^2}}.
+ \frac{\Differential x}{\pi\sqrt{1-x^2}}.
  \label{eq:arcsine-zero-limit}
 \end{equation}
 Moreover,
@@ -1092,7 +1071,7 @@ Szeg\H{o}'s theorem.  Define
  \mathcal C_{\!F}
  =2\pi\exp\left[
    \frac1\pi\int_0^\pi
-      \log\bigl(w(\cos\theta)\sin\theta\bigr)\dd\theta
+      \log\bigl(w(\cos\theta)\sin\theta\bigr)\Differential\theta
  \right].
  \label{eq:fabius-szego-constant}
 \end{equation}
@@ -1141,7 +1120,7 @@ As $N\to\infty$,
 \begin{equation}
  \boxed{
  \Delta_N=\mathcal C_{\!F}^{\,N}
-          2^{-N(N-1)}\exp\bigl(\smallo(N)\bigr).}
+          2^{-N(N-1)}\exp\bigl(\LittleO(N)\bigr).}
  \label{eq:hankel-asymptotic}
 \end{equation}
 In particular,
@@ -1154,12 +1133,12 @@ In particular,
 \begin{proof}
 The Gram identity gives $\Delta_N=\prod_{n=0}^{N-1}H_n$.  From
 \cref{eq:strong-norm},
-$\log H_n=\log\mathcal C_{\!F}-n\log4+\smallo(1)$.  Summation gives
+$\log H_n=\log\mathcal C_{\!F}-n\log4+\LittleO(1)$.  Summation gives
 \begin{align*}
  \log\Delta_N
  &=N\log\mathcal C_{\!F}
-   -\log4\sum_{n=0}^{N-1}n+\smallo(N)\\
- &=N\log\mathcal C_{\!F}-N(N-1)\log2+\smallo(N),
+   -\log4\sum_{n=0}^{N-1}n+\LittleO(N)\\
+ &=N\log\mathcal C_{\!F}-N(N-1)\log2+\LittleO(N),
 \end{align*}
 which is \cref{eq:hankel-asymptotic}.  Divide by $N^2$ and exponentiate to
 obtain \cref{eq:hankel-capacity}.
@@ -1178,7 +1157,7 @@ and define
 \begin{equation}
  \lambda_N(x)
  =\min\left\{
-   \int_{-1}^{1}|P(t)|^2w(t)\dd t:
+   \int_{-1}^{1}|P(t)|^2w(t)\Differential t:
    P\in\mathcal P_{N-1},\ P(x)=1
  \right\}.
  \label{eq:christoffel-variational}
@@ -1211,7 +1190,7 @@ For every real $x$,
  \frac1{v_N(x)^{\mathsf T}M_N^{-1}v_N(x)}.}
  \label{eq:inverse-hankel-christoffel}
 \end{equation}
-In particular, $\lambda_N(x)\in\Q$ whenever $x\in\Q$.
+In particular, $\lambda_N(x)\in\RationalNumbers$ whenever $x\in\RationalNumbers$.
 \end{proposition}
 
 \begin{proof}
@@ -1245,7 +1224,7 @@ positive.  Those hypotheses hold on every compact subinterval of $(-1,1)$.
 For every $x\in(-1,1)$,
 \begin{equation}
  \boxed{
- w(x)=\Up(x)=\lim_{N\to\infty}
+ w(x)=\RvachevUp(x)=\lim_{N\to\infty}
  \frac{N\lambda_N(x)}{\pi\sqrt{1-x^2}}.}
  \label{eq:up-christoffel-reconstruction}
 \end{equation}
@@ -1453,14 +1432,14 @@ Suppose
 converges.  Then
 \begin{equation}
  2M\lambda_{2M}(0)
- =\pi-\frac{\pi^2\mathcal S_F}{M}+\smallo(M^{-1}).
+ =\pi-\frac{\pi^2\mathcal S_F}{M}+\LittleO(M^{-1}).
  \label{eq:christoffel-first-correction}
 \end{equation}
 \end{corollary}
 
 \begin{proof}
 The denominator in \cref{eq:harmonic-mean} is
-$M/\pi+\mathcal S_F+\smallo(1)$.  Expand its reciprocal.
+$M/\pi+\mathcal S_F+\LittleO(1)$.  Expand its reciprocal.
 \end{proof}
 
 The convergence assumed here follows, for example, from the product-error
@@ -1515,12 +1494,12 @@ belong to $(-1,1)$.  Define
 For every polynomial $P$ of degree at most $2N-1$,
 \begin{equation}
  \boxed{
- \int_{-1}^{1}P(x)w(x)\dd x
+ \int_{-1}^{1}P(x)w(x)\Differential x
  =\sum_{j=1}^{N}\omega_{N,j}P(x_{N,j}).}
  \label{eq:gauss-quadrature}
 \end{equation}
 The nodes are algebraic, the weights are positive algebraic numbers, and all
-symmetric sums required to verify \cref{eq:gauss-quadrature} belong to $\Q$.
+symmetric sums required to verify \cref{eq:gauss-quadrature} belong to $\RationalNumbers$.
 \end{theorem}
 
 The first rules are especially simple:
@@ -1541,9 +1520,9 @@ These formulae are useful for integrals involving $F$ because
 $F(x)=w(x-1)$ on $[0,1]$.
 
 \subsection{The Jacobi continued fraction}
-For $z\in\C\setminus[-1,1]$, define
+For $z\in\ComplexNumbers\setminus[-1,1]$, define
 \begin{equation}
- \mathcal R(z)=\int_{-1}^{1}\frac{w(x)}{z-x}\dd x.
+ \mathcal R(z)=\int_{-1}^{1}\frac{w(x)}{z-x}\Differential x.
  \label{eq:cauchy-transform}
 \end{equation}
 At infinity,
@@ -1567,10 +1546,10 @@ The fraction converges locally uniformly off $[-1,1]$.
 Let
 \begin{equation}
  Q_{N-1}(z)=\int_{-1}^{1}
- \frac{\pi_N(z)-\pi_N(x)}{z-x}w(x)\dd x.
+ \frac{\pi_N(z)-\pi_N(x)}{z-x}w(x)\Differential x.
  \label{eq:second-kind-polynomial}
 \end{equation}
-Then $Q_{N-1}\in\Q[z]$ has degree $N-1$ and the $N$th convergent of
+Then $Q_{N-1}\in\RationalNumbers[z]$ has degree $N-1$ and the $N$th convergent of
 \cref{eq:j-fraction} is $Q_{N-1}/\pi_N$.
 
 \begin{theorem}[Gauss--Pad\'e identity and exact error]
@@ -1581,7 +1560,7 @@ The rational function $Q_{N-1}/\pi_N$ is the $[N-1/N]$ Pad\'e approximant of
  \boxed{
  \mathcal R(z)-\frac{Q_{N-1}(z)}{\pi_N(z)}
  =\frac1{\pi_N(z)^2}
-   \int_{-1}^{1}\frac{\pi_N(x)^2}{z-x}w(x)\dd x.}
+   \int_{-1}^{1}\frac{\pi_N(x)^2}{z-x}w(x)\Differential x.}
  \label{eq:pade-exact-error}
 \end{equation}
 For real $z>1$ this error is strictly positive and satisfies
@@ -1599,14 +1578,14 @@ For real $z>1$ this error is strictly positive and satisfies
 From \cref{eq:second-kind-polynomial},
 \begin{equation*}
  \pi_N(z)\mathcal R(z)-Q_{N-1}(z)
- =\int\frac{\pi_N(x)}{z-x}\dd\mu(x).
+ =\int\frac{\pi_N(x)}{z-x}\Differential\mu(x).
 \end{equation*}
 The polynomial
 $(\pi_N(z)-\pi_N(x))/(z-x)$ has degree $N-1$ in $x$, so it is orthogonal to
 $\pi_N(x)$.  Therefore
 \begin{equation*}
- \pi_N(z)\int\frac{\pi_N(x)}{z-x}\dd\mu(x)
- =\int\frac{\pi_N(x)^2}{z-x}\dd\mu(x),
+ \pi_N(z)\int\frac{\pi_N(x)}{z-x}\Differential\mu(x)
+ =\int\frac{\pi_N(x)^2}{z-x}\Differential\mu(x),
 \end{equation*}
 which proves \cref{eq:pade-exact-error}.  Expansion at infinity and
 orthogonality show that the first $2N$ Laurent coefficients agree, giving the
@@ -1639,7 +1618,7 @@ rational error interval.
 The repository proves
 \begin{equation}
  \mathcal R'(z)=2\bigl(\mathcal R(2z+1)-\mathcal R(2z-1)\bigr),
- \qquad z\in\C\setminus[-1,1].
+ \qquad z\in\ComplexNumbers\setminus[-1,1].
  \label{eq:cauchy-renormalization}
 \end{equation}
 Equations \cref{eq:j-fraction,eq:cauchy-renormalization} are complementary:
@@ -1670,16 +1649,16 @@ proves an absolutely and uniformly convergent expansion
 \begin{equation}
  w(x)=\sum_{r=0}^{\infty}c_rP_{2r}(x),
  \qquad
- c_r=\frac{4r+1}{2}\int_{-1}^{1}w(x)P_{2r}(x)\dd x,
+ c_r=\frac{4r+1}{2}\int_{-1}^{1}w(x)P_{2r}(x)\Differential x,
  \label{eq:up-legendre-series}
 \end{equation}
-with $c_r\in\Q$.  Only even degrees occur because $w$ is even.
+with $c_r\in\RationalNumbers$.  Only even degrees occur because $w$ is even.
 
 For $N\ge1$, form the Gram matrix of the first $N$ Legendre polynomials in the
 \emph{up} inner product:
 \begin{equation}
  G_N=\left[
-  \int_{-1}^{1}P_j(x)P_k(x)w(x)\dd x
+  \int_{-1}^{1}P_j(x)P_k(x)w(x)\Differential x
  \right]_{j,k=0}^{N-1}.
  \label{eq:legendre-gram}
 \end{equation}
@@ -1690,7 +1669,7 @@ $\det G_0=1$.
 \subsection{Finite Gaunt expansion}
 The Gaunt integral is
 \begin{equation}
- \int_{-1}^{1}P_j(x)P_k(x)P_\ell(x)\dd x
+ \int_{-1}^{1}P_j(x)P_k(x)P_\ell(x)\Differential x
  =2\begin{pmatrix}j&k&\ell\\0&0&0\end{pmatrix}^{\!2}.
  \label{eq:gaunt-integral}
 \end{equation}
@@ -1842,7 +1821,7 @@ This closes the promised circuit:
  \Pi_M\to\pi,\\
  \lambda_N(x)\to\pi w(x)\sqrt{1-x^2}/N,
  \end{cases}
- \longrightarrow w=\Up\longrightarrow F.
+ \longrightarrow w=\RvachevUp\longrightarrow F.
  \end{gathered}
  \label{eq:closed-spectral-circuit}
 \end{equation}
@@ -1874,10 +1853,10 @@ The program performs two independent calculations.
 \end{enumerate}
 The identity
 \begin{equation}
- H_n=\int x^n\pi_n(x)w(x)\dd x
+ H_n=\int x^n\pi_n(x)w(x)\Differential x
  \label{eq:numerical-norm-identity}
 \end{equation}
-reduces the recurrence to $\bigO(N^2)$ coefficient operations.  Thousands of
+reduces the recurrence to $\BigO(N^2)$ coefficient operations.  Thousands of
 digits are nevertheless necessary because monomial coefficients and moments
 cancel severely at high degree.  A failed longer trial was discarded in full;
 none of its partial files or values are used in this report.
@@ -2054,12 +2033,12 @@ Thus the candidate coefficient $1$ in
 
 \begin{proof}
 Since $d_n\to0$,
-$\log\beta_n=-\log4-4d_n+\bigO(d_n^2)$.  Therefore
+$\log\beta_n=-\log4-4d_n+\BigO(d_n^2)$.  Therefore
 \begin{align*}
  \log\frac{\pi}{\Pi_M}
  &=\sum_{j>M}\bigl(\log\beta_{2j}-\log\beta_{2j-1}\bigr)\\
  &=4\sum_{j>M}(d_{2j-1}-d_{2j})
-   +\smallo\left(\frac{(\log M)^2}{M^2}\right).
+   +\LittleO\left(\frac{(\log M)^2}{M^2}\right).
 \end{align*}
 Using \cref{eq:regular-difference-assumption} at $n=2j$ and
 $\sum_{j>M}j^{-3}\sim(2M^2)^{-1}$ gives
@@ -2088,7 +2067,7 @@ There exist bounded one-periodic functions $A_1,A_0$ such that, with
 $L=\log_2n$,
 \begin{equation}
  n^2\left(\frac14-\beta_n\right)
- =\frac{2}{\pi}L^2+L A_1(\{L\})+A_0(\{L\})+\smallo(1).
+ =\frac{2}{\pi}L^2+L A_1(\{L\})+A_0(\{L\})+\LittleO(1).
  \label{eq:dyadic-ripple}
 \end{equation}
 At least one of $A_1,A_0$ is nonconstant.
@@ -2131,7 +2110,7 @@ is positive.  Consequently
 \end{conjecture}
 
 Conjecture \ref{conj:beta-rate} implies absolute convergence because
-$\pi-\Pi_M=\bigO((\log M)^2/M^2)$.  The computed value at $M=100$ is
+$\pi-\Pi_M=\BigO((\log M)^2/M^2)$.  The computed value at $M=100$ is
 $5.8867251451\ldots$; it should not yet be treated as a reliable estimate of
 the limit.
 
@@ -2198,7 +2177,7 @@ $T_q(t)=\Pr(Y_q\ge1-t)$, then for sufficiently small $t>0$,
 A finite-coordinate small-box estimate, choosing
 $N\asymp\log(1/t)/|\log q|$, gives
 \begin{equation}
- -\log w_q(1-t)=\bigO\bigl(\log^2(1/t)\bigr).
+ -\log w_q(1-t)=\BigO\bigl(\log^2(1/t)\bigr).
  \label{eq:q-endpoint-log-square-bound}
 \end{equation}
 Hence the proof of \cref{thm:up-szego} applies verbatim and $w_q$ belongs to
@@ -2214,7 +2193,7 @@ as a research target rather than used below.
 
 \subsection{A continuum of Jacobi products}
 Let $\beta_n(q)$ be the monic recurrence coefficients for
-$w_q(x)\dd x$.  Rakhmanov and strong Szeg\H{o} theory give
+$w_q(x)\Differential x$.  Rakhmanov and strong Szeg\H{o} theory give
 \begin{equation}
  \beta_n(q)\longrightarrow\frac14
  \label{eq:q-nevai}
@@ -2239,7 +2218,7 @@ polynomials,
 Then \cref{eq:q-center-product} reduces to a Wallis-type product for
 $\pi/2$.  Thus the family continuously deforms the classical Wallis/Legendre
 product into the Fabius product while preserving exact rationality whenever
-$q\in\Q$.
+$q\in\RationalNumbers$.
 
 This interpolation suggests a two-parameter research program: determine the
 $q$-dependence of $w_q(0)$ and of the first correction to
@@ -2403,7 +2382,7 @@ low-degree native polynomials, and the Cauchy renormalization. It now also conta
 the finite scalar-naturality API, the all-degree rational native Jacobi layer,
 the generic/Legendre Gram determinant change-of-basis layers, and executable
 rational Legendre coefficient, entry, matrix, and determinant layers
-catalogued in \cref{sec:native-op}: exact \(\Q\)-valued determinants, polynomial
+catalogued in \cref{sec:native-op}: exact \(\RationalNumbers\)-valued determinants, polynomial
 coefficients, norms, zero diagonal, positive subdiagonals, determinant cross-ratio,
 orthogonality, centered recurrence, and real-cast bridges, with zero-based index
 \(n\) corresponding to \(\beta_{n+1}\).  The polynomial change-of-basis and Legendre
@@ -2484,7 +2463,7 @@ The most striking closed chain is therefore
  \longrightarrow \text{rational moments}
  \longrightarrow \text{rational Jacobi data}\\
  \longrightarrow \pi
- \longrightarrow \text{Christoffel reconstruction of }\Up
+ \longrightarrow \text{Christoffel reconstruction of }\RvachevUp
  \end{gathered}}
  \label{eq:final-chain}
 \end{equation}
@@ -2529,7 +2508,7 @@ Therefore
 and hence
 \begin{equation}
  -\log\Pr(D_q\le t)
- \le N\log(4/t)=\bigO\bigl(\log^2(1/t)\bigr).
+ \le N\log(4/t)=\BigO\bigl(\log^2(1/t)\bigr).
  \label{eq:q-small-ball-log-square}
 \end{equation}
 Conditioning on the first uniform coordinate gives
@@ -2598,8 +2577,8 @@ $P_n/L_n$ and
 \end{equation}
 Formula \cref{eq:fabius-szego-constant} gives
 \begin{equation}
- 2\pi\exp\left(\frac1\pi\int_0^\pi\log\sin\theta\dd\theta\right)
- =2\pi\e^{-\log2}=\pi,
+ 2\pi\exp\left(\frac1\pi\int_0^\pi\log\sin\theta\Differential\theta\right)
+ =2\pi\EulerE^{-\log2}=\pi,
  \label{eq:szego-constant-check}
 \end{equation}
 which matches \cref{eq:legendre-norm-check}.

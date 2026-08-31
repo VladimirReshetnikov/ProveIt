@@ -6,6 +6,7 @@
 \usepackage{microtype}
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs}
+\input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,tabularx,array,multirow}
 \usepackage{graphicx}
 \usepackage{caption}
@@ -78,37 +79,13 @@
   \vspace{0.55em}\hrule\end{minipage}\end{center}\smallskip
 }
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\E}{\mathbb E}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sincpi}{\operatorname{sinc}_{\pi}}
 \newcommand{\MM}{\mathsf M}
 \newcommand{\Dscr}{\mathscr D_{u}}
 \newcommand{\PiD}{\Pi_d}
-\newcommand{\Span}{\operatorname{span}}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\rank}{\operatorname{rank}}
-\newcommand{\diag}{\operatorname{diag}}
 \newcommand{\tr}{\operatorname{tr}}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
-\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
-\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
 \newcommand{\eps}{\varepsilon}
-\newcommand{\qbinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
-\newcommand{\vtwo}{\nu_2}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction/docs}}
 \DeclareMathOperator{\ord}{ord}
-\DeclareMathOperator{\Res}{Res}
 
 \title{\bfseries Closing the Lagrange--Legendre--Rvachev Loop\\[0.45em]
 \large Finite shifted-up synthesis, deconvolved Christoffel--Darboux kernels,\\
@@ -120,7 +97,7 @@ exact oblique projectors, and a rigorous non-flattening theorem}
 \maketitle
 
 \begin{abstract}
-Let $u=\Up$ denote Rvachev's even $C^\infty$ probability density supported on
+Let $u=\RvachevUp$ denote Rvachev's even $C^\infty$ probability density supported on
 $[-1,1]$.  The repository already contains two ingredients that at first look
 like opposite transformations: exact finite synthesis of every polynomial on a
 compact interval from shifted or shifted-and-dilated copies of $u$, and an
@@ -160,12 +137,12 @@ Substitution into the Legendre expansion closes the loop in blockwise form:
 \]
 with absolute and uniform convergence when each finite inner sum is kept as a
 block.  The report then proves that this block structure is essential.  If
-$C=\MM_u(\pi\ii)$, then
+$C=\MM_u(\pi\ImaginaryUnit)$, then
 \[
  Q_{2n}(0)=\frac{2(-1)^n}{C}\frac{(4n)!}{(2n)!(4\pi)^{2n}}
- \left(1+\frac{2\pi^2}{4n-1}+\bigO(n^{-2})\right),
+ \left(1+\frac{2\pi^2}{4n-1}+\BigO(n^{-2})\right),
 \]
-so $|Q_{2n}(0)|^{1/(2n)}\sim2n/(\pi\e)$.  Since $u$ is flat and nonanalytic at
+so $|Q_{2n}(0)|^{1/(2n)}\sim2n/(\pi\EulerE)$.  Since $u$ is flat and nonanalytic at
 its endpoints, the central-atom coefficients $u_nQ_{2n}(0)/4^n$ are unbounded
 in absolute value.  Thus grouping the repeated central copies $u(x)$ is
 impossible, and the flattened atom series is not absolute or unconditional;
@@ -241,8 +218,8 @@ new deductions.
 Status & Result used in this report \\
 \midrule
 Imported &
-$\widehat u(\xi)=\prod_{j\ge0}\sincpi(\xi/2^j)$,
-$\ord_{\xi=m}\widehat u=1+\vtwo(m)$, the probability/MGF model,
+$\widehat u(\xi)=\prod_{j\ge0}\SincPi(\xi/2^j)$,
+$\ord_{\xi=m}\widehat u=1+\TwoAdicValuation(m)$, the probability/MGF model,
 and the Bernoulli cumulants. \\
 Imported &
 Exact polynomial synthesis by $M=2^d$ up-atoms, its physical-scale interval
@@ -253,7 +230,7 @@ convergence of $\sum u_nP_{2n}$, and least-squares optimality of its partial
 sums.\\
 Imported &
 The reciprocal-MGF three-shell asymptotic, including the dominant poles
-$\pm2\pi\ii$ and the constant $C=\MM_u(\pi\ii)$.\\
+$\pm2\pi\ImaginaryUnit$ and the constant $C=\MM_u(\pi\ImaginaryUnit)$.\\
 Task-specific corollary &
 The explicit finite literal-shift formula for every Lagrange cardinal
 $\ell_j$ on $[-1,1]$, including Appell/Bell--Bernoulli coefficients.\\
@@ -281,19 +258,19 @@ theorem.\\
 
 \subsection{The up density, Fourier product, and moment generating function}
 
-Let $u=\Up$ be the even nonnegative $C^\infty$ function supported on $[-1,1]$
-and normalized by $\int_{-1}^1u(x)\dd x=1$.  We use the repository's Fourier
+Let $u=\RvachevUp$ be the even nonnegative $C^\infty$ function supported on $[-1,1]$
+and normalized by $\int_{-1}^1u(x)\Differential x=1$.  We use the repository's Fourier
 convention
 \[
- \widehat f(\xi)=\int_{\R}f(x)\e^{-2\pi\ii\xi x}\dd x,
+ \widehat f(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit\xi x}\Differential x,
  \qquad
- \widehat u(\xi)=\prod_{j=0}^{\infty}\sincpi(\xi/2^j),
+ \widehat u(\xi)=\prod_{j=0}^{\infty}\SincPi(\xi/2^j),
  \quad
- \sincpi(t)=\frac{\sin(\pi t)}{\pi t}.
+ \SincPi(t)=\frac{\sin(\pi t)}{\pi t}.
 \]
 At every nonzero integer $m$,
 \[
- \ord_{\xi=m}\widehat u(\xi)=1+\vtwo(m).
+ \ord_{\xi=m}\widehat u(\xi)=1+\TwoAdicValuation(m).
 \]
 Equivalently, if $V_j$ are independent uniform random variables on $[-1,1]$,
 then
@@ -302,8 +279,8 @@ then
 \]
 has density $u$.  Its moment generating function is
 \begin{equation}
- \MM_u(z)=\E\e^{zZ}
- =\int_{-1}^1\e^{zx}u(x)\dd x
+ \MM_u(z)=\Expectation\EulerE^{zZ}
+ =\int_{-1}^1\EulerE^{zx}u(x)\Differential x
  =\prod_{j\ge1}\frac{\sinh(z/2^j)}{z/2^j}.
  \label{eq:mgf}
 \end{equation}
@@ -335,7 +312,7 @@ terminates exactly.  Its Appell sequence is
 \begin{equation}
  A_n(x):=\Dscr x^n,
  \qquad
- \frac{\e^{xz}}{\MM_u(z)}=\sum_{n=0}^{\infty}A_n(x)\frac{z^n}{n!}.
+ \frac{\EulerE^{xz}}{\MM_u(z)}=\sum_{n=0}^{\infty}A_n(x)\frac{z^n}{n!}.
  \label{eq:appell}
 \end{equation}
 In complete Bell-polynomial notation,
@@ -360,9 +337,9 @@ Let $P$ have degree at most $d$, let $M=2^d$, and put
 \[
  Q=\MM_u(MD)^{-1}P.
 \]
-Then, globally on $\R$,
+Then, globally on $\RealNumbers$,
 \begin{equation}
- P(t)=\frac1M\sum_{k\in\Z}Q(k)
+ P(t)=\frac1M\sum_{k\in\IntegerNumbers}Q(k)
  u\!\left(\frac{t-k}{M}\right),
  \label{eq:global-synthesis}
 \end{equation}
@@ -375,11 +352,11 @@ translates on $[-1,1]$.
 \begin{theorem}[Physical-scale interval synthesis; imported]
 \label{thm:physical}
 Let $p\in\PiD$, let $I=[A,B]$, choose a spacing $h>0$, an origin $x_0$, and an
-integer ratio $m$ satisfying $\vtwo(m)\ge d$.  Put $\rho=mh$ and
+integer ratio $m$ satisfying $\TwoAdicValuation(m)\ge d$.  Put $\rho=mh$ and
 $p_\rho^\sharp=\MM_u(\rho D)^{-1}p$.  Then
 \begin{equation}
  p(x)=\frac1m
- \sum_{k=\ceil{(A-x_0)/h-m}}^{\floor{(B-x_0)/h+m}}
+ \sum_{k=\Ceiling{(A-x_0)/h-m}}^{\Floor{(B-x_0)/h+m}}
  p_\rho^\sharp(x_0+kh)
  u\!\left(\frac{x-x_0-kh}{\rho}\right),
  \qquad x\in[A,B].
@@ -433,7 +410,7 @@ identically.  Removing them gives \eqref{eq:literal-lagrange}.
 \begin{remark}[Atom count versus data complexity]
 The formula displays $4M-1=2^{d+2}-1$ atoms, but the coefficient vector is not
 independent data: it is obtained by sampling one degree-$d$ polynomial
-$\Dscr\ell_j$.  Thus its exact description still requires only $\bigO(d)$
+$\Dscr\ell_j$.  Thus its exact description still requires only $\BigO(d)$
 field elements.  The later endpoint compression reduces the displayed atom
 count to $d+2$ at the cost of a very large common dilation.
 \end{remark}
@@ -452,10 +429,10 @@ the $d$ nodes $\{\xi_r:r\ne j\}$.  Then
 
 \begin{proposition}[Appell form of every cardinal coefficient]
 \label{prop:appell-cardinal}
-For all $t\in\R$,
+For all $t\in\RealNumbers$,
 \begin{align}
  (\Dscr\ell_j)(t)
- &=\sum_{r=0}^{\floor{d/2}}
+ &=\sum_{r=0}^{\Floor{d/2}}
    \gamma_{2r}\frac{\ell_j^{(2r)}(t)}{(2r)!}
  \label{eq:derivative-cardinal}\\
  &=\lambda_j\sum_{n=0}^{d}(-1)^{d-n}e_{d-n}^{(j)}A_n(t).
@@ -506,7 +483,7 @@ visible dashed overlay is a floating-point FFT evaluation.}
 
 Let
 \[
- \mathcal K_d=\{k\in\Z:|k|<2M\},
+ \mathcal K_d=\{k\in\IntegerNumbers:|k|<2M\},
  \qquad q_d=|\mathcal K_d|=4M-1.
 \]
 Define
@@ -517,7 +494,7 @@ Define
  \label{eq:UB-def}
 \end{equation}
 where rows of $U$ are indexed by nodes and columns by $k\in\mathcal K_d$.
-Thus $U\in\R^{(d+1)\times q_d}$ and $B\in\R^{q_d\times(d+1)}$.
+Thus $U\in\RealNumbers^{(d+1)\times q_d}$ and $B\in\RealNumbers^{q_d\times(d+1)}$.
 
 \begin{theorem}[Exact nodal closure and oblique projector; new here]
 \label{thm:UB}
@@ -532,7 +509,7 @@ Consequently
  \qquad
  \mathcal P^2=\mathcal P,
  \qquad
- \rank\mathcal P=\tr\mathcal P=d+1,
+ \RankOperator\mathcal P=\tr\mathcal P=d+1,
  \label{eq:oblique-projector}
 \end{equation}
 with
@@ -662,7 +639,7 @@ Using the standard power expansion of $P_n$ gives an explicit Appell formula.
 \label{prop:Q-expansion}
 For every $n\ge0$,
 \begin{equation}
- Q_n(x)=2^{-n}\sum_{r=0}^{\floor{n/2}}(-1)^r
+ Q_n(x)=2^{-n}\sum_{r=0}^{\Floor{n/2}}(-1)^r
  \frac{(2n-2r)!}{r!(n-r)!(n-2r)!}\,A_{n-2r}(x).
  \label{eq:Q-expansion}
 \end{equation}
@@ -672,7 +649,7 @@ In particular, $Q_n(-x)=(-1)^nQ_n(x)$.
 \begin{proof}
 Apply $\Dscr x^m=A_m(x)$ termwise to
 \[
- P_n(x)=2^{-n}\sum_{r=0}^{\floor{n/2}}(-1)^r
+ P_n(x)=2^{-n}\sum_{r=0}^{\Floor{n/2}}(-1)^r
  \frac{(2n-2r)!}{r!(n-r)!(n-2r)!}x^{n-2r}.
 \]
 Parity follows because $\Dscr$ contains only even derivatives.
@@ -726,7 +703,7 @@ $(n+1)P_{n+1}=(2n+1)xP_n-nP_{n-1}$.
 Let $\xi_0,\ldots,\xi_d$ now be the zeros of $P_{d+1}$ and let
 $\omega_0,\ldots,\omega_d$ be the Gauss--Legendre weights.  Write
 \begin{equation}
- h_n=\int_{-1}^{1}P_n(x)^2\dd x=\frac{2}{2n+1},
+ h_n=\int_{-1}^{1}P_n(x)^2\Differential x=\frac{2}{2n+1},
  \qquad
  K_d(x,y)=\sum_{n=0}^{d}\frac{P_n(x)P_n(y)}{h_n}.
  \label{eq:CD-kernel}
@@ -774,7 +751,7 @@ most $d$.  Its deconvolution is exactly $K_d^\sharp(\,\cdot\,,y)$, so
 \eqref{eq:CD-synthesis}.  Gauss quadrature is exact on products of two
 polynomials of degree at most $d$, hence for $p\in\PiD$,
 \[
- p(x)=\int_{-1}^1K_d(x,y)p(y)\dd y
+ p(x)=\int_{-1}^1K_d(x,y)p(y)\Differential y
  =\sum_{j=0}^{d}\omega_jK_d(x,\xi_j)p(\xi_j).
 \]
 Uniqueness of cardinal interpolation proves \eqref{eq:gauss-cardinal-kernel}.
@@ -788,9 +765,9 @@ Let
 \[
  V_{in}=P_n(\xi_i),
  \qquad
- W=\diag(\omega_0,\ldots,\omega_d),
+ W=\DiagonalOperator(\omega_0,\ldots,\omega_d),
  \qquad
- H=\diag(h_0,\ldots,h_d),
+ H=\DiagonalOperator(h_0,\ldots,h_d),
 \]
 and let $D_{kn}=M^{-1}Q_n(k/M)$ as in \cref{thm:basis-factorization}.
 Discrete orthogonality gives $V^TWV=H$.
@@ -858,7 +835,7 @@ and the normalized atoms
  \label{eq:minimal-atoms}
 \end{equation}
 For each cardinal polynomial there is a unique coefficient vector
-$\widehat B_{:,j}\in\R^{d+2}$ such that
+$\widehat B_{:,j}\in\RealNumbers^{d+2}$ such that
 \begin{equation}
  \ell_j(x)=\sum_{r=0}^{d+1}\widehat B_{rj}\Psi_r(x),
  \qquad -1\le x\le1.
@@ -935,14 +912,14 @@ $\widehat U\widehat B=I$ yield
  =\lambda^Tv.
 \]
 The idempotent $\widehat B\widehat U$ has rank $d+1$, so its complementary
-idempotent has rank one, range $\ker\widehat U=\Span\{v\}$, and left range
-$\ker\widehat B^T=\Span\{\lambda\}$.  The normalization
+idempotent has rank one, range $\ker\widehat U=\SpanOperator\{v\}$, and left range
+$\ker\widehat B^T=\SpanOperator\{\lambda\}$.  The normalization
 $\lambda^Tv=1$ determines the factorization uniquely.
 \end{proof}
 
 \begin{corollary}[Every local up-spline is a polynomial plus one nodal defect]
 \label{cor:functional-defect}
-For $a\in\R^{d+2}$ define
+For $a\in\RealNumbers^{d+2}$ define
 \[
  F_a(x)=\sum_{r=0}^{d+1}a_r\Psi_r(x),
  \qquad
@@ -1039,14 +1016,14 @@ Let $I_d^{\mathrm{CL}}u$ use the Chebyshev--Lobatto nodes
 $\cos(j\pi/d)$.  Since $u\in C^\infty[-1,1]$, Jackson estimates give, for
 every integer $r\ge1$,
 \[
- E_d(u):=\inf_{p\in\Pi_d}\norm{u-p}_\infty=\bigO_r(d^{-r}).
+ E_d(u):=\inf_{p\in\Pi_d}\Norm{u-p}_\infty=\BigO_r(d^{-r}).
 \]
-The Chebyshev--Lobatto Lebesgue constants satisfy $\Lambda_d=\bigO(\log d)$,
+The Chebyshev--Lobatto Lebesgue constants satisfy $\Lambda_d=\BigO(\log d)$,
 so Lebesgue's lemma yields
 \begin{equation}
- \norm{u-I_d^{\mathrm{CL}}u}_\infty
+ \Norm{u-I_d^{\mathrm{CL}}u}_\infty
  \le(1+\Lambda_d)E_d(u)
- =\bigO_N(d^{-N})
+ =\BigO_N(d^{-N})
  \quad\text{for every }N.
  \label{eq:CL-superalg}
 \end{equation}
@@ -1082,7 +1059,7 @@ By \cref{thm:CD-synthesis},
 \begin{equation}
  \boxed{
  \Pi_df(x)=\frac1M\sum_{|k|<2M}
- \left[\int_{-1}^1K_d^\sharp(k/M,y)f(y)\dd y\right]u(x-k/M).}
+ \left[\int_{-1}^1K_d^\sharp(k/M,y)f(y)\Differential y\right]u(x-k/M).}
  \label{eq:projection-loop}
 \end{equation}
 This is the continuous analogue of \eqref{eq:gauss-interpolant-loop}.  The
@@ -1108,7 +1085,7 @@ The canonical repository expansion is
 \begin{equation}
  u(x)=\sum_{n=0}^{\infty}u_nP_{2n}(x),
  \qquad
- u_n=\frac{4n+1}{2}\int_{-1}^1u(x)P_{2n}(x)\dd x,
+ u_n=\frac{4n+1}{2}\int_{-1}^1u(x)P_{2n}(x)\Differential x,
  \label{eq:canonical-Legendre}
 \end{equation}
 with absolute and uniform convergence on $[-1,1]$.  Its coefficients have an
@@ -1147,10 +1124,10 @@ is retained as one block.
 \begin{proof}
 Substitute \eqref{eq:Legendre-atomization} into
 \eqref{eq:canonical-Legendre}.  The $n$th finite block is exactly
-$u_nP_{2n}(x)$.  Since $\norm{P_m}_\infty\le1$ on $[-1,1]$ and the repository
+$u_nP_{2n}(x)$.  Since $\Norm{P_m}_\infty\le1$ on $[-1,1]$ and the repository
 proves $\sum_n|u_n|<\infty$,
 \[
- \sum_{n\ge0}\norm{u_nP_{2n}}_\infty\le\sum_{n\ge0}|u_n|<\infty.
+ \sum_{n\ge0}\Norm{u_nP_{2n}}_\infty\le\sum_{n\ge0}|u_n|<\infty.
 \]
 \end{proof}
 
@@ -1228,19 +1205,19 @@ $1-x^2$, so repeated self-adjointness gives, for every $r\ge1$,
  =\frac1{[m(m+1)]^r}\int_{-1}^{1}(\mathcal L^rf)P_m.
  \label{eq:SL-integration}
 \end{equation}
-By Cauchy--Schwarz and $\norm{P_m}_2^2=2/(2m+1)$, the normalized Legendre
+By Cauchy--Schwarz and $\Norm{P_m}_2^2=2/(2m+1)$, the normalized Legendre
 coefficient $a_m=(2m+1)\int fP_m/2$ satisfies
 \begin{equation}
  |a_m|\le
  \sqrt{\frac{2m+1}{2}}\,
- \frac{\norm{\mathcal L^rf}_2}{[m(m+1)]^r}
- =\bigO_r(m^{1/2-2r}).
+ \frac{\Norm{\mathcal L^rf}_2}{[m(m+1)]^r}
+ =\BigO_r(m^{1/2-2r}).
  \label{eq:Legendre-rate}
 \end{equation}
 For $f=u$, $r$ is arbitrary.  Summing the tail and using
-$\norm{P_m}_\infty\le1$ shows
+$\Norm{P_m}_\infty\le1$ shows
 \begin{equation}
- \norm{u-S_N}_\infty=\bigO_R(N^{-R})
+ \Norm{u-S_N}_\infty=\BigO_R(N^{-R})
  \quad\text{for every }R>0.
  \label{eq:SN-superalg}
 \end{equation}
@@ -1269,17 +1246,17 @@ factorially growing transform as the degree increases.
 
 Let
 \begin{equation}
- C=\MM_u(\pi\ii)
+ C=\MM_u(\pi\ImaginaryUnit)
  =\prod_{j\ge1}\frac{\sin(\pi/2^j)}{\pi/2^j}
  \approx0.553771275888\ldots.
  \label{eq:C-constant}
 \end{equation}
 The nearest poles of $1/\MM_u(z)$ are the simple conjugate pair
-$\pm2\pi\ii$.  The repository proves the sharper three-shell formula; in the
+$\pm2\pi\ImaginaryUnit$.  The repository proves the sharper three-shell formula; in the
 present notation its leading consequence is
 \begin{equation}
  \gamma_{2m}=\frac{2(-1)^m(2m)!}{C(2\pi)^{2m}}
- \left(1+\bigO(m4^{-m})\right).
+ \left(1+\BigO(m4^{-m})\right).
  \label{eq:gamma-asymptotic}
 \end{equation}
 
@@ -1306,19 +1283,19 @@ As $n\to\infty$,
  \boxed{
  Q_{2n}(0)=
  \frac{2(-1)^n}{C}\frac{(4n)!}{(2n)!(4\pi)^{2n}}
- \left(1+\frac{2\pi^2}{4n-1}+\bigO(n^{-2})\right).}
+ \left(1+\frac{2\pi^2}{4n-1}+\BigO(n^{-2})\right).}
  \label{eq:Q0-asymptotic}
 \end{equation}
 Consequently,
 \begin{equation}
  Q_{2n}(0)=\frac{2\sqrt2}{C}(-1)^n
- \left(\frac{2n}{\pi\e}\right)^{2n}
- \left(1+\bigO(n^{-1})\right),
+ \left(\frac{2n}{\pi\EulerE}\right)^{2n}
+ \left(1+\BigO(n^{-1})\right),
  \label{eq:Q0-Stirling}
 \end{equation}
 and
 \begin{equation}
- \abs{Q_{2n}(0)}^{1/(2n)}\sim\frac{2n}{\pi\e}.
+ \AbsoluteValue{Q_{2n}(0)}^{1/(2n)}\sim\frac{2n}{\pi\EulerE}.
  \label{eq:Q0-root}
 \end{equation}
 \end{theorem}
@@ -1334,13 +1311,13 @@ From \eqref{eq:gamma-asymptotic},
 \begin{equation}
  \frac{\gamma_{2n-2}}{\gamma_{2n}}
  =-\frac{(2\pi)^2}{(2n)(2n-1)}
- \left(1+\bigO(n4^{-n})\right).
+ \left(1+\BigO(n4^{-n})\right).
  \label{eq:gamma-ratio-one}
 \end{equation}
 Multiplication gives
 \begin{equation}
  \frac{T_{n,1}}{T_{n,0}}
- =\frac{2\pi^2}{4n-1}+\bigO(4^{-n}).
+ =\frac{2\pi^2}{4n-1}+\BigO(4^{-n}).
  \label{eq:first-correction}
 \end{equation}
 
@@ -1361,10 +1338,10 @@ with finitely many small indices absorbed into $C_1$.  Hence
 \end{align*}
 Indeed, $(2n)!/(2n-j)!\le(2n)^j$, whereas every factor in
 $(4n)!/(4n-2j)!$ is at least $2n$.  Summing over $j\ge2$ gives
-$\bigO(n^{-2})$.  Therefore
+$\BigO(n^{-2})$.  Therefore
 \[
  Q_{2n}(0)=c_{n,0}\gamma_{2n}
- \left(1+\frac{2\pi^2}{4n-1}+\bigO(n^{-2})\right).
+ \left(1+\frac{2\pi^2}{4n-1}+\BigO(n^{-2})\right).
 \]
 Now $c_{n,0}=2^{-2n}\binom{4n}{2n}$, and substitution of
 \eqref{eq:gamma-asymptotic} gives \eqref{eq:Q0-asymptotic}.  Stirling's
@@ -1394,7 +1371,7 @@ Let
 \]
 From \eqref{eq:Q0-Stirling}, the leading logarithmic equation is
 \[
- 2n\log\frac{2n}{\pi\e}=\log X.
+ 2n\log\frac{2n}{\pi\EulerE}=\log X.
 \]
 
 \begin{corollary}[Legendre-deconvolution threshold; new here]
@@ -1403,21 +1380,21 @@ As $X\to\infty$,
 \begin{equation}
  \boxed{
  n_Q(X)=
- \frac{\log X}{2W\!\left(\log X/(\pi\e)\right)}+\bigO(1).}
+ \frac{\log X}{2W\!\left(\log X/(\pi\EulerE)\right)}+\BigO(1).}
  \label{eq:Q-Lambert}
 \end{equation}
 \end{corollary}
 
 \begin{proof}
-Set $H=\log X$ and $w=W(H/(\pi\e))$.  Then
+Set $H=\log X$ and $w=W(H/(\pi\EulerE))$.  Then
 $n_0=H/(2w)$ satisfies
-$2n_0\log(2n_0/(\pi\e))=H$.  The omitted logarithmic prefactor in
-\eqref{eq:Q0-Stirling} changes the continuous solution by $\smallo(1)$, and
-rounding to the least integer contributes $\bigO(1)$.
+$2n_0\log(2n_0/(\pi\EulerE))=H$.  The omitted logarithmic prefactor in
+\eqref{eq:Q0-Stirling} changes the continuous solution by $\LittleO(1)$, and
+rounding to the least integer contributes $\BigO(1)$.
 \end{proof}
 
 The repository's reciprocal-MGF threshold has
-$W(\log X/(2\pi\e))$ instead.  The changed argument records the extra central
+$W(\log X/(2\pi\EulerE))$ instead.  The changed argument records the extra central
 binomial amplification contributed by the leading coefficient of $P_{2n}$.
 
 \subsection{The central atom cannot be grouped}
@@ -1433,11 +1410,11 @@ same atom $u(x)$ for every $n$.  Its scalar coefficient is
 \label{lem:supergeom-analytic}
 If the even Legendre coefficients of a continuous function $f$ satisfy
 $|a_{2n}|^{1/n}\to0$, then its Legendre series converges locally uniformly in
-$\C$ and defines an entire function agreeing with $f$ on $[-1,1]$.
+$\ComplexNumbers$ and defines an entire function agreeing with $f$ on $[-1,1]$.
 \end{lemma}
 
 \begin{proof}
-For every compact $K\subset\C$ there are constants $C_K,R_K$ with
+For every compact $K\subset\ComplexNumbers$ there are constants $C_K,R_K$ with
 $|P_m(z)|\le C_KR_K^m$ for $z\in K$.  Supergeometric decay makes
 $\sum a_{2n}P_{2n}(z)$ uniformly convergent on $K$.  The limit is entire and
 agrees with $f$ on the interval by uniqueness of the Legendre expansion.
@@ -1516,7 +1493,7 @@ Take distinct nodes $1,q,\ldots,q^d$ over a field and set
  =\sum_{s=0}^{d+1}g_sx^s,
  \qquad
  g_s=(-1)^{d+1-s}q^{\binom{d+1-s}{2}}
- \qbinom{d+1}{s}_{q}.
+ \GaussianBinomial{d+1}{s}{q}.
  \label{eq:q-node-product}
 \end{equation}
 Synthetic division gives
@@ -1566,7 +1543,7 @@ all dyadic up-shift rows.
 Two $q$-structures coexist but play different roles:
 \begin{enumerate}
   \item geometric interpolation nodes produce Gaussian coefficients
-  $\qbinom{d+1}{s}_{q}$ in \eqref{eq:q-node-product};
+  $\GaussianBinomial{d+1}{s}{q}$ in \eqref{eq:q-node-product};
   \item dyadic Fourier zero multiplicities produce the annihilator
   $A_d(z)=\prod_{m=1}^{d}[2^m]_z$ in \eqref{eq:annihilator}.
 \end{enumerate}
@@ -1609,7 +1586,7 @@ The repository's $W_{-1}$ endpoint asymptotics invert a small spatial relation
 of the form $x\asymp\lambda2^{-\lambda}$.  Its reciprocal-MGF coefficient
 threshold uses the principal branch $W$ to invert factorial growth.  The new
 threshold \eqref{eq:Q-Lambert} is a third occurrence: the central binomial
-coefficient of $P_{2n}$ shifts the scale from $2\pi\e$ to $\pi\e$ in the
+coefficient of $P_{2n}$ shifts the scale from $2\pi\EulerE$ to $\pi\EulerE$ in the
 argument of $W$.  The common mechanism is inversion of a quantity
 $n\log n$, but the constants encode different geometry.
 
@@ -1647,7 +1624,7 @@ where the tiny negative minimum is roundoff.
 \small
 \begin{tabular}{@{}rrrrrr@{}}
 \toprule
-$d$ & $M$ & atoms & $\max|UB-I|$ & $\norm{BW^{-1/2}}_2$ & max column $\ell^1$ \\
+$d$ & $M$ & atoms & $\max|UB-I|$ & $\Norm{BW^{-1/2}}_2$ & max column $\ell^1$ \\
 \midrule
 1  & 2    & 7    & $1.11\times10^{-16}$ & 1.620 & 2.915 \\
 2  & 4    & 15   & $1.23\times10^{-11}$ & 2.928 & 5.537 \\
@@ -1700,7 +1677,7 @@ $n=50$.  At $n=50$,
 the ratio to the leading pole asymptotic in \eqref{eq:Q0-asymptotic} is
 $1.10433353399$, and the root ratio
 \[
- \frac{|Q_{100}(0)|^{1/100}}{100/(\pi\e)}
+ \frac{|Q_{100}(0)|^{1/100}}{100/(\pi\EulerE)}
  =1.01744592972.
 \]
 The slow approach of the unscaled ratio is consistent with the explicit
@@ -1742,12 +1719,12 @@ pre-asymptotic range.
 
 \begin{problem}[Optimal oversampling versus coefficient growth]
 \label{prob:optimal-ratio}
-The exact reproduction order only requires $\vtwo(m)\ge d$, so one may replace
+The exact reproduction order only requires $\TwoAdicValuation(m)\ge d$, so one may replace
 $M=2^d$ by $m=2^dq$ with odd $q$, or alter the physical radius and spacing
 while preserving their ratio.  Determine the choice minimizing a natural
 stability functional such as
 \[
- \norm{B_mW^{-1/2}}_2,
+ \Norm{B_mW^{-1/2}}_2,
  \qquad
  \max_j\sum_k|B_{m,kj}|,
  \qquad\text{or}\qquad
@@ -1783,7 +1760,7 @@ q-binomial/Appell row lift and could lead to stable barycentric variants.
 \label{prob:Borel}
 Develop a Borel--Laplace summation theory for
 \eqref{eq:formal-Q-generating}.  The reciprocal-MGF pole shells at
-$\pm2\pi\ii n$, with multiplicity $1+\vtwo(n)$, should reappear as a
+$\pm2\pi\ImaginaryUnit n$, with multiplicity $1+\TwoAdicValuation(n)$, should reappear as a
 2-adically stratified singularity set in the Borel plane.  Determine whether a
 canonical lateral sum exists away from the corresponding rays and whether its
 Stokes jumps have a direct Thue--Morse interpretation.
@@ -1813,7 +1790,7 @@ Several concrete experiments appear particularly informative:
   \item search for closed q-hypergeometric simplifications of
   \eqref{eq:q-row-lift};
   \item compare Gauss, Chebyshev, Leja, and geometric nodes through the exact
-  projector norm $\norm{BU}$ and the certificate vector $\lambda$;
+  projector norm $\Norm{BU}$ and the certificate vector $\lambda$;
   \item use interval arithmetic to certify the high-degree asymptotic and
   singular-value experiments.
 \end{itemize}
@@ -1983,7 +1960,7 @@ support,
 
 \bibitem{Rvachev1977}
 V.~A.~Rvachev,
-\newblock On approximation by means of the function $\Up(x)$,
+\newblock On approximation by means of the function $\RvachevUp(x)$,
 \newblock \emph{Doklady Akademii Nauk SSSR} \textbf{233} (1977), no.~2,
 295--296.
 
