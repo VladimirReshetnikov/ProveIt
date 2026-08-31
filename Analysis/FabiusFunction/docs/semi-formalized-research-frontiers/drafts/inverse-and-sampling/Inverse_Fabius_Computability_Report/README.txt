@@ -4,11 +4,12 @@ COMPUTABILITY OF THE INVERSE FABIUS FUNCTION
 Contents
 --------
 inverse_fabius_computability.tex
-    Complete 2743-line LaTeX source of the report.  Its latest synchronized
-    update adds the logarithmic reciprocal-modulus crosswalk described below.
+    Complete 2923-line LaTeX source of the report.  Its synchronized update
+    unites the equality/rigidity, effective-continuity, and logarithmic
+    reciprocal-modulus crosswalks described below.
 
 inverse_fabius_computability.pdf
-    Current 39-page A4 report, produced from the 2743-line source in exactly
+    Current 41-page A4 report, produced from the 2923-line source in exactly
     three serial pdfLaTeX passes.
 
 inverse_fabius_computability_experiments.py
@@ -36,11 +37,12 @@ The structural inverse-modulus portion of the report is crosswalked to:
 
     Analysis/FabiusFunction/Lean/FabiusFunction/InverseModulus.lean
 
-That module covers global fixed-length Fabius increments, reflection and
-one-sided shape, the least endpoint increment, constrained forward
-superadditivity, local and global inverse-gap bounds, global inverse
-subadditivity, attained exact unit-interval and totalized moduli, and the
-exact effective-injectivity threshold.
+That module covers global weak and maximal strict fixed-length Fabius-increment
+shape, reflection, the least endpoint increment and its complete equality
+locus, constrained forward superadditivity with exact equality cases, local and
+global inverse-gap bounds, unit-input inverse-gap rigidity, global inverse
+subadditivity, attained exact unit-interval and totalized moduli, and the exact
+effective-injectivity threshold.
 
 The effective-uniform-continuity portion is exhaustively crosswalked to all
 fourteen public declarations (two definitions and twelve theorems) in:
@@ -78,7 +80,7 @@ target tolerance 1/n.
 
 Render and ledger status
 ------------------------
-The 2743-line source and 39-page A4 PDF are synchronized after exactly three
+The 2923-line source and 41-page A4 PDF are synchronized after exactly three
 serial pdfLaTeX passes.  The final log has no TeX errors, unresolved references,
 rerun request, or overfull box.  All fonts are embedded/subset, Libertinus is
 present, no Type 3 font is used, representative pages were inspected, and all

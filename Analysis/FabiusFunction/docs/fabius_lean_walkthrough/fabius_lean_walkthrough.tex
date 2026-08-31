@@ -859,6 +859,89 @@ at both ends, by
 \nolinkurl{tendsto_deriv_fabiusInv_atTop_at_one_left}.  These are one-sided
 limits through \((0,1)\), not derivative values at the clamping points.
 
+\subsection{Effective dyadic continuity of the noncomputable inverse}
+
+\nolinkurl{FabiusInverseEffectiveContinuity.lean} supplies an explicit
+primitive-recursive modulus for the totalized inverse.  Its two
+natural-valued denominators are
+\[
+ D_{\mathrm{fac}}(r)=2^{\binom{r+1}{2}}(r+1)!,
+ \qquad
+ D_{\Delta}(r)=2^{\binom{r+1}{2}}(r+1)^{r+1}.
+\]
+The first is defined recursively and then identified with the displayed
+factorial form; the second is the elementary box-event denominator from the
+inverse-computability report.  Both functions are primitive recursive and
+\(D_{\mathrm{fac}}(r)\le D_{\Delta}(r)\) for every \(r\).
+
+Fix \(F\) of type \nolinkurl{BoundedFabius} and let \(h_F\) witness
+\nolinkurl{IsFabius} \(F\).  Only the sharp one-term recurrence estimate
+requires \(r>0\):
+\[
+ \frac{1}{
+   2^{\binom r2}(r+1)!(2^r-1)}
+ \le F(2^{-r}).
+\]
+The consequences are total in \(r\), including \(r=0\):
+\[
+ D_{\mathrm{fac}}(r)^{-1}\le F(2^{-r}),
+ \qquad
+ D_{\Delta}(r)^{-1}\le F(2^{-r}).
+\]
+For every real \(u,v\), either denominator \(D\) gives the strict and closed
+inverse moduli
+\[
+\begin{aligned}
+ |u-v|<D(r)^{-1}
+   &\Longrightarrow |F^{-1}(u)-F^{-1}(v)|<2^{-r},\\
+ |u-v|\le D(r)^{-1}
+   &\Longrightarrow |F^{-1}(u)-F^{-1}(v)|\le2^{-r}.
+\end{aligned}
+\]
+Here \(F^{-1}\) means the globally clamped \nolinkurl{fabiusInv}, so no
+unit-interval hypothesis is placed on \(u\) or \(v\).  Taking the stronger
+factorial denominator at \(r=n\), and using \(n<2^n\), proves
+\nolinkurl{fabiusInv_effectivelyUniformContinuous}, namely
+\nolinkurl{EffectivelyUniformContinuous} for that totalized inverse, in the
+repository's positive-precision reciprocal convention.
+
+The module's exhaustive public inventory is two definitions and twelve
+theorems:
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.07\textwidth} >{\raggedright\arraybackslash}p{0.53\textwidth} >{\raggedright\arraybackslash}p{0.33\textwidth}@{}}
+\toprule
+No. & Declaration & Formal content \\
+\midrule
+\endfirsthead
+\toprule
+No. & Declaration & Formal content \\
+\midrule
+\endhead
+1 & \nolinkurl{inverseFabiusFactorialDenominator} & Recursive natural-valued factorial denominator. \\
+2 & \nolinkurl{inverseFabiusFactorialDenominator_eq} & Closed form \(D_{\mathrm{fac}}(r)\). \\
+3 & \nolinkurl{inverseFabiusFactorialDenominator_primrec} & Primitive recursiveness of \(D_{\mathrm{fac}}\). \\
+4 & \nolinkurl{inverseFabiusDeltaDenominator} & Natural-valued report denominator \(D_{\Delta}\). \\
+5 & \nolinkurl{inverseFabiusDeltaDenominator_primrec} & Primitive recursiveness of \(D_{\Delta}\). \\
+6 & \nolinkurl{fabiusReal_inverse_two_pow_one_term_lower_bound} & One-term endpoint bound, under \(h_F\) and \(r>0\). \\
+7 & \nolinkurl{inv_inverseFabiusFactorialDenominator_le_fabiusReal} & Factorial reciprocal bound for every \(r\), under \(h_F\). \\
+8 & \nolinkurl{inverseFabiusFactorialDenominator_le_deltaDenominator} & \(D_{\mathrm{fac}}(r)\le D_{\Delta}(r)\), with no Fabius hypothesis. \\
+9 & \nolinkurl{inv_inverseFabiusDeltaDenominator_le_fabiusReal} & Report reciprocal bound for every \(r\), under \(h_F\). \\
+10 & \nolinkurl{abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_factorialDenominator} & Strict factorial-threshold modulus for all real inputs. \\
+11 & \nolinkurl{abs_fabiusInv_sub_le_inverse_two_pow_of_le_factorialDenominator} & Closed factorial-threshold modulus for all real inputs. \\
+12 & \nolinkurl{abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_deltaDenominator} & Strict report-threshold modulus for all real inputs. \\
+13 & \nolinkurl{abs_fabiusInv_sub_le_inverse_two_pow_of_le_deltaDenominator} & Closed report-threshold modulus for all real inputs. \\
+14 & \nolinkurl{fabiusInv_effectivelyUniformContinuous} & Effective uniform continuity with witness \(D_{\mathrm{fac}}(n)\). \\
+\bottomrule
+\end{longtable}
+
+The boundary is important.  The two denominator definitions and their
+primitive-recursion proofs are executable, but \nolinkurl{fabiusInv} itself
+is still a \emph{noncomputable} order-isomorphism inverse.  An effective
+modulus alone is not a name-producing algorithm.  This module proves neither
+\nolinkurl{SequentiallyComputable} nor a combined
+\nolinkurl{IsComputableRealFunction} theorem for the inverse, and it supplies
+no logarithmic selector \(r(n)\), exact least/ceiling denominator, tolerant
+bisection realizer, or input-bit complexity bound.
+
 \subsection{Generic formal implicit roots versus inverse-Fabius germs}
 \nolinkurl{ImplicitPowerSeries.lean} isolates a purely formal root engine.
 \nolinkurl{FormalImplicitRoot.existsUnique_isRoot_sub_mem} lifts a simple
@@ -4040,6 +4123,7 @@ Module & Role in the development \\
 \nolinkurl{SharpFlatness.lean} & Factorial-strengthened endpoint power bounds for \(F\) and \(\Up\). \\
 \nolinkurl{NowhereAnalytic.lean} & Exact real-analytic loci: off the closed transition supports and nowhere on them. \\
 \nolinkurl{FabiusInverse.lean} & Totalized inverse, order isomorphism on the unit interval, exact positive reciprocal derivative, exact global smoothness locus (continuity everywhere, but differentiability and every positive finite or \(C^\infty\) order exactly off the clamping endpoints), reciprocal-cubic second derivative, midpoint jet and interior curvature loci, strict closed-half curvature, and endpoint quotient/derivative blow-up. \\
+\nolinkurl{FabiusInverseEffectiveContinuity.lean} & Exhaustive two-definition/twelve-theorem effective inverse-continuity layer: primitive-recursive factorial and report denominators, recurrence and endpoint-mass lower bounds, strict and closed global inverse moduli, and \nolinkurl{EffectivelyUniformContinuous}; the inverse remains noncomputable and no sequential realizer or combined computable-function theorem is supplied. \\
 \nolinkurl{ImplicitPowerSeries.lean} & Nonmonic complete-adic lifting and residue-class uniqueness, with arbitrary-base and zero-constant formal implicit-root specializations over power-series rings; it does not construct or analytically realize a Fabius inverse germ. \\
 \nolinkurl{InverseBranch.lean} & Analytic inverse theorem, analytic-density preservation for continuous right-inverse branches, and the complement-interior analyticity condition and conditional Lambert-branch criterion for \nolinkurl{IsElementaryOrInverse}. \\
 \nolinkurl{AlgebraicBranch.lean} & Algebraic-function branch interface used in non-elementarity arguments. \\
