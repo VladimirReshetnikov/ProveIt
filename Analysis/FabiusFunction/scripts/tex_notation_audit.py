@@ -116,7 +116,8 @@ SEMANTIC_COMMANDS = {
     "FourierTwoPi", "FourierAngular", "LaplaceTransformOf",
     "MellinTransformOf", "BinaryDigitSum", "ThueMorseSign",
     "GaussianBinomial", "QPochhammer", "QInteger", "MetricDistance",
-    "EqualInLaw", "ConvergesInLaw",
+    "EqualInLaw", "ConvergesInLaw", "DyadicSigmaField",
+    "DecayOptimizationObjective", "LinearizedDecayObjective",
 }
 
 DECL_RE = re.compile(

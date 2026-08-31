@@ -38,6 +38,8 @@
 \fancyhead[L]{\small Fourier-decay audit, second wave}
 \fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
 \renewcommand{\headrulewidth}{0.4pt}
 
 \titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
@@ -65,18 +67,7 @@
 \crefname{erratum}{erratum}{errata}
 \Crefname{erratum}{Erratum}{Errata}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\e}{\mathrm e}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\vtwo}{v_2}
 \newcommand{\T}{T}
-\newcommand{\Lop}{\mathcal L}
 \newcommand{\Leb}{\operatorname{Leb}}
 \newcommand{\lean}[1]{%
   \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
@@ -101,7 +92,7 @@ and corrections to the first audit --- including to itself}
 
 \begin{abstract}
 Four further documents on the Fourier decay of
-$f(x)=\prod_{n\ge0}\sinc(\pi x/2^n)$ arrived after, and in explicit
+$f(x)=\prod_{n\ge0}\SincRad(\pi x/2^n)$ arrived after, and in explicit
 response to, the comparative audit of the first four
 \cite{audit}.  All four are syntheses of the whole corpus, and all four
 are essentially correct.  This document audits them, verifies their new
@@ -198,19 +189,19 @@ Throughout, $a=\log 2$,
 $E_\kappa(x)=x^{-\kappa}\exp(-(\log x)^2/(2a))$,
 $s(t)=|\sin\pi t|$, $\T t=2t\bmod 1$,
 $P_n(t)=\prod_{j<n}s(\T^jt)$, and
-$(\Lop_qh)(x)=\frac12[\sin^q(\tfrac{\pi x}2)h(\tfrac x2)+
+$(\LaplaceTransformSymbol_qh)(x)=\frac12[\sin^q(\tfrac{\pi x}2)h(\tfrac x2)+
 \cos^q(\tfrac{\pi x}2)h(\tfrac{x+1}2)]$, with Perron roots $\varrho_q$,
 scales $\Lambda_q=\varrho_q^{1/q}$, and exponents
 $\kappa_q=\frac12+\log_2(\pi/\Lambda_q)$.  The two forms of the original
 question \cite{mse-decay} are, for a positive, eventually analytic,
 eventually decreasing gauge $g$,
 \begin{equation}
- \frac1{t-t_0}\int_{t_0}^t\frac{|f(x)|}{g(x)}\dd x\longrightarrow1
+ \frac1{t-t_0}\int_{t_0}^t\frac{|f(x)|}{g(x)}\Differential x\longrightarrow1
  \tag{Q2}\label{eq:Q2}
 \end{equation}
 and the two-sided bounded relaxation of the same ratio
 \begin{equation}
- 0<A\le\frac1{t-t_0}\int_{t_0}^t\frac{|f(x)|}{g(x)}\dd x\le B<\infty.
+ 0<A\le\frac1{t-t_0}\int_{t_0}^t\frac{|f(x)|}{g(x)}\Differential x\le B<\infty.
  \tag{Q3}\label{eq:Q3}
 \end{equation}
 
@@ -297,14 +288,14 @@ adjudicated at forty working digits in \cref{sec:numerics}.
 \label{ssec:obstruction}
 
 Write $g_1=E_{\kappa_1}$ and, on the shell $x=2^k(1+z)$,
-$\alpha_k(\dd z)=\varrho_1^{-(k+1)}W(z)P_{k+1}(z)\dd z$ for the exact
+$\alpha_k(\Differential z)=\varrho_1^{-(k+1)}W(z)P_{k+1}(z)\Differential z$ for the exact
 normalized shell density, so that $\alpha_k\Rightarrow\alpha$ with
 $\alpha$ a finite measure of total mass $A_1$, atomless, fully
 supported, and singular (first audit, Prop.~5.3--Thm.~5.4; re-proved in
 all four drafts).  If \eqref{eq:Q2} holds for $g$, then subtracting the
 asymptotics at $2^k(1+z)$ and $2^k$ forces the \emph{shell linearity}
 \begin{equation}
- 2^{-k}\int_{2^k}^{2^k(1+z)}\frac{|f|}{g}\dd x\longrightarrow z
+ 2^{-k}\int_{2^k}^{2^k(1+z)}\frac{|f|}{g}\Differential x\longrightarrow z
  \quad\text{uniformly in }z\in[0,1].
  \label{eq:shell-linearity}
 \end{equation}
@@ -321,7 +312,7 @@ $z\in[0,1]$.  Then $g$ cannot satisfy \eqref{eq:Q2}.
 \end{theorem}
 
 \emph{Audit.}  The proof is a domination argument: the normalized shell
-measures of $|f|/g$ have the form $q_k\,\dd\alpha_k/\int q_k\dd\alpha_k$
+measures of $|f|/g$ have the form $q_k\,\Differential\alpha_k/\int q_k\Differential\alpha_k$
 with $M^{-1}\le q_k\le m^{-1}$; the denominators are bounded below by
 $M^{-1}(A_1+o(1))$, so every weak limit is dominated by a constant
 multiple of the singular measure $\alpha$ and is therefore singular ---
@@ -371,7 +362,7 @@ detail.
 The within-shell slope of the baseline is enormous.  In shell
 coordinates $x=2^k(1+z)$,
 \begin{equation}
- \frac{\dd}{\dd z}\log g_1\bigl(2^k(1+z)\bigr)
+ \frac{\Differential}{\Differential z}\log g_1\bigl(2^k(1+z)\bigr)
  =-\frac{k+\kappa_1+\log_2(1+z)}{1+z}
  \;\le\;-\frac{k+\kappa_1+1}{2}
  \;=:\;-2b_k,
@@ -392,7 +383,7 @@ room the construction uses.
 \item \textbf{Step equalizer.}  Fix a dyadic partition depth $r$,
 $\delta=2^{-r}$.  On each cell $I_{r,j}$ set
 $q\equiv\delta/\alpha_k(I_{r,j})$.  Then every cell of the reweighted
-measure $q\,\dd\alpha_k$ carries mass exactly $\delta$, so its
+measure $q\,\Differential\alpha_k$ carries mass exactly $\delta$, so its
 cumulative function is within $\delta$ of $z$.  For fixed $r$ the cell
 values and their reciprocals stay bounded as $k\to\infty$, because
 $\alpha_k(I_{r,j})\to\alpha(I_{r,j})>0$ (weak convergence against an
@@ -404,7 +395,7 @@ endpoints so that consecutive shells join as the constant $1$ ($g$
 then equals $g_1$ near every power of two, making the global function
 smooth).  In Document 7, a downward log-jump of size $D$ is spread over
 width $>D/b_k$, keeping $(\log q_k)'\ge-b_k$, so
-$\frac{\dd}{\dd z}\log(g_1/q_k)\le-2b_k+b_k=-b_k<0$; upward jumps of
+$\frac{\Differential}{\Differential z}\log(g_1/q_k)\le-2b_k+b_k=-b_k<0$; upward jumps of
 $q$ only steepen the decrease.  In Document 8, which corrects the
 reciprocal $h=1/g$, the requirement is simply
 $\|(\log r_k)'\|_\infty=o(k)$ against a reciprocal baseline slope
@@ -422,7 +413,7 @@ asymptotic.  (The unbounded relative variation of the cell multipliers
 as $r\to\infty$ is precisely the singularity of $\alpha$ expressing
 itself; the slow refinement keeps it below the slope budget.)
 \item \textbf{Summation.}  With per-shell uniform equalization error
-$\varepsilon_k\to0$, partial-shell integrals are $2^k(z+\bigO(\varepsilon_k))$
+$\varepsilon_k\to0$, partial-shell integrals are $2^k(z+\BigO(\varepsilon_k))$
 and the elementary Toeplitz bound
 $\sum_{j<K}2^j\varepsilon_j=o(2^K)$ gives
 $\int_{t_0}^t|f|/g_0=t+o(t)$ for the smooth gauge $g_0$ --- i.e.,
@@ -430,14 +421,14 @@ $\int_{t_0}^t|f|/g_0=t+o(t)$ for the smooth gauge $g_0$ --- i.e.,
 \item \textbf{Analytic upgrade.}  Both documents invoke the classical
 Carleman-type theorem of Hoischen (in the modern form of
 Gauthier--Kienzle \cite{gauthier-kienzle,hoischen}): for
-$F\in C^1(\R)$ and any continuous $\epsilon>0$ there is an entire $G$,
-real on $\R$, with $|G-F|<\epsilon$ and $|G'-F'|<\epsilon$ everywhere.
+$F\in C^1(\RealNumbers)$ and any continuous $\epsilon>0$ there is an entire $G$,
+real on $\RealNumbers$, with $|G-F|<\epsilon$ and $|G'-F'|<\epsilon$ everywhere.
 Document 7 applies it to $F=\log g_0$ with
 $\epsilon<\min(-F'/2,\,\text{something}\to0)$, obtaining
-$g=\e^G$ zero-free, positive, strictly decreasing, with
+$g=\EulerE^G$ zero-free, positive, strictly decreasing, with
 $g/g_0\to1$; Document 8 applies it to the increasing reciprocal $h$
 with $\epsilon<\frac12\min(h,h',\delta h)$, obtaining
-$\widetilde h>0$, $\widetilde h'>0$ on all of $\R$ and
+$\widetilde h>0$, $\widetilde h'>0$ on all of $\RealNumbers$ and
 $\widetilde h/h\to1$, hence a gauge positive and strictly decreasing on
 all of $(0,\infty)$.  In both cases $g/g_0\to1$ preserves the Ces\`aro
 limit by a split-and-squeeze argument (checked).
@@ -494,7 +485,7 @@ bounded-distortion, or Hardy-field class: \textbf{no}
 gauges: \textbf{yes} (\cref{thm:adaptive}) --- by a shell-adaptive
 construction whose within-shell microstructure necessarily refines
 forever; no fixed formula does it.
-\item Multiplicative repair: with $\dd x/x$ averaging, $A_1^{\log}g_1$
+\item Multiplicative repair: with $\Differential x/x$ averaging, $A_1^{\log}g_1$
 attains the exact unrestricted limit,
 $A_1^{\log}=0.09386063575678126\ldots$ (first audit's theorem; refined
 constant).
@@ -587,7 +578,7 @@ $\psi=-\sum_m\cos(2\pi mt)/m$ gives $\mathcal P\psi=\psi/2$; hence
  \qquad
  S_n=\sum_{j<n}d\circ\T^j-\psi+\psi\circ\T^n,
 \]
-and $\int_0^1d^2=\frac2\pi\int_0^{\pi/2}\log^2(\tan u)\dd u=\pi^2/4$
+and $\int_0^1d^2=\frac2\pi\int_0^{\pi/2}\log^2(\tan u)\Differential u=\pi^2/4$
 \emph{exactly} --- the martingale variance equals the asymptotic
 variance with no covariance corrections.  Audit: the identity
 $2\psi-\psi\circ\T=\log|\tan\pi t|$ is the double-angle formula;
@@ -642,7 +633,7 @@ finite-level profile numerics.
 \emph{Additional items verified.}
 \begin{enumerate}
 \item \textbf{RPF architecture.}  Its Lasota--Yorke constants for
-$\Lop_1$ on Lipschitz functions ($\|\Lop\varphi\|_\infty\le
+$\LaplaceTransformSymbol_1$ on Lipschitz functions ($\|\LaplaceTransformSymbol\varphi\|_\infty\le
 2^{-1/2}\|\varphi\|_\infty$; contraction factor $\sqrt2/4$ for the
 Lipschitz seminorm) are correct, and its lower bound
 $\varrho_1\ge1/\sqrt3>\sqrt2/4$ via Cauchy--Schwarz, the exact
@@ -659,7 +650,7 @@ stronger bounded-distortion framework.
 \item \textbf{Lambert and valley sections.}  The annular-maximum
 theorem (with the same $c=(a/\pi)\sqrt{3/2}$ and
 $-(w^2+2w)/(2a)$ correction) and the two-adic peak law
-$E_{m2^k}\sim H(1)|H(m)|(m2^k)^{-(k+1)}/(\e(k+1))$ agree with
+$E_{m2^k}\sim H(1)|H(m)|(m2^k)^{-(k+1)}/(\EulerE(k+1))$ agree with
 Documents 2/4 and with the first audit's own \S6 (the expansion
 coefficients in its ``expanded'' form were re-derived here from the
 $W$-asymptotics and check out, including the $-\,(1+\log c)\log k/a$
@@ -730,7 +721,7 @@ independent proofs, one mechanism.
 
 Two independent pipelines were used.
 \emph{Spectral} (\nolinkurl{stage7_spectral.py}): Chebyshev--Lobatto
-collocation of $\Lop_q$ at $N=48$ and $N=64$ nodes in 40-digit
+collocation of $\LaplaceTransformSymbol_q$ at $N=48$ and $N=64$ nodes in 40-digit
 arithmetic; leading triple by power iteration on $M$ and $M^{\mathsf T}$;
 $\int h$ by Clenshaw--Curtis on the same nodes;
 $A_1=(\int h)\,\nu(W)$, $B_1=(\int h)\,\nu(W/(1+\cdot))$ with the
@@ -790,7 +781,7 @@ $A_1$: Document 5's thirteen digits, Document 6's fifteen digits
 ($0.09126612413159$) are all correct.  $C_*$, the $q$-spectrum rows,
 Document 6's $\varrho_1$-collocation convergence table (reproduced here
 digit for digit at every $N$), Document 7's variance check
-$\Var(S_{1000})=2464.1112321386$, and all of Document 8's appendix
+$\Variance(S_{1000})=2464.1112321386$, and all of Document 8's appendix
 values except $\kappa_1$ are correct.  The errata:
 
 \begin{erratum}[Document 5's $B_1$ print]
@@ -833,7 +824,7 @@ $\varrho_1=0.66132260206056561507\ldots$ the correct value is
 \]
 i.e.\ the shared sixteen-digit print is wrong in its last two digits
 (correctly rounded: $2.748070014871333$).  The sensitivity is
-$\dd\kappa_1/\dd\varrho_1=-1/(a\varrho_1)\approx-2.18$, so the
+$\Differential\kappa_1/\Differential\varrho_1=-1/(a\varrho_1)\approx-2.18$, so the
 $6\cdot10^{-16}$ truncation of $\varrho_1$ moved $\kappa_1$ by
 $1.3\cdot10^{-15}$ --- harmless everywhere, but worth recording since
 the sixteen-digit value has now been copied through eight documents.
@@ -1086,7 +1077,7 @@ grid caveat but used as ``the'' range; the true range contains
 $[0.91627,1.11814]$ (\cref{ssec:profile-numerics}).
 \item \textbf{$A_1^{\log}=0.0938610$.}  A seventh-significant-figure
 error: the printed value was a finite-$K$ running mean of the shell
-sequence $(\beta_k)$, whose $\bigO(1/K)$ Ces\`aro transient had not
+sequence $(\beta_k)$, whose $\BigO(1/K)$ Ces\`aro transient had not
 died out.  Correct value $A_1^{\log}=0.09386063575678126\ldots$; the
 first audit's own per-mantissa table ($0.093861$ at $y=1$) was already
 consistent with it at its printed precision.
@@ -1255,7 +1246,7 @@ $2m-w(m)$, so
 \]
 with $w$ the binary digit sum (\lean{ThueMorseLobeSign}) --- the same
 Thue--Morse sign that defines the signed global extension
-$F=\sum(-1)^{w(n)}\,\mathrm{up}(\cdot-2n-1)$ governs the lobe signs of
+$\FabiusGlobal=\sum(-1)^{w(n)}\,\RvachevUp(\cdot-2n-1)$ governs the lobe signs of
 its Fourier transform, and it is self-similar under doubling of the
 frequency index (\lean{LobeSignSelfSimilarity});
 \item \textbf{the renormalization identity} $\Phi(z)=\operatorname{sinc}(\pi z)\,\Phi(z/2)$
@@ -1366,7 +1357,7 @@ profile range & $\supseteq[0.91627,1.11814]$ & finite-level; extremes uncertifie
 40-digit collocation: $\varrho_1$ ($N=48,64$), $A_1$, $B_1$,
 $A_1^{\log}$, $C_*$ with the ray-constancy test, the $q$-spectrum,
 Document 6's convergence table, Document 8's constants appendix,
-$\Var(S_{1000})$, and $\int_0^{\pi/2}\log^2\tan=\pi^3/8$.  Writes
+$\Variance(S_{1000})$, and $\int_0^{\pi/2}\log^2\tan=\pi^3/8$.  Writes
 \nolinkurl{constants.json}.
 \item \nolinkurl{verification_scripts/stage8_profile.py} ---
 finite-level profile with integer-exact dyadic argument reduction:

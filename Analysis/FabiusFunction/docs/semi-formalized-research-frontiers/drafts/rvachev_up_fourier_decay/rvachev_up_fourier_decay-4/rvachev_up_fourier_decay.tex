@@ -38,6 +38,8 @@
 \fancyhead[L]{\small Fourier decay of Rvachev's up-function}
 \fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
 \renewcommand{\headrulewidth}{0.4pt}
 
 \titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
@@ -61,28 +63,9 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
 \newcommand{\Phiup}{\Phi}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\sgn}{\operatorname{sgn}}
-\newcommand{\vtwo}{\nu_2}
 \newcommand{\spec}{\operatorname{spr}}
 \newcommand{\esssup}{\operatorname*{ess\,sup}}
-\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
-\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
-\newcommand{\abs}[1]{\left|#1\right|}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\angles}[1]{\left\langle#1\right\rangle}
 
 \newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
 \newenvironment{boxedremark}{%
@@ -118,9 +101,9 @@
 \begin{abstract}
 Let
 \[
- \Phiup(x)=\widehat{\Up}(x)
- =\prod_{h=0}^{\infty}\sinc\!\left(\frac{\pi x}{2^h}\right),
- \qquad \sinc t=\frac{\sin t}{t},
+ \Phiup(x)=\widehat{\RvachevUp}(x)
+ =\prod_{h=0}^{\infty}\SincRad\!\left(\frac{\pi x}{2^h}\right),
+ \qquad \SincRad t=\frac{\sin t}{t},
 \]
 be the Fourier transform of Rvachev's compactly supported up-function.  The phrase
 ``the decay rate of $\Phiup$'' is intrinsically ambiguous: the function vanishes at every
@@ -131,9 +114,9 @@ one nonzero amplitude.
 
 The exact dyadic factorization
 \[
- \abs{\Phiup(2^n y)}
- =\abs{\Phiup(y)}\,\pi^{-n}y^{-n}2^{-n(n+1)/2}
-   \prod_{j=1}^{n}\abs{\sin(\pi 2^j y)},
+ \AbsoluteValue{\Phiup(2^n y)}
+ =\AbsoluteValue{\Phiup(y)}\,\pi^{-n}y^{-n}2^{-n(n+1)/2}
+   \prod_{j=1}^{n}\AbsoluteValue{\sin(\pi 2^j y)},
  \qquad \tfrac12\le y\le1,
 \]
 reduces every natural averaged notion of decay to a weighted doubling-map problem.  We
@@ -147,7 +130,7 @@ the sharp exponents are
 \text{notion of amplitude}&\kappa\\ \hline
 \text{geometric mean / almost-everywhere dyadic ray}
  &\displaystyle \frac32+\frac{\log\pi}{\log2}=3.151496129\ldots\\[0.4em]
-\text{arithmetic mean of }\abs{\Phiup}
+\text{arithmetic mean of }\AbsoluteValue{\Phiup}
  &\displaystyle 2.748070014\ldots\\[0.3em]
 \text{root mean square}
  &\displaystyle \frac{\log(2\pi)}{\log2}=2.651496129\ldots\\[0.5em]
@@ -167,7 +150,7 @@ extremum, whose sign is the signed Thue--Morse value; (ii) the normalized arithm
 have a nonconstant dyadic phase profile, so a plain Cesaro limit does not exist although the
 weaker two-sided boundedness criterion does hold; and (iii) for each fixed $r\ge0$, the
 extremum immediately to the right of $2^{n-1}+r$ satisfies an explicit asymptotic of order
-$\exp(- (\log x)^2/\log2+\bigO(\log x))$, twice the generic log-square rate in the leading
+$\exp(- (\log x)^2/\log2+\BigO(\log x))$, twice the generic log-square rate in the leading
 quadratic term.  These results identify precisely what is correct in the existing decay-rate
 draft: its power $x^{-\log(2\pi)/\log2}$ is the RMS power, not a pointwise or optimal-envelope
 power, and no additional universal power of $\log x$ repairs that mismatch.
@@ -182,12 +165,12 @@ power, and no additional universal power of $\log x$ repairs that mismatch.
 Rvachev's up-function is the even $C^\infty$ probability density supported on $[-1,1]$
 that is closely related to the Fabius distribution function.  Under the Fourier convention
 \[
- \widehat f(\xi)=\int_{\R}f(t)\e^{-2\pi\ii t\xi}\dd t,
+ \widehat f(\xi)=\int_{\RealNumbers}f(t)\EulerE^{-2\pi\ImaginaryUnit t\xi}\Differential t,
 \]
 its transform is the entire function
 \begin{equation}
- \Phiup(z)=\widehat{\Up}(z)
- =\prod_{h=0}^{\infty}\sinc\!\left(\frac{\pi z}{2^h}\right).
+ \Phiup(z)=\widehat{\RvachevUp}(z)
+ =\prod_{h=0}^{\infty}\SincRad\!\left(\frac{\pi z}{2^h}\right).
  \label{eq:Phi-definition}
 \end{equation}
 This formula is classical; see, for example, Arias de Reyna's systematic treatment
@@ -195,7 +178,7 @@ This formula is classical; see, for example, Arias de Reyna's systematic treatme
 
 The motivating questions in \cite{mse-extrema,mse-decay} ask for the amplitude of the
 oscillations and, more specifically, for a positive elementary function $g$ such that an
-average of $\abs{\Phiup}/g$ tends to one or at least stays between two positive constants.
+average of $\AbsoluteValue{\Phiup}/g$ tends to one or at least stays between two positive constants.
 A working draft in the \texttt{ProveIt} repository \cite{decay-draft} proposes a log-normal
 factor together with the power $x^{-\log(2\pi)/\log2}$ and a possible power of $\log x$.
 The log-normal factor is indeed fundamental, but the rest of the conclusion depends on
@@ -205,7 +188,7 @@ There are three separate obstructions to a single pointwise answer.
 
 \begin{enumerate}
 \item The transform has a zero at every nonzero integer, so no asymptotic
-      $\abs{\Phiup(x)}\sim g(x)>0$ can hold on the full real ray.
+      $\AbsoluteValue{\Phiup(x)}\sim g(x)>0$ can hold on the full real ray.
 \item After the deterministic denominator is removed, what remains is a Birkhoff product
       for the doubling map.  Its geometric mean, arithmetic mean, quadratic mean, and
       supremum have different exponential growth rates.
@@ -291,31 +274,31 @@ already a nonzero multiple of $\log x$ in the logarithm of the amplitude.
 
 The compact convergence of \eqref{eq:Phi-definition} follows from
 \[
- \sinc w=1-\frac{w^2}{6}+\bigO(w^4),
+ \SincRad w=1-\frac{w^2}{6}+\BigO(w^4),
  \qquad
- \sum_{h\ge0}\frac{\abs z^2}{4^h}<\infty
+ \sum_{h\ge0}\frac{\AbsoluteValue z^2}{4^h}<\infty
 \]
-uniformly for $z$ in a compact set.  Hence $\Phiup$ is even, real on $\R$, entire, and
+uniformly for $z$ in a compact set.  Hence $\Phiup$ is even, real on $\RealNumbers$, entire, and
 $\Phiup(0)=1$.
 
-Vieta's product $\sinc t=\prod_{j\ge1}\cos(t/2^j)$ and Euler's sine product give two other
+Vieta's product $\SincRad t=\prod_{j\ge1}\cos(t/2^j)$ and Euler's sine product give two other
 useful forms:
 \begin{equation}
  \Phiup(z)
  =\prod_{j=1}^{\infty}\cos^j\!\left(\frac{\pi z}{2^j}\right)
  =\prod_{m=1}^{\infty}
-   \left(1-\frac{z^2}{m^2}\right)^{1+\vtwo(m)}.
+   \left(1-\frac{z^2}{m^2}\right)^{1+\TwoAdicValuation(m)}.
  \label{eq:three-products}
 \end{equation}
 Indeed, in the cosine product the factor with denominator $2^j$ occurs for exactly $j$
 pairs of indices.  In the Weierstrass product, the integer $m$ is a zero of the sinc factor
-at level $h$ precisely when $2^h\mid m$, so its total multiplicity is $1+\vtwo(m)$.
+at level $h$ precisely when $2^h\mid m$, so its total multiplicity is $1+\TwoAdicValuation(m)$.
 
 The elementary one-step scaling law is
 \begin{equation}
- \Phiup(2x)=\sinc(2\pi x)\Phiup(x),
+ \Phiup(2x)=\SincRad(2\pi x)\Phiup(x),
  \qquad
- \Phiup(x)=\sinc(\pi x)\Phiup(x/2).
+ \Phiup(x)=\SincRad(\pi x)\Phiup(x/2).
  \label{eq:one-step-scaling}
 \end{equation}
 
@@ -324,14 +307,14 @@ The elementary one-step scaling law is
 \begin{proposition}[Integer zero divisor]
 \label{prop:zero-divisor}
 The nonzero zeros of $\Phiup$ are exactly the nonzero integers.  The zero at
-$m\in\Z\setminus\{0\}$ has multiplicity
+$m\in\IntegerNumbers\setminus\{0\}$ has multiplicity
 \[
- d(m)=1+\vtwo(\abs m).
+ d(m)=1+\TwoAdicValuation(\AbsoluteValue m).
 \]
-Moreover, if $b\ge1$ is an integer, $d=1+\vtwo(b)$, and $z\uparrow b$, then
+Moreover, if $b\ge1$ is an integer, $d=1+\TwoAdicValuation(b)$, and $z\uparrow b$, then
 \begin{equation}
- \abs{\Phiup(z)}
- =b^{-d}\abs{\Phiup(b/2^d)}(b-z)^d\bigl(1+\bigO(b-z)\bigr).
+ \AbsoluteValue{\Phiup(z)}
+ =b^{-d}\AbsoluteValue{\Phiup(b/2^d)}(b-z)^d\bigl(1+\BigO(b-z)\bigr).
  \label{eq:zero-local-coefficient}
 \end{equation}
 \end{proposition}
@@ -339,16 +322,16 @@ Moreover, if $b\ge1$ is an integer, $d=1+\vtwo(b)$, and $z\uparrow b$, then
 \begin{proof}
 The divisor statement follows immediately from the last product in
 \eqref{eq:three-products}.  For the local coefficient, the vanishing factors are those with
-$0\le h\le\vtwo(b)$.  At $z=b$ each has a simple zero and
+$0\le h\le\TwoAdicValuation(b)$.  At $z=b$ each has a simple zero and
 \[
- \abs{\frac{\dd}{\dd z}\sinc\!\left(\frac{\pi z}{2^h}\right)\Big|_{z=b}}
+ \AbsoluteValue{\frac{\Differential}{\Differential z}\SincRad\!\left(\frac{\pi z}{2^h}\right)\Big|_{z=b}}
  =\frac1b.
 \]
 The product of the remaining factors is
 \[
  \prod_{h=d}^{\infty}
- \abs{\sinc\!\left(\frac{\pi b}{2^h}\right)}
- =\abs{\Phiup(b/2^d)}.
+ \AbsoluteValue{\SincRad\!\left(\frac{\pi b}{2^h}\right)}
+ =\AbsoluteValue{\Phiup(b/2^d)}.
 \]
 Multiplication gives \eqref{eq:zero-local-coefficient}.
 \end{proof}
@@ -360,13 +343,13 @@ Let
 \[
  T(x)=2x\pmod1,
  \qquad
- s(x)=\abs{\sin(\pi x)},
+ s(x)=\AbsoluteValue{\sin(\pi x)},
  \qquad x\in[0,1],
 \]
 and define the lacunary product
 \begin{equation}
  B_n(y):=\prod_{j=1}^{n}s(T^j y)
- =\prod_{j=1}^{n}\abs{\sin(\pi2^j y)}.
+ =\prod_{j=1}^{n}\AbsoluteValue{\sin(\pi2^j y)}.
  \label{eq:Bny}
 \end{equation}
 
@@ -374,20 +357,20 @@ and define the lacunary product
 \label{thm:exact-dyadic-factorization}
 For every $n\ge1$ and $y\in[1/2,1]$,
 \begin{equation}
- \abs{\Phiup(2^n y)}
- =\abs{\Phiup(y)}\,\pi^{-n}y^{-n}2^{-n(n+1)/2}B_n(y).
+ \AbsoluteValue{\Phiup(2^n y)}
+ =\AbsoluteValue{\Phiup(y)}\,\pi^{-n}y^{-n}2^{-n(n+1)/2}B_n(y).
  \label{eq:exact-factorization}
 \end{equation}
 For any real $\kappa$, set
 \begin{equation}
  W_\kappa(y)
- :=\abs{\Phiup(y)}y^\kappa
+ :=\AbsoluteValue{\Phiup(y)}y^\kappa
    \exp\!\left(\frac{(\log y)^2}{2a}\right).
  \label{eq:W-kappa}
 \end{equation}
 Then the following normalized identity is exact:
 \begin{equation}
- \frac{\abs{\Phiup(2^n y)}}{E_\kappa(2^n y)}
+ \frac{\AbsoluteValue{\Phiup(2^n y)}}{E_\kappa(2^n y)}
  =W_\kappa(y)
   \exp\!\left(n(\kappa a-\log\pi-a/2)\right)B_n(y).
  \label{eq:master-normalization}
@@ -397,7 +380,7 @@ Then the following normalized identity is exact:
 \begin{proof}
 Iterating \eqref{eq:one-step-scaling} gives
 \[
- \Phiup(2^n y)=\Phiup(y)\prod_{j=1}^{n}\sinc(\pi2^j y).
+ \Phiup(2^n y)=\Phiup(y)\prod_{j=1}^{n}\SincRad(\pi2^j y).
 \]
 The product of the denominators is
 $\pi^ny^n2^{1+\cdots+n}=\pi^ny^n2^{n(n+1)/2}$, proving
@@ -416,16 +399,16 @@ $W_\kappa$ and the dynamical product $B_n$ contain all remaining information.
 Let $\tau_k=(-1)^{s_2(k)}$, where $s_2(k)$ is the number of ones in the binary expansion of
 $k$.  The finite product identity
 \begin{equation}
- P_n(x):=\prod_{j=0}^{n-1}(1-\e^{2\pi\ii2^jx})
- =\sum_{k=0}^{2^n-1}\tau_k\e^{2\pi\ii kx}
+ P_n(x):=\prod_{j=0}^{n-1}(1-\EulerE^{2\pi\ImaginaryUnit2^jx})
+ =\sum_{k=0}^{2^n-1}\tau_k\EulerE^{2\pi\ImaginaryUnit kx}
  \label{eq:TM-polynomial}
 \end{equation}
 follows by induction.  Taking moduli yields
 \begin{equation}
- \abs{P_n(x)}=2^n\prod_{j=0}^{n-1}s(T^jx).
+ \AbsoluteValue{P_n(x)}=2^n\prod_{j=0}^{n-1}s(T^jx).
  \label{eq:TM-modulus}
 \end{equation}
-Thus the same products governing the decay of $\widehat{\Up}$ are the normalized moduli of
+Thus the same products governing the decay of $\widehat{\RvachevUp}$ are the normalized moduli of
 classical Thue--Morse trigonometric polynomials.  This is the bridge to Gelfond exponents,
 Riesz products, and thermodynamic formalism; see \cite{gelfond,queffelec,fan-schmeling-shen}.
 
@@ -439,10 +422,10 @@ identity.
 \label{lem:dyadic-boundary}
 Let $N=2^{n-1}$ and $0<z<N$.  Then
 \begin{equation}
- \abs{\Phiup(N+z)}
- =\frac{\abs{\Phiup(\tfrac12+z/(2N))}}
-        {\abs{\Phiup(z/(2N))}}
-  \left(\frac{z}{N+z}\right)^n\abs{\Phiup(z)}.
+ \AbsoluteValue{\Phiup(N+z)}
+ =\frac{\AbsoluteValue{\Phiup(\tfrac12+z/(2N))}}
+        {\AbsoluteValue{\Phiup(z/(2N))}}
+  \left(\frac{z}{N+z}\right)^n\AbsoluteValue{\Phiup(z)}.
  \label{eq:dyadic-boundary}
 \end{equation}
 \end{lemma}
@@ -450,15 +433,15 @@ Let $N=2^{n-1}$ and $0<z<N$.  Then
 \begin{proof}
 For $0\le h<n$, the number $N/2^h$ is an integer, so
 \[
- \abs{\sin(\pi(N+z)/2^h)}=\abs{\sin(\pi z/2^h)}.
+ \AbsoluteValue{\sin(\pi(N+z)/2^h)}=\AbsoluteValue{\sin(\pi z/2^h)}.
 \]
 The quotient of the first $n$ sinc factors is therefore $(z/(N+z))^n$ in absolute value.
 Reindexing the remaining tails gives
 \[
- \prod_{h=n}^{\infty}\sinc\!\left(\frac{\pi(N+z)}{2^h}\right)
+ \prod_{h=n}^{\infty}\SincRad\!\left(\frac{\pi(N+z)}{2^h}\right)
  =\Phiup\!\left(\frac12+\frac{z}{2N}\right),
  \quad
- \prod_{h=n}^{\infty}\sinc\!\left(\frac{\pi z}{2^h}\right)
+ \prod_{h=n}^{\infty}\SincRad\!\left(\frac{\pi z}{2^h}\right)
  =\Phiup\!\left(\frac{z}{2N}\right).
 \]
 Combining the finite and infinite parts proves the identity.
@@ -472,17 +455,17 @@ The Weierstrass product gives a short complete proof of the observed one-extremu
 \begin{theorem}[Strict logarithmic concavity between zeros]
 \label{thm:unique-extremum}
 The function $\Phiup$ is positive and strictly decreasing on $(0,1)$.  For every integer
-$m\ge1$, $\abs{\Phiup}$ has exactly one critical point
-$\xi_m\in(m,m+1)$.  It is the strict maximum of $\abs{\Phiup}$ on that interval.  Moreover,
+$m\ge1$, $\AbsoluteValue{\Phiup}$ has exactly one critical point
+$\xi_m\in(m,m+1)$.  It is the strict maximum of $\AbsoluteValue{\Phiup}$ on that interval.  Moreover,
 for every integer $m\ge0$,
 \begin{equation}
- \sgn\Phiup(x)=(-1)^{s_2(m)},\qquad m<x<m+1.
+ \Sign\Phiup(x)=(-1)^{s_2(m)},\qquad m<x<m+1.
  \label{eq:TM-sign}
 \end{equation}
 For $m\ge1$ the signed extremum is therefore
 $\Phiup(\xi_m)=(-1)^{s_2(m)}M_m$, where
 \[
- M_m:=\max_{m\le x\le m+1}\abs{\Phiup(x)}.
+ M_m:=\max_{m\le x\le m+1}\AbsoluteValue{\Phiup(x)}.
 \]
 \end{theorem}
 
@@ -490,11 +473,11 @@ $\Phiup(\xi_m)=(-1)^{s_2(m)}M_m$, where
 Away from the integer zeros, termwise logarithmic differentiation of
 \eqref{eq:three-products} is locally uniform and gives
 \begin{align}
- \frac{\dd}{\dd x}\log\abs{\Phiup(x)}
- &=-2x\sum_{k=1}^{\infty}\frac{1+\vtwo(k)}{k^2-x^2},
+ \frac{\Differential}{\Differential x}\log\AbsoluteValue{\Phiup(x)}
+ &=-2x\sum_{k=1}^{\infty}\frac{1+\TwoAdicValuation(k)}{k^2-x^2},
  \label{eq:log-derivative}\\
- \frac{\dd^2}{\dd x^2}\log\abs{\Phiup(x)}
- &=-2\sum_{k=1}^{\infty}(1+\vtwo(k))
+ \frac{\Differential^2}{\Differential x^2}\log\AbsoluteValue{\Phiup(x)}
+ &=-2\sum_{k=1}^{\infty}(1+\TwoAdicValuation(k))
    \frac{k^2+x^2}{(k^2-x^2)^2}<0.
  \label{eq:strict-log-concavity}
 \end{align}
@@ -507,13 +490,13 @@ contributed by $k=m+1$ forces it to $-\infty$ at the right endpoint.  It therefo
 exactly one zero, and strict log-concavity makes that point the unique maximum of the modulus.
 
 Starting from $\Phiup(0)=1$, crossing the zero at $k$ changes the sign
-$1+\vtwo(k)$ times.  Therefore the sign on $(m,m+1)$ is
+$1+\TwoAdicValuation(k)$ times.  Therefore the sign on $(m,m+1)$ is
 \[
- (-1)^{\sum_{k=1}^{m}(1+\vtwo(k))}.
+ (-1)^{\sum_{k=1}^{m}(1+\TwoAdicValuation(k))}.
 \]
-Legendre's identity $\vtwo(m!)=m-s_2(m)$ gives
+Legendre's identity $\TwoAdicValuation(m!)=m-s_2(m)$ gives
 \[
- \sum_{k=1}^{m}(1+\vtwo(k))=m+\vtwo(m!)=2m-s_2(m),
+ \sum_{k=1}^{m}(1+\TwoAdicValuation(k))=m+\TwoAdicValuation(m!)=2m-s_2(m),
 \]
 whose parity is $s_2(m)$.  This proves \eqref{eq:TM-sign}.
 \end{proof}
@@ -534,18 +517,18 @@ For $q\in(0,\infty)$ and a measurable $H$ on the shell
 $D_n=[2^{n-1},2^n]$, define
 \begin{equation}
  \mathcal M_{q,n}(H)
- :=\left(\frac1{2^{n-1}}\int_{2^{n-1}}^{2^n}\abs{H(x)}^q\dd x\right)^{1/q}
- =\left(2\int_{1/2}^{1}\abs{H(2^ny)}^q\dd y\right)^{1/q}.
+ :=\left(\frac1{2^{n-1}}\int_{2^{n-1}}^{2^n}\AbsoluteValue{H(x)}^q\Differential x\right)^{1/q}
+ =\left(2\int_{1/2}^{1}\AbsoluteValue{H(2^ny)}^q\Differential y\right)^{1/q}.
  \label{eq:shell-Lq}
 \end{equation}
 The endpoint conventions are
 \begin{align}
  \mathcal M_{0,n}(H)
  &:=\exp\!\left(\frac1{2^{n-1}}
-       \int_{2^{n-1}}^{2^n}\log\abs{H(x)}\dd x\right),
+       \int_{2^{n-1}}^{2^n}\log\AbsoluteValue{H(x)}\Differential x\right),
  \label{eq:shell-L0}\\
  \mathcal M_{\infty,n}(H)
- &:=\sup_{2^{n-1}\le x\le2^n}\abs{H(x)}.
+ &:=\sup_{2^{n-1}\le x\le2^n}\AbsoluteValue{H(x)}.
  \label{eq:shell-Linf}
 \end{align}
 The logarithm in \eqref{eq:shell-L0} is locally integrable despite the finitely many zeros.
@@ -572,8 +555,8 @@ For $q>0$, define
 The factor $1/2$ makes this the Lebesgue Perron operator with weight $s^q$.
 For every integrable $f$,
 \begin{equation}
- \int_0^1 f(x)\prod_{j=0}^{n-1}s(T^jx)^q\dd x
- =\int_0^1(\mathcal L_q^n f)(x)\dd x.
+ \int_0^1 f(x)\prod_{j=0}^{n-1}s(T^jx)^q\Differential x
+ =\int_0^1(\mathcal L_q^n f)(x)\Differential x.
  \label{eq:transfer-duality}
 \end{equation}
 
@@ -599,7 +582,7 @@ On a suitable Holder space $C^\alpha[0,1]$, with
 $0<\alpha\le\min(1,q)$, there is a spectral gap and
 \begin{equation}
  \rho_q^{-n}\mathcal L_q^nf
- =\nu_q(f)h_q+\bigO(\vartheta_q^n\norm f_{C^\alpha}),
+ =\nu_q(f)h_q+\BigO(\vartheta_q^n\Norm f_{C^\alpha}),
  \qquad 0<\vartheta_q<1.
  \label{eq:RPF-convergence}
 \end{equation}
@@ -634,7 +617,7 @@ More explicitly, with
 \]
 and the normalization in \Cref{prop:RPF},
 \begin{equation}
- A_q^q=\left(\int_0^1h_q(x)\dd x\right)\nu_q(\widetilde W_q).
+ A_q^q=\left(\int_0^1h_q(x)\Differential x\right)\nu_q(\widetilde W_q).
  \label{eq:Aq}
 \end{equation}
 The number $\Lambda_q$ is nondecreasing in $q$, and therefore $\kappa_q$ is nonincreasing.
@@ -648,7 +631,7 @@ Raise \eqref{eq:master-normalization} to the $q$th power, use
  &=\exp\!\left(qn(\kappa a-\log\pi-a/2)\right)\\
  &\quad\times\int_0^1
  W_\kappa\!\left(\frac{x+1}{2}\right)^q
- \prod_{j=0}^{n-1}s(T^jx)^q\dd x.
+ \prod_{j=0}^{n-1}s(T^jx)^q\Differential x.
 \end{align*}
 By \eqref{eq:transfer-duality} and \eqref{eq:RPF-convergence}, the integral equals
 \[
@@ -681,7 +664,7 @@ At the sharp power, the required logarithmic exponent is $p=0$.
 The $q=0$ endpoint is especially simple because Lebesgue measure is invariant under the
 doubling map and
 \begin{equation}
- \int_0^1\log\sin(\pi x)\dd x=-\log2=-a.
+ \int_0^1\log\sin(\pi x)\Differential x=-\log2=-a.
  \label{eq:log-sine-integral}
 \end{equation}
 
@@ -697,7 +680,7 @@ Then
 \begin{equation}
  \mathcal M_{0,n}\!\left(\frac{\Phiup}{E_{\kappa_0}}\right)
  =\exp\!\left(\int_0^1
-    \log W_{\kappa_0}\!\left(\frac{x+1}{2}\right)\dd x\right)
+    \log W_{\kappa_0}\!\left(\frac{x+1}{2}\right)\Differential x\right)
  \label{eq:exact-geometric-mean}
 \end{equation}
 for every $n\ge1$.  In particular, the normalized shell geometric mean is not merely
@@ -720,14 +703,14 @@ The same exponent governs almost every fixed dyadic phase.
 \label{cor:typical-ray}
 For Lebesgue-a.e. $y\in[1/2,1]$,
 \begin{equation}
- \log\abs{\Phiup(2^ny)}
+ \log\AbsoluteValue{\Phiup(2^ny)}
  =-\frac{(\log(2^ny))^2}{2a}
   -\kappa_0\log(2^ny)+o(n).
  \label{eq:typical-ray}
 \end{equation}
 Equivalently,
 \[
- \abs{\Phiup(2^ny)}=E_{\kappa_0}(2^ny)\e^{o(n)}.
+ \AbsoluteValue{\Phiup(2^ny)}=E_{\kappa_0}(2^ny)\EulerE^{o(n)}.
 \]
 \end{corollary}
 
@@ -765,11 +748,11 @@ Its operator norm on $C[0,1]$ is at most $1/2$, so
 There is also a completely finite Fourier proof.  Parseval applied to
 \eqref{eq:TM-polynomial} gives
 \[
- \int_0^1\abs{P_n(x)}^2\dd x=2^n,
+ \int_0^1\AbsoluteValue{P_n(x)}^2\Differential x=2^n,
 \]
 while \eqref{eq:TM-modulus} gives
 \begin{equation}
- \int_0^1\prod_{j=0}^{n-1}s(T^jx)^2\dd x=2^{-n}.
+ \int_0^1\prod_{j=0}^{n-1}s(T^jx)^2\Differential x=2^{-n}.
  \label{eq:exact-L2-product}
 \end{equation}
 
@@ -875,7 +858,7 @@ and have no zeros on $[0,1]$.  A compact exact-arithmetic verification is includ
 By \Cref{thm:Lq-spectrum}, there is $A_1>0$ such that
 \begin{equation}
  2\int_{1/2}^{1}
- \frac{\abs{\Phiup(2^ny)}}{E_{\kappa_1}(2^ny)}\dd y
+ \frac{\AbsoluteValue{\Phiup(2^ny)}}{E_{\kappa_1}(2^ny)}\Differential y
  \longrightarrow A_1.
  \label{eq:L1-shell-mean}
 \end{equation}
@@ -884,7 +867,7 @@ Therefore the choice
  g_1(x):=A_1E_{\kappa_1}(x)
  \label{eq:g1}
 \end{equation}
-makes the mean of $\abs{\Phiup}/g_1$ on each dyadic shell tend to one.  This gives the
+makes the mean of $\AbsoluteValue{\Phiup}/g_1$ on each dyadic shell tend to one.  This gives the
 precise answer to the natural shell version of the question in \cite{mse-decay}.
 
 It also answers the weaker full-ray boundedness question.
@@ -895,7 +878,7 @@ For every fixed $t_0>0$, there are constants $0<c<C<\infty$ such that, for all s
 large $t$,
 \begin{equation}
  c<\frac1{t-t_0}\int_{t_0}^{t}
- \frac{\abs{\Phiup(x)}}{E_{\kappa_1}(x)}\dd x<C.
+ \frac{\AbsoluteValue{\Phiup(x)}}{E_{\kappa_1}(x)}\Differential x<C.
  \label{eq:Cesaro-boundedness}
 \end{equation}
 After multiplying $E_{\kappa_1}$ by $A_1$, the same average tends to one along the dyadic
@@ -926,7 +909,7 @@ Normalize $h_1,\nu_1$ as in \Cref{prop:RPF}, and put
  \quad 0\le z\le1.
  \label{eq:phase-distribution}
 \]
-The measure $f_1\,\dd\nu_1$ is non-atomic, so $\mathscr F$ is continuous.  Here is a
+The measure $f_1\,\Differential\nu_1$ is non-atomic, so $\mathscr F$ is continuous.  Here is a
 short verification.  The endpoint atoms of $\nu_1$ vanish because the corresponding
 transfer weights vanish.  For $z\in(0,1)\setminus\{1/2\}$, the eigenmeasure equation gives
 \[
@@ -936,7 +919,7 @@ transfer weights vanish.  For $z\in(0,1)\setminus\{1/2\}$, the eigenmeasure equa
 remaining atom would generate forward atoms whose masses grow by at least the factor
 $2\rho_1>1$ at every step.  A periodic orbit gives an immediate contradiction, and a
 nonperiodic orbit would produce masses exceeding the finite total mass.  Thus $\nu_1$, and
-therefore $f_1\,\dd\nu_1$, has no atoms.
+therefore $f_1\,\Differential\nu_1$, has no atoms.
 
 \begin{theorem}[Dyadic phase limit]
 \label{thm:phase-limit}
@@ -944,7 +927,7 @@ For every $y\in[1/2,1]$ and every fixed $t_0>0$,
 \begin{equation}
  \lim_{n\to\infty}
  \frac1{2^ny-t_0}\int_{t_0}^{2^ny}
- \frac{\abs{\Phiup(x)}}{A_1E_{\kappa_1}(x)}\dd x
+ \frac{\AbsoluteValue{\Phiup(x)}}{A_1E_{\kappa_1}(x)}\Differential x
  =\mathscr P(y):=\frac{1+\mathscr F(2y-1)}{2y}.
  \label{eq:phase-limit}
 \end{equation}
@@ -957,7 +940,7 @@ Cesaro limit for the natural elementary scale $A_1E_{\kappa_1}$ does not exist.
 The spectral decomposition gives, for $z\in[0,1]$,
 \[
  \rho_1^{-n}\int_0^z f_1(x)
- \prod_{j=0}^{n-1}s(T^jx)\dd x
+ \prod_{j=0}^{n-1}s(T^jx)\Differential x
  \longrightarrow
  \left(\int_0^1h_1\right)\nu_1(f_1\mathbf1_{[0,z]}).
 \]
@@ -985,7 +968,7 @@ On the positive invariant support of $r$, iteration gives
 For Lebesgue-a.e. $x$, Birkhoff's theorem makes the logarithmic growth rate of the right
 side $\log(2\rho_1)>0$.  On the other hand, for any $r\in L^1$ and any $\epsilon>0$,
 Markov's inequality and Borel--Cantelli imply
-$r(T^nx)\le\e^{\epsilon n}$ eventually for almost every $x$.  Choosing
+$r(T^nx)\le\EulerE^{\epsilon n}$ eventually for almost every $x$.  Choosing
 $0<\epsilon<\log(2\rho_1)$ is a contradiction.  Thus $\nu_1$ is singular, and multiplying
 it by the continuous function $f_1$ leaves it singular.  Hence its normalized distribution
 $\mathscr F$ cannot equal $z$, the distribution function of Lebesgue measure.  But
@@ -1012,7 +995,7 @@ The $L^\infty$ numerator rate can be proved by a sharp elementary inequality.  P
 
 \begin{lemma}[Sharp two-step logarithmic inequality]
 \label{lem:sharp-sine-inequality}
-For every $x\in\R$,
+For every $x\in\RealNumbers$,
 \begin{equation}
  \frac23\log s(x)+\frac13\log s(Tx)\le\log\lambda,
  \label{eq:weighted-log-inequality}
@@ -1028,7 +1011,7 @@ Cubing the desired inequality gives
 \]
 With $\theta=\pi x$ and $u=\sin^2\theta$,
 \[
- s(x)^2s(Tx)=2\abs{\sin^3\theta\cos\theta},
+ s(x)^2s(Tx)=2\AbsoluteValue{\sin^3\theta\cos\theta},
 \]
 whose square is $4u^3(1-u)$.  The maximum of $u^3(1-u)$ on $[0,1]$ is $27/256$, attained
 at $u=3/4$.  Therefore the maximum of the original expression is
@@ -1045,7 +1028,7 @@ For every $n\ge1$,
 \end{equation}
 Consequently
 \begin{equation}
- \lim_{n\to\infty}\norm{\prod_{j=0}^{n-1}s\circ T^j}_{\infty}^{1/n}
+ \lim_{n\to\infty}\Norm{\prod_{j=0}^{n-1}s\circ T^j}_{\infty}^{1/n}
  =\lambda=\frac{\sqrt3}{2}.
  \label{eq:Gelfond-rate}
 \end{equation}
@@ -1087,13 +1070,13 @@ Define
 \end{equation}
 Then there is a constant $C<\infty$ such that
 \begin{equation}
- \abs{\Phiup(x)}\le C E_{\kappa_\infty}(x),
+ \AbsoluteValue{\Phiup(x)}\le C E_{\kappa_\infty}(x),
  \qquad x\ge1.
  \label{eq:uniform-envelope}
 \end{equation}
 This exponent is sharp.  In fact, for every $n\ge0$,
 \begin{equation}
- \abs{\Phiup(2^n\cdot2/3)}
+ \AbsoluteValue{\Phiup(2^n\cdot2/3)}
  =C_*E_{\kappa_\infty}(2^n\cdot2/3),
  \label{eq:exact-peak-ray}
 \end{equation}
@@ -1113,7 +1096,7 @@ In \eqref{eq:master-normalization}, the definition of $\kappa_\infty$ makes
 After the substitution $x=Ty$, the product is of the form bounded in
 \eqref{eq:Bn-uniform}; therefore
 \[
- \frac{\abs{\Phiup(2^ny)}}{E_{\kappa_\infty}(2^ny)}
+ \frac{\AbsoluteValue{\Phiup(2^ny)}}{E_{\kappa_\infty}(2^ny)}
  \le\lambda^{-1}\max_{1/2\le y\le1}W_{\kappa_\infty}(y).
 \]
 This proves the uniform upper bound.  At $y=2/3$, the orbit alternates between $2/3$ and
@@ -1123,16 +1106,16 @@ $1/3$, so $B_n(2/3)=\lambda^n$ exactly.  Equation
 
 \begin{corollary}[Sharp smoothness class]
 \label{cor:superpoly-subexp}
-For every $M>0$, $\Phiup(x)=\bigO(x^{-M})$ as $x\to\infty$.  On the other hand, for every
-$c>0$, $\e^{cx}\abs{\Phiup(x)}$ is unbounded.  Thus the transform decays faster than every
+For every $M>0$, $\Phiup(x)=\BigO(x^{-M})$ as $x\to\infty$.  On the other hand, for every
+$c>0$, $\EulerE^{cx}\AbsoluteValue{\Phiup(x)}$ is unbounded.  Thus the transform decays faster than every
 power but not at any fixed exponential rate.
 \end{corollary}
 
 \begin{proof}
 The first statement follows from \eqref{eq:uniform-envelope}, because the negative
 quadratic in $\log x$ dominates $-M\log x$.  The exact peak ray
-\eqref{eq:exact-peak-ray} decays only like $\exp(-\bigO((\log x)^2))$, which is much larger
-than $\e^{-cx}$ along that subsequence.
+\eqref{eq:exact-peak-ray} decays only like $\exp(-\BigO((\log x)^2))$, which is much larger
+than $\EulerE^{-cx}$ along that subsequence.
 \end{proof}
 
 \section{Exceptional extrema near dyadic boundaries}
@@ -1148,27 +1131,27 @@ Fix an integer $r\ge0$, and put
 \[
  b:=r+1,
  \qquad
- d:=1+\vtwo(b),
+ d:=1+\TwoAdicValuation(b),
  \qquad
  N:=2^{n-1}.
 \]
 Let $\xi_{N+r}$ be the unique critical point in $(N+r,N+r+1)$ and
-$M_{N+r}=\abs{\Phiup(\xi_{N+r})}$.  Then, as $n\to\infty$,
+$M_{N+r}=\AbsoluteValue{\Phiup(\xi_{N+r})}$.  Then, as $n\to\infty$,
 \begin{align}
  \xi_{N+r}
  &=N+b-\frac{db}{n}+o(n^{-1}),
  \label{eq:valley-location}\\
  M_{N+r}
  &\sim
- \abs{\Phiup(1/2)\Phiup(b/2^d)}
+ \AbsoluteValue{\Phiup(1/2)\Phiup(b/2^d)}
  \left(\frac bN\right)^n
- \left(\frac d{\e n}\right)^d.
+ \left(\frac d{\EulerE n}\right)^d.
  \label{eq:valley-amplitude}
 \end{align}
 In particular,
 \begin{equation}
  \log M_{N+r}
- =-\frac{(\log N)^2}{\log2}+\bigO(\log N).
+ =-\frac{(\log N)^2}{\log2}+\BigO(\log N).
  \label{eq:valley-log-rate}
 \end{equation}
 The leading quadratic coefficient in \eqref{eq:valley-log-rate} is twice the coefficient in
@@ -1179,9 +1162,9 @@ $E_\kappa$.
 Write $x=N+z$, $r<z<b$, in the exact boundary identity
 \eqref{eq:dyadic-boundary}.  Uniformly for $z\in[r,b]$,
 \begin{equation}
- \frac{\abs{\Phiup(\tfrac12+z/(2N))}}
-      {\abs{\Phiup(z/(2N))}}
- \longrightarrow\abs{\Phiup(1/2)},
+ \frac{\AbsoluteValue{\Phiup(\tfrac12+z/(2N))}}
+      {\AbsoluteValue{\Phiup(z/(2N))}}
+ \longrightarrow\AbsoluteValue{\Phiup(1/2)},
  \qquad
  \left(1+\frac zN\right)^{-n}\longrightarrow1,
  \label{eq:valley-uniform-factors}
@@ -1189,47 +1172,47 @@ Write $x=N+z$, $r<z<b$, in the exact boundary identity
 because $n/N\to0$.  Hence
 \begin{equation}
  M_{N+r}
- =\abs{\Phiup(1/2)}N^{-n}
-   \max_{r\le z\le b}\bigl(z^n\abs{\Phiup(z)}\bigr)(1+o(1)).
+ =\AbsoluteValue{\Phiup(1/2)}N^{-n}
+   \max_{r\le z\le b}\bigl(z^n\AbsoluteValue{\Phiup(z)}\bigr)(1+o(1)).
  \label{eq:valley-reduced-max}
 \end{equation}
 
 By \eqref{eq:zero-local-coefficient}, as $z\uparrow b$,
 \[
- \abs{\Phiup(z)}
- =D_b(b-z)^d(1+\bigO(b-z)),
+ \AbsoluteValue{\Phiup(z)}
+ =D_b(b-z)^d(1+\BigO(b-z)),
  \qquad
- D_b=b^{-d}\abs{\Phiup(b/2^d)}.
+ D_b=b^{-d}\AbsoluteValue{\Phiup(b/2^d)}.
 \]
 Any fixed region $z\le b-\delta$ is exponentially negligible relative to $b^n$, so the
 maximum lies in a shrinking neighborhood of $b$.  Set
 $u=n(b-z)/b$.  Uniformly for bounded $u$,
 \[
- z^n\abs{\Phiup(z)}
+ z^n\AbsoluteValue{\Phiup(z)}
  =D_b b^{n+d}n^{-d}\,u^d\left(1-\frac un\right)^n(1+o(1))
  \longrightarrow
- D_b b^{n+d}n^{-d}u^d\e^{-u}.
+ D_b b^{n+d}n^{-d}u^d\EulerE^{-u}.
 \]
-The function $u^d\e^{-u}$ has its unique maximum at $u=d$, with value $d^d\e^{-d}$.
+The function $u^d\EulerE^{-u}$ has its unique maximum at $u=d$, with value $d^d\EulerE^{-d}$.
 Standard localization of the maximum therefore gives
 \[
  b-z_{n,r}\sim\frac{db}{n}
 \]
 and
 \[
- \max z^n\abs{\Phiup(z)}
- \sim D_b b^{n+d}n^{-d}d^d\e^{-d}.
+ \max z^n\AbsoluteValue{\Phiup(z)}
+ \sim D_b b^{n+d}n^{-d}d^d\EulerE^{-d}.
 \]
-Insert $D_b=b^{-d}\abs{\Phiup(b/2^d)}$ into
+Insert $D_b=b^{-d}\AbsoluteValue{\Phiup(b/2^d)}$ into
 \eqref{eq:valley-reduced-max} to obtain \eqref{eq:valley-amplitude}; the location statement
 is \eqref{eq:valley-location}.  Finally,
-$-n\log N=-(\log N)^2/a+\bigO(\log N)$, proving
+$-n\log N=-(\log N)^2/a+\BigO(\log N)$, proving
 \eqref{eq:valley-log-rate}.
 \end{proof}
 
 For example, in the first interval after $N=2^{n-1}$, $r=0$, $b=d=1$, and
 \begin{equation}
- M_N\sim\frac{\Phiup(1/2)^2}{\e n}N^{-n},
+ M_N\sim\frac{\Phiup(1/2)^2}{\EulerE n}N^{-n},
  \qquad
  \xi_N=N+1-\frac1n+o(n^{-1}).
  \label{eq:first-dyadic-valley}
@@ -1241,7 +1224,7 @@ $\Phiup(1/2)=0.553771275888810\ldots$.
 
 \begin{corollary}[The upper envelope is sharp but not two-sided]
 \label{cor:extrema-limsup-liminf}
-For $M_m=\max_{[m,m+1]}\abs{\Phiup}$,
+For $M_m=\max_{[m,m+1]}\AbsoluteValue{\Phiup}$,
 \begin{equation}
  0<\limsup_{m\to\infty}\frac{M_m}{E_{\kappa_\infty}(m)}<\infty,
  \qquad
@@ -1254,14 +1237,14 @@ approach one nonzero amplitude.
 
 \begin{proof}
 The upper bound follows from \eqref{eq:uniform-envelope}.  Let
-$x_n=2^n(2/3)$ and $m_n=\floor{x_n}$.  The local maximum in the containing unit interval is
-at least $\abs{\Phiup(x_n)}$, and \eqref{eq:exact-peak-ray} gives a positive lower bound
+$x_n=2^n(2/3)$ and $m_n=\Floor{x_n}$.  The local maximum in the containing unit interval is
+at least $\AbsoluteValue{\Phiup(x_n)}$, and \eqref{eq:exact-peak-ray} gives a positive lower bound
 after division by $E_{\kappa_\infty}(m_n)$; changing the argument by less than one changes
 $E_{\kappa_\infty}$ by a factor tending to one.  This proves the positive limsup.
 
 For the liminf, take $m=N+r$ with fixed $r$.  Comparing
 \eqref{eq:valley-log-rate} with
-$\log E_{\kappa_\infty}(N)=-(\log N)^2/(2a)+\bigO(\log N)$ shows that the quotient tends to
+$\log E_{\kappa_\infty}(N)=-(\log N)^2/(2a)+\BigO(\log N)$ shows that the quotient tends to
 zero.
 \end{proof}
 
@@ -1277,17 +1260,17 @@ Suppose $N=2^{n-1}$, $z=z_n=o(N)$, and $z_n\to\infty$.  From
 \eqref{eq:dyadic-boundary}, provided the tail ratio remains bounded away from zero and
 infinity,
 \begin{equation}
- \log\abs{\Phiup(N+z_n)}
- =\log\abs{\Phiup(z_n)}+n\log\frac{z_n}{N}+o(n).
+ \log\AbsoluteValue{\Phiup(N+z_n)}
+ =\log\AbsoluteValue{\Phiup(z_n)}+n\log\frac{z_n}{N}+o(n).
  \label{eq:intermediate-master}
 \end{equation}
 If $\log z_n\sim\alpha\log N$ with $0\le\alpha<1$ and $z_n$ itself follows a typical
 fixed-phase decay law, then substitution of \eqref{eq:typical-ray} into
 \eqref{eq:intermediate-master} gives the quadratic coefficient
 \begin{equation}
- \log\abs{\Phiup(N+z_n)}
+ \log\AbsoluteValue{\Phiup(N+z_n)}
  =-\frac{1-\alpha+\alpha^2/2}{a}(\log N)^2
-  +\bigO(\log N)+o((\log N)^2).
+  +\BigO(\log N)+o((\log N)^2).
  \label{eq:intermediate-quadratic}
 \end{equation}
 The coefficient decreases continuously from $1/a$ at $\alpha=0$ to $1/(2a)$ as
@@ -1403,7 +1386,7 @@ The draft's power
  x^{-\log(2\pi)/\log2}
 \]
 is exactly the RMS power, by \eqref{eq:kappa2}.  If the intended amplitude was the average
-of $\abs{\Phiup}$, it must be replaced by $x^{-\kappa_1}$ with
+of $\AbsoluteValue{\Phiup}$, it must be replaced by $x^{-\kappa_1}$ with
 $\kappa_1=2.748070014\ldots$.  If the intended object was the sharp global upper envelope,
 it must be replaced by $x^{-\kappa_\infty}$ with
 $\kappa_\infty=2.359014879\ldots$.  If the intended object was a typical fixed dyadic
@@ -1414,11 +1397,11 @@ $\kappa_0=3.151496129\ldots$.
 
 A statement of the form
 \[
- \abs{\Phiup(x)}\sim C(\log x)^{-p}x^{-\kappa}
+ \AbsoluteValue{\Phiup(x)}\sim C(\log x)^{-p}x^{-\kappa}
  \exp\!\left(-\frac{(\log x)^2}{2\log2}\right)
 \]
 cannot hold globally, for any $C>0,p,\kappa$, because $\Phiup$ vanishes at every integer.
-It also cannot be repaired by replacing $\abs{\Phiup(x)}$ with the sequence of local maxima:
+It also cannot be repaired by replacing $\AbsoluteValue{\Phiup(x)}$ with the sequence of local maxima:
 \Cref{cor:extrema-limsup-liminf} gives a positive limsup and zero liminf at the sharp upper
 scale, while \Cref{thm:dyadic-valleys} exhibits a subsequence with a different leading
 quadratic coefficient.
@@ -1434,7 +1417,7 @@ $p=0$.
 
 A power of $n$ does occur in the exceptional valley asymptotic
 \eqref{eq:valley-amplitude}, but its exponent is the integer zero multiplicity
-$d=1+\vtwo(r+1)$ and it accompanies the much faster factor $(b/N)^n$.  It is not a universal
+$d=1+\TwoAdicValuation(r+1)$ and it accompanies the much faster factor $(b/N)^n$.  It is not a universal
 correction to the generic shell envelope.
 
 \section{Conclusions and further directions}
@@ -1523,10 +1506,10 @@ for this analytic weighted-composition operator.
 \toprule
 Symbol & Meaning\\
 \midrule
-$\Phiup=\widehat{\Up}$ & Fourier transform of Rvachev's up-function\\
+$\Phiup=\widehat{\RvachevUp}$ & Fourier transform of Rvachev's up-function\\
 $a$ & $\log2$\\
 $T$ & doubling map $x\mapsto2x\pmod1$\\
-$s(x)$ & $\abs{\sin(\pi x)}$\\
+$s(x)$ & $\AbsoluteValue{\sin(\pi x)}$\\
 $B_n(y)$ & $\prod_{j=1}^n s(T^jy)$\\
 $E_\kappa(x)$ & $x^{-\kappa}\exp(- (\log x)^2/(2\log2))$\\
 $W_\kappa(y)$ & bounded dyadic phase factor in \eqref{eq:master-normalization}\\
@@ -1534,7 +1517,7 @@ $\mathcal L_q$ & weighted Perron operator \eqref{eq:transfer-operator}\\
 $\rho_q$ & Perron root of $\mathcal L_q$\\
 $\Lambda_q$ & $\rho_q^{1/q}$, the $L^q$ numerator growth per dyadic level\\
 $\kappa_q$ & sharp power in the normalized $L^q$ shell decay\\
-$M_m$ & unique maximum of $\abs{\Phiup}$ on $[m,m+1]$\\
+$M_m$ & unique maximum of $\AbsoluteValue{\Phiup}$ on $[m,m+1]$\\
 \bottomrule
 \end{tabularx}
 \end{center}

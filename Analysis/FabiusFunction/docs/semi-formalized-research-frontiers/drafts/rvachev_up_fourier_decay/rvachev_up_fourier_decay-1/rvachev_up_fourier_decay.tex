@@ -34,6 +34,8 @@
 \fancyhead[L]{\small Fourier decay of Rvachev's up-function}
 \fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
 \renewcommand{\headrulewidth}{0.4pt}
 
 \titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
@@ -57,23 +59,6 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\N}{\mathbb N}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
-\newcommand{\sgn}{\operatorname{sgn}}
-\newcommand{\vtwo}{\nu_2}
-\newcommand{\wt}{s_2}
 \newcommand{\dist}{\mathop{\longrightarrow}\limits^{\mathrm d}}
 \newcommand{\T}{T}
 
@@ -95,11 +80,11 @@
 \begin{abstract}
 Let
 \[
- f(x)=\widehat{\Up}(x)
+ f(x)=\widehat{\RvachevUp}(x)
  =\prod_{n=0}^{\infty}\frac{\sin(\pi x/2^n)}{\pi x/2^n}
 \]
 be the Fourier transform of Rvachev's compactly supported up-function, with the
-Fourier convention $\widehat{\Up}(x)=\int_{\R}\Up(t)\e^{-2\pi\ii xt}\dd t$.
+Fourier convention $\widehat{\RvachevUp}(x)=\int_{\RealNumbers}\RvachevUp(t)\EulerE^{-2\pi\ImaginaryUnit xt}\Differential t$.
 The phrase ``the decay rate of $f$'' is intrinsically ambiguous: $f$ vanishes at
 every nonzero integer, its values on a fixed dyadic ray are governed by a
 Birkhoff sum for the doubling map, and the largest lobe in a dyadic annulus is
@@ -113,7 +98,7 @@ mantissa $y\in(1,2)$,
  \log|f(2^Ny)|
  =-\frac{\bigl(\log(2^Ny)\bigr)^2}{2a}
   -\left(\frac{\log\pi}{a}+\frac32\right)\log(2^Ny)
-  +\smallo(N).
+  +\LittleO(N).
 \]
 The centered remainder satisfies a central limit theorem with variance
 $\pi^2/4$ per dyadic step and a law of the iterated logarithm.  Thus even the
@@ -133,7 +118,7 @@ a boundary-layer optimization give
  +\bigl(\log(\sqrt3/2)-\log\pi-a/2\bigr)N\\
  &-\frac{(\log N)^2}{2a}
  +\frac{\log N\,\log\log N}{a}
- +\bigO(\log N).
+ +\BigO(\log N).
  \end{split}
 \]
 Equivalently, the annular envelope has a genuine
@@ -148,12 +133,12 @@ the starting draft.
 
 \section{The question and the form of the answer}
 
-Rvachev's up-function $\Up$ is an even, nonnegative $C^\infty$ function
-supported on $[-1,1]$, normalized by $\int_{\R}\Up=1$.  It is the density of an
+Rvachev's up-function $\RvachevUp$ is an even, nonnegative $C^\infty$ function
+supported on $[-1,1]$, normalized by $\int_{\RealNumbers}\RvachevUp=1$.  It is the density of an
 infinite sum of independent centered uniform random variables, and its Fourier
 transform is the infinite sinc product studied below; see
 \cite{arias1982,proveit,wikipedia}.  Smooth compact support already implies
-that $f=\widehat{\Up}$ decreases faster than every inverse power on the real
+that $f=\widehat{\RvachevUp}$ decreases faster than every inverse power on the real
 axis.  The product contains much more information: its dominant logarithmic
 scale is quadratic in $\log x$.
 
@@ -215,31 +200,31 @@ envelope.
 
 We use the entire extension
 \begin{equation}
- f(z)=\prod_{n=0}^{\infty}\sinc\!\left(\frac{\pi z}{2^n}\right),
- \qquad \sinc w=\begin{cases}\sin w/w,&w\ne0,\\1,&w=0.\end{cases}
+ f(z)=\prod_{n=0}^{\infty}\SincRad\!\left(\frac{\pi z}{2^n}\right),
+ \qquad \SincRad w=\begin{cases}\sin w/w,&w\ne0,\\1,&w=0.\end{cases}
  \label{eq:f-product}
 \end{equation}
 The product converges locally uniformly because
-$\log\sinc w=-w^2/6+\bigO(w^4)$ near the origin.
+$\log\SincRad w=-w^2/6+\BigO(w^4)$ near the origin.
 
 \begin{proposition}[Equivalent products and dilation equations]
-For every $z\in\C$,
+For every $z\in\ComplexNumbers$,
 \begin{align}
  f(z)
  &=\prod_{m=1}^{\infty}
    \left(\cos\frac{\pi z}{2^m}\right)^m,                    \label{eq:cos-product}\\
  &=\prod_{m=1}^{\infty}
-   \left(1-\frac{z^2}{m^2}\right)^{1+\vtwo(m)}.             \label{eq:weier-product}
+   \left(1-\frac{z^2}{m^2}\right)^{1+\TwoAdicValuation(m)}.             \label{eq:weier-product}
 \end{align}
 Moreover,
 \begin{align}
- f(z)&=\sinc(\pi z)f(z/2),                                  \label{eq:feq-down}\\
- f(2z)&=\sinc(2\pi z)f(z).                                  \label{eq:feq-up}
+ f(z)&=\SincRad(\pi z)f(z/2),                                  \label{eq:feq-down}\\
+ f(2z)&=\SincRad(2\pi z)f(z).                                  \label{eq:feq-up}
 \end{align}
 \end{proposition}
 
 \begin{proof}
-The identity $\sinc w=\prod_{j\ge1}\cos(w/2^j)$ follows by iterating the
+The identity $\SincRad w=\prod_{j\ge1}\cos(w/2^j)$ follows by iterating the
 double-angle formula and passing to the limit.  In the product over $n\ge0$,
 a factor $\cos(\pi z/2^m)$ occurs once for every decomposition $m=n+j$ with
 $n\ge0$ and $j\ge1$, hence exactly $m$ times.  This proves
@@ -247,11 +232,11 @@ $n\ge0$ and $j\ge1$, hence exactly $m$ times.  This proves
 
 Euler's sine product gives
 \[
- \sinc\!\left(\frac{\pi z}{2^n}\right)
+ \SincRad\!\left(\frac{\pi z}{2^n}\right)
  =\prod_{k=1}^{\infty}\left(1-\frac{z^2}{(2^nk)^2}\right).
 \]
 A positive integer $m$ can be written as $m=2^nk$ for precisely
-$1+\vtwo(m)$ values of $n\ge0$.  Regrouping the locally uniformly convergent
+$1+\TwoAdicValuation(m)$ values of $n\ge0$.  Regrouping the locally uniformly convergent
 product proves \eqref{eq:weier-product}.  Finally, separating the first factor
 in \eqref{eq:f-product}, or replacing $z$ by $2z$, gives
 \eqref{eq:feq-down}--\eqref{eq:feq-up}.
@@ -259,22 +244,22 @@ in \eqref{eq:f-product}, or replacing $z$ by $2z$, gives
 
 \begin{proposition}[Zeros and Thue--Morse signs]
 The nonzero zeros of $f$ are exactly the integers.  The zero at
-$m\in\Z\setminus\{0\}$ has multiplicity $1+\vtwo(|m|)$.  If $x>0$ is not an
+$m\in\IntegerNumbers\setminus\{0\}$ has multiplicity $1+\TwoAdicValuation(|m|)$.  If $x>0$ is not an
 integer and $n=\lfloor x\rfloor$, then
 \begin{equation}
- \sgn f(x)=(-1)^{\wt(n)},                                   \label{eq:sign-tm}
+ \Sign f(x)=(-1)^{\BinaryDigitSum(n)},                                   \label{eq:sign-tm}
 \end{equation}
-where $\wt(n)$ is the sum of the binary digits of $n$.
+where $\BinaryDigitSum(n)$ is the sum of the binary digits of $n$.
 \end{proposition}
 
 \begin{proof}
 The zero statement follows immediately from \eqref{eq:weier-product}.  Starting
 with $f(0)=1$, the sign on $(n,n+1)$ is changed by the total multiplicity
 \[
- \sum_{m=1}^{n}(1+\vtwo(m))
- =n+\vtwo(n!)=n+(n-\wt(n))=2n-\wt(n).
+ \sum_{m=1}^{n}(1+\TwoAdicValuation(m))
+ =n+\TwoAdicValuation(n!)=n+(n-\BinaryDigitSum(n))=2n-\BinaryDigitSum(n).
 \]
-Its parity is the parity of $\wt(n)$, proving \eqref{eq:sign-tm}.
+Its parity is the parity of $\BinaryDigitSum(n)$, proving \eqref{eq:sign-tm}.
 \end{proof}
 
 The zeros divide the graph into unit lobes.  Every lobe after the initial
@@ -286,7 +271,7 @@ the sequence of lobe maxima.
 For each integer $n\ge1$, the function $|f|$ has exactly one critical point in
 $(n,n+1)$.  It is a strict maximum.  Equivalently, the equation
 \begin{equation}
- \sum_{m=1}^{\infty}\frac{1+\vtwo(m)}{m^2-x^2}=0            \label{eq:critical-equation}
+ \sum_{m=1}^{\infty}\frac{1+\TwoAdicValuation(m)}{m^2-x^2}=0            \label{eq:critical-equation}
 \end{equation}
 has exactly one solution in $(n,n+1)$ for every $n\ge1$.
 \end{theorem}
@@ -296,13 +281,13 @@ Away from the integers, logarithmic differentiation of
 \eqref{eq:weier-product} gives
 \[
  \frac{f'(x)}{f(x)}=-2xH(x),\qquad
- H(x)=\sum_{m=1}^{\infty}\frac{1+\vtwo(m)}{m^2-x^2}.
+ H(x)=\sum_{m=1}^{\infty}\frac{1+\TwoAdicValuation(m)}{m^2-x^2}.
 \]
 The series and its derivative converge locally uniformly off the integers,
-because $\vtwo(m)=\bigO(\log m)$.  For $x>0$,
+because $\TwoAdicValuation(m)=\BigO(\log m)$.  For $x>0$,
 \[
  H'(x)=2x\sum_{m=1}^{\infty}
- \frac{1+\vtwo(m)}{(m^2-x^2)^2}>0.
+ \frac{1+\TwoAdicValuation(m)}{(m^2-x^2)^2}>0.
 \]
 For $n\ge1$, on $(n,n+1)$ one has $H(x)\to-\infty$ as $x\downarrow n$ and
 $H(x)\to+\infty$ as $x\uparrow n+1$.  Hence $H$ has exactly one zero there.
@@ -354,7 +339,7 @@ The equality is interpreted as $-\infty=-\infty$ when an orbit point is zero.
 Split the product \eqref{eq:f-product} after the $N$ factors whose arguments
 are at least of order one:
 \[
- f(2^Ny)=f(y)\prod_{k=1}^{N}\sinc(\pi2^ky).
+ f(2^Ny)=f(y)\prod_{k=1}^{N}\SincRad(\pi2^ky).
 \]
 Because $2^k$ is an integer,
 $|\sin(\pi2^ky)|=|\sin(\pi2^kz)|$.  Taking absolute values and logarithms gives
@@ -364,17 +349,17 @@ $|\sin(\pi2^ky)|=|\sin(\pi2^kz)|$.  Taking absolute values and logarithms gives
 \begin{corollary}[Uniform log-normal upper scale]
 As $x\to+\infty$,
 \begin{equation}
- \log|f(x)|\le-\frac{(\log x)^2}{2\log2}+\bigO(\log x),     \label{eq:universal-upper}
+ \log|f(x)|\le-\frac{(\log x)^2}{2\log2}+\BigO(\log x),     \label{eq:universal-upper}
 \end{equation}
 with an absolute implied constant.  Consequently, for every $A>0$,
-$f(x)=\bigO_A(x^{-A})$.
+$f(x)=\BigO_A(x^{-A})$.
 \end{corollary}
 
 \begin{proof}
 Write $x=2^Ny$ with $1\le y<2$ and use
 $|f(y)|\le1$ and $\phi\le0$ in \eqref{eq:exact-dyadic}.  Since
 $N=(\log x-\log y)/a$, the quadratic term is
-$-(\log x)^2/(2a)+\bigO(\log x)$.  The last assertion follows because a
+$-(\log x)^2/(2a)+\BigO(\log x)$.  The last assertion follows because a
 negative quadratic in $\log x$ eventually dominates $-A\log x$.
 \end{proof}
 
@@ -408,7 +393,7 @@ exists.  For $x_N=2^Ny$,
 \begin{equation}
  \log|f(x_N)|
  =-\frac{(\log x_N)^2}{2a}
-  -\kappa(\alpha(y))\log x_N+\smallo(\log x_N),            \label{eq:ray-law}
+  -\kappa(\alpha(y))\log x_N+\LittleO(\log x_N),            \label{eq:ray-law}
 \end{equation}
 where
 \begin{equation}
@@ -421,7 +406,7 @@ By \eqref{eq:exact-dyadic},
 \[
  \log|f(2^Ny)|
  =-\frac a2N^2+
- N\bigl(\alpha(y)-\log(\pi y)-a/2\bigr)+\smallo(N).
+ N\bigl(\alpha(y)-\log(\pi y)-a/2\bigr)+\LittleO(N).
 \]
 Substitute $N=(\log x_N-\log y)/a$.  The terms involving
 $\log y\cdot\log x_N$ cancel, leaving precisely
@@ -436,7 +421,7 @@ average, not on the chosen representative of the mantissa.
 
 The doubling map is ergodic for Lebesgue measure, and
 \begin{equation}
- \int_0^1\phi(t)\dd t=-\log2=-a.                            \label{eq:phi-mean}
+ \int_0^1\phi(t)\Differential t=-\log2=-a.                            \label{eq:phi-mean}
 \end{equation}
 The integral follows, for example, from the classical integral of
 $\log\sin$ on $(0,\pi)$.
@@ -447,14 +432,14 @@ For Lebesgue-almost every $y\in(1,2)$,
  \boxed{\quad
  \log|f(2^Ny)|
  =-\frac{\bigl(\log(2^Ny)\bigr)^2}{2\log2}
- -\kappa_{\mathrm{typ}}\log(2^Ny)+\smallo(N),
+ -\kappa_{\mathrm{typ}}\log(2^Ny)+\LittleO(N),
  \quad}                                                     \label{eq:typical-law}
 \end{equation}
 where $\kappa_{\mathrm{typ}}$ is given by \eqref{eq:ktyp}.  Equivalently,
 \begin{equation}
  |f(2^Ny)|
  =\exp\!\left(-\frac{(\log(2^Ny))^2}{2\log2}\right)
- (2^Ny)^{-\kappa_{\mathrm{typ}}+\smallo(1)}.               \label{eq:typical-multiplicative}
+ (2^Ny)^{-\kappa_{\mathrm{typ}}+\LittleO(1)}.               \label{eq:typical-multiplicative}
 \end{equation}
 \end{corollary}
 
@@ -480,19 +465,19 @@ polynomial.  Let
 \end{equation}
 The factorization
 \begin{equation}
- \prod_{j=0}^{N-1}(1-\e^{2\pi\ii2^jt})
- =\sum_{n=0}^{2^N-1}(-1)^{\wt(n)}\e^{2\pi\ii nt}           \label{eq:tm-poly}
+ \prod_{j=0}^{N-1}(1-\EulerE^{2\pi\ImaginaryUnit2^jt})
+ =\sum_{n=0}^{2^N-1}(-1)^{\BinaryDigitSum(n)}\EulerE^{2\pi\ImaginaryUnit nt}           \label{eq:tm-poly}
 \end{equation}
 shows that $Q_N$ is the modulus of a Thue--Morse polynomial.  The classical
 Gelfond estimate, and its ergodic-optimization interpretation, imply that
 there is a constant $C_G$ such that
 \begin{equation}
- \sup_{t\in\R}Q_N(t)\le C_G(\sqrt3)^N.                     \label{eq:gelfond}
+ \sup_{t\in\RealNumbers}Q_N(t)\le C_G(\sqrt3)^N.                     \label{eq:gelfond}
 \end{equation}
 At $t=1/3$ every factor has modulus $\sqrt3$, so the exponential rate is
 sharp.  In the notation for $\phi$, this says
 \begin{equation}
- \sup_t\sum_{j=0}^{N-1}\phi(\T^jt)=N\beta+\bigO(1),
+ \sup_t\sum_{j=0}^{N-1}\phi(\T^jt)=N\beta+\BigO(1),
  \qquad \beta=\log\frac{\sqrt3}{2}.                        \label{eq:max-birkhoff}
 \end{equation}
 The maximizing invariant measure is supported on the period-two orbit
@@ -592,18 +577,18 @@ The boundary term is negligible on the $\sqrt N$ scale.
 \begin{lemma}[Exact asymptotic variance]
 One has
 \begin{equation}
- \int_0^1d(x)^2\dd x=\frac{\pi^2}{4}.                      \label{eq:variance}
+ \int_0^1d(x)^2\Differential x=\frac{\pi^2}{4}.                      \label{eq:variance}
 \end{equation}
 \end{lemma}
 
 \begin{proof}
 By \eqref{eq:d-tan} and symmetry,
 \[
- \int_0^1d(x)^2\dd x
- =\frac2\pi\int_0^{\pi/2}\log^2(\tan u)\dd u.
+ \int_0^1d(x)^2\Differential x
+ =\frac2\pi\int_0^{\pi/2}\log^2(\tan u)\Differential u.
 \]
 The standard beta-integral differentiation formulas give
-$\int_0^{\pi/2}\log^2(\tan u)\dd u=\pi^3/8$, yielding
+$\int_0^{\pi/2}\log^2(\tan u)\Differential u=\pi^3/8$, yielding
 \eqref{eq:variance}.  Equivalently, one may use the Fourier series
 $\psi(x)=-\sum_{m\ge1}\cos(2\pi mx)/m$ and Parseval.
 \end{proof}
@@ -715,26 +700,26 @@ Then
 \end{equation}
 
 If one ignored the term $-N\log(1+z)$, the maximal Birkhoff sum would be
-$N\beta+\bigO(1)$, attained on the orbit $\{1/3,2/3\}$.  But that orbit has
+$N\beta+\BigO(1)$, attained on the orbit $\{1/3,2/3\}$.  But that orbit has
 $z$ bounded away from zero and therefore pays a linear penalty.  The optimizer
 instead starts at a tiny preimage of $1/3$.  A transient of length $r$ costs
 about $ar^2/2$, while choosing $z\asymp2^{-r}$ costs about $N2^{-r}$ through
 $-N\log(1+z)$.  Balancing these losses gives
 $2^{-r}\asymp r/N$, hence
 \begin{equation}
- r=\frac{\log N-\log\log N}{\log2}+\bigO(1).               \label{eq:r-opt}
+ r=\frac{\log N-\log\log N}{\log2}+\BigO(1).               \label{eq:r-opt}
 \end{equation}
 
 We first isolate the elementary saddle estimate.
 
 \begin{lemma}[Boundary-layer saddle]
-Fix $c>0$ and $A\in\R$.  As $N\to\infty$,
+Fix $c>0$ and $A\in\RealNumbers$.  As $N\to\infty$,
 \begin{equation}
- \min_{r\in\N_0}
+ \min_{r\in\NaturalNumbers_0}
  \left\{\frac a2r^2+cN2^{-r}+Ar\right\}
  =\frac{(\log N)^2}{2a}
   -\frac{\log N\,\log\log N}{a}
-  +\bigO(\log N).                                          \label{eq:saddle-lemma}
+  +\BigO(\log N).                                          \label{eq:saddle-lemma}
 \end{equation}
 \end{lemma}
 
@@ -742,18 +727,18 @@ Fix $c>0$ and $A\in\R$.  As $N\to\infty$,
 First omit $Ar$ and minimize over real $r\ge0$.  With $q=ar$, the critical
 point satisfies
 \[
- q\e^q=acN,
+ q\EulerE^q=acN,
  \qquad q=W(acN),
 \]
 where $W$ is the principal Lambert function.  At that point the minimum is
 \[
  \frac{q^2+2q}{2a}.
 \]
-The expansion $W(acN)=\log N-\log\log N+\bigO(1)$ gives the two displayed
-terms and an error $\bigO(\log N)$.  Rounding $r$ to an integer changes the
-value by $\bigO(\log N)$, because the second derivative at the saddle is
-$\bigO(\log N)$.  Any minimizing integer is $\bigO(\log N)$; the added term
-$Ar$ therefore also changes the result by only $\bigO(\log N)$.
+The expansion $W(acN)=\log N-\log\log N+\BigO(1)$ gives the two displayed
+terms and an error $\BigO(\log N)$.  Rounding $r$ to an integer changes the
+value by $\BigO(\log N)$, because the second derivative at the saddle is
+$\BigO(\log N)$.  Any minimizing integer is $\BigO(\log N)$; the added term
+$Ar$ therefore also changes the result by only $\BigO(\log N)$.
 \end{proof}
 
 \begin{theorem}[Sharp dyadic-annular maximum]
@@ -764,7 +749,7 @@ As $N\to\infty$,
  +\bigl(\beta-\log\pi-a/2\bigr)N\\
  &-\frac{(\log N)^2}{2a}
  +\frac{\log N\,\log\log N}{a}
- +\bigO(\log N).
+ +\BigO(\log N).
  \end{aligned}}                                             \label{eq:MN-sharp}
 \end{equation}
 \end{theorem}
@@ -775,7 +760,7 @@ We prove matching bounds for $B_N$.
 \emph{Upper bound.}
 The product representation gives $|f(1+z)|\le1$.  If $z>1/4$, then
 $-N\log(1+z)\le-c_0N$ for an absolute $c_0>0$, while
-\eqref{eq:max-birkhoff} gives $S_N(z)\le N\beta+\bigO(1)$.
+\eqref{eq:max-birkhoff} gives $S_N(z)\le N\beta+\BigO(1)$.
 This region is far below the eventual maximum, whose loss from $N\beta$ is
 only of order $(\log N)^2$.
 
@@ -785,7 +770,7 @@ that
  2^rz\le\frac14.                                            \label{eq:r-def}
 \end{equation}
 If $r\ge N$, then all $N$ factors lie in the small-angle regime and
-$S_N(z)\le-aN^2/2+\bigO(N)$, again much too small.  We may therefore assume
+$S_N(z)\le-aN^2/2+\BigO(N)$, again much too small.  We may therefore assume
 $r<N$.  For $1\le k\le r$ there is no wrap modulo one, and
 $\sin(\pi2^kz)\le\pi2^kz$.  Because
 $z\le2^{-r-2}$,
@@ -797,7 +782,7 @@ $z\le2^{-r-2}$,
 The remaining $N-r$ terms satisfy the shifted Gelfond estimate
 \[
  \sum_{k=r+1}^{N}\phi(\T^kz)
- \le(N-r)\beta+\bigO(1).
+ \le(N-r)\beta+\BigO(1).
 \]
 Maximality in \eqref{eq:r-def} also gives $z>2^{-r-3}$.  Since
 $\log(1+z)\ge z/2$ for $0\le z\le1$,
@@ -813,7 +798,7 @@ The saddle lemma implies
 \begin{equation}
  B_N\le N\beta-
 \frac{(\log N)^2}{2a}
- +\frac{\log N\,\log\log N}{a}+\bigO(\log N).             \label{eq:BN-upper}
+ +\frac{\log N\,\log\log N}{a}+\BigO(\log N).             \label{eq:BN-upper}
 \end{equation}
 
 \emph{Lower bound.}
@@ -834,22 +819,22 @@ Separating each small angle from its sinc correction gives
 \begin{align}
  A_r
  & =r\log(\pi/3)-\frac{ar(r-1)}2
- +\sum_{j=0}^{r-1}\log\sinc\!\left(\frac{\pi}{3\,2^j}\right)\notag\\
- & =r\log(\pi/3)-\frac{ar(r-1)}2+\log f(1/3)+\smallo(1).   \label{eq:Ar-asymp}
+ +\sum_{j=0}^{r-1}\log\SincRad\!\left(\frac{\pi}{3\,2^j}\right)\notag\\
+ & =r\log(\pi/3)-\frac{ar(r-1)}2+\log f(1/3)+\LittleO(1).   \label{eq:Ar-asymp}
 \end{align}
 The zero of $f$ at $1$ is simple, so
 \begin{equation}
- \log|f(1+z_r)|=\log z_r+\bigO(1)=-ar+\bigO(1).             \label{eq:f-near-one}
+ \log|f(1+z_r)|=\log z_r+\BigO(1)=-ar+\BigO(1).             \label{eq:f-near-one}
 \end{equation}
 Also, $\log(1+z_r)\le z_r$.  Substitution in \eqref{eq:BN} yields
 \begin{equation}
- B_N\ge N\beta-\frac a2r^2-\frac{N}{3\,2^r}+\bigO(r).     \label{eq:BN-lower-r}
+ B_N\ge N\beta-\frac a2r^2-\frac{N}{3\,2^r}+\BigO(r).     \label{eq:BN-lower-r}
 \end{equation}
 Choose $r$ according to the saddle lemma.  Then
 \begin{equation}
  B_N\ge N\beta-
 \frac{(\log N)^2}{2a}
- +\frac{\log N\,\log\log N}{a}+\bigO(\log N).             \label{eq:BN-lower}
+ +\frac{\log N\,\log\log N}{a}+\BigO(\log N).             \label{eq:BN-lower}
 \end{equation}
 Together, \eqref{eq:BN-upper} and \eqref{eq:BN-lower} determine $B_N$ to the
 required precision.  Finally use \eqref{eq:M-B}.
@@ -864,7 +849,7 @@ Let $X=2^N$ and $L=\log X$.  Since $N=L/a$, \eqref{eq:MN-sharp} becomes
  ={}&-\frac{L^2}{2a}-\kappa_*L\\
  &-\frac{(\log L)^2}{2a}
  +\frac{\log L\,\log\log L}{a}
- +\bigO(\log L),
+ +\BigO(\log L),
  \end{aligned}}                                             \label{eq:MX-sharp}
 \end{equation}
 for dyadic $X\to\infty$.  Equivalently,
@@ -876,7 +861,7 @@ for dyadic $X\to\infty$.  Equivalently,
  &\times\exp\!\left(
  -\frac{(\log\log X)^2}{2\log2}
  +\frac{\log\log X\,\log\log\log X}{\log2}
- +\bigO(\log\log X)\right).
+ +\BigO(\log\log X)\right).
  \end{split}                                                \label{eq:MX-multiplicative}
 \end{equation}
 The final exponential factor is smaller than every fixed negative power of
@@ -889,7 +874,7 @@ The explicit points used in the lower bound have
 \begin{equation}
  x_{N,r}=2^N\left(1+\frac{1}{3\,2^r}\right),
  \qquad
- r=\log_2N-\log_2\log N+\bigO(1).                          \label{eq:near-opt-location}
+ r=\log_2N-\log_2\log N+\BigO(1).                          \label{eq:near-opt-location}
 \end{equation}
 Consequently their relative displacement from the left endpoint is
 \begin{equation}
@@ -962,7 +947,7 @@ The mechanism is not special to the notation of the up-function.  For an
 integer $q\ge2$, consider
 \begin{equation}
  f_q(x)=\prod_{n=0}^{\infty}
- \sinc\!\left(\frac{\pi x}{q^n}\right).                    \label{eq:fq}
+ \SincRad\!\left(\frac{\pi x}{q^n}\right).                    \label{eq:fq}
 \end{equation}
 Writing $x=q^Ny$ gives the exact analogue
 \begin{equation}
@@ -1002,7 +987,7 @@ It yields the following rigorous answer to the decay question.
 
 \begin{itemize}
 \item Uniformly, $|f(x)|$ is at most
-      $\exp(-(\log x)^2/(2\log2)+\bigO(\log x))$, hence it is
+      $\exp(-(\log x)^2/(2\log2)+\BigO(\log x))$, hence it is
       super-polynomially small.
 \item On almost every fixed dyadic ray, the power exponent after this
       log-normal factor is $\kappa_{\mathrm{typ}}$, but the logarithm retains
@@ -1032,13 +1017,13 @@ For completeness, the Fourier series
 \end{equation}
 holds in $L^2(0,1)$.  Parseval gives
 \begin{equation}
- \int_0^1\psi(x)^2\dd x=\frac12\sum_{m=1}^{\infty}\frac1{m^2}
+ \int_0^1\psi(x)^2\Differential x=\frac12\sum_{m=1}^{\infty}\frac1{m^2}
  =\frac{\pi^2}{12}.                                        \label{eq:psi-var}
 \end{equation}
 Because only frequencies divisible by $2^k$ survive when
 $\psi$ is paired with $\psi\circ\T^k$,
 \begin{equation}
- \int_0^1\psi(x)\psi(\T^kx)\dd x
+ \int_0^1\psi(x)\psi(\T^kx)\Differential x
  =\frac{\pi^2}{12\,2^k}.                                  \label{eq:covariance}
 \end{equation}
 Therefore the Green--Kubo variance is
@@ -1056,12 +1041,12 @@ From \eqref{eq:weier-product},
  f(x)=(1-x^2)G(x),
  \qquad
  G(x)=\prod_{m=2}^{\infty}
- \left(1-\frac{x^2}{m^2}\right)^{1+\vtwo(m)}.              \label{eq:G-near-one}
+ \left(1-\frac{x^2}{m^2}\right)^{1+\TwoAdicValuation(m)}.              \label{eq:G-near-one}
 \end{equation}
 The product for $G$ converges locally uniformly near $x=1$ and $G(1)\ne0$.
 Consequently,
 \begin{equation}
- f(1+z)=-2G(1)z+\bigO(z^2),                                \label{eq:simple-zero}
+ f(1+z)=-2G(1)z+\BigO(z^2),                                \label{eq:simple-zero}
 \end{equation}
 which justifies \eqref{eq:f-near-one} and quantifies the endpoint cost in the
 annular lower bound.

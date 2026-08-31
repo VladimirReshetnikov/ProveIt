@@ -38,6 +38,8 @@
 \fancyhead[L]{\small Fourier-decay audit}
 \fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
 \renewcommand{\headrulewidth}{0.4pt}
 
 \titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
@@ -66,29 +68,10 @@
 \crefname{finding}{finding}{findings}
 \Crefname{finding}{Finding}{Findings}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\sgn}{\operatorname{sgn}}
-\newcommand{\vtwo}{v_2}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
 \newcommand{\lean}[1]{%
   \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
 \newcommand{\T}{T}
-\newcommand{\Lop}{\mathcal L}
 
 \newenvironment{boxedremark}{%
   \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
@@ -124,7 +107,7 @@ and a corrected constant in the published literature}
 \begin{abstract}
 Mathematics Stack Exchange question 2745497 asks for a positive, analytic,
 monotone decreasing gauge $g$ such that the Ces\`aro mean of $|f|/g$ tends to
-one, where $f(x)=\prod_{n\ge0}\sinc(\pi x/2^n)$ is the Fourier transform of
+one, where $f(x)=\prod_{n\ge0}\SincRad(\pi x/2^n)$ is the Fourier transform of
 Rvachev's up-function.  Four AI-produced documents in this directory propose
 solutions.  This audit verifies their overlapping claims numerically and
 against the literature, adjudicates their one genuine mutual contradiction,
@@ -156,7 +139,7 @@ that a deliberately \emph{shell-adaptive} analytic decreasing gauge does
 attain the unrestricted limit, so the impossibility is a class
 restriction, not an absolute one (\cref{sec:second-wave}).  We add one repair, with proof: with the
 same gauge, the \emph{logarithmic} mean
-$\frac{1}{\log(t/t_0)}\int_{t_0}^t\frac{|f(x)|}{g(x)}\frac{\dd x}{x}$
+$\frac{1}{\log(t/t_0)}\int_{t_0}^t\frac{|f(x)|}{g(x)}\frac{\Differential x}{x}$
 converges for all $t\to\infty$, so the multiplicative form of the question
 has an exact affirmative answer.
 
@@ -167,7 +150,7 @@ the published Theorem~1.2 of Aistleitner--Hofer--Larcher (Ann.\ Inst.\
 Fourier 67 (2017) 637--687), whose constant is $\pi$.  Both cannot be right.
 An exact Parseval computation of the paper's own variance functional
 (2.9)---confirmed by measurement over exact rational orbits,
-$\Var(S_{1000})=2459.5$ against the predictions $2464.1$ for variance
+$\Variance(S_{1000})=2459.5$ against the predictions $2464.1$ for variance
 $\pi^2/4$ and $4928.2$ for variance $\pi^2/2$---shows that Document~1 is
 correct and that the published equation~(4.5) omits the Parseval factor
 $\tfrac12$: the constants in the published Theorems~1.1 and~1.2 should
@@ -189,7 +172,7 @@ eigenfunctions $\sin2\pi x$ and $1+3\cos2\pi x$, making the RMS envelope
 constant $A_2=0.103008918$ converge at the alternating geometric rate
 $(-\tfrac12)^k$---yet the all-$t$ Ces\`aro limit still fails (singular
 eigenmeasure, profile $[0.894,1.192]$), and the total energy check
-$\int_\R f^2=\tfrac12+\sum_mf(m+\tfrac12)^2=0.808873535967972$ closes to
+$\int_\RealNumbers f^2=\tfrac12+\sum_mf(m+\tfrac12)^2=0.808873535967972$ closes to
 $2\cdot10^{-15}$.
 \end{abstract}
 
@@ -243,26 +226,26 @@ findings.
 \section{The object and the question}
 \label{sec:object}
 
-Throughout, $\sinc z=\sin z/z$, $\sinc 0=1$, $a=\log2$, and
+Throughout, $\SincRad z=\sin z/z$, $\SincRad 0=1$, $a=\log2$, and
 \begin{equation}
- f(x)=\prod_{n=0}^{\infty}\sinc\!\left(\frac{\pi x}{2^n}\right),
- \qquad x\in\R.
+ f(x)=\prod_{n=0}^{\infty}\SincRad\!\left(\frac{\pi x}{2^n}\right),
+ \qquad x\in\RealNumbers.
  \label{eq:f-def}
 \end{equation}
-Under the convention $\widehat h(\xi)=\int h(t)\e^{-2\pi\ii\xi t}\dd t$ one
-has $f=\widehat{\Up}$, the Fourier transform of Rvachev's up-function; in
+Under the convention $\widehat h(\xi)=\int h(t)\EulerE^{-2\pi\ImaginaryUnit\xi t}\Differential t$ one
+has $f=\widehat{\RvachevUp}$, the Fourier transform of Rvachev's up-function; in
 the Lean development this object is
 \lean{rvachevFourier\_eq\_product} with refinement law
 \lean{rvachevFourier\_scaling}.  The function is entire, even, vanishes at
-each nonzero integer $m$ with multiplicity $1+\vtwo(|m|)$, has exactly one
+each nonzero integer $m$ with multiplicity $1+\TwoAdicValuation(|m|)$, has exactly one
 critical point between consecutive integer zeros, and its sign on $(m,m+1)$
 is the signed Thue--Morse value $(-1)^{s_2(m)}$ (all four documents prove
 these; the sign statement is also in the Thue--Morse Formula Atlas,
 \S``The sign of the Fabius sinc product'').  All three background facts
 are formalized in this same normalization, and are cited here rather than
 reproved.  \emph{Multiplicity}: the dyadic zero lattice meets the integer
-$m\ge1$ exactly $1+\vtwo(m)$ times (\lean{LatticeFiber}) and
-$\|\Phi(x)\|/|x-m|^{1+\vtwo(m)}$ tends to an explicit positive constant
+$m\ge1$ exactly $1+\TwoAdicValuation(m)$ times (\lean{LatticeFiber}) and
+$\|\Phi(x)\|/|x-m|^{1+\TwoAdicValuation(m)}$ tends to an explicit positive constant
 along the punctured neighbourhood of $m$
 (\lean{PhiZeroOrder}, \lean{tendsto\_norm\_div\_pow\_zero\_order}), with
 the odd and $2^{j}$ extremes as corollaries (\lean{ValleyZeroOrders});
@@ -282,13 +265,13 @@ The question \cite{mse-decay} asks for a real $g$, ``elementary, if
 possible \dots\ analytic, positive and monotone decreasing (and having
 monotone derivatives of any order, if possible)'', such that
 \begin{equation}
- \lim_{t\to\infty}\frac{1}{t-t_0}\int_{t_0}^{t}\frac{|f(x)|}{g(x)}\dd x=1
+ \lim_{t\to\infty}\frac{1}{t-t_0}\int_{t_0}^{t}\frac{|f(x)|}{g(x)}\Differential x=1
  \tag{Q2}\label{eq:Q2}
 \end{equation}
 for large enough $t_0$, or at least
 \begin{equation}
  \exists\,0<A<B\ \forall t>t_0:\quad
- A<\frac{1}{t-t_0}\int_{t_0}^{t}\frac{|f(x)|}{g(x)}\dd x<B.
+ A<\frac{1}{t-t_0}\int_{t_0}^{t}\frac{|f(x)|}{g(x)}\Differential x<B.
  \tag{Q3}\label{eq:Q3}
 \end{equation}
 The asker's empirical guess was ``something close to
@@ -303,7 +286,7 @@ readings; \cref{sec:interpretations} maps out how the answer changes with
 the reading.  Second, since $\int_{t/2}^{t}$ carries half the weight of
 $\int_{t_0}^{t}$, condition \eqref{eq:Q2} is equivalent to the statement
 that the \emph{partial-shell} averages
-$\frac{1}{2^k}\int_{2^k}^{2^ky}|f|/g\,\dd x\to y-1$ for every
+$\frac{1}{2^k}\int_{2^k}^{2^ky}|f|/g\,\Differential x\to y-1$ for every
 $y\in[1,2]$; this equivalence is what ultimately decides \eqref{eq:Q2}
 negatively for natural gauges (\cref{sec:answer}).
 
@@ -343,7 +326,7 @@ largest lobe in $[2^k,2^{k+1}]$
    \cref{ssec:maxima}) \\[0.35em]
 Lebesgue-typical dyadic ray
  & $\kappa_0=3.1514961295$
- & holds a.e.\ with $\smallo(\log x)$ error; the error is genuinely random,
+ & holds a.e.\ with $\LittleO(\log x)$ error; the error is genuinely random,
    of iterated-logarithm size (Docs.~1--4; constant of \cref{sec:lil}) \\[0.35em]
 arithmetic mean = the literal question
  & $\kappa_1=2.7480700149$
@@ -351,7 +334,7 @@ arithmetic mean = the literal question
    logarithmic mean, not for all $t$ (Docs.~3, 4; \cref{sec:answer}) \\[0.35em]
 root mean square
  & $\kappa_2=\log_2(2\pi)=2.6514961295$
- & exact identity $\int_0^1\prod_{j<n}\sin^2(\pi2^jt)\dd t=2^{-n}$; this is
+ & exact identity $\int_0^1\prod_{j<n}\sin^2(\pi2^jt)\Differential t=2^{-n}$; this is
    precisely the exponent of the deleted draft (Docs.~3, 4); exactly
    solvable layer, developed in \cref{sec:rms} \\
 \bottomrule
@@ -406,10 +389,10 @@ rather than almost everywhere, for $\kappa_0$
 (\lean{KappaZeroInMeasure}, \lean{FluctuationTightness}).
 
 Two further interpretation issues are settled by the problem statement
-itself.  The convention $\sinc z=\sin z/z$ (argument already containing
-$\pi$) is forced by the stated zero set $\Z_{>0}$ and by the plot in the
+itself.  The convention $\SincRad z=\sin z/z$ (argument already containing
+$\pi$) is forced by the stated zero set $\IntegerNumbers_{>0}$ and by the plot in the
 question.  And the normalization matters only through trivial rescalings:
-$f(x)=\widehat{\Up}(x)$ exactly in the $\e^{-2\pi\ii x t}$ convention, so
+$f(x)=\widehat{\RvachevUp}(x)$ exactly in the $\EulerE^{-2\pi\ImaginaryUnit x t}$ convention, so
 every statement transfers verbatim to the up-function literature.
 
 Finally, the two forms \eqref{eq:Q2} and \eqref{eq:Q3} are genuinely
@@ -418,7 +401,7 @@ while \eqref{eq:Q2} fails for every gauge in the natural class
 (\cref{thm:audit-answer}).  The choice of \emph{averaging operator} is thus
 itself an interpretation with mathematical content: arithmetic averaging
 does not respect the multiplicative self-similarity
-$f(2x)=\sinc(2\pi x)f(x)$, and the obstruction to \eqref{eq:Q2} disappears
+$f(2x)=\SincRad(2\pi x)f(x)$, and the obstruction to \eqref{eq:Q2} disappears
 the moment the average is taken multiplicatively.
 
 \section{The common core, verified}
@@ -430,7 +413,7 @@ $n=k+1$,
 \[
  P_n(t)=\prod_{j=0}^{n-1}\bigl|\sin(\pi2^jt)\bigr|,
  \qquad
- H(y)=\prod_{m=1}^{\infty}\Bigl|\sinc\frac{\pi y}{2^m}\Bigr|.
+ H(y)=\prod_{m=1}^{\infty}\Bigl|\SincRad\frac{\pi y}{2^m}\Bigr|.
 \]
 Then
 \begin{equation}
@@ -449,10 +432,10 @@ the doubling map $\T t=2t\bmod1$, and the elementary algebra
  \qquad L=\log x,
 \]
 (Document 3's identity, reproved symbolically) converts each per-level
-numerator scale $\e^{-c}$ into the power
+numerator scale $\EulerE^{-c}$ into the power
 $\kappa=\tfrac12+c/a$.  The problem statement's own finite expansion
 \[
- \prod_{n=0}^{m}\sinc\frac{\pi x}{2^n}
+ \prod_{n=0}^{m}\SincRad\frac{\pi x}{2^n}
  =\frac{2^{\binom m2}}{(\pi x)^{m+1}}
  \sum_{n=0}^{2^m-1}t_n\sin\Bigl(\frac{\pi m}{2}+\frac{2n+1}{2^m}\pi x\Bigr)
 \]
@@ -460,7 +443,7 @@ was verified symbolically for $m=0,1,2$; it is the Thue--Morse
 sine-product identity of the Formula Atlas
 (\S``Sine and cosine products as Thue--Morse sums'') and is the bridge to
 Gelfond-type estimates: $2^nP_n(t)$ is the modulus of the Thue--Morse
-trigonometric polynomial $\sum_{r<2^n}(-1)^{s_2(r)}\e^{2\pi\ii rt}$.
+trigonometric polynomial $\sum_{r<2^n}(-1)^{s_2(r)}\EulerE^{2\pi\ImaginaryUnit rt}$.
 The identity is not merely spot-checked but proved: it is
 \lean{LacunaryProductToSum}'s
 \lean{prod\_sin\_two\_pow\_eq\_thueMorse\_sum},
@@ -474,15 +457,15 @@ This section states the audited answer, synthesizing Documents 3 and 4
 (who give it) with the numerical realization computed for this audit and
 one new repair.
 
-Let $\Lop_1$ be the weighted doubling transfer operator
+Let $\LaplaceTransformSymbol_1$ be the weighted doubling transfer operator
 \begin{equation}
- (\Lop_1 h)(x)
+ (\LaplaceTransformSymbol_1 h)(x)
  =\frac12\Bigl[\sin\Bigl(\frac{\pi x}{2}\Bigr)h\Bigl(\frac x2\Bigr)
  +\cos\Bigl(\frac{\pi x}{2}\Bigr)h\Bigl(\frac{x+1}{2}\Bigr)\Bigr],
  \qquad 0\le x\le1,
  \label{eq:L1}
 \end{equation}
-so that $\int_0^1P_n(t)q(t)\dd t=\int_0^1(\Lop_1^nq)(x)\dd x$, and let
+so that $\int_0^1P_n(t)q(t)\Differential t=\int_0^1(\LaplaceTransformSymbol_1^nq)(x)\Differential x$, and let
 $\varrho_1$ be its Perron root.  Then:
 \begin{align}
  \varrho_1&=0.661322602060565\ldots\notag\\
@@ -533,11 +516,11 @@ ratio converges to
  \qquad
  \mathscr F(z)
  =\lim_{n\to\infty}
- \frac{\int_0^zW(t)P_n(t)\dd t}{\int_0^1W(t)P_n(t)\dd t},
+ \frac{\int_0^zW(t)P_n(t)\Differential t}{\int_0^1W(t)P_n(t)\Differential t},
 \]
 with $W$ the bounded mantissa weight of the exact factorization.
 The limit distribution $\mathscr F$ is the (normalized, $W$-weighted)
-eigenmeasure of $\Lop_1$; it is continuous and \emph{singular}, so
+eigenmeasure of $\LaplaceTransformSymbol_1$; it is continuous and \emph{singular}, so
 $\mathscr F(z)\ne z$ and $\mathscr P\not\equiv1$.  Consequently no gauge
 whose within-shell shape stabilizes---in particular no Hardy-field
 gauge, with or without a continuous log-periodic
@@ -556,11 +539,11 @@ finite-shell running mean, wrong in its seventh figure ---
 \cref{sec:second-wave}),
 \[
  \lim_{t\to\infty}\frac{1}{\log(t/t_0)}
- \int_{t_0}^{t}\frac{|f(x)|}{A_1^{\log}g_1(x)}\,\frac{\dd x}{x}=1
+ \int_{t_0}^{t}\frac{|f(x)|}{A_1^{\log}g_1(x)}\,\frac{\Differential x}{x}=1
  \qquad\text{for \emph{all} } t\to\infty.
 \]
 Measured: all four tracked mantissas converge to the same constant, with
-the expected $\bigO(1/\log t)$ speed (\cref{ssec:logmean}).
+the expected $\BigO(1/\log t)$ speed (\cref{ssec:logmean}).
 \end{enumerate}
 \end{theorem}
 
@@ -571,7 +554,7 @@ The positive parts (i)--(ii) are Theorem 6.4 of Document 3 and
 Theorem 5.3/Corollary 6.2 of Document 4; their proofs were audited line by
 line and rest on the exact factorization plus the Fouvry--Mauduit
 asymptotic and the Ruelle--Perron--Frobenius (RPF) convergence for
-$\Lop_1$ (see \cref{ssec:imported} for the exact division between proved
+$\LaplaceTransformSymbol_1$ (see \cref{ssec:imported} for the exact division between proved
 and imported).  The negative part (iii) and the repair (iv) are proved
 here in full, since they are the audit's verdicts on the question itself.
 
@@ -599,7 +582,7 @@ the RPF convergence that supplies the shell limits, and with it the
 singularity of $\nu$ that makes the profile nonconstant.  The library's
 Perron layer stops short of that --- existence of the root
 $\varrho_1\in[\tfrac12,\sqrt2/2]$ by Fekete
-(\lean{PerronRootExistence}) and the Lasota--Yorke pair for $\Lop_1$
+(\lean{PerronRootExistence}) and the Lasota--Yorke pair for $\LaplaceTransformSymbol_1$
 (\lean{TransferOperatorStep}, \lean{LasotaYorkeIteration}) are formal, the
 spectral gap and the eigenfunction are not.
 
@@ -615,16 +598,16 @@ Let $g>0$ be measurable and $F(t)=\int_{t_0}^{t}|f|/g$.  If
 \end{lemma}
 
 \begin{proof}
-\eqref{eq:Q2} says $F(t)=(t-t_0)(1+\smallo(1))$.  Insert $t=2^ky$ and
+\eqref{eq:Q2} says $F(t)=(t-t_0)(1+\LittleO(1))$.  Insert $t=2^ky$ and
 $t=2^k$ and subtract:
-$F(2^ky)-F(2^k)=2^k\bigl(y-1+\smallo(1)\bigr)$, the error uniform for
+$F(2^ky)-F(2^k)=2^k\bigl(y-1+\LittleO(1)\bigr)$, the error uniform for
 $y\in[1,2]$ since $y$ is bounded.
 \end{proof}
 
 \Cref{lem:reduction} is formalized, and in greater generality:
 \lean{ShellLinearity}'s \lean{tendsto\_shell\_increment} proves
 $\bigl(F(2^k(1+z))-F(2^k)\bigr)/2^k\to z$ for an \emph{arbitrary}
-$F:\R\to\R$ and every $z\ge0$, not only for $y=1+z\in[1,2]$, with the ray
+$F:\RealNumbers\to\RealNumbers$ and every $z\ge0$, not only for $y=1+z\in[1,2]$, with the ray
 normalization $F(2^kc)/2^k\to c$ as
 \lean{tendsto\_ray\_div\_two\_pow}.  The uniformity in $y$ noted in the
 proof above is not part of the Lean statement, which fixes $z$ and takes
@@ -678,7 +661,7 @@ this proposition's conclusion, reached by a slightly better route.
 
 \begin{proposition}[exact $L^2$ identity]
 \label[proposition]{prop:L2}
-$\int_0^1P_n(t)^2\dd t=2^{-n}$ for every $n\ge1$.
+$\int_0^1P_n(t)^2\Differential t=2^{-n}$ for every $n\ge1$.
 \end{proposition}
 
 \begin{proof}
@@ -727,10 +710,10 @@ positive on $[0,1)$.  Hence, with $q=u^{-1}W$ (continuous, positive on
 $[0,1)$),
 \[
  \frac{F(2^k(1+z_2))-F(2^k(1+z_1))}{2^k}
- =\frac{1+\smallo(1)}{c_k\varrho_1^{\,k+1}}
- \int_{z_1}^{z_2}q(z)P_{k+1}(z)\dd z .
+ =\frac{1+\LittleO(1)}{c_k\varrho_1^{\,k+1}}
+ \int_{z_1}^{z_2}q(z)P_{k+1}(z)\Differential z .
 \]
-By the RPF convergence for $\Lop_1$ (\cref{ssec:imported}), for every
+By the RPF convergence for $\LaplaceTransformSymbol_1$ (\cref{ssec:imported}), for every
 continuous $\phi$,
 $\varrho_1^{-n}\int_0^1\phi P_n\to\nu(\phi)\int_0^1h$, where
 $h>0$ is the eigenfunction and $\nu$ the eigenmeasure, normalized by
@@ -751,37 +734,37 @@ the existence and positivity of $C$ being forced by
 \cref{lem:reduction} with $(z_1,z_2)=(0,1)$.  Comparing
 \eqref{eq:shell-limit} with \eqref{eq:linearity} gives
 $C\,\nu(q\,\mathbf 1_{[0,z]})=z$ for all $z\in[0,1]$: the finite Borel
-measure $Cq\dd\nu$ \emph{is} Lebesgue measure on $[0,1]$.  Since $q$ is
+measure $Cq\Differential\nu$ \emph{is} Lebesgue measure on $[0,1]$.  Since $q$ is
 continuous and positive on $[0,1)$, this forces
 $\nu\restriction_{[0,1)}\ll\mathrm{Leb}$, and $\nu(\{1\})=0$ by
 atomlessness, so $\nu\ll\mathrm{Leb}$.
 
-But $\nu$ is singular.  Indeed, if $\dd\nu=r\dd\mathrm{Leb}$ with
+But $\nu$ is singular.  Indeed, if $\Differential\nu=r\Differential\mathrm{Leb}$ with
 $0\le r\in L^1$ not a.e.\ zero, the eigenmeasure equation
-$\Lop_1^*\nu=\varrho_1\nu$ unwinds, by the change of variables on the two
+$\LaplaceTransformSymbol_1^*\nu=\varrho_1\nu$ unwinds, by the change of variables on the two
 branches, to the a.e.\ conformal relation
 $s(z)\,r(\T z)=\varrho_1\,r(z)$, $s(z)=|\sin\pi z|$.  Iterating,
 \[
  r(\T^nz)=\frac{\varrho_1^{\,n}}{P_n(z)}\,r(z),
 \]
 and by the Birkhoff ergodic theorem
-$P_n(z)=\exp\bigl(-n(\log 2+\smallo(1))\bigr)$ for Lebesgue-a.e.\ $z$
+$P_n(z)=\exp\bigl(-n(\log 2+\LittleO(1))\bigr)$ for Lebesgue-a.e.\ $z$
 (the potential $\log s$ is integrable with mean $-\log2$), so on
 $\{r>0\}$, a set of positive measure,
-$r(\T^nz)=r(z)\exp\bigl(n(\log(2\varrho_1)+\smallo(1))\bigr)\to\infty$
+$r(\T^nz)=r(z)\exp\bigl(n(\log(2\varrho_1)+\LittleO(1))\bigr)\to\infty$
 geometrically, using $\log(2\varrho_1)>0$ from \cref{prop:bracket}.  On
 the other hand $\T$ preserves Lebesgue measure, so for any
 $\varepsilon>0$,
-$\mathrm{Leb}\bigl(r\circ\T^n>\e^{\varepsilon n}\bigr)
-=\mathrm{Leb}\bigl(r>\e^{\varepsilon n}\bigr)
-\le\|r\|_1\e^{-\varepsilon n}$, which is summable; by Borel--Cantelli
-$r(\T^nz)\le\e^{\varepsilon n}$ eventually for a.e.\ $z$.  Choosing
+$\mathrm{Leb}\bigl(r\circ\T^n>\EulerE^{\varepsilon n}\bigr)
+=\mathrm{Leb}\bigl(r>\EulerE^{\varepsilon n}\bigr)
+\le\|r\|_1\EulerE^{-\varepsilon n}$, which is summable; by Borel--Cantelli
+$r(\T^nz)\le\EulerE^{\varepsilon n}$ eventually for a.e.\ $z$.  Choosing
 $\varepsilon<\log(2\varrho_1)$ yields a contradiction: no such density
 exists, so $\nu$ is \emph{not} absolutely continuous---contradicting
 $\nu\ll\mathrm{Leb}$ derived above.  This refutes \eqref{eq:Q2}.
 (The same computation upgrades to full singularity
 $\nu\perp\mathrm{Leb}$: the dual action
-$\Lop_1^*\nu=\sum_b(\tau_b)_*\bigl(\tfrac12(s\circ\tau_b)\,\nu\bigr)$
+$\LaplaceTransformSymbol_1^*\nu=\sum_b(\tau_b)_*\bigl(\tfrac12(s\circ\tau_b)\,\nu\bigr)$
 over the two inverse branches $\tau_b$ maps absolutely continuous parts
 to absolutely continuous parts and singular parts to singular parts, so
 by uniqueness of the Lebesgue decomposition the absolutely continuous
@@ -799,7 +782,7 @@ $\gamma$ is finite, then
 $h(2^k(1+z))-h(2^k)\to\gamma\log(1+z)$ uniformly, the shell shape
 stabilizes with $u(z)=(1+z)^{\gamma}$, and \cref{thm:impossible}
 applies.  If $\gamma=+\infty$ (resp.\ $-\infty$), the factor
-$\e^{-(h(2^k(1+z))-h(2^k))}$ degenerates monotonically, and---using that
+$\EulerE^{-(h(2^k(1+z))-h(2^k))}$ degenerates monotonically, and---using that
 the eigenmeasure charges every subinterval (full support, part of the
 RPF package)---the shell mass of $|f|/g$ concentrates at the left
 (resp.\ right) shell edge, so the partial-shell ratio tends to $1$
@@ -814,37 +797,37 @@ closed-form expression.
 There is $A_1^{\log}\in(0,\infty)$ such that, for every fixed $t_0>1$,
 \[
  \frac{1}{\log(t/t_0)}\int_{t_0}^{t}
- \frac{|f(x)|}{g_1(x)}\,\frac{\dd x}{x}
+ \frac{|f(x)|}{g_1(x)}\,\frac{\Differential x}{x}
  \longrightarrow A_1^{\log}
  \qquad (t\to\infty,\ \text{unrestricted}).
 \]
 \end{theorem}
 
 \begin{proof}
-Let $\beta_k=\int_{2^k}^{2^{k+1}}\frac{|f|}{g_1}\frac{\dd x}{x}$.  By the
+Let $\beta_k=\int_{2^k}^{2^{k+1}}\frac{|f|}{g_1}\frac{\Differential x}{x}$.  By the
 exact factorization,
-$\beta_k=\varrho_1^{-(k+1)}\int_0^1\frac{W(z)}{1+z}P_{k+1}(z)\dd z$, and
+$\beta_k=\varrho_1^{-(k+1)}\int_0^1\frac{W(z)}{1+z}P_{k+1}(z)\Differential z$, and
 the RPF convergence applied to the continuous weight $W(z)/(1+z)$ gives
 \[
  \beta_k\longrightarrow
  \beta_\infty
- :=\nu\Bigl(\frac{W}{1+\cdot}\Bigr)\int_0^1h\,\dd\mathrm{Leb}
+ :=\nu\Bigl(\frac{W}{1+\cdot}\Bigr)\int_0^1h\,\Differential\mathrm{Leb}
  \;\in(0,\infty);
 \]
 in particular $(\beta_k)$ is bounded.  For $2^K\le t<2^{K+1}$,
 \[
- \int_{t_0}^{t}\frac{|f|}{g_1}\frac{\dd x}{x}
- =\sum_{k=k_0}^{K-1}\beta_k+\bigO(1)+\Theta_K,
+ \int_{t_0}^{t}\frac{|f|}{g_1}\frac{\Differential x}{x}
+ =\sum_{k=k_0}^{K-1}\beta_k+\BigO(1)+\Theta_K,
  \qquad 0\le\Theta_K\le\beta_K ,
 \]
-and $\log(t/t_0)=K\log2+\bigO(1)$.  Since $\beta_k\to\beta_\infty$,
+and $\log(t/t_0)=K\log2+\BigO(1)$.  Since $\beta_k\to\beta_\infty$,
 Ces\`aro convergence gives
 $\frac{1}{K}\sum_{k<K}\beta_k\to\beta_\infty$, while
 $\Theta_K/(K\log 2)\to0$ because $(\beta_K)$ is bounded.  Hence the
 logarithmic mean converges to
 $A_1^{\log}=\beta_\infty/\log2$, with no constraint on how $t\to\infty$.
 The point of the proof is structural: in the logarithmic average the
-terminal partial shell has weight $\bigO(1/\log t)$, so the singular
+terminal partial shell has weight $\BigO(1/\log t)$, so the singular
 within-shell distribution that defeats \eqref{eq:Q2} is annihilated
 rather than merely averaged.
 \end{proof}
@@ -878,16 +861,16 @@ stationary-ergodic martingale LIL of Stout/Heyde--Scott
 $\log|2\sin\pi x|=-\sum_{j\ge1}\cos(2\pi jx)/j$ in $L^2$.
 \item \emph{Published research input:}
 the Fouvry--Mauduit asymptotic
-$I_1(n)=\kappa\varrho_1^{\,n}(1+\smallo(1))$
+$I_1(n)=\kappa\varrho_1^{\,n}(1+\LittleO(1))$
 \cite{fouvrymauduit1996}.  It is needed even for the bounded form
 \eqref{eq:Q3} with the exact gauge exponent: the elementary bracket of
 AHL Lemma 5.1 (whose monotone $m_j\uparrow$, $M_j\downarrow$ argument was
 audited and is elementary) pins $\varrho_1$ to five digits but still
-allows a subexponential drift $I_1(n)/\varrho_1^{\,n}=\e^{\smallo(n)}$,
+allows a subexponential drift $I_1(n)/\varrho_1^{\,n}=\EulerE^{\LittleO(n)}$,
 which a fixed power $x^{-\kappa_1}$ cannot absorb.
 \item \emph{The one genuinely imported analytic block:}
-the RPF spectral picture for $\Lop_1$ (existence of $h>0$, $\nu$, and
-$\varrho_1^{-n}\Lop_1^n\phi\to h\,\nu(\phi)$ for continuous $\phi$) on a
+the RPF spectral picture for $\LaplaceTransformSymbol_1$ (existence of $h>0$, $\nu$, and
+$\varrho_1^{-n}\LaplaceTransformSymbol_1^n\phi\to h\,\nu(\phi)$ for continuous $\phi$) on a
 H\"older or bounded-variation space, as cited by Documents 3 and 4 from
 the standard transfer-operator literature.  None of the four documents
 reproves it, and neither does this audit; it is the standing analytic
@@ -1003,9 +986,9 @@ envelope.
 
 Two audited facts anchor everything: away from the integers
 \begin{equation}
- (\log|f|)'(x)=-2x\sum_{k\ge1}\frac{1+\vtwo(k)}{k^2-x^2},
+ (\log|f|)'(x)=-2x\sum_{k\ge1}\frac{1+\TwoAdicValuation(k)}{k^2-x^2},
  \qquad
- (\log|f|)''(x)=-2\sum_{k\ge1}(1+\vtwo(k))\frac{k^2+x^2}{(k^2-x^2)^2}<0,
+ (\log|f|)''(x)=-2\sum_{k\ge1}(1+\TwoAdicValuation(k))\frac{k^2+x^2}{(k^2-x^2)^2}<0,
  \label{eq:lobe-derivatives}
 \end{equation}
 so every lobe of $|f|$ is strictly log-concave with a unique peak.  That
@@ -1024,12 +1007,12 @@ underlying \eqref{eq:lobe-derivatives} are now stated, for $|x|<1$, in
 the two indexings turns out to be combinatorial rather than analytic: it
 is the same fibre equivalence \lean{Fabius.dyadicFactorEquiv} that turns
 the scale product into the canonical product.  The fibre of
-$(h,r)\mapsto2^h(r+1)$ over $k$ has exactly $\vtwo(k)+1$ elements and the
+$(h,r)\mapsto2^h(r+1)$ over $k$ has exactly $\TwoAdicValuation(k)+1$ elements and the
 summand depends only on the fibre base, so the lattice sum collapses to
 the integer sum with that multiplicity.  This is stated once for an
 arbitrary summand (\lean{Fabius.tsum\_lobeZero\_regroup}), which is the
 reusable part: \emph{any} absolutely convergent sum over the dyadic zero
-lattice is the sum over the positive integers weighted by $\vtwo(k)+1$.
+lattice is the sum over the positive integers weighted by $\TwoAdicValuation(k)+1$.
 The two central-lobe derivative formulas are instances.  The unrestricted identities away
 from all integers remain report-level statements; the all-lobe concavity and one-peak
 conclusions above are formalized through the separate factorization route.  Summability of the two
@@ -1055,15 +1038,15 @@ There is an absolute constant $C$ such that for all $n\ge2$,
 
 \begin{proof}
 The left inequality is trivial.  For the right one, write
-$d_0=1+\vtwo(n)$, $d_1=1+\vtwo(n+1)$, $\delta_0=\xi_n-n$,
+$d_0=1+\TwoAdicValuation(n)$, $d_1=1+\TwoAdicValuation(n+1)$, $\delta_0=\xi_n-n$,
 $\delta_1=n+1-\xi_n$, and note $d_0,d_1\le1+\log_2(n+1)$.  Splitting off
 the $k=n$ and $k=n+1$ terms of \eqref{eq:lobe-derivatives} and bounding
 the rest crudely ($|k^2-x^2|\ge|k-x|\,n$ for $k\le2n$, quadratic tail
-beyond, $1+\vtwo(k)\le1+\log_2k$) gives, for $x$ in the middle segment
+beyond, $1+\TwoAdicValuation(k)\le1+\log_2k$) gives, for $x$ in the middle segment
 $[n+\delta_0/2,\,n+1-\delta_1/2]$,
 \[
  (\log|f|)'(x)=\frac{d_0}{x-n}\theta_0(x)-\frac{d_1}{n+1-x}\theta_1(x)
- +\bigO(\log^2n),
+ +\BigO(\log^2n),
  \qquad
  \theta_i(x)\in[\tfrac9{10},\tfrac65],
 \]
@@ -1077,7 +1060,7 @@ at least $\tfrac12$, the vanishing forces the other to satisfy
 $d_i/\delta_i\le C\log^2n$, whence
 $\delta_{\min}\ge c/\log^2 n$ and, on the middle segment around
 $\xi_n$, the curvature is at most $\Lambda\le C\log^5n$.  By
-log-concavity, $|f(\xi_n\pm s)|\ge E_n\e^{-\Lambda s^2/2}\ge E_n/\e$ for
+log-concavity, $|f(\xi_n\pm s)|\ge E_n\EulerE^{-\Lambda s^2/2}\ge E_n/\EulerE$ for
 $s\le\min(\Lambda^{-1/2},\delta_{\min}/2)\ge c\,(1+\log n)^{-5/2}$, and
 integrating over that subinterval gives
 $\int_n^{n+1}|f|\ge c\,E_n(1+\log n)^{-5/2}$, which is stronger than
@@ -1108,7 +1091,7 @@ $-(\log\log x)^2/(2\log2)$.
 \item \emph{Zero liminf on that scale.}
 $\liminf E_n/\bigl(\mathcal E(n)n^{-\kappa_\infty}\bigr)=0$: along
 $n=2^k$ (and $n=m2^k$, odd $m$) the peaks obey the two-adic law
-$E_{m2^k}\sim\frac{H(1)|H(m)|}{\e(k+1)}(m2^k)^{-(k+1)}$, whose leading
+$E_{m2^k}\sim\frac{H(1)|H(m)|}{\EulerE(k+1)}(m2^k)^{-(k+1)}$, whose leading
 quadratic coefficient $-1/\log2$ is twice the universal one.  Within the
 shell $[2^k,2^{k+1})$ the deepest lobe observed is the one abutting
 $2^{k+1}$ (zero multiplicity $k+2$; confirmed at $k\in\{9,11,13\}$ by
@@ -1127,7 +1110,7 @@ Ces\`aro-type statement of \cref{thm:audit-answer} transfers to the peak
 sequence up to the polylogarithmic slack.  Numerically the slack is a
 sharp constant: over $k=9,\dots,14$,
 \[
- \frac{\sum_{2^k\le n<2^{k+1}}E_n}{\int_{2^k}^{2^{k+1}}|f|\,\dd x}
+ \frac{\sum_{2^k\le n<2^{k+1}}E_n}{\int_{2^k}^{2^{k+1}}|f|\,\Differential x}
  =1.9238,\;1.9237,\;1.9237,\;1.9237,\;1.9237,\;1.9238\,(\pm3\cdot10^{-5}),
 \]
 supporting the conjecture that the ratio converges to a constant
@@ -1166,42 +1149,42 @@ A lobe occupies a $z$-cell of length $2^{-k}$; if the cell contains a
 point of the good set, then $E_n\ge|f|$ there exceeds the
 $\kappa_0$-line by more than $-\varepsilon k$.  The number of cells
 disjoint from the good set is at most $2^k\cdot\mathrm{Leb}(\text{bad})
-=\smallo(2^k)$.
+=\LittleO(2^k)$.
 
 \emph{Upper half (few lobes are too large).}  Call a cell $J$
 \emph{regular} if for every $j\le k':=k-4\lceil\log_2k\rceil$ the image
-$2^jJ$ keeps distance at least $k^2\,2^{j-k}$ from $\Z$.  For each $j$
+$2^jJ$ keeps distance at least $k^2\,2^{j-k}$ from $\IntegerNumbers$.  For each $j$
 the offending set is $2^j$ intervals of length $2k^22^{-k}$ each, so at
 most $(2k^2+2)2^j$ cells are irregular at level $j$, and summing over
-$j\le k'$ gives at most $C2^k/k^2=\smallo(2^k)$ irregular cells.  On a
+$j\le k'$ gives at most $C2^k/k^2=\LittleO(2^k)$ irregular cells.  On a
 regular cell every retained factor has logarithmic oscillation at most
 $\pi/k^2$ across the cell (length times $\pi2^j\cot$-bound), so
 \[
- \max_{J}P_{k+1}\le\e^{\pi/k}\,P_{k'}(z_J)
+ \max_{J}P_{k+1}\le\EulerE^{\pi/k}\,P_{k'}(z_J)
  \qquad\text{for every } z_J\in J,
 \]
 after discarding the last $4\lceil\log_2k\rceil$ factors, each bounded by
 one.  Now fix $\varepsilon$ and choose $q\in(0,1)$ with
 $\log\varrho_q<-q(1-\tfrac\varepsilon2)\log2$, possible because
 $(\log\varrho_q)/(q\log2)\to-1$ as $q\downarrow0$ (the pressure slope at
-the Lebesgue equilibrium; with the RPF package for $\Lop_q$ on
+the Lebesgue equilibrium; with the RPF package for $\LaplaceTransformSymbol_q$ on
 bounded-variation functions --- the weights $s^q$ have total variation
 $2$ uniformly in $q\in[0,1]$ --- this is standard perturbation theory,
 and it is the one imported input here, the same package as
 \cref{ssec:imported}).  Markov's inequality with
 $I_q(k')\le C_q\varrho_q^{k'}$ then bounds the measure of
-$\{P_{k'}\ge\e^{-(1-\varepsilon)k\log2}\}$ by $\e^{-c(\varepsilon)k}$;
+$\{P_{k'}\ge\EulerE^{-(1-\varepsilon)k\log2}\}$ by $\EulerE^{-c(\varepsilon)k}$;
 since on a regular cell all points give comparable $P_{k'}$, the number
 of regular cells whose maximum exceeds the threshold is
-$2^k\e^{-c(\varepsilon)k}=\smallo(2^k)$.  For such good cells,
-$E_n\le C\cdot\text{shell factor}\cdot\e^{-(1-\varepsilon)k\log2}$ lies
-below the $\kappa_0$-line by at most $\varepsilon k\log 2+\bigO(\log k)$.
+$2^k\EulerE^{-c(\varepsilon)k}=\LittleO(2^k)$.  For such good cells,
+$E_n\le C\cdot\text{shell factor}\cdot\EulerE^{-(1-\varepsilon)k\log2}$ lies
+below the $\kappa_0$-line by at most $\varepsilon k\log 2+\BigO(\log k)$.
 Adjusting $\varepsilon$ absorbs the constants.
 \end{proof}
 
 \begin{proposition}[central limit law for the peaks]
 \label[proposition]{prop:peak-clt}
-For every $u\in\R$,
+For every $u\in\RealNumbers$,
 \[
  \frac{1}{2^k}\,\#\Bigl\{2^k\le n<2^{k+1}:
  \log E_n+\frac{(\log n)^2}{2\log2}+\kappa_0\log n
@@ -1216,15 +1199,15 @@ All ingredients are already on the table.  The continuous CLT
 $\Sigma_k/\sqrt k\Rightarrow\mathcal N(0,\pi^2/4)$ holds by Document 1's
 martingale argument with the variance of \cref{thm:variance}.
 Convergence in distribution under Lebesgue measure transfers to the cell
-ensemble because, outside the $\smallo(2^k)$ irregular cells, all points
+ensemble because, outside the $\LittleO(2^k)$ irregular cells, all points
 of a cell give the same $\Sigma_{k'}$ up to $\pi/k$, and the discarded
-top factors change $\log E_n$ by at most $\bigO(\log^2k)$ in one
+top factors change $\log E_n$ by at most $\BigO(\log^2k)$ in one
 direction and, in the other, by at least $\log$ of the product of the
 discarded factors on a nested subcell: choosing inside the cell,
 factor by factor from the finest down, the third of the current subcell
 on which the new factor exceeds $\tfrac12$ leaves a nonempty subcell on
 which the discarded product is at least $2^{-4\lceil\log_2k\rceil}$.
-Both corrections are $\bigO(\log^2 k)=\smallo(\sqrt k)$, as is the
+Both corrections are $\BigO(\log^2 k)=\LittleO(\sqrt k)$, as is the
 bounded mantissa term, so the cell statistics of $\log E_n$ inherit the
 Gaussian limit with the same normalization.
 \end{proof}
@@ -1251,7 +1234,7 @@ Across the shell $[2^k,2^{k+1})$, the lobe of $n=2^k+m$ occupies the
 $z$-cell of $m2^{-k}$, and up to the bounded factors above,
 $E_n$ is the windowed maximum of $P_{k+1}$ there --- that is, of the
 modulus of the Thue--Morse polynomial
-$\sum_{r<2^{k+1}}(-1)^{s_2(r)}\e^{2\pi\ii rz}$ near the dyadic frequency
+$\sum_{r<2^{k+1}}(-1)^{s_2(r)}\EulerE^{2\pi\ImaginaryUnit rz}$ near the dyadic frequency
 $m/2^k$.  The peak-envelope interpretation is thus exactly the question
 of the value distribution of Thue--Morse spectra, and the exact grid
 identities of that world transfer:
@@ -1270,12 +1253,12 @@ For every $n\ge1$:
 
 \begin{proof}
 (i) is the classical evaluation $\prod_{r=1}^{N-1}(1-\omega^r)=N$ for
-$\omega=\e^{2\pi\ii/N}$, taken in modulus.  It says that the mean of
+$\omega=\EulerE^{2\pi\ImaginaryUnit/N}$, taken in modulus.  It says that the mean of
 $\psi=\log|2\sin\pi\cdot|$ over the \emph{nonzero} points of the
 $2^n$-grid is $2^{-n}\log2^n\to0$ --- the grid analogue of
 $\int_0^1\psi=0$, which is what makes the discrete Birkhoff sums behave
 like the continuous ones.
-(ii) Let $p(t)=\prod_{j<n}(1-\e^{2\pi\ii2^jt})$, of degree $2^n-1$ with
+(ii) Let $p(t)=\prod_{j<n}(1-\EulerE^{2\pi\ImaginaryUnit2^jt})$, of degree $2^n-1$ with
 coefficients $\pm1$, so $|p|=2^nP_n$.  The $2^n$-point discrete
 Parseval identity gives
 $2^{-n}\sum_m|p(m/2^n)|^2=\sum_r|c_r|^2=2^n$, i.e.\
@@ -1311,14 +1294,14 @@ empirical constant $\Theta_{\mathrm{peak}}=1.9237$ tying the two
 readings together.  For the companion question \cite{mse-extrema}, the
 sharp answers are the limsup envelope
 $x^{-\kappa_\infty}\mathcal E(x)$ and the typical law
-$x^{-\kappa_0+\smallo(1)}\mathcal E(x)$ --- two different formulas,
+$x^{-\kappa_0+\LittleO(1)}\mathcal E(x)$ --- two different formulas,
 necessarily.
 
 \section{Interpretation in detail, II: the root-mean-square amplitude}
 \label{sec:rms}
 
 The RMS reading asks for $g$ such that the quadratic Ces\`aro mean of
-$(f/g)^2$ is tame.  Because $f=\widehat\Up$, the shell RMS of $f$ is the
+$(f/g)^2$ is tame.  Because $f=\widehat\RvachevUp$, the shell RMS of $f$ is the
 energy spectral envelope of the up-function, and this is the one reading
 in which the deleted draft's exponent $\log_2(2\pi)$ is correct.  It is
 also, by a wide margin, the most rigid layer of the whole problem: its
@@ -1335,46 +1318,46 @@ grid mean of $P_n^2$ equal $2^{-n}$ exactly, for every $n$.  All
 remaining structure sits in the bounded mantissa weight, and it too is
 spectrally transparent:
 
-\begin{proposition}[exact subleading spectrum of $\Lop_2$]
+\begin{proposition}[exact subleading spectrum of $\LaplaceTransformSymbol_2$]
 \label[proposition]{prop:L2-spectrum}
 The operator
-$(\Lop_2h)(x)=\tfrac12[\sin^2(\tfrac{\pi x}2)h(\tfrac x2)
+$(\LaplaceTransformSymbol_2h)(x)=\tfrac12[\sin^2(\tfrac{\pi x}2)h(\tfrac x2)
 +\cos^2(\tfrac{\pi x}2)h(\tfrac{x+1}2)]$ satisfies, exactly,
 \[
- \Lop_2\mathbf 1=\tfrac12\,\mathbf 1,
+ \LaplaceTransformSymbol_2\mathbf 1=\tfrac12\,\mathbf 1,
  \qquad
- \Lop_2\bigl[\sin2\pi x\bigr]=-\tfrac14\sin2\pi x,
+ \LaplaceTransformSymbol_2\bigl[\sin2\pi x\bigr]=-\tfrac14\sin2\pi x,
  \qquad
- \Lop_2\bigl[1+3\cos2\pi x\bigr]=-\tfrac14\bigl(1+3\cos2\pi x\bigr),
+ \LaplaceTransformSymbol_2\bigl[1+3\cos2\pi x\bigr]=-\tfrac14\bigl(1+3\cos2\pi x\bigr),
 \]
 and on even Fourier modes it acts by frequency halving,
-$\Lop_2\e^{2\pi\ii\,2m x}\mapsto\tfrac12\e^{2\pi\ii mx}$.
+$\LaplaceTransformSymbol_2\EulerE^{2\pi\ImaginaryUnit\,2m x}\mapsto\tfrac12\EulerE^{2\pi\ImaginaryUnit mx}$.
 \end{proposition}
 
 \begin{proof}
-With $e_m(x)=\e^{2\pi\ii mx}$: for even frequency $2m$,
-$\e^{2\pi\ii\,2m\frac{x}{2}}=e_m(x)$ on both branches and
-$\sin^2+\cos^2=1$ gives $\Lop_2e_{2m}=\tfrac12e_m$ (the $m=0$ case is
+With $e_m(x)=\EulerE^{2\pi\ImaginaryUnit mx}$: for even frequency $2m$,
+$\EulerE^{2\pi\ImaginaryUnit\,2m\frac{x}{2}}=e_m(x)$ on both branches and
+$\sin^2+\cos^2=1$ gives $\LaplaceTransformSymbol_2e_{2m}=\tfrac12e_m$ (the $m=0$ case is
 the first display).  For $m=1$,
 \[
- \Lop_2e_1
- =\tfrac12\e^{\pi\ii x}\bigl[\sin^2(\tfrac{\pi x}2)
+ \LaplaceTransformSymbol_2e_1
+ =\tfrac12\EulerE^{\pi\ImaginaryUnit x}\bigl[\sin^2(\tfrac{\pi x}2)
  -\cos^2(\tfrac{\pi x}2)\bigr]
- =-\tfrac12\e^{\pi\ii x}\cos\pi x
+ =-\tfrac12\EulerE^{\pi\ImaginaryUnit x}\cos\pi x
  =-\tfrac14\bigl(e_1+\mathbf 1\bigr),
 \]
-and likewise $\Lop_2e_{-1}=-\tfrac14(e_{-1}+\mathbf1)$.  Hence
-$\{\mathbf1,e_1,e_{-1}\}$ spans an invariant subspace on which $\Lop_2$
+and likewise $\LaplaceTransformSymbol_2e_{-1}=-\tfrac14(e_{-1}+\mathbf1)$.  Hence
+$\{\mathbf1,e_1,e_{-1}\}$ spans an invariant subspace on which $\LaplaceTransformSymbol_2$
 has matrix eigenvalues $\{\tfrac12,-\tfrac14,-\tfrac14\}$; the real
 eigenfunctions for $-\tfrac14$ are
-$\sin2\pi x=(e_1-e_{-1})/2\ii$ and $1+3\cos2\pi x$ (direct check:
-$\Lop_2[3\cos2\pi x]=-\tfrac34(1+\cos2\pi x)$, so
-$\Lop_2[1+3\cos]=\tfrac12-\tfrac34-\tfrac34\cos=-\tfrac14(1+3\cos)$).
+$\sin2\pi x=(e_1-e_{-1})/2\ImaginaryUnit$ and $1+3\cos2\pi x$ (direct check:
+$\LaplaceTransformSymbol_2[3\cos2\pi x]=-\tfrac34(1+\cos2\pi x)$, so
+$\LaplaceTransformSymbol_2[1+3\cos]=\tfrac12-\tfrac34-\tfrac34\cos=-\tfrac14(1+3\cos)$).
 \end{proof}
 
 All four displays of \cref{prop:L2-spectrum} are formalized in
 \lean{RMSTransferEigenfunctions}, in exactly this normalization of
-$\Lop_2$: \lean{rms\_transfer\_const\_eigen},
+$\LaplaceTransformSymbol_2$: \lean{rms\_transfer\_const\_eigen},
 \lean{rms\_transfer\_sin\_eigen},
 \lean{rms\_transfer\_one\_add\_cos\_eigen}, and the mode halving in its
 real form, \lean{rms\_transfer\_cos\_even\_mode} together with
@@ -1387,7 +1370,7 @@ bound below.
 Collocation places the rest of the spectrum below $3\cdot10^{-4}$ in
 modulus, so the shell-RMS ratios converge at the exact geometric rate
 $\lambda_2/\lambda_1=-\tfrac12$ per shell --- relative error
-$\bigO(1/x)$, with alternating sign.  This is visible to the eye in the
+$\BigO(1/x)$, with alternating sign.  This is visible to the eye in the
 measurements: the shell means of $(f/g_{\kappa_2})^2$ for
 $k=4,5,6,7,8$ differ from their limit by
 $+1.51\cdot10^{-5}$, $-7.6\cdot10^{-6}$, $+3.8\cdot10^{-6}$,
@@ -1400,7 +1383,7 @@ error by $-\tfrac12$ to the displayed accuracy --- with limit
 \]
 (direct quadrature and the spectral iteration agree; the $L^1$ layer,
 by contrast, has the non-elementary subleading pair
-$-0.13435\pm0.0500\ii$ of modulus $0.1434$, rate
+$-0.13435\pm0.0500\ImaginaryUnit$ of modulus $0.1434$, rate
 $|\lambda_2|/\varrho_1=0.217$ per shell).
 
 \subsection{The RMS answer to the averaged question}
@@ -1412,13 +1395,13 @@ $\kappa_2=\log_2(2\pi)$.  Then:
 (i) the quadratic Ces\`aro ratio
 $\frac1{t-t_0}\int_{t_0}^t(f/G_2)^2$ is eventually confined to a compact
 subinterval of $(0,\infty)$ and tends to $1$ along $t=2^k$ with relative
-error $\bigO(2^{-k})$;
+error $\BigO(2^{-k})$;
 (ii) for $t=2^ky$ with fixed $y\in(1,2)$ it converges to a continuous,
 nonconstant mantissa profile $\mathscr P_2(y)$, so the limit for all
-$t$ fails --- for the same reason as at $q=1$: the $\Lop_2$-eigenmeasure
+$t$ fails --- for the same reason as at $q=1$: the $\LaplaceTransformSymbol_2$-eigenmeasure
 $\nu_2$ is atomless and singular;
 (iii) the logarithmic mean
-$\frac1{\log(t/t_0)}\int_{t_0}^t(f/G_2)^2\,\frac{\dd x}{x}$ converges
+$\frac1{\log(t/t_0)}\int_{t_0}^t(f/G_2)^2\,\frac{\Differential x}{x}$ converges
 for all $t\to\infty$.
 \end{theorem}
 
@@ -1440,11 +1423,11 @@ orbit is eventually periodic (mass grows around each loop) or not
 \emph{Singular:} an absolutely continuous part would have density $r$
 with $\sin^2(\pi z)\,r(\T z)=\tfrac12r(z)$, hence
 $r(\T^nz)=2^{-n}r(z)/P_n(z)^2$; for a.e.\ $z$ the Birkhoff theorem
-gives $P_n(z)^2=\e^{-2n\log2(1+\smallo(1))}$, so on $\{r>0\}$ the
-density grows like $\e^{n(\log2+\smallo(1))}$, contradicting
+gives $P_n(z)^2=\EulerE^{-2n\log2(1+\LittleO(1))}$, so on $\{r>0\}$ the
+density grows like $\EulerE^{n(\log2+\LittleO(1))}$, contradicting
 $r\in L^1$ by the same Borel--Cantelli argument as before.  (The general
 criterion behind both cases: the $q$-eigenmeasure is singular whenever
-$\varrho_q\e^{q\log2}>1$, i.e.\ whenever $\kappa_q<\kappa_0$; at
+$\varrho_q\EulerE^{q\log2}>1$, i.e.\ whenever $\kappa_q<\kappa_0$; at
 $q=2$ this reads $\tfrac12\cdot4=2>1$.)  The nonconstancy of
 $\mathscr P_2$ then follows as in \cref{thm:impossible}.
 \end{proof}
@@ -1455,7 +1438,7 @@ $[0.894,\,1.192]$ --- wider than the $L^1$ profile
 $[0.925,\,1.113]$, as expected, since squaring weights the singular
 concentration near the Gelfond preimages more heavily.  So even the most
 rigid reading of the question keeps the dyadic phase obstruction; what
-it gains is exact constants and an $\bigO(1/x)$ rate everywhere the
+it gains is exact constants and an $\BigO(1/x)$ rate everywhere the
 limit does exist.
 
 \subsection{Plancherel, Poisson, and the total energy}
@@ -1463,18 +1446,18 @@ limit does exist.
 \begin{proposition}[total energy]
 \label[proposition]{prop:energy}
 \[
- \int_{\R}f(x)^2\dd x=\int_{\R}\Up(t)^2\dd t
+ \int_{\RealNumbers}f(x)^2\Differential x=\int_{\RealNumbers}\RvachevUp(t)^2\Differential t
  =\frac12+\sum_{m=0}^{\infty}f\Bigl(m+\frac12\Bigr)^{2}
  =0.808873535967972\ldots
 \]
 \end{proposition}
 
 \begin{proof}
-The first equality is Plancherel ($f=\widehat\Up$, real and even).  For
-the second, expand $\Up$, supported in $[-1,1]$, in Fourier series on
-$[-1,1]$: the coefficients are $\tfrac12\widehat\Up(k/2)=\tfrac12f(k/2)$,
+The first equality is Plancherel ($f=\widehat\RvachevUp$, real and even).  For
+the second, expand $\RvachevUp$, supported in $[-1,1]$, in Fourier series on
+$[-1,1]$: the coefficients are $\tfrac12\widehat\RvachevUp(k/2)=\tfrac12f(k/2)$,
 and Parseval gives
-$\int\Up^2=\tfrac12\sum_{k\in\Z}f(k/2)^2$; the even $k\ne0$ terms vanish
+$\int\RvachevUp^2=\tfrac12\sum_{k\in\IntegerNumbers}f(k/2)^2$; the even $k\ne0$ terms vanish
 ($f$ vanishes at nonzero integers), $k=0$ gives $\tfrac12$, and the odd
 terms pair up.  Numerically the direct quadrature
 $2\int_0^{2^{14}}f^2$ and the series agree to $2\cdot10^{-15}$, the
@@ -1562,13 +1545,13 @@ $(\pi/2)\sqrt{2N\log\log N}$; the maximal invariant average
 $\beta=\log(\sqrt3/2)$ with the slow-ray exponent
 $\kappa_*=\kappa_\infty$; and the annular maximum
 $\log M_N=-\tfrac a2N^2+(\beta-\log\pi-\tfrac a2)N
--\frac{(\log N)^2}{2a}+\frac{\log N\log\log N}{a}+\bigO(\log N)$.
+-\frac{(\log N)^2}{2a}+\frac{\log N\log\log N}{a}+\BigO(\log N)$.
 
 \emph{Verified.}  The exact decomposition (\cref{sec:core}); the algebra of
 its centered form (resymbolized independently); $\kappa_0$, $\kappa_*$ to
 all printed digits; the variance $\pi^2/4$ and covariances
 $\pi^2/(12\cdot2^k)$ (Monte Carlo and quadrature,
-\cref{ssec:variance}); $\int_0^1\log^2|\tan\pi x|\dd x=\pi^2/4$;
+\cref{ssec:variance}); $\int_0^1\log^2|\tan\pi x|\Differential x=\pi^2/4$;
 $Pd=0$; the Green--Kubo resummation $\pi^2/12+2\sum_k\pi^2/(12\cdot2^k)
 =\pi^2/4$ in its appendix; the annular expansion's first three terms agree
 with Document 2's Lambert form after expanding $W$.
@@ -1579,8 +1562,8 @@ with Document 2's Lambert form after expanding $W$.
 pointwise claim instead of the Stack Exchange question.  Within the
 question's actual reading it is a (high-quality) analysis of the wrong
 functional.
-(ii) The boundary-layer theorem's error term $\bigO(\log N)$ is coarser
-than Document 2's $\bigO((\log\log N)^2)$; not an error, but strictly
+(ii) The boundary-layer theorem's error term $\BigO(\log N)$ is coarser
+than Document 2's $\BigO((\log\log N)^2)$; not an error, but strictly
 subsumed.
 (iii) No numerical validation is supplied; all of its constants
 nevertheless survived this audit's numerics.  Notably, its fluctuation
@@ -1595,13 +1578,13 @@ annular maximum in closed Lambert form,
 \begin{multline*}
  \log M_k=-\tfrac{\lambda}{2}k(k+1)-(k{+}1)\log\pi+(k{+}1)\beta\\
  {}-\frac{W(c(k{+}1))^2+2W(c(k{+}1))}{2\lambda}
- +\bigO\bigl((\log\log k)^2\bigr),
+ +\BigO\bigl((\log\log k)^2\bigr),
  \qquad c=\tfrac{\lambda}{\pi}\sqrt{\tfrac32}.
 \end{multline*}
 an elementary sharp Gelfond bound
 $Q_n\le\sqrt{5/3}\,(\sqrt3/2)^n$ via an explicit algebraic subaction,
 two-adic trough asymptotics
-$E_{m2^k}\sim\frac{H(1)|H(m)|}{\e(k+1)}(m2^k)^{-(k+1)}$ for odd $m$, a
+$E_{m2^k}\sim\frac{H(1)|H(m)|}{\EulerE(k+1)}(m2^k)^{-(k+1)}$ for odd $m$, a
 numerical table of $\log M_k$, and---critically---an explicit section
 stating that the Ces\`aro question is a \emph{different}, $L^1$,
 transfer-operator problem which the document does not solve.
@@ -1613,7 +1596,7 @@ maximization reproduces all ten rows of its $(\log M_k,\;x^*/2^k)$ table to
 every printed digit ($10^{-6}$), $k=3,\dots,12$ (\cref{ssec:maxima});
 $H(1)=0.55377127588881009534\ldots$ (recomputed to 30 digits, matches all
 20 printed); the Lambert residuals (bounded, $-0.72$ to $-0.82$, consistent
-with the claimed $\bigO((\log\log k)^2)$ window); the trough law for
+with the claimed $\BigO((\log\log k)^2)$ window); the trough law for
 $m=1$ and $m=3$ (\cref{ssec:valleys}); the predicted drift of the annular
 maximizer from mantissa $7/6$ toward deeper preimages of $1/3$ --- observed
 exactly at $k=14$, where the maximizer jumps from
@@ -1697,7 +1680,7 @@ certificate for $\varrho_1$; the same two-part Ces\`aro conclusion as
 Document 3, but with complete proofs of the eigenmeasure's atomlessness
 and singularity; a sharp two-step logarithmic inequality yielding the
 Gelfond bound; a dyadic-boundary identity giving valley asymptotics for
-every fixed offset $r$ (with the zero-multiplicity $d=1+\vtwo(r+1)$
+every fixed offset $r$ (with the zero-multiplicity $d=1+\TwoAdicValuation(r+1)$
 appearing as the power of $1/n$); a continuum of intermediate quadratic
 rates; and collocation numerics for $q\in\{1,2,3,4,8,16\}$.
 
@@ -1778,7 +1761,7 @@ $\psi(x)=\log|2\sin\pi x|$, $S_m=\sum_{\ell=0}^{m-1}\psi\circ\T^\ell$.
 \label{thm:variance}
 $\psi\in L^2(0,1)$ with mean zero, and for every $m\ge1$,
 \begin{equation}
- \int_0^1S_m(x)^2\dd x
+ \int_0^1S_m(x)^2\Differential x
  =\frac{\pi^2}{4}\,m-\frac{\pi^2}{3}\bigl(1-2^{-m}\bigr).
  \label{eq:exact-variance}
 \end{equation}
@@ -1798,15 +1781,15 @@ The Clausen expansion
 $\psi(x)=-\sum_{j\ge1}\cos(2\pi jx)/j$ holds in $L^2(0,1)$ (the
 coefficients are square-summable, and the series is the classical
 Fourier series of $\psi$).  By Parseval, using
-$\int_0^1\cos^2(2\pi jx)\dd x=\tfrac12$,
+$\int_0^1\cos^2(2\pi jx)\Differential x=\tfrac12$,
 \[
  c_0:=\int_0^1\psi^2=\frac12\sum_{j\ge1}\frac1{j^2}=\frac{\pi^2}{12},
 \]
 and for $r\ge1$, since
-$\int_0^1\cos(2\pi jx)\cos(2\pi k2^rx)\dd x=\tfrac12\,
+$\int_0^1\cos(2\pi jx)\cos(2\pi k2^rx)\Differential x=\tfrac12\,
 \mathbf 1_{\{j=2^rk\}}$,
 \[
- c_r:=\int_0^1\psi(x)\,\psi(2^rx\bmod1)\dd x
+ c_r:=\int_0^1\psi(x)\,\psi(2^rx\bmod1)\Differential x
  =\frac12\sum_{k\ge1}\frac{1}{2^rk}\cdot\frac1k
  =\frac{\pi^2}{12}\,2^{-r}.
 \]
@@ -1826,9 +1809,9 @@ $\int_0^1\log^2\bigl|\prod_{k<m}2\sin(\pi2^kt)\bigr|$.  Its two inputs are
 formal as well: the covariance ladder $c_r=(\pi^2/12)2^{-r}$ for every lag
 $r$, over the genuine mod-one doubling map
 (\lean{CovarianceLadder}, \lean{integral\_cocycle\_covariance}), and both
-Clausen values, $\int_0^1\log^2(2\sin\pi t)\dd t=\pi^2/12$
+Clausen values, $\int_0^1\log^2(2\sin\pi t)\Differential t=\pi^2/12$
 (\lean{CocycleParseval}, \lean{integral\_sq\_log\_two\_sin\_pi\_mul}) and
-$\int_0^1\log^2|\tan\pi t|\dd t=\pi^2/4$
+$\int_0^1\log^2|\tan\pi t|\Differential t=\pi^2/4$
 (\lean{GordinParseval}, \lean{integral\_sq\_log\_abs\_tan\_pi\_mul}).
 This is therefore the finite-$m$ kernel of \cref{find:ahl} in
 machine-checked form; the limit theorems that consume it are not (see
@@ -1852,7 +1835,7 @@ For Lebesgue-almost every $\alpha$,
 estimates completed)]
 Set $d=2\psi-\psi\circ\T$.  The double-angle identity gives
 $d(x)=\log|\tan\pi x|$, and
-$\int_0^1d^2=\tfrac2\pi\int_0^{\pi/2}\log^2\tan u\,\dd u
+$\int_0^1d^2=\tfrac2\pi\int_0^{\pi/2}\log^2\tan u\,\Differential u
 =\tfrac2\pi\cdot\tfrac{\pi^3}{8}=\tfrac{\pi^2}{4}$.
 The transfer operator $P$ of $\T$ (fiber average over the two preimages)
 annihilates $d$:
@@ -1870,13 +1853,13 @@ exact identity
 The law of the iterated logarithm for stationary ergodic
 square-integrable (reverse) martingale difference sequences
 (Stout; Heyde--Scott; via Skorokhod embedding, whose time change has
-almost-surely linear growth $T_L/L\to\E d^2$ by the ergodic theorem)
+almost-surely linear growth $T_L/L\to\Expectation d^2$ by the ergodic theorem)
 gives
 $\limsup\bigl(\sum_{\ell<L}d\circ\T^\ell\bigr)/\sqrt{2L\log\log L}
-=\sqrt{\E d^2}=\pi/2$ a.e.  The boundary terms are almost surely
-$\smallo(\sqrt{L\log\log L})$: $\psi\le\log2$ above, while
-$\mathrm{Leb}(\psi<-u)\le\tfrac2\pi\e^{-u}(1+\smallo(1))$ gives
-$\sum_L\Prob(\psi\circ\T^L<-2\log L)<\infty$, so by Borel--Cantelli
+=\sqrt{\Expectation d^2}=\pi/2$ a.e.  The boundary terms are almost surely
+$\LittleO(\sqrt{L\log\log L})$: $\psi\le\log2$ above, while
+$\mathrm{Leb}(\psi<-u)\le\tfrac2\pi\EulerE^{-u}(1+\LittleO(1))$ gives
+$\sum_L\Probability(\psi\circ\T^L<-2\log L)<\infty$, so by Borel--Cantelli
 $\psi(\T^L\alpha)\ge-2\log L$ eventually a.e.  The product form follows
 by exponentiating and absorbing the index shift $L\mapsto L+1$.
 \end{proof}
@@ -1897,7 +1880,7 @@ Independently of the martingale route, the constant $\pi$ is excluded by
 the tail calculus that any LIL proof must supply: with variance
 $\pi^2/4$, exceedance probabilities at threshold
 $(\pi-\varepsilon)\sqrt{L\log\log L}$ are
-$(\log L)^{-(\pi-\varepsilon)^2/(2\sigma^2)}=(\log L)^{-2+\smallo(1)}$
+$(\log L)^{-(\pi-\varepsilon)^2/(2\sigma^2)}=(\log L)^{-2+\LittleO(1)}$
 at Gaussian scale, and dyadic block maxima then have summable
 probabilities, so by Borel--Cantelli the lower bound (1.7) of
 \cite{ahl2017} cannot hold with the constant $\pi-\varepsilon$
@@ -1933,7 +1916,7 @@ $\int\cos^2=\tfrac12$ has been replaced by $1$.  The correct value is
 $\pi^2/4$; hence Lemma 4.1's constant is $\pi/2$, and Theorem 1.2's is
 $\pi/\sqrt2$.  Two internal cross-checks against the paper itself:
 its equation (1.13) states the classical i.i.d.\ benchmark
-$\limsup|\sum\e^{2\pi\ii hX_k}|/\sqrt{2N\log\log N}=1/\sqrt2$
+$\limsup|\sum\EulerE^{2\pi\ImaginaryUnit hX_k}|/\sqrt{2N\log\log N}=1/\sqrt2$
 \emph{correctly} (variance $\tfrac12$ of a single harmonic retained), and
 applying the (4.5)-style evaluation to the single harmonic
 $f=\cos2\pi\alpha$ would give $\sigma^2=1$ and hence a Hadamard-lacunary
@@ -1955,13 +1938,13 @@ no floating-point orbit corruption at any length) gives
  & measured & \eqref{eq:exact-variance}, $\sigma^2=\pi^2/4$ &
  same with $\sigma^2=\pi^2/2$\\
 \midrule
-$\Var(S_{20})$, $4\cdot10^5$ samples & $45.66$ & $46.06$ & $92.12$\\
-$\Var(S_{34})$, $4\cdot10^5$ samples & $80.41$ & $80.60$ & $161.20$\\
-$\Var(S_{1000})$, $4\cdot10^6$ samples & $2459.5$ & $2464.1$ & $4928.2$\\
+$\Variance(S_{20})$, $4\cdot10^5$ samples & $45.66$ & $46.06$ & $92.12$\\
+$\Variance(S_{34})$, $4\cdot10^5$ samples & $80.41$ & $80.60$ & $161.20$\\
+$\Variance(S_{1000})$, $4\cdot10^6$ samples & $2459.5$ & $2464.1$ & $4928.2$\\
 \bottomrule
 \end{tabular}
 \end{center}
-The covariance $\int_0^1\psi(x)\psi(2x)\dd x$ was measured as
+The covariance $\int_0^1\psi(x)\psi(2x)\Differential x$ was measured as
 $0.4112311$ against $\pi^2/24=0.4112335$.  Tail frequencies at $L=1000$
 track the $\sigma=\pi/2$ Gaussian branch from below (the distribution is
 left-skewed at finite $L$) and sit far below the $\sigma=\pi/\sqrt2$
@@ -1970,7 +1953,7 @@ $5.2\cdot10^{-4}$, against $2.7\cdot10^{-3}$ for the $\pi/2$ branch and
 $2.5\cdot10^{-2}$ for the branch the printed constant would require.
 A structural curiosity uncovered along the way: at small $L$ (e.g.\
 $L=40$) the upper tail is \emph{cut off} by the deterministic Gelfond cap
-$S_L\le L\log\sqrt3+\bigO(1)$, which sits below the
+$S_L\le L\log\sqrt3+\BigO(1)$, which sits below the
 $c=2.9$ threshold there; the LIL scale detaches from this cap only for
 $L\gtrsim10^2$--$10^3$, which is why na\"ive small-$L$ simulations
 cannot see the asymptotic constant at all, and why the corroboration
@@ -2036,7 +2019,7 @@ not correctness.
 \label{sec:numerics}
 
 All experiments evaluate $\log|f|$ by summing
-$\log|{\sinc}|$ over levels $h\le\log_2(\pi x)+30$ with a quartic Taylor
+$\log|{\SincRad}|$ over levels $h\le\log_2(\pi x)+30$ with a quartic Taylor
 tail (absolute error below $10^{-15}$), and integrate over unit lobes by
 24-point Gauss--Legendre panels.  Scripts: \cref{app:scripts}.
 
@@ -2044,7 +2027,7 @@ tail (absolute error below $10^{-15}$), and integrate over unit lobes by
 \label{ssec:shells}
 
 $\frac{1}{2^{n-1}}\int_{2^{n-1}}^{2^n}|f|/g_1$, by direct quadrature and,
-independently, as $\varrho_1^{-n}\int_0^1\Lop_1^n(W)\,$ by collocation
+independently, as $\varrho_1^{-n}\int_0^1\LaplaceTransformSymbol_1^n(W)\,$ by collocation
 ($N=40$) with Clenshaw--Curtis integration:
 \begin{center}
 \small
@@ -2094,7 +2077,7 @@ no''.
 \subsection{The logarithmic mean}
 \label{ssec:logmean}
 
-$\frac{1}{\log(t/t_0)}\int_{t_0}^{t}|f|/g_1\cdot x^{-1}\dd x$ at the same
+$\frac{1}{\log(t/t_0)}\int_{t_0}^{t}|f|/g_1\cdot x^{-1}\Differential x$ at the same
 mantissas:
 \begin{center}
 \small
@@ -2109,9 +2092,9 @@ $n=13$ & 0.093861 & 0.093287 & 0.094781 & 0.095032\\
 \end{center}
 All columns approach the common constant
 $A_1^{\log}=0.09386064$ (the first edition printed the running mean
-$0.0938610$, whose $\bigO(1/K)$ transient had not died out;
+$0.0938610$, whose $\BigO(1/K)$ transient had not died out;
 corrected --- \cref{sec:second-wave}), at the
-expected $\bigO(1/\log t)$ rate; the dyadic column is already exact
+expected $\BigO(1/\log t)$ rate; the dyadic column is already exact
 because complete shells contribute equally.  This substantiates
 \cref{thm:audit-answer}(iv).
 
@@ -2141,15 +2124,15 @@ $\mathcal A_k$\\
 Rows $3$--$12$ reproduce Document 2's table to every printed digit.  At
 $k=14$ the maximizer leaves the mantissa $7/6$ (one doubling to the
 Gelfond cycle) for $13/12$ (two doublings), exactly the pre-period growth
-$r=\log_2k-\log_2\log k+\bigO(1)$ predicted by Documents 1 and 2; the
+$r=\log_2k-\log_2\log k+\BigO(1)$ predicted by Documents 1 and 2; the
 Lambert residual stays in a bounded band, consistent with the claimed
-$\bigO((\log\log k)^2)$ remainder.
+$\BigO((\log\log k)^2)$ remainder.
 
 \subsection{Two-adic valleys}
 \label{ssec:valleys}
 
 Peak of $|f|$ on $(2^k,2^k+1)$ against
-$\frac{H(1)^2}{\e(k+1)}2^{-k(k+1)}$
+$\frac{H(1)^2}{\EulerE(k+1)}2^{-k(k+1)}$
 (Documents 2 and 4; $H(1)=0.5537712759$):
 $\log$-differences $+0.137$ ($k=8$), $+0.122$ ($k=12$), $+0.098$
 ($k=16$), decaying roughly like $1/k$; peak locations
@@ -2181,11 +2164,11 @@ rigor statement about $\kappa_1$ in the corpus, and it is machine-checkable.
 
 The reduction the certificate rests on is formal.  \lean{CollatzWielandt}'s
 \lean{perron\_root\_mem\_of\_two\_sided} proves that any continuous $h$
-that is positive on $[0,1]$ and satisfies $m\,h\le\Lop_1h\le M\,h$ there
+that is positive on $[0,1]$ and satisfies $m\,h\le\LaplaceTransformSymbol_1h\le M\,h$ there
 brackets the growth root, $m\le\varrho_1\le M$ --- with no eigenfunction,
-$\Lop_1$ being the operator \eqref{eq:L1} verbatim; and in its abstract
+$\LaplaceTransformSymbol_1$ being the operator \eqref{eq:L1} verbatim; and in its abstract
 form \lean{collatzWielandt\_bracket} the argument mentions neither
-$\Lop_1$ nor $[0,1]$ nor sine and cosine, using only monotonicity and
+$\LaplaceTransformSymbol_1$ nor $[0,1]$ nor sine and cosine, using only monotonicity and
 positive homogeneity.  The numerical half is now formal as well, by a
 different and Sturm-free route: \lean{PerronRootEnclosure} carries the
 same cubic test function through the tangent half-angle dictionary
@@ -2195,7 +2178,7 @@ certificates (\lean{BernsteinPositivity}), yielding the kernel-checked
 enclosure $0.66126798\le\varrho_1\le0.66134921$.  Only the last two
 digits of the SymPy enclosure above are given up; recovering them
 needs on the order of two thousand pieces, since the endpoints above
-approximate the exact range of $\Lop_1h/h$ to within $10^{-8}$.
+approximate the exact range of $\LaplaceTransformSymbol_1h/h$ to within $10^{-8}$.
 The $\kappa_1$ consequence is now formalized as well, in
 \lean{KappaOneEnclosure}, and it is precisely the three interval bounds
 just named that it had to supply.  Two of them were new.  Mathlib
@@ -2277,11 +2260,11 @@ between $\kappa_2$ and each of $\kappa_1$, $\kappa_0$, $\kappa_\infty$.
 \subsection{Ties to existing material}
 
 The Thue--Morse Formula Atlas already contains the sign law
-$\sgn f|_{(N,N+1)}=\varepsilon_N$, the finite Fourier product, the
+$\Sign f|_{(N,N+1)}=\varepsilon_N$, the finite Fourier product, the
 Gelfond exponent section (the $L^\infty$ row of the present dictionary),
 and---as the structural twin of the universal factor---the boundary
-flatness theorem $\log E(t)=-\log^2(1/t)/(2\log2)+\bigO(\log(1/t))$ for
-$E(t)=\prod_j(1-\e^{-2^jt})$, including the remark that a bounded
+flatness theorem $\log E(t)=-\log^2(1/t)/(2\log2)+\BigO(\log(1/t))$ for
+$E(t)=\prod_j(1-\EulerE^{-2^jt})$, including the remark that a bounded
 log-periodic fluctuation persists at the next order.  The mantissa
 profile of \cref{fig:profile} is the exact analogue of that fluctuation
 for the decay problem, with the new feature that here the fluctuation is
@@ -2365,18 +2348,18 @@ normalization and literal sign checks alone
 reduction underneath is the previously formal
 \lean{perron\_root\_mem\_of\_two\_sided}.  The SymPy enclosure of
 \cref{ssec:certificate} is ${\approx}10^{-7}$ sharper; its endpoints
-sit within $10^{-8}$ of the exact range of $\Lop_1h/h$, so reaching
+sit within $10^{-8}$ of the exact range of $\LaplaceTransformSymbol_1h/h$, so reaching
 them by subdivision needs roughly two thousand pieces (the method
 converges quadratically in the piece width) --- a mechanical, if bulky,
 sharpening.
 \item The valley asymptotics (elementary boundary-maximum analysis).
 \textbf{The local half is done}: the zero order at $m$ is exactly
-$1+\vtwo(m)$ with an explicit positive constant
+$1+\TwoAdicValuation(m)$ with an explicit positive constant
 (\lean{LatticeFiber}, \lean{ZeroOrderTail}, \lean{PhiZeroOrder}), and
 the two extremes --- simple zeros at odd integers, order $j+1$ at $2^j$,
 hence unbounded order along the dyadic integers --- are
 \lean{ValleyZeroOrders}.  The asymptotic constant of the valley law
-$E_{m2^k}\sim\frac{H(1)|H(m)|}{\e(k+1)}(m2^k)^{-(k+1)}$ is not
+$E_{m2^k}\sim\frac{H(1)|H(m)|}{\EulerE(k+1)}(m2^k)^{-(k+1)}$ is not
 formalized.
 \item The variance $\sigma^2=\pi^2/4$: Parseval for the Clausen series
 of $\log|2\sin\pi x|$ plus the geometric covariance sum; would also
@@ -2432,7 +2415,7 @@ $\kappa_1$ gauge through the peak--integral comparison, with
 $\Theta_{\mathrm{peak}}=1.9237$ tying the peak and integral readings
 together (\cref{sec:lobes}); and the root-mean-square reading is exactly
 solvable --- closed subleading eigenvalue $-\tfrac14$, alternating
-$\bigO(1/x)$ convergence, total-energy identity --- yet still carries
+$\BigO(1/x)$ convergence, total-energy identity --- yet still carries
 the dyadic phase obstruction (\cref{sec:rms}).
 \item \textbf{On the four documents.}  All are technically serious, and
 their factual overlap survived every numerical test applied here, in
@@ -2547,15 +2530,15 @@ $A_1^{\log}$ & $0.093860635756781264$ & logarithmic-shell limit
 $C_*$ & $0.139129774734829345$ & exact peak-ray constant
 $|f(2^n\cdot\tfrac23)|/E_{\kappa_\infty}$, second wave\\
 $A_2$ & $0.103008918$ & RMS shell constant, $A_2^2=0.0106108372$\\
-$\lambda_2(\Lop_2)$ & $-1/4$ (exact, double) & \cref{prop:L2-spectrum};
+$\lambda_2(\LaplaceTransformSymbol_2)$ & $-1/4$ (exact, double) & \cref{prop:L2-spectrum};
 rest of spectrum $<3\cdot10^{-4}$\\
-$\lambda_2(\Lop_1)$ & $-0.13435\pm0.0500\,\ii$ & collocation;
+$\lambda_2(\LaplaceTransformSymbol_1)$ & $-0.13435\pm0.0500\,\ImaginaryUnit$ & collocation;
 $|\lambda_2|/\varrho_1=0.217$\\
 $\Theta_{\mathrm{peak}}$ & $1.92372(3)$ &
 $\sum_{\mathrm{shell}}E_n/\int_{\mathrm{shell}}|f|$, $k=9$--$14$\\
 $A_1^{\mathrm{peak}}$ & $0.175569$ & $\Theta_{\mathrm{peak}}A_1$
 (conjectural limit)\\
-$\int_\R f^2$ & $0.808873535967972$ & two independent computations,
+$\int_\RealNumbers f^2$ & $0.808873535967972$ & two independent computations,
 \cref{prop:energy}\\
 $L^2$ profile range & $[0.894,1.192]$ & step-$0.025$ grid, $n=13$\\
 profile range & $\supseteq[0.91627,1.11814]$ & narrow features at
@@ -2575,7 +2558,7 @@ LIL constant & $\pi/\sqrt2=2.2214415$ & corrected; printed value $\pi$\\
 The complete scripts (\texttt{stage1.py}--\texttt{stage6b.py}, in
 \nolinkurl{verification_scripts/}) are short, self-contained NumPy/SymPy
 programs; \texttt{stage6.py}/\texttt{stage6b.py} produce the lobe-maxima
-statistics, the $\Lop_2$ spectrum, the RMS constants and profile, the
+statistics, the $\LaplaceTransformSymbol_2$ spectrum, the RMS constants and profile, the
 Plancherel check, and the $\kappa_q$ table of
 \cref{sec:lobes,sec:rms}.  The essential kernels follow.
 

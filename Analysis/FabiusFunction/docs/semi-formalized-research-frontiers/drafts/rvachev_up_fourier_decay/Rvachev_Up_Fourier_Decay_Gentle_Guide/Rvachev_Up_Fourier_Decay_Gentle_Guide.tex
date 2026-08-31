@@ -36,6 +36,8 @@
 \fancyhead[L]{\small Gentle guide to the sinc-product decay}
 \fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
 \renewcommand{\headrulewidth}{0.4pt}
 
 \titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
@@ -51,13 +53,6 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\Up}{\operatorname{up}}
 
 \title{\bfseries How Fast Does the Infinite Sinc Product Decay?\\[0.35em]
 \large A gentle guide to the answer, for readers who know limits,
@@ -74,8 +69,8 @@ integrals, and a little Fourier analysis}
 \hrule\vspace{0.9em}
 \noindent
 \textbf{The function.}
-$f(x)=\prod_{n=0}^{\infty}\sinc\!\bigl(\pi x/2^n\bigr)$, where
-$\sinc z=\frac{\sin z}{z}$.  It is the Fourier transform of the
+$f(x)=\prod_{n=0}^{\infty}\SincRad\!\bigl(\pi x/2^n\bigr)$, where
+$\SincRad z=\frac{\sin z}{z}$.  It is the Fourier transform of the
 ``smoothest possible bump'': an infinitely differentiable function that
 is zero outside $[-1,1]$.  It equals $1$ at $x=0$, vanishes at every
 positive integer, and in between it wiggles with rapidly shrinking
@@ -114,7 +109,7 @@ Then the running average of $|f|/g$ stays between $0.91$ and $1.12$
 forever (so the ``bounded'' version of the question is solved), and it
 converges to exactly $1$ if you stop the average at powers of two.
 Averaging ``per octave'' ($\frac1{\ln t}\int^t\frac{|f|}{g}
-\frac{\dd x}{x}$) also produces an honest limit for all $t$ --- with
+\frac{\Differential x}{x}$) also produces an honest limit for all $t$ --- with
 the slightly different constant $0.09386$ in place of $0.09127$, the
 per-octave average tends to exactly $1$.  But for arbitrary stopping
 points the plain running average
@@ -128,7 +123,7 @@ failure of cleverness.
 solution drafts against each other exposed a genuine error in a
 published 2017 paper (Annales de l'Institut Fourier): a variance was
 computed without the factor $\tfrac12$ from
-$\int_0^1\cos^2(2\pi kt)\,\dd t=\tfrac12$, making a headline constant
+$\int_0^1\cos^2(2\pi kt)\,\Differential t=\tfrac12$, making a headline constant
 $\sqrt2$ times too large ($\pi$ where it should be $\pi/\sqrt2$).
 The five-line correct computation is in \cref{sec:half}.
 \par\vspace{0.9em}\hrule
@@ -139,24 +134,24 @@ The five-line correct computation is in \cref{sec:half}.
 
 Start with the most famous function of signal processing,
 \[
- \sinc z=\frac{\sin z}{z},\qquad\sinc 0=1 .
+ \SincRad z=\frac{\sin z}{z},\qquad\SincRad 0=1 .
 \]
 Now multiply infinitely many copies of it, each one stretched twice as
 much as the last:
 \[
- f(x)=\sinc(\pi x)\cdot\sinc\!\Bigl(\frac{\pi x}{2}\Bigr)\cdot
- \sinc\!\Bigl(\frac{\pi x}{4}\Bigr)\cdot
- \sinc\!\Bigl(\frac{\pi x}{8}\Bigr)\cdots
+ f(x)=\SincRad(\pi x)\cdot\SincRad\!\Bigl(\frac{\pi x}{2}\Bigr)\cdot
+ \SincRad\!\Bigl(\frac{\pi x}{4}\Bigr)\cdot
+ \SincRad\!\Bigl(\frac{\pi x}{8}\Bigr)\cdots
 \]
 The product converges nicely: for large $n$ the factor
-$\sinc(\pi x/2^n)$ is extremely close to $1$ (since $\sinc z\approx
+$\SincRad(\pi x/2^n)$ is extremely close to $1$ (since $\SincRad z\approx
 1-z^2/6$ near $0$), so past some point the factors stop mattering.
 
-Why this particular product?  Because $\sinc$ is the Fourier transform
+Why this particular product?  Because $\SincRad$ is the Fourier transform
 of a rectangular pulse, and multiplying Fourier transforms means
 \emph{convolving} the originals.  So $f$ is the Fourier transform of
 the infinite convolution of rectangles of widths $1,\tfrac12,\tfrac14,
-\dots$ --- a famous function called $\Up(t)$ (Rvachev's
+\dots$ --- a famous function called $\RvachevUp(t)$ (Rvachev's
 \emph{up-function}, a close relative of the Fabius function): a
 perfectly smooth bump, infinitely differentiable, exactly zero outside
 $[-1,1]$.  Smooth compactly supported functions have rapidly decaying
@@ -168,7 +163,7 @@ Three visible features of $f$, all easy to believe and all proved in
 the audit:
 \begin{itemize}
 \item $f(m)=0$ for every nonzero integer $m$ (already the first factor
-$\sinc(\pi x)$ vanishes there);
+$\SincRad(\pi x)$ vanishes there);
 \item between consecutive integers, $|f|$ makes exactly one hump;
 \item the \emph{sign} of $f$ on the interval $(m,m+1)$ is
 $(-1)^{(\text{number of 1's in the binary digits of }m)}$ --- the
@@ -200,7 +195,7 @@ zeros after the decimal point, rather than adding a fixed number.
 That is the signature of a law like
 $\exp(-c(\ln x)^2)$: the exponent is \emph{quadratic} in $\ln x$.  A
 plain power law $x^{-p}$ would add the same $p$ digits per decade;
-an exponential $\e^{-cx}$ would multiply the digits by ten per decade.
+an exponential $\EulerE^{-cx}$ would multiply the digits by ten per decade.
 This function sits exactly in between, and the questioner's original
 guess, ``something close to $\exp(-\ln^2x)$,'' was pointing at the
 right family.  The correct constant turns out to be
@@ -212,7 +207,7 @@ from.
 \section{Where the \texorpdfstring{$\exp(-(\ln x)^2/(2\ln2))$}{exp(-ln²x/2ln2)} comes from: just count}
 
 Fix a large $x$, say $x=1000$, and look at the factors
-$\sinc(\pi x/2^n)$ one at a time.
+$\SincRad(\pi x/2^n)$ one at a time.
 
 \begin{itemize}
 \item If $2^n$ is \emph{much bigger} than $x$, the argument
@@ -221,7 +216,7 @@ $\pi x/2^n$ is tiny and the factor is essentially $1$.  Harmless.
 $n=0,1,\dots,9$, since $2^9=512<1000<1024=2^{10}$), the argument is
 large, and
 \[
- \Bigl|\sinc\!\Bigl(\frac{\pi x}{2^n}\Bigr)\Bigr|
+ \Bigl|\SincRad\!\Bigl(\frac{\pi x}{2^n}\Bigr)\Bigr|
  =\frac{|\sin(\pi x/2^n)|}{\pi x/2^n}
  \le\frac{2^n}{\pi x}.
 \]
@@ -285,7 +280,7 @@ The factors are like random numbers, and a product of $k$ random
 factors has a spread that grows with $k$: the logarithm performs a
 random-walk-like motion of typical size $\sqrt{k}$ around its mean
 (with variance $\pi^2/4$ per step --- this specific constant is the
-star of \cref{sec:half}).  Since multiplying by $\e^{\pm c\sqrt{k}}$
+star of \cref{sec:half}).  Since multiplying by $\EulerE^{\pm c\sqrt{k}}$
 means gaining or losing several \emph{orders of magnitude}, nearby
 values of $x$ can give wildly different $|f(x)|$.
 \end{itemize}
@@ -398,7 +393,7 @@ exponent that an old draft in this repository proposed, mistaking it
 for a pointwise decay rate.  ``Average'' involves a constant
 $\varrho=0.661322602\ldots$ with no known closed form: it is the
 growth rate of the integrals
-$\int_0^1|\sin(\pi t)\sin(2\pi t)\cdots\sin(2^{k-1}\pi t)|\,\dd t
+$\int_0^1|\sin(\pi t)\sin(2\pi t)\cdots\sin(2^{k-1}\pi t)|\,\Differential t
 \approx\text{const}\cdot\varrho^{\,k}$, a number studied in analytic
 number theory (Fouvry--Mauduit).  ``Typical'' comes from the
 average-cost-$\tfrac12$-per-factor rule.
@@ -415,7 +410,7 @@ because each implicitly chose a different row of this table.
 The original question asks for a nice function $g$ (positive, smooth,
 decreasing) such that
 \[
- \frac{1}{t-t_0}\int_{t_0}^{t}\frac{|f(x)|}{g(x)}\,\dd x
+ \frac{1}{t-t_0}\int_{t_0}^{t}\frac{|f(x)|}{g(x)}\,\Differential x
  \;\longrightarrow\;1
  \qquad\text{as } t\to\infty .
  \tag{$\ast$}
@@ -479,12 +474,12 @@ argument (if the limiting distribution had a density, iterating the
 digit-shift would blow the density up beyond any integrable bound).
 
 \emph{The repair.}  The mismatch is between an \emph{additive} average
-($\dd x$, which overweights the last octave) and a
+($\Differential x$, which overweights the last octave) and a
 \emph{multiplicative} function (whose natural period is the octave).
 Average multiplicatively instead --- give every octave equal weight:
 \[
  \frac{1}{\ln(t/t_0)}\int_{t_0}^{t}\frac{|f(x)|}{g(x)}\,
- \frac{\dd x}{x}
+ \frac{\Differential x}{x}
  \;\longrightarrow\;\text{const}
  \qquad\text{for \emph{all} } t\to\infty,
 \]
@@ -524,16 +519,16 @@ $2$'s making each term average to zero).  Three steps:
 \item \emph{Fourier series.}  Classically,
 $\ln|2\sin\pi t|=-\sum_{m\ge1}\frac{\cos(2\pi mt)}{m}$.
 \item \emph{Variance of one term.}  By Parseval --- remembering
-$\int_0^1\cos^2(2\pi mt)\,\dd t=\tfrac12$ ---
+$\int_0^1\cos^2(2\pi mt)\,\Differential t=\tfrac12$ ---
 \[
- \int_0^1\ln^2|2\sin\pi t|\,\dd t
+ \int_0^1\ln^2|2\sin\pi t|\,\Differential t
  =\frac12\sum_{m\ge1}\frac1{m^2}
  =\frac{\pi^2}{12}.
 \]
 \item \emph{Correlations between terms.}  Term $j$ and term $j+r$
 share only the frequencies where $m=2^r m'$, giving
 \[
- \int_0^1\ln|2\sin\pi t|\cdot\ln|2\sin(\pi 2^rt)|\,\dd t
+ \int_0^1\ln|2\sin\pi t|\cdot\ln|2\sin(\pi 2^rt)|\,\Differential t
  =\frac12\sum_{m'\ge1}\frac{1}{2^rm'^2}\cdot\frac1{m'}\cdot m'
  =\frac{\pi^2}{12}\cdot\frac{1}{2^r},
 \]
@@ -600,7 +595,7 @@ essentially because $\sin^2$ has the clean average $\tfrac12$ and
 because of binary uniqueness.  A sample, provable in a few lines
 each:
 \[
- \int_0^1\prod_{j=0}^{k-1}\sin^2(\pi2^jt)\,\dd t=\frac{1}{2^k}
+ \int_0^1\prod_{j=0}^{k-1}\sin^2(\pi2^jt)\,\Differential t=\frac{1}{2^k}
  \quad\text{exactly, for every }k,
 \]
 (write each $\sin^2$ as $\tfrac12(1-\cos)$; expanding the product
@@ -609,13 +604,13 @@ two, and by uniqueness of binary representation none of them can
 cancel to frequency zero, so only the constant term survives);
 and the total energy identity
 \[
- \int_{-\infty}^{\infty}f(x)^2\dd x
- =\int_{-1}^{1}\Up(t)^2\dd t
+ \int_{-\infty}^{\infty}f(x)^2\Differential x
+ =\int_{-1}^{1}\RvachevUp(t)^2\Differential t
  =\frac12+\sum_{m=0}^{\infty}f\Bigl(m+\tfrac12\Bigr)^{2}
  =0.8088735359679\ldots,
 \]
 which is just Parseval's theorem for the Fourier series of the bump
-$\Up$ on $[-1,1]$ (its Fourier coefficients are values of $f$ at
+$\RvachevUp$ on $[-1,1]$ (its Fourier coefficients are values of $f$ at
 half-integers!).  The two sides were computed independently and agree
 to $2\cdot10^{-15}$ --- a pleasant end-to-end check that every formula
 in this story is what it claims to be.  The mean-square envelope even

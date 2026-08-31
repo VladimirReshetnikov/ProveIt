@@ -38,6 +38,8 @@
 \setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
 \setlist[enumerate]{leftmargin=2.25em,itemsep=0.3em,topsep=0.4em}
 
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -50,26 +52,10 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\e}{\mathrm e}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
 \newcommand{\Leb}{\operatorname{Leb}}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
-\newcommand{\vtwo}{\nu_2}
 \newcommand{\T}{T}
-\newcommand{\Lop}{\mathcal L}
 \newcommand{\Ecal}{\mathcal E}
 \newcommand{\Wlam}{W}
-\newcommand{\abs}[1]{\left|#1\right|}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 \newcommand{\ind}{\mathbf 1}
 \newcommand{\Ceq}{\textup{(C)}}
 \newcommand{\Beq}{\textup{(B)}}
@@ -93,12 +79,12 @@ and natural versus shell-adaptive Ces\`aro gauges}
 \begin{abstract}
 Let
 \[
- \Phi(x)=\widehat{\Up}(x)
- =\prod_{h=0}^{\infty}\sinc\!\left(\frac{\pi x}{2^h}\right),
- \qquad \sinc z=\frac{\sin z}{z},
+ \Phi(x)=\widehat{\RvachevUp}(x)
+ =\prod_{h=0}^{\infty}\SincRad\!\left(\frac{\pi x}{2^h}\right),
+ \qquad \SincRad z=\frac{\sin z}{z},
 \]
 be the Fourier transform of Rvachev's compactly supported up-function under the
-\(\e^{-2\pi\ii x\xi}\) convention.  This article audits the original question,
+\(\EulerE^{-2\pi\ImaginaryUnit x\xi}\) convention.  This article audits the original question,
 four independent first-wave analyses, the Aistleitner--Hofer--Larcher paper on
 lacunary trigonometric products, and the subsequent comparative audit.  The
 apparently conflicting answers are reconciled by an exact dyadic factorization:
@@ -148,7 +134,7 @@ formula
  \log M_k={}&-\frac{\log2}{2}k(k+1)-(k+1)\log\pi
  +(k+1)\log\frac{\sqrt3}{2}\\
  &-\frac{W(c(k+1))^2+2W(c(k+1))}{2\log2}
- +\bigO((\log\log k)^2),
+ +\BigO((\log\log k)^2),
  \end{aligned}
 \]
 where \(c=(\log2)\sqrt{3/2}/\pi\).  This includes a second log-normal
@@ -167,7 +153,7 @@ law.
 Set
 \begin{equation}
  \Phi(x)=\prod_{h=0}^{\infty}
- \sinc\!\left(\frac{\pi x}{2^h}\right),
+ \SincRad\!\left(\frac{\pi x}{2^h}\right),
  \qquad x\ge0,
  \label{eq:Phi-def}
 \end{equation}
@@ -175,13 +161,13 @@ and let \(t_0>0\) be fixed.  The original question asks for a real-valued
 function \(g\), preferably elementary, real-analytic, positive and eventually
 decreasing, for which\cite{mse-question,question-source}
 \begin{equation*}
- \frac1{t-t_0}\int_{t_0}^{t}\frac{|\Phi(x)|}{g(x)}\dd x\longrightarrow1
+ \frac1{t-t_0}\int_{t_0}^{t}\frac{|\Phi(x)|}{g(x)}\Differential x\longrightarrow1
  \qquad(t\to\infty).
  \tag{C}
 \end{equation*}
 or at least for which the same expression stays between two positive constants:
 \begin{equation*}
- 0<A<\frac1{t-t_0}\int_{t_0}^{t}\frac{|\Phi(x)|}{g(x)}\dd x<B<\infty
+ 0<A<\frac1{t-t_0}\int_{t_0}^{t}\frac{|\Phi(x)|}{g(x)}\Differential x<B<\infty
  \qquad(t\ge t_1).
  \tag{B}
 \end{equation*}
@@ -259,7 +245,7 @@ function \(g_{\mathrm{ad}}\) on \((0,\infty)\) such that \Ceq holds and
 Its correction relative to \(g_0\) is shell-adaptive and cannot have a
 stabilizing within-shell profile.
 \item The natural gauge becomes fully convergent without adaptation if the
-arithmetic mean is replaced by the logarithmic mean \(\dd x/x\), as in
+arithmetic mean is replaced by the logarithmic mean \(\Differential x/x\), as in
 \eqref{eq:logmean}.
 \item The dyadic-annulus maximum obeys the Lambert--\(W\) asymptotic
 \eqref{eq:annulus-main}.  Local peaks immediately following \(m2^k\), with
@@ -346,10 +332,10 @@ poor guide to the final exponents.
 \label{sec:factorization}
 
 The infinite product converges locally uniformly, because
-\(\sinc z=1-z^2/6+\bigO(z^4)\) at the origin.  Hence \(\Phi\) is even and
+\(\SincRad z=1-z^2/6+\BigO(z^4)\) at the origin.  Hence \(\Phi\) is even and
 entire.  It also satisfies the exact refinement equation\cite{arias1982,wikipedia}
 \begin{equation}
- \Phi(2x)=\sinc(2\pi x)\Phi(x).
+ \Phi(2x)=\SincRad(2\pi x)\Phi(x).
  \label{eq:refinement}
 \end{equation}
 
@@ -357,7 +343,7 @@ For \(1\le y\le2\), put \(t=y-1\) and
 \begin{align}
  P_n(t)&:=\prod_{j=0}^{n-1}|\sin(\pi2^jt)|, \label{eq:Pn}\\
  H(y)&:=\prod_{r=1}^{\infty}
- \left|\sinc\!\left(\frac{\pi y}{2^r}\right)\right|.
+ \left|\SincRad\!\left(\frac{\pi y}{2^r}\right)\right|.
  \label{eq:H}
 \end{align}
 The tail \(H\) is continuous on \([1,2]\), positive on \([1,2)\), and
@@ -378,7 +364,7 @@ Split the factors in \eqref{eq:Phi-def} at level \(k\).  In the first
 \(k+1\) factors, substitute \(r=k-h\):
 \[
  \prod_{h=0}^{k}
- \left|\sinc\!\left(\frac{\pi2^ky}{2^h}\right)\right|
+ \left|\SincRad\!\left(\frac{\pi2^ky}{2^h}\right)\right|
  =\frac{\prod_{r=0}^{k}|\sin(\pi2^ry)|}
  {(\pi y)^{k+1}2^{0+1+\cdots+k}}.
 \]
@@ -417,14 +403,14 @@ All competing exponents arise by inserting a different exponential scale for
 Euler's product for sine gives the canonical product
 \begin{equation}
  \Phi(z)=\prod_{m=1}^{\infty}
- \left(1-\frac{z^2}{m^2}\right)^{1+\vtwo(m)}.
+ \left(1-\frac{z^2}{m^2}\right)^{1+\TwoAdicValuation(m)}.
  \label{eq:canonical-product}
 \end{equation}
 Thus a nonzero integer \(m\) is a zero of multiplicity
-\(1+\vtwo(|m|)\).  On every interval \((N,N+1)\),
+\(1+\TwoAdicValuation(|m|)\).  On every interval \((N,N+1)\),
 \begin{equation}
- \frac{\dd^2}{\dd x^2}\log|\Phi(x)|
- =-2\sum_{m=1}^{\infty}(1+\vtwo(m))
+ \frac{\Differential^2}{\Differential x^2}\log|\Phi(x)|
+ =-2\sum_{m=1}^{\infty}(1+\TwoAdicValuation(m))
  \frac{m^2+x^2}{(m^2-x^2)^2}<0.
  \label{eq:strict-log-concavity}
 \end{equation}
@@ -444,15 +430,15 @@ Define the centered observable
  S_n(t):=\sum_{j=0}^{n-1}X(\T^jt).
  \label{eq:X-S}
 \end{equation}
-Since \(\int_0^1\log|\sin\pi t|\dd t=-\log2\), one has
+Since \(\int_0^1\log|\sin\pi t|\Differential t=-\log2\), one has
 \(\int_0^1X=0\).  At \(\kappa=\kappa_0\),
 \eqref{eq:master-normalization} becomes the exact formula
 \begin{equation}
  |\Phi(2^ky)|
- =\Ecal_{\kappa_0}(2^ky)D_0(y)\e^{S_{k+1}(y-1)},
+ =\Ecal_{\kappa_0}(2^ky)D_0(y)\EulerE^{S_{k+1}(y-1)},
  \qquad
  D_0(y)=\frac{H(y)}{2\pi}
- y^{\kappa_0-1}\e^{(\log y)^2/(2a)}.
+ y^{\kappa_0-1}\EulerE^{(\log y)^2/(2a)}.
  \label{eq:typical-exact}
 \end{equation}
 
@@ -500,7 +486,7 @@ In \(L^2(0,1)\),
 \end{equation}
 Cosine orthogonality gives, for \(r\ge0\),
 \begin{equation}
- c_r:=\int_0^1X(t)X(2^rt)\dd t
+ c_r:=\int_0^1X(t)X(2^rt)\Differential t
  =\frac{\pi^2}{12\,2^r}.
  \label{eq:covariance}
 \end{equation}
@@ -511,7 +497,7 @@ cosine integral is \(1/2\), not \(1\).
 \label{prop:variance}
 For every \(n\ge1\),
 \begin{equation}
- \Var(S_n)
+ \Variance(S_n)
  =\frac{\pi^2}{4}n-\frac{\pi^2}{3}(1-2^{-n}).
  \label{eq:exact-variance}
 \end{equation}
@@ -521,7 +507,7 @@ In particular, the asymptotic variance per level is \(\pi^2/4\).
 \begin{proof}
 Stationarity and \eqref{eq:covariance} yield
 \[
- \Var(S_n)=nc_0+2\sum_{r=1}^{n-1}(n-r)c_r.
+ \Variance(S_n)=nc_0+2\sum_{r=1}^{n-1}(n-r)c_r.
 \]
 Using \(\sum_{r=1}^{n-1}(n-r)2^{-r}=n-2+2^{1-n}\) gives
 \eqref{eq:exact-variance}.
@@ -557,7 +543,7 @@ The first term is a stationary reverse-martingale sum.  Furthermore
  =4c_0+c_0-4c_1=\frac{\pi^2}{4}.
  \label{eq:d-variance}
 \end{equation}
-Since \(\Leb(|X|>u)=\bigO(\e^{-u})\), Borel--Cantelli implies
+Since \(\Leb(|X|>u)=\BigO(\EulerE^{-u})\), Borel--Cantelli implies
 \(X\circ\T^n=o(\sqrt{n\log\log n})\) almost surely.  This proves that the
 martingale variance and LIL constants pass unchanged to \(S_n\).
 
@@ -583,17 +569,17 @@ becomes \(\pi/\sqrt2\), and the corresponding product constant
 
 For \(q>0\), define the weighted transfer operator
 \begin{equation}
- (\Lop_qh)(x)=\frac12\sum_{\T y=x}s(y)^q h(y),
+ (\LaplaceTransformSymbol_qh)(x)=\frac12\sum_{\T y=x}s(y)^q h(y),
  \qquad s(y)=|\sin\pi y|.
  \label{eq:Lq}
 \end{equation}
 Thus
 \begin{equation}
- \int_0^1P_n(t)^qh(t)\dd t
- =\int_0^1\Lop_q^nh(x)\dd x.
+ \int_0^1P_n(t)^qh(t)\Differential t
+ =\int_0^1\LaplaceTransformSymbol_q^nh(x)\Differential x.
  \label{eq:Lq-integral}
 \end{equation}
-Let \(\rho_q\) be the spectral radius of \(\Lop_q\), and put
+Let \(\rho_q\) be the spectral radius of \(\LaplaceTransformSymbol_q\), and put
 \begin{equation}
  \Lambda_q:=\rho_q^{1/q},
  \qquad
@@ -612,8 +598,8 @@ The endpoint cases can be computed almost entirely by hand.
 
 Lebesgue measure is invariant under \(\T\), so
 \begin{equation}
- \int_0^1\log P_n(t)\dd t
- =n\int_0^1\log|\sin\pi t|\dd t=-na.
+ \int_0^1\log P_n(t)\Differential t
+ =n\int_0^1\log|\sin\pi t|\Differential t=-na.
  \label{eq:geometric-mean}
 \end{equation}
 Hence \(\Lambda_0=1/2\) and \(\kappa_0\) is \eqref{eq:kappa0}.  This is the
@@ -623,7 +609,7 @@ same exponent as the almost-everywhere fixed-ray law.
 
 For \(q=1\), \eqref{eq:Lq} becomes
 \begin{equation}
- (\Lop_1h)(x)=\frac12\left[
+ (\LaplaceTransformSymbol_1h)(x)=\frac12\left[
  \sin\!\left(\frac{\pi x}{2}\right)h\!\left(\frac x2\right)
  +\cos\!\left(\frac{\pi x}{2}\right)h\!\left(\frac{x+1}{2}\right)
  \right].
@@ -631,7 +617,7 @@ For \(q=1\), \eqref{eq:Lq} becomes
 \end{equation}
 Fouvry and Mauduit proved\cite{fouvrymauduit,ahl2017}
 \begin{equation}
- I_1(n):=\int_0^1P_n(t)\dd t
+ I_1(n):=\int_0^1P_n(t)\Differential t
  =K\rho_1^n(1+o(1)),
  \qquad K>0,
  \label{eq:FM}
@@ -644,7 +630,7 @@ which fixes the arithmetic-mean exponent \(\kappa_1\).
 \label{prop:L2}
 For every \(n\ge1\),
 \begin{equation}
- \int_0^1P_n(t)^2\dd t=2^{-n}.
+ \int_0^1P_n(t)^2\Differential t=2^{-n}.
  \label{eq:L2}
 \end{equation}
 \end{proposition}
@@ -720,15 +706,15 @@ such that
 \end{equation}
 RPF convergence implies that the finite measures on \([0,1]\)
 \begin{equation}
- \dd\eta_k(z):=
- \rho_1^{-(k+1)}W_1(z)P_{k+1}(z)\dd z
+ \Differential\eta_k(z):=
+ \rho_1^{-(k+1)}W_1(z)P_{k+1}(z)\Differential z
  \label{eq:etak}
 \end{equation}
 converge weakly to a finite nonzero measure \(\eta\).  Define
 \begin{equation}
  A_1:=\eta([0,1])
  =\lim_{k\to\infty}\int_0^1\frac{|\Phi(2^k(1+z))|}
- {g_1(2^k(1+z))}\dd z.
+ {g_1(2^k(1+z))}\Differential z.
  \label{eq:A1}
 \end{equation}
 A spectral computation gives \(A_1\approx0.09126612\), but only the exact
@@ -749,7 +735,7 @@ and satisfies \(\mu\perp\Leb\).
 \end{proposition}
 
 \begin{proof}
-The RPF eigenmeasure \(\nu\) for \(\Lop_1^*\) obeys, at a point \(z\),
+The RPF eigenmeasure \(\nu\) for \(\LaplaceTransformSymbol_1^*\) obeys, at a point \(z\),
 \(
  \rho_1\nu\{z\}=\tfrac12s(z)\nu\{\T z\}\).  Since
 \(\rho_1>1/2\), a nonzero atom would force its forward masses to grow by a
@@ -759,7 +745,7 @@ Multiplication by the continuous positive factor \(W_1\) preserves these
 properties.
 
 For singularity, suppose the eigenmeasure had a nonzero absolutely continuous
-part \(r\dd z\).  The dual eigen-equation gives almost everywhere
+part \(r\Differential z\).  The dual eigen-equation gives almost everywhere
 \begin{equation}
  s(z)r(\T z)=\rho_1r(z).
  \label{eq:conformal-density}
@@ -774,9 +760,9 @@ For Lebesgue-almost every \(z\), Birkhoff gives
 \((2\rho_1)^n\).  On the other hand, invariance of Lebesgue measure and
 Markov's inequality give
 \[
- \Leb\{r\circ\T^n>\e^{\varepsilon n}\}
- =\Leb\{r>\e^{\varepsilon n}\}
- \le\norm{r}_1\e^{-\varepsilon n}.
+ \Leb\{r\circ\T^n>\EulerE^{\varepsilon n}\}
+ =\Leb\{r>\EulerE^{\varepsilon n}\}
+ \le\Norm{r}_1\EulerE^{-\varepsilon n}.
 \]
 Borel--Cantelli contradicts geometric growth when
 \(0<\varepsilon<\log(2\rho_1)\).  The Lebesgue decomposition is preserved by
@@ -801,7 +787,7 @@ The distribution function \(\mathscr F\) is continuous and singular, so
 For every fixed \(y\in[1,2]\),
 \begin{equation}
  \frac1{2^ky-t_0}\int_{t_0}^{2^ky}
- \frac{|\Phi(x)|}{g_0(x)}\dd x
+ \frac{|\Phi(x)|}{g_0(x)}\Differential x
  \longrightarrow\mathscr P(y).
  \label{eq:profile-limit}
 \end{equation}
@@ -842,8 +828,8 @@ If \Ceq held, subtraction of its asymptotics at \(2^k(1+z)\) and
 \(2^k\) would force the normalized mass of every partial shell \([0,z]\) to
 converge to \(z\).  By \eqref{eq:stabilizing} and RPF convergence, those
 partial masses instead converge, after a scalar normalization, to
-\(q\dd\mu\), where \(q\) is continuous and strictly positive on \([0,1)\).
-Uniform linearity would therefore imply \(q\dd\mu=\dd z\).  This is impossible
+\(q\Differential\mu\), where \(q\) is continuous and strictly positive on \([0,1)\).
+Uniform linearity would therefore imply \(q\Differential\mu=\Differential z\).  This is impossible
 because \(\mu\) is singular and atomless.
 \end{proof}
 
@@ -863,7 +849,7 @@ shell-dependent corrections whose complexity increases with \(k\).
 There is a constant \(A_1^{\log}>0\) such that
 \begin{equation}
  \frac1{\log(t/t_0)}\int_{t_0}^{t}
- \frac{|\Phi(x)|}{A_1^{\log}g_1(x)}\frac{\dd x}{x}
+ \frac{|\Phi(x)|}{A_1^{\log}g_1(x)}\frac{\Differential x}{x}
  \longrightarrow1
  \qquad(t\to\infty)
  \label{eq:logmean}
@@ -875,8 +861,8 @@ without any restriction on the dyadic mantissa of \(t\).
 The logarithmic mass of the \(k\)-th shell converges by RPF to a positive
 constant.  Summing \(K\) completed shells gives a quantity asymptotic to that
 constant times \(K\), while the terminal partial shell is uniformly bounded.
-Since \(\log t=Ka+\bigO(1)\), ordinary Ces\`aro summation proves the result.
-The terminal shell has relative weight \(\bigO(1/\log t)\), so its singular
+Since \(\log t=Ka+\BigO(1)\), ordinary Ces\`aro summation proves the result.
+The terminal shell has relative weight \(\BigO(1/\log t)\), so its singular
 within-shell distribution disappears.
 \end{proof}
 
@@ -895,7 +881,7 @@ Let
 \begin{equation}
  D_k(z):=\frac{|\Phi(2^k(1+z))|}{g_0(2^k(1+z))},
  \qquad
- \dd\mu_k(z):=D_k(z)\dd z.
+ \Differential\mu_k(z):=D_k(z)\Differential z.
  \label{eq:muk}
 \end{equation}
 By construction and Theorem~\ref{thm:natural-profile},
@@ -919,14 +905,14 @@ to an atomless, fully supported probability measure \(\mu\), with
 \item
 \begin{equation}
  \sup_{0\le z\le1}
- \left|\int_0^zr_k\dd\mu_k-z\right|\longrightarrow0;
+ \left|\int_0^zr_k\Differential\mu_k-z\right|\longrightarrow0;
  \label{eq:flattening-cdf}
 \end{equation}
 \item
 \begin{equation}
- \norm{\log r_k}_\infty=o(k),
+ \Norm{\log r_k}_\infty=o(k),
  \qquad
- \norm{(\log r_k)'}_\infty=o(k).
+ \Norm{(\log r_k)'}_\infty=o(k).
  \label{eq:flattening-slopes}
 \end{equation}
 \end{enumerate}
@@ -960,17 +946,17 @@ inside \(U_j\), and arrange \(\ell_{k,j}=0\) near \(0\) and \(1\).
 For fixed \(j\), the values \(c_{k,j,i}\) stay in a compact subinterval of
 \((0,\infty)\), so the interpolation can be chosen with uniform bounds
 \[
- \norm{\ell_{k,j}}_\infty\le B_j,
+ \Norm{\ell_{k,j}}_\infty\le B_j,
  \qquad
- \norm{\ell_{k,j}'}_\infty\le C_j
+ \Norm{\ell_{k,j}'}_\infty\le C_j
  \quad(k\ge K_j^{(0)}).
 \]
-Let \(r_{k,j}=\e^{\ell_{k,j}}\).  Away from \(U_j\), the weighted mass of a
+Let \(r_{k,j}=\EulerE^{\ell_{k,j}}\).  Away from \(U_j\), the weighted mass of a
 whole cell is exactly its Lebesgue length.  The discrepancy is confined to
 \(U_j\), where the multiplier is uniformly bounded.  Taking \(U_j\) small
 enough therefore gives, for all sufficiently large \(k\),
 \[
- \sup_z\left|\int_0^zr_{k,j}\dd\mu_k-z\right|
+ \sup_z\left|\int_0^zr_{k,j}\Differential\mu_k-z\right|
  \le 3\varepsilon_j.
 \]
 The mesh bounds the possible error in the one partially traversed cell.
@@ -1018,7 +1004,7 @@ In shell coordinates,
 \end{equation}
 The right side is at least \(k/3\) for all large \(k\), uniformly in
 \(z\in[0,1]\).  By \eqref{eq:flattening-slopes},
-\(\norm{(\log r_k)'}_\infty=o(k)\); hence \(h\) is eventually strictly
+\(\Norm{(\log r_k)'}_\infty=o(k)\); hence \(h\) is eventually strictly
 increasing and \(g_\infty\) is eventually strictly decreasing.  Also
 \begin{equation}
  \log g_\infty(x)=\log g_0(x)+o(\log x).
@@ -1030,7 +1016,7 @@ increasing and \(g_\infty\) is eventually strictly decreasing.  Also
 The gauge \(g_\infty\) satisfies
 \begin{equation}
  \frac1{t-t_0}\int_{t_0}^{t}
- \frac{|\Phi(x)|}{g_\infty(x)}\dd x\longrightarrow1
+ \frac{|\Phi(x)|}{g_\infty(x)}\Differential x\longrightarrow1
  \qquad(t\to\infty).
  \label{eq:smooth-exact}
 \end{equation}
@@ -1039,40 +1025,40 @@ The gauge \(g_\infty\) satisfies
 \begin{proof}
 Let
 \[
- C_k(z):=\int_0^zD_k(u)r_k(u)\dd u.
+ C_k(z):=\int_0^zD_k(u)r_k(u)\Differential u.
 \]
 Lemma~\ref{lem:flattening} gives
 \(\sup_z|C_k(z)-z|\to0\).  If
 \(t=2^K(1+z)\), then, up to a fixed initial contribution,
 \[
- \int_{t_0}^{t}\frac{|\Phi(x)|}{g_\infty(x)}\dd x
+ \int_{t_0}^{t}\frac{|\Phi(x)|}{g_\infty(x)}\Differential x
  =\sum_{k<K}2^kC_k(1)+2^KC_K(z).
 \]
 Replacing \(C_k(1)\) by \(1\) and \(C_K(z)\) by \(z\) creates an
 \(o(2^K)\) error: this is the elementary Toeplitz fact that
 \(\sum_{k<K}2^k\varepsilon_k=o(2^K)\) whenever \(\varepsilon_k\to0\).
 The main term is
-\(\sum_{k<K}2^k+2^Kz=2^K(1+z)+\bigO(1)=t+\bigO(1)\).
+\(\sum_{k<K}2^k+2^Kz=2^K(1+z)+\BigO(1)=t+\BigO(1)\).
 This proves \eqref{eq:smooth-exact}.
 \end{proof}
 
 \subsection{Real-analytic upgrade by Carleman--Hoischen approximation}
 
 We use the following classical approximation theorem in its \(C^1\) form:
-for every real-valued \(F\in C^1(\R)\) and every positive continuous
-\(\epsilon\), there is an entire function \(G\), real on \(\R\), such that
+for every real-valued \(F\in C^1(\RealNumbers)\) and every positive continuous
+\(\epsilon\), there is an entire function \(G\), real on \(\RealNumbers\), such that
 \begin{equation}
  |G(x)-F(x)|<\epsilon(x),
  \qquad
  |G'(x)-F'(x)|<\epsilon(x)
- \quad(x\in\R).
+ \quad(x\in\RealNumbers).
  \label{eq:Hoischen}
 \end{equation}
 This is Hoischen's derivative version of Carleman approximation; a modern
 proof is due to Gauthier and Kienzle\cite{gauthier-kienzle}.
 
 Extend \(h\) from \eqref{eq:smooth-adaptive} to a positive strictly increasing
-\(C^1\) function on all of \(\R\).  Choose a continuous
+\(C^1\) function on all of \(\RealNumbers\).  Choose a continuous
 \(\delta(x)>0\) with \(\delta(x)\to0\) as \(x\to+\infty\), and apply
 \eqref{eq:Hoischen} with
 \begin{equation}
@@ -1080,7 +1066,7 @@ Extend \(h\) from \eqref{eq:smooth-adaptive} to a positive strictly increasing
  \label{eq:Hoischen-error}
 \end{equation}
 Then the real entire approximant \(\widetilde h\) satisfies
-\(\widetilde h>0\), \(\widetilde h'>0\) on \(\R\), and
+\(\widetilde h>0\), \(\widetilde h'>0\) on \(\RealNumbers\), and
 \(\widetilde h/h\to1\) as \(x\to+\infty\).  Define
 \begin{equation}
  g_{\mathrm{ad}}(x):=\frac1{\widetilde h(x)},
@@ -1101,12 +1087,12 @@ The rough asymptotic follows from
 \(g_0\).  For the integral, given \(\varepsilon>0\), choose \(X\) so that
 \(|\widetilde h/h-1|<\varepsilon\) for \(x\ge X\).  Then
 \[
- \left|\int_X^t|\Phi|(\widetilde h-h)\dd x\right|
- \le\varepsilon\int_X^t|\Phi|h\dd x
+ \left|\int_X^t|\Phi|(\widetilde h-h)\Differential x\right|
+ \le\varepsilon\int_X^t|\Phi|h\Differential x
  =\varepsilon(t+o(t))
 \]
 by Proposition~\ref{prop:smooth-adaptive}.  The initial interval contributes
-\(\bigO(1)\).  Letting \(\varepsilon\downarrow0\) proves the same limit for
+\(\BigO(1)\).  Letting \(\varepsilon\downarrow0\) proves the same limit for
 \(\widetilde h=1/g_{\mathrm{ad}}\).
 \end{proof}
 
@@ -1174,7 +1160,7 @@ most a fixed multiple of the value at \(1-\theta\).
 For \(0<\theta\le1/2\), write
 \begin{equation}
  \theta=2^{-r}s,
- \qquad r\in\Z_{\ge0},
+ \qquad r\in\IntegerNumbers_{\ge0},
  \qquad s\in I:=[1/4,1/2].
  \label{eq:transition}
 \end{equation}
@@ -1188,18 +1174,18 @@ If \(r<n\), then
 Uniformly for \(s\in I\), the initial block satisfies
 \begin{equation}
  \log\prod_{h=1}^{r}\sin\!\left(\frac{\pi s}{2^h}\right)
- =-\frac a2r^2+r\left(\log(\pi s)-\frac a2\right)+\bigO(1).
+ =-\frac a2r^2+r\left(\log(\pi s)-\frac a2\right)+\BigO(1).
  \label{eq:small-block}
 \end{equation}
 The Gelfond inequality gives the upper tail
-\(P_m(s)\le C\e^{m\beta}\).  Conversely, the \(q\)-fold preimages of
+\(P_m(s)\le C\EulerE^{m\beta}\).  Conversely, the \(q\)-fold preimages of
 \(1/3\) and \(2/3\) form an \(O(2^{-q})\)-net.  For example, if
 \(s_q=(j+1/3)/2^q\), then \(\T^qs_q=1/3\), and for \(0\le \ell<q\)
 \[
- \operatorname{dist}(\T^\ell s_q,\Z)
+ \operatorname{dist}(\T^\ell s_q,\IntegerNumbers)
  \ge \frac1{3\,2^{q-\ell}}.
 \]
-Since \(|\sin\pi u|\ge2\operatorname{dist}(u,\Z)\), the first \(q\)
+Since \(|\sin\pi u|\ge2\operatorname{dist}(u,\IntegerNumbers)\), the first \(q\)
 factors are bounded below by
 \[
  \prod_{\ell=0}^{q-1}|\sin(\pi2^\ell s_q)|
@@ -1220,7 +1206,7 @@ objective is \(O(\log n)\)-Lipschitz in \(s\).  Taking
 
 The finite objective is
 \begin{equation}
- \mathcal F_n(r,s)
+ \DecayOptimizationObjective{n}(r,s)
  =-\frac a2r^2
  +r\left(\log(\pi s)-\frac a2-\beta\right)
  -n\log(1+s2^{-r}).
@@ -1230,8 +1216,8 @@ The preceding estimates give
 \begin{equation}
  \log\sup_{0\le\theta\le1}
  H(1+\theta)(1+\theta)^{-n}P_n(\theta)
- =n\beta+\sup_{r,s}\mathcal F_n(r,s)
- +\bigO((\log\log n)^2).
+ =n\beta+\sup_{r,s}\DecayOptimizationObjective{n}(r,s)
+ +\BigO((\log\log n)^2).
  \label{eq:Fn-reduction}
 \end{equation}
 
@@ -1250,18 +1236,18 @@ changes the supremum by \(o(1)\).  Put
 the integers, the corresponding \(z\)-intervals tile the real line.  Up to a
 bounded term, the objective becomes
 \begin{equation}
- -\frac{z^2}{2a}-n\e^{-C_0}\e^{-z}.
+ -\frac{z^2}{2a}-n\EulerE^{-C_0}\EulerE^{-z}.
  \label{eq:z-objective}
 \end{equation}
 Its critical equation is
 \begin{equation}
- z\e^z=an\e^{-C_0}=cn.
+ z\EulerE^z=an\EulerE^{-C_0}=cn.
  \label{eq:Lambert-eq}
 \end{equation}
 Thus \(z=W(cn)\), with the principal Lambert function\cite{corless}, and at the maximum
 \begin{equation}
- \sup_{r,s}\mathcal F_n(r,s)
- =-\frac{W(cn)^2+2W(cn)}{2a}+\bigO(1).
+ \sup_{r,s}\DecayOptimizationObjective{n}(r,s)
+ =-\frac{W(cn)^2+2W(cn)}{2a}+\BigO(1).
  \label{eq:Lambert-sup}
 \end{equation}
 
@@ -1273,12 +1259,12 @@ As \(k\to\infty\), with \(n=k+1\),
  \log M_k
  =-\frac a2k(k+1)-n\log\pi+n\beta
  -\frac{W(cn)^2+2W(cn)}{2a}
- +\bigO((\log\log k)^2).}
+ +\BigO((\log\log k)^2).}
  \label{eq:annulus-main}
 \end{equation}
 \end{theorem}
 
-Expanding \(W(cn)=\log n-\log\log n+\log c+\bigO(\log\log n/\log n)\)
+Expanding \(W(cn)=\log n-\log\log n+\log c+\BigO(\log\log n/\log n)\)
 gives
 \begin{align}
  \log M_k={}&-\frac a2k^2
@@ -1286,14 +1272,14 @@ gives
  -\frac{(\log k)^2}{2a}
  +\frac{\log k\log\log k}{a}\notag\\
  &-\frac{1+\log c}{a}\log k
- +\bigO((\log\log k)^2).
+ +\BigO((\log\log k)^2).
  \label{eq:annulus-expanded}
 \end{align}
 In physical scale \(R=2^k\), the extra correction begins with
 \begin{equation}
  -\frac{(\log\log R)^2}{2\log2}
  +\frac{\log\log R\,\log\log\log R}{\log2}
- +\bigO(\log\log R).
+ +\BigO(\log\log R).
  \label{eq:second-lognormal}
 \end{equation}
 No fixed factor \((\log R)^{-p}\) can represent this boundary layer.  The
@@ -1318,11 +1304,11 @@ Fix an odd positive integer \(m\), put \(N=m2^k\), and write
 \end{equation}
 Near \(t=1\),
 \begin{equation}
- \Phi(t)=H(1)(1-t)+\bigO((1-t)^2).
+ \Phi(t)=H(1)(1-t)+\BigO((1-t)^2).
  \label{eq:Phi-near-one}
 \end{equation}
 The elementary boundary maximum
-\(\max_{0\le t\le1}t^p(1-t)\sim1/(\e p)\) now gives the exact valley law.
+\(\max_{0\le t\le1}t^p(1-t)\sim1/(\EulerE p)\) now gives the exact valley law.
 
 \begin{theorem}[Peaks after a fixed odd multiple of a power of two]
 \label{thm:twoadic}
@@ -1336,12 +1322,12 @@ and
 \begin{equation}
  \boxed{
  E_{m2^k}\sim
- \frac{H(1)|H(m)|}{\e(k+1)}(m2^k)^{-(k+1)}.}
+ \frac{H(1)|H(m)|}{\EulerE(k+1)}(m2^k)^{-(k+1)}.}
  \label{eq:twoadic-peak}
 \end{equation}
 In particular,
 \begin{equation}
- E_{2^k}\sim\frac{H(1)^2}{\e(k+1)}2^{-k(k+1)}.
+ E_{2^k}\sim\frac{H(1)^2}{\EulerE(k+1)}2^{-k(k+1)}.
  \label{eq:power-two-peak}
 \end{equation}
 \end{theorem}
@@ -1364,7 +1350,7 @@ and the two-adic valley asymptotic are elementary consequences of the product
 plus standard real analysis.
 \item The \(q=1\) exponent uses the Fouvry--Mauduit asymptotic
 \eqref{eq:FM}.  The shell profile uses the standard RPF spectral theorem for
-\(\Lop_1\).
+\(\LaplaceTransformSymbol_1\).
 \item The analytic adaptive gauge additionally uses the \(C^1\)
 Carleman--Hoischen approximation theorem.  Its shell-flattening construction
 is otherwise elementary once weak convergence \(\mu_k\Rightarrow\mu\) is

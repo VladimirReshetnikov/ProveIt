@@ -36,6 +36,8 @@
 \fancyhead[L]{\small Fourier decay of Rvachev's up-function}
 \fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
 \renewcommand{\headrulewidth}{0.4pt}
 
 \titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
@@ -59,22 +61,9 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
 \newcommand{\Uhat}{\mathcal U}
 \newcommand{\T}{\mathsf T}
-\newcommand{\Lop}{\mathcal L}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
 \newcommand{\esssup}{\operatorname*{ess\,sup}}
-\newcommand{\vtwo}{\nu_2}
 \newcommand{\dist}{\operatorname{dist}}
 
 \newenvironment{boxedremark}{%
@@ -109,13 +98,13 @@ of Rvachev's Up-Function\\[0.35em]
 \maketitle
 
 \begin{abstract}
-Let $\Up$ be Rvachev's compactly supported $C^\infty$ function, normalized to have
+Let $\RvachevUp$ be Rvachev's compactly supported $C^\infty$ function, normalized to have
 integral one, and use the Fourier convention
-$\widehat h(\xi)=\int_{\R}h(t)\e^{-2\pi\ii\xi t}\dd t$.  Its Fourier transform is
+$\widehat h(\xi)=\int_{\RealNumbers}h(t)\EulerE^{-2\pi\ImaginaryUnit\xi t}\Differential t$.  Its Fourier transform is
 \[
  \Uhat(\xi)=\prod_{n=0}^{\infty}
- \sinc\!\left(\frac{\pi\xi}{2^n}\right),
- \qquad \sinc z=\frac{\sin z}{z}.
+ \SincRad\!\left(\frac{\pi\xi}{2^n}\right),
+ \qquad \SincRad z=\frac{\sin z}{z}.
 \]
 The common description ``roughly log-normal'' is correct only at the coarsest scale.
 There is no single pointwise asymptotic equivalent: $\Uhat$ vanishes at every nonzero
@@ -155,12 +144,12 @@ profile obstructing a naive all-$T$ limit is described by a transfer-operator ei
 The object of study is
 \begin{equation}\label{eq:def-U}
  \Uhat(x)=\prod_{n=0}^{\infty}
- \sinc\!\left(\frac{\pi x}{2^n}\right),
- \qquad x\in\R.
+ \SincRad\!\left(\frac{\pi x}{2^n}\right),
+ \qquad x\in\RealNumbers.
 \end{equation}
-It is real, even, entire, and rapidly decreasing on the real axis.  Since $\Up$ is
+It is real, even, entire, and rapidly decreasing on the real axis.  Since $\RvachevUp$ is
 $C^\infty$ with compact support, integration by parts already gives
-$\Uhat(x)=\bigO_N(|x|^{-N})$ for every $N$.  What that elementary argument does not
+$\Uhat(x)=\BigO_N(|x|^{-N})$ for every $N$.  What that elementary argument does not
 reveal is the much sharper scale of decay, nor the arithmetic oscillations hidden inside
 that scale.
 
@@ -238,8 +227,8 @@ $(\log x)^{-1/2}$ correction.
 
 With the Fourier convention used in the abstract, the standard construction of the
 up-function gives \eqref{eq:def-U}; see Arias de Reyna~\cite{arias1982} for a systematic
-treatment.  The product converges normally on compact subsets of $\C$, since
-$1-\sinc z=\bigO(z^2)$ near zero.
+treatment.  The product converges normally on compact subsets of $\ComplexNumbers$, since
+$1-\SincRad z=\BigO(z^2)$ near zero.
 
 The elementary identity
 \[
@@ -249,34 +238,34 @@ The elementary identity
 yields a second, arithmetically revealing product.
 
 \begin{proposition}[Integer zeros and their multiplicities]\label{prop:zeros}
-For every $z\in\C$,
+For every $z\in\ComplexNumbers$,
 \begin{equation}\label{eq:weierstrass-collected}
  \Uhat(z)=\prod_{m=1}^{\infty}
- \left(1-\frac{z^2}{m^2}\right)^{1+\vtwo(m)},
+ \left(1-\frac{z^2}{m^2}\right)^{1+\TwoAdicValuation(m)},
 \end{equation}
-where $\vtwo(m)$ is the exponent of $2$ in $m$.  Thus the zero at each
-$m\in\Z\setminus\{0\}$ has multiplicity $1+\vtwo(|m|)$.
+where $\TwoAdicValuation(m)$ is the exponent of $2$ in $m$.  Thus the zero at each
+$m\in\IntegerNumbers\setminus\{0\}$ has multiplicity $1+\TwoAdicValuation(|m|)$.
 \end{proposition}
 
 \begin{proof}
 Inserting the sine product into \eqref{eq:def-U} gives factors with zeros at
 $z=2^nq$, $n\ge0$, $q\ge1$.  For a fixed positive integer $m$, the number of pairs
-$(n,q)$ satisfying $m=2^nq$ is $1+\vtwo(m)$.  Since
-$\sum_{m\ge1}(1+\vtwo(m))/m^2<\infty$, the collected genus-zero product converges
+$(n,q)$ satisfying $m=2^nq$ is $1+\TwoAdicValuation(m)$.  Since
+$\sum_{m\ge1}(1+\TwoAdicValuation(m))/m^2<\infty$, the collected genus-zero product converges
 normally and rearrangement is legitimate.
 \end{proof}
 
 A cosine form, useful for comparison with the Fabius literature, follows from repeated
-use of $\sinc(2z)=\sinc(z)\cos z$:
+use of $\SincRad(2z)=\SincRad(z)\cos z$:
 \begin{equation}\label{eq:cosine-form}
  \Uhat(z)=\prod_{m=1}^{\infty}
  \left(\cos\frac{\pi z}{2^m}\right)^m.
 \end{equation}
 The elementary scaling equation is
 \begin{equation}\label{eq:scaling}
- \Uhat(x)=\sinc(\pi x)\Uhat(x/2),
+ \Uhat(x)=\SincRad(\pi x)\Uhat(x/2),
  \qquad
- \Uhat(2x)=\sinc(2\pi x)\Uhat(x).
+ \Uhat(2x)=\SincRad(2\pi x)\Uhat(x).
 \end{equation}
 
 \subsection{Exactly one extremum between consecutive zeros}
@@ -296,17 +285,17 @@ Away from the integer zeros, logarithmic differentiation of
 \begin{equation}\label{eq:log-derivative}
  \frac{\Uhat'(x)}{\Uhat(x)}
  =-2x\sum_{m=1}^{\infty}
- \frac{1+\vtwo(m)}{m^2-x^2}.
+ \frac{1+\TwoAdicValuation(m)}{m^2-x^2}.
 \end{equation}
 The series and its derivative converge locally uniformly on
-$\R\setminus\Z$.  Put
+$\RealNumbers\setminus\IntegerNumbers$.  Put
 \[
- A(x):=\sum_{m=1}^{\infty}\frac{1+\vtwo(m)}{m^2-x^2}.
+ A(x):=\sum_{m=1}^{\infty}\frac{1+\TwoAdicValuation(m)}{m^2-x^2}.
 \]
 For $x>0$ away from the integers,
 \[
  A'(x)=2x\sum_{m=1}^{\infty}
- \frac{1+\vtwo(m)}{(m^2-x^2)^2}>0.
+ \frac{1+\TwoAdicValuation(m)}{(m^2-x^2)^2}>0.
 \]
 On $(n,n+1)$ one has $A(x)\to-\infty$ as $x\downarrow n$ and
 $A(x)\to+\infty$ as $x\uparrow n+1$.  Hence $A$ has exactly one zero there, and
@@ -337,7 +326,7 @@ and define
  Q_n(t)&:=2^nP_n(t)
        =\prod_{j=0}^{n-1}|2\sin(\pi2^jt)|,\label{eq:Qn}\\
  H(y)&:=\prod_{m=1}^{\infty}
- \left|\sinc\!\left(\frac{\pi y}{2^m}\right)\right|.
+ \left|\SincRad\!\left(\frac{\pi y}{2^m}\right)\right|.
  \label{eq:H}
 \end{align}
 The tail $H$ is continuous on $[1,2]$, strictly positive on $[1,2)$, and vanishes at
@@ -431,7 +420,7 @@ Let $\T(t)=2t\pmod1$ be the doubling map and
 \end{equation}
 Then $S_n(t)=\sum_{j=0}^{n-1}\varphi(\T^jt)$.  The classical integral
 \begin{equation}\label{eq:logsin-mean}
- \int_0^1\log|2\sin(\pi t)|\dd t=0
+ \int_0^1\log|2\sin(\pi t)|\Differential t=0
 \end{equation}
 shows that the Birkhoff sum is centered.
 
@@ -542,7 +531,7 @@ Let $\mathcal M_\T$ denote the $\T$-invariant Borel probability measures on $[0,
 Then
 \begin{equation}\label{eq:max-average}
  \sup_{\mu\in\mathcal M_\T}
- \int_0^1\log|\sin(\pi t)|\dd\mu(t)
+ \int_0^1\log|\sin(\pi t)|\Differential\mu(t)
  =\log\rho.
 \end{equation}
 The unique maximizing measure is the equidistribution on the two-cycle
@@ -555,10 +544,10 @@ Put $z=\sin^2(\pi t)$.  Under doubling, $z$ evolves by the logistic map
  R(z)=4z(1-z),\qquad 0\le z\le1.
 \]
 Let $\eta$ be the push-forward of a $\T$-invariant measure.  If
-$\int\log z\dd\eta=-\infty$, there is nothing to prove.  Otherwise invariance and
+$\int\log z\Differential\eta=-\infty$, there is nothing to prove.  Otherwise invariance and
 $\log R(z)=\log4+\log z+\log(1-z)$ imply
 \begin{equation}\label{eq:log-one-minus-z}
- \int\log(1-z)\dd\eta(z)=-\log4.
+ \int\log(1-z)\Differential\eta(z)=-\log4.
 \end{equation}
 The elementary inequality
 \begin{equation}\label{eq:z-inequality}
@@ -566,11 +555,11 @@ The elementary inequality
 \end{equation}
 with equality only at $z=3/4$, gives
 \[
- 3\int\log z\dd\eta+\int\log(1-z)\dd\eta
+ 3\int\log z\Differential\eta+\int\log(1-z)\Differential\eta
  \le\log\frac{27}{256}.
 \]
 Using \eqref{eq:log-one-minus-z} yields
-$\int\log z\dd\eta\le\log(3/4)$.  Since
+$\int\log z\Differential\eta\le\log(3/4)$.  Since
 $\log|\sin\pi t|=\tfrac12\log z$, this is \eqref{eq:max-average}.
 Equality forces $z=3/4$ almost surely.  Its two lifts are $t=1/3,2/3$, exchanged by
 $\T$, so invariance forces equal masses on the two points.
@@ -591,7 +580,7 @@ argument for an upper-semicontinuous potential gives
 \[
  \lim_{n\to\infty}\frac1n\log M_n
  =\sup_{\mu\in\mathcal M_\T}
- \int\log|\sin(\pi t)|\dd\mu(t).
+ \int\log|\sin(\pi t)|\Differential\mu(t).
 \]
 For completeness, choose nearly maximizing $t_n$ and pass to a weak limit of the
 empirical measures $n^{-1}\sum_{j<n}\delta_{\T^jt_n}$.  Every limit is invariant.
@@ -632,7 +621,7 @@ uniformly as $x\to\infty$, and the exponent cannot be improved.
 
 \begin{proof}
 In \eqref{eq:exact-factorization}, insert
-$P_{k+1}(t)\le M_{k+1}=\rho^{k+1}\e^{o(k)}$ from
+$P_{k+1}(t)\le M_{k+1}=\rho^{k+1}\EulerE^{o(k)}$ from
 \Cref{lem:Mn}.  Apply \eqref{eq:algebra-identity} with
 $c=\log(\pi/\rho)$.  Since $y\in[1,2)$ and $H(y)\le1$, the mantissa contribution is
 bounded above, giving \eqref{eq:global-upper-o}.
@@ -688,7 +677,7 @@ sine potential.
 
 The original question asked for a positive analytic, eventually monotone $g$ such that
 \[
- \frac1T\int_{T_0}^{T}\frac{|\Uhat(x)|}{g(x)}\dd x
+ \frac1T\int_{T_0}^{T}\frac{|\Uhat(x)|}{g(x)}\Differential x
 \]
 remains between two positive constants, or ideally tends to one.  The bounded version
 has a clean rigorous answer.
@@ -697,7 +686,7 @@ has a clean rigorous answer.
 
 Set
 \begin{equation}\label{eq:I1n}
- I_1(n):=\int_0^1P_n(t)\dd t.
+ I_1(n):=\int_0^1P_n(t)\Differential t.
 \end{equation}
 Fouvry and Mauduit proved~\cite{fouvrymauduit1996} that there are constants
 $\kappa>0$ and $0<\lambda<1$ such that
@@ -717,13 +706,13 @@ interval-certified proof.
 
 The relevant transfer operator is
 \begin{equation}\label{eq:transfer-L1}
- (\Lop f)(x)=\frac12\left[
+ (\LaplaceTransformSymbol f)(x)=\frac12\left[
  \sin\!\left(\frac{\pi x}{2}\right)f\!\left(\frac x2\right)
  +\cos\!\left(\frac{\pi x}{2}\right)f\!\left(\frac{x+1}{2}\right)
  \right],\qquad 0\le x\le1.
 \end{equation}
-Indeed, $I_1(n)=\int_0^1\Lop^n\mathbf1(x)\dd x$, and $\lambda$ is the dominant
-eigenvalue of $\Lop$ on a suitable H\"older space.
+Indeed, $I_1(n)=\int_0^1\LaplaceTransformSymbol^n\mathbf1(x)\Differential x$, and $\lambda$ is the dominant
+eigenvalue of $\LaplaceTransformSymbol$ on a suitable H\"older space.
 
 \subsection{The \texorpdfstring{$L^1$}{L1} exponent and the gauge}
 
@@ -742,7 +731,7 @@ and
 There exist constants $0<A<B<\infty$ and $X_0>0$ such that, for every $T\ge2X_0$,
 \begin{equation}\label{eq:cesaro-bounds}
  A\le\frac1T\int_{X_0}^{T}
- \frac{|\Uhat(x)|}{g_1(x)}\dd x\le B.
+ \frac{|\Uhat(x)|}{g_1(x)}\Differential x\le B.
 \end{equation}
 Replacing $T$ by $T-X_0$ in the denominator does not change the conclusion.  Thus
 $g_1$ rigorously satisfies the weaker requirement in the original question.
@@ -771,12 +760,12 @@ $[1,3/2]$.
 Let
 \[
  J_k:=\int_{2^k}^{2^{k+1}}
- \frac{|\Uhat(x)|}{g_1(x)}\dd x.
+ \frac{|\Uhat(x)|}{g_1(x)}\Differential x.
 \]
 After $x=2^ky$,
 \begin{equation}\label{eq:Jk}
  J_k=2^k\lambda^{-n}
- \int_0^1W_1(1+t)P_n(t)\dd t.
+ \int_0^1W_1(1+t)P_n(t)\Differential t.
 \end{equation}
 The symmetry $P_n(1-t)=P_n(t)$ gives
 $\int_0^{1/2}P_n=I_1(n)/2$.  Hence the lower and upper bounds for $W_1$, together
@@ -810,10 +799,10 @@ Put
  u(x):=\frac{\log x}{\log2}+\beta_1.
 \]
 Then $g_1'(x)=-x^{-1}u(x)g_1(x)$.  Induction using
-$\frac{\dd}{\dd x}=x^{-1}\frac{\dd}{\dd\log x}$ gives, for fixed $m$,
+$\frac{\Differential}{\Differential x}=x^{-1}\frac{\Differential}{\Differential\log x}$ gives, for fixed $m$,
 \begin{equation}\label{eq:derivative-asymp}
  \frac{g_1^{(m)}(x)}{g_1(x)}
- =x^{-m}\left((-1)^m u(x)^m+\bigO_m(u(x)^{m-1})\right).
+ =x^{-m}\left((-1)^m u(x)^m+\BigO_m(u(x)^{m-1})\right).
 \end{equation}
 The leading term controls the sign once $x$ is large enough.
 \end{proof}
@@ -828,10 +817,10 @@ statement explains the remaining obstruction to a single all-$T$ limit.
 
 On a H\"older space, the operator \eqref{eq:transfer-L1} has a positive eigenfunction
 $h$, a positive eigenmeasure $\nu$, and a spectral gap.  Normalize
-$\Lop h=\lambda h$, $\Lop^*\nu=\lambda\nu$, and $\nu(h)=1$.  Then, for H\"older $q$,
+$\LaplaceTransformSymbol h=\lambda h$, $\LaplaceTransformSymbol^*\nu=\lambda\nu$, and $\nu(h)=1$.  Then, for H\"older $q$,
 \begin{equation}\label{eq:spectral-gap}
- \lambda^{-n}\Lop^nq
- =h\,\nu(q)+\bigO(\theta^n\|q\|_{\mathrm{Hol}})
+ \lambda^{-n}\LaplaceTransformSymbol^nq
+ =h\,\nu(q)+\BigO(\theta^n\|q\|_{\mathrm{Hol}})
  \qquad(0<\theta<1).
 \end{equation}
 It follows from \eqref{eq:Jk} that
@@ -847,12 +836,12 @@ a profile
 \begin{equation}\label{eq:mantissa-profile}
  \lim_{K\to\infty}
  \frac1{2^Ky}\int_{1}^{2^Ky}
- \frac{|\Uhat(x)|}{C_1g_1(x)}\dd x
+ \frac{|\Uhat(x)|}{C_1g_1(x)}\Differential x
  =\frac{1+D(y)/C_1}{y},
 \end{equation}
 where
 \begin{equation}\label{eq:D-profile}
- D(y)=\left(\int_0^1h(x)\dd x\right)
+ D(y)=\left(\int_0^1h(x)\Differential x\right)
  \nu\!\left(W_1(1+\cdot)\mathbf1_{[0,y-1]}\right),
  \qquad D(2)=C_1.
 \end{equation}
@@ -879,11 +868,11 @@ gauges outside that class.
 
 The preceding rates are instances of one pressure family.  For $p>0$, define
 \begin{equation}\label{eq:Ip}
- I_p(n):=\int_0^1P_n(t)^p\dd t
+ I_p(n):=\int_0^1P_n(t)^p\Differential t
 \end{equation}
 and the weighted transfer operator
 \begin{equation}\label{eq:Lp-op}
- (\Lop_p f)(x):=\frac12\left[
+ (\LaplaceTransformSymbol_p f)(x):=\frac12\left[
  \sin^p\!\left(\frac{\pi x}{2}\right)f\!\left(\frac x2\right)
  +\cos^p\!\left(\frac{\pi x}{2}\right)f\!\left(\frac{x+1}{2}\right)
  \right].
@@ -910,7 +899,7 @@ there are constants $0<c_p<C_p<\infty$ such that, for all sufficiently large $k$
 \begin{equation}\label{eq:Lp-shell-bound}
  c_p2^k\le
  \int_{2^k}^{2^{k+1}}
- \left|\frac{\Uhat(x)}{g_p(x)}\right|^p\dd x
+ \left|\frac{\Uhat(x)}{g_p(x)}\right|^p\Differential x
  \le C_p2^k.
 \end{equation}
 With the spectral asymptotic \eqref{eq:Ip-asymp}, the shell integral divided by $2^k$
@@ -934,7 +923,7 @@ There is an elementary identity:
 \begin{equation}\label{eq:L2-exact}
  I_2(n)=2^{-n}.
 \end{equation}
-Indeed, $\Lop_2\mathbf1=\tfrac12\mathbf1$ because
+Indeed, $\LaplaceTransformSymbol_2\mathbf1=\tfrac12\mathbf1$ because
 $\sin^2u+\cos^2u=1$.  Hence $\lambda_2=1/2$,
 $r_2=1/\sqrt2$, and
 \begin{equation}\label{eq:beta2}
@@ -951,12 +940,12 @@ The pressure variational principle is
  \log\lambda_p
  =\sup_{\mu\in\mathcal M_\T}
  \left(h_\mu(\T)-\log2
- +p\int\log|\sin\pi t|\dd\mu(t)\right).
+ +p\int\log|\sin\pi t|\Differential\mu(t)\right).
 \end{equation}
 At $p=0$ the equilibrium state is Lebesgue measure, and differentiation of pressure gives
 \[
  \lim_{p\downarrow0}r_p
- =\exp\!\left(\int_0^1\log|\sin\pi t|\dd t\right)=\frac12.
+ =\exp\!\left(\int_0^1\log|\sin\pi t|\Differential t\right)=\frac12.
 \]
 Thus $\lim_{p\downarrow0}\beta_p=\beta_{\mathrm{typ}}$.  At zero temperature,
 \eqref{eq:pressure} and \Cref{lem:max-average} give
@@ -1013,9 +1002,9 @@ For a fully certified decimal expansion, one may combine a high-precision approx
 eigenfunction with a Collatz--Wielandt enclosure:
 if $v>0$ pointwise, then
 \begin{equation}\label{eq:CW}
- \inf_x\frac{\Lop v(x)}{v(x)}
+ \inf_x\frac{\LaplaceTransformSymbol v(x)}{v(x)}
  \le\lambda\le
- \sup_x\frac{\Lop v(x)}{v(x)}.
+ \sup_x\frac{\LaplaceTransformSymbol v(x)}{v(x)}.
 \end{equation}
 Interval arithmetic and a Chebyshev remainder bound can turn \eqref{eq:CW} into a
 machine-checkable enclosure.

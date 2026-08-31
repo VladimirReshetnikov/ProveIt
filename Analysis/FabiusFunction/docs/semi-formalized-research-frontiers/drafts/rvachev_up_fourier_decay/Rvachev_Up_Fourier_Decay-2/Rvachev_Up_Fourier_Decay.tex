@@ -35,6 +35,8 @@
 \fancyhead[L]{\small Fourier decay of Rvachev's up-function}
 \fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
 \renewcommand{\headrulewidth}{0.4pt}
 \titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
 \titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
@@ -93,19 +95,7 @@
 \crefname{warning}{warning}{warnings}
 \Crefname{warning}{Warning}{Warnings}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\e}{\mathrm e}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
-\newcommand{\vtwo}{v_2}
 \newcommand{\dist}{\operatorname{dist}}
-\newcommand{\supp}{\operatorname{supp}}
 \newcommand{\W}{W}
 \newcommand{\PhiF}{\Phi}
 \newcommand{\Qprod}{Q}
@@ -129,13 +119,13 @@ of Rvachev's Up-Function\\[0.35em]
 \begin{abstract}
 With the Fourier convention
 \(
- \widehat f(\xi)=\int_{\R}f(t)\e^{-2\pi i t\xi}\dd t,
+ \widehat f(\xi)=\int_{\RealNumbers}f(t)\EulerE^{-2\pi i t\xi}\Differential t,
 \)
 the normalized Rvachev up-function has Fourier transform
 \[
  \PhiF(\xi)=\prod_{h=0}^{\infty}
- \sinc\!\left(\frac{\pi\xi}{2^h}\right),
- \qquad \sinc z=\frac{\sin z}{z}.
+ \SincRad\!\left(\frac{\pi\xi}{2^h}\right),
+ \qquad \SincRad z=\frac{\sin z}{z}.
 \]
 The product is rapidly decreasing, but it has a highly nonuniform real-axis
 amplitude: it vanishes at every nonzero integer, its dyadic orbits are governed
@@ -166,7 +156,7 @@ and let \(W\) be the principal Lambert function.  We prove
  \log M_k={}&-\frac{\lambda}{2}k(k+1)
  -(k+1)\log\pi+(k+1)\beta\\
  &-\frac{W(c(k+1))^2+2W(c(k+1))}{2\lambda}
- +\bigO\!\left((\log\log k)^2\right).
+ +\BigO\!\left((\log\log k)^2\right).
 \end{align*}
 Thus the envelope contains a second log-normal suppression in
 \(\log\log x\); it is not a log-normal term multiplied merely by a fixed
@@ -175,9 +165,9 @@ sharp Gelfond exponent.  Finally, if \(E_n\) is the unique interzero peak on
 \((n,n+1)\), then for each fixed odd positive integer \(m\),
 \[
  E_{m2^k}\sim
- \frac{H(1)|H(m)|}{\e(k+1)}(m2^k)^{-(k+1)},
+ \frac{H(1)|H(m)|}{\EulerE(k+1)}(m2^k)^{-(k+1)},
  \qquad
- H(z)=\prod_{r=1}^{\infty}\sinc\!\left(\frac{\pi z}{2^r}\right).
+ H(z)=\prod_{r=1}^{\infty}\SincRad\!\left(\frac{\pi z}{2^r}\right).
 \]
 These two-adically exceptional peaks are exponentially smaller on the
 log-normal scale than the largest peak in the same dyadic annulus.  The
@@ -197,7 +187,7 @@ Under the Fourier convention used above, its Fourier transform is the entire
 function
 \begin{equation}
  \PhiF(z)=\prod_{h=0}^{\infty}
- \sinc\!\left(\frac{\pi z}{2^h}\right).
+ \SincRad\!\left(\frac{\pi z}{2^h}\right).
  \label{eq:Phi-definition}
 \end{equation}
 This product already occurs in the classical construction by Jessen and
@@ -272,21 +262,21 @@ All logarithms are natural.
 
 Since
 \(
- \sinc w=1-w^2/6+\bigO(w^4)
+ \SincRad w=1-w^2/6+\BigO(w^4)
 \)
 near the origin, the product in \eqref{eq:Phi-definition} converges locally
-uniformly on \(\C\).  It therefore defines an even entire function.  Shifting
+uniformly on \(\ComplexNumbers\).  It therefore defines an even entire function.  Shifting
 the index gives the exact refinement law
 \begin{equation}
- \PhiF(2z)=\sinc(2\pi z)\PhiF(z),
+ \PhiF(2z)=\SincRad(2\pi z)\PhiF(z),
  \qquad
- \PhiF(z)=\sinc(\pi z)\PhiF(z/2).
+ \PhiF(z)=\SincRad(\pi z)\PhiF(z/2).
  \label{eq:Phi-scaling}
 \end{equation}
 Repeated use of the first identity yields
 \begin{equation}
  \PhiF(2^k y)=\PhiF(y)
- \prod_{j=1}^{k}\sinc(\pi2^j y).
+ \prod_{j=1}^{k}\SincRad(\pi2^j y).
  \label{eq:Phi-ray-product}
 \end{equation}
 This elementary formula is the bridge from the Fourier transform to the
@@ -295,12 +285,12 @@ doubling map.
 Define the tail product
 \begin{equation}
  H(z)=\prod_{r=1}^{\infty}
- \sinc\!\left(\frac{\pi z}{2^r}\right).
+ \SincRad\!\left(\frac{\pi z}{2^r}\right).
  \label{eq:H-definition}
 \end{equation}
 Then
 \begin{equation}
- \PhiF(z)=\sinc(\pi z)H(z).
+ \PhiF(z)=\SincRad(\pi z)H(z).
  \label{eq:Phi-H}
 \end{equation}
 The function \(H\) is entire.  It is positive on \([0,2)\), and
@@ -324,18 +314,18 @@ the locally uniformly convergent product gives
 \begin{equation}
  \PhiF(z)=
  \prod_{m=1}^{\infty}
- \left(1-\frac{z^2}{m^2}\right)^{1+\vtwo(m)},
+ \left(1-\frac{z^2}{m^2}\right)^{1+\TwoAdicValuation(m)},
  \label{eq:canonical-product}
 \end{equation}
-where \(\vtwo(m)\) is the exponent of \(2\) in \(m\).  Indeed, a fixed
+where \(\TwoAdicValuation(m)\) is the exponent of \(2\) in \(m\).  Indeed, a fixed
 integer \(m\) occurs once for every \(h\) with \(2^h\mid m\), hence with
-multiplicity \(1+\vtwo(m)\).  Formula \eqref{eq:canonical-product} appears in
+multiplicity \(1+\TwoAdicValuation(m)\).  Formula \eqref{eq:canonical-product} appears in
 Arias de Reyna's treatment \cite{arias2017}.
 
 Consequently, the real zeros are precisely the nonzero integers, and the zero
 at \(m\ne0\) has multiplicity
 \begin{equation}
- \operatorname{ord}_{m}\PhiF=1+\vtwo(|m|).
+ \operatorname{ord}_{m}\PhiF=1+\TwoAdicValuation(|m|).
  \label{eq:zero-multiplicity}
 \end{equation}
 The multiplicities are the first indication that powers of two are exceptional.
@@ -366,18 +356,18 @@ gives
 \begin{equation}
  \frac{\PhiF'(x)}{\PhiF(x)}
  =-2x\sum_{m=1}^{\infty}
- \frac{1+\vtwo(m)}{m^2-x^2}.
+ \frac{1+\TwoAdicValuation(m)}{m^2-x^2}.
  \label{eq:logderivative}
 \end{equation}
 Put
 \[
  S(x)=\sum_{m=1}^{\infty}
- \frac{1+\vtwo(m)}{m^2-x^2}.
+ \frac{1+\TwoAdicValuation(m)}{m^2-x^2}.
 \]
 On \((n,n+1)\), termwise differentiation gives
 \[
  S'(x)=2x\sum_{m=1}^{\infty}
- \frac{1+\vtwo(m)}{(m^2-x^2)^2}>0.
+ \frac{1+\TwoAdicValuation(m)}{(m^2-x^2)^2}>0.
 \]
 The term \(m=n\) forces \(S(x)\to-\infty\) as \(x\downarrow n\), while
 the term \(m=n+1\) forces \(S(x)\to+\infty\) as \(x\uparrow n+1\).
@@ -416,17 +406,17 @@ As \(x\to+\infty\),
 
 \begin{proof}
 Let \(2^k\le x<2^{k+1}\).  For \(0\le h\le k\), use
-\(|\sin u|\le1\), while for \(h>k\) use \(|\sinc u|\le1\).  Then
+\(|\sin u|\le1\), while for \(h>k\) use \(|\SincRad u|\le1\).  Then
 \begin{equation}
  |\PhiF(x)|
  \le \prod_{h=0}^{k}\frac{2^h}{\pi x}
  =\frac{2^{k(k+1)/2}}{(\pi x)^{k+1}}.
  \label{eq:coarse-upper}
 \end{equation}
-Because \(k=(\log x)/\lambda+\bigO(1)\), taking logarithms gives
+Because \(k=(\log x)/\lambda+\BigO(1)\), taking logarithms gives
 \[
  \log|\PhiF(x)|
- \le-\frac{(\log x)^2}{2\lambda}+\bigO(\log x),
+ \le-\frac{(\log x)^2}{2\lambda}+\BigO(\log x),
 \]
 which proves the upper bound for the limsup.
 
@@ -440,7 +430,7 @@ For the reverse inequality, take \(x_k=2^k/3\).  Iterating
  2^{-k(k+1)/2}.
  \label{eq:special-ray-one-third}
 \end{equation}
-Since \(\log(2^k/3)=k\lambda+\bigO(1)\), this sequence attains the
+Since \(\log(2^k/3)=k\lambda+\BigO(1)\), this sequence attains the
 coefficient \(-1/(2\lambda)\).  Finally, \(\PhiF(n)=0\) for every positive
 integer \(n\), so the liminf is \(-\infty\).
 \end{proof}
@@ -448,9 +438,9 @@ integer \(n\), so the liminf is \(-\infty\).
 \begin{corollary}[Between polynomial and stretched-exponential decay]
 \label{cor:decay-class}
 The function \(\PhiF\) is rapidly decreasing: for every \(N>0\),
-\(|\PhiF(x)|=\bigO_N(x^{-N})\).  On the other hand, for every
+\(|\PhiF(x)|=\BigO_N(x^{-N})\).  On the other hand, for every
 \(\delta>0\), it is not true that
-\(|\PhiF(x)|=\bigO(\e^{-x^\delta})\) along all sufficiently large real
+\(|\PhiF(x)|=\BigO(\EulerE^{-x^\delta})\) along all sufficiently large real
 \(x\); the sequence \eqref{eq:special-ray-one-third} is much larger than any
 such stretched exponential.
 \end{corollary}
@@ -503,14 +493,14 @@ It is exactly the modulus of a Thue--Morse polynomial, up to the factor
 \(2^{-n}\).  Indeed, if \(s_2(m)\) is the sum of the binary digits of \(m\),
 then
 \begin{equation}
- \prod_{j=0}^{n-1}(1-\e^{2\pi i2^j t})
- =\sum_{m=0}^{2^n-1}(-1)^{s_2(m)}\e^{2\pi i m t},
+ \prod_{j=0}^{n-1}(1-\EulerE^{2\pi i2^j t})
+ =\sum_{m=0}^{2^n-1}(-1)^{s_2(m)}\EulerE^{2\pi i m t},
  \label{eq:TM-polynomial}
 \end{equation}
 and therefore
 \begin{equation}
  2^nQ_n(t)=
- \left|\sum_{m=0}^{2^n-1}(-1)^{s_2(m)}\e^{2\pi i m t}\right|.
+ \left|\sum_{m=0}^{2^n-1}(-1)^{s_2(m)}\EulerE^{2\pi i m t}\right|.
  \label{eq:Q-TM-modulus}
 \end{equation}
 The corresponding uniform exponent is the classical Gelfond exponent.  Its
@@ -537,7 +527,7 @@ exists.  Then, with \(x_k=2^k y\),
    \frac{\alpha(\theta)}{\lambda}
    -\frac12-\frac{\log\pi}{\lambda}
   \right)\log x_k
- +\smallo(\log x_k).
+ +\LittleO(\log x_k).
  \label{eq:general-ray-asymptotic}
 \end{equation}
 \end{theorem}
@@ -546,14 +536,14 @@ exists.  Then, with \(x_k=2^k y\),
 Insert
 \(
  \sum_{j=1}^{k}\log|\sin(\pi2^j\theta)|
- =k\alpha(\theta)+\smallo(k)
+ =k\alpha(\theta)+\LittleO(k)
 \)
 into \eqref{eq:ray-log-exact}.  This gives
 \[
  \log|\PhiF(2^k y)|
  =-\frac{\lambda}{2}k^2
  +k\left(\alpha(\theta)-\frac\lambda2-\log\pi-\log y\right)
- +\smallo(k).
+ +\LittleO(k).
 \]
 Substitute \(k=(\log x_k-\log y)/\lambda\).  The two terms containing
 \((\log y)\log x_k\) cancel, leaving \eqref{eq:general-ray-asymptotic}.
@@ -569,7 +559,7 @@ remaining dynamical datum.
 The potential \(\varphi\) in \eqref{eq:potential} belongs to \(L^1([0,1])\),
 and
 \begin{equation}
- \int_0^1\log|\sin\pi t|\dd t=-\log2=-\lambda.
+ \int_0^1\log|\sin\pi t|\Differential t=-\log2=-\lambda.
  \label{eq:log-sine-integral}
 \end{equation}
 The doubling map is ergodic for Lebesgue measure, so Birkhoff's theorem applies.
@@ -581,7 +571,7 @@ For Lebesgue-almost every \(y\in(1,2)\), as \(k\to\infty\),
  \log|\PhiF(2^k y)|
  =-\frac{\lambda}{2}k^2
  -k\left(\frac{3\lambda}{2}+\log(\pi y)\right)
- +\smallo(k).
+ +\LittleO(k).
  \label{eq:typical-k}
 \end{equation}
 Equivalently, for \(x_k=2^k y\),
@@ -589,7 +579,7 @@ Equivalently, for \(x_k=2^k y\),
  \log|\PhiF(x_k)|
  =-\frac{(\log x_k)^2}{2\lambda}
  -\left(\frac32+\frac{\log\pi}{\lambda}\right)\log x_k
- +\smallo(\log x_k).
+ +\LittleO(\log x_k).
  \label{eq:typical-x}
 \end{equation}
 The numerical value of the linear exponent is
@@ -613,7 +603,7 @@ fully explicit proof.
 
 \begin{theorem}[Uniform sine-product bound]
 \label{thm:gelfond-bound}
-For every \(t\in\R\) and every integer \(n\ge1\),
+For every \(t\in\RealNumbers\) and every integer \(n\ge1\),
 \begin{equation}
  Q_n(t)
  \le\sqrt{\frac53}\left(\frac{\sqrt3}{2}\right)^n.
@@ -626,7 +616,7 @@ The exponential rate is sharp: at \(t=1/3\) or \(2/3\),
 \end{equation}
 Consequently,
 \begin{equation}
- \sup_{t\in\R}\limsup_{n\to\infty}\frac1n\log Q_n(t)
+ \sup_{t\in\RealNumbers}\limsup_{n\to\infty}\frac1n\log Q_n(t)
  =\beta.
  \label{eq:max-alpha-beta}
 \end{equation}
@@ -797,7 +787,7 @@ The small block has the uniform factorization
  =(\pi s)^r2^{-r(r+1)/2}H_r(s),
  \qquad
  H_r(s)=\prod_{h=1}^{r}
- \sinc\!\left(\frac{\pi s}{2^h}\right).
+ \SincRad\!\left(\frac{\pi s}{2^h}\right).
  \label{eq:small-block-factorization}
 \end{equation}
 On the compact interval \(I\), the quantities \(H_r(s)\) are bounded above
@@ -806,14 +796,14 @@ and below by positive absolute constants, uniformly in \(r\).  Hence
  \log P_r(s)
  =-\frac{\lambda}{2}r^2
  +r\left(\log(\pi s)-\frac\lambda2\right)
- +\bigO(1)
+ +\BigO(1)
  \label{eq:small-block-log}
 \end{equation}
 uniformly for \(s\in I\).
 
 The tail estimate from \cref{thm:gelfond-bound} gives
 \begin{equation}
- Q_m(s)\le C_G\e^{m\beta},
+ Q_m(s)\le C_G\EulerE^{m\beta},
  \qquad C_G=\sqrt{\frac53}.
  \label{eq:tail-upper}
 \end{equation}
@@ -851,11 +841,11 @@ the preimages of \(2/3\), choose \(s_q\in I\) satisfying
 For \(0\le j<q\), the point \(T^j(s_q)\) is a nonintegral rational whose
 reduced denominator divides \(3\cdot2^{q-j}\).  Therefore
 \[
- \dist(T^j(s_q),\Z)\ge\frac{1}{3\cdot2^{q-j}}.
+ \dist(T^j(s_q),\IntegerNumbers)\ge\frac{1}{3\cdot2^{q-j}}.
 \]
 The elementary inequality
 \(
- |\sin\pi t|\ge2\dist(t,\Z)
+ |\sin\pi t|\ge2\dist(t,\IntegerNumbers)
 \)
 now gives
 \[
@@ -864,7 +854,7 @@ now gives
  =\left(\frac23\right)^q2^{-q(q+1)/2}.
 \]
 After time \(q\), the orbit alternates between \(1/3\) and \(2/3\), so every
-remaining factor equals \(\sqrt3/2=\e^\beta\).  Taking logarithms and
+remaining factor equals \(\sqrt3/2=\EulerE^\beta\).  Taking logarithms and
 absorbing the linear terms into \(Cq^2\) proves
 \eqref{eq:preimage-tail-lower}.
 \end{proof}
@@ -877,7 +867,7 @@ The quadratic loss in \(q\) is more than sufficient: later we choose
 
 Combining \eqref{eq:small-block-log} with the tail rate \(\beta\), define
 \begin{equation}
- \mathcal F_n(r,s)=
+ \DecayOptimizationObjective{n}(r,s)=
  -\frac{\lambda}{2}r^2
  +r\left(\log(\pi s)-\frac\lambda2-\beta\right)
  -n\log(1+s2^{-r}),
@@ -885,15 +875,15 @@ Combining \eqref{eq:small-block-log} with the tail rate \(\beta\), define
 \end{equation}
 for integers \(r\ge0\) and \(s\in I\).
 
-\begin{lemma}[Reduction to \(\mathcal F_n\)]
+\begin{lemma}[Reduction to \(\DecayOptimizationObjective{n}\)]
 \label{lem:An-Fn-reduction}
 As \(n\to\infty\),
 \begin{equation}
  \log A_n
  =n\beta+
- \sup_{\substack{r\in\Z_{\ge0}\\s\in I}}
- \mathcal F_n(r,s)
- +\bigO\!\left((\log\log n)^2\right).
+ \sup_{\substack{r\in\IntegerNumbers_{\ge0}\\s\in I}}
+ \DecayOptimizationObjective{n}(r,s)
+ +\BigO\!\left((\log\log n)^2\right).
  \label{eq:An-Fn-reduction}
 \end{equation}
 \end{lemma}
@@ -902,7 +892,7 @@ As \(n\to\infty\),
 We first record a benchmark.  Let
 \(r_0=\lfloor(\log n)/\lambda\rfloor\), put
 \(\theta_0=2^{-r_0}/3\), and use
-\(Q_{n-r_0}(1/3)=\e^{(n-r_0)\beta}\) in
+\(Q_{n-r_0}(1/3)=\EulerE^{(n-r_0)\beta}\) in
 \eqref{eq:Q-transition-factorization}.  The uniform bounds on \(H\) and
 \(H_{r_0}\) then give
 \begin{equation}
@@ -920,58 +910,58 @@ For the upper bound, first note that \(0\le H(1+\theta)\le1\) on
 which is exponentially smaller than the benchmark \eqref{eq:An-benchmark}.  If
 \(0<\theta<1/2\), use \eqref{eq:transition-coordinates}.  When \(r<n\),
 \eqref{eq:small-block-factorization} and \eqref{eq:tail-upper} give the
-right-hand side of \eqref{eq:An-Fn-reduction}, with an \(\bigO(1)\) error.
+right-hand side of \eqref{eq:An-Fn-reduction}, with an \(\BigO(1)\) error.
 When \(r\ge n\), all \(n\) sine factors are in their small-argument regime,
 and
 \[
  Q_n(\theta)\le(\pi\theta)^n2^{n(n-1)/2}
- \le\exp\!\left(-\frac\lambda2n^2+\bigO(n)\right),
+ \le\exp\!\left(-\frac\lambda2n^2+\BigO(n)\right),
 \]
 again negligible.  This proves the upper bound.
 
 For the lower bound, choose \((r,s_0)\) within \(1\) of the supremum of
-\(\mathcal F_n\).  We first record a quantitative localization.  With
+\(\DecayOptimizationObjective{n}\).  We first record a quantitative localization.  With
 \(r_0=\lfloor(\log n)/\lambda\rfloor\) and \(s=1/3\), one has
-\(s2^{-r_0}=\bigO(n^{-1})\), and therefore
+\(s2^{-r_0}=\BigO(n^{-1})\), and therefore
 \[
- \mathcal F_n(r_0,1/3)\ge-C_1(\log n)^2
+ \DecayOptimizationObjective{n}(r_0,1/3)\ge-C_1(\log n)^2
 \]
 for an absolute constant \(C_1\).  On the other hand, because
 \(\log(\pi s)-\lambda/2-\beta\) is bounded on \(I\),
 \[
- \mathcal F_n(r,s)\le-\frac\lambda2r^2+C_2r.
+ \DecayOptimizationObjective{n}(r,s)\le-\frac\lambda2r^2+C_2r.
 \]
-Comparison with the preceding lower bound forces \(r=\bigO(\log n)\) at every
+Comparison with the preceding lower bound forces \(r=\BigO(\log n)\) at every
 near-maximizer.  Since \(0\le s2^{-r}\le1/2\) and
 \(\log(1+u)\ge u/2\) on this interval, we also have
 \[
- \mathcal F_n(r,s)
+ \DecayOptimizationObjective{n}(r,s)
  \le C_3r-\frac12ns2^{-r}.
 \]
 A second comparison with \(-C_1(\log n)^2\) now gives
 \begin{equation}
- r=\bigO(\log n),
+ r=\BigO(\log n),
  \qquad
- n s_0 2^{-r}=\bigO((\log n)^2).
+ n s_0 2^{-r}=\BigO((\log n)^2).
  \label{eq:Fn-localization-crude}
 \end{equation}
 
 Take
 \[
- q=\left\lceil4\log_2(\log(n+\e^\e))\right\rceil
+ q=\left\lceil4\log_2(\log(n+\EulerE^\EulerE))\right\rceil
 \]
 after increasing it by a fixed constant if necessary.  For all sufficiently large
 \(n\), the localization \eqref{eq:Fn-localization-crude} implies
 \(n-r\ge q\).  Apply \cref{lem:dense-preimages} to obtain \(s_q\) with
-\(|s_q-s_0|\le2^{-q}\).  The derivative of \(\mathcal F_n(r,s)\) with
-respect to \(s\), throughout \(I\), is bounded by \(\bigO((\log n)^2)\) at
+\(|s_q-s_0|\le2^{-q}\).  The derivative of \(\DecayOptimizationObjective{n}(r,s)\) with
+respect to \(s\), throughout \(I\), is bounded by \(\BigO((\log n)^2)\) at
 the localized values in \eqref{eq:Fn-localization-crude}.  Hence
 \[
- \mathcal F_n(r,s_q)=\mathcal F_n(r,s_0)+\bigO(1).
+ \DecayOptimizationObjective{n}(r,s_q)=\DecayOptimizationObjective{n}(r,s_0)+\BigO(1).
 \]
 The factors \(H(1+2^{-r}s_q)\) and \(H_r(s_q)\) are bounded below by positive
 constants.  Finally, \eqref{eq:preimage-tail-lower} supplies the tail with a
-loss \(Cq^2=\bigO((\log\log n)^2)\).  This gives the lower bound in
+loss \(Cq^2=\BigO((\log\log n)^2)\).  This gives the lower bound in
 \eqref{eq:An-Fn-reduction}.
 \end{proof}
 
@@ -982,7 +972,7 @@ The remaining optimization has a useful exact structure.  Put
  C_0=\log\pi-\frac\lambda2-\beta
  =\log\!\left(\pi\sqrt{\frac23}\right),
  \qquad
- c=\lambda\e^{-C_0}
+ c=\lambda\EulerE^{-C_0}
  =\frac{\lambda}{\pi}\sqrt{\frac32}.
  \label{eq:C0-c}
 \end{equation}
@@ -996,26 +986,26 @@ Numerically,
 \label{lem:Lambert-optimization}
 Let \(w_n=W(cn)\), where \(W\) is the principal Lambert function.  Then
 \begin{equation}
- \sup_{\substack{r\in\Z_{\ge0}\\s\in I}}
- \mathcal F_n(r,s)
- =-\frac{w_n^2+2w_n}{2\lambda}+\bigO(1).
+ \sup_{\substack{r\in\IntegerNumbers_{\ge0}\\s\in I}}
+ \DecayOptimizationObjective{n}(r,s)
+ =-\frac{w_n^2+2w_n}{2\lambda}+\BigO(1).
  \label{eq:Lambert-optimization-result}
 \end{equation}
 \end{lemma}
 
 \begin{proof}
 First replace \(-n\log(1+s2^{-r})\) by \(-ns2^{-r}\), and denote the
-resulting function by \(F_n(r,s)\).  At a maximizer of
-\(\mathcal F_n\), the localization argument in
+resulting function by \(\LinearizedDecayObjective{n}(r,s)\).  At a maximizer of
+\(\DecayOptimizationObjective{n}\), the localization argument in
 \eqref{eq:Fn-localization-crude} gives
-\(ns2^{-r}=\bigO((\log n)^2)\).  Therefore
+\(ns2^{-r}=\BigO((\log n)^2)\).  Therefore
 \[
  0\le n\bigl(s2^{-r}-\log(1+s2^{-r})\bigr)
  \le\frac n2s^22^{-2r}
- =\bigO\!\left(\frac{(\log n)^4}{n}\right)=\smallo(1).
+ =\BigO\!\left(\frac{(\log n)^4}{n}\right)=\LittleO(1).
 \]
-The same comparison applies to a maximizer of \(F_n\), so the two suprema
-differ by \(\smallo(1)\).
+The same comparison applies to a maximizer of \(\LinearizedDecayObjective{n}\), so the two suprema
+differ by \(\LittleO(1)\).
 
 Set
 \[
@@ -1031,11 +1021,11 @@ Now put
  z=\lambda r-A.
  \label{eq:z-variable}
 \end{equation}
-Since \(s=\e^{A-C_0}\), a direct calculation gives
+Since \(s=\EulerE^{A-C_0}\), a direct calculation gives
 \begin{equation}
- F_n(r,s)
+ \LinearizedDecayObjective{n}(r,s)
  =-\frac{z^2}{2\lambda}
- -n\e^{-C_0}\e^{-z}
+ -n\EulerE^{-C_0}\EulerE^{-z}
  +\frac{A^2}{2\lambda}.
  \label{eq:F-z-form}
 \end{equation}
@@ -1043,20 +1033,20 @@ For successive integers \(r\), the intervals of possible \(z\) in
 \eqref{eq:z-variable} have length \(\lambda\) and meet end to end.  Thus they
 tile the real line, apart from an irrelevant lower truncation caused by
 \(r\ge0\).  The last term in \eqref{eq:F-z-form} is uniformly bounded.
-Consequently, the supremum differs by \(\bigO(1)\) from the maximum over real
+Consequently, the supremum differs by \(\BigO(1)\) from the maximum over real
 \(z\) of
 \[
- \phi_n(z)=-\frac{z^2}{2\lambda}-n\e^{-C_0}\e^{-z}.
+ \phi_n(z)=-\frac{z^2}{2\lambda}-n\EulerE^{-C_0}\EulerE^{-z}.
 \]
 The critical-point equation is
 \[
- -\frac z\lambda+n\e^{-C_0}\e^{-z}=0,
+ -\frac z\lambda+n\EulerE^{-C_0}\EulerE^{-z}=0,
  \qquad\text{or equivalently}\qquad
- z\e^z=\lambda n\e^{-C_0}=cn.
+ z\EulerE^z=\lambda n\EulerE^{-C_0}=cn.
 \]
 Hence the unique maximizer is \(z=w_n=W(cn)\).  At that point,
 \(
- n\e^{-C_0}\e^{-w_n}=w_n/\lambda,
+ n\EulerE^{-C_0}\EulerE^{-w_n}=w_n/\lambda,
 \)
 so
 \[
@@ -1068,7 +1058,7 @@ This proves \eqref{eq:Lambert-optimization-result}.
 \end{proof}
 
 The tiling argument is the reason the integer transition time \(r\) does not
-create an \(\bigO(\log n)\) rounding error.  The continuous variable \(s\),
+create an \(\BigO(\log n)\) rounding error.  The continuous variable \(s\),
 whose allowed interval has multiplicative width exactly two, compensates for
 the lattice step in \(r\).  The remaining loss in
 \cref{lem:An-Fn-reduction} comes from forcing the tail orbit to be genuinely
@@ -1090,7 +1080,7 @@ where \(c\) is given by \eqref{eq:C0-c}.  Then, as \(k\to\infty\),
  \log M_k=
  -\frac{\lambda}{2}k(k+1)-n\log\pi+n\beta
  -\frac{w_k^2+2w_k}{2\lambda}
- +\bigO\!\left((\log\log k)^2\right).}
+ +\BigO\!\left((\log\log k)^2\right).}
  \label{eq:annulus-main-centered}
 \end{equation}
 Equivalently, with \(a\) from \eqref{eq:a-constant},
@@ -1098,7 +1088,7 @@ Equivalently, with \(a\) from \eqref{eq:a-constant},
  \log M_k=
  -\frac\lambda2k^2-ak
  -\frac{W(c(k+1))^2+2W(c(k+1))}{2\lambda}
- +\bigO\!\left((\log\log k)^2\right).
+ +\BigO\!\left((\log\log k)^2\right).
  \label{eq:annulus-main-compact}
 \end{equation}
 \end{theorem}
@@ -1114,7 +1104,7 @@ The Lambert form is more accurate and more informative than a truncated
 series.  Expanding
 \begin{equation}
  W(cn)=\log n-\log\log n+\log c
- +\bigO\!\left(\frac{\log\log n}{\log n}\right)
+ +\BigO\!\left(\frac{\log\log n}{\log n}\right)
  \label{eq:W-expansion}
 \end{equation}
 gives the following explicit hierarchy.
@@ -1128,7 +1118,7 @@ As \(k\to\infty\),
  -\frac{(\log k)^2}{2\lambda}
  +\frac{\log k\,\log\log k}{\lambda}\\
  &-\frac{1+\log c}{\lambda}\log k
- +\bigO\!\left((\log\log k)^2\right).
+ +\BigO\!\left((\log\log k)^2\right).
 \end{split}
 \label{eq:annulus-expanded-k}
 \end{equation}
@@ -1146,7 +1136,7 @@ Then \(c(k+1)=d(L+\lambda)\), and
  \log\max_{R\le x\le2R}|\PhiF(x)|
  ={}&-\frac{L^2}{2\lambda}-\frac{a}{\lambda}L\\
  &-\frac{W(d(L+\lambda))^2+2W(d(L+\lambda))}{2\lambda}
- +\bigO\!\left((\log\log L)^2\right).
+ +\BigO\!\left((\log\log L)^2\right).
 \end{split}
 \label{eq:annulus-R-Lambert}
 \end{equation}
@@ -1155,7 +1145,7 @@ boundary-layer correction are
 \begin{equation}
  -\frac{(\log\log R)^2}{2\lambda}
  +\frac{\log\log R\,\log\log\log R}{\lambda}
- +\bigO(\log\log R).
+ +\BigO(\log\log R).
  \label{eq:second-lognormal}
 \end{equation}
 This is the decisive correction missed by a normalization containing only a
@@ -1167,7 +1157,7 @@ The proof also explains where the large peak lies.  At the smooth Lambert
 optimum, the variable \(z\) is \(w_n\), and
 \[
  n\theta=n s2^{-r}
- =n\e^{-C_0}\e^{-z}
+ =n\EulerE^{-C_0}\EulerE^{-z}
  =\frac{w_n}{\lambda}.
 \]
 The preimage approximation in \cref{lem:dense-preimages} changes this only by
@@ -1175,8 +1165,8 @@ lower-order factors.  Thus one can construct near-maximizing points with
 \begin{equation}
  \theta\asymp\frac{W(cn)}{n},
  \qquad
- r=\frac{W(cn)}{\lambda}+\bigO(1)
- =\log_2 n-\log_2\log n+\bigO(1).
+ r=\frac{W(cn)}{\lambda}+\BigO(1)
+ =\log_2 n-\log_2\log n+\BigO(1).
  \label{eq:near-max-location}
 \end{equation}
 The frequency therefore has the form
@@ -1209,17 +1199,17 @@ Fix an odd positive integer \(m\), put
 and define the finite product
 \begin{equation}
  \PhiF_k(t)=\prod_{j=0}^{k}
- \sinc\!\left(\frac{\pi t}{2^j}\right).
+ \SincRad\!\left(\frac{\pi t}{2^j}\right).
  \label{eq:Phi-k-finite}
 \end{equation}
 For \(0\le j\le k\), the integer \(N/2^j\) contributes only a sign to the
 sine.  Taking absolute values gives
 \[
  \left|
- \sinc\!\left(\frac{\pi(N+t)}{2^j}\right)
+ \SincRad\!\left(\frac{\pi(N+t)}{2^j}\right)
  \right|
  =\frac{t}{N+t}
- \sinc\!\left(\frac{\pi t}{2^j}\right).
+ \SincRad\!\left(\frac{\pi t}{2^j}\right).
 \]
 The remaining factors are the tail \(H(m+t/2^k)\).  Hence the exact identity
 \begin{equation}
@@ -1233,19 +1223,19 @@ Because \(m\) is odd, \(H(m)\ne0\).
 
 As \(k\to\infty\), uniformly for \(0\le t\le1\),
 \begin{equation}
- \PhiF_k(t)=\PhiF(t)\bigl(1+\bigO(4^{-k})\bigr),
+ \PhiF_k(t)=\PhiF(t)\bigl(1+\BigO(4^{-k})\bigr),
  \qquad
  H\!\left(m+\frac{t}{2^k}\right)
- =H(m)\bigl(1+\bigO(2^{-k})\bigr),
+ =H(m)\bigl(1+\BigO(2^{-k})\bigr),
  \label{eq:uniform-tail-approximations}
 \end{equation}
 The first estimate follows by writing \(\PhiF=\PhiF_k R_k\), where the
 omitted tail \(R_k\) is positive on \([0,1]\) and satisfies
-\(R_k=1+\bigO(4^{-k})\); thus the identity remains valid at \(t=1\), where
+\(R_k=1+\BigO(4^{-k})\); thus the identity remains valid at \(t=1\), where
 both sides vanish.  The second estimate follows from analyticity and
 \(H(m)\ne0\).  Finally,
 \begin{equation}
- \left(1+\frac{t}{N}\right)^{-(k+1)}=1+\smallo(1).
+ \left(1+\frac{t}{N}\right)^{-(k+1)}=1+\LittleO(1).
  \label{eq:N-denominator-uniform}
 \end{equation}
 Thus the peak problem reduces to maximizing \(t^p\PhiF(t)\), where
@@ -1257,7 +1247,7 @@ Thus the peak problem reduces to maximizing \(t^p\PhiF(t)\), where
 \label{lem:boundary-maximum}
 Let \(f\) be continuous on \([0,1]\), positive on \([0,1)\), and suppose
 \begin{equation}
- f(t)=h(1-t)+\bigO((1-t)^2)
+ f(t)=h(1-t)+\BigO((1-t)^2)
  \qquad(t\uparrow1),
  \label{eq:linear-zero-assumption}
 \end{equation}
@@ -1267,7 +1257,7 @@ with \(h>0\).  If
 \]
 then
 \begin{equation}
- J_p\sim\frac{h}{\e p}.
+ J_p\sim\frac{h}{\EulerE p}.
  \label{eq:boundary-max-value}
 \end{equation}
 Moreover, if \(t_p\) is any maximizing point, then
@@ -1282,19 +1272,19 @@ Evaluation at \(t=1-1/p\), together with
 \eqref{eq:linear-zero-assumption}, gives
 \begin{equation}
  J_p\ge \left(1-\frac1p\right)^p
- \left(\frac hp+\bigO(p^{-2})\right)
- =\frac{h+\smallo(1)}{\e p}.
+ \left(\frac hp+\BigO(p^{-2})\right)
+ =\frac{h+\LittleO(1)}{\EulerE p}.
  \label{eq:boundary-lower-benchmark}
 \end{equation}
 For each fixed \(\varepsilon>0\), the part \(0\le t\le1-\varepsilon\)
 contributes at most
-\((1-\varepsilon)^p\|f\|_\infty=\smallo(p^{-1})\).  Hence every maximizing
+\((1-\varepsilon)^p\|f\|_\infty=\LittleO(p^{-1})\).  Hence every maximizing
 point \(t_p\) tends to \(1\).
 
 Put \(s=p(1-t)\).  Uniformly for \(s\) in a fixed compact subset of
 \([0,\infty)\),
 \begin{equation}
- p\,t^pf(t)\longrightarrow hs\e^{-s}.
+ p\,t^pf(t)\longrightarrow hs\EulerE^{-s}.
  \label{eq:boundary-local-limit}
 \end{equation}
 It remains only to prevent the maximizing scaled variable
@@ -1303,25 +1293,25 @@ to \(1\), \eqref{eq:linear-zero-assumption} gives
 \(f(t)\le C(1-t)\), while
 \(t^p\le\exp(-p(1-t))\).  Therefore
 \begin{equation}
- p\,t^pf(t)\le C s\e^{-s}.
+ p\,t^pf(t)\le C s\EulerE^{-s}.
  \label{eq:boundary-tail-control}
 \end{equation}
 The right-hand side tends to zero both as \(s\downarrow0\) and as
 \(s\to\infty\), whereas \eqref{eq:boundary-lower-benchmark} supplies a
 positive limiting benchmark.  Thus \(s_p\) remains in a fixed compact
 subset of \((0,\infty)\).  Every subsequential limit of \(s_p\) must, by
-\eqref{eq:boundary-local-limit}, maximize \(hs\e^{-s}\).  This maximum is
+\eqref{eq:boundary-local-limit}, maximize \(hs\EulerE^{-s}\).  This maximum is
 unique and occurs at \(s=1\).  Hence \(s_p\to1\), and the maximum value is
-asymptotic to \(h/(\e p)\).
+asymptotic to \(h/(\EulerE p)\).
 \end{proof}
 
 For \(f=\PhiF\), formula \eqref{eq:Phi-H} gives
 \begin{equation}
- \PhiF(t)=h(1-t)+\bigO((1-t)^2),
+ \PhiF(t)=h(1-t)+\BigO((1-t)^2),
  \qquad h=H(1),
  \label{eq:Phi-linear-at-one}
 \end{equation}
-because \((\sinc(\pi t))'|_{t=1}=-1\).
+because \((\SincRad(\pi t))'|_{t=1}=-1\).
 
 \begin{theorem}[Peaks following \(m2^k\)]
 \label{thm:two-adic-peaks}
@@ -1335,14 +1325,14 @@ and
 \begin{equation}
 \boxed{
  E_{m2^k}\sim
- \frac{H(1)|H(m)|}{\e(k+1)}
+ \frac{H(1)|H(m)|}{\EulerE(k+1)}
  (m2^k)^{-(k+1)}.}
  \label{eq:two-adic-peak-main}
 \end{equation}
 In particular,
 \begin{equation}
  E_{2^k}\sim
- \frac{H(1)^2}{\e(k+1)}2^{-k(k+1)}.
+ \frac{H(1)^2}{\EulerE(k+1)}2^{-k(k+1)}.
  \label{eq:powers-two-peak}
 \end{equation}
 \end{theorem}
@@ -1352,7 +1342,7 @@ Let \(p=k+1\).  From \eqref{eq:near-m2k-factorization}--
 \eqref{eq:N-denominator-uniform}, uniformly in \(t\in[0,1]\),
 \[
  |\PhiF(m2^k+t)|
- =(m2^k)^{-p}|H(m)|\,t^p\PhiF(t)(1+\smallo(1)).
+ =(m2^k)^{-p}|H(m)|\,t^p\PhiF(t)(1+\LittleO(1)).
 \]
 Apply \cref{lem:boundary-maximum} with \(f=\PhiF\) and
 \eqref{eq:Phi-linear-at-one}.  The multiplicative error above tends to one
@@ -1368,7 +1358,7 @@ The peak immediately after \(2^k\) is exponentially smaller on the
 log-normal scale than the largest peak in \([2^k,2^{k+1}]\):
 \begin{equation}
  \log\frac{E_{2^k}}{M_k}
- =-\frac\lambda2k^2+\bigO(k).
+ =-\frac\lambda2k^2+\BigO(k).
  \label{eq:peak-spread}
 \end{equation}
 In particular, \(E_{2^k}/M_k\to0\) faster than every exponential in \(k\).
@@ -1377,7 +1367,7 @@ In particular, \(E_{2^k}/M_k\to0\) faster than every exponential in \(k\).
 \begin{proof}
 From \eqref{eq:powers-two-peak},
 \(
- \log E_{2^k}=-\lambda k(k+1)-\log(k+1)+\bigO(1).
+ \log E_{2^k}=-\lambda k(k+1)-\log(k+1)+\BigO(1).
 \)
 Subtract \eqref{eq:annulus-main-compact}.
 \end{proof}
@@ -1412,7 +1402,7 @@ Universal limsup &
 \(\log|\PhiF(x)|\sim_{\limsup}-(\log x)^2/(2\log2)\).\\[0.4em]
 Typical dyadic ray &
 \(\log|\PhiF(x)|=-(\log x)^2/(2\log2)
- -(3/2+\log\pi/\log2)\log x+\smallo(\log x)\).\\[0.4em]
+ -(3/2+\log\pi/\log2)\log x+\LittleO(\log x)\).\\[0.4em]
 Maximizing fixed ray &
 The same quadratic term, with linear coefficient
 \(-a/\log2\), attained by the orbit \(\{1/3,2/3\}\).\\[0.4em]
@@ -1433,7 +1423,7 @@ The draft \cite{proveitDraft} writes, in effect,
  \stackrel{?}{=}
  -\frac{(\log x)^2}{2\lambda}
  -\frac{\log(2\pi)}{\lambda}\log x
- -\frac12\log\log x+\bigO(1).
+ -\frac12\log\log x+\BigO(1).
  \label{eq:draft-proposed}
 \end{equation}
 There are several independent obstructions.
@@ -1474,10 +1464,10 @@ not by itself determine that normalization.
 Indeed, integrating \eqref{eq:annulus-exact} gives
 \begin{equation}
 \begin{split}
- \int_{2^k}^{2^{k+1}}|\PhiF(x)|\dd x
+ \int_{2^k}^{2^{k+1}}|\PhiF(x)|\Differential x
  ={}&2^k\pi^{-n}2^{-k(k+1)/2}\,I_n,\\
  I_n={}&\int_0^1
- H(1+\theta)(1+\theta)^{-n}Q_n(\theta)\dd\theta.
+ H(1+\theta)(1+\theta)^{-n}Q_n(\theta)\Differential\theta.
 \end{split}
 \label{eq:annulus-L1-reduction}
 \end{equation}
@@ -1506,11 +1496,11 @@ For each integer \(j\), \cref{thm:unique-peak} permits a one-dimensional
 maximization of
 \[
  \sum_{h=0}^{H}\log\left|
- \sinc\!\left(\frac{\pi x}{2^h}\right)\right|
+ \SincRad\!\left(\frac{\pi x}{2^h}\right)\right|
 \]
 on \((j,j+1)\).  A tail bound from
 \(
- \log\sinc u=-u^2/6+\bigO(u^4)
+ \log\SincRad u=-u^2/6+\BigO(u^4)
 \)
 controls the truncation.  Taking the largest of these unit-interval peaks
 produces \(M_k\).  The table compares the computed value with the centered
@@ -1569,7 +1559,7 @@ Lambert approximation
 \end{tikzpicture}
 \caption{The centered Lambert formula tracks the annular maximum with a
 small bounded-size residual even at modest values of \(k\).  The theorem only
-claims an \(\bigO((\log\log k)^2)\) remainder.}
+claims an \(\BigO((\log\log k)^2)\) remainder.}
 \label{fig:numerical-comparison}
 \end{figure}
 
@@ -1595,7 +1585,7 @@ amplitude curve.  It has a clean but layered structure.
  \eqref{eq:subaction-identity}; no computer-assisted ergodic optimization is
  needed in this special case.
  \item The largest peak in a dyadic annulus is a boundary-layer phenomenon.
- Its exact asymptotic through an \(\bigO((\log\log k)^2)\) remainder is the
+ Its exact asymptotic through an \(\BigO((\log\log k)^2)\) remainder is the
  Lambert formula \eqref{eq:annulus-main-centered}.
  \item The first correction beyond the main log-normal envelope is itself
  log-normal in \(\log x\), namely quadratic in \(\log\log x\).  A fixed
@@ -1648,12 +1638,12 @@ Lambert \(W\) \cite{corless1996},
 \[
  W(ck)=L_1-L_2+\log c
  +\frac{L_2-\log c}{L_1}
- +\bigO\!\left(\frac{L_2^2}{L_1^2}\right).
+ +\BigO\!\left(\frac{L_2^2}{L_1^2}\right).
 \]
 Inserting only the terms justified above the remainder in
 \cref{thm:annulus-main} gives \eqref{eq:annulus-expanded-k}.  Further formal
 terms can be written, but the present proof's orbit-shadowing error is
-\(\bigO(L_2^2)\), so coefficients at that order are not claimed.
+\(\BigO(L_2^2)\), so coefficients at that order are not claimed.
 
 \section{A compact proof of rapid decrease}
 \label{app:rapid}
