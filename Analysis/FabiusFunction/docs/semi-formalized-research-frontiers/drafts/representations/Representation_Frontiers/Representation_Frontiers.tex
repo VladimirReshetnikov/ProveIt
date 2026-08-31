@@ -64,7 +64,6 @@
 
 \newcommand{\eps}{\varepsilon}
 \newcommand{\PV}{\operatorname{PV}}
-\newcommand{\tr}{\operatorname{tr}}
 \newcommand{\polylog}{\operatorname{Li}}
 \newcommand{\InverseFourierTwoPiOperator}{\operatorname{Fourier}^{-1}_{2\pi}}
 \newcommand{\cO}{\mathcal O}
@@ -104,7 +103,6 @@
 % boundary. ----
 \newcommand{\Probability}{\mathbb P}
 \newcommand{\Spec}{\operatorname{Spec}}
-\newcommand{\ord}{\operatorname{ord}}
 \newcommand{\PhiF}{\Phi}
 \newcommand{\phiF}{\varphi}
 \newcommand{\Bell}{\mathcal B}
@@ -1239,16 +1237,16 @@ The operator \(\cK\) is trace class and
 \end{align}
 Furthermore,
 \begin{align}
- \tr(\cK^m)&=\frac{\zeta(2m)}{1-2^{-2m}},                   \label{p1:eq:K-traces}\\
+ \TraceOperator(\cK^m)&=\frac{\zeta(2m)}{1-2^{-2m}},        \label{p1:eq:K-traces}\\
  \frac{\Phi'(z)}{\Phi(z)}
- &=-2z\,\tr\!\left(\cK(I-z^2\cK)^{-1}\right).            \label{p1:eq:K-resolvent-trace}
+ &=-2z\,\TraceOperator\!\left(\cK(I-z^2\cK)^{-1}\right). \label{p1:eq:K-resolvent-trace}
 \end{align}
 \end{theorem}
 
 \begin{proof}
 By \eqref{p1:eq:spectral-zeta},
 \[
- \tr\cK=\sum_{n\ge1}\frac{1+\nu_2(n)}{n^2}
+ \TraceOperator\cK=\sum_{n\ge1}\frac{1+\nu_2(n)}{n^2}
  =\frac{\zeta(2)}{1-2^{-2}}<\infty,
 \]
 so \(\cK\) is trace class.  Its Fredholm determinant is the product over its eigenvalues,
@@ -1267,7 +1265,7 @@ logarithm gives \eqref{p1:eq:K-resolvent-trace}.
 This representation converts several scalar identities into operator identities.  For
 example, the zeta expansion \eqref{p1:eq:logPhi-zeta} is the standard trace expansion
 \[
- \log\det(I-z^2\cK)=-\sum_{m\ge1}\frac{z^{2m}}m\tr(\cK^m).
+ \log\det(I-z^2\cK)=-\sum_{m\ge1}\frac{z^{2m}}m\TraceOperator(\cK^m).
 \]
 It also suggests perturbation theory for generalized exponent sequences: changing the
 multiplicity sequence changes only the diagonal spectral multiplicities.
@@ -2603,7 +2601,7 @@ $a_n$.  Since $D^{-2}$ is trace class,
 \end{equation}
 The associated spectral zeta function is
 \begin{equation}
- \zeta_D(s)=\operatorname{tr}(D^{-s})
+ \zeta_D(s)=\TraceOperator(D^{-s})
  =\frac{\zeta(s)}{1-2^{-s}},\qquad \Re s>1.              \label{p2:eq:spectral-zeta}
 \end{equation}
 The determinant, zero multiplicities, heat trace, and arithmetic Dirichlet series are thus
@@ -7323,7 +7321,7 @@ Euler's product for sine collapses all scales onto the positive integers:
 Indeed, the factor at scale \(h\) vanishes at an integer \(m\) precisely when
 \(2^h\mid m\), so
 \begin{equation}
- \ord_{z=\pm m}\PhiF=1+\TwoAdicValuation(m).
+ \OrderOperator_{z=\pm m}\PhiF=1+\TwoAdicValuation(m).
  \label{p4:eq:zero-multiplicity}
 \end{equation}
 The associated Dirichlet series and exact counting function are
@@ -11790,7 +11788,7 @@ prose as follows.  Put $q=2^{-r}$.
  \Psi_r(z)&=\prod_{m\ge0}\SincPi(q^mz),                    \label{p5:eq:machine-1}\\
  \Phi(z)&=\prod_{a=0}^{r-1}\Psi_r(2^{-a}z),                \label{p5:eq:machine-2}\\
  \log\Psi_r(z)&=-\sum_{m\ge1}\frac{\zeta(2m)}{m(1-q^{2m})}z^{2m}, \label{p5:eq:machine-3}\\
- \ord_{z=n}\Psi_r&=1+\left\lfloor\frac{\nu_2(n)}r\right\rfloor, \label{p5:eq:machine-4}\\
+ \OrderOperator_{z=n}\Psi_r&=1+\left\lfloor\frac{\nu_2(n)}r\right\rfloor, \label{p5:eq:machine-4}\\
  \mathcal Z_r(s)&=\frac{\zeta(s)}{1-2^{-rs}},             \label{p5:eq:machine-5}\\
  g_{r,N}(x)&=\frac{q^{-\binom N2}}{(N-1)!}
  \sum_{k<2^N}\eps_k(x-x_{r,N,k})_+^{N-1},                \label{p5:eq:machine-6}\\
@@ -11930,7 +11928,6 @@ V.~Reshetnikov,
 
 % extra macros for part 3
 \renewcommand{\headrulewidth}{0.3pt}
-\newcommand{\wtPartl}{\operatorname{wt}_2}
 \newcommand{\statusknownPartl}{\textsf{K}}
 \newcommand{\statusderivedPartl}{\textsf{D}}
 \newcommand{\statusnewPartl}{\textsf{N}}
@@ -12191,7 +12188,7 @@ Put
  \qquad
  a_{N,j}=\frac{2^N-1-2j}{2^N},
  \qquad
- \eps_j=(-1)^{\wtPartl(j)}.                                      \label{p6:eq:aNj}
+ \eps_j=(-1)^{\BinaryDigitSum(j)}.                               \label{p6:eq:aNj}
 \end{equation}
 The density \(\rho_N\) of \(X_N\) is
 \begin{equation}
@@ -12840,16 +12837,16 @@ The operator \(\cK\) is trace class and
 \end{align}
 Furthermore,
 \begin{align}
- \tr(\cK^m)&=\frac{\zeta(2m)}{1-2^{-2m}},                   \label{p6:eq:K-traces}\\
+ \TraceOperator(\cK^m)&=\frac{\zeta(2m)}{1-2^{-2m}},        \label{p6:eq:K-traces}\\
  \frac{\Phi'(z)}{\Phi(z)}
- &=-2z\,\tr\!\left(\cK(I-z^2\cK)^{-1}\right).            \label{p6:eq:K-resolvent-trace}
+ &=-2z\,\TraceOperator\!\left(\cK(I-z^2\cK)^{-1}\right). \label{p6:eq:K-resolvent-trace}
 \end{align}
 \end{theorem}
 
 \begin{proof}
 By \eqref{p6:eq:spectral-zeta},
 \[
- \tr\cK=\sum_{n\ge1}\frac{1+\nu_2(n)}{n^2}
+ \TraceOperator\cK=\sum_{n\ge1}\frac{1+\nu_2(n)}{n^2}
  =\frac{\zeta(2)}{1-2^{-2}}<\infty,
 \]
 so \(\cK\) is trace class.  Its Fredholm determinant is the product over its eigenvalues,
@@ -12868,7 +12865,7 @@ logarithm gives \eqref{p6:eq:K-resolvent-trace}.
 This representation converts several scalar identities into operator identities.  For
 example, the zeta expansion \eqref{p6:eq:logPhi-zeta} is the standard trace expansion
 \[
- \log\det(I-z^2\cK)=-\sum_{m\ge1}\frac{z^{2m}}m\tr(\cK^m).
+ \log\det(I-z^2\cK)=-\sum_{m\ge1}\frac{z^{2m}}m\TraceOperator(\cK^m).
 \]
 It also suggests perturbation theory for generalized exponent sequences: changing the
 multiplicity sequence changes only the diagonal spectral multiplicities.
@@ -13163,7 +13160,7 @@ For this section write
 The half-integer sign theorem in the audited corpus gives
 \begin{equation}
  c_k=\eps_kA_k,
- \qquad \eps_k=(-1)^{\wtPartl(k)},
+ \qquad \eps_k=(-1)^{\BinaryDigitSum(k)},
  \qquad A_k>0.                                            \label{p6:eq:ck-sign}
 \end{equation}
 Because \(\rho\in C_c^\infty([-1,1])\), integration by parts shows that
@@ -13820,7 +13817,7 @@ has the simultaneous rational approximation
 
 There is a second orthogonal-polynomial representation of the signs, independent of the
 formal Jacobi system above.  Fix any \(m\) with \(n<2^m\), and put
-\(r=\wtPartl(n)\).  The top-degree Krawtchouk coefficient \cite{p6:Koekoek} gives
+\(r=\BinaryDigitSum(n)\).  The top-degree Krawtchouk coefficient \cite{p6:Koekoek} gives
 \begin{equation}
 \boxed{
  \eps_n=[u^m](1-u)^r(1+u)^{m-r}
@@ -14376,7 +14373,7 @@ precision recorded in \cref{p7:sec:numerics}.
 We use the Rvachev probability density
 \[
  \rho(x):=\RvachevUp(x),\qquad \rho\ge0,\qquad
- \operatorname{supp}\rho=[-1,1],\qquad
+ \SupportOperator\rho=[-1,1],\qquad
  \int_{-1}^{1}\rho(x)\Differential x=1,
 \]
 which is even and \(C^\infty\), with every derivative flat at the endpoints. Its associated
@@ -16069,7 +16066,6 @@ Oliver \& Boyd, 1965.
 
 
 % extra macros for part 5
-\newcommand{\wtPartii}{\operatorname{wt}_2}
 \newcommand{\1}{\mathbf 1}
 \newcommand{\PW}{\operatorname{PW}}
 \newcommand{\Haus}{\mathcal H}
@@ -16420,7 +16416,7 @@ dual statement.
 for a weighted box gives the finite Thue--Morse spline
 \begin{equation}
  F_N(x)=\frac{2^{N(N+1)/2}}{N!}
- \sum_{k=0}^{2^N-1}(-1)^{\wtPartii(k)}
+ \sum_{k=0}^{2^N-1}(-1)^{\BinaryDigitSum(k)}
  \left(x-\frac{k}{2^N}\right)_+^N.                      \label{p8:eq:finite-spline}
 \end{equation}
 Because $0\le X-X_N\le2^{-N}$,
@@ -18363,7 +18359,7 @@ $F$ & $F(x)=\Probability(\sum_{j\ge1}2^{-j}U_j\le x)$ & baseline\\
 $\RvachevUp$ & $\RvachevUp(y)=\mathop{\ast}_{j\ge1}2^{j-1}\1_{[-2^{-j},2^{-j}]}(y)$ & baseline\\
 $\Phi$ & $\Phi(t)=\prod_{j\ge1}\SincRad(t/2^j)$ & baseline\\
 $\Phi$ & $\Phi(t)=\prod_{n\ge1}(1-t^2/(4\pi^2n^2))^{1+\TwoAdicValuation(n)}$ & baseline\\
-$F_N$ & $\dfrac{2^{N(N+1)/2}}{N!}\sum_{k<2^N}(-1)^{\wtPartii(k)}(x-k/2^N)_+^N$ & baseline\\
+$F_N$ & $\dfrac{2^{N(N+1)/2}}{N!}\sum_{k<2^N}(-1)^{\BinaryDigitSum(k)}(x-k/2^N)_+^N$ & baseline\\
 $F$ & $x+\sum_{m,k}c_{m,k}\Lambda_{m,k}(x)$ & new\\
 $G$ & $\lim_J\bigl[s_{J,0}y+\sum_k(s_{J,k}-s_{J,k-1})(y-y_{J,k})_+\bigr]$ & new\\
 $\RvachevUp$ & $1-|y|+\sum_{m,k}c_{m,k}\Lambda_{m,k}(1-|y|)$ & new\\

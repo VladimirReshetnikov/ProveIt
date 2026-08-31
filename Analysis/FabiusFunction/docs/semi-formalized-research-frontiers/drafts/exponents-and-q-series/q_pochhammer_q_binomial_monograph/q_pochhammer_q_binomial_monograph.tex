@@ -120,7 +120,6 @@
 \newcommand{\eps}{\varepsilon}
 \newcommand{\F}{\mathbb F}
 \newcommand{\OO}{\mathcal O}
-\newcommand{\ord}{\operatorname{ord}}
 \newcommand{\inv}{\operatorname{inv}}
 \newcommand{\area}{\operatorname{area}}
 \newcommand{\ch}{\operatorname{ch}}
@@ -2281,7 +2280,7 @@ Let $\mathrm{Gr}(k,n)$ be the complex Grassmannian of $k$-planes in $\ComplexNum
 The integral cohomology of $\mathrm{Gr}(k,n)$ is concentrated in even degrees, and its Poincar\'e polynomial is
 \[
  P_{\mathrm{Gr}(k,n)}(t)
- =\sum_{j\ge0}\operatorname{rank}H^{2j}(\mathrm{Gr}(k,n);\IntegerNumbers)t^{2j}
+ =\sum_{j\ge0}\RankOperator H^{2j}(\mathrm{Gr}(k,n);\IntegerNumbers)t^{2j}
  =\GaussianBinomial{n}{k}{t^2}.
 \]
 \end{theorem}
@@ -6148,14 +6147,14 @@ coefficients, shifted factorials, and explicit powers of $q$.  Each of the
 following is a necessary condition for $L=R$.
 \begin{enumerate}
 \item \emph{Degree and order.}  If $L$ and $R$ are polynomials in $q$, then
- $\deg L=\deg R$ and $\ord_{q=0}L=\ord_{q=0}R$.  For a monomial
+ $\deg L=\deg R$ and $\OrderOperator_{q=0}L=\OrderOperator_{q=0}R$.  For a monomial
  $F=q^{\alpha}\prod_i\GaussianBinomial{n_i}{k_i}{q}$ these are
  $\alpha+\sum_ik_i(n_i-k_i)$ and $\alpha$, by
  \Cref{thm:qbinom-structure}(iii).
 \item \emph{Reversal.}  Substituting $q^{-1}$ for $q$ in a true identity
  yields a true identity, and by \Cref{thm:qbinom-structure}(ii),(iv) that
  substitution acts on a monomial $F$ as above by an explicit power:
- $F(q^{-1})=q^{-c_F}F(q)$ with $c_F=\deg F+\ord F$.  If $L$ and $R$ are such
+ $F(q^{-1})=q^{-c_F}F(q)$ with $c_F=\deg F+\OrderOperator F$.  If $L$ and $R$ are such
  monomials with $c_L\ne c_R$, then $L=R$ forces $L=R=0$.
 \item \emph{The value $q=0$.}  After denominators have been cleared, the
  substitution $q=0$ must give a true numerical identity; here
@@ -6189,7 +6188,7 @@ $\GaussianBinomial{n_i}{k_i}{q^{-1}}=q^{-k_i(n_i-k_i)}\GaussianBinomial{n_i}{k_i
  F(q^{-1})=q^{-\alpha}\prod_i q^{-k_i(n_i-k_i)}\GaussianBinomial{n_i}{k_i}{q}
  =q^{-c_F}F(q),
  \qquad
- c_F=2\alpha+\sum_ik_i(n_i-k_i)=\deg F+\ord F,
+ c_F=2\alpha+\sum_ik_i(n_i-k_i)=\deg F+\OrderOperator F,
 \]
 using $F(q)=q^{\alpha}\prod_i\GaussianBinomial{n_i}{k_i}{q}$.  If $L=R$, then applying the
 substitution gives $q^{-c_L}L=q^{-c_R}R=q^{-c_R}L$, so
@@ -6896,7 +6895,7 @@ Moreover, \path{tendstoLocallyUniformly_prefix_sinc_charFun} proves local
 uniform convergence on the real frequency line of the full phase-bearing
 finite-prefix sequence used above, and
 \path{tendstoUniformlyOn_prefix_sinc_charFun} supplies the explicit uniform
-convergence statement on every compact \(K\subset\R\).
+convergence statement on every compact \(K\subset\RealNumbers\).
 Under this monograph's exact-counterpart rule, the labelled theorem remains
 partial: no single declaration packages its complex-$t$ continuation together
 with complex-frequency locally uniform convergence of the full phase-bearing
@@ -8083,7 +8082,7 @@ For $0\le k\le n$,
 \end{equation}
 The integer $\GaussianBinomial{n}{k}{2}$ is odd; consequently $2^{\,k(n-k)}\GaussianBinomial{n}{k}{1/2}$ is an odd integer and
 \begin{equation}\label{eq:halfbase-valuation}
- \ord_2\GaussianBinomial{n}{k}{1/2}=-k(n-k).
+ \TwoAdicValuation\!\left(\GaussianBinomial{n}{k}{1/2}\right)=-k(n-k).
 \end{equation}
 \end{corollary}
 
@@ -8096,7 +8095,7 @@ Comparing \eqref{eq:halfbase-two-reciprocity} with \eqref{eq:halfbase-gaussian} 
 \[
  \GaussianBinomial{n}{k}{2}=\frac{\mathfrak m_n}{\mathfrak m_k\,\mathfrak m_{n-k}},
 \]
-and by \Cref{thm:subspace-count} it counts the $k$-dimensional subspaces of $\F_2^n$.  Thus the half-base Gaussian row is a finite-geometric count divided by an explicit power of two, and the exponent of that power is $k(n-k)$, the dimension of the Grassmannian.  In the same way \eqref{eq:halfbase-factorial} exhibits $(1/2;1/2)_n$ as a power-of-two normalization of a product of Mersenne numbers, with $\ord_2(1/2;1/2)_n=-\binom{n+1}{2}$ because $\mathfrak m_n$ is odd.
+and by \Cref{thm:subspace-count} it counts the $k$-dimensional subspaces of $\F_2^n$.  Thus the half-base Gaussian row is a finite-geometric count divided by an explicit power of two, and the exponent of that power is $k(n-k)$, the dimension of the Grassmannian.  In the same way \eqref{eq:halfbase-factorial} exhibits $(1/2;1/2)_n$ as a power-of-two normalization of a product of Mersenne numbers, with $\TwoAdicValuation\!\left(\QPochhammer{1/2}{1/2}{n}\right)=-\binom{n+1}{2}$ because $\mathfrak m_n$ is odd.
 % ed.: an incoming draft restated reciprocity and the $\F_2$-subspace count in
 % ed.: place; both are cross-referenced here instead.
 \end{remark}
@@ -12090,7 +12089,7 @@ negative contractions, the first two characteristic-function declarations state
 \]
 Here $G_q(z)=\operatorname{geometricReciprocalGamma}(q,z)$.
 The last two declarations assert local uniform convergence of the full
-phase-bearing prefixes on \(\R\) and its uniform-on-every-compact-set
+phase-bearing prefixes on \(\RealNumbers\) and its uniform-on-every-compact-set
 corollary.
 These are exact subclaims of
 \Cref{thm:geometric-uniform-characteristic,thm:qF-spectral}; neither compound
