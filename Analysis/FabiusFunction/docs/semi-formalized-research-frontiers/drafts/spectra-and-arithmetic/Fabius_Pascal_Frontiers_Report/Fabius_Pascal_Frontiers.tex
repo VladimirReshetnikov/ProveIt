@@ -34,6 +34,8 @@
 \fancyhead[L]{\small Pascal--Rvachev frontiers}
 \fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
 \renewcommand{\headrulewidth}{0.4pt}
 \titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
 \titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
@@ -57,28 +59,10 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\Li}{\operatorname{Li}}
-\newcommand{\vtwo}{\nu_2}
 \newcommand{\TV}{d_{\mathrm{TV}}}
 \newcommand{\Po}{\operatorname{Po}}
 \newcommand{\Normal}{\mathcal N}
 \newcommand{\LP}{\mathcal{LP}}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\e}{\mathrm e}
-\newcommand{\dd}{\,\mathrm d}
 \newcommand{\one}{\mathbf 1}
 \newcommand{\ZetaR}{\mathcal Z}
 \newcommand{\Ar}{\mathcal A}
@@ -133,28 +117,28 @@ literature.
 
 The first main result closes a problem explicitly left open in the repository:
 for every rank $r\geq1$, the generalized Thue--Morse spectral-sign generating
-function $G_r$ is nonrational, hypertranscendental over $\C(z)$, and has the
+function $G_r$ is nonrational, hypertranscendental over $\ComplexNumbers(z)$, and has the
 unit circle as a natural boundary.  The proof combines a new nonperiodicity
 argument for strongly block-multiplicative digit characters with the
 Adamczewski--Dreyfus--Hardouin Mahler dichotomy.  A parallel construction for
 the valuation-multiplicity Lambert series
 \[
- L_r(q)=\sum_{n\geq1}\binom{\vtwo(n)+1}{r}q^n
+ L_r(q)=\sum_{n\geq1}\binom{\TwoAdicValuation(n)+1}{r}q^n
 \]
 yields an explicit order-$(r+1)$ homogeneous Mahler equation, a dense set of
 radial singularities at dyadic roots of unity, hypertranscendence, and
 non-$D$-finiteness.  A bivariate master Lambert germ packages all ranks.
 
 The analytic zero divisor then gives a sharp higher-rank Strang--Fix theorem:
-on the lattice $Q^{-1}\Z$, the density $f_r$ integrates every polynomial of
-degree strictly below $\binom{\vtwo(Q)+1}{r}$ by an exact finite periodized
+on the lattice $Q^{-1}\IntegerNumbers$, the density $f_r$ integrates every polynomial of
+degree strictly below $\binom{\TwoAdicValuation(Q)+1}{r}$ by an exact finite periodized
 comb, and the threshold is optimal.  Appell reconstruction converts this into
 exact polynomial reproduction, with immediate Legendre and Bernoulli
 corollaries.
 
 Wick rotation of the canonical product produces
 \[
- \Ar_r(w)=\Phi_r(\ii\sqrt w)
+ \Ar_r(w)=\Phi_r(\ImaginaryUnit\sqrt w)
  =\prod_{n\geq1}\left(1+\frac{w}{n^2}\right)^{\mu_r(n)}.
 \]
 For every rank this is a type-I Laguerre--P\'olya function of order $1/2$;
@@ -223,10 +207,10 @@ particular:
 
 \begin{itemize}
 \item the canonical product for the classical Rvachev transform, its integer
-zero multiplicities $1+\vtwo(n)$, and exact zero jets;
+zero multiplicities $1+\TwoAdicValuation(n)$, and exact zero jets;
 \item the Pascal--Rvachev hierarchy, its random-series model, support,
 refinement law, multiplicity formula
-$\mu_r(n)=\binom{\vtwo(n)+1}{r}$, spectral zeta function, digital sign law,
+$\mu_r(n)=\binom{\TwoAdicValuation(n)+1}{r}$, spectral zeta function, digital sign law,
 and Mahler equation \cite{repo-spectra};
 \item rank-one sharp dyadic-comb moment exactness and Appell reproduction
 \cite{repo-comb,repo-compilations};
@@ -250,7 +234,7 @@ Topic & Status & Contribution in this report\\
 Spectral signs $G_r$ & \New & Proof of non-eventual-periodicity, nonrationality, hypertranscendence, and the unit-circle natural boundary; this resolves Problem D(iv) stated in the spectra volume.\\
 Multiplicity Lambert series $L_r$ & \New & Divisibility-layer formula, rank recurrence, order-$(r+1)$ Mahler equation, dense radial singularities, natural boundary, hypertranscendence, and non-$D$-finiteness.\\
 Rank master Lambert germ & \New & The bivariate identity $\mathscr L(u,q)=\sum_h(1+u)^h q^{2^h}/(1-q^{2^h})$ and its first-order Mahler equation.\\
-Higher-rank comb exactness & \New & Sharp degree $\binom{\vtwo(Q)+1}{r}-1$ for polynomial cubature and Appell reconstruction on $Q^{-1}\Z$.\\
+Higher-rank comb exactness & \New & Sharp degree $\binom{\TwoAdicValuation(Q)+1}{r}-1$ for polynomial cubature and Appell reconstruction on $Q^{-1}\IntegerNumbers$.\\
 Laguerre--P\'olya/PF hierarchy & \New & Lift of the rank-one product theorem to every Pascal rank, including all Toeplitz-minor and moment inequalities.\\
 Poisson-binomial spectral count & \New & Exact PGF, moment-probability duality, factorial cumulants, rank branching, saddle tilting, Poisson/mod-Poisson/Gaussian phase diagram.\\
 Generalized-gamma dual & \New & All-rank Thorin measure, rank branching, $L^2$ concentration, and a standardized rank CLT.\\
@@ -273,15 +257,15 @@ not used as a substitute for any analytic proof.
 
 Throughout this report
 \[
- \sinc z:=\frac{\sin(\pi z)}{\pi z},\qquad \sinc0=1.
+ \SincPi z:=\frac{\sin(\pi z)}{\pi z},\qquad \SincPi0=1.
 \]
 The normalized convention puts the zeros at the nonzero integers.
 
 \begin{definition}[Pascal--Rvachev products]
-Set $\Phi_0(z)=\sinc(2z)$.  For $r\geq1$, let
+Set $\Phi_0(z)=\SincPi(2z)$.  For $r\geq1$, let
 \begin{equation}\label{eq:Phi-r}
  a_{r,h}:=\binom{h}{r-1},\qquad
- \Phi_r(z):=\prod_{h\geq0}\sinc\!\left(\frac{z}{2^h}\right)^{a_{r,h}}.
+ \Phi_r(z):=\prod_{h\geq0}\SincPi\!\left(\frac{z}{2^h}\right)^{a_{r,h}}.
 \end{equation}
 The convention $\binom hk=0$ for $h<k$ is always in force.
 \end{definition}
@@ -295,7 +279,7 @@ model
 \end{equation}
 with all summands independent, so that
 \begin{equation}\label{eq:characteristic}
- \E\e^{-2\pi\ii zX_r}=\Phi_r(z),\qquad \supp X_r=[-1,1].
+ \Expectation\EulerE^{-2\pi\ImaginaryUnit zX_r}=\Phi_r(z),\qquad \SupportOperator X_r=[-1,1].
 \end{equation}
 Write $f_r$ for the density.  The case $r=1$ is the classical Rvachev
 up-density in the Fourier normalization used here; its translate/integral is
@@ -313,8 +297,8 @@ where the prime denotes an independent copy.
 
 For $n\neq0$, the zero order at $n$ is
 \begin{equation}\label{eq:mu-r}
- \mu_r(n)=\sum_{h=0}^{\vtwo(|n|)}\binom h{r-1}
- =\binom{\vtwo(|n|)+1}{r}.
+ \mu_r(n)=\sum_{h=0}^{\TwoAdicValuation(|n|)}\binom h{r-1}
+ =\binom{\TwoAdicValuation(|n|)+1}{r}.
 \end{equation}
 Consequently
 \begin{equation}\label{eq:canonical}
@@ -342,7 +326,7 @@ Also, the first positive zero is $2^{r-1}$, and
 
 \subsection{Moments, cumulants, and Bell polynomials}
 
-Let $m_{r,n}=\E X_r^n$.  Symmetry kills odd moments.  Taking logarithms in
+Let $m_{r,n}=\Expectation X_r^n$.  Symmetry kills odd moments.  Taking logarithms in
 \eqref{eq:canonical} gives, for $|z|<2^{r-1}$,
 \begin{equation}\label{eq:log-Phi}
  \log\Phi_r(z)=-\sum_{k\geq1}\frac{\ZetaR_r(2k)}{k}z^{2k}.
@@ -357,7 +341,7 @@ because it will connect the analytic and probabilistic results below.
 
 Define
 \begin{equation}\label{eq:A-def-early}
- \Ar_r(w):=\Phi_r(\ii\sqrt w)=\sum_{n\geq0}C_{r,n}w^n.
+ \Ar_r(w):=\Phi_r(\ImaginaryUnit\sqrt w)=\sum_{n\geq0}C_{r,n}w^n.
 \end{equation}
 Then
 \begin{equation}\label{eq:Bell-coeff}
@@ -483,14 +467,14 @@ We use the following deep dichotomy of Adamczewski, Dreyfus, and Hardouin
 
 \begin{theorem}[Mahler differential dichotomy, cited form]\label{thm:ADH}
 Let $p\geq2$, and let a possibly ramified Laurent series solve a nontrivial
-linear Mahler equation over $\C(z)$ involving $f(z),f(z^p),\ldots,f(z^{p^m})$.
+linear Mahler equation over $\ComplexNumbers(z)$ involving $f(z),f(z^p),\ldots,f(z^{p^m})$.
 Then either the solution belongs to the ramified rational field
-$\bigcup_{d\geq1}\C(z^{1/d})$, or it is hypertranscendental over $\C(z)$.
+$\bigcup_{d\geq1}\ComplexNumbers(z^{1/d})$, or it is hypertranscendental over $\ComplexNumbers(z)$.
 \end{theorem}
 
 A power series in integral powers that lies in a ramified rational field is in
 fact rational in $z$: invariance under all deck transformations of a common
-ramification forces the rational function to descend to $\C(z)$.
+ramification forces the rational function to descend to $\ComplexNumbers(z)$.
 
 \begin{lemma}[Finite-alphabet rational series]\label{lem:finite-rational}
 A rational power series whose coefficients lie in a finite set is eventually
@@ -509,7 +493,7 @@ coefficient sequence is eventually periodic.
 For every rank $r\geq1$:
 \begin{enumerate}[label=(\roman*)]
 \item $G_r(z)$ is not rational;
-\item $G_r(z)$ is hypertranscendental over $\C(z)$;
+\item $G_r(z)$ is hypertranscendental over $\ComplexNumbers(z)$;
 \item the unit circle is a natural boundary of $G_r$.
 \end{enumerate}
 Thus the natural-boundary part of Problem D in the spectra-and-arithmetic
@@ -538,7 +522,7 @@ algebraic point $\alpha\in K$ outside a finite exceptional set, the numbers
 \[
  G_r(\alpha),G_r'(\alpha),\ldots,G_r^{(m)}(\alpha)
 \]
-are algebraically independent over $\overline\Q$.
+are algebraically independent over $\overline\RationalNumbers$.
 \end{corollary}
 
 \begin{proof}
@@ -599,7 +583,7 @@ Consequently,
 \end{lemma}
 
 \begin{proof}
-If $v=\vtwo(n)$, only $h\leq v$ contribute, and the hockey-stick identity
+If $v=\TwoAdicValuation(n)$, only $h\leq v$ contribute, and the hockey-stick identity
 gives
 $\sum_{h=r-1}^{v}\binom h{r-1}=\binom{v+1}{r}$.  Summing
 $\one_{2^h\mid n}q^n$ over $n$ gives $q^{2^h}/(1-q^{2^h})$.
@@ -674,7 +658,7 @@ the circle would continue across some dyadic root, a contradiction.
 \begin{theorem}[Hypertranscendence and nonholonomicity of $L_r$]\label{thm:L-hyper}
 For every $r\geq1$:
 \begin{enumerate}[label=(\roman*)]
-\item $L_r$ is hypertranscendental over $\C(q)$;
+\item $L_r$ is hypertranscendental over $\ComplexNumbers(q)$;
 \item $L_r$ is not $D$-finite;
 \item the coefficient sequence $\mu_r(n)$ is not $P$-recursive.
 \end{enumerate}
@@ -738,7 +722,7 @@ $q$-Pochhammer program.
 Let $Q\geq1$ be an integer lattice parameter; it is denoted $Q$ rather than
 $q$ to avoid conflict with the Lambert variable.  For a polynomial $p$, put
 \begin{equation}\label{eq:comb}
- \mathcal C_{r,Q}[p](x):=\frac{1}{Q}\sum_{k\in\Z}
+ \mathcal C_{r,Q}[p](x):=\frac{1}{Q}\sum_{k\in\IntegerNumbers}
  p\!\left(x-\frac{k}{Q}\right)
  f_r\!\left(x-\frac{k}{Q}\right).
 \end{equation}
@@ -748,18 +732,18 @@ The sum is finite because $f_r$ is supported on $[-1,1]$.
 For $p(t)=t^j$,
 \begin{equation}\label{eq:comb-Fourier}
  \mathcal C_{r,Q}[t^j](x)
- =\sum_{m\in\Z}
- \frac{\Phi_r^{(j)}(Qm)}{(-2\pi\ii)^j}
- \e^{2\pi\ii Qmx}.
+ =\sum_{m\in\IntegerNumbers}
+ \frac{\Phi_r^{(j)}(Qm)}{(-2\pi\ImaginaryUnit)^j}
+ \EulerE^{2\pi\ImaginaryUnit Qmx}.
 \end{equation}
 The constant coefficient is $m_{r,j}$.
 \end{lemma}
 
 \begin{proof}
-Apply Poisson summation to $g_j(t)=t^jf_r(t)$ on the lattice $Q^{-1}\Z$.
+Apply Poisson summation to $g_j(t)=t^jf_r(t)$ on the lattice $Q^{-1}\IntegerNumbers$.
 Our Fourier convention gives
-$\widehat g_j(\xi)=\Phi_r^{(j)}(\xi)/(-2\pi\ii)^j$.
-At $\xi=0$ this is $\int t^jf_r(t)\dd t=m_{r,j}$.
+$\widehat g_j(\xi)=\Phi_r^{(j)}(\xi)/(-2\pi\ImaginaryUnit)^j$.
+At $\xi=0$ this is $\int t^jf_r(t)\Differential t=m_{r,j}$.
 \end{proof}
 
 \subsection{Exact order and sharpness}
@@ -767,13 +751,13 @@ At $\xi=0$ this is $\int t^jf_r(t)\dd t=m_{r,j}$.
 \begin{theorem}[Sharp Pascal comb theorem]\label{thm:sharp-comb}
 Let
 \begin{equation}\label{eq:M-rQ}
- M_r(Q):=\mu_r(Q)=\binom{\vtwo(Q)+1}{r}.
+ M_r(Q):=\mu_r(Q)=\binom{\TwoAdicValuation(Q)+1}{r}.
 \end{equation}
 If $p$ is a polynomial with $\deg p<M_r(Q)$, then for every real $x$,
 \begin{equation}\label{eq:comb-exact}
  \boxed{
- \frac1Q\sum_{k\in\Z}p\!\left(x-\frac{k}{Q}\right)
- f_r\!\left(x-\frac{k}{Q}\right)=\E p(X_r).}
+ \frac1Q\sum_{k\in\IntegerNumbers}p\!\left(x-\frac{k}{Q}\right)
+ f_r\!\left(x-\frac{k}{Q}\right)=\Expectation p(X_r).}
 \end{equation}
 The threshold is sharp.  If $M_r(Q)>0$, the identity fails for
 $p(t)=t^{M_r(Q)}$; if $M_r(Q)=0$, it already fails for constants.
@@ -782,7 +766,7 @@ $p(t)=t^{M_r(Q)}$; if $M_r(Q)=0$, it already fails for constants.
 \begin{proof}
 For $m\neq0$,
 \[
- \mu_r(Qm)=\binom{\vtwo(Q)+\vtwo(m)+1}{r}\geq M_r(Q).
+ \mu_r(Qm)=\binom{\TwoAdicValuation(Q)+\TwoAdicValuation(m)+1}{r}\geq M_r(Q).
 \]
 Hence every derivative $\Phi_r^{(j)}(Qm)$ vanishes for $j<M_r(Q)$.  By
 linearity and \cref{lem:comb-Fourier}, all nonconstant Fourier modes disappear
@@ -819,20 +803,20 @@ $r=4$ & -- & 0 & 4 & 14 & 34 & 69\\
 Here ``--'' means $M_r(2^H)=0$.
 
 \begin{remark}[Relation to the known rank-one theorem]
-At $r=1$, $M_1(Q)=1+\vtwo(Q)$, exactly the sharp rank-one hierarchy already
+At $r=1$, $M_1(Q)=1+\TwoAdicValuation(Q)$, exactly the sharp rank-one hierarchy already
 proved in the dyadic-comb and frontier-compilation volumes.  The new content is
-the Pascal-rank lift and its binomial growth in $\vtwo(Q)$.
+the Pascal-rank lift and its binomial growth in $\TwoAdicValuation(Q)$.
 \end{remark}
 
 \subsection{Appell reconstruction}
 
 Let
 \begin{equation}\label{eq:mgf}
- \Mr_r(z):=\E\e^{zX_r}=\Phi_r\!\left(\frac{\ii z}{2\pi}\right).
+ \Mr_r(z):=\Expectation\EulerE^{zX_r}=\Phi_r\!\left(\frac{\ImaginaryUnit z}{2\pi}\right).
 \end{equation}
 It is even.  Define Appell polynomials $P_{r,n}$ by
 \begin{equation}\label{eq:Appell}
- \frac{\e^{yz}}{\Mr_r(z)}
+ \frac{\EulerE^{yz}}{\Mr_r(z)}
  =\sum_{n\geq0}P_{r,n}(y)\frac{z^n}{n!}.
 \end{equation}
 
@@ -840,7 +824,7 @@ It is even.  Define Appell polynomials $P_{r,n}$ by
 For $0\leq n<M_r(Q)$,
 \begin{equation}\label{eq:Appell-reproduce}
  \boxed{
- \frac1Q\sum_{k\in\Z}P_{r,n}\!\left(\frac{k}{Q}\right)
+ \frac1Q\sum_{k\in\IntegerNumbers}P_{r,n}\!\left(\frac{k}{Q}\right)
  f_r\!\left(x-\frac{k}{Q}\right)=x^n.}
 \end{equation}
 \end{theorem}
@@ -851,12 +835,12 @@ Apply \cref{thm:sharp-comb} to the polynomial in the variable $t$
  p_x(t)=P_{r,n}(x-t).
 \]
 Its degree is $n<M_r(Q)$, so the left side of \eqref{eq:Appell-reproduce}
-is $\E P_{r,n}(x-X_r)$.  Taking the exponential generating function and using
+is $\Expectation P_{r,n}(x-X_r)$.  Taking the exponential generating function and using
 symmetry,
 \[
- \sum_{n\geq0}\E P_{r,n}(x-X_r)\frac{z^n}{n!}
- =\frac{\e^{xz}\E\e^{-zX_r}}{\Mr_r(z)}
- =\e^{xz}.
+ \sum_{n\geq0}\Expectation P_{r,n}(x-X_r)\frac{z^n}{n!}
+ =\frac{\EulerE^{xz}\Expectation\EulerE^{-zX_r}}{\Mr_r(z)}
+ =\EulerE^{xz}.
 \]
 Coefficient comparison gives $x^n$.
 \end{proof}
@@ -869,7 +853,7 @@ polynomial.
 \begin{corollary}[Exact finite Legendre moments]\label{cor:Legendre-comb}
 If $n<M_r(Q)$, then for every $x$,
 \begin{equation}\label{eq:Legendre-comb}
- \int_{-1}^{1}\mathrm P_n(t)f_r(t)\dd t
+ \int_{-1}^{1}\mathrm P_n(t)f_r(t)\Differential t
  =\frac1Q\sum_{|x-k/Q|\leq1}
  \mathrm P_n\!\left(x-\frac{k}{Q}\right)
  f_r\!\left(x-\frac{k}{Q}\right).
@@ -879,7 +863,7 @@ If $n<M_r(Q)$, then for every $x$,
 \begin{corollary}[Exact finite Bernoulli moments]\label{cor:Bernoulli-comb}
 If $n<M_r(Q)$, then
 \begin{equation}\label{eq:Bernoulli-comb}
- \E B_n(X_r)
+ \Expectation B_n(X_r)
  =\frac1Q\sum_{|x-k/Q|\leq1}
  B_n\!\left(x-\frac{k}{Q}\right)
  f_r\!\left(x-\frac{k}{Q}\right).
@@ -895,7 +879,7 @@ exactness degree is known before any numerical work begins.
 
 The archived program differentiates truncated products at three exact zeros.
 The first nonzero derivative agrees with
-$M_r(Q)=\binom{\vtwo(Q)+1}{r}$:
+$M_r(Q)=\binom{\TwoAdicValuation(Q)+1}{r}$:
 \begin{center}
 \begin{tabular}{@{}rrrr@{}}
 \toprule
@@ -917,13 +901,13 @@ precision.  This table checks the implementation; sharpness in
 
 From \eqref{eq:canonical},
 \begin{equation}\label{eq:A-product}
- \Ar_r(w):=\Phi_r(\ii\sqrt w)
+ \Ar_r(w):=\Phi_r(\ImaginaryUnit\sqrt w)
  =\prod_{n\geq1}\left(1+\frac{w}{n^2}\right)^{\mu_r(n)}
  =\sum_{k\geq0}C_{r,k}w^k.
 \end{equation}
 Since $X_r$ is symmetric,
 \begin{equation}\label{eq:A-mgf}
- \Ar_r(w)=\E\e^{2\pi\sqrt w X_r}=\E\e^{-2\pi\sqrt w X_r}
+ \Ar_r(w)=\Expectation\EulerE^{2\pi\sqrt w X_r}=\Expectation\EulerE^{-2\pi\sqrt w X_r}
  =\sum_{k\geq0}\frac{(2\pi)^{2k}m_{r,2k}}{(2k)!}w^k.
 \end{equation}
 The square root disappears from the Taylor series.
@@ -947,7 +931,7 @@ Laguerre--P\'olya.  The exponent of convergence of the zeros is $1/2$ because
 \]
 converges exactly for $\rho>1/2$.  Thus the order is at least $1/2$.
 On the other hand, $|X_r|\leq1$ and \eqref{eq:A-mgf} give growth
-$\exp(\bigO(\sqrt{|w|}))$, so the order is at most $1/2$.
+$\exp(\BigO(\sqrt{|w|}))$, so the order is at most $1/2$.
 \end{proof}
 
 \begin{theorem}[$PF_\infty$ coefficients and Jensen hyperbolicity]\label{thm:PF-all}
@@ -1023,7 +1007,7 @@ coefficient recursion inside the $PF_\infty$ cone.
 
 \begin{theorem}[Unbounded zero orders obstruct holonomicity]\label{thm:Phi-nonD}
 For every $r\geq1$, neither $\Phi_r(z)$ nor $\Ar_r(w)$ is $D$-finite over
-$\C(z)$.
+$\ComplexNumbers(z)$.
 \end{theorem}
 
 \begin{proof}
@@ -1041,7 +1025,7 @@ singular set, a contradiction.
 
 \begin{conjecture}[Differential transcendence of the sinc hierarchy]\label{conj:Phi-hyper}
 For every $r\geq1$, $\Phi_r$ and $\Ar_r$ are hypertranscendental over
-$\C(z)$.  More strongly, finite sets of distinct ranks should be
+$\ComplexNumbers(z)$.  More strongly, finite sets of distinct ranks should be
 differentially algebraically independent after quotienting by the explicit
 refinement relations.
 \end{conjecture}
@@ -1057,7 +1041,7 @@ than a scalar linear Mahler equation with rational coefficients.
 Fix $r\geq1$ and $\theta>0$.  For every pair $(n,j)$ with
 $1\leq j\leq\mu_r(n)$, let $B_{n,j}$ be independent Bernoulli variables with
 \begin{equation}\label{eq:p-n}
- p_{n,\theta}:=\Prob(B_{n,j}=1)=\frac{\theta}{n^2+\theta}.
+ p_{n,\theta}:=\Probability(B_{n,j}=1)=\frac{\theta}{n^2+\theta}.
 \end{equation}
 Since
 $\sum_{n,j}p_{n,\theta}\leq\theta\ZetaR_r(2)<\infty$, the sum below is finite
@@ -1073,12 +1057,12 @@ almost surely.
 The probability generating function of $N_{r,\theta}$ is
 \begin{equation}\label{eq:PB-pgf}
  \boxed{
- \E z^{N_{r,\theta}}=
+ \Expectation z^{N_{r,\theta}}=
  \frac{\Ar_r(\theta z)}{\Ar_r(\theta)}.}
 \end{equation}
 Consequently,
 \begin{equation}\label{eq:PB-prob}
- \Prob(N_{r,\theta}=k)
+ \Probability(N_{r,\theta}=k)
  =\frac{C_{r,k}\theta^k}{\Ar_r(\theta)}
  =\frac{(2\pi)^{2k}m_{r,2k}\theta^k}
  {(2k)!\Ar_r(\theta)}.
@@ -1099,7 +1083,7 @@ factors with their multiplicities.  Coefficient extraction and
 At $\theta=1$, the normalized even-moment sequence is literally a probability
 mass function:
 \begin{equation}\label{eq:moment-pmf}
- \Prob(N_{r,1}=k)=
+ \Probability(N_{r,1}=k)=
  \frac{(2\pi)^{2k}m_{r,2k}}{(2k)!\Ar_r(1)}.
 \end{equation}
 This is an exact moment--spectrum probability dual, not merely an analogy.
@@ -1114,15 +1098,15 @@ Let
 \end{equation}
 Then
 \begin{align}
- \lambda_{r,\theta}:=\E N_{r,\theta}&=S_{r,1}(\theta),\label{eq:PB-mean}\\
- \Var(N_{r,\theta})&=S_{r,1}(\theta)-S_{r,2}(\theta),\label{eq:PB-var}\\
+ \lambda_{r,\theta}:=\Expectation N_{r,\theta}&=S_{r,1}(\theta),\label{eq:PB-mean}\\
+ \Variance(N_{r,\theta})&=S_{r,1}(\theta)-S_{r,2}(\theta),\label{eq:PB-var}\\
  \kappa_k^{(F)}(N_{r,\theta})
  &=(-1)^{k-1}(k-1)!S_{r,k}(\theta).\label{eq:PB-factorial}
 \end{align}
 \end{proposition}
 
 \begin{proof}
-Use $\log\E(1+t)^N=\sum_{n,j}\log(1+p_{n,\theta}t)$ and compare powers of
+Use $\log\Expectation(1+t)^N=\sum_{n,j}\log(1+p_{n,\theta}t)$ and compare powers of
 $t$.
 \end{proof}
 
@@ -1146,7 +1130,7 @@ coefficient extraction.
 For every $\theta>0$,
 \begin{equation}\label{eq:saddle-tilt}
  C_{r,k}=\frac{\Ar_r(\theta)}{\theta^k}
- \Prob(N_{r,\theta}=k).
+ \Probability(N_{r,\theta}=k).
 \end{equation}
 The map $\theta\mapsto\lambda_{r,\theta}$ is strictly increasing from $0$ to
 $\infty$, so every $k>0$ has a unique saddle parameter satisfying
@@ -1226,7 +1210,7 @@ $4\zeta(2)=6.5797362673929057\ldots$.  The grouped numerical means are:
 \begin{center}
 \begin{tabular}{@{}rrrr@{}}
 \toprule
-$r$ & $\E N_{r,3^r}$ & target minus mean & proved TV bound\\
+$r$ & $\Expectation N_{r,3^r}$ & target minus mean & proved TV bound\\
 \midrule
 8  & 6.343771060790705 & $2.35965\times10^{-1}$ & $8.72586\times10^{-1}$\\
 12 & 6.544298628120802 & $3.54376\times10^{-2}$ & $1.13087\times10^{-1}$\\
@@ -1245,8 +1229,8 @@ The isolated critical result extends to a multi-scale theorem.
 
 \begin{theorem}[Rank phase diagram]\label{thm:PB-phase}
 Fix $c>0$, $a>0$, and set $\theta_r=ca^r$.  Let
-$\lambda_r=\E N_{r,\theta_r}$ and
-$\sigma_r^2=\Var(N_{r,\theta_r})$.
+$\lambda_r=\Expectation N_{r,\theta_r}$ and
+$\sigma_r^2=\Variance(N_{r,\theta_r})$.
 
 \begin{enumerate}[label=(\roman*)]
 \item If $0<a<3$, then $N_{r,\theta_r}\to0$ in probability and in total
@@ -1263,9 +1247,9 @@ variation.
 \end{equation}
 
 \item If $a=\sqrt{15}$, then $\lambda_r\to\infty$ and the following
-mod-Poisson convergence holds locally uniformly for $t\in\C$:
+mod-Poisson convergence holds locally uniformly for $t\in\ComplexNumbers$:
 \begin{equation}\label{eq:mod-Poisson}
- \E(1+t)^{N_{r,\theta_r}}\e^{-\lambda_rt}
+ \Expectation(1+t)^{N_{r,\theta_r}}\EulerE^{-\lambda_rt}
  \longrightarrow
  \exp\!\left(-8c^2\zeta(4)t^2\right).
 \end{equation}
@@ -1281,9 +1265,9 @@ with
 \end{equation}
 Moreover a Berry--Esseen bound is
 \begin{equation}\label{eq:PB-BE}
- \sup_x\left|\Prob\!\left(
+ \sup_x\left|\Probability\!\left(
  \frac{N_{r,\theta_r}-\lambda_r}{\sigma_r}\leq x\right)-\Phi_{\rm G}(x)
- \right|=\bigO((3/a)^{r/2}),
+ \right|=\BigO((3/a)^{r/2}),
 \end{equation}
 where $\Phi_{\rm G}$ is the standard normal CDF.
 \end{enumerate}
@@ -1321,20 +1305,20 @@ $S_{r,2}(\theta_r)\to16c^2\zeta(4)$.  For every $k\geq3$,
  \left(\frac{15^{k/2}}{4^k-1}\right)^r\to0.
 \]
 Expanding
-$\log\E(1+t)^N=\sum_{k\geq1}(-1)^{k-1}S_{r,k}t^k/k$ proves
+$\log\Expectation(1+t)^N=\sum_{k\geq1}(-1)^{k-1}S_{r,k}t^k/k$ proves
 \eqref{eq:mod-Poisson}; the vanishing maximum parameter makes the remainder
 uniform on compact $t$-sets.
 
 Finally suppose $3<a<5$.  By \cref{lem:PB-bounds},
 \[
- \lambda_r=\theta_r\ZetaR_r(2)(1+\smallo(1)),\qquad
- S_{r,2}(\theta_r)=\smallo(\lambda_r),
+ \lambda_r=\theta_r\ZetaR_r(2)(1+\LittleO(1)),\qquad
+ S_{r,2}(\theta_r)=\LittleO(\lambda_r),
 \]
 so \eqref{eq:mean-var-asymp} holds and $\sigma_r\to\infty$.  For a Bernoulli
 variable $B$ with parameter $p$,
-$\E|B-p|^3\leq p(1-p)$.  Hence the sum of third absolute centered moments is
+$\Expectation|B-p|^3\leq p(1-p)$.  Hence the sum of third absolute centered moments is
 at most $\sigma_r^2$.  The Berry--Esseen theorem, first for finite truncations
-and then by an $L^2$ tail limit, gives an error $\bigO(1/\sigma_r)$, which is
+and then by an $L^2$ tail limit, gives an error $\BigO(1/\sigma_r)$, which is
 \eqref{eq:PB-BE}.
 \end{proof}
 
@@ -1358,13 +1342,13 @@ Fix $\tau>0$.  Let
  Y_{r,n}\sim\operatorname{Gamma}(\tau\mu_r(n),\text{ rate }n^2),
 \end{equation}
 with independent summands and zero-shape terms omitted.  Since
-$\sum_n\E Y_{r,n}=\tau\ZetaR_r(2)<\infty$, the sum is finite almost surely.
+$\sum_n\Expectation Y_{r,n}=\tau\ZetaR_r(2)<\infty$, the sum is finite almost surely.
 
 \begin{theorem}[Generalized-gamma determinant dual]\label{thm:gamma-dual}
 For $w\geq0$,
 \begin{equation}\label{eq:gamma-LT}
  \boxed{
- \E\e^{-wV_{r,\tau}}=\Ar_r(w)^{-\tau}.}
+ \Expectation\EulerE^{-wV_{r,\tau}}=\Ar_r(w)^{-\tau}.}
 \end{equation}
 Thus $V_{r,\tau}$ is a generalized gamma convolution with discrete Thorin
 measure
@@ -1401,19 +1385,19 @@ Evaluate the Laplace transform of $4V_{r,\tau}$ at $w$ and apply
 
 From \eqref{eq:zeta-special},
 \begin{equation}\label{eq:V-mean-var}
- \E V_{r,\tau}=\frac{4\tau\zeta(2)}{3^r},
+ \Expectation V_{r,\tau}=\frac{4\tau\zeta(2)}{3^r},
  \qquad
- \Var(V_{r,\tau})=\frac{16\tau\zeta(4)}{15^r}.
+ \Variance(V_{r,\tau})=\frac{16\tau\zeta(4)}{15^r}.
 \end{equation}
 Therefore
 \begin{equation}\label{eq:V-relative}
- \frac{\Var(V_{r,\tau})}{(\E V_{r,\tau})^2}
+ \frac{\Variance(V_{r,\tau})}{(\Expectation V_{r,\tau})^2}
  =\frac{2}{5\tau}\left(\frac35\right)^r.
 \end{equation}
 
 \begin{corollary}[Deterministic mean normalization]\label{cor:V-L2}
 \begin{equation}\label{eq:V-L2}
- \frac{V_{r,\tau}}{\E V_{r,\tau}}\longrightarrow1
+ \frac{V_{r,\tau}}{\Expectation V_{r,\tau}}\longrightarrow1
  \qquad\text{in }L^2.
 \end{equation}
 \end{corollary}
@@ -1425,8 +1409,8 @@ The next result studies the much finer fluctuation scale.
 Let
 \begin{equation}\label{eq:W-def}
  W_{r,\tau}:=
- \frac{V_{r,\tau}-\E V_{r,\tau}}
- {\sqrt{\Var(V_{r,\tau})}}.
+ \frac{V_{r,\tau}-\Expectation V_{r,\tau}}
+ {\sqrt{\Variance(V_{r,\tau})}}.
 \end{equation}
 
 \begin{theorem}[Generalized-gamma rank CLT]\label{thm:gamma-CLT}
@@ -1450,12 +1434,12 @@ Formula \eqref{eq:gamma-standardized} follows directly from
 $15^{k/2}<4^k-1$, so each fixed standardized cumulant tends to zero.
 
 For a direct characteristic-function proof, put
-$\sigma_r^2=\Var(V_{r,\tau})$.  Then
+$\sigma_r^2=\Variance(V_{r,\tau})$.  Then
 \begin{align*}
- \log\E\e^{\ii tW_{r,\tau}}
- &=-\frac{\ii t\E V_{r,\tau}}{\sigma_r}
+ \log\Expectation\EulerE^{\ImaginaryUnit tW_{r,\tau}}
+ &=-\frac{\ImaginaryUnit t\Expectation V_{r,\tau}}{\sigma_r}
  -\tau\sum_n\mu_r(n)
- \log\!\left(1-\frac{\ii t}{\sigma_r n^2}\right).
+ \log\!\left(1-\frac{\ImaginaryUnit t}{\sigma_r n^2}\right).
 \end{align*}
 The smallest active $n$ is $2^{r-1}$, and
 \begin{equation}\label{eq:gamma-radius}
@@ -1468,7 +1452,7 @@ cancels the centering, and the quadratic term is $-t^2/2$.  The absolute
 remainder is bounded by a constant multiple of
 \[
  |t|^3\frac{\tau\ZetaR_r(6)}{\sigma_r^3}
- =\bigO\!\left(
+ =\BigO\!\left(
  \left(\frac{15^{3/2}}{63}\right)^r\right)\to0.
 \]
 L\'evy's continuity theorem proves the CLT.
@@ -1524,7 +1508,7 @@ The repository already gives a Fourier--Legendre expansion of the classical
 up-function.  The higher-rank comb theorem contributes a complementary local
 route.  For $n<M_r(Q)$, the Legendre coefficient
 \begin{equation}\label{eq:Legendre-coeff}
- \ell_{r,n}:=\frac{2n+1}{2}\int_{-1}^{1}f_r(t)\mathrm P_n(t)\dd t
+ \ell_{r,n}:=\frac{2n+1}{2}\int_{-1}^{1}f_r(t)\mathrm P_n(t)\Differential t
 \end{equation}
 can be computed from any phase $x$ by the finite sum in
 \eqref{eq:Legendre-comb}.  Varying $x$ provides exact internal consistency
@@ -1562,7 +1546,7 @@ The results here suggest three nonduplicative continuations.
 
 First, let $Q_r(u)$ be the quantile function of $X_r$.  Then
 \[
- \E p(X_r)=\int_0^1p(Q_r(u))\dd u.
+ \Expectation p(X_r)=\int_0^1p(Q_r(u))\Differential u.
 \]
 Combining this with \eqref{eq:comb-exact} transports every polynomial below
 the sharp threshold into an exact identity between a quantile integral and a
@@ -1590,7 +1574,7 @@ phenomena.
 
 \begin{conjecture}[Hypertranscendence of the Fourier hierarchy]
 For each $r\geq1$, the entire functions $\Phi_r$ and $\Ar_r$ are
-hypertranscendental over $\C(z)$.
+hypertranscendental over $\ComplexNumbers(z)$.
 \end{conjecture}
 
 \begin{conjecture}[Cross-rank differential independence]

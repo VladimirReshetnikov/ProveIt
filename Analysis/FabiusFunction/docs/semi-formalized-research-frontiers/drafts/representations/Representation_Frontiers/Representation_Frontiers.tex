@@ -14294,7 +14294,6 @@ R. Koekoek, P. A. Lesky, and R. F. Swarttouw,
 
 % extra macros for part 4
 \renewcommand{\arraystretch}{1.16}
-\newcommand{\sincpiPartc}{\operatorname{sinc}_{\!\pi}}
 \newcommand{\D}{\mathbb D}
 \newcommand{\T}{\mathbb T}
 \newcommand{\vTwo}{\nu_2}
@@ -14403,7 +14402,7 @@ The Fourier convention is
 \begin{equation}
  \Phi(\xi)=\int_{-1}^{1}\rho(x)\EulerE^{-2\pi\ImaginaryUnit\xi x}\Differential x,
  \qquad
- \sincpiPartc z=\frac{\sin(\pi z)}{\pi z},\quad \sincpiPartc 0=1.
+ \SincPi z=\frac{\sin(\pi z)}{\pi z},\quad \SincPi 0=1.
  \label{p7:eq:fourier-convention}
 \end{equation}
 The moment-generating and Cauchy transforms are
@@ -14527,7 +14526,7 @@ The corresponding unsigned block has
 Independence in \eqref{p7:eq:X-random-series} gives
 \begin{align}
  \Phi(\xi)
- &=\prod_{j=0}^{\infty}\sincpiPartc\!\left(\frac{\xi}{2^j}\right),
+ &=\prod_{j=0}^{\infty}\SincPi\!\left(\frac{\xi}{2^j}\right),
  \label{p7:eq:phi-sinc-product}\\
  M(t)
  &=\prod_{k=1}^{\infty}\frac{\sinh(t/2^k)}{t/2^k}.
@@ -14999,7 +14998,7 @@ For every \(\xi\in\mathbb C\),
 The series is locally uniformly convergent, and
 \begin{align}
  J_0(2\pi\xi)+2\sum_{m=1}^{\infty}(-1)^mc_{2m}J_{2m}(2\pi\xi)
- &=\prod_{j=0}^{\infty}\sincpiPartc\!\left(\frac{\xi}{2^j}\right)
+ &=\prod_{j=0}^{\infty}\SincPi\!\left(\frac{\xi}{2^j}\right)
  \label{p7:eq:Bessel-sinc}\\
  &=\prod_{n=1}^{\infty}\left(1-\frac{\xi^2}{n^2}\right)^{1+\vTwo(n)}.
  \label{p7:eq:Bessel-canonical}
@@ -15438,15 +15437,15 @@ analytic surrogate is preferable to a discontinuous sign function.
 Since \(\rho\) is supported in \([-1,1]\), the Paley--Wiener/Shannon formula at spacing
 \(1/2\) is
 \begin{equation}
- \Phi(z)=\sum_{k\in\IntegerNumbers}\Phi(k/2)\sincpiPartc(2z-k).
+ \Phi(z)=\sum_{k\in\IntegerNumbers}\Phi(k/2)\SincPi(2z-k).
  \label{p7:eq:Shannon-Phi}
 \end{equation}
 All nonzero integer samples vanish. If
 \(A_n=|\Phi(n+1/2)|\), the existing half-integer sign law
 \(\Sign\Phi(n+1/2)=\epsilon_n\) therefore yields
 \begin{equation}
- \Phi(z)=\sincpiPartc(2z)+\sum_{n=0}^{\infty}\epsilon_nA_n
- \left[\sincpiPartc(2z-(2n+1))+\sincpiPartc(2z+(2n+1))\right].
+ \Phi(z)=\SincPi(2z)+\sum_{n=0}^{\infty}\epsilon_nA_n
+ \left[\SincPi(2z-(2n+1))+\SincPi(2z+(2n+1))\right].
  \label{p7:eq:Shannon-TM}
 \end{equation}
 This formula is included as a derived synthesis rather than a primary novelty claim, because
@@ -15506,7 +15505,7 @@ Baseline; scaling\\
 Baseline; differential-difference law\\
 
 \(\Phi\), sinc product &
-\(\prod_{j\ge0}\sincpiPartc(\xi/2^j)\) &
+\(\prod_{j\ge0}\SincPi(\xi/2^j)\) &
 Baseline; Fourier image\\
 
 \(\Phi\), zero product &

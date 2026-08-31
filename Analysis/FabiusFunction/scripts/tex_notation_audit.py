@@ -117,7 +117,8 @@ SEMANTIC_COMMANDS = {
     "FourierTwoPi", "FourierAngular", "LaplaceTransformOf",
     "MellinTransformOf", "BinaryDigitSum", "ThueMorseSign",
     "GaussianBinomial", "QPochhammer", "QInteger", "MetricDistance",
-    "EqualInLaw", "ConvergesInLaw",
+    "EqualInLaw", "ConvergesInLaw", "DyadicSigmaField",
+    "DecayOptimizationObjective", "LinearizedDecayObjective",
 }
 
 DECL_RE = re.compile(
@@ -262,6 +263,22 @@ def audit_file(path: Path, docs: Path) -> tuple[dict, list[Finding], Counter[str
                     rel, line_number(code, match.start()), "retired-command",
                     f"retired \\{old}; use \\{replacement}",
                 ))
+
+        # ``\NaturalNumbers`` already owns its defining ``_0`` subscript.
+        # Any following subscript is both a likely TeX double-script failure
+        # and a semantic smell (the common ``>0`` case is
+        # ``\PositiveIntegers``).  This catches an argument-composition defect
+        # that a command-name-only audit cannot see.
+        for match in re.finditer(r"\\NaturalNumbers\s*_", code):
+            findings.append(Finding(
+                rel,
+                line_number(code, match.start()),
+                "canonical-double-script",
+                (
+                    r"\NaturalNumbers already includes the subscript 0; "
+                    r"use \PositiveIntegers or spell the intended set explicitly"
+                ),
+            ))
 
     # Literal operator spellings bypass the shared semantic command.
     literal_patterns = {
