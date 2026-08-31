@@ -13,19 +13,13 @@ superseded, generated, proved, numerical, and conjectural material.
 Main deliverables
 -----------------
 fabius_rvachev_new_frontiers.tex
-    Complete 2728-line A4/Libertinus LaTeX report. The merged source preserves
-    the current scalar-base-change Gram--Stieltjes and all-degree rational
-    native Jacobi boundaries while incorporating the detailed generic and
-    Legendre Gram-determinant Lean crosswalk. It now also inventories the exact
-    22-declaration executable rational Legendre coefficient/Gram API and the
-    eleven-theorem low-order values leaf, while keeping the remaining
-    paper-only boundary explicit.
+    Final synchronized report source, frozen at 2765 lines after the
+    rational-Legendre crosswalk reconciliation.
 
 fabius_rvachev_new_frontiers.pdf
-    Current 38-page A4 rendering with embedded/subset fonts, Libertinus prose,
-    and no Type 3 fonts. It was rebuilt in exactly three strict passes against
-    the updated source and is synchronized with the PDF preflight and checksum
-    ledger.
+    Final synchronized 38-page post-merge PDF. It was rebuilt in exactly three
+    halted pdflatex passes from the 2765-line source and passed structural,
+    normalized-text, font, and targeted visual-seam review.
 
 fabius_frontier_experiments.py
     Fully commented exact/high-precision experiment. It computes rational
@@ -48,14 +42,15 @@ data/pi_product_approximants.csv
 
 figures/*.pdf and figures/*.png
     Five figures in dual format. The delivered PDFs preserve the vector
-    originals; the report embeds the PNG companions so the Type 3 DejaVu
-    fonts in the vector plots do not propagate into the report PDF.
+    originals. The TeX selects the PNG companions, and the synchronized report
+    is Type-3-free. All five selected PNG payloads are named and hashed in the
+    expanded 20-entry live ledger.
 
 CORPUS_AUDIT.md
     Scope, source strata, nonduplication method, and status boundary.
 
 pdf_preflight.json
-    Structural preflight for the current synchronized PDF.
+    Structural record for the final synchronized PDF.
 
 Numerical publication run
 -------------------------
@@ -102,32 +97,23 @@ for figure in jacobi_coefficients pi_approximants pi_product_error \
       "figures/${figure}.pdf" "figures/${figure}"
 done
 
-Historical verification
------------------------
-* Clean latexmk build with no unresolved references, duplicate labels, or
+Final synchronized artifact verification
+----------------------------------------
+* The frozen 2765-line source had a clean three-pass pdflatex build with no
+  unresolved references or citations, rerun warnings, duplicate labels, or
   overfull boxes.
-* PDF preflight: 37 A4 pages, unencrypted, text-based, no warnings; Libertinus
-  prose is embedded and the 10 Type-3 font rows inherited from the vector plot
-  payloads match the pre-update baseline.
-* All 36 pages of the preceding revision were rendered to PNG and visually
-  inspected in contact sheets during publication.  The merged revision's
-  changed pages 11, 23, and 33 and its final page 37 were checked again at
-  full-page resolution.
-* Pre-update normalized PDF text extraction retained all 18 exact public Lean
-  declaration names in the determinant crosswalk. At that checkpoint, the
-  dedicated 22-name executable-rational inventory still awaited a rebuild.
-* Python byte-compilation and an independent degree-24 smoke run succeeded.
-
-Current repository rebuild verification
----------------------------------------
-* Exactly three strict pdflatex passes after the source and figure repair.
-* 38 A4 pages; Libertinus present; every font embedded and subset; no Type 3.
-* No overfull box, TeX error, unresolved reference, citation, or rerun request.
-* Whitespace-normalized PDF text contains all 51 public names in the generic
-  determinant, Legendre determinant, executable rational, and values
-  crosswalks.
-* The refreshed 20-entry checksum ledger includes all five PNG companions and
-  synchronizes the TeX, PDF, README, CORPUS_AUDIT, and pdf_preflight entries.
+* PDF preflight: 38 A4 pages, unencrypted, text-based, no warnings; Libertinus
+  prose is embedded; all 23 font rows are embedded, including five Libertinus
+  rows, with zero Type-3 rows. The earlier ten-row vector-plot baseline is
+  absent because the synchronized source selects the five PNG companions.
+* Crosswalk seam pages 10--13 and the five plot placements on pages 16, 21,
+  27, 27, and 28 were rendered and inspected at full-page resolution.
+* Normalized PDF text extraction retained all 51 exact public Lean declaration
+  names in the determinant, rational-data, and finite-value crosswalks.
+* The final 20-entry payload ledger verifies completely, including synchronized
+  source, PDF, README, preflight records, and all five PNG companions selected
+  by the TeX. The earlier 15-entry ledger is retained only as a historical
+  pre-PNG-tracking milestone.
 
 Claim status
 ------------
