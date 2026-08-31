@@ -15,11 +15,18 @@ import sys
 from collections import Counter
 from pathlib import Path
 
+from extract_source_results import (
+    SOURCE_FIELDS,
+    concordance_mismatches,
+    inventory_revision,
+)
+
 
 PACKAGE = Path(__file__).resolve().parents[1]
 MASTER = PACKAGE / "inverse_q_analogs_and_series.tex"
 CHAPTER_DIR = PACKAGE / "chapters"
 CONCORDANCE = PACKAGE / "theorem_concordance.csv"
+SOURCE_REVISION = PACKAGE / "audit" / "SOURCE_REVISION"
 
 RESULT_ENVS = {
     "theorem",
@@ -254,6 +261,25 @@ def check_concordance(
     return len(rows), Counter(row["source_kind"] for row in rows), len(incomplete)
 
 
+def check_source_snapshot(failures: list[str]) -> tuple[str, int]:
+    """Reproduce immutable source columns from the pinned historical tree."""
+
+    try:
+        revision = SOURCE_REVISION.read_text(encoding="utf-8").strip()
+        if not revision:
+            raise ValueError("SOURCE_REVISION is empty")
+        commit, rows = inventory_revision(revision)
+        mismatches = concordance_mismatches(rows, CONCORDANCE)
+        failures.extend(f"source snapshot: {message}" for message in mismatches)
+        return commit, len(rows)
+    except (OSError, UnicodeError, ValueError, RuntimeError) as error:
+        failures.append(
+            "cannot reproduce pinned source snapshot "
+            f"(fetch repository history if the clone is shallow): {error}"
+        )
+        return "unresolved", 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -277,6 +303,7 @@ def main() -> int:
                 failures.append(f"{path.name}: forbidden construction marker {marker!r}")
 
     canonical_labels, ref_count = check_labels_and_refs(texts, failures)
+    source_commit, reproduced_rows = check_source_snapshot(failures)
     row_count, source_counts, incomplete = check_concordance(
         args.allow_incomplete_concordance, canonical_labels, failures
     )
@@ -291,6 +318,11 @@ def main() -> int:
     print(
         f"source concordance: rows={row_count}, incomplete={incomplete}; "
         + ", ".join(f"{kind}={source_counts[kind]}" for kind in sorted(source_counts))
+    )
+    print(
+        "source snapshot: "
+        f"revision={source_commit}, rows={reproduced_rows}, "
+        f"immutable-fields={len(SOURCE_FIELDS)}"
     )
     if failures:
         print("\nFAILED", file=sys.stderr)

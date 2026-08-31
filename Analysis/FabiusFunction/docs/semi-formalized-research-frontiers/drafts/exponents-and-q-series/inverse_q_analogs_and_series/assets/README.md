@@ -16,14 +16,14 @@ The mathematical status is deliberately strict:
 - decimal agreement, plots, and asymptotic residuals never upgrade a claim to
   theorem status.
 
-`ASSET_DISPOSITION.csv` is the path-by-path migration plan.  Its source paths
-are relative to the surrounding `exponents-and-q-series/` directory; its
-destination paths are relative to the canonical
-`inverse_q_analogs_and_series/` directory.  The inventory covers all 77 files
-present in the six source packages: 39 are retained as reproducibility assets
-and 38 are retired as superseded reports, duplicate renderings, package
-metadata, or build byproducts.  No content-based deletion is inferred merely
-from a similar filename.
+`ASSET_DISPOSITION.csv` is the completed path-by-path migration ledger.  Its
+source paths are historical paths formerly relative to the surrounding
+`exponents-and-q-series/` directory; destination paths are relative to the
+canonical `inverse_q_analogs_and_series/` directory.  The inventory covered
+all 77 files in the six source packages: 39 were retained as reproducibility
+assets and 38 were retired as superseded reports, duplicate renderings,
+package metadata, or build byproducts.  No content-based deletion was inferred
+merely from a similar filename.
 
 | Disposition | Asset class | Count |
 | --- | --- | ---: |
