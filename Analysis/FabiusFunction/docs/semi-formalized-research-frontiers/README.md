@@ -108,7 +108,7 @@ The draft inboxes under [`drafts/`](drafts/) are grouped thematically
 when four articles on the Lambert W function itself arrived), with new
 archives arriving through `drafts/incoming/` (see its README for the
 protocol).
-Later the same day every group except the Fourier-decay corpus was
+Later the same day the groups other than the Fourier-decay corpus were
 **consolidated into volumes**, in two styles: the original members were
 merged mechanically — one document per group, absorbing the member
 drafts verbatim with per-part label prefixes (the later second-wave
@@ -199,9 +199,12 @@ part-boundary section numbering and
 page-counter handling were repaired along the way (edits are marked
 `% ed.:` in the sources).  Every volume carries
 a provenance section with each absorbed member's SHA-256; the absorbed
-directories were deleted (git history is the archive). The
-Fourier-decay corpus deliberately stays as separate documents: its
-structure is audit evidence (see its README). Each group carries a
+directories were deleted (git history is the archive). The Fourier-decay
+corpus initially stayed separate so its independent reports could be audited;
+on 2026-08-31 it too was consolidated, editorially, into one corrected proof
+volume. Its source concordance and immutable pre-consolidation Git links retain
+that audit evidence without leaving superseded documents live (see its README).
+Each group carries a
 `README.md` stating its purpose and contents, and
 [`drafts/MANIFEST.md`](drafts/MANIFEST.md) is the global inventory:
 every volume with its title and the previous paths of what it
