@@ -109,7 +109,7 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 614 modules and 8,378 lexically
+The post-merge 2026-08-31 inventory contains 615 modules and 8,383 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  Relative to the 610/8,318 activation checkpoint, the exact
 union adds four modules and 60 declarations.  The branch-point geometry and
