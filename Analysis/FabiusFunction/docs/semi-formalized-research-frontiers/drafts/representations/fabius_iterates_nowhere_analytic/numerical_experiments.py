@@ -32,8 +32,9 @@ Run, for example:
 
     python numerical_experiments.py --output-dir numerical_output
 
-The generated CSV and PNG files are deterministic for fixed command-line
-parameters.
+The generated CSV uses an explicit LF line terminator.  Exact PNG bytes require
+the pinned platform and dependency stack recorded in REPOSITORY_AUDIT.md; other
+supported environments should be compared numerically rather than by file hash.
 """
 
 from __future__ import annotations
@@ -41,12 +42,21 @@ from __future__ import annotations
 import argparse
 import csv
 import math
+import shutil
 from pathlib import Path
 from typing import Iterable
 
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import PchipInterpolator
+
+
+FIGURE_FILENAMES = (
+    "fabius_iterates.png",
+    "spine_comparison.png",
+    "spine_remainder.png",
+    "taylor_root_diagnostic.png",
+)
 
 
 def build_up_interpolant(
@@ -262,6 +272,7 @@ def iterate_values(
 
 def write_diagnostics(
     output_dir: Path,
+    figure_dir: Path,
     fab: FabiusNumerics,
     x0: float,
     iterate_count: int,
@@ -305,7 +316,11 @@ def write_diagnostics(
 
     csv_path = output_dir / "spine_diagnostic.csv"
     with csv_path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0].keys()))
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=list(rows[0].keys()),
+            lineterminator="\n",
+        )
         writer.writeheader()
         writer.writerows(rows)
 
@@ -380,6 +395,13 @@ def write_diagnostics(
         handle.write(f"dominant prefix H_n = {dominant:.17g}\n")
         handle.write("\nNo numerical output is used as a premise of the proof.\n")
 
+    figure_dir.mkdir(parents=True, exist_ok=True)
+    for filename in FIGURE_FILENAMES:
+        source = output_dir / filename
+        destination = figure_dir / filename
+        if source.resolve() != destination.resolve():
+            shutil.copyfile(source, destination)
+
 
 def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -388,6 +410,12 @@ def parse_arguments() -> argparse.Namespace:
         type=Path,
         default=Path("numerical_output"),
         help="directory for CSV, metadata, and plots",
+    )
+    parser.add_argument(
+        "--figure-dir",
+        type=Path,
+        default=Path("figures"),
+        help="directory synchronized with the four generated plots",
     )
     parser.add_argument("--x0", type=float, default=0.437123456789)
     parser.add_argument("--iterate-count", type=int, default=4)
@@ -425,12 +453,14 @@ def main() -> None:
 
     write_diagnostics(
         args.output_dir,
+        args.figure_dir,
         fab,
         args.x0,
         args.iterate_count,
         args.max_order,
     )
     print("Generated numerical diagnostics in", args.output_dir)
+    print("Synchronized report figures in", args.figure_dir)
     for key, value in checks.items():
         print(f"  {key} = {value:.12g}")
 

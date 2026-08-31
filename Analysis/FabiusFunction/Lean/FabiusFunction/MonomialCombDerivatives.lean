@@ -74,7 +74,6 @@ theorem iteratedDeriv_fourier_scaledRvachevSchwartz
     (((contDiff_rvachevFourier_ofReal F hF (n := (p : ℕ∞))).comp
       ((contDiff_const (c := u⁻¹)).mul contDiff_id)).contDiffAt)
   rw [iteratedDeriv_const_smul hcd (u⁻¹ : ℝ)]
-  simp only [Pi.smul_apply]
   congr 1
   have hg : ContDiff ℝ (p : ℕ∞)
       (fun t : ℝ => rvachevFourier F (t : ℂ)) :=

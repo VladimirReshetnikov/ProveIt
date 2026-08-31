@@ -123,7 +123,7 @@ def exact_dyadic_tables(outdir: Path, nmax: int):
     boolean = boolean_from_even_moments(moments, nmax)
 
     with (outdir / "dyadic_cumulants.csv").open("w", newline="", encoding="utf-8") as fh:
-        w = csv.writer(fh)
+        w = csv.writer(fh, lineterminator="\n")
         w.writerow([
             "n", "m_2n_exact", "classical_kappa_2n_exact",
             "free_r_2n_exact", "boolean_b_2n_exact",
@@ -394,7 +394,7 @@ def hankel_thresholds(outdir: Path, max_block=10):
         root = largest_sign_change_root(m, *brackets.get(m, (0.34, 0.45)))
         rows.append((m, root, mp.sqrt(root)))
     with (outdir / "leading_hankel_thresholds.csv").open("w", newline="", encoding="utf-8") as fh:
-        w = csv.writer(fh)
+        w = csv.writer(fh, lineterminator="\n")
         w.writerow(["block_size", "s_root", "q_root"])
         for m, sr, qr in rows:
             w.writerow([m, mp.nstr(sr, 40), mp.nstr(qr, 40)])
@@ -449,7 +449,7 @@ def jacobi_increment_experiment(outdir: Path, nmax=8):
             raise RuntimeError(f"Negative Jacobi-increment coefficient at r_{2*n}.")
 
     with (outdir / "jacobi_increment_verification.csv").open("w", newline="", encoding="utf-8") as fh:
-        w = csv.writer(fh)
+        w = csv.writer(fh, lineterminator="\n")
         w.writerow(["free_cumulant_order", "monomial_count", "all_coefficients_nonnegative"])
         w.writerows(rows)
     with (outdir / "jacobi_increment_formulas.txt").open("w", encoding="utf-8") as fh:
@@ -487,7 +487,11 @@ def finite_dyadic_polynomials(outdir: Path, nmax=6):
             fh.write(f"r_{2*n}^(N)={sp.sstr(fr)}\n")
             fh.write(f"b_{2*n}^(N)={sp.sstr(bo)}\n")
             fh.write(f"deg_Q(r)={sp.degree(fr,Q)}, deg_Q(b)={sp.degree(bo,Q)}\n")
-            fh.write(f"[Q]r={sp.expand(fr).coeff(Q,1)}, [Q]b={sp.expand(bo).coeff(Q,1)}\n\n")
+            separator = "\n\n" if n < nmax else "\n"
+            fh.write(
+                f"[Q]r={sp.expand(fr).coeff(Q,1)}, "
+                f"[Q]b={sp.expand(bo).coeff(Q,1)}{separator}"
+            )
     return Q, free, boolean
 
 
@@ -520,7 +524,7 @@ def endpoint_diagnostics(outdir: Path, exact_free, nmax=200):
     chosen = [n for n in [5, 10, 20, 40, 60, 80, 100, 150, 200] if n <= nmax]
 
     with (outdir / "endpoint_diagnostics.csv").open("w", newline="", encoding="utf-8") as fh:
-        w = csv.writer(fh)
+        w = csv.writer(fh, lineterminator="\n")
         w.writerow(["n", "m_2n", "b_2n", "b_over_m", "m_nth_root", "b_nth_root"])
         for n in chosen:
             w.writerow([
@@ -568,7 +572,12 @@ def make_figures(figdir: Path, thresholds, a, b, Sinv2, free_roots, s_symbol, c)
     fr_n = [n for n, _ in free_roots if n >= 2]
     fr_v = [float(x) for n, x in free_roots if n >= 2]
     plt.plot(fr_n, fr_v, label=r"$r_{2n}^{1/n}$")
-    plt.axhline(float(Sinv2), linestyle="--", linewidth=1, label=r"$S^{-2}$")
+    plt.axhline(
+        float(Sinv2),
+        linestyle="--",
+        linewidth=1,
+        label=rf"$S_{{{len(a) - 1}}}^{{-2}}$",
+    )
     plt.xlabel("compressed order n")
     plt.ylabel("n-th root")
     plt.title("Moment, Boolean, and free-cumulant root trends")

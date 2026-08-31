@@ -160,14 +160,20 @@ performed.
 
 - [`q_pochhammer_q_binomial_expansions_report/`](q_pochhammer_q_binomial_expansions_report/),
   *Local, Boundary, and Reciprocal Expansions of q-Pochhammer Symbols,
-  Gaussian Coefficients, and Related q-Analogues* (57 pp), arrived on
+  Gaussian Coefficients, and Related q-Analogues* (currently 57 pp and 2,777
+  source lines; delivered baseline 56 pp and 2,708 source lines), arrived on
   2026-08-30 from `q_pochhammer_q_binomial_expansions_report.zip` (outer
   SHA-256
   `e8c6e5be4512abc0bacfd904e3f0027b35fd5e47e916a6ad11cc76b2893b3a07`).
   All five entries in the submitted `MANIFEST.sha256` verified and every text
-  payload was already LF. It remains standalone pending post-publication
-  assessment, claim-by-claim consolidation, and a Lean crosswalk; manuscript
-  labels do not establish Lean verification.
+  payload was already LF. A post-publication update added the exact
+  commutative-ring Lean crosswalk for all four Gaussian values at `q = -1`
+  and both companion finite-product identities, then refreshed the paired PDF
+  and checksum ledger. The derivative half of the report's first-jet theorem
+  and its characteristic-zero simple-root consequence remain unformalized.
+  The report remains standalone pending claim-by-claim consolidation;
+  manuscript labels do not establish Lean verification beyond the named
+  crosswalk.
 
 - [`Fabius_Flat_Parameter_Response_Dynamics/`](Fabius_Flat_Parameter_Response_Dynamics/),
   *Flat Parameter Fronts, q-Susceptibility, and Smooth Dynamics* (23 pp),
@@ -184,8 +190,8 @@ sequences and the q-series calculus that organizes them: the
 exponent-sequence convolution monoid with its Newton-basis frontiers, and
 q-binomial Richardson acceleration of geometric sinc products. The
 denominator-free Gaussian/q-binomial core used by both is formalized at arbitrary
-ratio. `QBinomialCauchy.lean` exhaustively supplies one definition and four
-theorems: the finite q-Cauchy identity, its reflected strengthening, the
+ratio. `QBinomialCauchy.lean` exhaustively supplies one definition and five
+theorems: the finite q-Cauchy identity and its compatibility spelling, its reflected strengthening, the
 denominator-free q-Bernstein basis and its partition of unity, and the second
 finite Cauchy identity. They hold for arbitrary parameters and degrees over
 every commutative ring, including `q = 0`, roots of unity, and zero divisors.
@@ -481,7 +487,7 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 `149332f9d`.
 
 Member: `Exponents_and_q_Series_Frontiers`
-(currently 233 pp, seven parts) — the
+(currently 234 pp, seven parts) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -703,7 +709,8 @@ matching `assets/` directories.
 `Signed_Reciprocal_q_Fabius_Frontiers/` were merged editorially as the
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
-Second member: `q_pochhammer_q_binomial_monograph/` (202 pp, book class) —
+Second member: `q_pochhammer_q_binomial_monograph/`
+(211 pp; A4 book class; rebuilt after the exact `q = -1` crosswalk update) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
@@ -724,39 +731,59 @@ Chern–Dilcher–Jiu deleted-singularity identity and Ramanujan's ₁ψ₁
 verified numerically to 30 digits; one dominated-convergence majorant
 repaired with an `% ed.:` note).
 
-Its current formalization ledger covers the 184-result core in Chapters
-1–23: 35 exact, 24 partial, 122 with no counterpart, and 3 interface-only.
-The later Chapter 24 Fabius bridge is crosswalked locally and is outside
-those aggregate counts; in particular its general spectral Pochhammer
-theorem remains partial despite the now-formal inside `q = 1/2`
-specialization. The algebra of
+Its current formalization ledger has 248 labelled results: 42 exact, 74
+partial, 129 with no counterpart, and 3 interface-only.  Within that
+exhaustive total, the 191-result core in Chapters 1–23 has 36 exact, 29
+partial, 123 with no counterpart, and 3 interface-only entries.  The later
+Chapter 24 Fabius bridge is included in the full ledger and crosswalked
+locally; in particular its general spectral Pochhammer theorem remains
+partial despite the now-formal inside `q = 1/2` specialization. The algebra of
 q-shifted factorials now accounts for 3 exact, 1 partial, and 11
 unformalized results; the q-integer and Gaussian-coefficient chapter for
 3 exact, 2 partial, and 4 unformalized results. The finite
 q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
 unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
-unformalized results; the basic-hypergeometric chapter for 1 exact, 0
-partial, and 5 unformalized results; and the Bailey chapter for 1 exact, 0
-partial, and 6 unformalized results. Its q-difference annihilation lemma is
-now exact through `qDifference_sum_eval₂_eq_zero_of_degree_lt`, with the
-stronger characteristic-polynomial, all-moment, and scalar-extension
-top-coefficient results recorded above. Weighted symmetric-function inversion
-is now exact. Weighted generating products and the reciprocal finite theorem are
-partial because their formal power-series identities are exact while their
-analytic evaluation and convergence clauses remain open. The q-Pfaff--Saalschutz
-summation remains unformalized; no status is inferred from a related finite
-identity. These counts and boundaries were statically cross-checked against
-the exhaustive public surfaces of `QBinomialCauchy.lean` (one definition,
-four theorems), `SymmetricFunctionOrthogonality.lean` (one definition, six
-theorems), `FiniteTriangularTransform.lean` (one definition, one theorem),
-`SymmetricFunctionTransform.lean` (four definitions, five theorems), and
-`SymmetricFunctionGenerating.lean` (two definitions, six theorems), as well
-as `QDifferenceAnnihilation.lean` (four theorems) and
+unformalized results; and the basic-hypergeometric chapter for 1 exact, 0
+partial, and 8 unformalized results. The cyclotomic chapter now has 1 exact,
+0 partial, and 8 unformalized results. The exact rows include the primary and
+second q-Cauchy identities, both weighted-Pascal recurrences,
+elementary--complete orthogonality, and weighted symmetric-function inversion.
+Their adjacent strengthenings are recorded human-readably in the monograph:
+reflected q-Cauchy and the q-Bernstein partition of unity, plus total
+empty-family and degree-zero boundaries. Weighted generating products and the
+reciprocal finite theorem are partial because their formal power-series
+identities are exact while their analytic evaluation and convergence clauses
+remain open. The q-Pfaff--Saalschütz summation remains unformalized; no status
+is inferred from a related finite identity. These counts and boundaries were
+statically cross-checked against the exhaustive public surfaces of
+`QBinomialCauchy.lean` (one definition and five theorems, including the
+compatibility spelling of its primary identity),
+`SymmetricFunctionOrthogonality.lean` (one definition and six theorems),
+`FiniteTriangularTransform.lean` (one definition and one theorem),
+`SymmetricFunctionTransform.lean` (four definitions and five theorems), and
+`SymmetricFunctionGenerating.lean` (two definitions and six theorems),
+`QDifferenceAnnihilation.lean` (four theorems),
 `QBinomialInversionSpecializations.lean` (two definitions, four theorems),
 `QPochhammerElementaryIdentities.lean` (13 theorems),
-`QBinomialReciprocity.lean` (four theorems), and
+`QBinomialReciprocity.lean` (four theorems),
+`GaussianBinomialAtNegOne.lean` (five theorems), and
 `RvachevPochhammerFactorization.lean` (one definition, six theorems).
-The chapter's alternating sums, both weighted-subset conventions,
+The five `GaussianBinomialAtNegOne` theorems are
+`gaussianBinomial_neg_one_even_even`,
+`gaussianBinomial_neg_one_odd_even`,
+`gaussianBinomial_neg_one_odd_odd`,
+`finiteQPochhammerIn_neg_one_even`, and
+`finiteQPochhammerIn_neg_one_odd`. The first three together with the reused
+`gaussianBinomial_neg_one_even_odd_eq_zero` theorem from
+`QBinomialReciprocity` prove the monograph's complete `q = -1` value formula
+over every commutative ring, for all natural parameters including above-row
+zero extension. The `q`-Lucas theorem used by the printed proof remains
+unformalized; the status promotion concerns the corollary's exact statement.
+The q-difference annihilation row is exact through
+`qDifference_sum_eval₂_eq_zero_of_degree_lt`, with the stronger
+characteristic-polynomial, all-moment, and scalar-extension top-coefficient
+results recorded alongside it. The chapter's alternating sums, both
+weighted-subset conventions,
 named module-valued inversion iff, and both kernel orthogonalities are exact.
 Both orientations
 of q-Vandermonde and both central-support presentations are exact in
@@ -781,6 +808,16 @@ Separately,
 `SymmetricFunctionOrthogonality.lean` proves the displayed
 elementary--complete coefficient convolution exactly over every commutative
 ring, including the empty family and degree zero.
+
+`QBinomialCauchy.lean` gives the exact primary convolution under the canonical
+name `Fabius.finite_qCauchy_identity` and the compatibility spelling
+`Fabius.finiteQPochhammerIn_mul_eq_sum_gaussianBinomial`, together with its
+reflected orientation, the denominator-free q-Bernstein partition of unity,
+and the exact finite Cauchy convolution II. All parameters and degrees are
+arbitrary over every commutative ring, so no cancellation, nonvanishing,
+injectivity, topology, or convergence hypothesis is needed. The later
+q-Pfaff–Saalschütz summation and infinite-product consequences remain
+unformalized.
 
 The wave volumes' central probabilistic object — the normalized
 geometric-uniform law `Y_q = (1-q)·∑ qʲU_j`, with `q = 1/2` the

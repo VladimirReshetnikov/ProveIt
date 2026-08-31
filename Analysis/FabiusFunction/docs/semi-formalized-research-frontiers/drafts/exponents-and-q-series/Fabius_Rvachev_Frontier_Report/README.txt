@@ -21,5 +21,9 @@ Compile the report
 ------------------
 latexmk -pdf -interaction=nonstopmode -halt-on-error fabius_frontier_report.tex
 
+The repository copy selects Libertinus when available, falling back to Latin
+Modern only on hosts without the package.  Its committed PDF was rebuilt with
+Libertinus and uses the supplied PNG figure companions to avoid Type-3 fonts.
+
 The report treats novelty as novelty relative to the inspected ProveIt repository
 corpus as of 30 August 2026; it does not assert global publication priority.

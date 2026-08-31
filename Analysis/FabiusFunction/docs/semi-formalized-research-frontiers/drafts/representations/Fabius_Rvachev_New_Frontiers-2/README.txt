@@ -13,11 +13,19 @@ superseded, generated, proved, numerical, and conjectural material.
 Main deliverables
 -----------------
 fabius_rvachev_new_frontiers.tex
-    Complete 37-page, 2639-line LaTeX report.
+    Complete 2728-line A4/Libertinus LaTeX report. The merged source preserves
+    the current scalar-base-change Gram--Stieltjes and all-degree rational
+    native Jacobi boundaries while incorporating the detailed generic and
+    Legendre Gram-determinant Lean crosswalk. It now also inventories the exact
+    22-declaration executable rational Legendre coefficient/Gram API and the
+    eleven-theorem low-order values leaf, while keeping the remaining
+    paper-only boundary explicit.
 
 fabius_rvachev_new_frontiers.pdf
-    Rendered and visually inspected PDF, refreshed after the post-intake
-    formal crosswalk.
+    Current 38-page A4 rendering with embedded/subset fonts, Libertinus prose,
+    and no Type 3 fonts. It was rebuilt in exactly three strict passes against
+    the updated source and is synchronized with the PDF preflight and checksum
+    ledger.
 
 fabius_frontier_experiments.py
     Fully commented exact/high-precision experiment. It computes rational
@@ -38,14 +46,16 @@ data/jacobi_coefficients.csv
 data/pi_product_approximants.csv
     Jacobi-product and Christoffel approximants to pi.
 
-figures/*.pdf
-    Five vector figures embedded in the report.
+figures/*.pdf and figures/*.png
+    Five figures in dual format. The delivered PDFs preserve the vector
+    originals; the report embeds the PNG companions so the Type 3 DejaVu
+    fonts in the vector plots do not propagate into the report PDF.
 
 CORPUS_AUDIT.md
     Scope, source strata, nonduplication method, and status boundary.
 
 pdf_preflight.json
-    PDF structural preflight; no warnings were reported.
+    Structural preflight for the current synchronized PDF.
 
 Numerical publication run
 -------------------------
@@ -58,12 +68,17 @@ the report as evidence, not as a theorem.
 
 Rebuild the PDF
 ---------------
-Required: a reasonably complete TeX Live installation with pdflatex.
-From this directory:
+Required: a reasonably complete TeX Live installation with pdflatex and the
+Libertinus Type 1 packages. From this directory, the final publication build
+must run all three passes:
 
 pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_new_frontiers.tex
 pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_new_frontiers.tex
 pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_new_frontiers.tex
+
+After each rebuild, verify A4 page geometry, embedded/subset fonts, a positive
+Libertinus font count, no Type 3 fonts, and the final page count before
+refreshing the PDF preflight and checksum ledger.
 
 Re-run the numerical experiment
 -------------------------------
@@ -77,23 +92,51 @@ python fabius_frontier_experiments.py \
 A higher target degree requires rapidly increasing precision because the
 current monomial-basis recurrence is cancellation-prone.
 
-Verification performed
-----------------------
-* Clean three-pass pdflatex build with no unresolved references, duplicate labels, or
+The script writes CSV records with deterministic LF line endings and produces
+the five vector plot PDFs.  Refresh the PNG companions selected by the TeX
+source after a production run with:
+
+for figure in jacobi_coefficients pi_approximants pi_product_error \
+    scaled_jacobi_deficit zero_quantiles; do
+  pdftocairo -png -singlefile -r 300 \
+      "figures/${figure}.pdf" "figures/${figure}"
+done
+
+Historical verification
+-----------------------
+* Clean latexmk build with no unresolved references, duplicate labels, or
   overfull boxes.
 * PDF preflight: 37 A4 pages, unencrypted, text-based, no warnings; Libertinus
   prose is embedded and the 10 Type-3 font rows inherited from the vector plot
   payloads match the pre-update baseline.
-* All 36 landing pages were rendered to PNG and visually inspected in contact sheets
-  during publication.  After the formal crosswalk update, its changed pages
-  11, 12, 23, and 33, plus the new final page 37, were rendered and checked again
-  at full-page resolution.
-* Normalized PDF text extraction retains all 20 exact public Lean declaration
-  names in the new determinant crosswalk.
+* All 36 pages of the preceding revision were rendered to PNG and visually
+  inspected in contact sheets during publication.  The merged revision's
+  changed pages 11, 23, and 33 and its final page 37 were checked again at
+  full-page resolution.
+* Pre-update normalized PDF text extraction retained all 18 exact public Lean
+  declaration names in the determinant crosswalk. At that checkpoint, the
+  dedicated 22-name executable-rational inventory still awaited a rebuild.
 * Python byte-compilation and an independent degree-24 smoke run succeeded.
+
+Current repository rebuild verification
+---------------------------------------
+* Exactly three strict pdflatex passes after the source and figure repair.
+* 38 A4 pages; Libertinus present; every font embedded and subset; no Type 3.
+* No overfull box, TeX error, unresolved reference, citation, or rerun request.
+* Whitespace-normalized PDF text contains all 51 public names in the generic
+  determinant, Legendre determinant, executable rational, and values
+  crosswalks.
+* The refreshed 20-entry checksum ledger includes all five PNG companions and
+  synchronizes the TeX, PDF, README, CORPUS_AUDIT, and pdf_preflight entries.
 
 Claim status
 ------------
+The arrival-time novelty screen was corrected after filing: the pinned
+canonical representation frontier already contained the Nevai-limit,
+J-fraction, Hankel, and Gauss--Padé program. Those strands are inherited
+overlap; see CORPUS_AUDIT.md. The package remains standalone pending a
+claim-by-claim deduplication.
+
 The report distinguishes:
 * results already present in the audited repository;
 * new proofs or finite identities developed in the report;

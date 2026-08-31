@@ -2415,12 +2415,14 @@ their finite sum are \nolinkurl{fabiusPhaseLockedResidualTerm} and
 \nolinkurl{FabiusLambertPhaseExtractionBell.lean} leaves both definitions
 unchanged and proves the exact declaration
 \[
- R_{r,n}(\lambda)=(-1)^r
-   \left(\prod_{j=0}^{r}(\lambda+j)^{-1}\right)
-   \operatorname{factorialNormalize}
+ \begin{aligned}
+ R_{r,n}(\lambda)
+   &=(-1)^r\left(\prod_{j=0}^{r}(\lambda+j)^{-1}\right) \\
+   &\quad{}\times \operatorname{factorialNormalize}
      \bigl(\operatorname{completeBellPolynomial}
-       (\kappa^{(r,\lambda)})\bigr)_n
-   \,c_{r+1+n}(\lambda)
+       (\kappa^{(r,\lambda)})\bigr)_n \\
+   &\quad{}\times c_{r+1+n}(\lambda).
+ \end{aligned}
 \]
 as \nolinkurl{fabiusPhaseLockedResidualTerm_eq_bell};
 \nolinkurl{fabiusPhaseLockedResidualPartialSum_eq_sum_bell} rewrites each
@@ -2830,8 +2832,37 @@ endpoint continuity layer is now closed: in \nolinkurl{LowerLambertW.lean},
 \nolinkurl{deriv_principalLambertW_zero} states
 \(\operatorname{deriv}W_0(0)=1\), and
 \nolinkurl{principalLambertW_isEquivalent_zero} packages \(W_0(z)\sim z\).
-These are continuity and regular-point statements, not a branch-point
-derivative, vertical-tangent limit, curvature theorem, or Puiseux expansion.
+The later module \nolinkurl{LambertWCurvature.lean} closes the regular-domain
+second-derivative and shape layer.  On either smooth branch it uses the
+nonsingular exponential form
+\[
+ W''(z)=-\frac{e^{-2W(z)}(W(z)+2)}{(W(z)+1)^3}.
+\]
+For the principal branch, \nolinkurl{deriv_principalLambertW},
+\nolinkurl{deriv_principalLambertW_hasDerivAt}, and
+\nolinkurl{deriv_deriv_principalLambertW} give the first derivative and the
+derivative-of-derivative formula throughout
+\((-e^{-1},\infty)\), including \(z=0\).  The simplification
+\nolinkurl{deriv_deriv_principalLambertW_zero} gives \(W_0''(0)=-2\),
+\nolinkurl{deriv_deriv_principalLambertW_neg} proves strict negativity on the
+open domain, and \nolinkurl{strictConcaveOn_principalLambertW} extends strict
+concavity to the closed natural domain \([-e^{-1},\infty)\).
+
+For \(W_{-1}\), \nolinkurl{deriv_lowerLambertW_hasDerivAt} and
+\nolinkurl{deriv_deriv_lowerLambertW} give the same formula on
+\((-e^{-1},0)\).  The three exact sign declarations
+\nolinkurl{deriv_deriv_lowerLambertW_pos_iff},
+\nolinkurl{deriv_deriv_lowerLambertW_neg_iff}, and
+\nolinkurl{deriv_deriv_lowerLambertW_eq_zero_iff} locate the unique change at
+\(z=-2e^{-2}\): the second derivative is positive to its left, negative to
+its right, and zero exactly there.  Consequently
+\nolinkurl{strictConvexOn_lowerLambertW_left} proves strict convexity on
+\([-e^{-1},-2e^{-2}]\), while
+\nolinkurl{strictConcaveOn_lowerLambertW_right} proves strict concavity on
+\([-2e^{-2},0)\).  These are regular-interior derivative results plus shape
+theorems that include the finite branch point and shared inflection endpoint;
+the lower domain remains open at zero.  No branch-point derivative,
+vertical-tangent limit, or Puiseux expansion is asserted.
 
 The reusable layer treats
 \[
@@ -2840,7 +2871,7 @@ The reusable layer treats
   P_{m,A,\beta}
     =A\left(\frac m\beta e^{-1}\right)^m,
 \]
-under \(m\ne0\), \(A>0\), and \(\beta>0\).
+under \(m\in\mathbb N\setminus\{0\}\), \(A>0\), and \(\beta>0\).
 \nolinkurl{PowerExponentialLambertCalculus.lean} proves
 \nolinkurl{principalPowerExponentialPhase_continuousOn_Icc} on
 \([0,P_{m,A,\beta}]\) and
@@ -2890,9 +2921,31 @@ The declarations are
 \nolinkurl{lowerPowerExponentialPhase_sub_intrinsicMain_tendsto_zero}.
 This generic result is intentionally only the intrinsic two-term
 \(\epsilon\)-expansion with \(o(1)\) remainder.  A cleaned
-\(L=\log(A/x)\) formula, additional terms or a complete series, and
-branch-point vertical-tangent, Puiseux, second-derivative, or curvature
-claims remain outside this tranche.
+\(L=\log(A/x)\) formula, additional terms or a complete series, a
+branch-point vertical-tangent limit, and a Puiseux expansion remain outside
+this tranche.
+
+The separate \nolinkurl{PowerExponentialLambertCurvature.lean} does supply
+the generic regular-interior second derivative.  If \(\lambda\) denotes
+either scaled branch and
+\(0<x<P_{m,A,\beta}\), then, under the same hypotheses
+\(m\in\mathbb N\setminus\{0\}\), \(A>0\), and \(\beta>0\),
+\[
+ \lambda''(x)=
+ \frac{\lambda(x)\bigl(m-(m-\beta\lambda(x))^2\bigr)}
+      {x^2\bigl(m-\beta\lambda(x)\bigr)^3}.
+\]
+The complete public surface of that module consists of the two
+derivative-of-derivative witnesses
+\nolinkurl{deriv_principalPowerExponentialPhase_hasDerivAt} and
+\nolinkurl{deriv_lowerPowerExponentialPhase_hasDerivAt}, together with their
+value corollaries
+\nolinkurl{deriv_deriv_principalPowerExponentialPhase} and
+\nolinkurl{deriv_deriv_lowerPowerExponentialPhase}.  The factorization
+suggests candidate thresholds
+\(\beta\lambda=m\mathbin{\pm}\sqrt m\), but generic sign, zero-set,
+threshold, inflection, and strict-convexity/concavity packages have not been
+formalized and are not claimed here.
 
 Finally \nolinkurl{PowerExponentialLambertFabius.lean} specializes
 \((m,A,\beta)=(1,1,\log2)\).  It defines
@@ -2907,16 +2960,93 @@ specialized principal asymptotic \(\lambda_0(x)\sim x\); the generic lower
 divergence and intrinsic expansion specialize to the existing lower Fabius
 phase.
 
+The curvature specialization is isolated in
+\nolinkurl{PowerExponentialLambertFabiusCurvature.lean}.  Write
+\[
+ x_*:=\frac{2e^{-2}}{\log2},
+ \qquad P:=\frac{e^{-1}}{\log2}.
+\]
+For the lower phase it proves \(x_*\in(0,P)\),
+\(\lambda_{-1}(x_*)=2/\log2\), and, for \(0<x<P\),
+\[
+ \lambda_{-1}''(x)=
+ \frac{(\log2)\lambda_{-1}(x)^2
+       \bigl(2-(\log2)\lambda_{-1}(x)\bigr)}
+      {x^2\bigl(1-(\log2)\lambda_{-1}(x)\bigr)^3}.
+\]
+Its second derivative is positive exactly when \(x<x_*\), negative exactly
+when \(x_*<x\), and zero exactly when \(x=x_*\).  Thus \(x_*\) is the exact
+formalized inflection input: the phase is strictly convex on
+\((0,x_*]\) and strictly concave on \([x_*,P]\).
+
+The principal specialization deliberately uses the raw-\(W_0\) curvature
+API rather than restricting the generic positive-input formula.  Globally,
+\[
+ \lambda_0(x)=-\frac{W_0(-x\log2)}{\log2};
+\]
+for every \(x<P\),
+\[
+ \lambda_0'(x)=
+ \frac{1}{e^{W_0(-x\log2)}(W_0(-x\log2)+1)},
+ \qquad
+ \lambda_0''(x)=
+ \frac{(\log2)e^{-2W_0(-x\log2)}(W_0(-x\log2)+2)}
+      {(W_0(-x\log2)+1)^3}>0.
+\]
+In particular \(\lambda_0''(0)=2\log2\), and the phase is strictly convex
+on the full endpoint-inclusive half-line \((-\infty,P]\), including all
+negative inputs and zero.  The leaf's complete public surface is one
+noncomputable definition and eighteen theorems:
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.08\textwidth} >{\raggedright\arraybackslash}p{0.47\textwidth} >{\raggedright\arraybackslash}p{0.38\textwidth}@{}}
+\toprule
+No. & Declaration & Formal content \\
+\midrule
+\endfirsthead
+\toprule
+No. & Declaration & Formal content \\
+\midrule
+\endhead
+1 & \nolinkurl{fabiusLambertInflectionInput} & Definition of \(x_*=2e^{-2}/\log2\). \\
+2 & \nolinkurl{fabiusLambertInflectionInput_mem_Ioo} & \(x_*\in(0,P)\). \\
+3 & \nolinkurl{fabiusLambertPhase_inflectionInput} & \(\lambda_{-1}(x_*)=2/\log2\). \\
+4 & \nolinkurl{deriv_deriv_fabiusLambertPhase} & Exact lower-phase second derivative on \((0,P)\). \\
+5 & \nolinkurl{deriv_deriv_fabiusLambertPhase_pos_iff} & For \(0<x<P\), \(0<\lambda_{-1}''(x)\iff x<x_*\). \\
+6 & \nolinkurl{deriv_deriv_fabiusLambertPhase_neg_iff} & For \(0<x<P\), \(\lambda_{-1}''(x)<0\iff x_*<x\). \\
+7 & \nolinkurl{deriv_deriv_fabiusLambertPhase_eq_zero_iff} & For \(0<x<P\), \(\lambda_{-1}''(x)=0\iff x=x_*\). \\
+8 & \nolinkurl{deriv_deriv_fabiusLambertPhase_inflectionInput} & The simplified equality \(\lambda_{-1}''(x_*)=0\). \\
+9 & \nolinkurl{strictConvexOn_fabiusLambertPhase_left} & Strict convexity on \(\operatorname{Ioc}(0,x_*)\). \\
+10 & \nolinkurl{strictConcaveOn_fabiusLambertPhase_right} & Strict concavity on \(\operatorname{Icc}(x_*,P)\). \\
+11 & \nolinkurl{fabiusPrincipalLambertPhase_eq_principalLambertW} & Global affine-\(W_0\) coordinate formula. \\
+12 & \nolinkurl{fabiusPrincipalLambertPhase_continuousOn_Iic} & Continuity on \(\operatorname{Iic}(P)\). \\
+13 & \nolinkurl{fabiusPrincipalLambertPhase_hasDerivAt} & First-derivative witness for every \(x<P\). \\
+14 & \nolinkurl{deriv_fabiusPrincipalLambertPhase} & Exact first-derivative value for every \(x<P\). \\
+15 & \nolinkurl{deriv_fabiusPrincipalLambertPhase_hasDerivAt} & Derivative-of-derivative witness for every \(x<P\). \\
+16 & \nolinkurl{deriv_deriv_fabiusPrincipalLambertPhase} & Exact principal second-derivative value for every \(x<P\). \\
+17 & \nolinkurl{deriv_deriv_fabiusPrincipalLambertPhase_pos} & Strict positivity for every \(x<P\). \\
+18 & \nolinkurl{deriv_deriv_fabiusPrincipalLambertPhase_zero} & The simplified equality \(\lambda_0''(0)=2\log2\). \\
+19 & \nolinkurl{strictConvexOn_fabiusPrincipalLambertPhase} & Strict convexity on \(\operatorname{Iic}(P)\). \\
+\bottomrule
+\end{longtable}
+
 The import ladder reflects the proof structure:
 \nolinkurl{PowerExponentialLambert.lean} imports the raw lower and principal
 branches, then
 \nolinkurl{PowerExponentialLambertCalculus.lean},
 \nolinkurl{PowerExponentialLambertInverse.lean}, and
 \nolinkurl{PowerExponentialLambertAsymptotics.lean} add continuity,
-classification, and asymptotics in that order.  The Fabius bridge imports
-the last module together with the older generalized-coordinate and Fabius
-saddle modules.  These lemmas support the corrected comparisons in both the
-k-fold project and the principal Fabius saddle analysis.
+classification, and asymptotics in that order.
+\nolinkurl{LambertWCurvature.lean} is the raw branch curvature leaf;
+\nolinkurl{PowerExponentialLambertCurvature.lean} imports the generic
+calculus layer and contains only the four branch-generic second-derivative
+declarations above.  The non-curvature Fabius bridge imports the asymptotic
+layer together with the older generalized-coordinate and Fabius saddle
+modules, while
+\nolinkurl{PowerExponentialLambertFabiusCurvature.lean} imports that bridge
+and both curvature leaves.  The umbrella \nolinkurl{FabiusFunction.lean}
+exposes all three new curvature modules.  These lemmas support the corrected
+comparisons in both the k-fold project and the principal Fabius saddle
+analysis.
 
 \subsection{Decay comparisons}
 \nolinkurl{FabiusFlatness.lean} and \nolinkurl{FabiusDecayComparison.lean} convert the log-squared law into two useful endpoint comparisons.  For every \(m>0\),
@@ -3453,8 +3583,10 @@ Totalized inverse \(F^{-1}\) & \nolinkurl{fabiusInv}, \nolinkurl{fabiusOrderIso}
 Inverse curvature & \nolinkurl{deriv_deriv_fabiusInv}, \nolinkurl{deriv_deriv_fabiusInv_half}, \nolinkurl{deriv_deriv_fabiusInv_eq_zero_iff}, \nolinkurl{strictConcaveOn_fabiusInv_firstHalf}, \nolinkurl{strictConvexOn_fabiusInv_secondHalf} & \nolinkurl{FabiusInverse.lean} \\
 Uniform spline \(S_p\) & \nolinkurl{fabiusUniformSpline} & \nolinkurl{FabiusUniformSpline.lean} and \nolinkurl{FabiusComputability.lean} \\
 Logarithmic profile & \nolinkurl{fabiusLogProfile} & \nolinkurl{FabiusLogScale.lean} \\
-Generic scaled power--exponential phases & \nolinkurl{principalPowerExponentialPhase}, \nolinkurl{lowerPowerExponentialPhase}, \nolinkurl{powerExponentialLambertEpsilon}, \nolinkurl{lowerPowerExponentialPhaseIntrinsicMain} & \nolinkurl{PowerExponentialLambert.lean}, \nolinkurl{PowerExponentialLambertCalculus.lean}, \nolinkurl{PowerExponentialLambertInverse.lean}, and \nolinkurl{PowerExponentialLambertAsymptotics.lean} \\
+Real Lambert-branch curvature & \nolinkurl{deriv_deriv_principalLambertW}, \nolinkurl{deriv_deriv_lowerLambertW}, the lower sign iff family, \nolinkurl{strictConcaveOn_principalLambertW}, \nolinkurl{strictConvexOn_lowerLambertW_left}, \nolinkurl{strictConcaveOn_lowerLambertW_right} & \nolinkurl{LambertWCurvature.lean}; exact regular-domain second derivatives, with shape theorems including the branch point and inflection while the lower domain stays open at zero \\
+Generic scaled power--exponential phases & \nolinkurl{principalPowerExponentialPhase}, \nolinkurl{lowerPowerExponentialPhase}, \nolinkurl{powerExponentialLambertEpsilon}, \nolinkurl{lowerPowerExponentialPhaseIntrinsicMain}, \nolinkurl{deriv_principalPowerExponentialPhase_hasDerivAt}, \nolinkurl{deriv_deriv_principalPowerExponentialPhase}, \nolinkurl{deriv_lowerPowerExponentialPhase_hasDerivAt}, \nolinkurl{deriv_deriv_lowerPowerExponentialPhase} & \nolinkurl{PowerExponentialLambert.lean}, \nolinkurl{PowerExponentialLambertCalculus.lean}, \nolinkurl{PowerExponentialLambertInverse.lean}, \nolinkurl{PowerExponentialLambertAsymptotics.lean}, and \nolinkurl{PowerExponentialLambertCurvature.lean}; generic curvature sign/threshold/shape packages remain open \\
 Classical principal/lower Lambert reference coordinates & \nolinkurl{fabiusPrincipalLambertPhase}, \nolinkurl{fabiusLambertPhase} & \nolinkurl{PowerExponentialLambertFabius.lean} and \nolinkurl{FabiusLambertSaddle.lean} \\
+Fabius Lambert-phase curvature & \nolinkurl{fabiusLambertInflectionInput}, \nolinkurl{deriv_deriv_fabiusLambertPhase_eq_zero_iff}, \nolinkurl{strictConvexOn_fabiusLambertPhase_left}, \nolinkurl{strictConcaveOn_fabiusLambertPhase_right}, \nolinkurl{strictConvexOn_fabiusPrincipalLambertPhase} & \nolinkurl{PowerExponentialLambertFabiusCurvature.lean}; exact lower inflection and principal global-\nolinkurl{Iic} convexity \\
 Periodic correction \(\Psi\) & \nolinkurl{negativeLaplacePsi} & \nolinkurl{PeriodicCorrection.lean} \\
 Even Legendre truncation & \nolinkurl{rvachevLegendrePartialSumPolynomial} & \nolinkurl{FabiusLegendreLeastSquares.lean} \\
 \bottomrule
@@ -3723,15 +3855,18 @@ Module & Role in the development \\
 \nolinkurl{StirlingAsymptotics.lean} & Factorial and binomial asymptotics needed for the k-fold scale. \\
 \nolinkurl{LowerLambertW.lean} & Correctly defined lower Lambert branch, endpoint-inclusive continuity on \([-\exp(-1),0)\), smooth-interior calculus, divergence at zero, and intrinsic two-term small-argument expansion. \\
 \nolinkurl{PrincipalLambertW.lean} & Principal real branch, endpoint-inclusive continuity on \([-\exp(-1),\infty)\), smooth-interior calculus, unit derivative at zero, and \(W_0(z)\sim z\). \\
+\nolinkurl{LambertWCurvature.lean} & Nonsingular raw-branch second derivatives; principal strict concavity on its closed natural domain; and the lower branch's exact inflection, left strict convexity, and right strict concavity. \\
 \nolinkurl{PowerExponentialLambert.lean} & Definitions and exact solve laws for the principal and lower inverses of \(A\lambda^m e^{-\beta\lambda}\). \\
 \nolinkurl{PowerExponentialLambertCalculus.lean} & Interior derivative and order laws, plus full-domain continuity of both scaled phases through their common finite branch point. \\
+\nolinkurl{PowerExponentialLambertCurvature.lean} & Four regular-interior derivative-of-derivative and exact second-derivative declarations for the two generic scaled phases; no generic sign, threshold, or shape package. \\
 \nolinkurl{PowerExponentialLambertInverse.lean} & Exact images and \nolinkurl{InvOn} laws, classification of every nonnegative root below or at the peak, and strict-interior separation of the two roots. \\
 \nolinkurl{PowerExponentialLambertAsymptotics.lean} & Principal root equivalence, lower-branch divergence, and the intrinsic two-term \(\epsilon\)-expansion only; no cleaned \(L=\log(A/x)\) form or full series. \\
 \nolinkurl{PowerExponentialLambertFabius.lean} & Unit-rate generalized-coordinate bridge and the classical Fabius principal/lower specialization, including full-domain continuity, exact root dichotomy, interior separation, and the principal \(x\)-equivalence. \\
+\nolinkurl{PowerExponentialLambertFabiusCurvature.lean} & One definition and eighteen theorems: the lower phase's exact inflection and two shape intervals, plus principal calculus and strict convexity on the whole \nolinkurl{Iic} peak domain. \\
 \nolinkurl{PaperKFoldThueMorse.lean} & Aggregator separating exact results, repaired statements, and formal counterexamples. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Top-level packaging}}\\[0.25em]
-\nolinkurl{FabiusFunction.lean} & Umbrella import exposing the two paper audits, generic Volterra calculus and exact Fabius primitive ladders, shape and inverse/non-elementarity theory, computability, negative-Laplace and all-order/closed-form saddle APIs, k-fold audit, and Legendre developments. \\
+\nolinkurl{FabiusFunction.lean} & Umbrella import exposing the two paper audits, generic Volterra calculus and exact Fabius primitive ladders, shape and inverse/non-elementarity theory, computability, negative-Laplace and all-order/closed-form saddle APIs, raw and scaled Lambert curvature, k-fold audit, and Legendre developments. \\
 \addlinespace[0.45em]
 \bottomrule
 \end{longtable}
@@ -3783,11 +3918,22 @@ The subsequent five geometric and Lambert rows reflect source checkpoint
 The \nolinkurl{ImplicitPowerSeries.lean} row and the generic formal-root
 discussion are a post-snapshot foundation checked at source checkpoint
 \nolinkurl{cd9086a80cbecefecb9bc1e00378d151061595e0} on 28 August 2026.
-The seven Lambert rows from \nolinkurl{LowerLambertW.lean} through
-\nolinkurl{PowerExponentialLambertFabius.lean} record the current-tree
-endpoint-continuity, exact-root, and intrinsic-asymptotic tranche described
-in Section~\ref{ch:kfold}; their stated open boundaries are part of
-the crosswalk.
+The seven non-curvature Lambert rows from \nolinkurl{LowerLambertW.lean}
+through \nolinkurl{PowerExponentialLambertFabius.lean} record the
+current-tree endpoint-continuity, exact-root, and intrinsic-asymptotic
+tranche originating at source checkpoint
+\nolinkurl{925ca34a698cbd08703ec5d8abc65515730e30f6} and described in
+Section~\ref{ch:kfold}; their stated open boundaries are part of the
+crosswalk.  The three added rows
+\nolinkurl{LambertWCurvature.lean},
+\nolinkurl{PowerExponentialLambertCurvature.lean}, and
+\nolinkurl{PowerExponentialLambertFabiusCurvature.lean} are the current-tree
+curvature tranche, compiled 30 Aug 2026.  They are recorded
+declaration-by-declaration without a fabricated checkpoint or aggregate
+hash.  This tranche closes raw-branch curvature, the four generic
+second-derivative formulas, and the nineteen-declaration Fabius leaf; it
+does not close branch-point vertical-tangent limits, Puiseux expansions, or
+generic phase threshold and shape theorems.
 The title-page pin and reproduction count continue to describe the older
 audited snapshot.
 \end{remark}

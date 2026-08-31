@@ -2,7 +2,7 @@
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage[a4paper,margin=28mm]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
@@ -1168,7 +1168,7 @@ reported errors measure floating-point roundoff.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.92\textwidth]{figures/negative_duality_histogram.pdf}
+\includegraphics[width=0.92\textwidth]{figures/negative_duality_histogram.png}
 \caption{Independent simulations of \(X_{-1/2}\) and \(3X_{1/2}-1\).  The visual
 agreement supplements the exact digit-reflection coupling in
 \cref{tab:negative-coupling}.}
@@ -1179,7 +1179,7 @@ agreement supplements the exact digit-reflection coupling in
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.92\textwidth]{figures/plateau_phase.pdf}
+\includegraphics[width=0.92\textwidth]{figures/plateau_phase.png}
 \caption{For \(r=0.30\), the exact positive plateau is \([0.30,0.70]\) at height
 \(1/0.70\), while the negative plateau is
 \([0.09/0.70,1-0.09/0.70]\) at height \(1/1.30\).}
@@ -1190,7 +1190,7 @@ agreement supplements the exact digit-reflection coupling in
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.92\textwidth]{figures/gaussian_boundary.pdf}
+\includegraphics[width=0.92\textwidth]{figures/gaussian_boundary.png}
 \caption{Standardized densities for increasing \(r\), compared with the standard
 normal.  The exact excess kurtosis is \(-\frac65(1-r^2)/(1+r^2)\), and the measured
 Kolmogorov distance decreases consistently with \cref{thm:berry-esseen}.}

@@ -76,7 +76,7 @@ def write_exact(output: Path, order: int=12) -> list[sp.Rational]:
         gamma=sp.factor(sp.factorial(n)*an)     # multiplier sequence
         rows.append((n,an,c,gamma))
     with (output/'exact_coefficients.csv').open('w',newline='',encoding='utf-8') as f:
-        w=csv.writer(f); w.writerow(['n','a_n','c_n','gamma_n=n!*a_n'])
+        w=csv.writer(f,lineterminator='\n'); w.writerow(['n','a_n','c_n','gamma_n=n!*a_n'])
         w.writerows([[str(x) for x in row] for row in rows])
     with (output/'exact_coefficients_table.tex').open('w',encoding='utf-8') as f:
         f.write('% Generated automatically.\n\\begin{tabular}{rlll}\n\\toprule\n')
@@ -94,7 +94,7 @@ def write_asymptotics(output: Path, order: int, q0: float) -> list[mp.mpf]:
     ratio_limit=sigma**2/4
     ns=np.arange(2,order,dtype=int); roots=[]; ratios=[]
     with (output/'coefficient_asymptotics.csv').open('w',newline='',encoding='utf-8') as f:
-        w=csv.writer(f); w.writerow(['n','n^2*a_n^(1/n)','root_limit','n^2*a_(n+1)/a_n','ratio_limit'])
+        w=csv.writer(f,lineterminator='\n'); w.writerow(['n','n^2*a_n^(1/n)','root_limit','n^2*a_(n+1)/a_n','ratio_limit'])
         for n in ns:
             r=n*n*mp.power(a[n],mp.mpf(1)/n); rr=n*n*a[n+1]/a[n]
             roots.append(float(r)); ratios.append(float(rr))
@@ -113,7 +113,7 @@ def write_asymptotics(output: Path, order: int, q0: float) -> list[mp.mpf]:
 def write_zero_count(output: Path, maximum: int=4096) -> None:
     m=np.arange(1,maximum+1,dtype=int); d=np.array([-digit_sum(int(k)) for k in m])
     with (output/'zero_counting.csv').open('w',newline='',encoding='utf-8') as f:
-        w=csv.writer(f); w.writerow(['M','N_plus(M)=2M-s_2(M)','N_plus-2M'])
+        w=csv.writer(f,lineterminator='\n'); w.writerow(['M','N_plus(M)=2M-s_2(M)','N_plus-2M'])
         w.writerows([[int(k),positive_zero_count(int(k)),int(dd)] for k,dd in zip(m,d)])
     plt.figure(figsize=(7.2,4.4)); plt.plot(m,d,linewidth=.8); plt.xlabel('M')
     plt.ylabel(r'$N_+(M)-2M=-s_2(M)$'); plt.title('Binary discrepancy of the positive zero count')
@@ -124,7 +124,7 @@ def write_jensen_roots(output: Path, degree: int=5, last_shift: int=24) -> None:
     """High-precision roots of J_gamma^{d,n}; imaginary parts should be zero."""
     a=exact_coefficients(last_shift+degree); x=sp.symbols('x')
     with (output/'jensen_roots.csv').open('w',newline='',encoding='utf-8') as f:
-        w=csv.writer(f); w.writerow(['degree','shift','root','real','imaginary'])
+        w=csv.writer(f,lineterminator='\n'); w.writerow(['degree','shift','root','real','imaginary'])
         for shift in [0,1,4,8,16,last_shift]:
             poly=sum(sp.binomial(degree,j)*sp.factorial(shift+j)*a[shift+j]*x**j for j in range(degree+1))
             roots=sorted(sp.nroots(poly,n=70,maxsteps=300),key=lambda z:float(sp.re(z)))
