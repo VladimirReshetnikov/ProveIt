@@ -109,11 +109,15 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-30 inventory contains 601 modules and 8,200 lexically
+The post-union 2026-08-31 inventory contains 610 modules and 8,329 lexically
 visible public declarations, with zero missing module headers and zero missing
-doc comments.  The baseline records those zeroes, so every future source
-addition must preserve the full invariant rather than merely avoid worsening a
-historical backlog.
+doc comments.  This snapshot includes the expanded strictness and equality API
+in `InverseModulus.lean`, the new `ActivationTaylor.lean` module, and the
+reusable divided-slope bridge in `HyperbolicActivation.lean`.  The baseline
+records the current inventory and those zeroes, so every future source addition
+must preserve the full invariant rather than merely avoid worsening a
+historical backlog.  Run the script for live numbers after merging concurrent
+source work.
 
 ### What the review pass caught
 

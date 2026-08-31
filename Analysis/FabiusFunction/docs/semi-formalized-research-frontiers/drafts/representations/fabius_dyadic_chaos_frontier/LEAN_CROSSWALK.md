@@ -8,8 +8,11 @@ claims made in the paper.
 > **Critical status distinction.**  The symbols **P** and **I** in the paper
 > are *paper-provenance markers*: **P** means “proved in this report” and **I**
 > means “imported from the surrounding human-readable corpus.”  They do **not**
-> mean “proved in Lean.”  At the audited repository state, **none of the 36
-> nonconjectural labeled results is formalized in Lean as stated**.
+> mean “proved in Lean.”  The original intake contained 36 nonconjectural
+> labeled results.  The maintained report now contains 41: five deliberately
+> statement-exact additions are compiler-backed, and the original result #8
+> now has a statement-exact compiler-backed counterpart as well.  The other
+> 35 original results retain the status recorded below.
 
 ## Lean-status legend
 
@@ -23,6 +26,10 @@ claims made in the paper.
   or short composition of strong existing theorems, but that specialization or
   composition is not itself a Lean declaration.  This is still **not** a claim
   that the report theorem has compiled.
+- **Complete**: every mathematical clause of the report statement has an exact,
+  compiler-validated Lean counterpart under hypotheses no stronger than the
+  report's and with the same or a stronger conclusion.  No analytic,
+  probabilistic, indexing, or normalization bridge remains for that label.
 
 All declaration names below were checked against source declarations, not
 inferred from filenames.  Module names such as
@@ -33,34 +40,42 @@ inferred from filenames.  Module names such as
 
 | Report class | Number in report |
 |---|---:|
-| Theorem | 12 |
-| Proposition | 7 |
+| Theorem | 14 |
+| Proposition | 8 |
 | Lemma | 3 |
-| Corollary | 14 |
-| **Nonconjectural total** | **36** |
+| Corollary | 16 |
+| **Nonconjectural total** | **41** |
 
 | Lean status | Number below |
 |---|---:|
-| Unformalized | 14 |
-| Partial | 19 |
+| Unformalized | 12 |
+| Partial | 20 |
 | Near-complete | 3 |
-| **Crosswalk total** | **36** |
+| Complete | 6 |
+| **Crosswalk total** | **41** |
 
-The ordinal in the first column is solely an audit key.  Every
-theorem/proposition/lemma/corollary label from the TeX source occurs exactly
-once in the following table.
+The ordinal in the first column is solely an audit key.  The original keys
+1--36 remain stable; the five formalization-backed additions are appended as
+37--41 even though they occur at their natural expository locations in the
+report.  Every theorem/proposition/lemma/corollary label from the TeX source
+occurs exactly once in the following table.
+
+The activation evidence in row 8 and rows 37--41 tracks the source milestone
+`a345425d21d90e680bf15e34093af42c69c08a83`.  This current provenance
+supersedes the narrower historical activation checkpoint `7c8d1f1...`
+without rewriting that older checkpoint's evidence.
 
 | # | Exact report label and class | Report title | Provenance | Lean status | Existing declarations and exact remaining gap |
 |---:|---|---|:---:|---|---|
 | 1 | `thm:exact-Hoeffding` — theorem | Exact dyadic Hoeffding components | P | **Partial** | `Fabius.ProbabilityRepresentation.independent_uniform_coordinates`, `coordinate_has_uniform_law`, and `weightedUniformSeries` in `FabiusFunction.WeightedUniformSeries` construct the independent coordinates and their series; `Fabius.rvachevMeasure_eq_map_weightedSum` in `FabiusFunction.RandomSeriesLaw` identifies its law; `Fabius.integrable_exp_rvachevMeasure` in `FabiusFunction.GeometricCgfTails` supplies exponential integrability.  Missing are the coordinate conditional-expectation operators, the exact finite-support Hoeffding projections, orthogonality, and the unconditional `L²` sum over `Finset ℕ` with the tail normalization used in the report. |
-| 2 | `cor:R-product` — corollary | Second-moment product and refinement quotient | P | **Partial** | `Fabius.geometric_tail_dictionary_up` in `FabiusFunction.GeometricTailDictionary` gives exact finite-prefix MGF refinement.  `Fabius.centeredComplexGeneratingFunction_eq_centeredSincProduct` and `centeredComplexGeneratingFunction_shell` in `FabiusFunction.FourierLaplaceRotation` give the centered entire-product and shell laws.  The totalized hyperbolic odds `r`, the infinite product `R(t)=∏(1+r_j)`, and its identification with the report's real MGF quotient and variance have not been assembled. |
+| 2 | `cor:R-product` — corollary | Second-moment product and refinement quotient | P | **Partial** | `FabiusFunction.HyperbolicActivation` now defines the totalized real hyperbolic sinc and activation odds and proves `one_add_activationOdds`, `activationOdds_nonneg`, and `activationOdds_pos_iff`.  `Fabius.geometric_tail_dictionary_up` in `FabiusFunction.GeometricTailDictionary` gives exact finite-prefix MGF refinement, while `Fabius.centeredComplexGeneratingFunction_eq_centeredSincProduct` and `centeredComplexGeneratingFunction_shell` in `FabiusFunction.FourierLaplaceRotation` give the centered entire-product and shell laws.  Missing are the summable infinite odds product `R(t)=∏(1+r_j)`, its exact identification with the report's real MGF quotient, and the variance formula. |
 | 3 | `prop:chaos-refinement` — proposition | Dyadic chaos refinement | P | **Partial** | `Fabius.centeredComplexGeneratingFunction_shell` in `FabiusFunction.FourierLaplaceRotation` is the exact dyadic shell analogue.  Lean lacks the bivariate chaos product `C(t,z)`, its coefficients `A_k`, the coefficient recurrence, and the logarithmic-derivative identity for `A_1`. |
 | 4 | `prop:Newton-Bell` — proposition | Newton--Bell formula | P | **Partial** | `Fabius.completeBellPolynomial` and `completeBellPolynomial_succ` in `FabiusFunction.MomentCumulantAlgebra`, `Fabius.elementarySymmetricEval` in `FabiusFunction.SymmetricFunctionOrthogonality`, `Fabius.elementarySymmetricGeneratingSeries_eq_prod` in `FabiusFunction.SymmetricFunctionGenerating`, and the logarithmic product APIs `Fabius.hasSum_powerSum_log_one_sub` / `tsum_log_one_sub` in `FabiusFunction.EulerLogTransform` formalize the finite/formal algebra.  The summable odds sequence `j ↦ r(t2⁻ʲ)`, its power sums `s_l`, and the analytic passage from the infinite product to the displayed Bell formula are absent. |
-| 5 | `thm:active-set-law` — theorem | Variance shares are an active-set law | P | **Unformalized** | No declaration defines the Bernoulli active set with probabilities `p_j=r_j/(1+r_j)` or identifies its law with normalized Hoeffding energy.  This should be proved first as a general finite/countable product-observable theorem and then specialized to dyadic uniform coordinates. |
+| 5 | `thm:active-set-law` — theorem | Variance shares are an active-set law | P | **Unformalized** | `FabiusFunction.HyperbolicActivation` now supplies the totalized probabilities `activationProbability` and their exact odds bridge.  No declaration constructs the independent Bernoulli active set with those coordinate probabilities or identifies its law with normalized Hoeffding energy.  This should be proved first as a general finite/countable product-observable theorem and then specialized to dyadic uniform coordinates. |
 | 6 | `cor:no-active` — corollary | No-active atom | P | **Unformalized** | The requisite `R` and active-set law are missing.  Existing MGF/product infrastructure does not state `P(K_t=0)=1/R(t)` or the chi-square/Esscher interpretation. |
 | 7 | `cor:Sobol` — corollary | Closed Sobol formulae | P | **Unformalized** | No Lean API currently defines these first-order/total-effect Sobol indices or the finite-coordinate Hoeffding projection norm and error.  It depends on #1 and #5. |
-| 8 | `lem:p-bounds` — lemma | Activation bounds | P | **Unformalized** | Neither the totalized activation function `p(0)=0`, `p(x)=1-tanh(x)/x` for `x≠0`, nor its bounds and Taylor jet are declared.  The recommended first step is a reusable totalized hyperbolic-kernel module rather than repeated side conditions `x≠0`. |
-| 9 | `cor:K-variance-bound` — corollary | Uniform interaction-count variance | P | **Unformalized** | No `K_t` or Bernoulli variance sum exists in Lean.  Once #8 and the active-count construction exist, the coarse/fine dyadic split proves the explicit `22/9` bound. |
+| 8 | `lem:p-bounds` — lemma | Activation bounds | P | **Complete** | `FabiusFunction.HyperbolicActivation` defines the totalized `activationProbability`, proves its value at zero and the off-zero identity `activationProbability_of_ne_zero`, continuity and evenness, strict positivity exactly away from zero, the global bounds `activationProbability_le_min_one_sq_div_three` and `activationProbability_lt_one`, and the complementary positive-argument bound `one_sub_activationProbability_le_min_one_inv_of_pos`.  The identity `Fabius.tanhDiv_eq_dslope` identifies the removable quotient with the divided slope of `Real.tanh`.  In `FabiusFunction.ActivationTaylor`, `Fabius.tanh_sub_taylor_nine_isBigO` proves the degree-nine hyperbolic-tangent jet with an `O(||x||^11)` remainder; `Fabius.activationProbability_sub_taylor_eight_isBigO` transfers it to the report's activation polynomial with an `O(||x||^10)` remainder; and `Fabius.activationProbability_sub_taylor_eight_isBigO_pow` gives the literal human-facing `O(x^10)` form.  Together with the already formalized bounds, these declarations cover every clause of the report lemma under no stronger hypotheses. |
+| 9 | `cor:K-variance-bound` — corollary | Uniform interaction-count variance | P | **Unformalized** | The local inequalities needed for the coarse/fine split are now proved in `FabiusFunction.HyperbolicActivation`.  No Lean object `K_t`, Bernoulli variance sum, or theorem identifying that variance with `∑ p_j(1-p_j)` exists.  After the active-count construction, the remaining work is the dyadic split yielding the explicit `22/9` constant. |
 | 10 | `prop:local-Parseval` — proposition | Local active-degree Parseval identity | P | **Partial** | `Fabius.legendrePolynomial` and `integral_sq_eval_legendrePolynomial` in `FabiusFunction.LegendrePolynomial`, the orthogonality theorem `Fabius.integral_eval_legendrePolynomial_mul` in `FabiusFunction.FabiusLegendreSeries`, and `Fabius.hasSum_rvachevLegendreCoefficient_energy` in `FabiusFunction.FabiusLegendreEnergy` provide the one-dimensional Parseval pattern.  Lean lacks the modified spherical-Bessel coefficients `i_n(x)`, their exponential Legendre expansion, the local energy identity, and the totalized degree law `D(0,z)=z`. |
 | 11 | `thm:tensor-Legendre` — theorem | Exact tensor-Legendre coefficients | P | **Partial** | The same `FabiusFunction.LegendrePolynomial` foundation and `Fabius.hasSum_legendrePolynomialSeries_eq` / `hasSum_legendrePolynomialSeries_eq_uniform` in `FabiusFunction.LegendreSeriesConvergence` formalize one-dimensional Legendre completeness and convergence; the `FabiusLegendre*` modules formalize a one-dimensional Rvachev expansion only.  Missing are finitely supported multi-indices, infinite tensor basis/conditional-expectation limits, the coefficient product, and the support-energy/Hoeffding identification. |
 | 12 | `cor:joint-generating` — corollary | Joint interaction-degree generating function | P | **Unformalized** | No marked active-set process or tensor-coefficient probability generating function is defined.  This follows only after #5, #10, and #11, including the origin convention for `D`. |
@@ -72,12 +87,12 @@ once in the following table.
 | 18 | `prop:all-monomial-components` — proposition | All monomial Hoeffding components | P | **Partial** | `Fabius.integral_eval₂_eq_sum_completeBell_momentCumulant` in `FabiusFunction.PolynomialExpectationCumulant` and `Fabius.completeBellPolynomial` in `FabiusFunction.MomentCumulantAlgebra` formalize polynomial expectations through cumulants; `Fabius.centeredRvachevEvenCumulant_eq_bernoulliMersenne_formula` in `FabiusFunction.SinhDivBernoulliLog` supplies the dyadic cumulants.  The conditional multinomial expansion indexed by a finite coordinate set and the product of centered local powers remain absent. |
 | 19 | `cor:analytic-tail` — corollary | Analytic-observable order tail | P | **Unformalized** | The report-specific Hoeffding components, total order energy, dyadic q-Pochhammer bound, and orthogonal truncation operator are all missing, so the superexponential tail has no current Lean statement. |
 | 20 | `thm:q-leading` — theorem | Dyadic q-binomial chaos asymptotic | P | **Partial** | `FabiusFunction.BitPositionQBinomial`, `FabiusFunction.FiniteQBinomialCore`, `FabiusFunction.SymmetricFunctionGenerating`, and `FabiusFunction.MomentPowerSeries` supply finite q-binomial, symmetric-function, and power-series algebra.  Lean still lacks the analytic local-odds series, the infinite elementary-symmetric coefficient `A_k(t)`, uniform summable remainder control, and the first-correction asymptotic. |
-| 21 | `cor:q-leading-general` — corollary | General geometric-q leading law | P | **Partial** | `Fabius.geometricUniformWeight` / `geometricUniformSeries` in `FabiusFunction.GeometricUniformLaw` and `Fabius.geometric_tail_dictionary_geometricUniform` in `FabiusFunction.GeometricUniformDictionary` construct the q-law and its refinement.  The q-dependent chaos coefficient and its fixed-q small-field asymptotic are not declared. |
+| 21 | `cor:q-leading-general` — corollary | General geometric-q leading law | P | **Partial** | `Fabius.geometricUniformWeight` / `geometricUniformSeries` in `FabiusFunction.GeometricUniformLaw` and `Fabius.geometric_tail_dictionary_geometricUniform` in `FabiusFunction.GeometricUniformDictionary` construct the q-law and its refinement.  `FabiusFunction.GeometricActivationDimension` formalizes summability, refinement, positivity, certified finite-prefix bounds, and the normalized squared-weight sum; `Fabius.tendsto_geometricActivationDimension_div_sq` gives the deterministic activation sum's exact fixed-q leading coefficient `(1-q)/(3*(1+q))` whenever `|q|<1`.  The report corollary instead concerns the q-dependent chaos coefficient `A_k^(q)`, whose infinite elementary-symmetric identity, q-binomial factor, and small-field asymptotic remain absent. |
 | 22 | `cor:small-order-law` — corollary | Small-field order law | P | **Unformalized** | The active count, conditional order law, and asymptotics of `A_k/(R-1)` are all absent.  This should be a short corollary only after #5, #20, and the `A_1` leading term are formalized. |
 | 23 | `prop:Bell-Bernoulli-energy` — proposition | Bell--Bernoulli energy coefficients | P | **Partial** | `Fabius.centeredRvachevEvenCumulant_eq_bernoulliMersenne_formula` in `FabiusFunction.SinhDivBernoulliLog`, `Fabius.completeBellPolynomial` in `FabiusFunction.MomentCumulantAlgebra`, and the power-series infrastructure in `FabiusFunction.MomentPowerSeries` formalize the coefficient algebra.  Missing are the report's `R`, `log R`, their analytic identities, and the distinct radius proofs (`pi` for `log R`, `4*pi` for `R` and `R-1`). |
-| 24 | `prop:mu-refinement` — proposition | Effective-dimension refinement | P | **Unformalized** | No totalized `p`, effective mean `mu(t)=sum_j p(t2⁻ʲ)`, q-general mean, refinement identity, or convergent Bernoulli series exists in Lean. |
-| 25 | `thm:Mellin-p` — theorem | Closed Mellin transforms | P | **Partial** | `Fabius.bose_mellin_integral_zeta` in `FabiusFunction.MellinBose`, `Fabius.mellin_boseRegularizedMellinKernel_eq_gammaZeta_of_pos_re` and `mellin_boseRegularizedMellinKernel_eq_gammaZeta_of_re_zero` in `FabiusFunction.PeriodicFourier`, plus `FabiusFunction.MellinFinitePart` / `BoseFinitePartIntegral`, provide close Mellin--Gamma--zeta templates.  The activation profile, its derivative, the sech-squared transform, the two convergence strips, integration by parts, and the boundary continuation convention are not formalized. |
-| 26 | `thm:mu-phase` — theorem | Exact dyadic phase expansion | P | **Unformalized** | No renormalized lattice sum `P(theta)`, periodic correction `Q`, or exact `2/t` tail decomposition for `mu` is declared. |
+| 24 | `prop:mu-refinement` — proposition | Effective-dimension refinement | P | **Partial** | `FabiusFunction.GeometricActivationDimension` defines the totalized geometric activation sum and the dyadic specialization; proves summability for `|q|<1`, the generic and dyadic refinement identities, exact finite-prefix splittings, positivity, the simplified normalized quadratic bound, and certified generic and dyadic tails.  `Fabius.tendsto_geometricActivationDimension_div_sq` and `Fabius.tendsto_dyadicEffectiveDimension_div_sq` now give the deterministic series' exact leading coefficients.  Its algebraic theorem includes negative `q`; the probability-law interpretation remains restricted to the report's `0<q<1`.  Missing are the Bernoulli coefficient formulas, the full convergent power-series identities for `mu` and `mu_q` with their stated radii, and the formal bridge from the deterministic dyadic sum to the active-count expectation.  Hence the compound proposition remains Partial. |
+| 25 | `thm:Mellin-p` — theorem | Closed Mellin transforms | P | **Partial** | `Fabius.bose_mellin_integral_zeta` in `FabiusFunction.MellinBose`, `Fabius.mellin_boseRegularizedMellinKernel_eq_gammaZeta_of_pos_re` and `mellin_boseRegularizedMellinKernel_eq_gammaZeta_of_re_zero` in `FabiusFunction.PeriodicFourier`, plus `FabiusFunction.MellinFinitePart` / `BoseFinitePartIntegral`, provide close Mellin--Gamma--zeta templates.  The totalized activation profile and its elementary global bounds now exist in `FabiusFunction.HyperbolicActivation`.  Lean still lacks its derivative formula as a reusable activation theorem, the sech-squared Mellin transform, the two convergence strips, the integration-by-parts bridge, and the boundary continuation convention. |
+| 26 | `thm:mu-phase` — theorem | Exact dyadic phase expansion | P | **Unformalized** | `FabiusFunction.GeometricActivationDimension` now defines the dyadic activation sum and proves its refinement and quantitative tail.  No renormalized bilateral lattice sum `P(theta)`, periodic correction `Q`, Mellin-derived phase expansion, or exact `2/t` remainder decomposition is declared. |
 | 27 | `thm:Q-Fourier` — theorem | Fourier coefficients of the phase | P | **Partial** | `Fabius.negativeLaplacePsiFourierCoeff_eq_gamma_zeta`, `summable_negativeLaplacePsiFourierCoeff`, and `hasSum_negativeLaplacePsi_fourierSeries` in `FabiusFunction.PeriodicFourier` prove a closely analogous Fourier reconstruction for the negative-Laplace phase.  They do not concern the active-count phase `Q`; the Mellin-to-Fourier transfer and its coefficients must be repeated for the new kernel. |
 | 28 | `thm:phase-law` — theorem | Dyadic phase law in total variation | P | **Unformalized** | No bilateral integer-valued phase variable `K_theta`, coupling with `K_t`, total-variation bound, or locally uniform Laurent probability-generating product on `ℂˣ` exists in Lean. |
 | 29 | `cor:no-CLT-width` — corollary | No central-limit widening | P | **Unformalized** | The phase coupling and active-count variance series are missing.  The formal proof should use the report's direct tail identity rather than infer uniform integrability of squares from bounded second moments. |
@@ -88,20 +103,25 @@ once in the following table.
 | 34 | `cor:Walsh-corner` — corollary | Highest Walsh sign coefficient | P | **Partial** | `Fabius.sum_thueMorseSign_smul_eq_mixedDifference` in `FabiusFunction.ThueMorseMixedDifference` gives the finite sign/mixed-difference algebra.  Lean lacks the sign--magnitude probability construction, conditioning on magnitudes and a tail variable, and the conditional-expectation normalization `2^(-N)`. |
 | 35 | `prop:Rodrigues-bound` — proposition | Rodrigues bound for local coefficients | P | **Partial** | `Fabius.legendrePolynomial` in `FabiusFunction.LegendrePolynomial` uses Rodrigues normalization, while `Fabius.oddDoubleFactorial`, `oddDoubleFactorial_succ`, and `oddDoubleFactorial_pos` in `FabiusFunction.Arithmetic` provide the denominator arithmetic.  The complex coefficient `i_n(x)`, repeated integration by parts with endpoint vanishing, the beta integral, and the complex norm bound are missing. |
 | 36 | `cor:Lambert-degree` — corollary | Lambert-W inversion rule | P | **Partial** | `Fabius.principalLambertW_mul_exp` and `principalLambertW_unique` in `FabiusFunction.PrincipalLambertW`, `Fabius.log_factorial_sub_main_isBigO_log` in `FabiusFunction.StirlingAsymptotics`, and the `PowerExponentialLambert*` modules formalize the inversion technology.  The exact envelope `b_n(x)`, monotone-tail threshold `n_epsilon(x)`, certified tail, odd-double-factorial asymptotic, and the stated epsilon-to-zero asymptotic have not been connected. |
+| 37 | `thm:totalized-activation-dictionary` — theorem | Totalized activation dictionary | P | **Complete** | `FabiusFunction.HyperbolicActivation` supplies the literal real-valued statement through the `realSinhc` and `tanhDiv` continuity, parity, positivity, double-angle, and comparison declarations; `Fabius.tanhDiv_eq_dslope`, which identifies `tanhDiv` with the divided slope of `Real.tanh` at the origin; `one_add_activationOdds`, `one_add_activationOdds_pos`, `activationOdds_of_ne_zero`, `activationOdds_nonneg`, `activationOdds_pos_iff`; and the global odds/probability bridge, sign, and off-zero quotient declarations.  The theorem concerns the real totalized kernel; it does not claim the complex sinc API, a random-variable construction, or an all-order Taylor series. |
+| 38 | `cor:sharp-activation-quadratic` — corollary | Sharp quadratic activation coefficient | P | **Complete** | `Fabius.tendsto_activationProbability_div_sq` and `Fabius.tendsto_activationProbability_mul_div_sq` in `FabiusFunction.ActivationAsymptotics` give the literal punctured-neighborhood limits `activationProbability x / x^2 -> 1/3` and `activationProbability (a*x) / x^2 -> a^2/3` for every real `a`, including zero.  The proof uses one l'Hopital step and the continuous totalization `tanhDiv`; no Taylor-series conclusion is inferred. |
+| 39 | `prop:geometric-activation-dimension` — proposition | Geometric activation dimension | P | **Complete** | `FabiusFunction.GeometricActivationDimension` proves termwise comparison, summability for `|q|<1`, the exact and simplified geometric budgets, `hasSum_normalizedGeometricWeight_sq`, zero/nonnegative/even laws, positivity exactly off zero, one-step and finite-prefix refinements, certified prefix enclosures, and all stated dyadic specializations.  `Fabius.tendsto_geometricActivationDimension_div_sq` and `Fabius.tendsto_dyadicEffectiveDimension_div_sq` in `FabiusFunction.GeometricActivationAsymptotics` prove the exact punctured coefficient `(1-q)/(3*(1+q))` and its dyadic specialization `1/9`.  For negative `q`, this activation result is used here only as a deterministic signed-weight series theorem; the report's positive-weight active-count interpretation remains restricted to `0<q<1`, and equality with `E K_t` is not claimed by this result. |
+| 40 | `cor:dyadic-activation-truncation` — corollary | Certified dyadic activation truncation | P | **Complete** | `dyadicEffectiveDimension_eq_sum_range_add`, `dyadicEffectiveDimension_nonneg`, and `dyadicEffectiveDimension_tail_le` give exactly the first-`N` split and tail bound under the index correspondence `j=n+1`.  The omitted term is `dyadicEffectiveDimension ((1/2)^N*t)` and its bound is `(t^2/9)*(1/4)^N = t^2/(9*4^N)`.  This is a deterministic activation-sum theorem, not yet a probability-of-omission statement. |
+| 41 | `thm:square-summable-activation-series` — theorem | Square-summable activation series | P | **Complete** | `Fabius.activationProbability_mul_le_quadratic`, `summable_activationProbability_mul_of_summable_sq`, and `tsum_activationProbability_mul_le` in `FabiusFunction.ActivationSeries` prove the pointwise rescaled bound, genuine summability, and global budget for every arbitrary-index square-summable real family, including signed and zero weights.  `Fabius.tendsto_activationProbability_mul_div_sq` is the pointwise scaled-limit engine, and `Fabius.tendsto_tsum_activationProbability_mul_div_sq` in `FabiusFunction.ActivationSeriesAsymptotics` passes it through the sum by Tannery's theorem.  The summability hypothesis rules out reliance on totalized fallback `tsum` semantics. |
 
 ### Count check by class and Lean status
 
-| Class | Unformalized | Partial | Near-complete | Total |
-|---|---:|---:|---:|---:|
-| Theorem | 3 | 7 | 2 | 12 |
-| Proposition | 1 | 6 | 0 | 7 |
-| Lemma | 2 | 1 | 0 | 3 |
-| Corollary | 8 | 5 | 1 | 14 |
-| **Total** | **14** | **19** | **3** | **36** |
+| Class | Unformalized | Partial | Near-complete | Complete | Total |
+|---|---:|---:|---:|---:|---:|
+| Theorem | 3 | 7 | 2 | 2 | 14 |
+| Proposition | 0 | 7 | 0 | 1 | 8 |
+| Lemma | 1 | 1 | 0 | 1 | 3 |
+| Corollary | 8 | 5 | 1 | 2 | 16 |
+| **Total** | **12** | **20** | **3** | **6** | **41** |
 
 ## Conjectures and open problems
 
-These seven labels are deliberately excluded from the 36-result count.  A
+These seven labels are deliberately excluded from the 41-result count.  A
 future Lean file may encode them as named propositions for vocabulary and
 dependency tracking, but it must not assert them as theorems.
 
@@ -180,10 +200,21 @@ Lean rather than defects in the repaired paper statement:
 
 The following order maximizes reuse and exposes errors early.
 
-1. **Totalized local kernels.**  Define `realSinhc`, `tanhDiv`, `r`, and `p` at
-   zero; prove positivity, the odds/probability bridge, dyadic summability,
-   activation bounds, and the small Taylor jets.  This unlocks #2--#9 and
-   #20--#30.
+1. **Finish the local analytic series.**  The compiler-validated
+   `HyperbolicActivation`, `ActivationTaylor`, `ActivationSeries`,
+   `ActivationAsymptotics`, `ActivationSeriesAsymptotics`,
+   `GeometricActivationDimension`, and `GeometricActivationAsymptotics`
+   modules now provide totalized `realSinhc`, `tanhDiv`, odds and probability,
+   all elementary activation bounds, the report's finite Taylor jet, the
+   scaled sharp quadratic limit, arbitrary-index square-summable budgets and
+   Tannery limit, geometric/dyadic summability and refinement, normalized
+   geometric-weight square sum, exact finite-prefix splitting, certified
+   geometric tails, and sharp geometric/dyadic coefficients.  The remaining
+   local analytic milestone is the all-order Bernoulli coefficient series and
+   its exact convergence-radius statements.  That work closes the analytic
+   clauses of original report row #24 and feeds #2--#7 and #9--#30, but row
+   #24 remains Partial until the deterministic dyadic sum is identified with
+   the active-count expectation `E K_t`.
 2. **Finish the symmetric Thue--Morse specialization.**  The compiled
    `FabiusFunction.ThueMorseSymmetricDifference` module now supplies the
    centered wrapper, exact Boolean-cube expansion, polynomial extraction and
