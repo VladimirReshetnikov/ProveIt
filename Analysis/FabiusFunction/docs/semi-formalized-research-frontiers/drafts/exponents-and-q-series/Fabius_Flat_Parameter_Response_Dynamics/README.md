@@ -56,9 +56,11 @@ pdflatex -interaction=nonstopmode -halt-on-error -file-line-error fabius_frontie
 ~~~
 
 The document uses the repository’s canonical primary preamble: A4 paper, 27 mm margins, and
-Libertinus fonts when available. The validated artifact is 26 pages and its exact geometry,
-font, text-extraction, visual-inspection, and log facts are recorded in
-**PDF_VALIDATION.txt**. Remove LaTeX auxiliary files after validation.
+Libertinus fonts when available. The current 1,890-line source matches the 26-page PDF; its
+exact identity, geometry, font, and text-extraction facts are recorded in
+**PDF_VALIDATION.txt**. That receipt distinguishes the current structural checks from the
+earlier log and all-page visual inspection rather than carrying obsolete source-line
+coordinates forward. Remove LaTeX auxiliary files after validation.
 
 ## Reproducing the numerical layer
 

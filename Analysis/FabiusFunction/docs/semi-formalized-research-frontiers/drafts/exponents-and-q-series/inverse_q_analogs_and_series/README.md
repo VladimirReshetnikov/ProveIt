@@ -34,12 +34,18 @@ reference; `Cyclotomic_q_Fabius_Rvachev_Frontier/` retains the wider
 natural-boundary and cyclotomic blow-up program.  `PROVENANCE.md` records these
 and the other scope boundaries explicitly.
 
-The publication gate completed on 2026-08-31.  Three serial pdfLaTeX passes
-produced the committed 85-page PDF with a clean final log: no undefined or
-multiply defined references, rerun request, package warning, or underfull or
-overfull box.  All 85 pages were rasterized and inspected.  `pdfinfo` confirms
-A4, complete title/author/subject/keyword metadata, and no encryption;
-`pdffonts` reports 27 embedded/subset Type-1 rows, five Libertinus rows, and no
-Type 3 font.  The 43-entry retained-asset ledger verifies exactly, and the
-revision-backed audit reproduces all 260 concordance rows across the ten
-immutable source fields.
+The current notation-normalized artifact was rebuilt in three serial pdfLaTeX
+passes on 2026-08-31.  Its composite source has 6,689 lines across the driver
+and nine chapters; the 138-line driver has SHA-256
+`58e55a307357710bc10486511ebc9a30c203b15f9553872e10b1ffa9fb7e448f`.
+The matching 971,970-byte PDF has 85 A4 pages and SHA-256
+`db5e5d4835871f8802a96ffd20ed88fe87fd6ce3ba6824ce3f3728db3a10ed1b`.
+It is unencrypted and has extractable text; all 27 Type-1 font rows are
+embedded/subset, five are Libertinus rows, and none is Type 3.
+
+The earlier publication-gate receipt records a clean final log and an all-page
+visual inspection for the canonical layout.  Those two inspections were not
+rerun during this metadata-only refresh, so their warning counts are not
+silently projected onto the rebuilt bytes.  The 43-entry retained-asset ledger
+still verifies exactly, and the revision-backed audit reproduces all 260
+concordance rows across the ten immutable source fields.
