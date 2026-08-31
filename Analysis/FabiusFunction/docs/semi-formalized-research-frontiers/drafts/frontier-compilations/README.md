@@ -1,5 +1,11 @@
 # Frontier compilations
 
+> **Source-only merge status (2026-08-31).** Canonical-notation edits changed
+> the consolidated `Frontier_Compilations.tex`, but the retained 274-page PDF
+> was not rebuilt. Its previous page, font, and build facts are historical
+> validation facts rather than a synchronization claim; recompilation and any
+> dependent metadata refresh are deferred.
+
 The Digital Spectral Geometry intake is registered once, in the
 [`spectra-and-arithmetic`](../spectra-and-arithmetic/) group.  That filing
 preserves the full verified arrival ledger, repairs the failed audit and
@@ -50,7 +56,7 @@ audited packages, without wholesale textual duplication.
   establishes that any manuscript theorem is proved in Lean.
 
 The broad multi-topic "collected new results" report series,
-consolidated (2026-08-28) into the 275-page single volume
+consolidated (2026-08-28) into the retained 274-page single volume
 [`Frontier_Compilations/`](Frontier_Compilations/): ten absorbed reports,
 displayed as ten outer parts.
 

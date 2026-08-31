@@ -65,7 +65,9 @@ establish Lean verification.
   Proof-Complete Synthesis* (85 A4 pages), is the canonical consolidation of
   the six former inverse-q and forward-expansion packages.  Its
   [`theorem_concordance.csv`](inverse_q_analogs_and_series/theorem_concordance.csv)
-  accounts for all 260 source result environments, while
+  accounts for all 260 source result environments, with the revision-backed
+  audit validating 260/260 rows; the retained-asset checksum ledger verifies
+  43/43 entries.  The
   [`PROVENANCE.md`](inverse_q_analogs_and_series/PROVENANCE.md) and
   [`assets/ASSET_DISPOSITION.csv`](inverse_q_analogs_and_series/assets/ASSET_DISPOSITION.csv)
   preserve package-, result-, archive-, and asset-level provenance.  Unique
@@ -700,9 +702,9 @@ matching `assets/` directories.
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Second member: `q_pochhammer_q_binomial_monograph/`
-(212 A4 pp; book class; 13,111 source lines and a 1,574,592-byte PDF;
-rebuilt after the exact `q = -1` and generalized sinc--Pochhammer crosswalk
-updates) —
+(212-page last validated A4 PDF; book class; the current source-only merge is
+13,121 lines while the retained PDF is 1,576,424 bytes; the PDF was not
+rebuilt after the merged sinc--Pochhammer crosswalk update) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather

@@ -82,7 +82,7 @@ Most recent processed batch (all filed and removed on 2026-08-30):
 - `geometric_comb_interpolation_report-3.zip` (1,296,171 bytes; SHA-256
   `89c9de31b9b78b614c13d5a3ff24ae41b73ef6704a9daef77ba724b396e90fa0`)
   was a unique arrival, not a reship, and became the quick-gate archival package
-  [`../inverse-and-sampling/geometric_comb_lagrange_jackson_newton_report/`](../inverse-and-sampling/geometric_comb_lagrange_jackson_newton_report/).
+  [`../inverse-and-sampling/comb-interpolation/geometric_comb_interpolation_report-3/`](../inverse-and-sampling/comb-interpolation/geometric_comb_interpolation_report-3/).
   Its submitted TeX/PDF remain unchanged; deeper audit, numerical replay,
   canonicalization, and rebuild are deliberately deferred.
 - `Fabius_Zero_Bias_Frontier_Report.zip` (1,300,870 bytes; SHA-256
@@ -92,7 +92,7 @@ Most recent processed batch (all filed and removed on 2026-08-30):
 - `Inverse_Fabius_Computability_Report.zip` (689,198 bytes; SHA-256
   `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`)
   became
-  [`../inverse-and-sampling/Inverse_Fabius_Computability_Report/`](../inverse-and-sampling/Inverse_Fabius_Computability_Report/).
+  [`../inverse-and-sampling/inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report/`](../inverse-and-sampling/inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report/).
 - `fabius_frontier_report_bundle-D.zip` (1,508,514 bytes; SHA-256
   `39f3638f52f19955b88b7a865a60b76d9ce31154d98967d1400a6ad97396fa9a`)
   became
@@ -100,15 +100,17 @@ Most recent processed batch (all filed and removed on 2026-08-30):
 - `inverse_fabius_iterates_nowhere_analytic.zip` (1,137,032 bytes; SHA-256
   `8b1c05d59e120ecd20d69cd5aeb0009639f2f3b9a6c9fef32bdf82270eee16bd`)
   became
-  [`../inverse-and-sampling/inverse_fabius_iterates_nowhere_analytic/`](../inverse-and-sampling/inverse_fabius_iterates_nowhere_analytic/).
+  [`../inverse-and-sampling/analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/`](../inverse-and-sampling/analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/).
 - `inverse_q_analogs_report.zip` (894,405 bytes; SHA-256
   `471ee715022df77f2c5f45b86c213e50e980478eee1a6fc48dd91556cdaeb627`)
-  became
-  [`../exponents-and-q-series/inverse_q_analogs_report/`](../exponents-and-q-series/inverse_q_analogs_report/).
+  was absorbed into the canonical consolidation
+  [`../exponents-and-q-series/inverse_q_analogs_and_series/`](../exponents-and-q-series/inverse_q_analogs_and_series/),
+  whose provenance and asset-disposition ledgers preserve the arrival.
 - `q_pochhammer_q_binomial_expansions_report.zip` (730,285 bytes; SHA-256
   `e8c6e5be4512abc0bacfd904e3f0027b35fd5e47e916a6ad11cc76b2893b3a07`)
-  became
-  [`../exponents-and-q-series/q_pochhammer_q_binomial_expansions_report/`](../exponents-and-q-series/q_pochhammer_q_binomial_expansions_report/).
+  was absorbed into the canonical consolidation
+  [`../exponents-and-q-series/inverse_q_analogs_and_series/`](../exponents-and-q-series/inverse_q_analogs_and_series/),
+  whose provenance and asset-disposition ledgers preserve the arrival.
 
 The immediately preceding processed archive was
 `Fabius_Rvachev_Frontier_Report_Package.zip` (outer SHA-256

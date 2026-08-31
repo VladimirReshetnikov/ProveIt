@@ -73,6 +73,20 @@ New standalone intake members:
   formalization description do not independently establish current Lean
   verification.
 
+- [`fabius_information_frontier/`](fabius_information_frontier/), *Exact
+  Information Geometry and New Frontiers for the Fabius--Rvachev System*
+  (retained submitted 30-page PDF; current 2,137-line TeX), was filed on
+  2026-08-30 from `fabius_information_frontier_report.zip` (outer SHA-256
+  `41f9aba6eb85bb173827f13cb6b7b1d54b7ea9346faf7c9e5b1af859bbd42ec7`)
+  and moved here from `frontier-compilations` in the latest thematic
+  reorganization. Its immutable 18-entry arrival ledger verified the submitted
+  payload and is preserved byte-for-byte. The operational ledger was not
+  refreshed after the source-only notation migration: its TeX and README rows
+  are pending and its other seventeen rows pass. The retained PDF was not
+  rebuilt from the current source. It remains an archival intake rather than a
+  claim-level acceptance; manuscript theorem labels do not establish Lean
+  verification.
+
 - [`geometric_comb_q_fabius_report/`](comb-interpolation/geometric_comb_q_fabius_report/),
   *Geometric-Comb Interpolation, Gaussian Pascal Transforms, and the
   Fabius--Rvachev Boundary Layer* (retained 68-page A4 PDF; current
@@ -177,7 +191,7 @@ New standalone intake members:
   theorem, and precision asymptotics remain open Lean work. The `d_*` claim
   remains denominator-minimal only for the fixed dyadic proxy `2^{-r(n)}`, not
   the weaker target `1/n`. The current 2,937-line source has SHA-256
-  `9945b23025006337e87001332db7a1141896b2f29f0d715fa85261682a6b0397`;
+  `3ee69aa0c27486d5005e4d5f8448b36a8133083c8b79df51e9d08a5af56880b5`;
   the retained 42-page A4 PDF has 711,374 bytes and SHA-256
   `5a9976f9ece840d1b8456b4ea3753c36e369cbade8caff1c04158cc7d33cff75`.
   That PDF was built at the preceding checkpoint in exactly three strict
@@ -221,9 +235,10 @@ the inverse Taylor series, and the Bell--Lagrange formula also remain open.
 ## `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers/`
 
 The current merged root has 6,608 lines. Its retained 100-page PDF was not
-rebuilt after the notation merge. The covering 12-entry ledger under
-`assets/Fabius_Inverse_Frontier_Report_Source_and_PDF/` was not refreshed;
-the root-TeX row is pending and its other eleven rows pass.
+rebuilt after the notation merge. The remote's relinked 12-entry ledger under
+`assets/Fabius_Inverse_Frontier_Report_Source_and_PDF/` matches the current
+source, retained PDF, and all ten supporting files; it is accepted as an
+integrity receipt, not as evidence that the PDF was rebuilt from this source.
 
 Consolidated (2026-08-28) from:
 
@@ -330,13 +345,13 @@ Complements — and imports the prior inverse corrections of —
 provenance with SHA-256 in the volume's Appendix C and
 `assets/SHA256SUMS-absorbed.txt`.
 
-## `Inverse_Fabius_Computability_Report/`
+## `inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report/`
 
 Filed 2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (689,198
 bytes; SHA-256
 `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
 The current canonical source has 2,937 lines (SHA-256
-`9945b23025006337e87001332db7a1141896b2f29f0d715fa85261682a6b0397`).
+`3ee69aa0c27486d5005e4d5f8448b36a8133083c8b79df51e9d08a5af56880b5`).
 The retained historical 42-page A4/27 mm/Libertinus PDF has 711,374 bytes
 (SHA-256
 `5a9976f9ece840d1b8456b4ea3753c36e369cbade8caff1c04158cc7d33cff75`).
@@ -363,7 +378,7 @@ refreshed after the source-only merge: its TeX and README rows are pending and
 the other four rows pass. The live union audit scans 615 Lean modules
 and 8,389 public declarations with zero documentation/header gaps.
 
-## `inverse_fabius_iterates_nowhere_analytic/`
+## `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/`
 
 Filed 2026-08-30 from `inverse_fabius_iterates_nowhere_analytic.zip`
 (1,137,032 bytes; SHA-256

@@ -2,7 +2,7 @@
 
 > **Source-only merge status (2026-08-31).** The current root TeX has 5,648
 > lines (SHA-256
-> `8fa52a142c14ea77cdc916f9fca8034b68718fc076d62a064f38af92c3fd4d6a`).
+> `444b99363bcdde65433e15c0bc652e681a8b6d23d5dc1a443c32610142847d13`).
 > The retained 66-page PDF was not rebuilt after the notation migration and is
 > not claimed to be synchronized with that source. This volume has no live
 > checksum ledger covering the root TeX/PDF pair; historical build statements
