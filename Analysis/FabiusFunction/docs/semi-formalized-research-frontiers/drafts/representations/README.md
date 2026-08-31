@@ -61,7 +61,7 @@ result labels do not establish Lean proof status.
 
 - [`fabius_iterates_nowhere_analytic/`](fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Fabius
-  Function* (19 pp), arrived on 2026-08-30 with all 14 submitted payload
+  Function* (19 pp at landing), arrived on 2026-08-30 with all 14 submitted payload
   checksums verified; the single CSV entry was refreshed after LF
   normalization.  A Faà di Bruno partition defect, two-spine expansion,
   strict weight-unimodality argument, and Thue--Morse binary-transition lemma
@@ -71,28 +71,34 @@ result labels do not establish Lean proof status.
   rather than a new Thue--Morse atlas member.  The `n = 1` case and the
   inverse/non-elementarity infrastructure already exist in Lean; the
   `n ≥ 2` theorem appears genuinely new and remains unformalized.  The report
-  has 14 nonconjectural labelled results and three conjecture environments.
-  A hostile
-  post-intake proof pass found no fatal gap and made three proof-exposition
+  now has 15 nonconjectural labelled results and two conjecture environments.
+  A hostile post-intake proof pass found no fatal gap and made three proof-exposition
   repairs: an explicit uniform estimate in the weighted-defect decay, the
   correct neighborhood for the outer function in the two-spine lemma, and an
   empty-union-safe definition of the `n = 1` tie set.  It also corrected the
   landing source map's nonexistent `StrictMonotonicity.lean` to the live
-  `Monotonicity.lean`.  Three direct `pdflatex` passes then rebuilt a clean
-  19-page PDF, and every page was rendered again.  The shipped command also
-  reproduced all six numerical outputs byte-for-byte in a recovered,
+  `Monotonicity.lean`.  The shipped command also reproduced all six numerical
+  outputs byte-for-byte in a recovered,
   fully-pinned Ubuntu/Python environment.  The companion
   [`REPOSITORY_AUDIT.md`](fabius_iterates_nowhere_analytic/REPOSITORY_AUDIT.md)
   records that environment, the output hashes, the cross-platform drift, and
-  the remaining reproducibility limitations.  Two conjecture labels are
-  quarantined rather than treated as open: the proposed Taylor-series
-  “trichotomy” is nonexclusive at an `n = 1` interior dyadic point unless its
-  third class excludes eventually-zero polynomial series, while the
-  tie-cancellation statement follows from the canonical quarter-point facts
-  and the report's own binary-transition lemma.  The floating-point/FFT
+  the remaining reproducibility limitations.  A second proof pass separates
+  the exhaustive Taylor-series alternatives from the genuine
+  zero-radius/eventually-zero conjecture, so the finite-polynomial and
+  positive-radius/infinite-support classes are disjoint.  It also promotes the
+  former tie-cancellation conjecture to an exact proposition: at every tie,
+  orders `m = 6ℓ + 4` kill the earlier maximal spine and leave amplitude
+  `Up(1/9) ≥ 1/2` on the later one.  The finite-spine expansion then yields a
+  full derivative lower bound and zero Taylor radius at every tie point.  This
+  argument uses existing Lean quarter-value and derivative anchors, but its
+  spine conclusion is not yet formalized.  The floating-point/FFT
   diagnostic also does not substantiate the manuscript's separate claim of
-  symbolic verification.  None of the manuscript or numerical labels elevate
-  a result to Lean status.
+  symbolic verification.  After both proof passes, three direct `pdflatex`
+  passes rebuilt a warning-free 20-page A4 PDF; every page was rendered and
+  visually inspected.  Manuscript labels and numerical replay alone do not
+  establish Lean status.  The finite block-size arithmetic is now formalized
+  exactly as cross-referenced below; the compositional and analytic results
+  remain manuscript-level.
 - [`Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/`](Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/),
   *Shape, Divisibility, and Stein Geometry of the Fabius--Rvachev Law*
   (50 pp), arrived on 2026-08-30 with all 14 submitted payload checksums
@@ -183,10 +189,56 @@ result labels do not establish Lean proof status.
   Poisson operators, martingales, nonreversibility certificate, scalar Stein
   kernel, and endpoint asymptotics extend the operator-representation theme.
 
-All six remain standalone pending deliberate consolidation and completion of
-their claim-by-claim Lean crosswalks; the determinant sublayer just identified
-is the recorded partial crosswalk for `Fabius_Rvachev_New_Frontiers-2/`.
-Other paper theorem labels do not by themselves assert Lean status.
+These six reports, from `Fabius_Zero_Bias_Frontier_Report/` through
+`Fabius_Stein_Koopman_Frontier_Report/`, remain standalone pending deliberate
+consolidation and completion of their claim-by-claim Lean crosswalks.  The
+determinant sublayer recorded above and the partition-defect sublayer below are
+explicit partial crosswalks; other paper theorem labels do not by themselves
+assert Lean status.
+
+## Current Lean crosswalk: partition-defect arithmetic
+
+For a list of block sizes `r = (r₁, ..., rₖ)`, write
+
+`P_f(r) = ∑_{1 ≤ i < j ≤ k} f(rᵢ, rⱼ)`
+
+and define
+
+`δ(x,y) = (x - 1)(y - 1) + (x - 1) + (y - 1)` and
+`D(r) = P_δ(r)`.
+
+All subtraction in the Lean statements is natural-number subtraction.  For
+positive block sizes it has the ordinary integer interpretation below.
+`PartitionDefect.lean` supplies the following exact human-readable API.
+
+| Lean declarations | Human-readable content |
+| --- | --- |
+| `pairSum_nil`, `pairSum_cons`, `pairSum_one` | `P_f([]) = 0`; adjoining a head gives `P_f(x :: r) = ∑_{y ∈ r} f(x,y) + P_f(r)`; and `P_1(r) = C(k,2)`. |
+| `pairSum_add`, `pairSum_congr`, `pairSum_map` | Pair summation is additive in the kernel, respects equality of kernels on the list entries, and commutes with mapping the entries. |
+| `choose_add_two`, `choose_list_sum_two` | `C(a+b,2) = C(a,2) + C(b,2) + ab`, hence `C(∑ rᵢ,2) = ∑ C(rᵢ,2) + ∑_{i<j} rᵢrⱼ`. |
+| `blockPairDefect_eq_mul_sub_one`, `partitionDefect_eq_pairSum_mul_sub_one`, `partitionDefect_nonneg` | For positive `x,y`, `δ(x,y) = xy - 1`; hence `D(r) = ∑_{i<j}(rᵢrⱼ - 1) ≥ 0`. |
+| `choose_sum_two_eq_choose_length_add_sum_add_partitionDefect`, `partitionDefect_eq_choose_sum_sub_choose_length_sub_sum` | If `m = ∑ rᵢ`, then `C(m,2) = C(k,2) + ∑ C(rᵢ,2) + D(r)`, equivalently `D(r) = C(m,2) - C(k,2) - ∑ C(rᵢ,2)`. |
+| `length_le_sum_of_pos`, `sum_map_sub_one` | Positive sizes satisfy `k ≤ m`, and their total excess is `∑(rᵢ - 1) = m - k`. |
+| `pairSum_add_eq`, `pairSum_map_add_eq` | Every list entry occurs in exactly `k - 1` pairs: `∑_{i<j}(aᵢ+aⱼ) = (k-1)∑aᵢ`, also after an arbitrary natural-valued map. |
+| `partitionDefect_eq_linear_add_pairwise_excess` | `D(r) = (k-1)∑(rᵢ-1) + ∑_{i<j}(rᵢ-1)(rⱼ-1)`. |
+| `partitionDefect_lower_bound`, `partitionDefect_fixed_block_bound` | For positive block sizes of total `m`, `D(r) ≥ (k-1)(m-k)`; the second theorem exposes `m` and `k` as named parameters. |
+| private `list_sum_eq_zero_iff`, `pairSum_eq_zero_iff_pairwise` | A natural-valued list sum is zero exactly when every term is zero; a natural-valued pair sum is zero exactly when its kernel vanishes on every list-position pair. |
+| `blockPairDefect_eq_zero_iff`, `partitionDefect_eq_zero_iff`, `sub_one_mul_sub_one_eq_zero_iff` | For positive `x,y`, `δ(x,y)=0` iff `x=y=1`, while `(x-1)(y-1)=0` iff at least one is `1`. Thus `D(r)=0` iff `k≤1` or every block is a singleton. |
+| `partitionDefect_eq_lower_bound_iff`, `partitionDefect_fixed_block_eq_iff` | Equality in the sharp bound holds exactly when every pair contains a singleton, equivalently when at most one block is nonsingleton. |
+| `add_sub_one_le_mul_of_pos`, `mul_eq_add_sub_one_iff` | For positive `a,b`, `a+b-1 ≤ ab`; equality holds iff `a=1` or `b=1`, by `ab = (a+b-1) + (a-1)(b-1)`. |
+| `firstShell_le_fixedBlockProduct`, `fixedBlockProduct_eq_firstShell_iff` | If `2 ≤ k < m`, then `m-2 ≤ (k-1)(m-k)`, with equality iff `k=2` or `k=m-1`. |
+| `firstShell_le_partitionDefect`, `partitionDefect_eq_firstShell_iff` | A positive block-size list of total `m` with `2 ≤ k < m` has `D(r) ≥ m-2`. Equality gives the endpoint profile families `(m-1,1)` and `(2,1,...,1)`, up to order; they coincide for `m=3`. |
+| `partitionDefect_twoBlock_firstShell` | Sharpness is explicit: `D([m-1,1]) = m-2` for `m ≥ 3`. |
+
+This formalizes the list-level finite arithmetic behind the report's dyadic
+partition defect: pairwise and triangular forms, zero classification, sharp
+fixed-block minimum, equality profile, and first positive shell.  It
+generalizes the arithmetic from set partitions to arbitrary positive
+block-size lists.  A wrapper turning a finite set partition into its block-size
+list is still absent.  The quadratic-scale factorization, weighted-defect
+decay, two-spine reduction, finite spine expansion, orbit-weight analysis,
+positive-iterate nowhere-analyticity, co-countable zero-radius theorem, and
+dependent inverse/non-elementarity corollaries remain manuscript-level.
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
