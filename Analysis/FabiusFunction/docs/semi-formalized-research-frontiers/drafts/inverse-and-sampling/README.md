@@ -42,27 +42,49 @@ New standalone intake members:
   Lean verification.
 
 - [`Inverse_Fabius_Computability_Report/`](Inverse_Fabius_Computability_Report/),
-  *Computability of the Inverse Fabius Function* (29 pp), arrived on
+  *Computability of the Inverse Fabius Function* (34 pp after post-publication
+  revision; 29 pp at intake), arrived on
   2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (outer SHA-256
   `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
   All five submitted payload hashes verified and every text payload was
-  already LF. It remains standalone pending post-publication assessment and a
-  Lean crosswalk; the newly submitted bridge is not thereby Lean-verified.
+  already LF. A post-publication claim-by-claim reassessment now crosswalks
+  the structural least-mass, inverse-gap, exact-supremum, subadditivity, and
+  effective-injectivity layer to compiler-validated
+  [`InverseModulus.lean`](../../../../Lean/FabiusFunction/InverseModulus.lean).
+  That module does not formalize the report's closed `Delta_r` bound,
+  recursive-modulus packaging, tolerant-bisection realizer, sequential
+  computability theorem, or input-bit asymptotics. The revision also corrects
+  `d_*`: it is denominator-minimal for the fixed dyadic proxy `2^{-r(n)}`,
+  not for the weaker target tolerance `1/n`.
 
 - [`inverse_fabius_iterates_nowhere_analytic/`](inverse_fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Inverse
-  Fabius Function* (23 pp), arrived on 2026-08-30 from
+  Fabius Function* (24 A4 pp, 1730 source lines), arrived on 2026-08-30 from
   `inverse_fabius_iterates_nowhere_analytic.zip` (outer SHA-256
   `8b1c05d59e120ecd20d69cd5aeb0009639f2f3b9a6c9fef32bdf82270eee16bd`).
   All 13 submitted payload hashes verified; `spine_diagnostic.csv` was
   refreshed after CRLF-to-LF repository normalization. It remains standalone
   pending post-publication reconciliation with
   [`../representations/fabius_iterates_nowhere_analytic/`](../representations/fabius_iterates_nowhere_analytic/)
-  and a Lean crosswalk; its own status note says the principal claims have not
-  been translated into Lean.
+  and further Lean work. Its source now crosswalks the complete finite
+  positive-list defect API in `PartitionDefect.lean`, while the set-partition
+  bridge, weighted Bell/spine asymptotics, and principal forward/inverse
+  iterate claims remain paper-only.
 
 The inverse function's frontiers and the sampling/deconvolution circle of
 ideas, in two consolidated volumes.
+
+Post-snapshot formal status: `QuarterCatalanGerm.lean` now proves that the
+distinguished rational quarter germ becomes the Catalan inverse of
+`X + 4 X²` under the exact `9/4` parameter rescaling, together with the reverse
+rescaling and every positive coefficient.  `FabiusInverseQuarterJet.lean`
+then connects that quadratic inverse to the actual smooth inverse: its full
+centered jet at `5/72 = F(1/4)` is the factorial-scaled Catalan coefficient
+sequence, so `G^(m+1)(5/72) = (m+1)! (-4)^m C_m`.  This is equality of all
+derivatives, not local analytic equality.  A named nonzero flat-remainder
+decomposition remains open.  Beyond the quarter specialization, the
+general-dyadic analytic/algebraic shadow, convergence and identification of
+the inverse Taylor series, and the Bell--Lagrange formula also remain open.
 
 ## `Inverse_and_Sampling_Frontiers/`
 

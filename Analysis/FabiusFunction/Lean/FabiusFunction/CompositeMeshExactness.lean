@@ -164,10 +164,8 @@ theorem finite_support_comb_scaled (F : BoundedFabius)
     linarith
   constructor
   · rw [Int.ceil_le]
-    push_cast
     linarith
   · rw [Int.le_floor]
-    push_cast
     linarith
 
 /-- **General-scale polynomial comb exactness**: whenever every

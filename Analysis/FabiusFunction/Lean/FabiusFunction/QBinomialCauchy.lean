@@ -20,6 +20,8 @@ in positive characteristic, and in rings with zero divisors.
 ## Main results
 
 * `finite_qCauchy_identity` is the finite q-Cauchy convolution.
+* `finiteQPochhammerIn_mul_eq_sum_gaussianBinomial` is its compatibility
+  spelling from the first denominator-free API.
 * `finite_qCauchy_identity_reflected` reflects the Gaussian row and exposes
   the orientation used in nested finite convolutions.
 * `qBernsteinBasis` and `sum_qBernsteinBasis` package the `u = 0`
@@ -186,6 +188,18 @@ theorem finite_qCauchy_identity
         _ = ∑ k ∈ Finset.range (n + 2),
               qCauchySummand q u v (n + 1) k :=
           (sum_qCauchySummand_succ q u v n).symm
+
+/-- Compatibility spelling for `finite_qCauchy_identity`.
+
+This preserves the original public denominator-free API name while exposing
+the expanded q-Cauchy family through the shorter canonical name. -/
+theorem finiteQPochhammerIn_mul_eq_sum_gaussianBinomial
+    {R : Type*} [CommRing R] (q u v : R) (n : ℕ) :
+    finiteQPochhammerIn (u * v) q n =
+      ∑ k ∈ Finset.range (n + 1),
+        gaussianBinomial q n k * finiteQPochhammerIn u q k * v ^ k *
+          finiteQPochhammerIn v q (n - k) :=
+  finite_qCauchy_identity q u v n
 
 /-- **Reflected finite q-Cauchy identity.**  Reflecting the summation index
 in `finite_qCauchy_identity` gives

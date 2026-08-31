@@ -48,6 +48,12 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error dyadic_stein_koopman_fronti
 
 The build used pdfLaTeX from TeX Live 2025. The PDF was also rendered page-by-page and preflighted with PyMuPDF and Poppler utilities.
 
+The repository copy uses the supplied PNG figure companions to avoid the
+Type-3 fonts embedded by the vector plots, and falls back to Latin Modern Mono
+when `inconsolata.sty` is unavailable.  The checked-in PDF was rebuilt for
+exactly three pdfLaTeX passes with embedded/subset Libertinus prose fonts;
+`pdf_inspect.txt` and `pdf_preflight.txt` retain the arrival-time preflight.
+
 ## Tested environment
 
 - Python 3.13.5

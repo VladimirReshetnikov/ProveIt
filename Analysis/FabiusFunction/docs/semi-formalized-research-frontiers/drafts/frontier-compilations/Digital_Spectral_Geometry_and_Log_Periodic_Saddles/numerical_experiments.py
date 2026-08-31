@@ -35,7 +35,7 @@ import mpmath as mp
 
 def sinc(z: mp.mpf | mp.mpc) -> mp.mpf | mp.mpc:
     """Entire normalized sinc, sin(z)/z, with its removable value at zero."""
-    return mp.one if z == 0 else mp.sin(z) / z
+    return mp.mpf(1) if z == 0 else mp.sin(z) / z
 
 
 def log_sinhc(x: mp.mpf) -> mp.mpf:
@@ -57,7 +57,7 @@ def log_sinhc(x: mp.mpf) -> mp.mpf:
 def phi_sinc_product(z: mp.mpf | mp.mpc, tol: mp.mpf | None = None) -> mp.mpf | mp.mpc:
     """Phi(z) = product_{n>=1} sinc(z/2^n)."""
     tol = tol or mp.power(10, -(mp.mp.dps - 15))
-    product = mp.one
+    product = mp.mpf(1)
     n = 1
     while True:
         x = z / mp.power(2, n)
@@ -105,7 +105,7 @@ def phi_canonical_product(
     O(|z|^2/M), so this form is intended for cross-checks rather than extreme
     precision.
     """
-    product = mp.one
+    product = mp.mpf(1)
     for m in range(1, M + 1):
         product *= (
             1 - z * z / mp.power(2 * mp.pi * m, 2)
@@ -119,7 +119,7 @@ def log_mgf(t: mp.mpf, tol: mp.mpf | None = None) -> mp.mpf:
     if t <= 0:
         raise ValueError("this real-valued implementation expects t>0")
     tol = tol or mp.power(10, -(mp.mp.dps - 15))
-    total = mp.zero
+    total = mp.mpf(0)
     n = 1
     while True:
         x = t / mp.power(2, n)
@@ -153,7 +153,7 @@ def K1(t: mp.mpf, tol: mp.mpf | None = None) -> mp.mpf:
     """First derivative K'(t), summed factor by factor."""
     t = mp.mpf(t)
     tol = tol or mp.power(10, -(mp.mp.dps - 15))
-    total = mp.zero
+    total = mp.mpf(0)
     n = 1
     while True:
         scale = mp.power(2, -n)
@@ -171,7 +171,7 @@ def K2(t: mp.mpf, tol: mp.mpf | None = None) -> mp.mpf:
     """Second derivative K''(t), i.e. the tilted variance."""
     t = mp.mpf(t)
     tol = tol or mp.power(10, -(mp.mp.dps - 15))
-    total = mp.zero
+    total = mp.mpf(0)
     n = 1
     while True:
         scale = mp.power(2, -n)
@@ -227,7 +227,7 @@ def transseries_remainder(t: mp.mpf, tol: mp.mpf | None = None) -> mp.mpf:
     """R(t)=-sum_{ell>=0} log(1-exp(-2^(ell+1)t))."""
     t = mp.mpf(t)
     tol = tol or mp.power(10, -(mp.mp.dps - 15))
-    total = mp.zero
+    total = mp.mpf(0)
     ell = 0
     while True:
         term = -mp.log1p(-mp.e ** (-mp.power(2, ell + 1) * t))
@@ -377,9 +377,11 @@ def write_tables(out: Path) -> None:
     latex += [
         r"\bottomrule", r"\end{tabular}", r"\end{table}", "",
         r"\begin{equation}",
-        r"c_0=" + fmt(psi_c0(), 22) + r",\qquad"
-        r" |c_1|=" + fmt(abs(c1), 12) + r",\qquad"
-        r"\arg c_1=" + fmt(mp.arg(c1), 12) + r".",
+        r"\begin{aligned}",
+        r"c_0&=" + fmt(psi_c0(), 22) + r",\qquad"
+        r" |c_1|=" + fmt(abs(c1), 12) + r",\\",
+        r"\arg c_1&=" + fmt(mp.arg(c1), 12) + r".",
+        r"\end{aligned}",
         r"\label{eq:numerical-c1}",
         r"\end{equation}",
         "",

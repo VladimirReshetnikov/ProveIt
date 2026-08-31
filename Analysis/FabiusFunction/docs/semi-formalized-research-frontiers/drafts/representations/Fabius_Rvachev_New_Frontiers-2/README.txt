@@ -13,11 +13,13 @@ superseded, generated, proved, numerical, and conjectural material.
 Main deliverables
 -----------------
 fabius_rvachev_new_frontiers.tex
-    Complete frozen and rendered LaTeX report, containing 2734 lines.
+    Final synchronized report source, frozen at 2765 lines after the
+    rational-Legendre crosswalk reconciliation.
 
 fabius_rvachev_new_frontiers.pdf
-    Final 38-page post-merge PDF.  It was rebuilt in exactly three halted
-    pdflatex passes and passed structural, normalized-text, and visual review.
+    Final synchronized 38-page post-merge PDF. It was rebuilt in exactly three
+    halted pdflatex passes from the 2765-line source and passed structural,
+    normalized-text, font, and targeted visual-seam review.
 
 fabius_frontier_experiments.py
     Fully commented exact/high-precision experiment. It computes rational
@@ -38,14 +40,17 @@ data/jacobi_coefficients.csv
 data/pi_product_approximants.csv
     Jacobi-product and Christoffel approximants to pi.
 
-figures/*.pdf
-    Five vector figures embedded in the report.
+figures/*.pdf and figures/*.png
+    Five figures in dual format. The delivered PDFs preserve the vector
+    originals. The TeX selects the PNG companions, and the synchronized report
+    is Type-3-free. All five selected PNG payloads are named and hashed in the
+    expanded 20-entry live ledger.
 
 CORPUS_AUDIT.md
     Scope, source strata, nonduplication method, and status boundary.
 
 pdf_preflight.json
-    PDF structural preflight; no warnings were reported.
+    Structural record for the final synchronized PDF.
 
 Numerical publication run
 -------------------------
@@ -58,12 +63,17 @@ the report as evidence, not as a theorem.
 
 Rebuild the PDF
 ---------------
-Required: a reasonably complete TeX Live installation with pdflatex.
-From this directory:
+Required: a reasonably complete TeX Live installation with pdflatex and the
+Libertinus Type 1 packages. From this directory, the final publication build
+must run all three passes:
 
 pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_new_frontiers.tex
 pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_new_frontiers.tex
 pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_new_frontiers.tex
+
+After each rebuild, verify A4 page geometry, embedded/subset fonts, a positive
+Libertinus font count, no Type 3 fonts, and the final page count before
+refreshing the PDF preflight and checksum ledger.
 
 Re-run the numerical experiment
 -------------------------------
@@ -77,24 +87,42 @@ python fabius_frontier_experiments.py \
 A higher target degree requires rapidly increasing precision because the
 current monomial-basis recurrence is cancellation-prone.
 
-Verification performed
-----------------------
-* The frozen source had a clean three-pass pdflatex build with no unresolved
-  references or citations, rerun warnings, duplicate labels, or overfull boxes.
-* Final PDF preflight: 38 A4 pages, unencrypted, text-based, no warnings;
-  Libertinus prose is embedded and the 10 Type-3 font rows inherited from the
-  vector plot payloads exactly match the established baseline.
-* All 38 final pages were rendered to PNG and visually inspected; crosswalk
-  seam pages 10--12 and the formalization boundary on page 34 were also checked
-  at full-page resolution.
-* Final normalized PDF text extraction retains all 51 exact public Lean
-  declaration names in the determinant, rational-data, and finite-value
-  crosswalks.
-* Python byte-compilation and an independent degree-24 smoke run succeeded.
-* The refreshed 15-entry payload ledger verifies completely.
+The script writes CSV records with deterministic LF line endings and produces
+the five vector plot PDFs.  Refresh the PNG companions selected by the TeX
+source after a production run with:
+
+for figure in jacobi_coefficients pi_approximants pi_product_error \
+    scaled_jacobi_deficit zero_quantiles; do
+  pdftocairo -png -singlefile -r 300 \
+      "figures/${figure}.pdf" "figures/${figure}"
+done
+
+Final synchronized artifact verification
+----------------------------------------
+* The frozen 2765-line source had a clean three-pass pdflatex build with no
+  unresolved references or citations, rerun warnings, duplicate labels, or
+  overfull boxes.
+* PDF preflight: 38 A4 pages, unencrypted, text-based, no warnings; Libertinus
+  prose is embedded; all 23 font rows are embedded, including five Libertinus
+  rows, with zero Type-3 rows. The earlier ten-row vector-plot baseline is
+  absent because the synchronized source selects the five PNG companions.
+* Crosswalk seam pages 10--13 and the five plot placements on pages 16, 21,
+  27, 27, and 28 were rendered and inspected at full-page resolution.
+* Normalized PDF text extraction retained all 51 exact public Lean declaration
+  names in the determinant, rational-data, and finite-value crosswalks.
+* The final 20-entry payload ledger verifies completely, including synchronized
+  source, PDF, README, preflight records, and all five PNG companions selected
+  by the TeX. The earlier 15-entry ledger is retained only as a historical
+  pre-PNG-tracking milestone.
 
 Claim status
 ------------
+The arrival-time novelty screen was corrected after filing: the pinned
+canonical representation frontier already contained the Nevai-limit,
+J-fraction, Hankel, and Gauss--Padé program. Those strands are inherited
+overlap; see CORPUS_AUDIT.md. The package remains standalone pending a
+claim-by-claim deduplication.
+
 The report distinguishes:
 * results already present in the audited repository;
 * new proofs or finite identities developed in the report;

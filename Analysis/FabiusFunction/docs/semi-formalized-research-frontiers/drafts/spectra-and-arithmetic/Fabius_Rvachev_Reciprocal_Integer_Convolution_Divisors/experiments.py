@@ -187,7 +187,7 @@ def q_characteristic(M: int, z: float | mp.mpf, levels: int = 100) -> mp.mpc:
 def write_csv(path: Path, header: Iterable[str], rows: Iterable[Iterable[object]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(list(header))
         writer.writerows(rows)
 

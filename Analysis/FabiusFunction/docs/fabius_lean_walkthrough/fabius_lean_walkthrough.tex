@@ -2415,12 +2415,14 @@ their finite sum are \nolinkurl{fabiusPhaseLockedResidualTerm} and
 \nolinkurl{FabiusLambertPhaseExtractionBell.lean} leaves both definitions
 unchanged and proves the exact declaration
 \[
- R_{r,n}(\lambda)=(-1)^r
-   \left(\prod_{j=0}^{r}(\lambda+j)^{-1}\right)
-   \operatorname{factorialNormalize}
+ \begin{aligned}
+ R_{r,n}(\lambda)
+   &=(-1)^r\left(\prod_{j=0}^{r}(\lambda+j)^{-1}\right) \\
+   &\quad{}\times \operatorname{factorialNormalize}
      \bigl(\operatorname{completeBellPolynomial}
-       (\kappa^{(r,\lambda)})\bigr)_n
-   \,c_{r+1+n}(\lambda)
+       (\kappa^{(r,\lambda)})\bigr)_n \\
+   &\quad{}\times c_{r+1+n}(\lambda).
+ \end{aligned}
 \]
 as \nolinkurl{fabiusPhaseLockedResidualTerm_eq_bell};
 \nolinkurl{fabiusPhaseLockedResidualPartialSum_eq_sum_bell} rewrites each
@@ -3784,10 +3786,11 @@ The \nolinkurl{ImplicitPowerSeries.lean} row and the generic formal-root
 discussion are a post-snapshot foundation checked at source checkpoint
 \nolinkurl{cd9086a80cbecefecb9bc1e00378d151061595e0} on 28 August 2026.
 The seven Lambert rows from \nolinkurl{LowerLambertW.lean} through
-\nolinkurl{PowerExponentialLambertFabius.lean} record the current-tree
-endpoint-continuity, exact-root, and intrinsic-asymptotic tranche described
-in Section~\ref{ch:kfold}; their stated open boundaries are part of
-the crosswalk.
+\nolinkurl{PowerExponentialLambertFabius.lean} record the post-snapshot
+endpoint-continuity, exact-root, and intrinsic-asymptotic tranche originating
+at source checkpoint \nolinkurl{925ca34a698cbd08703ec5d8abc65515730e30f6}
+and described in Section~\ref{ch:kfold}; their stated open boundaries are part
+of the crosswalk.
 The title-page pin and reproduction count continue to describe the older
 audited snapshot.
 \end{remark}

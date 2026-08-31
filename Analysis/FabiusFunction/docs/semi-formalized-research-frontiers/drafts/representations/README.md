@@ -62,9 +62,12 @@ labels and numerical outputs do not establish Lean verification.
 
 - [`fabius_iterates_nowhere_analytic/`](fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Fabius
-  Function* (19 pp), arrived on 2026-08-30 with all 14 submitted payload
-  checksums verified; the single CSV entry was refreshed after LF
-  normalization.  A Faà di Bruno partition defect, two-spine expansion,
+  Function* (21 A4 pp and 1555 source lines, with a 469-line numerical
+  diagnostic), arrived on 2026-08-30 with
+  all 14 submitted payload checksums verified. The repaired package has an
+  exhaustive 15-entry live ledger; the single CSV entry was refreshed after
+  deterministic LF normalization. A Faà di Bruno partition defect, two-spine
+  expansion,
   strict weight-unimodality argument, and Thue--Morse binary-transition lemma
   yield the manuscript's claimed nowhere-analyticity theorem for every
   positive self-composition, together with a co-countable dense zero-radius
@@ -72,31 +75,42 @@ labels and numerical outputs do not establish Lean verification.
   rather than a new Thue--Morse atlas member.  The `n = 1` case and the
   inverse/non-elementarity infrastructure already exist in Lean; the
   `n ≥ 2` theorem appears genuinely new and remains unformalized.  The report
-  has 14 nonconjectural labelled results and three conjecture environments.
-  A hostile
-  post-intake proof pass found no fatal gap and made three proof-exposition
+  now has 15 nonconjectural labelled results and two conjecture environments.
+  A hostile post-intake proof pass found no fatal gap and made three
+  proof-exposition
   repairs: an explicit uniform estimate in the weighted-defect decay, the
   correct neighborhood for the outer function in the two-spine lemma, and an
   empty-union-safe definition of the `n = 1` tie set.  It also corrected the
   landing source map's nonexistent `StrictMonotonicity.lean` to the live
-  `Monotonicity.lean`.  Three direct `pdflatex` passes then rebuilt a clean
-  19-page PDF, and every page was rendered again.  The shipped command also
-  reproduced all six numerical outputs byte-for-byte in a recovered,
+  `Monotonicity.lean`. Before the incoming strengthening, three direct
+  `pdflatex` passes produced the current clean canonical A4/27 mm/Libertinus
+  21-page PDF with no Type 3 fonts, and every page was rendered. The shipped
+  command also reproduced all six numerical outputs byte-for-byte in a recovered,
   fully-pinned Ubuntu/Python environment.  The companion
   [`REPOSITORY_AUDIT.md`](fabius_iterates_nowhere_analytic/REPOSITORY_AUDIT.md)
   records that environment, the output hashes, the cross-platform drift, and
-  the remaining reproducibility limitations.  Two conjecture labels are
-  quarantined rather than treated as open: the proposed Taylor-series
-  “trichotomy” is nonexclusive at an `n = 1` interior dyadic point unless its
-  third class excludes eventually-zero polynomial series, while the
-  tie-cancellation statement follows from the canonical quarter-point facts
-  and the report's own binary-transition lemma.  The floating-point/FFT
+  the remaining reproducibility limitations.  A second proof pass separates
+  the exhaustive Taylor-series alternatives from the genuine
+  zero-radius/eventually-zero conjecture, so the finite-polynomial and
+  positive-radius/infinite-support classes are disjoint.  It also promotes the
+  former tie-cancellation conjecture to an exact proposition: at every tie,
+  orders `m = 6ℓ + 4` kill the earlier maximal spine and leave amplitude
+  `Up(1/9) ≥ 1/2` on the later one.  The finite-spine expansion then yields a
+  full derivative lower bound and zero Taylor radius at every tie point.  This
+  argument uses existing Lean quarter-value and derivative anchors, but its
+  spine conclusion is not yet formalized.  The floating-point/FFT
   diagnostic also does not substantiate the manuscript's separate claim of
-  symbolic verification.  None of the manuscript or numerical labels elevate
-  a result to Lean status.
+  symbolic verification. The reconciled 1,555-line source was rebuilt in
+  exactly three serial passes as a 21-page A4 PDF with embedded/subset fonts,
+  Libertinus present, no Type 3 font, and a refreshed 15-entry ledger.
+  Manuscript labels and numerical replay alone do not establish Lean status.
+  The finite block-size arithmetic
+  is now formalized exactly as cross-referenced below; the compositional and
+  analytic results remain manuscript-level.
 - [`Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/`](Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/),
   *Shape, Divisibility, and Stein Geometry of the Fabius--Rvachev Law*
-  (50 pp), arrived on 2026-08-30 with all 14 submitted payload checksums
+  (34 A4 pp, 2080 source lines; with a 466-line numerical experiment),
+  arrived on 2026-08-30 with all 14 submitted payload checksums
   verified; three CSV entries were then refreshed after repository-mandated
   LF normalization. Its strict log-concavity and reliability consequences,
   convolution-rootlessness, exact scalar Stein calculus, weighted invariant
@@ -108,27 +122,34 @@ labels and numerical outputs do not establish Lean verification.
   claim-by-claim editorial merge. Its claim of repository-distinctness is
   therefore stale: that earlier report already gives the same exact kernel
   values, rationality and mean identities, and proves a stronger two-term
-  Lambert-periodic endpoint theorem than this intake leaves conjectural. Its
-  bespoke letter-paper Latin Modern build,
-  incomplete metadata, and Type-3 plot fonts remain post-intake normalization
-  work, and manuscript theorem labels do not establish Lean status.
+  Lambert-periodic endpoint theorem than this intake leaves conjectural. The
+  original bespoke 50-page Letter/Latin-Modern/Type-3 rendering is retained in
+  repository history. The repaired title-derived pair uses canonical
+  A4/27 mm/Libertinus styling and PNG plot companions; three `pdflatex` passes
+  produced a 34-page PDF with embedded/subset fonts, no Type 3 font, and a
+  verified 18-entry live ledger. The exact existing Lean inputs are
+  crosswalked separately from the report's paper-only proposed results;
+  manuscript theorem labels do not establish Lean status.
 - [`Fabius_Rvachev_Noncommutative_Frontiers/`](Fabius_Rvachev_Noncommutative_Frontiers/),
-  *Noncommutative Cumulant Frontiers for the Fabius--Rvachev Law* (29 pp),
-  arrived on 2026-08-30 with all 21 payload checksums verified after four CSV
-  entries and one trailing-blank text entry were refreshed for repository
-  normalization. Its free and
+  *Noncommutative Cumulant Frontiers for the Fabius--Rvachev Law* (26 A4 pp,
+  1336 source lines; with a 667-line experiment), arrived on 2026-08-30 with
+  all 21 payload checksums verified. The repository repair gives the report title-derived source/PDF
+  stems, canonical A4/27 mm/Libertinus styling, deterministic LF CSV output,
+  PNG figure selection, a three-pass build, and a verified 21-entry live
+  ledger; every font is embedded and subset and the report has no Type 3 font.
+  Its free and
   Boolean cumulants, exact non-free-infinite-divisibility certificates,
   q-parametric Hankel obstruction, Jacobi stripping and increment program,
   finite-sinc cumulant transfer, and inverse-Fabius/Legendre/endpoint bridges
   form a distinct representation layer with spectral-arithmetic cross-links.
-  Its generic document stems, bespoke letter-paper preamble, missing
-  Libertinus prose, incomplete PDF metadata, and Type-3 plot fonts remain
-  explicit post-intake normalization work.
+  The original 29-page Letter/Type-3 rendering remains recoverable from the
+  recorded arrival commit and archive SHA-256.
 - [`Fabius_Rvachev_New_Frontiers-2/`](Fabius_Rvachev_New_Frontiers-2/),
   *Fabius--Rvachev New Frontiers* (38 pp; 2539 source lines at landing, 2619
   after the first 2026-08-30 formal crosswalk, 2720 after the rational-data
-  and finite-value crosswalk, and 2734 in the final merged source; all 15 active payload checksums
-  verify), arrived on
+  and finite-value crosswalk, 2734 at the prior rendered checkpoint, and 2765
+  in the final synchronized source; its expanded 20-entry ledger verifies
+  source/PDF parity and all five PNG companions selected by the TeX), arrived on
   2026-08-30 from a
   rootless archive with all 15 payload checksums verified. Its native up-law
   orthogonal polynomials, Jacobi and Christoffel reconstruction, rational
@@ -211,10 +232,15 @@ labels and numerical outputs do not establish Lean verification.
   while `beta_4` is the quotient of the fourth and third real Hankel ratios.
   This is not a general native evaluator.  Equality with the finite
   Gaunt/Wigner/`3j` formulas, Christoffel reconstruction, and
-  infinite/asymptotic Jacobi theory remain open.  The rebuilt 38-page A4 PDF
-  embeds Libertinus prose and preserves exactly the ten Type-3 font rows from
-  the five vector-plot payloads; all 51 crosswalk names extract, all pages were
-  visually inspected, and the refreshed 15-entry ledger verifies completely.
+  infinite/asymptotic Jacobi theory remain open.  Its original novelty screen
+  also overstated the gap: the pinned representation frontier already
+  contained the Nevai-limit, J-fraction, Hankel, and Gauss--Padé program.
+  The final artifact is the 38-page A4 PDF built in exactly three halted passes
+  from the 2765-line reconciled source.  It embeds Libertinus, uses the five PNG
+  plot companions while preserving the vector originals, and has zero Type-3
+  or non-embedded font rows.  All 51 crosswalk names extracted, the affected
+  crosswalk and plot seams were visually inspected, and the synchronized
+  20-entry ledger—including all five selected PNG payloads—verified.
 - [`Fabius_Stein_Koopman_Frontier_Report/`](Fabius_Stein_Koopman_Frontier_Report/),
   *Dyadic Stein--Koopman and q-Oscillator Calculus for the Fabius--Rvachev
   Law* (32 pp), arrived on 2026-08-30 with all 20 payload checksums verified.
@@ -223,14 +249,58 @@ labels and numerical outputs do not establish Lean verification.
   kernel, and endpoint asymptotics extend the operator-representation theme.
 
 All ten remain standalone pending deliberate consolidation and completion of
-their claim-by-claim Lean crosswalks; the determinant and exact-value sublayers
-just identified are the recorded partial crosswalk for
-`Fabius_Rvachev_New_Frontiers-2/`.
-Other paper theorem labels do not by themselves assert Lean status.
+their claim-by-claim Lean crosswalks. The determinant and exact-value sublayers
+recorded above for `Fabius_Rvachev_New_Frontiers-2/` and the partition-defect
+sublayer below are explicit partial crosswalks; other paper theorem labels do
+not by themselves assert Lean status.
+
+## Current Lean crosswalk: partition-defect arithmetic
+
+For a list of block sizes `r = (r₁, ..., rₖ)`, write
+
+`P_f(r) = ∑_{1 ≤ i < j ≤ k} f(rᵢ, rⱼ)`
+
+and define
+
+`δ(x,y) = (x - 1)(y - 1) + (x - 1) + (y - 1)` and
+`D(r) = P_δ(r)`.
+
+All subtraction in the Lean statements is natural-number subtraction.  For
+positive block sizes it has the ordinary integer interpretation below.
+`PartitionDefect.lean` supplies the following exact human-readable API.
+
+| Lean declarations | Human-readable content |
+| --- | --- |
+| `pairSum_nil`, `pairSum_cons`, `pairSum_one` | `P_f([]) = 0`; adjoining a head gives `P_f(x :: r) = ∑_{y ∈ r} f(x,y) + P_f(r)`; and `P_1(r) = C(k,2)`. |
+| `pairSum_add`, `pairSum_congr`, `pairSum_map` | Pair summation is additive in the kernel, respects equality of kernels on the list entries, and commutes with mapping the entries. |
+| `choose_add_two`, `choose_list_sum_two` | `C(a+b,2) = C(a,2) + C(b,2) + ab`, hence `C(∑ rᵢ,2) = ∑ C(rᵢ,2) + ∑_{i<j} rᵢrⱼ`. |
+| `blockPairDefect_eq_mul_sub_one`, `partitionDefect_eq_pairSum_mul_sub_one`, `partitionDefect_nonneg` | For positive `x,y`, `δ(x,y) = xy - 1`; hence `D(r) = ∑_{i<j}(rᵢrⱼ - 1) ≥ 0`. |
+| `choose_sum_two_eq_choose_length_add_sum_add_partitionDefect`, `partitionDefect_eq_choose_sum_sub_choose_length_sub_sum` | If `m = ∑ rᵢ`, then `C(m,2) = C(k,2) + ∑ C(rᵢ,2) + D(r)`, equivalently `D(r) = C(m,2) - C(k,2) - ∑ C(rᵢ,2)`. |
+| `length_le_sum_of_pos`, `sum_map_sub_one` | Positive sizes satisfy `k ≤ m`, and their total excess is `∑(rᵢ - 1) = m - k`. |
+| `pairSum_add_eq`, `pairSum_map_add_eq` | Every list entry occurs in exactly `k - 1` pairs: `∑_{i<j}(aᵢ+aⱼ) = (k-1)∑aᵢ`, also after an arbitrary natural-valued map. |
+| `partitionDefect_eq_linear_add_pairwise_excess` | `D(r) = (k-1)∑(rᵢ-1) + ∑_{i<j}(rᵢ-1)(rⱼ-1)`. |
+| `partitionDefect_lower_bound`, `partitionDefect_fixed_block_bound` | For positive block sizes of total `m`, `D(r) ≥ (k-1)(m-k)`; the second theorem exposes `m` and `k` as named parameters. |
+| private `list_sum_eq_zero_iff`, `pairSum_eq_zero_iff_pairwise` | A natural-valued list sum is zero exactly when every term is zero; a natural-valued pair sum is zero exactly when its kernel vanishes on every list-position pair. |
+| `blockPairDefect_eq_zero_iff`, `partitionDefect_eq_zero_iff`, `sub_one_mul_sub_one_eq_zero_iff` | For positive `x,y`, `δ(x,y)=0` iff `x=y=1`, while `(x-1)(y-1)=0` iff at least one is `1`. Thus `D(r)=0` iff `k≤1` or every block is a singleton. |
+| `partitionDefect_eq_lower_bound_iff`, `partitionDefect_fixed_block_eq_iff` | Equality in the sharp bound holds exactly when every pair contains a singleton, equivalently when at most one block is nonsingleton. |
+| `add_sub_one_le_mul_of_pos`, `mul_eq_add_sub_one_iff` | For positive `a,b`, `a+b-1 ≤ ab`; equality holds iff `a=1` or `b=1`, by `ab = (a+b-1) + (a-1)(b-1)`. |
+| `firstShell_le_fixedBlockProduct`, `fixedBlockProduct_eq_firstShell_iff` | If `2 ≤ k < m`, then `m-2 ≤ (k-1)(m-k)`, with equality iff `k=2` or `k=m-1`. |
+| `firstShell_le_partitionDefect`, `partitionDefect_eq_firstShell_iff` | A positive block-size list of total `m` with `2 ≤ k < m` has `D(r) ≥ m-2`. Equality gives the endpoint profile families `(m-1,1)` and `(2,1,...,1)`, up to order; they coincide for `m=3`. |
+| `partitionDefect_twoBlock_firstShell` | Sharpness is explicit: `D([m-1,1]) = m-2` for `m ≥ 3`. |
+
+This formalizes the list-level finite arithmetic behind the report's dyadic
+partition defect: pairwise and triangular forms, zero classification, sharp
+fixed-block minimum, equality profile, and first positive shell.  It
+generalizes the arithmetic from set partitions to arbitrary positive
+block-size lists.  A wrapper turning a finite set partition into its block-size
+list is still absent.  The quadratic-scale factorization, weighted-defect
+decay, two-spine reduction, finite spine expansion, orbit-weight analysis,
+positive-iterate nowhere-analyticity, co-countable zero-radius theorem, and
+dependent inverse/non-elementarity corollaries remain manuscript-level.
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
-[`Representation_Frontiers/`](Representation_Frontiers/) (300 pp;
+[`Representation_Frontiers/`](Representation_Frontiers/) (301 pp;
 eight parts):
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform
@@ -321,6 +391,87 @@ the monic orthogonal construction, parity, the symmetric three-term
 recurrence, and the first exact Jacobi data.  Roots and quadrature,
 second-kind polynomials, finite/infinite continued-fraction identification,
 and analytic convergence remain open.
+
+`PolynomialMomentGramDeterminant.lean` now supplies the exhaustive generic
+polynomial-basis transport surface: definitions `polynomialCoefficientMatrix`
+and `polynomialMomentGramMatrix`, and theorems
+`polynomialCoefficientMatrix_apply`, `polynomialMomentGramMatrix_apply`,
+`polynomialMomentGramMatrix_eq_transpose_mul_hankel_mul`,
+`polynomialMomentGramMatrix_det_eq_coefficient_det_sq_mul`,
+`polynomialCoefficientMatrix_det_eq_prod_coeff`,
+`polynomialMomentGramMatrix_det_eq_prod_coeff_sq_mul`, and
+`gramStieltjesJacobiSubdiagonal_eq_polynomialMomentGramMatrix_det_ratio`.
+The degree-coherent family hypothesis is `natDegree (p k) ≤ k`; the matrix
+identity is over a commutative semiring, determinant transport over a
+commutative ring, and the final field-level ratio also requires every diagonal
+coefficient to be nonzero.  It requires no Hankel nonvanishing and asserts no
+measure, positivity, orthogonality, root, quadrature, continued-fraction, or
+convergence result. Because field division is total, a zero middle Hankel
+determinant makes both displayed cross-ratios zero; that equality alone is not
+a genuine nonsingular Jacobi recurrence.
+
+`LegendrePolynomialRational.lean` supplies the adjacent executable coefficient
+layer. Its exhaustive public surface is two definitions,
+`legendrePolynomialCoeffRat` and `legendrePolynomialRat`, and six theorems:
+`legendrePolynomialRat_cast`, `coeff_legendrePolynomialRat`,
+`natDegree_legendrePolynomialRat`, `coeff_legendrePolynomialRat_self`,
+`coeff_legendrePolynomialRat_self_ne_zero`, and
+`coeff_legendrePolynomialRat_self_div_succ`. The first definition is a bounded
+executable rational coefficient sum; the second is its noncomputable polynomial
+wrapper. The theorems give the coefficient and real-cast bridges, exact degree,
+leading coefficient `2^(-n) * choose(2*n,n)`, its nonvanishing, and consecutive
+quotient `(n+1)/(2*n+1)`. No root, Christoffel, quadrature, orthogonality, or
+asymptotic result is asserted.
+
+`FabiusLegendreHankelDeterminant.lean` specializes that transport with the
+exhaustive definitions `upLegendreGramMatrix`, `upLegendreGramDet` and
+theorems `upLegendreGramMatrix_apply_eq_integral`,
+`upLegendreGramDet_eq_prod_leadingCoeff_sq_mul_hankelDet`,
+`upLegendreGramDet_zero`, `upLegendreGramDet_pos`,
+`coeff_legendrePolynomial_self_div_succ`,
+`gramStieltjesJacobiSubdiagonal_upMoment_eq_upLegendreGramDet_ratio`, and
+`rvachevJacobiSubdiagonalRat_cast_eq_upLegendreGramDet_ratio`.  The determinant
+identity and up-moment cross-ratio need only `BoundedFabius`; entry integration,
+positivity, and the rational-cast ratio additionally need `IsFabius`.  The
+empty `0×0` determinant is `D_0 = 1`, and the zero-based subdiagonal index `n`
+is the conventional `beta_(n+1)`, with prefactor `((n+1)/(2*n+1))^2`.
+Positivity excludes the totalized singular case. Finite Gaunt/Wigner entry
+expansions, Christoffel reconstruction, roots, quadrature, infinite Jacobi
+products/continued fractions, and asymptotics remain outside this module.
+The existing `rvachevTranslateGram` is instead the unweighted Gram kernel of
+shifted-up atoms.
+
+`FabiusLegendreRationalGram.lean` supplies the executable rational
+specialization. Its exhaustive public surface is three definitions,
+`rvachevLegendreGramEntryRat`, `rvachevLegendreGramMatrixRat`, and
+`rvachevLegendreGramDetRat`, and eleven theorems:
+`rvachevLegendreGramEntryRat_eq_momentPairing`,
+`rvachevLegendreGramMatrixRat_apply`,
+`rvachevLegendreGramMatrixRat_eq_polynomialMomentGramMatrix`,
+`rvachevLegendreGramEntryRat_cast`, `rvachevLegendreGramMatrixRat_cast`,
+`rvachevLegendreGramDetRat_cast`,
+`rvachevLegendreGramDetRat_eq_prod_leadingCoeff_sq_mul_rvachevHankelDetRat`,
+`rvachevLegendreGramDetRat_zero`, `rvachevLegendreGramDetRat_pos`,
+`rvachevOrthoNormRat_eq_rvachevLegendreGramDetRat_ratio`, and
+`rvachevJacobiSubdiagonalRat_eq_rvachevLegendreGramDetRat_ratio`. The bounded
+rational entry sum, matrix, and determinant agree with the abstract
+moment-pairing objects and cast to the real up-law objects for a `BoundedFabius`
+satisfying `IsFabius`. The determinant is the rational Hankel determinant times
+the squared-leading-coefficient product, equals one in order zero, is positive,
+and gives the exact rational norm and zero-based `beta_(n+1)` ratios, the latter
+with prefactor `((n+1)/(2*n+1))^2`. This does not prove a Gaunt/Wigner/`3j`
+entry expansion, Christoffel reconstruction, roots, quadrature, an infinite
+Jacobi product/continued fraction, or asymptotics.
+
+Separately, `QBinomialReciprocity.lean` has no public definitions and exactly
+four public theorems: `gaussianBinomial_reciprocity_units`,
+`gaussianBinomial_reciprocity`,
+`gaussianBinomial_neg_one_eq_zero_of_odd_degree`, and
+`gaussianBinomial_neg_one_even_odd_eq_zero`. They give unit-valued reciprocity
+over a commutative semiring (total above the diagonal), the nonzero-base
+semifield wrapper, and the odd-degree and total even-row/odd-column zeros at
+`q = -1` over every commutative ring. They use no quotient, cancellation,
+domain, characteristic, topology, or convergence hypothesis.
 
 The reciprocal-Gamma portion of Part II is now formal at source checkpoint
 `71ab6f6728fceb753c88d8b0573077a59acf2682`.  The reusable convergence engine

@@ -1,6 +1,6 @@
 \documentclass[11pt,oneside]{article}
 
-\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
@@ -141,7 +141,7 @@ $C^\infty$ probability density supported on $[-1,1]$.  The current
 Thue--Morse and infinite-sinc descriptions, moment recurrences, Bell--Bernoulli
 formulae, Lambert-$W$ endpoint asymptotics, polynomial synthesis by translates
 of $\Up$, and Fourier--Legendre expansions.  This report audits that corpus and
-then develops a different, apparently absent layer: the intrinsic convex and
+then develops a partly overlapping layer around the intrinsic convex and
 spectral geometry of the probability measure
 \[
   \dd\mu(x)=\Up(x)\dd x.
@@ -193,7 +193,7 @@ Gauss rules and the diagonal Pad\'e approximants of the Cauchy transform.
 Finally, the repository's exact Legendre coefficients give a finite
 Legendre--Gaunt Gram matrix whose determinants recover the $\beta_n$; this
 closes a new exact circuit from dyadic Fabius values through Wigner $3j$
-coefficients to $\pi$ and back to $\Up$.
+coefficients to $\pi$ and back to $\Up$ in a single exact circuit.
 
 A fully commented Python program in the archive computes exact initial data and
 4,800-digit data through $\beta_{200}$.  It finds strict increase toward
@@ -214,17 +214,19 @@ under \repo{} was inspected together with its current coverage, audit, archive,
 and frontier manifests.  Canonical consolidated sources and the newest
 Legendre/Lagrange reports were close-read; generated tables and superseded
 siblings were cross-checked through their manifests and targeted formula
-searches.  Repository searches for the defining terms and formulas of the new
-layer---\emph{log-concavity of $\Up$}, native Szeg\H{o}/Nevai asymptotics,
-Christoffel reconstruction, the alternating Jacobi product for $\pi$, and the
-Legendre--Gaunt determinant bridge---returned no matching result at the audited
-snapshot.  ``New'' therefore means new relative to this repository snapshot,
-not a claim of worldwide priority.  Every imported fact, new proof, standard
-external theorem, numerical observation, and conjecture is marked according to
-its status.
+searches.  That audit found pre-existing Nevai-limit, $J$-fraction, Hankel, and
+Gauss--Pad\'e programs in the canonical representation frontier.  It found no
+matching report-level result for the log-concavity of $\Up$, the rational
+Christoffel limits and alternating Jacobi product for $\pi$, or the finite
+Gaunt/Wigner entry expansion. The determinant change-of-basis and Jacobi
+cross-ratio are now formalized downstream. ``New'' therefore applies only to the
+non-overlapping claims relative to this repository snapshot, not to the whole
+package and not as a claim of worldwide priority.  Every imported fact, new
+proof, standard external theorem, numerical observation, and conjecture is
+marked according to its status.
 \end{statusbox}
 
-\begin{statusbox}{Most important new statements}
+\begin{statusbox}{Important statements developed or assembled here}
 \begin{enumerate}
 \item $\Up$ and $F|_{[0,1]}$ are log-concave; hence a dyadic Tur\'an inequality,
       strong discrete convexity of $-\log F(2^{-n})$, and convexity of the
@@ -302,11 +304,15 @@ repository's much longer crosswalk.
 \item The moment Laurent series and a renormalization identity for the Cauchy
       transform.
 \end{itemize}
-The last two bullets are where this report begins.  The repository had built
-the finite exact algebraic layer, but its own canonical discussion still
-identified the full Jacobi/Pad\'e theory as undeveloped.  No audited TeX source
-used Szeg\H{o}, Nevai, Rakhmanov, Christoffel, Gauss quadrature, or the central
-Jacobi product developed below.
+The last two bullets are where this report begins, but the original novelty
+screen was too broad.  At the pinned checkpoint the canonical representation
+frontier already discussed the Nevai limit, the native J-fraction, and the
+Gauss--Pad\'e program.  Those strands are therefore inherited overlap, not
+evidence of absence from the corpus.  The report remains useful as a combined
+treatment of log-concavity and the Fabius Tur\'an inequality, Christoffel
+reconstruction, the rational product limits for \(\pi\), and the finite
+Legendre--Gaunt bridge.  Its novelty language is repository-relative and must
+be read subject to this corrected crosswalk.
 
 \subsection{Why this direction avoids duplication}
 The recent Legendre reports solve a different closure problem.  They begin
@@ -347,7 +353,11 @@ Alternating Jacobi product for $\pi$
  & New theorem here & Strong Szeg\H{o} center asymptotic \\
 Gauss--Pad\'e package
  & New synthesis here & Classical Markov/Stieltjes theory \\
-Legendre--Gaunt determinant bridge
+Legendre Gram determinant, executable rational data, and Jacobi cross-ratio
+ & Exact Lean counterpart & \path{FabiusLegendreHankelDeterminant.lean};
+   \path{FabiusLegendreRationalGram.lean};
+   \path{FabiusLegendreRationalGramValues.lean} \\
+Finite Gaunt/Wigner entry expansion
  & New finite identity here & Existing exact Legendre coefficients \\
 Monotone $\beta_n$, precise log-square rate
  & Conjectural & Exact checks and 4,800-digit computation through $n=200$ \\
@@ -708,11 +718,12 @@ orthogonality, the Hankel cross-ratio, the centered recurrence, and all real-cas
 bridges.  The definition \path{rvachevJacobiSubdiagonalRat} is zero-based:
 its value at index \(n\) is the report coefficient \(\beta_{n+1}\).
 
-These are noncomputable adjugate-based finite definitions and do not themselves
-evaluate the explicit \(H_4\) and \(\beta_4\) fractions displayed below; the downstream
-executable tranche does.  This layer proves no roots, Christoffel reconstruction or
-central products, Gauss quadrature, second-kind polynomials,
-continued-fraction/Pad\'e identification, or Szeg\H{o}/Nevai/Rakhmanov asymptotics.
+These are noncomputable adjugate-based finite definitions.  The separate executable
+values leaf inventoried below now names and evaluates the explicit \(H_4\) and
+\(\beta_4\) fractions displayed below.  The modules in this tranche still prove no
+roots, Christoffel reconstruction or central products, Gauss quadrature, second-kind
+polynomials, continued-fraction/Pad\'e identification, or
+Szeg\H{o}/Nevai/Rakhmanov asymptotics.
 
 The later finite change-of-basis tranche closes precisely the determinant part of
 \cref{sec:legendre-gaunt}.  The generic module
@@ -784,7 +795,9 @@ eleven public theorems:
 \path{rvachevJacobiSubdiagonalRat_eq_rvachevLegendreGramDetRat_ratio}.
 The entry is a direct bounded double sum of executable Legendre coefficients and rational
 moments.  It therefore closes entrywise rationality without invoking a Gaunt expansion;
-the entry, matrix, and determinant cast to their analytic up-law counterparts.  The
+for a \path{BoundedFabius} input together with its \path{IsFabius} certificate, the entry,
+matrix, and determinant cast to their analytic up-law counterparts.  The finite rational
+identities themselves require no such analytic input.  The
 determinant is strictly positive over \(\Q\), so the rational norm and zero-based Jacobi
 cross-ratios are genuine rather than merely totalized identities.  These definitions give
 an exact evaluator route to \(H_4\) and \(\beta_4\).
@@ -836,7 +849,8 @@ This closure still does \emph{not} formalize equality with the finite Gaunt inte
 Wigner/\(3j\)-symbol, or factorial entry formulas
 \cref{eq:gaunt-integral,eq:finite-gaunt-matrix,eq:wigner-factorial}.  Entry
 rationality is now proved by the direct moment-sum route, not by those formulas.
-Christoffel reconstruction and the infinite/asymptotic Jacobi layers also remain open.
+Christoffel reconstruction, root and quadrature results, and the infinite continued-
+fraction or asymptotic Jacobi layers also remain open.
 Finally, the existing \path{rvachevTranslateGram} is a different object: it pairs
 shifted-up atoms under unweighted interval integration, whereas
 \path{upLegendreGramMatrix} and \path{rvachevLegendreGramMatrixRat} pair ordinary
@@ -869,9 +883,11 @@ The first moments from \cref{eq:moment-recurrence} are
  \label{eq:native-first-moments}
 \end{equation}
 The repository directly formalizes \(\pi_0,\ldots,\pi_4\) and
-\(H_0,\ldots,H_3\); the displayed \(\beta_1,\beta_2,\beta_3\) then follow as
-exact quotients of those formal norm values.  The executable rational Gram
-determinants now give an exact evaluation route for the final row:
+\(H_0,\ldots,H_4\); the displayed \(\beta_1,\beta_2,\beta_3\) follow as
+exact quotients of the earlier formal norm values, while
+\path{rvachevJacobiSubdiagonalRat_three} gives the zero-based exact value
+\(\beta_4\).  The executable rational Gram determinants give an exact evaluation
+route for that final row:
 \path{rvachevOrthoNormRat_eq_rvachevLegendreGramDetRat_ratio} at \(n=4\)
 computes \(H_4\), and
 \path{rvachevJacobiSubdiagonalRat_eq_rvachevLegendreGramDetRat_ratio} at \(n=3\)
@@ -896,9 +912,11 @@ The combined table is included to fix every normalization used later:
    & \beta_4&=\frac{835232}{4640643}.
  \label{eq:low-jacobi-data}
 \end{align}
-The two final-row fractions are named exact rational Lean computations, follow from
-the same exact moment algorithm, and are independently verified by the archive's
-Python program.  Numerically,
+The two final-row fractions are exact rational Lean computations, follow from the same
+exact moment algorithm, are independently verified by the archive's Python program,
+and have the named Lean
+certificates \path{rvachevOrthoNormRat_four} and
+\path{rvachevJacobiSubdiagonalRat_three}.  Numerically,
 \begin{equation}
  \beta_1=0.111111\ldots,
  \quad \beta_2=0.142222\ldots,
@@ -1060,7 +1078,7 @@ from the Jacobi truncation with the corresponding arcsine quantiles.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.82\textwidth]{zero_quantiles.pdf}
+\includegraphics[width=0.82\textwidth]{zero_quantiles.png}
 \caption{Zeros of $\pi_{100}$, computed as eigenvalues of the finite Jacobi
 matrix, against the arcsine quantiles.  This is a numerical illustration of
 \cref{eq:arcsine-zero-limit}, not an additional proof.}
@@ -1469,7 +1487,7 @@ present; convergence itself is proved by \cref{thm:pi-product}.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.82\textwidth]{pi_approximants.pdf}
+\includegraphics[width=0.82\textwidth]{pi_approximants.png}
 \caption{The direct rational products $\Pi_M$ and the exact Christoffel
 harmonic means $2M\lambda_{2M}(0)$.  Both converge to $\pi$; monotone approach
 from below is conjectural.}
@@ -1898,7 +1916,7 @@ Only the endpoint limit $\beta_n\to1/4$ is proved; the strict inequalities in
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.82\textwidth]{jacobi_coefficients.pdf}
+\includegraphics[width=0.82\textwidth]{jacobi_coefficients.png}
 \caption{The computed native recurrence coefficients and the proved limit
 $1/4$.}
 \label{fig:jacobi-coefficients}
@@ -1906,7 +1924,7 @@ $1/4$.}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.82\textwidth]{scaled_jacobi_deficit.pdf}
+\includegraphics[width=0.82\textwidth]{scaled_jacobi_deficit.png}
 \caption{The scaled deficit
 $n^2(1/4-\beta_n)/(\log_2n)^2$.  The horizontal line is the conjectural limit
 $2/\pi$, not a fitted value.}
@@ -1934,7 +1952,7 @@ of the slowly varying lower-order structure.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.82\textwidth]{pi_product_error.pdf}
+\includegraphics[width=0.82\textwidth]{pi_product_error.png}
 \caption{Scaled error of the rational product.  The candidate limit $1$ is
 part of \cref{conj:beta-rate}.}
 \label{fig:pi-product-error}
@@ -2381,13 +2399,15 @@ near-orthogonal reference basis.
 
 \subsection{Lean formalization order}
 The repository already contains rational moments, positive Hankel matrices,
-low-degree native polynomials, and the Cauchy renormalization.  It now also contains
-the finite scalar-naturality API and the all-degree rational native Jacobi layer
+low-degree native polynomials, and the Cauchy renormalization. It now also contains
+the finite scalar-naturality API, the all-degree rational native Jacobi layer,
+the generic/Legendre Gram determinant change-of-basis layers, and executable
+rational Legendre coefficient, entry, matrix, and determinant layers
 catalogued in \cref{sec:native-op}: exact \(\Q\)-valued determinants, polynomial
 coefficients, norms, zero diagonal, positive subdiagonals, determinant cross-ratio,
 orthogonality, centered recurrence, and real-cast bridges, with zero-based index
 \(n\) corresponding to \(\beta_{n+1}\).  The polynomial change-of-basis and Legendre
-specialization catalogued there now formalize
+specializations catalogued there now formalize
 \cref{eq:legendre-hankel,eq:beta-gaunt-determinants}, without formalizing the
 Gaunt/Wigner entry expansion.  The executable rational Legendre coefficient and
 Gram tranche now also closes direct moment-sum entry rationality and supplies finite
@@ -2399,7 +2419,15 @@ and squared integral; the latter is proved as the quotient of the fourth and thi
 real Hankel ratios.  These finite certificates do not amount to a general native evaluator.
 The remaining formalization sequence is:
 \begin{enumerate}
-\item \textbf{Finite algebra:} formalize
+\item \textbf{Finite algebra:} the determinant change-of-basis and
+      \cref{eq:legendre-hankel,eq:beta-gaunt-determinants} are supplied by
+      \path{PolynomialMomentGramDeterminant.lean} and
+      \path{FabiusLegendreHankelDeterminant.lean}; their executable rational
+      coefficient and Gram refinements are supplied by
+      \path{LegendrePolynomialRational.lean} and
+      \path{FabiusLegendreRationalGram.lean}, with the displayed low-order
+      certificates evaluated in \path{FabiusLegendreRationalGramValues.lean}.
+      Formalize the remaining
       \cref{eq:inverse-hankel-christoffel,eq:monic-center-product,%
 eq:orthonormal-center-product,eq:harmonic-mean}.  These need only finite
       linear algebra and the existing positivity and rational-native APIs.  Separately,
@@ -2649,9 +2677,12 @@ The nonduplication audit used the following hierarchy.
       \emph{$J$-fraction}, the alternating $\beta_{2j}/\beta_{2j-1}$ product,
       and the Legendre--Gaunt determinant formulas.
 \end{enumerate}
-No matching report-level result was found for the main claims developed here.
-The audit is necessarily corpus-relative: it does not establish that no
-analogous observation exists elsewhere in the worldwide literature.
+The canonical representation frontier already contained the Nevai-limit,
+$J$-fraction, Hankel, and Gauss--Pad\'e program.  The audit found no matching
+report-level result for the remaining log-concavity, rational-$\pi$, and
+Legendre--Gaunt claims.  This boundary is necessarily corpus-relative: it does
+not establish that no analogous observation exists elsewhere in the worldwide
+literature.
 
 \begin{thebibliography}{99}
 
