@@ -1,8 +1,8 @@
 \documentclass[11pt]{article}
-\usepackage[a4paper,margin=25mm,headheight=14pt]{geometry}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,bm}
 \usepackage{booktabs,longtable,tabularx,array}
@@ -104,7 +104,7 @@ On the original Fourier side, the zero at the nonzero integer $N$ has multiplici
 \]
 Thus the sinc product analytically interpolates the Thue--Morse word by its signs on consecutive unit intervals.  We also determine its Cartwright indicator and extend the zero-count/sign theorem to integer dilation bases.  The report closes with conjectural Hermite limits for Jensen polynomials, a log-periodic coefficient transseries expected to be dual to the known endpoint fluctuation, arithmetic questions for rational $q$, and concrete formalization targets.
 
-All claims labeled theorem, proposition, lemma, or corollary are proved here.  Claims labeled conjecture or problem are deliberately unproved.  ``New'' means that no exact statement was found in the pinned 87-file repository audit or in the targeted literature search described in \cref{sec:audit}; it is not a claim of exhaustive priority over all literature.
+All claims labeled theorem, proposition, lemma, or corollary are proved here.  Claims labeled conjecture or problem are deliberately unproved.  The arrival-time novelty screen was incomplete: the pinned corpus already contained overlapping Laguerre--P\'olya, PF$_\infty$, shifted-Jensen, zero-count, and sign material.  Accordingly, ``new'' below describes report-local deductions and packaging after the corrected crosswalk in \cref{sec:audit}; it is neither a claim of absence from the repository nor a claim of exhaustive priority over the literature.
 \end{abstract}
 
 \tableofcontents
@@ -137,11 +137,22 @@ Recent frontier drafts & Spectral moments, valuation packages, Gamma and zeta mo
 \bottomrule
 \end{longtable}
 
-Repository-wide exact-phrase and concept searches found no use of the terms Laguerre--Pólya, Pólya frequency, multiplier sequence, Jensen polynomial, Toeplitz minor, Cartwright class, Hermite--Biehler, or de Branges in this Fabius corpus.  The targeted external search included the classical Pólya--Schur paper, the Aissen--Edrei--Schoenberg--Whitney characterization of totally positive sequences, modern Jensen-polynomial work, Cartwright-class literature, and the principal Fabius papers.  No source located in that search states the Fabius-specific theorems proved below.
+The arrival-time exact-phrase search missed existing repository overlap.  At
+the pinned checkpoint, Part~V of \texttt{Frontier\_Compilations} already
+contained the matching Laguerre--P\'olya/PF$_\infty$/shifted-Jensen layer,
+with zero-count and sign material elsewhere in the same consolidated volume.
+Those strands are inherited baseline here.  The targeted external search
+still included the classical P\'olya--Schur paper, the
+Aissen--Edrei--Schoenberg--Whitney characterization of totally positive
+sequences, modern Jensen-polynomial work, Cartwright-class literature, and
+the principal Fabius papers.  The present report remains useful as a unified
+proof-oriented treatment, but its novelty claims must be read subject to this
+corrected repository crosswalk.
 
-\subsection{What is genuinely different here}
+\subsection{The linked layer developed here}
 
-The report does not merely attach classical terminology to a known product.  The substantive new deductions are the following linked chain.
+The report does not merely attach classical terminology to a known product.
+Its linked deductions and useful joint packaging are the following.
 \begin{enumerate}[leftmargin=2.2em]
 \item The imaginary square-root transform identifies the scaled Rvachev moment sequence with the elementary symmetric functions of an explicit dyadic spectral alphabet.
 \item This gives PF$_\infty$ Toeplitz total positivity and an exact multiplier sequence, hence hyperbolicity of every shifted Jensen polynomial.
@@ -305,6 +316,27 @@ The zero-order argument is unchanged.  Moreover,
 \]
 the standard base-$b$ digit-sum form of Legendre's formula.  Adding $N$ gives \eqref{eq:b-count}; parity gives \eqref{eq:b-sign}.
 \end{proof}
+
+\paragraph{Lean status: finite arithmetic only.}
+The five public theorems of \path{BaseDigitMultiplicity.lean} give an
+exhaustive machine-checked closure of the finite counting identity behind
+\eqref{eq:b-count}.  They are
+\path{sum_range_weightedScaleMultiplicity_of_log_lt},
+\path{sum_range_weightedScaleMultiplicity_log},
+\path{sum_range_div_pow_log_eq_self_add_tail},
+\path{sub_one_mul_sum_padicValNat_succ_add_digitSum}, and
+\path{sum_range_padicValNat_succ_eq_sub_digitSum_div}.  For every natural
+base \(b>1\), including composite \(b\), and every \(N\in\N\), including
+\(N=0\), the last two respectively prove the additive identity
+\[
+ (b-1)\sum_{n=1}^{N}\bigl(1+\nu_b(n)\bigr)+s_b(N)=bN
+\]
+and its quotient form \eqref{eq:b-count}; the first three supply the sharp
+finite logarithmic truncation and floor-sum decomposition used in that proof.
+This module does \emph{not} identify \(1+\nu_b(n)\) with an analytic zero
+order of \(\Phi_b\), construct or prove convergence of
+\eqref{eq:base-b-product}, or prove the zero set or sign law
+\eqref{eq:b-sign}.  Those analytic steps remain paper-only.
 
 \section{Laguerre--Pólya structure from an arbitrary scale alphabet}\label{sec:LP}
 
@@ -865,7 +897,12 @@ The shortest route into Lean is modular.
 \item Formalize the Euler product \eqref{eq:sinh-product} and the double-product rearrangement \eqref{eq:H-double-product} under absolute local convergence.
 \item Define finite spectral alphabets, prove total nonnegativity by products of bidiagonal Toeplitz matrices, and pass to limits one fixed minor at a time.
 \item Import or prove the finite Pólya--Schur criterion needed for Jensen polynomials; the full classification theorem is not necessary if one works through finite truncations and Hurwitz limits.
-\item Formalize the zero multiplicity and Legendre digit-sum identity.  The sign interpolation theorem then requires only continuity and parity of zero crossings.
+\item The finite general-base multiplicity sum and digit-sum identity are now
+formalized by the five-theorem API in \path{BaseDigitMultiplicity.lean}, for
+all \(b>1\) and \(N\ge0\).  Still formalize the analytic identification of
+those arithmetic multiplicities with zero orders; the sign interpolation
+then additionally requires product convergence, the exact zero set,
+continuity, and parity of zero crossings.
 \item Formalize the exact coefficient recurrence \eqref{eq:a-recurrence}; it is algebraic once the logarithmic series is available.
 \end{enumerate}
 These items are substantially more tractable than formalizing the local central limit theorem.  The root limit can initially be recorded as an analytic theorem with a separate probability module.
@@ -920,7 +957,7 @@ The imaginary square-root transform changes the viewpoint on the Fabius--Rvachev
 \]
 The left side remembers the compactly supported atomic function; the middle expression exposes the valuation-weighted divisor; the right side exposes the moments.  Laguerre--Pólya theory converts the divisor into a real-rootedness preserver, total positivity converts it into inequalities and positive minors, Bell polynomials convert its logarithm into exact recurrences, and Bernoulli tilting converts its coefficients into a local central-limit saddle.  Returning to the real Fourier axis, the same divisor makes the Thue--Morse sequence visible as a sign word.
 
-This package is complementary to, rather than a repetition of, the existing endpoint, inverse, $q$-binomial, Legendre, and spectral developments.  It supplies a new algebraic-analytic backbone on which several of those directions can be joined: coefficient asymptotics can be matched to the Lambert-$W$ endpoint phase, Toeplitz minors can be transported toward Legendre coordinates, and dyadic collisions can be desingularized toward de Branges spaces.  The resulting frontier is concrete enough for exact computation and formalization, yet broad enough to expose genuinely new structure.
+This package overlaps the existing Laguerre--P\'olya, PF-infinity, shifted-Jensen, zero-count, and sign developments, while organizing them alongside additional Cartwright and deformation questions.  Its remaining frontier directions ask how coefficient asymptotics match the Lambert-$W$ endpoint phase, how Toeplitz minors transport toward Legendre coordinates, and how dyadic collisions might be desingularized toward de Branges spaces.  These questions are concrete enough for exact computation and formalization, but no package-wide novelty claim is intended.
 
 \appendix
 \section{A compact theorem dependency map}
@@ -958,7 +995,7 @@ They satisfy both the source moment recurrence and the new Bernoulli recurrence 
 
 \section{Research-status ledger}
 
-\begin{longtable}{p{0.43\textwidth}p{0.14\textwidth}p{0.35\textwidth}}
+\begin{longtable}{p{0.43\textwidth}p{0.14\textwidth}p{0.348\textwidth}}
 \toprule
 Statement & Status & Basis \\
 \midrule
@@ -966,6 +1003,7 @@ Statement & Status & Basis \\
 Zero multiplicity $\nu_2(N)+1$ & Proved & Direct factor count.\\
 Exact count $2N-s_2(N)$ & Proved & Legendre digit-sum identity.\\
 Thue--Morse sign interpolation & Proved & Parity of cumulative multiplicity.\\
+Finite base-$b$ multiplicity/digit identity & Lean-proved arithmetic & \path{BaseDigitMultiplicity.lean}; every $b>1$ and $N\ge0$, with no analytic zero or sign claim.\\
 Laguerre--Pólya type I & Proved & Genus-zero positive product.\\
 PF$_\infty$ moments & Proved & Bidiagonal factorization / AESW.\\
 Multiplier sequence & Proved & Pólya--Schur.\\

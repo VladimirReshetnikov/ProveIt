@@ -262,7 +262,7 @@ def write_exact_table(path: Path, exact: OrthogonalData) -> None:
     products = product_pi_approximants(exact.beta)
     christoffel = christoffel_even_pi_approximants(products)
     with path.open("w", newline="", encoding="utf-8") as stream:
-        writer = csv.writer(stream)
+        writer = csv.writer(stream, lineterminator="\n")
         writer.writerow(
             [
                 "n",
@@ -301,7 +301,7 @@ def write_high_precision_tables(
     with (data_dir / "jacobi_coefficients.csv").open(
         "w", newline="", encoding="utf-8"
     ) as stream:
-        writer = csv.writer(stream)
+        writer = csv.writer(stream, lineterminator="\n")
         writer.writerow(
             [
                 "n",
@@ -329,7 +329,7 @@ def write_high_precision_tables(
     with (data_dir / "pi_product_approximants.csv").open(
         "w", newline="", encoding="utf-8"
     ) as stream:
-        writer = csv.writer(stream)
+        writer = csv.writer(stream, lineterminator="\n")
         writer.writerow(
             [
                 "M",

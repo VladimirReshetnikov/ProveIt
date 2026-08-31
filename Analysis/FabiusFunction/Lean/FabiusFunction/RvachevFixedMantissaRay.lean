@@ -234,7 +234,7 @@ through by the `2ⁿ` absorbed into the normalized orbit product. -/
 theorem norm_rvachevFourierProduct_two_pow_mul_half_cross (n : ℕ) (y : ℝ) :
     ((2 : ℝ) ^ (n * (n + 1) / 2) * (Real.pi * |y|) ^ n) *
         ‖rvachevFourierProduct
-          ((2 : ℂ) ^ n * (((y / 2 : ℝ) : ℂ)))‖ =
+          ((2 : ℂ) ^ n * ((y / 2 : ℝ) : ℂ))‖ =
       normalizedDyadicSineProduct n (y - 1) *
         rvachevFixedMantissaTail y := by
   have hshell :=
@@ -253,12 +253,12 @@ theorem norm_rvachevFourierProduct_two_pow_mul_half_cross (n : ℕ) (y : ℝ) :
   calc
     ((2 : ℝ) ^ (n * (n + 1) / 2) * (Real.pi * |y|) ^ n) *
         ‖rvachevFourierProduct
-          ((2 : ℂ) ^ n * (((y / 2 : ℝ) : ℂ)))‖ =
+          ((2 : ℂ) ^ n * ((y / 2 : ℝ) : ℂ))‖ =
       (2 : ℝ) ^ n *
         (((2 : ℝ) ^ (n * (n + 1) / 2) *
             (Real.pi * |y / 2|) ^ n) *
             ‖rvachevFourierProduct
-              ((2 : ℂ) ^ n * (((y / 2 : ℝ) : ℂ)))‖) := by
+              ((2 : ℂ) ^ n * ((y / 2 : ℝ) : ℂ))‖) := by
         rw [← hden]
         ring
     _ = (2 : ℝ) ^ n *
@@ -284,7 +284,7 @@ work is the finite normalization `Qₙ = 2ⁿ ∏ |sin|`. -/
 theorem norm_rvachevFourierProduct_two_pow_mul_half
     (n : ℕ) (y : ℝ) (hy : y ≠ 0) :
     ‖rvachevFourierProduct
-        ((2 : ℂ) ^ n * (((y / 2 : ℝ) : ℂ)))‖ =
+        ((2 : ℂ) ^ n * ((y / 2 : ℝ) : ℂ))‖ =
       normalizedDyadicSineProduct n (y - 1) /
           ((2 : ℝ) ^ (n * (n + 1) / 2) *
             (Real.pi * |y|) ^ n) *

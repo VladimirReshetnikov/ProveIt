@@ -61,6 +61,7 @@ import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
 import FabiusFunction.FinitePolynomialFilterExactness
+import FabiusFunction.FiniteAffineCombinationBounds
 import FabiusFunction.FabiusDiscreteLimitRates
 import FabiusFunction.EndpointTransferPolynomials
 import FabiusFunction.PerturbedLowerLambert
@@ -213,6 +214,7 @@ import FabiusFunction.SmoothingOperatorExponential
 import FabiusFunction.AlgebraicInverseGerm
 import FabiusFunction.AlgebraicInverseGermAnalytic
 import FabiusFunction.AlgebraicInverseGermBinomial
+import FabiusFunction.FabiusInverseQuarterJet
 import FabiusFunction.GeometricCgfTails
 import FabiusFunction.GeometricTailDictionary
 import FabiusFunction.GeometricUniformDictionary
@@ -382,6 +384,7 @@ import FabiusFunction.Convexity
 import FabiusFunction.EffectiveFlatness
 import FabiusFunction.SharpFlatness
 import FabiusFunction.FabiusInverse
+import FabiusFunction.InverseModulus
 import FabiusFunction.MidpointEndpointTransfer
 import FabiusFunction.InverseMidpointDefect
 import FabiusFunction.InverseLayerCake
@@ -444,6 +447,8 @@ import FabiusFunction.PrefixKernelCounting
 import FabiusFunction.ThueMorseFormalProduct
 import FabiusFunction.GlobalBlockFold
 import FabiusFunction.NormalizationDictionary
+
+set_option autoImplicit false
 
 /-!
 # Fabius function

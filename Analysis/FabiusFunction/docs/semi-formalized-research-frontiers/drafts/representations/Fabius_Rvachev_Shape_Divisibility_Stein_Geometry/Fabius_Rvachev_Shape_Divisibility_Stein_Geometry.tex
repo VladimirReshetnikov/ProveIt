@@ -1,109 +1,155 @@
-\documentclass[11pt,openany]{book}
+\documentclass[11pt,oneside]{article}
 
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
-\usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{bm}
 \usepackage{booktabs,longtable,array,tabularx}
 \usepackage{graphicx}
-\usepackage{enumitem}
+\usepackage{pgfplots}
 \usepackage{xcolor}
-\usepackage{url}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{xurl}
 \usepackage{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
-\usepackage{listings}
-\usepackage{fancyhdr}
-\usepackage{caption}
 
-\definecolor{darkblue}{RGB}{20,55,100}
-\definecolor{darkgreen}{RGB}{20,90,55}
-\definecolor{darkred}{RGB}{125,35,35}
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\pgfplotsset{compat=1.18}
 \hypersetup{
   colorlinks=true,
-  linkcolor=darkblue,
-  citecolor=darkgreen,
-  urlcolor=darkred,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
   pdftitle={Shape, Divisibility, and Stein Geometry of the Fabius--Rvachev Law},
-  pdfauthor={Research report prepared for Vladimir Reshetnikov}
+  pdfauthor={Research report prepared for Vladimir Reshetnikov's ProveIt repository},
+  pdfsubject={Strict shape, convolution rootlessness, Stein geometry, diffusion, and Legendre jets},
+  pdfkeywords={Fabius function, Rvachev up-function, strict log-concavity, Stein kernel, convolution roots, Legendre equation}
 }
-
-\graphicspath{{numerical_output/}}
-\setlength{\parindent}{1.2em}
-\setlength{\parskip}{0.2em}
-\setcounter{tocdepth}{2}
-\setcounter{secnumdepth}{3}
-\sloppy
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[LE,RO]{\thepage}
-\fancyhead[LO]{\nouppercase{\rightmark}}
-\fancyhead[RE]{\nouppercase{\leftmark}}
+\fancyhead[L]{\small Shape, divisibility, and Stein geometry}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
-\setlength{\headheight}{14pt}
 
-\newtheorem{theorem}{Theorem}[chapter]
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+
+% Long unbreakable inline mathematics occasionally leaves a line with no legal
+% break point.  A small emergency stretch lets TeX loosen such a line rather
+% than let it protrude into the margin; it applies only to lines that would
+% otherwise be overfull.
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{conjecture}[theorem]{Conjecture}
-\newtheorem{problem}[theorem]{Problem}
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
-\newtheorem{remark}[theorem]{Remark}
+\newtheorem{algorithm}[theorem]{Algorithm}
 \newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
 
-\DeclareMathOperator{\supp}{supp}
-\DeclareMathOperator{\Var}{Var}
-\DeclareMathOperator{\Cov}{Cov}
-\DeclareMathOperator{\ord}{ord}
-\DeclareMathOperator{\Li}{Li}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
 \newcommand{\Up}{\operatorname{up}}
 \newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\E}{\mathbb{E}}
-\newcommand{\Pp}{\mathbb{P}}
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\C}{\mathbb{C}}
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\dd}{\,\mathrm{d}}
-\newcommand{\repo}{\textsc{ProveIt}}
-\newcommand{\Imported}{\textcolor{darkblue}{\textsc{Imported}}}
-\newcommand{\ProvedHere}{\textcolor{darkgreen}{\textsc{Proved here}}}
-\newcommand{\Conjectural}{\textcolor{darkred}{\textsc{Conjectural}}}
-\newcommand{\Status}[1]{\par\smallskip\noindent\textbf{Status:} #1.\par\smallskip}
+\newcommand{\wt}{\operatorname{wt}_2}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\smallo}{o}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\vtwo}{v_2}
+\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
+\newcommand{\lean}[1]{%
+  \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
+\newcommand{\leanevaltwo}[1]{%
+  \nolinkurl{integral_eval}\texttt{\textsubscript{2}}\nolinkurl{#1}}
 
-\lstset{
-  basicstyle=\ttfamily\small,
-  frame=single,
-  breaklines=true,
-  columns=fullflexible,
-  showstringspaces=false
+\newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
+\newenvironment{boxedremark}{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{black}\hrule\vspace{0.6em}\small
+}{%
+  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
 }
 
-\title{\Huge Shape, Divisibility, and Stein Geometry\\[0.4em]
-       \Large of the Fabius--Rvachev Law\\[1em]
-       \large Repository-Distinct Frontier Results, Conjectures,\\
-       and a Formalization Program}
-\author{Research report prepared for Vladimir Reshetnikov}
-\date{August 30, 2026}
+\lstdefinestyle{pseudo}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{shadegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  xleftmargin=0.7em,
+  xrightmargin=0.7em,
+  aboveskip=0.8em,
+  belowskip=0.8em
+}
+
+\graphicspath{{numerical_output/}}
+\allowdisplaybreaks
+\lstset{style=pseudo}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Imported}{\textsc{Imported}}
+\newcommand{\ProvedHere}{\textsc{Proved here}}
+\newcommand{\Conjectural}{\textsc{Conjectural}}
+\newcommand{\Status}[1]{%
+  \begin{boxedremark}\textbf{Status.} #1.\end{boxedremark}}
+
+\title{\bfseries Shape, Divisibility, and Stein Geometry\\[0.35em]
+\large Strict shape, convolution rootlessness, diffusion, Legendre jets, and a corrected overlap boundary}
+\author{Research report prepared for Vladimir Reshetnikov's \texttt{ProveIt} repository}
+\date{Repository-normalized 30 August 2026\\
+\small Arrival archive SHA-256 \nolinkurl{200e65588b824d05f863ec0dae50b983408af3a7a2cf000c55556560e8e49d2e};\\
+\small overlap correction audited at \nolinkurl{563b90f25e0563cc521a53e9b478b667eaf3b694}}
 
 \begin{document}
-\frontmatter
 \maketitle
 
-\chapter*{Abstract}
-\addcontentsline{toc}{chapter}{Abstract}
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
 The Fabius function, the Rvachev up-function, the Prouhet--Thue--Morse sequence,
 geometric infinite sinc products, and the associated $q$-series form a remarkably
 rigid dyadic system.  The accompanying repository already contains an unusually
 large body of work on endpoint asymptotics, Lambert--$W$ carriers, dyadic arithmetic,
 $q$-binomial acceleration, Bell--Bernoulli moment calculus, Fourier decay,
 representation theory, inverse-function asymptotics, Legendre and Lagrange loops,
-and formalization.  The purpose of this report is therefore not to repeat that
-material, but to locate directions that remain genuinely absent from the audited
-corpus and to push them far enough to yield complete theorems.
+and formalization.  This corrected edition separates the report's genuinely
+distinct shape, convolution-root, diffusion, and Legendre-jet strands from its
+substantial overlap with the previously filed Stein--Koopman report.
 
 The first main result settles the critical binary endpoint of a strict
 log-concavity conjecture stated in the repository.  The Rvachev density is already
@@ -122,57 +168,98 @@ Rvachev probability law has no nontrivial identical convolution root of any orde
 even though it is an infinite convolution of unequal uniform laws.  The same
 argument applies to the full geometrically scaled uniform family.
 
-The third main contribution develops the canonical Stein kernel of the centered
-Fabius--Rvachev distribution.  We obtain exact Fabius-tail and conditional-moment
+The third main strand develops the canonical Stein kernel of the centered
+Fabius--Rvachev distribution.  It independently derives exact Fabius-tail and
+conditional-moment
 representations, exact values $\tau(0)=5/36$ and $\tau(1/2)=1/12$, a moment bridge
 to the repository's Bell--Bernoulli calculus, a weighted Poincare inequality with
 sharp spectral gap one, and a symmetric diffusion generator having the Rvachev
 law as invariant measure.  The Stein kernel is nowhere analytic, but its complete
 Taylor jet at the mode is the quadratic $5/36-x^2/2$.  Therefore the formal
 eigenvalue equation of the diffusion is exactly a rescaled Legendre equation.
-This produces a new ``Legendre shadow'': smooth eigenfunctions have Legendre
+This produces a ``Legendre shadow'': smooth eigenfunctions have Legendre
 Taylor jets, while global nonanalyticity rules out every analytic or polynomial
 eigenfunction beyond the constants and the linear eigenfunction.
 
+The exact scalar-kernel formula, dyadic values, rationality and moment identities
+overlap \emph{Dyadic Stein--Koopman and q-Oscillator Calculus}, already present
+at repository ancestor \nolinkurl{31549ad44}; that report also proves a stronger
+two-term Lambert-periodic endpoint theorem.  The overlap does not invalidate the
+proofs supplied here, but those results are not repository-distinct.
+
 Finally, an exact logarithmic-coordinate representation and rigorous endpoint
-bounds are derived for the Stein kernel.  They lead to a Lambert--$W$-compatible
-asymptotic conjecture
+bounds are derived for the Stein kernel.  They recover a Lambert--$W$-compatible
+leading equivalent already proved at greater precision in the Stein--Koopman
+report,
 \[
  \tau(1-\delta)\sim \frac{\delta}{1+\delta F'(\delta)/F(\delta)}
  \qquad (\delta\downarrow0),
 \]
-and to a program involving multiplicative concavity, factor-divisor rigidity,
+and motivate a program involving multiplicative concavity, factor-divisor rigidity,
 Stein spectral asymptotics, strict log-concavity for the nonbinary family, and
 Lean formalization.  A fully commented Python program and reproducible numerical
 certificates accompany the report.
 
-\chapter*{Research-status convention}
-\addcontentsline{toc}{chapter}{Research-status convention}
+\section*{Research-status convention}
+\addcontentsline{toc}{section}{Research-status convention}
 Every substantial statement is marked according to the following convention.
 
 \begin{center}
 \begin{tabularx}{0.92\textwidth}{>{\bfseries}l X}
 \toprule
 \Imported & A fact proved in the repository or in cited literature and used here as input.\\
-\ProvedHere & A complete proof is supplied in this report; the result was not found in the audited repository corpus.\\
+\ProvedHere & A complete proof is supplied in this report; this label does not assert repository novelty or Lean status.\\
 \Conjectural & A precise but unproved statement, normally accompanied by structural or numerical evidence.\\
 \bottomrule
 \end{tabularx}
 \end{center}
 
-``Repository-distinct'' is intentionally weaker than a claim of absolute priority
-in the global literature.  The searches were designed first to prevent duplication
-of the supplied corpus.  The report does not assert that every proved-here theorem
-has never appeared elsewhere under different terminology.
+The submitted phrase ``repository-distinct'' was intended only as a
+corpus-relative claim, not a claim of worldwide priority.  Because that source
+audit missed a live sibling report, this normalized edition no longer uses the
+phrase as a status category.
+
+The submitted novelty audit was incomplete: it missed the existing
+\emph{Dyadic Stein--Koopman and q-Oscillator Calculus} report.  The corrected
+overlap review is pinned to repository checkpoint
+\nolinkurl{563b90f25e0563cc521a53e9b478b667eaf3b694}; the earlier report is
+present at ancestor \nolinkurl{31549ad44}.  The labels above describe proof
+status inside this manuscript only.  No theorem, proposition, lemma, or
+corollary label by itself claims an exact Lean counterpart.
+
+The one imported input below that already has an exact Lean counterpart is the
+nowhere-analyticity theorem.  The distinction between that formalized input and
+the paper-only results of this report is recorded explicitly here.
+
+\begin{center}
+\small
+\begin{tabularx}{0.96\textwidth}{>{\raggedright\arraybackslash}p{0.24\textwidth} X >{\raggedright\arraybackslash}p{0.23\textwidth}}
+\toprule
+Manuscript role & Lean declaration and module & Current status\\
+\midrule
+Parameterized Rvachev nowhere-analyticity input &
+\lean{Fabius.rvachev_not_analyticAt} in
+\lean{FabiusFunction.OriginalPaperSupplement} &
+Exact existing Lean theorem\\
+Canonical Rvachev nowhere-analyticity input &
+\lean{Fabius.canonical_rvachev_not_analyticAt} in
+\lean{FabiusFunction.NowhereAnalytic} &
+Exact existing Lean theorem\\
+Shape, rootlessness, Stein, diffusion, endpoint, and Legendre-jet results
+proved or proposed here &
+The identifiers in the suggested-name section are prospective API names only &
+Paper-only; no exact Lean counterpart is claimed\\
+\bottomrule
+\end{tabularx}
+\end{center}
 
 \tableofcontents
 \listoffigures
 
-\mainmatter
 
-\chapter{Orientation and principal results}
+\section{Orientation and principal results}
 
-\section{Why a new direction was necessary}
+\subsection{Why a new direction was necessary}
 The repository has grown into a research library rather than a single article.
 Its current top-level documentation contains a primary exposition, a mathematical
 glossary, a non-elementarity study, a Lean walkthrough, an archive of historical
@@ -204,14 +291,18 @@ Bell--Bernoulli moment formulas and Lambert-series cumulants & Already part of t
 \bottomrule
 \end{longtable}
 
-The viable gap was a probability-shape theory centered on \emph{strictness},
-convolution roots, Stein kernels, and the diffusion naturally generated by the
-Rvachev law.  None of the audited master volumes contains a Stein-kernel section,
-and searches for ``Stein kernel'' and ``convolution root'' returned no relevant
-repository result.  Strict log-concavity at the critical binary point is explicitly
-left as a conjectural endpoint in the geometric-family treatment.
+The viable distinct layer is a probability-shape theory centered on
+\emph{strictness}, identical-convolution rootlessness, the invariant diffusion,
+and its Legendre formal jets.  The submitted audit's claim that the corpus had no
+Stein-kernel treatment was false: the Stein--Koopman report already proves the
+exact scalar kernel, its dyadic rational values and Appell moments, and a stronger
+two-term Lambert-periodic endpoint theorem.  The present kernel derivations are
+therefore overlapping paper proofs.  Strict log-concavity at the critical binary
+point, rootlessness, diffusion geometry, and the Legendre-jet consequences remain
+the report's distinct strands under the corrected checkpoint.  None is promoted
+to Lean-proved status here.
 
-\section{Executive theorem map}
+\subsection{Executive theorem map}
 The report proves the following chain.
 
 \begin{enumerate}[label=\textbf{R\arabic*.},leftmargin=3.2em]
@@ -239,10 +330,11 @@ is symmetric in $L^2(p)$ and has exact weighted spectral gap $1$.
 $5/36-x^2/2$, and induces an exact Legendre equation on eigenfunction jets.
 The only analytic eigenfunctions are $1$ and $x$.
 \item An exact endpoint integral in logarithmic coordinates gives rigorous bounds
-and a natural Lambert--$W$-scale asymptotic conjecture for $\tau(1-\delta)$.
+and a natural all-orders Lambert--$W$ transseries conjecture beyond the imported
+two-term endpoint law for $\tau(1-\delta)$.
 \end{enumerate}
 
-\section{A compact notation table}
+\subsection{A compact notation table}
 \begin{center}
 \begin{tabularx}{0.94\textwidth}{l X}
 \toprule
@@ -264,9 +356,9 @@ $\sinc z$ & $\sin z/z$, with $\sinc 0=1$\\
 \end{tabularx}
 \end{center}
 
-\chapter{Corpus audit and nonduplication method}
+\section{Corpus audit and nonduplication method}
 
-\section{Inventory strategy}
+\subsection{Inventory strategy}
 The requested directory contains both active documents and historical snapshots.
 A literal file count by itself is not a reliable duplication audit because many
 old sources were later merged verbatim into canonical volumes.  The audit therefore
@@ -286,15 +378,18 @@ LaTeX sources to the master documents into which they were absorbed.  Collision
 searches were then run on the exact concepts needed here: strict log-concavity,
 Stein kernels, convolution roots, weighted Poincare inequalities, diffusion
 generators, and Legendre jets.
+\item The correction pass also read the standalone
+\texttt{Fabius\_Stein\_Koopman\_Frontier\_Report} directly.  This check exposed
+the submitted audit's missed scalar-kernel and endpoint overlap.
 \end{enumerate}
 
 This method reads the corpus according to its own editorial architecture.  A
 historical file described as a verbatim predecessor of a consolidated volume was
 not treated as a mathematically independent current source.  Conversely, recent
-incoming reports not yet merged were checked separately because their distinctive
-strands can be absent from the master volume.
+standalone reports were checked separately instead of being inferred absent from
+the consolidated masters.
 
-\section{Imported facts used in this report}
+\subsection{Imported facts used in this report}
 Only a small portion of the repository's established theory is needed as input.
 The imported statements are:
 
@@ -315,10 +410,11 @@ whose scale selection is governed by Lambert $W$ and bounded dyadic-periodic
 corrections.
 \end{enumerate}
 
-All new theorems below are derived from these inputs and standard named results
-that are cited explicitly.
+All manuscript-level theorems below are derived from these inputs and standard
+named results that are cited explicitly.  Their labels certify paper proofs, not
+novelty and not Lean formalization.
 
-\section{External literature boundary}
+\subsection{External literature boundary}
 The probability arguments use two classical tools.  First, convolution and
 marginalization preserve log-concavity by the Prekopa theorem; modern surveys are
 \cite{samworth,saumardwellner}.  Second, a one-dimensional density with connected
@@ -327,9 +423,9 @@ inequality applies to it \cite{saumard}.  These tools are general; the exact
 Rvachev formulas, dyadic identities, and Legendre consequences developed here do
 not appear in those references.
 
-\chapter{The dyadic probability fixed point}
+\section{The dyadic probability fixed point}
 
-\section{Random-series and refinement descriptions}
+\subsection{Random-series and refinement descriptions}
 Let $(U_n)_{n\ge0}$ be independent random variables uniformly distributed on
 $[0,1]$, and define
 \begin{equation}\label{eq:Xseries}
@@ -366,14 +462,14 @@ For $0<x<1$ this simplifies to
  p'(x)=-2p(2x-1).
 \end{equation}
 
-\section{The survival identity}
+\subsection{The survival identity}
 The affine relation $Z=2X-1$ and the refinement equation yield an identity that
 will organize much of the report.
 
 \begin{proposition}[Density-survival self-duality]\label{prop:survival}
 For every $x\in[0,1]$,
 \begin{equation}\label{eq:survival}
- p(x)=\Pp(X\ge x)=1-F(x)=F(1-x).
+ p(x)=\Prob(X\ge x)=1-F(x)=F(1-x).
 \end{equation}
 Moreover,
 \begin{equation}\label{eq:fabius-density}
@@ -385,7 +481,7 @@ Moreover,
 For $x\in[0,1]$, the upper endpoint in \eqref{eq:refinement} lies outside the
 support, so
 \[
- p(x)=\int_{2x-1}^{1}p(t)\,dt=\Pp(Z\ge2x-1)=\Pp(X\ge x).
+ p(x)=\int_{2x-1}^{1}p(t)\,dt=\Prob(Z\ge2x-1)=\Prob(X\ge x).
 \]
 The symmetry $F(1-x)=1-F(x)$ gives the remaining equality.  The density
 transformation under $Z=2X-1$ gives \eqref{eq:fabius-density}.
@@ -399,7 +495,7 @@ normalization and is the source of the hazard, residual-life, and Stein identiti
 below.
 \end{remark}
 
-\section{Flatness at the mode}
+\subsection{Flatness at the mode}
 Because $p$ and all its derivatives vanish at the boundary, repeated
 differentiation of \eqref{eq:refinement-derivative} gives
 \begin{equation}\label{eq:flat-mode}
@@ -411,9 +507,9 @@ function nevertheless decreases away from zero and is nowhere analytic.  This
 combination will turn ordinary log-concavity into strict log-concavity without any
 local curvature lower bound.
 
-\chapter{Strict log-concavity at the critical binary point}
+\section{Strict log-concavity at the critical binary point}
 
-\section{A general strictness lemma}
+\subsection{A general strictness lemma}
 \begin{lemma}[No affine patch implies strict concavity]\label{lem:no-affine}
 Let $J$ be an interval and let $g:J\to\R$ be concave.  If $g$ is not affine on
 any nondegenerate subinterval of $J$, then $g$ is strictly concave on $J$.
@@ -428,7 +524,7 @@ Equality at an interior point of a chord of a concave function forces equality
 throughout that chord, hence $g$ is affine on $[x,y]$.
 \end{proof}
 
-\section{Resolution of the binary strictness conjecture}
+\subsection{Resolution of the binary strictness conjecture}
 \begin{theorem}[Strict log-concavity of the Rvachev density]\label{thm:strict-logconcave}
 The function $p=\Up$ is strictly log-concave on $(-1,1)$.  Equivalently, for
 $x\ne y$ in $(-1,1)$ and $0<t<1$,
@@ -468,9 +564,9 @@ flatness: strictness is global and order-theoretic, while every finite-order loc
 curvature test at the mode returns zero.
 \end{remark}
 
-\section{Strict log-concavity of the distribution tails}
+\subsection{Strict log-concavity of the distribution tails}
 \begin{theorem}[Strictly log-concave CDF and survival]\label{thm:cdf-survival}
-The centered CDF $H(x)=\Pp(Z\le x)$ and survival $1-H(x)$ are strictly
+The centered CDF $H(x)=\Prob(Z\le x)$ and survival $1-H(x)$ are strictly
 log-concave on $(-1,1)$.  The Fabius CDF $F$ and survival $1-F$ are strictly
 log-concave on $(0,1)$.
 \end{theorem}
@@ -489,7 +585,7 @@ $Ce^{-ax}$.  The statements for $F$ follow by the affine relation between $X$
 and $Z$.
 \end{proof}
 
-\section{Hazard, reverse hazard, and likelihood ratio}
+\subsection{Hazard, reverse hazard, and likelihood ratio}
 Let
 \[
  h_X(x)=\frac{F'(x)}{1-F(x)},\qquad
@@ -559,7 +655,7 @@ $p''(x)=8p(4x-3)$.  Pointwise log-concavity is
 $p(x)p''(x)-p'(x)^2\le0$.  Substitute $p'(x)=-2p(2x-1)$.
 \end{proof}
 
-\section{The inverse Fabius function}
+\subsection{The inverse Fabius function}
 Let $I=F^{-1}:(0,1)\to(0,1)$.
 
 \begin{theorem}[Strict log-convexity of the inverse slope]\label{thm:inverse-logconvex}
@@ -600,9 +696,9 @@ $I(1/2+h)=1/2+h/2+$ a flat remainder.  Strict log-convexity follows from
 \cref{thm:inverse-logconvex}.
 \end{proof}
 
-\chapter{Fourier zeros and convolution power-rootlessness}
+\section{Fourier zeros and convolution power-rootlessness}
 
-\section{The entire characteristic function}
+\subsection{The entire characteristic function}
 With the Fourier convention
 \[
  \Phi(\xi)=\E e^{2\pi i\xi Z},
@@ -633,11 +729,11 @@ Thus $Z$ also has the Bernoulli-triangular representation
 \begin{equation}\label{eq:bernoulli-triangle}
  Z\ \stackrel d=\ \sum_{m=1}^{\infty}\sum_{j=1}^{m}
  \frac{\varepsilon_{m,j}}{2^{m+1}},
- \qquad \Pp(\varepsilon_{m,j}=\pm1)=\frac12.
+ \qquad \Prob(\varepsilon_{m,j}=\pm1)=\frac12.
 \end{equation}
 This is the natural bridge from the sinc product to finite Thue--Morse sign sums.
 
-\section{A general zero-multiplicity obstruction}
+\subsection{A general zero-multiplicity obstruction}
 \begin{lemma}[Entire zero divisibility]\label{lem:zero-divisibility}
 Let $\mu$ be a compactly supported probability measure on $\R$.  If
 $\mu=\nu^{*r}$ for an integer $r\ge2$, then $\nu$ is compactly supported and every
@@ -681,7 +777,7 @@ distributed} summands.  This is stronger and more specific than the elementary
 fact that a nondegenerate compactly supported law cannot be infinitely divisible.
 \end{remark}
 
-\section{Extension to geometric atomic laws}
+\subsection{Extension to geometric atomic laws}
 Normalize the general geometric uniform series by
 \begin{equation}\label{eq:Za}
  Z_a=(a-1)\sum_{n=1}^{\infty}\frac{V_n}{a^n},\qquad a>1,
@@ -702,7 +798,7 @@ Apply \cref{lem:zero-divisibility} at the first positive zero of the first sinc
 factor.
 \end{proof}
 
-\section{A factor-classification conjecture}
+\subsection{A factor-classification conjecture}
 The cosine product \eqref{eq:cosine-triangle} supplies many compactly supported
 factors: choose any submultiset of the triangular array of cosine factors, and the
 chosen product is the characteristic function of the corresponding Rademacher
@@ -734,9 +830,9 @@ would combine Hadamard factorization of entire characteristic functions,
 positive-definiteness constraints, and the valuation-weighted zero divisor
 \eqref{eq:zero-order}.
 
-\chapter{The canonical Rvachev Stein kernel}
+\section{The canonical Rvachev Stein kernel}
 
-\section{Definition and Stein identity}
+\subsection{Definition and Stein identity}
 For a centered one-dimensional density $p$ with connected support, the canonical
 Stein kernel is
 \begin{equation}\label{eq:stein-def}
@@ -775,7 +871,7 @@ Integration by parts gives
 with vanishing boundary terms.
 \end{proof}
 
-\section{Exact Fabius-tail representations}
+\subsection{Exact Fabius-tail representations}
 The density-survival duality \eqref{eq:survival} turns the Stein kernel into a
 Fabius tail statistic.
 
@@ -800,7 +896,8 @@ is the mean residual life and $R_x=X-x$ under the same conditioning, then
  \qquad x e(x)\le\tau(x)\le e(x)\le1-x.
 \end{equation}
 \end{theorem}
-\Status{\ProvedHere}
+\Status{\ProvedHere independently; the exact scalar-kernel representation
+also appears in the earlier Stein--Koopman report}
 
 \begin{proof}
 Substitute $s=1-t$ into \eqref{eq:stein-def} and use $p(t)=F(1-t)$ to obtain
@@ -823,7 +920,7 @@ threshold for the uncentered Fabius law.  This is not a generic Stein-kernel
 formula; it is a consequence of the binary self-duality $p(x)=1-F(x)$.
 \end{remark}
 
-\section{Exact absolute moment and special values}
+\subsection{Exact absolute moment and special values}
 A useful absolute moment follows directly from the distributional recursion.
 
 \begin{lemma}[Exact first absolute moment]\label{lem:absolute-moment}
@@ -856,7 +953,8 @@ The canonical Stein kernel satisfies
  \qquad \tau''\!\left(\frac12\right)=-\frac13.
 \end{equation}
 \end{theorem}
-\Status{\ProvedHere}
+\Status{\ProvedHere independently; the values $\tau(0)=5/36$ and
+$\tau(1/2)=1/12$ also appear in the earlier Stein--Koopman report}
 
 \begin{proof}
 At $x=0$, \eqref{eq:stein-conditional} gives
@@ -895,21 +993,23 @@ $s'(1/2)=-(\log p)''(1/2)=16$.  Differentiating once more,
 \begin{proof}
 The tail formula for a symmetric variable gives
 \[
- \E|Z|=\int_0^1\Pp(|Z|>t)\,dt
+ \E|Z|=\int_0^1\Prob(|Z|>t)\,dt
  =4\int_0^{1/2}F(s)\,ds.
 \]
 Apply \cref{lem:absolute-moment}.
 \end{proof}
 
-\section{Dyadic rationality}
+\subsection{Dyadic rationality}
 The repository's exact integration machinery proves rationality of polynomially
 weighted Fabius integrals at dyadic endpoints.  Applying that calculus to
-\eqref{eq:stein-F} gives the following immediate new corollary.
+\eqref{eq:stein-F} gives the following immediate manuscript corollary, independently
+of the same dyadic-rationality conclusion in the earlier Stein--Koopman report.
 
 \begin{corollary}[Dyadic rationality of the Stein kernel]\label{cor:tau-dyadic}
 If $x\in(-1,1)$ is dyadic rational, then $\tau(x)\in\mathbb{Q}$.
 \end{corollary}
-\Status{\ProvedHere from imported dyadic integration theorems}
+\Status{\ProvedHere from imported dyadic integration theorems; overlapping the
+earlier Stein--Koopman report}
 
 \begin{proof}
 By evenness it is enough to take $0\le x<1$.  The denominator $F(1-x)$ is a
@@ -918,7 +1018,7 @@ an antiderivative of $(1-s)F(s)$, which is rational by the repository's monomial
 antiderivative and dyadic evaluation results.
 \end{proof}
 
-\section{Bell--Bernoulli moment bridge}
+\subsection{Bell--Bernoulli moment bridge}
 Let $\mu_k=\E Z^k$.  The repository expresses the even cumulants as
 \begin{equation}\label{eq:cumulants}
  \kappa_{2m}=\frac{2^{2m}B_{2m}}{2m(2^{2m}-1)},
@@ -941,7 +1041,8 @@ In particular,
 \end{align}
 All odd mixed moments vanish.
 \end{theorem}
-\Status{\ProvedHere}
+\Status{\ProvedHere independently; the earlier Stein--Koopman report contains
+the corresponding Appell-moment identity}
 
 \begin{proof}
 Take $\varphi(z)=z^{m+1}/(m+1)$ in \eqref{eq:stein-identity}.  Then
@@ -963,9 +1064,9 @@ combinatorial cost.  Conversely, numerical or analytic information on $\tau$ can
 be tested against a complete rational moment sequence.
 \end{remark}
 
-\chapter{The Rvachev--Stein diffusion and its Legendre shadow}
+\section{The Rvachev--Stein diffusion and its Legendre shadow}
 
-\section{Weighted Poincare inequality and exact gap}
+\subsection{Weighted Poincare inequality and exact gap}
 Saumard's one-dimensional theorem states that the canonical Stein kernel is a
 valid weight in a Poincare inequality for every density with connected support
 \cite{saumard}.
@@ -993,7 +1094,7 @@ while \eqref{eq:Etau} gives
 Thus no smaller multiplicative constant is possible.
 \end{proof}
 
-\section{A canonical symmetric generator}
+\subsection{A canonical symmetric generator}
 Define
 \begin{equation}\label{eq:generator}
  \mathcal Lg(x)=\tau(x)g''(x)-xg'(x).
@@ -1038,7 +1139,7 @@ invariant density vanishes there faster than any power.  A complete boundary
 classification can be developed through the Dirichlet form rather than assumed
 from the formal stochastic differential equation.
 
-\section{The Stein kernel is nowhere analytic}
+\subsection{The Stein kernel is nowhere analytic}
 \begin{theorem}[Nonanalyticity transfer]\label{thm:tau-nonanalytic}
 The Stein kernel $\tau$ is real analytic on no nonempty open subinterval of
 $(-1,1)$.
@@ -1058,7 +1159,7 @@ The right-hand side is analytic on $J$, so
 is analytic on $J$.  This contradicts nowhere analyticity of $p$.
 \end{proof}
 
-\section{The exact quadratic jet at the mode}
+\subsection{The exact quadratic jet at the mode}
 Let
 \[
  A(x)=\int_x^1t p(t)\,dt,
@@ -1105,7 +1206,7 @@ $p$: the entire formal series of $\tau$ is a quadratic polynomial, but the actua
 function is not analytic and is rescued from the polynomial's premature zero by a
 nontrivial flat correction.
 
-\section{Legendre equation in the eigenfunction jet}
+\subsection{Legendre equation in the eigenfunction jet}
 Consider a smooth solution of the formal eigenvalue problem
 \begin{equation}\label{eq:eigenproblem}
  \mathcal Lg=-\lambda g.
@@ -1164,7 +1265,7 @@ jet while the true global solution, if selected by spectral boundary conditions,
 must differ from it by a flat function at the mode.
 \end{remark}
 
-\section{No higher analytic eigenfunctions}
+\subsection{No higher analytic eigenfunctions}
 \begin{theorem}[Analytic-eigenfunction rigidity]\label{thm:analytic-eigen}
 Suppose a nonzero solution $g$ of \eqref{eq:eigenproblem} is real analytic on a
 nonempty open interval.  Then either
@@ -1198,7 +1299,7 @@ solution throughout $(-1,1)$.  A polynomial is analytic, so the last assertion
 follows.
 \end{proof}
 
-\section{A rational jet at the half point}
+\subsection{A rational jet at the half point}
 At $x=1/2$, the density has the complete formal germ
 \[
  p\!\left(\frac12+h\right)\sim\frac12-2h,
@@ -1238,9 +1339,9 @@ Divide by $1/2-2h$.  Equality on an interval would make $\tau$ analytic there,
 contrary to \cref{thm:tau-nonanalytic}.
 \end{proof}
 
-\chapter{Endpoint Stein asymptotics and Lambert scales}
+\section{Endpoint Stein asymptotics and Lambert scales}
 
-\section{Exact endpoint formula}
+\subsection{Exact endpoint formula}
 Set $x=1-\delta$ in \eqref{eq:stein-F}.  For $0<\delta<1$,
 \begin{equation}\label{eq:tau-endpoint}
  \tau(1-\delta)
@@ -1255,7 +1356,7 @@ For $0<\delta<1/2$, the Fabius equation gives the exact dyadic form
  \rho(\delta)=2\delta\frac{F(2\delta)}{F(\delta)}.
 \end{equation}
 
-\section{Tangent and chord bounds}
+\subsection{Tangent and chord bounds}
 \begin{theorem}[Rigorous elasticity bounds]\label{thm:endpoint-bounds}
 For $0<\delta<1$,
 \begin{equation}\label{eq:upper-rho}
@@ -1304,7 +1405,7 @@ Integrating $t\in[0,1]$ gives
 which proves \eqref{eq:lower-chord}.
 \end{proof}
 
-\section{Logarithmic-coordinate representation}
+\subsection{Logarithmic-coordinate representation}
 The endpoint structure becomes transparent after $s=\delta e^{-u}$.
 
 \begin{theorem}[Exact logarithmic-coordinate formula]\label{thm:log-coordinate}
@@ -1334,22 +1435,36 @@ $-\rho(\delta e^{-v})$.  Integration from $0$ to $u$ yields
 
 The mass in \eqref{eq:log-coordinate} is concentrated on
 $u\asymp(1+\rho(\delta))^{-1}$.  If $\rho$ varies slowly on that short logarithmic
-window, it can be frozen at $\rho(\delta)$, giving the next conjecture.
+window, it can be frozen at $\rho(\delta)$.  This heuristic motivated the
+arrival manuscript's one-term conjecture; its corrected repository status follows.
 
-\begin{conjecture}[Endpoint Stein law]\label{conj:stein-endpoint}
+The arrival manuscript presented the next leading equivalent as a conjecture.
+It is not an open claim in the repository: the earlier Stein--Koopman report
+proves a stronger two-term Lambert-periodic endpoint theorem, and the imported
+endpoint elasticity identifies its lower-Lambert coordinate with
+$\rho(\delta)$ to leading order.
+
+\begin{theorem}[Endpoint Stein law, imported from the stronger two-term result]
+\label{thm:stein-endpoint}
 As $\delta\downarrow0$,
-\begin{equation}\label{eq:stein-endpoint-conj}
+\begin{equation}\label{eq:stein-endpoint}
  \tau(1-\delta)
  \sim\frac{\delta}{1+\rho(\delta)}
  \sim\frac{\delta}{\rho(\delta)}.
 \end{equation}
-More strongly, substituting the repository's all-orders Lambert--$W$ and
-log-periodic expansion for $\rho(\delta)$ into \eqref{eq:log-coordinate} should
-produce an all-orders transseries for $\tau(1-\delta)$ with the same dyadic phase.
-\end{conjecture}
-\Status{\Conjectural; supported by the exact integral and numerical experiments}
+\end{theorem}
+\Status{\Imported at stronger two-term precision from the earlier
+Stein--Koopman report}
 
-\section{Multiplicative concavity conjecture}
+\begin{conjecture}[Full endpoint transseries]
+Substituting the repository's all-orders Lambert--$W$ and log-periodic expansion
+for $\rho(\delta)$ into \eqref{eq:log-coordinate} produces an all-orders
+transseries for $\tau(1-\delta)$ with the same dyadic phase.
+\end{conjecture}
+\Status{\Conjectural; this all-orders extension, unlike the leading and
+two-term endpoint laws, remains open}
+
+\subsection{Multiplicative concavity conjecture}
 The derivative of $t\mapsto\log F(e^t)$ is $\rho(e^t)$.  Numerical evidence
 suggests that this logarithmic-coordinate profile is concave.
 
@@ -1372,9 +1487,9 @@ If true, $\rho(\delta e^{-v})\ge\rho(\delta)$ in
 The numerical normalized ratios in \cref{tab:endpoint-numerics} approach $1$
 from below, exactly as this prediction requires.
 
-\chapter{Numerical experiments and reproducibility}
+\section{Numerical experiments and reproducibility}
 
-\section{Fixed-point discretization}
+\subsection{Fixed-point discretization}
 The accompanying script \path{rvachev_frontier_experiments.py} computes the
 density directly from \eqref{eq:refinement}.  On a uniform grid
 $-1=x_0<\cdots<x_N=1$, start with the uniform density $p_0=1/2$ and iterate
@@ -1401,10 +1516,10 @@ The script performs consistency assertions against
 The observed absolute errors in the last three nontrivial identities are below
 $2\times10^{-11}$.
 
-\section{Density, score, and Stein kernel}
+\subsection{Density, score, and Stein kernel}
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.82\textwidth]{up_density.pdf}
+\includegraphics[width=0.82\textwidth]{up_density.png}
 \caption{The Rvachev density obtained from the refinement fixed point.  The graph
 looks rounded at the mode, although every positive-order derivative there is
 zero.}
@@ -1413,7 +1528,7 @@ zero.}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.82\textwidth]{score_monotonicity.pdf}
+\includegraphics[width=0.82\textwidth]{score_monotonicity.png}
 \caption{The score $-p'/p$, equivalently the Fabius hazard.  The strict increase
 is proved in \cref{thm:hazard}; the plot is a diagnostic rather than evidence used
 in the proof.}
@@ -1422,7 +1537,7 @@ in the proof.}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.82\textwidth]{stein_kernel.pdf}
+\includegraphics[width=0.82\textwidth]{stein_kernel.png}
 \caption{The even canonical Stein kernel.  It has exact value $5/36$ at the mode,
 a quadratic infinite jet there, and a flat nonanalytic correction that keeps it
 positive until the endpoints.}
@@ -1453,12 +1568,13 @@ $0.99$ & $3.5395904\times10^{-11}$&$0.000931860552$&$947.5265981$\\
 The exact density values $p(1/4)=67/72$ and $p(3/4)=5/72$ explain the exact
 scores $72/67$ and $72/5$ visible in the table.
 
-\section{Endpoint diagnostic}
+\subsection{Endpoint diagnostic}
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.82\textwidth]{endpoint_stein_ratio.pdf}
-\caption{The ratio predicted to converge to $1$ in
-\cref{conj:stein-endpoint}.  The horizontal line is the conjectural limit.}
+\includegraphics[width=0.82\textwidth]{endpoint_stein_ratio.png}
+\caption{The ratio proved to converge to $1$ by the stronger imported endpoint
+law summarized in \cref{thm:stein-endpoint}.  The horizontal line is the
+theorem's limiting value.}
 \label{fig:endpoint-ratio}
 \end{figure}
 
@@ -1485,11 +1601,11 @@ $0.010$ & $0.000931860552$& $9.475265981$ & $0.9761487140$\\
 
 The second normalization $\tau(1-\delta)\rho(\delta)/\delta$ rises from about
 $0.569$ at $\delta=1/4$ to $0.883$ at $\delta=10^{-2}$, also consistent with the
-weaker equivalent in \eqref{eq:stein-endpoint-conj}.  Grid interpolation becomes
+weaker equivalent in \eqref{eq:stein-endpoint}.  Grid interpolation becomes
 unreliable much below $\delta=10^{-2}$ because the density is already extremely
 small; endpoint asymptotic evaluation should replace brute-force gridding there.
 
-\section{Stein discrepancy from Gaussianity}
+\subsection{Stein discrepancy from Gaussianity}
 For the centered Gaussian with the same variance, the Stein kernel is the constant
 $\sigma^2=1/9$.  The computation gives
 \begin{equation}\label{eq:stein-discrepancy-numeric}
@@ -1504,7 +1620,7 @@ and therefore the dimensionless quadratic Stein discrepancy
 This number is not claimed exact.  Obtaining a closed $q$-series or dyadic-integral
 form for it is one of the concrete problems proposed below.
 
-\section{A monotonicity conjecture suggested by the data}
+\subsection{A monotonicity conjecture suggested by the data}
 The exact ODE can be written
 \begin{equation}\label{eq:tau-hazard-ode}
  \tau'(x)=h_X(x)\tau(x)-x,
@@ -1527,9 +1643,9 @@ The kernel is not globally concave on $[0,1)$; numerical second derivatives chan
 sign.  Thus monotonicity, rather than concavity, is the plausible sharp shape
 statement.
 
-\chapter{Conjecture register and frontier program}
+\section{Conjecture register and frontier program}
 
-\section{Strictness for the full connected-support family}
+\subsection{Strictness for the full connected-support family}
 The geometric densities $h_a$ from \eqref{eq:Za} are known in the repository to
 be log-concave for $1<a\le2$, while strict log-concavity is conjectured.  The proof
 of \cref{thm:strict-logconcave} reduces the binary endpoint to a no-exponential-
@@ -1547,35 +1663,38 @@ of exponential patches or a finite-dimensional exponential-polynomial closure,
 both incompatible with compact support.  This route needs less than full nowhere
 analyticity and may therefore work uniformly in $a$.
 
-\section{Factor divisors and Thue--Morse automata}
+\subsection{Factor divisors and Thue--Morse automata}
 \Cref{conj:factor-rigidity} asks whether every compact factor is obtained by
 selecting entries of the Bernoulli triangle \eqref{eq:bernoulli-triangle}.  Three
 intermediate problems are more approachable.
 
-\begin{problem}[Finite-level divisor classification]
+\begin{boxedremark}
+\textbf{Research problem (finite-level divisor classification).}
 Classify all factorizations into characteristic polynomials of
 \[
  \Phi_N(\xi)=\prod_{m=1}^{N}\cos\!\left(\frac{\pi\xi}{2^m}\right)^m.
 \]
 Can positive definiteness be recognized by a finite Thue--Morse automaton on the
 zero allocations?
-\end{problem}
+\end{boxedremark}
 
-\begin{problem}[Uniform indecomposable atoms]
+\begin{boxedremark}
+\textbf{Research problem (uniform indecomposable atoms).}
 Describe all compact probability factorizations of a single sinc factor after
 iterating Vieta's identity.  Determine whether every factor is a Bernoulli digit
 subproduct times a translation.
-\end{problem}
+\end{boxedremark}
 
-\begin{problem}[Entire quotient positivity]
+\begin{boxedremark}
+\textbf{Research problem (entire quotient positivity).}
 Given an integer-valued zero divisor bounded by $1+\nu_2(m)$, characterize when
 the corresponding canonical product is positive definite on $\R$.
-\end{problem}
+\end{boxedremark}
 
 A solution would connect harmonic analysis, entire functions of exponential type,
 and the arithmetic of the Thue--Morse cosine products.
 
-\section{Stein arithmetic}
+\subsection{Stein arithmetic}
 \Cref{cor:tau-dyadic} gives rationality but not denominator structure.  Define
 \[
  T_{n,k}=\tau\!\left(\frac{k}{2^n}\right),
@@ -1599,7 +1718,7 @@ substantial.  The half-point rational shadow \eqref{eq:tau-half-rational} sugges
 that local jets may have simpler arithmetic than either numerator or denominator
 separately.
 
-\section{Stein spectral theory and Legendre comparison}
+\subsection{Stein spectral theory and Legendre comparison}
 The divergence-form eigenproblem is
 \begin{equation}\label{eq:sturm-liouville}
  -(\tau p g')'=\lambda p g,
@@ -1637,7 +1756,7 @@ solution plus a nonzero function flat at $0$.  For $\lambda\ne0,1$, the flat
 correction is unavoidable and determines the global boundary quantization.
 \end{conjecture}
 
-\section{Endpoint completion}
+\subsection{Endpoint completion}
 The exact formula \eqref{eq:log-coordinate} reduces Stein endpoint asymptotics to
 control of $\rho$ on a logarithmic window of width $O(1/\rho)$.  The repository's
 all-orders Fabius endpoint expansions should permit the following sequence.
@@ -1645,8 +1764,8 @@ all-orders Fabius endpoint expansions should permit the following sequence.
 \begin{enumerate}
 \item Insert the Lambert--$W$ carrier for $F$ into
 $\rho=\delta(\log F)'$ and prove a uniform slow-variation lemma.
-\item Derive \cref{conj:stein-endpoint} with an explicit relative error, ideally
-$O(1/\rho)$.
+\item Refine \cref{thm:stein-endpoint} by proving an explicit relative error,
+ideally $O(1/\rho)$.
 \item Transfer the bounded dyadic-periodic phase to $\tau$ and identify the first
 phase-dependent coefficient.
 \item Feed the result into the Liouville length and endpoint classification for
@@ -1655,7 +1774,7 @@ phase-dependent coefficient.
 \cref{conj:geometric-concavity} follows directly from the saddle representation.
 \end{enumerate}
 
-\section{Inverse-function consequences}
+\subsection{Inverse-function consequences}
 Strict log-convexity of $I'$ can be used algorithmically.  On each side of $1/2$,
 $\log I'$ has monotone derivative, so tangent and secant bounds give certified
 multiplicative envelopes for the inverse slope.  Combined with the existing
@@ -1669,13 +1788,13 @@ higher-order total positivity would connect the inverse Fabius function to
 Pick/Stieltjes or generalized Bernstein classes, though no such membership is
 asserted here.
 
-\chapter{A Lean-oriented formalization blueprint}
+\section{A Lean-oriented formalization blueprint}
 
-\section{Dependency graph}
+\subsection{Dependency graph}
 The new theory can be formalized in layers that reuse the existing Fabius Lean
 walkthrough.
 
-\subsection*{Layer 1: imported analytic object}
+\subsubsection*{Layer 1: imported analytic object}
 Formalize or import:
 \begin{enumerate}
 \item positivity and smoothness of $p$ on $(-1,1)$;
@@ -1684,7 +1803,7 @@ Formalize or import:
 \item the theorem that $p$ is analytic on no open subinterval.
 \end{enumerate}
 
-\subsection*{Layer 2: strict shape}
+\subsubsection*{Layer 2: strict shape}
 Add general library lemmas:
 \begin{enumerate}
 \item equality at one interior point of a concave chord implies affinity on the
@@ -1697,7 +1816,7 @@ CDF log-concavity.
 Then \cref{thm:strict-logconcave,thm:cdf-survival,thm:hazard} become short
 compositions.
 
-\subsection*{Layer 3: entire-zero obstruction}
+\subsubsection*{Layer 3: entire-zero obstruction}
 Formalize:
 \begin{enumerate}
 \item compact support of an identical convolution root;
@@ -1707,7 +1826,7 @@ Formalize:
 \end{enumerate}
 The proof of \cref{thm:rootless} then has essentially four lines.
 
-\subsection*{Layer 4: Stein kernel}
+\subsubsection*{Layer 4: Stein kernel}
 Define
 \[
  A(x)=\int_x^1tp(t)\,dt,
@@ -1717,7 +1836,7 @@ Prove differentiation, evenness, integration by parts, and the Fabius-tail chang
 of variables.  The conditional formula can be formalized without conditional
 expectation by first proving its numerator/denominator integral identity.
 
-\subsection*{Layer 5: jets and Legendre shadow}
+\subsubsection*{Layer 5: jets and Legendre shadow}
 A convenient abstraction is the ideal of functions flat at a point.  Prove that
 it is closed under sums, products, composition with smooth functions, and division
 by a nonvanishing smooth germ.  Then:
@@ -1749,15 +1868,19 @@ Fabius.steinEigen_analytic_rigidity
 \end{lstlisting}
 
 \section{Formalization risk ledger}
-The highest-risk imported item is nowhere analyticity on every interior interval.
-If that theorem is not yet available in Lean, strict log-concavity can be isolated
-as a theorem conditional on a weaker no-exponential-patch hypothesis.  The next
-risk is a general Prekopa theorem; for this one-dimensional setting, an elementary
-proof through monotone likelihood ratios may be shorter.  The Stein integration
-identities and zero-multiplicity obstruction are comparatively low risk.
+Nowhere analyticity is already available in Lean as
+\lean{Fabius.rvachev_not_analyticAt}, with the canonical specialization
+\lean{Fabius.canonical_rvachev_not_analyticAt}; the table above records their
+modules.  The highest remaining risk for strict log-concavity is supplying the
+log-concavity input and its concavity infrastructure in the exact form needed by
+the paper proof.  The next risk is a general Prekopa theorem; for this
+one-dimensional setting, an elementary proof through monotone likelihood ratios
+may be shorter.  The Stein integration identities and zero-multiplicity
+obstruction are comparatively low risk.  None of the prospective declarations
+listed in the preceding section is claimed to exist in Lean.
 
-\chapter{Conclusions}
-The principal gain of this report is a new organizing structure rather than one
+\section{Conclusions}
+The principal gain of this report is an organizing structure rather than one
 more isolated formula.  The binary Fabius--Rvachev law is simultaneously:
 
 \begin{itemize}
@@ -1782,9 +1905,9 @@ checks, numerical diagnostics, and a realistic Lean dependency graph.
 
 \appendix
 
-\chapter{Proof supplement: standard log-concavity facts}
+\section{Proof supplement: standard log-concavity facts}
 
-\section{Convolution and weak limits}
+\subsection{Convolution and weak limits}
 A uniform density on an interval is log-concave in the extended-value sense.
 Finite convolutions of log-concave functions are log-concave by Prekopa's theorem.
 The finite partial sums in \eqref{eq:Zseries} therefore have log-concave densities.
@@ -1792,7 +1915,7 @@ Their weak limit has density $p$, and the pointwise/weak closure theorem for
 log-concave laws preserves log-concavity.  This is the conceptual proof imported
 from the repository's geometric-family volume.
 
-\section{Half-line marginals}
+\subsection{Half-line marginals}
 For completeness, write
 \[
  H(x)=\int_{\R}\mathbf 1_{\{t\le x\}}p(t)\,dt.
@@ -1802,14 +1925,14 @@ extended-value convention.  The product with $p(t)$ is log-concave in $(x,t)$.
 Prekopa's theorem shows that the $t$-marginal $H(x)$ is log-concave.  The same
 argument with $t\ge x$ treats the survival function.
 
-\section{Derivative monotonicity}
+\subsection{Derivative monotonicity}
 If a differentiable concave function $g$ has $g'(x)=g'(y)$ for $x<y$, monotonicity
 of $g'$ forces $g'$ to be constant on $[x,y]$, so $g$ is affine there.  Thus the
 derivative of a differentiable strictly concave function is strictly decreasing.
 This is the only strictness input needed for the score and likelihood-ratio
 results.
 
-\chapter{Proof supplement: Fourier multiplicities}
+\section{Proof supplement: Fourier multiplicities}
 At an integer $m\ne0$, the $n$th factor in \eqref{eq:sinc-product} vanishes if and
 only if $m/2^n$ is a nonzero integer.  This holds exactly for
 $0\le n\le\nu_2(m)$.  Each zero is simple because $\sin z$ has simple zeros at
@@ -1822,7 +1945,7 @@ and $n+j=m$: there are exactly $m$ such pairs.  The support check is
  \sum_{m=1}^{\infty}\frac{m}{2^{m+1}}=1.
 \]
 
-\chapter{Numerical file guide}
+\section{Numerical file guide}
 The archive contains the following reproducibility files.
 
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.34\textwidth}p{0.56\textwidth}}
@@ -1843,7 +1966,10 @@ derivative, Stein-kernel, CSV, and plotting code.\\
 \path{numerical_output/global_diagnostics_readable.txt} & Mass, symmetry,
 exact-value checks, log-concavity defect, monotonicity diagnostic, and Stein
 discrepancy.\\
-\path{numerical_output/*.pdf} & Vector figures embedded in this report.\\
+\path{numerical_output/*.png} & Deterministic raster companions embedded in
+this report, avoiding the arrival PDFs' Type~3 plot fonts.\\
+\path{numerical_output/*.pdf} & Submitted vector figures retained as arrival
+evidence; they are not embedded by the normalized source.\\
 \bottomrule
 \end{longtable}
 
@@ -1851,9 +1977,10 @@ To reproduce the outputs, run
 \begin{lstlisting}
 python rvachev_frontier_experiments.py --output-dir numerical_output
 \end{lstlisting}
-from the source directory.  The default computation uses NumPy and Matplotlib.
+from the source directory.  The default computation uses NumPy and Matplotlib,
+writes LF-normalized tables and text, and regenerates the four PNG companions.
 
-\chapter{Corpus map used for the audit}
+\section{Corpus map used for the audit}
 The most important active families encountered in the recursive documentation
 tree were:
 
@@ -1876,11 +2003,11 @@ historical frontier material.
 \end{enumerate}
 
 The manifest itself states that consolidated documents absorb earlier drafts and
-preserve provenance hashes.  The audit therefore treated the consolidated source
-as controlling whenever the older source was explicitly described as absorbed
-verbatim or editorially deduplicated.
+preserve provenance hashes.  The submitted audit nevertheless missed the
+standalone Stein--Koopman report; the corrected boundary above therefore treats
+its scalar-kernel and stronger endpoint results as prior corpus overlap while
+retaining this report's independent derivations and distinct strands.
 
-\backmatter
 
 \begin{thebibliography}{99}
 

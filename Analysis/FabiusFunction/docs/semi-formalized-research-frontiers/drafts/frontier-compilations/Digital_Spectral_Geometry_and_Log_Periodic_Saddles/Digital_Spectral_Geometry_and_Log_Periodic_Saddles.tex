@@ -1,75 +1,123 @@
-\documentclass[11pt]{article}
+\documentclass[11pt,oneside]{article}
 
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern}
-\usepackage[margin=1in]{geometry}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
-\usepackage{amsmath,amssymb,amsfonts,amsthm,mathtools}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
 \usepackage{bm}
-\usepackage{booktabs,longtable,array}
-\usepackage{enumitem}
+\usepackage{booktabs,longtable,array,tabularx}
 \usepackage{graphicx}
+\usepackage{pgfplots}
 \usepackage{xcolor}
-\usepackage{url}
-\usepackage[hidelinks]{hyperref}
-\usepackage[nameinlink,noabbrev]{cleveref}
-\usepackage{listings}
+\usepackage{enumitem}
 \usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
 
-\allowdisplaybreaks
-\setlength{\emergencystretch}{3em}
-\setcounter{tocdepth}{2}
-\setcounter{secnumdepth}{3}
-
-\definecolor{theoremshade}{RGB}{246,246,240}
-\definecolor{conjectureshade}{RGB}{250,244,238}
-
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{conjecture}[theorem]{Conjecture}
-\theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{problem}[theorem]{Research problem}
-\theoremstyle{remark}
-\newtheorem{remark}[theorem]{Remark}
-
-\DeclareMathOperator{\sinc}{sinc}
-\DeclareMathOperator{\supp}{supp}
-\DeclareMathOperator{\Res}{Res}
-\DeclareMathOperator{\Li}{Li}
-\DeclareMathOperator{\Var}{Var}
-\DeclareMathOperator{\Cov}{Cov}
-\DeclareMathOperator{\den}{den}
-\newcommand{\upf}{\operatorname{up}}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\E}{\mathbb E}
-\newcommand{\cK}{\mathcal K}
-\newcommand{\cH}{\mathcal H}
-\newcommand{\cP}{\mathcal P}
-\newcommand{\cA}{\mathcal A}
-\newcommand{\vbtwo}{\nu_2}
-\newcommand{\st}{s_2}
-\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
-\newcommand{\fracpart}[1]{\left\{#1\right\}}
-\newcommand{\poch}[2]{\left(#1;#2\right)}
-\newcommand{\bigO}{\mathcal O}
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\pgfplotsset{compat=1.18}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Digital Spectral Geometry and Log-Periodic Saddles},
+  pdfsubject={Fourier zeros, log-periodic saddles, Strang--Fix reproduction, and integer-base frontiers},
+  pdfkeywords={Fabius function, Rvachev up-function, Thue--Morse, spectral zeta, Lambert W, Strang--Fix}
+}
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{Fabius--Rvachev frontier report}
-\fancyhead[R]{\thepage}
-\renewcommand{\headrulewidth}{0.3pt}
+\fancyhead[L]{\small Digital spectral geometry}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
 
-\title{\textbf{Digital Spectral Geometry and Log-Periodic Saddles}\\[0.35em]
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+
+% Long unbreakable inline mathematics occasionally leaves a line with no legal
+% break point.  A small emergency stretch lets TeX loosen such a line rather
+% than let it protrude into the margin; it applies only to lines that would
+% otherwise be overfull.
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\wt}{\operatorname{wt}_2}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\smallo}{o}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\vtwo}{v_2}
+\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
+\newcommand{\lean}[1]{%
+  \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
+\newcommand{\leanevaltwo}[1]{%
+  \nolinkurl{integral_eval}\texttt{\textsubscript{2}}\nolinkurl{#1}}
+
+\newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
+\newenvironment{boxedremark}{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{black}\hrule\vspace{0.6em}\small
+}{%
+  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
+}
+
+\lstdefinestyle{pseudo}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{shadegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  xleftmargin=0.7em,
+  xrightmargin=0.7em,
+  aboveskip=0.8em,
+  belowskip=0.8em
+}
+
+\title{\bfseries Digital Spectral Geometry and Log-Periodic Saddles\\[0.35em]
 \large Frontier results for the Thue--Morse, Fabius, inverse-Fabius,
 and Rvachev systems}
 \author{Research report prepared for Vladimir Reshetnikov}
@@ -84,10 +132,13 @@ dyadic sinc product
 \[
  \Phi(z)=\prod_{n\geq1}\sinc\!\left(\frac{z}{2^n}\right).
 \]
-This report develops a chain of results that appears not to have been isolated
-in the audited repository corpus.  Regrouping Euler's products shows that the
-zero at \(2\pi m\) has multiplicity \(1+\nu_2(m)\).  Consequently the
-Fourier-zero spectral zeta function is
+This report assembles a single manuscript-level chain around the zero divisor,
+log-periodic endpoint asymptotics, and polynomial reproduction.  These topics
+substantially overlap the repository's current expositions, frontier
+compilations, and Lean development; the value claimed here is the coherent
+presentation, not package-wide novelty or global priority.  Regrouping
+Euler's products shows that the zero at \(2\pi m\) has multiplicity
+\(1+\nu_2(m)\).  Consequently the Fourier-zero spectral zeta function is
 \[
  \mathcal Z_\Phi(s)
  =\frac{\zeta(s)}{(2\pi)^s(1-2^{-s})},
@@ -106,36 +157,36 @@ Lambert-\(W_{-1}\) saddle equation for the Fabius function at the flat endpoint,
 derive a refined inverse-Fabius expansion with an explicit periodic
 modulation, and organize its arbitrary-order saddle corrections.
 
-A second new thread proves a sharp dyadic Strang--Fix hierarchy.  On the grid
-\(2^{-r}\Z\), canonical Appell-weighted shifts of \(\upf\) reproduce exactly
+A further thread develops a sharp dyadic Strang--Fix hierarchy.  On the grid
+\(2^{-r}\Z\), canonical Appell-weighted shifts of \(\Up\) reproduce exactly
 all polynomials of degree at most \(r\), and an explicit Fourier series gives
 the first unavoidable aliasing defect in degree \(r+1\).  Finally, all spectral,
 digital, cumulant, and transseries constructions are extended to an
 integer-base family \(u_b\).  The report distinguishes proved statements,
-corpus-relative novelty claims, numerical evidence, and conjectures.
+numerical evidence, and conjectures.  A theorem label records a proof in this
+manuscript only; it does not by itself assert an exact Lean counterpart.
 \end{abstract}
 
 \paragraph{Corpus audit.}
-The build accompanying this report read \textbf{0} \texttt{.tex}
-files, comprising \textbf{0} source lines, under
-\texttt{Analysis/FabiusFunction/docs} recursively.  The concatenated source
-digest was
-\texttt{unavailable}.  A file-by-file heading manifest and phrase-cluster
-novelty check is included as \texttt{repository\_audit.md}.  ``New'' below
-means new relative to that audited corpus; no claim of first publication in
-the global literature is made without a broader priority search.
+The package audit was rerun against the materialized
+\path{Analysis/FabiusFunction/docs} tree and selected related Lean modules.
+Its dated inventory, digest method, and overlap register are recorded in
+\texttt{repository\_audit.md}.  The audit finds substantial prior overlap in
+each main topic of this report, so no blanket corpus-relative novelty claim is
+made.  It is a source audit, not a literature-priority search or a proof of
+mathematical equivalence between differently stated results.
 
 \tableofcontents
 
 \section{Scope, status, and the main chain of ideas}
 
 The repository corpus already develops a large network around the Fabius
-function, Rvachev's \(\upf\), dyadic rational values, the Thue--Morse
+function, Rvachev's \(\Up\), dyadic rational values, the Thue--Morse
 sequence, \(q\)-analogues, infinite sinc products, Bell and Bernoulli
-polynomials, Lambert \(W\), and polynomial expansions.  Repeating isolated
-identities from that network would add little.  The strategy here is instead
-to expose a common analytic object---the \emph{divisor of the entire sinc
-product}---and let it control four apparently different phenomena:
+polynomials, Lambert \(W\), and polynomial expansions.  This manuscript
+organizes that material around a common analytic object---the \emph{divisor
+of the entire sinc product}---and uses it to connect four apparently
+different phenomena:
 \[
 \boxed{
 \begin{array}{c}
@@ -162,13 +213,44 @@ The status conventions are as follows.
 
 \begin{itemize}[leftmargin=2em]
 \item A statement called a theorem, proposition, lemma, or corollary is proved
-      in this report.
+      in this manuscript.  That label does not mean that the same hypotheses
+      and conclusion have been checked by Lean.
 \item A numerical table is a high-precision consistency check, never a
       substitute for proof.
 \item A conjecture is deliberately stated so that it can be falsified.
-\item A corpus-relative novelty statement is limited by the audit procedure
-      described above.
+\item No priority or novelty conclusion should be inferred without a
+      claim-by-claim comparison with the current corpus and external
+      literature.
 \end{itemize}
+
+\paragraph{Current-corpus overlap and Lean boundary.}
+The targeted audit found four especially relevant clusters:
+\begin{itemize}[leftmargin=2em]
+\item zero multiplicities, spectral zeta functions, and digital counts in
+      \path{Frontier_Compilations.tex}, with related formal layers in
+      \path{DyadicZeroMultiplicity.lean},
+      \path{IntegerZeroAnalyticOrder.lean}, and
+      \path{SpectralZetaWeighted.lean};
+\item periodic endpoint corrections and lower-Lambert coordinates in the
+      primary exposition and \path{Frontier_Compilations.tex}, with related
+      modules \path{PeriodicCorrection.lean}, the
+      \path{FabiusLambert*.lean} family, and the
+      \path{NegativeLaplace*.lean} family;
+\item Appell synthesis and Strang--Fix sharpness in
+      \path{Up_Polynomial_Synthesis.tex} and
+      \path{Frontier_Compilations.tex}, with related modules including
+      \path{CompositeMeshSharpness.lean} and
+      \path{RvachevQBinomialFilter.lean};
+\item weighted and generalized sinc products in the frontier compilation,
+      with related modules \path{GeneralizedRvachevEntire.lean},
+      \path{GeneralizedZeroDivisor.lean}, and
+      \path{GeneralizedSincZeta.lean}.
+\end{itemize}
+These are topical and declaration-level matches, not assertions that every
+displayed theorem here has exactly the same formal statement.  This report
+contains no exhaustive theorem-to-declaration crosswalk; accordingly, all of
+its results remain manuscript/frontier material unless an exact named Lean
+declaration is supplied separately.
 
 \section{Normalization and probabilistic model}
 
@@ -201,7 +283,7 @@ Here \(\sinc z=\sin z/z\), with the removable value \(1\) at the origin.
 
 \begin{proposition}[Atomic density and the Fabius normalization]
 \label{prop:density}
-The law of \(X\) has an even \(C^\infty\) density \(u=\upf\), supported on
+The law of \(X\) has an even \(C^\infty\) density \(u=\Up\), supported on
 \([-1,1]\), satisfying
 \begin{equation}
  u'(x)=2\bigl(u(2x+1)-u(2x-1)\bigr).
@@ -218,7 +300,7 @@ In particular, for \(0\leq x\leq\frac12\),
 
 \begin{proof}
 The random series gives \eqref{eq:Phi-def}.  For \(|z|\) large, take
-\(N=\floor{\log_2|z|}-2\).  Since
+\(N=\left\lfloor\log_2|z|\right\rfloor-2\).  Since
 \[
  \left|\sinc\!\left(\frac z{2^n}\right)\right|
  \leq \min\!\left(1,\frac{2^n}{|z|}\e^{|\Im z|/2^n}\right),
@@ -397,8 +479,8 @@ For every integer \(M\geq1\),
 \end{equation}
 More generally,
 \[
- N(R)=2\floor{\frac{R}{2\pi}}
-      -s_2\!\left(\floor{\frac{R}{2\pi}}\right).
+ N(R)=2\left\lfloor\frac{R}{2\pi}\right\rfloor
+      -s_2\!\left(\left\lfloor\frac{R}{2\pi}\right\rfloor\right).
 \]
 Therefore
 \begin{equation}
@@ -699,7 +781,7 @@ separate exponentially small digital sector.  Both can be written exactly.
 \label{thm:exact-transseries}
 For \(t\geq1\), let
 \[
- q=\log t,\qquad \theta=\fracpart{\log_2t}.
+ q=\log t,\qquad \theta=\left\{\log_2t\right\}.
 \]
 Then
 \begin{equation}
@@ -740,7 +822,8 @@ In particular, there are no algebraic inverse powers of \(t\):
 \end{theorem}
 
 \begin{proof}
-Write \(\log_2t=N+\theta\), with \(N=\floor{\log_2t}\).  For \(n\leq N\),
+Write \(\log_2t=N+\theta\), with
+\(N=\left\lfloor\log_2t\right\rfloor\).  For \(n\leq N\),
 \[
  f(t/2^n)
  =\frac{t}{2^n}
@@ -890,7 +973,7 @@ convex, \(K'(0)=0\), and \(K'(t)\uparrow1\).  Hence, for every
 Set
 \[
  q=\log t,\qquad
- \theta=\fracpart{q/a},\qquad
+ \theta=\left\{q/a\right\},\qquad
  p(\theta)=\Psi'(\theta).
 \]
 Differentiating \eqref{eq:K-transseries} gives the exact saddle equation
@@ -1046,7 +1129,7 @@ and define
 As \(y\downarrow0\), define the leading phase
 \[
  \theta_0=
- \fracpart{\frac{Q+c}{a}}.
+ \left\{\frac{Q+c}{a}\right\}.
 \]
 Then
 \begin{align}
@@ -1199,8 +1282,10 @@ comparison of coefficients in \eqref{eq:poisson-Appell} proves
 \end{proof}
 
 The theorem specializes immediately to Legendre, Lagrange, Bernoulli, Bell,
-or any other polynomial family.  What is new here is the exact first failure
-beyond the reproduction threshold.
+or any other polynomial family.  The exact first failure beyond the
+reproduction threshold is the useful sharp endpoint of this presentation; it
+overlaps the repository's existing Appell, synthesis, and mesh-sharpness
+development and is not claimed here as a standalone novelty result.
 
 For odd \(m\), define
 \begin{equation}
@@ -1315,7 +1400,7 @@ Euler's sine product and the substitution \(m=b^{n-1}k\) give
 \eqref{eq:base-b-zeta}.  Finally,
 \[
  N_b(c_bM)
- =M+\sum_{j\geq1}\floor{\frac M{b^j}}
+ =M+\sum_{j\geq1}\left\lfloor\frac M{b^j}\right\rfloor
  =M+\frac{M-s_b(M)}{b-1},
 \]
 which is \eqref{eq:base-b-count}.
@@ -1348,7 +1433,7 @@ so the \(q\)-integer phenomenon is universal across integer bases.
 \subsection{Base-\(b\) log-periodicity}
 
 Set \(T=(b-1)t\), \(a_b=\log b\), \(q=\log T\), and
-\(\theta=\fracpart{q/a_b}\).  The split-sum proof of
+\(\theta=\left\{q/a_b\right\}\).  The split-sum proof of
 \cref{thm:exact-transseries} gives the following exact analogue.
 
 \begin{theorem}[Base-\(b\) transseries]
@@ -1461,8 +1546,14 @@ The Rvachev density \(u\), and more generally every \(u_b\), is log-concave
 on its support.
 \end{proposition}
 
-Strict log-concavity is more delicate because every finite stage has spline
-facets.  It is isolated below as a conjecture.
+Strictness has a sharp parameter boundary that the former all-base conjecture
+in this report missed.  If \(b>2\), the first uniform summand has half-width
+\((b-1)/b\), while the remaining tail has half-width \(1/b\); hence \(u_b\)
+has an exact central plateau on
+\([-(b-2)/b,(b-2)/b]\).  At \(b=2\), the density can be strictly
+log-concave in the chord sense while its logarithm is infinitely flat at the
+mode.  The false all-base formulation is quarantined below, leaving only the
+overlap range \(1<b<2\) as a live strict-curvature question.
 
 \subsection{A distributional smoothing/deconvolution calculus}
 
@@ -1513,18 +1604,23 @@ highly plausible and numerically testable.  A proof should follow from an
 explicit domination inequality for \(\sum_{|k|\geq2}k c_k\e^{2\pi\ii
 k\theta}\) by the first harmonic.
 
-\begin{conjecture}[Strict log-concavity]
-\label{conj:strict-logconcavity}
-For every real \(b>1\), the density \(u_b\) is strictly log-concave on
-\((-1,1)\):
+\begin{warning}[Quarantined all-base strictness claim]
+\label{warn:strict-logconcavity}
+The former conjecture that
 \[
- (\log u_b)''(x)<0,\qquad -1<x<1.
+ (\log u_b)''(x)<0,\qquad -1<x<1,
 \]
-\end{conjecture}
-
-The non-strict statement is proved above.  Strictness would sharpen
-concentration bounds and imply uniqueness properties for tilted saddle
-measures.
+for every real \(b>1\) is false.  For \(b>2\), the exact plateau
+\([-(b-2)/b,(b-2)/b]\) prevents even order-theoretic strict
+log-concavity.  At \(b=2\), the neighboring
+\emph{Shape, Divisibility, and Stein Geometry} manuscript proves strict
+log-concavity in the chord sense, but the central mode is infinitely flat, so
+the displayed pointwise curvature inequality fails at \(x=0\).  That
+strictness theorem is paper-level in the current corpus and is not asserted
+here to have an exact Lean counterpart.  For \(1<b<2\), pointwise strict
+logarithmic curvature remains a live frontier question; neither this report
+nor the present Lean development proves it.
+\end{warning}
 
 \begin{conjecture}[Complete endpoint transseries]
 \label{conj:resurgence}
@@ -1658,8 +1754,10 @@ Thue--Morse to Rudin--Shapiro and more general automatic sequences.
 
 \subsection{Formal verification}
 
-The algebraic core is friendly to proof assistants.  High-value
-formalization targets are:
+The repository already contains formal work on zero multiplicity, analytic
+zero order, weighted spectral zeta identities, periodic corrections,
+Lambert-phase algebra, and polynomial-filter sharpness.  For this report, the
+useful next task is an exact crosswalk for:
 \begin{enumerate}[label=(\roman*),leftmargin=2.5em]
 \item the divisor regrouping in \cref{thm:canonical};
 \item the identity \(N(2\pi M)=2M-s_2(M)\);
@@ -1667,13 +1765,15 @@ formalization targets are:
 \item the Bell-polynomial cumulant formula;
 \item coefficient extraction in the Appell reproduction theorem.
 \end{enumerate}
-The Mellin-contour and saddle arguments can remain analytic interfaces until
-the finite algebra is fully mechanized.
+Relevant declarations may cover ingredients or nearby formulations, but this
+manuscript does not establish exact statement identity.  The Mellin-contour
+and saddle arguments in particular must be treated as paper proofs unless a
+named declaration with matching assumptions and conclusion is recorded.
 
 \section{Conclusions}
 
-The main new viewpoint is that the dyadic sinc product carries an arithmetic
-spectral divisor:
+The organizing viewpoint of this manuscript is that the dyadic sinc product
+carries an arithmetic spectral divisor:
 \[
  \operatorname{mult}_{2\pi m}\Phi=1+\nu_2(m).
 \]
@@ -1692,7 +1792,9 @@ From this one line follow:
 The integer-base extension shows that this is not an accidental collection of
 dyadic tricks.  It is a general mechanism in which scale invariance,
 valuation arithmetic, Mellin poles, and flat compactly supported densities
-are different manifestations of the same structure.
+are different manifestations of the same structure.  This conclusion is a
+synthesis of manuscript arguments with substantial current-corpus overlap,
+not a claim of priority or of complete Lean formalization.
 
 \appendix
 
@@ -1707,7 +1809,7 @@ For completeness, for \(0<c<1\),
 \]
 For \(0<x<1\), closing to the right and accounting for orientation gives
 \[
- -\sum_{n\geq1}\Res_{s=n}
+ -\sum_{n\geq1}\operatorname*{Res}_{s=n}
  \frac{\pi x^s}{s\sin\pi s}
  =-\sum_{n\geq1}\frac{(-1)^n}{n}x^n
  =\log(1+x).
@@ -1754,15 +1856,20 @@ form of the arbitrary-order expansion requested in symbolic applications.
 
 The archive contains:
 \begin{itemize}[leftmargin=2em]
-\item \texttt{repository\_audit.md}, with every audited file, source hash,
-      and extracted structural heading;
+\item \texttt{repository\_audit.md}, with the dated corpus scope, deterministic
+      aggregate inventory, audit method, and targeted overlap register;
 \item \texttt{numerical\_experiments.py}, with all high-precision checks and
       figure generation;
 \item \texttt{numerical\_results.tex}, generated by that program;
-\item the figures used in this report, when Matplotlib was available.
+\item \texttt{numerical\_run.txt}, with the successful command, environment,
+      and generated-output hashes; and
+\item the three figures used in this report.
 \end{itemize}
-The audit deliberately records lexical overlap rather than claiming that
-automated text search decides mathematical equivalence.
+The audit is intentionally bounded: deterministic inventory and targeted
+source/declaration searches establish overlap, but automated text search does
+not decide mathematical equivalence.  The immutable arrival ledger records
+the received bundle; repaired live-file hashes belong to the repository's
+separate live ledger.
 
 \begin{thebibliography}{99}
 

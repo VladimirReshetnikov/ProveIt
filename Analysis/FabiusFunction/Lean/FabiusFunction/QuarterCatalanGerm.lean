@@ -1,29 +1,34 @@
+import FabiusFunction.AlgebraicInverseGermBinomial
 import FabiusFunction.InverseQuarterAnchor
+import FabiusFunction.QuadraticCompositionalInverse
 import Mathlib.RingTheory.PowerSeries.Catalan
 import Mathlib.RingTheory.PowerSeries.Inverse
 
 /-!
-# The Catalan formal germ at the quarter anchor
+# Catalan formal germs at the quarter anchor
 
-The exact quarter-anchor equation from `InverseQuarterAnchor` is
+The exact quarter-anchor equation is
 
 `D + 4 D^2 = (4 / 9) X`.
 
-This module solves that equation in `Q[[X]]`.  Its zero-constant solution is
+This module packages that equation in two compatible ways.  The explicit
+series `quarterCatalanGermSeries` is the zero-constant Catalan solution
 
 `D(X) = (4 / 9) X C(-(16 / 9) X)`,
 
-where `C` is the Catalan generating series.  Consequently its coefficient of
-degree `m >= 1` is
+whose coefficient of degree `m >= 1` is
 
 `(-1)^(m-1) Catalan_(m-1) 2^(4m-2) / 9^m`.
 
-The construction deliberately lives in formal power series.  It proves the
-coefficient identities and the algebraic uniqueness of the germ without any
-convergence argument.  In particular, it does **not** assert that the series
-converges to `quarterInverseGerm`, nor that a finite Fabius spline has the
-required local quadratic; those are analytic statements separate from the
-formal algebra proved here.
+The existing dyadic quantile germ `dyadicGermTwo` satisfies the same scaled
+quadratic.  Rescaling its parameter by `9 / 4` identifies it with the
+unscaled compositional inverse of `X + 4 X^2`, and yields the corresponding
+Catalan coefficient formula.
+
+All constructions here are formal power series.  They do not assert that the
+series converges to `quarterInverseGerm`.  The downstream module
+`FabiusInverseQuarterJet` separately identifies the actual inverse-Fabius
+derivative jet with the unscaled quadratic inverse.
 -/
 
 set_option autoImplicit false
@@ -70,8 +75,7 @@ private theorem quarterCatalan_scale_pow (n : ℕ) :
       rw [show (2 : ℚ) ^ (4 * n + 2) =
           2 ^ (4 * n) * 2 ^ 2 by rw [pow_add], pow_succ]
       norm_num
-      field_simp
-      ring
+      (field_simp; ring)
 
 /-- Exact report form of every positive-degree coefficient:
 
@@ -252,6 +256,84 @@ theorem existsUnique_quarterCatalanGermSeries :
       quarterCatalanGermSeries_equation⟩, ?_⟩
   intro D hD
   exact eq_quarterCatalanGermSeries_of_equation hD.1 hD.2
+
+/-! ## Bridge to the dyadic quantile germ -/
+
+/-- The distinguished dyadic germ satisfies the scaled quarter-anchor
+quadratic equation. -/
+theorem dyadicGermTwo_functionalEquation :
+    dyadicGermTwo + 4 * dyadicGermTwo ^ 2 =
+      PowerSeries.C ((4 : ℚ) / 9) * PowerSeries.X := by
+  have h := eval_germRoot dyadicWeightsTwo dyadicJetTwo rfl
+    dyadicJetTwo_coeff_zero
+    (by rw [dyadicJetTwo_coeff_one]; exact isUnit_one)
+  rw [germPolynomial_dyadicTwo_eval] at h
+  exact sub_eq_zero.mp h
+
+/-- Rescaling the dyadic parameter by `9 / 4` gives the Catalan reversion of
+`X + 4 * X²`. -/
+theorem rescale_dyadicGermTwo_eq_quadraticInverse :
+    PowerSeries.rescale ((9 : ℚ) / 4) dyadicGermTwo =
+      QuadraticInverse.inverse (4 : ℚ) := by
+  apply QuadraticInverse.eq_inverse
+  · rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply,
+      PowerSeries.coeff_rescale, pow_zero, one_mul,
+      PowerSeries.coeff_zero_eq_constantCoeff_apply]
+    exact constantCoeff_germRoot _ _ _ _ _
+  · have hC (q : ℚ) :
+        PowerSeries.rescale ((9 : ℚ) / 4) (PowerSeries.C q) =
+          PowerSeries.C q := by
+      ext n
+      simp only [PowerSeries.coeff_rescale, PowerSeries.coeff_C]
+      split_ifs with hn
+      · subst n
+        simp
+      · simp
+    have h := congrArg (PowerSeries.rescale ((9 : ℚ) / 4))
+      dyadicGermTwo_functionalEquation
+    simp only [map_add, map_mul, map_pow, map_ofNat, hC,
+      PowerSeries.rescale_X] at h
+    have hfour : (4 : PowerSeries ℚ) = PowerSeries.C (4 : ℚ) :=
+      (map_ofNat (PowerSeries.C : ℚ →+* PowerSeries ℚ) 4).symm
+    rw [hfour] at h
+    calc
+      PowerSeries.rescale ((9 : ℚ) / 4) dyadicGermTwo +
+          PowerSeries.C (4 : ℚ) *
+            PowerSeries.rescale ((9 : ℚ) / 4) dyadicGermTwo ^ 2 =
+          PowerSeries.C ((4 : ℚ) / 9) *
+            (PowerSeries.C ((9 : ℚ) / 4) * PowerSeries.X) := h
+      _ = PowerSeries.X := by
+        rw [← mul_assoc, ← map_mul,
+          show ((4 : ℚ) / 9) * ((9 : ℚ) / 4) = 1 by norm_num,
+          map_one, one_mul]
+
+/-- Equivalently, the dyadic germ is the quarter Catalan inverse with its
+variable rescaled by `4 / 9`. -/
+theorem dyadicGermTwo_eq_rescale_quadraticInverse :
+    dyadicGermTwo =
+      PowerSeries.rescale ((4 : ℚ) / 9)
+        (QuadraticInverse.inverse (4 : ℚ)) := by
+  calc
+    dyadicGermTwo =
+        PowerSeries.rescale ((4 : ℚ) / 9)
+          (PowerSeries.rescale ((9 : ℚ) / 4) dyadicGermTwo) := by
+      rw [PowerSeries.rescale_rescale]
+      norm_num
+    _ = PowerSeries.rescale ((4 : ℚ) / 9)
+        (QuadraticInverse.inverse (4 : ℚ)) := by
+      rw [rescale_dyadicGermTwo_eq_quadraticInverse]
+
+/-- The report-facing Catalan normalization of every positive-degree dyadic
+germ coefficient.  The extra power `(4 / 9)^(m + 1)` is exactly the parameter
+rescaling that distinguishes the finite-spline germ from the unscaled quarter
+inverse shadow. -/
+@[simp]
+theorem coeff_dyadicGermTwo_succ (m : ℕ) :
+    PowerSeries.coeff (m + 1) dyadicGermTwo =
+      ((4 : ℚ) / 9) ^ (m + 1) * (-4 : ℚ) ^ m * (catalan m : ℚ) := by
+  rw [dyadicGermTwo_eq_rescale_quadraticInverse,
+    PowerSeries.coeff_rescale, QuadraticInverse.coeff_succ_inverse]
+  ring
 
 end
 

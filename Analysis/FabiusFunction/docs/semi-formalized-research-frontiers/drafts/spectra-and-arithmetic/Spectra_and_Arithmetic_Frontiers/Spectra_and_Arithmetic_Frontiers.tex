@@ -2470,11 +2470,12 @@ whereas its numerator is $2^{-(N+1)}Q_{N+1}(t)$. Multiplication proves the claim
 
 Put
 \begin{equation}
- \lambda:=\log2,
- \qquad L_N:=\log x_N=N\lambda+\log y,
- \qquad
- \kappa_0:=\frac12+\frac{\log(2\pi)}{\lambda}
- =3.1514961294723187980\ldots,
+ \begin{aligned}
+ \lambda&:=\log2,
+ &L_N&:=\log x_N=N\lambda+\log y,\\
+ \kappa_0&:=\frac12+\frac{\log(2\pi)}{\lambda}
+ =3.1514961294723187980\ldots.
+ \end{aligned}
  \label{p2:eq:lambda-kappa0}
 \end{equation}
 and define
@@ -3485,6 +3486,28 @@ base-independent. The sharp $\sqrt3$ endpoint uses the special identity
 $\cos(2x)=2\cos^2x-1$ and the fact that squaring permutes the cycle. Finding the
 corresponding sharp constant for $b\ge3$ is a distinct ergodic-optimization problem.
 \end{remark}
+
+\paragraph{Lean crosswalk: finite base arithmetic only.}
+The five public theorems of \path{BaseDigitMultiplicity.lean} are
+\path{sum_range_weightedScaleMultiplicity_of_log_lt},
+\path{sum_range_weightedScaleMultiplicity_log},
+\path{sum_range_div_pow_log_eq_self_add_tail},
+\path{sub_one_mul_sum_padicValNat_succ_add_digitSum}, and
+\path{sum_range_padicValNat_succ_eq_sub_digitSum_div}.  Together they prove,
+for every natural base \(b>1\), including composite bases, and every
+\(N\ge0\), including \(N=0\), the sharp finite logarithmic truncation and
+the two exact forms
+\[
+ (b-1)\sum_{n=1}^{N}\bigl(1+\nu_b(n)\bigr)+s_b(N)=bN,
+ \qquad
+ \sum_{n=1}^{N}\bigl(1+\nu_b(n)\bigr)
+   =\frac{bN-s_b(N)}{b-1}.
+\]
+This is an exhaustive five-theorem \emph{finite arithmetic} API.  It neither
+constructs \(\mathscr U_b\) nor proves convergence of \eqref{p2:eq:Ub}, an
+analytic zero order or zero set, any sign law, or the rational-ray
+factorization and asymptotics of \cref{p2:thm:base-b}; all of those remain at
+the manuscript boundary.
 
 \section{A Lean formalization blueprint}\label{p2:sec:lean-blueprint}
 
@@ -5648,7 +5671,13 @@ and derive an Edgeworth expansion from \eqref{p3:eq:standard-cumulants}.  Determ
 The finite weighted arithmetic already works over every natural base, even a
 composite one: \path{WeightedScaleMultiplicity.lean} proves the scale-shift,
 divisibility-filter, layer-count, and Pascal floor identities without a
-primality hypothesis.  What remains speculative is the \emph{analytic}
+primality hypothesis.  The separate five-theorem module
+\path{BaseDigitMultiplicity.lean} now also closes the unweighted digit recovery
+at rank one: for every \(b>1\) and \(N\ge0\), it proves both the additive and
+quotient forms of
+\(\sum_{n=1}^{N}(1+\nu_b(n))=(bN-s_b(N))/(b-1)\), with no primality
+hypothesis and a total \(N=0\) boundary.  It does not supply the weighted
+higher-rank digit formula \eqref{p3:eq:Nr-digital}.  What remains speculative is the \emph{analytic}
 base-$b$ hierarchy---its entire products, zero divisors, Fourier asymptotics,
 and endpoint theory.  Replacing integral rank by a fractional exponent would
 additionally require a branch-consistent entire-product theory.
@@ -5672,6 +5701,11 @@ documented totalized convention at zero.
 \item \textbf{Completed generically.}  The hockey-stick identity behind
 \eqref{p3:eq:mu-r} is \path{weightedScaleMultiplicity_choose}; the scale-count
 identity \eqref{p3:eq:Nr-floor} is \path{sum_range_padicValNat_choose}.
+\item \textbf{Completed at rank one in every base.}
+\path{BaseDigitMultiplicity.lean} proves the finite logarithmic truncation and
+the additive and quotient digit-sum identities for all \(b>1\), including
+composite bases, and all \(N\ge0\).  This does not prove the analytic
+zero-order/sign interpretation or the weighted formula for \(r\ge2\).
 \item Formalize \cref{p3:lem:pascal-tail} as a finite subset count; this avoids delicate algebraic normalization.
 \item Derive \eqref{p3:eq:Nr-digital}, the discrepancy extremum, and optimal order.
 \item Prove parity collapse using the alternating partial-binomial identity or Lucas's theorem already available in Mathlib.
@@ -5728,8 +5762,9 @@ The canonical product, meromorphic continuation, Mellin contour shift, and de Br
 The endpoint transseries should not be formalized before its paper proof is complete.  By contrast, Tiers I and II are self-contained and already expose the main Thue--Morse and $q$-arithmetic novelty.
 
 \begin{statusbox}[Recommended first formalization target]
-The weighted-scale and Pascal floor foundations are complete.  The best next
-finite target is therefore the still-open digital part of
+The weighted-scale and Pascal floor foundations are complete, and the rank-one
+digit formula is complete in every base.  The best next finite target is
+therefore the still-open higher-rank digital part of
 \cref{p3:thm:digital-count}, together with
 \cref{p3:lem:pascal-tail,p3:lem:parity-collapse,p3:thm:prouhet-r}.  It has no analytic
 dependencies and would certify the generalized Thue--Morse sign layer.  The
@@ -5746,7 +5781,7 @@ $C_r=((r+1)!(\log2)^r)^{-1}$ governs sharp Fourier decay and endpoint small devi
 
 The most consequential structural result is the common scale zeta factor.  It converts a scale enumeration into the entire zero divisor, the local Fourier logarithm, all even cumulants, and the endpoint Mellin transform.  Its real pole at zero determines the main logarithmic degree; its imaginary dyadic lattice determines periodic corrections; and the resulting endpoint saddle is inverted by $W_{-1}$.  This places the Thue--Morse, $q$-binomial, sinc-product, and Lambert-$W$ phenomena within one exact analytic mechanism.
 
-The principal unresolved frontier is now sharply delimited: carry the explicit Mellin residue polynomial through nonlinear saddle inversion to obtain a complete higher-rank endpoint transseries, and connect its coefficients to exact dyadic $q$-formulae.  The generic weighted-scale and Pascal floor foundations are formalized; the finite digital/sign layer and the analytic endpoint program remain, with the latter supplying a longer-term test bed for new formal Mellin and Tauberian infrastructure.
+The principal unresolved frontier is now sharply delimited: carry the explicit Mellin residue polynomial through nonlinear saddle inversion to obtain a complete higher-rank endpoint transseries, and connect its coefficients to exact dyadic $q$-formulae.  The generic weighted-scale and Pascal floor foundations and the unweighted rank-one digit count in every base are formalized; the higher-rank finite digital/sign layer and the analytic endpoint program remain, with the latter supplying a longer-term test bed for new formal Mellin and Tauberian infrastructure.
 
 
 \appendix

@@ -2415,12 +2415,14 @@ their finite sum are \nolinkurl{fabiusPhaseLockedResidualTerm} and
 \nolinkurl{FabiusLambertPhaseExtractionBell.lean} leaves both definitions
 unchanged and proves the exact declaration
 \[
- R_{r,n}(\lambda)=(-1)^r
-   \left(\prod_{j=0}^{r}(\lambda+j)^{-1}\right)
-   \operatorname{factorialNormalize}
+ \begin{aligned}
+ R_{r,n}(\lambda)
+   &=(-1)^r\left(\prod_{j=0}^{r}(\lambda+j)^{-1}\right) \\
+   &\quad{}\times \operatorname{factorialNormalize}
      \bigl(\operatorname{completeBellPolynomial}
-       (\kappa^{(r,\lambda)})\bigr)_n
-   \,c_{r+1+n}(\lambda)
+       (\kappa^{(r,\lambda)})\bigr)_n \\
+   &\quad{}\times c_{r+1+n}(\lambda).
+ \end{aligned}
 \]
 as \nolinkurl{fabiusPhaseLockedResidualTerm_eq_bell};
 \nolinkurl{fabiusPhaseLockedResidualPartialSum_eq_sum_bell} rewrites each
@@ -3919,8 +3921,10 @@ discussion are a post-snapshot foundation checked at source checkpoint
 The seven non-curvature Lambert rows from \nolinkurl{LowerLambertW.lean}
 through \nolinkurl{PowerExponentialLambertFabius.lean} record the
 current-tree endpoint-continuity, exact-root, and intrinsic-asymptotic
-tranche described in Section~\ref{ch:kfold}; their stated open boundaries
-are part of the crosswalk.  The three added rows
+tranche originating at source checkpoint
+\nolinkurl{925ca34a698cbd08703ec5d8abc65515730e30f6} and described in
+Section~\ref{ch:kfold}; their stated open boundaries are part of the
+crosswalk.  The three added rows
 \nolinkurl{LambertWCurvature.lean},
 \nolinkurl{PowerExponentialLambertCurvature.lean}, and
 \nolinkurl{PowerExponentialLambertFabiusCurvature.lean} are the current-tree
