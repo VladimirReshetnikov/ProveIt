@@ -1,7 +1,10 @@
 # Validation record
 
-This record deliberately distinguishes completed inventory work from pending
-publication work. The immutable source baseline is
+This record deliberately distinguishes completed inventory and canonical-
+publication work from outstanding reproducibility work. The structural
+validator, final PDF, and live root/asset ledgers were complete at this
+recorded checkpoint; full numerical replay and fresh-checkout reproduction
+remain separate. The immutable source baseline is
 `73f0b373126ef22a3b5dccadfa7b99d61d445345`.
 
 ## Completed source and evidence checks
@@ -49,23 +52,50 @@ The complete row-level audit is
 are historical manifests, mismatches are reported rather than silently
 rewritten. They do not certify the current canonical payloads.
 
-## Pending canonical gates
+## Completed canonical publication gates
 
-The following are not yet claimed by this record:
+- `python audit/validate_canonical.py` passes the canonical nine-file TeX
+  graph, environment balance, 212 result environments (149 proof-required),
+  800 labels, 769 references, 62 bibliography keys, the 180-row source
+  disposition, the 151-row historical-ledger audit, 111 companion-payload
+  provenance rows for 110 physical payloads and 114 live asset hashes, and the
+  232-row theorem concordance. The concordance source projection is
+  `a065b161c80786829033f1efd39bb5d1e4c521b9b9c4446959a73729a55718e0`.
+- The validator's Lean check is intentionally narrow: it confirms that the
+  curated declaration name occurs in its nominated module. It does not invoke
+  Lean, compare theorem types, or claim that the one curated row is a complete
+  census of current formal results.
+- The final source has 188 lines, 6,722 bytes, and SHA-256
+  `92878edbef877a5e121c96cc80a003bd2137150550c8e05b5cd970ecefe6b248`.
+- Exactly three strict, serial pdfLaTeX passes were run from the final source.
+  All three exited successfully; no later TeX pass was run.
+- The final PDF has 155 pages, 2,448,906 bytes, and SHA-256
+  `d1f89b005bcae9afc9c70b4ccce632aa8c665ed68e98bacb2ff96827dd427095`.
+  Every page is 595.276 by 841.89 points (A4), has rotation zero and identical
+  MediaBox, CropBox, BleedBox, TrimBox, and ArtBox values, and contains
+  extractable text.
+- All 33 PDF font rows are embedded and subset; seven are Libertinus and none
+  is Type 3. The document is readable, unencrypted PDF 1.5 with populated
+  title, subject, and keyword metadata.
+- The final log contains no TeX error, undefined reference or citation, rerun
+  request, duplicate destination, or overfull box. It contains 36 benign
+  package warnings (24 hyperref, 11 caption, and one amsmath) and six
+  underfull boxes; all affected layouts were included in the visual review.
+- All 155 pages were rendered and reviewed in five contact sheets. Pages 1,
+  91, 109, 145, and 155 were additionally inspected at full size; no clipping,
+  overlap, corrupt image, or unintended blank page was found.
+- The root `SHA256SUMS` exhaustively covers every other permanent package file,
+  without duplicate or stale paths, and verifies in full. The dedicated live
+  `assets/SHA256SUMS` likewise verifies the current evidence tree; the eight
+  historical source-package ledgers summarized by the audit remain unchanged.
 
-- a successful final structural validator over the canonical TeX, theorem
-  concordance, source disposition, references, citations, and live payload
-  map;
-- a complete replay of every retained numerical script;
-- a live, exhaustive checksum ledger for the final companion-evidence tree;
-- a final canonical PDF built after the last TeX edit;
-- clean final log diagnostics, A4 geometry, embedded/subset fonts, zero Type 3
-  fonts, and visual inspection of every rendered page;
-- a fresh-checkout reproduction of the complete canonical gate.
+## Reproducibility work not rerun
 
-These are intentionally independent conditions. Passing a Python syntax
-check, finding an old PDF, or matching a historical checksum does not imply
-that the final publication has passed.
+The publication build did not rerun every retained numerical script, and the
+complete gate has not yet been reproduced from a fresh checkout. These are
+independent reproducibility tasks, not missing PDF-validation steps. Passing a
+Python syntax check, finding an old PDF, or matching a historical checksum
+still does not certify a numerical replay.
 
 ## Required publication procedure
 
@@ -80,5 +110,5 @@ pdflatex -interaction=nonstopmode -halt-on-error comb_interpolation_synthesis.te
 
 Then inspect the final log for errors, unresolved references, rerun requests,
 and overfull boxes; inspect PDF metadata and fonts; render every page; and
-visually examine every rendered page. Record measured page and font facts here
-only after those checks have actually completed.
+visually examine every rendered page. The measured result of that procedure is
+recorded above.

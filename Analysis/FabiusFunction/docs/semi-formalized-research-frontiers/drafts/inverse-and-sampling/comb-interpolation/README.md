@@ -28,8 +28,11 @@ baseline.
 See the canonical package's [README](comb_interpolation_synthesis/README.md),
 [provenance record](comb_interpolation_synthesis/PROVENANCE.md), and
 [validation record](comb_interpolation_synthesis/assets/VALIDATION.md). The
-source disposition is established; a final PDF and complete publication
-validator are separate gates and are not inferred from this navigation entry.
+structural validator now passes, and the final three-pass publication is a
+155-page A4 PDF with embedded/subset fonts, no Type 3 font, and complete
+page-by-page visual inspection. Its root operational ledger exhaustively
+covers every other permanent package file. A complete replay of every retained
+numerical script remains separate reproducibility work.
 
 The geometric q-series layer also cross-links to the
 [`q_pochhammer_q_binomial_monograph`](../../exponents-and-q-series/q_pochhammer_q_binomial_monograph/).

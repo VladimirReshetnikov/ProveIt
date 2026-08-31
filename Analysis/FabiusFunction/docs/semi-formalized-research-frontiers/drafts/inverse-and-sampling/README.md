@@ -51,11 +51,11 @@ historical artifacts, not claimed renderings of the current sources.
 
 | Root report | Current TeX lines | Current TeX SHA-256 | Retained PDF | Operational-ledger status |
 |---|---:|---|---:|---|
-| `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders` | 1,978 | `1dbf538e16b619f2c03403333cd46c912dc28b66a2823a1bb1f2b81ba859613e` | 23 pages | no live root-pair ledger |
-| `inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report` | 2,937 | `a6932249804ea3fb07a08b09542e123bbbca23b76a29e13ef27c91aa902ffbe3` | 42 pages | all six payload rows pass; PDF is historical |
-| `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers` | 6,603 | `3bae6a0d6df38778f31365acb8d5da7a09bd3ecafcd2a257c6be964df3740601` | 100 pages | all twelve payload rows pass; PDF is historical |
-| `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic` | 1,742 | `eda8c676e00a68c1e57e36ee22bfb3502cd56dd95f5630efcaf6a7f0f3b3d3d5` | 26 pages | all fifteen payload rows pass; PDF is historical |
-| `fabius_information_frontier` | 2,137 | `a8dd383ef450f4a6338990115b982945dc7f36674f7a65f3e623ca2002883296` | 30 pages | all nineteen payload rows pass; PDF is historical |
+| `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders` | 1,976 | `cc741563a0af99c6e8bc4b4ebb629c363f3b8605d5053db289a619740e992ccc` | 23 pages | no live root-pair ledger |
+| `inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report` | 2,937 | `ca8fa1819440543c011b5fcd2b6dd7816ee3d5f2da1e0975a0dfe07c84e8c16f` | 42 pages | all six payload rows pass; PDF is historical |
+| `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers` | 6,619 | `e00614842a31e5510e32154dee7444058420ac9f6b374845229e2fae7f64ed76` | 100 pages | all twelve payload rows pass; PDF is historical |
+| `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic` | 1,744 | `c1e9839bee77207ea059f8604ce3773fa0c25c57511e4ca70c3f204f4336bd74` | 26 pages | all fifteen payload rows pass; PDF is historical |
+| `fabius_information_frontier` | 2,139 | `d1b90d107a38219a2ff64bbae883d6172b49b70721b631b58cd3b6072781c6dd` | 30 pages | all nineteen payload rows pass; PDF is historical |
 
 Arrival ledgers and historical PDF hashes remain immutable and are not
 affected by this operational-ledger refresh.
@@ -98,11 +98,15 @@ Current members and recent intake:
   Unique computational evidence is preserved by source slug. The source
   inventory is pinned to
   `73f0b373126ef22a3b5dccadfa7b99d61d445345`; its 180-row disposition and
-  151-row historical-ledger audit are recorded in the canonical package.
-  Final PDF and full-validator success remain separate publication gates.
+  151-row historical-ledger audit are recorded in the canonical package. The
+  structural validator passes, and the final three-pass publication is a
+  155-page A4 PDF with embedded/subset fonts, no Type 3 font, extractable text
+  on every page, and complete visual inspection. Its exhaustive root ledger
+  verifies every other permanent package file. A full replay of all retained
+  numerical scripts remains separate reproducibility work.
 - [`fabius_information_frontier/`](fabius_information_frontier/), *Exact
   Information Geometry and New Frontiers for the Fabius--Rvachev System*
-  (retained submitted 30-page PDF; current 2,137-line TeX), was filed on
+  (retained submitted 30-page PDF; current 2,139-line TeX), was filed on
   2026-08-30 from `fabius_information_frontier_report.zip` (outer SHA-256
   `41f9aba6eb85bb173827f13cb6b7b1d54b7ea9346faf7c9e5b1af859bbd42ec7`)
   and moved here from `frontier-compilations` in the latest thematic
@@ -155,7 +159,7 @@ Current members and recent intake:
   theorem, and precision asymptotics remain open Lean work. The `d_*` claim
   remains denominator-minimal only for the fixed dyadic proxy `2^{-r(n)}`, not
   the weaker target `1/n`. The current 2,937-line source has SHA-256
-  `a6932249804ea3fb07a08b09542e123bbbca23b76a29e13ef27c91aa902ffbe3`;
+  `ca8fa1819440543c011b5fcd2b6dd7816ee3d5f2da1e0975a0dfe07c84e8c16f`;
   the retained 42-page A4 PDF has 711,374 bytes and SHA-256
   `5a9976f9ece840d1b8456b4ea3753c36e369cbade8caff1c04158cc7d33cff75`.
   That PDF was built at the preceding checkpoint in exactly three strict
@@ -168,7 +172,7 @@ Current members and recent intake:
 
 - [`inverse_fabius_iterates_nowhere_analytic/`](analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Inverse
-  Fabius Function* (retained 26-page A4 PDF; current 1,742-line source),
+  Fabius Function* (retained 26-page A4 PDF; current 1,744-line source),
   arrived on 2026-08-30 from
   `inverse_fabius_iterates_nowhere_analytic.zip` (outer SHA-256
   `8b1c05d59e120ecd20d69cd5aeb0009639f2f3b9a6c9fef32bdf82270eee16bd`).
@@ -198,8 +202,8 @@ the inverse Taylor series, and the Bell--Lagrange formula also remain open.
 
 ## `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers/`
 
-The current merged root has 6,603 lines and SHA-256
-`3bae6a0d6df38778f31365acb8d5da7a09bd3ecafcd2a257c6be964df3740601`.
+The current merged root has 6,619 lines and SHA-256
+`e00614842a31e5510e32154dee7444058420ac9f6b374845229e2fae7f64ed76`.
 Its retained 100-page PDF was not rebuilt after the notation merge. The
 relinked 12-entry ledger under
 `assets/Fabius_Inverse_Frontier_Report_Source_and_PDF/` verifies all twelve
@@ -238,13 +242,17 @@ data, text outputs, and PNG figures are retained by historical source slug;
 old manuscript wrappers, report/preview PDFs, stale package ledgers, and
 duplicated documentation are retired. The canonical package records a
 180-row source disposition and a 151-row historical-ledger audit. Its README
-and provenance file describe the evidence boundary. Final PDF and full
-validator success are not claimed until the separate publication gates pass.
+and provenance file describe the evidence boundary. The structural validator
+passes, and the final three-pass publication is a 155-page A4 PDF with
+embedded/subset fonts, no Type 3 font, extractable text on every page, and
+complete visual inspection. Its exhaustive root ledger verifies every other
+permanent package file. A full replay of all retained numerical scripts
+remains separate reproducibility work.
 
 ## `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders/`
 
-The current merged root has 1,978 lines and SHA-256
-`1dbf538e16b619f2c03403333cd46c912dc28b66a2823a1bb1f2b81ba859613e`.
+The current merged root has 1,976 lines and SHA-256
+`cc741563a0af99c6e8bc4b4ebb629c363f3b8605d5053db289a619740e992ccc`.
 Its retained 23-page PDF was not rebuilt after the notation merge, and this
 volume has no live checksum ledger covering the root TeX/PDF pair.
 
@@ -280,7 +288,7 @@ Filed 2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (689,198
 bytes; SHA-256
 `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
 The current canonical source has 2,937 lines (SHA-256
-`a6932249804ea3fb07a08b09542e123bbbca23b76a29e13ef27c91aa902ffbe3`).
+`ca8fa1819440543c011b5fcd2b6dd7816ee3d5f2da1e0975a0dfe07c84e8c16f`).
 The retained historical 42-page A4/27 mm/Libertinus PDF has 711,374 bytes
 (SHA-256
 `5a9976f9ece840d1b8456b4ea3753c36e369cbade8caff1c04158cc7d33cff75`).
@@ -312,7 +320,7 @@ and 8,391 public declarations with zero documentation/header gaps.
 Filed 2026-08-30 from `inverse_fabius_iterates_nowhere_analytic.zip`
 (1,137,032 bytes; SHA-256
 `8b1c05d59e120ecd20d69cd5aeb0009639f2b3b9a6c9fef32bdf82270eee16bd`).
-The current source has 1,742 lines. Its retained 26-page
+The current source has 1,744 lines. Its retained 26-page
 A4/27 mm/Libertinus inverse-iterate companion derives
 nowhere analyticity and formal-radius transport from the corrected forward
 iterate report, then proves the affine but nonrepresenting center jet and the
