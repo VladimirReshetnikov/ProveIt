@@ -1,0 +1,109 @@
+Exact Sturm-chain certificate for the inverse-moment Appell polynomial A_8
+============================================================================
+
+Generated exactly by audit/build_asset_manifest.py using fractions.Fraction.
+No floating-point arithmetic enters this certificate.
+
+Definition
+----------
+A_8(x) = x^8 - 28/9*x^6 + 434/135*x^4 - 9388/8505*x^2 + 1904369/32531625
+S_0 = A_8, S_1 = A_8', and S_{j+1} = -rem(S_{j-1}, S_j) in Q[x].
+
+Rational Sturm terms and primitive integer normalizations
+---------------------------------------------------------
+For every j, S_j = c_j P_j, c_j > 0, and P_j is primitive over Z.
+The positive scale preserves every limiting sign.
+
+j = 0; degree = 8
+S_0(x) = x^8 - 28/9*x^6 + 434/135*x^4 - 9388/8505*x^2 + 1904369/32531625
+c_0 = 1/32531625
+P_0(x) = 32531625*x^8 - 101209500*x^6 + 104583150*x^4 - 35909100*x^2 + 1904369
+check: S_0 = c_0 P_0
+
+j = 1; degree = 7
+S_1(x) = 8*x^7 - 56/3*x^5 + 1736/135*x^3 - 18776/8505*x
+c_1 = 8/8505
+P_1(x) = 8505*x^7 - 19845*x^5 + 13671*x^3 - 2347*x
+check: S_1 = c_1 P_1
+
+j = 2; degree = 6
+S_2(x) = 7/9*x^6 - 217/135*x^4 + 2347/2835*x^2 - 1904369/32531625
+c_2 = 1/32531625
+P_2(x) = 25302375*x^6 - 52291575*x^4 + 26931825*x^2 - 1904369
+check: S_2 = c_2 P_2
+
+j = 3; degree = 5
+S_3(x) = 32/15*x^5 - 28736/6615*x^3 + 13541216/8434125*x
+c_3 = 32/8434125
+P_3(x) = 562275*x^5 - 1144950*x^3 + 423163*x
+check: S_3 = c_3 P_3
+
+j = 4; degree = 4
+S_4(x) = 67/2835*x^4 - 25046/103275*x^2 + 1904369/32531625
+c_4 = 1/32531625
+P_4(x) = 768825*x^4 - 7889490*x^2 + 1904369
+check: S_4 = c_4 P_4
+
+j = 5; degree = 3
+S_5(x) = -661063168/37672425*x^3 + 415757824/113017275*x
+c_5 = 512/113017275
+P_5(x) = -3873417*x^3 + 812027*x
+check: S_5 = c_5 P_5
+
+j = 6; degree = 2
+S_6(x) = 221740577993/933396661575*x^2 - 1904369/32531625
+c_6 = 1/42002849770875
+P_6(x) = 9978326009685*x^2 - 2458805086291
+check: S_6 = c_6 P_6
+
+j = 7; degree = 1
+S_7(x) = 517206347238725632/801509036727947625*x
+c_7 = 517206347238725632/801509036727947625
+P_7(x) = x
+check: S_7 = c_7 P_7
+
+j = 8; degree = 0
+S_8(x) = 1904369/32531625
+c_8 = 1904369/32531625
+P_8(x) = 1
+check: S_8 = c_8 P_8
+
+Exact Euclidean recurrence
+--------------------------
+For divisions 1 through 7, S_{j-1} = Q_j S_j - S_{j+1}.
+Division 8 has zero remainder: S_7 = Q_8 S_8.
+
+Q_1(x) = 1/8*x
+S_0 = Q_1 S_1 - S_2
+
+Q_2(x) = 72/7*x
+S_1 = Q_2 S_2 - S_3
+
+Q_3(x) = 35/96*x
+S_2 = Q_3 S_3 - S_4
+
+Q_4(x) = 6048/67*x
+S_3 = Q_4 S_4 - S_5
+
+Q_5(x) = -2670955/1983189504*x
+S_4 = Q_5 S_5 - S_6
+
+Q_6(x) = -7681719939015168/103996331078717*x
+S_5 = Q_6 S_6 - S_7
+
+Q_7(x) = 245844419643348579540245/667785285967460973774848*x
+S_6 = Q_7 S_7 - S_8
+
+Q_8(x) = 4654857125148530688/422275882771951417*x
+S_7 = Q_8 S_8  (remainder 0)
+
+Limiting signs and Sturm variations
+-----------------------------------
+sign(S_0,...,S_8) at -infinity = (+, -, +, -, +, +, +, -, +)
+V(-infinity) = 6
+sign(S_0,...,S_8) at +infinity = (+, +, +, +, +, -, +, +, +)
+V(+infinity) = 2
+
+Therefore A_8 has V(-infinity)-V(+infinity) = 6-2 = 4 distinct real roots.
+The final positive nonzero constant S_8 proves gcd(A_8,A_8')=1, so A_8 is square-free.
+Its other four roots are nonreal and form two conjugate pairs.

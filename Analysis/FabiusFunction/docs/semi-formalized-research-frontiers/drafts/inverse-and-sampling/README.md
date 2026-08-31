@@ -21,11 +21,16 @@ inverse-iterate report retains its explicit reconciliation link to the forward
 iterate report under `representations/`.
 
 [`Inverse_Fabius_Analyticity_Asymptotics_and_Computability/`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/)
-is a consolidation workspace for five of these live source packages.  It
-currently contains provenance and a reproducible source-result inventory, not
-a canonical TeX/PDF deliverable.  The five source packages remain authoritative
-and will not be retired until every result and unique asset has a recorded
-disposition and a matching consolidated PDF passes the publication gate.
+is now a canonical-source draft for five of these live source packages. Its
+master TeX and nine chapters are present, as are the pinned 194-row raw
+source-result inventory, the 88-row source-asset disposition, and a
+deduplicated asset tree whose exhaustive 61-row live checksum ledger passes.
+The raw inventory is not the reviewed theorem concordance:
+`theorem_concordance.csv` is absent, the source validator therefore cannot
+complete, and no canonical PDF exists. The five source packages remain
+authoritative and live; their retained PDFs keep their separately documented
+historical/current status until the reviewed result-disposition and canonical
+PDF publication gates both pass.
 
 ## Non-comb source-only merge status (2026-08-31)
 
@@ -33,8 +38,9 @@ The canonical-notation integration changed the five live non-comb TeX roots
 listed below. The remote reorganization supplied a synchronized TeX/PDF/ledger trio
 for `analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function`, so
 that package is not included in the stale-artifact table below.
-By explicit integration policy, none of the listed same-stem PDFs was rebuilt;
-operational ledgers covering changed roots were not refreshed except as stated.
+By explicit integration policy, none of the listed same-stem PDFs was rebuilt.
+The operational ledgers were refreshed to record current sources and READMEs
+alongside the retained historical PDFs as distinct payloads.
 The relinked 12-entry ledger for
 `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers` records
 the current root source and the retained historical PDF as distinct payloads;
@@ -48,12 +54,11 @@ historical artifacts, not claimed renderings of the current sources.
 | `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders` | 1,978 | `1dbf538e16b619f2c03403333cd46c912dc28b66a2823a1bb1f2b81ba859613e` | 23 pages | no live root-pair ledger |
 | `inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report` | 2,937 | `a6932249804ea3fb07a08b09542e123bbbca23b76a29e13ef27c91aa902ffbe3` | 42 pages | all six payload rows pass; PDF is historical |
 | `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers` | 6,603 | `3bae6a0d6df38778f31365acb8d5da7a09bd3ecafcd2a257c6be964df3740601` | 100 pages | all twelve payload rows pass; PDF is historical |
-| `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic` | 1,742 | `eda8c676e00a68c1e57e36ee22bfb3502cd56dd95f5630efcaf6a7f0f3b3d3d5` | 26 pages | TeX and README rows pending; other thirteen pass |
-| `fabius_information_frontier` | 2,137 | `a8dd383ef450f4a6338990115b982945dc7f36674f7a65f3e623ca2002883296` | 30 pages | TeX and README rows pending; other seventeen pass |
+| `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic` | 1,742 | `eda8c676e00a68c1e57e36ee22bfb3502cd56dd95f5630efcaf6a7f0f3b3d3d5` | 26 pages | all fifteen payload rows pass; PDF is historical |
+| `fabius_information_frontier` | 2,137 | `a8dd383ef450f4a6338990115b982945dc7f36674f7a65f3e623ca2002883296` | 30 pages | all nineteen payload rows pass; PDF is historical |
 
-Package README edits that record this source-only state also make their own
-operational-ledger rows intentionally pending.  Arrival ledgers and historical
-PDF hashes remain immutable and are not affected by this note.
+Arrival ledgers and historical PDF hashes remain immutable and are not
+affected by this operational-ledger refresh.
 
 Current members and recent intake:
 
@@ -102,10 +107,10 @@ Current members and recent intake:
   `41f9aba6eb85bb173827f13cb6b7b1d54b7ea9346faf7c9e5b1af859bbd42ec7`)
   and moved here from `frontier-compilations` in the latest thematic
   reorganization. Its immutable 18-entry arrival ledger verified the submitted
-  payload and is preserved byte-for-byte. The operational ledger was not
-  refreshed after the source-only notation migration: its TeX and README rows
-  are pending and its other seventeen rows pass. The retained PDF was not
-  rebuilt from the current source. It remains an archival intake rather than a
+  payload and is preserved byte-for-byte. The refreshed 19-entry operational
+  ledger verifies the current TeX/README and retained PDF as distinct payloads;
+  it does not assert render synchronization. The retained PDF was not rebuilt
+  from the current source. It remains an archival intake rather than a
   claim-level acceptance; manuscript theorem labels do not establish Lean
   verification.
 
@@ -322,7 +327,8 @@ and leaves only two explicitly unformalized conjectures. The pinned numerical
 replay reproduced all 7 generated outputs byte for byte before repository LF
 normalization; it proves none of the analytic claims. The submitted 13-entry arrival ledger is preserved as
 `SHA256SUMS.arrival.txt` and verified 13/13 before normalization. The 15-entry
-`SHA256SUMS.txt` was intentionally not refreshed after the source-only merge:
-its TeX and README rows are pending and the other thirteen rows pass.
+The refreshed 15-entry `SHA256SUMS.txt` verifies every current payload while
+retaining the historical PDF as a distinct artifact; it does not assert render
+synchronization.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and previous paths.

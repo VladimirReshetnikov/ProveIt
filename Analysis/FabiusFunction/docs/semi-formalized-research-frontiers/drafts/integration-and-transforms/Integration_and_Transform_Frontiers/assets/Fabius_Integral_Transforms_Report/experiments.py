@@ -260,7 +260,7 @@ Quantity & Numerical value \\
 $\mathfrak M(1/2)$ & \num{%(mhalf)s} \\
 $\mathfrak M(-1/2)$ & \num{%(mneghalf)s} \\
 $\mathfrak M(-1)$ & \num{%(mnegone)s} \\
-$-\mathbb E\log Y$ & \num{%(logmoment)s} \\
+$-\Expectation\log Y$ & \num{%(logmoment)s} \\
 $C_*$ & \num{%(cstar)s} \\
 $\int_0^1F(1-F)$ & \num{%(gini)s} \\
 $\int_{\mathbb R}\operatorname{up}(x)^2\,dx$ & \num{%(l2)s} \\

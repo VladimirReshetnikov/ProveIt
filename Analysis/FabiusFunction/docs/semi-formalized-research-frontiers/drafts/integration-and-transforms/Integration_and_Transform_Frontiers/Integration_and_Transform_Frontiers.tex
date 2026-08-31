@@ -114,7 +114,6 @@
 \newcommand{\RL}{\mathcal I}
 \newcommand{\M}{\mathcal M}
 \newcommand{\eps}{\varepsilon}
-\newcommand{\1}{\mathbf 1}
 \DeclareMathOperator{\Rea}{Re}
 \DeclareMathOperator{\Ima}{Im}
 
@@ -1176,10 +1175,10 @@ The compactly supported Rvachev function is
 \end{equation}
 and the signed global extension is
 \begin{equation}
- \FabiusGlobal(x)=\sum_{m\geq0}(-1)^{s_2(m)}\RvachevUp(x-2m-1),
+ \FabiusGlobal(x)=\sum_{m\geq0}(-1)^{\BinaryDigitSum(m)}\RvachevUp(x-2m-1),
  \qquad \FabiusGlobal'(x)=2\FabiusGlobal(2x).                                      \label{p1:eq:signed-def}
 \end{equation}
-Here \(s_2(m)\) is the binary digit sum.  The bounded and signed functions
+Here \(\BinaryDigitSum(m)\) is the binary digit sum.  The bounded and signed functions
 coincide on \(( -\infty,1]\), but not globally
 \cite{p1:ProveItPrimary,p1:AriasArithmetic}.
 
@@ -1314,7 +1313,7 @@ In particular,
 \end{corollary}
 
 \begin{proof}
-Write \(F(t)=\Expectation\1_{\{X\leq t\}}\), apply Tonelli's theorem, and integrate
+Write \(F(t)=\Expectation\IndicatorOf{\{X\leq t\}}\), apply Tonelli's theorem, and integrate
 \((x-t)^{n-1}\) from \(t=X\) to \(t=x\).  At \(x=1\), symmetry gives
 \(\Expectation(1-X)^n=\Expectation X^n=d_n\).
 \end{proof}
@@ -2025,7 +2024,7 @@ Then
  -2^{\binom n2}F\!\left(\frac{x}{2^n}\right),
  &0\leq x\leq1,\\[4mm]
  \displaystyle
- \frac1{(n-1)!}\sum_{q=0}^{\lfloor(n-1)/2\rfloor}
+ \frac1{(n-1)!}\sum_{q=0}^{\Floor{(n-1)/2}}
  \binom{n-1}{2q}c_qx^{n-1-2q},&x\geq1.
  \end{cases}                                                    \label{p1:eq:up-unweighted-n}
 \end{equation}
@@ -2036,7 +2035,7 @@ density.
 \section{Exact higher derivatives and inverse differentiation}
 
 \subsection{Thue--Morse derivative formulas}
-Let \(\eps_k=(-1)^{s_2(k)}\).  Iterating Rvachev's functional-differential
+Let \(\eps_k=(-1)^{\BinaryDigitSum(k)}\).  Iterating Rvachev's functional-differential
 equation gives the standard exact derivative formula
 \begin{equation}
  \boxed{\quad
@@ -2124,7 +2123,7 @@ for \(x=1\), endpoint flatness supplies the limiting interpretation.
 Since \(\Rea\nu>0\), the absolute value of the kernel is
 \((x-t)^{\Rea\nu-1}\), which is integrable on the finite triangular region
 arising after insertion of
-\(F(t)=\Expectation\1_{\{X\leq t\}}\).  Fubini's theorem therefore gives
+\(F(t)=\Expectation\IndicatorOf{\{X\leq t\}}\).  Fubini's theorem therefore gives
 \eqref{p1:eq:fractional-stoploss}; for positive real \(\nu\), this reduces to the
 Tonelli argument in \cref{p1:cor:J-moment}.  At one, replace \(1-X\) by the
 identically distributed \(X\).  For \(x>1\), expand
@@ -2279,7 +2278,7 @@ At \(p=-1\), formula \eqref{p1:eq:inverse-log} gives the convergent constant
 \subsection{Higher and fractional inverse primitives}
 The indicator representation
 \begin{equation}
- Q(u)=\int_0^1\1_{\{F(t)\leq u\}}\Differential t                         \label{p1:eq:Q-indicator}
+ Q(u)=\int_0^1\IndicatorOf{\{F(t)\leq u\}}\Differential t                         \label{p1:eq:Q-indicator}
 \end{equation}
 turns all higher primitives into one-dimensional integrals of powers of
 \(y-F(t)\).
@@ -2736,7 +2735,7 @@ statistics; near \(s=0\) its one-sided derivatives involve
 \eqref{p1:eq:up-mgf} is an infinite sinc product, while the exterior branches of
 \eqref{p1:eq:up-global} are moment polynomials.  A distributional Fourier theory
 that explicitly separates those polynomial tails from
-\((2\pi\ImaginaryUnit\xi)^{-n}\widehat{\RvachevUp}(\xi)\) should produce useful compact
+\((2\pi\ImaginaryUnit\xi)^{-n}\FourierTwoPi{\RvachevUp}(\xi)\) should produce useful compact
 renormalized primitives.
 
 \item \textbf{Order statistics and periodic corrections.}  Push
@@ -3084,7 +3083,6 @@ L.~Comtet,
 
 
 % extra macros for part 2
-\newcommand{\QPartx}{\mathbb Q}
 \newcommand{\Mellin}{\mathcal M}
 \newcommand{\Vol}{\mathcal J}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction/docs}}
@@ -3352,7 +3350,7 @@ with $d_0=1$.  The repository proves the triangular recurrence
 and the Bernoulli recurrence
 \begin{equation}
  d_n=\frac{n2^n}{4(2^n-1)}d_{n-1}
- -\frac1{2^n-1}\sum_{k=1}^{\lfloor n/2\rfloor}
+ -\frac1{2^n-1}\sum_{k=1}^{\Floor{n/2}}
  \binom n{2k}2^{n-2k}B_{2k}d_{n-2k}.                       \label{p2:eq:d-bernoulli}
 \end{equation}
 Thus any result expressed through the $d_n$ is automatically connected to the
@@ -4039,7 +4037,7 @@ For $m\in\NaturalNumbers$,
 \end{equation}
 Thus the antiderivative formula recovers the moment bridge between the Fabius
 distribution and the infinite sinc product
-$\widehat\RvachevUp(\xi)=\prod_{j\ge1}\SincRad(2^{-j}\xi)$: the Taylor coefficients of
+$\FourierAngular{\RvachevUp}(\xi)=\prod_{j\ge1}\SincRad(2^{-j}\xi)$: the Taylor coefficients of
 the product are exactly the complete even moments in
 \eqref{p2:eq:up-integer-moments}.
 
@@ -4224,7 +4222,7 @@ $\bm m=(m_1,\ldots,m_r)$, put
 Define
 \begin{align}
  Q_{N,r}(a;\bm m)
- &=\mathbf 1_{\{a>b(\bm m)\}}
+ &=\IndicatorOf{\{a>b(\bm m)\}}
  \sum_{k_1,\ldots,k_r=0}^{N}
  \frac{\prod_{i=1}^{r}\binom N{k_i}\delta_i^{N-k_i}}
  {1+k_1+\cdots+k_r}                                       \notag\\
@@ -4889,11 +4887,11 @@ V.~Reshetnikov,
 
 
 % extra macros for part 3
-\newcommand{\QPartl}{\mathbb Q}
-\newcommand{\wtPartl}{s_2}
 \newcommand{\FP}{\operatorname{FP}}
 \newcommand{\Bell}{\mathcal B}
 \newcommand{\repoPartl}{\textsc{ProveIt}}
+% LOCAL-NON-FOURIER-HAT: \SimpleTailEstimate denotes the first-order estimator of the asymptotic tail remainder
+\newcommand{\SimpleTailEstimate}[1]{\widehat R_{#1}}
 \definecolor{deepgreen}{RGB}{24,102,72}
 \definecolor{deepred}{RGB}{145,44,44}
 \newsharedtheorem{problem}{Open problem}
@@ -6090,15 +6088,15 @@ quantile quadrature.
 The corpus proves, for $0\le a\le2^N$,
 \begin{equation}
  F(a/2^N)=\frac{2^{-\binom{N+1}{2}}}{N!}
- \sum_{h=0}^{a-1}(-1)^{\wtPartl(h)}
- \sum_{j=0}^{\lfloor N/2\rfloor}\binom N{2j}c_j
+ \sum_{h=0}^{a-1}(-1)^{\BinaryDigitSum(h)}
+ \sum_{j=0}^{\Floor{N/2}}\binom N{2j}c_j
  (2a-2h-1)^{N-2j}.                                          \label{p3:eq:repo-dyadic}
 \end{equation}
 Putting $x=a/2^r$ in \eqref{p3:eq:monomial-nfold} and applying
 \eqref{p3:eq:repo-dyadic} with $N=r+n+k$ gives an entirely finite closed form for every
 weighted primitive at every dyadic argument.  It involves only rational centered moments
 $c_j$, binomial coefficients, powers of two, and the signed Thue--Morse sequence
-$(-1)^{\wtPartl(h)}$.  We leave it in this compositional form because expanding the three finite
+$(-1)^{\BinaryDigitSum(h)}$.  We leave it in this compositional form because expanding the three finite
 sums obscures the ladder structure and offers no computational advantage.
 
 Write
@@ -6113,7 +6111,7 @@ half-base $q$-binomial identity in the corpus is, for $m,N\in\NaturalNumbers$,
  &=\frac{1}{2^{N^2}(1/2;1/2)_N}
  \sum_{j=0}^{N}
  \frac{\GaussianBinomial Nj{1/2}}{4^{\binom j2}(N+j)!}
- \sum_{h=0}^{m2^j-1}(-1)^{\wtPartl(h)}(h-m2^j+R)^{N+j},            \label{p3:eq:repo-q-dyadic}
+ \sum_{h=0}^{m2^j-1}(-1)^{\BinaryDigitSum(h)}(h-m2^j+R)^{N+j},            \label{p3:eq:repo-q-dyadic}
 \end{align}
 independent of the translation parameter $R\in\ComplexNumbers$.  Substitution of
 \eqref{p3:eq:repo-q-dyadic} into each ladder term supplies a $q$-binomial version of the
@@ -6254,11 +6252,11 @@ which suggests
 
 Ignoring the periodic derivative gives the simple estimator
 \begin{equation}
- \widehat R_N(a)=
+ \SimpleTailEstimate{N}(a)=
  \frac{Nt_N(a)}{\log N/L-(a-\tfrac12)}.                      \label{p3:eq:tail-simple}
 \end{equation}
 The experiment compares this with a 900-term reference tail.  Representative ratios
-$\widehat R_N/R_N$ are
+$\SimpleTailEstimate{N}/R_N$ are
 \begin{center}
 \begin{tabular}{@{}ccccc@{}}
 \toprule
@@ -6753,7 +6751,6 @@ source snapshot \texttt{a2541a7ee373c0e297de04424f8921ce881e62b7}, consulted 27 
 \newcommand{\numPartc}[1]{\texttt{#1}}
 \renewcommand{\headrulewidth}{0.35pt}
 \newcommand{\MPartc}{\mathfrak M}
-\newcommand{\ind}{\mathbf 1}
 \newcommand{\LiPartc}{\operatorname{Li}}
 \newcommand{\RePart}{\operatorname{Re}}
 \newcommand{\ImPart}{\operatorname{Im}}
@@ -6767,7 +6764,7 @@ source snapshot \texttt{a2541a7ee373c0e297de04424f8921ce881e62b7}, consulted 27 
 
 \begin{abstract}
 This report develops an integral calculus for the Fabius function \(\F\), its inverse
-\(\RationalNumbers=\F^{-1}\), and Rvachev's compactly supported function \(\RvachevUp\).  The starting
+\(\FabiusQuantile=\F^{-1}\), and Rvachev's compactly supported function \(\RvachevUp\).  The starting
 point is the probability model
 \[
   Y=\sum_{k\ge1}2^{-k}U_k,\qquad Z=2Y-1,
@@ -6778,15 +6775,15 @@ turns integration into a combination of quantile transport, moment calculus, and
 infinite-product transforms.
 
 The principal results are: a two-function inverse-pair integration identity containing
-all weighted area formulas for \(\F\) and \(\RationalNumbers\); a bivariate Laplace--Fourier duality;
-an entire complex moment function \(\MPartc(s)=\Expectation Y^s=\int_0^1\RationalNumbers(v)^s\Differential v\) with two
+all weighted area formulas for \(\F\) and \(\FabiusQuantile\); a bivariate Laplace--Fourier duality;
+an entire complex moment function \(\MPartc(s)=\Expectation Y^s=\int_0^1\FabiusQuantile(v)^s\Differential v\) with two
 rapidly convergent Newton-type series; exact series for negative and fractional powers;
 a stable recurrence for negative moments and a positive normalized limit
 \(C_*\), giving
 \[
   \MPartc(-r)\sim C_*\frac{2^{r(r+1)/2}}{\Gamma(r)};
 \]
-Riemann--Liouville primitives of arbitrary order for powers of \(\F\) and \(\RationalNumbers\);
+Riemann--Liouville primitives of arbitrary order for powers of \(\F\) and \(\FabiusQuantile\);
 beta-weighted formulas, Bernoulli-polynomial integrals, order-statistic representations,
 Cauchy transforms, and Gini/autocorrelation integrals expressed through the infinite
 sinc product.  Numerical experiments are supplied in a reproducible Python script.
@@ -6968,9 +6965,10 @@ All powers of positive real variables use the real logarithm:
 \[
  \F(x)=0\quad(x\le0),\qquad \F(x)=1\quad(x\ge1).
 \]
-Its inverse \(\RationalNumbers:(0,1)\to(0,1)\) is the ordinary increasing inverse; endpoint values
-are understood by continuity.  Angular frequency is used for Fourier transforms:
-\(\widehat f(t)=\int_\RealNumbers e^{itx}f(x)\Differential x\).
+Its inverse \(\FabiusQuantile:(0,1)\to(0,1)\) is the ordinary increasing inverse; endpoint values
+are understood by continuity.  Angular frequency is used for Fourier transforms.  In terms
+of the shared negative-kernel convention, the positive-kernel form is
+\(\FourierAngular{f}(-t)=\int_\RealNumbers e^{itx}f(x)\Differential x\).
 
 \section{Probability model and transform baseline}
 
@@ -7004,7 +7002,7 @@ and \(\RvachevUp\) is the density of \(Z\).  Thus
 \end{equation}
 In particular \(\F(x)+\F(1-x)=1\) on \([0,1]\), and the quantile obeys
 \begin{equation}\label{p4:eq:Qsymmetry}
- \RationalNumbers(1-v)=1-\RationalNumbers(v).
+ \FabiusQuantile(1-v)=1-\FabiusQuantile(v).
 \end{equation}
 
 The self-decomposition
@@ -7326,7 +7324,7 @@ Independence in \cref{p4:eq:Ydef} gives the locally uniformly convergent product
 \end{align}
 The characteristic function of the up law is therefore
 \begin{equation}\label{p4:eq:phi-product}
- \phi(t)=\widehat{\RvachevUp}(t)
+ \phi(t)=\CharacteristicFunction{Z}(t)=\FourierAngular{\RvachevUp}(-t)
  =\prod_{k=1}^{\infty}\frac{\sin(t/2^k)}{t/2^k}.
 \end{equation}
 The scaling equation
@@ -7339,7 +7337,7 @@ is the exponential generating-function form of the moment recurrence below.
 
 Write
 \begin{equation}\label{p4:eq:mn-mun}
- m_n=\Expectation Y^n=\int_0^1\RationalNumbers(v)^n\Differential v,
+ m_n=\Expectation Y^n=\int_0^1\FabiusQuantile(v)^n\Differential v,
  \qquad
  \mu_n=\Expectation Z^n=\int_{-1}^1x^n\RvachevUp(x)\Differential x.
 \end{equation}
@@ -7384,7 +7382,7 @@ For example
 \end{equation}
 
 \section{A universal integration calculus for \texorpdfstring{\(\F\)}{F} and
-\texorpdfstring{\(\RationalNumbers\)}{Q}}
+\texorpdfstring{\(\FabiusQuantile\)}{Q}}
 
 The classical area identity for a function and its inverse is only the first member of
 a much larger family.  The following theorem is the main algebraic engine of the report.
@@ -7458,13 +7456,13 @@ Let \(A,B\) be absolutely continuous on \([0,1]\).  For every \(z\in[0,1]\),
 \begin{equation}\label{p4:eq:AB-incomplete}
  A(z)B(\F(z))-A(0)B(0)
  =\int_0^z A'(x)B(\F(x))\Differential x
- +\int_0^{\F(z)}A(\RationalNumbers(v))B'(v)\Differential v.
+ +\int_0^{\F(z)}A(\FabiusQuantile(v))B'(v)\Differential v.
 \end{equation}
 At \(z=1\),
 \begin{equation}\label{p4:eq:AB-complete}
  A(1)B(1)-A(0)B(0)
  =\int_0^1A'(x)B(\F(x))\Differential x
- +\int_0^1A(\RationalNumbers(v))B'(v)\Differential v.
+ +\int_0^1A(\FabiusQuantile(v))B'(v)\Differential v.
 \end{equation}
 The formulas remain valid under the usual improper-integral hypotheses whenever an
 endpoint is singular.
@@ -7473,7 +7471,7 @@ endpoint is singular.
 \begin{proof}
 Differentiate the product \(A(x)B(\F(x))\), integrate from \(0\) to \(z\), and in
 the term containing \(\F'(x)\) use the increasing substitution \(v=\F(x)\),
-so that \(x=\RationalNumbers(v)\).
+so that \(x=\FabiusQuantile(v)\).
 \end{proof}
 
 \begin{remark}
@@ -7491,13 +7489,13 @@ Taking \(A(x)=x^p\), \(B(v)=v^q\) gives the following Mellin-type duality.
 Initially for \(\Re p,\Re q>0\),
 \begin{equation}\label{p4:eq:power-incomplete}
  p\int_0^z x^{p-1}\F(x)^q\Differential x
- +q\int_0^{\F(z)}\RationalNumbers(v)^p v^{q-1}\Differential v
+ +q\int_0^{\F(z)}\FabiusQuantile(v)^p v^{q-1}\Differential v
  =z^p\F(z)^q.
 \end{equation}
 In particular,
 \begin{equation}\label{p4:eq:power-complete}
  p\int_0^1x^{p-1}\F(x)^q\Differential x
- +q\int_0^1v^{q-1}\RationalNumbers(v)^p\Differential v=1.
+ +q\int_0^1v^{q-1}\FabiusQuantile(v)^p\Differential v=1.
 \end{equation}
 Both sides admit meromorphic or entire continuation in parameters whenever the endpoint
 flatness cancels the apparent singularities.
@@ -7506,7 +7504,7 @@ flatness cancels the apparent singularities.
 For all logarithmic derivatives at once, define
 \begin{align}
  J_{r,s}(p,q)&=\int_0^1x^{p-1}(\log x)^r\F(x)^q(\log\F(x))^s\Differential x,\label{p4:eq:Jrs}\\
- K_{r,s}(p,q)&=\int_0^1v^{q-1}(\log v)^s\RationalNumbers(v)^p(\log\RationalNumbers(v))^r\Differential v.\label{p4:eq:Krs}
+ K_{r,s}(p,q)&=\int_0^1v^{q-1}(\log v)^s\FabiusQuantile(v)^p(\log\FabiusQuantile(v))^r\Differential v.\label{p4:eq:Krs}
 \end{align}
 Differentiating \cref{p4:eq:power-complete} gives, for \(r+s>0\),
 \begin{equation}\label{p4:eq:log-hierarchy}
@@ -7524,13 +7522,13 @@ simple transform relation.
 For all \(s,t\in\ComplexNumbers\) and \(z\in[0,1]\),
 \begin{equation}\label{p4:eq:bivariate-incomplete}
  s\int_0^z e^{sx+t\F(x)}\Differential x
- +t\int_0^{\F(z)}e^{tv+s\RationalNumbers(v)}\Differential v
+ +t\int_0^{\F(z)}e^{tv+s\FabiusQuantile(v)}\Differential v
  =e^{sz+t\F(z)}-1.
 \end{equation}
 Hence
 \begin{equation}\label{p4:eq:bivariate-complete}
  s\int_0^1e^{sx+t\F(x)}\Differential x
- +t\int_0^1e^{tv+s\RationalNumbers(v)}\Differential v
+ +t\int_0^1e^{tv+s\FabiusQuantile(v)}\Differential v
  =e^{s+t}-1.
 \end{equation}
 The identities are entire in \((s,t)\); the cases \(s=0\) or \(t=0\) are understood
@@ -7547,7 +7545,7 @@ Taking \(B(v)=v\) and a primitive \(A\) of a prescribed weight yields the useful
 master formula
 \begin{equation}\label{p4:eq:weighted-antiderivative-master}
  \int_0^x A'(t)\F(t)\Differential t
- =A(x)\F(x)-A(0)\F(0)-\int_0^{\F(x)}A(\RationalNumbers(v))\Differential v.
+ =A(x)\F(x)-A(0)\F(0)-\int_0^{\F(x)}A(\FabiusQuantile(v))\Differential v.
 \end{equation}
 For monomial weights this becomes the promised indefinite integral.
 
@@ -7555,17 +7553,17 @@ For monomial weights this becomes the promised indefinite integral.
 For \(p\ne-1\), initially where the integrals converge and then by continuation,
 \begin{equation}\label{p4:eq:monomial-F-antiderivative}
  \int_0^x t^p\F(t)\Differential t
- =\frac{x^{p+1}\F(x)-\displaystyle\int_0^{\F(x)}\RationalNumbers(v)^{p+1}\Differential v}{p+1}.
+ =\frac{x^{p+1}\F(x)-\displaystyle\int_0^{\F(x)}\FabiusQuantile(v)^{p+1}\Differential v}{p+1}.
 \end{equation}
 The value at \(p=-1\) is removable:
 \begin{equation}\label{p4:eq:F-over-x-incomplete}
  \int_0^x\frac{\F(t)}t\Differential t
- =\F(x)\log x-\int_0^{\F(x)}\log\RationalNumbers(v)\Differential v.
+ =\F(x)\log x-\int_0^{\F(x)}\log\FabiusQuantile(v)\Differential v.
 \end{equation}
 On \([0,1]\), where \(\RvachevUp=1-\F\),
 \begin{equation}\label{p4:eq:monomial-up-half-antiderivative}
  \int_0^x t^p\RvachevUp(t)\Differential t
- =\frac{x^{p+1}(1-\F(x))+\displaystyle\int_0^{\F(x)}\RationalNumbers(v)^{p+1}\Differential v}{p+1}.
+ =\frac{x^{p+1}(1-\F(x))+\displaystyle\int_0^{\F(x)}\FabiusQuantile(v)^{p+1}\Differential v}{p+1}.
 \end{equation}
 \end{corollary}
 
@@ -7573,7 +7571,7 @@ More generally, from \cref{p4:eq:power-incomplete},
 \begin{equation}\label{p4:eq:Fpower-antiderivative}
  \int_0^x t^{p-1}\F(t)^q\Differential t
  =\frac{x^p\F(x)^q}{p}
- -\frac{q}{p}\int_0^{\F(x)}\RationalNumbers(v)^p v^{q-1}\Differential v.
+ -\frac{q}{p}\int_0^{\F(x)}\FabiusQuantile(v)^p v^{q-1}\Differential v.
 \end{equation}
 Thus products of \(\F\) and the positive half of \(\RvachevUp\) reduce to beta-weighted
 quantile integrals after expanding \((1-\F)^n\).
@@ -7583,7 +7581,7 @@ quantile integrals after expanding \((1-\F)^n\).
 \begin{definition}\label{p4:def:M}
 For \(s\in\ComplexNumbers\), set
 \begin{equation}\label{p4:eq:Mdef}
- \MPartc(s)=\Expectation Y^s=\int_0^1\RationalNumbers(v)^s\Differential v.
+ \MPartc(s)=\Expectation Y^s=\int_0^1\FabiusQuantile(v)^s\Differential v.
 \end{equation}
 For nonnegative integers, \(\MPartc(n)=m_n\).
 \end{definition}
@@ -7599,7 +7597,7 @@ positive moments: for every \(N>0\),
 \begin{theorem}[entire quantile Mellin function]\label{p4:thm:entireM}
 The function \(\MPartc\) in \cref{p4:eq:Mdef} is entire.  For every \(r\ge0\),
 \begin{equation}\label{p4:eq:M-derivatives}
- \MPartc^{(r)}(s)=\int_0^1\RationalNumbers(v)^s(\log\RationalNumbers(v))^r\Differential v
+ \MPartc^{(r)}(s)=\int_0^1\FabiusQuantile(v)^s(\log\FabiusQuantile(v))^r\Differential v
  =\Expectation\bigl[Y^s(\log Y)^r\bigr].
 \end{equation}
 In particular all negative moments and all logarithmic moments exist.
@@ -7623,7 +7621,7 @@ A first transform triangle follows immediately:
  \label{p4:eq:Mellin-F}\\
  \int_0^1x^{s-1}\RvachevUp(x)\Differential x&=\frac{\MPartc(s)}s,
  \label{p4:eq:Mellin-up-half}\\
- \int_0^1\RationalNumbers(v)^{s-1}\Differential v&=\MPartc(s-1).
+ \int_0^1\FabiusQuantile(v)^{s-1}\Differential v&=\MPartc(s-1).
  \label{p4:eq:Mellin-Q}
 \end{align}
 The first quotient has a removable singularity at \(s=0\) and is entire; the second
@@ -7710,7 +7708,7 @@ Numerically,
 
 The inverse symmetry \cref{p4:eq:Qsymmetry} suggests the two-variable transform
 \begin{equation}\label{p4:eq:M2def}
- \MPartc_2(a,b)=\int_0^1\RationalNumbers(v)^a\RationalNumbers(1-v)^b\Differential v
+ \MPartc_2(a,b)=\int_0^1\FabiusQuantile(v)^a\FabiusQuantile(1-v)^b\Differential v
  =\Expectation\bigl[Y^a(1-Y)^b\bigr].
 \end{equation}
 
@@ -7738,13 +7736,13 @@ The central formula follows from \(Y=(1+Z)/2\), \(1-Y=(1-Z)/2\).
 
 For example,
 \begin{equation}\label{p4:eq:M2-examples}
- \int_0^1\RationalNumbers(v)\RationalNumbers(1-v)\Differential v=\frac29,
+ \int_0^1\FabiusQuantile(v)\FabiusQuantile(1-v)\Differential v=\frac29,
  \qquad
- \int_0^1\RationalNumbers(v)^2\RationalNumbers(1-v)^2\Differential v=\frac{34}{675},
+ \int_0^1\FabiusQuantile(v)^2\FabiusQuantile(1-v)^2\Differential v=\frac{34}{675},
 \end{equation}
 and
 \begin{equation}\label{p4:eq:M2-negative-example}
- \int_0^1\frac{\Differential v}{\RationalNumbers(v)(1-\RationalNumbers(v))}=2\MPartc(-1).
+ \int_0^1\frac{\Differential v}{\FabiusQuantile(v)(1-\FabiusQuantile(v))}=2\MPartc(-1).
 \end{equation}
 
 \section{Negative moments: an exact recurrence and a new asymptotic constant}
@@ -8059,7 +8057,7 @@ integrals are rational.
 \end{theorem}
 
 \begin{proof}
-Use \(\F(x)=\Expectation\ind_{\{Y\le x\}}\) and Fubini:
+Use \(\F(x)=\Expectation\IndicatorOf{\{Y\le x\}}\) and Fubini:
 \[
  I_F(a,b)=\Expectation\int_Y^1x^{a-1}(1-x)^{b-1}\Differential x
  =\Expectation B_{1-Y}(b,a)=\Expectation B_Y(b,a),
@@ -8089,7 +8087,7 @@ leads to exact quantile truncations.
 \begin{proposition}\label{p4:prop:half-identities}
 For every complex \(p\), with removable values interpreted by continuation,
 \begin{align}
- \int_0^{1/2}\RationalNumbers(v)^p\Differential v
+ \int_0^{1/2}\FabiusQuantile(v)^p\Differential v
  &=2^{-p}\frac{1-\MPartc(p+1)}{p+1},
  \label{p4:eq:half-Q}\\
  \int_0^{1/2}x^p\F(x)\Differential x
@@ -8106,7 +8104,7 @@ In particular,
 \begin{proof}
 Change variables \(v=\F(x)\) in the first integral and use the lower-half equation:
 \[
- \int_0^{1/2}\RationalNumbers(v)^p\Differential v
+ \int_0^{1/2}\FabiusQuantile(v)^p\Differential v
  =\int_0^{1/2}x^p\F'(x)\Differential x
  =2^{-p}\int_0^1y^p\F(y)\Differential y.
 \]
@@ -8145,13 +8143,13 @@ Let \(\Re\alpha>0\).  Initially for \(\Re q>0\),
 \begin{equation}\label{p4:eq:RL-Fq}
  (I_0^\alpha\F^q)(x)
  =\frac{q}{\Gamma(\alpha+1)}
- \int_0^{\F(x)}(x-\RationalNumbers(v))^\alpha v^{q-1}\Differential v.
+ \int_0^{\F(x)}(x-\FabiusQuantile(v))^\alpha v^{q-1}\Differential v.
 \end{equation}
 Initially for \(\Re p>0\),
 \begin{equation}\label{p4:eq:RL-Qp}
- (I_0^\alpha\RationalNumbers^p)(v)
+ (I_0^\alpha\FabiusQuantile^p)(v)
  =\frac{p}{\Gamma(\alpha+1)}
- \int_0^{\RationalNumbers(v)}(v-\F(x))^\alpha x^{p-1}\Differential x.
+ \int_0^{\FabiusQuantile(v)}(v-\F(x))^\alpha x^{p-1}\Differential x.
 \end{equation}
 Both formulas continue in \(p\) or \(q\) wherever the endpoint terms admit continuation.
 \end{theorem}
@@ -8186,7 +8184,7 @@ In particular,
 
 \begin{proof}
 In \cref{p4:eq:RL-Fq}, the integral over \(v\) is the expectation of
-\((x-\RationalNumbers(V))_+^\alpha\) for a uniform \(V\).  Since \(\RationalNumbers(V)\overset d=Y\), this is
+\((x-\FabiusQuantile(V))_+^\alpha\) for a uniform \(V\).  Since \(\FabiusQuantile(V)\overset d=Y\), this is
 \cref{p4:eq:RL-F-prob}.  At \(x=1\), use \(1-Y\overset d=Y\).
 \end{proof}
 
@@ -8253,13 +8251,13 @@ fractional-truncated-moment formula.
 For an integer \(n\ge1\), the anchored \(n\)-fold antiderivative of \(\F\) is
 \begin{equation}\label{p4:eq:nth-F-primitive}
  I_0^n\F(x)=\frac1{n!}
- \int_0^{\F(x)}(x-\RationalNumbers(v))^n\Differential v.
+ \int_0^{\F(x)}(x-\FabiusQuantile(v))^n\Differential v.
 \end{equation}
 The same expression can be expanded finitely:
 \begin{equation}\label{p4:eq:nth-F-incomplete-moments}
  I_0^n\F(x)
  =\frac1{n!}\sum_{j=0}^n(-1)^j\binom njx^{n-j}
- \int_0^{\F(x)}\RationalNumbers(v)^j\Differential v.
+ \int_0^{\F(x)}\FabiusQuantile(v)^j\Differential v.
 \end{equation}
 Thus every repeated primitive is determined by incomplete quantile moments.  At a dyadic
 \(x\), these can in turn be reduced by the exact dyadic machinery already developed in
@@ -8267,16 +8265,16 @@ the repository.
 
 For inverse powers, \cref{p4:eq:RL-Qp} gives the complementary expression
 \begin{equation}\label{p4:eq:nth-Q-primitive}
- I_0^n(\RationalNumbers^p)(v)
- =\frac{p}{n!}\int_0^{\RationalNumbers(v)}x^{p-1}(v-\F(x))^n\Differential x.
+ I_0^n(\FabiusQuantile^p)(v)
+ =\frac{p}{n!}\int_0^{\FabiusQuantile(v)}x^{p-1}(v-\F(x))^n\Differential x.
 \end{equation}
 The special case \(p=1\) is a fractional extension of the area identity:
 \begin{equation}\label{p4:eq:nth-Q-area}
- I_0^n\RationalNumbers(v)=\frac1{n!}\int_0^{\RationalNumbers(v)}(v-\F(x))^n\Differential x.
+ I_0^n\FabiusQuantile(v)=\frac1{n!}\int_0^{\FabiusQuantile(v)}(v-\F(x))^n\Differential x.
 \end{equation}
 For \(n=1\), this is
 \begin{equation}\label{p4:eq:classic-inverse-area}
- \int_0^v\RationalNumbers(w)\Differential w=\int_0^{\RationalNumbers(v)}(v-\F(x))\Differential x,
+ \int_0^v\FabiusQuantile(w)\Differential w=\int_0^{\FabiusQuantile(v)}(v-\F(x))\Differential x,
 \end{equation}
 the usual area formula in a form adapted to the Fabius quantile.
 
@@ -8306,33 +8304,33 @@ Let \(f_j=\F^{(j)}(x)\).  Define rational differential expressions recursively b
 \begin{proposition}[all inverse derivatives]\label{p4:prop:inverse-derivatives}
 For \(0<v<1\),
 \begin{equation}\label{p4:eq:Q-nth-operator}
- \RationalNumbers^{(n)}(v)=\mathcal R_n(\RationalNumbers(v)).
+ \FabiusQuantile^{(n)}(v)=\mathcal R_n(\FabiusQuantile(v)).
 \end{equation}
 Equivalently, for \(n\ge2\),
 \begin{equation}\label{p4:eq:Q-Bell-rec}
- \RationalNumbers^{(n)}(v)
- =-\frac1{\F'(\RationalNumbers(v))}
- \sum_{k=2}^n\F^{(k)}(\RationalNumbers(v))
- B_{n,k}\bigl(\RationalNumbers'(v),\ldots,\RationalNumbers^{(n-k+1)}(v)\bigr),
+ \FabiusQuantile^{(n)}(v)
+ =-\frac1{\F'(\FabiusQuantile(v))}
+ \sum_{k=2}^n\F^{(k)}(\FabiusQuantile(v))
+ B_{n,k}\bigl(\FabiusQuantile'(v),\ldots,\FabiusQuantile^{(n-k+1)}(v)\bigr),
 \end{equation}
 where \(B_{n,k}\) is the partial exponential Bell polynomial.
 \end{proposition}
 
 \begin{proof}
 The operator relation follows by applying \(\Differential/\Differential v=(\F'(x))^{-1}\Differential/\Differential x\) at
-\(x=\RationalNumbers(v)\).  The Bell recurrence follows by differentiating
-\(\F(\RationalNumbers(v))=v\) \(n\) times and isolating the term containing \(\RationalNumbers^{(n)}\).
+\(x=\FabiusQuantile(v)\).  The Bell recurrence follows by differentiating
+\(\F(\FabiusQuantile(v))=v\) \(n\) times and isolating the term containing \(\FabiusQuantile^{(n)}\).
 \end{proof}
 
 The first expressions are
 \begin{align}
- \RationalNumbers'&=\frac1{f_1},\nonumber\\
- \RationalNumbers''&=-\frac{f_2}{f_1^3},\nonumber\\
- \RationalNumbers'''&=\frac{3f_2^2-f_1f_3}{f_1^5},\nonumber\\
- \RationalNumbers''''&=\frac{-15f_2^3+10f_1f_2f_3-f_1^2f_4}{f_1^7},
+ \FabiusQuantile'&=\frac1{f_1},\nonumber\\
+ \FabiusQuantile''&=-\frac{f_2}{f_1^3},\nonumber\\
+ \FabiusQuantile'''&=\frac{3f_2^2-f_1f_3}{f_1^5},\nonumber\\
+ \FabiusQuantile''''&=\frac{-15f_2^3+10f_1f_2f_3-f_1^2f_4}{f_1^7},
  \label{p4:eq:Q-first-derivatives}
 \end{align}
-with every \(f_j\) evaluated at \(x=\RationalNumbers(v)\).  Combining these formulas with the
+with every \(f_j\) evaluated at \(x=\FabiusQuantile(v)\).  Combining these formulas with the
 Lambert--\(W\) inverse endpoint expansion from the repository gives asymptotics of any
 fixed derivative order.
 
@@ -8340,7 +8338,7 @@ fixed derivative order.
 
 Since \(\MPartc\) is entire,
 \begin{equation}\label{p4:eq:M-nth-derivative}
- \MPartc^{(n)}(s)=\int_0^1\RationalNumbers(v)^s(\log\RationalNumbers(v))^n\Differential v.
+ \MPartc^{(n)}(s)=\int_0^1\FabiusQuantile(v)^s(\log\FabiusQuantile(v))^n\Differential v.
 \end{equation}
 The bilateral up transform satisfies, away from its complex zeros,
 \begin{equation}\label{p4:eq:U-Bell-derivative}
@@ -8395,7 +8393,7 @@ full line,
 For \(z\in\ComplexNumbers\setminus[0,1]\), define
 \begin{equation}\label{p4:eq:GY-def}
  G_Y(z)=\Expectation\frac1{z-Y}
- =\int_0^1\frac{\Differential v}{z-\RationalNumbers(v)}.
+ =\int_0^1\frac{\Differential v}{z-\FabiusQuantile(v)}.
 \end{equation}
 For \(|z|>1\),
 \begin{equation}\label{p4:eq:GY-moment-series}
@@ -8483,7 +8481,7 @@ For integers \(m,n\ge1\) and \(\Re p>-1\),
 \begin{equation}\label{p4:eq:weighted-gap}
  \int_0^1x^p\F(x)^m(1-\F(x))^n\Differential x
  =\frac1{p+1}\Expectation\left[
- \bigl(B_n^{p+1}-A_m^{p+1}\bigr)\ind_{\{A_m<B_n\}}
+ \bigl(B_n^{p+1}-A_m^{p+1}\bigr)\IndicatorOf{\{A_m<B_n\}}
  \right].
 \end{equation}
 In particular,
@@ -8525,12 +8523,12 @@ Using \(\F'(x)=2\RvachevUp(2x-1)\),
 \subsection{Quantiles and ordinary order statistics}
 
 If \(Y_{r:n}\) is the \(r\)-th order statistic of \(n\) independent Fabius variables,
-then \(Y_{r:n}=\RationalNumbers(V_{r:n})\) in distribution, where \(V_{r:n}\) has beta density.
+then \(Y_{r:n}=\FabiusQuantile(V_{r:n})\) in distribution, where \(V_{r:n}\) has beta density.
 Consequently
 \begin{equation}\label{p4:eq:quantile-order-stat}
  \Expectation Y_{r:n}^p
  =\frac1{B(r,n-r+1)}
- \int_0^1v^{r-1}(1-v)^{n-r}\RationalNumbers(v)^p\Differential v.
+ \int_0^1v^{r-1}(1-v)^{n-r}\FabiusQuantile(v)^p\Differential v.
 \end{equation}
 Symmetry gives
 \begin{equation}\label{p4:eq:order-stat-symmetry}
@@ -8612,13 +8610,13 @@ The general identity \cref{p4:thm:AB} can be applied in the \(v\)-variable as we
 \(A(x)=x\) and
 \(B(v)=\log(z/(z-v))\) gives
 \begin{equation}\label{p4:eq:inverse-log-resolvent}
- \int_0^1\frac{\RationalNumbers(v)}{z-v}\Differential v
+ \int_0^1\frac{\FabiusQuantile(v)}{z-v}\Differential v
  +\int_0^1\log\frac{z}{z-\F(x)}\Differential x
  =\log\frac{z}{z-1}.
 \end{equation}
 With \(B(v)=(z-v)^{-1}\),
 \begin{equation}\label{p4:eq:inverse-square-resolvent}
- \int_0^1\frac{\RationalNumbers(v)}{(z-v)^2}\Differential v
+ \int_0^1\frac{\FabiusQuantile(v)}{(z-v)^2}\Differential v
  +\int_0^1\frac{\Differential x}{z-\F(x)}
  =\frac1{z-1}.
 \end{equation}
@@ -8873,17 +8871,17 @@ For convenient reference, the central formulas are collected here.
 \begin{align*}
  A(z)B(\F(z))-A(0)B(0)
  &=\int_0^zA'B\circ\F
- +\int_0^{\F(z)}A\circ\RationalNumbers\,B',\\
+ +\int_0^{\F(z)}A\circ\FabiusQuantile\,B',\\
  p\int_0^1x^{p-1}\F(x)^q\Differential x
- +q\int_0^1v^{q-1}\RationalNumbers(v)^p\Differential v&=1,\\
+ +q\int_0^1v^{q-1}\FabiusQuantile(v)^p\Differential v&=1,\\
  s\int_0^1e^{sx+t\F(x)}\Differential x
- +t\int_0^1e^{tv+s\RationalNumbers(v)}\Differential v&=e^{s+t}-1.
+ +t\int_0^1e^{tv+s\FabiusQuantile(v)}\Differential v&=e^{s+t}-1.
 \end{align*}
 \end{resultbox}
 
 \begin{resultbox}[Entire moment calculus]
 \begin{align*}
- \MPartc(s)&=\int_0^1\RationalNumbers(v)^s\Differential v,\\
+ \MPartc(s)&=\int_0^1\FabiusQuantile(v)^s\Differential v,\\
  \MPartc(s)&=\sum_{k\ge0}(-1)^k\binom skm_k
  =2^{-s}\sum_{j\ge0}\binom{s}{2j}\mu_{2j},\\
  \int_0^1x^{s-1}\F(x)\Differential x&=\frac{1-\MPartc(s)}s,\qquad
@@ -8897,10 +8895,10 @@ For convenient reference, the central formulas are collected here.
  \MPartc(-r)&\sim C_*\frac{2^{r(r+1)/2}}{\Gamma(r)},\\
  I_0^\alpha\F^q(x)
  &=\frac{q}{\Gamma(\alpha+1)}
- \int_0^{\F(x)}(x-\RationalNumbers(v))^\alpha v^{q-1}\Differential v,\\
- I_0^\alpha\RationalNumbers^p(v)
+ \int_0^{\F(x)}(x-\FabiusQuantile(v))^\alpha v^{q-1}\Differential v,\\
+ I_0^\alpha\FabiusQuantile^p(v)
  &=\frac{p}{\Gamma(\alpha+1)}
- \int_0^{\RationalNumbers(v)}(v-\F(x))^\alpha x^{p-1}\Differential x.
+ \int_0^{\FabiusQuantile(v)}(v-\F(x))^\alpha x^{p-1}\Differential x.
 \end{align*}
 \end{resultbox}
 
@@ -9853,10 +9851,10 @@ one obtains
  \qquad \SincRad z=\frac{\sin z}{z}.
 \end{equation}
 In the repository convention
-$\widehat f(\xi)=\int f(x)e^{-2\pi\ImaginaryUnit\xi x}\Differential x$,
+$\FourierTwoPi{f}(\xi)=\int f(x)e^{-2\pi\ImaginaryUnit\xi x}\Differential x$,
 this becomes
 \begin{equation}
- \widehat{\RvachevUp}(\xi)=
+ \FourierTwoPi{\RvachevUp}(\xi)=
  \prod_{n=0}^{\infty}\SincRad(\pi\xi/2^n).
 \end{equation}
 Polynomially weighted Fourier transforms follow from
@@ -10231,7 +10229,7 @@ The accompanying program uses the finite random sum
  Y_n=\sum_{j=1}^n\frac{V_j}{2^j}
 \end{equation}
 and its compactly supported spline density.  Let
-$\tau_j=(-1)^{s_2(j)}$, $A_n=1-2^{-n}$, and $(r)_+=\max(r,0)$.  Then
+$\tau_j=(-1)^{\BinaryDigitSum(j)}$, $A_n=1-2^{-n}$, and $(r)_+=\max(r,0)$.  Then
 \begin{align}
  p_n(y)&=\frac{2^{\binom n2}}{(n-1)!}
  \sum_{j=0}^{2^n-1}\tau_j
@@ -10700,7 +10698,7 @@ differentiation is conjugate to dyadic dilation.  This report develops the corre
 \emph{integration} theory.  The first headline result is a two-sided integer
 operator orbit
 \[
-  \mathrm D^r\FF(x)=2^{r(r+1)/2}\FF(2^r x),\qquad r\in\mathbb Z,
+ \mathrm D^r\FF(x)=2^{r(r+1)/2}\FF(2^r x),\qquad r\in\IntegerNumbers,
 \]
 where negative powers are the distinguished zero-initial antiderivatives.  It yields
 closed forms for all integer-order primitives of \(F\), \(1-F\), and \(\RvachevUp\), and
@@ -10899,7 +10897,7 @@ The global signed self-differential extension is denoted by \(\FF\).  It agrees 
 \begin{equation}
  \FF'(x)=2\FF(2x).                                      \label{p6:eq:global-selfdiff}
 \end{equation}
-Writing \(\eps_k=(-1)^{s_2(k)}\), where \(s_2(k)\) is the binary digit sum, its block
+Writing \(\eps_k=(-1)^{\BinaryDigitSum(k)}\), where \(\BinaryDigitSum(k)\) is the binary digit sum, its block
 form is
 \begin{equation}
  \FF(x)=\eps_k\RvachevUp(x-2k-1),\qquad 2k\le x\le2k+2.       \label{p6:eq:block}
@@ -10924,10 +10922,10 @@ They are rational and begin
 \]
 With the Fourier convention
 \(
- \widehat f(\xi)=\int_\RealNumbers f(x)e^{-2\pi\ImaginaryUnit x\xi}\Differential x,
+ \FourierTwoPi{f}(\xi)=\int_\RealNumbers f(x)e^{-2\pi\ImaginaryUnit x\xi}\Differential x,
 \)
 \begin{equation}
- \widehat{\RvachevUp}(\xi)
+ \FourierTwoPi{\RvachevUp}(\xi)
  =\prod_{n=0}^{\infty}\SincRad\!\left(\frac{\pi\xi}{2^n}\right)
  =\prod_{m=1}^{\infty}\cos\!\left(\frac{\pi\xi}{2^m}\right)^m. \label{p6:eq:up-fourier}
 \end{equation}
@@ -10959,7 +10957,7 @@ Equivalently, with zero-initial negative powers of differentiation,
 \begin{equation}
  \boxed{\quad
  \mathrm D^r\FF(x)=2^{r(r+1)/2}\FF(2^r x),
- \qquad r\in\mathbb Z.
+ \qquad r\in\IntegerNumbers.
  \quad}                                                  \label{p6:eq:integer-orbit}
 \end{equation}
 \end{theorem}
@@ -11044,7 +11042,7 @@ with the upper limit understood as \(\min(x,1)\) once \(x>1\).  Then
   A_nF((x+1)/2^n),&-1\le x\le1,\\[1mm]
   \displaystyle
   \frac1{(n-1)!}
-  \sum_{j=0}^{\lfloor(n-1)/2\rfloor}
+  \sum_{j=0}^{\Floor{(n-1)/2}}
     \binom{n-1}{2j}c_jx^{n-1-2j},&x\ge1.
  \end{cases}                                               \label{p6:eq:up-causal-piecewise}
 \end{equation}
@@ -11072,7 +11070,7 @@ status.
 A direct endpoint consequence is useful for the arithmetic side of the repository.
 
 \begin{corollary}[Polynomial integrals over dyadic intervals]
-If \(P\in\mathbb Q[x]\) and \(a,b\in[0,1]\) are dyadic rationals, then
+If \(P\in\RationalNumbers[x]\) and \(a,b\in[0,1]\) are dyadic rationals, then
 \(
  \int_a^bP(x)F(x)\Differential x
 \)
@@ -11473,11 +11471,11 @@ Setting \(s=-2\pi\ImaginaryUnit\xi\) gives a one-sided Fourier transform not exp
 repository's full-line \(\RvachevUp\) product:
 \begin{equation}
  \int_0^1F(x)e^{-2\pi\ImaginaryUnit\xi x}\Differential x
- =\frac{e^{-2\pi\ImaginaryUnit\xi}-e^{-\pi\ImaginaryUnit\xi}\widehat{\RvachevUp}(\xi/2)}
+ =\frac{e^{-2\pi\ImaginaryUnit\xi}-e^{-\pi\ImaginaryUnit\xi}\FourierTwoPi{\RvachevUp}(\xi/2)}
  {-2\pi\ImaginaryUnit\xi}.                                          \label{p6:eq:F-fourier-one-sided}
 \end{equation}
 The transform of the positive half of \(\RvachevUp\) is obtained by replacing the numerator
-with \(e^{-\pi\ImaginaryUnit\xi}\widehat{\RvachevUp}(\xi/2)-1\).
+with \(e^{-\pi\ImaginaryUnit\xi}\FourierTwoPi{\RvachevUp}(\xi/2)-1\).
 
 \subsection{A Bromwich-compatible primitive representation}
 
@@ -11487,7 +11485,7 @@ Use the conventional one-sided Laplace transform
 \).
 Equation \eqref{p6:eq:F-laplace}, with \(s\mapsto-s\), gives
 \begin{equation}
- \Lap_-[F\mathbf{1}_{[0,1]}](s)
+ \Lap_-[F\IndicatorOf{[0,1]}](s)
  =\frac{e^{-s/2}M(s/2)-e^{-s}}{s}.                         \label{p6:eq:F-conventional-Laplace}
 \end{equation}
 For \(0<x<1\) and any admissible Bromwich line \(\RePart s=c>0\), the causal primitive
@@ -11495,7 +11493,7 @@ therefore has the representation
 \begin{equation}
  \mathcal A_n(x)
  =\frac1{2\pi\ImaginaryUnit}\int_{c-\ImaginaryUnit\infty}^{c+\ImaginaryUnit\infty}
-   e^{sx}s^{-n}\Lap_-[F\mathbf{1}_{[0,1]}](s)\Differential s.         \label{p6:eq:Bromwich-primitive}
+   e^{sx}s^{-n}\Lap_-[F\IndicatorOf{[0,1]}](s)\Differential s.         \label{p6:eq:Bromwich-primitive}
 \end{equation}
 The exact scaled formula \(\mathcal A_n(x)=A_nF(x/2^n)\) is thus a nontrivial collapse
 of a Bromwich integral on the unit interval.  At fractional order, the analogous
@@ -11784,7 +11782,7 @@ At \(q=1\),
  \int_0^1\frac{\Differential y}{I'(y)}
  &=4\int_0^1F(x)^2\Differential x                                  \label{p6:eq:reciprocal-Iprime-F2}\\
  &=2\int_{-1}^1\RvachevUp(t)^2\Differential t                            \\
- &=2\int_{\RealNumbers}\absPartvv{\widehat{\RvachevUp}(\xi)}^2\Differential\xi        \label{p6:eq:reciprocal-Iprime-fourier}\\
+ &=2\int_{\RealNumbers}\absPartvv{\FourierTwoPi{\RvachevUp}(\xi)}^2\Differential\xi        \label{p6:eq:reciprocal-Iprime-fourier}\\
  &=2\int_\RealNumbers\prod_{n=0}^{\infty}
    \SincRad^2\!\left(\frac{\pi\xi}{2^n}\right)\Differential\xi.
 \end{align}
@@ -11988,7 +11986,7 @@ Let
 \end{equation}
 Then \(\mathcal R\) is even, supported on \([-2,2]\), and
 \begin{equation}
- \widehat{\mathcal R}(\xi)=\absPartvv{\widehat{\RvachevUp}(\xi)}^2. \label{p6:eq:autocorrelation-Fourier}
+ \FourierTwoPi{\mathcal R}(\xi)=\absPartvv{\FourierTwoPi{\RvachevUp}(\xi)}^2. \label{p6:eq:autocorrelation-Fourier}
 \end{equation}
 At the two integer shifts,
 \begin{align}
@@ -12068,7 +12066,7 @@ Then
 Consequently
 \begin{equation}
  T_\alpha\FF=\mathbf D^\alpha\FF
- \quad\Longleftrightarrow\quad\alpha\in\mathbb Z.       \label{p6:eq:fractional-iff-integer}
+ \quad\Longleftrightarrow\quad\alpha\in\IntegerNumbers.       \label{p6:eq:fractional-iff-integer}
 \end{equation}
 \end{theorem}
 
@@ -12081,7 +12079,7 @@ Scaling in the Laplace transform gives
 Substitute \eqref{p6:eq:L-periodic}; all quadratic and power factors cancel, leaving
 \eqref{p6:eq:fractional-defect}.  Equality for all \(s\) is equivalent to
 \(P(t-\alpha)=P(t)\) for all \(t\).  Because \(P\) has minimal period one, this occurs
-exactly when \(\alpha\in\mathbb Z\).
+exactly when \(\alpha\in\IntegerNumbers\).
 \end{proof}
 
 The defect is exactly log-periodic in \(s\), not an asymptotic error.  For
@@ -12599,7 +12597,7 @@ Thus $\SupportOperator\RvachevUp=[-1,1]$, $\RvachevUp(0)=1$, and
 \end{definition}
 
 \begin{definition}[Signed Thue--Morse continuation]
-Let $\varepsilon_n=(-1)^{s_2(n)}$, where $s_2(n)$ is the binary digit sum.  Define
+Let $\varepsilon_n=(-1)^{\BinaryDigitSum(n)}$, where $\BinaryDigitSum(n)$ is the binary digit sum.  Define
 \begin{equation}
  \FabiusGlobal(x)=\sum_{n\ge0}\varepsilon_n\RvachevUp(x-2n-1).
  \label{p7:eq:global-F}
@@ -12672,9 +12670,9 @@ $\RvachevUp$ at $-1$ for every finite order.
 
 Our Fourier convention is
 \begin{equation}
- \widehat f(t)=\int_{\RealNumbers}f(x)\EulerE^{-\ImaginaryUnit tx}\Differential x,
+ \FourierAngular{f}(t)=\int_{\RealNumbers}f(x)\EulerE^{-\ImaginaryUnit tx}\Differential x,
  \qquad
- f(x)=\frac1{2\pi}\int_{\RealNumbers}\widehat f(t)\EulerE^{\ImaginaryUnit tx}\Differential t.
+ f(x)=\frac1{2\pi}\int_{\RealNumbers}\FourierAngular{f}(t)\EulerE^{\ImaginaryUnit tx}\Differential t.
  \label{p7:eq:fourier-conv}
 \end{equation}
 Here $\SincRad z=\sin z/z$ with $\SincRad0=1$.
@@ -12843,7 +12841,7 @@ $(x+1)/2^n\le1/2$; the base case is \cref{p7:eq:up-cdf}.
 For $n\ge1$ and $x\ge1$,
 \begin{equation}
  (I_{-1+}^{n}\RvachevUp)(x)=\frac1{(n-1)!}
- \sum_{j=0}^{\lfloor(n-1)/2\rfloor}
+ \sum_{j=0}^{\Floor{(n-1)/2}}
  \binom{n-1}{2j}m_{2j}x^{n-1-2j}.
  \label{p7:eq:up-polynomial-tail}
 \end{equation}
@@ -13497,7 +13495,7 @@ gives the last equality.
 \label{p7:thm:Gini-Fourier}
 Let
 \begin{equation}
- \Phiup(t)=\widehat\RvachevUp(t)=\prod_{j=1}^{\infty}\SincRad(t/2^j).
+ \Phiup(t)=\FourierAngular{\RvachevUp}(t)=\prod_{j=1}^{\infty}\SincRad(t/2^j).
  \label{p7:eq:up-Fourier-product}
 \end{equation}
 Then
@@ -13554,7 +13552,7 @@ The bilateral moment and Fourier transforms of $\RvachevUp$ are
  \int_{-1}^{1}\EulerE^{sx}\RvachevUp(x)\Differential x
  &=\prod_{j=1}^{\infty}\frac{\sinh(s/2^j)}{s/2^j},
  \label{p7:eq:up-mgf-product}\\
- \widehat\RvachevUp(t)
+ \FourierAngular{\RvachevUp}(t)
  &=\prod_{j=1}^{\infty}\SincRad(t/2^j).
  \label{p7:eq:up-sinc-product-again}
 \end{align}
@@ -14018,7 +14016,7 @@ where $P$ is smooth and one-periodic and
 The repository also proves that the centered function
 $\Psi=P-\int_0^1P$ has Fourier coefficients
 \begin{equation}
- \widehat\Psi(k)=
+ \FourierSeriesCoefficient{\Psi}{k}=
  -\frac{\Gamma(-\chi_k)\zeta(1-\chi_k)}L,
  \qquad
  \chi_k=\frac{2\pi\ImaginaryUnit k}{L},\quad k\ne0,
@@ -14237,7 +14235,7 @@ $|x-y|^{\alpha-1}=|x|^{\alpha-1}(1-\Sign(x)y/|x|)^{-(1-\alpha)}$ and use evennes
 
 By Fourier multiplication,
 \begin{equation}
- \widehat{(-\Delta)^{\alpha/2}\RvachevUp}(t)
+ \FourierAngular{(-\Delta)^{\alpha/2}\RvachevUp}(t)
  =|t|^\alpha\prod_{j=1}^{\infty}\SincRad(t/2^j).
  \label{p7:eq:Riesz-transform-up}
 \end{equation}
@@ -14544,7 +14542,7 @@ Mellin transform & $\displaystyle \int_0^1x^{s-1}F(x)\Differential x=(1-\mu(s))/
 Fractional endpoint & $\displaystyle \JPartxx_\alpha(1)=\mu(\alpha)/\Gamma(\alpha+1)$.\\[0.4em]
 Fractional dyadic lattice & $\displaystyle \JPartxx_\beta(2^{-n})=2^{-n\beta-\binom n2}\mu(n+\beta)/\Gamma(n+\beta+1)$.\\[0.4em]
 Laplace transform & $\displaystyle \Laplace F(s)=\phi(s)/s$.\\[0.4em]
-Fourier transform of $\RvachevUp$ & $\displaystyle \widehat\RvachevUp(t)=\prod_{j\ge1}\SincRad(t/2^j)$.\\[0.4em]
+Fourier transform of $\RvachevUp$ & $\displaystyle \FourierAngular{\RvachevUp}(t)=\prod_{j\ge1}\SincRad(t/2^j)$.\\[0.4em]
 Dyadic Appell family & $\displaystyle \Aop_q\FabiusGlobal(x)=2^{q(q-1)/2}\FabiusGlobal(2^{-q}x)$.\\[0.4em]
 Exact fractional defect & $\displaystyle R_q(s)=\exp(P(\log_2s+q)-P(\log_2s))$.\\[0.4em]
 Riesz tail & $\displaystyle (-\Delta)^{\alpha/2}\RvachevUp(x)=-C_{1,\alpha}\sum_{j\ge0}(1+\alpha)_{2j}m_{2j}/((2j)!|x|^{1+\alpha+2j})$.\\[0.4em]
@@ -15110,10 +15108,10 @@ and complex kernels.
 
 \begin{proof}
 By \eqref{p8:eq:up-survival},
-\(\RvachevUp(t)=\Expectation\mathbf1_{\{t<X\}}\).  Tonelli--Fubini gives
+\(\RvachevUp(t)=\Expectation\IndicatorOf{\{t<X\}}\).  Tonelli--Fubini gives
 \[
  \int_0^x k(t)\RvachevUp(t)\Differential t
- =\Expectation\int_0^x k(t)\mathbf1_{\{t<X\}}\Differential t
+ =\Expectation\int_0^x k(t)\IndicatorOf{\{t<X\}}\Differential t
  =\Expectation\int_0^{\min(X,x)}k(t)\Differential t.
 \]
 Taking \(x=1\) proves \eqref{p8:eq:survival-master}.
@@ -15428,7 +15426,7 @@ Laplace, or Mellin corollaries.
 
 \begin{proof}
 Write
-\(\Psi(\QF(u))=\int_0^1\Psi'(x)\mathbf1_{\{x<\QF(u)\}}\Differential x\).
+\(\Psi(\QF(u))=\int_0^1\Psi'(x)\IndicatorOf{\{x<\QF(u)\}}\Differential x\).
 Since \(x<\QF(u)\) is equivalent to \(F(x)<u\), Fubini gives the result.
 \end{proof}
 
@@ -15525,12 +15523,12 @@ Fa\`a di Bruno polynomial when high orders are required.
 
 \subsection{The Thue--Morse derivative tower}
 
-Let \(s_2(j)\) denote the binary digit sum.  Iterating
+Let \(\BinaryDigitSum(j)\) denote the binary digit sum.  Iterating
 \eqref{p8:eq:up-refinement} gives the established exact formula
 \begin{equation}
  \boxed{
  \RvachevUp^{(n)}(x)=2^{n(n+1)/2}
- \sum_{j=0}^{2^n-1}(-1)^{s_2(j)}
+ \sum_{j=0}^{2^n-1}(-1)^{\BinaryDigitSum(j)}
  \RvachevUp\bigl(2^nx+2^n-1-2j\bigr).}
  \label{p8:eq:up-nth-derivative}
 \end{equation}
@@ -15573,7 +15571,7 @@ analytic continuation.  Exponential weights similarly yield
 
 Throughout the truncated-moment formulas, powers of a positive part mean
 \[
- u_+^s:=\mathbf 1_{\{u>0\}}u^s.
+ u_+^s:=\IndicatorOf{\{u>0\}}u^s.
 \]
 Thus the zeroth truncated power is the strict-positivity indicator, while
 negative exponents are evaluated only where \(u>0\).  Replacing \(>\) by
@@ -15597,7 +15595,7 @@ The first and third are special cases of fractional theorems below.  For
 \begin{equation}
  (I_{-1+}^{n}\RvachevUp)(x)
  =\frac1{(n-1)!}
- \sum_{r=0}^{\lfloor(n-1)/2\rfloor}
+ \sum_{r=0}^{\Floor{(n-1)/2}}
  \binom{n-1}{2r}\mu_{2r}x^{n-1-2r}.
  \label{p8:eq:up-exterior-polynomial}
 \end{equation}
@@ -15673,7 +15671,7 @@ For \(0<\alpha<1\) and \(0<x<1\),
 \end{theorem}
 
 \begin{proof}
-Insert \(F(t)=\Expectation\mathbf1_{\{X\le t\}}\) into \eqref{p8:eq:RL-definition} and
+Insert \(F(t)=\Expectation\IndicatorOf{\{X\le t\}}\) into \eqref{p8:eq:RL-definition} and
 interchange expectation and integration.  The inner integral from \(X\) to
 \(x\) equals \((x-X)^\alpha/\alpha\).  For \(0<\alpha<1\), differentiate the
 formula with \(\alpha\) replaced by \(1-\alpha\).  The local singularity is
@@ -15738,7 +15736,7 @@ Let \(\alpha>0\), \(\Re p>-1\), and \(0<x\le1\).  Then
  I_{0+}^{\alpha}[t^pF(t)](x)
  &=\frac{x^{p+\alpha}}{\Gamma(\alpha)}
  \Expectation\!\left[
- \mathbf1_{\{X<x\}}
+ \IndicatorOf{\{X<x\}}
  \mathrm B_{1-X/x}(\alpha,p+1)
  \right].
  \label{p8:eq:weighted-F-fractional}
@@ -15769,7 +15767,7 @@ terminates:
 
 \begin{proof}
 For the up-function, insert
-\(\RvachevUp(t)=\Expectation\mathbf1_{\{t<X\}}\) into the Riemann--Liouville integral.  The
+\(\RvachevUp(t)=\Expectation\IndicatorOf{\{t<X\}}\) into the Riemann--Liouville integral.  The
 inner range is \(0<t<\min(X,x)\); scaling \(t=xr\) gives
 \eqref{p8:eq:weighted-up-fractional}.  For \(F\), the inner range is
 \(X<t<x\), producing the complementary incomplete beta integral in
@@ -16026,7 +16024,7 @@ where
 \end{equation}
 Here \(h_n=\int P_n^2\RvachevUp\) and
 \(\Delta_n=\det(\mu_{i+j})_{0\le i,j<n}\).  Rational moments imply
-\(a_n\in\mathbb Q_{>0}\).
+\(a_n\in\RationalNumbers_{>0}\).
 
 \begin{theorem}[Symmetric Jacobi fraction]
 \label{p8:thm:Jfraction}
@@ -16290,9 +16288,9 @@ Define
  \label{p8:eq:autocorrelation}
 \end{equation}
 With the Fourier convention
-\(\widehat f(\xi)=\int f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\Differential x\),
+\(\FourierTwoPi{f}(\xi)=\int f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\Differential x\),
 \begin{equation}
- \widehat C(\xi)=|\widehat\RvachevUp(\xi)|^2
+ \FourierTwoPi{C}(\xi)=|\FourierTwoPi{\RvachevUp}(\xi)|^2
  =\prod_{j=0}^{\infty}
  \SincRad^2\!\left(\frac{\pi\xi}{2^j}\right).
  \label{p8:eq:autocorrelation-fourier}
@@ -16309,7 +16307,7 @@ More generally,
 \begin{equation}
  \int_{\RealNumbers}\RvachevUp^{(m)}(x)\RvachevUp^{(n)}(x+a)\Differential x
  =\int_{\RealNumbers}(-2\pi\ImaginaryUnit\xi)^m(2\pi\ImaginaryUnit\xi)^n
- |\widehat\RvachevUp(\xi)|^2\EulerE^{2\pi\ImaginaryUnit a\xi}\Differential\xi.
+ |\FourierTwoPi{\RvachevUp}(\xi)|^2\EulerE^{2\pi\ImaginaryUnit a\xi}\Differential\xi.
  \label{p8:eq:derivative-correlation}
 \end{equation}
 At \(a=0\),
@@ -16498,7 +16496,7 @@ beta integral $\mathrm B_z(a,b)=\int_0^z u^{a-1}(1-u)^{b-1}\Differential u$, and
 \nolinkurl{Fabius.fractionalVolterra\_rpow\_mul\_fabiusReal} is
 \eqref{p8:eq:weighted-F-fractional}, for $\alpha>0$, $p\ge0$, and $0<x\le1$, with the
 clamp $\min(X/x,1)$ implementing the stopping (the $F$-display's indicator
-$\mathbf 1_{\{X<x\}}$ appears as $\mathrm B_0=0$ at clamped samples).  The proofs run
+$\IndicatorOf{\{X<x\}}$ appears as $\mathrm B_0=0$ at clamped samples).  The proofs run
 through the survival and lower-CDF layer cakes and one scaling substitution $t=xu$
 (\nolinkurl{Fabius.integral\_rpow\_mul\_rpow\_eq\_incompleteBeta} and its reflection);
 the exponent range $p\in(-1,0)$ and complex continuation remain outside, as the
@@ -16709,7 +16707,7 @@ Power/fractional bridge
 Cauchy equation
 & \(S'(z)=2[S(2z+1)-S(2z-1)]\) \\
 Jacobi fraction
-& \(S(z)=1/(z-a_1/(z-a_2/(z-\cdots)))\), \(a_n\in\mathbb Q_{>0}\), \(a_n\to1/4\) \\
+& \(S(z)=1/(z-a_1/(z-a_2/(z-\cdots)))\), \(a_n\in\RationalNumbers_{>0}\), \(a_n\to1/4\) \\
 Power asymptotic
 & \(\int_0^1\RvachevUp(x)^p\Differential x\sim\QF(1/p)\) \\
 \bottomrule
@@ -16965,7 +16963,7 @@ fractional primitives of $\RvachevUp$:
  \qquad 0<\beta<1.
 \]
 On the whole line, the Weyl family
-$W_\sigma=\InverseFourierAngularOperator[(\ImaginaryUnit\xi)^\sigma\widehat{\RvachevUp}(\xi)]$
+$W_\sigma=\InverseFourierAngularOperator[(\ImaginaryUnit\xi)^\sigma\FourierAngular{\RvachevUp}(\xi)]$
 satisfies the complex-order refinement hierarchy
 \[
  W_\sigma(x)=2^\sigma
@@ -17170,14 +17168,14 @@ $\RvachevUp$ vanishes at $\pm1$.
 
 We use the angular-frequency convention
 \begin{equation}
- \widehat f(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-\ImaginaryUnit\xi x}\Differential x,
+ \FourierAngular{f}(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-\ImaginaryUnit\xi x}\Differential x,
  \qquad
- f(x)=\frac1{2\pi}\int_{\RealNumbers}\widehat f(\xi)\EulerE^{\ImaginaryUnit\xi x}\Differential\xi.
+ f(x)=\frac1{2\pi}\int_{\RealNumbers}\FourierAngular{f}(\xi)\EulerE^{\ImaginaryUnit\xi x}\Differential\xi.
  \label{p9:eq:Fourier-convention}
 \end{equation}
 Then
 \begin{equation}
- \phi(\xi):=\widehat\RvachevUp(\xi)
+ \phi(\xi):=\FourierAngular{\RvachevUp}(\xi)
  =\prod_{j=1}^{\infty}\SincRad\!\left(\frac{\xi}{2^j}\right),
  \qquad \SincRad z=\frac{\sin z}{z},
  \label{p9:eq:sinc-product}
@@ -17827,10 +17825,10 @@ principal branches and define, initially on Schwartz functions and then by
 tempered-distribution continuation,
 \begin{align}
  \mathfrak D_+^\sigma f
- &=\InverseFourierAngularOperator\bigl[(\ImaginaryUnit\xi)^\sigma\widehat f(\xi)\bigr],
+ &=\InverseFourierAngularOperator\bigl[(\ImaginaryUnit\xi)^\sigma\FourierAngular{f}(\xi)\bigr],
  \label{p9:eq:Weyl-left}\\
  \mathfrak D_-^\sigma f
- &=\InverseFourierAngularOperator\bigl[(-\ImaginaryUnit\xi)^\sigma\widehat f(\xi)\bigr].
+ &=\InverseFourierAngularOperator\bigl[(-\ImaginaryUnit\xi)^\sigma\FourierAngular{f}(\xi)\bigr].
  \label{p9:eq:Weyl-right}
 \end{align}
 For $\Re\alpha>0$, the left Weyl integral is
@@ -17900,8 +17898,8 @@ The corresponding right-sided refinement is obtained by reflecting
 
 For real $0<\beta<2$, define the Riesz fractional Laplacian independently by
 \begin{equation}
- \widehat{(-\Delta)^{\beta/2}f}(\xi)
- =|\xi|^\beta\widehat f(\xi).
+ \FourierAngular{(-\Delta)^{\beta/2}f}(\xi)
+ =|\xi|^\beta\FourierAngular{f}(\xi).
  \label{p9:eq:Riesz-Fourier}
 \end{equation}
 When $\cos(\pi\beta/2)\ne0$,
@@ -18221,7 +18219,7 @@ $\RvachevUp(0)=1$, the singular-integral definition at $0$ gives the first line 
 function $(-\Delta)^{\beta/2}\RvachevUp$ is integrable because it is smooth on compact
 sets and has the exterior decay \cref{p9:eq:exterior-Riesz-series}.  Its integral
 is therefore its Fourier transform at $0$, namely
-$|0|^\beta\widehat\RvachevUp(0)=0$.  Evenness and the opposite signs at $0$ and outside
+$|0|^\beta\FourierAngular{\RvachevUp}(0)=0$.  Evenness and the opposite signs at $0$ and outside
 the support force a zero on each half-axis.
 \end{proof}
 
@@ -18946,7 +18944,7 @@ the infinite sinc product,
 
 \begin{abstract}
 This report develops a broad integral calculus for the Fabius function \(\F\), its
-inverse \(\RationalNumbers=\F^{-1}\), and Rvachev's compactly supported function \(\RvachevUp\), after a
+inverse \(\FabiusQuantile=\F^{-1}\), and Rvachev's compactly supported function \(\RvachevUp\), after a
 recursive audit of the current and archived LaTeX corpus under the ProveIt documentation
 root.  Existing dyadic derivative formulas, exact moment arithmetic, q-binomial and
 Thue--Morse structure, sinc products, Lambert--\(W\) endpoint expansions, Bell and
@@ -18960,15 +18958,15 @@ transforms, inverse-function dualities, order-statistic identities, and all inte
 orders of differentiation and integration.  It then advances beyond the audited corpus
 in four directions.  First, the inverse Fabius endpoint is placed in a fractional
 calculus: for \(T=\log(1/y)\) and
-\(\eta=y\RationalNumbers'(y)/\RationalNumbers(y)\sim\sqrt{\log2/(2T)}\),
+\(\eta=y\FabiusQuantile'(y)/\FabiusQuantile(y)\sim\sqrt{\log2/(2T)}\),
 \[
- I_{0+}^{a}(\RationalNumbers^\beta)(y)
- =\frac{y^a\RationalNumbers(y)^\beta}{\Gamma(a+1)}
+ I_{0+}^{a}(\FabiusQuantile^\beta)(y)
+ =\frac{y^a\FabiusQuantile(y)^\beta}{\Gamma(a+1)}
   \bigl(1-\beta H_a\eta+o(\eta)\bigr),
 \]
 while the Riemann--Liouville/Caputo derivative satisfies the dual digamma correction and
 the sharp strong threshold
-\(D_{0+}^{\sigma}(\RationalNumbers^\beta)\in L^p\iff \sigma p\le1\) near the endpoint.  Second,
+\(D_{0+}^{\sigma}(\FabiusQuantile^\beta)\in L^p\iff \sigma p\le1\) near the endpoint.  Second,
 exact exterior moment series are obtained for the Riesz potential and fractional
 Laplacian of \(\RvachevUp\); all coefficients are generated rationally from Bernoulli
 cumulants through complete Bell polynomials.  Third, the Cauchy transform is shown to
@@ -19043,7 +19041,7 @@ claims are restricted to the fractional endpoint, nonlocal, resolvent, and Floqu
 After comparison with all seventy-eight paths, the following proved package was not located
 explicitly in the audited corpus: the Riemann--Liouville inverse-pair duality of
 \cref{p10:thm:fractional-duality}; the digamma/trigamma endpoint expansions and sharp critical
-strong-\(L^p\) law for \(\RationalNumbers^\beta\) in
+strong-\(L^p\) law for \(\FabiusQuantile^\beta\) in
 \cref{p10:thm:Q-fractional-primitive-asymptotic,p10:thm:Q-fractional-derivative-Lp}; the exact
 exterior fractional-Laplacian and Riesz-potential series and the fractional Sobolev-energy
 identity in \cref{p10:thm:up-fraclap-exterior,p10:thm:up-Riesz-exterior,p10:thm:up-fractional-energy};
@@ -19067,9 +19065,10 @@ All powers of positive real variables use the real logarithm:
 \[
  \F(x)=0\quad(x\le0),\qquad \F(x)=1\quad(x\ge1).
 \]
-Its inverse \(\RationalNumbers:(0,1)\to(0,1)\) is the ordinary increasing inverse; endpoint values
-are understood by continuity.  Angular frequency is used for Fourier transforms:
-\(\widehat f(t)=\int_\RealNumbers e^{itx}f(x)\Differential x\).
+Its inverse \(\FabiusQuantile:(0,1)\to(0,1)\) is the ordinary increasing inverse; endpoint values
+are understood by continuity.  Angular frequency is used for Fourier transforms.  In terms
+of the shared negative-kernel convention, the positive-kernel form is
+\(\FourierAngular{f}(-t)=\int_\RealNumbers e^{itx}f(x)\Differential x\).
 
 \section{Probability model and transform baseline}
 
@@ -19103,7 +19102,7 @@ and \(\RvachevUp\) is the density of \(Z\).  Thus
 \end{equation}
 In particular \(\F(x)+\F(1-x)=1\) on \([0,1]\), and the quantile obeys
 \begin{equation}\label{p10:eq:Qsymmetry}
- \RationalNumbers(1-v)=1-\RationalNumbers(v).
+ \FabiusQuantile(1-v)=1-\FabiusQuantile(v).
 \end{equation}
 
 The self-decomposition
@@ -19129,7 +19128,7 @@ Independence in \cref{p10:eq:Ydef} gives the locally uniformly convergent produc
 \end{align}
 The characteristic function of the up law is therefore
 \begin{equation}\label{p10:eq:phi-product}
- \phi(t)=\widehat{\RvachevUp}(t)
+ \phi(t)=\CharacteristicFunction{Z}(t)=\FourierAngular{\RvachevUp}(-t)
  =\prod_{k=1}^{\infty}\frac{\sin(t/2^k)}{t/2^k}.
 \end{equation}
 The scaling equation
@@ -19142,7 +19141,7 @@ is the exponential generating-function form of the moment recurrence below.
 
 Write
 \begin{equation}\label{p10:eq:mn-mun}
- m_n=\Expectation Y^n=\int_0^1\RationalNumbers(v)^n\Differential v,
+ m_n=\Expectation Y^n=\int_0^1\FabiusQuantile(v)^n\Differential v,
  \qquad
  \mu_n=\Expectation Z^n=\int_{-1}^1x^n\RvachevUp(x)\Differential x.
 \end{equation}
@@ -19187,7 +19186,7 @@ For example
 \end{equation}
 
 \section{A universal integration calculus for \texorpdfstring{\(\F\)}{F} and
-\texorpdfstring{\(\RationalNumbers\)}{Q}}
+\texorpdfstring{\(\FabiusQuantile\)}{Q}}
 
 The classical area identity for a function and its inverse is only the first member of
 a much larger family.  The following theorem is the main algebraic engine of the report.
@@ -19222,13 +19221,13 @@ Let \(A,B\) be absolutely continuous on \([0,1]\).  For every \(z\in[0,1]\),
 \begin{equation}\label{p10:eq:AB-incomplete}
  A(z)B(\F(z))-A(0)B(0)
  =\int_0^z A'(x)B(\F(x))\Differential x
- +\int_0^{\F(z)}A(\RationalNumbers(v))B'(v)\Differential v.
+ +\int_0^{\F(z)}A(\FabiusQuantile(v))B'(v)\Differential v.
 \end{equation}
 At \(z=1\),
 \begin{equation}\label{p10:eq:AB-complete}
  A(1)B(1)-A(0)B(0)
  =\int_0^1A'(x)B(\F(x))\Differential x
- +\int_0^1A(\RationalNumbers(v))B'(v)\Differential v.
+ +\int_0^1A(\FabiusQuantile(v))B'(v)\Differential v.
 \end{equation}
 The formulas remain valid under the usual improper-integral hypotheses whenever an
 endpoint is singular.
@@ -19237,7 +19236,7 @@ endpoint is singular.
 \begin{proof}
 Differentiate the product \(A(x)B(\F(x))\), integrate from \(0\) to \(z\), and in
 the term containing \(\F'(x)\) use the increasing substitution \(v=\F(x)\),
-so that \(x=\RationalNumbers(v)\).
+so that \(x=\FabiusQuantile(v)\).
 \end{proof}
 
 \begin{remark}
@@ -19255,13 +19254,13 @@ Taking \(A(x)=x^p\), \(B(v)=v^q\) gives the following Mellin-type duality.
 Initially for \(\Re p,\Re q>0\),
 \begin{equation}\label{p10:eq:power-incomplete}
  p\int_0^z x^{p-1}\F(x)^q\Differential x
- +q\int_0^{\F(z)}\RationalNumbers(v)^p v^{q-1}\Differential v
+ +q\int_0^{\F(z)}\FabiusQuantile(v)^p v^{q-1}\Differential v
  =z^p\F(z)^q.
 \end{equation}
 In particular,
 \begin{equation}\label{p10:eq:power-complete}
  p\int_0^1x^{p-1}\F(x)^q\Differential x
- +q\int_0^1v^{q-1}\RationalNumbers(v)^p\Differential v=1.
+ +q\int_0^1v^{q-1}\FabiusQuantile(v)^p\Differential v=1.
 \end{equation}
 Both sides admit meromorphic or entire continuation in parameters whenever the endpoint
 flatness cancels the apparent singularities.
@@ -19270,7 +19269,7 @@ flatness cancels the apparent singularities.
 For all logarithmic derivatives at once, define
 \begin{align}
  J_{r,s}(p,q)&=\int_0^1x^{p-1}(\log x)^r\F(x)^q(\log\F(x))^s\Differential x,\label{p10:eq:Jrs}\\
- K_{r,s}(p,q)&=\int_0^1v^{q-1}(\log v)^s\RationalNumbers(v)^p(\log\RationalNumbers(v))^r\Differential v.\label{p10:eq:Krs}
+ K_{r,s}(p,q)&=\int_0^1v^{q-1}(\log v)^s\FabiusQuantile(v)^p(\log\FabiusQuantile(v))^r\Differential v.\label{p10:eq:Krs}
 \end{align}
 Differentiating \cref{p10:eq:power-complete} gives, for \(r+s>0\),
 \begin{equation}\label{p10:eq:log-hierarchy}
@@ -19288,13 +19287,13 @@ simple transform relation.
 For all \(s,t\in\ComplexNumbers\) and \(z\in[0,1]\),
 \begin{equation}\label{p10:eq:bivariate-incomplete}
  s\int_0^z e^{sx+t\F(x)}\Differential x
- +t\int_0^{\F(z)}e^{tv+s\RationalNumbers(v)}\Differential v
+ +t\int_0^{\F(z)}e^{tv+s\FabiusQuantile(v)}\Differential v
  =e^{sz+t\F(z)}-1.
 \end{equation}
 Hence
 \begin{equation}\label{p10:eq:bivariate-complete}
  s\int_0^1e^{sx+t\F(x)}\Differential x
- +t\int_0^1e^{tv+s\RationalNumbers(v)}\Differential v
+ +t\int_0^1e^{tv+s\FabiusQuantile(v)}\Differential v
  =e^{s+t}-1.
 \end{equation}
 The identities are entire in \((s,t)\); the cases \(s=0\) or \(t=0\) are understood
@@ -19311,7 +19310,7 @@ Taking \(B(v)=v\) and a primitive \(A\) of a prescribed weight yields the useful
 master formula
 \begin{equation}\label{p10:eq:weighted-antiderivative-master}
  \int_0^x A'(t)\F(t)\Differential t
- =A(x)\F(x)-A(0)\F(0)-\int_0^{\F(x)}A(\RationalNumbers(v))\Differential v.
+ =A(x)\F(x)-A(0)\F(0)-\int_0^{\F(x)}A(\FabiusQuantile(v))\Differential v.
 \end{equation}
 For monomial weights this becomes the promised indefinite integral.
 
@@ -19319,17 +19318,17 @@ For monomial weights this becomes the promised indefinite integral.
 For \(p\ne-1\), initially where the integrals converge and then by continuation,
 \begin{equation}\label{p10:eq:monomial-F-antiderivative}
  \int_0^x t^p\F(t)\Differential t
- =\frac{x^{p+1}\F(x)-\displaystyle\int_0^{\F(x)}\RationalNumbers(v)^{p+1}\Differential v}{p+1}.
+ =\frac{x^{p+1}\F(x)-\displaystyle\int_0^{\F(x)}\FabiusQuantile(v)^{p+1}\Differential v}{p+1}.
 \end{equation}
 The value at \(p=-1\) is removable:
 \begin{equation}\label{p10:eq:F-over-x-incomplete}
  \int_0^x\frac{\F(t)}t\Differential t
- =\F(x)\log x-\int_0^{\F(x)}\log\RationalNumbers(v)\Differential v.
+ =\F(x)\log x-\int_0^{\F(x)}\log\FabiusQuantile(v)\Differential v.
 \end{equation}
 On \([0,1]\), where \(\RvachevUp=1-\F\),
 \begin{equation}\label{p10:eq:monomial-up-half-antiderivative}
  \int_0^x t^p\RvachevUp(t)\Differential t
- =\frac{x^{p+1}(1-\F(x))+\displaystyle\int_0^{\F(x)}\RationalNumbers(v)^{p+1}\Differential v}{p+1}.
+ =\frac{x^{p+1}(1-\F(x))+\displaystyle\int_0^{\F(x)}\FabiusQuantile(v)^{p+1}\Differential v}{p+1}.
 \end{equation}
 \end{corollary}
 
@@ -19337,7 +19336,7 @@ More generally, from \cref{p10:eq:power-incomplete},
 \begin{equation}\label{p10:eq:Fpower-antiderivative}
  \int_0^x t^{p-1}\F(t)^q\Differential t
  =\frac{x^p\F(x)^q}{p}
- -\frac{q}{p}\int_0^{\F(x)}\RationalNumbers(v)^p v^{q-1}\Differential v.
+ -\frac{q}{p}\int_0^{\F(x)}\FabiusQuantile(v)^p v^{q-1}\Differential v.
 \end{equation}
 Thus products of \(\F\) and the positive half of \(\RvachevUp\) reduce to beta-weighted
 quantile integrals after expanding \((1-\F)^n\).
@@ -19347,7 +19346,7 @@ quantile integrals after expanding \((1-\F)^n\).
 \begin{definition}\label{p10:def:M}
 For \(s\in\ComplexNumbers\), set
 \begin{equation}\label{p10:eq:Mdef}
- \MPartiii(s)=\Expectation Y^s=\int_0^1\RationalNumbers(v)^s\Differential v.
+ \MPartiii(s)=\Expectation Y^s=\int_0^1\FabiusQuantile(v)^s\Differential v.
 \end{equation}
 For nonnegative integers, \(\MPartiii(n)=m_n\).
 \end{definition}
@@ -19363,7 +19362,7 @@ positive moments: for every \(N>0\),
 \begin{theorem}[entire quantile Mellin function]\label{p10:thm:entireM}
 The function \(\MPartiii\) in \cref{p10:eq:Mdef} is entire.  For every \(r\ge0\),
 \begin{equation}\label{p10:eq:M-derivatives}
- \MPartiii^{(r)}(s)=\int_0^1\RationalNumbers(v)^s(\log\RationalNumbers(v))^r\Differential v
+ \MPartiii^{(r)}(s)=\int_0^1\FabiusQuantile(v)^s(\log\FabiusQuantile(v))^r\Differential v
  =\Expectation\bigl[Y^s(\log Y)^r\bigr].
 \end{equation}
 In particular all negative moments and all logarithmic moments exist.
@@ -19387,7 +19386,7 @@ A first transform triangle follows immediately:
  \label{p10:eq:Mellin-F}\\
  \int_0^1x^{s-1}\RvachevUp(x)\Differential x&=\frac{\MPartiii(s)}s,
  \label{p10:eq:Mellin-up-half}\\
- \int_0^1\RationalNumbers(v)^{s-1}\Differential v&=\MPartiii(s-1).
+ \int_0^1\FabiusQuantile(v)^{s-1}\Differential v&=\MPartiii(s-1).
  \label{p10:eq:Mellin-Q}
 \end{align}
 The first quotient has a removable singularity at \(s=0\) and is entire; the second
@@ -19474,7 +19473,7 @@ Numerically,
 
 The inverse symmetry \cref{p10:eq:Qsymmetry} suggests the two-variable transform
 \begin{equation}\label{p10:eq:M2def}
- \MPartiii_2(a,b)=\int_0^1\RationalNumbers(v)^a\RationalNumbers(1-v)^b\Differential v
+ \MPartiii_2(a,b)=\int_0^1\FabiusQuantile(v)^a\FabiusQuantile(1-v)^b\Differential v
  =\Expectation\bigl[Y^a(1-Y)^b\bigr].
 \end{equation}
 
@@ -19502,13 +19501,13 @@ The central formula follows from \(Y=(1+Z)/2\), \(1-Y=(1-Z)/2\).
 
 For example,
 \begin{equation}\label{p10:eq:M2-examples}
- \int_0^1\RationalNumbers(v)\RationalNumbers(1-v)\Differential v=\frac29,
+ \int_0^1\FabiusQuantile(v)\FabiusQuantile(1-v)\Differential v=\frac29,
  \qquad
- \int_0^1\RationalNumbers(v)^2\RationalNumbers(1-v)^2\Differential v=\frac{34}{675},
+ \int_0^1\FabiusQuantile(v)^2\FabiusQuantile(1-v)^2\Differential v=\frac{34}{675},
 \end{equation}
 and
 \begin{equation}\label{p10:eq:M2-negative-example}
- \int_0^1\frac{\Differential v}{\RationalNumbers(v)(1-\RationalNumbers(v))}=2\MPartiii(-1).
+ \int_0^1\frac{\Differential v}{\FabiusQuantile(v)(1-\FabiusQuantile(v))}=2\MPartiii(-1).
 \end{equation}
 
 \section{Negative moments: an exact recurrence and a new asymptotic constant}
@@ -19823,7 +19822,7 @@ integrals are rational.
 \end{theorem}
 
 \begin{proof}
-Use \(\F(x)=\Expectation\ind_{\{Y\le x\}}\) and Fubini:
+Use \(\F(x)=\Expectation\IndicatorOf{\{Y\le x\}}\) and Fubini:
 \[
  I_F(a,b)=\Expectation\int_Y^1x^{a-1}(1-x)^{b-1}\Differential x
  =\Expectation B_{1-Y}(b,a)=\Expectation B_Y(b,a),
@@ -19853,7 +19852,7 @@ leads to exact quantile truncations.
 \begin{proposition}\label{p10:prop:half-identities}
 For every complex \(p\), with removable values interpreted by continuation,
 \begin{align}
- \int_0^{1/2}\RationalNumbers(v)^p\Differential v
+ \int_0^{1/2}\FabiusQuantile(v)^p\Differential v
  &=2^{-p}\frac{1-\MPartiii(p+1)}{p+1},
  \label{p10:eq:half-Q}\\
  \int_0^{1/2}x^p\F(x)\Differential x
@@ -19870,7 +19869,7 @@ In particular,
 \begin{proof}
 Change variables \(v=\F(x)\) in the first integral and use the lower-half equation:
 \[
- \int_0^{1/2}\RationalNumbers(v)^p\Differential v
+ \int_0^{1/2}\FabiusQuantile(v)^p\Differential v
  =\int_0^{1/2}x^p\F'(x)\Differential x
  =2^{-p}\int_0^1y^p\F(y)\Differential y.
 \]
@@ -19895,13 +19894,13 @@ Let \(\Re\alpha>0\).  Initially for \(\Re q>0\),
 \begin{equation}\label{p10:eq:RL-Fq}
  (I_0^\alpha\F^q)(x)
  =\frac{q}{\Gamma(\alpha+1)}
- \int_0^{\F(x)}(x-\RationalNumbers(v))^\alpha v^{q-1}\Differential v.
+ \int_0^{\F(x)}(x-\FabiusQuantile(v))^\alpha v^{q-1}\Differential v.
 \end{equation}
 Initially for \(\Re p>0\),
 \begin{equation}\label{p10:eq:RL-Qp}
- (I_0^\alpha\RationalNumbers^p)(v)
+ (I_0^\alpha\FabiusQuantile^p)(v)
  =\frac{p}{\Gamma(\alpha+1)}
- \int_0^{\RationalNumbers(v)}(v-\F(x))^\alpha x^{p-1}\Differential x.
+ \int_0^{\FabiusQuantile(v)}(v-\F(x))^\alpha x^{p-1}\Differential x.
 \end{equation}
 Both formulas continue in \(p\) or \(q\) wherever the endpoint terms admit continuation.
 \end{theorem}
@@ -19936,7 +19935,7 @@ In particular,
 
 \begin{proof}
 In \cref{p10:eq:RL-Fq}, the integral over \(v\) is the expectation of
-\((x-\RationalNumbers(V))_+^\alpha\) for a uniform \(V\).  Since \(\RationalNumbers(V)\overset d=Y\), this is
+\((x-\FabiusQuantile(V))_+^\alpha\) for a uniform \(V\).  Since \(\FabiusQuantile(V)\overset d=Y\), this is
 \cref{p10:eq:RL-F-prob}.  At \(x=1\), use \(1-Y\overset d=Y\).
 \end{proof}
 
@@ -20003,13 +20002,13 @@ fractional-truncated-moment formula.
 For an integer \(n\ge1\), the anchored \(n\)-fold antiderivative of \(\F\) is
 \begin{equation}\label{p10:eq:nth-F-primitive}
  I_0^n\F(x)=\frac1{n!}
- \int_0^{\F(x)}(x-\RationalNumbers(v))^n\Differential v.
+ \int_0^{\F(x)}(x-\FabiusQuantile(v))^n\Differential v.
 \end{equation}
 The same expression can be expanded finitely:
 \begin{equation}\label{p10:eq:nth-F-incomplete-moments}
  I_0^n\F(x)
  =\frac1{n!}\sum_{j=0}^n(-1)^j\binom njx^{n-j}
- \int_0^{\F(x)}\RationalNumbers(v)^j\Differential v.
+ \int_0^{\F(x)}\FabiusQuantile(v)^j\Differential v.
 \end{equation}
 Thus every repeated primitive is determined by incomplete quantile moments.  At a dyadic
 \(x\), these can in turn be reduced by the exact dyadic machinery already developed in
@@ -20017,16 +20016,16 @@ the repository.
 
 For inverse powers, \cref{p10:eq:RL-Qp} gives the complementary expression
 \begin{equation}\label{p10:eq:nth-Q-primitive}
- I_0^n(\RationalNumbers^p)(v)
- =\frac{p}{n!}\int_0^{\RationalNumbers(v)}x^{p-1}(v-\F(x))^n\Differential x.
+ I_0^n(\FabiusQuantile^p)(v)
+ =\frac{p}{n!}\int_0^{\FabiusQuantile(v)}x^{p-1}(v-\F(x))^n\Differential x.
 \end{equation}
 The special case \(p=1\) is a fractional extension of the area identity:
 \begin{equation}\label{p10:eq:nth-Q-area}
- I_0^n\RationalNumbers(v)=\frac1{n!}\int_0^{\RationalNumbers(v)}(v-\F(x))^n\Differential x.
+ I_0^n\FabiusQuantile(v)=\frac1{n!}\int_0^{\FabiusQuantile(v)}(v-\F(x))^n\Differential x.
 \end{equation}
 For \(n=1\), this is
 \begin{equation}\label{p10:eq:classic-inverse-area}
- \int_0^v\RationalNumbers(w)\Differential w=\int_0^{\RationalNumbers(v)}(v-\F(x))\Differential x,
+ \int_0^v\FabiusQuantile(w)\Differential w=\int_0^{\FabiusQuantile(v)}(v-\F(x))\Differential x,
 \end{equation}
 the usual area formula in a form adapted to the Fabius quantile.
 
@@ -20056,33 +20055,33 @@ Let \(f_j=\F^{(j)}(x)\).  Define rational differential expressions recursively b
 \begin{proposition}[all inverse derivatives]\label{p10:prop:inverse-derivatives}
 For \(0<v<1\),
 \begin{equation}\label{p10:eq:Q-nth-operator}
- \RationalNumbers^{(n)}(v)=\mathcal R_n(\RationalNumbers(v)).
+ \FabiusQuantile^{(n)}(v)=\mathcal R_n(\FabiusQuantile(v)).
 \end{equation}
 Equivalently, for \(n\ge2\),
 \begin{equation}\label{p10:eq:Q-Bell-rec}
- \RationalNumbers^{(n)}(v)
- =-\frac1{\F'(\RationalNumbers(v))}
- \sum_{k=2}^n\F^{(k)}(\RationalNumbers(v))
- B_{n,k}\bigl(\RationalNumbers'(v),\ldots,\RationalNumbers^{(n-k+1)}(v)\bigr),
+ \FabiusQuantile^{(n)}(v)
+ =-\frac1{\F'(\FabiusQuantile(v))}
+ \sum_{k=2}^n\F^{(k)}(\FabiusQuantile(v))
+ B_{n,k}\bigl(\FabiusQuantile'(v),\ldots,\FabiusQuantile^{(n-k+1)}(v)\bigr),
 \end{equation}
 where \(B_{n,k}\) is the partial exponential Bell polynomial.
 \end{proposition}
 
 \begin{proof}
 The operator relation follows by applying \(\Differential/\Differential v=(\F'(x))^{-1}\Differential/\Differential x\) at
-\(x=\RationalNumbers(v)\).  The Bell recurrence follows by differentiating
-\(\F(\RationalNumbers(v))=v\) \(n\) times and isolating the term containing \(\RationalNumbers^{(n)}\).
+\(x=\FabiusQuantile(v)\).  The Bell recurrence follows by differentiating
+\(\F(\FabiusQuantile(v))=v\) \(n\) times and isolating the term containing \(\FabiusQuantile^{(n)}\).
 \end{proof}
 
 The first expressions are
 \begin{align}
- \RationalNumbers'&=\frac1{f_1},\nonumber\\
- \RationalNumbers''&=-\frac{f_2}{f_1^3},\nonumber\\
- \RationalNumbers'''&=\frac{3f_2^2-f_1f_3}{f_1^5},\nonumber\\
- \RationalNumbers''''&=\frac{-15f_2^3+10f_1f_2f_3-f_1^2f_4}{f_1^7},
+ \FabiusQuantile'&=\frac1{f_1},\nonumber\\
+ \FabiusQuantile''&=-\frac{f_2}{f_1^3},\nonumber\\
+ \FabiusQuantile'''&=\frac{3f_2^2-f_1f_3}{f_1^5},\nonumber\\
+ \FabiusQuantile''''&=\frac{-15f_2^3+10f_1f_2f_3-f_1^2f_4}{f_1^7},
  \label{p10:eq:Q-first-derivatives}
 \end{align}
-with every \(f_j\) evaluated at \(x=\RationalNumbers(v)\).  Combining these formulas with the
+with every \(f_j\) evaluated at \(x=\FabiusQuantile(v)\).  Combining these formulas with the
 Lambert--\(W\) inverse endpoint expansion from the repository gives asymptotics of any
 fixed derivative order.
 
@@ -20090,7 +20089,7 @@ fixed derivative order.
 
 Since \(\MPartiii\) is entire,
 \begin{equation}\label{p10:eq:M-nth-derivative}
- \MPartiii^{(n)}(s)=\int_0^1\RationalNumbers(v)^s(\log\RationalNumbers(v))^n\Differential v.
+ \MPartiii^{(n)}(s)=\int_0^1\FabiusQuantile(v)^s(\log\FabiusQuantile(v))^n\Differential v.
 \end{equation}
 The bilateral up transform satisfies, away from its complex zeros,
 \begin{equation}\label{p10:eq:U-Bell-derivative}
@@ -20113,7 +20112,7 @@ apparent logarithmic singularities.
 \label{p10:sec:inverse-fractional-endpoint}
 
 The inverse function is the most singular object in the Fabius--Rvachev system.
-Ordinary derivatives of \(\RationalNumbers\) blow up at both endpoints, while \(\RationalNumbers\) itself tends to
+Ordinary derivatives of \(\FabiusQuantile\) blow up at both endpoints, while \(\FabiusQuantile\) itself tends to
 zero more slowly than every positive power.  This combination is exactly the regime in
 which fractional differentiation has a sharp critical exponent.  The results in this
 section are not contained in the audited corpus: the repository develops the
@@ -20125,7 +20124,7 @@ Put
  T=\log\frac1y,
  \qquad \ell=\log2,
  \qquad
- \eta(y)=\frac{y\RationalNumbers'(y)}{\RationalNumbers(y)}.
+ \eta(y)=\frac{y\FabiusQuantile'(y)}{\FabiusQuantile(y)}.
 \end{equation}
 The dimensionless quantity \(\eta\) is the logarithmic elasticity of the quantile.  It
 is the correct small parameter: powers of \(1/T\) alone miss the square-root scale and
@@ -20134,7 +20133,7 @@ the repository's periodic Lambert phase.
 \begin{proposition}[quantile scale and slow variation]\label{p10:prop:Q-slow-variation}
 As \(y\downarrow0\),
 \begin{align}
- \RationalNumbers(y)
+ \FabiusQuantile(y)
  &=\frac{\sqrt T}{e\sqrt\ell}
    \exp\!\bigl(-\sqrt{2\ell T}\bigr)
    \left(1+O\!\left(\frac{\log T}{\sqrt T}\right)\right),
@@ -20146,9 +20145,9 @@ As \(y\downarrow0\),
 \end{align}
 For each fixed \(c>0\),
 \begin{equation}\label{p10:eq:Q-slow}
- \frac{\RationalNumbers(cy)}{\RationalNumbers(y)}\longrightarrow1.
+ \frac{\FabiusQuantile(cy)}{\FabiusQuantile(y)}\longrightarrow1.
 \end{equation}
-Thus \(\RationalNumbers\), and every positive power \(\RationalNumbers^\beta\), is slowly varying at the
+Thus \(\FabiusQuantile\), and every positive power \(\FabiusQuantile^\beta\), is slowly varying at the
 origin in the multiplicative sense.
 \end{proposition}
 
@@ -20160,7 +20159,7 @@ term contributes
 \(
  \sqrt{\ell/(2T)}-1/(2T)
 \)
-to \(y\RationalNumbers'/\RationalNumbers\), while differentiating the smooth periodic correction contributes
+to \(y\FabiusQuantile'/\FabiusQuantile\), while differentiating the smooth periodic correction contributes
 \(O((\log T)/T)\).  Replacing \(y\) by \(cy\) changes \(T\) by the bounded number
 \(-\log c\); the difference of the square roots in \eqref{p10:eq:Q-leading} therefore tends
 to zero.  This proves \eqref{p10:eq:Q-slow}.
@@ -20177,15 +20176,15 @@ where \(\psi\) is the digamma function and \(\gamma\) is Euler's constant.  Thus
 \label{p10:thm:Q-fractional-primitive-asymptotic}
 Let \(a>0\) and \(\beta>0\).  Then
 \begin{equation}\label{p10:eq:Q-frac-primitive-eta}
- I_{0+}^{a}(\RationalNumbers^\beta)(y)
- =\frac{y^a\RationalNumbers(y)^\beta}{\Gamma(a+1)}
+ I_{0+}^{a}(\FabiusQuantile^\beta)(y)
+ =\frac{y^a\FabiusQuantile(y)^\beta}{\Gamma(a+1)}
   \left(1-\beta H_a\eta(y)+o(\eta(y))\right),
  \qquad y\downarrow0.
 \end{equation}
 Using \eqref{p10:eq:eta-leading},
 \begin{equation}\label{p10:eq:Q-frac-primitive-explicit}
- I_{0+}^{a}(\RationalNumbers^\beta)(y)
- =\frac{y^a\RationalNumbers(y)^\beta}{\Gamma(a+1)}
+ I_{0+}^{a}(\FabiusQuantile^\beta)(y)
+ =\frac{y^a\FabiusQuantile(y)^\beta}{\Gamma(a+1)}
  \left[
   1-\beta H_a\sqrt{\frac{\ell}{2T}}
   +O\!\left(\frac{\log T}{T}\right)
@@ -20198,15 +20197,15 @@ For \(a=n\in\NaturalNumbers\), this gives the first nontrivial endpoint correcti
 \begin{proof}
 After \(v=yu\),
 \begin{equation}\label{p10:eq:Q-frac-beta-kernel}
- I_{0+}^{a}(\RationalNumbers^\beta)(y)
- =\frac{y^a\RationalNumbers(y)^\beta}{\Gamma(a)}
+ I_{0+}^{a}(\FabiusQuantile^\beta)(y)
+ =\frac{y^a\FabiusQuantile(y)^\beta}{\Gamma(a)}
   \int_0^1(1-u)^{a-1}
-       \left(\frac{\RationalNumbers(yu)}{\RationalNumbers(y)}\right)^\beta\Differential u.
+       \left(\frac{\FabiusQuantile(yu)}{\FabiusQuantile(y)}\right)^\beta\Differential u.
 \end{equation}
 The differentiated endpoint expansion gives, uniformly on compact logarithmic
 \(u\)-ranges,
 \begin{equation}\label{p10:eq:Q-ratio-local}
- \log\frac{\RationalNumbers(yu)}{\RationalNumbers(y)}
+ \log\frac{\FabiusQuantile(yu)}{\FabiusQuantile(y)}
  =\eta(y)\log u+o(\eta(y))(1+|\log u|).
 \end{equation}
 Potter bounds for slowly varying functions dominate the remaining small-\(u\) tail by
@@ -20231,7 +20230,7 @@ where \(\psi_1\) is the trigamma function.  Expanding the logarithmic endpoint j
 order further gives the formal, and under the repository's all-orders smooth expansion
 rigorous, refinement
 \begin{equation}\label{p10:eq:Q-second-correction}
- \frac{\Gamma(a+1)I_{0+}^{a}(\RationalNumbers^\beta)(y)}{y^a\RationalNumbers(y)^\beta}
+ \frac{\Gamma(a+1)I_{0+}^{a}(\FabiusQuantile^\beta)(y)}{y^a\FabiusQuantile(y)^\beta}
  =1-\beta H_a\eta
  +\frac{V_a}{2}\bigl(\beta^2\eta^2+\beta\delta\bigr)
  +o(\eta^2+|\delta|).
@@ -20250,14 +20249,14 @@ For \(0<\sigma<1\), define
 
 \begin{theorem}[fractional inverse derivative and the sharp critical exponent]
 \label{p10:thm:Q-fractional-derivative-Lp}
-Let \(0<\sigma<1\) and \(\beta>0\).  Since \(\RationalNumbers(0)=0\), the left Caputo and
-Riemann--Liouville derivatives of \(\RationalNumbers^\beta\) coincide.  As \(y\downarrow0\),
+Let \(0<\sigma<1\) and \(\beta>0\).  Since \(\FabiusQuantile(0)=0\), the left Caputo and
+Riemann--Liouville derivatives of \(\FabiusQuantile^\beta\) coincide.  As \(y\downarrow0\),
 \begin{align}
- D_{0+}^{\sigma}(\RationalNumbers^\beta)(y)
- &=\frac{y^{-\sigma}\RationalNumbers(y)^\beta}{\Gamma(1-\sigma)}
+ D_{0+}^{\sigma}(\FabiusQuantile^\beta)(y)
+ &=\frac{y^{-\sigma}\FabiusQuantile(y)^\beta}{\Gamma(1-\sigma)}
    \left(1+\beta K_\sigma\eta(y)+o(\eta(y))\right)
  \label{p10:eq:Q-frac-derivative-eta}\\
- &=\frac{y^{-\sigma}\RationalNumbers(y)^\beta}{\Gamma(1-\sigma)}
+ &=\frac{y^{-\sigma}\FabiusQuantile(y)^\beta}{\Gamma(1-\sigma)}
    \left[
     1+\beta K_\sigma\sqrt{\frac{\ell}{2T}}
     +O\!\left(\frac{\log T}{T}\right)
@@ -20266,11 +20265,11 @@ Riemann--Liouville derivatives of \(\RationalNumbers^\beta\) coincide.  As \(y\d
 \end{align}
 Consequently, for every \(0<p<\infty\),
 \begin{equation}\label{p10:eq:Q-frac-Lp-threshold}
- D_{0+}^{\sigma}(\RationalNumbers^\beta)\in L^p(0,\tfrac12)
+ D_{0+}^{\sigma}(\FabiusQuantile^\beta)\in L^p(0,\tfrac12)
  \quad\Longleftrightarrow\quad \sigma p\le1.
 \end{equation}
 By reflection, the same criterion holds for the right derivative
-\(D_{1-}^{\sigma}(1-\RationalNumbers)^\beta\) on \((1/2,1)\).  In particular, the critical
+\(D_{1-}^{\sigma}(1-\FabiusQuantile)^\beta\) on \((1/2,1)\).  In particular, the critical
 exponent \(p=1/\sigma\) is included in the strong \(L^p\) space, not merely in weak
 \(L^p\).
 \end{theorem}
@@ -20291,7 +20290,7 @@ linear coefficient is
 
 It remains to decide integrability.  The leading asymptotic reduces the question to
 \begin{equation}\label{p10:eq:critical-integral}
- \int_0^\varepsilon y^{-\sigma p}\RationalNumbers(y)^{\beta p}\Differential y.
+ \int_0^\varepsilon y^{-\sigma p}\FabiusQuantile(y)^{\beta p}\Differential y.
 \end{equation}
 Set \(y=e^{-T}\).  By \eqref{p10:eq:Q-leading}, the logarithm of the transformed
 integrand, including \(\Differential y=e^{-T}\Differential T\), is
@@ -20302,15 +20301,15 @@ It tends linearly to \(-\infty\) if \(\sigma p<1\), linearly to \(+\infty\) if
 \(\sigma p>1\), and at \(\sigma p=1\) retains the integrable stretched-exponential
 factor \(\exp(-\beta p\sqrt{2\ell T}+O(\log T))\).  This proves
 \eqref{p10:eq:Q-frac-Lp-threshold}.  Reflection follows from
-\(1-\RationalNumbers(1-y)=\RationalNumbers(y)\).
+\(1-\FabiusQuantile(1-y)=\FabiusQuantile(y)\).
 \end{proof}
 
 \begin{corollary}[integer endpoint as a limit]\label{p10:cor:Qprime-critical}
 The limiting case \(\sigma\uparrow1\) predicts and is consistent with
 \begin{equation}\label{p10:eq:Qprime-Lp}
- \RationalNumbers'\in L^1(0,1),
+ \FabiusQuantile'\in L^1(0,1),
  \qquad
- \RationalNumbers'\notin L^p(0,1)\quad(p>1),
+ \FabiusQuantile'\notin L^p(0,1)\quad(p>1),
 \end{equation}
 which is the known sharp first-inverse-derivative threshold.  Thus
 \eqref{p10:eq:Q-frac-Lp-threshold} is a genuine continuous-order interpolation of the
@@ -20589,7 +20588,7 @@ full line,
 For \(z\in\ComplexNumbers\setminus[0,1]\), define
 \begin{equation}\label{p10:eq:GY-def}
  G_Y(z)=\Expectation\frac1{z-Y}
- =\int_0^1\frac{\Differential v}{z-\RationalNumbers(v)}.
+ =\int_0^1\frac{\Differential v}{z-\FabiusQuantile(v)}.
 \end{equation}
 For \(|z|>1\),
 \begin{equation}\label{p10:eq:GY-moment-series}
@@ -20663,7 +20662,7 @@ and, for every \(n\ge1\),
 \end{equation}
 For the inverse-Fabius resolvents
 \begin{equation}\label{p10:eq:Sn-def}
- S_n(z)=\int_0^1\frac{\Differential v}{(z-\RationalNumbers(v))^n},
+ S_n(z)=\int_0^1\frac{\Differential v}{(z-\FabiusQuantile(v))^n},
  \qquad z\in\ComplexNumbers\setminus[0,1],
 \end{equation}
 we have
@@ -20688,7 +20687,7 @@ This proves \eqref{p10:eq:Cauchy-log-fixed}.  Differentiation gives
 \(
  R_n(z)=(-1)^{n-1}R_1^{(n-1)}(z)/(n-1)!
 \), differentiating \eqref{p10:eq:Cauchy-diffeq-new} repeatedly gives
-\eqref{p10:eq:resolvent-hierarchy-up}.  Finally, \(\RationalNumbers(V)\) with
+\eqref{p10:eq:resolvent-hierarchy-up}.  Finally, \(\FabiusQuantile(V)\) with
 \(V\sim\mathrm{Unif}[0,1]\) has the same law as \(Y=(X+1)/2\), which gives
 \eqref{p10:eq:S-R-affine}; substitution into \eqref{p10:eq:resolvent-hierarchy-up} gives
 \eqref{p10:eq:resolvent-hierarchy-Q}.
@@ -20753,7 +20752,7 @@ For integers \(m,n\ge1\) and \(\Re p>-1\),
 \begin{equation}\label{p10:eq:weighted-gap}
  \int_0^1x^p\F(x)^m(1-\F(x))^n\Differential x
  =\frac1{p+1}\Expectation\left[
- \bigl(B_n^{p+1}-A_m^{p+1}\bigr)\ind_{\{A_m<B_n\}}
+ \bigl(B_n^{p+1}-A_m^{p+1}\bigr)\IndicatorOf{\{A_m<B_n\}}
  \right].
 \end{equation}
 In particular,
@@ -20795,12 +20794,12 @@ Using \(\F'(x)=2\RvachevUp(2x-1)\),
 \subsection{Quantiles and ordinary order statistics}
 
 If \(Y_{r:n}\) is the \(r\)-th order statistic of \(n\) independent Fabius variables,
-then \(Y_{r:n}=\RationalNumbers(V_{r:n})\) in distribution, where \(V_{r:n}\) has beta density.
+then \(Y_{r:n}=\FabiusQuantile(V_{r:n})\) in distribution, where \(V_{r:n}\) has beta density.
 Consequently
 \begin{equation}\label{p10:eq:quantile-order-stat}
  \Expectation Y_{r:n}^p
  =\frac1{B(r,n-r+1)}
- \int_0^1v^{r-1}(1-v)^{n-r}\RationalNumbers(v)^p\Differential v.
+ \int_0^1v^{r-1}(1-v)^{n-r}\FabiusQuantile(v)^p\Differential v.
 \end{equation}
 Symmetry gives
 \begin{equation}\label{p10:eq:order-stat-symmetry}
@@ -20882,13 +20881,13 @@ The general identity \cref{p10:thm:AB} can be applied in the \(v\)-variable as w
 \(A(x)=x\) and
 \(B(v)=\log(z/(z-v))\) gives
 \begin{equation}\label{p10:eq:inverse-log-resolvent}
- \int_0^1\frac{\RationalNumbers(v)}{z-v}\Differential v
+ \int_0^1\frac{\FabiusQuantile(v)}{z-v}\Differential v
  +\int_0^1\log\frac{z}{z-\F(x)}\Differential x
  =\log\frac{z}{z-1}.
 \end{equation}
 With \(B(v)=(z-v)^{-1}\),
 \begin{equation}\label{p10:eq:inverse-square-resolvent}
- \int_0^1\frac{\RationalNumbers(v)}{(z-v)^2}\Differential v
+ \int_0^1\frac{\FabiusQuantile(v)}{(z-v)^2}\Differential v
  +\int_0^1\frac{\Differential x}{z-\F(x)}
  =\frac1{z-1}.
 \end{equation}
@@ -20945,7 +20944,7 @@ The accompanying program \texttt{fractional\_frontier\_experiments.py} is fully
 commented and deterministic.  It reconstructs \(\RvachevUp\) by FFT inversion of the sinc
 product on a period-four grid with \(2^{18}\) points; the support \([-1,1]\) prevents
 periodic overlap.  The Fabius function is then obtained from
-\(\F(x)=\RvachevUp(x-1)\) on \([0,1]\), and a monotone inverse gives \(\RationalNumbers\).
+\(\F(x)=\RvachevUp(x-1)\) on \([0,1]\), and a monotone inverse gives \(\FabiusQuantile\).
 No Monte Carlo sampling or network access is used.
 
 The program independently checks four parts of the new analysis:
@@ -20959,7 +20958,7 @@ equation \eqref{p10:eq:Cauchy-diffeq-new}, and hierarchy
 \eqref{p10:eq:Q-frac-primitive-eta} and its first digamma correction;
 \item the normalized fractional derivative in
 \eqref{p10:eq:Q-frac-derivative-eta}.  The derivative is obtained by a symmetric
-five-point differentiation of \(I^{1-\sigma}\RationalNumbers\), avoiding the severe conditioning
+five-point differentiation of \(I^{1-\sigma}\FabiusQuantile\), avoiding the severe conditioning
 loss in direct division by the flat density \(\F'\).
 \end{enumerate}
 
@@ -20994,7 +20993,7 @@ regenerates all three files.
 \begin{conjecture}[sharp fractional Sobolev boundary]\label{p10:conj:Q-Wsp}
 For \(0<s<1\), \(1\le p<\infty\), and \(\beta>0\),
 \begin{equation}\label{p10:eq:Q-Wsp-conj}
- \RationalNumbers^\beta\in W^{s,p}(0,1)
+ \FabiusQuantile^\beta\in W^{s,p}(0,1)
  \quad\Longleftrightarrow\quad sp\le1.
 \end{equation}
 At the critical line \(sp=1\), membership should be strong rather than merely weak,
@@ -21191,17 +21190,17 @@ For convenient reference, the central formulas are collected here.
 \begin{align*}
  A(z)B(\F(z))-A(0)B(0)
  &=\int_0^zA'B\circ\F
- +\int_0^{\F(z)}A\circ\RationalNumbers\,B',\\
+ +\int_0^{\F(z)}A\circ\FabiusQuantile\,B',\\
  p\int_0^1x^{p-1}\F(x)^q\Differential x
- +q\int_0^1v^{q-1}\RationalNumbers(v)^p\Differential v&=1,\\
+ +q\int_0^1v^{q-1}\FabiusQuantile(v)^p\Differential v&=1,\\
  s\int_0^1e^{sx+t\F(x)}\Differential x
- +t\int_0^1e^{tv+s\RationalNumbers(v)}\Differential v&=e^{s+t}-1.
+ +t\int_0^1e^{tv+s\FabiusQuantile(v)}\Differential v&=e^{s+t}-1.
 \end{align*}
 \end{resultbox}
 
 \begin{resultbox}[Entire moment calculus]
 \begin{align*}
- \MPartiii(s)&=\int_0^1\RationalNumbers(v)^s\Differential v,\\
+ \MPartiii(s)&=\int_0^1\FabiusQuantile(v)^s\Differential v,\\
  \MPartiii(s)&=\sum_{k\ge0}(-1)^k\binom skm_k
  =2^{-s}\sum_{j\ge0}\binom{s}{2j}\mu_{2j},\\
  \int_0^1x^{s-1}\F(x)\Differential x&=\frac{1-\MPartiii(s)}s,\qquad
@@ -21215,23 +21214,23 @@ For convenient reference, the central formulas are collected here.
  \MPartiii(-r)&\sim C_*\frac{2^{r(r+1)/2}}{\Gamma(r)},\\
  I_0^\alpha\F^q(x)
  &=\frac{q}{\Gamma(\alpha+1)}
- \int_0^{\F(x)}(x-\RationalNumbers(v))^\alpha v^{q-1}\Differential v,\\
- I_0^\alpha\RationalNumbers^p(v)
+ \int_0^{\F(x)}(x-\FabiusQuantile(v))^\alpha v^{q-1}\Differential v,\\
+ I_0^\alpha\FabiusQuantile^p(v)
  &=\frac{p}{\Gamma(\alpha+1)}
- \int_0^{\RationalNumbers(v)}(v-\F(x))^\alpha x^{p-1}\Differential x.
+ \int_0^{\FabiusQuantile(v)}(v-\F(x))^\alpha x^{p-1}\Differential x.
 \end{align*}
 \end{resultbox}
 
 \begin{resultbox}[New fractional endpoint laws]
-For \(T=\log(1/y)\), \(\eta=y\RationalNumbers'/\RationalNumbers\sim\sqrt{\log2/(2T)}\),
+For \(T=\log(1/y)\), \(\eta=y\FabiusQuantile'/\FabiusQuantile\sim\sqrt{\log2/(2T)}\),
 \begin{align*}
- I_{0+}^{a}(\RationalNumbers^\beta)(y)
- &=\frac{y^a\RationalNumbers(y)^\beta}{\Gamma(a+1)}
+ I_{0+}^{a}(\FabiusQuantile^\beta)(y)
+ &=\frac{y^a\FabiusQuantile(y)^\beta}{\Gamma(a+1)}
    \bigl(1-\beta H_a\eta+o(\eta)\bigr),\\
- D_{0+}^{\sigma}(\RationalNumbers^\beta)(y)
- &=\frac{y^{-\sigma}\RationalNumbers(y)^\beta}{\Gamma(1-\sigma)}
+ D_{0+}^{\sigma}(\FabiusQuantile^\beta)(y)
+ &=\frac{y^{-\sigma}\FabiusQuantile(y)^\beta}{\Gamma(1-\sigma)}
    \bigl(1+\beta K_\sigma\eta+o(\eta)\bigr),\\
- D_{0+}^{\sigma}(\RationalNumbers^\beta)\in L^p(0,\tfrac12)
+ D_{0+}^{\sigma}(\FabiusQuantile^\beta)\in L^p(0,\tfrac12)
  &\Longleftrightarrow \sigma p\le1.
 \end{align*}
 \end{resultbox}
@@ -21690,9 +21689,9 @@ where $U\sim\mathrm{Unif}[0,1]$, $V\sim\mathrm{Unif}[-1,1]$, and the primed
 variables are independent copies.  This random-series and infinite-product
 view goes back to Jessen--Wintner and its later Fabius/Rvachev formulations
 \cite{p11:JessenWintner,p11:Fabius1966,p11:arias1982}.  With Fourier convention
-$\widehat f(\xi)=\int_{\RealNumbers}e^{-\ImaginaryUnit\xi x}f(x)\Differential x$,
+$\FourierAngular{f}(\xi)=\int_{\RealNumbers}e^{-\ImaginaryUnit\xi x}f(x)\Differential x$,
 \begin{equation}
- \widehat{\RvachevUp}(\xi)
+ \FourierAngular{\RvachevUp}(\xi)
  =\prod_{j=1}^{\infty}\SincRad\!\left(\frac{\xi}{2^j}\right),
  \qquad \SincRad z:=\frac{\sin z}{z}.
  \label{p11:eq:up-fourier-product}
@@ -21771,14 +21770,14 @@ $D_+^\alpha f:=k_{-\alpha}*f$.  Wherever the multiplier is an ordinary
 function, and elsewhere in the corresponding boundary-value distributional
 sense,
 \begin{equation}
- \widehat{D_+^\alpha f}(\xi)=(\ImaginaryUnit\xi)^\alpha\widehat f(\xi),
+ \FourierAngular{D_+^\alpha f}(\xi)=(\ImaginaryUnit\xi)^\alpha\FourierAngular{f}(\xi),
  \label{p11:eq:Weyl-def}
 \end{equation}
 with the branch obtained from the causal kernel.  This normalization removes
 zero-frequency polynomial ambiguities and makes the order family entire.  The
 Riesz fractional Laplacian is
 \begin{equation}
- \widehat{(-\Delta)^{\alpha/2}f}(\xi)=|\xi|^\alpha\widehat f(\xi).
+ \FourierAngular{(-\Delta)^{\alpha/2}f}(\xi)=|\xi|^\alpha\FourierAngular{f}(\xi).
  \label{p11:eq:Riesz-def}
 \end{equation}
 Different fractional derivatives answer different boundary-value questions;
@@ -21901,7 +21900,7 @@ For $v\in[a,u]$,
 \begin{align}
  \phi(G(v))-\phi(q_a)
  &=\int_{q_a}^{G(v)}\phi'(x)\Differential x\\
- &=\int_{q_a}^{q}\phi'(x)\ind_{\{F(x)\le v\}}\Differential x.
+ &=\int_{q_a}^{q}\phi'(x)\IndicatorOf{\{F(x)\le v\}}\Differential x.
 \end{align}
 Fubini's theorem is immediate for nonnegative $\phi'$ and follows for an
 arbitrary absolutely continuous $\phi$ by applying the same argument to its
@@ -22533,7 +22532,7 @@ representation \cite{p11:Widder} gives
  \label{p11:eq:Stieltjes-Laplace}\\
  M_X(t)
  &=\Expectation e^{tX}
- =e^{t/2}\widehat\RvachevUp(\ImaginaryUnit t/2).
+ =e^{t/2}\FourierAngular{\RvachevUp}(\ImaginaryUnit t/2).
  \label{p11:eq:MX-up}
 \end{align}
 The sinc product becomes an infinite product of hyperbolic sinc factors on
@@ -22672,13 +22671,13 @@ all higher derivative equations.
 The Fourier transform of the right-hand side is
 \begin{align}
  2^\alpha\ImaginaryUnit\sin(\xi/2)
- (\ImaginaryUnit\xi/2)^{\alpha-1}\widehat\RvachevUp(\xi/2)
+ (\ImaginaryUnit\xi/2)^{\alpha-1}\FourierAngular{\RvachevUp}(\xi/2)
  &=2\ImaginaryUnit\sin(\xi/2)(\ImaginaryUnit\xi)^{\alpha-1}
-   \widehat\RvachevUp(\xi/2)\\
- &=(\ImaginaryUnit\xi)^\alpha\widehat\RvachevUp(\xi),
+   \FourierAngular{\RvachevUp}(\xi/2)\\
+ &=(\ImaginaryUnit\xi)^\alpha\FourierAngular{\RvachevUp}(\xi),
 \end{align}
 where the last equality uses
-$\widehat\RvachevUp(\xi)=\SincRad(\xi/2)\widehat\RvachevUp(\xi/2)$.
+$\FourierAngular{\RvachevUp}(\xi)=\SincRad(\xi/2)\FourierAngular{\RvachevUp}(\xi/2)$.
 \end{proof}
 
 The theorem is the structurally correct fractional generalization: the
@@ -22947,7 +22946,7 @@ $0.0955632320160\ldots$.
 The characteristic function of $D$ is
 \begin{equation}
  \varphi_D(t)=|\varphi_X(t)|^2
- =\widehat\RvachevUp(t/2)^2.
+ =\FourierAngular{\RvachevUp}(t/2)^2.
  \label{p11:eq:D-characteristic}
 \end{equation}
 The standard fractional-moment identity \cite{p11:Samko,p11:Kilbas} now gives a
@@ -22960,14 +22959,14 @@ For $0<\beta<2$,
  \Kord_\beta(0)
  =\frac{\sin(\pi\beta/2)}{\pi}
   \int_0^\infty
-  \frac{1-\widehat\RvachevUp(t/2)^2}{t^{1+\beta}}\Differential t.
+  \frac{1-\FourierAngular{\RvachevUp}(t/2)^2}{t^{1+\beta}}\Differential t.
  \label{p11:eq:K-fractional-energy}
 \end{equation}
 In particular,
 \begin{equation}
  \int_0^1F(x)(1-F(x))\Differential x
  =\frac1\pi\int_0^\infty
-  \frac{1-\widehat\RvachevUp(t/2)^2}{t^2}\Differential t.
+  \frac{1-\FourierAngular{\RvachevUp}(t/2)^2}{t^2}\Differential t.
  \label{p11:eq:Gini-sinc-product}
 \end{equation}
 \end{theorem}
@@ -23614,7 +23613,7 @@ Consequently, the following are treated here as \emph{baseline}:
   \item basic Volterra/Riemann--Liouville formulas for \(\F\) and \(\G\);
   \item endpoint asymptotics expressed through Lambert \(W_{-1}\), periodic
         corrections, Bell polynomials, and Gamma--zeta operators;
-  \item the infinite sinc product for \(\widehat{\RvachevUp}\), its dyadic refinement,
+  \item the infinite sinc product for \(\FourierAngular{\RvachevUp}\), its dyadic refinement,
         and the existing Fourier-decay analysis;
   \item exact dyadic values, rational moment recurrences, finite Thue--Morse
         splines, and the established \(q\)-binomial machinery.
@@ -23698,7 +23697,7 @@ Put
 \end{equation}
 Then \(Y\) has density
 \begin{equation}\label{p12:eq:updef}
- \RvachevUp(y)=\F(1-|y|)\,\mathbf1_{[-1,1]}(y),
+ \RvachevUp(y)=\F(1-|y|)\,\IndicatorOf{[-1,1]}(y),
  \qquad
  \F'(x)=2\RvachevUp(2x-1).
 \end{equation}
@@ -23708,12 +23707,12 @@ Thus \(\RvachevUp\) is even and \(C^\infty\), and
 \end{equation}
 We use the cycles-per-unit Fourier convention
 \begin{equation}
- \widehat f(\xi)=\int_{\RealNumbers}f(x)e^{-2\pi\ImaginaryUnit x\xi}\Differential x,
+ \FourierTwoPi{f}(\xi)=\int_{\RealNumbers}f(x)e^{-2\pi\ImaginaryUnit x\xi}\Differential x,
  \qquad \SincRad t=\frac{\sin t}{t}.
 \end{equation}
 Then
 \begin{equation}\label{p12:eq:phi}
- \Phi(\xi):=\widehat{\RvachevUp}(\xi)
+ \Phi(\xi):=\FourierTwoPi{\RvachevUp}(\xi)
  =\prod_{j\ge0}\SincRad\!\left(\frac{\pi\xi}{2^j}\right).
 \end{equation}
 The moment-generating functions are
@@ -23821,8 +23820,8 @@ More generally, for \(0\le a<b\le1\),
 \begin{equation}\label{p12:eq:spacinginterval}
  \int_a^b h(x)\F(x)^p(1-\F(x))^q\Differential x
  =\Expectation\!\left[
- \mathbf1_{\{L<U\}}
- \int_a^b h(x)\mathbf1_{[L,U)}(x)\Differential x\right],
+ \IndicatorOf{\{L<U\}}
+ \int_a^b h(x)\IndicatorOf{[L,U)}(x)\Differential x\right],
 \end{equation}
 where \(L\) is the maximum of \(p\) independent copies of \(X\), and \(U\)
 is the minimum of another \(q\) copies.
@@ -23896,7 +23895,7 @@ For \(x\in[0,1]\), the partial primitive has the exact random-interval form
 \begin{equation}\label{p12:eq:partialspacing}
  \int_0^x h(t)\F(t)^p(1-\F(t))^q\Differential t
  =\Expectation\!\left[
- \mathbf1_{\{L<x,\,L<U\}}
+ \IndicatorOf{\{L<x,\,L<U\}}
  \bigl(H(\min\{x,U\})-H(L)\bigr)
  \right].
 \end{equation}
@@ -23927,7 +23926,7 @@ Insert
 \(\F(t)^p(1-\F(t))^q=\Probability(L\le t<U)\) into the Volterra integral and apply
 Fubini.  For fixed \(L<U\),
 \[
- \frac1{\Gamma(\nu)}\int_0^x(x-t)^{\nu-1}\mathbf1_{[L,U)}(t)\Differential t
+ \frac1{\Gamma(\nu)}\int_0^x(x-t)^{\nu-1}\IndicatorOf{[L,U)}(t)\Differential t
  =\frac{(x-L)_+^\nu-(x-U)_+^\nu}{\Gamma(\nu+1)}.
 \]
 The same random-label argument as in \cref{p12:thm:spacing} supplies the factor
@@ -24044,8 +24043,8 @@ For \(a,b>0\),
  \bigl[1-\max\{\G(u),\F(v)\}\bigr]\Differential u\Differential v.
 \end{equation}
 Indeed,
-\(\F(x)^a=a\int_0^1u^{a-1}\mathbf1_{\{\G(u)\le x\}}\Differential u\), while
-\(\G(x)^b=b\int_0^1v^{b-1}\mathbf1_{\{\F(v)\le x\}}\Differential v\).  Formula
+\(\F(x)^a=a\int_0^1u^{a-1}\IndicatorOf{\{\G(u)\le x\}}\Differential u\), while
+\(\G(x)^b=b\int_0^1v^{b-1}\IndicatorOf{\{\F(v)\le x\}}\Differential v\).  Formula
 \eqref{p12:eq:FGkernel} is a promising starting point for genuinely nonlinear
 \(\F\)--\(\G\) coupling constants.
 
@@ -24397,7 +24396,7 @@ Integration by parts gives
 \begin{align}
  \int_0^1e^{-sx}\F(x)\Differential x
  &=\frac{M_X(-s)-e^{-s}}s,\label{p12:eq:FLaplace}\\
- \widehat{\F\mathbf1_{[0,1]}}(\xi)
+ \FourierTwoPi{\F\IndicatorOf{[0,1]}}(\xi)
  &=\frac{e^{-\pi\ImaginaryUnit\xi}\Phi(\xi/2)-e^{-2\pi\ImaginaryUnit\xi}}
  {2\pi\ImaginaryUnit\xi},\label{p12:eq:FFourier}\\
  \int_0^1x^{s-1}\F(x)\Differential x
@@ -24654,7 +24653,7 @@ For \(0<\alpha<2\), the full fractional energy is
 
 \begin{conjecture}[Arithmetic opacity of the energy constant\tagconj]
 The number \(A_2\) is transcendental.  More conservatively, it does not belong
-to the field generated over \(\overline{\mathbb Q}\) by finitely many values of
+to the field generated over \(\overline{\RationalNumbers}\) by finitely many values of
 Gamma, zeta, polylogarithm, and elementary functions at algebraic arguments.
 \end{conjecture}
 
@@ -24666,16 +24665,16 @@ new class of ``dyadic sinc periods.''
 
 \subsection{Finite Thue--Morse derivative formulas}
 
-Let \(s_2(j)\) be the binary digit sum and \(T_n=n(n+1)/2\).  Iterating
+Let \(\BinaryDigitSum(j)\) be the binary digit sum and \(T_n=n(n+1)/2\).  Iterating
 \eqref{p12:eq:uprefinement} gives the baseline finite formulas
 \begin{align}
  \RvachevUp^{(n)}(x)
  &=2^{T_n}\sum_{j=0}^{2^n-1}
- (-1)^{n+s_2(j)}
+ (-1)^{n+\BinaryDigitSum(j)}
  \RvachevUp(2^nx+2j+1-2^n),\label{p12:eq:upnth}\\
  \F^{(n)}(x)
  &=2^{T_n}\sum_{j=0}^{2^{n-1}-1}
- (-1)^{n-1+s_2(j)}
+ (-1)^{n-1+\BinaryDigitSum(j)}
  \RvachevUp(2^nx+2j+1-2^n),\qquad n\ge1.
  \label{p12:eq:Fnth}
 \end{align}
@@ -24753,7 +24752,7 @@ Let
 The generalized Irwin--Hall formula is
 \begin{equation}\label{p12:eq:FM}
  \F_M(x)=\frac{2^{M(M+1)/2}}{M!}
- \sum_{k=0}^{2^M-1}(-1)^{s_2(k)}
+ \sum_{k=0}^{2^M-1}(-1)^{\BinaryDigitSum(k)}
  \left(x-\frac{k}{2^M}\right)_+^M.
 \end{equation}
 Thus \(\F_M\) is a rational piecewise polynomial on the dyadic mesh.  The tail
@@ -24774,7 +24773,7 @@ Then
 \begin{equation}\label{p12:eq:certified}
  |J-J_M|\le\frac{2L}{\binom Np}\,2^{-M}.
 \end{equation}
-If \(H'\) is a polynomial with rational coefficients, then \(J_M\in\mathbb Q\)
+If \(H'\) is a polynomial with rational coefficients, then \(J_M\in\RationalNumbers\)
 and can be evaluated exactly by integrating finitely many dyadic polynomials.
 \end{theorem}
 
@@ -24975,7 +24974,7 @@ Sinc energy &
 \eqref{p12:eq:sumrule}.\\[0.5em]
 Finite spline &
 \(\displaystyle\F_M(x)=2^{M(M+1)/2}M!^{-1}
-\sum_{k<2^M}(-1)^{s_2(k)}(x-k/2^M)_+^M\).\\
+\sum_{k<2^M}(-1)^{\BinaryDigitSum(k)}(x-k/2^M)_+^M\).\\
 \bottomrule
 \end{longtable}
 

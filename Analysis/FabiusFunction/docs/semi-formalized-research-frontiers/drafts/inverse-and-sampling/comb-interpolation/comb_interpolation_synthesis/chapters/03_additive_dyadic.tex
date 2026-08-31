@@ -82,10 +82,10 @@ enabling exact spectral and arithmetic ones.
 \subsection{The Fourier product and its integer zeros}
 \label{sec:fourier}
 
-With $\widehat f(\xi)=\int f(x)\EulerE^{-2\pi\ImaginaryUnit\xi x}\Differential x$ and
+With $\FourierTwoPi{f}(\xi)=\int f(x)\EulerE^{-2\pi\ImaginaryUnit\xi x}\Differential x$ and
 $\SincPi z=\sin(\pi z)/(\pi z)$,
 \begin{equation}
- \Phi(\xi):=\widehat{\RvachevUp}(\xi)
+ \Phi(\xi):=\FourierTwoPi{\RvachevUp}(\xi)
  =\prod_{j=0}^{\infty}\SincPi\!\left(\frac{\xi}{2^j}\right),
  \label{eq:Phi-product}
 \end{equation}
@@ -93,7 +93,7 @@ an even, real, rapidly decreasing entire function of exponential type.
 The characteristic function of the Fabius law is
 \begin{equation}
  \chi(\xi):=\Expectation\,\EulerE^{-2\pi\ImaginaryUnit\xi Y}
- =\widehat\rho(\xi)
+ =\FourierTwoPi{\rho}(\xi)
  =\EulerE^{-\pi\ImaginaryUnit\xi}\,\Phi(\xi/2).
  \label{eq:chi-Phi}
 \end{equation}
@@ -809,12 +809,13 @@ prepares the exact description of the first failure.
 \subsection{Trapezoidal aliasing through the characteristic function}
 
 Put $g_p(x)=x^{p}F(x)$ on $[0,1]$ and
-$\widehat g_p(n)=\int_0^1g_p(x)\EulerE^{-2\pi\ImaginaryUnit nx}\Differential x$.  The periodic
+$\FourierSeriesCoefficient{g_p}{n}
+=\int_0^1g_p(x)\EulerE^{-2\pi\ImaginaryUnit nx}\Differential x$.  The periodic
 extension of $g_p$ has a unit jump at the integers, and its Fourier
 series converges there to the midpoint value, which is exactly the
 trapezoidal endpoint convention:
 \begin{equation}
- T_{m,p}=\sum_{\ell\in\IntegerNumbers}\widehat g_p(M\ell),
+ T_{m,p}=\sum_{\ell\in\IntegerNumbers}\FourierSeriesCoefficient{g_p}{M\ell},
  \label{eq:trap-alias}
 \end{equation}
 the zero-frequency term being $I_p$.  Every nonzero coefficient is a
@@ -825,7 +826,7 @@ finite expression in the Fabius characteristic function
 \label{lem:gp-hat}
 For $n\in\IntegerNumbers\setminus\{0\}$,
 \begin{equation}
- \widehat g_p(n)
+ \FourierSeriesCoefficient{g_p}{n}
  =\sum_{j=0}^{p}
  \frac{\fall pj}{(2\pi\ImaginaryUnit n)^{j+1}}
  \left(
@@ -835,7 +836,7 @@ For $n\in\IntegerNumbers\setminus\{0\}$,
 \end{equation}
 In particular, for $p=0$,
 \begin{equation}
- \widehat g_0(\xi)
+ \FourierTwoPi{g_0}(\xi)
  =-\frac{\EulerE^{-2\pi\ImaginaryUnit\xi}}{2\pi\ImaginaryUnit\xi}
  +\frac{\chi(\xi)}{2\pi\ImaginaryUnit\xi}
  \qquad(\xi\ne0),
@@ -846,7 +847,8 @@ valid for all real $\xi$, not only integers.
 
 \begin{proof}
 Since $F(x)=\Probability(Y\le x)$, Fubini gives the layer representation
-$\widehat g_p(n)=\Expectation\int_Y^1x^{p}\EulerE^{-2\pi\ImaginaryUnit nx}\Differential x$.  Integrating by
+$\FourierSeriesCoefficient{g_p}{n}
+=\Expectation\int_Y^1x^{p}\EulerE^{-2\pi\ImaginaryUnit nx}\Differential x$.  Integrating by
 parts $p+1$ times, using $\EulerE^{-2\pi\ImaginaryUnit n}=1$ at the fixed endpoint,
 \[
  \int_Y^1x^{p}\EulerE^{-2\pi\ImaginaryUnit nx}\Differential x
@@ -856,7 +858,7 @@ parts $p+1$ times, using $\EulerE^{-2\pi\ImaginaryUnit n}=1$ at the fixed endpoi
 and $\Expectation\bigl[Y^{r}\EulerE^{-2\pi\ImaginaryUnit nY}\bigr]=\chi^{(r)}(n)/(-2\pi\ImaginaryUnit)^{r}$.
 For \eqref{eq:g0-hat}, one integration by parts of
 $\int_0^1F\,\EulerE^{-2\pi\ImaginaryUnit\xi x}\Differential x$ with $F'=\rho$,
-$\widehat\rho=\chi$ suffices.
+$\FourierTwoPi{\rho}=\chi$ suffices.
 \end{proof}
 
 Splitting \eqref{eq:gp-hat-chi} into its ``$-1$'' part (a pure
@@ -1287,7 +1289,7 @@ misses.
 Recall the shifted monomial comb
 $Q_{m,p}(\theta)$ of \eqref{eq:Qmp}.  Shifted Poisson summation for
 $f_p(x)=x^{p}\RvachevUp(x)$, together with
-$\widehat f_p(\xi)=(-2\pi\ImaginaryUnit)^{-p}\Phi^{(p)}(\xi)$, gives the exact
+$\FourierTwoPi{f_p}(\xi)=(-2\pi\ImaginaryUnit)^{-p}\Phi^{(p)}(\xi)$, gives the exact
 absolutely convergent representation
 \begin{equation}
  Q_{m,p}(\theta)
@@ -1324,8 +1326,9 @@ $\sum_{k\in\IntegerNumbers}(\theta+k)^{p}\,\RvachevUp\bigl(2^{-m}(\theta+k)\bigr
 (the display above is this identity multiplied by $h^{p+1}$ and substituted, and
 extends to polynomials by linearity).  The proof is the aliasing argument of this
 section made formal: \nolinkurl{MonomialCombFourier.lean} packages $x^{p}\RvachevUp(2^{-m}x)$ as a
-Schwartz map with $(-2\pi\ImaginaryUnit)^{p}\widehat{f_p}=(\widehat{f_0})^{(p)}$,
-\nolinkurl{MonomialCombDerivatives.lean} evaluates $(\widehat{f_0})^{(p)}$ through the entire
+Schwartz map with
+$(-2\pi\ImaginaryUnit)^{p}\FourierTwoPi{f_p}=(\FourierTwoPi{f_0})^{(p)}$,
+\nolinkurl{MonomialCombDerivatives.lean} evaluates $(\FourierTwoPi{f_0})^{(p)}$ through the entire
 transform via the real--complex derivative bridge, \nolinkurl{MonomialCombAlias.lean} kills
 every nonzero alias by the integer-zero order theorem
 ($\OrderOperator_{2^{m}\ell}\Phi=v_2(2^{m}\ell)+1>m$),
@@ -1376,7 +1379,7 @@ the tensor statement.
 \label{rem:base-b}
 Only the alignment of the sinc zeros with the dual lattice is used.
 For an integer base $b\ge2$, the compactly supported density $\RvachevUp_b$
-with $\widehat{\RvachevUp_b}(\xi)=\prod_{j\ge0}\SincPi(\xi/b^{j})$ (an
+with $\FourierTwoPi{\RvachevUp_b}(\xi)=\prod_{j\ge0}\SincPi(\xi/b^{j})$ (an
 infinite convolution of uniform laws at geometrically decreasing
 scales) satisfies the same theorem on the comb $h\IntegerNumbers+\theta$,
 $h=b^{-m}$: at $b^{m}\ell$ the factors $j=0,\dots,m$ all vanish.  The
@@ -1748,9 +1751,10 @@ periodic function, and the finite-grid alias identity gives the pure
 alias error
 \begin{align}
  \mathcal A_{M,\theta}[P]-I_P
- &=\sum_{\ell\ne0}\EulerE^{2\pi\ImaginaryUnit\ell\theta}\,\widehat{R_P}(M\ell),
+ &=\sum_{\ell\ne0}\EulerE^{2\pi\ImaginaryUnit\ell\theta}\,
+ \FourierSeriesCoefficient{R_P}{M\ell},
  \notag\\
- \widehat{R_P}(q)
+ \FourierSeriesCoefficient{R_P}{q}
  &=\sum_{j=0}^{d}\frac{1}{(2\pi\ImaginaryUnit q)^{j+1}}
  \int_0^1P^{(j)}(x)\,\rho(x)\,\EulerE^{-2\pi\ImaginaryUnit qx}\Differential x
  \quad(q\ne0),
@@ -1775,8 +1779,8 @@ periodized Bernoulli function and
  \label{eq:alias-correlation}
 \end{equation}
 for the Fabius variable $Y$, the layer-cake representation
-$F(x)=\Expectation\,\mathbf 1_{Y\le x}$ and Faulhaber's formula for the random
-threshold sum $\sum_{a\ge\lceil MY-\theta\rceil}(a+\theta)^{n}$ give,
+$F(x)=\Expectation\,\IndicatorOf{Y\le x}$ and Faulhaber's formula for the random
+threshold sum $\sum_{a\ge\Ceiling{MY-\theta}}(a+\theta)^{n}$ give,
 for \emph{every} integer $M\ge1$, every $\theta\in[0,1]$, and every
 $n\ge0$,
 \begin{equation}
@@ -2346,7 +2350,8 @@ odd frequencies alone (\nolinkurl{Fabius.tsum_shifted_monomial_sub_integral_odd}
 odd-level defect series of \cref{sec:dirichlet}, with the exact first-defect
 coefficients.  The endpoint phenomenon of \cref{thm:reflection-reduction} is formal on
 the up-side as well: coefficient parity
-(\nolinkurl{Fabius.fourier_monomialRvachevSchwartz_neg}, $\hat f(-\ell)=(-1)^p\hat f(\ell)$)
+(\nolinkurl{Fabius.fourier_monomialRvachevSchwartz_neg},
+$\FourierTwoPi{f}(-\ell)=(-1)^p\FourierTwoPi{f}(\ell)$)
 makes the odd-frequency defect series an odd function of the frequency whenever the
 threshold degree $\TwoAdicValuation(M)+1$ is odd, so at the endpoint shift $\theta=0$ the
 $\pm\ell$ aliases cancel exactly and the endpoint comb is exact \emph{one degree
@@ -2376,11 +2381,11 @@ Dirichlet fold at even threshold degree
 
 The quantitative input these defect series need --- that the first harmonic is not
 swallowed by the tail --- is now formal too.  The sinc factor obeys the quadratic lower
-bound \(1-x^2/6\le\operatorname{sinc}x\) (\nolinkurl{Fabius.one_sub_sq_div_six_le_sinc}),
+bound \(1-x^2/6\le\SincRad x\) (\nolinkurl{Fabius.one_sub_sq_div_six_le_sinc}),
 and the Weierstrass product inequality \(1-\sum u_i\le\prod(1-u_i)\)
 (\nolinkurl{Fabius.one_sub_sum_le_prod_one_sub}, \nolinkurl{Fabius.one_sub_tsum_le_tprod_one_sub}) ---
 neither of which Mathlib carried --- turns it into a bound on the whole dyadic product:
-\(1-2t^2/9\le\prod_{n}\operatorname{sinc}(t/2^n)\) for \(t^2\le6\)
+\(1-2t^2/9\le\prod_{n}\SincRad(t/2^n)\) for \(t^2\le6\)
 (\nolinkurl{Fabius.one_sub_le_prod_sinc_two_pow}, \nolinkurl{Fabius.one_sub_le_tprod_sinc_two_pow};
 the family is multipliable for \emph{every} real \(t\),
 \nolinkurl{Fabius.multipliable_sinc_two_pow}).  At the half-integer this gives the
@@ -2389,14 +2394,14 @@ explicit constant the comb volume assumes,
 (\nolinkurl{Fabius.four_ninths_lt_tprod_sinc_pi_div_two}, and for the corpus transform
 itself \nolinkurl{Fabius.four_ninths_lt_re_rvachevFourierProduct_half}).  The companion
 \emph{relative} bound is formal as well: every dilation contracts the sinc factor,
-\(\lvert\operatorname{sinc}(mx)\rvert\le\lvert\operatorname{sinc}x\rvert\) for \(m\ge1\)
+\(\lvert\SincRad(mx)\rvert\le\lvert\SincRad x\rvert\) for \(m\ge1\)
 (\nolinkurl{Fabius.abs_sinc_nat_mul_le}), whence the dilated-product comparison at every
 odd \(\ell\) (\nolinkurl{Fabius.prod_abs_sinc_odd_dilate_le}), with sharpness witnesses
 showing the hypothesis \(m\ge1\) cannot be dropped.
 
 The same bound gives an explicit \emph{nonvanishing window}.  At every real point the
 transform is the real dyadic sinc product,
-\(\Phi(x)=\prod_{n\ge0}\operatorname{sinc}(\pi x/2^n)\)
+\(\Phi(x)=\prod_{n\ge0}\SincRad(\pi x/2^n)\)
 (\nolinkurl{Fabius.rvachevFourierProduct_ofReal_eq_tprod_sinc}), so
 \(1-2(\pi x)^2/9\le\Phi(x)\) for \((\pi x)^2\le6\)
 (\nolinkurl{Fabius.one_sub_le_re_rvachevFourierProduct_ofReal}) and hence \(\Phi(x)>0\),
@@ -2513,7 +2518,7 @@ the exponents volume specialized to this finite mode set.
 
 On the phase side, signed Thue--Morse blocks annihilate initial
 Bernoulli modes with closed leading constants.  For $s\ge1$ let
-$t_j=(-1)^{s_2(j)}=\eps_j$ and
+$t_j=(-1)^{\BinaryDigitSum(j)}=\eps_j$ and
 $\beta_{s,r}=\sum_{j=0}^{2^{s}-1}t_j\,B_r(j/2^{s})$.
 
 \begin{theorem}[Thue--Morse--Bernoulli generating function]
@@ -2690,7 +2695,7 @@ Let $\zeta_b=\EulerE^{2\pi\ImaginaryUnit/b}$.  For every $N\ge1$,
  \mathcal E_N^{(b,\alpha)}[f]
  &:=Q_N^{(b,\alpha)}[f]-Q_{N-1}^{(b,\alpha)}[f] \notag\\
  &=b^{-N}\sum_{j=0}^{b^N-1}
-\left(1-b\,\mathbf 1_{\{j\equiv\varepsilon_N\ (\mathrm{mod}\ b)\}}\right)
+\left(1-b\,\IndicatorOf{j\equiv\varepsilon_N\ (\mathrm{mod}\ b)}\right)
  f\!\left({j+\theta_N\over b^N}\right)
  \label{eq:coherent-residue-layer}\\
  &=-b^{-N}\sum_{a=1}^{b-1}\zeta_b^{-a\varepsilon_N}
@@ -2717,7 +2722,7 @@ $j\equiv\varepsilon_N\pmod b$ in the fine grid; subtracting it changes
 the fine weight from $1$ to $1-b$ on precisely that class.  This proves
 \eqref{eq:coherent-residue-layer}.  Finite Fourier inversion of the residue
 indicator gives
-$1-b\mathbf 1_{\{j\equiv\varepsilon_N\}}=
+$1-b\IndicatorOf{j\equiv\varepsilon_N}=
 -\sum_{a=1}^{b-1}\zeta_b^{a(j-\varepsilon_N)}$, proving
 \eqref{eq:coherent-character-layer}.  The partial sum of
 \eqref{eq:coherent-exhaustion} telescopes to $Q_N^{(b,\alpha)}[f]$ because

@@ -101,7 +101,6 @@
 \newcommand{\Lip}{\operatorname{Lip}}
 \newcommand{\Bell}{\mathcal B}
 \newcommand{\D}{\mathcal D}
-\newcommand{\1}{\mathbf 1}
 
 \title{\bfseries Reciprocal-Integer Convolution Divisors of the Rvachev Law\\[0.35em]
 \large Arithmetic semigroups, singular-to-smooth parity, Thue--Morse quotients, zero zeta functions, and inverse-Fabius approximants}
@@ -293,7 +292,7 @@ Equivalently, if $U_0,U_1,\ldots$ are independent and uniform on $[-1,1]$, then
 \end{equation}
 The convergence is absolute almost surely, the support is $[-1,1]$, and
 \begin{equation}
- \mathbb E X=0,
+ \Expectation X=0,
  \qquad
  \Variance(X)=\frac19.
  \label{eq:X-variance}
@@ -301,7 +300,7 @@ The convergence is absolute almost surely, the support is $[-1,1]$, and
 
 Let $\FabiusBounded$ be the standard Fabius function on $[0,1]$.  In this normalization,
 \begin{equation}
- \mathbb P(X\le t)=\FabiusBounded\!\left(\frac{t+1}{2}\right),
+ \Probability(X\le t)=\FabiusBounded\!\left(\frac{t+1}{2}\right),
  \qquad -1\le t\le1,
  \label{eq:F-cdf}
 \end{equation}
@@ -854,7 +853,7 @@ Let $\mu=\LawOperator(X)$ and $\nu_M=\LawOperator(Y_M)$.  Then
 For every $1\le p<\infty$,
 \begin{equation}
  W_p(\mu,\nu_M)
- \le\frac1M\bigl(\mathbb E|X|^p\bigr)^{1/p}.
+ \le\frac1M\bigl(\Expectation|X|^p\bigr)^{1/p}.
  \label{eq:Wp-bound}
 \end{equation}
 Consequently $\nu_M\Rightarrow\mu$ as $M\to\infty$.  Along odd $M$ this is convergence
@@ -1008,7 +1007,8 @@ The quotient has removable cancellations whenever $M\mid n$.
 For every $M\ge2$ and $n\ge1$,
 \begin{equation}
  \delta_M(n)
- =1+\TwoAdicValuation(n)-\1_{M\mid n}\bigl(1+\TwoAdicValuation(n/M)\bigr).
+ =1+\TwoAdicValuation(n)-\IndicatorOf{M\mid n}
+ \bigl(1+\TwoAdicValuation(n/M)\bigr).
  \label{eq:deltaM-general}
 \end{equation}
 Equivalently,
@@ -1165,7 +1165,7 @@ cumulant formulas in \cref{sec:cumulants}.
 
 The moment generating function of the symmetric digit $D_M$ is
 \begin{equation}
- \mathbb E\EulerE^{tD_M}
+ \Expectation\EulerE^{tD_M}
  =\frac1M\frac{\sinh t}{\sinh(t/M)}.
  \label{eq:DM-mgf}
 \end{equation}
@@ -1218,7 +1218,7 @@ zero zeta factor $1-M^{-s}$.
 
 Faulhaber's formula yields a companion expression in Bernoulli polynomials.  For $r\ge0$,
 \begin{equation}
- \mathbb E D_M^{2r}
+ \Expectation D_M^{2r}
  =\frac{2^{2r}}{M^{2r+1}(2r+1)}
  \left[
  B_{2r+1}\!\left(\frac{M+1}{2}\right)
@@ -1227,11 +1227,11 @@ Faulhaber's formula yields a companion expression in Bernoulli polynomials.  For
  \label{eq:DM-Bernoulli-polynomial}
 \end{equation}
 The self-similarity $Y_M\overset d=(D_M+Y_M')/2$ gives a rational triangular recurrence
-for its moments $m_n^{(M)}=\mathbb E Y_M^n$:
+for its moments $m_n^{(M)}=\Expectation Y_M^n$:
 \begin{equation}
  (2^n-1)m_n^{(M)}
  =\sum_{k=0}^{n-1}\binom nk
- \mathbb E D_M^{n-k}\,m_k^{(M)},
+ \Expectation D_M^{n-k}\,m_k^{(M)},
  \qquad m_0^{(M)}=1.
  \label{eq:moment-recurrence}
 \end{equation}
@@ -1243,21 +1243,21 @@ products.
 Let $\Bell_n$ denote the complete exponential Bell polynomial.  The moment-cumulant
 formula specializes to
 \begin{equation}
- \mathbb E Y_M^{2n}
+ \Expectation Y_M^{2n}
  =\Bell_{2n}\bigl(0,\kappa_2(Y_M),0,\kappa_4(Y_M),\ldots,
  0,\kappa_{2n}(Y_M)\bigr).
  \label{eq:Bell-moments}
 \end{equation}
 For example,
 \begin{align}
- \mathbb E Y_M^2
+ \Expectation Y_M^2
  &=\frac{1-M^{-2}}9,
  \label{eq:moment2}\\
- \mathbb E Y_M^4
+ \Expectation Y_M^4
  &=\frac{(1-M^{-2})^2}{27}
    -\frac{2(1-M^{-4})}{225},
  \label{eq:moment4}\\
- \mathbb E Y_M^6
+ \Expectation Y_M^6
  &=\frac{5(1-M^{-2})^3}{243}
    -\frac{2(1-M^{-2})(1-M^{-4})}{135}
    +\frac{16(1-M^{-6})}{3969}.
@@ -1271,7 +1271,7 @@ reconstruction from two or more divisors.
 
 Define the Appell polynomials associated with $Y_M$ by
 \begin{equation}
- \frac{\EulerE^{xt}}{\mathbb E\EulerE^{tY_M}}
+ \frac{\EulerE^{xt}}{\Expectation\EulerE^{tY_M}}
  =\sum_{n=0}^{\infty}\mathscr A_n^{(M)}(x)\frac{t^n}{n!}.
  \label{eq:Appell-def}
 \end{equation}
@@ -1326,7 +1326,7 @@ The coefficient $c_{M,N}(n)$ counts representations
 \end{equation}
 It is also the exact mass numerator of the finite digit law:
 \begin{equation}
- \mathbb P(2^NZ_{M,N}=n)=M^{-N}c_{M,N}(n),
+ \Probability(2^NZ_{M,N}=n)=M^{-N}c_{M,N}(n),
  \qquad
  Z_{M,N}=\sum_{j=1}^{N}\frac{J_j}{2^j}.
  \label{eq:finite-mass}
@@ -1451,7 +1451,7 @@ Equivalently,
 
 The same $M=3$ coefficients are boundary masses of the singular Rvachev divisor:
 \begin{equation}
- \mathbb P(2^NZ_{3,N}=n)=3^{-N}c_{3,N}(n),
+ \Probability(2^NZ_{3,N}=n)=3^{-N}c_{3,N}(n),
  \qquad
  c_{3,N}(n)=s(n+1)\quad(2^N>n).
  \label{eq:Stern-masses}
@@ -1478,7 +1478,7 @@ $A_M$ is left as a frontier problem.
 
 Let
 \begin{equation}
- H_M(x)=\eta_M(( -\infty,x])=\mathbb P(Z_M\le x).
+ H_M(x)=\eta_M(( -\infty,x])=\Probability(Z_M\le x).
  \label{eq:HM}
 \end{equation}
 With the conventions $H_M(x)=0$ for $x\le0$ and $H_M(x)=1$ for $x\ge M-1$, the IFS
@@ -1633,11 +1633,11 @@ it appears inside the certified global bracket \eqref{eq:F-inverse-bracket}.
 The decomposition $X=Y_M+X'/M$ acts exactly on polynomials.  For a polynomial $p$, define
 \begin{equation}
  (\mathcal S_Mp)(y)
- =\mathbb E\,p\!\left(y+\frac XM\right)
+ =\Expectation\,p\!\left(y+\frac XM\right)
  =\sum_{k=0}^{\deg p}\frac{m_k(X)}{k!M^k}p^{(k)}(y),
  \label{eq:smoothing-operator}
 \end{equation}
-where $m_k(X)=\mathbb EX^k$.  Then
+where $m_k(X)=\Expectation X^k$.  Then
 \begin{equation}
  \int p(x)\,\mu(\Differential x)
  =\int (\mathcal S_Mp)(y)\,\nu_M(\Differential y).
@@ -1649,7 +1649,7 @@ Because all odd moments of $X$ vanish, only even derivatives occur.
 \label{prop:Legendre-transfer}
 For the Legendre polynomial $P_n$,
 \begin{equation}
- \mathbb E P_n(X)
+ \Expectation P_n(X)
  =\sum_{j=0}^{\Floor{n/2}}
  \frac{m_{2j}(X)}{(2j)!M^{2j}}
  \int_{\RealNumbers}P_n^{(2j)}(y)\,\nu_M(\Differential y).
@@ -1776,7 +1776,7 @@ limit.
 The numerical phase
 \begin{equation}
  \Omega_{M,N}(\theta)=2^{(\log_2M)\theta}
- \mathbb P(Z_{M,N}\le2^{-\theta})
+ \Probability(Z_{M,N}\le2^{-\theta})
  \label{eq:numerical-Omega}
 \end{equation}
 approximates the exact $\Omega_M$.  The $M=4$ curve is the constant $1/4$ from
@@ -1927,7 +1927,7 @@ have even more explicit rational transition probabilities but also exact overlap
 \label{conj:dyadic-rationality}
 For every $M\ge2$, every integer $n\ge0$, and every integer $k$,
 \begin{equation}
- H_M(k/2^n)\in\mathbb Q.
+ H_M(k/2^n)\in\RationalNumbers.
  \label{eq:dyadic-H-conj}
 \end{equation}
 Moreover, these values can be computed by a finite carry Markov chain with a rational
@@ -1962,7 +1962,7 @@ If $M$ is not a power of two, the power series
  A_M(x)=\frac{T(x^M)}{T(x)}
  \label{eq:AM-quotient-conj}
 \end{equation}
-has the unit circle as a natural boundary and is transcendental over $\mathbb C(x)$.  For
+has the unit circle as a natural boundary and is transcendental over $\ComplexNumbers(x)$.  For
 algebraic $0<|\xi|<1$, broad classes of values $A_M(\xi)$ are transcendental by a suitable
 Mahler method.
 \end{conjecture}
@@ -2008,7 +2008,8 @@ atomic function.
 \label{conj:Legendre-preconditioner}
 For suitable $M=M(n)$, the triangular transfer \eqref{eq:Legendre-transfer} yields a
 better-conditioned computation of the high-degree Legendre coefficient
-$\mathbb EP_n(X)$ than direct integration against $\RvachevUp$.  Powers of two optimize symbolic
+$\Expectation P_n(X)$ than direct integration against $\RvachevUp$.  Powers of two
+optimize symbolic
 simplicity, while even non-powers optimize a tradeoff between compact spline smoothing and
 nontrivial endpoint phase.
 \end{conjecture}

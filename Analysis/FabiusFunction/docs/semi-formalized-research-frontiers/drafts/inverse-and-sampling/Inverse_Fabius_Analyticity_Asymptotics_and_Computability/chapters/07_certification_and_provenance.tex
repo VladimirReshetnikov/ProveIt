@@ -1,0 +1,48 @@
+\part{Certification, Formalization, and Provenance}
+
+\section{Status discipline}
+\label{sec:status-discipline}
+
+This synthesis uses three noninterchangeable kinds of mathematical evidence.
+
+\begin{enumerate}
+\item A result is \emph{Lean-proved} only when a named declaration has the same
+      hypotheses and conclusion as the human-readable statement.
+\item A \emph{human-proved frontier result} has a complete proof in this volume
+      but no exact Lean counterpart yet.
+\item A \emph{conjecture} or \emph{research problem} retains an explicit,
+      mathematically substantive unresolved obligation.
+\end{enumerate}
+
+Executable symbolic or numerical checks are useful regression evidence, but
+they do not upgrade a manuscript claim into a theorem.  Conversely, a theorem
+whose special case is formalized is not labelled Lean-proved unless the
+specialization and all of its hypotheses match exactly.
+
+\section{Deduplication and result provenance}
+\label{sec:result-provenance}
+
+The machine-readable raw source inventory records every theorem-style source
+environment at the immutable pre-retirement revision.  Its canonical
+disposition fields are still blank, and the reviewed theorem concordance is a
+publication-gate deliverable that does not yet exist.  When that review is
+complete, several source rows may map to one canonical theorem when one
+statement is a specialization or a later duplicate of a stronger result.
+Such a many-to-one mapping will be deduplication, not loss: the source
+statement, source line, surviving label, logical status, and reason for the
+disposition must remain explicit.
+
+The companion asset ledger performs the analogous job for scripts, exact
+output, figures, generated fragments, checksum ledgers, and historical PDFs.
+Only unique reproducibility material is migrated into the canonical
+\path{assets/} tree.  Superseded layouts remain recoverable at the revision
+recorded in \path{audit/SOURCE_REVISION} and throughout Git history.
+
+\section{Reproducibility boundary}
+\label{sec:reproducibility-boundary}
+
+The publication gate has four independent layers: a structural source audit,
+replay of retained exact computations, three serial \LaTeX{} passes, and
+visual inspection of the rendered PDF.  Lean validation, when required by a
+source change, is serialized separately; no PDF or source-level claim is
+treated as compiler evidence.

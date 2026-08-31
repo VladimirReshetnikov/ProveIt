@@ -133,7 +133,7 @@ be set to $1$ in all conditioning arguments.
 
 \subsection{Notation for \texorpdfstring{$q$}{q}-analogues}
 
-For $k\in\Nzero$,
+For $k\in\NaturalNumbers$,
 \begin{align}
  (a;q)_k&:=\prod_{r=0}^{k-1}(1-aq^r),
  & (a;q)_0&:=1,\\
@@ -353,7 +353,7 @@ scale without invalidating the existing expansion.
 
 \begin{theorem}[Gaussian Pascal basis pair]
 \label{gq:thm:gaussian-pascal-basis}
-For every $m,k\in\Nzero$,
+For every $m,k\in\NaturalNumbers$,
 \begin{align}
  x^m
  &=\sum_{k=0}^m c^{m-k}\GaussianBinomial{m}{k}{q}N_k(x;c,q),
@@ -1218,7 +1218,7 @@ to the unavoidable sensitivity of the interpolation problem.
 \section{Jackson integration and confluent geometric data}
 \label{gq:chap:jackson-hermite}
 
-The same basis that triangularizes sampling on $cq^{\Nzero}$ also
+The same basis that triangularizes sampling on $cq^{\NaturalNumbers}$ also
 triangularizes Jackson integration.  This gives a useful dual picture:
 geometric Newton coefficients are simultaneously interpolation coordinates
 and exact $q$-quadrature coordinates.
@@ -2016,20 +2016,20 @@ result is naturally a Gaussian--Appell transform.
 
 Use the Fourier convention
 \[
- \widehat f(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\,\Differential x.
+ \FourierTwoPi{f}(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\,\Differential x.
 \]
 For $u=\RvachevUp$,
 \begin{equation}
- \widehat u(\xi)
+ \FourierTwoPi{u}(\xi)
  =\prod_{r=0}^{\infty}
-   \operatorname{sinc}\!\left(\frac{\pi\xi}{2^r}\right),
+   \SincRad\!\left(\frac{\pi\xi}{2^r}\right),
  \qquad
- \operatorname{sinc}(z)=\frac{\sin z}{z}.
+ \SincRad(z)=\frac{\sin z}{z}.
  \label{gq:eq:up-fourier-product}
 \end{equation}
 Hence, for every nonzero integer $m$,
 \begin{equation}
- \OrderOperator_{\xi=m}\widehat u(\xi)=1+\nu_2(m).
+ \OrderOperator_{\xi=m}\FourierTwoPi{u}(\xi)=1+\nu_2(m).
  \label{gq:eq:up-integer-zero-order}
 \end{equation}
 This exact multiplicity is the dyadic Strang--Fix mechanism behind the
