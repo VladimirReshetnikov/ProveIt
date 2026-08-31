@@ -1,0 +1,1134 @@
+% ed.: Unique operator, parity, determinant, asymptotic, and arithmetic
+% material consolidated from the four Legendre--Rvachev reports.
+
+\section{Legendre operator transmutation, parity, and arithmetic}
+\label{sec:legendre-transmutation}
+
+The preceding chapter describes the finite analysis/synthesis loop.  This
+chapter records what that loop reveals about the polynomial families
+$Q_n^-=\MM_u(D)^{-1}P_n$ and $R_n=\MM_u(D)P_n$.  The distinction is essential:
+$Q_n^-$ supplies synthesis samples, whereas $R_n$ is the moment-smoothed
+Legendre family.  Both are triangular transforms of the classical Legendre
+basis, but their natural Hilbert geometries and conjugated coordinate
+operators point in opposite directions.
+
+\subsection{Two pullback geometries and the Favard obstruction}
+
+For polynomials define
+\begin{equation}
+ \langle f,g\rangle_-=
+ \int_{-1}^{1}(\MM_u(D)f)(x)(\MM_u(D)g)(x)\Differential x,
+ \qquad
+ \langle f,g\rangle_+=
+ \int_{-1}^{1}(\mathscr D_uf)(x)(\mathscr D_ug)(x)\Differential x.
+ \label{eq:leg2-pullback-inner-products}
+\end{equation}
+Both forms are positive definite because the two triangular differential
+operators are invertible on every finite polynomial space.
+
+\begin{theorem}[Dual pullback Legendre geometries]
+\label{thm:leg2-dual-pullback}
+For all $m,n\ge0$,
+\begin{equation}
+ \boxed{\langle Q_m^-,Q_n^-\rangle_-=h_n\delta_{mn},
+ \qquad
+ \langle R_m,R_n\rangle_+=h_n\delta_{mn}.}
+ \label{eq:leg2-dual-pullback}
+\end{equation}
+Consequently either family, truncated at degree $d$, is an orthogonal basis of
+$\Pi_d$ for its indicated inner product.
+\end{theorem}
+
+\begin{proof}
+By definition,
+$\MM_u(D)Q_n^-=P_n$ and $\mathscr D_uR_n=P_n$.  Both equalities in
+\eqref{eq:leg2-dual-pullback} are therefore ordinary Legendre orthogonality.
+The differential transforms preserve degree and leading coefficient, so the
+first $d+1$ members of either family form a basis of $\Pi_d$.
+\end{proof}
+
+This exact orthogonality is not integration against a hidden scalar weight.
+
+\begin{proposition}[No scalar moment measure and the explicit Favard defect]
+\label{prop:leg2-no-scalar-measure}
+There is no finite signed measure $\rho$, with all polynomial moments, such
+that
+\[
+ \langle f,g\rangle_-=\int f(x)g(x)\Differential\rho(x)
+\]
+for all polynomials.  Moreover, if $\widehat Q_n^-$ denotes the monic
+normalization, then
+\begin{align}
+ \widehat Q_2^-&=x^2-\frac49,&
+ \widehat Q_3^-&=x^3-\frac{14}{15}x,\notag\\
+ \widehat Q_4^-&=x^4-\frac{32}{21}x^2+\frac{1072}{4725},
+ \label{eq:leg2-low-monic-Q}
+\end{align}
+and
+\begin{equation}
+ \boxed{\widehat Q_4^-
+ =x\widehat Q_3^--\frac{62}{105}\widehat Q_2^-
+ -\frac8{225}\widehat Q_0^-.}
+ \label{eq:leg2-favard-defect}
+\end{equation}
+Thus the scalar three-term Favard recurrence fails already at degree four,
+even for an indefinite quasi-definite scalar functional.
+\end{proposition}
+
+\begin{proof}
+Every scalar moment form makes multiplication by $x$ symmetric.  Here
+$\MM_u(D)x=x$ and
+$\MM_u(D)x^2=x^2+\mu_2=x^2+1/9$, so
+\[
+ \langle x,x\rangle_-=\int_{-1}^{1}x^2\Differential x=\frac23,
+ \qquad
+ \langle1,x^2\rangle_-=
+ \int_{-1}^{1}\left(x^2+\frac19\right)\Differential x=\frac89.
+\]
+The inequality contradicts scalar symmetry.
+
+Applying the finite reciprocal-moment series
+$\mathscr D_u=\sum_r\gamma_rD^r/r!$ to $P_2,P_3,P_4$ and dividing by their
+leading coefficients gives \eqref{eq:leg2-low-monic-Q}.  Substitution and
+collection of powers proves \eqref{eq:leg2-favard-defect}.  A monic
+parity-alternating scalar orthogonal sequence would have
+$\widehat Q_{n+1}=x\widehat Q_n-\lambda_n\widehat Q_{n-1}$; the nonzero
+$\widehat Q_0$ term is impossible.
+\end{proof}
+
+There is no contradiction between this proposition and
+\cref{thm:leg2-dual-pullback}: the latter transports the coordinate operator
+along with the inner product.  Scalar multiplication by $x$ is not that
+transported coordinate.
+
+\subsection{Conjugated recurrence, Sturm operator, and projection kernel}
+
+Let $K(z)=\log\MM_u(z)$ and recall
+\[
+ X_-=x-K'(D),\qquad X_+=x+K'(D).
+\]
+Define
+\[
+ \mathcal L=-D(1-x^2)D,\qquad
+ \mathcal L_-=\mathscr D_u\mathcal L\MM_u(D).
+\]
+
+\begin{theorem}[Deconvolved Legendre operator calculus]
+\label{thm:leg2-Q-operator-calculus}
+With the convention $Q_{-1}^-:=0$, the deconvolved family satisfies, for
+every $n\ge0$,
+\begin{align}
+ (n+1)Q_{n+1}^-&=(2n+1)X_-Q_n^--nQ_{n-1}^-,
+ \label{eq:leg2-Q-recurrence}\\
+ \mathcal L_-&=-D(1-X_-^2)D,
+ &
+ \mathcal L_-Q_n^-&=n(n+1)Q_n^-.
+ \label{eq:leg2-Q-sturm}
+\end{align}
+The operator $\mathcal L_-$ is symmetric for $\langle\cdot,\cdot\rangle_-$.
+For every $d\ge0$, put
+\begin{equation}
+ \widetilde K_d(x,y)=
+ \sum_{n=0}^{d}\frac{Q_n^-(x)Q_n^-(y)}{h_n},
+ \label{eq:leg2-pullback-kernel}
+\end{equation}
+one has, for $f\in\Pi_d$,
+\begin{align}
+ f(x)&=\langle f,\widetilde K_d(x,\cdot)\rangle_-,
+ \label{eq:leg2-pullback-reproducing}\\
+ \MM_u(D_x)\MM_u(D_y)\widetilde K_d(x,y)&=K_d(x,y),
+ \label{eq:leg2-kernel-transmutation}\\
+ (X_{-,x}-X_{-,y})\widetilde K_d(x,y)
+ &=\frac{d+1}{2}
+ \bigl(Q_{d+1}^-(x)Q_d^-(y)-Q_d^-(x)Q_{d+1}^-(y)\bigr).
+ \label{eq:leg2-operator-CD}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Conjugate the classical Legendre recurrence by $\mathscr D_u$.  The
+commutator identity $g(D)x=xg(D)+g'(D)$ gives
+$\mathscr D_ux\MM_u(D)=X_-$, proving
+\eqref{eq:leg2-Q-recurrence}.  Since the differential transforms commute with
+$D$ and are mutual inverses,
+\[
+ \mathscr D_ux^2\MM_u(D)
+ =(\mathscr D_ux\MM_u(D))^2=X_-^2,
+\]
+which proves the operator formula and eigenvalue equation in
+\eqref{eq:leg2-Q-sturm}.  The intertwining identity
+$\MM_u(D)\mathcal L_-=\mathcal L\MM_u(D)$ reduces symmetry to ordinary
+Legendre integration by parts; the factor $1-x^2$ kills the boundary term.
+
+Expand $f$ in the orthogonal $Q_n^-$ basis to obtain
+\eqref{eq:leg2-pullback-reproducing}.  Applying $\MM_u(D)$ in both variables
+gives \eqref{eq:leg2-kernel-transmutation}.  Finally apply
+$\mathscr D_{u,x}\mathscr D_{u,y}$ to the classical
+Christoffel--Darboux identity
+\[
+ (x-y)K_d(x,y)=\frac{d+1}{2}
+ \bigl(P_{d+1}(x)P_d(y)-P_d(x)P_{d+1}(y)\bigr);
+\]
+transporting $x$ and $y$ gives \eqref{eq:leg2-operator-CD}.
+\end{proof}
+
+\subsection{Gauss cardinal synthesis and weighted singular values}
+
+Fix $d\ge0$.  Let $\xi_0,\ldots,\xi_d$ be the Gauss--Legendre nodes, let
+$\omega_j>0$ be their quadrature weights, and put
+\begin{equation}
+ K_d(x,y)=\sum_{n=0}^{d}\frac{P_n(x)P_n(y)}{h_n},
+ \qquad
+ K_d^\sharp(t,y)=
+ \sum_{n=0}^{d}\frac{Q_n^-(t)P_n(y)}{h_n}.
+ \label{eq:leg2-Gauss-kernels}
+\end{equation}
+Let $m\in\PositiveIntegers$ satisfy $\TwoAdicValuation(m)\ge d$, put
+$h=m^{-1}$ and $K_m=\{k\in\IntegerNumbers:|k|<2m\}$, and define
+$\mathbf D_{kn}=hQ_n^-(kh)$ for $k\in K_m$, $0\le n\le d$,
+$V_{jn}=P_n(\xi_j)$ for $0\le j,n\le d$,
+$W=\operatorname{diag}(\omega_0,\ldots,\omega_d)$, and
+$H=\operatorname{diag}(h_0,\ldots,h_d)$.
+
+\begin{theorem}[Christoffel--Darboux cardinals and weighted SVD transfer]
+\label{thm:leg2-weighted-SVD}
+The Gauss cardinal polynomials and their literal up-atom coefficients are
+\begin{equation}
+ \ell_j(x)=\omega_jK_d(x,\xi_j),
+ \qquad
+ B_{kj}=h\omega_jK_d^\sharp(kh,\xi_j).
+ \label{eq:leg2-Gauss-cardinals}
+\end{equation}
+Moreover
+\begin{equation}
+ O=W^{1/2}VH^{-1/2}
+ \label{eq:leg2-Gauss-orthogonal}
+\end{equation}
+is orthogonal and
+\begin{equation}
+ \boxed{BW^{-1/2}=\mathbf D H^{-1/2}O^T.}
+ \label{eq:leg2-weighted-SVD}
+\end{equation}
+Thus $BW^{-1/2}$ and $\mathbf D H^{-1/2}$ have exactly the same singular
+values.
+\end{theorem}
+
+\begin{proof}
+Gauss quadrature with $d+1$ nodes is exact through degree $2d+1$, hence on
+products of two polynomials of degree at most $d$.  Therefore $V^TWV=H$ and
+\eqref{eq:leg2-Gauss-orthogonal} is orthogonal.  The reproducing
+property of $K_d$ gives
+$\omega_jK_d(\xi_i,\xi_j)=\delta_{ij}$; hence
+$\ell_j=\omega_jK_d(\cdot,\xi_j)$.  Apply the general polynomial synthesis
+theorem in the first variable of this finite kernel to get the coefficient
+formula in \eqref{eq:leg2-Gauss-cardinals}.
+
+In matrix form the basis-independent factorization of
+\cref{thm:lag-right-inverse} is $B=\mathbf D V^{-1}$.  From $V^TWV=H$,
+$V^{-1}=H^{-1}V^TW$.  Therefore
+\[
+ BW^{-1/2}=\mathbf D H^{-1}V^TW^{1/2}
+ =\mathbf D H^{-1/2}(W^{1/2}VH^{-1/2})^T,
+\]
+which is \eqref{eq:leg2-weighted-SVD}.  Right multiplication by an orthogonal
+matrix preserves singular values.
+\end{proof}
+
+\subsection{Moment-smoothed Legendre/Appell connection}
+\label{sec:leg-smoothed}
+
+For every integer $m\ge0$, write
+\begin{equation}
+ P_{2m}(x)=\sum_{j=0}^{m}p_{m,j}x^{2j},
+ \qquad
+ p_{m,j}=(-1)^{m-j}
+ \frac{(2m+2j)!}
+ {2^{2m}(m-j)!(m+j)!(2j)!}.
+ \label{eq:leg2-legendre-monomial}
+\end{equation}
+Since $\Gd_n=\mathscr D_ux^n$, the smoothed polynomial
+$R_{2m}=\MM_u(D)P_{2m}$ gives the connection from $P_{2m}$ to the
+Rvachev--Appell basis.
+
+\begin{theorem}[Forward and inverse Legendre--Appell transforms]
+\label{thm:leg2-appell-transforms}
+For every integer $m\ge0$ and every $0\le r\le m$, set
+\begin{equation}
+ \mathsf C_{m,r}=
+ \sum_{j=r}^{m}p_{m,j}
+ \frac{(2j)!}{(2r)!}
+ \frac{\mu_{2(j-r)}}{(2(j-r))!}.
+ \label{eq:leg2-C}
+\end{equation}
+Then, for every $m\ge0$,
+\begin{equation}
+ \boxed{R_{2m}(x)=\sum_{r=0}^{m}\mathsf C_{m,r}x^{2r},
+ \qquad
+ P_{2m}(x)=\sum_{r=0}^{m}\mathsf C_{m,r}\Gd_{2r}(x).}
+ \label{eq:leg2-forward-appell}
+\end{equation}
+Conversely, for every integer $r\ge0$,
+\begin{equation}
+ \Gd_{2r}(x)=\sum_{m=0}^{r}\mathsf D_{r,m}P_{2m}(x),
+ \label{eq:leg2-inverse-appell}
+\end{equation}
+where, for $0\le m\le r$,
+\begin{equation}
+ \boxed{\mathsf D_{r,m}=
+ \sum_{s=0}^{r-m}\binom{2r}{2s}\gamma_{2s}
+ \frac{(4m+1)2^{2m}(2r-2s)!(r-s+m)!}
+ {(r-s-m)!(2r-2s+2m+1)!}.}
+ \label{eq:leg2-D}
+\end{equation}
+For every integer $N\ge0$, let $\mathsf C^{(N)}$ and $\mathsf D^{(N)}$ be
+the square matrices indexed by $0,\ldots,N$, with entries
+$\mathsf C_{m,r}$ and $\mathsf D_{r,m}$ in their respective lower triangles
+and zeros above them.  These finite matrices are mutual inverses, and
+\begin{equation}
+ \boxed{\det\mathsf C^{(N)}
+ =\prod_{m=0}^{N}2^{-2m}\binom{4m}{2m}.}
+ \label{eq:leg2-C-determinant}
+\end{equation}
+The determinant is unchanged for every normalized even formal moment series:
+no subleading moment enters it.
+\end{theorem}
+
+\begin{proof}
+Apply $\MM_u(D)=\sum_s\mu_sD^s/s!$ to
+\eqref{eq:leg2-legendre-monomial}.  Odd moments vanish, and the coefficient of
+$x^{2r}$ is exactly \eqref{eq:leg2-C}.  Applying $\mathscr D_u$ to the first
+identity in \eqref{eq:leg2-forward-appell} gives the second.
+
+The direct Appell expansion
+\[
+ \Gd_{2r}(x)=\sum_{s=0}^{r}\binom{2r}{2s}\gamma_{2s}x^{2r-2s}
+\]
+and the classical monomial formula
+\[
+ x^{2q}=\sum_{m=0}^{q}
+ \frac{(4m+1)2^{2m}(2q)!(q+m)!}
+ {(q-m)!(2q+2m+1)!}P_{2m}(x)
+\]
+give \eqref{eq:leg2-D} after collecting $P_{2m}$.  The two displayed
+expansions are inverse changes of basis, so their finite matrices are mutual
+inverses.  Finally $\MM_u(D)$ preserves leading coefficients; hence
+$\mathsf C_{m,m}=2^{-2m}\binom{4m}{2m}$.  Multiplication of the triangular
+diagonal proves \eqref{eq:leg2-C-determinant} and its stated universality.
+\end{proof}
+
+\begin{corollary}[Smoothed transmutation and its dual geometry]
+\label{cor:leg2-R-transmutation}
+With the convention $R_{-1}:=0$, the moment-smoothed family satisfies, for
+every $n\ge0$,
+\begin{align}
+ (n+1)R_{n+1}&=(2n+1)X_+R_n-nR_{n-1},
+ \label{eq:leg2-R-recurrence}\\
+ \bigl[(1-X_+^2)D^2-2X_+D+n(n+1)\bigr]R_n&=0.
+ \label{eq:leg2-R-differential}
+\end{align}
+It is orthogonal for the dual pullback form $\langle\cdot,\cdot\rangle_+$ of
+\eqref{eq:leg2-pullback-inner-products}.
+\end{corollary}
+
+\begin{proof}
+Apply $\MM_u(D)$ to the classical recurrence and differential equation.
+Conjugation is an algebra homomorphism, $D$ commutes with $\MM_u(D)$, and
+$\MM_u(D)x\mathscr D_u=X_+$.  Orthogonality is the second identity of
+\cref{thm:leg2-dual-pullback}.
+\end{proof}
+
+\subsection{Legendre moments completed by one Thue--Morse row}
+
+Fix an integer $d\ge0$.  For $0\le r\le d+1$ put
+\begin{equation}
+ c_{d,r}=2^{d+1}-2d-3+2r,
+ \qquad
+ \Phi_{d,r}(x)=2^{-d}u\!\left(\frac{x-c_{d,r}}{2^{d+1}}\right),
+ \label{eq:leg2-endpoint-atoms}
+\end{equation}
+the normalized endpoint basis on $[-1,1]$.  Its polynomiality certificate may
+be normalized as
+\begin{equation}
+ \boxed{\tau_{d,r}=(-1)^{r+1}
+ \eps_{\left\lfloor(2^{d+1}-d-2+r)/2\right\rfloor},
+ \qquad 0\le r\le d+1.}
+ \label{eq:leg2-tau-row}
+\end{equation}
+Thus $\sum_rb_r\Phi_{d,r}$ belongs to $\Pi_d$ if and only if
+$\tau_d^Tb=0$, by \cref{thm:certificate}.  Define
+\begin{equation}
+ (\mathsf L_d)_{n,r}=
+ \frac{2n+1}{2}\int_{-1}^{1}\Phi_{d,r}(x)P_n(x)\Differential x
+ \quad(0\le n\le d),
+ \qquad
+ \mathcal Q_d=\begin{pmatrix}\mathsf L_d\\\tau_d^T\end{pmatrix}.
+ \label{eq:leg2-augmented-moment}
+\end{equation}
+
+\begin{theorem}[Legendre--Thue--Morse coordinate completion]
+\label{thm:leg2-augmented-moment}
+The matrix $\mathcal Q_d$ is invertible.  Its first $d+1$ inverse columns are
+the endpoint coordinates of $P_0,\ldots,P_d$.  Its last inverse column is the
+unique coefficient vector whose first $d+1$ Legendre moments vanish and whose
+defect coordinate $\tau_d^Tb$ equals one.
+\end{theorem}
+
+\begin{proof}
+Suppose $\mathcal Q_db=0$.  The last row makes the endpoint synthesis a
+polynomial in $\Pi_d$.  The preceding rows say that all of its Legendre
+coefficients through degree $d$ vanish; therefore the polynomial is zero.
+Endpoint-basis independence gives $b=0$, proving invertibility.  For the
+coordinate vector of $P_n$, Legendre orthogonality produces the $n$th standard
+basis vector in the first block and polynomiality produces zero in the last
+row.  The final-column characterization is the remaining standard basis
+vector under the inverse.
+\end{proof}
+
+\begin{theorem}[Compressed one-scale Legendre closure]
+\label{thm:leg2-compressed-one-scale}
+For every integer $N\ge0$, set $d=2N$.  Let $\beta_{d;n,r}$ be the unique endpoint
+coordinates
+\begin{equation}
+ P_n(x)=\sum_{r=0}^{d+1}\beta_{d;n,r}\Phi_{d,r}(x),
+ \qquad -1\le x\le1,\quad 0\le n\le d,
+ \label{eq:leg2-beta-endpoint}
+\end{equation}
+and define
+\begin{equation}
+ b_{N,r}^{\rm end}:=\sum_{m=0}^{N}a_m\beta_{2N;2m,r}
+ \qquad(0\le r\le2N+1).
+ \label{eq:leg2-BNr}
+\end{equation}
+Then the Fourier--Legendre cutoff has the exact $2N+2$-atom representation
+\begin{equation}
+ \boxed{
+ S_N(x)=4^{-N}\sum_{r=0}^{2N+1}b_{N,r}^{\rm end}
+ u\!\left(
+ \frac{x-c_{2N,r}}{2\cdot4^N}
+ \right),
+ \qquad -1\le x\le1,}
+ \label{eq:leg2-compressed-one-scale}
+\end{equation}
+and its coefficient row obeys the finite Thue--Morse certificate
+\begin{equation}
+ \boxed{\sum_{r=0}^{2N+1}\tau_{2N,r}b_{N,r}^{\rm end}=0.}
+ \label{eq:leg2-BN-certificate}
+\end{equation}
+Consequently the right side of \eqref{eq:leg2-compressed-one-scale} converges
+uniformly to $u$ as $N\to\infty$.
+\end{theorem}
+
+\begin{proof}
+The first $d+1$ inverse columns in
+\cref{thm:leg2-augmented-moment} are precisely the vectors
+$\beta_{d;0},\ldots,\beta_{d;d}$, proving existence and uniqueness in
+\eqref{eq:leg2-beta-endpoint}.  Take $d=2N$, multiply the representation of
+$P_{2m}$ by $a_m$, and sum over $0\le m\le N$.  Interchanging these two finite
+sums gives \eqref{eq:leg2-BNr}; inserting
+\eqref{eq:leg2-endpoint-atoms} and $2^{-2N}=4^{-N}$ gives
+\eqref{eq:leg2-compressed-one-scale}.  Each column
+$\beta_{2N;2m}$ lies in $\ker\tau_{2N}^T$, so linearity proves
+\eqref{eq:leg2-BN-certificate}.  Finally the finite train is identically
+$S_N$, and \eqref{eq:leg-canonical-series} converges uniformly to $u$.
+\end{proof}
+
+\begin{warning}[The endpoint dictionary changes with the cutoff]
+Equation \eqref{eq:leg2-compressed-one-scale} complements the raw common-mesh
+train \eqref{eq:leg-common-mesh}: the latter displays $4\cdot4^N-1$ sampled
+centers, whereas endpoint reduction leaves exactly $2N+2$ atoms.  In the
+compressed limit the scale, centers, and coefficients all depend on $N$.
+Uniform convergence therefore makes no coordinatewise or atomwise limiting
+claim.
+\end{warning}
+
+\subsection{Parity anatomy and a central reflected-pair basis}
+
+Return to the normalized cell $t\in[0,1]$.  Reflection
+$(\mathcal Rf)(t)=f(1-t)$ sends the local atom $\psi_k$ to $\psi_{1-k}$.
+Write $V_d^\pm$ and $\Pi_d^\pm$ for the two reflection eigenspaces.  Let
+\[
+ \mathcal D_d(t)=t^{d+1}+\mathcal E_d(t)
+\]
+be the canonical defect of \cref{thm:defect-Fourier}.
+
+\begin{lemma}[Reflection character of the canonical defect]
+\label{lem:leg2-defect-parity}
+The periodic residue and the one-dimensional quotient satisfy
+\begin{equation}
+ \mathcal E_d(1-t)=(-1)^{d+1}\mathcal E_d(t),
+ \qquad
+ \mathcal R|_{V_d/\Pi_d}=(-1)^{d+1}.
+ \label{eq:leg2-defect-parity}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Replace $t$ by $1-t$ in the odd-frequency Fourier series for
+$\mathcal E_d$ and then replace the frequency by its negative.  Integrality
+of the frequencies and evenness of $\widehat u$ leave the factor
+$(-1)^{d+1}$.  Moreover,
+\[
+ \mathcal R\mathcal D_d-(-1)^{d+1}\mathcal D_d
+ =(1-t)^{d+1}-(-1)^{d+1}t^{d+1}\in\Pi_d,
+\]
+because the leading terms cancel.  This proves the quotient character.
+\end{proof}
+
+\begin{theorem}[Parity split of the local up-spline space]
+\label{thm:leg2-parity-split}
+For every $N\ge0$,
+\begin{equation}
+ \boxed{V_{2N}^+=\Pi_{2N}^+,\qquad
+ V_{2N+1}^-=\Pi_{2N+1}^-.}
+ \label{eq:leg2-parity-split}
+\end{equation}
+Thus every symmetric member of $V_{2N}$ is already an even polynomial, and
+every antisymmetric member of $V_{2N+1}$ is already an odd polynomial about
+the cell midpoint.
+\end{theorem}
+
+\begin{proof}
+The local decomposition
+$V_d=\Pi_d\oplus\SpanOperator\{\mathcal D_d\}$ makes $V_d/\Pi_d$
+one-dimensional.  By \cref{lem:leg2-defect-parity}, the extra direction is
+antisymmetric when $d=2N$ and symmetric when $d=2N+1$.  Hence the opposite
+parity sector has the same dimension as its polynomial subspace; containment
+then gives the two equalities.
+\end{proof}
+
+For the determinant argument put
+\begin{equation}
+ A_d(z)=\prod_{m=1}^{d}[2^m]_z,\qquad
+ N_d^{\rm rel}=\deg A_d=2^{d+1}-d-2.
+ \label{eq:leg2-annihilator}
+\end{equation}
+The following generating function packages the endpoint reduction used
+repeatedly in the source reports.
+
+\begin{lemma}[Endpoint-tail generating function]
+\label{lem:leg2-endpoint-tail}
+Let $d$ be a nonnegative integer, $M=2^d$, $K=-M+1$,
+$R=N_d^{\rm rel}$, and
+$A_d(z)=\sum_{j=0}^{R}\alpha_jz^j$.  Suppose an active coefficient
+row $q$ is supported on the initial $R$ centers
+$K,\ldots,K+R-1$.  If $b_s$ are its coordinates on the consecutive endpoint
+basis beginning at $K+R$, then
+\begin{equation}
+ \boxed{\sum_{s\ge0}b_sz^s=
+ \frac{\displaystyle\sum_{p=0}^{R-1}
+ q_{K+p}\operatorname{rev}_p A_d(z)}
+ {A_d(z)},}
+ \qquad
+ \operatorname{rev}_p A_d(z)=
+ \sum_{j=0}^{p}\alpha_{p-j}z^j.
+ \label{eq:leg2-endpoint-tail}
+\end{equation}
+Only the first $d+2$ coefficients are needed for the endpoint basis.
+\end{lemma}
+
+\begin{proof}
+Extend each initial impulse by the monic annihilator recurrence.  After
+shifting $K$ to zero, palindromicity of $A_d$ writes that recurrence
+as $\sum_{j=0}^{R}\alpha_jn_{m-j}=0$ for $m\ge R$.  For the impulse at
+$p<R$, its generating function $N_p$ satisfies
+\[
+ A_d(z)N_p(z)
+ =z^p\sum_{j=0}^{R-p-1}\alpha_jz^j
+ =z^pA_d(z)-z^R\operatorname{rev}_pA_d(z).
+\]
+The endpoint coordinate is the original row minus this null extension.  At
+index $R+s$ the original row is zero, so its coordinate is the coefficient of
+$z^s$ in
+$\operatorname{rev}_pA_d/A_d$.  Linearity over the initial
+impulses proves \eqref{eq:leg2-endpoint-tail}.
+\end{proof}
+
+Fix an integer $N\ge0$, put $d=2N$ and $M=4^N$, and define the reflected central pairs
+\begin{equation}
+ S_r^{(N)}=\psi_{-r}+\psi_{r+1},
+ \qquad 0\le r\le N.
+ \label{eq:leg2-central-pairs}
+\end{equation}
+Under $t=(x+1)/2$, the corresponding physical pair is
+\begin{equation}
+ \boxed{\mathcal S_r^{(N)}(x):=\frac1{4^N}\left[
+ u\!\left(\frac{x-(2r+1)}{2\cdot4^N}\right)
+ +u\!\left(\frac{x+(2r+1)}{2\cdot4^N}\right)\right].}
+ \label{eq:leg2-physical-central-pairs}
+\end{equation}
+They belong to $\Pi_{2N}^+$ by \cref{thm:leg2-parity-split}.  Express them in
+the endpoint basis, obtaining a $(2N+2)\times(N+1)$ coordinate matrix; let
+$\mathsf B_N$ be its first $N+1$ rows.
+
+\begin{theorem}[Central $q$-determinant]
+\label{thm:leg2-central-determinant}
+For every integer $N\ge1$, define
+\begin{equation}
+ \sigma_N=[z^N]\frac1{(1-z)A_{2N-1}(z)}
+ =[z^N]\frac{(1-z)^{2N-2}}
+ {\prod_{m=1}^{2N-1}(1-z^{2^m})},
+ \qquad
+ C_N=2A_{2N-1}(1)=2^{1+N(2N-1)}.
+ \label{eq:leg2-sigma}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{\det\mathsf B_N=(-1)^N(C_N\sigma_N-1).}
+ \label{eq:leg2-central-determinant}
+\end{equation}
+This determinant is an odd, nonzero integer.  For $N=0$ the unique minor is
+one.
+\end{theorem}
+
+\begin{proof}
+For $N=0$, the degree-zero endpoint basis and the partition identity give
+$\mathsf B_0=(1)$, so its unique minor is one.
+
+For $N=1$, the endpoint annihilator is
+$A_2(z)=(1+z)(1+z+z^2+z^3)$.  Direct endpoint reduction gives the two
+central-pair columns
+\[
+ (3,-2,2,-3)^T,\qquad (2,-1,1,-2)^T.
+\]
+Thus
+$\mathsf B_1=\left(\begin{smallmatrix}3&2\\-2&-1\end{smallmatrix}\right)$
+has determinant $1$.  Also
+$\sigma_1=[z](1-z^2)^{-1}=0$ and $C_1=4$, so
+$1=(-1)(4\sigma_1-1)$ as required.
+
+Suppose henceforth that $N\ge2$.  In
+\cref{lem:leg2-endpoint-tail} take $d=2N$ and
+$R=N_{2N}^{\rm rel}=2M-2N-2$.  The two impulses in the $r$th central pair
+have shifted positions
+\[
+ p_-=M-r-1,\qquad p_+=M+r \qquad(0\le r\le N).
+\]
+They satisfy $0\le p_-,p_+<R$, because
+$3N+2<4^N=M$ for $N\ge2$.  The endpoint-tail lemma is therefore applicable
+to every column below.
+
+Write $A_{2N-1}(z)=\sum c_jz^j$ and
+$\ell_j=\sum_{q=0}^{j}c_q$.  Let $L_N$ be the unit lower-triangular Toeplitz
+matrix with entries $(L_N)_{sr}=\ell_{s-r}$ for $s\ge r$.  Apply
+\cref{lem:leg2-endpoint-tail} to the two impulses at positions
+$M-r-1$ and $M+r$.  Using
+\[
+ A_{2N}(z)=A_{2N-1}(z)[M]_z
+\]
+and convolving by $A_{2N-1}(z)/(1-z)$ gives
+$L_N\mathsf B_N=\mathsf F_N$, where
+\begin{equation}
+ (\mathsf F_N)_{sr}=
+ \begin{cases}
+ C_N,&r<s,\\
+ C_N-\ell_{r-s},&r\ge s.
+ \end{cases}
+ \label{eq:leg2-F-matrix}
+\end{equation}
+Indeed, below degree $N<M$ the factor $(1-z^M)^{-1}$ contributes only its
+constant term; the two reversed prefixes then sum to
+$2A_{2N-1}(1)$, except for the displayed truncated tail.
+
+Since $\det L_N=1$, it remains to evaluate $\det\mathsf F_N$.  Subtract row
+$s+1$ from row $s$ for $0\le s<N$.  The leading $N$-by-$N$ block becomes the
+upper-triangular Toeplitz matrix $-(c_{r-s})$, with determinant $(-1)^N$.
+If $A_{2N-1}^{-1}=\sum g_jz^j$, inversion of that block is
+convolution by $g_j$.  Its Schur complement is
+\[
+ C_N\sum_{j=0}^{N}g_j-1
+ =C_N[z^N]\frac1{(1-z)A_{2N-1}(z)}-1
+ =C_N\sigma_N-1.
+\]
+This proves \eqref{eq:leg2-central-determinant}.  The inverse series has
+integer coefficients because $A_{2N-1}(0)=1$ and the polynomial is
+monic over $\IntegerNumbers$.  Thus $\sigma_N\in\IntegerNumbers$; as $C_N$ is even, the final factor is
+odd and cannot vanish.
+\end{proof}
+
+\begin{corollary}[Central reflected-pair basis and exact Gram duality]
+\label{cor:leg2-central-basis}
+For every integer $N\ge0$, the $N+1$ pairs
+$S_0^{(N)},\ldots,S_N^{(N)}$ form a basis of
+$\Pi_{2N}^+$.  Hence every even Legendre mode $P_{2m}$, $0\le m\le N$, has a
+unique rational expansion
+\begin{equation}
+ P_{2m}(x)=\sum_{r=0}^{N}c_{m,r}^{(N)}\mathcal S_r^{(N)}(x)
+ \label{eq:leg2-central-legendre}
+\end{equation}
+in the affinely transported physical pair blocks $\mathcal S_r^{(N)}$.
+Let $\mathbf S_N$ collect those blocks,
+$\mathbf P_N=(P_0,P_2,\ldots,P_{2N})^T$,
+$\mathbf P_N=\mathsf U_N\mathbf S_N$, and
+\[
+ \mathcal G_N=\int_{-1}^{1}\mathbf S_N\mathbf S_N^T\Differential x,
+ \qquad
+ H_N^+=\operatorname{diag}(h_0,h_2,\ldots,h_{2N}).
+\]
+Then
+\begin{equation}
+ \boxed{\mathsf U_N\mathcal G_N\mathsf U_N^T=H_N^+,
+ \qquad
+ \mathcal G_N^{-1}=\mathsf U_N^T(H_N^+)^{-1}\mathsf U_N,}
+ \label{eq:leg2-central-Gram}
+\end{equation}
+and the even projection kernel has the pair-minimal factorization
+\begin{equation}
+ K_N^+(x,y)=\mathbf S_N(x)^T\mathcal G_N^{-1}\mathbf S_N(y).
+ \label{eq:leg2-central-kernel}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The nonzero minor in \cref{thm:leg2-central-determinant} proves independence.
+The pairs already lie in the $(N+1)$-dimensional space $\Pi_{2N}^+$, hence
+they form a basis.  Their endpoint coordinates are integral and the minor is
+a nonzero integer, so rational targets have rational coordinates.
+
+Integrate $\mathbf P_N=\mathsf U_N\mathbf S_N$ against its transpose and use
+Legendre orthogonality to obtain the first identity in
+\eqref{eq:leg2-central-Gram}; invert it for the second.  Finally substitute
+the same change of basis into
+$K_N^+(x,y)=\mathbf P_N(x)^T(H_N^+)^{-1}\mathbf P_N(y)$.
+\end{proof}
+
+\begin{remark}[What the central determinant does not prove]
+The reflected-pair basis spans the even sector at degree $2N$.  It is not the
+same assertion as the open central-consecutive-raw-block conjecture
+\ref{conj:central-basis}, which concerns a full local basis in both parities.
+The two integer determinants must therefore remain distinct.
+\end{remark}
+
+\subsection{Smooth convergence, log-square decay, and moment units}
+
+\begin{theorem}[Superalgebraic convergence in every derivative]
+\label{thm:leg2-Cinfty-convergence}
+For all integers $r,L\ge0$,
+\begin{equation}
+ \boxed{\|u-S_N\|_{C^r[-1,1]}=\BigO_{r,L}(N^{-L}).}
+ \label{eq:leg2-Cinfty-convergence}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $\mathcal L=-D(1-x^2)D$.  Since $u$ is smooth and flat at both endpoints,
+repeated integration by parts gives, for every $s\ge0$ and $\ell\ge1$,
+\[
+ \int_{-1}^{1}uP_\ell
+ =[\ell(\ell+1)]^{-s}
+ \int_{-1}^{1}(\mathcal L^su)P_\ell.
+\]
+The last integral is bounded uniformly in $\ell$, so the Legendre coefficient
+$a_n$ is $\BigO_s(n^{1-2s})$.  For fixed $r$,
+$\|P_\ell^{(r)}\|_\infty=\BigO_r(\ell^{2r})$.  Sum the differentiated tail
+and choose $s$ larger than $L+r+2$.
+\end{proof}
+
+The primary Fourier theory gives, for $|\xi|\ge1$,
+\begin{equation}
+ |\widehat u(\xi)|\le C_0
+ \exp\!\left(-\frac{(\log|\xi|)^2}{2\log2}\right)
+ |\xi|^{-\kappa_\infty},
+ \qquad
+ \kappa_\infty=\frac32+
+ \frac{\log(\pi/\sqrt3)}{\log2}.
+ \label{eq:leg2-fourier-envelope}
+\end{equation}
+This is equation \texttt{fourier-two-sided-envelope} in
+\path{Fabius_Function_and_Rvachev_Up.tex}; the exact Lean bound is
+\path{norm_rvachevFourier_le_decayGauge_abs} in
+\path{RvachevFourierDecay.lean}.
+
+\begin{theorem}[Log-square decay inherited from the sinc product]
+\label{thm:leg2-log-square}
+There exist constants $C>0$ and $n_0\in\NaturalNumbers$ such that, for every $n\ge n_0$,
+\begin{equation}
+ \boxed{|a_n|\le
+ C\frac{n^\sigma}{\log n}
+ \exp\!\left(-\frac{(\log n)^2}{2\log2}\right),}
+ \qquad
+ \sigma=2-\kappa_\infty+\log_2(2\pi).
+ \label{eq:leg2-log-square}
+\end{equation}
+Hence
+\begin{equation}
+ \liminf_{\substack{n\to\infty\\a_n\ne0}}
+ \frac{-\log|a_n|}{(\log n)^2}\ge\frac1{2\log2}.
+ \label{eq:leg2-log-square-liminf}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use \eqref{eq:leg-Lambda-bessel} at $m=2n,c=0$ and split the integral at
+$X_n=n/(2\pi)$.  The power series for $J_\nu$, followed by Stirling, gives
+constants $C_1>0$ and $q<1$ such that
+$|j_{2n}(t)|\le C_1q^{2n}$ for $|t|\le n$.  Thus the inner integral is
+$\BigO(n^2q^{2n})$.  On the complement use $|j_{2n}|\le1$ and
+\eqref{eq:leg2-fourier-envelope}.  With $a=\log2$ and $\kappa>1$, convexity of
+$t^2/(2a)+(\kappa-1)t$ after the substitution $t=\log x$ yields
+\[
+ \int_X^\infty
+ \exp\!\left(-\frac{(\log x)^2}{2a}\right)x^{-\kappa}\Differential x
+ \le
+ \frac{aX^{1-\kappa}}
+ {\log X+(\kappa-1)a}
+ \exp\!\left(-\frac{(\log X)^2}{2a}\right).
+\]
+Set $X=X_n$.  Expanding $\log X_n=\log n-\log(2\pi)$ produces the exponent
+$\sigma$ and the denominator $\log n$ in \eqref{eq:leg2-log-square}; the
+exponentially small inner contribution is absorbed.  Taking logarithms gives
+\eqref{eq:leg2-log-square-liminf}.
+\end{proof}
+
+\begin{theorem}[Every even up-moment is a two-adic unit]
+\label{thm:leg2-moment-units}
+For every $m\ge0$,
+\begin{equation}
+ \boxed{\TwoAdicValuation(\mu_{2m})=0,\qquad \mu_{2m}\equiv1\pmod2}
+ \label{eq:leg2-moment-units}
+\end{equation}
+inside $\RationalNumbers_2$.
+\end{theorem}
+
+\begin{proof}
+The distributional fixed point for $u$ gives
+\begin{equation}
+ (4^m-1)\mu_{2m}
+ =\sum_{r=1}^{m}\binom{2m}{2r}
+ \frac{\mu_{2m-2r}}{2r+1}.
+ \label{eq:leg2-moment-recurrence}
+\end{equation}
+Induct on $m$.  The initial moment is $\mu_0=1$.  Every denominator $2r+1$
+and the factor $4^m-1$ are odd, and the inductive moments are all one modulo
+two.  The right side of \eqref{eq:leg2-moment-recurrence} is therefore
+congruent to
+\[
+ \sum_{r=1}^{m}\binom{2m}{2r}=2^{2m-1}-1\equiv1\pmod2.
+\]
+Division by the odd unit $4^m-1$ preserves the congruence.
+\end{proof}
+
+\subsection{Exterior anchors and one-sided ladder instability}
+
+Let $\rho_0=2+\sqrt3$, the exterior growth base of Legendre polynomials at
+$-2$, and let $A_{2N,N}$ denote the raw top-degree amplitude obtained by
+expanding the partial Legendre sum in the one-sided Appell ladder
+$G_n(x+2)$.
+
+\begin{theorem}[Exterior divergence and exact top-amplitude growth]
+\label{thm:leg2-exterior-top-growth}
+The Legendre coefficients satisfy
+\begin{equation}
+ \limsup_{N\to\infty}|a_N|^{1/N}=1.
+ \label{eq:leg2-an-root}
+\end{equation}
+Consequently the terms $a_NP_{2N}(-2)$ are unbounded along a subsequence.
+The top raw
+amplitude is
+\begin{equation}
+ A_{2N,N}=(2N)!\,2^{\binom{2N+1}{2}}\,
+ a_N\,2^{-2N}\binom{4N}{2N},
+ \label{eq:leg2-top-amplitude}
+\end{equation}
+and
+\begin{equation}
+ \boxed{\limsup_{\substack{N\to\infty\\a_N\ne0}}
+ \frac{\log|A_{2N,N}|}{N^2}=2\log2.}
+ \label{eq:leg2-top-growth}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Since $a_N\to0$, the limsup in \eqref{eq:leg2-an-root} is at most one.  If it
+were below one, the Legendre series would converge locally uniformly in a
+Bernstein ellipse and analytically continue $u$ through its flat endpoints.
+The only analytic function with the zero endpoint Taylor series is locally
+zero, contradicting $u(0)=1$.  This proves \eqref{eq:leg2-an-root}.
+
+Equation \eqref{eq:leg2-an-root} says that no geometric bound
+$|a_N|=\BigO(\rho^{-2N})$ with $\rho>1$ can hold.  Fix
+$1<\rho<\rho_0$.  Infinitely many $N$ have $|a_N|>\rho^{-2N}$, while
+\[
+ |P_{2N}(-2)|\asymp\frac{\rho_0^{2N}}{\sqrt N}.
+\]
+Their products are unbounded.
+
+The deconvolution operator preserves leading coefficients, and
+$[x^{2N}]P_{2N}=2^{-2N}\binom{4N}{2N}$.  Multiplying that coordinate by the
+ladder amplitude $D_{2N}=(2N)!2^{\binom{2N+1}{2}}$ proves
+\eqref{eq:leg2-top-amplitude}.  The coefficient bound
+$|a_N|\le(4N+1)/2$ and \eqref{eq:leg2-an-root} show that its logarithm
+contributes $o(N^2)$ along the limsup.  Stirling shows that the factorial and
+central binomial contribute only $\BigO(N\log N)$.  The sole quadratic term is
+$\binom{2N+1}{2}\log2=(2N^2+N)\log2$, proving
+\eqref{eq:leg2-top-growth}.
+\end{proof}
+
+\begin{theorem}[No exponentially weighted normal Appell closure]
+\label{thm:leg2-no-normal-closure}
+Suppose $\sum_{n\ge0}|c_n|R^n<\infty$ for some $R>4$.  Then
+\[
+ f(z)=\sum_{n\ge0}c_nG_n(z+2)
+\]
+converges normally in a complex neighborhood of $[-1,1]$ and is analytic
+there.  Consequently it cannot agree with $u$ on any nondegenerate
+subinterval of $[-1,1]$.
+\end{theorem}
+
+\begin{proof}
+If $Z$ has density $u$, then
+$G_n(z+2)=\Expectation(z+2-Z)^n$ and $|Z|\le1$.  Choose $\varepsilon>0$ with
+$4+\varepsilon<R$.  On $|z|\le1+\varepsilon$,
+\[
+ |G_n(z+2)|\le(|z+2|+1)^n\le(4+\varepsilon)^n.
+\]
+The Weierstrass test gives normal convergence and analyticity.  Equality with
+$u$ on a nondegenerate subinterval of $[-1,1]$ would make $u$ analytic at its
+interior points, contradicting its nowhere-analyticity.  The exact primary
+anchor is \path{eq:nonanalytic-up-support} in
+\path{Fabius_Function_and_Rvachev_Up.tex}; the corresponding Lean declaration
+is \path{canonical_rvachev_not_analyticAt} in \path{NowhereAnalytic.lean}.
+\end{proof}
+
+\subsection{Factorial deconvolution, Lambert inversion, and non-flattening}
+
+Put
+\begin{equation}
+ C=\MM_u(\pi\ImaginaryUnit)=
+ \prod_{j\ge1}\frac{\sin(\pi/2^j)}{\pi/2^j}.
+ \label{eq:leg2-C-constant}
+\end{equation}
+As $m\to\infty$, the nearest-pole expansion of $1/\MM_u$ gives
+\begin{equation}
+ \gamma_{2m}=
+ \frac{2(-1)^m(2m)!}{C(2\pi)^{2m}}
+ \left(1+\BigO(m4^{-m})\right).
+ \label{eq:leg2-gamma-asymptotic}
+\end{equation}
+The imported estimate is the nearest-pole specialization of the three-shell
+expansion in \path{Inverse_and_Sampling_Frontiers.tex}.  Its source theorem
+and equation labels are, respectively,
+\path{p2:thm:three-shell} and \path{p2:eq:alpha-three-shell}.
+
+\begin{theorem}[Central deconvolution asymptotic]
+\label{thm:leg2-Q0-asymptotic}
+As $n\to\infty$,
+\begin{equation}
+ \boxed{Q_{2n}^-(0)=
+ \frac{2(-1)^n}{C}
+ \frac{(4n)!}{(2n)!(4\pi)^{2n}}
+ \left(1+\frac{2\pi^2}{4n-1}+\BigO(n^{-2})\right).}
+ \label{eq:leg2-Q0-asymptotic}
+\end{equation}
+In particular,
+\begin{equation}
+ Q_{2n}^-(0)=\frac{2\sqrt2}{C}(-1)^n
+ \left(\frac{2n}{\pi\EulerE}\right)^{2n}
+ \left(1+\BigO(n^{-1})\right),
+ \qquad
+ |Q_{2n}^-(0)|^{1/(2n)}\sim\frac{2n}{\pi\EulerE}.
+ \label{eq:leg2-Q0-root}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write
+\[
+ P_{2n}(x)=\sum_{j=0}^{n}c_{n,j}x^{2n-2j},
+ \qquad
+ c_{n,j}=2^{-2n}(-1)^j
+ \frac{(4n-2j)!}{j!(2n-j)!(2n-2j)!}.
+\]
+Since the constant term of $\mathscr D_ux^r$ is $\gamma_r$,
+$Q_{2n}^-(0)=\sum_jc_{n,j}\gamma_{2n-2j}$.  Let
+$T_{n,j}=c_{n,j}\gamma_{2n-2j}$.  The exact first ratio and
+\eqref{eq:leg2-gamma-asymptotic} give
+\[
+ \frac{T_{n,1}}{T_{n,0}}
+ =\frac{2\pi^2}{4n-1}+\BigO(4^{-n}).
+\]
+Uniform two-sided factorial bounds from the same pole expansion give, for
+$j\ge2$,
+\[
+ \left|\frac{T_{n,j}}{T_{n,0}}\right|
+ \le\frac{C_1}{j!}\left(\frac{2\pi^2}{n}\right)^j.
+\]
+Their sum is $\BigO(n^{-2})$.  Now
+$c_{n,0}=2^{-2n}\binom{4n}{2n}$; multiplying by
+\eqref{eq:leg2-gamma-asymptotic} proves
+\eqref{eq:leg2-Q0-asymptotic}.  Stirling gives
+\eqref{eq:leg2-Q0-root}.
+\end{proof}
+
+For $X>0$ let
+\[
+ n_Q(X)=\min\{n\ge1:|Q_{2n}^-(0)|\ge X\}.
+\]
+
+\begin{corollary}[Lambert--$W$ threshold with discrete monotonicity]
+\label{cor:leg2-Q-Lambert}
+As $X\to\infty$,
+\begin{equation}
+ \boxed{n_Q(X)=
+ \frac{\log X}
+ {2W\!\left(\log X/(\pi\EulerE)\right)}+\BigO(1).}
+ \label{eq:leg2-Q-Lambert}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The ratio of consecutive absolute values in
+\eqref{eq:leg2-Q0-root} tends to infinity; hence
+$|Q_{2n}^-(0)|$ is strictly increasing for all sufficiently large $n$.  This
+justifies inversion of the least-integer threshold.  Put $H=\log X$ and
+$w=W(H/(\pi\EulerE))$.  Then $n_0=H/(2w)$ solves
+$2n_0\log(2n_0/(\pi\EulerE))=H$.  The logarithm of the prefactor in
+\eqref{eq:leg2-Q0-root} changes the continuous solution by $o(1)$ because the
+derivative of the leading logarithm tends to infinity.  Eventual monotonicity
+and integer rounding contribute only $\BigO(1)$.
+\end{proof}
+
+\begin{theorem}[Sharp central growth and failure of atomwise flattening]
+\label{thm:leg2-central-growth}
+For the coefficient of the repeated central atom
+\[
+ c_n^{(0)}=\frac{a_nQ_{2n}^-(0)}{4^n}
+\]
+one has
+\begin{equation}
+ \boxed{\limsup_{n\to\infty}
+ \frac{|c_n^{(0)}|^{1/n}}{n^2}
+ =\frac1{\pi^2\EulerE^2}.}
+ \label{eq:leg2-central-growth}
+\end{equation}
+Therefore the flattened atom series is neither absolutely nor
+unconditionally convergent; the exact self-reconstruction must remain grouped
+into its finite Legendre blocks.
+\end{theorem}
+
+\begin{proof}
+Equation \eqref{eq:leg2-Q0-root} gives
+\[
+ \frac{|Q_{2n}^-(0)|^{1/n}}{n^2}\longrightarrow
+ \frac4{\pi^2\EulerE^2}.
+\]
+By \eqref{eq:leg2-an-root}, multiplication by $|a_n|^{1/n}$ preserves this
+value along the limsup, while division by $4^n$ divides it by four, proving
+\eqref{eq:leg2-central-growth}.  In particular the individual central terms
+do not tend to zero.  Absolute or unconditional convergence of a scalar
+series would force every term to vanish, so both forms of flattening fail.
+\end{proof}
+
+\subsection{Exact root transition at degree twelve}
+
+\begin{proposition}[First nonreal zeros; exact computer-assisted certificate]
+\label{prop:leg2-Q12-nonreal}
+For $1\le n\le11$, $Q_n^-$ has exactly $n$ real roots.  The polynomial
+$Q_{12}^-$ has exactly eight real roots and therefore four nonreal roots.
+The exact nonreal-root counts for $n=12,\ldots,20$ are
+\begin{equation}
+ 4,4,4,8,8,8,8,12,12.
+ \label{eq:leg2-nonreal-counts}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The retained exact verifier constructs every $Q_n^-$ over $\RationalNumbers$ from the
+reciprocal moments and applies the Euclidean Sturm-chain algorithm, with no
+floating-point decisions.  For $Q_{12}^-$ the chain degrees are
+$12,11,\ldots,0$, and the leading-coefficient signs are
+\[
+ +,+,+,+,+,+,+,+,-,+,+,+,+.
+\]
+At $+\infty$ this has two sign variations.  At $-\infty$, multiplying by the
+degree parities gives
+\[
+ +,-,+,-,+,-,+,-,-,-,+,-,+,
+\]
+with ten variations.  Sturm's theorem gives $10-2=8$ real roots.  The same
+exact sign-variation calculation gives $n$ real roots for $n\le11$ and the
+counts in \eqref{eq:leg2-nonreal-counts}; the canonical certificate, full
+table, and verifier are recorded under
+\nolinkurl{assets/evidence/legendre/root-geometry/}, as documented in
+\cref{sec:provenance-poly}.  Approximate
+root locations are diagnostic only and are not used in the proposition.
+\end{proof}
+
+\subsection{Consolidated precise conjectures}
+
+\begin{conjecture}[Exact two-adic valuations]
+\label{conj:leg2-two-adic}
+For every $m,n\ge1$,
+\[
+ \TwoAdicValuation(\mu_{2m}-1)=3+\TwoAdicValuation(m),
+ \qquad
+ \TwoAdicValuation(a_n)=-1.
+\]
+Exact rational computations verify both assertions through index $80$.
+\end{conjecture}
+
+\begin{conjecture}[Sharp log-square coefficient decay]
+\label{conj:leg2-sharp-log-square}
+\[
+ \liminf_{\substack{n\to\infty\\a_n\ne0}}
+ \frac{-\log|a_n|}{(\log n)^2}=\frac1{2\log2}.
+\]
+This is the precise sharpness question left by
+\cref{thm:leg2-log-square}; no unspecified log-periodic correction is included.
+\end{conjecture}
+
+\begin{conjecture}[Central determinant arithmetic]
+\label{conj:leg2-central-arithmetic}
+With $\sigma_N$ from \eqref{eq:leg2-sigma},
+\[
+ (-1)^N\sigma_N>0\quad(N\ge2),\qquad
+ \log\!\left(\frac{(-1)^N\sigma_N}{2^{2N-3}}\right)=o(N),
+\]
+and the normalized factor tends to infinity.  The sign assertion has exact
+evidence for $2\le N\le128$; the exceptional value is $\sigma_1=0$.
+\end{conjecture}
+
+\begin{conjecture}[Endpoint signs and conditioning]
+\label{conj:leg2-endpoint-signs}
+With the even-degree endpoint coordinates from
+\eqref{eq:leg2-beta-endpoint}, for every $m\ge1$ and
+$0\le r\le2m+1$,
+$(-1)^r\beta_{2m;2m,r}>0$.  Separately,
+\[
+ \log\kappa_2(\mathcal G_N)=\Theta(N^2),
+ \qquad
+ \lim_{\substack{d\to\infty\\2\mid d}}
+ \frac{\log\max_r|\beta_{d;d,r}|}{d^2}=\log2.
+\]
+These are statements about two different bases and are not identified.
+\end{conjecture}
+
+\begin{conjecture}[Complex zeros]
+\label{conj:leg2-complex-zeros}
+The number of nonreal zeros of $Q_n^-$ tends to infinity, and every
+$Q_n^-$ has only simple zeros.  The population and simplicity assertions are
+logically separate.
+\end{conjecture}
+
+Equation \eqref{eq:leg2-an-root} proves that the set of indices with
+$a_n\ne0$ is infinite.
+
+\begin{conjecture}[Exterior side lobes and square energy]
+\label{conj:leg2-exterior-energy}
+Regard the finite train $B_n$ of \eqref{eq:leg-block} as a function on all of
+$\RealNumbers$.  Along the nonzero coefficient indices,
+\[
+ \lim_{\substack{n\to\infty\\a_n\ne0}}
+ \frac{\|B_n\|_{L^2(\RealNumbers\setminus[-1,1])}}
+ {\|B_n\|_{L^2[-1,1]}}=\infty.
+\]
+Also the exact square energy
+$\mathscr E_F=\int_0^1\FabiusBounded(x)^2\Differential x$ is irrational.
+\end{conjecture}
+
+\begin{problem}[Make the remaining normalizations mathematical]
+\label{prob:leg2-normalizations}
+Find explicit diagonal entries for the proposed augmented determinant
+normalization, and an explicit affine normalization for the proposed
+two-regular spectral-closure sequences.  Until those data are specified,
+phrases such as natural normalization do not define conjectures.
+\end{problem}

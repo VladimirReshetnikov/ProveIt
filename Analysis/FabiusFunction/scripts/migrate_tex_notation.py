@@ -18,8 +18,8 @@ directories.  ``--apply`` is required to write.  Archive paths are rejected.
 
 Examples::
 
-    python Analysis/FabiusFunction/scripts/migrate_tex_notation.py docs/foo
-    python Analysis/FabiusFunction/scripts/migrate_tex_notation.py --apply docs/foo
+    python Analysis/FabiusFunction/scripts/migrate_tex_notation.py Analysis/FabiusFunction/docs/foo
+    python Analysis/FabiusFunction/scripts/migrate_tex_notation.py --apply Analysis/FabiusFunction/docs/foo
 """
 
 from __future__ import annotations

@@ -2,6 +2,29 @@
 
 New standalone intake members:
 
+- [`Non_Elementarity_of_the_Fabius_Function/`](Non_Elementarity_of_the_Fabius_Function/),
+  *The Fabius Function and Its Inverse are Not Elementary: Density of the
+  Analytic Locus under Algebraic Branches and Inversion* (14 A4 pp; 1,068
+  source lines at intake and 1,057 after the notation migration), was
+  reclassified on 2026-08-31 from the former top-level
+  `docs/Non_Elementarity_of_the_Fabius_Function/` pair through
+  `drafts/incoming/` and filed here without changing either submitted
+  payload. The bare two-file package supplied no archive or checksum ledger.
+  The intake hashes were PDF `ab722e11...` and TeX `3c3c2f48...`; the active
+  `SHA256SUMS` was refreshed after the post-publication semantic-notation
+  migration and verifies the current TeX/PDF pair. Its TeX source was already
+  LF, and its structurally readable, unencrypted PDF uses embedded/subset
+  fonts, includes Libertinus, and has no Type 3 font. The
+  title and abstract place its forward/inverse non-elementarity and analytic-
+  locus material with the inverse-function reports in this group. An older
+  same-stem study remains under `docs/archive/standalone-studies/`, but neither
+  its TeX nor its PDF is byte-identical to this later expanded package; both
+  are preserved and any supersession decision is deferred. It remains
+  standalone pending post-publication claim-level reassessment and verification
+  of its Lean crosswalk; manuscript theorem labels and the document's own
+  formalization description do not independently establish current Lean
+  verification.
+
 - [`geometric_comb_q_fabius_report/`](geometric_comb_q_fabius_report/),
   *Geometric-Comb Interpolation, Gaussian Pascal Transforms, and the
   Fabius--Rvachev Boundary Layer* (65 pp), arrived on 2026-08-30 from

@@ -5,6 +5,7 @@
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,array,tabularx,multirow}
 \usepackage{graphicx}
 \usepackage{caption}
@@ -30,10 +31,10 @@
   linkcolor=linkblue,
   citecolor=deepgreen,
   urlcolor=linkblue,
-  pdftitle={Exact Polynomial Synthesis from Rvachev Up-Atoms},
-  pdfsubject={Finite exact representation of polynomials by shifted and scaled
-    Rvachev up-functions: common-scale dictionaries, antiderivative-train
-    windows, and minimal atom counts},
+  pdftitle={Exact Rvachev Up-Function Polynomial Synthesis},
+  pdfsubject={Finite exact polynomial synthesis, Lagrange cardinal loops,
+    Legendre spectral closure, operator transmutation, and self-reconstruction
+    by Rvachev up-functions},
   pdfkeywords={Rvachev up function, Fabius function, Strang-Fix, polynomial
     reproduction, Thue-Morse, q-integer, binary partitions, Appell polynomials,
     shift-invariant space}
@@ -125,11 +126,11 @@
   belowskip=0.8em
 }
 
-\title{\bfseries Exact Polynomial Synthesis from Rvachev Up-Atoms\\[0.4em]
-\large Common-scale dictionaries, antiderivative-train windows,\\
-Thue--Morse certificates, and minimal atom counts}
+\title{\bfseries Exact Rvachev Up-Function Polynomial Synthesis\\[0.4em]
+\large Dictionaries, Lagrange cardinal loops, Legendre spectral closure,\\
+operator transmutation, and self-reconstruction}
 \author{Consolidated frontier volume for Vladimir Reshetnikov's \texttt{ProveIt} project}
-\date{28 August 2026}
+\date{30 August 2026}
 
 \begin{document}
 \maketitle
@@ -137,12 +138,15 @@ Thue--Morse certificates, and minimal atom counts}
 \begin{abstract}
 \noindent
 Let $u=\RvachevUp$ be Rvachev's even $C^\infty$ probability density supported
-on $[-1,1]$.  This volume consolidates two independently written
-reports on the same synthesis problem: represent an arbitrary
-polynomial \emph{exactly}, on a prescribed compact interval, by a
-finite signed sum of shifted and scaled copies of $u$.  The two
-sources solve it by two genuinely different constructions, which are
-presented here side by side, reconciled, and combined.
+on $[-1,1]$.  This volume consolidates thirteen independently developed
+frontier reports: three exact-polynomial synthesis packages, six
+Lagrange--Rvachev cardinal-loop packages, and four Legendre--Rvachev
+spectral/self-reconstruction packages.  Their shared problem is to represent
+polynomials exactly on a compact interval by finite signed sums of shifted and
+scaled copies of $u$, then close the representation with interpolation or
+orthogonal analysis.  Repeated foundations and equivalent matrix notations
+are stated once; genuinely different constructions and consequences are
+proved in a common notation.
 
 \emph{The common-scale dictionary.}  For degree $d$, the minimal
 integer scale-to-shift ratio with Strang--Fix reproduction order $d$
@@ -206,8 +210,23 @@ rational evaluations
  \mathcal E_7(0)=-\tfrac{1196113}{65063250},
 \]
 two of which independently reconfirm exact phase-error values computed
-in that volume.  Provenance of the absorbed sources, with SHA-256
-hashes, is in \cref{sec:provenance-poly}.
+in that volume.
+
+\emph{Lagrange and Legendre closure.}  Exact cardinal synthesis produces a
+canonical right inverse and oblique coefficient projector, a one-dimensional
+Thue--Morse defect completion, nested detail idempotents, signed-decoder and
+Lebesgue barriers, Appell--Vandermonde determinant growth, and exact
+Gaussian-binomial rows.  Fourier--Legendre analysis produces finite
+biorthogonal up-atom blocks, reverse local closure, rational spectral
+identities, positive energy series, refinement null trains, and exact boundary
+jets.  The deconvolved family $Q_n^-=\MM_u(D)^{-1}P_n$ and the distinct
+smoothed family $R_n=\MM_u(D)P_n$ carry dual pullback geometries with
+coordinates $X_\mp=x\mp K'(D)$; their operator recurrences,
+Christoffel--Darboux kernels, Legendre--Appell connection determinant,
+central reflected-pair $q$-determinant, factorial/Lambert asymptotics, and
+non-flattening theorem are proved below.  Provenance of every absorbed source
+and the exact-computation boundary are recorded in
+\cref{sec:provenance-poly}.
 \end{abstract}
 
 \clearpage
@@ -217,15 +236,13 @@ hashes, is in \cref{sec:provenance-poly}.
 \section*{Provenance and merge conventions}
 \addcontentsline{toc}{section}{Provenance and merge conventions}
 
-This volume is an editorial consolidation (28 August 2026) of three
-drafts --- two of the fourth wave and one of the seventh --- that
-solve the same problem by different routes; shared foundations are
-stated once, each construction keeps its own chapter, their
-overlapping material (Appell calculus, Thue--Morse products,
-rationality, sharp-order statements, tensor products, extension
-operators, conditioning, Lean roadmaps) is merged, and the comparison
-chapter and the cross-volume defect identities are new to the
-consolidation.
+This volume is an editorial consolidation (30 August 2026) of thirteen
+source packages: the three polynomial-synthesis drafts already merged here,
+six Lagrange--Rvachev reports, and four Legendre--Rvachev reports.  Shared
+foundations are stated once, each genuinely different construction keeps a
+coherent chapter, and overlapping Appell calculus, Thue--Morse products,
+rationality, projector identities, conditioning statements, and Lean
+roadmaps are deduplicated.
 \Cref{sec:provenance-poly} records the absorbed sources with SHA-256
 hashes and the deduplication detail; their supporting files are under
 \nolinkurl{assets/}.
@@ -251,6 +268,11 @@ its claim boundary is recorded after \cref{thm:scale-classification}.
 $u=\RvachevUp$ as in the corpus; $\widehat f(\xi)=\int f\,\EulerE^{-2\pi\ImaginaryUnit\xi x}\Differential x$;
 $\widehat u(\xi)=\prod_{j\ge0}\SincPi(\xi/2^{j})$ with
 $\ord_{\xi=n}\widehat u=1+\TwoAdicValuation(n)$ at nonzero integers $n$.  The
+normalized Fabius function on the unit interval is
+$\FabiusBounded(t):=u(1-t)$ for $0\le t\le1$; hence
+$u(x)=\FabiusBounded(1-|x|)$ on $[-1,1]$.  Where an endpoint estimate evaluates
+$\FabiusBounded(t)$ for $t\ge1$, we use the explicit constant-extension convention
+$\FabiusBounded(t)=1$.  The
 probability model is $Z=\sum_{j\ge1}2^{-j}V_j$, $V_j$ i.i.d.\ uniform
 on $[-1,1]$, with density $u$, moment generating function
 $\MM_u(z)=\Expectation\,\EulerE^{zZ}=\prod_{j\ge1}\frac{\sinh(z/2^{j})}{z/2^{j}}$,
@@ -300,7 +322,7 @@ $[a,b]$, we seek a \emph{finite} functional identity
  \qquad x\in[a,b],
  \label{eq:general-problem}
 \end{equation}
-with real amplitudes, shifts, and nonzero scales.  Three structural
+with real amplitudes and shifts and positive scales.  Three structural
 facts frame every construction.
 
 \emph{(i) Globality is impossible; locality is the right question.}
@@ -309,8 +331,10 @@ so no nonzero polynomial admits a global identity on $\RealNumbers$; the
 achievable object is an exact \emph{window} --- polynomial on
 $[a,b]$, smoothly decaying to zero outside a finite support.
 
-\emph{(ii) Signed amplitudes are essential and two atoms are needed
-even for constants.}  By the refinement derivative
+\emph{(ii) Signed amplitudes are essential, and two atoms are needed
+even for constants.}  Negative target polynomials force signed amplitudes in
+the unrestricted problem because every up-atom is nonnegative.  Independently,
+by the refinement derivative
 $u'(x)=2u(2x+1)-2u(2x-1)$, the function $u$ is strictly increasing on
 $(-1,0)$ and strictly decreasing on $(0,1)$; hence a single atom is
 never constant on a nondegenerate interval, and $N\ge2$ already for
@@ -378,7 +402,7 @@ $G_2=y^{2}+\tfrac19$, $G_3=y^{3}+\tfrac13y$,
 $G_4=y^{4}+\tfrac23y^{2}+\tfrac{19}{675}$,
 $G_5=y^{5}+\tfrac{10}9y^{3}+\tfrac{19}{135}y$.
 
-\subsection{Thue--Morse products, $q$-integers, and their Green
+\subsection{Thue--Morse products, \texorpdfstring{$q$}{q}-integers, and their Green
 sequences}
 
 Three finite dyadic products organize everything discrete in this
@@ -479,7 +503,7 @@ the polynomiality certificate:
 
 The first construction fixes \emph{one} dyadic scale and lets the
 alias arithmetic of the sinc product do all the work.  Normalize atoms
-by
+for $\rho>0$ by
 \begin{equation}
  \psi_{\rho,k}(t)=\frac1\rho\,u\!\left(\frac{t-k}{\rho}\right),
  \qquad
@@ -488,12 +512,13 @@ by
 \end{equation}
 supported on $[k-\rho,k+\rho]$ with unit integral.
 
-\subsection{Why the minimal cardinal ratio is $2^{d}$}
+\subsection{Why the minimal cardinal ratio is
+\texorpdfstring{$2^{d}$}{2 to the d}}
 
 \begin{theorem}[Scale classification]
 \label{thm:scale-classification}
 The integer translates $\{\psi_{\rho,k}\}_{k\in\IntegerNumbers}$ form a partition
-of unity iff $\rho\in\NaturalNumbers$; for integer $\rho$ the Strang--Fix
+of unity iff $\rho\in\PositiveIntegers$; for positive integer $\rho$ the Strang--Fix
 polynomial reproduction order of the system is exactly
 $\TwoAdicValuation(\rho)$.  Hence the smallest ratio reproducing all of $\PiD$ is
 $\rho=2^{d}$, and odd overscaling ($\rho=2^{d}q$, $q$ odd) buys no
@@ -503,7 +528,7 @@ order.
 \begin{proof}
 The $n$-th Fourier coefficient of the periodized sum is
 $\widehat u(\rho n)$, which vanishes for all $n\ne0$ iff $\rho n$ is
-always a nonzero integer, i.e.\ $\rho\in\NaturalNumbers$.  For integer $\rho$ and
+always a nonzero integer, i.e.\ $\rho\in\PositiveIntegers$.  For integer $\rho$ and
 $n\ne0$, $\ord_{\xi=n}\widehat u(\rho\,\cdot)
 =1+\TwoAdicValuation(\rho)+\TwoAdicValuation(n)$, minimal at odd $n$; the classical
 Strang--Fix equivalence \cite{StrangFix1973,Jia1998} gives order
@@ -580,6 +605,20 @@ deconvolution Appell polynomial
 $Q(t)=M^{n}\Gd_n(t/M)$.
 \end{theorem}
 
+\begin{proof}
+On $\PiD$ the constant-coefficient operator $\MM_u(MD)$ is unipotent
+triangular in degree, so its inverse is the displayed terminating series.
+Apply \cref{lem:poisson-collapse} to this $Q$:
+\[
+ \frac1M\sum_{k\in\IntegerNumbers}Q(k)u\!\left(\frac{t-k}{M}\right)
+ =\MM_u(MD)Q(t)=P(t).
+\]
+For $P(t)=t^n$, the defining Appell identity
+$\MM_u(D)\Gd_n=t^n$ and the change of variable $t\mapsto t/M$ give
+$\MM_u(MD)\bigl(M^n\Gd_n(t/M)\bigr)=t^n$, which proves the final
+assertion by uniqueness of the inverse image.
+\end{proof}
+
 Restricted to one normalized cell $[0,1]$, only the $2M$ centers
 $-M+1\le k\le M$ act.  A first compression is the \emph{partition
 pair} identity $\psi_{r-M}+\psi_r=\tfrac1M$ on $[0,1]$
@@ -597,8 +636,9 @@ $0\le s\le\TwoAdicValuation(j)$,
  \qquad(t\in\RealNumbers),
  \label{eq:alias-zero}
 \end{equation}
-and these $R_d:=\sum_{j=1}^{M-1}(\TwoAdicValuation(j)+1)=2M-d-2$ relations are
-linearly independent on any $R_d$ consecutive integers.  The solution
+and these
+$N_d^{\rm rel}:=\sum_{j=1}^{M-1}(\TwoAdicValuation(j)+1)=2M-d-2$ relations are
+linearly independent on any $N_d^{\rm rel}$ consecutive integers.  The solution
 space of the recurrence $A_d(E)n=0$ (shift $E$) is exactly their
 span, with $A_d$ the annihilator of
 \cref{thm:A-factor}.
@@ -630,7 +670,8 @@ the $A_d$-recurrence solution space.
 \end{theorem}
 
 \begin{proof}
-The $R_d$ relations give $\dim V_d\le2M-R_d=d+2$;
+The $N_d^{\rm rel}$ relations give
+$\dim V_d\le2M-N_d^{\rm rel}=d+2$;
 \cref{thm:global-synthesis} gives $\PiD\subset V_d$, so
 $\dim V_d\ge d+1$; and since some active atom (e.g.\ $\psi_0$) is not
 polynomial on $(0,1)$ --- the non-elementarity import of
@@ -667,7 +708,8 @@ measure zero in coefficient space.
 The atoms with the $d+2$ rightmost centers,
 $\mathcal B_d=\{\psi_k|_{[0,1]}:M-d-1\le k\le M\}$, form a basis of
 $V_d$.  Explicitly: extend the first
-$R_d$ values $q_k=Q(k)$, $k=-M+1,\dots,-M+R_d$, by the monic integer
+$N_d^{\rm rel}$ values $q_k=Q(k)$,
+$k=-M+1,\dots,-M+N_d^{\rm rel}$, by the monic integer
 recurrence $A_d(E)n=0$, and put $b_k=q_k-n_k$ on the last $d+2$
 centers; then
 \begin{equation}
@@ -685,7 +727,8 @@ fixed affine up-dictionary spanning $\PiD$ on an interval.
 
 \begin{proof}
 The extension $n$ lies in the complete nullspace, so its synthesis
-vanishes; $q-n$ is supported on the last $2M-R_d=d+2$ centers, so
+vanishes; $q-n$ is supported on the last
+$2M-N_d^{\rm rel}=d+2$ centers, so
 $\mathcal B_d$ spans $V_d$, and \cref{thm:local-dim} makes it a
 basis.  Integer recurrence coefficients preserve rationality.
 Reflection $t\mapsto1-t$ gives the mirror-image left basis.
@@ -721,7 +764,7 @@ $11,\dots,16$.
 \subsection{The output-sensitive algorithm}
 \label{sec:fast}
 
-The recurrence route touches $R_d\asymp2^{d+1}$ values to produce
+The recurrence route touches $N_d^{\rm rel}\asymp2^{d+1}$ values to produce
 $d+2$ numbers.  The exponential detour can be eliminated entirely: the
 annihilator acts on the deconvolution sequence as a \emph{bounded}
 differential operator.
@@ -751,15 +794,16 @@ $g_r=(A_d(E)Q)(K+r)$,
 \begin{proof}
 By \cref{thm:A-factor}, $a_\ell/A_d(1)$ is the law of
 $L=\sum_mU_m$, so $(A_d(E)Q)(x)=A_d(1)\,\Expectation\,Q(x+L)$.  Centering $L$
-at its mean $R_d/2$ and using $K+R_d/2=-d/2$,
+at its mean $N_d^{\rm rel}/2$ and using
+$K+N_d^{\rm rel}/2=-d/2$,
 \[
  g_r=A_d(1)\Bigl[
- \Expectation\,\EulerE^{(L-R_d/2)D}\;\MM_u(MD)^{-1}P
+ \Expectation\,\EulerE^{(L-N_d^{\rm rel}/2)D}\;\MM_u(MD)^{-1}P
  \Bigr]\!\left(r-\tfrac d2\right),
 \]
 and the two product formulas
 \begin{gather*}
- \Expectation\,\EulerE^{z(L-R_d/2)}
+ \Expectation\,\EulerE^{z(L-N_d^{\rm rel}/2)}
  =\prod_{m=1}^{d}\frac{\sinh(2^{m-1}z)}{2^{m}\sinh(z/2)},
  \\
  \MM_u(Mz)=\MM_u(z)\prod_{r=0}^{d-1}\frac{\sinh(2^{r}z)}{2^{r}z}
@@ -818,8 +862,8 @@ smaller physical scale $Mh=2^{d}(b-a)/J$ at one extra atom per cell.
 \end{theorem}
 
 \begin{proof}
-The same $R_d$ global relations stay independent, so
-$\dim\le J+2M-1-R_d=J+d+1$; the first-cell endpoint basis plus the
+The same $N_d^{\rm rel}$ global relations stay independent, so
+$\dim\le J+2M-1-N_d^{\rm rel}=J+d+1$; the first-cell endpoint basis plus the
 atoms centered at $M+1,\dots,M+J-1$ are triangularly independent
 (each new atom vanishes on $[0,r]$ and not immediately to the right),
 giving equality.  A polynomial in $V_{d,J}$ restricts on the first
@@ -844,23 +888,24 @@ Frontiers}.
 Order the active coefficients $q=(q_0,\dots,q_{2M-1})$ by increasing
 center ($q_j$ multiplies $\psi_{-M+1+j}$), and set
 \begin{equation}
- \Lambda_d(q)
+ \mathfrak C_d(q)
  =\bigl[A_d(E)\,\Delta^{d+1}q\bigr]_{-M+1}
  \overset{\eqref{eq:TM-factor}}{=}
  (-1)^{d+1}\sum_{r=0}^{M-1}\eps_r\,
  \bigl(q_{2r}-q_{2r+1}\bigr).
- \label{eq:Lambda}
+ \label{eq:certificate-functional}
 \end{equation}
 Then $\sum_jq_j\psi_{-M+1+j}$ is polynomial on $[0,1]$ \emph{iff}
-$\Lambda_d(q)=0$; and for the test sequence $q_j=(-M+1+j)^{d+1}$,
-$\Lambda_d(q)=A_d(1)\,(d+1)!$.
+$\mathfrak C_d(q)=0$; and for the test sequence
+$q_j=(-M+1+j)^{d+1}$,
+$\mathfrak C_d(q)=A_d(1)\,(d+1)!$.
 \end{theorem}
 
 \begin{proof}
 Polynomial syntheses are precisely (deconvolution polynomial
 sequences of degree $\le d$) $+$ (null sequences):
 $\Delta^{d+1}$ kills the former and $A_d(E)$ the latter, so
-$\Lambda_d$ vanishes on the $(2M-1)$-dimensional polynomial
+$\mathfrak C_d$ vanishes on the $(2M-1)$-dimensional polynomial
 preimage.  It is nonzero on the test sequence by
 $\Delta^{d+1}k^{d+1}=(d+1)!$ and $A_d(E)1=A_d(1)$, so its kernel is
 exactly that preimage.  The Thue--Morse form is the factorization
@@ -904,7 +949,7 @@ $\mathcal D_d(t):=t^{d+1}+\mathcal E_d(t)\in V_d$, and
  V_d=\PiD\oplus\SpanOperator\{\mathcal D_d\},
  \qquad
  c_{\mathrm{def}}(q)
- =\frac{\Lambda_d(q)}{A_d(1)\,(d+1)!}
+ =\frac{\mathfrak C_d(q)}{A_d(1)\,(d+1)!}
  \label{eq:defect-coordinate}
 \end{equation}
 is the defect coordinate of an arbitrary synthesis.
@@ -1124,7 +1169,7 @@ Let $a<b$, $L=b-a$, $h>0$, $K=\Ceiling{L/(2h)}$, and for $n\ge0$
  \sum_{N=0}^{K}p_{n+1}(N)\,
  u\!\left(\frac{x-a-h(2^{n+1}-2+2N)}{2^{n+1}h}\right).
  \;}
- \label{eq:Psi-def}
+ \label{eq:finite-Psi-def}
 \end{equation}
 Then $\Psi_{n,h}(x)=G_n\bigl(\tfrac{x-a+h}h\bigr)$ for all
 $x\in[a,b]$; in particular
@@ -1161,6 +1206,16 @@ atoms; the case $n=0$ is the partition of unity
 \eqref{eq:partition-interval}.
 \end{corollary}
 
+\begin{proof}
+If $h\ge L/2$, then $0<L/(2h)\le1$, hence $K=1$.  The binary-partition
+series has $p_{n+1}(0)=p_{n+1}(1)=1$, so
+\cref{thm:finite-window} has precisely the displayed two summands.  Substituting
+$h=L/2$ in its polynomial argument gives
+$(x-a+h)/h=1+2(x-a)/L$.  Expanding $p$ in the resulting $d+1$
+triangular blocks uses two atoms per block; for $n=0$ the formula is
+exactly \eqref{eq:partition-interval}.
+\end{proof}
+
 \subsection{Exact coefficients: the Appell transform}
 
 \begin{theorem}[Coefficient transform]
@@ -1195,7 +1250,7 @@ $\BigO(d^{2}+dK)$ exact operations.
 \begin{proof}
 $G_n=\MM_u(D)y^{n}$ makes $\MM_u(D)$ triangular-invertible on
 $\PiD$; apply $\MM_u(D)^{-1}$ to the expansion, extract coefficients,
-and use \eqref{eq:Psi-def}.  For the monomial form: with $c=a-h$,
+and use \eqref{eq:finite-Psi-def}.  For the monomial form: with $c=a-h$,
 $(x-a)^{m}=h^{m}(y-1)^{m}$, Appell operators commute with shifts, so
 $\MM_u(D)^{-1}(y-1)^{m}=\Gd_m(y-1)
 =\sum_n\binom mn\Gd_{m-n}(-1)\,y^{n}$ by the Appell binomial
@@ -1281,6 +1336,19 @@ for polynomial data, flat at its outer support endpoints, with
 \end{equation}
 \end{proposition}
 
+\begin{proof}
+The coefficients in \cref{thm:coefficient-transform} depend linearly on
+$p$, so $E_{d,a,b,h}$ is linear, and \cref{thm:finite-window} gives
+$E_{d,a,b,h}p=p$ on $[a,b]$.  This restriction identity also proves
+injectivity.  Every summand is a translate and dilation of the compactly
+supported $C^\infty$ function $u$, hence the finite sum is compactly
+supported, smooth, and flat at the two outer endpoints.  The leftmost
+support edge occurs for $(n,N)=(0,0)$ and equals $a-2h$; the rightmost
+occurs for $(n,N)=(d,K)$ and equals
+$a+h(2^{d+2}-2+2K)$.  Finally $2hK<L+2h$ gives the strict second
+inclusion in \eqref{eq:support}.
+\end{proof}
+
 \begin{theorem}[Collar--atom tradeoff]
 \label{thm:collar}
 For any collar $\rho>0$, the choice $h=\rho/2^{d+2}$ gives an exact
@@ -1311,7 +1379,7 @@ with compensation.  The quasipolynomial law
 worsen coefficients (normalized weights grow like $N^{n}$ while the
 Appell coordinates carry powers of $h$): a nontrivial
 conditioning-optimal $h$ should exist
-(\cref{conj:conditioning-scale}).  The same warning applies to the
+(\cref{prob:conditioning-scale}).  The same warning applies to the
 endpoint basis of \cref{sec:dictionary}, whose minimal atom count
 also comes at the price of large signed coefficients.
 \end{remark}
@@ -1321,7 +1389,9 @@ also comes at the price of large signed coefficients.
 and the Thue--Morse stencil}
 \label{sec:lattice}
 
-The third absorbed source detaches the dictionary construction from
+The third of the three exact-polynomial sources,
+\nolinkurl{Rvachev_Up_Exact_Polynomial_Representation_Report}, detaches the
+dictionary construction from
 the special lattice $M=2^{d}$ at unit spacing: the reproduction order
 depends only on the \emph{ratio} of atom radius to center spacing,
 and the physical scale is free.  This adds an interval algorithm with
@@ -1620,6 +1690,10 @@ inclusions of Rvachev theory \cite{RvachevRvachev1972,Rvachev1990}
 are thereby made explicit in two normal forms.
 \end{remark}
 
+\input{chapters/Lagrange_Cardinal_Loops}
+\input{chapters/Legendre_Spectral_Closure}
+\input{chapters/Legendre_Transmutation_Arithmetic}
+
 \section{Extensions}
 \label{sec:extensions}
 
@@ -1655,7 +1729,8 @@ polynomial-approximation remainder into a finite-atom approximation
 bound: the exact theory doubles as a constructive approximation
 scheme.
 
-\subsection{Base $b$ and $q$-ary ladders}
+\subsection{Base \texorpdfstring{$b$}{b} and
+\texorpdfstring{$q$}{q}-ary ladders}
 Both engines are dyadic only through the zero set of
 $\widehat u$.  For an integer base $b\ge2$, the compactly supported
 density with transform $\prod_{j\ge0}\SincPi(\xi/b^{j})$ supports the
@@ -1718,20 +1793,26 @@ since $\log A_d(1)=\Theta(d^{2})$ and all operator series are
 Bernoulli-rational; cancellation makes a proof nontrivial.)
 \end{conjecture}
 
-\begin{conjecture}[Support--atom Pareto optimality]
-\label{conj:pareto}
+\begin{problem}[Make support--atom Pareto optimality precise]
+\label{prob:pareto}
 For fixed $d$ and collar ratio $\rho/L\to0$, any causal
 positive-scale construction with uniformly controlled block condition
 numbers needs $\Omega_d(L/\rho)$ atoms; the bound of
 \cref{thm:collar} is optimal up to a degree-dependent constant.
-\end{conjecture}
+\emph{Problem:} specify the admissible causal construction class, the block
+norm and condition-number bound, and then prove or refute this proposed lower
+bound.
+\end{problem}
 
-\begin{conjecture}[Conditioning-optimal scale]
-\label{conj:conditioning-scale}
+\begin{problem}[Define and optimize the ladder scale]
+\label{prob:conditioning-scale}
 Natural coefficient and evaluation condition functionals of the
 ladder have a finite minimizer in $h>0$, unique up to a short list of
 adjacent $K$-regimes.
-\end{conjecture}
+\emph{Problem:} choose an explicit operator norm and target normalization,
+define the treatment of the discontinuous truncation index $K$, and determine
+the minimizers for that precise functional.
+\end{problem}
 
 \begin{question}[Condition-optimal $(d{+}2)$-basis]
 \label{q:condition-basis}
@@ -1785,19 +1866,23 @@ order-optimal.  (The fixed-dictionary count of
 \emph{lattice atom numbers}.)
 \end{conjecture}
 
-\begin{conjecture}[Stable radius, ghost limit, local Chebyshev]
-\label{conj:lattice-analytic}
+\begin{problem}[Specify stable radii, ghost limits, and local Chebyshev data]
+\label{prob:lattice-analytic}
 For fixed $p$ and interval, the coefficient norm of the canonical
 lattice representation has a finite minimizing radius $\rho_*>0$,
 governed by the nearest complex critical scale of
 $1/\MM_u(\rho z)$ (the lattice sibling of
-\cref{conj:conditioning-scale}).  The $\ell^{2}$-optimal
+\cref{prob:conditioning-scale}).  The $\ell^{2}$-optimal
 ghost-antiderivative iterates converge, after matching scale and
 lattice, to the canonical Appell samples.  And for generic ordered
 centers on a sufficiently short interval avoiding support endpoints,
 finite equal-scale up-translate families form an extended Chebyshev
 system.
-\end{conjecture}
+\emph{Problem:} define the coefficient norm and critical-scale rule, the
+scale-matching topology for ghost iterates, and the quantitative genericity
+and interval-length hypotheses before treating these three proposals as
+conjectures.
+\end{problem}
 
 \begin{question}[Sharp odd-denominator law]
 \label{q:odd-denominator}
@@ -1970,17 +2055,109 @@ of \cref{sec:frontiers-poly}. \\
 \end{tabular}
 \end{center}
 
-The exact SHA-256 hashes of the three absorbed \texttt{.tex} sources
-are recorded in \nolinkurl{assets/SHA256SUMS-absorbed.txt}.
+\medskip
+\noindent\textbf{Lagrange and Legendre source packages.}
+The ten later reports contribute 176 labeled proved results.  Equivalent
+polynomial-synthesis, right-inverse, projector, and finite-loop statements
+are represented once by the stronger canonical forms in
+\cref{sec:lagrange-loops,sec:legendre-closure}; the distinct operator,
+arithmetic, asymptotic, parity, and conditioning results are retained in
+\cref{sec:legendre-transmutation}.  Hashes below are SHA-256 over the
+repository-normalized main source bytes at the consolidation baseline.
+
+\begin{center}
+\scriptsize
+\begin{longtable}{@{}p{0.43\textwidth}p{0.52\textwidth}@{}}
+\toprule
+Source directory, main-source SHA-256 & Distinct contribution retained here\\
+\midrule
+\endfirsthead
+\toprule
+Source directory, main-source SHA-256 & Distinct contribution retained here\\
+\midrule
+\endhead
+\nolinkurl{rvachev_lagrange_loop_report}\\
+\nolinkurl{5d17373e36f6b12576a9add8c46fde57ae2e59b2b93410930fe64fb39f6dd647}
+& Base cardinal factorization, exact interpolation loop, and nested
+self-expansion.\\
+\addlinespace
+\nolinkurl{Lagrange_Rvachev_Loop_Package}\\
+\nolinkurl{978aeadec8087c5c44881ccc22b87fa2c3c5579aa539a462621c5418d066e4fb}
+& Minimal defect-completed inverse, nodal ghost, root-rate obstruction, and
+endpoint amplitude barrier.\\
+\addlinespace
+\nolinkurl{lagrange_rvachev_loop_report_v3}\\
+\nolinkurl{07587a69794e72f18af9075eae545f0cd5ae1694f318b961d287713a088a1465}
+& Basis-independent matrix factorization, $q$-geometric row lift,
+Legendre deconvolution, weighted kernel geometry, factorial asymptotic, and
+Lambert threshold.\\
+\addlinespace
+\nolinkurl{Lagrange_Rvachev_Closed_Loop_Report}\\
+\nolinkurl{727ccd7491844ffc4f2d0a82f351e052e83f50acbfcb76f7d12aad0059f95099}
+& Appell--Vandermonde inversion, sample-to-atom volume bound, the
+parity-adapted four-atom ladder, prime support, exterior-anchor instability,
+and normal-convergence obstruction.\\
+\addlinespace
+\nolinkurl{Rvachev_Lagrange_Loop_Report_v5}\\
+\nolinkurl{118a09539feafbccf24e353e6e6c0c2e647236fb77822eadba721adc4c38808d}
+& Markov encoder/signed decoder, variation and Lebesgue lower bounds,
+alias/sample exact sequence, and coefficient projector flag.\\
+\addlinespace
+\nolinkurl{Rvachev_Lagrange_Loop_Report_v6}\\
+\nolinkurl{e11a2c460ae2b5f33b80217a681dfae874398b8f22c8edcd8d351b5eaeeac0b2}
+& Undilated fixed-radius cardinal synthesis, sharp mesh interpretation, and
+interlevel dyadic null rows.  The source arrived without its advertised
+scripts or machine-readable data; that limitation is preserved.\\
+\addlinespace
+\nolinkurl{legendre_rvachev_closed_loop}\\
+\nolinkurl{bebd04fe47a308328d717028876e78f93c89d6d33238e54690c16d32bfb6a2db}
+& Translated analysis kernel, exact biorthogonality, reverse spectral closure,
+flatness and derivative-cell Thue--Morse identities, log-square coefficient
+bound, and two-adic moment units.\\
+\addlinespace
+\nolinkurl{Legendre_Rvachev_Closed_Loop_Report_v3}\\
+\nolinkurl{8bbd922a51dbc6a132892c43c226d57fda220f0b41550c2d27cd90f97ed324d2}
+& Pullback geometry and Favard obstruction, operator
+Christoffel--Darboux identity, parity split, central $q$-determinant and Gram
+basis, and the exact degree-twelve Sturm transition.\\
+\addlinespace
+\nolinkurl{Legendre_Rvachev_Closed_Loop_Report_v4}\\
+\nolinkurl{7eff3989000e82f72f4b9e9761f75b807ec95bf369f46b67d96abce207594274}
+& Moment-smoothed Legendre/Appell matrices and universal determinant,
+$X_+$ transmutation, Legendre moments completed by a Thue--Morse row, and the
+compressed $2N+2$-atom one-scale closure.\\
+\addlinespace
+\nolinkurl{Legendre_Rvachev_Self_Reconstruction}\\
+\nolinkurl{23180ac9e6ed8bfc9c9d0e7e01d97890b2414768fef982d7a1563083fdba8376}
+& Orthogonal self-reconstruction blocks and rank-one detail projectors,
+rational and nested dyadic-Fabius square energies, refinement null trains,
+exact lifting, derivative energies, and central non-flattening.\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+The historical hashes of the three earlier absorbed \texttt{.tex} sources
+remain in \nolinkurl{assets/SHA256SUMS-absorbed.txt}.  The ten hashes above,
+historical source snapshots, companion-asset roles, and the exact
+computer-assisted certificate boundary are mirrored in the canonical
+provenance files under \nolinkurl{assets/provenance/}.  Historical arrival
+ledgers are not rewritten to masquerade as live checksums.
+\paragraph{Exact replay of the degree-twelve root transition.}
+The compact certificate, the complete table through degree twenty, and the
+focused exact verifier used in \cref{prop:leg2-Q12-nonreal} live under
+\nolinkurl{assets/evidence/legendre/root-geometry/}.  The verifier reconstructs
+the rational polynomials and their Sturm chains rather than trusting the text
+summary; approximate root locations and plots are diagnostic only.
+
 \emph{What was deduplicated}: the corpus background (normalization,
 probability model, MGF/cumulants, Fourier zeros), the Appell
-calculus (the third source's up-Appell family
+calculus (the third exact-polynomial source's up-Appell family
 $A^{(m)}_r(u)=m^{r-1}\Gd_r(u/m)$ is the same deconvolution family in
 a scaled normalization --- verified on $P_2,P_4$), the Thue--Morse
-products, the sharp-order statement (the third source's exact
+products, the sharp-order statement (that source's exact
 stationary order $\TwoAdicValuation(m)$ is
 \cref{thm:scale-classification}), rationality and affine covariance,
-tensor products (the third source adds per-coordinate ratios),
+tensor products (that source adds per-coordinate ratios),
 extension-operator remarks, conditioning warnings, and the Lean
 roadmaps.
 \emph{What is new to the consolidation}: the unified Appell-pair and
@@ -1989,11 +2166,14 @@ sharpened bound $N_d\le d+2$ of \cref{thm:minimal-atoms}, and the
 cross-volume identities of \cref{sec:defect-crosswalk} --- the
 defect--quadrature duality \eqref{eq:defect-duality} with its exact
 special values \eqref{eq:defect-values}, cross-validated against the
-companion volume's independently computed phase-error table.  Beyond
-notation, no mathematical content of either source was discarded.
-Both sources audited the repository corpus (67-path inventory) and
-agree that the explicit finite constructions were absent from it;
-that corpus-relative novelty standard is inherited here.
+companion volume's independently computed phase-error table.  Equivalent
+source theorems are represented once by their strongest canonical form;
+distinct proved results are retained, while genuinely open assertions are
+separated into explicitly labeled conjectures and problems.  The first two
+exact-polynomial sources audited the repository corpus (67-path inventory) and
+agreed that the explicit finite constructions were absent from it; that
+corpus-relative novelty standard is inherited here without being promoted to
+a claim about the later ten packages.
 
 \begin{thebibliography}{99}
 
@@ -2137,4 +2317,3 @@ Fabius--Rvachev System},
 \end{thebibliography}
 
 \end{document}
-\input{../../../../fabius-notation.tex}

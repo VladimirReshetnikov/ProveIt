@@ -7,7 +7,8 @@ high-risk aliases and overloads retired by ``docs/fabius-notation.tex``.
 It does not attempt to parse TeX or decide the meaning of arbitrary one-letter
 variables; those are documented by the catalogue's per-document namespace.
 
-Default mode prints an inventory and all findings but exits successfully.
+Default mode prints the inventory and finding counts but exits successfully;
+use ``--list`` to print the individual findings.
 ``--strict`` turns findings into a failing CI-style gate.  ``--json`` emits the
 same information as machine-readable JSON.  Paths may be supplied explicitly
 for focused migration work; explicit archive paths are still rejected.
@@ -17,7 +18,7 @@ Examples::
     python Analysis/FabiusFunction/scripts/tex_notation_audit.py
     python Analysis/FabiusFunction/scripts/tex_notation_audit.py --strict
     python Analysis/FabiusFunction/scripts/tex_notation_audit.py --json report.json
-    python Analysis/FabiusFunction/scripts/tex_notation_audit.py docs/foo.tex
+    python Analysis/FabiusFunction/scripts/tex_notation_audit.py Analysis/FabiusFunction/docs/foo.tex
 """
 
 from __future__ import annotations
