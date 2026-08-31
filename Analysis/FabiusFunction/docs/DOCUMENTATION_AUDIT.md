@@ -109,10 +109,16 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 610 modules and 8,321 lexically
+The post-merge 2026-08-31 inventory contains 610 modules and 8,325 lexically
 visible public declarations, with zero missing module headers and zero missing
-doc comments.  This snapshot includes the new `ActivationTaylor.lean` module
-and the reusable divided-slope bridge in `HyperbolicActivation.lean`.  The
+doc comments.  This snapshot includes the seven-module activation tranche,
+the finite Taylor jet in `ActivationTaylor.lean`, and the reusable divided-slope
+bridge in `HyperbolicActivation.lean`.  Relative to the activation checkpoint's
+610/8,318 tree, the exact seven-declaration delta consists of three generalized
+spectral q-Pochhammer APIs in `RvachevPochhammerFactorization.lean` and the four
+documented
+zero-ratio, negative-ratio nonpositivity, nonpositive-ratio zero-`withDensity`,
+and probability-law nonidentity theorems in `GeometricUniformCDF.lean`.  The
 baseline records the current inventory and those zeroes, so every future source
 addition must preserve the full invariant rather than merely avoid worsening a
 historical backlog.  Run the script for live numbers after merging concurrent

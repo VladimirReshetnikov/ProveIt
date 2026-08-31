@@ -1470,6 +1470,18 @@ If \(0\le q<1\), including \(q=0\), its exterior values are
  \qquad F_q(x)=1\quad(x\ge1).                              \label{eq:geometric-cdf-tails}
 \end{equation}
 
+The totalized quotient in \eqref{eq:geometric-uniform-cdf-density} has a sharp
+parameter defect outside the positive-ratio range.  Lean proves
+\[
+ f_0(x)=0,\qquad q<0\Longrightarrow f_q(x)\le0.
+\]
+Consequently, for every \(q\le0\), clamping this selected formula by
+\(\operatorname{ofReal}\) gives the zero \texttt{withDensity} measure.  When also
+\(|q|<1\), that measure cannot equal the probability law \(\mu_q\).  This is a
+formal nonidentity result for the displayed total formula, not a denial of the
+already proved absolute continuity of \(\mu_q\); an exact Lean theorem for the
+paper-level corrected signed-ratio density at negative \(q\) remains open.
+
 For \(0<q<1\), conditioning on the head coordinate gives, for every real \(x\),
 \begin{align}
  F_q(x)
@@ -1584,7 +1596,8 @@ The generic CDF mechanisms are
 \lean{measure_eq_withDensity_of_cdf_hasDerivAt} in
 \path{ContinuousCDF.lean}.
 
-The exact named interface in \path{GeometricUniformCDF.lean} consists of
+The exact thirty-one-declaration interface in
+\path{GeometricUniformCDF.lean} consists of
 \lean{ProbabilityRepresentation.geometricUniformCDF},
 \lean{ProbabilityRepresentation.monotone_geometricUniformCDF},
 \lean{ProbabilityRepresentation.geometricUniformCDF_nonneg},
@@ -1598,6 +1611,10 @@ The exact named interface in \path{GeometricUniformCDF.lean} consists of
 \lean{ProbabilityRepresentation.geometricUniformCDF_eq_integral},
 \lean{ProbabilityRepresentation.geometricUniformCDF_eq_intervalIntegral},
 \lean{ProbabilityRepresentation.geometricUniformDensity},
+\lean{ProbabilityRepresentation.geometricUniformDensity_zero},
+\lean{ProbabilityRepresentation.geometricUniformDensity_nonpos_of_neg},
+\lean{ProbabilityRepresentation.volume_withDensity_geometricUniformDensity_eq_zero_of_nonpos},
+\lean{ProbabilityRepresentation.geometricUniformDistribution_ne_withDensity_geometricUniformDensity_of_nonpos},
 \lean{ProbabilityRepresentation.geometricUniformCDF_hasDerivAt},
 \lean{ProbabilityRepresentation.deriv_geometricUniformCDF},
 \lean{ProbabilityRepresentation.continuous_geometricUniformDensity},
@@ -1625,9 +1642,12 @@ dyadic support corollary is \lean{weightedSumDistribution_support_eq_Icc}.
 
 The remaining boundary is parameter-sensitive.  Although \(\mu_q\) is absolutely continuous
 throughout \(|q|<1\), the displayed total function \(f_q\) is identified as its
-Radon--Nikodym density only for \(0<q<1\); no such interpretation is claimed here at
-\(q=0\) or for negative \(q\).  The positive-ratio \(C^\infty\) theorem is proved by the
-real-space derivative refinement.  The phase-bearing general-\(q\) sinc prefixes and their
+Radon--Nikodym density only for \(0<q<1\).  At \(q=0\) it is identically zero, and for
+negative \(q\) it is nonpositive; hence its \(\operatorname{ofReal}\)-clamped measure is
+zero for every \(q\le0\) and is formally unequal to \(\mu_q\) on the contraction range.
+An exact Lean theorem for the paper-level corrected signed-ratio density remains open.  The positive-ratio
+\(C^\infty\) theorem is proved by the real-space derivative refinement.  The
+phase-bearing general-\(q\) sinc prefixes and their
 pointwise characteristic-function limit are formal; the pure complex sinc product now has
 named locally uniform convergence, pointwise \lean{HasProd}, and entireness, and the two
 identities above close its characteristic-function and reciprocal-Gamma bridges.  A named
@@ -10515,8 +10535,11 @@ That rule explains several choices made above:
       second-countable real inner-product target.  Its
       \path{GeometricUniformUniqueness.lean} specialization characterizes the named law,
       including \(q=0\) and negative \(q\), without support, density, or moment assumptions.
-      The selected density has no proved interpretation here at \(q=0\) or
-      negative \(q\).  \path{GeometricSincFactorization.lean} gives the exact finite
+      The selected total density is instead proved zero at \(q=0\), nonpositive for
+      negative \(q\), and to have zero clamped \texttt{withDensity} measure for
+      \(q\le0\), which cannot represent \(\mu_q\) on the nonpositive contraction range.
+      Only formalization of the paper-level sign-corrected density remains open.
+      \path{GeometricSincFactorization.lean} gives the exact finite
       residual sinc factorization and pointwise phase-bearing prefix limit for every
       \(|q|<1\), with dyadic wrappers.  The pure rescaled sinc product now has named
       locally uniform convergence, pointwise \lean{Multipliable}/\lean{HasProd}, and
