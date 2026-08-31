@@ -1,6 +1,6 @@
 # Lean crosswalk for the canonical inverse-Fabius synthesis
 
-This document records the source-level Lean correspondence for the 194 immutable source-result rows in theorem_concordance.csv and for one post-snapshot strengthening added directly to the canonical volume.
+This document records the source-level Lean correspondence for the 194 immutable source-result rows in theorem_concordance.csv and for three post-snapshot strengthenings added directly to the canonical volume.
 
 ## Evidence boundary
 
@@ -73,8 +73,8 @@ The table below is generated from the 37 Lean-proved concordance rows. Declarati
 |---|---|---|---|
 | Inverse_and_Sampling_Frontiers:p1:lem:filter-moments | is:p1:lem:filter-moments | FabiusFunction.GeometricLagrangeQMoments | Fabius.quarterGeometricLagrangeQMoment_eq_residual_qBinomial |
 | Inverse_and_Sampling_Frontiers:p1:thm:quarter-exact | is:p1:thm:quarter-exact | FabiusFunction.QuarterQuantile | Fabius.quarterQuantile_eq |
-| Inverse_and_Sampling_Frontiers:p2:thm:Catalan-quarter | is:p2:thm:inverse-derivatives | FabiusFunction.FabiusInverseQuarterJet | Fabius.iteratedDeriv_fabiusInv_five_seventy_two_succ |
-| Inverse_and_Sampling_Frontiers:p3:thm:self-sampling | is:p3:thm:self-sampling | FabiusFunction.PolynomialCombExactness | Fabius.tsum_shifted_polynomial_eq_integral |
+| Inverse_and_Sampling_Frontiers:p2:thm:Catalan-quarter | is:p2:thm:Catalan-quarter | FabiusFunction.FabiusInverseQuarterJet | Fabius.iteratedDeriv_fabiusInv_five_seventy_two_succ |
+| Inverse_and_Sampling_Frontiers:p3:thm:self-sampling | is:p3:thm:self-sampling | FabiusFunction.PolynomialCombExactness | Fabius.integral_polynomial_mul_rvachevUp_eq_dyadic_tsum |
 | Inverse_and_Sampling_Frontiers:p3:prop:half-integer-sign | is:p3:prop:half-integer-sign | FabiusFunction.ThueMorseLobeSign | Fabius.rvachevFourierProduct_eq_thueMorse_sign_mul_norm |
 | Inverse_and_Sampling_Frontiers:p3:lem:phi-half-lower | is:p3:lem:phi-half-lower | FabiusFunction.SincProductPositive | Fabius.four_ninths_lt_re_rvachevFourierProduct_half |
 | Inverse_Endpoint_All_Orders:thm:K-decomposition | ao:thm:K-decomposition | FabiusFunction.NegativeLaplace | Fabius.negativeLaplaceLog_exact_periodic_decomposition |
@@ -132,7 +132,11 @@ deliberately blank in the concordance.
 | `is:p3:thm:Appell-deconvolution` | `FabiusFunction.RvachevMomentAppell.Fabius.integral_eval_rvachevAppellPolynomial_add_mul_rvachev` proves the `x+y` smoothing identity. | The paper uses `x-y`; its human proof supplies the evenness/change-of-variables step, but no named formal theorem has that exact conclusion. |
 | `is:p3:cor:polynomial-deconvolution` | `FabiusFunction.RvachevPolynomialSynthesis.Fabius.normalized_tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp` proves phase-free shifted-up synthesis. | The paper gives an arbitrary phase `theta` through a different self-sampling formula. |
 
-## Exact post-source strengthening: derivative distributions
+## Post-source strengthenings
+
+Three results were added directly to the canonical synthesis after the immutable source snapshot. They therefore have no concordance rows and do not change the 194-row source totals.
+
+### Exact Lean strengthening: derivative distributions
 
 The canonical theorem rvd:thm:derivative-distribution has no concordance row because it was added after the immutable source snapshot. It is nevertheless directly backed by FabiusFunction.RvachevDerivativeDistribution.
 
@@ -147,6 +151,12 @@ The formal theorem family proves:
 
 This result is not Appell biorthogonality. Its test function is applied to the value of an iterated derivative. It does not prove an integral pairing of an iterated derivative with an Appell polynomial in the spatial variable.
 
+### New human-proved strengthenings
+
+The finite-product loss lemma `is:p3:lem:finite-product-loss` gives the exact elementary lower bound used to pass from finite sinc products to the positive half-frequency estimate. Its canonical proof is complete, but there is no named Lean declaration with that statement.
+
+The base-b density proposition `is:p3:prop:base-b-density` constructs the compactly supported smooth density, proves its normalization, symmetry, dilation law, and Fourier product, and thereby closes the analytic existence gap in the source base-b extension. `FabiusFunction.GeometricScaleProducts` formalizes the abstract geometric-product renormalization mechanism, but it does not construct this density or prove the proposition's full analytic statement. The proposition is therefore a human-proved frontier result.
+
 ## Principal formalization boundaries
 
 | Area | Exact Lean core | Missing full bridge |
@@ -160,11 +170,11 @@ This result is not Appell biorthogonality. Its test function is applied to the v
 
 ## Conjecture and problem discipline
 
-All 11 rows classified as conjecture map to canonical conjecture environments and claim no proof. All 14 open-problem rows map to canonical problem environments. The two source conjectures demoted to problems have explicit correction rationales in the CSV. The primitive-rule conjecture and the natural-threshold conjecture are not silently preserved as facts.
+All 10 rows classified as conjecture map to canonical conjecture environments and claim no proof. All 15 open-problem rows map to canonical problem environments. The source conjectures demoted to problems have explicit correction rationales in the CSV. The primitive-rule conjecture and the natural-threshold conjecture are not silently preserved as facts.
 
 The six all-orders endpoint conjectures remain conjectural: Gevrey-one growth, optimal truncation, sharp strip inheritance, nonconstant phase at every inverse order, a two-level exponentially improved transseries, and a universal diagonal inversion class.
 
-The two inverse-iterate conjectures remain conjectural: a direct inverse-spine asymptotic and the nested Lambert phase law.
+The direct inverse-spine asymptotic remains the one inverse-iterate conjecture. The former nested-Lambert conjecture is now a precise open problem: it asks for a recursive scale, coefficient, remainder, and non-erasure theorem rather than asserting an unsupported law.
 
 ## Highest-value next formalizations
 
