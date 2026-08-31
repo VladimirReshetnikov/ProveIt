@@ -98,10 +98,6 @@
 }
 
 % Document-specific notation not present in the shared canonical block.
-\newcommand{\upf}{\Up}
-\DeclareMathOperator{\Res}{Res}
-\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
-\newcommand{\fracpart}[1]{\left\{#1\right\}}
 
 \title{\bfseries Digital Spectral Geometry and Log-Periodic Saddles\\[0.35em]
 \large Frontier results for the Thue--Morse, Fabius, inverse-Fabius,
@@ -126,7 +122,7 @@ Fourier-zero spectral zeta function is
  \mathcal Z_\Phi(s)
  =\frac{\zeta(s)}{(2\pi)^s(1-2^{-s})},
 \]
-and the exact zero count is \(N(2\pi M)=2M-s_2(M)\).  Thus the binary digit
+and the exact zero count is \(N(2\pi M)=2M-\BinaryDigitSum(M)\).  Thus the binary digit
 sum---and, by parity, the Thue--Morse sequence---is recoverable from the
 spectral divisor of the up-function.
 
@@ -258,7 +254,7 @@ In particular, for \(0\leq x\leq\frac12\),
 
 \begin{proof}
 The random series gives \eqref{eq:Phi-def}.  For \(|z|\) large, take
-\(N=\floor{\log_2|z|}-2\).  Since
+\(N=\Floor{\log_2|z|}-2\).  Since
 \[
  \left|\SincRad\!\left(\frac z{2^n}\right)\right|
  \leq \min\!\left(1,\frac{2^n}{|z|}\EulerE^{|\Im z|/2^n}\right),
@@ -294,13 +290,13 @@ Let
  a_N=1-2^{-N},
 \]
 and let \(u_N\) be its density.  Writing
-\(\tau_k=(-1)^{s_2(k)}\), the ordinary inclusion--exclusion formula for a
+\(\ThueMorseSign{k}=(-1)^{\BinaryDigitSum(k)}\), the ordinary inclusion--exclusion formula for a
 convolution of boxes collapses, in the dyadic case, to
 \begin{equation}
  u_N(x)=
  \frac{2^{N(N-1)/2}}{(N-1)!}
  \sum_{k=0}^{2^N-1}
- \tau_k
+ \ThueMorseSign{k}
  \left(
    x+a_N-\frac{k}{2^{N-1}}
  \right)_{+}^{N-1}.
@@ -432,17 +428,17 @@ Let \(N(R)\) count positive zeros not exceeding \(R\), with multiplicity.
 For every integer \(M\geq1\),
 \begin{equation}
  \boxed{\displaystyle
- N(2\pi M)=2M-s_2(M).}
+ N(2\pi M)=2M-\BinaryDigitSum(M).}
  \label{eq:zero-count}
 \end{equation}
 More generally,
 \[
- N(R)=2\floor{\frac{R}{2\pi}}
-      -s_2\!\left(\floor{\frac{R}{2\pi}}\right).
+ N(R)=2\Floor{\frac{R}{2\pi}}
+      -\BinaryDigitSum\!\left(\Floor{\frac{R}{2\pi}}\right).
 \]
 Therefore
 \begin{equation}
- (-1)^{N(2\pi M)}=(-1)^{s_2(M)}=\tau_M.
+ (-1)^{N(2\pi M)}=(-1)^{\BinaryDigitSum(M)}=\ThueMorseSign{M}.
  \label{eq:TM-spectral-parity}
 \end{equation}
 The Thue--Morse sequence is the parity of the cumulative Fourier-zero
@@ -456,7 +452,7 @@ By \eqref{eq:multiplicity},
           =M+\nu_2(M!).
 \]
 Legendre's digit-sum formula gives
-\(\nu_2(M!)=M-s_2(M)\), proving \eqref{eq:zero-count}.  Since \(2M\) is
+\(\nu_2(M!)=M-\BinaryDigitSum(M)\), proving \eqref{eq:zero-count}.  Since \(2M\) is
 even, its parity reduction gives \eqref{eq:TM-spectral-parity}.
 \end{proof}
 
@@ -466,7 +462,7 @@ even, its parity reduction gives \eqref{eq:TM-spectral-parity}.
  \includegraphics[width=0.92\linewidth]{zero_count_digit_sum.png}
  \caption{The exact discrepancy in the zero count is the binary digit sum.
  The graph is not an error term fitted numerically; every plotted point is the
- identity \(2M-N(2\pi M)=s_2(M)\).}
+ identity \(2M-N(2\pi M)=\BinaryDigitSum(M)\).}
  \label{fig:zero-count}
 \end{figure}
 }{}
@@ -739,7 +735,7 @@ separate exponentially small digital sector.  Both can be written exactly.
 \label{thm:exact-transseries}
 For \(t\geq1\), let
 \[
- q=\log t,\qquad \theta=\fracpart{\log_2t}.
+ q=\log t,\qquad \theta=\FractionalPart{\log_2t}.
 \]
 Then
 \begin{equation}
@@ -780,7 +776,7 @@ In particular, there are no algebraic inverse powers of \(t\):
 \end{theorem}
 
 \begin{proof}
-Write \(\log_2t=N+\theta\), with \(N=\floor{\log_2t}\).  For \(n\leq N\),
+Write \(\log_2t=N+\theta\), with \(N=\Floor{\log_2t}\).  For \(n\leq N\),
 \[
  f(t/2^n)
  =\frac{t}{2^n}
@@ -930,7 +926,7 @@ convex, \(K'(0)=0\), and \(K'(t)\uparrow1\).  Hence, for every
 Set
 \[
  q=\log t,\qquad
- \theta=\fracpart{q/a},\qquad
+ \theta=\FractionalPart{q/a},\qquad
  p(\theta)=\Psi'(\theta).
 \]
 Differentiating \eqref{eq:K-transseries} gives the exact saddle equation
@@ -1090,7 +1086,7 @@ and define
 As \(y\downarrow0\), define the leading phase
 \[
  \theta_0=
- \fracpart{\frac{Q+c}{a}}.
+ \FractionalPart{\frac{Q+c}{a}}.
 \]
 Then
 \begin{align}
@@ -1365,7 +1361,7 @@ Euler's sine product and the substitution \(m=b^{n-1}k\) give
 \eqref{eq:base-b-zeta}.  Finally,
 \[
  N_b(c_bM)
- =M+\sum_{j\geq1}\floor{\frac M{b^j}}
+ =M+\sum_{j\geq1}\Floor{\frac M{b^j}}
  =M+\frac{M-s_b(M)}{b-1},
 \]
 which is \eqref{eq:base-b-count}.
@@ -1430,7 +1426,7 @@ so the \(q\)-integer phenomenon is universal across integer bases.
 \subsection{Base-\(b\) log-periodicity}
 
 Set \(T=(b-1)t\), \(a_b=\log b\), \(q=\log T\), and
-\(\theta=\fracpart{q/a_b}\).  The split-sum proof of
+\(\theta=\FractionalPart{q/a_b}\).  The split-sum proof of
 \cref{thm:exact-transseries} gives the following exact analogue.
 
 \begin{theorem}[Base-\(b\) transseries]
@@ -1571,9 +1567,9 @@ gives the distributional asymptotic
  \frac{m_{2j}}{(2j)!\,2^{2Nj}}D^{2j}u_N.
  \label{eq:smoothing-expansion}
 \end{equation}
-Conversely,
+Conversely, since the finite convolution density $u_N$ is even,
 \[
- \widehat u_N(z)=\frac{\Phi(z)}{\Phi(z/2^N)}
+ \FourierAngular{u_N}(z)=\frac{\Phi(z)}{\Phi(z/2^N)}
 \]
 gives
 \begin{equation}
@@ -1757,7 +1753,7 @@ tasks are therefore normalization-aware crosswalks from this report to those
 APIs, not claims that the mathematics is wholly unformalized:
 \begin{enumerate}[label=(\roman*),leftmargin=2.5em]
 \item the divisor regrouping in \cref{thm:canonical};
-\item the identity \(N(2\pi M)=2M-s_2(M)\);
+\item the identity \(N(2\pi M)=2M-\BinaryDigitSum(M)\);
 \item the finite spectral \(q\)-integer \eqref{eq:finite-qinteger};
 \item the Bell-polynomial cumulant formula;
 \item coefficient extraction in the Appell reproduction theorem.
@@ -1776,7 +1772,7 @@ Around this identity, the report develops or proposes:
 \begin{itemize}[leftmargin=2em]
 \item the spectral zeta
       \(\zeta(s)/((2\pi)^s(1-2^{-s}))\);
-\item the exact digit-sum count \(2M-s_2(M)\) and spectral Thue--Morse parity;
+\item the exact digit-sum count \(2M-\BinaryDigitSum(M)\) and spectral Thue--Morse parity;
 \item Bernoulli cumulants as reciprocal zero power sums;
 \item complex dimensions \(2\pi\ImaginaryUnit k/\log2\);
 \item an exact periodic-plus-exponential transseries for \(\log M(t)\);
@@ -1803,7 +1799,7 @@ For completeness, for \(0<c<1\),
 \]
 For \(0<x<1\), closing to the right and accounting for orientation gives
 \[
- -\sum_{n\geq1}\Res_{s=n}
+ -\sum_{n\geq1}\ResidueOperator_{s=n}
  \frac{\pi x^s}{s\sin\pi s}
  =-\sum_{n\geq1}\frac{(-1)^n}{n}x^n
  =\log(1+x).

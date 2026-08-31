@@ -84,7 +84,6 @@
 \crefname{warning}{warning}{warnings}
 \Crefname{warning}{Warning}{Warnings}
 
-\newcommand{\ord}{\operatorname{ord}}
 \newcommand{\fall}[2]{#1^{\underline{#2}}}
 \newcommand{\repo}{\textsc{ProveIt}}
 \newcommand{\statusproved}{\textcolor{deepgreen}{\textbf{proved here}}}
@@ -573,7 +572,7 @@ Then
  \label{p1:eq:canonical-a}
 \end{equation}
 with locally uniform convergence.  In particular,
-$\ord_{z=\pm n}\Phi_a=m_a(n)$.  For $\Re s>1$,
+$\OrderOperator_{z=\pm n}\Phi_a=m_a(n)$.  For $\Re s>1$,
 \begin{equation}
  \boxed{\quad
  \Zspec_a(s):=\sum_{n\ge1}\frac{m_a(n)}{n^s}
@@ -601,7 +600,7 @@ function was the right object to formalize first.  The classical statement is re
 as a corollary (\lean{Fabius.generalizedRvachevProduct\_one\_of\_canonical}).
 
 The locally uniform convergence the volume states alongside this display, and the
-consequence $\ord_{z=\pm n}\Phi_a=m_a(n)$ that the volume draws from it, are both
+consequence $\OrderOperator_{z=\pm n}\Phi_a=m_a(n)$ that the volume draws from it, are both
 formalized at a general admissible $a$, in \path{GeneralizedRvachevEntire.lean}.  The
 convergence is \lean{Fabius.hasProdLocallyUniformlyOn\_generalizedRvachevProduct}, on
 every ball $\lVert z\rVert<R$; \lean{HasProdLocallyUniformlyOn} is by definition the
@@ -611,9 +610,9 @@ verbatim rather than a surrogate for it.  Holomorphy on each ball
 (\lean{Fabius.generalizedRvachevProduct\_differentiable}) follow, and with them the
 order statement in both halves:
 \[
- \ord_{z=n}\Phi_a=m_a(n)
+ \OrderOperator_{z=n}\Phi_a=m_a(n)
  \quad\text{and}\quad
- \ord_{z=-n}\Phi_a=m_a(n),
+ \OrderOperator_{z=-n}\Phi_a=m_a(n),
  \qquad n\ge1,
 \]
 as \lean{Fabius.analyticOrderAt\_generalizedRvachevProduct\_pos} and
@@ -631,7 +630,7 @@ analyticity of the cofactor $R_n$, supplied here as
 evenness of $\Phi_a$: the mirror factorization
 $1-z^2/n^2=(z+n)\cdot\bigl(-(z-n)/n^2\bigr)$
 (\lean{Fabius.canonicalComplexFactor\_eq\_add\_mul}) is the same one line of algebra as
-its sibling, so both halves of $\ord_{z=\pm n}$ are proved directly and the appeal to
+its sibling, so both halves of $\OrderOperator_{z=\pm n}$ are proved directly and the appeal to
 $\Phi_a(-z)=\Phi_a(z)$ (\lean{Fabius.generalizedRvachevProduct\_neg},
 \path{LobeSignNegative.lean}) is not needed.
 
@@ -646,7 +645,7 @@ computed.  \path{GeneralizedZeroDivisor.lean} does both:
  \exists\,n\in\IntegerNumbers,\ n\ne0,\ z=n,\ m_a(\lvert n\rvert)\ne0
 \]
 (\lean{Fabius.generalizedRvachevProduct\_eq\_zero\_iff\_int}), and
-$\ord_{z=n}\Phi_a=m_a(\lvert n\rvert)$ at every nonzero integer, both signs in one
+$\OrderOperator_{z=n}\Phi_a=m_a(\lvert n\rvert)$ at every nonzero integer, both signs in one
 statement (\lean{Fabius.analyticOrderAt\_generalizedRvachevProduct\_int}).  Since $\Phi_a$
 is entire, the two together are its complete divisor: it vanishes precisely on
 $\{n\in\IntegerNumbers:n\ne0,\ m_a(\lvert n\rvert)>0\}$, to exactly that order, and nowhere else in
@@ -658,7 +657,7 @@ over $h\le\TwoAdicValuation(m)$, so it is nonzero exactly when some $a_h$ with $
 
 At the \emph{constant} weight the sharper integer-indexed form remains available:
 \lean{Fabius.analyticOrderAt\_generalizedRvachevProduct\_one} reads
-$\ord_{z=m}\Phi_{\mathbf1}=m_{\mathbf1}(\lvert m\rvert)$ for every nonzero integer $m$, chaining
+$\OrderOperator_{z=m}\Phi_{\mathbf1}=m_{\mathbf1}(\lvert m\rvert)$ for every nonzero integer $m$, chaining
 \lean{Fabius.analyticOrderAt\_rvachevFourierProduct\_int} (\path{IntegerZeroAnalyticOrder.lean})
 with the exponent identity.  The spectral zeta \eqref{p1:eq:zeta-a} is now
 formalized as well, in \path{SpectralZetaWeighted.lean}, for real $s>1$ and at an
@@ -843,7 +842,7 @@ modulo two, so that the exponent \eqref{p1:eq:lobe-sign-count} is a digit charac
 is formal in \path{DigitCharacterCongruence.lean}:
 \[
   M_a(N)=\sum_h a_h\Bigl\lfloor\frac{N}{2^h}\Bigr\rfloor
-  \;\equiv\;\sum_{h\in\operatorname{supp}_2 N}a_h\pmod 2,
+  \;\equiv\;\sum_{h\in\SupportOperator_2(N)}a_h\pmod 2,
   \qquad\text{hence}\quad(-1)^{M_a(N)}=\varepsilon_a(N)
 \]
 (\lean{Fabius.sum\_div\_two\_pow\_mul\_mod\_two}, \lean{Fabius.neg\_one\_pow\_sum\_div\_two\_pow}); the bridge is simply that
@@ -992,7 +991,7 @@ corollary recovers the classical Prouhet--Thue--Morse evaluation
 of $T_{a,L}$ at $z=1$ is formal as well, in \path{ProuhetBlockZeroOrder.lean}, so this
 theorem is now formalized in all three of its displays:
 \[
-  \ord_{z=1}T_{a,L}=\lvert O_L(a)\rvert
+  \OrderOperator_{z=1}T_{a,L}=\lvert O_L(a)\rvert
 \]
 (\lean{Fabius.rootMultiplicity\_prouhetBlockPoly}) --- and so no zero at all when every
 layer below $L$ is even, a case the statement covers.  The mechanism is the
@@ -1625,7 +1624,7 @@ $S$ acts on the exponent sequence exactly as dilation acts on the sinc product.
 
 Write
 \[
- \mathscr V(a)=\operatorname{span}_{\ComplexNumbers}\{S^ja:j\ge0\}.
+ \mathscr V(a)=\SpanOperator_{\ComplexNumbers}\{S^ja:j\ge0\}.
 \]
 The following classical sequence-theoretic equivalence acquires a direct analytic meaning in
 this setting.
@@ -2294,7 +2293,7 @@ alternating Pascal quotient without any appeal to a zero-by-zero cancellation ar
 For every positive integer $n$,
 \begin{equation}
  \boxed{
- \ord_{z=n}\Psi_d(z)
+ \OrderOperator_{z=n}\Psi_d(z)
  =1+\binom{\nu_2(n)}{d+1}.}
  \label{p1:eq:Psi-multiplicity}
 \end{equation}
@@ -2318,7 +2317,7 @@ These are \statusproved.  The multiplicity \eqref{p1:eq:Psi-multiplicity} is now
 full, and as an order statement rather than only an exponent count, in
 \path{AlternatingNewtonFamily.lean}:
 \[
- \ord_{z=\pm n}\Psi_d(z)=1+\binom{\TwoAdicValuation(n)}{d+1},
+ \OrderOperator_{z=\pm n}\Psi_d(z)=1+\binom{\TwoAdicValuation(n)}{d+1},
  \qquad n\ge1
 \]
 (\lean{Fabius.analyticOrderAt\_alternatingNewton},
@@ -5917,7 +5916,7 @@ Let $v_2(k)$ denote the exponent of $2$ in a nonzero integer $k$.
 \label{p3:prop:zero-multiplicity}
 For $k\in\mathbb Z\setminus\{0\}$,
 \begin{equation}
- \operatorname{ord}_{\xi=k}\Phi_n
+ \OrderOperator_{\xi=k}\Phi_n
  =1+\min\{v_2(k),n-1\}.
  \label{p3:eq:zero-multiplicity}
 \end{equation}
@@ -6460,7 +6459,7 @@ $n\ge r+2\ell+1$,
  \label{p3:eq:quadrature-law}
 \end{equation}
 The extremum occurs at $x=c_{r+2\ell}$ and has sign
-$\operatorname{sgn}(\varepsilon_{Q,\ell})(-1)^r$.
+$\Sign(\varepsilon_{Q,\ell})(-1)^r$.
 \end{theorem}
 
 \begin{proof}
@@ -7216,7 +7215,7 @@ $\sum_m\TwoAdicValuation(m)m^{-2}<\infty$ (count the multiples of each $2^j$).
 \label{p4:thm:w-divisor}
 For every nonzero integer $m$,
 \begin{equation}
- \ord_{z=\pi m}A=1-\TwoAdicValuation(|m|).
+ \OrderOperator_{z=\pi m}A=1-\TwoAdicValuation(|m|).
  \label{p4:eq:w-divisor}
 \end{equation}
 Explicitly: $A$ has a simple zero at every odd multiple of $\pi$; the points
@@ -7284,7 +7283,7 @@ transforms, and its cumulative parity is a digit sum.
 \label{p4:thm:w-digital}
 Let $s_2(M)$ be the binary digit sum.  Then
 \begin{equation}
- \sum_{m=1}^{M}\ord_{\pi m}A
+ \sum_{m=1}^{M}\OrderOperator_{\pi m}A
  =\sum_{m=1}^{M}\bigl(1-\TwoAdicValuation(m)\bigr)
  =M-\TwoAdicValuation(M!)=s_2(M),
  \label{p4:eq:w-digit-sum}
@@ -7318,7 +7317,7 @@ series, using $\sum_m\TwoAdicValuation(m)m^{-s}=\zeta(s)/(2^s-1)$.
 \label{p4:cor:w-tm-sign}
 For every integer $M\ge0$ and every real $x\in(\pi M,\pi(M+1))$,
 \begin{equation}
- \operatorname{sgn}A(x)=(-1)^{s_2(M)}.
+ \Sign A(x)=(-1)^{s_2(M)}.
  \label{p4:eq:w-tm-sign}
 \end{equation}
 \end{corollary}
@@ -7514,9 +7513,9 @@ precisely responsible for the zeros and poles of the quotient.
 \begin{theorem}[Exact finite multiplicities]
 \label{p4:thm:w-filtration}
 Let $m\in\IntegerNumbers\setminus\{0\}$ and $v=\TwoAdicValuation(|m|)$.  Then
-$\ord_{2\pi m}\Phi=v+1$, while
+$\OrderOperator_{2\pi m}\Phi=v+1$, while
 \begin{equation}
- \ord_{2\pi m}F_n
+ \OrderOperator_{2\pi m}F_n
  =\min(n,v+1)+\mathbf 1_{v\ge n-1}
  =\min(v+1,n-1)+2\cdot\mathbf 1_{v\ge n-1}
  =\begin{cases}
@@ -7530,7 +7529,7 @@ factorizations $F_n=P_n\cdot\SincRad(t/2^n)$ and
 $F_n=\bigl(\prod_{k<n}\SincRad(t/2^k)\bigr)\SincRad^2(t/2^n)$ respectively, and
 agree in all regimes.)
 Consequently the defect
-$\Delta_n(m)=\ord_{2\pi m}F_n-\ord_{2\pi m}\Phi$ is
+$\Delta_n(m)=\OrderOperator_{2\pi m}F_n-\OrderOperator_{2\pi m}\Phi$ is
 \begin{equation}
  \Delta_n(m)=
  \begin{cases}
@@ -7552,7 +7551,7 @@ duplicated smallest box one more exactly when $v\ge n-1$.
 \begin{corollary}[Divisor-level realization]
 \label{p4:cor:w-realization}
 For every nonzero integer $M$,
-$\ord_{t=2^n\pi M}\bigl(F_n/\Phi\bigr)=1-\TwoAdicValuation(|M|)$: at the critical
+$\OrderOperator_{t=2^n\pi M}\bigl(F_n/\Phi\bigr)=1-\TwoAdicValuation(|M|)$: at the critical
 scaling $t=2^nz$ the three exceptional layers of \eqref{p4:eq:w-defect} are
 exactly the divisor of $A$ --- the over-resolved layer $v=n-1$ is the simple
 zero of $A$ at odd multiples of $\pi$, the re-agreement layer $v=n$ is the
@@ -8089,7 +8088,7 @@ matching are independent design objectives (\cref{p4:sec:w-directions}).
       locality of \eqref{p4:eq:w-recursion} at higher order.
 \item \emph{Base-$q$ analogues}: for $\Phi_q(z)=\prod_{k\ge1}\SincRad(z/q^k)$
       and $A_q=\SincRad z/\Phi_q$, the Euler regrouping suggests
-      $\ord_{\pi m}A_q=1-\nu_q(m)$ with divisor Dirichlet series
+      $\OrderOperator_{\pi m}A_q=1-\nu_q(m)$ with divisor Dirichlet series
       $\zeta(s)(q^s-2)/(q^s-1)$; determine which spectral and sign
       phenomena survive and which are genuinely binary (for $q=2$ the
       cumulative divisor collapses to the digit sum and the functional
@@ -9682,7 +9681,6 @@ V. Reshetnikov et al.,
 \newcommand{\Fup}{\operatorname{Fup}}
 \newcommand{\Hh}{\widehat h}
 \newcommand{\1}{\mathbf 1}
-\newcommand{\dist}{\operatorname{dist}}
 \newcommand{\diam}{\operatorname{diam}}
 \newcommand{\LipVI}{\operatorname{Lip}}
 \newcommand{\DF}{D_{\!F}}
@@ -11038,8 +11036,8 @@ The two further declarations
 \path{tendstoLocallyUniformly_prefix_sinc_charFun} and
 \path{tendstoUniformlyOn_prefix_sinc_charFun} prove that the full
 phase-bearing finite prefixes converge locally uniformly on the real
-frequency line, and uniformly on every compact subset of \(\R\), to
-\(\phi_q\).  Their hypothesis is again exactly \(\abs q<1\), so this includes
+frequency line, and uniformly on every compact subset of \(\RealNumbers\), to
+\(\phi_q\).  Their hypothesis is again exactly \(\AbsoluteValue{q}<1\), so this includes
 \(q=0\) and negative contractions.
 A separately named centered and $h_a$-scaled Fourier wrapper, the derivative
 hierarchy, plateau geometry, cumulants, and uniqueness remain the frontier
@@ -11468,7 +11466,7 @@ the base profile.  For $a>2$ the essential support of $h_a^{(n)}$ is the
 level-$n$ Hutchinson approximant of the attractor $K_a$ of
 \eqref{p6:eq:Ka}, at exact Hausdorff distance
 \begin{equation}\label{p6:eq:energy-hausdorff}
- d_{\mathrm H}\bigl(\operatorname{supp}\mu_{a,n,p},\,K_a\bigr)
+ d_{\mathrm H}\bigl(\SupportOperator\mu_{a,n,p},\,K_a\bigr)
  =b_1a^{-n}
  =\frac{a-2}{a^{\,n+1}(a-1)},
 \end{equation}
@@ -11785,7 +11783,7 @@ $C=\bigl[\,q^{\,n-j}\GaussianBinomial{n}{j}{q^2}\,\bigr]_{n\ge j\ge0}$ factors t
 raw kernel and its inverse explicitly:
 \[
  C\,\widetilde G_N\,C^{\mathsf T}
- =\operatorname{diag}\bigl((q^2;q^2)_0,\ldots,(q^2;q^2)_N\bigr),
+ =\DiagonalOperator\bigl((q^2;q^2)_0,\ldots,(q^2;q^2)_N\bigr),
  \qquad
  (\widetilde G_N^{-1})_{jk}
  =\sum_{n=\max(j,k)}^{N}
@@ -11800,7 +11798,7 @@ $n$-th Gram--Schmidt vector there, and the positive kernel
 $G_N=[q^{(i-j)^2}]$ of \cref{p6:thm:gram-package} has
 $(G_N^{-1})_{jk}=(-1)^{j-k}(\widetilde G_N^{-1})_{jk}$; determinants,
 pivots, and distances are unchanged, since the two kernels are conjugate by
-$\operatorname{diag}\bigl((-1)^i\bigr)$.
+$\DiagonalOperator\bigl((-1)^i\bigr)$.
 \end{theorem}
 
 \begin{proof}
@@ -11820,7 +11818,7 @@ the defining sum \eqref{p6:eq:q-gram-schmidt} then keeps only the $j=n$
 term.  The two matrix identities are the same computation read as
 $C\widetilde G_NC^{\mathsf T}=D$ and
 $\widetilde G_N^{-1}=C^{\mathsf T}D^{-1}C$; conjugating by
-$\operatorname{diag}((-1)^i)$ transports both to the sign-corrected
+$\DiagonalOperator((-1)^i)$ transports both to the sign-corrected
 basis.
 \end{proof}
 
@@ -11853,7 +11851,7 @@ that is, $C'_{nk}=(-q)^{\,n-k}\GaussianBinomial{n}{k}{Q}$ and
 $B_{nk}=q^{(n-k)^2}\GaussianBinomial{n}{k}{Q}$ satisfy $C'_NB_N=B_NC'_N=I$, and the
 positive kernel factors as
 $G_N=B_ND_NB_N^{\mathsf T}$ with
-$D_N=\operatorname{diag}\bigl((Q;Q)_0,\ldots,(Q;Q)_N\bigr)$: the Cholesky
+$D_N=\DiagonalOperator\bigl((Q;Q)_0,\ldots,(Q;Q)_N\bigr)$: the Cholesky
 factor of the strictly totally positive kernel is itself entrywise
 positive.
 \end{enumerate}
@@ -11931,8 +11929,8 @@ orthogonal polynomials of the theta weight on the circle.
 \begin{corollary}[Uniform innovation]\label{p6:cor:innovation-distance}
 For every $n\ge1$,
 \[
- \operatorname{dist}_{L^2}
- \bigl(e_n,\operatorname{span}(e_0,\ldots,e_{n-1})\bigr)^2
+ \MetricDistance_{L^2}
+ \bigl(e_n,\SpanOperator(e_0,\ldots,e_{n-1})\bigr)^2
  =(q^2;q^2)_n\ \downarrow\ (q^2;q^2)_\infty>0:
 \]
 no matter how many derivatives have been recorded, the next one retains an
@@ -11960,7 +11958,7 @@ Fix a parity $\epsilon$ and let
 \]
 a strictly positive analytic weight.  Then $\psi_{2j+\epsilon}\mapsto z^j$
 extends to a unitary equivalence between
-$\overline{\operatorname{span}}\{\psi_{2j+\epsilon}\}_{j\ge0}\subset L^2(\RealNumbers)$
+$\overline{\SpanOperator}\{\psi_{2j+\epsilon}\}_{j\ge0}\subset L^2(\RealNumbers)$
 and the closure of the polynomials in
 $L^2\bigl(\mathbb T,\Theta_a\,\frac{d\theta}{2\pi}\bigr)$: each parity tower
 of normalized derivatives is the monomial sequence of a weighted Hardy space
@@ -12129,8 +12127,8 @@ with
  \boxed{\ \Upsilon_{a,n}
  =(-1)^n\sum_{k=0}^{n}c^{\,n-k}q^{\,k^2-n^2}\GaussianBinomial{n}{k}{q}\,h_a^{(2k)},\ }
 \end{equation}
-so $\operatorname{span}\{\Upsilon_{a,0},\ldots,\Upsilon_{a,N}\}
-=\operatorname{span}\{h_a,h_a'',\ldots,h_a^{(2N)}\}$ for every $N$;
+so $\SpanOperator\{\Upsilon_{a,0},\ldots,\Upsilon_{a,N}\}
+=\SpanOperator\{h_a,h_a'',\ldots,h_a^{(2N)}\}$ for every $N$;
 \item with $\Upsilon_{a,-1}=0$ and $\Upsilon_{a,0}=h_a$, the ladder obeys
 the three-term operator recurrence
 \begin{equation}\label{p6:eq:sw-ladder-recurrence}
@@ -12231,7 +12229,7 @@ $\det E_N^{\mathrm{jet}}
 \det[\langle\psi_{2i},\psi_{2j}\rangle]$, and the normalized determinant is
 $\prod_{r=1}^{N}(q;q)_r$ by \cref{p6:thm:gram-package} (the raw kernel's
 alternating signs cancel under conjugation by
-$\operatorname{diag}((-1)^i)$).  By \eqref{p6:eq:spectral-moments},
+$\DiagonalOperator((-1)^i)$).  By \eqref{p6:eq:spectral-moments},
 $\prod_{i=0}^{N}\|h_a^{(2i)}\|_2^2
 =\|h_a\|_2^{2(N+1)}c^{\,N(N+1)}q^{-N(N+1)(4N+5)/6}$ from
 $\sum_{i=0}^{N}i(2i+1)=N(N+1)(4N+5)/6$; the odd case uses
@@ -12651,7 +12649,7 @@ complementary gap string.
 For $\eps>0$, let
 \begin{equation}\label{p6:eq:tube-def}
  V_a(\eps)=
- \bigl|\{x\in(-b_a,b_a)\setminus K_a:\operatorname{dist}(x,K_a)<\eps\}\bigr|
+ \bigl|\{x\in(-b_a,b_a)\setminus K_a:\MetricDistance(x,K_a)<\eps\}\bigr|
 \end{equation}
 be the inner tube volume.  Each gap of length $\ell$ contributes
 $\min(2\eps,\ell)$.
@@ -12773,7 +12771,7 @@ $a\downarrow2$ (\cref{p6:thm:degree-law}).}
 The revised fourteenth-wave edition refines the degree law into a complete
 description of the local geometry seen from a typical point.  Let $Q$ be
 uniform on $(-b_a,b_a)$, let $\mathcal G$ be the length of the gap containing
-it, and let $\Delta=\operatorname{dist}(Q,K_a)$.
+it, and let $\Delta=\MetricDistance(Q,K_a)$.
 
 \begin{theorem}[Mellin law of the distance to $K_a$]
 \label{p6:thm:distance-mellin}
@@ -15298,7 +15296,7 @@ give
 including $q=0$ and negative contractions.
 Theorems \path{tendstoLocallyUniformly_prefix_sinc_charFun} and
 \path{tendstoUniformlyOn_prefix_sinc_charFun} additionally prove local
-uniform convergence of the full phase-bearing prefixes on \(\R\) and its
+uniform convergence of the full phase-bearing prefixes on \(\RealNumbers\) and its
 explicit uniform-on-every-compact-set form.
 
 There is still no named centered $\psi_q$ or MGF wrapper, no
@@ -15332,11 +15330,11 @@ so that at $q=1/b$ the factor $j=0$ vanishes exactly at the nonzero integers.
 \label{p7:prop:base-b-zero}
 Let $q=1/b$ with integer $b\ge2$.  At every nonzero integer $n$,
 \begin{equation}\label{p7:eq:base-b-zero}
- \ord_{z=n}\Phi_{1/b}(z)=1+\nu_b(n),
+ \OrderOperator_{z=n}\Phi_{1/b}(z)=1+\nu_b(n),
  \qquad
  \nu_b(n)=\max\{j\ge0:b^j\mid n\}.
 \end{equation}
-In particular $\ord_{z=n}\Phi_{1/4}(z)=1+\Floor{\TwoAdicValuation(n)/2}$: the quartic
+In particular $\OrderOperator_{z=n}\Phi_{1/4}(z)=1+\Floor{\TwoAdicValuation(n)/2}$: the quartic
 transform sees binary valuation levels in pairs, the spectral counterpart of
 even/odd scale decimation.
 \end{proposition}

@@ -2317,7 +2317,6 @@ V.~Reshetnikov,
 % extra macros for part 2
 \renewcommand{\headrulewidth}{0.35pt}
 \renewcommand{\headrule}{\hbox to\headwidth{\color{RuleGray}\leaders\hrule height \headrulewidth\hfill}}
-\newcommand{\ord}{\operatorname{ord}}
 \newcommand{\coeff}[2]{[z^{#1}]\,#2}
 \newcommand{\fall}[2]{#1^{\underline{#2}}}
 \newcommand{\Bell}{\mathcal B}
@@ -4818,7 +4817,7 @@ where
 \]
 The product is entire.  If $m\in\IntegerNumbers\setminus\{0\}$, then
 \begin{equation}
- \ord_{\xi=m}\Phi=1+\nu_2(m).
+ \OrderOperator_{\xi=m}\Phi=1+\nu_2(m).
  \label{p3:eq:integer-multiplicity}
 \end{equation}
 Indeed, the factors indexed by $0\le j\le\nu_2(m)$ vanish simply and all later factors are nonzero.
@@ -4828,7 +4827,7 @@ corpus.  The standalone product is entire by
 \path{Fabius.rvachevFourierProduct_differentiable}; for every nonzero
 integer \(m\), Lean proves
 \[
- \operatorname{ord}_{\xi=m}\Phi=1+\nu_2(|m|)
+ \OrderOperator_{\xi=m}\Phi=1+\nu_2(|m|)
 \]
 as \path{Fabius.analyticOrderAt_rvachevFourierProduct_int}, together with
 all lower derivative vanishings and the exact nonzero leading derivative
@@ -4955,7 +4954,7 @@ Differentiating \eqref{p3:eq:Phi-product},
 \end{equation}
 The term $\ell=0$ is $\mu_r$.  If $\ell\ne0$, then \eqref{p3:eq:integer-multiplicity} gives
 \[
- \ord_{\xi=2^N\ell}\Phi
+ \OrderOperator_{\xi=2^N\ell}\Phi
  =N+1+\nu_2(\ell)>r,
 \]
 so $\Phi^{(r)}(2^N\ell)=0$.  Thus every nonzero alias vanishes, proving the identity for monomials and hence for all polynomials of degree at most $N$.
@@ -5850,7 +5849,7 @@ Equation \eqref{p3:eq:centered-CDF} implies $q(t_k)=x_k$.  Apply \eqref{p3:eq:qu
 The rule in \eqref{p3:eq:inverse-Fabius-quadrature} is not claimed to integrate all ordinary polynomials in $t$.  It integrates exactly the non-elementary space
 \begin{equation}
  \mathcal V_N
- =\operatorname{span}\{1,q(t),q(t)^2,\ldots,q(t)^N\},
+ =\SpanOperator\{1,q(t),q(t)^2,\ldots,q(t)^N\},
  \qquad q(t)=2F^{-1}(t)-1,
  \label{p3:eq:inverse-exactness-space}
 \end{equation}
@@ -5975,7 +5974,7 @@ It is the characteristic function of a compactly supported smooth probability de
 
 If $m\ne0$ is an integer, then
 \begin{equation}
- \ord_{\xi=m}\Phi_b=1+\nu_b(m),
+ \OrderOperator_{\xi=m}\Phi_b=1+\nu_b(m),
  \label{p3:eq:b-multiplicity}
 \end{equation}
 where $\nu_b(m)$ is the largest $a$ such that $b^a\mid m$.

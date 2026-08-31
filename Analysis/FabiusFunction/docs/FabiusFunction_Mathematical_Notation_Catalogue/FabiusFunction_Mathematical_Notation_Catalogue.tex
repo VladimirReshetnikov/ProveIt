@@ -110,7 +110,7 @@
 \large Canonical symbols, exact definitions, local namespaces, and historical aliases}
 \author{Encyclopedic companion to Vladimir Reshetnikov's \texttt{ProveIt} formalization}
 \date{Notation contract \FabiusNotationVersion\\
-\small Active pre-catalogue corpus: 158 recursively inventoried \texttt{.tex} sources}
+\small Active pre-catalogue corpus: 143 recursively inventoried \texttt{.tex} sources}
 
 \begin{document}
 \maketitle
@@ -121,7 +121,7 @@ This catalogue is the normative dictionary for mathematical notation in the acti
 global extension, and Rvachev's up-function; fixes number-system, probability, transform,
 binary, $q$-series, asymptotic, fractional-calculus, approximation, and operator
 conventions; and records every recurring collision discovered by a recursive audit of the
-158 pre-existing active \texttt{.tex} sources.  Each entry states its type, domain,
+143 pre-catalogue active \texttt{.tex} sources.  Each entry states its type, domain,
 codomain, indices, parameters, normalization, exceptional values, and formalization
 status.  No phrase such as ``with the usual convention'' supplies missing data: when two
 usual conventions exist, both are defined and their conversion is printed.  Historical
@@ -135,10 +135,12 @@ The command definitions in \path{docs/fabius-notation.tex}, version
 \FabiusNotationVersion, are normative for active project-authored LaTeX.  This catalogue
 defines their mathematical meaning.  The directory \path{docs/archive/} is not an active
 migration target and is used only as provenance.  A historical source under
-\path{docs/papers/} may display its original notation only in a passage explicitly marked
-as a quotation or historical convention; surrounding project prose uses the canonical
-symbols.  Included tables and generated fragments inherit the namespace of their
-standalone parent document.
+\path{docs/papers/} may display its original notation only inside an explicit historical
+scope.  A source-faithful whole-paper transcription opens that scope with the exact
+preamble marker \texttt{HISTORICAL-NOTATION-SCOPE}; a shorter quotation labels the
+historical convention at the quotation itself.  The marker never exempts surrounding
+project prose, which uses the canonical symbols.  Included tables and generated fragments
+inherit the namespace of their standalone parent document.
 \end{boxedremark}
 
 \tableofcontents
@@ -341,6 +343,9 @@ Fourier transform.\\
 transform with kernel $\EulerE^{-2\pi\ImaginaryUnit x\xi}$.\\
 \commandname{FourierAngular}\texttt{\{f\}} & $\FourierAngular{f}$ & Angular-frequency
 Fourier transform with kernel $\EulerE^{-\ImaginaryUnit x\omega}$.\\
+\commandname{FourierSeriesCoefficient}\texttt{\{h\}\{k\}} &
+$\FourierSeriesCoefficient{h}{k}$ & The $k$th coefficient of a one-periodic function,
+with kernel $\EulerE^{-2\pi\ImaginaryUnit kx}$ on $[0,1]$.\\
 \commandname{LaplaceTransformSymbol} & $\LaplaceTransformSymbol$ & One-sided Laplace
 operator token unless a bilateral subscript is printed.\\
 \commandname{MellinTransformSymbol} & $\MellinTransformSymbol$ & Mellin-transform
@@ -1200,21 +1205,27 @@ having disjoint zero sets.}
 \end{catalogueentry}
 
 \begin{catalogueentry}{periodic-fourier}{Fourier series on the unit circle}
+\entryfield{Command}{
+\commandname{FourierSeriesCoefficient}\texttt{\{h\}\{k\}}.  The printed
+subscript ``FS'' distinguishes a discrete Fourier-series coefficient from both continuous
+line-transform normalizations.}
 \entryfield{Coefficient}{For a $1$-periodic integrable function $h$,
 \[
- \widehat h[k]\DefinitionEquals\int_0^1h(x)
+ \FourierSeriesCoefficient{h}{k}\DefinitionEquals\int_0^1h(x)
  \EulerE^{-2\pi\ImaginaryUnit kx}\,\Differential x,
  \qquad k\in\IntegerNumbers.
 \]}
 \entryfield{Series}{The formal Fourier series is
-$\sum_{k\in\IntegerNumbers}\widehat h[k]\EulerE^{2\pi\ImaginaryUnit kx}$.
+$\sum_{k\in\IntegerNumbers}
+\FourierSeriesCoefficient{h}{k}\EulerE^{2\pi\ImaginaryUnit kx}$.
 Its mode of convergence---pointwise, $L^2$, uniform, distributional, or a named
 summability method---is part of every theorem.}
 \entryfield{Separation from line transform}{Square brackets and an integer index mark a
 Fourier-series coefficient.  Parentheses and a real frequency mark
 $\FourierTwoPi h(\xi)$ or $\FourierAngular h(\omega)$ on the line.}
 \entryfield{Period \(T\)}{For a $T$-periodic function, $T>0$,
-$\widehat h_T[k]=T^{-1}\int_0^T h(x)\EulerE^{-2\pi\ImaginaryUnit kx/T}\,\Differential x$.
+$\FourierSeriesCoefficient{h_T}{k}
+=T^{-1}\int_0^T h(x)\EulerE^{-2\pi\ImaginaryUnit kx/T}\,\Differential x$.
 The factor $T^{-1}$ is never implicit.}
 \end{catalogueentry}
 
@@ -2914,9 +2925,14 @@ in the same scope.\\
 \begin{catalogueentry}{accent-collisions}{Hats, tildes, bars, stars, primes, and scripts}
 \entryfield{Hats}{A normalization-labelled hat produced by
 \commandname{FourierTwoPi} or \commandname{FourierAngular} is a Fourier transform.  A
-hat on a polynomial, matrix, estimator, or lifted object is local and is declared in
-words.  No unlabelled hat is silently interpreted as a Fourier transform in a document
-that also uses monic or normalized polynomials.}
+periodic coefficient uses \commandname{FourierSeriesCoefficient}.  A hat on a polynomial,
+matrix, estimator, accelerated approximant, or lifted object is local: all use sites call
+a descriptive document-local macro, and the raw accent occurs only in that macro's
+one-line definition.  The immediately preceding source comment has the form
+\texttt{LOCAL-NON-FOURIER-HAT: \textbackslash MacroName meaning}, names the same macro,
+and explains its mathematical role.  A generic local alias for \commandname{widehat} or
+\commandname{hat} is forbidden.  Thus no unlabelled hat is silently interpreted as a
+Fourier transform in a document that also uses monic or normalized polynomials.}
 \entryfield{Tildes}{A tilde may mark centering, normalization, continuation, lifting, or
 an alternative sign convention.  The transformed object's type and the defining map are
 given at first use.  It is never a substitute for the signed global Fabius function.}
@@ -3197,6 +3213,8 @@ application and hat rendering of the same $2\pi$ transform.\\
 $\FourierAngularTransformOf{f},\FourierAngular{f}$ &
 \commandname{FourierAngularTransformOf}, \commandname{FourierAngular} & Bracketed
 operator application and hat rendering of the same angular transform.\\
+$\FourierSeriesCoefficient{h}{k}$ & \commandname{FourierSeriesCoefficient} &
+Integer-indexed coefficient of a periodic function; not a continuous line transform.\\
 $\LaplaceTransformSymbol,\LaplaceTransformOf{f}$ &
 \commandname{LaplaceTransformSymbol}, \commandname{LaplaceTransformOf} & One-sided
 operator token and application; bilateral use is subscripted.\\
@@ -3274,6 +3292,7 @@ Command & Arity & Normative entry\\
 \commandname{FourierAngular} & 1 & \notelink{fourier-angular}{Angular Fourier transform}.\\
 \commandname{FourierAngularOperator} & 0 & \notelink{fourier-angular}{Angular Fourier transform}.\\
 \commandname{FourierAngularTransformOf} & 1 & \notelink{fourier-angular}{Angular Fourier transform}.\\
+\commandname{FourierSeriesCoefficient} & 2 & \notelink{periodic-fourier}{Fourier series}.\\
 \commandname{FourierTwoPi} & 1 & \notelink{fourier-two-pi}{$2\pi$ Fourier transform}.\\
 \commandname{FourierTwoPiOperator} & 0 & \notelink{fourier-two-pi}{$2\pi$ Fourier transform}.\\
 \commandname{FourierTwoPiTransformOf} & 1 & \notelink{fourier-two-pi}{$2\pi$ Fourier transform}.\\
@@ -3426,11 +3445,11 @@ or a catalogue entry are not substitutes for inspecting the current declaration.
 
 The inventory below is the recursive active tree observed on 2026-08-31 immediately
 before this catalogue is counted as a source.  It excludes every path below
-\path{docs/archive/}.  It contains 160 mathematical content sources: 77 standalone
-documents and 83 included or generated fragments.  The separate shared contract
-\path{docs/fabius-notation.tex} raises the pre-catalogue active TeX total to 161.  Once
-this standalone catalogue is included, the corresponding totals are 162 active TeX
-files and 78 standalone documents.  ``Standalone'' means that the uncommented source
+\path{docs/archive/}.  It contains 142 mathematical content sources: 61 standalone
+documents and 81 included or generated fragments.  The separate shared contract
+\path{docs/fabius-notation.tex} raises the pre-catalogue active TeX total to 143.  Once
+this standalone catalogue is included, the corresponding totals are 144 active TeX
+files and 62 standalone documents.  ``Standalone'' means that the uncommented source
 contains \commandname{documentclass}; every other content source is a fragment inheriting
 its root preamble.
 
@@ -3449,21 +3468,21 @@ Manifest group & Standalone & Fragments & Total\\
 \path{FabiusFunction_Mathematical_Glossary/} & 1 & 0 & 1\\
 \path{papers/} & 7 & 0 & 7\\
 Frontier synthesis root & 1 & 0 & 1\\
-\path{drafts/exponents-and-q-series/} & 17 & 18 & 35\\
-\path{drafts/frontier-compilations/} & 5 & 2 & 7\\
+\path{drafts/exponents-and-q-series/} & 11 & 16 & 27\\
+\path{drafts/frontier-compilations/} & 3 & 1 & 4\\
 \path{drafts/integration-and-transforms/} & 1 & 7 & 8\\
-\path{drafts/inverse-and-sampling/} & 9 & 17 & 26\\
+\path{drafts/inverse-and-sampling/} & 10 & 17 & 27\\
 \path{drafts/lambert-w/} & 1 & 4 & 5\\
-\path{drafts/representations/} & 22 & 26 & 48\\
+\path{drafts/representations/} & 12 & 26 & 38\\
 \path{drafts/rvachev_up_fourier_decay/} & 1 & 0 & 1\\
-\path{drafts/spectra-and-arithmetic/} & 9 & 9 & 18\\
+\path{drafts/spectra-and-arithmetic/} & 10 & 10 & 20\\
 \path{drafts/thue-morse/} & 1 & 0 & 1\\
 \midrule
-Mathematical content subtotal & 77 & 83 & 160\\
+Mathematical content subtotal & 61 & 81 & 142\\
 Shared notation contract & 0 & 1 & 1\\
 This catalogue & 1 & 0 & 1\\
 \midrule
-Active TeX total including catalogue & 78 & 84 & 162\\
+Active TeX total including catalogue & 62 & 82 & 144\\
 \bottomrule
 \end{longtable}
 \endgroup
@@ -3480,6 +3499,7 @@ The repository audit is invoked from the repository root as follows.
 
 \begin{lstlisting}[style=pseudo]
 python Analysis/FabiusFunction/scripts/tex_notation_audit.py --strict --list
+python Analysis/FabiusFunction/scripts/tex_notation_audit.py --semantic --strict --list
 \end{lstlisting}
 
 For each active source it records the relative path, byte and line counts, SHA-256 digest,
@@ -3490,9 +3510,15 @@ pattern.  A focused catalogue check supplies this file's path as the positional 
 The strict gate detects retired commands, local redefinitions of shared semantic
 commands, missing or duplicated canonical inputs, fragment imports of the shared input,
 selected literal bypasses of semantic operators, and known script-composition hazards.
-It is deliberately not a TeX parser and cannot infer the meaning of every one-letter
-variable.  The local declaration schema and collision register close that semantic gap;
-rendered-PDF inspection later closes the composition and layout gap.
+The opt-in semantic gate additionally requires classification of raw hats, delimiter
+spellings, number systems, indicator symbols, digit sums, asymptotic operators, sinc
+normalizations, and probability operators.  Its sole raw-hat exemption is a descriptive
+one-line local macro definition whose immediately preceding
+\texttt{LOCAL-NON-FOURIER-HAT:} comment names that macro and states its meaning; direct
+raw-hat use remains an error.  The audit is deliberately not a TeX parser and cannot infer
+the meaning of every one-letter variable.  The local declaration schema and collision
+register close that semantic gap; rendered-PDF inspection later closes the composition
+and layout gap.
 
 \section{Completeness and maintenance contract}
 \label{sec:maintenance}
@@ -3500,13 +3526,14 @@ rendered-PDF inspection later closes the composition and layout gap.
 At shared-contract version \FabiusNotationVersion:
 
 \begin{itemize}
-\item \path{docs/fabius-notation.tex} defines exactly 89 shared commands.
-\item Every one of those 89 command names occurs in the canonical quick reference and
+\item \path{docs/fabius-notation.tex} defines exactly 90 shared commands.
+\item Every one of those 90 command names occurs in the canonical quick reference and
       in the alphabetical command index, with its exact arity.
 \item Every command belongs to a detailed normative entry defining its type-level role,
       normalization, exceptional cases, or the local data the command intentionally
       requires at each use.
-\item Both Fourier conventions, both sinc normalizations, both Fabius inverses, the
+\item Both line-Fourier conventions, Fourier-series coefficients, both sinc
+      normalizations, both Fabius inverses, the
       bounded/global/up-function triad, zero-inclusive/positive naturals, exact/linearized
       decay objectives, and pointwise/topological support have distinct printed forms.
 \item The retired-alias index is exhaustive with respect to the audit's retired-command
