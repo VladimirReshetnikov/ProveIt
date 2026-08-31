@@ -440,6 +440,20 @@ Thus the infinite word is the fixed point beginning with \(0\) of
 \end{equation}
 In signed form a block is followed by its negative.
 
+\emph{Formal versions.}  The signed recursion \eqref{p1:eq:eps-recursion} is
+\lean{Fabius.thueMorseSign\_two\_mul} and
+\lean{Fabius.thueMorseSign\_two\_mul\_add\_one}, and the bit form
+\eqref{p1:eq:tau-recursion} is \lean{Fabius.thueMorseBit\_two\_mul} and
+\lean{Fabius.thueMorseBit\_two\_mul\_add\_one} in
+\path{ThueMorseEnumerators.lean}; the signed pair is in
+\path{DyadicClosedForm.lean}.
+The block-complement law \eqref{p1:eq:word-recursion}, in the signed reading stated
+here --- a block is followed by its negative --- is
+\lean{Fabius.thueMorseSign\_add\_pow\_two}, \(\eps_{h+2^b}=-\eps_h\) for \(h<2^b\), in
+the same file.  The uniqueness clause is not separately formalized: in Lean the
+sequence is \emph{defined} by its binary weight and the recursions are theorems about
+it, so there is no second candidate to rule out.
+
 \subsection{Binary concatenation and reflection}
 
 \begin{theorem}[Block concatenation]
@@ -998,6 +1012,16 @@ Consequently
   \tau(n)=\frac{1-\eps_n}{2}.
   \label{p1:eq:fractional-cos}
 \end{equation}
+
+\emph{Formal version.}  Equation \eqref{p1:eq:fractional-weight} is
+\lean{Fabius.tsum\_fract\_natCast\_div\_two\_pow} in \path{DigitDefectCounting.lean},
+\(\sum_{h\ge0}\{N/2^h\}=S_2(N)\); the index \(h=0\) contributes nothing, so the sum
+there and the sum here agree, and \(S_2\) is \(\wt\) by definition of the latter.  It
+sits in a defect-counting file rather than a Thue--Morse one because that is the role
+it plays: it is the regression test that fixes the \emph{sign} of the weighted defect
+series \lean{Fabius.tsum\_mul\_natCast\_div\_two\_pow} against Legendre's classical
+count.  The pointwise ingredient, \(\{N/2^h\}=(N\bmod 2^h)/2^h\), is
+\lean{Fabius.fract\_natCast\_div\_two\_pow}.
 \end{proposition}
 
 \begin{proof}
@@ -1033,6 +1057,20 @@ For every \(n\ge0\),
 All sufficiently large factors are \(+1\).  Moreover the \(j\)-th factor is
 exactly \((-1)^{b_j(n)}\).
 \end{theorem}
+
+\emph{Formal version.}  The infinite identity \eqref{p1:eq:sine-sign} is
+\lean{Fabius.thueMorseSign\_eq\_tprod\_sign\_sin}; its finite-window form is
+\lean{Fabius.thueMorseSign\_eq\_prod\_sign\_sin}, and the exact factor formula
+is \lean{Fabius.sign\_sin\_rademacherPoint}, all in
+\path{RademacherSine.lean}.  The same module proves the unconditional factored
+square wave \lean{Fabius.sin\_pi\_mul\_eq\_neg\_one\_zpow\_floor}, its
+off-integer sign form \lean{Fabius.sign\_sin\_pi\_mul}, positivity of the
+fractional factor \lean{Fabius.sin\_pi\_mul\_fract\_pos}, the floor and
+nonintegrality facts \lean{Fabius.floor\_rademacherPoint} and
+\lean{Fabius.fract\_rademacherPoint\_ne\_zero}, and eventual triviality
+\lean{Fabius.sign\_sin\_rademacherPoint\_eq\_one\_of\_lt}.  Thus the displayed
+infinite product has finite multiplicative support and needs no analytic
+convergence hypothesis.
 
 \begin{proof}
 The number \((n+\tfrac12)/2^j\) is never integral and has the same floor as
@@ -1757,6 +1795,18 @@ Only the parity of each binomial coefficient contributes to the exponent or
 cosine.  Equation \eqref{p1:eq:pascal-bit-probe} turns their parity sum into
 \(\wt(n)\).
 \end{proof}
+
+\emph{Formal version.}  The per-column probe \eqref{p1:eq:pascal-bit-probe} is Lucas's
+criterion, formal in three interchangeable readings in
+\path{ThueMorseLucasSupport.lean}: the bit form
+\lean{Fabius.odd\_choose\_iff\_testBit}, the bitwise-and form
+\lean{Fabius.odd\_choose\_iff\_land} (\(\binom nk\) is odd iff \(k\mathbin{\&}n=k\)),
+and the support form \lean{Fabius.odd\_choose\_iff\_bitSupport\_subset}.  Taking
+\(k=2^j\) gives exactly the probe.  The summed statements
+\eqref{p1:eq:sparse-pascal-sign} and \eqref{p1:eq:sparse-pascal-bit} follow by adding
+the parities over \(j\), but are not separately stated; the same reduction is carried
+out inline in \path{ThueMorseIntegerLift.lean}, where the column probes are summed
+against Catalan parities.
 
 Unlike the source formula, this scans only \(O(\log n)\) selected entries and
 uses no logarithm.  Its price is the distinguished set of power-of-two
@@ -6594,6 +6644,7 @@ Module & Contents \\
 \path{BinaryDigitFloor.lean} & Exhaustive four-theorem total-natural bridge from dyadic quotients to floor-difference binary digits: quotient-by-two normalization, parity remainder, the consecutive-floor difference, and the test-bit indicator identity; no analytic or real-floor generalization. \\
 \path{ThueMorseDigits.lean} & Additive Legendre, floor sums, floor-parity formula, `testBit` bridge, digit product. \\
 \path{ThueMorseEnumerators.lean} & Weight distribution, evil/odious enumerations and composition laws, XOR autocorrelation, signed Hamming spheres. \\
+\path{RademacherSine.lean} & Nine Rademacher--sine theorems: factored/signed square waves, half-shift floor and nonintegrality, per-bit factors and eventual \(+1\), and finite/infinite Thue--Morse sign products. \\
 \path{FinitePolynomialFunctional.lean} & Moment expansion for finite weighted polynomial evaluations, selected-, top-, and constant-coefficient extraction, scalar-extension forms, degree-valued strict cancellation, and same-ring conveniences over commutative semirings; repeated nodes and a zero surviving moment are allowed. \\
 \path{FinitePowerSeriesFilter.lean} & The universal finite rescaling filter on formal power series over arbitrary commutative semirings: diagonal coefficient action by the finite node moments, constant-term preservation from mass one or exactness, and compatibility with further rescaling and coefficient maps.  This is coefficientwise algebra only; it makes no analytic evaluation or convergence claim. \\
 \path{CompleteHomogeneous.lean} & Evaluated complete homogeneous symmetric polynomials over arbitrary commutative semirings: explicit multiset and universal-symmetric-polynomial forms, adjoining-variable and map/reindex laws, and the univariate complete-homogeneous quotient; only the linear-factor identity requires subtraction. \\

@@ -13,10 +13,11 @@ superseded, generated, proved, numerical, and conjectural material.
 Main deliverables
 -----------------
 fabius_rvachev_new_frontiers.tex
-    Complete 35-page LaTeX report.
+    Complete 37-page, 2639-line LaTeX report.
 
 fabius_rvachev_new_frontiers.pdf
-    Rendered and visually inspected PDF.
+    Rendered and visually inspected PDF, refreshed after the post-intake
+    formal crosswalk.
 
 fabius_frontier_experiments.py
     Fully commented exact/high-precision experiment. It computes rational
@@ -57,11 +58,12 @@ the report as evidence, not as a theorem.
 
 Rebuild the PDF
 ---------------
-Required: a reasonably complete TeX Live installation with pdflatex/latexmk.
+Required: a reasonably complete TeX Live installation with pdflatex.
 From this directory:
 
-latexmk -pdf -interaction=nonstopmode -halt-on-error \
-    fabius_rvachev_new_frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_new_frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_new_frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error fabius_rvachev_new_frontiers.tex
 
 Re-run the numerical experiment
 -------------------------------
@@ -77,11 +79,17 @@ current monomial-basis recurrence is cancellation-prone.
 
 Verification performed
 ----------------------
-* Clean latexmk build with no unresolved references, duplicate labels, or
+* Clean three-pass pdflatex build with no unresolved references, duplicate labels, or
   overfull boxes.
-* PDF preflight: 35 pages, unencrypted, text-based, no warnings.
-* All 35 pages rendered to PNG and visually inspected in contact sheets;
-  representative plot and table pages were also checked at full render size.
+* PDF preflight: 37 A4 pages, unencrypted, text-based, no warnings; Libertinus
+  prose is embedded and the 10 Type-3 font rows inherited from the vector plot
+  payloads match the pre-update baseline.
+* All 36 landing pages were rendered to PNG and visually inspected in contact sheets
+  during publication.  After the formal crosswalk update, its changed pages
+  11, 12, 23, and 33, plus the new final page 37, were rendered and checked again
+  at full-page resolution.
+* Normalized PDF text extraction retains all 20 exact public Lean declaration
+  names in the new determinant crosswalk.
 * Python byte-compilation and an independent degree-24 smoke run succeeded.
 
 Claim status

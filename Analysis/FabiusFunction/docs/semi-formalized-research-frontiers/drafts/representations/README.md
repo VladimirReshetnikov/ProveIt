@@ -2,6 +2,63 @@
 
 New standalone intake members:
 
+- [`fabius_dyadic_chaos_frontier/`](fabius_dyadic_chaos_frontier/),
+  *Dyadic Sensitivity and Polynomial-Chaos Frontiers for the
+  Fabius--Rvachev Law* (34 pp), arrived in
+  `fabius_dyadic_chaos_frontier.zip` (outer SHA-256
+  `d57fd01c3991a6a7ecd6ba6e745729c745745d3265cb3cfd414aac1991b11b86`).
+  The archive had one safe top-level wrapper and all thirty submitted
+  non-ledger checksums verified before extraction.  Nine CSV entries and
+  their ledger hashes were then normalized from CRLF to repository LF.
+  All seven delivered PDFs are structurally readable and unencrypted
+  (40 pages total).
+
+  The report's Hoeffding/functional-ANOVA decomposition, active-digit law,
+  tensor-Legendre marks, smooth-observable interaction bounds,
+  q-binomial/Gaussian limit, periodic effective dimension, phase limit,
+  negative-Laplace bridge, and Thue--Morse corner make it an orthogonal-chaos
+  representation member.  It remains standalone pending post-publication
+  theorem comparison, experiment assessment, and a Lean crosswalk.  Quick
+  intake did not render pages, rebuild TeX, replay the experiment, or validate
+  the mathematical claims; manuscript result labels do not establish Lean
+  proof status.
+
+- [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/),
+  the 36-page *Common-Digit Fabius Zonoids* bundle committed directly to
+  `incoming/` by `fef364bfd162f80919cd77b808530dd0734f1cb1`.
+  All 24 non-ledger payloads are covered by its submitted ledger; six CSV
+  hashes were refreshed after repository CRLF-to-LF normalization.
+
+- [`Jacobi_Digit_Fabius_Rvachev_Frontier_Report/`](Jacobi_Digit_Fabius_Rvachev_Frontier_Report/),
+  the 32-page *Jacobi-Digit Deformations of the Fabius--Rvachev Law* bundle
+  from `92c9909242ed6a2ab51d68ed816d1aa2a5339719`.  Every one of its 38
+  submitted payload hashes verified without normalization.
+
+- [`Matrix_Dilated_Fabius_Rvachev_Frontier_Report/`](Matrix_Dilated_Fabius_Rvachev_Frontier_Report/),
+  the 29-page *Matrix-Dilated Fabius--Rvachev Laws* bundle from
+  `8a184546747082cbd92ad4675fb61981c6b8c3b6`.  Its complete 27-entry
+  ledger now records the LF repository bytes; seven CSV entries changed only
+  by line-ending normalization.
+
+These were already-extracted tracked directories, not archives, so no outer
+ZIP hashes exist.  The common-digit and matrix-dilated manuscripts are related
+multivariate/zonoid lifts, but no substantive payload was an exact duplicate
+of an existing draft; semantic consolidation is deferred to the post-
+publication assessment.  Every PDF in the three deliveries was structurally
+readable and unencrypted.  No page rendering, experiment replay, TeX rebuild,
+claim audit, or Lean build was part of this quick intake, and manuscript
+result labels do not establish Lean proof status.
+
+- [`Fabius_Zero_Bias_Frontier_Report/`](Fabius_Zero_Bias_Frontier_Report/),
+  *Zero-Bias Towers and Spectral Peeling in the Fabius--Rvachev System*
+  (26 pp), arrived on 2026-08-30 from
+  `Fabius_Zero_Bias_Frontier_Report.zip` (outer SHA-256
+  `fb8bbf8e34a2f5eb4e5bbe7b06b22566502be7583696f01960a6e41d25b518ee`).
+  All 21 submitted payload hashes verified; six CSV entries were refreshed
+  after CRLF-to-LF repository normalization. The package remains standalone
+  pending post-publication assessment and a Lean crosswalk; manuscript labels
+  do not establish Lean verification.
+
 - [`fabius_iterates_nowhere_analytic/`](fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Fabius
   Function* (19 pp at landing), arrived on 2026-08-30 with all 14 submitted payload
@@ -73,13 +130,58 @@ New standalone intake members:
   Libertinus prose, incomplete PDF metadata, and Type-3 plot fonts remain
   explicit post-intake normalization work.
 - [`Fabius_Rvachev_New_Frontiers-2/`](Fabius_Rvachev_New_Frontiers-2/),
-  *Fabius--Rvachev New Frontiers* (35 pp), arrived on 2026-08-30 from a
+  *Fabius--Rvachev New Frontiers* (37 pp; 2639 source lines after the
+  2026-08-30 formal crosswalk, 2539 at landing), arrived on
+  2026-08-30 from a
   rootless archive with all 15 payload checksums verified. Its native up-law
   orthogonal polynomials, Jacobi and Christoffel reconstruction, rational
   limits and products for pi, Gauss--Pade structure, and Legendre--Gaunt
   determinants extend the moment, transform, and representation theme. It is
   distinct from the homonymous historical report already absorbed into
-  `Frontier_Compilations/`.
+  `Frontier_Compilations/`.  A post-intake source-only Lean crosswalk now closes
+  exactly the polynomial change-of-basis determinant sublayer.  The two
+  definitions `polynomialCoefficientMatrix`, `polynomialMomentGramMatrix` and
+  seven theorems `polynomialCoefficientMatrix_apply`,
+  `polynomialMomentGramMatrix_apply`,
+  `polynomialMomentGramMatrix_eq_transpose_mul_hankel_mul`,
+  `polynomialMomentGramMatrix_det_eq_coefficient_det_sq_mul`,
+  `polynomialCoefficientMatrix_det_eq_prod_coeff`,
+  `polynomialMomentGramMatrix_det_eq_prod_coeff_sq_mul`, and
+  `gramStieltjesJacobiSubdiagonal_eq_polynomialMomentGramMatrix_det_ratio` in
+  `PolynomialMomentGramDeterminant.lean` prove the finite
+  `G = Cᵀ H C` identity, triangular coefficient determinant, Gram/Hankel
+  determinant formula, and arbitrary-basis Jacobi cross-ratio.  The last
+  equality assumes no Hankel nonvanishing only because Lean's field division
+  is total: a zero middle Hankel determinant makes both cross-ratios zero and
+  does not give a genuine nonsingular Jacobi recurrence.  The two
+  definitions `upLegendreGramMatrix`, `upLegendreGramDet` and seven theorems
+  `upLegendreGramMatrix_apply_eq_integral`,
+  `upLegendreGramDet_eq_prod_leadingCoeff_sq_mul_hankelDet`,
+  `upLegendreGramDet_zero`, `upLegendreGramDet_pos`,
+  `coeff_legendrePolynomial_self_div_succ`,
+  `gramStieltjesJacobiSubdiagonal_upMoment_eq_upLegendreGramDet_ratio`, and
+  `rvachevJacobiSubdiagonalRat_cast_eq_upLegendreGramDet_ratio` in
+  `FabiusLegendreHankelDeterminant.lean` specialize this to the up moments.
+  For arbitrary `F : BoundedFabius`, the determinant identity, the convention
+  `D_0 = 1` for the empty `0×0` Gram determinant, the leading-coefficient
+  quotient, and the real Gram cross-ratio hold.  Entry-as-integral, strict
+  positivity, and the rational-cast bridge require `IsFabius F`; positivity
+  then excludes the totalized singular case.  Its zero-based index `n` is the
+  conventional `beta_(n+1)` and has prefactor `((n+1)/(2*n+1))^2`.  The finite
+  Gaunt/Wigner/`3j` entry formula, entry
+  rationality by that route, and Christoffel reconstruction remain outside
+  this closure; `rvachevTranslateGram` is the distinct unweighted Gram kernel
+  of shifted-up atoms.  The downstream executable modules
+  `LegendrePolynomialRational.lean` (2 definitions + 6 theorems),
+  `FabiusLegendreRationalGram.lean` (3 + 11), and
+  `FabiusLegendreRationalGramValues.lean` (0 + 11) bring the complete
+  seven-module finite-algebra inventory to 13 definitions and 61 theorems.
+  They supply executable rational Legendre coefficients and Gram determinants,
+  including the exact `H_4` and zero-based `beta_4` values, without closing the
+  Gaunt/Wigner entry route or the remaining analytic program.  The refreshed
+  37-page A4/Libertinus PDF matches the 2639-line source; its 10 Type-3 font rows
+  are the unchanged embedded-plot
+  baseline, and all 15 entries in the active payload ledger verify.
 - [`Fabius_Stein_Koopman_Frontier_Report/`](Fabius_Stein_Koopman_Frontier_Report/),
   *Dyadic Stein--Koopman and q-Oscillator Calculus for the Fabius--Rvachev
   Law* (32 pp), arrived on 2026-08-30 with all 20 payload checksums verified.
@@ -87,9 +189,12 @@ New standalone intake members:
   Poisson operators, martingales, nonreversibility certificate, scalar Stein
   kernel, and endpoint asymptotics extend the operator-representation theme.
 
-These five reports remain standalone pending claim-by-claim crosswalk and
-deliberate consolidation; paper theorem labels do not by themselves assert
-Lean status.
+These six reports, from `Fabius_Zero_Bias_Frontier_Report/` through
+`Fabius_Stein_Koopman_Frontier_Report/`, remain standalone pending deliberate
+consolidation and completion of their claim-by-claim Lean crosswalks.  The
+determinant sublayer recorded above and the partition-defect sublayer below are
+explicit partial crosswalks; other paper theorem labels do not by themselves
+assert Lean status.
 
 ## Current Lean crosswalk: partition-defect arithmetic
 
@@ -137,7 +242,7 @@ dependent inverse/non-elementarity corollaries remain manuscript-level.
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
-[`Representation_Frontiers/`](Representation_Frontiers/) (298 pp,
+[`Representation_Frontiers/`](Representation_Frontiers/) (300 pp;
 eight parts):
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform

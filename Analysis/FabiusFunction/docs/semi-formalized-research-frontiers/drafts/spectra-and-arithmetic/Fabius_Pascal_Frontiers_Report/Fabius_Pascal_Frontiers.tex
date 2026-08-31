@@ -1,0 +1,1943 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{listings}
+
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\definecolor{provedgreen}{RGB}{28,112,74}
+\definecolor{conjpurple}{RGB}{105,55,135}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Automatic Spectra, Exact Dyadic Cubature, and Probabilistic Duals in the Pascal--Rvachev Hierarchy},
+  pdfsubject={Repository-audited frontier results on Fabius and Rvachev functions},
+  pdfkeywords={Fabius function, Rvachev up-function, Thue-Morse, Mahler function, hypertranscendence, natural boundary, Poisson-binomial, Laguerre-Polya, q-series}
+}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Pascal--Rvachev frontiers}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.4em,itemsep=0.25em,topsep=0.4em}
+\setlength{\emergencystretch}{3em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{problem}[theorem]{Problem}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\vtwo}{\nu_2}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\Po}{\operatorname{Po}}
+\newcommand{\Normal}{\mathcal N}
+\newcommand{\LP}{\mathcal{LP}}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\smallo}{o}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\e}{\mathrm e}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\ZetaR}{\mathcal Z}
+\newcommand{\Ar}{\mathcal A}
+\newcommand{\Mr}{\mathcal M}
+\newcommand{\Bell}{\mathcal B}
+\newcommand{\New}{\textcolor{provedgreen}{\textsf{new relative to audited repository}}}
+\newcommand{\Conj}{\textcolor{conjpurple}{\textsf{conjectural}}}
+\newcommand{\Known}{\textsf{repository baseline}}
+
+\newenvironment{resultbox}{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \hrule\vspace{0.65em}\small
+}{%
+  \vspace{0.65em}\hrule\end{minipage}\end{center}\smallskip
+}
+
+\lstdefinestyle{code}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{shadegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  xleftmargin=0.6em,
+  xrightmargin=0.6em
+}
+
+\title{\bfseries Automatic Spectra, Exact Dyadic Cubature,\\
+ and Probabilistic Duals in the Pascal--Rvachev Hierarchy\\[0.5em]
+\large A repository-audited frontier report on Fabius, Rvachev, Thue--Morse,\\
+Mahler, $q$-series, Bell--Bernoulli, and spectral-product structures}
+\author{Prepared from the \texttt{ProveIt} Fabius-function document corpus}
+\date{30 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This report audits the current LaTeX research corpus under
+\path{Analysis/FabiusFunction/docs} in Vladimir Reshetnikov's
+\texttt{ProveIt} repository and develops a set of results not located in the
+consolidated documents or their manifest descriptions.  The audit treats the
+primary 9509-line exposition, the 14587-line canonical frontier volume, the
+spectra-and-arithmetic, exponent-and-$q$-series, dyadic-comb, and frontier-compilation
+volumes, and the repository's draft manifest as the principal current
+representatives of the recursively organized corpus.  Historical drafts that
+have been editorially absorbed are tracked through that manifest.  The word
+``new'' below therefore means \emph{new relative to this audited repository
+state}; it is not an unconditional claim of first publication in the world
+literature.
+
+The first main result closes a problem explicitly left open in the repository:
+for every rank $r\geq1$, the generalized Thue--Morse spectral-sign generating
+function $G_r$ is nonrational, hypertranscendental over $\C(z)$, and has the
+unit circle as a natural boundary.  The proof combines a new nonperiodicity
+argument for strongly block-multiplicative digit characters with the
+Adamczewski--Dreyfus--Hardouin Mahler dichotomy.  A parallel construction for
+the valuation-multiplicity Lambert series
+\[
+ L_r(q)=\sum_{n\geq1}\binom{\vtwo(n)+1}{r}q^n
+\]
+yields an explicit order-$(r+1)$ homogeneous Mahler equation, a dense set of
+radial singularities at dyadic roots of unity, hypertranscendence, and
+non-$D$-finiteness.  A bivariate master Lambert germ packages all ranks.
+
+The analytic zero divisor then gives a sharp higher-rank Strang--Fix theorem:
+on the lattice $Q^{-1}\Z$, the density $f_r$ integrates every polynomial of
+degree strictly below $\binom{\vtwo(Q)+1}{r}$ by an exact finite periodized
+comb, and the threshold is optimal.  Appell reconstruction converts this into
+exact polynomial reproduction, with immediate Legendre and Bernoulli
+corollaries.
+
+Wick rotation of the canonical product produces
+\[
+ \Ar_r(w)=\Phi_r(\ii\sqrt w)
+ =\prod_{n\geq1}\left(1+\frac{w}{n^2}\right)^{\mu_r(n)}.
+\]
+For every rank this is a type-I Laguerre--P\'olya function of order $1/2$;
+its coefficient sequence is $PF_\infty$, so all Toeplitz minors, shifted
+Jensen hyperbolicity statements, and ultra-log-concavity inequalities lift
+from the known rank-one case to the full Pascal hierarchy.
+
+A new probability interpretation is especially productive.  The normalized
+ratio $\Ar_r(\theta z)/\Ar_r(\theta)$ is the probability generating function
+of an infinite Poisson-binomial spectral count $N_{r,\theta}$.  It identifies
+exact even moments with count probabilities, obeys a rank-branching law, and
+has a multi-scale limit theory.  For $\theta_r=c a^r$, the count is degenerate
+when $a<3$, converges in total variation to a fixed Poisson law at $a=3$, is
+asymptotically Poisson with diverging mean for $3<a<\sqrt{15}$, has a
+nontrivial mod-Poisson correction at $a=\sqrt{15}$, and is asymptotically
+Gaussian throughout $3<a<5$.  Finally, $\Ar_r(w)^{-\tau}$ is the Laplace
+transform of a generalized-gamma convolution with an explicit Thorin measure;
+a separate rank central limit theorem and geometric standardized-cumulant
+decay follow.
+
+The report supplies complete proofs, exact Bell--Bernoulli formulas,
+computational checks, a reproducible Python program, a conjecture register,
+and a staged formalization plan.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Scope, audit method, and originality boundary}
+
+\subsection{What was audited}
+
+The current repository is not a small collection of independent notes.  Its
+own manifest states that absorbed drafts are deleted after their content has
+been integrated into a primary or consolidated frontier volume, with the
+manifest and git history serving as the inventory and archive
+\cite{repo-manifest}.  Accordingly, the audit used two complementary layers.
+
+\begin{enumerate}
+\item The primary human-readable exposition
+\path{Fabius_Function_and_Rvachev_Up.tex}, which separates the bounded Fabius
+CDF, Rvachev's compactly supported bump, and the signed global extension, and
+collects the proved probability, Fourier, arithmetic, inverse, Legendre, and
+Lambert-asymptotic results \cite{repo-primary}.
+\item The current consolidated frontier documents, especially
+\path{semi-formalized-research-frontiers.tex},
+\path{Spectra_and_Arithmetic_Frontiers.tex},
+\path{Exponents_and_q_Series_Frontiers.tex},
+\path{Dyadic_Comb_Frontiers.tex}, and
+\path{Frontier_Compilations.tex} \cite{repo-frontier,repo-spectra,repo-q,repo-comb,repo-compilations}.
+The manifest was then used to identify topics already absorbed from historical
+or incoming drafts.
+\end{enumerate}
+
+This method is stronger than searching a few obvious phrases and weaker than a
+formal semantic comparison of every theorem in every historical commit.  The
+novelty labels in this report are therefore deliberately local: they record
+absence from the audited current repository corpus, not an exhaustive global
+priority search.
+
+\subsection{Important duplication exclusions}
+
+Several attractive conclusions were initially rediscovered and then removed
+from the novelty ledger because the corpus already contains them.  In
+particular:
+
+\begin{itemize}
+\item the canonical product for the classical Rvachev transform, its integer
+zero multiplicities $1+\vtwo(n)$, and exact zero jets;
+\item the Pascal--Rvachev hierarchy, its random-series model, support,
+refinement law, multiplicity formula
+$\mu_r(n)=\binom{\vtwo(n)+1}{r}$, spectral zeta function, digital sign law,
+and Mahler equation \cite{repo-spectra};
+\item rank-one sharp dyadic-comb moment exactness and Appell reproduction
+\cite{repo-comb,repo-compilations};
+\item the rank-one type-I Laguerre--P\'olya classification, $PF_\infty$
+coefficient theorem, Jensen hyperbolicity, moment inequalities,
+non-infinite-divisibility result, and gamma dual \cite{repo-compilations};
+\item higher-rank zero counting, spectral zeta, heat-trace, endpoint, and
+Fourier-decay results already developed in the spectra volume.
+\end{itemize}
+
+The present results use those statements as inputs.  They do not rebrand them
+as new.
+
+\subsection{Result ledger}
+
+\begin{longtable}{@{}p{0.26\textwidth}p{0.18\textwidth}p{0.48\textwidth}@{}}
+\toprule
+Topic & Status & Contribution in this report\\
+\midrule
+\endhead
+Spectral signs $G_r$ & \New & Proof of non-eventual-periodicity, nonrationality, hypertranscendence, and the unit-circle natural boundary; this resolves Problem D(iv) stated in the spectra volume.\\
+Multiplicity Lambert series $L_r$ & \New & Divisibility-layer formula, rank recurrence, order-$(r+1)$ Mahler equation, dense radial singularities, natural boundary, hypertranscendence, and non-$D$-finiteness.\\
+Rank master Lambert germ & \New & The bivariate identity $\mathscr L(u,q)=\sum_h(1+u)^h q^{2^h}/(1-q^{2^h})$ and its first-order Mahler equation.\\
+Higher-rank comb exactness & \New & Sharp degree $\binom{\vtwo(Q)+1}{r}-1$ for polynomial cubature and Appell reconstruction on $Q^{-1}\Z$.\\
+Laguerre--P\'olya/PF hierarchy & \New & Lift of the rank-one product theorem to every Pascal rank, including all Toeplitz-minor and moment inequalities.\\
+Poisson-binomial spectral count & \New & Exact PGF, moment-probability duality, factorial cumulants, rank branching, saddle tilting, Poisson/mod-Poisson/Gaussian phase diagram.\\
+Generalized-gamma dual & \New & All-rank Thorin measure, rank branching, $L^2$ concentration, and a standardized rank CLT.\\
+Hypertranscendence of $\Phi_r$ or $\Ar_r$ & \Conj & Non-$D$-finiteness is proved; full differential transcendence remains conjectural.\\
+Exact higher-rank dyadic values and inverse asymptotics & Open & Concrete directions are given, but no theorem is claimed here.\\
+\bottomrule
+\end{longtable}
+
+\begin{resultbox}
+\textbf{Proof-status convention.}
+A theorem or corollary below is proved in the report.  A numerical table is
+supporting evidence only.  Every conjecture is marked explicitly.  The
+Python program verifies finite identities and numerical predictions but is
+not used as a substitute for any analytic proof.
+\end{resultbox}
+
+\section{Baseline: the Pascal--Rvachev hierarchy}
+
+\subsection{Fourier convention and random series}
+
+Throughout this report
+\[
+ \sinc z:=\frac{\sin(\pi z)}{\pi z},\qquad \sinc0=1.
+\]
+The normalized convention puts the zeros at the nonzero integers.
+
+\begin{definition}[Pascal--Rvachev products]
+Set $\Phi_0(z)=\sinc(2z)$.  For $r\geq1$, let
+\begin{equation}\label{eq:Phi-r}
+ a_{r,h}:=\binom{h}{r-1},\qquad
+ \Phi_r(z):=\prod_{h\geq0}\sinc\!\left(\frac{z}{2^h}\right)^{a_{r,h}}.
+\end{equation}
+The convention $\binom hk=0$ for $h<k$ is always in force.
+\end{definition}
+
+The repository proves local uniform convergence and gives the random-series
+model
+\begin{equation}\label{eq:X-r}
+ X_r=\sum_{h\geq0}\sum_{\ell=1}^{a_{r,h}}U_{h,\ell},
+ \qquad
+ U_{h,\ell}\sim\operatorname{Unif}[-2^{-h-1},2^{-h-1}],
+\end{equation}
+with all summands independent, so that
+\begin{equation}\label{eq:characteristic}
+ \E\e^{-2\pi\ii zX_r}=\Phi_r(z),\qquad \supp X_r=[-1,1].
+\end{equation}
+Write $f_r$ for the density.  The case $r=1$ is the classical Rvachev
+up-density in the Fourier normalization used here; its translate/integral is
+the bounded Fabius function.
+
+Pascal's identity gives the refinement ladder
+\begin{equation}\label{eq:refinement}
+ \Phi_r(2z)=\Phi_r(z)\Phi_{r-1}(z),
+ \qquad
+ 2X_r\stackrel d=X_r+X_{r-1}',
+\end{equation}
+where the prime denotes an independent copy.
+
+\subsection{Zero divisor and spectral zeta}
+
+For $n\neq0$, the zero order at $n$ is
+\begin{equation}\label{eq:mu-r}
+ \mu_r(n)=\sum_{h=0}^{\vtwo(|n|)}\binom h{r-1}
+ =\binom{\vtwo(|n|)+1}{r}.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:canonical}
+ \Phi_r(z)=\prod_{n\geq1}
+ \left(1-\frac{z^2}{n^2}\right)^{\mu_r(n)}.
+\end{equation}
+The associated Dirichlet series is
+\begin{equation}\label{eq:spectral-zeta}
+ \ZetaR_r(s):=\sum_{n\geq1}\frac{\mu_r(n)}{n^s}
+ =\zeta(s)\frac{2^{-(r-1)s}}{(1-2^{-s})^r}
+ =\frac{2^s\zeta(s)}{(2^s-1)^r},\qquad \Re s>1.
+\end{equation}
+These are repository baselines \cite{repo-spectra}.
+
+Two elementary consequences will be used repeatedly:
+\begin{equation}\label{eq:zeta-special}
+ \ZetaR_r(2)=\frac{4\zeta(2)}{3^r},\qquad
+ \ZetaR_r(4)=\frac{16\zeta(4)}{15^r},\qquad
+ \ZetaR_r(2k)=\frac{2^{2k}\zeta(2k)}{(2^{2k}-1)^r}.
+\end{equation}
+Also, the first positive zero is $2^{r-1}$, and
+\begin{equation}\label{eq:unbounded-multiplicity}
+ \mu_r(2^H)=\binom{H+1}{r}\longrightarrow\infty.
+\end{equation}
+
+\subsection{Moments, cumulants, and Bell polynomials}
+
+Let $m_{r,n}=\E X_r^n$.  Symmetry kills odd moments.  Taking logarithms in
+\eqref{eq:canonical} gives, for $|z|<2^{r-1}$,
+\begin{equation}\label{eq:log-Phi}
+ \log\Phi_r(z)=-\sum_{k\geq1}\frac{\ZetaR_r(2k)}{k}z^{2k}.
+\end{equation}
+Equivalently, the even cumulants are
+\begin{equation}\label{eq:cumulants-X}
+ \kappa_{2k}(X_r)=(-1)^{k+1}
+ \frac{2(2k-1)!}{(2\pi)^{2k}}\ZetaR_r(2k).
+\end{equation}
+This is another repository baseline.  We record the Bell-polynomial form
+because it will connect the analytic and probabilistic results below.
+
+Define
+\begin{equation}\label{eq:A-def-early}
+ \Ar_r(w):=\Phi_r(\ii\sqrt w)=\sum_{n\geq0}C_{r,n}w^n.
+\end{equation}
+Then
+\begin{equation}\label{eq:Bell-coeff}
+ C_{r,n}=\frac{1}{n!}\Bell_n(x_{r,1},\ldots,x_{r,n}),
+ \qquad
+ x_{r,k}=(-1)^{k+1}(k-1)!\ZetaR_r(2k),
+\end{equation}
+where $\Bell_n$ is the complete exponential Bell polynomial, and
+\begin{equation}\label{eq:C-moment}
+ C_{r,n}=\frac{(2\pi)^{2n}}{(2n)!}m_{r,2n}.
+\end{equation}
+Euler's formula
+\[
+ \zeta(2k)=(-1)^{k+1}\frac{B_{2k}(2\pi)^{2k}}{2(2k)!}
+\]
+makes every $m_{r,2n}$ rational and expresses it explicitly through Bell
+polynomials in Bernoulli numbers.
+
+\section{Hypertranscendence and natural boundaries of the spectral signs}
+
+\subsection{The generalized Thue--Morse characters}
+
+Let $b_j(N)\in\{0,1\}$ be the binary digits of $N$.  The spectra volume
+defines
+\begin{equation}\label{eq:epsilon}
+ \varepsilon_r(N)=(-1)^{\sum_{j\geq0}b_j(N)\binom j{r-1}},
+ \qquad
+ \sigma_{r,j}:=(-1)^{\binom j{r-1}}.
+\end{equation}
+Let
+\begin{equation}\label{eq:Pr}
+ P_r:=2^{\lceil\log_2r\rceil},\qquad B_r:=2^{P_r}.
+\end{equation}
+Lucas's theorem implies that $j\mapsto\sigma_{r,j}$ is periodic with period
+$P_r$, and at least one entry per period is $-1$.  The generating function is
+\begin{equation}\label{eq:G-product}
+ G_r(z):=\sum_{N\geq0}\varepsilon_r(N)z^N
+ =\prod_{j\geq0}(1+\sigma_{r,j}z^{2^j}).
+\end{equation}
+Splitting off one period gives the repository's Mahler equation
+\begin{equation}\label{eq:G-Mahler}
+ G_r(z)=A_r^{\rm sign}(z)G_r(z^{B_r}),
+ \qquad
+ A_r^{\rm sign}(z)=\prod_{j=0}^{P_r-1}(1+\sigma_{r,j}z^{2^j}).
+\end{equation}
+The open frontier list asks for the natural-boundary behavior of $G_r$ on
+$|z|=1$ \cite{repo-spectra}.
+
+\subsection{A nonperiodicity lemma for periodic digit characters}
+
+The key new input is not a numerical observation but an elementary rigidity
+argument.
+
+\begin{lemma}[Strong block multiplicativity]\label{lem:block}
+For $0\leq a<B_r^m$ and $k\geq0$,
+\begin{equation}\label{eq:block}
+ \varepsilon_r(a+B_r^mk)=\varepsilon_r(a)\varepsilon_r(k).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The binary digits of $a$ occupy positions below $mP_r$, while those of
+$B_r^mk$ are the digits of $k$ shifted by $mP_r$.  Periodicity of
+$\sigma_{r,j}$ with period $P_r$ leaves every shifted digit weight unchanged.
+The two sets of occupied positions are disjoint, so the signs multiply.
+\end{proof}
+
+\begin{lemma}[Eventual periodicity would be pure periodicity]\label{lem:eventual-pure}
+If $\varepsilon_r$ is eventually periodic with period $d\geq1$, then it is
+periodic with period $d$ from $N=0$ onward.
+\end{lemma}
+
+\begin{proof}
+Suppose $\varepsilon_r(N+d)=\varepsilon_r(N)$ for $N\geq N_0$.  Choose $m$
+so large that $B_r^m>N_0+d$, and then choose $k$ with $B_r^mk\geq N_0$.
+For $0\leq a<B_r^m-d$, eventual periodicity and
+\cref{lem:block} give
+\[
+ \varepsilon_r(k)\varepsilon_r(a+d)
+ =\varepsilon_r(B_r^mk+a+d)
+ =\varepsilon_r(B_r^mk+a)
+ =\varepsilon_r(k)\varepsilon_r(a).
+\]
+Cancel the sign $\varepsilon_r(k)$.  Since $m$ can be arbitrarily large, the
+identity $\varepsilon_r(a+d)=\varepsilon_r(a)$ holds for every $a\geq0$.
+\end{proof}
+
+\begin{theorem}[Nonperiodicity of every spectral sign sequence]\label{thm:nonperiodic}
+For every $r\geq1$, the sequence $(\varepsilon_r(N))_{N\geq0}$ is not
+eventually periodic.
+\end{theorem}
+
+\begin{proof}
+Assume it is eventually periodic.  By \cref{lem:eventual-pure}, it is purely
+periodic with some period $d$.  Fix $j$ so large that $2^j>d$.  Put
+\[
+ S_j:=\prod_{k=0}^{j-1}\sigma_{r,k},\qquad c:=\varepsilon_r(d-1)\in\{\pm1\}.
+\]
+Pure periodicity gives
+\[
+ \sigma_{r,j}=\varepsilon_r(2^j)=\varepsilon_r(2^j-d).
+\]
+In the first $j$ binary positions, $2^j-d=(2^j-1)-(d-1)$ is the bitwise
+complement of $d-1$.  Hence
+\begin{equation}\label{eq:complement-sign}
+ \varepsilon_r(2^j-d)
+ =\prod_{k=0}^{j-1}\sigma_{r,k}^{1-b_k(d-1)}
+ =\frac{S_j}{c}.
+\end{equation}
+Therefore $\sigma_{r,j}=S_j/c$, and
+\[
+ S_{j+1}=S_j\sigma_{r,j}=\frac{S_j^2}{c}=\frac1c=c.
+\]
+For all sufficiently large $j$, both $S_j$ and $S_{j+1}$ equal $c$, so
+$\sigma_{r,j}=1$ eventually.  This contradicts the periodic mask's having at
+least one negative entry in every period.
+\end{proof}
+
+\subsection{Mahler hypertranscendence}
+
+We use the following deep dichotomy of Adamczewski, Dreyfus, and Hardouin
+\cite{adh}.
+
+\begin{theorem}[Mahler differential dichotomy, cited form]\label{thm:ADH}
+Let $p\geq2$, and let a possibly ramified Laurent series solve a nontrivial
+linear Mahler equation over $\C(z)$ involving $f(z),f(z^p),\ldots,f(z^{p^m})$.
+Then either the solution belongs to the ramified rational field
+$\bigcup_{d\geq1}\C(z^{1/d})$, or it is hypertranscendental over $\C(z)$.
+\end{theorem}
+
+A power series in integral powers that lies in a ramified rational field is in
+fact rational in $z$: invariance under all deck transformations of a common
+ramification forces the rational function to descend to $\C(z)$.
+
+\begin{lemma}[Finite-alphabet rational series]\label{lem:finite-rational}
+A rational power series whose coefficients lie in a finite set is eventually
+periodic.
+\end{lemma}
+
+\begin{proof}
+Its coefficients satisfy a constant-coefficient linear recurrence from some
+index onward.  A state consists of a fixed finite window of consecutive
+coefficients.  Only finitely many states occur, and deterministic recurrence
+propagation makes the state sequence eventually periodic.  Therefore the
+coefficient sequence is eventually periodic.
+\end{proof}
+
+\begin{theorem}[Hypertranscendence and natural boundary of $G_r$]\label{thm:G-main}
+For every rank $r\geq1$:
+\begin{enumerate}[label=(\roman*)]
+\item $G_r(z)$ is not rational;
+\item $G_r(z)$ is hypertranscendental over $\C(z)$;
+\item the unit circle is a natural boundary of $G_r$.
+\end{enumerate}
+Thus the natural-boundary part of Problem D in the spectra-and-arithmetic
+frontier volume has an affirmative answer for every rank.
+\end{theorem}
+
+\begin{proof}
+The coefficients of $G_r$ lie in $\{\pm1\}$.  If $G_r$ were rational,
+\cref{lem:finite-rational} would make $\varepsilon_r$ eventually periodic,
+contradicting \cref{thm:nonperiodic}.  Equation \eqref{eq:G-Mahler} is a
+nontrivial linear Mahler equation, so \cref{thm:ADH} and the descent observation
+imply hypertranscendence.
+
+For the natural boundary there are two independent routes.  First,
+$G_r$ has integer coefficients and radius of convergence exactly $1$; the
+P\'olya--Carlson theorem says that such a series is either rational or has the
+unit circle as a natural boundary.  Second, the Mahler-specific theorem of
+Bell, Coons, and Rowland gives the same rational/natural-boundary dichotomy
+for a Mahler function meromorphic in the unit disk \cite{bcr}.  Nonrationality
+rules out the first alternative in either theorem.
+\end{proof}
+
+\begin{corollary}[Generic algebraic independence of values]\label{cor:G-values}
+Fix $m\geq0$ and a compact subset $K$ of the open unit disk.  For every
+algebraic point $\alpha\in K$ outside a finite exceptional set, the numbers
+\[
+ G_r(\alpha),G_r'(\alpha),\ldots,G_r^{(m)}(\alpha)
+\]
+are algebraically independent over $\overline\Q$.
+\end{corollary}
+
+\begin{proof}
+This is the value-specialization consequence of the
+Adamczewski--Dreyfus--Hardouin theorem for nonrational Mahler functions
+\cite{adh}.
+\end{proof}
+
+\begin{remark}[What this does not solve]
+A natural boundary is an analytic-continuation statement.  It does not by
+itself determine rarefied sums, Lyapunov exponents, or the pure-point versus
+singular-continuous decomposition of the diffraction measure.  The other
+parts of the repository's Problem D remain open.
+\end{remark}
+
+\subsection{First masks}
+
+\begin{center}
+\begin{tabular}{@{}rrrrl@{}}
+\toprule
+$r$ & $P_r$ & $B_r$ & negative mask entries & $(\sigma_{r,0},\ldots,\sigma_{r,P_r-1})$\\
+\midrule
+1 & 1 & 2 & 1 & $-$\\
+2 & 2 & 4 & 1 & $+-$\\
+3 & 4 & 16 & 2 & $++--$\\
+4 & 4 & 16 & 1 & $+++- $\\
+5 & 8 & 256 & 4 & $++++----$\\
+6 & 8 & 256 & 2 & $+++++-+-$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The Python checks in the archive verify the block identity on large finite
+ranges for ranks $1$ through $8$, but \cref{thm:nonperiodic} is the proof.
+
+\section{A hypertranscendental hierarchy of valuation Lambert series}
+
+\subsection{Divisibility layers}
+
+Define
+\begin{equation}\label{eq:L-def}
+ L_r(q):=\sum_{n\geq1}\mu_r(n)q^n,
+ \qquad |q|<1.
+\end{equation}
+The binomial multiplicity admits a useful layer-cake identity.
+
+\begin{lemma}[Divisibility decomposition]\label{lem:mu-layer}
+For $n\geq1$,
+\begin{equation}\label{eq:mu-layer}
+ \mu_r(n)=\sum_{h\geq r-1}\binom h{r-1}\one_{2^h\mid n}.
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:L-layer}
+ \boxed{
+ L_r(q)=\sum_{h\geq r-1}\binom h{r-1}
+ \frac{q^{2^h}}{1-q^{2^h}}.}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+If $v=\vtwo(n)$, only $h\leq v$ contribute, and the hockey-stick identity
+gives
+$\sum_{h=r-1}^{v}\binom h{r-1}=\binom{v+1}{r}$.  Summing
+$\one_{2^h\mid n}q^n$ over $n$ gives $q^{2^h}/(1-q^{2^h})$.
+\end{proof}
+
+Formula \eqref{eq:L-layer} is a genuine $q$-series bridge between the
+Pascal zero divisor and Lambert-series theory.  It is distinct from the
+Dirichlet spectral zeta function \eqref{eq:spectral-zeta}.
+
+\subsection{Rank recursion and a homogeneous Mahler equation}
+
+Let $T$ be the Mahler operator $(Tf)(q)=f(q^2)$ and put
+$R(q)=q/(1-q)$.
+
+\begin{proposition}[Pascal--Mahler recursion]\label{prop:L-recursion}
+The Lambert hierarchy satisfies
+\begin{align}
+ (I-T)L_1&=R,\label{eq:L-r1}\\
+ (I-T)L_r&=TL_{r-1},\qquad r\geq2,\label{eq:L-rec}\\
+ (I-T)^rL_r&=T^{r-1}R
+ =\frac{q^{2^{r-1}}}{1-q^{2^{r-1}}}.\label{eq:L-iterated}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Subtract \eqref{eq:L-layer} evaluated at $q^2$ from the same formula at $q$.
+Pascal's identity
+$\binom h{r-1}-\binom{h-1}{r-1}=\binom{h-1}{r-2}$ gives
+\eqref{eq:L-rec}; the rank-one difference is the first Lambert atom $R$.
+Since $T$ commutes with $I-T$, induction gives \eqref{eq:L-iterated}.
+\end{proof}
+
+Let $a=2^{r-1}$.  The rational function
+$g(q)=q^a/(1-q^a)$ satisfies
+\[
+ (1+q^a)g(q^2)-q^ag(q)=0.
+\]
+Combining this with \eqref{eq:L-iterated} gives the promised homogeneous
+equation.
+
+\begin{theorem}[Order-$(r+1)$ Mahler equation]\label{thm:L-Mahler}
+For every $r\geq1$,
+\begin{equation}\label{eq:L-homogeneous}
+ \boxed{
+ \bigl((1+q^{2^{r-1}})T-q^{2^{r-1}}I\bigr)
+ (I-T)^rL_r=0.}
+\end{equation}
+In expanded form this is a nontrivial linear Mahler equation involving
+$L_r(q),L_r(q^2),\ldots,L_r(q^{2^{r+1}})$ with rational coefficients.
+\end{theorem}
+
+\subsection{Dense dyadic singularities}
+
+\begin{theorem}[Natural boundary of $L_r$]\label{thm:L-boundary}
+Every dyadic root of unity is a radial singularity of $L_r$.  Since these
+roots are dense on the unit circle, $|q|=1$ is a natural boundary.
+\end{theorem}
+
+\begin{proof}
+Let $\zeta$ have order $2^J$ and put $q=\rho\zeta$, $0<\rho<1$.  For every
+$h\geq\max\{J,r-1\}$,
+\[
+ q^{2^h}=\rho^{2^h}>0.
+\]
+Thus the tail of \eqref{eq:L-layer} is positive real.  Already the fixed term
+with $h=\max\{J,r-1\}$ tends to $+\infty$ as $\rho\uparrow1$, while the
+finitely many preceding terms cannot cancel that divergence.  Hence $\zeta$
+is a radial singularity.  An analytic continuation through any open arc of
+the circle would continue across some dyadic root, a contradiction.
+\end{proof}
+
+\begin{theorem}[Hypertranscendence and nonholonomicity of $L_r$]\label{thm:L-hyper}
+For every $r\geq1$:
+\begin{enumerate}[label=(\roman*)]
+\item $L_r$ is hypertranscendental over $\C(q)$;
+\item $L_r$ is not $D$-finite;
+\item the coefficient sequence $\mu_r(n)$ is not $P$-recursive.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The natural boundary rules out rationality, including rationality in a
+ramified variable.  Apply \cref{thm:ADH} to \eqref{eq:L-homogeneous}.
+Hypertranscendence implies non-$D$-finiteness.  Equivalently, a $D$-finite
+ordinary generating function has a $P$-recursive coefficient sequence, so
+$\mu_r(n)$ is not $P$-recursive.
+\end{proof}
+
+\begin{remark}[Regular but not holonomic]
+For fixed $r$, $\mu_r(n)$ is nevertheless $2$-regular.  With the auxiliary
+convention $\mu_0(n):=1$,
+\begin{equation}\label{eq:mu-2regular}
+ \mu_r(2n)=\mu_r(n)+\mu_{r-1}(n),\qquad
+ \mu_r(2n+1)=\begin{cases}1,&r=1,\\0,&r\geq2.\end{cases}
+\end{equation}
+Thus finite-state linear algebra controls its $2$-kernel even though no
+polynomial-coefficient recurrence in $n$ exists.
+\end{remark}
+
+\subsection{The master rank Lambert germ}
+
+\begin{theorem}[Bivariate rank resolvent]\label{thm:master-L}
+For $|q|<1$ and $u$ in any bounded set for which the displayed series
+converges normally,
+\begin{equation}\label{eq:master-L}
+ \mathscr L(u,q):=\sum_{r\geq1}u^{r-1}L_r(q)
+ =\sum_{h\geq0}(1+u)^h\frac{q^{2^h}}{1-q^{2^h}}.
+\end{equation}
+It satisfies the first-order inhomogeneous Mahler equation
+\begin{equation}\label{eq:master-L-Mahler}
+ \boxed{\mathscr L(u,q)=\frac{q}{1-q}+(1+u)\mathscr L(u,q^2).}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Interchange the rank and scale sums in \eqref{eq:L-layer} and use
+\[
+ \sum_{r=1}^{h+1}\binom h{r-1}u^{r-1}=(1+u)^h.
+\]
+Separating the $h=0$ term and shifting $h\mapsto h+1$ gives
+\eqref{eq:master-L-Mahler}.
+\end{proof}
+
+\begin{remark}[A $q$-analogue viewpoint]
+The factors $q^{2^h}/(1-q^{2^h})$ are logarithmic derivatives of dyadic
+$q$-Pochhammer atoms.  The rank parameter changes the scale weight from $1$
+to $(1+u)^h$.  This makes \eqref{eq:master-L} a natural meeting point of
+automatic sequences, Lambert series, and the repository's broader
+$q$-Pochhammer program.
+\end{remark}
+
+\section{Sharp higher-rank dyadic-comb cubature}
+
+\subsection{A general periodization identity}
+
+Let $Q\geq1$ be an integer lattice parameter; it is denoted $Q$ rather than
+$q$ to avoid conflict with the Lambert variable.  For a polynomial $p$, put
+\begin{equation}\label{eq:comb}
+ \mathcal C_{r,Q}[p](x):=\frac{1}{Q}\sum_{k\in\Z}
+ p\!\left(x-\frac{k}{Q}\right)
+ f_r\!\left(x-\frac{k}{Q}\right).
+\end{equation}
+The sum is finite because $f_r$ is supported on $[-1,1]$.
+
+\begin{lemma}[Fourier coefficients of the weighted comb]\label{lem:comb-Fourier}
+For $p(t)=t^j$,
+\begin{equation}\label{eq:comb-Fourier}
+ \mathcal C_{r,Q}[t^j](x)
+ =\sum_{m\in\Z}
+ \frac{\Phi_r^{(j)}(Qm)}{(-2\pi\ii)^j}
+ \e^{2\pi\ii Qmx}.
+\end{equation}
+The constant coefficient is $m_{r,j}$.
+\end{lemma}
+
+\begin{proof}
+Apply Poisson summation to $g_j(t)=t^jf_r(t)$ on the lattice $Q^{-1}\Z$.
+Our Fourier convention gives
+$\widehat g_j(\xi)=\Phi_r^{(j)}(\xi)/(-2\pi\ii)^j$.
+At $\xi=0$ this is $\int t^jf_r(t)\dd t=m_{r,j}$.
+\end{proof}
+
+\subsection{Exact order and sharpness}
+
+\begin{theorem}[Sharp Pascal comb theorem]\label{thm:sharp-comb}
+Let
+\begin{equation}\label{eq:M-rQ}
+ M_r(Q):=\mu_r(Q)=\binom{\vtwo(Q)+1}{r}.
+\end{equation}
+If $p$ is a polynomial with $\deg p<M_r(Q)$, then for every real $x$,
+\begin{equation}\label{eq:comb-exact}
+ \boxed{
+ \frac1Q\sum_{k\in\Z}p\!\left(x-\frac{k}{Q}\right)
+ f_r\!\left(x-\frac{k}{Q}\right)=\E p(X_r).}
+\end{equation}
+The threshold is sharp.  If $M_r(Q)>0$, the identity fails for
+$p(t)=t^{M_r(Q)}$; if $M_r(Q)=0$, it already fails for constants.
+\end{theorem}
+
+\begin{proof}
+For $m\neq0$,
+\[
+ \mu_r(Qm)=\binom{\vtwo(Q)+\vtwo(m)+1}{r}\geq M_r(Q).
+\]
+Hence every derivative $\Phi_r^{(j)}(Qm)$ vanishes for $j<M_r(Q)$.  By
+linearity and \cref{lem:comb-Fourier}, all nonconstant Fourier modes disappear
+for every polynomial of degree below the threshold, leaving the moment at
+frequency zero.
+
+If $M=M_r(Q)>0$, the zero at $Q$ has exact order $M$, so
+$\Phi_r^{(M)}(Q)\neq0$.  The $m=1$ Fourier coefficient of the periodization for
+$t^M$ is therefore nonzero.  If $M=0$, then $\Phi_r(Q)\neq0$, so even the
+constant periodization has a nonzero first Fourier mode.
+\end{proof}
+
+\begin{corollary}[Dyadic degree]\label{cor:dyadic-degree}
+For $Q=2^H$, the exact polynomial degree is
+\begin{equation}\label{eq:dyadic-degree}
+ d_{r,H}=\binom{H+1}{r}-1
+\end{equation}
+when $H\geq r-1$; when $H<r-1$, even the constant periodization fails.
+\end{corollary}
+
+For example:
+\begin{center}
+\begin{tabular}{@{}c|rrrrrr@{}}
+\toprule
+& $H=2$ & $H=3$ & $H=4$ & $H=5$ & $H=6$ & $H=7$\\
+\midrule
+$r=1$ & 2 & 3 & 4 & 5 & 6 & 7\\
+$r=2$ & 2 & 5 & 9 & 14 & 20 & 27\\
+$r=3$ & 0 & 3 & 9 & 19 & 34 & 55\\
+$r=4$ & -- & 0 & 4 & 14 & 34 & 69\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here ``--'' means $M_r(2^H)=0$.
+
+\begin{remark}[Relation to the known rank-one theorem]
+At $r=1$, $M_1(Q)=1+\vtwo(Q)$, exactly the sharp rank-one hierarchy already
+proved in the dyadic-comb and frontier-compilation volumes.  The new content is
+the Pascal-rank lift and its binomial growth in $\vtwo(Q)$.
+\end{remark}
+
+\subsection{Appell reconstruction}
+
+Let
+\begin{equation}\label{eq:mgf}
+ \Mr_r(z):=\E\e^{zX_r}=\Phi_r\!\left(\frac{\ii z}{2\pi}\right).
+\end{equation}
+It is even.  Define Appell polynomials $P_{r,n}$ by
+\begin{equation}\label{eq:Appell}
+ \frac{\e^{yz}}{\Mr_r(z)}
+ =\sum_{n\geq0}P_{r,n}(y)\frac{z^n}{n!}.
+\end{equation}
+
+\begin{theorem}[Exact polynomial reproduction]\label{thm:Appell-reproduction}
+For $0\leq n<M_r(Q)$,
+\begin{equation}\label{eq:Appell-reproduce}
+ \boxed{
+ \frac1Q\sum_{k\in\Z}P_{r,n}\!\left(\frac{k}{Q}\right)
+ f_r\!\left(x-\frac{k}{Q}\right)=x^n.}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply \cref{thm:sharp-comb} to the polynomial in the variable $t$
+\[
+ p_x(t)=P_{r,n}(x-t).
+\]
+Its degree is $n<M_r(Q)$, so the left side of \eqref{eq:Appell-reproduce}
+is $\E P_{r,n}(x-X_r)$.  Taking the exponential generating function and using
+symmetry,
+\[
+ \sum_{n\geq0}\E P_{r,n}(x-X_r)\frac{z^n}{n!}
+ =\frac{\e^{xz}\E\e^{-zX_r}}{\Mr_r(z)}
+ =\e^{xz}.
+\]
+Coefficient comparison gives $x^n$.
+\end{proof}
+
+\subsection{Legendre and Bernoulli corollaries}
+
+Let $\mathrm P_n$ denote the Legendre polynomial and $B_n(x)$ the Bernoulli
+polynomial.
+
+\begin{corollary}[Exact finite Legendre moments]\label{cor:Legendre-comb}
+If $n<M_r(Q)$, then for every $x$,
+\begin{equation}\label{eq:Legendre-comb}
+ \int_{-1}^{1}\mathrm P_n(t)f_r(t)\dd t
+ =\frac1Q\sum_{|x-k/Q|\leq1}
+ \mathrm P_n\!\left(x-\frac{k}{Q}\right)
+ f_r\!\left(x-\frac{k}{Q}\right).
+\end{equation}
+\end{corollary}
+
+\begin{corollary}[Exact finite Bernoulli moments]\label{cor:Bernoulli-comb}
+If $n<M_r(Q)$, then
+\begin{equation}\label{eq:Bernoulli-comb}
+ \E B_n(X_r)
+ =\frac1Q\sum_{|x-k/Q|\leq1}
+ B_n\!\left(x-\frac{k}{Q}\right)
+ f_r\!\left(x-\frac{k}{Q}\right).
+\end{equation}
+\end{corollary}
+
+These identities turn initial blocks of orthogonal and Appell moments into
+finite exact sampling formulas.  They are potentially useful for stable
+Legendre coefficient computation because the right side is local and the
+exactness degree is known before any numerical work begins.
+
+\subsection{Numerical zero-jet check}
+
+The archived program differentiates truncated products at three exact zeros.
+The first nonzero derivative agrees with
+$M_r(Q)=\binom{\vtwo(Q)+1}{r}$:
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$r$ & $Q$ & predicted order & first nonzero derivative (numerical)\\
+\midrule
+2 & 4  & 3 & $\Phi_2^{(3)}(4)\approx 1.32282664349\times10^{-2}$\\
+3 & 8  & 4 & $\Phi_3^{(4)}(8)\approx-7.57646125312\times10^{-5}$\\
+4 & 16 & 5 & $\Phi_4^{(5)}(16)\approx 3.51415041684\times10^{-8}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The lower derivatives are numerically below $10^{-130}$ at the chosen
+precision.  This table checks the implementation; sharpness in
+\cref{thm:sharp-comb} follows analytically from the exact zero order.
+
+\section{All-rank Laguerre--P\'olya and P\'olya-frequency structure}
+
+\subsection{Wick rotation}
+
+From \eqref{eq:canonical},
+\begin{equation}\label{eq:A-product}
+ \Ar_r(w):=\Phi_r(\ii\sqrt w)
+ =\prod_{n\geq1}\left(1+\frac{w}{n^2}\right)^{\mu_r(n)}
+ =\sum_{k\geq0}C_{r,k}w^k.
+\end{equation}
+Since $X_r$ is symmetric,
+\begin{equation}\label{eq:A-mgf}
+ \Ar_r(w)=\E\e^{2\pi\sqrt w X_r}=\E\e^{-2\pi\sqrt w X_r}
+ =\sum_{k\geq0}\frac{(2\pi)^{2k}m_{r,2k}}{(2k)!}w^k.
+\end{equation}
+The square root disappears from the Taylor series.
+
+\subsection{Classification and total positivity}
+
+\begin{theorem}[All-rank type-I Laguerre--P\'olya theorem]\label{thm:LP-all}
+For every $r\geq1$, $\Ar_r$ is a type-I Laguerre--P\'olya entire function of
+genus zero and order $1/2$.  Its zeros are exactly $-n^2$, with multiplicity
+$\mu_r(n)$.
+\end{theorem}
+
+\begin{proof}
+The convergence
+$\sum_n\mu_r(n)/n^2=\ZetaR_r(2)<\infty$ makes
+\eqref{eq:A-product} a genus-zero product and the locally uniform limit of
+polynomials with only nonpositive real zeros.  Hence it is type-I
+Laguerre--P\'olya.  The exponent of convergence of the zeros is $1/2$ because
+\[
+ \sum_{n\geq1}\frac{\mu_r(n)}{(n^2)^\rho}=\ZetaR_r(2\rho)
+\]
+converges exactly for $\rho>1/2$.  Thus the order is at least $1/2$.
+On the other hand, $|X_r|\leq1$ and \eqref{eq:A-mgf} give growth
+$\exp(\bigO(\sqrt{|w|}))$, so the order is at most $1/2$.
+\end{proof}
+
+\begin{theorem}[$PF_\infty$ coefficients and Jensen hyperbolicity]\label{thm:PF-all}
+For every $r\geq1$, the ordinary coefficient sequence
+$(C_{r,k})_{k\geq0}$ is a P\'olya-frequency sequence of infinite order.
+Equivalently, every minor of the Toeplitz matrix
+$(C_{r,j-i})_{i,j\geq0}$ is nonnegative.  All shifted Jensen polynomials of
+the exponential coefficient sequence $k!C_{r,k}$ are hyperbolic with
+nonpositive zeros.
+\end{theorem}
+
+\begin{proof}
+The Aissen--Edrei--Schoenberg--Whitney characterization of $PF_\infty$
+sequences applies to
+\[
+ \Ar_r(w)=\prod_{n,j}\left(1+\frac{w}{n^2}\right),
+ \qquad 1\leq j\leq\mu_r(n),
+\]
+because all parameters $1/n^2$ are nonnegative and summable
+\cite{aesw}.  Jensen's characterization of the Laguerre--P\'olya class then
+gives the hyperbolicity assertion.
+\end{proof}
+
+\begin{corollary}[Ultra-log-concavity of every rank's moments]\label{cor:ULC}
+For $k\geq1$,
+\begin{align}
+ C_{r,k}^2&\geq\frac{k+1}{k}C_{r,k-1}C_{r,k+1},\label{eq:C-ULC}\\
+ m_{r,2k}^2&\geq\frac{2k-1}{2k+1}
+ m_{r,2k-2}m_{r,2k+2}.\label{eq:moment-ULC}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+Apply Newton's inequalities to finite truncations of
+\eqref{eq:A-product} and pass to the locally uniform limit.  Substitution of
+\eqref{eq:C-moment} simplifies the factorial ratio to
+$(2k-1)/(2k+1)$.
+\end{proof}
+
+The numerical ratios
+\[
+ \frac{C_{r,k}^2}{((k+1)/k)C_{r,k-1}C_{r,k+1}}
+\]
+are all greater than $1$ in the archived table for $1\leq r\leq6$ and
+$1\leq k\leq6$.  For example, the $k=1$ ratios are approximately
+$1.31579,1.16822,1.09457,1.05467,1.03210$ for ranks $1$ through $5$.
+
+\begin{remark}[Repository boundary]
+The rank-one instance, including the $PF_\infty$ theorem and
+\eqref{eq:moment-ULC}, already appears in
+\path{Frontier_Compilations.tex}.  The theorem here is the all-rank lift through
+the Pascal multiplicities.
+\end{remark}
+
+\subsection{Rank convolution}
+
+For $r\geq2$, Wick rotation of \eqref{eq:refinement} gives
+\begin{equation}\label{eq:A-refinement}
+ \Ar_r(4w)=\Ar_r(w)\Ar_{r-1}(w).
+\end{equation}
+
+\begin{corollary}[Coefficient Pascal convolution]\label{cor:C-convolution}
+For $r\geq2$ and every $k\geq0$,
+\begin{equation}\label{eq:C-convolution}
+ 4^kC_{r,k}=\sum_{j=0}^{k}C_{r,j}C_{r-1,k-j}.
+\end{equation}
+\end{corollary}
+
+This identity may be read either as a moment convolution or as a positive
+coefficient recursion inside the $PF_\infty$ cone.
+
+\subsection{Non-\texorpdfstring{$D$}{D}-finiteness of the Fourier products}
+
+\begin{theorem}[Unbounded zero orders obstruct holonomicity]\label{thm:Phi-nonD}
+For every $r\geq1$, neither $\Phi_r(z)$ nor $\Ar_r(w)$ is $D$-finite over
+$\C(z)$.
+\end{theorem}
+
+\begin{proof}
+Suppose a nonzero entire function $y$ satisfies a linear differential equation
+of order $d$ with polynomial coefficients.  Away from the finitely many zeros
+of the leading coefficient, an ordinary-point uniqueness theorem says that a
+zero of order at least $d$ forces the solution to vanish identically.  Thus
+zero multiplicities at ordinary points are uniformly bounded by $d-1$.
+
+For $\Phi_r$, the points $2^H$ have multiplicity
+$\binom{H+1}{r}\to\infty$; for $\Ar_r$, the points $-4^H$ have the same
+unbounded multiplicities.  Infinitely many of those points avoid the finite
+singular set, a contradiction.
+\end{proof}
+
+\begin{conjecture}[Differential transcendence of the sinc hierarchy]\label{conj:Phi-hyper}
+For every $r\geq1$, $\Phi_r$ and $\Ar_r$ are hypertranscendental over
+$\C(z)$.  More strongly, finite sets of distinct ranks should be
+differentially algebraically independent after quotienting by the explicit
+refinement relations.
+\end{conjecture}
+
+The Mahler dichotomy used for $G_r$ and $L_r$ does not apply directly here:
+\eqref{eq:refinement} couples different ranks and is multiplicative rather
+than a scalar linear Mahler equation with rational coefficients.
+
+\section{The Poisson-binomial spectral count}
+
+\subsection{Exact probability generating function}
+
+Fix $r\geq1$ and $\theta>0$.  For every pair $(n,j)$ with
+$1\leq j\leq\mu_r(n)$, let $B_{n,j}$ be independent Bernoulli variables with
+\begin{equation}\label{eq:p-n}
+ p_{n,\theta}:=\Prob(B_{n,j}=1)=\frac{\theta}{n^2+\theta}.
+\end{equation}
+Since
+$\sum_{n,j}p_{n,\theta}\leq\theta\ZetaR_r(2)<\infty$, the sum below is finite
+almost surely.
+
+\begin{definition}[Spectral count]\label{def:N}
+\begin{equation}\label{eq:N-def}
+ N_{r,\theta}:=\sum_{n\geq1}\sum_{j=1}^{\mu_r(n)}B_{n,j}.
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Poisson-binomial determinant duality]\label{thm:PB-dual}
+The probability generating function of $N_{r,\theta}$ is
+\begin{equation}\label{eq:PB-pgf}
+ \boxed{
+ \E z^{N_{r,\theta}}=
+ \frac{\Ar_r(\theta z)}{\Ar_r(\theta)}.}
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:PB-prob}
+ \Prob(N_{r,\theta}=k)
+ =\frac{C_{r,k}\theta^k}{\Ar_r(\theta)}
+ =\frac{(2\pi)^{2k}m_{r,2k}\theta^k}
+ {(2k)!\Ar_r(\theta)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Each factor in \eqref{eq:A-product} normalizes as
+\[
+ \frac{1+\theta z/n^2}{1+\theta/n^2}
+ =\frac{n^2}{n^2+\theta}+\frac{\theta}{n^2+\theta}z,
+\]
+the PGF of a Bernoulli variable with parameter \eqref{eq:p-n}.  Multiply the
+factors with their multiplicities.  Coefficient extraction and
+\eqref{eq:C-moment} give \eqref{eq:PB-prob}.
+\end{proof}
+
+At $\theta=1$, the normalized even-moment sequence is literally a probability
+mass function:
+\begin{equation}\label{eq:moment-pmf}
+ \Prob(N_{r,1}=k)=
+ \frac{(2\pi)^{2k}m_{r,2k}}{(2k)!\Ar_r(1)}.
+\end{equation}
+This is an exact moment--spectrum probability dual, not merely an analogy.
+
+\subsection{Cumulants, branching, and coefficient tilting}
+
+\begin{proposition}[Mean, variance, and factorial cumulants]\label{prop:PB-cumulants}
+Let
+\begin{equation}\label{eq:S-k}
+ S_{r,k}(\theta):=\sum_{n\geq1}\mu_r(n)
+ \left(\frac{\theta}{n^2+\theta}\right)^k.
+\end{equation}
+Then
+\begin{align}
+ \lambda_{r,\theta}:=\E N_{r,\theta}&=S_{r,1}(\theta),\label{eq:PB-mean}\\
+ \Var(N_{r,\theta})&=S_{r,1}(\theta)-S_{r,2}(\theta),\label{eq:PB-var}\\
+ \kappa_k^{(F)}(N_{r,\theta})
+ &=(-1)^{k-1}(k-1)!S_{r,k}(\theta).\label{eq:PB-factorial}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Use $\log\E(1+t)^N=\sum_{n,j}\log(1+p_{n,\theta}t)$ and compare powers of
+$t$.
+\end{proof}
+
+\begin{theorem}[Rank branching]\label{thm:N-branching}
+For $r\geq2$,
+\begin{equation}\label{eq:N-branching}
+ N_{r,4\theta}\stackrel d=N_{r,\theta}+N_{r-1,\theta}',
+\end{equation}
+with independent variables on the right.
+\end{theorem}
+
+\begin{proof}
+Normalize \eqref{eq:A-refinement} at $w=\theta$ and at $w=\theta z$; the
+resulting PGF factorization is exactly convolution of independent counts.
+\end{proof}
+
+Equation \eqref{eq:PB-prob} also gives an exact exponential tilt for
+coefficient extraction.
+
+\begin{corollary}[Saddle tilt]\label{cor:saddle-tilt}
+For every $\theta>0$,
+\begin{equation}\label{eq:saddle-tilt}
+ C_{r,k}=\frac{\Ar_r(\theta)}{\theta^k}
+ \Prob(N_{r,\theta}=k).
+\end{equation}
+The map $\theta\mapsto\lambda_{r,\theta}$ is strictly increasing from $0$ to
+$\infty$, so every $k>0$ has a unique saddle parameter satisfying
+$\lambda_{r,\theta}=k$.
+\end{corollary}
+
+\begin{proof}
+The first identity is a rearrangement of \eqref{eq:PB-prob}.  Each Bernoulli
+parameter is strictly increasing in $\theta$, so the mean is strictly
+increasing.  Monotone convergence gives the endpoint limits; as
+$\theta\to\infty$, increasingly many spectral levels have probability bounded
+away from zero.
+\end{proof}
+
+This converts asymptotics of the moment coefficients into local limit theory
+for $N_{r,\theta}$, and conversely.
+
+\subsection{Basic comparison inequalities}
+
+The following estimates drive the rank phase diagram.
+
+\begin{lemma}[Zeta comparison]\label{lem:PB-bounds}
+For every $r$ and $\theta>0$,
+\begin{align}
+ 0&\leq \theta\ZetaR_r(2)-\lambda_{r,\theta}
+ \leq\theta^2\ZetaR_r(4),\label{eq:mean-bound}\\
+ S_{r,2}(\theta)&\leq\theta^2\ZetaR_r(4).\label{eq:S2-bound}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+Termwise,
+\[
+ 0\leq\frac{\theta}{n^2}-\frac{\theta}{n^2+\theta}
+ =\frac{\theta^2}{n^2(n^2+\theta)}\leq\frac{\theta^2}{n^4},
+\]
+and
+$(\theta/(n^2+\theta))^2\leq\theta^2/n^4$.
+Sum with multiplicities.
+\end{proof}
+
+\subsection{Critical Poisson limit}
+
+\begin{theorem}[Critical rank Poisson law]\label{thm:critical-Poisson}
+Fix $c>0$ and put $\theta_r=c3^r$.  Then
+\begin{equation}\label{eq:critical-Poisson}
+ N_{r,c3^r}\xrightarrow[r\to\infty]{\mathrm{TV}}
+ \Po\!\left(4c\zeta(2)\right)
+ =\Po\!\left(\frac{2c\pi^2}{3}\right).
+\end{equation}
+With $\TV$ defined as the supremum over events,
+\begin{equation}\label{eq:critical-TV}
+ \TV\!\left(N_{r,c3^r},\Po(4c\zeta(2))\right)
+ \leq48c^2\zeta(4)\left(\frac35\right)^r.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:zeta-special},
+$\theta_r\ZetaR_r(2)=4c\zeta(2)$.  The mean error is at most
+\[
+ \theta_r^2\ZetaR_r(4)
+ =16c^2\zeta(4)(3/5)^r.
+\]
+Le Cam's inequality for a Poisson-binomial sum gives
+\[
+ \TV(N_{r,\theta_r},\Po(\lambda_{r,\theta_r}))
+ \leq2S_{r,2}(\theta_r)
+ \leq2\theta_r^2\ZetaR_r(4).
+\]
+The total variation distance between Poisson laws with parameters $\lambda$
+and $\lambda'$ is at most $|\lambda-\lambda'|$.  Add the two bounds.
+\end{proof}
+
+For $c=1$, the limiting mean is
+$4\zeta(2)=6.5797362673929057\ldots$.  The grouped numerical means are:
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$r$ & $\E N_{r,3^r}$ & target minus mean & proved TV bound\\
+\midrule
+8  & 6.343771060790705 & $2.35965\times10^{-1}$ & $8.72586\times10^{-1}$\\
+12 & 6.544298628120802 & $3.54376\times10^{-2}$ & $1.13087\times10^{-1}$\\
+16 & 6.574932579970129 & $4.80369\times10^{-3}$ & $1.46561\times10^{-2}$\\
+20 & 6.579105941567851 & $6.30326\times10^{-4}$ & $1.89943\times10^{-3}$\\
+24 & 6.579654307729619 & $8.19597\times10^{-5}$ & $2.46166\times10^{-4}$\\
+28 & 6.579725636253052 & $1.06311\times10^{-5}$ & $3.19031\times10^{-5}$\\
+32 & 6.579734889287106 & $1.37811\times10^{-6}$ & $4.13465\times10^{-6}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{A Poisson, mod-Poisson, and Gaussian phase diagram}
+
+The isolated critical result extends to a multi-scale theorem.
+
+\begin{theorem}[Rank phase diagram]\label{thm:PB-phase}
+Fix $c>0$, $a>0$, and set $\theta_r=ca^r$.  Let
+$\lambda_r=\E N_{r,\theta_r}$ and
+$\sigma_r^2=\Var(N_{r,\theta_r})$.
+
+\begin{enumerate}[label=(\roman*)]
+\item If $0<a<3$, then $N_{r,\theta_r}\to0$ in probability and in total
+variation.
+
+\item If $a=3$, the fixed Poisson limit of
+\cref{thm:critical-Poisson} holds.
+
+\item If $3<a<\sqrt{15}$, then
+\begin{equation}\label{eq:diverging-Poisson}
+ \TV(N_{r,\theta_r},\Po(\lambda_r))\longrightarrow0,
+ \qquad
+ \lambda_r\sim4c\zeta(2)(a/3)^r\longrightarrow\infty.
+\end{equation}
+
+\item If $a=\sqrt{15}$, then $\lambda_r\to\infty$ and the following
+mod-Poisson convergence holds locally uniformly for $t\in\C$:
+\begin{equation}\label{eq:mod-Poisson}
+ \E(1+t)^{N_{r,\theta_r}}\e^{-\lambda_rt}
+ \longrightarrow
+ \exp\!\left(-8c^2\zeta(4)t^2\right).
+\end{equation}
+
+\item Throughout the larger range $3<a<5$,
+\begin{equation}\label{eq:PB-CLT}
+ \frac{N_{r,\theta_r}-\lambda_r}{\sigma_r}
+ \xrightarrow{d}\Normal(0,1),
+\end{equation}
+with
+\begin{equation}\label{eq:mean-var-asymp}
+ \lambda_r\sim\sigma_r^2\sim4c\zeta(2)(a/3)^r.
+\end{equation}
+Moreover a Berry--Esseen bound is
+\begin{equation}\label{eq:PB-BE}
+ \sup_x\left|\Prob\!\left(
+ \frac{N_{r,\theta_r}-\lambda_r}{\sigma_r}\leq x\right)-\Phi_{\rm G}(x)
+ \right|=\bigO((3/a)^{r/2}),
+\end{equation}
+where $\Phi_{\rm G}$ is the standard normal CDF.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+If $a<3$, Markov's inequality and
+$\lambda_r\leq\theta_r\ZetaR_r(2)=4c\zeta(2)(a/3)^r$ prove (i).
+Part (ii) was proved above.
+
+For (iii), Le Cam and \eqref{eq:S2-bound} give
+\[
+ \TV(N_{r,\theta_r},\Po(\lambda_r))
+ \leq32c^2\zeta(4)(a^2/15)^r\to0.
+\]
+The mean asymptotic follows from
+\eqref{eq:mean-bound}, because the relative error is bounded by a constant
+times $(a/5)^r$.
+
+Now let $a=\sqrt{15}$.  The maximum Bernoulli parameter tends to zero because
+the smallest spectral point is $2^{r-1}$ and
+\[
+ \max_np_{n,\theta_r}\leq4c(a/4)^r\to0.
+\]
+Furthermore
+\[
+ 0\leq\theta_r^2\ZetaR_r(4)-S_{r,2}(\theta_r)
+ \leq2\theta_r^3\ZetaR_r(6)\to0,
+\]
+since $15^{3/2}/63<1$.  Thus
+$S_{r,2}(\theta_r)\to16c^2\zeta(4)$.  For every $k\geq3$,
+\[
+ S_{r,k}(\theta_r)\leq\theta_r^k\ZetaR_r(2k)
+ =2^{2k}c^k\zeta(2k)
+ \left(\frac{15^{k/2}}{4^k-1}\right)^r\to0.
+\]
+Expanding
+$\log\E(1+t)^N=\sum_{k\geq1}(-1)^{k-1}S_{r,k}t^k/k$ proves
+\eqref{eq:mod-Poisson}; the vanishing maximum parameter makes the remainder
+uniform on compact $t$-sets.
+
+Finally suppose $3<a<5$.  By \cref{lem:PB-bounds},
+\[
+ \lambda_r=\theta_r\ZetaR_r(2)(1+\smallo(1)),\qquad
+ S_{r,2}(\theta_r)=\smallo(\lambda_r),
+\]
+so \eqref{eq:mean-var-asymp} holds and $\sigma_r\to\infty$.  For a Bernoulli
+variable $B$ with parameter $p$,
+$\E|B-p|^3\leq p(1-p)$.  Hence the sum of third absolute centered moments is
+at most $\sigma_r^2$.  The Berry--Esseen theorem, first for finite truncations
+and then by an $L^2$ tail limit, gives an error $\bigO(1/\sigma_r)$, which is
+\eqref{eq:PB-BE}.
+\end{proof}
+
+\begin{remark}[Two distinct critical scales]
+The scale $3^r$ comes from the first spectral trace $\ZetaR_r(2)$ and creates
+the fixed Poisson law.  The scale $(\sqrt{15})^r$ makes the second factorial
+cumulant order one and creates the mod-Poisson correction.  The relative
+variance correction becomes order one only at the still larger scale $5^r$.
+This hierarchy of critical bases is a direct probabilistic shadow of the
+spectral denominators $(2^{2k}-1)^r$.
+\end{remark}
+
+\section{A generalized-gamma spectral dual and its rank CLT}
+
+\subsection{The Thorin measure}
+
+Fix $\tau>0$.  Let
+\begin{equation}\label{eq:V-def}
+ V_{r,\tau}:=\sum_{n\geq1}Y_{r,n},
+ \qquad
+ Y_{r,n}\sim\operatorname{Gamma}(\tau\mu_r(n),\text{ rate }n^2),
+\end{equation}
+with independent summands and zero-shape terms omitted.  Since
+$\sum_n\E Y_{r,n}=\tau\ZetaR_r(2)<\infty$, the sum is finite almost surely.
+
+\begin{theorem}[Generalized-gamma determinant dual]\label{thm:gamma-dual}
+For $w\geq0$,
+\begin{equation}\label{eq:gamma-LT}
+ \boxed{
+ \E\e^{-wV_{r,\tau}}=\Ar_r(w)^{-\tau}.}
+\end{equation}
+Thus $V_{r,\tau}$ is a generalized gamma convolution with discrete Thorin
+measure
+\begin{equation}\label{eq:Thorin}
+ \mathcal T_{r,\tau}=\tau\sum_{n\geq1}\mu_r(n)\delta_{n^2}.
+\end{equation}
+Its cumulants are
+\begin{equation}\label{eq:gamma-cumulants}
+ \kappa_k(V_{r,\tau})=\tau(k-1)!\ZetaR_r(2k),\qquad k\geq1.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The Laplace transform of a gamma variable with shape $\alpha$ and rate
+$\beta$ is $(1+w/\beta)^{-\alpha}$.  Multiply the transforms and use
+\eqref{eq:A-product}.  Logarithmic differentiation gives
+\eqref{eq:gamma-cumulants}.
+\end{proof}
+
+\begin{theorem}[Gamma rank branching]\label{thm:V-branching}
+For $r\geq2$,
+\begin{equation}\label{eq:V-branching}
+ 4V_{r,\tau}\stackrel d=V_{r,\tau}+V_{r-1,\tau}',
+\end{equation}
+with independence on the right.
+\end{theorem}
+
+\begin{proof}
+Evaluate the Laplace transform of $4V_{r,\tau}$ at $w$ and apply
+\eqref{eq:A-refinement}.
+\end{proof}
+
+\subsection{Concentration}
+
+From \eqref{eq:zeta-special},
+\begin{equation}\label{eq:V-mean-var}
+ \E V_{r,\tau}=\frac{4\tau\zeta(2)}{3^r},
+ \qquad
+ \Var(V_{r,\tau})=\frac{16\tau\zeta(4)}{15^r}.
+\end{equation}
+Therefore
+\begin{equation}\label{eq:V-relative}
+ \frac{\Var(V_{r,\tau})}{(\E V_{r,\tau})^2}
+ =\frac{2}{5\tau}\left(\frac35\right)^r.
+\end{equation}
+
+\begin{corollary}[Deterministic mean normalization]\label{cor:V-L2}
+\begin{equation}\label{eq:V-L2}
+ \frac{V_{r,\tau}}{\E V_{r,\tau}}\longrightarrow1
+ \qquad\text{in }L^2.
+\end{equation}
+\end{corollary}
+
+The next result studies the much finer fluctuation scale.
+
+\subsection{A rank central limit theorem}
+
+Let
+\begin{equation}\label{eq:W-def}
+ W_{r,\tau}:=
+ \frac{V_{r,\tau}-\E V_{r,\tau}}
+ {\sqrt{\Var(V_{r,\tau})}}.
+\end{equation}
+
+\begin{theorem}[Generalized-gamma rank CLT]\label{thm:gamma-CLT}
+For every fixed $\tau>0$,
+\begin{equation}\label{eq:gamma-CLT}
+ W_{r,\tau}\xrightarrow{d}\Normal(0,1).
+\end{equation}
+For $k\geq3$, its standardized cumulants are exactly
+\begin{equation}\label{eq:gamma-standardized}
+ \kappa_k(W_{r,\tau})
+ =\tau^{1-k/2}(k-1)!
+ \frac{\zeta(2k)}{\zeta(4)^{k/2}}
+ \left(\frac{15^{k/2}}{4^k-1}\right)^r,
+\end{equation}
+and hence decay geometrically.
+\end{theorem}
+
+\begin{proof}
+Formula \eqref{eq:gamma-standardized} follows directly from
+\eqref{eq:gamma-cumulants} and \eqref{eq:V-mean-var}.  For every $k\geq3$,
+$15^{k/2}<4^k-1$, so each fixed standardized cumulant tends to zero.
+
+For a direct characteristic-function proof, put
+$\sigma_r^2=\Var(V_{r,\tau})$.  Then
+\begin{align*}
+ \log\E\e^{\ii tW_{r,\tau}}
+ &=-\frac{\ii t\E V_{r,\tau}}{\sigma_r}
+ -\tau\sum_n\mu_r(n)
+ \log\!\left(1-\frac{\ii t}{\sigma_r n^2}\right).
+\end{align*}
+The smallest active $n$ is $2^{r-1}$, and
+\begin{equation}\label{eq:gamma-radius}
+ \sigma_r2^{2r-2}
+ =\sqrt{\tau\zeta(4)}\left(\frac4{\sqrt{15}}\right)^r
+ \longrightarrow\infty.
+\end{equation}
+Thus the logarithm may be expanded uniformly for fixed $t$.  The linear term
+cancels the centering, and the quadratic term is $-t^2/2$.  The absolute
+remainder is bounded by a constant multiple of
+\[
+ |t|^3\frac{\tau\ZetaR_r(6)}{\sigma_r^3}
+ =\bigO\!\left(
+ \left(\frac{15^{3/2}}{63}\right)^r\right)\to0.
+\]
+L\'evy's continuity theorem proves the CLT.
+\end{proof}
+
+The numerical standardized cumulants for $\tau=1$ are:
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$r$ & $\kappa_3$ & $\kappa_4$ & $\kappa_5$ & $\kappa_6$\\
+\midrule
+8  & $9.4478\times10^{-1}$ & $1.8895$ & $5.4648$ & $2.0155\times10^{1}$\\
+16 & $4.9397\times10^{-1}$ & $6.9420\times10^{-1}$ & $1.5149$ & $4.2908$\\
+24 & $2.5827\times10^{-1}$ & $2.5505\times10^{-1}$ & $4.1996\times10^{-1}$ & $9.1347\times10^{-1}$\\
+32 & $1.3503\times10^{-1}$ & $9.3704\times10^{-2}$ & $1.1642\times10^{-1}$ & $1.9447\times10^{-1}$\\
+48 & $3.6914\times10^{-2}$ & $1.2648\times10^{-2}$ & $8.9469\times10^{-3}$ & $8.8140\times10^{-3}$\\
+64 & $1.0091\times10^{-2}$ & $1.7073\times10^{-3}$ & $6.8756\times10^{-4}$ & $3.9947\times10^{-4}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Connections to Bell, Bernoulli, Legendre, \texorpdfstring{$q$}{q}-series, and inverse problems}
+
+\subsection{Exact Bell--Bernoulli moment calculus}
+
+Combining \eqref{eq:Bell-coeff} and \eqref{eq:C-moment} gives the explicit
+closed formula
+\begin{equation}\label{eq:moment-Bell}
+ m_{r,2n}=\frac{(2n)!}{(2\pi)^{2n}n!}
+ \Bell_n\!\left(
+ \ZetaR_r(2),-1!\ZetaR_r(4),\ldots,
+ (-1)^{n+1}(n-1)!\ZetaR_r(2n)
+ \right).
+\end{equation}
+Substitution of Euler's zeta values converts this to a rational expression in
+$B_2,B_4,\ldots,B_{2n}$ and the denominators
+$(2^{2k}-1)^r$.  The first exact moments, also reproduced by the Python
+program, include
+\begin{align*}
+ m_{1,2}&=\frac19,&m_{1,4}&=\frac{19}{675},&m_{1,6}&=\frac{583}{59535},\\
+ m_{2,2}&=\frac1{27},&m_{2,4}&=\frac{107}{30375},&m_{2,6}&=\frac{27953}{56260575},\\
+ m_{3,2}&=\frac1{81},&m_{3,4}&=\frac{571}{1366875},&m_{3,6}&=\frac{1165663}{53166243375}.
+\end{align*}
+
+The new $PF_\infty$ theorem adds a family of inequalities to this exact
+arithmetic data.  Every Toeplitz minor becomes a polynomial inequality among
+these Bell--Bernoulli expressions.  This is stronger than the first quadratic
+Tur\'an inequality and gives a systematic target for symbolic verification.
+
+\subsection{Legendre data from exact combs}
+
+The repository already gives a Fourier--Legendre expansion of the classical
+up-function.  The higher-rank comb theorem contributes a complementary local
+route.  For $n<M_r(Q)$, the Legendre coefficient
+\begin{equation}\label{eq:Legendre-coeff}
+ \ell_{r,n}:=\frac{2n+1}{2}\int_{-1}^{1}f_r(t)\mathrm P_n(t)\dd t
+\end{equation}
+can be computed from any phase $x$ by the finite sum in
+\eqref{eq:Legendre-comb}.  Varying $x$ provides exact internal consistency
+checks.  Choosing $Q=2^H$ makes the exactness degree grow like
+$H^r/r!$, a dramatic higher-rank gain over the linear rank-one degree.
+
+A promising computational program is to combine this exact low-degree block
+with the repository's global Legendre tail estimates.  The comb handles the
+initial coefficients without quadrature error; only the tail needs analytic
+bounding.
+
+\subsection{Mahler and \texorpdfstring{$q$}{q}-series bridges}
+
+There are now two different Mahler mechanisms in the same hierarchy.
+
+\begin{itemize}
+\item The sign functions $G_r$ are products of binary cyclotomic-like factors
+and satisfy a first-order homogeneous Mahler equation at the block base
+$B_r=2^{P_r}$.
+\item The multiplicity series $L_r$ are weighted dyadic Lambert series.  Their
+rank recursion produces an order-$(r+1)$ homogeneous equation at base $2$.
+\end{itemize}
+
+Both are hypertranscendental, but for different structural reasons: $G_r$
+needs a digit-character nonperiodicity argument, while $L_r$ has a direct
+dense set of radial singularities.  The master germ \eqref{eq:master-L}
+adds a rank variable to the $q$-series side and may be viewed as a resolvent of
+the scale-shift operator.
+
+\subsection{Inverse Fabius and Lambert-\texorpdfstring{$W$}{W} directions}
+
+The primary repository exposition already develops endpoint and inverse
+asymptotics with exact lower-Lambert coordinates and periodic corrections.
+The results here suggest three nonduplicative continuations.
+
+First, let $Q_r(u)$ be the quantile function of $X_r$.  Then
+\[
+ \E p(X_r)=\int_0^1p(Q_r(u))\dd u.
+\]
+Combining this with \eqref{eq:comb-exact} transports every polynomial below
+the sharp threshold into an exact identity between a quantile integral and a
+finite density comb.  For $r=1$, translating between $X_1$, the up-density,
+and the bounded Fabius CDF turns this into exact integral constraints on the
+inverse Fabius function.
+
+Second, the saddle identity \eqref{eq:saddle-tilt} reduces coefficient
+asymptotics for $C_{r,k}$ to inversion of
+$\lambda_{r,\theta}=k$.  In joint large-$(r,k)$ regimes, the dyadic pole
+lattice of the spectral zeta should produce logarithmically periodic
+corrections.  Determining whether the nonlinear inversion is most naturally
+expressed in a Lambert-$W$ coordinate is an open problem rather than a claim
+of this report.
+
+Third, the mod-Poisson scale $\theta_r=c(\sqrt{15})^r$ is governed by the
+second spectral trace, whereas endpoint inversion is governed by Mellin poles
+at the imaginary dyadic lattice.  A two-parameter saddle analysis could reveal
+a common periodic phase connecting these apparently different Lambert
+phenomena.
+
+\section{Conjectures and frontier research program}
+
+\subsection{Differential algebra}
+
+\begin{conjecture}[Hypertranscendence of the Fourier hierarchy]
+For each $r\geq1$, the entire functions $\Phi_r$ and $\Ar_r$ are
+hypertranscendental over $\C(z)$.
+\end{conjecture}
+
+\begin{conjecture}[Cross-rank differential independence]
+After adjoining the explicit refinement relations
+$\Phi_r(2z)=\Phi_r(z)\Phi_{r-1}(z)$, no further algebraic differential
+relations exist among a finite set of ranks.
+\end{conjecture}
+
+A possible route is parametrized difference Galois theory for the triangular
+rank system rather than for a single scalar Mahler equation.
+
+\subsection{Strict total positivity and zero interlacing}
+
+\begin{conjecture}[Strictness]
+After removing the forced degeneracies caused by repeated spectral zeros,
+all admissible Toeplitz minors of $(C_{r,k})$ are strictly positive, and the
+zeros of consecutive nontrivial Jensen polynomials strictly interlace.
+\end{conjecture}
+
+Finite products reduce this to strict total positivity for elementary
+symmetric functions with repeated parameters.  The difficulty is formulating
+the exact admissibility condition that survives the infinite limit.
+
+\subsection{Beyond the proved Poisson-binomial phase range}
+
+Theorem \ref{thm:PB-phase} identifies the bases $3$, $\sqrt{15}$, and $5$.
+Several further transitions should occur.
+
+\begin{problem}[The $5^r$ variance-critical law]
+Determine the limiting centered law when $\theta_r=c5^r$.  At this scale the
+second Bernoulli power sum is of the same order as the mean, so the variance is
+no longer asymptotic to the mean.  Higher factorial cumulants should decide
+whether the correct limit is still Gaussian after a modified normalization.
+\end{problem}
+
+\begin{problem}[Approach to the local saturation scale $4^r$]
+The largest Bernoulli parameter changes from vanishing to order one near
+$\theta_r\asymp4^r$, even though the global CLT survives beyond that scale.
+Separate the finitely many saturated low levels from the diffuse high-level
+cloud and derive a convolution limit.
+\end{problem}
+
+\begin{conjecture}[Full mod-Poisson hierarchy]
+For each $k\geq2$, the critical base
+$a_k=(4^k-1)^{1/k}$ produces a mod-Poisson correction whose first surviving
+term is the $k$th factorial cumulant.  The bases increase to $4$, creating an
+accumulating hierarchy of local spectral transitions.
+\end{conjecture}
+
+The statement needs care because lower factorial cumulants may already
+diverge; the correct renormalization should subtract all preceding terms.
+
+\subsection{Gamma Edgeworth theory}
+
+\begin{problem}[Explicit Edgeworth expansion]
+Use \eqref{eq:gamma-standardized} to derive an all-orders Edgeworth expansion
+for $W_{r,\tau}$ with a remainder uniform in a growing central window.  The
+smallest geometric decay factor is
+$15^{3/2}/63$, so the skewness term should control the first correction.
+\end{problem}
+
+The characteristic-function proof already gives an expanding analytic disk
+of radius proportional to $(4/\sqrt{15})^r$, an unusually favorable setting
+for uniform inversion.
+
+\subsection{Exact arithmetic and formalization}
+
+\begin{problem}[Denominator geometry]
+Combine the Bell formula \eqref{eq:moment-Bell}, von Staudt--Clausen, and the
+rank denominators $(2^{2k}-1)^r$ to determine exact prime valuations of
+$m_{r,2n}$.  The $PF_\infty$ inequalities may impose additional divisibility
+or sign constraints on reduced numerators.
+\end{problem}
+
+\begin{problem}[Machine-checked Mahler frontier]
+Formalize the nonperiodicity theorem, the Lambert operator recurrence, and the
+sharp comb theorem.  The analytic imports needed for full hypertranscendence
+are substantial, but most of the new finite combinatorics and exact Fourier
+zero-order reasoning can be separated from them.
+\end{problem}
+
+\section{Formalization roadmap}
+
+A realistic Lean development can be staged so that each layer has independent
+value.
+
+\subsection{Tier I: finite combinatorics}
+
+\begin{enumerate}
+\item Define $\sigma_{r,j}$ and $\varepsilon_r(N)$ from binary digits.
+\item Prove periodicity of the mask by Lucas's theorem.
+\item Prove strong $B_r$-multiplicativity.
+\item Formalize \cref{lem:eventual-pure} and the complement-bit identity
+\eqref{eq:complement-sign}.
+\item Conclude non-eventual-periodicity.
+\item Prove the layer-cake identity \eqref{eq:mu-layer} and the coefficient
+recurrences \eqref{eq:L-r1}--\eqref{eq:L-iterated} in formal power series.
+\end{enumerate}
+
+These steps require no complex analysis.
+
+\subsection{Tier II: exact products and Fourier algebra}
+
+\begin{enumerate}
+\item Reuse the repository's weighted-scale multiplicity theorem to identify
+zero orders.
+\item Formalize the periodized Fourier coefficient calculation
+\eqref{eq:comb-Fourier} under the existing Poisson-summation API.
+\item Prove the exactness and sharpness theorem \ref{thm:sharp-comb}.
+\item Define the Appell family and prove \eqref{eq:Appell-reproduce} by finite
+polynomial algebra plus moment evaluation.
+\item Formalize the product identity for $\Ar_r$ and coefficient convolution
+\eqref{eq:C-convolution}.
+\end{enumerate}
+
+\subsection{Tier III: probability}
+
+\begin{enumerate}
+\item Construct countable independent Bernoulli variables with summable
+parameters and identify the PGF \eqref{eq:PB-pgf}.
+\item Prove the mean and power-sum bounds in \cref{lem:PB-bounds}.
+\item Import or prove a countable version of Le Cam's inequality by finite
+truncation.
+\item Establish the critical Poisson theorem and the subcritical regime.
+\item Formalize Berry--Esseen for finite truncations and pass to the limit.
+\item Construct the gamma convolution from summable means and prove its
+Laplace transform and cumulants.
+\end{enumerate}
+
+\subsection{Tier IV: external transcendence theorems}
+
+The final hypertranscendence statements depend on the deep external theorem
+\ref{thm:ADH}.  A practical formal boundary would encode that theorem as an
+explicit imported assumption, prove that $G_r$ and $L_r$ satisfy its
+hypotheses, and keep the elementary nonrationality and natural-boundary proofs
+independent.
+
+\section{Computational experiments and reproducibility}
+
+\subsection{What the program checks}
+
+The archive contains \path{frontier_experiments.py}.  It performs the
+following deterministic checks at 80 decimal digits.
+
+\begin{enumerate}
+\item Coefficientwise verification of
+$(I-T)^rL_r=T^{r-1}q/(1-q)$ through rank $8$ and degree $4096$.
+\item Block multiplicativity of $\varepsilon_r$ through rank $8$ and large
+finite blocks, plus a finite search excluding small periods.
+\item Exact rational moments from Bernoulli numbers and the Bell recurrence.
+\item $PF_\infty$ ultra-log-concavity ratios for ranks $1$ through $6$.
+\item Numerical zero jets at $(r,Q)=(2,4),(3,8),(4,16)$.
+\item Grouped Poisson-binomial means at $\theta=3^r$, with rigorous analytic
+error bounds.
+\item Standardized gamma cumulants through rank $64$.
+\item Radial growth of $L_r$ toward an eighth root of unity.
+\end{enumerate}
+
+The exact command is
+\begin{lstlisting}[style=code]
+python frontier_experiments.py --output-dir numerical_output --dps 80
+\end{lstlisting}
+It creates
+\path{numerical_results.txt}, \path{moment_ulc.csv},
+\path{poisson_limit.csv}, \path{gamma_clt.csv}, and
+\path{lambert_radial.csv}.
+
+\subsection{Interpretive limits}
+
+The finite sign search does not prove nonperiodicity; \cref{thm:nonperiodic}
+does.  The radial table does not prove a natural boundary; density of the
+proved dyadic radial singularities does.  The small numerical values of lower
+zero derivatives reflect truncation and finite precision; their exact
+vanishing follows from the multiplicity theorem.
+
+\section{Conclusion}
+
+The repository's existing work already connects the Fabius and Rvachev
+functions to probability, exact dyadic arithmetic, infinite sinc products,
+Lambert asymptotics, Legendre expansions, Bell--Bernoulli moment calculus,
+$q$-binomial identities, and a higher Pascal hierarchy.  The most productive
+way to advance that corpus was therefore not to derive another version of the
+same endpoint or zero-count formula, but to ask what the established divisor
+and automatic sign structure force in neighboring theories.
+
+That strategy produced five coherent advances.
+
+First, the spectral signs are not merely automatic: their generating
+functions are hypertranscendental and analytically blocked by the unit circle.
+Second, the zero multiplicities have their own Lambert--Mahler hierarchy with
+the same strong analytic obstruction.  Third, exact lattice integration grows
+from linear order in the classical rank to binomial order in the Pascal rank.
+Fourth, Wick rotation promotes the entire zero divisor to total positivity at
+every rank.  Fifth, the same product is a probability generating function and
+a Laplace transform, yielding two new spectral probability models with exact
+branching laws and rank limit theorems.
+
+These results suggest a broader principle: the dyadic zero divisor is not just
+a bookkeeping device for an infinite product.  Under different transforms it
+becomes an automatic character, a Lambert $q$-series, a Strang--Fix exactness
+order, a P\'olya-frequency sequence, a Poisson-binomial cloud, and a Thorin
+measure.  Future progress is likely to come from moving deliberately between
+those representations rather than treating them as separate topics.
+
+\appendix
+
+\section{Auxiliary inequalities for the Poisson phase diagram}
+
+For reference, the elementary estimates used in
+\cref{thm:PB-phase} can be organized by Bernoulli power sums.  With
+$p_n=\theta/(n^2+\theta)$ and multiplicities understood,
+\begin{equation}\label{eq:power-bound-app}
+ S_k(\theta)=\sum\mu_r(n)p_n^k\leq\theta^k\ZetaR_r(2k).
+\end{equation}
+Moreover, for $k\geq1$,
+\begin{equation}\label{eq:power-error-app}
+ 0\leq\theta^k\ZetaR_r(2k)-S_k(\theta)
+ \leq k\theta^{k+1}\ZetaR_r(2k+2),
+\end{equation}
+because $1-(1+x)^{-k}\leq kx$ for $x\geq0$.  At a critical scaling
+$\theta_r=ca^r$, the leading upper bound is
+\begin{equation}\label{eq:power-scale-app}
+ \theta_r^k\ZetaR_r(2k)
+ =2^{2k}c^k\zeta(2k)
+ \left(\frac{a^k}{4^k-1}\right)^r.
+\end{equation}
+This one formula explains the sequence of factorial-cumulant critical bases
+$(4^k-1)^{1/k}$.
+
+\section{Exact rational moment tables}
+
+The following values were generated symbolically from
+\eqref{eq:moment-Bell}; no floating-point reconstruction was used.
+
+\begin{center}
+\begin{tabular}{@{}rlll@{}}
+\toprule
+$r$ & $m_{r,0}$ & $m_{r,2}$ & $m_{r,4}$\\
+\midrule
+1 & $1$ & $1/9$ & $19/675$\\
+2 & $1$ & $1/27$ & $107/30375$\\
+3 & $1$ & $1/81$ & $571/1366875$\\
+4 & $1$ & $1/243$ & $2963/61509375$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}
+\small
+\begin{tabular}{@{}rll@{}}
+\toprule
+$r$ & $m_{r,6}$ & $m_{r,8}$\\
+\midrule
+1 & $583/59535$ & $132809/32531625$\\
+2 & $27953/56260575$ & $698600719/7839308334375$\\
+3 & $1165663/53166243375$ & $2864068312649/1889077325876015625$\\
+4 & $45163673/50242099989375$ & $10285851106584079/455220408602972865234375$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Repository and literature references}
+
+\begin{thebibliography}{99}
+
+\bibitem{repo-primary}
+V. Reshetnikov,
+\emph{The Fabius Function and Rvachev's Up-Function: Exact arithmetic,
+probability, Fourier analysis, and corrected sharp asymptotics},
+\texttt{ProveIt},
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex},
+repository state retrieved 30 August 2026.
+
+\bibitem{repo-frontier}
+V. Reshetnikov,
+\emph{Semi-formalized research frontiers},
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/semi-formalized-research-frontiers.tex},
+retrieved 30 August 2026.
+
+\bibitem{repo-spectra}
+V. Reshetnikov,
+\emph{Spectra and Arithmetic Frontiers},
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Spectra_and_Arithmetic_Frontiers/Spectra_and_Arithmetic_Frontiers.tex},
+retrieved 30 August 2026.
+
+\bibitem{repo-q}
+V. Reshetnikov,
+\emph{Exponent-Sequence and $q$-Series Frontiers},
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/exponents-and-q-series/Exponents_and_q_Series_Frontiers/Exponents_and_q_Series_Frontiers.tex},
+retrieved 30 August 2026.
+
+\bibitem{repo-comb}
+V. Reshetnikov,
+\emph{Dyadic-Comb Frontiers for the Fabius--Rvachev System},
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/Dyadic_Comb_Frontiers.tex},
+retrieved 30 August 2026.
+
+\bibitem{repo-compilations}
+V. Reshetnikov,
+\emph{Frontier Compilations},
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/frontier-compilations/Frontier_Compilations/Frontier_Compilations.tex},
+retrieved 30 August 2026.
+
+\bibitem{repo-manifest}
+V. Reshetnikov,
+\emph{Draft manifest},
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/MANIFEST.md},
+retrieved 30 August 2026.
+
+\bibitem{adh}
+B. Adamczewski, T. Dreyfus, and C. Hardouin,
+\emph{Hypertranscendence and linear difference equations},
+J. Amer. Math. Soc. \textbf{34} (2021), no. 2, 475--503.
+
+\bibitem{bcr}
+J. P. Bell, M. Coons, and E. Rowland,
+\emph{The rational--transcendental dichotomy of Mahler functions},
+J. Integer Seq. \textbf{16} (2013), Article 13.2.10, 11 pp.
+
+\bibitem{aesw}
+M. Aissen, A. Edrei, I. J. Schoenberg, and A. Whitney,
+\emph{On the generating functions of totally positive sequences},
+Proc. Natl. Acad. Sci. USA \textbf{37} (1951), 303--307.
+See also M. Aissen, I. J. Schoenberg, and A. M. Whitney,
+\emph{On the generating functions of totally positive sequences I},
+J. Analyse Math. \textbf{2} (1952), 93--103.
+
+\bibitem{lecam}
+L. Le Cam,
+\emph{An approximation theorem for the Poisson binomial distribution},
+Pacific J. Math. \textbf{10} (1960), 1181--1197.
+
+\bibitem{stanley}
+R. P. Stanley,
+\emph{Differentiably finite power series},
+European J. Combin. \textbf{1} (1980), 175--188.
+
+\bibitem{allouche-shallit}
+J.-P. Allouche and J. Shallit,
+\emph{Automatic Sequences: Theory, Applications, Generalizations},
+Cambridge University Press, 2003.
+
+\bibitem{arias}
+J. Arias de Reyna,
+\emph{Arithmetic of the Fabius function},
+arXiv:1702.06487, revised 2018.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,21 @@
+Exact symbolic Edgeworth calculation
+====================================
+
+Let epsilon = 1-q.
+
+lambda_4(q) = 6*((epsilon - 1)**2 - 1)/(5*((epsilon - 1)**2 + 1))
+lambda_4 series = -6*epsilon/5 - 3*epsilon**2/5 + 3*epsilon**4/10 + O(epsilon**5)
+
+lambda_6(q) = 48*((epsilon - 1)**2 - 1)**2/(7*((epsilon - 1)**4 + (epsilon - 1)**2 + 1))
+lambda_6 series = 64*epsilon**2/7 + 64*epsilon**3/7 - 16*epsilon**4/21 + O(epsilon**5)
+
+E[H_4(Z)^2] = 24
+E[H_4(Z)^3] = 1728
+
+Formal entropy expansion through cubic order:
+D(Z_q || Gaussian) = lambda_4^2/48 - lambda_4^3/48 + O(epsilon^4)
+                    = 3*epsilon**2/100 + 33*epsilon**3/500 + O(epsilon**4)
+
+Predicted coefficients:
+c_2 = 3/100
+c_3 = 33/500

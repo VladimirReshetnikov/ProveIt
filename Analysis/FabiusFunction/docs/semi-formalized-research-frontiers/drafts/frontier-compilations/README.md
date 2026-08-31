@@ -1,6 +1,40 @@
 # Frontier compilations
 
-New standalone intake member:
+New standalone intake members:
+
+- [`Geometric_Uniform_Convolutions_and_New_Frontiers/`](Geometric_Uniform_Convolutions_and_New_Frontiers/)
+  is the title-derived filing of the generic source-only wrapper
+  `drafts/incoming/fabius-frontier-report-H/`, committed directly by
+  `8a184546747082cbd92ad4675fb61981c6b8c3b6`.  The delivery consists of a
+  single TeX manuscript, *Geometric Uniform Convolutions and New Frontiers
+  around the Fabius--Rvachev System*: no PDF, README, code, figures, captured
+  output, checksum file, or archive was supplied.  Quick intake repaired three
+  form-feed control bytes that had replaced the backslash in `\frac`
+  commands and added a repository-generated one-entry `SHA256SUMS`.
+
+  Its q-deformed derivative formulas, Gaussian/Edgeworth layer,
+  valuation-weighted zeros, non-Gevrey growth, and periodic Lambert endpoint
+  program overlap several same-batch reports and the consolidated corpus.
+  The source remains standalone pending post-publication compilation,
+  claim-by-claim comparison, and a Lean crosswalk.  Nothing in the intake
+  establishes that the TeX compiles or that any manuscript theorem is proved
+  in Lean.
+
+- [`fabius_information_frontier/`](fabius_information_frontier/),
+  *Exact Information Geometry and New Frontiers for the Fabius--Rvachev
+  System* (30 pp), arrived on 2026-08-30 from the rootless archive
+  `fabius_information_frontier_report.zip` (outer SHA-256
+  `41f9aba6eb85bb173827f13cb6b7b1d54b7ea9346faf7c9e5b1af859bbd42ec7`).
+  All 18 submitted non-ledger payload hashes verified; four CSV entries and
+  their ledger hashes were refreshed after CRLF-to-LF repository
+  normalization. Its geometric-uniform information laws, entropy/Fisher,
+  dyadic Thue--Morse, inverse-Fabius/Lambert, and q-asymptotic themes place it
+  with the broad frontier series. It remains standalone pending
+  post-publication claim review, semantic deduplication, experiment
+  assessment, and a Lean crosswalk; manuscript labels do not establish Lean
+  verification. The filed PDF hard-codes Latin Modern and inherits five
+  embedded/subset Type-3 font rows from its vector figures; canonical promotion
+  requires a Libertinus/Type-3-free rebuild and refreshed checksums.
 
 - [`Digital_Spectral_Geometry_and_Log_Periodic_Saddles/`](Digital_Spectral_Geometry_and_Log_Periodic_Saddles/),
   *Digital Spectral Geometry and Log-Periodic Saddles: Frontier Results for
@@ -64,6 +98,16 @@ bundled base-`b` canonical-product/order theorem, complex spectral-zeta
 identity, probabilistic cumulant formula, and log-periodic transseries are not
 proved wholesale by this arithmetic module.
 
+- [`Frontier_Directions_for_Fabius_Rvachev_Analysis/`](Frontier_Directions_for_Fabius_Rvachev_Analysis/),
+  *Frontier Directions for Fabius--Rvachev Analysis* (33 pp), arrived on
+  2026-08-30 from `fabius_frontier_report_bundle-D.zip` (outer SHA-256
+  `39f3638f52f19955b88b7a865a60b76d9ce31154d98967d1400a6ad97396fa9a`)
+  and was filed under a title-derived collision-safe name rather than its
+  generic wrapper. All 34 submitted payload hashes verified; nine CSV entries
+  were refreshed after CRLF-to-LF repository normalization. It remains
+  standalone pending post-publication assessment, editorial deduplication, and
+  a Lean crosswalk; manuscript labels do not establish Lean verification.
+
 The broad multi-topic "collected new results" report series,
 consolidated (2026-08-28) into the 272-page single volume
 [`Frontier_Compilations/`](Frontier_Compilations/): ten absorbed reports,
@@ -115,10 +159,19 @@ arbitrary-order endpoint remainder to the exact Lambert nodes,
 `CompleteHomogeneousAsymptotics.lean` and
 `LambertReciprocalAsymptotics.lean` control the residual alphabet and growing
 row, and `FabiusLambertPhaseExtraction.lean` proves the fixed-order finite
-Poincaré hierarchy and integer-phase-ray convergence. The report's
-Bell/generalized-harmonic conversion, exponentiated Bell hierarchy, higher
-derivative extractors, sign/bracketing claims, and growing-order uniformity
-remain open.
+Poincaré hierarchy and integer-phase-ray convergence.
+`CompleteHomogeneousBell.lean` proves the generic finite-alphabet Bell
+conversion, `LambertPhaseLockedBell.lean` specializes it to shifted
+reciprocal power sums and both exact moment forms, and
+`FabiusLambertPhaseExtractionBell.lean` rewrites each residual term and every
+finite residual partial sum in Bell form. The normalized specialization uses
+the rational-algebra/characteristic-zero field layer; total field inversion
+still requires no positivity or nonzero-shift premise. Thus the finite
+complete-homogeneous/Bell/generalized-harmonic conversion is closed. These
+identities do not prove convergence of the infinite residual series or add a
+new asymptotic estimate. The infinite residual convergence problem,
+exponentiated/multiplicative Bell relative-error hierarchy, higher derivative
+extractors, sign/bracketing claims, and growing-order uniformity remain open.
 
 Post-snapshot Lean status began at source checkpoint `b3720d4b5` with two
 generic finite-algebra modules relevant to Report I; the current tree adds the
