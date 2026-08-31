@@ -20,28 +20,17 @@ so no PDF was rebuilt for it.
 
 ## fourier-decay — `rvachev_up_fourier_decay/`
 
-The Fourier-decay corpus: eight independently written source documents on
-the decay envelope of `Û = ∏ sinc(2πξ/2^k)`, two audits, and a
-popularization. Kept in its historical directory (heavily
-cross-referenced internally; unchanged by the reorganization), and
-**deliberately excluded from the 2026-08-28 consolidations**: the
-separate-documents structure is audit evidence — the audits compare the
-sources *as* independent documents (see the group README).
+The former twelve-document Fourier-decay corpus was consolidated editorially
+on 2026-08-31. The canonical article deduplicates the original question, eight
+reports, two audits, and the Gentle Guide; supplies missing proofs; corrects
+the LIL normalization, Pochhammer formula, numerical transcriptions, and gauge
+overclaims; and adds integer-ratio `q`-Pochhammer, ray, and variance theorems.
+Its source concordance preserves the independent audit history through immutable
+links to pre-consolidation commit `2e3567feb14947ee3ebcdab11adca64e746ad26f`.
 
-| Directory | Document |
-| --- | --- |
-| `rvachev_up_fourier_decay-1/` | Source Document 1 (decay-rate analysis) |
-| `Rvachev_Up_Fourier_Decay-2/` | Source Document 2 |
-| `Rvachev_Up_Fourier_Decay-3/` | Source Document 3 (*Fourier decay of Rvachev up*) |
-| `rvachev_up_fourier_decay-4/` | Source Document 4 (the most rigorous where they overlap; ρ₁ certificate appendix) |
-| `rvachev_up_fourier_decay-5/` | Source Document 5 (*Final*) |
-| `rvachev_up_fourier_decay-6/` | Source Document 6 (*Final Synthesis*) |
-| `rvachev_up_fourier_decay-7/` | Source Document 7 (second wave; shell-adaptive gauge) |
-| `rvachev_up_fourier_decay-8/` | Source Document 8 (second wave) |
-| `Rvachev_Up_Fourier_Decay_Comparative_Audit/` | The comparative audit of Documents 1–4, κ-dictionary, feasibility list |
-| `Rvachev_Up_Fourier_Decay_Second_Wave_Audit/` | Audit of Documents 7–8; the shell-adaptive gauge verdict |
-| `Rvachev_Up_Fourier_Decay_Gentle_Guide/` | Popularization (corrected 2026-08-28: composite limit answer, per-octave constant, profile range) |
-| `asymptotic-decay-rate-of-an-infinite-product-of-sinc-functions/` | The original Stack-Exchange-format question document |
+| Directory | Document | Supporting evidence | Previous paths / provenance |
+| --- | --- | --- | --- |
+| `Rvachev_Up_Fourier_Decay/` | *Fourier Decay of Rvachev's Up-Function* — single canonical TeX/PDF synthesis, proof corpus, correction ledger, and Lean parity appendix | `verification_scripts/` retains the valid audit programs and captured data; the invalid legacy `stage4.py` sampler was retired in favor of `stage4b.py` | At commit `2e3567feb14947ee3ebcdab11adca64e746ad26f`: `asymptotic-decay-rate-of-an-infinite-product-of-sinc-functions/`;<br>`rvachev_up_fourier_decay-1/`;<br>`Rvachev_Up_Fourier_Decay-2/`;<br>`Rvachev_Up_Fourier_Decay-3/`;<br>`rvachev_up_fourier_decay-4/` through `rvachev_up_fourier_decay-8/`;<br>`Rvachev_Up_Fourier_Decay_Comparative_Audit/`;<br>`Rvachev_Up_Fourier_Decay_Second_Wave_Audit/`;<br>`Rvachev_Up_Fourier_Decay_Gentle_Guide/` |
 
 ## thue-morse — `thue-morse/`
 
