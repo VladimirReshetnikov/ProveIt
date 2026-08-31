@@ -121,7 +121,7 @@ case-folding collisions, and its CRC check passed.  The submitted 30-entry
 ledger verified 30/30 against the arrival bytes and is preserved unchanged as
 `SHA256SUMS.arrival.txt` (SHA-256
 `85c42740d869c520d5264049f945e52b3c9cfc1bc837a19aaf05c886c55aa6ea`).
-Ten CSV files were then normalized from CRLF to the repository's required LF
+Nine CSV files were then normalized from CRLF to the repository's required LF
 line endings; `SHA256SUMS` is the authoritative current-package ledger.
 
 This is a quick archival intake only.  The submitted TeX and PDF have not been

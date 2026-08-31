@@ -69,7 +69,7 @@ Most recent processed batch (all filed and removed on 2026-08-30):
   became the quick-gate archival package
   [`../representations/fabius_dyadic_chaos_frontier/`](../representations/fabius_dyadic_chaos_frontier/).
   Its safe single-wrapper archive and submitted 30-entry ledger verified in
-  full; ten CSVs received repository LF normalization, while claim audit,
+  full; nine CSVs received repository LF normalization, while claim audit,
   numerical replay, canonicalization, font repair, and rebuild remain
   deliberately deferred until after publication.
 - `fabius_information_frontier_report.zip` (751,588 bytes; SHA-256
