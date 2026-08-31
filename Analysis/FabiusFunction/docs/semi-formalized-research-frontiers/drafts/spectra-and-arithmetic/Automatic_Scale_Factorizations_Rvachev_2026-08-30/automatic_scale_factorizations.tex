@@ -39,6 +39,8 @@
 \fancyhead[L]{\small Automatic scale factorizations}
 \fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
 \renewcommand{\headrulewidth}{0.4pt}
 \titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
 \titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
@@ -65,30 +67,11 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
 \newcommand{\eps}{\varepsilon}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\Law}{\operatorname{Law}}
-\newcommand{\Var}{\operatorname{Var}}
 \newcommand{\ord}{\operatorname{ord}}
 \newcommand{\Mell}{\mathcal M}
 \newcommand{\Bell}{\mathcal B}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
 \newcommand{\one}{\mathbf 1}
-\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\set}[1]{\left\{#1\right\}}
-\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
-\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
 \newcommand{\repo}{\texttt{ProveIt}}
 
 \newenvironment{statusbox}[1]{%
@@ -133,7 +116,7 @@ to the Prouhet--Thue--Morse sign $e_{n-1}=(-1)^{s_2(n-1)}$:
 \]
 Their densities $u_\pm$ are $C^\infty$, nonnegative, and satisfy the exact factorization
 \[
- u_+*u_-=\Up.
+ u_+*u_-=\RvachevUp.
 \]
 This is not an algebraic splitting of a formal transform: both factors are genuine smooth
 probability densities.  Their support radii are controlled by the Thue--Morse--Mahler
@@ -147,12 +130,12 @@ Unexpectedly, each factor has an exact central plateau.  One has
 $u_+(x)=1$ for $|x|\le R_-$, while
 $u_-(x)=2$ for $|x|\le E(1/2)/4$.  The first plateau contains the entire support of
 $u_-$; this gives a direct convolutional explanation of the infinite-order flatness of
-$\Up$ at the origin.
+$\RvachevUp$ at the origin.
 
 A complex parameter $q$ produces characteristic subproducts
 \[
  \Phi_\sigma(z;q)=\prod_{m\ge0}
- \sinc(zq^{m+1})^{(1+\sigma e_m)/2},\qquad \sigma\in\{+1,-1\},
+ \SincRad(zq^{m+1})^{(1+\sigma e_m)/2},\qquad \sigma\in\{+1,-1\},
 \]
 which obey an exact two-component $q$-Mahler recursion.  Their logarithms have explicit
 lacunary $q$-series, and all even cumulants are Bernoulli multiples of
@@ -177,7 +160,7 @@ discrepancy, then
 \[
  \log\Pr(R_A-X_A\le\eps)
  =-\frac{\delta}{2\log2}\left(\log\frac1\eps\right)^2
- +\bigO\!\left(\log\frac1\eps\log\log\frac1\eps\right).
+ +\BigO\!\left(\log\frac1\eps\log\log\frac1\eps\right).
 \]
 For both Thue--Morse factors $\delta=1/2$.  Inverting this law yields a new stretched
 exponential endpoint scale for their quantile functions.  The report includes complete
@@ -261,7 +244,7 @@ The principal results distinct from the occupied baseline are:
 \item a general scale-subset factorization of the Rvachev law and its Thue--Morse pair;
 \item exact support radii in terms of the Mahler product $E(1/2)$;
 \item exact central plateaux and a convolutional proof of infinite-order flatness at the
-origin of $\Up$;
+origin of $\RvachevUp$;
 \item an exact coupled $q$-Mahler recursion for the two characteristic factors;
 \item closed Bernoulli cumulants, Bell moments, and finite Legendre coefficient formulae;
 \item a Thue--Morse prefix formula for every real zero multiplicity;
@@ -286,11 +269,11 @@ and define
 The series converges absolutely almost surely, and $X$ is supported on $[-1,1]$.  In the
 Fourier convention
 \(
- \widehat f(z)=\int_\R \e^{\ii zx}f(x)\dd x
+ \widehat f(z)=\int_\RealNumbers \EulerE^{\ImaginaryUnit zx}f(x)\Differential x
 \)
-and with $\sinc z=\sin z/z$, independence gives
+and with $\SincRad z=\sin z/z$, independence gives
 \begin{equation}
- \widehat\Up(z)=\prod_{n\ge1}\sinc\!\left(\frac z{2^n}\right).
+ \widehat\RvachevUp(z)=\prod_{n\ge1}\SincRad\!\left(\frac z{2^n}\right).
  \label{eq:up-product}
 \end{equation}
 The corresponding density is Rvachev's up-function.  This probability interpretation and
@@ -301,14 +284,14 @@ Reyna~\cite{Arias1982,Arias2017Compact}.
 If $S=(X+1)/2$, then $S$ is supported on $[0,1]$ and its distribution function is the
 Fabius function $F$.  Thus
 \begin{equation}
- F(x)=\int_{-1}^{2x-1}\Up(t)\dd t,
+ F(x)=\int_{-1}^{2x-1}\RvachevUp(t)\Differential t,
  \qquad 0\le x\le1,
  \label{eq:F-up-cdf}
 \end{equation}
 and differentiation together with the Fabius equation recovers the familiar pointwise
 bridge
 \begin{equation}
- \Up(x)=
+ \RvachevUp(x)=
  \begin{cases}
  F(1+x),&-1\le x\le0,\\
  F(1-x),&0\le x\le1.
@@ -323,7 +306,7 @@ in a question of Reshetnikov, is developed by Arias de Reyna~\cite{AriasArithmet
 
 \subsection{Definition and elementary factorization}
 
-For any set $A\subseteq\N_{\ge1}$, let
+For any set $A\subseteq\NaturalNumbers_{\ge1}$, let
 \begin{equation}
  X_A=\sum_{n\in A}2^{-n}V_n,
  \qquad
@@ -335,21 +318,21 @@ and its characteristic function by $\phi_A$.
 
 \begin{proposition}[Subset product and support]
 \label{prop:subset-product}
-For every $A\subseteq\N_{\ge1}$,
+For every $A\subseteq\NaturalNumbers_{\ge1}$,
 \begin{equation}
- \phi_A(z)=\prod_{n\in A}\sinc\!\left(\frac z{2^n}\right)
+ \phi_A(z)=\prod_{n\in A}\SincRad\!\left(\frac z{2^n}\right)
  \label{eq:subset-product}
 \end{equation}
-locally uniformly on $\C$.  The function is entire of exponential type at most $R_A$,
+locally uniformly on $\ComplexNumbers$.  The function is entire of exponential type at most $R_A$,
 $\mu_A$ is symmetric, and
 \(
- \supp\mu_A=[-R_A,R_A]
+ \SupportOperator\mu_A=[-R_A,R_A]
 \)
-unless $A=\varnothing$.  If $A^c=\N_{\ge1}\setminus A$, then
+unless $A=\varnothing$.  If $A^c=\NaturalNumbers_{\ge1}\setminus A$, then
 \begin{equation}
- \mu_A*\mu_{A^c}=\mu_{\N_{\ge1}},
+ \mu_A*\mu_{A^c}=\mu_{\NaturalNumbers_{\ge1}},
  \qquad
- \phi_A\phi_{A^c}=\widehat\Up.
+ \phi_A\phi_{A^c}=\widehat\RvachevUp.
  \label{eq:general-complement-factor}
 \end{equation}
 \end{proposition}
@@ -357,7 +340,7 @@ unless $A=\varnothing$.  If $A^c=\N_{\ge1}\setminus A$, then
 \begin{proof}
 Each factor is the characteristic function of $2^{-n}V_n$.  Absolute summability of the
 radii implies almost-sure and $L^1$ convergence of the random series.  On compact subsets
-of $\C$, $\sinc(z/2^n)=1+\bigO(4^{-n})$, so the product converges locally uniformly and is
+of $\ComplexNumbers$, $\SincRad(z/2^n)=1+\BigO(4^{-n})$, so the product converges locally uniformly and is
 entire.  The exponential-type bound follows either factorwise or directly from
 $|X_A|\le R_A$.  Finite partial sums have support equal to the Minkowski sum of their
 interval supports; taking closures gives the full interval.  Finally,
@@ -379,9 +362,9 @@ Let
 \end{equation}
 where $s_2(m)$ is the sum of the binary digits of $m$.  Put
 \begin{equation}
- A_+=\set{n\ge1:e_{n-1}=1},
+ A_+=\SetOf{n\ge1:e_{n-1}=1},
  \qquad
- A_-=\set{n\ge1:e_{n-1}=-1}.
+ A_-=\SetOf{n\ge1:e_{n-1}=-1}.
  \label{eq:Apm}
 \end{equation}
 Let $X_\pm=X_{A_\pm}$, $\mu_\pm=\mu_{A_\pm}$, and $\phi_\pm=\phi_{A_\pm}$.  The classical
@@ -400,15 +383,15 @@ example by Allouche and Mend\`es France~\cite{AlloucheMendesFrance2008}.
 \label{thm:tm-factorization}
 The laws $\mu_+$ and $\mu_-$ are compactly supported symmetric probability measures and
 \begin{equation}
- \boxed{\ \mu_+*\mu_-=\mu_{\Up},\qquad
- u_+*u_-=\Up\ },
+ \boxed{\ \mu_+*\mu_-=\mu_{\RvachevUp},\qquad
+ u_+*u_-=\RvachevUp\ },
  \label{eq:main-factorization}
 \end{equation}
 where the existence and smoothness of the densities $u_\pm$ are proved in
 \cref{thm:smoothness}.  Their characteristic functions are
 \begin{equation}
  \phi_\sigma(z)=\prod_{m\ge0}
- \sinc\!\left(\frac z{2^{m+1}}\right)^{(1+\sigma e_m)/2},
+ \SincRad\!\left(\frac z{2^{m+1}}\right)^{(1+\sigma e_m)/2},
  \qquad \sigma\in\{+1,-1\}.
  \label{eq:phi-pm}
 \end{equation}
@@ -466,7 +449,7 @@ Let $Y$ have a probability density $g$ supported on $[-r,r]$, and let
 $U\sim\operatorname{Unif}[-a,a]$ be independent, with $a>r$.  The density $f$ of $U+Y$
 is
 \begin{equation}
- f(x)=\frac1{2a}\int_{x-a}^{x+a}g(y)\dd y.
+ f(x)=\frac1{2a}\int_{x-a}^{x+a}g(y)\Differential y.
  \label{eq:plateau-convolution}
 \end{equation}
 Consequently
@@ -474,7 +457,7 @@ Consequently
  f(x)=\frac1{2a}\quad (|x|\le a-r).
  \label{eq:plateau-general}
 \end{equation}
-If $g\in C^\infty_c(\R)$, then on the right transition interval $a-r<x<a+r$,
+If $g\in C^\infty_c(\RealNumbers)$, then on the right transition interval $a-r<x<a+r$,
 \begin{equation}
  f^{(k)}(x)=-\frac1{2a}g^{(k-1)}(x-a),\qquad k\ge1,
  \label{eq:plateau-edge-derivative}
@@ -486,7 +469,7 @@ with the reflected formula on the left.
 Equation~\eqref{eq:plateau-convolution} is the convolution formula.  If
 $|x|\le a-r$, the integration interval contains all of $[-r,r]$, so its integral is one.
 On the right transition interval, the upper endpoint lies beyond the support and
-$f(x)=(2a)^{-1}\int_{x-a}^r g(y)\dd y$.  Differentiation gives
+$f(x)=(2a)^{-1}\int_{x-a}^r g(y)\Differential y$.  Differentiation gives
 \eqref{eq:plateau-edge-derivative}.
 \end{proof}
 
@@ -517,9 +500,9 @@ $a-r=\tau/4$.
 \label{cor:central-flatness}
 The Rvachev density satisfies
 \begin{equation}
- \Up(0)=1,
+ \RvachevUp(0)=1,
  \qquad
- \Up^{(k)}(0)=0\quad(k\ge1).
+ \RvachevUp^{(k)}(0)=0\quad(k\ge1).
  \label{eq:up-central-flatness}
 \end{equation}
 \end{corollary}
@@ -527,13 +510,13 @@ The Rvachev density satisfies
 \begin{proof}
 By \cref{thm:tm-factorization},
 \(
- \Up(0)=\int u_+(-y)u_-(y)\dd y.
+ \RvachevUp(0)=\int u_+(-y)u_-(y)\Differential y.
 \)
 The support of $u_-$ lies in the closed plateau of $u_+$, where $u_+=1$, giving
-$\Up(0)=\int u_-=1$.  Once \cref{thm:smoothness} is available, differentiation under the
+$\RvachevUp(0)=\int u_-=1$.  Once \cref{thm:smoothness} is available, differentiation under the
 integral gives
 \[
- \Up^{(k)}(0)=\int u_+^{(k)}(-y)u_-(y)\dd y=0.
+ \RvachevUp^{(k)}(0)=\int u_+^{(k)}(-y)u_-(y)\Differential y=0.
 \]
 Every derivative of $u_+$ vanishes on the open plateau and, by continuity, at its
 endpoints as well.
@@ -551,12 +534,12 @@ is exactly constant over the complete support of the other.
 For $|q|<1$, $q\ne0$, define
 \begin{equation}
  \Phi_\sigma(z;q)=\prod_{m\ge0}
- \sinc(zq^{m+1})^{a_m^\sigma},
+ \SincRad(zq^{m+1})^{a_m^\sigma},
  \qquad
  a_m^\sigma=\frac{1+\sigma e_m}{2}.
  \label{eq:Phiq}
 \end{equation}
-The product converges locally uniformly on $\C\times\{q:|q|<1\}$ and is entire in $z$.
+The product converges locally uniformly on $\ComplexNumbers\times\{q:|q|<1\}$ and is entire in $z$.
 For real $0<q<1$, it is the characteristic function of the random series obtained by
 retaining radii $q^{m+1}$ at the selected indices.  The dyadic factors are
 $\phi_\sigma(z)=\Phi_\sigma(z;1/2)$.
@@ -593,12 +576,12 @@ and
 Split the defining product into even and odd $m$.  Since
 $e_{2r}=e_r$ and $e_{2r+1}=-e_r$, the even-indexed factors are
 \[
- \prod_{r\ge0}\sinc(zq^{2r+1})^{a_r^\sigma}
+ \prod_{r\ge0}\SincRad(zq^{2r+1})^{a_r^\sigma}
  =\Phi_\sigma(z/q;q^2),
 \]
 while the odd-indexed factors are
 \[
- \prod_{r\ge0}\sinc(zq^{2r+2})^{a_r^{-\sigma}}
+ \prod_{r\ge0}\SincRad(zq^{2r+2})^{a_r^{-\sigma}}
  =\Phi_{-\sigma}(z;q^2).
 \]
 Multiplication proves \eqref{eq:q-mahler}; addition and subtraction of logarithms gives
@@ -664,7 +647,7 @@ the compact Thue--Morse substitution hull.  This is developed conjecturally in
 
 Euler's product gives, for $|w|<\pi$,
 \begin{equation}
- \log\sinc w=-\sum_{r\ge1}\frac{\zeta(2r)}{r\pi^{2r}}w^{2r}.
+ \log\SincRad w=-\sum_{r\ge1}\frac{\zeta(2r)}{r\pi^{2r}}w^{2r}.
  \label{eq:logsinc}
 \end{equation}
 Substituting \eqref{eq:selector-generating} yields the following exact germ.
@@ -691,7 +674,7 @@ sums, and evaluate the selector sum with \eqref{eq:selector-generating} at $q^{2
 For real $0<q<1$, let $X_\sigma(q)$ be the selected uniform series of radii $q^{m+1}$.
 Its cumulant generating function is
 \begin{equation}
- K_\sigma(t;q)=\log\mathbb E\e^{tX_\sigma(q)}
+ K_\sigma(t;q)=\log\mathbb E\EulerE^{tX_\sigma(q)}
  =\sum_{m\ge0}a_m^\sigma h(tq^{m+1}).
  \label{eq:Kq}
 \end{equation}
@@ -851,26 +834,26 @@ smooth.
 \label{thm:selector-Fourier}
 Suppose
 \begin{equation}
- A(N)=\delta N+\bigO(1),\qquad 0<\delta\le1.
+ A(N)=\delta N+\BigO(1),\qquad 0<\delta\le1.
  \label{eq:bounded-discrepancy}
 \end{equation}
 Then, as $|x|\to\infty$,
 \begin{equation}
  \log|\phi_A(x)|
- \le-\frac{\delta}{2\log2}(\log|x|)^2+\bigO(\log|x|).
+ \le-\frac{\delta}{2\log2}(\log|x|)^2+\BigO(\log|x|).
  \label{eq:Fourier-bound}
 \end{equation}
 Consequently, for every $M>0$,
 \begin{equation}
- |\phi_A(x)|=\bigO_M(|x|^{-M}),
+ |\phi_A(x)|=\BigO_M(|x|^{-M}),
  \label{eq:rapid-decay}
 \end{equation}
 and $\mu_A$ has a compactly supported $C^\infty$ density.
 \end{theorem}
 
 \begin{proof}
-Use $|\sinc y|\le\min(1,|y|^{-1})$.  Put
-$N=\floor{\log_2|x|}$.  Restricting the product to selected $n\le N$ gives
+Use $|\SincRad y|\le\min(1,|y|^{-1})$.  Put
+$N=\Floor{\log_2|x|}$.  Restricting the product to selected $n\le N$ gives
 \begin{align}
  \log|\phi_A(x)|
  &\le\sum_{\substack{n\le N\\n\in A}}(n\log2-\log|x|)\\
@@ -880,10 +863,10 @@ $N=\floor{\log_2|x|}$.  Restricting the product to selected $n\le N$ gives
 Bounded discrepancy and summation by parts imply
 \begin{equation}
  \sum_{\substack{n\le N\\n\in A}}n
- =\frac\delta2N^2+\bigO(N).
+ =\frac\delta2N^2+\BigO(N).
  \label{eq:weighted-count}
 \end{equation}
-Since $N=(\log|x|)/(\log2)+\bigO(1)$, substitution yields
+Since $N=(\log|x|)/(\log2)+\BigO(1)$, substitution yields
 \eqref{eq:Fourier-bound}.  The quadratic logarithm dominates every fixed multiple of
 $\log|x|$, giving \eqref{eq:rapid-decay}.  Fourier inversion then permits arbitrary
 termwise differentiation, producing a $C^\infty$ density.  Compact support was proved in
@@ -896,7 +879,7 @@ The measures $\mu_+$ and $\mu_-$ possess nonnegative $C^\infty$ densities $u_+$ 
 $u_-$.  Moreover
 \begin{equation}
  \log|\phi_\pm(x)|
- \le-\frac1{4\log2}(\log|x|)^2+\bigO(\log|x|).
+ \le-\frac1{4\log2}(\log|x|)^2+\BigO(\log|x|).
  \label{eq:tm-Fourier-bound}
 \end{equation}
 \end{theorem}
@@ -908,14 +891,14 @@ The Thue--Morse prefix sums satisfy
  \qquad
  \sum_{m=0}^{2r}e_m=e_r.
 \]
-Thus each sign occurs $N/2+\bigO(1)$ times among the first $N$ terms.  Apply
+Thus each sign occurs $N/2+\BigO(1)$ times among the first $N$ terms.  Apply
 \cref{thm:selector-Fourier} with $\delta=1/2$.
 \end{proof}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.92\textwidth]{fourier_decay.pdf}
-\caption{Numerical values along $x=\e^L+\sqrt2$.  Exact zeros prevent a global two-sided
+\caption{Numerical values along $x=\EulerE^L+\sqrt2$.  Exact zeros prevent a global two-sided
 asymptotic, but away from resonances the normalized logarithms cluster near the density
 predictions $1/(4\log2)$ for each factor and $1/(2\log2)$ for their product.}
 \label{fig:fourier-decay}
@@ -930,13 +913,13 @@ hold on the whole real axis.
 \section{The exact zero divisor}
 \label{sec:zeros}
 
-Each factor $\sinc(z/2^n)$ has simple zeros at $z=\pi\ell2^n$, $\ell\in\Z\setminus\{0\}$.
+Each factor $\SincRad(z/2^n)$ has simple zeros at $z=\pi\ell2^n$, $\ell\in\IntegerNumbers\setminus\{0\}$.
 The zeros of the full Rvachev transform are therefore $2\pi k$, $k\ne0$, with multiplicity
 $1+\nu_2(k)$.  The automatic splitting gives a finer formula.
 
 \begin{theorem}[Thue--Morse zero multiplicities]
 \label{thm:zero-multiplicity}
-Let $k\in\Z\setminus\{0\}$, put $N=1+\nu_2(k)$, and define
+Let $k\in\IntegerNumbers\setminus\{0\}$, put $N=1+\nu_2(k)$, and define
 \begin{equation}
  S_N=\sum_{m=0}^{N-1}e_m.
  \label{eq:SN}
@@ -978,7 +961,7 @@ of a compactly supported probability measure for any integer $r\ge2$.
 
 \begin{proof}
 If $\mu=\nu^{*r}$ and both laws are compactly supported, their characteristic functions
-extend to entire functions and $\phi_\mu=\phi_\nu^r$ on $\C$.  Every zero multiplicity of
+extend to entire functions and $\phi_\mu=\phi_\nu^r$ on $\ComplexNumbers$.  Every zero multiplicity of
 $\phi_\mu$ must then be divisible by $r$.  The function $\phi_+$ has simple zeros at
 $2\pi k$ for odd $k$.  The function $\phi_-$ has a simple zero at $4\pi$ (take $k=2$,
 $N=2$).  Their product has the simple zeros at odd $k$.  Each case contradicts
@@ -986,7 +969,7 @@ divisibility.
 \end{proof}
 
 \begin{remark}
-Thus the factorization $\mu_+*\mu_-=\mu_{\Up}$ is genuinely asymmetric: it does not arise
+Thus the factorization $\mu_+*\mu_-=\mu_{\RvachevUp}$ is genuinely asymmetric: it does not arise
 by extracting an equal convolution root.  The zero divisor records exactly which nested
 dyadic zeros each automatic factor receives.
 \end{remark}
@@ -996,7 +979,7 @@ dyadic zeros each automatic factor receives.
 
 Let
 \begin{equation}
- K_\sigma(t)=\log\mathbb E\e^{tX_\sigma}
+ K_\sigma(t)=\log\mathbb E\EulerE^{tX_\sigma}
  =\sum_{m\ge0}a_m^\sigma h(t/2^{m+1}),
  \qquad h(t)=\log\frac{\sinh t}{t}.
  \label{eq:Ksigma}
@@ -1014,7 +997,7 @@ Set
 \label{lem:mellin-h}
 For $-2<\Re s<-1$,
 \begin{equation}
- \Mell h(s):=\int_0^\infty h(t)t^{s-1}\dd t
+ \Mell h(s):=\int_0^\infty h(t)t^{s-1}\Differential t
  =\frac{\pi^{s+1}\zeta(-s)}{s\sin(\pi s/2)}
  =-2^{-s}\Gamma(s)\zeta(s+1).
  \label{eq:mellin-h}
@@ -1028,7 +1011,7 @@ Euler's product for $\sinh$ is
 \]
 For $-2<\Re s<0$, integration by parts gives
 \[
- \int_0^\infty y^{s-1}\log(1+y^2)\dd y
+ \int_0^\infty y^{s-1}\log(1+y^2)\Differential y
  =\frac{\pi}{s\sin(\pi s/2)}.
 \]
 In the smaller strip $\Re s<-1$, summation over $k$ is absolutely justified and yields the
@@ -1093,7 +1076,7 @@ a new general boundary theorem.
 \section{Sharp logarithmic endpoint laws}
 \label{sec:endpoint}
 
-Let $A\subseteq\N_{\ge1}$ and suppose $A(N)=\delta N+\bigO(1)$.  Write
+Let $A\subseteq\NaturalNumbers_{\ge1}$ and suppose $A(N)=\delta N+\BigO(1)$.  Write
 \begin{equation}
  D_A=R_A-X_A\ge0,
  \qquad
@@ -1114,14 +1097,14 @@ series
 \label{thm:Laplace-asymptotic}
 Under \eqref{eq:bounded-discrepancy}, as $t\to+\infty$,
 \begin{equation}
- \log\mathbb E\e^{-tD_A}
- =-\frac{\delta}{2\log2}(\log t)^2+\bigO(\log t).
+ \log\mathbb E\EulerE^{-tD_A}
+ =-\frac{\delta}{2\log2}(\log t)^2+\BigO(\log t).
  \label{eq:Laplace-asymptotic}
 \end{equation}
 Equivalently,
 \begin{equation}
- \log\mathbb E\e^{tX_A}
- =R_At-\frac{\delta}{2\log2}(\log t)^2+\bigO(\log t).
+ \log\mathbb E\EulerE^{tX_A}
+ =R_At-\frac{\delta}{2\log2}(\log t)^2+\BigO(\log t).
  \label{eq:mgf-edge}
 \end{equation}
 \end{theorem}
@@ -1131,21 +1114,21 @@ The logarithm of the Laplace transform is
 \begin{equation}
  L_A(t)=\sum_{n\in A}\ell(2^{1-n}t),
  \qquad
- \ell(y)=\log\frac{1-\e^{-y}}{y}.
+ \ell(y)=\log\frac{1-\EulerE^{-y}}{y}.
  \label{eq:ell-sum}
 \end{equation}
-For $y\ge1$, $\ell(y)=-\log y+\bigO(\e^{-y})$; for $0<y\le1$,
-$\ell(y)=\bigO(y)$.  Put $N=\floor{\log_2t}$.  Terms with $n>N+O(1)$ contribute
-$\bigO(1)$ in total, and the transition band contributes $\bigO(1)$.  Therefore
+For $y\ge1$, $\ell(y)=-\log y+\BigO(\EulerE^{-y})$; for $0<y\le1$,
+$\ell(y)=\BigO(y)$.  Put $N=\Floor{\log_2t}$.  Terms with $n>N+O(1)$ contribute
+$\BigO(1)$ in total, and the transition band contributes $\BigO(1)$.  Therefore
 \begin{align}
  L_A(t)
- &=-\sum_{\substack{n\le N\\n\in A}}\log(2^{1-n}t)+\bigO(N)\\
- &=-A(N)\log t+\log2\sum_{\substack{n\le N\\n\in A}}(n-1)+\bigO(N).
+ &=-\sum_{\substack{n\le N\\n\in A}}\log(2^{1-n}t)+\BigO(N)\\
+ &=-A(N)\log t+\log2\sum_{\substack{n\le N\\n\in A}}(n-1)+\BigO(N).
  \label{eq:Laplace-count}
 \end{align}
 Use \eqref{eq:bounded-discrepancy}, \eqref{eq:weighted-count}, and
-$N=(\log t)/(\log2)+\bigO(1)$ to obtain \eqref{eq:Laplace-asymptotic}.  Since
-$\mathbb E\e^{tX_A}=\e^{R_At}\mathbb E\e^{-tD_A}$, the second formula follows.
+$N=(\log t)/(\log2)+\BigO(1)$ to obtain \eqref{eq:Laplace-asymptotic}.  Since
+$\mathbb E\EulerE^{tX_A}=\EulerE^{R_At}\mathbb E\EulerE^{-tD_A}$, the second formula follows.
 \end{proof}
 
 \subsection{Small-ball theorem}
@@ -1158,7 +1141,7 @@ Under \eqref{eq:bounded-discrepancy}, as $\eps\downarrow0$,
  \log G_A(\eps)
  =-\frac{\delta}{2\log2}
  \left(\log\frac1\eps\right)^2
- +\bigO\!\left(
+ +\BigO\!\left(
  \log\frac1\eps\,\log\log\frac1\eps
  \right).
  \quad}
@@ -1170,17 +1153,17 @@ Under \eqref{eq:bounded-discrepancy}, as $\eps\downarrow0$,
 Let $L=\log(1/\eps)$.  For the upper bound, exponential Markov with $t=1/\eps$ gives
 \[
  G_A(\eps)
- =\Pr(\e^{-tD_A}\ge\e^{-t\eps})
- \le\e^{t\eps}\mathbb E\e^{-tD_A}.
+ =\Pr(\EulerE^{-tD_A}\ge\EulerE^{-t\eps})
+ \le\EulerE^{t\eps}\mathbb E\EulerE^{-tD_A}.
 \]
 Apply \cref{thm:Laplace-asymptotic}; this yields
 \[
  \log G_A(\eps)
- \le-\frac{\delta}{2\log2}L^2+\bigO(L).
+ \le-\frac{\delta}{2\log2}L^2+\BigO(L).
 \]
 
 For the lower bound choose
-$N=\ceil{\log_2(1/\eps)}+3$.  The deterministic tail after $N$ is at most
+$N=\Ceiling{\log_2(1/\eps)}+3$.  The deterministic tail after $N$ is at most
 \(
  \sum_{n>N}2^{1-n}=2^{1-N}\le\eps/4.
 \)
@@ -1199,10 +1182,10 @@ one, so independence gives
  \sum_{\substack{n\le N\\n\in A}}(n-1).
  \label{eq:small-ball-lower}
 \end{align}
-Now $M=\delta N+\bigO(1)$,
-$\sum_{n\le N,n\in A}n=\delta N^2/2+\bigO(N)$, and
-$N=L/\log2+\bigO(1)$.  The first and third terms combine to
-$-\delta L^2/(2\log2)+\bigO(L)$, while $M\log M=\bigO(L\log L)$.  This proves the matching
+Now $M=\delta N+\BigO(1)$,
+$\sum_{n\le N,n\in A}n=\delta N^2/2+\BigO(N)$, and
+$N=L/\log2+\BigO(1)$.  The first and third terms combine to
+$-\delta L^2/(2\log2)+\BigO(L)$, while $M\log M=\BigO(L\log L)$.  This proves the matching
 lower bound and hence \eqref{eq:small-ball}.
 \end{proof}
 
@@ -1212,7 +1195,7 @@ For $\sigma=\pm1$,
 \begin{equation}
  \log\Pr(R_\sigma-X_\sigma\le\eps)
  =-\frac1{4\log2}\left(\log\frac1\eps\right)^2
- +\bigO\!\left(\log\frac1\eps\log\log\frac1\eps\right).
+ +\BigO\!\left(\log\frac1\eps\log\log\frac1\eps\right).
  \label{eq:tm-small-ball}
 \end{equation}
 The same formula holds at the left endpoint by symmetry.
@@ -1245,7 +1228,7 @@ Under \eqref{eq:bounded-discrepancy}, as $u\downarrow0$,
 \begin{equation}
  \log\frac1{R_A-Q_A(1-u)}
  =\sqrt{\frac{2\log2}{\delta}\log\frac1u}
- +\bigO\!\left(\log\log\frac1u\right).
+ +\BigO\!\left(\log\log\frac1u\right).
  \label{eq:inverse-edge}
 \end{equation}
 Equivalently,
@@ -1253,7 +1236,7 @@ Equivalently,
  R_A-Q_A(1-u)
  =\exp\!\left[
  -\sqrt{\frac{2\log2}{\delta}\log\frac1u}
- +\bigO\!\left(\log\log\frac1u\right)
+ +\BigO\!\left(\log\log\frac1u\right)
  \right].
  \label{eq:inverse-edge-exp}
 \end{equation}
@@ -1265,10 +1248,10 @@ $2\sqrt{\log2}$.
 Put $\eps=R_A-Q_A(1-u)$, so $u=G_A(\eps)$.  If
 $Y=\log(1/u)$ and $L=\log(1/\eps)$, \cref{thm:small-ball} says
 \[
- Y=\frac\delta{2\log2}L^2+\bigO(L\log L).
+ Y=\frac\delta{2\log2}L^2+\BigO(L\log L).
 \]
 Solving this quadratic-scale relation gives
-$L=\sqrt{(2\log2/\delta)Y}+\bigO(\log Y)$, which is
+$L=\sqrt{(2\log2/\delta)Y}+\BigO(\log Y)$, which is
 \eqref{eq:inverse-edge}.
 \end{proof}
 
@@ -1276,7 +1259,7 @@ The leading law is not itself a Lambert-$W$ formula; Lambert $W_{-1}$ appears af
 retains the derivative of the quadratic-log Laplace action.  Suppose heuristically that a
 refined expansion along a stable symbolic phase has the form
 \begin{equation}
- \log\mathbb E\e^{-tD_A}
+ \log\mathbb E\EulerE^{-tD_A}
  =-c(\log t)^2+d\log t+C+o(1),
  \qquad c=\frac\delta{2\log2}.
  \label{eq:refined-Laplace-heuristic}
@@ -1289,7 +1272,7 @@ The saddle equation is then
 Ignoring the $o(1)$ term yields the explicit chart
 \begin{equation}
  \log t
- =-W_{-1}\!\left(-\frac{\eps}{2c}\e^{d/(2c)}\right)-\frac d{2c}.
+ =-W_{-1}\!\left(-\frac{\eps}{2c}\EulerE^{d/(2c)}\right)-\frac d{2c}.
  \label{eq:Lambert-chart}
 \end{equation}
 For the ordinary dyadic law, periodic log-scale corrections can be inserted into such
@@ -1321,7 +1304,7 @@ For $m=m_{\sigma,N}\ge1$, the density of $X_{\sigma,N}$ is
  \left(x+R_{\sigma,N}-\sum_{n\in S}2^{1-n}\right)_+^{m-1}.
  \label{eq:finite-spline}
 \end{equation}
-It is piecewise polynomial of degree $m-1$, with knots on the lattice $2^{1-N}\Z$.
+It is piecewise polynomial of degree $m-1$, with knots on the lattice $2^{1-N}\IntegerNumbers$.
 Moreover $X_{\sigma,N}\to X_\sigma$ almost surely and uniformly under the canonical
 coupling, with
 \begin{equation}
@@ -1364,11 +1347,11 @@ checks are:
 \begin{enumerate}
 \item agreement of the series and product definitions of $E(1/2)$ to 60 displayed digits;
 \item $R_++R_-=1$ to working precision;
-\item the complex product identity $\phi_+\phi_-=\widehat\Up$ with residual
+\item the complex product identity $\phi_+\phi_-=\widehat\RvachevUp$ with residual
 $2.2\times10^{-81}$ at the test point;
 \item both q-Mahler identities with residuals below $5\times10^{-81}$;
 \item the Mellin formula \eqref{eq:mellin-h} at $s=-3/2$ and at
-$s=-1.4+0.3\ii$, with numerical integration errors about $10^{-22}$ and $10^{-27}$;
+$s=-1.4+0.3\ImaginaryUnit$, with numerical integration errors about $10^{-22}$ and $10^{-27}$;
 \item the exact zero multiplicity table for $1\le k\le32$;
 \item convergence of the normalized edge logarithms to $1/(4\log2)$.
 \end{enumerate}
@@ -1378,7 +1361,7 @@ $s=-1.4+0.3\ii$, with numerical integration errors about $10^{-22}$ and $10^{-27
 \includegraphics[width=0.92\textwidth]{factor_densities.pdf}
 \caption{Monte Carlo illustration using $500{,}000$ coupled samples and 45 dyadic scales.
 The exact plateaux are already conspicuous: height $1$ for $u_+$ and height $2$ for $u_-$.
-The green curve is the coupled sum, whose exact law is $\Up$.}
+The green curve is the coupled sum, whose exact law is $\RvachevUp$.}
 \label{fig:density-factors}
 \end{figure}
 
@@ -1399,17 +1382,17 @@ The leading analytic mechanism is not special to base two.  Let $b>1$ and
 
 \begin{theorem}[Base-$b$ selector universality]
 \label{thm:base-b}
-If $A(N)=\delta N+\bigO(1)$, then
+If $A(N)=\delta N+\BigO(1)$, then
 \begin{align}
  \log|\phi_{A,b}(x)|
- &\le-\frac\delta{2\log b}(\log|x|)^2+\bigO(\log|x|),
+ &\le-\frac\delta{2\log b}(\log|x|)^2+\BigO(\log|x|),
  \label{eq:base-b-Fourier}\\
- \log\mathbb E\e^{-t(R_{A,b}-X_{A,b})}
- &=-\frac\delta{2\log b}(\log t)^2+\bigO(\log t),
+ \log\mathbb E\EulerE^{-t(R_{A,b}-X_{A,b})}
+ &=-\frac\delta{2\log b}(\log t)^2+\BigO(\log t),
  \label{eq:base-b-Laplace}\\
  \log\Pr(R_{A,b}-X_{A,b}\le\eps)
  &=-\frac\delta{2\log b}\left(\log\frac1\eps\right)^2
- +\bigO\!\left(\log\frac1\eps\log\log\frac1\eps\right).
+ +\BigO\!\left(\log\frac1\eps\log\log\frac1\eps\right).
  \label{eq:base-b-small}
 \end{align}
 In particular $X_{A,b}$ has a $C^\infty$ density whenever $\delta>0$.
@@ -1436,9 +1419,9 @@ The following statements are deliberately separated from the proved results.
 \label{conj:symbolic-saddle}
 There exist continuous observables $B,C,\ldots$ on the two-sided Thue--Morse substitution
 hull $\Omega_{\rm TM}$ such that, after associating to $t$ the shift state selected by
-$\floor{\log_2t}$,
+$\Floor{\log_2t}$,
 \begin{equation}
- \log\mathbb E\e^{-tD_\sigma}
+ \log\mathbb E\EulerE^{-tD_\sigma}
  =-\frac{(\log t)^2}{4\log2}
  +B(\omega_t)\log t+C(\omega_t)
  +\sum_{j\ge1}\frac{C_j(\omega_t)}{(\log t)^j}
@@ -1461,7 +1444,7 @@ $\log_2\eps$ can represent the complete correction.
 \label{conj:rigidity}
 Let $\nu_1,\nu_2$ be centered symmetric compactly supported probability measures with
 entire characteristic functions of Cartwright class, and suppose
-$\nu_1*\nu_2=\mu_{\Up}$.  Under the additional condition that every zero of each factor
+$\nu_1*\nu_2=\mu_{\RvachevUp}$.  Under the additional condition that every zero of each factor
 lies in the Rvachev zero set and both quotients have completely regular growth, the
 factorization is induced by assigning whole dyadic sinc factors, up to a finite
 B-spline factor and interchange of the two laws.
@@ -1487,7 +1470,7 @@ involution induced by $e_{2m+1}=-e_m$.
 For each sign there exists a fixed $C>0$ such that
 \begin{equation}
  \sup_{y\in[x,x+C]}\log|\phi_\sigma(y)|
- =-\frac1{4\log2}(\log x)^2+\bigO(\log x).
+ =-\frac1{4\log2}(\log x)^2+\BigO(\log x).
  \label{eq:local-envelope}
 \end{equation}
 This would complement the one-sided global bound by showing that no additional quadratic
@@ -1535,7 +1518,7 @@ radii reduce to absolutely convergent geometric sums.
 
 \paragraph{Fourier analysis.}
 Prove local uniform convergence of the entire products and the bound
-$|\sinc x|\le\min(1,1/|x|)$.  The weighted selector count then gives rapid decay.  Existing
+$|\SincRad x|\le\min(1,1/|x|)$.  The weighted selector count then gives rapid decay.  Existing
 Fourier inversion lemmas can convert weighted $L^1$ bounds to $C^\infty$ densities.
 
 \paragraph{Plateaux.}
@@ -1550,7 +1533,7 @@ recurrences avoid committing to a large combinatorial-polynomial library.
 
 \paragraph{Endpoint asymptotics.}
 Formalize the logarithmic Laplace estimate using explicit inequalities for
-$\ell(y)=\log((1-\e^{-y})/y)$ on $(0,1]$ and $[1,\infty)$.  The small-ball lower bound is a
+$\ell(y)=\log((1-\EulerE^{-y})/y)$ on $(0,1]$ and $[1,\infty)$.  The small-ball lower bound is a
 finite product event plus a deterministic tail estimate; it does not require a deep
 Tauberian theorem.  This makes \cref{thm:small-ball} unusually suitable for formal proof.
 
@@ -1558,7 +1541,7 @@ Tauberian theorem.  This makes \cref{thm:small-ball} unusually suitable for form
 
 Partitioning the uniform scales, rather than manipulating the completed Rvachev transform,
 opens a distinct structural direction.  The Thue--Morse word produces two genuine smooth
-compactly supported laws whose convolution is $\Up$, whose supports are measured by a
+compactly supported laws whose convolution is $\RvachevUp$, whose supports are measured by a
 Mahler product, and whose exact plateaux remember the first automatic digits.  Their
 cumulants combine Bernoulli numbers with $E(q^{2r})$, their moments pass through Bell
 polynomials, and their Legendre data are finite consequences of the same q-values.  At the
@@ -1608,7 +1591,7 @@ Cumulants add under convolution, so
 \end{equation}
 which is exactly the known cumulant of the Rvachev law.  For $r=1$,
 \begin{equation}
- \Var(X_+)+\Var(X_-)=\frac19,
+ \Variance(X_+)+\Variance(X_-)=\frac19,
  \label{eq:variance-sum}
 \end{equation}
 consistent with $\sum_{n\ge1}4^{-n}/3=1/9$.
