@@ -2925,9 +2925,14 @@ in the same scope.\\
 \begin{catalogueentry}{accent-collisions}{Hats, tildes, bars, stars, primes, and scripts}
 \entryfield{Hats}{A normalization-labelled hat produced by
 \commandname{FourierTwoPi} or \commandname{FourierAngular} is a Fourier transform.  A
-hat on a polynomial, matrix, estimator, or lifted object is local and is declared in
-words.  No unlabelled hat is silently interpreted as a Fourier transform in a document
-that also uses monic or normalized polynomials.}
+periodic coefficient uses \commandname{FourierSeriesCoefficient}.  A hat on a polynomial,
+matrix, estimator, accelerated approximant, or lifted object is local: all use sites call
+a descriptive document-local macro, and the raw accent occurs only in that macro's
+one-line definition.  The immediately preceding source comment has the form
+\texttt{LOCAL-NON-FOURIER-HAT: \textbackslash MacroName meaning}, names the same macro,
+and explains its mathematical role.  A generic local alias for \commandname{widehat} or
+\commandname{hat} is forbidden.  Thus no unlabelled hat is silently interpreted as a
+Fourier transform in a document that also uses monic or normalized polynomials.}
 \entryfield{Tildes}{A tilde may mark centering, normalization, continuation, lifting, or
 an alternative sign convention.  The transformed object's type and the defining map are
 given at first use.  It is never a substitute for the signed global Fabius function.}
@@ -3494,6 +3499,7 @@ The repository audit is invoked from the repository root as follows.
 
 \begin{lstlisting}[style=pseudo]
 python Analysis/FabiusFunction/scripts/tex_notation_audit.py --strict --list
+python Analysis/FabiusFunction/scripts/tex_notation_audit.py --semantic --strict --list
 \end{lstlisting}
 
 For each active source it records the relative path, byte and line counts, SHA-256 digest,
@@ -3504,9 +3510,15 @@ pattern.  A focused catalogue check supplies this file's path as the positional 
 The strict gate detects retired commands, local redefinitions of shared semantic
 commands, missing or duplicated canonical inputs, fragment imports of the shared input,
 selected literal bypasses of semantic operators, and known script-composition hazards.
-It is deliberately not a TeX parser and cannot infer the meaning of every one-letter
-variable.  The local declaration schema and collision register close that semantic gap;
-rendered-PDF inspection later closes the composition and layout gap.
+The opt-in semantic gate additionally requires classification of raw hats, delimiter
+spellings, number systems, indicator symbols, digit sums, asymptotic operators, sinc
+normalizations, and probability operators.  Its sole raw-hat exemption is a descriptive
+one-line local macro definition whose immediately preceding
+\texttt{LOCAL-NON-FOURIER-HAT:} comment names that macro and states its meaning; direct
+raw-hat use remains an error.  The audit is deliberately not a TeX parser and cannot infer
+the meaning of every one-letter variable.  The local declaration schema and collision
+register close that semantic gap; rendered-PDF inspection later closes the composition
+and layout gap.
 
 \section{Completeness and maintenance contract}
 \label{sec:maintenance}

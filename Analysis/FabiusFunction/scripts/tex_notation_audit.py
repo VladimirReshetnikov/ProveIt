@@ -40,12 +40,14 @@ from typing import Iterable
 
 CANONICAL_INPUT = "fabius-notation.tex"
 HISTORICAL_NOTATION_MARKER = "HISTORICAL-NOTATION-SCOPE"
+LOCAL_NON_FOURIER_HAT_MARKER = "LOCAL-NON-FOURIER-HAT:"
+RAW_HAT_PATTERN = r"\\(?:widehat|hat)(?![A-Za-z@])"
 
 # Broader recurring spellings whose meaning must be classified during the
 # semantic source pass.  This is intentionally opt-in: the ordinary strict gate
 # remains a fast check for already-retired aliases and contract violations.
 SEMANTIC_LITERAL_PATTERNS = {
-    r"\\(?:widehat|hat)(?![A-Za-z@])": (
+    RAW_HAT_PATTERN: (
         r"raw hat requires classification; use \FourierTwoPi or \FourierAngular "
         r"for a Fourier transform, or declare the non-Fourier accent locally"
     ),
@@ -260,6 +262,50 @@ def line_number(text: str, offset: int) -> int:
     return text.count("\n", 0, offset) + 1
 
 
+def is_annotated_local_non_fourier_hat_definition(
+    raw: str,
+    code: str,
+    match: re.Match[str],
+) -> bool:
+    """Recognize one explicitly classified, document-local hat definition.
+
+    The exemption is intentionally narrow.  The raw hat must occur on a one-line
+    ``\\newcommand`` declaration.  The immediately preceding source line must carry
+    ``LOCAL-NON-FOURIER-HAT:``, name the declared command, and give nonempty
+    explanatory text.  Raw hats at mathematical use sites therefore remain findings.
+    """
+    source_lines = raw.splitlines()
+    number = line_number(code, match.start())
+    if number < 2 or number > len(source_lines):
+        return False
+
+    declaration_line = source_lines[number - 1]
+    marker_line = source_lines[number - 2]
+    marker_at = marker_line.find(LOCAL_NON_FOURIER_HAT_MARKER)
+    if marker_at < 0:
+        return False
+
+    explanation = marker_line[marker_at + len(LOCAL_NON_FOURIER_HAT_MARKER):].strip()
+    if not explanation:
+        return False
+
+    declaration = re.search(
+        r"\\newcommand\s*\{\s*\\(?P<name>[A-Za-z@]+)\s*\}"
+        r"(?:\s*\[\s*\d+\s*\])?\s*\{[^\n]*"
+        + RAW_HAT_PATTERN,
+        declaration_line,
+    )
+    if declaration is None:
+        return False
+
+    name = declaration.group("name")
+    if f"\\{name}" not in explanation:
+        return False
+    if name in RETIRED_COMMANDS or name in SEMANTIC_COMMANDS:
+        return False
+    return True
+
+
 def relative(path: Path, docs: Path) -> str:
     return path.relative_to(docs).as_posix()
 
@@ -399,6 +445,11 @@ def audit_file(
     if semantic and not canonical_source and not catalogue_source and not historical_scope:
         for pattern, message in SEMANTIC_LITERAL_PATTERNS.items():
             for match in re.finditer(pattern, code):
+                if (
+                    pattern == RAW_HAT_PATTERN
+                    and is_annotated_local_non_fourier_hat_definition(raw, code, match)
+                ):
+                    continue
                 findings.append(Finding(
                     rel,
                     line_number(code, match.start()),
