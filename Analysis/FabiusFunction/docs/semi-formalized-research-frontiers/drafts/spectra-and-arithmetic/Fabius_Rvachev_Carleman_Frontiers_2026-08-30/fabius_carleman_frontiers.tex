@@ -293,10 +293,10 @@ On the unit interval,
 \end{equation}
 The signed Thue--Morse sequence is
 \begin{equation}
-  \ThueMorseSign{k}=(-1)^{s_2(k)},
+  \ThueMorseSign{k}=(-1)^{\BinaryDigitSum(k)},
   \label{eq:tm}
 \end{equation}
-where $s_2(k)$ is the sum of the binary digits of $k$.
+where $\BinaryDigitSum(k)$ is the sum of the binary digits of $k$.
 
 Write
 \begin{equation}
@@ -368,15 +368,15 @@ three is impossible.
 
 We use
 \begin{equation}
-  \widehat f(\xi)=\int_{\RealNumbers}f(t)e^{-2\pi i\xi t}\Differential t.
+  \FourierTwoPi{f}(\xi)=\int_{\RealNumbers}f(t)e^{-2\pi i\xi t}\Differential t.
   \label{eq:fourier-convention}
 \end{equation}
-For $\Phi=\widehat\RvachevUp$, the repository's product formula is
+For $\Phi=\FourierTwoPi{\RvachevUp}$, the repository's product formula is
 \begin{equation}
   \Phi(\xi)=\prod_{j=0}^{\infty}
-  \operatorname{sinc}\!\left(\frac{\pi\xi}{2^j}\right),
+  \SincRad\!\left(\frac{\pi\xi}{2^j}\right),
   \qquad
-  \operatorname{sinc}(z)=\frac{\sin z}{z}.
+  \SincRad(z)=\frac{\sin z}{z}.
   \label{eq:sinc-product}
 \end{equation}
 The exact cell formula also gives

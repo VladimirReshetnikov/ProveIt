@@ -78,6 +78,7 @@
 \newcommand{\newresult}{\textcolor{newgreen}{\textsc{New result proved here.}}}
 \newcommand{\imported}{\textcolor{importblue}{\textsc{Imported baseline.}}}
 \newcommand{\openstatus}{\textcolor{conjectureorange}{\textsc{Open or conjectural.}}}
+\newcommand{\SpectralPowerSum}[1]{\mathfrak{s}_{#1}}
 \newenvironment{boxedremark}{\par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}\hrule\vspace{0.6em}\small}{\vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip}
 \lstdefinestyle{pseudo}{basicstyle=\ttfamily\footnotesize,backgroundcolor=\color{shadegray},frame=single,
  rulecolor=\color{rulegray},columns=fullflexible,keepspaces=true,showstringspaces=false,breaklines=true,
@@ -121,7 +122,7 @@ The absorbed drafts are deleted from the working tree; git history is the archiv
 \begin{abstract}
 Let
 \[
- \PhiU(z):=\widehat{\RvachevUp}(z)
+ \PhiU(z):=\FourierTwoPi{\RvachevUp}(z)
  =\prod_{j=0}^{\infty}\SincPi\!\left(\frac z{2^j}\right),
  \qquad \SincPi u:=\frac{\sin(\pi u)}{\pi u},
 \]
@@ -135,7 +136,7 @@ It develops instead the half-integer spectral sequence $(a_k)$, identified in th
 previous spectral audit as a genuine unresolved bridge.
 
 The first main theorem is an infinite, positive-weight Prouhet system of all
-orders.  With $o_k=2k+1$, $\ThueMorseSign{k}=(-1)^{s_2(k)}$, and
+orders.  With $o_k=2k+1$, $\ThueMorseSign{k}=(-1)^{\BinaryDigitSum(k)}$, and
 $w_k=|a_k|$, one has
 \[
  \sum_{k\ge0}a_k=\frac12,
@@ -242,7 +243,7 @@ The following are \emph{not} claimed as discoveries here.
  formula for $\FabiusGlobal(m/2^n)$.
  \item The integer zero set of $\PhiU$, multiplicity $1+\nu_2(m)$ at a nonzero
  integer $m$, strict logarithmic concavity between zeros, and the sign law
- $\Sign \PhiU(x)=(-1)^{s_2(M)}$ on $M<x<M+1$.
+ $\Sign \PhiU(x)=\ThueMorseSign{M}$ on $M<x<M+1$.
  \item The pointwise, metric, probabilistic, extremal, annular, and transfer-operator
  Fourier-decay results developed in the successive decay reports.
  \item The corrected endpoint asymptotic in the lower-Lambert coordinate,
@@ -327,7 +328,7 @@ Alias-sign positivity & Conjectures positivity of the residual shifted spectral 
 Let $\FabiusBounded:[0,1]\to[0,1]$ be the bounded Fabius function.  Let
 \begin{equation}\label{p1:eq:global-F}
  \FabiusGlobal(x):=\sum_{n=0}^{\infty}\ThueMorseSign{n}\RvachevUp(x-2n-1),
- \qquad \ThueMorseSign{n}:=(-1)^{s_2(n)},
+ \qquad \ThueMorseSign{n}:=(-1)^{\BinaryDigitSum(n)},
 \end{equation}
 be its signed global extension; the sum is locally finite.  On $[-1,1]$,
 \begin{equation}\label{p1:eq:Up-F-relations}
@@ -361,11 +362,11 @@ formulation \cite{p1:ariascompact,p1:ariasarith}.
 
 We use the Fourier convention
 \[
- \widehat f(z)=\int_{\RealNumbers}f(t)\EulerE^{-2\pi\ImaginaryUnit tz}\Differential t.
+ \FourierTwoPi{f}(z)=\int_{\RealNumbers}f(t)\EulerE^{-2\pi\ImaginaryUnit tz}\Differential t.
 \]
 Put
 \begin{equation}\label{p1:eq:Phi-def}
- \PhiU(z):=\widehat\RvachevUp(z)
+ \PhiU(z):=\FourierTwoPi{\RvachevUp}(z)
  =\prod_{j=0}^{\infty}\SincPi\!\left(\frac z{2^j}\right),
  \qquad
  \SincPi u=\frac{\sin(\pi u)}{\pi u}.
@@ -379,7 +380,7 @@ selecting the first $J$ factors gives the elementary rapid-decay estimate
 The nonzero real zeros are exactly the integers; at $m\ne0$ the multiplicity is
 $1+\nu_2(|m|)$.  If $M<x<M+1$, then
 \begin{equation}\label{p1:eq:Phi-sign-law}
- \Sign \PhiU(x)=(-1)^{s_2(M)}.
+ \Sign \PhiU(x)=\ThueMorseSign{M}.
 \end{equation}
 
 \subsection{The exact dyadic \texorpdfstring{$q$}{q}-binomial formula}
@@ -416,7 +417,7 @@ Write $L=\log2$ and, for sufficiently small $x>0$,
 Let $\Psi$ be the smooth one-periodic correction whose nonzero Fourier
 coefficients are
 \begin{equation}\label{p1:eq:Psi-coeff-baseline}
- \widehat\Psi(k)=-\frac{\Gamma(-\chi_k)\zeta(1-\chi_k)}L,
+ \FourierSeriesCoefficient{\Psi}{k}=-\frac{\Gamma(-\chi_k)\zeta(1-\chi_k)}L,
  \qquad
  \chi_k=\frac{2\pi\ImaginaryUnit k}{L}.
 \end{equation}
@@ -543,10 +544,10 @@ The amplitudes \eqref{p1:eq:a-k-def} satisfy
 Equivalently, for every $m\ge1$,
 \begin{equation}\label{p1:eq:positive-prouhet}
  \boxed{
- \sum_{\substack{k\ge0\\s_2(k)\ \mathrm{even}}}
+ \sum_{\substack{k\ge0\\\BinaryDigitSum(k)\ \mathrm{even}}}
  w_k(2k+1)^{2m}
  =
- \sum_{\substack{k\ge0\\s_2(k)\ \mathrm{odd}}}
+ \sum_{\substack{k\ge0\\\BinaryDigitSum(k)\ \mathrm{odd}}}
  w_k(2k+1)^{2m}.}
 \end{equation}
 All displayed series converge absolutely.
@@ -1365,24 +1366,24 @@ Their sum is exactly $1/2$.
 
 Define the nonlinear half-integer spectral sums
 \begin{equation}\label{p1:eq:spectral-power-sums}
- \mathfrak s_m:=\sum_{k=0}^{\infty}a_k^m
+ \SpectralPowerSum{m}:=\sum_{k=0}^{\infty}a_k^m
  \qquad(m\ge1).
 \end{equation}
-They converge absolutely.  The case $m=1$ is $\mathfrak s_1=1/2$; for $m=2$,
+They converge absolutely.  The case $m=1$ is $\SpectralPowerSum{1}=1/2$; for $m=2$,
 \begin{equation}\label{p1:eq:s2-L2}
- \mathfrak s_2=2\int_0^1\RvachevUp(t)^2\Differential t-\frac12.
+ \SpectralPowerSum{2}=2\int_0^1\RvachevUp(t)^2\Differential t-\frac12.
 \end{equation}
 
 \begin{theorem}[Cyclotomic trace limits]\label{p1:thm:trace-limits}
 For every fixed integer $m\ge1$,
 \begin{equation}\label{p1:eq:trace-limit}
  \boxed{
- \lim_{n\to\infty}p_m(n)=\mathfrak s_m.}
+ \lim_{n\to\infty}p_m(n)=\SpectralPowerSum{m}.}
 \end{equation}
 For $m=1$ the equality is exact at every level.  For fixed $m\ge2$, the error
 splits into
 \begin{equation}\label{p1:eq:trace-error-split}
- |p_m(n)-\mathfrak s_m|
+ |p_m(n)-\SpectralPowerSum{m}|
  \le \frac{Nm}{2}(1+E_n)^{m-1}E_n
  +\sum_{k\ge N/2}|a_k|^m,
 \end{equation}
@@ -1415,7 +1416,7 @@ where the implied constant may depend on the fixed exponent $m$.
 \end{proof}
 
 \begin{corollary}[Algebraic approximation to spectral norms]\label{p1:cor:algebraic-spectral-norms}
-Every $\mathfrak s_m$ is a limit of explicitly computable rational numbers
+Every $\SpectralPowerSum{m}$ is a limit of explicitly computable rational numbers
 $p_m(n)$ whose defining algebraic conjugates are given by the finite
 $q$-binomial formula \eqref{p1:eq:q-approximant}.  In particular,
 $2\int_0^1\RvachevUp^2-1/2$ admits a superexponentially convergent rational sequence
@@ -1527,7 +1528,7 @@ For odd $1\le r<N$,
  &=2^n\left|\prod_{h=1}^{n}\sin(\pi r/2^h)\right|,
  \label{p1:eq:T-root-magnitude}\\
  \Sign \Gamma_{n,r}
- &=(-1)^{\sum_{h=1}^{n}\lfloor r/2^h\rfloor}
+ &=(-1)^{\sum_{h=1}^{n}\Floor{r/2^h}}
  =\ThueMorseSign{(r-1)/2}.
  \label{p1:eq:Gamma-sign}
 \end{align}
@@ -1538,14 +1539,14 @@ Thue--Morse sign attached to the target amplitude $\PhiU(r/2)$.
 \begin{proof}
 For the magnitude, use $|1-\EulerE^{2\pi\ImaginaryUnit x}|=2|\sin\pi x|$ in each factor of
 \eqref{p1:eq:T-n-polynomial} and reverse the order of scales.  For the sign,
-$\sin(\pi x)$ has sign $(-1)^{\lfloor x\rfloor}$ away from integers.  Since
+$\sin(\pi x)$ has sign $(-1)^{\Floor{x}}$ away from integers.  Since
 $r<N$, all floors beyond $h=n$ vanish, and
 \[
- \sum_{h=1}^{n}\left\lfloor\frac r{2^h}\right\rfloor
- =r-s_2(r).
+ \sum_{h=1}^{n}\Floor{\frac r{2^h}}
+ =r-\BinaryDigitSum(r).
 \]
-Write $r=2c+1$.  Then $s_2(r)=s_2(c)+1$, so
-$r-s_2(r)\equiv s_2(c)\pmod2$.  Hence the sign is $\ThueMorseSign{c}$ with
+Write $r=2c+1$.  Then $\BinaryDigitSum(r)=\BinaryDigitSum(c)+1$, so
+$r-\BinaryDigitSum(r)\equiv \BinaryDigitSum(c)\pmod2$.  Hence the sign is $\ThueMorseSign{c}$ with
 $c=(r-1)/2$.
 \end{proof}
 
@@ -1704,7 +1705,7 @@ Then the repository's closed formula is
  \FabiusBounded\!\left(\frac a{2^n}\right)
  =\frac{2^{-\binom{n+1}{2}}}{n!}
  \sum_{h=0}^{a-1}\ThueMorseSign{h}
- \sum_{k=0}^{\lfloor n/2\rfloor}
+ \sum_{k=0}^{\Floor{n/2}}
  \binom n{2k}(2a-2h-1)^{n-2k}c_k.
 \end{equation}
 Every quantity in \eqref{p1:eq:closed-dyadic-verification} is rational.  It is
@@ -1779,7 +1780,7 @@ the project, roots of unity, and elementary complex algebra.
 
 \subsection{Layer 2: Fourier-series extraction}
 
-Use the established rapid decay of $\widehat\RvachevUp$ to formalize:
+Use the established rapid decay of $\FourierTwoPi{\RvachevUp}$ to formalize:
 \begin{enumerate}
  \item the periodization $P$ and its complex Fourier coefficients;
  \item the reduction to odd modes and the cosine series
@@ -1891,12 +1892,12 @@ thresholds after sharp height estimates are included.
 \subsection{Spectral moments and nonlinear functionals of \texorpdfstring{$\RvachevUp$}{up}}
 
 The trace limits \eqref{p1:eq:trace-limit} define constants
-$\mathfrak s_m=\sum_ka_k^m$.  The cases $m\ge3$ do not have an immediate
+$\SpectralPowerSum{m}=\sum_ka_k^m$.  The cases $m\ge3$ do not have an immediate
 ordinary Parseval interpretation.
 
 \begin{problem}\label{p1:prob:nonlinear-traces}
 Find direct integral, probabilistic, or operator-theoretic representations of
-$\mathfrak s_m$ for $m\ge3$.  Determine whether the rational trace sequences
+$\SpectralPowerSum{m}$ for $m\ge3$.  Determine whether the rational trace sequences
 $p_m(n)$ satisfy recurrences or congruences inherited from the dyadic sample
 array.
 \end{problem}
@@ -2193,7 +2194,7 @@ revisions. This report audits all fifty-seven TeX corpus items, distinguishes
 results already present from genuinely unfilled directions, and develops an
 arithmetic theory for
 \[
- \mathscr U(x):=\widehat{\RvachevUp}(x)
+ \mathscr U(x):=\FourierTwoPi{\RvachevUp}(x)
  =\prod_{n=0}^{\infty}\SincRad\!\left(\frac{\pi x}{2^n}\right).
 \]
 The central result is an exact decay law on every non-dyadic rational ray
@@ -2268,7 +2269,7 @@ Metric cocycle theory & Exact variance, central limit theorem, law of the iterat
 \subsection{Why arithmetic rays are the genuine gap}
 
 The Fourier-decay subcorpus already goes far beyond the elementary statement that
-$\widehat{\RvachevUp}$ decreases faster than every power. Across its twelve drafts it
+$\FourierTwoPi{\RvachevUp}$ decreases faster than every power. Across its twelve drafts it
 develops the logarithmic cocycle for the doubling map, almost-everywhere behavior,
 exact variance, central-limit and iterated-logarithm fluctuations, extremal
 envelopes, transfer operators, and a moment spectrum. Re-deriving that material
@@ -2322,7 +2323,7 @@ global continuation governed by Thue--Morse signs \cite{p2:proveit,p2:ariascompa
 For this report only $\RvachevUp$ and its Fourier transform are needed. In the repository
 normalization,
 \begin{equation}
- \mathscr U(x):=\widehat{\RvachevUp}(x)
+ \mathscr U(x):=\FourierTwoPi{\RvachevUp}(x)
  =\prod_{n=0}^{\infty}\SincRad\!\left(\frac{\pi x}{2^n}\right),
  \qquad \SincRad u=\frac{\sin u}{u},\quad\SincRad0=1.
  \label{p2:eq:U-product}
@@ -3650,7 +3651,7 @@ $q$-binomial formulas. Possible entry points are:
  Pochhammer polynomial.
 \end{itemize}
 A direct finite identity here would join the exact dyadic values of $\FabiusBounded$ to the
-arithmetic rays of $\widehat{\RvachevUp}$, rather than linking them only asymptotically.
+arithmetic rays of $\FourierTwoPi{\RvachevUp}$, rather than linking them only asymptotically.
 
 \subsection{Sharp constants in other bases}
 
@@ -3858,9 +3859,7 @@ L.~C.~Washington,
 \renewcommand{\headrulewidth}{0.35pt}
 \renewcommand{\headrule}{\hbox to\headwidth{\color{rulegray}\leaders\hrule height \headrulewidth\hfill}}
 \newcommand{\nuu}{\nu_2}
-\newcommand{\wtPartl}{\widehat}
 \newcommand{\ResPartl}{\operatorname*{Res}}
-\newcommand{\bits}{s_2}
 \newcommand{\bigOPartl}{\mathrm O}
 \newcommand{\smalloPartl}{\mathrm o}
 \newcommand{\PhiR}{\Phi_r}
@@ -3941,7 +3940,7 @@ The existing Fabius-function corpus gives a remarkably broad account of the Rvac
   \Phi_1(z)=\prod_{h\ge 0}\SincPi\!\left(\frac{z}{2^h}\right),
   \qquad \SincPi z=\frac{\sin(\pi z)}{\pi z}.
 \]
-The present report begins at a boundary not developed in that corpus: the arithmetic of the entire zero divisor and its interaction with repeated dyadic summation.  For the classical product, the cumulative multiplicity of positive zeros up to $N$ is exactly $2N-s_2(N)$; hence the Thue--Morse sign is the parity of a spectral counting function.  This observation extends to a new Pascal--Rvachev hierarchy
+The present report begins at a boundary not developed in that corpus: the arithmetic of the entire zero divisor and its interaction with repeated dyadic summation.  For the classical product, the cumulative multiplicity of positive zeros up to $N$ is exactly $2N-\BinaryDigitSum(N)$; hence the Thue--Morse sign is the parity of a spectral counting function.  This observation extends to a new Pascal--Rvachev hierarchy
 \[
   \Phi_r(z)=\prod_{h\ge0}\SincPi\!\left(\frac z{2^h}\right)^{\binom h{r-1}},
   \qquad r\ge1.
@@ -4005,13 +4004,13 @@ Throughout,
   1,&z=0,
   \end{cases}
   \qquad
-  \widehat f(\xi):=\int_{\RealNumbers}f(x)e^{-2\pi i x\xi}\,\Differential x.
+  \FourierTwoPi{f}(\xi):=\int_{\RealNumbers}f(x)e^{-2\pi i x\xi}\,\Differential x.
 \]
 Thus the Fourier transform of the uniform probability density on $[-a/2,a/2]$ is $\SincPi(a\xi)$.  The $2$-adic valuation of a positive integer is $\nu_2(n)$, and
 \[
   n=\sum_{j\ge0}b_j(n)2^j,
   \qquad b_j(n)\in\{0,1\},
-  \qquad s_2(n):=\sum_{j\ge0}b_j(n).
+  \qquad \BinaryDigitSum(n):=\sum_{j\ge0}b_j(n).
 \]
 We use the generalized polynomial binomial coefficient $\binom yk=y(y-1)\cdots(y-k+1)/k!$, and set ordinary binomial coefficients to zero outside their natural range.
 
@@ -4041,7 +4040,7 @@ The surveyed sources \cite{p3:repo-primary,p3:repo-frontiers,p3:arias1982,p3:ari
 \[
   \Phi_1(z)=\prod_{n=1}^{\infty}\left(1-\frac{z^2}{n^2}\right)^{1+\nu_2(n)};
 \]
-\item the sign law $\Sign\Phi_1(x)=(-1)^{s_2(N)}$ for $N<x<N+1$;
+\item the sign law $\Sign\Phi_1(x)=\ThueMorseSign{N}$ for $N<x<N+1$;
 \item pointwise, metric, mean, extremal, annular, and near-zero analyses of the Fourier decay;
 \item the lower-Lambert endpoint coordinate and the small periodic correction in logarithmic scale;
 \item the digital, Mahler, Prouhet, rarefaction, and arithmetic-subsequence theory of the classical Thue--Morse sequence \cite{p3:allouche-shallit-1999,p3:automatic-sequences,p3:toth2022}.
@@ -4065,11 +4064,12 @@ Define the cumulative positive-zero multiplicity
 \begin{theorem}[Exact classical zero count]\label{p3:thm:classical-count}
 For every integer $N\ge0$,
 \begin{equation}\label{p3:eq:classical-count}
-  \mathcal N_1(N)=2N-s_2(N).
+  \mathcal N_1(N)=2N-\BinaryDigitSum(N).
 \end{equation}
 Consequently,
 \begin{equation}\label{p3:eq:spectral-thue-morse}
-  (-1)^{\mathcal N_1(N)}=(-1)^{s_2(N)}.
+  (-1)^{\mathcal N_1(N)}=\ThueMorseSign{N}
+  =(-1)^{\BinaryDigitSum(N)}.
 \end{equation}
 Thus the Thue--Morse sign between $N$ and $N+1$ is exactly the parity of the number of positive zeros counted with multiplicity up to $N$.
 \end{theorem}
@@ -4080,7 +4080,7 @@ Every factor indexed by $h$ contributes a simple zero at each positive multiple 
  \mathcal N_1(N)=\sum_{h\ge0}\Floor{\frac N{2^h}}
  =N+\sum_{h\ge1}\Floor{\frac N{2^h}}.
 \]
-Legendre's digit formula gives $\sum_{h\ge1}\Floor{N/2^h}=N-s_2(N)$, proving \eqref{p3:eq:classical-count}.  Since $2N$ is even, \eqref{p3:eq:spectral-thue-morse} follows.  Finally, $\Phi_1(0)>0$, and crossing the zero at $n$ changes the sign exactly when $\mu_1(n)$ is odd.  Therefore the sign on $(N,N+1)$ is $(-1)^{\mathcal N_1(N)}$.
+Legendre's digit formula gives $\sum_{h\ge1}\Floor{N/2^h}=N-\BinaryDigitSum(N)$, proving \eqref{p3:eq:classical-count}.  Since $2N$ is even, \eqref{p3:eq:spectral-thue-morse} follows.  Finally, $\Phi_1(0)>0$, and crossing the zero at $n$ changes the sign exactly when $\mu_1(n)$ is odd.  Therefore the sign on $(N,N+1)$ is $(-1)^{\mathcal N_1(N)}$.
 \end{proof}
 
 \begin{remark}
@@ -4105,12 +4105,12 @@ Put $Q=\Floor{N/2^M}$.  Then
  \mathcal N_{1,M}(N)
  &:=\sum_{n=1}^{N}\mu_{1,M}(n)
    =\sum_{h=0}^{M-1}\Floor{\frac N{2^h}}\label{p3:eq:finite-count-floor}\\
- &=2N-s_2(N)-2Q+s_2(Q).\label{p3:eq:finite-count-digital}
+ &=2N-\BinaryDigitSum(N)-2Q+\BinaryDigitSum(Q).\label{p3:eq:finite-count-digital}
 \end{align}
 In particular,
 \begin{equation}\label{p3:eq:finite-sign}
   (-1)^{\mathcal N_{1,M}(N)}
-  =(-1)^{s_2(N)}(-1)^{s_2(Q)}.
+  =\ThueMorseSign{N}\ThueMorseSign{Q}.
 \end{equation}
 \end{proposition}
 
@@ -4119,12 +4119,12 @@ The first equality counts the zeros supplied by each of the first $M$ factors.  
 \[
  \sum_{h\ge M}\Floor{\frac N{2^h}}
  =\sum_{k\ge0}\Floor{\frac Q{2^k}}
- =2Q-s_2(Q)
+ =2Q-\BinaryDigitSum(Q)
 \]
-by \cref{p3:thm:classical-count}.  Subtracting it from $2N-s_2(N)$ proves the result.
+by \cref{p3:thm:classical-count}.  Subtracting it from $2N-\BinaryDigitSum(N)$ proves the result.
 \end{proof}
 
-The factor $(-1)^{s_2(Q)}$ in \eqref{p3:eq:finite-sign} is a coarse-scale correction: a truncation remembers both the Thue--Morse parity at $N$ and the parity of the block index at scale $2^M$.
+The factor $\ThueMorseSign{Q}$ in \eqref{p3:eq:finite-sign} is a coarse-scale correction: a truncation remembers both the Thue--Morse parity at $N$ and the parity of the block index at scale $2^M$.
 
 \subsection{A zero-divisor Dirichlet series}
 
@@ -4459,7 +4459,7 @@ while the binary expansion $N=\sum_jb_j(N)2^j$ gives
   \qquad
   S_r(N):=\sum_{j\ge0}b_j(N)Q_r(j).
 \end{equation}
-For $r=1$, $Q_1(j)=1$ and $S_1(N)=s_2(N)$.
+For $r=1$, $Q_1(j)=1$ and $S_1(N)=\BinaryDigitSum(N)$.
 \end{theorem}
 
 \begin{proof}
@@ -4541,7 +4541,7 @@ Let
 \begin{equation}\label{p3:eq:Pr-dr}
  m_r:=\Ceiling{\log_2r},\qquad
  P_r:=2^{m_r},\qquad
- d_r:=2^{m_r-s_2(r-1)}.
+ d_r:=2^{m_r-\BinaryDigitSum(r-1)}.
 \end{equation}
 Then the digit-position weights
 \begin{equation}\label{p3:eq:sigma-rj}
@@ -4554,7 +4554,7 @@ are periodic in $j$ with period $P_r$, and exactly $d_r$ positions in one period
 The sign formula follows as in \cref{p3:thm:classical-count}: start positive at zero and count integer zeros with multiplicity.  By \cref{p3:lem:parity-collapse},
 $\varepsilon_r(N)=\prod_{j:b_j(N)=1}\sigma_{r,j}$.
 
-Since $r-1<P_r$, Lucas's theorem shows that the parity of $\binom j{r-1}$ depends only on the lowest $m_r$ binary digits of $j$.  Hence $P_r$ is a period.  Lucas's theorem also says that $\binom j{r-1}$ is odd precisely when every $1$-bit of $r-1$ is also a $1$-bit of $j$.  Among the $P_r=2^{m_r}$ residue classes, the remaining $m_r-s_2(r-1)$ bits are free, giving $d_r$ negative weights.
+Since $r-1<P_r$, Lucas's theorem shows that the parity of $\binom j{r-1}$ depends only on the lowest $m_r$ binary digits of $j$.  Hence $P_r$ is a period.  Lucas's theorem also says that $\binom j{r-1}$ is odd precisely when every $1$-bit of $r-1$ is also a $1$-bit of $j$.  Among the $P_r=2^{m_r}$ residue classes, the remaining $m_r-\BinaryDigitSum(r-1)$ bits are free, giving $d_r$ negative weights.
 
 A finite automaton need only remember the current digit position modulo $P_r$ and the accumulated sign, proving $2$-automaticity.  Grouping binary digits into blocks of length $P_r$ shows strong $2^{P_r}$-multiplicativity.
 \end{proof}
@@ -4694,7 +4694,7 @@ The integer zero divisor now carries three nested layers of binary information:
 \item the exact cumulative discrepancy $S_r(N)$, a polynomially weighted digit sum;
 \item the mod-$2$ sign mask $\binom j{r-1}\bmod2$, a periodic row of Pascal's triangle generating an automatic sequence and exact Prouhet partitions.
 \end{enumerate}
-For $r=1$ these collapse respectively to $1+\nu_2(n)$, $s_2(N)$, and the ordinary Thue--Morse sign.
+For $r=1$ these collapse respectively to $1+\nu_2(n)$, $\BinaryDigitSum(N)$, and the ordinary Thue--Morse sign.
 \end{resultbox}
 
 \section{\texorpdfstring{$q$}{q}-scale calculus: Pascal maxima versus Gaussian sums}\label{p3:sec:qcalculus}
@@ -5491,7 +5491,7 @@ Object & Exact result proved here & Bridge opened\\
 \midrule
 \endhead
 Classical zero count
-& $\mathcal N_1(N)=2N-s_2(N)$
+& $\mathcal N_1(N)=2N-\BinaryDigitSum(N)$
 & Thue--Morse parity becomes spectral counting parity.\\
 
 Pascal--Rvachev product
@@ -5520,7 +5520,7 @@ Spectral signs
 
 Prouhet partitions
 & Exact cancellation degree $Bd_r-1$ on $0\le N<2^{P_rB}$
-& A family whose efficiency is governed by $s_2(r-1)$.\\
+& A family whose efficiency is governed by $\BinaryDigitSum(r-1)$.\\
 
 $q$-scale calculus
 & $P_{r,M}(q)=\sum_{h<M}\binom h{r-1}q^h$
@@ -5616,7 +5616,7 @@ For each rank, determine:
 \item the diffraction or spectral measure and its pure-point/singular-continuous decomposition;
 \item the natural boundary behavior of $G_r(z)$ on $|z|=1$.
 \end{enumerate}
-The dependence of the mask density $d_r/P_r=2^{-s_2(r-1)}$ on the binary weight of the rank predicts sharp arithmetic phase changes as $r$ varies.
+The dependence of the mask density $d_r/P_r=2^{-\BinaryDigitSum(r-1)}$ on the binary weight of the rank predicts sharp arithmetic phase changes as $r$ varies.
 \end{frontierproblem}
 
 \subsection{Smoothed zero counts and complex dimensions}
@@ -5751,7 +5751,7 @@ already fixed.
 
 \section{Conclusion}\label{p3:sec:conclusion}
 
-The original rank-one sinc product contains more arithmetic than its pointwise sign pattern suggests.  Counting its zeros with multiplicity gives the exact formula $2N-s_2(N)$, so the Thue--Morse sequence is the parity boundary of a spectral counting law.  Promoting the constant scale multiplicity to the Pascal column $\binom h{r-1}$ reveals that this is the first case of a coherent hierarchy rather than an isolated coincidence.
+The original rank-one sinc product contains more arithmetic than its pointwise sign pattern suggests.  Counting its zeros with multiplicity gives the exact formula $2N-\BinaryDigitSum(N)$, so the Thue--Morse sequence is the parity boundary of a spectral counting law.  Promoting the constant scale multiplicity to the Pascal column $\binom h{r-1}$ reveals that this is the first case of a coherent hierarchy rather than an isolated coincidence.
 
 The hierarchy is unusually rigid.  Its support remains $[-1,1]$ at every rank; its refinement is exactly Pascal's identity; its zero multiplicities are binomial polynomials in $\nu_2$; its zero zeta function is elementary; its finite counts are digital; its signs are automatic; its blocks solve exact Prouhet problems; its moments are rational; and its normalized central laws become Gaussian.  In the two most delicate asymptotic regimes, the same coefficient
 $C_r=((r+1)!(\log2)^r)^{-1}$ governs sharp Fourier decay and endpoint small deviations.
@@ -6034,7 +6034,7 @@ $\mathcal N_r(N)$ & cumulative positive-zero multiplicity through $N$\\
 $Q_r(j)$ & Pascal tail weight $\sum_{k<r}\binom{j+1}{k}$\\
 $S_r(N)$ & digital discrepancy $\sum_jb_j(N)Q_r(j)$\\
 $\varepsilon_r(N)$ & sign of $\Phi_r$ on $(N,N+1)$\\
-$P_r$ & a digit-position period $2^{\lceil\log_2r\rceil}$\\
+$P_r$ & a digit-position period $2^{\Ceiling{\log_2r}}$\\
 $d_r$ & number of negative sign-mask entries in one period\\
 $\mathcal Z_r$ & zero-divisor Dirichlet series\\
 $\mathcal A_r$ & common scale zeta factor\\
@@ -6196,11 +6196,11 @@ Let $\FabiusBounded$ be the bounded Fabius distribution function,
 $\FabiusQuantile=\FabiusBounded^{-1}$ its inverse on $[0,1]$,
 $\RvachevUp(x)=1-\FabiusBounded(|x|)$ on $[-1,1]$, and
 \[
- \Phi(\xi)=\widehat{\RvachevUp}(\xi)
+ \Phi(\xi)=\FourierTwoPi{\RvachevUp}(\xi)
  =\prod_{j=0}^{\infty}\SincRad\!\left(\frac{\pi\xi}{2^j}\right)
 \]
 under the Fourier convention
-$\widehat f(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\Differential x$.
+$\FourierTwoPi{f}(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\Differential x$.
 The recursive documentation tree of the \texttt{ProveIt} Fabius development was audited at
 commit \RepoCommit.  Existing reports already contain the dyadic derivative tiling,
 integer-zero arithmetic, sharp Fourier-decay regimes, endpoint Lambert expansions,
@@ -6400,7 +6400,7 @@ $\RvachevUp(0)=1$ and $\int\RvachevUp=1$, and obeys
 \end{equation}
 Its Fourier transform is
 \begin{equation}
- \Phi(\xi):=\widehat{\RvachevUp}(\xi)
+ \Phi(\xi):=\FourierTwoPi{\RvachevUp}(\xi)
  =\prod_{j=0}^{\infty}\SincRad\!\left(\frac{\pi\xi}{2^j}\right),
  \qquad \SincRad z=\frac{\sin z}{z}.
  \label{p4:eq:phi-product}
@@ -6408,13 +6408,13 @@ Its Fourier transform is
 
 Write
 \begin{equation}
- \varepsilon_k:=(-1)^{s_2(k)},\qquad
+ \ThueMorseSign{k}:=(-1)^{\BinaryDigitSum(k)},\qquad
  T_n:=\binom{n+1}{2}=\frac{n(n+1)}2,
  \label{p4:eq:epsilon-Tn}
 \end{equation}
-where $s_2(k)$ is the binary digit sum.  The identities
-$\varepsilon_{2k}=\varepsilon_k$ and
-$\varepsilon_{2k+1}=-\varepsilon_k$ will be used repeatedly.
+where $\BinaryDigitSum(k)$ is the binary digit sum.  The identities
+$\ThueMorseSign{2k}=\ThueMorseSign{k}$ and
+$\ThueMorseSign{2k+1}=-\ThueMorseSign{k}$ will be used repeatedly.
 
 \begin{theorem}[Corpus baseline: exact derivative tiling]
 \label{p4:thm:derivative-tiling}
@@ -6422,7 +6422,7 @@ For every $n\geq0$ and $x\in\RealNumbers$,
 \begin{equation}
  \boxed{
  \RvachevUp^{(n)}(x)=2^{T_n}
- \sum_{k=0}^{2^n-1}\varepsilon_k\,
+ \sum_{k=0}^{2^n-1}\ThueMorseSign{k}\,
  \RvachevUp\!\left(2^n x+2^n-1-2k\right).}
  \label{p4:eq:derivative-tiling}
 \end{equation}
@@ -6430,7 +6430,7 @@ Equivalently, for $0\leq k<2^n$ and $-1\leq y\leq1$,
 \begin{equation}
  \boxed{
  \RvachevUp^{(n)}\!\left(-1+\frac{2k+1+y}{2^n}\right)
- =2^{T_n}\varepsilon_k\RvachevUp(y).}
+ =2^{T_n}\ThueMorseSign{k}\RvachevUp(y).}
  \label{p4:eq:cell-form}
 \end{equation}
 \end{theorem}
@@ -6439,8 +6439,8 @@ Equivalently, for $0\leq k<2^n$ and $-1\leq y\leq1$,
 The case $n=0$ is immediate.  Differentiate \eqref{p4:eq:derivative-tiling}.  Each derivative
 of an inner copy contributes $2^n$, and \eqref{p4:eq:up-differential} contributes another
 factor $2$.  The positive branch has index $2k$ and the negative branch index $2k+1$;
-the Thue--Morse identities above give exactly the signs $\varepsilon_{2k}$ and
-$\varepsilon_{2k+1}$.  The scalar grows from $2^{T_n}$ to
+the Thue--Morse identities above give exactly the signs $\ThueMorseSign{2k}$ and
+$\ThueMorseSign{2k+1}$.  The scalar grows from $2^{T_n}$ to
 $2^{T_n+n+1}=2^{T_{n+1}}$.
 
 For the cell form, the support condition
@@ -6481,7 +6481,7 @@ The signed and absolute formulas \eqref{p4:eq:cell-form} are
 cell endpoints.  The midpoint specialization
 \[
  \RvachevUp^{(n)}\!\left(-1+\frac{2k+1}{2^n}\right)
- =2^{T_n}\varepsilon_k
+ =2^{T_n}\ThueMorseSign{k}
 \]
 is the separate theorem \path{iteratedDeriv_rvachev_cell_zero}.  All declarations in this
 box are in \path{RvachevDerivativeDistribution.lean}.
@@ -6540,7 +6540,7 @@ not yet its Rademacher simplification.  If \(E\) is any real Banach space and
  \int_{-1}^{1}H\!\left(\RvachevUp^{(n)}(x)\right)\Differential x
  =
  2^{-n}\sum_{k=0}^{2^n-1}
- \int_{-1}^{1}H\!\left(2^{T_n}\varepsilon_k\RvachevUp(y)\right)\Differential y.
+ \int_{-1}^{1}H\!\left(2^{T_n}\ThueMorseSign{k}\RvachevUp(y)\right)\Differential y.
  \label{p4:eq:formal-signed-finite-mixture}
 \end{equation}
 This is \path{intervalIntegral_comp_iteratedDeriv_rvachev}.  In particular, it includes the
@@ -6670,7 +6670,7 @@ For $0\leq k<2^n$, put
 Then
 \begin{equation}
  \boxed{
- \RvachevUp^{(n)}(x_{n,k})=2^{T_n}\varepsilon_k.}
+ \RvachevUp^{(n)}(x_{n,k})=2^{T_n}\ThueMorseSign{k}.}
  \label{p4:eq:midpoint-values}
 \end{equation}
 These are precisely the points at which $|\RvachevUp^{(n)}|$ attains its global maximum.
@@ -6798,7 +6798,7 @@ Then $b_{N,k}\geq0$, $\sum_kb_{N,k}=1$, and at every $0<t<1$,
 \begin{equation}
  \boxed{
  \FabiusQuantile(1-t)=1-\lim_{N\to\infty}
- \sum_{k=0}^{\lfloor Nt\rfloor}b_{N,k}.}
+ \sum_{k=0}^{\Floor{Nt}}b_{N,k}.}
  \label{p4:eq:G-from-norms}
 \end{equation}
 The same reconstruction applies to the normalized norms of any fixed derivative
@@ -6813,7 +6813,7 @@ By \eqref{p4:eq:discrete-complete-monotonicity},
 Conditioned on $W=w$, these are the probabilities of a binomial random variable
 $K_N\sim\operatorname{Bin}(N,w)$.  Therefore
 \[
- \sum_{k=0}^{\lfloor Nt\rfloor}b_{N,k}
+ \sum_{k=0}^{\Floor{Nt}}b_{N,k}
  =\Expectation\Probability(K_N/N\leq t\mid W).
 \]
 The conditional law of large numbers makes the inner probability converge to

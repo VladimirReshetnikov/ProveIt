@@ -276,12 +276,12 @@ Throughout,
 \[
  \SincRad u=\begin{cases}\sin u/u,&u\ne0,\\1,&u=0,\end{cases}
  \qquad
- \widehat\mu(z)=\int_{\RealNumbers}\EulerE^{2\pi\ImaginaryUnit zx}\,\mu(\Differential x).
+ \FourierTwoPi{\mu}(-z)=\int_{\RealNumbers}\EulerE^{2\pi\ImaginaryUnit zx}\,\mu(\Differential x).
 \]
 Let $X$ be the random variable with density $\RvachevUp(x)$, supported on $[-1,1]$.
 The repository's primary exposition records the entire characteristic function~\cite{ProveItPrimary}
 \begin{equation}
- \Phi(z)=\widehat{\LawOperator(X)}(z)
+ \Phi(z)=\FourierTwoPi{\LawOperator(X)}(-z)
  =\prod_{n=0}^{\infty}\SincRad\!\left(\frac{\pi z}{2^n}\right),
  \qquad z\in\ComplexNumbers.
  \label{eq:Phi}
@@ -1338,7 +1338,7 @@ Let
  T_N(x)=\prod_{j=0}^{N-1}(1-x^{2^j})
  =\sum_{n=0}^{2^N-1}\ThueMorseSign{n}x^n,
  \qquad
- \ThueMorseSign{n}=(-1)^{s_2(n)},
+ \ThueMorseSign{n}=(-1)^{\BinaryDigitSum(n)},
  \label{eq:TN}
 \end{equation}
 be the finite Thue--Morse polynomial.
@@ -1650,7 +1650,7 @@ Because all odd moments of $X$ vanish, only even derivatives occur.
 For the Legendre polynomial $P_n$,
 \begin{equation}
  \mathbb E P_n(X)
- =\sum_{j=0}^{\lfloor n/2\rfloor}
+ =\sum_{j=0}^{\Floor{n/2}}
  \frac{m_{2j}(X)}{(2j)!M^{2j}}
  \int_{\RealNumbers}P_n^{(2j)}(y)\,\nu_M(\Differential y).
  \label{eq:Legendre-transfer}

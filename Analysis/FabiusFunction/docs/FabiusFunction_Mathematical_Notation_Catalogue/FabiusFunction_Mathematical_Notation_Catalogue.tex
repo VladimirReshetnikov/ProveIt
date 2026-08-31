@@ -343,6 +343,9 @@ Fourier transform.\\
 transform with kernel $\EulerE^{-2\pi\ImaginaryUnit x\xi}$.\\
 \commandname{FourierAngular}\texttt{\{f\}} & $\FourierAngular{f}$ & Angular-frequency
 Fourier transform with kernel $\EulerE^{-\ImaginaryUnit x\omega}$.\\
+\commandname{FourierSeriesCoefficient}\texttt{\{h\}\{k\}} &
+$\FourierSeriesCoefficient{h}{k}$ & The $k$th coefficient of a one-periodic function,
+with kernel $\EulerE^{-2\pi\ImaginaryUnit kx}$ on $[0,1]$.\\
 \commandname{LaplaceTransformSymbol} & $\LaplaceTransformSymbol$ & One-sided Laplace
 operator token unless a bilateral subscript is printed.\\
 \commandname{MellinTransformSymbol} & $\MellinTransformSymbol$ & Mellin-transform
@@ -1202,21 +1205,27 @@ having disjoint zero sets.}
 \end{catalogueentry}
 
 \begin{catalogueentry}{periodic-fourier}{Fourier series on the unit circle}
+\entryfield{Command}{
+\commandname{FourierSeriesCoefficient}\texttt{\{h\}\{k\}}.  The printed
+subscript ``FS'' distinguishes a discrete Fourier-series coefficient from both continuous
+line-transform normalizations.}
 \entryfield{Coefficient}{For a $1$-periodic integrable function $h$,
 \[
- \widehat h[k]\DefinitionEquals\int_0^1h(x)
+ \FourierSeriesCoefficient{h}{k}\DefinitionEquals\int_0^1h(x)
  \EulerE^{-2\pi\ImaginaryUnit kx}\,\Differential x,
  \qquad k\in\IntegerNumbers.
 \]}
 \entryfield{Series}{The formal Fourier series is
-$\sum_{k\in\IntegerNumbers}\widehat h[k]\EulerE^{2\pi\ImaginaryUnit kx}$.
+$\sum_{k\in\IntegerNumbers}
+\FourierSeriesCoefficient{h}{k}\EulerE^{2\pi\ImaginaryUnit kx}$.
 Its mode of convergence---pointwise, $L^2$, uniform, distributional, or a named
 summability method---is part of every theorem.}
 \entryfield{Separation from line transform}{Square brackets and an integer index mark a
 Fourier-series coefficient.  Parentheses and a real frequency mark
 $\FourierTwoPi h(\xi)$ or $\FourierAngular h(\omega)$ on the line.}
 \entryfield{Period \(T\)}{For a $T$-periodic function, $T>0$,
-$\widehat h_T[k]=T^{-1}\int_0^T h(x)\EulerE^{-2\pi\ImaginaryUnit kx/T}\,\Differential x$.
+$\FourierSeriesCoefficient{h_T}{k}
+=T^{-1}\int_0^T h(x)\EulerE^{-2\pi\ImaginaryUnit kx/T}\,\Differential x$.
 The factor $T^{-1}$ is never implicit.}
 \end{catalogueentry}
 
@@ -3199,6 +3208,8 @@ application and hat rendering of the same $2\pi$ transform.\\
 $\FourierAngularTransformOf{f},\FourierAngular{f}$ &
 \commandname{FourierAngularTransformOf}, \commandname{FourierAngular} & Bracketed
 operator application and hat rendering of the same angular transform.\\
+$\FourierSeriesCoefficient{h}{k}$ & \commandname{FourierSeriesCoefficient} &
+Integer-indexed coefficient of a periodic function; not a continuous line transform.\\
 $\LaplaceTransformSymbol,\LaplaceTransformOf{f}$ &
 \commandname{LaplaceTransformSymbol}, \commandname{LaplaceTransformOf} & One-sided
 operator token and application; bilateral use is subscripted.\\
@@ -3276,6 +3287,7 @@ Command & Arity & Normative entry\\
 \commandname{FourierAngular} & 1 & \notelink{fourier-angular}{Angular Fourier transform}.\\
 \commandname{FourierAngularOperator} & 0 & \notelink{fourier-angular}{Angular Fourier transform}.\\
 \commandname{FourierAngularTransformOf} & 1 & \notelink{fourier-angular}{Angular Fourier transform}.\\
+\commandname{FourierSeriesCoefficient} & 2 & \notelink{periodic-fourier}{Fourier series}.\\
 \commandname{FourierTwoPi} & 1 & \notelink{fourier-two-pi}{$2\pi$ Fourier transform}.\\
 \commandname{FourierTwoPiOperator} & 0 & \notelink{fourier-two-pi}{$2\pi$ Fourier transform}.\\
 \commandname{FourierTwoPiTransformOf} & 1 & \notelink{fourier-two-pi}{$2\pi$ Fourier transform}.\\
@@ -3502,13 +3514,14 @@ rendered-PDF inspection later closes the composition and layout gap.
 At shared-contract version \FabiusNotationVersion:
 
 \begin{itemize}
-\item \path{docs/fabius-notation.tex} defines exactly 89 shared commands.
-\item Every one of those 89 command names occurs in the canonical quick reference and
+\item \path{docs/fabius-notation.tex} defines exactly 90 shared commands.
+\item Every one of those 90 command names occurs in the canonical quick reference and
       in the alphabetical command index, with its exact arity.
 \item Every command belongs to a detailed normative entry defining its type-level role,
       normalization, exceptional cases, or the local data the command intentionally
       requires at each use.
-\item Both Fourier conventions, both sinc normalizations, both Fabius inverses, the
+\item Both line-Fourier conventions, Fourier-series coefficients, both sinc
+      normalizations, both Fabius inverses, the
       bounded/global/up-function triad, zero-inclusive/positive naturals, exact/linearized
       decay objectives, and pointwise/topological support have distinct printed forms.
 \item The retired-alias index is exhaustive with respect to the audit's retired-command
