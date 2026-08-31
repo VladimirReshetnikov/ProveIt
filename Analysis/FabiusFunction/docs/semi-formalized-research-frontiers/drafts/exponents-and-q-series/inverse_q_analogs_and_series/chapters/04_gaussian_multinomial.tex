@@ -134,9 +134,10 @@ Let
 
 \begin{lemma}[The elementary Bernoulli factor]
 \label{lem:gq-bernoulli-factor}
-For \(|x|<2\pi\),
+On \(|x|<2\pi\), let \(\ell(x)\) be the unique holomorphic logarithm of
+\((1-\EulerE^{-x})/x\) normalized by \(\ell(0)=0\).  Then
 \[
-  \log\frac{1-\EulerE^{-x}}{x}
+  \ell(x)
   =-\frac{x}{2}
    +\sum_{r\ge1}\frac{B_{2r}}{2r(2r)!}x^{2r}.
 \]
@@ -154,15 +155,18 @@ has nearest nonzero singularities at \(\pm2\pi\ImaginaryUnit\).  Therefore, for
   \frac1{\EulerE^x-1}-\frac1x
   =-\frac12+\sum_{r\ge1}B_{2r}\frac{x^{2r-1}}{(2r)!}.
 \]
-The left side is the derivative of
-\(\log((1-\EulerE^{-x})/x)\).  Termwise integration from \(0\) to \(x\)
-gives the formula; the integration constant is zero because the quotient
-tends to one.
+The quotient \((1-\EulerE^{-x})/x\), extended by the value one at zero, is
+zero-free in the open disk because its first nonzero zeros are
+\(\pm2\pi\ImaginaryUnit\).  Hence its normalized holomorphic logarithm
+exists there.  The left side above is its derivative.  Termwise integration
+from \(0\) to \(x\) gives the formula, with zero integration constant by the
+normalization.
 \end{proof}
 
 \begin{theorem}[Complete Gaussian logarithmic expansion]
 \label{thm:gq-one-log}
-Let \(q=\EulerE^{-t}\).  For \(|t|<2\pi/n\),
+Let \(q=\EulerE^{-t}\).  For \(|t|<2\pi/n\), take the holomorphic logarithm
+of the normalized quotient whose value at \(t=0\) is zero.  Then
 \[
   \log\frac{G_{n,k}(\EulerE^{-t})}{\binom nk}
   =-\frac d2t
@@ -537,7 +541,9 @@ the one retained here.
 \section{Multinomial extension}
 \label{sec:qmultinomial}
 
-Let \(n_1+\cdots+n_s=n\), and set
+Throughout this section let \(s\ge1\), let
+\(n_1,\ldots,n_s\in\IntegerNumbers_{\ge0}\), and put
+\(n=n_1+\cdots+n_s>0\).  Set
 \[
   M_{\bm n}(q)
   :=\frac{\QPochhammer{q}{q}{n}}
@@ -552,7 +558,8 @@ Let \(n_1+\cdots+n_s=n\), and set
 
 \begin{theorem}[Complete multinomial expansion at one]
 \label{thm:qm-one-log}
-For \(q=\EulerE^{-t}\) and \(|t|<2\pi/n\),
+For \(q=\EulerE^{-t}\) and \(|t|<2\pi/n\), take the holomorphic logarithm
+of the normalized quotient whose value at \(t=0\) is zero.  Then
 \[
   \log\frac{M_{\bm n}(\EulerE^{-t})}
                 {\binom{n}{n_1,\ldots,n_s}}
@@ -561,28 +568,56 @@ For \(q=\EulerE^{-t}\) and \(|t|<2\pi/n\),
    \frac{B_{2r}\Delta_{2r}(\bm n)}
         {2r(2r)!}\,t^{2r}.
 \]
-After multiplication by \(\EulerE^{D(\bm n)t/2}\), the normalized polynomial is
-even and its inverse at the minimum has the two Puiseux branches of
-\cref{prop:gq-centered-puiseux}.
+If \(D(\bm n)>0\), equivalently at least two of the \(n_i\) are positive,
+then
+\[
+ \EulerE^{D(\bm n)t/2}
+ \frac{M_{\bm n}(\EulerE^{-t})}{\binom{n}{n_1,\ldots,n_s}}
+\]
+is a nonconstant even function with a nondegenerate minimum at \(t=0\), and
+its inverse has the two Puiseux branches of
+\cref{prop:gq-centered-puiseux}.  If \(D(\bm n)=0\), then
+\(M_{\bm n}\equiv1\) and no local inverse exists.
 \end{theorem}
 
 \begin{proof}
 Apply \cref{lem:gq-bernoulli-factor} to the numerator
 \(\QPochhammer{q}{q}{n}\) and every denominator
-\(\QPochhammer{q}{q}{n_i}\).  Constants give the ordinary multinomial
+\(\QPochhammer{q}{q}{n_i}\).  Since \(|jt|<2\pi\) for every factor, the
+normalized factor logarithms sum to the holomorphic branch specified in the
+statement.  Constants give the ordinary multinomial
 coefficient and the power sums give \(\Delta_{2r}(\bm n)\).  The linear
 difference is
 \[
   \frac12\left(n^2-\sum_i n_i^2\right)
   =\sum_{i<j}n_in_j=D(\bm n).
 \]
-The coefficient distribution is palindromic with positive equal endpoints,
-so \cref{thm:gq-centered-palindromic,prop:gq-centered-puiseux} applies.
+It remains to justify the hypotheses for centered inversion.  Put
+\(N_i=n_1+\cdots+n_i\).  The telescoping factorization
+\[
+ M_{\bm n}(q)=\prod_{i=2}^{s}\GaussianBinomial{N_i}{n_i}{q}
+\]
+proves polynomiality, with the empty product for \(s=1\) understood as one.
+Boundary factors with \(n_i=0\) or \(N_{i-1}=0\) are one.  By
+\cref{prop:gq-positive-palindromic}, every nontrivial Gaussian factor has
+nonnegative coefficients, equal positive endpoints, and is palindromic;
+hence so does their product.
+Its degree is
+\[
+ \sum_{i=2}^{s}n_iN_{i-1}
+ =\sum_{j<i}n_in_j=D(\bm n).
+\]
+Thus it is nonconstant exactly when \(D(\bm n)>0\), in which case
+reciprocity makes the centered normalization even and
+\cref{thm:gq-centered-palindromic,prop:gq-centered-puiseux} applies.  If
+\(D(\bm n)=0\), at most one part is positive and the same factorization gives
+\(M_{\bm n}=1\).
 \end{proof}
 
 \begin{theorem}[Cyclotomic carry and exact ramification]
 \label{thm:qm-carry}
-Let \(\zeta\) be a primitive \(m\)-th root of unity and write
+Under the standing hypotheses above, let \(m\ge1\), let \(\zeta\) be a
+primitive \(m\)-th root of unity, and write
 \(n_i=m\ell_i+r_i\) with \(0\le r_i<m\).  The multiplicity of \(\zeta\) as
 a zero of \(M_{\bm n}\) is
 \[
