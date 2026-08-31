@@ -427,6 +427,37 @@ Finite complex Thue--Morse block transforms &
 \nolinkurl{sum_range_two_pow_thueMorseSign_cexp},
 \nolinkurl{sum_range_two_pow_thueMorseSign_cexp_affine} &
 \nolinkurl{ThueMorseComplexExponential.lean} \\
+Centered mixed differences and symmetric Thue--Morse blocks (exactly two
+definitions and eleven theorems).  The arbitrary-half-step layer uses
+additive commutative groups and an additive action, permits repeated values,
+and gives the empty, singleton, insert, and powerset laws.  Over a commutative
+ring, for a polynomial of degree at most \(|s|\), it extracts the degree-\(|s|\)
+coefficient with sign-free factor
+\(|s|!\prod_{i\in s}(2a_i)\), annihilates lower degree including the
+zero-polynomial/empty-support boundary, and evaluates the first surviving
+power.  The dyadic block is group-valued.  Its increasing-grid wrappers use a
+characteristic-zero field: the all-order form, including \(m=0\), has points
+\(x-(1-2^{-m})+2n2^{-m}\).  At positive order \(N=m+1\), the full point is
+\(x-(1-2^{-(m+1)})+n/2^m\); its varying term is \(n/2^m\), its mesh spacing
+is \(1/2^m\), and its complement sign is \((-1)^N\).  This closes the Boolean-cube,
+polynomial, and affine-grid clauses of the continuous-chaos report's
+Thue--Morse corner theorem, but not its repeated-integral equality under
+\(C^N\) hypotheses; the following Walsh conditional-expectation corollary
+also remains outside this module. &
+\nolinkurl{symmetricMixedDifference},
+\nolinkurl{symmetricMixedDifference_empty},
+\nolinkurl{symmetricMixedDifference_singleton},
+\nolinkurl{symmetricMixedDifference_insert},
+\nolinkurl{symmetricMixedDifference_eq_sum_powerset_smul},
+\nolinkurl{symmetricMixedDifference_polynomial_eq_coeff_card},
+\nolinkurl{symmetricMixedDifference_polynomial_of_degree_lt},
+\nolinkurl{symmetricMixedDifference_pow_card},
+\nolinkurl{symmetricDyadicMixedDifference},
+\nolinkurl{symmetricDyadicMixedDifference_zero},
+\nolinkurl{symmetricDyadicMixedDifference_eq_sum_thueMorseSign_smul},
+\nolinkurl{symmetricDyadicMixedDifference_inv_two_pow_eq_sum_thueMorseSign_smul},
+\nolinkurl{symmetricDyadicMixedDifference_inv_two_pow_succ_eq_sum_thueMorseSign_smul} &
+\nolinkurl{ThueMorseSymmetricDifference.lean} \\
 Generic weighted uniform series and laws &
 \nolinkurl{uniformProduct_map_of_ae_head_tail_recursion},
 \nolinkurl{weightedUniformSeries_map},
@@ -647,6 +678,75 @@ least/ceiling denominator, tolerant bisection, or input-bit asymptotics. &
 \nolinkurl{fabiusInv_effectivelyUniformContinuous} &
 \nolinkurl{FabiusInverseEffectiveContinuity.lean} \\
 Lower-Lambert coordinate & \nolinkurl{fabiusLambertPhase} & \nolinkurl{FabiusLambertSaddle.lean} \\
+Raw real Lambert curvature (the first 13 declarations of the exact 36-name
+curvature inventory).  For \(z>-e^{-1}\), the principal branch has the
+nonsingular formula
+\(W''=-e^{-2W}(W+2)/(W+1)^3\), hence \(W_0''(0)=-2\) and strict concavity
+on the closed domain \([-e^{-1},\infty)\).  Lower-branch calculus and all
+three sign equivalences assume exactly \(z\in(-e^{-1},0)\); the unique zero is
+\(-2e^{-2}\), with strict convexity on
+\([-e^{-1},-2e^{-2}]\) and strict concavity on
+\([-2e^{-2},0)\).  The endpoint-inclusive shape results do not assert a
+branch-point derivative, vertical-tangent limit, or Puiseux law. &
+\nolinkurl{deriv_principalLambertW},
+\nolinkurl{deriv_principalLambertW_hasDerivAt},
+\nolinkurl{deriv_deriv_principalLambertW},
+\nolinkurl{deriv_deriv_principalLambertW_zero},
+\nolinkurl{deriv_deriv_principalLambertW_neg},
+\nolinkurl{strictConcaveOn_principalLambertW},
+\nolinkurl{deriv_lowerLambertW_hasDerivAt},
+\nolinkurl{deriv_deriv_lowerLambertW},
+\nolinkurl{deriv_deriv_lowerLambertW_pos_iff},
+\nolinkurl{deriv_deriv_lowerLambertW_neg_iff},
+\nolinkurl{deriv_deriv_lowerLambertW_eq_zero_iff},
+\nolinkurl{strictConvexOn_lowerLambertW_left},
+\nolinkurl{strictConcaveOn_lowerLambertW_right} &
+\nolinkurl{LambertWCurvature.lean} \\
+Generic scaled power--exponential curvature (four declarations).  Write \(P\)
+for the power--exponential peak at parameters \(m,A,\beta\).
+If \(m\in\N\setminus\{0\}\), \(A>0\), \(\beta>0\), and \(0<x<P\), both
+inverse branches satisfy
+\(\lambda''=\lambda\bigl(m-(m-\beta\lambda)^2\bigr)/
+\bigl(x^2(m-\beta\lambda)^3\bigr)\).  No generic square-root threshold,
+sign, inflection, or global shape theorem is claimed. &
+\nolinkurl{deriv_principalPowerExponentialPhase_hasDerivAt},
+\nolinkurl{deriv_deriv_principalPowerExponentialPhase},
+\nolinkurl{deriv_lowerPowerExponentialPhase_hasDerivAt},
+\nolinkurl{deriv_deriv_lowerPowerExponentialPhase} &
+\nolinkurl{PowerExponentialLambertCurvature.lean} \\
+Fabius Lambert curvature (one definition and eighteen theorems, completing
+the 36-name inventory).  Put \(L=\log2\),
+\(x_*=2e^{-2}/L\), and \(P=e^{-1}/L\).  On \(0<x<P\), the lower phase has
+\(\lambda(x_*)=2/L\),
+\(\lambda''=L\lambda^2(2-L\lambda)/
+\bigl(x^2(1-L\lambda)^3\bigr)\), sign equivalences on either side of \(x_*\),
+and its unique zero there; its exact shape domains are
+\(\operatorname{Ioc}(0,x_*)\) and \(\operatorname{Icc}(x_*,P)\).
+The principal affine-\(W_0\) identity is global; continuity and strict
+convexity hold on \(\operatorname{Iic}(P)\), while first and second calculus
+and positivity assume \(x<P\), with \(\lambda_0''(0)=2L\).  This
+specialization adds no branch-point derivative, vertical-tangent limit, or
+Puiseux expansion. &
+\nolinkurl{fabiusLambertInflectionInput},
+\nolinkurl{fabiusLambertInflectionInput_mem_Ioo},
+\nolinkurl{fabiusLambertPhase_inflectionInput},
+\nolinkurl{deriv_deriv_fabiusLambertPhase},
+\nolinkurl{deriv_deriv_fabiusLambertPhase_pos_iff},
+\nolinkurl{deriv_deriv_fabiusLambertPhase_neg_iff},
+\nolinkurl{deriv_deriv_fabiusLambertPhase_eq_zero_iff},
+\nolinkurl{deriv_deriv_fabiusLambertPhase_inflectionInput},
+\nolinkurl{strictConvexOn_fabiusLambertPhase_left},
+\nolinkurl{strictConcaveOn_fabiusLambertPhase_right},
+\nolinkurl{fabiusPrincipalLambertPhase_eq_principalLambertW},
+\nolinkurl{fabiusPrincipalLambertPhase_continuousOn_Iic},
+\nolinkurl{fabiusPrincipalLambertPhase_hasDerivAt},
+\nolinkurl{deriv_fabiusPrincipalLambertPhase},
+\nolinkurl{deriv_fabiusPrincipalLambertPhase_hasDerivAt},
+\nolinkurl{deriv_deriv_fabiusPrincipalLambertPhase},
+\nolinkurl{deriv_deriv_fabiusPrincipalLambertPhase_pos},
+\nolinkurl{deriv_deriv_fabiusPrincipalLambertPhase_zero},
+\nolinkurl{strictConvexOn_fabiusPrincipalLambertPhase} &
+\nolinkurl{PowerExponentialLambertFabiusCurvature.lean} \\
 All-orders saddle expansion & saddle mass/log coefficient declarations & \nolinkurl{FabiusFullAsymptoticExpansion.lean} and related modules \\
 \bottomrule
 \end{longtable}
