@@ -38,16 +38,19 @@ New standalone intake members:
 
 - [`Digital_Spectral_Geometry_and_Log_Periodic_Saddles/`](Digital_Spectral_Geometry_and_Log_Periodic_Saddles/),
   *Digital Spectral Geometry and Log-Periodic Saddles: Frontier Results for
-  the Thue--Morse, Fabius, Inverse-Fabius, and Rvachev Systems* (23 pp),
+  the Thue--Morse, Fabius, Inverse-Fabius, and Rvachev Systems* (24 A4 pp,
+  1949 source lines; with a 490-line numerical generator),
   arrived on 2026-08-30 from the rootless archive
   `Fabius_Rvachev_Frontier_Report_Package.zip` (outer SHA-256
   `0028cb4f47134574ba7cd698bfc0ec11f08776b320cbc82b8467bea20d865f6d`).
   The arrival's own manifest covers only its TeX and PDF; the complete ten-file
-  arrival ledger is recorded in `ARRIVAL_SHA256SUMS`. Its submitted repository
-  audit read zero TeX files, and its numerical generation failed, leaving a
-  fallback fragment instead of the advertised summary and figures. The clean
-  23-page PDF is a bespoke letter-paper Latin Modern build with blank metadata,
-  not yet a policy-conforming Libertinus/A4 build. Its zero multiplicities,
+  arrival ledger is recorded in `ARRIVAL_SHA256SUMS`. The repository repair
+  replaces the failed numerical run with captured reproducible output and three
+  generated figures, reruns a dated 140-file corpus audit, records the
+  paper-versus-Lean boundary, adopts canonical A4/27 mm/Libertinus styling and
+  PDF metadata, and rebuilds exactly three passes. All fonts are embedded and
+  subset, no Type 3 font or overfull box remains, and the exhaustive 17-entry
+  live `SHA256SUMS` verifies. Its zero multiplicities,
   spectral zeta and digit count, log-periodic complex dimensions, endpoint and
   inverse-Fabius saddles, Appell/Strang--Fix reproduction, and integer-base
   generalization substantially overlap Parts II, V, VII, and VIII of the

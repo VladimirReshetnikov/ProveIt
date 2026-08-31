@@ -1,6 +1,6 @@
 PYTHON ?= python3
 LATEX ?= pdflatex
-REPORT := fabius_rvachev_frontier_report
+REPORT := Fabius_Rvachev_Shape_Divisibility_Stein_Geometry
 
 .PHONY: all figures pdf clean
 

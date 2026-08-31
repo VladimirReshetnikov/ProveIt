@@ -2,7 +2,7 @@
 
 \usepackage[T1]{fontenc}
 \usepackage{libertinus}
-\usepackage[scaled=0.88]{inconsolata}
+\IfFileExists{inconsolata.sty}{\usepackage[scaled=0.88]{inconsolata}}{\renewcommand{\ttdefault}{lmtt}}
 \usepackage{microtype}
 \usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs}
@@ -1068,7 +1068,7 @@ Equation \eqref{eq:G24-factor} gives $G_{24}^{(r)}<0$. By \cref{thm:lag-correlat
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.82\textwidth]{appell_lag_asymmetry.pdf}
+\includegraphics[width=0.82\textwidth]{appell_lag_asymmetry.png}
 \caption{Exact forward and reverse mixed Appell correlations in the dyadic chain. The exact laws are $|G_{24}|2^{-4k}$ and $|G_{24}|2^{-2k}$. Monte Carlo markers are shown only at lags $0$ and $1$, before the smaller correlation reaches the sampling-noise floor.}
 \label{fig:lag-asymmetry}
 \end{figure}
@@ -1353,7 +1353,7 @@ As $q\downarrow0$,
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.82\textwidth]{stein_kernel_endpoint_ratio.pdf}
+\includegraphics[width=0.82\textwidth]{stein_kernel_endpoint_ratio.png}
 \caption{Exact dyadic values of $\tau(1-2^{-n})\lambda(2^{-n})/2^{-n}$. The values are computed from rational Fabius data; only $W_{-1}$ is evaluated numerically. The ratio approaches one, in agreement with \cref{cor:tau-lambert}.}
 \label{fig:tau-ratio}
 \end{figure}
