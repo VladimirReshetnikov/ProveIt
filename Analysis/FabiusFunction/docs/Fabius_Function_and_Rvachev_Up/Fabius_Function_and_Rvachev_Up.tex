@@ -4253,6 +4253,76 @@ They are \lean{tendsto_deriv_fabiusInv_atTop_at_zero_right} and
 \lean{tendsto_deriv_fabiusInv_atTop_at_one_left}; these are limits through
 the open interval, not finite derivatives at \(0\) or \(1\).
 
+\subsection{Effective dyadic continuity of the inverse}
+\label{sec:fabius-inverse-effective-continuity}
+
+The exact inverse-modulus theory has an explicit primitive-recursive dyadic
+specialization.  Define the natural denominators
+\begin{equation}
+ D_{\mathrm{fac}}(r)=2^{\binom{r+1}{2}}(r+1)!,
+ \qquad
+ D_{\Delta}(r)=2^{\binom{r+1}{2}}(r+1)^{r+1}.             \label{eq:inverse-effective-denominators}
+\end{equation}
+They are respectively \lean{inverseFabiusFactorialDenominator}, whose displayed
+closed form is \lean{inverseFabiusFactorialDenominator_eq}, and
+\lean{inverseFabiusDeltaDenominator}.  For every positive \(r\), retaining the
+positive zeroth term in the exact dyadic recurrence gives the stronger estimate
+\begin{equation}
+ \frac{1}{2^{\binom r2}(r+1)!(2^r-1)}
+ \le F(2^{-r}).                                           \label{eq:inverse-one-term-lower-bound}
+\end{equation}
+This is \lean{fabiusReal_inverse_two_pow_one_term_lower_bound}.  Replacing
+\(2^r-1\) by \(2^r\), and then using \((r+1)!\le(r+1)^{r+1}\), yields for every
+\(r\in\N\)
+\begin{align}
+ D_{\mathrm{fac}}(r)^{-1}&\le F(2^{-r}),                 \label{eq:inverse-factorial-lower-bound}\\
+ D_{\mathrm{fac}}(r)&\le D_{\Delta}(r),                 \label{eq:inverse-denominator-comparison}\\
+ D_{\Delta}(r)^{-1}&\le F(2^{-r}).                       \label{eq:inverse-delta-lower-bound}
+\end{align}
+The three exact declarations are
+\lean{inv_inverseFabiusFactorialDenominator_le_fabiusReal},
+\lean{inverseFabiusFactorialDenominator_le_deltaDenominator}, and
+\lean{inv_inverseFabiusDeltaDenominator_le_fabiusReal}.  Thus the final line is
+the report's elementary \(\Delta_r\) bound, obtained here as a corollary of the
+stronger factorial estimate rather than from an infinite-product cylinder event.
+
+Both denominator functions are primitive recursive, by
+\lean{inverseFabiusFactorialDenominator_primrec} and
+\lean{inverseFabiusDeltaDenominator_primrec}.  For arbitrary real inputs \(u,v\),
+the two corresponding strict and closed moduli are
+\begin{align}
+ |u-v|<D_{\mathrm{fac}}(r)^{-1}
+ &\Longrightarrow |I(u)-I(v)|<2^{-r},                    \label{eq:inverse-factorial-modulus}\\
+ |u-v|\le D_{\mathrm{fac}}(r)^{-1}
+ &\Longrightarrow |I(u)-I(v)|\le2^{-r},                  \label{eq:inverse-factorial-modulus-closed}\\
+ |u-v|<D_{\Delta}(r)^{-1}
+ &\Longrightarrow |I(u)-I(v)|<2^{-r},                    \label{eq:inverse-delta-modulus}\\
+ |u-v|\le D_{\Delta}(r)^{-1}
+ &\Longrightarrow |I(u)-I(v)|\le2^{-r}.                  \label{eq:inverse-delta-modulus-closed}
+\end{align}
+These are
+\lean{abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_factorialDenominator},
+\lean{abs_fabiusInv_sub_le_inverse_two_pow_of_le_factorialDenominator},
+\lean{abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_deltaDenominator}, and
+\lean{abs_fabiusInv_sub_le_inverse_two_pow_of_le_deltaDenominator}.  Taking
+\(r=n\), the inequality \(n<2^n\) converts the first line to the reciprocal
+precision convention: for every \(n>0\),
+\begin{equation}
+ |u-v|<D_{\mathrm{fac}}(n)^{-1}
+ \Longrightarrow |I(u)-I(v)|<\frac1n.                    \label{eq:inverse-effective-uniform-continuity}
+\end{equation}
+Consequently \lean{fabiusInv_effectivelyUniformContinuous} proves
+\lean{EffectivelyUniformContinuous} for the totalized inverse of every bounded
+Fabius solution.
+
+This is the exhaustive public surface of
+\path{FabiusInverseEffectiveContinuity.lean}: two definitions and the twelve theorems
+named above.  The last theorem establishes only the effective-uniform-continuity
+clause.  The module supplies no tolerant-bisection realizer or sequential-computability
+theorem, and therefore no combined \lean{IsComputableRealFunction} result.  It also
+does not construct a logarithmic scale selector \(r(n)\), an exact least or ceiling
+denominator, or an input-bit complexity estimate.
+
 \subsection{Precise non-elementarity}
 
 The inductive predicate \lean{IsElementary} contains constants and the identity and is
@@ -10490,8 +10560,9 @@ Global derivatives, value distributions, and flatness &
 \path{RvachevDerivativeDistribution.lean},
 \path{EffectiveFlatness.lean}, \path{SharpFlatness.lean},
 \path{FabiusFlatness.lean}\\
-Analyticity, inverse, elementary obstruction &
-\path{NowhereAnalytic.lean}, \path{FabiusInverse.lean},
+Analyticity, inverse, effective inverse continuity, elementary obstruction &
+\path{NowhereAnalytic.lean}, \path{FabiusInverse.lean}, \path{InverseModulus.lean},
+\path{FabiusInverseEffectiveContinuity.lean},
 \path{InverseMidpointDefect.lean},
 \path{ElementaryFunction.lean}, \path{NotElementary.lean},
 \path{InverseBranch.lean}, \path{InverseNotElementary.lean}\\

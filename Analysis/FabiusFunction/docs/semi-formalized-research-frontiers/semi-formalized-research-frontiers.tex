@@ -616,6 +616,36 @@ Formal implicit roots and nonmonic Hensel lifting &
 \nolinkurl{PowerSeries.Implicit.eq_root} &
 \nolinkurl{ImplicitPowerSeries.lean} \\
 Totalized inverse & \nolinkurl{fabiusInv}, \nolinkurl{deriv_deriv_fabiusInv_eq_zero_iff}, \nolinkurl{tendsto_deriv_fabiusInv_atTop_at_zero_right}, \nolinkurl{fabiusInv_differentiableAt_iff}, \nolinkurl{fabiusInv_contDiffAt_infty_iff}, \nolinkurl{fabiusInv_analyticAt_iff} & \nolinkurl{FabiusInverse.lean}, \nolinkurl{InverseNotElementary.lean} \\
+Effective dyadic inverse continuity (two definitions and twelve theorems).
+With
+\(D_{\mathrm{fac}}(r)=2^{\binom{r+1}{2}}(r+1)!\) and
+\(D_{\Delta}(r)=2^{\binom{r+1}{2}}(r+1)^{r+1}\), the positive zeroth
+recurrence term gives
+\(\bigl(2^{\binom r2}(r+1)!(2^r-1)\bigr)^{-1}\le F(2^{-r})\) for \(r>0\).
+For every \(r\), both reciprocal denominator bounds follow,
+\(D_{\mathrm{fac}}(r)\le D_{\Delta}(r)\), both denominators are primitive
+recursive, and each denominator has both strict and closed inverse moduli:
+strict input error gives strict inverse error below \(2^{-r}\), while closed
+input error gives inverse error at most \(2^{-r}\).  The factorial witness at \(r=n\) proves
+\nolinkurl{EffectivelyUniformContinuous}; it does not supply
+\nolinkurl{SequentiallyComputable}, a combined
+\nolinkurl{IsComputableRealFunction} theorem, a logarithmic \(r(n)\), an exact
+least/ceiling denominator, tolerant bisection, or input-bit asymptotics. &
+\nolinkurl{inverseFabiusFactorialDenominator},
+\nolinkurl{inverseFabiusDeltaDenominator};
+\nolinkurl{inverseFabiusFactorialDenominator_eq},
+\nolinkurl{inverseFabiusFactorialDenominator_primrec},
+\nolinkurl{inverseFabiusDeltaDenominator_primrec},
+\nolinkurl{fabiusReal_inverse_two_pow_one_term_lower_bound},
+\nolinkurl{inv_inverseFabiusFactorialDenominator_le_fabiusReal},
+\nolinkurl{inverseFabiusFactorialDenominator_le_deltaDenominator},
+\nolinkurl{inv_inverseFabiusDeltaDenominator_le_fabiusReal},
+\nolinkurl{abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_factorialDenominator},
+\nolinkurl{abs_fabiusInv_sub_le_inverse_two_pow_of_le_factorialDenominator},
+\nolinkurl{abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_deltaDenominator},
+\nolinkurl{abs_fabiusInv_sub_le_inverse_two_pow_of_le_deltaDenominator},
+\nolinkurl{fabiusInv_effectivelyUniformContinuous} &
+\nolinkurl{FabiusInverseEffectiveContinuity.lean} \\
 Lower-Lambert coordinate & \nolinkurl{fabiusLambertPhase} & \nolinkurl{FabiusLambertSaddle.lean} \\
 All-orders saddle expansion & saddle mass/log coefficient declarations & \nolinkurl{FabiusFullAsymptoticExpansion.lean} and related modules \\
 \bottomrule
