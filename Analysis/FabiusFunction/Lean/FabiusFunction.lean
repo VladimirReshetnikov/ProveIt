@@ -92,6 +92,7 @@ import FabiusFunction.CenteredMomentCumulants
 import FabiusFunction.CenteredMomentParity
 import FabiusFunction.SinhDivBernoulliLog
 import FabiusFunction.HyperbolicActivation
+import FabiusFunction.ActivationAsymptotics
 import FabiusFunction.GeometricActivationDimension
 import FabiusFunction.ReciprocalExponentialGenerating
 import FabiusFunction.RvachevMomentAppell

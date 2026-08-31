@@ -104,21 +104,20 @@ theorem realSinhc_two_mul (x : ℝ) :
   · simp [hx]
   · rw [realSinhc_of_ne_zero (mul_ne_zero (by norm_num) hx),
       realSinhc_of_ne_zero hx, Real.sinh_two_mul]
-    field_simp [hx] <;> ring
+    field_simp [hx]
 
 private lemma hasDerivAt_coshChordGap (x : ℝ) :
-    HasDerivAt (fun y : ℝ ↦ y * Real.cosh y - Real.sinh y)
+    HasDerivAt (id * Real.cosh - Real.sinh)
       (x * Real.sinh x) x := by
-  simpa only [Pi.mul_apply, Pi.sub_apply, id_eq, one_mul,
-    add_sub_cancel_left] using
-      (((hasDerivAt_id x).mul (Real.hasDerivAt_cosh x)).sub
-        (Real.hasDerivAt_sinh x))
+  apply (((hasDerivAt_id x).mul (Real.hasDerivAt_cosh x)).sub
+    (Real.hasDerivAt_sinh x)).congr_deriv
+  simp [id]
 
 /-- For positive `x`, the chord from the origin to `(x, sinh x)` has slope
 strictly below the tangent slope `cosh x`. -/
 theorem sinh_lt_mul_cosh {x : ℝ} (hx : 0 < x) :
     Real.sinh x < x * Real.cosh x := by
-  let g := fun y : ℝ ↦ y * Real.cosh y - Real.sinh y
+  let g : ℝ → ℝ := id * Real.cosh - Real.sinh
   have hg (y : ℝ) : HasDerivAt g (y * Real.sinh y) y := by
     simpa [g] using hasDerivAt_coshChordGap y
   have hm : StrictMonoOn g (Ici 0) :=
@@ -158,7 +157,9 @@ theorem realSinhc_lt_cosh_iff (x : ℝ) :
   constructor
   · intro h hx
     subst x
-    simpa using h
+    have : (1 : ℝ) < 1 := by
+      simpa only [realSinhc_zero, Real.cosh_zero] using h
+    exact (lt_irrefl 1) this
   · intro hx
     rcases lt_or_gt_of_ne hx with hxneg | hxpos
     · have h := realSinhc_lt_cosh_of_pos (neg_pos.mpr hxneg)
@@ -229,11 +230,10 @@ theorem hasDerivAt_tanh (x : ℝ) :
     simpa only [Pi.div_apply] using
       (Real.tanh_eq_sinh_div_cosh (x := y))
   rw [htanh]
-  convert (Real.hasDerivAt_sinh x).div (Real.hasDerivAt_cosh x)
-      (Real.cosh_pos x).ne' using 1
+  apply ((Real.hasDerivAt_sinh x).div (Real.hasDerivAt_cosh x)
+    (Real.cosh_pos x).ne').congr_deriv
   simp only [Pi.div_apply]
-  field_simp [(Real.cosh_pos x).ne'] <;>
-    nlinarith [Real.cosh_sq_sub_sinh_sq x]
+  field_simp [(Real.cosh_pos x).ne']
 
 /-- Hyperbolic tangent is nonnegative on the nonnegative half-line. -/
 theorem tanh_nonneg_of_nonneg {x : ℝ} (hx : 0 ≤ x) :
@@ -261,16 +261,18 @@ theorem tanh_le_self_of_nonneg {x : ℝ} (hx : 0 ≤ x) :
   · exact (tanh_lt_self_of_pos hx).le
 
 private lemma hasDerivAt_tanhCubicGap (x : ℝ) :
-    HasDerivAt (fun y : ℝ ↦ Real.tanh y - y + y ^ 3 / 3)
+    HasDerivAt (Real.tanh - id + fun y : ℝ ↦ y ^ 3 / 3)
       (x ^ 2 - Real.tanh x ^ 2) x := by
-  convert (((hasDerivAt_tanh x).sub (hasDerivAt_id x)).add
-    ((hasDerivAt_pow 3 x).div_const 3)) using 1 <;> ring
+  have h := ((hasDerivAt_tanh x).sub (hasDerivAt_id x)).add
+    ((hasDerivAt_pow 3 x).div_const 3)
+  apply h.congr_deriv
+  ring
 
 /-- The elementary cubic lower bound
 `x - x^3 / 3 <= tanh x` for nonnegative `x`. -/
 theorem tanh_cubic_lower {x : ℝ} (hx : 0 ≤ x) :
     x - x ^ 3 / 3 ≤ Real.tanh x := by
-  let g := fun y : ℝ ↦ Real.tanh y - y + y ^ 3 / 3
+  let g : ℝ → ℝ := Real.tanh - id + fun y ↦ y ^ 3 / 3
   have hg (y : ℝ) : HasDerivAt g (y ^ 2 - Real.tanh y ^ 2) y := by
     simpa [g] using hasDerivAt_tanhCubicGap y
   have hm : MonotoneOn g (Ici 0) :=
@@ -285,7 +287,8 @@ theorem tanh_cubic_lower {x : ℝ} (hx : 0 ≤ x) :
         exact sub_nonneg.mpr ((sq_le_sq₀ ht0 hy.le).mpr hty))
   have hgap : 0 ≤ g x := by
     simpa [g] using hm (show 0 ∈ Ici (0 : ℝ) by simp) hx hx
-  dsimp only [g] at hgap
+  have hgap' : 0 ≤ Real.tanh x - x + x ^ 3 / 3 := by
+    simpa only [g, Pi.add_apply, Pi.sub_apply, id_eq] using hgap
   linarith
 
 /-! ## Odds and activation probability -/
@@ -348,7 +351,7 @@ theorem activationProbability_even : Function.Even activationProbability :=
 theorem one_add_activationOdds (x : ℝ) :
     1 + activationOdds x = Real.cosh x / realSinhc x := by
   rw [activationOdds, realSinhc_two_mul]
-  field_simp [realSinhc_ne_zero x] <;> ring
+  field_simp [realSinhc_ne_zero x] ; ring
 
 /-- The denominator `1 + activationOdds x` is strictly positive. -/
 theorem one_add_activationOdds_pos (x : ℝ) :
@@ -365,7 +368,7 @@ theorem activationOdds_of_ne_zero {x : ℝ} (hx : x ≠ 0) :
   have h : 1 + activationOdds x =
       x * Real.cosh x / Real.sinh x := by
     rw [one_add_activationOdds, realSinhc_of_ne_zero hx]
-    field_simp [hx, hsinh] <;> ring
+    field_simp [hx, hsinh]
   linarith
 
 /-- The activation odds are globally nonnegative. -/
@@ -382,7 +385,9 @@ theorem activationOdds_pos_iff (x : ℝ) :
   constructor
   · intro h hx
     subst x
-    simpa using h
+    have : (0 : ℝ) < 0 := by
+      simpa only [activationOdds_zero] using h
+    exact (lt_irrefl 0) this
   · intro hx
     have hratio : 1 < Real.cosh x / realSinhc x := by
       rw [lt_div_iff₀ (realSinhc_pos x)]
@@ -394,7 +399,7 @@ theorem activationOdds_pos_iff (x : ℝ) :
 theorem tanhDiv_mul_one_add_activationOdds (x : ℝ) :
     tanhDiv x * (1 + activationOdds x) = 1 := by
   rw [tanhDiv, one_add_activationOdds]
-  field_simp [realSinhc_ne_zero x, (Real.cosh_pos x).ne'] <;> ring
+  field_simp [realSinhc_ne_zero x, (Real.cosh_pos x).ne']
 
 /-- The denominator-free odds/probability identity.  This is the primary
 bridge because it includes the origin without a side condition. -/

@@ -145,6 +145,42 @@ theorem geometricActivationDimension_sub_refinement
   rw [geometricActivationDimension_refinement hq t]
   ring
 
+/-- At zero geometric ratio, only the zeroth coordinate remains. -/
+@[simp] theorem geometricActivationDimension_zero_ratio (t : ℝ) :
+    geometricActivationDimension 0 t = activationProbability t := by
+  simpa using
+    (geometricActivationDimension_refinement
+      (q := (0 : ℝ)) (by norm_num) t)
+
+/-- The zeroth geometric coordinate is a lower bound for the full effective
+dimension. -/
+theorem activationProbability_scale_le_geometricActivationDimension
+    {q : ℝ} (hq : |q| < 1) (t : ℝ) :
+    activationProbability ((1 - q) * t) ≤
+      geometricActivationDimension q t := by
+  rw [geometricActivationDimension_refinement hq t]
+  exact le_add_of_nonneg_right
+    (geometricActivationDimension_nonneg q (q * t))
+
+/-- In the convergent geometric range, the effective dimension is positive
+exactly away from the origin. -/
+theorem geometricActivationDimension_pos_iff
+    {q : ℝ} (hq : |q| < 1) (t : ℝ) :
+    0 < geometricActivationDimension q t ↔ t ≠ 0 := by
+  constructor
+  · intro h ht
+    subst t
+    simp at h
+  · intro ht
+    have hq_lt : q < 1 := (abs_lt.mp hq).2
+    have hscale : (1 - q) * t ≠ 0 :=
+      mul_ne_zero
+        (sub_ne_zero.mpr (ne_of_gt hq_lt))
+        ht
+    exact lt_of_lt_of_le
+      ((activationProbability_pos_iff ((1 - q) * t)).2 hscale)
+      (activationProbability_scale_le_geometricActivationDimension hq t)
+
 /-- The normalized geometric activation dimension inherits the exact
 quadratic geometric-series budget. -/
 theorem geometricActivationDimension_le_quadratic
@@ -153,6 +189,23 @@ theorem geometricActivationDimension_le_quadratic
       ((((1 - q) * t) ^ 2) / 3) * (1 - q ^ 2)⁻¹ := by
   simpa only [geometricActivationDimension] using
     tsum_activationProbability_pow_mul_le hq ((1 - q) * t)
+
+/-- The normalized geometric dimension has the simplified quadratic
+coefficient `(1 - q) / (3 * (1 + q))`. -/
+theorem geometricActivationDimension_le_normalized_quadratic
+    {q : ℝ} (hq : |q| < 1) (t : ℝ) :
+    geometricActivationDimension q t ≤
+      (1 - q) * t ^ 2 / (3 * (1 + q)) := by
+  rcases abs_lt.mp hq with ⟨hq_neg, hq_pos⟩
+  have hminus : 1 - q ≠ 0 := by linarith
+  have hplus : 1 + q ≠ 0 := by linarith
+  calc
+    geometricActivationDimension q t ≤
+        ((((1 - q) * t) ^ 2) / 3) * (1 - q ^ 2)⁻¹ :=
+      geometricActivationDimension_le_quadratic hq t
+    _ = (1 - q) * t ^ 2 / (3 * (1 + q)) := by
+      rw [show 1 - q ^ 2 = (1 - q) * (1 + q) by ring]
+      field_simp [hminus, hplus]
 
 /-- Splitting after `N` coordinates leaves the same geometric dimension at
 the rescaled field `q ^ N * t`. -/
@@ -181,6 +234,59 @@ theorem geometricActivationDimension_eq_sum_range_add
       congr 1
       rw [pow_add]
       ring
+
+/-- After the first `N` coordinates, the remaining geometric dimension has
+an explicitly decaying quadratic bound. -/
+theorem geometricActivationDimension_tail_le
+    {q : ℝ} (hq : |q| < 1) (t : ℝ) (N : ℕ) :
+    geometricActivationDimension q (q ^ N * t) ≤
+      ((1 - q) * t ^ 2 / (3 * (1 + q))) * (q ^ 2) ^ N := by
+  have hpow : (q ^ N) ^ 2 = (q ^ 2) ^ N := by
+    calc
+      (q ^ N) ^ 2 = q ^ (N * 2) := (pow_mul q N 2).symm
+      _ = q ^ (2 * N) := by rw [Nat.mul_comm]
+      _ = (q ^ 2) ^ N := pow_mul q 2 N
+  calc
+    geometricActivationDimension q (q ^ N * t) ≤
+        (1 - q) * (q ^ N * t) ^ 2 / (3 * (1 + q)) :=
+      geometricActivationDimension_le_normalized_quadratic
+        hq (q ^ N * t)
+    _ = ((1 - q) * t ^ 2 / (3 * (1 + q))) *
+        (q ^ 2) ^ N := by
+      rw [mul_pow, hpow]
+      ring
+
+/-- Every finite prefix underestimates the full convergent geometric
+activation dimension. -/
+theorem sum_range_activationProbability_le_geometricActivationDimension
+    {q : ℝ} (hq : |q| < 1) (t : ℝ) (N : ℕ) :
+    (∑ n ∈ Finset.range N,
+      activationProbability (q ^ n * ((1 - q) * t))) ≤
+      geometricActivationDimension q t := by
+  calc
+    (∑ n ∈ Finset.range N,
+        activationProbability (q ^ n * ((1 - q) * t))) ≤
+        (∑ n ∈ Finset.range N,
+          activationProbability (q ^ n * ((1 - q) * t))) +
+          geometricActivationDimension q (q ^ N * t) :=
+      le_add_of_nonneg_right
+        (geometricActivationDimension_nonneg q (q ^ N * t))
+    _ = geometricActivationDimension q t :=
+      (geometricActivationDimension_eq_sum_range_add hq t N).symm
+
+/-- A finite prefix plus the explicit quadratic tail bound overestimates the
+full geometric activation dimension. -/
+theorem geometricActivationDimension_le_sum_range_add_tail
+    {q : ℝ} (hq : |q| < 1) (t : ℝ) (N : ℕ) :
+    geometricActivationDimension q t ≤
+      (∑ n ∈ Finset.range N,
+        activationProbability (q ^ n * ((1 - q) * t))) +
+      ((1 - q) * t ^ 2 / (3 * (1 + q))) * (q ^ 2) ^ N := by
+  rw [geometricActivationDimension_eq_sum_range_add hq t N]
+  exact add_le_add_right
+    (geometricActivationDimension_tail_le hq t N)
+    (∑ n ∈ Finset.range N,
+      activationProbability (q ^ n * ((1 - q) * t)))
 
 /-! ## The dyadic effective dimension -/
 
@@ -224,8 +330,15 @@ theorem dyadicEffectiveDimension_half_refinement (t : ℝ) :
   change geometricActivationDimension (1 / 2) t =
     activationProbability (t / 2) +
       geometricActivationDimension (1 / 2) (t / 2)
-  convert geometricActivationDimension_refinement
-    (q := (1 / 2 : ℝ)) (by norm_num) t using 1 <;> ring
+  calc
+    geometricActivationDimension (1 / 2) t =
+        activationProbability ((1 - (1 / 2 : ℝ)) * t) +
+          geometricActivationDimension (1 / 2) ((1 / 2) * t) :=
+      geometricActivationDimension_refinement (by norm_num) t
+    _ = activationProbability (t / 2) +
+        geometricActivationDimension (1 / 2) (t / 2) := by
+      congr 2
+      all_goals ring
 
 /-- Doubling the field adds exactly one local activation probability. -/
 theorem dyadicEffectiveDimension_two_mul (t : ℝ) :
@@ -233,8 +346,15 @@ theorem dyadicEffectiveDimension_two_mul (t : ℝ) :
       activationProbability t + dyadicEffectiveDimension t := by
   change geometricActivationDimension (1 / 2) (2 * t) =
     activationProbability t + geometricActivationDimension (1 / 2) t
-  convert geometricActivationDimension_refinement
-    (q := (1 / 2 : ℝ)) (by norm_num) (2 * t) using 1 <;> ring
+  calc
+    geometricActivationDimension (1 / 2) (2 * t) =
+        activationProbability ((1 - (1 / 2 : ℝ)) * (2 * t)) +
+          geometricActivationDimension (1 / 2) ((1 / 2) * (2 * t)) :=
+      geometricActivationDimension_refinement (by norm_num) (2 * t)
+    _ = activationProbability t +
+        geometricActivationDimension (1 / 2) t := by
+      congr 2
+      all_goals ring
 
 /-- Difference form of the dyadic effective-dimension refinement. -/
 theorem dyadicEffectiveDimension_refinement (t : ℝ) :
@@ -247,18 +367,9 @@ theorem dyadicEffectiveDimension_refinement (t : ℝ) :
 the origin. -/
 theorem dyadicEffectiveDimension_pos_iff (t : ℝ) :
     0 < dyadicEffectiveDimension t ↔ t ≠ 0 := by
-  constructor
-  · intro h ht
-    subst t
-    simpa using h
-  · intro ht
-    rw [dyadicEffectiveDimension_half_refinement]
-    have ht2 : t / 2 ≠ 0 := div_ne_zero ht (by norm_num)
-    have hp : 0 < activationProbability (t / 2) :=
-      (activationProbability_pos_iff (t / 2)).2 ht2
-    have htail : 0 ≤ dyadicEffectiveDimension (t / 2) :=
-      dyadicEffectiveDimension_nonneg (t / 2)
-    linarith
+  change 0 < geometricActivationDimension (1 / 2) t ↔ t ≠ 0
+  exact geometricActivationDimension_pos_iff
+    (q := (1 / 2 : ℝ)) (by norm_num) t
 
 /-- The dyadic activation dimension has the global quadratic bound
 `t ^ 2 / 9`. -/
@@ -267,10 +378,10 @@ theorem dyadicEffectiveDimension_le_sq_div_nine (t : ℝ) :
   change geometricActivationDimension (1 / 2) t ≤ t ^ 2 / 9
   calc
     geometricActivationDimension (1 / 2) t ≤
-        ((((1 - (1 / 2 : ℝ)) * t) ^ 2) / 3) *
-          (1 - (1 / 2 : ℝ) ^ 2)⁻¹ :=
-      geometricActivationDimension_le_quadratic (by norm_num) t
-    _ = t ^ 2 / 9 := by norm_num <;> ring
+        (1 - (1 / 2 : ℝ)) * t ^ 2 /
+          (3 * (1 + (1 / 2 : ℝ))) :=
+      geometricActivationDimension_le_normalized_quadratic (by norm_num) t
+    _ = t ^ 2 / 9 := by ring
 
 /-- Splitting the first `N` dyadic coordinates leaves the dyadic dimension
 at the field `(1 / 2) ^ N * t`. -/
@@ -306,22 +417,22 @@ coordinates.  Its right side is `t ^ 2 / (9 * 4 ^ N)`. -/
 theorem dyadicEffectiveDimension_tail_le (t : ℝ) (N : ℕ) :
     dyadicEffectiveDimension ((1 / 2 : ℝ) ^ N * t) ≤
       (t ^ 2 / 9) * (1 / 4 : ℝ) ^ N := by
+  change geometricActivationDimension (1 / 2)
+      ((1 / 2 : ℝ) ^ N * t) ≤
+    (t ^ 2 / 9) * (1 / 4 : ℝ) ^ N
   calc
-    dyadicEffectiveDimension ((1 / 2 : ℝ) ^ N * t) ≤
-        (((1 / 2 : ℝ) ^ N * t) ^ 2) / 9 :=
-      dyadicEffectiveDimension_le_sq_div_nine _
+    geometricActivationDimension (1 / 2) ((1 / 2 : ℝ) ^ N * t) ≤
+        ((1 - (1 / 2 : ℝ)) * t ^ 2 /
+          (3 * (1 + (1 / 2 : ℝ)))) *
+          (((1 / 2 : ℝ) ^ 2) ^ N) :=
+      geometricActivationDimension_tail_le (by norm_num) t N
     _ = (t ^ 2 / 9) * (1 / 4 : ℝ) ^ N := by
-      have hpow : (((1 / 2 : ℝ) ^ N) ^ 2) =
-          (1 / 4 : ℝ) ^ N := by
-        calc
-          (((1 / 2 : ℝ) ^ N) ^ 2) =
-              (1 / 2 : ℝ) ^ (N * 2) :=
-            (pow_mul (1 / 2 : ℝ) N 2).symm
-          _ = (1 / 2 : ℝ) ^ (2 * N) := by rw [Nat.mul_comm]
-          _ = ((1 / 2 : ℝ) ^ 2) ^ N := pow_mul (1 / 2 : ℝ) 2 N
-          _ = (1 / 4 : ℝ) ^ N := by norm_num
-      rw [mul_pow, hpow]
-      ring
+      have hcoefficient :
+          (1 - (1 / 2 : ℝ)) * t ^ 2 /
+              (3 * (1 + (1 / 2 : ℝ))) = t ^ 2 / 9 := by
+        ring
+      have hratio : (1 / 2 : ℝ) ^ 2 = 1 / 4 := by norm_num
+      rw [hcoefficient, hratio]
 
 end
 
