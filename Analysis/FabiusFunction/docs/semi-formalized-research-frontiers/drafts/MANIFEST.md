@@ -28,8 +28,10 @@ READMEs record the pending rows; historical arrival ledgers remain immutable.
 This checkpoint supersedes any older "synchronized" or "current ledger
 verifies" wording in the affected rows below. In particular, the retained
 Exponents PDF is the last validated 236-page render and its two parent ledgers
-now verify the current source/retained-PDF pair; Digital currently passes
-15/18 rows; the nine
+verify the current source and retained PDF without asserting that the PDF was
+rebuilt; the q-Pochhammer monograph retains
+its last validated 212-page render for the current 13,119-line source; Digital
+currently passes 15/18 rows; the nine
 notation-migrated inverse/sampling roots retain their last validated PDFs; and
 the Geometric-Uniform, New Frontiers-2, and Zero-Bias packages retain their
 last validated PDFs while their source/README/validation ledger rows await a
@@ -120,6 +122,15 @@ Current documents are grouped one level deeper under
 `comb-interpolation/`, `inverse-asymptotics-and-computability/`, and
 `analyticity-and-elementarity/`; the table below keeps the document leaf
 directory names concise.
+
+`Inverse_Fabius_Analyticity_Asymptotics_and_Computability/` is an audit-only
+consolidation workspace, not yet a document bundle. It pins five live inputs at
+`0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`; its reproducible raw inventory
+passes 194/194 rows (projection SHA-256
+`ff123825f7516adb1edfd9e738f9021d38c03960f0ea134554ede9e14cd8459f`).
+All canonical-disposition fields are still empty; no theorem concordance, TeX,
+PDF, assets, or checksum ledger exists, so all five inputs remain live and no
+publication gate is claimed.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
