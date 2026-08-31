@@ -15451,17 +15451,28 @@ transport from $x=2^{-t}$ to the full limit $x\downarrow0$. & \Formalized\\
 
 The structural uniform-modulus layer is the exhaustive public surface of
 \path{InverseModulus.lean}: one definition,
-\path{Fabius.fabiusIntervalMass}, and twenty theorems,
+\path{Fabius.fabiusIntervalMass}, and thirty-one theorems,
 \path{Fabius.fabiusIntervalMass_reflect},
+\path{Fabius.fabiusIntervalMass_eq_zero_of_add_nonpos},
+\path{Fabius.fabiusIntervalMass_eq_zero_of_one_le},
 \path{Fabius.monotoneOn_fabiusIntervalMass_firstHalf},
 \path{Fabius.antitoneOn_fabiusIntervalMass_secondHalf},
+\path{Fabius.strictMonoOn_fabiusIntervalMass_firstHalf},
+\path{Fabius.strictAntiOn_fabiusIntervalMass_secondHalf},
 \path{Fabius.fabiusReal_sub_le_sub},
+\path{Fabius.fabiusReal_lt_fabiusIntervalMass_of_mem_Ioo},
+\path{Fabius.fabiusIntervalMass_eq_fabiusReal_iff},
+\path{Fabius.fabiusReal_sub_lt_sub},
+\path{Fabius.fabiusReal_sub_eq_sub_iff},
 \path{Fabius.fabiusReal_add_le},
+\path{Fabius.fabiusReal_add_eq_iff},
 \path{Fabius.fabiusInv_sub_le_sub_of_mem_Icc},
+\path{Fabius.fabiusInv_sub_eq_sub_iff_of_mem_Icc},
 \path{Fabius.fabiusInv_sub_le_sub_of_le},
 \path{Fabius.fabiusInv_sub_le_sub},
 \path{Fabius.fabiusInv_add_le},
 \path{Fabius.abs_fabiusInv_sub_le},
+\path{Fabius.abs_fabiusInv_sub_eq_iff_of_mem_Icc},
 \path{Fabius.dist_fabiusInv_le},
 \path{Fabius.fabiusInv_min_one},
 \path{Fabius.isGreatest_abs_fabiusInv_sub},
@@ -15473,12 +15484,18 @@ The structural uniform-modulus layer is the exhaustive public surface of
 \path{Fabius.fabiusReal_le_abs_sub_of_le_abs_fabiusInv_sub}, and
 \path{Fabius.forall_abs_fabiusInv_sub_lt_iff}.
 For nonnegative length the fixed-length Fabius increment is reflection-invariant,
-increases toward the centered interval, and then decreases.  The endpoint minimum yields
-the ordered and order-free inverse-gap bounds, subadditivity, absolute and metric
-self-moduli, saturation at one, and attained exact \path{IsGreatest}/\path{sSup} moduli
-globally and on the unit interval.  The final four declarations are the strict and closed
-effective-injectivity bounds, their contrapositive separation form, and the uniform
-strict-threshold biconditional.  This module does not supply the report's closed
+vanishes on either constant tail, increases toward the centered interval, and then
+decreases; for \(0<h\le1\), the maximal support-meeting branches
+\([-h,(1-h)/2]\) and \([(1-h)/2,1]\) are strict.  On the unit interval, the endpoint
+minimum has exact strict-interior and degenerate/endpoint equality loci, and constrained
+superadditivity has its full equality classification.  The ordered and order-free
+inverse-gap bounds include complete ordered and absolute equality loci on \([0,1]\), while
+the global clamped tails deliberately remain outside that equality classification.
+Subadditivity, absolute and metric self-moduli, saturation at one, and attained exact
+\path{IsGreatest}/\path{sSup} moduli hold globally and on the unit interval.  The final
+four declarations are the strict and closed effective-injectivity bounds, their
+contrapositive separation form, and the uniform strict-threshold biconditional.  This
+module does not supply the report's closed
 \(\Delta_r\) lower bound, recursive-modulus wrapper, tolerant-bisection realizer,
 sequential computability theorem, combined computable-real-function theorem, or input-bit
 asymptotics.
