@@ -109,30 +109,22 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 611 modules and 8,338 lexically
+The post-merge 2026-08-31 inventory contains 613 modules and 8,355 lexically
 visible public declarations, with zero missing module headers and zero missing
-doc comments.  This snapshot includes the expanded strictness and equality API
-in `InverseModulus.lean`, the seven-module activation tranche and finite Taylor
-jet in `ActivationTaylor.lean`, and the reusable divided-slope bridge in
-`HyperbolicActivation.lean`.  Relative to the activation checkpoint's
-610/8,318 tree, the density-diagnostic delta consists of the documented
-zero-ratio, negative-ratio nonpositivity, nonpositive-ratio zero-`withDensity`,
-and probability-law nonidentity theorems in `GeometricUniformCDF.lean`.  The
-final merged census adds the local `GeometricUniformMultisection.lean` leaf and
-its five documented declarations (`evenCoordinates`, `oddCoordinates`, and the
-three half--quarter multisection laws).  The baseline records the current
+doc comments.  This snapshot includes the two Lambert branch-point leaves, the
+activation-analysis family, the effective inverse-modulus pair, the geometric
+sinc characteristic bridge, the symmetric Thue--Morse difference module, the
+four nonpositive-parameter diagnostics in `GeometricUniformCDF.lean`, the
+expanded strictness and equality API in `InverseModulus.lean`, and the local
+half--quarter multisection leaf.  Relative to the 610-module/8,318-declaration
+activation checkpoint, the exact delta is three modules and 37 declarations:
+17 branch-point declarations, four density-diagnostic theorems, eleven
+inverse-modulus refinements, and the five documented declarations in
+`GeometricUniformMultisection.lean` (`evenCoordinates`, `oddCoordinates`, and
+the three half--quarter multisection laws).  The baseline records the current
 inventory and those zeroes, so every future source addition must preserve the
-full invariant rather than merely avoid worsening a historical backlog.  Run the
-script for live numbers after merging concurrent source work.
-and probability-law nonidentity theorems in `GeometricUniformCDF.lean`.  The
-expanded strictness and equality refinements in `InverseModulus.lean` are also
-included in the merged source inventory.  The final merged census adds the
-local `GeometricUniformMultisection.lean` leaf and its five documented
-declarations (`evenCoordinates`, `oddCoordinates`, and the three half--quarter
-multisection laws).  The baseline records the current inventory and those
-zeroes, so every future source addition must preserve the full invariant rather
-than merely avoid worsening a historical backlog.  Run the script for live
-numbers after merging concurrent source work.
+full invariant rather than merely avoid worsening a historical backlog.  Run
+the script for live numbers after merging concurrent source work.
 
 ### What the review pass caught
 

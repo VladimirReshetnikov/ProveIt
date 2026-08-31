@@ -42,6 +42,8 @@ import FabiusFunction.LowerLambertW
 import FabiusFunction.GeneralizedLambertCoordinate
 import FabiusFunction.LambertBranchDichotomy
 import FabiusFunction.LambertWCurvature
+import FabiusFunction.LambertWBranchPointGeometry
+import FabiusFunction.LambertWBranchPointAsymptotics
 import FabiusFunction.PowerExponentialLambert
 import FabiusFunction.PowerExponentialLambertCalculus
 import FabiusFunction.PowerExponentialLambertCurvature
