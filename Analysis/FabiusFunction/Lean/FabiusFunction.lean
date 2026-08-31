@@ -535,10 +535,17 @@ behind those sharp bounds.  It gives every signed cell profile and midpoint,
 the all-order Thue--Morse finite-mixture law for Banach-valued continuous
 tests, and every signed natural-power moment in one Boolean-cube formula.  Its
 even specialization holds at every derivative order, while positive-order odd
-moments vanish.  Equality of the Borel pushforwards of the normalized absolute
-derivative and `up` on `[-1,1]` separately yields all nonnegative real `rpow`
-absolute moments with exact scale `2^(p * C(n+1,2))`, including order and
-moment zero.
+moments vanish.  At every positive derivative order,
+`intervalIntegral_comp_normalized_iteratedDeriv_rvachev` gives the symmetric
+half-mixture of `up` and `-up` for continuous tests valued in any real Banach
+space, and `map_normalized_iteratedDeriv_rvachev_restrict_Icc` upgrades it to
+an equality of Borel pushforwards of restricted Lebesgue measure on `[-1,1]`.
+At order zero the normalized signed law is instead the unsymmetrized `up` law.
+Equality of the Borel pushforwards of the normalized absolute derivative and
+`up` on `[-1,1]` separately yields all nonnegative real `rpow` absolute moments
+with exact scale `2^(p * C(n+1,2))`, including order and moment zero.  This
+layer does not package an `eLpNorm` or general rearrangement-invariant norm
+ladder, inverse-Fabius level sets, beta specialization, or spectral theorem.
 
 The small-argument asymptotic layer is completed by closed forms for the
 objects that previously existed only as recursions.  The differential
