@@ -3553,9 +3553,10 @@ four public definitions,
 monic rational orthogonal polynomials, positive rational norms, a zero diagonal, positive
 rational subdiagonals, their real-cast comparisons, the determinant cross-ratio, and the
 centered rational recurrence in every degree.  The zero-based subdiagonal at index $n$ is
-the conventional $\beta_{n+1}$.  The rational definitions are noncomputable finite
-objects; no explicit $H_4$ or $\beta_4$ value, evaluator, root, Christoffel, quadrature,
-continued-fraction, Pad\'e, or asymptotic theorem is asserted.\\
+the conventional $\beta_{n+1}$.  These rational definitions are noncomputable finite
+objects and by themselves supply no native evaluator, root, Christoffel, quadrature,
+continued-fraction, Pad\'e, or asymptotic theorem; the separate finite values module below
+now supplies named $H_4$ and $\beta_4$ certificates.\\
 \path{PolynomialMomentGramDeterminant.lean} &
 Exactly two public definitions,
 \lean{polynomialCoefficientMatrix} and \lean{polynomialMomentGramMatrix}, and seven public
@@ -3603,6 +3604,57 @@ genuine nonsingular Jacobi formula.  It proves no finite
 Gaunt/Wigner/$3j$ entry formula, entry rationality by that route, Christoffel reconstruction,
 or infinite product.  The shifted-atom kernel \lean{rvachevTranslateGram} is a distinct
 unweighted interval Gram construction.\\
+\path{LegendrePolynomialRational.lean} &
+Exactly two public definitions, the executable scalar coefficient
+\lean{legendrePolynomialCoeffRat} and the noncomputable convenience wrapper
+\lean{legendrePolynomialRat}, and six public theorems:
+\lean{legendrePolynomialRat_cast}, \lean{coeff_legendrePolynomialRat},
+\lean{natDegree_legendrePolynomialRat},
+\lean{coeff_legendrePolynomialRat_self},
+\lean{coeff_legendrePolynomialRat_self_ne_zero}, and
+\lean{coeff_legendrePolynomialRat_self_div_succ}.  The coefficient theorem identifies
+the wrapper coefficientwise with the finite rational evaluator; the remaining results give
+its real Legendre cast, exact degree, explicit nonzero leading coefficient, and consecutive
+leading-coefficient quotient.\\
+\path{FabiusLegendreRationalGram.lean} &
+Exactly three public executable definitions,
+\lean{rvachevLegendreGramEntryRat}, \lean{rvachevLegendreGramMatrixRat}, and
+\lean{rvachevLegendreGramDetRat}, and eleven public theorems:
+\lean{rvachevLegendreGramEntryRat_eq_momentPairing},
+\lean{rvachevLegendreGramMatrixRat_apply},
+\lean{rvachevLegendreGramMatrixRat_eq_polynomialMomentGramMatrix},
+\lean{rvachevLegendreGramEntryRat_cast},
+\lean{rvachevLegendreGramMatrixRat_cast},
+\lean{rvachevLegendreGramDetRat_cast},
+\lean{rvachevLegendreGramDetRat_eq_prod_leadingCoeff_sq_mul_rvachevHankelDetRat},
+\lean{rvachevLegendreGramDetRat_zero}, \lean{rvachevLegendreGramDetRat_pos},
+\lean{rvachevOrthoNormRat_eq_rvachevLegendreGramDetRat_ratio}, and
+\lean{rvachevJacobiSubdiagonalRat_eq_rvachevLegendreGramDetRat_ratio}.  The bounded
+double moment sum closes entrywise rationality directly, and the cast theorems recover the
+up-law Gram objects for every genuine Fabius representative.  Positivity makes the rational
+norm and zero-based Jacobi formulas genuine determinant ratios.  The definitions provide an
+exact evaluator route for the report's \(H_4\) and \(\beta_4\); the next module supplies
+their named values.  Equality with the finite Gaunt/Wigner/\(3j\) entry formula,
+Christoffel reconstruction, and infinite or asymptotic Jacobi theory remain open.\\
+\path{FabiusLegendreRationalGramValues.lean} &
+No public definitions and exactly eleven public theorems:
+\lean{moment_four},
+\lean{rvachevLegendreGramDetRat_one},
+\lean{rvachevLegendreGramDetRat_two},
+\lean{rvachevLegendreGramDetRat_three},
+\lean{rvachevLegendreGramDetRat_four},
+\lean{rvachevLegendreGramDetRat_five},
+\lean{rvachevOrthoNormRat_four},
+\lean{rvachevJacobiSubdiagonalRat_three},
+\lean{hankelRatio_four},
+\lean{integral_sq_upOrthoPolynomial_four}, and
+\lean{hankelRatio_four_div_three}.  These exact finite native-computation certificates
+give the fourth nontrivial even-moment value (the raw eighth moment), rational Legendre
+Gram determinants through order five.  Under \lean{IsFabius},
+\(H_4=26727424/55791736875\) is also the real Hankel ratio and squared integral,
+whereas \(\beta_4=835232/4640643\) is the quotient of the fourth and third real
+Hankel ratios.  This is not a general native evaluator and supplies
+no Gaunt/Wigner/\(3j\), Christoffel, infinite-product, or asymptotic theorem.\\
 \path{FractionalVolterra.lean}, \path{FractionalVolterraSemigroup.lean} &
 The total real-order Gamma-normalized operator, its unconditional endpoint/locality/scalar,
 order-one, and positive-natural-order rules, and its positive-order ordered-endpoint

@@ -13,7 +13,7 @@ superseded, generated, proved, numerical, and conjectural material.
 Main deliverables
 -----------------
 fabius_rvachev_new_frontiers.tex
-    Complete 36-page, 2619-line LaTeX report.
+    Complete 37-page, 2720-line LaTeX report.
 
 fabius_rvachev_new_frontiers.pdf
     Rendered and visually inspected PDF, refreshed after the post-intake
@@ -81,14 +81,14 @@ Verification performed
 ----------------------
 * Clean three-pass pdflatex build with no unresolved references, duplicate labels, or
   overfull boxes.
-* PDF preflight: 36 A4 pages, unencrypted, text-based, no warnings; Libertinus
+* PDF preflight: 37 A4 pages, unencrypted, text-based, no warnings; Libertinus
   prose is embedded and the 10 Type-3 font rows inherited from the vector plot
   payloads match the pre-update baseline.
-* All 36 pages were rendered to PNG and visually inspected in contact sheets
-  during publication.  After the formal crosswalk update, its changed pages
-  11, 22, and 23 were rendered and checked again at full-page resolution.
-* Normalized PDF text extraction retains all 18 exact public Lean declaration
-  names in the new determinant crosswalk.
+* All 37 pages were rendered to PNG and visually inspected after the current
+  formal crosswalk update; changed pages 11--13, 23--25, and 32--34 were also
+  checked at full-page resolution.
+* Normalized PDF text extraction retains all 51 exact public Lean declaration
+  names in the determinant, rational-data, and finite-value crosswalks.
 * Python byte-compilation and an independent degree-24 smoke run succeeded.
 
 Claim status

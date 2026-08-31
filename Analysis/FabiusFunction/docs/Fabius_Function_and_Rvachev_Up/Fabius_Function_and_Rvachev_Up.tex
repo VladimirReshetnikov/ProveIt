@@ -10139,6 +10139,66 @@ Christoffel reconstruction, or an infinite Jacobi product.  Also,
 unweighted interval integration, whereas \lean{upLegendreGramMatrix} pairs polynomials under
 the up-law moment functional.
 
+The executable rational specialization is now closed without changing that distinction.
+\path{LegendrePolynomialRational.lean} has exactly two public definitions,
+\lean{legendrePolynomialCoeffRat} and \lean{legendrePolynomialRat}, and six public
+theorems:
+\lean{legendrePolynomialRat_cast}, \lean{coeff_legendrePolynomialRat},
+\lean{natDegree_legendrePolynomialRat},
+\lean{coeff_legendrePolynomialRat_self},
+\lean{coeff_legendrePolynomialRat_self_ne_zero}, and
+\lean{coeff_legendrePolynomialRat_self_div_succ}.  The scalar coefficient is a finite
+executable rational sum.  Its polynomial wrapper is deliberately noncomputable, but the
+coefficient theorem identifies every wrapper coefficient with that scalar evaluator; the cast,
+degree, leading-coefficient, nonvanishing, and consecutive-leading-coefficient theorems connect
+it exactly to the ordinary real Legendre family.
+
+\path{FabiusLegendreRationalGram.lean} has exactly three public definitions,
+\lean{rvachevLegendreGramEntryRat}, \lean{rvachevLegendreGramMatrixRat}, and
+\lean{rvachevLegendreGramDetRat}, and eleven public theorems:
+\lean{rvachevLegendreGramEntryRat_eq_momentPairing},
+\lean{rvachevLegendreGramMatrixRat_apply},
+\lean{rvachevLegendreGramMatrixRat_eq_polynomialMomentGramMatrix},
+\lean{rvachevLegendreGramEntryRat_cast},
+\lean{rvachevLegendreGramMatrixRat_cast},
+\lean{rvachevLegendreGramDetRat_cast},
+\lean{rvachevLegendreGramDetRat_eq_prod_leadingCoeff_sq_mul_rvachevHankelDetRat},
+\lean{rvachevLegendreGramDetRat_zero},
+\lean{rvachevLegendreGramDetRat_pos},
+\lean{rvachevOrthoNormRat_eq_rvachevLegendreGramDetRat_ratio}, and
+\lean{rvachevJacobiSubdiagonalRat_eq_rvachevLegendreGramDetRat_ratio}.
+The entry, finite matrix, and determinant are executable rational data.  Their direct bounded
+moment sum closes entrywise rationality and their casts recover the analytic up-law pairing,
+matrix, and determinant for every genuine Fabius representative.  Strict positivity makes the
+rational norm and zero-based Jacobi determinant quotients genuine ratios.  These definitions
+therefore give an exact evaluation route for the frontier report's \(H_4\) and \(\beta_4\).
+
+\path{FabiusLegendreRationalGramValues.lean} has no public definitions and exactly eleven
+public theorems:
+\lean{moment_four},
+\lean{rvachevLegendreGramDetRat_one},
+\lean{rvachevLegendreGramDetRat_two},
+\lean{rvachevLegendreGramDetRat_three},
+\lean{rvachevLegendreGramDetRat_four},
+\lean{rvachevLegendreGramDetRat_five},
+\lean{rvachevOrthoNormRat_four},
+\lean{rvachevJacobiSubdiagonalRat_three},
+\lean{hankelRatio_four},
+\lean{integral_sq_upOrthoPolynomial_four}, and
+\lean{hankelRatio_four_div_three}.  Exact finite native computation certifies the fourth nontrivial
+even-moment value (the raw eighth moment) and the first five rational Legendre Gram
+determinants.  The last five theorems give
+the named values
+\[
+ H_4=\frac{26727424}{55791736875},
+ \qquad \beta_4=\frac{835232}{4640643},
+\]
+first for the rational norm and zero-based subdiagonal and then, under
+\(h_F:\lean{IsFabius}\,F\), for the real Hankel norm, squared integral, and quotient of the
+fourth and third Hankel ratios.  These are finite low-order certificates, not a general native
+evaluator.  Equality with the separate Gaunt/Wigner/\(3j\) entry formulas, Christoffel
+reconstruction, and the infinite or asymptotic Jacobi layers remain frontier obligations.
+
 This closure does not supply a complex logarithmic fixed point, complex order,
 pointwise or nontangential Sokhotski--Plemelj limits, a principal-value Hilbert-transform
 identity, or the full Jacobi/Pad\'e theory.  Separate current modules do prove the real
@@ -10216,6 +10276,9 @@ renormalization, Laurent/Herglotz/inversion layers, initial Jacobi data, and fin
 \path{GramStieltjesNaturality.lean}, \path{RvachevRationalJacobi.lean},
 \path{PolynomialMomentGramDeterminant.lean},
 \path{FabiusLegendreHankelDeterminant.lean},
+\path{LegendrePolynomialRational.lean},
+\path{FabiusLegendreRationalGram.lean},
+\path{FabiusLegendreRationalGramValues.lean},
 \path{EarlyApproximants.lean},
 \path{EarlyMeasureBridge.lean}, \path{WeakConvergence.lean},
 \path{ProbabilityLaplaceMoments.lean}, \path{LaplaceMoments.lean},

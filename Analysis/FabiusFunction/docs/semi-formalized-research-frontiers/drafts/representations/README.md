@@ -77,15 +77,17 @@ New standalone intake members:
   Libertinus prose, incomplete PDF metadata, and Type-3 plot fonts remain
   explicit post-intake normalization work.
 - [`Fabius_Rvachev_New_Frontiers-2/`](Fabius_Rvachev_New_Frontiers-2/),
-  *Fabius--Rvachev New Frontiers* (36 pp; 2619 source lines after the
-  2026-08-30 formal crosswalk, 2539 at landing), arrived on
+  *Fabius--Rvachev New Frontiers* (37 pp; 2539 source lines at landing, 2619
+  after the first 2026-08-30 formal crosswalk, and 2720 after the current
+  rational-data and finite-value crosswalk; all 15 active payload checksums
+  verify), arrived on
   2026-08-30 from a
   rootless archive with all 15 payload checksums verified. Its native up-law
   orthogonal polynomials, Jacobi and Christoffel reconstruction, rational
   limits and products for pi, Gauss--Pade structure, and Legendre--Gaunt
   determinants extend the moment, transform, and representation theme. It is
   distinct from the homonymous historical report already absorbed into
-  `Frontier_Compilations/`.  A post-intake source-only Lean crosswalk now closes
+  `Frontier_Compilations/`.  A post-intake Lean crosswalk now closes
   exactly the polynomial change-of-basis determinant sublayer.  The two
   definitions `polynomialCoefficientMatrix`, `polynomialMomentGramMatrix` and
   seven theorems `polynomialCoefficientMatrix_apply`,
@@ -118,9 +120,53 @@ New standalone intake members:
   Gaunt/Wigner/`3j` entry formula, entry
   rationality by that route, and Christoffel reconstruction remain outside
   this closure; `rvachevTranslateGram` is the distinct unweighted Gram kernel
-  of shifted-up atoms.  The refreshed 36-page A4/Libertinus PDF matches the
-  2619-line source; its 10 Type-3 font rows are the unchanged embedded-plot
-  baseline, and all 15 entries in the active payload ledger verify.
+  of shifted-up atoms.
+
+  A second compile-green tranche adds exactly 22 declarations.  The definitions
+  `legendrePolynomialCoeffRat`, `legendrePolynomialRat` and the theorems
+  `legendrePolynomialRat_cast`, `coeff_legendrePolynomialRat`,
+  `natDegree_legendrePolynomialRat`, `coeff_legendrePolynomialRat_self`,
+  `coeff_legendrePolynomialRat_self_ne_zero`, and
+  `coeff_legendrePolynomialRat_self_div_succ` form the complete public surface
+  of `LegendrePolynomialRational.lean`.  The scalar coefficient is executable;
+  its convenience polynomial wrapper is noncomputable and is identified
+  coefficientwise with that scalar evaluator.  The definitions
+  `rvachevLegendreGramEntryRat`, `rvachevLegendreGramMatrixRat`,
+  `rvachevLegendreGramDetRat` and the theorems
+  `rvachevLegendreGramEntryRat_eq_momentPairing`,
+  `rvachevLegendreGramMatrixRat_apply`,
+  `rvachevLegendreGramMatrixRat_eq_polynomialMomentGramMatrix`,
+  `rvachevLegendreGramEntryRat_cast`, `rvachevLegendreGramMatrixRat_cast`,
+  `rvachevLegendreGramDetRat_cast`,
+  `rvachevLegendreGramDetRat_eq_prod_leadingCoeff_sq_mul_rvachevHankelDetRat`,
+  `rvachevLegendreGramDetRat_zero`, `rvachevLegendreGramDetRat_pos`,
+  `rvachevOrthoNormRat_eq_rvachevLegendreGramDetRat_ratio`, and
+  `rvachevJacobiSubdiagonalRat_eq_rvachevLegendreGramDetRat_ratio` form the
+  complete public surface of `FabiusLegendreRationalGram.lean`.  Its entry,
+  finite matrix, and determinant are executable rational data; the direct
+  bounded moment sum closes entrywise rationality and the cast bridges recover
+  the analytic up-law Gram objects.  Positivity makes the rational norm and
+  zero-based Jacobi formulas genuine determinant ratios.
+
+  `FabiusLegendreRationalGramValues.lean` adds no definitions and exactly the
+  eleven theorems `moment_four`, `rvachevLegendreGramDetRat_one`,
+  `rvachevLegendreGramDetRat_two`, `rvachevLegendreGramDetRat_three`,
+  `rvachevLegendreGramDetRat_four`, `rvachevLegendreGramDetRat_five`,
+  `rvachevOrthoNormRat_four`, `rvachevJacobiSubdiagonalRat_three`,
+  `hankelRatio_four`, `integral_sq_upOrthoPolynomial_four`, and
+  `hankelRatio_four_div_three`.  These exact finite native-computation
+  certificates cover the fourth nontrivial even-moment value (the raw eighth
+  moment), rational Gram determinants through
+  order five, and the now-named values
+  `H_4 = 26727424/55791736875` and `beta_4 = 835232/4640643`.  For every genuine
+  Fabius representative, `H_4` is also the real Hankel ratio and squared integral,
+  while `beta_4` is the quotient of the fourth and third real Hankel ratios.
+  This is not a general native evaluator.  Equality with the finite
+  Gaunt/Wigner/`3j` formulas, Christoffel reconstruction, and
+  infinite/asymptotic Jacobi theory remain open.  The rebuilt 37-page A4 PDF
+  embeds Libertinus prose and preserves exactly the ten Type-3 font rows from
+  the five vector-plot payloads; all 51 crosswalk names extract, all pages were
+  visually inspected, and the refreshed 15-entry ledger verifies completely.
 - [`Fabius_Stein_Koopman_Frontier_Report/`](Fabius_Stein_Koopman_Frontier_Report/),
   *Dyadic Stein--Koopman and q-Oscillator Calculus for the Fabius--Rvachev
   Law* (32 pp), arrived on 2026-08-30 with all 20 payload checksums verified.
@@ -129,8 +175,9 @@ New standalone intake members:
   kernel, and endpoint asymptotics extend the operator-representation theme.
 
 All six remain standalone pending deliberate consolidation and completion of
-their claim-by-claim Lean crosswalks; the determinant sublayer just identified
-is the recorded partial crosswalk for `Fabius_Rvachev_New_Frontiers-2/`.
+their claim-by-claim Lean crosswalks; the determinant and exact-value sublayers
+just identified are the recorded partial crosswalk for
+`Fabius_Rvachev_New_Frontiers-2/`.
 Other paper theorem labels do not by themselves assert Lean status.
 
 Series and orthogonal-expansion representations of the up-function,
