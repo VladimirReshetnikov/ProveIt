@@ -158,6 +158,8 @@ def collect(arguments: list[str], docs: Path, archive: Path) -> list[Path]:
         path = Path(raw).resolve()
         if not path.exists():
             raise FileNotFoundError(raw)
+        if is_under(path, archive):
+            raise ValueError(f"archive is excluded: {path}")
         candidates = path.rglob("*.tex") if path.is_dir() else [path]
         for candidate in candidates:
             candidate = candidate.resolve()
@@ -166,7 +168,10 @@ def collect(arguments: list[str], docs: Path, archive: Path) -> list[Path]:
             if not is_under(candidate, docs):
                 raise ValueError(f"outside docs tree: {candidate}")
             if is_under(candidate, archive):
-                raise ValueError(f"archive is excluded: {candidate}")
+                # A parent directory such as docs/ legitimately contains the
+                # excluded archive subtree.  Explicit archive arguments were
+                # rejected above; recursive discovery simply omits them.
+                continue
             if candidate.name == CANONICAL_INPUT:
                 continue
             found.add(candidate)

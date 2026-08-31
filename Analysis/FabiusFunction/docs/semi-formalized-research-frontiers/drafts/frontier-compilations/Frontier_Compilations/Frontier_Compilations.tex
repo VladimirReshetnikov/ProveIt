@@ -2413,9 +2413,8 @@ G.~Gasper and M.~Rahman,
 
 % extra macros for part 2
 \renewcommand{\headrulewidth}{0.4pt}
-\newcommand{\sgnPartx}{\operatorname{sgn}}
-\newcommand{\ord}{\operatorname{ord}}
-\newcommand{\suppPartx}{\operatorname{supp}}
+\newcommand{\sgnPartx}{\Sign}
+\newcommand{\suppPartx}{\SupportOperator}
 \newcommand{\VarPartx}{\operatorname{Var}}
 \newcommand{\vb}{\nu_b}
 \newcommand{\absPartx}[1]{\left\lvert #1\right\rvert}
@@ -2630,7 +2629,7 @@ Euler's product for sine and an absolutely convergent rearrangement give
 \end{equation}
 Thus
 \begin{equation}
- \ord_{z=n}\Phi=a(n),\qquad n\in\IntegerNumbers\setminus\{0\}.          \label{p2:eq:zero-order}
+ \OrderOperator_{z=n}\Phi=a(n),\qquad n\in\IntegerNumbers\setminus\{0\}.          \label{p2:eq:zero-order}
 \end{equation}
 This identity is an established corpus input.  Everything in
 \cref{p2:sec:spectrum,p2:sec:weighted,p2:sec:mellin,p2:sec:qfinite} is driven by taking it
@@ -3050,7 +3049,7 @@ argument.
 \begin{definition}[Zero spectral zeta function]
 For $\Re s>1$, set
 \begin{equation}
- Z_\Phi(s)=\sum_{n\ge1}\frac{\ord_n\Phi}{n^s}
+ Z_\Phi(s)=\sum_{n\ge1}\frac{\OrderOperator_n\Phi}{n^s}
           =\sum_{n\ge1}\frac{a(n)}{n^s}.                  \label{p2:eq:Zphi}
 \end{equation}
 \end{definition}
@@ -3808,7 +3807,7 @@ V.~Reshetnikov,
 % extra macros for part 3
 \renewcommand{\headrulewidth}{0.35pt}
 \renewcommand{\headrule}{\hbox to\headwidth{\color{rulegray}\leaders\hrule height \headrulewidth\hfill}}
-\newcommand{\sgnPartl}{\operatorname{sgn}}
+\newcommand{\sgnPartl}{\Sign}
 \newcommand{\VarPartl}{\operatorname{Var}}
 \newcommand{\bigOPartl}{\mathrm O}
 \newcommand{\smalloPartl}{\mathrm o}
@@ -4644,7 +4643,7 @@ $\widehat f(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\Diffe
 \end{equation}
 This is the $b=2$ case, so $q=1/4$.  Its nonzero zeros are precisely the integers, with
 \begin{equation}
- \ord_{x=m}\Phi=1+\TwoAdicValuation(|m|),\qquad m\in\IntegerNumbers\setminus\{0\}.
+ \OrderOperator_{x=m}\Phi=1+\TwoAdicValuation(|m|),\qquad m\in\IntegerNumbers\setminus\{0\}.
  \label{p3:eq:integer-multiplicity}
 \end{equation}
 The sign on $(m,m+1)$ is the signed Thue--Morse value $(-1)^{\BinaryDigitSum(m)}$ for $m\ge0$;
@@ -5159,8 +5158,8 @@ D. Reidel, 1974.
 % extra macros for part 4
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\arraystretch}{1.13}
-\newcommand{\wtPartc}{\operatorname{wt}_2}
-\newcommand{\suppPartc}{\operatorname{supp}}
+\newcommand{\wtPartc}{\BinaryDigitSum}
+\newcommand{\suppPartc}{\SupportOperator}
 \newcommand{\VarPartc}{\operatorname{Var}}
 \newcommand{\D}{\mathrm D}
 \newcommand{\Dyad}{\mathbb D_2}
@@ -5262,7 +5261,7 @@ Reciprocal-moment Appell polynomials $\Acard_n^{[r]}$ then give finite exact for
 $\sum_k\Acard_n^{[r]}(k)U_r(x-k)=x^n$ for $n\le r$.  Their coefficients are explicit complete Bell polynomials in Bernoulli cumulants; their dyadic scale transport is governed by the Bernoulli-polynomial values $B_n(1/2)$; and, because $\Acard_n(x;Q)$ is polynomial in $Q=4^r$, the scale sequence obeys exact q-binomial finite-difference closures at $q=1/4$.
 
 Third, two independent obstructions exclude holonomicity.  The midpoint identity propagates nonanalyticity backward through the dyadic tent map, proving that $F$ is nonanalytic at every dyadic rational; the same mechanism gives dense nonanalytic sets for $F^{-1}$ and $\RvachevUp$.  Hence none is locally D-finite on any open interval.  Independently, the unbounded multiplicities
-$\ord_m\widehat\RvachevUp=1+\nu_2(|m|)$ rule out a polynomial-coefficient differential equation for the entire Fourier transform.  This implies non-D-finiteness of the moment generating functions, non-P-recursiveness of the moment sequences, and non-P-recursiveness of every fixed-$x$ Appell coefficient sequence.  Symbolic and high-precision numerical experiments accompany the proofs, and the fully commented Python program is included in the archive.
+$\OrderOperator_m\widehat\RvachevUp=1+\nu_2(|m|)$ rule out a polynomial-coefficient differential equation for the entire Fourier transform.  This implies non-D-finiteness of the moment generating functions, non-P-recursiveness of the moment sequences, and non-P-recursiveness of every fixed-$x$ Appell coefficient sequence.  Symbolic and high-precision numerical experiments accompany the proofs, and the fully commented Python program is included in the archive.
 \end{abstract}
 
 \begin{tcolorbox}[colback=lightorange,colframe=conjorange,title=Priority and novelty disclaimer,fonttitle=\bfseries]
@@ -5729,12 +5728,12 @@ Thus the universal part of the integer zero multiplicity is literally the moment
 \label{p4:prop:zero-multiplicity}
 For every nonzero integer $m$,
 \begin{equation}
- \ord_m\widehat U=1+\nu_2(|m|).
+ \OrderOperator_m\widehat U=1+\nu_2(|m|).
  \label{p4:eq:zero-multiplicity}
 \end{equation}
 Consequently, for every nonzero $\ell\in\IntegerNumbers$,
 \begin{equation}
- \ord_\ell\widehat U_r=r+1+\nu_2(|\ell|).
+ \OrderOperator_\ell\widehat U_r=r+1+\nu_2(|\ell|).
  \label{p4:eq:scaled-zero-multiplicity}
 \end{equation}
 \end{proposition}
@@ -6503,12 +6502,11 @@ C. R. Acad. Sci. Paris \textbf{33} (1851), 225.
 \renewcommand{\headrulewidth}{0.4pt}
 \newcommand{\VarPartii}{\operatorname{Var}}
 \newcommand{\CovPartii}{\operatorname{Cov}}
-\newcommand{\suppPartii}{\operatorname{supp}}
-\newcommand{\sgnPartii}{\operatorname{sgn}}
+\newcommand{\suppPartii}{\SupportOperator}
+\newcommand{\sgnPartii}{\Sign}
 \newcommand{\vtwoPartii}{v_2}
-\newcommand{\diagPartii}{\operatorname{diag}}
+\newcommand{\diagPartii}{\DiagonalOperator}
 \newcommand{\Cum}{\operatorname{Cum}}
-\newcommand{\dist}{\mathrel{\stackrel{\mathrm d}=}}
 \newcommand{\repoPartii}{\nolinkurl{Analysis/FabiusFunction}}
 \newcommand{\statusproved}{\textcolor{provedgreen}{\textbf{proved here}}}
 \newcommand{\statusfrontier}{\textcolor{cautionorange}{\textbf{frontier proposal}}}
@@ -6669,7 +6667,7 @@ $U_k=2V_k-1$, uniform on $[-1,1]$.  Define
 \end{equation}
 Then $X\in[0,1]$, $Y\in[-1,1]$, and
 \begin{equation}\label{p5:eq:symmetry}
- X\dist1-X,\qquad Y\dist-Y.
+ X\EqualInLaw1-X,\qquad Y\EqualInLaw-Y.
 \end{equation}
 The distribution function of $X$ is the bounded Fabius function, and the density
 of $Y$ is Rvachev's $\RvachevUp$-function.  We write
@@ -7086,7 +7084,7 @@ Its Laplace transform is exactly
 \end{equation}
 Equivalently,
 \begin{equation}\label{p5:eq:V-grouped}
- V_\tau\dist\sum_{m\ge1}H_m,
+ V_\tau\EqualInLaw\sum_{m\ge1}H_m,
  \qquad
  H_m\sim\operatorname{Gamma}(\tau a_m,\text{rate }m^2)
 \end{equation}
@@ -7157,7 +7155,7 @@ Euler's product for $\sinh$ gives
 \begin{corollary}[Gamma perpetuity]\label{p5:cor:perpetuity}
 Let $V_\tau'$ be an independent copy of $V_\tau$.  Then
 \begin{equation}\label{p5:eq:perpetuity}
- \boxed{V_\tau\dist B_\tau+\frac14V_\tau'.}
+ \boxed{V_\tau\EqualInLaw B_\tau+\frac14V_\tau'.}
 \end{equation}
 This equation has a unique law on $[0,\infty)$ with finite first moment.
 \end{corollary}
@@ -7681,7 +7679,7 @@ Thus
 
 \subsection{Ordinary Fabius moments}
 
-By symmetry $X\dist1-X$,
+By symmetry $X\EqualInLaw1-X$,
 \begin{equation}\label{p5:eq:mn-M}
  m_n=\Expectation X^n=\Expectation(1-X)^n=M_n(1).
 \end{equation}
@@ -8170,8 +8168,8 @@ current snapshot.
 % extra macros for part 6
 \renewcommand{\headrulewidth}{0.35pt}
 \renewcommand{\headrule}{\hbox to\headwidth{\color{RuleGray}\leaders\hrule height \headrulewidth\hfill}}
-\newcommand{\suppPartvv}{\operatorname{supp}}
-\newcommand{\sgnPartvv}{\operatorname{sgn}}
+\newcommand{\suppPartvv}{\SupportOperator}
+\newcommand{\sgnPartvv}{\Sign}
 \newcommand{\DFT}{\operatorname{DFT}}
 \newcommand{\ThetaTM}{\Theta_{\!\mathrm{TM}}}
 \newcommand{\Bell}{\mathcal B}
@@ -9716,7 +9714,7 @@ V. Reshetnikov,
 \renewcommand{\headrulewidth}{0.4pt}
 \newcommand{\FP}{\operatorname*{FP}}
 \newcommand{\arsinh}{\operatorname{arsinh}}
-\newcommand{\sgnPartxx}{\operatorname{sgn}}
+\newcommand{\sgnPartxx}{\Sign}
 \newcommand{\ddPartxx}{\,\mathrm{d}}
 \newcommand{\Hh}{\mathcal H}
 \newcommand{\Ecal}{\mathscr E}
@@ -11384,7 +11382,7 @@ Cambridge University Press, 2003.
 
 
 % extra macros for part 8
-\newcommand{\sgnPartll}{\operatorname{sgn}}
+\newcommand{\sgnPartll}{\Sign}
 \newcommand{\ddPartll}{\,\mathrm{d}}
 \newcommand{\ePartll}{\mathrm{e}}
 \newcommand{\iiPartll}{\mathrm{i}}
@@ -13325,9 +13323,9 @@ source TeX included in the repository as \texttt{Lacunary\_products.tex}.
 % extra macros for part 9
 \renewcommand{\headrulewidth}{0.4pt}
 \newcommand{\VarPartcc}{\operatorname{Var}}
-\newcommand{\suppPartcc}{\operatorname{supp}}
+\newcommand{\suppPartcc}{\SupportOperator}
 \newcommand{\vtwoPartcc}{v_2}
-\newcommand{\wtPartcc}{\operatorname{wt}_2}
+\newcommand{\wtPartcc}{\BinaryDigitSum}
 \newcommand{\Mellin}{\mathcal M}
 \newcommand{\falling}[2]{(#1)_{\underline{#2}}}
 \newcommand{\statusE}{\textsf{[E]}}
@@ -13368,7 +13366,7 @@ $-\log\Theta(\EulerE^{-s})$.  Its Lambert-series coefficients satisfy
 \[
  -\log\Theta(\EulerE^{-s})
  =\sum_{n\ge1}\frac{2^{\vtwoPartcc(n)+1}-1}{n}\EulerE^{-ns}
- =\sum_{n\ge1}\frac{2^{\ord_{z=n}\widehat\RvachevUp}-1}{n}\EulerE^{-ns},
+ =\sum_{n\ge1}\frac{2^{\OrderOperator_{z=n}\widehat\RvachevUp}-1}{n}\EulerE^{-ns},
 \]
 giving a direct spectral--endpoint dictionary.  Third, its Mellin transform is
 \[
@@ -13691,7 +13689,7 @@ declarations are
 complex scale \(r\) and argument \(z\) with \(\lVert r\rVert<1\), the last
 theorem states
 \[
- \prod_{n\ge0}\sinc(\pi r^n z)
+ \prod_{n\ge0}\SincRad(\pi r^n z)
  =\prod_{k\ge0}\left(\frac{z^2}{(k+1)^2};r^2\right)_\infty .
 \]
 The first two declarations prove absolute summability of the paired Euler
@@ -13771,7 +13769,7 @@ Set $q=1/4$.  Then $\Phi_{1/4}=\Phi=\widehat\RvachevUp$.
 \end{equation}
 Thus the nonzero zeros of $\Phi$ are exactly the integers, and
 \begin{equation}
- \boxed{\ord_{z=n}\Phi=\vtwoPartcc(|n|)+1\qquad(n\in\IntegerNumbers\setminus\{0\}).} \label{p9:eq:zero-mult}
+ \boxed{\OrderOperator_{z=n}\Phi=\vtwoPartcc(|n|)+1\qquad(n\in\IntegerNumbers\setminus\{0\}).} \label{p9:eq:zero-mult}
 \end{equation}
 Moreover
 \begin{equation}
@@ -13966,7 +13964,7 @@ $s\ge s_0>0$.
 
 \begin{theorem}[Endpoint coefficients from Fourier zero multiplicities]
 \label{p9:thm:spectral-endpoint}
-\statusN\ Let $\mu(n)=\ord_{z=n}\Phi$.  Then
+\statusN\ Let $\mu(n)=\OrderOperator_{z=n}\Phi$.  Then
 \begin{equation}
  a(n)=2^{\mu(n)}-1,                                        \label{p9:eq:a-mu}
 \end{equation}
@@ -13974,13 +13972,13 @@ and hence
 \begin{equation}
  \boxed{
  -\log\Theta(\EulerE^{-s})
- =\sum_{n\ge1}\frac{2^{\ord_{z=n}\Phi}-1}{n}\EulerE^{-ns}.}   \label{p9:eq:spectral-endpoint}
+ =\sum_{n\ge1}\frac{2^{\OrderOperator_{z=n}\Phi}-1}{n}\EulerE^{-ns}.}   \label{p9:eq:spectral-endpoint}
 \end{equation}
 Equivalently, the weighted zero-multiplicity Dirichlet series is
 \begin{equation}
  \boxed{
  \mathfrak Z_\Phi(w):=
- \sum_{n\ge1}\frac{2^{\ord_{z=n}\Phi}-1}{n^w}
+ \sum_{n\ge1}\frac{2^{\OrderOperator_{z=n}\Phi}-1}{n^w}
  =\frac{\zeta(w)}{1-2^{1-w}},\qquad \Re w>1.}             \label{p9:eq:weighted-zero-zeta}
 \end{equation}
 \end{theorem}
@@ -14007,7 +14005,7 @@ individual exponential coefficient with a local spectral multiplicity.
 \begin{center}
 \begin{tabular}{@{}rrrr@{}}
 \toprule
-$n$ & $\vtwoPartcc(n)$ & $\ord_{z=n}\Phi$ & coefficient of $\EulerE^{-ns}$ in $\mathcal E(s)$\\
+$n$ & $\vtwoPartcc(n)$ & $\OrderOperator_{z=n}\Phi$ & coefficient of $\EulerE^{-ns}$ in $\mathcal E(s)$\\
 \midrule
 1 & 0 & 1 & $1$\\
 2 & 1 & 2 & $3/2$\\
@@ -14581,7 +14579,7 @@ formal Thue--Morse polynomial and Prouhet cancellation.
 \item \textbf{Endpoint Mahler identity:} prove
 $\mathcal E(s)=-\log\Theta(\EulerE^{-s})$ and the $2$-adic Lambert expansion.
 \item \textbf{Spectral--endpoint coefficient theorem:} identify the Lambert coefficient
-with $2^{\ord_n\Phi}-1$.
+with $2^{\OrderOperator_n\Phi}-1$.
 \item \textbf{Centered moment recurrence:} derive
 \eqref{p9:eq:centered-moment-rec} from the already formal sinc product.
 \item \textbf{Periodic Lambert map:} package the exact saddle equation and derivative
@@ -14835,7 +14833,7 @@ $R$ & $sT'(s)$, the exponentially small derivative correction\\
 $A$ & $-s\Lambda'(s)=s\Expectation_sX$\\
 $\Pi$ & $-1/2-P'/L$, the periodic part of $A-\log_2s$\\
 $C$ & $\Pi(u)+R(2^u)$, the exact bounded saddle perturbation\\
-$\mu(n)$ & integer-zero multiplicity $\ord_{z=n}\Phi=\vtwoPartcc(n)+1$\\
+$\mu(n)$ & integer-zero multiplicity $\OrderOperator_{z=n}\Phi=\vtwoPartcc(n)+1$\\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -14906,12 +14904,12 @@ Advances in Computational Mathematics \textbf{5} (1996), 329--359.
 \renewcommand{\headrulewidth}{0.4pt}
 \newcommand{\VarPartiii}{\operatorname{Var}}
 \newcommand{\CovPartiii}{\operatorname{Cov}}
-\newcommand{\suppPartiii}{\operatorname{supp}}
-\newcommand{\wtPartiii}{\operatorname{wt}_2}
+\newcommand{\suppPartiii}{\SupportOperator}
+\newcommand{\wtPartiii}{\BinaryDigitSum}
 \newcommand{\LawPartiii}{\mathcal L}
 \newcommand{\Normal}{\mathcal N}
 \newcommand{\He}{\operatorname{He}}
-\newcommand{\diagPartiii}{\operatorname{diag}}
+\newcommand{\diagPartiii}{\DiagonalOperator}
 \newcommand{\convexorder}{\preceq_{\mathrm{cx}}}
 \definecolor{provedgreen}{RGB}{25,105,70}
 \definecolor{conjecturered}{RGB}{150,45,45}
@@ -15010,7 +15008,7 @@ negative contractions, and \(t\in\RealNumbers\), putting \(z_q(t)=(1-q)t/(2\pi)\
 Moreover, \path{tendstoLocallyUniformly_prefix_sinc_charFun} proves that the displayed
 phase-bearing finite prefixes converge locally uniformly on the real frequency line to
 \(\phi_q\), and \path{tendstoUniformlyOn_prefix_sinc_charFun} gives the explicit uniform
-wrapper on every compact subset of \(\R\).  Independently, for every nonzero such \(q\),
+wrapper on every compact subset of \(\RealNumbers\).  Independently, for every nonzero such \(q\),
 direct named Cauchy-transform and adjacent-power refinement equations hold off the exact
 support.  A named centered wrapper, the report's
 rapid-decay and inversion proof, explicit Bernoulli-cumulant/Bell-moment formulas and
@@ -15125,7 +15123,7 @@ ratios, \path{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincPro
 Here \(G_q(z)\) denotes \path{geometricReciprocalGamma} applied to \(q,z\).
 The additional declarations \path{tendstoLocallyUniformly_prefix_sinc_charFun} and
 \path{tendstoUniformlyOn_prefix_sinc_charFun} upgrade the same real-frequency prefixes to
-local uniform convergence and uniform convergence on every compact subset of \(\R\).
+local uniform convergence and uniform convergence on every compact subset of \(\RealNumbers\).
 Still frontier are a named centered wrapper, the rapid-decay bound and Fourier
 inversion route, a closed higher-derivative refinement and endpoint-flatness wrapper, the
 shape transition, further transforms, and explicit Bernoulli-cumulant/Bell-moment formulas
@@ -15456,8 +15454,8 @@ with \path{tendstoLocallyUniformly_prefix_sinc_charFun} and
  =\EulerE^{\ImaginaryUnit t/2}G_q(z_q(t))G_q(-z_q(t)).
 \]
 The range again includes \(q=0\) and negative contractions.  The latter two theorems state
-that the phase-bearing finite prefixes converge locally uniformly on \(\R\), hence uniformly
-on every compact \(K\subset\R\), to \(\phi_q\).  No named centered wrapper is asserted.
+that the phase-bearing finite prefixes converge locally uniformly on \(\RealNumbers\), hence uniformly
+on every compact \(K\subset\RealNumbers\), to \(\phi_q\).  No named centered wrapper is asserted.
 
 The three generic real-CDF declarations in \path{ContinuousCDF.lean} are
 \path{continuous_cdf_of_nullSingleton},
