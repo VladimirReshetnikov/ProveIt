@@ -39,6 +39,44 @@ of editions.  Shared titles or formulas therefore do not imply ancestry.  The
 concordance records semantic provenance per result rather than selecting a
 single package wholesale.
 
+## Post-retirement audit reconciliation
+
+The later integration commit `53c431137` replayed seven audit-only sidecars
+from an older branch into the already retired paths
+`inverse_q_analogs_report/` and
+`q_pochhammer_q_binomial_expansions_report/`.  They contained no new theorem
+statement, proof, TeX source, PDF, experiment program, figure, or numerical
+payload.  Their nonduplicative evidence was reviewed and is preserved here;
+the redundant sidecars were then retired again so that the canonical package
+remains the sole live inverse-q document.
+
+For `inverse_q_analogs_report/`, the sidecars confirm that the original
+17-file delivery matched the archive hash already recorded above, and that a
+later normalized edition passed three strict serial pdfLaTeX runs, a complete
+51-page visual inspection, and deterministic replay of all seven textual data
+outputs.  That edition had TeX SHA-256
+`de375ee059e0ee9485286aea13e917363854d610b5ff77672001828fa663699b`
+and PDF SHA-256
+`1ef95365aa42fc5426dc7f7533096ecdc9605479fa1eb6c2b8757fc25e086fdb`.
+Its repaired endpoint, safeguarded-Newton, near-unit truncation-cost, and
+conditional-radicals statements are represented in the source concordance and
+the corrected canonical proofs.  The exact reship
+`Fabius_Rvachev_Frontier_Report_2026-08-30-E.zip`, with outer SHA-256
+`174bf733156cd874cf4f9321c6ab71ca44f311856cc01dc158ddf83dc00cf813`,
+was byte-identical to the filed package after documented line-ending
+normalization and introduced no additional mathematical content.
+
+For `q_pochhammer_q_binomial_expansions_report/`, the sidecars confirm a
+seven-file normalized ledger, exact replay of the retained 44-line numerical
+output, three clean serial pdfLaTeX passes, and visual inspection of the
+39-page report.  The validated source had SHA-256
+`2d3d47cb82ebeea01d43858599e78ddff3d0c97ac62cbe4f09e3ad7314eb4aee`
+and its PDF had SHA-256
+`88f8e5b4272a949a0521561d2328eb8312167726fbad5c80088ee017921463c5`.
+The retained program and numerical output already live in the canonical
+asset tree.  Git commit `53c431137` remains the byte-level archive for all
+seven sidecars summarized in this section.
+
 For that reason the consolidation lives in the neutral
 `inverse_q_analogs_and_series/` directory.  Although the extended report has
 the broadest pre-existing asset layout, promoting it in place would falsely
