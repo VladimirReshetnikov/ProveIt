@@ -17,10 +17,10 @@ operators point in opposite directions.
 For polynomials define
 \begin{equation}
  \langle f,g\rangle_-=
- \int_{-1}^{1}(\MM_u(D)f)(x)(\MM_u(D)g)(x)\dd x,
+ \int_{-1}^{1}(\MM_u(D)f)(x)(\MM_u(D)g)(x)\Differential x,
  \qquad
  \langle f,g\rangle_+=
- \int_{-1}^{1}(\mathscr D_uf)(x)(\mathscr D_ug)(x)\dd x.
+ \int_{-1}^{1}(\mathscr D_uf)(x)(\mathscr D_ug)(x)\Differential x.
  \label{eq:leg2-pullback-inner-products}
 \end{equation}
 Both forms are positive definite because the two triangular differential
@@ -54,7 +54,7 @@ This exact orthogonality is not integration against a hidden scalar weight.
 There is no finite signed measure $\rho$, with all polynomial moments, such
 that
 \[
- \langle f,g\rangle_-=\int f(x)g(x)\dd\rho(x)
+ \langle f,g\rangle_-=\int f(x)g(x)\Differential\rho(x)
 \]
 for all polynomials.  Moreover, if $\widehat Q_n^-$ denotes the monic
 normalization, then
@@ -80,10 +80,10 @@ Every scalar moment form makes multiplication by $x$ symmetric.  Here
 $\MM_u(D)x=x$ and
 $\MM_u(D)x^2=x^2+\mu_2=x^2+1/9$, so
 \[
- \langle x,x\rangle_-=\int_{-1}^{1}x^2\dd x=\frac23,
+ \langle x,x\rangle_-=\int_{-1}^{1}x^2\Differential x=\frac23,
  \qquad
  \langle1,x^2\rangle_-=
- \int_{-1}^{1}\left(x^2+\frac19\right)\dd x=\frac89.
+ \int_{-1}^{1}\left(x^2+\frac19\right)\Differential x=\frac89.
 \]
 The inequality contradicts scalar symmetry.
 
@@ -183,8 +183,8 @@ $\omega_j>0$ be their quadrature weights, and put
  \sum_{n=0}^{d}\frac{Q_n^-(t)P_n(y)}{h_n}.
  \label{eq:leg2-Gauss-kernels}
 \end{equation}
-Let $m\in\N_{>0}$ satisfy $\vtwo(m)\ge d$, put
-$h=m^{-1}$ and $K_m=\{k\in\Z:|k|<2m\}$, and define
+Let $m\in\PositiveIntegers$ satisfy $\TwoAdicValuation(m)\ge d$, put
+$h=m^{-1}$ and $K_m=\{k\in\IntegerNumbers:|k|<2m\}$, and define
 $\mathbf D_{kn}=hQ_n^-(kh)$ for $k\in K_m$, $0\le n\le d$,
 $V_{jn}=P_n(\xi_j)$ for $0\le j,n\le d$,
 $W=\operatorname{diag}(\omega_0,\ldots,\omega_d)$, and
@@ -358,7 +358,7 @@ Thus $\sum_rb_r\Phi_{d,r}$ belongs to $\Pi_d$ if and only if
 $\tau_d^Tb=0$, by \cref{thm:certificate}.  Define
 \begin{equation}
  (\mathsf L_d)_{n,r}=
- \frac{2n+1}{2}\int_{-1}^{1}\Phi_{d,r}(x)P_n(x)\dd x
+ \frac{2n+1}{2}\int_{-1}^{1}\Phi_{d,r}(x)P_n(x)\Differential x
  \quad(0\le n\le d),
  \qquad
  \mathcal Q_d=\begin{pmatrix}\mathsf L_d\\\tau_d^T\end{pmatrix}.
@@ -489,7 +489,7 @@ the cell midpoint.
 
 \begin{proof}
 The local decomposition
-$V_d=\Pi_d\oplus\Span\{\mathcal D_d\}$ makes $V_d/\Pi_d$
+$V_d=\Pi_d\oplus\SpanOperator\{\mathcal D_d\}$ makes $V_d/\Pi_d$
 one-dimensional.  By \cref{lem:leg2-defect-parity}, the extra direction is
 antisymmetric when $d=2N$ and symmetric when $d=2N+1$.  Hence the opposite
 parity sector has the same dimension as its polynomial subspace; containment
@@ -641,7 +641,7 @@ convolution by $g_j$.  Its Schur complement is
 \]
 This proves \eqref{eq:leg2-central-determinant}.  The inverse series has
 integer coefficients because $A_{2N-1}(0)=1$ and the polynomial is
-monic over $\Z$.  Thus $\sigma_N\in\Z$; as $C_N$ is even, the final factor is
+monic over $\IntegerNumbers$.  Thus $\sigma_N\in\IntegerNumbers$; as $C_N$ is even, the final factor is
 odd and cannot vanish.
 \end{proof}
 
@@ -660,7 +660,7 @@ Let $\mathbf S_N$ collect those blocks,
 $\mathbf P_N=(P_0,P_2,\ldots,P_{2N})^T$,
 $\mathbf P_N=\mathsf U_N\mathbf S_N$, and
 \[
- \mathcal G_N=\int_{-1}^{1}\mathbf S_N\mathbf S_N^T\dd x,
+ \mathcal G_N=\int_{-1}^{1}\mathbf S_N\mathbf S_N^T\Differential x,
  \qquad
  H_N^+=\operatorname{diag}(h_0,h_2,\ldots,h_{2N}).
 \]
@@ -704,7 +704,7 @@ The two integer determinants must therefore remain distinct.
 \label{thm:leg2-Cinfty-convergence}
 For all integers $r,L\ge0$,
 \begin{equation}
- \boxed{\|u-S_N\|_{C^r[-1,1]}=\bigO_{r,L}(N^{-L}).}
+ \boxed{\|u-S_N\|_{C^r[-1,1]}=\BigO_{r,L}(N^{-L}).}
  \label{eq:leg2-Cinfty-convergence}
 \end{equation}
 \end{theorem}
@@ -718,8 +718,8 @@ repeated integration by parts gives, for every $s\ge0$ and $\ell\ge1$,
  \int_{-1}^{1}(\mathcal L^su)P_\ell.
 \]
 The last integral is bounded uniformly in $\ell$, so the Legendre coefficient
-$a_n$ is $\bigO_s(n^{1-2s})$.  For fixed $r$,
-$\|P_\ell^{(r)}\|_\infty=\bigO_r(\ell^{2r})$.  Sum the differentiated tail
+$a_n$ is $\BigO_s(n^{1-2s})$.  For fixed $r$,
+$\|P_\ell^{(r)}\|_\infty=\BigO_r(\ell^{2r})$.  Sum the differentiated tail
 and choose $s$ larger than $L+r+2$.
 \end{proof}
 
@@ -740,7 +740,7 @@ This is equation \texttt{fourier-two-sided-envelope} in
 
 \begin{theorem}[Log-square decay inherited from the sinc product]
 \label{thm:leg2-log-square}
-There exist constants $C>0$ and $n_0\in\N$ such that, for every $n\ge n_0$,
+There exist constants $C>0$ and $n_0\in\NaturalNumbers$ such that, for every $n\ge n_0$,
 \begin{equation}
  \boxed{|a_n|\le
  C\frac{n^\sigma}{\log n}
@@ -762,12 +762,12 @@ Use \eqref{eq:leg-Lambda-bessel} at $m=2n,c=0$ and split the integral at
 $X_n=n/(2\pi)$.  The power series for $J_\nu$, followed by Stirling, gives
 constants $C_1>0$ and $q<1$ such that
 $|j_{2n}(t)|\le C_1q^{2n}$ for $|t|\le n$.  Thus the inner integral is
-$\bigO(n^2q^{2n})$.  On the complement use $|j_{2n}|\le1$ and
+$\BigO(n^2q^{2n})$.  On the complement use $|j_{2n}|\le1$ and
 \eqref{eq:leg2-fourier-envelope}.  With $a=\log2$ and $\kappa>1$, convexity of
 $t^2/(2a)+(\kappa-1)t$ after the substitution $t=\log x$ yields
 \[
  \int_X^\infty
- \exp\!\left(-\frac{(\log x)^2}{2a}\right)x^{-\kappa}\dd x
+ \exp\!\left(-\frac{(\log x)^2}{2a}\right)x^{-\kappa}\Differential x
  \le
  \frac{aX^{1-\kappa}}
  {\log X+(\kappa-1)a}
@@ -783,10 +783,10 @@ exponentially small inner contribution is absorbed.  Taking logarithms gives
 \label{thm:leg2-moment-units}
 For every $m\ge0$,
 \begin{equation}
- \boxed{\vtwo(\mu_{2m})=0,\qquad \mu_{2m}\equiv1\pmod2}
+ \boxed{\TwoAdicValuation(\mu_{2m})=0,\qquad \mu_{2m}\equiv1\pmod2}
  \label{eq:leg2-moment-units}
 \end{equation}
-inside $\Q_2$.
+inside $\RationalNumbers_2$.
 \end{theorem}
 
 \begin{proof}
@@ -845,7 +845,7 @@ The only analytic function with the zero endpoint Taylor series is locally
 zero, contradicting $u(0)=1$.  This proves \eqref{eq:leg2-an-root}.
 
 Equation \eqref{eq:leg2-an-root} says that no geometric bound
-$|a_N|=\bigO(\rho^{-2N})$ with $\rho>1$ can hold.  Fix
+$|a_N|=\BigO(\rho^{-2N})$ with $\rho>1$ can hold.  Fix
 $1<\rho<\rho_0$.  Infinitely many $N$ have $|a_N|>\rho^{-2N}$, while
 \[
  |P_{2N}(-2)|\asymp\frac{\rho_0^{2N}}{\sqrt N}.
@@ -858,7 +858,7 @@ ladder amplitude $D_{2N}=(2N)!2^{\binom{2N+1}{2}}$ proves
 \eqref{eq:leg2-top-amplitude}.  The coefficient bound
 $|a_N|\le(4N+1)/2$ and \eqref{eq:leg2-an-root} show that its logarithm
 contributes $o(N^2)$ along the limsup.  Stirling shows that the factorial and
-central binomial contribute only $\bigO(N\log N)$.  The sole quadratic term is
+central binomial contribute only $\BigO(N\log N)$.  The sole quadratic term is
 $\binom{2N+1}{2}\log2=(2N^2+N)\log2$, proving
 \eqref{eq:leg2-top-growth}.
 \end{proof}
@@ -876,7 +876,7 @@ subinterval of $[-1,1]$.
 
 \begin{proof}
 If $Z$ has density $u$, then
-$G_n(z+2)=\E(z+2-Z)^n$ and $|Z|\le1$.  Choose $\varepsilon>0$ with
+$G_n(z+2)=\Expectation(z+2-Z)^n$ and $|Z|\le1$.  Choose $\varepsilon>0$ with
 $4+\varepsilon<R$.  On $|z|\le1+\varepsilon$,
 \[
  |G_n(z+2)|\le(|z+2|+1)^n\le(4+\varepsilon)^n.
@@ -893,7 +893,7 @@ is \path{canonical_rvachev_not_analyticAt} in \path{NowhereAnalytic.lean}.
 
 Put
 \begin{equation}
- C=\MM_u(\pi\ii)=
+ C=\MM_u(\pi\ImaginaryUnit)=
  \prod_{j\ge1}\frac{\sin(\pi/2^j)}{\pi/2^j}.
  \label{eq:leg2-C-constant}
 \end{equation}
@@ -901,7 +901,7 @@ As $m\to\infty$, the nearest-pole expansion of $1/\MM_u$ gives
 \begin{equation}
  \gamma_{2m}=
  \frac{2(-1)^m(2m)!}{C(2\pi)^{2m}}
- \left(1+\bigO(m4^{-m})\right).
+ \left(1+\BigO(m4^{-m})\right).
  \label{eq:leg2-gamma-asymptotic}
 \end{equation}
 The imported estimate is the nearest-pole specialization of the three-shell
@@ -916,16 +916,16 @@ As $n\to\infty$,
  \boxed{Q_{2n}^-(0)=
  \frac{2(-1)^n}{C}
  \frac{(4n)!}{(2n)!(4\pi)^{2n}}
- \left(1+\frac{2\pi^2}{4n-1}+\bigO(n^{-2})\right).}
+ \left(1+\frac{2\pi^2}{4n-1}+\BigO(n^{-2})\right).}
  \label{eq:leg2-Q0-asymptotic}
 \end{equation}
 In particular,
 \begin{equation}
  Q_{2n}^-(0)=\frac{2\sqrt2}{C}(-1)^n
- \left(\frac{2n}{\pi\e}\right)^{2n}
- \left(1+\bigO(n^{-1})\right),
+ \left(\frac{2n}{\pi\EulerE}\right)^{2n}
+ \left(1+\BigO(n^{-1})\right),
  \qquad
- |Q_{2n}^-(0)|^{1/(2n)}\sim\frac{2n}{\pi\e}.
+ |Q_{2n}^-(0)|^{1/(2n)}\sim\frac{2n}{\pi\EulerE}.
  \label{eq:leg2-Q0-root}
 \end{equation}
 \end{theorem}
@@ -944,7 +944,7 @@ $T_{n,j}=c_{n,j}\gamma_{2n-2j}$.  The exact first ratio and
 \eqref{eq:leg2-gamma-asymptotic} give
 \[
  \frac{T_{n,1}}{T_{n,0}}
- =\frac{2\pi^2}{4n-1}+\bigO(4^{-n}).
+ =\frac{2\pi^2}{4n-1}+\BigO(4^{-n}).
 \]
 Uniform two-sided factorial bounds from the same pole expansion give, for
 $j\ge2$,
@@ -952,7 +952,7 @@ $j\ge2$,
  \left|\frac{T_{n,j}}{T_{n,0}}\right|
  \le\frac{C_1}{j!}\left(\frac{2\pi^2}{n}\right)^j.
 \]
-Their sum is $\bigO(n^{-2})$.  Now
+Their sum is $\BigO(n^{-2})$.  Now
 $c_{n,0}=2^{-2n}\binom{4n}{2n}$; multiplying by
 \eqref{eq:leg2-gamma-asymptotic} proves
 \eqref{eq:leg2-Q0-asymptotic}.  Stirling gives
@@ -970,7 +970,7 @@ As $X\to\infty$,
 \begin{equation}
  \boxed{n_Q(X)=
  \frac{\log X}
- {2W\!\left(\log X/(\pi\e)\right)}+\bigO(1).}
+ {2W\!\left(\log X/(\pi\EulerE)\right)}+\BigO(1).}
  \label{eq:leg2-Q-Lambert}
 \end{equation}
 \end{corollary}
@@ -980,11 +980,11 @@ The ratio of consecutive absolute values in
 \eqref{eq:leg2-Q0-root} tends to infinity; hence
 $|Q_{2n}^-(0)|$ is strictly increasing for all sufficiently large $n$.  This
 justifies inversion of the least-integer threshold.  Put $H=\log X$ and
-$w=W(H/(\pi\e))$.  Then $n_0=H/(2w)$ solves
-$2n_0\log(2n_0/(\pi\e))=H$.  The logarithm of the prefactor in
+$w=W(H/(\pi\EulerE))$.  Then $n_0=H/(2w)$ solves
+$2n_0\log(2n_0/(\pi\EulerE))=H$.  The logarithm of the prefactor in
 \eqref{eq:leg2-Q0-root} changes the continuous solution by $o(1)$ because the
 derivative of the leading logarithm tends to infinity.  Eventual monotonicity
-and integer rounding contribute only $\bigO(1)$.
+and integer rounding contribute only $\BigO(1)$.
 \end{proof}
 
 \begin{theorem}[Sharp central growth and failure of atomwise flattening]
@@ -997,7 +997,7 @@ one has
 \begin{equation}
  \boxed{\limsup_{n\to\infty}
  \frac{|c_n^{(0)}|^{1/n}}{n^2}
- =\frac1{\pi^2\e^2}.}
+ =\frac1{\pi^2\EulerE^2}.}
  \label{eq:leg2-central-growth}
 \end{equation}
 Therefore the flattened atom series is neither absolutely nor
@@ -1009,7 +1009,7 @@ into its finite Legendre blocks.
 Equation \eqref{eq:leg2-Q0-root} gives
 \[
  \frac{|Q_{2n}^-(0)|^{1/n}}{n^2}\longrightarrow
- \frac4{\pi^2\e^2}.
+ \frac4{\pi^2\EulerE^2}.
 \]
 By \eqref{eq:leg2-an-root}, multiplication by $|a_n|^{1/n}$ preserves this
 value along the limsup, while division by $4^n$ divides it by four, proving
@@ -1032,7 +1032,7 @@ The exact nonreal-root counts for $n=12,\ldots,20$ are
 \end{proposition}
 
 \begin{proof}
-The retained exact verifier constructs every $Q_n^-$ over $\Q$ from the
+The retained exact verifier constructs every $Q_n^-$ over $\RationalNumbers$ from the
 reciprocal moments and applies the Euclidean Sturm-chain algorithm, with no
 floating-point decisions.  For $Q_{12}^-$ the chain degrees are
 $12,11,\ldots,0$, and the leading-coefficient signs are
@@ -1059,9 +1059,9 @@ root locations are diagnostic only and are not used in the proposition.
 \label{conj:leg2-two-adic}
 For every $m,n\ge1$,
 \[
- \vtwo(\mu_{2m}-1)=3+\vtwo(m),
+ \TwoAdicValuation(\mu_{2m}-1)=3+\TwoAdicValuation(m),
  \qquad
- \vtwo(a_n)=-1.
+ \TwoAdicValuation(a_n)=-1.
 \]
 Exact rational computations verify both assertions through index $80$.
 \end{conjecture}
@@ -1115,14 +1115,14 @@ $a_n\ne0$ is infinite.
 \begin{conjecture}[Exterior side lobes and square energy]
 \label{conj:leg2-exterior-energy}
 Regard the finite train $B_n$ of \eqref{eq:leg-block} as a function on all of
-$\R$.  Along the nonzero coefficient indices,
+$\RealNumbers$.  Along the nonzero coefficient indices,
 \[
  \lim_{\substack{n\to\infty\\a_n\ne0}}
- \frac{\|B_n\|_{L^2(\R\setminus[-1,1])}}
+ \frac{\|B_n\|_{L^2(\RealNumbers\setminus[-1,1])}}
  {\|B_n\|_{L^2[-1,1]}}=\infty.
 \]
 Also the exact square energy
-$\mathscr E_F=\int_0^1F(x)^2\dd x$ is irrational.
+$\mathscr E_F=\int_0^1\FabiusBounded(x)^2\Differential x$ is irrational.
 \end{conjecture}
 
 \begin{problem}[Make the remaining normalizations mathematical]

@@ -31,16 +31,16 @@ We also write $\mathscr D_u:=\MM_u(D)^{-1}$ for the deconvolution operator.
 
 Use the classical Legendre normalization $P_n(1)=1$, for which
 \begin{equation}
- h_n=\int_{-1}^{1}P_n(x)^2\dd x=\frac2{2n+1}
+ h_n=\int_{-1}^{1}P_n(x)^2\Differential x=\frac2{2n+1}
  \label{eq:leg-hn}
 \end{equation}
 and define the even Fourier--Legendre coefficients
 \begin{equation}
- a_n:=\frac{4n+1}{2}\int_{-1}^{1}u(x)P_{2n}(x)\dd x.
+ a_n:=\frac{4n+1}{2}\int_{-1}^{1}u(x)P_{2n}(x)\Differential x.
  \label{eq:leg-an}
 \end{equation}
 The primary exposition's section on the Fourier--Legendre expansion of
-$\Up$ in \path{Fabius_Function_and_Rvachev_Up.tex} proves
+$\RvachevUp$ in \path{Fabius_Function_and_Rvachev_Up.tex} proves
 \begin{equation}
  u(x)=\sum_{n=0}^{\infty}a_nP_{2n}(x)
  \label{eq:leg-canonical-series}
@@ -55,8 +55,8 @@ anchors are \path{summable_abs_rvachevLegendreCoefficient},
 
 \begin{theorem}[Literal Legendre synthesis and Jacobi closed form]
 \label{thm:leg-mode-synthesis}
-Let $\ell\ge0$ and let $M\in\N_{>0}$ satisfy
-$\vtwo(M)\ge\ell$.  Then, for $x\in[-1,1]$,
+Let $\ell\ge0$ and let $M\in\PositiveIntegers$ satisfy
+$\TwoAdicValuation(M)\ge\ell$.  Then, for $x\in[-1,1]$,
 \begin{equation}
  \boxed{
  P_\ell(x)=\frac1M\sum_{|k|<2M}
@@ -112,7 +112,7 @@ The shifted canonical expansion is
 It is absolutely and uniformly convergent on
 $[-1,1]\times[-2,2]$ because
 $\sum_r|a_r|<\infty$ and $|P_{2r}|\le1$ on $[-1,1]$.
-For $\ell,r\ge0$ and $M\in\N_{>0}$ with $\vtwo(M)\ge\ell$, define
+For $\ell,r\ge0$ and $M\in\PositiveIntegers$ with $\TwoAdicValuation(M)\ge\ell$, define
 \begin{equation}
  H_{\ell r}^{(M)}(x)
  :=\frac1M\sum_{|k|<2M}Q_\ell^-(k/M)
@@ -123,13 +123,13 @@ For $m,r\ge0$, define
 \begin{equation}
  \mathscr C_{m,r}(c)
  :=\frac{2m+1}{2}\int_{I(c)}
- P_m(x)P_{2r}(x-c)\dd x.
+ P_m(x)P_{2r}(x-c)\Differential x.
  \label{eq:leg-clipped-C}
 \end{equation}
 
 \begin{theorem}[Reverse local loop and rational spectral closure]
 \label{thm:leg-reverse-loop}
-Let $\ell\ge0$ and $M\in\N_{>0}$ satisfy $\vtwo(M)\ge\ell$.  Then
+Let $\ell\ge0$ and $M\in\PositiveIntegers$ satisfy $\TwoAdicValuation(M)\ge\ell$.  Then
 \begin{equation}
  \boxed{P_\ell(x)=\sum_{r=0}^{\infty}a_rH_{\ell r}^{(M)}(x)}
  \label{eq:leg-reverse-loop}
@@ -183,14 +183,14 @@ all boundary jets is made explicit below.
 \subsection{Gram geometry and finite projector frames}
 
 Fix an integer $N\ge0$, put $M=4^N$, and write
-$K_M:=\{k\in\Z:|k|<2M\}$.  Let
+$K_M:=\{k\in\IntegerNumbers:|k|<2M\}$.  Let
 \[
  \phi_k(x)=u(x-k/M),\qquad
  \mathbf D_{kn}=M^{-1}Q_{2n}^-(k/M),\quad 0\le n\le N,
 \]
 and define
 \[
- G_{k\ell}=\int_{-1}^{1}\phi_k(x)\phi_\ell(x)\dd x,\qquad
+ G_{k\ell}=\int_{-1}^{1}\phi_k(x)\phi_\ell(x)\Differential x,\qquad
  H=\operatorname{diag}(h_0,h_2,\ldots,h_{2N}).
 \]
 
@@ -282,7 +282,7 @@ better-conditioned nullspace gauge.
 \subsection{Refinement null trains and a lifting law}
 
 For $p\in\Pi_d$ put $p^\sharp=\mathscr D_up$.  At a mesh
-$m\in\N_{>0}$ with $\vtwo(m)\ge d$, define the canonical finite coefficient
+$m\in\PositiveIntegers$ with $\TwoAdicValuation(m)\ge d$, define the canonical finite coefficient
 row
 \[
  (F_mp)_k=m^{-1}p^\sharp(k/m),\qquad |k|<2m.
@@ -292,8 +292,8 @@ indices divisible by $r$ and zero elsewhere.
 
 \begin{theorem}[Interlevel null train and refinement cocycle]
 \label{thm:leg-interlevel}
-Let $d\ge0$, $p\in\Pi_d$, and $r,s,m\in\N_{>0}$ with
-$\vtwo(m)\ge d$.  Then, on $[-1,1]$,
+Let $d\ge0$, $p\in\Pi_d$, and $r,s,m\in\PositiveIntegers$ with
+$\TwoAdicValuation(m)\ge d$.  Then, on $[-1,1]$,
 \begin{equation}
  \boxed{
  \frac1{rm}\sum_{|k|<2rm}
@@ -363,7 +363,7 @@ For every $s\ge0$,
 \end{equation}
 and the series is absolutely convergent.
 
-For every $\ell\ge0$, every $M\in\N_{>0}$ with $\vtwo(M)\ge\ell$, and
+For every $\ell\ge0$, every $M\in\PositiveIntegers$ with $\TwoAdicValuation(M)\ge\ell$, and
 every $s\ge0$,
 \begin{equation}
  \boxed{
@@ -548,7 +548,7 @@ $\|P_j\|_{L^\infty[-1,1]}\le1$ and $\sum_n|a_n|<\infty$, the Weierstrass
 test proves absolute uniform block convergence.
 
 The degree inequality in \eqref{eq:leg-SN-CN} is unconditional; equality
-would require $a_N\ne0$.  Since $\vtwo(4^N)=2N$, applying
+would require $a_N\ne0$.  Since $\TwoAdicValuation(4^N)=2N$, applying
 \eqref{eq:leg-mode-synthesis} to the single polynomial $S_N$ gives
 \eqref{eq:leg-common-mesh}.  Its convergence is precisely
 $S_N\to u$.  The universal least-mesh statement is
@@ -572,7 +572,7 @@ double series.  The repeated central coefficient in
 For $m,n\ge0$,
 \begin{equation}
  \boxed{
- \int_{-1}^{1}B_n(x)B_m(x)\dd x
+ \int_{-1}^{1}B_n(x)B_m(x)\Differential x
  =\delta_{nm}\frac{2a_n^2}{4n+1}.}
  \label{eq:leg-block-orthogonality}
 \end{equation}
@@ -592,7 +592,7 @@ For the Legendre Sturm--Liouville operator
 \]
 one further has
 \begin{equation}
- \int_{-1}^{1}(1-x^2)B_n'B_m'\dd x
+ \int_{-1}^{1}(1-x^2)B_n'B_m'\Differential x
  =\delta_{nm}\lambda_n\frac{2a_n^2}{4n+1},
  \label{eq:leg-derivative-blocks}
 \end{equation}
@@ -625,10 +625,10 @@ atom-Gram cancellation identity; this is the literal content formalized by
 
 Let
 \begin{equation}
- \mathscr E_F:=\int_0^1F(t)^2\dd t.
+ \mathscr E_F:=\int_0^1\FabiusBounded(t)^2\Differential t.
  \label{eq:leg-A2}
 \end{equation}
-Because $u(x)=F(1-|x|)$ on $[-1,1]$, $\|u\|_2^2=2\mathscr E_F$.
+Because $u(x)=\FabiusBounded(1-|x|)$ on $[-1,1]$, $\|u\|_2^2=2\mathscr E_F$.
 
 \begin{theorem}[Fabius square energy: rational series and sinc integrals]
 \label{thm:leg-A2}
@@ -637,11 +637,11 @@ One has the three exact representations
  \boxed{\mathscr E_F=\sum_{n=0}^{\infty}\frac{a_n^2}{4n+1}}
  \label{eq:leg-A2-series}\\
  &=\int_0^\infty
- \prod_{j=0}^{\infty}\sincpi^2(\xi/2^j)\dd\xi
+ \prod_{j=0}^{\infty}\SincPi^2(\xi/2^j)\Differential\xi
  \label{eq:leg-A2-fourier}\\
  &=\frac1{2\pi}\int_0^\infty
  \prod_{r=1}^{\infty}
- \left(\frac{\sin(t/2^r)}{t/2^r}\right)^2\dd t.
+ \left(\frac{\sin(t/2^r)}{t/2^r}\right)^2\Differential t.
  \label{eq:leg-A2-sinc}
 \end{align}
 Every finite partial sum in \eqref{eq:leg-A2-series} is a nonnegative
@@ -651,9 +651,9 @@ strict at the $n$th step exactly when $a_n\ne0$.
 
 \begin{proof}
 Divide \eqref{eq:leg-parseval} by two and use
-$\|u\|_2^2=2\mathscr E_F$.  Rationality follows from $a_n\in\Q$.
+$\|u\|_2^2=2\mathscr E_F$.  Rationality follows from $a_n\in\RationalNumbers$.
 Parseval for the Fourier convention of \cref{sec:shared} gives
-$\|u\|_2^2=\int_\R|\widehat u(\xi)|^2\dd\xi$.  Evenness, division by two,
+$\|u\|_2^2=\int_\RealNumbers|\widehat u(\xi)|^2\Differential\xi$.  Evenness, division by two,
 and the sinc product give \eqref{eq:leg-A2-fourier}; the substitution
 $t=2\pi\xi$ gives \eqref{eq:leg-A2-sinc}.  Monotonicity and its equality
 criterion follow because the added term is $a_n^2/(4n+1)$.
@@ -666,7 +666,7 @@ For every integer $n\ge0$, define the finite dyadic quantity
  \mathcal R_n^{\rm dy}:=
  \sum_{j=0}^{n}(-1)^{n+j}
  \binom{2n}{n+j}\binom{2n+2j}{2n}(2j)!
- 2^{\binom{2j+1}{2}}F(2^{-2j-1}).
+ 2^{\binom{2j+1}{2}}\FabiusBounded(2^{-2j-1}).
  \label{eq:leg-dyadic-R}
 \end{equation}
 Then, for every $n\ge0$, the coefficient identity in the following box
@@ -682,7 +682,7 @@ energy series:
 Every inner quantity $\mathcal R_n^{\rm dy}$ is rational.  Hence this is a
 positive outer series whose $n$th term is the square of a finite rational
 combination of the nested values
-$F(2^{-1}),F(2^{-3}),\ldots,F(2^{-2n-1})$.
+$\FabiusBounded(2^{-1}),\FabiusBounded(2^{-3}),\ldots,\FabiusBounded(2^{-2n-1})$.
 \end{corollary}
 
 \begin{proof}
@@ -691,7 +691,7 @@ kernel-verified as
 \path{rvachevLegendreCoefficient_eq_fabius_sum} in
 \path{FabiusLegendreCoefficients.lean}.  Here is its finite human-readable
 derivation.
-Put $\mu_{2j}=\int_{-1}^{1}x^{2j}u(x)\dd x$.  Expanding $P_{2n}$ in
+Put $\mu_{2j}=\int_{-1}^{1}x^{2j}u(x)\Differential x$.  Expanding $P_{2n}$ in
 monomials in \eqref{eq:leg-an} gives
 \[
  a_n=\frac{4n+1}{2^{2n+1}}
@@ -700,7 +700,7 @@ monomials in \eqref{eq:leg-an} gives
 \]
 The exact moment--Fabius bridge from the primary exposition is
 \[
- \mu_{2j}=2(2j)!\,2^{\binom{2j+1}{2}}F(2^{-2j-1});
+ \mu_{2j}=2(2j)!\,2^{\binom{2j+1}{2}}\FabiusBounded(2^{-2j-1});
 \]
 obtained by integrating the dyadic derivative-cell formula; its dyadic
 values are kernel-verified by \path{fabiusDyadic_cast}.  Substitution proves
@@ -725,17 +725,17 @@ needed for any theorem here.
 
 \begin{definition}[Translated Legendre analysis kernel]
 \label{def:leg-Lambda}
-For $m\ge0$ and $c\in\R$, set
+For $m\ge0$ and $c\in\RealNumbers$, set
 \begin{equation}
  \Lambda_m(c)=\frac{2m+1}{2}
- \int_{-1}^{1}u(x-c)P_m(x)\dd x.
+ \int_{-1}^{1}u(x-c)P_m(x)\Differential x.
  \label{eq:leg-Lambda}
 \end{equation}
 \end{definition}
 
 \begin{theorem}[Analysis kernel and Fourier--Bessel representation]
 \label{thm:leg-Lambda}
-For every $m\ge0$, the function $\Lambda_m$ belongs to $C_c^\infty(\R)$,
+For every $m\ge0$, the function $\Lambda_m$ belongs to $C_c^\infty(\RealNumbers)$,
 has support contained
 in $[-2,2]$, and satisfies
 \begin{align}
@@ -743,9 +743,9 @@ in $[-2,2]$, and satisfies
  \label{eq:leg-Lambda-parity}\\
  \Lambda_{2n}(0)&=a_n,\qquad \Lambda_{2n+1}(0)=0\quad(n\ge0),
  \label{eq:leg-Lambda-origin}\\
- \Lambda_m(c)&=(2m+1)(-\ii)^m
- \int_\R\widehat u(\xi)j_m(2\pi\xi)
- \e^{2\pi\ii\xi c}\dd\xi.
+ \Lambda_m(c)&=(2m+1)(-\ImaginaryUnit)^m
+ \int_\RealNumbers\widehat u(\xi)j_m(2\pi\xi)
+ \EulerE^{2\pi\ImaginaryUnit\xi c}\Differential\xi.
  \label{eq:leg-Lambda-bessel}
 \end{align}
 Here $j_m$ is the spherical Bessel function.
@@ -760,19 +760,19 @@ $C^\infty$, and supports add to $[-2,2]$.  Reflection gives
 \eqref{eq:leg-an} and oddness.
 
 The classical integral representation gives
-$\widehat\chi_m(\xi)=2(-\ii)^mj_m(2\pi\xi)$.  The rapid decay of
+$\widehat\chi_m(\xi)=2(-\ImaginaryUnit)^mj_m(2\pi\xi)$.  The rapid decay of
 $\widehat u$ makes the product integrable, so Fourier inversion of the
 convolution proves \eqref{eq:leg-Lambda-bessel}.
 \end{proof}
 
 \begin{lemma}[Rational dyadic truncated moments]
 \label{lem:leg-dyadic-truncated}
-If $a,b\in\Z[1/2]$, $a\le b$, and $r\ge0$, then
+If $a,b\in\IntegerNumbers[1/2]$, $a\le b$, and $r\ge0$, then
 \begin{equation}
- \int_a^b x^ru(x)\dd x\in\Q.
+ \int_a^b x^ru(x)\Differential x\in\RationalNumbers.
  \label{eq:leg-dyadic-truncated}
 \end{equation}
-Consequently $\Lambda_m(c)\in\Q$ for every dyadic $c$.
+Consequently $\Lambda_m(c)\in\RationalNumbers$ for every dyadic $c$.
 \end{lemma}
 
 \begin{proof}
@@ -784,11 +784,11 @@ endpoints.  On $[-1,1]$ the differential refinement equation implies
 because the other child $u(x-2)$ vanishes.  For a polynomial $p$ and dyadic
 $a,b\in[-1,1]$, substitute $t=(x-1)/2$ and integrate by parts:
 \begin{align*}
- \int_a^bp(x)u(x)\dd x
+ \int_a^bp(x)u(x)\Differential x
  &=
  \left[p(2t+1)u(t)\right]_{(a-1)/2}^{(b-1)/2}\\
  &\quad-\int_{(a-1)/2}^{(b-1)/2}
- 2p'(2t+1)u(t)\dd t.
+ 2p'(2t+1)u(t)\Differential t.
 \end{align*}
 The boundary values of $u$ at dyadic arguments are rational by
 \path{fabiusDyadic_cast} in \path{DyadicAnalytic.lean}, the exact
@@ -804,7 +804,7 @@ moments just proved.
 
 \begin{theorem}[Legendre--up dyadic biorthogonality]
 \label{thm:leg-biorthogonality}
-Let $\ell\ge0$, $M\in\N_{>0}$ with $\vtwo(M)\ge\ell$, and $m\ge0$.
+Let $\ell\ge0$, $M\in\PositiveIntegers$ with $\TwoAdicValuation(M)\ge\ell$, and $m\ge0$.
 Then
 \begin{equation}
  \boxed{
@@ -823,8 +823,8 @@ $\Lambda_m(k/M)$.
 
 \begin{corollary}[Finite biorthogonal matrices and projector identities]
 \label{cor:leg-biorthogonal-matrices}
-Let $d\ge0$ and $M\in\N_{>0}$ satisfy $\vtwo(M)\ge d$.  Then the matrices
-indexed by $K_M:=\{k\in\Z:|k|<2M\}$,
+Let $d\ge0$ and $M\in\PositiveIntegers$ satisfy $\TwoAdicValuation(M)\ge d$.  Then the matrices
+indexed by $K_M:=\{k\in\IntegerNumbers:|k|<2M\}$,
 \[
  A_{k\ell}^{(d)}=M^{-1}Q_\ell^-(k/M),\qquad
  L_{mk}^{(d)}=\Lambda_m(k/M)
@@ -843,7 +843,7 @@ $A^{(d)}L^{(d)}$ is an oblique projector of rank and trace $d+1$, and
 \end{corollary}
 
 \begin{proof}
-Because $\ell\le d$, the hypothesis $\vtwo(M)\ge d$ permits
+Because $\ell\le d$, the hypothesis $\TwoAdicValuation(M)\ge d$ permits
 \cref{thm:leg-biorthogonality} for every matrix entry, so
 $L^{(d)}A^{(d)}=I_{d+1}$.  Idempotence, rank, and trace follow from this
 right-inverse identity;
