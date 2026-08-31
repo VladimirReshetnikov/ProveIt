@@ -121,13 +121,15 @@
 \large Exact arithmetic, probability, Fourier analysis, and corrected sharp asymptotics}
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
-\date{Integrated repository snapshot: 30 August 2026\\
+\date{Integrated repository snapshot: 31 August 2026\\
 \small Historical Cauchy/complex-product checkpoint \nolinkurl{a81a13b46};
 CDF/implicit checkpoint \nolinkurl{e6f535e5d};
 affine-law checkpoint \nolinkurl{d312c0603};\\
 \small fractional-cutoff checkpoint \nolinkurl{149332f9d};
 inverse-layer-cake checkpoint \nolinkurl{37eab3c56};
-current-tree affine Cauchy-power tranche}
+current-tree affine Cauchy-power tranche;\\
+\small activation-series checkpoint
+\nolinkurl{f45041685da96aae71cbd8d2d7979476eefe93ec}}
 
 \begin{document}
 \maketitle
@@ -173,6 +175,14 @@ clock-measurability hypothesis.  Finite formal-series filters package arbitrary-
 moment exactness and the complete denominator-free Gaussian residual on geometric nodes;
 their analytic companion gives the same head--tail law for unconditionally summable
 weighted sampled coefficient series, without a convergence obligation at zero-weight nodes.
+
+A separate activation layer turns the totalized kernel
+\(p(x)=1-\tanh(x)/x\) into an exact square-summable calculus.  It proves the sharp
+punctured limit \(p(at)/t^2\to a^2/3\) for every real scale, genuine summability and a
+coefficient-sharp Tannery limit for arbitrary square-summable real weights, and the exact
+normalized geometric coefficient \((1-q)/(3(1+q))\) for \(\lvert q\rvert<1\).  Its dyadic
+value is \(1/9\).  These are deterministic analytic statements; no Bernoulli active-count
+expectation is inserted into them.
 
 Repeated integration is developed once, before its Fabius specialization, as an oriented
 normalized Volterra calculus whose algebra takes values in an arbitrary real normed space.
@@ -277,9 +287,10 @@ $\sinc z=\sin z/z$ with the removable value $1$ at the origin.
 The exposition follows the dependency order of the formal development.  The opening chapters
 separate the bounded function \(F\), the bump \(\Up\), and the signed extension
 \(\mathcal F\); construct the canonical function; and record the exact uniqueness and shape
-theorems.  The probability chapter then gives the weighted-uniform representation and its
-three finite approximations: atomic convolution measures, half-weighted step functions, and
-centered uniform splines.  It also isolates the arbitrary-weight distribution laws and the
+theorems.  The probability chapter then gives the weighted-uniform representation, the sharp
+square-summable activation calculus, and three finite approximations: atomic convolution
+measures, half-weighted step functions, and centered uniform splines.  It also isolates the
+arbitrary-weight distribution laws and the
 support-free and compact inverse-CDF transport theorems before specializing them back to the Fabius
 quantile.
 
@@ -1628,6 +1639,199 @@ adjacent-power hierarchy are also formal for every nonzero \(|q|<1\), including 
 ratios, in \path{GeometricUniformCauchy.lean}; these are distinct from the closed
 characteristic-function product identities above and do not supply the still-open
 rapid-decay or Fourier-inversion layers.
+
+\subsection{Sharp activation probabilities and square-summable fields}
+\label{sec:activation-series}
+
+The hyperbolic activation kernel admits a particularly clean totalization at the origin.
+Write
+\begin{align}
+ \operatorname{sinhc}_{\R}(x)
+   &=\begin{cases}\sinh(x)/x,&x\ne0,\\1,&x=0,\end{cases}
+ & h(x)&=\frac{\operatorname{sinhc}_{\R}(x)}{\cosh x},
+                                                        \label{eq:activation-totalizations}\\
+ r(x)&=\frac{\operatorname{sinhc}_{\R}(2x)}
+                  {\operatorname{sinhc}_{\R}(x)^2}-1,
+ & p(x)&=1-h(x).                                      \label{eq:activation-probability}
+\end{align}
+Thus \(h(x)=\tanh(x)/x\) away from zero and \(h(0)=1\), while \(p(0)=0\).
+The four displayed objects are exactly \lean{realSinhc}, \lean{tanhDiv},
+\lean{activationOdds}, and \lean{activationProbability} in
+\path{HyperbolicActivation.lean}.  The denominator-free identity
+\[
+ p(x)(1+r(x))=r(x)
+\]
+proves globally, including at \(x=0\), that \(p(x)=r(x)/(1+r(x))\).
+
+\begin{theorem}[Sharp local activation law]
+\label{thm:sharp-local-activation}
+The function \(p\) is continuous and even, and for every \(x\in\R\),
+\begin{equation}
+ 0\le p(x)<1,
+ \qquad p(x)>0\Longleftrightarrow x\ne0,
+ \qquad p(x)\le\min\!\left\{1,\frac{x^2}{3}\right\}.       \label{eq:activation-global-bound}
+\end{equation}
+The quadratic constant is sharp.  More precisely, for every real scale \(a\), including
+\(a=0\),
+\begin{equation}
+ \boxed{\displaystyle
+ \lim_{\substack{t\to0\\t\ne0}}\frac{p(at)}{t^2}=\frac{a^2}{3}.}
+                                                               \label{eq:activation-scaled-limit}
+\end{equation}
+The quotient limit is punctured: no value at \(t=0\) is assigned to the displayed quotient.
+\end{theorem}
+
+The order statements in \eqref{eq:activation-global-bound} are
+\lean{activationProbability_nonneg}, \lean{activationProbability_lt_one},
+\lean{activationProbability_pos_iff}, and
+\lean{activationProbability_le_min_one_sq_div_three}; continuity and evenness are
+\lean{continuous_activationProbability} and \lean{activationProbability_even}.  The
+away-from-zero formula and the denominator-free odds bridge are
+\lean{activationProbability_of_ne_zero},
+\lean{activationProbability_mul_one_add_activationOdds}, and
+\lean{activationProbability_eq_odds_div}.  The unscaled and scaled limits are
+\lean{tendsto_activationProbability_div_sq} and
+\lean{tendsto_activationProbability_mul_div_sq} in
+\path{ActivationAsymptotics.lean}.  The scale-sensitive global estimate used below is
+\lean{activationProbability_mul_le_quadratic} in \path{ActivationSeries.lean}:
+\begin{equation}
+ p(at)\le\frac{t^2}{3}a^2.                                  \label{eq:activation-scaled-bound}
+\end{equation}
+
+The proof of sharpness is deliberately lighter than a Taylor expansion.  The global bound
+comes from \(x-x^3/3\le\tanh x\) on the nonnegative half-line and evenness.  For the limit,
+one application of l'Hopital's rule to
+\((x-\tanh x)/x^3\) produces
+\((\tanh x/x)^2/3\), whose limit is immediate from the continuous totalization \(h(0)=1\).
+Consequently, the coefficient \(1/3\) is proved without a higher-order remainder theorem.
+
+\begin{theorem}[Arbitrary square-summable activation fields]
+\label{thm:square-summable-activation-fields}
+Let \(\iota\) be an arbitrary index type and let \(w:\iota\to\R\) satisfy
+\begin{equation}
+ \sum_{i\in\iota}w_i^2<\infty.                              \label{eq:activation-square-summable}
+\end{equation}
+For every \(t\in\R\), the family \(i\mapsto p(w_it)\) is genuinely summable.  If, only for
+this exposition, we abbreviate its sum by
+\begin{equation}
+ D_w(t):=\sum_{i\in\iota}p(w_it),                            \label{eq:activation-field-def}
+\end{equation}
+then
+\begin{equation}
+ D_w(t)\le\frac{t^2}{3}\sum_{i\in\iota}w_i^2               \label{eq:activation-field-bound}
+\end{equation}
+and
+\begin{equation}
+ \boxed{\displaystyle
+ \lim_{\substack{t\to0\\t\ne0}}\frac{D_w(t)}{t^2}
+   =\frac13\sum_{i\in\iota}w_i^2.}                         \label{eq:activation-field-limit}
+\end{equation}
+No countability assumption on \(\iota\) and no finite-support approximation are needed.
+\end{theorem}
+
+Here \(D_w\) is article notation, not a named Lean definition: all three declarations use
+the expanded topological sum.  Genuine summability is
+\lean{summable_activationProbability_mul_of_summable_sq}, the global budget is
+\lean{tsum_activationProbability_mul_le}, and the exact limit is
+\lean{tendsto_tsum_activationProbability_mul_div_sq} in
+\path{ActivationSeriesAsymptotics.lean}.  Tannery's theorem applies directly to the
+coordinate limits \eqref{eq:activation-scaled-limit}; the common summable majorant is
+\(w_i^2/3\), obtained from \eqref{eq:activation-scaled-bound}.  Thus
+\eqref{eq:activation-field-def} is not an appeal to Lean's zero-valued convention for a
+nonsummable \(\operatorname{tsum}\): hypothesis \eqref{eq:activation-square-summable}
+proves the series summable at every field value before its sum is used.
+
+The normalized geometric weights now become a one-line specialization.  For
+\(\lvert q\rvert<1\), set
+\begin{equation}
+ w_n(q)=(1-q)q^n,
+ \qquad
+ d_q(t)=\sum_{n=0}^{\infty}p\bigl(q^n(1-q)t\bigr).           \label{eq:geometric-activation-def}
+\end{equation}
+The second expression is \lean{geometricActivationDimension} in
+\path{GeometricActivationDimension.lean}.  The exact squared-weight identity is
+\begin{equation}
+ \sum_{n=0}^{\infty}\bigl((1-q)q^n\bigr)^2
+   =\frac{1-q}{1+q},                                        \label{eq:geometric-weight-square-sum}
+\end{equation}
+formalized in the convergence-carrying form
+\lean{hasSum_normalizedGeometricWeight_sq}.  Substitution into
+\Cref{thm:square-summable-activation-fields} gives the following result.
+
+\begin{corollary}[Sharp normalized geometric activation coefficient]
+\label{cor:sharp-geometric-activation}
+For every real \(q\) with \(\lvert q\rvert<1\) and every real \(t\), the series defining
+\(d_q(t)\) is summable and
+\begin{equation}
+ d_q(t)\le\frac{1-q}{3(1+q)}t^2,
+ \qquad
+ \boxed{\displaystyle
+ \lim_{\substack{t\to0\\t\ne0}}\frac{d_q(t)}{t^2}
+   =\frac{1-q}{3(1+q)}.}                                    \label{eq:geometric-activation-limit}
+\end{equation}
+At \(q=1/2\), write \(d_{\rm dy}=d_{1/2}\).  Then
+\begin{equation}
+ d_{\rm dy}(t)=\sum_{n=0}^{\infty}p(2^{-n-1}t),
+ \qquad d_{\rm dy}(t)\le\frac{t^2}{9},
+ \qquad
+ \lim_{\substack{t\to0\\t\ne0}}\frac{d_{\rm dy}(t)}{t^2}=\frac19.
+                                                               \label{eq:dyadic-activation-limit}
+\end{equation}
+\end{corollary}
+
+The summability, normalized bound, and sharp limit in
+\eqref{eq:geometric-activation-limit} are respectively
+\lean{summable_geometricActivationDimension_terms},
+\lean{geometricActivationDimension_le_normalized_quadratic}, and
+\lean{tendsto_geometricActivationDimension_div_sq}.  The dyadic expansion, bound, and sharp
+limit in \eqref{eq:dyadic-activation-limit} are
+\lean{dyadicEffectiveDimension_eq_tsum},
+\lean{dyadicEffectiveDimension_le_sq_div_nine}, and
+\lean{tendsto_dyadicEffectiveDimension_div_sq}; the named dyadic definition is
+\lean{dyadicEffectiveDimension}.  The last two limit theorems are in
+\path{GeometricActivationAsymptotics.lean}.
+
+The finite-depth API gives more than the limit.  In the convergent range,
+\begin{align}
+ d_q(t)&=p((1-q)t)+d_q(qt),                                  \label{eq:geometric-activation-refinement}\\
+ d_q(t)&=\sum_{n<N}p\bigl(q^n(1-q)t\bigr)+d_q(q^Nt),          \label{eq:geometric-activation-split}\\
+ 0\le d_q(q^Nt)&\le
+   \frac{1-q}{3(1+q)}t^2(q^2)^N.                             \label{eq:geometric-activation-tail}
+\end{align}
+These are \lean{geometricActivationDimension_refinement},
+\lean{geometricActivationDimension_eq_sum_range_add}, and
+\lean{geometricActivationDimension_tail_le}.  Together with
+\lean{sum_range_activationProbability_le_geometricActivationDimension} and
+\lean{geometricActivationDimension_le_sum_range_add_tail}, they sandwich the infinite sum
+between a finite prefix and that prefix plus the explicit tail certificate.  At the dyadic
+base, \lean{dyadicEffectiveDimension_half_refinement},
+\lean{dyadicEffectiveDimension_two_mul}, \lean{dyadicEffectiveDimension_refinement},
+\lean{dyadicEffectiveDimension_eq_sum_range_add}, and
+\lean{dyadicEffectiveDimension_tail_le} give the corresponding half-scale, doubling,
+difference, prefix, and tail formulas.  Positivity away from zero and evenness are recorded
+by \lean{geometricActivationDimension_pos_iff},
+\lean{geometricActivationDimension_even}, \lean{dyadicEffectiveDimension_pos_iff}, and
+\lean{dyadicEffectiveDimension_even}.
+
+The analytic range \(\lvert q\rvert<1\) in
+\eqref{eq:geometric-activation-limit} deliberately includes negative \(q\): there the
+weights alternate, but \(d_q\) is still a perfectly valid deterministic activation series.
+The positive-weight ``active count'' interpretation used in the research report is narrower,
+\(0<q<1\).  In particular, no Lean declaration constructs random Bernoulli activations or
+asserts an identity of the form \(d_{1/2}(t)=\E K_t\).  The quotient limits above are all
+punctured.  What remains open in this lane is not the quadratic activation asymptotic, but
+the proposed higher Taylor coefficients, Bernoulli expectation models, and associated full
+series expansions.
+
+At immutable source checkpoint
+\nolinkurl{f45041685da96aae71cbd8d2d7979476eefe93ec}, the complete activation tranche consists
+of the six modules \path{HyperbolicActivation.lean}, \path{ActivationSeries.lean},
+\path{ActivationAsymptotics.lean}, \path{ActivationSeriesAsymptotics.lean},
+\path{GeometricActivationDimension.lean}, and
+\path{GeometricActivationAsymptotics.lean}.  Their public inventories are, in that order,
+four definitions and 57 theorems, three theorems, two theorems, one theorem, two definitions
+and 30 theorems, and two theorems: six definitions and 95 theorems, hence 101 public
+declarations in total.
 
 \subsection{Finite atomic laws and weak convergence}
 
@@ -10237,12 +10441,17 @@ That rule explains several choices made above:
       \path{GeometricSincCharacteristicFunction.lean} give, for
       \(z=(1-q)t/(2\pi)\), the exact identities
       \(\phi_q(t)=e^{\ii t/2}\Phi_q(z)=e^{\ii t/2}G_q(z)G_q(-z)\), including
-      \(q=0\) and negative \(q\).  A named compact-uniform convergence wrapper for the
+      \(q=0\) and negative \(q\).  The six activation modules separately prove the sharp
+      coefficient \(p(at)/t^2\to a^2/3\), its arbitrary-index square-summable Tannery
+      theorem, the exact geometric coefficient \((1-q)/(3(1+q))\), and the dyadic value
+      \(1/9\).  These quotient limits are punctured and deterministic; no active-count
+      expectation identity is asserted.  A named compact-uniform convergence wrapper for the
       full phase-bearing prefixes, general-\(q\) rapid decay and Fourier inversion,
       centered packaging, closed
       higher-derivative and endpoint-flatness wrappers, shape results, further transforms,
-      and explicit Bernoulli-cumulant/Bell-moment formulas and asymptotics remain outside
-      this interface.  The separate global complex Pochhammer factorization is fixed at
+      and explicit higher Taylor, Bernoulli-cumulant/Bell-moment, and full-series formulas
+      beyond the proved quadratic activation asymptotic remain outside this interface.  The
+      separate global complex Pochhammer factorization is fixed at
       the dyadic scale and does not change those general-\(q\) omissions.  The exact-support oriented transform DDE and adjacent Cauchy-power
       recurrence for every nonzero \(|q|<1\), including negative ratios, are direct theorems
       of \path{GeometricUniformCauchy.lean}; these are distinct from the closed
@@ -10787,6 +10996,12 @@ renormalization, Laurent/Herglotz/inversion layers, initial Jacobi data, and fin
 \path{StepMeasureBridge.lean}, \path{StepApproximationLimit.lean},
 \path{FabiusUniformSpline.lean}, \path{QuarterSplineLocalPolynomial.lean},
 \path{QuarterSplineTwoSided.lean}, \path{FabiusComputability.lean}\\
+Hyperbolic activation kernels, arbitrary square-summable activation series,
+sharp local and Tannery asymptotics, and geometric and dyadic effective dimensions &
+\path{HyperbolicActivation.lean}, \path{ActivationSeries.lean},
+\path{ActivationAsymptotics.lean}, \path{ActivationSeriesAsymptotics.lean},
+\path{GeometricActivationDimension.lean},
+\path{GeometricActivationAsymptotics.lean}\\
 Fourier analysis &
 \path{FourierProduct.lean}, \path{FourierAnalytic.lean},
 \path{RvachevQBinomialFilter.lean},
@@ -10980,6 +11195,10 @@ Article & Lean & Meaning\\
 \(\mathcal F\) & \lean{extendedFabius}\hspace{0.35em}\lean{fabius} & signed global extension\\
 \(S_w\) & \lean{ProbabilityRepresentation.weightedUniformSeries}\hspace{0.35em}\lean{w} & weighted coordinate series\\
 \(\mu_w\) & \lean{ProbabilityRepresentation.weightedUniformDistribution}\hspace{0.35em}\lean{w} & its pushforward law\\
+\(p(x)\) & \lean{activationProbability}\hspace{0.35em}\lean{x} & totalized activation probability \(1-\tanh(x)/x\), with \(p(0)=0\)\\
+\(D_w(t)\) & article-only abbreviation; see \lean{tendsto_tsum_activationProbability_mul_div_sq} & square-summable activation field \(\sum_i p(w_it)\); no named Lean definition\\
+\(d_q(t)\) & \lean{geometricActivationDimension}\hspace{0.35em}\lean{q}\hspace{0.35em}\lean{t} & normalized geometric activation dimension\\
+\(d_{\rm dy}(t)\) & \lean{dyadicEffectiveDimension}\hspace{0.35em}\lean{t} & dyadic specialization \(d_{1/2}(t)\)\\
 \(G_q\) & \lean{geometricReciprocalGamma}\hspace{0.35em}\lean{q} & entire reciprocal-Gamma product for \(\lVert q\rVert<1\)\\
 \(\Gamma_{\langle q\rangle}\) & \lean{geometricGamma}\hspace{0.35em}\lean{q} & totalized meromorphic inverse of \(G_q\)\\
 \(G_{\rm dy},\Gamma_{\rm dy}\) & \lean{dyadicReciprocalGamma}\hspace{0.35em}\lean{dyadicGamma} & dyadic reciprocal product and totalized meromorphic inverse\\

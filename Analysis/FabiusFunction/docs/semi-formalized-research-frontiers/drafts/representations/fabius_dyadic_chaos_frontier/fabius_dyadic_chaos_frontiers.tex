@@ -195,6 +195,16 @@ sharp order-$k$ bound
 with equality at the top order for monomials.  This supplies a new direct
 bridge from sensitivity analysis to $q$-Pochhammer arithmetic.
 
+The activation analysis also extends beyond the dyadic lattice.  For an
+arbitrary square-summable real weight family $(w_i)_{i\in I}$, including
+signed and zero weights, we prove genuine summability, the global budget
+\[
+ \sum_{i\in I}p(w_it)\le \frac{t^2}{3}\sum_{i\in I}w_i^2,
+\]
+and the exact punctured small-field limit obtained by Tannery's theorem.  The
+normalized geometric family then has sharp coefficient
+$(1-q)/(3(1+q))$ for $|q|<1$, with dyadic value $1/9$.
+
 We also derive a two-variable chaos product, Bell-polynomial formulae for its
 coefficients, a $q$-binomial small-parameter expansion, and a Mellin analysis
 of the effective interaction order.  At large $t$ that order is not governed
@@ -310,6 +320,8 @@ The proved contributions are:
       norms;
 \item a Poisson--binomial law for the active set and exact first/total Sobol
       indices;
+\item a square-summable activation-series theorem with a global quadratic
+      budget and its exact Tannery limit;
 \item a marked tensor-Legendre refinement and a local Parseval identity;
 \item a sharp mixed-replacement inequality for smooth observables, its exact
       dyadic $q$-Pochhammer factor, and the monomial top order;
@@ -891,6 +903,12 @@ local sense
  \lim_{\substack{x\to0\\x\ne0}}\frac{p(x)}{x^2}=\frac13.}
  \label{eq:sharp-activation-quadratic}
 \end{equation}
+More generally, every real dilation $a$, including $a=0$, satisfies
+\begin{equation}
+ \boxed{
+ \lim_{\substack{t\to0\\t\ne0}}\frac{p(at)}{t^2}=\frac{a^2}{3}.}
+ \label{eq:scaled-sharp-activation-quadratic}
+\end{equation}
 \end{corollary}
 
 \begin{proof}
@@ -902,6 +920,50 @@ $(x-\tanh x)/x^3$.  Its derivative quotient is
 \]
 which tends to $1/3$ because the totalized quotient $\tau$ is continuous and
 $\tau(0)=1$.  For $x\ne0$, the original quotient equals $p(x)/x^2$.
+For $a\ne0$, compose this punctured limit with the dilation $t\mapsto at$
+and multiply by $a^2$; for $a=0$, both sides vanish identically.
+\end{proof}
+
+\begin{theorem}[Square-summable activation series; \statusP]
+\label{thm:square-summable-activation-series}
+Let $I$ be an arbitrary index set and let $(w_i)_{i\in I}$ be a real family
+such that $\sum_{i\in I}w_i^2<\infty$, where the sum is the unconditional
+nonnegative sum.  The weights may be signed or zero.  For all $a,t\in\R$,
+\begin{equation}
+ 0\le p(at)\le \frac{t^2}{3}a^2.
+ \label{eq:scaled-activation-budget}
+\end{equation}
+For every $t\in\R$, the activation family is genuinely summable and
+\begin{equation}
+ 0\le D_w(t):=\sum_{i\in I}p(w_it)
+ \le \frac{t^2}{3}\sum_{i\in I}w_i^2.
+ \label{eq:square-summable-activation-budget}
+\end{equation}
+Moreover, its quadratic budget is coefficient-sharp:
+\begin{equation}
+ \boxed{
+ \lim_{\substack{t\to0\\t\ne0}}\frac{D_w(t)}{t^2}
+ =\frac13\sum_{i\in I}w_i^2.}
+ \label{eq:square-summable-activation-limit}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Evenness extends the quadratic estimate in \cref{lem:p-bounds} from
+$x\ge0$ to every real $x$; substituting $x=at$ gives
+\eqref{eq:scaled-activation-budget}.  Its right-hand side is summable in $i$,
+so comparison proves both genuine summability and
+\eqref{eq:square-summable-activation-budget}.  For $t\ne0$, divide the
+pointwise estimate by $t^2$ to obtain the summable majorant $w_i^2/3$.
+The scaled limit \eqref{eq:scaled-sharp-activation-quadratic} gives
+\[
+ \frac{p(w_it)}{t^2}\longrightarrow\frac{w_i^2}{3}
+ \qquad (t\to0,\ t\ne0)
+\]
+for every $i$, including $w_i=0$.  Tannery's theorem now interchanges the
+punctured limit and the unconditional sum, proving
+\eqref{eq:square-summable-activation-limit}.  Thus no finite-support
+approximation or Taylor remainder is required.
 \end{proof}
 
 \begin{corollary}[Uniform interaction-count variance; \statusP]
@@ -1655,6 +1717,9 @@ Let $q,t\in\R$ with $|q|<1$, and define
 The series is summable.  The resulting function is even and nonnegative,
 vanishes at the origin, and satisfies
 \begin{align}
+ \sum_{n\ge0}\bigl(q^n(1-q)\bigr)^2
+ &=\frac{1-q}{1+q},
+ \label{eq:normalized-geometric-weight-square-sum}\\
  d_q(t)
  &=p\bigl((1-q)t\bigr)+d_q(qt),
  \label{eq:geometric-activation-refinement}\\
@@ -1667,6 +1732,13 @@ vanishes at the origin, and satisfies
  &\le \frac{(1-q)t^2}{3(1+q)}.
  \label{eq:geometric-activation-quadratic}
 \end{align}
+Its exact punctured quadratic coefficient is
+\begin{equation}
+ \boxed{
+ \lim_{\substack{t\to0\\t\ne0}}\frac{d_q(t)}{t^2}
+ =\frac{1-q}{3(1+q)}.}
+ \label{eq:geometric-activation-sharp}
+\end{equation}
 At $q=0$ one has $d_0(t)=p(t)$.  More generally, for every integer $N\ge0$,
 put
 \[
@@ -1695,6 +1767,12 @@ Consequently, for every real $t$,
  d_{1/2}(t)>0\iff t\ne0.
  \label{eq:formalized-dyadic-effective-dimension}
 \end{equation}
+and, sharply,
+\begin{equation}
+ \boxed{
+ \lim_{\substack{t\to0\\t\ne0}}\frac{d_{1/2}(t)}{t^2}=\frac19.}
+ \label{eq:dyadic-effective-dimension-sharp}
+\end{equation}
 \end{proposition}
 
 \begin{proof}
@@ -1704,7 +1782,17 @@ The global estimate $p(x)\le x^2/3$ bounds the $n$-th term by
 \]
 Since $|q|<1$, comparison with the resulting geometric series proves
 summability.  Factoring $1-q^2=(1-q)(1+q)$ gives the displayed quadratic
-constant.  Removing the zeroth term gives the refinement, while removing the
+constant.  The same geometric-series calculation gives the genuine
+\emph{HasSum} evaluation
+\[
+ \sum_{n\ge0}\bigl(q^n(1-q)\bigr)^2
+ =(1-q)^2\sum_{n\ge0}(q^2)^n
+ =\frac{1-q}{1+q}.
+\]
+Apply \cref{thm:square-summable-activation-series} to the weights
+$w_n=q^n(1-q)$ and this exact sum to obtain
+\eqref{eq:geometric-activation-sharp}; $q=1/2$ gives the coefficient $1/9$.
+Removing the zeroth term gives the refinement, while removing the
 first $N$ terms gives the exact prefix identity; applying the same quadratic
 bound at $q^Nt$ yields the enclosure.  Positivity is already forced by the
 zeroth term when $t\ne0$.  The dyadic statements are the specialization
@@ -2760,6 +2848,13 @@ this is a $q$-Pochhammer quotient, and monomials attain the top-order bound.
 Thus $q$-series enter not only through finite Fabius values or sinc products,
 but through the geometry of nonlinear sensitivity itself.
 
+At the activation level, the sharp local coefficient survives arbitrary
+square-summable signed weight families: a global $\ell^2$ budget supplies a
+summable majorant, and Tannery's theorem gives its exact punctured quadratic
+limit.  The normalized geometric weights have squared mass
+$(1-q)/(1+q)$, so the geometric and dyadic effective dimensions have sharp
+coefficients $(1-q)/(3(1+q))$ and $1/9$, respectively.
+
 At high field, the interaction order has bounded width around $\log_2t$.  Its
 phase limit, Mellin transform, and almost imperceptible periodic mean correction
 are explicit.  The zero-active event is exactly the negative Fabius Laplace
@@ -2791,6 +2886,7 @@ Statement & Status & Main dependency \\
 Exact exponential Hoeffding components & \statusP & independent products and coordinate projections \\
 Totalized component norm $r(0)=0$ & \statusP & one-dimensional hyperbolic integral \\
 Active-set Poisson--binomial law & \statusP & odds-to-probability factorization \\
+Square-summable activation budget and limit & \statusP & global quadratic bound and Tannery's theorem \\
 First and total Sobol indices & \statusP & active-set law and orthogonality \\
 Tensor-Legendre coefficients & \statusP & standard Legendre exponential expansion \\
 Marked local degree law & \statusP & one-dimensional Parseval identity \\
@@ -2800,6 +2896,7 @@ Sharp monomial top order & \statusP & multinomial expansion and uniform variance
 All polynomial components & \statusP & conditional multinomial expansion and Bell moments \\
 Small-$t$ $q$-binomial law & \statusP & local Taylor series and symmetric functions \\
 Bell--Bernoulli total energy & \statusP & repository cumulants and Bell exponential formula \\
+Sharp geometric and dyadic activation coefficients & \statusP & normalized geometric-weight HasSum evaluation \\
 Mellin transform of $p$ & \statusP & Mellin transform of $\sech^2$ \\
 Log-periodic mean $Q$ & \statusP & Mellin harmonic-sum analysis \\
 Phase law in total variation & \statusP & explicit Bernoulli coupling \\
@@ -2835,6 +2932,11 @@ Local Hoeffding odds
 & $r(x)=m(2x)/m(x)^2-1$; $r(0)=0$ and $r(x)=x\coth x-1$ for $x\ne0$ \\
 Local activation probability
 & $p(x)=r(x)/(1+r(x))$; $p(0)=0$ and $p(x)=1-\tanh(x)/x$ for $x\ne0$ \\
+Scaled activation limit
+& $p(at)/t^2\to a^2/3$ as $t\to0$ through $t\ne0$ \\
+Square-summable activation series
+& $D_w(t)=\sum_i p(w_it)\le(t^2/3)\sum_iw_i^2$ and
+$D_w(t)/t^2\to\frac13\sum_iw_i^2$ \\
 Component
 & $H_S=M\prod_{j\in S}(\e^{x_jV_j}/m(x_j)-1)$ \\
 Component energy
@@ -2860,6 +2962,9 @@ Monomial top energy
 & $\Ecal_d(x^d)=(d!)^23^{-d}4^{-d(d+1)/2}/(1/4;1/4)_d$ \\
 Effective mean
 & $\mu(t)=\sum_jp(t2^{-j})$, $\mu(2t)-\mu(t)=p(t)$ \\
+Geometric activation dimension
+& $d_q(t)=\sum_{n\ge0}p(q^n(1-q)t)$ and
+$d_q(t)/t^2\to(1-q)/(3(1+q))$ for $|q|<1$ \\
 Mellin transform
 & $\Mcal_p(s)=2^{2-s}(1-2^{2-s})\Gamma(s-1)\zeta(s-1)$ for $-2<\Re s<0$ \\
 Periodic mean

@@ -90,8 +90,8 @@ follows.
 
 ## Lean boundary
 
-`../LEAN_CROSSWALK.md` contains every one of the 40 nonconjectural report
-labels exactly once: 13 theorems, 8 propositions, 3 lemmas, and 16
+`../LEAN_CROSSWALK.md` contains every one of the 41 nonconjectural report
+labels exactly once: 14 theorems, 8 propositions, 3 lemmas, and 16
 corollaries. It also inventories the 3 conjectures and 4 open problems.
 
 At the start of this review, no report result was a Lean theorem exactly as
@@ -114,40 +114,49 @@ identity under `C^N` hypotheses. That analytic clause and a final
 report-shaped wrapper remain; the displayed decreasing-weight reindexing is
 no longer a gap.
 
-A subsequent integration completed and focused-built
-`FabiusFunction.HyperbolicActivation`,
-`FabiusFunction.ActivationAsymptotics`, and
-`FabiusFunction.GeometricActivationDimension`. The first module exposes four
+A subsequent integration completed and focused-built the six-module
+activation tranche. `FabiusFunction.HyperbolicActivation` exposes four
 definitions and 57 public theorem declarations for the real totalized
 hyperbolic sinc, totalized `tanh(x)/x`, activation odds and probability,
-their continuity/parity/sign algebra, and the global activation bounds. The
-second proves the exact punctured limit `p(x)/x^2 -> 1/3`. The third exposes
-two definitions and 29 public theorem declarations for geometric activation
-sums, their summability and exact and simplified geometric budgets under
-`|q|<1`, positivity, refinement, certified finite-prefix enclosures, and the
-dyadic effective dimension with its exact `t^2/(9*4^N)` tail certificate.
+their continuity/parity/sign algebra, and the global activation bounds.
+`FabiusFunction.ActivationSeries` adds three theorems for the rescaled
+pointwise bound, genuine summability, and the global budget of an
+arbitrary-index square-summable real family. `ActivationAsymptotics` adds two
+punctured limits, including arbitrary real dilation, and
+`ActivationSeriesAsymptotics` adds the exact Tannery limit. Finally,
+`GeometricActivationDimension` exposes two definitions and 30 theorems,
+including the exact normalized geometric-weight square sum, while
+`GeometricActivationAsymptotics` adds the sharp generic and dyadic
+coefficients. The combined public surface is 6 definitions and 95 theorems,
+or 101 declarations.
 
 ### Verified Lean source milestone
 
-The activation formalization is source-verified at commit
-`7c8d1f1d65ed1255f6264d306d45f8dad2b03ea5`.  Each focused target was built
-with `LAKE_JOBS=1` in a separate invocation from the final contents of that
-module and its project dependencies:
+The current activation formalization is source-verified at commit
+`f45041685da96aae71cbd8d2d7979476eefe93ec`.  The earlier
+`7c8d1f1d65ed1255f6264d306d45f8dad2b03ea5` milestone remains the historical
+checkpoint for the narrower 6-definition, 87-theorem tranche; it is not used
+as provenance for the new series or sharp geometric results. Each focused
+target was built with `LAKE_JOBS=1` in a separate invocation from the final
+contents of that module and its project dependencies:
 
 | Target | Exact command | Exit code | Warnings |
 | --- | --- | ---: | ---: |
 | Hyperbolic activation kernels | `lake build +FabiusFunction.HyperbolicActivation` | `0` | `0` |
+| Square-summable activation series | `lake build +FabiusFunction.ActivationSeries` | `0` | `0` |
 | Sharp activation asymptotics | `lake build +FabiusFunction.ActivationAsymptotics` | `0` | `0` |
 | Geometric and dyadic activation dimension | `lake build +FabiusFunction.GeometricActivationDimension` | `0` | `0` |
+| Square-summable activation asymptotics | `lake build +FabiusFunction.ActivationSeriesAsymptotics` | `0` | `0` |
+| Sharp geometric activation asymptotics | `lake build +FabiusFunction.GeometricActivationAsymptotics` | `0` | `0` |
 
-An exhaustive direct-Lean axiom audit covered all 87 public theorem
-declarations exactly once.  A subsequent proof-only simplification changed
-two of those declarations, and both were re-audited after the change.  Every
-reported dependency is in the standard set `propext`, `Classical.choice`, and
-`Quot.sound`; no declaration depends on `sorryAx` or a project-defined axiom.
-Static audits also found 6 public definitions and 87 public theorems, all 93
-with directly attached nonempty docstrings and facade reachability, with no
-forbidden placeholder or duplicate declaration.
+The historical milestone's exhaustive direct-Lean audit covered all 87 public
+theorems. At the current milestone, a direct audit covered the 11 new or
+refactored declarations that carry the generic-series and sharp-coefficient
+results. Every reported dependency is in the standard set `propext`,
+`Classical.choice`, and `Quot.sound`; no audited declaration depends on
+`sorryAx` or a project-defined axiom. Static audits found 6 public definitions
+and 95 public theorems, all 101 with directly attached nonempty docstrings and
+facade reachability, with no forbidden placeholder or duplicate declaration.
 
 This evidence is deliberately scoped: it establishes successful focused
 compilation and axiom cleanliness of the Lean source at the cited commit.  It
@@ -155,18 +164,21 @@ does not claim a fresh aggregate `lake build +FabiusFunction`.  The report
 build, PDF preflight, full render inspection, and artifact-ledger verification
 are separate evidence recorded below.
 
-The report therefore includes four new statement-exact results whose every
+The report therefore includes five statement-exact results whose every
 clause is covered by those compiled declarations. The original
 `lem:p-bounds` remains Partial solely because its Taylor jet through
 `O(x^10)` is absent. The original `prop:mu-refinement` remains Partial because
-its Bernoulli power-series coefficients and convergence radii are absent. The
-generic Lean definition is total in `q` through Mathlib's real-`tsum`
-convention. The condition `|q|<1` is the uniform, nondegenerate convergence
-regime proved by the API; without it no general summability is promised,
-although degenerate parameters may still converge. Only the report's
-`0<q<1` range has the centered geometric-uniform probability-law meaning. The
-deterministic activation sum is not identified with `E K_t` until the
-active-count object is formalized.
+its Bernoulli power-series coefficients, full convergent series, radii, and
+active-count bridge are absent. Under the new square-summability hypothesis,
+the activation sum is genuinely `Summable`; it does not rely on Mathlib's
+totalized fallback `tsum`. All quotient limits are punctured at zero. The
+condition `|q|<1` is the uniform, nondegenerate convergence regime proved by
+the geometric API. For negative `q`, the activation result is used here only
+as a deterministic signed-weight series theorem; the report's positive-weight
+active-count interpretation remains restricted to `0<q<1`. The deterministic activation sum is not identified
+with `E K_t` until the active-count object is formalized. No Taylor jet, full
+Bernoulli series, or q-binomial chaos coefficient is inferred from the new
+leading limits.
 
 ## Numerical replay
 
@@ -220,21 +232,22 @@ the displayed mathematical precision, not byte-for-byte renderer identity.
 
 The replayed figures were promoted after setting Matplotlib's PDF and
 PostScript font types to 42.  Every font in all six vector figures is now an
-embedded CID TrueType font, with no Type 3 rows.  Following the activation-
-dimension integration, the report was rebuilt with three explicit `pdflatex`
-passes into a 39-page A4 PDF.  Its final log has no unresolved reference or
-citation, package warning, overfull or underfull box, or fatal error; all 35
-font rows are embedded and none is Type 3.  The final document was rendered at
-120 dpi and inspected in four contact sheets.  The new totalized-activation,
-sharp-coefficient, geometric-dimension, and certified-tail pages were also
-inspected individually at full rendered resolution, including the page break
-across the tail proof.  No clipping, collision, broken glyph, or black-render
-artifact was found.
+embedded CID TrueType font, with no Type 3 rows. Following the square-summable
+and sharp geometric activation integration, the report was rebuilt with
+exactly three serial `pdflatex` passes into a 40-page A4 PDF. Its final log has
+no unresolved reference or citation, package warning, overfull or underfull
+box, or fatal error; all 35 font rows are embedded and none is Type 3. All 40
+pages were rendered at 120 dpi and inspected in four contact sheets. Pages
+12--13, 22--23, and 36--38 were also inspected individually at full rendered
+resolution, covering the scaled and square-summable limits, geometric/dyadic
+sharp coefficients, conclusion, status matrix, and formula atlas. No
+clipping, collision, broken glyph, or black-render artifact was found.
 
-The final artifact is an unencrypted PDF 1.5 file of 937,524 bytes with
+The final artifact is an unencrypted PDF 1.5 file of 948,783 bytes with
 SHA-256
-`aaabd9f99b8d61878ba9aa98db58352a6ebc371df2dcccf38a4b6ddff489ce1f`.
-All four new result titles are extractable from it exactly once.
+`0523771ad27522bda46c088659a85ed4b6243495795e3615c6ba5e5a5b2f1979`.
+All five compiler-backed result titles are extractable exactly once when
+matched with their theorem number and class.
 
 After the build-only temporary files were removed, `SHA256SUMS` was
 regenerated over exactly 32 non-ledger package files. Every entry was then

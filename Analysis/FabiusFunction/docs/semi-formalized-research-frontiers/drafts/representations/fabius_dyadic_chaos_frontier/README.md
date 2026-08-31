@@ -8,7 +8,7 @@ series.
 
 - `fabius_dyadic_chaos_frontiers.tex` - complete self-contained LaTeX source.
 - `fabius_dyadic_chaos_frontiers.pdf` - compiled A4 report.
-- `LEAN_CROSSWALK.md` - label-complete map from all 40 nonconjectural paper
+- `LEAN_CROSSWALK.md` - label-complete map from all 41 nonconjectural paper
   results to the current Lean corpus, with exact remaining proof obligations.
 - `experiments.py` - deterministic, extensively commented exact and
   high-precision experiment driver.
@@ -49,6 +49,9 @@ It develops and proves:
 9. an exact transfer between the no-active atom and the negative Fabius Laplace
    product;
 10. a Thue--Morse mixed-difference corner and a Lambert-W tensor-degree cutoff.
+11. an arbitrary-index square-summable activation theorem, including its
+    global quadratic budget, exact Tannery limit, and sharp geometric and
+    dyadic specializations.
 
 Conjectures and future directions cover phase-mode uniqueness, strict
 log-concavity, differential transcendence, the full geometric-q phase diagram,
@@ -64,13 +67,14 @@ The colored `P`, `I`, `C`, and `N` symbols in the report classify the
 human-readable manuscript: `P` means proved in the report and `I` means
 imported into the report. They are **not Lean status markers**.
 
-`LEAN_CROSSWALK.md` audits all 40 labeled
+`LEAN_CROSSWALK.md` audits all 41 labeled
 theorem/proposition/lemma/corollary statements. The maintained report now
-contains four deliberately statement-exact, compiler-backed results: the
+contains five deliberately statement-exact, compiler-backed results: the
 totalized activation dictionary, the sharp local quadratic coefficient, the
 geometric activation-dimension proposition, and the certified dyadic
-prefix/tail corollary. The remaining status counts are 12 Unformalized, 21
-Partial, and 3 Near-complete.
+prefix/tail corollary, together with the square-summable activation-series
+theorem. The remaining status counts are 12 Unformalized, 21 Partial, and 3
+Near-complete.
 
 Two older compound statements have improved without becoming Complete.
 `lem:p-bounds` is Partial because all its order and global quadratic bounds,
@@ -80,17 +84,26 @@ dyadic and geometric definitions, summability, refinements, positivity,
 prefix decompositions, and tail estimates are formalized, while its Bernoulli
 power series and radius statements are not.
 
-`FabiusFunction.HyperbolicActivation` has an exhaustive public surface of four
-definitions and 57 theorems; `FabiusFunction.ActivationAsymptotics` adds the
-exact punctured limit proving quadratic sharpness; and
-`FabiusFunction.GeometricActivationDimension` has two definitions and 29
-theorems. The first two modules are real-valued: they do not identify their
-totalized `realSinhc` with the separate complex sinc APIs. The geometric module
-proves a uniform, nondegenerate convergence theory under `|q|<1`. Outside that
-range no general summability is promised and the definition retains Mathlib's
-totalized real-`tsum` semantics, although degenerate parameters may still give
-a convergent series. Its negative-`q` results are algebraic and are not claims
-about the report's geometric-uniform probability law, which assumes `0<q<1`.
+The current activation tranche is source-verified at commit
+`f45041685da96aae71cbd8d2d7979476eefe93ec`. Its six modules expose an
+exhaustive public surface of 6 definitions and 95 theorems, or 101 public
+declarations: `HyperbolicActivation` (4+57), `ActivationSeries` (0+3),
+`ActivationAsymptotics` (0+2), `ActivationSeriesAsymptotics` (0+1),
+`GeometricActivationDimension` (2+30), and
+`GeometricActivationAsymptotics` (0+2). The earlier `7c8d1f1...` checkpoint
+remains a narrower historical milestone rather than the provenance of these
+new results.
+
+The generic series theorem permits an arbitrary index type and signed or zero
+real weights, provided their squares are summable. Under that hypothesis its
+activation series is genuinely summable; it is not an appeal to Mathlib's
+totalized fallback `tsum`. All quotient limits are punctured at zero. The
+geometric API proves a uniform, nondegenerate convergence theory under
+`|q|<1`; negative-`q` statements are deterministic algebraic generalizations,
+while the report's active-count probability interpretation assumes `0<q<1`.
+No theorem identifies the deterministic dyadic sum with `E K_t`, and the
+Taylor jet, full Bernoulli series, and q-binomial chaos coefficient remain
+outside this activation milestone.
 
 For `thm:TM-corner`, Lean now contains the exact Boolean-cube, polynomial,
 dyadic-sign, and report-grid clauses over a more general algebraic target. The
@@ -152,14 +165,19 @@ with Libertinus fonts when available and Latin Modern as a fallback.
 ## Verification status
 
 - All theorem, equation, figure, and bibliography references resolve.
-- The final PDF has 39 A4 pages. Every font is embedded and no Type 3 font is
+- The final PDF has 40 A4 pages and is an unencrypted 948,783-byte PDF 1.5
+  artifact. Every font is embedded and no Type 3 font is
   present in either the report or its six vector figures.
-- The final PDF was preflighted and rendered page-by-page at 120 dpi. Four
-  complete contact sheets were inspected, followed by full-resolution checks
-  of the new totalized-activation, sharp-coefficient, geometric-dimension, and
-  certified-tail pages, including the tail proof across its page break.
+- The final PDF was preflighted and all 40 pages were rendered at 120 dpi.
+  Four complete contact sheets were inspected, followed by full-resolution
+  checks of pages 12--13, 22--23, and 36--38: the scaled and square-summable
+  limits, the geometric/dyadic sharp coefficients, the conclusion, status
+  matrix, and formula atlas.
 - No clipping, overlapping text, broken glyphs, or black rendering artifacts
   were observed.
+- The exact five compiler-backed result headings are each extractable once
+  when matched with their theorem number and class. The report SHA-256 is
+  `0523771ad27522bda46c088659a85ed4b6243495795e3615c6ba5e5a5b2f1979`.
 - The experiment was replayed in two fresh trees. The six archived figure pairs
   were regenerated from the recorded environment after selecting TrueType
   output for the vector plots; the numerical data were retained where the
