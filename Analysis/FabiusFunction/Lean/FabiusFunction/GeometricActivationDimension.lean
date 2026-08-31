@@ -1,4 +1,4 @@
-import FabiusFunction.HyperbolicActivation
+import FabiusFunction.ActivationSeries
 import Mathlib.Analysis.SpecificLimits.Basic
 
 /-!
@@ -40,11 +40,10 @@ theorem activationProbability_pow_mul_le (q t : ℝ) (n : ℕ) :
     activationProbability (q ^ n * t) ≤
       (t ^ 2 / 3) * (q ^ 2) ^ n := by
   calc
-    activationProbability (q ^ n * t) ≤ (q ^ n * t) ^ 2 / 3 :=
-      activationProbability_le_sq_div_three _
+    activationProbability (q ^ n * t) ≤ (t ^ 2 / 3) * (q ^ n) ^ 2 :=
+      activationProbability_mul_le_quadratic (q ^ n) t
     _ = (t ^ 2 / 3) * (q ^ 2) ^ n := by
-      rw [mul_pow, pow_right_comm q n 2]
-      ring
+      rw [pow_right_comm]
 
 /-- Activation probabilities sampled at `q ^ n * t` form a summable series
 whenever the geometric ratio has absolute value less than one. -/
@@ -52,12 +51,9 @@ theorem summable_activationProbability_pow_mul
     {q : ℝ} (hq : |q| < 1) (t : ℝ) :
     Summable (fun n : ℕ ↦ activationProbability (q ^ n * t)) := by
   have hq2 : q ^ 2 < 1 := (sq_lt_one_iff_abs_lt_one q).2 hq
-  have hmajor : Summable (fun n : ℕ ↦ (t ^ 2 / 3) * (q ^ 2) ^ n) :=
-    (summable_geometric_of_lt_one (sq_nonneg q) hq2).mul_left (t ^ 2 / 3)
-  exact Summable.of_nonneg_of_le
-    (fun n ↦ activationProbability_nonneg (q ^ n * t))
-    (fun n ↦ activationProbability_pow_mul_le q t n)
-    hmajor
+  apply summable_activationProbability_mul_of_summable_sq ?_ t
+  simpa only [pow_right_comm] using
+    summable_geometric_of_lt_one (sq_nonneg q) hq2
 
 /-- The activation sum is bounded by the exact sum of its quadratic
 geometric majorant. -/
@@ -66,17 +62,40 @@ theorem tsum_activationProbability_pow_mul_le
     (∑' n : ℕ, activationProbability (q ^ n * t)) ≤
       (t ^ 2 / 3) * (1 - q ^ 2)⁻¹ := by
   have hq2 : q ^ 2 < 1 := (sq_lt_one_iff_abs_lt_one q).2 hq
-  have hterms := summable_activationProbability_pow_mul hq t
-  have hmajor : Summable (fun n : ℕ ↦ (t ^ 2 / 3) * (q ^ 2) ^ n) :=
-    (summable_geometric_of_lt_one (sq_nonneg q) hq2).mul_left (t ^ 2 / 3)
+  have hw : Summable (fun n : ℕ ↦ (q ^ n) ^ 2) := by
+    simpa only [pow_right_comm] using
+      summable_geometric_of_lt_one (sq_nonneg q) hq2
   calc
     (∑' n : ℕ, activationProbability (q ^ n * t)) ≤
-        ∑' n : ℕ, (t ^ 2 / 3) * (q ^ 2) ^ n :=
-      hterms.tsum_le_tsum
-        (fun n ↦ activationProbability_pow_mul_le q t n) hmajor
+        (t ^ 2 / 3) * ∑' n : ℕ, (q ^ n) ^ 2 :=
+      tsum_activationProbability_mul_le hw t
     _ = (t ^ 2 / 3) * (1 - q ^ 2)⁻¹ := by
-      rw [tsum_mul_left,
-        tsum_geometric_of_lt_one (sq_nonneg q) hq2]
+      congr 1
+      simpa only [pow_right_comm] using
+        tsum_geometric_of_lt_one (sq_nonneg q) hq2
+
+/-- The squared normalized geometric weights have total mass
+`(1 - q) / (1 + q)` throughout the convergent range. -/
+theorem hasSum_normalizedGeometricWeight_sq
+    {q : ℝ} (hq : |q| < 1) :
+    HasSum (fun n : ℕ ↦ (q ^ n * (1 - q)) ^ 2)
+      ((1 - q) / (1 + q)) := by
+  have hq2 : q ^ 2 < 1 := (sq_lt_one_iff_abs_lt_one q).2 hq
+  rcases abs_lt.mp hq with ⟨hq_neg, hq_pos⟩
+  have hminus : 1 - q ≠ 0 := by linarith
+  have hplus : 1 + q ≠ 0 := by linarith
+  have hsum :
+      HasSum (fun n : ℕ ↦ (q ^ n * (1 - q)) ^ 2)
+        ((1 - q) ^ 2 * (1 - q ^ 2)⁻¹) := by
+    simpa only [mul_pow, pow_right_comm, mul_comm] using
+      (hasSum_geometric_of_lt_one (sq_nonneg q) hq2).mul_left
+        ((1 - q) ^ 2)
+  have hvalue :
+      (1 - q) / (1 + q) = (1 - q) ^ 2 * (1 - q ^ 2)⁻¹ := by
+    rw [show 1 - q ^ 2 = (1 - q) * (1 + q) by ring]
+    field_simp [hminus, hplus]
+  rw [hvalue]
+  exact hsum
 
 /-! ## The normalized geometric effective dimension -/
 
