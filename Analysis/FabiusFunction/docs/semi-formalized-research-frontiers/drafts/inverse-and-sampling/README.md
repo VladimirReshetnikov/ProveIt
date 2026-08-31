@@ -26,12 +26,12 @@ New standalone intake members:
   source lines at intake and 1,057 after the notation migration), was
   reclassified on 2026-08-31 from the former top-level
   `docs/Non_Elementarity_of_the_Fabius_Function/` pair through
-  `drafts/incoming/` and filed here without changing either submitted
+  `drafts/incoming/` and initially filed here without changing either submitted
   payload. The bare two-file package supplied no archive or checksum ledger.
   The intake hashes were PDF `ab722e11...` and TeX `3c3c2f48...`; the active
-  `SHA256SUMS` was refreshed after the post-publication semantic-notation
-  migration and verifies the current TeX/PDF pair. Its TeX source was already
-  LF, and its structurally readable, unencrypted PDF uses embedded/subset
+  repository-added `SHA256SUMS` was refreshed after the post-publication
+  semantic-notation migration and verifies the current TeX/PDF pair. Its TeX
+  source remains LF, and its structurally readable, unencrypted PDF uses embedded/subset
   fonts, includes Libertinus, and has no Type 3 font. The
   title and abstract place its forward/inverse non-elementarity and analytic-
   locus material with the inverse-function reports in this group. An older

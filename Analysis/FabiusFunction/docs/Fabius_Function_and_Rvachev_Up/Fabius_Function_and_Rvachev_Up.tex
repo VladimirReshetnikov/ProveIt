@@ -1553,22 +1553,33 @@ This includes \(q=0\) and negative \(q\); the final two declarations are exact
 \(q=1/2\) wrappers for \lean{weightedSumDistribution}.  The Gamma-side product now
 supplies a named locally uniform product, pointwise \lean{Multipliable} and
 \lean{HasProd} forms, and entireness for the same rescaled sinc factors.  The new module
-\path{GeometricSincCharacteristicFunction.lean} has exactly the two public theorems
+\path{GeometricSincCharacteristicFunction.lean} has no public definitions and exactly
+the four public theorems
 \lean{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct} and
-\lean{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma}.
+\lean{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma},
+followed by \lean{tendstoLocallyUniformly_prefix_sinc_charFun} and
+\lean{tendstoUniformlyOn_prefix_sinc_charFun}.
 For
 \[
  z=z_{q,t}:=\frac{(1-q)t}{2\pi},
 \]
-they give, under the same sharp hypothesis \(|q|<1\),
+the first two give, under the same sharp hypothesis \(|q|<1\),
 \[
  \phi_q(t)=e^{\ImaginaryUnit t/2}\Phi_q(z)
  =e^{\ImaginaryUnit t/2}G_q(z)G_q(-z).
 \]
-Thus the bridge includes \(q=0\) and negative \(q\).  What remains missing is a named
-compact-uniform convergence wrapper for the \emph{full phase-bearing} characteristic
-prefixes.  The fixed-dyadic Pochhammer factorization in
-\path{RvachevPochhammerFactorization.lean} is not such a general-\(q\) wrapper.
+For the full prefix
+\[
+ P_{q,m}(t):=e^{\ImaginaryUnit(1-q^m)t/2}
+ \prod_{k=0}^{m-1}\SincRad\!\left(\frac{(1-q)q^kt}{2}\right),
+\]
+the last two prove \(P_{q,m}\to\phi_q\) locally uniformly on the real frequency line
+and uniformly on every compact \(K\subseteq\RealNumbers\).  Thus all four results include
+\(q=0\) and negative \(q\).  No complex-frequency analogue for the full phase-bearing
+prefixes or uniform-convergence claim on all of \(\RealNumbers\) is made.  The separate
+\path{RvachevPochhammerFactorization.lean} theorem below does supply the global
+general-contracting-\(q\) spectral \(q^2\)-Pochhammer rearrangement of the pure sinc
+product; it does not add a complex-frequency theorem for the full phase-bearing prefixes.
 
 The generic CDF mechanisms are
 \lean{continuous_cdf_of_nullSingleton},
@@ -1629,11 +1640,13 @@ An exact Lean theorem for the paper-level corrected signed-ratio density remains
 \(C^\infty\) theorem is proved by the real-space derivative refinement.  The
 phase-bearing general-\(q\) sinc prefixes and their
 pointwise characteristic-function limit are formal; the pure complex sinc product now has
-named locally uniform convergence, pointwise \lean{HasProd}, and entireness, and the two
-identities above close its characteristic-function and reciprocal-Gamma bridges.  A named
-compact-uniform convergence wrapper for the full phase-bearing prefixes, rapid-decay
-estimates, and a Fourier-inversion construction remain outside the formal API.  So do a
-named centered \(q\)-family, a closed all-order
+named locally uniform convergence, pointwise \lean{HasProd}, and entireness, and the four
+theorems above close its characteristic-function and reciprocal-Gamma bridges and upgrade
+the full prefixes to locally uniform convergence on the real frequency line and uniform
+convergence on every compact real frequency set.  No complex-frequency full-prefix
+analogue or uniform-convergence assertion on all real frequencies is made.  Rapid-decay
+estimates and a Fourier-inversion construction remain outside the formal API.  So do a
+named centered \(q\)-family or MGF wrapper, a closed all-order
 derivative hierarchy and explicit endpoint-flatness wrappers, shape theorems, further
 transform formulas, and explicit Bernoulli-cumulant/Bell-moment formulas and asymptotics.
 The global complex Pochhammer theorem proved below is the fixed inside
@@ -2974,7 +2987,7 @@ and heat-trace representations, D-finiteness, and general-base collision order l
 remain separate frontiers.
 \end{proof}
 
-\begin{theorem}[Complex Pochhammer factorization of the Rvachev product]
+\begin{theorem}[Complex Pochhammer factorization of geometric sinc products]
 For \(a,q\in\ComplexNumbers\), let the total complex infinite \(q\)-Pochhammer symbol be
 \begin{equation}
  (a;q)_{\infty,\ComplexNumbers}:=\prod_{j=0}^{\infty}(1-aq^j).
@@ -2982,6 +2995,14 @@ For \(a,q\in\ComplexNumbers\), let the total complex infinite \(q\)-Pochhammer s
 \end{equation}
 If \(\lVert q\rVert<1\), this factor family is multipliable and its finite
 prefixes converge to \((a;q)_{\infty,\ComplexNumbers}\), with no restriction on \(a\).
+For every \(q,z\in\ComplexNumbers\) with \(\lVert q\rVert<1\), put
+\(S_q(z):=\operatorname{geometricSincProduct}(q,z)\).  Then, globally in \(z\),
+\begin{equation}
+ S_q(z)=\prod_{k=0}^{\infty}
+   \left(\frac{z^2}{(k+1)^2};q^2\right)_{\infty,\ComplexNumbers}.
+                                                               \label{eq:geometric-complex-qpochhammer}
+\end{equation}
+The statement includes \(q=0\) and every zero of an individual factor.
 For every \(z\in\ComplexNumbers\), without a nonvanishing hypothesis,
 \begin{equation}
  \Phi(z)=\prod_{k=0}^{\infty}
@@ -2989,31 +3010,34 @@ For every \(z\in\ComplexNumbers\), without a nonvanishing hypothesis,
                                                                \label{eq:rvachev-complex-qpochhammer}
 \end{equation}
 The same right-hand side equals \(\widehat{\RvachevUp}(z)\) for every bounded
-Fabius witness satisfying the Fabius equations.  In the normalization of the
-signed-and-reciprocal \(q\)-frontier, \(t=4\pi z\) turns
-\eqref{eq:rvachev-complex-qpochhammer} into exactly the inside \(q=1/2\)
-specialization of its centered sinc--Pochhammer product.
+Fabius witness satisfying the Fabius equations.  Equation
+\eqref{eq:rvachev-complex-qpochhammer} is the \(q=1/2\), nome-\(1/4\)
+specialization of \eqref{eq:geometric-complex-qpochhammer}.
 \end{theorem}
 
 \begin{proof}[Formal proof and exact boundary]
 \path{RvachevPochhammerFactorization.lean} has one public definition,
-\lean{complexQPochhammerInf}, and exactly six public theorems:
+\lean{complexQPochhammerInf}, and exactly nine public theorems:
 \lean{complexQPochhammerInf_eq_tprod},
 \lean{multipliable_one_sub_mul_pow_complex},
 \lean{hasProd_complexQPochhammerInf},
 \lean{tendsto_finiteQPochhammerIn_complex},
+\lean{summable_norm_sineTerm_qpow_pair},
+\lean{geometricSincProduct_eq_tprod_pair},
+\lean{geometricSincProduct_eq_tprod_complexQPochhammerInf},
 \lean{rvachevFourierProduct_eq_tprod_complexQPochhammerInf}, and
 \lean{rvachevFourier_eq_tprod_complexQPochhammerInf}.
-The middle three convergence declarations require exactly
-\(\lVert q\rVert<1\).  The final two declarations instead fix the dyadic
-scale and hence the Pochhammer nome \(1/4\); they hold globally in the complex
-argument, including at individual zero factors, and the Fourier-transform
-form assumes exactly a bounded witness and \lean{IsFabius}.  The generic
-complex symbol and its convergence API do not turn the final factorization
-into a general-\(q\) sinc theorem.  In particular, these declarations neither
-name the frontier's \(\psi_q\) or \(M_q\), nor prove the outside
-\(\lvert q\rvert>1\) reciprocal formula, zero--pole exchange, or
-local-uniform/normal convergence of that parameterized product.
+The three convergence declarations after the definitional equality require
+exactly \(\lVert q\rVert<1\).  Under the same strict-contraction hypothesis,
+the next three declarations prove absolute summability of the paired Euler
+perturbations, the paired-index product, and
+\eqref{eq:geometric-complex-qpochhammer}; no nonvanishing premise is used.
+The final two declarations fix the dyadic scale and hence the Pochhammer nome
+\(1/4\); the Fourier-transform form assumes exactly a bounded witness and
+\lean{IsFabius}.  These results do not name the frontier's centered
+\(\psi_q\) or \(M_q\), prove the outside \(\lvert q\rvert>1\) reciprocal
+formula or zero--pole exchange, or supply a named local-uniform/normal-
+convergence theorem for the Pochhammer-product right-hand side.
 \end{proof}
 
 The exponent in the canonical product has a finite, base-generic double-counting
@@ -4590,18 +4614,18 @@ definition, \lean{fabiusIntervalMass}, and thirty-one theorems:
 \lean{fabiusReal_le_abs_sub_of_le_abs_fabiusInv_sub}, and
 \lean{forall_abs_fabiusInv_sub_lt_iff}.
 For every nonnegative interval length, the mass increment is reflection-invariant,
-vanishes on either constant tail, increases toward the centered interval, and then
-decreases.  When \(0<h\le1\), the maximal support-meeting branches
-\([-h,(1-h)/2]\) and \([(1-h)/2,1]\) are strict.  On the unit
-interval, the endpoint minimum has exact strict-interior and degenerate/endpoint equality
-loci, and constrained superadditivity has its complete equality classification.  The
-resulting ordered and order-free inverse-gap bounds include complete ordered and absolute
-equality loci on \([0,1]\), while the clamped tails deliberately preclude a global equality
-claim.  Subadditivity, absolute and metric self-moduli, saturation at one, and attained
-exact \path{IsGreatest}/\path{sSup} moduli hold over all real inputs and unit-interval
-inputs.  The final four theorems are the strict and closed effective-injectivity bounds,
-their contrapositive separation form, and the exact uniform strict-threshold
-biconditional.  This structural API does not claim the
+vanishes on both constant tails, and has the global weak increase--decrease shape.  When
+\(0<h\leq1\), the maximal support-meeting branches \([-h,(1-h)/2]\) and
+\([(1-h)/2,1]\) are respectively strictly increasing and strictly decreasing.  On the
+unit interval, the endpoint minimum has exact strict-interior and degenerate/endpoint
+equality loci, and constrained superadditivity has its complete equality classification.
+The resulting ordered and order-free inverse-gap bounds include complete ordered and
+absolute equality loci on \([0,1]\), while clamping creates additional cases and therefore
+precludes the corresponding global equality claims.  Subadditivity, absolute and metric
+self-moduli, saturation at one, and attained exact \path{IsGreatest}/\path{sSup} moduli
+hold over all real inputs and unit-interval inputs.  The final four theorems are the strict
+and closed effective-injectivity bounds, their contrapositive separation form, and the
+exact uniform strict-threshold biconditional.  This structural API does not claim the
 computability report's closed \(\Delta_r\) lower bound, recursive-modulus packaging,
 tolerant bisection realizer, sequential computability, combined computable-real-function
 theorem, or bit-complexity estimate.
@@ -10744,19 +10768,24 @@ That rule explains several choices made above:
       residual sinc factorization and pointwise phase-bearing prefix limit for every
       \(|q|<1\), with dyadic wrappers.  The pure rescaled sinc product now has named
       locally uniform convergence, pointwise \lean{Multipliable}/\lean{HasProd}, and
-      entireness.  The two theorems of
+      entireness.  The four theorems of
       \path{GeometricSincCharacteristicFunction.lean} give, for
       \(z=(1-q)t/(2\pi)\), the exact identities
       \(\phi_q(t)=e^{\ImaginaryUnit t/2}\Phi_q(z)=e^{\ImaginaryUnit t/2}G_q(z)G_q(-z)\), including
-      \(q=0\) and negative \(q\).  The seven activation modules separately prove the sharp
+      \(q=0\) and negative \(q\), and prove that
+      \(e^{\ImaginaryUnit(1-q^m)t/2}\prod_{k<m}\SincRad((1-q)q^kt/2)\) converges locally uniformly
+      on the real frequency line to \(\phi_q(t)\) and uniformly on every compact real
+      frequency set.  These convergence declarations are
+      \lean{tendstoLocallyUniformly_prefix_sinc_charFun} and
+      \lean{tendstoUniformlyOn_prefix_sinc_charFun}.  The seven activation modules
+      separately prove the sharp
       coefficient \(p(at)/t^2\to a^2/3\), its arbitrary-index square-summable Tannery
       theorem, the exact geometric coefficient \((1-q)/(3(1+q))\), and the dyadic value
       \(1/9\), together with the degree-eight finite Taylor jet of \(p\) and its
       order-ten remainder.  These quotient limits are punctured and deterministic; no
-      active-count expectation identity is asserted.  A named compact-uniform convergence
-      wrapper for the
-      full phase-bearing prefixes, general-\(q\) rapid decay and Fourier inversion,
-      centered packaging, closed
+      active-count expectation identity is asserted.  No complex-frequency analogue for
+      the full phase-bearing prefixes or uniform-convergence claim on all of \(\RealNumbers\) is
+      made.  General-\(q\) rapid decay and Fourier inversion, centered or MGF packaging, closed
       higher-derivative and endpoint-flatness wrappers, shape results, further transforms,
       and Taylor coefficients beyond the proved finite jet, an all-order Bernoulli
       coefficient formula, a radius-of-convergence theorem, and the corresponding full
@@ -11143,9 +11172,11 @@ Here the arbitrary-\(F\) formula inherits totalized division from the generic th
 entry-as-integral theorem, strict positivity \(D_n>0\), and identification with the real cast
 of the exact rational Rvachev subdiagonal each additionally require
 \(h_F:\lean{IsFabius}\,F\).  Under that hypothesis positivity removes the singular case and
-the cross-ratio is a genuine Jacobi formula.  Neither module proves the individual Gram entries by a
-finite Gaunt, Wigner, or \(3j\)-symbol expansion, entry rationality by that route,
-Christoffel reconstruction, or an infinite Jacobi product.  Also,
+the cross-ratio is a genuine Jacobi formula.  Those two modules themselves do not prove
+individual Gram entries by a finite Gaunt expansion or entry rationality by that route;
+the two downstream Gaunt modules inventoried below do.  A Wigner or \(3j\)-symbol
+identification, factorial closed form, Christoffel reconstruction, and infinite Jacobi
+product remain absent.  Also,
 \lean{rvachevTranslateGram} is a different object: it pairs shifted-up atoms under
 unweighted interval integration, whereas \lean{upLegendreGramMatrix} pairs polynomials under
 the up-law moment functional.
@@ -11179,9 +11210,98 @@ two theorems express the exact rational squared norm and the zero-based
 Gram-determinant ratios, with the latter carrying the factor
 \(((n+1)/(2n+1))^2\).  Thus the executable coefficient, entry, matrix, determinant,
 cast, positivity, norm-ratio, and Jacobi-ratio layer is formalized.  No finite
-Gaunt/Wigner/\(3j\) expansion, Christoffel reconstruction, root or quadrature theorem,
-infinite Jacobi product or continued fraction, or asymptotic statement is supplied by
-these modules.
+Gaunt expansion is supplied by this module itself.  The downstream modules below supply
+the finite Gaunt formulas; a Wigner/\(3j\) or factorial closed form, Christoffel
+reconstruction, root or quadrature theorem, infinite Jacobi product or continued
+fraction, and asymptotics remain outside this layer.
+
+The first downstream module, \path{LegendreGaunt.lean}, has exactly four public
+definitions:
+\lean{legendreLebesgueMomentRat},
+\lean{legendreGauntRat},
+\lean{legendreGaunt}, and
+\lean{legendreProductLinearizationCoeffRat}.
+For \(n\in\NaturalNumbers\), the first definition is \(2/(n+1)\) when \(n\) is even and
+zero when \(n\) is odd.  For \(i,j,k\in\NaturalNumbers\), the next three definitions are,
+respectively, the bounded rational coefficient--moment sum for \(P_iP_jP_k\), the real
+integral
+\[
+ G_{ijk}=\int_{-1}^{1}P_i(x)P_j(x)P_k(x)\,\Differential x,
+\]
+and the rational product-linearization coefficient
+\[
+ L_{ijk}=\frac{2k+1}{2}\,\lean{legendreGauntRat}(i,j,k).
+\]
+Its exactly twelve public theorems are
+\lean{legendreLebesgueMomentRat_even},
+\lean{legendreLebesgueMomentRat_odd},
+\lean{legendreLebesgueMomentRat_cast},
+\lean{legendreGauntRat_eq_momentFunctional},
+\lean{legendreGauntRat_cast},
+\lean{legendreGauntRat_swap_left},
+\lean{legendreGauntRat_swap_right},
+\lean{legendrePolynomial_mul_eq_sum_gaunt},
+\lean{legendrePolynomialRat_mul_eq_sum_gaunt},
+\lean{legendreGauntRat_eq_zero_of_odd_sum},
+\lean{legendreGauntRat_eq_zero_of_add_lt}, and
+\lean{legendreGauntRat_eq_zero_of_triangle_violation}.
+They prove the even and odd moment formulas, identify the real cast with
+\(\int_{-1}^{1}x^n\,\Differential x\), identify the triple sum with the rational moment
+functional and its real cast with \(G_{ijk}\), and prove the displayed first-two and
+last-two index symmetries.  Over both \(\RealNumbers[X]\) and
+\(\RationalNumbers[X]\), they give the exact finite identity
+\[
+ P_iP_j=\sum_{k=0}^{i+j}L_{ijk}P_k.
+\]
+The only public hypotheses are \(\operatorname{Odd}(i+j+k)\) for the parity zero,
+\(i+j<k\) for the one-sided degree zero, and
+\(i+j<k\lor i+k<j\lor j+k<i\) for the triangle-violation zero.  All four definitions
+and the other nine theorems are total at arbitrary natural indices.  The module proves
+no converse support theorem, Wigner/\(3j\) identification, factorial closed form,
+positivity theorem, or asymptotic claim.
+
+The second downstream module, \path{FabiusLegendreGaunt.lean}, has exactly one public
+definition,
+\lean{canonicalRvachevFullLegendreCoefficientRat}, and exactly eight public theorems:
+\lean{canonicalRvachevFullLegendreCoefficientRat_even},
+\lean{canonicalRvachevFullLegendreCoefficientRat_odd},
+\lean{canonicalRvachevFullLegendreCoefficientRat_cast},
+\lean{canonicalRvachevFullLegendreCoefficientRat_eq_normalized_moment},
+\lean{rvachevLegendreGramEntryRat_eq_sum_full_gaunt},
+\lean{rvachevLegendreGramEntryRat_eq_sum_gaunt},
+\lean{rvachevLegendreGramMatrixRat_apply_eq_sum_gaunt}, and
+\lean{upLegendreGramMatrix_apply_eq_sum_gaunt}.
+The definition equals \lean{canonicalRvachevLegendreCoefficientRat}\((k/2)\) when
+\(2\mid k\) and zero otherwise; hence its value at \(2n\) is the canonical even
+coefficient and its value at \(2n+1\) is zero.  Write \(c_k^{\mathrm{full}}\) for this
+definition and \(M_{\mathbb Q}\) for
+\lean{momentFunctional}\((\lean{rvachevRawMomentRat},\mathord{-})\).  Unconditionally
+in \(k\), the normalized-moment theorem states
+\[
+ c_k^{\mathrm{full}}=\frac{2k+1}{2}\,M_{\mathbb Q}(P_k).
+\]
+For arbitrary natural \(i,j\), write \(H_{ij}^{\mathbb Q}\) for the rational Gram
+entry, \(c_r\) for the canonical even coefficient, and \(G_{ijk}^{\mathbb Q}\) for
+the rational Gaunt coefficient.  The two entry formulas are exactly
+\[
+ H_{ij}^{\mathbb Q}=\sum_{k=0}^{i+j}c_k^{\mathrm{full}}G_{ijk}^{\mathbb Q}
+\]
+and, after deleting the zero odd terms,
+\[
+ H_{ij}^{\mathbb Q}=\sum_{r=0}^{\lfloor(i+j)/2\rfloor}c_rG_{ij,2r}^{\mathbb Q}.
+\]
+The rational matrix-entry theorem gives the second formula for every
+\(i,j:\lean{Fin}\,n\).  Only
+\lean{canonicalRvachevFullLegendreCoefficientRat_cast} and
+\lean{upLegendreGramMatrix_apply_eq_sum_gaunt} require
+\(F:\lean{BoundedFabius}\) and \(h_F:\lean{IsFabius}\,F\): the former identifies the
+cast with \lean{rvachevFullLegendreCoefficient}\((F,k)\), while the latter replaces the
+rational coefficient and Gaunt term in the even finite sum by
+\lean{rvachevLegendreCoefficient}\((F,r)\) and
+\lean{legendreGaunt}\((i,j,2r)\).  The other six theorems are unconditional finite
+identities.  This module makes no Wigner/\(3j\) or factorial claim, interchanges no
+infinite Legendre series with integration, and proves no Christoffel reconstruction or
+new positivity or asymptotic result.
 
 The low-order computation leaf \path{FabiusLegendreRationalGramValues.lean} has zero public
 definitions and exactly eleven public theorems:
@@ -11216,9 +11336,11 @@ zero-based.  Each of the final three transport
 theorems---the real Hankel-ratio value, its squared-orthogonal-polynomial integral, and
 the identity \(H_4/H_3=\beta_4\)---requires both
 \(F:\lean{BoundedFabius}\) and \(h_F:\lean{IsFabius}\,F\).  Thus the displayed norm and
-subdiagonal are now named exact Lean evaluations.  Finite Gaunt/Wigner/\(3j\) entry
-expansions, Christoffel reconstruction, root and quadrature theory, infinite Jacobi
-products or continued fractions, and asymptotics remain outside this values leaf.
+subdiagonal are now named exact Lean evaluations.  This values leaf itself contains no
+Gaunt entry expansion; the two preceding Gaunt modules supply the finite formulas.  A
+Wigner/\(3j\) or factorial closed form, Christoffel reconstruction, root and quadrature
+theory, infinite Jacobi products or continued fractions, and asymptotics remain outside
+the combined layer.
 
 This closure does not supply a complex logarithmic fixed point, complex order,
 pointwise or nontangential Sokhotski--Plemelj limits, a principal-value Hilbert-transform
@@ -11299,6 +11421,8 @@ renormalization, Laurent/Herglotz/inversion layers, initial Jacobi data, and fin
 \path{LegendrePolynomialRational.lean},
 \path{FabiusLegendreHankelDeterminant.lean},
 \path{FabiusLegendreRationalGram.lean},
+\path{LegendreGaunt.lean},
+\path{FabiusLegendreGaunt.lean},
 \path{FabiusLegendreRationalGramValues.lean},
 \path{EarlyApproximants.lean},
 \path{EarlyMeasureBridge.lean}, \path{WeakConvergence.lean},
