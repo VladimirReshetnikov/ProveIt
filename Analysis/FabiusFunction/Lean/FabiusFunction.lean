@@ -93,6 +93,13 @@ import FabiusFunction.SaddleLogExpansionPowerSeries
 import FabiusFunction.CenteredMomentCumulants
 import FabiusFunction.CenteredMomentParity
 import FabiusFunction.SinhDivBernoulliLog
+import FabiusFunction.HyperbolicActivation
+import FabiusFunction.ActivationSeries
+import FabiusFunction.ActivationAsymptotics
+import FabiusFunction.ActivationTaylor
+import FabiusFunction.ActivationSeriesAsymptotics
+import FabiusFunction.GeometricActivationDimension
+import FabiusFunction.GeometricActivationAsymptotics
 import FabiusFunction.ReciprocalExponentialGenerating
 import FabiusFunction.RvachevMomentAppell
 import FabiusFunction.ImplicitPowerSeries
@@ -136,6 +143,7 @@ import FabiusFunction.ThueMorseWalsh
 import FabiusFunction.ThueMorseComplexProductBridge
 import FabiusFunction.ThueMorseSparseMoments
 import FabiusFunction.ThueMorseMixedDifference
+import FabiusFunction.ThueMorseSymmetricDifference
 import FabiusFunction.ThueMorseAutocorrelation
 import FabiusFunction.ThueMorseOverlapFree
 import FabiusFunction.ThueMorseRecurrence
@@ -335,6 +343,7 @@ import FabiusFunction.LeadingJet
 import FabiusFunction.IntegerZeroAnalyticOrder
 import FabiusFunction.ScaledInfiniteProducts
 import FabiusFunction.GeometricReciprocalGamma
+import FabiusFunction.GeometricSincCharacteristicFunction
 import FabiusFunction.DyadicGammaOrder
 import FabiusFunction.ReciprocalIntegerGammaZeros
 import FabiusFunction.SincPrefixBound
@@ -387,6 +396,8 @@ import FabiusFunction.EffectiveFlatness
 import FabiusFunction.SharpFlatness
 import FabiusFunction.FabiusInverse
 import FabiusFunction.InverseModulus
+import FabiusFunction.FabiusInverseEffectiveContinuity
+import FabiusFunction.FabiusInverseLogarithmicModulus
 import FabiusFunction.MidpointEndpointTransfer
 import FabiusFunction.InverseMidpointDefect
 import FabiusFunction.InverseLayerCake

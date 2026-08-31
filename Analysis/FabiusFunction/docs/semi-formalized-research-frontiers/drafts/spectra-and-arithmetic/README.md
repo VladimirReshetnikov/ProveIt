@@ -14,42 +14,70 @@ not a visual review, experiment replay, TeX rebuild, mathematical audit, or
 Lean verification.
 
 - [`Automatic_Scale_Factorizations_Rvachev_2026-08-30/`](Automatic_Scale_Factorizations_Rvachev_2026-08-30/)
-  contains the 22-page *Automatic Scale Factorizations of the Rvachev Law*
-  bundle from arrival commit `8a184546747082cbd92ad4675fb61981c6b8c3b6`.
-  Six CSV hashes were refreshed for LF storage, and the JSON summary received
-  its missing final newline; all 21 non-ledger payloads are covered.
+  contains *Automatic Scale Factorizations of the Rvachev Law* (22 A4 pp,
+  1,702 source lines; with a 473-line program, eight data outputs, and three
+  PDF/PNG figure pairs), from arrival commit
+  `8a184546747082cbd92ad4675fb61981c6b8c3b6`. Its submitted ledger covers all
+  21 non-ledger payloads and verifies after six CSV hashes were refreshed for
+  LF storage and the JSON summary's missing final newline was repaired. Its
+  Thue--Morse scale partition, q-Mahler, Mellin, moment, plateau, and endpoint
+  themes remain standalone pending claim and experiment review, comparison,
+  and a Lean crosswalk.
 
 - [`Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30/`](Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30/)
-  contains the 31-page *Dyadic Radon Profiles in the Fabius--Rvachev Web*
-  bundle from `03b2f61889674f7d64ac86d3233236f5fa7ce660`.  Its 26-entry
-  ledger now records the repository-normalized bytes; nine CSV entries
-  changed only by CRLF-to-LF normalization.
+  contains *Dyadic Radon Profiles in the Fabius--Rvachev Web* (31
+  letter-paper pp, 2,064 source lines; with a 624-line program, ten data
+  files, and four PDF/PNG figure pairs), from
+  `03b2f61889674f7d64ac86d3233236f5fa7ce660`. Its complete 26-entry ledger
+  now records the repository-normalized bytes; nine CSV entries changed only
+  by CRLF-to-LF normalization. The title and abstract concern spectral
+  reconstruction of dyadic projection profiles, zero multiplicities,
+  q-sampled cumulants, automatic signs, Pascal factorizations, and exact
+  cubature.
 
 - [`Fabius_Pascal_Frontiers_Report/`](Fabius_Pascal_Frontiers_Report/)
-  contains the 27-page *Automatic Spectra, Exact Dyadic Cubature, and
-  Probabilistic Duals in the Pascal--Rvachev Hierarchy* bundle from
-  `8a184546747082cbd92ad4675fb61981c6b8c3b6`.  The delivery had no checksum
-  file, so the repository-generated `SHA256SUMS` covers all nine payloads.
+  contains *Automatic Spectra, Exact Dyadic Cubature, and Probabilistic Duals
+  in the Pascal--Rvachev Hierarchy* (27 A4 pp, 1,943 source lines; with a
+  426-line program, four CSV tables, and a captured numerical summary), from
+  `8a184546747082cbd92ad4675fb61981c6b8c3b6`. The nine-file delivery had no
+  checksum ledger or dependency lock, so the repository-generated
+  `SHA256SUMS` records and verifies all nine payloads. Its higher-rank spectral
+  signs and Lambert series, dyadic cubature, Laguerre--Pólya/Pascal hierarchy,
+  and probabilistic duals remain pending comparison.
 
 - [`fabius_holonomic_frontiers_report/`](fabius_holonomic_frontiers_report/)
-  contains the 30-page *Holonomic Rank, Exact Overlaps, and
-  Non-P-Recursiveness* bundle from
-  `6d6737530ec541196c506f95ec20a701a29872b3`.  Six CSV hashes in its
-  otherwise complete 26-entry ledger were refreshed for LF storage.
+  contains *Holonomic Rank, Exact Overlaps, and Non-P-Recursiveness in the
+  Fabius--Rvachev System* (30 A4 pp, 2,279 source lines; with a 644-line
+  experiment, six CSV tables, a generated TeX fragment, a captured text
+  check, and five PDF/PNG figure pairs), from
+  `6d6737530ec541196c506f95ec20a701a29872b3`. Six CSV hashes in its complete
+  26-entry ledger were refreshed for LF storage. All six delivered PDFs are
+  readable and unencrypted (35 pages total); the report concerns finite
+  sinc-product differential rank, exact signed overlaps, dyadic
+  Thue--Morse/frequency spectra, and non-D-finiteness/non-P-recursiveness.
 
 - [`Fabius_Rvachev_Carleman_Frontiers_2026-08-30/`](Fabius_Rvachev_Carleman_Frontiers_2026-08-30/)
-  contains the 24-page *Critical Ultradifferentiable Geometry of the
-  Fabius--Rvachev System* bundle from
-  `92c9909242ed6a2ab51d68ed816d1aa2a5339719`.  Four CSV hashes in its
-  complete 21-entry ledger were refreshed for LF storage.
+  contains *Critical Ultradifferentiable Geometry of the Fabius--Rvachev
+  System* (24 A4 pp, 1,941 source lines; with a 544-line program, four CSV
+  tables, and five PDF/PNG figure pairs), from
+  `92c9909242ed6a2ab51d68ed816d1aa2a5339719`. Four CSV hashes in its complete
+  21-entry ledger were refreshed for LF storage. Its derivative spectrum,
+  Denjoy--Carleman scales, discrete Fourier duality, lattice corrections,
+  Lambert-W saddles, and Bell-edge behavior remain pending comparison and
+  formalization.
 
 - [`Dyadic_Spectral_Divisors_and_Gamma_Duality/`](Dyadic_Spectral_Divisors_and_Gamma_Duality/)
   is the title-derived filing of the generic incoming wrapper
   `Fabius_Rvachev_Frontier_Report-F/` from
-  `d4605275f58f648ebcdeb74bc2ef5e4983abb6f0`.  The submitted three-entry
-  ledger verifies exactly but is incomplete; the added
-  `ARRIVAL_SHA256SUMS` covers all twenty delivered files, including that
-  original ledger.
+  `d4605275f58f648ebcdeb74bc2ef5e4983abb6f0`. *Dyadic Spectral Divisors and
+  Gamma Duality* is 22 A4 pages and 1,301 source lines, with a 379-line
+  program, seven generated outputs, and three PDF/PNG figure pairs. Its
+  submitted 3-entry ledger verifies those three payloads but is incomplete;
+  the repository-added full `ARRIVAL_SHA256SUMS` ledger records all 20
+  delivered files, including the submitted ledger. Its dyadic zero divisor,
+  Laguerre--Pólya/non-holonomic structure, reciprocal-base counting, heat
+  traces, Gamma/Thorin duality, and Lambert inversion remain separate pending
+  semantic deduplication and a Lean crosswalk.
 
 These reports overlap one another and the consolidated spectra volume in
 zero-divisor arithmetic, Pascal/valuation profiles, derivative growth,
