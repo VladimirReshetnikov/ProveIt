@@ -333,8 +333,9 @@ The endpoint continuity now has theorem-level names as well:
 branch point and on its full real domain, while
 \path{lowerLambertW_continuousWithinAt_branchPoint} and
 \path{lowerLambertW_continuousOn_Ico} do the same for the lower branch.  These
-continuity declarations do not include the vertical-tangent limits or the
-square-root (Puiseux) expansion at the branch point.
+continuity declarations are inputs to the compiled one-sided derivative and
+leading square-root layers recorded in
+\cref{rem:formal-branchpoint-crosswalk}.
 \end{remark}
 
 \begin{figure}[H]
@@ -723,9 +724,11 @@ unique-zero classification at \(-2/\ee^2\).  Finally,
 \path{strictConcaveOn_lowerLambertW_right} proves strict concavity on
 \([-2/\ee^2,0)\).
 
-The two branch-point vertical-tangent limits above are still not packaged as
-Lean declarations, and neither is the square-root Puiseux package of
-\cref{sec:branchpoint}.
+The raw one-sided endpoint limits, their secant forms, and the resulting
+failure of finite differentiability are now packaged in
+\path{LambertWBranchPointGeometry.lean}; the exact declaration crosswalk and
+the boundary between the leading equivalent and the stronger Puiseux theorem
+appear in \cref{rem:formal-branchpoint-crosswalk}.
 \end{remark}
 
 \begin{theorem}[Concavity and the inflection point]\label{thm:curvature}
@@ -1309,8 +1312,10 @@ an unordered labelled set contributes an exponential, giving
 
 \section{The square-root expansion at the branch point}\label{sec:branchpoint}
 
-Ordinary Taylor series fail at \(x=-1/\ee\) because the derivative of the
-inverse is infinite there.  The correct local variable is a square root.
+Ordinary Taylor series fail at \(x=-1/\ee\): from the right the principal
+derivative diverges to \(+\infty\), the lower derivative diverges to
+\(-\infty\), and neither branch has a finite right derivative there.  The
+correct local variable is a square root.
 
 Put
 \[
@@ -1436,6 +1441,55 @@ where the plus sign is for \(W_0\).  It also explains the vertical tangents:
  \Wz'(x)\sim\frac{\ee}{q},\qquad
  \Wm'(x)\sim-\frac{\ee}{q}.
 \]
+
+\begin{remark}[Compiled Lean branch-point crosswalk]
+\label{rem:formal-branchpoint-crosswalk}
+The raw geometric endpoint module
+\path{LambertWBranchPointGeometry.lean} exposes exactly eight declarations.
+The one-sided derivative limits are
+\path{tendsto_deriv_principalLambertW_branchPoint_atTop} and
+\path{tendsto_deriv_lowerLambertW_branchPoint_atBot}; their endpoint-secant
+counterparts are
+\path{tendsto_principalLambertW_secantSlope_branchPoint_atTop} and
+\path{tendsto_lowerLambertW_secantSlope_branchPoint_atBot}.  Failure of a
+finite right derivative is recorded by
+\path{principalLambertW_not_differentiableWithinAt_branchPoint} and
+\path{lowerLambertW_not_differentiableWithinAt_branchPoint}, while failure
+of ordinary differentiability of the totalized functions is
+\path{principalLambertW_not_differentiableAt_branchPoint} and
+\path{lowerLambertW_not_differentiableAt_branchPoint}.
+
+The companion \path{LambertWBranchPointAsymptotics.lean} has one definition
+and eight theorems.  The definition
+\path{lambertWBranchPointScale} is
+\(q(x)=\sqrt{2\ee(x+\ee^{-1})}\), with
+\path{lambertWBranchPointScale_pos} and
+\path{lambertWBranchPointScale_sq} recording its positivity and exact
+square.  The two limits of the squared displacement divided by
+\(x+\ee^{-1}\) are
+\path{tendsto_principalLambertW_add_one_sq_div_branchPoint} and
+\path{tendsto_lowerLambertW_add_one_sq_div_branchPoint}; their asymptotic
+equivalence forms are
+\path{principalLambertW_add_one_sq_isEquivalent_branchPoint} and
+\path{lowerLambertW_add_one_sq_isEquivalent_branchPoint}.  Finally,
+\path{principalLambertW_add_one_isEquivalent_branchPoint} and
+\path{lowerLambertW_add_one_isEquivalent_branchPoint} give precisely
+\[
+ \Wz(x)+1\sim q(x),\qquad \Wm(x)+1\sim-q(x)
+ \quad(x\downarrow-1/\ee).
+\]
+
+This formalizes the signed leading equivalent, but not the stronger
+\(\bigO(x+\ee^{-1})\) remainder in \eqref{eq:branchleading}, any displayed
+higher coefficient in \eqref{eq:puiseux-series}, the recurrences
+\eqref{eq:brec}--\eqref{eq:arec}, or convergence of the complete series in
+\cref{thm:puiseux}.  The derivative equivalents \(W_k'\sim\pm\ee/q\) shown
+above are also stronger than the compiled divergence statements.  Finally,
+the generic power--exponential and classical Fabius phase wrappers, together
+with their peak-threshold vertical-tangent and square-root corollaries,
+remain unformalized; the raw two-branch results must still be transported
+through those parameter maps.
+\end{remark}
 
 \begin{figure}[H]
 \centering
@@ -3656,14 +3710,14 @@ nontrivial partner (e.g.\ \(x=2\), \(y=4\)); the branches merge at
 Two evaluation methods complement the monotone Newton theory of
 \cref{sec:numerics}.
 
-\begin{proposition}[Logarithmic fixed-point iteration; third treatment]
+\begin{proposition}[Logarithmic fixed-point iteration]
 \label{cmp:prop:fixed-point}
 The iteration \(w_{n+1}=\log(x/w_n)\) has fixed points exactly at the
-nonzero branch values, with multiplier \(-1/W\) there: it is locally
-attracting precisely when \(\abs W>1\) --- on \(W_0\) only for \(x>\ee\),
-on \(W_{-1}\) for every \(-1/\ee<x<0\) --- and it loses contraction at
-\(W_0(\ee)=1\) and at the branch point.  Where it converges it is only
-linear.
+nonzero branch values, with multiplier \(-1/W\) there.  It is locally
+attracting exactly when \(\abs W>1\).  Thus the principal iteration attracts
+only for \(x>\ee\), while the lower one attracts throughout
+\(-1/\ee<x<0\).  Contraction fails at \(W_0(\ee)=1\) and at the branch point.
+Where the iteration converges, its rate is only linear.
 \end{proposition}
 
 \begin{theorem}[Inverse-Taylor (Schr\"oder-type) corrections; monograph

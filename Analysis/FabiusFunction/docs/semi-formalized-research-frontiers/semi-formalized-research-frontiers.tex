@@ -749,7 +749,9 @@ three sign equivalences assume exactly \(z\in(-e^{-1},0)\); the unique zero is
 \(-2e^{-2}\), with strict convexity on
 \([-e^{-1},-2e^{-2}]\) and strict concavity on
 \([-2e^{-2},0)\).  The endpoint-inclusive shape results do not assert a
-branch-point derivative, vertical-tangent limit, or Puiseux law. &
+branch-point derivative, vertical-tangent limit, or Puiseux law; the two
+later branch-point leaves in the next rows supply the vertical geometry and
+leading square-root law. &
 \nolinkurl{deriv_principalLambertW},
 \nolinkurl{deriv_principalLambertW_hasDerivAt},
 \nolinkurl{deriv_deriv_principalLambertW},
@@ -764,6 +766,41 @@ branch-point derivative, vertical-tangent limit, or Puiseux law. &
 \nolinkurl{strictConvexOn_lowerLambertW_left},
 \nolinkurl{strictConcaveOn_lowerLambertW_right} &
 \nolinkurl{LambertWCurvature.lean} \\
+Lambert branch-point vertical geometry (eight theorems).  Along the
+right-hand filter at \(b=-\exp(-1)\), the principal derivative and endpoint
+secant slope tend to \(+\infty\), while their lower-branch counterparts tend
+to \(-\infty\).  Consequently neither branch has a finite right derivative
+on \(\operatorname{Ioi}(b)\), and neither totalized real branch is
+differentiable at \(b\). &
+\nolinkurl{tendsto_deriv_principalLambertW_branchPoint_atTop},
+\nolinkurl{tendsto_deriv_lowerLambertW_branchPoint_atBot},
+\nolinkurl{tendsto_principalLambertW_secantSlope_branchPoint_atTop},
+\nolinkurl{tendsto_lowerLambertW_secantSlope_branchPoint_atBot},
+\nolinkurl{principalLambertW_not_differentiableWithinAt_branchPoint},
+\nolinkurl{lowerLambertW_not_differentiableWithinAt_branchPoint},
+\nolinkurl{principalLambertW_not_differentiableAt_branchPoint},
+\nolinkurl{lowerLambertW_not_differentiableAt_branchPoint} &
+\nolinkurl{LambertWBranchPointGeometry.lean} \\
+Lambert leading branch-point asymptotics (one noncomputable definition and
+eight theorems).  Put \(b=-\exp(-1)\).  The intrinsic scale
+\(\mathcal S(z)=\sqrt{2\exp(1)(z-b)}\) is positive to the right of \(b\) and
+has the stated exact square.  Both squared displacement ratios tend
+to \(2\exp(1)\), their squared forms are asymptotically equivalent, and the
+signs select
+\(W_0(z)+1\sim\mathcal S(z)\) and
+\(W_{-1}(z)+1\sim-\mathcal S(z)\) along the same right-hand filter.  These are
+only the leading square-root terms: an \(O(z-b)\) remainder, higher
+coefficients, and a convergent or full Puiseux expansion remain open. &
+\nolinkurl{lambertWBranchPointScale},
+\nolinkurl{lambertWBranchPointScale_pos},
+\nolinkurl{lambertWBranchPointScale_sq},
+\nolinkurl{tendsto_principalLambertW_add_one_sq_div_branchPoint},
+\nolinkurl{tendsto_lowerLambertW_add_one_sq_div_branchPoint},
+\nolinkurl{principalLambertW_add_one_sq_isEquivalent_branchPoint},
+\nolinkurl{lowerLambertW_add_one_sq_isEquivalent_branchPoint},
+\nolinkurl{principalLambertW_add_one_isEquivalent_branchPoint},
+\nolinkurl{lowerLambertW_add_one_isEquivalent_branchPoint} &
+\nolinkurl{LambertWBranchPointAsymptotics.lean} \\
 Generic scaled power--exponential curvature (four declarations).  Write \(P\)
 for the power--exponential peak at parameters \(m,A,\beta\).
 If \(m\in\N\setminus\{0\}\), \(A>0\), \(\beta>0\), and \(0<x<P\), both
@@ -15509,24 +15546,22 @@ The structural uniform-modulus layer is the exhaustive public surface of
 \path{Fabius.abs_fabiusInv_sub_le_of_abs_sub_le_fabiusReal},
 \path{Fabius.fabiusReal_le_abs_sub_of_le_abs_fabiusInv_sub}, and
 \path{Fabius.forall_abs_fabiusInv_sub_lt_iff}.
-For nonnegative length the fixed-length Fabius increment is reflection-invariant, vanishes
-on both constant tails, and has the global weak increase--decrease shape.  For
-\(0<h\leq1\), it is strictly increasing on \([-h,(1-h)/2]\) and strictly decreasing on
-\([(1-h)/2,1]\), the maximal strict branches before the constant tails.  Inside
-\([0,1]\), only the two endpoint intervals minimize nondegenerate fixed-length mass; the
-new equality theorems classify that least-mass inequality and constrained
-superadditivity.  The endpoint minimum also yields the ordered and order-free inverse-gap
-bounds, subadditivity, absolute and metric self-moduli, saturation at one, and attained
-exact \path{IsGreatest}/\path{sSup} moduli globally and on the unit interval.  On the unit
-interval, equality in the ordered inverse-gap bound occurs exactly for a degenerate
-interval or one meeting an endpoint, and equality in the absolute bound occurs exactly
-for coincident inputs or an endpoint input.  Clamping creates extra equality cases outside
-\([0,1]\), so no corresponding global classification is claimed.  The final four
-declarations are the strict and closed effective-injectivity bounds, their contrapositive
-separation form, and the uniform strict-threshold biconditional.  This module does not
-supply the report's closed \(\Delta_r\) lower bound, recursive-modulus wrapper,
-tolerant-bisection realizer, sequential computability theorem, combined
-computable-real-function theorem, or input-bit asymptotics.
+For nonnegative length the fixed-length Fabius increment is reflection-invariant,
+vanishes on both constant tails, and has the global weak increase--decrease shape.  When
+\(0<h\leq1\), the maximal support-meeting branches \([-h,(1-h)/2]\) and
+\([(1-h)/2,1]\) are respectively strictly increasing and strictly decreasing.  On the
+unit interval, the endpoint minimum has exact strict-interior and degenerate/endpoint
+equality loci, and constrained superadditivity has its full equality classification.  The
+ordered and order-free inverse-gap bounds include complete ordered and absolute equality
+loci on \([0,1]\), while clamping creates additional cases and therefore precludes the
+corresponding global equality claims.  Subadditivity, absolute and metric self-moduli,
+saturation at one, and attained exact \path{IsGreatest}/\path{sSup} moduli hold globally
+and on the unit interval.  The final four declarations are the strict and closed
+effective-injectivity bounds, their contrapositive separation form, and the uniform
+strict-threshold biconditional.  This module does not supply the report's closed
+\(\Delta_r\) lower bound, recursive-modulus wrapper, tolerant-bisection realizer,
+sequential computability theorem, combined computable-real-function theorem, or input-bit
+asymptotics.
 
 The inverse interface is centered around
 \begin{lstlisting}[style=pseudo]

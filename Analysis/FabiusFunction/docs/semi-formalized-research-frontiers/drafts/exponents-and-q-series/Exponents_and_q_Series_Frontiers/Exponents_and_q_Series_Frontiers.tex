@@ -2094,6 +2094,60 @@ right-hand strict concavity are
 \lean{Fabius.strictConvexOn\_lowerLambertW\_left} and
 \lean{Fabius.strictConcaveOn\_lowerLambertW\_right}.
 
+\begin{statusbox}{Lean crosswalk: raw Lambert branch-point geometry and leading scale}
+The compiled raw endpoint layer is split between
+\path{LambertWBranchPointGeometry.lean} and
+\path{LambertWBranchPointAsymptotics.lean}.  The former has exactly eight
+public declarations:
+\begin{itemize}
+\item the one-sided derivative divergences
+\lean{Fabius.tendsto\_deriv\_principalLambertW\_branchPoint\_atTop} and
+\lean{Fabius.tendsto\_deriv\_lowerLambertW\_branchPoint\_atBot};
+\item the matching endpoint-secant divergences
+\lean{Fabius.tendsto\_principalLambertW\_secantSlope\_branchPoint\_atTop}
+and
+\lean{Fabius.tendsto\_lowerLambertW\_secantSlope\_branchPoint\_atBot};
+\item failure of a finite right derivative,
+\lean{Fabius.principalLambertW\_not\_differentiableWithinAt\_branchPoint}
+and
+\lean{Fabius.lowerLambertW\_not\_differentiableWithinAt\_branchPoint}; and
+\item failure of ordinary differentiability of the totalized branches,
+\lean{Fabius.principalLambertW\_not\_differentiableAt\_branchPoint} and
+\lean{Fabius.lowerLambertW\_not\_differentiableAt\_branchPoint}.
+\end{itemize}
+Thus ``vertical tangent'' means the precise right-hand limits
+\(W_0'(z)\to+\infty\) and \(W_{-1}'(z)\to-\infty\), together with the
+absence of a finite right derivative at the common endpoint.
+
+The asymptotic module contributes one definition and eight theorems.  Its
+intrinsic scale is
+\lean{Fabius.lambertWBranchPointScale}, with positivity and exact square
+given by \lean{Fabius.lambertWBranchPointScale\_pos} and
+\lean{Fabius.lambertWBranchPointScale\_sq}.  The exact squared-ratio limits
+are
+\lean{Fabius.tendsto\_principalLambertW\_add\_one\_sq\_div\_branchPoint}
+and
+\lean{Fabius.tendsto\_lowerLambertW\_add\_one\_sq\_div\_branchPoint}; their
+equivalence forms are
+\lean{Fabius.principalLambertW\_add\_one\_sq\_isEquivalent\_branchPoint}
+and
+\lean{Fabius.lowerLambertW\_add\_one\_sq\_isEquivalent\_branchPoint}.
+Finally,
+\lean{Fabius.principalLambertW\_add\_one\_isEquivalent\_branchPoint} and
+\lean{Fabius.lowerLambertW\_add\_one\_isEquivalent\_branchPoint} formalize
+only the signed leading laws
+\[
+ W_0(z)+1\sim q(z),\qquad W_{-1}(z)+1\sim-q(z),\qquad
+ q(z)=\sqrt{2\e\,(z+\e^{-1})}.
+\]
+These are first-order equivalents, not the stronger
+\(\bigO(z+\e^{-1})\) remainder, the subsequent Puiseux coefficients, a
+coefficient recurrence, or convergence of the full Puiseux series.  Nor are
+there yet generic power--exponential or classical Fabius-phase pullbacks of
+these endpoint results, including corresponding peak-threshold derivative
+or square-root theorems.
+\end{statusbox}
+
 For the classical Fabius rate, the specialization
 \((m,A,\beta)=(1,1,\log2)\) is named explicitly in
 \path{PowerExponentialLambertFabius}\texttt{.lean}:
@@ -2142,20 +2196,25 @@ The import order is
 \path{PowerExponentialLambertInverse.lean},
 \path{PowerExponentialLambertAsymptotics.lean},
 \path{LambertWCurvature.lean},
+\path{LambertWBranchPointGeometry.lean},
+\path{LambertWBranchPointAsymptotics.lean},
 \path{PowerExponentialLambertCurvature.lean},
 \path{PowerExponentialLambertFabius}\texttt{.lean}, and finally
 \path{PowerExponentialLambertFabiusCurvature.lean}.
 Thus the coordinate, continuity, exact nonnegative-root geometry, principal
 equivalence, lower divergence, intrinsic two-term lower expansion, interior
-second derivatives, and the complete classical Fabius curvature split have
-Lean counterparts.  The endpoint theory still does not include a
-branch-point derivative limit, vertical-tangent theorem, or Puiseux law.
+second derivatives, complete classical Fabius curvature split, raw
+branch-point derivative geometry, and signed leading raw square-root laws
+have Lean counterparts.
 The generic curvature module does not yet export its square-root thresholds
-or strict-shape corollaries, and the generic asymptotic result does not yet
+or strict-shape corollaries; the raw branch-point results have not yet been
+transported to the generic power--exponential phases or the classical Fabius
+phases and their peak thresholds.  The generic small-input asymptotic result does not yet
 replace \(\epsilon_q\) by a cleaned \(L=\log(C_Pp/x)\) expression and does
-not provide further terms or a full logarithmic series; the endpoint
-transseries organized by the coordinate remains outside this formal
-boundary.
+not provide further terms or a full logarithmic series.  Likewise the
+\(\bigO\)-refined and full convergent Puiseux packages remain outside this
+formal boundary, as does the endpoint transseries organized by the
+coordinate.
 
 
 \section{An alternating Newton family of positive-definite Pascal quotients}
