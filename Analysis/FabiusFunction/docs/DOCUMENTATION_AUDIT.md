@@ -109,10 +109,11 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 615 modules and 8,391 lexically
+The post-merge 2026-08-31 inventory contains 616 modules and 8,400 lexically
 visible public declarations, with zero missing module headers and zero missing
-doc comments.  Relative to the 610/8,318 activation checkpoint, the initial exact
-union added five modules and 67 declarations.  The branch-point geometry and
+doc comments.  Relative to the 610/8,318 activation checkpoint, the current
+tree adds six modules and 82 declarations.  The initial exact union added five
+modules and 67 declarations.  The branch-point geometry and
 asymptotics leaves contribute 17 declarations for the one-sided vertical
 tangents and leading signed square-root laws of both real Lambert branches.
 The two Legendre--Gaunt modules contribute 25: four definitions and twelve
@@ -134,15 +135,22 @@ continuous-test half-mixture) and
 `map_normalized_iteratedDeriv_rvachev_restrict_Icc` (the restricted-Lebesgue
 Borel pushforward) in `RvachevDerivativeDistribution.lean`, together with the
 all-depth `generalizedRvachevProduct_two_pow_mul` shift--refinement theorem in
-`WeightLinearityProducts.lean`.  It records those zeroes, so every future
+`WeightLinearityProducts.lean`.  The final nine declarations are the two
+definitions and seven theorems of `LagrangeRvachevSynthesis.lean`: the generic
+finite-node decoder and atom coefficient, degree bounds, cardinal synthesis,
+componentwise biorthogonality, linear coefficient identity, exact finite
+interpolation loop, and unit row mass.  This inventory claim does not extend
+to a geometric Gaussian closed-form decoder, a matrix wrapper, or an
+optimal/minimum-variation decoder theorem.  It records those zeroes, so every future
 source addition must preserve the
 full invariant rather than merely avoid worsening a historical backlog.  Run
 the script for live numbers after merging concurrent source work.
 
-The documentation merge itself was validated source-only at the user's
-request.  Its merged TeX sources are newer than the selected committed PDFs;
-those PDFs remain potentially stale until the next required three-pass
-Libertinus rebuild.
+The primary exposition and Lean walkthrough were rebuilt from the current
+sources in fresh, uninterrupted three-pass Libertinus cycles on 2026-08-31.
+Frontier packages that still have a source newer than their retained PDF carry
+an explicit local pending-build disclosure rather than relying on this global
+audit note.
 
 ### What the review pass caught
 

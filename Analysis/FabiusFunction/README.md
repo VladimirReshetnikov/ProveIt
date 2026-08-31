@@ -76,10 +76,10 @@ and as a [rendered PDF](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_
 That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
-> **Source-only merge note (2026-08-31).**  At the user's request, the current
-> documentation merge was validated without regenerating PDFs.  The committed
-> PDFs may therefore lag their merged TeX sources until the next three-pass
-> Libertinus rebuild.
+> **Artifact status (2026-08-31).**  The primary exposition and Lean
+> walkthrough were rebuilt from their current sources in fresh, uninterrupted
+> three-pass Libertinus cycles.  Other frontier documents that still await a
+> matching render are identified by explicit package-local pending notices.
 
 The formally proved small-argument hierarchy—including the corrected sharp
 asymptotic, the general coefficient algebra for the recursive all-orders
@@ -284,6 +284,7 @@ points:
 | Actual quarter inverse Catalan jet | `FabiusFunction.FabiusInverseQuarterJet` | Exhaustive public surface: `iteratedDeriv_centeredFabiusInv_quarter_eq_quadraticInverse`, `iteratedDeriv_fabiusInv_five_seventy_two_succ`.  For every bounded Fabius solution, the full centered derivative jet at `5/72 = F(1/4)` equals the factorial-scaled coefficient sequence of `QuadraticInverse.inverse 4`; in particular `G^(m+1)(5/72) = (m+1)! (-4)^m C_m`.  This is equality of all jets, not local analytic equality: it neither erases the known nonanalytic flat defect nor proves that defect is nonzero by a named remainder theorem. |
 | Finite polynomial integrals from raw moments and formal cumulants | `FabiusFunction.PolynomialExpectationCumulant` | `integral_eval₂_eq_sum_moment`, `integral_eval₂_eq_sum_completeBell_momentCumulant_with_mass_correction`, `integral_eval₂_eq_sum_completeBell_momentCumulant_of_moment_zero_eq_one`, `integral_eval₂_eq_sum_completeBell_momentCumulant` |
 | Rvachev raw moments, triangular and injective reciprocal-moment Appell deconvolution, and exact shifted-up polynomial synthesis | `FabiusFunction.RvachevMomentAppell`, `FabiusFunction.RvachevPolynomialSynthesis` | `rvachevRawMomentRat`, `rvachevReciprocalMomentRat`, `rvachevAppellPolynomial`, `rvachevDeconvolvedPolynomial`, `rvachevDeconvolutionLinearMap`, `rvachevDeconvolvedPolynomial_finsetSum`, `rvachevDeconvolvedPolynomial_monomial`, `rvachevDeconvolvedPolynomial_X_pow`, `coeff_rvachevDeconvolvedPolynomial_natDegree`, `natDegree_rvachevDeconvolvedPolynomial`, `leadingCoeff_rvachevDeconvolvedPolynomial`, `rvachevDeconvolvedPolynomial_eq_zero_iff`, `rvachevDeconvolutionLinearMap_injective`, `rvachevDeconvolvedPolynomial_injective`, `integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev`, `tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`, `normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp` |
+| Generic finite-node Lagrange--Rvachev decoder, cardinal biorthogonality, and exact interpolation loop | `FabiusFunction.LagrangeRvachevSynthesis` | Exhaustive public surface: two definitions, `lagrangeRvachevDecoder` and `lagrangeRvachevAtomCoefficient`; and seven theorems, `natDegree_lagrangeBasis_le_card_sub_one`, `natDegree_lagrangeInterpolate_le_card_sub_one`, `normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp`, `normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node`, `lagrangeRvachevAtomCoefficient_eq_deconvolved_interpolate`, `sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp`, and `sum_lagrangeRvachevDecoder_eq_one`.  The degree bounds and polynomial reconstruction need no distinct-node hypothesis; componentwise Kronecker biorthogonality requires distinct nodes and evaluation inside `[-1,1]`, while the row-sum theorem additionally requires a nonempty node set.  This closes the reusable generic finite-node synthesis loop, not a geometric Gaussian closed-form decoder, bundled matrix/right-inverse wrapper, or optimal/minimum-variation decoder theorem. |
 | Sharp universal composite-mesh exactness and least natural meshes | `FabiusFunction.CompositeMeshSharpness` | Exhaustive public surface: `exists_shift_tsum_shifted_monomial_ne_integral_nat_real`, `rvachevCombExactThrough`, `rvachevCombExactThrough_iff_padicValNat`, `rvachevCombExactThrough_iff_pow_two_dvd`, `rvachevCombExactThrough_two_pow`, `two_pow_le_of_rvachevCombExactThrough`, `isLeast_rvachevCombExactThrough`, `isLeast_rvachevCombExactThrough_even`.  The `IsLeast` results quantify over meshes exact for the whole real polynomial space through the stated degree; they do not assert minimality for an individual Legendre polynomial, a fixed Legendre partial sum, or a target-adapted mesh. |
 | Universal endpoint-transfer polynomials and their formal exponential series | `FabiusFunction.EndpointTransferPolynomials` | `endpointTransferPolynomial_succ`, `endpointTransferPolynomial_eq_partitionExpSum`, `endpointTransferSeries_eq_exp_subst`, `aeval_endpointTransferPolynomial`, `map_endpointTransferSeries` |
 | Finite base-`b` layer regrouping in multiplicative and additive form | `FabiusFunction.BaseLayerRegrouping` | `filter_dvd_eq_image`, `prod_multiples_eq_prod_filter`, `sum_multiples_eq_sum_filter`, `prod_layers_eq_prod_pow_card`, `sum_layers_eq_sum_nsmul_card`, `card_filter_pow_dvd`, `prod_layers_eq_prod_pow_multiplicity`, `sum_layers_eq_sum_nsmul_multiplicity` |
@@ -628,6 +629,29 @@ For every nonzero natural mesh `M` and polynomial of degree at most `v₂(M)`,
 they give both global `tsum` synthesis and, on `[-1,1]`, its exact finite
 `k ∈ (-2M,2M)` form with the `1/M` normalization.
 
+The current-tree module `LagrangeRvachevSynthesis.lean` exports exactly two
+public definitions, `Fabius.lagrangeRvachevDecoder` and
+`Fabius.lagrangeRvachevAtomCoefficient`, and exactly seven public theorems:
+`Fabius.natDegree_lagrangeBasis_le_card_sub_one`,
+`Fabius.natDegree_lagrangeInterpolate_le_card_sub_one`,
+`Fabius.normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp`,
+`Fabius.normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node`,
+`Fabius.lagrangeRvachevAtomCoefficient_eq_deconvolved_interpolate`,
+`Fabius.sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp`, and
+`Fabius.sum_lagrangeRvachevDecoder_eq_one`.  For any finite real node family,
+the first two bound the basis and interpolant degrees by one less than the
+node count without requiring distinctness.  A nonzero mesh whose two-adic
+valuation reaches that bound gives exact cardinal and full-interpolant
+synthesis on `[-1,1]`; distinct nodes turn the cardinal formula into the
+componentwise Kronecker-delta identity, and distinct nonempty nodes make each
+fixed lattice-sample decoder row sum to one.  Thus the generic finite-node
+dictionary, its linear data-to-atom coefficients, componentwise
+biorthogonality, and exact finite interpolation loop are formalized.  No
+theorem here gives the geometric-node Gaussian q-binomial/q-Pochhammer or
+elementary-symmetric closed form for the decoder entries, packages the
+componentwise identity as a matrix/right-inverse equation, or proves an
+optimal or minimum-variation decoder.
+
 The focused-build `CompositeMeshSharpness.lean` module exports one public
 definition and seven public theorems.  The definition
 `Fabius.rvachevCombExactThrough F M d` requires `M ≠ 0` and shifted-comb
@@ -710,8 +734,9 @@ interval supremum norm; the module also exports the raw `TendstoUniformlyOn`
 form, convergence of the supremum-norm error to zero, and the pointwise
 corollary on `[-1,1]`.
 
-The five modules in this tranche have respectively `6/30`, `0/4`, `1/7`,
-`6/7`, and `5/25` public definition/theorem inventories, for exactly 91 public
+The six modules in this tranche have respectively `6/30`, `0/4`, `2/7`,
+`1/7`, `6/7`, and `5/25` public definition/theorem inventories, for exactly
+100 public
 declarations in total.  Universal whole-space mesh sharpness is now proved,
 but target-specific minimality for an individual Legendre polynomial or
 partial sum is not.  The modules also do not assert an
@@ -719,7 +744,8 @@ analytic reciprocal-MGF or differential-series realization of deconvolution,
 the displayed low reciprocal coefficients, parity or the displayed closed
 formulas for the deconvolved Legendre family,
 coefficient rationality for the atom rows, equality of the fixed-scale and
-separately scaled coefficient vectors, an unconditional
+separately scaled coefficient vectors, a geometric closed-form or bundled
+matrix form of the finite-node decoder, decoder optimality, an unconditional
 `natDegree(S_N) = 2*N` theorem or nonvanishing of its top Legendre
 coefficient, or the later refinement, projector, and asymptotic layers.
 
