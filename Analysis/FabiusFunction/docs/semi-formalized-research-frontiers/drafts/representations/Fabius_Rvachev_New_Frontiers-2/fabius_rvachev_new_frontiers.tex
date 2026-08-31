@@ -708,13 +708,11 @@ orthogonality, the Hankel cross-ratio, the centered recurrence, and all real-cas
 bridges.  The definition \path{rvachevJacobiSubdiagonalRat} is zero-based:
 its value at index \(n\) is the report coefficient \(\beta_{n+1}\).
 
-These are noncomputable adjugate-based finite definitions, not a rational
-evaluator.  In particular, they do not name or evaluate the explicit \(H_4\) and
-\(\beta_4\) fractions displayed below; the later finite-values module now supplies
-those named certificates.  These two earlier modules by themselves also prove no
-roots, Christoffel reconstruction or central products, Gauss quadrature, second-kind
-polynomials, continued-fraction/Pad\'e identification, or
-Szeg\H{o}/Nevai/Rakhmanov asymptotics.
+These are noncomputable adjugate-based finite definitions and do not themselves
+evaluate the explicit \(H_4\) and \(\beta_4\) fractions displayed below; the downstream
+executable tranche does.  This layer proves no roots, Christoffel reconstruction or
+central products, Gauss quadrature, second-kind polynomials,
+continued-fraction/Pad\'e identification, or Szeg\H{o}/Nevai/Rakhmanov asymptotics.
 
 The later finite change-of-basis tranche closes precisely the determinant part of
 \cref{sec:legendre-gaunt}.  The generic module
@@ -818,6 +816,22 @@ squared integral and \(\beta_4\) to the quotient of the fourth and third real Ha
 ratios for every \path{IsFabius} representative.  These are exact low-order
 certificates, not a general native evaluator.
 
+Together with the four finite-algebra modules above, the three downstream modules bring
+the complete seven-module inventory to thirteen definitions and sixty-one theorems,
+seventy-four public declarations.  More explicitly, the value module proves
+unconditionally that
+\path{moment_four} is \(132809/32531625\), together with
+\[
+ (D_1,D_2,D_3,D_4,D_5)=
+ \left(1,\frac19,\frac8{2025},\frac{39616}{602791875},
+ \frac{16544275456}{27453718922765625}\right),
+\]
+and \(H_4=26727424/55791736875\).  The declaration
+\path{rvachevJacobiSubdiagonalRat_three} gives the zero-based value
+\(\beta_4=835232/4640643\).
+Exactly its three real/integral consequences require a
+\path{BoundedFabius} witness \(F\) and a proof \path{IsFabius F}.
+
 This closure still does \emph{not} formalize equality with the finite Gaunt integral,
 Wigner/\(3j\)-symbol, or factorial entry formulas
 \cref{eq:gaunt-integral,eq:finite-gaunt-matrix,eq:wigner-factorial}.  Entry
@@ -882,9 +896,9 @@ The combined table is included to fix every normalization used later:
    & \beta_4&=\frac{835232}{4640643}.
  \label{eq:low-jacobi-data}
 \end{align}
-The two final-row fractions follow from the same exact moment algorithm, are
-independently verified by the archive's Python program, and now have the named
-Lean certificates just cited.  Numerically,
+The two final-row fractions are named exact rational Lean computations, follow from
+the same exact moment algorithm, and are independently verified by the archive's
+Python program.  Numerically,
 \begin{equation}
  \beta_1=0.111111\ldots,
  \quad \beta_2=0.142222\ldots,

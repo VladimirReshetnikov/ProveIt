@@ -2,12 +2,16 @@
 
 The Lambert W function enters the Fabius–Rvachev corpus through the
 two-scale endpoint asymptotics and the phase-locked Richardson layer of
-the exponents-and-q-series group.  The latter now runs from the exact
-algebra in `LambertPhaseLockedRichardson.lean` through the fixed-order
-analytic extractor in `FabiusLambertPhaseExtraction.lean` (with its
-pullback, complete-homogeneous, and reciprocal-row estimate modules),
-while the κ∞ decay gauge remains separate.  The endpoint programs of that volume's Parts VI–VII
-and of the inverse-endpoint volume use the lower branch W₋₁ as their
+the exponents-and-q-series group.  Its finite coefficient pipeline now runs
+from the exact residual-moment algebra in
+`LambertPhaseLockedRichardson.lean`, through the generic
+complete-homogeneous/Bell dictionary in `CompleteHomogeneousBell.lean`, to
+the shifted-reciprocal Bell specialization in
+`LambertPhaseLockedBell.lean`.  The fixed-order analytic extractor remains
+in `FabiusLambertPhaseExtraction.lean`, with its pullback,
+complete-homogeneous, and reciprocal-row estimate modules, while the κ∞
+decay gauge remains separate.  The endpoint programs of that volume's Parts
+VI–VII and of the inverse-endpoint volume use the lower branch W₋₁ as their
 canonical coordinate.  These articles treat the function itself, so they
 form their own group.
 
@@ -105,7 +109,17 @@ For the Fabius endpoint observable itself,
 Lagrange row extracts the periodic term with a complete finite Poincaré
 remainder hierarchy.  Subtracting the first `S` residuals at row order `r`
 leaves `O(lambda^(-(r+1+S)))`, and the estimator converges to the prescribed
-periodic value along every integer phase ray.  No convergence of the formal
-infinite residual series, Bell/harmonic conversion, multiplicative
-relative-error hierarchy, derivative extractor, or growing-order uniformity
-is claimed.
+periodic value along every integer phase ray.  The new finite rewrite tranche
+is recorded by
+`completeHomogeneousEvalOn_shiftedReciprocal_eq_bell`,
+`sum_shiftedReciprocalLagrangeWeight_mul_invPow_card_add_eq_bell`, and
+`sum_shiftedReciprocalLagrangeWeight_mul_invPow_eq_bell`: the generalized
+harmonic power sums become factorially weighted Bell inputs, and the exact
+fixed-order residual moments become factorially normalized complete Bell
+polynomials.  The direct normalized specialization uses a field with
+rational-algebra structure, and the weighted moment forms assume
+characteristic zero; total inversion adds no positivity or nonzero-shift
+premise.  This is a finite algebraic conversion only.  No convergence of
+the formal infinite residual series, multiplicative relative-error hierarchy,
+derivative extractor, uniformity in growing row order or residual depth, or
+new sign control at those boundaries is claimed.

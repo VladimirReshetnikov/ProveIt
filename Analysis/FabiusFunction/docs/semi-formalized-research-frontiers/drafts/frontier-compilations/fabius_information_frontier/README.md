@@ -83,3 +83,12 @@ The source expects the vector figures under `figures/`.
 - `SHA256SUMS`: integrity hashes.
 
 The exact theorems do not depend on the numerical experiments.
+
+## Document-policy debt
+
+The filed 30-page PDF preserves the submitted source's hard-coded Latin Modern
+font choice and contains five embedded/subset Type-3 rows contributed by the
+three vector figures.  Before this standalone intake is promoted into a
+canonical volume, rebuild it with the corpus-standard Libertinus prose fonts,
+replace or rasterize those figure fonts so the result has no Type-3 fonts, and
+refresh `SHA256SUMS` for every changed payload.

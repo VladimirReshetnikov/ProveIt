@@ -4,16 +4,22 @@ New standalone intake members:
 
 - [`Geometric_Uniform_Convolutions_and_New_Frontiers/`](Geometric_Uniform_Convolutions_and_New_Frontiers/),
   *Geometric Uniform Convolutions and New Frontiers around the
-  Fabius--Rvachev System*, arrived on 2026-08-30 as a bare, incomplete
-  one-file package containing 1,656 lines of LF TeX. No PDF, README,
-  checksum ledger, repository-metadata file, external code, data, or figures
-  was delivered, so the repository-generated ledger records only that TeX.
-  Its abstract says reproducible Python code accompanies the report, but none
-  is present. The source spans q-deformation, Thue--Morse differences,
-  Bell--Bernoulli calculus, Fourier-zero arithmetic, non-Gevrey growth, and
-  Lambert-W inversion. No compilation or mathematical assessment was
-  performed at intake; the missing PDF and companions remain explicit
-  follow-up work, and manuscript labels do not establish Lean verification.
+  Fabius--Rvachev System*, is the title-derived filing of the generic
+  source-only wrapper `drafts/incoming/fabius-frontier-report-H/`, committed
+  directly by `8a184546747082cbd92ad4675fb61981c6b8c3b6`. The incomplete
+  delivery consists of one 1,656-line LF TeX manuscript: no PDF, README,
+  external code, data, figures, captured output, checksum file, repository
+  metadata, or archive was supplied. Intake repaired three form-feed-corrupted
+  `\frac` tokens and added a repository-generated one-entry `SHA256SUMS`. The
+  package still has no PDF, and the source has not yet been shown to compile.
+
+  Its q-deformed derivative formulas, Gaussian/Edgeworth layer,
+  valuation-weighted zeros, non-Gevrey growth, and periodic Lambert endpoint
+  program overlap several same-batch reports and the consolidated corpus; its
+  abstract also says reproducible Python code accompanies the report, but none
+  was delivered. The source remains standalone pending post-publication compilation,
+  claim-by-claim comparison, and a Lean crosswalk.  Nothing in the intake
+  establishes that any manuscript theorem is proved in Lean.
 
 - [`fabius_information_frontier/`](fabius_information_frontier/),
   *Exact Information Geometry and New Frontiers for the Fabius--Rvachev
@@ -27,7 +33,9 @@ New standalone intake members:
   with the broad frontier series. It remains standalone pending
   post-publication claim review, semantic deduplication, experiment
   assessment, and a Lean crosswalk; manuscript labels do not establish Lean
-  verification.
+  verification. The filed PDF hard-codes Latin Modern and inherits five
+  embedded/subset Type-3 font rows from its vector figures; canonical promotion
+  requires a Libertinus/Type-3-free rebuild and refreshed checksums.
 
 - [`Digital_Spectral_Geometry_and_Log_Periodic_Saddles/`](Digital_Spectral_Geometry_and_Log_Periodic_Saddles/),
   *Digital Spectral Geometry and Log-Periodic Saddles: Frontier Results for
@@ -113,10 +121,19 @@ arbitrary-order endpoint remainder to the exact Lambert nodes,
 `CompleteHomogeneousAsymptotics.lean` and
 `LambertReciprocalAsymptotics.lean` control the residual alphabet and growing
 row, and `FabiusLambertPhaseExtraction.lean` proves the fixed-order finite
-Poincaré hierarchy and integer-phase-ray convergence. The report's
-Bell/generalized-harmonic conversion, exponentiated Bell hierarchy, higher
-derivative extractors, sign/bracketing claims, and growing-order uniformity
-remain open.
+Poincaré hierarchy and integer-phase-ray convergence.
+`CompleteHomogeneousBell.lean` proves the generic finite-alphabet Bell
+conversion, `LambertPhaseLockedBell.lean` specializes it to shifted
+reciprocal power sums and both exact moment forms, and
+`FabiusLambertPhaseExtractionBell.lean` rewrites each residual term and every
+finite residual partial sum in Bell form. The normalized specialization uses
+the rational-algebra/characteristic-zero field layer; total field inversion
+still requires no positivity or nonzero-shift premise. Thus the finite
+complete-homogeneous/Bell/generalized-harmonic conversion is closed. These
+identities do not prove convergence of the infinite residual series or add a
+new asymptotic estimate. The infinite residual convergence problem,
+exponentiated/multiplicative Bell relative-error hierarchy, higher derivative
+extractors, sign/bracketing claims, and growing-order uniformity remain open.
 
 Post-snapshot Lean status began at source checkpoint `b3720d4b5` with two
 generic finite-algebra modules relevant to Report I; the current tree adds the

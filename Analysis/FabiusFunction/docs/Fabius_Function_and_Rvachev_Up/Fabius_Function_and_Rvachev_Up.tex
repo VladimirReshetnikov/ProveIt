@@ -7052,7 +7052,32 @@ finite linear-denominator product and
 \lean{completeHomogeneousGeneratingSeriesOn_eq_invOfUnit_prod} identifies the
 series with its canonical \texttt{PowerSeries.invOfUnit} reciprocal.  This is
 a formal coefficient identity and asserts no analytic evaluation,
-convergence, or Bell/generalized-harmonic conversion.  The generic residual theorem
+convergence, or Bell/generalized-harmonic conversion.
+
+The separate finite-algebra module \path{CompleteHomogeneousBell.lean}
+supplies precisely that conversion.  For a finite family \(a_i\), put
+\begin{equation*}
+ p_k=\sum_i a_i^k,\qquad \kappa_0=0,\qquad
+ \kappa_{k+1}=k!\,p_{k+1}.
+\end{equation*}
+The definitions are \lean{completeHomogeneousPowerSum} and
+\lean{completeHomogeneousBellInput}.  Over every commutative semiring, the
+division-free identity
+\begin{equation}
+ \operatorname{Bell.complete}(\kappa)_n=n!\,h_n(a)          \label{eq:complete-homogeneous-bell}
+\end{equation}
+is \lean{bellComplete_completeHomogeneousBellInput}.  Over a commutative
+\(\Q\)-algebra, the normalized pointwise report form
+\begin{equation*}
+ h_n(a)=\operatorname{factorialNormalize}
+   \bigl(\operatorname{completeBellPolynomial}(\kappa)\bigr)_n
+\end{equation*}
+is
+\lean{completeHomogeneousEvalOn_eq_factorialNormalize_completeBellPolynomial}.
+These statements are finite algebra: the first uses no division, and neither
+asserts convergence of a formal or analytic series.
+
+The generic residual theorem
 \lean{sum_weight_mul_pow_card_add} and its distinct-node Lagrange
 specialization \lean{sum_lagrangeEvalWeight_mul_pow_card_add} are in
 \path{LagrangeResidualMoments.lean}.  Thus
@@ -7067,6 +7092,22 @@ The theorem \lean{completeHomogeneousEvalOn_isBigO_pow} in
 evaluation.  This evaluated asymptotic statement does not assert convergence
 of the preceding formal power series or its Bell/generalized-harmonic
 conversion.
+
+On the shifted reciprocal alphabet \(b_j=(\lambda+j)^{-1}\), \(0\le j\le r\),
+\path{LambertPhaseLockedBell.lean} names the generalized harmonic sums and
+their Bell input as \lean{shiftedReciprocalPowerSum} and
+\lean{shiftedReciprocalBellInput}.  The exact specialization
+\lean{completeHomogeneousEvalOn_shiftedReciprocal_eq_bell} rewrites
+\(h_n(b_0,\ldots,b_r)\) by the right-hand side of the normalized form above.
+The declarations
+\lean{sum_shiftedReciprocalLagrangeWeight_mul_invPow_card_add_eq_bell} and
+\lean{sum_shiftedReciprocalLagrangeWeight_mul_invPow_eq_bell} apply the same
+rewrite to the all-offset and \(s\ge1\) reciprocal-grid moments.  These
+normalized identities are stated over characteristic-zero fields; the direct
+complete-homogeneous specialization uses the rational-algebra structure.
+The shifted-reciprocal definitions require no
+positivity or nonvanishing hypothesis on \(\lambda\), because field inversion
+in Lean is total.
 
 For the actual Fabius endpoint problem, put
 \(x_{\lambda,j}=(\lambda+j)2^{-(\lambda+j)}\).  The module
@@ -7097,6 +7138,29 @@ bounds, and
 convergence to \(\Psi(a)\) along \(\lambda=a+n\).  These are
 fixed-index Poincaré estimates; no uniformity for \(r\) or \(S\)
 growing with \(\lambda\) is claimed.
+
+Finally, \path{FabiusLambertPhaseExtractionBell.lean} changes neither the
+residual definitions nor the preceding estimate.  It gives the exact rewrite
+\begin{equation*}
+ \begin{aligned}
+ R_{r,n}(\lambda)
+   &=(-1)^r\left(\prod_{j=0}^{r}(\lambda+j)^{-1}\right) \\
+   &\quad{}\times \operatorname{factorialNormalize}
+     \bigl(\operatorname{completeBellPolynomial}
+       (\kappa^{(r,\lambda)})\bigr)_n
+     \,c_{r+1+n}(\lambda),
+ \end{aligned}
+\end{equation*}
+where \(\kappa^{(r,\lambda)}\) is
+\lean{shiftedReciprocalBellInput} and \(c_m\) denotes
+\lean{fabiusSaddleLogCoefficient}.  The single-term and finite-sum
+declarations are \lean{fabiusPhaseLockedResidualTerm_eq_bell} and
+\lean{fabiusPhaseLockedResidualPartialSum_eq_sum_bell}.  This three-module
+Bell tranche closes only the finite complete-homogeneous/Bell/generalized-
+harmonic conversion and the exact finite residual rewrites.  It proves no
+convergence of the infinite residual series, multiplicative or exponentiated
+Bell relative-error hierarchy, higher extractor, Lambert sign or bracketing
+claim, or growing-order uniformity.
 
 \begin{proposition}[Principal specialization and denominator-free geometric residuals]
 \label{prop:geometric-principal-residuals}
@@ -10070,8 +10134,9 @@ satisfy the centered three-term recurrence in every degree.  The convention is z
  \pi_{n+2}(X)=X\pi_{n+1}(X)-\beta_{n+1}\pi_n(X).
 \]
 These four rational definitions are noncomputable finite-algebra objects, not native-code
-evaluators.  In particular, this layer proves all-degree rationality but does not evaluate
-the report's displayed \(H_4\) or \(\beta_4\) fractions.
+evaluators.  This module itself proves all-degree rationality without evaluating the
+report's displayed \(H_4\) or \(\beta_4\) fractions; the downstream executable
+rational-Legendre layer described below now supplies those named finite certificates.
 
 The polynomial change-of-basis layer is now explicit as well.
 \path{PolynomialMomentGramDeterminant.lean} has exactly two public definitions,
@@ -10139,22 +10204,24 @@ Christoffel reconstruction, or an infinite Jacobi product.  Also,
 unweighted interval integration, whereas \lean{upLegendreGramMatrix} pairs polynomials under
 the up-law moment functional.
 
-The executable rational specialization is now closed without changing that distinction.
+Three downstream modules make that finite Legendre layer executable over \(\Q\).
 \path{LegendrePolynomialRational.lean} has exactly two public definitions,
 \lean{legendrePolynomialCoeffRat} and \lean{legendrePolynomialRat}, and six public
 theorems:
-\lean{legendrePolynomialRat_cast}, \lean{coeff_legendrePolynomialRat},
+\lean{legendrePolynomialRat_cast},
+\lean{coeff_legendrePolynomialRat},
 \lean{natDegree_legendrePolynomialRat},
 \lean{coeff_legendrePolynomialRat_self},
 \lean{coeff_legendrePolynomialRat_self_ne_zero}, and
-\lean{coeff_legendrePolynomialRat_self_div_succ}.  The scalar coefficient is a finite
-executable rational sum.  Its polynomial wrapper is deliberately noncomputable, but the
-coefficient theorem identifies every wrapper coefficient with that scalar evaluator; the cast,
-degree, leading-coefficient, nonvanishing, and consecutive-leading-coefficient theorems connect
-it exactly to the ordinary real Legendre family.
+\lean{coeff_legendrePolynomialRat_self_div_succ}.  The first definition is an explicit
+finite rational coefficient sum; the polynomial wrapper is noncomputable, but casts
+coefficientwise to the real ordinary Legendre polynomial and has the exact degree,
+leading coefficient, nonvanishing, and consecutive-leading-coefficient quotient stated
+by these theorems.
 
-\path{FabiusLegendreRationalGram.lean} has exactly three public definitions,
-\lean{rvachevLegendreGramEntryRat}, \lean{rvachevLegendreGramMatrixRat}, and
+\path{FabiusLegendreRationalGram.lean} has exactly three finite public definitions,
+\lean{rvachevLegendreGramEntryRat},
+\lean{rvachevLegendreGramMatrixRat}, and
 \lean{rvachevLegendreGramDetRat}, and eleven public theorems:
 \lean{rvachevLegendreGramEntryRat_eq_momentPairing},
 \lean{rvachevLegendreGramMatrixRat_apply},
@@ -10167,14 +10234,15 @@ it exactly to the ordinary real Legendre family.
 \lean{rvachevLegendreGramDetRat_pos},
 \lean{rvachevOrthoNormRat_eq_rvachevLegendreGramDetRat_ratio}, and
 \lean{rvachevJacobiSubdiagonalRat_eq_rvachevLegendreGramDetRat_ratio}.
-The entry, finite matrix, and determinant are executable rational data.  Their direct bounded
-moment sum closes entrywise rationality and their casts recover the analytic up-law pairing,
-matrix, and determinant for every genuine Fabius representative.  Strict positivity makes the
-rational norm and zero-based Jacobi determinant quotients genuine ratios.  These definitions
-therefore give an exact evaluation route for the frontier report's \(H_4\) and \(\beta_4\).
+The entry is a bounded double sum of rational Legendre coefficients and
+\lean{rvachevRawMomentRat}; hence its rationality is executable finite arithmetic,
+not a Gaunt/Wigner computation.  The determinant identity, empty value, strict
+positivity, and the rational norm and Jacobi ratios are unconditional.  Only the
+entry, matrix, and determinant cast bridges assume both
+\(F:\lean{BoundedFabius}\) and \(h_F:\lean{IsFabius}\,F\).
 
-\path{FabiusLegendreRationalGramValues.lean} has no public definitions and exactly eleven
-public theorems:
+Finally, \path{FabiusLegendreRationalGramValues.lean} has no public definitions and
+exactly eleven public theorems:
 \lean{moment_four},
 \lean{rvachevLegendreGramDetRat_one},
 \lean{rvachevLegendreGramDetRat_two},
@@ -10185,19 +10253,33 @@ public theorems:
 \lean{rvachevJacobiSubdiagonalRat_three},
 \lean{hankelRatio_four},
 \lean{integral_sq_upOrthoPolynomial_four}, and
-\lean{hankelRatio_four_div_three}.  Exact finite native computation certifies the fourth nontrivial
-even-moment value (the raw eighth moment) and the first five rational Legendre Gram
-determinants.  The last five theorems give
-the named values
+\lean{hankelRatio_four_div_three}.  In addition to
+\[
+ \lean{moment_four}=\frac{132809}{32531625},
+\]
+it evaluates the first five rational Legendre Gram determinants:
+\[
+ D_1=1,\quad D_2=\frac19,\quad D_3=\frac8{2025},\quad
+ D_4=\frac{39616}{602791875},\quad
+ D_5=\frac{16544275456}{27453718922765625}.
+\]
+The named consequences
+\lean{rvachevOrthoNormRat_four} and
+\lean{rvachevJacobiSubdiagonalRat_three} give
 \[
  H_4=\frac{26727424}{55791736875},
- \qquad \beta_4=\frac{835232}{4640643},
+ \qquad
+ \beta_4=\frac{835232}{4640643},
 \]
-first for the rational norm and zero-based subdiagonal and then, under
-\(h_F:\lean{IsFabius}\,F\), for the real Hankel norm, squared integral, and quotient of the
-fourth and third Hankel ratios.  These are finite low-order certificates, not a general native
-evaluator.  Equality with the separate Gaunt/Wigner/\(3j\) entry formulas, Christoffel
-reconstruction, and the infinite or asymptotic Jacobi layers remain frontier obligations.
+where the subdiagonal index \(3\) is zero-based.  These eight exact rational
+certificates are unconditional.  The remaining three theorems,
+\lean{hankelRatio_four},
+\lean{integral_sq_upOrthoPolynomial_four}, and
+\lean{hankelRatio_four_div_three}, transport the same values to a bounded
+representative and require \(h_F:\lean{IsFabius}\,F\).
+This closes the displayed \(H_4,\beta_4\) evaluations, but still supplies no
+Gaunt/Wigner/\(3j\) entry expansion, roots, Christoffel reconstruction, Gaussian
+quadrature, continued-fraction or Pad\'e identification, or asymptotic theorem.
 
 This closure does not supply a complex logarithmic fixed point, complex order,
 pointwise or nontangential Sokhotski--Plemelj limits, a principal-value Hilbert-transform
@@ -10350,10 +10432,12 @@ Formal implicit roots and nonmonic Hensel lifting &
 \path{ImplicitPowerSeries.lean}\\
 Finite base-layer arithmetic &
 \path{BaseLayerRegrouping.lean}\\
-Finite polynomial, formal-series, and unconditionally summable analytic-series filters,
-and geometric Lagrange/Richardson exactness &
+Finite polynomial, formal-series, complete-homogeneous/Bell, and
+unconditionally summable analytic-series filters, and geometric
+Lagrange/Richardson exactness &
 \path{FinitePolynomialFunctional.lean}, \path{CompleteHomogeneous.lean},
 \path{CompleteHomogeneousGenerating.lean},
+\path{CompleteHomogeneousBell.lean},
 \path{FinitePowerSeriesFilter.lean}, \path{GeometricPowerSeriesFilter.lean},
 \path{AnalyticSeriesFilter.lean},
 \path{GeometricLagrange.lean}, \path{LagrangeResidualMoments.lean},
@@ -10364,14 +10448,16 @@ and geometric Lagrange/Richardson exactness &
 \path{GeometricLagrangeQBinomial.lean},
 \path{GeometricLagrangeQMoments.lean},
 \path{GeometricLagrangeCompleteHomogeneous.lean}\\
-Phase-locked reciprocal-grid Richardson algebra &
-\path{LambertPhaseLockedRichardson.lean}\\
+Phase-locked reciprocal-grid Richardson and Bell algebra &
+\path{LambertPhaseLockedRichardson.lean},
+\path{LambertPhaseLockedBell.lean}\\
 Phase-locked pullback, complete-homogeneous asymptotics, reciprocal-row growth,
 and finite-order periodic extraction &
 \path{FabiusLambertPhaseLockedPullback.lean},
 \path{CompleteHomogeneousAsymptotics.lean},
 \path{LambertReciprocalAsymptotics.lean},
-\path{FabiusLambertPhaseExtraction.lean}\\
+\path{FabiusLambertPhaseExtraction.lean},
+\path{FabiusLambertPhaseExtractionBell.lean}\\
 Finite \(q\)-Cauchy convolutions and the \(q\)-Bernstein partition of unity &
 \path{QBinomialCauchy.lean}\\
 Weighted Pascal, elementary--complete orthogonality, formal generating
@@ -10648,6 +10734,11 @@ unit-interval Stieltjes DDE, both complex-slit adjacent-power recurrences, and t
 centered Rvachev DDE/all-order Thue--Morse orbit.  Its inversion layer is an integrated
 interval Stieltjes--Perron theorem, not a pointwise or nontangential boundary/Plemelj
 formula.
+\newblock A later current-tree Bell tranche, inspected 30 August 2026, consists of
+\texttt{CompleteHomogeneousBell.lean}, \texttt{LambertPhaseLockedBell.lean}, and
+\texttt{FabiusLambertPhaseExtractionBell.lean}.  The declarations cited in the text
+are exact finite algebraic rewrites and add no convergence, sign, or asymptotic
+estimate; no aggregate commit hash is attributed to this later tranche here.
 \newblock The generic three-theorem continuous-CDF bridge, the two-definition/twenty-five-
 theorem geometric-uniform CDF and smooth-density interface, the half-base Fabius/Rvachev
 bridges, and the one-definition/eight-theorem formal implicit-root engine are included in

@@ -13,11 +13,11 @@ superseded, generated, proved, numerical, and conjectural material.
 Main deliverables
 -----------------
 fabius_rvachev_new_frontiers.tex
-    Complete 37-page, 2720-line LaTeX report.
+    Complete frozen and rendered LaTeX report, containing 2734 lines.
 
 fabius_rvachev_new_frontiers.pdf
-    Rendered and visually inspected PDF, refreshed after the post-intake
-    formal crosswalk.
+    Final 38-page post-merge PDF.  It was rebuilt in exactly three halted
+    pdflatex passes and passed structural, normalized-text, and visual review.
 
 fabius_frontier_experiments.py
     Fully commented exact/high-precision experiment. It computes rational
@@ -79,17 +79,19 @@ current monomial-basis recurrence is cancellation-prone.
 
 Verification performed
 ----------------------
-* Clean three-pass pdflatex build with no unresolved references, duplicate labels, or
-  overfull boxes.
-* PDF preflight: 37 A4 pages, unencrypted, text-based, no warnings; Libertinus
-  prose is embedded and the 10 Type-3 font rows inherited from the vector plot
-  payloads match the pre-update baseline.
-* All 37 pages were rendered to PNG and visually inspected after the current
-  formal crosswalk update; changed pages 11--13, 23--25, and 32--34 were also
-  checked at full-page resolution.
-* Normalized PDF text extraction retains all 51 exact public Lean declaration
-  names in the determinant, rational-data, and finite-value crosswalks.
+* The frozen source had a clean three-pass pdflatex build with no unresolved
+  references or citations, rerun warnings, duplicate labels, or overfull boxes.
+* Final PDF preflight: 38 A4 pages, unencrypted, text-based, no warnings;
+  Libertinus prose is embedded and the 10 Type-3 font rows inherited from the
+  vector plot payloads exactly match the established baseline.
+* All 38 final pages were rendered to PNG and visually inspected; crosswalk
+  seam pages 10--12 and the formalization boundary on page 34 were also checked
+  at full-page resolution.
+* Final normalized PDF text extraction retains all 51 exact public Lean
+  declaration names in the determinant, rational-data, and finite-value
+  crosswalks.
 * Python byte-compilation and an independent degree-24 smoke run succeeded.
+* The refreshed 15-entry payload ledger verifies completely.
 
 Claim status
 ------------

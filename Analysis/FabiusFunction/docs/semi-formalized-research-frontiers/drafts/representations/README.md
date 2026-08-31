@@ -2,41 +2,49 @@
 
 New standalone intake members:
 
-- [`Jacobi_Digit_Fabius_Rvachev_Frontier_Report/`](Jacobi_Digit_Fabius_Rvachev_Frontier_Report/),
-  *Jacobi-Digit Deformations of the Fabius--Rvachev Law* (32 letter-paper pp,
-  2,134 source lines), arrived on 2026-08-30 as a bare directory. Its
-  submitted ledger covers and verifies all 38 non-ledger payloads, and all
-  text payloads are LF. The title and abstract concern beta/Jacobi digit
-  replacements, Bessel products, random-flight representations, cumulants,
-  orthogonal polynomials, and endpoint asymptotics.
-
-- [`Matrix_Dilated_Fabius_Rvachev_Frontier_Report/`](Matrix_Dilated_Fabius_Rvachev_Frontier_Report/),
-  *Matrix-Dilated Fabius--Rvachev Laws* (29 A4 pp, 2,018 source lines),
-  arrived as a bare directory. Its submitted ledger covers all 27 non-ledger
-  payloads and now verifies after seven CSV entries were refreshed for
-  CRLF-to-LF normalization. The title and abstract concern matrix-dilated
-  vector-digit laws, infinite box splines, self-affine zonoids, tensor
-  cumulants, and rotating-zonoid q-series.
-
-- [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/),
-  *Common-Digit Fabius Zonoids* (36 A4 pp, 2,096 main-source lines), arrived
-  as a bare directory. Its submitted ledger covers all 24 non-ledger
-  payloads and now verifies after six CSV entries were refreshed for
-  CRLF-to-LF normalization. The title and abstract concern common-digit
-  couplings across geometric parameters, zonoid supports,
-  hyperbolic-secant covariance geometry, Gaussian limits, and parameter jets.
-
 - [`fabius_dyadic_chaos_frontier/`](fabius_dyadic_chaos_frontier/),
   *Dyadic Sensitivity and Polynomial-Chaos Frontiers for the
   Fabius--Rvachev Law* (34 A4 pp, 2,694 source lines; with a 658-line
-  experiment, nine CSV tables, three audit files, and six PDF/PNG figure
-  pairs), arrived from `fabius_dyadic_chaos_frontier.zip` (outer SHA-256
+  deterministic experiment, nine CSV tables, three audit files, and six
+  PDF/PNG figure pairs), arrived from `fabius_dyadic_chaos_frontier.zip`
+  (outer SHA-256
   `d57fd01c3991a6a7ecd6ba6e745729c745745d3265cb3cfd414aac1991b11b86`).
-  The archive passed CRC, structural, and path-safety checks; its ledger
-  covers all 30 payloads and now verifies after nine CSV rows were refreshed
-  for CRLF-to-LF normalization. All seven PDFs are readable and unencrypted
-  (40 pages total). Its title and abstract concern digit ANOVA, tensor
-  Legendre chaos, q-Pochhammer interaction bounds, and dyadic Mellin phases.
+  The single-wrapper archive passed CRC, structural, collision, and path-safety
+  checks; all 30 submitted payload hashes verified before extraction, and
+  nine CSV rows were refreshed after CRLF-to-LF normalization. All seven PDFs
+  are readable and unencrypted (40 pages total). Its Hoeffding/ANOVA,
+  active-digit, tensor-Legendre, q-Pochhammer interaction, periodic
+  effective-dimension, phase-limit, Laplace, and Thue--Morse strands form an
+  orthogonal-chaos representation program.
+
+- [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/),
+  *Common-Digit Fabius Zonoids: Exact Volumes, Hyperbolic-Secant Geometry,
+  Bernoulli Gaussianization, and Parameter Jets* (36 A4 pp, 2,096 main-source
+  lines), arrived as a bare directory in direct-arrival commit
+  `fef364bfd162f80919cd77b808530dd0734f1cb1`. Its submitted ledger covers all
+  24 non-ledger payloads and now verifies after six CSV entries were refreshed
+  for CRLF-to-LF normalization. The title and abstract concern common-digit
+  couplings across geometric parameters, zonoid supports, hyperbolic-secant
+  covariance geometry, Gaussian limits, and parameter jets.
+
+- [`Jacobi_Digit_Fabius_Rvachev_Frontier_Report/`](Jacobi_Digit_Fabius_Rvachev_Frontier_Report/),
+  *Jacobi-Digit Deformations of the Fabius--Rvachev Law* (32 letter-paper pp,
+  2,134 source lines), arrived on 2026-08-30 as a bare directory in
+  direct-arrival commit `92c9909242ed6a2ab51d68ed816d1aa2a5339719`.
+  Its submitted ledger covers and verifies all 38 non-ledger payloads without
+  normalization, and all text payloads are LF. The title and abstract concern
+  beta/Jacobi digit replacements, Bessel products, random-flight
+  representations, cumulants, orthogonal polynomials, and endpoint
+  asymptotics.
+
+- [`Matrix_Dilated_Fabius_Rvachev_Frontier_Report/`](Matrix_Dilated_Fabius_Rvachev_Frontier_Report/),
+  *Matrix-Dilated Fabius--Rvachev Laws* (29 A4 pp, 2,018 source lines),
+  arrived as a bare directory in direct-arrival commit
+  `8a184546747082cbd92ad4675fb61981c6b8c3b6`. Its submitted ledger covers all
+  27 non-ledger payloads and now verifies after seven CSV entries were
+  refreshed for CRLF-to-LF normalization. The title and abstract concern
+  matrix-dilated vector-digit laws, infinite box splines, self-affine zonoids,
+  tensor cumulants, and rotating-zonoid q-series.
 
 These four reports remain standalone pending post-publication claim review,
 experiment assessment, semantic comparison, and Lean crosswalks. Manuscript
@@ -117,9 +125,9 @@ labels and numerical outputs do not establish Lean verification.
   Libertinus prose, incomplete PDF metadata, and Type-3 plot fonts remain
   explicit post-intake normalization work.
 - [`Fabius_Rvachev_New_Frontiers-2/`](Fabius_Rvachev_New_Frontiers-2/),
-  *Fabius--Rvachev New Frontiers* (37 pp; 2539 source lines at landing, 2619
-  after the first 2026-08-30 formal crosswalk, and 2720 after the current
-  rational-data and finite-value crosswalk; all 15 active payload checksums
+  *Fabius--Rvachev New Frontiers* (38 pp; 2539 source lines at landing, 2619
+  after the first 2026-08-30 formal crosswalk, 2720 after the rational-data
+  and finite-value crosswalk, and 2734 in the final merged source; all 15 active payload checksums
   verify), arrived on
   2026-08-30 from a
   rootless archive with all 15 payload checksums verified. Its native up-law
@@ -203,7 +211,7 @@ labels and numerical outputs do not establish Lean verification.
   while `beta_4` is the quotient of the fourth and third real Hankel ratios.
   This is not a general native evaluator.  Equality with the finite
   Gaunt/Wigner/`3j` formulas, Christoffel reconstruction, and
-  infinite/asymptotic Jacobi theory remain open.  The rebuilt 37-page A4 PDF
+  infinite/asymptotic Jacobi theory remain open.  The rebuilt 38-page A4 PDF
   embeds Libertinus prose and preserves exactly the ten Type-3 font rows from
   the five vector-plot payloads; all 51 crosswalk names extract, all pages were
   visually inspected, and the refreshed 15-entry ledger verifies completely.
@@ -222,7 +230,7 @@ Other paper theorem labels do not by themselves assert Lean status.
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
-[`Representation_Frontiers/`](Representation_Frontiers/) (299 pp;
+[`Representation_Frontiers/`](Representation_Frontiers/) (300 pp;
 eight parts):
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform
