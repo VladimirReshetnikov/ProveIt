@@ -78,14 +78,14 @@ pdflatex -interaction=nonstopmode -halt-on-error comb_interpolation_synthesis.te
 
 A successful command is not, by itself, the complete publication gate. The
 current canonical PDF was built from the final source in exactly three strict,
-serial passes on 2026-08-31. It has 155 A4 pages, 2,447,377 bytes, and SHA-256
-`d6b6e1e87ac27be902eff9ab258f162f3dd57b5b39ce44753f075e81ab1a765c`.
+serial passes on 2026-08-31. It has 155 A4 pages, 2,448,906 bytes, and SHA-256
+`d1f89b005bcae9afc9c70b4ccce632aa8c665ed68e98bacb2ff96827dd427095`.
 All 33 font rows are embedded and subset, seven are Libertinus faces, and none
 is Type 3. Every page has text, A4 geometry, zero rotation, and the same five
 page boxes; all pages were reviewed in contact sheets and representative
 pages were inspected at full size. The final log has no TeX errors, undefined
 references or citations, rerun requests, duplicate destinations, or overfull
-boxes. Its 36 package warnings and five underfull boxes are the recorded,
+boxes. Its 36 package warnings and six underfull boxes are the recorded,
 visually checked hyperref/caption/amsmath and paragraph-layout diagnostics.
 
 ## Reproduce the computational evidence
