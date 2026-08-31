@@ -18,6 +18,9 @@
 \usepackage[nameinlink,noabbrev,capitalise]{cleveref}
 \usepackage{aliascnt}
 
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
+
 \graphicspath{{figures/}}
 \allowdisplaybreaks
 \setcounter{tocdepth}{2}
@@ -101,6 +104,8 @@
 \newcommand{\Wm}{\LambertW_{-1}}
 \newcommand{\stirling}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
 \newcommand{\brak}[1]{\left(#1\right)}
+% LOCAL-NON-FOURIER-HAT: \LambertRootApproximation denotes a numerical approximation to the exact Lambert root on the selected real branch.
+\newcommand{\LambertRootApproximation}{\widehat w}
 
 \lstdefinestyle{pythonstyle}{
   language=Python,
@@ -202,7 +207,7 @@ Thus
 \]
 Because the complex exponential is periodic and the map \(w\mapsto w\EulerE^w\)
 is not one-to-one, \(W\) has branches.  The branches are denoted \(W_k\),
-where \(k\in\mathbb Z\).  On the real line only \(W_0\) and \(W_{-1}\) can
+where \(k\in\IntegerNumbers\).  On the real line only \(W_0\) and \(W_{-1}\) can
 take real values.
 \end{definition}
 
@@ -416,7 +421,7 @@ inverse function cannot determine a branch merely by algebra.
 
 \subsection{The Wright omega viewpoint}
 
-For \(t\in\mathbb R\), define
+For \(t\in\RealNumbers\), define
 \[
        \omega(t):=\Wz(\EulerE^t).
 \]
@@ -972,7 +977,7 @@ every real \(s\).
 
 \begin{theorem}[Mellin integrals for both unbounded real ends]
 \label{thm:mellin-integrals}
-Let \(\alpha,\beta\in\mathbb R\).
+Let \(\alpha,\beta\in\RealNumbers\).
 \begin{enumerate}[label=\textup{(\roman*)}]
 \item If \(\beta>1\) and \(\alpha-\beta>-1\), then
 \begin{align}
@@ -2302,7 +2307,7 @@ and its real value is
 Thus \(v\) parametrizes the entire cut from \(-1/\EulerE\) to \(-\infty\).
 
 \begin{theorem}[Stieltjes and logarithmic integrals]\label{thm:stieltjes}
-For \(z\in\mathbb C\setminus(-\infty,-1/\EulerE]\),
+For \(z\in\ComplexNumbers\setminus(-\infty,-1/\EulerE]\),
 \begin{align}
  W_0'(z)
  &=\frac1\pi\int_0^\pi\frac{\Differential v}{z+a(v)},\label{eq:Wprime-stieltjes}\\
@@ -2444,17 +2449,17 @@ representations.
 \subsection{Residuals give certified a posteriori errors}
 
 \begin{theorem}[Residual error bound]\label{thm:residual}
-Let \(r=W_k(x)\), let \(\widehat w\) be an approximation on the same real
+Let \(r=W_k(x)\), let \(\LambertRootApproximation\) be an approximation on the same real
 inverse interval, and let \(I\) be the closed interval joining \(r\) and
-\(\widehat w\).  If \(I\) does not contain \(-1\), put
+\(\LambertRootApproximation\).  If \(I\) does not contain \(-1\), put
 \[
        m_I=\min_{t\in I}\AbsoluteValue{\EulerE^t(1+t)}.
 \]
 Then
 \begin{equation}\label{eq:residual-bound}
- \AbsoluteValue{\widehat w-r}
+ \AbsoluteValue{\LambertRootApproximation-r}
  \leq
- \frac{\AbsoluteValue{\widehat w\EulerE^{\widehat w}-x}}{m_I}.
+ \frac{\AbsoluteValue{\LambertRootApproximation\EulerE^{\LambertRootApproximation}-x}}{m_I}.
 \end{equation}
 For \(x\neq0\), an overflow-resistant alternative uses
 \[
@@ -2466,8 +2471,8 @@ If, in addition, \(I\) avoids zero and
 \]
 then
 \begin{equation}\label{eq:log-residual-bound}
-       \AbsoluteValue{\widehat w-r}
-       \leq\frac{\AbsoluteValue{G_x(\widehat w)}}{\mu_I}.
+       \AbsoluteValue{\LambertRootApproximation-r}
+       \leq\frac{\AbsoluteValue{G_x(\LambertRootApproximation)}}{\mu_I}.
 \end{equation}
 \end{theorem}
 
@@ -2475,8 +2480,8 @@ then
 Apply the mean value theorem to
 \(f(t)=t\EulerE^t-x\):
 \[
- f(\widehat w)-f(r)
- =f'(\xi)(\widehat w-r)
+ f(\LambertRootApproximation)-f(r)
+ =f'(\xi)(\LambertRootApproximation-r)
 \]
 for some \(\xi\in I\).  Since \(f(r)=0\) and
 \(\AbsoluteValue{f'(\xi)}\geq m_I\), \eqref{eq:residual-bound} follows.
@@ -2760,7 +2765,7 @@ unknown, not by algebra alone.
 \subsection{A linear term plus a logarithm}
 
 \begin{theorem}\label{thm:axblogx}
-Let \(a,b,c\in\mathbb R\), with \(ab\neq0\), and seek \(x>0\) satisfying
+Let \(a,b,c\in\RealNumbers\), with \(ab\neq0\), and seek \(x>0\) satisfying
 \[
        ax+b\log x=c.
 \]
@@ -3249,7 +3254,7 @@ Consider
 Exponential modes \(y(t)=\EulerE^{\lambda t}\) have exponents
 \begin{equation}\label{eq:dde-spectrum}
        \lambda_k=\frac1\tau W_k(a\tau),
-       \qquad k\in\mathbb Z.
+       \qquad k\in\IntegerNumbers.
 \end{equation}
 \end{theorem}
 
@@ -3473,7 +3478,7 @@ consistent, exactly the algebra of \cref{thm:fullasym} gives
        \sigma=1/L_{1,k},\quad \tau=L_{2,k}/L_{1,k}.
 \]
 The Lagrange-inversion calculation and coefficient identity are algebraic
-and remain valid over \(\mathbb C\).  This proves
+and remain valid over \(\ComplexNumbers\).  This proves
 \eqref{eq:complex-asym}.
 \end{proof}
 
@@ -3497,7 +3502,7 @@ Thus nonreal values occur in conjugate pairs.
 
 \begin{literaturenote}
 Under the standard DLMF convention, \(W_0\) is analytic on
-\(\mathbb C\setminus(-\infty,-1/\EulerE]\); the other branches are organized
+\(\ComplexNumbers\setminus(-\infty,-1/\EulerE]\); the other branches are organized
 with cuts associated with the negative real axis and the logarithmic point
 at zero.  Exact boundary labels require care because approaching a cut from
 above or below can change the branch index.  The foundational paper of
@@ -3949,7 +3954,7 @@ power series; no question of numerical convergence is involved.
 
 \subsection{Formal residues}
 
-For a Laurent series \(A(t)=\sum_{j\in\mathbb Z}a_jt^j\), define
+For a Laurent series \(A(t)=\sum_{j\in\IntegerNumbers}a_jt^j\), define
 \[
        \ResidueOperator_{t=0} A(t)\Differential t=a_{-1}.
 \]
@@ -4523,4 +4528,3 @@ doi:10.3390/math6040056.
 \end{thebibliography}
 
 \end{document}
-\input{../../../../fabius-notation.tex}

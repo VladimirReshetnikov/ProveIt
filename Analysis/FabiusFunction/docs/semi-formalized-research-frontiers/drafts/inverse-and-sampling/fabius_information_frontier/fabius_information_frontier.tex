@@ -75,8 +75,9 @@
 \newcommand{\KL}{D_{\mathrm{KL}}}
 \newcommand{\MI}{I}
 \newcommand{\mmse}{\operatorname{mmse}}
-\newcommand{\ind}{\mathbf 1}
 \newcommand{\epsTM}{\varepsilon}
+% LOCAL-NON-FOURIER-HAT: \GeometricPrefixReproduction denotes the deterministic finite-prefix reproduction in the squared-error test channel
+\newcommand{\GeometricPrefixReproduction}[1]{\widehat{X}_{#1}}
 \newcommand{\Repo}{\textcolor{navy}{\textbf{[repository input]}}}
 \newcommand{\New}{\textcolor{teal}{\textbf{[proved here]}}}
 \newcommand{\Derived}{\textcolor{gold}{\textbf{[derived synthesis]}}}
@@ -137,7 +138,7 @@ $X_q=S_{q,m}+q^mX_q'$ implies the exact non-Gaussian channel law
 \[
  I(X_q;S_{q,m})=m\log(1/q),
  \qquad
- \operatorname{mmse}(X_q\mid S_{q,m})=q^{2m}\operatorname{Var}(X_q),
+ \operatorname{mmse}(X_q\mid S_{q,m})=q^{2m}\Variance(X_q),
 \]
 and, strikingly,
 \[
@@ -163,7 +164,7 @@ A second main theorem identifies the first entropy correction of the finite sinc
 prefixes:
 \[
  h(X_q)-h(S_{q,m})
- =\frac{\operatorname{Var}(X_q)\,\mathcal J(f_q)}2q^{2m}
+ =\frac{\Variance(X_q)\,\mathcal J(f_q)}2q^{2m}
   +o(q^{2m}),
 \]
 where $\mathcal J$ is Fisher information.  In the dyadic case a new bridge gives
@@ -273,7 +274,8 @@ Let $U_0,U_1,\ldots$ be independent $\mathrm{Unif}[-1,1]$ random variables and s
 The series converges absolutely and $X_q\in[-1,1]$.  Write $f_q$ for its density,
 $F_q$ for its distribution function, and
 \begin{equation}
- \phi_q(t)=\Expectation\EulerE^{\ImaginaryUnit tX_q}
+ \phi_q(t)=\CharacteristicFunction{X_q}(t)
+ =\Expectation\EulerE^{\ImaginaryUnit tX_q}
  =\prod_{j=0}^{\infty}\SincRad\bigl((1-q)q^jt\bigr),
  \qquad \SincRad z=\frac{\sin z}{z}.
  \label{eq:phi-q}
@@ -611,12 +613,12 @@ exact factor $4^{-m}$.
 \subsection{A self-similar test channel for quadratic rate distortion}
 
 Let $R_{X_q}(D)$ be the rate-distortion function of $X_q$ under squared error.
-Use the deterministic reproduction $\widehat X_m=S_{q,m}$.  Its rate and
+Use the deterministic reproduction $\GeometricPrefixReproduction{m}=S_{q,m}$.  Its rate and
 distortion are
 \begin{equation}
- R_m:=I(X_q;\widehat X_m)=m\log(1/q),
+ R_m:=I(X_q;\GeometricPrefixReproduction{m})=m\log(1/q),
  \qquad
- D_m:=\Expectation(X_q-\widehat X_m)^2=q^{2m}\sigma_q^2.
+ D_m:=\Expectation(X_q-\GeometricPrefixReproduction{m})^2=q^{2m}\sigma_q^2.
  \label{eq:RD-points}
 \end{equation}
 Therefore
@@ -653,7 +655,7 @@ precisely the non-Gaussian entropy deficit $\delta_q$.
 \end{theorem}
 
 \begin{proof}
-The upper bound is achieved by $\widehat X_m=S_{q,m}$.  Shannon's lower bound for
+The upper bound is achieved by $\GeometricPrefixReproduction{m}=S_{q,m}$.  Shannon's lower bound for
 squared error gives
 \[
  R_{X_q}(D)\ge h(X_q)-\frac12\log(2\pi\EulerE D).
@@ -708,7 +710,7 @@ high-resolution optimum while retaining an exact algebraic interpretation.
 Let $b_{q,m}$ be the density of $S_{q,m}$.  Its characteristic function is the
 finite sinc product
 \begin{equation}
- \widehat b_{q,m}(t)
+ \CharacteristicFunction{S_{q,m}}(t)
  =\prod_{j=0}^{m-1}\SincRad\bigl((1-q)q^jt\bigr)
  =\frac{\phi_q(t)}{\phi_q(q^mt)}.
  \label{eq:finite-sinc}
@@ -758,10 +760,10 @@ Set $q=1/2$ and abbreviate
 \end{equation}
 For $0\le j<2^m$, let
 \begin{equation}
- \epsTM_j=(-1)^{s_2(j)},
+ \epsTM_j=(-1)^{\BinaryDigitSum(j)},
  \label{eq:TM-sign}
 \end{equation}
-where $s_2(j)$ is the binary digit sum.
+where $\BinaryDigitSum(j)$ is the binary digit sum.
 
 \begin{theorem}[Exact Thue--Morse prefix density]
 \label{thm:TM-spline}
@@ -773,9 +775,9 @@ The density of $S_m$ is the compact spline
  \PositivePart{s+A_m-\frac{j}{2^{m-1}}}^{m-1}.}
  \label{eq:TM-spline}
 \end{equation}
-Its Fourier transform is
+The corresponding characteristic function is
 \begin{equation}
- \widehat b_m(t)=\prod_{k=1}^{m}\SincRad(t/2^k).
+ \CharacteristicFunction{S_m}(t)=\prod_{k=1}^{m}\SincRad(t/2^k).
  \label{eq:dyadic-finite-sinc}
 \end{equation}
 \end{theorem}
@@ -792,7 +794,7 @@ For $a_k=2^{-k}$,
  \prod_{k=1}^{m}(2a_k)=2^{-m(m-1)/2}.
 \]
 Writing the subset indicator as the binary expansion of $j$ gives
-$2\sum_{k\in E}2^{-k}=j/2^{m-1}$ and $(-1)^{|E|}=(-1)^{s_2(j)}$.
+$2\sum_{k\in E}2^{-k}=j/2^{m-1}$ and $(-1)^{|E|}=(-1)^{\BinaryDigitSum(j)}$.
 The Fourier product follows directly from convolution.
 \end{proof}
 
@@ -1066,7 +1068,7 @@ needed to differentiate entropy.  In particular,
 \begin{proof}
 From \eqref{eq:finite-sinc},
 \[
- \widehat b_{q,m}(t)=\frac{\phi_q(t)}{\phi_q(q^mt)}.
+ \CharacteristicFunction{S_{q,m}}(t)=\frac{\phi_q(t)}{\phi_q(q^mt)}.
 \]
 Near the origin,
 \[
@@ -1076,7 +1078,7 @@ Near the origin,
 \]
 Thus on $|t|\le q^{-\eta m}$ with any fixed $0<\eta<1$,
 \[
- \widehat b_{q,m}(t)
+ \CharacteristicFunction{S_{q,m}}(t)
  =\phi_q(t)\left(1+\frac{\sigma_q^2q^{2m}t^2}{2}
 \right)
  +o(q^{2m})
@@ -1084,7 +1086,7 @@ Thus on $|t|\le q^{-\eta m}$ with any fixed $0<\eta<1$,
 in every polynomially weighted $L^1$ norm.  On the complementary frequencies,
 use the faster-than-polynomial decay of the infinite sinc product, choosing the
 weight and then $\eta$ so that the tail is $o(q^{2m})$.  Fourier inversion and
-$\widehat{f_q''}(t)=-t^2\phi_q(t)$ give
+$\FourierAngular{f_q''}(t)=-t^2\phi_q(t)$ give
 \eqref{eq:density-deconvolution}.  Flatness at $\pm1$ allows the same split after
 multiplication by $1+|\log f_q|$ and controls the thin support layer where
 $b_{q,m}=0$ but $f_q>0$.  Finally both densities have total mass one, giving

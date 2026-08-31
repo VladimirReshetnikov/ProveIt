@@ -316,7 +316,9 @@ The omitted random tail is a scaled copy of $Y$:
 
 \subsection{The finite Thue--Morse spline}
 
-Put $\ThueMorseSignSymbol_j=(-1)^{s_2(j)}$, the signed Thue--Morse sequence \cite{p1:AlloucheShallit}.  The unequal-box inclusion--exclusion formula for the corresponding box spline \cite{p1:deBoorSplines} gives
+Put $\ThueMorseSignSymbol_j=(-1)^{\BinaryDigitSum(j)}$, the signed Thue--Morse sequence
+\cite{p1:AlloucheShallit}.  The unequal-box inclusion--exclusion formula for the
+corresponding box spline \cite{p1:deBoorSplines} gives
 \begin{equation}
  \boxed{
  \Fn(x)=\frac{2^{\binom n2}}{(n-1)!}
@@ -331,12 +333,14 @@ answers both questions at the inverse-dyadic outputs $y=F(2^{-r})$.
 
 \subsection{Fourier product and reciprocal-sinc coefficients}
 
-With the Fourier convention $\widehat f(\xi)=\int f(x)\EulerE^{-\ImaginaryUnit x\xi}\Differential x$,
+With the angular-frequency Fourier convention
+$\FourierAngular{f}(\xi)=\int f(x)\EulerE^{-\ImaginaryUnit x\xi}\Differential x$,
 \begin{equation}
- \Phi(\xi):=\widehat\RvachevUp(\xi)
+ \Phi(\xi):=\FourierAngular{\RvachevUp}(\xi)
  =\prod_{k=1}^{\infty}\SincRad(2^{-k}\xi),
  \qquad
- \widehat p_n(\xi)=\prod_{k=1}^{n}\SincRad(2^{-k}\xi),\qquad\SincRad t:=\frac{\sin t}{t},\ \SincRad0:=1.
+ \FourierAngular{p_n}(\xi)=\prod_{k=1}^{n}\SincRad(2^{-k}\xi),
+ \qquad\SincRad t:=\frac{\sin t}{t},\ \SincRad0:=1.
  \label{p1:eq:Phi-products}
 \end{equation}
 Near the origin define rational coefficients $b_j$ by
@@ -650,7 +654,7 @@ where
 \begin{equation}
  \boxed{
  \mathcal A_r(z,Q):=
- J_r(z)+\sum_{j=1}^{\lfloor r/2\rfloor}
+ J_r(z)+\sum_{j=1}^{\Floor{r/2}}
  (-1)^jb_jQ^jJ_r^{(2j)}(z).}
  \label{p1:eq:Ar-def}
 \end{equation}
@@ -683,7 +687,7 @@ polynomials,
 Apply the inverse operator \eqref{p1:eq:reciprocal-MGF}.  Derivatives of order greater
 than $r$ vanish, so the series truncates exactly:
 \[
- q_n(z)=\sum_{j=0}^{\lfloor r/2\rfloor}
+ q_n(z)=\sum_{j=0}^{\Floor{r/2}}
  (-1)^jb_ja^{2j}D^{2j}(y_r+J_r(z)).
 \]
 Finally use $\Fn(x_r+z)=p_n(\xi_r+z)$.
@@ -1059,9 +1063,11 @@ convention
 \end{equation}
 The zero-mean periodic fluctuation has Fourier coefficients
 \begin{equation}
- \Psi(u)=\sum_{k\ne0}\widehat\Psi(k)\EulerE^{2\pi\ImaginaryUnit ku},
+ \Psi(u)=\sum_{k\ne0}\FourierSeriesCoefficient{\Psi}{k}
+ \EulerE^{2\pi\ImaginaryUnit ku},
  \qquad
- \widehat\Psi(k)=-\frac{\Gamma(-\chi_k)\zeta(1-\chi_k)}{L},
+ \FourierSeriesCoefficient{\Psi}{k}
+ =-\frac{\Gamma(-\chi_k)\zeta(1-\chi_k)}{L},
  \qquad
  \chi_k=\frac{2\pi\ImaginaryUnit k}{L}.
  \label{p1:eq:Psi-Fourier}
@@ -1248,7 +1254,8 @@ $u$ modulo one, proving that every value of $\kappa_0-\Psi$ is a subsequential
 limit.  Conversely, compactness of the phase circle shows that every sequence has a
 phase-convergent subsequence, so no other limit can occur.
 
-The Fourier coefficient $\widehat\Psi(1)$ in \eqref{p1:eq:Psi-Fourier} is nonzero:
+The Fourier coefficient $\FourierSeriesCoefficient{\Psi}{1}$ in
+\eqref{p1:eq:Psi-Fourier} is nonzero:
 Gamma has no zeros and the classical zero-free line $\Re s=1$ gives
 $\zeta(1-\chi_1)\ne0$ \cite{p1:TitchmarshZeta}.  Thus $\Psi$ is nonconstant and the interval has positive
 length.  Formula \eqref{p1:eq:no-constant-second-term} would force a singleton limit set,
@@ -1486,9 +1493,9 @@ Numerically,
 \end{equation}
 The first Fourier coefficient has
 \begin{equation}
- |\widehat\Psi(1)|=1.0627109779221651\times10^{-6},
+ |\FourierSeriesCoefficient{\Psi}{1}|=1.0627109779221651\times10^{-6},
  \qquad
- \arg\widehat\Psi(1)=-0.7795055208985225\ldots,
+ \arg\FourierSeriesCoefficient{\Psi}{1}=-0.7795055208985225\ldots,
  \label{p1:eq:first-Psi-mode}
 \end{equation}
 and the second mode is smaller by a factor about $6.30\times10^{-7}$.  Thus $\Psi$ is
@@ -1614,7 +1621,7 @@ The results separate naturally into five Lean-sized packages.
 Formalize that, for a polynomial $q$ of degree at most $r$,
 \[
  M(aD)q=J \quad\Longrightarrow\quad
- q=\sum_{j=0}^{\lfloor r/2\rfloor}(-1)^jb_ja^{2j}D^{2j}J.
+ q=\sum_{j=0}^{\Floor{r/2}}(-1)^jb_ja^{2j}D^{2j}J.
 \]
 This requires only finite sums after the degree bound is known; no convergence theorem for
 formal differential operators is needed.
@@ -1633,9 +1640,9 @@ mutually inverse series give mutually inverse operators on every polynomial --- 
 topology or convergence theorem anywhere, exactly as the obligation predicts.  The
 displayed implication is \nolinkurl{Fabius.eq_seriesDerivOp_of_seriesDerivOp_eq}, and
 for an even reciprocal series (all odd coefficients zero, as for $1/M$ by
-\eqref{p1:eq:reciprocal-MGF}) the truncation at $\lfloor r/2\rfloor$ is
+\eqref{p1:eq:reciprocal-MGF}) the truncation at $\Floor{r/2}$ is
 \nolinkurl{Fabius.eq_sum_even_of_seriesDerivOp_eq}, which reads verbatim
-$q=\sum_{j=0}^{\lfloor r/2\rfloor}\psi_{2j}a^{2j}D^{2j}J$ with
+$q=\sum_{j=0}^{\Floor{r/2}}\psi_{2j}a^{2j}D^{2j}J$ with
 $\psi_{2j}=(-1)^jb_j$.  What remains outside the module is only the analytic
 identification of the abstract series with the moment generating function of $Y$ ---
 that is the business of the algebraic-inverse-germ obligation below, not of the
@@ -1985,7 +1992,8 @@ continuous coordinate.
 
 The first periodic mode of $\Psi$ dominates all later modes by many orders of magnitude.
 One may therefore construct inexpensive approximants using only
-$\widehat\Psi(\pm1)$ while retaining a rigorous tail bound from Stirling's formula for Gamma
+$\FourierSeriesCoefficient{\Psi}{\pm1}$ while retaining a rigorous tail bound from
+Stirling's formula for Gamma
 and standard vertical-line estimates for zeta.  A useful computational target is a certified
 endpoint inverse routine whose cost is essentially that of evaluating $W_{-1}$ plus one
 complex exponential, with a user-prescribed relative error.
@@ -2411,7 +2419,7 @@ at the symmetric Rvachev law.  Their reciprocal moment generating function yield
 sequence $A_n$.  We derive a Bernoulli-cumulant and Bell-polynomial calculus, and exhibit a new
 dual random variable: an infinite dyadic sum of logistic variables whose characteristic function is
 the reciprocal Rvachev moment generating function.  Consequently
-$A_n(x)=\mathbb E(x+\ImaginaryUnit Z)^n$, giving exact sign alternation of the Appell constants.
+$A_n(x)=\Expectation(x+\ImaginaryUnit Z)^n$, giving exact sign alternation of the Appell constants.
 
 Finite dyadic convolution prefixes are identified exactly with normalized Barnes multiple Bernoulli
 polynomials at the period vector $(1,1/2,\ldots,2^{1-N})$.  Applying the complete Thue--Morse
@@ -2494,7 +2502,7 @@ Centered Appell sequence
 & $A_n(x)=2^nP_n((x+1)/2)$, with Bernoulli cumulants and Bell constants. & derived \\
 Logistic dual
 & $1/M(t)$ is the characteristic function of a dyadic logistic series, so
-  $A_n(x)=\mathbb E(x+\ImaginaryUnit Z)^n$. & \statusnew \\
+  $A_n(x)=\Expectation(x+\ImaginaryUnit Z)^n$. & \statusnew \\
 Dyadic Barnes prefix
 & Finite-prefix polynomials are normalized Barnes multiple Bernoulli polynomials at a geometric period vector. & \statusnew \\
 Thue--Morse operator
@@ -2599,10 +2607,10 @@ $(V_j)_{j\ge1}$ be independent uniform random variables on $[-1,1]$.  Put
 Then $F$ is the distribution function of $X$ and $\RvachevUp$ is the density of $Y$.  Their moment
 generating functions are entire:
 \begin{align}
- L(t)&=\mathbb E\EulerE^{tX}
+ L(t)&=\Expectation\EulerE^{tX}
  =\prod_{j\ge1}\frac{\EulerE^{t/2^j}-1}{t/2^j},
  \label{p2:eq:L-def}\\
- M(t)&=\mathbb E\EulerE^{tY}
+ M(t)&=\Expectation\EulerE^{tY}
  =\prod_{j\ge1}\frac{\sinh(t/2^j)}{t/2^j}
  =\EulerE^{-t}L(2t).
  \label{p2:eq:M-def}
@@ -2945,7 +2953,8 @@ already $N=4$ should reveal whether a stable binary pattern exists.
 \subsection{The external precursor and the normalization used here}
 
 Lee's scaling-polynomial construction associates to a compactly supported probability density
-$\phi$ the Appell sequence generated by $\EulerE^{xt}/\widehat\phi(\ImaginaryUnit t)$ and proves its biorthogonality
+$\phi$ the Appell sequence generated by
+$\EulerE^{xt}/\FourierAngular{\phi}(\ImaginaryUnit t)$ and proves its biorthogonality
 to the distributional derivatives of $\phi$.  For the up-function, these are the Kabaya--Iri
 polynomials.  In the Fabius normalization used in this report, it is convenient to distinguish the
 uncentered law $X\in[0,1]$ from the centered law $Y=2X-1\in[-1,1]$.
@@ -2992,9 +3001,9 @@ For $n\ge1$,
 The polynomial averaging operators are inverted exactly:
 \begin{equation}
  \boxed{
- \mathbb E\,P_n(x+X)=x^n,
+ \Expectation\,P_n(x+X)=x^n,
  \qquad
- \mathbb E\,A_n(x+Y)=x^n.
+ \Expectation\,A_n(x+Y)=x^n.
  }
  \label{p2:eq:mean-value-inversion}
 \end{equation}
@@ -3016,8 +3025,8 @@ Differentiate the generating functions with respect to $x$ to obtain
 \eqref{p2:eq:Appell-derivative}; multiply by $\EulerE^{yt}$ to obtain
 \eqref{p2:eq:Appell-translation}.  For the mean-value identities,
 \[
- \mathbb E\sum_{n\ge0}P_n(x+X)\frac{t^n}{n!}
- =\mathbb E\frac{\EulerE^{(x+X)t}}{L(t)}=\EulerE^{xt},
+ \Expectation\sum_{n\ge0}P_n(x+X)\frac{t^n}{n!}
+ =\Expectation\frac{\EulerE^{(x+X)t}}{L(t)}=\EulerE^{xt},
 \]
 and similarly for $A_n$.  The biorthogonality is Lee's general compactly supported
 distribution identity specialized to $f_X$ and transported affinely to $\RvachevUp$.  It can also be checked
@@ -3026,7 +3035,8 @@ directly by repeated integration by parts and \eqref{p2:eq:mean-value-inversion}
 
 \begin{remark}
 Equation \eqref{p2:eq:mean-value-inversion} is an exact polynomial deconvolution formula.  The operator
-$\mathcal T_Y:p\mapsto\mathbb E p(\,\cdot+Y)$ is triangular on $\RationalNumbers[x]$ with ones on its diagonal;
+$\mathcal T_Y:p\mapsto\Expectation p(\,\cdot+Y)$ is triangular on
+$\RationalNumbers[x]$ with ones on its diagonal;
 $A_n=\mathcal T_Y^{-1}x^n$.  This is the linear inverse problem announced in
 \cref{p2:sec:scope}.
 \end{remark}
@@ -3111,7 +3121,7 @@ $t/\sinh t$.  Then
  &=\sum_{k=0}^n\binom nkB_kP_{n-k}(2x),
  \label{p2:eq:P-Bernoulli-refinement}\\
  2^nA_n(x)
- &=\sum_{r=0}^{\lfloor n/2\rfloor}
+ &=\sum_{r=0}^{\Floor{n/2}}
    \binom n{2r}c_{2r}A_{n-2r}(2x).
  \label{p2:eq:A-Bernoulli-refinement}
 \end{align}
@@ -3146,7 +3156,7 @@ Let $\Lambda$ be a standard logistic random variable with density
 \end{equation}
 The beta integral gives
 \begin{equation}
- \mathbb E\EulerE^{\ImaginaryUnit t\Lambda}
+ \Expectation\EulerE^{\ImaginaryUnit t\Lambda}
  =\Gamma(1+\ImaginaryUnit t)\Gamma(1-\ImaginaryUnit t)
  =\frac{\pi t}{\sinh(\pi t)}.
  \label{p2:eq:logistic-cf}
@@ -3163,7 +3173,7 @@ The series converges in $L^2$ and almost surely.
 For real $t$,
 \begin{equation}
  \boxed{
- \mathbb E\EulerE^{\ImaginaryUnit tZ}
+ \Expectation\EulerE^{\ImaginaryUnit tZ}
  =\prod_{j\ge1}\frac{t/2^j}{\sinh(t/2^j)}
  =\frac1{M(t)}.
  }
@@ -3171,15 +3181,15 @@ For real $t$,
 \end{equation}
 Consequently, as polynomial identities,
 \begin{align}
- A_n(x)&=\mathbb E\,(x+\ImaginaryUnit Z)^n,
+ A_n(x)&=\Expectation\,(x+\ImaginaryUnit Z)^n,
  \label{p2:eq:A-logistic-moment}\\
- P_n(x)&=\mathbb E\left(x-\frac12+\frac{\ImaginaryUnit Z}{2}\right)^n.
+ P_n(x)&=\Expectation\left(x-\frac12+\frac{\ImaginaryUnit Z}{2}\right)^n.
  \label{p2:eq:P-logistic-moment}
 \end{align}
 In particular,
 \begin{equation}
  \boxed{
- \alpha_{2m}=(-1)^m\mathbb E Z^{2m},
+ \alpha_{2m}=(-1)^m\Expectation Z^{2m},
  \qquad (-1)^m\alpha_{2m}>0.
  }
  \label{p2:eq:alpha-sign}
@@ -3189,7 +3199,7 @@ In particular,
 \begin{proof}
 Independence and \eqref{p2:eq:logistic-cf} give
 \[
- \mathbb E\EulerE^{\ImaginaryUnit tZ}
+ \Expectation\EulerE^{\ImaginaryUnit tZ}
  =\prod_{j\ge1}
  \frac{t/2^j}{\sinh(t/2^j)}=\frac1{M(t)}.
 \]
@@ -3212,9 +3222,9 @@ positive-definite characteristic function.
 
 Let $D=\Differential/\Differential x$.  On polynomials,
 \begin{equation}
- \mathcal T_Y=\mathbb E\EulerE^{YD}=M(D),
+ \mathcal T_Y=\Expectation\EulerE^{YD}=M(D),
  \qquad
- \mathcal T_Y^{-1}=M(D)^{-1}=\mathbb E\EulerE^{\ImaginaryUnit ZD}.
+ \mathcal T_Y^{-1}=M(D)^{-1}=\Expectation\EulerE^{\ImaginaryUnit ZD}.
  \label{p2:eq:operator-deconvolution}
 \end{equation}
 Therefore
@@ -3257,9 +3267,9 @@ Define finite-prefix Appell polynomials by
 \end{align}
 They satisfy the exact finite mean-value identities
 \begin{equation}
- \mathbb E P_n^{[N]}(x+X_N)=x^n,
+ \Expectation P_n^{[N]}(x+X_N)=x^n,
  \qquad
- \mathbb E A_n^{[N]}(x+Y_N)=x^n.
+ \Expectation A_n^{[N]}(x+Y_N)=x^n.
  \label{p2:eq:finite-mean-value}
 \end{equation}
 Because $X_N$ and $Y_N$ are finite convolutions of boxes, these polynomials are the exact
@@ -3479,7 +3489,7 @@ Hence
  M(t)=M_N(t)M(2^{-N}t).
  \label{p2:eq:finite-infinite-mgf}
 \end{equation}
-Write $\mu_r=\mathbb EX^r$ and $m_{2r}=\mathbb EY^{2r}$.
+Write $\mu_r=\Expectation X^r$ and $m_{2r}=\Expectation Y^{2r}$.
 
 \begin{theorem}[Exact finite-prefix expansion; \statusnew]
 \label{p2:thm:finite-prefix-expansion}
@@ -3495,13 +3505,13 @@ For the centered sequence,
 \begin{equation}
  \boxed{
  A_n^{[N]}(x)
- =\sum_{r=0}^{\lfloor n/2\rfloor}
+ =\sum_{r=0}^{\Floor{n/2}}
  \binom n{2r}m_{2r}\,4^{-Nr}A_{n-2r}(x).
  }
  \label{p2:eq:A-prefix-expansion}
 \end{equation}
 Thus $P_n^{[N]}(x)$ is exactly a polynomial of degree $n$ in $2^{-N}$, while
-$A_n^{[N]}(x)$ is exactly a polynomial of degree $\lfloor n/2\rfloor$ in $4^{-N}$.
+$A_n^{[N]}(x)$ is exactly a polynomial of degree $\Floor{n/2}$ in $4^{-N}$.
 \end{theorem}
 
 \begin{proof}
@@ -3575,7 +3585,7 @@ For every $n,N\ge0$,
  }
  \label{p2:eq:P-exact-recovery}
 \end{equation}
-Let $d=\lfloor n/2\rfloor$.  Then
+Let $d=\Floor{n/2}$.  Then
 \begin{equation}
  \boxed{
  A_n(x)=\sum_{j=0}^{d}w_{d,j}(1/4)A_n^{[N+j]}(x).
@@ -3720,7 +3730,7 @@ recover the limit exactly:
 \label{p2:alg:exact-Appell}
 To compute $A_n(x)$ exactly:
 \begin{enumerate}
-\item Set $d=\lfloor n/2\rfloor$ and choose any starting depth $N\ge1$.
+\item Set $d=\Floor{n/2}$ and choose any starting depth $N\ge1$.
 \item For $j=0,\ldots,d$, form the finite Barnes polynomial
 \[
  A_n^{[N+j]}(x)
@@ -3735,7 +3745,7 @@ $q=1/2$.
 
 \begin{remark}[Why centering halves the interpolation order]
 The raw expansion contains every power $2^{-Nr}$ through $r=n$.  Symmetry removes odd moments,
-so the centered expansion contains only $4^{-Nr}$ through $r=\lfloor n/2\rfloor$.  Centering thus
+so the centered expansion contains only $4^{-Nr}$ through $r=\Floor{n/2}$.  Centering thus
 halves both the polynomial degree in the tail parameter and the number of prefix levels required for
 exact recovery.  This is the exact-polynomial counterpart of the conditioning improvement obtained
 by centering logarithmic sinc-product tails in the repository's acceleration reports.
@@ -4478,10 +4488,10 @@ For convenient reuse, the main formulas are collected here.
  \frac{\EulerE^{xt}}{M(t)}
  &=\sum_{n\ge0}A_n(x)\frac{t^n}{n!},
  \qquad
- A_n(x)=\mathbb E(x+\ImaginaryUnit Z)^n,\\
+ A_n(x)=\Expectation(x+\ImaginaryUnit Z)^n,\\
  Z&=\sum_{j\ge1}\frac{\Lambda_j}{\pi2^j},
  \qquad
- \mathbb E\EulerE^{\ImaginaryUnit tZ}=M(t)^{-1},\\[0.3em]
+ \Expectation\EulerE^{\ImaginaryUnit tZ}=M(t)^{-1},\\[0.3em]
  A_n^{[N]}(x)
  &=\mathfrak B_n^{(N)}
  \left(x+1-2^{-N}\mid1,\frac12,\ldots,2^{1-N}\right),\\
@@ -4489,11 +4499,11 @@ For convenient reuse, the main formulas are collected here.
  A_n^{[N]}\left(x+1-2^{-N}-\frac{k}{2^{N-1}}\right)
  &=2^{-N(N-1)/2}\fall nN x^{n-N},\\[0.3em]
  A_n^{[N]}(x)
- &=\sum_{r=0}^{\lfloor n/2\rfloor}
+ &=\sum_{r=0}^{\Floor{n/2}}
  \binom n{2r}m_{2r}4^{-Nr}A_{n-2r}(x),\\
  A_n(x)
- &=\sum_{j=0}^{\lfloor n/2\rfloor}
- w_{\lfloor n/2\rfloor,j}(1/4)A_n^{[N+j]}(x),\\
+ &=\sum_{j=0}^{\Floor{n/2}}
+ w_{\Floor{n/2},j}(1/4)A_n^{[N+j]}(x),\\
  w_{p,j}(q)
  &=\frac{(-1)^{p-j}q^{\binom{p-j+1}{2}}}
  {(q;q)_j(q;q)_{p-j}},\\[0.3em]
@@ -4694,7 +4704,7 @@ Rvachev--Appell Deconvolution}
 \begin{abstract}
 Let $u=\RvachevUp$ be Rvachev's even $C^\infty$ probability density on $[-1,1]$ and let
 \[
- \Phi(\xi)=\widehat u(\xi)
+ \Phi(\xi)=\FourierTwoPi{u}(\xi)
  =\prod_{j=0}^{\infty}\SincPi\!\left(\frac{\xi}{2^j}\right),
  \qquad \SincPi z=\frac{\sin(\pi z)}{\pi z}.
 \]
@@ -4801,9 +4811,10 @@ Let $u=\RvachevUp$ be Rvachev's even nonnegative $C^\infty$ function supported o
 \]
 We use
 \begin{equation}
- \widehat f(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\iu x\xi}\Differential x,
+ \FourierTwoPi{f}(\xi)
+ =\int_{\RealNumbers}f(x)\EulerE^{-2\pi\iu x\xi}\Differential x,
  \qquad
- \Phi(\xi)=\widehat u(\xi)
+ \Phi(\xi)=\FourierTwoPi{u}(\xi)
  =\prod_{j=0}^{\infty}\SincPi\!\left(\frac{\xi}{2^j}\right),
  \label{p3:eq:Phi-product}
 \end{equation}
@@ -4838,7 +4849,7 @@ The standard Fabius distribution function $F:[0,1]\to[0,1]$ is related to $u$ by
 \end{equation}
 If $X$ has density $u$, then
 \begin{equation}
- \mathbb P(X\le x)=F\!\left(\frac{x+1}{2}\right),
+ \Probability(X\le x)=F\!\left(\frac{x+1}{2}\right),
  \qquad -1\le x\le1.
  \label{p3:eq:centered-CDF}
 \end{equation}
@@ -4899,7 +4910,10 @@ For $0\le a\le2^n$, the corpus gives the finite moment--Thue--Morse formula
  \binom n{2k}(2a-2h-1)^{n-2k}c_k,
  \label{p3:eq:finite-F-moment}
 \end{equation}
-where $\eps_h=(-1)^{s_2(h)}$.  In particular every dyadic sample of $F$ and $u$ is rational.  A second exact formula, recalled in \cref{p3:sec:qbinomial}, expresses the same value through Gaussian binomial coefficients at $q=1/2$ and finite signed Thue--Morse power sums.
+where $\eps_h=(-1)^{\BinaryDigitSum(h)}$.  In particular every dyadic sample of $F$ and
+$u$ is rational.  A second exact formula, recalled in \cref{p3:sec:qbinomial}, expresses
+the same value through Gaussian binomial coefficients at $q=1/2$ and finite signed
+Thue--Morse power sums.
 
 \section{The shifted dyadic self-sampling theorem}
 \label{p3:sec:self-sampling}
@@ -4940,12 +4954,12 @@ Let $0\le r\le N$ and set $f_r(x)=x^ru(x)$.  Since $u\in C_c^\infty(\RealNumbers
 \begin{equation}
  h_N\sum_{k\in\IntegerNumbers}f_r\bigl(h_N(k+\theta)\bigr)
  =\sum_{\ell\in\IntegerNumbers}\EulerE^{2\pi\iu\ell\theta}
- \widehat f_r(2^N\ell).
+ \FourierTwoPi{f_r}(2^N\ell).
  \label{p3:eq:shifted-Poisson}
 \end{equation}
 Differentiating \eqref{p3:eq:Phi-product},
 \begin{equation}
- \widehat f_r(\xi)=\frac{\Phi^{(r)}(\xi)}{(-2\pi\iu)^r}.
+ \FourierTwoPi{f_r}(\xi)=\frac{\Phi^{(r)}(\xi)}{(-2\pi\iu)^r}.
  \label{p3:eq:monomial-transform}
 \end{equation}
 The term $\ell=0$ is $\mu_r$.  If $\ell\ne0$, then \eqref{p3:eq:integer-multiplicity} gives
@@ -5049,7 +5063,7 @@ The series is locally normally convergent.  Moreover $G_{N,\theta}$ has a zero o
 \begin{proof}
 Apply shifted Poisson summation to $f_z(x)=\EulerE^{zx}u(x)$.  Its Fourier transform is
 \[
- \widehat f_z(\xi)
+ \FourierTwoPi{f_z}(\xi)
  =\Phi\!\left(\xi+\frac{\iu z}{2\pi}\right).
 \]
 The zero-frequency term is $M(z)$, giving \eqref{p3:eq:master-alias}.  Compact support and smoothness imply the local normal convergence needed to differentiate termwise.  At $z=0$, the summand indexed by $\ell\ne0$ has order
@@ -5262,7 +5276,7 @@ Insert this into \eqref{p3:eq:valuation-filtration}.  Pair positive and negative
 For $j\ge0$,
 \begin{equation}
  \Sign\Phi\!\left(\frac{2j+1}{2}\right)
- =(-1)^{s_2(j)}=\eps_j.
+ =(-1)^{\BinaryDigitSum(j)}=\eps_j.
  \label{p3:eq:half-integer-sign}
 \end{equation}
 Hence the first quadrature defect is a Thue--Morse-signed half-integer spectral Dirichlet series.
@@ -5273,9 +5287,11 @@ On the positive real axis, $\Phi$ changes sign whenever an integer zero has odd 
 \[
  \sum_{m=1}^{j}\bigl(1+\nu_2(m)\bigr)
  =j+\nu_2(j!)
- =2j-s_2(j),
+ =2j-\BinaryDigitSum(j),
 \]
-where the last equality is Legendre's formula $\nu_2(j!)=j-s_2(j)$.  Its parity is therefore $s_2(j)$.  Since $\Phi(1/2)>0$, the claimed sign follows.
+where the last equality is Legendre's formula
+$\nu_2(j!)=j-\BinaryDigitSum(j)$.  Its parity is therefore $\BinaryDigitSum(j)$.  Since
+$\Phi(1/2)>0$, the claimed sign follows.
 \end{proof}
 
 Writing
@@ -5315,7 +5331,7 @@ Define a $1$-periodic continuous function $\Kcal$ by
 \end{equation}
 with periodic extension.  Its mean is zero.  For $n\ne0$, its Fourier coefficient is
 \begin{equation}
- \widehat{\Kcal}(n)
+ \FourierSeriesCoefficient{\Kcal}{n}
  =\int_{-1/2}^{1/2}\Kcal(t)\EulerE^{-2\pi\iu nt}\Differential t
  =\Phi(n/2).
  \label{p3:eq:K-Fourier}
@@ -5324,7 +5340,7 @@ In particular the even nonzero coefficients vanish, and the odd coefficients car
 
 Let $\Bper_r(t)=B_r(\{t\})$ be the periodic Bernoulli polynomial, understood in the standard Fourier/distributional sense when $r=1$.  For $n\ne0$,
 \begin{equation}
- \widehat{\Bper_r}(n)=-\frac{r!}{(2\pi\iu n)^r}.
+ \FourierSeriesCoefficient{\Bper_r}{n}=-\frac{r!}{(2\pi\iu n)^r}.
  \label{p3:eq:periodic-Bernoulli-Fourier}
 \end{equation}
 
