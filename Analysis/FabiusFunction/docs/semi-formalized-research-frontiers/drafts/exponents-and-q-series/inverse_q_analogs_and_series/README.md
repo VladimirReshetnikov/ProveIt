@@ -22,10 +22,17 @@ Status terminology is deliberately strict:
   proof but no exact Lean counterpart has yet been validated.
 - `Conjecture` means that a genuine proof obligation remains.
 
-The six source directories will be removed only after the concordance proves
-that every theorem, proof, conjecture, problem, and unique reproducibility asset
-has a canonical disposition.  Git history remains the archival record of the
-superseded layouts.
+The six source directories were removed only after every source result and
+unique reproducibility asset received a canonical disposition.  The pinned
+pre-retirement revision in `audit/SOURCE_REVISION` and repository history
+preserve the superseded layouts.
+
+This volume is canonical for branch-specified inverse maps and the six-package
+concordance, not for every neighboring topic that uses q-products.  The sibling
+`q_pochhammer_q_binomial_monograph/` remains the broad forward-theory
+reference; `Cyclotomic_q_Fabius_Rvachev_Frontier/` retains the wider
+natural-boundary and cyclotomic blow-up program.  `PROVENANCE.md` records these
+and the other scope boundaries explicitly.
 
 The final publication gate is three serial pdfLaTeX passes, a clean final log,
 full-page raster inspection, A4 and metadata checks, embedded/subset Libertinus

@@ -57,8 +57,8 @@ now have canonical destinations and live hashes in
 | G2 | `Legendre_Rvachev_Closed_Loop_Report_v3/legendre_rvachev_closed_loop.tex` |
 | G3 | `Legendre_Rvachev_Closed_Loop_Report_v4/legendre_rvachev_closed_loop.tex` |
 | G4 | `Legendre_Rvachev_Self_Reconstruction/legendre_rvachev_self_reconstruction.tex` |
-| X1 | `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/Dyadic_Comb_Frontiers.tex` |
-| X2 | `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_and_Sampling_Frontiers/Inverse_and_Sampling_Frontiers.tex` |
+| X1 | `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/comb-interpolation/Dyadic_Comb_Frontiers/Dyadic_Comb_Frontiers.tex` |
+| X2 | `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers/Inverse_and_Sampling_Frontiers.tex` |
 
 Legacy theorem labels in the tables are exact labels from those source files.
 For P1--P3, whose original report TeX is no longer duplicated beside the

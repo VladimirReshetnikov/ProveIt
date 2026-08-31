@@ -39,6 +39,8 @@
 \fancyhead[L]{\small Fourier decay of Rvachev's up-function}
 \fancyhead[R]{\small\nouppercase{\rightmark}}
 \fancyfoot[C]{\thepage}
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
 \renewcommand{\headrulewidth}{0.4pt}
 
 \titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
@@ -84,39 +86,20 @@
 \crefname{warning}{warning}{warnings}
 \Crefname{warning}{Warning}{Warnings}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\Phiup}{\Phi}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
-\newcommand{\supp}{\operatorname{supp}}
-\newcommand{\sgn}{\operatorname{sgn}}
-\newcommand{\vtwo}{\nu_2}
-\newcommand{\wt}{\operatorname{wt}}
-\newcommand{\Li}{\operatorname{Li}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\lcm}{\operatorname{lcm}}
-\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
 \newcommand{\repo}{\texttt{ProveIt}}
 \newcommand{\lean}[1]{\texttt{#1}}
 \newcommand{\decl}[1]{\nolinkurl{#1}}
-\newcommand{\spec}{\operatorname{spr}}
-\newcommand{\esssup}{\operatorname*{ess\,sup}}
-\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
-\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
-\newcommand{\abs}[1]{\left|#1\right|}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\angles}[1]{\left\langle#1\right\rangle}
+\newcommand{\ConstantOneFunction}{\mathbf{1}}
+\newcommand{\DoublingInverseBranch}[1]{\iota_{#1}}
+\newcommand{\CertificatePolynomial}{p_{\mathrm{cert}}}
+\newcommand{\LobeLogAmplitude}{\ell_{\mathrm{lobe}}}
+\newcommand{\LogGaugeProfile}{g_{\log}}
+\newcommand{\ShellLimitDistribution}{D_{\mathrm{shell}}}
+\newcommand{\ShellPhaseProfile}{P_{\mathrm{phase}}}
+\newcommand{\CesaroNumerator}{I_g}
+\newcommand{\GeometricSincProduct}[1]{\Phi^{\mathrm{sinc}}_{#1}}
+\newcommand{\BasePowerValuation}[1]{\nu^{\mathrm{pow}}_{#1}}
+\newcommand{\LebesgueMeasure}{\operatorname{Leb}}
 
 \newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
 \newenvironment{boxedremark}{%
@@ -152,9 +135,9 @@
 \begin{abstract}
 Let
 \[
- \Phi(x)=\widehat{\Up}(x)
- =\prod_{h=0}^{\infty}\sinc\!\left(\frac{\pi x}{2^h}\right),
- \qquad \sinc z=\frac{\sin z}{z},
+ \FourierTwoPi{\RvachevUp}(x)
+ =\prod_{h=0}^{\infty}\SincRad\!\left(\frac{\pi x}{2^h}\right),
+ \qquad \SincRad z=\frac{\sin z}{z},
 \]
 be the Fourier transform of Rvachev's compactly supported up-function.  This article
 consolidates the original 2018 question, eight successive research reports, a gentle guide,
@@ -215,12 +198,12 @@ normalizing constant numerically
 $A_1^{\log}\approx0.09386063575678126354$.
 
 Finally, the raw annular maximum
-$\mathfrak M_k=\max_{2^k\le x\le2^{k+1}}|\Phi(x)|$ has a sharper boundary-layer law:
+$\mathfrak M_k=\max_{2^k\le x\le2^{k+1}}|\FourierTwoPi{\RvachevUp}(x)|$ has a sharper boundary-layer law:
 \[
  \log\mathfrak M_k
  =-\frac{\log2}{2}k^2-(\log2)\kappa_\infty k
  -\frac{W(c(k+1))^2+2W(c(k+1))}{2\log2}
- +O((\log\log k)^2),
+ +\BigO((\log\log k)^2),
 \]
 where $c=(\log2)\pi^{-1}\sqrt{3/2}$ and $W$ is the principal Lambert function.  Thus the
 largest point in a shell approaches its left boundary and carries a second log-normal factor
@@ -242,12 +225,12 @@ certificates, and numerical evidence are distinguished throughout.
 Rvachev's up-function is the even $C^\infty$ probability density supported on $[-1,1]$
 that is closely related to the Fabius distribution function.  Under the Fourier convention
 \[
- \widehat f(\xi)=\int_{\R}f(t)\e^{-2\pi\ii t\xi}\dd t,
+ \FourierTwoPi{f}(\xi)=\int_{\RealNumbers}f(t)\EulerE^{-2\pi\ImaginaryUnit t\xi}\Differential t,
 \]
 its transform is the entire function
 \begin{equation}
- \Phiup(z)=\widehat{\Up}(z)
- =\prod_{h=0}^{\infty}\sinc\!\left(\frac{\pi z}{2^h}\right).
+ \FourierTwoPi{\RvachevUp}(z)
+ =\prod_{h=0}^{\infty}\SincRad\!\left(\frac{\pi z}{2^h}\right).
  \label{eq:Phi-definition}
 \end{equation}
 This formula is classical; see, for example, Arias de Reyna's systematic treatment
@@ -255,7 +238,7 @@ This formula is classical; see, for example, Arias de Reyna's systematic treatme
 
 The motivating questions in \cite{mse-extrema,mse-decay} ask for the amplitude of the
 oscillations and, more specifically, for a positive elementary function $g$ such that an
-average of $\abs{\Phiup}/g$ tends to one or at least stays between two positive constants.
+average of $\AbsoluteValue{\FourierTwoPi{\RvachevUp}}/g$ tends to one or at least stays between two positive constants.
 A working draft in the \texttt{ProveIt} repository \cite{decay-draft} proposes a log-normal
 factor together with the power $x^{-\log(2\pi)/\log2}$ and a possible power of $\log x$.
 The log-normal factor is indeed fundamental, but the rest of the conclusion depends on
@@ -264,12 +247,12 @@ which norm or averaging operation is intended.
 Here is a cleaned statement of the two averaging questions.  Fix $t_0>0$ and ask for a
 positive, eventually decreasing, real-analytic gauge $g$ on $(0,\infty)$ such that either
 \begin{align*}
- \frac1{t-t_0}\int_{t_0}^{t}\frac{\abs{\Phiup(x)}}{g(x)}\dd x&\longrightarrow1
+ \frac1{t-t_0}\int_{t_0}^{t}\frac{\AbsoluteValue{\FourierTwoPi{\RvachevUp}(x)}}{g(x)}\Differential x&\longrightarrow1
  &&\text{as }t\to\infty, \tag{Q2}\label{eq:Q2-intro}\\
  0<\liminf_{t\to\infty}\frac1{t-t_0}\int_{t_0}^{t}
- \frac{\abs{\Phiup(x)}}{g(x)}\dd x
+ \frac{\AbsoluteValue{\FourierTwoPi{\RvachevUp}(x)}}{g(x)}\Differential x
  &\le\limsup_{t\to\infty}\frac1{t-t_0}\int_{t_0}^{t}
- \frac{\abs{\Phiup(x)}}{g(x)}\dd x<\infty. \tag{Q3}\label{eq:Q3-intro}
+ \frac{\AbsoluteValue{\FourierTwoPi{\RvachevUp}(x)}}{g(x)}\Differential x<\infty. \tag{Q3}\label{eq:Q3-intro}
 \end{align*}
 The original wording also asked about monotonicity of higher derivatives.  That optional
 request is ambiguous unless one specifies alternating signs and whether the tail may depend
@@ -289,7 +272,7 @@ There are three separate obstructions to a single pointwise answer.
 
 \begin{enumerate}
 \item The transform has a zero at every nonzero integer, so no asymptotic
-      $\abs{\Phiup(x)}\sim g(x)>0$ can hold on the full real ray.
+      $\AbsoluteValue{\FourierTwoPi{\RvachevUp}(x)}\sim g(x)>0$ can hold on the full real ray.
 \item After the deterministic denominator is removed, what remains is a Birkhoff product
       for the doubling map.  Its geometric mean, arithmetic mean, quadratic mean, and
       supremum have different exponential growth rates.
@@ -303,9 +286,9 @@ Thus the correct answer is a \emph{spectrum of decay rates}, not one formula.  A
 common scale is
 \begin{equation}
  E_\kappa(x)
- :=\exp\!\left(-\frac{(\log x)^2}{2a}-\kappa\log x\right)
+ \DefinitionEquals\exp\!\left(-\frac{(\log x)^2}{2a}-\kappa\log x\right)
  =x^{-\kappa}\exp\!\left(-\frac{(\log x)^2}{2\log2}\right),
- \qquad a:=\log2.
+ \qquad a\DefinitionEquals\log2.
  \label{eq:E-kappa}
 \end{equation}
 For fixed dyadic phase, the quadratic term in \eqref{eq:E-kappa} comes from the product of
@@ -373,7 +356,7 @@ already a nonzero multiple of $\log x$ in the logarithm of the amplitude.
 \label{sec:audit-map}
 
 The four earliest reports and the first comparative audit established the analytic backbone.
-Their apparent disagreement is mostly a disagreement about which functional of $|\Phi|$ is
+Their apparent disagreement is mostly a disagreement about which functional of $|\FourierTwoPi{\RvachevUp}|$ is
 being estimated.  The following compact table records the verdict on that backbone before
 the detailed proofs; the full twelve-source concordance, including Reports 5--8, the
 second-wave audit, and the gentle guide, appears in \Cref{sec:source-reconciliation}.
@@ -425,14 +408,14 @@ The final answer can therefore be stated compactly.
 Let $E_\kappa$ be defined by \eqref{eq:E-kappa}.
 \begin{enumerate}
 \item For Lebesgue-a.e. $y\in(1,2)$,
-$|\Phi(2^ny)|=E_{\kappa_0}(2^ny)\exp(o(n))$ as $n\to\infty$, with asymptotic
+$|\FourierTwoPi{\RvachevUp}(2^ny)|=E_{\kappa_0}(2^ny)\exp(\LittleO(n))$ as $n\to\infty$, with asymptotic
 variance $\pi^2/4$ per dyadic level, the exact finite variance in
 \Cref{thm:exact-variance}, and the corrected LIL of \Cref{thm:correct-lil}.
 \item The normalized shell $L^q$ means converge to positive constants for every fixed
 $0<q<\infty$, with exponent $\kappa_q$ determined by the Perron root of
 \eqref{eq:transfer-operator}.  In particular $q=1$ answers the normalized dyadic-shell
 $L^1$ question and $q=2$ gives $\kappa_2=\log_2(2\pi)$ exactly.
-\item There is $C<\infty$ such that $|\Phi(x)|\le C E_{\kappa_\infty}(x)$ for $x\ge1$,
+\item There is $C<\infty$ such that $|\FourierTwoPi{\RvachevUp}(x)|\le C E_{\kappa_\infty}(x)$ for $x\ge1$,
 and equality up to one fixed constant holds on the ray $x=2^n(2/3)$.
 \item The raw annular maxima have the additional Lambert-$W$ suppression stated in
 \Cref{thm:annular-main}; the local lobe maxima have both sharp-envelope subsequences and the
@@ -463,31 +446,31 @@ Items 1--3 are \Cref{thm:correct-lil,thm:Lq-spectrum,thm:uniform-envelope}; item
 
 The compact convergence of \eqref{eq:Phi-definition} follows from
 \[
- \sinc w=1-\frac{w^2}{6}+\bigO(w^4),
+ \SincRad w=1-\frac{w^2}{6}+\BigO(w^4),
  \qquad
- \sum_{h\ge0}\frac{\abs z^2}{4^h}<\infty
+ \sum_{h\ge0}\frac{\AbsoluteValue z^2}{4^h}<\infty
 \]
-uniformly for $z$ in a compact set.  Hence $\Phiup$ is even, real on $\R$, entire, and
-$\Phiup(0)=1$.
+uniformly for $z$ in a compact set.  Hence $\FourierTwoPi{\RvachevUp}$ is even, real on $\RealNumbers$, entire, and
+$\FourierTwoPi{\RvachevUp}(0)=1$.
 
-Vieta's product $\sinc t=\prod_{j\ge1}\cos(t/2^j)$ and Euler's sine product give two other
+Vieta's product $\SincRad t=\prod_{j\ge1}\cos(t/2^j)$ and Euler's sine product give two other
 useful forms:
 \begin{equation}
- \Phiup(z)
+ \FourierTwoPi{\RvachevUp}(z)
  =\prod_{j=1}^{\infty}\cos^j\!\left(\frac{\pi z}{2^j}\right)
  =\prod_{m=1}^{\infty}
-   \left(1-\frac{z^2}{m^2}\right)^{1+\vtwo(m)}.
+   \left(1-\frac{z^2}{m^2}\right)^{1+\TwoAdicValuation(m)}.
  \label{eq:three-products}
 \end{equation}
 Indeed, in the cosine product the factor with denominator $2^j$ occurs for exactly $j$
 pairs of indices.  In the Weierstrass product, the integer $m$ is a zero of the sinc factor
-at level $h$ precisely when $2^h\mid m$, so its total multiplicity is $1+\vtwo(m)$.
+at level $h$ precisely when $2^h\mid m$, so its total multiplicity is $1+\TwoAdicValuation(m)$.
 
 The elementary one-step scaling law is
 \begin{equation}
- \Phiup(2x)=\sinc(2\pi x)\Phiup(x),
+ \FourierTwoPi{\RvachevUp}(2x)=\SincRad(2\pi x)\FourierTwoPi{\RvachevUp}(x),
  \qquad
- \Phiup(x)=\sinc(\pi x)\Phiup(x/2).
+ \FourierTwoPi{\RvachevUp}(x)=\SincRad(\pi x)\FourierTwoPi{\RvachevUp}(x/2).
  \label{eq:one-step-scaling}
 \end{equation}
 
@@ -501,31 +484,32 @@ separates local analytic information from the large-$x$ decay problem.
 
 For $|q|<1$, write
 \[
- (u;q)_\infty:=\prod_{j=0}^{\infty}(1-uq^j),
+ \QPochhammer{u}{q}{\infty}\DefinitionEquals
+ \prod_{j=0}^{\infty}(1-uq^j),
 \]
 and put
 \begin{equation}
- c_k:=\frac{\zeta(2k)-1}{k}
+ c_k\DefinitionEquals\frac{\zeta(2k)-1}{k}
  =\frac{(2\pi)^{2k}|B_{2k}|/(2k)!-2}{2k}>0.
  \label{eq:ck}
 \end{equation}
 
 \begin{theorem}[Corrected Gamma--Pochhammer factorization]
 \label{thm:pochhammer-tail}
-For every $z\in\C$,
+For every $z\in\ComplexNumbers$,
 \begin{equation}
- \Phiup(z)=\prod_{n=0}^{\infty}
+ \FourierTwoPi{\RvachevUp}(z)=\prod_{n=0}^{\infty}
  \frac{1}{\Gamma(1+z/2^n)\Gamma(1-z/2^n)}.
  \label{eq:reciprocal-gamma-product}
 \end{equation}
 For an integer $m\ge0$, define the tail
 \[
- R_m(z):=\prod_{n=m}^{\infty}\sinc\!\left(\frac{\pi z}{2^n}\right).
+ R_m(z)\DefinitionEquals\prod_{n=m}^{\infty}\SincRad\!\left(\frac{\pi z}{2^n}\right).
 \]
 If $|z|<2^{m+1}$, then
 \begin{equation}
  R_m(z)
- =\left(\frac{z^2}{4^m};\frac14\right)_\infty
+ =\QPochhammer{z^2/4^m}{1/4}{\infty}
  \exp\!\left(
    -\sum_{k=1}^{\infty}
     \frac{c_k}{1-4^{-k}}\left(\frac{z}{2^m}\right)^{2k}
@@ -534,8 +518,8 @@ If $|z|<2^{m+1}$, then
 \end{equation}
 and therefore
 \begin{equation}
- \Phiup(z)=
- \left(\prod_{n=0}^{m-1}\sinc\!\left(\frac{\pi z}{2^n}\right)\right)
+ \FourierTwoPi{\RvachevUp}(z)=
+ \left(\prod_{n=0}^{m-1}\SincRad\!\left(\frac{\pi z}{2^n}\right)\right)
  R_m(z).
  \label{eq:finite-prefix-tail}
 \end{equation}
@@ -545,17 +529,17 @@ The empty prefix for $m=0$ is $1$.
 \begin{proof}
 Euler's reflection formula and $\Gamma(1+w)=w\Gamma(w)$ give
 \[
- \sinc(\pi w)=\frac{1}{\Gamma(1+w)\Gamma(1-w)},
+ \SincRad(\pi w)=\frac{1}{\Gamma(1+w)\Gamma(1-w)},
 \]
 so multiplication over $w=z/2^n$ proves
 \eqref{eq:reciprocal-gamma-product}; local uniform convergence follows from the same
-$1+\bigO(4^{-n})$ estimate used for the sinc product.
+$1+\BigO(4^{-n})$ estimate used for the sinc product.
 
 To prove the tail formula, isolate the nearest zeros at $w=\pm1$.  The function
-$\sinc(\pi w)/(1-w^2)$ is holomorphic and zero-free in $|w|<2$, equals $1$ at $0$, and its
+$\SincRad(\pi w)/(1-w^2)$ is holomorphic and zero-free in $|w|<2$, equals $1$ at $0$, and its
 analytic logarithm has the absolutely convergent expansion
 \begin{equation}
- \sinc(\pi w)
+ \SincRad(\pi w)
  =(1-w^2)\exp\!\left(-\sum_{k=1}^{\infty}c_kw^{2k}\right),
  \qquad |w|<2.
  \label{eq:local-sinc-tail}
@@ -569,7 +553,7 @@ locally uniform convergence in $|z|<2^{m+1}$ permits interchange of the two sums
 algebraic factors give
 \[
  \prod_{n=m}^{\infty}\left(1-\frac{z^2}{4^n}\right)
- =\left(\frac{z^2}{4^m};\frac14\right)_\infty,
+ =\QPochhammer{z^2/4^m}{1/4}{\infty},
 \]
 while the analytic correction is
 \[
@@ -583,7 +567,7 @@ This is \eqref{eq:corrected-pochhammer-tail}; splitting the original product at 
 
 \begin{remark}[What the convergence disk does and does not say]
 The condition $|z|<2^{m+1}$ is the convergence disk of the chosen logarithmic expansion,
-not a support statement for $\Phiup$.  Outside it, formula
+not a support statement for $\FourierTwoPi{\RvachevUp}$.  Outside it, formula
 \eqref{eq:corrected-pochhammer-tail} must be analytically continued or recomputed with a
 larger $m$; it emphatically does not say that the entire function vanishes there.  Thus the
 free index $m$ is a legitimate numerical truncation parameter.  This factorization answers
@@ -603,15 +587,15 @@ formalization target.
 
 \begin{proposition}[Integer zero divisor]
 \label{prop:zero-divisor}
-The nonzero zeros of $\Phiup$ are exactly the nonzero integers.  The zero at
-$m\in\Z\setminus\{0\}$ has multiplicity
+The nonzero zeros of $\FourierTwoPi{\RvachevUp}$ are exactly the nonzero integers.  The zero at
+$m\in\IntegerNumbers\setminus\{0\}$ has multiplicity
 \[
- d(m)=1+\vtwo(\abs m).
+ d(m)=1+\TwoAdicValuation(\AbsoluteValue m).
 \]
-Moreover, if $b\ge1$ is an integer, $d=1+\vtwo(b)$, and $z\uparrow b$, then
+Moreover, if $b\ge1$ is an integer, $d=1+\TwoAdicValuation(b)$, and $z\uparrow b$, then
 \begin{equation}
- \abs{\Phiup(z)}
- =b^{-d}\abs{\Phiup(b/2^d)}(b-z)^d\bigl(1+\bigO(b-z)\bigr).
+ \AbsoluteValue{\FourierTwoPi{\RvachevUp}(z)}
+ =b^{-d}\AbsoluteValue{\FourierTwoPi{\RvachevUp}(b/2^d)}(b-z)^d\bigl(1+\BigO(b-z)\bigr).
  \label{eq:zero-local-coefficient}
 \end{equation}
 \end{proposition}
@@ -619,16 +603,16 @@ Moreover, if $b\ge1$ is an integer, $d=1+\vtwo(b)$, and $z\uparrow b$, then
 \begin{proof}
 The divisor statement follows immediately from the last product in
 \eqref{eq:three-products}.  For the local coefficient, the vanishing factors are those with
-$0\le h\le\vtwo(b)$.  At $z=b$ each has a simple zero and
+$0\le h\le\TwoAdicValuation(b)$.  At $z=b$ each has a simple zero and
 \[
- \abs{\frac{\dd}{\dd z}\sinc\!\left(\frac{\pi z}{2^h}\right)\Big|_{z=b}}
+ \AbsoluteValue{\frac{\Differential}{\Differential z}\SincRad\!\left(\frac{\pi z}{2^h}\right)\Big|_{z=b}}
  =\frac1b.
 \]
 The product of the remaining factors is
 \[
  \prod_{h=d}^{\infty}
- \abs{\sinc\!\left(\frac{\pi b}{2^h}\right)}
- =\abs{\Phiup(b/2^d)}.
+ \AbsoluteValue{\SincRad\!\left(\frac{\pi b}{2^h}\right)}
+ =\AbsoluteValue{\FourierTwoPi{\RvachevUp}(b/2^d)}.
 \]
 Multiplication gives \eqref{eq:zero-local-coefficient}.
 \end{proof}
@@ -640,13 +624,13 @@ Let
 \[
  T(x)=2x\pmod1,
  \qquad
- s(x)=\abs{\sin(\pi x)},
+ s(x)=\AbsoluteValue{\sin(\pi x)},
  \qquad x\in[0,1],
 \]
 and define the lacunary product
 \begin{equation}
- B_n(y):=\prod_{j=1}^{n}s(T^j y)
- =\prod_{j=1}^{n}\abs{\sin(\pi2^j y)}.
+ B_n(y)\DefinitionEquals\prod_{j=1}^{n}s(T^j y)
+ =\prod_{j=1}^{n}\AbsoluteValue{\sin(\pi2^j y)}.
  \label{eq:Bny}
 \end{equation}
 
@@ -654,20 +638,20 @@ and define the lacunary product
 \label{thm:exact-dyadic-factorization}
 For every $n\ge1$ and $y\in[1/2,1]$,
 \begin{equation}
- \abs{\Phiup(2^n y)}
- =\abs{\Phiup(y)}\,\pi^{-n}y^{-n}2^{-n(n+1)/2}B_n(y).
+ \AbsoluteValue{\FourierTwoPi{\RvachevUp}(2^n y)}
+ =\AbsoluteValue{\FourierTwoPi{\RvachevUp}(y)}\,\pi^{-n}y^{-n}2^{-n(n+1)/2}B_n(y).
  \label{eq:exact-factorization}
 \end{equation}
 For any real $\kappa$, set
 \begin{equation}
  W_\kappa(y)
- :=\abs{\Phiup(y)}y^\kappa
+ \DefinitionEquals\AbsoluteValue{\FourierTwoPi{\RvachevUp}(y)}y^\kappa
    \exp\!\left(\frac{(\log y)^2}{2a}\right).
  \label{eq:W-kappa}
 \end{equation}
 Then the following normalized identity is exact:
 \begin{equation}
- \frac{\abs{\Phiup(2^n y)}}{E_\kappa(2^n y)}
+ \frac{\AbsoluteValue{\FourierTwoPi{\RvachevUp}(2^n y)}}{E_\kappa(2^n y)}
  =W_\kappa(y)
   \exp\!\left(n(\kappa a-\log\pi-a/2)\right)B_n(y).
  \label{eq:master-normalization}
@@ -677,7 +661,7 @@ Then the following normalized identity is exact:
 \begin{proof}
 Iterating \eqref{eq:one-step-scaling} gives
 \[
- \Phiup(2^n y)=\Phiup(y)\prod_{j=1}^{n}\sinc(\pi2^j y).
+ \FourierTwoPi{\RvachevUp}(2^n y)=\FourierTwoPi{\RvachevUp}(y)\prod_{j=1}^{n}\SincRad(\pi2^j y).
 \]
 The product of the denominators is
 $\pi^ny^n2^{1+\cdots+n}=\pi^ny^n2^{n(n+1)/2}$, proving
@@ -693,19 +677,20 @@ $W_\kappa$ and the dynamical product $B_n$ contain all remaining information.
 
 \subsection{The Thue--Morse polynomial}
 
-Let $\tau_k=(-1)^{s_2(k)}$, where $s_2(k)$ is the number of ones in the binary expansion of
+Let $\ThueMorseSign{k}\DefinitionEquals(-1)^{\BinaryDigitSum(k)}$, where
+$\BinaryDigitSum(k)$ is the number of ones in the binary expansion of
 $k$.  The finite product identity
 \begin{equation}
- P_n(x):=\prod_{j=0}^{n-1}(1-\e^{2\pi\ii2^jx})
- =\sum_{k=0}^{2^n-1}\tau_k\e^{2\pi\ii kx}
+ P_n(x)\DefinitionEquals\prod_{j=0}^{n-1}(1-\EulerE^{2\pi\ImaginaryUnit2^jx})
+ =\sum_{k=0}^{2^n-1}\ThueMorseSign{k}\EulerE^{2\pi\ImaginaryUnit kx}
  \label{eq:TM-polynomial}
 \end{equation}
 follows by induction.  Taking moduli yields
 \begin{equation}
- \abs{P_n(x)}=2^n\prod_{j=0}^{n-1}s(T^jx).
+ \AbsoluteValue{P_n(x)}=2^n\prod_{j=0}^{n-1}s(T^jx).
  \label{eq:TM-modulus}
 \end{equation}
-Thus the same products governing the decay of $\widehat{\Up}$ are the normalized moduli of
+Thus the same products governing the decay of $\FourierTwoPi{\RvachevUp}$ are the normalized moduli of
 classical Thue--Morse trigonometric polynomials.  This is the bridge to Gelfond exponents,
 Riesz products, and thermodynamic formalism; see \cite{gelfond,queffelec,fan-schmeling-shen}.
 
@@ -713,9 +698,9 @@ Riesz products, and thermodynamic formalism; see \cite{gelfond,queffelec,fan-sch
 \label{cor:finite-TM-sinc-expansion}
 For every integer $m\ge0$ and every real $x\ne0$,
 \begin{align}
- \prod_{h=0}^{m}\sinc\!\left(\frac{\pi x}{2^h}\right)
+ \prod_{h=0}^{m}\SincRad\!\left(\frac{\pi x}{2^h}\right)
  =\frac{2^{m(m-1)/2}}{(\pi x)^{m+1}}
- \sum_{r=0}^{2^m-1}\tau_r
+ \sum_{r=0}^{2^m-1}\ThueMorseSign{r}
  \sin\!\left(\frac{\pi m}{2}+\frac{(2r+1)\pi x}{2^m}\right).
  \label{eq:finite-TM-sinc-expansion}
 \end{align}
@@ -729,12 +714,12 @@ Put $\theta=\pi x/2^m$.  Reversing the factors gives
  =\prod_{j=0}^{m}\sin(2^j\theta).
 \]
 Apply \eqref{eq:TM-polynomial} with $m+1$ factors, multiply by the phase that converts
-$1-\e^{2\ii u}$ to $-2\ii\e^{\ii u}\sin u$, and pair the terms indexed by
+$1-\EulerE^{2\ImaginaryUnit u}$ to $-2\ImaginaryUnit\EulerE^{\ImaginaryUnit u}\sin u$, and pair the terms indexed by
 $r$ and $2^{m+1}-1-r$.  Binary complementation gives
-$\tau_{2^{m+1}-1-r}=(-1)^{m+1}\tau_r$; taking the appropriate real or imaginary part yields
+$\ThueMorseSign{2^{m+1}-1-r}=(-1)^{m+1}\ThueMorseSign{r}$; taking the appropriate real or imaginary part yields
 \[
  \prod_{j=0}^{m}\sin(2^j\theta)
- =2^{-m}\sum_{r=0}^{2^m-1}\tau_r
+ =2^{-m}\sum_{r=0}^{2^m-1}\ThueMorseSign{r}
    \sin\!\left(\frac{\pi m}{2}+(2r+1)\theta\right).
 \]
 Finally,
@@ -752,12 +737,12 @@ represented in Lean by \lean{LacunaryProductToSum}.
 The Thue--Morse identity and the finite $q$-binomial theorem
 \[
  \prod_{j=0}^{n-1}(1+zq^j)
- =\sum_{r=0}^{n}q^{r(r-1)/2}\qbinom{n}{r}{q}z^r
+ =\sum_{r=0}^{n}q^{r(r-1)/2}\GaussianBinomial{n}{r}{q}z^r
 \]
 are two versions of the same subset-expansion principle.  The Gaussian identity groups
 subsets by cardinality; the binary product
 $\prod_{j<n}(1-z^{2^j})$ instead assigns every subset its unique binary weight, leaving the
-coefficient $(-1)^{s_2(k)}$.  This is why Gaussian-binomial arithmetic and Thue--Morse
+coefficient $(-1)^{\BinaryDigitSum(k)}$.  This is why Gaussian-binomial arithmetic and Thue--Morse
 Fourier products meet elsewhere in the Fabius development even though the decay cocycle is
 most naturally written in binary-dynamical language.
 \end{remark}
@@ -772,10 +757,10 @@ identity.
 \label{lem:dyadic-boundary}
 Let $N=2^{n-1}$ and $0<z<N$.  Then
 \begin{equation}
- \abs{\Phiup(N+z)}
- =\frac{\abs{\Phiup(\tfrac12+z/(2N))}}
-        {\abs{\Phiup(z/(2N))}}
-  \left(\frac{z}{N+z}\right)^n\abs{\Phiup(z)}.
+ \AbsoluteValue{\FourierTwoPi{\RvachevUp}(N+z)}
+ =\frac{\AbsoluteValue{\FourierTwoPi{\RvachevUp}(\tfrac12+z/(2N))}}
+        {\AbsoluteValue{\FourierTwoPi{\RvachevUp}(z/(2N))}}
+  \left(\frac{z}{N+z}\right)^n\AbsoluteValue{\FourierTwoPi{\RvachevUp}(z)}.
  \label{eq:dyadic-boundary}
 \end{equation}
 \end{lemma}
@@ -783,16 +768,16 @@ Let $N=2^{n-1}$ and $0<z<N$.  Then
 \begin{proof}
 For $0\le h<n$, the number $N/2^h$ is an integer, so
 \[
- \abs{\sin(\pi(N+z)/2^h)}=\abs{\sin(\pi z/2^h)}.
+ \AbsoluteValue{\sin(\pi(N+z)/2^h)}=\AbsoluteValue{\sin(\pi z/2^h)}.
 \]
 The quotient of the first $n$ sinc factors is therefore $(z/(N+z))^n$ in absolute value.
 Reindexing the remaining tails gives
 \[
- \prod_{h=n}^{\infty}\sinc\!\left(\frac{\pi(N+z)}{2^h}\right)
- =\Phiup\!\left(\frac12+\frac{z}{2N}\right),
+ \prod_{h=n}^{\infty}\SincRad\!\left(\frac{\pi(N+z)}{2^h}\right)
+ =\FourierTwoPi{\RvachevUp}\!\left(\frac12+\frac{z}{2N}\right),
  \quad
- \prod_{h=n}^{\infty}\sinc\!\left(\frac{\pi z}{2^h}\right)
- =\Phiup\!\left(\frac{z}{2N}\right).
+ \prod_{h=n}^{\infty}\SincRad\!\left(\frac{\pi z}{2^h}\right)
+ =\FourierTwoPi{\RvachevUp}\!\left(\frac{z}{2N}\right).
 \]
 Combining the finite and infinite parts proves the identity.
 \end{proof}
@@ -804,18 +789,18 @@ The Weierstrass product gives a short complete proof of the observed one-extremu
 
 \begin{theorem}[Strict logarithmic concavity between zeros]
 \label{thm:unique-extremum}
-The function $\Phiup$ is positive and strictly decreasing on $(0,1)$.  For every integer
-$m\ge1$, $\abs{\Phiup}$ has exactly one critical point
-$\xi_m\in(m,m+1)$.  It is the strict maximum of $\abs{\Phiup}$ on that interval.  Moreover,
+The function $\FourierTwoPi{\RvachevUp}$ is positive and strictly decreasing on $(0,1)$.  For every integer
+$m\ge1$, $\AbsoluteValue{\FourierTwoPi{\RvachevUp}}$ has exactly one critical point
+$\xi_m\in(m,m+1)$.  It is the strict maximum of $\AbsoluteValue{\FourierTwoPi{\RvachevUp}}$ on that interval.  Moreover,
 for every integer $m\ge0$,
 \begin{equation}
- \sgn\Phiup(x)=(-1)^{s_2(m)},\qquad m<x<m+1.
+ \Sign\FourierTwoPi{\RvachevUp}(x)=(-1)^{\BinaryDigitSum(m)},\qquad m<x<m+1.
  \label{eq:TM-sign}
 \end{equation}
 For $m\ge1$ the signed extremum is therefore
-$\Phiup(\xi_m)=(-1)^{s_2(m)}M_m$, where
+$\FourierTwoPi{\RvachevUp}(\xi_m)=(-1)^{\BinaryDigitSum(m)}M_m$, where
 \[
- M_m:=\max_{m\le x\le m+1}\abs{\Phiup(x)}.
+ M_m\DefinitionEquals\max_{m\le x\le m+1}\AbsoluteValue{\FourierTwoPi{\RvachevUp}(x)}.
 \]
 \end{theorem}
 
@@ -823,32 +808,32 @@ $\Phiup(\xi_m)=(-1)^{s_2(m)}M_m$, where
 Away from the integer zeros, termwise logarithmic differentiation of
 \eqref{eq:three-products} is locally uniform and gives
 \begin{align}
- \frac{\dd}{\dd x}\log\abs{\Phiup(x)}
- &=-2x\sum_{k=1}^{\infty}\frac{1+\vtwo(k)}{k^2-x^2},
+ \frac{\Differential}{\Differential x}\log\AbsoluteValue{\FourierTwoPi{\RvachevUp}(x)}
+ &=-2x\sum_{k=1}^{\infty}\frac{1+\TwoAdicValuation(k)}{k^2-x^2},
  \label{eq:log-derivative}\\
- \frac{\dd^2}{\dd x^2}\log\abs{\Phiup(x)}
- &=-2\sum_{k=1}^{\infty}(1+\vtwo(k))
+ \frac{\Differential^2}{\Differential x^2}\log\AbsoluteValue{\FourierTwoPi{\RvachevUp}(x)}
+ &=-2\sum_{k=1}^{\infty}(1+\TwoAdicValuation(k))
    \frac{k^2+x^2}{(k^2-x^2)^2}<0.
  \label{eq:strict-log-concavity}
 \end{align}
 For $0<x<1$, every denominator in \eqref{eq:log-derivative} is positive, so
-$(\log\Phiup)'(x)<0$.  This proves strict decrease on the first interval.
+$(\log\FourierTwoPi{\RvachevUp})'(x)<0$.  This proves strict decrease on the first interval.
 
 Now let $m\ge1$.  The logarithmic derivative is strictly decreasing on $(m,m+1)$.
 The pole contributed by $k=m$ forces it to $+\infty$ at the left endpoint, while the pole
 contributed by $k=m+1$ forces it to $-\infty$ at the right endpoint.  It therefore has
 exactly one zero, and strict log-concavity makes that point the unique maximum of the modulus.
 
-Starting from $\Phiup(0)=1$, crossing the zero at $k$ changes the sign
-$1+\vtwo(k)$ times.  Therefore the sign on $(m,m+1)$ is
+Starting from $\FourierTwoPi{\RvachevUp}(0)=1$, crossing the zero at $k$ changes the sign
+$1+\TwoAdicValuation(k)$ times.  Therefore the sign on $(m,m+1)$ is
 \[
- (-1)^{\sum_{k=1}^{m}(1+\vtwo(k))}.
+ (-1)^{\sum_{k=1}^{m}(1+\TwoAdicValuation(k))}.
 \]
-Legendre's identity $\vtwo(m!)=m-s_2(m)$ gives
+Legendre's identity $\TwoAdicValuation(m!)=m-\BinaryDigitSum(m)$ gives
 \[
- \sum_{k=1}^{m}(1+\vtwo(k))=m+\vtwo(m!)=2m-s_2(m),
+ \sum_{k=1}^{m}(1+\TwoAdicValuation(k))=m+\TwoAdicValuation(m!)=2m-\BinaryDigitSum(m),
 \]
-whose parity is $s_2(m)$.  This proves \eqref{eq:TM-sign}.
+whose parity is $\BinaryDigitSum(m)$.  This proves \eqref{eq:TM-sign}.
 \end{proof}
 
 \begin{remark}
@@ -868,10 +853,10 @@ estimate.
 \label{lem:peak-integral}
 There is an absolute constant $C$ such that, for every integer $n\ge2$,
 \begin{equation}
- \int_n^{n+1}\abs{\Phiup(x)}\dd x
+ \int_n^{n+1}\AbsoluteValue{\FourierTwoPi{\RvachevUp}(x)}\Differential x
  \le M_n
  \le C(1+\log n)^{5/2}
-       \int_n^{n+1}\abs{\Phiup(x)}\dd x.
+       \int_n^{n+1}\AbsoluteValue{\FourierTwoPi{\RvachevUp}(x)}\Differential x.
  \label{eq:peak-integral-comparison}
 \end{equation}
 In particular, the weaker exponent $3$ stated in the comparative audit also holds.
@@ -879,12 +864,13 @@ In particular, the weaker exponent $3$ stated in the comparative audit also hold
 
 \begin{proof}
 The first inequality is immediate because the interval has length one.  Put
-$F(x)=\log\abs{\Phiup(x)}$ on $(n,n+1)$,
-$d_0=1+\vtwo(n)$, $d_1=1+\vtwo(n+1)$, and write
+$\LobeLogAmplitude(x)\DefinitionEquals
+\log\AbsoluteValue{\FourierTwoPi{\RvachevUp}(x)}$ on $(n,n+1)$,
+$d_0=1+\TwoAdicValuation(n)$, $d_1=1+\TwoAdicValuation(n+1)$, and write
 $\delta_0=\xi_n-n$, $\delta_1=n+1-\xi_n$.  Isolating the two adjacent poles in
 \eqref{eq:log-derivative} gives
 \begin{equation}
- F'(x)=\frac{d_0\theta_0(x)}{x-n}
+ \LobeLogAmplitude'(x)=\frac{d_0\theta_0(x)}{x-n}
        -\frac{d_1\theta_1(x)}{n+1-x}+R_n(x),
  \qquad \frac45\le\theta_i(x)\le\frac65,
  \label{eq:peak-derivative-split}
@@ -896,8 +882,8 @@ for $n<x<n+1$.  The remaining terms satisfy
 \end{equation}
 Indeed, for $k< n$ or $n+1<k\le2n$ the $k$th summand is at most a constant times
 $(1+\log n)/|k-x|$; summing the harmonic series gives
-$\bigO((1+\log n)^2)$.  For $k>2n$, it is at most
-$C n(1+\log k)/k^2$, whose tail is $\bigO(1+\log n)$.  This proves
+$\BigO((1+\log n)^2)$.  For $k>2n$, it is at most
+$C n(1+\log k)/k^2$, whose tail is $\BigO(1+\log n)$.  This proves
 \eqref{eq:peak-remainder-bound}.
 
 At $x=\xi_n$ the derivative vanishes.  If $\delta_0\le1/2$, then
@@ -906,7 +892,7 @@ $d_0/\delta_0\le C(1+\log n)^2$; since $d_0\ge1$,
 $\delta_0\ge c(1+\log n)^{-2}$.  Interchanging the endpoints handles
 $\delta_1\le1/2$.  Hence
 \begin{equation}
- \delta_*:=\min(\delta_0,\delta_1)
+ \delta_*\DefinitionEquals\min(\delta_0,\delta_1)
  \ge c(1+\log n)^{-2}.
  \label{eq:peak-endpoint-distance}
 \end{equation}
@@ -914,18 +900,20 @@ $\delta_1\le1/2$.  Hence
 For $|x-\xi_n|\le\delta_*/2$, isolate the same two terms in
 \eqref{eq:strict-log-concavity}.  They contribute at most
 $C(1+\log n)\delta_*^{-2}$; the remaining inverse-square series is
-$\bigO(1+\log n)$.  Thus
+$\BigO(1+\log n)$.  Thus
 \begin{equation}
- |F''(x)|\le\Lambda_n:=C_1(1+\log n)^5.
+ \AbsoluteValue{\LobeLogAmplitude''(x)}
+ \le\Lambda_n\DefinitionEquals{}C_1(1+\log n)^5.
  \label{eq:peak-curvature-bound}
 \end{equation}
 Taylor's formula at the critical point gives
-$F(\xi_n+s)\ge F(\xi_n)-\Lambda_ns^2/2$.  On the interval
+$\LobeLogAmplitude(\xi_n+s)\ge
+\LobeLogAmplitude(\xi_n)-\Lambda_ns^2/2$.  On the interval
 \[
- |s|\le w_n:=\min\{\delta_*/2,\Lambda_n^{-1/2}\}
+ |s|\le w_n\DefinitionEquals\min\{\delta_*/2,\Lambda_n^{-1/2}\}
  \ge c_1(1+\log n)^{-5/2},
 \]
-we therefore have $|\Phiup(\xi_n+s)|\ge\e^{-1/2}M_n$.  Integration over
+we therefore have $|\FourierTwoPi{\RvachevUp}(\xi_n+s)|\ge\EulerE^{-1/2}M_n$.  Integration over
 this interval proves the second inequality in
 \eqref{eq:peak-integral-comparison}.
 \end{proof}
@@ -933,7 +921,7 @@ this interval proves the second inequality in
 The exact log-concavity and one-peak inputs are represented by exact declarations in the current Lean source; the explicit uniform bounds
 \eqref{eq:peak-remainder-bound}--\eqref{eq:peak-curvature-bound} remain a useful Lean target.
 Computations in the audits suggest that the actual ratio
-$M_n/\int_n^{n+1}|\Phiup|$ is far smaller than this worst-case bound and that its shell
+$M_n/\int_n^{n+1}|\FourierTwoPi{\RvachevUp}|$ is far smaller than this worst-case bound and that its shell
 aggregate may approach $1.92372\ldots$.  No certified limiting constant is presently
 claimed.  Likewise, a Gaussian limit for the distribution of the lobe heights is supported
 by the continuous martingale CLT and a regular-cell argument, but the required uniform
@@ -949,18 +937,18 @@ For $q\in(0,\infty)$ and a measurable $H$ on the shell
 $D_n=[2^{n-1},2^n]$, define
 \begin{equation}
  \mathcal M_{q,n}(H)
- :=\left(\frac1{2^{n-1}}\int_{2^{n-1}}^{2^n}\abs{H(x)}^q\dd x\right)^{1/q}
- =\left(2\int_{1/2}^{1}\abs{H(2^ny)}^q\dd y\right)^{1/q}.
+ \DefinitionEquals\left(\frac1{2^{n-1}}\int_{2^{n-1}}^{2^n}\AbsoluteValue{H(x)}^q\Differential x\right)^{1/q}
+ =\left(2\int_{1/2}^{1}\AbsoluteValue{H(2^ny)}^q\Differential y\right)^{1/q}.
  \label{eq:shell-Lq}
 \end{equation}
 The endpoint conventions are
 \begin{align}
  \mathcal M_{0,n}(H)
- &:=\exp\!\left(\frac1{2^{n-1}}
-       \int_{2^{n-1}}^{2^n}\log\abs{H(x)}\dd x\right),
+ &\DefinitionEquals\exp\!\left(\frac1{2^{n-1}}
+       \int_{2^{n-1}}^{2^n}\log\AbsoluteValue{H(x)}\Differential x\right),
  \label{eq:shell-L0}\\
  \mathcal M_{\infty,n}(H)
- &:=\sup_{2^{n-1}\le x\le2^n}\abs{H(x)}.
+ &\DefinitionEquals\sup_{2^{n-1}\le x\le2^n}\AbsoluteValue{H(x)}.
  \label{eq:shell-Linf}
 \end{align}
 The logarithm in \eqref{eq:shell-L0} is locally integrable despite the finitely many zeros.
@@ -978,7 +966,7 @@ This product is generated by an explicit Perron--Frobenius operator.
 For $q>0$, define
 \begin{equation}
  (\mathcal L_q f)(x)
- :=\frac12\left[
+ \DefinitionEquals\frac12\left[
    \sin^q\!\left(\frac{\pi x}{2}\right)f(x/2)
   +\cos^q\!\left(\frac{\pi x}{2}\right)f((x+1)/2)
  \right].
@@ -987,8 +975,8 @@ For $q>0$, define
 The factor $1/2$ makes this the Lebesgue Perron operator with weight $s^q$.
 For every integrable $f$,
 \begin{equation}
- \int_0^1 f(x)\prod_{j=0}^{n-1}s(T^jx)^q\dd x
- =\int_0^1(\mathcal L_q^n f)(x)\dd x.
+ \int_0^1 f(x)\prod_{j=0}^{n-1}s(T^jx)^q\Differential x
+ =\int_0^1(\mathcal L_q^n f)(x)\Differential x.
  \label{eq:transfer-duality}
 \end{equation}
 
@@ -1015,15 +1003,16 @@ $\|f\|_\infty+[f]_\alpha$, there is a spectral gap: there are
 $C_{q,\alpha}<\infty$ and $0<\vartheta_{q,\alpha}<1$ such that, for every
 $f\in C^\alpha[0,1]$ and $n\ge0$,
 \begin{equation}
- \norm{\rho_q^{-n}\mathcal L_q^nf-\nu_q(f)h_q}_{C^\alpha}
- \le C_{q,\alpha}\vartheta_{q,\alpha}^n\norm f_{C^\alpha}.
+ \Norm{\rho_q^{-n}\mathcal L_q^nf-\nu_q(f)h_q}_{C^\alpha}
+ \le C_{q,\alpha}\vartheta_{q,\alpha}^n\Norm f_{C^\alpha}.
  \label{eq:RPF-convergence}
 \end{equation}
 \end{proposition}
 
 \begin{proof}[Classical analytic input and proof architecture]
 Write the two inverse branches of doubling as
-$\tau_0(x)=x/2$ and $\tau_1(x)=(x+1)/2$, and their weights as
+$\DoublingInverseBranch{0}(x)=x/2$ and
+$\DoublingInverseBranch{1}(x)=(x+1)/2$, and their weights as
 $w_0(x)=\tfrac12\sin^q(\pi x/2)$ and
 $w_1(x)=\tfrac12\cos^q(\pi x/2)$.  For
 $0<\alpha\le\min(1,q)$ the weights belong to $C^\alpha$, while both branches contract
@@ -1052,9 +1041,9 @@ is independent of this input.
 
 Set
 \begin{equation}
- \Lambda_q:=\rho_q^{1/q},
+ \Lambda_q\DefinitionEquals\rho_q^{1/q},
  \qquad
- \kappa_q:=\frac{\log\pi+a/2-\log\Lambda_q}{a},
+ \kappa_q\DefinitionEquals\frac{\log\pi+a/2-\log\Lambda_q}{a},
  \qquad q>0.
  \label{eq:kappa-q}
 \end{equation}
@@ -1063,7 +1052,7 @@ Set
 \label{thm:Lq-spectrum}
 For every $q\in(0,\infty)$ there is a constant $A_q\in(0,\infty)$ such that
 \begin{equation}
- \mathcal M_{q,n}\!\left(\frac{\Phiup}{E_{\kappa_q}}\right)
+ \mathcal M_{q,n}\!\left(\frac{\FourierTwoPi{\RvachevUp}}{E_{\kappa_q}}\right)
  \longrightarrow A_q
  \qquad(n\to\infty).
  \label{eq:Lq-limit}
@@ -1071,11 +1060,11 @@ For every $q\in(0,\infty)$ there is a constant $A_q\in(0,\infty)$ such that
 More explicitly, with
 \[
  \widetilde W_{q}(x)
- :=W_{\kappa_q}\!\left(\frac{x+1}{2}\right)^q,
+ \DefinitionEquals{}W_{\kappa_q}\!\left(\frac{x+1}{2}\right)^q,
 \]
 and the normalization in \Cref{prop:RPF},
 \begin{equation}
- A_q^q=\left(\int_0^1h_q(x)\dd x\right)\nu_q(\widetilde W_q).
+ A_q^q=\left(\int_0^1h_q(x)\Differential x\right)\nu_q(\widetilde W_q).
  \label{eq:Aq}
 \end{equation}
 The number $\Lambda_q$ is nondecreasing in $q$, and therefore $\kappa_q$ is nonincreasing.
@@ -1085,16 +1074,16 @@ The number $\Lambda_q$ is nondecreasing in $q$, and therefore $\kappa_q$ is noni
 Raise \eqref{eq:master-normalization} to the $q$th power, use
 \eqref{eq:shell-Lq}, and substitute $x=2y-1$.  This gives
 \begin{align*}
- \mathcal M_{q,n}\!\left(\frac{\Phiup}{E_\kappa}\right)^q
+ \mathcal M_{q,n}\!\left(\frac{\FourierTwoPi{\RvachevUp}}{E_\kappa}\right)^q
  &=\exp\!\left(qn(\kappa a-\log\pi-a/2)\right)\\
  &\quad\times\int_0^1
  W_\kappa\!\left(\frac{x+1}{2}\right)^q
- \prod_{j=0}^{n-1}s(T^jx)^q\dd x.
+ \prod_{j=0}^{n-1}s(T^jx)^q\Differential x.
 \end{align*}
 By \eqref{eq:transfer-duality} and \eqref{eq:RPF-convergence}, the integral equals
 \[
  \rho_q^n\left(\int_0^1h_q\right)
- \nu_q\!\left(W_\kappa((\,\cdot\,+1)/2)^q\right)(1+o(1)).
+ \nu_q\!\left(W_\kappa((\,\cdot\,+1)/2)^q\right)(1+\LittleO(1)).
 \]
 The definition \eqref{eq:kappa-q} is exactly the cancellation condition
 \[
@@ -1112,7 +1101,7 @@ monotonicity of $\kappa_q$.
 \label{rem:no-log-correction}
 For a fixed $q\in(0,\infty)$, replacing $E_{\kappa_q}$ by
 $E_{\kappa_q}(\log x)^p$ multiplies the normalized shell mean by
-$(na)^{-p}(1+o(1))$.  It therefore tends to $0$ when $p>0$ and to $+\infty$ when $p<0$.
+$(na)^{-p}(1+\LittleO(1))$.  It therefore tends to $0$ when $p>0$ and to $+\infty$ when $p<0$.
 At the sharp power, the required logarithmic exponent is $p=0$.
 \end{remark}
 
@@ -1122,7 +1111,7 @@ At the sharp power, the required logarithmic exponent is $p=0$.
 The $q=0$ endpoint is especially simple because Lebesgue measure is invariant under the
 doubling map and
 \begin{equation}
- \int_0^1\log\sin(\pi x)\dd x=-\log2=-a.
+ \int_0^1\log\sin(\pi x)\Differential x=-\log2=-a.
  \label{eq:log-sine-integral}
 \end{equation}
 
@@ -1130,15 +1119,15 @@ doubling map and
 \label{thm:geometric-mean}
 Define
 \begin{equation}
- \kappa_0:=\frac32+\frac{\log\pi}{a}
+ \kappa_0\DefinitionEquals\frac32+\frac{\log\pi}{a}
  =3.1514961294723187980\ldots .
  \label{eq:kappa0}
 \end{equation}
 Then
 \begin{equation}
- \mathcal M_{0,n}\!\left(\frac{\Phiup}{E_{\kappa_0}}\right)
+ \mathcal M_{0,n}\!\left(\frac{\FourierTwoPi{\RvachevUp}}{E_{\kappa_0}}\right)
  =\exp\!\left(\int_0^1
-    \log W_{\kappa_0}\!\left(\frac{x+1}{2}\right)\dd x\right)
+    \log W_{\kappa_0}\!\left(\frac{x+1}{2}\right)\Differential x\right)
  \label{eq:exact-geometric-mean}
 \end{equation}
 for every $n\ge1$.  In particular, the normalized shell geometric mean is not merely
@@ -1161,14 +1150,14 @@ The same exponent governs almost every fixed dyadic phase.
 \label{cor:typical-ray}
 For Lebesgue-a.e. $y\in[1/2,1]$,
 \begin{equation}
- \log\abs{\Phiup(2^ny)}
+ \log\AbsoluteValue{\FourierTwoPi{\RvachevUp}(2^ny)}
  =-\frac{(\log(2^ny))^2}{2a}
-  -\kappa_0\log(2^ny)+o(n).
+  -\kappa_0\log(2^ny)+\LittleO(n).
  \label{eq:typical-ray}
 \end{equation}
 Equivalently,
 \[
- \abs{\Phiup(2^ny)}=E_{\kappa_0}(2^ny)\e^{o(n)}.
+ \AbsoluteValue{\FourierTwoPi{\RvachevUp}(2^ny)}=E_{\kappa_0}(2^ny)\EulerE^{\LittleO(n)}.
 \]
 \end{corollary}
 
@@ -1182,7 +1171,7 @@ for almost every $y$.  Substitute this in \eqref{eq:master-normalization} with
 $\kappa=\kappa_0$.
 \end{proof}
 
-The $o(n)$ in \eqref{eq:typical-ray} is genuinely dynamical; it need not converge to a
+The $\LittleO(n)$ in \eqref{eq:typical-ray} is genuinely dynamical; it need not converge to a
 constant.  Thus even the ``typical'' statement is a logarithmic asymptotic, not a pointwise
 equivalent with one universal prefactor.
 
@@ -1194,21 +1183,21 @@ The almost-everywhere exponent records only the mean of the logarithmic cocycle.
 order is probabilistic, but in this particular problem the variance and the martingale
 structure are completely explicit.  Put
 \begin{equation}
- \psi(t):=\log|2\sin(\pi t)|,
+ \psi(t)\DefinitionEquals\log|2\sin(\pi t)|,
  \qquad
- S_n(t):=\sum_{j=0}^{n-1}\psi(T^jt),
+ S_n(t)\DefinitionEquals\sum_{j=0}^{n-1}\psi(T^jt),
  \qquad Tt=2t\pmod1.
  \label{eq:psi-Sn}
 \end{equation}
 The exact centered logarithm in the alternative shell coordinates $x=2^k(1+t)$ is
 \begin{equation}
- \log|\Phi(x)|
+ \log|\FourierTwoPi{\RvachevUp}(x)|
  =-\frac{(\log x)^2}{2a}-\kappa_0\log x+\Psi(1+t)+S_{k+1}(t),
  \label{eq:centered-log-final}
 \end{equation}
 where the mantissa term is explicitly
 \begin{equation}
- \Psi(y):=\log W_{\kappa_0}(y/2),\qquad 1<y<2.
+ \Psi(y)\DefinitionEquals\log W_{\kappa_0}(y/2),\qquad 1<y<2.
  \label{eq:Psi-mantissa}
 \end{equation}
 It is bounded on every compact subinterval of $(1,2)$.  Thus all metric fluctuations are
@@ -1228,7 +1217,7 @@ contains the whole calculation.
 \label{thm:exact-variance}
 The function $\psi$ has mean zero and, for every $n\ge1$,
 \begin{equation}
- \int_0^1 S_n(t)^2\dd t
+ \int_0^1 S_n(t)^2\Differential t
  =\frac{\pi^2}{4}n-\frac{\pi^2}{3}\bigl(1-2^{-n}\bigr).
  \label{eq:variance-exact}
 \end{equation}
@@ -1241,14 +1230,14 @@ Consequently the asymptotic variance per dyadic level is
 
 \begin{proof}
 The mean is zero by the classical log-sine integral.  Parseval and
-$\int_0^1\cos^2(2\pi mt)\dd t=1/2$ give
+$\int_0^1\cos^2(2\pi mt)\Differential t=1/2$ give
 \[
- C_0:=\int_0^1\psi(t)^2\dd t
+ C_0\DefinitionEquals\int_0^1\psi(t)^2\Differential t
  =\frac12\sum_{m\ge1}\frac1{m^2}=\frac{\pi^2}{12}.
 \]
 For $r\ge1$, orthogonality leaves only frequencies $m=2^r\ell$:
 \[
- C_r:=\int_0^1\psi(t)\psi(T^rt)\dd t
+ C_r\DefinitionEquals\int_0^1\psi(t)\psi(T^rt)\Differential t
  =\frac12\sum_{\ell\ge1}\frac1{2^r\ell}\frac1\ell
  =\frac{\pi^2}{12\,2^r}.
 \]
@@ -1268,7 +1257,7 @@ Let $\mathcal P$ be the unweighted Perron operator of the doubling map,
 \]
 From \eqref{eq:clausen}, $\mathcal P\psi=\psi/2$.  Therefore
 \begin{equation}
- d:=2\psi-\psi\circ T=\log|\tan(\pi t)|,
+ d\DefinitionEquals2\psi-\psi\circ T=\log|\tan(\pi t)|,
  \qquad \mathcal P d=0,
  \label{eq:martingale-difference}
 \end{equation}
@@ -1280,8 +1269,8 @@ and telescoping gives the exact identity
 The sequence $(d\circ T^j)$ is a stationary ergodic reverse martingale-difference sequence
 for the decreasing filtration $(T^{-j}\mathcal B)$.  Moreover
 \begin{equation}
- \int_0^1d(t)^2\dd t
- =\frac2\pi\int_0^{\pi/2}\log^2(\tan u)\dd u
+ \int_0^1d(t)^2\Differential t
+ =\frac2\pi\int_0^{\pi/2}\log^2(\tan u)\Differential u
  =\frac{\pi^2}{4}.
  \label{eq:d-variance}
 \end{equation}
@@ -1308,13 +1297,13 @@ $\pm\pi/\sqrt2$.
 \end{theorem}
 
 \begin{proof}
-The tail estimate $\operatorname{Leb}\{|d|>u\}=O(\e^{-u})$ shows that
+The tail estimate $\LebesgueMeasure\{|d|>u\}=\BigO(\EulerE^{-u})$ shows that
 $d\in L^p(0,1)$ for every finite $p$.  With
-$\mathcal F_j=T^{-j}\mathcal B$, the variables $d\circ T^j$ form a stationary reverse
+$\DyadicSigmaField_j=T^{-j}\mathcal B$, the variables $d\circ T^j$ form a stationary reverse
 martingale-difference sequence.  Moreover,
 \[
  \frac1n\sum_{j=0}^{n-1}
- \mathbb E\!\left[(d\circ T^j)^2\mid\mathcal F_{j+1}\right]
+ \Expectation\!\left[(d\circ T^j)^2\mid\DyadicSigmaField_{j+1}\right]
  =\frac1n\sum_{j=0}^{n-1}(\mathcal P d^2)\circ T^{j+1}
  \longrightarrow\int_0^1d^2
 \]
@@ -1328,20 +1317,20 @@ For the LIL we instead use the direct reverse-martingale strong invariance princ
 Cuny and Merlev\`ede \cite[Cor.~2.5 and Rem.~2.6]{cuny-merlevede2015}.  Its hypotheses are
 exactly that $T$ is measure-preserving and ergodic, $d\in L^2$, and
 $(d\circ T^j)$ is stationary and adapted to the decreasing filtration with
-$\mathbb E[d\circ T^j\mid\mathcal F_{j+1}]=0$.  It supplies, on an extension of the
+$\Expectation[d\circ T^j\mid\DyadicSigmaField_{j+1}]=0$.  It supplies, on an extension of the
 probability space, independent centered Gaussian variables $Z_j$ with
 \[
- \mathbb E Z_j^2=\int_0^1d^2=\frac{\pi^2}{4}
+ \Expectation Z_j^2=\int_0^1d^2=\frac{\pi^2}{4}
 \]
 such that
 \[
  \max_{1\le k\le n}
  \left|\sum_{j=1}^k d\circ T^j-\sum_{j=1}^kZ_j\right|
- =o(\sqrt{n\log\log n})
+ =\LittleO(\sqrt{n\log\log n})
  \qquad\text{almost surely}.
 \]
 The exponential-tail Borel--Cantelli estimate
-$\max_{j\le n}|d\circ T^j|=O(\log n)$ makes the indexing change from
+$\max_{j\le n}|d\circ T^j|=\BigO(\log n)$ makes the indexing change from
 $\sum_{j=1}^k d\circ T^j$ to $\sum_{j=0}^{k-1}d\circ T^j$ negligible uniformly on this
 scale.  The classical Gaussian LIL therefore gives the constants $\pm\pi/2$.  A mere
 time reversal followed by a forward martingale LIL would control negative-time sums;
@@ -1351,12 +1340,12 @@ It remains only to remove
 the two coboundary terms in \eqref{eq:Gordin-exact}.  The positive part of $\psi$ is bounded
 by $\log2$, while near the integers
 \[
- \operatorname{Leb}\{\psi<-u\}=O(\e^{-u}).
+ \LebesgueMeasure\{\psi<-u\}=\BigO(\EulerE^{-u}).
 \]
 Hence
-$\sum_n\operatorname{Leb}\{|\psi\circ T^n|>\varepsilon\sqrt{n\log\log n}\}<\infty$.
-Borel--Cantelli makes the boundary terms $o(\sqrt{n\log\log n})$ almost surely.  Replacing
-the threshold by $\varepsilon\sqrt n$ also makes them $o(\sqrt n)$ in probability, which
+$\sum_n\LebesgueMeasure\{|\psi\circ T^n|>\varepsilon\sqrt{n\log\log n}\}<\infty$.
+Borel--Cantelli makes the boundary terms $\LittleO(\sqrt{n\log\log n})$ almost surely.  Replacing
+the threshold by $\varepsilon\sqrt n$ also makes them $\LittleO(\sqrt n)$ in probability, which
 completes the CLT.
 \end{proof}
 
@@ -1364,13 +1353,13 @@ In terms of the Fourier transform, for a.e. fixed $y=1+t\in(1,2)$ and
 $x_k=2^ky$, \eqref{eq:centered-log-final} and \eqref{eq:LIL-correct} give
 \begin{equation}
  \limsup_{k\to\infty}
- \frac{\log|\Phi(x_k)|+(\log x_k)^2/(2a)+\kappa_0\log x_k-\Psi(y)}
+ \frac{\log|\FourierTwoPi{\RvachevUp}(x_k)|+(\log x_k)^2/(2a)+\kappa_0\log x_k-\Psi(y)}
  {\sqrt{2(k+1)\log\log(k+1)}}=\frac\pi2,
  \label{eq:LIL-Phi}
 \end{equation}
 with the corresponding negative liminf.  The multiplicative fluctuation is therefore
 \[
- \exp\!\left(\pm\left(\frac\pi{\sqrt2}+o(1)\right)
+ \exp\!\left(\pm\left(\frac\pi{\sqrt2}+\LittleO(1)\right)
  \sqrt{\frac{\log x}{\log2}\,\log\log\log x}\right),
 \]
 which is subpolynomial in $x$ but larger than every fixed power of $\log x$.
@@ -1383,7 +1372,7 @@ lower constants as $\pi$ when the denominator is $\sqrt{n\log\log n}$.  That val
 incompatible with the exact variance \eqref{eq:variance-exact}.  On p.~663,
 eq.~(4.5), the paper's variance calculation prints the cosine-series diagonal without the
 factor
-$\int_0^1\cos^2(2\pi mt)\dd t=1/2$, thereby doubling $\sigma^2$ from
+$\int_0^1\cos^2(2\pi mt)\Differential t=1/2$, thereby doubling $\sigma^2$ from
 $\pi^2/4$ to $\pi^2/2$.  Restoring that factor gives
 $\sigma=\pi/2$ and therefore the constant $\sqrt2\sigma=\pi/\sqrt2$ in the
 $\sqrt{n\log\log n}$ normalization.  This correction changes no exponent or qualitative
@@ -1394,9 +1383,9 @@ conclusion in that paper, but it matters for the sharp constant.
 
 For $q=2$, the transfer operator simplifies dramatically:
 \begin{equation}
- \mathcal L_2\mathbf1
+ \mathcal L_2\ConstantOneFunction
  =\frac12\left(\sin^2\frac{\pi x}{2}+\cos^2\frac{\pi x}{2}\right)
- =\frac12\mathbf1.
+ =\frac12\ConstantOneFunction.
  \label{eq:L2-one}
 \end{equation}
 Its operator norm on $C[0,1]$ is at most $1/2$, so
@@ -1409,11 +1398,11 @@ Its operator norm on $C[0,1]$ is at most $1/2$, so
 There is also a completely finite Fourier proof.  Parseval applied to
 \eqref{eq:TM-polynomial} gives
 \[
- \int_0^1\abs{P_n(x)}^2\dd x=2^n,
+ \int_0^1\AbsoluteValue{P_n(x)}^2\Differential x=2^n,
 \]
 while \eqref{eq:TM-modulus} gives
 \begin{equation}
- \int_0^1\prod_{j=0}^{n-1}s(T^jx)^2\dd x=2^{-n}.
+ \int_0^1\prod_{j=0}^{n-1}s(T^jx)^2\Differential x=2^{-n}.
  \label{eq:exact-L2-product}
 \end{equation}
 
@@ -1428,7 +1417,7 @@ The sharp root-mean-square exponent is
 \end{equation}
 There is a constant $A_2\in(0,\infty)$ such that
 \begin{equation}
- \mathcal M_{2,n}\!\left(\frac{\Phiup}{E_{\kappa_2}}\right)
+ \mathcal M_{2,n}\!\left(\frac{\FourierTwoPi{\RvachevUp}}{E_{\kappa_2}}\right)
  \longrightarrow A_2.
  \label{eq:RMS-limit}
 \end{equation}
@@ -1461,7 +1450,7 @@ correction do not follow and are incompatible with the exact shell identity
 
 For clarity in this subsection write
 \[
- S_n(t):=\prod_{j=0}^{n-1}\abs{\sin(\pi2^jt)}.
+ S_n(t)\DefinitionEquals\prod_{j=0}^{n-1}\AbsoluteValue{\sin(\pi2^jt)}.
 \]
 
 \begin{proposition}[Roots of unity and dyadic Parseval]
@@ -1476,19 +1465,19 @@ For every integer $n\ge1$,
 \end{proposition}
 
 \begin{proof}
-Let $N=2^n$ and $\omega=\e^{2\pi\ii/N}$.  Differentiating
+Let $N=2^n$ and $\omega=\EulerE^{2\pi\ImaginaryUnit/N}$.  Differentiating
 $z^N-1=(z-1)\prod_{r=1}^{N-1}(z-\omega^r)$ at $z=1$ gives
 \[
  N=\prod_{r=1}^{N-1}(1-\omega^r).
 \]
-Taking absolute values and using $|1-\e^{2\pi\ii r/N}|=2\sin(\pi r/N)$ proves
+Taking absolute values and using $|1-\EulerE^{2\pi\ImaginaryUnit r/N}|=2\sin(\pi r/N)$ proves
 \eqref{eq:root-unity-product}.
 
 For the second identity, evaluate the Thue--Morse polynomial
 \eqref{eq:TM-polynomial} on the $N$th roots of unity.  Discrete Parseval gives
 \[
- \sum_{m=0}^{N-1}\abs{P_n(m/N)}^2
- =N\sum_{r=0}^{N-1}|\tau_r|^2=N^2.
+ \sum_{m=0}^{N-1}\AbsoluteValue{P_n(m/N)}^2
+ =N\sum_{r=0}^{N-1}\AbsoluteValue{\ThueMorseSign{r}}^2=N^2.
 \]
 Since \eqref{eq:TM-modulus} says $|P_n(t)|=2^nS_n(t)=NS_n(t)$, division by
 $N^2$ yields \eqref{eq:discrete-lacunary-parseval}.
@@ -1505,14 +1494,14 @@ of the numerator are exactly $2^{-n}$ at every level.
 \label{prop:L2-eigen-identities}
 The quadratic transfer operator satisfies
 \begin{align}
- \mathcal L_2\mathbf1&=\tfrac12\mathbf1,
+ \mathcal L_2\ConstantOneFunction&=\tfrac12\ConstantOneFunction,
  \label{eq:L2-const-eigen}\\
  \mathcal L_2[\sin(2\pi x)]&=-\tfrac14\sin(2\pi x),
  \label{eq:L2-sin-eigen}\\
  \mathcal L_2[1+3\cos(2\pi x)]&=-\tfrac14[1+3\cos(2\pi x)].
  \label{eq:L2-cos-eigen}
 \end{align}
-For $e_m(x)=\e^{2\pi\ii mx}$ it also obeys
+For $e_m(x)=\EulerE^{2\pi\ImaginaryUnit mx}$ it also obeys
 \begin{equation}
  \mathcal L_2e_{2m}=\tfrac12e_m.
  \label{eq:L2-mode-halving}
@@ -1525,9 +1514,9 @@ $e_{2m}((x+1)/2)=e_m(x)$; hence \eqref{eq:L2-mode-halving} follows from
 $\sin^2+\cos^2=1$, and $m=0$ gives \eqref{eq:L2-const-eigen}.  For frequency one,
 \[
  \mathcal L_2e_1
- =\tfrac12\e^{\pi\ii x}
+ =\tfrac12\EulerE^{\pi\ImaginaryUnit x}
    \left(\sin^2\frac{\pi x}{2}-\cos^2\frac{\pi x}{2}\right)
- =-\tfrac14(e_1+\mathbf1).
+ =-\tfrac14(e_1+\ConstantOneFunction).
 \]
 The conjugate identity holds for $e_{-1}$.  Taking their imaginary difference gives
 \eqref{eq:L2-sin-eigen}; combining their real sum with
@@ -1546,9 +1535,9 @@ evidence until a certified spectral bound on a specified function space is suppl
 \label{prop:total-energy}
 One has the exact identities
 \begin{equation}
- \int_{\R}\abs{\Phiup(x)}^2\dd x
- =\int_{\R}\Up(t)^2\dd t
- =\frac12+\sum_{m=0}^{\infty}\Phiup\!\left(m+\frac12\right)^2.
+ \int_{\RealNumbers}\AbsoluteValue{\FourierTwoPi{\RvachevUp}(x)}^2\Differential x
+ =\int_{\RealNumbers}\RvachevUp(t)^2\Differential t
+ =\frac12+\sum_{m=0}^{\infty}\FourierTwoPi{\RvachevUp}\!\left(m+\frac12\right)^2.
  \label{eq:total-energy}
 \end{equation}
 Numerical quadrature and the rapidly convergent series both give
@@ -1557,15 +1546,15 @@ certificate.
 \end{proposition}
 
 \begin{proof}
-The first equality is Plancherel, using that $\Phiup=\widehat\Up$ is real on the real axis.
-Expand the function $\Up$, supported in $[-1,1]$, in its length-two Fourier series.  Its
-$k$th coefficient is $\tfrac12\widehat\Up(k/2)=\tfrac12\Phiup(k/2)$, so Parseval on
+The first equality is Plancherel, using that $\FourierTwoPi{\RvachevUp}$ is real on the real axis.
+Expand the function $\RvachevUp$, supported in $[-1,1]$, in its length-two Fourier series.  Its
+$k$th coefficient is $\tfrac12\FourierTwoPi{\RvachevUp}(k/2)$, so Parseval on
 $[-1,1]$ gives
 \[
- \int_{-1}^{1}\Up(t)^2\dd t
- =\frac12\sum_{k\in\Z}\Phiup(k/2)^2.
+ \int_{-1}^{1}\RvachevUp(t)^2\Differential t
+ =\frac12\sum_{k\in\IntegerNumbers}\FourierTwoPi{\RvachevUp}(k/2)^2.
 \]
-The term $k=0$ contributes $1/2$.  Every nonzero even term vanishes because $\Phiup$ is
+The term $k=0$ contributes $1/2$.  Every nonzero even term vanishes because $\FourierTwoPi{\RvachevUp}$ is
 zero at every nonzero integer, and the positive and negative odd terms pair by evenness.
 This is exactly \eqref{eq:total-energy}.  Super-polynomial decay makes the series absolutely
 and rapidly convergent.
@@ -1633,15 +1622,16 @@ For a positive continuous test function $f$, the Collatz--Wielandt inequalities 
 \]
 Take
 \[
- f(x)=F(\sin\pi x),\qquad
- F(u)=1+\frac{376189}{10^6}u-\frac{69093}{10^6}u^2
+ f(x)=\CertificatePolynomial(\sin\pi x),\qquad
+ \CertificatePolynomial(u)=1+\frac{376189}{10^6}u-\frac{69093}{10^6}u^2
        +\frac{15483}{10^6}u^3.
 \]
 This function is positive on $[0,1]$.  Put $t=\tan(\pi x/4)\in[0,1]$,
 $u=2t/(1+t^2)$, and $v=(1-t^2)/(1+t^2)$.  Then
 \[
  \frac{\mathcal L_1f(x)}{f(x)}
- =\frac{uF(u)+vF(v)}{2F(2uv)},
+ =\frac{u\CertificatePolynomial(u)+v\CertificatePolynomial(v)}
+ {2\CertificatePolynomial(2uv)},
 \]
 a rational function of $t$.  Exact Sturm-sequence checks show that the numerators of its
 differences from the two rational endpoints in \eqref{eq:rho1-rigorous-bound} are positive
@@ -1662,7 +1652,7 @@ certificate is short, exact, and executable from the appendix alone.
 
 \begin{remark}[Separate Lean certificate]
 The current Lean source contains a different, wider Bernstein-certificate bracket for the
-growth root defined from $\sup_x\mathcal L_1^n\mathbf1(x)$:
+growth root defined from $\sup_x\mathcal L_1^n\ConstantOneFunction(x)$:
 \[
  0.66126798\le\rho\le0.66134921,
  \qquad
@@ -1680,16 +1670,16 @@ existence and an enclosure should not be conflated with that analytic identifica
 By \Cref{thm:Lq-spectrum}, there is $A_1>0$ such that
 \begin{equation}
  2\int_{1/2}^{1}
- \frac{\abs{\Phiup(2^ny)}}{E_{\kappa_1}(2^ny)}\dd y
+ \frac{\AbsoluteValue{\FourierTwoPi{\RvachevUp}(2^ny)}}{E_{\kappa_1}(2^ny)}\Differential y
  \longrightarrow A_1.
  \label{eq:L1-shell-mean}
 \end{equation}
 Therefore the choice
 \begin{equation}
- g_1(x):=A_1E_{\kappa_1}(x)
+ g_1(x)\DefinitionEquals{}A_1E_{\kappa_1}(x)
  \label{eq:g1}
 \end{equation}
-makes the mean of $\abs{\Phiup}/g_1$ on each dyadic shell tend to one.  Chebyshev
+makes the mean of $\AbsoluteValue{\FourierTwoPi{\RvachevUp}}/g_1$ on each dyadic shell tend to one.  Chebyshev
 collocation of the transfer operator, followed by the spectral formula
 \eqref{eq:Aq}, gives
 \begin{equation}
@@ -1713,11 +1703,12 @@ question, although the threshold may depend on the derivative order.
 \end{proposition}
 
 \begin{proof}
-Put $u=\log x$ and $G(u)=g_1(\e^u)$.  Then
+Put $u=\log x$ and
+$\LogGaugeProfile(u)\DefinitionEquals g_1(\EulerE^u)$.  Then
 \[
- G(u)=A_1\exp\!\left(-\frac{u^2}{2a}-\kappa_1u\right),
+ \LogGaugeProfile(u)=A_1\exp\!\left(-\frac{u^2}{2a}-\kappa_1u\right),
  \qquad
- x^m\frac{\dd^m}{\dd x^m}
+ x^m\frac{\Differential^m}{\Differential x^m}
  =D_u(D_u-1)\cdots(D_u-m+1).
 \]
 Writing $p(u)=u/a+\kappa_1$, repeated differentiation gives
@@ -1738,7 +1729,7 @@ For every fixed $t_0>0$, there are constants $0<c<C<\infty$ such that, for all s
 large $t$,
 \begin{equation}
  c<\frac1{t-t_0}\int_{t_0}^{t}
- \frac{\abs{\Phiup(x)}}{E_{\kappa_1}(x)}\dd x<C.
+ \frac{\AbsoluteValue{\FourierTwoPi{\RvachevUp}(x)}}{E_{\kappa_1}(x)}\Differential x<C.
  \label{eq:Cesaro-boundedness}
 \end{equation}
 After multiplying $E_{\kappa_1}$ by $A_1$, the same average tends to one along the dyadic
@@ -1762,14 +1753,14 @@ This can be stated exactly in terms of the eigenmeasure of $\mathcal L_1$.
 
 Normalize $h_1,\nu_1$ as in \Cref{prop:RPF}, and put
 \[
- f_1(x):=W_{\kappa_1}\!\left(\frac{x+1}{2}\right),
+ f_1(x)\DefinitionEquals{}W_{\kappa_1}\!\left(\frac{x+1}{2}\right),
  \qquad
- \mathscr F(z):=
- \frac{\nu_1(f_1\mathbf1_{[0,z]})}{\nu_1(f_1)},
+ \ShellLimitDistribution(z)\DefinitionEquals
+ \frac{\nu_1(f_1\IndicatorOf{[0,z]})}{\nu_1(f_1)},
  \quad 0\le z\le1.
  \label{eq:phase-distribution}
 \]
-The measure $f_1\,\dd\nu_1$ is non-atomic, so $\mathscr F$ is continuous.  Here is a
+The measure $f_1\,\Differential\nu_1$ is non-atomic, so $\ShellLimitDistribution$ is continuous.  Here is a
 short verification.  The endpoint atoms of $\nu_1$ vanish because the corresponding
 transfer weights vanish.  For $z\in(0,1)\setminus\{1/2\}$, the eigenmeasure equation gives
 \[
@@ -1779,7 +1770,7 @@ transfer weights vanish.  For $z\in(0,1)\setminus\{1/2\}$, the eigenmeasure equa
 remaining atom would generate forward atoms whose masses grow by at least the factor
 $2\rho_1>1$ at every step.  A periodic orbit gives an immediate contradiction, and a
 nonperiodic orbit would produce masses exceeding the finite total mass.  Thus $\nu_1$, and
-therefore $f_1\,\dd\nu_1$, has no atoms.
+therefore $f_1\,\Differential\nu_1$, has no atoms.
 
 \begin{theorem}[Dyadic phase limit]
 \label{thm:phase-limit}
@@ -1787,12 +1778,12 @@ For every $y\in[1/2,1]$ and every fixed $t_0>0$,
 \begin{equation}
  \lim_{n\to\infty}
  \frac1{2^ny-t_0}\int_{t_0}^{2^ny}
- \frac{\abs{\Phiup(x)}}{A_1E_{\kappa_1}(x)}\dd x
- =\mathscr P(y):=\frac{1+\mathscr F(2y-1)}{2y}.
+ \frac{\AbsoluteValue{\FourierTwoPi{\RvachevUp}(x)}}{A_1E_{\kappa_1}(x)}\Differential x
+ =\ShellPhaseProfile(y)\DefinitionEquals\frac{1+\ShellLimitDistribution(2y-1)}{2y}.
  \label{eq:phase-limit}
 \end{equation}
-The continuous function $\mathscr P$ satisfies
-$\mathscr P(1/2)=\mathscr P(1)=1$ but is not identically one.  Consequently the ordinary
+The continuous function $\ShellPhaseProfile$ satisfies
+$\ShellPhaseProfile(1/2)=\ShellPhaseProfile(1)=1$ but is not identically one.  Consequently the ordinary
 Cesaro limit for the natural elementary scale $A_1E_{\kappa_1}$ does not exist.
 \end{theorem}
 
@@ -1800,20 +1791,20 @@ Cesaro limit for the natural elementary scale $A_1E_{\kappa_1}$ does not exist.
 The spectral decomposition gives, for $z\in[0,1]$,
 \[
  \rho_1^{-n}\int_0^z f_1(x)
- \prod_{j=0}^{n-1}s(T^jx)\dd x
+ \prod_{j=0}^{n-1}s(T^jx)\Differential x
  \longrightarrow
- \left(\int_0^1h_1\right)\nu_1(f_1\mathbf1_{[0,z]}).
+ \left(\int_0^1h_1\right)\nu_1(f_1\IndicatorOf{[0,z]}).
 \]
 Approximation from above and below by Holder functions justifies the indicator; the
 leading conformal measure has no atoms.  Returning to the shell variable, the partial
 integral from $2^{n-1}$ to $2^ny$ is asymptotic to
 \[
- 2^{n-1}A_1\mathscr F(2y-1).
+ 2^{n-1}A_1\ShellLimitDistribution(2y-1).
 \]
 The sum of all preceding complete shells is asymptotic to $2^{n-1}A_1$.  Division by
 $2^nyA_1$ gives \eqref{eq:phase-limit}.
 
-It remains to prove that $\mathscr F$ is not the identity distribution.  We first note that
+It remains to prove that $\ShellLimitDistribution$ is not the identity distribution.  We first note that
 $\nu_1$ is singular with respect to Lebesgue measure.  Otherwise its nonzero absolutely
 continuous part would yield an $L^1$ density $r\ge0$ satisfying
 \begin{equation}
@@ -1828,12 +1819,12 @@ On the positive invariant support of $r$, iteration gives
 For Lebesgue-a.e. $x$, Birkhoff's theorem makes the logarithmic growth rate of the right
 side $\log(2\rho_1)>0$.  On the other hand, for any $r\in L^1$ and any $\epsilon>0$,
 Markov's inequality and Borel--Cantelli imply
-$r(T^nx)\le\e^{\epsilon n}$ eventually for almost every $x$.  Choosing
+$r(T^nx)\le\EulerE^{\epsilon n}$ eventually for almost every $x$.  Choosing
 $0<\epsilon<\log(2\rho_1)$ is a contradiction.  Thus $\nu_1$ is singular, and multiplying
 it by the continuous function $f_1$ leaves it singular.  Hence its normalized distribution
-$\mathscr F$ cannot equal $z$, the distribution function of Lebesgue measure.  But
-$\mathscr P\equiv1$ would force
-$1+\mathscr F(2y-1)=2y$, or $\mathscr F(z)=z$.  Therefore $\mathscr P$ is nonconstant.
+$\ShellLimitDistribution$ cannot equal $z$, the distribution function of Lebesgue measure.  But
+$\ShellPhaseProfile\equiv1$ would force
+$1+\ShellLimitDistribution(2y-1)=2y$, or $\ShellLimitDistribution(z)=z$.  Therefore $\ShellPhaseProfile$ is nonconstant.
 \end{proof}
 
 For orientation, the following finite-level computation displays the nonconstant profile in
@@ -1847,7 +1838,7 @@ the limiting statement.
  width=0.82\textwidth,
  height=0.34\textwidth,
  xlabel={dyadic mantissa $m$},
- ylabel={$\mathscr P(m/2)$},
+ ylabel={$\ShellPhaseProfile(m/2)$},
  xmin=1,xmax=2,
  ymin=0.90,ymax=1.13,
  grid=major,
@@ -1904,39 +1895,41 @@ continuous $u:[0,1]\to(0,\infty)$ such that
 \end{equation}
 Then the unrestricted limit
 \begin{equation}
- \frac1{t-X_0}\int_{X_0}^t\frac{|\Phi(x)|}{g(x)}\dd x\longrightarrow1
+ \frac1{t-X_0}\int_{X_0}^t\frac{|\FourierTwoPi{\RvachevUp}(x)|}{g(x)}\Differential x\longrightarrow1
  \label{eq:Q2-final}
 \end{equation}
 cannot hold.
 \end{theorem}
 
 \begin{proof}
-Assume \eqref{eq:Q2-final}.  If $F(t)$ denotes the numerator integral, then for every fixed
+Assume \eqref{eq:Q2-final}.  If $\CesaroNumerator(t)$ denotes the numerator integral,
+then for every fixed
 $0\le z_1<z_2\le1$,
 \begin{equation}
- \frac{F(2^k(1+z_2))-F(2^k(1+z_1))}{2^k}\longrightarrow z_2-z_1.
+ \frac{\CesaroNumerator(2^k(1+z_2))-\CesaroNumerator(2^k(1+z_1))}{2^k}
+ \longrightarrow z_2-z_1.
  \label{eq:partial-shell-linearity}
 \end{equation}
 The exact factorization in the coordinates $x=2^k(1+z)$ gives
 \[
- \frac{|\Phi(2^k(1+z))|}{E_{\kappa_1}(2^k(1+z))}
+ \frac{|\FourierTwoPi{\RvachevUp}(2^k(1+z))|}{E_{\kappa_1}(2^k(1+z))}
  =\rho_1^{-(k+1)}W(z)\prod_{j=0}^{k}|\sin(\pi2^jz)|,
 \]
 where
-$W(z):=W_{\kappa_1}((1+z)/2)=f_1(z)$ is continuous and positive on $[0,1)$.
+$W(z)\DefinitionEquals{}W_{\kappa_1}((1+z)/2)=f_1(z)$ is continuous and positive on $[0,1)$.
 Combining this identity with
 \eqref{eq:stabilizing-shape} and the Ruelle--Perron--Frobenius limit shows that every
 subsequential shell limit in \eqref{eq:partial-shell-linearity} is a constant multiple of
 \[
- \nu_1\!\left(\frac{W}{u}\mathbf1_{[z_1,z_2]}\right),
+ \nu_1\!\left(\frac{W}{u}\IndicatorOf{[z_1,z_2]}\right),
 \]
 where $\nu_1$ is the eigenmeasure of $\mathcal L_1^*$.  The full-shell case forces the
 multiplicative constant to be finite and nonzero.  Equation
 \eqref{eq:partial-shell-linearity} would therefore make the measure
 $(W/u)\nu_1$ proportional to Lebesgue measure.  Since $W/u$ is continuous and positive on
-$[0,1)$ and $\nu_1$ has no endpoint atoms, this would imply $\nu_1\ll\operatorname{Leb}$.
+$[0,1)$ and $\nu_1$ has no endpoint atoms, this would imply $\nu_1\ll\LebesgueMeasure$.
 
-That is impossible.  If $\dd\nu_1=r\dd x$ had a nonzero absolutely continuous part, the
+That is impossible.  If $\Differential\nu_1=r\Differential x$ had a nonzero absolutely continuous part, the
 eigenmeasure equation would give
 \begin{equation}
  |\sin(\pi z)|r(Tz)=\rho_1r(z)
@@ -1947,13 +1940,13 @@ On the positive support of $r$, iteration and Birkhoff's theorem yield
 \[
  r(T^nz)=r(z)\frac{\rho_1^n}
  {\prod_{j=0}^{n-1}|\sin(\pi T^jz)|}
- =r(z)\exp\bigl(n(\log(2\rho_1)+o(1))\bigr).
+ =r(z)\exp\bigl(n(\log(2\rho_1)+\LittleO(1))\bigr).
 \]
 Here $2\rho_1>1$; for example, Cauchy--Schwarz together with the exact $L^2$ identity and
 the Gelfond upper bound gives $\rho_1\ge1/\sqrt3>1/2$, consistently with the rigorous
 bracket in \Cref{prop:rho1-rigorous-bound}.  On the other hand, invariance of
 Lebesgue measure, Markov's inequality, and Borel--Cantelli imply
-$r(T^nz)\le\e^{\varepsilon n}$ eventually for a.e. $z$, for every $\varepsilon>0$.
+$r(T^nz)\le\EulerE^{\varepsilon n}$ eventually for a.e. $z$, for every $\varepsilon>0$.
 Choosing $\varepsilon<\log(2\rho_1)$ is a contradiction.  Thus $\nu_1$ is singular and
 \eqref{eq:Q2-final} cannot hold.
 \end{proof}
@@ -1970,8 +1963,8 @@ limiting shell shape exists.
 
 In shell coordinates put
 \begin{equation}
- D_k(z):=\frac{\abs{\Phiup(2^k(1+z))}}{g_1(2^k(1+z))},
- \qquad \dd\mu_k(z):=D_k(z)\dd z,
+ D_k(z)\DefinitionEquals\frac{\AbsoluteValue{\FourierTwoPi{\RvachevUp}(2^k(1+z))}}{g_1(2^k(1+z))},
+ \qquad \Differential\mu_k(z)\DefinitionEquals{}D_k(z)\Differential z,
  \qquad 0\le z\le1.
  \label{eq:shell-finite-measures}
 \end{equation}
@@ -1996,18 +1989,18 @@ Then $g$ cannot satisfy the unrestricted limit \eqref{eq:Q2-final}.
 \end{theorem}
 
 \begin{proof}
-Put $a_k:=\mu_k([0,1])$ and $\bar\mu_k:=a_k^{-1}\mu_k$.  Then
+Put $a_k\DefinitionEquals\mu_k([0,1])$ and $\bar\mu_k\DefinitionEquals{}a_k^{-1}\mu_k$.  Then
 $a_k\to1$ and $\bar\mu_k\Rightarrow\mu$.  After the irrelevant scalar $c_k$ is cancelled,
 the probability measure induced on the $k$th shell has the form
 \[
- \dd\eta_k(z)=
- \frac{q_k(z)\dd\mu_k(z)}{\int_0^1q_k\dd\mu_k},
+ \Differential\eta_k(z)=
+ \frac{q_k(z)\Differential\mu_k(z)}{\int_0^1q_k\Differential\mu_k},
  \qquad M^{-1}\le q_k\le m^{-1}.
 \]
-Since $\int q_k\dd\mu_k\ge a_k/M$, we have the correctly normalized domination
+Since $\int q_k\Differential\mu_k\ge a_k/M$, we have the correctly normalized domination
 $\eta_k\le(M/m)\bar\mu_k$: for every continuous $\varphi\ge0$,
 \[
- \int\varphi\dd\eta_k\le\frac{M}{m}\int\varphi\dd\bar\mu_k.
+ \int\varphi\Differential\eta_k\le\frac{M}{m}\int\varphi\Differential\bar\mu_k.
 \]
 Any weak limit $\eta$ is therefore dominated by $(M/m)\mu$ and is singular.  But
 \eqref{eq:Q2-final}, evaluated at $2^k$ and $2^k(1+z)$ and subtracted, forces the partial
@@ -2031,7 +2024,7 @@ The word ``elementary'' must not be substituted for the hypotheses above.  For i
 if $2c\varepsilon<1/a$, then
 \[
  g_{\varepsilon,c}(x)
- :=g_1(x)\exp\!\bigl(\varepsilon\sin(c(\log x)^2)\bigr)
+ \DefinitionEquals{}g_1(x)\exp\!\bigl(\varepsilon\sin(c(\log x)^2)\bigr)
 \]
 is elementary, positive, real-analytic, and eventually decreasing, but its shell shape need
 not stabilize.  It still fails by \Cref{thm:bounded-distortion}, because the multiplier is
@@ -2058,14 +2051,14 @@ $r_k\in C^\infty([0,1])$, $r_k>0$, such that
 \item
 \begin{equation}
  \sup_{0\le z\le1}
- \left|\int_0^zr_k\dd\mu_k-z\right|\longrightarrow0;
+ \left|\int_0^zr_k\Differential\mu_k-z\right|\longrightarrow0;
  \label{eq:flattening-cdf}
 \end{equation}
 \item
 \begin{equation}
- \norm{\log r_k}_\infty=o(k),
+ \Norm{\log r_k}_\infty=\LittleO(k),
  \qquad
- \norm{(\log r_k)'}_\infty=o(k).
+ \Norm{(\log r_k)'}_\infty=\LittleO(k).
  \label{eq:flattening-slopes}
 \end{equation}
 \end{enumerate}
@@ -2080,7 +2073,7 @@ $I_{j,i}=[x_{j,i-1},x_{j,i}]$ has positive mass.  For fixed $j$, weak convergenc
 $\mu_k(I_{j,i})\to\mu(I_{j,i})$ simultaneously over the finite partition.  Define the
 cell equalizer
 \[
- c_{k,j,i}:=\frac{|I_{j,i}|}{\mu_k(I_{j,i})}.
+ c_{k,j,i}\DefinitionEquals\frac{|I_{j,i}|}{\mu_k(I_{j,i})}.
 \]
 
 For fixed $j$, the finitely many ratios $c_{k,j,i}$ converge to positive finite limits.
@@ -2093,15 +2086,15 @@ these finitely many constants smoothly inside $U_j$, and arrange $\ell_{k,j}=0$ 
 endpoints.  The interpolation can be kept between its neighboring values and chosen with
 bounds
 \[
- \norm{\ell_{k,j}}_\infty\le B_j,
+ \Norm{\ell_{k,j}}_\infty\le B_j,
  \qquad
- \norm{\ell_{k,j}'}_\infty\le C_j.
+ \Norm{\ell_{k,j}'}_\infty\le C_j.
 \]
 Put $r_{k,j}=\exp\ell_{k,j}$.  On a cell $I=I_{j,i}$ the definition
 $c_{k,j,i}\mu_k(I)=|I|$ gives the exact error identity
 \[
- \int_I r_{k,j}\dd\mu_k-|I|
- =\int_{I\cap U_j}(r_{k,j}-c_{k,j,i})\dd\mu_k.
+ \int_I r_{k,j}\Differential\mu_k-|I|
+ =\int_{I\cap U_j}(r_{k,j}-c_{k,j,i})\Differential\mu_k.
 \]
 Thus the total error over any union of complete cells is at most
 $2e^{B_j}\mu_k(U_j)$.  A cumulative interval $[0,z]$ has, in addition, at most one
@@ -2111,7 +2104,7 @@ $e^{B_j}\mu_k(U_j)$; the omitted Lebesgue length is bounded in the same way by t
 and $|U_j|$.  Our choice of $U_j$, followed by large $k$, therefore gives (after harmlessly
 rescaling the sequence $\varepsilon_j$)
 \[
- \sup_z\left|\int_0^zr_{k,j}\dd\mu_k-z\right|\le3\varepsilon_j.
+ \sup_z\left|\int_0^zr_{k,j}\Differential\mu_k-z\right|\le3\varepsilon_j.
 \]
 
 Choose increasing integers $K_j$ so that these conclusions hold for $k\ge K_j$ and
@@ -2131,16 +2124,16 @@ Apply \Cref{lem:flattening} to the measures in
 \eqref{eq:shell-finite-measures}.  Define a multiplier $R$ on every sufficiently large
 shell by
 \begin{equation}
- R(2^k(1+z)):=r_k(z),
+ R(2^k(1+z))\DefinitionEquals{}r_k(z),
  \qquad 0\le z\le1.
  \label{eq:R-global}
 \end{equation}
 Because $r_k=1$ in neighborhoods of both endpoints, adjacent pieces agree with all
 derivatives near every power of two; hence $R$ is globally smooth on a half-line.  Put
 \begin{equation}
- h_0(x):=\frac1{g_1(x)},
- \qquad h(x):=h_0(x)R(x),
- \qquad g_\infty(x):=\frac1{h(x)}.
+ h_0(x)\DefinitionEquals\frac1{g_1(x)},
+ \qquad h(x)\DefinitionEquals{}h_0(x)R(x),
+ \qquad g_\infty(x)\DefinitionEquals\frac1{h(x)}.
  \label{eq:smooth-adaptive-gauge}
 \end{equation}
 In shell coordinates,
@@ -2153,7 +2146,7 @@ for all large $k$, uniformly in $z$.  Equation \eqref{eq:flattening-slopes} ther
 $h$ eventually strictly increasing and $g_\infty$ eventually strictly decreasing.  It also
 gives
 \begin{equation}
- \log g_\infty(x)=\log g_1(x)+o(\log x).
+ \log g_\infty(x)=\log g_1(x)+\LittleO(\log x).
  \label{eq:smooth-rough-scale}
 \end{equation}
 
@@ -2162,7 +2155,7 @@ gives
 For every fixed sufficiently large $X_0$,
 \begin{equation}
  \frac1{t-X_0}\int_{X_0}^{t}
- \frac{\abs{\Phiup(x)}}{g_\infty(x)}\dd x\longrightarrow1.
+ \frac{\AbsoluteValue{\FourierTwoPi{\RvachevUp}(x)}}{g_\infty(x)}\Differential x\longrightarrow1.
  \label{eq:smooth-exact-limit}
 \end{equation}
 \end{proposition}
@@ -2170,35 +2163,35 @@ For every fixed sufficiently large $X_0$,
 \begin{proof}
 Let
 \[
- C_k(z):=\int_0^zD_k(u)r_k(u)\dd u.
+ C_k(z)\DefinitionEquals\int_0^zD_k(u)r_k(u)\Differential u.
 \]
 By \Cref{lem:flattening}, $\sup_z|C_k(z)-z|\to0$.  If
 $t=2^K(1+z)$, complete and partial shells give, up to one fixed initial contribution,
 \[
- \int_{X_0}^{t}\frac{\abs{\Phiup(x)}}{g_\infty(x)}\dd x
+ \int_{X_0}^{t}\frac{\AbsoluteValue{\FourierTwoPi{\RvachevUp}(x)}}{g_\infty(x)}\Differential x
  =\sum_{k<K}2^kC_k(1)+2^KC_K(z).
 \]
-Replacing $C_k(1)$ by $1$ and $C_K(z)$ by $z$ costs $o(2^K)$: indeed
-$\sum_{k<K}2^k\epsilon_k=o(2^K)$ whenever $\epsilon_k\to0$.  The main term is
-$\sum_{k<K}2^k+2^Kz=t+\bigO(1)$, after absorbing the fixed choice of initial shell.
+Replacing $C_k(1)$ by $1$ and $C_K(z)$ by $z$ costs $\LittleO(2^K)$: indeed
+$\sum_{k<K}2^k\epsilon_k=\LittleO(2^K)$ whenever $\epsilon_k\to0$.  The main term is
+$\sum_{k<K}2^k+2^Kz=t+\BigO(1)$, after absorbing the fixed choice of initial shell.
 Division by $t-X_0$ proves \eqref{eq:smooth-exact-limit}.
 \end{proof}
 
 \subsection{Real-analytic upgrade by Carleman--Hoischen approximation}
 
-We use the following precise classical input: if $F\in C^1(\R)$ and
-$\epsilon:\R\to(0,\infty)$ is continuous, there is an entire function $G$, real on the
+We use the following precise classical input: if $f\in C^1(\RealNumbers)$ and
+$\epsilon:\RealNumbers\to(0,\infty)$ is continuous, there is an entire function $g$, real on the
 real axis, such that
 \begin{equation}
- |G(x)-F(x)|<\epsilon(x),
- \qquad |G'(x)-F'(x)|<\epsilon(x)
- \quad(x\in\R).
+ \AbsoluteValue{g(x)-f(x)}<\epsilon(x),
+ \qquad \AbsoluteValue{g'(x)-f'(x)}<\epsilon(x)
+ \quad(x\in\RealNumbers).
  \label{eq:Hoischen}
 \end{equation}
 This is Hoischen's derivative form of Carleman approximation; we use the formulation of
 Gauthier and Kienzle \cite{gauthier-kienzle}.
 
-Extend $h$ in \eqref{eq:smooth-adaptive-gauge} to a positive $C^1$ function on $\R$
+Extend $h$ in \eqref{eq:smooth-adaptive-gauge} to a positive $C^1$ function on $\RealNumbers$
 such that $h'(x)>0$ for every $x$.  This is possible because
 \eqref{eq:baseline-slope} makes $h'$ positive on the retained tail; before a joining point,
 a positive exponential chosen to match its value and first derivative supplies a $C^1$
@@ -2208,10 +2201,10 @@ then choose a continuous positive tolerance $\epsilon$ satisfying
  \epsilon(x)<\frac12\min\{h(x),h'(x),\delta(x)h(x)\}.
  \label{eq:Hoischen-error}
 \end{equation}
-The real entire approximant $\widetilde h$ is positive and strictly increasing on $\R$,
+The real entire approximant $\widetilde h$ is positive and strictly increasing on $\RealNumbers$,
 and $\widetilde h/h\to1$ at $+\infty$.  Define
 \begin{equation}
- g_{\mathrm{ad}}(x):=\frac1{\widetilde h(x)},
+ g_{\mathrm{ad}}(x)\DefinitionEquals\frac1{\widetilde h(x)},
  \qquad x>0.
  \label{eq:g-adaptive}
 \end{equation}
@@ -2222,13 +2215,13 @@ The gauge $g_{\mathrm{ad}}$ is positive, real-analytic, and strictly decreasing.
 fixed $t_0>0$ it satisfies
 \begin{equation}
  \frac1{t-t_0}\int_{t_0}^{t}
- \frac{\abs{\Phiup(x)}}{g_{\mathrm{ad}}(x)}\dd x\longrightarrow1,
+ \frac{\AbsoluteValue{\FourierTwoPi{\RvachevUp}(x)}}{g_{\mathrm{ad}}(x)}\Differential x\longrightarrow1,
  \label{eq:adaptive-exact-limit}
 \end{equation}
 and
 \begin{equation}
  \log g_{\mathrm{ad}}(x)
- =-\frac{(\log x)^2}{2\log2}-\kappa_1\log x+o(\log x).
+ =-\frac{(\log x)^2}{2\log2}-\kappa_1\log x+\LittleO(\log x).
  \label{eq:adaptive-rough-scale}
 \end{equation}
 \end{theorem}
@@ -2240,11 +2233,11 @@ For the integral, fix $\varepsilon>0$ and choose $X$ so that
 $|\widetilde h/h-1|<\varepsilon$ for $x\ge X$.  Since $1/g_{\mathrm{ad}}=\widetilde h$
 and $1/g_\infty=h$,
 \[
- \left|\int_X^t\abs{\Phiup(x)}(\widetilde h(x)-h(x))\dd x\right|
- \le\varepsilon\int_X^t\abs{\Phiup(x)}h(x)\dd x
- =\varepsilon(t+o(t))
+ \left|\int_X^t\AbsoluteValue{\FourierTwoPi{\RvachevUp}(x)}(\widetilde h(x)-h(x))\Differential x\right|
+ \le\varepsilon\int_X^t\AbsoluteValue{\FourierTwoPi{\RvachevUp}(x)}h(x)\Differential x
+ =\varepsilon(t+\LittleO(t))
 \]
-by \Cref{prop:smooth-adaptive}.  The initial interval contributes $\bigO(1)$.  Divide by
+by \Cref{prop:smooth-adaptive}.  The initial interval contributes $\BigO(1)$.  Divide by
 $t$ and then let $\varepsilon\downarrow0$.
 \end{proof}
 
@@ -2253,7 +2246,7 @@ The natural profile is driven by the distribution function of an atomless singul
 but the profile itself also contains the ordinary factor $1/y$ and is not itself a singular
 distribution function.  The multiplier $r_k$ corrects only finitely many cells at
 level $k$, while the number of cells tends to infinity.  Its logarithm and logarithmic
-slope are $o(k)$, so the gauge remains decreasing, yet its normalized shell shape never
+slope are $\LittleO(k)$, so the gauge remains decreasing, yet its normalized shell shape never
 converges and its distortion becomes unbounded.  Thus neither
 \Cref{thm:stabilizing-impossibility} nor \Cref{thm:bounded-distortion} applies.
 \end{remark}
@@ -2286,7 +2279,7 @@ negligible.
 There is a constant $A_1^{\log}>0$ such that, for every fixed $t_0>1$,
 \begin{equation}
  \frac1{\log(t/t_0)}\int_{t_0}^t
- \frac{|\Phi(x)|}{E_{\kappa_1}(x)}\frac{\dd x}{x}
+ \frac{|\FourierTwoPi{\RvachevUp}(x)|}{E_{\kappa_1}(x)}\frac{\Differential x}{x}
  \longrightarrow A_1^{\log}
  \qquad(t\to\infty)
  \label{eq:logarithmic-mean}
@@ -2295,10 +2288,10 @@ without any restriction on the endpoint.  In the normalization of
 \Cref{prop:RPF}, if
 $f_1(x)=W_{\kappa_1}((x+1)/2)$, then
 \begin{equation}
- B_1:=\left(\int_0^1h_1(x)\dd x\right)
+ B_1\DefinitionEquals\left(\int_0^1h_1(x)\Differential x\right)
  \nu_1\!\left(\frac{f_1}{1+\cdot}\right),
  \qquad
- A_1^{\log}:=\frac{B_1}{\log2}.
+ A_1^{\log}\DefinitionEquals\frac{B_1}{\log2}.
  \label{eq:A1log}
 \end{equation}
 Numerically,
@@ -2312,17 +2305,17 @@ Numerically,
 Let
 \[
  \beta_n=\int_{2^{n-1}}^{2^n}
- \frac{|\Phi(x)|}{E_{\kappa_1}(x)}\frac{\dd x}{x}.
+ \frac{|\FourierTwoPi{\RvachevUp}(x)|}{E_{\kappa_1}(x)}\frac{\Differential x}{x}.
 \]
 The master factorization and $x=2^ny$, followed by $z=2y-1$, give
 \[
  \beta_n=\rho_1^{-n}\int_0^1
- \frac{f_1(z)}{1+z}\prod_{j=0}^{n-1}|\sin(\pi T^jz)|\dd z.
+ \frac{f_1(z)}{1+z}\prod_{j=0}^{n-1}|\sin(\pi T^jz)|\Differential z.
 \]
 The spectral limit in \Cref{prop:RPF} yields $\beta_n\to\beta_\infty$, where
 $\beta_\infty=(\int h_1)\nu_1(f_1/(1+\cdot))$.  If
 $2^N\le t<2^{N+1}$, the logarithmic integral equals
-$\sum_{n<N}\beta_n+O(1)$, while $\log(t/t_0)=N\log2+O(1)$.  Ordinary Cesaro convergence of
+$\sum_{n<N}\beta_n+\BigO(1)$, while $\log(t/t_0)=N\log2+\BigO(1)$.  Ordinary Cesaro convergence of
 the sequence $(\beta_n)$ proves \eqref{eq:logarithmic-mean} and
 \eqref{eq:A1log}.
 \end{proof}
@@ -2332,13 +2325,13 @@ the sequence $(\beta_n)$ proves \eqref{eq:logarithmic-mean} and
 
 The $L^\infty$ numerator rate can be proved by a sharp elementary inequality.  Put
 \begin{equation}
- \lambda:=\frac{\sqrt3}{2}.
+ \lambda\DefinitionEquals\frac{\sqrt3}{2}.
  \label{eq:lambda}
 \end{equation}
 
 \begin{lemma}[Sharp two-step logarithmic inequality]
 \label{lem:sharp-sine-inequality}
-For every $x\in\R$,
+For every $x\in\RealNumbers$,
 \begin{equation}
  \frac23\log s(x)+\frac13\log s(Tx)\le\log\lambda,
  \label{eq:weighted-log-inequality}
@@ -2354,7 +2347,7 @@ Cubing the desired inequality gives
 \]
 With $\theta=\pi x$ and $u=\sin^2\theta$,
 \[
- s(x)^2s(Tx)=2\abs{\sin^3\theta\cos\theta},
+ s(x)^2s(Tx)=2\AbsoluteValue{\sin^3\theta\cos\theta},
 \]
 whose square is $4u^3(1-u)$.  The maximum of $u^3(1-u)$ on $[0,1]$ is $27/256$, attained
 at $u=3/4$.  Therefore the maximum of the original expression is
@@ -2371,7 +2364,7 @@ For every $n\ge1$,
 \end{equation}
 Consequently
 \begin{equation}
- \lim_{n\to\infty}\norm{\prod_{j=0}^{n-1}s\circ T^j}_{\infty}^{1/n}
+ \lim_{n\to\infty}\Norm{\prod_{j=0}^{n-1}s\circ T^j}_{\infty}^{1/n}
  =\lambda=\frac{\sqrt3}{2}.
  \label{eq:Gelfond-rate}
 \end{equation}
@@ -2407,20 +2400,20 @@ Define
 \begin{equation}
  \boxed{\displaystyle
  \kappa_\infty
- :=\frac{\log\pi+a/2-\log(\sqrt3/2)}{a}
+ \DefinitionEquals\frac{\log\pi+a/2-\log(\sqrt3/2)}{a}
  =\frac32+\frac{\log(\pi/\sqrt3)}{\log2}
  =2.3590148791117407073\ldots .}
  \label{eq:kappa-infty}
 \end{equation}
 Then there is a constant $C<\infty$ such that
 \begin{equation}
- \abs{\Phiup(x)}\le C E_{\kappa_\infty}(x),
+ \AbsoluteValue{\FourierTwoPi{\RvachevUp}(x)}\le C E_{\kappa_\infty}(x),
  \qquad x\ge1.
  \label{eq:uniform-envelope}
 \end{equation}
 This exponent is sharp.  In fact, for every $n\ge0$,
 \begin{equation}
- \abs{\Phiup(2^n\cdot2/3)}
+ \AbsoluteValue{\FourierTwoPi{\RvachevUp}(2^n\cdot2/3)}
  =C_*E_{\kappa_\infty}(2^n\cdot2/3),
  \label{eq:exact-peak-ray}
 \end{equation}
@@ -2441,7 +2434,7 @@ In \eqref{eq:master-normalization}, the definition of $\kappa_\infty$ makes
 After the substitution $x=Ty$, the product is of the form bounded in
 \eqref{eq:Bn-uniform}; therefore
 \[
- \frac{\abs{\Phiup(2^ny)}}{E_{\kappa_\infty}(2^ny)}
+ \frac{\AbsoluteValue{\FourierTwoPi{\RvachevUp}(2^ny)}}{E_{\kappa_\infty}(2^ny)}
  \le\lambda^{-1}\max_{1/2\le y\le1}W_{\kappa_\infty}(y).
 \]
 This proves the uniform upper bound.  At $y=2/3$, the orbit alternates between $2/3$ and
@@ -2453,10 +2446,10 @@ $1/3$, so $B_n(2/3)=\lambda^n$ exactly.  Equation
 \label{cor:universal-log-order}
 With the convention $\log0=-\infty$,
 \begin{equation}
- \limsup_{x\to\infty}\frac{\log|\Phiup(x)|}{(\log x)^2}
+ \limsup_{x\to\infty}\frac{\log|\FourierTwoPi{\RvachevUp}(x)|}{(\log x)^2}
  =-\frac1{2\log2},
  \qquad
- \liminf_{x\to\infty}\frac{\log|\Phiup(x)|}{(\log x)^2}=-\infty.
+ \liminf_{x\to\infty}\frac{\log|\FourierTwoPi{\RvachevUp}(x)|}{(\log x)^2}=-\infty.
  \label{eq:universal-log-order}
 \end{equation}
 Equivalently, the coefficient $1/(2\log2)$ is the sharp global log-square order, but no
@@ -2466,22 +2459,22 @@ positive two-sided pointwise equivalent exists.
 \begin{proof}
 The upper bound in the limsup follows from \eqref{eq:uniform-envelope}; the exact period-two
 ray \eqref{eq:exact-peak-ray} gives the reverse inequality.  The liminf is $-\infty$ because
-$\Phiup$ vanishes at every positive integer (and also because one may approach those zeros
+$\FourierTwoPi{\RvachevUp}$ vanishes at every positive integer (and also because one may approach those zeros
 arbitrarily closely).
 \end{proof}
 
 \begin{corollary}[Sharp smoothness class]
 \label{cor:superpoly-subexp}
-For every $M>0$, $\Phiup(x)=\bigO(x^{-M})$ as $x\to\infty$.  On the other hand, for every
-$c>0$, $\e^{cx}\abs{\Phiup(x)}$ is unbounded.  Thus the transform decays faster than every
+For every $M>0$, $\FourierTwoPi{\RvachevUp}(x)=\BigO(x^{-M})$ as $x\to\infty$.  On the other hand, for every
+$c>0$, $\EulerE^{cx}\AbsoluteValue{\FourierTwoPi{\RvachevUp}(x)}$ is unbounded.  Thus the transform decays faster than every
 power but not at any fixed exponential rate.
 \end{corollary}
 
 \begin{proof}
 The first statement follows from \eqref{eq:uniform-envelope}, because the negative
 quadratic in $\log x$ dominates $-M\log x$.  The exact peak ray
-\eqref{eq:exact-peak-ray} decays only like $\exp(-\bigO((\log x)^2))$, which is much larger
-than $\e^{-cx}$ along that subsequence.
+\eqref{eq:exact-peak-ray} decays only like $\exp(-\BigO((\log x)^2))$, which is much larger
+than $\EulerE^{-cx}$ along that subsequence.
 \end{proof}
 
 
@@ -2497,24 +2490,24 @@ asymptotic in the corpus.
 
 Put
 \begin{equation}
- \mathfrak M_k:=\max_{2^k\le x\le2^{k+1}}|\Phiup(x)|,
- \qquad n:=k+1,
- \qquad \beta:=\log\frac{\sqrt3}{2}<0.
+ \mathfrak M_k\DefinitionEquals\max_{2^k\le x\le2^{k+1}}|\FourierTwoPi{\RvachevUp}(x)|,
+ \qquad n\DefinitionEquals{}k+1,
+ \qquad \beta\DefinitionEquals\log\frac{\sqrt3}{2}<0.
  \label{eq:annular-M}
 \end{equation}
 Also define the tail factor
 \[
- \mathcal H(y):=\prod_{m=1}^{\infty}\left|\sinc\!\left(\frac{\pi y}{2^m}\right)\right|,
- \qquad y\in\R.
+ \mathcal H(y)\DefinitionEquals\prod_{m=1}^{\infty}\left|\SincRad\!\left(\frac{\pi y}{2^m}\right)\right|,
+ \qquad y\in\RealNumbers.
 \]
-Thus $\mathcal H(y)=|\Phiup(y/2)|$ globally.  In particular it is continuous and bounded;
+Thus $\mathcal H(y)=|\FourierTwoPi{\RvachevUp}(y/2)|$ globally.  In particular it is continuous and bounded;
 on compact sets avoiding the nonzero even integers it is bounded away from zero.
 
 \subsection{Exact reduction and transition coordinates}
 
 Writing $x=2^k(1+\theta)$, $0\le\theta\le1$, gives
 \begin{equation}
- |\Phiup(2^k(1+\theta))|
+ |\FourierTwoPi{\RvachevUp}(2^k(1+\theta))|
  =\frac{2^{-k(k+1)/2}}{\pi^n}
  \mathcal H(1+\theta)(1+\theta)^{-n}Q_n(\theta),
  \label{eq:annular-exact-final}
@@ -2527,7 +2520,7 @@ Hence
 \begin{equation}
  \mathfrak M_k=\pi^{-n}2^{-k(k+1)/2}A_n,
  \quad
- A_n:=\sup_{0\le\theta\le1}
+ A_n\DefinitionEquals\sup_{0\le\theta\le1}
  \mathcal H(1+\theta)(1+\theta)^{-n}Q_n(\theta).
  \label{eq:An-final}
 \end{equation}
@@ -2535,7 +2528,7 @@ The weight $(1+\theta)^{-n}$ pushes the maximum toward $0$, where $Q_n$ vanishes
 For $0<\theta\le1/2$, write uniquely up to endpoints
 \begin{equation}
  \theta=2^{-r}s,
- \qquad r\in\Z_{\ge0},\quad s\in I:=[1/4,1/2].
+ \qquad r\in\NaturalNumbers,\quad s\in I\DefinitionEquals[1/4,1/2].
  \label{eq:transition-final}
 \end{equation}
 If $r<n$, then
@@ -2548,10 +2541,10 @@ If $r<n$, then
 Uniformly for $s\in I$,
 \begin{equation}
  \log R_r(s)
- =-\frac a2r^2+r\left(\log(\pi s)-\frac a2\right)+O(1).
+ =-\frac a2r^2+r\left(\log(\pi s)-\frac a2\right)+\BigO(1).
  \label{eq:small-block-final}
 \end{equation}
-The remaining tail satisfies $Q_m(s)\le C\e^{m\beta}$ by
+The remaining tail satisfies $Q_m(s)\le C\EulerE^{m\beta}$ by
 \Cref{prop:Bn-uniform}.
 
 For a matching lower bound one needs near-maximizing tails at essentially arbitrary $s$.
@@ -2577,16 +2570,16 @@ $2/3$ they approximate every point of $I$ as in \eqref{eq:preimage-close-final}.
 time $q$, every orbit point is a nonintegral rational with reduced denominator at most
 $3\cdot2^{q-j}$.  Therefore
 \[
- |\sin(\pi T^js_q)|\ge2\operatorname{dist}(T^js_q,\Z)
+ |\sin(\pi T^js_q)|\ge2\MetricDistance(T^js_q,\IntegerNumbers)
  \ge\frac{2}{3\cdot2^{q-j}}.
 \]
-The first $q$ factors lose at most $\exp(O(q^2))$.  Thereafter the orbit alternates between
-$1/3$ and $2/3$, and every factor equals $\sqrt3/2=\e^\beta$.
+The first $q$ factors lose at most $\exp(\BigO(q^2))$.  Thereafter the orbit alternates between
+$1/3$ and $2/3$, and every factor equals $\sqrt3/2=\EulerE^\beta$.
 \end{proof}
 
 Define the finite-dimensional objective
 \begin{equation}
- \mathcal F_n(r,s)
+ \DecayOptimizationObjective{n}(r,s)
  =-\frac a2r^2+r\left(\log(\pi s)-\frac a2-\beta\right)
  -n\log(1+s2^{-r}).
  \label{eq:Fn-final}
@@ -2597,8 +2590,8 @@ Define the finite-dimensional objective
 As $n\to\infty$,
 \begin{equation}
  \log A_n=n\beta+
- \sup_{\substack{r\in\Z_{\ge0}\\s\in I}}\mathcal F_n(r,s)
- +O((\log\log n)^2).
+ \sup_{\substack{r\in\NaturalNumbers\\s\in I}}\DecayOptimizationObjective{n}(r,s)
+ +\BigO((\log\log n)^2).
  \label{eq:An-reduction-final}
 \end{equation}
 \end{lemma}
@@ -2609,11 +2602,11 @@ Equations \eqref{eq:transition-product-final}--\eqref{eq:small-block-final} and 
 Gelfond bound give, uniformly in $r,s$,
 \begin{equation}
  \log\!\left(\mathcal H(1+\theta)(1+\theta)^{-n}Q_n(\theta)\right)
- \le n\beta+\mathcal F_n(r,s)+C.
+ \le n\beta+\DecayOptimizationObjective{n}(r,s)+C.
  \label{eq:An-phase-upper}
 \end{equation}
 Here $\mathcal H$ is bounded on $[1,2]$.  If $\theta\ge1/2$, the left side is at most
-$-n\log(3/2)+O(1)$.  If $r\ge n$, the elementary bounds
+$-n\log(3/2)+\BigO(1)$.  If $r\ge n$, the elementary bounds
 $|\sin u|\le|u|$ give
 \[
  \log Q_n(2^{-r}s)
@@ -2621,34 +2614,34 @@ $|\sin u|\le|u|$ give
 \]
 so this range is $-\Omega(n^2)$.  Both are exponentially inferior to the admissible trial
 $r=\lfloor\log_2n\rfloor$, $s=1/3$, whose tail lies exactly on the maximizing two-cycle and
-whose logarithm is $n\beta-O((\log n)^2)$.  This proves that every phase within
-$O((\log\log n)^2)$ of the maximum has $r<n$.
+whose logarithm is $n\beta-\BigO((\log n)^2)$.  This proves that every phase within
+$\BigO((\log\log n)^2)$ of the maximum has $r<n$.
 
 The same comparison yields the two uniform localization estimates used below.  Since
 $s\in[1/4,1/2]$,
 \[
- \mathcal F_n(r,s)\le-\frac a2r^2+C_1r,
+ \DecayOptimizationObjective{n}(r,s)\le-\frac a2r^2+C_1r,
  \qquad
  \log(1+s2^{-r})\ge\frac12s2^{-r}.
 \]
-Comparison with the trial value first gives $r=O(\log n)$ and then, after retaining the
-last negative term in $\mathcal F_n$,
+Comparison with the trial value first gives $r=\BigO(\log n)$ and then, after retaining the
+last negative term in $\DecayOptimizationObjective{n}$,
 \begin{equation}
- ns2^{-r}=O((\log n)^2).
+ ns2^{-r}=\BigO((\log n)^2).
  \label{eq:boundary-localization}
 \end{equation}
 Thus \eqref{eq:An-phase-upper} gives the desired upper bound by taking the supremum of
-$\mathcal F_n$.
+$\DecayOptimizationObjective{n}$.
 
 For the reverse inequality choose a localized pair $(r,s)$ within one of the supremum of
-$\mathcal F_n$ and put
-$q=\lceil4\log_2\log(n+\e^\e)\rceil$.  For large $n$ we have $n-r\ge q$.
+$\DecayOptimizationObjective{n}$ and put
+$q=\lceil4\log_2\log(n+\EulerE^\EulerE)\rceil$.  For large $n$ we have $n-r\ge q$.
 Choose $s_q$ by \Cref{lem:dense-preimages-final}.  In the localized region
 \[
- \left|\frac{\partial\mathcal F_n}{\partial s}\right|
- \le4r+n2^{-r}=O((\log n)^2),
+ \left|\frac{\partial\DecayOptimizationObjective{n}}{\partial s}\right|
+ \le4r+n2^{-r}=\BigO((\log n)^2),
 \]
-so $|\mathcal F_n(r,s_q)-\mathcal F_n(r,s)|=O(1)$.  The dense-preimage lower bound gives
+so $|\DecayOptimizationObjective{n}(r,s_q)-\DecayOptimizationObjective{n}(r,s)|=\BigO(1)$.  The dense-preimage lower bound gives
 \[
  \log Q_{n-r}(s_q)\ge(n-r)\beta-Cq^2,
 \]
@@ -2656,9 +2649,9 @@ while \eqref{eq:small-block-final} supplies the matching prefix and
 $\mathcal H(1+2^{-r}s_q)$ is bounded below because its argument tends to $1$.
 Consequently the resulting phase has logarithm at least
 \[
- n\beta+\sup_{r,s}\mathcal F_n(r,s)-O(q^2).
+ n\beta+\sup_{r,s}\DecayOptimizationObjective{n}(r,s)-\BigO(q^2).
 \]
-Since $q^2=O((\log\log n)^2)$, this completes both sides of
+Since $q^2=\BigO((\log\log n)^2)$, this completes both sides of
 \eqref{eq:An-reduction-final}.
 \end{proof}
 
@@ -2666,30 +2659,30 @@ Since $q^2=O((\log\log n)^2)$, this completes both sides of
 
 Set
 \begin{equation}
- C_0:=\log\pi-\frac a2-\beta=\log\!\left(\pi\sqrt{\frac23}\right),
+ C_0\DefinitionEquals\log\pi-\frac a2-\beta=\log\!\left(\pi\sqrt{\frac23}\right),
  \qquad
- c:=a\e^{-C_0}=\frac a\pi\sqrt{\frac32}.
+ c\DefinitionEquals{}a\EulerE^{-C_0}=\frac a\pi\sqrt{\frac32}.
  \label{eq:annular-c}
 \end{equation}
 At the localized maximum, \eqref{eq:boundary-localization} implies
 \[
  n\left|\log(1+s2^{-r})-s2^{-r}\right|
- =O\!\left(\frac{(\log n)^4}{n}\right)=o(1).
+ =O\!\left(\frac{(\log n)^4}{n}\right)=\LittleO(1).
 \]
 Put $A=C_0+\log s$ and $z=ar-A$.  Then
 \begin{equation}
  -\frac a2r^2+rA-ns2^{-r}
- =-\frac{z^2}{2a}-n\e^{-C_0}\e^{-z}+\frac{A^2}{2a}.
+ =-\frac{z^2}{2a}-n\EulerE^{-C_0}\EulerE^{-z}+\frac{A^2}{2a}.
  \label{eq:z-objective}
 \end{equation}
 As $s$ traverses $[1/4,1/2]$, the interval of possible $A$ has length exactly $a$.
 Successive integer values of $r\ge0$ therefore make the corresponding $z$-intervals tile a
 half-line.  That half-line contains the maximizer below for all large $n$.  Since
-$A^2/(2a)=O(1)$, the supremum is, up to $O(1)$, the real maximum of
+$A^2/(2a)=\BigO(1)$, the supremum is, up to $\BigO(1)$, the real maximum of
 \[
- \phi_n(z)=-\frac{z^2}{2a}-n\e^{-C_0}\e^{-z}.
+ \phi_n(z)=-\frac{z^2}{2a}-n\EulerE^{-C_0}\EulerE^{-z}.
 \]
-Its critical equation is $z\e^z=cn$, so the maximizer is $w_n=W(cn)$ and
+Its critical equation is $z\EulerE^z=cn$, so the maximizer is $w_n=W(cn)$ and
 we use the principal real branch of $W$ throughout \cite{corless-lambert}.  Thus
 \begin{equation}
  \max\phi_n=-\frac{w_n^2+2w_n}{2a}.
@@ -2704,7 +2697,7 @@ Let $w_k=W(c(k+1))$, with $c$ from \eqref{eq:annular-c}.  Then, as $k\to\infty$,
  \log\mathfrak M_k
  =-\frac a2k(k+1)-(k+1)\log\pi+(k+1)\beta
  -\frac{w_k^2+2w_k}{2a}
- +O((\log\log k)^2).}
+ +\BigO((\log\log k)^2).}
  \label{eq:annular-main}
 \end{equation}
 Equivalently,
@@ -2712,12 +2705,12 @@ Equivalently,
  \log\mathfrak M_k
  =-\frac a2k^2-a\kappa_\infty k
  -\frac{W(c(k+1))^2+2W(c(k+1))}{2a}
- +O((\log\log k)^2).
+ +\BigO((\log\log k)^2).
  \label{eq:annular-main-compact}
 \end{equation}
 Any maximizing phase $\theta_k$ satisfies
 \begin{equation}
- \theta_k=\frac{W(c(k+1))}{a(k+1)}\e^{o(1)}.
+ \theta_k=\frac{W(c(k+1))}{a(k+1)}\EulerE^{\LittleO(1)}.
  \label{eq:annular-location}
 \end{equation}
 \end{theorem}
@@ -2729,37 +2722,37 @@ $a\kappa_\infty=a/2+\log\pi-\beta$.
 
 For the location statement, \eqref{eq:An-phase-upper} and the matching lower bound show
 that the $z$ associated with any maximizing phase satisfies
-$\phi_n(w_n)-\phi_n(z)=O((\log\log n)^2)$.  Writing $z=w_n+u$ and using
-$n\e^{-C_0-w_n}=w_n/a$, one has
+$\phi_n(w_n)-\phi_n(z)=\BigO((\log\log n)^2)$.  Writing $z=w_n+u$ and using
+$n\EulerE^{-C_0-w_n}=w_n/a$, one has
 \[
- \phi_n'(w_n+u)=\frac{w_n(\e^{-u}-1)-u}{a}.
+ \phi_n'(w_n+u)=\frac{w_n(\EulerE^{-u}-1)-u}{a}.
 \]
 For $u\le0$ this gives a loss at least $w_nu^2/(2a)$; for $0\le u\le1$ it gives the same
 bound up to an absolute constant.  A displacement $u\ge1$ already costs a fixed positive
-multiple of $w_n$.  Since $w_n\asymp\log n$ while $(\log\log n)^2=o(w_n)$, every maximizer
+multiple of $w_n$.  Since $w_n\asymp\log n$ while $(\log\log n)^2=\LittleO(w_n)$, every maximizer
 therefore satisfies
 \[
- z=w_n+O\!\left(\frac{\log\log n}{\sqrt{w_n}}\right)=w_n+o(1).
+ z=w_n+O\!\left(\frac{\log\log n}{\sqrt{w_n}}\right)=w_n+\LittleO(1).
 \]
 Since
-$\theta=s2^{-r}=\e^{-C_0-z}$ and
-$n\e^{-C_0-w_n}=w_n/a$, this gives \eqref{eq:annular-location}.
+$\theta=s2^{-r}=\EulerE^{-C_0-z}$ and
+$n\EulerE^{-C_0-w_n}=w_n/a$, this gives \eqref{eq:annular-location}.
 \end{proof}
 
 Let $R=2^k$, $L=\log R$, and $d=\pi^{-1}\sqrt{3/2}$.  Since
 $c(k+1)=d(L+a)$, \eqref{eq:annular-main-compact} becomes
 \begin{equation}
- \log\max_{R\le x\le2R}|\Phiup(x)|
+ \log\max_{R\le x\le2R}|\FourierTwoPi{\RvachevUp}(x)|
  =-\frac{L^2}{2a}-\kappa_\infty L
  -\frac{W(d(L+a))^2+2W(d(L+a))}{2a}
- +O((\log\log\log R)^2).
+ +\BigO((\log\log\log R)^2).
  \label{eq:annular-physical}
 \end{equation}
 The extra term begins
 \begin{equation}
  -\frac{(\log\log R)^2}{2a}
  +\frac{\log\log R\,\log\log\log R}{a}
- +O(\log\log R).
+ +\BigO(\log\log R).
  \label{eq:second-lognormal}
 \end{equation}
 Thus the annular maximum is smaller than the left-endpoint envelope
@@ -2790,13 +2783,13 @@ and
 \begin{equation}
  \boxed{\displaystyle
  M_{m2^k}\sim
- \frac{\mathcal H(1)\abs{\mathcal H(m)}}{\e(k+1)}
+ \frac{\mathcal H(1)\AbsoluteValue{\mathcal H(m)}}{\EulerE(k+1)}
  (m2^k)^{-(k+1)}.}
  \label{eq:odd-multiple-amplitude}
 \end{equation}
 In particular,
 \begin{equation}
- M_{2^k}\sim\frac{\mathcal H(1)^2}{\e(k+1)}2^{-k(k+1)}.
+ M_{2^k}\sim\frac{\mathcal H(1)^2}{\EulerE(k+1)}2^{-k(k+1)}.
  \label{eq:power-two-first-lobe}
 \end{equation}
 \end{theorem}
@@ -2805,45 +2798,45 @@ In particular,
 Put $N=m2^k$.  Splitting the product at $h=k$ and using the integral-periodicity of the
 sine numerators gives the exact zero-safe identity
 \begin{equation}
- \abs{\Phiup(N+t)}
+ \AbsoluteValue{\FourierTwoPi{\RvachevUp}(N+t)}
  =\left(\frac{t}{N+t}\right)^{k+1}
-   \frac{\abs{\Phiup(t)}}{\abs{\Phiup(t/2^{k+1})}}
+   \frac{\AbsoluteValue{\FourierTwoPi{\RvachevUp}(t)}}{\AbsoluteValue{\FourierTwoPi{\RvachevUp}(t/2^{k+1})}}
    \mathcal H\!\left(m+\frac{t}{2^k}\right),
  \qquad 0\le t\le1.
  \label{eq:odd-multiple-exact}
 \end{equation}
 Indeed, the first $k+1$ sine numerators have the same absolute values as those of
-$\Phiup(t)$, the denominator quotient is $(t/(N+t))^{k+1}$, and reindexing the two tails
+$\FourierTwoPi{\RvachevUp}(t)$, the denominator quotient is $(t/(N+t))^{k+1}$, and reindexing the two tails
 produces the remaining quotient and $\mathcal H$ factor.
 
 Uniformly for $0\le t\le1$,
-$\Phiup(t/2^{k+1})\to1$,
+$\FourierTwoPi{\RvachevUp}(t/2^{k+1})\to1$,
 $\mathcal H(m+t/2^k)\to\mathcal H(m)$, and
 $(1+t/N)^{-(k+1)}\to1$.  Hence
 \begin{equation}
- \abs{\Phiup(N+t)}
- =N^{-(k+1)}\abs{\mathcal H(m)}\,t^{k+1}\Phiup(t)(1+o(1))
+ \AbsoluteValue{\FourierTwoPi{\RvachevUp}(N+t)}
+ =N^{-(k+1)}\AbsoluteValue{\mathcal H(m)}\,t^{k+1}\FourierTwoPi{\RvachevUp}(t)(1+\LittleO(1))
  \label{eq:odd-multiple-uniform}
 \end{equation}
 uniformly on $[0,1]$.  On any fixed neighborhood of $1$ the logarithmic derivative of the omitted multiplier is
-$\bigO((k+1)/N)+\bigO(2^{-k})=o(1)$, by local uniform convergence of the product and its
-derivative.  Thus the critical-point equation below is perturbed only by $o(1)$.
-On $[0,1)$ the function $\Phiup(t)$ is positive, and
+$\BigO((k+1)/N)+\BigO(2^{-k})=\LittleO(1)$, by local uniform convergence of the product and its
+derivative.  Thus the critical-point equation below is perturbed only by $\LittleO(1)$.
+On $[0,1)$ the function $\FourierTwoPi{\RvachevUp}(t)$ is positive, and
 \Cref{prop:zero-divisor} at the simple zero $1$ gives
 \begin{equation}
- \Phiup(t)=\mathcal H(1)(1-t)(1+\bigO(1-t)).
+ \FourierTwoPi{\RvachevUp}(t)=\mathcal H(1)(1-t)(1+\BigO(1-t)).
  \label{eq:Phi-near-one}
 \end{equation}
 
-Let $p=k+1$.  A maximizer of $t^p\Phiup(t)$ must tend to $1$: values on
+Let $p=k+1$.  A maximizer of $t^p\FourierTwoPi{\RvachevUp}(t)$ must tend to $1$: values on
 $[0,1-\delta]$ are exponentially smaller than the value at $1-1/p$.  At its interior
 maximizer $t_p$, logarithmic differentiation gives
-$p/t_p+\Phiup'(t_p)/\Phiup(t_p)=0$.  Equation \eqref{eq:Phi-near-one} implies
-$(1-t)\Phiup'(t)/\Phiup(t)\to-1$, so $p(1-t_p)\to1$.  Consequently
-$t_p^p\to\e^{-1}$ and
-$p\Phiup(t_p)\to\mathcal H(1)$.  For the exact lobe expression, logarithmic
-differentiation adds only the $o(1)$ term estimated above, so its critical equation gives
-$p(1-t_k)=1+o(1)$ by the same argument.  Substitution into the uniform value asymptotic
+$p/t_p+\FourierTwoPi{\RvachevUp}'(t_p)/\FourierTwoPi{\RvachevUp}(t_p)=0$.  Equation \eqref{eq:Phi-near-one} implies
+$(1-t)\FourierTwoPi{\RvachevUp}'(t)/\FourierTwoPi{\RvachevUp}(t)\to-1$, so $p(1-t_p)\to1$.  Consequently
+$t_p^p\to\EulerE^{-1}$ and
+$p\FourierTwoPi{\RvachevUp}(t_p)\to\mathcal H(1)$.  For the exact lobe expression, logarithmic
+differentiation adds only the $\LittleO(1)$ term estimated above, so its critical equation gives
+$p(1-t_k)=1+\LittleO(1)$ by the same argument.  Substitution into the uniform value asymptotic
 \eqref{eq:odd-multiple-uniform} proves
 \eqref{eq:odd-multiple-location}--\eqref{eq:odd-multiple-amplitude}.  Taking $m=1$ gives
 \eqref{eq:power-two-first-lobe}.
@@ -2855,29 +2848,29 @@ $p(1-t_k)=1+o(1)$ by the same argument.  Substitution into the uniform value asy
 \label{thm:dyadic-valleys}
 Fix an integer $r\ge0$, and put
 \[
- b:=r+1,
+ b\DefinitionEquals{}r+1,
  \qquad
- d:=1+\vtwo(b),
+ d\DefinitionEquals1+\TwoAdicValuation(b),
  \qquad
- N:=2^{n-1}.
+ N\DefinitionEquals2^{n-1}.
 \]
 Let $\xi_{N+r}$ be the unique critical point in $(N+r,N+r+1)$ and
-$M_{N+r}=\abs{\Phiup(\xi_{N+r})}$.  Then, as $n\to\infty$,
+$M_{N+r}=\AbsoluteValue{\FourierTwoPi{\RvachevUp}(\xi_{N+r})}$.  Then, as $n\to\infty$,
 \begin{align}
  \xi_{N+r}
- &=N+b-\frac{db}{n}+o(n^{-1}),
+ &=N+b-\frac{db}{n}+\LittleO(n^{-1}),
  \label{eq:valley-location}\\
  M_{N+r}
  &\sim
- \abs{\Phiup(1/2)\Phiup(b/2^d)}
+ \AbsoluteValue{\FourierTwoPi{\RvachevUp}(1/2)\FourierTwoPi{\RvachevUp}(b/2^d)}
  \left(\frac bN\right)^n
- \left(\frac d{\e n}\right)^d.
+ \left(\frac d{\EulerE n}\right)^d.
  \label{eq:valley-amplitude}
 \end{align}
 In particular,
 \begin{equation}
  \log M_{N+r}
- =-\frac{(\log N)^2}{\log2}+\bigO(\log N).
+ =-\frac{(\log N)^2}{\log2}+\BigO(\log N).
  \label{eq:valley-log-rate}
 \end{equation}
 The leading quadratic coefficient in \eqref{eq:valley-log-rate} is twice the coefficient in
@@ -2888,24 +2881,24 @@ $E_\kappa$.
 Write $x=N+z$, $r<z<b$, in the exact boundary identity
 \eqref{eq:dyadic-boundary}, and define
 \[
- Q_n(z):=
- \frac{\abs{\Phiup(\tfrac12+z/(2N))}}
-      {\abs{\Phiup(z/(2N))}}
+ Q_n(z)\DefinitionEquals
+ \frac{\AbsoluteValue{\FourierTwoPi{\RvachevUp}(\tfrac12+z/(2N))}}
+      {\AbsoluteValue{\FourierTwoPi{\RvachevUp}(z/(2N))}}
  \left(1+\frac zN\right)^{-n},
  \qquad
- A_n(z):=Q_n(z)z^n\abs{\Phiup(z)}.
+ A_n(z)\DefinitionEquals{}Q_n(z)z^n\AbsoluteValue{\FourierTwoPi{\RvachevUp}(z)}.
 \]
 For all sufficiently large $n$ the denominator in $Q_n$ is nonzero on $[r,b]$.
 Uniformly on this interval,
 \begin{equation}
- Q_n(z)\longrightarrow Q_\infty:=\abs{\Phiup(1/2)},
+ Q_n(z)\longrightarrow Q_\infty\DefinitionEquals\AbsoluteValue{\FourierTwoPi{\RvachevUp}(1/2)},
 \label{eq:valley-uniform-factors}
 \end{equation}
 because $n/N\to0$.  Hence
 \begin{equation}
  M_{N+r}=N^{-n}A_n(z_{n,r})
  =N^{-n}\max_{r\le z\le b}A_n(z),
- \qquad z_{n,r}:=\xi_{N+r}-N.
+ \qquad z_{n,r}\DefinitionEquals\xi_{N+r}-N.
  \label{eq:valley-exact-max}
 \end{equation}
 Indeed, this is exactly \eqref{eq:dyadic-boundary} in the open interval; at both
@@ -2915,13 +2908,13 @@ $\xi_{N+r}$.
 
 By \eqref{eq:zero-local-coefficient}, as $z\uparrow b$,
 \[
- \abs{\Phiup(z)}
- =D_b(b-z)^d(1+\bigO(b-z)),
+ \AbsoluteValue{\FourierTwoPi{\RvachevUp}(z)}
+ =D_b(b-z)^d(1+\BigO(b-z)),
  \qquad
- D_b=b^{-d}\abs{\Phiup(b/2^d)}.
+ D_b=b^{-d}\AbsoluteValue{\FourierTwoPi{\RvachevUp}(b/2^d)}.
 \]
 Choose $\delta_0>0$ so small that the local expansion bounds
-$|\Phiup(z)|$ above and below by fixed positive multiples of $(b-z)^d$ on
+$|\FourierTwoPi{\RvachevUp}(z)|$ above and below by fixed positive multiples of $(b-z)^d$ on
 $[b-\delta_0,b]$.  By \eqref{eq:valley-uniform-factors}, $Q_n$ is bounded above
 and below there by positive constants.  Consequently the trial point $z=b-db/n$
 has
@@ -2930,58 +2923,58 @@ has
 \]
 for large $n$, whereas $A_n(z)$ is exponentially smaller when
 $z\le b-\delta_0$.  On the remaining interval put $u=n(b-z)/b$.  Since
-$(1-u/n)^n\le \e^{-u}$,
+$(1-u/n)^n\le \EulerE^{-u}$,
 \[
- A_n(z)\le C b^{n+d}n^{-d}u^d\e^{-u}.
+ A_n(z)\le C b^{n+d}n^{-d}u^d\EulerE^{-u}.
 \]
 Choose $U>d$ so large that this upper bound for $u\ge U$ is smaller than the
 trial-point lower bound.  It follows that the exact maximizing coordinate
 \[
- u_{n,r}:=\frac{n(b-z_{n,r})}{b}
+ u_{n,r}\DefinitionEquals\frac{n(b-z_{n,r})}{b}
 \]
 lies in the fixed compact interval $[0,U]$.  Uniformly for $u\in[0,U]$, the local
 zero expansion and \eqref{eq:valley-uniform-factors} give
 \[
  \frac{A_n(b-bu/n)}{Q_\infty D_b b^{n+d}n^{-d}}
  =\frac{Q_n(b-bu/n)}{Q_\infty}
-   u^d\left(1-\frac un\right)^n(1+o(1))
- \longrightarrow u^d\e^{-u}.
+   u^d\left(1-\frac un\right)^n(1+\LittleO(1))
+ \longrightarrow u^d\EulerE^{-u}.
 \]
-The function $u^d\e^{-u}$ has its unique maximum at $u=d$, with value $d^d\e^{-d}$.
+The function $u^d\EulerE^{-u}$ has its unique maximum at $u=d$, with value $d^d\EulerE^{-d}$.
 Every convergent subsequence of the exact maximizers $u_{n,r}$ must therefore maximize
 this limiting function; uniqueness forces
 \[
  u_{n,r}\longrightarrow d,
  \qquad
- b-z_{n,r}=\frac{db}{n}+o(n^{-1}),
+ b-z_{n,r}=\frac{db}{n}+\LittleO(n^{-1}),
 \]
 and uniform convergence also gives
 \[
  \max_{r\le z\le b}A_n(z)
- \sim Q_\infty D_b b^{n+d}n^{-d}d^d\e^{-d}.
+ \sim Q_\infty D_b b^{n+d}n^{-d}d^d\EulerE^{-d}.
 \]
-Insert $D_b=b^{-d}\abs{\Phiup(b/2^d)}$ into
+Insert $D_b=b^{-d}\AbsoluteValue{\FourierTwoPi{\RvachevUp}(b/2^d)}$ into
 \eqref{eq:valley-exact-max} to obtain \eqref{eq:valley-amplitude}; the location statement
 is \eqref{eq:valley-location}.  Finally,
-$-n\log N=-(\log N)^2/a+\bigO(\log N)$, proving
+$-n\log N=-(\log N)^2/a+\BigO(\log N)$, proving
 \eqref{eq:valley-log-rate}.
 \end{proof}
 
 For example, in the first interval after $N=2^{n-1}$, $r=0$, $b=d=1$, and
 \begin{equation}
- M_N\sim\frac{\Phiup(1/2)^2}{\e n}N^{-n},
+ M_N\sim\frac{\FourierTwoPi{\RvachevUp}(1/2)^2}{\EulerE n}N^{-n},
  \qquad
- \xi_N=N+1-\frac1n+o(n^{-1}).
+ \xi_N=N+1-\frac1n+\LittleO(n^{-1}).
  \label{eq:first-dyadic-valley}
 \end{equation}
 Numerically,
-$\Phiup(1/2)=0.553771275888810\ldots$.
+$\FourierTwoPi{\RvachevUp}(1/2)=0.553771275888810\ldots$.
 
 \subsection{Consequences for the sequence of extrema}
 
 \begin{corollary}[The upper envelope is sharp but not two-sided]
 \label{cor:extrema-limsup-liminf}
-For $M_m=\max_{[m,m+1]}\abs{\Phiup}$,
+For $M_m=\max_{[m,m+1]}\AbsoluteValue{\FourierTwoPi{\RvachevUp}}$,
 \begin{equation}
  0<\limsup_{m\to\infty}\frac{M_m}{E_{\kappa_\infty}(m)}<\infty,
  \qquad
@@ -2994,14 +2987,14 @@ approach one nonzero amplitude.
 
 \begin{proof}
 The upper bound follows from \eqref{eq:uniform-envelope}.  Let
-$x_n=2^n(2/3)$ and $m_n=\floor{x_n}$.  The local maximum in the containing unit interval is
-at least $\abs{\Phiup(x_n)}$, and \eqref{eq:exact-peak-ray} gives a positive lower bound
+$x_n=2^n(2/3)$ and $m_n=\Floor{x_n}$.  The local maximum in the containing unit interval is
+at least $\AbsoluteValue{\FourierTwoPi{\RvachevUp}(x_n)}$, and \eqref{eq:exact-peak-ray} gives a positive lower bound
 after division by $E_{\kappa_\infty}(m_n)$; changing the argument by less than one changes
 $E_{\kappa_\infty}$ by a factor tending to one.  This proves the positive limsup.
 
 For the liminf, take $m=N+r$ with fixed $r$.  Comparing
 \eqref{eq:valley-log-rate} with
-$\log E_{\kappa_\infty}(N)=-(\log N)^2/(2a)+\bigO(\log N)$ shows that the quotient tends to
+$\log E_{\kappa_\infty}(N)=-(\log N)^2/(2a)+\BigO(\log N)$ shows that the quotient tends to
 zero.
 \end{proof}
 
@@ -3013,21 +3006,21 @@ normalization does not exist.
 \label{sec:intermediate-rates}
 
 The boundary identity also explains why many intermediate effective decay rates appear.
-Suppose $N=2^{n-1}$, $z=z_n=o(N)$, and $z_n\to\infty$.  From
+Suppose $N=2^{n-1}$, $z=z_n=\LittleO(N)$, and $z_n\to\infty$.  From
 \eqref{eq:dyadic-boundary}, provided the tail ratio remains bounded away from zero and
 infinity,
 \begin{equation}
- \log\abs{\Phiup(N+z_n)}
- =\log\abs{\Phiup(z_n)}+n\log\frac{z_n}{N}+o(n).
+ \log\AbsoluteValue{\FourierTwoPi{\RvachevUp}(N+z_n)}
+ =\log\AbsoluteValue{\FourierTwoPi{\RvachevUp}(z_n)}+n\log\frac{z_n}{N}+\LittleO(n).
  \label{eq:intermediate-master}
 \end{equation}
 If $\log z_n\sim\alpha\log N$ with $0\le\alpha<1$ and $z_n$ itself follows a typical
 fixed-phase decay law, then substitution of \eqref{eq:typical-ray} into
 \eqref{eq:intermediate-master} gives the quadratic coefficient
 \begin{equation}
- \log\abs{\Phiup(N+z_n)}
+ \log\AbsoluteValue{\FourierTwoPi{\RvachevUp}(N+z_n)}
  =-\frac{1-\alpha+\alpha^2/2}{a}(\log N)^2
-  +\bigO(\log N)+o((\log N)^2).
+  +\BigO(\log N)+\LittleO((\log N)^2).
  \label{eq:intermediate-quadratic}
 \end{equation}
 The coefficient decreases continuously from $1/a$ at $\alpha=0$ to $1/(2a)$ as
@@ -3040,29 +3033,29 @@ extrema.
 
 The dyadic product belongs to a natural one-parameter family.  Let $b>1$ and define
 \begin{equation}
- \Phi_b(z):=\prod_{n=0}^{\infty}
- \sinc\!\left(\frac{\pi z}{b^n}\right).
+ \GeometricSincProduct{b}(z)\DefinitionEquals\prod_{n=0}^{\infty}
+ \SincRad\!\left(\frac{\pi z}{b^n}\right).
  \label{eq:Phi-b}
 \end{equation}
-Local uniform convergence follows from $\sinc w=1-w^2/6+\bigO(w^4)$ and
+Local uniform convergence follows from $\SincRad w=1-w^2/6+\BigO(w^4)$ and
 $\sum b^{-2n}<\infty$.  The product is therefore entire for every real $b>1$.
 
 \subsection{Global and arbitrary-radius Pochhammer factorizations}
 
 \begin{proposition}[Global spectral Pochhammer factorization]
 \label{prop:global-spectral-pochhammer}
-For every $b>1$ and $z\in\C$,
+For every $b>1$ and $z\in\ComplexNumbers$,
 \begin{equation}
  \boxed{\displaystyle
- \Phi_b(z)=\prod_{\ell=1}^{\infty}
- \left(\frac{z^2}{\ell^2};b^{-2}\right)_\infty.}
+ \GeometricSincProduct{b}(z)=\prod_{\ell=1}^{\infty}
+ \QPochhammer{z^2/\ell^2}{b^{-2}}{\infty}.}
  \label{eq:global-spectral-pochhammer}
 \end{equation}
 More generally, for the tail
-$R_{b,m}(z):=\prod_{n=m}^{\infty}\sinc(\pi z/b^n)$,
+$R_{b,m}(z)\DefinitionEquals\prod_{n=m}^{\infty}\SincRad(\pi z/b^n)$,
 \begin{equation}
  R_{b,m}(z)=\prod_{\ell=1}^{\infty}
- \left(\frac{z^2}{\ell^2b^{2m}};b^{-2}\right)_\infty.
+ \QPochhammer{z^2/(\ell^2b^{2m})}{b^{-2}}{\infty}.
  \label{eq:global-spectral-pochhammer-tail}
 \end{equation}
 Both products converge locally uniformly.
@@ -3071,7 +3064,7 @@ Both products converge locally uniformly.
 \begin{proof}
 Euler's sine product gives
 \[
- \sinc\!\left(\frac{\pi z}{b^n}\right)
+ \SincRad\!\left(\frac{\pi z}{b^n}\right)
  =\prod_{\ell=1}^{\infty}
   \left(1-\frac{z^2}{\ell^2b^{2n}}\right).
 \]
@@ -3088,25 +3081,25 @@ $\ell$ proves \eqref{eq:global-spectral-pochhammer}; replacing $z$ by $z/b^m$ pr
 
 \begin{corollary}[Zero divisor for an integer ratio]
 \label{cor:integer-ratio-zero-divisor}
-If $b\ge2$ is an integer, the nonzero zeros of $\Phi_b$ are precisely the nonzero integers.
+If $b\ge2$ is an integer, the nonzero zeros of $\GeometricSincProduct{b}$ are precisely the nonzero integers.
 The zero at $M\ne0$ has multiplicity
 \[
- 1+\nu_b(|M|),
+ 1+\BasePowerValuation{b}(|M|),
  \qquad
- \nu_b(M):=\max\{j\ge0:b^j\mid M\}.
+ \BasePowerValuation{b}(M)\DefinitionEquals\max\{j\ge0:b^j\mid M\}.
 \]
 \end{corollary}
 
 \begin{proof}
 In \eqref{eq:global-spectral-pochhammer}, a zero at $M$ occurs once for every representation
 $|M|=\ell b^n$ with $\ell\ge1$, $n\ge0$.  These representations correspond exactly to
-$0\le n\le\nu_b(|M|)$.
+$0\le n\le\BasePowerValuation{b}(|M|)$.
 \end{proof}
 
 For an integer $J\ge1$, put
 \[
- H_J^{(s)}:=\sum_{\ell=1}^{J}\ell^{-s},
- \qquad d_{J,k}:=\frac{\zeta(2k)-H_J^{(2k)}}{k}.
+ H_J^{(s)}\DefinitionEquals\sum_{\ell=1}^{J}\ell^{-s},
+ \qquad d_{J,k}\DefinitionEquals\frac{\zeta(2k)-H_J^{(2k)}}{k}.
 \]
 
 \begin{theorem}[Arbitrary-radius finite-zero extraction]
@@ -3116,7 +3109,7 @@ If $|z|<(J+1)b^m$, then
 \begin{align}
  R_{b,m}(z)
  ={}&\prod_{\ell=1}^{J}
- \left(\frac{z^2}{\ell^2b^{2m}};b^{-2}\right)_\infty \notag\\
+ \QPochhammer{z^2/(\ell^2b^{2m})}{b^{-2}}{\infty} \notag\\
  &\times\exp\!\left(
   -\sum_{k=1}^{\infty}
    \frac{d_{J,k}}{1-b^{-2k}}
@@ -3141,7 +3134,7 @@ series is absolutely convergent for $|u|<J+1$, and
  \right],
 \end{align*}
 which is \eqref{eq:arbitrary-zero-extraction}.  Finally
-$\zeta(2k)-H_J^{(2k)}=(J+1)^{-2k}(1+o(1))$, so the root test gives the stated exact
+$\zeta(2k)-H_J^{(2k)}=(J+1)^{-2k}(1+\LittleO(1))$, so the root test gives the stated exact
 radius.  The next unextracted zeros at $u=\pm(J+1)$ give the same geometric explanation.
 \end{proof}
 
@@ -3161,8 +3154,8 @@ $\phi(t)=\log|\sin(\pi t)|$, with $\phi(0)=-\infty$.
 Let $b\ge2$ be an integer, let $N\ge0$, $1\le y<b$, and $z=\{y\}$.  In the extended
 real line,
 \begin{align}
- \log|\Phi_b(b^Ny)|
- ={}&\log|\Phi_b(y)|-N\log(\pi y)
+ \log|\GeometricSincProduct{b}(b^Ny)|
+ ={}&\log|\GeometricSincProduct{b}(y)|-N\log(\pi y)
  -\frac{\log b}{2}N(N+1) \notag\\
  &+\sum_{k=1}^{N}\phi(T_b^kz).
  \label{eq:b-adic-shell}
@@ -3173,7 +3166,7 @@ At a zero, both sides are interpreted as $-\infty$.
 \begin{proof}
 Reindexing \eqref{eq:Phi-b} gives
 \[
- \Phi_b(b^Ny)=\Phi_b(y)\prod_{k=1}^{N}\sinc(\pi b^ky).
+ \GeometricSincProduct{b}(b^Ny)=\GeometricSincProduct{b}(y)\prod_{k=1}^{N}\SincRad(\pi b^ky).
 \]
 Because $b$ is an integer,
 $|\sin(\pi b^ky)|=|\sin(\pi T_b^kz)|$.  Take absolute values and logarithms and use
@@ -3182,22 +3175,22 @@ $\sum_{k=1}^{N}k\log b=\tfrac12N(N+1)\log b$.
 
 \begin{theorem}[Fixed-ray and typical integer-ratio decay]
 \label{thm:b-adic-ray}
-Let $b\ge2$ be an integer and $1\le y<b$.  Assume $\Phi_b(y)\ne0$ and that
+Let $b\ge2$ be an integer and $1\le y<b$.  Assume $\GeometricSincProduct{b}(y)\ne0$ and that
 \[
- \alpha_b(y):=\lim_{N\to\infty}\frac1N
+ \alpha_b(y)\DefinitionEquals\lim_{N\to\infty}\frac1N
  \sum_{k=1}^{N}\phi(T_b^kz)
 \]
 exists and is finite.  For $x_N=b^Ny$,
 \begin{equation}
- \log|\Phi_b(x_N)|
+ \log|\GeometricSincProduct{b}(x_N)|
  =-\frac{(\log x_N)^2}{2\log b}
-  -\kappa_b(\alpha_b(y))\log x_N+o(\log x_N),
+  -\kappa_b(\alpha_b(y))\log x_N+\LittleO(\log x_N),
  \label{eq:b-adic-ray}
 \end{equation}
 where
 \begin{equation}
  \kappa_b(\alpha)
- :=\frac{\log\pi+\tfrac12\log b-\alpha}{\log b}.
+ \DefinitionEquals\frac{\log\pi+\tfrac12\log b-\alpha}{\log b}.
  \label{eq:kappa-b-alpha}
 \end{equation}
 For Lebesgue-almost every $y\in(1,b)$,
@@ -3214,9 +3207,9 @@ Put $B=\log b$.  If the Birkhoff average is $\alpha_b(y)$, then
 \eqref{eq:b-adic-shell} is
 \[
  -\frac B2N^2
- +N\left(\alpha_b(y)-\log(\pi y)-\frac B2\right)+o(N)
+ +N\left(\alpha_b(y)-\log(\pi y)-\frac B2\right)+\LittleO(N)
 \]
-up to the constant $\log|\Phi_b(y)|$.  Substitute
+up to the constant $\log|\GeometricSincProduct{b}(y)|$.  Substitute
 $N=(\log x_N-\log y)/B$.  The two mixed terms involving
 $\log y\,\log x_N$ cancel, leaving
 \eqref{eq:b-adic-ray}--\eqref{eq:kappa-b-alpha}.
@@ -3230,10 +3223,10 @@ $\tfrac32+\log_2\pi=\kappa_0$.
 
 The centered form makes the mechanism especially transparent.  With
 $\psi(t)=\log|2\sin(\pi t)|$ and
-$C_b(y)=\log|\Phi_b(y)|+(\log y)^2/(2\log b)
+$C_b(y)=\log|\GeometricSincProduct{b}(y)|+(\log y)^2/(2\log b)
 +\kappa_{\mathrm{typ}}(b)\log y$, one has, away from zeros,
 \begin{align}
- &\log|\Phi_b(b^Ny)|
+ &\log|\GeometricSincProduct{b}(b^Ny)|
  +\frac{(\log(b^Ny))^2}{2\log b}
  +\kappa_{\mathrm{typ}}(b)\log(b^Ny) \notag\\
  &\qquad=\sum_{k=1}^{N}\psi(T_b^kz)+C_b(y).
@@ -3248,12 +3241,12 @@ Let $b\ge2$ be an integer, let $N\ge1$, and put
 $S_N(t)=\sum_{j=0}^{N-1}\psi(T_b^jt)$.  Then, for
 $j\ge0$,
 \begin{equation}
- \int_0^1\psi(t)\psi(T_b^jt)\dd t=\frac{\pi^2}{12b^j},
+ \int_0^1\psi(t)\psi(T_b^jt)\Differential t=\frac{\pi^2}{12b^j},
  \label{eq:b-adic-covariance}
 \end{equation}
 and
 \begin{align}
- \int_0^1S_N(t)^2\dd t
+ \int_0^1S_N(t)^2\Differential t
  &=\frac{\pi^2}{12}
  \left[N+2\sum_{j=1}^{N-1}(N-j)b^{-j}\right] \notag\\
  &=\frac{\pi^2}{12}
@@ -3277,7 +3270,7 @@ In $L^2(0,1)$,
 After replacing $t$ by $b^jt$, cosine orthogonality leaves only pairs
 $n=mb^j$, so
 \[
- \int_0^1\psi(t)\psi(T_b^jt)\dd t
+ \int_0^1\psi(t)\psi(T_b^jt)\Differential t
  =\frac12\sum_{m=1}^{\infty}\frac1{(mb^j)m}
  =\frac{\pi^2}{12b^j}.
 \]
@@ -3306,7 +3299,7 @@ the Fourier series gives $\mathcal P_b\psi=\psi/b$.  Hence, with
 one has $\mathcal P_bd=0$ and
 \begin{equation}
  S_N=\sum_{j=0}^{N-1}d\circ T_b^j-h+h\circ T_b^N,
- \qquad \norm d_2^2=\sigma_b^2.
+ \qquad \Norm d_2^2=\sigma_b^2.
  \label{eq:b-adic-Gordin}
 \end{equation}
 \begin{corollary}[Integer-ratio CLT and LIL; imported martingale theorem]
@@ -3695,8 +3688,8 @@ substrate is already represented by exact Lean declarations and which analytic b
 The Fourier image of Rvachev's up-function has one deterministic core and several genuinely
 different stochastic or extremal refinements.  The exact identity
 \[
- |\Phiup(2^ny)|
- =|\Phiup(y)|\pi^{-n}y^{-n}2^{-n(n+1)/2}
+ |\FourierTwoPi{\RvachevUp}(2^ny)|
+ =|\FourierTwoPi{\RvachevUp}(y)|\pi^{-n}y^{-n}2^{-n(n+1)/2}
  \prod_{j=1}^n|\sin(\pi2^jy)|
 \]
 separates them perfectly.  The triangular denominator produces
@@ -3713,7 +3706,7 @@ The final quantitative dictionary is:
 The other three rows have exact closed forms; the displayed $\kappa_1$ digits are spectral
 computation accompanied by a separate rigorous enclosure.
 Typical logarithms fluctuate as
-$(\pi/\sqrt2+o(1))\sqrt{(\log x/\log2)\log\log\log x}$ along the LIL extremal
+$(\pi/\sqrt2+\LittleO(1))\sqrt{(\log x/\log2)\log\log\log x}$ along the LIL extremal
 subsequences.
 Raw dyadic-annulus maxima carry an additional Lambert-$W$ term of order
 $-(\log\log x)^2/(2\log2)$.  Fixed-offset lobe maxima after powers of two can instead have
@@ -3761,9 +3754,9 @@ v = (1-t**2)/(1+t**2)
 c = sp.Rational(376189, 10**6)
 d = sp.Rational(-69093, 10**6)
 e = sp.Rational(15483, 10**6)
-F = lambda z: 1 + c*z + d*z**2 + e*z**3
+p_cert = lambda z: 1 + c*z + d*z**2 + e*z**3
 
-R = sp.cancel((u*F(u) + v*F(v)) / (2*F(2*u*v)))
+R = sp.cancel((u*p_cert(u) + v*p_cert(v)) / (2*p_cert(2*u*v)))
 lo = sp.Rational(66126807, 10**8)
 hi = sp.Rational(66134891, 10**8)
 
@@ -3789,10 +3782,11 @@ for this analytic weighted-composition operator.
 \toprule
 Symbol & Meaning\\
 \midrule
-$\Phiup=\widehat{\Up}$ & Fourier transform of Rvachev's up-function\\
+$\FourierTwoPi{\RvachevUp}$ & Fourier transform of Rvachev's up-function under the
+$\EulerE^{-2\pi\ImaginaryUnit t\xi}$ convention\\
 $a$ & $\log2$\\
 $T$ & doubling map $x\mapsto2x\pmod1$\\
-$s(x)$ & $\abs{\sin(\pi x)}$\\
+$s(x)$ & $\AbsoluteValue{\sin(\pi x)}$\\
 $B_n(y)$ & $\prod_{j=1}^n s(T^jy)$\\
 $E_\kappa(x)$ & $x^{-\kappa}\exp(- (\log x)^2/(2\log2))$\\
 $W_\kappa(y)$ & bounded dyadic phase factor in \eqref{eq:master-normalization}\\
@@ -3800,7 +3794,7 @@ $\mathcal L_q$ & weighted Perron operator \eqref{eq:transfer-operator}\\
 $\rho_q$ & Perron root of $\mathcal L_q$\\
 $\Lambda_q$ & $\rho_q^{1/q}$, the $L^q$ numerator growth per dyadic level\\
 $\kappa_q$ & sharp power in the normalized $L^q$ shell decay\\
-$M_m$ & unique maximum of $\abs{\Phiup}$ on $[m,m+1]$\\
+$M_m$ & unique maximum of $\AbsoluteValue{\FourierTwoPi{\RvachevUp}}$ on $[m,m+1]$\\
 \bottomrule
 \end{tabularx}
 \end{center}
