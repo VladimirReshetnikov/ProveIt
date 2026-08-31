@@ -93,9 +93,9 @@ crosswalk.
 The delivered `repository_audit.md` had inspected zero TeX files. The repaired
 audit reads the repository recursively while excluding this newly filed
 package directory. Against the final merged corpus it reads 188 prior TeX
-files (387,884 lines; 16,696,934 bytes; raw-byte
+files (388,265 lines; 16,718,131 bytes; raw-byte
 concatenated SHA-256
-`db617ceba02db5fe80f004f5d88e506fe9fe194c93d494848acb9d6bb0cf8997`).
+`85aef1b1e9db41e6e73dd4290ad6b96eb9321fbc8529c103be9de505809c2a10`).
 All six advertised contribution clusters have substantial prior textual
 overlap, and no theorem-level novelty is accepted on intake. The
 divisor/zeta/count/heat/cumulant spine specializes existing Exponents and

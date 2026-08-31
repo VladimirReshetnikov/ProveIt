@@ -4357,6 +4357,35 @@ They are \lean{tendsto_deriv_fabiusInv_atTop_at_zero_right} and
 \lean{tendsto_deriv_fabiusInv_atTop_at_one_left}; these are limits through
 the open interval, not finite derivatives at \(0\) or \(1\).
 
+The exact uniform modulus of this clamped inverse is now separated from the
+differential theory in \path{InverseModulus.lean}.  Its exhaustive public surface is one
+definition, \lean{fabiusIntervalMass}, and twenty theorems:
+\lean{fabiusIntervalMass_reflect},
+\lean{monotoneOn_fabiusIntervalMass_firstHalf},
+\lean{antitoneOn_fabiusIntervalMass_secondHalf},
+\lean{fabiusReal_sub_le_sub}, \lean{fabiusReal_add_le},
+\lean{fabiusInv_sub_le_sub_of_mem_Icc},
+\lean{fabiusInv_sub_le_sub_of_le}, \lean{fabiusInv_sub_le_sub},
+\lean{fabiusInv_add_le}, \lean{abs_fabiusInv_sub_le},
+\lean{dist_fabiusInv_le}, \lean{fabiusInv_min_one},
+\lean{isGreatest_abs_fabiusInv_sub}, \lean{sSup_abs_fabiusInv_sub_eq},
+\lean{isGreatest_abs_fabiusInv_sub_Icc},
+\lean{sSup_abs_fabiusInv_sub_Icc_eq},
+\lean{abs_fabiusInv_sub_lt_of_abs_sub_lt_fabiusReal},
+\lean{abs_fabiusInv_sub_le_of_abs_sub_le_fabiusReal},
+\lean{fabiusReal_le_abs_sub_of_le_abs_fabiusInv_sub}, and
+\lean{forall_abs_fabiusInv_sub_lt_iff}.
+For every nonnegative interval length, the mass increment is reflection-invariant,
+increases toward the centered interval, and then decreases.  The resulting endpoint
+minimum gives the ordered and order-free inverse-gap bounds, subadditivity, absolute and
+metric self-moduli, saturation at one, and attained exact \path{IsGreatest}/\path{sSup}
+moduli over both all real inputs and unit-interval inputs.  The final four theorems are the
+strict and closed effective-injectivity bounds, their contrapositive separation form, and
+the exact uniform strict-threshold biconditional.  This structural API does not claim the
+computability report's closed \(\Delta_r\) lower bound, recursive-modulus packaging,
+tolerant bisection realizer, sequential computability, combined computable-real-function
+theorem, or bit-complexity estimate.
+
 \subsection{Effective dyadic continuity of the inverse}
 \label{sec:fabius-inverse-effective-continuity}
 
@@ -4426,6 +4455,63 @@ clause.  The module supplies no tolerant-bisection realizer or sequential-comput
 theorem, and therefore no combined \lean{IsComputableRealFunction} result.  It also
 does not construct a logarithmic scale selector \(r(n)\), an exact least or ceiling
 denominator, or an input-bit complexity estimate.
+
+\subsection{Logarithmic reciprocal continuity of the inverse}
+\label{sec:fabius-inverse-logarithmic-continuity}
+
+The downstream module \path{FabiusInverseLogarithmicModulus.lean} replaces the
+coarse choice \(r=n\) by the primitive-recursive selector
+
+\begin{equation}
+ r_{\log}(n)=\operatorname{Nat.log2}(n)+1.                \label{eq:inverse-logarithmic-order}
+\end{equation}
+
+This is \lean{inverseFabiusLogarithmicOrder}; its equation, primitive
+recursiveness, least-order property for \(n>0\), and bound \(r_{\log}(n)\le n\)
+are respectively
+\lean{inverseFabiusLogarithmicOrder_eq_succ_log2},
+\lean{inverseFabiusLogarithmicOrder_primrec},
+\lean{inverseFabiusLogarithmicOrder_isLeast}, and
+\lean{inverseFabiusLogarithmicOrder_le_self}.  In particular, for \(n>0\), it
+is exactly the least natural \(r\) satisfying \(n<2^r\).
+
+The definitions \lean{inverseFabiusLogarithmicFactorialDenominator} and
+\lean{inverseFabiusLogarithmicDeltaDenominator} take value \(1\) at zero and,
+for \(n>0\), are \(D_{\mathrm{fac}}(r_{\log}(n))\) and
+\(D_{\Delta}(r_{\log}(n))\).  The positive-input equations are
+\lean{inverseFabiusLogarithmicFactorialDenominator_of_pos} and
+\lean{inverseFabiusLogarithmicDeltaDenominator_of_pos}; primitive recursiveness
+is proved by
+\lean{inverseFabiusLogarithmicFactorialDenominator_primrec} and
+\lean{inverseFabiusLogarithmicDeltaDenominator_primrec}, and their pointwise
+comparison is
+\lean{inverseFabiusLogarithmicFactorialDenominator_le_deltaDenominator}.
+
+For either logarithmic denominator \(d\) and every \(n>0\), both boundary forms
+are available:
+\begin{equation}
+ |u-v|<d(n)^{-1}\Longrightarrow |I(u)-I(v)|<\frac1n,
+ \qquad
+ |u-v|\le d(n)^{-1}\Longrightarrow |I(u)-I(v)|<\frac1n.  \label{eq:inverse-logarithmic-moduli}
+\end{equation}
+The factorial declarations are
+\lean{abs_fabiusInv_sub_lt_inv_nat_of_lt_logarithmicFactorialDenominator} and
+\lean{abs_fabiusInv_sub_lt_inv_nat_of_le_logarithmicFactorialDenominator}; the
+Delta declarations are
+\lean{abs_fabiusInv_sub_lt_inv_nat_of_lt_logarithmicDeltaDenominator} and
+\lean{abs_fabiusInv_sub_lt_inv_nat_of_le_logarithmicDeltaDenominator}.  The
+closed input threshold still gives a strict final output because
+\(2^{-r_{\log}(n)}<1/n\).  Finally,
+\lean{fabiusInv_effectivelyUniformContinuous_logarithmic} and
+\lean{fabiusInv_effectivelyUniformContinuous_logarithmicDelta} separately
+package the factorial and report-exact Delta witnesses for
+\lean{EffectivelyUniformContinuous}.
+
+This is the exhaustive public surface of the module: three definitions and
+fifteen theorems.  It does not construct the exact endpoint-mass ceiling
+denominator or a tolerant-bisection realizer, and it makes no
+\lean{SequentiallyComputable}, combined \lean{IsComputableRealFunction}, or
+input-bit asymptotic claim.
 
 \subsection{Precise non-elementarity}
 
@@ -6626,6 +6712,17 @@ sign theorem for a real extrapolation error, or analytic acceleration result.  T
 claims remain distinct from the proved Gaussian cancellation algebra.
 \end{proof}
 
+The full \path{QuarterCatalanGerm.lean} surface is two definitions and thirteen
+theorems.  Besides the coefficient, equation, uniqueness, and injectivity declarations
+used above, its four dyadic-germ bridges are
+\lean{dyadicGermTwo_functionalEquation},
+\lean{rescale_dyadicGermTwo_eq_quadraticInverse},
+\lean{dyadicGermTwo_eq_rescale_quadraticInverse}, and
+\lean{coeff_dyadicGermTwo_succ}.  They identify the distinguished rational dyadic
+germ, after parameter rescaling by \(9/4\), with the unique Catalan inverse of
+\(X+4X^2\), and give every positive coefficient as
+\((4/9)^{m+1}(-4)^m C_m\).  This remains formal power-series algebra.
+
 \begin{theorem}[Actual Catalan jet at the quarter inverse anchor]
 \label{thm:fabius-inverse-quarter-jet}
 Let \(F:\lean{BoundedFabius}\) satisfy \(h_F:\lean{IsFabius}\,F\), and write
@@ -6645,15 +6742,17 @@ Consequently, for every \(m\in\N\),
 \end{theorem}
 
 \begin{proof}[Lean proof]
-These are
+The separate \path{FabiusInverseQuarterJet.lean} has zero definitions and exactly
+two theorems.  They are
 \lean{iteratedDeriv_centeredFabiusInv_quarter_eq_quadraticInverse} and
 \lean{iteratedDeriv_fabiusInv_five_seventy_two_succ} in
-\path{FabiusInverseQuarterJet.lean}.  The proof transfers the exact smooth
-quarter jet of the forward Fabius function through Faà di Bruno and the local
+\path{FabiusInverseQuarterJet.lean}.  The proof transfers the exact smooth quarter
+jet of the forward Fabius function through Faà di Bruno and the local
 inverse identity, then applies the scalar convolution recurrence for the
 quadratic compositional inverse.  This proves equality of jets only.  It does
 not assert equality of the inverse with a quadratic analytic germ on a
-neighborhood, nor introduce a named nonzero flat-remainder theorem.
+neighborhood, introduce a named nonzero flat-remainder theorem, or claim that
+the known nonanalytic flat defect vanishes.
 \end{proof}
 
 The polynomial in \eqref{eq:half-q-binomial-theorem} has the complete rational root locus
@@ -10923,9 +11022,11 @@ Global derivatives, value distributions, and flatness &
 \path{EffectiveFlatness.lean}, \path{SharpFlatness.lean},
 \path{FabiusFlatness.lean}\\
 Analyticity, inverse, effective inverse continuity, elementary obstruction &
-\path{NowhereAnalytic.lean}, \path{FabiusInverse.lean}, \path{InverseModulus.lean},
-\path{FabiusInverseEffectiveContinuity.lean}, \path{FabiusInverseQuarterJet.lean},
-\path{InverseMidpointDefect.lean},
+\path{NowhereAnalytic.lean}, \path{FabiusInverse.lean},
+\path{InverseMidpointDefect.lean}, \path{InverseModulus.lean},
+\path{FabiusInverseQuarterJet.lean},
+\path{FabiusInverseEffectiveContinuity.lean},
+\path{FabiusInverseLogarithmicModulus.lean},
 \path{ElementaryFunction.lean}, \path{NotElementary.lean},
 \path{InverseBranch.lean}, \path{InverseNotElementary.lean}\\
 Moments and exact arithmetic &

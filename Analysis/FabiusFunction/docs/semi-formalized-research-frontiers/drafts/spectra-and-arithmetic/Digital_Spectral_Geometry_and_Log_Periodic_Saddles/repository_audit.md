@@ -3,9 +3,9 @@
 Target: `Analysis/FabiusFunction/docs/**/*.tex`, excluding this newly filed package directory.
 
 - TeX files read: **188**
-- Total source lines: **387884**
-- Total source bytes: **16696934**
-- Concatenated-corpus SHA-256: `db617ceba02db5fe80f004f5d88e506fe9fe194c93d494848acb9d6bb0cf8997`
+- Total source lines: **388265**
+- Total source bytes: **16718131**
+- Concatenated-corpus SHA-256: `85aef1b1e9db41e6e73dd4290ad6b96eb9321fbc8529c103be9de505809c2a10`
 
 The corpus digest hashes raw file bytes concatenated in lexicographic relative-path order.
 Phrase clusters are a broad overlap screen, not a decision procedure for mathematical equivalence
@@ -15,7 +15,7 @@ or a claim of worldwide priority.
 
 ### Fourier-zero spectral zeta
 
-Matched **42** prior TeX files:
+Matched **43** prior TeX files:
 
 - `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
 - `fabius_lean_walkthrough/fabius_lean_walkthrough.tex`
@@ -59,6 +59,7 @@ Matched **42** prior TeX files:
 - `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Spectra_and_Arithmetic_Frontiers/Spectra_and_Arithmetic_Frontiers.tex`
 - `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/fabius_holonomic_frontiers_report/fabius_holonomic_frontiers.tex`
 - `semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex`
+- `semi-formalized-research-frontiers/semi-formalized-research-frontiers.tex`
 
 ### Exact digit-sum zero count
 
@@ -383,7 +384,7 @@ Matched **37** prior TeX files:
 
 ### `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
 
-- SHA-256: `7471ae0ff0905b7b9a43b6b7b55e900e9b54f9b31ba6e420b2c83517c0234d56`
+- SHA-256: `c4db92c21907898ec9a3ea888f3d7833c05b3bb7b9b23746bb6eabfc83f21374`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
 - Structural headings:
   - section: Historical note and scope
@@ -429,6 +430,7 @@ Matched **37** prior TeX files:
   - subsection: The totalized inverse
   - subsection: The exact inverse modulus
   - subsection: Effective dyadic continuity of the inverse
+  - subsection: Logarithmic reciprocal continuity of the inverse
   - subsection: Precise non-elementarity
   - section: Moments, generating functions, and reciprocal powers
   - subsection: Even and half moments
@@ -3005,7 +3007,7 @@ Matched **37** prior TeX files:
 
 ### `fabius_lean_walkthrough/fabius_lean_walkthrough.tex`
 
-- SHA-256: `a7c02649aca5652a36221964bfdf922274188400e668e81998d53bfb50731a15`
+- SHA-256: `2e33e1b7b4f4828d59516762224ac2b62b8d5b46bfe0e2f869e03f1b47803c42`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle
 - Structural headings:
   - section: Scope and conventions
@@ -6782,7 +6784,7 @@ Matched **37** prior TeX files:
 
 ### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Fabius_Computability_Report/inverse_fabius_computability.tex`
 
-- SHA-256: `17d5e306561da3b5e6c909569b89e56b68f374efbec45c9f57389cebc33be3bb`
+- SHA-256: `aec52c72078494baf4a61df8c5df586651221d946feef53854eaa268ce62db24`
 - Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
 - Structural headings:
   - section: Main result and proof architecture
@@ -6837,6 +6839,7 @@ Matched **37** prior TeX files:
   - subsection: Why the present \texttt{noncomputable} definition is not an obstacle
   - subsection: The completed structural inverse-modulus layer
   - subsection: The completed effective-uniform-continuity layer
+  - subsection: The completed logarithmic reciprocal-modulus layer
   - subsection: The remaining name-transformation module
   - subsection: Remaining formalization order
   - subsection: Reusable generic infrastructure
@@ -10660,7 +10663,7 @@ Matched **37** prior TeX files:
 
 ### `semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex`
 
-- SHA-256: `93597f21d1479cef21b9e4035b8942b8888a2b997429bcae81b90a1e6138c667`
+- SHA-256: `eb86be50ccb35ac47c415443aa094ebaa8341219440d94c49b27be2c7a3c2418`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Phase-locked Lambert-W saddle; Integer-base atomic family
 - Structural headings:
   - section: Provenance
@@ -10820,8 +10823,8 @@ Matched **37** prior TeX files:
 
 ### `semi-formalized-research-frontiers/semi-formalized-research-frontiers.tex`
 
-- SHA-256: `d16e6edb36dd1e1b0a9fe36f8fb8c87e885769a39152888571efd68a27dba483`
-- Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle
+- SHA-256: `db88215ca917b6fd77297c986eb40ae15149d58a25ec766b06afd8c60a658ff7`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle
 - Structural headings:
   - section: Consolidation map and reading conventions
   - section: Lean object crosswalk---inputs, not certification

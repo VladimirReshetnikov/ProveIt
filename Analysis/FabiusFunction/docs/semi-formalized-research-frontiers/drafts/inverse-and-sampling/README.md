@@ -69,8 +69,8 @@ New standalone intake members:
   committed and pushed.
 
 - [`Inverse_Fabius_Computability_Report/`](Inverse_Fabius_Computability_Report/),
-  *Computability of the Inverse Fabius Function* (37 A4 pp, 2,665 source
-  lines; 34 pp and 2,446 lines in the preceding revision; 29 pp at intake),
+  *Computability of the Inverse Fabius Function* (40 A4 pp, 2,787 source
+  lines; 37 pp and 2,665 lines in the preceding revision; 29 pp at intake),
   arrived on
   2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (outer SHA-256
   `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
@@ -85,16 +85,22 @@ New standalone intake members:
   a one-term recurrence lower bound stronger than the report's box estimate,
   the exact numerical `Delta_r` inequality, strict and closed versions of the
   Delta/factorial dyadic inverse moduli, primitive-recursive denominators, and
-  `EffectivelyUniformContinuous` with the simple `r=n` factorial witness. The
-  probabilistic box-event proof itself, logarithmic `r(n)`, exact ceiling
-  `d_*`, tolerant bisection, sequential computability, the combined
-  computable-real-function theorem, and precision asymptotics remain open Lean
-  work. The `d_*` claim remains denominator-minimal only for the fixed dyadic
-  proxy `2^{-r(n)}`, not the weaker target `1/n`. The synchronized three-pass
-  PDF includes the previously blank author metadata; all fonts are
-  embedded/subset and Type 3-free. The immutable five-entry arrival ledger
-  verifies the submitted payload, and the current six-entry operational
-  ledger verifies the repository-normalized package.
+  `EffectivelyUniformContinuous` with the simple `r=n` factorial witness. It
+  further exhaustively crosswalks all eighteen public declarations in
+  [`FabiusInverseLogarithmicModulus.lean`](../../../../Lean/FabiusFunction/FabiusInverseLogarithmicModulus.lean):
+  the three primitive-recursive least-order and denominator definitions and
+  fifteen theorems proving binary-length/minimality laws, positive-input
+  unfoldings, denominator comparison, strict and closed logarithmic inverse
+  moduli, and effective uniform continuity with either witness. The
+  probabilistic box-event proof itself, exact ceiling `d_*`, tolerant
+  bisection, sequential computability, the combined computable-real-function
+  theorem, and precision asymptotics remain open Lean work. The `d_*` claim
+  remains denominator-minimal only for the fixed dyadic proxy `2^{-r(n)}`, not
+  the weaker target `1/n`. The synchronized exactly-three-pass PDF is 700,414
+  bytes, includes the repaired author metadata, and embeds/subsets all fonts
+  with Libertinus present and no Type 3 fonts. The immutable five-entry
+  arrival ledger verifies the submitted payload, and the current exhaustive
+  six-entry operational ledger verifies the repository-normalized package.
 
 - [`inverse_fabius_iterates_nowhere_analytic/`](inverse_fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Inverse

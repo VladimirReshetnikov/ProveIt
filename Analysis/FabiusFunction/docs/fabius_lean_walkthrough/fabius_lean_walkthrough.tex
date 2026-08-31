@@ -908,6 +908,61 @@ These two definitions and twelve theorems are the module's complete public
 surface.  It does not provide a tolerant-bisection realizer, sequential
 computability, or a combined \nolinkurl{IsComputableRealFunction} theorem.
 
+The downstream \nolinkurl{FabiusInverseLogarithmicModulus.lean} replaces the
+coarse choice \(r=n\) by
+\[
+ r_{\log}(n)=\operatorname{Nat.log2}(n)+1.
+\]
+The definition is \nolinkurl{inverseFabiusLogarithmicOrder}.  Its exact
+binary-length equation, primitive-recursive certificate, least-order theorem
+for \(n>0\), and comparison \(r_{\log}(n)\le n\) are
+\nolinkurl{inverseFabiusLogarithmicOrder_eq_succ_log2},
+\nolinkurl{inverseFabiusLogarithmicOrder_primrec},
+\nolinkurl{inverseFabiusLogarithmicOrder_isLeast}, and
+\nolinkurl{inverseFabiusLogarithmicOrder_le_self}.  Thus, at positive \(n\),
+it is exactly the least natural \(r\) with \(n<2^r\).
+
+The other two definitions are
+\nolinkurl{inverseFabiusLogarithmicFactorialDenominator} and
+\nolinkurl{inverseFabiusLogarithmicDeltaDenominator}.  They take value one
+at zero and, at positive \(n\), evaluate the corresponding dyadic denominator
+at \(r_{\log}(n)\).  Those positive-input equations are
+\nolinkurl{inverseFabiusLogarithmicFactorialDenominator_of_pos} and
+\nolinkurl{inverseFabiusLogarithmicDeltaDenominator_of_pos}; primitive
+recursiveness is proved by
+\nolinkurl{inverseFabiusLogarithmicFactorialDenominator_primrec} and
+\nolinkurl{inverseFabiusLogarithmicDeltaDenominator_primrec}; and the
+pointwise factorial-to-Delta comparison is
+\nolinkurl{inverseFabiusLogarithmicFactorialDenominator_le_deltaDenominator}.
+
+For either logarithmic denominator \(d\), both threshold conventions give a
+strict reciprocal output estimate:
+\[
+ |u-v|<d(n)^{-1}\Longrightarrow |I(u)-I(v)|<\frac1n,\qquad
+ |u-v|\le d(n)^{-1}\Longrightarrow |I(u)-I(v)|<\frac1n
+ \quad(n>0).
+\]
+The factorial declarations are
+\nolinkurl{abs_fabiusInv_sub_lt_inv_nat_of_lt_logarithmicFactorialDenominator}
+and
+\nolinkurl{abs_fabiusInv_sub_lt_inv_nat_of_le_logarithmicFactorialDenominator};
+the Delta declarations are
+\nolinkurl{abs_fabiusInv_sub_lt_inv_nat_of_lt_logarithmicDeltaDenominator}
+and
+\nolinkurl{abs_fabiusInv_sub_lt_inv_nat_of_le_logarithmicDeltaDenominator}.
+The closed input threshold still has a strict conclusion because
+\(2^{-r_{\log}(n)}<1/n\).  Finally,
+\nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmic} and
+\nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmicDelta}
+separately package the factorial and report-exact Delta witnesses for
+\nolinkurl{EffectivelyUniformContinuous}.
+
+These three definitions and fifteen theorems are the complete public surface.
+The module does not construct the exact endpoint-mass ceiling denominator or
+a tolerant-bisection realizer, and it proves no
+\nolinkurl{SequentiallyComputable}, combined
+\nolinkurl{IsComputableRealFunction}, or input-bit asymptotic statement.
+
 The separate smooth bridge \nolinkurl{FabiusInverseQuarterJet.lean} identifies
 the complete inverse jet at the quarter anchor.  For
 \(G(y)=\operatorname{fabiusInv}(F,h_F,y)\),
@@ -3749,6 +3804,7 @@ Totalized inverse \(F^{-1}\) & \nolinkurl{fabiusInv}, \nolinkurl{fabiusOrderIso}
 Inverse curvature & \nolinkurl{deriv_deriv_fabiusInv}, \nolinkurl{deriv_deriv_fabiusInv_half}, \nolinkurl{deriv_deriv_fabiusInv_eq_zero_iff}, \nolinkurl{strictConcaveOn_fabiusInv_firstHalf}, \nolinkurl{strictConvexOn_fabiusInv_secondHalf} & \nolinkurl{FabiusInverse.lean} \\
 Exact inverse modulus & \nolinkurl{fabiusIntervalMass}, \nolinkurl{abs_fabiusInv_sub_le}, \nolinkurl{sSup_abs_fabiusInv_sub_eq}, \nolinkurl{forall_abs_fabiusInv_sub_lt_iff} & \nolinkurl{InverseModulus.lean} \\
 Effective dyadic inverse modulus & \nolinkurl{inverseFabiusFactorialDenominator}, \nolinkurl{inverseFabiusDeltaDenominator}, \nolinkurl{fabiusInv_effectivelyUniformContinuous} & \nolinkurl{FabiusInverseEffectiveContinuity.lean}; explicit primitive-recursive continuity modulus, not an inverse realizer \\
+Logarithmic reciprocal inverse modulus & \nolinkurl{inverseFabiusLogarithmicOrder}, \nolinkurl{inverseFabiusLogarithmicFactorialDenominator}, \nolinkurl{inverseFabiusLogarithmicDeltaDenominator}, \nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmic}, \nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmicDelta} & \nolinkurl{FabiusInverseLogarithmicModulus.lean}; least binary-length selector and two primitive-recursive witnesses, not an inverse realizer \\
 Actual quarter inverse jet & \nolinkurl{iteratedDeriv_centeredFabiusInv_quarter_eq_quadraticInverse}, \nolinkurl{iteratedDeriv_fabiusInv_five_seventy_two_succ} & \nolinkurl{FabiusInverseQuarterJet.lean}; equality of jets, not local analytic equality \\
 Centered Thue--Morse mixed differences & \nolinkurl{symmetricMixedDifference}, \nolinkurl{symmetricMixedDifference_polynomial_eq_coeff_card}, \nolinkurl{symmetricDyadicMixedDifference_eq_sum_thueMorseSign_smul} & \nolinkurl{ThueMorseSymmetricDifference.lean}; finite algebraic identities, with no analytic limit claim \\
 Uniform spline \(S_p\) & \nolinkurl{fabiusUniformSpline} & \nolinkurl{FabiusUniformSpline.lean} and \nolinkurl{FabiusComputability.lean} \\
@@ -3813,6 +3869,7 @@ Module & Role in the development \\
 \nolinkurl{FabiusInverse.lean} & Totalized inverse, order isomorphism on the unit interval, exact positive reciprocal derivative, exact global smoothness locus (continuity everywhere, but differentiability and every positive finite or \(C^\infty\) order exactly off the clamping endpoints), reciprocal-cubic second derivative, midpoint jet and interior curvature loci, strict closed-half curvature, and endpoint quotient/derivative blow-up. \\
 \nolinkurl{InverseModulus.lean} & Reflection and global one-sided shape of fixed-length Fabius increments, least endpoint mass, forward superadditivity, global inverse subadditivity, the attained exact totalized and unit-interval inverse moduli, and strict/closed/contrapositive/exact-threshold effective injectivity. \\
 \nolinkurl{FabiusInverseEffectiveContinuity.lean} & Two primitive-recursive explicit denominators, the factorial and elementary lower bounds for dyadic Fabius values, strict and closed dyadic inverse moduli, and the final effective-uniform-continuity package; no inverse realizer or sequential-computability theorem. \\
+\nolinkurl{FabiusInverseLogarithmicModulus.lean} & Three definitions and fifteen theorems: the primitive-recursive least binary-length order, its exact \nolinkurl{Nat.log2} formula and minimality, factorial and Delta denominators at that order, strict/closed-input reciprocal moduli, and an effective-uniform-continuity theorem for either witness; no exact endpoint-mass ceiling, tolerant-bisection realizer, sequential computability, combined computable-real-function theorem, or input-bit asymptotic. \\
 \nolinkurl{FabiusInverseQuarterJet.lean} & Full smooth derivative jet of the centered inverse at \(5/72\), identified with the factorial-scaled coefficients of the quadratic compositional inverse; this is not a local analytic identity. \\
 \nolinkurl{ImplicitPowerSeries.lean} & Nonmonic complete-adic lifting and residue-class uniqueness, with arbitrary-base and zero-constant formal implicit-root specializations over power-series rings; it does not construct or analytically realize a Fabius inverse germ. \\
 \nolinkurl{QuarterCatalanGerm.lean} & The explicit scaled quarter Catalan formal germ, its functional equation and uniqueness, and the forward/reverse rescaling bridge from \nolinkurl{dyadicGermTwo} to \nolinkurl{QuadraticInverse.inverse}. \\
@@ -4112,6 +4169,14 @@ hash.  This tranche closes raw-branch curvature, the four generic
 second-derivative formulas, and the nineteen-declaration Fabius leaf; it
 does not close branch-point vertical-tangent limits, Puiseux expansions, or
 generic phase threshold and shape theorems.
+The \nolinkurl{FabiusInverseLogarithmicModulus.lean} row is a still later
+current-tree addition inspected declaration-by-declaration on 30 August 2026.
+Its three definitions and fifteen theorems close the least logarithmic scale
+selector and both primitive-recursive reciprocal continuity witnesses only;
+the exact endpoint-mass ceiling, tolerant bisection, sequential computability,
+combined computable-real-function theorem, and input-bit asymptotics remain
+outside that leaf.  No aggregate checkpoint is fabricated for this merged
+surface.
 The title-page pin and reproduction count continue to describe the older
 audited snapshot.
 \end{remark}

@@ -4,13 +4,13 @@ COMPUTABILITY OF THE INVERSE FABIUS FUNCTION
 Contents
 --------
 inverse_fabius_computability.tex
-    Complete 2665-line, canonically styled LaTeX source of the report.  Its
-    latest update crosswalks the effective-continuity formalization described
-    below.
+    Complete 2787-line, canonically styled LaTeX source of the report.  Its
+    latest synchronized update preserves the effective-continuity crosswalk
+    and adds the logarithmic reciprocal-modulus crosswalk described below.
 
 inverse_fabius_computability.pdf
-    Current 37-page A4 rendering (693,787 bytes), rebuilt from the merged
-    source in exactly three strict serial pdfLaTeX passes.
+    Current synchronized A4 rendering, rebuilt from the merged source in
+    exactly three strict serial pdfLaTeX passes.
 
 inverse_fabius_computability_experiments.py
     Exact-rational Python supplement using only the standard library.  It
@@ -53,7 +53,10 @@ moduli, primitive-recursive denominator packaging, and effective uniform
 continuity now have matching declarations in
 `FabiusInverseEffectiveContinuity.lean`; Lean derives the endpoint inequality
 through a stronger recurrence rather than the report's random-series event.
-The probabilistic event proof, logarithmic modulus, exact ceiling denominator,
+`FabiusInverseLogarithmicModulus.lean` additionally formalizes the least
+logarithmic order, both composed denominators, the strict and closed
+reciprocal moduli, and effective uniform continuity with either logarithmic
+witness.  The probabilistic event proof, exact ceiling denominator,
 tolerant-bisection realizer, inverse sequential computability, combined
 computable-real-function theorem, and optimal input-bit law remain paper-level.
 The explicit periodic inverse correction and explicit all-orders inverse
@@ -64,7 +67,7 @@ forward computability, strict density shape, the clamped inverse and its
 inverse identities/calculus, exact dyadic inverse evaluation, and the leading
 inverse endpoint equivalent.  The report names those exact declarations and
 keeps its remaining inverse-computability declarations unqualified and
-schematic.  The live union audit scans 602 Lean modules and 8,194 public
+schematic.  The live union audit scans 603 Lean modules and 8,212 public
 declarations with zero documentation/header gaps.  No unqualified worldwide
 novelty claim is made.
 
@@ -102,33 +105,37 @@ factorial-denominator inverse moduli, primitive recursiveness of both explicit
 denominator sequences, and EffectivelyUniformContinuous for the totalized
 inverse with the simple r=n factorial-denominator witness.
 
+The logarithmic refinement is exhaustively crosswalked to all eighteen public
+declarations (three definitions and fifteen theorems) in:
+
+    Analysis/FabiusFunction/Lean/FabiusFunction/FabiusInverseLogarithmicModulus.lean
+
+That module defines the primitive-recursive least order r(n), proves its
+binary-length and least-order characterizations and r(n) <= n, composes both
+the Delta and stronger factorial denominators with r(n), proves both composed
+denominators primitive recursive, supplies strict and closed-input reciprocal
+moduli, and packages EffectivelyUniformContinuous with either witness.  The
+Delta package is the exact d(n), d(0)=1 construction stated in the report.
+
 The random-series box-event proof itself is not formalized: Lean proves its
-numerical conclusion through the stronger recurrence route.  The logarithmic
-r(n) modulus, exact ceiling denominator d_* and its qualified fixed-target
-minimality, tolerant bisection, sequential computability, the combined
-computable-real-function theorem, and input-bit asymptotics remain open Lean
-work.  The report retains their complete human proofs and imported-source
-qualifications.  The scope correction for d_* remains in force: it is
+numerical conclusion through the stronger recurrence route.  The exact
+ceiling denominator d_* and its qualified fixed-target minimality, tolerant
+bisection, sequential computability, the combined computable-real-function
+theorem, and input-bit asymptotics remain open Lean work.  The report retains
+their complete human proofs and imported-source qualifications.  The scope
+correction for d_* remains in force: it is
 denominator-minimal for the fixed dyadic proxy 2^{-r(n)}, not for the weaker
 target tolerance 1/n.
 
 Build and validation
 --------------------
-The 2665-line source uses the repository's canonical article/A4/27 mm/
+The 2787-line source uses the repository's canonical article/A4/27 mm/
 Libertinus style and was rebuilt from clean auxiliaries in exactly three
-strict serial pdfLaTeX passes.  The final 37-page, 693,787-byte PDF has the
-formerly blank author metadata populated.  Its log has no errors, unresolved
-references or citations, rerun requests, duplicate destinations, overfull
-boxes, or underfull boxes.  Every page is A4 with zero rotation.  All 22 font
-rows are embedded and subset; six are Libertinus and none is Type 3.  Text
-extraction and visual checks cover the status boundary, corpus audit,
-asymptotic caveat, Lean roadmap, proof-status table, and crosswalk.  Auxiliary
-files were removed after validation and the active checksum ledger refreshed.
-
-Current release hashes
-----------------------
-inverse_fabius_computability.tex
-    17d5e306561da3b5e6c909569b89e56b68f374efbec45c9f57389cebc33be3bb
-
-inverse_fabius_computability.pdf
-    f1fac402b23f39804175f3864dc35ed182fc0f4d5ca4646b5ad9005c9810a9b5
+strict serial pdfLaTeX passes.  The synchronized PDF has populated author
+metadata; every page is A4 with zero rotation; every font is embedded and
+subset; Libertinus is present; and no Type 3 font is used.  Text extraction
+and visual checks cover the status boundary, corpus audit, asymptotic caveat,
+Lean roadmap, proof-status tables, and both exhaustive effective-continuity
+crosswalks.  Auxiliary files were removed after validation and the six-entry
+active checksum ledger refreshed.  Exact current hashes are recorded in
+SHA256SUMS.txt.

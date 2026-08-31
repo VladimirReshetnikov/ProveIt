@@ -170,7 +170,7 @@ of an existing draft; semantic consolidation is deferred to the post-
   current 23-entry ledger passes in full.
 - [`Fabius_Rvachev_Noncommutative_Frontiers/`](Fabius_Rvachev_Noncommutative_Frontiers/),
   *Noncommutative Cumulant Frontiers for the Fabius--Rvachev Law* (26 A4 pp,
-  1336 source lines; with a 667-line experiment), arrived on 2026-08-30 with
+  1336 source lines; with a 681-line experiment), arrived on 2026-08-30 with
   all 21 payload checksums verified. The repository repair gives the report title-derived source/PDF
   stems, canonical A4/27 mm/Libertinus styling, deterministic LF CSV output,
   PNG figure selection, a three-pass build, and a verified 21-entry live
