@@ -1,8 +1,8 @@
 # Geometric-Comb Interpolation and the Fabius--Rvachev Boundary Layer
 
-> **Source-only merge status (2026-08-31).** The current TeX has 3,554 lines
+> **Source-only merge status (2026-08-31).** The current TeX has 3,553 lines
 > (SHA-256
-> `406a956ebc9ae64d9bd2a47998b15e0e62fa0dadf7f0e4147b51b42a394800ef`).
+> `2d888100650656ef2c85bb08bf9967164e0b22c1486987d7a209091fe25ab80f`).
 > The retained 68-page PDF was not rebuilt after the notation migration and is
 > not claimed to be synchronized with that source. `SHA256SUMS.txt` was
 > intentionally not refreshed: its TeX row and this README row are pending,
@@ -108,7 +108,7 @@ pdflatex -halt-on-error -file-line-error -interaction=nonstopmode geometric_comb
 
 The retained PDF is 68 A4 pages and 818043 bytes. Its SHA-256 is
 `bcd2559f1e6f4be608c291c6ef5de48108c3b0d78139ecf1a5672942d72d9b92`; the
-current TeX has 3,554 lines and the SHA-256 recorded above. Geometry, fonts,
+current TeX has 3,553 lines and the SHA-256 recorded above. Geometry, fonts,
 extractable text, build diagnostics, and
 all-page visual inspection are recorded in `pdf_preflight.json` and
 `INTAKE_AUDIT.md` for the preceding checkpoint. Build auxiliaries are

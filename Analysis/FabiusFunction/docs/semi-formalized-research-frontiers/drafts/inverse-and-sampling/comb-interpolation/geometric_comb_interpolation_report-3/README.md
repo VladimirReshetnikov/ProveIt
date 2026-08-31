@@ -1,8 +1,8 @@
 # Interpolation on a geometric comb: archival intake
 
-> **Source-only merge status (2026-08-31).** The current TeX has 2,736 lines
+> **Source-only merge status (2026-08-31).** The current TeX has 2,735 lines
 > (SHA-256
-> `eb47182f60fb5594a739bb54c211a24cca4ba267f4864f91251970d249587466`).
+> `df9456de278b3608658797ffaedf415526e487e1124a86e0907ca00c6b1cc349`).
 > The retained submitted 36-page PDF was not rebuilt after the notation
 > migration and is not claimed to be synchronized with that source.
 > `SHA256SUMS.txt` was intentionally not refreshed: its TeX row, this README

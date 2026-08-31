@@ -1,8 +1,8 @@
 # Dyadic-Comb Frontiers for the Fabius–Rvachev System
 
-> **Source-only merge status (2026-08-31).** The current root TeX has 5,648
+> **Source-only merge status (2026-08-31).** The current root TeX has 5,649
 > lines (SHA-256
-> `444b99363bcdde65433e15c0bc652e681a8b6d23d5dc1a443c32610142847d13`).
+> `24bfa9196f00223f7e4dd04344a784ab7be2049499ee739b63d38267b20d6649`).
 > The retained 66-page PDF was not rebuilt after the notation migration and is
 > not claimed to be synchronized with that source. This volume has no live
 > checksum ledger covering the root TeX/PDF pair; historical build statements
