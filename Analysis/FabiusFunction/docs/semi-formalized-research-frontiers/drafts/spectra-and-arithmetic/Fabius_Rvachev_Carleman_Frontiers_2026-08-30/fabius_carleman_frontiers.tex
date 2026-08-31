@@ -58,8 +58,6 @@
 \newtheorem{remark}[theorem]{Remark}
 
 \newcommand{\T}{\mathbb{T}}
-\newcommand{\eps}{\varepsilon}
-\newcommand{\dist}{\operatorname{dist}}
 \newcommand{\osc}{\operatorname{osc}}
 \newcommand{\id}{\operatorname{id}}
 \newcommand{\comp}{\mathbin{\circ}}
@@ -68,7 +66,6 @@
 \newcommand{\Roumieu}[1]{\mathcal{E}^{\{#1\}}}
 \newcommand{\Beurling}[1]{\mathcal{E}^{(#1)}}
 \newcommand{\DC}[1]{\mathcal{E}^{[#1]}}
-\newcommand{\TV}{\mathrm{TV}}
 \newcommand{\Wm}{W}
 \newcommand{\Mm}{M}
 \newcommand{\Bm}{B_C}
@@ -110,7 +107,7 @@ discrete Legendre duality, Lambert--$W$ saddles, and Bell-edge frontiers}
 \maketitle
 
 \begin{abstract}
-The exact derivative scale of the bounded Fabius function $F$ and the Rvachev
+The exact derivative scale of the bounded Fabius function $\FabiusBounded$ and the Rvachev
 up-function $\RvachevUp$ is
 \[
   W_n=2^{n(n+1)/2}.
@@ -121,7 +118,7 @@ and several other directions.  The present report isolates a regularity-theoreti
 layer that is not developed there in interval-uniform form.
 
 First, normalized derivatives $W_n^{-1}f^{(n)}$ obey a quantitative universal law
-on \emph{every} nondegenerate interval, for $f=F$ or $f=\RvachevUp$.  Their pushforward
+on \emph{every} nondegenerate interval, for $f=\FabiusBounded$ or $f=\RvachevUp$.  Their pushforward
 measures converge in total variation, at rate $O(2^{-n}/|J|)$, to the symmetric law
 of $S\RvachevUp(Y)$, where $S$ is a Rademacher sign and $Y$ is uniform on $[-1,1]$.
 Consequently every sufficiently high derivative attains both sharp extrema
@@ -133,7 +130,7 @@ Second, with
   M_n=\frac{W_n}{n!}=\frac{2^{n(n+1)/2}}{n!},
 \]
 we obtain an exact local Denjoy--Carleman classification.  For any comparison
-weight $N$, membership of $F$ or $\RvachevUp$ in the Roumieu class $\mathcal E^{\{N\}}$
+weight $N$, membership of $\FabiusBounded$ or $\RvachevUp$ in the Roumieu class $\mathcal E^{\{N\}}$
 is equivalent to exponential domination of $M$ by $N$, while Beurling membership
 is equivalent to strict exponential domination.  Thus $M$ is the critical local
 weight on every interval.  The class is nonquasianalytic and strongly
@@ -283,7 +280,7 @@ $\frac43 n^6 4^{-n}$; exact integer arithmetic through $n=120$ supports it.
 
 \subsection{Fabius, Rvachev, and Thue--Morse conventions}
 
-Let $F:[0,1]\to[0,1]$ be the bounded Fabius function and let
+Let $\FabiusBounded:[0,1]\to[0,1]$ be the bounded Fabius function and let
 $\RvachevUp:\RealNumbers\to\RealNumbers$ be the compactly supported Rvachev up-function, normalized by
 \[
   \SupportOperator\RvachevUp=[-1,1],\qquad \RvachevUp(0)=1,\qquad
@@ -291,12 +288,12 @@ $\RvachevUp:\RealNumbers\to\RealNumbers$ be the compactly supported Rvachev up-f
 \]
 On the unit interval,
 \begin{equation}
-  F(x)=\RvachevUp(x-1),\qquad 0\le x\le1.
+  \FabiusBounded(x)=\RvachevUp(x-1),\qquad 0\le x\le1.
   \label{eq:F-up-shift}
 \end{equation}
 The signed Thue--Morse sequence is
 \begin{equation}
-  \eps_k=(-1)^{s_2(k)},
+  \ThueMorseSign{k}=(-1)^{s_2(k)},
   \label{eq:tm}
 \end{equation}
 where $s_2(k)$ is the sum of the binary digits of $k$.
@@ -321,18 +318,18 @@ It maps $[-1,1]$ affinely onto the $k$th cell of length $h_n$ in $[-1,1]$.
 The primary exposition proves the exact derivative cell identity
 \begin{equation}
   \RvachevUp^{(n)}\bigl(c_{n,k}(y)\bigr)
-  =W_n\eps_k\RvachevUp(y).
+  =W_n\ThueMorseSign{k}\RvachevUp(y).
   \label{eq:cell-identity}
 \end{equation}
 In particular,
 \begin{equation}
   \Norm{\RvachevUp^{(n)}}_{L^\infty([-1,1])}=W_n,
   \qquad
-  \RvachevUp^{(n)}\bigl(c_{n,k}(0)\bigr)=W_n\eps_k.
+  \RvachevUp^{(n)}\bigl(c_{n,k}(0)\bigr)=W_n\ThueMorseSign{k}.
   \label{eq:sharp-global}
 \end{equation}
-The shift \eqref{eq:F-up-shift} transfers these identities to $F$ on $[0,1]$.
-Equivalent matched-grid identities and the global signed extension of $F$ are
+The shift \eqref{eq:F-up-shift} transfers these identities to $\FabiusBounded$ on $[0,1]$.
+Equivalent matched-grid identities and the global signed extension of $\FabiusBounded$ are
 recorded in \cite{ProveItMain,ProveItIterates}.
 
 \subsection{A discrepancy lemma}
@@ -342,26 +339,28 @@ Thue--Morse: every interval of indices has uniformly bounded signed discrepancy.
 
 \begin{lemma}[Prefix and block discrepancy]
 \label{lem:tm-discrepancy}
-Let $P(N)=\sum_{k=0}^{N-1}\eps_k$.  Then
+Let $P(N)=\sum_{k=0}^{N-1}\ThueMorseSign{k}$.  Then
 \begin{equation}
   P(2m)=0,
   \qquad
-  P(2m+1)=\eps_m.
+  P(2m+1)=\ThueMorseSign{m}.
   \label{eq:prefix}
 \end{equation}
 Consequently, for all integers $0\le a<b$,
 \begin{equation}
-  \AbsoluteValue{\sum_{k=a}^{b-1}\eps_k}\le2.
+  \AbsoluteValue{\sum_{k=a}^{b-1}\ThueMorseSign{k}}\le2.
   \label{eq:block-discrepancy}
 \end{equation}
 Moreover, no three consecutive signs are equal.
 \end{lemma}
 
 \begin{proof}
-The identities $\eps_{2m}=\eps_m$ and $\eps_{2m+1}=-\eps_m$ give
+The identities $\ThueMorseSign{2m}=\ThueMorseSign{m}$ and
+$\ThueMorseSign{2m+1}=-\ThueMorseSign{m}$ give
 \eqref{eq:prefix} by pairing.  Hence every prefix sum belongs to
 $\{-1,0,1\}$, and a block sum is the difference of two prefix sums.  Finally,
-each pair $(\eps_{2m},\eps_{2m+1})$ consists of opposite signs, so a run of length
+each pair $(\ThueMorseSign{2m},\ThueMorseSign{2m+1})$ consists of opposite
+signs, so a run of length
 three is impossible.
 \end{proof}
 
@@ -410,12 +409,12 @@ Equivalently, for every bounded Borel function $H$,
   \label{eq:mu-star-test}
 \end{equation}
 For a nondegenerate interval $J$ in the domain of $f$, where
-$f\in\{F,\RvachevUp\}$, let $\mu_{n,J}^{f}$ be the pushforward of normalized Lebesgue
+$f\in\{\FabiusBounded,\RvachevUp\}$, let $\mu_{n,J}^{f}$ be the pushforward of normalized Lebesgue
 measure on $J$ by $W_n^{-1}f^{(n)}$.
 
 \begin{theorem}[Quantitative local Thue--Morse universality]
 \label{thm:local-universality}
-Let $f=\RvachevUp$ with $J\subseteq[-1,1]$, or $f=F$ with $J\subseteq[0,1]$.
+Let $f=\RvachevUp$ with $J\subseteq[-1,1]$, or $f=\FabiusBounded$ with $J\subseteq[0,1]$.
 Assume $|J|>0$.  Then for every bounded Borel $H$,
 \begin{equation}
  \left|
@@ -428,16 +427,18 @@ Assume $|J|>0$.  Then for every bounded Borel $H$,
 \end{equation}
 Consequently,
 \begin{equation}
-  \Norm{\mu_{n,J}^{f}-\mu_*}_{\TV}
+  \TotalVariationOf{\mu_{n,J}^{f}-\mu_*}
   \le 6\frac{h_n}{|J|}
   =\frac{12}{2^n|J|},
   \label{eq:tv-bound}
 \end{equation}
-where $\|\nu\|_{\TV}=\sup_{\|H\|_\infty\le1}|\int H\Differential\nu|$.
+where
+$\TotalVariationOf{\nu}
+ =\sup_{\Norm{H}_\infty\le1}\AbsoluteValue{\int H\Differential\nu}$.
 \end{theorem}
 
 \begin{proof}
-It suffices to prove the assertion for $\RvachevUp$, because $F$ is its translate on
+It suffices to prove the assertion for $\RvachevUp$, because $\FabiusBounded$ is its translate on
 $[0,1]$.  Decompose $J$ into the union of all complete level-$n$ cells contained in
 $J$ and at most two boundary fragments.  Let $q$ be the number of complete cells,
 let their consecutive index set be $K$, and let $r=|J|-qh_n$.  Then
@@ -451,12 +452,12 @@ Put
 \]
 By \eqref{eq:cell-identity}, the contribution of the complete cells is
 \[
- I_K=\frac{h_n}{2}\sum_{k\in K}A_{\eps_k}.
+ I_K=\frac{h_n}{2}\sum_{k\in K}A_{\ThueMorseSign{k}}.
 \]
 Since $q h_n\int H\Differential\mu_*=qh_n(A_++A_-)/4$, their difference is
 \[
  I_K-qh_n\int H\Differential\mu_*
- =\frac{h_n}{4}\left(\sum_{k\in K}\eps_k\right)(A_+-A_-).
+ =\frac{h_n}{4}\left(\sum_{k\in K}\ThueMorseSign{k}\right)(A_+-A_-).
 \]
 By \cref{lem:tm-discrepancy}, its absolute value is at most
 $2h_n\|H\|_\infty$.
@@ -556,7 +557,7 @@ $[-1,1]$.  For $p=1$, use $\int_{-1}^{1}\RvachevUp=1$.
 
 \begin{corollary}[Exact local quadratic derivative order]
 \label{cor:local-order}
-For $f=F$ or $f=\RvachevUp$ and every nondegenerate interval $J$ in its domain,
+For $f=\FabiusBounded$ or $f=\RvachevUp$ and every nondegenerate interval $J$ in its domain,
 \begin{equation}
  \lim_{n\to\infty}
  \frac{\log_2\Norm{f^{(n)}}_{L^\infty(J)}}{n^2}
@@ -599,7 +600,7 @@ Define the critical sequence
 
 \begin{theorem}[Exact local comparison against every weight]
 \label{thm:dc-classification}
-Let $f=F$ or $f=\RvachevUp$, and let $J$ be any nondegenerate compact interval in its
+Let $f=\FabiusBounded$ or $f=\RvachevUp$, and let $J$ be any nondegenerate compact interval in its
 domain.  For every positive sequence $N$,
 \begin{align}
   f\in\Roumieu{N}(J)
@@ -653,7 +654,7 @@ one.
 
 \begin{corollary}[No finite Gevrey order on any interval]
 \label{cor:no-gevery}
-For every finite $s\ge1$, neither $F$ nor $\RvachevUp$ belongs locally on any nondegenerate
+For every finite $s\ge1$, neither $\FabiusBounded$ nor $\RvachevUp$ belongs locally on any nondegenerate
 interval to the Gevrey class with derivative bounds $C\rho^n(n!)^s$.
 \end{corollary}
 
@@ -704,7 +705,7 @@ compact interval $J$, define
 Then $g\in\Roumieu{M}(J)$ exactly when $\tau_J(g;M)<\infty$, and
 $g\in\Beurling{M}(J)$ exactly when $\tau_J(g;M)=0$.  For the basic functions,
 \begin{equation}
-  \tau_J(F;M)=\tau_J(\RvachevUp;M)=1.
+  \tau_J(\FabiusBounded;M)=\tau_J(\RvachevUp;M)=1.
   \label{eq:type-one}
 \end{equation}
 Thus every interval has the same exact Carleman type, even intervals adjacent to a
@@ -854,7 +855,7 @@ Taking the maximum proves the result.
 
 \begin{remark}[Distinction from the iterate defect]
 The iterate report \cite{ProveItIterates} studies the \emph{signed, unnormalized}
-Fa\`a di Bruno expansion of $F^{\comp r}$ and proves that branched partitions are
+Fa\`a di Bruno expansion of $\FabiusBounded^{\comp r}$ and proves that branched partitions are
 small after cancellation-sensitive normalization by $W_n$.  The present theorem
 answers a different question: it computes the \emph{positive,
 factorial-normalized} sequence transform that governs closure of the entire
@@ -888,11 +889,11 @@ needed by the Fabius dynamics.
 \section{Inverse Fabius function and all compositional iterates}
 \label{sec:inverse-iterates}
 
-Let $I=F^{-1}:(0,1)\to(0,1)$, and write
+Let $\FabiusQuantile:(0,1)\to(0,1)$ be the inverse of $\FabiusBounded$, and write
 \[
-  G_r=F^{\comp r},
+  G_r=\FabiusBounded^{\comp r},
   \qquad
-  H_r=I^{\comp r}
+  H_r=\FabiusQuantile^{\comp r}
   \qquad(r\ge1).
 \]
 
@@ -902,9 +903,9 @@ Let $I=F^{-1}:(0,1)\to(0,1)$, and write
 \label{thm:inverse-class}
 On every compact interval $K\Subset(0,1)$,
 \begin{equation}
-  I\in\Roumieu{M}(K)
+  \FabiusQuantile\in\Roumieu{M}(K)
   \quad\text{and}\quad
-  I\notin\Beurling{M}(K).
+  \FabiusQuantile\notin\Beurling{M}(K).
   \label{eq:inverse-class}
 \end{equation}
 Consequently the inverse Fabius function is not of finite Gevrey order on any
@@ -912,15 +913,17 @@ nondegenerate interior interval.
 \end{theorem}
 
 \begin{proof}
-The image $J=I(K)$ is compactly contained in $(0,1)$, where $F'>0$.
+The image $J=\FabiusQuantile(K)$ is compactly contained in $(0,1)$, where
+$\FabiusBounded'>0$.
 By \cref{cor:critical-class,cor:stability}, local inversion gives
-$I\in\Roumieu{M}(K)$.  If $I\in\Beurling{M}(K)$, Beurling inversion stability would
-imply $F\in\Beurling{M}(J)$, contradicting \cref{cor:critical-class}.
+$\FabiusQuantile\in\Roumieu{M}(K)$.  If
+$\FabiusQuantile\in\Beurling{M}(K)$, Beurling inversion stability would
+imply $\FabiusBounded\in\Beurling{M}(J)$, contradicting \cref{cor:critical-class}.
 The Gevrey conclusion follows as in \cref{cor:no-gevery}.
 \end{proof}
 
 This theorem concerns interior regularity.  It does not replace the repository's
-much finer endpoint asymptotics for $I(y)$ as $y\downarrow0$, where Lambert phases
+much finer endpoint asymptotics for $\FabiusQuantile(y)$ as $y\downarrow0$, where Lambert phases
 and log-periodic transseries enter.  Rather, it identifies the unique ambient
 ultradifferentiable scale through which those endpoint singular asymptotics must
 connect to the smooth interior.
@@ -976,7 +979,7 @@ spine theorem.
 \end{theorem}
 
 \begin{proof}
-Because $F\in\Roumieu{M}$ and the class is composition stable,
+Because $\FabiusBounded\in\Roumieu{M}$ and the class is composition stable,
 $G_r\in\Roumieu{M}$ locally.  Suppose $G_r\in\Beurling{M}(J)$ for a
 nondegenerate interval $J$.  Choose $x\in E_r\cap\operatorname{int}J$.
 For every $\rho>0$ there would be $C_\rho$ such that
@@ -1022,7 +1025,7 @@ not the exact ordinary-exponential type
 The spine theorem identifies the pointwise candidate
 \[
   \mathcal H_r(x)=
-  \max_{0\le j<r}(F^{\comp j})'(x).
+  \max_{0\le j<r}(\FabiusBounded^{\comp j})'(x).
 \]
 
 \begin{conjecture}[Uniform spine-type formula]
@@ -1068,7 +1071,7 @@ For $|\xi|\ge 1/(\pi\sqrt2)$, set
 \begin{equation}
   a(\xi)=\log_2(\pi|\xi|)+\frac12,
   \qquad
-  d(\xi)=\dist(a(\xi),\IntegerNumbers).
+  d(\xi)=\MetricDistance(a(\xi),\IntegerNumbers).
   \label{eq:a-d}
 \end{equation}
 Then every nearest integer to $a(\xi)$ is an optimizer in
@@ -1097,7 +1100,7 @@ where
  -\frac{(\log\pi+\tfrac12\log2)^2}{2\log2}
  \right),
  \label{eq:CC}\\
- P(a)&=2^{\dist(a,\IntegerNumbers)^2/2},
+ P(a)&=2^{\MetricDistance(a,\IntegerNumbers)^2/2},
  \qquad
  1\le P(a)\le2^{1/8}.
  \label{eq:periodic-factor}
@@ -1115,7 +1118,7 @@ Taking base-$2$ logarithms of the $n$th term in \eqref{eq:BC-def} gives
 The minimum over integers is therefore obtained at a nearest integer to $a$, and its
 value is \eqref{eq:BC-closed}.  Expanding $a^2$ in powers of $\log|\xi|$ yields
 \eqref{eq:BC-factor}--\eqref{eq:CC}.  Finally
-$0\le\dist(a,\IntegerNumbers)\le1/2$ gives \eqref{eq:periodic-factor}.
+$0\le\MetricDistance(a,\IntegerNumbers)\le1/2$ gives \eqref{eq:periodic-factor}.
 \end{proof}
 
 \begin{figure}[htbp]
@@ -1400,7 +1403,7 @@ and
 \item The pure quadratic lattice transform satisfies, for $A>1$,
 \begin{equation}
  \inf_{n\ge0}\frac{b^{n(n-1)/2}}{A^n}
- =b^{-a_b^2/2+\dist(a_b,\IntegerNumbers)^2/2},
+ =b^{-a_b^2/2+\MetricDistance(a_b,\IntegerNumbers)^2/2},
  \qquad
  a_b=\log_b A+\frac12.
  \label{eq:b-lattice}
@@ -1449,7 +1452,7 @@ single chain-rule partition.  A different object sums all positive Bell terms:
 where $B_{n,k}$ is the exponential partial Bell polynomial.  This is the critical
 norm majorant one obtains by replacing every derivative amplitude in a self-composition
 by its sharp absolute bound and discarding cancellation.  It is deliberately not
-identified with an actual derivative of $F\comp F$.
+identified with an actual derivative of $\FabiusBounded\comp\FabiusBounded$.
 
 The two edges $k\approx n$ and $k\approx1$ dominate, while the middle is suppressed
 by the quadratic weight defect.  Several terms can be extracted exactly.
@@ -1618,7 +1621,8 @@ phase.
 \subsection{Inverse endpoints and two-regime regularity}
 
 \begin{problem}[Interior critical class versus endpoint transseries]
-Match the interior class $\Roumieu{M}\setminus\Beurling{M}$ of $I=F^{-1}$ to the
+Match the interior class $\Roumieu{M}\setminus\Beurling{M}$ of
+$\FabiusQuantile=\FabiusBounded^{-1}$ to the
 known Lambert--periodic endpoint expansion as $y\downarrow0$.  A satisfactory
 connection should identify a scale-dependent crossover: derivatives on compact
 interior intervals are governed by $M$, while the shrinking endpoint neighborhood
@@ -1627,7 +1631,7 @@ introduces the Lambert saddle and periodic endpoint phase.
 
 \begin{conjecture}[Endpoint-rescaled Carleman type]
 There exists a two-parameter asymptotic for
-$\sup_{y\in[\eta,2\eta]}|I^{(n)}(y)|$ in the joint limit $n\to\infty$,
+$\sup_{y\in[\eta,2\eta]}|\FabiusQuantile^{(n)}(y)|$ in the joint limit $n\to\infty$,
 $\eta\downarrow0$, whose transition curve is expressed through the same
 $W_{-1}$ phase that governs the endpoint inverse expansion.  Away from that curve
 it reduces either to an $M_n$-type interior bound or to the endpoint transseries.
@@ -1674,7 +1678,8 @@ is determined by the extremal orbit of the base-$b$ trigonometric numerator.
 The following sequence is designed to minimize dependencies.
 
 \begin{enumerate}[label=\textbf{L\arabic*.},leftmargin=2.5em]
-\item Formalize $P(2m)=0$, $P(2m+1)=\eps_m$, and block discrepancy at most $2$.
+\item Formalize $P(2m)=0$, $P(2m+1)=\ThueMorseSign{m}$, and block discrepancy
+      at most $2$.
 \item Combine the existing exact cell identity with interval-cell decomposition to
 formalize \cref{thm:local-universality} first for simple functions $H$, then for
 bounded Borel tests or, more modestly, continuous tests.
@@ -1815,7 +1820,7 @@ both the exact $d=3$ candidate and the expected hierarchy in
 Let
 \[
   a_0=\log_2(2\pi/3)+\frac12,
-  \qquad d_0=\dist(a_0,\IntegerNumbers).
+  \qquad d_0=\MetricDistance(a_0,\IntegerNumbers).
 \]
 Then \eqref{eq:constant-peak-ratio} has the explicit value
 \begin{equation}

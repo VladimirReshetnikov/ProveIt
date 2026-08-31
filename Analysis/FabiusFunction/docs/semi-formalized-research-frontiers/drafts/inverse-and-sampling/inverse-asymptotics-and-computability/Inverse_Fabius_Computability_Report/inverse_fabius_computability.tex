@@ -1,6 +1,6 @@
 \documentclass[11pt,oneside]{article}
 
-\usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
@@ -9,26 +9,24 @@
 \input{../../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,array,tabularx}
 \usepackage{graphicx}
+\usepackage{pgfplots}
 \usepackage{xcolor}
 \usepackage{enumitem}
 \usepackage{fancyhdr}
 \usepackage{titlesec}
 \usepackage{listings}
 \usepackage{xurl}
-\usepackage[hypertexnames=false]{hyperref}
+\usepackage{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
-\usepackage{aliascnt}
 
 \definecolor{linkblue}{RGB}{25,75,135}
-\definecolor{deepgreen}{RGB}{30,105,75}
 \definecolor{shadegray}{RGB}{246,247,249}
 \definecolor{rulegray}{RGB}{195,201,208}
-\definecolor{warmshade}{RGB}{250,247,240}
-
+\pgfplotsset{compat=1.18}
 \hypersetup{
   colorlinks=true,
   linkcolor=linkblue,
-  citecolor=deepgreen,
+  citecolor=linkblue,
   urlcolor=linkblue,
   pdftitle={Computability of the Inverse Fabius Function},
   pdfauthor={Research report prepared for Vladimir Reshetnikov's ProveIt project},
@@ -50,64 +48,37 @@
 \setcounter{tocdepth}{2}
 \setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
 \setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
-\setlength{\emergencystretch}{3em}
-\allowdisplaybreaks[2]
-\numberwithin{equation}{section}
+
+% Long unbreakable inline mathematics occasionally leaves a line with no legal
+% break point.  A small emergency stretch lets TeX loosen such a line rather
+% than let it protrude into the margin; it applies only to lines that would
+% otherwise be overfull.
+\setlength{\emergencystretch}{2em}
 
 \newtheorem{theorem}{Theorem}[section]
-\newaliascnt{proposition}{theorem}
-\newtheorem{proposition}[proposition]{Proposition}
-\aliascntresetthe{proposition}
-\newaliascnt{lemma}{theorem}
-\newtheorem{lemma}[lemma]{Lemma}
-\aliascntresetthe{lemma}
-\newaliascnt{corollary}{theorem}
-\newtheorem{corollary}[corollary]{Corollary}
-\aliascntresetthe{corollary}
-\newaliascnt{conjecture}{theorem}
-\newtheorem{conjecture}[conjecture]{Conjecture}
-\aliascntresetthe{conjecture}
-\newaliascnt{problem}{theorem}
-\newtheorem{problem}[problem]{Research problem}
-\aliascntresetthe{problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
 \theoremstyle{definition}
-\newaliascnt{definition}{theorem}
-\newtheorem{definition}[definition]{Definition}
-\aliascntresetthe{definition}
-\newaliascnt{algorithm}{theorem}
-\newtheorem{algorithm}[algorithm]{Algorithm}
-\aliascntresetthe{algorithm}
-\newaliascnt{example}{theorem}
-\newtheorem{example}[example]{Example}
-\aliascntresetthe{example}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
-\newaliascnt{remark}{theorem}
-\newtheorem{remark}[remark]{Remark}
-\aliascntresetthe{remark}
-\newaliascnt{warning}{theorem}
-\newtheorem{warning}[warning]{Warning}
-\aliascntresetthe{warning}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
 
-\crefname{algorithm}{algorithm}{algorithms}
-\Crefname{algorithm}{Algorithm}{Algorithms}
-\crefname{problem}{research problem}{research problems}
-\Crefname{problem}{Research problem}{Research problems}
-\crefname{conjecture}{conjecture}{conjectures}
-\Crefname{conjecture}{Conjecture}{Conjectures}
-\crefname{warning}{warning}{warnings}
-\Crefname{warning}{Warning}{Warnings}
+\newcommand{\lean}[1]{%
+  \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
+\newcommand{\leanevaltwo}[1]{%
+  \nolinkurl{integral_eval}\texttt{\textsubscript{2}}\nolinkurl{#1}}
 
-\newcommand{\Inv}{G}
-\newcommand{\InvT}{\overline G}
-\newcommand{\Clamp}{\operatorname{clamp}}
-\newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction/docs}}
-\newcommand{\commit}{\nolinkurl{40fdea4cc0a728189f357389e3f114a2cb00e561}}
-
-\newenvironment{statusbox}[1]{%
+\newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
+\newenvironment{boxedremark}{%
   \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
-  \color{black}\hrule\vspace{0.55em}\noindent\textbf{#1}\par\smallskip
+  \color{black}\hrule\vspace{0.6em}\small
 }{%
-  \vspace{0.55em}\hrule\end{minipage}\end{center}\smallskip
+  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
 }
 
 \lstdefinestyle{pseudo}{
@@ -118,27 +89,47 @@
   columns=fullflexible,
   keepspaces=true,
   showstringspaces=false,
-  breaklines=true,
   xleftmargin=0.7em,
   xrightmargin=0.7em,
   aboveskip=0.8em,
   belowskip=0.8em
 }
 
+% Report-local layout, notation, environments, and listing extension.
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+
+\newtheorem{problem}[theorem]{Research problem}
+
+\crefname{problem}{research problem}{research problems}
+\Crefname{problem}{Research problem}{Research problems}
+
+\newcommand{\Inv}{G}
+\newcommand{\InvT}{\overline G}
+\newcommand{\Clamp}{\operatorname{clamp}}
+\newcommand{\arrivalcommit}{\nolinkurl{40fdea4cc0a728189f357389e3f114a2cb00e561}}
+\newenvironment{statusbox}[1]{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{black}\hrule\vspace{0.55em}\small\noindent\textbf{#1}\par\smallskip
+}{%
+  \vspace{0.55em}\hrule\end{minipage}\end{center}\smallskip
+}
+\lstdefinestyle{reportpseudo}{style=pseudo,breaklines=true}
+
 \title{\bfseries Computability of the Inverse Fabius Function\\[0.4em]
 \large Sequential computation, effective uniform continuity,\\
 exact inverse moduli, and certified Thue--Morse bisection}
 \author{Research report prepared for Vladimir Reshetnikov's \texttt{ProveIt} project}
 \date{30 August 2026\\[0.25em]
-\small Repository snapshot: \commit}
+\small Arrival snapshot: \arrivalcommit; current-corpus status audited on intake}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
 Let $F$ be the canonical bounded Fabius function, viewed as the strictly
-increasing distribution function on $[0,1]$, and let $G=F^{-1}$.  We prove
-constructively that $G$ is a computable real function in the
+increasing distribution function on $[0,1]$, and let $G=F^{-1}$.  At the
+paper level, we prove constructively that $G$ is a computable real function in the
 Grzegorczyk/Wikipedia sense \cite{G1957,Weihrauch2000,WikipediaCRF}: it maps every computable real sequence to a
 computable real sequence, and it possesses a recursive modulus of uniform
 continuity.  The same theorem holds for the repository's totalized inverse
@@ -181,9 +172,11 @@ Finally, a tolerant bisection algorithm uses certified approximations to both
 $F(c)$ and the target value.  It never asks an undecidable exact-equality
 question: when comparison is inconclusive, the inverse modulus certifies that
 the midpoint is already sufficiently accurate.  This supplies a uniform
-name-transformer and proves sequential computability.
+name-transformer and proves sequential computability at the
+mathematical-report level.
 
-The report audits the recursive LaTeX corpus under \repo{}, separates imported
+The report audits the recursive LaTeX corpus under
+\path{Analysis/FabiusFunction/docs}, separates imported
 repository results from the arguments proved here, relates the construction to
 $q$-binomial and sinc-product representations, Lambert-$W$ inverse asymptotics,
 Legendre expansions, and Bell/Bernoulli coefficient calculi.  It records both
@@ -198,7 +191,7 @@ calculations.
 Every statement labelled theorem, proposition, lemma, or corollary below is
 proved in this report or explicitly imported with a source pointer.  The
 repository audit and all relative-novelty statements remain pinned to commit
-\commit.  At that snapshot, the main computability theorem, the least
+\arrivalcommit.  At that snapshot, the main computability theorem, the least
 fixed-length Fabius-increment inequality, the exact inverse modulus, and the
 closed elementary modulus were absent under the formulations used here.
 
@@ -329,12 +322,18 @@ branch is what removes that obstruction.
 
 \section{Corpus audit, conventions, and nonduplication boundary}
 
-\subsection{Pinned repository snapshot}
+\subsection{Arrival snapshot and live-corpus intake audit}
 
-The recursive audit was pinned to commit \commit\ \cite{ProveIt}.  The GitHub code index at
-its parent snapshot enumerated 94 files with extension \texttt{.tex} below
-\repo{}; the final merge added two further LaTeX sources, for a total of 96 in
-the pinned tree.  All source paths were inventoried.  Primary and consolidated
+The delivered manuscript recorded commit \arrivalcommit\ \cite{ProveIt} as its
+arrival snapshot and counted 96 LaTeX sources there.  On intake, the audit was
+rerun against the live repository: the formal documentation audit scanned 582
+modules and 7,976 public declarations, with no missing declaration comments or
+module headers.  The present merged tree now scans 615 modules and 8,383
+public declarations with the same zero-gap result.  A separate intake
+inventory found 147 prior \texttt{.tex}
+sources below \path{Analysis/FabiusFunction/docs}, excluding this newly filed
+package.  These counts identify the corpus inspected; they are not a novelty
+certificate.  All source paths were inventoried.  Primary and consolidated
 mathematical reports were read directly; generated table fragments and frozen
 variants were checked together with the parent documents that include them.
 
@@ -360,7 +359,7 @@ uniform continuity.
 
 \subsection{What the repository already proves}
 
-The following inputs are established in the pinned development and are not
+The following inputs are established in the live development and are not
 claimed as new here.
 
 \begin{enumerate}
@@ -373,24 +372,34 @@ infinite dyadic sinc product.
 executable recurrence.  The centered Thue--Morse splines converge uniformly
 with error at most $2^{-N}$.
 \item The forward bounded $F$ and the signed global extension are already
-proved computable real functions.  The relevant Lean modules are
-\path{FabiusComputability.lean} and \path{FabiusComputableSpline.lean}; they
-expose the sequential-computability and effective-uniform-continuity clauses,
-including a primitive-recursive spline evaluator.
-\item The module \texttt{FabiusInverse.lean} constructs the clamped totalized
-inverse $\texttt{fabiusInv}$, proves both inverse identities, continuity,
-monotonicity, interior $C^\infty$ regularity, derivative and curvature laws,
-and endpoint steepness.
-\item The inverse/sampling reports derive exact finite-prefix quantile germs,
-$q$-binomial Richardson filters, and all-orders endpoint asymptotics for
-$G$, including the nonconstant log-periodic Gamma--zeta fluctuation.
+proved computable real functions.  In \path{FabiusComputability.lean} and
+\path{FabiusComputableSpline.lean}, the public declarations include
+\lean{abs_uniformCenteredPartialCDF_sub_fabiusReal_le},
+\lean{abs_fabiusUniformSpline_sub_fabiusReal_le_all},
+\lean{fabius_sequentiallyComputable}, and
+\lean{fabius_isComputableRealFunction}.
+\item \path{Convexity.lean} proves the strict rise and fall of the density via
+\lean{strictMonoOn_deriv_fabiusReal_Icc} and
+\lean{strictAntiOn_deriv_fabiusReal_Icc}; \path{Monotonicity.lean} proves
+\lean{strictMonoOn_fabiusReal}.
+\item \path{FabiusInverse.lean} constructs the clamped totalized inverse
+\lean{fabiusInv}, proves the inverse identities
+\lean{fabiusReal_fabiusInv} and \lean{fabiusInv_fabiusReal}, continuity via
+\lean{continuous_fabiusInv}, and the interior differential and shape theory.
+Exact dyadic inverse evaluation is also formalized, including
+\lean{fabiusInv_fabiusAtInverseTwoPow}.
+\item \path{FabiusInverseAsymptotic.lean} proves the leading equivalent
+\lean{fabiusInv_isEquivalent_fabiusInverseAsymptoticMain}.  The companion
+frontier reports develop explicit periodic corrections and all-orders
+reversion, but those stronger formulas are not public Lean theorems.
 \end{enumerate}
 
-\subsection{The gap closed here}
+\subsection{The paper-level gap addressed here}
 
-No theorem named or formulated as sequential computability, effective uniform
-continuity, or computable-real-function status for \texttt{fabiusInv} occurs
-in the pinned snapshot.  The missing bridge is not a formal triviality.  A
+At the pinned arrival snapshot, no public theorem named or formulated as
+sequential computability, effective uniform continuity, or
+computable-real-function status for \lean{fabiusInv} occurred in the formal
+corpus.  The missing bridge was not a formal triviality.  A
 computable strictly increasing function can be inverted effectively on a
 compact interval only after one supplies effective injectivity information;
 ordinary strict monotonicity is qualitative.
@@ -405,7 +414,8 @@ occurs exactly at $x=0$ or $x=1-h$; in the equivalent form
 $F(b)-F(a)=F(b-a)$ the complete alternatives are $a=b$, $a=0$, or $b=1$.
 The second bound is elementary and recursive.
 Together with the existing forward evaluator they close both clauses of the
-requested definition.
+requested definition at the paper level.  Formalizing those clauses remains
+the roadmap in \cref{sec:lean-status}.
 
 The historical statement above remains about the pinned snapshot.  In the
 current post-publication development, \path{InverseModulus.lean} formally
@@ -1774,14 +1784,17 @@ to have been newly proved by \path{InverseModulus.lean}.
 
 \subsection{Endpoint asymptotics become modulus asymptotics}
 
-The inverse endpoint reports in the corpus give much more than computability\ \cite{ProveIt}.
+The live formal corpus proves the leading inverse equivalent through
+\lean{fabiusInv_isEquivalent_fabiusInverseAsymptoticMain} in
+\path{FabiusInverseAsymptotic.lean}.  The companion frontier reports give
+stronger paper-level inverse expansions\ \cite{ProveIt}.
 Let
 \begin{equation}\label{eq:T-L-rho}
  T=\log(1/\eta),
  \qquad L=\log2,
  \qquad \rho=\sqrt{\frac{2T}{L}}.
 \end{equation}
-Suppressing the explicitly known first log-periodic correction, their leading
+Suppressing the paper-level first log-periodic correction, the formalized leading
 equivalent is
 \begin{equation}\label{eq:G-leading}
  G(\eta)\sim
@@ -1790,7 +1803,8 @@ equivalent is
  \exp\!\bigl(-\sqrt{2LT}\bigr)
  \qquad(\eta\downarrow0).
 \end{equation}
-More precisely, the corpus obtains a relative expansion of the form
+More precisely, \path{Inverse_Endpoint_All_Orders.tex} obtains at the
+frontier-document level a relative expansion of the form
 \begin{equation}\label{eq:G-periodic-correction}
  \frac{G(\eta)}{G_0(\eta)}
  =1+
@@ -1800,17 +1814,21 @@ More precisely, the corpus obtains a relative expansion of the form
 where $\Psi$ is a nonconstant smooth one-periodic Gamma--zeta fluctuation and
 $\theta$ is the lower-Lambert phase shifted by an explicit constant.
 
-\begin{corollary}[Sharp asymptotic modulus]\label{cor:sharp-asymptotic-modulus}
-The expressions \eqref{eq:G-leading} and
-\eqref{eq:G-periodic-correction} are, without any further inversion, the
-leading and first-correction asymptotics of the exact continuity modulus of
-$G$ and $\InvT$:
+\begin{corollary}[Paper-level transfer of the frontier inverse expansion]
+\label{cor:sharp-asymptotic-modulus}
+At the paper level, the expressions \eqref{eq:G-leading} and
+\eqref{eq:G-periodic-correction} transfer, without any further inversion, to
+the leading and first-correction asymptotics of the exact continuity modulus
+of $G$ and $\InvT$:
 \begin{equation}\label{eq:asymptotic-modulus}
  \omega_G(\eta)=\omega_{\InvT}(\eta)=G(\eta)
  \qquad(0\le\eta\le1).
 \end{equation}
-Every proved all-orders endpoint expansion for the inverse therefore transfers
-verbatim to an all-orders modulus-of-continuity expansion.
+Likewise, every valid all-orders endpoint expansion for the inverse transfers
+verbatim to an all-orders modulus-of-continuity expansion.  Lean currently
+proves the leading equivalent and an implicit expansion pulled back to exact
+inverse coordinates, but not the displayed explicit periodic correction or
+an explicit all-orders reversion.
 \end{corollary}
 
 \begin{proof}
@@ -2003,15 +2021,16 @@ approximations.
 
 The flat endpoint makes the inverse poorly conditioned in any power scale.
 The lower branch $W_{-1}$ naturally solves the saddle equation controlling
-$F(x)$ as $x\downarrow0$.  The repository then uses Bell-polynomial reversion to transport
-all-orders forward expansions to $G(y)$ \cite{ProveIt}; Bernoulli numbers and
+$F(x)$ as $x\downarrow0$.  The frontier reports then use Bell-polynomial
+reversion to transport all-orders forward expansions to $G(y)$ \cite{ProveIt}; Bernoulli numbers and
 polynomials enter through logarithms of the Laplace/sinc products and through
 formal composition.
 
-The exact identity $\omega_G(\eta)=G(\eta)$ gives these expansions a second
-interpretation: they are not only quantile asymptotics but optimal continuity-
-modulus asymptotics.  In particular, the nonconstant periodic Gamma--zeta term
-cannot be discarded from a genuinely sharp effective modulus.
+At the paper level, the exact identity $\omega_G(\eta)=G(\eta)$ gives these
+expansions a second interpretation: they are not only quantile asymptotics but
+optimal continuity-modulus asymptotics.  In particular, the nonconstant
+periodic Gamma--zeta term cannot be discarded from a genuinely sharp
+effective modulus.  This interpretation is not yet a public Lean theorem.
 
 \subsection{Legendre and Lagrange representations}
 
@@ -2344,7 +2363,8 @@ combined computable-real-function theorem, or input-bit asymptotics.
 
 A natural downstream file remains
 \begin{center}
-\path{Analysis/FabiusFunction/Lean/FabiusFunction/FabiusInverseComputability.lean}.
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/}\\
+\path{FabiusInverseComputability.lean}.
 \end{center}
 It should import
 \path{FabiusFunction.FabiusInverseLogarithmicModulus}.  It no longer needs to
@@ -2353,7 +2373,7 @@ or effective uniform continuity.  Its remaining public surface is the
 name-transformation layer; the following Lean is schematic rather than a
 claim about declarations already present.
 
-\begin{lstlisting}[style=pseudo,language={}]
+\begin{lstlisting}[style=reportpseudo,language={}]
 /-- Tolerant bisection transforms every computable input sequence. -/
 theorem fabiusInv_sequentiallyComputable :
     SequentiallyComputable (fabiusInv fabius fabius_spec)
@@ -2554,8 +2574,9 @@ branch template plus a Thue--Morse address.
 \section{Conclusion}
 \label{sec:conclusion}
 
-The inverse Fabius function is computable in precisely the two-part sense
-requested.  The effective-uniform-continuity clause follows from the exact
+At the paper level, the inverse Fabius function is computable in precisely the
+two-part sense requested.  The effective-uniform-continuity clause follows
+from the exact
 geometric identity
 \[
   \omega_G(\eta)=G(\min(\eta,1)),
@@ -2572,8 +2593,8 @@ requires deciding equality of computable reals.
 
 The result is stronger than an existence proof.  It identifies the
 \emph{optimal} modulus, explains why inversion loses quadratically many bits
-at the flat endpoints, and turns the repository's lower-Lambert quantile
-asymptotics into sharp continuity-modulus asymptotics.  The same proof covers
+at the flat endpoints, and turns the frontier lower-Lambert quantile
+asymptotics into sharp paper-level continuity-modulus asymptotics.  The same proof covers
 the inverse on $[0,1]$ and the canonical clamped totalization on all of
 $\RealNumbers$.
 
@@ -2602,11 +2623,12 @@ package, and precision asymptotics remain to be formalized.
 
 The following version makes every tolerance in
 \cref{alg:tolerant-bisection} explicit.  The function
-\texttt{TargetName(i,s)} returns a rational within $2^{-s}$ of the clamped
-input $y_i$.  The function \texttt{CenteredSpline(N,c)} is the exact rational
+\texttt{TargetName} returns, on inputs $i,s$, a rational within $2^{-s}$ of
+the clamped input $y_i$.  The function \texttt{CenteredSpline} returns, on
+inputs $N,c$, the exact rational
 $S_N(c)$ of \eqref{eq:centered-spline-formula}.
 
-\begin{lstlisting}[style=pseudo,language={}]
+\begin{lstlisting}[style=reportpseudo,language={}]
 InverseFabiusName(i, p):
     # Requested absolute output error: 2^(-p).
     r     := p + 2
@@ -2662,18 +2684,23 @@ representation in the repository and classical Fabius theory & Imported;
 normalization restated in \cref{sec:forward}.\\
 \addlinespace
 Exact finite CDF \eqref{eq:finite-cdf-formula} & Inclusion--exclusion for finite sums
-of uniforms & Proved in \cref{prop:finite-cdf}.\\
+of uniforms & Paper-level proof in \cref{prop:finite-cdf}.\\
 \addlinespace
 Uniform centered-spline error $2^{-N}$ & Tail support and the global density
-bound $p\le2$ & Proved in \cref{thm:centered-error}; also formalized forward
-in the repository.\\
+bound $p\le2$ & Paper-level proof in \cref{thm:centered-error}; formalized
+counterparts include
+\lean{abs_uniformCenteredPartialCDF_sub_fabiusReal_le} and
+\lean{abs_fabiusUniformSpline_sub_fabiusReal_le_all}.\\
 \addlinespace
 Strict increase of $F$ & Positivity of finite-convolution densities and a
-short tail & Proved in \cref{prop:strict-increase}.\\
+short tail & Paper-level proof in \cref{prop:strict-increase}; Lean proves
+\lean{strictMonoOn_fabiusReal}.\\
 \addlinespace
 Symmetric strict unimodality of $p=F'$ & Differential equation, symmetry, and
-strict increase of $F$ & Proved in \cref{prop:density-shape} from imported
-Fabius identities.\\
+strict increase of $F$ & Paper-level derivation in
+\cref{prop:density-shape}; Lean proves
+\lean{strictMonoOn_deriv_fabiusReal_Icc} and
+\lean{strictAntiOn_deriv_fabiusReal_Icc}.\\
 \addlinespace
 Least fixed-length increment $F(h)$ & Symmetric unimodality of $p$ & Human
 proof in \cref{thm:least-mass}; reflection, global weak shape, maximal strict
@@ -2720,11 +2747,12 @@ sequential-computability declaration is supplied by the current inverse
 effective-continuity modules.\\
 \addlinespace
 Optimal bit asymptotic & Closed lower bound plus iterated-flatness upper bound &
-Proved in \cref{thm:mu-asymptotic}.\\
+Paper-level proof in \cref{thm:mu-asymptotic}; no direct public Lean theorem.\\
 \addlinespace
-Sharp periodic refinement & Repository's all-orders endpoint inverse theory &
-Imported and reinterpreted in
-\cref{cor:sharp-asymptotic-modulus}; not rederived.\\
+Sharp periodic refinement & Frontier all-orders endpoint inverse theory &
+Imported as a paper-level input and reinterpreted in
+\cref{cor:sharp-asymptotic-modulus}; the leading equivalent is formalized,
+but the explicit periodic correction is not.\\
 \bottomrule
 \end{longtable}
 
@@ -2764,6 +2792,14 @@ computable-real-function packaging.\\
 \path{FabiusInverse.lean} & Existing clamped inverse, inverse identities,
 continuity, interior derivatives, curvature, and endpoint steepness.\\
 \addlinespace
+\path{Convexity.lean} and \path{Monotonicity.lean} & Formal strict density
+shape and strict increase used as the geometric input to the paper-level
+least-mass argument.\\
+\addlinespace
+\path{FabiusInverseAsymptotic.lean} & Formal leading endpoint equivalent and
+implicit expansion pulled back to exact inverse coordinates; not an explicit
+periodic or all-orders inverse reversion.\\
+\addlinespace
 \path{InverseModulus.lean} & Post-snapshot formalization of fixed-length
 Fabius increments, their global weak and maximal strict shapes, the least
 endpoint increment and complete equality locus, constrained forward
@@ -2792,8 +2828,8 @@ crosswalked in \cref{sec:lean-status}.\\
 \addlinespace
 \path{Inverse_and_Sampling_Frontiers.tex} and
 \path{Inverse_Endpoint_All_Orders.tex} & Exact finite-prefix quantiles,
-$q$-Richardson filters, Bell-polynomial inversion, and all-orders endpoint
-quantile asymptotics.\\
+$q$-Richardson filters, Bell-polynomial inversion, and explicit all-orders
+endpoint quantile asymptotics at frontier-document, not Lean, status.\\
 \addlinespace
 \path{Small_Argument_Asymptotics.tex} & Explicit lower-Lambert forward
 asymptotics and periodic Gamma--zeta coefficient calculus.\\
@@ -2807,9 +2843,9 @@ the computability proof.\\
 
 The audit included generated \texttt{.tex} fragments and frozen variants, but
 the report cites parent documents rather than treating generated rows as
-independent mathematical sources.  The repository was pinned because its
-\texttt{main} branch advanced during the audit; all path and count statements
-refer to commit \commit.
+independent mathematical sources.  The arrival hashes preserve the delivered
+commit-\arrivalcommit\ view; the counts and formalization boundaries stated in
+this filed edition come from the live-corpus intake rerun described above.
 
 \section{Reproducing the exact-rational supplement}
 \label{app:reproduction}
@@ -2821,7 +2857,7 @@ The archive accompanying this report contains
 and its captured output \path{numerical_output.txt}.  The program uses only
 Python's standard library.  From the extracted package directory, run
 
-\begin{lstlisting}[style=pseudo,language={}]
+\begin{lstlisting}[style=reportpseudo,language={}]
 python inverse_fabius_computability_experiments.py
 \end{lstlisting}
 
@@ -2887,7 +2923,7 @@ J.~Arias de Reyna,
 \bibitem{ProveIt}
 V.~Reshetnikov,
 \newblock \texttt{ProveIt}, Fabius-function development and documentation,
-\newblock repository snapshot \commit,
+\newblock arrival repository snapshot \arrivalcommit,
 \newblock \url{https://github.com/VladimirReshetnikov/ProveIt}.
 
 \bibitem{WikipediaCRF}

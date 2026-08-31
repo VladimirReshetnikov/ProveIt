@@ -81,7 +81,7 @@ RETIRED_COMMANDS = {
     "sgn": "Sign",
     "lcm": "LeastCommonMultiple",
     "ord": "OrderOperator",
-    "TV": "TotalVariationDistance",
+    "TV": "TotalVariationOf or TotalVariationDistance",
     "dist": "MetricDistance or EqualInLaw",
     "vtwo": "TwoAdicValuation",
     "qbinom": "GaussianBinomial (three explicit arguments)",
@@ -307,7 +307,9 @@ def audit_file(path: Path, docs: Path) -> tuple[dict, list[Finding], Counter[str
         r"\\operatorname\s*\{\s*diag\s*\}": r"use \DiagonalOperator",
         r"\\operatorname\s*\{\s*tr\s*\}": r"use \TraceOperator",
         r"\\operatorname\s*\{\s*rank\s*\}": r"use \RankOperator",
-        r"\\operatorname\s*\{\s*TV\s*\}": r"use \TotalVariationDistance",
+        r"\\operatorname\s*\{\s*TV\s*\}": (
+            r"use \TotalVariationOf or \TotalVariationDistance"
+        ),
         r"\\operatorname\s*\{\s*ord\s*\}": r"use \OrderOperator",
         r"\\operatorname\s*\{\s*wt\s*\}\s*_\s*(?:\{\s*2\s*\}|2)": (
             r"use \BinaryDigitSum"

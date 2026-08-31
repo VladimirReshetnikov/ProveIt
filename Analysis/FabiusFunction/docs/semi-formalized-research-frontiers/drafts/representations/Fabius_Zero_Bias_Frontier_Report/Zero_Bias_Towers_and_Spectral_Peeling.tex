@@ -10,22 +10,20 @@
 \usepackage{bm}
 \usepackage{booktabs,longtable,array,tabularx}
 \usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage{xcolor}
 \usepackage{enumitem}
 \usepackage{fancyhdr}
 \usepackage{titlesec}
-\usepackage{xcolor}
 \usepackage{listings}
 \usepackage{xurl}
 \usepackage{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
 
-\graphicspath{{figures/}}
-\setlength{\emergencystretch}{2.5em}
-\allowdisplaybreaks
-
 \definecolor{linkblue}{RGB}{25,75,135}
 \definecolor{shadegray}{RGB}{246,247,249}
 \definecolor{rulegray}{RGB}{195,201,208}
+\pgfplotsset{compat=1.18}
 \hypersetup{
   colorlinks=true,
   linkcolor=linkblue,
@@ -39,8 +37,8 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small Zero-bias towers in the Fabius--Rvachev system}
-\fancyhead[R]{\small\thepage}
-\fancyfoot{}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 
 \titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
@@ -50,6 +48,12 @@
 \setcounter{tocdepth}{2}
 \setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
 \setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+
+% Long unbreakable inline mathematics occasionally leaves a line with no legal
+% break point.  A small emergency stretch lets TeX loosen such a line rather
+% than let it protrude into the margin; it applies only to lines that would
+% otherwise be overfull.
+\setlength{\emergencystretch}{2em}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
@@ -64,6 +68,9 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
+% Report-local notation and environments.
+\graphicspath{{figures/}}
+\allowdisplaybreaks
 \newcommand{\ord}{\operatorname{ord}}
 \newcommand{\Wass}{W_1}
 \newcommand{\LP}{\mathcal{LP}}
@@ -99,7 +106,7 @@
 \Large in the Fabius--Rvachev System\\[0.55em]
 \large Random-index $q$-calculus, normalized Laguerre--P\'olya derivatives,\\
 Thue--Morse release values, and logarithmic Gaussianization}
-\author{Frontier research report for Vladimir Reshetnikov's \repo\ corpus}
+\author{Frontier research report for Vladimir Reshetnikov's \texttt{ProveIt} corpus}
 \date{Repository-relative novelty audit through commit\\
 \texttt{40fdea4cc0a728189f357389e3f114a2cb00e561} (30 August 2026)}
 
@@ -228,7 +235,12 @@ higher-order distributional transforms are classical
 present report is the exact Fabius--Rvachev specialization, its $q$-occupancy
 calculus, the probability interpretation of the normalized derivatives of
 $H$, the arithmetic release formulas, and the phase-resolved endpoint
-asymptotics assembled from the repository's imported theorems.
+asymptotics assembled from the repository's imported theorems.  These are
+paper-level claims, not Lean status: the current formal corpus contains the
+underlying random-series, moment, Fourier-divisor, shape, and endpoint inputs,
+but no zero-bias tower, occupancy, spectral-peeling, or tower-Gaussianization
+declaration.  The theorem labels below therefore record this manuscript's
+internal proof status only.
 \end{statusbox}
 
 \begin{table}[ht]
@@ -1532,6 +1544,14 @@ checks.  It uses no external data.  Its principal computations are:
 \item occupancy-based Monte Carlo sampling of tower densities;
 \item deterministic moment and spectral-peeling plots.
 \end{enumerate}
+The repository intake replay pins the five Python dependencies listed in
+\path{requirements.txt}.  The exact moment, collision, and released-Fourier
+tables reproduce the delivered bytes.  Three floating-point tables differ
+only in last-place rounding across the updated numerical stack (maximum
+absolute difference $7.31\times10^{-14}$); figure geometry and mathematical
+content are unchanged, while antialiasing and vector-font encoding are
+platform dependent.  These observations are reproducibility evidence only,
+not formal proofs of the manuscript theorems.
 
 \subsection{Selected high-moment data}
 

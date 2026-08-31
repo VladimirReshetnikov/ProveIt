@@ -1,51 +1,116 @@
-\documentclass[11pt]{article}
+\documentclass[11pt,oneside]{article}
 
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools,bm}
 \input{../../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,array,tabularx}
 \usepackage{graphicx}
+\usepackage{pgfplots}
 \usepackage{xcolor}
 \usepackage{enumitem}
 \usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{xurl}
 \usepackage{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
-\usepackage{url}
+\usepackage{aliascnt}
+
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\pgfplotsset{compat=1.18}
 
 \hypersetup{
   colorlinks=true,
-  linkcolor=blue!55!black,
-  citecolor=green!40!black,
-  urlcolor=blue!65!black,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
   pdftitle={Interpolation on a Geometric Comb},
-  pdfauthor={Research report for the ProveIt Fabius Function project}
+  pdfauthor={Research report for the ProveIt Fabius Function project},
+  pdfsubject={Geometric-comb interpolation, Jackson calculus, modal filters, B-splines, and Fabius--Rvachev connections},
+  pdfkeywords={geometric interpolation, q-binomial, Jackson derivative, Fabius function, Rvachev up-function}
 }
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{Interpolation on a Geometric Comb}
-\fancyhead[R]{\thepage}
-\setlength{\headheight}{14pt}
+\fancyhead[L]{\small Interpolation on a geometric comb}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
 
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
 \numberwithin{equation}{section}
 \setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+\setlength{\emergencystretch}{2em}
 
 \newtheorem{theorem}{Theorem}[section]
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{conjecture}[theorem]{Conjecture}
-\newtheorem{problem}[theorem]{Problem}
+
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\newaliascnt{conjecture}{theorem}
+\newtheorem{conjecture}[conjecture]{Conjecture}
+\aliascntresetthe{conjecture}
+\newaliascnt{problem}{theorem}
+\newtheorem{problem}[problem]{Problem}
+\aliascntresetthe{problem}
 \theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{example}[theorem]{Example}
-\newtheorem{algorithm}[theorem]{Algorithm}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\newaliascnt{algorithm}{theorem}
+\newtheorem{algorithm}[algorithm]{Algorithm}
+\aliascntresetthe{algorithm}
 \theoremstyle{remark}
-\newtheorem{remark}[theorem]{Remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+
+\crefname{proposition}{proposition}{propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\crefname{lemma}{lemma}{lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{corollary}{corollary}{corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\crefname{conjecture}{conjecture}{conjectures}
+\Crefname{conjecture}{Conjecture}{Conjectures}
+\crefname{problem}{problem}{problems}
+\Crefname{problem}{Problem}{Problems}
+\crefname{definition}{definition}{definitions}
+\Crefname{definition}{Definition}{Definitions}
+\crefname{example}{example}{examples}
+\Crefname{example}{Example}{Examples}
+\crefname{algorithm}{algorithm}{algorithms}
+\Crefname{algorithm}{Algorithm}{Algorithms}
+\crefname{remark}{remark}{remarks}
+\Crefname{remark}{Remark}{Remarks}
+
+\newenvironment{statusbox}[1]{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{black}\hrule\vspace{0.6em}\small\textbf{#1}\par\smallskip
+}{%
+  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
+}
 
 \newcommand{\Gc}{\mathcal G}
 \newcommand{\Rc}{\mathcal R}
@@ -92,10 +157,31 @@ $q=1/2$; an exact sign formula and probabilistic remainder identity for Fabius
 values near the flat endpoint; and a base-squaring principle explaining why the
 Rvachev Fourier problem naturally uses interpolation base $Q=q^2$.
 
-All statements advertised as theorems are proved.  Conjectures and open
-problems are separated explicitly.  A commented Python program reproduces the
-numerical checks and figures and is included with the source and rendered PDF.
+All statements advertised as theorems have manuscript proofs.  Conjectures and
+open problems are separated explicitly.  A commented Python program reproduces
+the numerical checks and figures and is included with the source and rendered
+PDF.  Manuscript proof, numerical replay, and Lean proof status are distinct.
 \end{abstract}
+
+\begin{statusbox}{Result and formalization status}
+The finite Gaussian-comb core has substantial, independently checked Lean
+coverage.  In particular,
+\nolinkurl{GeometricLagrangeQMoments.lean} contains the natural-moment residual
+and finite row-variation identities,
+\nolinkurl{LimitConditionNumber.lean} proves convergence of the finite
+condition numbers to the infinite $q$-product,
+\nolinkurl{GeometricUniformLaw.lean} and
+\nolinkurl{GeometricUniformCDF.lean} construct the geometric-uniform law and
+its smooth CDF/density, and \nolinkurl{RvachevQBinomialFilter.lean} contains a
+finite Gaussian transform for the Rvachev Fourier product.  Those modules do
+not make this whole report Lean-proved.  No exact current theorem was located
+for the Jackson divided-difference identification, locally uniform infinite
+Newton reconstruction, confluent Puiseux--log filters, regular-variation
+transfer, Hermite--Genocchi/B-spline probability law, perpetuity scaling limit,
+Fabius boundary expectation, or entire scale reconstruction.  Those results,
+the two conjectures, and the five numbered research problems remain manuscript
+mathematics.  The companion computations are diagnostics, not proof premises.
+\end{statusbox}
 
 \vspace{0.5em}
 \noindent\textbf{Scope and priority.}
@@ -1229,16 +1315,21 @@ Slutsky's theorem proves \eqref{eq:Y-scaling-limit}.  Independence gives
 Expanding $1/(t;q)_\infty=\sum_{r\ge0}t^r/(q;q)_r$ around $t=0$ and comparing
 moment-generating coefficients gives \eqref{eq:Z-moments}.
 
-For the density, decompose the Laplace transform into simple fractions at its
-poles $s=-q^{-k}$:
+For the density, first decompose the finite product
+$\prod_{j=0}^{N}(1+sq^j)^{-1}$ into simple fractions.  Its coefficient at the
+pole $s=-q^{-k}$ is the finite version of
 \[
  \frac1{(-s;q)_\infty}
  =\sum_{k\ge0}
  \frac{(-1)^kq^{\binom{k+1}{2}}}
  {(q;q)_k(q;q)_\infty}\frac1{1+sq^k}.
 \]
-Termwise inversion gives \eqref{eq:Z-density}; for each $y>0$ the Gaussian
-factor in $k$ and the term $e^{-q^{-k}y}$ ensure absolute convergence.
+For $s\ge0$, the finite coefficients converge to the displayed coefficients
+and are dominated by a constant times
+$q^{\binom{k+1}{2}}/(q;q)_k$; dominated convergence therefore gives the
+infinite partial-fraction identity.  Termwise Laplace inversion gives
+\eqref{eq:Z-density}.  For each $y>0$, the Gaussian factor in $k$ together with
+$e^{-q^{-k}y}$ gives absolute convergence and justifies the inversion.
 \end{proof}
 
 \begin{remark}
@@ -2028,23 +2119,34 @@ scale index, which interact with multivariate self-similar distributions and
 box splines.  The Dirichlet-average interpretation suggests that multivariate
 Peano kernels may again have positive probabilistic representations.
 
-\subsection{Formalization roadmap}
+\subsection{Formalization boundary and remaining roadmap}
 
-The most suitable theorem sequence for Lean or another proof assistant is:
+The live Lean corpus has moved beyond a roadmap for the elementary finite
+filter.  The modules \nolinkurl{FiniteQBinomialCore.lean},
+\nolinkurl{GeometricLagrangeQBinomial.lean},
+\nolinkurl{GeometricLagrangeQMoments.lean}, and
+\nolinkurl{GeometricLagrangeCompleteHomogeneous.lean} contain named theorems
+for finite $q$-products, Gaussian weights, cancellation/residual formulas, the
+complete-homogeneous specialization, and the exact finite row norm.
+\nolinkurl{LimitConditionNumber.lean} supplies the fixed-$q$ infinite-product
+limit, while the geometric-uniform and Rvachev modules named in the opening
+status box cover related probability and Fourier infrastructure.
+
+The report-specific obligations that remain are therefore narrower:
 \begin{enumerate}[leftmargin=2em]
-\item finite $q$-product identities and the geometric denominator
-\eqref{eq:bary-denominator};
-\item row polynomial factorization and moment residuals;
-\item Jackson divided differences on monomials, extended by polynomial
-linearity;
-\item operator recursion and total variation;
-\item divided-difference remainder plus a library Hermite--Genocchi theorem;
-\item Dirichlet moment calculation and the scaling limit via exponential
-variables;
-\item Fabius endpoint derivative induction and boundary sign identity.
+\item identify geometric divided differences with iterated Jackson derivatives
+under explicit field and differentiability hypotheses;
+\item construct the infinite Newton series and prove its local uniform
+convergence;
+\item formalize confluent spectral zeros and the Puiseux--log remainder bound;
+\item prove the reversed-row $\ell^1$ limit and the regular-variation transfer;
+\item add Hermite--Genocchi/Dirichlet-average infrastructure, the geometric-knot
+B-spline moments, and the perpetuity scaling limit;
+\item derive the Fabius boundary expectation and the entire scale-reconstruction
+theorem from the already formalized finite core.
 \end{enumerate}
-The analytic infinite Newton theorem requires more infrastructure, but the
-finite algebraic and probabilistic core is comparatively modular.
+Until those items exist as checked declarations, the correspondingly labelled
+results here remain manuscript theorems.
 
 \section{Conclusions}
 

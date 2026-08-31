@@ -1,0 +1,11130 @@
+# Repository audit
+
+Target: `Analysis/FabiusFunction/docs/**/*.tex`, excluding this newly filed package directory.
+
+- TeX files read: **188**
+- Total source lines: **390119**
+- Total source bytes: **16813357**
+- Concatenated-corpus SHA-256: `bb8a7de4c16a960f8d640d99797085b4f17cd0cdcc38b38caa4014536806b4d3`
+
+The corpus digest hashes raw file bytes concatenated in lexicographic relative-path order.
+Phrase clusters are a broad overlap screen, not a decision procedure for mathematical equivalence
+or a claim of worldwide priority.
+
+## Candidate-contribution phrase clusters
+
+### Fourier-zero spectral zeta
+
+Matched **43** prior TeX files:
+
+- `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
+- `fabius_lean_walkthrough/fabius_lean_walkthrough.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Cyclotomic_q_Fabius_Rvachev_Frontier/cyclotomic_q_fabius_frontier.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Exponents_and_q_Series_Frontiers/Exponents_and_q_Series_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/inverse_q_analogs_report-2/inverse_q_analogs_report.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/q_pochhammer_q_binomial_expansions_report/q_analog_expansions_report.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/q_pochhammer_q_binomial_monograph/q_pochhammer_q_binomial_monograph.tex`
+- `semi-formalized-research-frontiers/drafts/frontier-compilations/Frontier_Compilations/Frontier_Compilations.tex`
+- `semi-formalized-research-frontiers/drafts/frontier-compilations/Geometric_Uniform_Convolutions_and_New_Frontiers/fabius-frontier-report-H.tex`
+- `semi-formalized-research-frontiers/drafts/frontier-compilations/Geometric_Uniform_Frontier_Directions/fabius_frontier_report.tex`
+- `semi-formalized-research-frontiers/drafts/integration-and-transforms/Integration_and_Transform_Frontiers/Integration_and_Transform_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/Dyadic_Comb_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_and_Sampling_Frontiers/Inverse_and_Sampling_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/geometric_comb_lagrange_jackson_newton_report/geometric_comb_interpolation.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/geometric_comb_q_fabius_report/geometric_comb_q_fabius_report.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/Fabius_Rvachev_Shape_Divisibility_Stein_Geometry.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Fabius_Stein_Koopman_Frontier_Report/dyadic_stein_koopman_frontier.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Fabius_Zero_Bias_Frontier_Report/Zero_Bias_Towers_and_Spectral_Peeling.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Jacobi_Digit_Fabius_Rvachev_Frontier_Report/jacobi_digit_frontier_report.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Lagrange_Rvachev_Loop_Package/Lagrange_Rvachev_Loop.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Closed_Loop_Report_v3/legendre_rvachev_closed_loop.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Self_Reconstruction/legendre_rvachev_self_reconstruction.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Matrix_Dilated_Fabius_Rvachev_Frontier_Report/matrix_dilated_fabius_rvachev.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Representation_Frontiers/Representation_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Rvachev_Lagrange_Loop_Report_v5/Rvachev_Lagrange_Loop_Report.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Rvachev_Lagrange_Loop_Report_v6/Rvachev_Lagrange_Loop_Report_v6.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Up_Polynomial_Synthesis/Up_Polynomial_Synthesis.tex`
+- `semi-formalized-research-frontiers/drafts/representations/lagrange_rvachev_loop_report_v3/lagrange_rvachev_loop.tex`
+- `semi-formalized-research-frontiers/drafts/representations/legendre_rvachev_closed_loop/legendre_rvachev_closed_loop.tex`
+- `semi-formalized-research-frontiers/drafts/representations/rvachev_lagrange_loop_report/rvachev_lagrange_loop_report.tex`
+- `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Comparative_Audit/Rvachev_Up_Fourier_Decay_Comparative_Audit.tex`
+- `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-4/rvachev_up_fourier_decay.tex`
+- `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-6/Rvachev_Up_Fourier_Decay_Final_Synthesis.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Automatic_Scale_Factorizations_Rvachev_2026-08-30/automatic_scale_factorizations.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30/dyadic_radon_profiles_fabius_rvachev.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Dyadic_Spectral_Divisors_and_Gamma_Duality/fabius_frontier_report.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Pascal_Frontiers_Report/Fabius_Pascal_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Total_Positivity_Frontier_Report/Fabius_Total_Positivity_Frontier_Report.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Spectra_and_Arithmetic_Frontiers/Spectra_and_Arithmetic_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/fabius_holonomic_frontiers_report/fabius_holonomic_frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex`
+- `semi-formalized-research-frontiers/semi-formalized-research-frontiers.tex`
+
+### Exact digit-sum zero count
+
+Matched **88** prior TeX files:
+
+- `FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex`
+- `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
+- `archive/glossary/FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex`
+- `archive/glossary/FabiusFunction_Mathematical_Glossary-2/FabiusFunction_Mathematical_Glossary.tex`
+- `archive/lean-walkthrough/Fabius_Function_Lean_Walkthrough/Fabius_Function_Lean_Walkthrough.tex`
+- `archive/lean-walkthrough/fabius_lean_walkthrough/fabius_lean_walkthrough.tex`
+- `archive/primary-exposition/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
+- `archive/primary-exposition/Fabius_Function_and_Rvachev_Up-2/Fabius_Function_and_Rvachev_Up.tex`
+- `archive/primary-exposition/Fabius_Function_and_Rvachev_Up-3/Fabius_Function_and_Rvachev_Up.tex`
+- `archive/primary-exposition/Fabius_and_Rvachev_Up-2/Fabius_and_Rvachev_Up.tex`
+- `archive/primary-exposition/Fabius_and_Rvachev_up/Fabius_and_Rvachev_up.tex`
+- `archive/primary-exposition/Fabius_function_and_up_function/Fabius_function_and_up_function.tex`
+- `archive/primary-supplements/Fabius_Function_Missing_Parts/Fabius_Function_Missing_Parts.tex`
+- `archive/primary-supplements/Fabius_Function_Missing_Parts-2/Fabius_Function_Missing_Parts.tex`
+- `archive/q-calculus/fabius-q-special-functions/fabius-q-special-functions.tex`
+- `archive/research-frontiers/Fabius_Dyadic_Formulae_and_Alternative_Representations/Fabius_Dyadic_Formulae_and_Alternative_Representations.tex`
+- `archive/research-frontiers/Fabius_Dyadic_q_Connections/Fabius_Dyadic_q_Connections.tex`
+- `archive/research-frontiers/Primary_Exposition_Gap_Register/Primary_Exposition_Gap_Register.tex`
+- `archive/research-frontiers/Thue_Morse_Formula_Atlas-1/Thue_Morse_Formula_Atlas.tex`
+- `archive/research-frontiers/Thue_Morse_Formula_Atlas-2/Consolidated_Formula_Atlas_for_the_Thue_Morse_Sequence.tex`
+- `archive/research-frontiers/Thue_Morse_Formula_Atlas-3/Thue_Morse_Formula_Atlas.tex`
+- `archive/research-frontiers/non-formalized-research-frontiers/non-formalized-research-frontiers.tex`
+- `archive/standalone-studies/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex`
+- `fabius_lean_walkthrough/fabius_lean_walkthrough.tex`
+- `papers/AIF_2017__67_2_637_0/AIF_2017__67_2_637_0-corrected.tex`
+- `papers/arXiv-1502.06738v2/Lacunary_products.tex`
+- `papers/arXiv-1702.06487v3/157-Arithmetic-v3.tex`
+- `papers/arXiv-2211.13570v1/document.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Exponents_and_q_Series_Frontiers/Exponents_and_q_Series_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Fabius_Flat_Parameter_Response_Dynamics/fabius_frontier_report.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/inverse_q_analogs_report/inverse_q_analogs_report.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/q_pochhammer_q_binomial_expansions_report/q_analog_expansions_report.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/q_pochhammer_q_binomial_monograph/q_pochhammer_q_binomial_monograph.tex`
+- `semi-formalized-research-frontiers/drafts/frontier-compilations/Frontier_Compilations/Frontier_Compilations.tex`
+- `semi-formalized-research-frontiers/drafts/frontier-compilations/Geometric_Uniform_Convolutions_and_New_Frontiers/fabius-frontier-report-H.tex`
+- `semi-formalized-research-frontiers/drafts/frontier-compilations/Geometric_Uniform_Frontier_Directions/fabius_frontier_report.tex`
+- `semi-formalized-research-frontiers/drafts/integration-and-transforms/Integration_and_Transform_Frontiers/Integration_and_Transform_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/Dyadic_Comb_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Endpoint_All_Orders/Inverse_Endpoint_All_Orders.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Fabius_Computability_Report/inverse_fabius_computability.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_and_Sampling_Frontiers/Inverse_and_Sampling_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/fabius_information_frontier/fabius_information_frontier.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/geometric_comb_interpolation_report/geometric_comb_interpolation_report.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/geometric_comb_lagrange_jackson_newton_report/geometric_comb_interpolation.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/geometric_comb_q_fabius_report/geometric_comb_q_fabius_report.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/inverse_fabius_iterates_nowhere_analytic/inverse_fabius_iterates_nowhere_analytic.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Fabius_Rvachev_New_Frontiers-2/fabius_rvachev_new_frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Fabius_Rvachev_Noncommutative_Frontiers/Fabius_Rvachev_Noncommutative_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/Fabius_Rvachev_Shape_Divisibility_Stein_Geometry.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Fabius_Zero_Bias_Frontier_Report/Zero_Bias_Towers_and_Spectral_Peeling.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Jacobi_Digit_Fabius_Rvachev_Frontier_Report/jacobi_digit_frontier_report.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Lagrange_Rvachev_Closed_Loop_Report/lagrange_up_loop.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Lagrange_Rvachev_Loop_Package/Lagrange_Rvachev_Loop.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Closed_Loop_Report_v3/legendre_rvachev_closed_loop.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Closed_Loop_Report_v4/legendre_rvachev_closed_loop.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Self_Reconstruction/legendre_rvachev_self_reconstruction.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Matrix_Dilated_Fabius_Rvachev_Frontier_Report/matrix_dilated_fabius_rvachev.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Representation_Frontiers/Representation_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Rvachev_Lagrange_Loop_Report_v5/Rvachev_Lagrange_Loop_Report.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Rvachev_Lagrange_Loop_Report_v6/Rvachev_Lagrange_Loop_Report_v6.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Up_Polynomial_Synthesis/Up_Polynomial_Synthesis.tex`
+- `semi-formalized-research-frontiers/drafts/representations/common_digit_fabius_zonoids_frontier_report/common_digit_fabius_zonoids.tex`
+- `semi-formalized-research-frontiers/drafts/representations/fabius_dyadic_chaos_frontier/fabius_dyadic_chaos_frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/representations/fabius_iterates_nowhere_analytic/fabius_iterates_nowhere_analytic.tex`
+- `semi-formalized-research-frontiers/drafts/representations/lagrange_rvachev_loop_report_v3/lagrange_rvachev_loop.tex`
+- `semi-formalized-research-frontiers/drafts/representations/legendre_rvachev_closed_loop/legendre_rvachev_closed_loop.tex`
+- `semi-formalized-research-frontiers/drafts/representations/rvachev_lagrange_loop_report/rvachev_lagrange_loop_report.tex`
+- `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay-2/Rvachev_Up_Fourier_Decay.tex`
+- `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay-3/Fourier_decay_of_Rvachev_up.tex`
+- `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Comparative_Audit/Rvachev_Up_Fourier_Decay_Comparative_Audit.tex`
+- `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Second_Wave_Audit/Rvachev_Up_Fourier_Decay_Second_Wave_Audit.tex`
+- `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-1/rvachev_up_fourier_decay.tex`
+- `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-4/rvachev_up_fourier_decay.tex`
+- `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-5/Rvachev_Up_Fourier_Decay_Final.tex`
+- `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-6/Rvachev_Up_Fourier_Decay_Final_Synthesis.tex`
+- `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-7/rvachev_up_fourier_decay_final.tex`
+- `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-8/rvachev_up_fourier_decay_final.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Automatic_Scale_Factorizations_Rvachev_2026-08-30/automatic_scale_factorizations.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30/dyadic_radon_profiles_fabius_rvachev.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Dyadic_Spectral_Divisors_and_Gamma_Duality/fabius_frontier_report.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Pascal_Frontiers_Report/Fabius_Pascal_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Rvachev_Carleman_Frontiers_2026-08-30/fabius_carleman_frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Total_Positivity_Frontier_Report/Fabius_Total_Positivity_Frontier_Report.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Spectra_and_Arithmetic_Frontiers/Spectra_and_Arithmetic_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/fabius_holonomic_frontiers_report/fabius_holonomic_frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex`
+- `semi-formalized-research-frontiers/semi-formalized-research-frontiers.tex`
+
+### Complex dimensions / heat trace
+
+Matched **36** prior TeX files:
+
+- `FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex`
+- `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
+- `archive/glossary/FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex`
+- `archive/glossary/FabiusFunction_Mathematical_Glossary-2/FabiusFunction_Mathematical_Glossary.tex`
+- `archive/primary-exposition/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
+- `archive/primary-exposition/Fabius_Function_and_Rvachev_Up-2/Fabius_Function_and_Rvachev_Up.tex`
+- `archive/primary-exposition/Fabius_Function_and_Rvachev_Up-3/Fabius_Function_and_Rvachev_Up.tex`
+- `archive/primary-exposition/Fabius_and_Rvachev_Up-2/Fabius_and_Rvachev_Up.tex`
+- `archive/primary-exposition/Fabius_and_Rvachev_up/Fabius_and_Rvachev_up.tex`
+- `archive/primary-exposition/Fabius_function_and_up_function/Fabius_function_and_up_function.tex`
+- `archive/research-frontiers/Fabius_Dyadic_Asymptotic_Bridge/Fabius_Dyadic_Asymptotic_Bridge.tex`
+- `archive/research-frontiers/Fabius_Dyadic_Formulae_to_Asymptotics/Fabius_Dyadic_Formulae_to_Asymptotics.tex`
+- `archive/research-frontiers/Primary_Exposition_Gap_Register/Primary_Exposition_Gap_Register.tex`
+- `archive/research-frontiers/non-formalized-research-frontiers/non-formalized-research-frontiers.tex`
+- `archive/standalone-studies/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex`
+- `fabius_lean_walkthrough/fabius_lean_walkthrough.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Exponents_and_q_Series_Frontiers/Exponents_and_q_Series_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Fabius_Flat_Parameter_Response_Dynamics/fabius_frontier_report.tex`
+- `semi-formalized-research-frontiers/drafts/frontier-compilations/Frontier_Compilations/Frontier_Compilations.tex`
+- `semi-formalized-research-frontiers/drafts/frontier-compilations/Geometric_Uniform_Frontier_Directions/fabius_frontier_report.tex`
+- `semi-formalized-research-frontiers/drafts/integration-and-transforms/Integration_and_Transform_Frontiers/Integration_and_Transform_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Endpoint_All_Orders/Inverse_Endpoint_All_Orders.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Fabius_Computability_Report/inverse_fabius_computability.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_and_Sampling_Frontiers/Inverse_and_Sampling_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/fabius_information_frontier/fabius_information_frontier.tex`
+- `semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/Lambert_W_Guide.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Fabius_Stein_Koopman_Frontier_Report/dyadic_stein_koopman_frontier.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Fabius_Zero_Bias_Frontier_Report/Zero_Bias_Towers_and_Spectral_Peeling.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Representation_Frontiers/Representation_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30/dyadic_radon_profiles_fabius_rvachev.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Dyadic_Spectral_Divisors_and_Gamma_Duality/fabius_frontier_report.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Total_Positivity_Frontier_Report/Fabius_Total_Positivity_Frontier_Report.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Spectra_and_Arithmetic_Frontiers/Spectra_and_Arithmetic_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/fabius_holonomic_frontiers_report/fabius_holonomic_frontiers.tex`
+- `semi-formalized-research-frontiers/semi-formalized-research-frontiers.tex`
+
+### Sharp Strang--Fix aliasing defect
+
+Matched **24** prior TeX files:
+
+- `FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex`
+- `archive/glossary/FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex`
+- `archive/glossary/FabiusFunction_Mathematical_Glossary-2/FabiusFunction_Mathematical_Glossary.tex`
+- `archive/primary-exposition/Fabius_Function_and_Rvachev_Up-3/Fabius_Function_and_Rvachev_Up.tex`
+- `archive/primary-exposition/Fabius_function_and_up_function/Fabius_function_and_up_function.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Exponents_and_q_Series_Frontiers/Exponents_and_q_Series_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/frontier-compilations/Frontier_Compilations/Frontier_Compilations.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/Dyadic_Comb_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_and_Sampling_Frontiers/Inverse_and_Sampling_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/geometric_comb_q_fabius_report/geometric_comb_q_fabius_report.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Lagrange_Rvachev_Closed_Loop_Report/lagrange_up_loop.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Lagrange_Rvachev_Loop_Package/Lagrange_Rvachev_Loop.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Closed_Loop_Report_v4/legendre_rvachev_closed_loop.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Self_Reconstruction/legendre_rvachev_self_reconstruction.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Matrix_Dilated_Fabius_Rvachev_Frontier_Report/matrix_dilated_fabius_rvachev.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Representation_Frontiers/Representation_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Rvachev_Lagrange_Loop_Report_v5/Rvachev_Lagrange_Loop_Report.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Rvachev_Lagrange_Loop_Report_v6/Rvachev_Lagrange_Loop_Report_v6.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Up_Polynomial_Synthesis/Up_Polynomial_Synthesis.tex`
+- `semi-formalized-research-frontiers/drafts/representations/lagrange_rvachev_loop_report_v3/lagrange_rvachev_loop.tex`
+- `semi-formalized-research-frontiers/drafts/representations/legendre_rvachev_closed_loop/legendre_rvachev_closed_loop.tex`
+- `semi-formalized-research-frontiers/drafts/representations/rvachev_lagrange_loop_report/rvachev_lagrange_loop_report.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Pascal_Frontiers_Report/Fabius_Pascal_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors.tex`
+
+### Phase-locked Lambert-W saddle
+
+Matched **75** prior TeX files:
+
+- `FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex`
+- `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
+- `Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.tex`
+- `archive/early-notes/K-fold summation over the signed Thue-Morse sequence/K-fold summation over the signed Thue-Morse sequence.tex`
+- `archive/glossary/FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex`
+- `archive/glossary/FabiusFunction_Mathematical_Glossary-2/FabiusFunction_Mathematical_Glossary.tex`
+- `archive/lean-walkthrough/Fabius_Function_Lean_Walkthrough/Fabius_Function_Lean_Walkthrough.tex`
+- `archive/primary-exposition/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
+- `archive/primary-exposition/Fabius_Function_and_Rvachev_Up-2/Fabius_Function_and_Rvachev_Up.tex`
+- `archive/primary-exposition/Fabius_Function_and_Rvachev_Up-3/Fabius_Function_and_Rvachev_Up.tex`
+- `archive/primary-exposition/Fabius_and_Rvachev_Up-2/Fabius_and_Rvachev_Up.tex`
+- `archive/primary-exposition/Fabius_and_Rvachev_up/Fabius_and_Rvachev_up.tex`
+- `archive/primary-exposition/Fabius_function_and_up_function/Fabius_function_and_up_function.tex`
+- `archive/primary-supplements/Fabius_Function_Missing_Parts/Fabius_Function_Missing_Parts.tex`
+- `archive/primary-supplements/Fabius_Function_Missing_Parts-2/Fabius_Function_Missing_Parts.tex`
+- `archive/research-frontiers/Fabius_Dyadic_Asymptotic_Bridge/Fabius_Dyadic_Asymptotic_Bridge.tex`
+- `archive/research-frontiers/Fabius_Dyadic_Formulae_to_Asymptotics/Fabius_Dyadic_Formulae_to_Asymptotics.tex`
+- `archive/research-frontiers/non-formalized-research-frontiers/non-formalized-research-frontiers.tex`
+- `archive/standalone-studies/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex`
+- `fabius_lean_walkthrough/fabius_lean_walkthrough.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/data/ldp_edge_table.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/fabius_frontier_report.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Cyclotomic_q_Fabius_Rvachev_Frontier/cyclotomic_q_fabius_frontier.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Exponents_and_q_Series_Frontiers/Exponents_and_q_Series_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Fabius_Rvachev_Frontier_Report/fabius_frontier_report.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/fabius_q_frontiers_report/q_fabius_parameter_frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/inverse_q_analogs_report/inverse_q_analogs_report.tex`
+- `semi-formalized-research-frontiers/drafts/frontier-compilations/Frontier_Compilations/Frontier_Compilations.tex`
+- `semi-formalized-research-frontiers/drafts/frontier-compilations/Geometric_Uniform_Convolutions_and_New_Frontiers/fabius-frontier-report-H.tex`
+- `semi-formalized-research-frontiers/drafts/frontier-compilations/Geometric_Uniform_Frontier_Directions/fabius_frontier_report.tex`
+- `semi-formalized-research-frontiers/drafts/integration-and-transforms/Integration_and_Transform_Frontiers/Integration_and_Transform_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/Dyadic_Comb_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Endpoint_All_Orders/Inverse_Endpoint_All_Orders.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Fabius_Computability_Report/inverse_fabius_computability.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_and_Sampling_Frontiers/Inverse_and_Sampling_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/geometric_comb_interpolation_report/geometric_comb_interpolation_report.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/inverse_fabius_iterates_nowhere_analytic/inverse_fabius_iterates_nowhere_analytic.tex`
+- `semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/Lambert_W_Guide.tex`
+- `semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/assets/Lambert-W-Article/generated/iteration_counts.tex`
+- `semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/assets/Lambert-W-Article/generated/representative_values.tex`
+- `semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/assets/Lambert-W-Function-article-4/numerical_values.tex`
+- `semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/assets/Lambert_W_article/numerical_results.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Fabius_Rvachev_New_Frontiers-2/fabius_rvachev_new_frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/Fabius_Rvachev_Shape_Divisibility_Stein_Geometry.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Fabius_Stein_Koopman_Frontier_Report/dyadic_stein_koopman_frontier.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Fabius_Zero_Bias_Frontier_Report/Zero_Bias_Towers_and_Spectral_Peeling.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Jacobi_Digit_Fabius_Rvachev_Frontier_Report/jacobi_digit_frontier_report.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Lagrange_Rvachev_Closed_Loop_Report/lagrange_up_loop.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Lagrange_Rvachev_Loop_Package/Lagrange_Rvachev_Loop.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Closed_Loop_Report_v3/legendre_rvachev_closed_loop.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Closed_Loop_Report_v4/legendre_rvachev_closed_loop.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Self_Reconstruction/legendre_rvachev_self_reconstruction.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Matrix_Dilated_Fabius_Rvachev_Frontier_Report/matrix_dilated_fabius_rvachev.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Representation_Frontiers/Representation_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Rvachev_Lagrange_Loop_Report_v5/Rvachev_Lagrange_Loop_Report.tex`
+- `semi-formalized-research-frontiers/drafts/representations/common_digit_fabius_zonoids_frontier_report/common_digit_fabius_zonoids.tex`
+- `semi-formalized-research-frontiers/drafts/representations/fabius_dyadic_chaos_frontier/fabius_dyadic_chaos_frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/representations/fabius_iterates_nowhere_analytic/fabius_iterates_nowhere_analytic.tex`
+- `semi-formalized-research-frontiers/drafts/representations/lagrange_rvachev_loop_report_v3/lagrange_rvachev_loop.tex`
+- `semi-formalized-research-frontiers/drafts/representations/legendre_rvachev_closed_loop/legendre_rvachev_closed_loop.tex`
+- `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Comparative_Audit/Rvachev_Up_Fourier_Decay_Comparative_Audit.tex`
+- `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Gentle_Guide/Rvachev_Up_Fourier_Decay_Gentle_Guide.tex`
+- `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-5/Rvachev_Up_Fourier_Decay_Final.tex`
+- `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-6/Rvachev_Up_Fourier_Decay_Final_Synthesis.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Automatic_Scale_Factorizations_Rvachev_2026-08-30/automatic_scale_factorizations.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30/dyadic_radon_profiles_fabius_rvachev.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Dyadic_Spectral_Divisors_and_Gamma_Duality/fabius_frontier_report.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Pascal_Frontiers_Report/Fabius_Pascal_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Rvachev_Carleman_Frontiers_2026-08-30/fabius_carleman_frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Total_Positivity_Frontier_Report/Fabius_Total_Positivity_Frontier_Report.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Spectra_and_Arithmetic_Frontiers/Spectra_and_Arithmetic_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/fabius_holonomic_frontiers_report/fabius_holonomic_frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex`
+- `semi-formalized-research-frontiers/semi-formalized-research-frontiers.tex`
+
+### Integer-base atomic family
+
+Matched **37** prior TeX files:
+
+- `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
+- `archive/primary-exposition/Fabius_Function_and_Rvachev_Up-3/Fabius_Function_and_Rvachev_Up.tex`
+- `archive/research-frontiers/Thue_Morse_Formula_Atlas-1/Thue_Morse_Formula_Atlas.tex`
+- `archive/research-frontiers/Thue_Morse_Formula_Atlas-2/Consolidated_Formula_Atlas_for_the_Thue_Morse_Sequence.tex`
+- `archive/research-frontiers/Thue_Morse_Formula_Atlas-3/Thue_Morse_Formula_Atlas.tex`
+- `papers/ubiq15/ubiq15-corrected.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/fabius_frontier_report.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Exponents_and_q_Series_Frontiers/Exponents_and_q_Series_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Fabius_Flat_Parameter_Response_Dynamics/fabius_frontier_report.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/inverse_q_analogs_extended_report/inverse_q_analogs_extended_report.tex`
+- `semi-formalized-research-frontiers/drafts/exponents-and-q-series/q_pochhammer_q_binomial_monograph/q_pochhammer_q_binomial_monograph.tex`
+- `semi-formalized-research-frontiers/drafts/frontier-compilations/Frontier_Compilations/Frontier_Compilations.tex`
+- `semi-formalized-research-frontiers/drafts/frontier-compilations/Geometric_Uniform_Frontier_Directions/fabius_frontier_report.tex`
+- `semi-formalized-research-frontiers/drafts/integration-and-transforms/Integration_and_Transform_Frontiers/Integration_and_Transform_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/Dyadic_Comb_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Fabius_Computability_Report/inverse_fabius_computability.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_and_Sampling_Frontiers/Inverse_and_Sampling_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/fabius_information_frontier/fabius_information_frontier.tex`
+- `semi-formalized-research-frontiers/drafts/inverse-and-sampling/geometric_comb_q_fabius_report/geometric_comb_q_fabius_report.tex`
+- `semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/Lambert_W_Guide.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Fabius_Zero_Bias_Frontier_Report/Zero_Bias_Towers_and_Spectral_Peeling.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Jacobi_Digit_Fabius_Rvachev_Frontier_Report/jacobi_digit_frontier_report.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Closed_Loop_Report_v4/legendre_rvachev_closed_loop.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Matrix_Dilated_Fabius_Rvachev_Frontier_Report/matrix_dilated_fabius_rvachev.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Representation_Frontiers/Representation_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Rvachev_Lagrange_Loop_Report_v6/Rvachev_Lagrange_Loop_Report_v6.tex`
+- `semi-formalized-research-frontiers/drafts/representations/Up_Polynomial_Synthesis/Up_Polynomial_Synthesis.tex`
+- `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Comparative_Audit/Rvachev_Up_Fourier_Decay_Comparative_Audit.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Automatic_Scale_Factorizations_Rvachev_2026-08-30/automatic_scale_factorizations.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30/dyadic_radon_profiles_fabius_rvachev.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Dyadic_Spectral_Divisors_and_Gamma_Duality/fabius_frontier_report.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Rvachev_Carleman_Frontiers_2026-08-30/fabius_carleman_frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Total_Positivity_Frontier_Report/Fabius_Total_Positivity_Frontier_Report.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Spectra_and_Arithmetic_Frontiers/Spectra_and_Arithmetic_Frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/fabius_holonomic_frontiers_report/fabius_holonomic_frontiers.tex`
+- `semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex`
+
+## File manifest
+
+### `FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex`
+
+- SHA-256: `6fd29746b6c61e89de66f52ca852c95dfb1cc968d5df5c94ef0d5beb8dd979bf`
+- Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Headword index}\addcontentsline{toc}{section}{Headword index
+  - section: A}\label{sec:letter-a
+  - section: B}\label{sec:letter-b
+  - section: C}\label{sec:letter-c
+  - section: D}\label{sec:letter-d
+  - section: E}\label{sec:letter-e
+  - section: F}\label{sec:letter-f
+  - section: G}\label{sec:letter-g
+  - section: H}\label{sec:letter-h
+  - section: I}\label{sec:letter-i
+  - section: J}\label{sec:letter-j
+  - section: K}\label{sec:letter-k
+  - section: L}\label{sec:letter-l
+  - section: M}\label{sec:letter-m
+  - section: N}\label{sec:letter-n
+  - section: O}\label{sec:letter-o
+  - section: P}\label{sec:letter-p
+  - section: Q}\label{sec:letter-q
+  - section: R}\label{sec:letter-r
+  - section: S}\label{sec:letter-s
+  - section: T}\label{sec:letter-t
+  - section: U}\label{sec:letter-u
+  - section: V}\label{sec:letter-v
+  - section: W}\label{sec:letter-w
+  - section: Z}\label{sec:letter-z
+  - section: Notation and formalization crosswalk
+  - section: Coverage map
+  - section: Source note
+
+### `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
+
+- SHA-256: `fb7c77579fab38d07606b70cdd30ef1c535e9951478009151ea4c32bec629711`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Historical note and scope
+  - subsection: A guide to the main results
+  - section: Three functions that must not be conflated
+  - subsection: The bounded Fabius distribution function
+  - subsection: Rvachev's compactly supported bump
+  - subsection: The signed global extension
+  - subsection: Exact shape: positivity, bijectivity, and unimodality
+  - subsection: Convexity and the maximal slope
+  - subsection: The optimal Lipschitz constant
+  - section: Existence and uniqueness by a contraction
+  - subsection: The admissible function space
+  - subsection: The integral transform
+  - subsection: The differential equation for $\Up$ and smoothness
+  - subsection: The original Rvachev characterization
+  - section: The probability law behind the functions
+  - subsection: An infinite weighted sum of uniforms
+  - subsection: Generic weighted laws and support-free quantile transport
+  - subsection: The normalized geometric family
+  - subsection: Sharp activation probabilities, finite Taylor jets, and square-summable fields
+  - subsection: Finite atomic laws and weak convergence
+  - subsection: Combinatorial step functions and the half-weight convention
+  - subsection: Centered finite splines and an explicit error bound
+  - subsection: The exact quarter cell of the finite spline
+  - section: Fourier products, inversion, and Poisson summation
+  - subsection: Finite complex transforms and a Thue--Morse product-to-sum bridge
+  - subsection: Geometric reciprocal-Gamma products
+  - subsection: Total local factorization and exact complex zero jets
+  - subsection: Finite weighted scale arithmetic behind the zero orders
+  - subsection: Rapid decay and inversion
+  - subsection: Poisson summation and partitions of unity
+  - subsection: Banach-free cyclic aliasing
+  - subsection: Finite odd-coset DFT traces
+  - subsection: Moment expansion of the Fourier transform
+  - section: The global extension, derivatives, flatness, and inverse
+  - subsection: The signed extension and all iterated derivatives
+  - subsection: Exact midpoint--endpoint transmutation
+  - subsection: Exact inverse midpoint defect
+  - subsection: Normalized Volterra calculus and exact Fabius primitives
+  - subsection: Dyadic derivative cells and exact value distributions
+  - subsection: Effective flatness
+  - subsection: The precise analytic statements
+  - subsection: The totalized inverse
+  - subsection: The exact inverse modulus
+  - subsection: Effective dyadic continuity of the inverse
+  - subsection: Logarithmic reciprocal continuity of the inverse
+  - subsection: Precise non-elementarity
+  - section: Moments, generating functions, and reciprocal powers
+  - subsection: Even and half moments
+  - subsection: Full centered moment and cumulant parity
+  - subsection: Universal Bell and cumulant transforms
+  - subsection: Rvachev moment--Appell deconvolution and polynomial synthesis
+  - subsection: The probability--Laplace bridge
+  - subsection: Exact values at reciprocal powers of two
+  - subsection: Parity and the exact two-adic valuation
+  - subsection: Bernoulli recurrences
+  - section: Exact evaluation at arbitrary dyadic rationals
+  - subsection: The closed Thue--Morse formula
+  - subsection: Thue--Morse cancellation
+  - subsection: The exact leading-bit recurrence
+  - subsection: The bit-recursive evaluator
+  - subsection: Reduction of an arbitrary dyadic argument
+  - subsection: Denominator bounds
+  - subsection: The exact half-base \(q\)-binomial layer
+  - section: The global binary-reduction telescope
+  - subsection: The corrected parity-power presentation
+  - subsection: The global complex $q$-binomial series
+  - section: A complex $q$-binomial discrete limit
+  - section: Iterated prefix sums of the signed Thue--Morse sequence
+  - subsection: Iterated prefix sums and the binomial convolution law
+  - subsection: Prouhet annihilation, signed dyadic reciprocity, and exact zero runs
+  - subsection: Two generating-series identities
+  - subsection: The analytic Thue--Morse series and its natural boundary
+  - subsection: The functional equation of the normalized prefix grid
+  - subsection: The literal right endpoint does not converge
+  - subsection: Corrected normalization and pointwise convergence
+  - subsection: The lower Lambert branch
+  - subsection: A binomial--logarithm formula for the Thue--Morse bit
+  - section: Endpoint asymptotics: the exact formal hierarchy
+  - subsection: The negative-Laplace product and its exact decomposition
+  - subsection: The Gamma--zeta Fourier series
+  - subsection: The evaluated constant
+  - subsection: A fully effective dyadic bound
+  - subsection: The lower-Lambert saddle and exact reduction
+  - subsection: The compact online formula and its missing periodic factor
+  - subsection: The first two periodic saddle corrections
+  - subsection: The recursive all-orders theorem
+  - subsection: Universal finite endpoint-transfer algebra
+  - subsection: Recursive elementary re-expansion of the phase
+  - subsection: Three endpoint consequences already formalized
+  - section: The Fourier--Legendre expansion of \(\Up\)
+  - section: Additional proved summation identities
+  - section: Effective computability
+  - section: Formalization boundary and audit conventions
+  - section: Affine Cauchy--Stieltjes calculus
+  - section: Conclusion
+  - section: Lean module map
+  - section: Notation crosswalk
+
+### `Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.tex`
+
+- SHA-256: `3c3c2f485dd2c637c9d6650b35b3fc8bd8fc5efd74c00900f47b16822addb44f`
+- Phrase clusters: Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Statement
+  - subsection: The two inputs
+  - section: The class of elementary functions}\label{sec:elem
+  - subsection: Definition
+  - subsection: What is not claimed}\label{sec:notclaimed
+  - section: Analyticity of the generators
+  - section: Density of the analytic locus}\label{sec:density
+  - subsection: Openness
+  - subsection: The unary step
+  - subsection: The induction
+  - section: The inverse, and why inverting cannot help}\label{sec:inverse
+  - subsection: A right inverse is an implicit branch
+  - subsection: The inverse of the Fabius function
+  - subsection: Closing the class under inversion
+  - section: The formal development
+  - subsection: Correspondence with the Lean names
+  - subsection: Ingredients taken from \texttt{Mathlib}
+  - subsection: Statement of the main theorem in Lean
+  - section: Discussion
+  - subsection: Why smoothness cannot decide the question
+  - subsection: The role of the endpoints
+  - subsection: What a stronger theorem would require
+
+### `archive/early-notes/Fabius Asymptotic/Fabius Asymptotic.tex`
+
+- SHA-256: `02af9a309267f0427afdedb3b0976eb0c923b40bcce4ae9b3603e51fdb526fb8`
+- Phrase clusters: none
+- Structural headings:
+  - section: 1) Exact identity on a dyadic logarithmic scale
+  - section: 2) Large- $t$ expansion of $g$ : determination of the coefficients
+  - subsection: 2.1 Quadratic coefficient
+  - subsection: 2.2 The $t \ln t$ and $t$ coefficients
+  - subsection: 2.3 The $(\ln t)^{2}$ and $\ln t$ coefficients
+  - section: 3) Remainder and the 1-periodic term
+
+### `archive/early-notes/K-fold summation over the signed Thue-Morse sequence/K-fold summation over the signed Thue-Morse sequence.tex`
+
+- SHA-256: `2d22d2bd23ab7e62c10e9923f027354ec264391b58e0e56f0f343b9cb3fb4515`
+- Phrase clusters: Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: 1) Self-similarity in the data, and the Fabius equation
+  - section: 2) Why the runs of zeros? how long? what do they mean?
+  - section: 3) "How close is it to $F$ after $N$ summations?"
+  - section: 4) A compact formula for the $k$-fold sums
+  - section: 5) Asymptotics of $F(x)$ as $x \downarrow 0$ and the Lambert $W$ function
+
+### `archive/glossary/FabiusFunction_Mathematical_Glossary/FabiusFunction_Mathematical_Glossary.tex`
+
+- SHA-256: `a564c062b17b3093264f572c01483fe219331196518911e58df0046b09674888`
+- Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Headword index}\addcontentsline{toc}{section}{Headword index
+  - section: A}\label{sec:letter-a
+  - section: B}\label{sec:letter-b
+  - section: C}\label{sec:letter-c
+  - section: D}\label{sec:letter-d
+  - section: E}\label{sec:letter-e
+  - section: F}\label{sec:letter-f
+  - section: G}\label{sec:letter-g
+  - section: H}\label{sec:letter-h
+  - section: I}\label{sec:letter-i
+  - section: J}\label{sec:letter-j
+  - section: K}\label{sec:letter-k
+  - section: L}\label{sec:letter-l
+  - section: M}\label{sec:letter-m
+  - section: N}\label{sec:letter-n
+  - section: O}\label{sec:letter-o
+  - section: P}\label{sec:letter-p
+  - section: Q}\label{sec:letter-q
+  - section: R}\label{sec:letter-r
+  - section: S}\label{sec:letter-s
+  - section: T}\label{sec:letter-t
+  - section: U}\label{sec:letter-u
+  - section: V}\label{sec:letter-v
+  - section: W}\label{sec:letter-w
+  - section: Z}\label{sec:letter-z
+  - section: Notation crosswalk for repository-specific objects
+  - section: Coverage map
+  - section: Source note
+
+### `archive/glossary/FabiusFunction_Mathematical_Glossary-2/FabiusFunction_Mathematical_Glossary.tex`
+
+- SHA-256: `4200e021b8dd1a6a20e2722fd1c3f26fec3dc68ba92ae970dbf33e1957af08a9`
+- Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Purpose and scope
+  - section: Notation and object conventions
+  - section: Subject guide
+  - section: Alphabetical glossary
+  - section: \color{linkblue}A
+  - section: \color{linkblue}B
+  - section: \color{linkblue}C
+  - section: \color{linkblue}D
+  - section: \color{linkblue}E
+  - section: \color{linkblue}F
+  - section: \color{linkblue}G
+  - section: \color{linkblue}H
+  - section: \color{linkblue}I
+  - section: \color{linkblue}L
+  - section: \color{linkblue}M
+  - section: \color{linkblue}N
+  - section: \color{linkblue}O
+  - section: \color{linkblue}P
+  - section: \color{linkblue}Q
+  - section: \color{linkblue}R
+  - section: \color{linkblue}S
+  - section: \color{linkblue}T
+  - section: \color{linkblue}U
+  - section: \color{linkblue}V
+  - section: \color{linkblue}W
+  - section: \color{linkblue}Z
+  - section: Alias and synonym index
+  - section: Corpus note
+
+### `archive/lean-walkthrough/Fabius_Function_Lean_Walkthrough/Fabius_Function_Lean_Walkthrough.tex`
+
+- SHA-256: `6c62cf5203696918fffafd8ac886cc682faa1e564379d5040934400eedd2820a`
+- Phrase clusters: Exact digit-sum zero count; Phase-locked Lambert-W saddle
+- Structural headings:
+  - chapter: Abstract
+  - chapter: How to use this walkthrough
+  - chapter: Repository boundary, build, and trust surface
+  - section: The focused Lean library
+  - section: Pinning the prose to a source snapshot
+  - section: The root facade is a curated API, not a dump
+  - section: Four kinds of source module
+  - section: Naming conventions that encode intent
+  - section: The bounded cumulative function
+  - section: Rvachev's compactly supported bump
+  - section: The signed global extension
+  - section: Exact rational coordinates
+  - section: Transform and approximation coordinates
+  - chapter: Dependency architecture
+  - section: The main dependency strata
+  - section: Why dependency direction matters
+  - section: Thin facades and thick bridges
+  - chapter: The exact arithmetic kernel
+  - section: Why \module{Arithmetic} comes first
+  - section: Binary identities are an API, not incidental lemmas
+  - section: Moments and division-free normalization
+  - section: The closed dyadic sum
+  - section: The executable evaluator
+  - chapter: The specification and the differential bootstrap
+  - section: \module{Basic}: the semantic vocabulary
+  - section: Folding to \upfun and managing the seam at zero
+  - section: Why the derivative formula bootstraps all smoothness
+  - section: Support and positivity as analytic infrastructure
+  - section: The fixed-point space
+  - section: The smoothing operator
+  - section: Recovering the differential specification
+  - section: A second uniqueness layer
+  - subsection: Stage 1: exact equality on every dyadic point
+  - subsection: Stage 2: approximate an arbitrary real by floor dyadics
+  - subsection: Stage 3: pass to the limit by continuity
+  - section: What the final uniqueness API gives
+  - chapter: A second uniqueness theorem: the original compact-support problem
+  - section: The original specification includes an unknown scale
+  - section: First force the scale to be two
+  - section: Fourier uniqueness in Schwartz space
+  - section: Why both uniqueness proofs belong in the library
+  - section: The formal-series layer is deliberately pre-analytic
+  - section: From the bump to integral moments
+  - section: The inverse-power identity
+  - section: Generating functions, Laplace transforms, and Fourier transforms
+  - section: Normalized moments and denominator chains
+  - section: Four files, four proof obligations
+  - section: Representation refinement
+  - section: Prefix stability of the inverse-power table
+  - section: The abstract bit recurrence
+  - section: Thue--Morse cancellation creates Taylor blocks
+  - section: The analytic recurrence
+  - section: Why this is a particularly strong formalization result
+  - chapter: The signed global extension and dyadic translation calculus
+  - section: Local finiteness hidden inside a \texttt{tsum}
+  - section: Agreement with the bounded coordinate
+  - section: Reindexing the derivative
+  - section: The closed formula for all iterated derivatives
+  - section: Power-of-two translation and Thue--Morse sign change
+  - section: Exact cancellation of neighboring Taylor remainders
+  - chapter: The first paper facade: compact support, probability, and approximation
+  - section: What \module{Paper05442} exposes
+  - section: Finite convolution and atomic approximants
+  - section: From interval averages to pointwise convergence
+  - section: Weak convergence through characteristic functions
+  - section: The infinite product probability representation
+  - section: The CDF satisfies the Fabius smoothing equation
+  - section: Fourier product and Poisson summation
+  - chapter: The arithmetic paper facade
+  - section: Numbered statements versus prose-level support
+  - section: Qualitative consequences
+  - section: Global dyadic formulas
+  - section: Denominator bounds
+  - section: Odd normalizations and \texorpdfstring{$2$-adic}{2-adic} valuations
+  - section: Taylor reduction as the computational heart of the paper
+  - chapter: Thue--Morse generating identities and \texorpdfstring{$q$-binomial}{q-binomial} formulas
+  - section: The combinatorial sublibrary
+  - section: Finite exponential factorization
+  - section: \texorpdfstring{$q$-weights}{q-weights} as coefficient extractors
+  - section: Inverse powers first, arbitrary numerators second
+  - section: Raw, scalar, and Taylor layers
+  - section: Audit of the local \texorpdfstring{$K$-fold}{K-fold} Thue--Morse draft
+  - chapter: Discrete limits, Toeplitz rows, and uniform splines
+  - section: Why there is a separate discrete-limit branch
+  - section: Safe encoding of a floor-defined finite prefix
+  - section: The outer \texorpdfstring{$q$-binomial}{q-binomial} row
+  - subsection: Row sums equal one
+  - subsection: Uniform total variation
+  - subsection: Indices escape to infinity
+  - section: The finite-row Toeplitz theorem
+  - section: Complex shifts and why polynomial translation is harmless
+  - section: The half-cell-centered uniform spline
+  - section: Probability and spline convergence meet
+  - chapter: Legendre coefficients, uniform series, and least squares
+  - section: A generic orthogonal-polynomial foundation
+  - section: Uniform convergence for smooth functions
+  - section: Fabius coefficients through exact moments
+  - section: Even-only and full series
+  - section: Least squares as an orthogonal projection theorem
+  - section: A clean example of generic/specific layering
+  - chapter: The asymptotic tower begins with an exact product
+  - section: Why the asymptotic proof does not start with an asymptotic formula
+  - section: The exact dilation equation
+  - section: From the product logarithm back to the transform
+  - section: The asymptotic dependency tower
+  - section: Why there are many small asymptotic modules
+  - chapter: The periodic correction and its Mellin analysis
+  - section: Centering the exact periodic term
+  - section: Mean, smoothness, and Fourier coefficients
+  - section: Mellin regularization
+  - section: The periodic term is genuinely nonconstant
+  - section: Endpoint Laplace comparison
+  - section: The exact phase equation
+  - section: The compact corrected main term
+  - section: The literal elementary expansion
+  - section: Central arc, minor arc, and normalized mass
+  - section: The corrected theorem and the obstruction theorem
+  - section: Why a quotient-of-exponentials fit is not an asymptotic equivalent
+  - chapter: The full exact-phase asymptotic expansion
+  - section: A generic notion of expansion
+  - section: Vertical jets and finite exponential algebra
+  - section: Gaussian contraction of polynomial corrections
+  - section: Central and tail estimates to every order
+  - section: From complex kernel mass to a real saddle ratio
+  - section: Taking the logarithm
+  - section: Finite truncations and the first explicit correction
+  - section: Transport from the dyadic logarithmic scale to \texorpdfstring{$x\to0^+$}{x to 0+}
+  - section: What is and is not expanded
+  - section: Dyadic and \texorpdfstring{$q$-binomial}{q-binomial} sharp transfers
+  - chapter: Recurring Lean proof-engineering patterns
+  - section: Carry invariants in types when they are truly structural
+  - section: Prove exact algebra before casting
+  - section: Separate implementation invariants from mathematical specifications
+  - section: Use local finiteness instead of unnecessary convergence theory
+  - section: Package smooth compact support as Schwartz only at transform boundaries
+  - section: Strong induction follows binary control flow
+  - section: Use formal power series for coefficient identities
+  - section: Normalize before proving parity or divisibility
+  - section: Factor generic convergence arguments away from special coefficients
+  - section: Prefer exact cancellation to estimation when symmetry allows it
+  - section: Make false source claims first-class
+  - section: Control coercions at named boundaries
+  - section: Keep endpoint facts explicit
+  - chapter: Task-oriented reading paths and extension points
+  - section: To understand the canonical construction
+  - section: To modify or optimize the dyadic evaluator
+  - section: To add a new exact arithmetic theorem
+  - section: To follow the first paper
+  - section: To follow the arithmetic paper
+  - section: To work on \texorpdfstring{$q$-binomial}{q-binomial} or discrete formulas
+  - section: To work on spectral approximation
+  - section: To work on the asymptotic theory
+  - section: Where to place a new theorem
+  - chapter: Categorized module catalogue
+  - chapter: Key declaration index
+  - chapter: Source-claim and correction map
+  - chapter: Reproduction and audit checklist
+  - section: Clone and pin
+  - section: Build the focused library
+  - section: Enumerate the source tree
+  - section: Inspect imports rather than guessing dependencies
+  - section: Interrogate theorem dependencies in Lean
+  - section: Search for placeholders with context
+  - section: Recompute an exact dyadic value
+  - section: Read the repository's own coverage documents
+  - chapter: Notation and Lean translation guide
+  - section: A final architectural summary
+  - chapter: Source notes
+
+### `archive/lean-walkthrough/fabius_lean_walkthrough/fabius_lean_walkthrough.tex`
+
+- SHA-256: `eba2c977805f658242d0599bcb4de77200f0a21857c3f1b6a9a7a13956e16e76`
+- Phrase clusters: Exact digit-sum zero count
+- Structural headings:
+  - chapter: Abstract
+  - chapter: Scope and conventions
+  - chapter: Building and entering the development}\label{ch:build
+  - section: Repository location and toolchain
+  - section: What the umbrella module exposes
+  - section: A practical exploration workflow
+  - chapter: The mathematical objects and their Lean interfaces}\label{ch:objects
+  - section: The bounded function
+  - subsection: Why specify before constructing?
+  - section: The Rvachev up-function
+  - section: The signed global extension
+  - section: Auxiliary analytic objects
+  - chapter: The dependency architecture}\label{ch:architecture
+  - section: A layered view
+  - section: Why existence is not the first analytic file
+  - section: Two independent uniqueness arguments
+  - section: Paper aggregators versus theorem-producing modules
+  - chapter: The exact-arithmetic foundation}\label{ch:arithmetic
+  - section: Why the development begins over \texorpdfstring{\(\N\) and \(\Q\)}{N and Q}
+  - section: Binary weight and the Thue--Morse sign
+  - section: Product normalizations
+  - section: Moment and half-moment recurrences
+  - section: Closed dyadic formulas
+  - section: The inverse-power table
+  - section: Horner evaluation
+  - section: Recursive removal of the highest bit
+  - section: Clamping, reflection, and the global evaluator
+  - section: Recognizing dyadic rationals
+  - section: Arithmetic API design lessons
+  - chapter: Constructing the canonical bounded function}\label{ch:existence
+  - section: The ambient complete metric space
+  - section: Extending an interval function
+  - section: The nonlinear-looking transform that is actually affine
+  - section: The contraction estimate
+  - section: From an integral fixed point to the differential law
+  - section: Bootstrapping smoothness
+  - section: Uniqueness by dyadic density
+  - chapter: Differential identities and the signed global extension}\label{ch:differential
+  - section: The role of \file{Differential.lean}
+  - section: Domain bookkeeping
+  - section: Scale and translation lemmas
+  - section: Local finiteness of the translate sum
+  - section: Agreement and global identities
+  - section: Why use a \lean{tsum} for a locally finite expression?
+  - chapter: The exact--analytic dyadic bridge}\label{ch:dyadic-bridge
+  - section: The purpose of \file{DyadicAnalytic.lean}
+  - section: Finite Taylor expansion on a dyadic scale
+  - section: Inverse-power values
+  - section: From closed polynomial to Horner program
+  - section: Correctness of highest-bit reduction
+  - section: Representation independence
+  - section: Dyadic density and uniqueness
+  - section: The global dyadic theorem
+  - chapter: Moments, generating functions, and exact denominators}\label{ch:moments
+  - section: Analytic moments of the up-function
+  - subsection: Integration over compact support
+  - section: Identifying analytic and exact moments
+  - section: Generating functions
+  - section: Removable singularities
+  - section: Normalized half moments
+  - section: Normalized even moments
+  - section: Parity through Lucas' theorem
+  - section: Reduced numerators, denominators, and two-adic valuation
+  - section: Denominator bounds
+  - section: Bernoulli recurrences and source-facing arithmetic
+  - chapter: Fourier analysis and Rvachev's original characterization}\label{ch:fourier
+  - section: Why the up-function is the Fourier object
+  - section: Fourier conventions
+  - section: Transforming the derivative equation
+  - section: Iteration to a finite product
+  - section: The infinite sinc product
+  - section: Fourier injectivity and uniqueness
+  - section: Moment series from the Fourier product
+  - section: Poisson summation
+  - chapter: Finite convolutions, probability, and approximation}\label{ch:probability
+  - section: The probabilistic representation
+  - section: Finite convolution measures
+  - section: Weak convergence
+  - section: Step approximants
+  - section: The endpoint half-weight correction
+  - section: Coefficient unimodality
+  - section: From distribution functions to the bounded Fabius function
+  - section: Exact finite Taylor formulas and nonanalyticity
+  - section: Corrections recorded by the original-paper aggregator
+  - chapter: The two paper formalizations as navigable APIs}\label{ch:papers
+  - section: The first paper: \file{Paper05442.lean}
+  - section: The arithmetic paper: \file{Paper06487.lean}
+  - section: Statements that remain questions or conjectures
+  - section: Why a separate coverage document matters
+  - chapter: Thue--Morse and q-binomial identities}\label{ch:qbinomial
+  - section: Why q-binomial algebra appears
+  - section: The finite q-Pochhammer infrastructure
+  - section: Why prove a specialized q-binomial theorem?
+  - section: Raw, scalar, and polished formulas
+  - section: The unrestricted finite identity
+  - section: Translation invariance as a polynomial theorem
+  - section: Taylor expansion in the q parameter
+  - section: The global binary-reduction series
+  - section: Parity-power series
+  - chapter: Discrete limits and complex shifts}\label{ch:discrete-limit
+  - section: The shape of the limit theorem
+  - section: Uniform spline approximants
+  - section: Complex-shift control
+  - section: The Toeplitz averaging mechanism
+  - section: Integration and identification of the limit
+  - section: Proof flow of the discrete-limit family
+  - chapter: The logarithmic scale near the flat endpoint}\label{ch:logscale}\label{ch:asymptotics
+  - section: Why ordinary Taylor asymptotics fail
+  - section: The exact logarithmic delay identity
+  - section: Positivity near zero
+  - section: The quadratic logarithmic law
+  - section: A quantitative coarse bound
+  - section: Filter formulations
+  - chapter: Negative Laplace analysis and the periodic correction}\label{ch:negative-laplace
+  - section: The negative moment generating function
+  - section: The kernel and its bounds
+  - section: The exact dilation equation
+  - section: How the periodic function is constructed
+  - section: Continuity and regularity
+  - section: Mellin--Bose analysis
+  - section: Finite parts and Bromwich preparation
+  - section: Why the periodic term cannot be dropped
+  - section: Identification with the generating function
+  - chapter: Bromwich inversion and the sharp saddle point}\label{ch:saddle
+  - section: From a transform to the endpoint density
+  - section: The Lambert phase
+  - section: Exact reduction at the saddle
+  - section: Central and tail decomposition
+  - section: The Gaussian reference weight
+  - section: Cumulants and derivative bounds
+  - section: Minor arcs and tail decay
+  - section: The first correction
+  - section: The corrected sharp formula
+  - section: Failure of an uncorrected elementary formula
+  - chapter: All-order asymptotic expansions}\label{ch:all-orders
+  - section: Why the exact phase is retained
+  - section: Formal logarithm of the Laplace product
+  - section: Higher small-argument expansion
+  - section: Gaussian polynomial contractions
+  - section: Coefficient recurrences
+  - section: Uniform central remainders
+  - section: All-order tails
+  - section: Assembling the normalized mass expansion
+  - section: From mass to logarithm
+  - section: Transfer to \texorpdfstring{\(F(x)\)}{F(x)}
+  - section: First-order and Wikipedia-facing corollaries
+  - section: The proof-audit role of the asymptotic aggregator
+  - chapter: Legendre expansions and polynomial approximation}\label{ch:legendre
+  - section: Why Legendre polynomials are a natural basis
+  - section: Building the polynomial basis
+  - section: Sturm--Liouville orthogonality
+  - section: Norms and pointwise bounds
+  - section: Vanishing of odd coefficients
+  - section: Exact coefficient evaluation
+  - section: Generic convergence infrastructure
+  - section: Identifying the uniform limit
+  - section: Translated series for the global Fabius function
+  - section: Least-squares optimality
+  - section: Computational significance
+  - chapter: The k-fold Thue--Morse draft audit}\label{ch:kfold
+  - section: Purpose of the audit
+  - section: Exact finite identities
+  - section: Polygonal interpolation and corrected approximation
+  - section: Formal counterexamples
+  - section: Repairing the lower Lambert branch
+  - section: Decay comparisons
+  - chapter: Recurring proof-engineering patterns}\label{ch:engineering
+  - section: Strong induction as the default arithmetic engine
+  - section: Finite sums and index transport
+  - section: Casts as explicit interfaces
+  - section: Pointwise derivatives instead of raw \lean{deriv}
+  - section: Piecewise functions and boundary glue
+  - section: Local finiteness before infinite-sum algebra
+  - section: Integrability from support and bounds
+  - section: Interchanging sums, limits, derivatives, and integrals
+  - section: Big-O, little-o, and eventual domains
+  - section: Polynomial identities
+  - section: Choosing automation deliberately
+  - section: Public wrappers and internal strength
+  - section: No placeholders and explicit corrections
+  - chapter: How to read and extend the code}\label{ch:extending
+  - section: Four recommended reading paths
+  - subsection: Path A: existence and uniqueness
+  - subsection: Path B: exact evaluation
+  - subsection: Path C: the historical Rvachev theory
+  - subsection: Path D: sharp asymptotics
+  - section: Adding a new exact identity
+  - section: Adding a new moment theorem
+  - section: Adding an asymptotic correction
+  - section: Testing a suspected source error
+  - section: Maintaining dependency hygiene
+  - section: Naming and theorem granularity
+  - section: A minimal downstream example
+  - section: What to trust when prose and code differ
+  - chapter: Concluding perspective
+  - chapter: Detailed dependency map}\label{app:dependency
+  - section: Core spine
+  - section: Arithmetic spine
+  - section: Original-paper spine
+  - section: Asymptotic spine
+  - chapter: Paper theorem map}\label{app:paper-map
+  - section: Arias de Reyna, arXiv:1702.05442
+  - section: Arias de Reyna, arXiv:1702.06487
+  - section: How to use the map
+  - chapter: Annotated module guide}\label{app:modules
+  - chapter: Corrections and critical distinctions}\label{app:corrections
+  - section: What these corrections teach
+  - chapter: Lean and mathematical glossary}\label{app:glossary
+  - chapter: Example exploration snippets}\label{app:snippets
+  - section: Inspect the public objects
+  - section: Evaluate exact dyadic data
+  - section: Work generically under the specification
+  - section: Find source-facing arithmetic theorems
+  - section: Inspect asymptotic interfaces
+  - section: Search tactics
+  - chapter: Bibliographic and repository notes
+  - chapter: Document metadata
+
+### `archive/primary-exposition/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
+
+- SHA-256: `4c90d3a51eff3812c4248e4ffe37ba4e9ea8e06a00bee89db390dfc0b69309f3`
+- Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Orientation and conventions
+  - subsection: Three versions of the same dyadic object
+  - subsection: Historical remarks
+  - subsection: A first picture
+  - section: Existence, uniqueness, and the infinite Fourier product}\label{sec:existence
+  - subsection: Why the scale in the differential equation must be two
+  - subsection: Existence by infinite convolution
+  - subsection: Existence and uniqueness of the bounded CDF
+  - section: Finite approximants, random series, and self-similarity
+  - subsection: Spline and step-function approximants
+  - subsection: Distributional fixed-point equations
+  - subsection: Elementary endpoint bounds
+  - section: The global extension and exact derivative identities}\label{sec:global
+  - subsection: Thue--Morse translation and the dilation equation
+  - subsection: Terminating Taylor formulas at dyadic points
+  - subsection: Nowhere analyticity
+  - section: Fourier analysis, Poisson summation, and orthogonal expansions}\label{sec:fourier
+  - subsection: Zeros, entire continuation, and inversion
+  - subsection: Poisson summation and partition of unity
+  - subsection: Fourier--Legendre expansion of the up function
+  - section: Moments and entire generating functions}\label{sec:moments
+  - subsection: Even moments of the up function
+  - subsection: Half moments and inverse dyadic values
+  - subsection: A moment formula at the opposite endpoint
+  - subsection: Bernoulli recurrences
+  - section: Exact values at dyadic rationals}\label{sec:dyadic
+  - subsection: A closed finite formula in terms of the moments
+  - subsection: The highest-bit recursion}\label{subsec:highest-bit
+  - subsection: Worked highest-bit example
+  - subsection: A table of exact dyadic values
+  - section: Arithmetic structure: hidden integers, denominators, and parity}\label{sec:arithmetic
+  - subsection: The integer numerators $F_n$ and $G_n$
+  - subsection: Reshetnikov's integers
+  - subsection: Parity and exact $2$-adic valuations
+  - subsection: A common denominator for all dyadic samples of the bump
+  - section: A finite $q$-binomial--Thue--Morse formula}\label{sec:qbinomial
+  - subsection: Notation and statement
+  - subsection: Thue--Morse annihilation
+  - subsection: The $q$-binomial cancellation
+  - subsection: Relation with the simpler closed formula
+  - section: The small-argument problem and its natural scales}\label{sec:asymptotic
+  - subsection: The negative Laplace product
+  - subsection: Mean and Gamma--zeta Fourier coefficients
+  - subsection: The sharp Lambert main term
+  - subsection: Bromwich inversion in saddle coordinates
+  - subsection: The first correction and the full expansion
+  - subsection: An explicit formula in elementary logarithms
+  - subsection: Why the uncorrected expansion is false
+  - subsection: The coarse law and the recurrence moments
+  - section: A global binary-reduction series}\label{sec:binary-series
+  - subsection: Dyadic rows converging to arbitrary arguments
+  - section: Practical exact and numerical evaluation}\label{sec:computation
+  - subsection: A rational evaluator in pseudocode
+  - subsection: Independent checks
+  - section: Corrections certified by the formal development}\label{sec:corrections
+  - section: Concluding synthesis}\label{sec:conclusion
+  - section: Notation dictionary}\label{app:notation
+  - section: A source-to-theorem map}\label{app:source-map
+
+### `archive/primary-exposition/Fabius_Function_and_Rvachev_Up-2/Fabius_Function_and_Rvachev_Up.tex`
+
+- SHA-256: `c2f203778b1889bff22e4839f369c16e50e9ef45799717f6f1357dc1df3f40d1`
+- Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Historical note and scope
+  - section: Three functions that must not be conflated
+  - subsection: The bounded Fabius distribution function
+  - subsection: Rvachev's compactly supported bump
+  - subsection: The signed global extension
+  - section: Existence and uniqueness by a contraction
+  - subsection: The admissible function space
+  - subsection: The integral transform
+  - subsection: The differential equation for $\Up$ and smoothness
+  - subsection: The original Rvachev characterization
+  - section: The probability law behind the functions
+  - subsection: An infinite weighted sum of uniforms
+  - subsection: Finite convolutions and step approximants
+  - section: Fourier transform, entire products, and Poisson summation
+  - subsection: The sinc product
+  - subsection: Rapid decay and inversion
+  - subsection: Poisson summation and partitions of unity
+  - subsection: Moment expansion of the Fourier transform
+  - section: The global extension and exact derivative identities
+  - subsection: Thue--Morse splitting
+  - subsection: All iterated derivatives
+  - subsection: Polynomial behavior near dyadic points
+  - section: Moments and generating functions
+  - subsection: The even moments $c_n$
+  - subsection: The half moments $d_n$
+  - subsection: Relation between the two moment sequences
+  - subsection: Bernoulli-number recurrences
+  - section: Exact values at reciprocal powers of two
+  - subsection: An exact two-adic valuation
+  - subsection: A normalized odd integer
+  - section: Exact evaluation at arbitrary dyadic rationals
+  - subsection: The closed Thue--Morse formula
+  - subsection: Thue--Morse cancellation
+  - subsection: A Taylor block that removes the leading bit
+  - subsection: The bit-recursive evaluator
+  - subsection: A complete level-$4$ table
+  - subsection: Denominator bounds
+  - subsection: A $q$-binomial form and translation invariance
+  - section: Endpoint asymptotics: exact logarithmic decomposition
+  - subsection: The negative Laplace product
+  - subsection: Removing the quadratic drift
+  - subsection: Fourier coefficients of the periodic correction
+  - subsection: The finite part at the Mellin origin
+  - section: The corrected sharp asymptotic
+  - subsection: The lower Lambert coordinate
+  - subsection: The main term
+  - subsection: Bromwich inversion
+  - subsection: The local phase
+  - subsection: Central and tail estimates
+  - subsection: Completion of the leading proof
+  - section: First correction and the all-orders saddle expansion
+  - subsection: The first correction
+  - subsection: All orders
+  - section: Elementary log--log forms and the missing periodic term
+  - subsection: The literal small-$x$ expansion
+  - subsection: The dyadic logarithmic scale
+  - subsection: Why the uncorrected formula is false at the claimed scale
+  - subsection: Symmetry at the right endpoint
+  - section: Consequences of the endpoint expansion
+  - section: The Fourier--Legendre expansion of $\Up$
+  - subsection: Orthogonality and coefficients
+  - subsection: Exact coefficient formula
+  - subsection: Absolute and uniform convergence
+  - subsection: A practical polynomial approximation
+  - subsection: Least-squares optimality of the partial sums
+  - section: Additional summation and spectral identities
+  - subsection: The cosine series on the support
+  - subsection: Scaled partitions
+  - subsection: Mean and variance of the Fabius law
+  - subsection: An exact self-convolution law
+  - section: Computation in exact and numerical regimes
+  - subsection: Which representation should be used?
+  - subsection: Precomputing the reciprocal-power table
+  - subsection: Operation count of the bit recursion
+  - subsection: Stable endpoint evaluation
+  - subsection: A verification suite suggested by the mathematics
+  - section: Corrections, conventions, and proof audit
+  - subsection: Bounded versus signed-global Fabius functions
+  - subsection: The Reshetnikov normalization
+  - subsection: The local asymptotic derivation
+  - subsection: Why the periodic term cannot be averaged away
+  - subsection: A visually good quotient of exponentials has the wrong boundary scale
+  - subsection: What the formalization proves, and what it deliberately does not claim
+  - section: Conclusion
+  - section: Exact data
+  - subsection: Moment and half-moment sequences
+  - subsection: Reciprocal powers and normalized odd integers
+  - section: Proof dependency and Lean module guide
+  - section: Notation crosswalk
+
+### `archive/primary-exposition/Fabius_Function_and_Rvachev_Up-3/Fabius_Function_and_Rvachev_Up.tex`
+
+- SHA-256: `dd439752b47b42cec8fd74a16e928454c92387b63469b216e5dd2e310c5863e3`
+- Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Historical note and scope
+  - subsection: A guide to the main results
+  - section: Three functions that must not be conflated
+  - subsection: The bounded Fabius distribution function
+  - subsection: Rvachev's compactly supported bump
+  - subsection: The signed global extension
+  - subsection: Exact shape: positivity, bijectivity, and unimodality
+  - subsection: Convexity and the unique inflection point
+  - subsection: The optimal Lipschitz constant
+  - section: Existence and uniqueness by a contraction
+  - subsection: The admissible function space
+  - subsection: The integral transform
+  - subsection: The differential equation for $\Up$ and smoothness
+  - subsection: The original Rvachev characterization
+  - section: The probability law behind the functions
+  - subsection: An infinite weighted sum of uniforms
+  - subsection: Finite convolutions and step approximants
+  - subsection: Combinatorial step functions and the half-weight convention
+  - subsection: Centered finite splines and an explicit error bound
+  - section: Fourier transform, entire products, and Poisson summation
+  - subsection: The sinc product
+  - subsection: Cosine and canonical products
+  - subsection: Rapid decay and inversion
+  - subsection: Poisson summation and partitions of unity
+  - subsection: Moment expansion of the Fourier transform
+  - section: The global extension and exact derivative identities
+  - subsection: Thue--Morse splitting
+  - subsection: All iterated derivatives
+  - subsection: Sharp uniform bounds for all derivatives
+  - subsection: Effective flatness at the origin
+  - subsection: Polynomial behavior near dyadic points
+  - subsection: Elementary endpoint bounds
+  - subsection: The exact analytic locus
+  - section: Moments and generating functions
+  - subsection: The even moments $c_n$
+  - subsection: The half moments $d_n$
+  - subsection: Relation between the two moment sequences
+  - subsection: Bernoulli-number recurrences
+  - section: Exact values at reciprocal powers of two
+  - subsection: A triangular recurrence and its nonrecursive solution
+  - subsection: An exact two-adic valuation
+  - subsection: A normalized odd integer
+  - section: Exact evaluation at arbitrary dyadic rationals
+  - subsection: The closed Thue--Morse formula
+  - subsection: Thue--Morse cancellation
+  - subsection: A Taylor block that removes the leading bit
+  - subsection: The bit-recursive evaluator
+  - subsection: Reduction of an arbitrary dyadic argument
+  - subsection: A complete level-$4$ table
+  - subsection: The odd numerators at level $5$
+  - subsection: Denominator bounds
+  - subsection: A $q$-binomial form, double cancellation, and scalar translation
+  - section: The half-base $q$-calculus behind the dyadic formula
+  - subsection: Why a geometric calculus should be expected
+  - subsection: Finite $q$-Pochhammer symbols at base one half
+  - subsection: Gaussian binomial coefficients on the dyadic grid
+  - subsection: The barycentric reading of the Gaussian row
+  - subsection: The Thue--Morse exponential block
+  - subsection: The coefficient-extraction theorem
+  - subsection: Arbitrary dyadic numerators
+  - subsection: Translation invariance
+  - subsection: Worked examples
+  - subsection: What each factor is doing
+  - subsection: Two nested notions of finite difference
+  - subsection: Why this is not a basic hypergeometric summation
+  - subsection: Numerical practice
+  - subsection: How to reconstruct the formula from scratch
+  - section: The global binary-reduction telescope
+  - subsection: The corrected parity-power presentation
+  - subsection: The global complex $q$-binomial series
+  - section: A complex $q$-binomial discrete limit
+  - section: Iterated prefix sums of the signed Thue--Morse sequence
+  - subsection: Iterated prefix sums and the discrete B-spline law
+  - subsection: Prouhet annihilation and exact dyadic zero runs
+  - subsection: Two generating-series identities
+  - subsection: The functional equation of the normalized prefix grid
+  - subsection: Corrected normalization and pointwise convergence
+  - subsection: The lower Lambert branch
+  - subsection: A binomial--logarithm formula for the Thue--Morse bit
+  - section: Endpoint asymptotics: exact logarithmic decomposition
+  - subsection: An exact delay identity and the coarse quadratic scale
+  - subsection: The negative Laplace product
+  - subsection: Removing the quadratic drift
+  - subsection: Fourier coefficients of the periodic correction
+  - subsection: The finite part at the Mellin origin
+  - section: The corrected sharp asymptotic
+  - subsection: The lower Lambert coordinate
+  - subsection: The main term
+  - subsection: Bromwich inversion
+  - subsection: The normalized saddle mass
+  - subsection: The local phase
+  - subsection: Central and tail estimates
+  - subsection: Completion of the leading proof
+  - section: First correction and the all-orders saddle expansion
+  - subsection: The first correction
+  - subsection: All orders
+  - subsection: The saddle jets in closed form
+  - subsection: Every coefficient in closed form
+  - subsection: The phase to all orders
+  - subsection: A numerical check at reciprocal powers
+  - subsection: The highest derivative in each coefficient
+  - section: Elementary log--log forms and the missing periodic term
+  - subsection: The literal small-$x$ expansion
+  - subsection: The dyadic logarithmic scale
+  - subsection: Why the uncorrected formula is false at the claimed scale
+  - subsection: The periodic correction is unique
+  - subsection: Symmetry at the right endpoint
+  - section: Consequences of the endpoint expansion
+  - section: The Fourier--Legendre expansion of $\Up$
+  - subsection: Orthogonality and coefficients
+  - subsection: Exact coefficient formula
+  - subsection: Absolute and uniform convergence
+  - subsection: A practical polynomial approximation
+  - subsection: Least-squares optimality of the partial sums
+  - section: Additional summation and spectral identities
+  - subsection: The cosine series on the support
+  - subsection: A sampling identity
+  - subsection: Scaled partitions
+  - subsection: Mean and variance of the Fabius law
+  - subsection: An exact self-convolution law
+  - section: Computation in exact and numerical regimes
+  - subsection: Which representation should be used?
+  - subsection: Precomputing the reciprocal-power table
+  - subsection: Operation count of the bit recursion
+  - subsection: Stable endpoint evaluation
+  - subsection: A verification suite suggested by the mathematics
+  - subsection: Effective uniform continuity and sequential computability
+  - section: Corrections, conventions, and proof audit
+  - subsection: Source-level defects corrected in the statements
+  - subsection: Bounded versus signed-global Fabius functions
+  - subsection: The Reshetnikov normalization
+  - subsection: The local asymptotic derivation
+  - subsection: Why the periodic term cannot be averaged away
+  - subsection: A visually good quotient of exponentials has the wrong boundary scale
+  - subsection: The literal Thue--Morse prefix normalization does not converge
+  - subsection: A proposed maximum proxy has no maximum
+  - subsection: A stationary substitution that leaves a linear term
+  - subsection: The uniform local slope bound fails at the second level
+  - subsection: What the formalization proves, and what it deliberately does not claim
+  - section: Conclusion
+  - subsection: What each viewpoint makes transparent
+  - section: Exact data
+  - subsection: Moment and half-moment sequences
+  - subsection: Constants of the endpoint expansion
+  - subsection: Reciprocal powers and normalized odd integers
+  - subsection: Half-base $q$-products and the $q$-binomial layer
+  - section: Proof dependency and Lean module guide
+  - subsection: Foundations: definitions, existence, and the original characterization
+  - subsection: Regularity, shape, and the global extension
+  - subsection: Probability, finite splines, and computability
+  - subsection: Fourier transform, Poisson summation, and the Laplace bridge
+  - subsection: Moments, generating functions, and exact arithmetic
+  - subsection: Dyadic closed forms and finite $q$-binomial identities
+  - subsection: Global binary reduction and the discrete limit
+  - subsection: The Fourier--Legendre expansion
+  - subsection: The negative-Laplace product and its periodic correction
+  - subsection: Tilted moments, endpoint cumulants, and the sharp dyadic formula
+  - subsection: Vertical estimates, Bromwich inversion, and the central saddle
+  - subsection: The lower-Lambert phase and the corrected sharp asymptotic
+  - subsection: The all-orders expansion
+  - subsection: Elementary log--log forms and endpoint consequences
+  - subsection: Iterated Thue--Morse prefixes and draft refutations
+  - subsection: Public aggregates
+  - section: Concordance with the source papers
+  - section: Notation crosswalk
+
+### `archive/primary-exposition/Fabius_and_Rvachev_Up-2/Fabius_and_Rvachev_Up.tex`
+
+- SHA-256: `319d8ffed7b5dd1b30a5c845b3c1b3bdc4520b1ee96a866fdef85f067380811a`
+- Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Orientation: three functions, not one
+  - subsection: Historical coordinates
+  - section: Probability and infinite convolution
+  - subsection: The random series
+  - subsection: The refinement and delay-differential equations
+  - subsection: Finite convolutions and constructive approximants
+  - section: Existence, uniqueness, monotonicity, and support}\label{sec:existence-uniqueness
+  - subsection: Rapid decay of the sinc product
+  - subsection: Fourier uniqueness
+  - subsection: Monotonicity and strict inequalities
+  - subsection: A first picture
+  - section: The signed global extension and differential self-similarity
+  - section: Fourier analysis, infinite products, and Poisson summation}\label{sec:fourier
+  - subsection: The entire Fourier transform
+  - subsection: Poisson summation and partition of unity
+  - subsection: A useful sampling identity
+  - section: Moments and generating functions}\label{sec:moments
+  - subsection: The moment series and the recurrence for \texorpdfstring{$c_n$}{c n}
+  - subsection: The exponential generating function and the \texorpdfstring{$d_n$}{d n} recurrence
+  - subsection: Relations between the two moment systems
+  - subsection: Bernoulli recurrences
+  - section: Exact evaluation at dyadic rationals}\label{sec:dyadic
+  - subsection: The closed Thue--Morse--moment formula
+  - subsection: A complete level-four table
+  - subsection: The inverse-power lookup table
+  - subsection: Taylor reduction by the highest binary digit
+  - subsection: Correctness under rescaling and clamping
+  - subsection: Exact dyadic derivatives
+  - section: Arithmetic of the moments and dyadic values}\label{sec:arithmetic
+  - subsection: Integral moment numerators
+  - subsection: Parity of the moment numerators
+  - subsection: Reshetnikov's numbers
+  - subsection: Common denominators on a dyadic grid
+  - subsection: The remaining denominator conjecture
+  - section: Finite \texorpdfstring{$q$}{q}-binomial and Thue--Morse formulas}\label{sec:q-binomial
+  - section: Legendre expansion and best polynomial approximation}\label{sec:legendre
+  - section: Sharp asymptotics at the flat endpoint}\label{sec:asymptotic
+  - subsection: The negative Laplace product
+  - subsection: The exact periodic decomposition
+  - subsection: The lower Lambert phase
+  - subsection: Exact Bromwich reduction
+  - subsection: The corrected sharp main term
+  - subsection: Compact Lambert-\texorpdfstring{$W$}{W} form
+  - subsection: Expansion in elementary logarithms
+  - subsection: Why the periodic term cannot be omitted
+  - subsection: The first saddle correction
+  - subsection: The all-orders expansion
+  - section: Synthesis and computational workflow}\label{sec:synthesis
+  - section: Corrections and strengthened statements}\label{sec:corrections
+  - section: Correspondence with the Lean development}\label{app:Lean-map
+  - section: Selected exact data}\label{app:data
+  - subsection: Moments
+  - subsection: Inverse-power values
+  - subsection: Asymptotic constants
+  - section: Notation index}\label{app:notation
+
+### `archive/primary-exposition/Fabius_and_Rvachev_up/Fabius_and_Rvachev_up.tex`
+
+- SHA-256: `e22f703bb12c92aab36b06271e2317fd660b710840ad87bff24ceb88237139ee`
+- Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Introduction and conventions
+  - subsection: A guide to the main results
+  - section: The three related functions}\label{sec:three-functions
+  - subsection: The bounded Fabius function
+  - subsection: Rvachev's compactly supported twin
+  - subsection: The signed global extension
+  - section: Construction by probability, convolution, and Fourier transform
+  - subsection: An infinite random series
+  - subsection: Infinite convolution
+  - subsection: The distribution-function interpretation
+  - section: Step approximants and elementary structure}\label{sec:basic-properties
+  - subsection: A sequence of combinatorial step functions
+  - subsection: Partition of unity and Poisson summation
+  - subsection: Cosine and Weierstrass products
+  - section: The global extension and the derivative tower
+  - section: Moments, generating functions, and inverse powers of two
+  - subsection: Even moments
+  - subsection: Half-moments and a generating function
+  - section: A closed formula for every dyadic value
+  - subsection: Examples
+  - subsection: Refinement invariance
+  - section: A fast bit-recursive exact evaluator}\label{sec:bit-recursion
+  - subsection: Taylor data at inverse powers of two
+  - subsection: Precomputation at inverse powers
+  - subsection: The binary algorithm
+  - subsection: Bounded, global, and rational interfaces
+  - section: The finite \texorpdfstring{$q$}{q}-binomial--Thue--Morse formula
+  - section: Arithmetic sequences, denominators, and parity
+  - subsection: Integer normalizations of the moments
+  - subsection: Reshetnikov's integers
+  - subsection: Denominator bounds for all dyadic values
+  - subsection: Lucas parity and exact \texorpdfstring{$2$-adic}{2-adic} valuations
+  - subsection: Bernoulli recurrences
+  - section: The Fourier--Legendre expansion}\label{sec:legendre
+  - part: Endpoint asymptotics
+  - section: The negative Laplace product and dyadic renormalization
+  - subsection: The exact Laplace identity
+  - subsection: An exact periodic decomposition
+  - section: The Gamma--zeta periodic fluctuation}\label{sec:periodic-fluctuation
+  - section: The exact lower-Lambert phase}\label{sec:lambert-phase
+  - section: The sharp endpoint main term}\label{sec:sharp-main
+  - subsection: The leading quadratic law
+  - section: Corrected explicit forms and the failure of the nonperiodic formula
+  - subsection: The compact Lambert--\texorpdfstring{$W$}{W} form
+  - subsection: An elementary logarithmic expansion
+  - subsection: Dyadic logarithmic scale
+  - subsection: Why the periodic term cannot be omitted
+  - section: The first saddle correction}\label{sec:first-correction
+  - section: The full all-orders expansion}\label{sec:full-expansion
+  - subsection: All-order expansion of the phase
+  - subsection: A numerical check at exact inverse powers
+  - section: Consequences and conceptual summary}\label{sec:consequences
+  - section: Infinite binary-reduction series and discrete limits
+  - subsection: Binary prefixes, tails, and the analytic telescope
+  - subsection: The parity-power form and the missing endpoint term
+  - subsection: The fully explicit global \texorpdfstring{$q$}{q}-binomial series
+  - subsection: A finite discrete approximation converging to \texorpdfstring{$\Th$}{Theta}
+  - section: Concordance with the formal development and source corrections
+  - subsection: Corrections incorporated in the statements
+
+### `archive/primary-exposition/Fabius_function_and_up_function/Fabius_function_and_up_function.tex`
+
+- SHA-256: `798827ce426cf4fec7ad6d6cddbd69908f6b21a2402ce77572268871ffaae7fb`
+- Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: The three related functions
+  - subsection: History and scope
+  - subsection: Probability construction
+  - section: Existence and uniqueness of the up function}\label{sec:existence
+  - subsection: Infinite convolution descriptions
+  - section: Finite approximants and restricted partitions}\label{sec:approximants
+  - section: The bounded Fabius function}\label{sec:bounded
+  - section: The signed global extension and the Thue--Morse sequence}\label{sec:theta
+  - subsection: Nowhere analyticity
+  - section: Fourier analysis and partitions of unity}\label{sec:fourier
+  - section: Moments and generating functions}\label{sec:moments
+  - subsection: Integral numerator sequences
+  - subsection: Bernoulli recurrences
+  - section: Exact evaluation at dyadic rationals}\label{sec:dyadic
+  - subsection: A finite formula for the up function
+  - subsection: The bounded finite formula
+  - subsection: Worked finite-sum examples
+  - subsection: Taylor reduction and bit clearing
+  - section: Denominator arithmetic and $2$-adic valuation}\label{sec:denominators
+  - subsection: Reshetnikov's integer sequence
+  - subsection: Parity via Lucas's theorem
+  - section: The Fourier--Legendre expansion}\label{sec:legendre
+  - section: Negative Laplace transform and exact dyadic renormalization}\label{sec:negative-laplace
+  - section: The Gamma--zeta periodic correction}\label{sec:periodic
+  - section: Lambert phase and saddle-point inversion}\label{sec:asymptotic
+  - subsection: The exact phase
+  - subsection: Bromwich inversion
+  - subsection: Exact action and Gaussian mass
+  - section: The corrected sharp endpoint asymptotic}\label{sec:sharp
+  - subsection: Elementary logarithmic form
+  - subsection: Inverse-dyadic arguments
+  - section: The all-orders exact-Lambert expansion}\label{sec:all-orders
+  - subsection: All-orders expansion of the phase itself
+  - section: Further structural consequences}\label{sec:further
+  - subsection: A refinable-function viewpoint
+  - subsection: Probability and infinite divisibility across scales
+  - subsection: Zeros of the Fourier transform and approximation theory
+  - subsection: Dyadic arithmetic as finite Taylor geometry
+  - subsection: Corrections and normalization choices
+  - section: A compact theorem map}\label{sec:map
+  - section: Additional exact data}\label{app:data
+  - section: A direct consistency check for $F(1/16)$}\label{app:F16
+  - section: Uniqueness of the asymptotic correction}\label{app:uniqueness-Psi
+  - section: Bibliographic notes}\label{app:bibnotes
+
+### `archive/primary-supplements/Fabius_Function_Missing_Parts/Fabius_Function_Missing_Parts.tex`
+
+- SHA-256: `92b6ef9f333270fe3ea38aa7f0e242b7e2d97eec32c57da24457dd7332814f51`
+- Phrase clusters: Exact digit-sum zero count; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Purpose, scope, and status conventions
+  - subsection: A supplement rather than a second survey
+  - subsection: What the labels mean
+  - section: The inverse as a global mathematical object
+  - subsection: The order isomorphism on the unit interval
+  - subsection: A four-way comparison calculus
+  - subsection: Tails, endpoints, and reflection
+  - section: Exact inversion of the dyadic evaluator
+  - subsection: The exact statement
+  - subsection: A small exact table
+  - section: \texorpdfstring{Flatness of \(F\) becomes steepness of \(\InvF\)}{Flatness of F becomes steepness of its inverse}
+  - subsection: The transported power inequalities
+  - subsection: An effective bound against every line
+  - subsection: Infinite one-sided slope
+  - subsection: Failure of every positive Hölder estimate
+  - section: Classical calculus and the exact regularity of the inverse
+  - subsection: Smoothness and differential identities in the interior
+  - subsection: Shape reversal under inversion
+  - subsection: \texorpdfstring{The \(C^\infty\) and analytic loci}{The smooth and analytic loci}
+  - section: Inverting the sharp small-argument asymptotic
+  - subsection: The exact lower Lambert phase
+  - subsection: Asymptotic solution for the phase
+  - subsection: The endpoint equivalent for the inverse
+  - subsection: The complete hierarchy of elementary scales
+  - section: Closed periodic saddle jets
+  - subsection: The recursive jets
+  - subsection: Why the Stirling indices are shifted
+  - subsection: Coefficient rows and the first jets
+  - section: The centered exponent and its algebraic collapse
+  - subsection: From a long Taylor expansion to one short formula
+  - section: Formal exponential, Gaussian contraction, and logarithm
+  - subsection: The exponential recursion
+  - subsection: Gaussian contraction and mass coefficients
+  - subsection: Logarithmic coefficients
+  - subsection: The top jet and the highest derivative
+  - section: The first and second logarithmic corrections
+  - subsection: Order two: the first correction
+  - subsection: Order four of the formal exponential
+  - subsection: Gaussian contraction and the second mass coefficient
+  - subsection: The second logarithmic coefficient
+  - section: Why the all-orders remainder is actually rigorous
+  - subsection: The exact normalized saddle mass
+  - subsection: The order-dependent central window
+  - subsection: All-order control of the exact centered exponent
+  - subsection: Finite exponentiation without an infinite-series argument
+  - subsection: Gaussian contraction on the whole line
+  - subsection: The complementary contour
+  - subsection: The all-orders mass expansion
+  - subsection: Transfer through the logarithm
+  - subsection: Adding the flat tail and returning to \texorpdfstring{\(x\downarrow0\)}{x to 0}
+  - section: A proof-oriented concordance with the Lean modules
+  - subsection: Named declarations worth knowing
+  - section: What is formalized and what is newly synthesized
+  - subsection: Directly formalized
+  - subsection: Classical consequences derived in this article
+  - subsection: Claims deliberately not made
+  - section: Concluding synthesis
+  - section: A compact inverse reference
+  - section: A compact coefficient reference
+  - section: Repository paths used in the audit
+
+### `archive/primary-supplements/Fabius_Function_Missing_Parts-2/Fabius_Function_Missing_Parts.tex`
+
+- SHA-256: `1a9875085fad321306a5f2d3bc32b6fdfb3a2e97b79d161a6091ad0ef2384fab`
+- Phrase clusters: Exact digit-sum zero count; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Scope, conventions, and the audit boundary
+  - subsection: Three levels of coverage
+  - subsection: Notation that must not collide
+  - subsection: The positivity hypothesis in the original characterization is redundant
+  - part: The inverse and the elementary-function obstruction
+  - section: The total inverse of the bounded Fabius function
+  - subsection: Order-isomorphism construction and totalization
+  - subsection: Reflection and exact inverse values
+  - subsection: Interior differential geometry: an ordinary-analysis corollary
+  - section: Flatness of \texorpdfstring{$F$}{F} becomes steepness of \texorpdfstring{$I$}{I}
+  - subsection: Root-free inverse bounds
+  - subsection: An effective infinite-slope estimate
+  - section: Elementary functions through their analytic locus
+  - subsection: The exact formal class
+  - subsection: Analytic loci
+  - subsection: The reusable obstruction
+  - section: Strong non-elementarity of the Fabius family
+  - part: Probability laws and the bridges the headline formulas conceal
+  - section: The product probability law in measure-theoretic form
+  - subsection: Sample space and uniform convergence
+  - subsection: Deleting the head coordinate
+  - subsection: Coordinate reflection
+  - section: The survival-function Fubini identity
+  - section: Raw, endpoint, and tilted Laplace moments
+  - subsection: Three moment families
+  - subsection: Differential recurrence
+  - subsection: Reflection and the half moments
+  - section: From atomic laws to half-endpoint histograms
+  - subsection: Half-endpoint indicators are ordinary indicators almost everywhere
+  - subsection: Atomic measure, cell geometry, and exact normalization
+  - subsection: The overlap sandwich
+  - subsection: Portmanteau plus a moving-boundary squeeze
+  - part: The reusable discrete engines
+  - section: Weighted paths solve triangular recurrences
+  - subsection: Compositions as increasing paths
+  - subsection: Last-edge decomposition
+  - subsection: The generic triangular solver
+  - section: The nonrecursive composition formula for \texorpdfstring{$F(2^{-n})$}{F(2 to the -n)}
+  - subsection: Small cases as structural checks
+  - section: A finite-row Toeplitz convergence theorem
+  - subsection: Abstract statement
+  - section: The Fabius Toeplitz rows and corrected discrete prefixes
+  - subsection: The half-base \texorpdfstring{$q$}{q}-binomial weights
+  - subsection: Why the inner range uses a half-cell correction
+  - subsection: Where the abstract theorem enters the discrete limit
+  - part: The formal and analytic machinery of the all-orders saddle expansion
+  - section: Parameter-dependent Poincar\'e expansions
+  - subsection: Elementary algebra of full expansions
+  - subsection: Flat functions
+  - subsection: Exact logarithmic coordinates
+  - section: Recursive coefficients of a formal exponential
+  - subsection: Structural laws
+  - section: Recursive coefficients of a formal logarithm
+  - subsection: From mass expansions to logarithmic expansions
+  - section: Exact finite remainders from formal coefficient identities
+  - section: Gaussian contraction: integration becomes polynomial algebra
+  - subsection: Gaussian moments
+  - subsection: The contraction functional
+  - section: Uniform Gaussian tails for polynomial references
+  - subsection: A factorial coefficient weight
+  - subsection: The all-orders central radius
+  - section: Closed saddle jets and shifted Stirling numbers
+  - subsection: The exponent coefficient at arbitrary order
+  - section: From exponent coefficients to periodic mass and log coefficients
+  - subsection: The highest derivative has a universal coefficient
+  - section: The second periodic correction, line by line
+  - subsection: Gaussian contraction
+  - subsection: Taking the logarithm
+  - section: Assembly of the full endpoint expansion
+  - subsection: Exact Lambert phase and exact normalized mass
+  - subsection: The central integral and the moving window
+  - subsection: Finite exponential substitution
+  - subsection: Gaussian contraction and the disappearance of half-orders
+  - subsection: Logarithmic transfer and restoration of the flat tail
+  - section: Why the exact phase cannot be casually re-expanded
+  - section: Executable recurrences in mathematical pseudocode
+  - section: Lean declaration and module concordance
+  - section: Audit matrix against the main article
+  - section: Notation crosswalk
+  - section: A compact dependency diagram
+
+### `archive/q-calculus/Fabius_q_Special_Functions/Fabius_q_Special_Functions.tex`
+
+- SHA-256: `a2d6220fba7f427a8e038a347bcc2defb51d61e4ac6d45db352a49e553210520`
+- Phrase clusters: none
+- Structural headings:
+  - section: Introduction
+  - section: Binary self-similarity, Rvachev's function, and the half moments
+  - subsection: The bounded function and the compactly supported twin
+  - subsection: Half moments and a normalized recurrence sequence
+  - subsection: Inverse-dyadic values
+  - section: The \texorpdfstring{$q$}{q}-Pochhammer symbol
+  - subsection: Finite and infinite shifted factorials
+  - subsection: The special product at base one half
+  - section: Gaussian binomial coefficients
+  - subsection: Definitions
+  - subsection: Symmetry and the two Pascal recurrences
+  - subsection: Why the coefficient at one half is still binary
+  - section: The finite \texorpdfstring{$q$}{q}-binomial theorem and dyadic nodal annihilation
+  - subsection: The theorem
+  - subsection: The roots are dyadic nodes
+  - subsection: A geometric finite-difference stencil
+  - section: Thue--Morse cancellation and normalized exponential blocks
+  - subsection: The sign sequence
+  - subsection: Power sums and the forced zero
+  - subsection: Removing the forced zero
+  - subsection: The bridge to the Fabius moment series
+  - section: The geometric coefficient-extraction theorem
+  - section: Exact values at inverse powers of two
+  - subsection: The centered numerator
+  - subsection: A detailed check at \texorpdfstring{$n=2$}{n=2}
+  - subsection: Numerical cancellation versus exact structure
+  - section: Translation invariance and raw coordinates
+  - subsection: Why a common translation disappears
+  - subsection: The raw-coordinate formula
+  - section: Arbitrary dyadic arguments
+  - subsection: The signed global extension
+  - subsection: Why the same Gaussian row still works
+  - section: Taylor reduction and the global \texorpdfstring{$q$}{q}-binomial series
+  - subsection: The normalized numerator is a moment coefficient
+  - subsection: A finite reduction polynomial
+  - subsection: Iteration along the binary expansion
+  - section: A discrete limit and a Toeplitz interpretation
+  - subsection: The discrete approximants
+  - subsection: The reindexed Gaussian weights
+  - section: Arithmetic meaning of the \texorpdfstring{$q=1/2$}{q=1/2} specialization
+  - section: Why these special functions arise
+  - subsection: Dilation creates a geometric grid
+  - subsection: The annihilator is a \texorpdfstring{$q$}{q}-Pochhammer polynomial
+  - subsection: Thue--Morse contributes the second triangular exponent
+  - subsection: The endpoint value supplies the normalizer
+  - subsection: The same row becomes a summability kernel
+  - section: Relation to basic hypergeometric series
+  - section: Formalization architecture in Lean
+  - subsection: Representative theorem names
+  - subsection: Proof-engineering choices with mathematical content
+  - section: Further perspectives
+  - subsection: A \texorpdfstring{$q$}{q}-difference operator in disguise
+  - subsection: Translation invariance as a vanishing-moment principle
+  - subsection: Exact evaluation and stable evaluation are different goals
+  - subsection: Why no larger special-function machine is required
+  - section: Conclusion
+  - section: A compact derivation of the central formula
+  - section: Notation dictionary
+
+### `archive/q-calculus/fabius-q-special-functions/fabius-q-special-functions.tex`
+
+- SHA-256: `a00f1cae980ac4e2a15600b68f55d5688b71c30a41bf8ed9898930177f7ab1e8`
+- Phrase clusters: Exact digit-sum zero count
+- Structural headings:
+  - section: Introduction: the special functions are structural
+  - section: The Fabius function and its dyadic backbone
+  - subsection: Two functions that should not be conflated
+  - subsection: Half moments and the exact inverse-dyadic sequence
+  - subsection: The formal refinement equation
+  - subsection: Why a geometric calculus should be expected
+  - section: \texorpdfstring{$q$-Pochhammer symbols}{q-Pochhammer symbols}: the multiplicative factorials
+  - subsection: Finite and infinite products
+  - subsection: \texorpdfstring{$q$-integers and $q$-factorials}{q-integers and q-factorials}
+  - subsection: The half-base specialization and Mersenne products
+  - subsection: Basic hypergeometric context
+  - section: Gaussian binomial coefficients
+  - subsection: Definition and first properties
+  - subsection: The finite \texorpdfstring{$q$-binomial theorem}{q-binomial theorem}
+  - subsection: Combinatorial meaning and reciprocal base
+  - subsection: A geometric finite-difference stencil
+  - section: Thue--Morse blocks and Prouhet cancellation
+  - subsection: The signed sequence
+  - subsection: The generating polynomial
+  - subsection: Centered power sums
+  - subsection: Translated blocks
+  - section: Matching the two refinement products
+  - subsection: A family of quotient series
+  - subsection: Geometric divided differences extract \texorpdfstring{$a_n$}{a[n]}
+  - section: Deriving the inverse-dyadic formula
+  - subsection: The normalized numerator
+  - subsection: Normalizing by the half-base Pochhammer product
+  - subsection: A commuting diagram of the proof
+  - subsection: Worked examples
+  - section: Translation invariance and scalar extension}\label{sec:translation
+  - subsection: Why a common shift disappears
+  - subsection: Why the polynomial formulation matters in Lean
+  - subsection: The half shift and other convenient choices
+  - subsection: Reflection and the raw-coordinate formula
+  - section: Every dyadic numerator}\label{sec:arbitrarym
+  - subsection: A finite Thue--Morse prefix series
+  - subsection: The same divided difference with an inserted prefix
+  - subsection: Why the common translation remains harmless
+  - subsection: Representation independence
+  - subsection: Unit-interval and global interpretations
+  - section: From finite Taylor reduction to a global \texorpdfstring{$q$-series}{q-series}
+  - subsection: The normalized numerator as a Taylor coefficient
+  - subsection: Binary prefixes and tails
+  - subsection: The binary telescope
+  - subsection: Substituting the \texorpdfstring{$q$-binomial polynomial}{q-binomial polynomial}
+  - section: What each special-function factor is doing
+  - subsection: The product \texorpdfstring{$\qpoch{1/2}{1/2}{n}$}{(1/2;1/2)[n]}
+  - subsection: The coefficient \texorpdfstring{$\halfqbinom{n}{k}$}{[n choose k] at q=1/2}
+  - subsection: The factor \texorpdfstring{$2^{k(k-1)}$}{2 to the k(k-1)}
+  - subsection: The factorial \texorpdfstring{$(n+k)!$}{(n+k)!}
+  - subsection: The Thue--Morse sign
+  - subsection: The common translation
+  - subsection: The power \texorpdfstring{$2^{n^2}$}{2 to the n-squared}
+  - section: Two nested notions of finite difference
+  - subsection: An additive difference encoded by Thue--Morse
+  - subsection: A multiplicative or geometric difference encoded by \texorpdfstring{$q$}{q}
+  - subsection: Double triangularity
+  - section: How the Lean formalization is organized
+  - subsection: The dependency spine
+  - subsection: Formal power series rather than analytic germs
+  - subsection: The coefficient-isolation lemma
+  - subsection: Why the half-base library is deliberately small
+  - subsection: Natural-number subtraction and rational subtraction
+  - subsection: Empty products, empty sums, and the zero cases
+  - subsection: Translation as a polynomial identity
+  - subsection: Separating algebraic identities from analytic convergence
+  - subsection: A small Lean-style schematic
+  - section: Arithmetic and computational perspectives
+  - subsection: Mersenne factors in the rational coefficients
+  - subsection: Severe cancellation
+  - subsection: The half-base infinite product
+  - subsection: A rational consistency check
+  - subsection: Symbolic checks of translation invariance
+  - section: Broader \texorpdfstring{$q$-special-function}{q-special-function} context
+  - subsection: Why this is not primarily a basic hypergeometric summation
+  - subsection: Relation to \texorpdfstring{$q$-difference operators}{q-difference operators}
+  - subsection: The classical limit and what it would mean
+  - subsection: Roots, annihilators, and spectral language
+  - section: Conclusions
+  - section: Notation and software cross-reference
+  - section: Elementary identities at base \texorpdfstring{$1/2$}{1/2}
+  - subsection: Pochhammer--Mersenne conversion
+  - subsection: Half-base Gaussian coefficient
+  - subsection: Endpoint evaluation
+  - subsection: Barycentric denominator
+  - subsection: The first nonzero Thue--Morse moment
+  - section: A step-by-step proof blueprint
+  - section: Selected exact data
+  - section: Acknowledgment of sources
+
+### `archive/research-frontiers/Fabius_Dyadic_Asymptotic_Bridge/Fabius_Dyadic_Asymptotic_Bridge.tex`
+
+- SHA-256: `c5ad7c5298d958ab63f459a3e246c2293d3020525223bc05ef2d0e1edab58f10`
+- Phrase clusters: Complex dimensions / heat trace; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: The missing bridge
+  - subsection: Main conclusions
+  - section: Exact arithmetic in a coefficient-ready normalization
+  - subsection: The probability law and its entire moment function
+  - subsection: Reciprocal powers and the triangular factor
+  - subsection: The global $q$-binomial formula
+  - section: Resumming the exact recurrences
+  - subsection: From the triangular recurrence to the entire product
+  - subsection: A probabilistic interpretation of the product
+  - subsection: Positive and negative arguments
+  - section: The periodic decomposition of the negative product
+  - subsection: Mellin transform of the dyadic kernel
+  - subsection: Exact decomposition, mean, and oscillation
+  - section: Vertical coefficient extraction
+  - section: The reciprocal-power saddle
+  - subsection: The Lambert coordinate is forced by coefficient balance
+  - subsection: Exact coefficient saddle mass
+  - subsection: Phase locking
+  - subsection: The local phase is the continuous phase
+  - subsection: Gaussian domination and the leading mass
+  - subsection: First correction
+  - subsection: All orders
+  - section: The elementary $n$-scale expansion
+  - section: Fixed-numerator dyadic rays
+  - subsection: The prefix factor near the saddle
+  - subsection: The ray saddle and its phase lock
+  - subsection: Identity of local phases
+  - subsection: A moderate-numerator extension
+  - section: An exact Bromwich-to-coefficient collapse
+  - subsection: Iterating the negative refinement equation
+  - subsection: Why the finite product disappears exactly
+  - section: What the different exact formulae contribute
+  - subsection: Why the $q$-Pochhammer factor is not the periodic term
+  - subsection: Why the composition sum must be resummed
+  - section: Exact-rational numerical checks
+  - section: From exact dyadics to arbitrary real arguments
+  - subsection: The leading law follows by squeezing
+  - subsection: Why squeezing cannot recover the sharp periodic formula
+  - subsection: The remaining two-parameter problem
+  - section: A formalization roadmap
+  - section: Conclusions
+  - section: The key algebraic cancellation
+  - section: Exact arithmetic used in the numerical tables
+  - section: Bibliographic note
+
+### `archive/research-frontiers/Fabius_Dyadic_Formulae_and_Alternative_Representations/Fabius_Dyadic_Formulae_and_Alternative_Representations.tex`
+
+- SHA-256: `462276b10fcd32b0446deb7cfedc4ec07c2ae55dbd333d5ff9b1d98f07df89e1`
+- Phrase clusters: Exact digit-sum zero count
+- Structural headings:
+  - section: Scope, conventions, and the formula map
+  - subsection: Five presentations of the same value
+  - subsection: The exact dyadic formula taken as input
+  - section: The master coefficient and its probabilistic meaning
+  - subsection: The probability law behind the moment series
+  - subsection: The Thue--Morse prefix series
+  - subsection: The numerator and the law separate completely
+  - section: Moment coordinates and alternative exact representations
+  - subsection: An infinite-cube composition formula
+  - subsection: Cumulants, Bernoulli numbers, and Bell polynomials
+  - subsection: Exact moment correction of the matched spline
+  - subsection: The reciprocal correction transform
+  - subsection: The Gaussian row is a divided difference
+  - subsection: The parametric coefficient polynomial
+  - subsection: Why the node values are Thue--Morse power sums
+  - subsection: Translation invariance is lower-degree annihilation
+  - subsection: A useful abstract summary
+  - section: Binary Taylor reduction and the global series
+  - subsection: The finite reduction polynomial
+  - subsection: The sparse digit form on the unit interval
+  - subsection: The dyadic triangle of finite representations
+  - subsection: Shifted splines and the finite row
+  - subsection: At dyadic inputs the limit stabilizes exactly
+  - subsection: The row polynomial
+  - subsection: What fails away from a dyadic point
+  - subsection: Two infinite constructions that share a limit but not terms
+  - subsection: The first rows
+  - section: A unified dyadic identity and a worked example
+  - subsection: The complete equality chain
+  - section: Computational and conceptual consequences
+  - subsection: Which representation is best for which task?
+  - subsection: A compact exact-arithmetic scheme
+  - subsection: Exact arithmetic checks implied by the connections
+  - subsection: Endpoint and convention warnings
+  - section: Relation to the Lean development
+  - section: Conclusion
+  - section: A compact identity sheet
+  - subsection: Probability and moments
+  - subsection: Master coefficient
+  - subsection: Geometric extraction
+  - subsection: Spline corrections
+  - subsection: Discrete filter
+
+### `archive/research-frontiers/Fabius_Dyadic_Formulae_to_Asymptotics/Fabius_Dyadic_Formulae_to_Asymptotics.tex`
+
+- SHA-256: `6e98efd3afc402159a7f080e8604c951d5bc51be4a73383da67c1241d46d54ca`
+- Phrase clusters: Complex dimensions / heat trace; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: The missing bridge
+  - subsection: What is proved
+  - subsection: Headline notation and result
+  - section: One coefficient sequence behind the exact formulae
+  - subsection: The half moments and the endpoint identity
+  - subsection: Factorial normalization and the recurrence
+  - subsection: Composition sum
+  - subsection: The entire product
+  - section: Decompressing the half-base \texorpdfstring{$q$}{q}-binomial formula
+  - subsection: The geometric interpolation functional
+  - subsection: The finite Thue--Morse blocks
+  - subsection: The literal numerator collapses
+  - subsection: General dyadic numerators
+  - section: The first asymptotic already visible in the exact values
+  - section: The exact negative-Laplace decomposition
+  - subsection: Periodization of the dilation equation
+  - subsection: Mean, Fourier modes, and the asymptotic constant
+  - section: Sharp route I: endpoint moments versus Laplace moments
+  - subsection: Second-order kernel comparison
+  - subsection: Differentiating the exact periodic decomposition
+  - section: The lower-Lambert phase and the derivative cancellation
+  - subsection: The exact phase
+  - subsection: Why \texorpdfstring{$\Psi$}{Psi} is evaluated at \texorpdfstring{$\lambda_n$}{lambda n}
+  - subsection: Compact versus expanded form
+  - section: Sharp route II: a coefficient saddle from the exact generating product
+  - subsection: Positive-axis growth of \texorpdfstring{$A$}{A}
+  - subsection: Cauchy extraction
+  - section: Consequences for every exact arithmetic representation
+  - subsection: The normalized recurrence and composition sum
+  - subsection: The half moments
+  - subsection: The literal \texorpdfstring{$q$}{q}-binomial numerator
+  - subsection: A first all-orders corollary
+  - section: What each exact formula contributes asymptotically
+  - subsection: Why direct termwise analysis of the \texorpdfstring{$q$}{q}-sum is misleading
+  - section: How much of the full small-argument asymptotic is encoded by inverse dyadics?
+  - subsection: The arbitrary-argument formula
+  - subsection: Dense sampling of the periodic correction
+  - subsection: What inverse powers alone do not prove
+  - section: Numerical verification from exact rational values
+  - section: Correspondence with the Lean development
+  - section: Conclusions
+  - section: Algebra behind the expanded dyadic formula
+  - section: A stable numerical recipe
+  - section: Notation cross-reference
+
+### `archive/research-frontiers/Fabius_Dyadic_q_Connections/Fabius_Dyadic_q_Connections.tex`
+
+- SHA-256: `81a0a911ac7ab28e12c6b87ccaf76ffccaf32e48f873abff18fb7a2d01bcf3e5`
+- Phrase clusters: Exact digit-sum zero count
+- Structural headings:
+  - section: Orientation and notation
+  - subsection: What is being connected
+  - subsection: The half-base notation is Mersenne arithmetic
+  - subsection: The probabilistic normalization
+  - section: The master Taylor block
+  - subsection: The reduction polynomial
+  - subsection: Appell compression
+  - subsection: Immediate consequences
+  - section: The binary expansion as a sparse Appell series
+  - subsection: Prefixes, bits, and tails
+  - subsection: The digit--Appell formula
+  - subsection: A superexponential remainder bound
+  - subsection: Dyadic rationals are the terminating case
+  - section: Why Thue--Morse and Gaussian binomial coefficients appear
+  - subsection: The Thue--Morse difference operator
+  - subsection: Geometric divided differences
+  - subsection: The two annihilators together
+  - section: The finite $q$-formula as an Appell identity
+  - subsection: A centered master formula
+  - subsection: The arbitrary-translation form
+  - section: One-shot and digitwise formulae for a general dyadic rational
+  - section: From exact dyadic values to the arbitrary-argument $q$-series
+  - subsection: The centered nested series
+  - subsection: The raw translated nested series
+  - subsection: A useful commutative diagram
+  - section: Alternative exact representations of inverse-dyadic values
+  - subsection: Coefficient extraction from the moment product
+  - subsection: A lower-Hessenberg determinant
+  - subsection: Cumulants, Bernoulli numbers, and Bell polynomials
+  - section: The discrete limit as a $q$-Toeplitz transform
+  - subsection: Shifted finite splines
+  - subsection: The discrete $q$-sum
+  - subsection: One polynomial explains the entire row
+  - subsection: A quantitative discrete-limit estimate
+  - subsection: Exact formula versus discrete limit
+  - section: Integral-transform representations
+  - subsection: Fourier--sinc inversion
+  - subsection: Bromwich inversion of the moment product
+  - section: Computational consequences
+  - subsection: Exact dyadic evaluation
+  - subsection: Arbitrary arguments
+  - section: Synthesis
+  - section: A compact proof of the geometric simplex sum
+  - section: First moments and inverse-dyadic values
+  - section: Map to the formal development
+
+### `archive/research-frontiers/Fabius_Thue_Morse_Convergence_Rate/Fabius_Thue_Morse_Convergence_Rate.tex`
+
+- SHA-256: `577c5f3426def68a774fedf3fce61552d32200c8da526ace44178f2a8995a6d3`
+- Phrase clusters: none
+- Structural headings:
+  - section: Scope, conventions, and the quantitative question
+  - section: The discrete hierarchy
+  - subsection: Signed Thue--Morse and inclusive summation
+  - subsection: Dyadic annihilation
+  - section: The exact polynomial bridge
+  - subsection: Approximation polynomials
+  - subsection: The centered probability measure and histogram
+  - section: What the floor index actually samples
+  - section: Fourier factorization of the omitted tail
+  - subsection: The cosine products
+  - subsection: A cardinal probability distribution
+  - section: Discrete curvature of the coefficient rows
+  - section: The intrinsic error at coefficient centers
+  - section: The sharp expansion for the Fabius sample
+  - section: Pointwise and uniform sharpness
+  - subsection: Uniform error profile and pointwise law
+  - subsection: The exact uniform constant
+  - section: Exact special values
+  - subsection: The endpoints
+  - subsection: An exact midpoint coefficient
+  - section: The corresponding result for Rvachev's bump
+  - section: Rates for the histogram and for recentered interpolation
+  - subsection: The step histogram
+  - subsection: Linear interpolation through the true centers
+  - section: Why the constants take these values
+  - section: A Lean formalization roadmap
+  - section: Conclusion
+  - section: Notation crosswalk
+  - section: A compact statement of the main estimates
+
+### `archive/research-frontiers/Fabius_Thue_Morse_Convergence_Rates/Fabius_Thue_Morse_Convergence_Rates.tex`
+
+- SHA-256: `384d69b461cb94af33f1c080703e269ea77104405d1940413f1944172b3312c0`
+- Phrase clusters: none
+- Structural headings:
+  - section: Scope, conventions, and the answer in one table
+  - subsection: What is formalized and what is new here
+  - section: The exact discrete bridge
+  - subsection: Signed Thue--Morse prefixes
+  - subsection: The finite polynomial and the one-order shift
+  - subsection: Natural centers, atomic law, and histogram
+  - section: The hidden Bernoulli tail
+  - subsection: Rademacher factorization
+  - subsection: Exact support radius and variance
+  - subsection: Why the leading center correction is second order
+  - section: Fourier inversion on the moving lattice
+  - subsection: A shifted-lattice inversion formula
+  - subsection: The exact deconvolution multiplier
+  - section: Sharp center-grid asymptotics
+  - subsection: Expansion of the reciprocal tail product
+  - subsection: The uniform expansion
+  - subsection: Sharp norm constant
+  - subsection: A continuous reconstruction with the same rate
+  - subsection: The all-orders pattern
+  - section: The histogram: a sharp first-order quantization error
+  - section: The floor-prefix approximation to the bounded Fabius function
+  - subsection: Definition and exact moving-center displacement
+  - subsection: First- and second-order expansions
+  - subsection: The equivalent statement for the \texorpdfstring{$\Up$}{Up} sample
+  - section: An exact midpoint identity
+  - subsection: Correct centering can be exact at the same point
+  - section: Bias removal and accelerated prefix reconstructions
+  - section: Conceptual synthesis
+  - subsection: One row, three coordinate choices
+  - subsection: Variance versus support radius
+  - subsection: Why the \texorpdfstring{$n$}{n} is structural
+  - subsection: A practical recommendation
+  - section: A Lean formalization roadmap
+  - section: Conclusion
+  - section: Elementary geometric-tail formulas
+  - section: A short exact-arithmetic algorithm
+
+### `archive/research-frontiers/Primary_Exposition_Gap_Register/Primary_Exposition_Gap_Register.tex`
+
+- SHA-256: `06c7b888d9601b67ad7a5c0aee3f087d44d9ecaaa9abfb3bf3edfda4bd29c0d1`
+- Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace
+- Structural headings:
+  - section: Status and promotion rule
+  - section: Fourier-decay normalization
+  - section: Dyadic specializations and evaluator cost
+  - subsection: Concrete rational values
+  - subsection: Popcount complexity
+  - subsection: Independent analytic derivations
+  - section: Complex-shift spline estimate
+  - section: Prefix-kernel interpretations
+  - section: Block-polynomial derivatives at one
+  - section: An actual infinite formal product
+  - section: Formal-background crosswalk
+  - section: Endpoint material maintained elsewhere
+  - section: Provenance
+
+### `archive/research-frontiers/Repeated_Integration_and_Rvachev_Up/Repeated_Integration_and_Rvachev_Up.tex`
+
+- SHA-256: `eadcb4b414ac93723a91acbd5062d44340f78134a2cecbc18f7d7ba67eb2c9be`
+- Phrase clusters: none
+- Structural headings:
+  - section: The overlooked construction
+  - section: Normalization and the integration operator
+  - section: The affine random recursion
+  - section: The finite stages are box splines
+  - subsection: The first stages
+  - section: Fourier product and exact identification of the limit
+  - section: The exact \texorpdfstring{$n$th}{n-th} stage in truncated powers
+  - subsection: Knots, cells, and the highest derivative
+  - section: Tail replacement rather than truncation
+  - section: A positive Peano kernel
+  - section: A finite-prefix derivative plateau
+  - section: The exact convergence rate
+  - subsection: Certified iteration counts
+  - section: Fourier asymptotics and the spectral meaning of \texorpdfstring{$1/4$}{1/4}
+  - section: Why the exact constant is visible at dyadic points
+  - section: Comparison with ordinary truncation
+  - section: Computational forms
+  - subsection: Recurrence by antiderivatives
+  - subsection: Point evaluation by the Thue--Morse sum
+  - subsection: Certified approximation of \texorpdfstring{$\Up$}{up}
+  - section: A roadmap for Lean formalization
+  - section: Conclusions
+  - section: Algebraic equivalence with the Stack Exchange formula
+  - section: A few exact finite-stage formulas
+  - section: Notation crosswalk
+
+### `archive/research-frontiers/Rvachev_Up_from_Repeated_Integration/Rvachev_Up_from_Repeated_Integration.tex`
+
+- SHA-256: `ef52fd2df35a140ff5c26d7a4c32e0618fce8de94f5eff301dc41ecfc1e66f16`
+- Phrase clusters: none
+- Structural headings:
+  - section: The problem, the indexing, and the answer
+  - subsection: Main finite-stage formula
+  - subsection: Main sharp convergence theorem
+  - section: The integration operator is a probability operator
+  - section: The limit is Rvachev's up-function
+  - subsection: Self-similarity and the differential equation
+  - subsection: Fourier product
+  - subsection: Relation with the bounded Fabius function
+  - section: Exact finite splines and the Thue--Morse collapse
+  - subsection: A general nonuniform box-spline formula
+  - subsection: The subset-sum polynomial
+  - subsection: Derivatives, knots, and exact smoothness
+  - subsection: The first iterates
+  - section: Replacing the last tail: the exact error decomposition
+  - subsection: The comparison kernel
+  - subsection: Peano identity and the pointwise error formula
+  - section: Sharp derivative geometry of the partial densities
+  - subsection: A sharp derivative norm for the up-function
+  - section: The exact convergence rate
+  - subsection: All stages after the first admissible one
+  - subsection: The first \texorpdfstring{$C^r$}{C-r} spline
+  - subsection: Exact \texorpdfstring{$C^r$}{C-r} convergence
+  - subsection: The uniform errors and exact extremal values
+  - section: The asymptotic error profile
+  - subsection: A full even-derivative expansion
+  - section: Exact computation and numerical use
+  - subsection: A direct exact-arithmetic evaluator
+  - subsection: Conditioning and stable evaluation
+  - section: How this fits the existing ProveIt development
+  - section: Conclusions
+
+### `archive/research-frontiers/Thue_Morse_Formula_Atlas-1/Thue_Morse_Formula_Atlas.tex`
+
+- SHA-256: `8f7d14efd304f5cb1d72dce66e5f0be45d6dd81d5ba4fc565ff6332cba1ec178`
+- Phrase clusters: Exact digit-sum zero count; Integer-base atomic family
+- Structural headings:
+  - section: Conventions, provenance, and a one-page map
+  - subsection: Formula map
+  - section: Binary recursion, blocks, automata, and uniqueness
+  - subsection: The two-scale recurrence and substitution
+  - subsection: Binary concatenation
+  - subsection: The exact two-kernel and a minimal automaton
+  - subsection: Nonperiodicity
+  - section: Floor, fractional-part, trigonometric, and bitwise formulas
+  - subsection: Digit extraction
+  - subsection: A sign product and an entire sinc product
+  - subsection: XOR and carry-free multiplication
+  - section: Two-adic valuations, carries, and Catalan numbers
+  - subsection: Legendre and the central binomial coefficient
+  - subsection: Catalan valuation
+  - subsection: Kummer carries and multinomials
+  - section: Pascal-triangle formulas and Boolean-lattice inversion
+  - subsection: Odd entries and the binomial--logarithm formula
+  - subsection: A log-free residue formula
+  - subsection: Row enumerators, powers-of-two columns, and submasks
+  - subsection: Pascal parity as a zeta matrix
+  - subsection: Odd multinomial support
+  - section: Exact balance, interval discrepancy, and dyadic blocks
+  - section: Finite and infinite Euler products
+  - subsection: The finite mother product
+  - subsection: The infinite product and Mahler equation
+  - subsection: A direct natural-boundary theorem
+  - section: The ruler sequence, coefficient recurrences, partitions, and determinants
+  - subsection: Partition and Bell-polynomial formulas
+  - subsection: A factorial determinant
+  - section: Prouhet cancellation and a master finite-difference identity
+  - subsection: Exact vanishing order
+  - subsection: The operator formula
+  - subsection: All higher moments
+  - section: Sparse Prouhet identities on arbitrary Pascal supports
+  - section: The bit series in characteristic two
+  - section: Iterated prefix sums and terminal zero runs
+  - section: Walsh, ordinary Fourier, and cyclotomic formulas
+  - subsection: The Boolean-cube character
+  - subsection: Trigonometric factorization
+  - subsection: Exact discrete Fourier transform
+  - section: Riesz products, autocorrelation, and spectral type
+  - section: Base-\texorpdfstring{\(b\)}{b} Thue--Morse constants and Mahler transcendence
+  - section: Shifted Dirichlet series and Mellin transforms
+  - section: A two-parameter product calculus
+  - subsection: The Woods--Robbins product
+  - subsection: Three dyadic block-product limits
+  - section: Combinatorics on the infinite word
+  - subsection: Uniform recurrence and reversal symmetry
+  - subsection: An elementary linear complexity bound
+  - section: Distribution in arithmetic and polynomial subsequences
+  - section: Base-\texorpdfstring{\(B\)}{B} root-of-unity generalization
+  - section: The discrete bridge to the Fabius and up-functions
+  - section: Representation comparison and a Lean roadmap
+  - section: The first 64 terms
+  - section: A compact identity index
+  - section: Executable checks
+  - section: Bibliographic notes
+
+### `archive/research-frontiers/Thue_Morse_Formula_Atlas-2/Consolidated_Formula_Atlas_for_the_Thue_Morse_Sequence.tex`
+
+- SHA-256: `be9b986264c626fffb889ffdac53c49f28ff78cbeabb87e376b5927667bc7b7b`
+- Phrase clusters: Exact digit-sum zero count; Integer-base atomic family
+- Structural headings:
+  - section: Scope, normalization, and the master dictionary
+  - subsection: Two normalizations
+  - subsection: The master formula atlas
+  - subsection: Four complementary viewpoints
+  - section: Binary recursion, morphisms, blocks, and automata
+  - subsection: The fundamental recursion
+  - subsection: Concatenation and digit disjointness
+  - subsection: The two-state automaton and the \texorpdfstring{$2$}{2}-kernel
+  - subsection: Tensor and Walsh descriptions
+  - subsection: Overlap-free structure
+  - section: Digit, floor, fractional-part, and trigonometric formulae
+  - subsection: Extracting a binary digit
+  - subsection: Products of local digit signs
+  - subsection: A sinc sign interpolation
+  - section: Factorial valuations, central binomials, Catalan numbers, and carries
+  - subsection: Legendre's identity in base two
+  - subsection: A single central binomial coefficient
+  - subsection: Catalan numbers
+  - subsection: Kummer's theorem and the carry-corrected addition law
+  - subsection: Subtraction and borrow counts
+  - section: Pascal's triangle, Lucas support, and log-free row formulae
+  - subsection: Odd entries and the Boolean submask lattice
+  - subsection: The binomial--logarithm formula and its exact variants
+  - subsection: A log-free formula modulo three
+  - subsection: A one-parameter row statistic
+  - subsection: Nested binomial parity probes
+  - subsection: Power-of-two rows and cyclotomic sparsity
+  - section: Multinomial parity and higher-dimensional support
+  - subsection: Odd multinomial coefficients
+  - subsection: Valuation and carry interpretation
+  - subsection: A multivariate Boolean lattice
+  - section: Evil and odious numbers, counting, and exact summatory formulae
+  - subsection: Exact prefix sums
+  - subsection: Interval discrepancy
+  - section: Finite generating products and their algebra
+  - subsection: The coefficient product
+  - subsection: Reciprocity and cyclotomic factorization
+  - subsection: Coefficient extraction and binary uniqueness
+  - subsection: Weighted digit sums
+  - section: Infinite products, Mahler equations, and coefficient recurrences
+  - subsection: The signed analytic generating function
+  - subsection: The zero--one generating function
+  - subsection: Logarithmic derivative and the ruler function
+  - subsection: Bell-polynomial formula
+  - subsection: A determinant formula
+  - subsection: Euler-transform form
+  - section: Algebraic avatars in characteristic two and over the integers
+  - subsection: The Artin--Schreier equation
+  - subsection: An integer algebraic lift
+  - section: Prouhet cancellation, finite differences, and exact cubature
+  - subsection: The Prouhet partition
+  - subsection: The finite-difference identity
+  - subsection: Exact integral cubature
+  - subsection: All power moments
+  - subsection: Centered moments and parity
+  - subsection: Binomial and falling-factorial moments
+  - section: Sparse Pascal-support Prouhet identities}\label{sec:sparse-prouhet
+  - subsection: Unsigned and signed support together
+  - section: Iterated prefix sums and the Fabius bridge
+  - subsection: Discrete antiderivatives
+  - subsection: Terminal zero runs in dyadic blocks
+  - subsection: Why the same product appears in Fabius theory
+  - section: Walsh and ordinary Fourier transforms
+  - subsection: Walsh transform: a one-point spectrum
+  - subsection: Ordinary discrete Fourier transform
+  - subsection: A Rademacher sine-sign formula
+  - section: Gelfond sums and exact residue-class rarefaction}\label{sec:gelfond
+  - subsection: The sharp uniform exponent
+  - subsection: Root-of-unity filters
+  - subsection: New closed formula modulo three
+  - subsection: Matrix recursion for general odd moduli
+  - section: Autocorrelation, Riesz products, and the spectral measure
+  - subsection: Autocorrelation coefficients
+  - subsection: A new functional equation for the one-sided generating series
+  - subsection: Finite Riesz products
+  - subsection: A renormalization identity for distribution functions
+  - section: Laplace, Mellin, Dirichlet, and finite-product transforms
+  - subsection: Laplace transform of the coefficient sequence
+  - subsection: Shifted Dirichlet series
+  - subsection: A dyadic functional equation for \texorpdfstring{$D(s,a)$}{D(s,a)}
+  - subsection: Positivity of dyadic reciprocal-power blocks
+  - subsection: Logarithmic block products
+  - section: Thue--Morse constants and infinite products
+  - subsection: \texorpdfstring{Base-$b$}{Base-b} Thue--Morse--Mahler numbers
+  - subsection: Transcendence and irrationality exponent
+  - subsection: A two-parameter Thue--Morse product
+  - subsection: The Woods--Robbins product
+  - subsection: Three dyadic block-product limits
+  - section: \texorpdfstring{Base-$q$}{Base-q} digit characters and root-of-unity generalization
+  - subsection: The generalized sequence
+  - subsection: Finite and infinite products
+  - subsection: Generalized Prouhet cancellation
+  - subsection: Multivariate digit weights
+  - section: Hankel determinants, Pad\'e approximation, and natural boundaries}\label{sec:hankel
+  - subsection: Hankel matrices
+  - subsection: Connection with irrationality measure
+  - subsection: Natural boundary
+  - section: Combinatorics on words and dynamical structure
+  - subsection: Uniform recurrence and frequencies
+  - subsection: Overlap-freeness
+  - subsection: Aperiodicity}\label{subsec:aperiodicity
+  - subsection: Factor complexity and automaticity
+  - section: Worked examples and computational checks
+  - subsection: A sixteen-term comparison table
+  - subsection: Example: the product \texorpdfstring{$P_4$}{P4}
+  - subsection: Example: sparse support at \texorpdfstring{$N=13$}{N=13}
+  - subsection: Example: carries
+  - subsection: Reference algorithms
+  - subsection: Dependency map of the formulae
+  - section: Formalization roadmap for \texttt{ProveIt}
+  - subsection: Already central in the existing development
+  - subsection: Layer 1: binary and finite algebra
+  - subsection: Layer 2: valuations and Pascal support
+  - subsection: Layer 3: polynomials, moments, and finite differences
+  - subsection: Layer 4: formal power series
+  - subsection: Layer 5: Fourier and analysis
+  - subsection: Suggested module graph
+  - section: Conclusions
+  - section: The first sixty-four values
+  - section: Identity crosswalk
+  - section: Source-draft consolidation map
+
+### `archive/research-frontiers/Thue_Morse_Formula_Atlas-3/Thue_Morse_Formula_Atlas.tex`
+
+- SHA-256: `d4f13cdd292c78ceb3630a41a336191f1cfdcfb4d2ac644567fee8b2a873235c`
+- Phrase clusters: Exact digit-sum zero count; Integer-base atomic family
+- Structural headings:
+  - section: Scope, conventions, and the formula being complemented
+  - subsection: The original Pascal-row logarithm
+  - subsection: A compact formula index
+  - section: Binary recursion, blocks, automata, and uniqueness
+  - subsection: The two-scale recurrence
+  - subsection: Concatenating more than one bit
+  - subsection: Complement and permutation symmetries
+  - subsection: The Boolean group law
+  - section: Digit, floor, fractional-part, and trigonometric formulae
+  - subsection: Extracting digits arithmetically
+  - subsection: Fractional parts
+  - subsection: Finite sign products
+  - section: Two-adic valuations, central binomial coefficients, Catalan numbers, and carries
+  - subsection: Legendre's formula as a parity extractor
+  - subsection: Catalan parity and the ruler sequence
+  - subsection: Kummer's carry cocycle
+  - section: Pascal support, sparse columns, residue formulae, and Boolean inversion
+  - subsection: Lucas support is a Boolean lattice
+  - subsection: Power-of-two columns recover the digits
+  - subsection: Removing the logarithm modulo three
+  - subsection: A signed row-statistic family
+  - subsection: An \texorpdfstring{\(r\)}{r}-nomial logarithm family
+  - subsection: Boolean M\"obius inversion
+  - section: Odious and evil enumerators
+  - section: Lacunary generating products and their coefficient formulae
+  - subsection: The finite mother product
+  - subsection: The Mahler product
+  - subsection: The logarithm reveals the ruler sequence
+  - subsection: Partition and Bell-polynomial formulae
+  - subsection: A lower-Hessenberg determinant
+  - subsection: The bit series over characteristic two
+  - subsection: An integer algebraic lift
+  - subsection: A direct natural-boundary argument
+  - section: Finite differences, Prouhet cancellation, and exact moments
+  - subsection: A master mixed-difference identity
+  - subsection: Prouhet annihilation and sharp extraction
+  - subsection: The finite exponential transform
+  - subsection: All higher dyadic power sums
+  - subsection: Sparse Prouhet identities on one Pascal row
+  - section: Exact prefix sums, discrepancy, and the Fabius connection
+  - subsection: The first prefix is already exact
+  - subsection: Iterated prefixes and Prouhet vanishing
+  - subsection: Why the sequence appears in the Fabius theory
+  - section: Ordinary Fourier transforms, Walsh characters, and Riesz products
+  - subsection: The trigonometric factorization
+  - subsection: The exact discrete Fourier transform
+  - subsection: The Walsh transform is a delta function
+  - subsection: Finite Riesz products
+  - subsection: Autocorrelation recursion
+  - section: Dirichlet transforms, digit constants, and infinite products
+  - subsection: An entire shifted Dirichlet series
+  - subsection: Thue--Morse digit constants in every base
+  - subsection: The Woods--Robbins product
+  - subsection: A useful product functional equation
+  - section: Rarefied sums and Newman's phenomenon
+  - subsection: A root-of-unity filter at dyadic endpoints
+  - subsection: Complete evaluation modulo three
+  - subsection: The global Newman theorem
+  - section: Combinatorics and dynamics of the infinite word
+  - subsection: Uniform recurrence and aperiodicity
+  - subsection: Complement and reversal closure
+  - subsection: Overlap avoidance and critical exponent
+  - subsection: Linear factor complexity
+  - section: Hankel determinants, Mahler values, and Diophantine consequences
+  - subsection: Hankel determinants built from the signs
+  - subsection: Transcendence of the function and of algebraic values
+  - section: The base-\texorpdfstring{\(B\)}{B} root-of-unity family
+  - section: Formula selection and a Lean formalization roadmap
+  - subsection: Which representation is useful where?
+  - subsection: Existing formalized spine
+  - subsection: Suggested dependency order for the new formulae
+  - subsection: Executable checks
+  - section: Worked examples and consistency checks
+  - subsection: One index through ten formulae
+  - subsection: A complete four-bit block
+  - subsection: A carry-corrected addition
+  - section: Concluding synthesis
+  - section: The first 64 terms
+  - section: A compact identity map
+  - section: Consolidation provenance
+
+### `archive/research-frontiers/non-formalized-research-frontiers/non-formalized-research-frontiers.tex`
+
+- SHA-256: `733cd1318ae70768510d7e62936f0334176f8c85d99c1332df0f61f6d5aa2143`
+- Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Consolidation map and reading conventions
+  - section: Lean object crosswalk---inputs, not certification
+  - part: Fabius Integration Research Frontiers
+  - section: Dossier abstract
+  - section: Scope, conventions, and the audit boundary
+  - subsection: Three levels of coverage
+  - subsection: Notation that must not collide
+  - subsection: The positivity hypothesis in the original characterization is redundant
+  - section: The inverse and the elementary-function obstruction
+  - subsection: The total inverse of the bounded Fabius function
+  - subsection: Flatness of \texorpdfstring{$F$}{F} becomes steepness of \texorpdfstring{$I$}{I}
+  - subsection: Elementary functions through their analytic locus
+  - subsection: Strong non-elementarity of the Fabius family
+  - section: Probability laws and the bridges the headline formulas conceal
+  - subsection: The product probability law in measure-theoretic form
+  - subsection: The survival-function Fubini identity
+  - subsection: Raw, endpoint, and tilted Laplace moments
+  - subsection: From atomic laws to half-endpoint histograms
+  - section: The reusable discrete engines
+  - subsection: Weighted paths solve triangular recurrences
+  - subsection: The nonrecursive composition formula for \texorpdfstring{$F(2^{-n})$}{F(2 to the -n)}
+  - subsection: A finite-row Toeplitz convergence theorem
+  - subsection: The Fabius Toeplitz rows and corrected discrete prefixes
+  - section: The formal and analytic machinery of the all-orders saddle expansion
+  - subsection: Parameter-dependent Poincar\'e expansions
+  - subsection: Recursive coefficients of a formal exponential
+  - subsection: Recursive coefficients of a formal logarithm
+  - subsection: Exact finite remainders from formal coefficient identities
+  - subsection: Gaussian contraction: integration becomes polynomial algebra
+  - subsection: Uniform Gaussian tails for polynomial references
+  - subsection: Closed saddle jets and shifted Stirling numbers
+  - subsection: From exponent coefficients to periodic mass and log coefficients
+  - subsection: The second periodic correction, line by line
+  - subsection: Assembly of the full endpoint expansion
+  - subsection: Why the exact phase cannot be casually re-expanded
+  - subsection: Supplementary material from this dossier
+  - subsection: Executable recurrences in mathematical pseudocode
+  - subsection: Lean declaration and module concordance
+  - subsection: Audit matrix against the main article
+  - subsection: Notation crosswalk
+  - subsection: A compact dependency diagram
+  - part: Repeated Integration and Rvachev's Up-Function
+  - section: Dossier abstract
+  - section: The overlooked construction
+  - section: Normalization and the integration operator
+  - section: The affine random recursion
+  - section: The finite stages are box splines
+  - subsection: The first stages
+  - section: Fourier product and exact identification of the limit
+  - section: The exact \texorpdfstring{$n$th}{n-th} stage in truncated powers
+  - subsection: Knots, cells, and the highest derivative
+  - section: Tail replacement rather than truncation
+  - section: A positive Peano kernel
+  - section: A finite-prefix derivative plateau
+  - section: The exact convergence rate
+  - subsection: Certified iteration counts
+  - section: Fourier asymptotics and the spectral meaning of \texorpdfstring{$1/4$}{1/4}
+  - section: Why the exact constant is visible at dyadic points
+  - section: Comparison with ordinary truncation
+  - section: Computational forms
+  - subsection: Recurrence by antiderivatives
+  - subsection: Point evaluation by the Thue--Morse sum
+  - subsection: Certified approximation of \texorpdfstring{$\Up$}{up}
+  - section: A roadmap for Lean formalization
+  - section: Conclusions
+  - section: Supplementary material from this dossier
+  - section: Algebraic equivalence with the Stack Exchange formula
+  - section: A few exact finite-stage formulas
+  - section: Notation crosswalk
+  - part: Repeated Integration and Rvachev's Up-Function: Sharp Thresholds
+  - section: Dossier abstract
+  - section: The problem, the indexing, and the answer
+  - subsection: Main finite-stage formula
+  - subsection: Main sharp convergence theorem
+  - section: The integration operator is a probability operator
+  - section: The limit is Rvachev's up-function
+  - subsection: Self-similarity and the differential equation
+  - subsection: Fourier product
+  - subsection: Relation with the bounded Fabius function
+  - section: Exact finite splines and the Thue--Morse collapse
+  - subsection: A general nonuniform box-spline formula
+  - subsection: The subset-sum polynomial
+  - subsection: Derivatives, knots, and exact smoothness
+  - subsection: The first iterates
+  - section: Replacing the last tail: the exact error decomposition
+  - subsection: The comparison kernel
+  - subsection: Peano identity and the pointwise error formula
+  - section: Sharp derivative geometry of the partial densities
+  - subsection: A sharp derivative norm for the up-function
+  - section: The exact convergence rate
+  - subsection: All stages after the first admissible one
+  - subsection: The first \texorpdfstring{$C^r$}{C-r} spline
+  - subsection: Exact \texorpdfstring{$C^r$}{C-r} convergence
+  - subsection: The uniform errors and exact extremal values
+  - section: The asymptotic error profile
+  - subsection: A full even-derivative expansion
+  - section: Exact computation and numerical use
+  - subsection: A direct exact-arithmetic evaluator
+  - subsection: Conditioning and stable evaluation
+  - section: How this fits the existing ProveIt development
+  - section: Conclusions
+  - part: Dyadic Calculus for the Fabius Function
+  - section: Dossier abstract
+  - section: Orientation and notation
+  - subsection: What is being connected
+  - subsection: The half-base notation is Mersenne arithmetic
+  - subsection: The probabilistic normalization
+  - section: The master Taylor block
+  - subsection: The reduction polynomial
+  - subsection: Appell compression
+  - subsection: Immediate consequences
+  - section: The binary expansion as a sparse Appell series
+  - subsection: Prefixes, bits, and tails
+  - subsection: The digit--Appell formula
+  - subsection: A superexponential remainder bound
+  - subsection: Dyadic rationals are the terminating case
+  - section: Why Thue--Morse and Gaussian binomial coefficients appear
+  - subsection: The Thue--Morse difference operator
+  - subsection: Geometric divided differences
+  - subsection: The two annihilators together
+  - section: The finite \texorpdfstring{$q$}{q}-formula as an Appell identity
+  - subsection: A centered master formula
+  - subsection: The arbitrary-translation form
+  - section: One-shot and digitwise formulae for a general dyadic rational
+  - section: From exact dyadic values to the arbitrary-argument \texorpdfstring{$q$}{q}-series
+  - subsection: The centered nested series
+  - subsection: The raw translated nested series
+  - subsection: A useful commutative diagram
+  - section: Alternative exact representations of inverse-dyadic values
+  - subsection: Coefficient extraction from the moment product
+  - subsection: A lower-Hessenberg determinant
+  - subsection: Cumulants, Bernoulli numbers, and Bell polynomials
+  - section: The discrete limit as a \texorpdfstring{$q$}{q}-Toeplitz transform
+  - subsection: Shifted finite splines
+  - subsection: The discrete \texorpdfstring{$q$}{q}-sum
+  - subsection: One polynomial explains the entire row
+  - subsection: A quantitative discrete-limit estimate
+  - subsection: Exact formula versus discrete limit
+  - section: Integral-transform representations
+  - subsection: Fourier--sinc inversion
+  - subsection: Bromwich inversion of the moment product
+  - section: Computational consequences
+  - subsection: Exact dyadic evaluation
+  - subsection: Arbitrary arguments
+  - section: Synthesis
+  - section: Supplementary material from this dossier
+  - section: A compact proof of the geometric simplex sum
+  - section: First moments and inverse-dyadic values
+  - section: Map to the formal development
+  - part: The Dyadic Web of the Fabius Function
+  - section: Dossier abstract
+  - section: Scope, conventions, and the formula map
+  - subsection: Five presentations of the same value
+  - subsection: The exact dyadic formula taken as input
+  - section: The master coefficient and its probabilistic meaning
+  - subsection: The probability law behind the moment series
+  - subsection: The Thue--Morse prefix series
+  - subsection: The numerator and the law separate completely
+  - section: Moment coordinates and alternative exact representations
+  - subsection: An infinite-cube composition formula
+  - subsection: Cumulants, Bernoulli numbers, and Bell polynomials
+  - subsection: Exact moment correction of the matched spline
+  - subsection: The reciprocal correction transform
+  - subsection: The Gaussian row is a divided difference
+  - subsection: The parametric coefficient polynomial
+  - subsection: Why the node values are Thue--Morse power sums
+  - subsection: Translation invariance is lower-degree annihilation
+  - subsection: A useful abstract summary
+  - section: Binary Taylor reduction and the global series
+  - subsection: The finite reduction polynomial
+  - subsection: The sparse digit form on the unit interval
+  - subsection: The dyadic triangle of finite representations
+  - subsection: Shifted splines and the finite row
+  - subsection: At dyadic inputs the limit stabilizes exactly
+  - subsection: The row polynomial
+  - subsection: What fails away from a dyadic point
+  - subsection: Two infinite constructions that share a limit but not terms
+  - subsection: The first rows
+  - section: A unified dyadic identity and a worked example
+  - subsection: The complete equality chain
+  - section: Computational and conceptual consequences
+  - subsection: Which representation is best for which task?
+  - subsection: A compact exact-arithmetic scheme
+  - subsection: Exact arithmetic checks implied by the connections
+  - subsection: Endpoint and convention warnings
+  - section: Relation to the Lean development
+  - section: Conclusion
+  - section: Supplementary material from this dossier
+  - section: A compact identity sheet
+  - subsection: Probability and moments
+  - subsection: Master coefficient
+  - subsection: Geometric extraction
+  - subsection: Spline corrections
+  - subsection: Discrete filter
+  - part: From Exact Dyadic Arithmetic to Endpoint Asymptotics
+  - section: Dossier abstract
+  - section: The missing bridge
+  - subsection: Main conclusions
+  - section: Exact arithmetic in a coefficient-ready normalization
+  - subsection: The probability law and its entire moment function
+  - subsection: Reciprocal powers and the triangular factor
+  - subsection: The global \texorpdfstring{$q$}{q}-binomial formula
+  - section: Resumming the exact recurrences
+  - subsection: From the triangular recurrence to the entire product
+  - subsection: A probabilistic interpretation of the product
+  - subsection: Positive and negative arguments
+  - section: The periodic decomposition of the negative product
+  - subsection: Mellin transform of the dyadic kernel
+  - subsection: Exact decomposition, mean, and oscillation
+  - section: Vertical coefficient extraction
+  - section: The reciprocal-power saddle
+  - subsection: The Lambert coordinate is forced by coefficient balance
+  - subsection: Exact coefficient saddle mass
+  - subsection: Phase locking
+  - subsection: The local phase is the continuous phase
+  - subsection: Gaussian domination and the leading mass
+  - subsection: First correction
+  - subsection: All orders
+  - section: The elementary \texorpdfstring{$n$}{n}-scale expansion
+  - section: Fixed-numerator dyadic rays
+  - subsection: The prefix factor near the saddle
+  - subsection: The ray saddle and its phase lock
+  - subsection: Identity of local phases
+  - subsection: A moderate-numerator extension
+  - section: An exact Bromwich-to-coefficient collapse
+  - subsection: Iterating the negative refinement equation
+  - subsection: Why the finite product disappears exactly
+  - section: What the different exact formulae contribute
+  - subsection: Why the \texorpdfstring{$q$}{q}-Pochhammer factor is not the periodic term
+  - subsection: Why the composition sum must be resummed
+  - section: Exact-rational numerical checks
+  - section: From exact dyadics to arbitrary real arguments
+  - subsection: The leading law follows by squeezing
+  - subsection: Why squeezing cannot recover the sharp periodic formula
+  - subsection: The remaining two-parameter problem
+  - section: A formalization roadmap
+  - section: Conclusions
+  - section: Supplementary material from this dossier
+  - section: The key algebraic cancellation
+  - section: Exact arithmetic used in the numerical tables
+  - section: Bibliographic note
+  - part: From Exact Dyadic Formulae to the Small-Argument Asymptotic
+  - section: Dossier abstract
+  - section: The missing bridge
+  - subsection: What is proved
+  - subsection: Headline notation and result
+  - section: One coefficient sequence behind the exact formulae
+  - subsection: The half moments and the endpoint identity
+  - subsection: Factorial normalization and the recurrence
+  - subsection: Composition sum
+  - subsection: The entire product
+  - section: Decompressing the half-base \texorpdfstring{$q$}{q}-binomial formula
+  - subsection: The geometric interpolation functional
+  - subsection: The finite Thue--Morse blocks
+  - subsection: The literal numerator collapses
+  - subsection: General dyadic numerators
+  - section: The first asymptotic already visible in the exact values
+  - section: The exact negative-Laplace decomposition
+  - subsection: Periodization of the dilation equation
+  - subsection: Mean, Fourier modes, and the asymptotic constant
+  - section: Sharp route I: endpoint moments versus Laplace moments
+  - subsection: Second-order kernel comparison
+  - subsection: Differentiating the exact periodic decomposition
+  - section: The lower-Lambert phase and the derivative cancellation
+  - subsection: The exact phase
+  - subsection: Why \texorpdfstring{$\Psi$}{Psi} is evaluated at \texorpdfstring{$\lambda_n$}{lambda n}
+  - subsection: Compact versus expanded form
+  - section: Sharp route II: a coefficient saddle from the exact generating product
+  - subsection: Positive-axis growth of \texorpdfstring{$A$}{A}
+  - subsection: Cauchy extraction
+  - section: Consequences for every exact arithmetic representation
+  - subsection: The normalized recurrence and composition sum
+  - subsection: The half moments
+  - subsection: The literal \texorpdfstring{$q$}{q}-binomial numerator
+  - subsection: A first all-orders corollary
+  - section: What each exact formula contributes asymptotically
+  - subsection: Why direct termwise analysis of the \texorpdfstring{$q$}{q}-sum is misleading
+  - section: How much of the full small-argument asymptotic is encoded by inverse dyadics?
+  - subsection: The arbitrary-argument formula
+  - subsection: Dense sampling of the periodic correction
+  - subsection: What inverse powers alone do not prove
+  - section: Numerical verification from exact rational values
+  - section: Correspondence with the Lean development
+  - section: Conclusions
+  - section: Supplementary material from this dossier
+  - section: Algebra behind the expanded dyadic formula
+  - section: A stable numerical recipe
+  - section: Notation cross-reference
+  - part: Iterated Thue--Morse Prefix Sums and the Fabius Function
+  - section: Dossier abstract
+  - section: Scope, conventions, and the quantitative question
+  - section: The discrete hierarchy
+  - subsection: Signed Thue--Morse and inclusive summation
+  - subsection: Dyadic annihilation
+  - section: The exact polynomial bridge
+  - subsection: Approximation polynomials
+  - subsection: The centered probability measure and histogram
+  - section: What the floor index actually samples
+  - section: Fourier factorization of the omitted tail
+  - subsection: The cosine products
+  - subsection: A cardinal probability distribution
+  - section: Discrete curvature of the coefficient rows
+  - section: The intrinsic error at coefficient centers
+  - section: The sharp expansion for the Fabius sample
+  - section: Pointwise and uniform sharpness
+  - subsection: Uniform error profile and pointwise law
+  - subsection: The exact uniform constant
+  - section: Exact special values
+  - subsection: The endpoints
+  - subsection: An exact midpoint coefficient
+  - section: The corresponding result for Rvachev's bump
+  - section: Rates for the histogram and for recentered interpolation
+  - subsection: The step histogram
+  - subsection: Linear interpolation through the true centers
+  - section: Why the constants take these values
+  - section: A Lean formalization roadmap
+  - section: Conclusion
+  - section: Supplementary material from this dossier
+  - section: Notation crosswalk
+  - section: A compact statement of the main estimates
+  - part: Signed Thue--Morse Prefix Sums and the Fabius Function
+  - section: Dossier abstract
+  - section: Scope, conventions, and the answer in one table
+  - subsection: What is formalized and what is new here
+  - section: The exact discrete bridge
+  - subsection: Signed Thue--Morse prefixes
+  - subsection: The finite polynomial and the one-order shift
+  - subsection: Natural centers, atomic law, and histogram
+  - section: The hidden Bernoulli tail
+  - subsection: Rademacher factorization
+  - subsection: Exact support radius and variance
+  - subsection: Why the leading center correction is second order
+  - section: Fourier inversion on the moving lattice
+  - subsection: A shifted-lattice inversion formula
+  - subsection: The exact deconvolution multiplier
+  - section: Sharp center-grid asymptotics
+  - subsection: Expansion of the reciprocal tail product
+  - subsection: The uniform expansion
+  - subsection: Sharp norm constant
+  - subsection: A continuous reconstruction with the same rate
+  - subsection: The all-orders pattern
+  - section: The histogram: a sharp first-order quantization error
+  - section: The floor-prefix approximation to the bounded Fabius function
+  - subsection: Definition and exact moving-center displacement
+  - subsection: First- and second-order expansions
+  - subsection: The equivalent statement for the \texorpdfstring{$\Up$}{Up} sample
+  - section: An exact midpoint identity
+  - subsection: Correct centering can be exact at the same point
+  - section: Bias removal and accelerated prefix reconstructions
+  - section: Conceptual synthesis
+  - subsection: One row, three coordinate choices
+  - subsection: Variance versus support radius
+  - subsection: Why the \texorpdfstring{$n$}{n} is structural
+  - subsection: A practical recommendation
+  - section: A Lean formalization roadmap
+  - section: Conclusion
+  - section: Supplementary material from this dossier
+  - section: Elementary geometric-tail formulas
+  - section: A short exact-arithmetic algorithm
+  - part: Fabius Inverse and Saddle Research Frontiers
+  - section: Dossier abstract
+  - section: Purpose, scope, and status conventions
+  - subsection: A supplement rather than a second survey
+  - subsection: What the labels mean
+  - section: The inverse as a global mathematical object
+  - subsection: The order isomorphism on the unit interval
+  - subsection: A four-way comparison calculus
+  - subsection: Tails, endpoints, and reflection
+  - section: Exact inversion of the dyadic evaluator
+  - subsection: The exact statement
+  - subsection: A small exact table
+  - section: \texorpdfstring{Flatness of \(F\) becomes steepness of \(\InvF\)}{Flatness of F becomes steepness of its inverse}
+  - subsection: The transported power inequalities
+  - subsection: An effective bound against every line
+  - subsection: Infinite one-sided slope
+  - subsection: Failure of every positive Hölder estimate
+  - section: Classical calculus and the exact regularity of the inverse
+  - subsection: Smoothness and differential identities in the interior
+  - subsection: Shape reversal under inversion
+  - subsection: \texorpdfstring{The \(C^\infty\) and analytic loci}{The smooth and analytic loci}
+  - section: Inverting the sharp small-argument asymptotic
+  - subsection: The exact lower Lambert phase
+  - subsection: Asymptotic solution for the phase
+  - subsection: The endpoint equivalent for the inverse
+  - subsection: The complete hierarchy of elementary scales
+  - section: Closed periodic saddle jets
+  - subsection: The recursive jets
+  - subsection: Why the Stirling indices are shifted
+  - subsection: Coefficient rows and the first jets
+  - section: The centered exponent and its algebraic collapse
+  - subsection: From a long Taylor expansion to one short formula
+  - section: Formal exponential, Gaussian contraction, and logarithm
+  - subsection: The exponential recursion
+  - subsection: Gaussian contraction and mass coefficients
+  - subsection: Logarithmic coefficients
+  - subsection: The top jet and the highest derivative
+  - section: The first and second logarithmic corrections
+  - subsection: Order two: the first correction
+  - subsection: Order four of the formal exponential
+  - subsection: Gaussian contraction and the second mass coefficient
+  - subsection: The second logarithmic coefficient
+  - section: Why the all-orders remainder is actually rigorous
+  - subsection: The exact normalized saddle mass
+  - subsection: The order-dependent central window
+  - subsection: All-order control of the exact centered exponent
+  - subsection: Finite exponentiation without an infinite-series argument
+  - subsection: Gaussian contraction on the whole line
+  - subsection: The complementary contour
+  - subsection: The all-orders mass expansion
+  - subsection: Transfer through the logarithm
+  - subsection: Adding the flat tail and returning to \texorpdfstring{\(x\downarrow0\)}{x to 0}
+  - section: A proof-oriented concordance with the Lean modules
+  - subsection: Named declarations worth knowing
+  - section: What is formalized and what is newly synthesized
+  - subsection: Directly formalized
+  - subsection: Classical consequences derived in this article
+  - subsection: Claims deliberately not made
+  - section: Concluding synthesis
+  - section: Supplementary material from this dossier
+  - section: A compact inverse reference
+  - section: A compact coefficient reference
+  - section: Repository paths used in the audit
+  - part: Small-Argument Asymptotics Research Frontiers
+  - section: Dossier abstract
+  - section: Introduction
+  - subsection: What was already known, and what is new
+  - subsection: Notation
+  - section: The lower-Lambert phase}\label{smallarg:sec:lambert
+  - section: The periodic correction and the sharp main term}\label{smallarg:sec:main
+  - section: The saddle jets and their closed form}\label{smallarg:sec:jets
+  - subsection: Solving the recursion
+  - subsection: The closed forms
+  - section: The exponent coefficients in closed form}\label{smallarg:sec:exponent
+  - section: The general coefficient formula}\label{smallarg:sec:general
+  - subsection: Step 1: the mass coefficients
+  - subsection: Step 2: taking the logarithm
+  - subsection: Step 3: expanding the jets
+  - subsection: Structural consequences
+  - section: The explicit coefficients}\label{smallarg:sec:explicit
+  - subsection: Mass coefficients in the jets
+  - subsection: Logarithmic coefficients in the jets
+  - subsection: The same coefficients in the derivatives of \texorpdfstring{$\Psi$}{Psi}
+  - subsection: The \texorpdfstring{$\Psi$}{Psi}-free parts
+  - subsection: The resulting expansions
+  - subsection: The right endpoint}\label{smallarg:sec:right
+  - section: The leading-derivative law}\label{smallarg:sec:leading
+  - section: Fourier form and the amplitude law}\label{smallarg:sec:fourier
+  - subsection: The amplitude law
+  - subsection: Why the expansion is only asymptotic
+  - section: Numerical verification}\label{smallarg:sec:numerics
+  - subsection: The fourth coefficient
+  - subsection: A worked example}\label{smallarg:sec:worked
+  - subsection: An independent confirmation to \texorpdfstring{$n=400$}{n=400}
+  - section: Map to the Lean development}\label{smallarg:sec:lean
+  - subsection: What is machine-checked, and what is not
+  - section: What is not claimed}\label{smallarg:sec:notclaimed
+  - section: Two traps}\label{smallarg:sec:traps
+  - section: Notation crosswalk}\label{smallarg:sec:crosswalk
+  - section: Open items}\label{smallarg:sec:open
+  - section: Consolidated promotion rule
+
+### `archive/standalone-studies/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.tex`
+
+- SHA-256: `60a0a3548f536b5eee423fda038ad6a07870ce37b1b4883b88693c4b03620255`
+- Phrase clusters: none
+- Structural headings:
+  - section: Statement
+  - subsection: The two inputs
+  - section: The class of elementary functions
+  - subsection: Definition
+  - subsection: What is not claimed}\label{sec:notclaimed
+  - section: Analyticity of the generators
+  - section: Density of the analytic locus
+  - subsection: Openness
+  - subsection: The unary step
+  - subsection: The induction
+  - section: The formal development
+  - subsection: Correspondence with the Lean names
+  - subsection: Ingredients taken from \texttt{Mathlib}
+  - subsection: Statement of the main theorem in Lean
+  - section: Discussion
+  - subsection: Why smoothness cannot decide the question
+  - subsection: The role of the endpoints
+  - subsection: What a stronger theorem would require
+
+### `archive/standalone-studies/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex`
+
+- SHA-256: `81c129cb65d0bf1f0c35e5dbf0e69ca062287b02e739fd3c6da0ed1dbdf0305c`
+- Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Introduction
+  - subsection: What was already known, and what is new
+  - subsection: Notation
+  - section: The lower-Lambert phase}\label{sec:lambert
+  - section: The periodic correction and the sharp main term}\label{sec:main
+  - section: The saddle jets and their closed form}\label{sec:jets
+  - subsection: Solving the recursion
+  - subsection: The closed forms
+  - section: The exponent coefficients in closed form}\label{sec:exponent
+  - section: The general coefficient formula}\label{sec:general
+  - subsection: Step 1: the mass coefficients
+  - subsection: Step 2: taking the logarithm
+  - subsection: Step 3: expanding the jets
+  - subsection: Structural consequences
+  - section: The explicit coefficients}\label{sec:explicit
+  - subsection: Mass coefficients in the jets
+  - subsection: Logarithmic coefficients in the jets
+  - subsection: The same coefficients in the derivatives of \texorpdfstring{$\Psi$}{Psi}
+  - subsection: The \texorpdfstring{$\Psi$}{Psi}-free parts
+  - subsection: The resulting expansions
+  - section: The leading-derivative law}\label{sec:leading
+  - section: Fourier form and the amplitude law}\label{sec:fourier
+  - subsection: The amplitude law
+  - subsection: Why the expansion is only asymptotic
+  - section: Numerical verification}\label{sec:numerics
+  - section: Map to the Lean development}\label{sec:lean
+  - section: What is not claimed}\label{sec:notclaimed
+  - section: Two traps}\label{sec:traps
+  - section: Notation crosswalk}\label{sec:crosswalk
+  - section: Open items}\label{sec:open
+
+### `archive/standalone-studies/fabius-inverse-dyadic-closed-form/fabius-inverse-dyadic-closed-form.tex`
+
+- SHA-256: `59421688e4834473395557dab13df52f6816bc0e21beed0813a15e040dd5d60b`
+- Phrase clusters: none
+- Structural headings:
+  - section: The recurrence and its range
+  - section: Normalization
+  - section: The composition formula
+  - section: Increasing chains and an explicit multiple sum
+  - section: A nilpotent-matrix interpretation
+  - section: Low-index examples}\label{sec:examples
+  - subsection: $n=0$ and $n=1$
+  - subsection: $n=2$
+  - subsection: $n=3$
+  - subsection: $n=4$
+  - section: Equivalence of the three viewpoints
+  - section: Relation to inverse-dyadic Fabius values
+  - section: Lean formalization
+  - subsection: Existing recurrence layer
+  - subsection: Generic weighted paths
+  - subsection: Explicit composition formula
+  - subsection: Verification targets
+  - section: Conclusion
+
+### `fabius_lean_walkthrough/fabius_lean_walkthrough.tex`
+
+- SHA-256: `5602ac5f003a0afbd4e18de1aa59670bf2895bbf2844c1fae8e04fac4d57c2df`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Scope and conventions
+  - section: Building and entering the development}\label{ch:build
+  - subsection: Repository location and toolchain
+  - subsection: What the umbrella module exposes
+  - subsection: Four kinds of source module
+  - subsection: Naming conventions that encode intent
+  - subsection: A practical exploration workflow
+  - section: The mathematical objects and their Lean interfaces}\label{ch:objects
+  - subsection: The bounded function
+  - subsection: The Rvachev up-function
+  - subsection: The signed global extension
+  - subsection: Auxiliary analytic objects
+  - section: The dependency architecture}\label{ch:architecture
+  - subsection: A layered view
+  - subsection: Why existence is not the first analytic file
+  - subsection: Two independent uniqueness arguments
+  - subsection: Paper aggregators versus theorem-producing modules
+  - section: The exact-arithmetic foundation}\label{ch:arithmetic
+  - subsection: Why the development begins over \texorpdfstring{\(\N\) and \(\Q\)}{N and Q}
+  - subsection: Binary weight and the Thue--Morse sign
+  - subsection: Product normalizations
+  - subsection: Moment and half-moment recurrences
+  - subsection: Closed dyadic formulas
+  - subsection: The inverse-power table
+  - subsection: Horner evaluation
+  - subsection: Recursive removal of the highest bit
+  - subsection: Clamping, reflection, and the global evaluator
+  - subsection: Recognizing dyadic rationals
+  - subsection: Arithmetic API design lessons
+  - section: Constructing the canonical bounded function}\label{ch:existence
+  - subsection: The ambient complete metric space
+  - subsection: Extending an interval function
+  - subsection: The nonlinear-looking transform that is actually affine
+  - subsection: The contraction estimate
+  - subsection: From an integral fixed point to the differential law
+  - subsection: Bootstrapping smoothness
+  - subsection: Uniqueness by dyadic density
+  - section: Differential identities and the signed global extension}\label{ch:differential
+  - subsection: The role of \texttt{Differential.lean}
+  - subsection: Domain bookkeeping
+  - subsection: Scale and translation lemmas
+  - subsection: Local finiteness of the translate sum
+  - subsection: Agreement and global identities
+  - subsection: Global differential calculus
+  - subsection: Exact Taylor reduction
+  - subsection: Why use a \texttt{tsum} for a locally finite expression?
+  - section: Sharp shape, inverse branches, and effective computation}\label{ch:regularity
+  - subsection: One global derivative equation
+  - subsection: Sharp regularity and flatness
+  - subsection: The totalized inverse
+  - subsection: Effective dyadic continuity of the noncomputable inverse
+  - subsection: Generic formal implicit roots versus inverse-Fabius germs
+  - subsection: Exact analytic loci and non-elementarity
+  - subsection: Primitive-recursive splines and computable reals
+  - section: The exact--analytic dyadic bridge}\label{ch:dyadic-bridge
+  - subsection: The purpose of \texttt{DyadicAnalytic.lean}
+  - subsection: Finite Taylor expansion on a dyadic scale
+  - subsection: Inverse-power values
+  - subsection: From closed polynomial to Horner program
+  - subsection: Correctness of highest-bit reduction
+  - subsection: Representation independence
+  - subsection: Dyadic density and uniqueness
+  - subsection: The global dyadic theorem
+  - section: Moments, generating functions, and exact denominators}\label{ch:moments
+  - subsection: Analytic moments of the up-function
+  - subsection: Identifying analytic and exact moments
+  - subsection: Generating functions
+  - subsection: Removable singularities
+  - subsection: Normalized half moments
+  - subsection: Normalized even moments
+  - subsection: Parity through Lucas' theorem
+  - subsection: Reduced numerators, denominators, and two-adic valuation
+  - subsection: Denominator bounds
+  - subsection: Bernoulli recurrences and source-facing arithmetic
+  - section: Fourier analysis and Rvachev's original characterization}\label{ch:fourier
+  - subsection: Why the up-function is the Fourier object
+  - subsection: Fourier conventions
+  - subsection: Transforming the derivative equation
+  - subsection: Iteration to a finite product
+  - subsection: The infinite sinc product
+  - subsection: Fourier injectivity and uniqueness
+  - subsection: Moment series from the Fourier product
+  - subsection: Poisson summation
+  - section: Finite convolutions, probability, and approximation}\label{ch:probability
+  - subsection: The probabilistic representation
+  - subsection: The reusable affine-law, geometric CDF, and density layer
+  - subsection: Activation Taylor jets, square-summability, and effective dimension
+  - subsection: Finite convolution measures
+  - subsection: Weak convergence
+  - subsection: Step approximants
+  - subsection: The endpoint half-weight correction
+  - subsection: Coefficient unimodality
+  - subsection: From distribution functions to the bounded Fabius function
+  - subsection: Exact finite Taylor formulas and nonanalyticity
+  - subsection: Corrections recorded by the original-paper aggregator
+  - section: The two paper formalizations as navigable APIs}\label{ch:papers
+  - subsection: The first paper: \texttt{Paper05442.lean}
+  - subsection: The arithmetic paper: \texttt{Paper06487.lean}
+  - subsection: Statements that remain questions or conjectures
+  - subsection: Why a separate coverage document matters
+  - section: Thue--Morse and q-binomial identities}\label{ch:qbinomial
+  - subsection: Why q-binomial algebra appears
+  - subsection: Centered mixed differences
+  - subsection: The finite q-Pochhammer infrastructure
+  - subsection: Why prove a specialized q-binomial theorem?
+  - subsection: Raw, scalar, and polished formulas
+  - subsection: The unrestricted finite identity
+  - subsection: Translation invariance as a polynomial theorem
+  - subsection: Polynomial constancy and Taylor reduction
+  - subsection: The global binary-reduction series
+  - subsection: Parity-power series
+  - section: Discrete limits and complex shifts}\label{ch:discrete-limit
+  - subsection: The shape of the limit theorem
+  - subsection: Uniform spline approximants
+  - subsection: Complex-shift control
+  - subsection: The Toeplitz averaging mechanism
+  - subsection: Final reindexing and identification
+  - subsection: Proof flow of the discrete-limit family
+  - section: The logarithmic scale near the flat endpoint}\label{ch:logscale}\label{ch:asymptotics
+  - subsection: Why ordinary Taylor asymptotics fail
+  - subsection: The exact logarithmic delay identity
+  - subsection: Positivity near zero
+  - subsection: The quadratic logarithmic law
+  - subsection: A quantitative coarse bound
+  - subsection: Filter formulations
+  - section: Negative Laplace analysis and the periodic correction}\label{ch:negative-laplace
+  - subsection: The negative moment generating function
+  - subsection: The kernel and its bounds
+  - subsection: The exact dilation equation
+  - subsection: How the periodic function is constructed
+  - subsection: Continuity and regularity
+  - subsection: Mellin--Bose analysis and finite parts
+  - subsection: Why the periodic term cannot be dropped
+  - subsection: Identification with the generating function
+  - section: Bromwich inversion and the sharp saddle point}\label{ch:saddle
+  - subsection: From a transform to the endpoint density
+  - subsection: The Lambert phase
+  - subsection: Exact reduction at the saddle
+  - subsection: Central and tail decomposition
+  - subsection: The Gaussian reference weight
+  - subsection: Cumulants and derivative bounds
+  - subsection: Minor arcs and tail decay
+  - subsection: The first correction
+  - subsection: The corrected sharp formula
+  - subsection: Failure of an uncorrected elementary formula
+  - section: All-order asymptotic expansions}\label{ch:all-orders
+  - subsection: Why the exact phase is retained
+  - subsection: Formal logarithm of the Laplace product
+  - subsection: Higher small-argument expansion
+  - subsection: Gaussian polynomial contractions
+  - subsection: Coefficient recurrences
+  - subsection: Universal endpoint-transfer polynomials and finite expectations
+  - subsection: Geometric principal specialization and all residual moments
+  - subsection: Fixed-order phase-locked Lambert extraction
+  - subsection: Unconditionally summable analytic filters
+  - subsection: Uniform central remainders
+  - subsection: All-order tails
+  - subsection: Assembling the normalized mass expansion
+  - subsection: From mass to logarithm
+  - subsection: Transfer to \texorpdfstring{\(F(x)\)}{F(x)}
+  - subsection: First-order and Wikipedia-facing corollaries
+  - subsection: The proof-audit role of the asymptotic aggregator
+  - section: Legendre expansions and polynomial approximation}\label{ch:legendre
+  - subsection: Why Legendre polynomials are a natural basis
+  - subsection: Building the polynomial basis
+  - subsection: Sturm--Liouville orthogonality
+  - subsection: Norms and pointwise bounds
+  - subsection: Vanishing of odd coefficients
+  - subsection: Exact coefficient evaluation
+  - subsection: Generic convergence infrastructure
+  - subsection: Identifying the uniform limit
+  - subsection: Translated series for the global Fabius function
+  - subsection: Least-squares optimality
+  - subsection: Computational significance
+  - section: The k-fold Thue--Morse draft audit}\label{ch:kfold
+  - subsection: Purpose of the audit
+  - subsection: Exact finite identities
+  - subsection: The failed polygon and the corrected grid samples
+  - subsection: Formal counterexamples
+  - subsection: Repairing the lower Lambert branch
+  - subsection: Decay comparisons
+  - section: Recurring proof-engineering patterns}\label{ch:engineering
+  - subsection: Strong induction as the default arithmetic engine
+  - subsection: Finite sums and index transport
+  - subsection: Casts as explicit interfaces
+  - subsection: Pointwise derivatives instead of raw \texttt{deriv}
+  - subsection: Piecewise functions and boundary glue
+  - subsection: Local finiteness before infinite-sum algebra
+  - subsection: Integrability from support and bounds
+  - subsection: Interchanging sums, limits, derivatives, and integrals
+  - subsection: Big-O, little-o, and eventual domains
+  - subsection: Polynomial identities
+  - subsection: Choosing automation deliberately
+  - subsection: Public wrappers and internal strength
+  - subsection: No placeholders and explicit corrections
+  - section: How to read and extend the code}\label{ch:extending
+  - subsection: Five recommended reading paths
+  - subsection: Adding a new exact identity
+  - subsection: Adding a new moment theorem
+  - subsection: Adding an asymptotic correction
+  - subsection: Testing a suspected source error
+  - subsection: Maintaining dependency hygiene
+  - subsection: Naming and theorem granularity
+  - subsection: A minimal downstream example
+  - subsection: What to trust when prose and code differ
+  - section: Concluding perspective
+  - section: Detailed dependency map}\label{app:dependency
+  - subsection: Core spine
+  - subsection: Arithmetic spine
+  - subsection: Original-paper spine
+  - subsection: Activation spine
+  - subsection: Asymptotic spine
+  - section: Paper theorem map}\label{app:paper-map
+  - subsection: Arias de Reyna, arXiv:1702.05442
+  - subsection: Arias de Reyna, arXiv:1702.06487
+  - subsection: How to use the map
+  - section: Mathematical object--Lean crosswalk}\label{app:crosswalk
+  - section: Annotated module guide}\label{app:modules
+  - section: Corrections and critical distinctions}\label{app:corrections
+  - subsection: What these corrections teach
+  - section: Lean and mathematical glossary}\label{app:glossary
+  - section: Example exploration snippets}\label{app:snippets
+  - subsection: Inspect the public objects
+  - subsection: Evaluate exact dyadic data
+  - subsection: Work generically under the specification
+  - subsection: Use the normalized Volterra foundation (post-snapshot)
+  - subsection: Find source-facing arithmetic theorems
+  - subsection: Inspect asymptotic interfaces
+  - subsection: Search tactics
+  - section: Reproduction and trust checks}\label{app:reproduction
+  - subsection: Pin the inspected tree
+  - subsection: Build and inspect trust
+  - subsection: Rebuild this document
+  - section: Document metadata
+
+### `papers/AIF_2017__67_2_637_0/AIF_2017__67_2_637_0-corrected.tex`
+
+- SHA-256: `7bcb38a7dd92bbeddbda0cf9f1e62fc4e9d662fc88326f67722f25e2f8ff6315`
+- Phrase clusters: Exact digit-sum zero count
+- Structural headings:
+  - section: 1. Introduction and statement of results
+  - section: 2. Probabilistic results for lacunary trigonometric products
+  - section: 3. Proofs of results from Section 2
+  - section: 4. Exponential Sums and Trigonometric Products: Proofs of Theorem 1.1 and Theorem 1.2
+  - section: 5. Discrepancy of evil Kronecker sequences: Proof of Theorem 1.3
+  - section: 6. Concrete Examples: Proof of Theorem 1.4
+  - section: 7. An open problem from the theory of metric Diophantine approximation
+  - section: BIBLIOGRAPHY
+
+### `papers/AIF_2017__67_2_637_0/AIF_2017__67_2_637_0.tex`
+
+- SHA-256: `df2c02baa616c62f1d247b3eb65f219f5c855cb8bd622a7009522b863ae9e21c`
+- Phrase clusters: none
+- Structural headings:
+  - section: 2. Probabilistic results for lacunary trigonometric products
+  - section: 3. Proofs of results from Section 2
+  - section: 4. Exponential Sums and Trigonometric Products: Proofs of Theorem 1.1 and Theorem 1.2
+  - section: 5. Discrepancy of evil Kronecker sequences: Proof of Theorem 1.3
+  - section: 6. Concrete Examples: Proof of Theorem 1.4
+  - section: 7. An open problem from the theory of metric Diophantine approximation
+  - section: BIBLIOGRAPHY
+
+### `papers/arXiv-1502.06738v2/Lacunary_products.tex`
+
+- SHA-256: `685766c3147b5b519cacba6c6c78c71fa3776d2b352cb861a030eedbb9d49fe6`
+- Phrase clusters: Exact digit-sum zero count
+- Structural headings:
+  - section: Introduction and statement of results} \label{sect_int
+  - section: Probabilistic results for lacunary trigonometric products} \label{sect_lac
+  - section: Proofs of results from Section~\ref{sect_lac}} \label{sect_lac2
+  - section: Exponential Sums and Trigonometric Products: Proofs of Theorem~\ref{th_thue} and Theorem~\ref{th_theorem2}} \label{sect_proof
+  - section: Discrepancy of Thue--Morse--Kronecker sequences: Proof of Theorem~\ref{th_thue2}} \label{sect_proof_th2
+  - section: Concrete Examples: Proof of Theorem~\ref{th_thue4}} \label{sect_proof_th4
+  - section: An open problem from the theory of metric Diophantine approximation} \label{sec_conc
+
+### `papers/arXiv-1702.05442v1/09-Function.tex`
+
+- SHA-256: `a87d1eea98bb7c767a48bc2375f3beb2404e6479ea0be0203bbb6e99a95f5649`
+- Phrase clusters: none
+- Structural headings:
+  - section: Introduction.
+  - section: Existence and Unicity.
+  - section: Other expressions for $\varphi$.
+  - section: Properties.
+  - section: Values at dyadic points.
+
+### `papers/arXiv-1702.06487v3/157-Arithmetic-v3.tex`
+
+- SHA-256: `b024e206b38f623d5287758f884ef12fbc3196faafdd43a56079666a5cc3ae59`
+- Phrase clusters: Exact digit-sum zero count
+- Structural headings:
+  - section: Introduction.
+  - subsection: Some notations.
+  - section: Properties of the Fabius function.
+  - section: The values of the Fabius function and two sequences of rational numbers.
+  - subsection: The sequence of rational  numbers $c_n$.
+  - subsection: Relation to  values of the Fabius function.
+  - subsection: The sequence of rational  numbers $d_n$.
+  - section: Reshetnikov question.
+  - section: Answer to Reshetnikov's question.
+  - section: Computation of $\up(m/2^n)$.}\label{S:comput
+  - section: The least common denominator of $\up(a/2^n)$.
+  - section: On the nature of the numbers $d_n$.
+  - section: Relation with Bernoulli numbers.
+
+### `papers/arXiv-2211.13570v1/document.tex`
+
+- SHA-256: `bdf1c1afefb445c3295f5f628819fc5e2dfa22f7a4e7dc0d324f844f258732e8`
+- Phrase clusters: Exact digit-sum zero count
+- Structural headings:
+  - section: Introduction
+  - subsection: Scope of this paper
+  - section: Linear combinations
+  - subsection: Generalization to different alphabets along the Thue-Morse sequence
+  - section: Conclusion and further work
+  - subsection: Extension to other sequences
+
+### `papers/ubiq15/ubiq15-corrected.tex`
+
+- SHA-256: `5dd84f1af599d7359d8ba8bea2017bdb0b0d14d33e15f12ee33f4367677ab8e8`
+- Phrase clusters: Integer-base atomic family
+- Structural headings:
+  - section: 1 Introduction
+  - section: 2 Definition
+  - section: 3 Combinatorics on words
+  - subsection: 3.1 The pioneering work of Thue
+  - subsection: 3.2 The problem of infinite play in chess
+  - subsection: 3.3 Morphisms of the free monoid
+  - section: 4 Differential geometry
+  - section: 5 Number theory
+  - subsection: 5.1 The Prouhet-Tarry-Escott problem
+  - subsection: 5.2 Curious infinite products
+  - subsection: 5.3 Partitions of the set of integers
+  - subsection: 5.4 Algebraicity of formal power series in positive characteristic
+  - subsection: 5.5 $\boldsymbol{\beta}$-Expansions
+  - section: 6 Semigroup and group theory
+  - section: 7 Real analysis
+  - subsection: 7.1 Iteration of continuous functions
+  - subsection: 7.2 The Knopp function
+  - section: 8 Physics
+  - section: 9 Generalizations
+  - section: 10 Conclusion
+  - section: Acknowledgments
+  - section: References
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/data/edgeworth_table.tex`
+
+- SHA-256: `4ef00b337047bae1875c4c9ac3e6df0895bfbbc060a4274326488d380925b69a`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/data/ldp_edge_table.tex`
+
+- SHA-256: `54ade361281fdc195a759cd9a161505b05ad9abf852e48e3e768e991742f02fe`
+- Phrase clusters: Phase-locked Lambert-W saddle
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/data/quantile_table.tex`
+
+- SHA-256: `a3c0efb46be3d778420cdcf8b61a2abae01330492eaadbf2db8d46ec19f9ba06`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/fabius_frontier_report.tex`
+
+- SHA-256: `cd10c6b8ef24f7525d89ef3720841b7ba3df4d10fd52798158259d44494a0cca`
+- Phrase clusters: Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Executive summary and principal contributions
+  - subsection: The geometric-uniform family
+  - subsection: Why the new scales are natural
+  - section: Repository audit and nonduplication protocol}\label{sec:audit
+  - subsection: Corpus map
+  - subsection: Results deliberately excluded as already present
+  - subsection: Audit limitations and reproducibility
+  - section: Preliminaries: Fabius, Rvachev, and the geometric \texorpdfstring{$q$}{q}-family}\label{sec:prelim
+  - subsection: Random-series identities
+  - subsection: Smoothness and Fourier conventions
+  - subsection: Cumulants of a centered uniform variable
+  - section: Exact cumulants and the Bernoulli--Bell bridge}\label{sec:cumulants
+  - section: All-orders Edgeworth expansion in Schwartz seminorms}\label{sec:edgeworth
+  - subsection: The exact-cumulant Edgeworth polynomial
+  - subsection: Global sinc-product bounds
+  - subsection: Low-frequency cumulant control
+  - subsection: Proof of the Edgeworth theorem
+  - subsection: First explicit orders
+  - section: CDF and inverse-distribution asymptotics}\label{sec:quantiles
+  - subsection: Uniform CDF expansion
+  - subsection: Central Cornish--Fisher inversion
+  - section: Moderate deviations and the compact-scale large-deviation principle}\label{sec:ldp
+  - subsection: Gaussian moderate deviations
+  - subsection: The compact scale
+  - subsection: Exact saddle parametrization
+  - section: Lambert--\texorpdfstring{$W$}{W} inversion at the limiting support edge}\label{sec:lambert-edge
+  - subsection: A renormalized Mellin constant
+  - subsection: The lower Lambert branch
+  - section: Quadratic \texorpdfstring{$q$}{q}-Gevrey and Denjoy--Carleman regularity}\label{sec:carleman
+  - subsection: A convention for global ultradifferentiable classes
+  - subsection: The Rvachev function
+  - subsection: Separated-base atomic functions
+  - subsection: Associated functions and Fourier decay
+  - section: Numerical experiments}\label{sec:numerics
+  - subsection: Method
+  - subsection: Central quantiles
+  - subsection: Lambert--\texorpdfstring{$W$}{W} edge check
+  - section: Conjectures and frontier directions}\label{sec:conjectures
+  - subsection: A matched four-regime asymptotic theory
+  - subsection: Beyond all orders and sinc-zero geometry
+  - subsection: Entropy and information geometry
+  - subsection: Local symbolic Carleman spectra
+  - subsection: The overlapping phase \texorpdfstring{$1<a<2$}{1<a<2}
+  - subsection: Arithmetic and Thue--Morse directions
+  - subsection: Formalization targets
+  - section: Promising research program}\label{sec:program
+  - section: Conclusion
+  - section: Explicit Hermite polynomials and third-order formulas}\label{app:hermite
+  - section: A coefficient-extraction form of the full Edgeworth series}\label{app:coefficient
+  - section: Large-deviation series derivation}\label{app:ldp-series
+  - section: Reproducibility and files}\label{app:repro
+  - section: Repository source inventory used in the audit}\label{app:inventory
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Cyclotomic_q_Fabius_Rvachev_Frontier/cyclotomic_q_fabius_frontier.tex`
+
+- SHA-256: `b940b280e7b71d8209f04e788c3888d2617f9ae09ed5813208e65e5aeee2d70a`
+- Phrase clusters: Fourier-zero spectral zeta; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Scope, status, and contribution boundary
+  - subsection: The audited source landscape
+  - subsection: Result ledger
+  - section: The Fabius--Rvachev interface and its complex $q$-extension
+  - subsection: The dyadic probability law
+  - subsection: The geometric family
+  - section: Master logarithmic and $q$-Pochhammer representations
+  - subsection: The exact logarithmic series
+  - subsection: A spectral $q$-Pochhammer factorization
+  - section: Radial resonance at roots of unity
+  - subsection: Cyclotomic notation
+  - subsection: The radial action and constant term
+  - subsection: Dilogarithmic and cyclic descriptions
+  - section: A natural-boundary theorem
+  - subsection: The sign of the action
+  - subsection: Natural boundary
+  - section: Cyclotomic blow-ups
+  - subsection: Leading blow-up theorem
+  - subsection: Subcritical and order-$d$ corrections
+  - subsection: All orders and Bell polynomials
+  - subsection: Four small root orders
+  - section: A universal analytic-germ principle
+  - section: Spectral zero condensation
+  - subsection: The zero cloud
+  - section: Bernoulli cumulants, Bell moments, and Appell collapse
+  - subsection: Complex moment functional
+  - subsection: Limiting Appell family
+  - section: Polyharmonic heat symbols and Stokes sectors
+  - subsection: Dissipative roots
+  - subsection: Backward roots and contour rotation
+  - section: Inverse cyclotomic branches
+  - subsection: Inverse frequency at fixed radial scaling
+  - subsection: Inverse $q$ at small frequency
+  - section: Numerical experiments
+  - subsection: Evaluation strategy
+  - subsection: Radial expansion
+  - subsection: Blow-up and inverse errors
+  - subsection: Fitted exponents
+  - section: Connections with Thue--Morse and cyclic digital structure
+  - section: Further conjectures and research directions
+  - subsection: Maximal natural-boundary domain
+  - subsection: Cyclic quantum dilogarithm in the finite term
+  - subsection: Irrational boundary phases and small divisors
+  - subsection: Arithmetic of the cyclotomic constants
+  - subsection: Uniform double scaling in root order
+  - subsection: Inverse monodromy and branch braiding
+  - subsection: Two-nome extension
+  - subsection: Formalization roadmap
+  - section: Conclusion
+  - section: Uniformity details for the radial theorem
+  - section: A direct coefficient derivation for the inverse $q$-branch
+  - section: Exact small-order constants
+  - section: Reproducibility manifest
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Cyclotomic_q_Fabius_Rvachev_Frontier/data/numerical_slopes_table.tex`
+
+- SHA-256: `1f2f85099257dcf0313c421ab873e2aad5f16fc71cac9decb2dd29300b9fb5c5`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Exponents_and_q_Series_Frontiers/Exponents_and_q_Series_Frontiers.tex`
+
+- SHA-256: `bea208ae2c0dfa6f6989de24c1c2a2aca039dda7cd598d69439d52c73c2700e4`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Provenance
+  - part: Exponent-Sequence and Newton-Basis Frontiers for the Fabius--Rvachev System
+  - section: Audit boundary, source stratification, and novelty discipline
+  - subsection: Pinned corpus
+  - subsection: What is new relative to the pinned tree
+  - section: The exponent-sequence convolution monoid
+  - subsection: Admissible sequences
+  - section: Integer zeros, spectral zeta, digital defects, and lobe signs
+  - subsection: The universal zero-divisor formula
+  - subsection: Exact counting and a generalized digital defect
+  - subsection: Lobe signs and generalized Thue--Morse characters
+  - subsection: Finite sign products and exact Prouhet order
+  - section: Bernoulli cumulants, Bell moments, and identifiability
+  - subsection: The same generating function at $q=4^{-j}$
+  - subsection: Zero spectrum and cumulants determine one another
+  - section: Certified Gaussian-$q$-binomial Richardson tomography
+  - subsection: Lagrange weights on a geometric grid
+  - subsection: Exact transformed series and sign certification
+  - subsection: Conditioning does not deteriorate with order
+  - subsection: Recovering the entire exponent sequence
+  - section: Shift algebra, refinement systems, and rational classification
+  - subsection: The shift is the dilation operator in disguise
+  - subsection: When the refinement tower closes
+  - section: Polynomial weights and Newton factorization through the Pascal hierarchy
+  - subsection: The audited Pascal--Rvachev transforms
+  - subsection: Integer-valued polynomials are exactly the finite Newton sector
+  - subsection: Leading Fourier and endpoint orders
+  - subsection: The generalized lower-Lambert coordinate
+  - section: An alternating Newton family of positive-definite Pascal quotients
+  - subsection: Definition and three exact factorizations
+  - subsection: Sparse enhancement of the classical zero divisor
+  - subsection: Automatic lobe signs and sparse Prouhet order
+  - section: Gaussian boundary layers and convergence to a box density
+  - subsection: A quantitative central limit theorem for the Pascal component
+  - subsection: Boundary scaling of the smooth box approximants
+  - subsection: Exact global distances from the limiting box
+  - section: Mellin reflection, periodic endpoint hierarchies, and Lambert inversion
+  - subsection: The endpoint Laplace transform
+  - subsection: Pole order is the endpoint logarithmic order
+  - subsection: Generalized Bernoulli polynomials generate the residues
+  - subsection: Inverse endpoint consequence
+  - section: Numerical experiments and reproducibility audit
+  - subsection: Exact identity checks
+  - subsection: Tomography of the first hidden exponent
+  - subsection: The sparse zero spectrum for $d=2$
+  - subsection: Deterministic boundary-layer inversion
+  - subsection: Reproduction command
+  - section: Conjectures and frontier problems
+  - section: Formalization and computational research program
+  - subsection: Phase I: finite algebra and digital combinatorics
+  - subsection: Phase II: probability and entire products
+  - subsection: Phase III: asymptotics and inverse functions
+  - subsection: Certified computation
+  - section: Conclusion
+  - section: Complete recursive corpus inventory
+  - section: Result ledger and dependency map
+  - section: Reproducibility manifest
+  - part: q-Binomial Richardson Acceleration of Geometric Sinc Products
+  - section: Audit scope and the non-duplication boundary
+  - subsection: How the corpus was used
+  - subsection: What is new in this report
+  - section: Geometric sinc products and finite Rvachev splines
+  - subsection: The finite Thue--Morse derivative comb
+  - section: The exact Bernoulli--Bell tail expansion
+  - subsection: A universal tail function
+  - subsection: Bernoulli cumulants
+  - subsection: Bell coefficients and their recurrence
+  - section: q-Lagrange Richardson extrapolation
+  - subsection: The filter polynomial
+  - subsection: A Romberg-style triangular algorithm
+  - subsection: The exact q-moment identity
+  - subsection: The complete error series
+  - subsection: Divided differences and non-asymptotic sign bounds
+  - subsection: Uniform stability of arbitrarily high order
+  - subsection: A rigorous a posteriori certificate
+  - section: Physical-space consequences for Rvachev splines
+  - subsection: All-order inverse-differential expansion
+  - subsection: Superconvergence of the extrapolated spline
+  - subsection: Exact moment matching
+  - section: Fabius and inverse-Fabius consequences
+  - subsection: Relation to \texorpdfstring{Lambert--\(W\)}{Lambert-W} endpoint asymptotics
+  - section: Numerical verification
+  - subsection: Absolute errors
+  - subsection: Leading constants
+  - subsection: A posteriori estimates
+  - section: A universal geometric-product theorem
+  - section: Lean formalization roadmap
+  - section: Further frontier problems
+  - subsection: A matched Lambert--Richardson endpoint theory
+  - subsection: Optimal order in finite precision
+  - subsection: Positivity restoration
+  - subsection: Dyadic rational evaluation from accelerated splines
+  - subsection: Complex domains and pole-aware extrapolation
+  - subsection: Other refinable and compactly supported functions
+  - section: Conclusion
+  - section: Exact coefficients and filters at \texorpdfstring{\(b=2\)}{b=2}
+  - section: Corpus audit map
+  - subsection: Current top-level expositions
+  - subsection: Current frontier drafts
+  - subsection: Paper-source directories
+  - subsection: Historical archive families
+  - section: Reproducibility notes
+  - section: Scope, source audit, and novelty boundary
+  - subsection: Documents examined
+  - subsection: What is new here
+  - section: Fourier normalization and the probabilistic head--tail model
+  - subsection: The infinite product
+  - subsection: Partial products and random sums
+  - section: Exact inverse transforms: dyadic box splines with Thue--Morse knots
+  - subsection: Uniform knot formula
+  - subsection: Cell formula and exact arithmetic
+  - subsection: Convolution and scaling recursions
+  - section: Structural properties of the finite-product splines
+  - subsection: Shape, plateau, and partition of unity
+  - subsection: Fourier zeros
+  - subsection: Cumulants and the variance defect
+  - subsection: Sharp derivative plateaux
+  - section: Sharp convergence of the ordinary partial products
+  - subsection: Smooth-test and transport estimates
+  - subsection: Exact $C^r$ error law
+  - subsection: Exact Kolmogorov distance
+  - subsection: $L^p$ consequences and endpoint flatness
+  - section: All-orders differential expansion
+  - subsection: The reciprocal product and Bell--Bernoulli coefficients
+  - subsection: Uniform expansion theorem
+  - subsection: Signed geometric Richardson acceleration
+  - section: A positive quadrature hierarchy for the exact tail
+  - subsection: Up as a scale mixture of uniform boxes
+  - subsection: Quadrature tail surrogates
+  - subsection: General exact quadrature error theorem
+  - subsection: Explicit positive accelerated schemes
+  - subsection: Arbitrary order with positivity
+  - section: Numerical and exact-arithmetic experiments
+  - subsection: Method
+  - subsection: Verification of exact constants
+  - section: Algorithms and implementation considerations
+  - subsection: Exact cell construction
+  - subsection: Positive quadrature construction
+  - subsection: Numerical stability
+  - section: Further deductions and research directions
+  - subsection: Results that appear immediately accessible
+  - subsection: Conjectures
+  - subsection: Broader extensions
+  - section: Conclusion
+  - section: Proof of the scale-derivative identity
+  - section: Reproducibility manifest
+  - part: Fourier Images of the Repeated-Integration Approximants
+  - section: Scope, sources, and relation to the prefix theory
+  - section: The repeated-integration family and its Fourier products
+  - subsection: Recursion, box splines, and the head--tail model
+  - subsection: Finite products and the master factorization
+  - section: Exact forms and the canonical valuation product
+  - subsection: Functional equations and renormalization products
+  - subsection: The valuation-weighted canonical product
+  - subsection: The complete divisor and local principal parts
+  - section: Digital divisor laws and the Thue--Morse sign
+  - section: Taylor coefficients: Bernoulli series, radius, and dominant poles
+  - subsection: The local logarithm and its arithmetic explanation
+  - subsection: Radius and dominant-pole asymptotics
+  - section: The finite zero filtration and its divisor realization
+  - section: The critical spectral boundary layer
+  - subsection: The sharp relative-convergence window
+  - subsection: Two conditioning thresholds and the deconvolution obstruction
+  - section: All-orders norm asymptotics
+  - subsection: The weighted-\texorpdfstring{$L^p$}{Lp} master theorem
+  - subsection: Sobolev expansions, energies, and monotonicity
+  - section: Cumulant defects and finite moment polynomials
+  - section: Exact algebraic Fourier tails and the Sobolev threshold
+  - section: Positive moment-matched closures
+  - subsection: The closure framework and the rate theorem
+  - subsection: The explicit menu
+  - subsection: Three closure families and the prefix quadratures
+  - section: Directions, conjectures, and formalization targets
+  - section: Verification and reproducibility
+  - section: Audit boundary, status discipline, and contribution map
+  - subsection: Pinned corpus and recursive reading strategy
+  - subsection: Established material deliberately excluded from novelty claims
+  - subsection: New theorem package
+  - section: Normalization and the common probability space
+  - subsection: Fourier convention
+  - subsection: Uniform coordinates and exact tail self-similarity
+  - section: Exact finite inverse transforms: dyadic box splines
+  - subsection: Convolution and support
+  - subsection: Thue--Morse knots and truncated powers
+  - subsection: Refinement recurrences
+  - section: Established all-orders deconvolution expansion
+  - subsection: Reciprocal product and Bell coefficients
+  - subsection: Physical-space expansion
+  - section: Convex order and peakedness
+  - subsection: Two orderings
+  - section: Exact moments and the single-crossing law
+  - subsection: A quadratic absolute-value identity
+  - subsection: The density error crosses at a fixed location
+  - section: Exact convergence metrics
+  - subsection: Definitions
+  - subsection: Exact essential-supremum transport and the nonoptimal truncation coupling
+  - section: Stop-loss potentials, call splines, and Zolotarev distance
+  - subsection: Call and put transforms
+  - subsection: Exact height, area, and order-two ideal metric
+  - subsection: All-orders stop-loss profile
+  - section: A positivity obstruction to acceleration
+  - section: Smooth tests, CDFs, quantiles, and moment hierarchies
+  - subsection: Smooth-test expansion
+  - subsection: CDF and interior quantile expansion
+  - subsection: Exact cumulant tail
+  - section: Numerical verification and reproducibility
+  - subsection: Stable period-two Fourier reconstruction
+  - subsection: Approximants and leading profiles
+  - subsection: Exact metric checks
+  - section: Information geometry and finite-order transport frontiers
+  - subsection: Entropy monotonicity and convergence
+  - subsection: Fisher information
+  - subsection: Weighted information asymptotics
+  - subsection: Fixed-order Wasserstein asymptotics
+  - subsection: The transport-order crossover near twice the truncation stage
+  - section: Further deductions and research directions
+  - subsection: Weighted endpoint remainder theorem
+  - subsection: Exact Wasserstein values beyond first order
+  - subsection: Total positivity and variation diminution
+  - subsection: Nonlinear positive acceleration
+  - subsection: Formalization roadmap
+  - section: Compact theorem and formula index
+  - section: The first-stage exception in detail
+  - section: Derivation of the Fisher first variation
+  - section: Reproducibility ledger
+  - subsection: Archive contents
+  - subsection: Audited source hashes
+  - subsection: Numerical command
+  - part: Atomic Sinc-Product Splines Beyond the Binary Point
+  - section: Executive summary of the mathematical contribution
+  - section: Corpus audit, normalization, and editorial method
+  - subsection: Repository corpus used for non-duplication
+  - subsection: Fourier, probability, and function conventions
+  - subsection: Editorial reconstruction rules
+  - section: English translation I: why atomic functions arise
+  - section: English translation II: the general atomic equation
+  - subsection: Definition and Fourier reduction
+  - subsection: The source zero-matching criterion
+  - subsection: Solutions with zero integral
+  - section: English translation III: the first-order family \texorpdfstring{$h_a$}{h-a}
+  - subsection: Reduction to the symmetric equation
+  - subsection: Probability model and support
+  - subsection: Maclaurin coefficients and source decay estimates
+  - section: English translation IV: the separated regime \texorpdfstring{$a>2$}{a greater than 2}
+  - subsection: The central plateau and the polynomial-gap cascade
+  - subsection: Taylor series and the exceptional set in the source
+  - subsection: Source evaluation formulae
+  - section: English translation V: the critical atom \texorpdfstring{$\Up$}{up}
+  - subsection: Definition, support, and differential equation
+  - subsection: Nowhere analyticity and dyadic Taylor polynomials
+  - subsection: Moments and exact dyadic values
+  - subsection: Recursive evaluation on arbitrary points
+  - section: English translation VI: polynomial reproduction and uniqueness
+  - subsection: The source difference equation
+  - subsection: Reconstructed source uniqueness theorem
+  - subsection: The surviving beginning of the \texorpdfstring{$\Fup_n$}{Fup-n} hierarchy
+  - subsection: A canonical \texorpdfstring{$\Fup$}{Fup} ladder
+  - subsection: The classical \texorpdfstring{$\Fup_n$}{Fup-n} hierarchy and its Gaussian regime
+  - subsection: The Edgeworth program is a theorem
+  - section: Repository crosswalk: \texorpdfstring{$F$}{F}, \texorpdfstring{$\Up$}{up}, and the geometric-\texorpdfstring{$q$}{q} law
+  - subsection: The three normalizations
+  - subsection: Affine identification with the repository's geometric-\texorpdfstring{$q$}{q} family
+  - subsection: Log-concavity and the overlapping regime
+  - section: Bernoulli cumulants, Bell moments, and Lambert-series structure}\label{p6:sec:cumulants
+  - subsection: Moment generating function
+  - subsection: Bell-polynomial moments
+  - subsection: A Lambert series in the scale variable
+  - subsection: \texorpdfstring{$q$}{q}-binomial organization of finite products
+  - section: Weighted Prouhet identities and the full derivative hierarchy
+  - subsection: The signed exponential product
+  - subsection: All derivatives of \texorpdfstring{$h_a$}{h-a}
+  - subsection: Exact derivative norms for \texorpdfstring{$a\ge2$}{a greater than or equal to 2}
+  - subsection: Equimeasurability and the full \texorpdfstring{$L^p$}{Lp} ladder
+  - section: Spectral moments and the Stieltjes--Wigert bridge
+  - subsection: The spectral probability law and its moments
+  - subsection: The scaled Stieltjes--Wigert package
+  - section: The derivative tower as a \texorpdfstring{$q$}{q}-Gaussian Riesz sequence
+  - subsection: Closed orthogonalization: Gaussian binomials and Rogers--Szeg\H{o} innovations
+  - subsection: The physical-space Stieltjes--Wigert ladder and the autocorrelation germ
+  - section: The fractal spline atlas for \texorpdfstring{$a>2$}{a greater than 2}}\label{p6:sec:symbolic-localization
+  - subsection: The exceptional self-similar set
+  - subsection: Finite spline formula
+  - subsection: Local polynomial degree
+  - subsection: Derivative localization on \texorpdfstring{$K_a$}{K-a}
+  - section: Fractal strings, complex dimensions, and the exact tube formula
+  - subsection: The gap string and its complex dimensions
+  - subsection: An exact tube formula
+  - subsection: The local polynomial degree as a random variable
+  - subsection: Distance to the nonanalytic set and the shifted zeta law
+  - subsection: Log-Weibull intermittency of the leading jets
+  - section: Polynomial reproduction beyond the binary point
+  - subsection: Zeros of the Fourier product
+  - subsection: Explicit low-degree coefficient sequences
+  - subsection: What fails without rational power relations
+  - section: Fourier decay and smoothness
+  - subsection: An elementary log-Gaussian envelope
+  - subsection: Derivative growth from Fourier decay and from self-similarity
+  - section: Ordinary finite sinc products: an all-orders convergence expansion
+  - subsection: Prefix splines and exact tail scaling
+  - subsection: Interpretation as an inverse approximate identity
+  - section: The critical deformation \texorpdfstring{$a\downarrow2$}{a down to 2}
+  - subsection: A deterministic coupling bound
+  - subsection: Collapse of the fractal spline geometry
+  - section: Parameter limits: the Gaussian and uniform ends of the family
+  - subsection: The many-small-summands limit \texorpdfstring{$a\downarrow1$}{a down to 1}
+  - subsection: The single-dominant-summand limit \texorpdfstring{$a\to\infty$}{a to infinity}
+  - section: Endpoint tails, inverse Fabius behavior, and Lambert \texorpdfstring{$W$}{W}
+  - subsection: The endpoint random series
+  - subsection: Why the lower Lambert branch appears
+  - subsection: The edge pantograph equation
+  - subsection: The exact periodic decomposition in every base
+  - subsection: Gamma--zeta Fourier modes of the periodic term
+  - subsection: The exact saddle and the general-base lower-Lambert coordinate
+  - section: Deterministic numerical experiments
+  - subsection: Reproducibility design
+  - subsection: Exact moment table
+  - subsection: Weighted Prouhet checks
+  - subsection: Prefix-spline convergence
+  - subsection: Fourteenth-wave verification package
+  - subsection: Fifteenth-wave verification package
+  - section: Conjectures and future research directions}\label{p6:sec:future-directions
+  - subsection: A focused conjecture register
+  - subsection: Promising proof programs
+  - section: Conclusion
+  - section: Concordance with the attached source
+  - subsection: Merged OCR-reconstruction ledger
+  - section: Reproducibility and package contents
+  - part: Signed and Reciprocal q-Fabius Frontiers
+  - section: Audit boundary, twin provenance, and the merge
+  - subsection: The two sources and their agreement
+  - subsection: Roles of the letter \texorpdfstring{$q$}{q}
+  - subsection: The two Klein-four orbits
+  - section: The geometric-uniform family and its reciprocal germ
+  - subsection: Definition, support, and uniqueness
+  - subsection: The universal Mahler equation and the reciprocal germ
+  - section: The Klein-four sign and inversion calculus
+  - subsection: Negative parameters are affine positive laws
+  - subsection: Reciprocal inversion and the Cayley coordinate
+  - subsection: Finite reciprocal duality by digit reversal
+  - section: Cumulants, spectral zeta, and shape
+  - subsection: The Bernoulli cumulant dictionary
+  - subsection: Spectral zeta and Fourier decay
+  - subsection: Log-concavity and the exact plateau phase
+  - section: Scale multisection and the half--quarter bridge
+  - section: Spectral \texorpdfstring{$q^2$}{q\^2}-Pochhammer products and zero divisors
+  - subsection: The factorization inside and outside the disk
+  - subsection: Integer zero divisors at reciprocal-integer ratio
+  - section: Reciprocal Laplace duality and vertical moment geometry
+  - section: \texorpdfstring{$q$}{q}-Fabius--Bernoulli Appell polynomials
+  - section: The Fabius--Pochhammer moment polynomial
+  - section: Two master products on the binary cube
+  - subsection: The two-nome partition function
+  - subsection: The digit-position product and its position-parity companion
+  - subsection: Prouhet moment transfer, desingularization, and Bell--Bernoulli
+  - section: Position-energy layers and the finite-geometry square
+  - section: Box-spline combs and the quartic Cantor skeleton
+  - section: Reciprocal \texorpdfstring{$q$}{q}-Lagrange rows
+  - section: Exact inverse-geometric endpoint lattices
+  - subsection: The stop-loss simplex formula
+  - subsection: The lattice, its jets, and negative transport
+  - section: Endpoint asymptotics and the general-\texorpdfstring{$q$}{q} Lambert program
+  - subsection: A uniform two-term law and its inversion
+  - subsection: The periodic cocycle is now exact
+  - section: Numerical experiments and reproducibility
+  - section: Conjectures, problems, and formalization roadmap
+  - subsection: Frontier problems
+  - subsection: Lean formalization roadmap
+  - section: Conclusion
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Exponents_and_q_Series_Frontiers/assets/fabius_finite_products_frontier/data/information_table_rows.tex`
+
+- SHA-256: `ecf5f49fe335c4d4bcc2f2d3c941e60f88c2da30f32a53f968de0a2c5823c0c1`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Exponents_and_q_Series_Frontiers/assets/fabius_finite_products_frontier/data/metric_table_rows.tex`
+
+- SHA-256: `b736c68b51dfa97e9d18a5442bd998962e1a091df5c16fef8bd2afc0cbf091b9`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Fabius_Flat_Parameter_Response_Dynamics/fabius_frontier_report.tex`
+
+- SHA-256: `5b6b142e80be2050027278ca4e14d470fbd033a7351cda13950ab43b72c44b78`
+- Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Integer-base atomic family
+- Structural headings:
+  - section: Scope, corpus audit, and novelty boundary
+  - subsection: What was surveyed
+  - subsection: Existing inputs deliberately not reproved from first principles
+  - subsection: Exact formalization boundary
+  - subsection: Relation to the major existing themes
+  - section: The normalized geometric-uniform family
+  - section: Joint smoothness and flat nonanalytic parameter fronts
+  - subsection: Uniform Schwartz bounds in the parameter
+  - subsection: The exact plateau and its moving boundary
+  - section: The first \texorpdfstring{\(q\)}{q}-response at the Fabius point
+  - subsection: Pathwise differentiation and the tangent measure
+  - subsection: A contractive susceptibility resolvent
+  - subsection: Exact refinement equations for the tangent CDF and density
+  - subsection: Conditional transport form
+  - section: Fourier, Bernoulli--Bell, and Legendre faces of the response
+  - subsection: A marked infinite-sinc product
+  - subsection: Closed cumulants and first moment jets
+  - subsection: An exact rational shifted-Legendre spectrum
+  - section: A conditional global smooth Schr\"oder coordinate for Fabius iteration
+  - subsection: The global basin of the midpoint
+  - subsection: A flat local contraction
+  - subsection: Globalization and exact conjugacy
+  - subsection: Exact escape clocks
+  - section: A logarithmic B\"ottcher height at the endpoints
+  - subsection: A conditional periodic quotient of the two dynamical coordinates
+  - section: Numerical experiments and exact symbolic checks
+  - subsection: Reproducibility package
+  - subsection: Pathwise moment checks
+  - subsection: Tangent CDF and antisymmetry
+  - section: Further deductions and frontier conjectures
+  - subsection: Uniform transseries at the flat fronts
+  - subsection: Analyticity above the critical ratio
+  - subsection: Asymptotics of the tangent Legendre spectrum
+  - subsection: The dynamical periodic factor
+  - subsection: A \texorpdfstring{\(q\)}{q}-family of global dynamical coordinates
+  - subsection: Arithmetic of higher response jets
+  - subsection: Thue--Morse finite models for susceptibility
+  - section: Lean formalization roadmap
+  - subsection: Tranche A: parameter calculus for the probability law
+  - subsection: Tranche B: joint smoothness and flat fronts
+  - subsection: Tranche C: exact response algebra
+  - subsection: Tranche D: smooth dynamics
+  - section: Conclusions
+  - section: Derivation of selected exact coefficients
+  - section: Numerical file inventory
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Fabius_Rvachev_Frontier_Report/fabius_frontier_report.tex`
+
+- SHA-256: `064a420b6f040b6acb72d30d37ff79ea5d73a89a4dd5305845c6a660cba53141`
+- Phrase clusters: Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Scope, corpus audit, and novelty boundary
+  - subsection: The inspected corpus
+  - subsection: What is taken as established
+  - subsection: New results relative to the corpus
+  - section: Geometric-uniform preliminaries
+  - subsection: The law, its centered form, and its transform
+  - subsection: The affine fixed point
+  - subsection: $q$-brackets, Bernoulli cumulants, and Bell polynomials
+  - section: Negative parameters: an exact affine duality
+  - subsection: The coupling theorem
+  - subsection: The correct negative-parameter density and the sign diagnosis
+  - subsection: Characteristic functions and sinc products
+  - section: The exact negative dyadic law
+  - subsection: Fabius, inverse Fabius, and Rvachev formulas
+  - subsection: Thue--Morse derivative peaks on a stretched dyadic grid
+  - subsection: Legendre-series transport
+  - subsection: Exact transport of the Lambert--\texorpdfstring{$W_{-1}$}{W-1} endpoint phase
+  - section: Shape theory: log-concavity and exact plateaux
+  - subsection: Log-concavity for all real parameters
+  - subsection: A dominant-digit plateau lemma
+  - section: Residue-class decomposition and multiplication formulas
+  - subsection: Decomposition into independent \texorpdfstring{$q^m$}{q^m} laws
+  - subsection: Even--odd splitting
+  - subsection: Computational significance
+  - section: Reciprocal bases and finite geometric normalization
+  - subsection: Exact \texorpdfstring{$q\leftrightarrow q^{-1}$}{q <-> q^-1} reversal
+  - subsection: Canonical limits for \texorpdfstring{$\lvert q\rvert>1$}{|q|>1}
+  - subsection: Bell/$q$-bracket reciprocity
+  - section: The Gaussian boundary \texorpdfstring{$\lvert q\rvert\uparrow1$}{|q| -> 1}
+  - subsection: Sign-invariant standardization
+  - subsection: A quantitative central limit theorem
+  - subsection: Closed standardized Bernoulli cumulants
+  - subsection: Bell-polynomial moment correction
+  - subsection: Quartic characteristic correction
+  - subsection: Expected Edgeworth and entropy refinements
+  - section: Numerical experiments
+  - subsection: Reproducibility and deterministic error control
+  - subsection: Negative dyadic collapse
+  - subsection: The plateau phase
+  - subsection: Approach to the Gaussian
+  - section: Further conjectures and frontier directions
+  - subsection: All-orders Gaussian asymptotics
+  - subsection: A generic-$q$ Lambert--\texorpdfstring{$W$}{W} endpoint theory
+  - subsection: Legendre coefficients and endpoint saddles
+  - subsection: Reciprocal-base algebra and $q$-identities
+  - subsection: A formalization roadmap
+  - section: Conclusions
+  - section: Auxiliary algebra
+  - subsection: Support endpoints under negative affine transport
+  - subsection: Finite negative/positive scale
+  - subsection: Low standardized cumulants
+  - section: Numerical file manifest
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/Fabius_Rvachev_Frontier_Report/numerical_results.tex`
+
+- SHA-256: `0097dcdf835c69e69edb49ea9ec13b9103ea5f175970881364ae11291c34eb51`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/fabius_q_frontiers_report/q_fabius_parameter_frontiers.tex`
+
+- SHA-256: `0fb1791193a7952a28ff6398e48b551ac3b9e23ccdd96a7f7ce5c3bfb773c606`
+- Phrase clusters: Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Scope, corpus audit, and nonduplication boundary
+  - subsection: What was compared
+  - subsection: Main claims of the report
+  - section: The geometric-uniform law and the Fabius--Rvachev point
+  - subsection: Random series, transforms, and fixed point
+  - subsection: Bernoulli cumulants
+  - subsection: The natural small parameter
+  - section: An exact parameter-flow kernel and martingale transport
+  - subsection: Coefficient cocycle
+  - subsection: Compound-Poisson interpretation
+  - subsection: Explicit martingale coupling
+  - section: The scaled cumulant transform as a midpoint \texorpdfstring{$q$}{q}-integral
+  - subsection: Exact half-step representation
+  - subsection: Limit transform
+  - subsection: All-orders midpoint Euler--Maclaurin expansion
+  - section: A large-deviation principle as \texorpdfstring{$q\uparrow1$}{q tends to 1}
+  - subsection: The rate function
+  - subsection: Central rate series
+  - section: Lambert-\texorpdfstring{$W_{-1}$}{W(-1)} behavior at the rate boundary
+  - subsection: Asymptotics of the limiting transform
+  - section: Uniform all-orders Edgeworth expansion for \texorpdfstring{$q\uparrow1$}{q tends to 1}
+  - subsection: Standardized infinite-sinc product
+  - subsection: Weighted Hermite polynomial
+  - subsection: Global Fourier bounds
+  - subsection: The differentiated theorem
+  - subsection: First explicit corrections
+  - section: Central, moderate, and large deviations in one scale diagram
+  - section: Numerical experiments and reproducibility
+  - subsection: Numerical methodology
+  - section: Extensions, conjectures, and research program
+  - subsection: General bounded seeds
+  - subsection: Sharp and beyond-all-orders questions
+  - subsection: Parameter-flow geometry
+  - subsection: Rate-series arithmetic
+  - subsection: Formalization roadmap
+  - section: Conclusion
+  - section: A compact proof ledger
+  - section: Explicit rate coefficients through order sixteen
+  - section: Files in the reproducibility package
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/inverse_q_analog_functions_report/inverse_q_analog_functions.tex`
+
+- SHA-256: `be17e3c0af419f7a15bdbd027767d26025e9ee81cc0eaefdca1d8705b65a2b2d`
+- Phrase clusters: none
+- Structural headings:
+  - chapter: Abstract
+  - chapter: Orientation, source map, and the inverse viewpoint
+  - section: Relation to the existing exponent--\texorpdfstring{$q$}{q}-series corpus
+  - section: Four kinds of inverse problem
+  - section: Natural asymptotic coordinates
+  - chapter: Universal branchwise inversion calculus
+  - section: Lagrange--B\"urmann reversion
+  - section: Implicit differentiation in passive parameters
+  - section: Critical values and Puiseux inverses
+  - section: The discriminant and the branch atlas
+  - chapter: Finite \texorpdfstring{$q$}{q}-Pochhammer inverse in the parameter \texorpdfstring{$a$}{a}
+  - section: Low orders and exact radicals
+  - section: The principal branch at \texorpdfstring{$a=0$}{a=0}
+  - section: Inverse branches at the simple zeros
+  - section: Complete real branch geometry}\label{sec:real-a-geometry
+  - section: Roots of unity and exact ramification}\label{sec:root-unity-a
+  - section: Inverse at \texorpdfstring{$a=\infty$}{a=infinity}
+  - section: Cross-expansions of \texorpdfstring{$a(Y;q)$}{a(Y;q)} in the base
+  - chapter: Finite \texorpdfstring{$q$}{q}-Pochhammer inverse in the base \texorpdfstring{$q$}{q}
+  - section: Derivatives, regular points, and the discriminant
+  - section: Expansion and inversion at \texorpdfstring{$q=0$}{q=0}
+  - section: All-order logarithmic expansion and inverse at \texorpdfstring{$q=1$}{q=1}
+  - section: A critical scaled classical limit
+  - section: Laurent--Puiseux inversion at \texorpdfstring{$q=\pm\infty$}{q=+-infinity}
+  - section: Zeros in the base and colliding factors
+  - chapter: The infinite \texorpdfstring{$q$}{q}-Pochhammer inverse
+  - section: Inverse in \texorpdfstring{$a$}{a}: origin, zeros, and real branches
+  - section: Large negative \texorpdfstring{$a$}{a} and log-periodic inversion
+  - section: Radial approach to a root of unity
+  - subsection: The specialization \texorpdfstring{$q\to1^-$}{q to 1}
+  - subsection: The specialization \texorpdfstring{$q\to-1$}{q to -1}
+  - section: Expansion at \texorpdfstring{$q=0$}{q=0}
+  - section: Complex branch remarks
+  - chapter: Inverse with respect to continuous order and geometric step
+  - section: Complex order
+  - section: The endpoint \texorpdfstring{$\alpha\to+\infty$}{alpha to infinity}
+  - section: Poles in the order variable
+  - section: Inversion in the geometric step
+  - chapter: Gaussian coefficients: inverse in the base}\label{chap:gaussian-inverse
+  - section: The positive real inverse is global
+  - section: The partition reversion at \texorpdfstring{$q=0$}{q=0}
+  - section: Expansion at \texorpdfstring{$q=1$}{q=1}
+  - section: Reciprocity and the inverse at infinity
+  - section: The point \texorpdfstring{$q=-1$}{q=-1}
+  - section: General roots of unity
+  - section: Exact low-degree examples
+  - chapter: Continuous Gaussian coefficients and inversion in both parameters
+  - section: The \texorpdfstring{$q\to1$}{q to 1} bridge
+  - section: Inverse in the upper parameter
+  - section: Inverse in the lower parameter
+  - section: Small and large base
+  - chapter: Inverse \texorpdfstring{$q$}{q}-gamma, \texorpdfstring{$q$}{q}-factorial, and \texorpdfstring{$q$}{q}-beta functions
+  - section: The inverse \texorpdfstring{$q$}{q}-gamma function in its argument
+  - section: Endpoint expansions of the two branches
+  - section: Inverse in the base of \texorpdfstring{$\Gamma_q(x)$}{Gamma q(x)}
+  - section: Inverse \texorpdfstring{$q$}{q}-beta functions
+  - chapter: Elementary \texorpdfstring{$q$}{q}-analogues: exact and asymptotic inverses
+  - section: The \texorpdfstring{$q$}{q}-number and its exact inverse in the exponent
+  - section: Inverse in the base for integral exponent
+  - subsection: The branch at \texorpdfstring{$q=0$}{q=0}
+  - subsection: The branch at \texorpdfstring{$q=1$}{q=1}
+  - subsection: The parity point \texorpdfstring{$q=-1$}{q=-1}
+  - subsection: The branch at infinity
+  - section: Jackson's two \texorpdfstring{$q$}{q}-exponentials and their inverses
+  - section: A normalized \texorpdfstring{$q$}{q}-polylogarithm family
+  - chapter: Basic hypergeometric functions and parameterwise inversion
+  - section: The inverse in the series variable
+  - section: Derivatives with respect to every continuous parameter
+  - section: Terminating parameters and singular lower parameters
+  - section: Perturbative inversion near \texorpdfstring{$q=1$}{q=1}
+  - section: Roots of unity and base singularities
+  - section: Orthogonal-polynomial and \texorpdfstring{$q$}{q}-Appell specializations
+  - chapter: Simultaneous inversion, condition numbers, and branch geometry
+  - section: Iso-level hypersurfaces
+  - section: Several observables and the inverse Jacobian
+  - section: Relative condition numbers
+  - section: Monodromy as the global inverse invariant
+  - chapter: Branch-aware numerical inversion and experiments
+  - section: Why direct Newton iteration is not enough
+  - section: Newton, Halley, and continuation equations
+  - section: Numerical branch portraits
+  - section: High-precision checks
+  - section: Reproducibility
+  - chapter: Conjectures and frontier problems
+  - section: Generic critical geometry of finite Pochhammer maps
+  - section: Real and sectorial univalence
+  - section: Root-of-unity transseries and monodromy
+  - section: Large-argument log-periodic inversion
+  - section: Inverse Gaussian coefficients and partition coefficients
+  - section: Differential and \texorpdfstring{$q$}{q}-difference transcendence
+  - section: Uniform double scaling at coalescing branches
+  - section: Formalization roadmap
+  - chapter: Synthesis and practical reference tables
+  - section: Which coordinate should be inverted?
+  - section: A parameter-by-parameter checklist
+  - section: Main conclusions
+  - chapter: Universal reversion formulae through fifth order
+  - chapter: Software inventory and generated artifacts
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/inverse_q_analog_functions_report/numerical_results.tex`
+
+- SHA-256: `10d81829492912973c7f41bf2340cade004e147634497a16ffbebe42130421a9`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/inverse_q_analog_jet_atlas/inverse_q_analog_jet_atlas.tex`
+
+- SHA-256: `0f52a1ec83e28d5cd204561f68f620d8943057c151cd7d9f97071ba57ab2de42`
+- Phrase clusters: none
+- Structural headings:
+  - chapter: Abstract
+  - chapter: Corpus audit and novelty boundary
+  - chapter: How to read the atlas
+  - part: Universal inversion machinery
+  - chapter: Parameter-wise inverses and their geometry
+  - section: One equation does not recover every parameter
+  - section: The inverse Riemann surface
+  - section: Branch labels used below
+  - chapter: Ordinary inverse jets to arbitrary order
+  - section: Lagrange--Bürmann in coefficient form
+  - section: Bell-polynomial packaging
+  - section: Mixed parameter jets
+  - chapter: Singular inverses: Puiseux, logarithmic, and multiscale regimes
+  - section: Finite ramification
+  - section: Unfolding a fold
+  - section: Essential and logarithmic inversion
+  - section: Newton polygons for multiple small scales
+  - chapter: Simultaneous inversion and Good's multivariate formula
+  - section: Square systems
+  - section: Good's multivariate Lagrange inversion
+  - section: A practical jet algebra
+  - part: Finite \(q\)-Pochhammer products
+  - chapter: Inversion in the argument
+  - section: Forward algebra and logarithmic derivatives
+  - section: The branch issuing from \(a=0\)
+  - section: Inverse jets at the exact zeros
+  - section: Positive real base: complete real branch skeleton
+  - section: Argument inverse at infinity
+  - chapter: Base inversion near \(q=0\) and \(q=1\)
+  - section: The small-base combinatorial jet
+  - section: The logarithmic jet at \(q=1\)
+  - section: Inverting the argument while \(q\to1\)
+  - chapter: The inverse atlas at \(q=-1\) and at roots of unity
+  - section: Generic regularity at \(q=-1\)
+  - section: The unique nontrivial critical parameter
+  - section: The singular endpoint parameters \(a=\pm1\)
+  - section: Arbitrary roots of unity
+  - chapter: Base inversion at \(q=\pm\infty\)
+  - section: Reciprocal factorization
+  - section: Reciprocal transport as an algorithm
+  - chapter: Order inversion, multiple arguments, and mixed recovery
+  - section: Complex order
+  - section: Near \(q=1\): Bernoulli-polynomial order jet
+  - section: Discrete order and bracketing
+  - section: Several arguments and identifiability
+  - part: The infinite product and complex-order limits
+  - chapter: Argument inversion for \((a;q)_\infty\)
+  - section: The principal real branch
+  - section: The branch at \(a=0\)
+  - section: All zero branches
+  - section: The principal branch at target zero
+  - section: Nonprincipal critical points
+  - chapter: Base inversion for the infinite product
+  - section: At \(q=0\)
+  - section: Fixed argument and the essential singularity at \(q=1\)
+  - section: Monotonicity on principal sign domains
+  - chapter: The fixed-target double-scaling inverse at \(q=1\)
+  - section: Why fixed argument is the wrong scale
+  - section: Explicit expansion
+  - section: Complex targets and logarithm branches
+  - chapter: Complex order near \(q=0\), resonances, and loss of identifiability
+  - section: A generalized power series rather than a Taylor series
+  - section: Order identifiability collapses at zero base
+  - section: Near integer order
+  - part: Gaussian coefficients and palindromic \(q\)-polynomials
+  - chapter: Gaussian base inversion near \(q=0\) and \(q=1\)
+  - section: Restricted partitions at zero base
+  - section: Bernoulli cumulants at unit base
+  - chapter: The centered-palindromic inverse theorem
+  - section: A universal probabilistic normalization
+  - section: Cumulant Puiseux series
+  - section: Gaussian cumulants
+  - chapter: Roots of unity and the square-free Gaussian covering
+  - section: Cyclotomic factorization
+  - section: The alternating base
+  - section: Nonzero targets at a root of unity
+  - chapter: Large base and reciprocal Gaussian branches
+  - section: Reciprocity
+  - chapter: Continuous upper and lower parameters; q-multinomials
+  - section: q-gamma interpolation of the Gaussian coefficient
+  - section: q-multinomial cyclotomic carry theorem
+  - section: Centered q-multinomial inverse
+  - part: Other principal \(q\)-analogs
+  - chapter: q-numbers and q-factorials
+  - section: The q-number: one exact inverse and one algebraic inverse
+  - section: q-factorials at the distinguished bases
+  - chapter: q-gamma and q-digamma inverse jets
+  - section: Definitions and parameter derivatives
+  - section: All-order algebraic expansion at \(q=1\)
+  - section: Inverting the base
+  - section: Inverting the argument
+  - section: q-digamma argument and base inverses
+  - chapter: q-beta: coordinate inverses and a critical base curve
+  - section: Coordinate monotonicity
+  - section: Base expansion and the curve \(xy=1\)
+  - chapter: Euler q-exponentials, basic hypergeometric series, and theta products
+  - section: Euler q-exponentials reduce exactly to Pochhammer inversion
+  - section: A coefficientwise inverse for basic hypergeometric series
+  - section: Parameter inversion near a truncation locus
+  - section: Multiplicative theta products
+  - section: Other positive palindromic q-enumerators
+  - part: Fabius--Rvachev synthesis, algorithms, and frontiers
+  - chapter: An effective geometric base for the Rvachev infinite sinc product
+  - section: A one-parameter compactly supported convolution family
+  - section: Cumulants and a globally identifiable base
+  - section: Overdetermined consistency and deformations
+  - chapter: Numerical realization of the inverse atlas
+  - section: Coordinate selection before iteration
+  - section: Predictor--corrector continuation
+  - section: Exact root-of-unity preprocessing
+  - section: Certified local inverses
+  - section: Reproducible experiments in the archive
+  - chapter: Conjectures and research directions
+  - section: Algebraic monodromy of finite base inverses
+  - section: Secondary discriminants and collision normal forms
+  - section: Resurgence of \(q\to1\) inverse jets
+  - section: Global q-beta critical surfaces
+  - section: Root-of-unity universality for multinomial inverses
+  - section: Coefficient arithmetic of the double-scaling inverse
+  - section: Fabius--Rvachev inverse consistency
+  - section: Formal verification roadmap
+  - part: Reference appendices
+  - chapter: Inverse-regime tables
+  - section: Finite q-Pochhammer product
+  - section: Gaussian and related polynomial q-analogs
+  - chapter: Coefficient formula compendium
+  - section: Scalar ordinary reversion
+  - section: Fold inversion
+  - section: Centered cumulant inversion
+  - section: Reciprocal polynomial inversion
+  - chapter: Reproduction notes and source map
+  - section: Archive contents
+  - section: Principal audited TeX sources
+  - section: Build commands
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/inverse_q_analogs_extended_report/inverse_q_analogs_extended_report.tex`
+
+- SHA-256: `45bacdef4543cbcb70bddf8d59332f5341f329f7a548b4cff5456b40bc69081b`
+- Phrase clusters: Integer-base atomic family
+- Structural headings:
+  - chapter: Abstract
+  - chapter: Relation to the source drafts and status of claims
+  - chapter: Notation and branch conventions
+  - part: A general calculus of parameter-wise inversion
+  - chapter: Inverse problems, sheets, and identifiability
+  - section: One scalar equation does not recover every parameter
+  - section: Real branches and complex coverings
+  - section: Jacobian identifiability
+  - section: Dimensionless condition numbers
+  - chapter: Regular analytic reversion
+  - section: The scalar inverse jet
+  - section: Lagrange--Bürmann form
+  - section: Logarithmic reversion
+  - section: Auxiliary-parameter derivatives
+  - section: Multivariate Lagrange--Good inversion
+  - chapter: Singular inversion and asymptotic reversion
+  - section: Simple folds and Puiseux coefficients
+  - section: Newton polygons for mixed powers}\label{sec:newton-polygon-placeholder
+  - section: Large-log inversion
+  - section: Logarithmic corrections and Lambert \texorpdfstring{\(W\)}{W}
+  - section: Exponentially small and periodic corrections
+  - chapter: A universal theory for positive and palindromic \texorpdfstring{\(q\)}{q}-polynomials
+  - section: Positive-base inversion
+  - section: Cumulant coordinates at \texorpdfstring{\(q=1\)}{q=1}
+  - section: Reciprocity and the inverse at infinity
+  - section: Cyclotomic zeros
+  - part: Finite and infinite \texorpdfstring{\(q\)}{q}-Pochhammer inverses
+  - chapter: Finite \texorpdfstring{\(q\)}{q}-Pochhammer inversion in the argument
+  - section: The polynomial covering in \texorpdfstring{\(a\)}{a}
+  - section: The inverse jet at \texorpdfstring{\(a=0\)}{a=0}
+  - section: Local inverse at a simple zero
+  - section: Colliding zeros at roots of unity
+  - section: Large-base clustering of argument sheets
+  - chapter: Finite \texorpdfstring{\(q\)}{q}-Pochhammer inversion in the base
+  - section: Logarithmic derivatives and the critical set
+  - section: All-order inversion at \texorpdfstring{\(q=0\)}{q=0}
+  - section: All-order inversion at \texorpdfstring{\(q=1\)}{q=1}
+  - section: The complete \texorpdfstring{\(q=-1\)}{q=-1} critical classification
+  - section: The exceptional cubic is a Morse saddle in two parameters
+  - section: Other roots of unity
+  - section: The inverse at \texorpdfstring{\(q=\pm\infty\)}{q=+-infinity}
+  - chapter: Order inversion and simultaneous recovery for finite products
+  - section: Discrete order
+  - section: Complex order and exact reduction to argument inversion
+  - section: Exact recovery from consecutive products
+  - section: General two-observable inversion
+  - chapter: The infinite \texorpdfstring{\(q\)}{q}-Pochhammer inverse in its argument
+  - section: Principal real branch
+  - section: Near target one: argument close to zero
+  - section: Near target zero: argument close to one
+  - section: Large positive target and the negative argument sheet
+  - section: Nonprincipal real branch points
+  - chapter: The infinite product inverted in the base
+  - section: Near \texorpdfstring{\(q=0\)}{q=0}
+  - section: Fixed argument and \texorpdfstring{\(q\to1^-\)}{q to 1}
+  - section: The nonuniform scaling \texorpdfstring{\(a=q^x\)}{a=q^x}
+  - section: Radial inversion at \texorpdfstring{\(q=-1\)}{q=-1}
+  - section: A primitive-root inverse normal form
+  - section: Exterior continuation and \texorpdfstring{\(q=\pm\infty\)}{q=+-infinity}
+  - section: Stokes data and continuation paths
+  - part: Gaussian, multinomial, and parameter inverses
+  - chapter: Gaussian coefficients inverted in the base
+  - section: The global positive branch
+  - section: The inverse at \texorpdfstring{\(q=0\)}{q=0}
+  - section: Bernoulli and cumulant reversion at \texorpdfstring{\(q=1\)}{q=1}
+  - section: The exact first inverse jets at \texorpdfstring{\(q=-1\)}{q=-1}
+  - section: Primitive roots of unity and carry geometry
+  - section: The inverse at \texorpdfstring{\(q=\pm\infty\)}{q=+-infinity}
+  - section: Complex critical values and monodromy
+  - chapter: Continuous upper and lower parameter inverses
+  - section: The \texorpdfstring{\(q\)}{q}-gamma interpolation
+  - section: Upper-parameter inversion
+  - section: Lower-parameter inversion and the central fold
+  - section: Discrete aliasing at special bases
+  - section: A dilogarithmic double-scaling inverse
+  - chapter: Multinomials and broader positive \texorpdfstring{\(q\)}{q}-analogs
+  - section: Gaussian multinomials
+  - section: A reusable inversion template
+  - section: Coefficient distributions and asymptotic inverse universality
+  - part: Other \texorpdfstring{\(q\)}{q}-analogs and their parameter inverses
+  - chapter: Inverse \texorpdfstring{\(q\)}{q}-numbers and \texorpdfstring{\(q\)}{q}-factorials
+  - section: The \texorpdfstring{\(q\)}{q}-number inverted in \texorpdfstring{\(x\)}{x}
+  - section: The base inverse of \texorpdfstring{\([x]_q\)}{[x]q}
+  - section: Fractional Newton polygons at \texorpdfstring{\(q=0\)}{q=0}
+  - section: The point \texorpdfstring{\(q=-1\)}{q=-1}
+  - section: The \texorpdfstring{\(q\)}{q}-factorial near \texorpdfstring{\(q=0\)}{q=0}
+  - section: The \texorpdfstring{\(q\)}{q}-factorial near \texorpdfstring{\(q=1\)}{q=1}
+  - section: Cyclotomic Puiseux inverses of the factorial
+  - section: The factorial inverse at infinity
+  - chapter: Inverse \texorpdfstring{\(q\)}{q}-gamma and \texorpdfstring{\(q\)}{q}-digamma functions
+  - section: Forward formulas
+  - section: Inverting \texorpdfstring{\(\Gamma_q\)}{Gammaq} in its argument
+  - section: Left and right endpoint inverses in \texorpdfstring{\(x\)}{x}
+  - section: Base inversion near \texorpdfstring{\(q=0\)}{q=0}
+  - section: Base inversion near \texorpdfstring{\(q=1\)}{q=1}
+  - section: The exterior base and \texorpdfstring{\(q\to\infty\)}{q to infinity}
+  - section: Inverse \texorpdfstring{\(q\)}{q}-digamma in \texorpdfstring{\(x\)}{x}
+  - section: The critical base inverse of \texorpdfstring{\(\psi_q\)}{psiq}
+  - chapter: Inverse \texorpdfstring{\(q\)}{q}-beta functions
+  - section: Monotone parameter inverses
+  - section: Base inversion near \texorpdfstring{\(q=1\)}{q=1}
+  - section: The exterior inverse
+  - chapter: Euler \texorpdfstring{\(q\)}{q}-exponentials and basic hypergeometric inverses
+  - section: Exact reduction of Euler exponentials
+  - section: Local inverse of a basic hypergeometric series in its argument
+  - section: Inversion in a numerator parameter
+  - section: Inversion in the base
+  - section: Implicit eigenvalue and zero inverses
+  - chapter: Theta functions and the inverse nome
+  - section: Small-nome inverse series
+  - section: The elliptic modulus and exact nome inverse
+  - section: The modular endpoint \texorpdfstring{\(q\to1\)}{q to 1}
+  - section: Root-of-unity and modular-sheet structure
+  - part: The Fabius--Rvachev deformation and inverse parameter recovery
+  - chapter: A geometrically weighted atomic-function family
+  - section: Definition by a random series
+  - section: Exact cumulants
+  - section: Every even cumulant is an inverse observable
+  - section: Scale-free recovery from kurtosis
+  - section: Conditioning
+  - section: Parameter derivatives of the characteristic function
+  - chapter: Inverse Fabius and Rvachev observables
+  - section: Recovering \texorpdfstring{\(q\)}{q} from moments
+  - section: Recovery from a CDF value
+  - section: Recovery from several samples
+  - section: A connection to geometric-comb interpolation
+  - section: Rigorous and conjectural geometry of CDF branches
+  - part: Branch-aware computation, certification, and reproducibility
+  - chapter: Stable numerical inversion
+  - section: The forward map must be evaluated in inverse coordinates
+  - section: Choice of local coordinate
+  - section: Logarithmic Newton and Halley corrections
+  - section: Predictor--corrector continuation of a selected sheet
+  - section: Continuation through a fold
+  - section: Certified real inverses
+  - section: A complex disk certificate
+  - section: Discriminants, resultants, and a zero-fiber factorization
+  - section: Certification of discrete parameter recovery
+  - chapter: Reproducible symbolic and numerical experiments
+  - section: Scope and arithmetic model
+  - section: The exact \texorpdfstring{\(q=-1\)}{q=-1} table
+  - section: Endpoint inverse residuals
+  - section: Gaussian inverse jets
+  - section: Exact recovery in the atomic-function family
+  - section: Archive layout and reproduction
+  - chapter: An inversion atlas
+  - section: Local normal forms by object and parameter
+  - section: Regular, critical, and nonidentifiable parameters
+  - section: A worked multivariate recovery example
+  - section: A worked cyclotomic recovery example
+  - part: Open structure and a concrete research program
+  - chapter: Algebraic and analytic frontiers
+  - section: Generic monodromy of finite Pochhammer inverses
+  - section: Secondary discriminants and Maxwell loci
+  - section: A double-scaling theory at colliding zeros
+  - section: Resurgence of radial inverse series
+  - section: Global phase diagrams for \texorpdfstring{\(q\)}{q}-gamma base inversion
+  - section: The critical curve of the \texorpdfstring{\(q\)}{q}-beta base inverse
+  - chapter: Combinatorial and probabilistic frontiers
+  - section: Discrete inverse Gaussian problems
+  - section: Inverse universality from coefficient distributions
+  - section: Statistical recovery of the Fabius--Rvachev contraction
+  - section: Global geometry of CDF inverse branches
+  - chapter: Higher-codimension inversion and formalization
+  - section: Cusp and caustic classification
+  - section: Multivariate Lagrange--Good coefficients as combinatorial objects
+  - section: A Lean formalization roadmap
+  - section: Prioritized next results
+  - chapter: Coefficient machinery
+  - section: Recursive construction of a scalar inverse jet
+  - section: Logarithmic forward derivatives
+  - section: Fold coefficients through the cubic correction
+  - section: Asymptotic reversion with a reciprocal logarithm
+  - chapter: Derivations at special bases
+  - section: The finite Pochhammer critical point at \texorpdfstring{\(q=-1\)}{q=-1}
+  - section: The Morse determinant at the exceptional cubic
+  - section: Radial root-of-unity decomposition
+  - section: Gaussian cumulants at \texorpdfstring{\(q=1\)}{q=1}
+  - section: The \texorpdfstring{\(q\)}{q}-gamma expansion near one
+  - chapter: Implementation notes
+  - section: Branch labels in data structures
+  - section: Precision management
+  - section: Regression tests
+  - section: Files included in the archive
+  - chapter: Conclusion
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/inverse_q_analogs_extended_report/numerical_results.tex`
+
+- SHA-256: `0141cd880f09e1f1a50f1e03d67bf1e2c9869b3b376205f9939d2da2021a0bd3`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/inverse_q_analogs_report/inverse_q_analogs_report.tex`
+
+- SHA-256: `de375ee059e0ee9485286aea13e917363854d610b5ff77672001828fa663699b`
+- Phrase clusters: Exact digit-sum zero count; Phase-locked Lambert-W saddle
+- Structural headings:
+  - chapter: Abstract
+  - chapter: Relation to the source monograph and status of claims
+  - part: Foundations of parameter-wise inversion
+  - chapter: What it means to invert a \texorpdfstring{\(q\)}{q}-analogue
+  - section: Partial inverses, not one universal inverse
+  - section: Real inverse, complex inverse, and Riemann surface
+  - section: Normalization and branch labels
+  - chapter: Local analytic inversion and singularity theory
+  - section: The inverse function theorem and sensitivities
+  - section: Lagrange--Buerhmann coefficients
+  - section: Simple branch points and Puiseux inversion
+  - section: Discriminants, caustics, and Maxwell sets
+  - section: Several unknown parameters
+  - chapter: Derivative kernels for \texorpdfstring{\(q\)}{q}-products
+  - section: Finite and infinite argument derivatives
+  - section: Base derivatives
+  - section: Complex order derivatives
+  - section: Truncation bounds for certified evaluation
+  - part: Inverse \texorpdfstring{\(q\)}{q}-Pochhammer theory
+  - chapter: Finite products: inversion in the argument
+  - section: The real branch decomposition
+  - section: Exact low-degree inverses
+  - section: The principal series at \texorpdfstring{\(y=1\)}{y=1}
+  - section: The discriminant of the product
+  - section: Secondary discriminants and the first Maxwell collision
+  - section: Monodromy away from the Maxwell set
+  - chapter: The infinite product: inversion in the argument
+  - section: The principal inverse
+  - section: Three distinguished target regimes
+  - subsection: Near \(y=1\)
+  - subsection: Near the first zero, \(y=0^+\)
+  - subsection: Large targets and log-periodic correction
+  - section: All nonprincipal real branches
+  - section: A Bernstein-function conjecture
+  - chapter: Inversion with respect to the base \texorpdfstring{\(q\)}{q}
+  - section: Finite products on the principal sign domains
+  - section: The small-base inverse series
+  - section: The infinite product as a function of the base
+  - section: Polylogarithmic inversion near \texorpdfstring{\(q=1\)}{q=1}
+  - section: Complex base branches
+  - chapter: Inversion with respect to order
+  - section: Exact reduction to the principal argument inverse
+  - section: Complex order lattice
+  - section: Discrete order recovery
+  - section: Multiple shifted factors
+  - part: Gaussian coefficients and combinatorial \texorpdfstring{\(q\)}{q}-analogs
+  - chapter: Inverting a Gaussian coefficient with respect to \texorpdfstring{\(q\)}{q}
+  - section: A global positive-base theorem
+  - section: Expansion at \texorpdfstring{\(q=0\)}{q=0}
+  - section: Complete Bernoulli reversion near \texorpdfstring{\(q=1\)}{q=1}
+  - section: The large-target inverse
+  - section: Complex branches and cyclotomic geometry
+  - chapter: Inverting the upper and lower Gaussian parameters
+  - section: Discrete parameters \texorpdfstring{\(n\) and \(k\)}{n and k}
+  - section: A two-parameter analytic interpolation
+  - subsection: Recovering the upper parameter
+  - subsection: Recovering the lower parameter
+  - section: Inverting the base in the generalized coefficient
+  - chapter: A positive-coefficient inversion principle
+  - section: The general theorem
+  - section: Examples
+  - subsection: \(q\)-factorials
+  - subsection: \(q\)-multinomial coefficients
+  - subsection: Rogers--Szego polynomials
+  - subsection: Partition polynomials and selected \(q\)-Catalan numbers
+  - section: Probabilistic inversion
+  - chapter: Inverse \texorpdfstring{\(q\)}{q}-numbers and elementary deformations
+  - section: The \texorpdfstring{\(q\)}{q}-number
+  - section: Recovering the base of a \texorpdfstring{\(q\)}{q}-number
+  - section: Other elementary \texorpdfstring{\(q\)}{q}-deformations
+  - part: Inverse \texorpdfstring{\(q\)}{q}-special functions
+  - chapter: The inverse \texorpdfstring{\(q\)}{q}-gamma and \texorpdfstring{\(q\)}{q}-polygamma functions
+  - section: Two real argument branches of \texorpdfstring{\(\Gamma_q\)}{Gamma-q}
+  - section: Puiseux expansion at the minimum
+  - section: Endpoint asymptotics of the two branches
+  - section: Recovering the base of \texorpdfstring{\(\Gamma_q(x)\)}{Gamma-q(x)}
+  - section: The minimizer as a function of the base
+  - chapter: The inverse \texorpdfstring{\(q\)}{q}-beta function
+  - section: Coordinate inverses
+  - section: Endpoint inverse asymptotics
+  - section: Inversion with respect to \texorpdfstring{\(q\)}{q}
+  - chapter: Euler \texorpdfstring{\(q\)}{q}-exponentials and product logarithms
+  - section: Exact inverse reductions
+  - section: Asymptotic consequences
+  - section: Inverse semigroup questions
+  - chapter: Basic hypergeometric, theta, and orthogonal-polynomial inverses
+  - section: Local inverse of a basic hypergeometric series
+  - section: Theta-function inversion
+  - section: \texorpdfstring{\(q\)}{q}-orthogonal polynomials
+  - part: Computation, certification, and research frontiers
+  - chapter: Branch-aware numerical inversion
+  - section: Why unconstrained Newton iteration is insufficient
+  - section: Bracketed Newton on a real branch
+  - section: Stable product evaluation
+  - section: Complex predictor--corrector continuation
+  - section: Locating branch points
+  - section: Formal and interval certification
+  - section: Complexity considerations
+  - chapter: Reproducible experiments
+  - section: Archive layout
+  - section: Experiment A: the first critical-value collision
+  - section: Experiment B: remote critical asymptotics
+  - section: Experiment C: inverse Bernoulli expansion
+  - section: Experiment D: the \texorpdfstring{\(q\)}{q}-gamma minimum
+  - section: Experiment E: higher derivatives of the principal inverse
+  - section: Limitations of the experiments
+  - chapter: Research program and conjectures}\label{chap:research
+  - section: Finite-product Maxwell geometry
+  - section: A full expansion of remote infinite-product extrema
+  - section: Double scaling and Lambert \texorpdfstring{\(W\)}{W}
+  - section: Complete Bernstein and Pick geometry
+  - section: Galois and monodromy theory
+  - section: Inverse-coefficient positivity
+  - section: Inverse generalized Gaussian monotonicity
+  - section: Inverse \texorpdfstring{\(q\)}{q}-gamma minimizer
+  - section: Multivariate inverse systems
+  - section: Formalization roadmap
+  - chapter: Conclusion
+  - chapter: Inverse-calculus formulas
+  - section: Derivatives of a one-variable inverse
+  - section: Ordinary power-series reversion
+  - section: Puiseux reversion at a simple fold
+  - section: Multivariate implicit inversion
+  - chapter: Exact secondary discriminants for finite products
+  - chapter: Reproducible numerical and symbolic experiments
+  - section: Archive layout
+  - section: Reproduction command
+  - section: Checks implemented in the program
+  - chapter: Notation and branch conventions
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/inverse_q_analogs_report-2/inverse_q_analogs_report.tex`
+
+- SHA-256: `d45ddc13357c9d752023636decbc5b5708569bc35444bb07b4e6a86949a4eb7c`
+- Phrase clusters: Fourier-zero spectral zeta
+- Structural headings:
+  - chapter: Abstract
+  - chapter: Reader's guide and status conventions
+  - part: General architecture of inverse $q$-theory
+  - chapter: Source audit, scope, and the inverse correspondence
+  - section: What has to be inverted
+  - section: Inverse functions as Riemann surfaces
+  - section: A map of the principal regimes
+  - chapter: A reusable calculus of reversion and ramification
+  - section: Regular local inversion
+  - section: Critical points and Puiseux inversion
+  - section: Implicit derivatives with respect to every parameter
+  - section: Singular asymptotic inversion
+  - section: Conditioning and rigorous residual bounds
+  - part: Finite $q$-Pochhammer symbols
+  - chapter: Inversion in the Pochhammer parameter $a$
+  - section: A global real inverse
+  - section: Reversion at $a=0$
+  - section: Inversion at the Pochhammer zeros
+  - section: Exact inverses at $q=0,1,-1$
+  - section: The $a$-inverse for $q$ near $0$ and $1$
+  - section: All $a$-branches as $q\to\infty$
+  - chapter: Inversion in the base $q$
+  - section: A canonical real branch on $0\le q\le1$
+  - section: The stable inverse series at $q=0$
+  - section: Logarithmic inversion at $q=1$
+  - section: The complete Puiseux construction at $q=\infty$
+  - section: Zeros in the $q$-plane
+  - section: The exceptional geometry at $q=-1$
+  - section: General roots of unity
+  - part: Infinite products and complex order
+  - chapter: The infinite $q$-Pochhammer inverse
+  - section: Global real inverses in $a$ and $q$
+  - section: The $a$-inverse at $a=0$
+  - section: The $a$-inverse at the first zero $a=1$
+  - section: The base inverse at $q=0$
+  - section: Singular base inversion at $q\to1^-$
+  - section: Fixed level, $a$-inversion as $q\to1$
+  - section: Radial asymptotics at every root of unity
+  - section: The radial point $q=-1$ in detail
+  - section: Why $q=\pm\infty$ is different for the infinite product
+  - chapter: Inversion in the complex order and truncation index
+  - section: Global real order inverse
+  - section: Series at order $\alpha=0$
+  - section: Large order and inversion of the tail
+  - section: Recovering a discrete truncation index
+  - section: Joint inversion and level-curve differential equations
+  - part: Gaussian coefficients and $q$-gamma inverses
+  - chapter: The base inverse of a Gaussian polynomial
+  - section: The unique positive inverse
+  - section: Partition-controlled reversion at $q=0$
+  - section: Bernoulli-cumulant inversion at $q=1$
+  - section: Puiseux inversion at $q=\pm\infty$
+  - section: Exact local data at $q=-1$
+  - section: Primitive roots of unity and cyclotomic valuation
+  - section: The complex branch locus
+  - chapter: Continuous Gaussian parameters
+  - section: Inversion in the upper parameter
+  - section: Inversion in the lower parameter and the central branch point
+  - section: Continuous parameter inversion near $q=1$
+  - chapter: Inverse theory for Jackson's $q$-gamma function
+  - section: The two real $x$-inverse branches
+  - section: The limit $q\to1$ and inversion in $x$
+  - section: Inversion in the base near $q=1$
+  - section: Inversion near $q=0$
+  - section: The standard $q>1$ continuation and $q\to\infty$
+  - part: Other $q$-analogs and transferable inverse schemes
+  - chapter: $q$-numbers, $q$-factorials, and $q$-exponentials
+  - section: The $q$-number
+  - section: The $q$-factorial
+  - section: Euler's two $q$-exponentials
+  - section: A normalized $q$-Lambert inverse
+  - chapter: Rogers--Szeg\H{o}, $q$-Catalan, theta, and basic hypergeometric inverses
+  - section: Rogers--Szeg\H{o} polynomials
+  - section: MacMahon's $q$-Catalan polynomial
+  - section: Theta products
+  - section: A universal inverse template for ${}_r\phi_s$
+  - section: Products and ratios with many parameters
+  - chapter: Series algorithms, continuation, and certified computation
+  - section: A branch-aware workflow
+  - section: Formal reversion without expression swell
+  - section: Stable direct evaluation
+  - section: Numerical branch continuation
+  - section: What the companion program checks
+  - part: Frontier questions and synthesis
+  - chapter: Conjectures and research programs
+  - section: Monodromy and generic Galois groups
+  - section: All-orders root-of-unity inversion
+  - section: Resurgence and exponentially small inverse corrections
+  - section: Critical values, zero attractors, and inverse conditioning
+  - section: Coefficient structure of inverse series
+  - section: Multivariate and elliptic extensions
+  - section: Connections to geometric-comb interpolation and atomic functions
+  - section: Formal verification
+  - chapter: Conclusions
+  - chapter: Compact coefficient atlas}\label{app:atlas
+  - section: Universal regular inverse
+  - section: Finite and infinite Pochhammer quick reference
+  - section: Gaussian quick reference
+  - chapter: Numerical and symbolic validation}\label{app:numerical-results
+  - chapter: Companion-code notes
+  - chapter: Bibliographic notes
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/q-series-proof-oriented-article/q_series_proof_article.tex`
+
+- SHA-256: `d9199ed74bae1ad6458dead1c70892678437cdd90f9117a2ed546a6891a664ff`
+- Phrase clusters: none
+- Structural headings:
+  - section: Scope, convergence, and notation
+  - subsection: Infinite products
+  - subsection: Formal versus analytic identities
+  - section: Gaussian binomial coefficients
+  - section: The infinite q-binomial theorem and Euler's expansions
+  - section: Basic hypergeometric series
+  - section: Euler telescoping and terminating balanced sums
+  - subsection: The q-Pfaff--Saalsch\"utz sum
+  - subsection: Jackson's terminating very-well-poised sum
+  - section: Bilateral summation: Ramanujan's 1-psi-1 sum
+  - section: Jacobi's triple product and Watson's quintuple product
+  - subsection: A finite identity and its limit
+  - subsection: The quintuple product
+  - section: Theta functions, Ramanujan's theta function, and lattice dissection
+  - subsection: Poisson summation and modular inversion
+  - subsection: Dedekind's eta function
+  - subsection: Ramanujan's general theta function
+  - subsection: Schr\"oter's lattice-dissection formula
+  - section: Partitions and the combinatorics of products}\label{sec:partitions
+  - section: Theta series and representations by squares}\label{sec:squares
+  - subsection: Two squares via unique factorization in the Gaussian integers
+  - subsection: Four squares from the triple product
+  - section: Bailey pairs: inversion, transformation, and chains}\label{sec:bailey
+  - subsection: Bailey's lemma
+  - section: The Rogers--Ramanujan identities and continued fraction
+  - subsection: The continued fraction
+  - section: Bailey chains and the endpoint Andrews--Gordon identities
+  - section: A source atlas of further product identities
+  - subsection: Bailey's modulus-9 trio
+  - subsection: Dyson's modulus-27 quartet
+  - subsection: Rogers's modulus-14 trio
+  - subsection: Rogers--Selberg and Jackson--Slater records
+  - subsection: Fine's eta-quotient Lambert series
+  - subsection: Borwein sign patterns: corrected modern status
+  - subsection: Crosswalk from the supplied archive to this article
+  - section: Exact computational verification as finite algebra
+  - section: Synthesis and further directions
+  - section: Literal verification of Jackson's rational certificate
+  - section: Core exact-arithmetic checker for product identities
+  - section: Bibliographic note
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/q_pochhammer_q_binomial_expansions_report/q_analog_expansions_report.tex`
+
+- SHA-256: `2d3d47cb82ebeea01d43858599e78ddff3d0c97ac62cbe4f09e3ad7314eb4aee`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count
+- Structural headings:
+  - chapter: Abstract
+  - chapter: Principal results and status
+  - section: Live-repository crosswalk
+  - chapter: What kind of expansion is meant?}\label{chap:taxonomy
+  - section: Four analytically different regimes
+  - section: Notation
+  - section: Bell polynomials and conversion of coordinates
+  - chapter: Finite products at an arbitrary center}\label{chap:regular-center
+  - section: The universal regular-point formula
+  - section: Resonant zeros of a finite shifted factorial
+  - section: Gaussian coefficients through cyclotomic factors
+  - chapter: Finite products as \texorpdfstring{$q\to1$}{q tends to 1}}\label{chap:qone-finite
+  - section: A fixed first parameter
+  - section: The classical scaling \texorpdfstring{$a=q^\alpha$}{a = q-alpha}
+  - chapter: Gaussian and multinomial coefficients near \texorpdfstring{$q=1$}{q = 1}}\label{chap:gaussian-qone
+  - section: All logarithmic coefficients
+  - section: Centering, explicit coefficients, and symmetry
+  - section: Cumulants of inversions
+  - section: Multinomial extension
+  - chapter: Expansions at \texorpdfstring{$q=0$}{q = 0}}\label{chap:qzero
+  - section: Finite and infinite shifted factorials
+  - section: Gaussian polynomials and rectangular partitions
+  - section: The small-\texorpdfstring{$q$}{q} expansion of \texorpdfstring{$\Gamma_q$}{q-gamma}
+  - chapter: The reciprocal point \texorpdfstring{$q=\infty$}{q = infinity} and the two real rays}\label{chap:infinity
+  - section: Finite shifted factorials
+  - section: Gaussian and multinomial reciprocity
+  - chapter: The point \texorpdfstring{$q=-1$}{q = -1}}\label{chap:qminusone
+  - section: Finite shifted factorials
+  - section: \texorpdfstring{$q$}{q}-factorials
+  - section: The complete first jet of a Gaussian coefficient
+  - chapter: General roots of unity}\label{chap:roots-finite
+  - section: Cyclotomic order and the carry criterion
+  - section: All local Taylor coefficients
+  - chapter: Infinite shifted factorials as \texorpdfstring{$q\to1$}{q tends to 1}}\label{chap:infinite-qone
+  - section: Fixed \texorpdfstring{$a$}{a}: the polylogarithmic expansion
+  - section: The coalescing parameter \texorpdfstring{$a=q^x$}{a = q to x}
+  - chapter: The \texorpdfstring{$q$}{q}-gamma, \texorpdfstring{$q$}{q}-beta, and \texorpdfstring{$q$}{q}-polygamma functions}\label{chap:qgamma-exp
+  - section: All-order expansion of \texorpdfstring{$\Gamma_q$}{q-gamma}
+  - section: \texorpdfstring{$q$}{q}-digamma and higher logarithmic derivatives
+  - section: The \texorpdfstring{$q$}{q}-beta function
+  - chapter: Modular and exponentially improved expansions}\label{chap:modular
+  - section: The eta product at \texorpdfstring{$q=1$}{q = 1}
+  - section: The eta product on the negative real ray
+  - section: An arbitrary eta cusp
+  - section: A theta transseries by Poisson summation
+  - chapter: Radial asymptotics at arbitrary roots of unity}\label{chap:root-radial
+  - section: A fixed nonresonant parameter
+  - section: The first coefficients
+  - section: Coalescence and why a second scaling is necessary
+  - chapter: Other \texorpdfstring{$q$}{q}-analogues near \texorpdfstring{$q=1$}{q = 1}}\label{chap:other-q
+  - section: The two standard \texorpdfstring{$q$}{q}-exponentials
+  - section: The \texorpdfstring{$q$}{q}-difference operator as an operator-valued \texorpdfstring{$q$}{q}-number
+  - section: Jackson integration by Euler--Maclaurin
+  - chapter: Basic hypergeometric series as differential-operator deformations
+  - section: A coefficientwise all-order operator
+  - section: The first two perturbative orders
+  - section: Terminating series and roots of unity
+  - chapter: A double-scaling expansion for Gaussian coefficients
+  - section: Why fixed \texorpdfstring{$n$}{n} is not uniform
+  - section: A finite \texorpdfstring{$q$}{q}-factorial with a moving endpoint
+  - section: Gaussian coefficients
+  - section: Recovery of ordinary Stirling asymptotics
+  - section: Multinomial double scaling
+  - chapter: Implications for the ProveIt and Fabius-function programme
+  - section: Effective coefficient generation
+  - section: Reciprocal dyadic normalizations
+  - section: Moment and cumulant organization
+  - section: Root-of-unity cancellation as exact algebra
+  - chapter: Numerical validation and reproducible computation}\label{chap:numerics
+  - section: What was checked
+  - section: Representative errors
+  - section: Stable evaluation rules
+  - chapter: Conjectures and research directions}\label{chap:frontiers
+  - section: A uniform coalescing root-of-unity normal form
+  - section: Higher \texorpdfstring{$q$}{q}-Lucas jets
+  - section: Rigorous complex double scaling
+  - section: Resurgence and exponentially small sectors
+  - section: Automatic proof-producing expansion
+  - section: Optimal truncation and certified error bounds
+  - chapter: Conclusions
+  - chapter: Coefficient extraction and conversion tables}\label{app:coefficients
+  - section: From a logarithmic expansion to an ordinary expansion
+  - section: Conversion between \texorpdfstring{$t=-\log q$}{t = -log q} and \texorpdfstring{$h=q-1$}{h = q - 1}
+  - section: Gaussian quick-reference coefficients
+  - chapter: Small-base and reciprocal coefficient tables}\label{app:small-base
+  - section: A stable table for \texorpdfstring{$(aq;q)_\infty$}{the infinite aq product}
+  - section: Reciprocal transfer
+  - chapter: Reproducible symbolic and numerical checks}\label{app:reproducibility
+  - section: Companion program
+  - section: Recorded test instance
+  - chapter: Compact formula map}\label{app:formula-map
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/q_pochhammer_q_binomial_monograph/q_pochhammer_q_binomial_monograph.tex`
+
+- SHA-256: `8f1369e8926db76aa7546a3ee0ecd0c3e2d4c6dff101355d770171c893201470`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Integer-base atomic family
+- Structural headings:
+  - chapter: Abstract
+  - chapter: Preface and source map
+  - section: Two regimes for $q$
+  - section: Conventions
+  - part: The finite algebra
+  - chapter: The algebra of \texorpdfstring{$q$}{q}-shifted factorials}\label{chap:pochhammer
+  - section: Definitions and first examples
+  - section: Concatenation, dissection, and reversal
+  - section: Negative indices
+  - section: Partial fractions and logarithmic derivatives
+  - section: Infinite products and Lambert series
+  - subsection: Complex orders
+  - section: The dilogarithmic limit
+  - section: Classical shifted factorials as a limit
+  - chapter: \texorpdfstring{$q$}{q}-integers and Gaussian coefficients}\label{chap:gaussian
+  - section: Definitions
+  - section: The two Pascal recurrences
+  - section: Symmetry, reciprocity, and degree
+  - section: Multinomial coefficients and flags
+  - section: Adjacent ratios and efficient recurrences
+  - section: Coefficient moments
+  - chapter: Finite \texorpdfstring{$q$}{q}-binomial theorems and inversion}\label{chap:finite-qbinomial
+  - section: Euler's finite product expansions
+  - section: Reciprocal finite products
+  - section: \texorpdfstring{$q$}{q}-Vandermonde convolution
+  - section: \texorpdfstring{$q$}{q}-binomial inversion
+  - section: A \texorpdfstring{$q$}{q}-Cauchy product identity
+  - chapter: Weighted binomial coefficients and symmetric functions}\label{chap:weighted
+  - section: Elementary and complete weighted coefficients
+  - section: Classical, Stirling, and Gaussian specializations
+  - section: Principal specialization of Schur polynomials
+  - section: Weighted inversion
+  - section: The subset--subspace analogy
+  - chapter: Partitions, words, paths, and inversion statistics}\label{chap:combinatorics
+  - section: Binary words
+  - section: Partitions inside a rectangle
+  - section: Lattice paths and area
+  - section: Durfee squares and the central convolution
+  - section: Words with several letters
+  - section: Rogers--Szeg\H{o} polynomials
+  - chapter: Finite fields, Grassmannians, and rank enumeration}\label{chap:finite-geometry
+  - section: Counting subspaces
+  - section: Flags and \texorpdfstring{$q$}{q}-multinomial coefficients
+  - section: Matrices of fixed rank
+  - section: Schubert cells and a topological meaning
+  - section: Growth over finite fields
+  - chapter: Symmetry and unimodality}\label{chap:unimodality
+  - section: A representation-theoretic lemma
+  - section: Exterior powers and Gaussian coefficients
+  - part: Infinite series and basic hypergeometric summation
+  - chapter: The infinite \texorpdfstring{$q$}{q}-binomial theorem}\label{chap:infinite-qbinomial
+  - section: A functional-equation proof
+  - section: Formal and analytic interpretations
+  - section: Limits in the number of factors
+  - chapter: Basic hypergeometric series}\label{chap:basic-hypergeometric
+  - section: Definition and convergence
+  - section: Heine's transformation
+  - section: The \texorpdfstring{$q$}{q}-Gauss sum
+  - section: A second finite Cauchy identity
+  - section: The \texorpdfstring{$q$}{q}-Pfaff--Saalsch\"utz sum
+  - section: The two \texorpdfstring{$q$}{q}-Chu--Vandermonde sums
+  - section: A hierarchy of mechanisms
+  - chapter: Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum}\label{chap:bilateral
+  - section: Definition
+  - chapter: \texorpdfstring{$q$}{q}-difference calculus and the quantum binomial}\label{chap:qcalculus
+  - section: The \texorpdfstring{$q$}{q}-derivative
+  - section: \texorpdfstring{$q$}{q}-Taylor and Newton interpolation
+  - section: The quantum plane
+  - section: Jackson's \texorpdfstring{$q$}{q}-integral
+  - chapter: The \texorpdfstring{$q$}{q}-gamma and \texorpdfstring{$q$}{q}-beta functions}\label{chap:qgamma
+  - section: Definition and functional equation
+  - section: A \texorpdfstring{$q$}{q}-Bohr--Mollerup theorem
+  - section: Classical limit
+  - section: The Jackson \texorpdfstring{$q$}{q}-beta integral
+  - section: Multiplication and reflection-type formulas
+  - part: Theta products and partition identities
+  - chapter: Jacobi's triple product}\label{chap:jtp
+  - section: A bilateral theta series
+  - section: A finite triple product
+  - section: Euler's pentagonal number theorem
+  - section: Jacobi's cubic identity
+  - section: A theta form of the \texorpdfstring{$q$}{q}-gamma reflection product
+  - chapter: Partitions and product--sum identities}\label{chap:partitions
+  - section: Unrestricted, distinct, and odd parts
+  - section: Bounded partitions
+  - section: Finite approximations and stabilization
+  - chapter: Bailey pairs and the Rogers--Ramanujan identities}\label{chap:bailey
+  - section: Bailey pairs
+  - section: Bailey inversion
+  - section: The limiting Bailey lemma
+  - section: The Rogers--Ramanujan identities
+  - part: Cyclotomic arithmetic and extended indices
+  - chapter: Cyclotomic factorization and congruences}\label{chap:cyclotomic
+  - section: Cyclotomic valuations and carries
+  - section: The \texorpdfstring{$q$}{q}-Lucas congruence
+  - section: Cyclic sieving for subsets
+  - section: A \texorpdfstring{$q$}{q}-Babbage congruence modulo a cyclotomic square
+  - chapter: Negative upper indices and geometric Newton interpolation}\label{chap:qnewton
+  - section: Generalized Gaussian coefficients
+  - section: An arbitrary upper parameter
+  - section: Two complex arguments and generalized binomial series
+  - section: Newton interpolation on the grid \texorpdfstring{$1,q,q^2,\ldots$}{1, q, q-squared, ...}
+  - part: Central sums, limits, and effective methods
+  - chapter: Central \texorpdfstring{$q$}{q}-binomial sums and Lambert series}\label{chap:central
+  - section: The central-factor reduction
+  - section: A \texorpdfstring{$q$}{q}-beta evaluation
+  - section: Deleting a singular term
+  - section: Separate finite and infinite components
+  - section: The classical finite part
+  - chapter: Asymptotic regimes and Bernoulli expansions}\label{chap:asymptotics
+  - section: A complete expansion as \texorpdfstring{$q\to1$}{q to 1}
+  - section: Fixed \texorpdfstring{$q$}{q} and growing parameters
+  - section: The regime \texorpdfstring{$q>1$}{q greater than 1}
+  - section: Extreme specializations
+  - chapter: Computation, certification, and formal proof architecture}\label{chap:formalization
+  - section: Dynamic programming for Gaussian polynomials
+  - section: A factorization algorithm
+  - section: Telescoping certificates for finite sums
+  - section: Denominator clearing and specialization
+  - section: Integer-exponent translation and automated identity discovery}\label{sec:identity-discovery
+  - section: Formal series versus analytic series
+  - section: Necessary conditions for a proposed identity
+  - part: Geometric filters, dyadic structure, and the Fabius bridge
+  - chapter: Geometric interpolation and exact \texorpdfstring{$q$}{q}-filters}\label{chap:geometric-filters
+  - section: A reversed Gaussian row
+  - section: Lagrange weights at zero
+  - section: All residual moments
+  - section: Formal coefficient filters
+  - chapter: Half-base arithmetic and Prouhet--Thue--Morse cancellation}\label{chap:halfbase-thuemorse
+  - section: Mersenne normalization
+  - section: A compressed geometric Prouhet functional
+  - section: The Thue--Morse product
+  - section: Two cancellation mechanisms
+  - chapter: Geometric uniform sums, \texorpdfstring{$q$}{q}-cumulants, and the Fabius--Rvachev functions}\label{chap:geometric-uniform-fabius
+  - section: The geometric uniform random series
+  - section: Fourier product and cumulants
+  - section: Superpolynomial Fourier decay and smoothness
+  - section: Finite spline approximants
+  - section: The Fabius and Rvachev specializations
+  - chapter: Dyadic Gaussian--Thue--Morse structure and the values of \texorpdfstring{$F$}{F}
+  - section: Reciprocal nodes and the leading-coefficient filter
+  - section: The normalized Thue--Morse block
+  - section: Composition and determinant forms
+  - section: A Fourier formula for the Fabius function
+  - section: Digital cancellation in an arbitrary radix
+  - section: The geometric row as a summability kernel
+  - subsection: Negative parameters
+  - subsection: Reciprocal germs and reciprocity
+  - subsection: The spectral \texorpdfstring{$q^2$}{q2}-Pochhammer factorization
+  - section: The moment polynomial and the endpoint values
+  - section: The universal division-free definition
+  - section: The M\"obius function of the subspace lattice
+  - section: A ring-level residual principle
+  - section: Cells, a local reduction, and the digit expansion
+  - section: An off-grid continuation of the dyadic formula
+  - section: A digit-sparse expansion at an arbitrary argument
+  - chapter: Formula atlas}\label{app:atlas
+  - chapter: Limit and specialization dictionary}\label{app:limits
+  - section: Elementary limits
+  - section: Classical shadows of the main summations
+  - section: Roots of unity
+  - chapter: Proof-dependency guide}\label{app:dependencies
+  - section: Route to Gaussian combinatorics
+  - section: Route to product--sum identities
+  - section: Route to arithmetic
+  - section: Route to analytic deformation
+  - section: Route to geometric filters and the Fabius bridge
+  - chapter: Formalization status}\label{app:lean-status
+  - section: By chapter
+  - section: By result
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/q_series_from_first_principles/q_series_from_first_principles.tex`
+
+- SHA-256: `e1918a0405bd12851d2ddbc6fb92c40652a3807a59bf65683ea34c8e8e822bff`
+- Phrase clusters: none
+- Structural headings:
+  - section: Purpose, scope, and the supplied corpus
+  - subsection: Proof policy
+  - section: Analytic and formal foundations
+  - section: Gaussian polynomials and finite $q$-algebra
+  - section: The infinite $q$-binomial theorem and Heine's transformation
+  - section: Euler telescoping and the terminating $q$-Saalsch\"utz sum
+  - section: Partitions, Durfee squares, and Euler products
+  - section: The Jacobi triple product and its consequences
+  - section: Jacobi theta functions and the Dedekind eta function
+  - subsection: Poisson summation from first principles
+  - subsection: Theta powers and sums of squares
+  - section: Bailey pairs: inversion, lemma, chain, and lattice shift
+  - subsection: Inverting the Bailey transform
+  - subsection: Bailey's lemma
+  - subsection: A one-step Bailey lattice shift
+  - section: The Rogers--Ramanujan identities
+  - subsection: The partition theorem encoded by the two series
+  - section: The Rogers--Ramanujan continued fraction
+  - section: The full Andrews--Gordon identities
+  - section: How the remaining supplied identities fit
+  - subsection: A reusable discovery protocol
+  - section: Further deductions and research directions
+  - subsection: Finite forms before infinite limits
+  - subsection: Automating Bailey-pair discovery
+  - subsection: Modulus prediction from quadratic forms
+  - subsection: Borwein-type finite positivity
+  - subsection: Bilateral and multilateral Bailey structures
+  - section: Conclusion
+  - section: Convergence and interchange ledger
+  - section: Formula sheet
+  - section: Proof-completeness index
+
+### `semi-formalized-research-frontiers/drafts/exponents-and-q-series/q_series_monograph/q_series_monograph.tex`
+
+- SHA-256: `d526d60e9058d6f4b8b9670df87a8faec2f1530d8fce2fda176d332dc86745fd`
+- Phrase clusters: none
+- Structural headings:
+  - section: How the source material is organized here
+  - subsection: Logical and analytic convention
+  - section: $q$-shifted factorials and Gaussian coefficients
+  - section: The finite and infinite $q$-binomial theorems
+  - section: Basic hypergeometric series and Heine's transformation
+  - section: A finite Rogers product lemma and $q$-Pfaff--Saalsch\"utz
+  - section: Jacobi's triple product and the quintuple product
+  - section: Partitions and coefficient recurrences
+  - section: Bailey pairs, inversion, and Bailey's lemma
+  - section: The Rogers--Ramanujan identities
+  - section: The Rogers--Ramanujan continued fraction
+  - section: The full Andrews--Gordon family
+  - section: Poisson summation and theta transformations
+  - section: The Dedekind eta function and the $q\to1^-$ regime
+  - section: Ramanujan's bilateral ${}_1\psi_1$ summation
+  - section: Finite forms and polynomial approximants
+  - section: Cyclotomic dissections and Borwein-type sign questions
+  - section: How the modulus-specific material fits the general machinery
+  - subsection: Why modulus $14$ is genuinely different
+  - subsection: A reusable proof protocol
+  - section: Frontier problems suggested by the unified viewpoint
+  - section: Proof audit and dependency table
+  - section: Conclusion
+  - section: Analytic details used repeatedly
+  - section: Notation index
+
+### `semi-formalized-research-frontiers/drafts/frontier-compilations/Frontier_Compilations/Frontier_Compilations.tex`
+
+- SHA-256: `ba83ac3253d66ba8c8d762fe59f132850cbb0737f6ab5662ceefd35bd34ced86`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - part: #1}
+  - section: Provenance
+  - section: Corpus audit, novelty boundary, and theorem status
+  - subsection: What was audited
+  - subsection: The two explicit gaps used as starting points
+  - subsection: Status discipline
+  - subsection: Executive list of new results
+  - section: The master dictionary: probability, sinc products, and Thue--Morse splines
+  - subsection: The up-law and its finite prefixes
+  - subsection: The finite Thue--Morse formula
+  - subsection: A saturated derivative plateau
+  - section: Rational moments from the infinite sinc product
+  - subsection: Moment generating function and cumulants
+  - subsection: Hankel determinants and exact quadrature constants
+  - subsection: Low-degree orthogonal data
+  - section: The exact ordinary-prefix error law
+  - subsection: A convex-order potential for the omitted tail
+  - subsection: Sharp $C^m$ constants
+  - subsection: Why the equality is finite-stage exact
+  - section: Gaussian tail quadrature: a positive $4^{-rn}$ hierarchy
+  - subsection: The Gaussian rule for the up-law
+  - subsection: The Gaussian-corrected finite spline
+  - subsection: Explicit Gaussian rules
+  - section: Gauss--Lobatto tails: positivity and exact support
+  - subsection: Construction and positivity
+  - subsection: The Lobatto Peano kernel
+  - subsection: Explicit support-preserving rules
+  - section: Higher-convex order, sharp weak errors, and scheme comparison
+  - subsection: A two-sided quadrature sandwich
+  - subsection: Four representative finite-tail models
+  - subsection: A design principle
+  - section: An all-orders expansion for the ordinary prefix
+  - subsection: Reciprocal-sinc coefficients
+  - subsection: The expansion theorem
+  - subsection: Comparison with the repeated-integration series
+  - section: $q=1/4$ Richardson acceleration and Gaussian $q$-binomials
+  - subsection: Geometric Lagrange weights
+  - subsection: Accelerated combinations
+  - subsection: Low-order filters
+  - section: Exact and high-precision verification
+  - subsection: Exact rational checks
+  - subsection: Third-order checks
+  - subsection: Minimal exact-arithmetic pseudocode
+  - subsection: Verification philosophy
+  - section: Consequences and additional deductions
+  - subsection: Exact dyadic values reappear as extremal certificates
+  - subsection: A rational hierarchy despite algebraic nodes
+  - subsection: A compact-support hierarchy of increasingly smooth splines
+  - subsection: Uniform approximation of integrals and observables
+  - subsection: Asymptotic bracketing of smooth observables
+  - subsection: Why $q=1/4$ is unavoidable
+  - section: Lean formalization roadmap
+  - subsection: Phase I: probability measures and scaling
+  - subsection: Phase II: the ordinary-prefix potential
+  - subsection: Phase III: abstract positive quadrature
+  - subsection: Phase IV: exact low-order certificates
+  - subsection: Phase V: reciprocal sinc and $q$-binomial acceleration
+  - section: Open problems and next frontier
+  - subsection: Arithmetic of the Hankel constants
+  - subsection: Asymptotics as the quadrature order grows
+  - subsection: Nested positive tail rules
+  - subsection: Positive acceleration versus signed Richardson filters
+  - subsection: Fourier-decay interaction
+  - subsection: Optimal support-exact positive rules
+  - subsection: Beyond the dyadic scale
+  - section: Conclusion
+  - section: Coefficient and constant tables
+  - subsection: Moments and cumulants
+  - subsection: Reciprocal-sinc coefficients
+  - subsection: Quadrature constants
+  - section: Derivation of the low-order quadrature rules
+  - subsection: Gaussian order two
+  - subsection: Gaussian order three
+  - subsection: Lobatto order two
+  - subsection: Lobatto order three
+  - section: A reusable abstract sharpness lemma
+  - section: Corpus coverage map
+  - section: Notation index
+  - section: Audit boundary and research method
+  - subsection: Why the snapshot is pinned
+  - subsection: Collision policy
+  - section: Normalization and established inputs
+  - subsection: The centered random series
+  - subsection: Canonical product and exact orders
+  - section: The arithmetic zero spectrum
+  - subsection: Equivalent descriptions
+  - subsection: Ordinary generating function and natural boundary
+  - subsection: Spectral traces and the Taylor law
+  - section: Thue--Morse signs from zero counting
+  - subsection: The neighboring-bit identity
+  - subsection: Exact lobe signs
+  - subsection: A Thue--Morse lobe decomposition of the bump
+  - section: Laguerre--Polya geometry and real critical points
+  - section: Exact $2$-adic Strang--Fix hierarchy
+  - subsection: Weighted periodizations
+  - subsection: Exact polynomial reproduction
+  - subsection: A formalization-friendly version
+  - section: Spectral zeta function and complex dimensions
+  - section: Mellin transform on the imaginary axis
+  - subsection: Exact transform
+  - subsection: Complete large-$y$ expansion
+  - subsection: Endpoint duality
+  - section: Finite products, $q$-integers, and pole condensation
+  - subsection: Truncated multiplicities
+  - subsection: Gaussian $q$-binomial layer algebra
+  - subsection: The common-zero zeta tower
+  - section: The zero heat trace
+  - section: A base-$b$ theory
+  - section: Numerical and symbolic verification
+  - subsection: Imaginary-axis residual
+  - subsection: Exact digital checks
+  - subsection: A reproducible verification recipe
+  - section: What is genuinely added to the pinned corpus
+  - section: Lean formalization roadmap
+  - subsection: Layer I: elementary arithmetic
+  - subsection: Layer II: finite algebra and Dirichlet series
+  - subsection: Layer III: exact lattice reproduction
+  - subsection: Layer IV: complex analysis
+  - section: Open frontier
+  - section: Conclusion
+  - section: Residue calculation at the origin
+  - section: First coefficients and moments
+  - section: Corpus concordance
+  - section: Corpus boundary, audit method, and collision control}\label{p3:sec:audit
+  - subsection: Pinned recursive corpus
+  - subsection: The mature baseline
+  - subsection: Candidates deliberately discarded
+  - subsection: External literature boundary}\label{p3:sec:literature
+  - section: Established logarithmic \texorpdfstring{$q$}{q}-Richardson structure}\label{p3:sec:baseline
+  - subsection: The lacunary sinc product
+  - subsection: Bernoulli--zeta coefficients
+  - subsection: Geometric Lagrange weights
+  - section: Factorization through the complete zero divisor}\label{p3:sec:factorized
+  - subsection: Definition and holomorphic continuation
+  - subsection: Exact error on the whole disk
+  - subsection: Uniform complex bounds
+  - subsection: Local jets at every included zero
+  - subsection: Bernoulli and Bell transfer at zeros
+  - section: Exact classification of same-parity nesting}\label{p3:sec:nesting
+  - subsection: Positive error magnitudes
+  - subsection: Boundary asymptotics
+  - subsection: Necessary and sufficient condition
+  - subsection: Golden-ratio threshold and eventual nesting
+  - subsection: Threshold curve and its asymptotics
+  - section: The dyadic Fabius--Rvachev product}\label{p3:sec:dyadic
+  - subsection: Normalization and integer zeros
+  - subsection: Two monotone zero-preserving chains
+  - subsection: Exact preservation of Thue--Morse lobe signs
+  - subsection: Low-order dyadic weights
+  - subsection: Adaptive global evaluation
+  - section: Structural connections and extensions}\label{p3:sec:connections
+  - subsection: \texorpdfstring{$q$}{q}-binomial interpolation is the common finite engine
+  - subsection: Canonical products and spectral determinants
+  - subsection: Connection to inverse-Fabius and Lambert phases
+  - subsection: What the theorem does not say
+  - section: Numerical experiments}\label{p3:sec:numerics
+  - subsection: Reproducibility
+  - subsection: Dyadic nesting across the full tail disk
+  - subsection: Unique reversal beyond the threshold
+  - subsection: A multiplicity-five zero
+  - section: Conjectures and frontier directions}\label{p3:sec:future
+  - section: Lean formalization blueprint}\label{p3:sec:lean
+  - section: Conclusion
+  - section: Complete recursive TeX manifest}\label{p3:app:manifest
+  - section: Reproduction files}\label{p3:app:files
+  - section: Corpus audit and non-duplication protocol
+  - subsection: What was audited
+  - subsection: The overlap map
+  - subsection: Status labels used below
+  - section: Established framework and notation
+  - subsection: The three functions
+  - subsection: Probability, Fourier, and moments
+  - subsection: The imported endpoint coordinate
+  - section: An exact midpoint--endpoint transmutation
+  - subsection: The complete midpoint jet
+  - subsection: Central integral identities
+  - section: The inverse midpoint defect and its Lambert--W transfer
+  - subsection: An exact fixed-point equation
+  - subsection: Certified monotone inversion
+  - subsection: Sharp leading comparison
+  - subsection: A rigorous Lagrange--Bell jet
+  - section: Thue--Morse blocks and the dyadic zero architecture
+  - subsection: Box convolutions
+  - subsection: Exact integer multiplicities
+  - section: A dyadic cardinal reproduction ladder
+  - subsection: Strang--Fix vanishing at every scale
+  - subsection: The sampling operator
+  - subsection: Reciprocal-moment Appell correctors
+  - section: Bernoulli cumulants and Bell-polynomial correctors
+  - subsection: Closed cumulants
+  - subsection: Complete Bell form
+  - subsection: Bernoulli-polynomial dyadic transport
+  - section: q-Lagrange interpolation and exact Richardson closure
+  - subsection: Interpolation in the scale variable
+  - subsection: Exact q-binomial annihilation
+  - section: Dense nonanalyticity and holonomic obstructions
+  - subsection: D-finite and P-recursive objects
+  - subsection: Backward propagation through the tent map
+  - subsection: The entire Fourier transform
+  - subsection: Moments and Appell coefficients
+  - section: Numerical and symbolic verification
+  - subsection: Reproducible implementation
+  - subsection: Midpoint identity and inverse defect
+  - subsection: Exact dyadic arithmetic
+  - subsection: Cardinal and q-scale checks
+  - section: A formalization roadmap
+  - subsection: Low-cost Lean targets
+  - subsection: Finite combinatorial and algebraic targets
+  - subsection: Fourier and periodization targets
+  - subsection: Holonomic infrastructure
+  - section: Further frontier problems
+  - section: Conclusion
+  - section: Additional proof details
+  - subsection: Barycentric denominator calculation
+  - subsection: Why the inverse correction is beyond every Lambert order
+  - subsection: Ordinary-point analyticity
+  - section: Explicit Appell polynomials through degree eight
+  - section: Reproducibility files
+  - section: Complete recursive TeX manifest
+  - section: Corpus audit, baseline, and novelty discipline
+  - subsection: Scope of the audit
+  - subsection: What was already present
+  - subsection: Status ledger
+  - section: Normalization and the master determinant
+  - subsection: The random series
+  - subsection: Fourier and Wick-rotated products
+  - subsection: The spectral power sums
+  - section: A $q$-binomial and multiple-zeta formula for every even moment
+  - subsection: Finite depth and one-site occupancy
+  - subsection: Distinct-index zeta sums
+  - subsection: Reduction to ordinary zeta values
+  - subsection: First examples
+  - section: Laguerre--P\'olya structure and an infinite hierarchy of moment inequalities
+  - subsection: Classification of the Wick-rotated determinant
+  - subsection: P\'olya frequency and Jensen hyperbolicity
+  - section: Optimal sub-Gaussian concentration without infinite divisibility
+  - section: The generalized gamma-convolution dual
+  - subsection: Construction and Thorin measure
+  - subsection: An exact $q=1/4$ perpetuity
+  - subsection: Thue--Morse parity as Thorin-mass parity
+  - subsection: Complete Bernstein and Stieltjes consequences
+  - section: The L\'evy heat kernel and its exact theta completion
+  - subsection: L\'evy density and Mellin transform
+  - subsection: Exact completion
+  - section: Endpoint tilting: truncated exponentials, mod-Gamma limits, and Lambert $W$
+  - subsection: Exact negative-Laplace decomposition
+  - subsection: The tilted binary coordinates
+  - subsection: Tilted cumulants and exact phase dependence
+  - subsection: Central and local concentration under the tilt
+  - subsection: Lambert-$W_{-1}$ localization
+  - section: A universal endpoint-transfer theorem
+  - subsection: Universal correction polynomials
+  - subsection: The first two corrections
+  - subsection: Ordinary Fabius moments
+  - subsection: Centered moments and the $q$/MZV coefficient bridge
+  - subsection: Numerical validation
+  - section: Synthesis: one determinant, two probability laws, three asymptotic regimes
+  - section: Next frontier targets
+  - subsection: Phase-resolved Edgeworth and local limits
+  - subsection: All-orders moment transfer
+  - subsection: Inverse recovery of the periodic endpoint function
+  - subsection: A $q$-deformed gamma dual
+  - section: Lean formalization roadmap
+  - subsection: Low-risk algebraic modules
+  - subsection: Analytic modules
+  - subsection: Library-heavy modules
+  - section: Exact coefficients and normalized Tur\'an ratios
+  - section: Proof-dependency map
+  - section: Corpus map used in the audit
+  - section: Bibliographic notes
+  - section: Corpus boundary and nonduplication audit
+  - subsection: Pinned recursive inventory
+  - subsection: Strong negative controls
+  - subsection: Result ledger
+  - section: Established framework and normalization
+  - section: Confluent shift-polynomial extrapolation
+  - subsection: The master identity
+  - subsection: Exact conditioning for positive roots
+  - subsection: The Gaussian \texorpdfstring{$q$}{q}-Richardson row as the simple-root case
+  - section: Prouhet--Richardson factorizations and bounded digital filters
+  - subsection: A general factorized family
+  - subsection: The twisted Thue--Morse filter
+  - subsection: Why the powers of two are canonical
+  - subsection: Mixed digital filters
+  - section: Rational multiplicative Lambert phase locks
+  - subsection: Exact phase geometry
+  - subsection: Confluent endpoint extraction
+  - subsection: Conditioning versus the additive lock
+  - section: The maximal Gamma--zeta strip
+  - subsection: Exact exponential type of the Fourier coefficients
+  - subsection: Maximal holomorphy
+  - section: Weighted Wiener algebras and Bell-polynomial stability
+  - section: Radial--angular Lambert phase tomography
+  - subsection: Radial interpolation of the coefficient jet
+  - subsection: Angular DFT and exact aliasing
+  - subsection: The combined tomography theorem
+  - section: Numerical and exact-arithmetic experiments
+  - subsection: Exact filter verification
+  - subsection: Gamma--zeta modes
+  - subsection: Tomography experiment
+  - section: Consequences for the Fabius--Rvachev research program
+  - subsection: A single annihilator language
+  - subsection: Endpoint coefficient spectroscopy
+  - subsection: Bell and Bernoulli closure
+  - subsection: Generalized Pascal--Rvachev hierarchies
+  - section: Conjectures and promising research directions
+  - subsection: A concrete Lean formalization order
+  - section: Conclusion
+  - section: Auxiliary identities
+  - subsection: Complete homogeneous form of transformed moments
+  - subsection: Additive phase weights
+  - subsection: Digital condition limit
+  - section: Reproduction guide
+  - section: Complete pinned LaTeX inventory
+  - section: Scope, corpus audit, and novelty protocol
+  - subsection: What was inspected
+  - subsection: Three status classes
+  - subsection: Result map
+  - section: Established baseline and notation
+  - subsection: The twin functions
+  - subsection: Thue--Morse and binary notation
+  - subsection: $q$-notation
+  - subsection: The established zero divisor
+  - section: The dyadic spectral operator
+  - subsection: Definition and self-similarity
+  - subsection: The sinc product as a Fredholm determinant
+  - subsection: Multiplicity as spectral degeneracy
+  - section: Exact zero arithmetic and spectral parity
+  - subsection: The positive counting function
+  - subsection: Thue--Morse as spectral-flow parity
+  - subsection: Dyadic-block statistics
+  - subsection: A certified canonical-product truncation
+  - section: Spectral zeta, determinant coefficients, and cumulants
+  - subsection: The exact spectral zeta function
+  - subsection: Trace logarithm and a coefficient recurrence
+  - subsection: A spectral interpretation of the known cumulants
+  - section: Heat trace and dyadic complex dimensions
+  - subsection: Mellin representation
+  - subsection: Complete heat expansion
+  - subsection: Size of the oscillation
+  - section: Exact local jets at all integer zeros
+  - subsection: A normalized factorization
+  - subsection: The next coefficient and dyadic-ray recursion
+  - subsection: Thue--Morse signs of the leading jets
+  - subsection: Numerical checks
+  - section: The dyadic $q$-Euler determinant
+  - subsection: Definition and $q$-Pochhammer tower
+  - subsection: Lambert series and plethystic logarithm
+  - section: Finite multiscale Gaussian-binomial formulae
+  - subsection: A finite determinant
+  - subsection: Dyadic endpoints and a multiscale factorial
+  - section: Mellin asymptotics of the $q$-Pochhammer tower
+  - subsection: The subcritical regime $|u|<1$
+  - subsection: The critical product $u=1$
+  - section: A symmetric $q$-integer deformation of the sinc product
+  - subsection: Symmetric $q$-integers
+  - subsection: Exact $q$-scaling
+  - subsection: Exact $q$-Pochhammer factorization
+  - subsection: Convergence to the Rvachev Fourier transform
+  - subsection: Exact $q$-zero arithmetic and a Thue--Morse sign law
+  - subsection: The $q$-spectral zeta and coefficient recurrence
+  - section: A base-$b$ extension
+  - section: Computational verification and reproducible checks
+  - subsection: What was checked
+  - subsection: $q\uparrow1$ sample values
+  - subsection: A practical evaluation hierarchy
+  - section: Connections back to the Fabius and Thue--Morse theories
+  - subsection: Two independent appearances of $q$-binomial structure
+  - subsection: Thue--Morse as a determinant sign
+  - subsection: Moments and zeros from one spectrum
+  - subsection: Heat smoothing versus Fourier decay
+  - section: Lean formalization roadmap
+  - subsection: Layer 1: arithmetic and finite products
+  - subsection: Layer 2: locally finite zero factorization and cofactor jets
+  - subsection: Layer 3: infinite products and traces
+  - subsection: Layer 4: Mellin asymptotics
+  - section: Frontier questions
+  - section: Conclusion
+  - section: Recursive TeX corpus ledger}\label{p7:app:ledger
+  - subsection: Living and canonical documents: 18
+  - subsection: Frozen historical archive: 32
+  - subsection: Imported paper sources: 7
+  - section: Residue calculations for the critical $q$-Euler product}\label{p7:app:residues
+  - section: Selected source map
+  - section: Scope, corpus audit, and nonduplication boundary
+  - subsection: The audited corpus
+  - subsection: What is new relative to the repository
+  - subsection: Proof-status convention
+  - section: Notation and structural background
+  - subsection: Sinc products and the Rvachev transform
+  - subsection: \texorpdfstring{$q$}{q}-notation
+  - subsection: Bernoulli and Bell polynomials
+  - subsection: The lower-Lambert coordinate
+  - section: Exact logarithmic tails and multiplicative \texorpdfstring{$q$}{q}-Richardson acceleration
+  - section: The exact Bernoulli--zeta tail of a lacunary sinc product
+  - subsection: The logarithmic sinc series
+  - subsection: Exact omitted-tail formula
+  - section: Geometric Lagrange weights and their \texorpdfstring{$q$}{q}-binomial form
+  - subsection: Interpolation at \texorpdfstring{$1,q,\ldots,q^r$}{1, q, ..., q-to-the-r}
+  - subsection: An exact condition number
+  - section: Multiplicative \texorpdfstring{$q$}{q}-Richardson extrapolation
+  - subsection: Definition and exact transformed error
+  - subsection: Certified alternating brackets
+  - subsection: Leading term and explicit remainder bound
+  - subsection: Richardson table and multiplicative recurrence
+  - subsection: Explicit dyadic levels
+  - subsection: Hybrid Bernoulli--Richardson correction
+  - section: Bell-polynomial error calculus and derivatives
+  - subsection: From logarithmic error to relative error
+  - subsection: Logarithmic derivatives
+  - subsection: Application to interzero extrema
+  - section: Transfer to finite signed Thue--Morse sums
+  - section: Numerical verification and observed orders
+  - section: Lambert phase-locked extraction of the endpoint oscillation
+  - section: The all-orders endpoint template
+  - section: Phase-locked Lambert nodes
+  - subsection: Exact phase locking
+  - subsection: Lagrange weights in reciprocal scale
+  - subsection: All residual moments
+  - subsection: Extraction of the periodic endpoint factor
+  - subsection: Coefficient extraction beyond \texorpdfstring{$\Psi$}{Psi}
+  - section: Bernoulli-polynomial geometry and conditioning of the Lambert lattice
+  - subsection: A stable evaluation strategy
+  - section: Unified interpretation, formalization path, and research program
+  - section: Two extrapolation geometries
+  - section: Consequences for Fabius and Rvachev computations
+  - subsection: Certified Fourier evaluation
+  - subsection: Peak localization and envelope testing
+  - subsection: Independent extraction of the endpoint oscillation
+  - subsection: A bridge from exact dyadic values to asymptotics
+  - subsection: Base-\texorpdfstring{$b$}{b} generalized up-functions
+  - section: Lean formalization blueprint
+  - subsection: Suggested definitions and compiled Lambert crosswalk
+  - subsection: Algebraic theorem chain
+  - subsection: Remaining sinc-side analytic theorem chain
+  - section: Open problems and next frontier steps
+  - subsection: Optimal order under finite precision
+  - subsection: Monotonicity within each bracket parity
+  - subsection: Global continuation across zeros
+  - subsection: Direct formulas for the phase coefficients
+  - subsection: A sign theory for Lambert corrections
+  - subsection: Thue--Morse arithmetic of transformed products
+  - section: Conclusion
+  - section: Original audited TeX inventory
+  - subsection: Living top-level and canonical sources (6)
+  - subsection: Living Rvachev Fourier-decay drafts (12)
+  - subsection: Bundled source-paper TeX (7)
+  - subsection: Frozen archive: early notes and standalone studies (5)
+  - subsection: Frozen archive: primary expositions and supplements (8)
+  - subsection: Frozen archive: q-calculus, walkthrough, and glossary (6)
+  - subsection: Frozen archive: research frontiers (13)
+  - section: Additional algebraic details
+  - subsection: Derivation of the \texorpdfstring{$q$}{q}-moment formula
+  - subsection: Why all transformed sinc-tail terms have one sign
+  - subsection: Bell form of complete homogeneous functions
+  - section: Reproducibility notes
+  - section: Scope, audit method, and proof-status discipline
+  - subsection: What was inspected
+  - subsection: Status labels
+  - subsection: The structural gap that motivates the report
+  - section: Established framework and normalization
+  - subsection: The three functions
+  - subsection: Probability model
+  - subsection: Sinc product
+  - subsection: Thue--Morse product
+  - subsection: Negative Laplace transform and periodic correction
+  - subsection: The Fourier-decay spectrum is not one number
+  - section: A geometric $q$-Rvachev family
+  - subsection: Definition and probabilistic realization
+  - subsection: $q$-Pochhammer factorization
+  - subsection: Cumulants in the $q$-family
+  - section: The binary specialization: a $2$-adic zero divisor
+  - subsection: Finite triple factorization: sinc, $q$-Pochhammer, and Thue--Morse
+  - section: The endpoint correction is a Thue--Morse logarithm
+  - subsection: Exact identification
+  - subsection: The $2$-adic Lambert series
+  - subsection: The spectral--endpoint dictionary
+  - section: Mellin transform and the exact periodic phase
+  - subsection: Mellin transform
+  - subsection: Residues and the Fourier coefficients of $P$
+  - subsection: The periodic correction to the saddle mean
+  - section: Tilted cumulants and exact periodically perturbed Lambert saddles
+  - subsection: Exact tilted mean
+  - subsection: All tilted cumulants
+  - subsection: Exact Lambert fixed point and branch threshold
+  - subsection: Numerical check of the exact fixed point
+  - section: All-orders sinc tails and centered Rvachev moments
+  - subsection: Exact base-$1/4$ tail law
+  - subsection: Centered cumulants and a Bernoulli--Mersenne recurrence
+  - subsection: Certified Thue--Morse acceleration
+  - section: How the new identities reorganize the existing theory
+  - subsection: A commutative diagram of transforms
+  - subsection: Two compatible $q$-geometries
+  - subsection: Endpoint asymptotics from spectral data
+  - subsection: Relation to the Fourier-decay audits
+  - section: Further frontier problems
+  - subsection: High-priority formalization targets
+  - subsection: A general-$q$ decay spectrum
+  - subsection: Bridging the bases $1/2$ and $1/4$
+  - subsection: A spectral derivation of the full endpoint expansion
+  - subsection: Arithmetic nature of the periodic mean
+  - subsection: Weighted zero statistics
+  - section: Conclusions
+  - section: Supplementary derivations
+  - subsection: The coefficient formula by partitions
+  - subsection: A direct proof of the first-harmonic scale
+  - subsection: The unperturbed and perturbed Lambert equations
+  - section: Recursive source inventory
+  - subsection: Living documents: five files
+  - subsection: Active frontier drafts: thirteen files
+  - subsection: Frozen archive: thirty-two files
+  - subsection: Source-paper transcriptions: seven files
+  - section: Notation crosswalk
+  - section: Corpus audit and the novelty boundary
+  - subsection: What was inspected
+  - subsection: What the repository already does very well
+  - subsection: Deliberate exclusions
+  - subsection: The transverse direction
+  - section: The geometric \texorpdfstring{$q$}{q}-Fabius--Rvachev family
+  - subsection: Activation Taylor jets, square-summability, and effective dimension
+  - subsection: Recovery of the classical functions
+  - subsection: Distributional refinement
+  - section: Infinite sinc products and smooth compact support
+  - section: Bernoulli cumulants, Bell moments, and \texorpdfstring{$q$}{q}-binomial scale geometry
+  - subsection: Exact cumulants
+  - subsection: Bell-polynomial moments and a triangular recurrence
+  - subsection: A Bernoulli--Appell inverse to geometric averaging
+  - subsection: Finite-stage Gaussian-binomial geometry
+  - section: Parameter geometry: majorization, shape, and concentration
+  - subsection: A convex-order flow
+  - subsection: A uniform sub-Gaussian bound
+  - subsection: Log-concavity and an exact plateau transition
+  - section: Gaussian degeneration and an Edgeworth frontier
+  - section: A rigorous endpoint law and Lambert-\texorpdfstring{$W$}{W} inversion
+  - subsection: Finite-simplex upper bound
+  - subsection: A matching product lower bound
+  - subsection: Inverse endpoint law
+  - subsection: The expected periodic completion
+  - section: Fourier-zero arithmetic and the special role of base two
+  - subsection: Why the contiguous Thue--Morse block is uniquely dyadic
+  - section: Phase-aware Lagrange and Richardson extrapolation
+  - subsection: A phase-preserving interpolation theorem
+  - subsection: Fourier phase averaging
+  - subsection: Exact Lambert-\texorpdfstring{$W$}{W} sample nodes
+  - subsection: A practical composite algorithm
+  - section: Deterministic numerical experiments
+  - subsection: Fixed-point density solver
+  - subsection: Cumulant checks
+  - subsection: Endpoint bounds
+  - subsection: Phase-aware extrapolation
+  - subsection: Zero multiplicities
+  - subsection: Reproducibility
+  - section: Conjectures and promising research directions
+  - subsection: Analytic shape
+  - subsection: Uniform Gaussian asymptotics
+  - subsection: Endpoint phase and inverse transfer
+  - subsection: A two-parameter large-deviation/Gaussian phase diagram
+  - subsection: Arithmetic zero collisions
+  - subsection: Beyond binary Thue--Morse
+  - subsection: Numerical analysis and conditioning
+  - section: A Lean formalization roadmap
+  - subsection: Probability layer
+  - subsection: Analysis layer
+  - subsection: Algebraic layer
+  - subsection: Order and limit layer
+  - subsection: Endpoint and numerical layer
+  - section: Conclusion
+  - section: Complete TeX corpus inventory
+  - section: Auxiliary proof details
+  - subsection: Schur-convexity of weighted i.i.d. sums
+  - subsection: A direct expansion behind the inverse law
+  - subsection: Endpoint upper and lower constants
+  - subsection: Phase-aware weights as finite differences
+  - section: Reproducibility manifest
+
+### `semi-formalized-research-frontiers/drafts/frontier-compilations/Frontier_Compilations/assets/Fabius_Rvachev_Frontier_Report-3/corpus_manifest_table.tex`
+
+- SHA-256: `93745894bfd4920fc9bac5fbb77ccc1346f80d127ceaa21f4bc176407eb4b7b9`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/frontier-compilations/Geometric_Uniform_Convolutions_and_New_Frontiers/fabius-frontier-report-H.tex`
+
+- SHA-256: `a25582118828d7f3c5c3adbaadf329b9718e8205b55d6ca8c78b5b31b715f3be`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Scope, corpus audit, and novelty protocol
+  - subsection: What was read
+  - subsection: How overlap was controlled
+  - subsection: Status map
+  - section: A geometric-convolution deformation of the Fabius--Rvachev pair
+  - subsection: Fourier and Laplace products
+  - section: A $q$-Thue--Morse calculus for all derivatives
+  - subsection: Geometric Prouhet sums
+  - section: Cumulants, moments, and geometric Bernoulli polynomials
+  - subsection: Exact cumulants
+  - subsection: An Appell family that inverts geometric averaging
+  - section: The Gaussian end of the deformation: a mod-Gaussian expansion
+  - section: Fourier zeros, valuations, and weighted zeta identities
+  - section: Sharp derivative growth and failure of every finite Gevrey bound
+  - section: Mellin analysis and the hidden log-periodic phase
+  - section: Endpoint saddle points and phase-aware Lambert--$W$ inversion
+  - subsection: The Lambert-$W_{-1}$ skeleton
+  - subsection: A stable parametric inverse
+  - subsection: Explicit phase-free inverse expansion
+  - subsection: All-orders Bell-polynomial saddle calculus
+  - section: Consequences for inverse Fabius computations
+  - section: Legendre coefficients and approximation-theoretic implications
+  - section: Further conjectures and research programs
+  - subsection: Exponentially improved endpoint transseries
+  - subsection: Minor-arc closure of the saddle theorem
+  - subsection: Zero divisors beyond reciprocal integers
+  - subsection: Geometric Bernoulli zeros and operators
+  - subsection: Strict log-concavity and total positivity
+  - subsection: Formalization targets
+  - section: Numerical experiments and reproducibility
+  - section: Synthesis
+  - section: Selected algebraic checks
+  - subsection: Consistency of the zeta and Bernoulli expansions
+  - subsection: The first nonvanishing geometric Prouhet moment
+  - subsection: Scaling invariance of the quadratic derivative constant
+  - section: Corpus manifest
+
+### `semi-formalized-research-frontiers/drafts/frontier-compilations/Geometric_Uniform_Frontier_Directions/fabius_frontier_report.tex`
+
+- SHA-256: `ff3df1ae7645b2fb7fa73fce8e80a76fd7496853fa2588a79a78b1d9371dee8d`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Scope, source audit, and status discipline
+  - subsection: What was treated as already known
+  - subsection: Meaning of the status labels
+  - subsection: Nonduplication matrix
+  - section: The geometric-uniform master family
+  - section: Negative parameters are affine images of positive parameters
+  - section: Bernoulli cumulants, Bell moments, and the Gaussian regime
+  - subsection: Closed cumulants for every parameter
+  - subsection: Central limit theorem and a quantitative scale
+  - subsection: Edgeworth and inverse-quantile conjectures
+  - subsection: Numerical evidence
+  - section: A large-deviation bridge as $q\uparrow1$
+  - section: Log-concavity, central plateaux, and exact subdyadic derivative geometry
+  - subsection: Shape theorem
+  - subsection: Every derivative as separated signed copies
+  - section: Sinc zeros, a spectral zeta function, and digit sums
+  - subsection: Reciprocal-integer collapse and base-$B$ arithmetic
+  - subsection: Standardized zeros and why the Gaussian is zero-free
+  - section: $q$-Pochhammer-normalized moment polynomials
+  - section: A Legendre heat-kernel frontier
+  - section: Exact arbitrary-$q$ dilation-periodic Laplace decomposition
+  - section: A general-$q$ Lambert-$W$ endpoint and inverse program
+  - subsection: Three inverse regimes
+  - section: Further Thue--Morse, $q$-series, and transform consequences
+  - subsection: Pole lattices and log-periodicity
+  - subsection: A hierarchy of twisted zero statistics
+  - subsection: Spectral determinants
+  - section: Research agenda and formalization priorities
+  - subsection: Tier I: short proofs with immediate payoff
+  - subsection: Tier II: analytic projects
+  - subsection: Tier III: algebraic and combinatorial projects
+  - subsection: Additional long-range conjectures
+  - section: Reproducibility and numerical methodology
+  - subsection: FFT density inversion
+  - subsection: High-precision Legendre evaluation
+  - subsection: Periodic phase
+  - subsection: Moment polynomials
+  - subsection: Generated files
+  - section: Conclusion
+  - section: Selected numerical tables
+  - subsection: First-harmonic endpoint phases
+  - subsection: Moment-polynomial checks
+  - section: Repository source-lineage crosswalk
+  - section: Conjecture catalogue
+
+### `semi-formalized-research-frontiers/drafts/integration-and-transforms/Integration_and_Transform_Frontiers/Integration_and_Transform_Frontiers.tex`
+
+- SHA-256: `c9be7d5f0d5c7c794fa0653ec149ede1a88eeb8ce835e5e2bfd525cea93f1356`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Provenance
+  - part: Antiderivatives of Monomially Weighted Fabius-Type Functions
+  - section: Scope, status, and corpus audit
+  - subsection: The source corpus
+  - subsection: Lean formalization update
+  - subsection: What ``closed form'' means here
+  - section: Normalization and probabilistic infrastructure
+  - subsection: The three Fabius-type functions
+  - subsection: Normalized integer and fractional primitives
+  - section: The dyadic antiderivative ladder
+  - section: The Newton--Volterra expansion for arbitrary powers
+  - subsection: A general commutator identity
+  - subsection: The complete Fabius formula
+  - subsection: Remainders and the negative-power series
+  - section: Global closed form for natural powers
+  - section: Definite integrals, Newton interpolation, and moment identities
+  - subsection: The entire Mellin moment
+  - subsection: A two-parameter finite-difference identity
+  - subsection: Negative powers and logarithmic constants
+  - section: Exponential master functions and the sinc product
+  - section: Bell and Bernoulli polynomial organization
+  - section: Rvachev up-function: complete weighted primitives
+  - subsection: First-order formulas and the singularity at zero
+  - subsection: All natural powers and all integer orders
+  - section: Exact higher derivatives and inverse differentiation
+  - subsection: Thue--Morse derivative formulas
+  - subsection: The derivative/antiderivative dictionary
+  - section: Fractional antiderivative order
+  - section: Antiderivatives of the inverse Fabius function
+  - subsection: Exact first-order reductions
+  - subsection: Higher and fractional inverse primitives
+  - subsection: Higher derivatives of the inverse
+  - section: New inverse-primitive asymptotics
+  - subsection: Repository input and slow variation
+  - subsection: Weighted primitives near zero
+  - subsection: Large weighted quantile moments
+  - section: Numerical experiments and reproducibility
+  - section: Conjectures and frontier directions
+  - subsection: A periodic saddle expansion for weighted primitives
+  - subsection: Second-order large-quantile correction
+  - subsection: Large negative moments
+  - subsection: Holonomicity, arithmetic, and formalization problems
+  - section: Summary of principal formulas
+  - section: Corpus comparison map
+  - section: Exact initial values and sample antiderivatives
+  - section: Derivation of the centered-moment recurrence
+  - section: Implementation notes
+  - part: Fabius Monomial Antiderivatives and Inverse-Quantile Integrals
+  - section: Executive summary and nonduplication boundary
+  - subsection: Corpus audit
+  - subsection: Contribution map
+  - section: Established platform and notation
+  - subsection: The bounded Fabius function
+  - subsection: Rvachev's up-function and the signed extension
+  - subsection: Inverse function
+  - section: The exact primitive ladder
+  - subsection: A self-similar Volterra chain
+  - subsection: Repeated integration by parts
+  - section: Closed forms for nonnegative integer powers
+  - subsection: The monomial formula
+  - subsection: Continuation outside the unit interval
+  - subsection: Complete moments and exact arithmetic
+  - subsection: A scaled reflection identity
+  - section: Fractional, negative, and complex powers
+  - subsection: Flatness estimate
+  - subsection: The exact complex-exponent series
+  - subsection: Negative integer powers
+  - subsection: Logarithmic powers, Stirling numbers, and Bell polynomials
+  - section: The Mellin transform as an entire dyadic interpolant
+  - section: \texorpdfstring{The transforms $1-F(x)$ and $F(1-x)$}{The transforms 1-F(x) and F(1-x)}
+  - section: Rvachev up-function primitives
+  - subsection: Piecewise polynomial weights
+  - subsection: Fractional and negative powers
+  - section: The signed global extension
+  - section: Integrals of the inverse Fabius function
+  - subsection: The unweighted primitive
+  - subsection: Arbitrary complex weights
+  - subsection: Endpoint integrability threshold
+  - subsection: Complete inverse moments and order statistics
+  - section: A finite Thue--Morse formula for the nonlinear inverse remainder
+  - section: Endpoint asymptotics for inverse primitives
+  - section: Numerical experiments and exact verification
+  - section: Further deductions
+  - subsection: An exponential-weight generating primitive
+  - subsection: A uniqueness principle for the dyadic coefficient row
+  - subsection: A critical complement contrast
+  - section: Conjectures and frontier directions
+  - subsection: Promising research program
+  - section: Lean crosswalk and remaining formalization frontier
+  - section: Conclusion
+  - section: Proof details for compact-uniform convergence
+  - section: Corpus inventory by document family
+  - section: Reproducibility files
+  - section: Audit boundary, novelty discipline, and claim status
+  - subsection: Pinned corpus and reading method
+  - subsection: Status convention
+  - subsection: Current Lean crosswalk for the normalized Volterra layer
+  - subsection: Main new theorem package
+  - section: Inherited Fabius--Rvachev data and notation
+  - subsection: Three functions and one random variable
+  - subsection: Integral operators and factorials
+  - section: The dyadic primitive ladder
+  - subsection: Exact closure under integration
+  - subsection: A useful moment bound for the ladder
+  - section: Polynomial weights: terminating closed forms
+  - subsection: A polynomial theorem
+  - subsection: Monomial formula and examples
+  - subsection: A recurrence in the exponent
+  - subsection: The globally bounded \texorpdfstring{$F$}{F}: exact piecewise formula
+  - section: Fractional, negative, and complex powers
+  - subsection: The Mellin--Newton expansion
+  - subsection: Negative powers and positivity
+  - subsection: Exponent interpolation and exact forward differences
+  - section: Complete integrals, moments, and special-function structure
+  - subsection: Entire Mellin interpolation
+  - subsection: Ordinary and exponential generating functions
+  - subsection: The sinc product, Bernoulli cumulants, and Bell moments
+  - subsection: Complete monotonicity and strict total positivity
+  - section: Reflection, survival, and Rvachev's up-function
+  - subsection: The two reflected bounded-CDF transforms, and the genuinely different bump
+  - subsection: The survival transform \texorpdfstring{$1-F(x)$}{1-F(x)}
+  - subsection: A shifted primitive ladder for the compact bump
+  - section: Higher derivatives and mixed orders
+  - subsection: Derivatives of monomially weighted Fabius functions
+  - subsection: A bilateral operator notation
+  - section: Integrals and derivatives of the inverse Fabius function
+  - subsection: The quantile area identity
+  - subsection: Weighted inverse integrals and the nonlinear hierarchy
+  - subsection: Order-statistic interpretation
+  - subsection: Derivatives of the inverse
+  - section: Exact dyadic arithmetic, Thue--Morse sums, and \texorpdfstring{$q$}{q}-binomials
+  - subsection: Reciprocal-dyadic weighted primitives
+  - subsection: Exact inverse areas at reciprocal-dyadic ordinates
+  - subsection: Arbitrary dyadic arguments and Thue--Morse signs
+  - section: Numerical experiments and reproducibility
+  - subsection: Independent representations
+  - subsection: Fractional and negative complete integrals
+  - subsection: Exact checks
+  - section: Asymptotic tails for negative powers
+  - subsection: Moment asymptotics inherited from the endpoint theory
+  - subsection: A first hazard approximation
+  - subsection: Acceleration
+  - section: Further frontier directions
+  - subsection: The nonlinear power hierarchy
+  - subsection: Two-parameter fractional calculus
+  - subsection: Complex zeros and total positivity
+  - subsection: Characterization by polynomial closure
+  - subsection: Certified computation
+  - section: Remaining Lean formalization roadmap
+  - section: Conclusion
+  - section: Technical convergence details
+  - subsection: Rapid decay of the moments
+  - subsection: Compact bounds for generalized binomial coefficients
+  - subsection: Termwise exponent differentiation
+  - section: Selected exact formula table
+  - section: Recursive corpus inventory
+  - section: Reproduction commands and generated files
+  - part: Integral Calculus and Transform Dualities for the Fabius--Rvachev System
+  - section: Corpus audit, scope, and novelty boundary
+  - subsection: What was reviewed
+  - subsection: Conventions
+  - section: Probability model and transform baseline
+  - subsection: The dyadic uniform sum
+  - subsection: Moment-generating and Fourier products
+  - subsection: Rational moments, cumulants, and Bell polynomials
+  - subsection: Power duality and logarithmic derivatives
+  - subsection: A bivariate Laplace--Fourier identity
+  - subsection: Weighted antiderivatives
+  - section: The entire complex moment function
+  - subsection: Entire continuation
+  - subsection: Superpolynomial moment decay
+  - subsection: Two globally convergent Newton series
+  - subsection: A mixed reflected Mellin function
+  - section: Negative moments: an exact recurrence and a new asymptotic constant
+  - subsection: The recurrence
+  - subsection: A normalized limit and a periodic phase profile
+  - subsection: Logarithmic asymptotics and entire-function growth
+  - subsection: Singular Fabius integrals
+  - section: Definite weighted integrals
+  - subsection: Polynomial and analytic weights
+  - subsection: Bernoulli-polynomial weights
+  - subsection: Beta weights
+  - subsection: A dyadic half-interval identity
+  - section: Fractional and integer antiderivatives
+  - subsection: Fractional inverse-pair duality
+  - subsection: Repeated primitives of Rvachev's up function
+  - subsection: Appell polynomial tails
+  - subsection: Ordinary \(n\)-fold antiderivatives as incomplete moments
+  - section: Derivatives of arbitrary order
+  - subsection: Derivatives of the Fabius function
+  - subsection: Inverse derivatives and Bell polynomials
+  - subsection: Derivatives of integral transforms
+  - section: Laplace, Fourier, Mellin, and resolvent transforms
+  - subsection: One-sided Laplace transforms
+  - subsection: Stieltjes transforms and all resolvent powers
+  - subsection: Entire-kernel calculus
+  - section: Products, order statistics, and correlation integrals
+  - subsection: Products of distribution and survival powers
+  - subsection: Quantiles and ordinary order statistics
+  - subsection: The Gini integral and the sinc product
+  - subsection: Autocorrelation and \(L^2\) energy
+  - section: Additional integral-transform identities
+  - subsection: A transform relation for inverse resolvents
+  - subsection: Frullani representations for logarithmic constants
+  - subsection: A smoothing difference equation for \texorpdfstring{\(\MPartc\)}{M}
+  - section: Numerical experiments and reproducibility}\label{p4:sec:numerics
+  - subsection: Numerical error notes
+  - section: Conjectures and frontier directions
+  - subsection: Near-rigidity of the negative-moment phase
+  - subsection: Completely regular growth of the entire Mellin function
+  - subsection: Arithmetic nature of the new constants
+  - subsection: Complete monotonicity of normalized errors
+  - subsection: Order-statistic endpoint regimes
+  - subsection: General base and \texorpdfstring{\(q\)}{q}-deformations
+  - subsection: Formalization roadmap
+  - section: Summary of principal formulas
+  - section: Conclusion
+  - section: Exact low-order data
+  - section: Repository audit categories
+  - section: Reproducibility instructions
+  - part: Integral and Transform Frontiers for the Fabius and Rvachev Functions
+  - section: Scope, corpus audit, and novelty protocol
+  - subsection: Repository review
+  - subsection: Main questions addressed
+  - section: Definitions and probabilistic normalization
+  - subsection: The bounded Fabius function and Rvachev's function
+  - subsection: Random-series model
+  - subsection: Endpoint flatness and the inverse
+  - section: Three master integration principles
+  - section: Integer-order primitives and derivative hierarchies
+  - subsection: Normalized primitives of $F$
+  - subsection: Derivatives and primitives of $\upf$
+  - section: Dyadic antiderivatives with polynomial, fractional, and complex weights
+  - subsection: A finite closed form for nonnegative integer powers
+  - subsection: A convergent dyadic series for arbitrary complex powers
+  - subsection: Repeated weighted antiderivatives
+  - section: Fractional Volterra integration and a two-parameter dyadic recurrence
+  - section: Mellin transforms, logarithmic moments, and Newton interpolation
+  - subsection: The entire complex moment function
+  - subsection: Mellin transforms of $F$ and $\upf$
+  - subsection: A Newton series reconstructed from rational moments
+  - subsection: A complex fixed-point equation
+  - subsection: Mellin--Laplace bridges
+  - section: Laplace, Fourier, and Bell--Bernoulli transforms
+  - subsection: The one-sided Laplace product
+  - subsection: Bernoulli cumulants and Bell-polynomial derivatives
+  - subsection: Bilateral transform of $\upf$ and the sinc product
+  - section: Integral calculus of the inverse Fabius function
+  - subsection: Global inverse moments and local primitives
+  - subsection: All derivatives of the inverse
+  - subsection: Sharp integrability of the first inverse derivative
+  - section: Endpoint asymptotics of inverse primitives
+  - section: Stieltjes, Cauchy, and logarithmic transforms}\label{p5:sec:stieltjes
+  - section: Products, order statistics, and autocorrelation}\label{p5:sec:products-correlations
+  - subsection: Products of $F$ and $1-F$
+  - subsection: The autocorrelation transform
+  - section: Numerical experiments
+  - subsection: Finite Thue--Morse spline model
+  - subsection: Results and reproducibility
+  - section: An arithmetic continued fraction generated by the moments
+  - section: Conjectures and frontier directions
+  - subsection: Higher inverse derivatives
+  - subsection: Negative moments and a dual endpoint saddle
+  - subsection: Autocorrelation arithmetic
+  - subsection: Fractional operator spectrum
+  - subsection: Mellin zeros, growth, and acceleration
+  - subsection: Orthogonal-polynomial arithmetic
+  - section: Novelty ledger and formalization roadmap
+  - section: Conclusion
+  - section: Selected exact formulas at a glance
+  - section: Bibliographic and repository notes
+  - part: Integral and Transform Frontiers for the Fabius--Rvachev System
+  - section: Scope, corpus audit, and status of the results
+  - subsection: Repository corpus and non-duplication boundary
+  - subsection: Proof-status summary
+  - subsection: Current Lean crosswalk for the normalized Volterra layer
+  - section: Normalization and structural identities
+  - subsection: The three related functions
+  - subsection: Derivatives, moments, and transforms already available
+  - section: The exact antiderivative ladder
+  - subsection: A two-sided integer differential orbit
+  - subsection: Global causal primitives of \(\upf\)
+  - subsection: Definite dyadic integrals become exact arithmetic
+  - section: Polynomial, analytic, fractional, and negative weights
+  - subsection: A finite operator formula for every polynomial weight
+  - subsection: Convergent series for arbitrary complex powers
+  - subsection: Analytic weights and exponential resolvents
+  - section: Closed primitives involving the inverse Fabius function
+  - subsection: A closed first primitive
+  - subsection: Powers of the inverse
+  - subsection: All repeated primitives: a layer-cake formula
+  - subsection: A general weighted area identity
+  - section: Causal fractional integrals and the Volterra resolvent
+  - subsection: Riemann--Liouville primitives of \(\upf\)
+  - subsection: Volterra resolvent
+  - section: Laplace and Fourier transforms on the unit interval
+  - subsection: Closed transforms of \(F\) and the positive half of \(\upf\)
+  - subsection: A Bromwich-compatible primitive representation
+  - section: An entire Mellin interpolant and inverse moments
+  - subsection: Definition and binomial moment expansion
+  - subsection: Mellin transforms of \(F\) and \(\upf\)
+  - subsection: Every complex moment of the inverse
+  - subsection: Logarithmic moments and harmonic-number series
+  - section: Exact equimeasurability of every derivative
+  - subsection: Pushforward law
+  - subsection: Distribution function and rearrangements
+  - section: Inverse derivatives and sharp integrability
+  - subsection: An exact \(L^p\) transform
+  - subsection: Entropy-type identities
+  - subsection: All higher inverse derivatives
+  - section: Nonlinear beta chains and Bell-polynomial integrals
+  - subsection: Universal beta integrals
+  - subsection: Bell-polynomial total derivatives
+  - section: Cauchy--Stieltjes transforms and correlations
+  - subsection: Cauchy transform of \(\upf\)
+  - subsection: Autocorrelation and a sinc-square integral
+  - section: The exact obstruction to fractional self-differential scaling
+  - subsection: Laplace transform of the global signed extension
+  - subsection: Fractional defect theorem
+  - section: Numerical experiments
+  - subsection: Method
+  - subsection: Representative checks
+  - section: Further conjectures and research directions
+  - subsection: Higher inverse derivatives
+  - subsection: Growth and zeros of the entire inverse-moment function
+  - subsection: Arithmetic nature of singular integrals
+  - subsection: Fractional primitive linear independence
+  - subsection: Dyadic autocorrelations and \(q\)-arithmetic
+  - subsection: Formalization roadmap
+  - section: Conclusion
+  - section: Corpus map used in the audit
+  - section: Selected formulas for direct use
+  - section: Reproducibility files
+  - part: Integral Transforms and Fractional Calculus for the Fabius and Rvachev Functions
+  - section: Corpus audit, scope, and novelty discipline
+  - subsection: Recursive source boundary
+  - subsection: Headline additions relative to the audited tree
+  - section: Four equivalent languages and normalization
+  - subsection: The three functions
+  - subsection: Probability model and moments
+  - subsection: Integral conventions
+  - section: Ordinary primitives and the full integer-order ladder
+  - subsection: The first primitive and its totalization
+  - subsection: All integer primitives
+  - subsection: Integer derivatives
+  - subsection: The up-function primitive hierarchy
+  - section: Weighted antiderivatives and analytic weights
+  - subsection: Monomial weights: a finite closed form
+  - subsection: Complex powers and dyadic-shell series
+  - subsection: Truncated moment--quantile formula
+  - subsection: Analytic weights
+  - subsection: Weights for $\Up$
+  - section: Nonlinear transmutation between a function and its inverse
+  - subsection: A fractional change-of-variables theorem
+  - subsection: Ordinary inverse antiderivatives
+  - subsection: Mixed moments of $F$ and $G$
+  - subsection: Ordinary and fractional derivatives of $G$
+  - subsection: Sharp $L^r$ threshold for the inverse slope
+  - section: Definite integrals, moments, and Bell--Bernoulli structure
+  - subsection: Mellin transforms of $F$ and $\Up$
+  - subsection: Bernoulli cumulants and complete Bell moments
+  - subsection: Bernoulli-polynomial integrals
+  - subsection: Moments of ordinary derivatives
+  - subsection: Beta integrals and products
+  - subsection: A mixed product and a sinc-product integral
+  - section: Laplace, Fourier, Mellin, Cauchy, and correlation transforms
+  - subsection: Laplace transforms of $F$ and $\Up$
+  - subsection: Laplace and Mellin transforms of the inverse
+  - subsection: Stieltjes and Cauchy transforms
+  - subsection: Autocorrelation, convolution, and Sobolev energies
+  - section: Riemann--Liouville and Caputo calculus on dyadic scales
+  - subsection: The exact order-shift equation
+  - subsection: Endpoint values and the fractional dyadic lattice
+  - subsection: Fractional calculus for $\Up$
+  - subsection: Fractional derivatives of $F$
+  - subsection: Complements and right-sided fractional integrals
+  - section: A continuous dyadic Appell family and its exact fractional defect
+  - subsection: The continuous-order dyadic family
+  - subsection: Laplace transform of the signed continuation
+  - subsection: Exact completion of the periodic endpoint term
+  - subsection: The exact Riemann--Liouville defect
+  - subsection: Interpretation
+  - section: Whole-line fractional operators acting on $\Up$
+  - subsection: Fractional Laplacian outside the support
+  - subsection: Riesz potentials
+  - subsection: Transform-side fractional derivatives
+  - section: The inverse Mellin transform has a Gevrey-2 boundary
+  - section: Numerical experiments and reproducibility
+  - subsection: Numerical cautions
+  - section: Conjectures and research directions
+  - subsection: Higher inverse derivatives
+  - subsection: Fractional endpoint transseries
+  - subsection: Physical-space sign structure of the dyadic defect
+  - subsection: A Jackson or $q$-fractional calculus at base $1/2$
+  - subsection: Arithmetic and closed forms for Sobolev energies
+  - subsection: Nonlinear fractional Volterra equations for $G$
+  - subsection: Complex order and monodromy
+  - subsection: Formalization program
+  - section: Summary of exact formulas
+  - section: Detailed proof supplements
+  - subsection: Entire continuation in power exponents
+  - subsection: Moment recurrence
+  - subsection: Why the inverse Mellin integral stops at $\Ree s=0$
+  - subsection: A compact derivation of the Gamma--zeta defect
+  - section: Numerical files and execution
+  - section: Audit notes and source map
+  - part: Integral, Transform, and Fractional-Calculus Frontiers for the Fabius--Rvachev System
+  - section: Corpus audit and the non-duplication boundary
+  - subsection: Coverage protocol
+  - subsection: What is imported and what is added
+  - section: Normalizations and the probabilistic platform
+  - subsection: The bounded Fabius law and the up-law
+  - subsection: Entire exponential products and rational cumulants
+  - section: The universal survival-kernel calculus
+  - subsection: Arbitrary kernels and partial antiderivatives
+  - subsection: Exponential kernels and ordinary transforms
+  - subsection: Derivative-weighted beta integrals
+  - section: Generalized moments and the Mellin transform
+  - subsection: An entire Newton series from reflection
+  - subsection: A three-function Mellin dictionary
+  - section: Inverse Fabius integral calculus
+  - subsection: Area identity and ordinary antiderivatives
+  - subsection: A general layer-cake transform
+  - subsection: Laplace, Fourier, and mixed Mellin transforms of the inverse
+  - subsection: All ordinary derivatives of the inverse
+  - section: Integer-order derivative and antiderivative hierarchies
+  - subsection: The Thue--Morse derivative tower
+  - subsection: All repeated antiderivatives as truncated moments
+  - section: Fractional calculus
+  - subsection: Conventions
+  - subsection: Fractional primitives and derivatives of the Fabius function
+  - subsection: Weighted fractional antiderivatives: the incomplete-beta master theorem
+  - subsection: Fractional primitives of the up-function
+  - subsection: Fractional calculus of the inverse Fabius function
+  - subsection: A full-line Riesz refinement law
+  - section: Cauchy, Stieltjes, and Hilbert transforms
+  - subsection: The Cauchy transform and its representations
+  - subsection: An exact functional-differential equation
+  - subsection: Boundary values and the Hilbert transform
+  - section: The Jacobi continued fraction of the up-law
+  - subsection: From rational moments to a J-fraction
+  - section: Nonlinear powers and order statistics
+  - subsection: Exact order-statistic identities
+  - subsection: Large-power asymptotics from inverse slow variation
+  - section: Correlation and transform families
+  - section: Numerical verification and reproducibility
+  - subsection: Exact and floating-point layers
+  - subsection: Reproduction command
+  - section: Conjectures and future research directions
+  - subsection: Cauchy renormalization as a spectral equation
+  - subsection: Jacobi arithmetic and endpoint flatness
+  - subsection: Fractional endpoint asymptotics
+  - subsection: Nonlinear power integrals
+  - subsection: Fractional formalization roadmap
+  - section: Conclusion
+  - section: Exact formula sheet
+  - section: Corpus families inspected
+  - section: Reproducibility manifest
+  - part: Fractional Integral Calculus and Complex-Order Transform Hierarchies for the Fabius--Rvachev System
+  - section: Scope, recursive corpus audit, and proof status
+  - subsection: Audit endpoint and moving-tree caveat
+  - subsection: What the repository already contains
+  - subsection: Status ledger
+  - section: Normalization and structural input
+  - subsection: The bounded function, inverse, and compact density
+  - subsection: Fourier products and moments
+  - subsection: Endpoint rapid variation
+  - section: Existing ordinary and Volterra calculus: a compact atlas
+  - subsection: Integer derivative and primitive orbits
+  - subsection: Monomially weighted primitives
+  - subsection: Inverse primitives and ordinary derivatives
+  - subsection: Standard Riemann--Liouville primitives
+  - section: Exact fractional calculus in the Fabius and inverse clocks
+  - subsection: Conjugacy definition
+  - subsection: Power laws and Mittag--Leffler eigenfunctions
+  - subsection: The dual inverse clock
+  - section: Caputo and Riemann--Liouville transmutation through the inverse
+  - subsection: Left fractional integrals and derivatives
+  - subsection: All positive noninteger orders
+  - subsection: Right-sided transmutation
+  - section: Fractional endpoint laws for inverse powers
+  - section: A standard fractional bridge from Fabius to Rvachev
+  - subsection: Fractional derivatives of \texorpdfstring{$\Up$}{up} from the support boundary
+  - subsection: Fractional primitives of \texorpdfstring{$1-F$}{1-F}
+  - section: Whole-line Weyl derivatives and complex-order refinement
+  - subsection: Fourier-multiplier definition
+  - subsection: The complex-order hierarchy
+  - subsection: Riesz symmetrization
+  - section: Generalized Stieltjes transforms of complex order
+  - subsection: Moment, derivative, and dyadic-order hierarchies
+  - subsection: One-sided version
+  - section: Complex-order resolvents involving \texorpdfstring{$F$}{F} and the inverse
+  - subsection: Distribution and survival resolvents
+  - subsection: Inverse-composition resolvents
+  - subsection: Large-\texorpdfstring{$z$}{z} mixed-moment series
+  - section: Riesz potentials and the fractional Laplacian of \texorpdfstring{$\Up$}{up}
+  - subsection: Exact exterior fractional Laplacian
+  - subsection: Riesz potentials
+  - subsection: A numerical one-node phenomenon
+  - section: Fractional energies and autocorrelation transforms
+  - section: Definite integrals and transform catalog
+  - subsection: CDF--survival master identities
+  - subsection: Quantile transport and power duality
+  - subsection: Full-line analytic kernels and Fourier transforms
+  - subsection: Product and order-statistic integrals
+  - subsection: Compositions with the inverse density
+  - section: Indefinite integral catalog
+  - subsection: Fabius and reflected Fabius functions
+  - subsection: Rvachev folds
+  - subsection: Inverse Fabius function
+  - section: Numerical experiments and reproducibility
+  - subsection: Cross-check table
+  - subsection: Endpoint Caputo convergence
+  - subsection: Fractional-Laplacian profiles
+  - section: Conjectures and frontier directions
+  - subsection: Phase-resolved Caputo endpoint correction
+  - subsection: The one-node law and total positivity
+  - subsection: Fractional spectral interpolation
+  - subsection: General base and \texorpdfstring{$q$}{q}-deformation
+  - subsection: Arithmetic of fractional constants
+  - section: Lean formalization roadmap
+  - section: Conclusion
+  - section: Formula index by operator
+  - section: Exact low-order moments
+  - section: Computational files
+  - part: Integral, Transform, and Fractional-Order Frontiers for the Fabius--Rvachev System
+  - section: Corpus audit, scope, and novelty boundary
+  - subsection: What was reviewed
+  - subsection: Conventions
+  - section: Probability model and transform baseline
+  - subsection: The dyadic uniform sum
+  - subsection: Moment-generating and Fourier products
+  - subsection: Rational moments, cumulants, and Bell polynomials
+  - subsection: Power duality and logarithmic derivatives
+  - subsection: A bivariate Laplace--Fourier identity
+  - subsection: Weighted antiderivatives
+  - section: The entire complex moment function
+  - subsection: Entire continuation
+  - subsection: Superpolynomial moment decay
+  - subsection: Two globally convergent Newton series
+  - subsection: A mixed reflected Mellin function
+  - section: Negative moments: an exact recurrence and a new asymptotic constant
+  - subsection: The recurrence
+  - subsection: A normalized limit and a periodic phase profile
+  - subsection: Logarithmic asymptotics and entire-function growth
+  - subsection: Singular Fabius integrals
+  - section: Definite weighted integrals
+  - subsection: Polynomial and analytic weights
+  - subsection: Bernoulli-polynomial weights
+  - subsection: Beta weights
+  - subsection: A dyadic half-interval identity
+  - section: Fractional and integer antiderivatives
+  - subsection: Fractional inverse-pair duality
+  - subsection: Repeated primitives of Rvachev's up function
+  - subsection: Appell polynomial tails
+  - subsection: Ordinary \(n\)-fold antiderivatives as incomplete moments
+  - section: Derivatives of arbitrary order
+  - subsection: Derivatives of the Fabius function
+  - subsection: Inverse derivatives and Bell polynomials
+  - subsection: Derivatives of integral transforms
+  - section: Endpoint fractional calculus of the inverse Fabius function
+  - section: Nonlocal fractional calculus of Rvachev's up-function
+  - section: Fractional self-differential scaling and a dyadic Floquet corrector
+  - section: Laplace, Fourier, Mellin, and resolvent transforms
+  - subsection: One-sided Laplace transforms
+  - subsection: Stieltjes transforms and all resolvent powers
+  - subsection: A transform fixed point and the full resolvent hierarchy
+  - subsection: Entire-kernel calculus
+  - section: Products, order statistics, and correlation integrals
+  - subsection: Products of distribution and survival powers
+  - subsection: Quantiles and ordinary order statistics
+  - subsection: The Gini integral and the sinc product
+  - subsection: Autocorrelation and \(L^2\) energy
+  - section: Additional integral-transform identities
+  - subsection: A transform relation for inverse resolvents
+  - subsection: Frullani representations for logarithmic constants
+  - subsection: A smoothing difference equation for \texorpdfstring{\(\MPartiii\)}{M}
+  - section: Numerical experiments and reproducibility
+  - section: Conjectures and frontier directions
+  - subsection: Critical fractional Sobolev regularity of the inverse
+  - subsection: Function-space realization of the Floquet corrector
+  - subsection: Arithmetic nonlocal tails
+  - subsection: Near-rigidity of the negative-moment phase
+  - subsection: Completely regular growth of the entire Mellin function
+  - subsection: Arithmetic nature of the new constants
+  - subsection: Complete monotonicity of normalized errors
+  - subsection: Order-statistic endpoint regimes
+  - subsection: General base and \texorpdfstring{\(q\)}{q}-deformations
+  - subsection: Formalization roadmap
+  - section: Summary of principal formulas
+  - section: Conclusion
+  - section: Exact low-order data
+  - section: Repository audit categories
+  - section: Recursive TeX audit ledger
+  - section: Reproducibility instructions
+  - part: Fractional Quantile Transmutation, Complex-Order Resolvents, and Nonlocal Rvachev Calculus
+  - section: Scope, corpus audit, and novelty boundary
+  - subsection: Repository snapshot
+  - subsection: What the repository already contained
+  - subsection: Results that are new relative to the audited snapshot
+  - section: Common probabilistic and analytic model
+  - subsection: The three functions
+  - subsection: Quantile and density dictionaries
+  - subsection: Fractional-calculus conventions
+  - section: An entire-order primitive ladder
+  - subsection: Fabius distribution ladder
+  - subsection: Rvachev ladder and exterior moment series
+  - section: Quantile--Volterra transmutation
+  - subsection: The master theorem
+  - subsection: Powers, negative powers, and an entire parameter
+  - subsection: Logarithmic powers and exponential generating functions
+  - subsection: Definite integrals and fractional order statistics
+  - subsection: Log-convexity and Turan inequalities in the order
+  - subsection: Semigroup identity after transmutation
+  - section: Caputo derivatives of the inverse Fabius function
+  - subsection: Orders between zero and one
+  - subsection: Every noninteger Caputo order
+  - subsection: Abel inversion identity
+  - subsection: Endpoint asymptotics
+  - subsection: First correction and the log-periodic phase
+  - section: A complex-order generalized Stieltjes system
+  - subsection: Definition and elementary structure
+  - subsection: Dyadic order recurrence
+  - subsection: Laplace representation and exact fractional order shifts
+  - subsection: Boundary jump as a fractional integral of the density
+  - subsection: Endpoint values and inverse moments
+  - section: Weyl and Riesz fractional calculus of Rvachev's function
+  - subsection: Exact order-lowering dilation law
+  - subsection: One-sided Weyl tails
+  - subsection: Riesz fractional-Laplacian tails
+  - section: An entire-order hierarchy from Fabius differences
+  - subsection: Autocorrelation and the difference density
+  - subsection: Gamma-normalized positive-part order
+  - subsection: Triangular dyadic refinement
+  - subsection: A double inverse-Fabius integral
+  - subsection: Fractional Fourier energy
+  - subsection: Exact even orders
+  - section: Numerical experiments
+  - subsection: Reconstruction method
+  - subsection: Independent checks
+  - subsection: Boundary jump experiment
+  - section: Further deductions and research directions
+  - subsection: All-order endpoint expansions
+  - subsection: A two-dimensional holonomic-like lattice
+  - subsection: Zeros in the order plane
+  - subsection: Spectral analysis of the triangular refinement operator
+  - subsection: Higher-dimensional differences and B-spline noise
+  - subsection: Fractional operators and q-binomial arithmetic
+  - subsection: Formalization roadmap
+  - section: Conclusion
+  - section: Proof details for analytic continuation
+  - subsection: Why the reciprocal Gamma factor is canonical
+  - subsection: Complex powers and branches
+  - section: Moment recurrences and exact constants
+  - section: Reproducibility notes
+  - section: Corpus novelty matrix
+  - part: Integral and Transform Calculus for the Fabius--Rvachev--Quantile System
+  - section: Scope, corpus audit, and status of the results
+  - subsection: Audit boundary
+  - subsection: Principal new contributions
+  - section: The three functions and their probability models
+  - subsection: The bounded Fabius distribution
+  - subsection: Rvachev's compactly supported density
+  - subsection: Bernoulli cumulants and Bell moments
+  - section: Endpoint integrability: powers of a CDF versus powers of a quantile
+  - section: The adjacent-order-statistic spacing principle
+  - subsection: The universal weighted identity
+  - subsection: Moments, Jacobi weights, exponentials, and Lambert weights
+  - subsection: Partial, iterated, and fractional antiderivatives
+  - section: Incomplete beta--quantile antiderivatives
+  - subsection: A closed incomplete formula
+  - subsection: The beta--quantile lattice
+  - subsection: Unaligned products of \(\F\) and \(\G\)
+  - section: The mixed-power lattice
+  - subsection: The bivariate resolvent
+  - subsection: Strict checkerboard total positivity
+  - section: Beta localization and asymptotics
+  - subsection: Interior localization
+  - subsection: The balanced sequence and central flatness
+  - subsection: A logarithmic law and Lambert saddle
+  - section: Powers of Rvachev's \(\Up\) function
+  - subsection: Coupling to the derivative of \(\F\)
+  - section: A transform dictionary
+  - subsection: Transforms of the inverse Fabius function
+  - subsection: Linear transforms of \(\F\)
+  - subsection: Spacing transforms
+  - section: The Cauchy--Stieltjes hierarchy of the \(\Up\)-law
+  - subsection: Laplace--sinh representation
+  - subsection: Dyadic functional equations
+  - subsection: Boundary values and a Hilbert-transform refinement law
+  - subsection: Endpoint derivative growth
+  - section: Generalized resolvent duality for \(\F\) and \(\G\)
+  - section: Sinc-product energies and the constant \(\int_0^1\F^2\)
+  - section: General derivatives and antiderivatives of arbitrary order
+  - subsection: Finite Thue--Morse derivative formulas
+  - subsection: Integer and fractional primitives of \(\Up\)
+  - subsection: Fractional primitives of \(\F\) and \(\G\)
+  - section: Finite Thue--Morse splines and certified series approximations
+  - section: Numerical experiments
+  - section: Conjectures and frontier directions
+  - subsection: Analytic continuation and non-holonomicity
+  - subsection: The mixed-power resolvent as a new special function
+  - subsection: Balanced Lambert tomography
+  - subsection: Dyadic sinc periods
+  - subsection: Formalization roadmap
+  - section: Compact formula compendium
+  - section: Conclusion
+
+### `semi-formalized-research-frontiers/drafts/integration-and-transforms/Integration_and_Transform_Frontiers/assets/Fabius_Fractional_Integral_Transform_Frontiers/new_numerical_results.tex`
+
+- SHA-256: `38ee0ca8fc1aa36650adec1b13ed5321b03bb1d30d0fd20e0a16decc71daf72f`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/integration-and-transforms/Integration_and_Transform_Frontiers/assets/Fabius_Integral_Transform_Fractional_Frontiers/jacobi_coefficients.tex`
+
+- SHA-256: `df233a2e2bc71159b3131ac3f335befed7154d3d2fabff312434476d5f8d8e98`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/integration-and-transforms/Integration_and_Transform_Frontiers/assets/Fabius_Integral_Transforms_Report/numerical_results.tex`
+
+- SHA-256: `744500c434eb9f0da182d02424d0d423cada054906f45a44b6844b9d51773793`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/integration-and-transforms/Integration_and_Transform_Frontiers/assets/Fabius_Integral_and_Transform_Frontiers/numerical_results.tex`
+
+- SHA-256: `cbd9f965271eb03f6859699f65b4281cdab9d82e3ab50272ae05e2fa6f482ac7`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/integration-and-transforms/Integration_and_Transform_Frontiers/assets/Fabius_Rvachev_Fractional_Integral_Report/numerical_results.tex`
+
+- SHA-256: `5685b5ec4d7c515d1f27c184bb2856058b0f90497ff7b8f043aa62d979d864bf`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/integration-and-transforms/Integration_and_Transform_Frontiers/assets/Fabius_Rvachev_Integral_Frontiers/moment_table.tex`
+
+- SHA-256: `fcda4cba6c9c868bb75f22cbefc675f55bbca495d61190defd845ce2057b354b`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/integration-and-transforms/Integration_and_Transform_Frontiers/assets/fabius_fractional_transform_frontiers_bundle/numerical_results.tex`
+
+- SHA-256: `6179d07143486fb1bdf3ca1daf15f6827a2b6b989cc128a586ca3c2aa8fc951f`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/Dyadic_Comb_Frontiers.tex`
+
+- SHA-256: `0dec8babc07ab2a35ab6830e7e3febe2b6ce2631436fdf28a75d3c72638b0e91`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Provenance and merge conventions
+  - subsection: Unified notation
+  - section: Common foundations
+  - subsection: Normalization and the probability model
+  - subsection: The Fourier product and its integer zeros
+  - subsection: Moments
+  - subsection: Exact dyadic values: one identity, three algorithms
+  - part: Comb sums and quadrature
+  - section: The dyadic combs
+  - subsection: Left, right, and trapezoidal Fabius combs
+  - subsection: Shifted and midpoint combs
+  - subsection: Rvachev combs
+  - section: The rational row generating function
+  - subsection: Pole collapse
+  - subsection: Comb sums as Euler derivatives of the row
+  - section: Closed forms for nonnegative integer powers
+  - subsection: The Bernoulli--Thue--Morse formula
+  - subsection: Bell--Prouhet collapse of the signed block
+  - section: The exact Euler--Maclaurin collapse
+  - subsection: Trapezoidal aliasing through the characteristic function
+  - subsection: The collapse and its threshold
+  - subsection: One-formula closed form and low-degree examples
+  - section: The first defect and spectral Dirichlet values
+  - subsection: The odd-level defect series
+  - subsection: Exact rational multiples of powers of \texorpdfstring{$\pi$}{pi}
+  - subsection: Sharpness and positivity
+  - section: Shifted Rvachev quadrature and the alias calculus
+  - subsection: Exact polynomial quadrature for every shift
+  - subsection: The finite \texorpdfstring{$2$}{2}-adic alias hierarchy
+  - subsection: First failure and phase superconvergence
+  - subsection: Absolute integer powers: the exact zeta correction
+  - subsection: Finite arithmetic form
+  - subsection: The Bernoulli corrector and the shifted rule
+  - subsection: The exact all-mesh alias--Bernoulli identity
+  - subsection: Composite-mesh termination and the reflection reduction
+  - subsection: The shifted first defect and its forced phases
+  - subsection: Spectral positivity: the conjecture becomes a theorem
+  - subsection: The exhaustion series and its closed tail
+  - subsection: Derivative-free rational extrapolation
+  - subsection: Composite-mesh Rvachev quadrature
+  - subsection: Phase cubature and the phase--resolution separation
+  - subsection: Digital phase filters: Prouhet in the Bernoulli basis
+  - subsection: Coherent radix exhaustion and tensor shells
+  - subsection: Thue--Morse moment identities and the Bernoulli triangle
+  - subsection: Further directions from the absorbed report
+  - section: Complex, fractional, and negative powers
+  - subsection: Entire dependence and the Hurwitz--Thue--Morse formula
+  - subsection: Complex-power Euler--Maclaurin and Richardson filtering
+  - subsection: The Mellin transform of \texorpdfstring{$\Up$}{up}
+  - subsection: The universal zeta correction
+  - subsection: Negative powers and the logarithmic transition
+  - section: Iterated and fractional-order summation
+  - subsection: The binomial kernel and two exact reductions
+  - subsection: Fractional order
+  - section: Arithmetic consequences
+  - section: Verification for Part I
+  - section: Frontier directions for Part I
+  - part: Global polynomial interpolation on the dyadic comb
+  - section: The interpolation problem and its classical context
+  - section: Ordinary global Lagrange interpolation
+  - subsection: Barycentric and Newton forms
+  - subsection: Symmetry, degree drop, and compressed forms
+  - subsection: A $2$-adic law for the barycentric weights
+  - subsection: Endpoint-jet defects: the Stirling transform
+  - subsection: The observed Runge transition
+  - section: The endpoint-flat Hermite family
+  - subsection: The smoothstep and the factorization
+  - subsection: Barycentric implementation
+  - subsection: Why the textbook remainder explains nothing
+  - section: Weighted Lebesgue geometry and the instability theorems
+  - subsection: The value-data operator and its cardinal functions
+  - subsection: Exact modes
+  - subsection: Fixed order and all orders
+  - subsection: Matching derivatives at every node is worse
+  - section: The balance law and the logarithmically thin window
+  - subsection: Exact and asymptotic balance orders
+  - subsection: Lambert-$W$ appearances
+  - subsection: The all-orders correction program
+  - section: High-precision experiments
+  - subsection: Protocol
+  - subsection: Endpoint jets: suppression, window, reversal
+  - subsection: Interpretation
+  - section: The dyadic hierarchy and arithmetic connections
+  - subsection: Nested corrections and the midpoint surplus
+  - subsection: Thue--Morse cancellation and the mixed transform
+  - subsection: Fourier, Lambert, and inverse-function connections
+  - section: Stable reconstruction on the same comb
+  - subsection: Local Hermite interpolation: the cure
+  - subsection: The wider menu
+  - section: Conjectures and frontier problems for Part II
+  - section: Lean formalization program for Part II
+  - section: Gamma-product calculations
+  - subsection: Half-cell central cardinal (mode A)
+  - subsection: Near-central boundary-node cardinal (mode B)
+  - subsection: The one-third mode
+  - subsection: Full-comb central cardinal
+  - section: Mode asymptotics
+  - section: Row reciprocity
+  - section: Core algorithms
+  - section: Provenance of the absorbed sources
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/assets/Fabius_Dyadic_Comb_Sums_Report_Package/generated/exactness_matrix.tex`
+
+- SHA-256: `46732239fb10cf8a6f6fb9783e8c81999da7634bf5d3a68bff1284c4bf317a77`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/assets/Fabius_Dyadic_Comb_Sums_Report_Package/generated/first_defects.tex`
+
+- SHA-256: `2ea10bc6283e0088209a2cb85379ebcf28e1567988a2949798019b4006769932`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/assets/Fabius_Dyadic_Comb_Sums_Report_Package/generated/fractional_values.tex`
+
+- SHA-256: `e953ecb3a2c683b00e73e159800f9f0beeff8044c26673ca5b8f2f06a85c6afa`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/assets/Fabius_Dyadic_Comb_Sums_Report_Package/generated/integer_closed_forms.tex`
+
+- SHA-256: `3f9fdc946301752e38ef8cf2ac55c05dba2ebea812ccd94f111469e07abb57c4`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/assets/Fabius_Euler_Maclaurin_Report_Package/data/moment_table.tex`
+
+- SHA-256: `44b12236c57bb7e13aa99a20a4d0a6d3138c030fd06d047873082c94af84c90d`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/assets/Fabius_Euler_Maclaurin_Report_Package/data/spectral_table.tex`
+
+- SHA-256: `1564ebe42f11ffe4825184f4767f6c34bb129bb18b8eb12e1dce04876806f134`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/assets/Fabius_Euler_Maclaurin_Report_Package/data/threshold_table.tex`
+
+- SHA-256: `537ecfa97ed4cbacb718ad5ef6e2445ca347ac5d647a45379b863b656434423d`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/assets/fabius-dyadic-comb-sums-report/corpus_inventory.tex`
+
+- SHA-256: `67576c5146f7d90bd35864a33e0fb5ebedd87711dd5dab0c2fe959ce5435de64`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/assets/fabius-dyadic-comb-sums-report/corpus_meta.tex`
+
+- SHA-256: `6762782a5088f9430cf59b89d180b4ea5bb11ac525e4f69d6923ef66e209c0a4`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Dyadic_Comb_Frontiers/assets/fabius-dyadic-comb-sums-report/generated_results.tex`
+
+- SHA-256: `827ec30f0462e01f10a36977f838c086dd08dcde5f926b9e87e241906b88cc5c`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Endpoint_All_Orders/Inverse_Endpoint_All_Orders.tex`
+
+- SHA-256: `6150356d2c3ab717f7e18b963d50ac44f24011b24788c6869c11ae3e31acff25`
+- Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Provenance and merge conventions
+  - subsection: Notation
+  - section: Imported inputs and the two-scale inverse problem
+  - subsection: Forward input
+  - subsection: Inverse prior art
+  - subsection: The two-scale problem
+  - section: The diagonal Lagrange--B\"urmann calculus
+  - section: The explicit third correction
+  - section: Structure laws
+  - subsection: Logarithmic degrees and top logarithms
+  - subsection: Transfer of the newest periodic derivative
+  - section: Fourier-mode algebra and the analyticity strip
+  - section: Phase locking and coefficient tomography
+  - section: Elasticity and every inverse derivative
+  - section: A log-free resummation: the Wright-omega carrier
+  - subsection: The carrier
+  - subsection: First coefficients and the universal $5/24$
+  - subsection: The inversion is not the source of divergence
+  - subsection: Derivatives, numerics, and the pre-asymptotic hierarchy
+  - section: The forward saddle engine: constrained partition sums
+  - subsection: The decomposition and the dyadic Bose tail
+  - subsection: One Mellin kernel, two asymptotic ends
+  - subsection: Exact saddle map and ultraflat jets
+  - section: Verification
+  - section: Connections across the corpus
+  - section: Conjectures and frontier directions
+  - section: Proof details
+  - section: Coefficient dictionary
+  - section: Provenance of the absorbed sources
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Endpoint_All_Orders/assets/inverse_fabius_asymptotics_report/generated_coefficients.tex`
+
+- SHA-256: `7460fcf25a9bcb93870c24dc269e23f856b927f28c36e3b699cb1fba833d8ebe`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Fabius_Computability_Report/inverse_fabius_computability.tex`
+
+- SHA-256: `b8c5b5cc0aac752497fab8e8a1433971eb4fc74b4c33637115b00ca45143645a`
+- Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Main result and proof architecture
+  - subsection: The theorem in one statement
+  - subsection: Four proof layers
+  - section: Corpus audit, conventions, and nonduplication boundary
+  - subsection: Arrival snapshot and live-corpus intake audit
+  - subsection: What the repository already proves
+  - subsection: The paper-level gap addressed here
+  - subsection: Three functions that must not be conflated
+  - section: Computable-analysis definitions
+  - subsection: Fast names and computable sequences
+  - subsection: The reciprocal uniform-continuity convention
+  - section: Probability, Fourier structure, and the forward function
+  - subsection: The random-series model
+  - subsection: Finite sums and their exact CDFs
+  - subsection: Centered finite splines and a uniform certificate
+  - section: Effective positivity, strict increase, and the density shape
+  - subsection: A closed positive lower bound at dyadic points
+  - subsection: Strict monotonicity from the random series
+  - subsection: Symmetric strict unimodality
+  - section: The least-mass interval and the exact inverse modulus
+  - subsection: Intervals of a prescribed geometric length
+  - subsection: The inverse's modulus is the inverse itself
+  - section: Effective uniform continuity
+  - subsection: A closed primitive-recursive modulus
+  - subsection: The exact-dyadic repository modulus
+  - subsection: Binary conditioning is quadratic
+  - section: Sequential computability by tolerant bisection
+  - subsection: Why ordinary bisection is insufficient
+  - subsection: The algorithm on a computable sequence
+  - subsection: Correctness of every branch
+  - subsection: Clamping and the totalized inverse
+  - subsection: Completion of the main theorem
+  - subsection: An abstract inverse-computability principle
+  - section: Analytic consequences of the exact modulus
+  - subsection: Uniform continuity without any H\"older exponent
+  - subsection: Endpoint asymptotics become modulus asymptotics
+  - subsection: Derivative blow-up versus computability
+  - section: Numerical and exact-rational checks
+  - subsection: Endpoint mass bounds
+  - subsection: Centered-spline convergence
+  - subsection: What the code deliberately does not claim
+  - section: Connections to the wider Fabius--Rvachev corpus
+  - subsection: Thue--Morse inclusion--exclusion
+  - subsection: \texorpdfstring{$q$}{q}-binomial coefficients and accelerated forward oracles
+  - subsection: Infinite sinc products and alternative evaluation
+  - subsection: Lambert \texorpdfstring{$W$}{W}, Bell polynomials, and Bernoulli data
+  - subsection: Legendre and Lagrange representations
+  - subsection: Total positivity, unimodality, and interval masses
+  - section: Lean formalization status and remaining roadmap
+  - subsection: Why the present \texttt{noncomputable} definition is not an obstacle
+  - subsection: The completed structural inverse-modulus layer
+  - subsection: The completed effective-uniform-continuity layer
+  - subsection: The completed logarithmic reciprocal-modulus layer
+  - subsection: The remaining name-transformation module
+  - subsection: Remaining formalization order
+  - subsection: Reusable generic infrastructure
+  - section: Further deductions, conjectures, and research directions
+  - subsection: A certified practical inverse evaluator
+  - subsection: Sharp integer moduli and the log-periodic phase
+  - subsection: Base-\texorpdfstring{$b$}{b} atomic distributions
+  - subsection: Certified spectral and polynomial representations
+  - subsection: Higher-dimensional monotone transport
+  - subsection: Branchwise inversion of the signed global extension
+  - section: Conclusion
+  - section: Pseudocode with explicit error budgets
+  - section: Proof-dependency and status audit
+  - section: Corpus crosswalk
+  - section: Reproducing the exact-rational supplement
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_and_Sampling_Frontiers/Inverse_and_Sampling_Frontiers.tex`
+
+- SHA-256: `3efcce893857186c53e6cde20609993699a2a5757c39b5d8cbce5fe0193b4705`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Provenance
+  - part: Inverse Frontiers for the Fabius--Rvachev System
+  - section: Executive summary, status, and nonduplication boundary
+  - subsection: What was inspected
+  - subsection: Contribution map
+  - subsection: What is deliberately not repeated
+  - section: Established platform and notation
+  - subsection: Fabius, Rvachev, and the random series
+  - subsection: The finite Thue--Morse spline
+  - subsection: Fourier product and reciprocal-sinc coefficients
+  - subsection: Terminating jets at inverse powers of two
+  - section: Bell-polynomial transfer from forward splines to quantiles
+  - subsection: A general inverse perturbation theorem
+  - subsection: The first two quantile corrections
+  - subsection: Gaussian \texorpdfstring{$q$}{q}-binomial Richardson filters for quantiles
+  - section: Exact inverse-dyadic local polynomials and algebraic quantile germs
+  - subsection: The plateau mechanism
+  - subsection: The algebraic inverse branch
+  - subsection: The first four algebraic germs
+  - subsection: The quarter anchor: an exact square root
+  - subsection: Catalan--Gaussian-binomial Richardson constants
+  - subsection: Exact sign and two-sided bounds for every accelerated quarter error
+  - subsection: A universal first coefficient at every inverse-dyadic anchor
+  - section: Periodic Lambert--Bell inversion at the endpoint
+  - subsection: The forward input and its periodic data
+  - subsection: Two-scale inversion of the saddle phase
+  - subsection: A complete periodic limit set
+  - subsection: Quantile elasticity and inverse derivatives
+  - subsection: An all-orders Lambert--Bell reversion algorithm
+  - section: Symbolic, exact, and high-precision verification
+  - subsection: Exact rational checks of the local-polynomial theorem
+  - subsection: Quarter-anchor convergence and exact enclosures
+  - subsection: Endpoint inversion on exact dyadic test values
+  - subsection: Independent checks and failure modes
+  - section: Algorithms and a Lean formalization roadmap
+  - subsection: Exact construction of an inverse-dyadic germ
+  - subsection: Endpoint coefficient engine
+  - subsection: Formalization modules
+  - section: Further deductions and frontier problems
+  - subsection: Discriminants and convergence radii of the algebraic germs
+  - subsection: Validity thresholds
+  - subsection: Stieltjes and Bernstein structure
+  - subsection: Uniform transition between finite-prefix and endpoint regimes
+  - subsection: Optimal phase-aware endpoint approximants
+  - subsection: Inverse functional equations
+  - subsection: Publication-priority boundary
+  - section: Conclusion
+  - section: Complete recursive LaTeX corpus inventory
+  - subsection: Living documents and embedded papers: 25 files
+  - subsection: Frozen archive: 32 files
+  - section: Compact coefficient reference
+  - subsection: Reciprocal-sinc coefficients
+  - subsection: Inverse-transfer coefficients
+  - subsection: Endpoint reference
+  - section: Reproducibility files
+  - part: Dyadic Inverse Germs and Barnes--Rvachev Deconvolution
+  - section: Scope, corpus audit, and result boundary
+  - subsection: What was audited
+  - subsection: Result map
+  - subsection: Why the two inverse problems belong together
+  - section: Established platform and notation
+  - subsection: Fabius, the signed extension, and the Rvachev density
+  - subsection: The two random series
+  - subsection: Moments and cumulants
+  - section: Algebraic Taylor shadows of the inverse Fabius function
+  - subsection: The finite dyadic jet polynomial
+  - subsection: Lagrange--B\"urmann and Bell formulas
+  - subsection: The midpoint: a linear Taylor shadow
+  - subsection: The quarter point: Catalan numbers exactly
+  - subsection: The eighth point: a cubic algebraic shadow
+  - subsection: A general singularity program for inverse derivatives
+  - section: Kabaya--Iri polynomials and the Rvachev Appell inverse
+  - subsection: The external precursor and the normalization used here
+  - subsection: Appell, mean-value, and biorthogonality identities
+  - subsection: Bell reconstruction from Bernoulli cumulants
+  - subsection: Bernoulli refinement recurrences
+  - subsection: A dyadic logistic dual
+  - subsection: Operator interpretation
+  - section: Finite dyadic prefixes as Barnes--Bernoulli polynomials
+  - subsection: Finite random sums and finite Appell inverses
+  - subsection: Normalized Barnes multiple Bernoulli polynomials
+  - subsection: A complete Thue--Morse difference operator
+  - subsection: A q-binomial form of the difference operator
+  - section: Exact finite-prefix expansions and \texorpdfstring{$q$}{q}-Richardson recovery
+  - subsection: Tail self-similarity is polynomial in the truncation scale
+  - subsection: Geometric Lagrange weights
+  - subsection: Residual moments beyond the exact degree
+  - subsection: Worked centered recovery in degree six
+  - subsection: Worked uncentered recovery in degree three
+  - subsection: A finite algorithm for any fixed degree
+  - section: Reciprocal-sinc poles and the asymptotics of Appell constants
+  - subsection: The reciprocal moment generating function
+  - subsection: Exact leading Laurent coefficient
+  - subsection: A \texorpdfstring{$2$}{2}-adic hierarchy of exponentially small corrections
+  - subsection: The first three pole shells explicitly
+  - subsection: Why the correction polynomial is genuinely dyadic
+  - subsection: A Mittag--Leffler frontier
+  - section: A Lambert-\texorpdfstring{$W$}{W} threshold for the Appell coefficients
+  - subsection: From pole asymptotics to factorial growth
+  - subsection: A second Lambert geometry in the same theory
+  - section: Synthesis, computational consequences, and formalization roadmap
+  - subsection: The common dyadic algebra
+  - subsection: Computational consequences
+  - subsection: Suggested Lean module decomposition
+  - subsection: Further frontier questions
+  - section: Conclusion
+  - section: Complete audited TeX inventory
+  - subsection: Living top-level and canonical sources (6)
+  - subsection: Living Rvachev Fourier-decay drafts (12)
+  - subsection: Bundled source-paper TeX (7)
+  - subsection: Frozen archive: early notes and standalone studies (5)
+  - subsection: Frozen archive: primary expositions and supplements (8)
+  - subsection: Frozen archive: q-calculus, walkthrough, and glossary (6)
+  - subsection: Frozen archive: research frontiers (13)
+  - section: Symbolic and numerical verification notes
+  - section: A compact formula sheet
+  - section: Scope, corpus audit, and novelty boundary
+  - subsection: What was read
+  - subsection: Strong negative controls
+  - subsection: New layer isolated by the audit
+  - section: Normalization and established structure
+  - subsection: The up-law, Fabius function, and Fourier convention
+  - subsection: Moments, moment generating function, and cumulants
+  - subsection: Exact dyadic arithmetic
+  - section: The shifted dyadic self-sampling theorem
+  - subsection: Definition of the rules
+  - subsection: Rationality and denominator control
+  - subsection: Finite moment identities in Fabius values
+  - section: The master alias function and the $2$-adic error filtration
+  - subsection: An entire generating function for all moment defects
+  - subsection: An exact local factorization at every integer zero
+  - section: The first defect: half-integer spectrum and Thue--Morse signs
+  - subsection: The spectral sign is exactly Thue--Morse
+  - subsection: Symmetries
+  - section: A Bernoulli convolution formula for the first defect
+  - subsection: The periodic up-kernel
+  - subsection: A rigorous first-harmonic bound
+  - section: Parity-selected positive superconvergence
+  - subsection: Forced phases
+  - subsection: Classification of the superconvergent phases
+  - subsection: A canonical phase schedule and exact experiments
+  - section: Positive alias filters as Richardson extrapolation
+  - subsection: Coset rules
+  - subsection: Uniqueness in alias space
+  - section: Inverse-moment Rvachev--Appell polynomials
+  - subsection: The umbral inverse of the moment family
+  - subsection: Continuous deconvolution
+  - subsection: Finite lattice reproduction
+  - subsection: Root geometry: an exact counterexample to real-rootedness
+  - section: Transport through the inverse Fabius function
+  - subsection: Endpoint nodes and the Lambert coordinate
+  - section: Finite Gaussian-$q$-binomial identities forced by quadrature
+  - subsection: The exact dyadic evaluator
+  - subsection: A $q$-binomial--Thue--Morse--Bell identity
+  - section: Base-$b$ and multidimensional extensions
+  - subsection: Integer dilation bases
+  - subsection: Tensor-product cubature
+  - section: Exact and high-precision experiments
+  - subsection: Independent check of the spectral defect
+  - subsection: Exact arithmetic workflow
+  - subsection: Reproducibility boundary
+  - section: Conjectures and frontier research program
+  - subsection: The next alias layer
+  - subsection: Optimal phase and scale filters
+  - subsection: Denominators and arithmetic geometry
+  - subsection: Rvachev--Appell zero geometry
+  - subsection: Lambert endpoint sum rules
+  - subsection: Digital generalizations and higher dimensions
+  - section: Lean formalization roadmap
+  - subsection: Tier I: finite arithmetic and Appell algebra
+  - subsection: Tier II: Fourier zeros and Poisson summation
+  - subsection: Tier III: first defect and superconvergence
+  - subsection: Tier IV: probability transport and positive filters
+  - section: Conclusion
+  - section: Complete grouped corpus ledger
+  - subsection: Living documentation treated as authoritative
+  - subsection: Frozen archive represented through provenance
+  - section: First inverse-moment Appell polynomials
+  - section: Exact two-layer formula for the next defect
+  - section: Reproducibility manifest
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_and_Sampling_Frontiers/assets/Fabius_Dyadic_Self_Sampling_Frontier_Package/appell_polynomials.tex`
+
+- SHA-256: `a17a506bded1d51ad7ab8ec0ed7eac95bb97f8878a9c22959a7d2328b550a959`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_and_Sampling_Frontiers/assets/Fabius_Dyadic_Self_Sampling_Frontier_Package/harmonic_tail_table.tex`
+
+- SHA-256: `541a3b26aa123535797a38b6bc3020427c08c94fce847abe6ec9d3d3a3d82a26`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_and_Sampling_Frontiers/assets/Fabius_Dyadic_Self_Sampling_Frontier_Package/quadrature_table.tex`
+
+- SHA-256: `43b22a0d790f7486e1a543f3dac2cb1b208b7e368e9918c88b65ec9719472023`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_and_Sampling_Frontiers/assets/Fabius_Dyadic_Self_Sampling_Frontier_Package/quadrature_table_display.tex`
+
+- SHA-256: `1cd8ed5fddd739ef13fc974876941a0c3a07ba4a02f569636a72390fd70296b9`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_and_Sampling_Frontiers/assets/Fabius_Dyadic_Self_Sampling_Frontier_Package/spectral_check.tex`
+
+- SHA-256: `6202fbbd6c83bac937fd7aa0a94b62c28215b92ac9ff28fb368d5b3244dfd869`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_and_Sampling_Frontiers/assets/Fabius_Dyadic_Self_Sampling_Frontier_Package/spectral_check_display.tex`
+
+- SHA-256: `5cb4babb3fa025c78eb217f401f3017a77825d67519270e0f6acd75101a209c1`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/fabius_information_frontier/fabius_information_frontier.tex`
+
+- SHA-256: `b756c86255c24f421029ded2f60f574f0677fbad4bb0fa62416950a742ebda45`
+- Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Integer-base atomic family
+- Structural headings:
+  - section: Scope, corpus audit, and contribution boundary
+  - subsection: What was audited
+  - subsection: Result ledger
+  - section: The geometric-uniform family and the dyadic dictionary
+  - subsection: Probability law, fixed point, and Fourier product
+  - subsection: Variance, Bernoulli cumulants, and Bell moments
+  - subsection: The Fabius--Rvachev specialization
+  - section: An exact equal-information filtration
+  - subsection: Prefix and tail decomposition
+  - subsection: The posterior is a self-similar copy
+  - subsection: Transport of Legendre and Appell representations
+  - section: Estimation, correlation, and rate distortion
+  - subsection: Exact MMSE and a Gaussian-form identity without Gaussianity
+  - subsection: A self-similar test channel for quadratic rate distortion
+  - section: Finite sinc products and a Thue--Morse Bayesian identity
+  - subsection: The finite $q$-product channel
+  - subsection: The dyadic Thue--Morse spline
+  - subsection: Joint density and an exact KL integral
+  - subsection: Conditional inverse-Fabius quantiles
+  - section: Information density, varentropy, and the surprisal limit
+  - subsection: Exact information density
+  - subsection: The complementary tail channel
+  - section: Finite-prefix entropy and Fisher information
+  - subsection: Monotone entropy convergence
+  - subsection: A reverse-small-noise expansion
+  - subsection: A new Fisher bridge for $F$, $G$, and $\Up$
+  - section: Inverse-Fabius endpoint information on the lower-Lambert scale
+  - subsection: Imported inverse asymptotics
+  - subsection: Entropy contained in an endpoint probability tail
+  - section: The near-Gaussian $q\uparrow1$ frontier
+  - subsection: Exact standardized Bernoulli cumulants
+  - subsection: Formal Hermite calculation of the entropy deficit
+  - section: Numerical experiments
+  - subsection: Method and reproducibility
+  - subsection: Entropy deficit and the $q\uparrow1$ coefficients
+  - subsection: Dyadic entropy, Fisher information, and finite prefixes
+  - subsection: Information-spectrum convergence
+  - subsection: Numerical interpretation
+  - section: Conjectures and a prioritized frontier program
+  - subsection: Full information-spectrum asymptotics
+  - subsection: Optimal coding versus the exact geometric prefix
+  - subsection: Periodic Lambert corrections to tail information
+  - subsection: A Bayesian spectral operator
+  - subsection: Thue--Morse information identities beyond KL
+  - subsection: General masks and higher dimensions
+  - subsection: Formalization priorities
+  - section: Conclusion
+  - section: Detailed derivations and auxiliary identities
+  - subsection: Entropy-power calculation for the deficit bound
+  - subsection: Exact information and correlation in one line
+  - subsection: Formal Hermite entropy algebra
+  - section: Corpus-relative nonduplication notes
+  - section: Reproducibility manifest
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/geometric_comb_interpolation_report/geometric_comb_interpolation_report.tex`
+
+- SHA-256: `02dd81e5d1480e867c2482a38574accf06b6bedd19cbef5dccc6a585cca01711`
+- Phrase clusters: Exact digit-sum zero count; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Introduction and contribution map
+  - subsection: Why a geometric comb is different
+  - subsection: Baseline from the linked monograph
+  - subsection: Results developed here
+  - section: Notation and elementary $q$-identities
+  - section: Geometry of the comb
+  - subsection: Scale covariance
+  - subsection: Vandermonde determinant
+  - section: Lagrange interpolation on a finite comb
+  - subsection: Cardinal functions and barycentric weights
+  - subsection: The origin row
+  - subsection: Residuals at an arbitrary target
+  - subsection: Exact analytic tail and a sharp majorant
+  - section: Newton interpolation and Jackson calculus
+  - subsection: Jackson derivative as a divided difference
+  - subsection: Newton formula and explicit coefficients
+  - subsection: Two inverse Gaussian basis transforms
+  - subsection: Infinite Newton reconstruction
+  - section: Dilation-operator calculus and the Gaussian filter
+  - subsection: Spectral polynomial
+  - subsection: Exact action on powers and logarithmic powers
+  - subsection: Uniqueness
+  - section: Confluent modal extrapolation
+  - section: Stability, boundary layers, and regular variation
+  - subsection: Exact total variation
+  - subsection: The singular regime $q\uparrow1$
+  - subsection: The reversed-row boundary layer
+  - subsection: Convergence for merely continuous data
+  - subsection: Regularly varying endpoint germs
+  - section: Smooth remainders and geometric-knot B-splines
+  - subsection: Hermite--Genocchi representation
+  - subsection: Peano kernel and a positive spline density
+  - subsection: Exact moments
+  - subsection: A $q$-Pochhammer scaling limit
+  - section: Geometric-uniform random sums and finite splines
+  - subsection: The generic law
+  - subsection: Finite generalized Irwin--Hall splines
+  - subsection: Convergence to the infinite law
+  - subsection: Centered law, Bernoulli cumulants, and sinc products
+  - section: Fabius and Rvachev functions at the flat boundary
+  - subsection: Definitions and endpoint differential scaling
+  - subsection: An exact boundary-comb identity
+  - subsection: The boundary B-spline and its $q$-exponential scale
+  - subsection: Exact rational computation
+  - section: Fourier-scale interpolation for the Rvachev function
+  - subsection: The base-squaring principle
+  - subsection: Exact moment-flat filter
+  - subsection: Application to $\Up$
+  - subsection: Entire Newton reconstruction of all scales
+  - section: Algorithms and numerical implementation
+  - subsection: Barycentric interpolation away from zero
+  - subsection: Newton--Horner evaluation
+  - subsection: Origin extrapolation by factor recursion
+  - subsection: Exact dyadic arithmetic
+  - subsection: Precision budgeting
+  - section: Numerical experiments
+  - subsection: Moment cancellation and factor recursion
+  - subsection: Noise amplification
+  - subsection: Regular-variation constants
+  - subsection: Exact Fabius boundary remainders
+  - subsection: Reproducibility files
+  - section: Research frontiers and conjectures
+  - subsection: A local limit theorem for geometric B-splines
+  - subsection: Fabius--Dirichlet small-value asymptotics
+  - subsection: Second-order regular variation
+  - subsection: The double-scaling transition $q\uparrow1$, $n\to\infty$
+  - subsection: Optimal filters under analytic priors
+  - subsection: Inverse Fabius and nonlinear combs
+  - subsection: Multivariate geometric combs
+  - subsection: Formalization boundary and remaining roadmap
+  - section: Conclusions
+  - section: Additional derivations
+  - subsection: Partial fractions for the $q$-exponential perpetuity
+  - subsection: Equivalence of the power formulas
+  - subsection: A generating function for the smooth remainder on exponentials
+  - section: Companion-code notes
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/geometric_comb_lagrange_jackson_newton_report/geometric_comb_interpolation.tex`
+
+- SHA-256: `5b2aef31fe8a5f936fb32404306e1168c4de5e4ad22ed7ef1dcb3e5841c3b785`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count
+- Structural headings:
+  - section: Orientation and the four equivalent pictures
+  - subsection: The geometric comb
+  - subsection: Basic notation
+  - subsection: A map of the proved results
+  - section: Algebra of the geometric Vandermonde system
+  - subsection: Nodal polynomial and Vandermonde determinant
+  - subsection: The Gaussian Pascal factorization
+  - subsection: Two inverse basis changes
+  - section: Lagrange cardinal functions on the comb
+  - subsection: Barycentric weights
+  - subsection: A target on the same multiplicative line
+  - subsection: The zero row as a dilation polynomial
+  - subsection: Exact total variation and conditioning at the accumulation point
+  - section: Mellin symbols and exact residuals
+  - subsection: Complex powers
+  - subsection: Logarithmic powers by spectral differentiation
+  - subsection: Mellin-transform interpretation
+  - subsection: The universal complete-symmetric residual
+  - section: Newton interpolation is Jackson calculus
+  - subsection: Divided differences and iterated \texorpdfstring{$q$}{q}-derivatives
+  - subsection: Infinite Jackson--Newton series for analytic functions
+  - subsection: The limits \texorpdfstring{$q\to1$}{q to 1} and \texorpdfstring{$q\to0$}{q to 0}
+  - subsection: Neville, Richardson, and Romberg recurrences
+  - section: Convergence at an accumulation point and divergence away from it
+  - subsection: The zero row is a regular summability method
+  - subsection: The limiting profile viewed from the finest tooth
+  - subsection: Power, Puiseux, and logarithmic endpoint expansions
+  - subsection: Superflat data force divergence off the comb
+  - section: The geometric-uniform family
+  - subsection: Probability law, support, and refinement
+  - subsection: Moments and Bernoulli cumulants
+  - subsection: The left boundary layer
+  - subsection: Comb samples are normalized moments
+  - subsection: The classical Fabius and Rvachev normalizations
+  - section: Exact Fabius transforms on the dyadic comb
+  - subsection: Dyadic values and Mersenne products
+  - subsection: The endpoint extrapolant as a Mersenne--moment convolution
+  - subsection: Newton coefficients as a Gaussian moment transform
+  - subsection: Generating-function factorization
+  - subsection: Exact divergence of the Fabius interpolants
+  - section: The Rvachev Fourier product through the same filter
+  - subsection: Tail products along a geometric comb
+  - subsection: Moment interpretation of the residual
+  - subsection: Exact synthesis of geometric cardinals by shifted up-functions
+  - subsection: The additive Thue--Morse companion
+  - section: Numerical experiments and exact checks
+  - subsection: Reproducibility
+  - subsection: Exact endpoint values
+  - subsection: Divergence away from the comb
+  - subsection: Quadratic growth of the Newton coefficients
+  - subsection: Bounded row variation
+  - subsection: Reciprocal Rvachev product
+  - section: Research frontiers
+  - subsection: Asymptotics of the Fabius Newton coefficients
+  - subsection: Boundary-crossing formulas for \texorpdfstring{$q>1/2$}{q greater than 1/2}
+  - subsection: Confluent limits and roots of unity
+  - subsection: Regularization near Fourier zeros
+  - subsection: Exact Lebesgue functions below the finest node
+  - subsection: Flatness-adapted approximation spaces
+  - subsection: Multivariate geometric meshes
+  - subsection: Adaptive ratios and asymptotic optimization
+  - subsection: Formal verification roadmap
+  - section: Conclusions
+  - section: Selected finite identities
+  - section: Pseudocode for exact dyadic computation
+  - section: Source map
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/geometric_comb_q_fabius_report/geometric_comb_q_fabius_report.tex`
+
+- SHA-256: `37e71ad371673a8c301d1b2f23e516cf34b904fb98f22e18448e4dedfe939c08`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Sharp Strang--Fix aliasing defect; Integer-base atomic family
+- Structural headings:
+  - chapter: Abstract
+  - chapter: Executive summary of the main formulas
+  - part: Algebra of the geometric comb
+  - chapter: Scope, provenance, and normalization
+  - section: Relation to the source monograph and neighboring reports
+  - section: Manuscript proof versus Lean proof
+  - section: The affine geometric comb
+  - section: Notation for \texorpdfstring{$q$}{q}-analogues
+  - chapter: Newton interpolation as \texorpdfstring{$q$}{q}-Taylor calculus
+  - section: The \texorpdfstring{$q$}{q}-Pochhammer Newton basis
+  - section: Triangular evaluation and the geometric Vandermonde determinant
+  - section: Online extension of the comb
+  - chapter: The Gaussian Pascal change of coordinates
+  - section: Monomials versus geometric falling powers
+  - section: Coefficient transforms and Rogers--Szeg\H{o} polynomials
+  - section: A matrix factorization of geometric sampling
+  - section: Combinatorics at reciprocal integer base
+  - section: The classical limit in logarithmic coordinates
+  - chapter: Lagrange cardinals and geometric filters
+  - section: Closed barycentric weights
+  - section: Cardinals in Newton coordinates
+  - section: Evaluation at the accumulation point: \texorpdfstring{$q$}{q}-Richardson weights
+  - section: Generating function of the Richardson triangle
+  - part: Exact residuals, convergence, and stability
+  - chapter: Complete-homogeneous residual calculus
+  - section: A universal moment theorem
+  - section: Exact monomial interpolation error
+  - section: Residual of a power series
+  - section: Divided differences of analytic functions
+  - chapter: Infinite Newton series at an accumulating comb
+  - section: Why an accumulation point changes the problem
+  - section: Complex bases and spiralling combs
+  - section: Meromorphic targets
+  - chapter: A sharp stability dichotomy
+  - section: Lebesgue functions
+  - section: Bounded extrapolation to the accumulation point
+  - section: Boundary-layer profile near the isolated outer node
+  - section: The global asymptotic
+  - section: Interpretation: stable at the accumulation end, unstable in the gap
+  - chapter: Jackson integration and confluent geometric data
+  - section: The Newton--Jackson integral formula
+  - section: Repeated geometric nodes
+  - section: Anchoring ordinary derivatives at the accumulation point
+  - part: The dyadic Fabius--Rvachev specialization
+  - chapter: Fabius moments and the exact half-base Gaussian transform
+  - section: Probability model, moments, and the preferred normalization
+  - section: Inverse-dyadic values are normalized moments
+  - section: The exact Gaussian transform of Fabius data
+  - section: A finite Gaussian-cardinal formula
+  - chapter: Boundary recovery and gap divergence
+  - section: The boundary residue and its generating function
+  - section: Recovery of every fixed flat jet
+  - section: A rigorous gap-growth upper bound
+  - section: A saddle-point conjecture for the actual interpolation error
+  - chapter: The Rvachev synthesis loop in geometric coordinates
+  - section: Fourier zeros and inverse-moment Appell polynomials
+  - section: Exact fixed-radius polynomial reproduction
+  - section: A \texorpdfstring{$q$}{q}-Appell deformation of geometric falling powers
+  - section: Geometric cardinals as finite sums of \texorpdfstring{$\Up$}{up} translates
+  - section: Collocation, a stochastic encoder, and a signed right inverse
+  - section: Closing the loop for the Rvachev function
+  - section: The reflected boundary comb
+  - part: Experiments, conjectures, and implementation
+  - chapter: Exact and high-dynamic-range numerical experiments
+  - section: Reproducibility protocol
+  - section: Exact algebraic checks
+  - section: Lebesgue growth and boundary-layer location
+  - section: Exact Fabius interpolation in the gap
+  - section: What the experiments do and do not establish
+  - chapter: Further deductions, conjectures, and research directions
+  - section: Second-order Lebesgue asymptotics
+  - section: A function-space criterion for infinite geometric Newton series
+  - section: Signed saddle analysis for Fabius data
+  - section: Boundary-residue entire functions
+  - section: Geometric Hermite stability
+  - section: The mixed \texorpdfstring{$q$}{q}-Appell family
+  - section: Decoder variation, total positivity, and optimal gauges
+  - section: Stable alternatives to global gap interpolation
+  - section: Complex and arithmetic geometric combs
+  - section: Formalization program
+  - chapter: Formula dictionary
+  - section: General geometric comb
+  - section: Half-base Fabius formulas
+  - section: Atomic synthesis formulas
+  - chapter: Selected exact dyadic data
+  - section: Moments and inverse-dyadic values
+  - section: First geometric Newton coefficients
+  - chapter: Archive and reproduction notes
+  - section: Archive layout
+  - section: Commands
+  - section: Source boundary
+  - chapter: Status ledger
+
+### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/inverse_fabius_iterates_nowhere_analytic/inverse_fabius_iterates_nowhere_analytic.tex`
+
+- SHA-256: `58dd004d131562a8fa79c649967a04e6f4a2a0f9914b5eede6e951dc1f0499fa`
+- Phrase clusters: Exact digit-sum zero count; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Statement of the problem and strengthened results
+  - section: Repository audit and novelty boundary
+  - subsection: Canonical sources inspected
+  - subsection: Existing results and the novelty boundary
+  - section: Fabius, Rvachev, Thue--Morse, and the derivative atlas
+  - subsection: The Rvachev bump and the signed global extension
+  - subsection: Exact all-order derivatives
+  - subsection: Shape and orbit dynamics
+  - section: Why a direct dyadic-jet induction fails
+  - section: The dyadic defect of a Fa\`a di Bruno partition
+  - section: A two-spine composition lemma
+  - section: Strict unimodality of the spine weights
+  - section: Binary transitions force recurrent large amplitudes
+  - section: Proof of the zero-radius theorem
+  - section: The inverse-iterate theorem
+  - subsection: Interior diffeomorphism structure
+  - subsection: Formal-radius invariance under local inversion
+  - subsection: Endpoint obstruction and iterated inverse asymptotics
+  - subsection: The fixed center: a convergent Taylor series that fails to represent
+  - subsection: No local elementary representation
+  - subsection: What formal reversion does and does not preserve
+  - section: Numerical diagnostics
+  - subsection: Sinc-product reconstruction
+  - subsection: Forward spines and inverse formal reversion
+  - section: Connections to the broader Fabius corpus
+  - subsection: Bell polynomials and Bernoulli cumulants
+  - subsection: q-binomial and Thue--Morse structure
+  - subsection: Infinite sinc products
+  - subsection: Legendre expansions and polynomial representations
+  - section: Conjectures and research directions
+  - subsection: Promising formalization route
+  - subsection: Generalization to other atomic functions
+  - section: Summary of the proof mechanism
+  - section: Auxiliary details on the partition defect
+  - section: Reproducibility guide
+  - section: Repository source map
+
+### `semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/Lambert_W_Guide.tex`
+
+- SHA-256: `f6e89bf8c515db6894c5705db612b710d7f86cd9f90fc9de94c0eee729d80f7c`
+- Phrase clusters: Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - subsection: Provenance
+  - section: Why a new function is needed
+  - subsection: A first numerical example
+  - subsection: Reading guide and prerequisites
+  - section: The two real branches}\label{sec:realbranches
+  - section: Elementary identities and transformations}\label{sec:identities
+  - subsection: The Wright omega viewpoint
+  - section: Exact relations between the two real branches}\label{sec:pairing
+  - subsection: Bernoulli-number expansions of the paired branches
+  - section: Differential calculus and geometry}\label{sec:calculus
+  - subsection: First and second derivatives
+  - subsection: Higher derivatives
+  - subsection: Conditioning
+  - section: Integral calculus and exact moments}\label{sec:integrals
+  - subsection: A finite formula for polynomial moments
+  - subsection: Mellin-type definite integrals on the unbounded ends
+  - section: Taylor series at an arbitrary regular point}\label{sec:localTaylor
+  - section: The Maclaurin series of the principal branch}\label{sec:maclaurin
+  - subsection: Rigorous remainder estimates
+  - subsection: The tree function and Cayley's formula
+  - section: The square-root expansion at the branch point}\label{sec:branchpoint
+  - subsection: Even and odd combinations of the two branches
+  - subsection: An exponential branch-point coordinate
+  - section: Logarithmic asymptotic expansions}\label{sec:asymptotics
+  - subsection: Unsigned Stirling numbers
+  - subsection: The expansion written separately for each branch
+  - section: Rigorous elementary bounds}\label{sec:bounds
+  - subsection: Bounds for the principal branch on \texorpdfstring{\(x\geq0\)}{x >= 0}
+  - subsection: Bounds on the negative part of the principal branch
+  - subsection: Bounds for the nonprincipal branch near the branch point
+  - subsection: Bounds for \texorpdfstring{\(W_{-1}\)}{W-1} near zero
+  - section: Rational and continued-fraction approximations}\label{sec:rational
+  - subsection: Pade approximants at the origin
+  - subsection: Euler's continued fraction
+  - section: Contour and real integral representations}\label{sec:integralreps
+  - subsection: A local contour representation for all branches
+  - subsection: The principal-branch cut parametrization
+  - section: Numerical evaluation}\label{sec:numerics
+  - subsection: Residuals give certified a posteriori errors
+  - subsection: Newton and Halley iterations
+  - subsection: Logarithmic Newton iteration
+  - subsection: A practical branch-aware algorithm
+  - subsection: Which approximation should be used?
+  - section: Solving transcendental equations}\label{sec:equations
+  - subsection: A linear term plus a logarithm
+  - subsection: A power times an exponential
+  - subsection: An exponential equal to an affine function
+  - subsection: The equation \texorpdfstring{\(x^x=A\)}{x to the x equals A}
+  - subsection: Fixed points of exponentiation
+  - subsection: A Planck-type maximization problem
+  - section: Applications}\label{sec:applications
+  - subsection: Michaelis--Menten substrate depletion
+  - subsection: A diode with a series resistor
+  - subsection: Characteristic exponents of a delay equation
+  - subsection: The final-size equation of an epidemic model
+  - subsection: Inverting the prime-number scale
+  - section: Series in a logarithmic argument}\label{sec:omega-series
+  - section: A brief guide to the complex branches}\label{sec:complex
+  - subsection: Local branches and the critical value
+  - subsection: Indexing and the all-branch asymptotic expansion
+  - subsection: Derivative and conjugation
+  - section: What the supplied archive contributes}\label{sec:archive
+  - section: Summary and a branch-safe workflow}\label{sec:summary
+  - section: Complements from the parallel treatments}\label{sec:complements
+  - subsection: Power towers and iterated exponentials
+  - subsection: Fixed-point, Schr\"oder, and inverse-Taylor methods
+  - subsection: Structural identities and the branch-exchange involution
+  - subsection: A transcendence consequence
+  - subsection: A practitioner's toolkit
+  - subsection: Further worked applications
+  - subsection: Generalizations and open directions
+  - section: Role in the Fabius--Rvachev corpus}\label{sec:corpus-role
+  - section: A complete proof of Lagrange--Buer\-mann inversion
+  - subsection: Formal residues
+  - subsection: Proof of the inversion formula
+  - section: Coefficient tables and exact recurrences}\label{app:coefficients
+  - subsection: Maclaurin coefficients
+  - subsection: Signed branch-point coefficients
+  - subsection: Derivative polynomials
+  - section: Numerical experiments and reproducibility}\label{app:numerics
+  - section: Problems with complete solutions}\label{app:problems
+  - subsection: Problems
+  - subsection: Solutions
+  - section: Compact formula sheet}\label{app:formula-sheet
+  - section: Concordance of the four merged treatments}\label{app:concordance
+
+### `semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/assets/Lambert-W-Article/generated/iteration_counts.tex`
+
+- SHA-256: `81f6a9a0d1d9309cf15c38ef1dcd9e72162f88a2255b29aae62244c44fee5c7a`
+- Phrase clusters: Phase-locked Lambert-W saddle
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/assets/Lambert-W-Article/generated/representative_values.tex`
+
+- SHA-256: `fa1b3b635b5ff9669bd33043dc7f34b67c9a3c9aa628289f88c5400323db9084`
+- Phrase clusters: Phase-locked Lambert-W saddle
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/assets/Lambert-W-Function-article-4/numerical_values.tex`
+
+- SHA-256: `c2656728e6db1e9555f624255b352a281599057ac859335c43a4b20ca2ac3bb0`
+- Phrase clusters: Phase-locked Lambert-W saddle
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/assets/Lambert_W_article/numerical_results.tex`
+
+- SHA-256: `376fdca744c4280009ea016704401d824315eb56506c9bc0444f8c32a4f268b7`
+- Phrase clusters: Phase-locked Lambert-W saddle
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/representations/Fabius_Rvachev_New_Frontiers-2/fabius_rvachev_new_frontiers.tex`
+
+- SHA-256: `f7a4fefc81fefb676b03dcc7b4431f3d7024422058a04af0dce8894ca65dcbb0`
+- Phrase clusters: Exact digit-sum zero count; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Corpus audit and choice of frontier
+  - subsection: Snapshot and source strata
+  - subsection: What the corpus already contains
+  - subsection: Why this direction avoids duplication
+  - section: Repository baseline and notation
+  - subsection: The Fabius and up laws
+  - subsection: MGF, cumulants, and rational moments
+  - subsection: Endpoint law
+  - section: A new log-concavity theorem
+  - subsection: Infinite uniform convolution
+  - subsection: Dyadic ratio monotonicity and a Tur\'an inequality
+  - subsection: Strong discrete curvature at dyadic points
+  - subsection: The inverse in logarithmic probability coordinates
+  - section: The native orthogonal-polynomial system
+  - subsection: Hankel determinants, norms, and Jacobi coefficients
+  - subsection: Low-degree certificates
+  - subsection: Three equivalent exact engines
+  - section: Szeg\H{o}--Nevai asymptotics forced by endpoint flatness
+  - subsection: Verification of the Szeg\H{o} condition
+  - subsection: Nevai limit, ratio asymptotics, and zeros
+  - subsection: Strong norm asymptotics and a Fabius--Szeg\H{o} constant
+  - section: Christoffel reconstruction from rational moments
+  - subsection: Moment-matrix formula and exact arithmetic
+  - subsection: Bulk reconstruction theorem
+  - subsection: A moment reconstruction of the Fabius function itself
+  - section: An alternating rational Jacobi product for \texorpdfstring{$\pi$}{pi}
+  - subsection: Strong center asymptotics
+  - subsection: Hankel-determinant form
+  - subsection: Exact harmonic mean of the product approximants
+  - subsection: Initial rational products
+  - section: Gauss quadrature and Pad\'e approximation of the Cauchy transform
+  - subsection: Exact Gaussian rules
+  - subsection: The Jacobi continued fraction
+  - subsection: Coupling to dyadic renormalization
+  - section: The Legendre--Gaunt determinant bridge
+  - subsection: Exact Legendre data
+  - subsection: Finite Gaunt expansion
+  - subsection: Determinants recover the native recurrence
+  - subsection: Christoffel functions directly in the Legendre basis
+  - section: Numerical experiment and exact verification
+  - subsection: Two arithmetic modes
+  - subsection: Observed recurrence coefficients
+  - subsection: Observed product errors
+  - subsection: Reproducibility and data products
+  - section: Conjectures suggested by the spectral data
+  - subsection: Monotonicity and one-sided rational approximants
+  - subsection: A logarithmic-square correction at the Nevai edge
+  - subsection: Dyadic periodic modulation
+  - subsection: Strict log-concavity and strict Tur\'an inequalities
+  - subsection: The central Christoffel shift
+  - section: A geometric \texorpdfstring{$q$}{q}-uniform extension
+  - subsection: Definition, transform, and cumulants
+  - subsection: Log-concavity and the Szeg\H{o} class
+  - subsection: A continuum of Jacobi products
+  - section: Research program and formalization roadmap
+  - subsection: Prove monotonicity by a convolution flow
+  - subsection: Derive the log-square Jacobi correction
+  - subsection: Christoffel--Lambert double scaling
+  - subsection: Exploit the Pad\'e renormalization residual
+  - subsection: Arithmetic of Hankel and Gaunt determinants
+  - subsection: The geometric \texorpdfstring{$q$}{q}-surface
+  - subsection: Numerical improvements
+  - subsection: Lean formalization order
+  - section: Conclusion
+  - section: A detailed small-box estimate for the \texorpdfstring{$q$}{q}-family
+  - section: Exact low-degree spectral table
+  - section: Normalization checks against classical weights
+  - subsection: Lebesgue weight
+  - subsection: Uniform probability weight and the center constant
+  - section: Computational method in pseudocode
+  - section: Corpus-audit notes
+
+### `semi-formalized-research-frontiers/drafts/representations/Fabius_Rvachev_Noncommutative_Frontiers/Fabius_Rvachev_Noncommutative_Frontiers.tex`
+
+- SHA-256: `665845e8ad0d7f278ac51bb4727d48f1a3a7b4c38f857767951e9c337809302a`
+- Phrase clusters: Exact digit-sum zero count
+- Structural headings:
+  - section: Corpus audit, novelty screen, and scope
+  - subsection: The audited documentation tree
+  - subsection: New contributions
+  - subsection: Notation and normalization
+  - section: Classical dyadic structure as probabilistic input
+  - subsection: Infinite sinc products and the Rvachev law
+  - subsection: Bernoulli cumulants
+  - subsection: A positive dyadic moment recurrence
+  - section: Free and Boolean transforms of the moment sequence
+  - subsection: Partition cumulants
+  - subsection: Lagrange inversion
+  - subsection: Triangular recurrences
+  - subsection: First exact dyadic values
+  - section: An exact obstruction to free infinite divisibility
+  - subsection: Conditional positive definiteness
+  - subsection: The dyadic certificate
+  - subsection: A three-way divisibility comparison
+  - section: A geometric \texorpdfstring{\(q\)}{q}-family obstruction
+  - subsection: Variance-normalized free cumulants
+  - subsection: The degree-thirty determinant
+  - subsection: A hierarchy of necessary-condition thresholds
+  - subsection: The Gaussian endpoint and connected partitions
+  - section: Boolean cumulants and Jacobi coefficient stripping
+  - subsection: The Stieltjes continued fraction
+  - subsection: Jacobi increments and free-cumulant positivity
+  - section: Interfaces with inverse Fabius and Legendre expansions
+  - subsection: An inverse-Fabius moment identity
+  - subsection: A finite transform from Legendre coefficients
+  - section: Finite dyadic sinc products and exact \texorpdfstring{\(q=1/4\)}{q=1/4} acceleration
+  - subsection: Partial random series
+  - subsection: Richardson extraction and \texorpdfstring{\(q\)}{q}-binomial weights
+  - subsection: A Thue--Morse research direction
+  - section: Endpoint flatness, Boolean renewal, and a free transform radius
+  - subsection: The endpoint constant
+  - subsection: A conditional defective-renewal theorem
+  - subsection: The free compositional map
+  - subsection: Why Lambert--\texorpdfstring{\(W\)}{W} should reappear
+  - section: Cyclotomic and \texorpdfstring{\(q\)}{q}-integer structure
+  - subsection: Normalized classical cumulants live in a \texorpdfstring{\(q\)}{q}-integer ring
+  - subsection: A \texorpdfstring{\(q\)}{q}-binomial expansion problem
+  - section: Further frontier directions
+  - subsection: A proof program for Jacobi-increment positivity
+  - subsection: Determining the full free-divisibility region
+  - subsection: Free and Boolean transforms of the inverse function
+  - subsection: Legendre and Jacobi error transport
+  - subsection: Beyond the dyadic base
+  - subsection: Arithmetic questions
+  - subsection: Formal verification
+  - section: Conclusions
+  - section: Reproducibility guide
+  - section: Explicit normalized \texorpdfstring{\(q\)}{q}-family formulas}\label{app:qformulas
+  - section: The degree-thirty Sturm polynomial}\label{app:P30
+  - section: Additional finite-level polynomials
+  - section: A compact proof certificate for the dyadic theorem
+
+### `semi-formalized-research-frontiers/drafts/representations/Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/Fabius_Rvachev_Shape_Divisibility_Stein_Geometry.tex`
+
+- SHA-256: `c313169c48848db96eb3d25a9d47ea2220156a8f70a0c77a600d85dbc21bf925`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Abstract
+  - section: Research-status convention
+  - section: Orientation and principal results
+  - subsection: Why a new direction was necessary
+  - subsection: Executive theorem map
+  - subsection: A compact notation table
+  - section: Corpus audit and nonduplication method
+  - subsection: Inventory strategy
+  - subsection: Imported facts used in this report
+  - subsection: External literature boundary
+  - section: The dyadic probability fixed point
+  - subsection: Random-series and refinement descriptions
+  - subsection: The survival identity
+  - subsection: Flatness at the mode
+  - section: Strict log-concavity at the critical binary point
+  - subsection: A general strictness lemma
+  - subsection: Resolution of the binary strictness conjecture
+  - subsection: Strict log-concavity of the distribution tails
+  - subsection: Hazard, reverse hazard, and likelihood ratio
+  - subsection: The inverse Fabius function
+  - section: Fourier zeros and convolution power-rootlessness
+  - subsection: The entire characteristic function
+  - subsection: A general zero-multiplicity obstruction
+  - subsection: Extension to geometric atomic laws
+  - subsection: A factor-classification conjecture
+  - section: The canonical Rvachev Stein kernel
+  - subsection: Definition and Stein identity
+  - subsection: Exact Fabius-tail representations
+  - subsection: Exact absolute moment and special values
+  - subsection: Dyadic rationality
+  - subsection: Bell--Bernoulli moment bridge
+  - section: The Rvachev--Stein diffusion and its Legendre shadow
+  - subsection: Weighted Poincare inequality and exact gap
+  - subsection: A canonical symmetric generator
+  - subsection: The Stein kernel is nowhere analytic
+  - subsection: The exact quadratic jet at the mode
+  - subsection: Legendre equation in the eigenfunction jet
+  - subsection: No higher analytic eigenfunctions
+  - subsection: A rational jet at the half point
+  - section: Endpoint Stein asymptotics and Lambert scales
+  - subsection: Exact endpoint formula
+  - subsection: Tangent and chord bounds
+  - subsection: Logarithmic-coordinate representation
+  - subsection: Multiplicative concavity conjecture
+  - section: Numerical experiments and reproducibility
+  - subsection: Fixed-point discretization
+  - subsection: Density, score, and Stein kernel
+  - subsection: Endpoint diagnostic
+  - subsection: Stein discrepancy from Gaussianity
+  - subsection: A monotonicity conjecture suggested by the data
+  - section: Conjecture register and frontier program
+  - subsection: Strictness for the full connected-support family
+  - subsection: Factor divisors and Thue--Morse automata
+  - subsection: Stein arithmetic
+  - subsection: Stein spectral theory and Legendre comparison
+  - subsection: Endpoint completion
+  - subsection: Inverse-function consequences
+  - section: A Lean-oriented formalization blueprint
+  - subsection: Dependency graph
+  - section: Suggested theorem names
+  - section: Formalization risk ledger
+  - section: Conclusions
+  - section: Proof supplement: standard log-concavity facts
+  - subsection: Convolution and weak limits
+  - subsection: Half-line marginals
+  - subsection: Derivative monotonicity
+  - section: Proof supplement: Fourier multiplicities
+  - section: Numerical file guide
+  - section: Corpus map used for the audit
+
+### `semi-formalized-research-frontiers/drafts/representations/Fabius_Stein_Koopman_Frontier_Report/data/appell_polynomials.tex`
+
+- SHA-256: `7d0dbe28f525dc87c60a73776edce23f129121460d5e998d735fd19d24f6279b`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/representations/Fabius_Stein_Koopman_Frontier_Report/data/exact_verification.tex`
+
+- SHA-256: `0e55995df2d58e633a0f4c60eae1f4389c084ffda65e0864a74a5eb2edec7e1f`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/representations/Fabius_Stein_Koopman_Frontier_Report/data/gram_matrix.tex`
+
+- SHA-256: `040d74ec826a59da06397d9b585cb014eee375510eb22894a3805efa20f46240`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/representations/Fabius_Stein_Koopman_Frontier_Report/dyadic_stein_koopman_frontier.tex`
+
+- SHA-256: `0871082f18ea0b988d14ed7030c3adf5722c4f7079f2ed7309d45e57554e51bc`
+- Phrase clusters: Fourier-zero spectral zeta; Complex dimensions / heat trace; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Scope, corpus audit, and contribution boundary
+  - subsection: How the corpus was inspected
+  - subsection: Result ledger
+  - section: Normalization and imported interfaces
+  - subsection: Fabius, Rvachev, and the centered probability law
+  - subsection: The imported inverse-moment Appell family
+  - section: The affine smoothing chain
+  - subsection: A geometric-uniform family
+  - section: Appell--Koopman diagonalization
+  - subsection: The master affine theorem
+  - subsection: Exact polynomial spectral coordinates
+  - subsection: Dual eigendistributions
+  - section: \texorpdfstring{A $q$-Weyl and Bell--Bernoulli operator calculus}{A q-Weyl and Bell--Bernoulli operator calculus}
+  - subsection: The derivative--Koopman commutation relation
+  - subsection: The Appell raising operator
+  - section: Transfer determinants, resolvents, and Poisson equations
+  - subsection: Finite polynomial transfer determinants
+  - subsection: Closed resolvents and the polynomial Poisson equation
+  - subsection: An Appell-Fock completion
+  - section: A fixed-point Stein method
+  - subsection: The invariant fixed-point operator
+  - subsection: Stein equation and sharp elementary factors
+  - section: The differential-dilation Stein operator
+  - subsection: A local/nonlocal hybrid
+  - subsection: Rvachev's equation as the adjoint Stein equation
+  - section: Martingales, lag correlations, and irreversibility
+  - subsection: Polynomial and exponential martingales
+  - subsection: The Appell Gram kernel
+  - subsection: An exact dyadic nonreversibility certificate
+  - subsection: A general affine-uniform theorem
+  - section: The scalar Stein kernel in Fabius coordinates
+  - subsection: Definition and exact Fabius formula
+  - subsection: An inverse-Fabius identity
+  - subsection: Bell--Bernoulli moments of the kernel
+  - section: Lambert--periodic endpoint asymptotics of the Stein kernel
+  - subsection: Imported inverse elasticity
+  - subsection: A Watson ratio for the Fabius primitive
+  - subsection: The endpoint theorem
+  - subsection: Lower-Lambert form
+  - section: Signed bases and the broader geometric family
+  - subsection: Negative contraction parameters
+  - subsection: Reciprocal bases
+  - section: Exact computation and numerical experiments
+  - subsection: Reproducibility architecture
+  - subsection: Exact Appell and Gram data
+  - subsection: Endpoint experiment
+  - subsection: Monte Carlo scope
+  - section: Conjectures and frontier research directions
+  - subsection: Natural-space transfer spectra
+  - subsection: A full Stein-kernel transseries
+  - subsection: Stein discrepancies for the finite sinc/spline hierarchy
+  - subsection: Thue--Morse projectors
+  - subsection: Legendre conditioning and nonnormality
+  - subsection: Irreversibility beyond a single moment
+  - subsection: General atomic masks and multivariate up-like functions
+  - subsection: \texorpdfstring{Complex and reciprocal $q$}{Complex and reciprocal q}
+  - section: Formalization roadmap
+  - section: Conclusion
+  - section: Generated Appell table
+  - section: Derivation of the universal irreversibility witness
+  - section: A compact formula sheet
+  - section: Corpus nonduplication ledger
+  - section: Reproducibility manifest
+
+### `semi-formalized-research-frontiers/drafts/representations/Fabius_Zero_Bias_Frontier_Report/Zero_Bias_Towers_and_Spectral_Peeling.tex`
+
+- SHA-256: `e83f0e426ce872b4da4cd046fa5fcc8a53b4c5e29e60c60ecc6ff7bbc7fb823e`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Scope, corpus audit, and claim discipline
+  - section: Normalization and imported analytic toolkit
+  - subsection: The centered and uncentered laws
+  - subsection: The square-root entire transform
+  - subsection: The negative-Laplace phase
+  - section: One zero-bias step and the geometric digit selector
+  - subsection: Definition and elementary identities
+  - subsection: A $q^2$-geometric replacement index
+  - section: The complete zero-bias tower
+  - subsection: Power-biased radius times a spherical coordinate
+  - subsection: Bessel mixture
+  - section: Normalized Laguerre--P\'olya derivatives as probability laws
+  - section: Spectral peeling and Thue--Morse release values
+  - subsection: The inherited divisor at level $m$
+  - subsection: Integer-base extension
+  - section: Occupancy calculus and the $q$-Pochhammer layer
+  - subsection: A general allocation theorem
+  - subsection: Geometric uniform digits
+  - subsection: An exact sampler
+  - section: Universal Gaussianization
+  - section: Fabius endpoint bias and phase-modulated mod-Gamma asymptotics
+  - subsection: A bridge from absolute moments to the Fabius law
+  - subsection: A periodic mod-Gamma law
+  - subsection: High-moment and tower-moment consequences
+  - subsection: A sharp leading Wasserstein rate
+  - section: Numerical experiments
+  - subsection: Selected high-moment data
+  - subsection: Occupancy sampling
+  - section: Conjectures and frontier problems
+  - subsection: Further directions
+  - section: Lean formalization plan
+  - section: Conclusion
+  - section: Stable moment recurrence and exact checks
+  - section: Occupancy dynamic program
+  - section: Files generated by the companion program
+
+### `semi-formalized-research-frontiers/drafts/representations/Jacobi_Digit_Fabius_Rvachev_Frontier_Report/jacobi_digit_frontier_report.tex`
+
+- SHA-256: `ca7910b238f258c91c11d57fe0bcc611a3f6b9945ad93b530d8959df9effb36a`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Scope, status, and repository audit
+  - subsection: Snapshot and audit method
+  - subsection: Novelty crosswalk
+  - subsection: Status convention
+  - section: The Jacobi-digit cascade
+  - subsection: Sphere dimension and compact random flights
+  - section: Geometric Bessel products and smooth compact support
+  - subsection: A geometric \(q\)-Bessel coefficient array
+  - section: Rayleigh cumulants, Bell moments, and Bernoulli specializations
+  - subsection: Bernoulli numbers at two different boundaries
+  - section: Fourier zeros, spectral zeta, and scale resonance
+  - subsection: Exact zero multiset and zeta factorization
+  - subsection: Resonance is exceptional but dense
+  - section: Higher-order Rvachev refinement equations
+  - section: Endpoint fractional pantographs and inverse asymptotics
+  - subsection: Exact Volterra equation
+  - subsection: Endpoint Laplace product and periodic renormalization
+  - subsection: Small balls and inverse quantiles
+  - section: Boundary regimes: Bernoulli, Rvachev, and Gaussian
+  - subsection: The Bernoulli-convolution boundary \(\alpha\downarrow0\)
+  - subsection: Gaussianization as \(q\uparrow1\)
+  - subsection: Gaussianization as \(\alpha\to\infty\)
+  - section: Jacobi--Gegenbauer to Hermite orthogonal flow
+  - subsection: The two solvable edges
+  - subsection: Exact first coefficients
+  - section: Small-\(q\) and large-\(q\) expansions
+  - section: Numerical experiments and reproducibility
+  - subsection: Validation results
+  - subsection: Interpretation of the density figures
+  - section: Conjectures and frontier research program
+  - subsection: Arithmetic and spectral questions
+  - subsection: A matrix-valued Thue--Morse extension
+  - subsection: Shape transition below \(\alpha=1\)
+  - subsection: Endpoint and inverse problems
+  - subsection: Orthogonal and interpolation questions
+  - subsection: Vector random-flight questions
+  - subsection: Formalization plan
+  - section: Conclusion
+  - section: The resultant polynomial for the \(\beta_3\) phase
+  - section: A direct formula for the periodic profile
+  - section: Numerical file inventory
+  - section: Repository comparison record
+
+### `semi-formalized-research-frontiers/drafts/representations/Lagrange_Rvachev_Closed_Loop_Report/data/moment_table.tex`
+
+- SHA-256: `6f1957876c8bca7b1fabccf785d855e194acd346e5b92750dc26e8e7ddfde660`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/representations/Lagrange_Rvachev_Closed_Loop_Report/data/quadratic_cardinal_table.tex`
+
+- SHA-256: `9bbb74d6103957a9dc6ab890a4bccae642c6ca4b5263cb22774bba3e827a43bf`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/representations/Lagrange_Rvachev_Closed_Loop_Report/lagrange_up_loop.tex`
+
+- SHA-256: `727ccd7491844ffc4f2d0a82f351e052e83f50acbfcb76f7d12aad0059f95099`
+- Phrase clusters: Exact digit-sum zero count; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Problem, terminology, and corpus audit
+  - subsection: The requested loop
+  - subsection: Repository audit and duplication boundary
+  - section: Fabius--Rvachev background
+  - subsection: The up-function, the Fabius function, and the sinc product
+  - subsection: Moments, Bernoulli cumulants, and Bell polynomials
+  - subsection: The moment Appell family and its inverse
+  - section: The dyadic integration ladder and the two-atom blocks
+  - subsection: One causal integration
+  - subsection: Repeated integration and binary partitions
+  - subsection: Tail moments and the two-atom theorem
+  - section: Exact Lagrange cardinal synthesis
+  - subsection: The main finite formula
+  - subsection: A nodes-only elementary-symmetric formula
+  - subsection: The Appell--Vandermonde inverse
+  - subsection: A worked quadratic cardinal system
+  - subsection: Algorithm and complexity
+  - section: A common-scale representation using shifts only
+  - subsection: Global common-scale synthesis
+  - subsection: The minimal d+2 endpoint dictionary
+  - section: The first closed loop: Lagrange interpolation of the up-function
+  - subsection: Finite interpolation and atom synthesis
+  - subsection: Uniform convergence on Chebyshev--Lobatto grids
+  - subsection: Nested Lagrange--Newton series
+  - subsection: A compactly supported smooth extension operator
+  - section: The second closed loop: the Fourier--Legendre expansion
+  - subsection: The corpus-known Legendre series
+  - subsection: Literal substitution through Lagrange cardinals
+  - subsection: The explicit Legendre-to-up transform
+  - subsection: The first three finite loops
+  - section: Structural analysis of the closed loop
+  - subsection: Finite-rank conjugacy
+  - subsection: Intrinsic sample-to-atom amplification
+  - subsection: Why the anchor minus two is unstable
+  - subsection: The top Legendre-loop amplitude
+  - subsection: Analyticity obstruction to a stable fixed-coefficient loop
+  - subsection: Endpoint asymptotics and a Lambert--W saddle
+  - section: Arithmetic and q-structural consequences
+  - subsection: Rationality
+  - subsection: Prime support on the equispaced grid
+  - subsection: q-products, aliases, and the two inverse finite products
+  - section: A parity-adapted two-sided ladder
+  - section: Exact and numerical experiments
+  - subsection: Reproducibility protocol
+  - subsection: Conditioning of the Appell--Vandermonde factor
+  - subsection: Legendre-loop coefficient growth
+  - section: Further frontier directions
+  - subsection: Renormalized atom bases
+  - subsection: A topology for a fixed-coefficient closure
+  - subsection: Sharper Legendre coefficient asymptotics
+  - subsection: Optimal cardinal grids for atomic extension
+  - subsection: Formal verification
+  - section: Conclusion
+  - section: Formula sheet
+  - section: Data files in the archive
+
+### `semi-formalized-research-frontiers/drafts/representations/Lagrange_Rvachev_Loop_Package/Lagrange_Rvachev_Loop.tex`
+
+- SHA-256: `978aeadec8087c5c44881ccc22b87fa2c3c5579aa539a462621c5418d066e4fb`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Executive summary and principal results
+  - section: Corpus audit, dependency boundary, and non-duplication
+  - subsection: How the repository was treated
+  - subsection: Exact ingredients imported from the corpus
+  - subsection: What appears to be new relative to the audited consolidated corpus
+  - section: Rvachev's up-function and the endpoint structure
+  - subsection: Normalization and basic identities
+  - subsection: Flatness and the dyadic endpoint law
+  - subsection: Why a broad atom can be tiny on the target interval
+  - section: Lagrange interpolation on an arbitrary node set
+  - section: The imported endpoint polynomial-synthesis theorem
+  - subsection: The common-scale endpoint dictionary
+  - subsection: The Bernoulli multiplier
+  - subsection: A self-contained algebraic inversion of the triangular step
+  - subsection: Bell-polynomial form of the differential multiplier
+  - section: Exact Lagrange polynomials as finite sums of shifted up-functions
+  - subsection: A closed finite coefficient formula
+  - subsection: Low-degree examples
+  - section: The geometric-node \texorpdfstring{$q$}{q}-binomial specialization
+  - section: Substitution and exact closure of the loop
+  - subsection: The double sum and its collapse
+  - subsection: Why direct synthesis gives the same answer
+  - section: The defect-completed matrix factorization
+  - subsection: Sampling and synthesis matrices
+  - subsection: The restricted Thue--Morse certificate
+  - subsection: The coefficient projector
+  - section: The canonical defect and the nodal ghost
+  - subsection: Canonical defect normalization
+  - subsection: The ghost identity
+  - subsection: Rank-one projector formula
+  - section: Function-space operator interpretation
+  - section: Equispaced dyadic interpolation: exact finite closure but no justified series
+  - section: Chebyshev closure and a genuinely convergent self-series
+  - subsection: Superalgebraic convergence
+  - subsection: Why the rate cannot be geometric
+  - subsection: A telescoping up-series
+  - section: Endpoint conditioning and the Lambert-scale barrier
+  - subsection: A universal amplitude lower bound
+  - subsection: Quadratic-exponential growth
+  - subsection: Stable output versus unstable internal coordinates
+  - subsection: Exact coefficient data
+  - section: Numerical experiments and reproducibility
+  - subsection: Exact arithmetic component
+  - subsection: Finite-convolution approximation of \texorpdfstring{$u$}{u}
+  - subsection: Interpolation diagnostics
+  - section: Connections with the surrounding Fabius--Rvachev theory
+  - subsection: Thue--Morse and the \texorpdfstring{$q$}{q}-integer annihilator
+  - subsection: Bell and Bernoulli polynomials
+  - subsection: Infinite sinc products and Strang--Fix reproduction
+  - subsection: Lambert \texorpdfstring{$W$}{W} and numerical conditioning
+  - subsection: Lagrange residual moments and the ghost
+  - subsection: Inverse Fabius and adaptive sampling
+  - section: Frontier conjectures and open problems
+  - section: Algorithms
+  - section: Formalization roadmap
+  - section: Conclusions
+  - section: Detailed proof of the elementary-symmetric derivative identity
+  - section: Proof of the geometric excluded-variable identity
+  - section: Exact low-degree regression identities
+  - section: Reproducibility files
+  - section: Repository paths audited most directly
+
+### `semi-formalized-research-frontiers/drafts/representations/Lagrange_Rvachev_Loop_Package/low_degree_cardinal_coefficients.tex`
+
+- SHA-256: `79226211bc66bf30a7365134cca7610adcde4f264f418e6f4b928c5cbf967153`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Closed_Loop_Report_v3/legendre_rvachev_closed_loop.tex`
+
+- SHA-256: `8bbd922a51dbc6a132892c43c226d57fda220f0b41550c2d27cd90f97ed324d2`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Scope, corpus audit, and status discipline
+  - subsection: Audit strategy
+  - subsection: Meaning of ``new''
+  - section: The up-function, its probability law, and Appell calculus
+  - subsection: Normalization and Fourier product
+  - subsection: Probability representation and moment generating function
+  - subsection: Reciprocal MGF, Bell polynomials, and deconvolution
+  - subsection: Thue--Morse and q-integer products
+  - section: Imported arbitrary-polynomial synthesis
+  - subsection: Global common-scale formula
+  - subsection: Sharp scale, local dimension, and endpoint basis
+  - subsection: The one-dimensional defect
+  - section: Explicit Legendre specialization
+  - subsection: Deconvolved Legendre polynomials
+  - subsection: Finite shift-only representation
+  - subsection: Endpoint compression
+  - section: The canonical Fourier--Legendre expansion and first closed loop
+  - subsection: Exact coefficients
+  - subsection: Termwise closure
+  - subsection: One common lattice per partial sum
+  - subsection: Why grouping is essential
+  - section: A hidden orthogonal family: pullback Legendre geometry
+  - subsection: Pullback inner product and probabilistic form
+  - subsection: Transmuted Rodrigues formula and recurrence
+  - subsection: Conjugated Sturm--Liouville operator
+  - subsection: Transmuted Christoffel--Darboux kernel
+  - section: Continuous--discrete biorthogonality and Gram geometry
+  - subsection: A metric projector in atom coefficient space
+  - section: Two-sided up-atom factorization of the even projection kernel
+  - section: Parity anatomy of the local up-spline space
+  - section: A central reflected-pair basis and its q-determinant
+  - subsection: Central pairs
+  - subsection: Endpoint-tail generating functions
+  - subsection: The determinant certificate
+  - subsection: The central basis theorem
+  - subsection: Arithmetic and the binary-partition threshold
+  - subsection: Worked formulas
+  - section: The symmetric common-scale closed loop
+  - section: Superalgebraic convergence and derivative loops
+  - section: Exact and numerical experiments
+  - subsection: Determinant and reconstruction certificates
+  - subsection: Cancellation in exact central atomizations
+  - subsection: Legendre convergence
+  - subsection: An exact spectral transition at degree twelve
+  - section: Minimal central Gram geometry and structural interpretation
+  - subsection: Three exact coordinate systems
+  - subsection: How the q-product enters
+  - subsection: Why closure does not force analyticity
+  - section: Conjectures and frontier problems
+  - section: Conclusions
+  - section: Exact coefficient algorithms
+  - subsection: Moments and reciprocal-MGF coefficients
+  - subsection: Deconvolved Legendre coefficients
+  - subsection: Endpoint reduction
+  - subsection: Binary-partition coefficient
+  - subsection: Central coefficients
+  - section: Reproducibility inventory
+
+### `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Closed_Loop_Report_v4/generated/connection_matrices.tex`
+
+- SHA-256: `310ff6473914f39ee6416c230448fb0ddae63da85c25f73da2c7396bb2dcf2be`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Closed_Loop_Report_v4/generated/fixed_scale_summary.tex`
+
+- SHA-256: `b1a5f05a0d6fb6afb15d5ce8ad02b3c2393608dd5219ba7d74a0b785a7bc0034`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Closed_Loop_Report_v4/generated/low_degree_legendre_atoms.tex`
+
+- SHA-256: `2839c9b35dee6a7918bd1cf36af1794d637a43fbcb9cbaf12087b4f4a5b3b358`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Closed_Loop_Report_v4/generated/sign_evidence.tex`
+
+- SHA-256: `b8c14855454c4da423885e4a7f235407b69c944bc6ddf27f894e3e3c19963b2e`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Closed_Loop_Report_v4/legendre_rvachev_closed_loop.tex`
+
+- SHA-256: `7eff3989000e82f72f4b9e9761f75b807ec95bf369f46b67d96abce207594274`
+- Phrase clusters: Exact digit-sum zero count; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Problem, corpus audit, and nonduplication boundary
+  - subsection: The requested composition
+  - subsection: Repository-wide thematic audit
+  - subsection: Status convention
+  - section: Imported Rvachev, Fabius, and Legendre data
+  - subsection: The up-function and its transforms
+  - subsection: Fabius special values
+  - subsection: The even Fourier--Legendre series
+  - section: The imported arbitrary-polynomial endpoint theorem
+  - subsection: The common-scale dictionary
+  - subsection: The $q$-integer annihilator
+  - subsection: The Bernoulli output-sensitive multiplier
+  - subsection: The finite Thue--Morse certificate
+  - section: Direct finite synthesis of Legendre polynomials
+  - subsection: Affine specialization to $[-1,1]$
+  - subsection: Low-degree formulas
+  - subsection: A signed-coordinate phenomenon
+  - section: Closing the Fourier--Legendre loop at one scale
+  - subsection: Common dictionary at cutoff $N$
+  - subsection: The first two loops
+  - subsection: Atom-count comparison
+  - section: A direct Legendre--Rvachev--Appell connection
+  - subsection: Centered Rvachev--Appell polynomials
+  - subsection: Forward connection coefficients
+  - subsection: Inverse connection coefficients
+  - subsection: A universal determinant
+  - section: A Bernoulli-deformed Legendre operator
+  - subsection: Conjugating multiplication by $x$
+  - subsection: Transmuted recurrence and differential equation
+  - section: Legendre moments completed by a Thue--Morse row
+  - subsection: Endpoint atoms on the physical interval
+  - subsection: The augmented square transform
+  - subsection: Dyadic Fabius cell moments
+  - section: Arithmetic and $q$-structural consequences
+  - subsection: Rationality at every layer
+  - subsection: Three appearances of the same dyadic arithmetic
+  - subsection: A $q$-binomial form of the connection coefficients
+  - subsection: Denominators and valuations
+  - section: Conditioning, endpoint flatness, and Lambert--$W$
+  - subsection: Exact identities versus unstable evaluation
+  - subsection: Closed-loop coefficient growth
+  - subsection: Why Lambert--$W$ appears
+  - subsection: Numerical diagnostic
+  - section: Further deductions from the closed loop
+  - subsection: A finite-rank extension/restriction factorization
+  - subsection: A defect-sensitive reconstruction formula
+  - subsection: Universality beyond the Rvachev law
+  - subsection: A route to fast coefficient generation
+  - section: Conjectures and frontier directions
+  - section: Conclusion
+  - section: Formula sheet
+  - section: Pseudocode for the direct closed loop
+  - section: Reproducibility files
+
+### `semi-formalized-research-frontiers/drafts/representations/Legendre_Rvachev_Self_Reconstruction/legendre_rvachev_self_reconstruction.tex`
+
+- SHA-256: `23180ac9e6ed8bfc9c9d0e7e01d97890b2414768fef982d7a1563083fdba8376`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Corpus audit and mathematical orientation
+  - subsection: Principal repository inputs
+  - subsection: Imported, specialized, and new deductions
+  - section: Rvachev's atom, its MGF, and polynomial deconvolution
+  - subsection: Normalization and Fourier product
+  - subsection: Bernoulli cumulants and Bell-polynomial inverse
+  - subsection: The imported exact polynomial theorem
+  - section: Finite shifted-up synthesis of Legendre polynomials
+  - subsection: The deconvolved Legendre family
+  - subsection: The requested finite Legendre representation
+  - subsection: Even modes and the nested quarter-grid
+  - section: Closing the existing Fourier--Legendre loop
+  - subsection: Exact rational Legendre coefficients
+  - subsection: The blockwise self-loop
+  - subsection: One lattice for each partial sum
+  - section: Orthogonal finite translate blocks
+  - subsection: An exact atom-Gram identity
+  - subsection: Rank-one atomized detail projectors
+  - section: A positive rational energy series and an infinite sinc integral
+  - subsection: The square energy of the Fabius function
+  - subsection: A nested dyadic-Fabius square series
+  - section: Sturm--Liouville and Sobolev energy hierarchies
+  - section: Nested grids, exact null trains, and a lifting law
+  - subsection: A general interlevel null relation
+  - subsection: The refinement cocycle
+  - subsection: A quarter-grid lifting decomposition
+  - section: Endpoint, center, and derivative sum rules
+  - subsection: Mode-wise biorthogonality
+  - section: Even Christoffel--Darboux projectors as dual translate frames
+  - subsection: The even projection kernel
+  - section: Factorial deconvolution and a sharp central-coefficient law
+  - subsection: Imported asymptotic input
+  - subsection: Legendre coefficients cannot decay geometrically
+  - subsection: \texorpdfstring{Lambert-$W$}{Lambert-W} threshold
+  - section: Connections across the Fabius--Rvachev corpus
+  - subsection: Bell and Bernoulli polynomials
+  - subsection: q-binomial coefficients and dyadic arithmetic
+  - subsection: Thue--Morse and nullspace geometry
+  - subsection: Infinite sinc products and energy
+  - section: Numerical and exact verification
+  - subsection: Exact arithmetic checks
+  - subsection: Reproduction command
+  - section: Conjectures and frontier directions
+  - subsection: Higher-dimensional and other orthogonal systems
+  - section: Formalization roadmap
+  - section: Conclusion
+  - section: Exact recurrences used by the program
+  - section: Artifact inventory
+
+### `semi-formalized-research-frontiers/drafts/representations/Matrix_Dilated_Fabius_Rvachev_Frontier_Report/matrix_dilated_fabius_rvachev.tex`
+
+- SHA-256: `fe9d903e1a09e07014f24aab6114751b8187c0a630fb8f63a128aa26f7abc6b3`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Corpus audit, contribution boundary, and notation
+  - subsection: Recursive audit
+  - subsection: The scalar baseline
+  - subsection: Matrix notation
+  - section: The matrix-dilated law and its self-affine support
+  - section: Fourier product, matrix Mahler equation, and smoothness
+  - subsection: A finite-frame decay mechanism
+  - subsection: Log-concavity survives the infinite matrix cascade
+  - section: The matrix Rvachev equation
+  - section: Finite box splines and all-orders geometric approximation
+  - subsection: The Bell--Bernoulli operator to arbitrary order
+  - section: The multivariate Thue--Morse derivative cube
+  - section: Bell--Bernoulli tensor cumulants and arithmetic
+  - section: Appell--Koopman structure and Legendre projections
+  - subsection: A matrix Appell intertwiner
+  - subsection: Exact Legendre coefficients of every projection
+  - section: Zonoid volume and the geometry carried by the density
+  - section: The rotating planar family
+  - subsection: Perimeter and area as exact \texorpdfstring{$q$}{q}-series
+  - subsection: Dense edges and an exact curvature measure
+  - subsection: Rational functions versus natural boundaries
+  - subsection: An Abel shape theorem: polygons versus a disk
+  - subsection: Cyclotomic formulas for projection cumulants
+  - section: Directional caps, generalized inverse Fabius functions, and Lambert scales
+  - section: Numerical experiments
+  - subsection: Geometry checks
+  - subsection: Fourier, covariance, and Prouhet checks
+  - subsection: Reproduction command
+  - section: Formalization blueprint
+  - subsection: Phase I: generic vector series and support
+  - subsection: Phase II: sinc products and smoothness
+  - subsection: Phase III: distributions and derivative cubes
+  - subsection: Phase IV: tensor algebra
+  - subsection: Phase V: planar convex geometry
+  - section: Open problems and further research
+  - section: Conclusion
+  - section: Fourier and tensor conventions
+  - section: A quantitative finite-prefix smoothness lemma
+  - section: Generated files and numerical ledger
+
+### `semi-formalized-research-frontiers/drafts/representations/Representation_Frontiers/Representation_Frontiers.tex`
+
+- SHA-256: `3205954527dbf3fdb9463e59e8a4e12174f63c4cd772c7404b88cab5456c5d66`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Provenance
+  - part: Resolvent, Continued-Fraction, and Transform Representations of the Fabius--Rvachev System
+  - section: Executive summary and novelty boundary
+  - subsection: What was audited
+  - subsection: Non-duplication protocol
+  - subsection: Main new results
+  - section: Normalization and structural dictionary
+  - subsection: The functions
+  - subsection: Fourier convention and basic transforms
+  - subsection: The probability model
+  - section: Audited representation atlas
+  - subsection: Real-space and probability representations of \(\rho\)
+  - subsection: Product, zero, gamma, and exponential representations of \(\Phi\)
+  - subsection: Moment, cumulant, and Bell-polynomial representations
+  - subsection: Transform representations of \(F\) and \(F^{-1}\)
+  - subsection: A compact atlas table
+  - section: The Cauchy--Stieltjes transform}\label{p1:sec:cauchy
+  - section: A dyadic functional equation for the resolvent
+  - subsection: Logarithmic fixed-point identity
+  - subsection: Functional-differential equation
+  - subsection: All-order Thue--Morse derivative tree
+  - subsection: Uniqueness in the Stieltjes class
+  - section: Finite logarithmic resolvents and the spline boundary jump
+  - section: Exact transforms of \(F\), one-sided \(\Up\), and \(F^{-1}\)}\label{p1:sec:fabius-transforms
+  - subsection: The Laplace and Fourier transforms of \(F\)
+  - subsection: One-sided transforms of the up-function
+  - subsection: The inverse Fabius function as a transport map
+  - section: Logarithmic derivatives of the Fourier image
+  - subsection: Three meromorphic expansions
+  - subsection: Digamma and Hurwitz-zeta hierarchy
+  - section: A Fredholm determinant for the Fourier product}\label{p1:sec:fredholm
+  - section: Jacobi continued fractions and exact rational coefficients}\label{p1:sec:jacobi
+  - subsection: Exact moment recurrence
+  - subsection: Monic orthogonal polynomials
+  - subsection: The Jacobi and Stieltjes fractions
+  - subsection: Hankel determinants
+  - subsection: Exact coefficients and numerical evidence
+  - subsection: The limiting coefficient
+  - subsection: Pad\'e and Gaussian-quadrature representations
+  - section: Further combined representations
+  - subsection: The Cauchy transform of the Fabius measure
+  - subsection: A determinant form of the Fabius Laplace transform
+  - subsection: A resolvent--product--continued-fraction triangle
+  - section: Numerical experiments and reproducibility
+  - subsection: Exact arithmetic
+  - subsection: Numerical verification of the resolvent equation
+  - subsection: Numerical comparison of logarithmic derivatives
+  - section: Conjectures and frontier problems
+  - section: Promising research program
+  - subsection: Analytic program
+  - subsection: Orthogonal-polynomial program
+  - subsection: Operator and special-function program
+  - subsection: Inverse-function program
+  - section: Conclusion
+  - section: Reproducibility instructions}\label{p1:app:repro
+  - section: Corpus audit ledger}\label{p1:app:corpus
+  - section: Selected exact data}\label{p1:app:data
+  - part: Representation Atlas and New Analytic Bridges for the Fabius and Rvachev Functions
+  - section: Scope, source audit, and status discipline
+  - subsection: Repository boundary
+  - subsection: Collision quarantine
+  - subsection: Status legend and limits of the novelty statement
+  - section: Normalization and the master probability diagram
+  - subsection: The compact law and its CDF
+  - subsection: Fixed-point integral equations
+  - subsection: The signed global extension and derivative tower
+  - section: Infinite convolutions, finite splines, and head--tail representations
+  - subsection: Box convolution
+  - subsection: General truncated-power spline
+  - subsection: Hypercube and section representations
+  - section: Fourier-product atlas and spectral representations
+  - subsection: Conventions and the three canonical products
+  - subsection: Logarithmic Taylor series and partial fractions
+  - subsection: Linear and quadratic heat traces
+  - subsection: Frullani--Lambert integral for the Fourier product
+  - subsection: Fredholm determinant and spectral zeta
+  - section: Fourier inversion, sampling, and interval series
+  - subsection: Whole-line inversion
+  - subsection: Poisson partition and half-integer spectrum
+  - subsection: Paley--Wiener sampling of the Fourier image
+  - subsection: Fourier--Legendre representation
+  - section: Laplace, Mellin, moment, and \texorpdfstring{$q$}{q}-series representations
+  - subsection: Moment-generating and Laplace products
+  - subsection: Mellin moments, including negative orders
+  - subsection: Cumulants, Bernoulli numbers, and Bell polynomials
+  - subsection: Wick rotation, Newton recurrence, and \texorpdfstring{$q$}{q}-MZV formula
+  - subsection: Appell and logistic representations already in the corpus
+  - section: Thue--Morse, dyadic arithmetic, and finite product-to-sum bridges
+  - section: Endpoint Laplace phases, Lambert \texorpdfstring{$W$}{W}, and inverse asymptotics
+  - part: New theorem packages
+  - section: The dyadic gamma factorization
+  - subsection: Definition, convergence, and poles
+  - subsection: Reflection factorization of the Rvachev transform
+  - subsection: Canonical reciprocal product and power series
+  - subsection: Dyadic digamma and Stieltjes resolvent
+  - subsection: Malmsten and heat-trace integrals
+  - subsection: Geometric-\texorpdfstring{$q$}{q} extension
+  - section: Gaussian variance mixtures and the logistic dual
+  - subsection: The existing Thorin variable
+  - subsection: Equality in law
+  - subsection: Convolution semigroup, density, and moments
+  - subsection: Closed Levy density and self-decomposability
+  - subsection: Complete monotonicity in the squared coordinate
+  - section: Jensen means, factorial products, and binary digit sums
+  - subsection: Exact circular mean
+  - subsection: Digit-sum derivative
+  - subsection: Asymptotic growth
+  - subsection: Subunit circular energy
+  - section: Non-holonomicity from the arithmetic zero divisor
+  - section: Fourier representations of the bounded Fabius function
+  - subsection: The density transform
+  - subsection: The global CDF as a tempered distribution
+  - subsection: Sine integral and odd-harmonic series
+  - subsection: Gamma versions
+  - section: Quantile and inverse-Fabius transform representations
+  - subsection: Quantile pushforward and product transforms
+  - subsection: A nonlinear Fourier transform of the inverse
+  - subsection: Sine series of the inverse in terms of \texorpdfstring{$F$}{F}
+  - section: Compact representation atlas
+  - section: Numerical experiments and reproducibility
+  - subsection: Dyadic gamma factorization
+  - subsection: Jensen mean
+  - subsection: Logistic series versus Gaussian mixture
+  - subsection: Fabius sine series
+  - subsection: Reproduction command
+  - section: Conjectures and testable frontier statements
+  - section: Promising research directions
+  - subsection: Formalization roadmap
+  - subsection: Spectral geometry and complex analysis
+  - subsection: Probability and semigroups
+  - subsection: Base-\texorpdfstring{$b$}{b} and geometric-\texorpdfstring{$q$}{q} families
+  - subsection: Inverse spectral analysis
+  - subsection: Computer-assisted certification
+  - section: Conclusion
+  - section: Audited living document families
+  - section: Numerical package contents
+  - section: Selected derivations in one line
+  - part: Dyadic Multiresolution and Product-Series Representations in the Fabius--Rvachev System
+  - section: Audit protocol, scope, and novelty boundary
+  - subsection: Pinned corpus and cumulative audit
+  - subsection: Explicit exclusion map
+  - subsection: Status ledger
+  - section: Normalization and the function triad
+  - subsection: Bounded Fabius function, density, and Rvachev function
+  - subsection: Fourier convention
+  - subsection: Probabilistic model
+  - section: A representation atlas from the existing theory
+  - subsection: Infinite convolution, cube integrals, and finite heads
+  - subsection: Sinc, hyperbolic-sinc, and renormalization products
+  - subsection: Moments, cumulants, Bell polynomials, and Bernoulli numbers
+  - subsection: Fourier inversion, twisted Poisson summation, and cosine series
+  - subsection: Fourier images of $p$, $F$, and $1-F$
+  - subsection: Quantile, Stieltjes, and correlation representations
+  - subsection: Legendre and Chebyshev coefficient integrals
+  - section: The projective dyadic mass array
+  - subsection: Definition and exact algebra
+  - subsection: Fixed-cell uniform mixtures
+  - subsection: Rational exponential-polynomial limits for the transforms
+  - subsection: A second-order quadrature principle
+  - subsection: Moments, $L^q$ norms, and discrete entropies
+  - section: Haar and Faber--Schauder representations
+  - subsection: Rational unnormalized Haar increments
+  - subsection: Fourier image of the Haar expansion
+  - subsection: Faber--Schauder series of the Fabius function
+  - subsection: A sinc-squared series for the Fourier image of $F$
+  - section: Walsh--Hadamard and Thue--Morse product representations
+  - subsection: Paley Walsh functions and the finite Hadamard transform
+  - subsection: Reflection selection rules
+  - subsection: Finite-product Fourier transform of a Walsh mode
+  - subsection: A series of finite products for the infinite sinc product
+  - subsection: Exact Hamming-weight cancellation
+  - subsection: The Gaussian-binomial cancellation spectrum
+  - subsection: All higher Walsh moments: a Bell--Bernoulli formula
+  - section: Bernstein polynomials and positive beta-mixture limits
+  - subsection: Rational Bernstein approximants
+  - subsection: Derivative as a beta-density mixture
+  - subsection: Hypergeometric transform representations
+  - section: Dual quantile cells and equal-weight sinc mixtures
+  - subsection: The inverse dyadic width array
+  - subsection: Exact chord integration and the Fourier image
+  - subsection: Moment and Laplace limits from inverse dyadic values
+  - subsection: Dual $L^q$ spectra and entropy constants
+  - section: Haar scale energies and the $\sinc^4$ continuum expansion
+  - subsection: Three exact forms of the energy
+  - subsection: Local Taylor expansion of a Haar coefficient
+  - subsection: A frequency multiplier and a superalgebraic alias remainder
+  - subsection: All orders and Bell--Bernoulli coefficients
+  - subsection: Derivative norms from half-integer samples of the sinc product
+  - subsection: A meromorphic generating function for the rational energies
+  - subsection: Beyond all orders: a phase-locked alias frontier
+  - section: Multiresolution of the inverse Fabius function
+  - subsection: Faber--Schauder series and reflection
+  - subsection: Fourier and Walsh images of the inverse
+  - subsection: Boundary coefficients and slow variation
+  - subsection: Boundary domination of inverse interpolation
+  - section: Comparison of the representation families
+  - subsection: A commuting diagram of finite transforms
+  - subsection: Computational observations
+  - section: Further deductions and frontier directions
+  - subsection: Exact arithmetic of multiresolution coefficients
+  - subsection: Mass-polynomial renormalization
+  - subsection: Hamming layers and Walsh pressure
+  - subsection: Higher-order rational multiwavelets
+  - subsection: Beta mixtures and confluent dyadic extrapolation
+  - subsection: Quantile-width extremes and Lambert phases
+  - subsection: Base-$b$ and nonuniform scale systems
+  - subsection: Formalization route
+  - section: Numerical and exact-symbolic verification
+  - subsection: Exact checks
+  - subsection: Transform convergence
+  - subsection: Haar energy asymptotics
+  - subsection: Reproducibility files
+  - section: Conclusions
+  - section: Compact formula index
+  - section: Proof details for two auxiliary identities
+  - subsection: Derivation of the local Haar expansion
+  - subsection: Absolute convergence of the first-moment Hamming layers
+  - section: Reproducibility ledger
+  - section: Scope, audit boundary, and proof-status discipline
+  - subsection: What was audited
+  - subsection: Prior art inside the repository
+  - section: Normalization dictionary and the probability model
+  - subsection: The three real functions
+  - subsection: Random uniform series
+  - subsection: Fourier conventions
+  - section: A representation atlas from the audited corpus
+  - subsection: Refinement and functional-differential forms
+  - subsection: Infinite convolution and finite box splines
+  - subsection: Dyadic sinc and cosine products
+  - subsection: Collapsed canonical product and 2-adic multiplicity
+  - subsection: Logarithmic, zeta, and Bernoulli series
+  - subsection: Fourier inversion, cosine series, and sampling
+  - subsection: Endpoint Laplace products
+  - subsection: Exact reciprocal-dyadic values
+  - subsection: Endpoint and inverse asymptotics
+  - section: A specified Dirichlet operator and a genuine Fredholm determinant
+  - subsection: The Green block
+  - subsection: The dyadic direct sum
+  - subsection: A self-adjoint operator whose degeneracies are 2-adic
+  - subsection: Exact renormalization by removing one block
+  - subsection: Geometric-scale and exponent-sequence operators
+  - section: Resolvent, heat, theta, and Stieltjes representations
+  - subsection: The logarithmic derivative as a resolvent trace
+  - subsection: Heat trace and dyadic theta series
+  - subsection: Exponentials of heat integrals
+  - subsection: Complete Bernstein structure
+  - section: Probability laws generated by the operator
+  - subsection: Brownian-bridge quadratic functionals
+  - subsection: An exponential series and a generalized gamma convolution
+  - subsection: A Thorin and heat-measure description
+  - section: Exterior powers, exact moments, and reciprocal-dyadic values
+  - subsection: Exterior powers are normalized even moments
+  - subsection: A positive spectral formula for \(F(2^{-n})\)
+  - subsection: A contour coefficient representation
+  - section: P\'olya-frequency structure and real-zero consequences
+  - subsection: Toeplitz total positivity
+  - subsection: Strict Newton--Tur\'an inequalities
+  - subsection: Laguerre--P\'olya class and derivative zeros
+  - section: Determinant inversion formulas for \(\Up\) and \(F\)
+  - subsection: Real Fourier integrals
+  - subsection: Bromwich--Fredholm inversion
+  - subsection: A determinant series on compact subdisks
+  - section: A Mellin--Barnes Fredholm representation of the endpoint transform
+  - subsection: Pole geometry and the periodic endpoint term
+  - subsection: A second Mellin representation through the heat trace
+  - section: Numerical experiments and reproducibility
+  - subsection: Fourier product versus trace exponential
+  - subsection: Exact exterior powers and Tur\'an ratios
+  - subsection: Mellin--Barnes validation
+  - section: Further proved deductions and frontier conjectures
+  - subsection: A unique critical point in every spectral gap
+  - subsection: Fredholm minors for pointwise values
+  - subsection: Operator saddle theory for the inverse Fabius function
+  - subsection: Beyond the classical dyadic tower
+  - subsection: Exponentially small endpoint structure
+  - subsection: Formalization targets
+  - section: Conclusion
+  - section: Master table of representations
+  - section: Proof details for the exterior-power dyadic formula
+  - section: Recursive corpus map and nonduplication checklist
+  - section: Numerical archive contents
+  - part: Polyphase, Operator, and Jump-Measure Representations
+  - section: Scope, corpus audit, and novelty discipline
+  - subsection: Pinned source boundary
+  - subsection: Status convention
+  - subsection: What is deliberately not claimed as new
+  - section: Normalization and structural dictionary
+  - subsection: The probability law, the bump, and the bounded function
+  - subsection: Fourier and sinc conventions
+  - subsection: Thue--Morse normalizations
+  - section: A compact representation atlas
+  - subsection: Probability, infinite-cube, and distribution representations
+  - subsection: Differential and refinement representations
+  - subsection: Fourier inversion and CDF inversion
+  - subsection: Laplace, Bromwich, and Fourier images of the bounded function
+  - subsection: Product, canonical-zero, and Gamma representations
+  - subsection: Moments, cumulants, and Bell--Bernoulli series
+  - subsection: Finite splines, Poisson series, and multiresolution forms
+  - subsection: Resolvent and determinant forms
+  - section: Polyphase factorization by scale classes
+  - subsection: Sparse-scale products and laws
+  - subsection: A sparse Rvachev differential equation
+  - subsection: Cosine, Gamma, canonical-zero, and logarithmic forms
+  - subsection: Spectral zeta and determinant splitting
+  - subsection: Hyperbolic products, cumulants, and Bell polynomials
+  - section: Mellin alias cancellation and log-periodic phases
+  - subsection: A general harmonic-sum lemma
+  - subsection: Application to logarithmic Fourier and Laplace products
+  - section: Multidimensional volume and section representations
+  - subsection: Radon notation and the product density
+  - subsection: Coordinate integral forms
+  - subsection: A geometric representation of the inverse Fabius function
+  - subsection: Polyphase transforms of the bounded Fabius function
+  - subsection: Nested polyphase factorizations
+  - section: Finite sparse splines and Thue--Morse jump measures
+  - subsection: Truncated-power and Fourier-quotient formulas
+  - subsection: The derivative-jump formula
+  - subsection: Reading the sequence from left to right
+  - subsection: Atomic convolution, Fourier, and Laplace products
+  - subsection: Unsigned evil and odious measures
+  - section: Bell--Bernoulli power sums on sparse knots
+  - subsection: Prouhet cancellation and all surviving powers
+  - subsection: Finite cumulants and complete Bell form
+  - subsection: Unsigned power sums
+  - subsection: Infinite moment limits
+  - subsection: A Gaussian \texorpdfstring{$q$}{q}-binomial side identity
+  - section: Infinite products of averaging operators
+  - subsection: Uniform averaging and strong product limits
+  - subsection: Bernoulli logarithm of the operator product
+  - subsection: Exact tail operators and series--product combinations
+  - subsection: Reciprocal and deconvolution operators
+  - section: Twisted Poisson and zero-slope representations
+  - subsection: A one-parameter Zak family
+  - subsection: Differentiating through the untwisted limit
+  - section: Sparse lobe signs and base-\texorpdfstring{$2^r$}{2-to-the-r} digit sums
+  - section: Representation concordance
+  - subsection: Rvachev's up-function and its Fourier image
+  - subsection: The bounded and inverse Fabius functions
+  - subsection: Signed and unsigned Thue--Morse representations
+  - section: Rigidity and extraction of the polyphase factor
+  - section: Numerical and exact verification
+  - subsection: Verification protocol
+  - subsection: Visual factorization
+  - subsection: Reproduction
+  - section: Conjectures and frontier directions
+  - subsection: Uniform all-orders deconvolution
+  - subsection: Nondegeneracy of sparse Mellin harmonics
+  - subsection: Sparse endpoint asymptotics
+  - subsection: Radon tomography and section algorithms
+  - subsection: Orthogonal polynomials and sparse spectral data
+  - subsection: Twisted scale characters
+  - subsection: General bases and residue subsets
+  - subsection: Arithmetic of sparse knot limits
+  - subsection: Formalization roadmap
+  - section: Conclusion
+  - section: Corpus audit boundary
+  - section: Archive contents and reproducibility
+  - section: Selected identities in machine-friendly form
+  - part: Sampling, Pad\'e, Mellin, Resolvent, and Product--Integral Representations
+  - section: Executive summary and novelty boundary
+  - subsection: What was audited
+  - subsection: Non-duplication protocol
+  - subsection: Main new results
+  - section: Normalization and structural dictionary
+  - subsection: The functions
+  - subsection: Fourier convention and basic transforms
+  - subsection: The probability model
+  - section: Audited representation atlas
+  - subsection: Real-space and probability representations of \(\rho\)
+  - subsection: Product, zero, gamma, and exponential representations of \(\Phi\)
+  - subsection: Moment, cumulant, and Bell-polynomial representations
+  - subsection: Transform representations of \(F\) and \(F^{-1}\)
+  - subsection: A compact atlas table
+  - section: The Cauchy--Stieltjes transform}\label{p6:sec:cauchy
+  - section: A dyadic functional equation for the resolvent
+  - subsection: Logarithmic fixed-point identity
+  - subsection: Functional-differential equation
+  - subsection: All-order Thue--Morse derivative tree
+  - subsection: Uniqueness in the Stieltjes class
+  - section: Finite logarithmic resolvents and the spline boundary jump
+  - section: Exact transforms of \(F\), one-sided \(\Up\), and \(F^{-1}\)}\label{p6:sec:fabius-transforms
+  - subsection: The Laplace and Fourier transforms of \(F\)
+  - subsection: One-sided transforms of the up-function
+  - subsection: The inverse Fabius function as a transport map
+  - section: Logarithmic derivatives of the Fourier image
+  - subsection: Three meromorphic expansions
+  - subsection: Digamma and Hurwitz-zeta hierarchy
+  - section: A Fredholm determinant for the Fourier product}\label{p6:sec:fredholm
+  - section: Jacobi continued fractions and exact rational coefficients}\label{p6:sec:jacobi
+  - subsection: Exact moment recurrence
+  - subsection: Monic orthogonal polynomials
+  - subsection: The Jacobi and Stieltjes fractions
+  - subsection: Hankel determinants
+  - subsection: Exact coefficients and numerical evidence
+  - subsection: The limiting coefficient
+  - subsection: Pad\'e and Gaussian-quadrature representations
+  - section: Further combined representations
+  - subsection: The Cauchy transform of the Fabius measure
+  - subsection: A determinant form of the Fabius Laplace transform
+  - subsection: A resolvent--product--continued-fraction triangle
+  - section: Half-lattice Shannon reconstruction and a convergent Mittag--Leffler formula
+  - section: Odd-harmonic cosine series and spectral Prouhet cancellation
+  - section: Bose--Malmsten product-integrals for the Fourier image
+  - section: Mellin and quantile representations
+  - section: Formal Thue--Morse orthogonality and nonlinear Jacobi renormalization
+  - section: Explicit dyadic Pad\'e approximants and antiperiodic quadrature
+  - subsection: A Krawtchouk and contour avatar
+  - section: Numerical experiments and reproducibility
+  - subsection: Exact arithmetic
+  - subsection: Numerical verification of the resolvent equation
+  - subsection: Numerical comparison of logarithmic derivatives
+  - subsection: Second-wave sampling, Mellin, and Pad\'e checks
+  - section: Conjectures and frontier problems
+  - section: Promising research program
+  - subsection: Analytic program
+  - subsection: Orthogonal-polynomial program
+  - subsection: Operator and special-function program
+  - subsection: Inverse-function program
+  - section: Conclusion
+  - section: Reproducibility instructions}\label{p6:app:repro
+  - section: Corpus audit ledger}\label{p6:app:corpus
+  - section: Selected exact data}\label{p6:app:data
+  - part: Unit-Circle, Bessel, and Spectral--Monodromy Representations
+  - section: Scope, conventions, and nonduplication protocol
+  - subsection: Normalized objects
+  - subsection: Corpus audit
+  - subsection: Proof-status convention
+  - section: Established representation atlas
+  - subsection: Random series, convolutions, and refinement
+  - subsection: Finite Thue--Morse splines
+  - subsection: Fourier, hyperbolic, and canonical products
+  - subsection: Moments, cumulants, Bell polynomials, and Bernoulli numbers
+  - subsection: Cauchy, logarithmic, determinant, and continued-fraction forms
+  - subsection: Fabius and inverse-function transform forms
+  - section: Probability--Chebyshev coordinates
+  - section: Unit-circle lift and Carath\'eodory--Joukowski bridge
+  - subsection: A canonical probability measure on the circle
+  - subsection: Joukowski uniformization
+  - subsection: Boundary recovery of \(\rho\)
+  - subsection: Phase series for \(F\) and \(F^{-1}\)
+  - subsection: Disk form of the resolvent differential equation
+  - section: Bessel series equal to the dyadic products
+  - subsection: Laplace--Bessel--Joukowski chain
+  - subsection: Fabius and inverse-Fabius transforms
+  - section: Schur, Verblunsky, CMV, and Toeplitz representations
+  - subsection: Schur algorithm and rationality
+  - subsection: Wall--Schur continued fraction
+  - subsection: Geronimus bridge to Jacobi coefficients
+  - subsection: CMV resolvent
+  - subsection: Toeplitz determinants and Szeg\H{o} product
+  - section: Spectral, contour, and monodromy formulas for Thue--Morse
+  - subsection: Zero-counting encodes the full binary digit sum
+  - subsection: Logarithmic monodromy of finite resolvents
+  - subsection: Abel--Poisson regularization of the Rademacher product
+  - subsection: A cardinal Bessel--Thue--Morse expansion
+  - section: Compact representation atlas
+  - section: Exact computations and numerical experiments
+  - subsection: Bessel convergence
+  - subsection: Three independent Cauchy-transform evaluations
+  - subsection: Verblunsky data
+  - subsection: Reproducibility boundaries
+  - section: Conjectures and frontier research program
+  - subsection: Promising research directions
+  - section: Conclusion
+  - section: Proof details and convergence notes
+  - subsection: Smoothness of the circle weight
+  - subsection: Local uniform convergence of Bessel series
+  - subsection: Log-integrability of the circle weight
+  - subsection: A direct expression for the circle measure
+  - section: Reproducibility map
+  - part: Dyadic Multiresolution and Sampling Frontiers for the Fabius--Rvachev System
+  - section: Audit boundary, status discipline, and contribution map
+  - subsection: Pinned recursive corpus
+  - subsection: Meaning of the status labels
+  - subsection: Existing material deliberately excluded from novelty claims
+  - subsection: New theorem package
+  - section: Normalization and established representation atlas
+  - subsection: The three functions
+  - subsection: Probability and infinite convolution
+  - subsection: Functional--differential and Volterra forms
+  - subsection: Fourier, Laplace, product, and canonical-product forms
+  - subsection: Finite splines, exact dyadic arithmetic, and limits
+  - subsection: Moment, orthogonal-polynomial, and endpoint forms
+  - subsection: A compact dictionary of established representations
+  - section: Exact rational Faber--Schauder representation
+  - subsection: Dyadic tents and midpoint defects
+  - subsection: Coefficient kernel, symmetry, signs, and curvature
+  - subsection: Sharp interpolation scale
+  - subsection: Low-level exact coefficients
+  - subsection: A universal kernel dictionary
+  - subsection: Exact-rational inverse interpolants
+  - section: Rational Haar expansions and a Haar--sinc transform
+  - subsection: The derivative as a dyadic martingale limit
+  - subsection: Fourier transform of one Haar cell
+  - section: A positive rational series for the sinc energy
+  - subsection: Haar Parseval
+  - subsection: Derivative norm scaling
+  - subsection: All-orders level asymptotics
+  - subsection: All-orders tail and acceleration
+  - section: Triangular Bernoulli and independent-binomial layers
+  - subsection: Regrouping the binary digits
+  - subsection: A triangular cosine product
+  - subsection: Finite combinatorial CDFs
+  - section: Odd-lattice reconstruction of the Fourier image
+  - subsection: Paley--Wiener sampling
+  - subsection: Higher zero multiplicities as odd-sample sum rules
+  - section: Chebyshev, Gegenbauer, and Bessel--product expansions
+  - subsection: Chebyshev coefficients
+  - subsection: A Gegenbauer family
+  - section: Exact-rational Bernstein limits and Kummer transforms
+  - subsection: Dyadic Bernstein polynomials for F
+  - subsection: Finite Kummer sums for transforms
+  - section: Weighted cube volumes and hyperplane sections
+  - subsection: Sublevel volumes
+  - subsection: Hyperplane sections and a Fourier-slice limit
+  - section: Representation synthesis
+  - section: Numerical and exact verification
+  - subsection: Reproducibility design
+  - subsection: Faber convergence
+  - subsection: Energy partial sums and acceleration
+  - subsection: Haar, triangular, and cardinal checks
+  - subsection: Bessel and Bernstein checks
+  - section: Conjectures and frontier directions
+  - subsection: Arithmetic nature of the energy constant
+  - subsection: Endpoint phase tomography through rational wavelets
+  - subsection: The triangular coefficient problem
+  - subsection: Odd samples as intrinsic spectral coordinates
+  - subsection: Nonlinear wavelet energies
+  - subsection: Orthogonal-polynomial coefficient geometry
+  - subsection: Base-b and geometric-weight extensions
+  - subsection: Lean formalization roadmap
+  - section: Conclusion
+  - section: Remainder proof for the all-orders energy expansion
+  - section: Exact dyadic evaluation used by the experiments
+  - section: Compact formula compendium
+  - section: Corpus and reproducibility files
+  - section: Postscript: the Faber--Schauder and tent layers, formal
+
+### `semi-formalized-research-frontiers/drafts/representations/Representation_Frontiers/assets/Fabius_Rvachev_Multiresolution_Representations/generated_tables.tex`
+
+- SHA-256: `423aa73305a2baacc95bfae6672088b47bf38d2a954257641c49402aa3ee1a1a`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/representations/Representation_Frontiers/assets/Fabius_Rvachev_Representation_Frontiers/corpus_inventory.tex`
+
+- SHA-256: `7c6e596c646c5fd846b2835454800640962e46b629155c130a77f43b69c99993`
+- Phrase clusters: none
+- Structural headings:
+  - subsection: Pinned 67-source ledger
+  - subsection: Live additions checked after the pinned ledger
+
+### `semi-formalized-research-frontiers/drafts/representations/Representation_Frontiers/assets/Fabius_Rvachev_Representation_Frontiers/generated_tables.tex`
+
+- SHA-256: `993afe57d7603b17be590104ac1ee5099deefc5837f67ab33c6d022f49664ec1`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/representations/Representation_Frontiers/assets/Fabius_Rvachev_Thue_Morse_Representation_Frontiers/corpus_inventory.tex`
+
+- SHA-256: `7c6e596c646c5fd846b2835454800640962e46b629155c130a77f43b69c99993`
+- Phrase clusters: none
+- Structural headings:
+  - subsection: Pinned 67-source ledger
+  - subsection: Live additions checked after the pinned ledger
+
+### `semi-formalized-research-frontiers/drafts/representations/Representation_Frontiers/assets/Fabius_Rvachev_Thue_Morse_Representation_Frontiers/first_wave_generated/generated_tables.tex`
+
+- SHA-256: `993afe57d7603b17be590104ac1ee5099deefc5837f67ab33c6d022f49664ec1`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/representations/Representation_Frontiers/assets/Fabius_Rvachev_Thue_Morse_Representation_Frontiers/generated_tables.tex`
+
+- SHA-256: `993afe57d7603b17be590104ac1ee5099deefc5837f67ab33c6d022f49664ec1`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/representations/Representation_Frontiers/assets/rvachev_fabius_representations_2026/generated_tables.tex`
+
+- SHA-256: `63fd769715a206c12a07fe53b51e2088a3df6edb107a85f25d25284bc728fa60`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/representations/Rvachev_Lagrange_Loop_Report_v5/Rvachev_Lagrange_Loop_Report.tex`
+
+- SHA-256: `118a09539feafbccf24e353e6e6c0c2e647236fb77822eadba721adc4c38808d`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Corpus audit, provenance, and novelty boundary
+  - section: Notation and imported structural facts
+  - subsection: The up-function as a probability density
+  - subsection: The inverse-moment Appell operator
+  - subsection: Lagrange interpolation
+  - section: Affine conjugation: exact synthesis by literal shifts
+  - subsection: A compressed but asymmetric unscaled basis
+  - section: Lagrange cardinal polynomials as finite up-shift combinations
+  - subsection: A closed coefficient formula in elementary symmetric polynomials
+  - subsection: Rationality and symmetry on dyadic combs
+  - subsection: The first nontrivial closed identity
+  - section: Closing the loop
+  - subsection: The fixed-level self-representation
+  - subsection: The Lagrange series becomes an up-shift series
+  - section: Operator factorization and the signed Markov inverse
+  - subsection: Synthesis, sampling, and coefficient conversion
+  - subsection: The coefficient-space projector
+  - subsection: Trace and determinant sum rules
+  - subsection: Why negative decoder weights are forced
+  - section: Local shift-space geometry and the spectral multiplicity ledger
+  - subsection: Polynomial and nodal-zero summands
+  - subsection: Alias kernel and exact sequence
+  - subsection: Explicit \texorpdfstring{$2$}{2}-adic zero modes and Appell one modes
+  - subsection: What compression removes
+  - section: Nested projector flags and dyadic detail multiplicities
+  - section: Convergence, Runge behavior, and coordinate stability
+  - subsection: An exact transfer theorem
+  - subsection: Chebyshev--Lobatto convergence
+  - subsection: Equispaced Runge behavior
+  - subsection: Lebesgue growth must appear in the decoder
+  - subsection: Computational complexity
+  - section: Numerical experiments
+  - subsection: Exact rational right-inverse checks
+  - subsection: Projector obliquity without forming the projector
+  - subsection: The loop inherits interpolation error
+  - subsection: Reproducibility files
+  - section: Further deductions, conjectures, and research directions
+  - subsection: Minimal fixed-radius complexity
+  - subsection: Asymptotics of projector obliquity
+  - subsection: Alias gauges and minimum-variation exact synthesis
+  - subsection: A continuum limit of the signed Markov decoder
+  - subsection: \texorpdfstring{$q$}{q}-binomial minors and Thue--Morse spectral algebra
+  - subsection: Lambert-\texorpdfstring{$W$}{W} and the Runge boundary layer
+  - subsection: Node sets co-designed with the up kernel
+  - subsection: Formalization
+  - section: Conclusion
+  - section: Formula sheet
+  - section: Dimension and multiplicity ledger
+  - section: Notes on numerical verification
+  - section: Selected corpus crosswalk
+
+### `semi-formalized-research-frontiers/drafts/representations/Rvachev_Lagrange_Loop_Report_v6/Rvachev_Lagrange_Loop_Report_v6.tex`
+
+- SHA-256: `e11a2c460ae2b5f33b80217a681dfae874398b8f22c8edcd8d351b5eaeeac0b2`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Sharp Strang--Fix aliasing defect; Integer-base atomic family
+- Structural headings:
+  - chapter: Principal conclusions
+  - chapter: Corpus, scope, and notation
+  - section: Repository scope
+  - section: The normalized Rvachev function
+  - section: Polynomials, grids, and shifts
+  - section: Lagrange notation
+  - chapter: Moment, cumulant, and Bernoulli--Appell structure
+  - section: Moment generating function
+  - section: The inverse moment operator
+  - section: Deconvolution of a general polynomial
+  - chapter: Exact dyadic spectral multiplicities
+  - section: Zeros of the infinite sinc product
+  - section: A weighted Poisson identity
+  - chapter: Finite polynomial synthesis on \texorpdfstring{$[-1,1]$}{[-1,1]}
+  - section: The synthesis theorem in transform form
+  - section: A canonical polynomial analysis map
+  - section: Explicit monomial identities
+  - section: Affine target intervals
+  - chapter: Lagrange cardinals as finite sums of shifted \texorpdfstring{$u$}{up}
+  - section: General node set
+  - section: Vandermonde--Appell matrix formula
+  - section: Equispaced and dyadic combs
+  - section: Low-degree identities
+  - chapter: Closing the loop at a fixed interpolation level
+  - section: Direct substitution
+  - section: A commutative diagram
+  - section: Immediate consequences
+  - chapter: Collocation right inverses and coefficient-space projectors
+  - section: The rectangular collocation matrix
+  - section: The oblique projector
+  - section: All right inverses and the canonical one
+  - section: Sample-space and coefficient-space geometry
+  - chapter: The Lagrange series and the level-grouped self-representation
+  - section: Telescoping form of the existing expansion
+  - section: Synthesize each level separately
+  - section: Synthesize a fixed partial sum once
+  - section: Direct cardinal substitution at level \texorpdfstring{\(N\)}{N}
+  - chapter: Dyadic inter-level relations and local null vectors
+  - section: Two exact representations of the same polynomial
+  - section: Moment cancellation of the detail measure
+  - section: Only the odd aliases govern the new order
+  - chapter: Convergence, Runge behavior, and numerical conditioning
+  - section: Exact-arithmetic convergence
+  - section: Node geometry remains decisive
+  - section: Internal coefficient amplification
+  - section: Oversampling is not by itself the instability
+  - section: Stable implementation strategies
+  - chapter: Numerical experiments
+  - section: Reproducible method
+  - section: Interpretation
+  - chapter: Generalizations that follow without new analytic input
+  - section: Any polynomial projector factors
+  - section: Vector- and matrix-valued polynomials
+  - section: Several variables by tensor products
+  - section: Other infinite-convolution kernels
+  - chapter: Results not found in the scanned corpus
+  - section: Proved deductions
+  - subsection: Exact 2-adic multiplicity, not merely increasing order
+  - subsection: Minimal denominator for undilated degree reproduction
+  - subsection: Explicit right inverse of the up-collocation matrix
+  - subsection: Coefficient projector and its complete spectrum
+  - subsection: Dyadic detail null vectors
+  - subsection: Exact inheritance of Runge behavior
+  - section: A distributional view of the loop
+  - chapter: Conjectures and open problems
+  - chapter: Promising research directions
+  - section: A 2-adic approximation theory for infinite sinc products
+  - section: Coefficient measures and deconvolution topology
+  - section: Canonical duals and frames on a bounded interval
+  - section: Null-space bases and multiresolution compression
+  - section: Alternative node systems
+  - section: \texorpdfstring{Base-\(b\)}{Base-b} and nonuniform analogues
+  - section: Computer algebra and formal verification
+  - chapter: Conclusion
+  - chapter: Corpus audit and source map
+  - chapter: Proof details for the weighted Poisson identity
+  - section: Distributional derivation
+  - section: Moment-polynomial form
+  - chapter: Coefficient construction in exact arithmetic
+  - section: Matrix version
+  - chapter: Reproducibility files
+
+### `semi-formalized-research-frontiers/drafts/representations/Up_Polynomial_Synthesis/Up_Polynomial_Synthesis.tex`
+
+- SHA-256: `3622e9a2fe7e23200730e0390db5696558abc0bb487e4afc2595b14132f7604a`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Sharp Strang--Fix aliasing defect; Integer-base atomic family
+- Structural headings:
+  - section: Provenance and merge conventions
+  - subsection: Notation
+  - section: The synthesis problem and its boundary conditions
+  - subsection: The Appell pair
+  - section: The common-scale dictionary
+  - subsection: Why the minimal cardinal ratio is $2^{d}$
+  - subsection: Global synthesis by moment deconvolution
+  - subsection: The alias nullspace and the local dimension theorem
+  - subsection: The endpoint basis
+  - subsection: The output-sensitive algorithm
+  - subsection: Several cells: localization knob
+  - section: The polynomiality certificate and the canonical defect
+  - subsection: One scalar decides polynomiality
+  - subsection: The canonical defect and its Fourier residue
+  - section: The scale-ladder windows
+  - subsection: The antiderivative train
+  - subsection: Polynomial tails and the finite window
+  - subsection: Exact coefficients: the Appell transform
+  - subsection: Twisted Poisson summation and general ratios
+  - subsection: The physical-scale interval algorithm
+  - subsection: Ghost antiderivatives and the exact derivative stencil
+  - subsection: Finite sinc prefixes
+  - subsection: Verification and arithmetic
+  - section: Dictionary versus ladder, and the minimal atom count
+  - section: Extensions
+  - subsection: Odd overscaling
+  - subsection: Tensor products and multivariate compression
+  - subsection: Hermite jet stitching and analytic data
+  - subsection: Base $b$ and $q$-ary ladders
+  - subsection: Positive synthesis and dual functionals
+  - section: Conjectures, problems, and the Lean program
+  - section: Low-order operator data
+  - section: Provenance of the absorbed sources
+
+### `semi-formalized-research-frontiers/drafts/representations/common_digit_fabius_zonoids_frontier_report/common_digit_fabius_zonoids.tex`
+
+- SHA-256: `16e31b9da28c1515a82ec15753a574ba38b6064ca64af37ccdb647e47e70df65`
+- Phrase clusters: Exact digit-sum zero count; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Repository audit, scope, and novelty boundary
+  - subsection: How the source corpus was used
+  - subsection: Main contributions and status
+  - section: The one-parameter geometric-uniform law
+  - subsection: Definition and elementary structure
+  - subsection: Fabius normalization at \texorpdfstring{$q=1/2$}{q=1/2}
+  - subsection: Bernoulli cumulants
+  - section: The common-digit multivariate lift
+  - subsection: Definition and support
+  - subsection: Joint infinite sinc product and its zero hyperplanes
+  - subsection: All mixed cumulants
+  - subsection: Smooth density, flat boundary, log-concavity, and association
+  - section: Exact zonoid volume
+  - subsection: Finite zonotopes and generalized Vandermonde minors
+  - subsection: The volume product
+  - subsection: Equally spaced hyperbolic parameters and a finite \texorpdfstring{$q$}{q}-superfactorial
+  - section: Hyperbolic covariance geometry and the Szeg\H{o} kernel
+  - subsection: Covariance and correlation
+  - subsection: Cauchy determinant and support--correlation duality
+  - subsection: Exact linear prediction errors
+  - subsection: Hardy-space feature map and strict total positivity
+  - section: The exact two-parameter support lens
+  - subsection: Comb vertices and interpolation
+  - subsection: Exact log-periodic modulation
+  - section: The hyperbolic-secant process and Gaussianization
+  - subsection: A wide-sense stationary process
+  - subsection: Exact mixed cumulants under hyperbolic translation
+  - subsection: Gaussian limit in smooth path spaces
+  - subsection: Bell partitions beyond Wick's rule
+  - section: Euler determinants and a local derivative-innovation ladder
+  - subsection: A confluent determinant equal to one
+  - subsection: Meixner--Pollaczek polynomials and exact innovations
+  - section: Confluent parameter jets and exact support volumes
+  - subsection: Samplewise analyticity and jet supports
+  - subsection: Confluence of the exact volume formula
+  - subsection: Several confluent clusters
+  - subsection: Hyperbolic collision expansion
+  - subsection: Exact jet generators and Lambert-\texorpdfstring{$W$}{W} cutoff scales
+  - section: Legendre coefficients, copulas, and the inverse Fabius function
+  - subsection: A bivariate shifted-Legendre calculus
+  - subsection: The common-digit copula
+  - section: A Thue--Morse vector filter
+  - section: Hyperbolic node design
+  - section: Reproducible numerical experiments
+  - subsection: Reproduction command and environment
+  - subsection: Finite-zonotope convergence
+  - subsection: Correlation determinants
+  - subsection: Monte Carlo covariance
+  - subsection: Jet volumes and Euler determinants
+  - subsection: Gaussianization rates
+  - section: Conjectures and promising research directions
+  - subsection: Signed parameters and oriented-matroid chambers
+  - subsection: Complex parameters, Pick determinants, and real support volume
+  - subsection: Sharp ray-wise decay of the joint sinc product
+  - subsection: Jet small balls and Lambert phases
+  - subsection: Inverse-Fabius copula endpoint laws
+  - subsection: Hyperbolic Fekete limits
+  - subsection: The \texorpdfstring{$q$}{q}-Barnes constant
+  - subsection: Thue--Morse determinant filters
+  - subsection: Legendre singular values and conditional inversion
+  - section: Formalization roadmap
+  - section: Conclusion
+  - section: A self-contained algebraic route to the volume formula
+  - subsection: Zonotope minors
+  - subsection: Generalized Vandermonde to Schur
+  - subsection: Littlewood's sum
+  - section: Mixed moments as colored Bell sums
+  - section: Fourier regularity in more detail
+  - section: Artifact and data manifest
+  - section: Acknowledgment of source boundaries
+
+### `semi-formalized-research-frontiers/drafts/representations/common_digit_fabius_zonoids_frontier_report/generated/legendre_coefficients.tex`
+
+- SHA-256: `5b8940aca8a3b49ef9dd3be70eb276da2e637fc2f5ac8d41d5b90641cbd2519f`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/representations/fabius_dyadic_chaos_frontier/fabius_dyadic_chaos_frontiers.tex`
+
+- SHA-256: `3ff13b907faf7d2000ad6c218c8eb8f3468ed9750e32ceb2e31eb21cbe713fe5`
+- Phrase clusters: Exact digit-sum zero count; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Scope, corpus audit, and contribution boundary
+  - subsection: What was read and how duplication was screened
+  - subsection: Imported material not relabeled as new
+  - subsection: Contribution map
+  - section: The dyadic law and normalization dictionary
+  - subsection: Fabius and Rvachev variables
+  - subsection: Moments, cumulants, and Bell polynomials
+  - subsection: Product probability space and projections
+  - section: Exact Hoeffding decomposition of the exponential observable
+  - subsection: The chaos generating product
+  - subsection: Newton sums and a Bell-polynomial form
+  - section: The active-digit Poisson--binomial law
+  - subsection: Exact Sobol indices and finite-coordinate projections
+  - subsection: Elementary local estimates
+  - section: Marked tensor-Legendre chaos
+  - section: A sharp interaction bound for every smooth observable
+  - subsection: A mixed-replacement identity
+  - subsection: The exact dyadic and geometric-q factors
+  - subsection: Sharpness for monomials
+  - subsection: Exact polynomial components and Bell--Bernoulli tails
+  - subsection: Superexponential order truncation
+  - section: Small-field q-binomial asymptotics and Bell--Bernoulli structure
+  - subsection: Local expansion and the leading Gaussian-binomial row
+  - subsection: The total energy as a Bernoulli--Bell series
+  - section: Effective interaction dimension and a Mellin phase law
+  - subsection: Refinement and convergent small-field series
+  - subsection: Mellin transform of the activation profile
+  - subsection: The logarithmically periodic mean
+  - subsection: A phase-indexed limiting distribution
+  - section: The no-active atom and the negative Fabius Laplace endpoint
+  - section: Thue--Morse corners inside the continuous digit chaos
+  - section: Reproducible exact and numerical experiments
+  - subsection: Certified truncation policy
+  - subsection: What the program verifies
+  - subsection: Reproduction command
+  - section: Conjectures and frontier research program
+  - subsection: Mode locking in the phase law
+  - subsection: Differential algebra of the chaos products
+  - subsection: The full geometric-q phase diagram
+  - subsection: Inverse-Fabius observables
+  - subsection: Best N-term and downward-closed chaos approximation
+  - subsection: Strict log-concavity and local limit theory
+  - subsection: Automatic signs in the sign--magnitude refinement
+  - subsection: Formalization roadmap
+  - section: Conclusion
+  - section: Status and dependency matrix
+  - section: Compact formula atlas
+  - section: Corpus nonduplication ledger
+  - section: Archive manifest and reproducibility boundary
+
+### `semi-formalized-research-frontiers/drafts/representations/fabius_iterates_nowhere_analytic/fabius_iterates_nowhere_analytic.tex`
+
+- SHA-256: `e46584803c86359e977f404ea4d9b7f515c5579cf392f10d87f2ceaeb8b3c835`
+- Phrase clusters: Exact digit-sum zero count; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Statement of the problem and the strengthened result
+  - section: Repository audit and novelty boundary
+  - subsection: Canonical sources inspected
+  - subsection: Existing formal result and the new step
+  - section: Fabius, Rvachev, Thue--Morse, and the derivative atlas
+  - subsection: The Rvachev bump and the signed global extension
+  - subsection: Exact all-order derivatives
+  - subsection: Shape and orbit dynamics
+  - section: Why a direct dyadic-jet induction fails
+  - section: The dyadic defect of a Fa\`a di Bruno partition
+  - section: A two-spine composition lemma
+  - section: Strict unimodality of the spine weights
+  - section: Binary transitions force recurrent large amplitudes
+  - section: Proof of the zero-radius theorem
+  - section: Consequences and refinements
+  - subsection: Inverse compositional iterates
+  - subsection: No local elementary representation
+  - subsection: A pointwise derivative-growth invariant
+  - subsection: A Denjoy--Carleman interpretation
+  - section: Numerical diagnostics
+  - subsection: Sinc-product reconstruction
+  - subsection: Taylor-series composition and the spine comparison
+  - section: Connections to the broader Fabius corpus
+  - subsection: Bell polynomials and Bernoulli cumulants
+  - subsection: q-binomial and Thue--Morse structure
+  - subsection: Infinite sinc products
+  - subsection: Legendre expansions and polynomial representations
+  - section: Conjectures and research directions
+  - subsection: Promising formalization route
+  - subsection: Generalization to other atomic functions
+  - section: Summary of the proof mechanism
+  - section: Auxiliary details on the partition defect
+  - section: Reproducibility guide
+  - section: Repository source map
+
+### `semi-formalized-research-frontiers/drafts/representations/lagrange_rvachev_loop_report_v3/endpoint_degree2_matrix.tex`
+
+- SHA-256: `9e8638e16a76ac52fa7939dea09b96054f20d17b03038d6d651baf37e7800713`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/representations/lagrange_rvachev_loop_report_v3/lagrange_rvachev_loop.tex`
+
+- SHA-256: `07587a69794e72f18af9075eae545f0cd5ae1694f318b961d287713a088a1465`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Orientation, terminology, and corpus audit
+  - subsection: Lagrange is not Legendre
+  - subsection: What was read and what was used
+  - section: Imported foundations and notation
+  - subsection: The up density, Fourier product, and moment generating function
+  - subsection: Reciprocal MGF and the Rvachev--Appell family
+  - subsection: Exact polynomial synthesis already available in the corpus
+  - section: Finite literal-shift synthesis of Lagrange cardinal polynomials
+  - subsection: The main cardinal formula
+  - subsection: Closed coefficients through symmetric functions and Appell polynomials
+  - subsection: A complete degree-two example
+  - section: The exact matrix loop: right inverses, projectors, and moments
+  - subsection: Collocation and synthesis matrices
+  - subsection: Partition, Appell moments, and Cauchy--Binet identities
+  - subsection: Any polynomial basis fits the same triangle
+  - section: Gauss--Legendre nodes and a deconvolved Christoffel--Darboux kernel
+  - subsection: Deconvolved Legendre polynomials
+  - subsection: A nonlocal three-term recurrence
+  - subsection: The kernel theorem
+  - subsection: A weighted singular-value identity
+  - section: The minimal \texorpdfstring{$d+2$}{d+2}-atom dictionary and its rank-one complement
+  - subsection: Imported endpoint compression, specialized to interpolation
+  - subsection: Cofactors identify the unique redundant direction
+  - subsection: Readable and high-cancellation examples
+  - section: The literal Lagrange interpolation loop
+  - subsection: Arbitrary nodal data
+  - subsection: Superalgebraic convergence at Chebyshev--Lobatto nodes
+  - subsection: Gauss data factor through a discrete Legendre transform
+  - subsection: The corresponding projection-kernel loop
+  - section: Closing the canonical Fourier--Legendre loop
+  - subsection: The imported series
+  - subsection: Termwise finite closure
+  - subsection: One fixed lattice for each partial sum
+  - subsection: Superalgebraic convergence rate of the closed partial loop
+  - section: Factorial deconvolution and the non-flattening theorem
+  - subsection: Reciprocal-MGF pole input
+  - subsection: A new asymptotic for the deconvolved Legendre constants
+  - subsection: A new Lambert--\texorpdfstring{$W$}{W} threshold
+  - subsection: The central atom cannot be grouped
+  - section: Connections to \texorpdfstring{$q$}{q}-binomials, Bell polynomials, Thue--Morse, and Lambert \texorpdfstring{$W$}{W}
+  - subsection: A \texorpdfstring{$q$}{q}-geometric row lift of Lagrange weights
+  - subsection: The two different \texorpdfstring{$q$}{q}-products in the loop
+  - subsection: Bell--Bernoulli algebra is the coefficient engine
+  - subsection: Thue--Morse controls compression, not the literal coefficients
+  - subsection: Two Lambert geometries
+  - section: Numerical experiments and reproducibility
+  - subsection: Methods
+  - subsection: Matrix checks through degree ten
+  - subsection: Closed-block variation and asymptotic verification
+  - subsection: Reproduction commands and generated files
+  - section: Frontier conjectures and research directions
+  - subsection: Promising computational directions
+  - section: Formalization roadmap
+  - section: Conclusion
+  - section: Exact low-degree and matrix data
+  - section: Endpoint-compression algorithm in explicit form
+  - section: Artifact inventory
+
+### `semi-formalized-research-frontiers/drafts/representations/lagrange_rvachev_loop_report_v3/legendre_coefficients.tex`
+
+- SHA-256: `4a4761b3d4b0fbf9f881b1c820eb61aa0e8c673faeffb3fbf6877bb2b8b1d0f0`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/representations/lagrange_rvachev_loop_report_v3/low_degree_polynomials.tex`
+
+- SHA-256: `677f7359f0a3121a4abb8ca9840624f54e4c6050b3fca7498e3de59caf93c004`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/representations/legendre_rvachev_closed_loop/legendre_coefficients_table.tex`
+
+- SHA-256: `321be20b967045433d9b2ac38fcd54e5e17cd0c97809b7e5eb764e477a5cd2c4`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/representations/legendre_rvachev_closed_loop/legendre_rvachev_closed_loop.tex`
+
+- SHA-256: `bebd04fe47a308328d717028876e78f93c89d6d33238e54690c16d32bfb6a2db`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Corpus audit and orientation
+  - subsection: The two transformations being composed
+  - subsection: Sources used
+  - subsection: Imported and new results at a glance
+  - section: Foundations and notation
+  - subsection: The up density, Fourier transform, and probability model
+  - subsection: Moment generating function, moments, and cumulants
+  - subsection: Moment deconvolution and its Bell--Bernoulli coefficients
+  - subsection: Legendre and spherical-Bessel normalization
+  - section: Exact finite shifted-up synthesis of Legendre polynomials
+  - subsection: The imported interval synthesis theorem
+  - subsection: Legendre specialization
+  - subsection: A Jacobi-polynomial formula for $Q_\ell$
+  - subsection: Parity-reduced atom blocks
+  - subsection: Low-degree polynomials and exact examples
+  - subsection: The compressed $\ell+2$-atom representation
+  - section: The canonical Fourier--Legendre expansion and the requested loop
+  - subsection: Exact Legendre coefficients
+  - subsection: Termwise finite closure
+  - subsection: One lattice for an entire partial sum
+  - subsection: Why the loop must remain blockwise
+  - section: A dual translated Legendre kernel
+  - subsection: Elementary properties
+  - subsection: Spherical-Bessel transform
+  - subsection: Exact rationality at dyadic shifts
+  - section: Exact dyadic spectral biorthogonality
+  - subsection: The scalar identity
+  - subsection: Parity blocks
+  - subsection: Finite analysis and synthesis matrices
+  - section: The reverse local-Legendre loop
+  - subsection: Shifted local expansions
+  - subsection: Clipped affine Legendre connection coefficients
+  - subsection: Arithmetic spectral closure
+  - subsection: Exact examples
+  - section: Endpoint flatness, boundary jets, and Thue--Morse cancellation
+  - subsection: Infinite Legendre coefficient sum rules
+  - subsection: Finite boundary-jet identities
+  - subsection: Dyadic derivative cells and Thue--Morse signs
+  - section: A log-square bound for the Legendre coefficients
+  - subsection: A Bessel small-argument bound
+  - subsection: The tail integral
+  - subsection: The coefficient theorem
+  - section: Two-adic arithmetic of moments and Legendre coefficients
+  - subsection: A proved unit theorem for the moments
+  - subsection: Experimental congruence patterns
+  - section: Numerical experiments and independent checks
+  - subsection: Exact arithmetic layer
+  - subsection: High-precision coefficient layer
+  - subsection: Independent Fourier-product synthesis check
+  - subsection: Reproduction
+  - section: Frontier conjectures and research directions
+  - subsection: Sharp transfer of the Fourier envelope
+  - subsection: Stable spectral biorthogonalization
+  - subsection: Structure of the rational spectral constants
+  - subsection: Lambert $W$ and asymptotic thresholds
+  - subsection: Formalization roadmap
+  - section: Conclusion
+  - section: Exact formulae used by the experiment program
+  - section: Artifact inventory
+
+### `semi-formalized-research-frontiers/drafts/representations/legendre_rvachev_closed_loop/low_degree_Q.tex`
+
+- SHA-256: `452f6b43e4fe2fc09d6e5bce1cc9499c4f32b0d75008f43941a5bb3785800ff1`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/representations/rvachev_lagrange_loop_report/rvachev_lagrange_loop_report.tex`
+
+- SHA-256: `5d17373e36f6b12576a9add8c46fde57ae2e59b2b93410930fe64fb39f6dd647`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Sharp Strang--Fix aliasing defect
+- Structural headings:
+  - section: Scope, corpus audit, and a terminology point
+  - subsection: Pinned repository boundary
+  - subsection: What is and is not meant by ``a Lagrange series''
+  - subsection: Status labels
+  - section: Rvachev normalization and the synthesis input
+  - subsection: Fourier and moment generating functions
+  - subsection: The inverse smoothing operator
+  - subsection: Repository input: affine polynomial synthesis
+  - section: Every Lagrange cardinal as finitely many literal shifts of up
+  - subsection: General nodes
+  - subsection: Why the exponential atom count is not the final word
+  - section: A completely explicit quadratic example
+  - section: Closing the finite Lagrange loop
+  - subsection: Interpolation first, synthesis second
+  - subsection: Perfect reconstruction at the nodes
+  - section: The decisive observation: the loop is exactly interpolation
+  - section: From a Lagrange series to a genuine self-up series
+  - subsection: Safe partial-sum substitution
+  - subsection: Termwise block form
+  - section: Nested interpolation gives an exact multiresolution algebra
+  - section: A rigorous convergent choice: dyadic Chebyshev--Lobatto grids
+  - section: Compressed common-scale loop: only \(d+2\) atoms
+  - section: Connections to Appell, Kabaya--Iri, and \(q\)-binomial structures
+  - subsection: Lagrange versus Rvachev--Appell coordinates
+  - subsection: Where the \(q\)-binomial algebra enters
+  - subsection: Thue--Morse as the complementary detail character
+  - section: Stability has two different meanings
+  - subsection: External stability: exactly the Lebesgue constant
+  - subsection: Internal stability: atom coefficients can still be large
+  - section: Numerical verification
+  - section: Further deductions
+  - subsection: A universal factorization theorem for any polynomial projector
+  - subsection: Cardinal columns are exact dual certificates
+  - subsection: Nested details provide canonical cancellation blocks
+  - section: Conjectures and open problems
+  - section: Promising computational directions
+  - section: Lean formalization roadmap
+  - subsection: Finite Lagrange layer
+  - subsection: Bridge to the existing Appell synthesis API
+  - subsection: Matrix perfect reconstruction
+  - subsection: Nested projector algebra
+  - section: Conclusions
+  - section: Exact coefficient recipe
+  - section: Reproduction information from the repository
+  - section: Literature context
+
+### `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay-2/Rvachev_Up_Fourier_Decay.tex`
+
+- SHA-256: `df24e59e68f1cacf0aa1c26f1f48b0e6bb2a643fccf8ac805a96b373a56576a8`
+- Phrase clusters: Exact digit-sum zero count
+- Structural headings:
+  - section: The question and the necessary distinction between decay notions
+  - section: Product identities, zeros, and one peak per unit interval
+  - subsection: Entire convergence and the scaling law
+  - subsection: Canonical zero product
+  - subsection: Uniqueness of the interzero extremum
+  - section: The universal leading logarithmic scale
+  - section: Dyadic rays and Thue--Morse products
+  - subsection: Exact dynamical decomposition
+  - subsection: A general ray law
+  - subsection: The almost-everywhere ray law
+  - section: An elementary sharp Gelfond bound
+  - section: The sharp dyadic-annulus envelope
+  - subsection: Exact annular reduction
+  - subsection: Transition coordinates near the endpoint
+  - subsection: The finite-dimensional objective
+  - subsection: Lambert \texorpdfstring{\(W\)}{W} optimization
+  - subsection: Main envelope theorem
+  - subsection: Geometry of a near-maximizing point
+  - section: Two-adic troughs in the sequence of local peaks
+  - subsection: Exact factorization near an odd multiple of a power of two
+  - subsection: A boundary maximum lemma
+  - section: What can and cannot be normalized
+  - subsection: Pointwise normalization
+  - subsection: Why the draft's proposed second term is not valid
+  - section: The original Cesaro-average question is a different problem
+  - section: Numerical verification
+  - section: Conclusions and a formalization roadmap
+  - section: Expanded forms and constants
+  - section: A compact proof of rapid decrease
+
+### `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay-3/Fourier_decay_of_Rvachev_up.tex`
+
+- SHA-256: `ae5ba2d44c565ce826471893cf867d6cf4c365a0a5f580fdd4548d0a2dedb73d`
+- Phrase clusters: Exact digit-sum zero count
+- Structural headings:
+  - section: Statement of the problem and the main correction
+  - section: Fourier product, zeros, and the unique extrema
+  - subsection: Normalization and product representations
+  - subsection: Exactly one extremum between consecutive zeros
+  - section: The exact dyadic factorization}\label{sec:dyadic
+  - subsection: An exact logarithmic normal form
+  - section: Almost-everywhere pointwise decay and its sharp upper fluctuation
+  - section: The sharp global and extremal envelope}\label{sec:extremal
+  - subsection: An ergodic-optimization lemma
+  - subsection: The envelope theorem
+  - section: Absolute mean decay and a rigorous Ces\`aro gauge}\label{sec:cesaro
+  - subsection: The Fouvry--Mauduit constant
+  - subsection: The \texorpdfstring{$L^1$}{L1} exponent and the gauge
+  - subsection: Analyticity and monotonicity properties of the gauge
+  - subsection: Why a simple normalization need not converge for every \texorpdfstring{$T$}{T}
+  - section: A unified \texorpdfstring{$L^p$}{Lp} spectrum}\label{sec:Lp
+  - subsection: Three exact or limiting cases
+  - section: Numerical evaluation of the mean constant}\label{sec:numerics
+  - section: Consequences and comparison with the earlier draft}\label{sec:comparison
+  - subsection: The leading quadratic logarithm was right
+  - subsection: The next power depends on the notion of amplitude
+  - subsection: The missing correction is not \texorpdfstring{$\log\log x$}{log log x}
+  - subsection: Constant pointwise amplitude is impossible
+  - subsection: The bounded Ces\`aro problem is solved
+  - section: Formalization-ready decomposition}\label{sec:formalization
+  - section: Conclusion
+
+### `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Comparative_Audit/Rvachev_Up_Fourier_Decay_Comparative_Audit.tex`
+
+- SHA-256: `871c3790ace2ce71bb906d17e96129aec79fcbb4fd069c412109b5da138e2ce7`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Purpose, inputs, and method
+  - section: The object and the question
+  - section: What ``asymptotic decay rate'' can mean
+  - section: The common core, verified
+  - section: The answer to the original question
+  - subsection: Rigorous basis
+  - subsection: Imported inputs, stated as obligations
+  - section: Interpretation in detail, I: the envelope of the lobe maxima
+  - subsection: Geometry of one lobe, and a peak--integral comparison
+  - subsection: The peak sequence is the spectrum in miniature
+  - subsection: The discrete dictionary: peaks as Thue--Morse spectra
+  - subsection: Verdict for this interpretation
+  - section: Interpretation in detail, II: the root-mean-square amplitude
+  - subsection: Exactness at every scale
+  - subsection: The RMS answer to the averaged question
+  - subsection: Plancherel, Poisson, and the total energy
+  - subsection: The lognormal fallacy, quantified
+  - section: Audit of the four documents
+  - subsection: Relations among the documents
+  - subsection: The conflict
+  - subsection: The rigorous adjudication
+  - subsection: The source of the error, located in the authors' own text
+  - subsection: Numerical corroboration
+  - section: Numerical experiments
+  - subsection: Shell means and the constant $A_1$
+  - subsection: Ces\`aro means: dyadic convergence and the mantissa profile
+  - subsection: The logarithmic mean
+  - subsection: Annular maxima and the Lambert formula
+  - subsection: Two-adic valleys
+  - subsection: Variance and tails
+  - subsection: The $\varrho_1$ certificate
+  - subsection: Exact spot identities
+  - section: Relation to the repository corpus
+  - subsection: The deleted draft
+  - subsection: Ties to existing material
+  - subsection: Formalization targets, ordered by feasibility
+  - section: Verdict
+  - section: Postscript: the second wave (27 August 2026)
+  - section: Constants
+  - section: Verification scripts
+
+### `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Gentle_Guide/Rvachev_Up_Fourier_Decay_Gentle_Guide.tex`
+
+- SHA-256: `300cff33d98720436d655000b6d1070d1a86016e0ecc97235bc9e4b0a11f1791`
+- Phrase clusters: Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: TL;DR
+  - section: The function, and why anyone cares
+  - section: How small is it, really?
+  - section: Where the \texorpdfstring{$\exp(-(\ln x)^2/(2\ln2))$}{exp(-ln²x/2ln2)} comes from: just count
+  - section: The wild part: sines and binary digits
+  - section: One octave under the microscope
+  - section: Four legitimate answers to ``how fast does it decay?''
+  - section: The answer to the Stack Exchange question
+  - section: The missing \texorpdfstring{$\tfrac12$}{1/2}: a cautionary tale
+  - section: The humps, and the mean-square miracle
+  - section: What to remember
+  - section: Where to find the real proofs
+
+### `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay_Second_Wave_Audit/Rvachev_Up_Fourier_Decay_Second_Wave_Audit.tex`
+
+- SHA-256: `e2aa812e12ba613cdb89a7bce56814aa034db99b4db68457e46848340f480684`
+- Phrase clusters: Exact digit-sum zero count
+- Structural headings:
+  - section: Purpose, inputs, and method
+  - subsection: Verdict at a glance
+  - section: The state of the problem after the first audit
+  - section: The resolution of the unrestricted Ces\`aro question
+  - subsection: The obstruction, upgraded
+  - subsection: The existence theorem
+  - subsection: The final map of the original question
+  - section: Document-by-document audit
+  - subsection: Document 5
+  - subsection: Document 6
+  - subsection: Document 7
+  - subsection: Document 8
+  - section: Numerical adjudication
+  - subsection: The constants
+  - subsection: The profile at finite level
+  - subsection: The exact peak ray
+  - section: Corrections to the first audit
+  - section: Consequences for the corpus and the formalization ledger
+  - subsection: Postscript: ledger update (late August 2026 campaign)
+  - section: Verdict
+  - section: Reference constants after the second wave
+  - section: Verification scripts
+
+### `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/asymptotic-decay-rate-of-an-infinite-product-of-sinc-functions/asymptotic-decay-rate-of-an-infinite-product-of-sinc-functions.tex`
+
+- SHA-256: `62586a1f0e6d9a12a23bfd38c006365ffc0bf897e84c6b4d3d318ac6c0c29b62`
+- Phrase clusters: none
+- Structural headings:
+  - section: Asymptotic decay rate of an infinite product of sinc functions
+
+### `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-1/rvachev_up_fourier_decay.tex`
+
+- SHA-256: `27a9fda6220d3e3cde110919c40f1946ccdeff1463e8ef7a5055fbb6c26ef7ed`
+- Phrase clusters: Exact digit-sum zero count
+- Structural headings:
+  - section: The question and the form of the answer
+  - section: Product structure, zeros, signs, and lobes
+  - section: The exact dyadic decomposition
+  - section: Fixed dyadic rays and their Birkhoff averages
+  - subsection: The Lebesgue-typical law
+  - subsection: The maximal invariant average and a slow periodic ray
+  - subsection: Why no global pointwise equivalent can exist
+  - section: Gaussian fluctuations and the iterated logarithm
+  - section: The sharp dyadic-annular envelope
+  - subsection: The envelope in the original variable
+  - section: Comparison of the distinct decay regimes
+  - section: A general geometric ratio
+  - section: Conclusions
+  - section: Auxiliary integral and covariance checks
+  - section: A direct formula for the simple zero at one
+
+### `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-4/rvachev_up_fourier_decay.tex`
+
+- SHA-256: `b0a76b35fbb9a9af78c469f07d94eb4346bfaeace20cca193b3c9afa97ed6816`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count
+- Structural headings:
+  - section: The question and the shape of the answer
+  - subsection: Main decay table
+  - section: Exact products, zeros, and scaling laws
+  - subsection: Entire convergence and three product forms
+  - subsection: Zeros and their multiplicities
+  - subsection: Exact dyadic renormalization
+  - subsection: The Thue--Morse polynomial
+  - subsection: A second exact scaling identity
+  - section: Exactly one extremum per unit interval
+  - section: Dyadic-shell means and the transfer operator
+  - subsection: Normalized shell means
+  - subsection: The weighted doubling operator
+  - subsection: The full finite-$q$ decay spectrum
+  - section: Geometric-mean and typical decay
+  - section: The exact RMS power
+  - section: Arithmetic-mean decay and the Cesaro question
+  - subsection: The Perron root $\rho_1$
+  - subsection: Sharp dyadic-shell mean
+  - subsection: Why the ordinary Cesaro limit has a dyadic phase
+  - section: The sharp uniform envelope
+  - section: Exceptional extrema near dyadic boundaries
+  - subsection: Consequences for the sequence of extrema
+  - section: A continuum of intermediate boundary rates
+  - section: Numerical evaluation of the finite-$q$ spectrum
+  - subsection: Chebyshev collocation
+  - subsection: Sample spectrum
+  - section: Correction of the working draft
+  - subsection: Correct common feature
+  - subsection: The power $\log_2(2\pi)$ has a precise meaning
+  - subsection: There is no global equivalent
+  - subsection: No universal half-logarithm correction
+  - section: Conclusions and further directions
+  - section: Exact Collatz--Wielandt certificate for $\rho_1$
+  - section: Notation cross-reference
+
+### `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-5/Rvachev_Up_Fourier_Decay_Final.tex`
+
+- SHA-256: `12af56c41c2a2dad549bddf77477e17ec47cf7a5d2dc65df1ca96dd89880b455`
+- Phrase clusters: Exact digit-sum zero count; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: The question, the conventions, and the final verdict
+  - subsection: Division between elementary proof, imported analysis, and numerics
+  - section: Entire product, zero multiplicities, signs, and lobes
+  - subsection: Convergence, scaling, and the canonical zero product
+  - subsection: Exactly one extremum in every interzero interval
+  - section: The exact dyadic reduction
+  - subsection: One algebraic normalization for all notions of size
+  - section: Typical dyadic rays and the corrected metric fluctuation law
+  - subsection: Birkhoff averages and the typical exponent
+  - subsection: An exact reverse-martingale decomposition
+  - subsection: Correction to the published lacunary-product constant
+  - section: The complete finite-\texorpdfstring{$L^q$}{Lq} shell spectrum
+  - subsection: The weighted doubling operator
+  - subsection: The four distinguished values
+  - section: The ordinary Ces\`aro question
+  - subsection: The sharp arithmetic gauge and Q3
+  - subsection: Analyticity and eventual derivative signs
+  - subsection: The nonconstant dyadic-mantissa profile
+  - subsection: Exactly what kind of Q2 gauge is ruled out
+  - subsection: A logarithmic Ces\`aro mean removes the phase
+  - section: The sharp fixed-ray and uniform envelope
+  - section: The sharp dyadic-annulus maximum and Lambert \texorpdfstring{$W$}{W}
+  - subsection: The boundary-layer coordinates
+  - subsection: The exact Lambert optimization
+  - section: Exceptional two-adic troughs among the local peaks
+  - section: Comparative audit of the supplied materials
+  - subsection: The two apparent contradictions that are not contradictions
+  - subsection: What is now final, and what remains genuinely open
+  - section: Independent numerical checks and reproducibility
+  - subsection: Direct dyadic-cell quadrature
+  - subsection: The phase profile has narrow singular features
+  - subsection: Finite-shell check of the Lambert formula
+  - subsection: An exact-arithmetic certificate for a coarse Perron-root interval
+  - section: Conclusion
+
+### `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-6/Rvachev_Up_Fourier_Decay_Final_Synthesis.tex`
+
+- SHA-256: `de912bde5096ff4e4db8b4ad3a176e3f7c35551688fcf4bb450437626619a924`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: The question and the shape of the answer
+  - subsection: Main decay table
+  - section: Audit map and final verdict
+  - section: Exact products, zeros, and scaling laws
+  - subsection: Entire convergence and three product forms
+  - subsection: Zeros and their multiplicities
+  - subsection: Exact dyadic renormalization
+  - subsection: The Thue--Morse polynomial
+  - subsection: A second exact scaling identity
+  - section: Exactly one extremum per unit interval
+  - section: Dyadic-shell means and the transfer operator
+  - subsection: Normalized shell means
+  - subsection: The weighted doubling operator
+  - subsection: The full finite-\texorpdfstring{$q$}{q} decay spectrum
+  - section: Geometric-mean and typical decay
+  - section: Central limit theorem and the corrected iterated-logarithm law
+  - subsection: Exact covariance and finite-\texorpdfstring{$n$}{n} variance
+  - subsection: A one-line Gordin decomposition
+  - subsection: The normalization error in the published theorem
+  - section: The exact RMS power
+  - section: Arithmetic-mean decay and the Cesaro question
+  - subsection: The Perron root \texorpdfstring{$\rho_1$}{rho1}
+  - subsection: Sharp dyadic-shell mean
+  - subsection: Why the ordinary Cesaro limit has a dyadic phase
+  - subsection: How far the unrestricted Cesaro obstruction extends
+  - subsection: The multiplicatively natural mean
+  - section: The sharp uniform envelope
+  - section: The raw dyadic-annulus maximum and its Lambert boundary layer
+  - subsection: Exact reduction and transition coordinates
+  - subsection: Lambert optimization
+  - section: Exceptional extrema near dyadic boundaries
+  - subsection: Consequences for the sequence of extrema
+  - section: A continuum of intermediate boundary rates
+  - section: Numerical evaluation of the finite-\texorpdfstring{$q$}{q} spectrum
+  - subsection: Chebyshev collocation
+  - subsection: Sample spectrum
+  - section: Source-by-source reconciliation and correction of the draft
+  - subsection: What all four wave-1 documents got right
+  - subsection: Why the proposed answers appeared to disagree
+  - subsection: The genuine error surface
+  - subsection: The literal Cesaro question
+  - subsection: No universal logarithmic power
+  - subsection: Imported analytic inputs and certified parts
+  - section: Conclusion
+  - section: Exact Collatz--Wielandt certificate for \texorpdfstring{$\rho_1$}{rho1}
+  - section: Notation cross-reference
+
+### `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-7/rvachev_up_fourier_decay_final.tex`
+
+- SHA-256: `17426ff49f76d580c922045d693fb215552a51e68e5a45cff8442d5a46cf9ad9`
+- Phrase clusters: Exact digit-sum zero count
+- Structural headings:
+  - section: Problem, conventions, and the hierarchy of answers
+  - section: Exact dyadic factorization and zero geometry
+  - subsection: The shell identity
+  - subsection: Canonical product, multiplicities, and one peak per lobe
+  - section: Transfer operator and the arithmetic eigenvalue
+  - subsection: The doubling map and its weighted Perron operator
+  - subsection: The scale dictionary
+  - section: The natural arithmetic gauge and its singular phase profile
+  - subsection: The shell constant and limiting measure
+  - subsection: Exact dyadic-mantissa Ces\`aro profile
+  - subsection: Eventual behavior of the derivatives
+  - section: What the singular profile does and does not forbid
+  - subsection: Linearity forced by an unrestricted Ces\`aro limit
+  - subsection: Stabilizing and bounded-distortion gauges
+  - subsection: Hardy fields and the overreach about ``elementary'' functions
+  - section: An analytic decreasing gauge with the exact unrestricted Ces\`aro limit
+  - subsection: A shellwise equalization lemma
+  - subsection: A smooth decreasing exact gauge
+  - subsection: Entire approximation preserving monotonicity
+  - section: A natural exact repair: logarithmic averaging
+  - section: Typical rays, RMS scale, and the corrected fluctuation law
+  - subsection: The centered lacunary sum
+  - subsection: Exact covariance and variance
+  - subsection: Martingale decomposition and LIL
+  - subsection: The \texorpdfstring{\(\sqrt2\)}{sqrt(2)} error in the published lacunary-product constant
+  - subsection: The exact RMS exponent
+  - section: The sharp extremal product and the coarse uniform envelope
+  - section: Largest peak in a dyadic annulus: the Lambert-\texorpdfstring{\(W\)}{W} law
+  - subsection: Boundary-layer reduction
+  - subsection: Exact Lambert optimization
+  - section: Two-adic exceptional valleys and lobe maxima
+  - section: Numerical adjudication and reproducibility
+  - subsection: Spectral and shell constants
+  - subsection: Corrected profile range
+  - subsection: Minimal reproducibility pseudocode
+  - section: Document-by-document adjudication
+  - section: Final theorem and practical interpretation
+  - section: Details behind the exponent spectrum
+  - section: Why the adaptive construction does not contradict singularity
+  - section: Source map and bibliographic notes
+
+### `semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/rvachev_up_fourier_decay-8/rvachev_up_fourier_decay_final.tex`
+
+- SHA-256: `a1dcad9e686f4f0b39ef326c953501a3e03eef7fbd9b8c05351bbaaa6c211749`
+- Phrase clusters: Exact digit-sum zero count
+- Structural headings:
+  - section: The question and the final verdict
+  - section: Audit of the supplied materials
+  - section: Exact dyadic factorization and lobe structure
+  - subsection: Zeros, signs, and one extremum per lobe
+  - section: Typical fixed rays and the corrected fluctuation law
+  - subsection: The exact covariance calculation
+  - subsection: A one-line martingale decomposition
+  - subsection: The factor-\texorpdfstring{\(\sqrt2\)}{sqrt(2)} error in the lacunary-products paper
+  - section: The full \texorpdfstring{\(L^q\)}{Lq} decay spectrum
+  - subsection: Geometric mean and \texorpdfstring{\(q\downarrow0\)}{q to 0}
+  - subsection: Arithmetic mean and the Fouvry--Mauduit constant
+  - subsection: Root mean square: an exact identity
+  - subsection: Uniform norm and the maximizing two-cycle
+  - section: The natural arithmetic-mean gauge
+  - subsection: Dyadic endpoints, the phase profile, and boundedness
+  - subsection: What the singular profile really rules out
+  - subsection: The logarithmic average repairs the natural gauge
+  - section: A literal all-time analytic gauge: shell-adaptive flattening
+  - subsection: A flattening lemma for weakly convergent shell measures
+  - subsection: A positive smooth decreasing exact gauge
+  - subsection: Real-analytic upgrade by Carleman--Hoischen approximation
+  - section: The sharp pointwise and annular envelopes
+  - subsection: Boundary-layer reduction
+  - subsection: Lambert optimization
+  - section: Exceptional local peaks and two-adic valleys
+  - section: Implications, limitations, and formalization targets
+  - subsection: What is now completely settled
+  - subsection: What should not be claimed
+  - subsection: Lean-friendly decomposition
+  - section: Conclusion
+  - section: Constants and conversions
+  - section: Source map
+
+### `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Automatic_Scale_Factorizations_Rvachev_2026-08-30/automatic_scale_factorizations.tex`
+
+- SHA-256: `df2070f8e23b7948d4dfe8c1df7b988becfd8713199604b093bf4a0737f84cfc`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Corpus audit and contribution boundary
+  - subsection: How the source tree was read
+  - subsection: Occupied territory
+  - subsection: Result ledger
+  - section: Classical normalization: Fabius and Rvachev
+  - section: Scale-subset laws
+  - subsection: Definition and elementary factorization
+  - subsection: The Thue--Morse pair
+  - section: Exact support radii and flat-top geometry
+  - subsection: Mahler-product support radii
+  - subsection: A general plateau lemma
+  - section: The complex \texorpdfstring{$q$}{q}-family and its Mahler cocycle
+  - subsection: A shift-hull renormalization
+  - section: Exact logarithmic series, Bernoulli cumulants, and Bell moments
+  - subsection: Lacunary q-series for the characteristic factors
+  - subsection: Cumulants
+  - section: Legendre and Jacobi data from the q-moments
+  - section: Fourier decay and smoothness from selector density
+  - section: The exact zero divisor
+  - section: Mellin transform and the inherited natural boundary
+  - section: Sharp logarithmic endpoint laws
+  - subsection: Laplace asymptotics
+  - subsection: Small-ball theorem
+  - section: Inverse-edge quantiles and Lambert-W coordinates
+  - section: Finite dyadic spline approximants
+  - section: Numerical experiments
+  - section: General base and automatic-selector extension
+  - section: Conjectures and frontier problems
+  - section: Formalization blueprint
+  - section: Conclusions
+  - section: Additional exact identities
+  - subsection: Weighted Thue--Morse prefixes
+  - subsection: Complementary variance check
+  - section: Reproducibility inventory
+
+### `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30/data/fourier_envelope_table.tex`
+
+- SHA-256: `7bd925ca1fb6f8983ea61cf0ab298960300bb17bd325bfba1e9897b1f86e0990`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30/dyadic_radon_profiles_fabius_rvachev.tex`
+
+- SHA-256: `55f13bc9b2326dd9ee23a3a58ff94ab328aac7b7cf525fdb1813256da8ef9fcf`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Scope, audit method, and contribution boundary
+  - subsection: The living documentation tree
+  - subsection: Established material treated as input
+  - subsection: Result ledger
+  - section: Normalization and imported rank-one structure
+  - subsection: The centered Rvachev random variable
+  - subsection: Fabius and inverse-Fabius coordinates
+  - subsection: Bernoulli cumulants
+  - section: Dyadic Radon profiles
+  - subsection: Definition and geometric meaning
+  - section: Integer zero profiles and exact spectral inversion
+  - subsection: Multiplicity as a second triangular integration
+  - subsection: Discrete-convex classification
+  - subsection: The zero-divisor Dirichlet series
+  - section: $q$-sampled cumulants, Hausdorff rigidity, and Bell--Legendre transforms
+  - subsection: Every even cumulant samples the direction series
+  - subsection: A dyadic Hausdorff moment problem
+  - subsection: Finite $q$-Vandermonde reconstruction
+  - subsection: Bell-polynomial moments
+  - subsection: Legendre coefficients as a finite $q$-Bell transform
+  - section: Generalized Thue--Morse signs and exact Prouhet order
+  - subsection: The spectral sign word
+  - subsection: Automaticity is exactly eventual parity periodicity
+  - subsection: Prouhet cancellation
+  - section: A sharp logarithmic Fourier envelope
+  - section: The Pascal hierarchy as a projection of classical up-laws
+  - subsection: Imported Pascal products
+  - section: Positive dyadic-comb cubature and profile Appell polynomials
+  - subsection: Profile Appell deconvolution
+  - section: Inverse-Fabius coordinates and the Lambert endpoint frontier
+  - subsection: Exact quantile realization of the projection cone
+  - subsection: Laplace factorization
+  - subsection: A conjectural all-orders endpoint law
+  - section: Exact and high-precision experiments
+  - subsection: Reproducibility boundary
+  - subsection: Profile inversion
+  - subsection: Digital signs and Prouhet cancellation
+  - subsection: Cumulant-ratio moments
+  - subsection: Zero zeta and Fourier envelope
+  - section: Conjectures and a frontier research program
+  - subsection: Spectral rigidity beyond the dyadic model
+  - subsection: Stable $q$-tomography
+  - subsection: Tomography from several directions
+  - subsection: Base-$b$ and matrix-dilation profiles
+  - subsection: Optimization of smoothness, support, and cubature precision
+  - subsection: Lambert phase tomography
+  - subsection: Arithmetic and exact-value questions
+  - section: Formalization roadmap
+  - subsection: Tier I: finite combinatorics
+  - subsection: Tier II: probability and generating functions
+  - subsection: Tier III: complex and Fourier analysis
+  - subsection: Tier IV: conjectural endpoint analysis
+  - section: Conclusion
+  - section: Proof supplements
+  - subsection: Support and smoothness in the infinite product model
+  - subsection: Exact first nonzero Prouhet derivative
+  - subsection: A direct complete-monotonicity identity
+  - section: Selected exact data
+  - subsection: Pascal direction profiles
+  - subsection: First cumulant-ratio inequalities
+  - section: Corpus and reproducibility manifest
+  - subsection: Source families screened
+  - subsection: Archive contents
+
+### `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Dyadic_Spectral_Divisors_and_Gamma_Duality/fabius_frontier_report.tex`
+
+- SHA-256: `378598dfb74c9e583303d9ed11962e58e362abe45da6bb244817e5ebc2fb8631`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Corpus audit, scope, and novelty boundary
+  - subsection: Documents examined
+  - subsection: Established inputs reused here
+  - subsection: Non-duplication matrix
+  - section: Normalization and reciprocal-integer-base family
+  - subsection: The dyadic law and its \texorpdfstring{base-\(b\)}{base-b} analogue
+  - subsection: The square-root moment transform
+  - section: Laguerre--P\'olya structure, total positivity, and Jensen hyperbolicity
+  - subsection: Real-rooted entire functions
+  - subsection: P\'olya-frequency moments
+  - subsection: All shifted Jensen polynomials
+  - section: Bernoulli, Bell, and symmetric-function formulas
+  - subsection: Spectral power sums
+  - subsection: Newton recurrence and Bell polynomial
+  - section: Non-holonomicity and non-P-recursive moments
+  - subsection: A zero-multiplicity obstruction
+  - section: Cartwright class and digital zero counts
+  - section: Complete Bernstein structure and a Thorin gamma dual
+  - subsection: Stieltjes logarithmic derivative
+  - subsection: Generalized gamma convolution
+  - section: The arithmetic heat trace
+  - subsection: Definition, q-renewal, and Malmsten representation
+  - subsection: Mellin transform and log-periodic skeleton
+  - subsection: Exact beyond-all-orders remainder
+  - section: Exact modular duality for the infinite sinc moment product
+  - subsection: Laplace transform of the heat identity
+  - subsection: A partition product hidden in the sinc product
+  - section: Consequences for computation and approximation
+  - subsection: Certified Stieltjes--Pad\'e control
+  - subsection: Moment cones and Legendre expansions
+  - subsection: Inverse-Fabius transfer
+  - section: Conjectures and frontier problems
+  - section: Summary of the new theorem network
+  - section: Reproducibility
+  - section: Selected numerical constants
+
+### `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Dyadic_Spectral_Divisors_and_Gamma_Duality/generated/heat_coefficients_table.tex`
+
+- SHA-256: `e64410fdf107c5d8f5dbb6ceedf5d3ff3cb5c8f0b52020234c866374b2afe269`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Dyadic_Spectral_Divisors_and_Gamma_Duality/generated/heat_validation_table.tex`
+
+- SHA-256: `d8d1bf79ceea523f82550032b7a4841e259c0c3902491730e8ab059752174b93`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Dyadic_Spectral_Divisors_and_Gamma_Duality/generated/jensen_table.tex`
+
+- SHA-256: `5b0ae5320dbd316af2085064c75f203c77e2f042c9f01a023830ed6cf5cf4f39`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Dyadic_Spectral_Divisors_and_Gamma_Duality/generated/large_z_constants_table.tex`
+
+- SHA-256: `f25c259ebe0971bdde7ae8aa6d2959736ff514d6c6f85b9590ecd2fb76d28835`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Dyadic_Spectral_Divisors_and_Gamma_Duality/generated/large_z_identity_table.tex`
+
+- SHA-256: `af7f9d45b607b7ad445d18e77ab65d5c19e647e3b1841057925f2f8efd22a833`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Dyadic_Spectral_Divisors_and_Gamma_Duality/generated/moment_table.tex`
+
+- SHA-256: `339a5aa275721fb96e82405386b4baa9d280f13136cbf34a2ef17e42f166413c`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Pascal_Frontiers_Report/Fabius_Pascal_Frontiers.tex`
+
+- SHA-256: `1687673dfd03269c62cebc79b4d8229c3d6c21b73e8d82747fbc10a746674019`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Scope, audit method, and originality boundary
+  - subsection: What was audited
+  - subsection: Important duplication exclusions
+  - subsection: Result ledger
+  - section: Baseline: the Pascal--Rvachev hierarchy
+  - subsection: Fourier convention and random series
+  - subsection: Zero divisor and spectral zeta
+  - subsection: Moments, cumulants, and Bell polynomials
+  - section: Hypertranscendence and natural boundaries of the spectral signs
+  - subsection: The generalized Thue--Morse characters
+  - subsection: A nonperiodicity lemma for periodic digit characters
+  - subsection: Mahler hypertranscendence
+  - subsection: First masks
+  - section: A hypertranscendental hierarchy of valuation Lambert series
+  - subsection: Divisibility layers
+  - subsection: Rank recursion and a homogeneous Mahler equation
+  - subsection: Dense dyadic singularities
+  - subsection: The master rank Lambert germ
+  - section: Sharp higher-rank dyadic-comb cubature
+  - subsection: A general periodization identity
+  - subsection: Exact order and sharpness
+  - subsection: Appell reconstruction
+  - subsection: Legendre and Bernoulli corollaries
+  - subsection: Numerical zero-jet check
+  - section: All-rank Laguerre--P\'olya and P\'olya-frequency structure
+  - subsection: Wick rotation
+  - subsection: Classification and total positivity
+  - subsection: Rank convolution
+  - subsection: Non-\texorpdfstring{$D$}{D}-finiteness of the Fourier products
+  - section: The Poisson-binomial spectral count
+  - subsection: Exact probability generating function
+  - subsection: Cumulants, branching, and coefficient tilting
+  - subsection: Basic comparison inequalities
+  - subsection: Critical Poisson limit
+  - subsection: A Poisson, mod-Poisson, and Gaussian phase diagram
+  - section: A generalized-gamma spectral dual and its rank CLT
+  - subsection: The Thorin measure
+  - subsection: Concentration
+  - subsection: A rank central limit theorem
+  - section: Connections to Bell, Bernoulli, Legendre, \texorpdfstring{$q$}{q}-series, and inverse problems
+  - subsection: Exact Bell--Bernoulli moment calculus
+  - subsection: Legendre data from exact combs
+  - subsection: Mahler and \texorpdfstring{$q$}{q}-series bridges
+  - subsection: Inverse Fabius and Lambert-\texorpdfstring{$W$}{W} directions
+  - section: Conjectures and frontier research program
+  - subsection: Differential algebra
+  - subsection: Strict total positivity and zero interlacing
+  - subsection: Beyond the proved Poisson-binomial phase range
+  - subsection: Gamma Edgeworth theory
+  - subsection: Exact arithmetic and formalization
+  - section: Formalization roadmap
+  - subsection: Tier I: finite combinatorics
+  - subsection: Tier II: exact products and Fourier algebra
+  - subsection: Tier III: probability
+  - subsection: Tier IV: external transcendence theorems
+  - section: Computational experiments and reproducibility
+  - subsection: What the program checks
+  - subsection: Interpretive limits
+  - section: Conclusion
+  - section: Auxiliary inequalities for the Poisson phase diagram
+  - section: Exact rational moment tables
+  - section: Repository and literature references
+
+### `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Rvachev_Carleman_Frontiers_2026-08-30/fabius_carleman_frontiers.tex`
+
+- SHA-256: `f0d5d2fb4061a81ac4b992d64a2d265cd5226963d0485bcca1fe102ab38c15e0`
+- Phrase clusters: Exact digit-sum zero count; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Corpus audit, novelty boundary, and principal results
+  - subsection: How the repository was screened
+  - subsection: Overlap map
+  - subsection: Principal contributions
+  - section: Baseline identities and notation
+  - subsection: Fabius, Rvachev, and Thue--Morse conventions
+  - subsection: A discrepancy lemma
+  - subsection: Fourier convention
+  - section: A universal local law for high derivatives
+  - subsection: The limiting probability measure
+  - subsection: Exact local extrema and oscillation
+  - subsection: Universal local moments and \texorpdfstring{$L^p$}{Lp} norms
+  - section: The exact local Denjoy--Carleman scale
+  - subsection: Roumieu and Beurling conventions
+  - subsection: Complete comparison theorem
+  - subsection: A local regularity spectrum
+  - section: Geometry of the critical weight
+  - subsection: Quotients, nonquasianalyticity, and derivations
+  - subsection: The exact Fa\`a di Bruno transform
+  - subsection: Nonlinear stability
+  - section: Inverse Fabius function and all compositional iterates
+  - subsection: The inverse function at the critical scale
+  - subsection: Forward and inverse iterates: an exact synthesis
+  - subsection: A sharper type formula suggested by the spine expansion
+  - section: Fourier--Carleman duality and its lattice correction
+  - subsection: Optimization of all integration-by-parts bounds
+  - subsection: What the derivative scale does and does not explain
+  - section: The associated function and a \texorpdfstring{Lambert--$W_{-1}$}{Lambert-W(-1)} saddle
+  - subsection: Continuous saddle and Lambert predictor
+  - subsection: Two dualities, two periodic phenomena
+  - section: Geometric-base and \texorpdfstring{$q$}{q}-deformed critical weights
+  - section: Bell-polynomial edge asymptotics
+  - subsection: The positive critical-norm majorant
+  - subsection: A two-edge asymptotic conjecture
+  - section: Further conjectures and a research program
+  - subsection: Microlocal and Fourier questions
+  - subsection: Inverse endpoints and two-regime regularity
+  - subsection: Extension theory without moderate growth
+  - subsection: \texorpdfstring{$q$}{q}, cyclotomic, and arithmetic deformations
+  - subsection: Formalization roadmap
+  - section: Reproducible numerical experiments
+  - section: Conclusions
+  - section: Additional proof details
+  - subsection: Why the one-large-part product is maximal
+  - subsection: Right-edge Bell exponents
+  - subsection: The peak-ray constant
+  - section: Artifact inventory and reproducibility
+
+### `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors.tex`
+
+- SHA-256: `25e8f4a4c896a8314deef3c8d7d93c9f0ed99c836102fe4439a202c30c56a9e2`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Sharp Strang--Fix aliasing defect; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Corpus audit, scope, and novelty controls
+  - subsection: Operational reading protocol
+  - subsection: Targeted duplication tests
+  - subsection: Map of genuinely distinct results
+  - section: The Rvachev probability law and its established Fourier backbone
+  - subsection: Normalization
+  - subsection: The integer zero lattice
+  - section: Reciprocal-integer convolution divisors
+  - subsection: A Dirichlet-kernel factor at every dyadic level
+  - subsection: Complete classification of independent-copy scales
+  - subsection: New refinement equations for $\Up$ and $F$
+  - section: The digit IFS and the multiplicative convolution cocycle
+  - subsection: Affine digit coordinates
+  - subsection: The multiplicative cocycle
+  - subsection: Cocycle factorization by the $2$-adic valuation
+  - section: Singular-to-smooth parity and exact regularity
+  - subsection: A pure-type lemma for the digit measures
+  - subsection: Odd divisors are singular continuous
+  - subsection: Even divisors and a complete regularity trichotomy
+  - subsection: A torus aliasing dichotomy
+  - section: Transport convergence, singular approximants, and the inverse Fabius function
+  - subsection: Exact $W_\infty$ distance
+  - subsection: Certified quantile approximants
+  - subsection: Iterated and radix-$M$ quantile schemes
+  - subsection: A $q=M^{-2}$ Richardson hierarchy
+  - section: The arithmetic zero divisor and its spectral zeta function
+  - subsection: Exact zero multiplicities
+  - subsection: A closed spectral zeta function
+  - subsection: Power-of-two rigidity and complex dimensions
+  - subsection: Values at the origin and a zeta-regularized determinant
+  - section: Bernoulli cumulants, Bell moments, and Appell cocycles
+  - subsection: The discrete digit cumulants
+  - subsection: Bernoulli-polynomial digit moments
+  - subsection: Complete Bell-polynomial moments
+  - subsection: An Appell semigroup law
+  - section: Thue--Morse quotients, bounded binary partitions, and Stern's sequence
+  - subsection: Finite digit polynomials
+  - subsection: Carry recurrence
+  - subsection: The $M=3$ Stern/hyperbinary specialization
+  - subsection: Power-of-two rationality versus nonpower Mahler structure
+  - section: Exact endpoint log-periodicity and inverse scaling
+  - subsection: CDF refinement and the endpoint phase
+  - subsection: Quantile phase
+  - section: Polynomial and Legendre transfer formulas
+  - subsection: A finite polynomial smoothing operator
+  - subsection: Cocycle composition of polynomial smoothing
+  - subsection: A representation-theoretic interpretation
+  - section: Numerical experiments and reproducibility
+  - subsection: What was computed
+  - subsection: Repository provenance and replay boundary
+  - subsection: Odd and even cascade behavior
+  - subsection: Endpoint phases
+  - subsection: Zero multiplicities and Fourier resonance
+  - subsection: Reproduction command
+  - section: Mellin complex dimensions of the endpoint phase
+  - section: Conjectures and frontier problems
+  - subsection: Fractional regularity from carry matrices
+  - subsection: Infinitely rich endpoint phases
+  - subsection: Dyadic arithmetic of the divisor CDF
+  - subsection: Stern multifractality inside the singular $M=3$ divisor
+  - subsection: Mahler and natural-boundary rigidity
+  - subsection: General integer bases
+  - subsection: Legendre spectra and arithmetic preconditioners
+  - subsection: Hybrid Lambert-$W$/divisor inversion
+  - section: A formalization and research program
+  - subsection: Current exact Lean adjacency and the quotient-family boundary
+  - subsection: Lean-sized theorem units
+  - subsection: Computational priorities
+  - subsection: Conceptual payoff
+  - section: Conclusion
+  - section: Proof supplements
+  - subsection: The zero-zeta computation in one line
+  - subsection: Expansion at $s=0$
+  - subsection: The finite-cascade coefficient recurrence
+  - section: Corpus coverage matrix
+  - section: Archive contents and file map
+
+### `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Total_Positivity_Frontier_Report/Fabius_Total_Positivity_Frontier_Report.tex`
+
+- SHA-256: `7f8e3364facee0c41836f2301eb80d4fbcad4084814bf03fe17dda8b075404fe`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Corpus audit, scope, and novelty controls}\label{sec:audit
+  - subsection: Pinned recursive audit
+  - subsection: The linked layer developed here
+  - section: Normalization and the decisive transform}\label{sec:normalization
+  - section: The dyadic zero divisor and exact Thue--Morse sign interpolation}\label{sec:zeros
+  - subsection: Integer-base generalization
+  - section: Laguerre--Pólya structure from an arbitrary scale alphabet}\label{sec:LP
+  - section: Pólya-frequency coefficients and Toeplitz minors}\label{sec:PF
+  - section: Multiplier sequences and shifted Jensen polynomials}\label{sec:multiplier
+  - subsection: A two-sided inequality for the raw moments
+  - section: Exact Lambert power sums, Bernoulli recurrences, and Bell polynomials}\label{sec:bell
+  - section: Cartwright geometry of the Fourier product}\label{sec:cartwright
+  - section: A Poisson-binomial saddle model}\label{sec:poisson
+  - section: Structural consequences and interfaces with the existing corpus}\label{sec:interfaces
+  - subsection: Why the $q$ here is the square of the dyadic $q$
+  - subsection: Relation to the endpoint and inverse-Fabius asymptotics
+  - subsection: Moment and Legendre interfaces
+  - subsection: Operator meaning
+  - section: Conjectures}\label{sec:conjectures
+  - section: Promising research directions}\label{sec:future
+  - subsection: Formalization targets
+  - subsection: de Branges and desingularized zero sets
+  - subsection: Strict minors and tableaux
+  - subsection: Asymptotic root processes
+  - subsection: Rational bases and automatic sign words
+  - subsection: Inverse and endpoint matching
+  - section: Numerical methodology and reproducibility}\label{sec:numerics
+  - section: Conclusion
+  - section: A compact theorem dependency map
+  - section: First exact values
+  - section: Research-status ledger
+
+### `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Total_Positivity_Frontier_Report/figures/exact_coefficients_table.tex`
+
+- SHA-256: `d2894a635d538c913b3eeaa6913ebcf81111df44de5e7dcd5c7df184f8a96656`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Spectra_and_Arithmetic_Frontiers/Spectra_and_Arithmetic_Frontiers.tex`
+
+- SHA-256: `da819989900ff6fed6707f4d19c2185c231a0c565b081832580252cb9707b840`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Provenance
+  - part: Half-Integer Spectral Arithmetic for the Fabius--Rvachev System
+  - section: Scope, recursive audit, and the non-duplication boundary}\label{p1:sec:scope
+  - subsection: What was inspected
+  - subsection: Results explicitly treated as baseline
+  - subsection: The gap selected for this report
+  - subsection: Contribution map
+  - section: Baseline notation and identities}\label{p1:sec:baseline
+  - subsection: The three functions
+  - subsection: The Fourier product
+  - subsection: The exact dyadic \texorpdfstring{$q$}{q}-binomial formula
+  - subsection: The lower-Lambert endpoint theorem
+  - section: The half-integer spectral sequence}\label{p1:sec:half-spectrum
+  - subsection: Definition and first values
+  - subsection: Exact two-periodic cosine expansion
+  - section: An all-order weighted Prouhet system}\label{p1:sec:prouhet
+  - subsection: Moment cancellation
+  - subsection: A nontrivial signed measure with every positive moment zero
+  - subsection: Certified finite truncations
+  - section: Dyadic spectral moment filtration}\label{p1:sec:moment-filtration
+  - subsection: Every derivative as a half-integer spectral moment
+  - subsection: Exact termination at reduced dyadic points
+  - section: An exact beyond-all-orders spectral remainder}\label{p1:sec:beyond-all-orders
+  - subsection: Cancellation of every cosine Taylor coefficient
+  - subsection: The direct Lambert--\texorpdfstring{$W$}{W} bridge
+  - section: The exact dyadic alias transform}\label{p1:sec:dct
+  - subsection: The abstract cyclic aliasing foundation
+  - subsection: Folded coefficients
+  - subsection: Exact inverse transform
+  - section: Certified superexponential recovery}\label{p1:sec:alias-error
+  - subsection: A uniform product estimate
+  - subsection: Numerical convergence for the leading amplitude
+  - section: Finite \texorpdfstring{$q$}{q}-binomial--cyclotomic approximants}\label{p1:sec:q-approximants
+  - subsection: Explicit substitution
+  - subsection: A finite algebraic tower
+  - section: Cyclotomic orbit polynomials and rational traces}\label{p1:sec:cyclotomic
+  - subsection: The Galois orbit
+  - subsection: Ramanujan-filtered trace formula
+  - subsection: Orbit polynomials at the first levels
+  - subsection: Rational traces converging to nonlinear sinc moments
+  - subsection: Collapse of the normalized Galois orbit
+  - section: A finite Thue--Morse sign carrier for every alias class}\label{p1:sec:sign-carrier
+  - subsection: Exact factorization of a folded class
+  - subsection: The finite Thue--Morse polynomial
+  - subsection: A positivity conjecture
+  - section: Certified arithmetic of integer-zero jets}\label{p1:sec:zero-jets
+  - subsection: The imported local formula
+  - subsection: Finite exact approximants with a rigorous error
+  - section: Computational verification}\label{p1:sec:verification
+  - subsection: Independent checks performed
+  - subsection: Exact arithmetic workflow
+  - subsection: A compact reproducibility listing
+  - section: Lean formalization roadmap}\label{p1:sec:lean
+  - subsection: Layer 1: finite Fourier algebra
+  - subsection: Layer 2: Fourier-series extraction
+  - subsection: Layer 3: alias limits and estimates
+  - subsection: Layer 4: cyclotomic structure
+  - subsection: Layer 5: imported endpoint asymptotics
+  - subsection: Indicative theorem interfaces
+  - section: Further frontier problems}\label{p1:sec:open
+  - subsection: Exact signs of the folded coefficients
+  - subsection: Minimal polynomials and stabilizers
+  - subsection: Arithmetic nature of the limiting amplitudes
+  - subsection: Spectral moments and nonlinear functionals of \texorpdfstring{$\Up$}{up}
+  - subsection: A genuine transform between the two Gaussian-binomial webs
+  - subsection: Lambert spectral localization
+  - subsection: A two-variable transform
+  - section: Conclusion}\label{p1:sec:conclusion
+  - section: Corpus inventory}\label{p1:app:inventory
+  - subsection: Living documentation: 25 TeX files
+  - subsection: Frozen archive: 32 TeX files
+  - section: Selected source map}\label{p1:app:sources
+  - part: Arithmetic Dyadic Rays of the Rvachev Fourier Product
+  - section: Executive summary and frontier boundary}\label{p2:sec:executive
+  - subsection: The contribution map
+  - subsection: Why arithmetic rays are the genuine gap
+  - subsection: Corpus and novelty audit
+  - section: Established platform from the corpus}\label{p2:sec:platform
+  - subsection: Fabius, Rvachev, and the Fourier product
+  - subsection: The finite Thue--Morse polynomial
+  - subsection: The half-base $q$-calculus layer
+  - subsection: What is imported and what is not
+  - section: Exact fixed-mantissa factorization}\label{p2:sec:factorization
+  - section: Exact arithmetic laws on rational dyadic rays}\label{p2:sec:rational-rays
+  - subsection: The cycle multiplier
+  - subsection: The exact log-quadratic law
+  - subsection: All rational mantissas
+  - section: Cyclotomic algebra of the ray spectrum}\label{p2:sec:cyclotomic-algebra
+  - subsection: Relative norms and orbit polynomials
+  - subsection: Ramanujan traces
+  - subsection: A one-integer law for the mean exponent
+  - section: The sharp rational-ray endpoint}\label{p2:sec:sharp-endpoint
+  - section: Mersenne and plus-denominator rays}\label{p2:sec:mersenne
+  - subsection: Exact orbit products
+  - subsection: The universal sinc-tail constant
+  - subsection: Exponent asymptotics and unboundedness
+  - section: A direct half-base $q$-binomial bridge}\label{p2:sec:qbridge
+  - subsection: Numerical convergence of the twin exponents
+  - section: Exact computations and orbit-polynomial data}\label{p2:sec:computations
+  - subsection: Two exact algorithms
+  - subsection: Exact orbit polynomials
+  - subsection: Exact checks performed
+  - subsection: Reproducible symbolic code
+  - section: A general-base extension}\label{p2:sec:general-base
+  - section: A Lean formalization blueprint}\label{p2:sec:lean-blueprint
+  - subsection: Suggested module boundary
+  - subsection: Core theorem signatures
+  - subsection: Proof dependency order
+  - section: Further frontier problems}\label{p2:sec:open
+  - subsection: The closure of the ray-exponent spectrum
+  - subsection: Extremizers at fixed period
+  - subsection: Stabilizers and repeated orbit-polynomial roots
+  - subsection: Regulator statistics
+  - subsection: Beyond the first Mersenne correction
+  - subsection: A wider $q$-binomial bridge
+  - subsection: Sharp constants in other bases
+  - section: Conclusion}\label{p2:sec:conclusion
+  - section: Corpus inventory}\label{p2:app:inventory
+  - subsection: Living documentation: 25 TeX files
+  - subsection: Frozen archive: 32 TeX files
+  - section: Constants and numerical reference}\label{p2:app:constants
+  - part: Spectral Arithmetic and the Pascal--Rvachev Hierarchy
+  - section: Scope, corpus boundary, and normalization}\label{p3:sec:scope
+  - subsection: What was reviewed
+  - subsection: Fourier and probabilistic conventions
+  - subsection: The established rank-one architecture
+  - section: The classical product as a spectral Thue--Morse object}\label{p3:sec:classical-spectral
+  - subsection: Cumulative multiplicity and parity
+  - subsection: Finite products and a two-scale sign correction
+  - subsection: A zero-divisor Dirichlet series
+  - section: The Pascal--Rvachev hierarchy}\label{p3:sec:hierarchy
+  - subsection: Definition and convergence
+  - subsection: The refinement ladder
+  - subsection: The shifted endpoint variables
+  - section: Zero divisors, digital counts, and generalized Thue--Morse signs}\label{p3:sec:digital
+  - subsection: Integer zero multiplicities
+  - subsection: Finite scale and a Pascal tail formula
+  - subsection: The zero-divisor zeta hierarchy
+  - subsection: An exact digital zero-counting law
+  - subsection: Pascal parity and automatic sign sequences
+  - subsection: Spectral Prouhet partitions
+  - subsection: Statistics of the spectral discrepancy
+  - section: \texorpdfstring{$q$}{q}-scale calculus: Pascal maxima versus Gaussian sums}\label{p3:sec:qcalculus
+  - subsection: The finite Pascal kernel
+  - subsection: The Gaussian companion
+  - subsection: Local logarithms and the same \texorpdfstring{$q$}{q}-kernel
+  - section: Cumulants, concentration, and a Gaussian rank limit}\label{p3:sec:gaussian
+  - subsection: Exact cumulants
+  - subsection: A quantitative central limit theorem in the rank
+  - subsection: Two complementary asymptotic regimes
+  - section: Sharp Fourier decay for every rank}\label{p3:sec:fourier
+  - subsection: A global upper envelope
+  - subsection: A sharp dyadic ray
+  - section: Endpoint Laplace asymptotics and Lambert \texorpdfstring{$W$}{W}}\label{p3:sec:endpoint
+  - subsection: Laplace products and a discrete-antiderivative ladder
+  - subsection: The common scale zeta factor
+  - subsection: Residues and periodic logarithmic polynomials
+  - subsection: Small deviations
+  - subsection: Recovery of the Fabius endpoint
+  - subsection: The lower-Lambert saddle in every rank
+  - section: A unified dictionary and further exact consequences}\label{p3:sec:synthesis
+  - subsection: A master rank germ
+  - subsection: A bivariate polynomial for all finite zero counts
+  - subsection: A zero-divisor trace formula for cumulants
+  - subsection: The common Fourier--endpoint constant
+  - subsection: Result map
+  - section: Frontier program}\label{p3:sec:frontier-program
+  - subsection: Exact higher-rank endpoint transseries
+  - subsection: Dyadic values and higher-rank \texorpdfstring{$q$}{q}-arithmetic
+  - subsection: Arithmetic of moments and denominators
+  - subsection: Automatic signs, rarefaction, and spectral measures
+  - subsection: Smoothed zero counts and complex dimensions
+  - subsection: Local Gaussian limits and moderate deviations in rank
+  - subsection: Beyond the binary Pascal ladder
+  - section: Lean formalization roadmap}\label{p3:sec:lean
+  - subsection: Tier I: finite combinatorics and digital arithmetic
+  - subsection: Tier II: finite products, moments, and rationality
+  - subsection: Tier III: probability and Fourier limits
+  - subsection: Tier IV: complex analysis and Tauberian theory
+  - section: Conclusion}\label{p3:sec:conclusion
+  - section: Reproducibility checks}\label{p3:app:checks
+  - section: Complete LaTeX corpus inventory}\label{p3:app:corpus
+  - section: Notation crosswalk}\label{p3:app:notation
+  - part: Derivative Norm Spectra and Dual Moment Geometries of the Fabius--Rvachev System
+  - section: Scope, corpus audit, and novelty boundary
+  - subsection: What was inspected
+  - subsection: Status convention
+  - section: Normalization and established structural identities
+  - section: Exact equimeasurability and the complete derivative norm spectrum
+  - subsection: Absolute and signed value distributions
+  - subsection: Every rearrangement-invariant norm scales exactly
+  - subsection: Thue--Morse extremizers and exact level sets
+  - section: The norm spectrum determines the Fabius function
+  - section: An exact inverse-Fabius beta transform
+  - section: The Euler--Gamma differential operator
+  - subsection: Exact Mellin symbol
+  - subsection: Cumulants, Bell polynomials, and finite-p corrections
+  - section: Large-p norms, Lambert coordinates, and phase tomography
+  - subsection: Imported inverse endpoint expansion
+  - subsection: Euler's constant shifts the inverse correction
+  - subsection: Recovering the endpoint periodic function from global norms
+  - section: Fourier energy and a shifted Stieltjes--Wigert moment problem
+  - subsection: Exact spectral moments
+  - subsection: A direct proof of moment indeterminacy
+  - subsection: A nonclassical q-Pearson equation
+  - section: Hankel determinants, q-binomial polynomials, and Lagrange quadrature
+  - subsection: Gaussian quadrature as q-binomial Lagrange interpolation
+  - section: The optimal derivative weight and a q-Legendre Fourier envelope
+  - subsection: Exact Denjoy--Carleman weight
+  - subsection: Exact associated function and periodic lattice correction
+  - section: Numerical experiments
+  - subsection: Derivative tiling and norm checks
+  - subsection: Spectral moments
+  - subsection: Euler--Gamma operator convergence
+  - subsection: Symbolic Hankel checks
+  - section: Conjectures and promising research directions
+  - subsection: A full norm transseries
+  - subsection: Nevanlinna parameter of the sinc-square measure
+  - subsection: Orthogonal complement and spectral zeros
+  - subsection: Confluent q-Richardson phase tomography
+  - subsection: Base-b and Pascal--Rvachev extensions
+  - subsection: Formalization roadmap
+  - section: Conclusion
+  - section: Recursive TeX corpus ledger
+  - section: Reproducibility files
+
+### `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/fabius_holonomic_frontiers_report/data/dyadic_ode_examples.tex`
+
+- SHA-256: `a7202717f4b5bc6262911064cdb9255a2adf96cd27f560406639fe497908ac0c`
+- Phrase clusters: none
+- Structural headings:
+  - none detected
+
+### `semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/fabius_holonomic_frontiers_report/fabius_holonomic_frontiers.tex`
+
+- SHA-256: `aac61b6c8b1472c4f244ab88a41d43240080b1cf5070824cfb6a7abc76160803`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Scope, corpus audit, and status of the results
+  - subsection: Repository snapshot and exclusion boundaries
+  - subsection: Three levels of assertion
+  - subsection: Main new theorem families
+  - section: Normalizations and background
+  - subsection: The bounded Fabius function and the up function
+  - subsection: A geometric finite family
+  - subsection: D-finiteness, P-recursiveness, and rank
+  - section: Finite signed-frequency calculus and exact differential rank
+  - subsection: The exponential polynomial behind a finite sinc product
+  - subsection: A minimal-rank lemma for exponential polynomials
+  - subsection: Rank--knot duality in physical space
+  - section: Exact overlaps, separation, and holonomic entropy
+  - subsection: The restricted-coefficient collision polynomial
+  - subsection: A sharp separation formula below the overlap threshold
+  - subsection: Submultiplicativity and a signed overlap entropy
+  - section: The dyadic case: Thue--Morse spectrum and a closed minimal ODE
+  - subsection: The odd frequency lattice
+  - subsection: The minimal odd-lattice operator
+  - subsection: A Pochhammer factorization
+  - subsection: All-order Bell--Bernoulli coefficients
+  - subsection: Discriminant and Barnes-\texorpdfstring{$G$}{G} asymptotics
+  - section: General-\texorpdfstring{$q$}{q} operator coefficients from \texorpdfstring{$q$}{q}-integers and Bell polynomials
+  - section: The inverse-golden-ratio overlap: the first rank defect
+  - section: The infinite transform: first-order dilation, infinite differential rank
+  - subsection: Integer-base sinc products and their divisor
+  - subsection: Non-D-finiteness from unbounded multiplicity
+  - subsection: Escape from every finite dyadic trigonometric field
+  - section: Moment, cumulant, and reciprocal sequences are not P-recursive
+  - subsection: The moment-generating function
+  - subsection: Three non-P-recursive rational sequences
+  - subsection: The functions \texorpdfstring{$F$ and $\upf$}{F and up} themselves
+  - section: Deep dyadic Fabius samples and P-recursiveness
+  - subsection: All fixed derivative orders
+  - subsection: An entire generating function of order zero
+  - section: Numerical experiments and reproducibility
+  - subsection: Rank table
+  - subsection: Operator residual and discriminant checks
+  - subsection: Reproduction command
+  - section: Conjectures and promising research directions
+  - subsection: Proving the golden finite-state recurrence
+  - subsection: Differential transcendence
+  - subsection: Rank entropy versus Bernoulli-convolution entropy
+  - subsection: Near-overlap conditioning and restricted-coefficient polynomials
+  - subsection: A mixed dilation--differential Ore algebra
+  - subsection: Inverse Fabius samples
+  - subsection: Saddle analysis of the order-zero sample OGF
+  - subsection: Formalization targets
+  - section: Conclusion
+  - section: A compact theorem dependency map
+  - section: Selected exact computational certificates
+  - subsection: Golden level three
+  - subsection: Dyadic level three
+  - subsection: First cumulants
+  - section: Reproducibility manifest
+
+### `semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex`
+
+- SHA-256: `72cc36490ec3ad63b06159c99e2de171576151f1ed17d769e837258de70f4b6f`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Phase-locked Lambert-W saddle; Integer-base atomic family
+- Structural headings:
+  - section: Provenance
+  - part: A Unified Formula Atlas for the Thue--Morse Sequence
+  - subsection: Two normalizations
+  - subsection: The Pascal-row formula being complemented
+  - subsection: Merge policy
+  - subsection: A compact formula index
+  - subsection: Recursion and uniqueness
+  - subsection: Binary concatenation and reflection
+  - subsection: Exclusive-or is the natural group law
+  - subsection: Finite automata, matrices, and tensor powers
+  - subsection: The sequence is primitive recursive
+  - subsection: Exact weight distribution in a dyadic block
+  - subsection: Evil and odious enumerators
+  - subsection: Extracting one binary digit
+  - subsection: Dyadic floor and fractional-part sums
+  - subsection: Square waves and a sine-sign product
+  - subsection: The sign of the Fabius sinc product
+  - subsection: The ruler transition
+  - subsection: Legendre's formula
+  - subsection: A single central binomial coefficient
+  - subsection: Catalan valuations
+  - subsection: Kummer's carry cocycle
+  - subsection: Subtraction and borrow counts
+  - subsection: Lucas's theorem as a submask criterion
+  - subsection: A logarithm-free Pascal-row formula modulo three
+  - subsection: A one-parameter row statistic
+  - subsection: Sparse Pascal probes for individual bits
+  - subsection: Odd multinomial coefficients and exact \texorpdfstring{\(r\)}{r}-nomial logarithms
+  - subsection: Boolean weight enumerators and M\"obius inversion
+  - subsection: The Boolean-cube mother identity
+  - subsection: The finite Prouhet polynomial
+  - subsection: Reciprocity and cyclotomic multiplicities
+  - subsection: The infinite product and Mahler equation
+  - subsection: A weighted digit enumerator
+  - subsection: Thue--Morse constants in every base
+  - subsection: The logarithmic ruler transform
+  - subsection: A nonlocal convolution recurrence
+  - subsection: Partition and Bell-polynomial formulae
+  - subsection: A Hessenberg determinant
+  - subsection: The zero--one series over \texorpdfstring{\(\mathbb F_2\)}{F2}
+  - subsection: An integral algebraic lift
+  - subsection: The unit circle is a natural boundary
+  - subsection: Hankel determinants never vanish
+  - subsection: Transcendental values and the sharp irrationality exponent
+  - subsection: The mixed-difference master identity
+  - subsection: Exact multiple-integral remainder
+  - subsection: Arbitrary translation weights
+  - subsection: Prouhet cancellation and the first surviving moment
+  - subsection: The finite exponential transform
+  - subsection: All power moments: a finite composition formula
+  - subsection: Bell-polynomial compression and cumulants
+  - subsection: Centered moments and a parity selection rule
+  - subsection: All binomial-basis moments
+  - subsection: The first prefix discrepancy
+  - subsection: Iterated inclusive prefixes
+  - subsection: Terminal zero runs at dyadic boundaries
+  - subsection: Why this is the discrete spine of the Fabius theory
+  - subsection: A finite Fourier product
+  - subsection: Sine and cosine products as Thue--Morse sums
+  - subsection: The exact dyadic discrete Fourier transform
+  - subsection: A one-point Walsh spectrum
+  - subsection: Rademacher step functions
+  - subsection: Finite Riesz products
+  - subsection: Finite and limiting autocorrelation
+  - subsection: A Mahler equation for the autocorrelation series
+  - subsection: Uniform recurrence and letter frequencies
+  - subsection: Aperiodicity
+  - subsection: Overlap-freeness and the critical exponent
+  - subsection: Complement and reversal closure
+  - subsection: Linear factor complexity
+  - subsection: Root-of-unity filters at dyadic endpoints
+  - subsection: Complete evaluation modulo three
+  - subsection: Gelfond's uniform exponent
+  - subsection: A matrix recursion for odd moduli
+  - subsection: The global Newman theorem and the arithmetic frontier
+  - subsection: Quadratic logarithmic decay near one
+  - subsection: The shifted Dirichlet family
+  - subsection: Mellin representation and entire continuation
+  - subsection: The harmonic kernel
+  - subsection: Pair reduction
+  - subsection: A two-parameter master product
+  - subsection: The Woods--Robbins product
+  - subsection: Three dyadic block-product limits
+  - subsection: Formalized modules (August 2026)
+  - subsection: Which representation is best?
+  - subsection: A compact verification script
+  - subsection: A dependency-aware formalization order
+  - subsection: Proof-dependency graph
+  - subsection: One index through many representations
+  - subsection: An all-order dyadic moment
+  - subsection: A Fourier sample
+  - subsection: Autocorrelation from the recursion
+  - subsection: A complete four-bit block
+  - subsection: A carry-corrected addition
+  - part: Finite-Block Calculus for the Fabius--Rvachev--Thue--Morse System
+  - section: Corpus audit and research positioning
+  - subsection: What was inspected
+  - subsection: Established pillars
+  - subsection: The missing commutative bridge
+  - subsection: Priority and uncertainty
+  - section: Objects, normalizations, and exact background
+  - subsection: The signed block polynomial
+  - subsection: Fourier and Laplace products
+  - subsection: The lower-Lambert phase
+  - section: One Thue--Morse block, two exact product bridges
+  - subsection: Oscillatory specialization: the Fourier bridge
+  - subsection: Decaying specialization: the endpoint Laplace bridge
+  - subsection: The omitted tail is a scaled copy of the whole
+  - section: The zeta--Lambert tail calculus
+  - subsection: A local logarithm of the sinc function
+  - subsection: All orders, exact radius, explicit remainder
+  - subsection: Arbitrary-order finite Thue--Morse approximants
+  - subsection: Why the coefficient array is a Lambert series
+  - section: An all-orders finite-block formula for the endpoint Laplace product
+  - subsection: Centering removes the linear tail
+  - subsection: Bernoulli--zeta expansion of the negative tail
+  - subsection: The endpoint product from one finite digital block
+  - section: $q$-binomial Richardson acceleration on the spectral scale
+  - subsection: An analytic error germ in $q^m$
+  - subsection: Geometric-grid weights are Gaussian binomials
+  - section: Exact random tails and a weak differential expansion
+  - subsection: The random-series model
+  - subsection: Cumulants are the same zeta--Lambert coefficients
+  - subsection: A certified weak expansion
+  - section: Lambert-$W$ complexity of endpoint product truncation
+  - subsection: The canonical scale and the tail variable
+  - subsection: A finite-block endpoint evaluation protocol
+  - section: A Thue--Morse Barnes-type tower from Dirichlet trivial zeros
+  - subsection: Input from the Atlas
+  - subsection: The derivative tower
+  - section: Numerical verification and order diagnostics
+  - subsection: Exact-identity residuals
+  - subsection: Observed convergence orders
+  - subsection: Weak expansion check
+  - subsection: Endpoint-tail coefficients
+  - subsection: Lambert-depth experiment
+  - section: Consequences for the existing research program
+  - subsection: A new exact-arithmetic/Fourier bridge
+  - subsection: A new $q$-binomial role
+  - subsection: A certified route from finite splines to $\Up$
+  - subsection: A product engine for endpoint saddles
+  - subsection: Formalization leverage
+  - section: Lean formalization roadmap
+  - section: Frontier conjectures and next deductions
+  - subsection: General radix and nonuniform tails
+  - section: Conclusion
+  - section: Coefficient and extrapolation tables
+  - subsection: Zeta--Lambert and centered Laplace coefficients
+  - subsection: Analytic error germ
+  - subsection: Gaussian-binomial extrapolation weights
+  - section: Reproducibility protocol
+  - section: Complete corpus ledger and deduplication map
+  - subsection: Living documentation treated as authoritative
+  - subsection: Frozen archive represented through provenance
+
+### `semi-formalized-research-frontiers/semi-formalized-research-frontiers.tex`
+
+- SHA-256: `4c17c3000168b744a8d70e189991774654c0214c73ca9c92170b10b10a1bce55`
+- Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle
+- Structural headings:
+  - section: Consolidation map and reading conventions
+  - section: Lean object crosswalk---inputs, not certification
+  - part: Probability, Discrete, and Generic Asymptotic Engines
+  - section: Topic abstract
+  - section: Scope, conventions, and the audit boundary
+  - subsection: Three levels of coverage
+  - subsection: Notation that must not collide
+  - subsection: The positivity hypothesis in the original characterization is redundant
+  - section: The elementary-function obstruction and inverse handoff
+  - subsection: Canonical inverse treatment
+  - subsection: Elementary functions through their analytic locus
+  - subsection: Strong non-elementarity of the Fabius family
+  - section: Probability laws and the bridges the headline formulas conceal
+  - subsection: The product probability law in measure-theoretic form
+  - subsection: The survival-function Fubini identity
+  - subsection: Raw, endpoint, and tilted Laplace moments
+  - subsection: From atomic laws to half-endpoint histograms
+  - section: The reusable discrete engines
+  - subsection: Weighted paths solve triangular recurrences
+  - subsection: Specialization to the inverse-dyadic recurrence
+  - subsection: A finite-row Toeplitz convergence theorem
+  - subsection: The Fabius specialization and its canonical exact treatment
+  - section: The formal and analytic machinery of the all-orders saddle expansion
+  - subsection: Parameter-dependent Poincar\'e expansions
+  - subsection: Recursive coefficients of a formal exponential
+  - subsection: Recursive coefficients of a formal logarithm
+  - subsection: Exact finite remainders from formal coefficient identities
+  - subsection: Gaussian contraction: integration becomes polynomial algebra
+  - subsection: Uniform Gaussian tails for polynomial references
+  - subsection: Handoff to the Fabius-specific saddle synthesis
+  - subsection: Supplementary material from this synthesis
+  - subsection: Executable recurrences in mathematical pseudocode
+  - subsection: Lean declaration and module concordance
+  - subsection: Audit matrix against the main article
+  - subsection: Notation crosswalk
+  - subsection: A compact dependency diagram
+  - part: Repeated Integration and Rvachev's Up-Function
+  - section: Topic abstract
+  - section: The problem, the indexing, and the answer
+  - subsection: Main finite-stage formula
+  - subsection: Main sharp convergence theorem
+  - section: The integration operator is a probability operator
+  - section: The limit is Rvachev's up-function
+  - subsection: Self-similarity and the differential equation
+  - subsection: Fourier product
+  - subsection: Relation with the bounded Fabius function
+  - section: Exact finite splines and the Thue--Morse collapse
+  - subsection: A general nonuniform box-spline formula
+  - subsection: The subset-sum polynomial
+  - subsection: Derivatives, knots, and exact smoothness
+  - subsection: The first iterates
+  - section: Replacing the last tail: the exact error decomposition
+  - subsection: The comparison kernel
+  - subsection: Peano identity and the pointwise error formula
+  - section: Sharp derivative geometry of the partial densities
+  - subsection: A sharp derivative norm for the up-function
+  - section: The exact convergence rate
+  - subsection: All stages after the first admissible one
+  - subsection: The first \texorpdfstring{$C^r$}{C-r} spline
+  - subsection: Exact \texorpdfstring{$C^r$}{C-r} convergence
+  - subsection: The uniform errors and exact extremal values
+  - section: The asymptotic error profile
+  - subsection: A full even-derivative expansion
+  - section: Comparison with ordinary truncation
+  - section: Exact computation and numerical use
+  - subsection: A direct exact-arithmetic evaluator
+  - subsection: Conditioning and stable evaluation
+  - section: How this fits the existing ProveIt development
+  - section: Conclusions
+  - part: The Dyadic Web of the Fabius Function
+  - section: Topic abstract
+  - section: Scope, conventions, and the formula map
+  - subsection: Five presentations of the same value
+  - subsection: The exact dyadic formula taken as input
+  - section: The master coefficient and its probabilistic meaning
+  - subsection: The probability law behind the moment series
+  - subsection: The Thue--Morse prefix series
+  - subsection: The numerator and the law separate completely
+  - section: Moment coordinates and alternative exact representations
+  - subsection: An infinite-cube composition formula
+  - subsection: Cumulants, Bernoulli numbers, and Bell polynomials
+  - subsection: Exact moment correction of the matched spline
+  - subsection: The reciprocal correction transform
+  - subsection: The Gaussian row is a divided difference
+  - subsection: The parametric coefficient polynomial
+  - subsection: Why the node values are Thue--Morse power sums
+  - subsection: Translation invariance is lower-degree annihilation
+  - subsection: A useful abstract summary
+  - section: Binary Taylor reduction and the global series
+  - subsection: The finite reduction polynomial
+  - subsection: Appell compression of every Taylor block
+  - subsection: The sparse digit form on the unit interval
+  - subsection: Direct one-row Appell and nested digit--$q$ forms
+  - subsection: The dyadic triangle of finite representations
+  - subsection: Shifted splines and the finite row
+  - subsection: At dyadic inputs the limit stabilizes exactly
+  - subsection: The row polynomial
+  - subsection: What fails away from a dyadic point
+  - subsection: Two infinite constructions that share a limit but not terms
+  - subsection: The first rows
+  - section: A unified dyadic identity and a worked example
+  - subsection: The complete equality chain
+  - section: Fourier representation
+  - section: Computational and conceptual consequences
+  - subsection: Which representation is best for which task?
+  - subsection: A compact exact-arithmetic scheme
+  - subsection: Exact arithmetic checks implied by the connections
+  - subsection: Endpoint and convention warnings
+  - section: Relation to the Lean development
+  - section: Conclusion
+  - part: From Exact Dyadic Formulae to the Small-Argument Asymptotic
+  - section: Topic abstract
+  - section: The missing bridge
+  - subsection: What is proved
+  - subsection: Headline notation and result
+  - section: Exact dyadic inputs from the preceding part
+  - section: The first asymptotic already visible in the exact values
+  - section: The exact negative-Laplace decomposition
+  - subsection: Periodization of the dilation equation
+  - subsection: Mean, Fourier modes, and the asymptotic constant
+  - section: Sharp route I: endpoint moments versus Laplace moments
+  - subsection: Second-order kernel comparison
+  - subsection: Differentiating the exact periodic decomposition
+  - section: The lower-Lambert phase and the derivative cancellation
+  - subsection: The exact phase
+  - subsection: Why \texorpdfstring{$\Psi$}{Psi} is evaluated at \texorpdfstring{$\lambda_n$}{lambda n}
+  - subsection: Compact versus expanded form
+  - section: Sharp route II: a coefficient saddle from the exact generating product
+  - subsection: Positive-axis growth of \texorpdfstring{$A$}{A}
+  - subsection: Vertical extraction and the normalized saddle mass
+  - subsection: Local phase, domination, and all orders
+  - section: Fixed and moderately growing dyadic numerators
+  - section: Exact Bromwich-to-coefficient collapse
+  - section: Consequences for every exact arithmetic representation
+  - subsection: The normalized recurrence and composition sum
+  - subsection: The half moments
+  - subsection: The literal \texorpdfstring{$q$}{q}-binomial numerator
+  - subsection: A first all-orders corollary
+  - section: What each exact formula contributes asymptotically
+  - subsection: Why direct termwise analysis of the \texorpdfstring{$q$}{q}-sum is misleading
+  - section: How much of the full small-argument asymptotic is encoded by inverse dyadics?
+  - subsection: The arbitrary-argument formula
+  - subsection: Dense sampling of the periodic correction
+  - subsection: What inverse powers alone do not prove
+  - section: Numerical verification from exact rational values
+  - section: Correspondence with the Lean development
+  - section: Conclusions
+  - section: Supplementary material from this synthesis
+  - section: Algebra behind the expanded dyadic formula
+  - section: A stable numerical recipe
+  - section: Notation cross-reference
+  - part: Signed Thue--Morse Prefix Sums and the Fabius Function
+  - section: Topic abstract
+  - section: Scope, conventions, and the answer in one table
+  - subsection: What is formalized and what is new here
+  - section: The exact discrete bridge
+  - subsection: Signed Thue--Morse prefixes
+  - subsection: The finite polynomial and the one-order shift
+  - subsection: Natural centers, atomic law, and histogram
+  - section: The hidden Bernoulli tail
+  - subsection: Rademacher factorization
+  - subsection: Exact support radius and variance
+  - subsection: Why the leading center correction is second order
+  - section: Fourier inversion on the moving lattice
+  - subsection: A shifted-lattice inversion formula
+  - subsection: The exact deconvolution multiplier
+  - section: Sharp center-grid asymptotics
+  - subsection: Expansion of the reciprocal tail product
+  - subsection: The uniform expansion
+  - subsection: Sharp norm constant
+  - subsection: A continuous reconstruction with the same rate
+  - subsection: The all-orders pattern
+  - subsection: An elementary finite-level certificate
+  - section: The histogram: a sharp first-order quantization error
+  - section: The floor-prefix approximation to the bounded Fabius function
+  - subsection: Definition and exact moving-center displacement
+  - subsection: First- and second-order expansions
+  - subsection: The equivalent statement for the \texorpdfstring{$\Up$}{Up} sample
+  - section: An exact midpoint identity
+  - subsection: Correct centering can be exact at the same point
+  - section: Bias removal and accelerated prefix reconstructions
+  - section: Conceptual synthesis
+  - subsection: One row, three coordinate choices
+  - subsection: Variance versus support radius
+  - subsection: Why the \texorpdfstring{$n$}{n} is structural
+  - subsection: A practical recommendation
+  - section: A Lean formalization roadmap
+  - section: Conclusion
+  - section: Supplementary material from this synthesis
+  - section: Elementary geometric-tail formulas
+  - section: A short exact-arithmetic algorithm
+  - part: Inverse and Small-Argument Saddle Analysis
+  - section: Topic abstract
+  - section: Purpose, scope, and status conventions
+  - subsection: A supplement rather than a second survey
+  - subsection: What the labels mean
+  - subsection: Local saddle notation and its crosswalk
+  - section: The inverse as a global mathematical object
+  - subsection: The order isomorphism on the unit interval
+  - subsection: A four-way comparison calculus
+  - subsection: Tails, endpoints, and reflection
+  - section: Exact inversion of the dyadic evaluator
+  - subsection: The exact statement
+  - subsection: A small exact table
+  - section: \texorpdfstring{Flatness of \(F\) becomes steepness of \(\InvF\)}{Flatness of F becomes steepness of its inverse}
+  - subsection: The transported power inequalities
+  - subsection: An effective bound against every line
+  - subsection: Infinite one-sided slope
+  - subsection: Failure of every positive Hölder estimate
+  - section: Classical calculus and the exact regularity of the inverse
+  - subsection: Smoothness and differential identities in the interior
+  - subsection: Shape reversal under inversion
+  - subsection: \texorpdfstring{The \(C^\infty\) and analytic loci}{The smooth and analytic loci}
+  - subsection: Analytic-density and non-elementarity consequences
+  - section: Inverting the sharp small-argument asymptotic
+  - subsection: The exact lower Lambert phase
+  - subsection: Asymptotic solution for the phase
+  - subsection: The endpoint equivalent for the inverse
+  - subsection: The complete hierarchy of elementary scales
+  - section: Closed periodic saddle jets
+  - subsection: The recursive jets
+  - subsection: Why the Stirling indices are shifted
+  - subsection: Coefficient rows and the first jets
+  - section: The centered exponent and its algebraic collapse
+  - subsection: From a long Taylor expansion to one short formula
+  - section: Formal exponential, Gaussian contraction, and logarithm
+  - subsection: The exponential recursion
+  - subsection: Gaussian contraction and mass coefficients
+  - subsection: Logarithmic coefficients
+  - subsection: The top jet and the highest derivative
+  - section: The first and second logarithmic corrections
+  - subsection: Order two: the first correction
+  - subsection: Order four of the formal exponential
+  - subsection: Gaussian contraction and the second mass coefficient
+  - subsection: The second logarithmic coefficient
+  - section: Why the all-orders remainder is actually rigorous
+  - subsection: The exact normalized saddle mass
+  - subsection: The order-dependent central window
+  - subsection: All-order control of the exact centered exponent
+  - subsection: Finite exponentiation without an infinite-series argument
+  - subsection: Gaussian contraction on the whole line
+  - subsection: The complementary contour
+  - subsection: The all-orders mass expansion
+  - subsection: Transfer through the logarithm
+  - subsection: Adding the flat tail and returning to \texorpdfstring{\(x\downarrow0\)}{x to 0}
+  - subsection: Exact transfer to the right endpoint
+  - subsection: The separate elementary expansion of the Lambert phase
+  - section: Higher explicit corrections and their Fourier signatures
+  - subsection: The third and fourth coefficients in bounded-jet coordinates
+  - subsection: The same coefficients in the derivatives of \texorpdfstring{$\Psi$}{Psi}
+  - subsection: The \texorpdfstring{$\Psi$}{Psi}-free parts
+  - subsection: Exact period means
+  - section: Fourier form and the amplitude law}\label{smallarg:sec:fourier
+  - subsection: The amplitude law
+  - subsection: Why the expansion is only asymptotic
+  - section: Numerical verification}\label{smallarg:sec:numerics
+  - subsection: The fourth coefficient
+  - subsection: A worked example}\label{smallarg:sec:worked
+  - subsection: An independent confirmation to \texorpdfstring{$n=400$}{n=400}
+  - section: Two traps}\label{smallarg:sec:traps
+  - section: Specialist open items
+  - section: A proof-oriented concordance with the Lean modules
+  - subsection: Named declarations worth knowing
+  - section: What is formalized and what is newly synthesized
+  - subsection: Directly formalized
+  - subsection: Classical consequences derived in this article
+  - subsection: Symbolic and numerical frontier
+  - subsection: Claims deliberately not made
+  - section: Concluding synthesis
+  - section: Supplementary material from this synthesis
+  - section: Repository paths used in the audit
+  - part: Primary Exposition Gap Register
+  - section: Fourier-decay normalization
+  - section: Dyadic specializations and evaluator cost
+  - subsection: Concrete rational values
+  - subsection: Popcount complexity
+  - subsection: Independent analytic derivations
+  - subsection: Global block fold for the signed evaluator
+  - subsection: Least-common-denominator valuation
+  - subsection: Rvachev rational-input wrapper
+  - section: Centered finite splines and local finiteness
+  - subsection: Global positive-part form and a rejected raw-spline recurrence
+  - subsection: What ``a factor of two'' is intended to compare
+  - subsection: Uniform CDF control and weak convergence
+  - subsection: Local finiteness of the signed translate family
+  - section: Step cells and corrected-prefix conventions
+  - subsection: Exact histogram-cell tiling
+  - subsection: Why half-endpoint cells are needed
+  - subsection: Independent roles of the order and coordinate corrections
+  - section: Already-preserved audit dispositions
+  - section: Complex-shift spline estimate
+  - section: Prefix-kernel interpretations
+  - section: An actual infinite formal product
+  - section: Formal-background crosswalk
+  - section: Endpoint material in the consolidated volume
+  - section: Provenance
+  - section: Consolidated promotion rule
