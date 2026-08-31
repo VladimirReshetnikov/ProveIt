@@ -51,16 +51,26 @@ the redundant sidecars were then retired again so that the canonical package
 remains the sole live inverse-q document.
 
 For `inverse_q_analogs_report/`, the sidecars confirm that the original
-17-file delivery matched the archive hash already recorded above, and that a
-later normalized edition passed three strict serial pdfLaTeX runs, a complete
-51-page visual inspection, and deterministic replay of all seven textual data
-outputs.  That edition had TeX SHA-256
+17-file delivery matched the archive hash already recorded above.  No checksum
+ledger was submitted: the repository-generated arrival ledger verified all 17
+payloads before normalization.  Twelve hashes agree with the pinned source
+ledger, while five CSV hashes differ solely because the arrival ledger records
+their pre-normalization line endings.  A later normalized edition passed three
+strict serial pdfLaTeX runs, a complete 51-page visual inspection, and
+deterministic replay of all seven textual data outputs.  That edition had TeX
+SHA-256
 `de375ee059e0ee9485286aea13e917363854d610b5ff77672001828fa663699b`
 and PDF SHA-256
 `1ef95365aa42fc5426dc7f7533096ecdc9605479fa1eb6c2b8757fc25e086fdb`.
+The superseded source and rendering are recoverable at commit `444cd6ac2`.
 Its repaired endpoint, safeguarded-Newton, near-unit truncation-cost, and
 conditional-radicals statements are represented in the source concordance and
-the corrected canonical proofs.  The exact reship
+the corrected canonical proofs.  The late audit's stronger assertion that the
+order-five Maxwell collision was proved is not promoted: it treats a large
+secondary-discriminant factorization as exact symbolic output without a
+retained certificate.  Chapter 2 proves the elementary uniqueness statement
+for the displayed reciprocal polynomial but correctly keeps the Maxwell-factor
+identification uncertified.  The exact reship
 `Fabius_Rvachev_Frontier_Report_2026-08-30-E.zip`, with outer SHA-256
 `174bf733156cd874cf4f9321c6ab71ca44f311856cc01dc158ddf83dc00cf813`,
 was byte-identical to the filed package after documented line-ending
@@ -73,9 +83,13 @@ output, three clean serial pdfLaTeX passes, and visual inspection of the
 `2d3d47cb82ebeea01d43858599e78ddff3d0c97ac62cbe4f09e3ad7314eb4aee`
 and its PDF had SHA-256
 `88f8e5b4272a949a0521561d2328eb8312167726fbad5c80088ee017921463c5`.
-The retained program and numerical output already live in the canonical
-asset tree.  Git commit `53c431137` remains the byte-level archive for all
-seven sidecars summarized in this section.
+The superseded source and rendering are recoverable at commit `1d5c97985`.
+The retained program and numerical output already live in the canonical asset
+tree.  These seven late sidecars are intentionally absent from the 77-row
+asset-disposition ledger, which inventories the earlier immutable
+`6fe9fb8f50e1b8a9a800fa0e8ef6f688f5bb5838` source snapshot.  Git commit
+`53c431137` remains the byte-level archive for all seven sidecars summarized in
+this section.
 
 For that reason the consolidation lives in the neutral
 `inverse_q_analogs_and_series/` directory.  Although the extended report has
