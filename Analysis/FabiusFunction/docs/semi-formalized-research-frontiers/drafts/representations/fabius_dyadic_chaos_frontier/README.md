@@ -69,30 +69,34 @@ imported into the report. They are **not Lean status markers**.
 
 `LEAN_CROSSWALK.md` audits all 41 labeled
 theorem/proposition/lemma/corollary statements. The maintained report now
-contains five deliberately statement-exact, compiler-backed results: the
-totalized activation dictionary, the sharp local quadratic coefficient, the
-geometric activation-dimension proposition, and the certified dyadic
-prefix/tail corollary, together with the square-summable activation-series
-theorem. The remaining status counts are 12 Unformalized, 21 Partial, and 3
-Near-complete.
+contains six statement-exact, compiler-backed results: the totalized
+activation dictionary, the activation-bounds lemma including its finite Taylor
+jet, the sharp local quadratic coefficient, the geometric
+activation-dimension proposition, the certified dyadic prefix/tail corollary,
+and the square-summable activation-series theorem. The remaining status counts
+are 12 Unformalized, 20 Partial, and 3 Near-complete.
 
-Two older compound statements have improved without becoming Complete.
-`lem:p-bounds` is Partial because all its order and global quadratic bounds,
-including sharpness of the coefficient `1/3`, are formalized, while its Taylor
-expansion through `O(x^10)` is not. `prop:mu-refinement` is Partial because its
-dyadic and geometric definitions, summability, refinements, positivity,
-prefix decompositions, and tail estimates are formalized, while its Bernoulli
-power series and radius statements are not.
+The older compound statement `lem:p-bounds` is now Complete.  The divided-slope
+bridge is `Fabius.tanhDiv_eq_dslope`; the finite analytic calculation is
+`Fabius.tanh_sub_taylor_nine_isBigO`; and the report's activation expansion is
+formalized in the canonical norm-power form by
+`Fabius.activationProbability_sub_taylor_eight_isBigO` and in the literal
+`O(x^10)` form by
+`Fabius.activationProbability_sub_taylor_eight_isBigO_pow`.
+`prop:mu-refinement` remains Partial: its dyadic and geometric definitions,
+summability, refinements, positivity, prefix decompositions, and tail estimates
+are formalized, but its all-order Bernoulli power series, convergence-radius
+statements, and active-count expectation bridge are not.
 
 The current activation tranche is source-verified at commit
-`f45041685da96aae71cbd8d2d7979476eefe93ec`. Its six modules expose an
-exhaustive public surface of 6 definitions and 95 theorems, or 101 public
-declarations: `HyperbolicActivation` (4+57), `ActivationSeries` (0+3),
-`ActivationAsymptotics` (0+2), `ActivationSeriesAsymptotics` (0+1),
-`GeometricActivationDimension` (2+30), and
-`GeometricActivationAsymptotics` (0+2). The earlier `7c8d1f1...` checkpoint
-remains a narrower historical milestone rather than the provenance of these
-new results.
+`a345425d21d90e680bf15e34093af42c69c08a83`. Its seven modules expose an
+exhaustive public surface of 6 definitions and 99 theorems, or 105 public
+declarations: `HyperbolicActivation` (4+58), `ActivationTaylor` (0+3),
+`ActivationSeries` (0+3), `ActivationAsymptotics` (0+2),
+`ActivationSeriesAsymptotics` (0+1), `GeometricActivationDimension` (2+30),
+and `GeometricActivationAsymptotics` (0+2). The earlier `7c8d1f1...`
+checkpoint remains a narrower historical milestone rather than the provenance
+of these new results.
 
 The generic series theorem permits an arbitrary index type and signed or zero
 real weights, provided their squares are summable. Under that hypothesis its
@@ -102,8 +106,10 @@ geometric API proves a uniform, nondegenerate convergence theory under
 `|q|<1`; negative-`q` statements are deterministic algebraic generalizations,
 while the report's active-count probability interpretation assumes `0<q<1`.
 No theorem identifies the deterministic dyadic sum with `E K_t`, and the
-Taylor jet, full Bernoulli series, and q-binomial chaos coefficient remain
-outside this activation milestone.
+all-order Bernoulli series and radius theorems, active-count expectation
+bridge, and q-binomial chaos coefficient remain outside this activation
+milestone.  The proved finite Taylor jet does not imply any of those stronger
+claims.
 
 For `thm:TM-corner`, Lean now contains the exact Boolean-cube, polynomial,
 dyadic-sign, and report-grid clauses over a more general algebraic target. The
@@ -175,8 +181,9 @@ with Libertinus fonts when available and Latin Modern as a fallback.
   matrix, and formula atlas.
 - No clipping, overlapping text, broken glyphs, or black rendering artifacts
   were observed.
-- The exact five compiler-backed result headings are each extractable once
-  when matched with their theorem number and class. The report SHA-256 is
+- The exact five appended compiler-backed result headings audited during the
+  PDF release are each extractable once when matched with their theorem number
+  and class. The report SHA-256 is
   `0523771ad27522bda46c088659a85ed4b6243495795e3615c6ba5e5a5b2f1979`.
 - The experiment was replayed in two fresh trees. The six archived figure pairs
   were regenerated from the recorded environment after selecting TrueType

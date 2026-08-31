@@ -109,14 +109,14 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-30 inventory contains 603 modules and 8,213 lexically
+The post-Taylor 2026-08-31 inventory contains 610 modules and 8,318 lexically
 visible public declarations, with zero missing module headers and zero missing
-doc comments.  Relative to the preceding 602/8,207 baseline, the delta is
-exactly four documented theorems in `GeometricReciprocalGamma.lean` and the two
-documented theorems in the new `GeometricSincCharacteristicFunction.lean`.
-The baseline records those zeroes, so every future source
+doc comments.  This snapshot includes the new `ActivationTaylor.lean` module
+and the reusable divided-slope bridge in `HyperbolicActivation.lean`.  The
+baseline records the current inventory and those zeroes, so every future source
 addition must preserve the full invariant rather than merely avoid worsening a
-historical backlog.
+historical backlog.  Run the script for live numbers after merging concurrent
+source work.
 
 ### What the review pass caught
 

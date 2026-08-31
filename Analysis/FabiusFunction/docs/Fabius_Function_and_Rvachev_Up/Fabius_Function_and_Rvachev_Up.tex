@@ -128,8 +128,8 @@ affine-law checkpoint \nolinkurl{d312c0603};\\
 \small fractional-cutoff checkpoint \nolinkurl{149332f9d};
 inverse-layer-cake checkpoint \nolinkurl{37eab3c56};
 current-tree affine Cauchy-power tranche;\\
-\small activation-series checkpoint
-\nolinkurl{f45041685da96aae71cbd8d2d7979476eefe93ec}}
+\small activation/Taylor checkpoint
+\nolinkurl{a345425d21d90e680bf15e34093af42c69c08a83}}
 
 \begin{document}
 \maketitle
@@ -176,13 +176,17 @@ moment exactness and the complete denominator-free Gaussian residual on geometri
 their analytic companion gives the same head--tail law for unconditionally summable
 weighted sampled coefficient series, without a convergence obligation at zero-weight nodes.
 
-A separate activation layer turns the totalized kernel
-\(p(x)=1-\tanh(x)/x\) into an exact square-summable calculus.  It proves the sharp
+A separate activation layer writes \(h\) for the continuous totalization of
+\(\tanh(x)/x\), with \(h(0)=1\), and turns \(p(x)=1-h(x)\) into an exact
+square-summable calculus.  It proves the sharp
 punctured limit \(p(at)/t^2\to a^2/3\) for every real scale, genuine summability and a
 coefficient-sharp Tannery limit for arbitrary square-summable real weights, and the exact
 normalized geometric coefficient \((1-q)/(3(1+q))\) for \(\lvert q\rvert<1\).  Its dyadic
-value is \(1/9\).  These are deterministic analytic statements; no Bernoulli active-count
-expectation is inserted into them.
+value is \(1/9\).  The same layer identifies the totalized quotient with the divided slope
+of \(\tanh\) at zero and proves the finite jet
+\(p(x)=x^2/3-2x^4/15+17x^6/315-62x^8/2835+O(x^{10})\).
+These are deterministic analytic statements; no Bernoulli active-count expectation is
+inserted into them.
 
 Repeated integration is developed once, before its Fabius specialization, as an oriented
 normalized Volterra calculus whose algebra takes values in an arbitrary real normed space.
@@ -288,7 +292,8 @@ The exposition follows the dependency order of the formal development.  The open
 separate the bounded function \(F\), the bump \(\Up\), and the signed extension
 \(\mathcal F\); construct the canonical function; and record the exact uniqueness and shape
 theorems.  The probability chapter then gives the weighted-uniform representation, the sharp
-square-summable activation calculus, and three finite approximations: atomic convolution
+square-summable activation calculus and its finite Taylor jet, and three finite approximations:
+atomic convolution
 measures, half-weighted step functions, and centered uniform splines.  It also isolates the
 arbitrary-weight distribution laws and the
 support-free and compact inverse-CDF transport theorems before specializing them back to the Fabius
@@ -1640,7 +1645,7 @@ ratios, in \path{GeometricUniformCauchy.lean}; these are distinct from the close
 characteristic-function product identities above and do not supply the still-open
 rapid-decay or Fourier-inversion layers.
 
-\subsection{Sharp activation probabilities and square-summable fields}
+\subsection{Sharp activation probabilities, finite Taylor jets, and square-summable fields}
 \label{sec:activation-series}
 
 The hyperbolic activation kernel admits a particularly clean totalization at the origin.
@@ -1704,6 +1709,83 @@ one application of l'Hopital's rule to
 \((x-\tanh x)/x^3\) produces
 \((\tanh x/x)^2/3\), whose limit is immediate from the continuous totalization \(h(0)=1\).
 Consequently, the coefficient \(1/3\) is proved without a higher-order remainder theorem.
+The finite-jet theorem below is logically independent of that l'Hopital argument and is not
+used to prove the sharp limit.
+
+\begin{proposition}[The totalized tangent quotient is a divided slope]
+\label{prop:tanh-div-dslope}
+For a differentiable real function \(f\), write
+\[
+ \operatorname{dslope}_0(f)(x)=
+ \begin{cases}
+  \dfrac{f(x)-f(0)}{x},&x\ne0,\\[0.6em]
+  f'(0),&x=0.
+ \end{cases}
+\]
+Then the totalization in \eqref{eq:activation-totalizations} satisfies the global function
+identity
+\begin{equation}
+ \boxed{\displaystyle h=\operatorname{dslope}_0(\tanh).}       \label{eq:tanh-div-dslope}
+\end{equation}
+In particular, the displayed divided slope equals \(\tanh(x)/x\) away from zero and equals
+\(\tanh'(0)=1\) at zero.
+\end{proposition}
+
+This is exactly \lean{tanhDiv_eq_dslope} in \path{HyperbolicActivation.lean}.  It records the
+removable value as part of the function itself rather than as an informal convention.  The
+value \(\tanh'(0)=1\) is the specialization at zero of \lean{hasDerivAt_tanh}.
+
+\begin{theorem}[Finite Taylor jet of the activation probability]
+\label{thm:activation-taylor-jet}
+Set
+\begin{align*}
+ T_9(x)&=x-\frac{x^3}{3}+\frac{2x^5}{15}-\frac{17x^7}{315}
+              +\frac{62x^9}{2835},\\
+ P_8(x)&=\frac{x^2}{3}-\frac{2x^4}{15}+\frac{17x^6}{315}
+              -\frac{62x^8}{2835}.
+\end{align*}
+As \(x\to0\), the following three Big-O statements hold:
+\begin{align}
+ \tanh x-T_9(x)&=\bigO\!\left(\lVert x\rVert^{11}\right),
+                                                        \label{eq:tanh-taylor-nine}\\
+ p(x)-P_8(x)&=\bigO\!\left(\lVert x\rVert^{10}\right),
+                                                        \label{eq:activation-taylor-eight-norm}\\
+ p(x)-P_8(x)&=\bigO\!\left(x^{10}\right).              \label{eq:activation-taylor-eight-power}
+\end{align}
+Thus, in the usual human shorthand,
+\[
+ \boxed{\displaystyle
+ p(x)=\frac{x^2}{3}-\frac{2x^4}{15}+\frac{17x^6}{315}
+       -\frac{62x^8}{2835}+\bigO(x^{10}).}
+\]
+The last two statements are the canonical norm-power and literal real-power formulations of
+the same estimate; \(\lVert x\rVert^{10}=x^{10}\) because the exponent is even.
+\end{theorem}
+
+The three estimates \eqref{eq:tanh-taylor-nine}--\eqref{eq:activation-taylor-eight-power}
+are respectively \lean{tanh_sub_taylor_nine_isBigO},
+\lean{activationProbability_sub_taylor_eight_isBigO}, and
+\lean{activationProbability_sub_taylor_eight_isBigO_pow} in
+\path{ActivationTaylor.lean}.  Their proof first obtains analyticity of \(\tanh\) from
+\(\tanh=\sinh/\cosh\), using that real \(\cosh\) never vanishes.  The denominator-free
+identity
+\[
+ \tanh x\,\cosh x=\sinh x
+\]
+and the iterated Leibniz rule then determine the finite derivative table
+\[
+ \bigl(\tanh^{(n)}(0)\bigr)_{n=0}^{10}
+   =(0,1,0,-2,0,16,0,-272,0,7936,0).
+\]
+The source packages these three proof steps as the private support declarations
+\lean{analyticAt_tanh}, \lean{tanh_mul_cosh}, and
+\lean{iteratedDeriv_tanh_zero_table}.
+The canonical analytic power series and its finite partial-sum estimate give the
+order-eleven remainder in \eqref{eq:tanh-taylor-nine}.  Dividing the remainder by \(x\) on
+the punctured neighborhood lowers its order to ten, and the totalized value restores the
+origin.  This argument proves precisely the displayed finite jet.  It does not yet provide
+an all-order Bernoulli formula for the coefficients, a radius-of-convergence theorem, or a
+full convergent activation series.
 
 \begin{theorem}[Arbitrary square-summable activation fields]
 \label{thm:square-summable-activation-fields}
@@ -1819,19 +1901,20 @@ weights alternate, but \(d_q\) is still a perfectly valid deterministic activati
 The positive-weight ``active count'' interpretation used in the research report is narrower,
 \(0<q<1\).  In particular, no Lean declaration constructs random Bernoulli activations or
 asserts an identity of the form \(d_{1/2}(t)=\E K_t\).  The quotient limits above are all
-punctured.  What remains open in this lane is not the quadratic activation asymptotic, but
-the proposed higher Taylor coefficients, Bernoulli expectation models, and associated full
-series expansions.
+punctured.  What remains open in this lane is neither the quadratic activation asymptotic nor
+the finite jet of \Cref{thm:activation-taylor-jet}, but coefficients beyond that jet, an
+all-order Bernoulli coefficient formula, a radius-of-convergence and full-series theorem,
+and the proposed Bernoulli expectation models.
 
 At immutable source checkpoint
-\nolinkurl{f45041685da96aae71cbd8d2d7979476eefe93ec}, the complete activation tranche consists
-of the six modules \path{HyperbolicActivation.lean}, \path{ActivationSeries.lean},
-\path{ActivationAsymptotics.lean}, \path{ActivationSeriesAsymptotics.lean},
-\path{GeometricActivationDimension.lean}, and
+\nolinkurl{a345425d21d90e680bf15e34093af42c69c08a83}, the complete activation tranche consists
+of the seven modules \path{HyperbolicActivation.lean}, \path{ActivationSeries.lean},
+\path{ActivationAsymptotics.lean}, \path{ActivationTaylor.lean},
+\path{ActivationSeriesAsymptotics.lean}, \path{GeometricActivationDimension.lean}, and
 \path{GeometricActivationAsymptotics.lean}.  Their public inventories are, in that order,
-four definitions and 57 theorems, three theorems, two theorems, one theorem, two definitions
-and 30 theorems, and two theorems: six definitions and 95 theorems, hence 101 public
-declarations in total.
+four definitions and 58 theorems, three theorems, two theorems, three theorems, one theorem,
+two definitions and 30 theorems, and two theorems: six definitions and 99 theorems, hence
+105 public declarations in total.
 
 \subsection{Finite atomic laws and weak convergence}
 
@@ -10441,16 +10524,19 @@ That rule explains several choices made above:
       \path{GeometricSincCharacteristicFunction.lean} give, for
       \(z=(1-q)t/(2\pi)\), the exact identities
       \(\phi_q(t)=e^{\ii t/2}\Phi_q(z)=e^{\ii t/2}G_q(z)G_q(-z)\), including
-      \(q=0\) and negative \(q\).  The six activation modules separately prove the sharp
+      \(q=0\) and negative \(q\).  The seven activation modules separately prove the sharp
       coefficient \(p(at)/t^2\to a^2/3\), its arbitrary-index square-summable Tannery
       theorem, the exact geometric coefficient \((1-q)/(3(1+q))\), and the dyadic value
-      \(1/9\).  These quotient limits are punctured and deterministic; no active-count
-      expectation identity is asserted.  A named compact-uniform convergence wrapper for the
+      \(1/9\), together with the degree-eight finite Taylor jet of \(p\) and its
+      order-ten remainder.  These quotient limits are punctured and deterministic; no
+      active-count expectation identity is asserted.  A named compact-uniform convergence
+      wrapper for the
       full phase-bearing prefixes, general-\(q\) rapid decay and Fourier inversion,
       centered packaging, closed
       higher-derivative and endpoint-flatness wrappers, shape results, further transforms,
-      and explicit higher Taylor, Bernoulli-cumulant/Bell-moment, and full-series formulas
-      beyond the proved quadratic activation asymptotic remain outside this interface.  The
+      and Taylor coefficients beyond the proved finite jet, an all-order Bernoulli
+      coefficient formula, a radius-of-convergence theorem, and the corresponding full
+      activation series remain outside this interface.  The
       separate global complex Pochhammer factorization is fixed at
       the dyadic scale and does not change those general-\(q\) omissions.  The exact-support oriented transform DDE and adjacent Cauchy-power
       recurrence for every nonzero \(|q|<1\), including negative ratios, are direct theorems
@@ -10996,10 +11082,12 @@ renormalization, Laurent/Herglotz/inversion layers, initial Jacobi data, and fin
 \path{StepMeasureBridge.lean}, \path{StepApproximationLimit.lean},
 \path{FabiusUniformSpline.lean}, \path{QuarterSplineLocalPolynomial.lean},
 \path{QuarterSplineTwoSided.lean}, \path{FabiusComputability.lean}\\
-Hyperbolic activation kernels, arbitrary square-summable activation series,
-sharp local and Tannery asymptotics, and geometric and dyadic effective dimensions &
+Hyperbolic activation kernels, the finite activation Taylor jet, arbitrary square-summable
+activation series, sharp local and Tannery asymptotics, and geometric and dyadic effective
+dimensions &
 \path{HyperbolicActivation.lean}, \path{ActivationSeries.lean},
-\path{ActivationAsymptotics.lean}, \path{ActivationSeriesAsymptotics.lean},
+\path{ActivationAsymptotics.lean}, \path{ActivationTaylor.lean},
+\path{ActivationSeriesAsymptotics.lean},
 \path{GeometricActivationDimension.lean},
 \path{GeometricActivationAsymptotics.lean}\\
 Fourier analysis &
@@ -11195,7 +11283,8 @@ Article & Lean & Meaning\\
 \(\mathcal F\) & \lean{extendedFabius}\hspace{0.35em}\lean{fabius} & signed global extension\\
 \(S_w\) & \lean{ProbabilityRepresentation.weightedUniformSeries}\hspace{0.35em}\lean{w} & weighted coordinate series\\
 \(\mu_w\) & \lean{ProbabilityRepresentation.weightedUniformDistribution}\hspace{0.35em}\lean{w} & its pushforward law\\
-\(p(x)\) & \lean{activationProbability}\hspace{0.35em}\lean{x} & totalized activation probability \(1-\tanh(x)/x\), with \(p(0)=0\)\\
+\(h(x)\) & \lean{tanhDiv}\hspace{0.35em}\lean{x} & totalized \(\tanh(x)/x\), globally the divided slope \lean{tanhDiv_eq_dslope}\\
+\(p(x)\) & \lean{activationProbability}\hspace{0.35em}\lean{x} & \(1-h(x)\), with \(p(0)=0\) and the proved degree-eight finite Taylor jet\\
 \(D_w(t)\) & article-only abbreviation; see \lean{tendsto_tsum_activationProbability_mul_div_sq} & square-summable activation field \(\sum_i p(w_it)\); no named Lean definition\\
 \(d_q(t)\) & \lean{geometricActivationDimension}\hspace{0.35em}\lean{q}\hspace{0.35em}\lean{t} & normalized geometric activation dimension\\
 \(d_{\rm dy}(t)\) & \lean{dyadicEffectiveDimension}\hspace{0.35em}\lean{t} & dyadic specialization \(d_{1/2}(t)\)\\
@@ -11397,6 +11486,11 @@ function factorization and finite iteration, its contractive probability-fixed-p
 uniqueness theorem, and the geometric-uniform uniqueness specialization are included in
 compiler-validated checkpoint \texttt{d312c0603}.
 \newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/d312c0603/Analysis/FabiusFunction}.
+
+\newblock The seven-module activation tranche, including the divided-slope totalization and
+the finite degree-eight activation Taylor jet, is recorded at immutable source checkpoint
+\texttt{a345425d21d90e680bf15e34093af42c69c08a83}.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/a345425d21d90e680bf15e34093af42c69c08a83/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 

@@ -30,14 +30,16 @@ New standalone intake members:
   non-ledger file.
 
   The [label-complete Lean crosswalk](fabius_dyadic_chaos_frontier/LEAN_CROSSWALK.md)
-  inventories all 41 nonconjectural report results: 12 Unformalized, 21
-  Partial, 3 Near-complete, and 5 Complete.  The five statement-exact Lean
+  inventories all 41 nonconjectural report results: 12 Unformalized, 20
+  Partial, 3 Near-complete, and 6 Complete.  The six statement-exact Lean
   results cover the totalized activation dictionary, scaled sharp local
-  coefficient, arbitrary-index square-summable activation budget and Tannery
-  limit, geometric/dyadic activation dimension with sharp coefficient, and
-  certified dyadic truncation.  Their current source provenance is commit
-  `f45041685da96aae71cbd8d2d7979476eefe93ec`, whose six activation modules
-  expose 6 definitions and 95 theorems.  The focused-built symmetric
+  coefficient, the finite activation Taylor jet through (O(x^{10})),
+  arbitrary-index square-summable activation budget and Tannery limit,
+  geometric/dyadic activation dimension with sharp coefficient, and certified
+  dyadic truncation.  Their current source provenance is commit
+  `a345425d21d90e680bf15e34093af42c69c08a83`, whose seven activation modules
+  expose 6 definitions and 99 theorems, or 105 public declarations.  The
+  focused-built symmetric
   Thue--Morse module separately supplies the exact algebraic and report-grid
   clauses of `thm:TM-corner`; its repeated `C^N` integral clause remains.
   Paper markers still record manuscript provenance rather than Lean status.

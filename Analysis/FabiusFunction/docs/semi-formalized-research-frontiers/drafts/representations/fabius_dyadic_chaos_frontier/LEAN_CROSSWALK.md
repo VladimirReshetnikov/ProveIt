@@ -10,8 +10,9 @@ claims made in the paper.
 > means “imported from the surrounding human-readable corpus.”  They do **not**
 > mean “proved in Lean.”  The original intake contained 36 nonconjectural
 > labeled results.  The maintained report now contains 41: five deliberately
-> statement-exact additions are compiler-backed, while the other 36 retain
-> the status recorded below.
+> statement-exact additions are compiler-backed, and the original result #8
+> now has a statement-exact compiler-backed counterpart as well.  The other
+> 35 original results retain the status recorded below.
 
 ## Lean-status legend
 
@@ -48,9 +49,9 @@ inferred from filenames.  Module names such as
 | Lean status | Number below |
 |---|---:|
 | Unformalized | 12 |
-| Partial | 21 |
+| Partial | 20 |
 | Near-complete | 3 |
-| Complete | 5 |
+| Complete | 6 |
 | **Crosswalk total** | **41** |
 
 The ordinal in the first column is solely an audit key.  The original keys
@@ -59,8 +60,8 @@ The ordinal in the first column is solely an audit key.  The original keys
 report.  Every theorem/proposition/lemma/corollary label from the TeX source
 occurs exactly once in the following table.
 
-Rows 37--41 track the activation source milestone
-`f45041685da96aae71cbd8d2d7979476eefe93ec`.  This current provenance
+The activation evidence in row 8 and rows 37--41 tracks the source milestone
+`a345425d21d90e680bf15e34093af42c69c08a83`.  This current provenance
 supersedes the narrower historical activation checkpoint `7c8d1f1...`
 without rewriting that older checkpoint's evidence.
 
@@ -73,7 +74,7 @@ without rewriting that older checkpoint's evidence.
 | 5 | `thm:active-set-law` — theorem | Variance shares are an active-set law | P | **Unformalized** | `FabiusFunction.HyperbolicActivation` now supplies the totalized probabilities `activationProbability` and their exact odds bridge.  No declaration constructs the independent Bernoulli active set with those coordinate probabilities or identifies its law with normalized Hoeffding energy.  This should be proved first as a general finite/countable product-observable theorem and then specialized to dyadic uniform coordinates. |
 | 6 | `cor:no-active` — corollary | No-active atom | P | **Unformalized** | The requisite `R` and active-set law are missing.  Existing MGF/product infrastructure does not state `P(K_t=0)=1/R(t)` or the chi-square/Esscher interpretation. |
 | 7 | `cor:Sobol` — corollary | Closed Sobol formulae | P | **Unformalized** | No Lean API currently defines these first-order/total-effect Sobol indices or the finite-coordinate Hoeffding projection norm and error.  It depends on #1 and #5. |
-| 8 | `lem:p-bounds` — lemma | Activation bounds | P | **Partial** | `FabiusFunction.HyperbolicActivation` defines the totalized `activationProbability`, proves its value at zero and the off-zero identity `activationProbability_of_ne_zero`, continuity and evenness, strict positivity exactly away from zero, the global bounds `activationProbability_le_min_one_sq_div_three` and `activationProbability_lt_one`, and the complementary positive-argument bound `one_sub_activationProbability_le_min_one_inv_of_pos`.  Thus every order/bound clause is formalized, in the stronger global real form where appropriate.  `FabiusFunction.ActivationAsymptotics` additionally proves that the quadratic coefficient tends sharply to `1/3`.  The displayed Taylor jet through `O(x^10)` remains unformalized, so the compound report lemma is still only Partial. |
+| 8 | `lem:p-bounds` — lemma | Activation bounds | P | **Complete** | `FabiusFunction.HyperbolicActivation` defines the totalized `activationProbability`, proves its value at zero and the off-zero identity `activationProbability_of_ne_zero`, continuity and evenness, strict positivity exactly away from zero, the global bounds `activationProbability_le_min_one_sq_div_three` and `activationProbability_lt_one`, and the complementary positive-argument bound `one_sub_activationProbability_le_min_one_inv_of_pos`.  The identity `Fabius.tanhDiv_eq_dslope` identifies the removable quotient with the divided slope of `Real.tanh`.  In `FabiusFunction.ActivationTaylor`, `Fabius.tanh_sub_taylor_nine_isBigO` proves the degree-nine hyperbolic-tangent jet with an `O(||x||^11)` remainder; `Fabius.activationProbability_sub_taylor_eight_isBigO` transfers it to the report's activation polynomial with an `O(||x||^10)` remainder; and `Fabius.activationProbability_sub_taylor_eight_isBigO_pow` gives the literal human-facing `O(x^10)` form.  Together with the already formalized bounds, these declarations cover every clause of the report lemma under no stronger hypotheses. |
 | 9 | `cor:K-variance-bound` — corollary | Uniform interaction-count variance | P | **Unformalized** | The local inequalities needed for the coarse/fine split are now proved in `FabiusFunction.HyperbolicActivation`.  No Lean object `K_t`, Bernoulli variance sum, or theorem identifying that variance with `∑ p_j(1-p_j)` exists.  After the active-count construction, the remaining work is the dyadic split yielding the explicit `22/9` constant. |
 | 10 | `prop:local-Parseval` — proposition | Local active-degree Parseval identity | P | **Partial** | `Fabius.legendrePolynomial` and `integral_sq_eval_legendrePolynomial` in `FabiusFunction.LegendrePolynomial`, the orthogonality theorem `Fabius.integral_eval_legendrePolynomial_mul` in `FabiusFunction.FabiusLegendreSeries`, and `Fabius.hasSum_rvachevLegendreCoefficient_energy` in `FabiusFunction.FabiusLegendreEnergy` provide the one-dimensional Parseval pattern.  Lean lacks the modified spherical-Bessel coefficients `i_n(x)`, their exponential Legendre expansion, the local energy identity, and the totalized degree law `D(0,z)=z`. |
 | 11 | `thm:tensor-Legendre` — theorem | Exact tensor-Legendre coefficients | P | **Partial** | The same `FabiusFunction.LegendrePolynomial` foundation and `Fabius.hasSum_legendrePolynomialSeries_eq` / `hasSum_legendrePolynomialSeries_eq_uniform` in `FabiusFunction.LegendreSeriesConvergence` formalize one-dimensional Legendre completeness and convergence; the `FabiusLegendre*` modules formalize a one-dimensional Rvachev expansion only.  Missing are finitely supported multi-indices, infinite tensor basis/conditional-expectation limits, the coefficient product, and the support-energy/Hoeffding identification. |
@@ -102,7 +103,7 @@ without rewriting that older checkpoint's evidence.
 | 34 | `cor:Walsh-corner` — corollary | Highest Walsh sign coefficient | P | **Partial** | `Fabius.sum_thueMorseSign_smul_eq_mixedDifference` in `FabiusFunction.ThueMorseMixedDifference` gives the finite sign/mixed-difference algebra.  Lean lacks the sign--magnitude probability construction, conditioning on magnitudes and a tail variable, and the conditional-expectation normalization `2^(-N)`. |
 | 35 | `prop:Rodrigues-bound` — proposition | Rodrigues bound for local coefficients | P | **Partial** | `Fabius.legendrePolynomial` in `FabiusFunction.LegendrePolynomial` uses Rodrigues normalization, while `Fabius.oddDoubleFactorial`, `oddDoubleFactorial_succ`, and `oddDoubleFactorial_pos` in `FabiusFunction.Arithmetic` provide the denominator arithmetic.  The complex coefficient `i_n(x)`, repeated integration by parts with endpoint vanishing, the beta integral, and the complex norm bound are missing. |
 | 36 | `cor:Lambert-degree` — corollary | Lambert-W inversion rule | P | **Partial** | `Fabius.principalLambertW_mul_exp` and `principalLambertW_unique` in `FabiusFunction.PrincipalLambertW`, `Fabius.log_factorial_sub_main_isBigO_log` in `FabiusFunction.StirlingAsymptotics`, and the `PowerExponentialLambert*` modules formalize the inversion technology.  The exact envelope `b_n(x)`, monotone-tail threshold `n_epsilon(x)`, certified tail, odd-double-factorial asymptotic, and the stated epsilon-to-zero asymptotic have not been connected. |
-| 37 | `thm:totalized-activation-dictionary` — theorem | Totalized activation dictionary | P | **Complete** | `FabiusFunction.HyperbolicActivation` supplies the literal real-valued statement through the `realSinhc` and `tanhDiv` continuity, parity, positivity, double-angle, and comparison declarations; `one_add_activationOdds`, `one_add_activationOdds_pos`, `activationOdds_of_ne_zero`, `activationOdds_nonneg`, `activationOdds_pos_iff`; and the global odds/probability bridge, sign, and off-zero quotient declarations.  The theorem concerns the real totalized kernel; it does not claim the complex sinc API, analyticity, a random-variable construction, or a Taylor series. |
+| 37 | `thm:totalized-activation-dictionary` — theorem | Totalized activation dictionary | P | **Complete** | `FabiusFunction.HyperbolicActivation` supplies the literal real-valued statement through the `realSinhc` and `tanhDiv` continuity, parity, positivity, double-angle, and comparison declarations; `Fabius.tanhDiv_eq_dslope`, which identifies `tanhDiv` with the divided slope of `Real.tanh` at the origin; `one_add_activationOdds`, `one_add_activationOdds_pos`, `activationOdds_of_ne_zero`, `activationOdds_nonneg`, `activationOdds_pos_iff`; and the global odds/probability bridge, sign, and off-zero quotient declarations.  The theorem concerns the real totalized kernel; it does not claim the complex sinc API, a random-variable construction, or an all-order Taylor series. |
 | 38 | `cor:sharp-activation-quadratic` — corollary | Sharp quadratic activation coefficient | P | **Complete** | `Fabius.tendsto_activationProbability_div_sq` and `Fabius.tendsto_activationProbability_mul_div_sq` in `FabiusFunction.ActivationAsymptotics` give the literal punctured-neighborhood limits `activationProbability x / x^2 -> 1/3` and `activationProbability (a*x) / x^2 -> a^2/3` for every real `a`, including zero.  The proof uses one l'Hopital step and the continuous totalization `tanhDiv`; no Taylor-series conclusion is inferred. |
 | 39 | `prop:geometric-activation-dimension` — proposition | Geometric activation dimension | P | **Complete** | `FabiusFunction.GeometricActivationDimension` proves termwise comparison, summability for `|q|<1`, the exact and simplified geometric budgets, `hasSum_normalizedGeometricWeight_sq`, zero/nonnegative/even laws, positivity exactly off zero, one-step and finite-prefix refinements, certified prefix enclosures, and all stated dyadic specializations.  `Fabius.tendsto_geometricActivationDimension_div_sq` and `Fabius.tendsto_dyadicEffectiveDimension_div_sq` in `FabiusFunction.GeometricActivationAsymptotics` prove the exact punctured coefficient `(1-q)/(3*(1+q))` and its dyadic specialization `1/9`.  For negative `q`, this activation result is used here only as a deterministic signed-weight series theorem; the report's positive-weight active-count interpretation remains restricted to `0<q<1`, and equality with `E K_t` is not claimed by this result. |
 | 40 | `cor:dyadic-activation-truncation` — corollary | Certified dyadic activation truncation | P | **Complete** | `dyadicEffectiveDimension_eq_sum_range_add`, `dyadicEffectiveDimension_nonneg`, and `dyadicEffectiveDimension_tail_le` give exactly the first-`N` split and tail bound under the index correspondence `j=n+1`.  The omitted term is `dyadicEffectiveDimension ((1/2)^N*t)` and its bound is `(t^2/9)*(1/4)^N = t^2/(9*4^N)`.  This is a deterministic activation-sum theorem, not yet a probability-of-omission statement. |
@@ -114,9 +115,9 @@ without rewriting that older checkpoint's evidence.
 |---|---:|---:|---:|---:|---:|
 | Theorem | 3 | 7 | 2 | 2 | 14 |
 | Proposition | 0 | 7 | 0 | 1 | 8 |
-| Lemma | 1 | 2 | 0 | 0 | 3 |
+| Lemma | 1 | 1 | 0 | 1 | 3 |
 | Corollary | 8 | 5 | 1 | 2 | 16 |
-| **Total** | **12** | **21** | **3** | **5** | **41** |
+| **Total** | **12** | **20** | **3** | **6** | **41** |
 
 ## Conjectures and open problems
 
@@ -200,18 +201,20 @@ Lean rather than defects in the repaired paper statement:
 The following order maximizes reuse and exposes errors early.
 
 1. **Finish the local analytic series.**  The compiler-validated
-   `HyperbolicActivation`, `ActivationSeries`, `ActivationAsymptotics`,
-   `ActivationSeriesAsymptotics`, `GeometricActivationDimension`, and
-   `GeometricActivationAsymptotics` modules now provide totalized `realSinhc`,
-   `tanhDiv`, odds and probability, all elementary activation bounds, the
+   `HyperbolicActivation`, `ActivationTaylor`, `ActivationSeries`,
+   `ActivationAsymptotics`, `ActivationSeriesAsymptotics`,
+   `GeometricActivationDimension`, and `GeometricActivationAsymptotics`
+   modules now provide totalized `realSinhc`, `tanhDiv`, odds and probability,
+   all elementary activation bounds, the report's finite Taylor jet, the
    scaled sharp quadratic limit, arbitrary-index square-summable budgets and
    Tannery limit, geometric/dyadic summability and refinement, normalized
    geometric-weight square sum, exact finite-prefix splitting, certified
-   geometric tails, and sharp geometric/dyadic coefficients.  The next local
-   milestone is the Taylor jet of `activationProbability`, followed by the
-   Bernoulli coefficient series and their exact convergence radii.  Those
-   remaining analytic clauses close the original report rows #8 and #24 and
-   feed #2--#9 and #20--#30.
+   geometric tails, and sharp geometric/dyadic coefficients.  The remaining
+   local analytic milestone is the all-order Bernoulli coefficient series and
+   its exact convergence-radius statements.  That work closes the analytic
+   clauses of original report row #24 and feeds #2--#7 and #9--#30, but row
+   #24 remains Partial until the deterministic dyadic sum is identified with
+   the active-count expectation `E K_t`.
 2. **Finish the symmetric Thue--Morse specialization.**  The compiled
    `FabiusFunction.ThueMorseSymmetricDifference` module now supplies the
    centered wrapper, exact Boolean-cube expansion, polynomial extraction and
