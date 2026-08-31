@@ -825,6 +825,163 @@ closed interval \([0,1/2]\), while
 \([1/2,1]\).  These closed-interval shape theorems use differentiability only
 on the interiors, so they are compatible with the singular endpoint slopes.
 
+The downstream module \nolinkurl{InverseModulus.lean} packages the sharp
+global modulus.  Its increment
+\nolinkurl{fabiusIntervalMass} is reflection-invariant and globally unimodal
+for every nonnegative length, by
+\nolinkurl{fabiusIntervalMass_reflect},
+\nolinkurl{fabiusIntervalMass_eq_zero_of_add_nonpos}, and
+\nolinkurl{fabiusIntervalMass_eq_zero_of_one_le}; the strict rise/fall on the
+nondegenerate support window is
+\nolinkurl{strictMonoOn_fabiusIntervalMass_firstHalf} and
+\nolinkurl{strictAntiOn_fabiusIntervalMass_secondHalf}.
+Hence the endpoint comparison has both strict and equality classifications:
+\nolinkurl{fabiusReal_lt_fabiusIntervalMass_of_mem_Ioo},
+\nolinkurl{fabiusIntervalMass_eq_fabiusReal_iff},
+\nolinkurl{fabiusReal_sub_lt_sub}, and
+\nolinkurl{fabiusReal_sub_eq_sub_iff}; the additive equality form is
+\nolinkurl{fabiusReal_add_eq_iff}.
+The global and unit-interval inverse equality loci are
+\nolinkurl{fabiusInv_sub_eq_sub_iff_of_mem_Icc} and
+\nolinkurl{abs_fabiusInv_sub_eq_iff_of_mem_Icc}, respectively.  These
+refinements preserve the clamping caveat: the complete equality classification
+is stated on the unit interval, while the global statements retain only the
+sharp inequalities and exact attained moduli.
+The same shape results also give
+\nolinkurl{monotoneOn_fabiusIntervalMass_firstHalf}, and
+\nolinkurl{antitoneOn_fabiusIntervalMass_secondHalf}.  Hence
+\nolinkurl{fabiusReal_sub_le_sub} and \nolinkurl{fabiusReal_add_le} prove the
+least endpoint mass and constrained forward superadditivity.  The three
+ordered/order-free inverse-gap forms are
+\nolinkurl{fabiusInv_sub_le_sub_of_mem_Icc},
+\nolinkurl{fabiusInv_sub_le_sub_of_le}, and
+\nolinkurl{fabiusInv_sub_le_sub}; \nolinkurl{fabiusInv_add_le} gives global
+inverse subadditivity.  In particular,
+\[
+ \lvert F^{-1}(u)-F^{-1}(v)\rvert
+ \le F^{-1}(\lvert u-v\rvert)
+\]
+for arbitrary real inputs, exactly
+\nolinkurl{abs_fabiusInv_sub_le} (with metric spelling
+\nolinkurl{dist_fabiusInv_le}).  Saturation is
+\nolinkurl{fabiusInv_min_one}.  The attained global and unit-interval maxima
+and their supremum equalities are
+\nolinkurl{isGreatest_abs_fabiusInv_sub},
+\nolinkurl{sSup_abs_fabiusInv_sub_eq},
+\nolinkurl{isGreatest_abs_fabiusInv_sub_Icc}, and
+\nolinkurl{sSup_abs_fabiusInv_sub_Icc_eq}.  Finally,
+\nolinkurl{abs_fabiusInv_sub_lt_of_abs_sub_lt_fabiusReal},
+\nolinkurl{abs_fabiusInv_sub_le_of_abs_sub_le_fabiusReal},
+\nolinkurl{fabiusReal_le_abs_sub_of_le_abs_fabiusInv_sub}, and
+\nolinkurl{forall_abs_fabiusInv_sub_lt_iff} give the strict, closed,
+contrapositive, and exact-threshold effective-injectivity forms.  This module
+does not supply recursive-modulus packaging or an inversion algorithm.
+
+\nolinkurl{FabiusInverseEffectiveContinuity.lean} supplies the explicit
+primitive-recursive specialization of that modulus.  Its two denominators are
+\[
+ D_{\mathrm{fac}}(r)=2^{\binom{r+1}{2}}(r+1)!,\qquad
+ D_{\Delta}(r)=2^{\binom{r+1}{2}}(r+1)^{r+1}.
+\]
+They are \nolinkurl{inverseFabiusFactorialDenominator}, with closed form
+\nolinkurl{inverseFabiusFactorialDenominator_eq}, and
+\nolinkurl{inverseFabiusDeltaDenominator}; their primitive-recursive proofs are
+\nolinkurl{inverseFabiusFactorialDenominator_primrec} and
+\nolinkurl{inverseFabiusDeltaDenominator_primrec}.  Retaining the positive
+zeroth recurrence term gives
+\nolinkurl{fabiusReal_inverse_two_pow_one_term_lower_bound}.  Its weakened
+factorial form, the comparison \(D_{\mathrm{fac}}\le D_{\Delta}\), and the
+resulting elementary lower bound are respectively
+\nolinkurl{inv_inverseFabiusFactorialDenominator_le_fabiusReal},
+\nolinkurl{inverseFabiusFactorialDenominator_le_deltaDenominator}, and
+\nolinkurl{inv_inverseFabiusDeltaDenominator_le_fabiusReal}.
+
+The strict and closed inverse moduli for the factorial denominator are
+\nolinkurl{abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_factorialDenominator}
+and
+\nolinkurl{abs_fabiusInv_sub_le_inverse_two_pow_of_le_factorialDenominator};
+the corresponding elementary-denominator forms are
+\nolinkurl{abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_deltaDenominator} and
+\nolinkurl{abs_fabiusInv_sub_le_inverse_two_pow_of_le_deltaDenominator}.
+Finally \nolinkurl{fabiusInv_effectivelyUniformContinuous} packages the
+reciprocal-precision condition as \nolinkurl{EffectivelyUniformContinuous}.
+These two definitions and twelve theorems are the module's complete public
+surface.  It does not provide a tolerant-bisection realizer, sequential
+computability, or a combined \nolinkurl{IsComputableRealFunction} theorem.
+
+The downstream \nolinkurl{FabiusInverseLogarithmicModulus.lean} replaces the
+coarse choice \(r=n\) by
+\[
+ r_{\log}(n)=\operatorname{Nat.log2}(n)+1.
+\]
+The definition is \nolinkurl{inverseFabiusLogarithmicOrder}.  Its exact
+binary-length equation, primitive-recursive certificate, least-order theorem
+for \(n>0\), and comparison \(r_{\log}(n)\le n\) are
+\nolinkurl{inverseFabiusLogarithmicOrder_eq_succ_log2},
+\nolinkurl{inverseFabiusLogarithmicOrder_primrec},
+\nolinkurl{inverseFabiusLogarithmicOrder_isLeast}, and
+\nolinkurl{inverseFabiusLogarithmicOrder_le_self}.  Thus, at positive \(n\),
+it is exactly the least natural \(r\) with \(n<2^r\).
+
+The other two definitions are
+\nolinkurl{inverseFabiusLogarithmicFactorialDenominator} and
+\nolinkurl{inverseFabiusLogarithmicDeltaDenominator}.  They take value one
+at zero and, at positive \(n\), evaluate the corresponding dyadic denominator
+at \(r_{\log}(n)\).  Those positive-input equations are
+\nolinkurl{inverseFabiusLogarithmicFactorialDenominator_of_pos} and
+\nolinkurl{inverseFabiusLogarithmicDeltaDenominator_of_pos}; primitive
+recursiveness is proved by
+\nolinkurl{inverseFabiusLogarithmicFactorialDenominator_primrec} and
+\nolinkurl{inverseFabiusLogarithmicDeltaDenominator_primrec}; and the
+pointwise factorial-to-Delta comparison is
+\nolinkurl{inverseFabiusLogarithmicFactorialDenominator_le_deltaDenominator}.
+
+For either logarithmic denominator \(d\), both threshold conventions give a
+strict reciprocal output estimate:
+\[
+ |u-v|<d(n)^{-1}\Longrightarrow |I(u)-I(v)|<\frac1n,\qquad
+ |u-v|\le d(n)^{-1}\Longrightarrow |I(u)-I(v)|<\frac1n
+ \quad(n>0).
+\]
+The factorial declarations are
+\nolinkurl{abs_fabiusInv_sub_lt_inv_nat_of_lt_logarithmicFactorialDenominator}
+and
+\nolinkurl{abs_fabiusInv_sub_lt_inv_nat_of_le_logarithmicFactorialDenominator};
+the Delta declarations are
+\nolinkurl{abs_fabiusInv_sub_lt_inv_nat_of_lt_logarithmicDeltaDenominator}
+and
+\nolinkurl{abs_fabiusInv_sub_lt_inv_nat_of_le_logarithmicDeltaDenominator}.
+The closed input threshold still has a strict conclusion because
+\(2^{-r_{\log}(n)}<1/n\).  Finally,
+\nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmic} and
+\nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmicDelta}
+separately package the factorial and report-exact Delta witnesses for
+\nolinkurl{EffectivelyUniformContinuous}.
+
+These three definitions and fifteen theorems are the complete public surface.
+The module does not construct the exact endpoint-mass ceiling denominator or
+a tolerant-bisection realizer, and it proves no
+\nolinkurl{SequentiallyComputable}, combined
+\nolinkurl{IsComputableRealFunction}, or input-bit asymptotic statement.
+
+The separate smooth bridge \nolinkurl{FabiusInverseQuarterJet.lean} identifies
+the complete inverse jet at the quarter anchor.  For
+\(G(y)=\operatorname{fabiusInv}(F,h_F,y)\),
+\[
+ \left.\frac{d^n}{dt^n}
+   \left(G\!\left(\frac5{72}+t\right)-\frac14\right)\right|_{t=0}
+ =n!\,[X^n]\bigl(\operatorname{QuadraticInverse.inverse}(4)\bigr),
+\]
+and hence
+\[
+ G^{(m+1)}(5/72)=(m+1)!(-4)^m C_m.
+\]
+The exact declarations are
+\nolinkurl{iteratedDeriv_centeredFabiusInv_quarter_eq_quadraticInverse} and
+\nolinkurl{iteratedDeriv_fabiusInv_five_seventy_two_succ}.  They prove
+equality of every derivative jet, not equality with an analytic function on
+a neighborhood or a named nonzero flat-remainder decomposition.
+
 Flatness of \(F\) becomes steepness of \(F^{-1}\).  Substituting
 \(x=F^{-1}(y)\) into the effective estimate gives, on the stated shrinking
 window,
@@ -975,6 +1132,18 @@ interface are \nolinkurl{PowerSeries.Implicit.root},
 \nolinkurl{PowerSeries.Implicit.constantCoeff_root},
 \nolinkurl{PowerSeries.Implicit.eval_root}, and
 \nolinkurl{PowerSeries.Implicit.eq_root}.
+
+The specialization \nolinkurl{QuarterCatalanGerm.lean} has two public
+definitions and thirteen public theorems.  Besides the explicit unique
+zero-constant solution of \(D+4D^2=(4/9)X\), it proves that the distinguished
+\nolinkurl{dyadicGermTwo} obeys the same scaled equation.  The four bridge
+declarations are \nolinkurl{dyadicGermTwo_functionalEquation},
+\nolinkurl{rescale_dyadicGermTwo_eq_quadraticInverse},
+\nolinkurl{dyadicGermTwo_eq_rescale_quadraticInverse}, and
+\nolinkurl{coeff_dyadicGermTwo_succ}; rescaling by \(9/4\) gives
+\(\operatorname{QuadraticInverse.inverse}(4)\), and the degree-\((m+1)\)
+coefficient before that rescaling is
+\((4/9)^{m+1}(-4)^mC_m\).
 
 These declarations are formal algebra only.  They neither define the inverse
 frontier's \(\mathcal A_r\) or \(Q_{x_0}\), nor prove convergence or analyticity
@@ -1551,6 +1720,22 @@ This is
 \(\lvert q\rvert<1\), including \(q=0\) and negative \(q\), among all
 probability measures, with no support, density, or moment hypothesis.
 
+At the fixed dyadic ratios, \nolinkurl{GeometricUniformMultisection.lean}
+splits the coordinates into \nolinkurl{evenCoordinates} and
+\nolinkurl{oddCoordinates} and proves the pointwise identity
+\[
+ Y_{1/2}(\omega)=\frac23Y_{1/4}(\operatorname{evenCoordinates}\omega)
+ +\frac13Y_{1/4}(\operatorname{oddCoordinates}\omega).
+\]
+The theorems
+\nolinkurl{geometricUniformSeries_one_half_multisection},
+\nolinkurl{geometricUniformDistribution_one_half_multisection}, and
+\nolinkurl{geometricUniformDistribution_one_half_conv_one_quarter} transport
+this through the independent product map to the corresponding affine image
+and convolution laws.  This five-declaration leaf is the fixed normalized
+two-section result only; it does not assert a general-ratio multisection
+theorem.
+
 The finite-tail dictionary is already stronger than a characteristic-function-only
 statement: \nolinkurl{geometric_tail_dictionary_geometricUniform} packages finite
 measure, characteristic-function, MGF, and CGF factorizations.  The later
@@ -1635,6 +1820,50 @@ outside this module.
 Rapid-decay bounds, Fourier inversion, a named centered family or MGF wrapper, explicit
 Bernoulli-cumulant and Bell-moment formulas and asymptotics, further transform formulas,
 and shape theory remain separate targets.
+
+The one-definition, nine-theorem module
+\nolinkurl{RvachevPochhammerFactorization.lean} gives a second, spectral
+description of this pure sinc product.  It defines
+\nolinkurl{complexQPochhammerInf} by
+\[
+ (a;q)_{\infty,\ComplexNumbers}=\prod_{j=0}^{\infty}(1-aq^j).
+\]
+The four foundational declarations
+\nolinkurl{complexQPochhammerInf_eq_tprod},
+\nolinkurl{multipliable_one_sub_mul_pow_complex},
+\nolinkurl{hasProd_complexQPochhammerInf}, and
+\nolinkurl{tendsto_finiteQPochhammerIn_complex}
+state its defining product and prove, for exactly \(\lVert q\rVert<1\),
+multipliability, the named product, and convergence of the finite prefixes,
+with no restriction on \(a\).
+
+For every strict complex contraction \(q\) and every \(z\in\ComplexNumbers\),
+the remaining geometric layer starts from
+\[
+ \sum_{h,k\ge0}
+ \left\lVert\frac{q^{2h}z^2}{(k+1)^2}\right\rVert
+ =\lVert z\rVert^2
+  \left(\sum_{h\ge0}\lVert q\rVert^{2h}\right)
+  \left(\sum_{k\ge0}\frac1{(k+1)^2}\right)<\infty.
+\]
+This is \nolinkurl{summable_norm_sineTerm_qpow_pair}.  Absolute
+multipliability lets \nolinkurl{geometricSincProduct_eq_tprod_pair} flatten the
+scale-indexed Euler products and lets
+\nolinkurl{geometricSincProduct_eq_tprod_complexQPochhammerInf} exchange the
+two indices, giving globally
+\[
+ S_q(z)=\prod_{k=0}^{\infty}
+ \left(\frac{z^2}{(k+1)^2};q^2\right)_{\infty,\ComplexNumbers}.
+\]
+No division occurs, so the formula includes \(q=0\) and individual zero
+factors.  The final declarations
+\nolinkurl{rvachevFourierProduct_eq_tprod_complexQPochhammerInf} and
+\nolinkurl{rvachevFourier_eq_tprod_complexQPochhammerInf} specialize to
+\(q=1/2\), nome \(1/4\), first for the standalone Rvachev product and then for
+every bounded \nolinkurl{IsFabius} witness.  This module does not classify the
+Pochhammer zero lattice or multiplicities, construct a reciprocal zero--pole
+factorization, establish local-uniform or normal convergence of the rearranged
+Pochhammer product or joint holomorphy in \(q\), or treat \(\lVert q\rVert>1\).
 
 The definition of \(F_q\), together with its monotonicity, range bounds, and
 measurability, is total in real \(q\).  If \(\lvert q\rvert<1\), then \(F_q\)
@@ -1983,6 +2212,48 @@ in \nolinkurl{ThueMorseExponential.lean}:
 It is a finite identity, so no interchange of limits or infinite products is
 hidden in the proof.
 
+\subsection{Centered mixed differences}
+\nolinkurl{ThueMorseSymmetricDifference.lean} turns the order-free operator of
+\nolinkurl{ThueMorseMixedDifference.lean} into a centered Boolean-cube
+calculus.  If \(a_i\) are half-steps indexed by a finite set \(s\), then
+\nolinkurl{symmetricMixedDifference} is the ordinary mixed difference with
+steps \(-2a_i\), based at \(x+\sum_{i\in s}a_i\).  Its empty and singleton
+values are \nolinkurl{symmetricMixedDifference_empty} and
+\nolinkurl{symmetricMixedDifference_singleton}; peeling off a fresh index is
+\nolinkurl{symmetricMixedDifference_insert}.  The full expansion
+\nolinkurl{symmetricMixedDifference_eq_sum_powerset_smul} is
+\[
+ \Delta^{\mathrm{sym}}_{a,s}f(x)
+ =\sum_{t\subseteq s}(-1)^{|t|}
+   f\!\left(x+\sum_{i\in s}a_i-2\sum_{i\in t}a_i\right).
+\]
+
+For a polynomial of degree at most \(|s|\),
+\nolinkurl{symmetricMixedDifference_polynomial_eq_coeff_card} extracts
+\[
+ [X^{|s|}]p\;|s|!\prod_{i\in s}(2a_i).
+\]
+The strict-degree vanishing and first surviving monomial are
+\nolinkurl{symmetricMixedDifference_polynomial_of_degree_lt} and
+\nolinkurl{symmetricMixedDifference_pow_card}.  The degree-valued hypothesis
+keeps the empty-set/zero-polynomial boundary honest.
+
+The second public definition, \nolinkurl{symmetricDyadicMixedDifference}, uses
+the half-steps \(2^jh\), \(j<m\).  Its zero-order value is
+\nolinkurl{symmetricDyadicMixedDifference_zero}; its centered Thue--Morse sum is
+\nolinkurl{symmetricDyadicMixedDifference_eq_sum_thueMorseSign_smul}.  With
+\(h=2^{-m}\), block reflection gives the increasing grid
+\[
+ \sum_{n<2^m}(-1)^m\varepsilon_n
+ f\!\left(x-(1-2^{-m})+2n2^{-m}\right),
+\]
+exactly
+\nolinkurl{symmetricDyadicMixedDifference_inv_two_pow_eq_sum_thueMorseSign_smul}.
+The positive-order spelling with \(m+1\) differences and mesh \(2^{-m}\) is
+\nolinkurl{symmetricDyadicMixedDifference_inv_two_pow_succ_eq_sum_thueMorseSign_smul}.
+These are all two definitions and eleven theorems in the module; it proves no
+analytic limit or differentiability statement.
+
 \subsection{The finite q-Pochhammer infrastructure}
 \nolinkurl{HalfQBinomial.lean} develops exact q-binomial algebra at \(q=1/2\) over \(\RationalNumbers\).  The finite q-Pochhammer product is represented without analytic convergence issues:
 \[
@@ -1991,6 +2262,17 @@ hidden in the proof.
 At \(q=1/2\), clearing powers of two turns many factors into Mersenne numbers.  This is why the Mersenne products introduced in \nolinkurl{Arithmetic.lean} reappear.
 
 The module defines a rational \nolinkurl{halfQBinomial} and proves its q-Pascal recurrence.  It then proves a finite q-binomial theorem by induction.  The induction step is not a black-box appeal to an imported polynomial theorem; it matches the precise normalization required downstream.  Summands are shifted and paired so the q-Pascal recurrence telescopes into the next product.
+
+\nolinkurl{QBinomialCauchy.lean} supplies the denominator-free finite
+q-Cauchy layer over every commutative ring.  Its five public theorem names are
+\nolinkurl{finite_qCauchy_identity}, the compatibility spelling
+\nolinkurl{finiteQPochhammerIn_mul_eq_sum_gaussianBinomial},
+\nolinkurl{finite_qCauchy_identity_reflected},
+\nolinkurl{sum_qBernsteinBasis}, and
+\nolinkurl{finite_qCauchy_second_identity}, with the single public definition
+\nolinkurl{qBernsteinBasis}.  All five theorems include degree zero,
+\(q=0\), roots of unity, positive characteristic, and zero divisors; none
+uses division, cancellation, or a nonvanishing hypothesis.
 
 \subsection{Why prove a specialized q-binomial theorem?}
 Mathlib contains general polynomial and combinatorial infrastructure, but a specialized theorem at \(q=1/2\) gives the repository:
@@ -4232,6 +4514,8 @@ Reshetnikov quantity \(R_n\) & \nolinkurl{reshetnikov} & \nolinkurl{Arithmetic.l
 Generic continuous-CDF and density extraction & \nolinkurl{continuous_cdf_of_nullSingleton}, \nolinkurl{cdf_reflection_sub}, \nolinkurl{measure_eq_withDensity_of_cdf_hasDerivAt} & \nolinkurl{ContinuousCDF.lean} \\
 Affine independent-copy operator and uniqueness & \nolinkurl{affineIndependentCopyLaw}, \nolinkurl{affineIndependentCopyLaw_isProbabilityMeasure}, \nolinkurl{affineIndependentCopyLaw_eq_map_prod}, \nolinkurl{charFun_affineIndependentCopyLaw}, \nolinkurl{charFun_eq_mul_charFun_of_affineIndependentCopy_fixedPoint}, \nolinkurl{charFun_iterate_of_affineIndependentCopy_fixedPoint}, \nolinkurl{eq_of_charFun_affine_recurrence}, \nolinkurl{affineIndependentCopyLaw_fixedPoint_unique}, \nolinkurl{affineIndependentCopy_map_fixedPoint_unique} & \nolinkurl{AffineIndependentCopy.lean}; arbitrary measurable digit space and second-countable Borel real inner-product target, with completeness only for the three uniqueness declarations \\
 Geometric uniform law \(\mu_q\) & \nolinkurl{geometricUniformDistribution}, \nolinkurl{geometricUniformDistribution_selfSimilar}, \nolinkurl{geometricUniformDistribution_support_eq_Icc}, \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar} & \nolinkurl{GeometricUniformLaw.lean} and \nolinkurl{GeometricUniformUniqueness.lean}; the characterization holds for \(\lvert q\rvert<1\) without support, density, or moment assumptions \\
+Fixed half--quarter multisection & \nolinkurl{evenCoordinates}, \nolinkurl{oddCoordinates}, \nolinkurl{geometricUniformSeries_one_half_multisection}, \nolinkurl{geometricUniformDistribution_one_half_multisection}, \nolinkurl{geometricUniformDistribution_one_half_conv_one_quarter} & \nolinkurl{GeometricUniformMultisection.lean}; fixed normalized two-section only \\
+General geometric-sinc Pochhammer factorization & \nolinkurl{complexQPochhammerInf}, \nolinkurl{summable_norm_sineTerm_qpow_pair}, \nolinkurl{geometricSincProduct_eq_tprod_pair}, \nolinkurl{geometricSincProduct_eq_tprod_complexQPochhammerInf}, \nolinkurl{rvachevFourierProduct_eq_tprod_complexQPochhammerInf}, \nolinkurl{rvachevFourier_eq_tprod_complexQPochhammerInf} & \nolinkurl{RvachevPochhammerFactorization.lean}; one definition and nine theorems, with the three additional symbol-convergence theorems listed in the text above \\
 Geometric CDF \(F_q\) and density \(f_q\) & \nolinkurl{geometricUniformCDF}, \nolinkurl{geometricUniformDensity}, \nolinkurl{geometricUniformDensity_zero}, \nolinkurl{geometricUniformDensity_nonpos_of_neg}, \nolinkurl{volume_withDensity_geometricUniformDensity_eq_zero_of_nonpos}, \nolinkurl{geometricUniformDistribution_ne_withDensity_geometricUniformDensity_of_nonpos}, \nolinkurl{geometricUniformCDF_hasDerivAt}, \nolinkurl{geometricUniformDistribution_eq_withDensity}, \nolinkurl{contDiff_geometricUniformCDF}, \nolinkurl{contDiff_geometricUniformDensity} & \nolinkurl{GeometricUniformCDF.lean} \\
 Weighted-sum CDF and half-base bridges & \nolinkurl{weightedSumCDF}, \nolinkurl{weightedSumCDF_eq_geometricUniformCDF_one_half}, \nolinkurl{geometricUniformCDF_one_half_eq_fabiusReal}, \nolinkurl{geometricUniformDensity_one_half_eq_rvachevUp} & \nolinkurl{ProbabilityRepresentation.lean} \\
 Totalized activation kernel \(p\) & \nolinkurl{activationProbability}, \nolinkurl{tanhDiv_eq_dslope}, \nolinkurl{activationProbability_le_min_one_sq_div_three}, \nolinkurl{activationProbability_mul_le_quadratic}, \nolinkurl{tendsto_activationProbability_mul_div_sq} & \nolinkurl{HyperbolicActivation.lean}, \nolinkurl{ActivationSeries.lean}, and \nolinkurl{ActivationAsymptotics.lean} \\
@@ -4241,6 +4525,11 @@ Geometric and dyadic activation dimensions & \nolinkurl{geometricActivationDimen
 Forward curvature profile & \nolinkurl{deriv_deriv_fabiusReal}, \nolinkurl{deriv_deriv_fabiusReal_eq_zero_iff} & \nolinkurl{Convexity.lean} \\
 Totalized inverse \(F^{-1}\) & \nolinkurl{fabiusInv}, \nolinkurl{fabiusOrderIso}, \nolinkurl{fabiusInv_differentiableAt_iff}, \nolinkurl{fabiusInv_contDiffAt_infty_iff} & \nolinkurl{FabiusInverse.lean} \\
 Inverse curvature & \nolinkurl{deriv_deriv_fabiusInv}, \nolinkurl{deriv_deriv_fabiusInv_half}, \nolinkurl{deriv_deriv_fabiusInv_eq_zero_iff}, \nolinkurl{strictConcaveOn_fabiusInv_firstHalf}, \nolinkurl{strictConvexOn_fabiusInv_secondHalf} & \nolinkurl{FabiusInverse.lean} \\
+Exact inverse modulus & \nolinkurl{fabiusIntervalMass}, \nolinkurl{strictMonoOn_fabiusIntervalMass_firstHalf}, \nolinkurl{fabiusIntervalMass_eq_fabiusReal_iff}, \nolinkurl{fabiusInv_sub_eq_sub_iff_of_mem_Icc}, \nolinkurl{abs_fabiusInv_sub_le}, \nolinkurl{abs_fabiusInv_sub_eq_iff_of_mem_Icc}, \nolinkurl{sSup_abs_fabiusInv_sub_eq}, \nolinkurl{forall_abs_fabiusInv_sub_lt_iff} & \nolinkurl{InverseModulus.lean}; strict and equality refinements are unit-interval qualified where clamping requires it \\
+Effective dyadic inverse modulus & \nolinkurl{inverseFabiusFactorialDenominator}, \nolinkurl{inverseFabiusDeltaDenominator}, \nolinkurl{fabiusInv_effectivelyUniformContinuous} & \nolinkurl{FabiusInverseEffectiveContinuity.lean}; explicit primitive-recursive continuity modulus, not an inverse realizer \\
+Logarithmic reciprocal inverse modulus & \nolinkurl{inverseFabiusLogarithmicOrder}, \nolinkurl{inverseFabiusLogarithmicFactorialDenominator}, \nolinkurl{inverseFabiusLogarithmicDeltaDenominator}, \nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmic}, \nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmicDelta} & \nolinkurl{FabiusInverseLogarithmicModulus.lean}; least binary-length selector and two primitive-recursive witnesses, not an inverse realizer \\
+Actual quarter inverse jet & \nolinkurl{iteratedDeriv_centeredFabiusInv_quarter_eq_quadraticInverse}, \nolinkurl{iteratedDeriv_fabiusInv_five_seventy_two_succ} & \nolinkurl{FabiusInverseQuarterJet.lean}; equality of jets, not local analytic equality \\
+Centered Thue--Morse mixed differences & \nolinkurl{symmetricMixedDifference}, \nolinkurl{symmetricMixedDifference_polynomial_eq_coeff_card}, \nolinkurl{symmetricDyadicMixedDifference_eq_sum_thueMorseSign_smul} & \nolinkurl{ThueMorseSymmetricDifference.lean}; finite algebraic identities, with no analytic limit claim \\
 Uniform spline \(S_p\) & \nolinkurl{fabiusUniformSpline} & \nolinkurl{FabiusUniformSpline.lean} and \nolinkurl{FabiusComputability.lean} \\
 Logarithmic profile & \nolinkurl{fabiusLogProfile} & \nolinkurl{FabiusLogScale.lean} \\
 Real Lambert-branch curvature & \nolinkurl{deriv_deriv_principalLambertW}, \nolinkurl{deriv_deriv_lowerLambertW}, the lower sign iff family, \nolinkurl{strictConcaveOn_principalLambertW}, \nolinkurl{strictConvexOn_lowerLambertW_left}, \nolinkurl{strictConcaveOn_lowerLambertW_right} & \nolinkurl{LambertWCurvature.lean}; exact regular-domain second derivatives, with shape theorems including the branch point and inflection while the lower domain stays open at zero \\
@@ -4306,6 +4595,7 @@ Module & Role in the development \\
 \nolinkurl{InverseModulus.lean} & Exhaustive one-definition/thirty-one-theorem structural inverse-modulus layer: global weak and maximal strict fixed-length increment shape, exact endpoint minimizers, constrained-superadditivity equality, unit-interval inverse-gap rigidity, global sharp modulus bounds and attained suprema, and effective injectivity.  The inverse equality loci are deliberately not global because of the clamped tails. \\
 \nolinkurl{FabiusInverseEffectiveContinuity.lean} & Exhaustive two-definition/twelve-theorem effective inverse-continuity layer: primitive-recursive factorial and report denominators, recurrence and endpoint-mass lower bounds, strict and closed global inverse moduli, and \nolinkurl{EffectivelyUniformContinuous}; the inverse remains noncomputable and no sequential realizer or combined computable-function theorem is supplied. \\
 \nolinkurl{ImplicitPowerSeries.lean} & Nonmonic complete-adic lifting and residue-class uniqueness, with arbitrary-base and zero-constant formal implicit-root specializations over power-series rings; it does not construct or analytically realize a Fabius inverse germ. \\
+\nolinkurl{QuarterCatalanGerm.lean} & The explicit scaled quarter Catalan formal germ, its functional equation and uniqueness, and the forward/reverse rescaling bridge from \nolinkurl{dyadicGermTwo} to \nolinkurl{QuadraticInverse.inverse}. \\
 \nolinkurl{InverseBranch.lean} & Analytic inverse theorem, analytic-density preservation for continuous right-inverse branches, and the complement-interior analyticity condition and conditional Lambert-branch criterion for \nolinkurl{IsElementaryOrInverse}. \\
 \nolinkurl{AlgebraicBranch.lean} & Algebraic-function branch interface used in non-elementarity arguments. \\
 \nolinkurl{ElementaryFunction.lean} & Formal expression language and semantics for elementary real functions. \\
@@ -4352,6 +4642,7 @@ Module & Role in the development \\
 \nolinkurl{ContinuousCDF.lean} & Generic continuity of atomless probability CDFs, reflection symmetry from measure invariance, and the theorem identifying any everywhere pointwise CDF derivative as the exact Lebesgue density without prior regularity or absolute continuity assumptions. \\
 \nolinkurl{AffineIndependentCopy.lean} & The affine independent-copy convolution operator, its probability and product-map forms, characteristic-function factorization and finite fixed-point iteration, and contractive uniqueness.  The digit space is arbitrary measurable, the target is second-countable Borel real inner-product, and completeness is confined to the three uniqueness declarations; \(\lvert q\rvert<1\) includes zero and negative scales without support, density, or moment hypotheses. \\
 \nolinkurl{GeometricUniformLaw.lean} & Named weights \((1-q)q^n\), their series and probability law, affine self-similarity, reflection, absolute continuity, null singletons, and exact range/support statements. \\
+\nolinkurl{GeometricUniformMultisection.lean} & Fixed normalized even/odd split of the half-ratio coordinate series into two independent quarter-ratio copies, with pointwise, product-map, and convolution forms. \\
 \nolinkurl{GeometricUniformUniqueness.lean} & Specializes the generic product-map theorem to prove \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar}: every probability solution of the geometric affine head--tail equation is \(\mu_q\) when \(\lvert q\rvert<1\), including \(q=0\) and negative \(q\), with no support, density, or moment assumption. \\
 \nolinkurl{GeometricSincFactorization.lean} & Closed characteristic function of the scaled uniform digit, exact closed-factor and phase-collapsed finite residual formulas for \(\lvert q\rvert<1\), pointwise convergence of the phase-bearing sinc prefixes, and the two dyadic weighted-sum wrappers. \\
 \nolinkurl{GeometricReciprocalGamma.lean} & Locally uniform convergence, pointwise multipliability and \nolinkurl{HasProd}, and entireness of the geometric sinc product, together with its reciprocal-Gamma reflection factorization. \\
@@ -4382,6 +4673,9 @@ Module & Role in the development \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Finite q-binomial and Thue--Morse algebra}}\\[0.25em]
 \nolinkurl{HalfQBinomial.lean} & Exact q-binomial coefficients at q=1/2, q-Pascal recurrence, Mersenne normalization, and a finite q-binomial theorem. \\
+\nolinkurl{QBinomialCauchy.lean} & One q-Bernstein definition and five denominator-free finite q-Cauchy/q-Bernstein theorems over arbitrary commutative rings, including the compatibility alias \nolinkurl{finiteQPochhammerIn_mul_eq_sum_gaussianBinomial}. \\
+\nolinkurl{ThueMorseMixedDifference.lean} & Order-independent translation differences, Boolean-cube expansion, polynomial coefficient extraction, and dyadic Thue--Morse specialization. \\
+\nolinkurl{ThueMorseSymmetricDifference.lean} & Centered half-step recurrence and Boolean-cube expansion, sign-free sharp polynomial extraction, strict-degree cancellation, and centered/increasing-grid dyadic Thue--Morse block formulas. \\
 \nolinkurl{FabiusRawQBinomialFormula.lean} & Raw coefficient-valued finite q-binomial identity before scalar or analytic specialization. \\
 \nolinkurl{FabiusRawQBinomialScalar.lean} & Scalar evaluation of the raw finite identity. \\
 \nolinkurl{FabiusQBinomialFormula.lean} & Principal exact Thue--Morse/q-binomial formula for unrestricted natural parameters. \\
@@ -4609,7 +4903,7 @@ crosswalk.  The three added rows
 curvature tranche, compiled 30 Aug 2026.  They are recorded
 declaration-by-declaration without a fabricated checkpoint or aggregate
 hash.  This tranche closes raw-branch curvature, the four generic
-second-derivative formulas, and the nineteen-declaration Fabius leaf.
+second-derivative formulas, and the nineteen-declaration Fabius leaf; it
 The two additional rows
 \nolinkurl{LambertWBranchPointGeometry.lean} and
 \nolinkurl{LambertWBranchPointAsymptotics.lean} are the later current-tree
@@ -4621,6 +4915,14 @@ non-differentiability, squared-ratio limits, and leading signed square-root
 equivalences.  They do not close \(O(\Delta)\) remainders, higher or
 convergent/full Puiseux expansions, generic/Fabius endpoint wrappers, or
 the generic \(m\mathbin{\pm}\sqrt m\) threshold and shape layer.
+The \nolinkurl{FabiusInverseLogarithmicModulus.lean} row is a still later
+current-tree addition inspected declaration-by-declaration on 30 August 2026.
+Its three definitions and fifteen theorems close the least logarithmic scale
+selector and both primitive-recursive reciprocal continuity witnesses only;
+the exact endpoint-mass ceiling, tolerant bisection, sequential computability,
+combined computable-real-function theorem, and input-bit asymptotics remain
+outside that leaf.  No aggregate checkpoint is fabricated for this merged
+surface.
 The seven activation rows and the finite-Taylor and square-summable discussions in
 Section~\ref{ch:probability} record source checkpoint
 \nolinkurl{a345425d21d90e680bf15e34093af42c69c08a83}, published 31 August
@@ -4636,8 +4938,13 @@ Lean audits of the previously recorded new or refactored declarations,
 \nolinkurl{propext}, \nolinkurl{Classical.choice}, and \nolinkurl{Quot.sound}
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
-the 105 activation declarations documented.  No aggregate facade build is
-claimed for this checkpoint.
+the 105 activation declarations documented.  The present merged census is 613
+modules and 8,355 public declarations: it adds the two raw Lambert branch-point
+leaves with seventeen declarations and the five-declaration
+\nolinkurl{GeometricUniformMultisection.lean} leaf (the two coordinate
+definitions and three half--quarter laws), while also including the four
+geometric-density diagnostics and eleven inverse-modulus refinements in
+existing modules.  No aggregate facade build is claimed for this checkpoint.
 The title-page pin and reproduction count continue to describe the older
 audited snapshot.
 \end{remark}

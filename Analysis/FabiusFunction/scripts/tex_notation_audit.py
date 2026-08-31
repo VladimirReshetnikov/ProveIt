@@ -80,6 +80,9 @@ RETIRED_COMMANDS = {
     "supp": "SupportOperator or SupportOf",
     "sgn": "Sign",
     "lcm": "LeastCommonMultiple",
+    "ord": "OrderOperator",
+    "TV": "TotalVariationOf or TotalVariationDistance",
+    "dist": "MetricDistance or EqualInLaw",
     "vtwo": "TwoAdicValuation",
     "qbinom": "GaussianBinomial (three explicit arguments)",
     "qpoch": "QPochhammer (three explicit arguments)",
@@ -169,15 +172,21 @@ def active_tex_files(arguments: list[str], docs: Path, archive: Path) -> list[Pa
         path = Path(raw).resolve()
         if not path.exists():
             raise FileNotFoundError(raw)
+        if is_under(path, archive):
+            raise ValueError(f"archive is excluded: {path}")
         candidates = path.rglob("*.tex") if path.is_dir() else [path]
         for candidate in candidates:
+            candidate = candidate.resolve()
             if candidate.suffix.lower() != ".tex":
                 continue
             if not is_under(candidate, docs):
                 raise ValueError(f"outside docs tree: {candidate}")
             if is_under(candidate, archive):
-                raise ValueError(f"archive is excluded: {candidate}")
-            files.add(candidate.resolve())
+                # Parent-directory audits omit the archive just like the
+                # default whole-corpus scan.  Explicit archive arguments were
+                # rejected above.
+                continue
+            files.add(candidate)
     return sorted(files)
 
 
@@ -297,6 +306,33 @@ def audit_file(path: Path, docs: Path) -> tuple[dict, list[Finding], Counter[str
             for match in re.finditer(pattern, code):
                 findings.append(Finding(
                     rel, line_number(code, match.start()), "literal-core-symbol", message,
+                ))
+
+    literal_semantic_patterns = {
+        r"\\operatorname\s*\{\s*span\s*\}": r"use \SpanOperator",
+        r"\\operatorname\s*\{\s*diag\s*\}": r"use \DiagonalOperator",
+        r"\\operatorname\s*\{\s*tr\s*\}": r"use \TraceOperator",
+        r"\\operatorname\s*\{\s*rank\s*\}": r"use \RankOperator",
+        r"\\operatorname\s*\{\s*TV\s*\}": (
+            r"use \TotalVariationOf or \TotalVariationDistance"
+        ),
+        r"\\operatorname\s*\{\s*ord\s*\}": r"use \OrderOperator",
+        r"\\operatorname\s*\{\s*wt\s*\}\s*_\s*(?:\{\s*2\s*\}|2)": (
+            r"use \BinaryDigitSum"
+        ),
+        r"\\operatorname\s*\{\s*supp\s*\}": r"use \SupportOperator",
+        r"\\operatorname\s*\{\s*sgn\s*\}": r"use \Sign",
+        r"\\operatorname\s*\{\s*lcm\s*\}": r"use \LeastCommonMultiple",
+        r"\\operatorname\s*\{\s*dist\s*\}": r"use \MetricDistance",
+    }
+    if not canonical_source:
+        for pattern, message in literal_semantic_patterns.items():
+            for match in re.finditer(pattern, code):
+                findings.append(Finding(
+                    rel,
+                    line_number(code, match.start()),
+                    "literal-shared-operator",
+                    f"literal shared operator; {message}",
                 ))
 
     digest = hashlib.sha256(raw.encode("utf-8-sig")).hexdigest()

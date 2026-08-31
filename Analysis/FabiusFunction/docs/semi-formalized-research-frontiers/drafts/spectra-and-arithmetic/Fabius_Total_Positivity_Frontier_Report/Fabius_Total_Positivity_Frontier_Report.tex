@@ -48,7 +48,6 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\DeclareMathOperator{\ord}{ord}
 
 \title{\textbf{Total Positivity and Cartwright Geometry\\in the Fabius--Rvachev Dyadic Sinc Product}\\[0.55em]
 \large Laguerre--Pólya structure, multiplier sequences, exact Thue--Morse sign interpolation, and a geometric-scale deformation}
@@ -80,7 +79,8 @@ For $q=1/4$ these limits are $\EulerE^2$ and $1$.
 
 On the original Fourier side, the zero at the nonzero integer $N$ has multiplicity $\nu_2(N)+1$.  Consequently the multiplicity-weighted positive zero count is exactly $2N-s_2(N)$, and, more strikingly,
 \[
- \Sign\widehat{\RvachevUp}(x)=(-1)^{s_2(\Floor{x})}\qquad(x>0,\ x\notin\IntegerNumbers).
+ \Sign\widehat{\RvachevUp}(x)=\ThueMorseSign{\Floor{x}}
+ \qquad(x>0,\ x\notin\IntegerNumbers).
 \]
 Thus the sinc product analytically interpolates the Thue--Morse word by its signs on consecutive unit intervals.  We also determine its Cartwright indicator and extend the zero-count/sign theorem to integer dilation bases.  The report closes with conjectural Hermite limits for Jensen polynomials, a log-periodic coefficient transseries expected to be dual to the known endpoint fluctuation, arithmetic questions for rational $q$, and concrete formalization targets.
 
@@ -214,7 +214,7 @@ for the $\{+1,-1\}$ form of the Thue--Morse sequence.
 \begin{theorem}[Exact zero multiplicities]\label{thm:zero-multiplicity}
 For every nonzero integer $N$,
 \begin{equation}\label{eq:zero-order}
- \ord_{z=N}\widehat{\RvachevUp}(z)=\nu_2(\AbsoluteValue N)+1.
+ \OrderOperator_{z=N}\widehat{\RvachevUp}(z)=\nu_2(\AbsoluteValue N)+1.
 \end{equation}
 Equivalently, $H$ has a zero at $-\pi^2N^2$ of multiplicity $\nu_2(N)+1$ and has no other zeros.
 \end{theorem}
@@ -278,7 +278,7 @@ Let $\nu_b(N)=\max\{j:b^j\mid N\}$ and let $s_b(N)$ be the sum of the base-$b$ d
 \begin{theorem}[Base-$b$ valuation word]\label{thm:base-b}
 For $N\ge1$,
 \begin{align}
- \ord_{z=N}\Phi_b(z)&=\nu_b(N)+1,\label{eq:b-order}\\
+ \OrderOperator_{z=N}\Phi_b(z)&=\nu_b(N)+1,\label{eq:b-order}\\
  Z_{b,+}(N)&=\frac{bN-s_b(N)}{b-1}.
  \label{eq:b-count}
 \end{align}
@@ -853,7 +853,7 @@ For $q=1/4$, the Fourier frequencies of $\Omega_q$ are integer multiples of $2\p
 \end{conjecture}
 
 \begin{conjecture}[Phase duality with endpoint flatness]\label{conj:phase-duality}
-In the dyadic case, the periodic function in \eqref{eq:transseries-conj} is obtained from the periodic Gamma--zeta fluctuation in the endpoint asymptotic of $F(x)$ by an explicit saddle/Legendre transform, up to an elementary change of phase and normalization.
+In the dyadic case, the periodic function in \eqref{eq:transseries-conj} is obtained from the periodic Gamma--zeta fluctuation in the endpoint asymptotic of $\FabiusBounded(x)$ by an explicit saddle/Legendre transform, up to an elementary change of phase and normalization.
 \end{conjecture}
 
 This would make the coefficient asymptotic and the inverse-Fabius Lambert-$W$ asymptotic two dual projections of the same Mellin singularity lattice.

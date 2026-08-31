@@ -68,15 +68,19 @@ The exact stages use Python `Fraction` and SymPy rational/integer arithmetic;
 decimals attached to exact certificates are emitted only after exact
 calculation, while endpoint and threshold diagnostics use the stated
 high-precision arithmetic. The four generated CSV files use deterministic LF
-line endings. The plotting stage retains both
-vector PDF and PNG output, while the report deliberately embeds the PNG twins
-so Type 3 fonts in the vector plots cannot propagate into the report PDF.
+line endings. The plotting stage retains both vector PDF and PNG output. It
+uses the headless Agg backend, embeds plot text as TrueType rather than Type 3
+glyphs, and omits volatile PDF date metadata; repeated runs in the recorded
+environment produce byte-identical vector files. The report continues to
+embed the byte-identical PNG twins.
 
 ## Compiling the report
 
 The arrival PDF was a 29-page US-Letter rendering whose included vector plots
 introduced Type 3 fonts. The normalized source uses A4 paper, 27 mm margins,
-the repository palette and running heads, and conditional Libertinus prose.
+the repository palette and running heads, and conditional Libertinus prose;
+the regenerated standalone vector plots now contain only embedded, subset
+CID TrueType fonts.
 After every source change, run exactly three serial passes from this directory:
 
 ```bash
@@ -94,4 +98,5 @@ no overfull boxes. Remove only TeX sidecars such as `.aux`, `.log`, `.out`, and
 The normalized three-pass build is 26 A4 pages. All fonts are embedded and
 subset, Libertinus is present, Type 3 fonts are absent, the final log has no
 overfull box, error, unresolved-reference, or rerun warning, and all 21 live
-payload checksums verify.
+payload checksums verify. The three one-page vector plot PDFs likewise have
+all fonts embedded and subset and contain no Type 3 fonts.

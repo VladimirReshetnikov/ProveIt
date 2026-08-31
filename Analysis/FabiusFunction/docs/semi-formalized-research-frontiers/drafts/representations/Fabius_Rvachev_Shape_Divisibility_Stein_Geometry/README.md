@@ -4,8 +4,9 @@ This directory preserves and normalizes the report received on 2026-08-30 in
 `Fabius_Rvachev_Frontier_Report_2026-08-30-C.zip` (outer SHA-256
 `200e65588b824d05f863ec0dae50b983408af3a7a2cf000c55556560e8e49d2e`).
 All 14 submitted payload checksums verified before repository normalization.
-The original 50-page Letter/Latin-Modern rendering remains recorded in repository
-history; its four Type-3 vector plots are retained here as arrival evidence.
+The original 50-page Letter/Latin-Modern rendering and its four Type-3 vector
+plots remain recorded in repository history. The current vector companions were
+regenerated with embedded, subset fonts and contain no Type 3 fonts.
 
 ## Corrected corpus and proof-status boundary
 
@@ -42,8 +43,8 @@ paper results is claimed to have an exact Lean counterpart.
   and text output plus four metadata-stable PNG figures.
 - `numerical_output/*.png` are the raster companions embedded by the normalized
   TeX source.
-- `numerical_output/*.pdf` are the submitted vector figures retained as arrival
-  evidence; the normalized TeX does not embed their Type-3 fonts.
+- `numerical_output/*.pdf` are normalized vector companions retained for
+  high-resolution inspection; all fonts are embedded and subset, with no Type 3.
 - `requirements.txt` records minimum top-level dependency versions, not a full
   environment lock.
 - `SHA256SUMS.txt` is the package ledger and must be refreshed only after the

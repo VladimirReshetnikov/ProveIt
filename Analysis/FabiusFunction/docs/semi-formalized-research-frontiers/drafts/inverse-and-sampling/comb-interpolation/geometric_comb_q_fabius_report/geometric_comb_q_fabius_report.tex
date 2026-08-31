@@ -13,16 +13,16 @@
 \usepackage{enumitem}
 \usepackage{fancyhdr}
 \usepackage{titlesec}
-\usepackage{xurl}
 \usepackage{listings}
-\usepackage{hyperref}
-\usepackage[nameinlink,noabbrev,capitalise]{cleveref}
+\usepackage{xurl}
+\usepackage[unicode,hypertexnames=false]{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
 
-\definecolor{linkblue}{RGB}{30,76,128}
+\definecolor{linkblue}{RGB}{25,75,135}
 \definecolor{deepgreen}{RGB}{34,103,75}
 \definecolor{deepred}{RGB}{142,48,48}
 \definecolor{shadegray}{RGB}{246,247,249}
-\definecolor{rulegray}{RGB}{190,198,205}
+\definecolor{rulegray}{RGB}{195,201,208}
 
 \hypersetup{
   colorlinks=true,
@@ -175,11 +175,13 @@ $t_j=1-2^{-j}$.  Finally, exact polynomial reproduction by translates of
 $\RvachevUp$ is composed with the geometric Lagrange operator, producing a finite
 Gaussian--Appell decoder and a closed interpolation/synthesis loop.
 
-Statements labeled theorem, proposition, lemma, or corollary are proved.
-Unproved asymptotic claims are explicitly labeled conjectures.  The bundled
-Python program uses exact rational arithmetic wherever possible and
-logarithmic floating-point arithmetic only for the enormous Lebesgue
-constants.
+Statements labeled theorem, proposition, lemma, or corollary carry
+manuscript-level proofs in this report.  That label does not by itself assert
+a Lean proof: the exact formal boundary is recorded in
+\Cref{sec:lean-boundary,app:status-ledger}.  Unproved asymptotic claims are
+explicitly labeled conjectures.  The bundled Python program uses exact
+rational arithmetic wherever possible and logarithmic floating-point
+arithmetic only for the enormous Lebesgue constants.
 \end{quote}
 
 \chapter*{Executive summary of the main formulas}
@@ -275,15 +277,59 @@ The geometric comb $2^{-j}$ has a different pathology: it samples one
 boundary on all binary scales, but it leaves a fixed gap $(1/2,1)$.  The
 Rvachev--Lagrange loop report supplies the exact inverse-moment Appell
 synthesis of polynomials by translates of $\RvachevUp$.  Results imported from those
-reports are identified when used; the new derivations are proved here.
+reports are identified when used; the report-specific derivations carry
+manuscript proofs here.
 
-All novelty statements are relative to the audited repository snapshot in
-the title, not claims of unrestricted world priority.  Classical background
+Results developed here means beyond the explicitly inspected source set at
+the pinned repository snapshot; it is neither an exhaustive repository
+nonduplication certificate nor a claim of unrestricted world priority.
+Classical background
 on $q$-series and $q$-calculus is available in
 \cite{Andrews1986,GasperRahman2004,KacCheung2002,DLMF17}; the $q$-Newton
 viewpoint is particularly explicit in \cite{Kupershmidt2000}.  Barycentric
 interpolation and its numerical evaluation are treated in
 \cite{BerrutTrefethen2004,Higham2004}.
+
+\section{Manuscript proof versus Lean proof}
+\label{sec:lean-boundary}
+
+In this document, ``proved'' means proved in the displayed mathematical
+argument.  It does not mean that the statement has a corresponding Lean
+declaration.  The formal API was audited at the source snapshot
+\path{e5175d5eb78d66f4e31db3bc506541b9bae12c57}; the relevant files and
+declarations listed below were unchanged when rechecked at intake head
+\path{ffcdbdac47246bd553f272bd1ceac441f8dd4f0c}.
+
+The repository already formalizes substantial finite foundations:
+\begin{enumerate}
+\item finite $q$-Pochhammer and Gaussian-binomial algebra, including
+      \path{finite_qBinomial_theorem} and
+      \path{gaussianBinomial_reciprocity};
+\item complete-homogeneous specialization on a geometric alphabet via
+      \path{completeHomogeneousEvalOn_geometric_range};
+\item geometric evaluation-at-zero weights, all rational power residuals,
+      and their exact finite $\ell^1$ norm via
+      \path{geometricLagrangeWeight_eq_qBinomial},
+      \path{geometricLagrangeQMoment_eq_residual_qBinomial}, and
+      \path{sum_abs_geometricLagrangeWeight_eq_qPochhammer_ratio};
+\item the inverse-dyadic Fabius moment identity
+      \path{halfMoment_eq_fabius_formula};
+\item Rvachev moment/Appell deconvolution and global and finite polynomial
+      synthesis, in particular
+      \path{integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev}
+      and
+      \path{normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp}.
+\end{enumerate}
+
+No one-to-one Lean declaration was found for this report's Jackson
+divided-difference theorem, Gaussian Newton basis pair, arbitrary-evaluation
+complete-homogeneous interpolation remainder, analytic infinite Newton
+convergence theorem, boundary-layer or global Lebesgue asymptotics,
+Newton--Jackson quadrature, Fabius boundary-residue and fixed-jet bounds,
+gap-growth bound, or Gaussian--Appell cardinal/biorthogonality packaging.
+Some of these follow on paper from formalized finite ingredients, but that is
+not the same as a checked Lean theorem.  The conjectures and research
+problems have no proof status in either layer.
 
 \section{The affine geometric comb}
 
@@ -1607,8 +1653,9 @@ $n+m+2$, so the difference is zero.  Subtracting
 
 \begin{corollary}[Analytic convergence with prescribed jets]
 \label{cor:anchored-analytic}
-If $f$ is analytic in a disk containing $[0,c]$, then for every fixed $m$,
-$H_{n,m}^{c,q}f\to f$ locally uniformly in that disk as $n\to\infty$.
+If $f$ is analytic in a centered disk $|z|<R_0$ with $R_0>c$, then for every
+fixed $m$, $H_{n,m}^{c,q}f\to f$ locally uniformly in that disk as
+$n\to\infty$.
 Moreover, all derivatives through order $m$ agree exactly for every $n$.
 \end{corollary}
 
@@ -2515,8 +2562,7 @@ Then
  \boxed{U_n(x)=(\Interp_nu)(x),\qquad -1\le x\le1.}
  \label{eq:rvachev-loop-identity}
 \end{equation}
-Hence, on every set and in every norm or seminorm on which both sides are
-defined,
+Hence, in every norm or seminorm restricted to $[-1,1]$,
 \begin{equation}
  \Norm{u-U_n}=\Norm{u-\Interp_nu}.
  \label{eq:rvachev-loop-error-transfer}
@@ -2646,19 +2692,23 @@ For $q=1/2$ and $c=1$, the two constants are
  &=1.75421915716734780836138830414\ldots.
  \label{eq:numeric-global-prefactor}
 \end{align}
-Selected computed values are shown in \Cref{tab:lebesgue-numerics}.
+Selected computed values are shown in \Cref{tab:lebesgue-numerics}.  The
+optimizer searches the persistent top gap $(1/2,1)$; the theorem, rather
+than this finite search, establishes that this peak is globally dominant for
+all sufficiently large degrees.
 
 \begin{table}[htbp]
 \centering
-\caption{Geometric-comb Lebesgue diagnostics for $q=1/2$, $c=1$.  The last
-column is the computed maximum divided by the leading asymptotic in
-\eqref{eq:half-global-asymptotic}.}
+\caption{Geometric-comb Lebesgue diagnostics for $q=1/2$, $c=1$.  Here
+$x_n^{\mathrm{top}}$ is the numerically maximized point in $(1/2,1)$; the
+last column is that top-gap maximum divided by the leading global asymptotic
+in \eqref{eq:half-global-asymptotic}.}
 \label{tab:lebesgue-numerics}
 \small
 \begin{tabular}{@{}rrrrr@{}}
 \toprule
-$n$ & $\Leb_n(0)$ & $x_n^*$ & $n(1-x_n^*)$ &
-$\Leb_n^*/\Leb_{n,\mathrm{asymp}}^*$\\
+$n$ & $\Leb_n(0)$ & $x_n^{\mathrm{top}}$ & $n(1-x_n^{\mathrm{top}})$ &
+$\Leb_n^{\mathrm{top}}/\Leb_{n,\mathrm{asymp}}^*$\\
 \midrule
  4 & 7.285714 & 0.830861 & 0.676556 & 0.86792\\
  8 & 8.191739 & 0.899264 & 0.805886 & 0.86854\\
@@ -2672,14 +2722,14 @@ $\Leb_n^*/\Leb_{n,\mathrm{asymp}}^*$\\
 \end{table}
 
 The endpoint column rapidly approaches its finite limit.  At the same time,
-$\log_{10}\Leb_n^*$ reaches approximately $129.70$ by $n=30$.  The ratio in
-the last column and the scaled peak location both approach one, in agreement
-with \Cref{thm:global-lebesgue}.
+$\log_{10}\Leb_n^{\mathrm{top}}$ reaches approximately $129.70$ by $n=30$.
+The ratio in the last column and the scaled top-gap location both approach
+one, in agreement with \Cref{thm:global-lebesgue}.
 
 \begin{figure}[p]
 \centering
 \includegraphics[width=0.90\textwidth]{lebesgue_growth.pdf}
-\caption{Computed global Lebesgue maxima versus the sharp asymptotic
+\caption{Top-gap maxima and the sharp global asymptotic
 $2(-q;q)_\infty q^{-\binom n2}/(\EulerE n)$ for $q=1/2$.  Logarithmic arithmetic
 is essential: the ordinate already exceeds $10^{148}$ at $n=32$.}
 \label{fig:lebesgue-growth}
@@ -2688,7 +2738,7 @@ is essential: the ordinate already exceeds $10^{148}$ at $n=32$.}
 \begin{figure}[p]
 \centering
 \includegraphics[width=0.90\textwidth]{lebesgue_peak_location.pdf}
-\caption{The scaled boundary-layer location $n(1-x_n^*)$.  The limiting value
+\caption{The scaled top-gap location $n(1-x_n^{\mathrm{top}})$.  The limiting value
 $1$ is the maximizer of $\alpha\EulerE^{-\alpha}$ in
 \Cref{thm:lebesgue-profile}.}
 \label{fig:lebesgue-peak}
@@ -2765,7 +2815,8 @@ prefactor from small $n$.
 
 The exact checks strongly guard against transcription errors in powers of
 $q$, Gaussian reciprocity, and factorial normalizations.  The numerical
-Lebesgue data confirm the proved asymptotic but are not needed for its proof.
+top-gap Lebesgue data are consistent with the proved global asymptotic but
+are not needed for its proof.
 The Fabius gap data, by contrast, are evidence for a conjecture: they show
 rapid divergence at one exact rational point but do not prove the proposed
 general saddle law.  The script records raw CSV data so alternative
@@ -3022,33 +3073,38 @@ $q$-Lucas congruences.
 \section{Formalization program}
 \label{sec:formalization-program}
 
-The theory separates into finite algebra, analytic convergence, and
-asymptotics, making it well suited to staged formalization in Lean.
+The manuscript layer separates into finite algebra, analytic convergence,
+and asymptotics, making the remaining gap well suited to staged
+formalization in Lean.  The bullets below distinguish reuse of existing
+declarations from genuinely missing statements; they should not be read as
+a claim that the whole report is already formalized.
 
 \begin{enumerate}
-\item \textbf{Finite products.}  Define $N_k$, prove
+\item \textbf{Finite products.}  Reuse the existing finite $q$-Pochhammer
+      API, then define $N_k$, prove
       \eqref{eq:newton-pochhammer}, and derive the denominator product in
       \Cref{thm:geometric-barycentric} without division until the final
       field specialization.
-\item \textbf{Gaussian Pascal equivalence.}  Formalize
+\item \textbf{Gaussian Pascal equivalence.}  Build on the existing Gaussian
+      reciprocity and inversion API to formalize
       \Cref{thm:gaussian-pascal-basis} and its inverse as mutually inverse
       triangular matrices over a commutative ring.
-\item \textbf{Residual calculus.}  Prove
-      \Cref{thm:universal-moment-residual} through generating functions for
-      complete homogeneous symmetric polynomials, then derive the analytic
-      residual only after importing convergence lemmas.
-\item \textbf{Endpoint stability.}  Formalize the exact identity
-      \eqref{eq:endpoint-lebesgue} and monotone convergence of finite
-      $q$-products.
+\item \textbf{Residual calculus.}  Reuse the formal complete-homogeneous and
+      geometric residual-moment layers to state the arbitrary-evaluation
+      interpolation residual; derive the analytic residual only after
+      importing convergence lemmas.
+\item \textbf{Endpoint stability.}  Reuse the formal rational finite
+      $\ell^1$ identity and extend its presentation as needed; the real
+      infinite-product limit remains to be formalized.
 \item \textbf{Boundary profile.}  Isolate the elementary limits
       $(1-\alpha/n)^n\to\EulerE^{-\alpha}$, dominated convergence for the Euler
       cloud, and the tail bound from $q^{\binom r2}$.
-\item \textbf{Fabius arithmetic.}  Reuse the existing exact dyadic-value
-      development to prove \Cref{thm:fabius-gaussian-transform}, the residue
-      generating function, and the fixed-jet bound.
-\item \textbf{Atomic synthesis.}  Formalize the finite consequence
-      \eqref{eq:cardinal-up-decoder} once the repository's polynomial
-      reproduction theorem for $\RvachevUp$ is available; matrix
+\item \textbf{Fabius arithmetic.}  Reuse the existing exact dyadic-value and
+      moment development to prove \Cref{thm:fabius-gaussian-transform}, the
+      residue generating function, and the fixed-jet bound.
+\item \textbf{Atomic synthesis.}  Reuse the repository's already formalized
+      Rvachev Appell deconvolution and finite polynomial-synthesis theorem;
+      specialize it to \eqref{eq:cardinal-up-decoder}.  Matrix
       biorthogonality then reduces to finite sums.
 \end{enumerate}
 
@@ -3245,7 +3301,10 @@ reciprocal Gaussian transform.
 
 \section{Archive layout}
 
-The delivered ZIP archive contains:
+The normalized package contains the research payload plus intake records.
+No source ZIP attributable to this package was present in the audited
+workspace, so \path{ARRIVAL_SHA256SUMS.txt} preserves the verified 16-file
+arrival ledger rather than asserting an unobserved archive hash.
 \begin{longtable}{@{}p{0.40\textwidth}p{0.52\textwidth}@{}}
 \toprule
 Path & Purpose\\
@@ -3266,6 +3325,14 @@ Path & Purpose\\
 & Reproducible figures in vector and raster form.\\
 \path{README.md}
 & Dependencies and commands.\\
+\path{ARRIVAL_SHA256SUMS.txt}
+& Verbatim, verified checksum ledger for the arrival payload.\\
+\path{INTAKE_AUDIT.md}, \path{NUMERICAL_REPLAY.txt}
+& Provenance, mathematical/Lean-status audit, and numerical replay record.\\
+\path{pdf_preflight.json}
+& Machine-readable PDF geometry, font, text, build, and visual checks.\\
+\path{SHA256SUMS.txt}
+& Exhaustive final-package ledger; by convention it excludes itself.\\
 \bottomrule
 \end{longtable}
 
@@ -3275,77 +3342,129 @@ From the extracted archive directory, regenerate the data and figures with
 \begin{lstlisting}[language=bash]
 python geometric_comb_experiments.py
 \end{lstlisting}
-The script requires Python 3.10 or later together with
-\texttt{numpy}, \texttt{matplotlib}, and \texttt{mpmath}.  Rebuild the PDF
-with a sufficiently complete TeX Live installation, for example
+The script requires Python 3.10 or later and the exact package versions in
+\path{requirements.txt}.  Rebuild the PDF from a clean auxiliary state with
+exactly three strict, serial passes:
 \begin{lstlisting}[language=bash]
-pdflatex geometric_comb_q_fabius_report.tex
-pdflatex geometric_comb_q_fabius_report.tex
+pdflatex -halt-on-error -file-line-error -interaction=nonstopmode \
+  geometric_comb_q_fabius_report.tex
+pdflatex -halt-on-error -file-line-error -interaction=nonstopmode \
+  geometric_comb_q_fabius_report.tex
+pdflatex -halt-on-error -file-line-error -interaction=nonstopmode \
+  geometric_comb_q_fabius_report.tex
 \end{lstlisting}
-Two passes resolve the table of contents and cross-references.
+The checked archive records final-pass diagnostics in
+\path{pdf_preflight.json}; build auxiliaries are not package contents.
 
 \section{Source boundary}
 
-The primary source monograph and the neighboring reports were read to retain
-notation and avoid duplicating already consolidated results.  The repository
-snapshot used here is
+The primary source monograph and neighboring reports were read to retain
+notation and avoid duplicating already consolidated results.  The report was
+written against
 \begin{equation}
  \texttt{e5175d5eb78d66f4e31db3bc506541b9bae12c57}
  \quad\text{(30 August 2026).}
  \label{eq:repository-snapshot-appendix}
 \end{equation}
+Its formal-status boundary was rechecked at intake head
+\path{ffcdbdac47246bd553f272bd1ceac441f8dd4f0c}.  The relevant Lean files
+named in \Cref{sec:lean-boundary} have no diff between those two commits.
 The sharp geometric-comb Lebesgue asymptotic, the fixed-jet Fabius estimate,
 and their systematic composition with the geometric Gaussian--Appell
-decoder are presented as new deductions relative to that snapshot.
+decoder are manuscript deductions beyond the explicitly identified source
+baseline.  No wider priority claim is made.
 
 \chapter{Status ledger}
 \label{app:status-ledger}
 
-\begin{longtable}{@{}p{0.47\textwidth}p{0.17\textwidth}p{0.27\textwidth}@{}}
-\caption{Logical status of the principal claims.}\label{tab:status-ledger}\\
+\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}
+>{\raggedright\arraybackslash}p{0.13\textwidth}
+>{\raggedright\arraybackslash}p{0.335\textwidth}
+>{\raggedright\arraybackslash}p{0.18\textwidth}@{}}
+\caption{Logical and formal status of the principal claims.  ``Paper proof''
+means a manuscript proof in this report, not a Lean declaration.}
+\label{tab:status-ledger}\\
 \toprule
-Claim & Status & Location\\
+Claim & Manuscript & Lean boundary & Location\\
 \midrule
 \endfirsthead
 \toprule
-Claim & Status & Location\\
+Claim & Manuscript & Lean boundary & Location\\
 \midrule
 \endhead
-Newton basis equals a normalized $q$-Pochhammer symbol
-& proved & \Cref{chap:q-newton}\\
-Iterated $D_q$ equals geometric divided difference
-& proved & \Cref{thm:Dq-divided-difference}\\
-Gaussian Pascal basis transform and inverse
-& proved & \Cref{thm:gaussian-pascal-basis}\\
+Newton/$q$-Pochhammer identification
+& Paper proof
+& Finite $q$-Pochhammer API exists; no report-specific $N_k$ theorem found
+& \Cref{chap:q-newton}\\
+Iterated $D_q$ and divided differences
+& Paper proof
+& No one-to-one declaration found
+& \Cref{thm:Dq-divided-difference}\\
+Gaussian Pascal basis pair
+& Paper proof
+& Gaussian reciprocity/inversion ingredients formalized; basis pair not packaged
+& \Cref{thm:gaussian-pascal-basis}\\
 Complete-homogeneous monomial residual
-& proved & \Cref{thm:monomial-residual}\\
+& Paper proof
+& Geometric residual moments formalized; arbitrary evaluation remainder not packaged
+& \Cref{thm:monomial-residual}\\
 Analytic infinite Newton convergence
-& proved & \Cref{thm:analytic-newton-convergence}\\
-Finite endpoint Lebesgue limit
-& proved & \Cref{thm:endpoint-lebesgue}\\
-Boundary-layer profile and sharp global Lebesgue constant
-& proved & \Cref{thm:lebesgue-profile,thm:global-lebesgue}\\
-Newton--Jackson moment formula
-& proved & \Cref{thm:jackson-newton-moments}\\
+& Paper proof
+& No one-to-one declaration found
+& \Cref{thm:analytic-newton-convergence}\\
+Endpoint Lebesgue formula and limit
+& Paper proof
+& Exact finite rational $\ell^1$ identity formalized; real infinite-product limit not
+& \Cref{thm:endpoint-lebesgue}\\
+Boundary profile and global Lebesgue asymptotic
+& Paper proof
+& No one-to-one declaration found
+& \Cref{thm:lebesgue-profile,thm:global-lebesgue}\\
+Newton--Jackson formula
+& Paper proof
+& No one-to-one declaration found
+& \Cref{thm:jackson-newton-moments}\\
 Fabius half-base Gaussian transform
-& proved & \Cref{thm:fabius-gaussian-transform}\\
-Fabius boundary residue and fixed-jet bounds
-& proved & \Cref{thm:fabius-boundary-residue,thm:fabius-fixed-jets}\\
-Quadratic-logarithmic Fabius gap upper bound
-& proved & \Cref{thm:fabius-gap-upper}\\
+& Paper proof
+& Inverse-dyadic moment and Gaussian ingredients formalized; transform not packaged
+& \Cref{thm:fabius-gaussian-transform}\\
+Fabius residue and fixed-jet bounds
+& Paper proof
+& No one-to-one declarations found
+& \Cref{thm:fabius-boundary-residue,thm:fabius-fixed-jets}\\
+Fabius gap upper bound
+& Paper proof
+& No one-to-one declaration found
+& \Cref{thm:fabius-gap-upper}\\
 Two-sided Fabius gap asymptotic
-& conjectural & \Cref{conj:fabius-gap-asymptotic}\\
+& Conjecture
+& Unproved
+& \Cref{conj:fabius-gap-asymptotic}\\
 Second-order Lebesgue expansion
-& conjectural & \Cref{conj:second-order-lebesgue}\\
-Dyadic fixed-radius polynomial synthesis by $\RvachevUp$
-& proved from Fourier zero multiplicities
+& Conjecture
+& Unproved
+& \Cref{conj:second-order-lebesgue}\\
+Hermite saddle displacement
+& Conjecture
+& Unproved
+& \Cref{conj:hermite-saddle}\\
+Dyadic fixed-radius $\RvachevUp$ synthesis
+& Paper proof
+& Directly formalized by
+  \path{normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp}
 & \Cref{thm:up-polynomial-synthesis}\\
-Gaussian--Appell cardinal decoder and right inverse
-& proved & \Cref{thm:gaussian-Appell-decoder,thm:gaussian-Appell-biorthogonality}\\
-Optimal growing-order geometric Hermite anchoring
-& open & \Cref{prob:optimal-geometric-hermite}\\
+Gaussian--Appell decoder/right inverse
+& Paper proof
+& Underlying Appell synthesis formalized; cardinal specialization and matrix package not found
+& \Cref{thm:gaussian-Appell-decoder,thm:gaussian-Appell-biorthogonality}\\
+Growing-order Hermite anchoring
+& Open problem
+& Unproved
+& \Cref{prob:optimal-geometric-hermite}\\
 \bottomrule
 \end{longtable}
+\normalsize
 
 \backmatter
 

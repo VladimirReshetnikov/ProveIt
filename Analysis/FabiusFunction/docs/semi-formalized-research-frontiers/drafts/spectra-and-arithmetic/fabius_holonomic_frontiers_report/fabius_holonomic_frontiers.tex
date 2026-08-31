@@ -58,11 +58,9 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
-\DeclareMathOperator{\ord}{ord}
 \DeclareMathOperator{\Disc}{Disc}
 
 \newcommand{\D}{\mathrm D}
-\newcommand{\Fabius}{F}
 \newcommand{\PhiN}{\Phi_{q,N}}
 \newcommand{\PhiInf}{\Phi_b}
 \newcommand{\eps}{\varepsilon}
@@ -139,7 +137,8 @@ finite trigonometric rational field $\ComplexNumbers(z,\EulerE^{\ImaginaryUnit z
 truncation belongs to one.  Consequently the moment sequence, cumulant
 sequence, and reciprocal-moment coefficients of the Rvachev law are not
 P-recursive.  A separate endpoint argument proves that the exact rational
-sequence $F(2^{-n})$, and more generally $F(c2^{-n})$ and fixed-order derivative
+sequence $\FabiusBounded(2^{-n})$, and more generally
+$\FabiusBounded(c2^{-n})$ and fixed-order derivative
 samples, are not P-recursive; their ordinary generating functions are
 non-D-finite entire functions of order zero.
 
@@ -229,7 +228,7 @@ The proved contributions can be read in five layers.
   rational field.  Moment, cumulant, and reciprocal coefficient sequences are
   not P-recursive.
   \item \textbf{Endpoint sample obstruction.}  The deep dyadic samples
-  $F(c2^{-n})$ and their fixed derivative analogues satisfy no polynomial-
+  $\FabiusBounded(c2^{-n})$ and their fixed derivative analogues satisfy no polynomial-
   coefficient recurrence.  Their ordinary generating functions are entire of
   order zero but non-D-finite.
 \end{enumerate}
@@ -239,18 +238,18 @@ The proved contributions can be read in five layers.
 
 \subsection{The bounded Fabius function and the up function}
 
-We use the bounded Fabius function $F:\RealNumbers\to[0,1]$, clamped to $0$ on
+We use the bounded Fabius function $\FabiusBounded:\RealNumbers\to[0,1]$, clamped to $0$ on
 $(-\infty,0]$ and to $1$ on $[1,\infty)$, with
 \begin{equation}
- F'(x)=2F(2x),\qquad 0\le x\le\frac12,
+ \FabiusBounded'(x)=2\FabiusBounded(2x),\qquad 0\le x\le\frac12,
  \label{eq:fabius-diff}
 \end{equation}
-and $F(x)+F(1-x)=1$ on $[0,1]$.  It is strictly increasing on $[0,1]$,
+and $\FabiusBounded(x)+\FabiusBounded(1-x)=1$ on $[0,1]$.  It is strictly increasing on $[0,1]$,
 $C^\infty$, and flat at the endpoints.  Rvachev's even up function is the
 compactly supported density on $[-1,1]$ related by
 \begin{equation}
-  \RvachevUp(t)=F(t+1)\quad(-1\le t\le0),\qquad
-  \RvachevUp(t)=F(1-t)\quad(0\le t\le1).
+  \RvachevUp(t)=\FabiusBounded(t+1)\quad(-1\le t\le0),\qquad
+  \RvachevUp(t)=\FabiusBounded(1-t)\quad(0\le t\le1).
   \label{eq:F-up}
 \end{equation}
 These normalizations agree with the primary exposition in the repository and
@@ -782,7 +781,7 @@ $k=\sum_{j=1}^{N}b_j2^{N-j}$.  Then
  \sum_{j=1}^{N}\eps_j2^{-j}
  =\frac{2^N-1-2k}{2^N},
  \qquad
- \prod_{j=1}^{N}\eps_j=(-1)^{s_2(k)}=:\ThueMorseSign{k}.
+ \prod_{j=1}^{N}\eps_j=\ThueMorseSign{k}=(-1)^{s_2(k)}.
  \label{eq:dyadic-frequency-TM}
 \end{equation}
 Thus all frequencies are the odd multiples
@@ -808,7 +807,7 @@ gauged finite Rvachev transform.
 \centering
 \includegraphics[width=0.92\textwidth]{data/dyadic_thue_morse_spectrum.pdf}
 \caption{At level $N=7$, every odd dyadic frequency occurs once, and the
-coefficient is the Thue--Morse sign $(-1)^{s_2(k)}$.}
+coefficient is the Thue--Morse sign $\ThueMorseSign{k}$.}
 \label{fig:dyadic-spectrum}
 \end{figure}
 
@@ -1284,7 +1283,7 @@ The nonzero zeros of $\Phi_b$ are the points
 \end{equation}
 and
 \begin{equation}
- \ord_{z=\pi bm}\Phi_b=1+\nu_b(m),
+ \OrderOperator_{z=\pi bm}\Phi_b=1+\nu_b(m),
  \label{eq:base-b-zero-order}
 \end{equation}
 where $\nu_b(m)=\max\{k:b^k\mid m\}$.
@@ -1565,7 +1564,9 @@ many singularities for $K'$ and $1/M$, and unbounded zero multiplicity for
 $M$.
 \end{remark}
 
-\subsection{The functions \texorpdfstring{$F$ and $\RvachevUp$}{F and up} themselves}
+\subsection{The functions
+\texorpdfstring{$\FabiusBounded$ and $\RvachevUp$}{bounded Fabius and up}
+themselves}
 
 Fabius's original example is nowhere analytic on its active interval
 \cite{Fabius}; the repository develops stronger variants and iterated
@@ -1573,14 +1574,14 @@ consequences.  This immediately has a holonomic interpretation.
 
 \begin{corollary}[The Fabius and up functions are not D-finite]
 \label{cor:F-up-not-Dfinite}
-No nonzero polynomial-coefficient linear ODE can hold for $F$ on an interval
+No nonzero polynomial-coefficient linear ODE can hold for $\FabiusBounded$ on an interval
 containing a nontrivial subinterval of $(0,1)$.  The same is true for $\RvachevUp$ on
 an interval meeting $(-1,1)$ nontrivially.
 \end{corollary}
 \begin{proof}
 A solution of a polynomial-coefficient linear ODE is real analytic at every
 ordinary point; only the finitely many roots of the leading coefficient can be
-singular.  The function $F$ is nowhere analytic on $(0,1)$, so such an ODE is
+singular.  The function $\FabiusBounded$ is nowhere analytic on $(0,1)$, so such an ODE is
 impossible.  Relation \eqref{eq:F-up} transfers the same obstruction to either
 active half of $\RvachevUp$.
 \end{proof}
@@ -1594,14 +1595,14 @@ sample sequence most prominent in the arithmetic theory.
 
 For fixed $c>0$, define, after any harmless finite initial prefix,
 \begin{equation}
- a_n(c):=F(c2^{-n}).
+ a_n(c):=\FabiusBounded(c2^{-n}).
  \label{eq:deep-sample}
 \end{equation}
 For all sufficiently large $n$, the argument lies in $(0,1/2]$.  Integrating
-\eqref{eq:fabius-diff} from $0$ to $x$ and using $F(0)=0$ gives the exact
+\eqref{eq:fabius-diff} from $0$ to $x$ and using $\FabiusBounded(0)=0$ gives the exact
 Volterra identity
 \begin{equation}
- F(x)=\int_0^{2x}F(u)\Differential u,
+ \FabiusBounded(x)=\int_0^{2x}\FabiusBounded(u)\Differential u,
  \qquad 0\le x\le\frac12.
  \label{eq:F-Volterra}
 \end{equation}
@@ -1624,19 +1625,19 @@ More generally, for every fixed $j\ge1$,
 \begin{proof}
 Apply \eqref{eq:F-Volterra} with $x=c2^{-n-1}$:
 \[
- a_{n+1}(c)=\int_0^{c2^{-n}}F(u)\Differential u.
+ a_{n+1}(c)=\int_0^{c2^{-n}}\FabiusBounded(u)\Differential u.
 \]
-Since $F$ is increasing and positive on $(0,1)$, the integral is positive and
-at most $c2^{-n}F(c2^{-n})$.  Iterating this estimate proves
+Since $\FabiusBounded$ is increasing and positive on $(0,1)$, the integral is positive and
+at most $c2^{-n}\FabiusBounded(c2^{-n})$.  Iterating this estimate proves
 \eqref{eq:sample-ratio-iterated}.
 \end{proof}
 
 \begin{theorem}[No P-recursion for deep dyadic samples]
 \label{thm:deep-samples-not-P}
-For every $c>0$, the sequence $(F(c2^{-n}))_{n\ge0}$ is not P-recursive.  In
+For every $c>0$, the sequence $(\FabiusBounded(c2^{-n}))_{n\ge0}$ is not P-recursive.  In
 particular, the exact rational sequence
 \begin{equation}
- \boxed{\bigl(F(2^{-n})\bigr)_{n\ge0}}
+ \boxed{\bigl(\FabiusBounded(2^{-n})\bigr)_{n\ge0}}
  \label{eq:exact-dyadic-sequence}
 \end{equation}
 is not P-recursive.
@@ -1669,7 +1670,7 @@ The right-hand side tends to zero because a polynomial times an exponentially
 decaying sequence tends to zero.  A nonzero polynomial cannot tend to zero
 along the positive integers.  This contradiction proves the theorem.
 
-Arias de Reyna proved that $F$ takes rational values at dyadic arguments and
+Arias de Reyna proved that $\FabiusBounded$ takes rational values at dyadic arguments and
 established strong denominator and integrality properties
 \cite{AriasDefinition,AriasArithmetic}.  Hence the specialization $c=1$ is an
 exact rational, not merely numerical, example.
@@ -1684,7 +1685,7 @@ law near the endpoint.
 \label{lem:derivative-scaling}
 For every integer $m\ge0$ and $0\le x\le2^{-m}$,
 \begin{equation}
- F^{(m)}(x)=2^{m(m+1)/2}F(2^mx).
+ \FabiusBounded^{(m)}(x)=2^{m(m+1)/2}\FabiusBounded(2^mx).
  \label{eq:derivative-scaling}
 \end{equation}
 \end{lemma}
@@ -1692,10 +1693,10 @@ For every integer $m\ge0$ and $0\le x\le2^{-m}$,
 The assertion is trivial for $m=0$ and is \eqref{eq:fabius-diff} for $m=1$.
 If it holds for $m$, differentiate on $0\le x\le2^{-(m+1)}$:
 \begin{align*}
- F^{(m+1)}(x)
+ \FabiusBounded^{(m+1)}(x)
  &=2^{m(m+1)/2}2^mF'(2^mx)\\
- &=2^{m(m+1)/2+m+1}F(2^{m+1}x)\\
- &=2^{(m+1)(m+2)/2}F(2^{m+1}x).
+ &=2^{m(m+1)/2+m+1}\FabiusBounded(2^{m+1}x)\\
+ &=2^{(m+1)(m+2)/2}\FabiusBounded(2^{m+1}x).
 \end{align*}
 \end{proof}
 
@@ -1703,7 +1704,7 @@ If it holds for $m$, differentiate on $0\le x\le2^{-(m+1)}$:
 \label{cor:derivative-samples-not-P}
 For every fixed $m\ge0$ and $c>0$, the sequence
 \begin{equation}
- \bigl(F^{(m)}(c2^{-n})\bigr)_{n\ge0}
+ \bigl(\FabiusBounded^{(m)}(c2^{-n})\bigr)_{n\ge0}
  \label{eq:derivative-sample-sequence}
 \end{equation}
 is not P-recursive.
@@ -1711,7 +1712,8 @@ is not P-recursive.
 \begin{proof}
 For sufficiently large $n$, \eqref{eq:derivative-scaling} gives
 \[
- F^{(m)}(c2^{-n})=2^{m(m+1)/2}F(c2^{-(n-m)}).
+ \FabiusBounded^{(m)}(c2^{-n})
+ =2^{m(m+1)/2}\FabiusBounded(c2^{-(n-m)}).
 \]
 This is a nonzero constant multiple and finite shift of the sequence in
 \cref{thm:deep-samples-not-P}.
@@ -1721,7 +1723,7 @@ This is a nonzero constant multiple and finite shift of the sequence in
 
 Define the ordinary generating function
 \begin{equation}
- A_c(z):=\sum_{n=0}^{\infty}F(c2^{-n})z^n,
+ A_c(z):=\sum_{n=0}^{\infty}\FabiusBounded(c2^{-n})z^n,
  \label{eq:sample-OGF}
 \end{equation}
 where any clamped or omitted finite prefix is immaterial.
@@ -1771,7 +1773,7 @@ sequence would be P-recursive, contrary to
 
 \begin{remark}[Endpoint asymptotics enter at the next order]
 The leading log-square bound in \eqref{eq:sample-OGF-growth} is only an upper
-estimate.  The repository's corrected endpoint transseries for $F(x)$ as
+estimate.  The repository's corrected endpoint transseries for $\FabiusBounded(x)$ as
 $x\downarrow0$, with Lambert--$W$ carrier and a nonconstant dyadic periodic
 factor, should permit a saddle-point expansion of $A_c(r)$ with logarithmic
 periodicity.  This is formulated as a future problem in
@@ -1980,13 +1982,13 @@ exact overlaps should appear as order drops in noncommutative elimination.
 \label{conj:inverse-samples}
 For every fixed $c>0$, the sequence
 \begin{equation}
- b_n(c):=F^{-1}(c2^{-n})
+ b_n(c):=\FabiusQuantile(c2^{-n})
  \label{eq:inverse-sample}
 \end{equation}
 for sufficiently large $n$ is not P-recursive.
 \end{conjecture}
 
-Unlike $F(c2^{-n})$, the inverse sequence decays only stretched-exponentially
+Unlike $\FabiusBounded(c2^{-n})$, the inverse sequence decays only stretched-exponentially
 in $\sqrt n$ at leading order, a scale compatible with some P-recursive
 asymptotic templates.  A proof will therefore need the complete endpoint
 structure, probably the nonconstant log-periodic factor in the corrected
@@ -1999,9 +2001,9 @@ recurrences.
 
 \begin{problem}[Sharp growth of $A_c$]
 \label{problem:sample-OGF-asymptotic}
-Insert the all-orders endpoint expansion of $F(c2^{-n})$ into
+Insert the all-orders endpoint expansion of $\FabiusBounded(c2^{-n})$ into
 \begin{equation}
- A_c(r)=\sum_{n\ge0}F(c2^{-n})r^n
+ A_c(r)=\sum_{n\ge0}\FabiusBounded(c2^{-n})r^n
  \label{eq:Ac-saddle-sum}
 \end{equation}
 and derive a complete saddle expansion as $r\to+\infty$.  Determine whether
@@ -2014,7 +2016,7 @@ and derive a complete saddle expansion as $r\to+\infty$.  Determine whether
 with a nonconstant periodic function $\mathcal Q_c$.
 \end{problem}
 
-This would create a new duality between the endpoint asymptotics of $F$ and the
+This would create a new duality between the endpoint asymptotics of $\FabiusBounded$ and the
 growth theory of an entire function of order zero.  The saddle index is of
 size $\log_2 r$, while the endpoint carrier itself contains a Lambert--$W$
 scale; their interaction should produce a two-level asymptotic inversion.

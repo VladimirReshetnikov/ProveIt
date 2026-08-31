@@ -1,0 +1,3534 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\input{../fabius-notation.tex}
+\usepackage{bm}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\pgfplotsset{compat=1.18}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Mathematical Notation Catalogue for Analysis/FabiusFunction},
+  pdfsubject={Normative symbols, conventions, aliases, and formalization crosswalk for the active Fabius-function corpus},
+  pdfkeywords={Fabius function, Rvachev up-function, notation, Fourier transform, q-series, Lambert W, Thue-Morse}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small FabiusFunction notation catalogue}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+
+% Long command names and file paths occasionally leave no natural break point.
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+% Repository-facing helpers are not mathematical notation and therefore do not
+% belong in the shared notation input.
+\newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
+\newcommand{\lean}[1]{%
+  \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
+\newcommand{\commandname}[1]{\texttt{\textbackslash#1}}
+
+\newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
+\newenvironment{boxedremark}{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{black}\hrule\vspace{0.6em}\small
+}{%
+  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
+}
+
+\lstdefinestyle{pseudo}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{shadegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  xleftmargin=0.7em,
+  xrightmargin=0.7em,
+  aboveskip=0.8em,
+  belowskip=0.8em
+}
+
+% Catalogue-only presentation helpers.  They add no mathematical notation.
+\newenvironment{catalogueentry}[2]{%
+  \par\addvspace{1.05\baselineskip}%
+  \phantomsection\hypertarget{notation:#1}{}%
+  \noindent{\large\bfseries #2}\par\smallskip
+}{%
+  \par\nopagebreak[2]\vspace{0.2\baselineskip}%
+  \noindent\color{rulegray}\rule{\linewidth}{0.3pt}\color{black}%
+}
+\newcommand{\entryfield}[2]{\par\noindent\textit{#1.}\enspace #2}
+\newcommand{\notelink}[2]{\hyperlink{notation:#1}{#2}}
+
+\title{\bfseries Mathematical Notation Catalogue for \texttt{Analysis/FabiusFunction}\\[0.35em]
+\large Canonical symbols, exact definitions, local namespaces, and historical aliases}
+\author{Encyclopedic companion to Vladimir Reshetnikov's \texttt{ProveIt} formalization}
+\date{Notation contract \FabiusNotationVersion\\
+\small Active pre-catalogue corpus: 158 recursively inventoried \texttt{.tex} sources}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This catalogue is the normative dictionary for mathematical notation in the active
+\repo\ documentation corpus.  It distinguishes the bounded Fabius function, the signed
+global extension, and Rvachev's up-function; fixes number-system, probability, transform,
+binary, $q$-series, asymptotic, fractional-calculus, approximation, and operator
+conventions; and records every recurring collision discovered by a recursive audit of the
+158 pre-existing active \texttt{.tex} sources.  Each entry states its type, domain,
+codomain, indices, parameters, normalization, exceptional values, and formalization
+status.  No phrase such as ``with the usual convention'' supplies missing data: when two
+usual conventions exist, both are defined and their conversion is printed.  Historical
+papers and frontier reports remain mathematically interpretable through explicit alias and
+local-namespace crosswalks rather than through overloaded bare letters.
+\end{abstract}
+
+\begin{boxedremark}
+\textbf{Normative scope.}
+The command definitions in \path{docs/fabius-notation.tex}, version
+\FabiusNotationVersion, are normative for active project-authored LaTeX.  This catalogue
+defines their mathematical meaning.  The directory \path{docs/archive/} is not an active
+migration target and is used only as provenance.  A historical source under
+\path{docs/papers/} may display its original notation only in a passage explicitly marked
+as a quotation or historical convention; surrounding project prose uses the canonical
+symbols.  Included tables and generated fragments inherit the namespace of their
+standalone parent document.
+\end{boxedremark}
+
+\tableofcontents
+\newpage
+
+\section{Scope contract and how to use this catalogue}
+
+\subsection{What counts as notation}
+
+The inventory includes a glyph or compound expression whenever its interpretation requires
+one or more mathematical choices: a domain, codomain, index set, endpoint rule, transform
+normalization, branch, sign, scaling, convergence mode, or proof-status boundary.  Thus it
+includes not only named functions but also interval brackets, empty sums, $0^0$, arrows of
+convergence, subscripts on transforms, and superscripts denoting derivatives or powers.
+Typography that changes no mathematical meaning---for example the insertion of braces in
+\commandname{mathbb}\texttt{\{R\}}---is not a separate notation.
+
+The catalogue has two levels.
+\begin{enumerate}
+\item A \emph{global semantic symbol} has one meaning throughout the active corpus and,
+      where available, one command in \path{fabius-notation.tex}.
+\item A \emph{local symbol} is scoped to a definition, theorem, table, or explicitly named
+      document part.  A local symbol must be declared where its scope begins and must not
+      be cited outside that scope without qualification.
+\end{enumerate}
+The local level is essential: a corpus this broad legitimately uses $A$, $D$, $I$, $P$,
+$Q$, and $T$ for many unrelated temporary objects.  Unification means making those scopes
+and meanings explicit, not forcing every matrix and polynomial to share a single name.
+
+\subsection{The no-implicit-parts checklist}
+
+Every new or revised notation declaration answers all applicable questions below.
+\begin{enumerate}
+\item What mathematical object is denoted: scalar, set, map, measure, sequence, matrix,
+      operator, equivalence class, or proposition?
+\item What are its domain and codomain?  If it is indexed, what is the complete index set?
+\item What is the exact defining formula, including all summation and product bounds?
+\item Which parameters are fixed, which vary, and what inequalities or nonvanishing
+      conditions do they satisfy?
+\item Which normalization, sign, Fourier frequency, logarithm, complex-power branch, and
+      measure convention is used?
+\item What happens at endpoints, at an empty index set, at zero, and at a removable
+      singularity?
+\item Does equality mean pointwise equality, equality almost everywhere, equality of
+      measures, equality in distribution, or asymptotic equivalence?
+\item Is the assertion formally proved, a standard definition, derived only in a frontier
+      report, conjectural, refuted, numerical, or historical?
+\end{enumerate}
+
+\subsection{Status vocabulary}
+\label{sec:status-register}
+
+\begin{longtable}{@{}p{0.19\textwidth}p{0.75\textwidth}@{}}
+\toprule
+Status & Exact meaning in this catalogue\\
+\midrule
+\endhead
+\textbf{Definition} & A definition or typography contract; no theorem is asserted.\\
+\textbf{Lean-proved} & The stated mathematical content has a named proved Lean declaration
+in the module identified by the crosswalk.\\
+\textbf{Classical} & A standard mathematical convention used by the prose; its presence in
+the catalogue is not a claim that the project has formalized the general theorem.\\
+\textbf{Frontier-derived} & Derived in a research-frontier document but not certified here as
+having an exact current Lean counterpart.\\
+\textbf{Conjectural} & Proposed and explicitly unproved.\\
+\textbf{Refuted} & A historical formula or normalization for which the project records a
+counterexample or negative theorem.\\
+\textbf{Historical alias} & A symbol needed to read a source artifact; it is not canonical
+for new project prose.\\
+\bottomrule
+\end{longtable}
+
+\section{Canonical quick reference}
+
+The first column is the literal shared command name.  The second column is its rendering;
+the third fixes its semantics.  Commands taking arguments show metavariables in braces.
+
+\begingroup\small
+\begin{longtable}{@{}p{0.28\textwidth}p{0.19\textwidth}p{0.47\textwidth}@{}}
+\toprule
+Shared command & Rendering & Normative meaning\\
+\midrule
+\endfirsthead
+\toprule
+Shared command & Rendering & Normative meaning\\
+\midrule
+\endhead
+\commandname{FabiusNotationVersion} & \FabiusNotationVersion & Date-valued version of the
+shared notation contract; it is metadata, not a mathematical variable.\\
+\commandname{NaturalNumbers} & $\NaturalNumbers$ & Nonnegative integers
+$\{0,1,2,\ldots\}$.\\
+\commandname{PositiveIntegers} & $\PositiveIntegers$ & Strictly positive integers
+$\{1,2,3,\ldots\}$.\\
+\commandname{IntegerNumbers} & $\IntegerNumbers$ & Integers.\\
+\commandname{RationalNumbers} & $\RationalNumbers$ & Rational numbers.\\
+\commandname{RealNumbers} & $\RealNumbers$ & Real numbers.\\
+\commandname{ComplexNumbers} & $\ComplexNumbers$ & Complex numbers.\\
+\commandname{ExtendedRealNumbers} & $\ExtendedRealNumbers$ & Extended reals
+$\RealNumbers\cup\{-\infty,+\infty\}$.\\
+\commandname{FabiusBounded} & $\FabiusBounded$ & Bounded, CDF-normalized Fabius
+function.\\
+\commandname{FabiusGlobal} & $\FabiusGlobal$ & Signed global Fabius extension.\\
+\commandname{FabiusQuantile} & $\FabiusQuantile$ & Ordinary inverse of
+$\FabiusBounded|_{[0,1]}$.\\
+\commandname{FabiusClampedQuantile} & $\FabiusClampedQuantile$ & Totalized clamped
+inverse on all real inputs.\\
+\commandname{RvachevUp} & $\RvachevUp$ & Rvachev's even compactly supported
+up-function.\\
+\commandname{EulerE} & $\EulerE$ & Base of the natural logarithm.\\
+\commandname{ImaginaryUnit} & $\ImaginaryUnit$ & The complex number satisfying
+$\ImaginaryUnit^2=-1$.\\
+\commandname{Differential} & $\Differential x$ & Upright differential in an integral or
+differential form.\\
+\commandname{AbsoluteValue}\texttt{\{x\}} & $\AbsoluteValue{x}$ & Absolute value or,
+when a field is explicitly complex, complex modulus.\\
+\commandname{Norm}\texttt{\{x\}} & $\Norm{x}$ & The norm supplied by the explicitly
+named normed space.\\
+\commandname{Floor}\texttt{\{x\}} & $\Floor{x}$ & Greatest integer not exceeding $x$.\\
+\commandname{Ceiling}\texttt{\{x\}} & $\Ceiling{x}$ & Least integer not below $x$.\\
+\commandname{FractionalPart}\texttt{\{x\}} & $\FractionalPart{x}$ & $x-\Floor{x}$ for
+$x\in\RealNumbers$.\\
+\commandname{PositivePart}\texttt{\{x\}} & $\PositivePart{x}$ & $\max\{x,0\}$ for
+an ordered scalar $x$.\\
+\commandname{IndicatorOf}\texttt{\{A\}} & $\IndicatorOf{A}$ & Indicator of a set $A$,
+equal to one on $A$ and zero off $A$.\\
+\commandname{SetOf}\texttt{\{x:P(x)\}} & $\SetOf{x:P(x)}$ & Delimiters for a set
+specified by membership data or a predicate; the ambient type is stated locally.\\
+\commandname{InnerProduct}\texttt{\{x,y\}} & $\InnerProduct{x,y}$ & Inner-product
+delimiters; the scalar field, space, and linear-slot convention are stated locally.\\
+\commandname{CardinalityOf}\texttt{\{A\}} & $\CardinalityOf{A}$ & Finite cardinality
+or cardinal number according to the declared type; never measure or absolute value.\\
+\commandname{DefinitionEquals} & $a\DefinitionEquals b$ & Definitional assignment:
+the left-hand symbol is introduced to mean exactly the right-hand object.\\
+\commandname{Sign} & $\Sign$ & Real sign function with $\Sign(0)=0$.\\
+\commandname{IdentityOperator} & $\IdentityOperator$ & Identity map on the domain stated
+at the point of use.\\
+\commandname{SpanOperator} & $\SpanOperator$ & Linear span over the stated scalar field.\\
+\commandname{TraceOperator} & $\TraceOperator$ & Matrix or trace-class operator trace.\\
+\commandname{RankOperator} & $\RankOperator$ & Dimension of an image, over the stated
+field.\\
+\commandname{DiagonalOperator} & $\DiagonalOperator$ & Diagonal matrix/operator constructor.\\
+\commandname{ResidueOperator} & $\ResidueOperator$ & Complex residue at a stated point.\\
+\commandname{LeastCommonMultiple} & $\LeastCommonMultiple$ & Nonnegative least common
+multiple; finite-family and empty-family rules must be stated locally.\\
+\commandname{OrderOperator} & $\OrderOperator$ & An order invariant whose species
+(vanishing, pole, multiplicative, group-element, or recurrence order) is printed.\\
+\commandname{PrincipalLogarithm} & $\PrincipalLogarithm$ & Principal complex logarithm
+with argument in $(-\pi,\pi]$ and domain $\ComplexNumbers\setminus(-\infty,0]$.\\
+\commandname{FallingFactorial}\texttt{\{x\}\{n\}} & $\FallingFactorial{x}{n}$ &
+Falling factorial $\prod_{j=0}^{n-1}(x-j)$, equal to one when $n=0$.\\
+\commandname{RisingFactorial}\texttt{\{x\}\{n\}} & $\RisingFactorial{x}{n}$ &
+Rising factorial $\prod_{j=0}^{n-1}(x+j)$, equal to one when $n=0$.\\
+\commandname{SupportOperator} & $\SupportOperator$ & Pointwise-support operator token;
+its operand and ambient space must follow.\\
+\commandname{SupportOf}\texttt{\{f\}} & $\SupportOf{f}$ & Pointwise support
+$\{x:f(x)\ne0\}$.\\
+\commandname{TopologicalSupportOf}\texttt{\{f\}} & $\TopologicalSupportOf{f}$ & Closure
+of the pointwise support.\\
+\commandname{Convolution} & $f\Convolution g$ & Convolution, with the underlying group and
+measure stated locally.\\
+\commandname{MetricDistance} & $\MetricDistance(x,y)$ & Distance of the named metric space.\\
+\commandname{TotalVariationOf}\texttt{\{a\}} & $\TotalVariationOf{a}$ & Total
+variation of one typed function, signed measure, or other locally declared object.\\
+\commandname{TotalVariationDistance} & $\TotalVariationDistance(\mu,\nu)$ & Total
+variation distance with the probability convention $\sup_A|\mu(A)-\nu(A)|$.\\
+\commandname{Probability} & $\Probability$ & Probability measure.\\
+\commandname{Expectation} & $\Expectation$ & Expectation with respect to the stated law.\\
+\commandname{Variance} & $\Variance$ & Variance $\Expectation[(X-\Expectation X)^2]$.\\
+\commandname{Covariance} & $\Covariance$ & Covariance of explicitly stated random
+variables.\\
+\commandname{LawOperator} & $\LawOperator$ & Pushforward-law operator token; it is not a
+metric, density, or samplewise map.\\
+\commandname{LawOf}\texttt{\{X\}} & $\LawOf{X}$ & Pushforward probability law of $X$.\\
+\commandname{EqualInLaw} & $X\EqualInLaw Y$ & Equality of probability laws, not
+pointwise equality.\\
+\commandname{ConvergesInLaw} & $X_n\ConvergesInLaw X$ & Weak convergence of laws.\\
+\commandname{DyadicSigmaField} & $\DyadicSigmaField_n$ & Level-$n$ dyadic filtration
+$\sigma$-field; the generating random coordinates and base probability space are printed.\\
+\commandname{DecayOptimizationObjective}\texttt{\{n\}} &
+$\DecayOptimizationObjective{n}$ & Exact level-$n$ nonlinear objective in the
+Fourier-decay saddle problem, with variables and feasible set declared locally.\\
+\commandname{LinearizedDecayObjective}\texttt{\{n\}} &
+$\LinearizedDecayObjective{n}$ & The explicitly linearized level-$n$ decay objective;
+it is not identified with the nonlinear objective without an equality theorem.\\
+\commandname{FourierTwoPiOperator} & $\FourierTwoPiOperator$ & Forward Fourier operator
+with kernel $\EulerE^{-2\pi\ImaginaryUnit x\xi}$.\\
+\commandname{FourierAngularOperator} & $\FourierAngularOperator$ & Forward Fourier
+operator with kernel $\EulerE^{-\ImaginaryUnit x\omega}$.\\
+\commandname{InverseFourierTwoPiOperator} & $\InverseFourierTwoPiOperator$ & Inverse of
+$\FourierTwoPiOperator$ on a named inversion domain.\\
+\commandname{InverseFourierAngularOperator} & $\InverseFourierAngularOperator$ & Inverse
+of $\FourierAngularOperator$, including the $1/(2\pi)$ measure factor.\\
+\commandname{FourierTwoPiTransformOf}\texttt{\{f\}} &
+$\FourierTwoPiTransformOf{f}$ & Operator-application form of the $2\pi$-frequency
+Fourier transform.\\
+\commandname{FourierAngularTransformOf}\texttt{\{f\}} &
+$\FourierAngularTransformOf{f}$ & Operator-application form of the angular-frequency
+Fourier transform.\\
+\commandname{FourierTwoPi}\texttt{\{f\}} & $\FourierTwoPi{f}$ & Cycles-per-unit Fourier
+transform with kernel $\EulerE^{-2\pi\ImaginaryUnit x\xi}$.\\
+\commandname{FourierAngular}\texttt{\{f\}} & $\FourierAngular{f}$ & Angular-frequency
+Fourier transform with kernel $\EulerE^{-\ImaginaryUnit x\omega}$.\\
+\commandname{LaplaceTransformSymbol} & $\LaplaceTransformSymbol$ & One-sided Laplace
+operator token unless a bilateral subscript is printed.\\
+\commandname{MellinTransformSymbol} & $\MellinTransformSymbol$ & Mellin-transform
+operator token on a stated strip of convergence.\\
+\commandname{LaplaceTransformOf}\texttt{\{f\}} & $\LaplaceTransformOf{f}$ & Laplace
+transform; one-sided or bilateral domain must be printed.\\
+\commandname{MellinTransformOf}\texttt{\{f\}} & $\MellinTransformOf{f}$ & Mellin
+transform $\int_0^\infty x^{s-1}f(x)\,\Differential x$ on its stated strip.\\
+\commandname{MomentGeneratingFunction}\texttt{\{X\}} & $\MomentGeneratingFunction{X}$ &
+$z\mapsto\Expectation[\EulerE^{zX}]$ on its stated domain.\\
+\commandname{CharacteristicFunction}\texttt{\{X\}} & $\CharacteristicFunction{X}$ &
+$t\mapsto\Expectation[\EulerE^{\ImaginaryUnit tX}]$.\\
+\commandname{SincRad} & $\SincRad$ & Radian sinc, $\sin t/t$, totalized to one at zero.\\
+\commandname{SincPi} & $\SincPi$ & Normalized sinc, $\sin(\pi x)/(\pi x)$, totalized
+to one at zero.\\
+\commandname{BinaryDigitSum} & $\BinaryDigitSum$ & Number of one-bits in a nonnegative
+integer.\\
+\commandname{ThueMorseSignSymbol} & $\ThueMorseSignSymbol$ & The symbol reserved for the
+Thue--Morse sign sequence; use the argument-taking command in formulas.\\
+\commandname{ThueMorseSign}\texttt{\{n\}} & $\ThueMorseSign{n}$ &
+$(-1)^{\BinaryDigitSum(n)}$.\\
+\commandname{PadicValuation}\texttt{\{p\}} & $\PadicValuation{p}$ & $p$-adic valuation;
+the argument and zero convention are stated locally.\\
+\commandname{TwoAdicValuation} & $\TwoAdicValuation$ & Two-adic valuation.\\
+\commandname{QPochhammer}\texttt{\{a\}\{q\}\{n\}} & $\QPochhammer{a}{q}{n}$ & Finite
+or infinite $q$-shifted factorial with explicit base and length.\\
+\commandname{GaussianBinomial}\texttt{\{n\}\{k\}\{q\}} &
+$\GaussianBinomial{n}{k}{q}$ & Gaussian binomial coefficient with explicit base.\\
+\commandname{QInteger}\texttt{\{n\}\{q\}} & $\QInteger{n}{q}$ & $q$-integer with
+explicit base.\\
+\commandname{Polylogarithm} & $\Polylogarithm$ & Polylogarithm with order supplied as a
+subscript.\\
+\commandname{LambertW} & $\LambertW$ & Lambert $W$; a branch subscript is mandatory when
+more than one branch is possible.\\
+\commandname{GammaFunction} & $\GammaFunction$ & Euler Gamma function.\\
+\commandname{RiemannZeta} & $\RiemannZeta$ & Riemann zeta function or its meromorphic
+continuation, as stated.\\
+\commandname{BigO}\texttt{\{g\}} & $\BigO{g}$ & Big-$O$ in a limit declared in the same
+sentence.\\
+\commandname{LittleO}\texttt{\{g\}} & $\LittleO{g}$ & Little-$o$ in a limit declared in
+the same sentence.\\
+\commandname{BigOAt}\texttt{\{g\}\{a\}} & $\BigOAt{g}{a}$ & Big-$O$ with limiting
+regime $a$ printed.\\
+\commandname{LittleOAt}\texttt{\{g\}\{a\}} & $\LittleOAt{g}{a}$ & Little-$o$ with
+limiting regime $a$ printed.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\section{Foundational mathematical grammar}
+
+\begin{catalogueentry}{contract-version}{Shared notation contract version}
+\entryfield{Command}{\commandname{FabiusNotationVersion} expands to the ISO date
+\FabiusNotationVersion.}
+\entryfield{Meaning}{It identifies the semantic API described by this catalogue and
+\path{docs/fabius-notation.tex}.  It is not a publication date, source revision, theorem
+date, numeric parameter, or claim that every historical source was authored on that
+date.}
+\entryfield{Update rule}{Any addition, removal, arity change, or mathematical change to
+a shared command updates this date and the quick reference, alphabetical index, rendered
+symbol index, retired-alias mapping, and relevant detailed entry in the same change.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{elementary-constants}{The exponential base and imaginary unit}
+\entryfield{Exponential base}{$\EulerE\in\RealNumbers$ is the unique positive number
+with $\log\EulerE=1$.  The expression $\EulerE^z$ is the complex exponential for
+$z\in\ComplexNumbers$, not a local error variable raised to a power.}
+\entryfield{Imaginary unit}{$\ImaginaryUnit\in\ComplexNumbers$ is the root of
+$z^2=-1$ with positive imaginary part.  Thus $\ImaginaryUnit^2=-1$ and
+$\overline{\ImaginaryUnit}=-\ImaginaryUnit$.  The other root is
+$-\ImaginaryUnit$.}
+\entryfield{Typography}{Both constants are upright.  An italic $e$ or $i$ remains a
+local variable or index and acquires no constant meaning from context alone.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{number-systems}{Number systems and inclusions}
+\entryfield{Canonical symbols}{
+$\NaturalNumbers=\{0,1,2,\ldots\}$,
+$\PositiveIntegers=\{1,2,3,\ldots\}$,
+$\IntegerNumbers$, $\RationalNumbers$, $\RealNumbers$, $\ComplexNumbers$, and
+$\ExtendedRealNumbers=\RealNumbers\cup\{-\infty,+\infty\}$.}
+\entryfield{Inclusions}{
+$\NaturalNumbers\subset\IntegerNumbers\subset\RationalNumbers\subset
+\RealNumbers\subset\ComplexNumbers$.  These are the standard injective embeddings; a
+formula involving coercion into a larger system is interpreted only after the target has
+been named.}
+\entryfield{Endpoint convention}{Neither $+\infty$ nor $-\infty$ is a real number.  They
+belong only to $\ExtendedRealNumbers$.  Arithmetic involving them follows extended-order
+conventions only when explicitly stated.}
+\entryfield{Retired ambiguity}{A bare $\mathbb N$ is forbidden in normative prose because
+authors disagree about whether it contains zero.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{metavariables}{Default metavariables and mandatory overrides}
+\entryfield{Discrete indices}{Unless an entry says otherwise,
+$j,k,m,n,r,N\in\NaturalNumbers$.  A statement requiring positivity writes
+$n\in\PositiveIntegers$ or $n\ge1$.  The letter $p$ denotes a prime only when the same
+sentence says ``prime''.}
+\entryfield{Real variables}{The letters $x,y,t,u,s,\xi,\omega$ have no global type.  Each
+definition declares whether they lie in $\RealNumbers$, $\ComplexNumbers$, an interval, or
+a measure space.}
+\entryfield{Parameters}{The letters $a,b,q,\alpha,\beta,\lambda$ are never assigned a
+default domain.  Their admissible set and all inequalities, such as $\AbsoluteValue{q}<1$
+or $\alpha>0$, are part of the declaration.}
+\entryfield{Functions and measures}{Lower-case $f,g,h$ denote local functions only after a
+domain and codomain are supplied.  Greek $\mu,\nu$ denote local measures only after a
+measurable space is supplied.  No letter acquires mathematical meaning merely from its
+font.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{definition-equality}{Definition, equality, equivalence, and
+identification}
+\entryfield{Definition}{The symbol $a\coloneqq b$ introduces $a$ as an abbreviation or new
+object whose value is exactly $b$.  It is not an asymptotic statement.}
+\entryfield{Equality}{The symbol $=$ means equality in the ambient type: equality of
+scalars, functions, sets, measures, matrices, or equivalence classes as determined by the
+declared type.  Function equality is extensional; equality almost everywhere is written
+separately.}
+\entryfield{Almost-everywhere equality}{For a measure $\mu$, $f=g$ $\mu$-a.e. means
+$\mu(\{x:f(x)\ne g(x)\})=0$.  It does not license substitution into a pointwise endpoint
+formula without a continuous-representative theorem.}
+\entryfield{Law equality}{For random variables $X$ and $Y$, $X\EqualInLaw Y$ abbreviates
+$\LawOf{X}=\LawOf{Y}$ and does not imply $X(\omega)=Y(\omega)$ on a shared sample space.}
+\entryfield{Isomorphism}{Symbols $\cong$ and $\simeq$ require the category---sets, groups,
+rings, topological spaces, normed spaces, or probability spaces---to be stated locally.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{sets-intervals}{Sets, set operations, and intervals}
+\entryfield{Set grammar}{For a universe $U$, $x\in A$ means membership in $A\subseteq U$;
+$A\subseteq B$ permits equality and $A\subsetneq B$ does not.  Union, intersection,
+complement, and set difference are $A\cup B$, $A\cap B$, $U\setminus A$, and $A\setminus
+B$.}
+\entryfield{Intervals}{For $a,b\in\RealNumbers$ with $a\le b$,
+$[a,b]=\{x:a\le x\le b\}$, $(a,b)=\{x:a<x<b\}$,
+$[a,b)=\{x:a\le x<b\}$, and $(a,b]=\{x:a<x\le b\}$.}
+\entryfield{Empty reversed intervals}{If $b<a$, each ordered interval above is empty.  An
+oriented integral $\int_a^b$ is not an integral over that empty set; it changes sign under
+endpoint reversal.}
+\entryfield{Lean aliases}{The Lean set constructors are \lean{Set.Icc}, \lean{Set.Ioo},
+\lean{Set.Ico}, and \lean{Set.Ioc}, in the same order as the four printed intervals.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{maps}{Maps, restrictions, composition, images, and preimages}
+\entryfield{Typed map}{The declaration $f:A\to B$ includes domain $A$ and codomain $B$.
+The restriction to $S\subseteq A$ is $f|_S:S\to B$.}
+\entryfield{Composition}{For $f:A\to B$ and $g:B\to C$,
+$(g\circ f)(x)=g(f(x))$.  Composition is evaluated right to left.}
+\entryfield{Image and preimage}{For $S\subseteq A$ and $T\subseteq B$,
+$f(S)=\{f(x):x\in S\}$ and $f^{-1}(T)=\{x\in A:f(x)\in T\}$.  The latter does not
+require $f$ to be invertible.}
+\entryfield{Inverse map}{The symbol $f^{-1}:B\to A$ denotes an inverse function only after
+$f$ has been declared bijective.  A superscript $-1$ on a set image is always the preimage,
+not reciprocal arithmetic.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{semantic-delimiters}{Set, inner-product, cardinality, and
+definition delimiters}
+\entryfield{Set constructor}{The command \commandname{SetOf}\texttt{\{body\}} supplies
+only extensible braces.  The body supplies either an explicit finite list or a typed
+predicate, for example
+$\SetOf{n\in\NaturalNumbers:n<N}$.  A colon and a vertical bar have the same
+set-builder meaning only after the ambient type has been printed.  The command does not
+deduplicate a list, choose a universe, or turn a class into a set.}
+\entryfield{Inner product}{The command
+\commandname{InnerProduct}\texttt{\{x,y\}} supplies angle delimiters.  In this catalogue
+$\InnerProduct{x,y}_{H}$ is linear in $x$ and conjugate-linear in $y$ on the complex
+Hilbert space $H$; a source adopting the opposite convention must say so at the first
+use and conjugate all adjoint formulas consistently.  A duality pairing is instead
+labelled $\langle\phi,x\rangle_{X^\ast,X}$.}
+\entryfield{Cardinality}{For a finite set $A$,
+$\CardinalityOf{A}\in\NaturalNumbers$ is its number of elements and
+$\CardinalityOf{\varnothing}=0$.  For an infinite set it may denote a cardinal number
+only when the ambient set theory is explicit.  Length, Lebesgue measure, probability,
+determinant, absolute value, and norm are never inferred from the same vertical bars.}
+\entryfield{Definitional equality}{$a\DefinitionEquals b$ introduces the symbol $a$
+with type and value supplied by $b$.  Reversing the direction uses
+$b\mathrel{\eqqcolon}a$; a theorem already requiring proof uses ordinary equality.
+Definitional equality in prose is not a claim of Lean kernel reduction unless an exact
+Lean definition is cited.}
+\entryfield{Empty and singleton cases}{$\SetOf{}=\varnothing$ when the body is an
+explicit empty list, whereas $\SetOf{x}$ is a singleton.  A displayed set-builder with
+an unsatisfiable predicate is empty by its predicate, not by typography.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{families}{Sequences, families, ranges, and finite indexing}
+\entryfield{Sequence}{A sequence $(a_n)_{n\in\NaturalNumbers}$ is a map
+$a:\NaturalNumbers\to A$ into a declared codomain $A$.  A finite row
+$(a_{n,k})_{0\le k\le n}$ is defined only for the printed triangular range.}
+\entryfield{Half-open range}{The project and Lean frequently use $j<n$ to mean
+$j\in\{0,1,\ldots,n-1\}$.  Thus $\sum_{j<n}$ and $\prod_{j<n}$ are half-open at $n$.}
+\entryfield{Inclusive range}{The notation $0\le j\le n$ includes both endpoints and has
+$n+1$ indices.  It is never silently identified with $j<n$.}
+\entryfield{Indexed family}{For a possibly infinite set $I$, $(a_i)_{i\in I}$ is a family
+indexed by $I$.  Summability over $I$ is unconditional unless an order is separately
+specified.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{sums-products}{Sums, products, and neutral-element conventions}
+\entryfield{Finite operations}{For a finite set $S$, $\sum_{i\in S}a_i$ and
+$\prod_{i\in S}a_i$ are taken in the stated additive and multiplicative structures.}
+\entryfield{Empty cases}{The empty sum is $0$ and the empty product is $1$.  Consequently
+$\sum_{j<n}$ is zero and $\prod_{j<n}$ is one when $n=0$.}
+\entryfield{Infinite series}{The notation $\sum_{n=0}^{\infty}a_n$ includes an ordering by
+$\NaturalNumbers$.  For a family over an arbitrary type, the project uses unconditional
+summability; rearrangement requires absolute or unconditional convergence.}
+\entryfield{Infinite products}{The product $\prod_{n=0}^{\infty}a_n$ is the limit of the
+ordered partial products $\prod_{n<N}a_n$ as $N\to\infty$.  Local uniform convergence is
+stated when the factors depend on a complex variable.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{powers-factorials}{Powers, factorials, and binomial coefficients}
+\entryfield{Natural powers}{For an element $x$ of a monoid and
+$n\in\NaturalNumbers$, $x^0=1$ and $x^{n+1}=x^n x$.  In particular, the natural-power
+convention is $0^0=1$.}
+\entryfield{Integer powers}{For $n\in\IntegerNumbers$, $x^n$ requires an invertible
+nonzero $x$ when $n<0$; the ambient field may totalize $0^{-1}$ algebraically, but an
+analytic formula never relies on that totalization without saying so.}
+\entryfield{Complex powers}{For $z^\alpha$ with noninteger $\alpha$, the chosen branch of
+$\log z$ and its cut are mandatory.  The principal convention is
+$z^\alpha=\exp(\alpha\PrincipalLogarithm z)$ with
+$\arg z\in(-\pi,\pi]$.}
+\entryfield{Factorial}{For $n\in\NaturalNumbers$, $0!=1$ and
+$n!=\prod_{1\le j\le n}j$.  The odd double factorial satisfies
+$(-1)!!=1$ and $(2n+1)!!=\prod_{j=0}^{n}(2j+1)$.}
+\entryfield{Binomial coefficient}{For $n,k\in\NaturalNumbers$,
+$\binom nk=n!/(k!(n-k)!)$ when $k\le n$ and $\binom nk=0$ when $k>n$.}
+\entryfield{Falling factorial}{For a scalar $x$ and $n\in\NaturalNumbers$,
+$\FallingFactorial{x}{n}\DefinitionEquals\prod_{j=0}^{n-1}(x-j)$; the empty product
+gives $\FallingFactorial{x}{0}=1$.  Thus
+$\FallingFactorial{x}{n}=\GammaFunction(x+1)/\GammaFunction(x-n+1)$ only where the
+quotient is defined or after a separately justified continuation.}
+\entryfield{Rising factorial}{For a scalar $x$ and $n\in\NaturalNumbers$,
+$\RisingFactorial{x}{n}\DefinitionEquals\prod_{j=0}^{n-1}(x+j)$ and
+$\RisingFactorial{x}{0}=1$.  It equals the ordinary Pochhammer symbol $(x)_n$ in this
+catalogue; the base-$q$ analogue is always \commandname{QPochhammer} and never shares
+this two-argument syntax.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{logarithm-order}{The principal logarithm and order operators}
+\entryfield{Principal logarithm}{The command \commandname{PrincipalLogarithm} denotes
+the analytic branch
+\[
+ \PrincipalLogarithm z=\log|z|+\ImaginaryUnit\operatorname{Arg}z,
+ \qquad -\pi<\operatorname{Arg}z\le\pi,
+\]
+on $\ComplexNumbers\setminus(-\infty,0]$.  In particular it is undefined at zero and
+has distinct boundary values on the two sides of the negative real axis.  The real
+symbol $\log x$ for $x>0$ is its restriction and carries no branch ambiguity.}
+\entryfield{Complex powers}{The principal power is
+$z^\alpha=\exp(\alpha\PrincipalLogarithm z)$ on the same cut domain.  Algebraic laws
+such as $(zw)^\alpha=z^\alpha w^\alpha$ are not used across a branch crossing without
+an explicit argument calculation.}
+\entryfield{Vanishing order}{For a nonzero holomorphic $f$ near $z_0$,
+$\OrderOperator_{z_0}(f)=m\in\NaturalNumbers$ when
+$f(z)=(z-z_0)^m g(z)$ with $g(z_0)\ne0$.  For a pole, a signed divisor order is written
+$\OrderOperator_{z_0}^{\mathrm{div}}(f)<0$ so that it cannot be mistaken for the
+nonnegative zero order.}
+\entryfield{Multiplicative order}{For a group element $a$, the multiplicative order is
+$\OrderOperator_G(a)=\min\SetOf{n\in\PositiveIntegers:a^n=e_G}$ when this set is
+nonempty and is $\infty$ otherwise.  The group subscript is mandatory whenever an
+analytic order also occurs.}
+\entryfield{Other orders}{Differential-equation order, recurrence order, matrix order,
+and asymptotic truncation order are prose-qualified quantities.  The shared operator
+provides typography, not permission to leave the species or base point implicit.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{scalar-size}{Absolute value, norms, and distance}
+\entryfield{Absolute value}{For $x\in\RealNumbers$, $\AbsoluteValue{x}=\max\{x,-x\}$.
+For $z\in\ComplexNumbers$, $\AbsoluteValue{z}=\sqrt{z\overline z}$.}
+\entryfield{Norm}{The expression $\Norm{x}$ is meaningful only after a normed space has
+been named.  For a function, $\Norm{f}_{\infty}$ means an essential supremum or a pointwise
+supremum exactly as the surrounding declaration states.}
+\entryfield{Distance}{In a metric space $(X,d)$,
+$\MetricDistance(x,y)=d(x,y)$.  Probability metrics such as total variation and
+Wasserstein distance are given their own decorated symbols and never use a bare
+$\MetricDistance$ without the metric name.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{rounding-positive-part}{Floor, ceiling, fractional part, sign, and
+positive part}
+\entryfield{Definitions}{For $x\in\RealNumbers$,
+$\Floor{x}=\max\{n\in\IntegerNumbers:n\le x\}$,
+$\Ceiling{x}=\min\{n\in\IntegerNumbers:x\le n\}$,
+$\FractionalPart{x}=x-\Floor{x}\in[0,1)$,
+$\PositivePart{x}=\max\{x,0\}$, and
+$\Sign(x)=-1,0,1$ according as $x<0$, $x=0$, or $x>0$.}
+\entryfield{Nearest integer}{A nearest-integer or nearest-dyadic operation must separately
+state its tie-breaking rule; neither floor nor ceiling implies one.}
+\entryfield{Use in powers}{For $\alpha>0$, $\PositivePart{x}^{\alpha}$ is zero when
+$x\le0$.  For $\alpha=0$, the natural-power value at $x\le0$ is one only if a formula
+explicitly uses natural exponentiation; real powers require a separate endpoint rule.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{indicator}{Indicator and half-weighted interval indicator}
+\entryfield{Ordinary indicator}{For a set $A$ in a universe $U$,
+$\IndicatorOf{A}:U\to\{0,1\}$ is one on $A$ and zero on $U\setminus A$.}
+\entryfield{Half-weighted indicator}{When adjacent closed intervals meet, the project uses
+a separately named half-endpoint indicator taking value $1/2$ at each boundary and $1$ in
+the interior.  It is not denoted by the ordinary $\IndicatorOf{A}$.}
+\entryfield{Measure-theoretic caveat}{Changing endpoint values does not change a Lebesgue
+integral, but it does change pointwise finite-spline identities and exact values at grid
+points.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{support}{Pointwise support, topological support, and essential
+support}
+\entryfield{Pointwise support}{For a function $f:X\to A$ with zero in $A$,
+$\SupportOf{f}=\SetOf{x\in X:f(x)\ne0}$.  The bare command
+\commandname{SupportOperator} is the same operator token before an explicitly supplied
+operand; \commandname{SupportOf} supplies the parentheses and is preferred in prose.}
+\entryfield{Topological support}{For topological $X$,
+$\TopologicalSupportOf{f}=\overline{\SupportOf{f}}$.  Thus a boundary point can belong to
+the topological support even when $f$ and all of its derivatives vanish there.}
+\entryfield{Measure support}{For a Borel measure $\mu$, $\SupportOperator\mu$ is the
+complement of the largest open $\mu$-null set.  This is not obtained by evaluating a
+measure as a pointwise function.}
+\entryfield{Essential support}{Essential support depends on a background measure and ignores
+null changes; it must be labeled ``essential''.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{calculus}{Derivatives, iterated derivatives, and integrals}
+\entryfield{Derivative}{For $f:\RealNumbers\to E$ into a real normed space,
+$f'(x)$ denotes the Fr\'echet derivative evaluated on $1$ when it exists.  Higher
+derivatives are $f^{(n)}$, with $f^{(0)}=f$.}
+\entryfield{Partial derivatives}{For a multivariable function, $\partial_j f$ differentiates
+in the $j$th coordinate.  A gradient, Jacobian, Hessian, or directional derivative is named
+explicitly and includes its inner-product or coordinate convention.}
+\entryfield{Differential}{In $\int_a^b f(x)\,\Differential x$, the upright
+$\Differential x$ identifies the variable of integration and is not a free multiplicative
+variable.}
+\entryfield{Oriented interval integral}{For integrable $f$,
+$\int_b^a f(x)\,\Differential x=-\int_a^b f(x)\,\Differential x$ and
+$\int_a^a f(x)\,\Differential x=0$.}
+\entryfield{Whole-space integral}{An integral $\int_{\RealNumbers}$ is with respect to
+Lebesgue measure unless another measure is printed.  An expectation is written
+$\Expectation$, not as an unlabeled integral.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{convolution}{Convolution of functions, measures, and sequences}
+\entryfield{Functions}{For integrable functions $f,g:\RealNumbers\to\ComplexNumbers$,
+$(f\Convolution g)(x)=\int_{\RealNumbers}f(x-y)g(y)\,\Differential y$.}
+\entryfield{Measures}{For finite Borel measures $\mu,\nu$ on $\RealNumbers$,
+$(\mu\Convolution\nu)(A)=\int\!\int\IndicatorOf{A}(x+y)\,\mu(\Differential x)
+\nu(\Differential y)$.  It is the law of $X+Y$ for independent $X,Y$ with laws
+$\mu,\nu$.}
+\entryfield{Sequences}{For sequences indexed by $\NaturalNumbers$, the Cauchy convolution
+is $(a\Convolution b)_n=\sum_{k=0}^{n}a_kb_{n-k}$.  It is distinct from bilateral
+convolution over $\IntegerNumbers$.}
+\entryfield{Power}{The notation $f^{\Convolution n}$ means $n$-fold convolution, with
+$f^{\Convolution0}=\delta_0$ for measures and the appropriate convolution unit for the
+ambient algebra.}
+\end{catalogueentry}
+
+\section{The semantic Fabius--Rvachev objects}
+
+\begin{catalogueentry}{fabius-bounded}{The bounded Fabius function
+$\FabiusBounded$}
+\entryfield{Command}{\commandname{FabiusBounded}.}
+\entryfield{Type}{A smooth function $\FabiusBounded:\RealNumbers\to[0,1]\subset
+\RealNumbers$.}
+\entryfield{Normalization}{
+$\FabiusBounded(x)=0$ for $x\le0$,
+$\FabiusBounded(x)=1$ for $x\ge1$,
+$\FabiusBounded(1-x)=1-\FabiusBounded(x)$ for every real $x$, and
+$\FabiusBounded'(x)=2\FabiusBounded(2x)$ on the left half of the unit interval.}
+\entryfield{Shape}{Its restriction $\FabiusBounded|_{[0,1]}$ is continuous and strictly
+increasing from zero to one.  Its constant tails are part of the object, not an informal
+extension.}
+\entryfield{Lean crosswalk}{The real-valued object is \lean{fabiusReal}; the abstract
+specification is \lean{IsFabius}; construction and uniqueness are exposed through
+\lean{fabius} and \lean{fabius_spec}.  Status: \textbf{Lean-proved}.}
+\entryfield{Forbidden aliases}{The bare capital letter, the former calligraphic glyph,
+and the former decorated-capital glyph are not canonical because the active historical
+corpus also uses them for transforms, families, and the signed global extension.  This
+catalogue names those aliases textually rather than re-emitting their retired control
+sequences.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{rvachev-up}{Rvachev's up-function $\RvachevUp$}
+\entryfield{Command}{\commandname{RvachevUp}.}
+\entryfield{Type and definition}{The function $\RvachevUp:\RealNumbers\to\RealNumbers$ is
+defined by
+\[
+ \RvachevUp(x)=\FabiusBounded(1-\AbsoluteValue{x}).
+\]
+This single formula uses the constant tails of $\FabiusBounded$ and therefore gives
+$\RvachevUp(x)=0$ whenever $\AbsoluteValue{x}\ge1$.}
+\entryfield{Normalization}{It is even, nonnegative, smooth, has integral one, satisfies
+$\RvachevUp(0)=1$, and has topological support $[-1,1]$.  Every derivative vanishes at
+$x=\pm1$.}
+\entryfield{Differential law}{For every $x\in\RealNumbers$,
+$\RvachevUp'(x)=2(\RvachevUp(2x+1)-\RvachevUp(2x-1))$.}
+\entryfield{Lean crosswalk}{\lean{rvachevUp} in \path{Basic.lean}, with differential,
+support, Fourier, and shape theorems in their dedicated modules.  Status:
+\textbf{Lean-proved}.}
+\entryfield{Historical aliases}{The source papers print an upright word ``up'', use
+legacy commands named \commandname{up} or \commandname{Up}, or use the local glyph
+$\varphi$.  These spellings are historical evidence, not commands to be re-emitted in
+project-authored formulas; normative prose uses only $\RvachevUp$.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{fabius-global}{The signed global extension $\FabiusGlobal$}
+\entryfield{Command}{\commandname{FabiusGlobal}.}
+\entryfield{Type}{A smooth function $\FabiusGlobal:\RealNumbers\to\RealNumbers$.  It is not
+a cumulative distribution function and is not constrained to $[0,1]$.}
+\entryfield{Canonical translate formula}{For $x\in\RealNumbers$,
+\[
+ \FabiusGlobal(x)=\sum_{n=0}^{\infty}
+   \ThueMorseSign{n}\,\RvachevUp(x-2n-1).
+\]
+At each fixed $x$, compact support leaves only finitely many nonzero summands; hence this
+formula is pointwise locally finite even when written as an infinite sum.}
+\entryfield{Identifications}{For $x\in[0,1]$,
+$\FabiusGlobal(x)=\FabiusBounded(x)$.  Globally,
+$\FabiusGlobal'(x)=2\FabiusGlobal(2x)$.  Repeated differentiation gives
+$\FabiusGlobal^{(m)}(x)=2^{\binom{m+1}{2}}\FabiusGlobal(2^m x)$ for
+$m\in\NaturalNumbers$.}
+\entryfield{Lean crosswalk}{\lean{extendedFabius}, with translate-cell and calculus results
+in \path{GlobalExtension.lean}.  Status: \textbf{Lean-proved}.}
+\entryfield{Retired aliases}{The former calligraphic glyph, the former decorated-capital
+glyph, and the plain capital glyph of the 2017 arithmetic paper are historical aliases.
+They must be translated semantically, never by a blind global replacement.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{fabius-quantile}{The ordinary and clamped Fabius inverses}
+\entryfield{Commands}{\commandname{FabiusQuantile} and
+\commandname{FabiusClampedQuantile}.}
+\entryfield{Ordinary inverse}{Because
+$\FabiusBounded|_{[0,1]}:[0,1]\to[0,1]$ is a strictly increasing bijection,
+\[
+ \FabiusQuantile:[0,1]\to[0,1],\qquad
+ \FabiusQuantile(y)=\bigl(\FabiusBounded|_{[0,1]}\bigr)^{-1}(y).
+\]
+Thus $\FabiusBounded(\FabiusQuantile(y))=y$ for $y\in[0,1]$ and
+$\FabiusQuantile(\FabiusBounded(x))=x$ for $x\in[0,1]$.}
+\entryfield{Clamped inverse}{For $y\in\RealNumbers$, define
+$\operatorname{clamp}(y)=\min\{1,\max\{0,y\}\}$ and
+\[
+ \FabiusClampedQuantile(y)=\FabiusQuantile(\operatorname{clamp}(y)).
+\]
+Consequently it is zero on $(-\infty,0]$ and one on $[1,\infty)$.}
+\entryfield{Lean crosswalk}{\lean{fabiusInv} and \lean{fabiusOrderIso} in
+\path{FabiusInverse.lean}.  Status: \textbf{Lean-proved}.}
+\entryfield{Retired aliases}{Bare $I$, $G$, $J$, the formal inverse expression, and a
+legacy inverse macro occur in older prose.  They are local or historical only.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{is-fabius}{The abstract predicate \lean{IsFabius}}
+\entryfield{Kind}{A proposition about a candidate bounded function, not a fourth Fabius
+function.}
+\entryfield{Role}{It packages the exact tails, reflection, smoothness/differentiability, and
+left-half differential law required by the formal development.  A theorem quantified over
+an arbitrary $f$ with \lean{IsFabius f} is more general than a theorem stated only for
+$\FabiusBounded$.}
+\entryfield{Authority}{The Lean declaration's type is authoritative for its precise fields,
+coercions, and domains.  A prose summary is not permission to omit a hypothesis.}
+\entryfield{Status}{\textbf{Lean-proved}: existence supplies the canonical witness and
+uniqueness identifies every witness with it.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{fabius-relations}{Canonical relations among the three functions}
+\entryfield{Fold}{For every $x\in\RealNumbers$,
+$\RvachevUp(x)=\FabiusBounded(1-\AbsoluteValue{x})$.}
+\entryfield{Density relation}{For $x\in\RealNumbers$,
+$\FabiusBounded'(x)=2\RvachevUp(2x-1)$.  Both sides vanish outside the unit interval.}
+\entryfield{Unit-interval translate}{For $x\in[0,1]$,
+$\FabiusBounded(x)=\RvachevUp(x-1)$.  This is not a global identity.}
+\entryfield{Global agreement}{For $x\in[0,1]$,
+$\FabiusGlobal(x)=\FabiusBounded(x)$.  Outside that interval the left side is signed and
+the right side has constant tails.}
+\entryfield{Audit rule}{Every use of a differential, translation, or scaling identity states
+whether its subject is $\FabiusBounded$, $\RvachevUp$, or $\FabiusGlobal$ and prints the
+domain on which it holds.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{fabius-dyadic-cells}{Dyadic points, reduced levels, and derivative
+cells}
+\entryfield{Dyadic point}{A dyadic rational is $x=m/2^n$ with
+$m\in\IntegerNumbers$ and $n\in\NaturalNumbers$.  A unit-interval dyadic additionally has
+$0\le m\le2^n$.}
+\entryfield{Reduced positive level}{For an interior dyadic, ``reduced at level $n$'' means
+$0<m<2^n$ and $m$ is odd.  The oddness prevents the same rational from being represented
+at a smaller positive denominator level.}
+\entryfield{Cell}{A level-$n$ dyadic cell is an interval between consecutive multiples of
+$2^{-n}$; open, closed, or half-open endpoints are printed because derivative and spline
+formulas can distinguish them.}
+\entryfield{Derivative scaling}{At a reduced interior dyadic $m/2^n$, derivatives above a
+finite order vanish according to the exact global-scaling theorem.  The catalogue does not
+infer local analyticity from the terminating Taylor jet.}
+\entryfield{Representation independence}{An exact evaluator accepting $(m,n)$ must prove
+invariance under $(m,n)\mapsto(2m,n+1)$ rather than assuming a reduced input.}
+\end{catalogueentry}
+
+\section{Probability, measures, and distributional notation}
+
+\begin{catalogueentry}{probability-space}{Probability spaces and random variables}
+\entryfield{Probability space}{$(\Omega,\mathscr A,\Probability)$ denotes a probability
+space: $\Omega$ is the sample set, $\mathscr A$ is a $\sigma$-algebra on $\Omega$, and
+$\Probability:\mathscr A\to[0,1]$ is countably additive with
+$\Probability(\Omega)=1$.}
+\entryfield{Random variable}{A real random variable is an
+$\mathscr A/\mathcal B(\RealNumbers)$-measurable map $X:\Omega\to\RealNumbers$.
+A random vector $X:\Omega\to\RealNumbers^d$ is measurable for the Borel
+$\sigma$-algebra of $\RealNumbers^d$.}
+\entryfield{Events}{Braces inside probability are inverse images:
+$\Probability\{X\le x\}$ abbreviates
+$\Probability(X^{-1}((-\infty,x]))$.  They do not imply that $X$ has a density.}
+\entryfield{Almost surely}{$X=Y$ almost surely, written $X=Y$ a.s., means
+$\Probability\{\omega:X(\omega)=Y(\omega)\}=1$.  This is weaker than pointwise equality
+and different from \notelink{law}{equality in law}.}
+\entryfield{Independence}{Random variables $(X_j)_{j\in J}$ are independent when
+\[
+ \Probability\!\left(\bigcap_{j\in K}\{X_j\in B_j\}\right)
+ =\prod_{j\in K}\Probability\{X_j\in B_j\}
+\]
+for every finite $K\subseteq J$ and every family of Borel sets $B_j$.
+\emph{i.i.d.} means independent and identically distributed.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{law}{Law, pushforward, equality in law, and weak convergence}
+\entryfield{Law}{For a measurable $X:\Omega\to S$,
+\[
+ \LawOf{X}\DefinitionEquals\LawOperator(X)\DefinitionEquals X_{\#}\Probability,\qquad
+ \LawOf{X}(B)=\Probability(X^{-1}(B)),
+\]
+where $S$ is a measurable space, $B$ is measurable, and $X_{\#}$ denotes pushforward.
+Thus \commandname{LawOperator} is the operator token and \commandname{LawOf} is its
+argument-delimited form; both take a random variable and return a probability measure.}
+\entryfield{Equality in law}{$X\EqualInLaw Y$ means
+$\LawOf{X}=\LawOf{Y}$.  It neither asserts that $X$ and $Y$ share a sample space nor
+that they are equal almost surely.}
+\entryfield{Convergence in law}{$X_n\ConvergesInLaw X$ means
+\[
+ \int_S h\,\Differential\LawOf{X_n}\longrightarrow
+ \int_S h\,\Differential\LawOf{X}
+\]
+for every bounded continuous $h:S\to\RealNumbers$, with $S$ a metric space.  For
+real-valued variables this is equivalent to convergence of distribution functions at
+every continuity point of the limiting distribution function.}
+\entryfield{Measure notation}{$\mu_n\Rightarrow\mu$ is allowed for weak convergence of
+measures; it must not be reused for implication in the same displayed formula.}
+\entryfield{Lean crosswalk}{Probability measures and pushforwards use Mathlib's
+\lean{ProbabilityMeasure}, \lean{Measure.map}, and distribution APIs.  A prose
+probabilistic representation is labelled \textbf{prose-derived} unless an exact Lean
+theorem is cited.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{dyadic-filtration}{The canonical dyadic filtration}
+\entryfield{Command}{\commandname{DyadicSigmaField}.  The printed base glyph is
+$\DyadicSigmaField$; it is never a generic event, matrix, Appell family, or algebra when
+the command is used.}
+\entryfield{Probability space}{Fix a probability space
+$(\Omega,\mathscr A,\Probability)$ and an explicitly ordered coordinate family
+$(U_j)_{j\in\PositiveIntegers}$.  For $n\in\NaturalNumbers$ define
+\[
+ \DyadicSigmaField_n\DefinitionEquals
+ \sigma(U_1,\ldots,U_n),
+ \qquad
+ \DyadicSigmaField_0\DefinitionEquals\{\varnothing,\Omega\}.
+\]
+If a document instead generates from binary digits, Rademacher variables, or dyadic
+partition cells, it replaces the displayed generators while retaining the level-zero
+and monotonicity clauses.}
+\entryfield{Filtration law}{$\DyadicSigmaField_n\subseteq\DyadicSigmaField_{n+1}
+\subseteq\mathscr A$ for every $n$.  Conditional expectation
+$\Expectation[X\mid\DyadicSigmaField_n]$ is defined only for an integrable $X$ (or the
+appropriate nonnegative extended variant) and is an equivalence class modulo almost
+sure equality.}
+\entryfield{Limit field}{$\DyadicSigmaField_\infty\DefinitionEquals
+\sigma(\bigcup_{n\in\NaturalNumbers}\DyadicSigmaField_n)$.  Equality with the ambient
+$\mathscr A$ is an additional generation hypothesis, not part of the notation.}
+\entryfield{Collision policy}{An unqualified calligraphic $A$ remains local.  The shared
+command is reserved for this filtration, and every subscript is a level index in
+$\NaturalNumbers\cup\{\infty\}$ rather than a matrix dimension or event label.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{cdf-density}{Distribution functions, densities, and atoms}
+\entryfield{Distribution function}{For a real random variable $X$,
+\[
+ F_X(x)\DefinitionEquals\Probability\{X\le x\},\qquad x\in\RealNumbers.
+\]
+It is right-continuous, nondecreasing, and has limits $0$ and $1$ at negative and
+positive infinity.  The subscript is compulsory unless the distribution is uniquely
+fixed in the surrounding entry.}
+\entryfield{Density}{A Borel function $f_X:\RealNumbers\to[0,\infty)$ is a density when
+$\LawOf{X}(B)=\int_B f_X(x)\,\Differential x$ for every Borel set $B$.  Then
+$F_X(x)=\int_{-\infty}^{x}f_X(t)\,\Differential t$.  A distribution need not possess a
+density.}
+\entryfield{Atom}{The mass at $a$ is
+$\Probability\{X=a\}=F_X(a)-F_X(a^-)$, where
+$F_X(a^-)=\lim_{x\uparrow a}F_X(x)$.  A Dirac measure at $a$ is
+$\delta_a(B)=\IndicatorOf{B}(a)$.}
+\entryfield{Signed measures}{A signed measure $\nu$ is not a probability law.  Its total
+variation measure is $|\nu|$; the scalar $\nu(\RealNumbers)$ is its total mass and may
+be negative.}
+\entryfield{Endpoints}{A uniform law on $[a,b]$, $a<b$, has density
+$(b-a)^{-1}\IndicatorOf{[a,b]}(x)$.  Changing the values at the two endpoints changes
+neither the associated absolutely continuous measure nor any Lebesgue integral.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{expectation}{Expectation, moments, variance, and covariance}
+\entryfield{Expectation}{For an integrable real random variable,
+\[
+ \Expectation[X]\DefinitionEquals\int_{\Omega}X(\omega)\,\Differential\Probability(\omega)
+ =\int_{\RealNumbers}x\,\Differential\LawOf{X}(x).
+\]
+For a nonnegative $X$, the extended integral is permitted and may equal $+\infty$.}
+\entryfield{Raw moments}{$m_n(X)\DefinitionEquals\Expectation[X^n]$ for
+$n\in\NaturalNumbers$ whenever the expectation exists; $m_0(X)=1$, including on the
+event $X=0$, by the polynomial convention $x^0=1$ for every $x$.}
+\entryfield{Central moments}{$\mu_n(X)\DefinitionEquals
+\Expectation[(X-\Expectation X)^n]$, assuming the needed integrability.  Raw $m_n$ and
+central $\mu_n$ must not be interchanged.}
+\entryfield{Variance and covariance}{For square-integrable real variables,
+\[
+ \Variance(X)=\Expectation[(X-\Expectation X)^2],\qquad
+ \Covariance(X,Y)=\Expectation[(X-\Expectation X)(Y-\Expectation Y)].
+\]
+Thus $\Variance(X)=\Covariance(X,X)\ge0$.}
+\entryfield{Cumulants}{When $\log\MomentGeneratingFunction{X}(t)$ exists near $0$,
+$\kappa_n(X)$ is the coefficient defined by
+$\log\MomentGeneratingFunction{X}(t)=\sum_{n\ge1}\kappa_n(X)t^n/n!$.
+The logarithm is the real logarithm on the positive MGF, not an unstated complex branch.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{fabius-random-series}{Canonical probabilistic model of the Fabius
+distribution}
+\entryfield{Input variables}{Let $(U_k)_{k\in\PositiveIntegers}$ be independent with
+$U_k\sim\operatorname{Uniform}[0,1]$.  The index begins at $1$.}
+\entryfield{Random series}{Define
+\[
+ X\DefinitionEquals\sum_{k=1}^{\infty}2^{-k}U_k.
+\]
+The series converges absolutely for every sample point because
+$0\le U_k\le1$ and $\sum_{k\ge1}2^{-k}=1$; hence $X\in[0,1]$ almost surely.}
+\entryfield{Distribution}{$\FabiusBounded(x)=\Probability\{X\le x\}$ for
+$x\in\RealNumbers$.  The density is
+$f_X(x)=2\RvachevUp(2x-1)$, so the distribution identity reproduces
+$\FabiusBounded'(x)=2\RvachevUp(2x-1)$.}
+\entryfield{Centered variable}{For $Y=2X-1$ one has $Y\in[-1,1]$ almost surely and
+$Y$ has density $\RvachevUp$.  Equivalently,
+$\RvachevUp(t)=\tfrac12 f_X((t+1)/2)$.}
+\entryfield{Finite approximants}{$X_N=\sum_{k=1}^{N}2^{-k}U_k$ has support
+$[0,1-2^{-N}]$ and $X_N\to X$ almost surely, in every $L^p$ for
+$1\le p<\infty$, and in law.  These distinct modes are printed when a bound depends on
+one of them.}
+\entryfield{Status}{The random-series representation is a semantic bridge used in the
+corpus.  Each downstream theorem retains its own proof-status label; the representation
+alone does not formalize a probabilistic argument in Lean.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{geometric-uniform-family}{Geometrically weighted uniform series}
+\entryfield{Parameters}{Unless a complex analytic continuation is explicitly declared,
+$q\in(0,1)$.  Let $U_0,U_1,\ldots$ be independent and uniformly distributed on
+$[0,1]$.}
+\entryfield{Normalized series}{The probability-normalized variable is
+\[
+ X_q\DefinitionEquals(1-q)\sum_{n=0}^{\infty}q^nU_n.
+\]
+The weights sum to $1$, so $X_q\in[0,1]$ almost surely.  At $q=\tfrac12$ its law agrees
+with the canonical Fabius law after the index shift $U_n\leftrightarrow U_{n+1}$.}
+\entryfield{Unnormalized series}{Some frontier documents instead study
+$S_q=\sum_{n\ge0}q^nU_n=X_q/(1-q)$ with support $[0,(1-q)^{-1}]$.
+The letter $S_q$ and its support must be printed whenever this normalization is used.}
+\entryfield{Characteristic function}{Independence gives
+\[
+ \CharacteristicFunction{X_q}(t)
+ =\prod_{n=0}^{\infty}
+   \frac{\EulerE^{\ImaginaryUnit t(1-q)q^n}-1}
+        {\ImaginaryUnit t(1-q)q^n},
+\]
+with every factor assigned its continuous value $1$ at $t=0$.}
+\entryfield{Complex \(q\)}{For $q\in\ComplexNumbers$, the same product may define an
+analytic function for $|q|<1$, but it is no longer the characteristic function of a real
+probability variable unless additional reality hypotheses are given.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{probability-metrics}{Total variation, Wasserstein, and
+Kolmogorov distances}
+\entryfield{One-object total variation}{The command
+\commandname{TotalVariationOf}\texttt{\{a\}} denotes the total variation of one object
+$a$.  Its type must be stated locally.  For a real function on $[u,v]$,
+\[
+ \TotalVariationOf{f}
+ \DefinitionEquals
+ \sup_{u=x_0<\cdots<x_n=v}
+ \sum_{j=1}^{n}\AbsoluteValue{f(x_j)-f(x_{j-1})}.
+\]
+For a finite signed measure $\sigma$, it denotes $|\sigma|(X)$, equivalently the
+total-variation norm under the convention stated in the source.  These are one-object
+functionals, not distances between two probability measures.}
+\entryfield{Total variation}{For probability measures $\mu,\nu$ on the same measurable
+space,
+\[
+ \TotalVariationDistance(\mu,\nu)
+ \DefinitionEquals\sup_{A}|\mu(A)-\nu(A)|
+ =\frac12\int|f-g|\,\Differential\lambda
+\]
+when both have densities $f,g$ with respect to $\lambda$.  Some literature omits the
+factor $1/2$; that alternative is never silently substituted.}
+\entryfield{Kolmogorov distance}{For real laws with CDFs $F_X,F_Y$,
+$d_{\mathrm K}(F_X,F_Y)=\sup_{x\in\RealNumbers}|F_X(x)-F_Y(x)|$.}
+\entryfield{Wasserstein distance}{For $p\in[1,\infty)$ and laws with finite $p$th moments,
+\[
+ W_p(\mu,\nu)=
+ \left(\inf_{\pi\in\Pi(\mu,\nu)}
+ \int |x-y|^p\,\Differential\pi(x,y)\right)^{1/p},
+\]
+where $\Pi(\mu,\nu)$ is the set of couplings.  The product coupling makes
+$\Pi(\mu,\nu)$ nonempty for probability measures on standard Borel spaces.}
+\entryfield{Type rule}{A metric symbol takes two laws or measures, not two random
+variables, unless the law operation is explicitly stated in the local scope.}
+\end{catalogueentry}
+
+\section{Fourier, Laplace, Mellin, and generating transforms}
+
+\subsection{The two Fourier conventions}
+
+\begin{catalogueentry}{fourier-two-pi}{The \(2\pi\)-frequency Fourier transform}
+\entryfield{Commands}{\commandname{FourierTwoPiOperator} is the operator token,
+\commandname{FourierTwoPiTransformOf}\texttt{\{f\}} is its bracketed application, and
+\commandname{FourierTwoPi}\texttt{\{f\}} is its normalization-labelled hat.  These are
+three presentations of one forward transform, not three transforms.}
+\entryfield{Forward transform}{For $f\in L^1(\RealNumbers)$,
+\[
+ \FourierTwoPi{f}(\xi)
+ \DefinitionEquals\FourierTwoPiTransformOf{f}(\xi)
+ \DefinitionEquals\FourierTwoPiOperator[f](\xi)
+ \DefinitionEquals\int_{\RealNumbers}
+ f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\,\Differential x,
+ \qquad \xi\in\RealNumbers.
+\]
+The transform variable is $\xi$ and carries cycles per unit.}
+\entryfield{Inverse}{Under a hypothesis guaranteeing inversion,
+\[
+ f(x)=\int_{\RealNumbers}
+ \FourierTwoPi{f}(\xi)\EulerE^{2\pi\ImaginaryUnit x\xi}\,\Differential\xi.
+\]
+There is no scalar prefactor in either direction.  The operator implementing this
+inverse is \commandname{InverseFourierTwoPiOperator}.  It is written only on a named
+inversion domain; it does not assert pointwise inversion for arbitrary $L^1$ data.  For
+$L^2$, both formulas are interpreted through Plancherel extension.}
+\entryfield{Rules}{With justified derivatives and integrals,
+\[
+ \FourierTwoPi{f'}(\xi)=2\pi\ImaginaryUnit\xi\,\FourierTwoPi f(\xi),
+ \qquad
+ \FourierTwoPi{f\Convolution g}=\FourierTwoPi f\,\FourierTwoPi g.
+\]
+Translation by $a$ contributes $\EulerE^{-2\pi\ImaginaryUnit a\xi}$; dilation obeys
+$\FourierTwoPi{f(a\,\cdot)}(\xi)=|a|^{-1}\FourierTwoPi f(\xi/a)$ for real $a\ne0$.}
+\entryfield{Measures}{For a finite Borel measure $\mu$,
+$\FourierTwoPi{\mu}(\xi)=\int\EulerE^{-2\pi\ImaginaryUnit x\xi}\,\Differential\mu(x)$.
+This has no density assumption.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{fourier-angular}{The angular-frequency Fourier transform}
+\entryfield{Commands}{\commandname{FourierAngularOperator} is the operator token,
+\commandname{FourierAngularTransformOf}\texttt{\{f\}} is its bracketed application,
+and \commandname{FourierAngular}\texttt{\{f\}} is its normalization-labelled hat.}
+\entryfield{Forward transform}{For $f\in L^1(\RealNumbers)$,
+\[
+ \FourierAngular{f}(\omega)
+ \DefinitionEquals\FourierAngularTransformOf{f}(\omega)
+ \DefinitionEquals\FourierAngularOperator[f](\omega)
+ \DefinitionEquals\int_{\RealNumbers}
+ f(x)\EulerE^{-\ImaginaryUnit\omega x}\,\Differential x,
+ \qquad\omega\in\RealNumbers.
+\]}
+\entryfield{Inverse}{Under an inversion hypothesis,
+\[
+ f(x)=\frac1{2\pi}\int_{\RealNumbers}
+ \FourierAngular{f}(\omega)\EulerE^{\ImaginaryUnit\omega x}\,\Differential\omega.
+\]
+The forward direction has no prefactor and the inverse has $1/(2\pi)$.  The command
+\commandname{InverseFourierAngularOperator} denotes precisely this inverse on a stated
+inversion domain.}
+\entryfield{Rules}{$\FourierAngular{f'}(\omega)
+=\ImaginaryUnit\omega\FourierAngular f(\omega)$ and
+$\FourierAngular{f\Convolution g}
+=\FourierAngular f\,\FourierAngular g$.}
+\entryfield{Conversion}{The two catalogued transforms satisfy
+\[
+ \FourierTwoPi f(\xi)=\FourierAngular f(2\pi\xi),\qquad
+ \FourierAngular f(\omega)=\FourierTwoPi f(\omega/(2\pi)).
+\]
+A formula may change variables between them only by displaying this rescaling.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{characteristic-function}{Characteristic functions and Fourier
+signs}
+\entryfield{Definition}{For a real random variable $X$,
+\[
+ \CharacteristicFunction{X}(t)
+ \DefinitionEquals\Expectation[\EulerE^{\ImaginaryUnit tX}]
+ =\int_{\RealNumbers}\EulerE^{\ImaginaryUnit tx}\,\Differential\LawOf X(x),
+ \qquad t\in\RealNumbers.
+\]
+The probabilistic sign is positive.}
+\entryfield{Fourier conversion}{Because both catalogued Fourier transforms use a negative
+sign,
+\[
+ \CharacteristicFunction{X}(t)
+ =\FourierAngular{\LawOf X}(-t)
+ =\FourierTwoPi{\LawOf X}\!\left(-\frac{t}{2\pi}\right).
+\]}
+\entryfield{Moments}{If $\Expectation|X|^n<\infty$, then
+$\CharacteristicFunction{X}^{(n)}(0)=\ImaginaryUnit^n\Expectation[X^n]$.
+Analyticity at zero requires stronger hypotheses than the existence of all moments.}
+\entryfield{Independent sums}{For independent $X,Y$,
+$\CharacteristicFunction{X+Y}=\CharacteristicFunction X\,
+\CharacteristicFunction Y$.  The equality is pointwise in $t$.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{sinc}{The two sinc normalizations}
+\entryfield{Radian sinc}{For $z\in\ComplexNumbers$,
+\[
+ \SincRad(z)\DefinitionEquals
+ \begin{cases}\sin z/z,&z\ne0,\\1,&z=0.\end{cases}
+\]
+The value at zero fills the removable singularity, and the result is entire.}
+\entryfield{Normalized sinc}{For $z\in\ComplexNumbers$,
+\[
+ \SincPi(z)\DefinitionEquals
+ \begin{cases}\sin(\pi z)/(\pi z),&z\ne0,\\1,&z=0.\end{cases}
+\]}
+\entryfield{Conversion}{$\SincPi(z)=\SincRad(\pi z)$ and
+$\SincRad(z)=\SincPi(z/\pi)$.}
+\entryfield{Zeros}{$\SincRad$ vanishes at $\pi k$, while $\SincPi$ vanishes at $k$, for
+$k\in\IntegerNumbers\setminus\{0\}$.  This distinction is essential in zero-set and
+sampling arguments.}
+\entryfield{Retired alias}{A bare sinc operator is forbidden in normative prose.
+Historical occurrences must be annotated with one of the two definitions.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{up-fourier-product}{Fourier products for Rvachev's up-function}
+\entryfield{\(2\pi\)-frequency form}{With $\int\RvachevUp=1$ and the
+\notelink{fourier-two-pi}{$2\pi$ convention},
+\[
+ \FourierTwoPi{\RvachevUp}(\xi)
+ =\prod_{n=0}^{\infty}\SincRad\!\left(\frac{\pi\xi}{2^n}\right)
+ =\prod_{n=0}^{\infty}\SincPi\!\left(\frac{\xi}{2^n}\right).
+\]}
+\entryfield{Angular form}{Equivalently,
+\[
+ \FourierAngular{\RvachevUp}(\omega)
+ =\prod_{j=1}^{\infty}\SincRad\!\left(\frac{\omega}{2^j}\right).
+\]
+The angular product begins at $j=1$; the $2\pi$ product begins at $n=0$.}
+\entryfield{At zero}{Every factor is assigned value $1$ at zero, so both products equal
+$1$ at the origin.}
+\entryfield{Convergence}{The products converge locally uniformly on
+$\ComplexNumbers$, hence define entire functions.  A logarithm of the product is used
+only on a zero-free domain with an explicit branch.}
+\entryfield{Zeros}{Multiplicities are computed by counting all pairs $(n,k)$ for which
+$\xi/2^n=k\in\IntegerNumbers\setminus\{0\}$, not by treating the displayed factors as
+having disjoint zero sets.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{periodic-fourier}{Fourier series on the unit circle}
+\entryfield{Coefficient}{For a $1$-periodic integrable function $h$,
+\[
+ \widehat h[k]\DefinitionEquals\int_0^1h(x)
+ \EulerE^{-2\pi\ImaginaryUnit kx}\,\Differential x,
+ \qquad k\in\IntegerNumbers.
+\]}
+\entryfield{Series}{The formal Fourier series is
+$\sum_{k\in\IntegerNumbers}\widehat h[k]\EulerE^{2\pi\ImaginaryUnit kx}$.
+Its mode of convergence---pointwise, $L^2$, uniform, distributional, or a named
+summability method---is part of every theorem.}
+\entryfield{Separation from line transform}{Square brackets and an integer index mark a
+Fourier-series coefficient.  Parentheses and a real frequency mark
+$\FourierTwoPi h(\xi)$ or $\FourierAngular h(\omega)$ on the line.}
+\entryfield{Period \(T\)}{For a $T$-periodic function, $T>0$,
+$\widehat h_T[k]=T^{-1}\int_0^T h(x)\EulerE^{-2\pi\ImaginaryUnit kx/T}\,\Differential x$.
+The factor $T^{-1}$ is never implicit.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{laplace-transform}{One-sided and bilateral Laplace transforms}
+\entryfield{Commands}{\commandname{LaplaceTransformSymbol} is the operator token and
+\commandname{LaplaceTransformOf}\texttt{\{f\}} supplies a bracketed operand.  An
+unsubscripted token is one-sided by this catalogue's convention.}
+\entryfield{One-sided}{For $f:[0,\infty)\to\ComplexNumbers$,
+\[
+ \LaplaceTransformOf f(s)
+ \DefinitionEquals\int_0^\infty \EulerE^{-sx}f(x)\,\Differential x,
+ \qquad s\in\ComplexNumbers
+\]
+where the integral converges.}
+\entryfield{Bilateral}{For $f:\RealNumbers\to\ComplexNumbers$,
+\[
+ \LaplaceTransformSymbol_{\mathrm{bi}}[f](s)
+ \DefinitionEquals\int_{-\infty}^{\infty}
+ \EulerE^{-sx}f(x)\,\Differential x.
+\]
+The subscript \(\mathrm{bi}\) is compulsory; it prevents a support assumption from being
+smuggled into an identity.}
+\entryfield{Abscissa}{The abscissa of absolute convergence is
+$\sigma_a=\inf\{\sigma\in\RealNumbers:
+\int_0^\infty \EulerE^{-\sigma x}|f(x)|\,\Differential x<\infty\}$,
+with infimum in $\ExtendedRealNumbers$.}
+\entryfield{Probability relation}{For a nonnegative random variable $X$,
+$\Expectation[\EulerE^{-sX}]$ is the Laplace--Stieltjes transform of its law.
+$\MomentGeneratingFunction X(t)=\Expectation[\EulerE^{tX}]$ is obtained at $s=-t$
+only where both sides are finite.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{mgf}{Moment-generating and exponential-generating functions}
+\entryfield{Moment-generating function}{For a real random variable $X$,
+\[
+ \MomentGeneratingFunction X(t)\DefinitionEquals
+ \Expectation[\EulerE^{tX}]
+\]
+for real or complex $t$ at which the expectation is absolutely finite.  It is not
+declared on all of $\ComplexNumbers$ merely because every formal moment exists.}
+\entryfield{Moment expansion}{If the MGF is analytic at zero,
+$\MomentGeneratingFunction X(t)=\sum_{n=0}^{\infty}
+\Expectation[X^n]t^n/n!$ locally.}
+\entryfield{Exponential-generating function}{For an abstract sequence $(a_n)$,
+$A_{\mathrm{egf}}(z)=\sum_{n\ge0}a_nz^n/n!$.  It is an MGF only after a random variable
+with $a_n=\Expectation[X^n]$ has been specified.}
+\entryfield{Ordinary-generating function}{$A_{\mathrm{ogf}}(z)=\sum_{n\ge0}a_nz^n$.
+The subscripts \(\mathrm{egf}\) and \(\mathrm{ogf}\) are retained wherever both occur.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{mellin-transform}{Mellin transform}
+\entryfield{Commands}{\commandname{MellinTransformSymbol} is the operator token and
+\commandname{MellinTransformOf}\texttt{\{f\}} supplies the operand.  Neither command
+chooses a convergence strip or analytic continuation.}
+\entryfield{Definition}{For $f:(0,\infty)\to\ComplexNumbers$,
+\[
+ \MellinTransformOf f(s)\DefinitionEquals
+ \int_0^\infty f(x)x^{s-1}\,\Differential x,
+ \qquad s\in\ComplexNumbers,
+\]
+on the maximal strip of absolute convergence.}
+\entryfield{Complex power}{For $x>0$, $x^{s-1}$ means
+$\exp((s-1)\log x)$ with the real logarithm $\log x$; no complex branch is involved.}
+\entryfield{Scaling}{For real $a>0$,
+$\MellinTransformOf{f(a\,\cdot)}(s)=a^{-s}\MellinTransformOf f(s)$.}
+\entryfield{Continuation}{A meromorphic continuation of the integral-defined transform is
+identified by the same symbol only after its initial strip and uniqueness of continuation
+have been stated.  Poles, residues, and contour shifts refer to that continuation.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{cauchy-stieltjes}{Cauchy and Stieltjes transforms}
+\entryfield{Cauchy transform}{For a finite Borel measure $\mu$ on $\RealNumbers$,
+\[
+ G_\mu(z)\DefinitionEquals\int_{\RealNumbers}\frac{1}{z-x}\,
+ \Differential\mu(x),\qquad z\in\ComplexNumbers\setminus\SupportOf\mu.
+\]}
+\entryfield{Alternative sign}{Some sources define
+$\widetilde G_\mu(z)=\int(x-z)^{-1}\Differential\mu(x)=-G_\mu(z)$.
+The catalogue uses the $z-x$ denominator; a quoted alternative carries a tilde and the
+minus-sign conversion.}
+\entryfield{Stieltjes transform}{For a measure on $[0,\infty)$,
+$S_\mu(s)=\int_0^\infty(s+x)^{-1}\Differential\mu(x)$ for
+$s\in\ComplexNumbers\setminus(-\infty,0]$ when finite.  Denominator signs must be
+accounted for before relating it to $G_\mu$.}
+\entryfield{Boundary values}{Symbols $G_\mu(x\pm\ImaginaryUnit0)$ mean non-tangential
+limits from the upper or lower half-plane when those limits exist; they are not
+evaluation at a complex number with an infinitesimal component.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{transform-distributions}{Transforms of distributions and
+generalized functions}
+\entryfield{Tempered distributions}{For $T\in\mathscr S'(\RealNumbers)$, its
+$2\pi$-Fourier transform is defined by duality
+$\langle\FourierTwoPi T,\phi\rangle
+=\langle T,\FourierTwoPi\phi\rangle$ after fixing the test-function transform above.
+The pairing is bilinear, not a Hermitian inner product.}
+\entryfield{Dirac identities}{$\FourierTwoPi{\delta_a}(\xi)
+=\EulerE^{-2\pi\ImaginaryUnit a\xi}$ and
+$\FourierTwoPi 1=\delta_0$ in $\mathscr S'$.}
+\entryfield{Derivatives}{$\FourierTwoPi{D^mT}
+=(2\pi\ImaginaryUnit\xi)^m\FourierTwoPi T$, where $D$ is distributional derivative.}
+\entryfield{Audit rule}{A distributional identity is never presented as an absolutely
+convergent integral identity.  The ambient test-function space and duality convention
+appear at the first use.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{fourier-decay-objectives}{Nonlinear and linearized Fourier-decay
+objectives}
+\entryfield{Commands}{For $n\in\NaturalNumbers$ the exact optimization functional is
+$\DecayOptimizationObjective{n}$ and its first-order or otherwise explicitly specified
+linearization is $\LinearizedDecayObjective{n}$.  Their semantic names prevent either
+from being mistaken for a Fabius function, a Fourier operator, or a filtration.}
+\entryfield{Required declaration}{At the first use a document supplies a variable space
+$V_n$, a feasible set $\mathcal C_n\subseteq V_n$, a codomain (normally
+$\RealNumbers\cup\{+\infty\}$), and formulas
+\[
+ \DecayOptimizationObjective{n}:\mathcal C_n\to\ExtendedRealNumbers,
+ \qquad
+ \LinearizedDecayObjective{n}:T_{v_0}\mathcal C_n\to\ExtendedRealNumbers.
+\]
+The base point $v_0$, constraints, frequency normalization, logarithm base, weights, and
+all $n$-dependence are part of those formulas.  The shared commands intentionally do not
+smuggle in one draft's choice.}
+\entryfield{Linearization contract}{A label ``linearized'' identifies a new objective.
+An expansion such as
+$\DecayOptimizationObjective{n}(v_0+h)=
+\DecayOptimizationObjective{n}(v_0)+
+\LinearizedDecayObjective{n}(h)+r_n(h)$ states the norm and limit in which
+$r_n(h)=\LittleOAt{\Norm{h}}{h\to0}$.  Dropping $r_n$ produces an approximation, not an
+identity.}
+\entryfield{Optimization values}{$\inf_{v\in\mathcal C_n}
+\DecayOptimizationObjective{n}(v)$ is an extended-real value.  A symbol for a minimizer
+is introduced only after existence; uniqueness is an additional theorem.  The optimum
+of the linearized problem is not substituted for the nonlinear optimum without a bound.}
+\entryfield{Status}{The commands are \textbf{definitions of notation}.  Particular
+decay bounds, saddle locations, convexity assertions, and asymptotic optima inherit the
+proof-status of the document that states them.}
+\end{catalogueentry}
+
+\section{Binary arithmetic, Thue--Morse data, and exact combinatorics}
+
+\begin{catalogueentry}{binary-weight}{Binary digit sum and bits}
+\entryfield{Binary expansion}{Every $n\in\NaturalNumbers$ has the unique finite expansion
+$n=\sum_{j=0}^{\infty}b_j(n)2^j$ with $b_j(n)\in\{0,1\}$ and all but finitely many
+$b_j(n)$ zero.  Leading zeros are allowed but contribute nothing.}
+\entryfield{Digit sum}{The canonical binary weight is
+\[
+ \BinaryDigitSum(n)\DefinitionEquals\sum_{j=0}^{\infty}b_j(n),
+ \qquad n\in\NaturalNumbers.
+\]
+Thus $\BinaryDigitSum(0)=0$.}
+\entryfield{Bit extraction}{$b_j(n)=\Floor{n/2^j}-2\Floor{n/2^{j+1}}$ for
+$j\in\NaturalNumbers$.  Negative integers require an explicitly selected finite-word or
+$2$-adic representation and are outside this global definition.}
+\entryfield{Retired aliases}{The former digit-sum, population-count, and bare-weight
+spellings may occur in quotations.  Normative prose uses \commandname{BinaryDigitSum};
+an unsubscripted weight is especially unsafe because it can denote an integration weight.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{thue-morse}{Thue--Morse bit and sign sequences}
+\entryfield{Bit sequence}{$t_n\DefinitionEquals\BinaryDigitSum(n)\bmod2\in\{0,1\}$ for
+$n\in\NaturalNumbers$.}
+\entryfield{Sign sequence}{The canonical sign is
+\[
+ \ThueMorseSign n\DefinitionEquals(-1)^{\BinaryDigitSum(n)}
+ =(-1)^{t_n}\in\{-1,1\}.
+\]
+Consequently $\ThueMorseSign0=1$.}
+\entryfield{Recurrences}{$t_{2n}=t_n$, $t_{2n+1}=1-t_n$ and
+$\ThueMorseSign{2n}=\ThueMorseSign n$,
+$\ThueMorseSign{2n+1}=-\ThueMorseSign n$.}
+\entryfield{Generating product}{For every $N\in\NaturalNumbers$,
+\[
+ \sum_{n=0}^{2^N-1}\ThueMorseSign n\,z^n
+ =\prod_{j=0}^{N-1}(1-z^{2^j}).
+\]
+At $N=0$ both sides are $1$: the sum contains the sole term $n=0$ and the product is
+empty.}
+\entryfield{Lean crosswalk}{The formal sign sequence uses declarations in
+\path{ThueMorse.lean} and related prefix modules.  Exact theorem names are recorded in
+the crosswalk appendix; prose identities are not upgraded beyond their verified status.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{padic-valuation}{\(p\)-adic and \(2\)-adic valuations}
+\entryfield{Finite valuation}{For a prime $p$ and nonzero
+$n\in\IntegerNumbers$,
+\[
+ \PadicValuation p(n)\DefinitionEquals
+ \max\{k\in\NaturalNumbers:p^k\mid n\}.
+\]
+The value depends only on $|n|$.}
+\entryfield{At zero}{In analytic formulas using extended values,
+$\PadicValuation p(0)=+\infty\in\ExtendedRealNumbers$.  In Lean or finite-natural APIs,
+the valuation of zero may instead be represented by a separate option or by a
+library-specific totalization; each theorem states which codomain it uses.}
+\entryfield{Two-adic abbreviation}{$\TwoAdicValuation(n)=\PadicValuation2(n)$.
+For $n\ne0$, write $n=2^{\TwoAdicValuation(n)}n_{\mathrm{odd}}$ with
+$n_{\mathrm{odd}}$ odd.}
+\entryfield{Order notation}{For a zero or pole of a meromorphic function at $z_0$,
+$\OrderOperator_{z_0}(f)$ is a different valuation-like object; positive values denote
+zeros and negative values poles in this catalogue.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{dyadic-prefix}{Dyadic blocks and prefix sums}
+\entryfield{Block}{The level-$N$ dyadic block of indices is
+$B_N=\{0,1,\ldots,2^N-1\}$ for $N\in\NaturalNumbers$.}
+\entryfield{Signed prefix sum}{For a function $P:\NaturalNumbers\to\ComplexNumbers$,
+\[
+ \Sigma_N(P)\DefinitionEquals
+ \sum_{n=0}^{2^N-1}\ThueMorseSign n\,P(n).
+\]}
+\entryfield{Prouhet cancellation}{If $P$ is a polynomial of degree $<N$, then
+$\Sigma_N(P)=0$.  At degree $N$ the surviving value depends on the leading coefficient
+and the exact sign convention; it must not be quoted without that coefficient.}
+\entryfield{Arbitrary prefix}{$S_M(P)=\sum_{n=0}^{M-1}\ThueMorseSign nP(n)$ for
+$M\in\NaturalNumbers$.  The half-open upper bound ensures $S_0(P)=0$.}
+\entryfield{Shifted block}{A sum over
+$a2^N\le n<(a+1)2^N$ prints both $a\in\NaturalNumbers$ and $N\in\NaturalNumbers$;
+its sign is not inferred from the unshifted identity without applying the binary carry
+law.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{finite-dft}{Finite discrete Fourier transforms}
+\entryfield{Forward DFT}{For a vector $a=(a_0,\ldots,a_{N-1})\in\ComplexNumbers^N$,
+$N\in\PositiveIntegers$,
+\[
+ \widehat a_k\DefinitionEquals
+ \sum_{n=0}^{N-1}a_n\EulerE^{-2\pi\ImaginaryUnit kn/N},
+ \qquad k=0,\ldots,N-1.
+\]}
+\entryfield{Inverse}{$a_n=N^{-1}\sum_{k=0}^{N-1}
+\widehat a_k\EulerE^{2\pi\ImaginaryUnit kn/N}$.  The normalization is forward-unscaled,
+inverse-$N^{-1}$.}
+\entryfield{Root-of-unity form}{With
+$\zeta_N=\EulerE^{2\pi\ImaginaryUnit/N}$,
+$\widehat a_k=\sum_n a_n\zeta_N^{-kn}$.  The symbol $\zeta_N$ is a primitive root
+chosen with positive angle.}
+\entryfield{Thue--Morse specialization}{For $N=2^m$ and
+$a_n=\ThueMorseSign n$, the product formula evaluates the DFT at
+$z=\zeta_N^{-k}$.  Multiplicities of zeros require counting vanishing factors, not only
+identifying a vanishing product.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{zero-runs}{Zero sets, multiplicities, and runs}
+\entryfield{Order of a zero}{For analytic $f$ not identically zero near $z_0$,
+$\OrderOperator_{z_0}(f)=m\in\NaturalNumbers$ means
+$f(z)=(z-z_0)^mg(z)$ with $g(z_0)\ne0$.}
+\entryfield{Run in a sequence}{For a sequence $(a_n)$, a zero run of length $\ell$ from
+$r$ means $a_r=\cdots=a_{r+\ell-1}=0$ and, when the adjacent indices exist,
+$a_{r-1}\ne0$ and $a_{r+\ell}\ne0$.}
+\entryfield{Boundary runs}{At $r=0$, only the right maximality condition is required.
+For a finite sequence ending at $M$, a terminal run has no right-neighbor condition.}
+\entryfield{Separation}{A multiplicity of a zero of a generating polynomial is not a run
+of zero coefficients.  The corpus contains both phenomena and keeps
+$\OrderOperator_{z_0}$ separate from $\ell_{\mathrm{run}}$.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{compositions-partitions}{Compositions, partitions, and multi-indices}
+\entryfield{Weak composition}{A weak composition of $n$ into $k$ parts is
+$\alpha=(\alpha_1,\ldots,\alpha_k)\in\NaturalNumbers^k$ with
+$|\alpha|=\sum_{j=1}^k\alpha_j=n$.}
+\entryfield{Composition}{A composition has $\alpha_j\in\PositiveIntegers$.
+For $n=0$, the unique composition with zero parts is the empty tuple; there is no
+positive-part composition into $k>0$ parts.}
+\entryfield{Partition}{A partition
+$\lambda\vdash n$ is a finite nonincreasing sequence of positive integers summing to
+$n$.  Its length is $\ell(\lambda)$ and its multiplicity of part $j$ is $m_j(\lambda)$.}
+\entryfield{Multi-index}{For $\alpha\in\NaturalNumbers^d$,
+$|\alpha|=\sum_j\alpha_j$, $\alpha!=\prod_j\alpha_j!$,
+$x^\alpha=\prod_jx_j^{\alpha_j}$, and
+$\partial^\alpha=\prod_j\partial_{x_j}^{\alpha_j}$.  Products over $d=0$ are empty and
+equal $1$.}
+\entryfield{Factorials}{The shared
+$\FallingFactorial{x}{n}=x(x-1)\cdots(x-n+1)$ and
+$\RisingFactorial{x}{n}=x(x+1)\cdots(x+n-1)$ both equal $1$ at $n=0$.}
+\end{catalogueentry}
+
+\section{\texorpdfstring{\(q\)-series}{q-series}, products, and arithmetic functions}
+
+\begin{catalogueentry}{q-parameter}{The \(q\) parameter and analytic regimes}
+\entryfield{Formal regime}{$q$ may be an indeterminate and all identities may live in
+$R[q]$ or $R[[q]]$.  Convergence language is meaningless in this regime.}
+\entryfield{Analytic regime}{For infinite products and series, the default explicit
+hypothesis is $q\in\ComplexNumbers$ with $|q|<1$.  For probability models, it is
+strengthened to $q\in(0,1)$.}
+\entryfield{Roots of unity}{At $q=\zeta$ with $\zeta^N=1$, denominators in rational
+$q$-expressions can vanish.  Evaluation means polynomial evaluation after cancellation
+only when a polynomial representative has been proved; otherwise it is excluded.}
+\entryfield{Base-role rule}{If a document also uses $q$ for a denominator, quantile,
+frequency, or conjugate exponent, the $q$-series base is renamed locally
+$q_{\mathrm{base}}$.  Semantic subscripts take priority over traditional brevity.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{q-pochhammer}{Finite and infinite \(q\)-Pochhammer symbols}
+\entryfield{Finite definition}{For $a,q\in\ComplexNumbers$ and
+$n\in\NaturalNumbers$,
+\[
+ \QPochhammer a q n\DefinitionEquals
+ \prod_{j=0}^{n-1}(1-aq^j).
+\]
+The product is empty at $n=0$, so $\QPochhammer a q0=1$ for all $a,q$, including
+values that make later factors vanish.}
+\entryfield{Infinite definition}{For $|q|<1$,
+\[
+ \QPochhammer a q\infty\DefinitionEquals
+ \prod_{j=0}^{\infty}(1-aq^j),
+\]
+with analytic meaning as a limit of finite products.  The literal index $\infty$ denotes
+an infinite product, not an extended-natural argument to the finite definition.}
+\entryfield{Factorization}{$\QPochhammer a q{m+n}
+=\QPochhammer a q m\,\QPochhammer{aq^m}q n$ for
+$m,n\in\NaturalNumbers$.}
+\entryfield{Retired signatures}{Former two-argument macros hid the base and are retired.
+The canonical command always receives $(a,q,n)$ in that order.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{q-integer}{\(q\)-integers and \(q\)-factorials}
+\entryfield{Definition}{For $n\in\NaturalNumbers$,
+\[
+ \QInteger n q\DefinitionEquals
+ \begin{cases}(1-q^n)/(1-q),&q\ne1,\\n,&q=1.\end{cases}
+\]
+Equivalently $\QInteger n q=1+q+\cdots+q^{n-1}$ for $n>0$, and
+$\QInteger0q=0$.}
+\entryfield{\(q\)-factorial}{$[n]_q!\DefinitionEquals\prod_{j=1}^{n}\QInteger j q$,
+with $[0]_q!=1$.  The exclamation mark belongs to the notation and does not apply an
+ordinary factorial to the polynomial $[n]_q$.}
+\entryfield{Limit}{$\lim_{q\to1}\QInteger n q=n$ and
+$\lim_{q\to1}[n]_q!=n!$ for fixed $n$.}
+\entryfield{Alternative symmetric integer}{The symmetric quantity
+$(q^n-q^{-n})/(q-q^{-1})$ is written $[n]_{q,\mathrm{sym}}$ if needed; it is not the
+canonical \commandname{QInteger}.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{gaussian-binomial}{Gaussian binomial coefficients}
+\entryfield{Definition}{For $n,k\in\NaturalNumbers$,
+\[
+ \GaussianBinomial n k q\DefinitionEquals
+ \begin{cases}
+ \dfrac{\QPochhammer q q n}
+       {\QPochhammer q q k\,\QPochhammer q q{n-k}},
+       &0\le k\le n,\\[0.8em]
+ 0,&k>n,
+ \end{cases}
+\]
+interpreted as its polynomial in $q$, so removable singularities are filled.}
+\entryfield{Boundary values}{$\GaussianBinomial n0q
+=\GaussianBinomial nnq=1$, including $n=0$.}
+\entryfield{Recurrence}{For $1\le k\le n$,
+\[
+ \GaussianBinomial n k q
+ =\GaussianBinomial{n-1}kq+
+ q^{n-k}\GaussianBinomial{n-1}{k-1}q.
+\]}
+\entryfield{Retired signatures}{The corpus formerly used incompatible argument orders
+for its abbreviated Gaussian-binomial macro.  The canonical
+\commandname{GaussianBinomial} receives upper index, lower index, then base.}
+\entryfield{Limit}{$\GaussianBinomial n k1=\binom nk$, understood by polynomial
+evaluation, not substitution into the displayed rational quotient.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{basic-hypergeometric}{Basic hypergeometric series}
+\entryfield{Definition}{For $|q|<1$, the unilateral basic hypergeometric series is
+\[
+ {}_r\phi_s\!\left(
+ \begin{matrix}a_1,\ldots,a_r\\b_1,\ldots,b_s\end{matrix};
+ q,z\right)
+ \DefinitionEquals
+ \sum_{n=0}^{\infty}
+ \frac{\prod_{j=1}^r\QPochhammer{a_j}qn}
+      {\QPochhammer q q n\prod_{j=1}^s\QPochhammer{b_j}qn}
+ \left((-1)^nq^{\binom n2}\right)^{1+s-r}z^n,
+\]
+provided no denominator factor vanishes and the series converges.}
+\entryfield{Normalization warning}{References differ on the
+$((-1)^nq^{\binom n2})^{1+s-r}$ factor.  Every occurrence in this corpus either expands
+the definition above or cites this entry.}
+\entryfield{Termination}{If an upper parameter is $q^{-N}$ with
+$N\in\NaturalNumbers$, the series terminates at $n=N$ unless an earlier denominator
+singularity makes the expression undefined.}
+\entryfield{Bilateral series}{The bilateral basic hypergeometric symbol sums over
+$n\in\IntegerNumbers$ and is never identified with the unilateral symbol.  Negative-index
+$q$-Pochhammers must be defined before use.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{q-difference}{\(q\)-difference operators}
+\entryfield{Jackson derivative}{For $q\ne1$ and $x\ne0$,
+\[
+ D_qf(x)\DefinitionEquals\frac{f(x)-f(qx)}{(1-q)x}.
+\]
+At $x=0$, $D_qf(0)$ is assigned $f'(0)$ only when that derivative exists and the local
+definition explicitly makes the continuous extension.}
+\entryfield{Shift operator}{$T_qf(x)=f(qx)$.  Thus
+$D_q=(1-T_q)/((1-q)x)$ as an identity on functions where division by $x$ is valid.}
+\entryfield{Base direction}{The expression
+$(f(qx)-f(x))/((q-1)x)$ is algebraically identical.  The genuinely different operator
+$(f(qx)-f(x))/((q-1)qx)$ is labelled separately.}
+\entryfield{Classical limit}{If $f$ is differentiable at $x$, then
+$D_qf(x)\to f'(x)$ as $q\to1$ through real positive values.  Uniformity in $x$ is never
+inferred without a theorem.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{cyclotomic}{Cyclotomic polynomials and roots of unity}
+\entryfield{Primitive root}{$\zeta_N=\EulerE^{2\pi\ImaginaryUnit/N}$ for
+$N\in\PositiveIntegers$ is the chosen positively oriented primitive $N$th root.}
+\entryfield{Cyclotomic polynomial}{$\Phi_N(x)\in\IntegerNumbers[x]$ is the monic
+polynomial whose roots are $\zeta_N^k$ for
+$1\le k\le N$ and $\gcd(k,N)=1$.}
+\entryfield{Factorization}{$x^N-1=\prod_{d\mid N}\Phi_d(x)$, where $d$ ranges over the
+positive divisors of $N$.}
+\entryfield{Order of a root}{For $\zeta^N=1$,
+$\OrderOperator(\zeta)=\min\{d\in\PositiveIntegers:\zeta^d=1\}$.
+This group-theoretic order is distinct from the analytic
+$\OrderOperator_{z_0}(f)$ of a zero.}
+\entryfield{Evaluation policy}{A rational $q$-series expression is not evaluated at a
+root of unity until all denominator zeros and possible cancellations have been audited.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{arithmetic-functions}{Divisibility, gcd, lcm, and standard
+arithmetic functions}
+\entryfield{Divisibility}{$a\mid b$ for $a,b\in\IntegerNumbers$ means
+$b=ac$ for some $c\in\IntegerNumbers$.  In a sum $d\mid n$, the divisor $d$ is positive
+unless otherwise stated.}
+\entryfield{GCD and LCM}{$\gcd(a,b)\in\NaturalNumbers$ is the nonnegative greatest common
+divisor and $\LeastCommonMultiple(a,b)\in\NaturalNumbers$ the nonnegative least common
+multiple.  Here $\gcd(0,0)=0$ and $\LeastCommonMultiple(0,b)=0$.}
+\entryfield{Möbius function}{$\mu_{\mathrm{M}}(n)=0$ if a prime square divides $n$, and
+$(-1)^r$ if $n$ is a product of $r$ distinct primes; its domain is
+$\PositiveIntegers$ and $\mu_{\mathrm{M}}(1)=1$.  The subscript prevents a collision
+with measures and means.}
+\entryfield{Euler totient}{$\varphi_{\mathrm E}(n)
+=|\{1\le k\le n:\gcd(k,n)=1\}|$, $n\in\PositiveIntegers$.
+The subscript separates it from characteristic functions.}
+\entryfield{Divisor sums}{$\sigma_\alpha(n)=\sum_{d\mid n}d^\alpha$ for
+$n\in\PositiveIntegers$ and $\alpha\in\ComplexNumbers$, with positive divisors and
+$d^\alpha=\exp(\alpha\log d)$.}
+\end{catalogueentry}
+
+\section{Asymptotics, logarithms, Lambert \(W\), and saddle analysis}
+
+\begin{catalogueentry}{asymptotic-regime}{Limits and named asymptotic regimes}
+\entryfield{Limit annotation}{A limit variable and destination are part of every
+asymptotic assertion: $n\to\infty$, $x\to0^+$, $z\to z_0$ in a sector, or
+$q\uparrow1$ are different regimes.  A subscript may abbreviate a regime only after it
+has been declared.}
+\entryfield{One-sided limits}{$x\to a^+$ means $x>a$ and $x\to a$;
+$x\to a^-$ means $x<a$.  For $q\uparrow1$, $q$ is real and approaches $1$ from below.}
+\entryfield{Uniformity}{An estimate uniform for $y\in Y$ means its threshold and implied
+constant may be chosen independently of $y$.  Pointwise asymptotics never imply this.}
+\entryfield{Complex sectors}{A sector is printed as
+$S(\theta_0,\alpha,r)=\{z:0<|z|<r,\ |\arg z-\theta_0|<\alpha\}$, with a selected
+continuous argument.  Statements at a branch point include the slit and sector.}
+\entryfield{Parameter order}{For iterated limits, notation such as
+$n\to\infty$ followed by $q\uparrow1$ records the order.  A joint limit instead states a
+relation such as $(1-q)n\to\tau$.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{big-o}{Big \(O\), little \(o\), and comparison relations}
+\entryfield{Big \(O\)}{$f=\BigOAt g{x\to a}$ means that there are $C>0$ and a punctured
+neighborhood in the declared domain such that $|f(x)|\le C|g(x)|$.  If $g$ vanishes
+arbitrarily near $a$, the inequality definition remains authoritative.}
+\entryfield{Little \(o\)}{$f=\LittleOAt g{x\to a}$ means
+$f(x)/g(x)\to0$ where the quotient is defined, or equivalently the epsilon inequality
+when that avoids isolated zeros.}
+\entryfield{Asymptotic equivalence}{$f(x)\sim g(x)$ as $x\to a$ means
+$f(x)/g(x)\to1$.  It requires $g$ to be nonzero in a punctured neighborhood.}
+\entryfield{Two-sided comparability}{$f\asymp g$ in a regime means
+$c|g|\le|f|\le C|g|$ for constants $0<c\le C<\infty$.  This is not asymptotic
+equivalence.}
+\entryfield{Vinogradov notation}{$f\ll g$ means $f=\BigO(g)$ and $f\gg g$ means
+$g\ll f$.  A dependency subscript, for example $\ll_\alpha$, lists every parameter on
+which the implied constant may depend.}
+\entryfield{Shared commands}{Normative prose prefers
+\commandname{BigOAt} and \commandname{LittleOAt}; bare
+\commandname{BigO} and \commandname{LittleO} are reserved for formulas whose regime is
+printed immediately outside the expression.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{asymptotic-expansion}{Asymptotic sequences and expansions}
+\entryfield{Asymptotic sequence}{Functions $(\phi_n)$ form an asymptotic sequence in a
+regime when $\phi_{n+1}=o(\phi_n)$ for every $n$.}
+\entryfield{Expansion}{$f\sim\sum_{n\ge0}a_n\phi_n$ means that for every
+$N\in\PositiveIntegers$,
+\[
+ f-\sum_{n=0}^{N-1}a_n\phi_n=o(\phi_{N-1})
+\]
+in the stated regime.  It does not assert convergence of the infinite series.}
+\entryfield{Poincaré scale}{For powers at infinity,
+$f(x)\sim\sum_{n\ge0}a_nx^{-\lambda_n}$ requires
+$\lambda_0<\lambda_1<\cdots$ and $x$ in a domain where the powers have been defined.}
+\entryfield{Exponentially small terms}{A transseries term such as
+$\EulerE^{-A/\epsilon}\epsilon^\beta(\log\epsilon)^m$ lists the sign of
+$\operatorname{Re}(A/\epsilon)$, the logarithm branch, and the ordering used to compare
+exponential scales.}
+\entryfield{Truncation}{An optimally truncated expansion names its truncation index
+$N(\epsilon)$ and the remainder norm; the infinite formal series is not assigned its
+optimal-truncation error.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{principal-log}{Real logarithm, principal logarithm, and arguments}
+\entryfield{Real logarithm}{$\log x$ for $x>0$ is the real natural logarithm with base
+$\EulerE$.}
+\entryfield{Principal branch}{The shared command denotes
+\[
+ \PrincipalLogarithm z=\log|z|+\ImaginaryUnit\operatorname{Arg}z,\qquad
+ \operatorname{Arg}z\in(-\pi,\pi],
+\]
+for $z\in\ComplexNumbers\setminus(-\infty,0]$, with the boundary convention
+$\operatorname{Arg}(-r)=\pi$ when a boundary value is explicitly taken from above.
+The analytic domain itself excludes the nonpositive real axis.}
+\entryfield{Other branches}{On a simply connected zero-free domain $D$, a branch
+$\log_Dz$ is an analytic function satisfying $\exp(\log_Dz)=z$.  Its normalization at
+one base point is stated.}
+\entryfield{Complex powers}{$z^\alpha\DefinitionEquals
+\exp(\alpha\PrincipalLogarithm z)$ when the principal branch is intended.  If
+$\alpha\in\IntegerNumbers$, the algebraic power has its global meaning and no branch is
+needed.}
+\entryfield{Boundary notation}{$\PrincipalLogarithm(x\pm\ImaginaryUnit0)$ denotes a
+specified limiting value.  It is not silently substituted into a formula proved only
+inside the slit plane.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{lambert-w}{Lambert \(W\) and its branches}
+\entryfield{Defining equation}{A branch of $\LambertW$ satisfies
+\[
+ \LambertW_k(z)\EulerE^{\LambertW_k(z)}=z,
+\]
+where $k\in\IntegerNumbers$ labels the branch.  The inverse is multivalued before a
+branch is selected.}
+\entryfield{Principal branch}{$\LambertW_0$ is real on $[-\EulerE^{-1},\infty)$,
+analytic at $0$, and satisfies $\LambertW_0(0)=0$.  Its standard complex cut is
+$(-\infty,-\EulerE^{-1}]$.}
+\entryfield{Lower real branch}{$\LambertW_{-1}$ is real on
+$[-\EulerE^{-1},0)$, takes values in $(-\infty,-1]$, and approaches $-\infty$ as
+$z\uparrow0$.}
+\entryfield{Branch point}{At $z=-\EulerE^{-1}$ the two real branches meet at $-1$ and
+have a square-root branch point.  A Taylor series in $z+\EulerE^{-1}$ is therefore not
+asserted there.}
+\entryfield{Asymptotic branch}{For large $z$ away from cuts,
+\[
+ \LambertW_k(z)=L_1-L_2+\frac{L_2}{L_1}+\cdots,\quad
+ L_1=\log z+2\pi\ImaginaryUnit k,\quad L_2=\log L_1,
+\]
+with both logarithm branches and the sector specified.}
+\entryfield{Bare symbol policy}{A branchless $\LambertW(z)$ is permitted only when the
+domain makes the real principal branch unambiguous; all complex and negative-real uses
+carry a subscript.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{polylog-gamma-zeta}{Polylogarithm, gamma, and zeta functions}
+\entryfield{Polylogarithm}{For $|z|<1$,
+\[
+ \Polylogarithm_s(z)\DefinitionEquals\sum_{n=1}^{\infty}\frac{z^n}{n^s},
+\qquad s\in\ComplexNumbers.
+\]
+Elsewhere the symbol denotes its analytically continued branch, with the $z$-plane cut
+and logarithm convention stated.}
+\entryfield{Gamma function}{For $\operatorname{Re}s>0$,
+$\GammaFunction(s)=\int_0^\infty x^{s-1}\EulerE^{-x}\,\Differential x$.
+Its meromorphic continuation has simple poles at
+$0,-1,-2,\ldots$ and no zeros.  For $n\in\NaturalNumbers$,
+$\GammaFunction(n+1)=n!$.}
+\entryfield{Riemann zeta}{For $\operatorname{Re}s>1$,
+$\RiemannZeta(s)=\sum_{n=1}^\infty n^{-s}$, extended meromorphically to
+$\ComplexNumbers$ with a simple pole at $s=1$.}
+\entryfield{Hurwitz zeta}{$\zeta(s,a)=\sum_{n=0}^{\infty}(n+a)^{-s}$ initially for
+$\operatorname{Re}s>1$ and $a\notin\{0,-1,-2,\ldots\}$, with the branch of each power
+specified if $a$ is complex.}
+\entryfield{Collision policy}{The same Greek glyph may label a root of unity or a zeta
+function only with a semantic subscript or arguments that make its type immediate.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{coefficient-extraction}{Coefficient extraction and formal series}
+\entryfield{Coefficient operator}{For
+$A(z)=\sum_{n\in\IntegerNumbers}a_nz^n$,
+\[
+ [z^n]A(z)\DefinitionEquals a_n.
+\]
+The bracket is an operator, not multiplication by $z^n$.}
+\entryfield{Cauchy formula}{If $A$ is analytic on and inside a positively oriented circle
+$|z|=r$,
+\[
+ [z^n]A(z)=\frac{1}{2\pi\ImaginaryUnit}
+ \int_{|z|=r}\frac{A(z)}{z^{n+1}}\,\Differential z,
+ \qquad n\in\NaturalNumbers.
+\]}
+\entryfield{Laurent coefficients}{For an annular Laurent series the same operator permits
+$n\in\IntegerNumbers$; the annulus and contour winding number are stated.}
+\entryfield{Formal interpretation}{In $R[[z]]$, coefficient extraction is algebraic and
+does not assert analytic convergence.  Cauchy's formula belongs only to the analytic
+interpretation.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{residue}{Residues and contour orientation}
+\entryfield{Residue}{For meromorphic $f$ near $z_0$,
+$\ResidueOperator_{z=z_0}f(z)$ is the coefficient of $(z-z_0)^{-1}$ in the Laurent
+expansion.}
+\entryfield{Simple pole}{If $f=g/h$, $g,h$ analytic,
+$h(z_0)=0$, and $h'(z_0)\ne0$, then
+$\ResidueOperator_{z=z_0}f=g(z_0)/h'(z_0)$.}
+\entryfield{Contour}{Unless an arrow says otherwise, a simple closed contour is positively
+oriented.  Then
+$\int_\gamma f(z)\,\Differential z
+=2\pi\ImaginaryUnit\sum\operatorname{Ind}(\gamma,z_j)
+\ResidueOperator_{z=z_j}f$.}
+\entryfield{Indentations and cuts}{A keyhole contour states the upper and lower boundary
+values of every multivalued factor and the direction of each segment.  An omitted arc is
+discarded only with a displayed bound.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{saddle-point}{Saddles, phase functions, and steepest descent}
+\entryfield{Phase-amplitude form}{A saddle integral is written
+\[
+ I(\lambda)=\int_{\Gamma}A(z,\lambda)
+ \EulerE^{\lambda\Phi(z)}\,\Differential z,
+\]
+with $\lambda$'s limiting regime, the oriented contour $\Gamma$, and analytic domains of
+$A$ and $\Phi$ stated.}
+\entryfield{Saddle}{A simple saddle $z_\ast$ satisfies
+$\Phi'(z_\ast)=0$ and $\Phi''(z_\ast)\ne0$.  Degenerate saddles state the first
+nonzero derivative order.}
+\entryfield{Descent direction}{A steepest-descent path has
+$\operatorname{Im}\Phi$ constant and $\operatorname{Re}\Phi$ decreasing away from the
+saddle.  The square root in the Gaussian factor is fixed by the contour orientation.}
+\entryfield{Leading term}{For a single nondegenerate contributing saddle, the schematic
+factor
+\[
+ A(z_\ast,\lambda)\EulerE^{\lambda\Phi(z_\ast)}
+ \sqrt{\frac{2\pi}{-\lambda\Phi''(z_\ast)}}
+\]
+is meaningful only after selecting the square-root branch and verifying the contour
+deformation.  It is not a universal sign-free formula.}
+\entryfield{Multiple saddles}{A set $\mathcal S(\lambda)$ lists all saddles; a contributing
+subset additionally depends on the original contour and Stokes region.  Dominance is
+decided by $\operatorname{Re}(\lambda\Phi(z_\ast))$, not by modulus of $z_\ast$.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{lambert-saddles}{Lambert-\(W\) parametrization of saddle families}
+\entryfield{Typical reduction}{When a saddle equation is rearranged to
+$u\EulerE^u=z(\lambda)$, its solutions are
+$u_k=\LambertW_k(z(\lambda))$, $k\in\IntegerNumbers$.}
+\entryfield{Back-substitution}{If $u=\alpha z+\beta$, then
+$z_k=(\LambertW_k(z(\lambda))-\beta)/\alpha$ with $\alpha\ne0$.
+Every scaling and sign is retained; a Lambert solution is not the original saddle until
+this substitution is made.}
+\entryfield{Branch enumeration}{The integer $k$ labels Lambert branches, not necessarily
+the order in which saddle contributions dominate.  A separate ordering permutation is
+used if needed.}
+\entryfield{Coalescence}{At a branch point, two branch-labelled saddles may coalesce.
+Uniform asymptotics then use an Airy or higher canonical model rather than summing two
+singular Gaussian approximations.}
+\entryfield{Status}{Lambert-\(W\) saddle catalogues in frontier documents are
+\textbf{frontier/conjectural} unless an exact contour theorem and error bound are cited.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{singularity-analysis}{Singularity analysis and transfer notation}
+\entryfield{Dominant singularity}{For a power series with radius $\rho>0$, a dominant
+singularity lies on $|z|=\rho$.  There may be more than one; the symbol $\rho$ alone does
+not choose one.}
+\entryfield{Delta domain}{A dented domain at positive $\rho$ is
+\[
+ \Delta(\rho,\eta,\theta)=
+ \{z:|z|<\rho+\eta,\ z\ne\rho,\
+ |\arg(z-\rho)|>\theta\},
+\]
+with $\eta>0$ and $0<\theta<\pi/2$.  Alternate angular parametrizations must be expanded.}
+\entryfield{Basic transfer}{For
+$\alpha\notin\{0,-1,-2,\ldots\}$,
+\[
+ [z^n](1-z/\rho)^{-\alpha}
+ \sim\frac{n^{\alpha-1}}{\GammaFunction(\alpha)}\rho^{-n}.
+\]
+The power uses the branch analytic at $z=0$ in the dented domain.}
+\entryfield{Periodic singularities}{Contributions from every dominant singularity are
+summed with their phases.  Replacing them by the positive-real contribution can erase
+oscillation or exact zeros.}
+\entryfield{Remainder}{A transfer theorem states the regularity and domain hypotheses that
+turn a local expansion into a coefficient error estimate; a formal local expansion alone
+does not supply it.}
+\end{catalogueentry}
+
+\section{Fractional calculus, Volterra operators, and regularity classes}
+
+\begin{catalogueentry}{fractional-integral}{Riemann--Liouville fractional integrals}
+\entryfield{Left-sided operator}{For $\alpha>0$, lower terminal
+$a\in\RealNumbers$, and suitable $f$,
+\[
+ (I_{a+}^{\alpha}f)(x)\DefinitionEquals
+ \frac1{\GammaFunction(\alpha)}
+ \int_a^x(x-t)^{\alpha-1}f(t)\,\Differential t,
+ \qquad x>a.
+\]}
+\entryfield{Right-sided operator}{For upper terminal $b$,
+\[
+ (I_{b-}^{\alpha}f)(x)\DefinitionEquals
+ \frac1{\GammaFunction(\alpha)}
+ \int_x^b(t-x)^{\alpha-1}f(t)\,\Differential t,
+ \qquad x<b.
+\]}
+\entryfield{Order zero}{$I_{a+}^{0}=I_{b-}^{0}=\IdentityOperator$ by extension, not by
+substitution into the singular gamma-integral formula.}
+\entryfield{Semigroup}{Under integrability hypotheses,
+$I_{a+}^{\alpha}I_{a+}^{\beta}=I_{a+}^{\alpha+\beta}$ for
+$\alpha,\beta>0$.  Terminals must match.}
+\entryfield{Complex order}{For complex $\alpha$ with $\operatorname{Re}\alpha>0$,
+the kernel power uses the real logarithm because $x-t>0$.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{fractional-derivative}{Riemann--Liouville and Caputo derivatives}
+\entryfield{Riemann--Liouville}{Let $\alpha>0$ and
+$m=\Ceiling\alpha$.  The left derivative is
+\[
+ D_{a+}^{\alpha}f
+ \DefinitionEquals\frac{\Differential^m}{\Differential x^m}
+ I_{a+}^{m-\alpha}f.
+\]}
+\entryfield{Caputo}{Under sufficient regularity,
+\[
+ {}^{\mathrm C}D_{a+}^{\alpha}f
+ \DefinitionEquals I_{a+}^{m-\alpha}f^{(m)}.
+\]
+These operators differ by explicit endpoint terms and are not interchangeable.}
+\entryfield{Integer order}{If $\alpha=m\in\NaturalNumbers$, both reduce to the ordinary
+$m$th derivative only under the appropriate endpoint/regularity interpretation.}
+\entryfield{Endpoint data}{A fractional differential equation declares whether initial
+conditions are ordinary derivatives $f^{(j)}(a)$, fractional traces, or integral
+conditions.  The operator symbol alone does not determine them.}
+\entryfield{Fourier derivative}{On the whole line, a multiplier definition such as
+$\FourierAngular{D^\alpha f}(\omega)
+=(\ImaginaryUnit\omega)^\alpha\FourierAngular f(\omega)$ requires a branch for the
+complex power and is a third, separately named construction.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{volterra}{Volterra integral operators and resolvents}
+\entryfield{Operator}{For a kernel $K$ on $a\le t\le x\le b$,
+\[
+ (V_Kf)(x)\DefinitionEquals\int_a^xK(x,t)f(t)\,\Differential t.
+\]}
+\entryfield{Convolution kernel}{If $K(x,t)=k(x-t)$ and $a=0$, this is the one-sided
+convolution $(k\Convolution_+f)(x)=\int_0^xk(x-t)f(t)\,\Differential t$.
+It is not the whole-line \commandname{Convolution}.}
+\entryfield{Iterates}{$V_K^0=\IdentityOperator$ and
+$V_K^{n+1}=V_K\circ V_K^n$.  A superscript here is operator composition, not a pointwise
+power.}
+\entryfield{Resolvent}{When the Neumann series converges,
+$(\IdentityOperator-\lambda V_K)^{-1}
+=\sum_{n=0}^{\infty}\lambda^nV_K^n$.  The topology and allowed $\lambda$ are stated.}
+\entryfield{Kernel resolvent}{A resolvent kernel $R_\lambda(x,t)$ represents the operator
+resolvent after its identity term is separated; conventions that include a Dirac identity
+kernel are labelled.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{function-spaces}{Lebesgue, Sobolev, and Hölder spaces}
+\entryfield{Lebesgue space}{$L^p(E)$, $1\le p<\infty$, consists of almost-everywhere
+classes with norm
+$\|f\|_{L^p(E)}=(\int_E|f|^p)^{1/p}$; $L^\infty$ uses essential supremum.  The measure
+is Lebesgue measure unless printed otherwise.}
+\entryfield{Smoothness}{$C^k(E)$ has continuous derivatives through order
+$k\in\NaturalNumbers$; $C^\infty(E)=\bigcap_kC^k(E)$.  On a closed interval,
+derivatives at endpoints are one-sided restrictions of derivatives on a neighborhood
+unless another convention is stated.}
+\entryfield{Hölder space}{For $0<\alpha\le1$,
+\[
+ [f]_{C^{0,\alpha}(E)}
+ =\sup_{x\ne y\in E}\frac{|f(x)-f(y)|}{|x-y|^\alpha}.
+\]
+$C^{k,\alpha}$ applies this seminorm to the $k$th derivative and includes lower sup
+norms in its norm.}
+\entryfield{Sobolev space}{$W^{k,p}(E)$ uses weak derivatives through order $k$ in
+$L^p$.  $H^s$ means the $L^2$-based Sobolev space, with Fourier normalization specified
+when a Bessel-potential norm is displayed.}
+\entryfield{Local spaces}{The suffix \(\mathrm{loc}\) means membership after restriction
+to every compact subset of the open domain; it imposes no boundary control.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{gevrey-flatness}{Gevrey classes, flatness, and nonanalyticity}
+\entryfield{Gevrey class}{A smooth $f$ is locally Gevrey of order $s\ge1$ when every
+compact $K$ admits $C,A>0$ such that
+\[
+ \sup_{x\in K}|f^{(n)}(x)|\le CA^n(n!)^s
+ \quad(n\in\NaturalNumbers).
+\]
+For several variables, $n!$ is replaced by the multi-index factorial.}
+\entryfield{Analytic class}{Order $s=1$ corresponds locally to real analyticity under the
+standard derivative criterion.  Membership for $s>1$ does not imply analyticity.}
+\entryfield{Flatness}{$f$ is flat at $a$ if $f^{(n)}(a)=0$ for every
+$n\in\NaturalNumbers$.  A nonzero smooth function may be flat, so a zero Taylor series
+does not identify the function near $a$.}
+\entryfield{Fabius endpoints}{$\RvachevUp$ is flat at $\pm1$ and
+$\FabiusBounded$ is flat at the transition points $0$ and $1$ relative to its constant
+tails.  This is compatible with smoothness and with failure of analyticity there.}
+\entryfield{Quasianalyticity}{A Denjoy--Carleman class is declared with its derivative
+weight sequence $M_n$; whether it is quasianalytic is a theorem about that sequence, not
+synonymous with being Gevrey.}
+\end{catalogueentry}
+
+\section{Exact Fabius moments and arithmetic normalizations}
+
+\begin{catalogueentry}{full-moments}{Even full moments of the up-function}
+\entryfield{Definition}{For $n\in\NaturalNumbers$,
+\[
+ c_n\DefinitionEquals
+ \int_{\RealNumbers}t^{2n}\RvachevUp(t)\,\Differential t
+ =\int_{-1}^{1}t^{2n}\RvachevUp(t)\,\Differential t.
+\]
+The equality of the two integrals uses the support of $\RvachevUp$.}
+\entryfield{Initial value}{$c_0=1$ because $\RvachevUp$ is normalized to integral one.
+The full odd moments vanish by evenness.}
+\entryfield{Fourier expansion}{With the $2\pi$ convention,
+\[
+ \FourierTwoPi{\RvachevUp}(z)
+ =\sum_{n=0}^{\infty}
+ \frac{(-1)^nc_n}{(2n)!}(2\pi z)^{2n}.
+\]
+The series is entire; $z$ may be complex.}
+\entryfield{Canonical integer numerator}{Define
+\[
+ N_n^{(c)}\DefinitionEquals
+ c_n(2n+1)!!\prod_{j=1}^{n}(2^{2j}-1).
+\]
+The empty product gives $N_0^{(c)}=1$.  Historical prose used a capital-letter
+sequence that collided with Fabius functions; new prose uses the semantic superscript.}
+\entryfield{Lean crosswalk}{\lean{moment n} and \lean{momentIntegral n}, with exact
+arithmetic results in \path{Arithmetic.lean} and analytic results in
+\path{AnalyticMoments.lean}.  Status: \textbf{Lean-proved}.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{half-moments}{Normalized half moments}
+\entryfield{Definition}{Set $d_0=1$ and, for $n\in\PositiveIntegers$,
+\[
+ d_n\DefinitionEquals
+ n\int_0^1t^{n-1}\RvachevUp(t)\,\Differential t.
+\]
+The separate definition at zero avoids the meaningless factor
+$0\int_0^1t^{-1}\RvachevUp(t)\,\Differential t$.}
+\entryfield{Binomial bridge}{For $n\in\NaturalNumbers$,
+\[
+ d_n=2^{-n}\sum_{0\le k\le n/2}\binom n{2k}c_k,
+\]
+where the bound means $k=0,\ldots,\Floor{n/2}$.}
+\entryfield{Dyadic-value bridge}{For $n\in\NaturalNumbers$,
+\[
+ \FabiusBounded(2^{-n})
+ =\frac{d_n}{n!\,2^{\binom n2}}.
+\]
+An inverse-dyadic value means evaluation at an inverse power of two, not a value of
+\notelink{fabius-quantile}{the inverse function}.}
+\entryfield{Canonical integer numerator}{Define
+\[
+ N_n^{(d)}\DefinitionEquals
+ d_n(n+1)!\prod_{j=1}^{n}(2^j-1).
+\]
+Again the empty product gives $N_0^{(d)}=1$.  A historical capital-letter numerator
+sequence is recorded as a retired alias rather than reused.}
+\entryfield{Two-adic value}{For $n\ge1$, the reduced numerator and denominator of
+$2d_n$ are odd, equivalently $\TwoAdicValuation(d_n)=-1$ for the rational valuation
+extended additively to quotients.}
+\entryfield{Lean crosswalk}{\lean{halfMoment n} and \lean{halfMomentIntegral n}.
+Status: \textbf{Lean-proved}.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{reshetnikov-integers}{Reshetnikov's integer normalization}
+\entryfield{Definition}{For $n\in\PositiveIntegers$,
+\[
+ R_n^{\mathrm{Res}}\DefinitionEquals
+ 2^{\binom{n-1}{2}}(2n)!\,
+ \FabiusBounded(2^{-n})
+ \prod_{j=1}^{\Floor{n/2}}(2^{2j}-1).
+\]}
+\entryfield{Type and theorem}{$R_n^{\mathrm{Res}}\in\PositiveIntegers$ and is odd.
+Its superscript is mandatory in cross-topic documents because $R_n$ also denotes
+polynomial remainders, resolvents, and recurrence polynomials.}
+\entryfield{Factors}{The power of two is triangular, the factorial is $(2n)!$, and the
+Mersenne-type product stops at $\Floor{n/2}$.  Removing or shifting any of these produces
+a different normalization.}
+\entryfield{Lean crosswalk}{\lean{reshetnikov n} and the corresponding integrality,
+positivity, and oddness theorems in \path{Arithmetic.lean} and
+\path{PaperStatements.lean}.  Status: \textbf{Lean-proved}.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{dyadic-denominator}{Dyadic common denominators}
+\entryfield{Grid}{For $n\in\PositiveIntegers$, let
+$A_n=\{a\in\PositiveIntegers:a<2^n,\ a\text{ odd}\}$.}
+\entryfield{Reduced denominator}{For $r\in\RationalNumbers$, write
+$r=p/q$ with $q\in\PositiveIntegers$ and $\gcd(p,q)=1$; then
+$\operatorname{den}(r)=q$, including $\operatorname{den}(0)=1$.}
+\entryfield{Definition}{The semantic dyadic denominator is
+\[
+ D_n^{\mathrm{dyad}}\DefinitionEquals
+ \LeastCommonMultiple\{
+ \operatorname{den}(\RvachevUp(a/2^n)):a\in A_n\}.
+\]
+At $n=0$ the index set is empty; the catalogue assigns
+$D_0^{\mathrm{dyad}}=1$, the LCM identity, when a zero-level value is needed.}
+\entryfield{Reflection}{The same LCM is obtained from the corresponding bounded-Fabius
+values after applying the exact reflection/translation relation.}
+\entryfield{Collision policy}{A bare $D_n$ is never globally canonical: it also denotes
+determinants and asymptotic main terms.  The semantic superscript is required outside a
+single-purpose local scope.}
+\entryfield{Lean crosswalk}{\lean{dyadicDenominator n} in \path{Arithmetic.lean}, with
+bounds in \path{DenominatorBound.lean}.  Status: \textbf{Lean-proved}.}
+\end{catalogueentry}
+
+\section{Approximation, orthogonal polynomials, splines, and quadrature}
+
+\begin{catalogueentry}{weighted-inner-product}{Weights and polynomial inner products}
+\entryfield{Measure form}{For a positive Borel measure $\mu$ with finite needed moments,
+\[
+ \langle f,g\rangle_\mu\DefinitionEquals
+ \int f(x)\overline{g(x)}\,\Differential\mu(x).
+\]
+The inner product is linear in the first argument and conjugate-linear in the second in
+this catalogue.}
+\entryfield{Weight form}{If $\Differential\mu(x)=w(x)\Differential x$ on an interval
+$I$, write $\langle f,g\rangle_w=\int_I f(x)\overline{g(x)}w(x)\,\Differential x$,
+with $w\ge0$ almost everywhere.}
+\entryfield{Norm}{$\|f\|_\mu=\sqrt{\langle f,f\rangle_\mu}$.  It is a norm only after
+quotienting functions equal $\mu$-almost everywhere or restricting to a nondegenerate
+function space.}
+\entryfield{Fabius weights}{When the measure has density $\RvachevUp$ on $[-1,1]$, write
+$\InnerProduct{f,g}_{\RvachevUp}$ after declaring that measure.  An unlabeled upright-word
+subscript is retired because it bypasses the semantic command.  A bounded-Fabius
+Stieltjes measure is a different but related object.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{orthogonal-polynomials}{Orthogonal, monic, and orthonormal
+polynomials}
+\entryfield{Orthogonal family}{Polynomials $(p_n)_{n\in\NaturalNumbers}$ satisfy
+$\deg p_n=n$ and $\langle p_n,p_m\rangle_\mu=0$ for $n\ne m$.}
+\entryfield{Monic normalization}{$P_n$ is monic when its coefficient of $x^n$ is $1$.
+This fixes an orthogonal polynomial uniquely when the moment functional is positive
+definite.}
+\entryfield{Orthonormal normalization}{$\pi_n$ is orthonormal when
+$\langle\pi_n,\pi_m\rangle_\mu=\delta_{nm}$ and its leading coefficient is positive.
+Thus $\pi_n=P_n/\|P_n\|_\mu$.}
+\entryfield{Three-term recurrence}{For monic polynomials,
+\[
+ P_{n+1}(x)=(x-\alpha_n)P_n(x)-\beta_nP_{n-1}(x),
+\]
+with $P_{-1}=0$, $P_0=1$, $\alpha_n\in\RealNumbers$, and $\beta_n>0$ for
+$n\ge1$.  Orthonormal recurrence coefficients use a different normalization.}
+\entryfield{Classical names}{Legendre, Chebyshev, Jacobi, and Gegenbauer polynomials
+carry their standard family parameters only after their normalization is displayed;
+several incompatible leading-value conventions exist.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{legendre-chebyshev}{Legendre and Chebyshev normalizations}
+\entryfield{Legendre}{$P_n^{\mathrm{Leg}}$ is defined by
+$P_n^{\mathrm{Leg}}(1)=1$ and orthogonality for weight $1$ on $[-1,1]$.  Its leading
+coefficient is $2^{-n}\binom{2n}{n}$, so it is not monic for $n>1$.}
+\entryfield{First Chebyshev family}{$T_n(\cos\theta)=\cos(n\theta)$,
+$T_n(1)=1$, orthogonal for $(1-x^2)^{-1/2}$ on $[-1,1]$.}
+\entryfield{Second Chebyshev family}{$U_n(\cos\theta)
+=\sin((n+1)\theta)/\sin\theta$, with the continuous endpoint values, orthogonal for
+$(1-x^2)^{1/2}$.}
+\entryfield{Coefficient convention}{A Legendre coefficient may be the raw inner product
+$\langle f,P_n^{\mathrm{Leg}}\rangle$ or the expansion coefficient
+$(2n+1)\langle f,P_n^{\mathrm{Leg}}\rangle/2$.  The corpus prints which one it means.}
+\entryfield{Collision}{The letter $P_n$ is local: it also denotes probability,
+prefix polynomials, and Padé denominators.  A family superscript is required in a
+cross-topic statement.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{moments-hankel}{Moment matrices and Hankel determinants}
+\entryfield{Moment sequence}{For a finite measure $\mu$,
+$m_n=\int x^n\,\Differential\mu(x)$ for $n\in\NaturalNumbers$ whenever finite.}
+\entryfield{Hankel matrix}{The order-$N$ moment matrix is
+\[
+ H_N(\mu)\DefinitionEquals(m_{i+j})_{0\le i,j<N}
+ \in\ComplexNumbers^{N\times N},
+ \qquad N\in\NaturalNumbers.
+\]
+Thus $H_0$ is the unique $0\times0$ matrix.}
+\entryfield{Determinant}{$\Delta_N(\mu)=\det H_N(\mu)$ and
+$\Delta_0(\mu)=1$.  A positive measure with infinite support has $\Delta_N>0$ for every
+$N\ge1$.}
+\entryfield{Shifted matrix}{$H_N^{(r)}=(m_{i+j+r})_{0\le i,j<N}$ for
+$r\in\NaturalNumbers$.  The shift belongs in the superscript, not in an unstated change
+of the moment sequence.}
+\entryfield{Fabius parity}{For the centered up measure, odd moments vanish and even
+moments are $c_n$.  Reindexing the even block must show whether its entry is
+$c_{i+j}$ or $c_{i+j+r}$.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{jacobi-matrix}{Jacobi matrices and spectral measures}
+\entryfield{Matrix}{For orthonormal polynomials with
+$x\pi_n=a_{n+1}\pi_{n+1}+b_n\pi_n+a_n\pi_{n-1}$,
+$a_n>0$, the Jacobi operator is the tridiagonal matrix
+\[
+ J=\begin{pmatrix}
+ b_0&a_1&0&\cdots\\
+ a_1&b_1&a_2&\ddots\\
+ 0&a_2&b_2&\ddots\\
+ \vdots&\ddots&\ddots&\ddots
+ \end{pmatrix}.
+\]}
+\entryfield{Indexing}{Rows and columns begin at $0$; $a_0$ does not appear.
+A finite truncation $J_N$ uses indices $0,\ldots,N-1$.}
+\entryfield{Spectral measure}{The measure $\mu$ satisfies
+$\langle e_0,p(J)e_0\rangle=\int p(x)\,\Differential\mu(x)$ for polynomials $p$,
+under the spectral theorem.}
+\entryfield{Resolvent}{$G_\mu(z)=\langle e_0,(z\IdentityOperator-J)^{-1}e_0\rangle$
+matches the Cauchy-transform denominator $z-x$.}
+\entryfield{Frontier status}{Any claimed closed recurrence coefficients for the Fabius
+measure remain \textbf{frontier/conjectural} unless linked to a proved Lean declaration.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{splines}{Knots, B-splines, degree, and order}
+\entryfield{Knot vector}{A knot vector is a nondecreasing finite sequence
+$\tau=(\tau_0,\ldots,\tau_{m})$.  Repeated knots are allowed and their multiplicity
+affects smoothness.}
+\entryfield{Degree versus order}{A B-spline of degree $p\in\NaturalNumbers$ has order
+$p+1$.  The corpus always says degree or order; a bare index is not assumed to be one
+or the other.}
+\entryfield{Cox--de Boor base case}{$B_{i,0}(x)=
+\IndicatorOf{[\tau_i,\tau_{i+1})}(x)$, except that a designated final endpoint may be
+closed to make a partition of unity on the full knot span.}
+\entryfield{Recursion}{For $p\ge1$,
+\[
+ B_{i,p}(x)=
+ \frac{x-\tau_i}{\tau_{i+p}-\tau_i}B_{i,p-1}(x)
+ +\frac{\tau_{i+p+1}-x}{\tau_{i+p+1}-\tau_{i+1}}B_{i+1,p-1}(x),
+\]
+where a term with zero denominator is defined to be zero.}
+\entryfield{Support}{$\SupportOf{B_{i,p}}\subseteq[\tau_i,\tau_{i+p+1}]$.
+Equality needs nondegenerate knot spans.}
+\entryfield{Cardinal splines}{Uniform integer knots and a translated normalization are
+declared before using the shorter cardinal B-spline symbol.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{divided-differences}{Divided differences}
+\entryfield{Distinct nodes}{For pairwise distinct $x_0,\ldots,x_n$,
+\[
+ [x_0,\ldots,x_n]f
+ =\sum_{j=0}^n\frac{f(x_j)}
+ {\prod_{0\le k\le n,\ k\ne j}(x_j-x_k)}.
+\]}
+\entryfield{Recursive form}{$[x_j]f=f(x_j)$ and
+$[x_0,\ldots,x_n]f=
+([x_1,\ldots,x_n]f-[x_0,\ldots,x_{n-1}]f)/(x_n-x_0)$.}
+\entryfield{Repeated nodes}{If nodes coalesce and $f$ is sufficiently differentiable,
+$[\underbrace{x,\ldots,x}_{n+1}]f=f^{(n)}(x)/n!$.  This is a continuous extension, not
+substitution into a zero denominator.}
+\entryfield{Spline relation}{B-splines expressed as divided differences state the
+truncated-power normalization and knot multiplicities.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{quadrature}{Quadrature nodes, weights, and exactness}
+\entryfield{Rule}{An $N$-node quadrature rule for $\mu$ is
+$Q_N(f)=\sum_{j=1}^{N}w_{j,N}f(x_{j,N})$, with nodes and weights indexed from $1$.}
+\entryfield{Degree of exactness}{It has degree of exactness $d$ when
+$Q_N(p)=\int p\,\Differential\mu$ for all polynomials of degree at most $d$, and this
+fails for at least one polynomial of degree $d+1$.}
+\entryfield{Gaussian rule}{For a positive measure, Gaussian nodes are the zeros of the
+degree-$N$ orthogonal polynomial; the rule has positive weights and degree $2N-1$.}
+\entryfield{Endpoint variants}{Gauss--Radau fixes one endpoint and Gauss--Lobatto fixes
+both.  Their exactness degrees and endpoint weights differ from the Gaussian rule and are
+printed separately.}
+\entryfield{Error}{An expression $E_N(f)=\int f\,\Differential\mu-Q_N(f)$ fixes the sign.
+The derivative form of an error requires the exact smoothness interval and normalization
+constant.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{pade}{Padé approximation}
+\entryfield{Definition}{For a formal series $f(z)=\sum_{n\ge0}a_nz^n$, a type
+$[L/M]$ Padé approximant is a rational function
+$P_L(z)/Q_M(z)$ with $\deg P_L\le L$, $\deg Q_M\le M$,
+$Q_M(0)=1$, and
+\[
+ Q_M(z)f(z)-P_L(z)=\BigOAt{z^{L+M+1}}{z\to0}.
+\]}
+\entryfield{Existence and uniqueness}{A normalized pair may fail to exist with exact
+degrees or may have a common factor.  The rational function is unique under the standard
+normality hypothesis, which is stated when used.}
+\entryfield{Poles}{Zeros of $Q_M$ after cancellation are poles of the approximant.
+Uncancelled numerator-denominator zero pairs are not counted as poles.}
+\entryfield{Collision policy}{$P,Q$ are local polynomial names; they do not denote
+probability or the Fabius quantile inside this entry.  Outside it, the type-$[L/M]$
+subscript or semantic label is retained.}
+\end{catalogueentry}
+
+\section{Linear algebra, operators, kernels, and spectral notation}
+
+\begin{catalogueentry}{vectors-matrices}{Vectors, matrices, and indices}
+\entryfield{Vectors}{A column vector is $x=(x_1,\ldots,x_n)^{\mathsf T}\in
+\mathbb K^n$, where $\mathbb K$ is explicitly $\RealNumbers$ or $\ComplexNumbers$.
+Algorithmic zero-based coordinates are marked separately.}
+\entryfield{Matrices}{$A=(a_{ij})_{1\le i\le m,\,1\le j\le n}
+\in\mathbb K^{m\times n}$.  The first dimension is the number of rows.}
+\entryfield{Transpose and adjoint}{$A^{\mathsf T}$ is transpose,
+$\overline A$ entrywise conjugation, and
+$A^\ast=\overline A^{\mathsf T}$ conjugate transpose.  For real matrices,
+$A^\ast=A^{\mathsf T}$.}
+\entryfield{Identity and zeros}{$I_n$ is the $n\times n$ identity and $0_{m\times n}$
+the rectangular zero matrix.  A bare $0$ inherits type only inside a displayed typed
+equation.}
+\entryfield{Empty size}{The unique $0\times0$ matrix has determinant $1$, trace $0$, and
+rank $0$.  Matrix products with a zero inner dimension are zero matrices by empty sums.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{matrix-operators}{Trace, rank, determinant, and diagonal}
+\entryfield{Trace}{For $A\in\mathbb K^{n\times n}$,
+$\TraceOperator A=\sum_{j=1}^{n}a_{jj}$, with $\TraceOperator A=0$ at $n=0$.}
+\entryfield{Rank}{$\RankOperator A$ is the dimension of the image of the associated linear
+map.  Row rank and column rank agree over a field.}
+\entryfield{Determinant}{$\det A$ is defined only for a square matrix or an endomorphism
+of a finite free module with a chosen basis-free determinant construction.}
+\entryfield{Diagonal}{$\DiagonalOperator(x_1,\ldots,x_n)$ is the square diagonal matrix
+with those diagonal entries.  Applying \commandname{DiagonalOperator} to a matrix in
+order to extract a vector is forbidden; extraction is written
+$\operatorname{diagvec}(A)$ to prevent an input-type overload.}
+\entryfield{Span}{For vectors $v_j$,
+$\SpanOperator_{\mathbb K}\{v_j:j\in J\}$ is their linear span over $\mathbb K$.
+The scalar field is printed when not obvious.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{matrix-products}{Tensor, Kronecker, and Hadamard products}
+\entryfield{Tensor product}{$V\otimes_{\mathbb K}W$ is the algebraic tensor product of
+vector spaces; completed topological tensor products carry a norm or topology subscript.}
+\entryfield{Kronecker product}{For matrices $A=(a_{ij})$ and $B$,
+$A\otimes B$ is the block matrix $(a_{ij}B)$.  Its dimensions are the pairwise products
+of the input dimensions.}
+\entryfield{Hadamard product}{$A\circ B=(a_{ij}b_{ij})$ for matrices of identical shape.
+It is not composition.}
+\entryfield{Composition}{$S\circ T$ means first $T$, then $S$.  When Hadamard products
+occur in the same section, they use $\odot$ instead of $\circ$.}
+\entryfield{Powers}{$A^0=I_n$ for square $A\in\mathbb K^{n\times n}$, including the zero
+matrix.  Entrywise powers are written $A^{\circ k}$.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{norms}{Vector, matrix, and operator norms}
+\entryfield{Euclidean norm}{For $x\in\ComplexNumbers^n$,
+$\|x\|_2=(\sum_j|x_j|^2)^{1/2}$.}
+\entryfield{Induced norm}{For $A:\mathbb K^n\to\mathbb K^m$,
+$\|A\|_{p\to q}=\sup_{x\ne0}\|Ax\|_q/\|x\|_p$.  The spectral norm is
+$\|A\|_{2\to2}$.}
+\entryfield{Frobenius norm}{$\|A\|_{\mathrm F}
+=(\sum_{i,j}|a_{ij}|^2)^{1/2}=(\TraceOperator A^\ast A)^{1/2}$.}
+\entryfield{Unsubscripted norm}{The shared \commandname{Norm} supplies delimiters only.
+Each local scope declares the norm behind them; it is not globally the Euclidean or
+supremum norm.}
+\entryfield{Condition number}{For invertible $A$,
+$\kappa_p(A)=\|A\|_{p\to p}\|A^{-1}\|_{p\to p}$; for singular $A$ it is $+\infty$.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{spectrum}{Spectrum, eigenvalues, and resolvents}
+\entryfield{Finite spectrum}{For $A\in\ComplexNumbers^{n\times n}$,
+$\sigma(A)=\{\lambda\in\ComplexNumbers:\det(\lambda I_n-A)=0\}$.}
+\entryfield{Multiplicity}{Algebraic multiplicity is root multiplicity in the
+characteristic polynomial; geometric multiplicity is
+$\dim\ker(A-\lambda I_n)$.  They are not conflated.}
+\entryfield{Spectral radius}{$\rho(A)=\max_{\lambda\in\sigma(A)}|\lambda|$ for
+$n>0$; for the $0\times0$ matrix the spectrum is empty and the catalogue sets
+$\rho(A)=0$ when a total convention is required.}
+\entryfield{Operator spectrum}{For a bounded operator $T$ on a complex Banach space,
+$\sigma(T)=\{\lambda:\lambda\IdentityOperator-T\text{ is not boundedly invertible}\}$.}
+\entryfield{Resolvent}{$R_T(z)=(z\IdentityOperator-T)^{-1}$ for
+$z\notin\sigma(T)$.  This operator-valued $R_T$ is distinct from
+$R_n^{\mathrm{Res}}$.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{hankel-toeplitz}{Hankel and Toeplitz matrices}
+\entryfield{Hankel}{A finite Hankel matrix has entries $H_{ij}=a_{i+j}$, with declared
+index origins.  In this catalogue $0\le i,j<N$ is the default.}
+\entryfield{Toeplitz}{A Toeplitz matrix has entries $T_{ij}=a_{i-j}$ and therefore
+requires a two-sided sequence for zero-based finite indices.}
+\entryfield{Moment interpretation}{A Hankel matrix $(m_{i+j})$ is positive semidefinite
+when $(m_n)$ is a moment sequence of a positive real measure.}
+\entryfield{Operator interpretation}{Infinite Hankel or Toeplitz matrices define
+operators only after a sequence space and boundedness/domain conditions are supplied.}
+\entryfield{Collision}{A transform, matrix, and determinant may all be called $H$ in
+source literature.  Cross-topic prose uses $H_N(\mu)$, $T_N(a)$, or a semantic operator
+subscript.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{total-positivity}{Minors and total positivity}
+\entryfield{Minor}{For row index set $I$ and column index set $J$ of equal finite size,
+$A[I,J]$ is the corresponding submatrix and
+$\Delta_{I,J}(A)=\det A[I,J]$.  Both index sets are listed in increasing order.}
+\entryfield{Totally nonnegative}{A real matrix is totally nonnegative if every minor is
+nonnegative.}
+\entryfield{Totally positive}{It is totally positive if every minor that is not forced to
+vanish by the matrix shape is positive.  For a rectangular matrix, all square orders up
+to $\min(m,n)$ are included.}
+\entryfield{Strict versus order \(r\)}{The suffix \(\mathrm{TP}_r\) restricts to minors of
+order at most $r$; \(\mathrm{TN}_r\) is the nonnegative analogue.  Neither implies
+unqualified total positivity when $r$ is finite below matrix size.}
+\entryfield{Kernel version}{A kernel $K(x,y)$ is totally positive when determinants
+$\det(K(x_i,y_j))$ have the specified sign for strictly ordered point tuples.  Weak
+orders and repeated nodes require a confluent formulation.}
+\entryfield{Status}{Total-positivity claims for Fabius moment or collocation matrices are
+\textbf{frontier/conjectural} unless their exact minor family is linked to a proof.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{positive-definite-kernels}{Positive-definite kernels and RKHS
+notation}
+\entryfield{Positive definite}{A Hermitian kernel $K:X\times X\to\ComplexNumbers$ is
+positive semidefinite if
+$\sum_{i,j}\overline{c_i}c_jK(x_i,x_j)\ge0$ for all finite choices.}
+\entryfield{Strictness}{Strict positive definiteness requires positivity for nonzero
+coefficient vectors when the points are pairwise distinct.}
+\entryfield{RKHS}{The reproducing-kernel Hilbert space $\mathcal H_K$ satisfies
+$f(x)=\langle f,K(\,\cdot\,,x)\rangle_{\mathcal H_K}$ under the catalogue's
+first-slot-linear convention.  References using second-slot linearity conjugate this
+identity.}
+\entryfield{Gram matrix}{$G_X=(K(x_i,x_j))_{i,j=1}^N$.  Its rank may be smaller than
+$N$ even for a positive-semidefinite kernel.}
+\entryfield{Collision}{Kernel $K$, compact set $K$, and field $\mathbb K$ may coexist only
+with type-bearing subscripts or a local declaration.}
+\end{catalogueentry}
+
+\section{Research-frontier namespaces}
+
+The entries in this section define the symbols needed to read the semi-formalized frontier
+documents.  They do not assert that the proposed Fabius specializations are theorems.
+Every such specialization carries one of the proof-status labels in
+\cref{sec:status-register}.
+
+\begin{catalogueentry}{appell-sheffer}{Appell and Sheffer polynomial families}
+\entryfield{Appell family}{A polynomial sequence $(A_n)_{n\in\NaturalNumbers}$ is Appell
+when $A_0$ is a nonzero constant and
+$A_n'(x)=nA_{n-1}(x)$ for $n\ge1$.}
+\entryfield{Generating function}{With the normalization $A_0=1$,
+\[
+ \sum_{n=0}^{\infty}A_n(x)\frac{z^n}{n!}
+ =g(z)\EulerE^{xz},\qquad g(0)=1,
+\]
+as a formal identity or analytic identity on a printed disk.}
+\entryfield{Associated law}{If $g(z)=1/\MomentGeneratingFunction X(z)$, the family is
+associated with a law only where the reciprocal series exists; this does not imply that
+all $A_n$ are orthogonal.}
+\entryfield{Sheffer family}{A Sheffer sequence has EGF
+$g(z)\exp(xf(z))$ with $g(0)\ne0$, $f(0)=0$, and $f'(0)\ne0$.
+Appell is the case $f(z)=z$.}
+\entryfield{Collision}{The local $A_n$ is neither a matrix nor an event.  A Fabius-derived
+family carries the semantic superscript \(\mathrm{Fab}\) outside its defining section.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{lagrange-cardinal}{Lagrange and cardinal interpolation}
+\entryfield{Nodes}{Let $x_0,\ldots,x_N$ be pairwise distinct scalars.  The cardinal
+polynomial at node $j$ is
+\[
+ \ell_j(x)=\prod_{\substack{0\le k\le N\\k\ne j}}
+ \frac{x-x_k}{x_j-x_k},
+ \qquad \ell_j(x_k)=\delta_{jk}.
+\]}
+\entryfield{Interpolant}{$I_Nf(x)=\sum_{j=0}^{N}f(x_j)\ell_j(x)$ is the unique polynomial
+of degree at most $N$ matching $f$ at all nodes.}
+\entryfield{Empty case}{For $N=0$, the product is empty and $\ell_0=1$.
+There is no $N=-1$ interpolant unless a separate empty-data convention is introduced.}
+\entryfield{Barycentric weights}{$w_j=(\prod_{k\ne j}(x_j-x_k))^{-1}$ and
+$I_Nf(x)=
+(\sum_jw_jf(x_j)/(x-x_j))/(\sum_jw_j/(x-x_j))$ away from nodes, with the value at a
+node assigned by continuity.  Scaling every $w_j$ by the same nonzero constant changes
+neither interpolant.}
+\entryfield{Cardinal infinite grids}{An infinite cardinal function $L$ satisfying
+$L(k)=\delta_{0k}$ for $k\in\IntegerNumbers$ is a different object and requires a
+function space and convergence mode for $\sum_kf(k)L(x-k)$.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{sampling}{Sampling, reconstruction, and band limitation}
+\entryfield{Band limitation}{Under the $2\pi$ Fourier convention, $f$ is bandlimited to
+$[-B,B]$ when $\SupportOf{\FourierTwoPi f}\subseteq[-B,B]$.}
+\entryfield{Critical lattice}{The Shannon lattice spacing is $(2B)^{-1}$ for $B>0$.
+With suitable $L^2$ or regularity hypotheses,
+\[
+ f(x)=\sum_{k\in\IntegerNumbers}
+ f\!\left(\frac{k}{2B}\right)
+ \SincPi(2Bx-k).
+\]
+The theorem states whether convergence is in $L^2$, uniform, or pointwise.}
+\entryfield{Oversampling}{A denser lattice adds frame redundancy; it does not change the
+definition of \commandname{SincPi}.}
+\entryfield{Fabius caveat}{Compact support in physical space makes the Fourier transform
+entire, not bandlimited.  Sampling formulas in the inverse-Fabius frontier therefore
+require an independently proved interpolation or frame theorem.}
+\entryfield{Alias policy}{A sample index $k$, a frequency index, and a Lambert branch
+index may all be integers; each sum declares which role its index has.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{refinement-dilation}{Refinement equations and dilation operators}
+\entryfield{Dilation}{For nonzero real $a$, $(D_af)(x)=f(ax)$.  A unitary
+$L^2$ dilation is instead $(U_af)(x)=|a|^{1/2}f(ax)$; the two are not conflated.}
+\entryfield{Translation}{$T_bf(x)=f(x-b)$.  Thus $D_aT_b=T_{b/a}D_a$ for
+$a\ne0$ under this convention.}
+\entryfield{Refinement equation}{A refinable function satisfies
+\[
+ \phi(x)=\sum_{k\in\IntegerNumbers}h_k\phi(ax-k)
+\]
+with dilation $|a|>1$, a declared mask $(h_k)$, and a stated convergence/pointwise
+interpretation.  A factor such as $\sqrt{|a|}$ or $|a|$ is part of the mask
+normalization and is never implicit.}
+\entryfield{Mask symbol}{$H(z)=\sum_kh_kz^k$ is a Laurent polynomial or series according
+to the mask support.  Its Fourier-domain refinement law depends on the selected Fourier
+normalization.}
+\entryfield{Fabius scaling}{The equation
+$\FabiusGlobal'(x)=2\FabiusGlobal(2x)$ is a differential scaling law, not by itself a
+standard refinability equation for $\FabiusGlobal$.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{iterates-dynamics}{Function iterates, orbits, and conjugacy}
+\entryfield{Iterate}{For a self-map $f:X\to X$,
+$f^{\circ0}=\IdentityOperator_X$ and
+$f^{\circ(n+1)}=f\circ f^{\circ n}$.  The circle distinguishes iteration from pointwise
+power $f(x)^n$.}
+\entryfield{Orbit}{The forward orbit of $x$ is
+$\mathcal O_f^+(x)=\{f^{\circ n}(x):n\in\NaturalNumbers\}$.}
+\entryfield{Periodic point}{$x$ has least period $p\in\PositiveIntegers$ when
+$f^{\circ p}(x)=x$ and no smaller positive exponent does.  A fixed point has period one.}
+\entryfield{Conjugacy}{Maps $f:X\to X$ and $g:Y\to Y$ are conjugate through a bijection
+$h:X\to Y$ when $h\circ f=g\circ h$.  If $h$ is only a surjection, the relation is a
+semiconjugacy.}
+\entryfield{Fabius inverse}{Iterations of \commandname{FabiusQuantile} stay in $[0,1]$.
+Iterations of the clamped inverse on all reals are a different dynamical system and use
+\commandname{FabiusClampedQuantile} explicitly.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{koopman-transfer}{Koopman and transfer operators}
+\entryfield{Koopman}{For a measurable map $T:X\to X$,
+$(\mathcal K_Tf)(x)=f(Tx)$.  Its function space and measure are part of the operator
+type.}
+\entryfield{Perron--Frobenius}{A transfer operator $\mathcal P_T$ is defined by the
+duality
+\[
+ \int(\mathcal P_Tf)g\,\Differential\mu
+ =\int f(g\circ T)\,\Differential\mu
+\]
+when such a density operator exists.  It is not automatically pointwise inverse
+composition.}
+\entryfield{Invariant measure}{$\mu$ is $T$-invariant when
+$T_\#\mu=\mu$, equivalently $\int f\circ T\,\Differential\mu
+=\int f\,\Differential\mu$ for bounded measurable $f$.}
+\entryfield{Spectrum}{A Koopman eigenfunction satisfies
+$\mathcal K_Tf=\lambda f$.  Spectral claims state the Banach or Hilbert space because
+the spectrum changes with it.}
+\entryfield{Status}{Fabius Koopman models in the frontier corpus are
+\textbf{frontier/conjectural} unless an operator, invariant measure, and proved spectral
+statement are all linked.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{stein-zero-bias}{Stein operators and zero-bias transforms}
+\entryfield{Stein operator}{An operator $\mathcal A$ characterizes a law $\mu$ on a test
+class $\mathcal T$ when
+$\int\mathcal Af\,\Differential\mu=0$ for every $f\in\mathcal T$, together with a
+uniqueness theorem.  The operator alone is not a characterization without the class.}
+\entryfield{Stein equation}{For a test $h$,
+$\mathcal Af_h=h-\int h\,\Differential\mu$.  A bound on $f_h$ specifies its norm and
+the class of $h$.}
+\entryfield{Zero bias}{For mean-zero $X$ with variance $\sigma^2>0$, a zero-biased
+variable $X^\ast$ satisfies
+\[
+ \Expectation[Xf(X)]=\sigma^2\Expectation[f'(X^\ast)]
+\]
+for an appropriate class of absolutely continuous $f$.}
+\entryfield{Iteration}{A zero-bias tower declares how centering and variance
+renormalization are applied at every stage; the star is a distributional transform, not
+complex conjugation.}
+\entryfield{Status}{Proposed Fabius Stein characterizations and zero-bias towers retain
+\textbf{frontier/conjectural} status until uniqueness and domain conditions are proved.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{carleman}{Carleman linearization and Carleman matrices}
+\entryfield{Analytic map}{Let $f(z)=\sum_{n\ge0}a_nz^n$ near a fixed expansion point.
+The Carleman matrix is
+\[
+ C(f)_{mn}\DefinitionEquals[z^n]f(z)^m,\qquad
+ m,n\in\NaturalNumbers.
+\]}
+\entryfield{Zeroth row}{Since $f(z)^0=1$, $C(f)_{0n}=\delta_{0n}$, including the
+convention $0^0=1$ inside the polynomial identity.}
+\entryfield{Composition}{Formally, $C(f\circ g)=C(f)C(g)$ when both sides are defined
+with compatible expansion points and the infinite matrix product is coefficientwise
+finite or convergent.}
+\entryfield{Truncation}{$C_N(f)=(C(f)_{mn})_{0\le m,n<N}$ is a finite truncation, not
+the exact Carleman operator.  Spectral convergence of truncations requires a theorem.}
+\entryfield{Collision}{This Carleman matrix is distinct from the Carleman condition
+$\sum_nm_{2n}^{-1/(2n)}=\infty$ for moment determinacy.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{holonomic}{Holonomic and \(D\)-finite functions}
+\entryfield{\(D\)-finite}{A formal power series $f(z)$ over a characteristic-zero field is
+$D$-finite when it satisfies
+\[
+ p_r(z)f^{(r)}(z)+\cdots+p_0(z)f(z)=0
+\]
+for polynomials $p_j$, not all zero.}
+\entryfield{\(P\)-recursive}{A sequence $(a_n)$ is $P$-recursive when
+$\sum_{j=0}^rp_j(n)a_{n+j}=0$ for all sufficiently large $n$, with polynomial
+coefficients $p_j(n)$.}
+\entryfield{Equivalence}{Over characteristic zero, an ordinary generating function is
+$D$-finite exactly when its coefficient sequence is $P$-recursive, subject to the
+standard formal-series interpretation.}
+\entryfield{Nonholonomicity}{Failure of one guessed differential equation does not prove
+nonholonomicity.  A nonholonomicity claim identifies a rigorous obstruction such as
+infinitely many singularities or incompatible coefficient asymptotics.}
+\entryfield{Status}{Fabius holonomicity questions in the active frontier reports are
+\textbf{open} unless a theorem is explicitly cited.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{chaos-cumulants}{Chaos expansions, cumulants, and Edgeworth terms}
+\entryfield{Orthogonal chaos}{A chaos decomposition
+$L^2(\Omega)=\bigoplus_{n\ge0}\mathcal H_n$ is relative to a specified probability
+structure.  $J_n$ denotes the orthogonal projection onto $\mathcal H_n$ only within that
+scope.}
+\entryfield{Cumulant generating function}{For an MGF nonzero near zero,
+$K_X(t)=\log\MomentGeneratingFunction X(t)
+=\sum_{r\ge1}\kappa_r(X)t^r/r!$, with the analytic logarithm normalized by $K_X(0)=0$.}
+\entryfield{Standardization}{For variance $\sigma^2>0$,
+$Z=(X-\Expectation X)/\sigma$.  Standardized cumulants are
+$\lambda_r=\kappa_r(X)/\sigma^r$ for $r\ge3$.}
+\entryfield{Edgeworth expansion}{An order-$s$ Edgeworth approximation identifies the
+normal density or CDF, Hermite-polynomial normalization, scaling parameter, and a uniform
+remainder regime.  The formal polynomial correction alone is not a probability density
+theorem.}
+\entryfield{Hermite choice}{Probabilists' Hermite polynomials satisfy
+$\operatorname{He}_n(x)=(-1)^n\EulerE^{x^2/2}
+\frac{\Differential^n}{\Differential x^n}\EulerE^{-x^2/2}$.
+Physicists' polynomials are separately labelled $H_n^{\mathrm{phys}}$.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{large-deviations}{Large deviations and rate functions}
+\entryfield{Log-MGF}{$\Lambda(t)=\log\Expectation[\EulerE^{tX}]$ on its effective domain
+$\mathcal D_\Lambda=\{t:\MomentGeneratingFunction X(t)<\infty\}$.}
+\entryfield{Legendre--Fenchel transform}{$\Lambda^\ast(x)=
+\sup_{t\in\RealNumbers}\{tx-\Lambda(t)\}\in[0,\infty]$.}
+\entryfield{LDP}{A sequence $X_n$ obeys a large-deviation principle with speed
+$a_n\to\infty$ and rate $I$ when closed-set upper and open-set lower logarithmic bounds
+are stated explicitly.}
+\entryfield{Good rate function}{$I$ is good when every sublevel set
+$\{x:I(x)\le c\}$ is compact.  Convexity is not part of the definition of a general
+rate function.}
+\entryfield{Endpoint scaling}{An endpoint or small-ball asymptotic for
+$\FabiusBounded(x)$ as $x\downarrow0$ is not called an LDP until a family, speed, and
+normalization have been identified.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{information}{Entropy, relative entropy, and Fisher information}
+\entryfield{Differential entropy}{For a density $f$,
+$h(f)=-\int f(x)\log f(x)\,\Differential x$ when the positive and negative parts are
+well defined, with $0\log0=0$ by continuity.  It can be negative.}
+\entryfield{Relative entropy}{For probability measures $\mu\ll\nu$,
+\[
+ D_{\mathrm{KL}}(\mu\|\nu)
+ =\int\log\!\left(\frac{\Differential\mu}{\Differential\nu}\right)\,
+ \Differential\mu,
+\]
+and it is $+\infty$ when absolute continuity fails or the integral diverges.  The order
+of the arguments matters.}
+\entryfield{Fisher information}{For a differentiable positive density,
+$J(f)=\int|(\log f)'|^2f\,\Differential x
+=\int|f'|^2/f\,\Differential x$ when finite.  Zeros require a weak or extended-value
+interpretation.}
+\entryfield{Mutual information}{$I(X;Y)=D_{\mathrm{KL}}(
+\LawOf{(X,Y)}\|\LawOf X\otimes\LawOf Y)$.}
+\entryfield{Status}{Numerical entropy or Fisher-information tables are
+\textbf{computational evidence} unless accompanied by verified error bounds.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{zonoids}{Minkowski sums and zonoids}
+\entryfield{Minkowski sum}{For $A,B\subseteq\RealNumbers^d$,
+$A+B=\{a+b:a\in A,\ b\in B\}$ and
+$\lambda A=\{\lambda a:a\in A\}$.}
+\entryfield{Zonotope}{A finite zonotope generated by vectors $v_1,\ldots,v_N$ is
+\[
+ Z_N=\sum_{j=1}^{N}[0,v_j]
+ =\left\{\sum_{j=1}^{N}t_jv_j:0\le t_j\le1\right\}.
+\]}
+\entryfield{Zonoid}{A zonoid is a Hausdorff limit of zonotopes.  A random-vector
+representation such as $\Expectation[0,X]$ requires integrability and a declared
+selection/Aumann-expectation convention.}
+\entryfield{Support function}{$h_K(u)=\sup_{x\in K}\langle u,x\rangle$ for a nonempty
+compact convex set $K$.  It satisfies $h_{A+B}=h_A+h_B$.}
+\entryfield{Common-digit construction}{When coordinates share binary or uniform digits,
+the joint random series and ambient dimension are declared.  Marginal Fabius laws alone
+do not determine the zonoid or dependence structure.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{radon}{Radon transforms and projections}
+\entryfield{Hyperplane Radon transform}{For suitable
+$f:\RealNumbers^d\to\ComplexNumbers$,
+\[
+ (\mathcal Rf)(\theta,s)
+ =\int_{\{x:\langle x,\theta\rangle=s\}}f(x)\,
+ \Differential\mathcal H^{d-1}(x),
+\quad \theta\in\mathbb S^{d-1},\ s\in\RealNumbers.
+\]}
+\entryfield{Redundancy}{$\mathcal Rf(-\theta,-s)=\mathcal Rf(\theta,s)$.  A parameter
+domain may quotient this redundancy or retain it explicitly.}
+\entryfield{Measure projection}{For a measure $\mu$, the one-dimensional projection in
+direction $\theta$ is $(x\mapsto\langle x,\theta\rangle)_\#\mu$.  Its density, when it
+exists, is related to the Radon transform but is not assumed.}
+\entryfield{Fourier slice}{With compatible $2\pi$ conventions,
+$\FourierTwoPi{(\mathcal Rf)(\theta,\cdot)}(\xi)
+=\widehat f_{\,2\pi}(\xi\theta)$, where the transform on the right is
+$d$-dimensional and uses exponent $-2\pi\ImaginaryUnit\langle x,\eta\rangle$.}
+\entryfield{Status}{Dyadic Radon-profile identifications are
+\textbf{frontier/conjectural} unless their measure and slice normalizations are proved.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{spectral-heat}{Heat traces, spectral zeta functions, and
+determinants}
+\entryfield{Eigenvalue list}{For a nonnegative self-adjoint operator $L$ with discrete
+spectrum, eigenvalues are
+$0\le\lambda_0\le\lambda_1\le\cdots$, repeated by multiplicity.}
+\entryfield{Heat trace}{$\Theta_L(t)=\TraceOperator(\EulerE^{-tL})
+=\sum_j\EulerE^{-t\lambda_j}$ for $t>0$ when trace class.}
+\entryfield{Spectral zeta}{$\zeta_L(s)=\sum_{\lambda_j>0}\lambda_j^{-s}$ initially in
+its convergence half-plane.  Zero eigenvalues are excluded and their multiplicity is
+recorded separately.}
+\entryfield{Zeta determinant}{If $\zeta_L$ is regular at zero,
+$\det{}'L=\exp(-\zeta_L'(0))$.  The prime means zero modes are omitted; it is not an
+ordinary finite determinant.}
+\entryfield{Heat coefficients}{An expansion
+$\Theta_L(t)\sim\sum_ja_jt^{\alpha_j}$ as $t\downarrow0$ specifies the exponent order,
+possible logarithmic terms, and whether the expansion is proved or numerically fitted.}
+\entryfield{Digital spectrum}{A digital or dyadic spectrum defined from a sequence or
+matrix is not automatically the spectrum of a self-adjoint operator; the construction
+must supply the operator and Hilbert space.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{noncommutative}{Noncommutative probability and free cumulants}
+\entryfield{Noncommutative probability space}{A pair $(\mathcal A,\tau)$ consists of a
+unital algebra and a unital linear functional $\tau$; positivity and traciality are
+additional hypotheses, not automatic.}
+\entryfield{Moments}{For $X\in\mathcal A$, $m_n=\tau(X^n)$.  Products preserve order;
+$XY$ need not equal $YX$.}
+\entryfield{Free cumulants}{Free cumulants $(r_n)$ are defined by
+\[
+ m_n=\sum_{\pi\in NC(n)}\prod_{B\in\pi}r_{|B|},
+\]
+where $NC(n)$ is the lattice of noncrossing partitions of
+$\{1,\ldots,n\}$ and the scalar formula assumes a single variable.}
+\entryfield{Freeness}{Subalgebras are free when alternating centered products from
+different subalgebras have zero $\tau$.  It is not classical independence.}
+\entryfield{Status}{Noncommutative Fabius analogues in the frontier corpus are
+\textbf{proposed definitions} or \textbf{conjectural}; they are never crosswalked to the
+commutative Lean object without an explicit construction.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{matrix-dilation}{Matrix dilations and multivariate scaling}
+\entryfield{Expansive matrix}{A real $d\times d$ matrix $A$ is expansive when every
+eigenvalue has modulus greater than one.}
+\entryfield{Dilation operator}{For $f:\RealNumbers^d\to\ComplexNumbers$,
+$(D_Af)(x)=f(Ax)$.  The unitary $L^2$ version is
+$(U_Af)(x)=|\det A|^{1/2}f(Ax)$.}
+\entryfield{Lattice mask}{A matrix refinement equation has the form
+$\phi(x)=\sum_{k\in\IntegerNumbers^d}h_k\phi(Ax-k)$ with a declared mask and convergence
+mode.}
+\entryfield{Fourier scaling}{Under the $d$-dimensional $2\pi$ convention,
+$\widehat{f(A\,\cdot)}_{\,2\pi}(\xi)
+=|\det A|^{-1}\widehat f_{\,2\pi}(A^{-\mathsf T}\xi)$.}
+\entryfield{Scalar specialization}{For $d=1$ and $A=(2)$ this reduces to the familiar
+dyadic scaling.  A matrix theorem does not follow from the scalar theorem without
+controlling anisotropy and lattice geometry.}
+\end{catalogueentry}
+
+\section{Namespace governance and collision register}
+\label{sec:namespace-register}
+
+The shared commands above are global semantic names.  Every other symbol is local and is
+governed by the rules in this section.  A local declaration is not optional merely
+because a letter is conventional: the active corpus combines probability, analysis,
+arithmetic, special functions, approximation theory, spectral theory, and proposed
+frontier constructions, so nearly every conventional letter has several legitimate
+meanings.
+
+\subsection{Scope hierarchy and declaration schema}
+
+The narrowest enclosing declaration wins among local names.  Scopes, from narrowest to
+widest, are: a displayed definition, a theorem/lemma/conjecture environment, an algorithm
+or table, a subsection explicitly headed ``Notation'', a section, and finally one
+standalone document.  A fragment included with \commandname{input} does not create an
+independent preamble or global namespace; it inherits the standalone root's shared input
+and may introduce only locally scoped names.  A local meaning ends at the closing
+environment or section boundary unless a later sentence explicitly renews it.
+
+Every local notation declaration supplies the following data.  ``Not applicable'' is a
+permitted answer; silence is not.
+
+\begingroup\small
+\begin{longtable}{@{}p{0.20\textwidth}p{0.74\textwidth}@{}}
+\toprule
+Field & Required content\\
+\midrule
+\endhead
+Kind & Scalar, set, proposition, sequence, function, measure, matrix, operator, formal
+series, equivalence class, or other fully named mathematical kind.\\
+Type & Domain and codomain, including scalar field, measurable/topological structure,
+and whether equality is pointwise or modulo an equivalence relation.\\
+Indices & Complete index set, origin, inclusivity of endpoints, and empty-index behavior.\\
+Parameters & Which quantities are fixed and varying; admissible domains, inequalities,
+integrality, primality, nonvanishing, and branch indices.\\
+Formula & Exact definition with every sum, product, integral, supremum, and infimum bound.\\
+Normalization & Fourier frequency/sign, measure mass, polynomial leading coefficient,
+orthogonality scale, logarithm/power branch, and any factorial or transform prefactor.\\
+Exceptional cases & Values at zero, endpoints, removable singularities, empty sets,
+empty matrices, divergent parameters, and nonexistence cases.\\
+Status & Definition, Lean-proved, classical, frontier-derived, conjectural, refuted,
+historical alias, or numerical evidence.\\
+Scope end & The environment, section, or document boundary after which the letter is
+available for reassignment.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{High-frequency letter collisions}
+
+This register does not ban ordinary local letters.  It records the qualification needed
+when two meanings can meet in one document or in cross-document synthesis.
+
+\begingroup\small
+\begin{longtable}{@{}p{0.08\textwidth}p{0.39\textwidth}p{0.47\textwidth}@{}}
+\toprule
+Glyph & Meanings found in the active corpus & Normative resolution\\
+\midrule
+\endfirsthead
+\toprule
+Glyph & Meanings found in the active corpus & Normative resolution\\
+\midrule
+\endhead
+$F$ & Bounded Fabius function, signed global extension, CDF, Fourier transform,
+polynomial family, matrix, and optimization functional. & Use $\FabiusBounded$ and
+$\FabiusGlobal$ for the two Fabius functions, normalization-labelled Fourier commands
+for transforms, and $\DecayOptimizationObjective{n}$ for the decay objective.  A local
+$F_a$, $F_m$, or matrix $F_N$ retains its typed subscript and declaration.\\
+$Q$ & Rational numbers, Fabius quantile, quadrature rule, polynomial, matrix, and a
+$q$-dependent quantity. & Use $\RationalNumbers$ for the number field and
+$\FabiusQuantile$ or $\FabiusClampedQuantile$ for inverses.  Quadrature is $Q_N$ only
+inside its declared numerical-analysis scope; the base of a $q$-series is lower-case
+$q$ and always explicit.\\
+$N$ & Natural-number type, positive-integer type, truncation level, matrix size, node
+count, and asymptotic parameter. & Use $\NaturalNumbers$ or $\PositiveIntegers$ for
+sets.  A local $N$ carries a declaration such as $N\in\PositiveIntegers$ and one role;
+zero-based and one-based counts are never inferred.\\
+$A$ & Event, matrix, Appell family, algebra, feasible set, and dyadic filtration. & Use
+$\DyadicSigmaField_n$ for the canonical dyadic filtration.  An event is typed
+$A\in\mathscr A$, a matrix has dimensions, and an Appell polynomial has a degree
+subscript and preferably a semantic superscript.\\
+$D$ & Derivative, differential operator, dilation, denominator, determinant-derived
+sequence, and domain. & The upright differential is $\Differential$; derivatives are
+$f'$ or $D^nf$ after declaring $D$.  Dilations use $D_a$ or $D_A$, and dyadic
+denominators retain the superscript $D_n^{\mathrm{dyad}}$.\\
+$E$ & Expectation, event, energy, error, and exponential generating function. & Use
+$\Expectation$ for expectation.  Events are roman-labelled or typed in the event
+$\sigma$-field; energies and errors retain descriptive subscripts; an EGF is labelled
+``egf''.\\
+$G$ & Cauchy transform, generating function, Gram matrix, graph, group, and inverse
+alias in historical drafts. & A transform is $G_\mu$, a Gram matrix is $G_N$ or
+$G_X$, and a group is typed.  The Fabius inverse is never bare $G$; use the quantile
+commands.\\
+$H$ & Hilbert space, Hankel matrix, Hermite polynomial, Hessian, entropy, and transfer
+function. & Use $\mathcal H$ for a Hilbert/RKHS space, $H_N(\mu)$ for a finite Hankel
+matrix, $\operatorname{He}_n$ or $H_n^{\mathrm{phys}}$ for the two Hermite
+normalizations, and $\nabla^2f$ for a Hessian.\\
+$I$ & Identity, indicator, interpolant, interval, information, and inverse. & Use
+$\IdentityOperator$ for an identity map and $\IndicatorOf{A}$ for an indicator.
+Interpolants carry a degree such as $I_N$, intervals print endpoints, and neither Fabius
+inverse is denoted by bare $I$.\\
+$K$ & Kernel, compact set, number field, Koopman operator, and cumulant generating
+function. & A kernel is $K(x,y)$, a compact set remains $K\subseteq X$, the scalar field
+is $\mathbb K$, the Koopman operator is $\mathcal K_T$, and the cumulant generator is
+$K_X(t)$ only inside its probability scope.\\
+$L$ & Laplace transform, Lagrange/cardinal function, linear operator, likelihood, and
+slowly varying factor. & Use $\LaplaceTransformSymbol$ for Laplace.  Cardinal functions
+carry an index, operators declare domain/codomain, and slowly varying functions are
+labelled $L_{\mathrm{sv}}$ when transforms are nearby.\\
+$M$ & Mellin transform, moment-generating function, matrix, moment cutoff, mask, and
+manifold. & Use $\MellinTransformSymbol$ and $\MomentGeneratingFunction{X}$ for the two
+transforms.  Matrices carry dimensions; cutoffs and masks are locally typed.\\
+$P$ & Probability, polynomial, projection, transition kernel, Padé numerator, and
+partition. & Use $\Probability$ for probability.  Polynomials carry degree indices,
+projections are $P_V$ with their range, Markov kernels are $P(x,\Differential y)$, and
+Padé numerators are $P_L$ only in a declared $[L/M]$ scope.\\
+$R$ & Real-number type, radius, residue, resolvent, recurrence polynomial, remainder,
+and Reshetnikov integer. & Use $\RealNumbers$ and $\ResidueOperator$ for the first two
+semantic roles.  Resolvents are $R_T(z)$, remainders carry an error superscript, and the
+arithmetic integer is $R_n^{\mathrm{Res}}$.\\
+$S$ & Sum, support, Stieltjes transform, saddle action, spline space, and random series. &
+Use $\SupportOf{f}$ for support and $S_\mu$ for Stieltjes transforms.  Saddle actions,
+spline spaces, and random series carry semantic subscripts and declared domains.\\
+$T$ & Translation, transformation, Toeplitz matrix, random time, Thue--Morse object, and
+truncation. & Translations are $T_b$, Toeplitz matrices are $T_N(a)$, and the sign
+sequence uses $\ThueMorseSign{n}$.  A dynamical map $T:X\to X$ is typed at first use.\\
+$W$ & Lambert function, Wasserstein distance, Walsh function, and weight. & Use
+$\LambertW_k$ with branch $k$ and $W_p(\mu,\nu)$ with transport exponent $p$.  Walsh
+functions and weights carry their own indices and domains.\\
+$\varepsilon$ & Thue--Morse sign, small positive tolerance, perturbation parameter, and
+error sequence. & Use $\ThueMorseSign{n}$ for the sign.  A tolerance is quantified
+$\varepsilon>0$; perturbations and errors receive semantic subscripts when signs occur
+in the same scope.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{Accents, scripts, and overloaded punctuation}
+
+\begin{catalogueentry}{accent-collisions}{Hats, tildes, bars, stars, primes, and scripts}
+\entryfield{Hats}{A normalization-labelled hat produced by
+\commandname{FourierTwoPi} or \commandname{FourierAngular} is a Fourier transform.  A
+hat on a polynomial, matrix, estimator, or lifted object is local and is declared in
+words.  No unlabelled hat is silently interpreted as a Fourier transform in a document
+that also uses monic or normalized polynomials.}
+\entryfield{Tildes}{A tilde may mark centering, normalization, continuation, lifting, or
+an alternative sign convention.  The transformed object's type and the defining map are
+given at first use.  It is never a substitute for the signed global Fabius function.}
+\entryfield{Bars}{For a scalar, bars mean $\AbsoluteValue{x}$; for a finite set they mean
+$\CardinalityOf{A}$; a restriction is $f|_S$; divisibility is $a\mid b$; conditional
+probability is $\Probability(A\mid B)$ with $\Probability(B)>0$.  These roles are
+distinguished by type and spacing, not guessed from visual similarity.}
+\entryfield{Stars}{For a scalar, $\overline z$ is conjugation; $A^\ast$ is an adjoint;
+$X^\ast$ in the zero-bias entry is a distributional transform; $X^\ast$ may also denote
+a dual space only after a type declaration.  None of these implies optimality; an
+optimizer is labelled $x_{\mathrm{opt}}$.}
+\entryfield{Primes}{$f'$ is a derivative, $\zeta_L'$ a derivative of the spectral zeta
+function, and $\det{}'L$ omits zero modes.  A primed variable such as $x'$ is a new local
+variable only after declaration.}
+\entryfield{Superscripts}{Parenthesized $f^{(n)}$ means the $n$th derivative;
+$f^{\circ n}$ means iteration; $f^{\Convolution n}$ means convolution power; $A^{\mathsf
+T}$ means transpose; $A^\ast$ means adjoint.  Ordinary $f^n$ remains pointwise or
+algebraic power.}
+\entryfield{Subscripts}{A shared symbol that already owns a semantic subscript is not
+followed by a second raw subscript.  Use the command's arguments or introduce a wrapper
+whose expansion has one syntactically valid script.  This rule covers number systems,
+quantiles, transform hats, and any future decorated semantic command.}
+\end{catalogueentry}
+
+\subsection{Local alphabet register}
+
+The following roles are intentionally local because assigning them global commands would
+create more collisions than it removes.  Each occurrence must nevertheless instantiate
+the declaration schema above.
+
+\begin{longtable}{@{}p{0.22\textwidth}p{0.72\textwidth}@{}}
+\toprule
+Family & Mandatory local data\\
+\midrule
+\endhead
+Polynomials $p_n,P_n,A_n$ & Coefficient field, variable, degree, leading-coefficient
+normalization, orthogonality measure if any, and index origin.\\
+Matrices $A_N,H_N,T_N,G_N$ & Row and column index types, dimensions, scalar field,
+entry formula, and zero-size convention.\\
+Kernels $K(x,y)$ & Two domain spaces, scalar codomain, symmetry/Hermitian convention,
+regularity, and positive-definiteness status.\\
+Measures $\mu,\nu$ & Underlying measurable space, positivity/signedness, total mass,
+and density only if one exists.\\
+Random variables $X,Y,U_j$ & Probability space or a statement that only their joint law
+is relevant, codomain, independence/dependence, and distribution.\\
+Generating functions $A(z),G(z),M(z)$ & Ordinary, exponential, Dirichlet, or other
+series type; coefficient indexing; formal versus analytic interpretation; convergence
+domain.\\
+Recurrences & Initial values, index range on which the recurrence applies, coefficient
+ring, and treatment of singular leading coefficients.\\
+Optimization variables & Feasible set, topology/norm, objective codomain, existence and
+uniqueness status, and whether infima are attained.\\
+Asymptotic phases and amplitudes & Limit variable and direction, uniform parameters,
+branch choices, order of truncation, and quantified remainder.\\
+Frontier constructions & Complete proposed definition plus one of the status labels in
+\cref{sec:status-register}; a suggestive name does not confer a theorem.\\
+\bottomrule
+\end{longtable}
+
+\section{Retired-alias index}
+\label{sec:retired-aliases}
+
+This index is a reading aid for historical sources and a migration contract, not a second
+namespace.  Names in the first column are printed through \commandname{commandname} so
+that the retired control sequences are not executed.  Migration is semantic: determine
+the old occurrence's type and normalization first, then choose the target.  A textual
+replacement performed before that classification is invalid whenever the target column
+contains ``or''.
+
+\begingroup\small
+\begin{longtable}{@{}p{0.29\textwidth}p{0.30\textwidth}p{0.35\textwidth}@{}}
+\toprule
+Retired source name(s) & Canonical target & Required disambiguation\\
+\midrule
+\endfirsthead
+\toprule
+Retired source name(s) & Canonical target & Required disambiguation\\
+\midrule
+\endhead
+\commandname{R} & \commandname{RealNumbers} & Number field only; a radius remains a
+typed local variable.\\
+\commandname{C} & \commandname{ComplexNumbers} & Number field only; constants and
+contours remain local.\\
+\commandname{Q} & \commandname{RationalNumbers} & Number field only; do not rewrite a
+quantile, quadrature rule, or polynomial.\\
+\commandname{N} & \commandname{NaturalNumbers} or \commandname{PositiveIntegers} & Decide
+from whether zero belongs to the set; never append another raw subscript to the chosen
+command.\\
+\commandname{Z} & \commandname{IntegerNumbers} & Number field only.\\
+\commandname{Up}, \commandname{up}, \commandname{upf} & \commandname{RvachevUp} & The
+even compactly supported function, not the bounded or global Fabius function.\\
+\commandname{sinc} & \commandname{SincRad} or \commandname{SincPi} & Inspect the defining
+formula or zero set.  Radian zeros are at nonzero multiples of $\pi$; normalized zeros
+are at nonzero integers.\\
+\commandname{sincpi}, \commandname{sincp}, \commandname{sincpiPartc} &
+\commandname{SincPi} & These source-local names were explicitly normalized by $\pi$.\\
+\commandname{sincPartx}, \commandname{sincPartl}, \commandname{sincPartii},
+\commandname{sincPartxx}, \commandname{sincPartll}, \commandname{sincPartcc},
+\commandname{sincPartvvv} & \commandname{SincRad} & These generated-fragment aliases
+were classified from their defining formulas as radian sinc.\\
+\commandname{wt} & \commandname{BinaryDigitSum} & Only for binary Hamming weight; a
+general graph or code weight remains local.\\
+\commandname{tm}, \commandname{TM} & \commandname{ThueMorseSignSymbol} or
+\commandname{ThueMorseSign} & Use the symbol-only command in declarations and the
+argument-taking command in formulas.\\
+\commandname{e}, \commandname{ee} & \commandname{EulerE} & Only the exponential base;
+an error variable remains local.\\
+\commandname{ii} & \commandname{ImaginaryUnit} & The complex unit, not an index.\\
+\commandname{dd} & \commandname{Differential} & Upright integral differential; a
+derivative operator is declared separately.\\
+\commandname{Li} & \commandname{Polylogarithm} & The special function, with its order
+printed as a subscript.\\
+\commandname{Var} & \commandname{Variance} & Probability variance only.\\
+\commandname{Cov} & \commandname{Covariance} & Probability covariance only.\\
+\commandname{E} & \commandname{Expectation} & Expectation only; events and energies are
+local and semantically labelled.\\
+\commandname{Prob}, \commandname{Pp} & \commandname{Probability} & Probability measure,
+not polynomial or projection.\\
+\commandname{bigO}, \commandname{Oh} & \commandname{BigO} or \commandname{BigOAt} & Prefer
+the explicit-regime command; retain the token-only form only when the same sentence
+quantifies the limit.\\
+\commandname{smallo}, \commandname{littleo}, \commandname{littleoh} &
+\commandname{LittleO} or \commandname{LittleOAt} & Prefer the explicit-regime command
+and state uniformity parameters.\\
+\commandname{supp} & \commandname{SupportOperator} or \commandname{SupportOf} & Use the
+argument-delimited form in prose; distinguish pointwise, topological, measure, and
+essential support.\\
+\commandname{sgn} & \commandname{Sign} & Real sign with value zero at zero.\\
+\commandname{TV} & \commandname{TotalVariationOf} or
+\commandname{TotalVariationDistance} & Count the mathematical arguments: one typed
+object means total variation; two probability measures mean the fixed distance.\\
+\commandname{dist} & \commandname{MetricDistance} or \commandname{EqualInLaw} & Inspect
+the relation: a numeric metric distance is not equality in distribution.\\
+\commandname{ord} & \commandname{OrderOperator} & Multiplicative order, vanishing order,
+or another order operator only after the local arguments define which notion is meant.\\
+\commandname{lcm} & \commandname{LeastCommonMultiple} & State the finite family and
+empty-family convention.\\
+\commandname{vtwo} & \commandname{TwoAdicValuation} & State the value at zero or restrict
+to nonzero arguments.\\
+\commandname{qbinom} & \commandname{GaussianBinomial} & Supply all three arguments:
+upper index, lower index, and base.\\
+\commandname{qpoch}, \commandname{poch} & \commandname{QPochhammer} & Supply element,
+base, and finite length or $\infty$ explicitly.\\
+\commandname{Law} & \commandname{LawOperator} or \commandname{LawOf} & Use the
+argument-delimited form for a random variable.\\
+\commandname{Lop} & \commandname{LaplaceTransformSymbol} or
+\commandname{LaplaceTransformOf} & Decide between an operator token and application; mark
+bilateral transforms separately.\\
+\commandname{abs} & \commandname{AbsoluteValue} & Scalar absolute value or complex
+modulus; do not use for set cardinality.\\
+\commandname{norm} & \commandname{Norm} & Declare the normed space and norm species.\\
+\commandname{floor}, \commandname{ceil} & \commandname{Floor},
+\commandname{Ceiling} & Preserve exact endpoint inequalities.\\
+\commandname{pospart} & \commandname{PositivePart} & Ordered-scalar positive part with
+value zero on nonpositive inputs.\\
+\commandname{set} & \commandname{SetOf} & Supply the ambient type and predicate/list
+grammar.\\
+\commandname{angles} & \commandname{InnerProduct} & Declare inner product versus dual
+pairing and the linear slot.\\
+\commandname{diag} & \commandname{DiagonalOperator} & Matrix constructor only; diagonal
+extraction uses a separately named local operator.\\
+\commandname{Span}, \commandname{spanop} & \commandname{SpanOperator} & State the scalar
+field.\\
+\commandname{Tr} & \commandname{TraceOperator} & Matrix or trace-class operator trace;
+state the space.\\
+\commandname{rank} & \commandname{RankOperator} & Rank over the stated field.\\
+\commandname{Res} & \commandname{ResidueOperator} & Complex residue; a named arithmetic
+sequence retains its semantic superscript.\\
+\commandname{Id} & \commandname{IdentityOperator} & Identity map on a stated domain.\\
+\commandname{Log} & \commandname{PrincipalLogarithm} & Only the principal complex
+branch; a formal logarithm or another branch is separately labelled.\\
+\commandname{defeq} & \commandname{DefinitionEquals} & Introduction of a definition,
+not a proved equality.\\
+\commandname{Fglobal}, \commandname{Fs}, \commandname{extF}, \commandname{Fext} &
+\commandname{FabiusGlobal} & Signed global Fabius extension only.\\
+\commandname{InvF} & \commandname{FabiusQuantile} or
+\commandname{FabiusClampedQuantile} & Decide from the input domain: $[0,1]$ for the
+ordinary inverse, all reals for the clamped totalization.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\begin{boxedremark}
+The alias index deliberately does not assign global replacements to bare local letters,
+generic hats, primes, stars, or calligraphic alphabets.  Those collisions require a type-
+and-scope decision, recorded in \cref{sec:namespace-register}, rather than a lexical
+substitution.
+\end{boxedremark}
+
+\section{Symbol and shared-command indexes}
+\label{sec:symbol-index}
+
+\subsection{Rendered-symbol index}
+
+The rendered column is intentionally redundant with the semantic command name.  The
+redundancy makes a PDF search by glyph useful while preserving a stable source-level
+identifier.
+
+\begingroup\small
+\begin{longtable}{@{}p{0.22\textwidth}p{0.38\textwidth}p{0.34\textwidth}@{}}
+\toprule
+Rendered symbol family & Shared command(s) & Distinguishing data\\
+\midrule
+\endfirsthead
+\toprule
+Rendered symbol family & Shared command(s) & Distinguishing data\\
+\midrule
+\endhead
+$\NaturalNumbers,\PositiveIntegers$ & \commandname{NaturalNumbers},
+\commandname{PositiveIntegers} & Zero included versus excluded.\\
+$\IntegerNumbers,\RationalNumbers,\RealNumbers,\ComplexNumbers,
+\ExtendedRealNumbers$ & \commandname{IntegerNumbers}, \commandname{RationalNumbers},
+\commandname{RealNumbers}, \commandname{ComplexNumbers},
+\commandname{ExtendedRealNumbers} & Algebraic number system versus ordered extension by
+two infinities.\\
+$\FabiusBounded,\FabiusGlobal,\RvachevUp$ & \commandname{FabiusBounded},
+\commandname{FabiusGlobal}, \commandname{RvachevUp} & Bounded CDF, signed global
+extension, and even compactly supported density-shaped function.\\
+$\FabiusQuantile,\FabiusClampedQuantile$ & \commandname{FabiusQuantile},
+\commandname{FabiusClampedQuantile} & Inverse on $[0,1]$ versus clamped totalization on
+$\RealNumbers$.\\
+$\EulerE,\ImaginaryUnit,\Differential x$ & \commandname{EulerE},
+\commandname{ImaginaryUnit}, \commandname{Differential} & Exponential base, complex
+unit, and integration differential.\\
+$\AbsoluteValue{x},\Norm{x},\CardinalityOf{A}$ & \commandname{AbsoluteValue},
+\commandname{Norm}, \commandname{CardinalityOf} & Scalar modulus, norm, and set
+cardinality; the types disambiguate identical bars.\\
+$\Floor{x},\Ceiling{x},\FractionalPart{x},\PositivePart{x}$ &
+\commandname{Floor}, \commandname{Ceiling}, \commandname{FractionalPart},
+\commandname{PositivePart} & Integer rounding, fractional residue, and ordered positive
+part.\\
+$\IndicatorOf{A},\SetOf{x:P(x)},\InnerProduct{x,y}$ &
+\commandname{IndicatorOf}, \commandname{SetOf}, \commandname{InnerProduct} & Function,
+set-builder delimiters, and inner-product/declared duality delimiters.\\
+$\DefinitionEquals,\Sign,\IdentityOperator$ & \commandname{DefinitionEquals},
+\commandname{Sign}, \commandname{IdentityOperator} & Definition relation, real sign,
+and identity map.\\
+$\SpanOperator,\TraceOperator,\RankOperator,\DiagonalOperator$ &
+\commandname{SpanOperator}, \commandname{TraceOperator}, \commandname{RankOperator},
+\commandname{DiagonalOperator} & Linear-algebra operators with an explicit field and
+space.\\
+$\ResidueOperator,\LeastCommonMultiple,\OrderOperator,\PrincipalLogarithm$ &
+\commandname{ResidueOperator}, \commandname{LeastCommonMultiple},
+\commandname{OrderOperator}, \commandname{PrincipalLogarithm} & Complex residue,
+arithmetic LCM, qualified order species, and principal complex branch.\\
+$\FallingFactorial{x}{n},\RisingFactorial{x}{n}$ &
+\commandname{FallingFactorial}, \commandname{RisingFactorial} & Unit-step falling versus
+rising products; both equal one at length zero.\\
+$\SupportOperator,\SupportOf{f},\TopologicalSupportOf{f}$ &
+\commandname{SupportOperator}, \commandname{SupportOf},
+\commandname{TopologicalSupportOf} & Operator token, pointwise support, and its
+topological closure.\\
+$\Convolution,\MetricDistance,\TotalVariationOf{a},\TotalVariationDistance$ &
+\commandname{Convolution}, \commandname{MetricDistance},
+\commandname{TotalVariationOf}, \commandname{TotalVariationDistance} &
+Algebraic/measure convolution, generic metric, a one-object variation functional, and
+the fixed two-measure probability TV convention.\\
+$\Probability,\Expectation,\Variance,\Covariance$ & \commandname{Probability},
+\commandname{Expectation}, \commandname{Variance}, \commandname{Covariance} & Measure,
+integral operator, and second-order statistics.\\
+$\LawOperator,\LawOf{X},\EqualInLaw,\ConvergesInLaw$ & \commandname{LawOperator},
+\commandname{LawOf}, \commandname{EqualInLaw}, \commandname{ConvergesInLaw} & Law
+operator/application, law equality, and weak convergence of laws.\\
+$\DyadicSigmaField_n$ & \commandname{DyadicSigmaField} & Level-$n$ filtration
+$\sigma$-field with explicitly stated generators.\\
+$\DecayOptimizationObjective{n},\LinearizedDecayObjective{n}$ &
+\commandname{DecayOptimizationObjective}, \commandname{LinearizedDecayObjective} &
+Exact versus linearized Fourier-decay objectives.\\
+$\FourierTwoPiOperator,\InverseFourierTwoPiOperator$ &
+\commandname{FourierTwoPiOperator}, \commandname{InverseFourierTwoPiOperator} & Forward
+and inverse cycles-per-unit operators.\\
+$\FourierAngularOperator,\InverseFourierAngularOperator$ &
+\commandname{FourierAngularOperator}, \commandname{InverseFourierAngularOperator} &
+Forward and inverse angular-frequency operators.\\
+$\FourierTwoPiTransformOf{f},\FourierTwoPi{f}$ &
+\commandname{FourierTwoPiTransformOf}, \commandname{FourierTwoPi} & Bracketed operator
+application and hat rendering of the same $2\pi$ transform.\\
+$\FourierAngularTransformOf{f},\FourierAngular{f}$ &
+\commandname{FourierAngularTransformOf}, \commandname{FourierAngular} & Bracketed
+operator application and hat rendering of the same angular transform.\\
+$\LaplaceTransformSymbol,\LaplaceTransformOf{f}$ &
+\commandname{LaplaceTransformSymbol}, \commandname{LaplaceTransformOf} & One-sided
+operator token and application; bilateral use is subscripted.\\
+$\MellinTransformSymbol,\MellinTransformOf{f}$ &
+\commandname{MellinTransformSymbol}, \commandname{MellinTransformOf} & Operator token and
+application on a stated convergence strip.\\
+$\MomentGeneratingFunction{X},\CharacteristicFunction{X}$ &
+\commandname{MomentGeneratingFunction}, \commandname{CharacteristicFunction} &
+Exponential moment transform and positive-sign probabilistic Fourier transform.\\
+$\SincRad,\SincPi$ & \commandname{SincRad}, \commandname{SincPi} & Radian versus
+$\pi$-normalized entire sinc.\\
+$\BinaryDigitSum,\ThueMorseSignSymbol,\ThueMorseSign{n}$ &
+\commandname{BinaryDigitSum}, \commandname{ThueMorseSignSymbol},
+\commandname{ThueMorseSign} & Bit count, reserved sequence glyph, and indexed sign.\\
+$\PadicValuation{p},\TwoAdicValuation$ & \commandname{PadicValuation},
+\commandname{TwoAdicValuation} & Prime-parametric and specialized two-adic valuations;
+zero convention local.\\
+$\QPochhammer{a}{q}{n},\GaussianBinomial{n}{k}{q},\QInteger{n}{q}$ &
+\commandname{QPochhammer}, \commandname{GaussianBinomial}, \commandname{QInteger} & Every
+base and finite/infinite length explicit.\\
+$\Polylogarithm,\LambertW,\GammaFunction,\RiemannZeta$ &
+\commandname{Polylogarithm}, \commandname{LambertW}, \commandname{GammaFunction},
+\commandname{RiemannZeta} & Named special functions; order, branch, and continuation
+domains printed as applicable.\\
+$\BigO,\LittleO,\BigOAt{g}{a},\LittleOAt{g}{a}$ & \commandname{BigO},
+\commandname{LittleO}, \commandname{BigOAt}, \commandname{LittleOAt} & Token-only and
+explicit-limit asymptotic operators.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{Alphabetical shared-command index}
+
+The following is the complete source-level index for version
+\FabiusNotationVersion.  Argument counts are part of the API; braces displayed in a
+command name are mathematical arguments, not optional typography.
+
+\begingroup\small
+\begin{longtable}{@{}p{0.31\textwidth}p{0.09\textwidth}p{0.54\textwidth}@{}}
+\toprule
+Command & Arity & Normative entry\\
+\midrule
+\endfirsthead
+\toprule
+Command & Arity & Normative entry\\
+\midrule
+\endhead
+\commandname{AbsoluteValue} & 1 & \notelink{scalar-size}{Absolute value, norm, distance}.\\
+\commandname{BigO} & 0 & \notelink{big-o}{Asymptotic operators}.\\
+\commandname{BigOAt} & 2 & \notelink{big-o}{Asymptotic operators}.\\
+\commandname{BinaryDigitSum} & 0 & \notelink{binary-weight}{Binary digit sum}.\\
+\commandname{CardinalityOf} & 1 & \notelink{semantic-delimiters}{Semantic delimiters}.\\
+\commandname{Ceiling} & 1 & \notelink{rounding-positive-part}{Rounding and positive part}.\\
+\commandname{CharacteristicFunction} & 1 & \notelink{characteristic-function}{Characteristic functions}.\\
+\commandname{ComplexNumbers} & 0 & \notelink{number-systems}{Number systems}.\\
+\commandname{ConvergesInLaw} & 0 & \notelink{law}{Law and weak convergence}.\\
+\commandname{Convolution} & 0 & \notelink{convolution}{Convolution}.\\
+\commandname{Covariance} & 0 & \notelink{expectation}{Expectation and moments}.\\
+\commandname{DecayOptimizationObjective} & 1 & \notelink{fourier-decay-objectives}{Decay objectives}.\\
+\commandname{DefinitionEquals} & 0 & \notelink{semantic-delimiters}{Semantic delimiters}.\\
+\commandname{DiagonalOperator} & 0 & \notelink{matrix-operators}{Matrix operators}.\\
+\commandname{Differential} & 0 & \notelink{calculus}{Calculus}.\\
+\commandname{DyadicSigmaField} & 0 & \notelink{dyadic-filtration}{Dyadic filtration}.\\
+\commandname{EqualInLaw} & 0 & \notelink{law}{Law and weak convergence}.\\
+\commandname{EulerE} & 0 & \notelink{elementary-constants}{Elementary constants}.\\
+\commandname{Expectation} & 0 & \notelink{expectation}{Expectation and moments}.\\
+\commandname{ExtendedRealNumbers} & 0 & \notelink{number-systems}{Number systems}.\\
+\commandname{FabiusBounded} & 0 & \notelink{fabius-bounded}{Bounded Fabius function}.\\
+\commandname{FabiusClampedQuantile} & 0 & \notelink{fabius-quantile}{Fabius inverses}.\\
+\commandname{FabiusGlobal} & 0 & \notelink{fabius-global}{Global extension}.\\
+\commandname{FabiusNotationVersion} & 0 & \notelink{contract-version}{Contract version}.\\
+\commandname{FabiusQuantile} & 0 & \notelink{fabius-quantile}{Fabius inverses}.\\
+\commandname{FallingFactorial} & 2 & \notelink{powers-factorials}{Powers and factorials}.\\
+\commandname{Floor} & 1 & \notelink{rounding-positive-part}{Rounding and positive part}.\\
+\commandname{FourierAngular} & 1 & \notelink{fourier-angular}{Angular Fourier transform}.\\
+\commandname{FourierAngularOperator} & 0 & \notelink{fourier-angular}{Angular Fourier transform}.\\
+\commandname{FourierAngularTransformOf} & 1 & \notelink{fourier-angular}{Angular Fourier transform}.\\
+\commandname{FourierTwoPi} & 1 & \notelink{fourier-two-pi}{$2\pi$ Fourier transform}.\\
+\commandname{FourierTwoPiOperator} & 0 & \notelink{fourier-two-pi}{$2\pi$ Fourier transform}.\\
+\commandname{FourierTwoPiTransformOf} & 1 & \notelink{fourier-two-pi}{$2\pi$ Fourier transform}.\\
+\commandname{FractionalPart} & 1 & \notelink{rounding-positive-part}{Rounding and positive part}.\\
+\commandname{GammaFunction} & 0 & \notelink{polylog-gamma-zeta}{Gamma function}.\\
+\commandname{GaussianBinomial} & 3 & \notelink{gaussian-binomial}{Gaussian binomial}.\\
+\commandname{IdentityOperator} & 0 & \notelink{accent-collisions}{Identity and script rules}.\\
+\commandname{ImaginaryUnit} & 0 & \notelink{elementary-constants}{Elementary constants}.\\
+\commandname{IndicatorOf} & 1 & \notelink{indicator}{Indicators}.\\
+\commandname{InnerProduct} & 1 & \notelink{semantic-delimiters}{Semantic delimiters}.\\
+\commandname{IntegerNumbers} & 0 & \notelink{number-systems}{Number systems}.\\
+\commandname{InverseFourierAngularOperator} & 0 & \notelink{fourier-angular}{Angular Fourier transform}.\\
+\commandname{InverseFourierTwoPiOperator} & 0 & \notelink{fourier-two-pi}{$2\pi$ Fourier transform}.\\
+\commandname{LambertW} & 0 & \notelink{lambert-w}{Lambert (W)}.\\
+\commandname{LaplaceTransformOf} & 1 & \notelink{laplace-transform}{Laplace transforms}.\\
+\commandname{LaplaceTransformSymbol} & 0 & \notelink{laplace-transform}{Laplace transforms}.\\
+\commandname{LawOf} & 1 & \notelink{law}{Law and weak convergence}.\\
+\commandname{LawOperator} & 0 & \notelink{law}{Law and weak convergence}.\\
+\commandname{LeastCommonMultiple} & 0 & \notelink{dyadic-denominator}{LCM and dyadic denominator}.\\
+\commandname{LinearizedDecayObjective} & 1 & \notelink{fourier-decay-objectives}{Decay objectives}.\\
+\commandname{LittleO} & 0 & \notelink{big-o}{Asymptotic operators}.\\
+\commandname{LittleOAt} & 2 & \notelink{big-o}{Asymptotic operators}.\\
+\commandname{MellinTransformOf} & 1 & \notelink{mellin-transform}{Mellin transform}.\\
+\commandname{MellinTransformSymbol} & 0 & \notelink{mellin-transform}{Mellin transform}.\\
+\commandname{MetricDistance} & 0 & \notelink{scalar-size}{Absolute value, norm, distance}.\\
+\commandname{MomentGeneratingFunction} & 1 & \notelink{mgf}{Moment-generating functions}.\\
+\commandname{NaturalNumbers} & 0 & \notelink{number-systems}{Number systems}.\\
+\commandname{Norm} & 1 & \notelink{scalar-size}{Absolute value, norm, distance}.\\
+\commandname{OrderOperator} & 0 & \notelink{logarithm-order}{Logarithm and order}.\\
+\commandname{PadicValuation} & 1 & \notelink{padic-valuation}{Valuations}.\\
+\commandname{Polylogarithm} & 0 & \notelink{polylog-gamma-zeta}{Polylogarithm}.\\
+\commandname{PositiveIntegers} & 0 & \notelink{number-systems}{Number systems}.\\
+\commandname{PositivePart} & 1 & \notelink{rounding-positive-part}{Rounding and positive part}.\\
+\commandname{PrincipalLogarithm} & 0 & \notelink{logarithm-order}{Logarithm and order}.\\
+\commandname{Probability} & 0 & \notelink{probability-space}{Probability spaces}.\\
+\commandname{QInteger} & 2 & \notelink{q-integer}{(q)-integers}.\\
+\commandname{QPochhammer} & 3 & \notelink{q-pochhammer}{(q)-Pochhammer symbols}.\\
+\commandname{RankOperator} & 0 & \notelink{matrix-operators}{Matrix operators}.\\
+\commandname{RationalNumbers} & 0 & \notelink{number-systems}{Number systems}.\\
+\commandname{RealNumbers} & 0 & \notelink{number-systems}{Number systems}.\\
+\commandname{ResidueOperator} & 0 & \notelink{residue}{Residues}.\\
+\commandname{RiemannZeta} & 0 & \notelink{polylog-gamma-zeta}{Zeta functions}.\\
+\commandname{RisingFactorial} & 2 & \notelink{powers-factorials}{Powers and factorials}.\\
+\commandname{RvachevUp} & 0 & \notelink{rvachev-up}{Rvachev up-function}.\\
+\commandname{SetOf} & 1 & \notelink{semantic-delimiters}{Semantic delimiters}.\\
+\commandname{Sign} & 0 & \notelink{rounding-positive-part}{Rounding and positive part}.\\
+\commandname{SincPi} & 0 & \notelink{sinc}{Sinc normalizations}.\\
+\commandname{SincRad} & 0 & \notelink{sinc}{Sinc normalizations}.\\
+\commandname{SpanOperator} & 0 & \notelink{matrix-operators}{Matrix operators}.\\
+\commandname{SupportOf} & 1 & \notelink{support}{Support}.\\
+\commandname{SupportOperator} & 0 & \notelink{support}{Support}.\\
+\commandname{ThueMorseSign} & 1 & \notelink{thue-morse}{Thue--Morse sign}.\\
+\commandname{ThueMorseSignSymbol} & 0 & \notelink{thue-morse}{Thue--Morse sign}.\\
+\commandname{TopologicalSupportOf} & 1 & \notelink{support}{Support}.\\
+\commandname{TotalVariationDistance} & 0 & \notelink{probability-metrics}{Probability metrics}.\\
+\commandname{TotalVariationOf} & 1 & \notelink{probability-metrics}{Probability metrics}.\\
+\commandname{TraceOperator} & 0 & \notelink{matrix-operators}{Matrix operators}.\\
+\commandname{TwoAdicValuation} & 0 & \notelink{padic-valuation}{Valuations}.\\
+\commandname{Variance} & 0 & \notelink{expectation}{Expectation and moments}.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\section{Lean crosswalk and formalization boundary}
+\label{sec:lean-crosswalk}
+
+The crosswalk maps semantic mathematical objects to actual current Lean declarations.
+It does not imply that every identity printed in a frontier document has been formalized.
+A row marked ``notation only'' records precisely that no single global Lean object is
+asserted by the shared command.  Lean names are case-sensitive and module paths are
+relative to \path{Analysis/FabiusFunction/Lean/FabiusFunction/}.
+
+\begingroup\small
+\begin{longtable}{@{}p{0.24\textwidth}p{0.33\textwidth}p{0.37\textwidth}@{}}
+\toprule
+Catalogue object & Lean declaration and module & Exact boundary\\
+\midrule
+\endfirsthead
+\toprule
+Catalogue object & Lean declaration and module & Exact boundary\\
+\midrule
+\endhead
+$\FabiusBounded$ & \lean{fabiusReal} in \path{Basic.lean}; canonical witness
+\lean{fabius} and proof \lean{fabius_spec} in \path{PaperStatements.lean} &
+\lean{fabiusReal} is the real-valued view of a \lean{BoundedFabius}; the witness and
+\lean{IsFabius} proof select the canonical object.\\
+Abstract Fabius specification & \lean{IsFabius} in \path{Basic.lean} & The declaration's
+actual type is authoritative for hypotheses; the catalogue summary does not manufacture
+a weaker premise-free theorem.\\
+$\RvachevUp$ & \lean{rvachevUp} in \path{Basic.lean} & Takes a
+\lean{BoundedFabius} argument.  Evenness, bounds, and other properties are separate
+theorems, not fields silently attached to an arbitrary function.\\
+$\FabiusGlobal$ & \lean{extendedFabius} in \path{Basic.lean} & Takes a
+\lean{BoundedFabius}; translate-cell and calculus results occur in later dedicated
+modules.\\
+$\FabiusQuantile$ and $\FabiusClampedQuantile$ & \lean{fabiusOrderIso} and
+\lean{fabiusInv} in \path{FabiusInverse.lean} & The formal definitions take both a
+bounded object and its \lean{IsFabius} proof.  Domain behavior must be checked against
+the exact declaration before claiming ordinary versus clamped inverse laws.\\
+$\ThueMorseSign{n}$ & \lean{thueMorseSign} in \path{Arithmetic.lean} & Integer-valued
+sign sequence on \lean{Nat}; digit, recurrence, and product identities live in their
+named Thue--Morse modules.\\
+Exact full moments & \lean{moment} in \path{Arithmetic.lean};
+\lean{momentIntegral} in \path{Basic.lean} & Rational recurrence and real integral are
+distinct objects; \path{AnalyticMoments.lean} supplies bridge theorems with hypotheses.\\
+Exact half moments & \lean{halfMoment} in \path{Arithmetic.lean};
+\lean{halfMomentIntegral} in \path{Basic.lean} & Rational recurrence and real integral
+are not identified by notation alone.\\
+$R_n^{\mathrm{Res}}$ & \lean{reshetnikov} in \path{Arithmetic.lean} & The Lean value is
+rational at the definition boundary; integrality, positivity, and oddness require their
+named theorems.\\
+$D_n^{\mathrm{dyad}}$ & \lean{dyadicDenominator} in \path{Arithmetic.lean} & A natural
+number definition; bounds and divisibility results occur in \path{DenominatorBound.lean}
+and related modules.\\
+Number systems and elementary algebra & Mathlib types \lean{Nat}, \lean{Int},
+\lean{Rat}, \lean{Real}, \lean{Complex} and their standard APIs & Printed coercions are
+mathematical exposition.  Lean coercions and side conditions remain those required by
+the elaborated theorem.\\
+Intervals & \lean{Set.Icc}, \lean{Set.Ioo}, \lean{Set.Ico}, \lean{Set.Ioc} & Endpoint
+order in the Lean constructor matches the four catalogue interval conventions.\\
+Probability laws and pushforwards & Mathlib \lean{Measure.map} and probability-measure
+APIs & A prose random-series representation is not Lean-proved unless a project theorem
+states the corresponding measure equality.\\
+Fourier commands & Mathlib Fourier-transform APIs plus project-specific theorems in
+dedicated Fourier modules & The shared commands choose print normalization.  They are
+not names of one new Lean definition and do not erase Mathlib's hypotheses.\\
+$\DyadicSigmaField_n$ & Notation only & Each document declares its generators and
+probability space; no single project-wide Lean filtration is asserted by the command.\\
+$\DecayOptimizationObjective{n}$ and $\LinearizedDecayObjective{n}$ & Notation only &
+They name document-local typed functionals in the Fourier-decay frontier.  No general
+formalization or equality between exact and linearized objectives is claimed.\\
+Generic $q$-series, fractional, matrix, spectral, and frontier entries & Definition or
+classical notation unless a row or document cites an exact declaration & Their presence
+in this encyclopedic catalogue is not evidence that the general theory or a proposed
+Fabius specialization is formalized.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\begin{boxedremark}
+The safe direction of use is Lean-to-prose: inspect a declaration and then state exactly
+that theorem with all hypotheses.  Similar names, compiled object files, an earlier audit,
+or a catalogue entry are not substitutes for inspecting the current declaration.
+\end{boxedremark}
+
+\section{Active-source manifest and reproducibility}
+\label{sec:source-manifest}
+
+\subsection{Snapshot boundary}
+
+The inventory below is the recursive active tree observed on 2026-08-31 immediately
+before this catalogue is counted as a source.  It excludes every path below
+\path{docs/archive/}.  It contains 160 mathematical content sources: 77 standalone
+documents and 83 included or generated fragments.  The separate shared contract
+\path{docs/fabius-notation.tex} raises the pre-catalogue active TeX total to 161.  Once
+this standalone catalogue is included, the corresponding totals are 162 active TeX
+files and 78 standalone documents.  ``Standalone'' means that the uncommented source
+contains \commandname{documentclass}; every other content source is a fragment inheriting
+its root preamble.
+
+\begingroup\small
+\begin{longtable}{@{}p{0.48\textwidth}r r r@{}}
+\toprule
+Manifest group & Standalone & Fragments & Total\\
+\midrule
+\endfirsthead
+\toprule
+Manifest group & Standalone & Fragments & Total\\
+\midrule
+\endhead
+\path{Fabius_Function_and_Rvachev_Up/} & 1 & 0 & 1\\
+\path{fabius_lean_walkthrough/} & 1 & 0 & 1\\
+\path{FabiusFunction_Mathematical_Glossary/} & 1 & 0 & 1\\
+\path{papers/} & 7 & 0 & 7\\
+Frontier synthesis root & 1 & 0 & 1\\
+\path{drafts/exponents-and-q-series/} & 17 & 18 & 35\\
+\path{drafts/frontier-compilations/} & 5 & 2 & 7\\
+\path{drafts/integration-and-transforms/} & 1 & 7 & 8\\
+\path{drafts/inverse-and-sampling/} & 9 & 17 & 26\\
+\path{drafts/lambert-w/} & 1 & 4 & 5\\
+\path{drafts/representations/} & 22 & 26 & 48\\
+\path{drafts/rvachev_up_fourier_decay/} & 1 & 0 & 1\\
+\path{drafts/spectra-and-arithmetic/} & 9 & 9 & 18\\
+\path{drafts/thue-morse/} & 1 & 0 & 1\\
+\midrule
+Mathematical content subtotal & 77 & 83 & 160\\
+Shared notation contract & 0 & 1 & 1\\
+This catalogue & 1 & 0 & 1\\
+\midrule
+Active TeX total including catalogue & 78 & 84 & 162\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+The frontier paths in the table are all below
+\path{semi-formalized-research-frontiers/}; the root row is its standalone synthesis.
+Counts describe files, not distinct mathematical claims or publication units.  Corrected
+and source-faithful historical-paper variants are counted separately because each is an
+active TeX source requiring an interpretable notation namespace.
+
+\subsection{Reproducible inventory and strict gate}
+
+The repository audit is invoked from the repository root as follows.
+
+\begin{lstlisting}[style=pseudo]
+python Analysis/FabiusFunction/scripts/tex_notation_audit.py --strict --list
+\end{lstlisting}
+
+For each active source it records the relative path, byte and line counts, SHA-256 digest,
+standalone/fragment classification, canonical-input count, input targets, and lexical
+command counts.  It excludes the archive by resolved path, not by a fragile filename
+pattern.  A focused catalogue check supplies this file's path as the positional argument.
+
+The strict gate detects retired commands, local redefinitions of shared semantic
+commands, missing or duplicated canonical inputs, fragment imports of the shared input,
+selected literal bypasses of semantic operators, and known script-composition hazards.
+It is deliberately not a TeX parser and cannot infer the meaning of every one-letter
+variable.  The local declaration schema and collision register close that semantic gap;
+rendered-PDF inspection later closes the composition and layout gap.
+
+\section{Completeness and maintenance contract}
+\label{sec:maintenance}
+
+At shared-contract version \FabiusNotationVersion:
+
+\begin{itemize}
+\item \path{docs/fabius-notation.tex} defines exactly 89 shared commands.
+\item Every one of those 89 command names occurs in the canonical quick reference and
+      in the alphabetical command index, with its exact arity.
+\item Every command belongs to a detailed normative entry defining its type-level role,
+      normalization, exceptional cases, or the local data the command intentionally
+      requires at each use.
+\item Both Fourier conventions, both sinc normalizations, both Fabius inverses, the
+      bounded/global/up-function triad, zero-inclusive/positive naturals, exact/linearized
+      decay objectives, and pointwise/topological support have distinct printed forms.
+\item The retired-alias index is exhaustive with respect to the audit's retired-command
+      registry.  Ambiguous aliases map only after semantic classification.
+\item Symbols not promoted to the shared API remain governed by the local declaration
+      schema; they have no implicit corpus-wide type or normalization.
+\end{itemize}
+
+A future shared-command change is incomplete unless it updates, in the same logical
+change, the version stamp, quick reference, detailed entry, rendered-symbol index,
+alphabetical index, alias mapping if applicable, audit registry, and at least one focused
+strict-audit result.  A future source that introduces a genuinely new mathematical
+convention updates the relevant encyclopedic entry even when no new shared command is
+needed.  A convention found only in an explicit historical quotation is entered in the
+retired-alias register, not revived as normative project notation.
+
+\begin{boxedremark}
+This catalogue is a notation contract and an interpretive reference.  It does not convert
+frontier assertions into theorems, does not weaken hypotheses found in Lean, and does not
+substitute lexical or rendered checks for mathematical verification.  Its promise is
+narrower and exact: every symbol has a declared semantic route, every global command has
+one normative meaning, and every unavoidable local ambiguity has an explicit scope rule.
+\end{boxedremark}
+
+\end{document}

@@ -45,15 +45,25 @@ New standalone intake members:
 
 - [`geometric_comb_q_fabius_report/`](comb-interpolation/geometric_comb_q_fabius_report/),
   *Geometric-Comb Interpolation, Gaussian Pascal Transforms, and the
-  Fabius--Rvachev Boundary Layer* (65 pp), arrived on 2026-08-30 from
-  `geometric_comb_q_fabius_report.zip` (outer SHA-256
-  `d7a84fdad1cc0e98f3e2d9d6e6a101cdae2a070a190a957cd15d761ec765a54c`).
-  All 16 submitted payload hashes verified; two CSV entries were refreshed
-  after CRLF-to-LF repository normalization. It belongs beside the geometric
-  and dyadic comb reports below, while cross-linking the q-Pochhammer monograph.
-  It remains standalone pending post-publication assessment and a Lean
-  crosswalk; its formalization section is explicitly future work. Manuscript
-  labels do not establish Lean verification.
+  Fabius--Rvachev Boundary Layer* (retained 68-page A4 PDF; current
+  3,554-line TeX; 637-line deterministic experiment). No attributable source
+  archive remains, so no outer-archive hash is inferred; the immutable
+  submitted ledger preserves the arrival state. The 20-entry operational
+  ledger was intentionally not refreshed after the source-only merge: its TeX
+  and README rows are pending and the other 18 rows pass. A pinned CPython
+  3.13.14 replay was byte-identical across all 11 generated artifacts. The
+  retained A4/27 mm/Libertinus PDF was built in exactly three strict passes
+  at the preceding publication checkpoint, but not from the current source,
+  with every font embedded/subset and no Type 3 fonts. The finite Gaussian,
+  complete-homogeneous, geometric-Lagrange, moment, condition-number,
+  half-moment, and Rvachev-deconvolution layers are crosswalked to their named
+  Lean declarations. The report-specific Jackson basis, arbitrary-point
+  residual, analytic convergence, Lebesgue asymptotics, Fabius bounds, and
+  Gaussian--Appell packaging remain manuscript-only; the two-sided gap,
+  second-order Lebesgue, and Hermite-saddle claims remain conjectures, and the
+  growing-order Hermite problem remains open. It belongs beside the geometric
+  and dyadic comb reports below and cross-links the q-Pochhammer monograph;
+  manuscript labels do not establish Lean verification.
 
 - [`geometric_comb_interpolation_report/`](comb-interpolation/geometric_comb_interpolation_report/),
   *Interpolation on a Geometric Comb* (34 pp), arrived on 2026-08-30 from
@@ -93,20 +103,30 @@ New standalone intake members:
   `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
   All five submitted payload hashes verified and every text payload was
   already LF. A post-publication claim-by-claim reassessment now crosswalks
-  the global weak and maximal-domain strict fixed-length-increment shape,
-  complete endpoint equality locus, inverse-gap
+  the structural least-mass, global weak and maximal-domain strict
+  fixed-length-increment shape, complete endpoint equality locus, inverse-gap
   rigidity, exact-supremum, subadditivity, and effective-injectivity layers to
   compiler-validated
   [`InverseModulus.lean`](../../../../Lean/FabiusFunction/InverseModulus.lean).
+  The post-publication strict/equality extension adds eleven declarations:
+  six support/strict results (`fabiusIntervalMass_eq_zero_of_add_nonpos`,
+  `fabiusIntervalMass_eq_zero_of_one_le`,
+  `strictMonoOn_fabiusIntervalMass_firstHalf`,
+  `strictAntiOn_fabiusIntervalMass_secondHalf`,
+  `fabiusReal_lt_fabiusIntervalMass_of_mem_Ioo`, and
+  `fabiusReal_sub_lt_sub`) and five equality classifications
+  (`fabiusIntervalMass_eq_fabiusReal_iff`, `fabiusReal_sub_eq_sub_iff`,
+  `fabiusReal_add_eq_iff`, `fabiusInv_sub_eq_sub_iff_of_mem_Icc`, and
+  `abs_fabiusInv_sub_eq_iff_of_mem_Icc`).
   The source now also exhaustively crosswalks all fourteen public declarations
   in
   [`FabiusInverseEffectiveContinuity.lean`](../../../../Lean/FabiusFunction/FabiusInverseEffectiveContinuity.lean):
   a one-term recurrence lower bound stronger than the report's box estimate,
   the exact numerical `Delta_r` inequality, strict and closed versions of the
   Delta/factorial dyadic inverse moduli, primitive-recursive denominators, and
-  `EffectivelyUniformContinuous` with the simple `r=n` factorial witness. The
-  source further exhaustively crosswalks all eighteen public declarations
-  (three definitions and fifteen theorems) in
+  `EffectivelyUniformContinuous` with the simple `r=n` factorial witness. It
+  further exhaustively crosswalks all eighteen public declarations (three
+  definitions and fifteen theorems) in
   [`FabiusInverseLogarithmicModulus.lean`](../../../../Lean/FabiusFunction/FabiusInverseLogarithmicModulus.lean):
   the primitive-recursive least order `r(n)`, its binary-length and minimality
   laws, the report-exact Delta and stronger factorial denominators at that
@@ -116,13 +136,22 @@ New standalone intake members:
   bisection, sequential computability, the combined computable-real-function
   theorem, and precision asymptotics remain open Lean work. The `d_*` claim
   remains denominator-minimal only for the fixed dyadic proxy `2^{-r(n)}`, not
-  the weaker target `1/n`. The synchronized three-pass 41-page A4 PDF has
-  embedded/subset fonts, includes Libertinus, and is Type-3-free; all five
-  active checksum entries verify.
+  the weaker target `1/n`. The current 2,937-line source has SHA-256
+  `9945b23025006337e87001332db7a1141896b2f29f0d715fa85261682a6b0397`;
+  the retained 42-page A4 PDF has 711,374 bytes and SHA-256
+  `5a9976f9ece840d1b8456b4ea3753c36e369cbade8caff1c04158cc7d33cff75`.
+  That PDF was built at the preceding checkpoint in exactly three strict
+  serial passes, with repaired
+  author metadata, every font embedded/subset (22 fonts), Libertinus present,
+  and no Type 3 fonts. The immutable five-entry arrival ledger verifies the
+  submitted payload. The six-entry operational ledger was intentionally not
+  refreshed after the source-only merge: its TeX and README rows are pending
+  and the other four rows pass.
 
 - [`inverse_fabius_iterates_nowhere_analytic/`](analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Inverse
-  Fabius Function* (24 A4 pp, 1730 source lines), arrived on 2026-08-30 from
+  Fabius Function* (retained 26-page A4 PDF; current 1,742-line source),
+  arrived on 2026-08-30 from
   `inverse_fabius_iterates_nowhere_analytic.zip` (outer SHA-256
   `8b1c05d59e120ecd20d69cd5aeb0009639f2f3b9a6c9fef32bdf82270eee16bd`).
   All 13 submitted payload hashes verified; `spine_diagnostic.csv` was
@@ -135,7 +164,7 @@ New standalone intake members:
   iterate claims remain paper-only.
 
 The inverse function's frontiers and the sampling/deconvolution circle of
-ideas, in two consolidated volumes.
+ideas, in three consolidated volumes and seven retained standalone reports.
 
 Post-snapshot formal status: `QuarterCatalanGerm.lean` now proves that the
 distinguished rational quarter germ becomes the Catalan inverse of
@@ -150,6 +179,11 @@ general-dyadic analytic/algebraic shadow, convergence and identification of
 the inverse Taylor series, and the Bell--Lagrange formula also remain open.
 
 ## `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers/`
+
+The current merged root has 6,608 lines. Its retained 100-page PDF was not
+rebuilt after the notation merge. The covering 12-entry ledger under
+`assets/Fabius_Inverse_Frontier_Report_Source_and_PDF/` was not refreshed;
+the root-TeX row is pending and its other eleven rows pass.
 
 Consolidated (2026-08-28) from:
 
@@ -167,6 +201,10 @@ altered) and their directories deleted; provenance with SHA-256 hashes
 is recorded in the volume itself, and git history is the archive.
 
 ## `comb-interpolation/Dyadic_Comb_Frontiers/`
+
+The current merged root has 5,648 lines. Its retained 66-page PDF was not
+rebuilt after the notation merge, and this volume has no live checksum ledger
+covering the root TeX/PDF pair.
 
 Editorially merged (2026-08-28) from the six dyadic-comb drafts of the
 second and third waves — three on comb sums/quadrature
@@ -222,6 +260,10 @@ directories are deleted; git history is the archive.
 
 ## `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders/`
 
+The current merged root has 1,979 lines. Its retained 23-page PDF was not
+rebuilt after the notation merge, and this volume has no live checksum ledger
+covering the root TeX/PDF pair.
+
 Editorially merged (2026-08-28) from the three same-topic
 inverse-asymptotics drafts of the fourth, fifth, and sixth waves:
 `inverse_fabius_all_orders_package/` (*Closed All-Orders Endpoint
@@ -247,5 +289,61 @@ Complements — and imports the prior inverse corrections of —
 `Inverse_and_Sampling_Frontiers/`.  Absorbed directories deleted;
 provenance with SHA-256 in the volume's Appendix C and
 `assets/SHA256SUMS-absorbed.txt`.
+
+## `Inverse_Fabius_Computability_Report/`
+
+Filed 2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (689,198
+bytes; SHA-256
+`755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
+The current canonical source has 2,937 lines (SHA-256
+`9945b23025006337e87001332db7a1141896b2f29f0d715fa85261682a6b0397`).
+The retained historical 42-page A4/27 mm/Libertinus PDF has 711,374 bytes
+(SHA-256
+`5a9976f9ece840d1b8456b4ea3753c36e369cbade8caff1c04158cc7d33cff75`).
+It was built at the preceding checkpoint in exactly three strict serial
+passes with all 22 fonts
+embedded/subset, Libertinus present, and no Type 3 fonts.  The report gives
+self-contained proofs of the structural least-interval-mass and exact
+inverse-modulus identities, the elementary endpoint-mass estimate,
+tolerant-bisection realizer, inverse-computability packaging, and optimal
+input-bit law.  `InverseModulus.lean` now adds eleven strict/equality
+declarations: six support/strict results covering the two constant tails,
+the two strict fixed-length half-shapes, and strict interior mass, together
+with five endpoint/equality classifications for fixed-length mass,
+superadditivity, and ordered and absolute inverse gaps.  The closed
+`Delta_r` estimate, recursive-modulus packaging, tolerant bisection,
+sequential computability, and input-bit asymptotics remain paper-level.  The
+crosswalk also identifies the already formalized forward spline/computability,
+strict shape, inverse identities/calculus, exact dyadic evaluation, and leading
+inverse endpoint equivalent; explicit periodic and all-orders inverse
+reversion remain frontier-document results.  The exact-rational supplement
+reproduces its captured output byte for byte.  Original five-file hashes are
+preserved in `ARRIVAL_SHA256SUMS.txt`. The six-entry `SHA256SUMS.txt` was not
+refreshed after the source-only merge: its TeX and README rows are pending and
+the other four rows pass. The live union audit scans 615 Lean modules
+and 8,383 public declarations with zero documentation/header gaps.
+
+## `inverse_fabius_iterates_nowhere_analytic/`
+
+Filed 2026-08-30 from `inverse_fabius_iterates_nowhere_analytic.zip`
+(1,137,032 bytes; SHA-256
+`8b1c05d59e120ecd20d69cd5aeb0009639f2b3b9a6c9fef32bdf82270eee16bd`).
+The current source has 1,742 lines. Its retained 26-page
+A4/27 mm/Libertinus inverse-iterate companion derives
+nowhere analyticity and formal-radius transport from the corrected forward
+iterate report, then proves the affine but nonrepresenting center jet and the
+iterated endpoint obstruction.  The inverse-nowhere-analytic conclusion is
+already a corollary of that forward report and is not independent novelty.
+Lean status is limited to the existing one-fold inverse analytic locus and
+one-fold endpoint Hölder obstruction; the higher iterates, formal-radius
+transport, all-order center jet, and iterated endpoint scale remain
+manuscript-only.  The hostile audit retains 19 nonconjectural labelled results,
+quarantines three stale, false, or duplicate conjecture claims as warnings,
+and leaves only two explicitly unformalized conjectures. The pinned numerical
+replay reproduced all 7 generated outputs byte for byte before repository LF
+normalization; it proves none of the analytic claims. The submitted 13-entry arrival ledger is preserved as
+`SHA256SUMS.arrival.txt` and verified 13/13 before normalization. The 15-entry
+`SHA256SUMS.txt` was intentionally not refreshed after the source-only merge:
+its TeX and README rows are pending and the other thirteen rows pass.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and previous paths.

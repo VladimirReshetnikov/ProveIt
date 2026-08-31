@@ -67,7 +67,7 @@ The deconvolved polynomial has the finite Jacobi expansion
 \begin{equation}
  \boxed{
  Q_\ell^-(x)=
- \sum_{r=0}^{\lfloor\ell/2\rfloor}
+ \sum_{r=0}^{\Floor{\ell/2}}
  \frac{\gamma_{2r}}{(2r)!}
  \frac{(\ell+2r)!}{2^{2r}\ell!}
  P_{\ell-2r}^{(2r,2r)}(x).}
@@ -105,7 +105,7 @@ For $x\in[-1,1]$ and $c\in[-2,2]$ put
 \]
 The shifted canonical expansion is
 \begin{equation}
- u(x-c)=\mathbf1_{I(c)}(x)
+ u(x-c)=\IndicatorOf{I(c)}(x)
  \sum_{r=0}^{\infty}a_rP_{2r}(x-c).
  \label{eq:leg-shifted-local}
 \end{equation}
@@ -116,7 +116,7 @@ For $\ell,r\ge0$ and $M\in\PositiveIntegers$ with $\TwoAdicValuation(M)\ge\ell$,
 \begin{equation}
  H_{\ell r}^{(M)}(x)
  :=\frac1M\sum_{|k|<2M}Q_\ell^-(k/M)
- \mathbf1_{I(k/M)}(x)P_{2r}(x-k/M).
+ \IndicatorOf{I(k/M)}(x)P_{2r}(x-k/M).
  \label{eq:leg-H}
 \end{equation}
 For $m,r\ge0$, define
@@ -191,7 +191,7 @@ $K_M:=\{k\in\IntegerNumbers:|k|<2M\}$.  Let
 and define
 \[
  G_{k\ell}=\int_{-1}^{1}\phi_k(x)\phi_\ell(x)\Differential x,\qquad
- H=\operatorname{diag}(h_0,h_2,\ldots,h_{2N}).
+ H=\DiagonalOperator(h_0,h_2,\ldots,h_{2N}).
 \]
 
 \begin{theorem}[Exact Gram isometry and coefficient projector]
@@ -237,7 +237,7 @@ Its coefficient matrix is positive semidefinite of rank $N+1$.
 The $(m,n)$ entry of $\mathbf D^TG\mathbf D$ is the inner product of the finite syntheses of
 $P_{2m}$ and $P_{2n}$, hence is $h_{2n}\delta_{mn}$.  The projector
 identities follow by substituting $\mathbf D^TG\mathbf D=H$; cyclicity of trace gives
-$\operatorname{tr}\Pi_{\rm coef}=N+1$.
+$\TraceOperator\Pi_{\rm coef}=N+1$.
 
 Substitute \eqref{eq:leg-mode-synthesis} in both variables of
 \eqref{eq:leg-even-CD} and interchange finite sums.  The coefficient matrix
@@ -257,7 +257,7 @@ There is also a one-sided synthesis/analysis factorization.  Put
 Then
 \[
  \Pi_N^{\rm e}\colon L^2([-1,1])\longrightarrow
- \operatorname{span}\{P_0,P_2,\ldots,P_{2N}\}
+ \SpanOperator\{P_0,P_2,\ldots,P_{2N}\}
 \]
 denotes the orthogonal projector, and
 \begin{equation}
@@ -297,7 +297,7 @@ $\TwoAdicValuation(m)\ge d$.  Then, on $[-1,1]$,
 \begin{equation}
  \boxed{
  \frac1{rm}\sum_{|k|<2rm}
- \bigl(1-r\mathbf1_{r\mid k}\bigr)
+ \bigl(1-r\IndicatorOf{r\mid k}\bigr)
  p^\sharp(k/(rm))u(x-k/(rm))=0.}
  \label{eq:leg-interlevel}
 \end{equation}
@@ -330,7 +330,7 @@ For every integer $N\ge0$, put $m=4^N$.  For $|k|<8m$,
 \begin{equation}
  \boxed{
  a_k^{(N+1)}-(E_4a^{(N)})_k
- =\frac{1-4\mathbf1_{4\mid k}}{4m}C_N^-(k/(4m))
+ =\frac{1-4\IndicatorOf{4\mid k}}{4m}C_N^-(k/(4m))
  +\frac{a_{N+1}}{4m}Q_{2N+2}^-(k/(4m)).}
  \label{eq:leg-lifting}
 \end{equation}
@@ -345,7 +345,7 @@ At $t=k/(4m)$,
  =\frac1{4m}\bigl(C_N^-(t)+a_{N+1}Q_{2N+2}^-(t)\bigr),
 \]
 whereas $(E_4a^{(N)})_k=
-4\mathbf1_{4\mid k}C_N^-(t)/(4m)$.  Subtract.  Apply
+4\IndicatorOf{4\mid k}C_N^-(t)/(4m)$.  Subtract.  Apply
 \cref{thm:leg-interlevel} to $p=S_N$ for the first term and
 \eqref{eq:leg-mode-synthesis} to the new mode for the second.
 \end{proof}
@@ -357,7 +357,7 @@ whereas $(E_4a^{(N)})_k=
 For every $s\ge0$,
 \begin{equation}
  \boxed{
- \sum_{n\ge\lceil s/2\rceil}
+ \sum_{n\ge\Ceiling{s/2}}
  a_n\frac{(2n+s)!}{2^ss!(2n-s)!}=0,}
  \label{eq:leg-flatness-series}
 \end{equation}
@@ -415,7 +415,7 @@ Then
  \boxed{
  \frac{2^{\binom{s+1}{2}}}{M}
  \sum_{k=1}^{2M-1}Q_\ell^-(k/M)
- (-1)^{\operatorname{wt}_2(j_{k,s})}u(y_{k,s})
+ (-1)^{\BinaryDigitSum(j_{k,s})}u(y_{k,s})
  =
  \begin{cases}
  \dfrac{(\ell+s)!}{2^ss!(\ell-s)!},&s\le\ell,\\[0.7em]
@@ -432,7 +432,7 @@ $Q_\ell^-(k/M)$ with a level-$s$ Thue--Morse sign row.
 The exact derivative-cell law is
 \[
  u^{(s)}\!\left(-1+\frac{2j+1+y}{2^s}\right)
- =2^{\binom{s+1}{2}}(-1)^{\operatorname{wt}_2(j)}u(y),
+ =2^{\binom{s+1}{2}}(-1)^{\BinaryDigitSum(j)}u(y),
  \qquad 0\le j<2^s,\quad -1\le y\le1.
 \]
 It is the theorem \path{iteratedDeriv_rvachev_cell} in the primary Lean
@@ -482,7 +482,7 @@ For every integer $n\ge0$ and $f\in L^2([-1,1])$, define
  \label{eq:leg-rank-one-detail}
 \end{equation}
 Then $\Delta_n$ is the self-adjoint orthogonal rank-one projector onto
-$\operatorname{span}\{P_{2n}\}$, and it has the finite atomized form
+$\SpanOperator\{P_{2n}\}$, and it has the finite atomized form
 \begin{equation}
  \boxed{
  (\Delta_nf)(x)=\frac{4n+1}{2m_n}\langle f,P_{2n}\rangle
@@ -653,7 +653,7 @@ strict at the $n$th step exactly when $a_n\ne0$.
 Divide \eqref{eq:leg-parseval} by two and use
 $\|u\|_2^2=2\mathscr E_F$.  Rationality follows from $a_n\in\RationalNumbers$.
 Parseval for the Fourier convention of \cref{sec:shared} gives
-$\|u\|_2^2=\int_\RealNumbers|\widehat u(\xi)|^2\Differential\xi$.  Evenness, division by two,
+$\|u\|_2^2=\int_\RealNumbers|\FourierTwoPi{u}(\xi)|^2\Differential\xi$.  Evenness, division by two,
 and the sinc product give \eqref{eq:leg-A2-fourier}; the substitution
 $t=2\pi\xi$ gives \eqref{eq:leg-A2-sinc}.  Monotonicity and its equality
 criterion follow because the added term is $a_n^2/(4n+1)$.
@@ -744,7 +744,7 @@ in $[-2,2]$, and satisfies
  \Lambda_{2n}(0)&=a_n,\qquad \Lambda_{2n+1}(0)=0\quad(n\ge0),
  \label{eq:leg-Lambda-origin}\\
  \Lambda_m(c)&=(2m+1)(-\ImaginaryUnit)^m
- \int_\RealNumbers\widehat u(\xi)j_m(2\pi\xi)
+ \int_\RealNumbers\FourierTwoPi{u}(\xi)j_m(2\pi\xi)
  \EulerE^{2\pi\ImaginaryUnit\xi c}\Differential\xi.
  \label{eq:leg-Lambda-bessel}
 \end{align}
@@ -752,7 +752,7 @@ Here $j_m$ is the spherical Bessel function.
 \end{theorem}
 
 \begin{proof}
-Let $\chi_m(x)=P_m(x)\mathbf1_{[-1,1]}(x)$.  Evenness of $u$ gives
+Let $\chi_m(x)=P_m(x)\IndicatorOf{[-1,1]}(x)$.  Evenness of $u$ gives
 $\Lambda_m=(2m+1)(u*\chi_m)/2$.  Convolution of a compactly supported
 $C^\infty$ function with a compactly supported integrable function is
 $C^\infty$, and supports add to $[-2,2]$.  Reflection gives
@@ -760,8 +760,8 @@ $C^\infty$, and supports add to $[-2,2]$.  Reflection gives
 \eqref{eq:leg-an} and oddness.
 
 The classical integral representation gives
-$\widehat\chi_m(\xi)=2(-\ImaginaryUnit)^mj_m(2\pi\xi)$.  The rapid decay of
-$\widehat u$ makes the product integrable, so Fourier inversion of the
+$\FourierTwoPi{\chi_m}(\xi)=2(-\ImaginaryUnit)^mj_m(2\pi\xi)$.  The rapid decay of
+$\FourierTwoPi{u}$ makes the product integrable, so Fourier inversion of the
 convolution proves \eqref{eq:leg-Lambda-bessel}.
 \end{proof}
 

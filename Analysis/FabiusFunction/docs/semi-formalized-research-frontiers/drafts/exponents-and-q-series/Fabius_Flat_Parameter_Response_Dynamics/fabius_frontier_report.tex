@@ -1,6 +1,6 @@
 \documentclass[11pt,oneside]{article}
 
-\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
@@ -9,18 +9,20 @@
 \input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,tabularx,array}
 \usepackage{graphicx}
+\usepackage{pgfplots}
 \usepackage{xcolor}
 \usepackage{enumitem}
 \usepackage{fancyhdr}
 \usepackage{titlesec}
-\usepackage{xurl}
 \usepackage{listings}
+\usepackage{xurl}
 \usepackage{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
 
 \definecolor{linkblue}{RGB}{25,75,135}
 \definecolor{shadegray}{RGB}{246,247,249}
 \definecolor{rulegray}{RGB}{195,201,208}
+\pgfplotsset{compat=1.18}
 \hypersetup{
   colorlinks=true,
   linkcolor=linkblue,
@@ -28,13 +30,9 @@
   urlcolor=linkblue,
   pdftitle={Flat Parameter Fronts, q-Susceptibility, and Smooth Dynamics in the Fabius-Rvachev System},
   pdfsubject={New frontier results for the Fabius function, geometric-uniform laws, q-series, and iteration},
-  pdfkeywords={Fabius function, Rvachev up-function, q-series, linear response, Koenigs coordinate, Schroeder equation, Lambert W, Legendre polynomials, Bernoulli numbers, Bell polynomials}
+  pdfkeywords={Fabius function, Rvachev up-function, q-series, linear response, Koenigs coordinate, Schroeder equation, Lambert W, Legendre polynomials, Bernoulli numbers, Bell polynomials},
+  pdfauthor={Research report prepared from the current ProveIt documentation corpus}
 }
-\setlength{\emergencystretch}{3em}
-\setcounter{secnumdepth}{3}
-\setcounter{tocdepth}{2}
-\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
-\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
 
 \pagestyle{fancy}
 \fancyhf{}
@@ -42,28 +40,43 @@
 \fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
+
 \titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
 \titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+
+% Long unbreakable inline mathematics occasionally leaves a line with no legal
+% break point.  A small emergency stretch lets TeX loosen such a line rather
+% than let it protrude into the margin; it applies only to lines that would
+% otherwise be overfull.
+\setlength{\emergencystretch}{2em}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{conjecture}[theorem]{Conjecture}
-\newtheorem{problem}[theorem]{Problem}
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
 
+% Report-local additions after the canonical primary preamble.
+\newtheorem{problem}[theorem]{Problem}
 \newcommand{\Lip}{\operatorname{Lip}}
 \newcommand{\flatremainder}{\operatorname{Flat}}
 \newcommand{\statusproved}{\textsc{Proved here}}
 \newcommand{\statusexisting}{\textsc{Existing repository input}}
 \newcommand{\statusnumerical}{\textsc{Numerical check}}
 \newcommand{\statusconjectural}{\textsc{Conjectural}}
+\newcommand{\statusconditional}{\textsc{Conditional}}
 
 \newenvironment{statusbox}{%
   \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
@@ -121,26 +134,29 @@ infinite-sinc Fourier transform, Bernoulli cumulants, Bell-polynomial moment jet
 rational shifted-Legendre spectrum.  The first several exact Legendre coefficients are
 computed; a tempting alternating-sign pattern is shown to fail at degree \(16\).
 
-The third direction treats composition dynamics.  Using the already established strict
-convexity of \(F\), the exact midpoint--endpoint transfer, and the complete affine midpoint
-jet, we construct a unique global \(C^\infty\) diffeomorphism
+The third direction treats composition dynamics.  We isolate a \(C^\infty\) flat Koenigs
+linearization statement as an explicit analytic hypothesis \(\mathrm{(K)}\), because the
+derivative estimates needed to justify it are not supplied here.  Conditional on
+\(\mathrm{(K)}\), the established strict convexity of \(F\), exact midpoint--endpoint transfer,
+and complete affine midpoint jet give a unique global \(C^\infty\) diffeomorphism
 \(\Theta:(0,1)\to\RealNumbers\) satisfying
 \[
  \Theta(F(x))=2\Theta(x),\qquad
  \Theta(F^{-1}(x))=\tfrac12\Theta(x),\qquad
  \Theta'(1/2)=1.
 \]
-The coordinate differs from \(x-1/2\) by a nonzero flat function.  Consequently inverse
+The conditional coordinate differs from \(x-1/2\) by a nonzero flat function.  Consequently
+inverse
 iterates have the beyond-all-orders expansion
 \[
  F^{-n}(x)=\frac12+2^{-n}\Theta(x)+\BigO_{x,N}(2^{-Nn})
  \quad\text{for every }N,
 \]
 with no intermediate algebraic correction terms.  Finally, the known quadratic endpoint law
-is converted into a logarithmic B\"ottcher-type height, giving an exact doubling cocycle and a
-double-exponential asymptotic for forward iterates.  Its quotient by \(-\Theta\) is an exact
-one-periodic dynamical factor.  The report ends with explicit conjectures, numerical checks,
-and a Lean formalization roadmap.
+is converted unconditionally into a logarithmic B\"ottcher-type height, giving an exact
+doubling cocycle and a double-exponential asymptotic for forward iterates.  Conditional on
+\(\mathrm{(K)}\), its quotient by \(-\Theta\) is an exact one-periodic dynamical factor.  The
+report ends with explicit conjectures, numerical checks, and a Lean formalization roadmap.
 \end{abstract}
 
 \tableofcontents
@@ -227,7 +243,33 @@ phase \cite{repoPrimary,repoFrontier}.
 \end{itemize}
 
 Everything labeled \statusproved{} is derived in this report from these inputs and standard
-real/Fourier analysis.  Conjectures are explicitly separated.
+real/Fourier analysis.  Conditional statements and conjectures are explicitly separated.  No
+new theorem in this report has an exact current Lean counterpart; the formal files listed
+below certify inputs only.
+
+\subsection{Exact formalization boundary}
+
+All paths in this paragraph are relative to
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/}.  The fixed-parameter probability law,
+reflection, support, and affine self-similarity are in
+\path{GeometricUniformLaw.lean}; the fixed-\(q\) CDF and density and their spatial smoothness
+are in \path{GeometricUniformCDF.lean}; the half-base identifications are in
+\path{ProbabilityRepresentation.lean}; and the fixed-parameter prefix sinc convergence is in
+\path{GeometricSincFactorization.lean}.  The affine operator and uniqueness theorem are in
+\path{AffineIndependentCopy.lean}, while the shape and inverse inputs are in
+\path{Convexity.lean} and \path{FabiusInverse.lean}.  Exact midpoint transfer and inverse
+midpoint defect are in \path{MidpointEndpointTransfer.lean} and
+\path{InverseMidpointDefect.lean}; endpoint flatness and the leading quadratic logarithmic law
+are in \path{FabiusFlatness.lean} and \path{FabiusLogSquaredAsymptotic.lean}.  Finally,
+\path{CenteredMomentCumulants.lean}, \path{ExponentialBell.lean}, and
+\path{GeometricUniformDictionary.lean} provide fixed-base algebraic infrastructure.
+
+Not presently formalized are joint parameter--space smoothness, the flat parameter fronts,
+the tangent measure and susceptibility/refinement theory, the response sinc/cumulant/moment/
+Legendre calculations, the higher-response source regularity, the flat Koenigs hypothesis,
+the global coordinate, the endpoint height, or the dynamical periodic factor.  In particular,
+fixed-\(q\) spatial smoothness in \path{GeometricUniformCDF.lean} must not be cited as joint
+\(q,x\) smoothness.
 
 \subsection{Relation to the major existing themes}
 
@@ -244,9 +286,9 @@ Exact plateau phase & Flat nonanalytic fronts & Endpoint flatness transported in
 Infinite sinc product & Tangent Fourier product & One marked factor plus a logarithmic derivative sum \tabularnewline
 Bernoulli cumulants & Moment \(q\)-jets & \(q\)-integers and complete Bell polynomials \tabularnewline
 Legendre expansion & Tangent Legendre spectrum & Exact rational coefficients from moment derivatives \tabularnewline
-Midpoint--endpoint transfer & Global Schr\"oder coordinate & Flat local linearization extended by inverse iteration \tabularnewline
-Lambert/periodic endpoint law & Dynamical height \(B\) & Doubling cocycle and a new one-periodic quotient \tabularnewline
-Thue--Morse/dyadic structure & Composition clocks & Exact multiplication by \(2\) in the global coordinate \tabularnewline
+Midpoint--endpoint transfer & Conditional global Schr\"oder coordinate & Flat local linearization hypothesis extended by inverse iteration \tabularnewline
+Lambert/periodic endpoint law & Dynamical height \(B\) & Unconditional doubling cocycle; conditional periodic quotient \tabularnewline
+Thue--Morse/dyadic structure & Composition clocks & Conditional multiplication by \(2\) in the global coordinate \tabularnewline
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -578,19 +620,28 @@ For \(0<q<1\), define
 
 \begin{theorem}[Susceptibility series]
 \label{thm:susceptibility}
-The operator \(R_q\) is a contraction on \(\mathcal M_0\):
+The operator \(R_q\) preserves \(\mathcal M_0\) and is a contraction there:
 \begin{equation}
  \|R_q\eta\|_{\mathrm{KR}}\le q\|\eta\|_{\mathrm{KR}}.
  \label{eq:Rq-contraction}
 \end{equation}
-Let \(\mu_q\) be the law of \(X_q\), and define the source functional
+Let \(\mu_q\) be the law of \(X_q\).  The derivative
+\(\nu_q=\partial_q\mu_q\) exists in total variation (and hence in the KR norm), has smooth
+compactly supported density \(\partial_qf_q\), and has total mass zero.  Define the finite
+zero-mass measure
+\begin{equation}
+ \sigma_q:=\nu_q-R_q\nu_q.
+ \label{eq:sigmaq-measure}
+\end{equation}
+For every \(\phi\in C_c^1(\RealNumbers)\), this measure has the source formula
 \begin{equation}
  \langle\phi,\sigma_q\rangle
  =\int_0^1\int
  \phi'((1-q)u+qx)(x-u)\Differential\mu_q(x)\Differential u.
  \label{eq:sigmaq}
 \end{equation}
-Then the parameter derivative \(\nu_q=\partial_q\mu_q\) is the unique zero-mass solution of
+It has a smooth compactly supported density.  Moreover, \(\nu_q\) is the unique zero-mass
+solution of
 \begin{equation}
  \nu_q=R_q\nu_q+\sigma_q,
  \label{eq:linear-response-fixed}
@@ -606,33 +657,57 @@ with convergence in \(\|\cdot\|_{\mathrm{KR}}\).
 \end{theorem}
 
 \begin{proof}
-If \(\Lip(\phi)\le1\), then
+Write
+\[
+ T_q\phi(x)=\int_0^1\phi((1-q)u+qx)\Differential u.
+\]
+If \(\Lip(\phi)\le1\), then \(T_q\phi\) has Lipschitz constant at most \(q\).
+It need not vanish at the KR basepoint.  Since \(\eta(\RealNumbers)=0\), however,
+\[
+ \int T_q\phi\Differential\eta
+ =\int\bigl(T_q\phi-T_q\phi(0)\bigr)\Differential\eta,
+\]
+and the parenthesized function does vanish at zero.  Thus
 \(
- x\mapsto\int_0^1\phi((1-q)u+qx)\Differential u
-\)
-has Lipschitz constant at most \(q\).  This proves \eqref{eq:Rq-contraction}.  Differentiate
-the fixed-point identity \(\mu_q=R_q\mu_q\): the derivative hitting the measure gives
-\(R_q\nu_q\), while the derivative hitting the affine map gives \(\sigma_q\).  Since
-\(\|R_q\|<1\), the Neumann series is convergent and the solution is unique.
+\|R_q\eta\|_{\mathrm{KR}}\le q\|\eta\|_{\mathrm{KR}}
+\), proving \eqref{eq:Rq-contraction}; preservation of total mass is immediate.
+
+Joint smoothness and the common compact support \([0,1]\) imply differentiability of
+\(q\mapsto f_q(x)\Differential x\) in total variation.  Hence \(\nu_q\) and the measure
+\(\sigma_q\) in \eqref{eq:sigmaq-measure} are well defined and have the asserted smooth
+densities.  Differentiate the fixed-point identity \(\mu_q=R_q\mu_q\) against
+\(\phi\in C_c^1(\RealNumbers)\).  The derivative hitting the measure gives \(R_q\nu_q\); differentiating
+the affine argument gives \eqref{eq:sigmaq}.  Since \(\|R_q\|<1\) on \(\mathcal M_0\), the
+Neumann series converges in KR and its solution is unique.
 \end{proof}
 
-\begin{corollary}[Higher response hierarchy]
+\begin{proposition}[Higher response hierarchy: distributional and conditional]
 \label{cor:higher-response}
 For \(s\ge1\), let \(\nu_q^{(s)}=\partial_q^s\mu_q\) and
 \(R_q^{(j)}=\partial_q^jR_q\) in the distributional test-function sense.  Then
 \begin{equation}
- \nu_q^{(s)}
- =(I-R_q)^{-1}
- \sum_{j=1}^{s}\binom{s}{j}R_q^{(j)}\nu_q^{(s-j)}.
+ (I-R_q)\nu_q^{(s)}
+ =\sum_{j=1}^{s}\binom{s}{j}R_q^{(j)}\nu_q^{(s-j)}
+ \qquad\text{in }\mathcal D'(\RealNumbers).
+ \label{eq:higher-distributional}
+\end{equation}
+If the distribution on the right has independently been represented by a finite zero-mass
+measure \(S_{q,s}\), then the KR resolvent gives the conditional identity
+\begin{equation}
+ \nu_q^{(s)}=(I-R_q)^{-1}S_{q,s}
+ =\sum_{n=0}^{\infty}R_q^nS_{q,s}.
  \label{eq:higher-resolvent}
 \end{equation}
-Thus all \(q\)-jets are generated by one contractive resolvent and a triangular sequence of
-explicit sources.
-\end{corollary}
+No common measure-space regularity theorem for the displayed differentiated sources is proved
+here when \(s\ge2\); the resolvent assertion at those orders is therefore conditional, not a
+completed higher-response theorem.
+\end{proposition}
 
 \begin{proof}
-Differentiate \(\mu_q=R_q\mu_q\) \(s\) times, isolate the term \(R_q\nu_q^{(s)}\), and apply
-\((I-R_q)^{-1}\).
+Differentiating \(\mu_q=R_q\mu_q\) \(s\) times against compactly supported smooth tests and
+isolating \(R_q\nu_q^{(s)}\) proves \eqref{eq:higher-distributional}.  Under the additional
+measure representation stated above, the contraction argument from
+\cref{thm:susceptibility} applies to \(S_{q,s}\) and proves \eqref{eq:higher-resolvent}.
 \end{proof}
 
 \subsection{Exact refinement equations for the tangent CDF and density}
@@ -689,23 +764,34 @@ At \(x=1/2\), the boundary values of \(f\) vanish and \(G(0)=G(1)=0\); hence
 
 \subsection{Conditional transport form}
 
-\begin{proposition}[Velocity field]
+\begin{proposition}[Canonical velocity field and conditional versions]
 \label{prop:velocity-field}
 Let
 \(
- b(x)=\Expectation[V\mid X=x]
+ \widetilde b(x)=\Expectation[V\mid X=x]
 \)
-be any regular conditional version.  On \((0,1)\),
+be any regular conditional version.  The half-base density is strictly positive on
+\((0,1)\), and every such version agrees Lebesgue-a.e. there with the canonical representative
 \begin{equation}
- b(x)f(x)=-G(x),
+ b_*(x):=-\frac{G(x)}{f(x)}.
+ \label{eq:canonical-velocity}
+\end{equation}
+The function \(b_*\) is smooth and odd on \((0,1)\), and it satisfies the pointwise identities
+\begin{equation}
+ b_*(x)f(x)=-G(x),
  \qquad
- \rho(x)=-\frac{\Differential}{\Differential x}\bigl(b(x)f(x)\bigr),
- \qquad
- b(1-x)=-b(x).
+ \rho(x)=-\frac{\Differential}{\Differential x}\bigl(b_*(x)f(x)\bigr),
+ \qquad b_*(1-x)=-b_*(x).
  \label{eq:velocity-form}
 \end{equation}
-Thus the \(q\)-response is a one-dimensional continuity equation: mass is transported by the
-conditional parameter velocity \(b\).
+For an arbitrary regular conditional version, the product identity holds only a.e. and the
+continuity equation only distributionally:
+\[
+ \widetilde b\,f=-G\quad\text{a.e. on }(0,1),
+ \qquad \rho=-(\widetilde b\,f)' \quad\text{in }\mathcal D'(\RealNumbers).
+\]
+Thus the \(q\)-response is a one-dimensional continuity equation with canonical velocity
+\(b_*\); null-set changes to a conditional version carry no pointwise content.
 \end{proposition}
 
 \begin{proof}
@@ -713,11 +799,20 @@ For a smooth compactly supported test function,
 \[
  \int\varphi(x)\rho(x)\Differential x
  =\Expectation[\varphi'(X)V]
- =\int\varphi'(x)b(x)f(x)\Differential x.
+ =\int\varphi'(x)\widetilde b(x)f(x)\Differential x.
 \]
-Hence \(\rho=-(bf)'\) in distributions.  Both sides are smooth in the interior.  Integration
-from the left endpoint, where \(bf\) and \(G\) vanish, gives \(bf=-G\).  Reflection of
-\((X,V)\) gives the oddness of \(b\).
+Hence \(\rho=-(\widetilde b f)'\) in distributions.  Extend
+\(\widetilde b f\) by zero off \([0,1]\).  Since \(V\) is bounded, this product is integrable
+and compactly supported; \(G\) is also compactly supported because \(\int\rho=0\).  Therefore
+\((\widetilde b f+G)'=0\) on \(\RealNumbers\), and compact support forces
+\(\widetilde b f=-G\) a.e.
+
+At half base, \(f(x)=2\RvachevUp(2x-1)>0\) for \(0<x<1\).  Thus \(\mu\) and Lebesgue measure have the
+same null sets in the interior, and every conditional version equals
+\(b_*=-G/f\) there a.e.  Smoothness follows from smoothness of \(G,f\) and interior positivity.
+Finally, \(G(1-x)=-G(x)\) and \(f(1-x)=f(x)\), so the canonical representative is odd.
+Its product with \(f\) equals \(-G\) pointwise, and differentiation yields the pointwise
+continuity equation.
 \end{proof}
 
 \section{Fourier, Bernoulli--Bell, and Legendre faces of the response}
@@ -940,7 +1035,7 @@ shown in decimal form.  The same-sign pair at degrees \(14\) and \(16\) is visib
 \label{fig:legendre-coeffs}
 \end{figure}
 
-\section{A global smooth Schr\"oder coordinate for Fabius iteration}
+\section{A conditional global smooth Schr\"oder coordinate for Fabius iteration}
 \label{sec:koenigs}
 
 Let
@@ -949,7 +1044,8 @@ Let
  \qquad Q=F^{-1}:(0,1)\to(0,1).
 \]
 The primary exposition already supplies the smooth inverse, strict curvature, and the exact
-midpoint defect.  Here we use those facts to solve the global composition dynamics.
+midpoint defect.  After the unconditional dynamical preliminaries, the global composition
+claims are explicitly conditional on the analytic hypothesis \(\mathrm{(K)}\) isolated below.
 
 \subsection{The global basin of the midpoint}
 
@@ -1005,57 +1101,54 @@ flatness says \(F(t)=\LittleO(t^N)\) as \(t\downarrow0\) for every \(N\), while
 statement.  Positivity follows from \(F(t)>0\) for \(t>0\).
 \end{proof}
 
-We record the elementary smooth-linearization lemma used below.
+The local \(C^\infty\) linearization is the one analytic step not completed in this report.
+We isolate it rather than treating a telescoping sketch as a proof.
 
-\begin{lemma}[Flat Koenigs lemma]
-\label{lem:flat-koenigs}
-Let \(g\) be \(C^\infty\) near zero, with
-\[
- g(0)=0,\qquad g'(0)=\lambda\in(0,1),\qquad g(y)-\lambda y\text{ flat at }0.
-\]
-Then on a neighborhood of zero the limit
+\begin{definition}[Flat Koenigs analytic hypothesis \(\mathrm{(K)}\)]
+\label{hyp:flat-koenigs}
+For the map \(g\) in \eqref{eq:g-def}, hypothesis \(\mathrm{(K)}\) is the assertion that on a
+neighborhood of zero the limit
 \begin{equation}
- \theta(y)=\lim_{n\to\infty}\lambda^{-n}g^n(y)
+ \theta(y)=\lim_{n\to\infty}2^n g^n(y)
  \label{eq:local-koenigs-limit}
 \end{equation}
 exists in \(C^\infty\), is a local increasing diffeomorphism, and satisfies
 \begin{equation}
- \theta(g(y))=\lambda\theta(y),
+ \theta(g(y))=\frac12\theta(y),
  \qquad \theta'(0)=1,
  \qquad \theta(y)-y\text{ is flat at }0.
  \label{eq:local-koenigs-properties}
 \end{equation}
-It is the unique \(C^1\) solution with derivative one at zero.
-\end{lemma}
+It also asserts uniqueness among local \(C^1\) solutions with derivative one at zero.
+\end{definition}
 
-\begin{proof}
-Write \(g(y)=\lambda y+r(y)\).  Shrink the neighborhood so that
-\(|g(y)|\le a|y|\) with \(\lambda<a<\sqrt\lambda\).  The telescoping identity is
+\begin{statusbox}
+\textbf{\statusconditional.}
+Hypothesis \(\mathrm{(K)}\) is neither proved in this report nor represented by a current Lean
+theorem.  Every subsequent assertion involving \(\Theta\), its inverse-iterate expansion, its
+escape clock, or the periodic quotient with \(B\) is conditional on \(\mathrm{(K)}\).
+\end{statusbox}
+
+\begin{remark}[The missing estimate]
+For a general contraction \(g(y)=\lambda y+r(y)\), the telescoping identity
 \begin{equation}
  \lambda^{-n}g^n(y)
- =y+\sum_{k=0}^{n-1}\lambda^{-k-1}r(g^k(y)).
+ =y+\sum_{k=0}^{n-1}\lambda^{-k-1}r(g^k(y))
  \label{eq:koenigs-telescope}
 \end{equation}
-Because \(r(z)=\BigO(z^N)\) for every \(N\), choose \(N\) so that \(a^N<\lambda\).  The
-series is uniformly convergent.  Differentiating its terms and using the chain rule gives the
-same geometric majorants for every derivative order after increasing \(N\); hence convergence
-is in \(C^\infty\).  The functional equation follows by shifting the limit.  For each fixed
-\(N\), the infinite series in \eqref{eq:koenigs-telescope} is \(\BigO(y^N)\), proving
-flatness.  Since \(\theta'(0)=1\), it is locally invertible.  If \(\widetilde\theta\) is another
-normalized solution, then
-\[
- \widetilde\theta(y)
- =\lambda^{-n}\widetilde\theta(g^n(y))
- =\lambda^{-n}g^n(y)+\LittleO(1),
-\]
-so it equals the limit.
-\end{proof}
+and flatness of \(r\) readily give local uniform convergence after choosing a sufficiently
+large flatness order.  The submitted argument then asserted the same majorant after arbitrary
+differentiation.  That step requires uniform Faà di Bruno estimates for derivatives of the
+iterates and was not supplied.  Equation \eqref{eq:koenigs-telescope} is therefore motivation
+for \(\mathrm{(K)}\), not a complete \(C^\infty\) proof.
+\end{remark}
 
 \subsection{Globalization and exact conjugacy}
 
-\begin{theorem}[Global Fabius Schr\"oder coordinate]
+\begin{theorem}[Global Fabius Schr\"oder coordinate, conditional on \(\mathrm{(K)}\)]
 \label{thm:global-theta}
-There is a unique \(C^\infty\) increasing diffeomorphism
+Assume hypothesis \(\mathrm{(K)}\) from \cref{hyp:flat-koenigs}.  Then there is a unique
+\(C^\infty\) increasing diffeomorphism
 \begin{equation}
  \Theta:(0,1)\longrightarrow\RealNumbers
  \label{eq:theta-domain}
@@ -1095,8 +1188,8 @@ where each displayed remainder is nonzero and flat.
 \end{theorem}
 
 \begin{proof}
-Apply \cref{lem:flat-koenigs} to \(g\) with \(\lambda=1/2\), obtaining a local coordinate
-\(\theta\).  By \cref{lem:diagonal}, every interior point enters the local neighborhood under
+Hypothesis \(\mathrm{(K)}\) supplies the local coordinate \(\theta\).  By
+\cref{lem:diagonal}, every interior point enters the local neighborhood under
 some inverse iterate.  If \(m\) is large enough, define
 \begin{equation}
  \Theta(x)=2^m\theta(Q^m(x)-p).
@@ -1117,15 +1210,15 @@ follows from
  =2^n\widetilde\Theta(Q^n(x))
  =2^n(Q^n(x)-p)+\LittleO(1).
 \]
-Flatness is the local conclusion of \cref{lem:flat-koenigs}; flatness of the inverse follows
+Flatness is part of hypothesis \(\mathrm{(K)}\); flatness of the inverse follows
 by composition.  The remainder is not identically zero because that would make \(F\) exactly
 affine near \(p\), contradicting \eqref{eq:midpoint-transfer-input} and \(F(h)>0\) for
 \(h>0\).
 \end{proof}
 
-\begin{corollary}[Exact iterate formula and beyond-all-orders inverse asymptotic]
+\begin{corollary}[Conditional exact iterate formula and inverse asymptotic]
 \label{cor:iterate-formula}
-For every \(x\in(0,1)\) and \(n\ge0\),
+Assume \(\mathrm{(K)}\).  For every \(x\in(0,1)\) and \(n\ge0\),
 \begin{equation}
  F^n(x)=\Theta^{-1}(2^n\Theta(x)),
  \qquad
@@ -1149,10 +1242,10 @@ Equation \eqref{eq:exact-iterates-theta} is iteration of the conjugacy.  Since
 \(t=2^{-n}\Theta(x)\).
 \end{proof}
 
-\begin{corollary}[Nonanalyticity of the linearizing coordinate]
+\begin{corollary}[Conditional nonanalyticity of the linearizing coordinate]
 \label{cor:theta-nonanalytic}
-Neither \(\Theta\) nor \(\Theta^{-1}\) is real analytic at the midpoint.  Their Taylor series
-there are exactly \(x-p\) and \(p+t\), respectively.
+Assume \(\mathrm{(K)}\).  Neither \(\Theta\) nor \(\Theta^{-1}\) is real analytic at the
+midpoint.  Their Taylor series there are exactly \(x-p\) and \(p+t\), respectively.
 \end{corollary}
 
 \begin{proof}
@@ -1163,9 +1256,9 @@ conjugacy would then force \(F(p+h)=p+2h\) locally, contradicting
 
 \subsection{Exact escape clocks}
 
-\begin{corollary}[Dyadic escape time]
+\begin{corollary}[Conditional dyadic escape time]
 \label{cor:escape-clock}
-Fix \(a\in(0,1/2)\).  For \(x\in(p,p+a)\), let
+Assume \(\mathrm{(K)}\).  Fix \(a\in(0,1/2)\).  For \(x\in(p,p+a)\), let
 \[
  \tau_a(x)=\min\{n\ge0:F^n(x)\ge p+a\}.
 \]
@@ -1194,9 +1287,10 @@ first crossing of \(p+a\) is the first \(n\) with
 \section{A logarithmic B\"ottcher height at the endpoints}
 \label{sec:bottcher}
 
-The coordinate \(\Theta\) solves the hyperbolic dynamics globally, but its endpoint inverse
-\(\Theta^{-1}(t)\) as \(|t|\to\infty\) is highly non-elementary.  The leading endpoint law
-already implies a second natural doubling coordinate adapted to logarithmic height.
+Conditional on \(\mathrm{(K)}\), the coordinate \(\Theta\) solves the hyperbolic dynamics
+globally, but its endpoint inverse \(\Theta^{-1}(t)\) as \(|t|\to\infty\) is highly
+non-elementary.  Independently of that hypothesis, the leading endpoint law implies a natural
+doubling height adapted to the endpoint logarithm.
 
 Put
 \begin{equation}
@@ -1251,7 +1345,14 @@ or equivalently
  \exp\left\{-2L\exp\bigl(2^nB(x)+\LittleO(1)\bigr)\right\}.}
  \label{eq:double-exponential-orbit}
 \end{equation}
-The right-endpoint statement follows by replacing \(x\) with \(1-x\).
+For \(p<x<1\), define \(B_{\mathrm R}(x)=B(1-x)\).  Reflection gives the explicit
+right-endpoint formula
+\begin{equation}
+ \boxed{\displaystyle
+ 1-F^n(x)=
+ \exp\left\{-2L\exp\bigl(2^nB_{\mathrm R}(x)+\LittleO(1)\bigr)\right\}.}
+ \label{eq:double-exponential-right-orbit}
+\end{equation}
 \end{theorem}
 
 \begin{proof}
@@ -1267,10 +1368,12 @@ Thus
  2^{-n}z_n=z_0+\sum_{k=0}^{n-1}2^{-k-1}\varepsilon(x_k),
 \]
 and the series converges because its terms are eventually bounded by a geometric sequence.
-This proves \eqref{eq:B-limit} and \eqref{eq:B-series}.  Uniform convergence on compact
-subsets follows from monotone convergence of the iterates to zero and the uniform smallness of
-\(\varepsilon\) near zero, giving continuity.  Shifting the orbit proves
-\eqref{eq:B-doubling}.
+This proves \eqref{eq:B-limit} and \eqref{eq:B-series}.  On a compact
+\(K\Subset(0,p)\), the continuous functions \(F^k|_K\) decrease pointwise to the continuous
+limit zero.  Dini's theorem makes this convergence uniform.  Consequently
+\(\varepsilon(F^k(x))\to0\) uniformly on \(K\), and the geometrically weighted series in
+\eqref{eq:B-series} converges uniformly there.  This proves continuity of \(B\).  Shifting
+the orbit proves \eqref{eq:B-doubling}.
 
 The tail identity
 \[
@@ -1278,18 +1381,27 @@ The tail identity
  =\sum_{k=n}^{\infty}2^{n-k-1}\varepsilon(x_k)
 \]
 tends to zero.  Therefore \(z_n=2^nB(x)+\LittleO(1)\), which gives
-\eqref{eq:double-exp-log} and \eqref{eq:double-exponential-orbit}.  Positivity follows because
-\(z_n\to+\infty\); if \(B(x)=0\), the tail identity would instead force \(z_n\to0\).
+\eqref{eq:double-exp-log} and \eqref{eq:double-exponential-orbit}.  Also \(z_n\to+\infty\).
+If \(B(x)<0\), the tail identity would force \(z_n\to-\infty\); if \(B(x)=0\), it would force
+\(z_n\to0\).  Both alternatives are impossible, so \(B(x)>0\).
+
+Finally, reflection iterates exactly:
+\(
+ 1-F^n(x)=F^n(1-x)
+\).
+Applying \eqref{eq:double-exponential-orbit} to \(1-x\in(0,p)\) proves
+\eqref{eq:double-exponential-right-orbit}.
 \end{proof}
 
-\subsection{An exact periodic quotient of the two dynamical coordinates}
+\subsection{A conditional periodic quotient of the two dynamical coordinates}
 
-Both \(B\) and \(-\Theta\) double under \(F\) on the left half.  Their quotient is therefore
-invariant along each orbit.  In the linear coordinate, invariance becomes periodicity.
+Assume \(\mathrm{(K)}\), so that the conditional coordinate \(\Theta\) exists.  Both \(B\) and
+\(-\Theta\) then double under \(F\) on the left half.  Their quotient is invariant along each
+orbit, and in the linear coordinate invariance becomes periodicity.
 
-\begin{theorem}[Dynamical one-periodic factor]
+\begin{theorem}[Dynamical one-periodic factor, conditional on \(\mathrm{(K)}\)]
 \label{thm:dynamical-periodic}
-Define, for \(u\in\RealNumbers\),
+Assume \(\mathrm{(K)}\).  Define, for \(u\in\RealNumbers\),
 \begin{equation}
  \mathcal P_{\mathrm{dyn}}(u)
  =2^{-u}B\!\left(\Theta^{-1}(-2^u)\right).
@@ -1324,7 +1436,7 @@ The representation \eqref{eq:B-theta-periodic} is the definition with
 The repository's sharp endpoint expansion contains a nonconstant periodic function
 \(\Psi\) of a lower-Lambert phase.  The periodic factor
 \(\mathcal P_{\mathrm{dyn}}\) is different in construction: it is extracted from composition
-orbits and the exact global Schr\"oder coordinate.  Determining the transform between the two
+orbits and the conditional global Schr\"oder coordinate.  Determining the transform between the two
 periodic objects is one of the main open problems proposed below.
 \end{remark}
 
@@ -1333,9 +1445,10 @@ periodic objects is one of the main open problems proposed below.
 
 \begin{statusbox}
 \textbf{Role of computation.}
-All theorems above are proved independently of numerics.  The included Python program uses
-exact rational arithmetic for cumulants, moments, and Legendre coefficients, and common-random-
-number Monte Carlo only as a consistency check of the pathwise derivative formula.
+All unconditional theorems above are proved independently of numerics; computation also does
+not discharge hypothesis \(\mathrm{(K)}\).  The included Python program uses exact rational
+arithmetic for cumulants, moments, and Legendre coefficients, and common-random-number Monte
+Carlo only as a consistency check of the pathwise derivative formula.
 \end{statusbox}
 
 \subsection{Reproducibility package}
@@ -1467,17 +1580,18 @@ ansatz and forces any asymptotic argument to retain a phase.
 
 \begin{conjecture}[Nonconstant dynamical cocycle]
 \label{conj:Pdyn}
-The function \(\mathcal P_{\mathrm{dyn}}\) in \eqref{eq:Pdyn-def} is nonconstant and real
-analytic.  Its Fourier coefficients can be obtained by an explicit cohomological transform of
-the Gamma--zeta Fourier coefficients of the repository's endpoint periodic function
-\(\Psi\).
+Assuming \(\mathrm{(K)}\), the function \(\mathcal P_{\mathrm{dyn}}\) in
+\eqref{eq:Pdyn-def} is nonconstant and real analytic.  Its Fourier coefficients can be
+obtained by an explicit cohomological transform of the Gamma--zeta Fourier coefficients of
+the repository's endpoint periodic function \(\Psi\).
 \end{conjecture}
 
-One route is to insert the sharp endpoint expansion into the cocycle
-\(z(F(x))-2z(x)\), sum it along the orbit as in \eqref{eq:B-series}, and then convert the orbit
-phase to the global coordinate \(u=\log_2[-\Theta(x)]\).  The resulting Fourier transform
-should contain small divisors of the simple form \(2^{1-2\pi \ImaginaryUnit k/\log2}-1\), but the exact
-normalization depends on the lower-Lambert displacement.
+Conditional on \(\mathrm{(K)}\), one route is to insert the sharp endpoint expansion into the
+cocycle \(z(F(x))-2z(x)\), sum it along the orbit as in \eqref{eq:B-series}, and then convert
+the orbit phase to \(u=\log_2[-\Theta(x)]\).  No Fourier multiplier is asserted here: it must
+be derived only after the lower-Lambert phase has been converted to the dynamical phase.  An
+unvalidated candidate in the submitted draft simplified to a non-small constant and is
+withdrawn.
 
 \subsection{A \texorpdfstring{\(q\)}{q}-family of global dynamical coordinates}
 
@@ -1599,8 +1713,9 @@ corollaries.
 \begin{enumerate}
 \item Derive the diagonal inequalities from strict convexity and prove global attraction of the
 inverse midpoint.
-\item Formalize the flat contraction lemma \cref{lem:flat-koenigs}, first in a local
-one-dimensional real setting.
+\item Close the flat Koenigs hypothesis \(\mathrm{(K)}\) from
+\cref{hyp:flat-koenigs}, including the missing all-orders derivative estimates, first in a
+local one-dimensional real setting.
 \item Globalize by finite inverse iteration and prove image \(\RealNumbers\), uniqueness, reflection, and
 the limit formula.
 \item Deduce exact iterate conjugacy and the beyond-all-orders estimate.
@@ -1608,8 +1723,9 @@ the limit formula.
 double-exponential orbit asymptotic.
 \end{enumerate}
 
-The local linearization is the only substantial general-purpose analytic component.  It is
-independent of Fabius-specific arithmetic and may be useful elsewhere in the library.
+The local linearization is the only substantial general-purpose analytic component, and it is
+an open proof obligation in this report.  It is independent of Fabius-specific arithmetic and
+may be useful elsewhere in the library.
 
 \section{Conclusions}
 \label{sec:conclusion}
@@ -1627,12 +1743,12 @@ Bernoulli cumulants, Bell moment recurrences, and a rational Legendre spectrum. 
 a natural object for extending the repository's exact arithmetic and finite Thue--Morse
 approximants into parameter space.
 
-The global coordinate \(\Theta\) reveals an unexpectedly simple composition law beneath the
-nonanalytic graph: the whole open unit interval is smoothly conjugate to the real line under
-multiplication by two.  The price of that simplicity is a nonanalytic, flat coordinate at the
-midpoint and extremely singular endpoint geometry.  The logarithmic height \(B\) captures the
-latter, and its exact periodic quotient with \(\Theta\) gives a concrete target for connecting
-composition dynamics to the known Lambert--periodic endpoint expansion.
+Conditional on the explicitly isolated hypothesis \(\mathrm{(K)}\), the global coordinate
+\(\Theta\) would reveal a simple composition law beneath the nonanalytic graph: the whole open
+unit interval would be smoothly conjugate to the real line under multiplication by two.  The
+unconditional logarithmic height \(B\) captures the singular endpoint geometry.  Under
+\(\mathrm{(K)}\), its exact periodic quotient with \(\Theta\) gives a concrete target for
+connecting composition dynamics to the known Lambert--periodic endpoint expansion.
 
 These results suggest a coherent next phase: formalize parameter response, construct marked
 Thue--Morse finite models, solve the tangent Legendre asymptotics, and identify the Fourier
