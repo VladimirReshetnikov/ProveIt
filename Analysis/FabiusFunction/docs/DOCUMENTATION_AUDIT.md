@@ -109,10 +109,10 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 615 modules and 8,382 lexically
+The post-merge 2026-08-31 inventory contains 616 modules and 8,387 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  Relative to the 610/8,318 activation checkpoint, the exact
-union adds five modules and 64 declarations.  The branch-point geometry and
+union adds six modules and 69 declarations.  The branch-point geometry and
 asymptotics leaves contribute 17 declarations for the one-sided vertical
 tangents and leading signed square-root laws of both real Lambert branches.
 The two Legendre--Gaunt modules contribute 25: four definitions and twelve
@@ -123,10 +123,13 @@ Rvachev coefficient sums for rational and real Legendre Gram entries.  Another
 eighteen declarations are three generalized spectral q-Pochhammer
 APIs, four density-diagnostic theorems, and eleven inverse-modulus strictness
 and equality refinements.  `GaussianBinomialAtNegOneDerivative.lean` supplies
-the final four declarations: two first-derivative formulas at (q=-1) and two
-simple-root multiplicity theorems.  The baseline records the current inventory
-and those zeroes, so every future source addition must preserve the full
-invariant rather than merely avoid worsening a
+four more declarations: two first-derivative formulas at `q = -1` and two
+simple-root multiplicity theorems.  `GeometricUniformMultisection.lean`
+contributes the final five declarations: two parity-coordinate definitions,
+the fixed half-quarter sample-space decomposition, its law-level multisection
+identity, and the resulting half/quarter convolution theorem.  The baseline
+records the current inventory and those zeroes, so every future source addition
+must preserve the full invariant rather than merely avoid worsening a
 historical backlog.  Run the script for live numbers after merging concurrent
 source work.
 
