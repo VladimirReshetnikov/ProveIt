@@ -62,7 +62,6 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{caution}[theorem]{Caution}
 
-\newcommand{\ord}{\operatorname{ord}}
 \newcommand{\Bell}{\mathcal B}
 \newcommand{\New}{\textcolor{darkgreen}{\textsf{\textbf{[N]}}}}
 \newcommand{\Imported}{\textcolor{navy}{\textsf{\textbf{[I]}}}}
@@ -322,14 +321,14 @@ at both endpoints.
 
 \subsection{Fabius and inverse-Fabius coordinates}
 
-Let $F:[0,1]\to[0,1]$ be the standard Fabius function and let
-$I=F^{-1}$.  With
+Let $\FabiusBounded:[0,1]\to[0,1]$ be the standard Fabius function, with
+$\FabiusQuantile=\FabiusBounded^{-1}$.  With
 \begin{equation}
  G(x):=\Probability(X\le x),\qquad -1\le x\le1,
 \end{equation}
 we have the exact coordinate relation
 \begin{equation}
- G(x)=F\!\left(\frac{x+1}{2}\right).
+ G(x)=\FabiusBounded\!\left(\frac{x+1}{2}\right).
  \label{eq:CDF-Fabius}
 \end{equation}
 Indeed, differentiating the right-hand side and using the two halves of the
@@ -340,13 +339,14 @@ $x=-1$.
 \label{prop:quantile-coordinate}
 If $V\sim\operatorname{Unif}[0,1]$, then
 \begin{equation}
- X\ \stackrel d=\ 2I(V)-1.
+ X\ \stackrel d=\ 2\FabiusQuantile(V)-1.
  \label{eq:X-quantile}
 \end{equation}
 \end{proposition}
 
 \begin{proof}
-The quantile of $G(x)=F((x+1)/2)$ is $G^{-1}(v)=2I(v)-1$.
+The quantile of $G(x)=\FabiusBounded((x+1)/2)$ is
+$G^{-1}(v)=2\FabiusQuantile(v)-1$.
 \end{proof}
 
 \subsection{Bernoulli cumulants}
@@ -516,7 +516,7 @@ simple.
 The zero of $\Psi_c$ at every nonzero integer of $2$-adic valuation $v$ has
 multiplicity
 \begin{equation}
- m_v:=\ord_{t=n}\Psi_c(t)
+ m_v:=\OrderOperator_{t=n}\Psi_c(t)
  =\sum_{j=0}^{v}a_j
  =\sum_{h=0}^{v}c_h(v-h+1).
  \label{eq:m-profile}
@@ -883,7 +883,7 @@ Let $b_j(N)\in\{0,1\}$ be the $j$th binary digit of $N$ and define
 \label{thm:sign-formula}
 For $N\ge0$ and $t\in(N,N+1)$,
 \begin{equation}
- \operatorname{sgn}\Psi_c(t)
+ \Sign \Psi_c(t)
  =\varepsilon_c(N)
  :=(-1)^{\sum_{j\ge0}a_j\Floor{N/2^j}}
  =(-1)^{\sum_{j\ge0}\alpha_jb_j(N)}.
@@ -1148,7 +1148,7 @@ with the convention $\binom{j}{r-1}=0$ when $j<r-1$.  The audited corpus
 already develops its support, smooth density, refinement ladder, zero
 multiplicity
 \begin{equation}
- \ord_{t=n}\Phi_r(t)=\binom{\TwoAdicValuation(|n|)+1}{r},
+ \OrderOperator_{t=n}\Phi_r(t)=\binom{\TwoAdicValuation(|n|)+1}{r},
  \label{eq:Pascal-zero-imported}
 \end{equation}
 and many arithmetic and asymptotic consequences.  The following theorem gives
@@ -1292,7 +1292,7 @@ Up to a nonzero constant,
 $\widehat{x^jg_c}(\xi)$ is the $j$th derivative of $\Psi_c(\xi)$.  For
 $n\ne0$,
 \[
- \ord_{\xi=Qn}\Psi_c
+ \OrderOperator_{\xi=Qn}\Psi_c
  =m_{H+\TwoAdicValuation(|n|)}\ge m_H.
 \]
 Hence all nonconstant Fourier modes vanish when $j<m_H$.  The constant mode is
@@ -1379,20 +1379,20 @@ For every dyadic direction profile,
  \boxed{
  Y_c\ \stackrel d=\
  \sum_{h\ge0}\sum_{\ell=1}^{c_h}
- 2^{-h}\bigl(2I(V_{h,\ell})-1\bigr).}
+ 2^{-h}\bigl(2\FabiusQuantile(V_{h,\ell})-1\bigr).}
  \label{eq:inverse-Fabius-profile}
 \end{equation}
 Writing $D_c:=S_c+Y_c\in[0,2S_c]$, one has
 \begin{equation}
  D_c\ \stackrel d=\
- 2\sum_{h\ge0}\sum_{\ell=1}^{c_h}2^{-h}I(V_{h,\ell}),
+ 2\sum_{h\ge0}\sum_{\ell=1}^{c_h}2^{-h}\FabiusQuantile(V_{h,\ell}),
  \label{eq:Dc-inverse}
 \end{equation}
 and the right-endpoint deficit is
 \begin{equation}
  S_c-Y_c\ \stackrel d=\
  2\sum_{h\ge0}\sum_{\ell=1}^{c_h}2^{-h}
- \bigl(1-I(V_{h,\ell})\bigr).
+ \bigl(1-\FabiusQuantile(V_{h,\ell})\bigr).
  \label{eq:deficit-inverse}
 \end{equation}
 \end{theorem}
@@ -1405,12 +1405,12 @@ $S_c$ gives the last two identities.
 
 Thus every linear tomographic law is also a nonlinear sum of inverse-Fabius
 coordinates.  This exact bridge is useful because the repository's sharpest
-endpoint information is naturally written for $I(y)$ and for the lower branch
+endpoint information is naturally written for $\FabiusQuantile(y)$ and for the lower branch
 $W_{-1}$ of Lambert's function.
 
 \subsection{Laplace factorization}
 
-Let $D:=1+X=2I(V)$ and define
+Let $D:=1+X=2\FabiusQuantile(V)$ and define
 \begin{equation}
  L_1(s):=\Expectation\EulerE^{-sD}
  =\int_0^1\EulerE^{-2sI(v)}\Differential v.

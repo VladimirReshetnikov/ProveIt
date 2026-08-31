@@ -74,7 +74,6 @@ SAFE_RENAMES = {
     "sgn": "Sign",
     "lcm": "LeastCommonMultiple",
     "ord": "OrderOperator",
-    "TV": "TotalVariationDistance",
     "vtwo": "TwoAdicValuation",
     "Law": "LawOperator",
     "Lop": "LaplaceTransformSymbol",
@@ -110,7 +109,6 @@ SAFE_LITERAL_RENAMES = (
     ("operator-diag", r"\\operatorname\s*\{\s*diag\s*\}", "DiagonalOperator"),
     ("operator-tr", r"\\operatorname\s*\{\s*tr\s*\}", "TraceOperator"),
     ("operator-rank", r"\\operatorname\s*\{\s*rank\s*\}", "RankOperator"),
-    ("operator-TV", r"\\operatorname\s*\{\s*TV\s*\}", "TotalVariationDistance"),
     ("operator-ord", r"\\operatorname\s*\{\s*ord\s*\}", "OrderOperator"),
     (
         "operator-binary-weight",

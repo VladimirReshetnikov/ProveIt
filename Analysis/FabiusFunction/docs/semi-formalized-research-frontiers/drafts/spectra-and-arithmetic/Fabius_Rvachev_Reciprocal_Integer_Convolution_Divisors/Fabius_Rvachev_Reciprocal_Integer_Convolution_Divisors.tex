@@ -99,10 +99,7 @@
 
 % Report-local notation not present in the shared preamble.
 \newcommand{\T}{\mathbb T}
-\newcommand{\ord}{\operatorname{ord}}
-\newcommand{\TV}{\operatorname{TV}}
 \newcommand{\Lip}{\operatorname{Lip}}
-\newcommand{\eps}{\varepsilon}
 \newcommand{\Bell}{\mathcal B}
 \newcommand{\D}{\mathcal D}
 \newcommand{\1}{\mathbf 1}
@@ -303,14 +300,15 @@ The convergence is absolute almost surely, the support is $[-1,1]$, and
  \label{eq:X-variance}
 \end{equation}
 
-Let $F$ be the standard Fabius function on $[0,1]$.  In this normalization,
+Let $\FabiusBounded$ be the standard Fabius function on $[0,1]$.  In this normalization,
 \begin{equation}
- \mathbb P(X\le t)=F\!\left(\frac{t+1}{2}\right),
+ \mathbb P(X\le t)=\FabiusBounded\!\left(\frac{t+1}{2}\right),
  \qquad -1\le t\le1,
  \label{eq:F-cdf}
 \end{equation}
-and $F'(x)=2\RvachevUp(2x-1)$.  This distinction is important: $F$ is the affine CDF of
-the $\RvachevUp$ density, while the identity $F(x)=\RvachevUp(x-1)$ on $[0,1]$ is a special
+and $\FabiusBounded'(x)=2\RvachevUp(2x-1)$.  This distinction is important:
+$\FabiusBounded$ is the affine CDF of the $\RvachevUp$ density, while the
+identity $\FabiusBounded(x)=\RvachevUp(x-1)$ on $[0,1]$ is a special
 functional coincidence of the Fabius/Rvachev pair.
 
 \subsection{The integer zero lattice}
@@ -318,7 +316,7 @@ functional coincidence of the Fabius/Rvachev pair.
 A second established fact used repeatedly below is the complete zero divisor of $\Phi$~\cite{ProveItPrimary}.
 For $m\in\IntegerNumbers\setminus\{0\}$,
 \begin{equation}
- \ord_{z=m}\Phi(z)=1+\TwoAdicValuation(|m|),
+ \OrderOperator_{z=m}\Phi(z)=1+\TwoAdicValuation(|m|),
  \label{eq:Phi-zero-order}
 \end{equation}
 where $\TwoAdicValuation(m)$ is the exponent of $2$ in $m$.  There are no other zeros.  The
@@ -469,7 +467,7 @@ which would require every $0<c<1$ and would in particular force a zero-free
 characteristic function.
 \end{remark}
 
-\subsection{New refinement equations for $\RvachevUp$ and $F$}
+\subsection{New refinement equations for $\RvachevUp$ and $\FabiusBounded$}
 
 Write $\D_a\mu$ for the pushforward of a measure under $x\mapsto ax$.  Then
 \eqref{eq:main-decomposition} is the measure identity
@@ -488,17 +486,17 @@ For every integer $M\ge2$,
  \RvachevUp(x)=M\int_{\RealNumbers}\RvachevUp\bigl(M(x-y)\bigr)\,\nu_M(\Differential y).
  \label{eq:Up-M-refinement}
 \end{equation}
-If $F$ is extended by $0$ on $(-\infty,0]$ and by $1$ on $[1,\infty)$, then
+If $\FabiusBounded$ is extended by $0$ on $(-\infty,0]$ and by $1$ on $[1,\infty)$, then
 \begin{equation}
- F(u)=\int_{\RealNumbers}
- F\!\left(\frac{M(2u-1-y)+1}{2}\right)\nu_M(\Differential y).
+ \FabiusBounded(u)=\int_{\RealNumbers}
+ \FabiusBounded\!\left(\frac{M(2u-1-y)+1}{2}\right)\nu_M(\Differential y).
  \label{eq:F-M-refinement}
 \end{equation}
 \end{corollary}
 
 \begin{proof}
 The first formula is the density of \eqref{eq:measure-refinement}.  For the second, apply
-the CDF identity to $G(t)=F((t+1)/2)$:
+the CDF identity to $G(t)=\FabiusBounded((t+1)/2)$:
 $G(t)=\int G(M(t-y))\nu_M(\Differential y)$, then set $t=2u-1$.
 \end{proof}
 
@@ -874,9 +872,10 @@ have essential displacement smaller than their difference $1/M$.
 \begin{corollary}[Maximal total variation along odd approximants]
 \label{cor:TV}
 For every odd $M\ge3$, $\mu$ and $\nu_M$ are mutually singular.  In the convention
-$d_{\TV}(\rho,\sigma)=\sup_A|\rho(A)-\sigma(A)|$,
+$\TotalVariationDistance(\rho,\sigma)
+ =\sup_A\AbsoluteValue{\rho(A)-\sigma(A)}$,
 \begin{equation}
- d_{\TV}(\mu,\nu_M)=1,
+ \TotalVariationDistance(\mu,\nu_M)=1,
  \qquad
  W_\infty(\mu,\nu_M)=\frac1M.
  \label{eq:TV-Wcontrast}
@@ -894,7 +893,8 @@ One-dimensional $W_\infty$ equals the supremum norm of quantiles, so
  \sup_{0<p<1}|G_X^{-1}(p)-G_M^{-1}(p)|=\frac1M.
  \label{eq:quantile-W}
 \end{equation}
-By \eqref{eq:F-cdf}, $G_X^{-1}(p)=2F^{-1}(p)-1$.  If $K_M$ is the quantile function of
+By \eqref{eq:F-cdf},
+$G_X^{-1}(p)=2\FabiusQuantile(p)-1$.  If $K_M$ is the quantile function of
 $Z_M$, then \eqref{eq:Y-Z-affine} gives
 \[
  G_M^{-1}(p)=\frac{2K_M(p)-(M-1)}{M}.
@@ -905,7 +905,7 @@ $Z_M$, then \eqref{eq:Y-Z-affine} gives
 For every integer $M\ge2$ and every $0<p<1$,
 \begin{equation}
  \boxed{
- \left|F^{-1}(p)-\left(\frac{K_M(p)}{M}+\frac1{2M}\right)\right|
+ \left|\FabiusQuantile(p)-\left(\frac{K_M(p)}{M}+\frac1{2M}\right)\right|
  \le\frac1{2M}.}
  \label{eq:F-inverse-bracket}
 \end{equation}
@@ -930,7 +930,7 @@ Then $X=S_{M,k}+M^{-k}X^{(k)}$ in the natural coupling.  Hence
 \end{equation}
 If $L_{M,k}$ is the quantile of $S_{M,k}$,
 \begin{equation}
- \left|F^{-1}(p)-\frac{1+L_{M,k}(p)}2\right|
+ \left|\FabiusQuantile(p)-\frac{1+L_{M,k}(p)}2\right|
  \le\frac1{2M^k}.
  \label{eq:iter-inverse}
 \end{equation}
@@ -998,7 +998,7 @@ integer scale.
 
 Let
 \begin{equation}
- \delta_M(n)=\ord_{z=n}Q_M(z),
+ \delta_M(n)=\OrderOperator_{z=n}Q_M(z),
  \qquad n\in\PositiveIntegers.
  \label{eq:deltaM-def}
 \end{equation}
@@ -1337,9 +1337,9 @@ For fixed $n$, $c_{M,N}(n)$ stabilizes once $2^N>n$; call the stable value $c_M(
 Let
 \begin{equation}
  T_N(x)=\prod_{j=0}^{N-1}(1-x^{2^j})
- =\sum_{n=0}^{2^N-1}\eps_nx^n,
+ =\sum_{n=0}^{2^N-1}\ThueMorseSign{n}x^n,
  \qquad
- \eps_n=(-1)^{s_2(n)},
+ \ThueMorseSign{n}=(-1)^{s_2(n)},
  \label{eq:TN}
 \end{equation}
 be the finite Thue--Morse polynomial.
@@ -1360,14 +1360,14 @@ where
 \begin{equation}
  A_M(x)=\sum_{n\ge0}c_M(n)x^n,
  \qquad
- T(x)=\prod_{j\ge0}(1-x^{2^j})=\sum_{n\ge0}\eps_nx^n.
+ T(x)=\prod_{j\ge0}(1-x^{2^j})=\sum_{n\ge0}\ThueMorseSign{n}x^n.
  \label{eq:AM-T}
 \end{equation}
 Equivalently,
 \begin{equation}
- \sum_{k=0}^{n}c_M(k)\eps_{n-k}
+ \sum_{k=0}^{n}c_M(k)\ThueMorseSign{n-k}
  =\begin{cases}
- \eps_{n/M},&M\mid n,\\
+ \ThueMorseSign{n/M},&M\mid n,\\
  0,&M\nmid n.
  \end{cases}
  \label{eq:TM-convolution-inverse}
@@ -1436,15 +1436,15 @@ In $\IntegerNumbers[[x]]$,
 \begin{equation}
  \boxed{
  \left(\sum_{n\ge0}s(n+1)x^n\right)
- \left(\sum_{n\ge0}\eps_nx^n\right)
- =\sum_{n\ge0}\eps_nx^{3n}.}
+ \left(\sum_{n\ge0}\ThueMorseSign{n}x^n\right)
+ =\sum_{n\ge0}\ThueMorseSign{n}x^{3n}.}
  \label{eq:Stern-TM}
 \end{equation}
 Equivalently,
 \begin{equation}
- \sum_{k=0}^{n}s(k+1)\eps_{n-k}
+ \sum_{k=0}^{n}s(k+1)\ThueMorseSign{n-k}
  =\begin{cases}
- \eps_{n/3},&3\mid n,\\0,&3\nmid n.
+ \ThueMorseSign{n/3},&3\mid n,\\0,&3\nmid n.
  \end{cases}
  \label{eq:Stern-TM-coeff}
 \end{equation}
@@ -2029,7 +2029,8 @@ unless $M$ is large.
 There is an adaptive scheme choosing $M$ and an innovation depth $k$ from the Lambert
 phase of $p$ such that:
 \begin{enumerate}
-\item the Lambert-$W$ approximation provides a narrow initial interval for $F^{-1}(p)$;
+\item the Lambert-$W$ approximation provides a narrow initial interval for
+      $\FabiusQuantile(p)$;
 \item the quantile of $Y_{M^k}$ refines it with the rigorous radius $1/(2M^k)$;
 \item $q=M^{-2}$ Richardson extrapolation reduces the Fourier/cascade work to
 polylogarithmic complexity in the requested precision.

@@ -300,6 +300,8 @@ of the pointwise support.\\
 \commandname{Convolution} & $f\Convolution g$ & Convolution, with the underlying group and
 measure stated locally.\\
 \commandname{MetricDistance} & $\MetricDistance(x,y)$ & Distance of the named metric space.\\
+\commandname{TotalVariationOf}\texttt{\{a\}} & $\TotalVariationOf{a}$ & Total
+variation of one typed function, signed measure, or other locally declared object.\\
 \commandname{TotalVariationDistance} & $\TotalVariationDistance(\mu,\nu)$ & Total
 variation distance with the probability convention $\sup_A|\mu(A)-\nu(A)|$.\\
 \commandname{Probability} & $\Probability$ & Probability measure.\\
@@ -1018,6 +1020,18 @@ probability variable unless additional reality hypotheses are given.}
 
 \begin{catalogueentry}{probability-metrics}{Total variation, Wasserstein, and
 Kolmogorov distances}
+\entryfield{One-object total variation}{The command
+\commandname{TotalVariationOf}\texttt{\{a\}} denotes the total variation of one object
+$a$.  Its type must be stated locally.  For a real function on $[u,v]$,
+\[
+ \TotalVariationOf{f}
+ \DefinitionEquals
+ \sup_{u=x_0<\cdots<x_n=v}
+ \sum_{j=1}^{n}\AbsoluteValue{f(x_j)-f(x_{j-1})}.
+\]
+For a finite signed measure $\sigma$, it denotes $|\sigma|(X)$, equivalently the
+total-variation norm under the convention stated in the source.  These are one-object
+functionals, not distances between two probability measures.}
 \entryfield{Total variation}{For probability measures $\mu,\nu$ on the same measurable
 space,
 \[
@@ -3031,6 +3045,13 @@ and state uniformity parameters.\\
 argument-delimited form in prose; distinguish pointwise, topological, measure, and
 essential support.\\
 \commandname{sgn} & \commandname{Sign} & Real sign with value zero at zero.\\
+\commandname{TV} & \commandname{TotalVariationOf} or
+\commandname{TotalVariationDistance} & Count the mathematical arguments: one typed
+object means total variation; two probability measures mean the fixed distance.\\
+\commandname{dist} & \commandname{MetricDistance} or \commandname{EqualInLaw} & Inspect
+the relation: a numeric metric distance is not equality in distribution.\\
+\commandname{ord} & \commandname{OrderOperator} & Multiplicative order, vanishing order,
+or another order operator only after the local arguments define which notion is meant.\\
 \commandname{lcm} & \commandname{LeastCommonMultiple} & State the finite family and
 empty-family convention.\\
 \commandname{vtwo} & \commandname{TwoAdicValuation} & State the value at zero or restrict
@@ -3148,10 +3169,11 @@ $\SupportOperator,\SupportOf{f},\TopologicalSupportOf{f}$ &
 \commandname{SupportOperator}, \commandname{SupportOf},
 \commandname{TopologicalSupportOf} & Operator token, pointwise support, and its
 topological closure.\\
-$\Convolution,\MetricDistance,\TotalVariationDistance$ &
+$\Convolution,\MetricDistance,\TotalVariationOf{a},\TotalVariationDistance$ &
 \commandname{Convolution}, \commandname{MetricDistance},
-\commandname{TotalVariationDistance} & Algebraic/measure convolution, generic metric,
-and the fixed probability TV convention.\\
+\commandname{TotalVariationOf}, \commandname{TotalVariationDistance} &
+Algebraic/measure convolution, generic metric, a one-object variation functional, and
+the fixed two-measure probability TV convention.\\
 $\Probability,\Expectation,\Variance,\Covariance$ & \commandname{Probability},
 \commandname{Expectation}, \commandname{Variance}, \commandname{Covariance} & Measure,
 integral operator, and second-order statistics.\\
@@ -3307,6 +3329,7 @@ Command & Arity & Normative entry\\
 \commandname{ThueMorseSignSymbol} & 0 & \notelink{thue-morse}{Thue--Morse sign}.\\
 \commandname{TopologicalSupportOf} & 1 & \notelink{support}{Support}.\\
 \commandname{TotalVariationDistance} & 0 & \notelink{probability-metrics}{Probability metrics}.\\
+\commandname{TotalVariationOf} & 1 & \notelink{probability-metrics}{Probability metrics}.\\
 \commandname{TraceOperator} & 0 & \notelink{matrix-operators}{Matrix operators}.\\
 \commandname{TwoAdicValuation} & 0 & \notelink{padic-valuation}{Valuations}.\\
 \commandname{Variance} & 0 & \notelink{expectation}{Expectation and moments}.\\
@@ -3477,8 +3500,8 @@ rendered-PDF inspection later closes the composition and layout gap.
 At shared-contract version \FabiusNotationVersion:
 
 \begin{itemize}
-\item \path{docs/fabius-notation.tex} defines exactly 88 shared commands.
-\item Every one of those 88 command names occurs in the canonical quick reference and
+\item \path{docs/fabius-notation.tex} defines exactly 89 shared commands.
+\item Every one of those 89 command names occurs in the canonical quick reference and
       in the alphabetical command index, with its exact arity.
 \item Every command belongs to a detailed normative entry defining its type-level role,
       normalization, exceptional cases, or the local data the command intentionally
