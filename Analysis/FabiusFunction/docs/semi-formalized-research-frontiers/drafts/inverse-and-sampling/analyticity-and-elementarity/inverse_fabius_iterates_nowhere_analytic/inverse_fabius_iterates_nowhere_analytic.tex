@@ -105,6 +105,8 @@
 \newcommand{\ThetaF}{\Theta}
 \newcommand{\half}{\tfrac12}
 \newcommand{\rad}{\operatorname{rad}}
+% LOCAL-NON-FOURIER-HAT: \FormalTaylorGerm denotes the formal Taylor series of a smooth map at the center stated in context
+\newcommand{\FormalTaylorGerm}[1]{\widehat{#1}}
 \newcommand{\statusnote}[1]{%
   \begin{center}
   \fcolorbox{linkblue}{shadegray}{\parbox{0.91\textwidth}{\small #1}}
@@ -381,10 +383,10 @@ In particular, $\RvachevUp$ is even, strictly decreasing on $[0,1]$, and
 
 For $k\geq0$, put
 \begin{equation}
-  \eps_k=(-1)^{s_2(k)},
+  \eps_k=(-1)^{\BinaryDigitSum(k)},
   \label{eq:tm-sign}
 \end{equation}
-where $s_2(k)$ is the sum of the binary digits of $k$.  The signed global extension
+where $\BinaryDigitSum(k)$ is the sum of the binary digits of $k$.  The signed global extension
 $\ThetaF$ can be written blockwise as
 \begin{equation}
  \ThetaF(t)=\eps_k\,\RvachevUp\bigl(t-(2k+1)\bigr),
@@ -421,7 +423,7 @@ At the matched dyadic grid this becomes the exact Thue--Morse jet law
  F^{(m)}\!\left(\frac{a}{2^m}\right)
  =\begin{cases}
  0,&a\text{ even},\\
- Q_m\eps_{\lfloor a/2\rfloor},&a\text{ odd}.
+ Q_m\eps_{\Floor{a/2}},&a\text{ odd}.
  \end{cases}
  \label{eq:dyadic-jet}
 \end{equation}
@@ -1015,25 +1017,25 @@ Consequently $R_g(x_0)=0$ if and only if $R_k(y_0)=0$.
 \begin{proof}
 Translate the centers and write the formal Taylor series as
 \[
- \widehat g(z)=a_1z+a_2z^2+\cdots,
+ \FormalTaylorGerm{g}(z)=a_1z+a_2z^2+\cdots,
  \qquad
- \widehat k(w)=b_1w+b_2w^2+\cdots,
+ \FormalTaylorGerm{k}(w)=b_1w+b_2w^2+\cdots,
  \qquad a_1b_1=1.
 \]
 Differentiating the smooth identities $g\comp k=\id$ and $k\comp g=\id$ to every
 finite order gives the formal composition identities
 \begin{equation}
- \widehat g\comp\widehat k=w,
+ \FormalTaylorGerm{g}\comp\FormalTaylorGerm{k}=w,
  \qquad
- \widehat k\comp\widehat g=z.
+ \FormalTaylorGerm{k}\comp\FormalTaylorGerm{g}=z.
  \label{eq:formal-inverse-identities}
 \end{equation}
 Thus each is the unique formal compositional inverse of the other.
 
-Assume $R_k(y_0)>0$.  Then $\widehat k$ defines an analytic germ with nonzero linear
+Assume $R_k(y_0)>0$.  Then $\FormalTaylorGerm{k}$ defines an analytic germ with nonzero linear
 coefficient.  By the analytic inverse-function theorem it has a convergent analytic
 inverse germ.  The Taylor series of that inverse is the unique formal inverse of
-$\widehat k$, hence equals $\widehat g$.  Therefore $R_g(x_0)>0$.  Interchanging $g$
+$\FormalTaylorGerm{k}$, hence equals $\FormalTaylorGerm{g}$.  Therefore $R_g(x_0)>0$.  Interchanging $g$
 and $k$ proves the converse.
 \end{proof}
 
@@ -1152,7 +1154,7 @@ The exact derivative atlas gives
 \]
 Formal composition therefore gives
 \[
- \widehat G_n(\half+h)=\half+2^nh.
+ \FormalTaylorGerm{G_n}(\half+h)=\half+2^nh.
 \]
 Its unique formal inverse is $\half+2^{-n}h$, proving the derivative identities for
 $K_n$.  If this Taylor polynomial represented $K_n$ on a neighborhood, then $K_n$
@@ -1212,12 +1214,12 @@ No numerical experiment is used in any proof.  The accompanying commented script
 \subsection{Sinc-product reconstruction}
 
 With the Fourier convention
-$\widehat f(\xi)=\int_\RealNumbers f(t)e^{-2\pi i\xi t}\Differential t$, the Rvachev bump has product
+$\FourierTwoPi{f}(\xi)=\int_\RealNumbers f(t)e^{-2\pi i\xi t}\Differential t$, the Rvachev bump has product
 \begin{equation}
- \widehat\RvachevUp(\xi)
- =\prod_{j=0}^{\infty}\operatorname{sinc}
+ \FourierTwoPi{\RvachevUp}(\xi)
+ =\prod_{j=0}^{\infty}\SincRad
    \left(\frac{\pi\xi}{2^j}\right),
- \qquad \operatorname{sinc}(z)=\frac{\sin z}{z}.
+ \qquad \SincRad(z)=\frac{\sin z}{z}.
  \label{eq:sinc-product}
 \end{equation}
 The script truncates the product, applies an inverse FFT on a period larger than the
@@ -1315,7 +1317,7 @@ The script writes all raw values to
 \path{numerical_output/spine_diagnostic.csv}, records orbit metadata and the maximum
 formal reversion residual, and regenerates every figure.  At degree $22$, using
 160 decimal digits, the maximum coefficient residual in
-$\widehat G_4\comp\widehat K_4=\id$ is below $2\times10^{-65}$.
+$\FormalTaylorGerm{G_4}\comp\FormalTaylorGerm{K_4}=\id$ is below $2\times10^{-65}$.
 
 \section{Connections to the broader Fabius corpus}
 \label{sec:connections}
@@ -1418,7 +1420,7 @@ precisely its eventually-zero-jet locus, then claimed that
 The second clause is false: formal reversion preserves convergence, not polynomiality.
 At $x=1/4$ the exact forward Taylor germ is
 \[
- \widehat F_{1/4}(z)=\frac5{72}+z+4z^2,
+ \FormalTaylorGerm{F_{1/4}}(z)=\frac5{72}+z+4z^2,
 \]
 because $F'(1/4)=1$, $F''(1/4)=8$, and all higher derivatives vanish.  At
 $y=F(1/4)=5/72$, the inverse Taylor germ therefore solves $w=z+4z^2$ and is

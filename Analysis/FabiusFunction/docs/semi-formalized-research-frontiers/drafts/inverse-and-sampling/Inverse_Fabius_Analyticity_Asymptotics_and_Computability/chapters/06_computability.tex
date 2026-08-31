@@ -1,0 +1,1770 @@
+% Editorial bootstrap from the immutable source revision.
+% This file is canonical and may be edited independently.
+
+\part{Exact Inverse Moduli and Computability}
+
+
+% Source fragment: Inverse computability; prefix co.
+\section{Main result and proof architecture}
+
+\subsection{The theorem in one statement}
+
+Throughout the report, $F:\RealNumbers\to[0,1]$ denotes the bounded Fabius function:
+it is $0$ on $(-\infty,0]$, $1$ on $[1,\infty)$, and on $[0,1]$ it is the
+strictly increasing $C^\infty$ function satisfying
+\begin{equation}\label{co:eq:F-basic}
+ F(x)+F(1-x)=1,
+ \qquad
+ F'(x)=2F(2x)\quad(0\le x\le\tfrac12).
+\end{equation}
+Let $G:[0,1]\to[0,1]$ be its inverse, and define the totalized inverse
+\begin{equation}\label{co:eq:totalized-inverse}
+ \InvT(y):=G(\Clamp(y)),
+ \qquad
+ \Clamp(y):=\min(1,\max(0,y)).
+\end{equation}
+Thus $\InvT(y)=0$ for $y\le0$ and $\InvT(y)=1$ for $y\ge1$.
+
+\begin{theorem}[Computability of the inverse Fabius function]\label{co:thm:main}
+The inverse $G:[0,1]\to[0,1]$, in the subset-domain version of the
+Grzegorczyk definition, and its totalization $\InvT:\RealNumbers\to\RealNumbers$ are computable
+real functions.  More explicitly:
+\begin{enumerate}
+\item $G$ and $\InvT$ are sequentially computable.  From one algorithm that
+      names a computable sequence $(y_i)$, one can uniformly compute dyadic
+      approximations to $G(y_i)$ (or $\InvT(y_i)$) of any requested precision.
+\item For $r\ge0$, put
+      \begin{equation}\label{co:eq:Delta-intro}
+       \Delta_r=\frac{1}{2^{r(r+1)/2}(r+1)^{r+1}}.
+      \end{equation}
+      Then, for all $u,v\in\RealNumbers$,
+      \begin{equation}\label{co:eq:explicit-dyadic-modulus-intro}
+       \AbsoluteValue{u-v}<\Delta_r
+       \quad\Longrightarrow\quad
+       \AbsoluteValue{\InvT(u)-\InvT(v)}<2^{-r}.
+      \end{equation}
+\item For $n\ge1$, let
+      \begin{equation}\label{co:eq:r-of-n}
+       r(n):=\min\SetOf{r\ge1:2^r>n},
+      \end{equation}
+      and define
+      \begin{equation}\label{co:eq:d-of-n-intro}
+       d(n):=2^{r(n)(r(n)+1)/2}\bigl(r(n)+1\bigr)^{r(n)+1},
+       \qquad d(0):=1.
+      \end{equation}
+      The integer function $d$ is recursive (indeed primitive recursive after
+      a standard bounded-search coding), and
+      \begin{equation}\label{co:eq:wikipedia-modulus-intro}
+       \AbsoluteValue{u-v}<\frac1{d(n)}
+       \quad\Longrightarrow\quad
+       \AbsoluteValue{\InvT(u)-\InvT(v)}<\frac1n
+       \qquad(n\ge1).
+      \end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The claims are assembled below from independently certified ingredients; we
+record the dependency chain here so that the headline theorem has a proof at
+the point where it is stated.  The tolerant-bisection realizer proved in
+\cref{co:thm:bisection-correct} uniformly transforms a fast name of a sequence
+$(y_i)$ in $[0,1]$ into a fast name of $(G(y_i))$.  This is
+\cref{co:cor:G-sequential}.  Applying the computable, $1$-Lipschitz clamp first
+gives the same uniform transformation for $\InvT$ by
+\cref{co:lem:clamp-computable,co:cor:GT-sequential}, proving item~1.
+
+For item~2, \cref{co:lem:box-event} gives
+$\Delta_r\le F(2^{-r})$.  The exact inverse-modulus theorem, in the
+effective-injectivity form \cref{co:cor:effective-injectivity}, therefore gives
+\[
+ |u-v|<\Delta_r\quad\Longrightarrow\quad
+ |\InvT(u)-\InvT(v)|<2^{-r};
+\]
+this is \cref{co:thm:closed-dyadic-modulus}.  For $n\ge1$, the least integer
+$r(n)\ge1$ with $2^{r(n)}>n$ is computable by bounded search, and the displayed
+formula for $d(n)$ is a computable composition of integer operations.  Moreover
+$d(n)^{-1}=\Delta_{r(n)}$ and $2^{-r(n)}<1/n$.  Chaining these two strict
+inequalities with item~2 proves item~3, as detailed in
+\cref{co:thm:reciprocal-modulus}.  Thus $G$ (on its subset domain) and $\InvT$
+satisfy both clauses of \cref{co:def:computable-function}.
+\end{proof}
+
+The theorem is stronger than a nonconstructive assertion that a continuous
+inverse on a compact interval is uniformly continuous.  It gives a concrete
+integer modulus, a finite algorithm on names, and a sharp structural identity
+for the best possible modulus.
+
+\subsection{Four proof layers}
+
+The argument is organized so that every hidden effectiveness issue is exposed.
+
+\begin{enumerate}
+\item \textbf{Forward oracle.}  A centered finite convolution has an exact
+Thue--Morse truncated-power formula.  At rational inputs it is rational, and
+its error from $F$ is at most $2^{-N}$.
+\item \textbf{Effective injectivity.}  Symmetric unimodality shows that an
+interval of geometric length $h$ has probability mass at least $F(h)$;
+strict radial unimodality shows that equality occurs only for a degenerate
+interval or an endpoint interval.
+A direct event gives the computable lower bound $F(2^{-r})\ge\Delta_r$.
+\item \textbf{Uniform continuity.}  Effective injectivity of $F$ becomes an
+effective modulus for $G$.  In fact the ordinary modulus of $G$ is exactly
+$G$ itself.
+\item \textbf{Name transformation.}  Tolerant bisection combines the forward
+oracle and the inverse modulus.  A midpoint is used for a left/right update
+only when the sign is certified; otherwise it is already a certified output.
+\end{enumerate}
+
+The fourth layer matters.  Naive bisection that waits until it decides whether
+$F(c)<y$, $F(c)=y$, or $F(c)>y$ is not an algorithm on arbitrary computable
+reals: equality of computable reals is undecidable in general.  The tolerance
+branch is what removes that obstruction.
+
+% Source fragment: Inverse computability; prefix co.
+\section{Computable-analysis definitions}
+
+\subsection{Fast names and computable sequences}
+
+Following standard computable analysis \cite{co:G1957,co:Weihrauch2000,co:PourElRichards1989}, a convenient representation of a real number $x$ is a fast dyadic Cauchy
+name: an algorithm returns a dyadic rational $q_p$ such that
+\begin{equation}\label{co:eq:fast-name}
+ \AbsoluteValue{x-q_p}\le2^{-p}.
+\end{equation}
+A real sequence $(x_i)_{i\in\NaturalNumbers}$ is computable when one algorithm returns
+$q_{i,p}$ satisfying \eqref{co:eq:fast-name} uniformly in both $i$ and $p$.
+The repository uses an equivalent signed-natural code for the dyadic
+numerator, avoiding an opaque integer encoding.
+
+\begin{definition}[Sequential computability]\label{co:def:sequential}
+A function $f$ is \emph{sequentially computable} if there is one effective
+realizer transformer with the following property.  Given as a subroutine any
+algorithm $Q(i,p)$ returning a dyadic rational with
+$|Q(i,p)-x_i|\le2^{-p}$ for a sequence $(x_i)$ in the domain, the transformer
+produces an algorithm $R(i,p)$ returning a dyadic rational with
+$|R(i,p)-f(x_i)|\le2^{-p}$.  The same transformer works for every input name,
+uniformly in the sequence index $i$ and requested precision $p$.
+\end{definition}
+
+Thus this is a realizability assertion, not merely the extensional statement
+that each computable input sequence happens to have a computable image.  The
+construction in \cref{co:sec:sequential} supplies the single uniform
+transformer explicitly.
+
+\subsection{The reciprocal uniform-continuity convention}
+
+\begin{definition}[Effective uniform continuity]\label{co:def:euc}
+A function $f:\RealNumbers\to\RealNumbers$ is \emph{effectively uniformly continuous} if there
+is a recursive $d:\NaturalNumbers\to\NaturalNumbers$ with $d(n)>0$ for $n>0$ such that
+\begin{equation}\label{co:eq:euc-def}
+ \AbsoluteValue{x-y}<\frac1{d(n)}
+ \quad\Longrightarrow\quad
+ \AbsoluteValue{f(x)-f(y)}<\frac1n
+ \qquad(n>0).
+\end{equation}
+\end{definition}
+
+This is the reciprocal convention used in the cited Wikipedia article
+\cite{co:WikipediaCRF}.  The repository implements it in
+\path{FabiusComputability.lean}.  It is equivalent to the more common binary
+modulus convention
+\begin{equation}\label{co:eq:binary-modulus-convention}
+ \AbsoluteValue{x-y}<2^{-m(p)}
+ \quad\Longrightarrow\quad
+ \AbsoluteValue{f(x)-f(y)}<2^{-p},
+\end{equation}
+provided $m$ is recursive.  We give both forms because the binary version
+reveals the endpoint conditioning much more clearly.
+
+\begin{definition}[Computable real function]\label{co:def:computable-function}
+In the Grzegorczyk formulation used here, a real function is computable if it
+is sequentially computable and effectively uniformly continuous.
+\end{definition}
+
+For $G$ defined only on $[0,1]$, the same definitions are restricted to
+sequences and pairs of points in that computable compact domain.  The totalized
+$\InvT$ lets one use the literal type $\RealNumbers\to\RealNumbers$ without changing the
+mathematics.
+
+\section{Probability, Fourier structure, and the forward function}
+\label{co:sec:forward}
+
+\subsection{The random-series model}
+
+The classical probability model may be written as follows\ \cite{co:Fabius1966,co:Arias05442,co:ProveIt}.  Let $U_1,U_2,\ldots$ be independent uniform random variables on $[0,1]$ and
+put
+\begin{equation}\label{co:eq:random-series}
+ X:=\sum_{k=1}^{\infty}2^{-k}U_k.
+\end{equation}
+The series converges absolutely, $0\le X\le1$, and
+\begin{equation}\label{co:eq:F-cdf}
+ F(x)=\Probability[X\le x].
+\end{equation}
+Reflection $U_k\mapsto1-U_k$ sends $X$ to $1-X$ and proves the symmetry in
+\eqref{co:eq:F-basic}.
+
+The centered random variable
+\begin{equation}\label{co:eq:centered-random}
+ Y:=2X-1=\sum_{k=1}^{\infty}2^{-k}(2U_k-1)
+\end{equation}
+has density $\RvachevUp$.  With $\SincRad z=\sin z/z$,
+\begin{equation}\label{co:eq:sinc-product}
+ \Expectation\EulerE^{\ImaginaryUnit tY}
+ =\prod_{k=1}^{\infty}\SincRad\!\left(\frac{t}{2^k}\right).
+\end{equation}
+Thus the probability model, the Rvachev bump, and the infinite sinc product
+are three representations of the same object.  The computability proof uses
+the probability representation in physical space; the Fourier and polynomial
+alternatives are developed in the shared platform and the deconvolution and
+self-sampling parts of this volume.
+
+\subsection{Finite sums and their exact CDFs}
+
+For $N\ge1$, define
+\begin{equation}\label{co:eq:finite-random-sum}
+ X_N:=\sum_{k=1}^{N}2^{-k}U_k,
+ \qquad
+ R_N:=X-X_N.
+\end{equation}
+Then
+\begin{equation}\label{co:eq:tail-bound}
+ 0\le R_N\le2^{-N}.
+\end{equation}
+Let $F_N(x)=\Probability[X_N\le x]$.  The general inclusion--exclusion formula for a
+sum of independent, nonidentically scaled uniforms becomes especially rigid
+for dyadic scales.
+
+\begin{proposition}[Finite Thue--Morse CDF]\label{co:prop:finite-cdf}
+For $N\ge1$ and $x\in\RealNumbers$,
+\begin{equation}\label{co:eq:finite-cdf-formula}
+ F_N(x)=
+ \frac{2^{N(N+1)/2}}{N!}
+ \sum_{j=0}^{2^N-1}(-1)^{\BinaryDigitSum(j)}
+ \PositivePart{x-\frac{j}{2^N}}^{N},
+\end{equation}
+where $\BinaryDigitSum(j)$ is the sum of the binary digits of $j$.
+\end{proposition}
+
+\begin{proof}
+For positive lengths $a_1,\ldots,a_N$, the CDF of
+$\sum a_kU_k$ is
+\[
+ \frac{1}{N!\prod_{k=1}^N a_k}
+ \sum_{A\subseteq\{1,\ldots,N\}}(-1)^{|A|}
+ \PositivePart{x-\sum_{k\in A}a_k}^{N}.
+\]
+This follows by integrating the box indicator over the half-space
+$\sum a_ku_k\le x$, or inductively by finite differences of truncated powers.
+Here $a_k=2^{-k}$ and
+$\prod a_k=2^{-N(N+1)/2}$.  The map
+\[
+ A\longmapsto j(A):=\sum_{k\in A}2^{N-k}
+\]
+is a bijection from subsets to $\{0,\ldots,2^N-1\}$, with
+$\sum_{k\in A}2^{-k}=j(A)/2^N$ and
+$|A|\equiv \BinaryDigitSum(j(A))\pmod2$.  Substitution gives
+\eqref{co:eq:finite-cdf-formula}.
+\end{proof}
+
+The alternating signs are exactly the Thue--Morse signs.  No limiting
+argument is hidden in \eqref{co:eq:finite-cdf-formula}: at rational $x$ it is an
+exact rational obtained by finitely many integer operations.
+
+\subsection{Centered finite splines and a uniform certificate}
+
+The deterministic midpoint of the omitted tail is $2^{-N-1}$.  Define
+\begin{equation}\label{co:eq:centered-truncation}
+ Q_N:=X_N+2^{-N-1},
+ \qquad
+ S_N(x):=\Probability[Q_N\le x]=F_N(x-2^{-N-1}).
+\end{equation}
+Then \cref{co:prop:finite-cdf} gives
+\begin{equation}\label{co:eq:centered-spline-formula}
+ S_N(x)=
+ \frac{2^{N(N+1)/2}}{N!}
+ \sum_{j=0}^{2^N-1}(-1)^{\BinaryDigitSum(j)}
+ \PositivePart{x-\frac{2j+1}{2^{N+1}}}^{N}.
+\end{equation}
+This is the centered uniform spline used by the repository's primitive-
+recursive evaluator.
+
+\begin{lemma}[Uniform density bound]\label{co:lem:density-bound}
+The finite CDFs $F_N$ and $S_N$ are globally $2$-Lipschitz.
+\end{lemma}
+
+\begin{proof}
+The density of $2^{-1}U_1$ is $2\IndicatorOf{[0,1/2]}$.  Convolution with any
+probability measure cannot increase the $L^\infty$ norm of a density.  Hence
+the density of $X_N$ is bounded by $2$.  Translating by $2^{-N-1}$ does not
+change this bound.  Integrating the density over an interval proves the
+Lipschitz estimate.
+\end{proof}
+
+\begin{theorem}[Certified centered approximation]\label{co:thm:centered-error}
+For every $N\ge1$ and every real $x$,
+\begin{equation}\label{co:eq:centered-error}
+ \AbsoluteValue{S_N(x)-F(x)}\le2^{-N}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write
+\[
+ X=Q_N+E_N,
+ \qquad
+ E_N=R_N-2^{-N-1}.
+\]
+By \eqref{co:eq:tail-bound}, $|E_N|\le2^{-N-1}$.  Therefore
+\[
+ S_N(x-2^{-N-1})\le F(x)\le S_N(x+2^{-N-1}).
+\]
+By \cref{co:lem:density-bound}, moving the argument by $2^{-N-1}$ changes $S_N$
+by at most $2\cdot2^{-N-1}=2^{-N}$.  This gives both sides of
+\eqref{co:eq:centered-error}.
+\end{proof}
+
+\begin{corollary}[Self-contained computability of $F$]\label{co:cor:F-computable}
+There is an explicit uniform algorithm which, given a rational $x$ and a
+precision $p$, returns a rational $q$ with
+$|q-F(x)|\le2^{-p}$.  One may take $q=S_N(x)$ with $N\ge p$.
+Consequently $F$ is sequentially computable; together with its global
+$2$-Lipschitz bound, it is a computable real function.
+\end{corollary}
+
+\begin{proof}
+Formula \eqref{co:eq:centered-spline-formula} is a finite rational computation,
+and \cref{co:thm:centered-error} supplies its error certificate.  At an arbitrary
+computable input, first replace the input by a sufficiently accurate dyadic;
+the $2$-Lipschitz bound controls this replacement.  The construction is
+uniform in a sequence index.  Effective uniform continuity follows from
+$|F(x)-F(y)|\le2|x-y|$; for example the reciprocal modulus $d(n)=2n$ works.
+\end{proof}
+
+\begin{remark}[Efficiency versus computability]
+The direct sum has $2^N$ terms and is not intended as an efficient evaluator.
+The repository's exact dyadic recurrence, highest-bit reduction, and
+primitive-recursive natural-number implementation are substantially better.
+For the theorem here, only termination and a proved error bound are required.
+\end{remark}
+
+\section{Effective positivity, strict increase, and the density shape}
+
+\subsection{A closed positive lower bound at dyadic points}
+
+The existence of an inverse requires strict increase; effective inversion
+requires a quantitative version.  Both begin with an elementary positive
+probability event.
+
+\begin{lemma}[Dyadic endpoint box event]\label{co:lem:box-event}
+For every $r\ge0$,
+\begin{equation}\label{co:eq:Delta-def}
+ F(2^{-r})\ge
+ \Delta_r:=2^{-r(r+1)/2}(r+1)^{-(r+1)}.
+\end{equation}
+In particular, $F(x)>0$ for every $x>0$.
+\end{lemma}
+
+\begin{proof}
+Put $m=r+1$.  For $1\le k\le m$, impose the independent restrictions
+\begin{equation}\label{co:eq:box-restrictions}
+ U_k\le a_k:=\frac{2^{k-r-1}}{m}.
+\end{equation}
+The largest $a_k$ is $a_m=1/m\le1$, so these are valid events.  On their
+intersection,
+\[
+ 2^{-k}U_k\le\frac{2^{-r-1}}m
+ \quad(1\le k\le m).
+\]
+After summation the first $m$ terms contribute at most $2^{-r-1}$.  The
+unrestricted tail contributes at most
+\[
+ \sum_{k=m+1}^{\infty}2^{-k}=2^{-m}=2^{-r-1}.
+\]
+Thus the event in \eqref{co:eq:box-restrictions} implies $X\le2^{-r}$.  Its
+probability is
+\begin{align*}
+ \prod_{k=1}^{m}a_k
+ &=m^{-m}2^{\sum_{k=1}^m(k-r-1)}\\
+ &=m^{-m}2^{m(m+1)/2-m(r+1)}\\
+ &=2^{-r(r+1)/2}(r+1)^{-(r+1)}=\Delta_r.
+\end{align*}
+This proves \eqref{co:eq:Delta-def}.  Given $x>0$, choose $r$ with
+$2^{-r}\le x$ and use monotonicity of a CDF.
+\end{proof}
+
+The bound is deliberately elementary: it uses only independence, the support
+of the tail, and integer arithmetic.  It is not numerically sharp, but
+\cref{co:sec:binary-conditioning} shows that its logarithm has the correct two
+largest orders for computability purposes.
+
+The numerical conclusion of \cref{co:lem:box-event} is now Lean-formalized, but
+by a different and stronger route.  Here is the complete recurrence argument.
+Let $a_0=1$ and use the repository's exact inverse-dyadic identities
+\[
+ a_r=
+ \frac{\displaystyle\sum_{0\le k<r}a_k/(r-k+1)!}{2^r-1}
+ \quad(r\ge1),
+ \qquad
+ F(2^{-r})=2^{-\binom r2}a_r.
+\]
+Every $a_k$ is positive.  Retaining only the $k=0$ summand therefore gives
+\[
+ a_r\ge\frac{1}{(r+1)!(2^r-1)},
+ \qquad
+ F(2^{-r})\ge
+ \frac{1}{2^{\binom r2}(r+1)!(2^r-1)}
+ \quad(r\ge1).
+\]
+Since $2^r-1\le2^r$ and
+$\binom r2+r=\binom{r+1}{2}$, taking the larger denominator yields the
+first inequality below; the exceptional index $r=0$ is simply $F(1)=1$.
+Thus for every $r\ge0$,
+\begin{equation}\label{co:eq:factorial-endpoint-lower}
+ F(2^{-r})\ge
+ \frac{1}{2^{\binom{r+1}{2}}(r+1)!}
+ \ge
+ \frac{1}{2^{\binom{r+1}{2}}(r+1)^{r+1}}
+ =\Delta_r.
+\end{equation}
+Indeed, $(r+1)!\le(r+1)^{r+1}$ proves the second inequality after
+multiplication by the positive power of two and reversal under reciprocation.
+
+For the executable arithmetic, write
+\[
+ d_{\mathrm{fac}}(r):=2^{\binom{r+1}{2}}(r+1)!,
+ \qquad
+ d_{\Delta}(r):=2^{\binom{r+1}{2}}(r+1)^{r+1}=\Delta_r^{-1}.
+\]
+Lean defines the first denominator by primitive recursion,
+\[
+ d_{\mathrm{fac}}(0)=1,
+ \qquad
+ d_{\mathrm{fac}}(r+1)
+ =d_{\mathrm{fac}}(r)\,2^{r+1}(r+2).
+\]
+Induction, using
+$\binom{r+2}{2}=\binom{r+1}{2}+r+1$, proves the displayed closed form.
+The recursive clause uses only successor, multiplication, and exponentiation,
+so $d_{\mathrm{fac}}$ is primitive recursive.  Likewise
+$\binom{r+1}{2}=r(r+1)/2$, and primitive-recursive closure under successor,
+multiplication, natural-number division, and exponentiation proves that
+$d_{\Delta}$ is primitive recursive.  Finally
+$d_{\mathrm{fac}}(r)\le d_{\Delta}(r)$ is exactly the factorial--power
+inequality above, and positivity reverses this comparison between their
+reciprocals.
+
+The declarations
+\path{Fabius.fabiusReal_inverse_two_pow_one_term_lower_bound},
+\path{Fabius.inv_inverseFabiusFactorialDenominator_le_fabiusReal}, and
+\path{Fabius.inv_inverseFabiusDeltaDenominator_le_fabiusReal} certify this
+chain.  They do not formalize the event in
+\eqref{co:eq:box-restrictions}, its containment, or its product probability;
+that probabilistic proof remains report-level.  The argument in this paragraph
+uses only the already formalized dyadic recurrence and therefore preserves the
+distinction between the two proof routes.
+
+\subsection{Strict monotonicity from the random series}
+
+\begin{proposition}[Strict increase]\label{co:prop:strict-increase}
+For $0\le a<b\le1$,
+\begin{equation}\label{co:eq:strict-increase}
+ F(a)<F(b).
+\end{equation}
+Hence $F:[0,1]\to[0,1]$ is a homeomorphism and $G=F^{-1}$ exists.
+\end{proposition}
+
+\begin{proof}
+The density of $X_N$ is strictly positive on the interior of its support
+$(0,1-2^{-N})$.  This follows inductively: a convolution of two densities
+that are positive on the interiors of compact intervals is positive on the
+interior of their Minkowski-sum interval, because the convolution integral
+contains a nonempty open region on which both factors are positive.
+
+Choose $N$ so large that $2^{-N}<b-a$.  Then the open interval
+$(a,b-2^{-N})$ is nonempty and lies below the right endpoint of the support of
+$X_N$.  Choose a nonempty open subinterval $J$ of it.  The preceding positivity
+gives $\Probability[X_N\in J]>0$.  For $X_N\in J$ and every possible
+$0\le R_N\le2^{-N}$, one has $a<X_N+R_N<b$.  Consequently
+\[
+ F(b)-F(a)=\Probability[a<X\le b]\ge\Probability[X_N\in J]>0.
+\]
+Continuity and the endpoint values $F(0)=0$, $F(1)=1$ then give the
+homeomorphism statement.
+\end{proof}
+
+\subsection{Symmetric strict unimodality}
+
+Let
+\begin{equation}\label{co:eq:density-p}
+ p(x):=F'(x),\qquad 0\le x\le1.
+\end{equation}
+The repository proves that $F$ is $C^\infty$, so $p$ is continuous.  The
+functional and reflection equations completely determine its qualitative
+shape.
+
+\begin{proposition}[Shape of the Fabius density]\label{co:prop:density-shape}
+The density $p$ satisfies
+\begin{equation}\label{co:eq:density-symmetry}
+ p(x)=p(1-x),
+\end{equation}
+is strictly increasing on $[0,1/2]$, and is strictly decreasing on
+$[1/2,1]$.  Equivalently, $p(x)$ is a strictly decreasing function of
+$|x-1/2|$.
+\end{proposition}
+
+\begin{proof}
+On $[0,1/2]$, \eqref{co:eq:F-basic} gives
+\[
+ p(x)=2F(2x).
+\]
+By \cref{co:prop:strict-increase}, this is strictly increasing.  Differentiating
+$F(x)+F(1-x)=1$ gives $p(x)=p(1-x)$, which reflects the first-half behavior
+to the second half.
+\end{proof}
+
+This simple observation is the geometric heart of the inverse modulus.  It is
+also a point where Rvachev's function enters directly: by
+\eqref{ii:eq:up-F},
+\begin{equation}\label{co:eq:p-up}
+ p(x)=2\RvachevUp(2x-1).
+\end{equation}
+Thus \cref{co:prop:density-shape} is the standard single-peaked shape of the
+compactly supported atomic bump.
+
+\section{The least-mass interval and the exact inverse modulus}
+\label{co:sec:exact-modulus}
+
+\subsection{Intervals of a prescribed geometric length}
+
+For $0\le h\le1$ and $0\le x\le1-h$, define the fixed-length CDF increment
+\begin{equation}\label{co:eq:interval-mass}
+ M_h(x):=F(x+h)-F(x).
+\end{equation}
+If $\mu$ is the Fabius probability law with CDF $F$, then the canonical
+measure-theoretic interpretation is
+\[
+ M_h(x)=\mu\bigl((x,x+h]\bigr).
+\]
+The law is atomless---indeed it has the continuous density $p=F'$---so the
+value is unchanged if either or both endpoints are included.  In particular,
+\[
+ \mu\bigl((x,x+h]\bigr)
+ =\mu\bigl([x,x+h]\bigr)
+ =\mu\bigl((x,x+h)\bigr)
+ =\mu\bigl([x,x+h)\bigr).
+\]
+We therefore continue to call $M_h(x)$ an interval mass, while
+\eqref{co:eq:interval-mass} fixes the canonical CDF convention.
+
+\begin{theorem}[Strict interval-mass shape and exact minimizers]
+\label{co:thm:least-mass}
+For every $0\le h\le1$,
+\begin{equation}\label{co:eq:least-mass}
+ \min_{0\le x\le1-h}\bigl(F(x+h)-F(x)\bigr)=F(h).
+\end{equation}
+If $0<h\le1$ and $m=(1-h)/2$, then the globally extended increment $M_h$ is
+strictly increasing on $[-h,m]$, symmetric about $m$, and strictly decreasing
+on $[m,1]$; outside $[-h,1]$ it is identically zero.  On the admissible-start
+interval $0\le x\le1-h$ one has the boundary-safe equality law
+\begin{equation}\label{co:eq:least-mass-equality}
+ M_h(x)=F(h)
+ \quad\Longleftrightarrow\quad
+ h=0\ \text{or}\ x=0\ \text{or}\ x=1-h.
+\end{equation}
+Equivalently, whenever $0\le a\le b\le1$,
+\begin{equation}\label{co:eq:least-mass-equality-ab}
+ F(b-a)=F(b)-F(a)
+ \quad\Longleftrightarrow\quad
+ a=b\ \text{or}\ a=0\ \text{or}\ b=1.
+\end{equation}
+Thus every genuinely interior interval $0<a<b<1$ has strictly more Fabius
+mass than an endpoint interval of the same length.  At $h=1$ the two endpoint
+formulas coincide at the single admissible start $x=0$.
+\end{theorem}
+
+\begin{proof}
+The case $h=0$ gives $M_0\equiv0$, so suppose $0<h\le1$ and put
+$m=(1-h)/2$.  Reflection gives
+\begin{align*}
+ M_h(1-h-x)
+ &=F(1-x)-F(1-h-x)\\
+ &=(1-F(x))-(1-F(x+h))=M_h(x),
+\end{align*}
+so $M_h$ is symmetric about $m$.
+
+Consider $-h<x<m$.  Then $0<x+h<1$.  If $x\le0$, the constant left tail gives
+$p(x)=0$, whereas strict positivity on the open support gives $p(x+h)>0$.
+If $x>0$, compute
+\begin{equation}\label{co:eq:distance-comparison}
+ \left(x+h-\frac12\right)^2-
+ \left(x-\frac12\right)^2
+ =h(2x+h-1)<0.
+\end{equation}
+Thus $x+h$ is strictly closer to $1/2$ than $x$ is.  The strict radial
+unimodality in \cref{co:prop:density-shape} again gives $p(x+h)>p(x)$.  Hence
+\begin{equation}\label{co:eq:M-derivative}
+ M_h'(x)=p(x+h)-p(x)>0
+ \qquad(-h<x<m).
+\end{equation}
+The mean-value theorem makes $M_h$ strictly increasing on the closed interval
+$[-h,m]$.  Reflection makes it strictly decreasing on $[m,1]$.  The clamped
+tails of $F$ give $M_h=0$ to the left of $-h$ and to the right of $1$; this is
+why the global half-line shape is only non-strict, whereas the two finite
+branches above are maximally strict.
+
+Finally,
+\[
+ M_h(0)=F(h)-F(0)=F(h)
+ \quad\text{and}\quad
+ M_h(1-h)=F(1)-F(1-h)=F(h).
+\]
+If $0<x<1-h$, compare $x$ strictly with $0$ on the left branch when $x\le m$,
+and compare it strictly with $1-h$ on the right branch when $m<x$.  In either
+case $M_h(x)>F(h)$.  This proves the minimum and the complete equality locus
+\eqref{co:eq:least-mass-equality}.  Substituting $h=b-a$ and $x=a$ gives
+\eqref{co:eq:least-mass-equality-ab}; its diagonal alternative $a=b$ is exactly
+the degenerate case $h=0$.
+\end{proof}
+
+\begin{corollary}[Global increment shape and constrained superadditivity]
+\label{co:cor:global-increment-shape}
+For every $h\ge0$, the globally extended increment $M_h$ is nondecreasing on
+the half-line
+\[
+ x\le\frac{1-h}{2}
+\]
+and nonincreasing on the complementary half-line.  Consequently, whenever
+$a,b\ge0$ and $a+b\le1$,
+\begin{equation}\label{co:eq:fabius-superadditive}
+ F(a)+F(b)\le F(a+b).
+\end{equation}
+Its complete equality locus is
+\begin{equation}\label{co:eq:fabius-superadditive-equality}
+ F(a)+F(b)=F(a+b)
+ \quad\Longleftrightarrow\quad
+ a=0\ \text{or}\ b=0\ \text{or}\ a+b=1.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The derivative argument above never used $x\ge0$: from
+$x\le(1-h)/2$ and $h\ge0$, either $x+h\le1/2$ and the monotonicity of $p$ on
+the left half gives $p(x)\le p(x+h)$, or $x+h>1/2$ and reflection replaces
+$p(x+h)$ by $p(1-x-h)$, where
+\[
+ x\le1-x-h\le\frac12.
+\]
+Thus $M_h'\ge0$ on the entire left half-line.  Reflection
+$M_h(1-h-x)=M_h(x)$ gives the right-half statement.  For
+\eqref{co:eq:fabius-superadditive}, apply \cref{co:thm:least-mass} to the interval
+from $a$ to $a+b$: its length is $b$, so
+\[
+ F(b)\le F(a+b)-F(a).
+\]
+ Rearranging proves the inequality.  Equality is exactly the equality case of
+ \cref{co:thm:least-mass} for the interval $[a,a+b]$: its three alternatives are
+ $a=a+b$, $a=0$, and $a+b=1$, and the first is equivalent to $b=0$.
+\end{proof}
+
+\begin{remark}[A general principle]\label{co:rem:general-principle}
+The lower bound used only that a probability density on $[0,1]$ is symmetric
+and unimodal.  Hence the minimum-value part of \cref{co:thm:least-mass} holds for
+every continuous symmetric unimodal distribution.  The endpoint-only equality
+locus uses the genuinely stronger hypothesis that the density decreases
+strictly with distance from the midpoint; plateaus can create additional
+minimizers.  The Fabius system is special not because the geometric lemma is
+exotic, but because $F(h)$ has unusually rich exact arithmetic and endpoint
+asymptotics.
+\end{remark}
+
+\subsection{The inverse's modulus is the inverse itself}
+
+For a bounded function $H$ define its ordinary modulus of continuity by
+\begin{equation}\label{co:eq:ordinary-modulus}
+ \omega_H(\eta):=
+ \sup\SetOf{\AbsoluteValue{H(u)-H(v)}:\AbsoluteValue{u-v}\le\eta}.
+\end{equation}
+For $G$ the variables are restricted to $[0,1]$; for $\InvT$ they range over
+$\RealNumbers$.
+
+\begin{theorem}[Exact modulus of the inverse]\label{co:thm:exact-inverse-modulus}
+For every $\eta\ge0$, with the inputs in the definition of $\omega_G$
+restricted to $[0,1]$,
+\begin{equation}\label{co:eq:exact-inverse-modulus}
+ \omega_G(\eta)=G(\min(\eta,1)).
+\end{equation}
+In particular this is $G(\eta)$ for $0\le\eta\le1$ and is $1$ thereafter.
+For the totalized inverse and every $\eta\ge0$,
+\begin{equation}\label{co:eq:exact-total-modulus}
+ \omega_{\InvT}(\eta)=G(\min(\eta,1)).
+\end{equation}
+More strongly, for all real $u,v$,
+\begin{equation}\label{co:eq:absolute-inverse-gap-bound}
+ \AbsoluteValue{\InvT(u)-\InvT(v)}
+ \le \InvT(\AbsoluteValue{u-v})
+ =G\bigl(\min(\AbsoluteValue{u-v},1)\bigr).
+\end{equation}
+The associated ordered-gap and subadditivity laws are
+\begin{equation}\label{co:eq:inverse-gap-bound}
+ \InvT(v)-\InvT(u)\le \InvT(v-u)
+ \qquad(u,v\in\RealNumbers)
+\end{equation}
+and
+\begin{equation}\label{co:eq:inverse-subadditive}
+ \InvT(x+y)\le\InvT(x)+\InvT(y)
+ \qquad(x,y\in\RealNumbers).
+\end{equation}
+On the unit interval the ordered-gap equality cases are exactly
+\begin{equation}\label{co:eq:inverse-gap-equality}
+ G(v)-G(u)=G(v-u)
+ \quad\Longleftrightarrow\quad
+ u=v\ \text{or}\ u=0\ \text{or}\ v=1
+ \qquad(0\le u\le v\le1).
+\end{equation}
+Equivalently, without ordering the inputs,
+\begin{equation}\label{co:eq:absolute-inverse-gap-equality}
+ \AbsoluteValue{G(u)-G(v)}=G(\AbsoluteValue{u-v})
+ \quad\Longleftrightarrow\quad
+ u=v\ \text{or}\ u\in\{0,1\}\ \text{or}\ v\in\{0,1\}
+ \qquad(u,v\in[0,1]).
+\end{equation}
+These two equality classifications are intentionally unit-domain statements:
+the constant tails of $\InvT$ create additional configurations on $\RealNumbers$.
+\end{theorem}
+
+\begin{proof}
+First let $c,d\in[0,1]$.  Interchanging them if necessary, assume $c\le d$,
+and put
+\[
+ a=G(c),\qquad b=G(d).
+\]
+Monotonicity of $G$ gives $a\le b$.  The inverse identities and
+\cref{co:thm:least-mass} give
+\begin{equation}\label{co:eq:mass-gap-proof}
+ F(b-a)\le F(b)-F(a)=d-c.
+\end{equation}
+Both $b-a$ and $d-c$ lie in $[0,1]$.  Applying the increasing inverse and
+using $G(F(b-a))=b-a$ yields
+\[
+ b-a\le G(d-c).
+\]
+Removing the temporary ordering assumption gives
+\begin{equation}\label{co:eq:unit-absolute-gap}
+ \AbsoluteValue{G(c)-G(d)}\le G(\AbsoluteValue{c-d})
+ \qquad(c,d\in[0,1]).
+\end{equation}
+The same argument records equality.  Under $c\le d$, equality in the inverse
+gap is equivalent, after applying the strictly increasing $F$, to equality in
+\eqref{co:eq:mass-gap-proof}.  By \eqref{co:eq:least-mass-equality-ab}, this says
+\[
+ a=b,\qquad a=0,\qquad\text{or}\qquad b=1.
+\]
+Because $a=G(c)$ and $b=G(d)$ and $F,G$ are inverse order isomorphisms, these
+alternatives are respectively $c=d$, $c=0$, and $d=1$.  This proves
+\eqref{co:eq:inverse-gap-equality}.  Applying it after ordering $c,d$ proves
+\eqref{co:eq:absolute-inverse-gap-equality}; reversing the order exchanges the
+left and right endpoint alternatives.
+
+Now put $c=\Clamp(u)$ and $d=\Clamp(v)$.  Projection onto $[0,1]$ is
+nonexpansive and has diameter one, so
+\[
+ \AbsoluteValue{c-d}\le\min(\AbsoluteValue{u-v},1).
+\]
+Combining this with \eqref{co:eq:unit-absolute-gap} proves
+\eqref{co:eq:absolute-inverse-gap-bound}.  If $\AbsoluteValue{u-v}\le\eta$, monotonicity
+then gives the upper bound $G(\min(\eta,1))$ for both moduli.  Let
+$\theta=\min(\eta,1)$.  The pair $(0,\theta)$ belongs to $[0,1]^2$, has input
+separation $\theta\le\eta$, and has output separation
+\[
+ \AbsoluteValue{G(\theta)-G(0)}=G(\theta).
+\]
+Thus the displayed upper bound is attained, not merely approached, proving
+both exact supremum identities.
+
+For \eqref{co:eq:inverse-gap-bound}, if $u\le v$, remove the absolute value from
+\eqref{co:eq:absolute-inverse-gap-bound}; then $v-u=\AbsoluteValue{v-u}$.  If $v<u$, the
+left side is nonpositive by monotonicity, whereas $\InvT(v-u)\ge0$.
+Finally apply \eqref{co:eq:inverse-gap-bound} with $u=x$ and $v=x+y$:
+\[
+ \InvT(x+y)-\InvT(x)\le\InvT(y),
+\]
+which rearranges to \eqref{co:eq:inverse-subadditive}.
+\end{proof}
+
+\begin{corollary}[Effective-injectivity form]\label{co:cor:effective-injectivity}
+For $0\le h\le1$ and $u,v\in\RealNumbers$,
+\begin{equation}\label{co:eq:effective-injectivity}
+ \AbsoluteValue{u-v}<F(h)
+ \quad\Longrightarrow\quad
+ \AbsoluteValue{\InvT(u)-\InvT(v)}<h.
+\end{equation}
+The closed-threshold and contrapositive forms are
+\begin{align}
+ \AbsoluteValue{u-v}\le F(h)
+ &\Longrightarrow \AbsoluteValue{\InvT(u)-\InvT(v)}\le h,
+ \label{co:eq:closed-effective-injectivity}\\
+ h\le\AbsoluteValue{\InvT(u)-\InvT(v)}
+ &\Longrightarrow F(h)\le\AbsoluteValue{u-v}.
+ \label{co:eq:contrapositive-effective-injectivity}
+\end{align}
+The same statements hold for $G$ on $[0,1]$.
+\end{corollary}
+
+\begin{proof}
+The strict hypothesis gives
+$\AbsoluteValue{u-v}<F(h)\le1$, so the saturation in the exact modulus disappears.
+Strict monotonicity of $G$ on $[0,1]$ therefore gives
+\[
+ \AbsoluteValue{\InvT(u)-\InvT(v)}
+ \le G(\AbsoluteValue{u-v})<G(F(h))=h.
+\]
+The same chain with non-strict inequalities proves
+\eqref{co:eq:closed-effective-injectivity}; its contrapositive is
+\eqref{co:eq:contrapositive-effective-injectivity}.
+\end{proof}
+
+\begin{theorem}[Exact strict threshold]\label{co:thm:exact-strict-threshold}
+For $0\le h\le1$ and every real $\delta$,
+\begin{equation}\label{co:eq:exact-strict-threshold}
+ \left[
+   \forall u,v\in\RealNumbers,
+   \ \AbsoluteValue{u-v}<\delta
+   \Longrightarrow
+   \AbsoluteValue{\InvT(u)-\InvT(v)}<h
+ \right]
+ \quad\Longleftrightarrow\quad
+ \delta\le F(h).
+\end{equation}
+Thus $F(h)$ is exactly the largest strict universal input threshold for output
+error below $h$.
+\end{theorem}
+
+\begin{proof}
+If $\delta\le F(h)$, then
+$\AbsoluteValue{u-v}<\delta$ implies $\AbsoluteValue{u-v}<F(h)$, and
+\cref{co:cor:effective-injectivity} applies.  Conversely, suppose the universal
+implication holds but $F(h)<\delta$.  Take
+\[
+ u=0,\qquad v=F(h).
+\]
+Their input separation is $F(h)<\delta$, whereas the inverse identities give
+\[
+ \AbsoluteValue{\InvT(0)-\InvT(F(h))}=\AbsoluteValue{0-h}=h,
+\]
+contradicting the asserted strict output bound.  Notice that no sign
+hypothesis on $\delta$ is needed: for $\delta\le0$ the left implication is
+vacuous and the right inequality follows from $F(h)\ge0$.
+\end{proof}
+
+\section{Effective uniform continuity}
+
+\subsection{A closed primitive-recursive modulus}
+
+Combining the exact inverse modulus with the box event gives the promised
+fully explicit implication.
+
+\begin{theorem}[Closed dyadic modulus]\label{co:thm:closed-dyadic-modulus}
+For every $r\ge0$ and all $u,v\in\RealNumbers$,
+\begin{equation}\label{co:eq:closed-dyadic-modulus}
+ \AbsoluteValue{u-v}<\Delta_r
+ \quad\Longrightarrow\quad
+ \AbsoluteValue{\InvT(u)-\InvT(v)}<2^{-r},
+\end{equation}
+where $\Delta_r$ is given by \eqref{co:eq:Delta-def}.
+\end{theorem}
+
+\begin{proof}
+By \cref{co:lem:box-event}, $\Delta_r\le F(2^{-r})$.  Apply
+\cref{co:cor:effective-injectivity} with $h=2^{-r}$.
+\end{proof}
+
+The exact statement \eqref{co:eq:closed-dyadic-modulus} is also formalized as
+\path{Fabius.abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_deltaDenominator}.
+The stronger factorial-denominator version is
+\path{Fabius.abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_factorialDenominator}.
+The formal API also closes both endpoints:
+\[
+ \AbsoluteValue{u-v}\le\Delta_r
+ \quad\Longrightarrow\quad
+ \AbsoluteValue{\InvT(u)-\InvT(v)}\le2^{-r},
+\]
+with declaration
+\path{Fabius.abs_fabiusInv_sub_le_inverse_two_pow_of_le_deltaDenominator};
+\path{Fabius.abs_fabiusInv_sub_le_inverse_two_pow_of_le_factorialDenominator}
+is its stronger factorial-denominator companion.  Thus the strict and closed
+input/output boundaries are separately available rather than recovered by an
+unstated limiting argument.  Their common proof is direct.  Let $d$ be either
+$d_{\mathrm{fac}}(r)$ or $d_{\Delta}(r)$.  The recurrence argument above gives
+$d^{-1}\le F(2^{-r})$.  Hence
+\[
+ \AbsoluteValue{u-v}<d^{-1}
+ \quad\Longrightarrow\quad
+ \AbsoluteValue{u-v}<F(2^{-r})
+ \quad\Longrightarrow\quad
+ \AbsoluteValue{\InvT(u)-\InvT(v)}<2^{-r}
+\]
+by strict effective injectivity.  Replacing both strict inequalities by weak
+ones and using its closed-threshold companion proves the two closed versions.
+This proves all four formal dyadic implications without a limiting argument;
+only the choice of denominator distinguishes the factorial and Delta forms.
+
+\begin{theorem}[Reciprocal modulus required by the definition]\label{co:thm:reciprocal-modulus}
+For $n\ge1$, let $r(n)$ be the least positive integer with $2^{r(n)}>n$ and
+put
+\begin{equation}\label{co:eq:d-explicit}
+ d(n)=2^{r(n)(r(n)+1)/2}\bigl(r(n)+1\bigr)^{r(n)+1},
+ \qquad d(0)=1.
+\end{equation}
+Then $d$ is recursive and satisfies \eqref{co:eq:euc-def} for $\InvT$.
+Thus $\InvT$ and the restricted inverse $G$ are effectively uniformly
+continuous.
+\end{theorem}
+
+\begin{proof}
+The function $r(n)$ can be found by bounded integer search, or equivalently by
+computing the binary length of $n$; hence it is recursive.  Exponentiation,
+multiplication, and composition preserve recursiveness, so $d$ is recursive.
+By construction,
+\[
+ \frac1{d(n)}=\Delta_{r(n)}
+ \quad\text{and}\quad
+ 2^{-r(n)}<\frac1n.
+\]
+If $|u-v|<1/d(n)$, \cref{co:thm:closed-dyadic-modulus} gives
+$|\InvT(u)-\InvT(v)|<2^{-r(n)}<1/n$.
+\end{proof}
+
+\begin{remark}[An even simpler, much larger modulus]
+Taking $r=n$ gives the one-line primitive-recursive choice
+\[
+ d_0(n)=2^{n(n+1)/2}(n+1)^{n+1}\qquad(n\ge1),
+\]
+because $2^{-n}<1/n$.  The logarithmic choice $r(n)$ in
+\cref{co:thm:reciprocal-modulus} is far smaller and has the correct leading
+complexity scale.
+
+The Lean development uses the stronger one-line witness
+\[
+ d_{\mathrm{fac}}(n)=2^{\binom{n+1}{2}}(n+1)!,
+\]
+which is no larger than $d_0(n)$.  The theorem
+\path{Fabius.fabiusInv_effectivelyUniformContinuous} proves
+\texttt{EffectivelyUniformContinuous} for the totalized inverse as follows.
+The recurrence above makes $d_{\mathrm{fac}}$ primitive recursive and positive.
+For $n\ge1$, the strict factorial implication gives
+\[
+ \AbsoluteValue{u-v}<\frac1{d_{\mathrm{fac}}(n)}
+ \quad\Longrightarrow\quad
+ \AbsoluteValue{\InvT(u)-\InvT(v)}<2^{-n}.
+\]
+The elementary inequality $n<2^n$ between positive integers reverses under
+reciprocation, so $2^{-n}<1/n$.  Chaining these inequalities is precisely the
+reciprocal convention in \cref{co:def:euc}; $d_{\mathrm{fac}}(0)=1$ supplies the
+harmless zeroth value.  Thus effective uniform continuity itself is
+formalized.  The downstream
+\path{FabiusInverseLogarithmicModulus.lean} now also formalizes the smaller
+choice $r(n)$ in \cref{co:thm:reciprocal-modulus}.  Its declaration
+\path{Fabius.inverseFabiusLogarithmicOrder_isLeast} identifies the least order,
+\path{Fabius.inverseFabiusLogarithmicOrder_primrec} proves primitive
+recursiveness, and
+\path{Fabius.fabiusInv_effectivelyUniformContinuous_logarithmicDelta} packages
+the report-exact denominator $d(n)$.  The same module supplies the stronger
+logarithmic factorial witness.
+\end{remark}
+
+\subsection{The exact-dyadic repository modulus}
+
+Put $h_n:=2^{-r(n)}$.  The corpus proves that every $F(h_n)$ is an exactly
+computable positive rational.  Therefore one can replace the elementary lower
+bound $\Delta_{r(n)}$ by the exact endpoint mass while retaining an exact
+dyadic output proxy.
+
+\begin{proposition}[Repository-native exact-dyadic modulus]\label{co:prop:exact-dyadic-modulus}
+Let
+\begin{equation}\label{co:eq:d-star}
+ d_*(n):=
+ \Ceiling{\frac{1}{F(h_n)}}
+ \qquad(n\ge1),
+ \qquad h_n=2^{-r(n)},
+ \quad d_*(0):=1.
+\end{equation}
+Then $d_*$ is recursive and
+\begin{equation}\label{co:eq:d-star-strong}
+ \AbsoluteValue{u-v}<\frac1{d_*(n)}
+ \quad\Longrightarrow\quad
+ \AbsoluteValue{\InvT(u)-\InvT(v)}<h_n<\frac1n.
+\end{equation}
+Moreover, $d_*(n)$ is the least positive integer $d$ satisfying
+\[
+ \frac1d\le F(h_n).
+\]
+Equivalently, it is the least reciprocal denominator certified by the exact
+inverse-modulus law for the fixed dyadic output target $h_n$.  It is not
+claimed to be the least integer modulus for the weaker target $1/n$.
+\end{proposition}
+
+\begin{proof}
+The exact dyadic evaluator computes the positive rational $F(h_n)$, and
+rational reciprocal and ceiling are computable integer operations.  By the
+defining property of the ceiling,
+\[
+ \frac1{d_*(n)}\le F(h_n).
+\]
+The strict input hypothesis and \cref{co:cor:effective-injectivity} therefore
+give output separation strictly below $h_n$, while the definition of $r(n)$
+gives $h_n<1/n$.
+
+For the qualified minimality statement, let $1\le d<d_*(n)$.  Then
+\[
+ d<\frac1{F(h_n)},
+ \qquad\text{hence}\qquad
+ \frac1d>F(h_n).
+\]
+The endpoint pair $u=0$, $v=F(h_n)$ has input separation strictly below
+$1/d$ and output separation exactly $h_n$.  Thus $d$ cannot certify the
+stricter conclusion $\AbsoluteValue{\InvT(u)-\InvT(v)}<h_n$.
+\end{proof}
+
+\begin{remark}[The genuine integer optimum for the $1/n$ target]
+The exact inverse-modulus law shows that a positive integer $d$ has the
+universal property
+\[
+ \AbsoluteValue{u-v}<\frac1d
+ \quad\Longrightarrow\quad
+ \AbsoluteValue{\InvT(u)-\InvT(v)}<\frac1n
+\]
+if and only if
+\[
+ \frac1d\le F(1/n).
+\]
+Consequently the mathematically least such denominator is
+\[
+ d_{\mathrm{opt}}(n)=\Ceiling{\frac1{F(1/n)}}.
+\]
+The present report does not prove that $n\mapsto d_{\mathrm{opt}}(n)$ is
+recursive: computability of the real number $F(1/n)$ alone does not make the
+discontinuous ceiling operation effective at an unknown integer boundary.
+The dyadic quantity $d_*$ avoids that issue because $F(h_n)$ is an exact
+rational.
+
+The distinction is already visible at $n=1$.  Here $r(1)=1$,
+$F(1/2)=1/2$, and hence $d_*(1)=2$, whereas $d=1$ already satisfies the
+required implication with output tolerance $1$.
+\end{remark}
+
+The exact-ceiling construction $d_*$, including its recursion and qualified
+denominator minimality, has not yet been translated into Lean.  The current
+logarithmic effective-continuity layer deliberately avoids the ceiling by
+using the explicit Delta or stronger factorial denominator at the formalized
+least order $r(n)$.
+
+\subsection{Binary conditioning is quadratic}
+\label{co:sec:binary-conditioning}
+
+The exact modulus permits a sharp, representation-independent measurement of
+how many input bits are intrinsically needed near the flat endpoint.
+
+\begin{definition}[Optimal binary modulus index]\label{co:def:mu}
+For $p\ge1$, define
+\begin{equation}\label{co:eq:mu-def}
+ \mu(p):=\min\SetOf{m\in\NaturalNumbers:2^{-m}\le F(2^{-p})}
+ =\Ceiling{\log_2\frac1{F(2^{-p})}}.
+\end{equation}
+Then
+\begin{equation}\label{co:eq:mu-property}
+ \AbsoluteValue{u-v}<2^{-\mu(p)}
+ \quad\Longrightarrow\quad
+ \AbsoluteValue{\InvT(u)-\InvT(v)}<2^{-p},
+\end{equation}
+and no smaller $m$ has this universal property.
+\end{definition}
+
+The lower event bound already gives an upper bound for $\mu(p)$.  A matching
+lower bound follows from endpoint flatness.
+
+\begin{lemma}[Elementary flatness upper bound]\label{co:lem:flatness-upper}
+For every integer $q\ge1$ and $0\le x\le2^{-q}$,
+\begin{equation}\label{co:eq:flatness-upper}
+ F(x)\le\frac{2^{q(q+1)/2}}{q!}\,x^q.
+\end{equation}
+In particular,
+\begin{equation}\label{co:eq:dyadic-flatness-upper}
+ F(2^{-p})\le\frac{2^{-p(p-1)/2}}{p!}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Repeated differentiation of $F'(x)=2F(2x)$ gives
+\begin{equation}\label{co:eq:iterated-derivative}
+ F^{(q)}(x)=2^{q(q+1)/2}F(2^qx)
+ \qquad(0\le x\le2^{-q}).
+\end{equation}
+All derivatives of $F$ vanish at $0$, and $0\le F\le1$.  Taylor's formula in
+integral form therefore gives
+\begin{align*}
+ F(x)
+ &=\frac1{(q-1)!}\int_0^x(x-t)^{q-1}F^{(q)}(t)\Differential t\\
+ &\le\frac{2^{q(q+1)/2}}{(q-1)!}
+      \int_0^x(x-t)^{q-1}\Differential t
+ =\frac{2^{q(q+1)/2}}{q!}x^q.
+\end{align*}
+Set $q=p$ and $x=2^{-p}$ to obtain
+\eqref{co:eq:dyadic-flatness-upper}.
+\end{proof}
+
+\begin{theorem}[Asymptotically sharp input-bit requirement]\label{co:thm:mu-asymptotic}
+For every $p\ge1$,
+\begin{align}
+ \Ceiling{\frac{p(p-1)}2+\log_2(p!)}
+ \;&\le\;\mu(p)\label{co:eq:mu-lower}\\
+ &\le\;
+ \Ceiling{\frac{p(p+1)}2+(p+1)\log_2(p+1)}.
+ \label{co:eq:mu-upper}
+\end{align}
+Consequently
+\begin{equation}\label{co:eq:mu-asymptotic}
+ \boxed{\displaystyle
+ \mu(p)=\frac{p^2}{2}+p\log_2p+\BigO(p).}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The flatness bound \eqref{co:eq:dyadic-flatness-upper} yields
+\[
+ \log_2\frac1{F(2^{-p})}
+ \ge\frac{p(p-1)}2+\log_2(p!),
+\]
+while \cref{co:lem:box-event} yields
+\[
+ \log_2\frac1{F(2^{-p})}
+ \le\frac{p(p+1)}2+(p+1)\log_2(p+1).
+\]
+Take ceilings and use \eqref{co:eq:mu-def}.  Stirling's formula
+$\log_2(p!)=p\log_2p-(\log_2\EulerE)p+\BigO(\log p)$ makes both bounds equal to
+$p^2/2+p\log_2p+\BigO(p)$.
+\end{proof}
+
+\begin{remark}[Intrinsic endpoint cost]
+The quadratic precision loss is not an artifact of the spline evaluator or of
+bisection.  The two admissible inputs $0$ and $F(2^{-p})$ have outputs separated
+by $2^{-p}$.  Any uniform oracle algorithm that promises $p$ output bits must,
+in the worst endpoint case, obtain enough input information to distinguish
+those values.  The exact modulus quantifies that information barrier.
+\end{remark}
+
+\begin{corollary}[Growth of exact and explicit reciprocal moduli]\label{co:cor:d-growth}
+Let
+\[
+ d_{\mathrm{opt}}(n)=\Ceiling{1/F(1/n)},\qquad
+ d_*(n)=\Ceiling{1/F(2^{-r(n)})},
+\]
+and let $d_\Delta(n)$ denote the explicit denominator $d(n)$ of
+\cref{co:thm:reciprocal-modulus}.  Then each of
+$d_{\mathrm{opt}},d_*$, and $d_\Delta$ has
+\begin{equation}\label{co:eq:d-growth}
+ \log_2 d_\bullet(n)
+ =\frac12(\log_2 n)^2
+  +(\log_2n)\log_2\log_2n
+  +\BigO(\log n).
+\end{equation}
+Equivalently,
+\begin{equation}\label{co:eq:d-quasipoly}
+ d_\bullet(n)=n^{\frac12\log_2n+\log_2\log_2n+\BigO(1)}.
+\end{equation}
+Here $d_{\mathrm{opt}}$ is the mathematically least denominator for the
+$1/n$ target, $d_*$ is recursive and exact-dyadic, and $d_\Delta$ is the
+closed elementary witness; no computability claim is made here for
+$d_{\mathrm{opt}}$.
+\end{corollary}
+
+\begin{proof}
+Put $p=r(n)$.  Minimality of $p$ gives
+\[
+ 2^{-p}<\frac1n\le2^{-(p-1)},
+ \qquad p=\log_2n+\BigO(1).
+\]
+Since $F$ is increasing, with
+$\Lambda(q)=\log_2(1/F(2^{-q}))$ this implies
+\[
+ \Lambda(p-1)\le \log_2\frac1{F(1/n)}<\Lambda(p).
+\]
+By \cref{co:thm:mu-asymptotic}, and because
+$\mu(q)=\Ceiling{\Lambda(q)}$,
+\[
+ \Lambda(q)=\frac{q^2}{2}+q\log_2q+\BigO(q).
+\]
+The preceding sandwich therefore gives the same formula with $q=p$ for
+$\log_2(1/F(1/n))$.  For every $x\ge1$,
+$x\le\Ceiling{x}<2x$, so applying the outer ceiling changes its base-$2$
+logarithm by at most one.  This proves \eqref{co:eq:d-growth} for
+$d_{\mathrm{opt}}$.
+
+The same ceiling observation applied directly to $F(2^{-p})$ proves it for
+$d_*$.  Finally the closed formula for $d_\Delta$ gives
+\[
+ \log_2d_\Delta(n)
+ =\frac{p(p+1)}2+(p+1)\log_2(p+1)
+ =\frac{p^2}{2}+p\log_2p+\BigO(p).
+\]
+Substitute $p=\log_2n+O(1)$ in all three cases.  Exponentiating the resulting
+identity proves \eqref{co:eq:d-quasipoly}.
+\end{proof}
+
+\section{Sequential computability by tolerant bisection}
+\label{co:sec:sequential}
+
+\subsection{Why ordinary bisection is insufficient}
+
+Suppose $y$ is given only by a computable name.  At a dyadic midpoint $c$,
+one can approximate both $F(c)$ and $y$, but in general no algorithm can
+decide whether the two represented reals are exactly equal.  An implementation
+that loops until it proves either $F(c)<y$ or $F(c)>y$ can therefore fail to
+terminate when $y=F(c)$.
+
+The inverse modulus provides the missing third branch.  If the approximations
+are too close to certify a sign, then $F(c)$ is close to $y$; effective
+injectivity says that $c$ is close to $G(y)$, so the algorithm may return it.
+
+\subsection{The algorithm on a computable sequence}
+
+Let $(y_i)$ be a computable sequence in $[0,1]$.  Fix a naming algorithm
+$q(i,s)\in\RationalNumbers$ with
+\begin{equation}\label{co:eq:input-name}
+ \AbsoluteValue{q(i,s)-y_i}\le2^{-s}.
+\end{equation}
+We describe an algorithm which, from $(i,p)$, returns a dyadic $z(i,p)$ with
+\begin{equation}\label{co:eq:output-name-goal}
+ \AbsoluteValue{z(i,p)-G(y_i)}<2^{-p}.
+\end{equation}
+
+\begin{algorithm}[Tolerant certified bisection]\label{co:alg:tolerant-bisection}
+Given an index $i$ and output precision $p$:
+\begin{enumerate}
+\item Set
+\[
+ r=p+2,
+ \qquad h=2^{-r},
+ \qquad \delta=\Delta_r.
+\]
+Choose integers $s,N$ effectively so that
+\begin{equation}\label{co:eq:oracle-precisions}
+ 2^{-s}\le\delta/8,
+ \qquad 2^{-N}\le\delta/8.
+\end{equation}
+Compute the rational $\widetilde y=q(i,s)$.
+\item Initialize the certified bracket $[a,b]=[0,1]$.
+\item Repeat at most $p+2$ times:
+  \begin{enumerate}
+  \item Put $c=(a+b)/2$ and evaluate the exact rational $S_N(c)$ by
+        \eqref{co:eq:centered-spline-formula}.
+  \item Form the rational approximate difference
+        \begin{equation}\label{co:eq:D-tilde}
+         \widetilde D=S_N(c)-\widetilde y.
+        \end{equation}
+  \item If $\widetilde D>\delta/2$, replace $b$ by $c$.
+  \item If $\widetilde D<-\delta/2$, replace $a$ by $c$.
+  \item Otherwise return $c$.
+  \end{enumerate}
+\item If no midpoint was returned, return $(a+b)/2$ after the final update.
+\end{enumerate}
+\end{algorithm}
+
+Every comparison in \cref{co:alg:tolerant-bisection} is between exact rationals.
+The order $N$ can be extremely large, but it is obtained by a finite integer
+calculation and the spline sum is finite.  Hence the procedure is an algorithm
+in the computability-theoretic sense.
+
+\subsection{Correctness of every branch}
+
+\begin{lemma}[Difference certificate]\label{co:lem:difference-certificate}
+At every midpoint $c$ in \cref{co:alg:tolerant-bisection},
+\begin{equation}\label{co:eq:difference-certificate}
+ \AbsoluteValue{\widetilde D-(F(c)-y_i)}\le\delta/4.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+By \cref{co:thm:centered-error} and \eqref{co:eq:oracle-precisions},
+$|S_N(c)-F(c)|\le\delta/8$.  By \eqref{co:eq:input-name} and the same choice of
+$s$, $|\widetilde y-y_i|\le\delta/8$.  The triangle inequality gives
+\eqref{co:eq:difference-certificate}.
+\end{proof}
+
+\begin{lemma}[Safe left/right updates]\label{co:lem:safe-updates}
+If $\widetilde D>\delta/2$, then $G(y_i)<c$.  If
+$\widetilde D<-\delta/2$, then $c<G(y_i)$.
+\end{lemma}
+
+\begin{proof}
+In the first case, \cref{co:lem:difference-certificate} gives
+\[
+ F(c)-y_i\ge\widetilde D-\delta/4>\delta/4>0.
+\]
+Since $F$ is strictly increasing, $c>G(y_i)$.  The second case is symmetric.
+Thus every update preserves the invariant
+\begin{equation}\label{co:eq:bracket-invariant}
+ G(y_i)\in[a,b].
+\end{equation}
+\end{proof}
+
+\begin{lemma}[The inconclusive branch is a success branch]\label{co:lem:near-branch}
+If $|\widetilde D|\le\delta/2$, then
+\begin{equation}\label{co:eq:near-output}
+ \AbsoluteValue{c-G(y_i)}<h=2^{-r}<2^{-p}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+By \cref{co:lem:difference-certificate},
+\[
+ |F(c)-y_i|\le|\widetilde D|+\delta/4
+ \le3\delta/4<\delta.
+\]
+The choice $\delta=\Delta_r$ and \cref{co:thm:closed-dyadic-modulus}, applied to
+the input pair $F(c),y_i$, give
+\[
+ |G(F(c))-G(y_i)|<2^{-r}.
+\]
+Because $c\in[0,1]$, $G(F(c))=c$.  Finally, $r=p+2$.
+\end{proof}
+
+\begin{theorem}[Correctness and uniformity of tolerant bisection]
+\label{co:thm:bisection-correct}
+Algorithm \ref{co:alg:tolerant-bisection} terminates and returns a dyadic
+$z(i,p)$ satisfying \eqref{co:eq:output-name-goal}.  The map $(i,p)\mapsto z(i,p)$
+is computable whenever the name $(i,s)\mapsto q(i,s)$ is computable.
+\end{theorem}
+
+\begin{proof}
+The loop has a fixed finite bound.  If it returns through the inconclusive
+branch, \cref{co:lem:near-branch} proves the error estimate.  Otherwise
+\cref{co:lem:safe-updates} preserves the bracket invariant through $p+2$
+bisections.  Its final width is $2^{-(p+2)}$, so the final midpoint is at
+distance at most $2^{-(p+3)}<2^{-p}$ from $G(y_i)$.
+
+All quantities $r,h,\delta,s,N$ are computable from $p$.  Midpoints are
+dyadic; $S_N(c)$ is an exact finite rational expression; and every branch is
+a rational comparison.  The only access to the sequence is the single call to
+its naming algorithm.  Therefore the construction is uniform in $i$ and $p$.
+\end{proof}
+
+\begin{corollary}[Sequential computability on the unit interval]
+\label{co:cor:G-sequential}
+The inverse $G:[0,1]\to[0,1]$ is sequentially computable.
+\end{corollary}
+
+\begin{proof}
+Given any computable sequence $(y_i)$ in $[0,1]$, the output of
+\cref{co:alg:tolerant-bisection} is a computable fast dyadic name for the sequence
+$(G(y_i))$.
+\end{proof}
+
+\subsection{Clamping and the totalized inverse}
+
+\begin{lemma}[Computability of clamping]\label{co:lem:clamp-computable}
+If $(y_i)$ is a computable real sequence, then
+$(\Clamp(y_i))$ is a computable sequence.
+\end{lemma}
+
+\begin{proof}
+Clamping is $1$-Lipschitz.  If $q(i,p)$ approximates $y_i$ within $2^{-p}$,
+then the exactly rational quantity $\Clamp(q(i,p))$ approximates
+$\Clamp(y_i)$ within the same error.  The rational min/max operations are
+decidable and computable.
+\end{proof}
+
+\begin{corollary}[Sequential computability of the totalized inverse]
+\label{co:cor:GT-sequential}
+The totalized inverse $\InvT:\RealNumbers\to\RealNumbers$ is sequentially computable.
+\end{corollary}
+
+\begin{proof}
+Given a computable sequence $(y_i)$, first compute the clamped sequence by
+\cref{co:lem:clamp-computable}, then apply \cref{co:cor:G-sequential}.  By
+\eqref{co:eq:totalized-inverse}, the result is $(\InvT(y_i))$.
+\end{proof}
+
+\subsection{Main-theorem dependency checkpoint}
+
+At this point every result cited in the proof of \cref{co:thm:main} has been
+established: tolerant bisection supplies one uniform realizer transformer,
+clamping totalizes it, and the closed dyadic threshold supplies the recursive
+reciprocal modulus.  Thus the early proof is now entirely discharged rather
+than relying on a compactness or choice argument.
+
+\subsection{An abstract inverse-computability principle}
+
+The Fabius proof illustrates a reusable theorem.  Stating it clarifies which
+properties are genuinely needed and which belong only to this example.
+
+\begin{theorem}[Effective inversion on a computable compact interval]
+\label{co:thm:abstract-inversion}
+Let $f:[0,1]\to[0,1]$ be a strictly increasing homeomorphism.  Suppose:
+\begin{enumerate}
+\item there is one algorithm which, given a dyadic rational $c\in[0,1]$ and
+      $s\in\NaturalNumbers$, returns a rational within $2^{-s}$ of $f(c)$;
+\item there is a computable positive rational sequence $(\alpha_p)$ such that
+      for all $0\le x\le1-2^{-p}$,
+      \begin{equation}\label{co:eq:abstract-gap}
+       f(x+2^{-p})-f(x)\ge\alpha_p.
+      \end{equation}
+\end{enumerate}
+Then $f^{-1}$ is sequentially computable and effectively uniformly continuous.
+A tolerant-bisection algorithm is obtained by replacing $\Delta_r$ with
+$\alpha_r$ in \cref{co:alg:tolerant-bisection}.
+\end{theorem}
+
+\begin{proof}
+Condition \eqref{co:eq:abstract-gap} implies
+$|u-v|<\alpha_p\Rightarrow|f^{-1}(u)-f^{-1}(v)|<2^{-p}$ by the same
+contrapositive argument as \cref{co:cor:effective-injectivity}: if two inverse
+values were at least $2^{-p}$ apart, monotonicity and
+\eqref{co:eq:abstract-gap} would force their inputs to be at least
+$\alpha_p$ apart.
+
+This implication gives the uniform realizer.  On input precision $p$, run the
+tolerant bisection of \cref{co:alg:tolerant-bisection} for $p+2$ steps, replacing
+$\Delta_{p+2}$ by the positive rational $\alpha_{p+2}$.  Use hypothesis~1 and
+the input name to approximate both sides within $\alpha_{p+2}/8$.  A certified
+sign preserves the inverse bracket; in the inconclusive branch their true
+difference is below $3\alpha_{p+2}/4$, so the preceding implication certifies
+output error below $2^{-(p+2)}$.  If that branch never occurs, the final
+bracket has width $2^{-(p+2)}$.  All loop bounds, precisions, and comparisons
+are effective, so this is one uniform name transformer and proves sequential
+computability.
+
+For the reciprocal convention, set $d(0)=1$.  For $n\ge1$, compute any
+$p(n)\ge1$ with $2^{-p(n)}<1/n$ and define
+\[
+ d(n):=\Floor{\frac1{\alpha_{p(n)}}}+1.
+\]
+Because $\alpha_{p(n)}$ is a positive computable rational, $d$ is a positive
+recursive integer function and $d(n)>1/\alpha_{p(n)}$, hence
+$1/d(n)<\alpha_{p(n)}$.  Therefore
+\[
+ |u-v|<\frac1{d(n)}
+ \Longrightarrow |f^{-1}(u)-f^{-1}(v)|<2^{-p(n)}<\frac1n.
+\]
+This is effective uniform continuity in the subset-domain sense.
+\end{proof}
+
+For the Fabius function, \cref{co:thm:least-mass} identifies the best possible
+choice $\alpha_p=F(2^{-p})$; its minimizing intervals are exactly the left and
+right endpoint intervals.  The box event in \cref{co:lem:box-event} supplies a
+closed lower substitute requiring no invocation of the exact dyadic evaluator.
+
+\section{Analytic consequences of the exact modulus}
+
+\subsection{Uniform continuity without any H\"older exponent}
+
+Effective uniform continuity is sometimes mentally associated with a power-law
+modulus.  The inverse Fabius function is a clean counterexample to that
+intuition.
+
+\begin{theorem}[No positive H\"older exponent at the endpoints]
+\label{co:thm:no-holder}
+For every $\alpha>0$ and every $C>0$, there are arbitrarily small $y>0$ such
+that
+\begin{equation}\label{co:eq:no-holder-zero}
+ G(y)>Cy^\alpha.
+\end{equation}
+By reflection, there are arbitrarily small $1-y>0$ such that
+\begin{equation}\label{co:eq:no-holder-one}
+ 1-G(y)>C(1-y)^\alpha.
+\end{equation}
+Thus neither $G$ nor $\InvT$ is H\"older continuous of any positive order at
+$0$ or $1$, despite being effectively uniformly continuous.
+\end{theorem}
+
+\begin{proof}
+Choose an integer $q$ with $q\alpha>1$.  By
+\cref{co:lem:flatness-upper}, for all sufficiently small $x>0$,
+$F(x)\le C_qx^q$ with a fixed $C_q$.  If $G(y)\le Cy^\alpha$ held near zero,
+substitution $y=F(x)$ would give
+\[
+ x=G(F(x))\le C F(x)^\alpha
+ \le C C_q^\alpha x^{q\alpha}.
+\]
+After division by $x$, the right side tends to zero, a contradiction.  The
+right endpoint follows from $G(1-y)=1-G(y)$.
+\end{proof}
+
+\begin{corollary}[The exact modulus is sub-H\"older]\label{co:cor:sub-holder}
+For every $\alpha>0$,
+\begin{equation}\label{co:eq:sub-holder}
+ \frac{\omega_G(\eta)}{\eta^\alpha}
+ =\frac{G(\eta)}{\eta^\alpha}\longrightarrow+\infty
+ \qquad(\eta\downarrow0).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Choose an integer $q$ with $q\alpha>1$ and write $x=G(\eta)$, so that
+$\eta=F(x)$ and $x\downarrow0$ with $\eta\downarrow0$.  By
+\cref{co:lem:flatness-upper}, for all sufficiently small $x$,
+$F(x)\le C_qx^q$.  Hence
+\[
+ \frac{G(\eta)}{\eta^\alpha}
+ =\frac{x}{F(x)^\alpha}
+ \ge C_q^{-\alpha}x^{1-q\alpha}\longrightarrow+\infty.
+\]
+The equality with $\omega_G$ is \cref{co:thm:exact-inverse-modulus}.
+\end{proof}
+
+The endpoint growth used here is also formalized, independently of the new
+exact-modulus module, in \path{FabiusInverseAsymptotic.lean}.  The declarations
+\path{Fabius.rpow_isLittleO_fabiusInv_at_zero_right} and
+\path{Fabius.tendsto_fabiusInv_div_rpow_atTop_at_zero_right} give the
+sub-H\"older divergence, while
+\path{Fabius.fabiusInv_not_isBigO_rpow_at_zero_right} and
+\path{Fabius.not_exists_fabiusInv_le_const_mul_rpow_near_zero} give the
+corresponding impossibility of a positive power-law upper bound.  These are
+analytic inputs already present in the repository, not consequences claimed
+to have been newly proved by \path{InverseModulus.lean}.
+
+\subsection{Endpoint asymptotics become modulus asymptotics}
+
+The live formal corpus proves the leading inverse equivalent through
+\lean{fabiusInv_isEquivalent_fabiusInverseAsymptoticMain} in
+\path{FabiusInverseAsymptotic.lean}.  The companion frontier reports give
+stronger paper-level inverse expansions\ \cite{co:ProveIt}.
+Let
+\begin{equation}\label{co:eq:T-L-rho}
+ T=\log(1/\eta),
+ \qquad L=\log2,
+ \qquad \rho=\sqrt{\frac{2T}{L}}.
+\end{equation}
+Suppressing the paper-level first log-periodic correction, the formalized leading
+equivalent is
+\begin{equation}\label{co:eq:G-leading}
+ G(\eta)\sim
+ G_0(\eta):=
+ \frac{\sqrt T}{\EulerE\sqrt L}
+ \exp\!\bigl(-\sqrt{2LT}\bigr)
+ \qquad(\eta\downarrow0).
+\end{equation}
+More precisely, \path{Inverse_Endpoint_All_Orders.tex} obtains at the
+frontier-document level a relative expansion of the form
+\begin{equation}\label{co:eq:G-periodic-correction}
+ \frac{G(\eta)}{G_0(\eta)}
+ =1+
+ \frac{\frac12\log\rho+\kappa_0-\Psi(\theta)}{\rho}
+ +\BigO\!\left(\frac{(\log\rho)^2}{\rho^2}\right),
+\end{equation}
+where $\Psi$ is a nonconstant smooth one-periodic Gamma--zeta fluctuation and
+$\theta:=\rho+\beta$ is the leading saddle phase.  It is not the exact
+lower-Lambert phase: the latter is
+\[
+ \lambda(G(\eta))=-\frac1L\LambertW_{-1}(-LG(\eta))
+ =\theta+\BigO\!\left(\frac{\log\rho}{\rho}\right).
+\]
+Thus replacing the exact phase by $\theta$ is justified at the displayed
+algebraic order, but the distinction matters for exponentially small terms.
+
+\begin{corollary}[Paper-level transfer of the frontier inverse expansion]
+\label{co:cor:sharp-asymptotic-modulus}
+At the paper level, the expressions \eqref{co:eq:G-leading} and
+\eqref{co:eq:G-periodic-correction} transfer, without any further inversion, to
+the leading and first-correction asymptotics of the exact continuity modulus
+of $G$ and $\InvT$:
+\begin{equation}\label{co:eq:asymptotic-modulus}
+ \omega_G(\eta)=\omega_{\InvT}(\eta)=G(\eta)
+ \qquad(0\le\eta\le1).
+\end{equation}
+Likewise, every valid all-orders endpoint expansion for the inverse transfers
+verbatim to an all-orders modulus-of-continuity expansion.  Lean currently
+proves the leading equivalent and an implicit expansion pulled back to exact
+inverse coordinates, but not the displayed explicit periodic correction or
+an explicit all-orders reversion.
+\end{corollary}
+
+\begin{proof}
+This is exactly \cref{co:thm:exact-inverse-modulus}.
+\end{proof}
+
+This observation closes a conceptual loop in the corpus.  The lower-Lambert
+phase and Bell-polynomial inverse transfer were developed to approximate
+quantiles.  The geometric theorem shows that the same quantiles are the
+optimal global sensitivity profile of the inverse map.
+
+\subsection{Derivative blow-up versus computability}
+
+On $0<y<1$, the repository proves
+\begin{equation}\label{co:eq:inverse-derivative}
+ G'(y)=\frac{1}{F'(G(y))}
+ =\frac{1}{2\RvachevUp(2G(y)-1)}>0.
+\end{equation}
+The derivative tends to $+\infty$ at both endpoints.  There is therefore no
+global Lipschitz constant and no endpoint condition number bounded in the
+ordinary differential sense.  Nonetheless the exact nonlinear modulus
+$G(\eta)$ is computable, and tolerant bisection uses precisely that nonlinear
+conditioning.  This is why derivative-based numerical intuition alone is not
+a substitute for a computable-analysis proof.
+
+% Source fragment: Inverse computability; prefix co.
+\section{Further deductions, conjectures, and research directions}
+\label{co:sec:frontiers}
+
+\subsection{A certified practical inverse evaluator}
+
+The proof algorithm is intentionally elementary rather than efficient.  A
+practical certified implementation should retain its logical shell while
+replacing the forward oracle by a portfolio of enclosures:
+
+\begin{itemize}
+\item exact dyadic evaluation and terminating local Taylor formulae near
+      dyadic anchors;
+\item centered Thue--Morse splines at moderate depth;
+\item quarter-base $q$-Richardson acceleration of finite-prefix errors;
+\item Fourier/sinc evaluation in regions where frequency-space decay is
+      favorable;
+\item lower-Lambert endpoint enclosures when the requested target is extremely
+      close to $0$ or $1$.
+\end{itemize}
+
+Each backend must return a rational interval containing $F(c)$, not merely a
+floating-point approximation.  The bisection controller only asks whether
+that interval lies wholly above or below the target interval; overlapping
+intervals trigger refinement or the modulus-based acceptance branch.  Thus
+backend selection is a performance concern, not part of the correctness
+argument.
+
+\begin{problem}[Near-optimal certified evaluation]
+\label{comp:prob:near-optimal-evaluation}
+Construct and formally verify an inverse evaluator whose oracle-bit
+consumption is $\mu(p)+\BigO(\log p)$ for $p$ output bits at the worst endpoint,
+and whose arithmetic running time is quasi-linear or softly quadratic in the
+size of the exact integers produced.  Separate information-theoretic oracle
+precision from the cost of evaluating $F$ to that precision.
+\end{problem}
+
+\subsection{Sharp integer moduli and the log-periodic phase}
+
+The real-valued optimal input-bit threshold is
+\[
+ \Lambda(p):=\log_2\frac1{F(2^{-p})},
+ \qquad \mu(p)=\Ceiling{\Lambda(p)}.
+\]
+The all-orders endpoint theory expresses $\Lambda(p)$ in a lower-Lambert
+phase with a nonconstant one-periodic Gamma--zeta contribution and a hierarchy
+of inverse powers.  Passing to the integer ceiling introduces a second,
+sawtooth nonlinearity.  It is therefore natural to study the arithmetic
+interaction between the smooth periodic saddle phase and fractional parts of
+its growing nonperiodic carrier.
+
+For $p\ge1$ define the exact lower-Lambert phase
+\[
+ \lambda_p:=-\frac1L\LambertW_{-1}(-L2^{-p}),
+ \qquad 2^{-p}=\lambda_p e^{-L\lambda_p}.
+\]
+The first valid forward remainder gives the precise reduction
+\begin{equation}\label{co:eq:Lambda-lower-Lambert}
+ \Lambda(p)=\frac{\lambda_p^2}{2}-\beta\lambda_p
+ +\frac{\log\lambda_p}{2L}-\frac{\Csharp}{L}
+ -\frac{\Psi(\lambda_p)}{L}+\BigO(\lambda_p^{-1}).
+\end{equation}
+Indeed, substitute $x=2^{-p}$ and its exact phase $\lambda_p$ into
+\eqref{ao:eq:forward-all-orders} with $N=1$, negate, and divide by
+$L=\log2$; this is exactly the definition of $\Lambda(p)$.
+Put
+\[
+ A(p):=\frac{\lambda_p^2}{2}-\beta\lambda_p
+ +\frac{\log\lambda_p}{2L}-\frac{\Csharp}{L},
+ \qquad R(p):=\mu(p)-A(p).
+\]
+Equation \eqref{co:eq:Lambda-lower-Lambert} and
+$0\le\Ceiling{\Lambda(p)}-\Lambda(p)<1$ show that $R(p)$ is bounded.
+
+\begin{conjecture}[Nontrivial fluctuation of the optimal integer modulus]
+\label{co:conj:integer-modulus}
+The bounded sequence $(R(p))_{p\ge1}$ has at least two accumulation points and
+is not eventually periodic.
+\end{conjecture}
+
+The conjecture isolates a definite sequence and makes no unsupported claim
+that its accumulation set is a simple sum of two independent sets.  A stronger
+description or equidistribution theorem would require joint information about
+$\lambda_p\bmod1$ and the fractional parts of $\Lambda(p)$, which the present
+corpus does not supply.  Exact values $F(2^{-p})\in\RationalNumbers$ make the
+sequence amenable to arbitrary-precision experimentation without numerical
+ambiguity.
+
+\subsection{Base-\texorpdfstring{$b$}{b} atomic distributions}
+
+Replace the dyadic random series by
+\[
+ X_b=\sum_{k\ge1}b^{-k}U_k,
+ \qquad b\ge2,
+\]
+with independent uniform coordinates.  The finite convolution is still
+computable, but binary Thue--Morse signs are replaced by base-$b$ subset or
+digit combinatorics, and the support is $[0,1/(b-1)]$ before normalization.
+The least-interval-mass theorem continues to follow whenever the normalized
+density is symmetric and unimodal.  The same proof would then identify the
+optimal inverse modulus with the quantile itself.
+
+\begin{problem}[Uniform computability across the base]
+\label{comp:prob:uniform-base}
+Develop a theorem uniform in the integer parameter $b$: construct a single
+algorithm that, given $b$, a name of $y$, and a precision $p$, computes the
+normalized quantile of $X_b$.  Determine the leading dependence of the
+optimal input-bit modulus on both $b$ and $p$, and identify the corresponding
+base-$b$ log-periodic correction.
+\end{problem}
+
+\subsection{Certified spectral and polynomial representations}
+
+The Legendre, Lagrange, and shifted-$\RvachevUp$ representations in the corpus are
+mathematically exact, but a representation becomes an algorithm only after a
+recursive uniform tail bound is attached.  This suggests three concrete
+projects:
+
+\begin{enumerate}
+\item derive explicit Legendre coefficient envelopes strong enough to certify
+      pointwise and uniform evaluation of $\RvachevUp$;
+\item combine the finite shifted-$\RvachevUp$ representation of polynomials with
+      interval arithmetic to obtain certified local surrogates for $F$;
+\item compare physical-space spline, Legendre, and sinc-product evaluators by
+      bit complexity, not merely by observed decimal convergence.
+\end{enumerate}
+
+A cross-certified implementation could evaluate the same point by two
+independent representations and intersect the resulting enclosures.  This is
+particularly attractive near transition regions where one representation's
+natural error bound is pessimistic.
+
+\subsection{Higher-dimensional monotone transport}
+
+The one-dimensional theorem
+\[
+ \min_x \Probability\{X\in(x,x+h]\}=\Probability\{X\in(0,h]\}
+\]
+is a sharp anti-concentration lower bound tailored to a symmetric unimodal
+law.  Because the law is atomless, the same identity holds with any choice of
+open or closed endpoints.  In higher dimensions, inverse CDFs are replaced by
+triangular Rosenblatt maps or optimal-transport maps.  Effective invertibility
+would require computable lower bounds on masses of suitable boxes or sections.
+
+\begin{problem}[Atomic transport computability]
+\label{comp:prob:atomic-transport}
+For products or coupled variants of Fabius-type laws, determine conditions
+under which the triangular transport from Lebesgue measure has a computable
+inverse with an explicit multivariate modulus.  Investigate whether total
+positivity or variation-diminishing properties supply the needed lower
+section-mass estimates.
+\end{problem}
+
+\subsection{Branchwise inversion of the signed global extension}
+
+The signed global Fabius extension is not globally injective, so it has no
+single inverse.  On every maximal monotonicity interval, however, it has a
+branch inverse.  Local finiteness of its Thue--Morse translate expansion makes
+forward evaluation computable.  The remaining issue is effective branch
+separation near critical values.
+
+\begin{problem}[Computable branch atlas]
+\label{comp:prob:branch-atlas}
+Construct an effective enumeration of monotonicity intervals of the signed
+global extension, together with certified branch ranges and recursive inverse
+moduli.  Determine whether the self-similar translation law permits one finite
+branch template plus a Thue--Morse address.
+\end{problem}

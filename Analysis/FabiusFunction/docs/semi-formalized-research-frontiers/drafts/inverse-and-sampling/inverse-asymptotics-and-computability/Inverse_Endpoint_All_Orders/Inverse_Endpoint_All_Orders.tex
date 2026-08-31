@@ -97,12 +97,10 @@
 
 \newcommand{\eps}{\varepsilon}
 \newcommand{\Bell}{Y}
-\newcommand{\Psihat}{\widehat\Psi}
 \newcommand{\Csharp}{C_{\sharp}}
 \newcommand{\CB}{C_{B}}
 \newcommand{\Gzero}{G_0}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction/docs}}
-\newcommand{\ind}{\mathbf 1}
 \newcommand{\Hnum}{\mathsf H}
 
 \newenvironment{statusbox}[1]{%
@@ -319,14 +317,14 @@ theorem states: for every fixed $N\ge1$,
 uniformly in the phase, with every $A_j$ a bounded smooth one-periodic
 differential polynomial in the Gamma--zeta fluctuation
 \begin{equation}
- \Psi(u)=\sum_{k\ne0}\Psihat(k)\,\EulerE^{2\pi\ImaginaryUnit ku},
+ \Psi(u)=\sum_{k\ne0}\FourierSeriesCoefficient{\Psi}{k}\,\EulerE^{2\pi\ImaginaryUnit ku},
  \qquad
- \Psihat(k)=-\frac{\Gamma(-\chi_k)\,\zeta(1-\chi_k)}{L},
+ \FourierSeriesCoefficient{\Psi}{k}=-\frac{\Gamma(-\chi_k)\,\zeta(1-\chi_k)}{L},
  \qquad
  \chi_k=\frac{2\pi\ImaginaryUnit k}{L},
  \label{eq:Psi-Fourier}
 \end{equation}
-$\Psihat(0)=0$.  The explicit first correction and the forward
+$\FourierSeriesCoefficient{\Psi}{0}=0$.  The explicit first correction and the forward
 top-jet law are
 \begin{equation}
  A_1(u)=\frac1{24}+\frac1{2L}
@@ -757,10 +755,10 @@ computer-algebra diagnostic.
 For a finite jet monomial
 $\mathcal M=\prod_{r}\bigl(\Psi^{(r)}\bigr)^{m_r}$,
 \begin{equation}
- \widehat{\mathcal M}(k)
+ \FourierSeriesCoefficient{\mathcal M}{k}
  =\sum_{\substack{k_{r,s}\in\IntegerNumbers\setminus\{0\}\\ \sum k_{r,s}=k}}
  \prod_{r}\prod_{s=1}^{m_r}
- (2\pi\ImaginaryUnit k_{r,s})^{r}\,\Psihat(k_{r,s}),
+ (2\pi\ImaginaryUnit k_{r,s})^{r}\,\FourierSeriesCoefficient{\Psi}{k_{r,s}},
  \label{eq:convolution}
 \end{equation}
 and every Fourier coefficient of every $d_n,h_n,g_n$ is a finite
@@ -774,14 +772,14 @@ For every $\sigma<\pi/(2L)$, all periodic coefficient functions of
 all $d_n,h_n,g_n$ extend holomorphically and boundedly to
 $\AbsoluteValue{\Im\theta}\le\sigma$, with normally convergent Fourier series:
 Stirling on vertical lines gives
-$\AbsoluteValue{\Psihat(k)}\le C_\eps\exp[-(\pi^{2}/L-\eps)\AbsoluteValue k]$, and
+$\AbsoluteValue{\FourierSeriesCoefficient{\Psi}{k}}\le C_\eps\exp[-(\pi^{2}/L-\eps)\AbsoluteValue k]$, and
 differentiation, multiplication, and composition preserve the
 exponential type.  Consequently, truncating all Fourier sums at
 $\AbsoluteValue k\le K$ costs at most
 $C(1+\ell)^{N}K^{\BigO(1)}
 \EulerE^{-(\pi^{2}/L-2\pi\sigma)K}$ at fixed inverse order $N$ --- a few
 modes suffice for high-precision real-phase evaluation, since already
-$\AbsoluteValue{\Psihat(1)}=1.06271\ldots\times10^{-6}$.
+$\AbsoluteValue{\FourierSeriesCoefficient{\Psi}{1}}=1.06271\ldots\times10^{-6}$.
 \end{proposition}
 
 \section{Phase locking and coefficient tomography}
@@ -1071,7 +1069,7 @@ $A_{m-1}$, whose top jet is normalization-independent), so the
 linearized oscillation amplitude law
 \begin{equation}
  \operatorname{amp}(g_m)\approx
- 2\AbsoluteValue{\Psihat(1)}\,
+ 2\AbsoluteValue{\FourierSeriesCoefficient{\Psi}{1}}\,
  \frac{(2\pi^{2}/L^{2})^{m-1}}{(m-1)!}
  \label{eq:amplitude-law}
 \end{equation}
@@ -1200,7 +1198,7 @@ $\BigO(w^{-1}\EulerE^{-2^{\vartheta}})$ (a forward perturbation of size
 $\EulerE^{-2^{\lambda}}$, divided by the steep phase derivative $Lw$) and
 the saddle-resurgent scale.  For the latter, optimizing the
 amplitude law \eqref{eq:amplitude-law} against the Fourier decay
-$\AbsoluteValue{\Psihat(k)}\asymp\EulerE^{-\pi^{2}\AbsoluteValue k/L}$ places the dominant
+$\AbsoluteValue{\FourierSeriesCoefficient{\Psi}{k}}\asymp\EulerE^{-\pi^{2}\AbsoluteValue k/L}$ places the dominant
 mode of $g_m$ near $k_*\sim2(m-1)L/\pi^{2}$ and gives the linearized
 growth $m!\,(8/\pi^{2})^{m}$ up to algebraic factors --- optimal
 truncation near $m\simeq\pi^{2}w/8$ with remainder scale
@@ -1430,7 +1428,7 @@ sectors in the same digital universe as the Thue--Morse and ruler
 sequences --- but with geometric accumulation over the full
 $2$-adic valuation in place of digit-sum parity.  Note the
 crosswalk: $\TwoAdicValuation(n)+1$ is precisely the integer zero order of
-$\widehat\RvachevUp$ that drives the exactness theorems of the companion
+$\FourierTwoPi{\RvachevUp}$ that drives the exactness theorems of the companion
 volume \emph{Dyadic-Comb Frontiers}; here the same statistic returns
 as the arithmetic seed of the beyond-all-orders sectors.
 

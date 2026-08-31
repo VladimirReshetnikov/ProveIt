@@ -72,6 +72,10 @@
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
 \newcommand{\leanevaltwo}[1]{%
   \nolinkurl{integral_eval}\texttt{\textsubscript{2}}\nolinkurl{#1}}
+% LOCAL-NON-FOURIER-HAT: \ClampedExtensionOf denotes the clamped extension of an admissible function.
+\newcommand{\ClampedExtensionOf}[1]{\widehat{#1}}
+% LOCAL-NON-FOURIER-HAT: \FullRvachevLegendreCoefficientRat denotes the parity-completed rational Legendre coefficient sequence.
+\newcommand{\FullRvachevLegendreCoefficientRat}[1]{\widehat c_{#1}^{\RationalNumbers}}
 
 \newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
 \newenvironment{boxedremark}{%
@@ -139,7 +143,7 @@ Unless stated otherwise, empty finite sums are \(0\), empty finite products
 are \(1\), and Lean's natural-power convention makes \(0^0=1\).  The Fourier
 transform convention used in this walkthrough is
 \[
-  \widehat f(\xi)=\int_{\RealNumbers}f(x)e^{-2\pi\ImaginaryUnit x\xi}\,\Differential x.
+  \FourierTwoPi{f}(\xi)=\int_{\RealNumbers}f(x)e^{-2\pi\ImaginaryUnit x\xi}\,\Differential x.
 \]
 These conventions matter at base indices and in every Poisson- or
 Fourier-normalization check.
@@ -302,7 +306,7 @@ The up-function is the more natural object for Fourier analysis because it is ev
 \subsection{The signed global extension}
 The bounded function cannot satisfy an unrestricted translation law: it is constant on both tails.  The repository therefore defines \nolinkurl{extendedFabius}, a signed global extension assembled as a locally finite sum of odd translates of \(\RvachevUp\), weighted by the Thue--Morse sign.  In the repository's normalization,
 \[
-  \FabiusGlobal(x)=\sum_{n\geq0}(-1)^{s_2(n)}\,\RvachevUp(x-2n-1).
+  \FabiusGlobal(x)=\sum_{n\geq0}(-1)^{\BinaryDigitSum(n)}\,\RvachevUp(x-2n-1).
 \]
 Only finitely many summands are nonzero at any given \(x\).  Lean nevertheless treats the expression through a \nolinkurl{tsum}, so the library must prove local finiteness, summability, and the reduction of the infinite sum to a finite set before elementary rearrangements are legal.
 
@@ -383,15 +387,15 @@ The exact side is not just a transcription of closed formulas.  It supplies exec
 \subsection{Binary weight and the Thue--Morse sign}
 The smallest combinatorial ingredients are the binary digit sum and its sign:
 \[
-  s_2(n)=\text{number of ones in the binary expansion of }n,
+  \BinaryDigitSum(n)=\text{number of ones in the binary expansion of }n,
   \qquad
-  \varepsilon(n)=(-1)^{s_2(n)}.
+  \varepsilon(n)=(-1)^{\BinaryDigitSum(n)}.
 \]
 In the code these appear under names such as \nolinkurl{binaryWeight} and \nolinkurl{thueMorseSign}.  Elementary identities under doubling and successor are proved early because they drive both the dyadic evaluator and the q-binomial development:
 \[
-  s_2(2n)=s_2(n),
+  \BinaryDigitSum(2n)=\BinaryDigitSum(n),
   \qquad
-  s_2(2n+1)=s_2(n)+1,
+  \BinaryDigitSum(2n+1)=\BinaryDigitSum(n)+1,
 \]
 so that \(\varepsilon(2n)=\varepsilon(n)\) and \(\varepsilon(2n+1)=-\varepsilon(n)\).
 
@@ -473,7 +477,7 @@ At the center of the evaluator is a structurally terminating function such as \n
 \]
 A Taylor identity expresses the value at \(a/2^n\) using the value and inverse-power data associated with the smaller remainder \(r\).  Since \(r<a\) whenever \(a>0\), the recursive call decreases in a well-founded order.
 
-This is the computational counterpart of traversing the ones in the binary expansion of \(a\).  The number of recursive Taylor reductions is therefore controlled by \(s_2(a)\), not by the magnitude of \(a\) itself.  Together with precomputation of the inverse-power table, the design yields the approximate complexity described in the repository documentation: a quadratic table phase in the exponent and a bit-weight-dependent evaluation phase.
+This is the computational counterpart of traversing the ones in the binary expansion of \(a\).  The number of recursive Taylor reductions is therefore controlled by \(\BinaryDigitSum(a)\), not by the magnitude of \(a\) itself.  Together with precomputation of the inverse-power table, the design yields the approximate complexity described in the repository documentation: a quadratic table phase in the exponent and a bit-weight-dependent evaluation phase.
 
 Lean does not accept ``the highest bit was removed'' as a termination argument.  The source proves a chain of inequalities connecting the bit logarithm, the largest power of two not exceeding \(a\), and the remainder.  This chain is packaged so the recursive definition can use a measure.  The correctness proof later reuses the very same decomposition, an example of an implementation lemma doing double duty as a mathematical induction lemma.
 
@@ -529,9 +533,9 @@ An element of \(C(I,\RealNumbers)\) accepts a subtype argument.  To integrate it
 
 For an admissible \(f\), define the cumulative integral
 \[
-  A_f(y)=\int_0^y \widehat f(t)\,\Differential t,
+  A_f(y)=\int_0^y \ClampedExtensionOf{f}(t)\,\Differential t,
 \]
-where \(\widehat f\) is the clamped extension.  Symmetry implies
+where \(\ClampedExtensionOf{f}\) is the clamped extension.  Symmetry implies
 \[
   \int_0^1 f(t)\,\Differential t=\frac12.
 \]
@@ -654,11 +658,11 @@ That stronger local statement is what permits termwise continuity and differenti
 \subsection{Agreement and global identities}
 Once local finiteness is available, the signed extension is shown to agree with the bounded function on \([0,1]\).  On every cell \(2b\leq x\leq2b+2\), exactly one translate survives and
 \[
-  \FabiusGlobal(x)=(-1)^{s_2(b)}\,\RvachevUp(x-2b-1).
+  \FabiusGlobal(x)=(-1)^{\BinaryDigitSum(b)}\,\RvachevUp(x-2b-1).
 \]
 The case \(b=0\), together with the defining fold relation, gives unit-interval agreement.
 
-The extension is therefore a sequence of two-unit cells, not a globally periodic function: the sign of cell \(b\) is the Thue--Morse value \((-1)^{s_2(b)}\).  Scale-and-translation theorems record the precise identities on their valid blocks.  \nolinkurl{GlobalDyadic.lean} combines this cell structure with exact values to remove assumptions that a numerator be reduced or lie between zero and its denominator.
+The extension is therefore a sequence of two-unit cells, not a globally periodic function: the sign of cell \(b\) is the Thue--Morse value \((-1)^{\BinaryDigitSum(b)}\).  Scale-and-translation theorems record the precise identities on their valid blocks.  \nolinkurl{GlobalDyadic.lean} combines this cell structure with exact values to remove assumptions that a numerator be reduced or lie between zero and its denominator.
 
 \subsection{Global differential calculus}
 Local finiteness also permits termwise differentiation and even--odd
@@ -1296,7 +1300,7 @@ Let \(F\) and \(G\) satisfy \nolinkurl{IsFabius}.  Correctness gives
 \]
 for every dyadic rational \(q\).  To extend this to an arbitrary real \(x\), choose dyadic approximants such as
 \[
-  q_n=2^{-n}\left\lfloor 2^n x\right\rfloor.
+  q_n=2^{-n}\Floor{2^n x}.
 \]
 Then \(q_n\to x\).  Continuity gives
 \[
@@ -1424,7 +1428,7 @@ The proof requires more combinatorial normalization than the half-moment case be
 \subsection{Parity through Lucas' theorem}
 \nolinkurl{Parity.lean} proves that the natural moment numerators are odd.  The key combinatorial input is Lucas' theorem modulo two: a binomial coefficient \(\binom nk\) is odd exactly when every one-bit of \(k\) occurs at a one-bit position of \(n\).  Consequently the number of odd entries in row \(n\) of Pascal's triangle is
 \[
-  2^{s_2(n)}.
+  2^{\BinaryDigitSum(n)}.
 \]
 
 The moment recurrence is reduced modulo two.  Most terms vanish in pairs or carry explicit factors of two; the surviving binomial pattern is counted using Lucas' theorem.  The source must bridge several representations of a finite range---natural inequalities, \nolinkurl{Fin} types, and \nolinkurl{Finset.range}---before applying mathlib's Lucas results.  Dedicated cardinality lemmas hide this bridge from the final parity induction.
@@ -1435,7 +1439,7 @@ The moment recurrence is reduced modulo two.  Most terms vanish in pairs or carr
 The argument differs for odd and even indices.  Odd-index statements reduce to the normalized even moments.  Even-index statements use the half-moment recurrence together with the Lucas count of odd binomial coefficients.  The formal proof includes lemmas relating:
 \begin{itemize}
   \item the numerator and denominator fields of a normalized rational;
-  \item divisibility by two in \(\NaturalNumbers\) and \(\mathbb Z\);
+  \item divisibility by two in \(\NaturalNumbers\) and \(\IntegerNumbers\);
   \item coprimality in reduced form; and
   \item a valuation statement for the dyadic value \(F(2^{-n})\).
 \end{itemize}
@@ -1479,9 +1483,9 @@ Formal Fourier proofs are extremely sensitive to normalization.  Mathlib's trans
 
 A schematic transform identity is
 \[
-  \widehat{\RvachevUp}(z)
-  =\operatorname{sinc}(\pi z)\,
-   \widehat{\RvachevUp}(z/2).
+  \FourierTwoPi{\RvachevUp}(z)
+  =\SincRad(\pi z)\,
+   \FourierTwoPi{\RvachevUp}(z/2).
 \]
 Depending on whether the source theorem uses angular or ordinary frequency, the argument of sinc is adjusted.  The Lean theorem's constants should be taken as authoritative; the important structural feature is multiplication by one sinc factor and halving of frequency.
 
@@ -1490,7 +1494,7 @@ The source first proves that a candidate satisfying the original assumptions is 
 
 After simplification, the phases combine into a sine quotient, producing the sinc recurrence.  The mass normalization gives
 \[
-  \widehat{\RvachevUp}(0)=\int_{\RealNumbers}\RvachevUp(x)\,\Differential x=1.
+  \FourierTwoPi{\RvachevUp}(0)=\int_{\RealNumbers}\RvachevUp(x)\,\Differential x=1.
 \]
 This is the seed value that controls the limit after infinitely many refinements.
 
@@ -1501,17 +1505,17 @@ The proof does not rewrite Fourier integrals by hand at every step.  It first es
 \subsection{Iteration to a finite product}
 Iterating the refinement identity \(n\) times gives
 \[
-  \widehat{\RvachevUp}(z)
+  \FourierTwoPi{\RvachevUp}(z)
   =\left(\prod_{j=0}^{n-1}
-      \operatorname{sinc}\!\left(\frac{\pi z}{2^j}\right)
+      \SincRad\!\left(\frac{\pi z}{2^j}\right)
     \right)
-    \widehat{\RvachevUp}\!\left(\frac{z}{2^n}\right).
+    \FourierTwoPi{\RvachevUp}\!\left(\frac{z}{2^n}\right).
 \]
 This is proved by induction.  The Lean induction must reconcile two equivalent ways of writing a finite product: appending the last factor versus splitting off the first.  A small library of \nolinkurl{Finset.range} product identities keeps the main theorem readable.
 
 As \(n\to\infty\), \(z/2^n\to0\), so continuity of the Fourier transform gives
 \[
-  \widehat{\RvachevUp}(z/2^n)\to1.
+  \FourierTwoPi{\RvachevUp}(z/2^n)\to1.
 \]
 The formal product proof uses the available bound \(\operatorname{complexSinc}(w)-1=O(w)\) near zero, so the deviations are dominated by the geometric series \(\sum_j |\pi z|/2^j\).  The sharper classical quadratic expansion is not needed.
 
@@ -1522,9 +1526,9 @@ Infinite products in Lean can be represented through partial products and limits
 
 The result is the celebrated formula
 \[
-  \widehat{\RvachevUp}(z)
+  \FourierTwoPi{\RvachevUp}(z)
    =\prod_{j\geq0}
-      \operatorname{sinc}\!\left(\frac{\pi z}{2^j}\right)
+      \SincRad\!\left(\frac{\pi z}{2^j}\right)
 \]
 with the indexing adjusted to the normalization used by the code.
 
@@ -1551,7 +1555,7 @@ the value of \nolinkurl{rvachevFourierMomentTerm} at \(z,n\).  The declarations
 \nolinkurl{hasSum_rvachevFourierMomentTerm} prove
 \[
   A_0(z)=1,\qquad A_n(cz)=(c^2)^nA_n(z),\qquad
-  \operatorname{HasSum}(A_\bullet(z),\widehat\RvachevUp(z)).
+  \operatorname{HasSum}(A_\bullet(z),\FourierTwoPi{\RvachevUp}(z)).
 \]
 The separate module \nolinkurl{RvachevQBinomialFilter.lean} feeds this genuine
 series into the geometric Lagrange filter.  For arbitrary \(c,z\in\ComplexNumbers\), natural
@@ -1571,7 +1575,7 @@ For positive spacing \(u\), the normalized identity has the form
 \[
   \sum_{k\in\IntegerNumbers}\RvachevUp(t+uk)
   =\frac1u\sum_{k\in\IntegerNumbers}
-    \widehat{\RvachevUp}(k/u)e^{2\pi\ImaginaryUnit kt/u}.
+    \FourierTwoPi{\RvachevUp}(k/u)e^{2\pi\ImaginaryUnit kt/u}.
 \]
 The formal audit records two source corrections visible in this equation: the
 printed equation~(25) omitted the translation variable \(t\) from the
@@ -1590,7 +1594,7 @@ Compact support sharpens the \(t=0\) specialization on the full ray
 \[
   \sum_{m\in\IntegerNumbers}\RvachevUp(am)=1+2\RvachevUp(a),
   \qquad
-  a+2a\RvachevUp(a)=\sum_{m\in\IntegerNumbers}\widehat{\RvachevUp}(m/a).
+  a+2a\RvachevUp(a)=\sum_{m\in\IntegerNumbers}\FourierTwoPi{\RvachevUp}(m/a).
 \]
 The declarations \nolinkurl{rvachev_lattice_sum_of_one_half_le} and
 \nolinkurl{rvachev_poisson_support_specialization_of_one_half_le} require no
@@ -1670,11 +1674,11 @@ These are
 \nolinkurl{affineIndependentCopyLaw_eq_map_prod}.  Characteristic functions
 then give the factorization, fixed-point recurrence, and its finite iterate:
 \[
- \widehat{\mathcal T_{\rho,d,q}(\mu)}(t)
-  =\widehat{d_*\rho}(t)\widehat\mu(qt),\qquad
- \widehat\mu(t)
-  =\prod_{k=0}^{n-1}\widehat{d_*\rho}(q^kt)\,
-    \widehat\mu(q^nt).
+ \CharacteristicFunction{\mathcal T_{\rho,d,q}(\mu)}(t)
+  =\CharacteristicFunction{d_*\rho}(t)\CharacteristicFunction{\mu}(qt),\qquad
+ \CharacteristicFunction{\mu}(t)
+  =\prod_{k=0}^{n-1}\CharacteristicFunction{d_*\rho}(q^kt)\,
+    \CharacteristicFunction{\mu}(q^nt).
 \]
 The corresponding declarations are
 \nolinkurl{charFun_affineIndependentCopyLaw},
@@ -1746,12 +1750,12 @@ measure, characteristic-function, MGF, and CGF factorizations.  The later
  \phi_q(t)=
  e^{\ImaginaryUnit(1-q^m)t/2}
  \left(\prod_{k=0}^{m-1}
-   \operatorname{sinc}\!\left(\frac{(1-q)q^kt}{2}\right)\right)
+   \SincRad\!\left(\frac{(1-q)q^kt}{2}\right)\right)
  \phi_q(q^m t),
 \]
 and the phase-bearing prefix obtained by deleting the residual factor
 \(\phi_q(q^m t)\) converges pointwise to \(\phi_q(t)\).  The digit identity itself,
-\(\widehat\eta_q(t)=e^{\ImaginaryUnit(1-q)t/2}\operatorname{sinc}((1-q)t/2)\), is unconditional
+\(\CharacteristicFunction{\eta_q}(t)=e^{\ImaginaryUnit(1-q)t/2}\SincRad((1-q)t/2)\), is unconditional
 in real \(q\).  Thus the contraction-range result includes \(q=0\) and negative
 ratios; at \(q=1/2\) it has exact wrappers for the classical weighted-sum law.
 
@@ -1792,7 +1796,7 @@ ratios, the first two theorems give the exact identities
 For
 \[
  P_{q,m}(t):=e^{\ImaginaryUnit(1-q^m)t/2}
-   \prod_{k=0}^{m-1}\operatorname{sinc}
+   \prod_{k=0}^{m-1}\SincRad
       \!\left(\frac{(1-q)q^kt}{2}\right),
 \]
 the last two prove that \(P_{q,m}\) tends locally uniformly on the real frequency line
@@ -2206,7 +2210,7 @@ which vanishes for low degree and factors in a controlled way at the critical de
 The same even/odd recursion gives the exact exponential factorization formalized
 in \nolinkurl{ThueMorseExponential.lean}:
 \[
-  \sum_{r<2^n}(-1)^{s_2(r)}e^{rz}
+  \sum_{r<2^n}(-1)^{\BinaryDigitSum(r)}e^{rz}
   =\prod_{j<n}\bigl(1-e^{2^jz}\bigr).
 \]
 It is a finite identity, so no interchange of limits or infinite products is
@@ -2316,7 +2320,7 @@ This algebraic constancy is distinct from the discrete-limit approximation \noli
 \subsection{The global binary-reduction series}
 \nolinkurl{FabiusBinaryReductionSeries.lean} and \nolinkurl{FabiusGlobalQBinomialSeries.lean} pass from finite identities to an infinite series representing the signed extension.  The binary reduction follows the same highest-bit philosophy as the exact evaluator, but now the steps are organized as a global \(q\)-series.
 
-A genuine scale-zero term forces the outer index to start at \(m=0\).  Its previous prefix is the half-scale floor \(\lfloor x/2\rfloor\), so the zeroth coefficient distinguishes even and odd unit blocks of the signed extension.  It vanishes for \(x<1\) and equals one at \(x=1\); hence the older \(m=1\) presentation survives only on \(0\leq x<1\).
+A genuine scale-zero term forces the outer index to start at \(m=0\).  Its previous prefix is the half-scale floor \(\Floor{x/2}\), so the zeroth coefficient distinguishes even and odd unit blocks of the signed extension.  It vanishes for \(x<1\) and equals one at \(x=1\); hence the older \(m=1\) presentation survives only on \(0\leq x<1\).
 
 The exact finite telescope leaves a signed residual whose uniform geometric
 bound is at most \(2^{1-N}\) through inclusive scale \(N\geq1\), for every
@@ -2370,11 +2374,11 @@ The proof is careful not to use order arguments on \(\ComplexNumbers\).  Norm bo
 The finite prefix is encoded safely as the natural floor
 \[
   \texttt{fabiusDiscreteLimitRangeLength}(x,p)
-  =\left\lfloor 2^p x+\tfrac12\right\rfloor_+,
+  =\PositivePart{\Floor{2^p x+\tfrac12}},
 \]
 so no negative length is coerced into a natural number.  For \(x\geq0\), its
 integer cast is
-\(\lfloor2^px-\tfrac12\rfloor+1\), and the length is zero exactly when
+\(\Floor{2^px-\tfrac12}+1\), and the length is zero exactly when
 \(2^px<\tfrac12\).  The exact row-mass
 theorem gives sum \(1\).  A lower bound
 \(\operatorname{halfQPochhammer}(n)\geq1/4\) yields the explicit total-variation
@@ -3412,21 +3416,21 @@ exhaustive public API has one definition,
 If \(c_r^{\RationalNumbers}\) is
 \nolinkurl{canonicalRvachevLegendreCoefficientRat}\((r)\), its full extension is
 \[
- \widehat c_k^{\RationalNumbers}=
+ \FullRvachevLegendreCoefficientRat{k}=
  \begin{cases}
    c_{k/2}^{\RationalNumbers},&2\mid k,\\
    0,&2\nmid k.
  \end{cases}
 \]
 The even and odd theorems give
-\(\widehat c_{2n}^{\RationalNumbers}=c_n^{\RationalNumbers}\) and
-\(\widehat c_{2n+1}^{\RationalNumbers}=0\).  Unconditionally in \(k\), the
-normalized-moment theorem says that \(\widehat c_k^{\RationalNumbers}\) is
+\(\FullRvachevLegendreCoefficientRat{2n}=c_n^{\RationalNumbers}\) and
+\(\FullRvachevLegendreCoefficientRat{2n+1}=0\).  Unconditionally in \(k\), the
+normalized-moment theorem says that \(\FullRvachevLegendreCoefficientRat{k}\) is
 \((2k+1)/2\) times \nolinkurl{momentFunctional} with moment sequence
 \nolinkurl{rvachevRawMomentRat}, evaluated at
 \nolinkurl{legendrePolynomialRat}\((k)\).  In abbreviated notation,
 \[
- \widehat c_k^{\RationalNumbers}
+ \FullRvachevLegendreCoefficientRat{k}
  =\frac{2k+1}{2}\,\mathcal M_{\mathrm{Rv}}(P_k^{\RationalNumbers}).
 \]
 For arbitrary natural \(i,j\), write \(R_{ij}^{\RationalNumbers}\) for
@@ -3434,9 +3438,9 @@ For arbitrary natural \(i,j\), write \(R_{ij}^{\RationalNumbers}\) for
 theorems state exactly
 \[
  R_{ij}^{\RationalNumbers}
- =\sum_{k=0}^{i+j}\widehat c_k^{\RationalNumbers}
+ =\sum_{k=0}^{i+j}\FullRvachevLegendreCoefficientRat{k}
     G^{\RationalNumbers}_{ijk}
- =\sum_{r=0}^{\lfloor(i+j)/2\rfloor}c_r^{\RationalNumbers}
+ =\sum_{r=0}^{\Floor{(i+j)/2}}c_r^{\RationalNumbers}
     G^{\RationalNumbers}_{ij,2r}.
 \]
 The rational matrix theorem supplies the second equality entrywise for every
@@ -3446,13 +3450,13 @@ Exactly two public theorems in this companion require analytic hypotheses.
 Given \(F\) of type \nolinkurl{BoundedFabius} and a proof \(h_F\) of
 \nolinkurl{IsFabius F},
 \nolinkurl{canonicalRvachevFullLegendreCoefficientRat_cast} identifies the real cast
-of \(\widehat c_k^{\RationalNumbers}\) with
+of \(\FullRvachevLegendreCoefficientRat{k}\) with
 \nolinkurl{rvachevFullLegendreCoefficient}\((F,k)\), and
 \nolinkurl{upLegendreGramMatrix_apply_eq_sum_gaunt} states, writing
 \(D^F_{n,ij}\) for \nolinkurl{upLegendreGramMatrix}\((F,n,i,j)\),
 \[
  D^F_{n,ij}
- =\sum_{r=0}^{\lfloor(i+j)/2\rfloor}c_r(F)\,G_{ij,2r},
+ =\sum_{r=0}^{\Floor{(i+j)/2}}c_r(F)\,G_{ij,2r},
 \]
 where \(c_r(F)\) is \nolinkurl{rvachevLegendreCoefficient}\((F,r)\), for
 \(i,j\in\operatorname{Fin} n\).  The other six theorems are unconditional finite
@@ -3626,14 +3630,14 @@ and, for the secants drawn from the common endpoint \((b,-1)\),
 In particular neither branch has a finite right derivative: both fail
 
 \begin{center}
-\(\operatorname{DifferentiableWithinAt}_{\mathbb R}
+\(\operatorname{DifferentiableWithinAt}_{\RealNumbers}
   (W_j,\operatorname{Ioi}(b),b)\).
 \end{center}
 
 The two totalized all-real branch functions also fail
 
 \begin{center}
-\(\operatorname{DifferentiableAt}_{\mathbb R}(W_j,b)\).
+\(\operatorname{DifferentiableAt}_{\RealNumbers}(W_j,b)\).
 \end{center}
 
 The human proof follows the source layering.  Endpoint continuity gives
@@ -3741,7 +3745,7 @@ The reusable layer treats
   P_{m,A,\beta}
     =A\left(\frac m\beta e^{-1}\right)^m,
 \]
-under \(m\in\mathbb N\setminus\{0\}\), \(A>0\), and \(\beta>0\).
+under \(m\in\PositiveIntegers\), \(A>0\), and \(\beta>0\).
 \nolinkurl{PowerExponentialLambertCalculus.lean} proves
 \nolinkurl{principalPowerExponentialPhase_continuousOn_Icc} on
 \([0,P_{m,A,\beta}]\) and
@@ -3801,7 +3805,7 @@ The separate \nolinkurl{PowerExponentialLambertCurvature.lean} does supply
 the generic regular-interior second derivative.  If \(\lambda\) denotes
 either scaled branch and
 \(0<x<P_{m,A,\beta}\), then, under the same hypotheses
-\(m\in\mathbb N\setminus\{0\}\), \(A>0\), and \(\beta>0\),
+\(m\in\PositiveIntegers\), \(A>0\), and \(\beta>0\),
 \[
  \lambda''(x)=
  \frac{\lambda(x)\bigl(m-(m-\beta\lambda(x))^2\bigr)}
@@ -3987,7 +3991,7 @@ For even/odd splits, a specialized theorem is especially valuable:
 Once established, it drives Thue--Morse identities, convolution recurrences, and parity counts.
 
 \subsection{Casts as explicit interfaces}
-Exact theorems live in \(\NaturalNumbers\), \(\mathbb Z\), or \(\RationalNumbers\); analytic theorems live in \(\RealNumbers\) or \(\ComplexNumbers\).  Lean will insert canonical casts, but it will not silently prove that a finite sum commutes with the cast or that a natural exponent has the intended target type.
+Exact theorems live in \(\NaturalNumbers\), \(\IntegerNumbers\), or \(\RationalNumbers\); analytic theorems live in \(\RealNumbers\) or \(\ComplexNumbers\).  Lean will insert canonical casts, but it will not silently prove that a finite sum commutes with the cast or that a natural exponent has the intended target type.
 
 The code therefore proves and reuses lemmas of the forms
 \begin{align*}
@@ -4736,14 +4740,14 @@ Module & Role in the development \\
 \nolinkurl{FabiusSharpAsymptotic.lean} & Correct sharp formula with periodic phase, first error bound, and asymptotic equivalence. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Post-snapshot algebra and phase-extraction machinery}}\\[0.25em]
-\nolinkurl{ExponentialPartition.lean} & Weighted partitions and their reciprocal-factorial coefficient sum over arbitrary commutative \(\mathbb Q\)-algebras, including the marked-part and normalized successor recurrences and the field quotient bridge. \\
+\nolinkurl{ExponentialPartition.lean} & Weighted partitions and their reciprocal-factorial coefficient sum over arbitrary commutative \(\RationalNumbers\)-algebras, including the marked-part and normalized successor recurrences and the field quotient bridge. \\
 \nolinkurl{ExponentialBell.lean} & Recurrence-uniqueness bridge identifying the finite weighted-partition family with \nolinkurl{SaddleExpansion.expCoeff}. \\
-\nolinkurl{MomentCumulantAlgebra.lean} & Factorial normalization, the complete Bell transform and inverse moment--cumulant transform, the classical Bell recurrence, normalized inverse laws, and functoriality over arbitrary commutative \(\mathbb Q\)-algebras. \\
-\nolinkurl{EndpointTransferPolynomials.lean} & Universal endpoint-transfer polynomials over \(\mathbb Q[X]\): recurrence, weighted-partition formula, exact formal exponential series, finite truncation, evaluation naturality, and the coefficients through order three. \\
+\nolinkurl{MomentCumulantAlgebra.lean} & Factorial normalization, the complete Bell transform and inverse moment--cumulant transform, the classical Bell recurrence, normalized inverse laws, and functoriality over arbitrary commutative \(\RationalNumbers\)-algebras. \\
+\nolinkurl{EndpointTransferPolynomials.lean} & Universal endpoint-transfer polynomials over \(\RationalNumbers[X]\): recurrence, weighted-partition formula, exact formal exponential series, finite truncation, evaluation naturality, and the coefficients through order three. \\
 \nolinkurl{PolynomialExpectationCumulant.lean} & Finite polynomial integrals as coefficient-weighted raw moments and complete Bell transforms of formal cumulants, including the exact zeroth-moment correction and the probability-measure specialization. \\
 \nolinkurl{CompleteHomogeneous.lean} & Evaluation and adjoining-variable recurrences for complete homogeneous symmetric polynomials, together with their univariate quotient polynomial, over arbitrary commutative semirings or rings as appropriate. \\
 \nolinkurl{CompleteHomogeneousGenerating.lean} & Finite formal generating series for complete homogeneous evaluations: coefficient and adjoining-variable recurrences over commutative semirings, and one-factor/full-product denominator clearing plus the canonical \nolinkurl{PowerSeries.invOfUnit} reciprocal over commutative rings.  No analytic evaluation, convergence, or Bell/generalized-harmonic conversion is asserted. \\
-\nolinkurl{CompleteHomogeneousBell.lean} & Finite power sums and factorially weighted Bell input; the division-free complete-homogeneous/complete-Bell identity over every commutative semiring and its factorially normalized pointwise report form over commutative \(\mathbb Q\)-algebras.  No analytic convergence is asserted. \\
+\nolinkurl{CompleteHomogeneousBell.lean} & Finite power sums and factorially weighted Bell input; the division-free complete-homogeneous/complete-Bell identity over every commutative semiring and its factorially normalized pointwise report form over commutative \(\RationalNumbers\)-algebras.  No analytic convergence is asserted. \\
 \nolinkurl{GeometricCompleteHomogeneous.lean} & Denominator-free principal specialization \(h_n(1,q,\ldots,q^p)=\GaussianBinomial{n+p}{p}{q}\), its arbitrary common-scale form over every commutative semiring, and the range-indexed bridge used by interpolation rows. \\
 \nolinkurl{LagrangeResidualMoments.lean} & Every higher residual moment of a polynomially exact finite row, with a representation-independent commutative-ring theorem and the distinct-node Lagrange specialization. \\
 \nolinkurl{GeometricResidualMoments.lean} & Every positive residual moment on \(c,cq,\ldots,cq^p\) over a commutative ring, assuming exactness directly on those scaled nodes, together with distinct-node Lagrange, arbitrary-dilation, and shifted-block field corollaries. \\
@@ -5027,7 +5031,7 @@ Term or identifier & Meaning in this development \\
 \nolinkurl{halfMoment} / \nolinkurl{moment} & Exact rational recurrence sequences later identified with analytic integrals. \\
 \nolinkurl{halfMomentNumerator} / \nolinkurl{momentNumerator} & Division-free natural recurrences used for parity and denominator proofs. \\
 \nolinkurl{binaryWeight} & Number of one-bits of a natural number. \\
-\nolinkurl{thueMorseSign} & Sign \((-1)^{s_2(n)}\). \\
+\nolinkurl{thueMorseSign} & Sign \((-1)^{\BinaryDigitSum(n)}\). \\
 \nolinkurl{halfQBinomial} & Exact q-binomial coefficient specialized to \(q=1/2\). \\
 \nolinkurl{field_simp} & Tactic for clearing field denominators after nonvanishing hypotheses have been supplied. \\
 \nolinkurl{norm_cast} / \nolinkurl{push_cast} & Tactics normalizing canonical casts across algebraic operations. \\
