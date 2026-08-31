@@ -46,6 +46,7 @@ RETIRED_COMMANDS = {
     "N": "NaturalNumbers or PositiveIntegers",
     "Z": "IntegerNumbers",
     "Up": "RvachevUp",
+    "up": "RvachevUp",
     "upf": "RvachevUp",
     "sinc": "SincRad or SincPi",
     "sincpi": "SincPi",
@@ -92,11 +93,15 @@ RETIRED_COMMANDS = {
     "Id": "IdentityOperator",
     "Log": "PrincipalLogarithm",
     "defeq": "DefinitionEquals",
+    "Fglobal": "FabiusGlobal",
+    "InvF": "FabiusClampedQuantile or FabiusQuantile",
 }
 
 SEMANTIC_COMMANDS = {
     "FabiusBounded", "FabiusGlobal", "FabiusQuantile",
     "FabiusClampedQuantile", "RvachevUp", "SincRad", "SincPi",
+    "FourierTwoPiOperator", "FourierAngularOperator",
+    "FourierTwoPiTransformOf", "FourierAngularTransformOf",
     "FourierTwoPi", "FourierAngular", "LaplaceTransformOf",
     "MellinTransformOf", "BinaryDigitSum", "ThueMorseSign",
     "GaussianBinomial", "QPochhammer", "QInteger", "MetricDistance",
@@ -251,6 +256,12 @@ def audit_file(path: Path, docs: Path) -> tuple[dict, list[Finding], Counter[str
         r"\\operatorname\s*\{\s*up\s*\}": r"literal up operator; use \RvachevUp",
         r"\\mathrm\s*\{\s*up\s*\}": r"literal up operator; use \RvachevUp",
         r"\\mathop\s*\{\s*\\rm\s+up\s*\}": r"literal up operator; use \RvachevUp",
+        r"\\mathcal\s*(?:\{\s*F\s*\}|F(?![A-Za-z@]))": (
+            r"ambiguous calligraphic F; use \FabiusGlobal or a descriptive local symbol"
+        ),
+        r"\\widetilde\s*(?:\{\s*F\s*\}|F(?![A-Za-z@]))": (
+            r"ambiguous tilde F; use \FabiusGlobal or a descriptive local symbol"
+        ),
     }
     if not canonical_source:
         for pattern, message in literal_patterns.items():

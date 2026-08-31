@@ -2857,22 +2857,32 @@ $E_\kappa$.
 
 \begin{proof}
 Write $x=N+z$, $r<z<b$, in the exact boundary identity
-\eqref{eq:dyadic-boundary}.  Uniformly for $z\in[r,b]$,
-\begin{equation}
+\eqref{eq:dyadic-boundary}, and define
+\[
+ Q_n(z):=
  \frac{\abs{\Phiup(\tfrac12+z/(2N))}}
       {\abs{\Phiup(z/(2N))}}
- \longrightarrow\abs{\Phiup(1/2)},
+ \left(1+\frac zN\right)^{-n},
  \qquad
- \left(1+\frac zN\right)^{-n}\longrightarrow1,
- \label{eq:valley-uniform-factors}
+ A_n(z):=Q_n(z)z^n\abs{\Phiup(z)}.
+\]
+For all sufficiently large $n$ the denominator in $Q_n$ is nonzero on $[r,b]$.
+Uniformly on this interval,
+\begin{equation}
+ Q_n(z)\longrightarrow Q_\infty:=\abs{\Phiup(1/2)},
+\label{eq:valley-uniform-factors}
 \end{equation}
 because $n/N\to0$.  Hence
 \begin{equation}
- M_{N+r}
- =\abs{\Phiup(1/2)}N^{-n}
-   \max_{r\le z\le b}\bigl(z^n\abs{\Phiup(z)}\bigr)(1+o(1)).
- \label{eq:valley-reduced-max}
+ M_{N+r}=N^{-n}A_n(z_{n,r})
+ =N^{-n}\max_{r\le z\le b}A_n(z),
+ \qquad z_{n,r}:=\xi_{N+r}-N.
+ \label{eq:valley-exact-max}
 \end{equation}
+Indeed, this is exactly \eqref{eq:dyadic-boundary} in the open interval; at both
+endpoints the continuous extension vanishes.  Thus it is the exact objective $A_n$,
+not merely its uniformly equivalent principal factor, whose maximizer determines
+$\xi_{N+r}$.
 
 By \eqref{eq:zero-local-coefficient}, as $z\uparrow b$,
 \[
@@ -2883,33 +2893,46 @@ By \eqref{eq:zero-local-coefficient}, as $z\uparrow b$,
 \]
 Choose $\delta_0>0$ so small that the local expansion bounds
 $|\Phiup(z)|$ above and below by fixed positive multiples of $(b-z)^d$ on
-$[b-\delta_0,b]$.  The trial point $z=b-db/n$ has size at least
-$c\,b^{n+d}n^{-d}$ for large $n$, whereas $z\le b-\delta_0$ is exponentially smaller.
-On the remaining interval put $u=n(b-z)/b$.  Since $(1-u/n)^n\le \e^{-u}$,
+$[b-\delta_0,b]$.  By \eqref{eq:valley-uniform-factors}, $Q_n$ is bounded above
+and below there by positive constants.  Consequently the trial point $z=b-db/n$
+has
 \[
- z^n\abs{\Phiup(z)}\le C b^{n+d}n^{-d}u^d\e^{-u}.
+ A_n(b-db/n)\ge c\,b^{n+d}n^{-d}
 \]
-After $U>d$ is chosen large, the supremum of $u^de^{-u}$ over $u\ge U$ is smaller
-than the trial-point lower constant.  Thus every maximizer has $u$ in one fixed compact
-interval.  Uniformly there,
+for large $n$, whereas $A_n(z)$ is exponentially smaller when
+$z\le b-\delta_0$.  On the remaining interval put $u=n(b-z)/b$.  Since
+$(1-u/n)^n\le \e^{-u}$,
 \[
- z^n\abs{\Phiup(z)}
- =D_b b^{n+d}n^{-d}\,u^d\left(1-\frac un\right)^n(1+o(1))
- \longrightarrow
- D_b b^{n+d}n^{-d}u^d\e^{-u}.
+ A_n(z)\le C b^{n+d}n^{-d}u^d\e^{-u}.
+\]
+Choose $U>d$ so large that this upper bound for $u\ge U$ is smaller than the
+trial-point lower bound.  It follows that the exact maximizing coordinate
+\[
+ u_{n,r}:=\frac{n(b-z_{n,r})}{b}
+\]
+lies in the fixed compact interval $[0,U]$.  Uniformly for $u\in[0,U]$, the local
+zero expansion and \eqref{eq:valley-uniform-factors} give
+\[
+ \frac{A_n(b-bu/n)}{Q_\infty D_b b^{n+d}n^{-d}}
+ =\frac{Q_n(b-bu/n)}{Q_\infty}
+   u^d\left(1-\frac un\right)^n(1+o(1))
+ \longrightarrow u^d\e^{-u}.
 \]
 The function $u^d\e^{-u}$ has its unique maximum at $u=d$, with value $d^d\e^{-d}$.
-Uniform convergence on the compact interval just obtained therefore gives
+Every convergent subsequence of the exact maximizers $u_{n,r}$ must therefore maximize
+this limiting function; uniqueness forces
 \[
- b-z_{n,r}\sim\frac{db}{n}
+ u_{n,r}\longrightarrow d,
+ \qquad
+ b-z_{n,r}=\frac{db}{n}+o(n^{-1}),
 \]
-and
+and uniform convergence also gives
 \[
- \max z^n\abs{\Phiup(z)}
- \sim D_b b^{n+d}n^{-d}d^d\e^{-d}.
+ \max_{r\le z\le b}A_n(z)
+ \sim Q_\infty D_b b^{n+d}n^{-d}d^d\e^{-d}.
 \]
 Insert $D_b=b^{-d}\abs{\Phiup(b/2^d)}$ into
-\eqref{eq:valley-reduced-max} to obtain \eqref{eq:valley-amplitude}; the location statement
+\eqref{eq:valley-exact-max} to obtain \eqref{eq:valley-amplitude}; the location statement
 is \eqref{eq:valley-location}.  Finally,
 $-n\log N=-(\log N)^2/a+\bigO(\log N)$, proving
 \eqref{eq:valley-log-rate}.

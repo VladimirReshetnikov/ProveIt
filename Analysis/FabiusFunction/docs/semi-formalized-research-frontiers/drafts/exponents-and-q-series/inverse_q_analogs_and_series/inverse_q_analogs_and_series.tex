@@ -1,0 +1,140 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{bm}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\pgfplotsset{compat=1.18}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Inverse q-Analogs and Their Series Expansions},
+  pdfsubject={Branchwise inversion, q-Pochhammer products, Gaussian coefficients, q-special functions, and Fabius-Rvachev connections},
+  pdfkeywords={q-analog, q-Pochhammer, Gaussian polynomial, Lagrange inversion, Lambert W, Fabius function, Rvachev function}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Inverse \(q\)-analogs and series}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+
+% Long unbreakable inline mathematics occasionally leaves a line with no legal
+% break point.  A small emergency stretch lets TeX loosen such a line rather
+% than let it protrude into the margin; it applies only to lines that would
+% otherwise be overfull.
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
+\newcommand{\lean}[1]{%
+  \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
+\newcommand{\leanevaltwo}[1]{%
+  \nolinkurl{integral_eval}\texttt{\textsubscript{2}}\nolinkurl{#1}}
+
+\newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
+\newenvironment{boxedremark}{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{black}\hrule\vspace{0.6em}\small
+}{%
+  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
+}
+
+\lstdefinestyle{pseudo}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{shadegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  xleftmargin=0.7em,
+  xrightmargin=0.7em,
+  aboveskip=0.8em,
+  belowskip=0.8em
+}
+
+\title{\bfseries Inverse \(q\)-Analogs and Their Series Expansions\\[0.35em]
+\large A branch-aware, proof-complete synthesis}
+\author{Human-readable research synthesis for\\
+\small Vladimir Reshetnikov's \texttt{ProveIt} repository}
+\date{Consolidated repository edition: 31 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This volume replaces six overlapping reports on inverse \(q\)-analogs and
+their series expansions with one branch-aware account.  Its organizing
+principle is that inversion is meaningful only after the forward observable,
+the parameter being recovered, a base point or asymptotic regime, and a branch
+have all been specified.  Universal reversion is developed once and then
+specialized to finite and infinite \(q\)-Pochhammer products, Gaussian and
+multinomial coefficients, \(q\)-gamma and related special functions,
+cyclotomic limits, and the Fabius--Rvachev geometric-product setting.
+
+Every nonconjectural result is accompanied by a complete human-readable proof.
+Claims backed by Lean are named explicitly; correct classical arguments that
+remain outside Lean are labelled as human-proved frontier results; numerical
+observations are not promoted to theorems.  Statements that remain genuinely
+open appear only in theorem-style environments named \emph{Conjecture}, with
+their outstanding obligations stated.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+
+\input{chapters/00_scope_status_and_normalizations}
+\input{chapters/01_universal_inversion}
+\input{chapters/02_finite_q_pochhammer}
+\input{chapters/03_infinite_q_pochhammer}
+\input{chapters/04_gaussian_multinomial}
+\input{chapters/05_q_special_functions}
+\input{chapters/06_cyclotomic_fabius}
+\input{chapters/07_certification_and_frontiers}
+\input{chapters/08_reference_appendices}
+
+\end{document}

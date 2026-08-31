@@ -17,7 +17,7 @@ citation is unresolved, so this can gate a commit.
 import io, os, re, sys
 from pathlib import Path
 
-FRONTIER_ROOT = Path(__file__).resolve().parent
+FRONTIER_ROOT = Path(__file__).resolve().parent.parent
 FABIUS_ROOT = FRONTIER_ROOT.parent.parent
 DOCS = FRONTIER_ROOT
 LEAN = FABIUS_ROOT / 'Lean' / 'FabiusFunction'

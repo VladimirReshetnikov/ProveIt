@@ -101,19 +101,22 @@ establish Lean verification.
 
 - [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](Cyclotomic_q_Fabius_Rvachev_Frontier/),
   *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
-  Product* (25 pp), arrived on 2026-08-30 from
+  Product* (25 pp at arrival; currently 29 A4 pp and 1,896 source lines),
+  arrived on 2026-08-30 from
   `Cyclotomic_q_Fabius_Rvachev_Frontier.zip` (outer SHA-256
   `029da7d9ec96a0b2e5c4164c37f2b361dd015112bd0c6237263e3c538c5b0f64`).
   All 22 submitted payload hashes verified; five CSV entries were refreshed
   after CRLF-to-LF repository normalization. Its title and abstract place its
   radial root-of-unity expansions, claimed natural-boundary theorem,
   cyclotomic blow-ups, Bell/moment condensation, and inverse branches beside
-  the consolidated q-series frontier. It remains standalone pending the
-  required post-publication claim-level comparison and a Lean crosswalk;
-  manuscript labels and numerical evidence do not establish Lean verification.
-  The submitted 25-page A4 report uses Latin Modern rather than the house
-  Libertinus face and retains nine embedded/subset Type-3 figure-font rows;
-  normalization is deferred so that the verified arrival payload stays intact.
+  the consolidated q-series frontier. A post-publication revision crosswalks
+  the global geometric-sinc q-Pochhammer factorization while leaving the
+  cyclotomic asymptotic and natural-boundary layers manuscript-only; the
+  refreshed active ledger verifies all 22 payloads. The current five PDFs have
+  33 pages in total (29 main plus four one-page figures). The main report still
+  uses Latin Modern rather than the house Libertinus face and retains nine
+  embedded/subset Type-3 figure-font rows; the standalone figures contain nine
+  more. Font normalization remains deferred.
 
 - [`inverse_q_analogs_extended_report/`](inverse_q_analogs_extended_report/),
   *Inverse q-Analogs in All Parameters* (104 pp), arrived on 2026-08-30 from
