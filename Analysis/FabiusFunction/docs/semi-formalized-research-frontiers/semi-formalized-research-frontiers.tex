@@ -316,13 +316,21 @@ argument now proves uniqueness for contractive affine independent-copy equations
 second-countable real inner-product spaces; in particular, the named geometric law is the
 unique probability solution of its refinement equation for \(|q|<1\), including \(q=0\)
 and negative \(q\), with no support, density, or moment hypothesis.  The negative- and
-zero-parameter density interpretation remains open.  The existing
-\texttt{geometricSincProduct} packages the rescaled sinc factors as a \texttt{tprod}; a
-named characteristic-function bridge to it (or explicit \texttt{HasProd} theorem) and
-compact-uniform convergence beyond the formal pointwise sinc-prefix limit, general-\(q\) rapid decay and Fourier
-inversion, and the further centered, shape, explicit Bernoulli-cumulant/Bell-moment,
-transform, derivative-hierarchy, and endpoint-flatness layers remain in the frontier on the
-precise boundary recorded below.
+zero-parameter density interpretation remains open.  Write
+\(S_q(z)=\operatorname{geometricSincProduct}(q,z)\),
+\(G_q(z)=\operatorname{geometricReciprocalGamma}(q,z)\), and
+\(z_q(t)=(1-q)t/(2\pi)\).  The formal API now proves, for every real
+\(|q|<1\) and \(t\in\R\), including \(q=0\) and negative \(q\),
+\[
+ \phi_q(t)=e^{\ii t/2}S_q(z_q(t))
+ =e^{\ii t/2}G_q(z_q(t))G_q(-z_q(t)).
+\]
+It also gives locally uniform convergence on \(\C\) of the defining products for \(S_q\),
+their pointwise multipliability and exact \texttt{HasProd} identity, and entireness of
+\(S_q\).  A named compact-uniform theorem for the full phase-bearing characteristic
+prefixes, general-\(q\) rapid decay and Fourier inversion, and the further centered/MGF,
+shape, explicit Bernoulli-cumulant/Bell-moment, transform, derivative-hierarchy, and
+endpoint-flatness layers remain in the frontier on the precise boundary recorded below.
 
 Closely overlapping presentations have been merged rather than concatenated.  Each topic
 uses the strongest or most complete source as its backbone, imports independent proofs,
@@ -460,6 +468,14 @@ Closed digit factor, exact finite residual factorization, pointwise phase-bearin
 limit, and dyadic weighted-sum wrappers &
 \nolinkurl{GeometricUniformDictionary.lean},
 \nolinkurl{GeometricSincFactorization.lean} \\
+Geometric sinc-product convergence &
+Locally uniform convergence, pointwise multipliability and exact \nolinkurl{HasProd}, and
+entireness of the geometric sinc product &
+\nolinkurl{GeometricReciprocalGamma.lean} \\
+Geometric characteristic/sinc/Gamma bridges &
+Exact phase-bearing characteristic-function identities through the rescaled geometric sinc
+product and paired reciprocal-Gamma factors for every real \(\lvert q\rvert<1\) &
+\nolinkurl{GeometricSincCharacteristicFunction.lean} \\
 Generic continuous-CDF bridge &
 \nolinkurl{continuous_cdf_of_nullSingleton},
 \nolinkurl{cdf_reflection_sub},
@@ -702,15 +718,19 @@ iteration, and probability-fixed-point uniqueness for \(|q|<1\); the named geome
 therefore characterized by its affine equation, including at \(q=0\) and negative \(q\).
 The scaled digit now has a closed characteristic function, and for every \(|q|<1\) the
 phase-collapsed finite residual formula and pointwise convergence of its phase-bearing sinc
-prefixes are formal, with exact dyadic wrappers; \texttt{geometricSincProduct} already
-packages the same factors after frequency rescaling as a \texttt{tprod}.  What remains
-here is the density interpretation at \(q=0\) and at negative \(q\), a named
-characteristic-function bridge to \texttt{geometricSincProduct} (or explicit
-\texttt{HasProd} theorem), compact-uniform convergence for the characteristic prefixes, rapid decay and Fourier
-inversion, named centered packaging, a closed higher-derivative hierarchy and
-endpoint-flatness wrappers, shape theorems, further transforms, and explicit
-Bernoulli-cumulant/Bell-moment formulas and asymptotics.  Finite characteristic-function,
-MGF, and CGF tail factorizations are already part of the geometric tail dictionary.
+prefixes are formal, with exact dyadic wrappers.  The defining products for
+\texttt{geometricSincProduct} now converge locally uniformly on \(\C\), have named
+\texttt{Multipliable} and \texttt{HasProd} theorems, and define an entire function.  For
+\(z_q(t)=(1-q)t/(2\pi)\), the exact named bridges give
+\(\phi_q(t)=e^{\ii t/2}S_q(z_q(t))
+=e^{\ii t/2}G_q(z_q(t))G_q(-z_q(t))\) throughout \(|q|<1\), including zero
+and negative ratios.  What remains here is the density interpretation at \(q=0\) and at
+negative \(q\), a named compact-uniform theorem for the full phase-bearing characteristic
+prefixes, rapid decay and Fourier inversion, named centered/MGF packaging, a closed
+higher-derivative hierarchy and endpoint-flatness wrappers, shape theorems, further
+transforms, and explicit Bernoulli-cumulant/Bell-moment formulas and asymptotics.  Finite
+characteristic-function, MGF, and CGF tail factorizations are already part of the geometric
+tail dictionary.
 The generic and geometric Cauchy rows above additionally make the transform DDE and
 adjacent-power hierarchy direct named theorems, including negative nonzero ratios.  Here
 ``closed higher-derivative hierarchy'' means the report's real-space density derivatives
@@ -1547,10 +1567,33 @@ The scaled-digit identity holds for every real \(q\).  Writing
 and the phase-bearing prefix obtained by removing \(\phi_q(q^m t)\) tends pointwise to
 \(\phi_q(t)\).  This includes \(q=0\) and negative \(q\); the last two declarations are
 the exact \(q=1/2\) weighted-sum versions.  This is a sequence-of-prefixes
-\texttt{Tendsto} theorem.  The existing \texttt{geometricSincProduct} packages the same
-sinc factors, after frequency rescaling, as a \texttt{tprod}; a named
-characteristic-function bridge to it (or explicit \texttt{HasProd} theorem) and uniform
-convergence of the characteristic prefixes on compact frequency sets are not yet present.
+\texttt{Tendsto} theorem.
+
+The four new public theorems in \path{GeometricReciprocalGamma.lean} are
+\lean{hasProdLocallyUniformly_geometricSincProduct},
+\lean{geometricSincProductFactors_multipliable},
+\lean{hasProd_geometricSincProduct}, and
+\lean{geometricSincProduct_differentiable}.  For every complex \(q\) with
+\(\lVert q\rVert<1\), they prove locally uniform convergence on \(\C\) of the defining
+products for \(S_q(z)=\operatorname{geometricSincProduct}(q,z)\), pointwise
+multipliability and the exact \texttt{HasProd} identity, and entireness of \(S_q\).
+The zero-definition, two-theorem module
+\path{GeometricSincCharacteristicFunction.lean} consists exactly of
+\lean{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct} and
+\lean{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma}.
+Writing \(G_q(z)=\operatorname{geometricReciprocalGamma}(q,z)\) and
+\(z_q(t)=(1-q)t/(2\pi)\), these declarations give, for every real \(|q|<1\) and
+\(t\in\R\),
+\begin{align}
+ \phi_q(t)
+ &=e^{\ii t/2}S_q\bigl(z_q(t)\bigr),
+ \label{integration:eq:geometric-sinc-characteristic}\\
+ &=e^{\ii t/2}G_q\bigl(z_q(t)\bigr)G_q\bigl(-z_q(t)\bigr).
+ \label{integration:eq:geometric-reciprocal-gamma-characteristic}
+\end{align}
+The scope again includes \(q=0\) and negative \(q\).  The locally uniform theorem is for
+the complex-variable sinc product \(S_q\); no named theorem yet packages compact-uniform
+convergence of the full phase-bearing characteristic prefixes.
 
 The earlier compiler-validated checkpoint \texttt{e6f535e5d} supplied the two modules that
 promote the
@@ -1651,12 +1694,12 @@ Radon--Nikodym density only when \(0<q<1\); its density interpretation at \(q=0\
 negative \(q\) remains open in this interface.  The following report layers also remain in
 the research quarantine:
 \begin{itemize}
-\item a named characteristic-function bridge to the existing
-      \texttt{geometricSincProduct} \texttt{tprod} (or explicit \texttt{HasProd} theorem)
-      and compact-uniform convergence beyond the formal pointwise phase-bearing sinc-prefix
-      limit, quantitative rapid decay, and the
+\item a named compact-uniform theorem for the full phase-bearing characteristic prefixes,
+      beyond both the formal pointwise characteristic-prefix limit and the locally uniform
+      convergence of the unphased complex sinc product, quantitative rapid decay, and the
       Fourier-inversion construction of smooth densities;
-\item separately named centered variables and densities and their affine transport package;
+\item separately named centered variables, MGF wrappers, and densities and their affine
+      transport package;
 \item a closed all-order derivative-refinement hierarchy and explicit endpoint-flatness
       wrappers, beyond the formal existence of all finite derivatives;
 \item log-concavity, strictness, central plateaux and other parameter-dependent shape claims;
@@ -1667,8 +1710,13 @@ The finite factorization and iteration
 \eqref{integration:eq:affine-independent-copy-charfun}--%
 \eqref{integration:eq:affine-charfun-iterate}, and the probability-law uniqueness theorem,
 are formal; \eqref{integration:eq:geometric-sinc-residual} and its pointwise prefix limit
-now supply the geometric sinc specialization.  They do not supply the compact-uniform or
-Fourier estimates in the first item.
+now supply the finite geometric sinc specialization, while
+\eqref{integration:eq:geometric-sinc-characteristic}--%
+\eqref{integration:eq:geometric-reciprocal-gamma-characteristic} supply the exact infinite
+sinc and reciprocal-Gamma characteristic-function bridges.  The locally uniform
+\texttt{HasProd} theorem controls \(S_q\) as a complex-variable product; these declarations
+do not supply the named full phase-bearing characteristic-prefix compact-uniform theorem
+or the Fourier estimates in the first item.
 The affine measure fixed point is also the direct theorem
 \lean{eq_geometricUniformDistribution_of_selfSimilar}.  The transform DDE and adjacent
 Cauchy-power hierarchy are direct named results in \path{GeometricUniformCauchy.lean}; the
@@ -3512,6 +3560,16 @@ The unconditional closed scaled-digit characteristic function and, for \(|q|<1\)
 closed-factor and phase-collapsed finite residual formulas, pointwise phase-bearing sinc
 prefix convergence, and dyadic weighted-sum wrappers;
 \cref{integration:eq:geometric-sinc-residual}.\\
+\path{GeometricReciprocalGamma.lean} &
+Locally uniform convergence on \(\C\), pointwise multipliability and exact
+\texttt{HasProd}, and entireness of the geometric sinc product, together with its
+reciprocal-Gamma reflection factorization;
+\cref{integration:eq:geometric-sinc-characteristic}.\\
+\path{GeometricSincCharacteristicFunction.lean} &
+The zero-definition, two-theorem exact bridge from the geometric-uniform characteristic
+function to the rescaled geometric sinc product and to the paired reciprocal-Gamma factors
+for every real \(|q|<1\), including zero and negative ratios;
+\cref{integration:eq:geometric-sinc-characteristic,integration:eq:geometric-reciprocal-gamma-characteristic}.\\
 \path{ContinuousCDF.lean} &
 The three reusable real-CDF bridges: continuity from null singletons, CDF reflection from
 affine reflection invariance, and identification of an everywhere pointwise CDF derivative
@@ -3885,13 +3943,18 @@ reflection, absolute continuity, null singletons, and support equal to the serie
 for \(|q|<1\), its exact nonnegative-range tails, and, for \(0<q<1\), refinement integrals,
 an explicit compactly supported Radon--Nikodym density, and real-space \(C^\infty\)
 regularity.  Series, law, CDF, and density half-base bridges are formal, and
-\texttt{geometricSincProduct} packages the rescaled sinc factors as a \texttt{tprod}.  The
-zero/negative parameter density interpretation, a named characteristic-function bridge to
-that product (or explicit \texttt{HasProd} theorem), compact-uniform convergence,
-general-\(q\) rapid decay and Fourier inversion, centered package, closed higher-derivative
-and endpoint-flatness wrappers, shape, further transforms, and explicit
+\texttt{geometricSincProduct} is now backed by locally uniform convergence on \(\C\),
+pointwise multipliability and an exact \texttt{HasProd} theorem, and entireness.  With
+\(z_q(t)=(1-q)t/(2\pi)\), exact named bridges prove
+\(\phi_q(t)=e^{\ii t/2}S_q(z_q(t))
+=e^{\ii t/2}G_q(z_q(t))G_q(-z_q(t))\) throughout \(|q|<1\), including
+zero and negative ratios.  The zero/negative parameter density interpretation, a named
+compact-uniform theorem for the full phase-bearing characteristic prefixes, general-\(q\)
+rapid decay and Fourier inversion, centered/MGF package, closed higher-derivative and
+endpoint-flatness wrappers, shape, further transforms, and explicit
 Bernoulli-cumulant/Bell-moment formulas and asymptotics remain outside the formal boundary.
-In contrast, the geometric finite residual sinc formula and pointwise prefix limit, generic
+In contrast, the finite residual sinc formula, pointwise characteristic-prefix limit,
+locally uniform complex sinc product, exact infinite characteristic/Gamma bridges, generic
 affine-law factorization, finite characteristic-function iteration, and fixed-point
 uniqueness are formal, and specialize throughout \(|q|<1\).\\
 The all-power half-base bridge and the transform DDE/adjacent-power hierarchy are likewise

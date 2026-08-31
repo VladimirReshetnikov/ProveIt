@@ -337,6 +337,7 @@ import FabiusFunction.LeadingJet
 import FabiusFunction.IntegerZeroAnalyticOrder
 import FabiusFunction.ScaledInfiniteProducts
 import FabiusFunction.GeometricReciprocalGamma
+import FabiusFunction.GeometricSincCharacteristicFunction
 import FabiusFunction.DyadicGammaOrder
 import FabiusFunction.ReciprocalIntegerGammaZeros
 import FabiusFunction.SincPrefixBound

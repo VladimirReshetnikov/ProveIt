@@ -1542,14 +1542,25 @@ The digit formula is unconditional in real \(q\).  For every \(|q|<1\), depth
 \]
 and the phase-bearing prefix without the residual converges pointwise to \(\phi_q(t)\).
 This includes \(q=0\) and negative \(q\); the final two declarations are exact
-\(q=1/2\) wrappers for \lean{weightedSumDistribution}.  The existing
-\lean{geometricSincProduct} already packages the same sinc factors, after frequency
-rescaling, as a \lean{tprod}.  What is missing is a named
-characteristic-function-to-\lean{geometricSincProduct} bridge (or explicit
-\lean{HasProd} theorem) and compact-uniform convergence of the characteristic prefixes.
-The fixed-dyadic Pochhammer factorization in
-\path{RvachevPochhammerFactorization.lean} does not supply either of these
-general-\(q\) characteristic-function statements.
+\(q=1/2\) wrappers for \lean{weightedSumDistribution}.  The Gamma-side product now
+supplies a named locally uniform product, pointwise \lean{Multipliable} and
+\lean{HasProd} forms, and entireness for the same rescaled sinc factors.  The new module
+\path{GeometricSincCharacteristicFunction.lean} has exactly the two public theorems
+\lean{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct} and
+\lean{charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma}.
+For
+\[
+ z=z_{q,t}:=\frac{(1-q)t}{2\pi},
+\]
+they give, under the same sharp hypothesis \(|q|<1\),
+\[
+ \phi_q(t)=e^{\ii t/2}\Phi_q(z)
+ =e^{\ii t/2}G_q(z)G_q(-z).
+\]
+Thus the bridge includes \(q=0\) and negative \(q\).  What remains missing is a named
+compact-uniform convergence wrapper for the \emph{full phase-bearing} characteristic
+prefixes.  The fixed-dyadic Pochhammer factorization in
+\path{RvachevPochhammerFactorization.lean} is not such a general-\(q\) wrapper.
 
 The generic CDF mechanisms are
 \lean{continuous_cdf_of_nullSingleton},
@@ -1601,11 +1612,12 @@ throughout \(|q|<1\), the displayed total function \(f_q\) is identified as its
 Radon--Nikodym density only for \(0<q<1\); no such interpretation is claimed here at
 \(q=0\) or for negative \(q\).  The positive-ratio \(C^\infty\) theorem is proved by the
 real-space derivative refinement.  The phase-bearing general-\(q\) sinc prefixes and their
-pointwise characteristic-function limit are formal, while \lean{geometricSincProduct}
-already packages the same rescaled sinc factors as a \lean{tprod}.  A named
-characteristic-function-to-\lean{geometricSincProduct} bridge (or explicit \lean{HasProd}
-theorem), compact-uniform convergence, rapid-decay estimates, and a Fourier-inversion
-construction remain outside the formal API.  So do a named centered \(q\)-family, a closed all-order
+pointwise characteristic-function limit are formal; the pure complex sinc product now has
+named locally uniform convergence, pointwise \lean{HasProd}, and entireness, and the two
+identities above close its characteristic-function and reciprocal-Gamma bridges.  A named
+compact-uniform convergence wrapper for the full phase-bearing prefixes, rapid-decay
+estimates, and a Fourier-inversion construction remain outside the formal API.  So do a
+named centered \(q\)-family, a closed all-order
 derivative hierarchy and explicit endpoint-flatness wrappers, shape theorems, further
 transform formulas, and explicit Bernoulli-cumulant/Bell-moment formulas and asymptotics.
 The global complex Pochhammer theorem proved below is the fixed inside
@@ -1613,8 +1625,9 @@ The global complex Pochhammer theorem proved below is the fixed inside
 The probability-law fixed point itself is uniquely characterized by
 \Cref{cor:geometric-uniform-law-unique}.  The oriented Cauchy transform and its
 adjacent-power hierarchy are also formal for every nonzero \(|q|<1\), including negative
-ratios, in \path{GeometricUniformCauchy.lean}; these are distinct from the still-open
-characteristic-function-to-infinite-product and Fourier-inversion formulas just listed.
+ratios, in \path{GeometricUniformCauchy.lean}; these are distinct from the closed
+characteristic-function product identities above and do not supply the still-open
+rapid-decay or Fourier-inversion layers.
 
 \subsection{Finite atomic laws and weak convergence}
 
@@ -2489,6 +2502,8 @@ Gamma-side total meromorphic representative and the matching sinc product by
  \Gamma_{\langle q\rangle}(z):=G_q(z)^{-1},\qquad
  \Phi_q(z):=\prod_{n=0}^{\infty}\sinc(\pi q^nz).
 \end{equation}
+The product defining \(\Phi_q\) converges locally uniformly on \(\C\), its factors have the
+corresponding pointwise \lean{HasProd}, and \(\Phi_q\) is entire.
 Then
 \begin{align}
  \Gamma_{\langle q\rangle}(z)
@@ -2540,8 +2555,8 @@ hypothesis by \(f(0)=1\).  The no-hidden-zero statements use a complete
 commutative normed ring with a normed unit and a multiplicative norm, but need
 neither continuity of \(f\) nor local compactness of the domain.
 
-The specialization is \path{GeometricReciprocalGamma.lean}.  Its twenty-five
-public declarations are
+The specialization is \path{GeometricReciprocalGamma.lean}.  Its twenty-nine
+public declarations (six definitions and twenty-three theorems) are
 \lean{shiftedReciprocalGamma},
 \lean{shiftedReciprocalGamma_zero},
 \lean{shiftedReciprocalGamma_differentiable},
@@ -2559,7 +2574,11 @@ public declarations are
 \lean{geometricGamma_meromorphic},
 \lean{geometricGamma_mahler},
 \lean{geometricSincProduct},
+\lean{hasProdLocallyUniformly_geometricSincProduct},
+\lean{geometricSincProductFactors_multipliable},
+\lean{hasProd_geometricSincProduct},
 \lean{geometricReciprocalGamma_mul_neg},
+\lean{geometricSincProduct_differentiable},
 \lean{dyadicReciprocalGamma},
 \lean{dyadicGamma},
 \lean{dyadicReciprocalGamma_differentiable},
@@ -2569,7 +2588,9 @@ public declarations are
 \lean{rvachevFourierProduct_eq_one_div_dyadicGamma_mul}.
 Here \(q\in\C\) and \(\lVert q\rVert<1\) are the exact hypotheses on every
 generic convergence, holomorphy, Mahler, zero-orbit, meromorphy, and reflection
-statement; normalization at zero itself needs no contraction hypothesis.
+statement; normalization at zero itself needs no contraction hypothesis.  In particular,
+the four added sinc declarations respectively expose the locally uniform product, its
+pointwise \lean{Multipliable} and \lean{HasProd} consequences, and entireness.
 
 At every reciprocal integer scale, \path{ReciprocalIntegerGammaZeros.lean}
 exposes four public theorems:
@@ -10210,18 +10231,23 @@ That rule explains several choices made above:
       The selected density has no proved interpretation here at \(q=0\) or
       negative \(q\).  \path{GeometricSincFactorization.lean} gives the exact finite
       residual sinc factorization and pointwise phase-bearing prefix limit for every
-      \(|q|<1\), with dyadic wrappers; \lean{geometricSincProduct} already packages the
-      same rescaled sinc factors as a \lean{tprod}.  A named
-      characteristic-function-to-\lean{geometricSincProduct} bridge (or explicit
-      \lean{HasProd} theorem), compact-uniform convergence, general-\(q\) rapid decay and
-      Fourier inversion, centered packaging, closed
+      \(|q|<1\), with dyadic wrappers.  The pure rescaled sinc product now has named
+      locally uniform convergence, pointwise \lean{Multipliable}/\lean{HasProd}, and
+      entireness.  The two theorems of
+      \path{GeometricSincCharacteristicFunction.lean} give, for
+      \(z=(1-q)t/(2\pi)\), the exact identities
+      \(\phi_q(t)=e^{\ii t/2}\Phi_q(z)=e^{\ii t/2}G_q(z)G_q(-z)\), including
+      \(q=0\) and negative \(q\).  A named compact-uniform convergence wrapper for the
+      full phase-bearing prefixes, general-\(q\) rapid decay and Fourier inversion,
+      centered packaging, closed
       higher-derivative and endpoint-flatness wrappers, shape results, further transforms,
       and explicit Bernoulli-cumulant/Bell-moment formulas and asymptotics remain outside
       this interface.  The separate global complex Pochhammer factorization is fixed at
       the dyadic scale and does not change those general-\(q\) omissions.  The exact-support oriented transform DDE and adjacent Cauchy-power
       recurrence for every nonzero \(|q|<1\), including negative ratios, are direct theorems
-      of \path{GeometricUniformCauchy.lean}; these are distinct from the still-open
-      characteristic-function-to-infinite-product and Fourier-inversion formulas.
+      of \path{GeometricUniformCauchy.lean}; these are distinct from the closed
+      characteristic-function product bridge and do not supply the still-open rapid-decay
+      or Fourier-inversion layers.
 \item Quantile transport is formal at the measure level first for arbitrary real
       probability laws, with no support or range restriction and an almost-everywhere
       sublevel characterization; a compact pointwise specialization feeds the clamped

@@ -6843,10 +6843,17 @@ mainline tranche, rechecked in the current combined full-facade build, does prov
 finite residual product and pointwise convergence
 of its phase-bearing prefixes for every \(|q|<1\); finite characteristic-function, MGF, and
 CGF tail factorizations were already available in the geometric dictionary.  The existing
-\texttt{geometricSincProduct} packages the same sinc factors, after frequency rescaling,
-as a \texttt{tprod}; what remains separate is a named characteristic-function bridge to it
-(or explicit \texttt{HasProd} theorem) and compact-uniform convergence of the
-characteristic prefixes.
+\texttt{geometricSincProduct} is now backed by locally uniform convergence on \(\C\),
+pointwise multipliability and an exact \texttt{HasProd} theorem, and entireness.  Writing
+\(z_q(t)=(1-q)t/(2\pi)\), \(S_q(z)=\operatorname{geometricSincProduct}(q,z)\), and
+\(G_q(z)=\operatorname{geometricReciprocalGamma}(q,z)\), two named declarations prove
+\[
+ \phi_q(t)=e^{\ii t/2}S_q(z_q(t))
+ =e^{\ii t/2}G_q(z_q(t))G_q(-z_q(t))
+\]
+for every real \(|q|<1\), including \(q=0\) and negative \(q\).  What remains separate
+is a named compact-uniform theorem for the full phase-bearing characteristic prefixes;
+the locally uniform theorem concerns the unphased complex sinc product \(S_q\).
 A still later module, \path{InversePairIntegral.lean}, does
 formalize the complete and variable-upper proper-compact absolutely-continuous inverse-pair
 identities.
@@ -7206,6 +7213,32 @@ and the phase-bearing prefix without the residual converges pointwise to \(\phi_
 This scope includes \(q=0\) and negative \(q\), and the final two declarations are the
 exact \(q=1/2\) weighted-sum wrappers.
 
+The four new public theorems in \path{GeometricReciprocalGamma.lean} are
+\nolinkurl{Fabius.hasProdLocallyUniformly_geometricSincProduct},
+\nolinkurl{Fabius.geometricSincProductFactors_multipliable},
+\nolinkurl{Fabius.hasProd_geometricSincProduct}, and
+\nolinkurl{Fabius.geometricSincProduct_differentiable}.  For complex \(q\) with
+\(\lVert q\rVert<1\), they prove locally uniform convergence on \(\C\) of the defining
+products for \(S_q(z)=\operatorname{geometricSincProduct}(q,z)\), pointwise
+multipliability and the exact \nolinkurl{HasProd} identity, and entireness of \(S_q\).
+The new zero-definition, two-theorem module
+\path{GeometricSincCharacteristicFunction.lean} consists exactly of
+\nolinkurl{Fabius.charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct}
+and
+\nolinkurl{Fabius.charFun_geometricUniformDistribution_eq_phase_mul_geometricReciprocalGamma}.
+Writing \(G_q(z)=\operatorname{geometricReciprocalGamma}(q,z)\) and
+\(z_q(t)=(1-q)t/(2\pi)\), they prove for every real \(|q|<1\) and \(t\in\R\)
+\begin{align}
+ \phi_q(t)
+ &=e^{\ii t/2}S_q\bigl(z_q(t)\bigr),
+ \label{p4:eq:geometric-sinc-characteristic}\\
+ &=e^{\ii t/2}G_q\bigl(z_q(t)\bigr)G_q\bigl(-z_q(t)\bigr).
+ \label{p4:eq:geometric-reciprocal-gamma-characteristic}
+\end{align}
+The hypotheses include \(q=0\) and negative \(q\).  The locally uniform theorem is a
+complex-variable product theorem for \(S_q\); it does not itself package compact-uniform
+convergence of the full phase-bearing characteristic prefixes.
+
 The three generic declarations in \path{ContinuousCDF.lean} are
 \nolinkurl{Fabius.continuous_cdf_of_nullSingleton},
 \nolinkurl{Fabius.cdf_reflection_sub}, and
@@ -7262,12 +7295,15 @@ Thus the dyadic CDF and density identities used at the start of this report are 
 The definition \nolinkurl{Fabius.ProbabilityRepresentation.geometricUniformDensity} is
 totalized, but its classical density and Radon--Nikodym interpretation are not formal here for
 \(q\le0\).  The pointwise phase-bearing characteristic-function prefix limit is formal;
-\nolinkurl{geometricSincProduct} already packages the same rescaled sinc factors as a
-\nolinkurl{tprod}.  Still outside the formal layer are a named characteristic-function
-bridge to that product (or explicit \nolinkurl{HasProd} theorem), compact-uniform
-convergence of the characteristic prefixes, the rapid-decay/Fourier-inversion route, closed higher-derivative refinements
-and endpoint-flatness wrappers, shape results, further transform formulas, and explicit
-Bernoulli-cumulant/Bell-moment formulas and asymptotics.
+\nolinkurl{geometricSincProduct} now has locally uniform convergence on \(\C\), pointwise
+multipliability and an exact \nolinkurl{HasProd} theorem, and entireness.  The named
+bridges \eqref{p4:eq:geometric-sinc-characteristic}--%
+\eqref{p4:eq:geometric-reciprocal-gamma-characteristic} give the exact rescaled sinc and
+paired reciprocal-Gamma formulas throughout \(|q|<1\).  Still outside the formal layer are
+a named compact-uniform theorem for the full phase-bearing characteristic prefixes, the
+rapid-decay/Fourier-inversion route, named centered/MGF packaging, closed higher-derivative
+refinements and endpoint-flatness wrappers, shape results, further transform formulas, and
+explicit Bernoulli-cumulant/Bell-moment formulas and asymptotics.
 The affine measure fixed point is unique by
 \nolinkurl{Fabius.ProbabilityRepresentation.eq_geometricUniformDistribution_of_selfSimilar}
 for every \(|q|<1\).  The oriented transform DDE and adjacent Cauchy-power recurrence are
