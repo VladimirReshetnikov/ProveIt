@@ -1,26 +1,35 @@
-\documentclass[11pt]{article}
+\documentclass[11pt,oneside]{article}
 
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
 \usepackage[T1]{fontenc}
-\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
-\usepackage[a4paper,margin=1in]{geometry}
-\usepackage{amsmath,amssymb,amsthm,mathtools}
-\usepackage{booktabs,longtable,array}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{bm}
+\usepackage{booktabs,longtable,array,tabularx}
 \usepackage{graphicx}
-\usepackage{enumitem}
+\usepackage{pgfplots}
 \usepackage{xcolor}
-\usepackage{listings}
+\usepackage{enumitem}
 \usepackage{fancyhdr}
-\usepackage[hidelinks]{hyperref}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
 
-\definecolor{deepblue}{RGB}{28,67,112}
-\definecolor{deepred}{RGB}{130,38,38}
-\definecolor{softgray}{RGB}{245,246,248}
-
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\pgfplotsset{compat=1.18}
 \hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
   pdftitle={Nowhere Analyticity of Every Positive Compositional Iterate of the Fabius Function},
-  pdfauthor={OpenAI GPT-5.6 Pro},
+  pdfauthor={Research report prepared for the ProveIt Fabius-function corpus},
   pdfsubject={Fabius function, Rvachev up-function, Thue--Morse sequence, Faa di Bruno formula},
   pdfkeywords={Fabius function, nowhere analytic, composition, Rvachev, Thue--Morse, Bell polynomials}
 }
@@ -28,9 +37,23 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small Fabius compositional iterates}
-\fancyhead[R]{\small \nouppercase{\leftmark}}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
-\setlength{\headheight}{14pt}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+
+% Long unbreakable inline mathematics occasionally leaves a line with no legal
+% break point.  A small emergency stretch lets TeX loosen such a line rather
+% than let it protrude into the margin; it applies only to lines that would
+% otherwise be overfull.
+\setlength{\emergencystretch}{2em}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
@@ -39,51 +62,80 @@
 \newtheorem{conjecture}[theorem]{Conjecture}
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\D}{\mathcal{D}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
 \newcommand{\Up}{\operatorname{up}}
-\newcommand{\eps}{\varepsilon}
-\newcommand{\id}{\operatorname{id}}
-\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\wt}{\operatorname{wt}_2}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\smallo}{o}
 \newcommand{\supp}{\operatorname{supp}}
-\newcommand{\TM}{\operatorname{TM}}
-\newcommand{\dd}{\,\mathrm{d}}
-\newcommand{\littleo}{o}
-\newcommand{\bigO}{O}
-\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
-\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
-\newcommand{\set}[1]{\left\{#1\right\}}
-\newcommand{\brak}[1]{\left[#1\right]}
-\newcommand{\paren}[1]{\left(#1\right)}
-\newcommand{\comp}{\mathbin{\circ}}
-\newcommand{\Qm}{Q_m}
-\newcommand{\G}{G}
-\newcommand{\ThetaF}{\Theta}
-\newcommand{\half}{\tfrac12}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\vtwo}{v_2}
+\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
+\newcommand{\lean}[1]{%
+  \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
+\newcommand{\leanevaltwo}[1]{%
+  \nolinkurl{integral_eval}\texttt{\textsubscript{2}}\nolinkurl{#1}}
 
-\newcommand{\statusnote}[1]{%
-  \begin{center}
-  \fcolorbox{deepblue}{softgray}{\parbox{0.91\textwidth}{\small #1}}
-  \end{center}
+\newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
+\newenvironment{boxedremark}{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{black}\hrule\vspace{0.6em}\small
+}{%
+  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
 }
 
-\lstset{
+\lstdefinestyle{pseudo}{
   basicstyle=\ttfamily\small,
-  breaklines=true,
+  backgroundcolor=\color{shadegray},
   frame=single,
+  rulecolor=\color{rulegray},
   columns=fullflexible,
   keepspaces=true,
   showstringspaces=false,
-  keywordstyle=\bfseries,
-  commentstyle=\itshape
+  xleftmargin=0.7em,
+  xrightmargin=0.7em,
+  aboveskip=0.8em,
+  belowskip=0.8em
 }
 
-\title{\textbf{Nowhere Analyticity of Every Positive\\Compositional Iterate of the Fabius Function}\\[0.5em]
+% Necessary report-local notation; the shared preamble above is otherwise
+% identical to the primary Fabius--Rvachev exposition.
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\littleo}{o}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\comp}{\mathbin{\circ}}
+\newcommand{\ThetaF}{\Theta}
+\newcommand{\half}{\tfrac12}
+\newcommand{\statusnote}[1]{%
+  \begin{center}
+  \fcolorbox{linkblue}{shadegray}{\parbox{0.91\textwidth}{\small #1}}
+  \end{center}
+}
+
+\title{\bfseries Nowhere Analyticity of Every Positive\\Compositional Iterate of the Fabius Function\\[0.5em]
 \large A dyadic-spine proof through Fa\`a di Bruno partitions}
 \author{Research report prepared for the ProveIt Fabius-function corpus}
 \date{30 August 2026}
@@ -93,12 +145,16 @@
 
 \statusnote{\textbf{Result status.}
 The theorem proved here is a new mathematical extension of the repository's formally verified base case.
-The proof is self-contained and has undergone a repository proof review; the
-delivered numerical diagnostic has also been reproduced exactly in its recovered
-Linux environment.  Neither check is a Lean proof.  Since the report snapshot, the
-finite block-size arithmetic of the partition defect has been formalized in Lean,
-but the finite-set-partition wrapper, composition theorem, weighted partition
-estimate, and spine asymptotic remain manuscript results.}
+The proof is self-contained at manuscript level and has undergone repository
+claim-level and proof review.  The delivered floating-point diagnostic was
+reproduced exactly in its recovered Linux environment, but it remains a
+finite-order check and no independent symbolic-verification artifact is supplied.
+Neither review nor numerical replay is a Lean proof.  Since the report snapshot,
+the finite positive-list arithmetic of the partition defect has been formalized in
+Lean.  Repository statements explicitly marked as formalized are used only as
+established input facts; the finite-set-partition wrapper, composition theorem,
+weighted partition-defect estimate, spine asymptotic, and principal iterate theorem
+remain manuscript results.}
 
 \begin{abstract}
 Let $F\colon[0,1]\to[0,1]$ be the bounded Fabius function and let
@@ -395,6 +451,65 @@ An equivalent and more transparent formula is
 Every summand is nonnegative.  Therefore $D(\pi)=0$ only in the two extremal cases:
 there is one block, or every block is a singleton.  These are exactly the two
 unbranched chain-rule spines.
+
+\paragraph{Lean crosswalk: the finite positive-list defect is complete.}
+The module \path{PartitionDefect.lean} has exactly three public definitions
+and thirty-three public theorems; the following inventory is exhaustive.
+Its list \(r=[r_1,\ldots,r_k]\) records positive block sizes, but it does not
+construct a set partition of \(\{1,\ldots,m\}\).
+\begin{itemize}[leftmargin=2em]
+ \item The three definitions are \path{pairSum}, \path{blockPairDefect}, and
+ \path{partitionDefect}.
+ \item The unordered-pair and triangular-number engine consists of
+ \path{pairSum_nil}, \path{pairSum_cons}, \path{pairSum_one},
+ \path{pairSum_add}, \path{pairSum_congr}, \path{pairSum_map},
+ \path{choose_add_two}, and \path{choose_list_sum_two}.
+ \item The conventional defect formulas, excess decomposition, and fixed-block
+ lower bound are
+ \path{blockPairDefect_eq_mul_sub_one},
+ \path{partitionDefect_eq_pairSum_mul_sub_one},
+ \path{partitionDefect_nonneg},
+ \path{choose_sum_two_eq_choose_length_add_sum_add_partitionDefect},
+ \path{partitionDefect_eq_choose_sum_sub_choose_length_sub_sum},
+ \path{length_le_sum_of_pos}, \path{sum_map_sub_one},
+ \path{pairSum_add_eq}, \path{pairSum_map_add_eq},
+ \path{partitionDefect_eq_linear_add_pairwise_excess},
+ \path{partitionDefect_lower_bound}, and
+ \path{partitionDefect_fixed_block_bound}.
+ \item The zero and sharp-equality classifiers are
+ \path{pairSum_eq_zero_iff_pairwise},
+ \path{blockPairDefect_eq_zero_iff},
+ \path{partitionDefect_eq_zero_iff},
+ \path{sub_one_mul_sub_one_eq_zero_iff},
+ \path{partitionDefect_eq_lower_bound_iff}, and
+ \path{partitionDefect_fixed_block_eq_iff}.
+ \item The first-positive-shell closure is
+ \path{add_sub_one_le_mul_of_pos},
+ \path{mul_eq_add_sub_one_iff},
+ \path{firstShell_le_fixedBlockProduct},
+ \path{fixedBlockProduct_eq_firstShell_iff},
+ \path{firstShell_le_partitionDefect},
+ \path{partitionDefect_eq_firstShell_iff}, and
+ \path{partitionDefect_twoBlock_firstShell}.
+\end{itemize}
+For positive entries the module proves
+\[
+ D(r)=(k-1)\sum_i(r_i-1)
+      +\sum_{i<j}(r_i-1)(r_j-1)
+ \ge (k-1)(m-k).
+\]
+It proves \(D(r)=0\) exactly when \(k\le1\) or every entry is one; equality
+in the fixed-\(m\), fixed-\(k\) bound exactly when every pair contains a
+singleton (equivalently at most one entry exceeds one); and, under precisely
+\(2\le k<m\), the first-shell bound \(D(r)\ge m-2\), with equality exactly at
+\(k=2\) or \(k=m-1\) together with that same one-nonsingleton condition.  The
+explicit profile \([m-1,1]\) attains the shell for \(m\ge3\).
+
+This closure does \emph{not} formalize the set-partition family \(\Pi_m\),
+the quadratic-scale factorization \eqref{eq:Q-factorization}, the weighted
+Bell sum \eqref{eq:defect-decay}, its asymptotics, the two-spine reduction,
+the finite spine expansion, or the positive-iterate theorem.  Those steps
+remain paper-only.
 
 Let $u(\pi)$ be the number of singleton blocks and let
 \begin{equation}
@@ -1053,7 +1168,8 @@ every order.}
 \end{figure}
 
 The script writes all raw values to \texttt{numerical\_output/}\newline\texttt{spine\_diagnostic.csv},
-records orbit metadata, and regenerates every figure from command-line parameters.
+records orbit metadata, regenerates every figure from command-line parameters,
+and synchronizes the four PNG files into the directory read by TeX.
 The code contains detailed comments explaining Fourier normalization, the signed
 extension, truncated power-series composition, and the spine weights.
 
@@ -1143,8 +1259,8 @@ conclusion.
 A tempting strengthening would assert zero Taylor radius at every interior point.
 That statement is already false for $n=1$: at a dyadic point, the high-order jet of
 $F$ eventually vanishes, so the formal Taylor series is a finite polynomial, although
-it does not represent $F$ on any neighborhood.  At any point, exactly one of the
-following three alternatives holds:
+it does not represent $F$ on any neighborhood.  For fixed $n$, every interior point
+belongs to exactly one of the following three classes:
 \begin{enumerate}[label=(\roman*)]
  \item the Taylor series has radius zero;
  \item only finitely many Taylor coefficients are nonzero, so the series is a
@@ -1191,13 +1307,14 @@ $x$ away from orbit tie surfaces.
 
 A Lean formalization can be modular.
 \begin{enumerate}[label=\arabic*.]
- \item Define $Q_m$ and prove the algebraic identity
- \eqref{eq:Q-factorization} for finite set partitions.
- \item The block-size-list forms of the pairwise and triangular defect identities,
- their zero classification, sharp fixed-block minimum, equality profile, and first
- positive shell are now formalized in \path{PartitionDefect.lean}.  A
- finite-set-partition wrapper and the quadratic-scale factorization remain open.
- \item Replace the asymptotic counting proof initially by a stronger but simpler
+ \item \textbf{Completed:} \path{PartitionDefect.lean} supplies the exhaustive
+ positive-list algebra, including the pairwise and triangular defect identities,
+ zero classification, the sharp fixed-block bound and equality profile, and the
+ first positive shell.
+ \item Bridge finite set partitions to their positive block-size lists, define
+ $Q_m$, and prove \eqref{eq:Q-factorization}; neither the set-partition bridge nor
+ this quadratic-scale identity is supplied by the list module.
+ \item Replace the paper's weighted Bell-counting argument initially by a stronger but simpler
  explicit estimate sufficient for $\littleo(1)$.
  \item Use the existing iterated-derivative and bounded-derivative APIs for $F$.
  \item Prove the spine expansion by induction on the fixed iterate count.
@@ -1338,20 +1455,25 @@ spine evaluation, CSV output, and figures.\\
 \texttt{numerical\_output/}\newline\texttt{numerical\_metadata.txt}
 & Parameters, orbit points, slopes, prefixes, suffixes, and dominant weight.\\
 \path{figures/*.png}
-& Figures included in the report.\\
+& Synchronized figure copies: three are included in the report and the Taylor-root
+diagnostic is retained as supplementary output.\\
 \bottomrule
 \end{longtable}
 
 A typical reproduction command is
-\begin{lstlisting}[language=bash]
-python numerical_experiments.py \
+\begin{lstlisting}[style=pseudo,language=bash]
+MPLBACKEND=Agg python numerical_experiments.py \
   --output-dir numerical_output \
+  --figure-dir figures \
   --x0 0.437123456789 \
   --iterate-count 4 \
   --max-order 22
 \end{lstlisting}
-The program requires Python 3, NumPy, SciPy, and Matplotlib.  It performs consistency
-checks at $\Up(0)$, $\Up(1/2)$, $F(0)$, $F(1/2)$, and $F(1)$ before writing output.
+The program requires Python 3, NumPy, SciPy, and Matplotlib.  It records values at
+$\Up(0)$, $\Up(1/2)$, $F(0)$, $F(1/2)$, and $F(1)$ before writing output, while
+enforcing numerical tolerances only at $\Up(0)$ and $F(1/2)$.  Exact PNG bytes and
+the final floating-point digits depend on the pinned platform and dependency stack
+recorded in the repository audit; the CSV record terminator is fixed explicitly to LF.
 
 \section{Repository source map}
 \label{app:source-map}
@@ -1363,6 +1485,8 @@ directly connected to the proof are:
  for the primary exposition;
  \item \path{GlobalExtension.lean}
  and \path{BoundedDerivatives.lean} in \path{Lean/FabiusFunction/} for the derivative atlas;
+ \item \path{PartitionDefect.lean} in \path{Lean/FabiusFunction/} for the
+ exhaustive three-definition, thirty-three-theorem positive-list defect layer;
  \item \path{Convexity.lean}, \path{Monotonicity.lean}, and the order-isomorphism
  modules for the orbit dynamics;
  \item \path{OriginalPaperSupplement.lean} and \path{NowhereAnalytic.lean} for the

@@ -104,7 +104,7 @@ theorem pascalDyadicMultiplicity_one (n : ℕ) (hn : 1 ≤ n) :
 /-- The first positive frequency has the first row of Pascal's triangle as
 its rank profile. -/
 @[simp] theorem pascalDyadicMultiplicity_one_index (r : ℕ) :
-    pascalDyadicMultiplicity r 1 = Nat.choose 1 r := by
+    pascalDyadicMultiplicity r 1 = (1 : ℕ).choose r := by
   rw [pascalDyadicMultiplicity_of_pos r 1 (by omega),
     dyadicZeroMultiplicity_one]
 
@@ -136,7 +136,7 @@ theorem pascalDyadicMultiplicity_succ_ne_zero_iff_pow_two_dvd
 
 /-- Odd positive indices carry the first row of Pascal's triangle. -/
 @[simp] theorem pascalDyadicMultiplicity_two_mul_add_one (r n : ℕ) :
-    pascalDyadicMultiplicity r (2 * n + 1) = Nat.choose 1 r := by
+    pascalDyadicMultiplicity r (2 * n + 1) = (1 : ℕ).choose r := by
   rw [pascalDyadicMultiplicity_of_pos r (2 * n + 1) (by omega),
     dyadicZeroMultiplicity_two_mul_add_one]
 

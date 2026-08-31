@@ -1,36 +1,58 @@
-\documentclass[11pt]{article}
+\documentclass[11pt,oneside]{article}
 
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
 \usepackage[T1]{fontenc}
-\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
-\usepackage[a4paper,margin=1in]{geometry}
-\usepackage{amsmath,amssymb,amsthm,mathtools}
-\usepackage{booktabs,longtable,array}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{bm}
+\usepackage{booktabs,longtable,array,tabularx}
 \usepackage{graphicx}
-\usepackage{enumitem}
+\usepackage{pgfplots}
 \usepackage{xcolor}
-\usepackage{listings}
+\usepackage{enumitem}
 \usepackage{fancyhdr}
-\usepackage[hidelinks]{hyperref}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
 
-\definecolor{deepblue}{RGB}{28,67,112}
-\definecolor{deepred}{RGB}{130,38,38}
-\definecolor{softgray}{RGB}{245,246,248}
-
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\pgfplotsset{compat=1.18}
 \hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
   pdftitle={Nowhere Analyticity of Every Positive Compositional Iterate of the Inverse Fabius Function},
-  pdfauthor={OpenAI GPT-5.6 Pro},
-  pdfsubject={inverse Fabius function, compositional iterates, formal power-series reversion, Rvachev up-function, Thue--Morse sequence},
-  pdfkeywords={inverse Fabius function, nowhere analytic, composition, formal reversion, Rvachev, Thue--Morse, Bell polynomials}
+  pdfsubject={Inverse Fabius function, compositional iterates, formal power-series reversion, and dyadic-spine asymptotics},
+  pdfkeywords={inverse Fabius function, nowhere analytic, composition, formal reversion, Rvachev, Thue-Morse, Bell polynomials}
 }
 
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small Inverse Fabius compositional iterates}
-\fancyhead[R]{\small \nouppercase{\leftmark}}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
-\setlength{\headheight}{14pt}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+
+% Long unbreakable inline mathematics occasionally leaves a line with no legal
+% break point.  A small emergency stretch lets TeX loosen such a line rather
+% than let it protrude into the margin; it applies only to lines that would
+% otherwise be overfull.
+\setlength{\emergencystretch}{2em}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
@@ -39,22 +61,70 @@
 \newtheorem{conjecture}[theorem]{Conjecture}
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
 
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\D}{\mathcal{D}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
 \newcommand{\Up}{\operatorname{up}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\wt}{\operatorname{wt}_2}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\smallo}{o}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\vtwo}{v_2}
+\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
+\newcommand{\lean}[1]{%
+  \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
+\newcommand{\leanevaltwo}[1]{%
+  \nolinkurl{integral_eval}\texttt{\textsubscript{2}}\nolinkurl{#1}}
+
+\newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
+\newenvironment{boxedremark}{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{black}\hrule\vspace{0.6em}\small
+}{%
+  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
+}
+
+\lstdefinestyle{pseudo}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{shadegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  xleftmargin=0.7em,
+  xrightmargin=0.7em,
+  aboveskip=0.8em,
+  belowskip=0.8em
+}
+
+
+% Report-local notation retained after the canonical repository preamble.
+\newcommand{\D}{\mathcal{D}}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\id}{\operatorname{id}}
 \newcommand{\ord}{\operatorname{ord}}
-\newcommand{\supp}{\operatorname{supp}}
 \newcommand{\TM}{\operatorname{TM}}
-\newcommand{\dd}{\,\mathrm{d}}
 \newcommand{\littleo}{o}
-\newcommand{\bigO}{O}
 \newcommand{\abs}[1]{\left\lvert #1\right\rvert}
 \newcommand{\norm}[1]{\left\lVert #1\right\rVert}
 \newcommand{\set}[1]{\left\{#1\right\}}
@@ -70,21 +140,11 @@
 
 \newcommand{\statusnote}[1]{%
   \begin{center}
-  \fcolorbox{deepblue}{softgray}{\parbox{0.91\textwidth}{\small #1}}
+  \fcolorbox{linkblue}{shadegray}{\parbox{0.91\textwidth}{\small #1}}
   \end{center}
 }
 
-\lstset{
-  basicstyle=\ttfamily\small,
-  breaklines=true,
-  frame=single,
-  columns=fullflexible,
-  keepspaces=true,
-  showstringspaces=false,
-  keywordstyle=\bfseries,
-  commentstyle=\itshape
-}
-
+\lstset{style=pseudo}
 \title{\textbf{Nowhere Analyticity of Every Positive\\Compositional Iterate of the Inverse Fabius Function}\\[0.5em]
 \large Formal reversion, analytic inversion, and the dyadic-spine theorem}
 \author{Research report prepared for the ProveIt Fabius-function corpus}
@@ -462,6 +522,67 @@ An equivalent and more transparent formula is
 Every summand is nonnegative.  Therefore $D(\pi)=0$ only in the two extremal cases:
 there is one block, or every block is a singleton.  These are exactly the two
 unbranched chain-rule spines.
+
+\paragraph{Lean crosswalk: the finite positive-list defect is complete.}
+\begingroup\small\sloppy
+The module \path{PartitionDefect.lean} has exactly three public definitions
+and thirty-three public theorems; the following inventory is exhaustive.
+Its list \(r=[r_1,\ldots,r_k]\) records positive block sizes, but it does not
+construct a set partition of \(\{1,\ldots,m\}\).
+\begin{itemize}[leftmargin=2em]
+ \item The three definitions are \path{pairSum}, \path{blockPairDefect}, and
+ \path{partitionDefect}.
+ \item The unordered-pair and triangular-number engine consists of
+ \path{pairSum_nil}, \path{pairSum_cons}, \path{pairSum_one},
+ \path{pairSum_add}, \path{pairSum_congr}, \path{pairSum_map},
+ \path{choose_add_two}, and \path{choose_list_sum_two}.
+ \item The conventional defect formulas, excess decomposition, and fixed-block
+ lower bound are
+ \path{blockPairDefect_eq_mul_sub_one},
+ \path{partitionDefect_eq_pairSum_mul_sub_one},
+ \path{partitionDefect_nonneg},
+ \path{choose_sum_two_eq_choose_length_add_sum_add_partitionDefect},
+ \path{partitionDefect_eq_choose_sum_sub_choose_length_sub_sum},
+ \path{length_le_sum_of_pos}, \path{sum_map_sub_one},
+ \path{pairSum_add_eq}, \path{pairSum_map_add_eq},
+ \path{partitionDefect_eq_linear_add_pairwise_excess},
+ \path{partitionDefect_lower_bound}, and
+ \path{partitionDefect_fixed_block_bound}.
+ \item The zero and sharp-equality classifiers are
+ \path{pairSum_eq_zero_iff_pairwise},
+ \path{blockPairDefect_eq_zero_iff},
+ \path{partitionDefect_eq_zero_iff},
+ \path{sub_one_mul_sub_one_eq_zero_iff},
+ \path{partitionDefect_eq_lower_bound_iff}, and
+ \path{partitionDefect_fixed_block_eq_iff}.
+ \item The first-positive-shell closure is
+ \path{add_sub_one_le_mul_of_pos},
+ \path{mul_eq_add_sub_one_iff},
+ \path{firstShell_le_fixedBlockProduct},
+ \path{fixedBlockProduct_eq_firstShell_iff},
+ \path{firstShell_le_partitionDefect},
+ \path{partitionDefect_eq_firstShell_iff}, and
+ \path{partitionDefect_twoBlock_firstShell}.
+\end{itemize}
+For positive entries the module proves
+\[
+ D(r)=(k-1)\sum_i(r_i-1)
+      +\sum_{i<j}(r_i-1)(r_j-1)
+ \ge (k-1)(m-k).
+\]
+It proves \(D(r)=0\) exactly when \(k\le1\) or every entry is one; equality
+in the fixed-\(m\), fixed-\(k\) bound exactly when every pair contains a
+singleton (equivalently at most one entry exceeds one); and, under precisely
+\(2\le k<m\), the first-shell bound \(D(r)\ge m-2\), with equality exactly at
+\(k=2\) or \(k=m-1\) together with that same one-nonsingleton condition.  The
+explicit profile \([m-1,1]\) attains the shell for \(m\ge3\).
+
+This closure does \emph{not} formalize the set-partition family \(\Pi_m\),
+the quadratic-scale factorization \eqref{eq:Q-factorization}, the weighted
+Bell sum \eqref{eq:defect-decay}, its asymptotics, the two-spine reduction,
+the finite spine expansion, or either the forward- or inverse-iterate theorem.
+Those steps remain paper-only.
+\endgroup
 
 Let $u(\pi)$ be the number of singleton blocks and let
 \begin{equation}

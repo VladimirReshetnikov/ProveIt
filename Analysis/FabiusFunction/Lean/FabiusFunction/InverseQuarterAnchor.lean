@@ -28,10 +28,10 @@ algebraic, while keeping the still-analytic spline input honest and explicit.
   local left inverse gives the report's finite-depth quantile formula without
   any asymptotic argument.
 
-There is deliberately no assertion here that `fabiusUniformSpline n` has the
-required local polynomial.  That is the remaining analytic/Thue--Morse
-plateau theorem; `IsQuarterLocalPolynomial` is designed to be discharged by
-that theorem once it is available.
+This module deliberately packages the local-polynomial premise as
+`IsQuarterLocalPolynomial`.  The downstream module
+`QuarterSplineLocalPolynomial` now discharges that premise for the finite
+uniform splines using the analytic/Thue--Morse plateau theorem.
 
 The companion module `QuarterCatalanGerm` packages the report's Catalan
 coefficients as the unique zero-constant formal-power-series solution of the

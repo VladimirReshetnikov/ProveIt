@@ -12,14 +12,14 @@ and is the unique compactly supported continuous fixed point of
 This script approximates that fixed point on a uniform grid.  It then
 computes:
 
-* the score -p'(x)/p(x), whose strict increase is predicted by the
+* the score -p'(x)/p(x), whose strict increase follows from the
   strict-log-concavity theorem proved in the accompanying report;
 * the canonical one-dimensional Stein kernel
 
       tau(x) = (1/p(x)) integral_x^1 t p(t) dt;
 
 * the endpoint scale parameter rho(delta)=delta F'(delta)/F(delta),
-  using F(delta)=up(1-delta), and the conjectural asymptotic diagnostic
+  using F(delta)=up(1-delta), and the endpoint asymptotic diagnostic
 
       tau(1-delta) (rho(delta)+1) / delta -> 1.
 
@@ -31,9 +31,11 @@ Usage
 -----
     python rvachev_frontier_experiments.py --output-dir numerical_output
 
-The script writes PDF figures and CSV tables.  The defaults (200001 grid
-points, 24 fixed-point iterations) reproduce the numerical values quoted
-in the report on an ordinary desktop computer.
+The script writes PNG figures, LF-normalized CSV tables, and an LF-normalized
+readable summary.  The defaults (200001 grid points, 24 fixed-point iterations)
+reproduce the numerical values quoted in the report on an ordinary desktop
+computer.  The submitted vector PDFs are preserved separately as arrival
+evidence and are not overwritten.
 """
 
 from __future__ import annotations
@@ -44,6 +46,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
+import matplotlib
+
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy.typing import NDArray
@@ -204,7 +209,7 @@ def at(value: float, x: FloatArray, y: FloatArray) -> float:
 def endpoint_diagnostics(
     approximation: Approximation, deltas: Iterable[float]
 ) -> list[dict[str, float]]:
-    """Compute endpoint quantities appearing in the asymptotic conjecture.
+    """Compute quantities appearing in the imported endpoint equivalent.
 
     For 0 < delta < 1/2, the Fabius/Rvachev relation gives
 
@@ -240,9 +245,24 @@ def write_csv(path: Path, rows: list[dict[str, object]]) -> None:
     if not rows:
         raise ValueError("cannot write an empty CSV table")
     with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0].keys()))
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=list(rows[0].keys()),
+            lineterminator="\n",
+        )
         writer.writeheader()
         writer.writerows(rows)
+
+
+def save_png(fig: matplotlib.figure.Figure, path: Path) -> None:
+    """Save a stable raster companion without time-dependent metadata."""
+
+    fig.savefig(
+        path,
+        dpi=180,
+        facecolor="white",
+        metadata={"Software": "ProveIt deterministic numerical figure"},
+    )
 
 
 def save_density_figure(approximation: Approximation, output_dir: Path) -> None:
@@ -255,7 +275,7 @@ def save_density_figure(approximation: Approximation, output_dir: Path) -> None:
     ax.set_title("Rvachev up-density from the refinement fixed point")
     ax.grid(True, alpha=0.25)
     fig.tight_layout()
-    fig.savefig(output_dir / "up_density.pdf")
+    save_png(fig, output_dir / "up_density.png")
     plt.close(fig)
 
 
@@ -270,10 +290,10 @@ def save_score_figure(approximation: Approximation, output_dir: Path) -> None:
     ax.plot(x[mask], score)
     ax.set_xlabel("x")
     ax.set_ylabel("-up'(x) / up(x)")
-    ax.set_title("Increasing score predicted by strict log-concavity")
+    ax.set_title("Increasing score from strict log-concavity")
     ax.grid(True, alpha=0.25)
     fig.tight_layout()
-    fig.savefig(output_dir / "score_monotonicity.pdf")
+    save_png(fig, output_dir / "score_monotonicity.png")
     plt.close(fig)
 
 
@@ -288,12 +308,12 @@ def save_stein_figure(approximation: Approximation, output_dir: Path) -> None:
     ax.set_title("Canonical Stein kernel of the Rvachev distribution")
     ax.grid(True, alpha=0.25)
     fig.tight_layout()
-    fig.savefig(output_dir / "stein_kernel.pdf")
+    save_png(fig, output_dir / "stein_kernel.png")
     plt.close(fig)
 
 
 def save_endpoint_figure(rows: list[dict[str, float]], output_dir: Path) -> None:
-    """Plot the normalized endpoint ratio used to test the conjecture."""
+    """Plot the normalized endpoint ratio used to diagnose the theorem."""
 
     delta = np.array([row["delta"] for row in rows], dtype=np.float64)
     ratio = np.array(
@@ -311,7 +331,7 @@ def save_endpoint_figure(rows: list[dict[str, float]], output_dir: Path) -> None
     ax.set_title("Endpoint Stein-kernel asymptotic diagnostic")
     ax.grid(True, alpha=0.25)
     fig.tight_layout()
-    fig.savefig(output_dir / "endpoint_stein_ratio.pdf")
+    save_png(fig, output_dir / "endpoint_stein_ratio.png")
     plt.close(fig)
 
 
@@ -383,7 +403,7 @@ def main() -> None:
         "--output-dir",
         type=Path,
         default=Path("numerical_output"),
-        help="directory for PDF figures and CSV tables",
+        help="directory for PNG figures and LF-normalized tables",
     )
     parser.add_argument(
         "--grid-size",
@@ -427,7 +447,7 @@ def main() -> None:
         [{"quantity": name, "value": value} for name, value in checks.items()],
     )
     with (args.output_dir / "global_diagnostics_readable.txt").open(
-        "w", encoding="utf-8"
+        "w", encoding="utf-8", newline="\n"
     ) as handle:
         for name, value in checks.items():
             handle.write(f"{name}: {value:.16g}\n")

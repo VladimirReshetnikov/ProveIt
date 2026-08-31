@@ -322,7 +322,7 @@ is not by itself evidence of formalization.  Statements proved in Lean carry the
 declaration names in the text, typeset as \lean{Fabius.thueMorseSign}; statements without
 such a citation must not be inferred to have a formal counterpart.
 
-The current inventory in \cref{p1:sec:formalized-modules} consists of one hundred and two compiled
+The current inventory in \cref{p1:sec:formalized-modules} consists of one hundred and three compiled
 Lean modules.  It covers the finite algebraic, automata, moment, Fourier, rarefaction,
 Dirichlet--Mellin, word-combinatorial, and Fabius--Rvachev bridges recorded there, often in
 greater generality than the displayed prose.  The dependency-aware map in
@@ -442,11 +442,11 @@ In signed form a block is followed by its negative.
 
 \emph{Formal versions.}  The signed recursion \eqref{p1:eq:eps-recursion} is
 \lean{Fabius.thueMorseSign\_two\_mul} and
-\lean{Fabius.thueMorseSign\_two\_mul\_add\_one}, and the bit form
+\lean{Fabius.thueMorseSign\_two\_mul\_add\_one} in
+\path{DyadicClosedForm.lean}, while the bit form
 \eqref{p1:eq:tau-recursion} is \lean{Fabius.thueMorseBit\_two\_mul} and
 \lean{Fabius.thueMorseBit\_two\_mul\_add\_one} in
-\path{ThueMorseEnumerators.lean}; the signed pair is in
-\path{DyadicClosedForm.lean}.
+\path{ThueMorseEnumerators.lean}.
 The block-complement law \eqref{p1:eq:word-recursion}, in the signed reading stated
 here --- a block is followed by its negative --- is
 \lean{Fabius.thueMorseSign\_add\_pow\_two}, \(\eps_{h+2^b}=-\eps_h\) for \(h<2^b\), in
@@ -1079,6 +1079,29 @@ The number \((n+\tfrac12)/2^j\) is never integral and has the same floor as
 \((-1)^{\lfloor n/2^j\rfloor}=(-1)^{b_j(n)}\).  The factors are positive once
 \(2^j>n+\tfrac12\).
 \end{proof}
+
+\paragraph{Lean crosswalk (exhaustive).}
+The nine public theorems of \path{RademacherSine.lean} now close this
+square-wave and sine-sign layer exactly.  The square-wave group is
+\lean{Fabius.sin\_pi\_mul\_eq\_neg\_one\_zpow\_floor}, the unconditional
+factored identity valid even at integers;
+\lean{Fabius.sin\_pi\_mul\_fract\_pos}, whose precise hypothesis is
+\(\operatorname{fract}(x)\ne0\); and
+\lean{Fabius.sign\_sin\_pi\_mul}, with that same nonzero-fractional-part
+hypothesis.  The half-shifted factor group is
+\lean{Fabius.floor\_rademacherPoint},
+\lean{Fabius.fract\_rademacherPoint\_ne\_zero},
+\lean{Fabius.sign\_sin\_rademacherPoint}, and
+\lean{Fabius.sign\_sin\_rademacherPoint\_eq\_one\_of\_lt}; the first three
+hold for every \(n,j\in\N\), while the last assumes exactly \(n<2^j\) and
+proves that the factor is \(+1\).  Finally,
+\lean{Fabius.thueMorseSign\_eq\_prod\_sign\_sin} is the finite product under
+exactly \(n<2^m\), and
+\lean{Fabius.thueMorseSign\_eq\_tprod\_sign\_sin} is the displayed total
+infinite-product statement for every \(n\).  Its proof is finite-support
+bookkeeping---the preceding eventual-one theorem reduces \(\prod'\) to a
+finite product---so this result asserts neither convergence of a genuinely
+infinite nontrivial product nor any unshifted sine formula.
 
 \subsection{The sign of the Fabius sinc product}
 \label{p1:sec:sinc-sign}
@@ -6612,7 +6635,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{p1:sec:formalized-modules}
 
-The first tranches of the formalization now exist as one hundred and two
+The first tranches of the formalization now exist as one hundred and three
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -6643,6 +6666,7 @@ Module & Contents \\
 \path{CentralBinomialValuation.lean} & Exhaustive three-theorem bridge: central-binomial valuation equals binary weight, its parity gives the Thue--Morse sign, and zero valuation is equivalent to zero binary weight (hence occurs only at \(n=0\)). \\
 \path{BinaryDigitFloor.lean} & Exhaustive four-theorem total-natural bridge from dyadic quotients to floor-difference binary digits: quotient-by-two normalization, parity remainder, the consecutive-floor difference, and the test-bit indicator identity; no analytic or real-floor generalization. \\
 \path{ThueMorseDigits.lean} & Additive Legendre, floor sums, floor-parity formula, `testBit` bridge, digit product. \\
+\path{RademacherSine.lean} & Exhaustive nine-theorem square-wave and Rademacher--sine closure: the everywhere-valid factored sine identity; positivity and sign under exactly nonzero fractional part; the half-shifted floor, its unconditional nonintegrality, the exact bit factor, and eventual factor \(+1\) under \(n<2^j\); and the finite product under \(n<2^m\) plus the total \(\prod'\) identity, reduced to finite support rather than analytic infinite-product convergence. \\
 \path{ThueMorseEnumerators.lean} & Weight distribution, evil/odious enumerations and composition laws, XOR autocorrelation, signed Hamming spheres. \\
 \path{RademacherSine.lean} & Nine Rademacher--sine theorems: factored/signed square waves, half-shift floor and nonintegrality, per-bit factors and eventual \(+1\), and finite/infinite Thue--Morse sign products. \\
 \path{FinitePolynomialFunctional.lean} & Moment expansion for finite weighted polynomial evaluations, selected-, top-, and constant-coefficient extraction, scalar-extension forms, degree-valued strict cancellation, and same-ring conveniences over commutative semirings; repeated nodes and a zero surviving moment are allowed. \\
@@ -6651,7 +6675,7 @@ Module & Contents \\
 \path{CompleteHomogeneousGenerating.lean} & Finite formal generating series for complete homogeneous evaluations: exact coefficients, empty-family and adjoining-variable recurrences over commutative semirings, and one-factor/full-product denominator clearing plus the canonical \path{PowerSeries.invOfUnit} reciprocal over commutative rings.  Repeated values, zero divisors, and nilpotents are allowed; analytic evaluation, convergence, and the Bell/generalized-harmonic conversion are not asserted. \\
 \path{LagrangeResidualMoments.lean} & The all-order residual-moment formula for any finite weighted row exact below the node count, over an arbitrary commutative ring with repeated nodes allowed; distinct field-valued nodes enter only in the Lagrange-weight specialization. \\
 \path{BaseLayerRegrouping.lean} & Finite base-\(b\) layer reindexing and regrouping over arbitrary commutative monoids, with additive companions; the truncated divisor count and its evaluation as \(1+\nu_b(m)\) under explicit layer-range coverage.  No infinite-product or convergence assertion is made. \\
-\path{GeometricCompleteHomogeneous.lean} & The denominator-free principal specialization \(h_n(1,q,\ldots,q^r)={n+r\brack r}_q\) over arbitrary commutative semirings, including arbitrary common scale and the range-indexed form. \\
+\path{GeometricCompleteHomogeneous.lean} & The denominator-free principal specialization \(h_n(1,q,\ldots,q^r)=\genfrac{[}{]}{0pt}{}{n+r}{r}_{q}\) over arbitrary commutative semirings, including arbitrary common scale and the range-indexed form. \\
 \path{GeometricResidualMoments.lean} & Every positive moment of an arbitrary exact geometric row over any commutative ring, with repeated nodes and arbitrary scales allowed; geometric Lagrange rows, common dilations, and shifted blocks follow over fields under finite-node injectivity. \\
 \path{GeometricPowerSeriesFilter.lean} & Formal-series filtering at the nodes \(1,q,\ldots,q^p\): coefficient cancellation through the exactness order, the Gaussian multiplier in every positive degree, an all-index residual-series identity with the mass-one degree-zero boundary, and the geometric Lagrange specialization.  Analytic substitution, convergence, and remainder bounds are not asserted. \\
 \path{AnalyticSeriesFilter.lean} & Convergent-series form of an arbitrary finite rescaling filter: diagonal action, exact finite head and infinite tail, the target-zero constant boundary, and geometric and geometric-Lagrange Gaussian tails, including shifted scales.  Mathlib \path{Summable} is unconditional; hypotheses are imposed on weighted samples, so a zero-weight node needs no unweighted convergence.  Conditionally-only boundary series, signs, bounds, uniform convergence, and sinc-product instantiations are not asserted by this generic module. \\
@@ -6853,7 +6877,7 @@ Possible module boundaries are listed below.  Entries marked
 \Cref{p1:sec:formalized-modules}; they are repeated here to record which
 proposed boundary each one realizes, and are not additional modules.
 \begin{center}
-\small
+\footnotesize% ed.: keep the fixed roadmap table within the text block
 \begin{tabularx}{0.94\textwidth}{@{}>{\raggedright\arraybackslash}p{0.42\textwidth}>{\raggedright\arraybackslash}X@{}}
 \toprule
 Proposed module & Main declarations \\
