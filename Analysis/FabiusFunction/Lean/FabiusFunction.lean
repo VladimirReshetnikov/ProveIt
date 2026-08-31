@@ -91,6 +91,8 @@ import FabiusFunction.SaddleLogExpansionPowerSeries
 import FabiusFunction.CenteredMomentCumulants
 import FabiusFunction.CenteredMomentParity
 import FabiusFunction.SinhDivBernoulliLog
+import FabiusFunction.HyperbolicActivation
+import FabiusFunction.GeometricActivationDimension
 import FabiusFunction.ReciprocalExponentialGenerating
 import FabiusFunction.RvachevMomentAppell
 import FabiusFunction.ImplicitPowerSeries
