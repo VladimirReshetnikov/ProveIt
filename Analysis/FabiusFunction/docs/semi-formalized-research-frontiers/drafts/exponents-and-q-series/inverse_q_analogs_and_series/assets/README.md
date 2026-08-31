@@ -50,6 +50,8 @@ directories:
 ```text
 assets/
 ├── README.md
+├── VALIDATION.md
+├── SHA256SUMS
 ├── requirements.txt
 ├── ASSET_DISPOSITION.csv
 └── experiments/
@@ -203,21 +205,23 @@ python scripts/q_expansion_experiments.py > output/numerical_results.txt
 The exact q=1 and q=-1 suites each check all 230 pairs
 `0 <= k <= n <= 20` before the numerical asymptotic tests are printed.
 
-## Required path adjustment during migration
+## Migrated path adjustment
 
 The source programs were originally beside their outputs.  Moving them into
 `scripts/` changes the meaning of `Path(__file__).parent` (or
 `Path(__file__).with_name(...)`).  The migrated copies of the `functions`,
 `jet_atlas`, `extended`, `branch_geometry`, and `compact` programs therefore
-need a small, mechanical path adjustment: compute the experiment root as the
-parent of `scripts/` and route existing outputs to the sibling directories
+make a small, mechanical path adjustment: they compute the experiment root as
+the parent of `scripts/` and route existing outputs to the sibling directories
 shown above.  The `forward` program only writes to standard output and needs
-no path rewrite.  These edits must not change the mathematics, default
-precision, row order, or displayed values.
+no path rewrite.  These edits do not change the mathematics, default
+precision, row order, or displayed values.  Text and CSV writers also use
+explicit LF line endings so that retained audit logs are reproducible across
+Windows and POSIX hosts.
 
-The source copies are intentionally untouched by this preparation step.  The
-disposition ledger records each required migration edit so that the later
-copy-and-verify change is reviewable.
+The source copies remain untouched.  `VALIDATION.md` records the clean-room
+rerun of every migrated program and distinguishes byte-for-byte reproduction
+from harmless rendering metadata and last-digit floating-point drift.
 
 ## What is not retained
 
@@ -231,6 +235,7 @@ single requirements file above; generated LaTeX table fragments and TeX
 are unnecessary when the corresponding vector PDFs are present.
 
 Retirement does not erase history: every old package remains recoverable from
-Git.  A canonical checksum ledger should be generated only after the migration
-and any necessary script path edits are final, so this preparation deliberately
-contains no hashes that would immediately become stale.
+Git.  `SHA256SUMS` is the canonical post-migration ledger.  It covers every
+retained file beneath `assets/` except the ledger itself; a verifier can thus
+detect changes to programs, historical numerical snapshots, vector figures,
+the dependency manifest, or the migration documentation.
