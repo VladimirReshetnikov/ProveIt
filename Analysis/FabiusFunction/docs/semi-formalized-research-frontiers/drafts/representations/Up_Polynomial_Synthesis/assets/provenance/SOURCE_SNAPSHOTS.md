@@ -5,6 +5,8 @@ Arrival ledgers are historical evidence and are not rewritten.
 
 ## Git snapshots
 
+- Complete pre-retirement tree containing all ten absorbed report directories:
+  443793e846934e7363e314ea01129b9f50197a58
 - Base Lagrange report and v5 audit: 4544e9af6b94820402c69967be1dff3f85e43c1e
 - Lagrange v6 corpus audit: 57c2ad230e11dfd4dc3aa9aabd2a35db51331415
 - Base Legendre spectral-closure report:
