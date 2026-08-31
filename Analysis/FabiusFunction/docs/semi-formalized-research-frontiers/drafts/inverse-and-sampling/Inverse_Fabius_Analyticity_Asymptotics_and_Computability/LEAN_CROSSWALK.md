@@ -1,0 +1,190 @@
+# Lean crosswalk for the canonical inverse-Fabius synthesis
+
+This document records the source-level Lean correspondence for the 194 immutable source-result rows in theorem_concordance.csv and for one post-snapshot strengthening added directly to the canonical volume.
+
+## Evidence boundary
+
+The audit inspected the actual Lean source files below Analysis/FabiusFunction/Lean/FabiusFunction. It did not infer coverage from .olean files, declaration names alone, generated documentation, or historical commit messages.
+
+No Lean, Lake, or umbrella build was run for this crosswalk pass, and no Git command was run. Consequently, Lean-proved means that an exact or immediately equivalent source declaration was inspected; it does not claim fresh compilation of the current aggregate target. Human-proved frontier result means that the canonical chapter contains a complete human-readable proof but the inspected Lean tree has only partial ingredients or no matching declaration.
+
+The first ten columns of theorem_concordance.csv remain field-for-field identical to audit/source_result_inventory.csv: 194 rows were compared and no immutable-field difference was found.
+
+## Status vocabulary
+
+| Status | Meaning |
+|---|---|
+| Lean-proved | The source claim has a direct or normalization-equivalent Lean counterpart. The CSV records one principal module and declaration; its disposition note names any adjacent companion declarations needed for a multi-clause paper statement. |
+| human-proved frontier result | The canonical text supplies a complete paper proof, but no exact Lean theorem covers the full statement. Formal-series results are not counted as analytic theorems. |
+| conjecture | A precise, live, plausible conjecture retained as explicitly nonassertoric. |
+| open problem | A research direction or a source conjecture deliberately demoted because the available evidence does not justify a precise conjectural assertion. |
+| not applicable | A definition, algorithm specification, example, warning, discharged obligation, or retired/vacuous claim. |
+
+## Coverage totals
+
+| Source package | Rows | Lean-proved | Human-proved | Conjecture | Open problem | Not applicable |
+|---|---:|---:|---:|---:|---:|---:|
+| Inverse_and_Sampling_Frontiers | 83 | 6 | 54 | 2 | 10 | 11 |
+| Inverse_Endpoint_All_Orders | 29 | 1 | 20 | 6 | 0 | 2 |
+| Inverse_Fabius_Computability_Report | 40 | 14 | 16 | 1 | 4 | 5 |
+| inverse_fabius_iterates_nowhere_analytic | 24 | 2 | 17 | 1 | 1 | 3 |
+| Non_Elementarity_of_the_Fabius_Function | 18 | 14 | 1 | 0 | 0 | 3 |
+| **Total** | **194** | **37** | **108** | **10** | **15** | **24** |
+
+The high human-proved count is intentional. In particular, a full forward asymptotic expansion composed with F inverse is not an explicit all-orders inverse reversion theorem, and a formal Catalan or Richardson identity is not an analytic asymptotic for the actual finite-prefix quantiles.
+
+## Canonical-label mapping
+
+Most retained source labels use a stable namespace prefix:
+
+| Source package or prefix | Canonical prefix |
+|---|---|
+| Inverse_and_Sampling_Frontiers p1, p2, p3 | is:p1, is:p2, is:p3 |
+| Inverse_Endpoint_All_Orders | ao |
+| Inverse_Fabius_Computability_Report | co |
+| Non_Elementarity_of_the_Fabius_Function | ne |
+| inverse_fabius_iterates_nowhere_analytic | ii |
+
+The four historically unlabelled computability problems receive stable labels comp:prob:near-optimal-evaluation, comp:prob:uniform-base, comp:prob:atomic-transport, and comp:prob:branch-atlas.
+
+Important non-identity mappings are:
+
+| Source label | Canonical destination | Disposition |
+|---|---|---|
+| p1:thm:phase-two-orders | ao:thm:all-orders | Low-order specialization absorbed into the stronger all-orders theorem. |
+| p1:cor:first-oscillatory-inverse | ao:thm:all-orders | First relative correction absorbed into the all-orders expansion. |
+| p1:thm:inverse-limit-set | ao:thm:phase-locked | The normalized cluster interval is grouped with phase-locked endpoint sequences. |
+| p1:thm:quantile-elasticity | ao:thm:elasticity | Two-term result absorbed into the all-orders elasticity theorem. |
+| p1:thm:all-orders-endpoint-recursion | ao:thm:all-orders | The triangular recursion is part of the stronger canonical theorem. |
+| p2:thm:algebraic-inverse-germ | is:p2:thm:algebraic-inverse-germ | The full reduced-dyadic algebraic shadow and nonzero flat-remainder theorem is retained; its general form remains outside Lean. |
+| p2:thm:Catalan-quarter | is:p2:thm:Catalan-quarter | The complete quarter-point theorem is retained explicitly; its exact Lean derivative formula is recorded in the CSV. |
+| p3:conj:positive-extremality | is:p3:prob:sparse-positive-phase | Corrected and demoted from an unsupported extremality conjecture to a sparse positive-filter design problem. |
+| p3:conj:quantile-phase-locking | is:p3:prob:quantile-endpoint-alias | Corrected and demoted to the missing uniform endpoint/alias matching problem. |
+| p3:conj:primitive-rules | none | Retired as vacuous: least-common-denominator normalization already forces primitive integer weights. |
+| p1:conj:natural-threshold | none | Retired; the proved eventual-threshold result remains, while the universal n >= r+1 cutoff had no proof or Lean support. |
+
+The four unlabelled source obligations are marked not applicable and point to the theorem that discharges them. The unlabelled first-derivatives example is folded into is:p2:thm:inverse-derivatives.
+
+## Exact declaration index
+
+The table below is generated from the 37 Lean-proved concordance rows. Declaration names are fully qualified.
+
+| Source key | Canonical label | Lean module | Principal declaration |
+|---|---|---|---|
+| Inverse_and_Sampling_Frontiers:p1:lem:filter-moments | is:p1:lem:filter-moments | FabiusFunction.GeometricLagrangeQMoments | Fabius.quarterGeometricLagrangeQMoment_eq_residual_qBinomial |
+| Inverse_and_Sampling_Frontiers:p1:thm:quarter-exact | is:p1:thm:quarter-exact | FabiusFunction.QuarterQuantile | Fabius.quarterQuantile_eq |
+| Inverse_and_Sampling_Frontiers:p2:thm:Catalan-quarter | is:p2:thm:inverse-derivatives | FabiusFunction.FabiusInverseQuarterJet | Fabius.iteratedDeriv_fabiusInv_five_seventy_two_succ |
+| Inverse_and_Sampling_Frontiers:p3:thm:self-sampling | is:p3:thm:self-sampling | FabiusFunction.PolynomialCombExactness | Fabius.tsum_shifted_polynomial_eq_integral |
+| Inverse_and_Sampling_Frontiers:p3:prop:half-integer-sign | is:p3:prop:half-integer-sign | FabiusFunction.ThueMorseLobeSign | Fabius.rvachevFourierProduct_eq_thueMorse_sign_mul_norm |
+| Inverse_and_Sampling_Frontiers:p3:lem:phi-half-lower | is:p3:lem:phi-half-lower | FabiusFunction.SincProductPositive | Fabius.four_ninths_lt_re_rvachevFourierProduct_half |
+| Inverse_Endpoint_All_Orders:thm:K-decomposition | ao:thm:K-decomposition | FabiusFunction.NegativeLaplace | Fabius.negativeLaplaceLog_exact_periodic_decomposition |
+| Inverse_Fabius_Computability_Report:thm:centered-error | co:thm:centered-error | FabiusFunction.FabiusComputability | Fabius.abs_uniformCenteredPartialCDF_sub_fabiusReal_le |
+| Inverse_Fabius_Computability_Report:cor:F-computable | co:cor:F-computable | FabiusFunction.FabiusComputableSpline | Fabius.fabiusReal_isComputableRealFunction |
+| Inverse_Fabius_Computability_Report:prop:strict-increase | co:prop:strict-increase | FabiusFunction.Monotonicity | Fabius.strictMonoOn_fabiusReal |
+| Inverse_Fabius_Computability_Report:prop:density-shape | co:prop:density-shape | FabiusFunction.Convexity | Fabius.strictMonoOn_deriv_fabiusReal_Icc |
+| Inverse_Fabius_Computability_Report:thm:least-mass | co:thm:least-mass | FabiusFunction.InverseModulus | Fabius.fabiusIntervalMass_eq_fabiusReal_iff |
+| Inverse_Fabius_Computability_Report:cor:global-increment-shape | co:cor:global-increment-shape | FabiusFunction.InverseModulus | Fabius.fabiusReal_add_le |
+| Inverse_Fabius_Computability_Report:thm:exact-inverse-modulus | co:thm:exact-inverse-modulus | FabiusFunction.InverseModulus | Fabius.sSup_abs_fabiusInv_sub_eq |
+| Inverse_Fabius_Computability_Report:cor:effective-injectivity | co:cor:effective-injectivity | FabiusFunction.InverseModulus | Fabius.abs_fabiusInv_sub_lt_of_abs_sub_lt_fabiusReal |
+| Inverse_Fabius_Computability_Report:thm:exact-strict-threshold | co:thm:exact-strict-threshold | FabiusFunction.InverseModulus | Fabius.forall_abs_fabiusInv_sub_lt_iff |
+| Inverse_Fabius_Computability_Report:thm:closed-dyadic-modulus | co:thm:closed-dyadic-modulus | FabiusFunction.FabiusInverseEffectiveContinuity | Fabius.abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_deltaDenominator |
+| Inverse_Fabius_Computability_Report:thm:reciprocal-modulus | co:thm:reciprocal-modulus | FabiusFunction.FabiusInverseLogarithmicModulus | Fabius.fabiusInv_effectivelyUniformContinuous_logarithmicDelta |
+| Inverse_Fabius_Computability_Report:lem:flatness-upper | co:lem:flatness-upper | FabiusFunction.SharpFlatness | Fabius.fabiusReal_le_two_pow_div_factorial_mul_pow |
+| Inverse_Fabius_Computability_Report:thm:no-holder | co:thm:no-holder | FabiusFunction.FabiusInverseAsymptotic | Fabius.not_exists_fabiusInv_le_const_mul_rpow_near_zero |
+| Inverse_Fabius_Computability_Report:cor:sub-holder | co:cor:sub-holder | FabiusFunction.FabiusInverseAsymptotic | Fabius.fabiusInv_isLittleO_negLog_rpow_at_zero_right |
+| Non_Elementarity_of_the_Fabius_Function:thm:nowhere | ne:thm:nowhere | FabiusFunction.NowhereAnalytic | Fabius.canonical_fabius_analyticAt_iff |
+| Non_Elementarity_of_the_Fabius_Function:thm:density | ne:thm:density | FabiusFunction.ElementaryFunction | Fabius.IsElementary.dense_analyticLocus |
+| Non_Elementarity_of_the_Fabius_Function:cor:main | ne:cor:main | FabiusFunction.NotElementary | Fabius.canonical_fabius_not_isElementary_eqOn_of_interior_nonempty |
+| Non_Elementarity_of_the_Fabius_Function:prop:comp | ne:prop:comp | FabiusFunction.ElementaryFunction | Fabius.IsElementary.comp |
+| Non_Elementarity_of_the_Fabius_Function:lem:open | ne:lem:open | FabiusFunction.ElementaryFunction | Fabius.isOpen_analyticLocus |
+| Non_Elementarity_of_the_Fabius_Function:lem:key | ne:lem:key | FabiusFunction.ElementaryFunction | Fabius.dense_analyticLocus_comp |
+| Non_Elementarity_of_the_Fabius_Function:thm:algebraic | ne:thm:algebraic | FabiusFunction.AlgebraicBranch | Fabius.analyticDenseOn_of_algebraic |
+| Non_Elementarity_of_the_Fabius_Function:cor:algebraic | ne:cor:algebraic | FabiusFunction.NotElementary | Fabius.not_algebraicBranch_eqOn |
+| Non_Elementarity_of_the_Fabius_Function:thm:ift | ne:thm:ift | FabiusFunction.InverseBranch | Fabius.analyticAt_of_rightInverse |
+| Non_Elementarity_of_the_Fabius_Function:thm:invnowhere | ne:thm:invnowhere | FabiusFunction.InverseNotElementary | Fabius.analyticLocus_fabiusInv |
+| Non_Elementarity_of_the_Fabius_Function:cor:invmain | ne:cor:invmain | FabiusFunction.InverseNotElementary | Fabius.canonical_fabiusInv_not_isElementary_on_Ioo |
+| Non_Elementarity_of_the_Fabius_Function:thm:invbranch | ne:thm:invbranch | FabiusFunction.InverseBranch | Fabius.analyticDenseOn_of_rightInverse |
+| Non_Elementarity_of_the_Fabius_Function:thm:plusdense | ne:thm:plusdense | FabiusFunction.InverseBranch | Fabius.IsElementaryOrInverse.dense_analyticLocus |
+| Non_Elementarity_of_the_Fabius_Function:cor:plusmain | ne:cor:plusmain | FabiusFunction.InverseNotElementary | Fabius.not_isElementaryOrInverse_eqOn_fabiusInv |
+| inverse_fabius_iterates_nowhere_analytic:prop:fixed-k-minimum | ii:prop:fixed-k-minimum | FabiusFunction.PartitionDefect | Fabius.partitionDefect_fixed_block_eq_iff |
+| inverse_fabius_iterates_nowhere_analytic:prop:first-shell | ii:prop:first-shell | FabiusFunction.PartitionDefect | Fabius.partitionDefect_eq_firstShell_iff |
+
+Several paper rows contain multiple clauses. For those rows, the principal declaration above is accompanied in the same module by the remaining exact clauses, and the CSV disposition note names that split. The important cases are:
+
+- Density shape: strictMonoOn_deriv_fabiusReal_Icc is accompanied by strictAntiOn_deriv_fabiusReal_Icc and derivative reflection.
+- Least interval mass: fabiusIntervalMass_eq_fabiusReal_iff is accompanied by the strict first- and second-half interval-mass theorems.
+- Exact inverse modulus: sSup_abs_fabiusInv_sub_eq is accompanied by the pointwise gap, ordered-gap, subadditivity, and equality declarations.
+- Effective injectivity: the strict theorem has closed-threshold and contrapositive companions.
+- Dense analytic locus: IsElementary.dense_analyticLocus is accompanied by the generic isOpen_analyticLocus theorem.
+- Expanded elementary-plus-inverse exclusion: the recorded inverse declaration has a forward companion in InverseNotElementary.
+
+## Formal kernels of stronger human-proved results
+
+The following four canonical results have substantial Lean ingredients, but the
+full paper statement is stronger than the cited declaration. They are therefore
+classified as human-proved frontier results, and their Lean fields are
+deliberately blank in the concordance.
+
+| Canonical result | Formal kernel | Unformalized bridge or clause |
+|---|---|---|
+| `is:p3:prop:local-factorization` | `FabiusFunction.IntegerZeroLocalFactorization.Fabius.rvachevFourierProduct_int_add_factorization` proves the denominator-cleared integer-zero factorization; adjacent declarations construct the analytic cofactor and its derivative engine. | The same proposition includes the normalized exponential local form and its explicit logarithmic jet. |
+| `is:p3:thm:first-defect` | `FabiusFunction.CombDefectSeries.Fabius.tsum_shifted_monomial_sub_integral_odd` proves the odd-alias representation, and `FabiusFunction.CombFirstDefect.Fabius.iteratedDeriv_rvachevFourierProduct_nat_mul_int_of_odd` evaluates the surviving derivative. | No named declaration assembles the evaluated complex series and both displayed sine/cosine forms. |
+| `is:p3:thm:Appell-deconvolution` | `FabiusFunction.RvachevMomentAppell.Fabius.integral_eval_rvachevAppellPolynomial_add_mul_rvachev` proves the `x+y` smoothing identity. | The paper uses `x-y`; its human proof supplies the evenness/change-of-variables step, but no named formal theorem has that exact conclusion. |
+| `is:p3:cor:polynomial-deconvolution` | `FabiusFunction.RvachevPolynomialSynthesis.Fabius.normalized_tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp` proves phase-free shifted-up synthesis. | The paper gives an arbitrary phase `theta` through a different self-sampling formula. |
+
+## Exact post-source strengthening: derivative distributions
+
+The canonical theorem rvd:thm:derivative-distribution has no concordance row because it was added after the immutable source snapshot. It is nevertheless directly backed by FabiusFunction.RvachevDerivativeDistribution.
+
+The formal theorem family proves:
+
+- the cell identity through Fabius.iteratedDeriv_rvachev_cell;
+- its zero and absolute-value specializations through Fabius.iteratedDeriv_rvachev_cell_zero and Fabius.abs_iteratedDeriv_rvachev_cell;
+- the general test-function integral law through Fabius.intervalIntegral_comp_iteratedDeriv_rvachev;
+- normalized signed and absolute test-function laws through Fabius.intervalIntegral_comp_normalized_iteratedDeriv_rvachev and Fabius.intervalIntegral_comp_normalized_abs_iteratedDeriv_rvachev;
+- signed and absolute Borel pushforward equalities through Fabius.map_normalized_iteratedDeriv_rvachev_restrict_Icc and Fabius.map_normalized_abs_iteratedDeriv_rvachev_restrict_Icc;
+- natural signed moments, their even/odd specializations, and all nonnegative real absolute moments through Fabius.intervalIntegral_iteratedDeriv_rvachev_pow, Fabius.intervalIntegral_iteratedDeriv_rvachev_pow_of_even, Fabius.intervalIntegral_iteratedDeriv_rvachev_pow_eq_zero_of_odd, and Fabius.intervalIntegral_abs_iteratedDeriv_rvachev_rpow.
+
+This result is not Appell biorthogonality. Its test function is applied to the value of an iterated derivative. It does not prove an integral pairing of an iterated derivative with an Appell polynomial in the spatial variable.
+
+## Principal formalization boundaries
+
+| Area | Exact Lean core | Missing full bridge |
+|---|---|---|
+| Explicit all-orders inverse endpoint expansion | Full forward all-orders expansion, implicit pullback along the inverse, sharp leading inverse scale, Gamma-zeta periodic data | Explicit inverse coefficient reversion, diagonal formulas, inverse top jets, elasticity hierarchy, W-resummation, Gevrey/transseries theory |
+| Inverse computability | Forward computability, sharp inverse modulus, effective injectivity, explicit effective continuity, endpoint non-Holder laws | Tolerant bisection implementation, restricted and totalized inverse sequential computability, abstract inversion wrapper |
+| Inverse iterates | Single-inverse nonanalyticity and exact PartitionDefect combinatorics | Every n > 1 iterate theorem, zero-radius transport, spine dominance, formal-reversion radius |
+| Dyadic inverse germs | Exact quarter quantile, analytic quarter germ, complete quarter inverse jet | General reduced-dyadic analytic shadow, nonzero flat remainder, all-dyadic inverse derivatives |
+| Appell and Bernoulli structure | Appell derivative/translation laws, moments, cumulants, continuous deconvolution, polynomial synthesis | Logistic dual, Barnes identifications, full finite-prefix collapse/recovery, some displayed Bernoulli recurrences |
+| Shifted self-sampling | Exact polynomial self-sampling, sharp mesh exactness, integer-zero factorization, half-integer sign, positive half-frequency bound | Entire master-alias convergence theorem, complete phase classification, positive-filter uniqueness, tensor/base-b quadrature |
+
+## Conjecture and problem discipline
+
+All 11 rows classified as conjecture map to canonical conjecture environments and claim no proof. All 14 open-problem rows map to canonical problem environments. The two source conjectures demoted to problems have explicit correction rationales in the CSV. The primitive-rule conjecture and the natural-threshold conjecture are not silently preserved as facts.
+
+The six all-orders endpoint conjectures remain conjectural: Gevrey-one growth, optimal truncation, sharp strip inheritance, nonconstant phase at every inverse order, a two-level exponentially improved transseries, and a universal diagonal inversion class.
+
+The two inverse-iterate conjectures remain conjectural: a direct inverse-spine asymptotic and the nested Lambert phase law.
+
+## Highest-value next formalizations
+
+1. Prove a reusable tolerant monotone-bisection theorem and instantiate it to obtain sequential computability of the restricted and totalized Fabius inverse.
+2. Build a generic asymptotic series-reversion layer with Bell-polynomial coefficient extraction, then instantiate it with the existing forward Lambert expansion.
+3. Prove positive convergence-radius preservation under formal compositional inversion and use it for the iterate Taylor-radius transport theorem.
+4. Formalize the Q-factorization and analytic spine estimates on top of PartitionDefect; the existing defect theorems do not by themselves prove iterate nonanalyticity.
+5. Generalize the quarter-cell analytic germ and inverse-jet bridge to every reduced dyadic point.
+6. Assemble the coefficientwise comb identities into the entire master-alias theorem with locally normal convergence.
+7. Derive the displayed Bernoulli-refined Appell recurrence and separate any genuine Appell biorthogonality theorem from the derivative-distribution pushforward law.
+8. Define the regrouped 2-adic exponential B-series and prove its Mellin representation, contour shift, and saddle map.
+
+## Static consistency checks performed
+
+- Exactly 194 concordance rows.
+- No blank canonical status or disposition note.
+- Every Lean-proved row has both a module and declaration; no other status has Lean fields.
+- Every retained assertion has a canonical label.
+- Every conjecture maps to a conjecture label and every open problem maps to a problem label.
+- Every populated canonical label was present in the current canonical chapter sources.
+- All ten immutable source fields matched audit/source_result_inventory.csv for every row.
+
+These are static source and CSV checks only. They are not a substitute for the consolidated Lean build, the canonical validator's pinned-history replay, or the publication build.

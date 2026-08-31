@@ -6,8 +6,11 @@
 This synthesis uses three noninterchangeable kinds of mathematical evidence.
 
 \begin{enumerate}
-\item A result is \emph{Lean-proved} only when a named declaration has the same
-      hypotheses and conclusion as the human-readable statement.
+\item A result is \emph{Lean-proved} only when every clause of the
+      human-readable statement has the same hypotheses and conclusion as a
+      named Lean declaration.  A paper theorem assembled from several Lean
+      declarations qualifies only when the finite family is explicitly
+      identified; the presence of all the right ingredients is not enough.
 \item A \emph{human-proved frontier result} has a complete proof in this volume
       but no exact Lean counterpart yet.
 \item A \emph{conjecture} or \emph{research problem} retains an explicit,
@@ -18,6 +21,48 @@ Executable symbolic or numerical checks are useful regression evidence, but
 they do not upgrade a manuscript claim into a theorem.  Conversely, a theorem
 whose special case is formalized is not labelled Lean-proved unless the
 specialization and all of its hypotheses match exactly.
+
+At the source snapshot recorded in the concordance, the resulting
+classification is \(37\) Lean-proved rows, \(108\) human-proved frontier
+rows, \(10\) conjectures, \(15\) open problems, and \(24\) nonassertoric
+rows, for \(194\) rows in all.  These are source-result counts, not counts of
+distinct canonical theorem environments: deduplication may send several
+source rows to one stronger surviving result.
+
+\subsection{Partial formalizations are recorded as partial}
+
+Four results in the self-sampling chapter have substantial formal kernels
+but nonidentical or stronger canonical conclusions.  The whole labelled
+results are therefore human-proved frontier results, with the precise Lean
+boundary as follows.
+
+\begin{description}
+\item[\cref{is:p3:prop:local-factorization}.]
+Lean proves the denominator-cleared integer-zero factorization and the
+analytic-cofactor derivative engine.  The proposition also asserts the
+normalized local exponential form and its explicit logarithmic jet; those
+extra clauses, and hence the whole proposition, are not a single exact Lean
+result.
+
+\item[\cref{is:p3:thm:first-defect}.]
+Lean proves the odd-alias representation, and a companion theorem evaluates
+the surviving derivative coefficient.  No named declaration assembles these
+pieces into the displayed complex series together with both trigonometric
+forms, so the canonical theorem remains human-proved.
+
+\item[\cref{is:p3:thm:Appell-deconvolution}.]
+Lean proves the smoothing identity with the polynomial evaluated at \(x+y\).
+The canonical theorem uses \(x-y\).  Evenness makes the two statements
+mathematically equivalent, as the human proof shows, but the crosswalk found
+no named formal change-of-variables/evenness bridge with the canonical
+conclusion.
+
+\item[\cref{is:p3:cor:polynomial-deconvolution}.]
+Lean proves phase-free synthesis by shifted up-atoms.  The canonical
+corollary is the different, arbitrarily phased self-sampling formula with
+\(\theta\in\RealNumbers\).  The former is a valuable formal companion, not an
+exact formalization of the latter.
+\end{description}
 
 \section{Deduplication and result provenance}
 \label{sec:result-provenance}
