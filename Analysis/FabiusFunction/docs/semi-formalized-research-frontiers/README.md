@@ -108,6 +108,17 @@ The draft inboxes under [`drafts/`](drafts/) are grouped thematically
 when four articles on the Lambert W function itself arrived), with new
 archives arriving through `drafts/incoming/` (see its README for the
 protocol).
+
+The inverse group also contains the in-progress canonical-source draft
+[`Inverse_Fabius_Analyticity_Asymptotics_and_Computability/`](drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/).
+Its master and nine chapters, pinned 194-row raw source-result inventory,
+88-row source-asset disposition, and deduplicated 61-payload asset ledger are
+present; the asset ledger passes in full. The raw inventory is not the reviewed
+theorem concordance. `theorem_concordance.csv` and the canonical PDF are absent,
+so the source validator and publication gate remain pending and all five source
+packages stay live. Their existing PDFs remain source-package or historical
+artifacts, not renderings of the new canonical master.
+
 Later the same day the groups other than the Fourier-decay corpus were
 **consolidated into volumes**, in two styles: the original members were
 merged mechanically — one document per group, absorbing the member
