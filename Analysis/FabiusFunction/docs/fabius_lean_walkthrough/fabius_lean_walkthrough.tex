@@ -842,6 +842,40 @@ closed interval \([0,1/2]\), while
 \([1/2,1]\).  These closed-interval shape theorems use differentiability only
 on the interiors, so they are compatible with the singular endpoint slopes.
 
+The downstream module \nolinkurl{InverseModulus.lean} packages the sharp
+global modulus.  Its increment
+\nolinkurl{fabiusIntervalMass} is reflection-invariant and globally unimodal
+for every nonnegative length, by
+\nolinkurl{fabiusIntervalMass_reflect},
+\nolinkurl{monotoneOn_fabiusIntervalMass_firstHalf}, and
+\nolinkurl{antitoneOn_fabiusIntervalMass_secondHalf}.  Hence
+\nolinkurl{fabiusReal_sub_le_sub} and \nolinkurl{fabiusReal_add_le} prove the
+least endpoint mass and constrained forward superadditivity.  The three
+ordered/order-free inverse-gap forms are
+\nolinkurl{fabiusInv_sub_le_sub_of_mem_Icc},
+\nolinkurl{fabiusInv_sub_le_sub_of_le}, and
+\nolinkurl{fabiusInv_sub_le_sub}; \nolinkurl{fabiusInv_add_le} gives global
+inverse subadditivity.  In particular,
+\[
+ \lvert F^{-1}(u)-F^{-1}(v)\rvert
+ \le F^{-1}(\lvert u-v\rvert)
+\]
+for arbitrary real inputs, exactly
+\nolinkurl{abs_fabiusInv_sub_le} (with metric spelling
+\nolinkurl{dist_fabiusInv_le}).  Saturation is
+\nolinkurl{fabiusInv_min_one}.  The attained global and unit-interval maxima
+and their supremum equalities are
+\nolinkurl{isGreatest_abs_fabiusInv_sub},
+\nolinkurl{sSup_abs_fabiusInv_sub_eq},
+\nolinkurl{isGreatest_abs_fabiusInv_sub_Icc}, and
+\nolinkurl{sSup_abs_fabiusInv_sub_Icc_eq}.  Finally,
+\nolinkurl{abs_fabiusInv_sub_lt_of_abs_sub_lt_fabiusReal},
+\nolinkurl{abs_fabiusInv_sub_le_of_abs_sub_le_fabiusReal},
+\nolinkurl{fabiusReal_le_abs_sub_of_le_abs_fabiusInv_sub}, and
+\nolinkurl{forall_abs_fabiusInv_sub_lt_iff} give the strict, closed,
+contrapositive, and exact-threshold effective-injectivity forms.  This module
+does not supply recursive-modulus packaging or an inversion algorithm.
+
 Flatness of \(F\) becomes steepness of \(F^{-1}\).  Substituting
 \(x=F^{-1}(y)\) into the effective estimate gives, on the stated shrinking
 window,
@@ -3452,6 +3486,7 @@ Weighted-sum CDF and half-base bridges & \nolinkurl{weightedSumCDF}, \nolinkurl{
 Forward curvature profile & \nolinkurl{deriv_deriv_fabiusReal}, \nolinkurl{deriv_deriv_fabiusReal_eq_zero_iff} & \nolinkurl{Convexity.lean} \\
 Totalized inverse \(F^{-1}\) & \nolinkurl{fabiusInv}, \nolinkurl{fabiusOrderIso}, \nolinkurl{fabiusInv_differentiableAt_iff}, \nolinkurl{fabiusInv_contDiffAt_infty_iff} & \nolinkurl{FabiusInverse.lean} \\
 Inverse curvature & \nolinkurl{deriv_deriv_fabiusInv}, \nolinkurl{deriv_deriv_fabiusInv_half}, \nolinkurl{deriv_deriv_fabiusInv_eq_zero_iff}, \nolinkurl{strictConcaveOn_fabiusInv_firstHalf}, \nolinkurl{strictConvexOn_fabiusInv_secondHalf} & \nolinkurl{FabiusInverse.lean} \\
+Exact inverse modulus & \nolinkurl{fabiusIntervalMass}, \nolinkurl{abs_fabiusInv_sub_le}, \nolinkurl{sSup_abs_fabiusInv_sub_eq}, \nolinkurl{forall_abs_fabiusInv_sub_lt_iff} & \nolinkurl{InverseModulus.lean} \\
 Uniform spline \(S_p\) & \nolinkurl{fabiusUniformSpline} & \nolinkurl{FabiusUniformSpline.lean} and \nolinkurl{FabiusComputability.lean} \\
 Logarithmic profile & \nolinkurl{fabiusLogProfile} & \nolinkurl{FabiusLogScale.lean} \\
 Generic scaled power--exponential phases & \nolinkurl{principalPowerExponentialPhase}, \nolinkurl{lowerPowerExponentialPhase}, \nolinkurl{powerExponentialLambertEpsilon}, \nolinkurl{lowerPowerExponentialPhaseIntrinsicMain} & \nolinkurl{PowerExponentialLambert.lean}, \nolinkurl{PowerExponentialLambertCalculus.lean}, \nolinkurl{PowerExponentialLambertInverse.lean}, and \nolinkurl{PowerExponentialLambertAsymptotics.lean} \\
@@ -3510,6 +3545,7 @@ Module & Role in the development \\
 \nolinkurl{SharpFlatness.lean} & Factorial-strengthened endpoint power bounds for \(F\) and \(\Up\). \\
 \nolinkurl{NowhereAnalytic.lean} & Exact real-analytic loci: off the closed transition supports and nowhere on them. \\
 \nolinkurl{FabiusInverse.lean} & Totalized inverse, order isomorphism on the unit interval, exact positive reciprocal derivative, exact global smoothness locus (continuity everywhere, but differentiability and every positive finite or \(C^\infty\) order exactly off the clamping endpoints), reciprocal-cubic second derivative, midpoint jet and interior curvature loci, strict closed-half curvature, and endpoint quotient/derivative blow-up. \\
+\nolinkurl{InverseModulus.lean} & Reflection and global one-sided shape of fixed-length Fabius increments, least endpoint mass, forward superadditivity, global inverse subadditivity, the attained exact totalized and unit-interval inverse moduli, and strict/closed/contrapositive/exact-threshold effective injectivity. \\
 \nolinkurl{ImplicitPowerSeries.lean} & Nonmonic complete-adic lifting and residue-class uniqueness, with arbitrary-base and zero-constant formal implicit-root specializations over power-series rings; it does not construct or analytically realize a Fabius inverse germ. \\
 \nolinkurl{InverseBranch.lean} & Analytic inverse theorem, analytic-density preservation for continuous right-inverse branches, and the complement-interior analyticity condition and conditional Lambert-branch criterion for \nolinkurl{IsElementaryOrInverse}. \\
 \nolinkurl{AlgebraicBranch.lean} & Algebraic-function branch interface used in non-elementarity arguments. \\

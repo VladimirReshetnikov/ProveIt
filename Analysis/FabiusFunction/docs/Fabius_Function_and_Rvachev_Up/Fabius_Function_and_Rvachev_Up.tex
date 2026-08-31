@@ -4164,6 +4164,76 @@ Interior smoothness and the derivative chain are
 \lean{deriv_fabiusInv_pos}, all in \path{FabiusInverse.lean}.
 \end{proof}
 
+\subsection{The exact inverse modulus}
+
+For a nonnegative length \(h\), set
+
+\[
+ M_h(x):=F(x+h)-F(x).
+\]
+
+Reflection gives \(M_h(1-h-x)=M_h(x)\).  The derivative shape proved above
+shows that \(M_h\) is nondecreasing on
+\((-\infty,(1-h)/2]\) and nonincreasing on
+\([(1-h)/2,\infty)\), including intervals which meet the constant tails.
+Consequently, whenever \(0\le a\le b\le1\),
+\begin{equation}
+ F(b-a)\le F(b)-F(a).                                      \label{eq:fabius-least-interval-mass}
+\end{equation}
+Writing \(G=I\) for the globally clamped inverse, transport through the order
+isomorphism gives, for arbitrary \(u,v,x,y\in\R\),
+\begin{equation}
+ \lvert G(u)-G(v)\rvert\le G(\lvert u-v\rvert),
+ \qquad G(x+y)\le G(x)+G(y).                              \label{eq:fabius-exact-inverse-modulus}
+\end{equation}
+The first bound is sharp.  For every \(\eta\ge0\), the greatest output gap
+among pairs at input distance at most \(\eta\) is \(G(\eta)\), both over all
+real inputs and after restricting both inputs to \([0,1]\).  Since \(G\) is
+clamped, the same value is \(G(\min(\eta,1))\).
+
+For \(0\le h\le1\), the corresponding exact strict uniform threshold is
+\begin{equation}
+ \bigl(\forall u,v\in\R,
+   \lvert u-v\rvert<\delta\Longrightarrow
+   \lvert G(u)-G(v)\rvert<h\bigr)
+ \quad\Longleftrightarrow\quad
+ \delta\le F(h).                                         \label{eq:fabius-effective-injectivity-threshold}
+\end{equation}
+No sign condition on \(\delta\) is needed; a nonpositive input radius makes
+the implication vacuous.  Closed-threshold and contrapositive forms are also
+formalized.
+
+\begin{proof}[Formal proof]
+The definition and fixed-length shape surface in \path{InverseModulus.lean}
+are \lean{fabiusIntervalMass}, \lean{fabiusIntervalMass_reflect},
+\lean{monotoneOn_fabiusIntervalMass_firstHalf}, and
+\lean{antitoneOn_fabiusIntervalMass_secondHalf}.  The endpoint inequality and
+its forward superadditive form are \lean{fabiusReal_sub_le_sub} and
+\lean{fabiusReal_add_le}.  The ordered unit-interval, ordered global, and
+order-free inverse-gap forms are
+\lean{fabiusInv_sub_le_sub_of_mem_Icc},
+\lean{fabiusInv_sub_le_sub_of_le}, and
+\lean{fabiusInv_sub_le_sub}; inverse subadditivity is
+\lean{fabiusInv_add_le}.  The absolute and metric forms in
+\eqref{eq:fabius-exact-inverse-modulus} are
+\lean{abs_fabiusInv_sub_le} and \lean{dist_fabiusInv_le}, and saturation is
+\lean{fabiusInv_min_one}.  Attainment and the exact suprema are
+\lean{isGreatest_abs_fabiusInv_sub},
+\lean{sSup_abs_fabiusInv_sub_eq},
+\lean{isGreatest_abs_fabiusInv_sub_Icc}, and
+\lean{sSup_abs_fabiusInv_sub_Icc_eq}.  Finally, the strict, closed,
+contrapositive, and biconditional effective-injectivity declarations are
+\lean{abs_fabiusInv_sub_lt_of_abs_sub_lt_fabiusReal},
+\lean{abs_fabiusInv_sub_le_of_abs_sub_le_fabiusReal},
+\lean{fabiusReal_le_abs_sub_of_le_abs_fabiusInv_sub}, and
+\lean{forall_abs_fabiusInv_sub_lt_iff}.
+\end{proof}
+
+This exact structural modulus does not by itself provide the closed elementary
+dyadic lower bound, recursive-modulus packaging, tolerant-bisection realizer,
+sequential-computability theorem, or input-bit asymptotics discussed in the
+frontier computability report.
+
 The same module controls the curvature of the inverse without asserting differentiability
 at the clamped endpoints.  For \(0<y<1\),
 \begin{equation}
@@ -10430,7 +10500,7 @@ Global derivatives, value distributions, and flatness &
 \path{FabiusFlatness.lean}\\
 Analyticity, inverse, elementary obstruction &
 \path{NowhereAnalytic.lean}, \path{FabiusInverse.lean},
-\path{InverseMidpointDefect.lean},
+\path{InverseModulus.lean}, \path{InverseMidpointDefect.lean},
 \path{ElementaryFunction.lean}, \path{NotElementary.lean},
 \path{InverseBranch.lean}, \path{InverseNotElementary.lean}\\
 Moments and exact arithmetic &

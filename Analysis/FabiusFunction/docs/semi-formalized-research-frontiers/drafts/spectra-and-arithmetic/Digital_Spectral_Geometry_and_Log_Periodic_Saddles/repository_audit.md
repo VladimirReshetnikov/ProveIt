@@ -3,9 +3,9 @@
 Target: `Analysis/FabiusFunction/docs/**/*.tex`, excluding this newly filed package directory.
 
 - TeX files read: **187**
-- Total source lines: **385033**
-- Total source bytes: **16550290**
-- Concatenated-corpus SHA-256: `5a405ca8244090f73f907fb3ba36fbe10a79cbfee5277b3712aa3218ba639794`
+- Total source lines: **385506**
+- Total source bytes: **16569797**
+- Concatenated-corpus SHA-256: `4b112efd7d4d6e331aec29e92ad413fafb62d71f5ceb69bbb527a9bb4f593f17`
 
 The corpus digest hashes raw file bytes concatenated in lexicographic relative-path order.
 Phrase clusters are a broad overlap screen, not a decision procedure for mathematical equivalence
@@ -382,7 +382,7 @@ Matched **37** prior TeX files:
 
 ### `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
 
-- SHA-256: `a35f740cfed5117d3d194bac0633ddafd1b67db9b67d3ef6971be764e1de5303`
+- SHA-256: `d745dbcec5014db29a64be09b67c66f7719b07db6e96a4001f9d71f0e91696fa`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
 - Structural headings:
   - section: Historical note and scope
@@ -426,6 +426,7 @@ Matched **37** prior TeX files:
   - subsection: Effective flatness
   - subsection: The precise analytic statements
   - subsection: The totalized inverse
+  - subsection: The exact inverse modulus
   - subsection: Precise non-elementarity
   - section: Moments, generating functions, and reciprocal powers
   - subsection: Even and half moments
@@ -3002,7 +3003,7 @@ Matched **37** prior TeX files:
 
 ### `fabius_lean_walkthrough/fabius_lean_walkthrough.tex`
 
-- SHA-256: `005f08db0dc9be7d05a3559e8fa9afa3698cc34fb7fdb7e45be511da9ef4edcd`
+- SHA-256: `0fd37b1bc06a608ebc734ee1e5ba2cae6a2dfb6ad8b9b47743b29b0f29553cfd`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle
 - Structural headings:
   - section: Scope and conventions
@@ -6779,7 +6780,7 @@ Matched **37** prior TeX files:
 
 ### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Fabius_Computability_Report/inverse_fabius_computability.tex`
 
-- SHA-256: `77b9ad74ea66dafd4a775c00f69382f6778b4ce01047fb9724c0a0510eb35b3b`
+- SHA-256: `c258ee98ecc740981863d8a7f44c055c8bd8ee5d32f7f39a5b106517b409574e`
 - Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
 - Structural headings:
   - section: Main result and proof architecture
@@ -6830,10 +6831,11 @@ Matched **37** prior TeX files:
   - subsection: Lambert \texorpdfstring{$W$}{W}, Bell polynomials, and Bernoulli data
   - subsection: Legendre and Lagrange representations
   - subsection: Total positivity, unimodality, and interval masses
-  - section: A Lean formalization roadmap
+  - section: Lean formalization status and remaining roadmap
   - subsection: Why the present \texttt{noncomputable} definition is not an obstacle
-  - subsection: Suggested module and theorem surface
-  - subsection: A low-risk formalization order
+  - subsection: The completed structural inverse-modulus layer
+  - subsection: The remaining computability module
+  - subsection: Remaining formalization order
   - subsection: Reusable generic infrastructure
   - section: Further deductions, conjectures, and research directions
   - subsection: A certified practical inverse evaluator
@@ -9253,7 +9255,7 @@ Matched **37** prior TeX files:
 
 ### `semi-formalized-research-frontiers/drafts/representations/fabius_iterates_nowhere_analytic/fabius_iterates_nowhere_analytic.tex`
 
-- SHA-256: `1325b0065a5cd2b4fd5920169d4577c8298cede3b31f16a8421a5152d1e2475a`
+- SHA-256: `8cee0190fe6b333aea4b037934f3aebb4eede535c00f96ae5ec45ebceb392e6a`
 - Phrase clusters: Exact digit-sum zero count; Phase-locked Lambert-W saddle
 - Structural headings:
   - section: Statement of the problem and the strengthened result

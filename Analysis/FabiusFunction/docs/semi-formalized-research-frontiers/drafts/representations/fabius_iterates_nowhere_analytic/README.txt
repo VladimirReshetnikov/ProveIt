@@ -21,14 +21,17 @@ smoothness hypothesis near h(x), and made the n = 1 tie set literally empty.  It
 also corrected the source map from the nonexistent StrictMonotonicity.lean to the
 live Monotonicity.lean module.
 
-The report now contains 14 nonconjectural labelled manuscript results, two
-numbered warning quarantines, and one live conjecture.  Former Conjecture 14.1 is
-not exclusive at an n = 1 interior dyadic point: the same finite Taylor polynomial
-has positive radius and fails to represent F locally.  Former Conjecture 14.2 is
-already discharged by the exact quarter-point facts and the report's
-binary-transition lemma.  These dispositions are stated directly in the TeX.
-Neither manuscript labels nor numerical replay establish Lean status; the n >= 2
-iterate theorem and its new finite-spine machinery remain unformalized.
+The report now contains 15 nonconjectural labelled manuscript results and two
+conjectures.  The exhaustive Taylor-series alternatives are disjoint: the
+positive-radius alternative explicitly requires infinitely many nonzero
+coefficients, while the remaining conjecture asks whether that alternative is
+empty.  The former tie-cancellation conjecture is now a proved manuscript
+proposition: orders m = 6l + 4 give an exact surviving amplitude Up(1/9) >= 1/2
+and force zero Taylor radius at every tie point.  Lean supplies its quarter-value
+anchors and formalizes the finite block-size arithmetic in PartitionDefect.lean,
+but the tie proposition, n >= 2 iterate theorem, set-partition wrapper, and new
+finite-spine machinery remain unformalized.  Neither manuscript labels nor
+numerical replay establish Lean status.
 
 Reproduce the numerical diagnostics
 -----------------------------------
@@ -60,12 +63,13 @@ done
 
 Validated repository build (2026-08-30)
 ---------------------------------------
-- 19 A4 pages using the canonical 27 mm geometry and Libertinus prose.
+- 20 A4 pages from the 1,482-line source, using the canonical 27 mm geometry
+  and Libertinus prose.
 - All PDF fonts are embedded and subset Type 1 fonts; no Type 3 fonts occur.
 - The final log has no warnings, unresolved references, or overfull/underfull boxes.
 - All pages have extractable text and render successfully; the title/status box,
-  theorem boundary, numerical figures, quarantine warnings, live conjecture, and
-  source map were inspected visually.
+  theorem boundary, numerical figures, corrected exhaustive alternatives, exact
+  tie proposition, two live conjectures, and source map were inspected visually.
 - The source map names the live Monotonicity.lean module.
 - The numerical script and Lean sources were not rerun during document-policy
   normalization; the supplied PNG figures and their numerical_output copies remain

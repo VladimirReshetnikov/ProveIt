@@ -69,12 +69,20 @@ New standalone intake members:
   committed and pushed.
 
 - [`Inverse_Fabius_Computability_Report/`](Inverse_Fabius_Computability_Report/),
-  *Computability of the Inverse Fabius Function* (29 pp), arrived on
+  *Computability of the Inverse Fabius Function* (35 pp after post-publication
+  revision; 29 pp at intake), arrived on
   2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (outer SHA-256
   `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
   All five submitted payload hashes verified and every text payload was
-  already LF. It remains standalone pending post-publication assessment and a
-  Lean crosswalk; the newly submitted bridge is not thereby Lean-verified.
+  already LF. A post-publication claim-by-claim reassessment now crosswalks
+  the structural least-mass, inverse-gap, exact-supremum, subadditivity, and
+  effective-injectivity layer to compiler-validated
+  [`InverseModulus.lean`](../../../../Lean/FabiusFunction/InverseModulus.lean).
+  That module does not formalize the report's closed `Delta_r` bound,
+  recursive-modulus packaging, tolerant-bisection realizer, sequential
+  computability theorem, or input-bit asymptotics. The revision also corrects
+  `d_*`: it is denominator-minimal for the fixed dyadic proxy `2^{-r(n)}`,
+  not for the weaker target tolerance `1/n`.
 
 - [`inverse_fabius_iterates_nowhere_analytic/`](inverse_fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Inverse
@@ -195,15 +203,18 @@ provenance with SHA-256 in the volume's Appendix C and
 Filed 2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (689,198
 bytes; SHA-256
 `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
-The canonical 30-page A4/27 mm/Libertinus report gives self-contained
-paper-level proofs of the least-interval-mass identity, exact inverse modulus,
-elementary endpoint-mass estimate, tolerant-bisection realizer,
-inverse-computability packaging, and optimal input-bit law.  Those results do
-not yet have matching public Lean declarations.  The crosswalk separately
-identifies the already formalized forward spline/computability, strict shape,
-inverse identities/calculus, exact dyadic evaluation, and leading inverse
-endpoint equivalent; explicit periodic and all-orders inverse reversion remain
-frontier-document results.  The standard-library exact-rational supplement
+The canonical 35-page A4/27 mm/Libertinus report gives self-contained proofs
+of the structural least-interval-mass and exact inverse-modulus identities,
+the elementary endpoint-mass estimate, tolerant-bisection realizer,
+inverse-computability packaging, and optimal input-bit law.  The structural
+least-mass, inverse-gap, subadditivity, attained-supremum, and exact effective-
+injectivity layer is now formalized in `InverseModulus.lean`; the closed
+`Delta_r` estimate, recursive-modulus packaging, tolerant bisection,
+sequential computability, and input-bit asymptotics remain paper-level.  The
+crosswalk also identifies the already formalized forward spline/computability,
+strict shape, inverse identities/calculus, exact dyadic evaluation, and leading
+inverse endpoint equivalent; explicit periodic and all-orders inverse
+reversion remain frontier-document results.  The exact-rational supplement
 reproduces its captured output byte for byte.  Original five-file hashes are
 preserved in `ARRIVAL_SHA256SUMS.txt`; the current six-entry
 `SHA256SUMS.txt` verifies 6/6.

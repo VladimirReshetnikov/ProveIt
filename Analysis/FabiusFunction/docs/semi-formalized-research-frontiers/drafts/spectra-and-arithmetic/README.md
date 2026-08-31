@@ -65,9 +65,9 @@ New standalone intake member:
 rootless `Fabius_Rvachev_Frontier_Report_Package.zip` on 2026-08-30. The
 title-based directory avoids collision with an unrelated q-series package
 that used the same generic report filename. Its delivered zero-file audit was
-replaced by a reproducible recursive audit of 187 prior TeX files (385,033
-lines and 16,550,290 bytes) excluding this package directory, with raw corpus
-digest `5a405ca8244090f73f907fb3ba36fbe10a79cbfee5277b3712aa3218ba639794`.
+replaced by a reproducible recursive audit of 187 prior TeX files (385,506
+lines and 16,569,797 bytes) excluding this package directory, with raw corpus
+digest `4b112efd7d4d6e331aec29e92ad413fafb62d71f5ceb69bbb527a9bb4f593f17`.
 Its
 failed numerical generation was repaired and rerun at 80-digit precision,
 producing all three optional figures and the generated tables. No theorem-
