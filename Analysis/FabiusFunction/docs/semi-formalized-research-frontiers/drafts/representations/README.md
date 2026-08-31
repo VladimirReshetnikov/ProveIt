@@ -2,6 +2,21 @@
 
 New standalone intake members:
 
+- [`fabius_dyadic_chaos_frontier/`](fabius_dyadic_chaos_frontier/),
+  *Dyadic Sensitivity and Polynomial-Chaos Frontiers for the
+  Fabius--Rvachev Law* (34 A4 pp), arrived on 2026-08-30 from
+  `fabius_dyadic_chaos_frontier.zip` (1,351,045 bytes; outer SHA-256
+  `d57fd01c3991a6a7ecd6ba6e745729c745745d3265cb3cfd414aac1991b11b86`).
+  The safe single-wrapper archive's submitted 30-entry ledger verified 30/30
+  and is preserved unchanged; ten CSVs were normalized from CRLF to LF and
+  the current 31-entry ledger passes.  The 2,694-line report develops
+  functional-ANOVA and polynomial-chaos decompositions, active-digit laws,
+  Legendre marks, q-binomial interaction asymptotics, effective dimension,
+  phase limits, and Thue--Morse/Lambert connections.  This is a quick archival
+  intake only: the submitted source and PDF are unchanged, the numerical
+  program has not been replayed, and claim audit, Lean crosswalk, canonical
+  normalization, Type-3 plot-font repair, and rebuild remain deferred.
+
 - [`Fabius_Zero_Bias_Frontier_Report/`](Fabius_Zero_Bias_Frontier_Report/),
   *Zero-Bias Towers and Spectral Peeling in the Fabius--Rvachev System*
   (26 pp), arrived on 2026-08-30 from

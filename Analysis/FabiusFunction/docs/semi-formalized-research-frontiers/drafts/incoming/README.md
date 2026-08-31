@@ -64,6 +64,14 @@ when no archives are waiting.
 
 Most recent processed batch (all filed and removed on 2026-08-30):
 
+- `fabius_dyadic_chaos_frontier.zip` (1,351,045 bytes; SHA-256
+  `d57fd01c3991a6a7ecd6ba6e745729c745745d3265cb3cfd414aac1991b11b86`)
+  became the quick-gate archival package
+  [`../representations/fabius_dyadic_chaos_frontier/`](../representations/fabius_dyadic_chaos_frontier/).
+  Its safe single-wrapper archive and submitted 30-entry ledger verified in
+  full; ten CSVs received repository LF normalization, while claim audit,
+  numerical replay, canonicalization, font repair, and rebuild remain
+  deliberately deferred until after publication.
 - `fabius_information_frontier_report.zip` (751,588 bytes; SHA-256
   `41f9aba6eb85bb173827f13cb6b7b1d54b7ea9346faf7c9e5b1af859bbd42ec7`)
   became

@@ -1,0 +1,1656 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\setlength{\emergencystretch}{3em}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\definecolor{deepolive}{RGB}{55,67,40}
+\definecolor{softkhaki}{RGB}{236,232,207}
+\definecolor{softcoral}{RGB}{190,90,75}
+\hypersetup{colorlinks=true,linkcolor=deepolive,citecolor=deepolive,urlcolor=softcoral}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Frontiers around the Fabius--Rvachev system}
+\rhead{\thepage}
+\setlength{\headheight}{14pt}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{problem}[theorem]{Problem}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{status}[theorem]{Status note}
+
+\DeclareMathOperator{Var}{Var}
+\DeclareMathOperator{Cov}{Cov}
+\DeclareMathOperator{supp}{supp}
+\DeclareMathOperator{sgn}{sgn}
+\DeclareMathOperator{Li}{Li}
+\DeclareMathOperator{Res}{Res}
+\DeclareMathOperator{erfc}{erfc}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\up}{\operatorname{up}}
+\newcommand{\tm}{\mathrm t}
+\newcommand{\Bell}{\mathcal B}
+\newcommand{\cP}{\mathcal P}
+\newcommand{\cA}{\mathcal A}
+\newcommand{\cB}{\mathcal B}
+\newcommand{\cD}{\mathcal D}
+\newcommand{\RepoCommit}{\texttt{unknown}}
+\IfFileExists{repo-metadata.tex}{\input{repo-metadata.tex}}{}
+
+\title{\textbf{Geometric Uniform Convolutions and New Frontiers\\around the Fabius--Rvachev System}\\[0.7ex]
+\large A corpus-audited report on $q$-deformation, Thue--Morse differences,
+Bernoulli--Bell calculus, Fourier-zero arithmetic, sharp non-Gevrey growth,
+and phase-aware Lambert--$W$ inversion}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{30 August 2026\\Repository snapshot: \RepoCommit}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This report begins with a recursive full-text audit of the \texttt{*.tex} corpus in
+\texttt{Analysis/FabiusFunction/docs} at repository commit \RepoCommit.  Its purpose is
+not to repackage the substantial material already present there, but to develop a
+coherent collection of results that are new relative to that snapshot and that connect
+several of its recurring themes in a different way.
+
+The central construction is the geometric uniform convolution
+\[
+ V_q=(1-q)\sum_{k\ge0}q^k Z_k,\qquad Z_k\stackrel{\mathrm{iid}}\sim\mathrm{Unif}[0,1],
+ \qquad 0<q<1.
+\]
+Its distribution function $F_q$ and the density $u_q$ of $X_q=2V_q-1$ recover,
+at $q=\tfrac12$, the Fabius function and Rvachev's up-function in their standard
+probabilistic normalization.  We prove a $q$-deformed Thue--Morse formula for every
+derivative of $u_q$; derive geometric Prouhet sums in closed Bell--Bernoulli form;
+construct an Appell family of ``geometric Bernoulli polynomials'' that exactly inverts
+averaging by $V_q$; and obtain an explicit cumulant calculus and a two-term Edgeworth
+expansion in the Gaussian limit $q\uparrow1$.
+
+For reciprocal integral bases $q=1/b$, the Fourier transform has a Hadamard product
+whose zero at the integer $m$ has multiplicity $v_b(m)+1$.  This gives a
+valuation-weighted zeta identity and, more strikingly, the sharp derivative-growth law
+\[
+ \lim_{n\to\infty}\frac{\log\|u_{1/b}^{(n)}\|_{L^p}}{n^2}
+   =\frac{\log b}{2}\qquad(1\le p\le\infty).
+\]
+Consequently the classical up-function is smooth and compactly supported but belongs
+to no Gevrey class of finite order.  Finally, a Mellin analysis of the endpoint
+Laplace product exhibits a nonconstant, exponentially small log-periodic term.  Keeping
+this term produces a phase-aware saddle-point formula and a stable parametric
+asymptotic inversion; suppressing it recovers the familiar Lambert-$W_{-1}$ skeleton
+but cannot yield a true fixed-$q$ relative asymptotic for the direct function.
+
+Rigorous results, results conditional only on a stated saddle admissibility lemma, and
+open conjectures are labeled separately.  Reproducible Python code accompanies the
+report and generates all numerical tables and figures.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+
+\section{Scope, corpus audit, and novelty protocol}
+
+\subsection{What was read}
+
+The source corpus for comparison is the complete recursive collection of files ending
+in \texttt{.tex} below
+\begin{center}
+\path{Analysis/FabiusFunction/docs}.
+\end{center}
+A machine-generated manifest, including relative paths, line counts, titles when
+present, and SHA-256 hashes, accompanies this report.  The scan was performed after a
+fresh checkout at commit \RepoCommit.  The audit included subdirectories, drafts,
+semi-formalized notes, generated articles, and auxiliary TeX fragments; no filename
+filter other than the extension was applied.
+
+The corpus already develops, often in considerable detail, the classical Fabius and
+Rvachev functional equations, dyadic values, moment recurrences, infinite sinc
+products, $q$-Pochhammer and $q$-binomial identities, Lambert-$W$ endpoint inversion,
+Bell- and Bernoulli-polynomial machinery, interpolation on dyadic combs, and
+Legendre/Lagrange expansions.  Merely deriving another form of one of those formulas
+would therefore not meet the purpose of the present report.
+
+\subsection{How overlap was controlled}
+
+For every candidate direction we used three tests.
+\begin{enumerate}[label=(\roman*)]
+\item \emph{Lexical test.}  Distinctive terminology and theorem signatures were
+searched across the concatenated corpus.
+\item \emph{Formula test.}  Normalized equation fragments were searched after removal
+of spacing, delimiter, and macro variations.
+\item \emph{Structural test.}  Even when no formula matched literally, the surrounding
+argument was compared against the topic and theorem inventory so that a mere change of
+notation would not count as new.
+\end{enumerate}
+The phrase ``new'' below always means \emph{new relative to the audited repository
+snapshot}.  It is not a claim of absolute priority over every item in the mathematical
+literature.  The most defensible global-priority candidates are the exact quadratic
+derivative-growth constant, the geometric Bernoulli inversion family, and the
+phase-aware combination of the Mellin lattice with inverse-Fabius asymptotics.
+
+\subsection{Status map}
+
+\begin{table}[ht]
+\centering
+\caption{Logical status of the principal contributions.}
+\begin{tabularx}{\textwidth}{@{}p{0.24\textwidth}p{0.18\textwidth}X@{}}
+\toprule
+Contribution & Status & Main dependency \\
+\midrule
+Geometric convolution $F_q,u_q$ and smoothness & proved & Fourier-product decay \\
+Iterated $q$-Thue--Morse derivative formula & proved & affine-chain induction \\
+Bell--Bernoulli geometric Prouhet sums & proved & exponential generating function \\
+Geometric Bernoulli Appell inversion & proved & reciprocal moment-generating function \\
+Cumulants and $q\uparrow1$ Edgeworth expansion & proved on compact $y$-sets & uniform characteristic-function expansion \\
+Valuation-weighted Hadamard product & proved & Euler's sine product and regrouping \\
+Sharp $n^2$ derivative-growth constant & proved & a resonant Fourier sequence plus refinement bounds \\
+No finite Gevrey order & proved & derivative-growth contradiction \\
+Mellin lattice and log-periodic Laplace asymptotic & proved & Mellin inversion and contour displacement \\
+Endpoint saddle and phase-aware inversion & conditional theorem & quantified minor-arc/admissibility estimate stated in \cref{sec:saddle} \\
+Legendre-envelope and transseries statements & conjectural & numerical and structural evidence \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{A geometric-convolution deformation of the Fabius--Rvachev pair}
+\label{sec:qfamily}
+
+Throughout, $0<q<1$ and
+\[
+ a:=1-q,\qquad r:=\log(1/q)>0.
+\]
+Let $(Z_k)_{k\ge0}$ be independent random variables uniformly distributed on $[0,1]$,
+and let $U_k=2Z_k-1$, so $U_k\sim\mathrm{Unif}[-1,1]$.
+
+\begin{definition}[Geometric Fabius and up families]
+Define
+\begin{align}
+ V_q&=a\sum_{k=0}^{\infty}q^kZ_k, & 0\le V_q\le1,\\
+ X_q&=2V_q-1=a\sum_{k=0}^{\infty}q^kU_k, & -1\le X_q\le1.
+\end{align}
+Let
+\[
+ F_q(x)=\Pp(V_q\le x),\qquad f_q=F_q',
+\]
+and let $u_q$ denote the density of $X_q$.  Distribution functions are extended by
+$F_q(x)=0$ for $x\le0$ and $F_q(x)=1$ for $x\ge1$.
+\end{definition}
+
+The almost-sure convergence is immediate from absolute convergence.  Splitting off the
+first summand gives the distributional fixed points
+\begin{equation}
+ V_q\overset d=aZ+qV_q',\qquad X_q\overset d=aU+qX_q',
+ \label{eq:fixedpoints}
+\end{equation}
+where primed variables are independent copies.
+
+\begin{proposition}[Functional and symmetry equations]
+The functions $F_q,f_q,u_q$ satisfy
+\begin{align}
+ F_q(x)+F_q(1-x)&=1,\label{eq:Fsymmetry}\\
+ f_q(x)&=\frac{F_q(x/q)-F_q((x-a)/q)}{a},\label{eq:fdifference}\\
+ u_q(x)&=\frac1{2a}\int_{(x-a)/q}^{(x+a)/q}u_q(y)\dd y,\label{eq:urefinement}\\
+ u_q'(x)&=\frac{u_q((x+a)/q)-u_q((x-a)/q)}{2aq}.
+ \label{eq:uderivative}
+\end{align}
+In the left endpoint interval $0<x<a$,
+\begin{equation}
+ F_q'(x)=\frac1aF_q(x/q).
+ \label{eq:qfabius-left}
+\end{equation}
+Moreover
+\begin{equation}
+ u_q(x)=\frac12 f_q\!\left(\frac{x+1}{2}\right).
+ \label{eq:u-f-relation}
+\end{equation}
+At $q=a=\tfrac12$, $F_q$ is the classical Fabius function and $u_q$ is Rvachev's
+up-function in the normalization $\supp u_q=[-1,1]$.
+\end{proposition}
+
+\begin{proof}
+The reflection $Z_k\mapsto1-Z_k$ sends $V_q$ to $1-V_q$, proving
+\eqref{eq:Fsymmetry}.  Conditioning in the first identity of \eqref{eq:fixedpoints}
+and differentiating gives \eqref{eq:fdifference}; when $0<x<a$, its second term
+vanishes and gives \eqref{eq:qfabius-left}.  Conditioning in the second fixed point
+and changing variables gives \eqref{eq:urefinement}; differentiation yields
+\eqref{eq:uderivative}.  Finally $X_q=2V_q-1$ gives \eqref{eq:u-f-relation}.  For
+$q=1/2$, equations \eqref{eq:Fsymmetry} and \eqref{eq:qfabius-left} become
+$F(x)+F(1-x)=1$ and $F'(x)=2F(2x)$ on $[0,1/2]$, while
+\eqref{eq:uderivative} becomes
+\[
+ \up'(x)=2\bigl(\up(2x+1)-\up(2x-1)\bigr).
+\]
+These equations and the endpoint normalization characterize the classical pair.
+\end{proof}
+
+\subsection{Fourier and Laplace products}
+
+With $\sinc z=\sin z/z$ and $\sinc0=1$,
+\begin{align}
+ \widehat u_q(t)&=\E e^{itX_q}
+   =\prod_{k=0}^{\infty}\sinc(aq^kt),
+ \label{eq:qfourier}\\
+ M_q(t)&=\E e^{tV_q}
+   =\prod_{k=0}^{\infty}\frac{e^{aq^kt}-1}{aq^kt},
+ \label{eq:qmgf}\\
+ L_q(s)&=\E e^{-sV_q}
+   =\prod_{k=0}^{\infty}\frac{1-e^{-aq^ks}}{aq^ks}.
+ \label{eq:qlaplace}
+\end{align}
+Each product converges locally uniformly.  In particular, $\widehat u_q$ is entire of
+exponential type at most one, as it must be for a distribution supported on
+$[-1,1]$.
+
+\begin{theorem}[Smoothness and endpoint flatness]
+\label{thm:smoothness}
+For every $q\in(0,1)$, the law of $X_q$ has a $C^\infty$ density $u_q$ supported on
+$[-1,1]$.  The density and all its derivatives vanish at $\pm1$.  Consequently
+$F_q\in C^\infty(\R)$ after constant extension outside $[0,1]$, and every derivative
+of positive order is flat at both endpoints.
+\end{theorem}
+
+\begin{proof}
+Put $T=a|t|$ and $R=\log T$.  For $T\ge1$, choose
+$N=\lfloor R/r\rfloor+1$.  For $0\le k<N$, $Tq^k\ge1$, and therefore
+\[
+ |\widehat u_q(t)|
+ \le\prod_{k=0}^{N-1}\frac1{Tq^k}
+ =T^{-N}q^{-N(N-1)/2}.
+\]
+Taking logarithms and using $N=R/r+O(1)$ gives
+\begin{equation}
+ \log|\widehat u_q(t)|\le-\frac{R^2}{2r}+O_q(R).
+ \label{eq:lognormal-fourier-bound}
+\end{equation}
+Hence $|t|^m\widehat u_q(t)\in L^1(\R)$ for every $m$.  Fourier inversion gives a
+$C^\infty$ density and permits termwise differentiation to all orders.  Since the
+random series lies in $[-1,1]$, this density has compact support; smooth extension by
+zero forces all endpoint jets to vanish.  Equation \eqref{eq:u-f-relation} transfers
+the assertion to $F_q$.
+\end{proof}
+
+\begin{remark}
+The decay in \eqref{eq:lognormal-fourier-bound} is faster than every inverse power but
+much slower than $e^{-c|t|^\alpha}$.  This already hints that the functions are smooth
+but far outside familiar finite-order Gevrey scales.  In \cref{sec:gevrey} we prove a
+sharp statement, not merely a heuristic one, for $q=1/b$.
+\end{remark}
+
+\begin{proposition}[Log-concavity]
+For each $q\in(0,1)$, $u_q$ is even and log-concave on $(-1,1)$.  Thus it is unimodal
+with its maximum at zero; $f_q$ is symmetric about $1/2$ and log-concave on $(0,1)$.
+\end{proposition}
+
+\begin{proof}
+Every finite partial sum of $X_q$ has a density obtained by convolving scaled uniform
+densities.  Uniform densities on intervals are log-concave, and convolution preserves
+log-concavity.  The finite densities converge weakly to $u_q$ and, by
+\cref{thm:smoothness}, locally uniformly after passing through Fourier inversion.
+Log-concavity is closed under such a nonzero limit.  Evenness follows from
+$U_k\overset d=-U_k$.  The statement for $f_q$ follows by affine rescaling.
+\end{proof}
+
+\section{A $q$-Thue--Morse calculus for all derivatives}
+\label{sec:qthue}
+
+The two affine branches in \eqref{eq:uderivative} generate a binary tree.  Their signs
+are precisely the signs that become the Thue--Morse sequence when $q=1/2$, while their
+locations form a geometric rather than an arithmetic Prouhet configuration.
+
+For a sign word $\boldsymbol\epsilon=(\epsilon_0,\dots,\epsilon_{n-1})\in\{\pm1\}^n$,
+write
+\[
+ \epsilon(\boldsymbol\epsilon)=\prod_{j=0}^{n-1}\epsilon_j,
+ \qquad
+ Q_q(\boldsymbol\epsilon)=\sum_{j=0}^{n-1}\epsilon_jq^j.
+\]
+
+\begin{theorem}[Iterated geometric Thue--Morse formula]
+\label{thm:qthue-derivative}
+For every integer $n\ge1$,
+\begin{equation}
+ u_q^{(n)}(x)=
+ \frac{q^{-n(n-1)/2}}{(2aq)^n}
+ \sum_{\boldsymbol\epsilon\in\{\pm1\}^n}
+ \epsilon(\boldsymbol\epsilon)\,
+ u_q\!\left(q^{-n}\bigl(x+aQ_q(\boldsymbol\epsilon)\bigr)\right).
+ \label{eq:qthue-derivative}
+\end{equation}
+At $q=1/2$, if $\tm_j=(-1)^{s_2(j)}$ is the $\{\pm1\}$ Thue--Morse sequence, this
+reduces to
+\begin{equation}
+ \up^{(n)}(x)=(-1)^n2^{n(n+1)/2}
+ \sum_{j=0}^{2^n-1}\tm_j\,
+ \up\bigl(2^nx+2j-(2^n-1)\bigr).
+ \label{eq:classical-thue-derivative}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The case $n=1$ is \eqref{eq:uderivative}.  Suppose \eqref{eq:qthue-derivative} holds.
+Differentiating a term introduces the slope $q^{-n}$, and substituting
+\eqref{eq:uderivative} for the resulting $u_q'$ appends one sign and one affine branch.
+Thus the scalar multiplier acquires $(2aq)^{-1}q^{-n}$, changing
+$q^{-n(n-1)/2}$ to $q^{-(n+1)n/2}$.  Reversal of the order of signs does not change
+either their product or the set of geometric sums, completing the induction.
+
+For $q=1/2$, the numbers
+$2^{n-1}Q_{1/2}(\boldsymbol\epsilon)$ are all odd integers from
+$-(2^n-1)$ to $2^n-1$.  Writing $\epsilon_j=2\delta_j-1$ shows that the product of
+signs is $(-1)^n(-1)^{\sum\delta_j}$; bit reversal preserves the binary digit sum.
+This gives \eqref{eq:classical-thue-derivative}.
+\end{proof}
+
+\subsection{Geometric Prouhet sums}
+
+Define
+\begin{equation}
+ S_{n,m}(q)=\sum_{\boldsymbol\epsilon\in\{\pm1\}^n}
+ \epsilon(\boldsymbol\epsilon)Q_q(\boldsymbol\epsilon)^m.
+ \label{eq:Snm-def}
+\end{equation}
+These are the signed moments of the branch configuration in
+\eqref{eq:qthue-derivative}.
+
+\begin{theorem}[Bell--Bernoulli evaluation]
+\label{thm:geometric-prouhet}
+The exponential generating function is
+\begin{equation}
+ \sum_{m\ge0}S_{n,m}(q)\frac{t^m}{m!}
+ =2^n\prod_{j=0}^{n-1}\sinh(tq^j).
+ \label{eq:Snm-egf}
+\end{equation}
+Consequently $S_{n,m}(q)=0$ when $m<n$ or $m\not\equiv n\pmod2$.  For $m=n+2h$,
+put
+\begin{equation}
+ \alpha_\ell(n,q)=
+ \frac{2^{2\ell-1}B_{2\ell}}{\ell(2\ell)!}
+ \frac{1-q^{2\ell n}}{1-q^{2\ell}}
+ \qquad(\ell\ge1).
+ \label{eq:alpha-def}
+\end{equation}
+If $Y_h$ denotes the complete exponential Bell polynomial, then
+\begin{equation}
+ S_{n,n+2h}(q)=
+ 2^n(n+2h)!q^{n(n-1)/2}
+ \frac{Y_h(1!\alpha_1,2!\alpha_2,\dots,h!\alpha_h)}{h!}.
+ \label{eq:Snm-bell}
+\end{equation}
+In particular,
+\begin{align}
+ S_{n,n}(q)&=2^n n!q^{n(n-1)/2},\\
+ S_{n,n+2}(q)&=
+ \frac{2^n(n+2)!}{6}q^{n(n-1)/2}
+ \frac{1-q^{2n}}{1-q^2}.
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Summing one sign at a time gives
+\[
+ \sum_{\boldsymbol\epsilon}\epsilon(\boldsymbol\epsilon)
+ e^{tQ_q(\boldsymbol\epsilon)}
+ =\prod_{j=0}^{n-1}(e^{tq^j}-e^{-tq^j}),
+\]
+which is \eqref{eq:Snm-egf}.  Factor $tq^j$ out of every hyperbolic sine and use
+\begin{equation}
+ \log\frac{\sinh z}{z}
+ =\sum_{\ell\ge1}
+ \frac{2^{2\ell-1}B_{2\ell}}{\ell(2\ell)!}z^{2\ell}.
+ \label{eq:logsinh-bernoulli}
+\end{equation}
+Then
+\[
+ 2^n\prod_{j=0}^{n-1}\sinh(tq^j)
+ =2^nt^nq^{n(n-1)/2}
+ \exp\!\left(\sum_{\ell\ge1}\alpha_\ell(n,q)t^{2\ell}\right).
+\]
+The defining generating function of the complete Bell polynomials yields
+\eqref{eq:Snm-bell}.
+\end{proof}
+
+\begin{corollary}[Explicit centered Thue--Morse power sums]
+For the ordinary Thue--Morse signs $\tm_j=(-1)^{s_2(j)}$,
+\begin{equation}
+ \sum_{j=0}^{2^n-1}\tm_j\bigl(2j-(2^n-1)\bigr)^m
+ =(-1)^n2^{(n-1)m}S_{n,m}(1/2).
+ \label{eq:centered-TM-sum}
+\end{equation}
+Thus \eqref{eq:Snm-bell} gives a closed formula for every centered power sum, not only
+the classical vanishing range $m<n$.
+\end{corollary}
+
+\begin{remark}
+Equation \eqref{eq:Snm-bell} is simultaneously a $q$-deformation of Prouhet
+cancellation and a finite-level shadow of the Bell--Bernoulli cumulant formulas below.
+The same coefficient
+$(1-q^{2\ell n})/(1-q^{2\ell})$ is the finite geometric power sum that becomes
+$(1-q^{2\ell})^{-1}$ in the infinite convolution.
+\end{remark}
+
+\section{Cumulants, moments, and geometric Bernoulli polynomials}
+\label{sec:bernoulli}
+
+\subsection{Exact cumulants}
+
+\begin{theorem}[Bernoulli cumulants]
+\label{thm:cumulants}
+The nonzero cumulants of $X_q$ are
+\begin{equation}
+ \kappa_{2m}(X_q)=
+ \frac{2^{2m}B_{2m}}{2m}\,
+ \frac{a^{2m}}{1-q^{2m}},
+ \qquad m\ge1,
+ \label{eq:X-cumulants}
+\end{equation}
+and all odd cumulants vanish.  For $V_q$,
+\begin{equation}
+ \kappa_1(V_q)=\frac12,\qquad
+ \kappa_{2m}(V_q)=
+ \frac{B_{2m}}{2m}\,
+ \frac{a^{2m}}{1-q^{2m}},
+ \qquad
+ \kappa_{2m+1}(V_q)=0\quad(m\ge1).
+ \label{eq:V-cumulants}
+\end{equation}
+Consequently every raw or centered moment is an explicit complete Bell polynomial in
+rational functions of $q$ and Bernoulli numbers.
+\end{theorem}
+
+\begin{proof}
+For $U\sim\mathrm{Unif}[-1,1]$,
+\[
+ \log\E e^{tU}=\log\frac{\sinh t}{t},
+\]
+and \eqref{eq:logsinh-bernoulli} shows that
+$\kappa_{2m}(U)=2^{2m}B_{2m}/(2m)$.  Cumulants add under independence and scale
+homogeneously, so summing $(aq^k)^{2m}$ proves \eqref{eq:X-cumulants}.
+Since $V_q=(X_q+1)/2$, \eqref{eq:V-cumulants} follows.  The moment--cumulant relation
+is precisely the complete Bell-polynomial identity.
+\end{proof}
+
+For example,
+\begin{align}
+ \Var(V_q)&=\frac{a}{12(1+q)},\label{eq:Vvariance}\\
+ \kappa_4(V_q)&=-\frac{a^4}{120(1-q^4)},\\
+ \kappa_6(V_q)&=\frac{a^6}{252(1-q^6)}.
+\end{align}
+The moments also obey a triangular recurrence obtained directly from
+\eqref{eq:fixedpoints}.  If $m_n(q)=\E V_q^n$, then $m_0=1$ and
+\begin{equation}
+ (1-q^n)m_n(q)=
+ \sum_{j=0}^{n-1}\binom nj
+ \frac{q^j a^{n-j}}{n-j+1}m_j(q).
+ \label{eq:moment-recurrence}
+\end{equation}
+For rational $q$, all moments are rational.
+
+\subsection{An Appell family that inverts geometric averaging}
+
+Classical Bernoulli polynomials invert averaging over one uniform random variable:
+$\E[B_n(x+Z)]=x^n$.  The entire geometric convolution has a natural analogue.
+
+\begin{definition}[Geometric Bernoulli polynomials]
+Define $\Bell_{n,q}(x)$ by
+\begin{equation}
+ \frac{e^{xt}}{M_q(t)}
+ =\prod_{k=0}^{\infty}\frac{aq^kt}{e^{aq^kt}-1}\,e^{xt}
+ =\sum_{n=0}^{\infty}\Bell_{n,q}(x)\frac{t^n}{n!}.
+ \label{eq:geometric-Bernoulli-egf}
+\end{equation}
+The product converges near $t=0$, and the definition may equally be read as a formal
+power-series identity.
+\end{definition}
+
+\begin{theorem}[Averaging inverse and $q$-difference law]
+\label{thm:geometric-Bernoulli}
+The polynomials $\Bell_{n,q}$ form an Appell sequence and satisfy
+\begin{align}
+ \frac{\dd}{\dd x}\Bell_{n,q}(x)&=n\Bell_{n-1,q}(x),
+ \label{eq:appell}\tag{A}\\
+ \E\,\Bell_{n,q}(x+V_q)&=x^n,
+ \label{eq:averaging-inverse}\tag{B}\\
+ \Bell_{n,q}(x+a)-\Bell_{n,q}(x)
+ &=anq^{n-1}\Bell_{n-1,q}(x/q),
+ \label{eq:q-difference-Bernoulli}\tag{C}\\
+ \Bell_{n,q}(1-x)&=(-1)^n\Bell_{n,q}(x).
+ \label{eq:Bernoulli-reflection}\tag{D}
+\end{align}
+As $q\downarrow0$, $\Bell_{n,q}(x)$ tends coefficientwise to the classical Bernoulli
+polynomial $B_n(x)$.
+\end{theorem}
+
+\begin{proof}
+Equation \eqref{eq:appell} follows by differentiating
+\eqref{eq:geometric-Bernoulli-egf}.  Multiplying its generating function by
+$M_q(t)=\E e^{tV_q}$ proves \eqref{eq:averaging-inverse}.  The fixed-point product
+satisfies
+\[
+ M_q(t)=\frac{e^{at}-1}{at}M_q(qt).
+\]
+Therefore, with $G_q(x,t)=e^{xt}/M_q(t)$,
+\[
+ G_q(x+a,t)-G_q(x,t)=at\,G_q(x/q,qt),
+\]
+and coefficient extraction gives \eqref{eq:q-difference-Bernoulli}.  Symmetry
+$V_q\overset d=1-V_q$ is equivalent to $M_q(t)=e^tM_q(-t)$; hence
+$G_q(1-x,t)=G_q(x,-t)$, proving \eqref{eq:Bernoulli-reflection}.  At $q=0$, only the
+first uniform summand remains and the generating function becomes
+$te^{xt}/(e^t-1)$.
+\end{proof}
+
+Writing $y=x-1/2$, $\sigma_q^2=\Var(V_q)$, and $\kappa_{4,q}=\kappa_4(V_q)$ gives
+\begin{align}
+ \Bell_{0,q}(x)&=1,\\
+ \Bell_{1,q}(x)&=y,\\
+ \Bell_{2,q}(x)&=y^2-\sigma_q^2,\\
+ \Bell_{3,q}(x)&=y^3-3\sigma_q^2y,\\
+ \Bell_{4,q}(x)&=y^4-6\sigma_q^2y^2+3\sigma_q^4-\kappa_{4,q}.
+\end{align}
+More generally, $\Bell_{n,q}(x)$ is the complete Bell polynomial whose first argument
+is $y$ and whose higher arguments are the negatives of the centered cumulants of
+$V_q$.
+
+\begin{corollary}[Exact moment inversion]
+For $m_j(q)=\E V_q^j$,
+\begin{equation}
+ \sum_{j=0}^{n}\binom njm_j(q)\Bell_{n-j,q}(x)=x^n.
+ \label{eq:moment-inversion}
+\end{equation}
+Thus the lower-triangular moment matrix of the geometric convolution has an explicit
+Appell-polynomial inverse.
+\end{corollary}
+
+\begin{remark}
+At finite depth $N$, the same construction is a multiple Bernoulli/N\o rlund
+polynomial with geometric step sizes $a,aq,\dots,aq^{N-1}$.  The infinite-depth limit
+retains an exact one-step $q$-difference law, which is not present for arbitrary
+multiple Bernoulli systems.  This provides a direct bridge from Bernoulli polynomials
+to the probabilistic Fabius fixed point rather than passing only through moment
+coefficients.
+\end{remark}
+
+\section{The Gaussian end of the deformation: a mod-Gaussian expansion}
+\label{sec:gaussian}
+
+As $q\uparrow1$, the support remains fixed but the distribution concentrates at its
+center because the individual geometric weights become small.  Normalize by
+\begin{equation}
+ Y_q=\frac{V_q-1/2}{\sigma_q},
+ \qquad
+ \sigma_q^2=\frac{1-q}{12(1+q)}.
+ \label{eq:Yq-def}
+\end{equation}
+Let $\lambda_j(q)$ denote the standardized cumulants of $Y_q$.
+
+\begin{proposition}[Standardized cumulants]
+For $m\ge2$,
+\begin{equation}
+ \lambda_{2m}(q)=
+ \frac{B_{2m}}{2m}\frac{a^{2m}}{1-q^{2m}}
+ \left(\frac{12(1+q)}a\right)^m
+ =O_m(a^{m-1}),
+ \label{eq:standardized-cumulants}
+\end{equation}
+and the odd cumulants vanish.  In particular,
+\begin{align}
+ \lambda_4(q)&=-\frac65\frac{1-q^2}{1+q^2}
+ =-\frac65a-\frac35a^2+O(a^3),\label{eq:lambda4}\\
+ \lambda_6(q)&=\frac{48}{7}\frac{a^2(1+q)^3}{1+q+q^2+q^3+q^4+q^5}
+ =\frac{64}{7}a^2+O(a^3).
+ \label{eq:lambda6}
+\end{align}
+\end{proposition}
+
+\begin{theorem}[Gaussian and second-order Edgeworth limits]
+\label{thm:edgeworth}
+Let $g_q$ and $G_q$ be the density and distribution function of $Y_q$, and let
+$\phi,\Phi$ be the standard normal density and distribution function.  For $y$ in a
+fixed compact set, as $a=1-q\downarrow0$,
+\begin{align}
+ g_q(y)=\phi(y)\bigg[1
+ &-\frac a{20}H_4(y)\\
+ &+a^2\left(-\frac1{40}H_4(y)+\frac4{315}H_6(y)
+                 +\frac1{800}H_8(y)\right)
+ +O(a^3)\bigg],
+ \label{eq:edgeworth-density}
+\end{align}
+where $H_n$ are the probabilists' Hermite polynomials.  Integrating,
+\begin{align}
+ G_q(y)=\Phi(y)+\phi(y)\bigg[&\frac a{20}H_3(y)\\
+ &+a^2\left(\frac1{40}H_3(y)-\frac4{315}H_5(y)
+                   -\frac1{800}H_7(y)\right)
+ +O(a^3)\bigg].
+ \label{eq:edgeworth-cdf}
+\end{align}
+In particular, $Y_q\Rightarrow N(0,1)$.
+\end{theorem}
+
+\begin{proof}
+The logarithm of the characteristic function is
+\[
+ \log\E e^{itY_q}=-\frac{t^2}{2}
+ +\sum_{m\ge2}\lambda_{2m}(q)\frac{(it)^{2m}}{(2m)!}.
+\]
+Use \eqref{eq:lambda4}--\eqref{eq:lambda6}, exponentiate through order $a^2$, and
+Fourier-invert.  The $\lambda_4^2/2$ term produces $H_8/800$.  The product structure
+and the bound used in \cref{thm:smoothness}, after standardization, provide an
+integrable majorant outside a growing neighborhood of the origin; this makes the
+expansion uniform on compact $y$-sets.  Finally
+$\int_{-\infty}^y\phi(t)H_n(t)\dd t=-\phi(y)H_{n-1}(y)$ gives
+\eqref{eq:edgeworth-cdf}.
+\end{proof}
+
+\begin{remark}
+The limit is a triangular-array central limit theorem with a particularly transparent
+small parameter: the largest normalized summand is $O(\sqrt{1-q})$.  Formula
+\eqref{eq:standardized-cumulants} supplies an all-orders mod-Gaussian expansion.  At
+order $a^N$, only finitely many Bernoulli cumulants contribute, and the coefficient is
+an explicit complete Bell polynomial in Hermite operators.
+\end{remark}
+
+\IfFileExists{figures/edgeworth-density.pdf}{
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.78\textwidth]{figures/edgeworth-density.pdf}
+\caption{A numerical comparison generated by \texttt{experiments.py}: standardized
+$q$-convolution density, Gaussian approximation, and the first two Edgeworth
+corrections.}
+\label{fig:edgeworth}
+\end{figure}}{}
+
+\section{Fourier zeros, valuations, and weighted zeta identities}
+\label{sec:zeros}
+
+It is useful first to remove the harmless support normalization.  Define
+\begin{equation}
+ \Psi_q(z)=\prod_{k=0}^{\infty}\sinc(q^kz).
+ \label{eq:Psiq}
+\end{equation}
+Then $\widehat u_q(t)=\Psi_q(at)$.  The zero multiset is
+\begin{equation}
+ \mathcal Z_q=\{\,\pi n q^{-k}:n\in\Z\setminus\{0\},\ k\ge0\,\},
+ \label{eq:zero-multiset}
+\end{equation}
+with multiplicity equal to the number of representations.
+
+\begin{proposition}[Arithmetic dichotomy for zero collisions]
+All nonzero zeros of $\Psi_q$ are simple if and only if
+$q^d\notin\mathbb Q$ for every integer $d\ge1$.  If $q^d\in\mathbb Q$ for some
+$d\ge1$, then $\Psi_q$ has infinitely many multiple zeros.
+\end{proposition}
+
+\begin{proof}
+Two factors share a zero exactly when
+$nq^{-k}=mq^{-\ell}$ for nonzero integers $m,n$ and $k\ne\ell$.  This is equivalent to
+$q^{|k-\ell|}\in\mathbb Q$.  One collision can be multiplied by arbitrary nonzero
+integers, yielding infinitely many.
+\end{proof}
+
+The cleanest arithmetic occurs at reciprocal integral bases.
+
+\begin{theorem}[Valuation-weighted Hadamard product]
+\label{thm:hadamard-valuation}
+Let $b\ge2$ be an integer and let
+\[
+ v_b(m)=\max\{j\ge0:b^j\mid m\}.
+\]
+Then
+\begin{equation}
+ \Psi_{1/b}(z)=
+ \prod_{m=1}^{\infty}
+ \left(1-\frac{z^2}{\pi^2m^2}\right)^{v_b(m)+1}.
+ \label{eq:valuation-hadamard}
+\end{equation}
+The product converges locally uniformly.  Equivalently, the zero at $\pm\pi m$ has
+multiplicity $v_b(m)+1$ and there are no other zeros.
+\end{theorem}
+
+\begin{proof}
+Euler's product gives
+\[
+ \sinc(z/b^k)=\prod_{n=1}^{\infty}
+ \left(1-\frac{z^2}{\pi^2n^2b^{2k}}\right).
+\]
+A factor indexed by $(n,k)$ contributes to the zero $\pi m$ exactly when
+$m=nb^k$, and the number of such $k$ is $v_b(m)+1$.  Regrouping is legitimate because
+on compact sets the sum of absolute quadratic deviations is bounded by
+\[
+ C|z|^2\sum_{k\ge0}b^{-2k}\sum_{n\ge1}n^{-2}<\infty.
+\]
+\end{proof}
+
+\begin{corollary}[Valuation Dirichlet series]
+For $\Re s>1$,
+\begin{equation}
+ \sum_{m=1}^{\infty}\frac{v_b(m)+1}{m^s}
+ =\frac{\zeta(s)}{1-b^{-s}}.
+ \label{eq:valuation-zeta}
+\end{equation}
+Consequently, for $|z|<\pi$,
+\begin{equation}
+ \log\Psi_{1/b}(z)
+ =-\sum_{j=1}^{\infty}
+ \frac{\zeta(2j)}{j(1-b^{-2j})}
+ \left(\frac z\pi\right)^{2j}.
+ \label{eq:Psi-Taylor-zeta}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Since $v_b(m)+1=\sum_{k\ge0}\mathbf1_{b^k\mid m}$,
+\[
+ \sum_{m\ge1}\frac{v_b(m)+1}{m^s}
+ =\sum_{k\ge0}\sum_{n\ge1}(b^kn)^{-s}.
+\]
+This proves \eqref{eq:valuation-zeta}; logarithmic expansion of
+\eqref{eq:valuation-hadamard} gives \eqref{eq:Psi-Taylor-zeta}.
+\end{proof}
+
+\begin{corollary}[A cotangent/valuation partial fraction identity]
+Away from the zeros,
+\begin{equation}
+ \sum_{k=0}^{\infty}
+ \left(b^{-k}\cot(z/b^k)-\frac1z\right)
+ =-2z\sum_{m=1}^{\infty}
+ \frac{v_b(m)+1}{\pi^2m^2-z^2}.
+ \label{eq:cotangent-valuation}
+\end{equation}
+Both sides converge normally on compact subsets avoiding the poles.
+\end{corollary}
+
+\begin{remark}
+For $b=2$, the multiplicity is $v_2(m)+1$, so the zero divisor of the up-function's
+Fourier transform literally records the dyadic valuation.  Equation
+\eqref{eq:valuation-zeta} says that the corresponding spectral zeta function is the
+ordinary Riemann zeta function multiplied by the local Euler correction
+$(1-2^{-s})^{-1}$.  This is a direct arithmetic encoding in the sinc product, distinct
+from the more familiar appearance of Thue--Morse signs in real-space derivatives.
+\end{remark}
+
+\section{Sharp derivative growth and failure of every finite Gevrey bound}
+\label{sec:gevrey}
+
+The superpolynomial Fourier decay in \eqref{eq:lognormal-fourier-bound} proves
+smoothness but does not identify the exact derivative scale.  Reciprocal integral bases
+admit a resonant sequence on which the Fourier product can be evaluated sharply enough
+to close the upper and lower bounds.
+
+Let
+\begin{equation}
+ S_b=\sum_{k=0}^{\infty}b^{-k}U_k
+ \label{eq:Sb}
+\end{equation}
+with density $h_b$.  Thus $X_{1/b}=\frac{b-1}{b}S_b$, so $h_b$ and $u_{1/b}$ differ
+only by a fixed dilation.
+
+\begin{lemma}[Refinement upper bound]
+\label{lem:derivative-upper}
+For every $n\ge0$,
+\begin{equation}
+ \|h_b^{(n)}\|_\infty
+ \le b^{n(n+1)/2}\|h_b\|_\infty.
+ \label{eq:derivative-upper}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Since $S_b\overset d=U+b^{-1}S_b'$, conditioning on $U$ gives
+\[
+ h_b(x)=\frac12\int_{b(x-1)}^{b(x+1)}h_b(y)\dd y,
+\]
+so
+\[
+ h_b'(x)=\frac b2\bigl(h_b(b(x+1))-h_b(b(x-1))\bigr).
+\]
+After $n$ iterations the common scalar before the signed $2^n$-term sum is
+$(b/2)^n b^{n(n-1)/2}$.  Taking absolute values cancels the $2^{-n}$ and yields
+\eqref{eq:derivative-upper}.
+\end{proof}
+
+\begin{lemma}[Exact resonant Fourier values]
+\label{lem:resonant-values}
+Put
+\[
+ c_b=\frac{\pi}{b+1},\qquad
+ \theta_b=\frac{\sin c_b}{c_b},\qquad
+ T_b=\prod_{j=1}^{\infty}\sinc(c_b/b^j)>0.
+\]
+Then, for every $m\ge0$,
+\begin{equation}
+ \left|\widehat h_b(c_bb^m)\right|
+ =T_b\theta_b^{m+1}b^{-m(m+1)/2}.
+ \label{eq:resonant-fourier}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+We have $\widehat h_b=\Psi_{1/b}$.  For $0\le j\le m$, the congruence
+$b^j\equiv(-1)^j\pmod{b+1}$ gives
+$|\sin(c_bb^j)|=\sin c_b$.  Hence
+\[
+ \prod_{j=0}^{m}|\sinc(c_bb^j)|
+ =\theta_b^{m+1}b^{-m(m+1)/2}.
+\]
+The remaining factors are exactly $T_b$ after reindexing.
+\end{proof}
+
+\begin{theorem}[Sharp quadratic derivative growth]
+\label{thm:sharp-derivative-growth}
+For every integer $b\ge2$ and every $1\le p\le\infty$,
+\begin{equation}
+ \boxed{
+ \lim_{n\to\infty}
+ \frac{\log\|u_{1/b}^{(n)}\|_{L^p(\R)}}{n^2}
+ =\frac{\log b}{2}.}
+ \label{eq:sharp-derivative-growth}
+\end{equation}
+Equivalently,
+\[
+ \|u_{1/b}^{(n)}\|_p=b^{n^2/2+O_{b,p}(n)}.
+\]
+For the classical up-function,
+\begin{equation}
+ \log_2\|\up^{(n)}\|_p=\frac{n^2}{2}+O_p(n).
+ \label{eq:up-derivative-growth}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The upper bound for $p=\infty$ follows from \cref{lem:derivative-upper}; compact
+support then gives the same logarithmic upper bound for every $p$.  For the lower
+bound, Fourier transformation gives
+\[
+ |t|^n|\widehat h_b(t)|=|\widehat{h_b^{(n)}}(t)|
+ \le\|h_b^{(n)}\|_1.
+\]
+Choose $t=c_bb^n$ in \eqref{eq:resonant-fourier}.  Its logarithm is
+\[
+ n\log(c_bb^n)+(n+1)\log\theta_b
+ -\frac{n(n+1)}2\log b+\log T_b
+ =\frac{\log b}{2}n^2+O_b(n).
+\]
+Thus the $L^1$ norm has the matching lower bound.  On a fixed compact support,
+$\|f\|_1\le C_p\|f\|_p$ for all $p\ge1$, so the lower bound transfers to every
+$L^p$ norm.  Finally, the fixed dilation between $h_b$ and $u_{1/b}$ changes the
+logarithm of an $n$th derivative norm by only $O_b(n)$.
+\end{proof}
+
+\begin{corollary}[No finite Gevrey order]
+\label{cor:no-gevrey}
+For $b\ge2$, neither $u_{1/b}$ nor the associated $F_{1/b}$ belongs to a Gevrey class
+$G^s$ of any finite order $s$ on a neighborhood of its closed support.  In particular,
+the classical Fabius and up-functions are not Gevrey of finite order.
+\end{corollary}
+
+\begin{proof}
+A compactly supported $G^s$ function satisfies
+$\|f^{(n)}\|_\infty\le CR^n(n!)^s$, whose logarithm is $O_s(n\log n)$.  This
+contradicts \eqref{eq:sharp-derivative-growth}.  The affine and differential relation
+between $F_{1/b}$ and $u_{1/b}$ transfers the conclusion.
+\end{proof}
+
+\begin{remark}
+The result is sharper than the qualitative statement ``nowhere analytic.''  It locates
+the precise Denjoy--Carleman scale: the natural derivative majorant is
+$M_n\asymp b^{n^2/2+O(n)}$, not $(n!)^s$ for any fixed $s$.  Since
+$M_{n-1}/M_n$ decays geometrically, the associated class is strongly nonquasianalytic,
+consistent with compact support.
+\end{remark}
+
+\IfFileExists{figures/resonant-fourier.pdf}{
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.78\textwidth]{figures/resonant-fourier.pdf}
+\caption{Exact resonant Fourier values from \eqref{eq:resonant-fourier}, displayed on
+the quadratic logarithmic scale that drives \cref{thm:sharp-derivative-growth}.}
+\label{fig:resonant}
+\end{figure}}{}
+
+\section{Mellin analysis and the hidden log-periodic phase}
+\label{sec:mellin}
+
+The left endpoint of $F_q$ is controlled by the Laplace transform
+\eqref{eq:qlaplace}.  Set
+\begin{equation}
+ H_q(z)=\prod_{k=0}^{\infty}\frac{1-e^{-zq^k}}{zq^k},
+ \qquad L_q(s)=H_q(as),
+ \label{eq:Hq}
+\end{equation}
+and write $L=\log z$.  The discrete scale $z\mapsto qz$ produces a Mellin lattice on
+the imaginary axis.  Its contribution is nonzero but, for $q=1/2$, exponentially
+small enough to be easily missed numerically.
+
+Let $\gamma$ be Euler's constant and $\gamma_1$ the first Stieltjes constant in the
+convention
+\[
+ \zeta(1+s)=\frac1s+\sum_{n\ge0}\frac{(-1)^n\gamma_n}{n!}s^n.
+\]
+Define
+\begin{equation}
+ c_1=\frac{\pi^2}{12}-\frac{\gamma^2}{2}-\gamma_1,
+ \qquad
+ \chi_n=\frac{2\pi in}{r},
+ \label{eq:c1-chi}
+\end{equation}
+and the real-analytic $r$-periodic function
+\begin{equation}
+ \cP_r(L)=
+ -\frac1r\sum_{n\in\Z\setminus\{0\}}
+ \frac{\Gamma(1+\chi_n)\zeta(1+\chi_n)}{\chi_n}
+ e^{-\chi_nL}.
+ \label{eq:periodic-P}
+\end{equation}
+The coefficients occur in conjugate pairs.  Stirling's formula gives exponential
+convergence, with the $n$th harmonic of order
+$e^{-\pi^2|n|/r}$ up to powers of $|n|$.
+
+\begin{lemma}[Mellin kernel]
+For
+\[
+ g(x)=\log\frac{1-e^{-x}}x,
+\]
+its Mellin transform in $-1<\Re s<0$ is
+\begin{equation}
+ g^*(s)=\int_0^\infty g(x)x^{s-1}\dd x
+ =-\frac{\Gamma(1+s)\zeta(1+s)}s.
+ \label{eq:mellin-kernel}
+\end{equation}
+Moreover,
+\begin{equation}
+ \log H_q(z)=\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}
+ g^*(s)\frac{z^{-s}}{1-e^{rs}}\dd s,
+ \qquad -1<c<0.
+ \label{eq:mellin-H}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Differentiate $g$:
+$g'(x)=(e^x-1)^{-1}-x^{-1}$.  Integration by parts is legitimate in the stated
+strip and analytic continuation of the classical Bose integral gives
+\[
+ \int_0^\infty g'(x)x^s\dd x=\Gamma(1+s)\zeta(1+s).
+\]
+This proves \eqref{eq:mellin-kernel}.  Mellin inversion applied to
+$\sum_{k\ge0}g(zq^k)$ introduces
+$\sum_{k\ge0}q^{-ks}=(1-e^{rs})^{-1}$ and gives \eqref{eq:mellin-H}.
+\end{proof}
+
+\begin{theorem}[Complete logarithmic asymptotic with Mellin phase]
+\label{thm:mellin-asymptotic}
+For every fixed $q\in(0,1)$ and every $N>0$, as $z\to+\infty$,
+\begin{equation}
+ \boxed{
+ \log H_q(z)=
+ -\frac{L^2}{2r}-\frac L2-rac r{12}-\frac{c_1}{r}
+ +\cP_r(L)+O_{q,N}(z^{-N}).}
+ \label{eq:H-asymptotic}
+\end{equation}
+The periodic function $\cP_r$ is nonconstant.  Therefore no asymptotic that retains
+only powers and iterated logarithms can have a relative error tending to zero for
+$H_q$ at fixed $q$.
+\end{theorem}
+
+\begin{proof}
+In \eqref{eq:mellin-H}, shift the contour to the right.  The denominator has simple
+poles at $s=\chi_n$; at $n=0$ it combines with the double pole of $g^*$.  The expansion
+\[
+ \Gamma(1+s)\zeta(1+s)=\frac1s+c_1s+O(s^2),
+ \qquad
+ \frac1{1-e^{rs}}=-\frac1{rs}+\frac12-\frac{rs}{12}+O(s^3)
+\]
+gives
+\[
+ \frac{g^*(s)}{1-e^{rs}}
+ =\frac1{rs^3}-\frac1{2s^2}
+  +\left(\frac r{12}+\frac{c_1}{r}\right)\frac1s+O(1).
+\]
+Because the large-$z$ contour displacement contributes the negatives of the crossed
+residues, the pole at zero yields the first four nonperiodic terms in
+\eqref{eq:H-asymptotic}.  The poles $\chi_n$, $n\ne0$, yield
+\eqref{eq:periodic-P}.  The contour may be shifted past any fixed positive real part,
+producing $O(z^{-N})$.  Finally, $\Gamma$ has no zeros and the classical zero-free line
+$\zeta(1+it)\ne0$ shows that every Fourier coefficient in
+\eqref{eq:periodic-P} is nonzero; hence $\cP_r$ is nonconstant.
+\end{proof}
+
+\begin{remark}[Why the phase is almost invisible at $q=1/2$]
+The first harmonic is suppressed by the gamma factor at
+$|\Im\chi_1|=2\pi/r$.  Its exponential scale is $e^{-\pi^2/r}$.  For
+$r=\log2$ this is only a few parts in $10^7$ before algebraic factors, whereas for
+small $q$ (large $r$) the ripple becomes readily visible.  The attached experiment
+plots the residual after removal of the quadratic-logarithmic main part.
+\end{remark}
+
+\IfFileExists{figures/mellin-periodic-residual.pdf}{
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.80\textwidth]{figures/mellin-periodic-residual.pdf}
+\caption{The residual in \eqref{eq:H-asymptotic} as a function of $\log z$.  A value of
+$q$ for which the Mellin ripple is visible is used in the figure; the dyadic ripple has
+the same structure but much smaller amplitude.}
+\label{fig:mellin-ripple}
+\end{figure}}{}
+
+\section{Endpoint saddle points and phase-aware Lambert--$W$ inversion}
+\label{sec:saddle}
+
+The Mellin theorem concerns a transform.  To return to $F_q(x)$ for $x\downarrow0$,
+write the inverse Laplace integral in the scaled variable $z=as$:
+\begin{equation}
+ F_q(x)=\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}
+ e^{(x/a)z}H_q(z)\frac{\dd z}{z}.
+ \label{eq:F-bromwich}
+\end{equation}
+The saddle itself drifts through the Mellin phase.  Define
+\begin{align}
+ \cA(L)&=\frac Lr+\frac12-\cP_r'(L),
+ \label{eq:A-def}\\
+ \cB(L)&=\cA(L)-\cA'(L)
+ =\frac Lr+\frac12-\frac1r-\cP_r'(L)+\cP_r''(L).
+ \label{eq:B-def}
+\end{align}
+Both are positive for sufficiently large $L$.
+
+\begin{lemma}[Saddle admissibility condition]
+\label{lem:admissibility}
+Let $z=e^L$ and exponentially tilt the independent summands in
+$\sum q^kZ_k$ by $e^{-z\sum q^kZ_k}$.  Uniformly as $L\to\infty$:
+\begin{enumerate}[label=(\alph*)]
+\item the tilted variance is $\cB(L)z^{-2}(1+o(1))$;
+\item on the central arc $|t|\le z\cB(L)^{-2/5}$, the logarithm of the tilted
+characteristic function has a cumulant expansion with standardized cumulants
+$O_j(\cB(L)^{1-j/2})$;
+\item outside that arc, its modulus contributes $o(\cB(L)^{-1/2})$ to the inversion
+integral.
+\end{enumerate}
+\end{lemma}
+
+\begin{status}
+Parts (a) and (b) follow directly by differentiating the product and splitting at
+$k\approx L/r$.  Part (c) is the only substantial analytic estimate not written out
+line by line here; it follows from the same two-range sinc/product bounds used in
+\cref{thm:smoothness}, now for the exponentially tilted factors.  All endpoint saddle
+statements below are rigorous conditional on this quantified minor-arc estimate.  The
+included code tests the resulting formulas independently at high precision.
+\end{status}
+
+\begin{theorem}[Phase-aware endpoint saddle]
+\label{thm:phase-saddle}
+Assume \cref{lem:admissibility}.  Parameterize $x\downarrow0$ by $L\to\infty$ through
+\begin{equation}
+ x=x_q(L):=a\cA(L)e^{-L}.
+ \label{eq:x-parametric}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{
+ F_q(x_q(L))=
+ \frac{\exp\!\left(
+ \cA(L)-\frac{L^2}{2r}-\frac L2-rac r{12}-\frac{c_1}{r}
+ +\cP_r(L)\right)}{\sqrt{2\pi\cB(L)}}
+ \left(1+O_q(L^{-1})\right).}
+ \label{eq:F-phase-saddle}
+\end{equation}
+The density satisfies
+\begin{equation}
+ \frac{f_q(x_q(L))}{F_q(x_q(L))}
+ =\frac{e^L}{a}\left(1+O_q(L^{-1})\right).
+ \label{eq:hazard-saddle}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $\ell(z)=\log H_q(z)$.  From \eqref{eq:H-asymptotic},
+\[
+ -z\ell'(z)=\cA(\log z)+O_N(z^{-N}),
+ \qquad
+ z^2\ell''(z)=\cB(\log z)+O_N(z^{-N}).
+\]
+Thus \eqref{eq:x-parametric} is the saddle equation
+$x/a=-\ell'(z)$ to beyond every algebraic order.  At the saddle,
+$(x/a)z=\cA(L)$ and the exponent in \eqref{eq:F-bromwich} is the exponent displayed in
+\eqref{eq:F-phase-saddle}.  Gaussian integration on the central arc gives
+$[2\pi\cB(L)]^{-1/2}$; \cref{lem:admissibility} controls the complement and gives the
+relative error.  Removing the factor $1/z$ from the inversion integral for the density
+multiplies the leading term by $z/a=e^L/a$, proving \eqref{eq:hazard-saddle}.
+\end{proof}
+
+\subsection{The Lambert-$W_{-1}$ skeleton}
+
+Suppressing $\cP_r$ in the saddle equation gives
+\[
+ \frac xa e^L=\frac Lr+\frac12.
+\]
+With $w=L+r/2$, this is solved exactly by
+\begin{equation}
+ w=-W_{-1}(-\rho_qx),
+ \qquad
+ \rho_q=\frac r a e^{-r/2}.
+ \label{eq:w-lambert}
+\end{equation}
+The corresponding phase-free approximation is
+\begin{equation}
+ F_q(x)\approx
+ \sqrt{\frac r{2\pi(w-1)}}
+ \exp\!\left[-\frac{w^2-2w}{2r}+\frac r{24}-\frac{c_1}{r}\right].
+ \label{eq:F-lambert-skeleton}
+\end{equation}
+For $q=1/2$, $\rho_q=\sqrt2\log2$.
+
+\begin{remark}[Direct versus inverse asymptotics]
+At fixed $q$, omitting $\cP_r$ from \eqref{eq:F-lambert-skeleton} leaves a bounded
+nonvanishing multiplicative ripple, so the phase-free direct formula is not an
+asymptotic equivalence in the strict ratio sense.  For the inverse function the same
+bounded logarithmic ripple shifts $L$ by only $O(1/L)$ because
+$\dd\log F_q/\dd\log x\sim\cA(L)\asymp L$.  Thus a phase-free inverse can still have
+relative error tending to zero, but the phase enters the first genuinely high-accuracy
+correction.
+\end{remark}
+
+\subsection{A stable parametric inverse}
+
+Define
+\begin{equation}
+ \mathcal Y_q(L)=
+ \cA(L)-\frac{L^2}{2r}-\frac L2-rac r{12}-\frac{c_1}{r}
+ +\cP_r(L)-\frac12\log(2\pi\cB(L)).
+ \label{eq:Y-parametric}
+\end{equation}
+For large $L$, this is strictly decreasing.
+
+\begin{algorithm}[Phase-aware inverse Fabius approximation]
+\label{alg:inverse}
+Given a sufficiently small $y>0$:
+\begin{enumerate}[label=\arabic*.]
+\item Solve the scalar equation $\mathcal Y_q(L)=\log y$ for its large positive root.
+A phase-free Lambert estimate from \eqref{eq:w-lambert} is an excellent initial value.
+\item Return
+\begin{equation}
+ F_q^{-1}(y)\approx a\cA(L)e^{-L}.
+ \label{eq:inverse-parametric}
+\end{equation}
+\item For higher orders, expand the centered Bromwich integral in Gaussian moments as
+described below, add the resulting $L^{-j}$ corrections to
+\eqref{eq:Y-parametric}, and repeat one Newton step.
+\end{enumerate}
+Under \cref{lem:admissibility}, the leading algorithm has relative error
+$1+O_q(L^{-2})$ in $F_q^{-1}(y)$.
+\end{algorithm}
+
+The improved inverse accuracy follows because an $O(L^{-1})$ error in $\log F_q$ is
+divided by the logarithmic slope $\cA(L)=\Theta(L)$.
+
+\subsection{Explicit phase-free inverse expansion}
+
+Let $Y=-\log y$, $S=\sqrt{2rY}$, and
+\begin{equation}
+ D_r=1+\frac{r^2}{12}-2c_1-r\log\frac{2\pi}{r},
+ \qquad A_S=D_r-r\log S.
+ \label{eq:Dr-AS}
+\end{equation}
+Solving the phase-free version of \eqref{eq:Y-parametric} gives
+\begin{equation}
+ v:=w-1
+ =S+\frac{A_S}{2S}
+ -\frac{A_S^2+2rA_S}{8S^3}
+ +O_r\!\left(\frac{(\log S)^3}{S^5}\right).
+ \label{eq:v-expansion}
+\end{equation}
+Hence
+\begin{equation}
+ F_q^{-1}(y)=
+ \frac{ae^{r/2}}r(v+1)e^{-v-1}
+ \left(1+O_r(S^{-1})\right),
+ \label{eq:inverse-explicit}
+\end{equation}
+where the $O(S^{-1})$ term contains the bounded Mellin phase.  Replacing
+\eqref{eq:v-expansion} by the phase-aware scalar solve in \cref{alg:inverse} recovers
+that term rather than averaging it away.
+
+\subsection{All-orders Bell-polynomial saddle calculus}
+
+The calculation is algorithmic.  Put $z_0=e^L$ and scale the contour by
+$z=z_0(1+i\tau/\sqrt{\cB(L)})$.  Then
+\[
+ \Phi(z)-\Phi(z_0)=-\frac{\tau^2}{2}
+ +\sum_{j\ge3}\frac{\Lambda_j(L)}{j!}(i\tau)^j,
+ \qquad
+ \Lambda_j(L)=\frac{z_0^j\Phi^{(j)}(z_0)}{\cB(L)^{j/2}}.
+\]
+The amplitude $z_0/z$ is expanded geometrically.  Exponentiating the higher terms uses
+partial Bell polynomials; integrating replaces $\tau^{2m}$ by the Gaussian moment
+$(2m-1)!!$ and kills odd powers.  Since
+\[
+ z^j\frac{\dd^j}{\dd z^j}
+ =D(D-1)\cdots(D-j+1),\qquad D=\frac\dd{\dd L},
+\]
+every coefficient is an explicit differential polynomial in $\cP_r$ and a rational
+function of $L$.  The accompanying Python implementation generates these corrections
+symbolically or numerically to arbitrary prescribed order.
+
+\section{Consequences for inverse Fabius computations}
+\label{sec:inverse-consequences}
+
+For the classical case $q=1/2$, the Mellin phase is tiny but conceptually important.
+It changes the interpretation of any purported ``complete'' endpoint expansion.
+
+\begin{proposition}[No phase-free complete direct expansion]
+There is no function $A(x)$ built from a finite or asymptotic hierarchy of powers of
+$x$, $\log(1/x)$, and iterated logarithms, with no nonconstant periodic dependence on
+$\log x/\log2$, such that
+\[
+ F(x)/A(x)\longrightarrow1\qquad(x\downarrow0)
+\]
+and such that $A$ captures the saddle to bounded logarithmic error at all orders.
+\end{proposition}
+
+\begin{proof}
+The transform asymptotic contains the nonconstant periodic function
+$\cP_{\log2}(\log z)$.  The saddle map has derivative bounded away from zero after
+normalization and transports this term into a nonconstant bounded term in
+$\log F(x)$.  A phase-free log-power hierarchy has no term with that periodicity.
+The nonvanishing of the Fourier coefficients follows from the proof of
+\cref{thm:mellin-asymptotic}.
+\end{proof}
+
+\begin{remark}
+This does not invalidate useful Lambert-$W$ formulas.  It identifies their exact
+asymptotic status.  For ordinary numerical precision, the dyadic phase is usually
+smaller than truncation, rounding, and model errors.  For a mathematically complete
+transseries or hundreds/thousands of digits, it is unavoidable.
+\end{remark}
+
+The phase-aware parametrization also improves numerical conditioning.  Directly
+solving $F(x)=y$ near zero involves a function whose logarithmic derivative is large.
+In \cref{alg:inverse}, the large variable $L$ is solved from a nearly quadratic,
+monotone equation; the final $x=a\cA(L)e^{-L}$ is then formed without subtracting
+nearly equal quantities.  The periodic series converges exponentially and usually
+requires only one harmonic in the dyadic case.
+
+\section{Legendre coefficients and approximation-theoretic implications}
+\label{sec:legendre}
+
+Let $h_b$ be the density in \eqref{eq:Sb}, affinely rescaled to $[-1,1]$ when
+necessary, and write its Legendre expansion
+\begin{equation}
+ h_b(x)=\sum_{n\ge0}a_n^{(b)}P_n(x),
+ \qquad
+ a_n^{(b)}=\frac{2n+1}{2}\int_{-1}^1h_b(x)P_n(x)\dd x.
+ \label{eq:legendre-expansion}
+\end{equation}
+Symmetry forces $a_{2n+1}^{(b)}=0$.  Standard repeated-integration estimates for
+Legendre coefficients, combined with
+\cref{thm:sharp-derivative-growth}, allow the number of integrations to grow with the
+degree.
+
+\begin{proposition}[Log-squared upper envelope]
+For each $b\ge2$ there is $C_b>0$ such that, along the even degrees,
+\begin{equation}
+ \log|a_{2n}^{(b)}|
+ \le-\frac{(\log n)^2}{2\log b}+C_b\log n\log\log(n+2)
+ \qquad(n\ge2).
+ \label{eq:legendre-upper}
+\end{equation}
+The same scale applies to best polynomial approximation errors in every fixed Sobolev
+norm.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+A $k$-fold Legendre integration-by-parts estimate has the form
+$|a_n|\le C^k n^{-k+O(1)}\max_{j\le k}\|h_b^{(j)}\|$; the exact polynomial factors in
+$n$ do not affect the leading log-squared term.  By
+\cref{thm:sharp-derivative-growth}, the derivative contribution is
+$\exp((\log b)k^2/2+O_b(k))$.  Choosing
+$k=\lfloor\log n/\log b\rfloor$ yields \eqref{eq:legendre-upper}; tracking the
+variable-$k$ constants in the Legendre estimate gives the displayed secondary term.
+\end{proof}
+
+\begin{conjecture}[Sharp Legendre envelope]
+\label{conj:legendre-envelope}
+For every integer $b\ge2$,
+\begin{equation}
+ \limsup_{n\to\infty}
+ \frac{\log|a_{2n}^{(b)}|}{(\log n)^2}
+ =-\frac1{2\log b}.
+ \label{eq:legendre-envelope-conj}
+\end{equation}
+More precisely, after removal of the quadratic and linear terms in $\log n$, the
+upper envelope contains a bounded nonconstant periodic function of
+$\log n/\log b$.
+\end{conjecture}
+
+The conjectured constant is the Legendre-dual of the derivative-growth constant:
+optimizing $n^{-k}b^{k^2/2}$ produces exactly
+$\exp[-(\log n)^2/(2\log b)]$.  A lower bound is harder because Legendre oscillations
+can create cancellations absent from the Fourier resonant sequence.  The supplied code
+computes exact rational moments for rational $q$, forms Legendre coefficients without
+quadrature, and plots the renormalized envelope.
+
+\IfFileExists{figures/legendre-envelope.pdf}{
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.80\textwidth]{figures/legendre-envelope.pdf}
+\caption{Renormalized even Legendre coefficients for the dyadic density.  The plot is a
+diagnostic for \cref{conj:legendre-envelope}; finite degrees should not be mistaken for
+proof of the limiting constant.}
+\label{fig:legendre-envelope}
+\end{figure}}{}
+
+\section{Further conjectures and research programs}
+\label{sec:future}
+
+\subsection{Exponentially improved endpoint transseries}
+
+\begin{conjecture}[Geometric exponential transseries]
+After the full periodic saddle series in powers of $1/L$ is removed, the endpoint
+remainder admits a transseries generated by exponentials
+\[
+ e^{-zq^j},\qquad j=0,1,2,\dots,
+\]
+where $z=e^L$ is the saddle variable.  The sectors accumulate geometrically and obey a
+$q$-difference resurgence law inherited from
+$H_q(z)=((1-e^{-z})/z)H_q(qz)$.
+\end{conjecture}
+
+The superalgebraic remainder in \cref{thm:mellin-asymptotic} is consistent with this
+claim but does not identify its exponentially small structure.  A useful first goal is
+to derive the leading $e^{-z}$ correction uniformly through one Mellin period and then
+track its descendants under $z\mapsto qz$.
+
+\subsection{Minor-arc closure of the saddle theorem}
+
+\begin{problem}
+Give a self-contained proof of \cref{lem:admissibility}(c) with an explicit constant
+uniform for $q$ in compact subsets of $(0,1)$.  Then compute the first three relative
+saddle coefficients and certify them by interval arithmetic.
+\end{problem}
+
+A direct route is to split the tilted product into active indices
+$k\le L/r+O(1)$ and a small-argument tail.  On the active block, a positive proportion
+of factors stays uniformly away from its local lattice of maxima; on the tail, the
+quadratic characteristic-function estimate is uniform.  This is analogous to the
+minor-arc component of local limit theorems for digital harmonic sums.
+
+\subsection{Zero divisors beyond reciprocal integers}
+
+For general $q$, the multiplicity function is
+\[
+ m_q(z)=\#\{k\ge0:zq^k/\pi\in\Z\setminus\{0\}\}.
+\]
+When $q^d=A/B$ is rational in lowest terms, the layers split into $d$ residue classes,
+each carrying a mixed $A$--$B$ valuation structure.
+
+\begin{problem}
+Classify the canonical product and spectral Dirichlet series for all $q$ such that some
+$q^d$ is rational.  Determine whether the resulting Dirichlet series factor into
+Riemann zeta functions and finitely many local Euler corrections, or whether genuinely
+new automatic Dirichlet series occur when the numerator $A>1$.
+\end{problem}
+
+\subsection{Geometric Bernoulli zeros and operators}
+
+The averaging operator
+\[
+ (T_qp)(x)=\E p(x+V_q)
+\]
+has inverse on polynomials given by $T_q^{-1}x^n=\Bell_{n,q}(x)$.  The fixed-point
+decomposition factors it as an infinite product of uniform-averaging operators.
+
+\begin{problem}
+Develop the spectral and zero geometry of $\Bell_{n,q}$.  Questions include the
+location of nonreal zeros, interlacing under $n\mapsto n+1$, asymptotic zero measures as
+$n\to\infty$, and operator factorizations of $T_q^{-1}$ in terms of the $q$-difference
+law \eqref{eq:q-difference-Bernoulli}.
+\end{problem}
+
+\begin{conjecture}[Central zero rigidity]
+For each fixed $q\in(0,1)$, all real zeros of $\Bell_{n,q}$ are simple except for the
+forced central zero of odd degree, and the number of real zeros is eventually a fixed
+proportion of $n$ depending continuously on $q$.
+\end{conjecture}
+
+This is deliberately stated as a numerical research question rather than a theorem;
+classical Bernoulli polynomial zeros already warn against naive all-real-rootedness.
+
+\subsection{Strict log-concavity and total positivity}
+
+\begin{conjecture}[Strict interior log-concavity]
+For every $q\in(0,1)$, $(\log u_q)''(x)<0$ for $-1<x<1$, except possibly at the
+symmetry point in a limiting interpretation.
+\end{conjecture}
+
+Finite convolutions are spline densities for which strictness can be analyzed by
+variation-diminishing methods.  Passing a uniform strict estimate to the infinite
+limit would give strong inequalities for $F_q$, including monotonicity of endpoint
+hazard ratios used in rigorous inverse bounds.
+
+\subsection{Formalization targets}
+
+Several results are well suited for formal proof assistants:
+\begin{enumerate}[label=(\roman*)]
+\item the probabilistic fixed point and functional equations;
+\item the affine-word induction in \cref{thm:qthue-derivative};
+\item the Bell-polynomial formula \eqref{eq:Snm-bell};
+\item the moment recurrence and geometric Bernoulli inversion;
+\item the valuation Hadamard product at the level of formal power series; and
+\item the upper half of the derivative-growth theorem.
+\end{enumerate}
+The resonant lower bound additionally needs a modest amount of real/complex analysis.
+The Mellin contour argument is the least immediate formalization target but can be
+split into reusable theorems on harmonic sums.
+
+\section{Numerical experiments and reproducibility}
+\label{sec:numerics}
+
+The archive contains \texttt{experiments.py}.  It uses arbitrary-precision arithmetic
+for products and Mellin coefficients, exact rational arithmetic where feasible, and
+standard floating-point quadrature only for the optional density plots.  Running
+\begin{center}
+\texttt{python experiments.py --all}
+\end{center}
+regenerates the CSV tables and PDF figures used here.
+
+The experiments are designed as tests of identities, not as substitutes for proof:
+\begin{enumerate}[label=(\arabic*)]
+\item \texttt{mellin\_comparison.csv} compares the direct product
+$\log H_q(z)$ with \eqref{eq:H-asymptotic}, both with and without the periodic term.
+\item \texttt{resonant\_fourier.csv} checks \eqref{eq:resonant-fourier} at high
+precision for several bases and levels.
+\item \texttt{edgeworth\_comparison.csv} compares numerical Fourier inversion with
+\eqref{eq:edgeworth-density}.
+\item \texttt{legendre\_coefficients.csv} computes dyadic even Legendre coefficients
+from exact moments, avoiding endpoint quadrature.
+\item \texttt{corpus-manifest.txt} records every audited TeX source and its hash.
+\end{enumerate}
+
+\IfFileExists{data/mellin_comparison.tex}{\input{data/mellin_comparison.tex}}{}
+
+\section{Synthesis}
+
+The geometric uniform convolution turns several themes that appear separately in the
+classical theory into facets of a single object.
+\begin{itemize}
+\item The two-branch differential refinement generates Thue--Morse signs; the branch
+locations carry a geometric $q$-deformation, and their signed moments are controlled by
+Bell polynomials with Bernoulli-number inputs.
+\item The infinite version of the same geometric power sums gives the exact cumulants.
+The reciprocal moment-generating function then produces an Appell family that extends
+classical Bernoulli polynomials and exactly inverts Fabius averaging.
+\item At reciprocal integer $q$, the Fourier zeros merge according to a digital
+valuation.  The same base $b$ fixes both the zero multiplicities and the sharp
+$n^2\log b/2$ derivative-growth scale.
+\item Mellin poles at an imaginary arithmetic progression record discrete scale
+invariance.  Their log-periodic term survives the saddle and supplies the missing phase
+in a genuinely complete endpoint expansion.
+\item Lambert $W_{-1}$ remains the correct coarse inverse coordinate, but the Mellin
+phase specifies how to pass from a highly accurate approximation to an asymptotic
+calculus that is complete at fixed $q$.
+\end{itemize}
+
+The strongest concrete result is \cref{thm:sharp-derivative-growth}: for the classical
+up-function, the exact leading logarithmic growth of every $L^p$ derivative norm is
+$(\log2)n^2/2$.  The most useful new computational object is the phase-aware inverse
+parametrization \eqref{eq:Y-parametric}--\eqref{eq:inverse-parametric}.  The broadest
+new structural object is the geometric Bernoulli sequence, which may be developed
+independently as a $q$-Appell/N\o rlund theory.
+
+\appendix
+
+\section{Selected algebraic checks}
+
+\subsection{Consistency of the zeta and Bernoulli expansions}
+
+Euler's formula
+\[
+ \zeta(2m)=(-1)^{m+1}\frac{B_{2m}(2\pi)^{2m}}{2(2m)!}
+\]
+turns \eqref{eq:Psi-Taylor-zeta} into the cumulant expansion obtained from
+\eqref{eq:X-cumulants} after the rescaling $z=at$.  This independently checks all
+normalizing factors in the Fourier and probabilistic derivations.
+
+\subsection{The first nonvanishing geometric Prouhet moment}
+
+Near $t=0$,
+\[
+ 2^n\prod_{j=0}^{n-1}\sinh(tq^j)
+ =2^nt^nq^{n(n-1)/2}+O(t^{n+2}),
+\]
+so differentiation at zero gives
+$S_{n,n}=2^nn!q^{n(n-1)/2}$.  Substituting this into the Taylor expansion of
+\eqref{eq:qthue-derivative} confirms that the normalization reproduces the $n$th
+derivative rather than a scalar multiple.
+
+\subsection{Scaling invariance of the quadratic derivative constant}
+
+If $g(x)=c^{-1}f(x/c)$, then
+\[
+ \|g^{(n)}\|_p=c^{-n-1+1/p}\|f^{(n)}\|_p.
+\]
+The logarithm of the scaling factor is linear in $n$ and therefore disappears after
+division by $n^2$.  This justifies moving freely between $h_b$ and the support-normalized
+$u_{1/b}$ in \cref{thm:sharp-derivative-growth}.
+
+\section{Corpus manifest}
+
+The full manifest is supplied as a separate text file in the archive to keep this PDF
+readable.  A compact generated summary is included below when available.
+
+\IfFileExists{corpus-summary.tex}{\input{corpus-summary.tex}}{
+\begin{quote}
+Corpus summary was not generated in this build.  See \texttt{corpus-manifest.txt}.
+\end{quote}}
+
+\begin{thebibliography}{99}
+
+\bibitem{Fabius1966}
+J.~Fabius,
+\newblock A probabilistic example of a nowhere analytic $C^\infty$-function,
+\newblock \emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte Gebiete}
+\textbf{5} (1966), 173--174.
+
+\bibitem{Rvachev}
+V.~L. Rvachev,
+\newblock Compactly supported solutions of functional-differential equations and their
+applications,
+\newblock foundational papers and monographs on atomic functions; bibliographic details
+and translations are collected in the audited repository corpus.
+
+\bibitem{deBruijn1948}
+N.~G. de Bruijn,
+\newblock On Mahler's partition problem,
+\newblock \emph{Indagationes Mathematicae} \textbf{10} (1948), 210--220.
+
+\bibitem{FlajoletGourdonDumas1995}
+P.~Flajolet, X.~Gourdon, and P.~Dumas,
+\newblock Mellin transforms and asymptotics: harmonic sums,
+\newblock \emph{Theoretical Computer Science} \textbf{144} (1995), 3--58.
+
+\bibitem{AlloucheShallit}
+J.-P. Allouche and J.~Shallit,
+\newblock \emph{Automatic Sequences: Theory, Applications, Generalizations},
+\newblock Cambridge University Press, 2003.
+
+\bibitem{GasperRahman}
+G.~Gasper and M.~Rahman,
+\newblock \emph{Basic Hypergeometric Series}, 2nd ed.,
+\newblock Cambridge University Press, 2004.
+
+\bibitem{Comtet}
+L.~Comtet,
+\newblock \emph{Advanced Combinatorics},
+\newblock D.~Reidel, 1974.
+
+\bibitem{Norlund}
+N.~E. N\o rlund,
+\newblock \emph{Vorlesungen \"uber Differenzenrechnung},
+\newblock Springer, 1924.
+
+\bibitem{Petrov}
+V.~V. Petrov,
+\newblock \emph{Sums of Independent Random Variables},
+\newblock Springer, 1975.
+
+\bibitem{Wong}
+R.~Wong,
+\newblock \emph{Asymptotic Approximations of Integrals},
+\newblock SIAM, 2001.
+
+\bibitem{Rodino}
+L.~Rodino,
+\newblock \emph{Linear Partial Differential Operators in Gevrey Spaces},
+\newblock World Scientific, 1993.
+
+\bibitem{Szego}
+G.~Szeg\H{o},
+\newblock \emph{Orthogonal Polynomials}, 4th ed.,
+\newblock American Mathematical Society Colloquium Publications, vol.~23, 1975.
+
+\bibitem{DLMF}
+F.~W.~J. Olver, D.~W. Lozier, R.~F. Boisvert, and C.~W. Clark (eds.),
+\newblock \emph{NIST Handbook of Mathematical Functions},
+\newblock Cambridge University Press, 2010.
+
+\bibitem{ProveItCorpus}
+V.~Reshetnikov,
+\newblock \emph{ProveIt: Analysis/FabiusFunction/docs},
+\newblock Git repository, snapshot \RepoCommit, recursively audited for this report.
+
+\end{thebibliography}
+
+\end{document}

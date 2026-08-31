@@ -1,0 +1,53 @@
+Fabius--Pascal frontier experiments
+===========================================
+mpmath precision: 80 decimal digits
+
+Lambert coefficient recurrences verified through rank 8 and q^4096: True
+Spectral-sign block Mahler identity verified through rank 8: True
+  rank 1: P_r=1, no period <=128 on first 8192 signs: True
+  rank 2: P_r=2, no period <=128 on first 8192 signs: True
+  rank 3: P_r=4, no period <=128 on first 8192 signs: True
+  rank 4: P_r=4, no period <=128 on first 8192 signs: True
+  rank 5: P_r=8, no period <=128 on first 8192 signs: True
+  rank 6: P_r=8, no period <=128 on first 8192 signs: True
+  rank 7: P_r=8, no period <=128 on first 8192 signs: True
+  rank 8: P_r=8, no period <=128 on first 8192 signs: True
+
+Exact even moments E[X_r^(2k)] (k=0,...,5):
+  rank 1: 1, 1/9, 19/675, 583/59535, 132809/32531625, 46840699/24405225075
+  rank 2: 1, 1/27, 107/30375, 27953/56260575, 698600719/7839308334375, 113798103846529/6016313242034431875
+  rank 3: 1, 1/81, 571/1366875, 1165663/53166243375, 2864068312649/1889077325876015625, 189566928671369643619/1483126048419729907162921875
+  rank 4: 1, 1/243, 2963/61509375, 45163673/50242099989375, 10285851106584079/455220408602972865234375, 257962420696093094421751609/365616414406857135909292556101171875
+
+All sampled PF_infinity ultra-log-concavity ratios exceed 1.
+See moment_ulc.csv for ranks 1--6 and k=1--6.
+
+Numerical zero jets controlling sharp cubature order:
+  rank 2, q=4, predicted zero order 3
+    derivative 0: -5.6009905718071322788e-246
+    derivative 1: 2.3367599613450294894e-171
+    derivative 2: -3.3774801942465125283e-170
+    derivative 3: 0.013228266434915368096
+  rank 3, q=8, predicted zero order 4
+    derivative 0: -1.7508920012070417228e-328
+    derivative 1: 5.9079949080665427673e-342
+    derivative 2: -2.6767485206135607181e-173
+    derivative 3: 3.3444968814314943936e-172
+    derivative 4: -0.000075764612531191703807
+  rank 4, q=16, predicted zero order 5
+    derivative 0: -1.4183856256426860019e-411
+    derivative 1: 3.2897579089849001187e-346
+    derivative 2: -1.4637670913098523993e-344
+    derivative 3: 1.8623134102902745789e-176
+    derivative 4: -2.0715757504851394093e-175
+    derivative 5: 3.5141504168383793354e-8
+
+Critical Poisson target 4*zeta(2) = 6.579736267392905745889661
+See poisson_limit.csv for grouped means and rigorous error bounds.
+
+See gamma_clt.csv for the geometric decay of standardized cumulants.
+
+Radial growth at an eighth root of unity is tabulated in lambert_radial.csv.
+The proof of the natural boundary uses all dyadic roots, not this finite table.
+
+Status: every finite check completed successfully.
