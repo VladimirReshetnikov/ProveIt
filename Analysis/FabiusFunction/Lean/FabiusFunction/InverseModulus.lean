@@ -34,10 +34,18 @@ automatically saturates at one.
   `antitoneOn_fabiusIntervalMass_secondHalf` give the complete global unimodal
   shape of a fixed-length CDF increment.
 * `fabiusReal_sub_le_sub` is the least-mass endpoint inequality.
+* `strictMonoOn_fabiusIntervalMass_firstHalf`,
+  `strictAntiOn_fabiusIntervalMass_secondHalf`, and
+  `fabiusIntervalMass_eq_fabiusReal_iff` identify the two endpoint intervals
+  as the unique minimizers at every nondegenerate length.
 * `fabiusReal_add_le` and `fabiusInv_add_le` expose the resulting constrained
   superadditivity of `F` and global subadditivity of its clamped inverse.
 * `fabiusInv_sub_le_sub_of_le` and `abs_fabiusInv_sub_le` are the ordered and
   symmetric sharp inverse-gap bounds on all of `ℝ`.
+* `fabiusInv_sub_eq_sub_iff_of_mem_Icc` and
+  `abs_fabiusInv_sub_eq_iff_of_mem_Icc` give their complete equality loci on
+  the unit interval; the restriction is essential because clamping creates
+  additional equality cases on all of `ℝ`.
 * `isGreatest_abs_fabiusInv_sub` and
   `isGreatest_abs_fabiusInv_sub_Icc` say that the sharp bounds are attained;
   `sSup_abs_fabiusInv_sub_eq` and `sSup_abs_fabiusInv_sub_Icc_eq` are their
@@ -53,8 +61,9 @@ open Set
 
 namespace Fabius
 
-/-- The CDF increment `F (x+h) - F x`.  For the atomless Fabius probability
-law this is the mass of `(x, x+h]`, equivalently of `[x, x+h]`. -/
+/-- The CDF increment `F (x+h) - F x`.  When `h ≥ 0`, the atomless Fabius
+probability law identifies this with the mass of `(x, x+h]`, equivalently of
+`[x, x+h]`; allowing arbitrary `h` keeps the algebraic API uncluttered. -/
 def fabiusIntervalMass (F : BoundedFabius) (h x : ℝ) : ℝ :=
   fabiusReal F (x + h) - fabiusReal F x
 
@@ -66,6 +75,27 @@ theorem fabiusIntervalMass_reflect (F : BoundedFabius) (hF : IsFabius F)
     show 1 - h - x + h = 1 - x by ring,
     show 1 - h - x = 1 - (x + h) by ring,
     hF.symmetry_all x, hF.symmetry_all (x + h)]
+  ring
+
+/-- A nonnegative-length interval wholly to the left of the Fabius support
+has zero mass.  Together with `fabiusIntervalMass_eq_zero_of_one_le`, this
+records the two constant tails that prevent global strict monotonicity. -/
+theorem fabiusIntervalMass_eq_zero_of_add_nonpos
+    (F : BoundedFabius) (hF : IsFabius F) {h x : ℝ}
+    (hh : 0 ≤ h) (hx : x + h ≤ 0) :
+    fabiusIntervalMass F h x = 0 := by
+  rw [fabiusIntervalMass, hF.zero_of_nonpos (x + h) hx,
+    hF.zero_of_nonpos x (by linarith)]
+  ring
+
+/-- A nonnegative-length interval wholly to the right of the Fabius support
+has zero mass. -/
+theorem fabiusIntervalMass_eq_zero_of_one_le
+    (F : BoundedFabius) (hF : IsFabius F) {h x : ℝ}
+    (hh : 0 ≤ h) (hx : 1 ≤ x) :
+    fabiusIntervalMass F h x = 0 := by
+  rw [fabiusIntervalMass, hF.one_of_one_le (x + h) (by linarith),
+    hF.one_of_one_le x hx]
   ring
 
 private theorem fabiusIntervalMass_hasDerivAt
@@ -98,6 +128,29 @@ private theorem deriv_fabiusReal_le_shift_of_le_center
           1 - (x + h) < 1 - (1 : ℝ) / 2 := sub_lt_sub_left hxright 1
           _ = (1 : ℝ) / 2 := by ring).le)
       horder
+
+private theorem deriv_fabiusReal_lt_shift_of_mem
+    (F : BoundedFabius) (hF : IsFabius F) {h x : ℝ}
+    (hh : h ∈ Ioc (0 : ℝ) 1) (hx : x ∈ Ioo (-h) ((1 - h) / 2)) :
+    deriv (fabiusReal F) x < deriv (fabiusReal F) (x + h) := by
+  have hxh0 : 0 < x + h := by linarith [hx.1]
+  have hxh1 : x + h < 1 := by linarith [hx.2, hh.2]
+  by_cases hx0 : x ≤ 0
+  · rw [(deriv_fabiusReal_eq_zero_iff F hF x).2 (by
+      intro hxunit
+      exact (not_lt_of_ge hx0) hxunit.1)]
+    exact deriv_fabiusReal_pos F hF ⟨hxh0, hxh1⟩
+  · have hx0' : 0 < x := lt_of_not_ge hx0
+    have hxhalf : x < 1 / 2 := by linarith [hx.2, hh.1]
+    have horder : x < 1 - (x + h) := by linarith [hx.2]
+    by_cases hleft : x + h ≤ 1 / 2
+    · exact strictMonoOn_deriv_fabiusReal_Icc F hF
+        ⟨hx0'.le, hxhalf.le⟩ ⟨hxh0.le, hleft⟩ (by linarith [hh.1])
+    · rw [← deriv_fabiusReal_one_sub F hF (x + h)]
+      have hxright : (1 : ℝ) / 2 < x + h := lt_of_not_ge hleft
+      exact strictMonoOn_deriv_fabiusReal_Icc F hF
+        ⟨hx0'.le, hxhalf.le⟩
+        ⟨by linarith [hxh1], by linarith [hxright]⟩ horder
 
 /-- For a nonnegative length `h`, the fixed-length CDF increment increases
 while its centre approaches `1/2` from the left.  The statement is global in
@@ -134,6 +187,44 @@ theorem antitoneOn_fabiusIntervalMass_secondHalf
   have hx' : 1 - h - x ∈ Iic ((1 - h) / 2) := by
     show 1 - h - x ≤ (1 - h) / 2
     linarith
+  have hreflected := hmono hy' hx' (by linarith)
+  rwa [fabiusIntervalMass_reflect F hF h y,
+    fabiusIntervalMass_reflect F hF h x] at hreflected
+
+/-- At every nondegenerate length `0 < h ≤ 1`, the fixed-length Fabius mass is
+strictly increasing from the first interval that meets the support, whose
+starting point is `-h`, to the interval centered at `1 / 2`.  The closed
+domain records the strict rise away from the zero tail as well as the complete
+interior shape. -/
+theorem strictMonoOn_fabiusIntervalMass_firstHalf
+    (F : BoundedFabius) (hF : IsFabius F) {h : ℝ}
+    (hh : h ∈ Ioc (0 : ℝ) 1) :
+    StrictMonoOn (fabiusIntervalMass F h)
+      (Icc (-h) ((1 - h) / 2)) := by
+  refine strictMonoOn_of_deriv_pos (f := fabiusIntervalMass F h)
+    (convex_Icc (-h) ((1 - h) / 2)) ?_ ?_
+  · exact ((hF.contDiff.continuous.comp
+      (continuous_id.add continuous_const)).sub hF.contDiff.continuous).continuousOn
+  · intro x hx
+    rw [interior_Icc] at hx
+    rw [(fabiusIntervalMass_hasDerivAt F hF h x).deriv]
+    exact sub_pos.mpr (deriv_fabiusReal_lt_shift_of_mem F hF hh hx)
+
+/-- At every nondegenerate length `0 < h ≤ 1`, the fixed-length Fabius mass is
+strictly decreasing after its interval passes the midpoint, all the way to
+the first interval lying beyond the support.  This is the reflected form of
+`strictMonoOn_fabiusIntervalMass_firstHalf`. -/
+theorem strictAntiOn_fabiusIntervalMass_secondHalf
+    (F : BoundedFabius) (hF : IsFabius F) {h : ℝ}
+    (hh : h ∈ Ioc (0 : ℝ) 1) :
+    StrictAntiOn (fabiusIntervalMass F h)
+      (Icc ((1 - h) / 2) 1) := by
+  intro x hx y hy hxy
+  have hmono := strictMonoOn_fabiusIntervalMass_firstHalf F hF hh
+  have hy' : 1 - h - y ∈ Icc (-h) ((1 - h) / 2) := by
+    constructor <;> linarith [hy.1, hy.2]
+  have hx' : 1 - h - x ∈ Icc (-h) ((1 - h) / 2) := by
+    constructor <;> linarith [hx.1, hx.2]
   have hreflected := hmono hy' hx' (by linarith)
   rwa [fabiusIntervalMass_reflect F hF h y,
     fabiusIntervalMass_reflect F hF h x] at hreflected
@@ -192,6 +283,113 @@ theorem fabiusReal_sub_le_sub (F : BoundedFabius) (hF : IsFabius F)
       _ = fabiusIntervalMass F h a := hreflect
       _ = fabiusReal F b - fabiusReal F a := hfinish
 
+/-- **Strict interior least-mass inequality.**  If an interval of length
+`0 < h ≤ 1` lies strictly between the endpoints of `[0,1]`, then its Fabius
+mass is strictly larger than the mass `F h` of either endpoint interval. -/
+theorem fabiusReal_lt_fabiusIntervalMass_of_mem_Ioo
+    (F : BoundedFabius) (hF : IsFabius F) {h x : ℝ}
+    (hh : h ∈ Ioc (0 : ℝ) 1) (hx : x ∈ Ioo (0 : ℝ) (1 - h)) :
+    fabiusReal F h < fabiusIntervalMass F h x := by
+  have hzero : fabiusIntervalMass F h 0 = fabiusReal F h := by
+    simp [fabiusIntervalMass, hF.zero_of_nonpos]
+  have hmono := strictMonoOn_fabiusIntervalMass_firstHalf F hF hh
+  have hzero_mem : (0 : ℝ) ∈ Icc (-h) ((1 - h) / 2) := by
+    constructor <;> linarith [hh.1, hh.2]
+  by_cases hleft : x ≤ (1 - h) / 2
+  · have hx' : x ∈ Icc (-h) ((1 - h) / 2) := by
+      constructor <;> linarith [hx.1, hh.1]
+    calc
+      fabiusReal F h = fabiusIntervalMass F h 0 := hzero.symm
+      _ < fabiusIntervalMass F h x := hmono hzero_mem hx' hx.1
+  · let x' : ℝ := 1 - h - x
+    have hx'0 : 0 < x' := by
+      dsimp [x']
+      linarith [hx.2]
+    have hx'_mem : x' ∈ Icc (-h) ((1 - h) / 2) := by
+      dsimp [x']
+      constructor <;> linarith [hh.1, hx.2, lt_of_not_ge hleft]
+    calc
+      fabiusReal F h = fabiusIntervalMass F h 0 := hzero.symm
+      _ < fabiusIntervalMass F h x' := hmono hzero_mem hx'_mem hx'0
+      _ = fabiusIntervalMass F h x := by
+        dsimp [x']
+        exact fabiusIntervalMass_reflect F hF h x
+
+/-- **Exact fixed-length minimizers, including the degenerate length.**  For
+`0 ≤ h ≤ 1`, a subinterval of `[0,1]` of length `h` has mass `F h` exactly
+when `h = 0`, or when it is the left endpoint interval `[0,h]` or the right
+endpoint interval `[1-h,1]`. -/
+theorem fabiusIntervalMass_eq_fabiusReal_iff
+    (F : BoundedFabius) (hF : IsFabius F) {h x : ℝ}
+    (hh : h ∈ Icc (0 : ℝ) 1) (hx : x ∈ Icc (0 : ℝ) (1 - h)) :
+    fabiusIntervalMass F h x = fabiusReal F h ↔
+      h = 0 ∨ x = 0 ∨ x = 1 - h := by
+  constructor
+  · intro heq
+    by_cases hh0 : h = 0
+    · exact Or.inl hh0
+    right
+    have hh' : h ∈ Ioc (0 : ℝ) 1 :=
+      ⟨lt_of_le_of_ne hh.1 (Ne.symm hh0), hh.2⟩
+    by_cases hx0 : x = 0
+    · exact Or.inl hx0
+    by_cases hx1 : x = 1 - h
+    · exact Or.inr hx1
+    have hx' : x ∈ Ioo (0 : ℝ) (1 - h) :=
+      ⟨lt_of_le_of_ne hx.1 (Ne.symm hx0), lt_of_le_of_ne hx.2 hx1⟩
+    have hstrict := fabiusReal_lt_fabiusIntervalMass_of_mem_Ioo F hF hh' hx'
+    exact (ne_of_lt hstrict heq.symm).elim
+  · rintro (rfl | rfl | rfl)
+    · simp [fabiusIntervalMass, hF.zero_of_nonpos]
+    · simp [fabiusIntervalMass, hF.zero_of_nonpos]
+    · calc
+        fabiusIntervalMass F h (1 - h) = fabiusIntervalMass F h 0 := by
+          simpa using fabiusIntervalMass_reflect F hF h 0
+        _ = fabiusReal F h := by
+          simp [fabiusIntervalMass, hF.zero_of_nonpos]
+
+/-- Every nondegenerate interior subinterval of `[0,1]` has strictly more
+Fabius mass than an endpoint interval of the same length. -/
+theorem fabiusReal_sub_lt_sub (F : BoundedFabius) (hF : IsFabius F)
+    {a b : ℝ} (ha : 0 < a) (hab : a < b) (hb : b < 1) :
+    fabiusReal F (b - a) < fabiusReal F b - fabiusReal F a := by
+  have hh : b - a ∈ Ioc (0 : ℝ) 1 := ⟨by linarith, by linarith⟩
+  have hx : a ∈ Ioo (0 : ℝ) (1 - (b - a)) := ⟨ha, by linarith⟩
+  have hmass := fabiusReal_lt_fabiusIntervalMass_of_mem_Ioo F hF hh hx
+  rw [fabiusIntervalMass, show a + (b - a) = b by ring] at hmass
+  exact hmass
+
+/-- **Complete equality locus for the least-mass inequality.**  For
+`0 ≤ a ≤ b ≤ 1`, equality holds exactly for a degenerate interval or for
+one of the two endpoint intervals. -/
+theorem fabiusReal_sub_eq_sub_iff
+    (F : BoundedFabius) (hF : IsFabius F)
+    {a b : ℝ} (ha : a ∈ Icc (0 : ℝ) 1) (hb : b ∈ Icc (0 : ℝ) 1)
+    (hab : a ≤ b) :
+    fabiusReal F (b - a) = fabiusReal F b - fabiusReal F a ↔
+      a = b ∨ a = 0 ∨ b = 1 := by
+  constructor
+  · intro heq
+    by_cases hab' : a = b
+    · exact Or.inl hab'
+    right
+    have hablt : a < b := lt_of_le_of_ne hab hab'
+    by_cases ha0 : a = 0
+    · exact Or.inl ha0
+    right
+    by_cases hb1 : b = 1
+    · exact hb1
+    have ha' : 0 < a := lt_of_le_of_ne ha.1 (Ne.symm ha0)
+    have hb' : b < 1 := lt_of_le_of_ne hb.2 hb1
+    have hstrict := fabiusReal_sub_lt_sub F hF ha' hablt hb'
+    exact (ne_of_lt hstrict heq).elim
+  · rintro (rfl | ha0 | hb1)
+    · simp [hF.zero_of_nonpos]
+    · subst a
+      simp [hF.zero_of_nonpos]
+    · subst b
+      rw [hF.one_of_one_le 1 le_rfl, hF.symmetry_all a]
+
 /-- **Constrained superadditivity of the Fabius CDF.**  Nonnegative arguments
 whose sum lies in `[0,1]` satisfy `F a + F b ≤ F (a+b)`. -/
 theorem fabiusReal_add_le (F : BoundedFabius) (hF : IsFabius F)
@@ -203,6 +401,34 @@ theorem fabiusReal_add_le (F : BoundedFabius) (hF : IsFabius F)
     (by linarith)
   rw [show a + b - a = b by ring] at hgap
   linarith
+
+/-- Equality in constrained Fabius superadditivity occurs exactly when one
+summand vanishes or the two arguments fill the whole unit interval. -/
+theorem fabiusReal_add_eq_iff (F : BoundedFabius) (hF : IsFabius F)
+    {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (hab : a + b ≤ 1) :
+    fabiusReal F a + fabiusReal F b = fabiusReal F (a + b) ↔
+      a = 0 ∨ b = 0 ∨ a + b = 1 := by
+  have hEq := fabiusReal_sub_eq_sub_iff F hF
+    (show a ∈ Icc (0 : ℝ) 1 by constructor <;> linarith)
+    (show a + b ∈ Icc (0 : ℝ) 1 by constructor <;> linarith)
+    (by linarith)
+  rw [show a + b - a = b by ring] at hEq
+  constructor
+  · intro heq
+    have hmass : fabiusReal F b = fabiusReal F (a + b) - fabiusReal F a := by
+      linarith
+    rcases hEq.mp hmass with habzero | ha0 | hsum
+    · exact Or.inr (Or.inl (by linarith))
+    · exact Or.inl ha0
+    · exact Or.inr (Or.inr hsum)
+  · intro heq
+    have hmass : fabiusReal F b = fabiusReal F (a + b) - fabiusReal F a := by
+      apply hEq.mpr
+      rcases heq with ha0 | hb0 | hsum
+      · exact Or.inr (Or.inl ha0)
+      · exact Or.inl (by linarith)
+      · exact Or.inr (Or.inr hsum)
+    linarith
 
 /-- On the unit interval, inverse increments are bounded by the inverse of
 the input increment. -/
@@ -221,6 +447,42 @@ theorem fabiusInv_sub_le_sub_of_mem_Icc
   have huvDiff : v - u ∈ Icc (0 : ℝ) 1 := by
     constructor <;> linarith [hu.1, hv.2]
   exact (fabiusReal_le_iff_le_fabiusInv F hF hdiff huvDiff).mp hmass
+
+/-- **Equality in the ordered inverse-gap bound on `[0,1]`.**  For
+`0 ≤ u ≤ v ≤ 1`, equality holds exactly for a degenerate input interval or
+for an interval meeting one of the two endpoints.  This deliberately remains
+a unit-interval theorem: the constant tails of the totalized inverse create
+additional equality cases on all of `ℝ`. -/
+theorem fabiusInv_sub_eq_sub_iff_of_mem_Icc
+    (F : BoundedFabius) (hF : IsFabius F) {u v : ℝ}
+    (hu : u ∈ Icc (0 : ℝ) 1) (hv : v ∈ Icc (0 : ℝ) 1) (huv : u ≤ v) :
+    fabiusInv F hF v - fabiusInv F hF u = fabiusInv F hF (v - u) ↔
+      u = v ∨ u = 0 ∨ v = 1 := by
+  have hGu := fabiusInv_mem_Icc F hF u
+  have hGv := fabiusInv_mem_Icc F hF v
+  have hGuv : fabiusInv F hF u ≤ fabiusInv F hF v :=
+    monotone_fabiusInv F hF huv
+  have huvDiff : v - u ∈ Icc (0 : ℝ) 1 := by
+    constructor <;> linarith [hu.1, hv.2]
+  have hForward := fabiusReal_sub_eq_sub_iff F hF hGu hGv hGuv
+  constructor
+  · intro heq
+    have hmass :
+        fabiusReal F (fabiusInv F hF v - fabiusInv F hF u) =
+          fabiusReal F (fabiusInv F hF v) -
+            fabiusReal F (fabiusInv F hF u) := by
+      rw [heq, fabiusReal_fabiusInv F hF huvDiff,
+        fabiusReal_fabiusInv F hF hv, fabiusReal_fabiusInv F hF hu]
+    rcases hForward.mp hmass with hdiag | hzero | hone
+    · exact Or.inl (injOn_fabiusInv F hF hu hv hdiag)
+    · exact Or.inr (Or.inl <| injOn_fabiusInv F hF hu
+        (show (0 : ℝ) ∈ Icc 0 1 by norm_num) (by simpa using hzero))
+    · exact Or.inr (Or.inr <| injOn_fabiusInv F hF hv
+        (show (1 : ℝ) ∈ Icc 0 1 by norm_num) (by simpa using hone))
+  · rintro (rfl | rfl | rfl)
+    · simp
+    · simp
+    · rw [fabiusInv_one F hF, fabiusInv_one_sub F hF u]
 
 /-- **Ordered sharp modulus bound on the totalized inverse.**  For arbitrary
 real inputs `u ≤ v`, including the clamped tails,
@@ -284,6 +546,57 @@ theorem abs_fabiusInv_sub_le
   · rw [abs_of_nonneg (sub_nonneg.mpr (monotone_fabiusInv F hF hvu)),
       abs_of_nonneg (sub_nonneg.mpr hvu)]
     exact fabiusInv_sub_le_sub_of_le F hF hvu
+
+/-- **Complete equality locus for the inverse self-modulus on `[0,1]`.**
+The sharp bound is an equality exactly when the two inputs coincide or at
+least one input is an endpoint.  No analogous five-case statement is valid
+for arbitrary real inputs: clamping contributes straddling-tail equality
+configurations and makes the endpoint alternatives order-dependent. -/
+theorem abs_fabiusInv_sub_eq_iff_of_mem_Icc
+    (F : BoundedFabius) (hF : IsFabius F) {u v : ℝ}
+    (hu : u ∈ Icc (0 : ℝ) 1) (hv : v ∈ Icc (0 : ℝ) 1) :
+    |fabiusInv F hF u - fabiusInv F hF v| = fabiusInv F hF |u - v| ↔
+      u = v ∨ u = 0 ∨ u = 1 ∨ v = 0 ∨ v = 1 := by
+  constructor
+  · intro heq
+    rcases le_total u v with huv | hvu
+    · have heq' :
+          fabiusInv F hF v - fabiusInv F hF u = fabiusInv F hF (v - u) := by
+        rw [abs_of_nonpos (sub_nonpos.mpr (monotone_fabiusInv F hF huv)),
+          abs_of_nonpos (sub_nonpos.mpr huv)] at heq
+        simpa only [neg_sub] using heq
+      rcases (fabiusInv_sub_eq_sub_iff_of_mem_Icc F hF hu hv huv).mp heq' with
+        huv' | hu0 | hv1
+      · exact Or.inl huv'
+      · exact Or.inr (Or.inl hu0)
+      · exact Or.inr (Or.inr (Or.inr (Or.inr hv1)))
+    · have heq' :
+          fabiusInv F hF u - fabiusInv F hF v = fabiusInv F hF (u - v) := by
+        rw [abs_of_nonneg (sub_nonneg.mpr (monotone_fabiusInv F hF hvu)),
+          abs_of_nonneg (sub_nonneg.mpr hvu)] at heq
+        exact heq
+      rcases (fabiusInv_sub_eq_sub_iff_of_mem_Icc F hF hv hu hvu).mp heq' with
+        hvu' | hv0 | hu1
+      · exact Or.inl hvu'.symm
+      · exact Or.inr (Or.inr (Or.inr (Or.inl hv0)))
+      · exact Or.inr (Or.inr (Or.inl hu1))
+  · rintro (rfl | hu0 | hu1 | hv0 | hv1)
+    · simp
+    · subst u
+      simp only [fabiusInv_zero, zero_sub, abs_neg]
+      rw [abs_of_nonneg (fabiusInv_nonneg F hF v), abs_of_nonneg hv.1]
+    · subst u
+      rw [fabiusInv_one F hF,
+        abs_of_nonneg (sub_nonneg.mpr (fabiusInv_le_one F hF v)),
+        abs_of_nonneg (sub_nonneg.mpr hv.2), fabiusInv_one_sub F hF v]
+    · subst v
+      simp only [fabiusInv_zero, sub_zero]
+      rw [abs_of_nonneg (fabiusInv_nonneg F hF u), abs_of_nonneg hu.1]
+    · subst v
+      rw [fabiusInv_one F hF,
+        abs_of_nonpos (sub_nonpos.mpr (fabiusInv_le_one F hF u)),
+        abs_of_nonpos (sub_nonpos.mpr hu.2)]
+      simpa only [neg_sub] using (fabiusInv_one_sub F hF u).symm
 
 /-- Metric-native spelling of `abs_fabiusInv_sub_le`. -/
 theorem dist_fabiusInv_le

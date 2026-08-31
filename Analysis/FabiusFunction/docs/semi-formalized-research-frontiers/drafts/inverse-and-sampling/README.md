@@ -69,16 +69,27 @@ New standalone intake members:
   committed and pushed.
 
 - [`Inverse_Fabius_Computability_Report/`](Inverse_Fabius_Computability_Report/),
-  *Computability of the Inverse Fabius Function* (40 A4 pp, 2,787 source
-  lines; 37 pp and 2,665 lines in the preceding revision; 29 pp at intake),
-  arrived on
+  *Computability of the Inverse Fabius Function* (42 A4 pp, 2,967 source
+  lines), arrived on
   2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (outer SHA-256
   `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
   All five submitted payload hashes verified and every text payload was
   already LF. A post-publication claim-by-claim reassessment now crosswalks
-  the structural least-mass, inverse-gap, exact-supremum, subadditivity, and
-  effective-injectivity layer to compiler-validated
+  the structural least-mass, global weak and maximal-domain strict
+  fixed-length-increment shape, complete endpoint equality locus, inverse-gap
+  rigidity, exact-supremum, subadditivity, and effective-injectivity layers to
+  compiler-validated
   [`InverseModulus.lean`](../../../../Lean/FabiusFunction/InverseModulus.lean).
+  The post-publication strict/equality extension adds eleven declarations:
+  six support/strict results (`fabiusIntervalMass_eq_zero_of_add_nonpos`,
+  `fabiusIntervalMass_eq_zero_of_one_le`,
+  `strictMonoOn_fabiusIntervalMass_firstHalf`,
+  `strictAntiOn_fabiusIntervalMass_secondHalf`,
+  `fabiusReal_lt_fabiusIntervalMass_of_mem_Ioo`, and
+  `fabiusReal_sub_lt_sub`) and five equality classifications
+  (`fabiusIntervalMass_eq_fabiusReal_iff`, `fabiusReal_sub_eq_sub_iff`,
+  `fabiusReal_add_eq_iff`, `fabiusInv_sub_eq_sub_iff_of_mem_Icc`, and
+  `abs_fabiusInv_sub_eq_iff_of_mem_Icc`).
   The source now also exhaustively crosswalks all fourteen public declarations
   in
   [`FabiusInverseEffectiveContinuity.lean`](../../../../Lean/FabiusFunction/FabiusInverseEffectiveContinuity.lean):
@@ -86,21 +97,26 @@ New standalone intake members:
   the exact numerical `Delta_r` inequality, strict and closed versions of the
   Delta/factorial dyadic inverse moduli, primitive-recursive denominators, and
   `EffectivelyUniformContinuous` with the simple `r=n` factorial witness. It
-  further exhaustively crosswalks all eighteen public declarations in
+  further exhaustively crosswalks all eighteen public declarations (three
+  definitions and fifteen theorems) in
   [`FabiusInverseLogarithmicModulus.lean`](../../../../Lean/FabiusFunction/FabiusInverseLogarithmicModulus.lean):
-  the three primitive-recursive least-order and denominator definitions and
-  fifteen theorems proving binary-length/minimality laws, positive-input
-  unfoldings, denominator comparison, strict and closed logarithmic inverse
-  moduli, and effective uniform continuity with either witness. The
-  probabilistic box-event proof itself, exact ceiling `d_*`, tolerant
+  the primitive-recursive least order `r(n)`, its binary-length and minimality
+  laws, the report-exact Delta and stronger factorial denominators at that
+  order, their primitive recursiveness and comparison, strict and closed-input
+  reciprocal moduli, and `EffectivelyUniformContinuous` with either witness.
+  The probabilistic box-event proof itself, exact ceiling `d_*`, tolerant
   bisection, sequential computability, the combined computable-real-function
   theorem, and precision asymptotics remain open Lean work. The `d_*` claim
   remains denominator-minimal only for the fixed dyadic proxy `2^{-r(n)}`, not
-  the weaker target `1/n`. The synchronized exactly-three-pass PDF is 700,414
-  bytes, includes the repaired author metadata, and embeds/subsets all fonts
-  with Libertinus present and no Type 3 fonts. The immutable five-entry
-  arrival ledger verifies the submitted payload, and the current exhaustive
-  six-entry operational ledger verifies the repository-normalized package.
+  the weaker target `1/n`. The synchronized 2,967-line source has SHA-256
+  `b8c5b5cc0aac752497fab8e8a1433971eb4fc74b4c33637115b00ca45143645a`, and
+  its 42-page A4 PDF has 711,377 bytes and SHA-256
+  `2dcf4b539c6b0ffbdda32e4de3a8b62f99bbaf5bc95d3436707f80031ea6989c`.
+  The PDF was rebuilt in exactly three strict serial passes, with repaired
+  author metadata, every font embedded/subset (22 fonts), Libertinus present,
+  and no Type 3 fonts. The immutable five-entry arrival ledger verifies the
+  submitted payload, and the current six-entry operational ledger verifies
+  the repository-normalized package.
 
 - [`inverse_fabius_iterates_nowhere_analytic/`](inverse_fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Inverse
@@ -235,12 +251,21 @@ provenance with SHA-256 in the volume's Appendix C and
 Filed 2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (689,198
 bytes; SHA-256
 `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
-The canonical 35-page A4/27 mm/Libertinus report gives self-contained proofs
-of the structural least-interval-mass and exact inverse-modulus identities,
-the elementary endpoint-mass estimate, tolerant-bisection realizer,
-inverse-computability packaging, and optimal input-bit law.  The structural
-least-mass, inverse-gap, subadditivity, attained-supremum, and exact effective-
-injectivity layer is now formalized in `InverseModulus.lean`; the closed
+The current canonical 42-page A4/27 mm/Libertinus report uses the synchronized
+2,967-line source (SHA-256
+`b8c5b5cc0aac752497fab8e8a1433971eb4fc74b4c33637115b00ca45143645a`) and
+the 711,377-byte PDF (SHA-256
+`2dcf4b539c6b0ffbdda32e4de3a8b62f99bbaf5bc95d3436707f80031ea6989c`).
+It was rebuilt in exactly three strict serial passes with all 22 fonts
+embedded/subset, Libertinus present, and no Type 3 fonts.  The report gives
+self-contained proofs of the structural least-interval-mass and exact
+inverse-modulus identities, the elementary endpoint-mass estimate,
+tolerant-bisection realizer, inverse-computability packaging, and optimal
+input-bit law.  `InverseModulus.lean` now adds eleven strict/equality
+declarations: six support/strict results covering the two constant tails,
+the two strict fixed-length half-shapes, and strict interior mass, together
+with five endpoint/equality classifications for fixed-length mass,
+superadditivity, and ordered and absolute inverse gaps.  The closed
 `Delta_r` estimate, recursive-modulus packaging, tolerant bisection,
 sequential computability, and input-bit asymptotics remain paper-level.  The
 crosswalk also identifies the already formalized forward spline/computability,
@@ -249,7 +274,8 @@ inverse endpoint equivalent; explicit periodic and all-orders inverse
 reversion remain frontier-document results.  The exact-rational supplement
 reproduces its captured output byte for byte.  Original five-file hashes are
 preserved in `ARRIVAL_SHA256SUMS.txt`; the current six-entry
-`SHA256SUMS.txt` verifies 6/6.
+`SHA256SUMS.txt` verifies 6/6.  The live union audit scans 611 Lean modules
+and 8,338 public declarations with zero documentation/header gaps.
 
 ## `inverse_fabius_iterates_nowhere_analytic/`
 

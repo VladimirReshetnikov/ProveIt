@@ -109,12 +109,13 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 611 modules and 8,327 lexically
+The post-merge 2026-08-31 inventory contains 611 modules and 8,338 lexically
 visible public declarations, with zero missing module headers and zero missing
-doc comments.  This snapshot includes the seven-module activation tranche,
-the finite Taylor jet in `ActivationTaylor.lean`, and the reusable divided-slope
-bridge in `HyperbolicActivation.lean`.  Relative to the activation checkpoint's
-610/8,318 tree, the exact four-declaration delta consists of the documented
+doc comments.  This snapshot includes the expanded strictness and equality API
+in `InverseModulus.lean`, the seven-module activation tranche and finite Taylor
+jet in `ActivationTaylor.lean`, and the reusable divided-slope bridge in
+`HyperbolicActivation.lean`.  Relative to the activation checkpoint's
+610/8,318 tree, the density-diagnostic delta consists of the documented
 zero-ratio, negative-ratio nonpositivity, nonpositive-ratio zero-`withDensity`,
 and probability-law nonidentity theorems in `GeometricUniformCDF.lean`.  The
 final merged census adds the local `GeometricUniformMultisection.lean` leaf and
@@ -123,6 +124,15 @@ three half--quarter multisection laws).  The baseline records the current
 inventory and those zeroes, so every future source addition must preserve the
 full invariant rather than merely avoid worsening a historical backlog.  Run the
 script for live numbers after merging concurrent source work.
+and probability-law nonidentity theorems in `GeometricUniformCDF.lean`.  The
+expanded strictness and equality refinements in `InverseModulus.lean` are also
+included in the merged source inventory.  The final merged census adds the
+local `GeometricUniformMultisection.lean` leaf and its five documented
+declarations (`evenCoordinates`, `oddCoordinates`, and the three half--quarter
+multisection laws).  The baseline records the current inventory and those
+zeroes, so every future source addition must preserve the full invariant rather
+than merely avoid worsening a historical backlog.  Run the script for live
+numbers after merging concurrent source work.
 
 ### What the review pass caught
 

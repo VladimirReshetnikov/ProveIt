@@ -4,13 +4,13 @@ COMPUTABILITY OF THE INVERSE FABIUS FUNCTION
 Contents
 --------
 inverse_fabius_computability.tex
-    Complete 2787-line, canonically styled LaTeX source of the report.  Its
-    latest synchronized update preserves the effective-continuity crosswalk
-    and adds the logarithmic reciprocal-modulus crosswalk described below.
+    Complete 2967-line, canonically styled LaTeX source of the report.  Its
+    synchronized update unites the equality/rigidity, effective-continuity,
+    and logarithmic reciprocal-modulus crosswalks described below.
 
 inverse_fabius_computability.pdf
-    Current synchronized A4 rendering, rebuilt from the merged source in
-    exactly three strict serial pdfLaTeX passes.
+    Current synchronized 42-page A4 rendering, rebuilt from the merged source
+    in exactly three strict serial pdfLaTeX passes.
 
 inverse_fabius_computability_experiments.py
     Exact-rational Python supplement using only the standard library.  It
@@ -67,7 +67,7 @@ forward computability, strict density shape, the clamped inverse and its
 inverse identities/calculus, exact dyadic inverse evaluation, and the leading
 inverse endpoint equivalent.  The report names those exact declarations and
 keeps its remaining inverse-computability declarations unqualified and
-schematic.  The live union audit scans 603 Lean modules and 8,212 public
+schematic.  The live union audit scans 611 Lean modules and 8,338 public
 declarations with zero documentation/header gaps.  No unqualified worldwide
 novelty claim is made.
 
@@ -87,11 +87,12 @@ The structural inverse-modulus portion of the report is crosswalked to:
 
     Analysis/FabiusFunction/Lean/FabiusFunction/InverseModulus.lean
 
-That module covers global fixed-length Fabius increments, reflection and
-one-sided shape, the least endpoint increment, constrained forward
-superadditivity, local and global inverse-gap bounds, global inverse
-subadditivity, attained exact unit-interval and totalized moduli, and the
-exact effective-injectivity threshold.
+That module covers global weak and maximal strict fixed-length Fabius-increment
+shape, reflection, the least endpoint increment and its complete equality
+locus, constrained forward superadditivity with exact equality cases, local and
+global inverse-gap bounds, unit-input inverse-gap rigidity, global inverse
+subadditivity, attained exact unit-interval and totalized moduli, and the exact
+effective-injectivity threshold.
 
 The effective-uniform-continuity portion is exhaustively crosswalked to all
 fourteen public declarations (two definitions and twelve theorems) in:
@@ -129,13 +130,14 @@ target tolerance 1/n.
 
 Build and validation
 --------------------
-The 2787-line source uses the repository's canonical article/A4/27 mm/
+The 2967-line source uses the repository's canonical article/A4/27 mm/
 Libertinus style and was rebuilt from clean auxiliaries in exactly three
-strict serial pdfLaTeX passes.  The synchronized PDF has populated author
-metadata; every page is A4 with zero rotation; every font is embedded and
-subset; Libertinus is present; and no Type 3 font is used.  Text extraction
-and visual checks cover the status boundary, corpus audit, asymptotic caveat,
-Lean roadmap, proof-status tables, and both exhaustive effective-continuity
-crosswalks.  Auxiliary files were removed after validation and the six-entry
-active checksum ledger refreshed.  Exact current hashes are recorded in
-SHA256SUMS.txt.
+strict serial pdfLaTeX passes.  The synchronized 42-page PDF has populated
+author metadata; every page is A4 with zero rotation; every font is embedded
+and subset; Libertinus is present; and no Type 3 font is used.  The final log
+has no errors, unresolved references/citations, rerun request, or overfull
+box.  Text extraction and visual checks cover the status boundary, corpus
+audit, asymptotic caveat, Lean roadmap, proof-status tables, and both
+exhaustive effective-continuity crosswalks.  Auxiliary files were removed
+after validation and the six-entry active checksum ledger refreshed.  Exact
+current hashes are recorded in SHA256SUMS.txt.

@@ -849,6 +849,24 @@ global modulus.  Its increment
 \nolinkurl{fabiusIntervalMass} is reflection-invariant and globally unimodal
 for every nonnegative length, by
 \nolinkurl{fabiusIntervalMass_reflect},
+\nolinkurl{fabiusIntervalMass_eq_zero_of_add_nonpos}, and
+\nolinkurl{fabiusIntervalMass_eq_zero_of_one_le}; the strict rise/fall on the
+nondegenerate support window is
+\nolinkurl{strictMonoOn_fabiusIntervalMass_firstHalf} and
+\nolinkurl{strictAntiOn_fabiusIntervalMass_secondHalf}.
+Hence the endpoint comparison has both strict and equality classifications:
+\nolinkurl{fabiusReal_lt_fabiusIntervalMass_of_mem_Ioo},
+\nolinkurl{fabiusIntervalMass_eq_fabiusReal_iff},
+\nolinkurl{fabiusReal_sub_lt_sub}, and
+\nolinkurl{fabiusReal_sub_eq_sub_iff}; the additive equality form is
+\nolinkurl{fabiusReal_add_eq_iff}.
+The global and unit-interval inverse equality loci are
+\nolinkurl{fabiusInv_sub_eq_sub_iff_of_mem_Icc} and
+\nolinkurl{abs_fabiusInv_sub_eq_iff_of_mem_Icc}, respectively.  These
+refinements preserve the clamping caveat: the complete equality classification
+is stated on the unit interval, while the global statements retain only the
+sharp inequalities and exact attained moduli.
+The same shape results also give
 \nolinkurl{monotoneOn_fabiusIntervalMass_firstHalf}, and
 \nolinkurl{antitoneOn_fabiusIntervalMass_secondHalf}.  Hence
 \nolinkurl{fabiusReal_sub_le_sub} and \nolinkurl{fabiusReal_add_le} prove the
@@ -997,6 +1015,89 @@ at both ends, by
 \nolinkurl{tendsto_deriv_fabiusInv_atTop_at_zero_right} and
 \nolinkurl{tendsto_deriv_fabiusInv_atTop_at_one_left}.  These are one-sided
 limits through \((0,1)\), not derivative values at the clamping points.
+
+\subsection{Effective dyadic continuity of the noncomputable inverse}
+
+\nolinkurl{FabiusInverseEffectiveContinuity.lean} supplies an explicit
+primitive-recursive modulus for the totalized inverse.  Its two
+natural-valued denominators are
+\[
+ D_{\mathrm{fac}}(r)=2^{\binom{r+1}{2}}(r+1)!,
+ \qquad
+ D_{\Delta}(r)=2^{\binom{r+1}{2}}(r+1)^{r+1}.
+\]
+The first is defined recursively and then identified with the displayed
+factorial form; the second is the elementary box-event denominator from the
+inverse-computability report.  Both functions are primitive recursive and
+\(D_{\mathrm{fac}}(r)\le D_{\Delta}(r)\) for every \(r\).
+
+Fix \(F\) of type \nolinkurl{BoundedFabius} and let \(h_F\) witness
+\nolinkurl{IsFabius} \(F\).  Only the sharp one-term recurrence estimate
+requires \(r>0\):
+\[
+ \frac{1}{
+   2^{\binom r2}(r+1)!(2^r-1)}
+ \le F(2^{-r}).
+\]
+The consequences are total in \(r\), including \(r=0\):
+\[
+ D_{\mathrm{fac}}(r)^{-1}\le F(2^{-r}),
+ \qquad
+ D_{\Delta}(r)^{-1}\le F(2^{-r}).
+\]
+For every real \(u,v\), either denominator \(D\) gives the strict and closed
+inverse moduli
+\[
+\begin{aligned}
+ |u-v|<D(r)^{-1}
+   &\Longrightarrow |F^{-1}(u)-F^{-1}(v)|<2^{-r},\\
+ |u-v|\le D(r)^{-1}
+   &\Longrightarrow |F^{-1}(u)-F^{-1}(v)|\le2^{-r}.
+\end{aligned}
+\]
+Here \(F^{-1}\) means the globally clamped \nolinkurl{fabiusInv}, so no
+unit-interval hypothesis is placed on \(u\) or \(v\).  Taking the stronger
+factorial denominator at \(r=n\), and using \(n<2^n\), proves
+\nolinkurl{fabiusInv_effectivelyUniformContinuous}, namely
+\nolinkurl{EffectivelyUniformContinuous} for that totalized inverse, in the
+repository's positive-precision reciprocal convention.
+
+The module's exhaustive public inventory is two definitions and twelve
+theorems:
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.07\textwidth} >{\raggedright\arraybackslash}p{0.53\textwidth} >{\raggedright\arraybackslash}p{0.33\textwidth}@{}}
+\toprule
+No. & Declaration & Formal content \\
+\midrule
+\endfirsthead
+\toprule
+No. & Declaration & Formal content \\
+\midrule
+\endhead
+1 & \nolinkurl{inverseFabiusFactorialDenominator} & Recursive natural-valued factorial denominator. \\
+2 & \nolinkurl{inverseFabiusFactorialDenominator_eq} & Closed form \(D_{\mathrm{fac}}(r)\). \\
+3 & \nolinkurl{inverseFabiusFactorialDenominator_primrec} & Primitive recursiveness of \(D_{\mathrm{fac}}\). \\
+4 & \nolinkurl{inverseFabiusDeltaDenominator} & Natural-valued report denominator \(D_{\Delta}\). \\
+5 & \nolinkurl{inverseFabiusDeltaDenominator_primrec} & Primitive recursiveness of \(D_{\Delta}\). \\
+6 & \nolinkurl{fabiusReal_inverse_two_pow_one_term_lower_bound} & One-term endpoint bound, under \(h_F\) and \(r>0\). \\
+7 & \nolinkurl{inv_inverseFabiusFactorialDenominator_le_fabiusReal} & Factorial reciprocal bound for every \(r\), under \(h_F\). \\
+8 & \nolinkurl{inverseFabiusFactorialDenominator_le_deltaDenominator} & \(D_{\mathrm{fac}}(r)\le D_{\Delta}(r)\), with no Fabius hypothesis. \\
+9 & \nolinkurl{inv_inverseFabiusDeltaDenominator_le_fabiusReal} & Report reciprocal bound for every \(r\), under \(h_F\). \\
+10 & \nolinkurl{abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_factorialDenominator} & Strict factorial-threshold modulus for all real inputs. \\
+11 & \nolinkurl{abs_fabiusInv_sub_le_inverse_two_pow_of_le_factorialDenominator} & Closed factorial-threshold modulus for all real inputs. \\
+12 & \nolinkurl{abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_deltaDenominator} & Strict report-threshold modulus for all real inputs. \\
+13 & \nolinkurl{abs_fabiusInv_sub_le_inverse_two_pow_of_le_deltaDenominator} & Closed report-threshold modulus for all real inputs. \\
+14 & \nolinkurl{fabiusInv_effectivelyUniformContinuous} & Effective uniform continuity with witness \(D_{\mathrm{fac}}(n)\). \\
+\bottomrule
+\end{longtable}
+
+The boundary is important.  The two denominator definitions and their
+primitive-recursion proofs are executable, but \nolinkurl{fabiusInv} itself
+is still a \emph{noncomputable} order-isomorphism inverse.  An effective
+modulus alone is not a name-producing algorithm.  This module proves neither
+\nolinkurl{SequentiallyComputable} nor a combined
+\nolinkurl{IsComputableRealFunction} theorem for the inverse, and it supplies
+no logarithmic selector \(r(n)\), exact least/ceiling denominator, tolerant
+bisection realizer, or input-bit complexity bound.
 
 \subsection{Generic formal implicit roots versus inverse-Fabius germs}
 \nolinkurl{ImplicitPowerSeries.lean} isolates a purely formal root engine.
@@ -4048,7 +4149,7 @@ Geometric and dyadic activation dimensions & \nolinkurl{geometricActivationDimen
 Forward curvature profile & \nolinkurl{deriv_deriv_fabiusReal}, \nolinkurl{deriv_deriv_fabiusReal_eq_zero_iff} & \nolinkurl{Convexity.lean} \\
 Totalized inverse \(F^{-1}\) & \nolinkurl{fabiusInv}, \nolinkurl{fabiusOrderIso}, \nolinkurl{fabiusInv_differentiableAt_iff}, \nolinkurl{fabiusInv_contDiffAt_infty_iff} & \nolinkurl{FabiusInverse.lean} \\
 Inverse curvature & \nolinkurl{deriv_deriv_fabiusInv}, \nolinkurl{deriv_deriv_fabiusInv_half}, \nolinkurl{deriv_deriv_fabiusInv_eq_zero_iff}, \nolinkurl{strictConcaveOn_fabiusInv_firstHalf}, \nolinkurl{strictConvexOn_fabiusInv_secondHalf} & \nolinkurl{FabiusInverse.lean} \\
-Exact inverse modulus & \nolinkurl{fabiusIntervalMass}, \nolinkurl{abs_fabiusInv_sub_le}, \nolinkurl{sSup_abs_fabiusInv_sub_eq}, \nolinkurl{forall_abs_fabiusInv_sub_lt_iff} & \nolinkurl{InverseModulus.lean} \\
+Exact inverse modulus & \nolinkurl{fabiusIntervalMass}, \nolinkurl{strictMonoOn_fabiusIntervalMass_firstHalf}, \nolinkurl{fabiusIntervalMass_eq_fabiusReal_iff}, \nolinkurl{fabiusInv_sub_eq_sub_iff_of_mem_Icc}, \nolinkurl{abs_fabiusInv_sub_le}, \nolinkurl{abs_fabiusInv_sub_eq_iff_of_mem_Icc}, \nolinkurl{sSup_abs_fabiusInv_sub_eq}, \nolinkurl{forall_abs_fabiusInv_sub_lt_iff} & \nolinkurl{InverseModulus.lean}; strict and equality refinements are unit-interval qualified where clamping requires it \\
 Effective dyadic inverse modulus & \nolinkurl{inverseFabiusFactorialDenominator}, \nolinkurl{inverseFabiusDeltaDenominator}, \nolinkurl{fabiusInv_effectivelyUniformContinuous} & \nolinkurl{FabiusInverseEffectiveContinuity.lean}; explicit primitive-recursive continuity modulus, not an inverse realizer \\
 Logarithmic reciprocal inverse modulus & \nolinkurl{inverseFabiusLogarithmicOrder}, \nolinkurl{inverseFabiusLogarithmicFactorialDenominator}, \nolinkurl{inverseFabiusLogarithmicDeltaDenominator}, \nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmic}, \nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmicDelta} & \nolinkurl{FabiusInverseLogarithmicModulus.lean}; least binary-length selector and two primitive-recursive witnesses, not an inverse realizer \\
 Actual quarter inverse jet & \nolinkurl{iteratedDeriv_centeredFabiusInv_quarter_eq_quadraticInverse}, \nolinkurl{iteratedDeriv_fabiusInv_five_seventy_two_succ} & \nolinkurl{FabiusInverseQuarterJet.lean}; equality of jets, not local analytic equality \\

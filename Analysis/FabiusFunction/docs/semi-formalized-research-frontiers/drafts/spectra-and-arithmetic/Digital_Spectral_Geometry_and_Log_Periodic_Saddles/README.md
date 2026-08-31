@@ -31,7 +31,7 @@ Main files:
 - `CHECKSUMS.sha256` — hashes of the current repository-normalized package
   payload (excluding the ledger itself).
 
-The 24-page report now uses the current primary document's canonical A4,
+The report now uses the current primary document's canonical A4,
 27 mm-margin preamble: its shared package, color, heading, theorem, macro,
 boxed-environment, and listing-style block is reproduced verbatim, apart from
 the permitted PDF metadata and running-head text. Four notation commands that
@@ -45,9 +45,9 @@ Rebuild from this directory:
 python repository_audit.py
 uv run --with-requirements requirements.txt \
   python numerical_experiments.py --output-dir .
-pdflatex -interaction=nonstopmode -halt-on-error -file-line-error Fabius_Rvachev_Frontier_Report.tex
-pdflatex -interaction=nonstopmode -halt-on-error -file-line-error Fabius_Rvachev_Frontier_Report.tex
-pdflatex -interaction=nonstopmode -halt-on-error -file-line-error Fabius_Rvachev_Frontier_Report.tex
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error -shell-escape Fabius_Rvachev_Frontier_Report.tex
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error -shell-escape Fabius_Rvachev_Frontier_Report.tex
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error -shell-escape Fabius_Rvachev_Frontier_Report.tex
 ```
 
 The numerical experiments are consistency checks only. Theorem labels are
@@ -93,9 +93,9 @@ crosswalk.
 The delivered `repository_audit.md` had inspected zero TeX files. The repaired
 audit reads the repository recursively while excluding this newly filed
 package directory. Against the final merged corpus it reads 188 prior TeX
-files (389,651 lines; 16,788,437 bytes; raw-byte
+files (390,119 lines; 16,813,357 bytes; raw-byte
 concatenated SHA-256
-`89123f8f7dbe881cc3682754d7638ad508b0e72f8457f5ca4e389a9e3c6db019`).
+`bb8a7de4c16a960f8d640d99797085b4f17cd0cdcc38b38caa4014536806b4d3`).
 All six advertised contribution clusters have substantial prior textual
 overlap, and no theorem-level novelty is accepted on intake. The
 divisor/zeta/count/heat/cumulant spine specializes existing Exponents and

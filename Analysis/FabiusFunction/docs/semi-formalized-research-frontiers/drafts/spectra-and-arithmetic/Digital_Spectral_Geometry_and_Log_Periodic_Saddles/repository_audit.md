@@ -3,9 +3,9 @@
 Target: `Analysis/FabiusFunction/docs/**/*.tex`, excluding this newly filed package directory.
 
 - TeX files read: **188**
-- Total source lines: **389651**
-- Total source bytes: **16788437**
-- Concatenated-corpus SHA-256: `89123f8f7dbe881cc3682754d7638ad508b0e72f8457f5ca4e389a9e3c6db019`
+- Total source lines: **390119**
+- Total source bytes: **16813357**
+- Concatenated-corpus SHA-256: `bb8a7de4c16a960f8d640d99797085b4f17cd0cdcc38b38caa4014536806b4d3`
 
 The corpus digest hashes raw file bytes concatenated in lexicographic relative-path order.
 Phrase clusters are a broad overlap screen, not a decision procedure for mathematical equivalence
@@ -384,7 +384,7 @@ Matched **37** prior TeX files:
 
 ### `Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
 
-- SHA-256: `45ee295add37135e39c297be36db469ed80623d9dd8157a8de75051402baedc0`
+- SHA-256: `fb7c77579fab38d07606b70cdd30ef1c535e9951478009151ea4c32bec629711`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
 - Structural headings:
   - section: Historical note and scope
@@ -3008,7 +3008,7 @@ Matched **37** prior TeX files:
 
 ### `fabius_lean_walkthrough/fabius_lean_walkthrough.tex`
 
-- SHA-256: `ae3b4cc6420e26cdcccca61f7cfe338d5ae8caa29d0fb3ec313e977859ee90dd`
+- SHA-256: `5602ac5f003a0afbd4e18de1aa59670bf2895bbf2844c1fae8e04fac4d57c2df`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle
 - Structural headings:
   - section: Scope and conventions
@@ -3061,6 +3061,7 @@ Matched **37** prior TeX files:
   - subsection: One global derivative equation
   - subsection: Sharp regularity and flatness
   - subsection: The totalized inverse
+  - subsection: Effective dyadic continuity of the noncomputable inverse
   - subsection: Generic formal implicit roots versus inverse-Fabius germs
   - subsection: Exact analytic loci and non-elementarity
   - subsection: Primitive-recursive splines and computable reals
@@ -6788,7 +6789,7 @@ Matched **37** prior TeX files:
 
 ### `semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Fabius_Computability_Report/inverse_fabius_computability.tex`
 
-- SHA-256: `aec52c72078494baf4a61df8c5df586651221d946feef53854eaa268ce62db24`
+- SHA-256: `b8c5b5cc0aac752497fab8e8a1433971eb4fc74b4c33637115b00ca45143645a`
 - Phrase clusters: Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle; Integer-base atomic family
 - Structural headings:
   - section: Main result and proof architecture
@@ -10667,7 +10668,7 @@ Matched **37** prior TeX files:
 
 ### `semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex`
 
-- SHA-256: `eb86be50ccb35ac47c415443aa094ebaa8341219440d94c49b27be2c7a3c2418`
+- SHA-256: `72cc36490ec3ad63b06159c99e2de171576151f1ed17d769e837258de70f4b6f`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Phase-locked Lambert-W saddle; Integer-base atomic family
 - Structural headings:
   - section: Provenance
@@ -10827,7 +10828,7 @@ Matched **37** prior TeX files:
 
 ### `semi-formalized-research-frontiers/semi-formalized-research-frontiers.tex`
 
-- SHA-256: `e4bb4db39c0a6c73ea3c915d9feee78221ba24daf9ef4a2ca00d0572643276aa`
+- SHA-256: `4c17c3000168b744a8d70e189991774654c0214c73ca9c92170b10b10a1bce55`
 - Phrase clusters: Fourier-zero spectral zeta; Exact digit-sum zero count; Complex dimensions / heat trace; Phase-locked Lambert-W saddle
 - Structural headings:
   - section: Consolidation map and reading conventions
