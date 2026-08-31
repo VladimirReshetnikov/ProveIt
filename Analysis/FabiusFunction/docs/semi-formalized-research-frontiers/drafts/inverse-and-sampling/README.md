@@ -3,24 +3,24 @@
 New standalone intake members:
 
 - [`Non_Elementarity_of_the_Fabius_Function/`](Non_Elementarity_of_the_Fabius_Function/),
-  *The Fabius Function and Its Inverse are Not Elementary* (14 A4 pp,
-  1068 source lines), filed on 2026-08-31 from the bare directory
-  `drafts/incoming/Non_Elementarity_of_the_Fabius_Function/`.  Origin commit
-  `7bd49a7f7` had moved the byte-identical TeX/PDF pair from the former root
-  documentation path into the intake queue because full formalization had not
-  yet been established.  No archive or submitted checksum ledger accompanied
-  that move, so the repository-generated two-entry `ARRIVAL_SHA256SUMS.txt`
-  records and verifies both delivered payloads.  The TeX was already LF; the
-  supplied PDF is A4, uses embedded/subset Libertinus and Type-1 mathematical
-  fonts, and has no Type-3 font.  Its title and abstract concern the analytic
-  locus, elementary and algebraic branches, and the inverse Fabius function,
-  so it belongs in this inverse-facing group.  An older same-stem study remains
-  under `docs/archive/standalone-studies/`, but neither its TeX nor its PDF is
-  byte-identical to this later expanded package; intake preserves both and
-  defers any supersession decision.  The manuscript presents itself as a
-  human-readable account of a formal development, but quick intake did not
-  perform a claim-by-claim Lean audit; its status remains standalone and
-  unreviewed until that post-publication crosswalk.
+  *The Fabius Function and Its Inverse are Not Elementary: Density of the
+  Analytic Locus under Algebraic Branches and Inversion* (14 A4 pp, 1,068
+  source lines), was reclassified on 2026-08-31 from the former top-level
+  `docs/Non_Elementarity_of_the_Fabius_Function/` pair through
+  `drafts/incoming/` and filed here without changing either submitted
+  payload. The bare two-file package supplied no archive or checksum ledger;
+  the repository-added `SHA256SUMS` covers and verifies both files. Its TeX
+  source was already LF, and its structurally readable, unencrypted PDF uses
+  embedded/subset fonts, includes Libertinus, and has no Type 3 font. The
+  title and abstract place its forward/inverse non-elementarity and analytic-
+  locus material with the inverse-function reports in this group. An older
+  same-stem study remains under `docs/archive/standalone-studies/`, but neither
+  its TeX nor its PDF is byte-identical to this later expanded package; both
+  are preserved and any supersession decision is deferred. It remains
+  standalone pending post-publication claim-level reassessment and verification
+  of its Lean crosswalk; manuscript theorem labels and the document's own
+  formalization description do not independently establish current Lean
+  verification.
 
 - [`geometric_comb_q_fabius_report/`](geometric_comb_q_fabius_report/),
   *Geometric-Comb Interpolation, Gaussian Pascal Transforms, and the
