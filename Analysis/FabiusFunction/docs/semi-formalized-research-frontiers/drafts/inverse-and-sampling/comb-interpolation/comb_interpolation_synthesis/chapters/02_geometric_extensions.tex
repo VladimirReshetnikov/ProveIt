@@ -725,16 +725,16 @@ For $b=1/2$,
 \begin{equation}
  F_{1/2,N}(x)
  =\frac{2^{N(N+1)/2}}{N!}
- \sum_{r=0}^{2^N-1}(-1)^{s_2(r)}
+ \sum_{r=0}^{2^N-1}(-1)^{\BinaryDigitSum(r)}
  \left(x-\frac{r}{2^N}\right)_+^N,
  \label{g1:eq:dyadic-finite-CDF}
 \end{equation}
-where $s_2(r)$ is the binary digit sum.
+where $\BinaryDigitSum(r)$ is the binary digit sum of $r$.
 \end{corollary}
 
 \begin{proof}
 Here $a_j=2^{-(j+1)}$.  Every subset sum is uniquely $r/2^N$, and the subset
-cardinality has the parity of $s_2(r)$.  The product of widths is
+cardinality has the parity of $\BinaryDigitSum(r)$.  The product of widths is
 $2^{-N(N+1)/2}$.
 \end{proof}
 
@@ -769,11 +769,11 @@ Put
 Then $Z_b$ is symmetric and supported on $[-1,1]$.  Under the Fourier
 convention
 \[
- \widehat u_b(z)=\Expectation e^{-2\pi izZ_b},
+ \FourierTwoPi{u_b}(z)=\Expectation\,\EulerE^{-2\pi\ImaginaryUnit zZ_b},
 \]
 its characteristic function is
 \begin{equation}
- \widehat u_b(z)
+ \FourierTwoPi{u_b}(z)
  =\prod_{j=0}^{\infty}
  \SincRad\!\bigl(2\pi(1-b)b^jz\bigr),
  \qquad \SincRad w:=\frac{\sin w}{w}.
@@ -781,7 +781,7 @@ its characteristic function is
 \end{equation}
 At $b=1/2$, this is
 \begin{equation}
- \widehat\RvachevUp(z)=\prod_{j=0}^{\infty}\SincRad(\pi z/2^j),
+ \FourierTwoPi{\RvachevUp}(z)=\prod_{j=0}^{\infty}\SincRad(\pi z/2^j),
  \label{g1:eq:up-sinc}
 \end{equation}
 which is the standard Rvachev product.
@@ -1039,7 +1039,7 @@ For real $z$ near zero this is negative, regardless of the parity of $n$.
 
 For the Rvachev function,
 \[
- \Phi(z)=\widehat\RvachevUp(z)
+ \Phi(z)=\FourierTwoPi{\RvachevUp}(z)
  =\prod_{j=0}^{\infty}\SincRad(\pi z/2^j).
 \]
 Taking $c=1/2$ and $Q=1/4$ in
@@ -2026,9 +2026,9 @@ The centered random variable
 \end{equation}
 has an even $C^\infty$ density $u_q$ supported on $[-1,1]$.  With the Fourier
 convention
-$\widehat f(\xi)=\int_\RealNumbers f(x)\EulerE^{-2\pi\ImaginaryUnit\xi x}\Differential x$,
+$\FourierTwoPi{f}(\xi)=\int_\RealNumbers f(x)\EulerE^{-2\pi\ImaginaryUnit\xi x}\Differential x$,
 \begin{equation}
- \widehat u_q(\xi)=\prod_{j=0}^\infty
+ \FourierTwoPi{u_q}(\xi)=\prod_{j=0}^\infty
  \SincPi\!\left(2(1-q)q^j\xi\right),
  \qquad
  \SincPi(t)=\frac{\sin(\pi t)}{\pi t}.
@@ -2221,7 +2221,7 @@ normalization.  From \eqref{g2:eq:uq-Fq-relation},
 \end{equation}
 Its Fourier transform is the canonical infinite sinc product
 \begin{equation}
- \widehat u(\xi)=\prod_{j=0}^\infty\SincPi(\xi/2^j).
+ \FourierTwoPi{u}(\xi)=\prod_{j=0}^\infty\SincPi(\xi/2^j).
  \label{g2:eq:up-fourier-classical}
 \end{equation}
 The construction and these identities agree with the classical treatments of
@@ -2516,16 +2516,16 @@ Put
 \end{equation}
 The infinite product \eqref{g2:eq:uq-fourier-product} satisfies
 \begin{equation}
- \widehat u_q(q^k\xi)
- =\frac{\widehat u_q(\xi)}{S_{q,k}(\xi)}.
+ \FourierTwoPi{u_q}(q^k\xi)
+ =\frac{\FourierTwoPi{u_q}(\xi)}{S_{q,k}(\xi)}.
  \label{g2:eq:tail-product-ratio}
 \end{equation}
-Thus values of $\widehat u_q$ on a geometric frequency comb are exactly the
+Thus values of $\FourierTwoPi{u_q}$ on a geometric frequency comb are exactly the
 tails of its defining product.
 
 \begin{theorem}[Reciprocal sinc-product filter]
 \label{g2:thm:reciprocal-product}
-Let $0<q<1$ and suppose $\widehat u_q(\xi)\ne0$.  Define
+Let $0<q<1$ and suppose $\FourierTwoPi{u_q}(\xi)\ne0$.  Define
 \begin{equation}
  R_{n,q}(\xi)=\sum_{k=0}^n
  \frac{\lambda_{n,k}^{(q)}}{S_{q,k}(\xi)}.
@@ -2533,14 +2533,14 @@ Let $0<q<1$ and suppose $\widehat u_q(\xi)\ne0$.  Define
 \end{equation}
 Then
 \begin{equation}
- R_{n,q}(\xi)\longrightarrow\frac1{\widehat u_q(\xi)}.
+ R_{n,q}(\xi)\longrightarrow\frac1{\FourierTwoPi{u_q}(\xi)}.
  \label{g2:eq:reciprocal-limit}
 \end{equation}
 More precisely,
 \begin{equation}
- \AbsoluteValue{R_{n,q}(\xi)-\frac1{\widehat u_q(\xi)}}
+ \AbsoluteValue{R_{n,q}(\xi)-\frac1{\FourierTwoPi{u_q}(\xi)}}
  \le
- \frac{q^{\binom{n+1}{2}}}{|\widehat u_q(\xi)|(q;q)_n}
+ \frac{q^{\binom{n+1}{2}}}{|\FourierTwoPi{u_q}(\xi)|(q;q)_n}
  \EulerE^{2\pi|\xi|}\frac{(2\pi|\xi|)^{n+1}}{(n+1)!}.
  \label{g2:eq:reciprocal-error-bound}
 \end{equation}
@@ -2549,18 +2549,18 @@ More precisely,
 \begin{proof}
 Apply the geometric filter to the entire function of $t$
 \[
- h_\xi(t)=\widehat u_q(t\xi)=\Expectation\EulerE^{-2\pi\ImaginaryUnit t\xi Z_q}.
+ h_\xi(t)=\FourierTwoPi{u_q}(t\xi)=\Expectation\EulerE^{-2\pi\ImaginaryUnit t\xi Z_q}.
 \]
 Since $h_\xi(0)=1$, \Cref{g2:thm:regular-summability} already gives
 $\sum_k\lambda_{n,k}h_\xi(q^k)\to1$.  By
 \eqref{g2:eq:tail-product-ratio}, this sum is
-$\widehat u_q(\xi)R_{n,q}(\xi)$, proving the limit.
+$\FourierTwoPi{u_q}(\xi)R_{n,q}(\xi)$, proving the limit.
 For the quantitative bound, the Taylor coefficients of $h_\xi$ satisfy
 $|c_m|\le(2\pi|\xi|)^m/m!$ because $|Z_q|\le1$.  Formula
 \eqref{g1:eq:exact-analytic-tail} with $A=1$ and
 $\GaussianBinomial{n+r}{n}q\le1/(q;q)_n$ gives
 \[
- |\widehat u_q(\xi)R_{n,q}(\xi)-1|
+ |\FourierTwoPi{u_q}(\xi)R_{n,q}(\xi)-1|
  \le\frac{q^{\binom{n+1}{2}}}{(q;q)_n}
  \sum_{m=n+1}^\infty\frac{(2\pi|\xi|)^m}{m!}.
 \]
@@ -2581,7 +2581,7 @@ should produce stable formulas for residues and zero multiplicities; see
 
 Expanding the characteristic function gives
 \begin{equation}
- \widehat u_q(t\xi)
+ \FourierTwoPi{u_q}(t\xi)
  =\sum_{m=0}^\infty
  \frac{(-2\pi\ImaginaryUnit\xi)^m}{m!}\Expectation Z_q^m\,t^m.
  \label{g2:eq:uq-characteristic-series}
@@ -2608,11 +2608,11 @@ Thus
 \begin{equation}
  \Probability(X^{(N)}\le x)
  =\frac{2^{N(N+1)/2}}{N!}
- \sum_{m=0}^{2^N-1}(-1)^{s_2(m)}
+ \sum_{m=0}^{2^N-1}(-1)^{\BinaryDigitSum(m)}
  \left(x-\frac{m}{2^N}\right)_+^N,
  \label{g2:eq:thue-morse-spline-cdf}
 \end{equation}
-where $s_2(m)$ is the binary digit sum.  Differentiating gives the density with
+where $\BinaryDigitSum(m)$ is the binary digit sum of $m$.  Differentiating gives the density with
 power $N-1$ and factor $(N-1)!^{-1}$.
 
 The Gaussian comb filter and the Thue--Morse spline are two different
@@ -2716,9 +2716,9 @@ at roots of unity, and cyclic $q$-difference equations.
 
 \begin{problem}[Filtered finite parts at sinc zeros]
 \label{g2:prob:zero-regularization}
-Let $\xi_0$ be a zero of $\widehat u_q$ of known multiplicity $m$.  Construct
+Let $\xi_0$ be a zero of $\FourierTwoPi{u_q}$ of known multiplicity $m$.  Construct
 from $R_{n,q}$ and its first $m$ derivatives a sequence converging to the
-finite part of $1/\widehat u_q$ at $\xi_0$, with a bound uniform in a shrinking
+finite part of $1/\FourierTwoPi{u_q}$ at $\xi_0$, with a bound uniform in a shrinking
 neighborhood of the zero.
 \end{problem}
 
@@ -2783,7 +2783,7 @@ The Gaussian--Appell decoder \eqref{gq:eq:cardinal-up-decoder} supplies an exact
 preconditioner for each finite polynomial interpolant, but it cannot remove
 the divergence because it reproduces the same polynomial.  A genuinely new
 scheme must let the atom space grow in smoothness or scale, rather than merely
-re-expressing $\mathbb P_n$.
+re-expressing the space of polynomials of degree at most $n$.
 
 \begin{problem}[Growing Hermite data]
 \label{g2:prob:growing-hermite}

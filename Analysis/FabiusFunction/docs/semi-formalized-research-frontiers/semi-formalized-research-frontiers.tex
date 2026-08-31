@@ -202,10 +202,8 @@ fractional and inverse-layer-cake checkpoint \nolinkurl{37eab3c56}}
 \newcommand{\fract}[1]{\left\{#1\right\}}
 \newcommand{\Deltah}{\Delta_h}
 \newcommand{\Btri}[1]{\binom{#1}{2}}
-\newcommand{\indicator}{\mathbf 1}
 \newcommand{\pos}[1]{\left(#1\right)_{+}}
 \newcommand{\Unif}{\operatorname{Unif}}
-\newcommand{\Psihat}{\widehat\Psi}
 \newcommand{\Mmain}{\mathcal M}
 \newcommand{\CoeffMass}{\mathcal C}
 \newcommand{\Prefix}{\mathcal S}
@@ -213,7 +211,6 @@ fractional and inverse-layer-cake checkpoint \nolinkurl{37eab3c56}}
 \newcommand{\Lam}{\Lambda}
 \newcommand{\epsTM}{\varepsilon}
 \newcommand{\conv}{*}
-\newcommand{\ind}{\mathbf 1}
 \newcommand{\Binom}[2]{\binom{#1}{#2}}
 \newcommand{\iu}{\mathrm i}
 \newcommand{\D}{\mathrm D}
@@ -1603,10 +1600,11 @@ description
  =\bigl((u,x)\mapsto d(u)+qx\bigr)_*(\rho\otimes\lambda).
  \label{integration:eq:affine-independent-copy-map}
 \end{equation}
-Consequently, if \(\widehat\lambda\) denotes the characteristic function of \(\lambda\),
+Consequently, writing \(\CharacteristicFunction{\lambda}\) for the characteristic
+function of \(\lambda\),
 \begin{equation}
- \widehat{\mathcal A_{\rho,d,q}(\lambda)}(t)
- =\widehat{d_*\rho}(t)\,\widehat\lambda(qt).
+ \CharacteristicFunction{\mathcal A_{\rho,d,q}(\lambda)}(t)
+ =\CharacteristicFunction{d_*\rho}(t)\,\CharacteristicFunction{\lambda}(qt).
  \label{integration:eq:affine-independent-copy-charfun}
 \end{equation}
 
@@ -1614,12 +1612,12 @@ Consequently, if \(\widehat\lambda\) denotes the characteristic function of \(\l
 \label{integration:thm:affine-independent-copy-unique}
 If \(\lambda\) is a fixed point of \(\mathcal A_{\rho,d,q}\), then
 \begin{align}
- \widehat\lambda(t)
-   &=\widehat{d_*\rho}(t)\,\widehat\lambda(qt),
+ \CharacteristicFunction{\lambda}(t)
+   &=\CharacteristicFunction{d_*\rho}(t)\,\CharacteristicFunction{\lambda}(qt),
       \label{integration:eq:affine-charfun-recurrence}\\
- \widehat\lambda(t)
-   &=\left(\prod_{k=0}^{n-1}\widehat{d_*\rho}(q^kt)\right)
-      \widehat\lambda(q^nt) \qquad(n\in\NaturalNumbers).
+ \CharacteristicFunction{\lambda}(t)
+   &=\left(\prod_{k=0}^{n-1}\CharacteristicFunction{d_*\rho}(q^kt)\right)
+      \CharacteristicFunction{\lambda}(q^nt) \qquad(n\in\NaturalNumbers).
       \label{integration:eq:affine-charfun-iterate}
 \end{align}
 If \(|q|<1\), any two probability fixed points are equal.  The same conclusion holds when
@@ -1631,12 +1629,13 @@ the hypotheses are presented directly in the product-map form
 For two fixed points, subtract the one-step recurrences.  Since every characteristic
 function has modulus at most one, the common digit factor gives
 \[
- \left|\widehat\lambda(t)-\widehat\nu(t)\right|
+ \left|\CharacteristicFunction{\lambda}(t)-\CharacteristicFunction{\nu}(t)\right|
  \le
- \left|\widehat\lambda(qt)-\widehat\nu(qt)\right|.
+ \left|\CharacteristicFunction{\lambda}(qt)-\CharacteristicFunction{\nu}(qt)\right|.
 \]
 Iterating sends \(t\) to \(q^nt\to0\).  Continuity at the origin and
-\(\widehat\lambda(0)=\widehat\nu(0)=1\) make the right-hand side tend to zero, after which
+\(\CharacteristicFunction{\lambda}(0)=\CharacteristicFunction{\nu}(0)=1\) make the
+right-hand side tend to zero, after which
 characteristic-function extensionality identifies the measures.  No infinite product is
 used: \eqref{integration:eq:affine-charfun-iterate} is a finite identity.  No support,
 density, absolute-continuity, or moment hypothesis occurs, and both \(q=0\) and negative
@@ -2025,7 +2024,7 @@ Put
 \[
  A=\{(t,x)\in[0,1]\times\RealNumbers:t<x\},
  \qquad
- H(t,x)=\mathbf1_A(t,x)k(t).
+ H(t,x)=\IndicatorOf{A}(t,x)k(t).
 \]
 Integrability of $k$ and finiteness of the probability law make $H$
 Bochner integrable.  Integrating first in $t$ gives
@@ -2536,7 +2535,7 @@ enlarged intervals.
 
 For $a<b$, define
 \begin{equation}
- \mathbf1_{[a,b]}^*(x)=
+ \IndicatorOf{[a,b]}^{*}(x)=
  \begin{cases}
   1,&a<x<b,\\
   \tfrac12,&x=a\text{ or }x=b,\\
@@ -2551,18 +2550,18 @@ to Lebesgue integration.
 \label{integration:lem:half-indicator-ae}
 For every $a,b\in\RealNumbers$,
 \begin{equation}
- \mathbf1_{[a,b]}^*=\mathbf1_{(a,b]}
+ \IndicatorOf{[a,b]}^{*}=\IndicatorOf{(a,b]}
  \quad\text{Lebesgue-almost everywhere}.
  \label{integration:eq:half-indicator-ae}
 \end{equation}
 Consequently
 \begin{equation}
- \int_\RealNumbers\mathbf1_{[a,b]}^*(x)\Differential x=\max(b-a,0),
+ \int_\RealNumbers\IndicatorOf{[a,b]}^{*}(x)\Differential x=\max(b-a,0),
  \label{integration:eq:half-indicator-total-integral}
 \end{equation}
 and, for $c\le d$,
 \begin{equation}
- \int_c^d\mathbf1_{[a,b]}^*(x)\Differential x
+ \int_c^d\IndicatorOf{[a,b]}^{*}(x)\Differential x
  =\max\bigl(\min(d,b)-\max(c,a),0\bigr).
  \label{integration:eq:half-indicator-overlap}
 \end{equation}
@@ -2600,7 +2599,7 @@ be the half-width of a cell and
 Its full width is $2h_n=2^{-n}$.  Smearing the atom uniformly over its cell produces the
 histogram
 \begin{equation}
- \Wcal_n(x)=2^n\sum_m p_{n,m}\mathbf1^*_{C_{n,m}}(x).
+ \Wcal_n(x)=2^n\sum_m p_{n,m}\IndicatorOf{C_{n,m}}^{*}(x).
  \label{integration:eq:histogram-from-atoms}
 \end{equation}
 By \eqref{integration:eq:half-indicator-total-integral}, each term has integral $p_{n,m}$, hence
@@ -2631,9 +2630,9 @@ If $x_{n,m}\in(a+h_n,b-h_n]$, then the entire cell lies inside $[a,b]$, so the n
 overlap is $1$.  If the cell meets $[a,b]$, then its center lies in
 $(a-h_n,b+h_n]$.  Therefore, term by term,
 \begin{equation}
- \mathbf1_{(a+h_n,b-h_n]}(x_{n,m})
+ \IndicatorOf{(a+h_n,b-h_n]}(x_{n,m})
  \le2^n\ell_{n,m}(a,b)
- \le\mathbf1_{(a-h_n,b+h_n]}(x_{n,m}).
+ \le\IndicatorOf{(a-h_n,b+h_n]}(x_{n,m}).
  \label{integration:eq:overlap-indicator-sandwich}
 \end{equation}
 Multiplication by $p_{n,m}$ and summation gives the central bridge.
@@ -2910,8 +2909,8 @@ mass one, uniformly bounded total variation, and sampled indices \(2n-j\) escapi
 finite prefix.  The shifted-spline definition there also records the indispensable
 half-cell cutoff
 \[
- \left\lfloor 2^p x-\frac12\right\rfloor+1
- =\left\lfloor 2^p x+\frac12\right\rfloor_{+},
+ \Floor{2^p x-\frac12}+1
+ =\PositivePart{\Floor{2^p x+\frac12}},
 \]
 which converts an inclusive upper index into a natural range length without creating a
 spurious summand below the first cell.  The exact-dyadic chapter then strengthens the old
@@ -3416,7 +3415,7 @@ absolute Gaussian moments.
 The same coefficientwise expansion yields the norm estimate
 \begin{equation}
  \left|\Gcal[p]\right|
- \le\sum_k|p_k|\mu_{2\lceil k/2\rceil},
+ \le\sum_k|p_k|\mu_{2\Ceiling{k/2}},
  \label{integration:eq:gaussian-contraction-norm-bound}
 \end{equation}
 with odd coefficients contributing zero in the exact functional.  In the formal proof a
@@ -3980,11 +3979,11 @@ For every \(n\in\NaturalNumbers\), the rational Lebesgue moment is \(2/(n+1)\) a
 \(n\), zero at odd \(n\), and casts to \(\int_{-1}^{1}x^n\,dx\).  For arbitrary natural
 \(i,j,k\), \lean{legendreGauntRat} is the bounded rational coefficient--moment sum,
 \lean{legendreGaunt} is \(G_{ijk}=\int_{-1}^{1}P_iP_jP_k\,dx\), and, writing
-\(a_{ijk}=((2k+1)/2)G_{ijk}^{\mathbb Q}\), the coefficient \(a_{ijk}\) is exactly
+\(a_{ijk}=((2k+1)/2)G_{ijk}^{\RationalNumbers}\), the coefficient \(a_{ijk}\) is exactly
 \lean{legendreProductLinearizationCoeffRat}\((i,j,k)\).
 The sum equals the rational moment functional and casts to the integral, obeys the
-displayed first-two and last-two swaps, and gives over both \(\mathbb R[X]\) and
-\(\mathbb Q[X]\)
+displayed first-two and last-two swaps, and gives over both \(\RealNumbers[X]\) and
+\(\RationalNumbers[X]\)
 \[
  P_iP_j=\sum_{k=0}^{i+j}a_{ijk}P_k.
 \]
@@ -4006,17 +4005,17 @@ Exactly one public definition,
 The definition equals \lean{canonicalRvachevLegendreCoefficientRat}\((k/2)\) when
 \(2\mid k\) and zero otherwise, so its even restriction is the canonical sequence and its
 odd entries vanish.  Write \(c_k^{\mathrm{full}}\) for this definition and
-\(M_{\mathbb Q}\) for the rational moment functional.  Unconditionally in \(k\),
+\(M_{\RationalNumbers}\) for the rational moment functional.  Unconditionally in \(k\),
 \[
- c_k^{\mathrm{full}}=\frac{2k+1}{2}\,M_{\mathbb Q}(P_k).
+ c_k^{\mathrm{full}}=\frac{2k+1}{2}\,M_{\RationalNumbers}(P_k).
 \]
-For all natural \(i,j\), write \(H_{ij}^{\mathbb Q}\) for the rational Gram entry,
-\(c_r\) for the canonical even coefficient, and \(G_{ijk}^{\mathbb Q}\) for the
+For all natural \(i,j\), write \(H_{ij}^{\RationalNumbers}\) for the rational Gram entry,
+\(c_r\) for the canonical even coefficient, and \(G_{ijk}^{\RationalNumbers}\) for the
 rational Gaunt coefficient.  Then
 \[
- H_{ij}^{\mathbb Q}=\sum_{k=0}^{i+j}c_k^{\mathrm{full}}G_{ijk}^{\mathbb Q},
+ H_{ij}^{\RationalNumbers}=\sum_{k=0}^{i+j}c_k^{\mathrm{full}}G_{ijk}^{\RationalNumbers},
  \qquad
- H_{ij}^{\mathbb Q}=\sum_{r=0}^{\lfloor(i+j)/2\rfloor}c_rG_{ij,2r}^{\mathbb Q}.
+ H_{ij}^{\RationalNumbers}=\sum_{r=0}^{\Floor{(i+j)/2}}c_rG_{ij,2r}^{\RationalNumbers}.
 \]
 The rational matrix theorem gives the even formula for every \(i,j:\lean{Fin}\,n\).
 Only the cast theorem and real matrix-entry formula require
@@ -4608,7 +4607,7 @@ Former source SHA-256 values:
 \section*{Topic abstract}
 A Math Stack Exchange question asks for a closed form for the sequence
 \[
- f_0(x)=\frac12\ind_{(-1,1)}(x),\qquad
+ f_0(x)=\frac12\IndicatorOf{(-1,1)}(x),\qquad
  f_n(x)=2\int_{-1}^{x}\bigl(f_{n-1}(2t+1)-f_{n-1}(2t-1)\bigr)\Differential t.
 \]
 The first integration produces the piecewise linear tent
@@ -4622,7 +4621,7 @@ Consequently, for $n\ge1$,
 \[
  f_n=u_{2^{-1}}\conv u_{2^{-2}}\conv\cdots\conv u_{2^{-n}}\conv u_{2^{-n}},
  \qquad
- u_a(x)=\frac1{2a}\ind_{[-a,a]}(x).
+ u_a(x)=\frac1{2a}\IndicatorOf{[-a,a]}(x).
 \]
 This identifies $f_n$ as a nonuniform box spline.  Collapsing its general
 inclusion--exclusion formula with the Thue--Morse generating polynomial yields, for
@@ -4671,7 +4670,7 @@ variance defect.
 The recurrence considered in the Math Stack Exchange question
 \cite{repeated2:mse-question,repeated2:mse-answer} is
 \begin{equation}
- f_0(x)=\frac12\ind_{(-1,1)}(x),
+ f_0(x)=\frac12\IndicatorOf{(-1,1)}(x),
  \qquad
  f_n(x)=2\int_{-1}^{x}
  \bigl(f_{n-1}(2t+1)-f_{n-1}(2t-1)\bigr)\Differential t.
@@ -4831,7 +4830,7 @@ comparison-kernel argument below determines the coefficient exactly.
 
 For $a>0$, let
 \begin{equation}
- u_a(x)=\frac1{2a}\ind_{[-a,a]}(x)
+ u_a(x)=\frac1{2a}\IndicatorOf{[-a,a]}(x)
  \label{repeated2:eq:uniform-density}
 \end{equation}
 be the density of a random variable uniform on $[-a,a]$.  Let $T$ denote the operator in
@@ -5091,7 +5090,7 @@ The classical finite Thue--Morse identity is
 \begin{equation}
  \prod_{r=0}^{n-1}(1-z^{2^r})
  =\sum_{j=0}^{2^n-1}(-1)^{\BinaryDigitSum(j)}z^j
- =\sum_{j\in\mathbb Z}\tau_n(j)z^j.
+ =\sum_{j\in\IntegerNumbers}\tau_n(j)z^j.
  \label{repeated2:eq:thue-morse-product}
 \end{equation}
 
@@ -5189,7 +5188,7 @@ application of $T$ adds exactly one degree and exactly one order of classical sm
 
 The first three functions are
 \begin{align}
- f_0(x)&=\frac12\ind_{(-1,1)}(x),
+ f_0(x)&=\frac12\IndicatorOf{(-1,1)}(x),
  \label{repeated2:eq:f0-explicit}\\
  f_1(x)&=\pos{1-|x|},
  \label{repeated2:eq:f1-explicit}\\
@@ -7442,7 +7441,7 @@ For $0\le m\le2^n$ the moment formula proved in the formal development is
  F\!\left(\frac{m}{2^n}\right)
  =\frac{2^{-\binom{n+1}{2}}}{n!}
  \sum_{h=0}^{m-1}\ThueMorseSignSymbol_h
- \sum_{k=0}^{\lfloor n/2\rfloor}
+ \sum_{k=0}^{\Floor{n/2}}
  \binom n{2k}c_k(2m-2h-1)^{n-2k}.}                        \label{dyadicweb:eq:input-moment-dyadic}
 \end{equation}
 The same finite expression, interpreted with $\FabiusGlobal$ on the left, is valid for every
@@ -7540,7 +7539,7 @@ If $0\le m\le2^n$, the left side is the bounded value $F(m/2^n)$.
 \begin{proof}
 Put $t_h=2m-2h-1$.  By \eqref{dyadicweb:eq:C-def},
 \[
- \sum_{k=0}^{\lfloor n/2\rfloor}\binom n{2k}c_kt_h^{n-2k}
+ \sum_{k=0}^{\Floor{n/2}}\binom n{2k}c_kt_h^{n-2k}
  =n![W^n]\bigl(\EulerE^{t_hW}\mathscr C(W)\bigr).
 \]
 Using \eqref{dyadicweb:eq:A-C-transform} at $X=2W$ gives
@@ -7637,7 +7636,7 @@ The affine relation $Z=2Y-1$ gives both directions of the moment change of coord
 For every $n,k\in\NaturalNumbers$,
 \begin{align}
  d_n
- &=2^{-n}\sum_{k=0}^{\lfloor n/2\rfloor}\binom n{2k}c_k,
+ &=2^{-n}\sum_{k=0}^{\Floor{n/2}}\binom n{2k}c_k,
                                                                \label{dyadicweb:eq:d-from-c-new}\\
  c_k
  &=\sum_{j=0}^{2k}(-1)^j2^j\binom{2k}{j}d_j.              \label{dyadicweb:eq:c-from-d-new}
@@ -7828,7 +7827,7 @@ The centered finite spline of degree $p\ge1$ is
  S_p(x)=\frac{(-1)^p}{2^{\binom p2}p!}
  \sum_{r=0}^{N_p(x)-1}\ThueMorseSignSymbol_r\left(r-2^px+\frac12\right)^p,
  \qquad
- N_p(x)=\max\!\left(0,\left\lfloor2^px+\frac12\right\rfloor\right). \label{dyadicweb:eq:centered-spline-local}
+ N_p(x)=\max\!\left(0,\Floor{2^px+\frac12}\right). \label{dyadicweb:eq:centered-spline-local}
 \end{equation}
 At degree zero set
 \begin{equation}
@@ -7852,7 +7851,7 @@ For all $m,n\in\NaturalNumbers$,
 \begin{equation}
  \boxed{
  \FabiusGlobal(m/2^n)=
- \sum_{k=0}^{\lfloor n/2\rfloor}
+ \sum_{k=0}^{\Floor{n/2}}
  \frac{c_k}{(2k)!\,2^{k(2n-2k+1)}}
  S_{n-2k}\!\left(\frac{m}{2^{n-2k}}\right).}              \label{dyadicweb:eq:moment-corrected-spline}
 \end{equation}
@@ -7892,7 +7891,7 @@ The formula has three noteworthy features.
 For every $m,n\in\NaturalNumbers$,
 \begin{equation}
  \FabiusGlobal(m/2^n)-S_n(m/2^n)
- =\sum_{k=1}^{\lfloor n/2\rfloor}
+ =\sum_{k=1}^{\Floor{n/2}}
  \frac{c_k}{(2k)!\,2^{k(2n-2k+1)}}
  S_{n-2k}\!\left(\frac{m}{2^{n-2k}}\right).               \label{dyadicweb:eq:matched-defect}
 \end{equation}
@@ -7929,7 +7928,7 @@ For every $m,n\in\NaturalNumbers$,
 \begin{equation}
  \boxed{
  S_n(m/2^n)=
- \sum_{k=0}^{\lfloor n/2\rfloor}
+ \sum_{k=0}^{\Floor{n/2}}
  \frac{\gamma_k}{(2k)!\,2^{k(2n-2k+1)}}
  \FabiusGlobal\!\left(\frac{m}{2^{n-2k}}\right).}            \label{dyadicweb:eq:reciprocal-spline}
 \end{equation}
@@ -8580,7 +8579,7 @@ For orientation, the first rows are
 
 For $x\ge0$ set
 \begin{equation}
- p_m(x)=\lfloor2^mx\rfloor,
+ p_m(x)=\Floor{2^mx},
  \qquad
  y_m(x)=x-\frac{p_m(x)}{2^m},
  \qquad 0\le y_m(x)<2^{-m},                               \label{dyadicweb:eq:prefix-tail-local}
@@ -8589,7 +8588,7 @@ and put
 \begin{equation}
  p^*_{m-1}(x)=
  \begin{cases}
- \lfloor x/2\rfloor,&m=0,\\
+ \Floor{x/2},&m=0,\\
  p_{m-1}(x),&m\ge1.
  \end{cases}                                               \label{dyadicweb:eq:previous-prefix-local}
 \end{equation}
@@ -8815,7 +8814,7 @@ limit, appears in the next section.
 The combinatorial bridge between the one-shot and set-bit organizations is an exact
 prefix-block decomposition.  Write
 $M/2^N=0.\delta_1\ldots\delta_N{}_2$ and
-$p_m=\lfloor2^mM/2^N\rfloor$.  For any function $P$ on the nonnegative integers and
+$p_m=\Floor{2^mM/2^N}$.  For any function $P$ on the nonnegative integers and
 $k\ge0$,
 \begin{align}
  \sum_{r=0}^{M2^k-1}\ThueMorseSignSymbol_rP(r)
@@ -8901,7 +8900,7 @@ For $n\ge s$ put $M=m2^{n-s}$, so that $x=M/2^n$.  For every $0\le k\le n$,
 \[
  2^{n+k}x=M2^k\in\NaturalNumbers,
  \qquad
- N_{n+k}(x)=\left\lfloor M2^k+\frac12\right\rfloor=M2^k.
+ N_{n+k}(x)=\Floor{M2^k+\frac12}=M2^k.
 \]
 Therefore \eqref{dyadicweb:eq:DnQ-local} becomes exactly the dyadic formula
 \eqref{dyadicweb:eq:input-q-dyadic} with numerator $M$ and denominator exponent $n$.  That formula is
@@ -9144,7 +9143,7 @@ $Q$.
 There is a simpler way to turn the exact dyadic formula into a limit at arbitrary argument.
 For $x\ge0$ define the nearest nonnegative dyadic numerator
 \begin{equation}
- M_n(x)=\max\!\left(0,\left\lfloor2^nx+\frac12\right\rfloor\right)=N_n(x),
+ M_n(x)=\max\!\left(0,\Floor{2^nx+\frac12}\right)=N_n(x),
  \qquad
  \widetilde x_n=\frac{M_n(x)}{2^n}.                        \label{dyadicweb:eq:nearest-dyadic}
 \end{equation}
@@ -9192,7 +9191,7 @@ moment/Thue--Morse limit:
  F(x)=\lim_{n\to\infty}
  &\frac{2^{-\binom{n+1}{2}}}{n!}
  \sum_{h=0}^{M_n(x)-1}\ThueMorseSignSymbol_h                              \notag\\
- &\times\sum_{k=0}^{\lfloor n/2\rfloor}
+ &\times\sum_{k=0}^{\Floor{n/2}}
  \binom n{2k}c_k(2M_n(x)-2h-1)^{n-2k},                   \label{dyadicweb:eq:synchronized-moment-limit}
 \end{align}
 again with error at most $2^{-n}$ on $[0,1]$.  This representation contains no $q$-symbols at
@@ -9213,7 +9212,7 @@ Let
 Then for every $k\ge0$,
 \begin{equation}
  N_{n+k}(x)
- =M_n(x)2^k+\left\lfloor2^k\theta_n(x)+\frac12\right\rfloor, \label{dyadicweb:eq:cutoff-defect}
+ =M_n(x)2^k+\Floor{2^k\theta_n(x)+\frac12}, \label{dyadicweb:eq:cutoff-defect}
 \end{equation}
 and the shifted coordinate in the inner power is
 \begin{equation}
@@ -9224,7 +9223,7 @@ Thus the source discrete row differs from the synchronized exact dyadic row in e
 ways:
 \begin{enumerate}
 \item the complete block of length $M_n2^k$ acquires a boundary defect
-      $\lfloor2^k\theta_n+1/2\rfloor$;
+      $\Floor{2^k\theta_n+1/2}$;
 \item the common translation $Q$ is replaced by the scale-dependent translation
       $Q-2^k\theta_n$.
 \end{enumerate}
@@ -9307,12 +9306,12 @@ following chain of exact finite expressions:
  &=2^{-\binom s2}[X^s]\bigl(B_m(X)\mathscr A(X)\bigr)     \label{dyadicweb:eq:chain-coefficient}\\
  &=\frac{2^{-\binom{s+1}{2}}}{s!}
    \sum_{h=0}^{m-1}\ThueMorseSignSymbol_h
-   \sum_{k=0}^{\lfloor s/2\rfloor}
+   \sum_{k=0}^{\Floor{s/2}}
    \binom s{2k}c_k(2m-2h-1)^{s-2k}                       \label{dyadicweb:eq:chain-moment}\\
  &=\frac{1}{2^{s^2}(1/2;1/2)_s}
    \sum_{k=0}^{s}\frac{\GaussianBinomial sk{1/2}}{4^{\binom k2}(s+k)!}
    \sum_{r=0}^{m2^k-1}\ThueMorseSignSymbol_r(r-m2^k+Q)^{s+k}              \label{dyadicweb:eq:chain-q}\\
- &=\sum_{k=0}^{\lfloor s/2\rfloor}
+ &=\sum_{k=0}^{\Floor{s/2}}
    \frac{c_k}{(2k)!2^{k(2s-2k+1)}}
    S_{s-2k}\!\left(\frac{m}{2^{s-2k}}\right)             \label{dyadicweb:eq:chain-moment-spline}\\
  &=\sum_{\substack{1\le j\le s\\\delta_j=1}}
@@ -9483,10 +9482,11 @@ sum & $0.147500482$ & $0.147500482$ & $0.147500482$ \\
 The exact-arithmetic network has a complementary global integral form.  For
 $Z=2Y-1$, independence gives
 \begin{equation}
- \widehat\RvachevUp(\xi)=\prod_{j=0}^{\infty}
+ \FourierTwoPi{\RvachevUp}(\xi)=\prod_{j=0}^{\infty}
  \SincRad\!\left(\frac{\pi\xi}{2^j}\right),
  \qquad
- \widehat f(\xi)=\int_\RealNumbers f(t)\EulerE^{-2\pi\ImaginaryUnit\xi t}\Differential t.
+ \FourierTwoPi{f}(\xi)=\int_\RealNumbers
+ f(t)\EulerE^{-2\pi\ImaginaryUnit\xi t}\Differential t.
  \label{dyadicweb:eq:up-Fourier}
 \end{equation}
 Integrating the Fourier inversion formula from the symmetry center gives, for
@@ -9616,7 +9616,7 @@ return V / (2^(n*(n-1)/2) * n!)
 \end{lstlisting}
 
 The centered-moment formula can be evaluated similarly.  Its advantage is parity: only
-$\lfloor n/2\rfloor+1$ moments occur.  The half-moment formula aligns more directly with the
+$\Floor{n/2}+1$ moments occur.  The half-moment formula aligns more directly with the
 binary Taylor polynomials.
 
 \subsection{Exact arithmetic checks implied by the connections}
@@ -9665,7 +9665,7 @@ $\NaturalNumbers$ destroys the formula.
 \end{warning}
 
 \begin{warning}[Binary expansions at dyadics]
-The floor prefixes $p_m=\lfloor2^mx\rfloor$ select the terminating expansion at a dyadic
+The floor prefixes $p_m=\Floor{2^mx}$ select the terminating expansion at a dyadic
 rational.  Replacing it by the alternative expansion ending in infinitely many $1$-digits
 changes the termwise digit series even though the represented real number is unchanged.
 \end{warning}
@@ -10198,10 +10198,10 @@ where $A_0$ is defined in \eqref{dyadicasym:eq:CF-intro}.  With
 \end{equation}
 the Fourier coefficients of the centered function are
 \begin{equation}
- \widehat\Psi(0)=0,
+ \FourierSeriesCoefficient{\Psi}{0}=0,
  \qquad
  \boxed{
- \widehat\Psi(k)=-\frac{\Gamma(-\chi_k)\zeta(1-\chi_k)}L}
+ \FourierSeriesCoefficient{\Psi}{k}=-\frac{\Gamma(-\chi_k)\zeta(1-\chi_k)}L}
  \quad(k\ne0).                                             \label{dyadicasym:eq:Psi-Fourier-report}
 \end{equation}
 The Gamma factor has no zeros, and $\zeta$ has no zeros on $\Re z=1$ away from its pole at
@@ -11226,7 +11226,7 @@ and take its logarithm only after conversion to the desired floating-point preci
 $\lambda=-W_{-1}(-L2^{-n})/L$ or by Newton iteration initialized with
 $n+\log n/L$.
 
-\item Reduce $u=\lambda-\lfloor\lambda\rfloor$ and put $s=2^u\in[1,2)$.  Evaluate
+\item Reduce $u=\lambda-\Floor{\lambda}$ and put $s=2^u\in[1,2)$.  Evaluate
 \begin{align*}
  P(u)={}&\sum_{j\ge1}\log\frac{1-\EulerE^{-s/2^j}}{s/2^j}
  +\frac L2(u^2-u)\\
@@ -11404,7 +11404,7 @@ $\sigma_{k+1}(m)=\sum_{j=0}^{m}\sigma_k(j)$ be its inclusive iterated prefix sum
 formal development in \repo\ proves that a shifted and normalized order-$(n+1)$ prefix row
 is exactly the coefficient row of a finite product of discrete uniform laws, and that its
 associated histogram converges pointwise to Rvachev's compactly supported function $\RvachevUp$.
-Sampling the same row at $\lfloor 2^n x\rfloor$ consequently converges to the bounded Fabius
+Sampling the same row at $\Floor{2^n x}$ consequently converges to the bounded Fabius
 function $F(x)$.  The existing argument is deliberately qualitative and supplies no rate.
 
 This report makes the convergence quantitative.  At the natural cell centers, the normalized
@@ -11422,7 +11422,7 @@ The piecewise-constant histogram is less accurate because of cell quantization:
 $\|\mathcal W_n-\RvachevUp\|_\infty=2^{-n}+\BigO(n4^{-n})$.
 Most strikingly, the literal dyadic-floor approximation
 \[
- A_n(x)=\frac{\sigma_{n+1}(\lfloor2^n x\rfloor)}{2^{\binom n2}}
+ A_n(x)=\frac{\sigma_{n+1}(\Floor{2^n x})}{2^{\binom n2}}
 \]
 has a still larger, entirely geometric first-order error.  Uniformly on $[0,1]$,
 \[
@@ -11461,7 +11461,8 @@ We use the source article's normalization throughout:
 \item $\RvachevUp$ is the even compactly supported density on $[-1,1]$, with
       $\RvachevUp(x-1)=F(x)$ for $0\le x\le1$;
 \item the Fourier transform is
-      $\widehat f(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\Differential x$.
+      $\FourierTwoPi{f}(\xi)=\int_{\RealNumbers}
+      f(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\Differential x$.
 \end{itemize}
 The sharp derivative theorem from the source gives
 \begin{equation}
@@ -11617,7 +11618,7 @@ By \eqref{tmrates:eq:coefficient-bridge}, this is exactly
 Let $I_{n,m}$ be the cell of width $h_n$ centered at $\lambda_{n,m}$.  Spreading each atom of
 $\mu_n$ uniformly over its cell gives the step density
 \begin{equation}
- \mathcal W_n(x)=\sum_m H_n(\lambda_{n,m})\mathbf 1_{I_{n,m}}(x), \label{tmrates:eq:Wn}
+ \mathcal W_n(x)=\sum_m H_n(\lambda_{n,m})\IndicatorOf{I_{n,m}}(x), \label{tmrates:eq:Wn}
 \end{equation}
 with half weight from each adjacent cell at a shared endpoint.  In the interior of a cell,
 $\mathcal W_n$ is simply the corresponding normalized prefix coefficient.  The formal
@@ -11643,7 +11644,7 @@ an equivalent representation of \eqref{tmrates:eq:atomic-law}:
 \end{equation}
 Consequently
 \begin{equation}
- \widehat{\mu_n}(\xi)
+ \FourierTwoPi{\mu_n}(\xi)
  =\prod_{\ell=1}^{n}
   \left(\cos\frac{\pi\xi}{2^\ell}\right)^\ell.          \label{tmrates:eq:finite-cosine}
 \end{equation}
@@ -11654,7 +11655,7 @@ The complete series
 \end{equation}
 converges absolutely, and its density is $\RvachevUp$.  Equivalently,
 \begin{equation}
- \widehat\RvachevUp(\xi)
+ \FourierTwoPi{\RvachevUp}(\xi)
  =\prod_{\ell=1}^{\infty}
   \left(\cos\frac{\pi\xi}{2^\ell}\right)^\ell.          \label{tmrates:eq:infinite-cosine}
 \end{equation}
@@ -11741,16 +11742,18 @@ directly to $\mu_n$.
 \begin{lemma}[Nyquist inversion for a shifted lattice]
 \label{tmrates:lem:lattice-inversion}
 Let $\mu=\sum_{k\in\IntegerNumbers}p_k\delta_{a+hk}$ be a finite measure on a translate of $h\IntegerNumbers$, and let
-$\widehat\mu(\xi)=\sum_kp_k\EulerE^{-2\pi\ImaginaryUnit(a+hk)\xi}$.  Then, for every $m\in\IntegerNumbers$,
+$\FourierTwoPi{\mu}(\xi)=\sum_kp_k\EulerE^{-2\pi\ImaginaryUnit(a+hk)\xi}$.
+Then, for every $m\in\IntegerNumbers$,
 \begin{equation}
  \frac{p_m}{h}
  =\int_{-1/(2h)}^{1/(2h)}
-   \widehat\mu(\xi)\EulerE^{2\pi\ImaginaryUnit(a+hm)\xi}\Differential\xi.          \label{tmrates:eq:lattice-inversion}
+   \FourierTwoPi{\mu}(\xi)\EulerE^{2\pi\ImaginaryUnit(a+hm)\xi}\Differential\xi.          \label{tmrates:eq:lattice-inversion}
 \end{equation}
 \end{lemma}
 
 \begin{proof}
-Insert the finite sum defining $\widehat\mu$ and integrate term by term.  The $k$th term is
+Insert the finite sum defining $\FourierTwoPi{\mu}$ and integrate term by term.  The
+$k$th term is
 \[
  p_k\int_{-1/(2h)}^{1/(2h)}\EulerE^{2\pi\ImaginaryUnit h(m-k)\xi}\Differential\xi,
 \]
@@ -11764,7 +11767,7 @@ For $\mu_n$, the interval in \eqref{tmrates:eq:lattice-inversion} is
 Combining \eqref{tmrates:eq:Hn} and \eqref{tmrates:eq:lattice-inversion} gives
 \begin{equation}
  H_n(\lambda_{n,m})
- =\int_{B_n}\widehat{\mu_n}(\xi)
+ =\int_{B_n}\FourierTwoPi{\mu_n}(\xi)
    \EulerE^{2\pi\ImaginaryUnit\lambda_{n,m}\xi}\Differential\xi.                  \label{tmrates:eq:Hn-inversion}
 \end{equation}
 
@@ -11774,7 +11777,7 @@ On $B_n$, all factors in the omitted cosine tail are positive: for $\ell>n$,
 $|\pi\xi/2^\ell|\le\pi/4$.  Hence one may divide \eqref{tmrates:eq:infinite-cosine} by
 \eqref{tmrates:eq:finite-cosine} and write
 \begin{equation}
- \widehat{\mu_n}(\xi)=\widehat\RvachevUp(\xi)R_n(\xi),
+ \FourierTwoPi{\mu_n}(\xi)=\FourierTwoPi{\RvachevUp}(\xi)R_n(\xi),
  \qquad
  R_n(\xi)=\prod_{\ell>n}
   \left(\sec\frac{\pi\xi}{2^\ell}\right)^\ell,
@@ -11797,10 +11800,11 @@ $t/\sin t\le\pi/2$.  Thus there is an absolute $C_*$ such that
  1\le R_n(\xi)\le C_*\left(\frac\pi2\right)^n,
  \qquad \xi\in B_n.                                      \label{tmrates:eq:Rn-global-bound}
 \end{equation}
-This exponential growth is harmless because $\widehat\RvachevUp$ decays faster than every power.
+This exponential growth is harmless because $\FourierTwoPi{\RvachevUp}$ decays faster
+than every power.
 Indeed, compact support and smoothness give, for each $M\ge1$,
 \begin{equation}
- |\widehat\RvachevUp(\xi)|
+ |\FourierTwoPi{\RvachevUp}(\xi)|
  \le\frac{\|\RvachevUp^{(M)}\|_1}{(2\pi|\xi|)^M}
  \le\frac{2^{1+\binom{M+1}{2}}}{(2\pi|\xi|)^M}
  \qquad(\xi\ne0),                                        \label{tmrates:eq:fourier-rapid}
@@ -11863,7 +11867,8 @@ uniformly on the moving lattice.
 \begin{proof}
 Use \eqref{tmrates:eq:Hn-inversion} and \eqref{tmrates:eq:Rn} and split the integral at
 $|\xi|=2^{n/4}$.  On the inner interval, \eqref{tmrates:eq:Rn-expansion} is uniform.  Since
-$\int_{\RealNumbers}|\xi|^6|\widehat\RvachevUp(\xi)|\Differential\xi<\infty$, its integrated remainder is
+$\int_{\RealNumbers}|\xi|^6|\FourierTwoPi{\RvachevUp}(\xi)|\Differential\xi<\infty$,
+its integrated remainder is
 $\BigO(n^3 64^{-n})$ uniformly in the phase $\lambda$.
 
 On the complementary part of $B_n$, combine \eqref{tmrates:eq:Rn-global-bound} with
@@ -11874,10 +11879,12 @@ by integrals over all of $\RealNumbers$.
 
 With the chosen Fourier convention,
 \begin{equation*}
- \int_{\RealNumbers}(\pi\xi)^2\widehat\RvachevUp(\xi)\EulerE^{2\pi\ImaginaryUnit\lambda\xi}\Differential\xi
+ \int_{\RealNumbers}(\pi\xi)^2\FourierTwoPi{\RvachevUp}(\xi)
+ \EulerE^{2\pi\ImaginaryUnit\lambda\xi}\Differential\xi
  =-\frac14\RvachevUp''(\lambda),
  \qquad
- \int_{\RealNumbers}(\pi\xi)^4\widehat\RvachevUp(\xi)\EulerE^{2\pi\ImaginaryUnit\lambda\xi}\Differential\xi
+ \int_{\RealNumbers}(\pi\xi)^4\FourierTwoPi{\RvachevUp}(\xi)
+ \EulerE^{2\pi\ImaginaryUnit\lambda\xi}\Differential\xi
  =\frac1{16}\RvachevUp^{(4)}(\lambda).
 \end{equation*}
 Substituting \eqref{tmrates:eq:alpha-n} and \eqref{tmrates:eq:beta-n} gives
@@ -11977,7 +11984,7 @@ just a big-$O$ convergence estimate.
 
 The Fourier expansion above determines the sharp asymptotics.  A complementary argument
 gives explicit, if nonsharp, bounds at every level $n\ge3$.  Let
-$\beta_h=h^{-1}\mathbf 1_{[-h/2,h/2]}$ and define the mass-preserving dilation
+$\beta_h=h^{-1}\IndicatorOf{[-h/2,h/2]}$ and define the mass-preserving dilation
 \[
  (D_h\RvachevUp)(x)=h^{-1}\RvachevUp(x/h).
 \]
@@ -12102,17 +12109,17 @@ The source theorem obtains $F$ from the prefix row by evaluating its $\RvachevUp
 half the argument.  Define
 \begin{equation}
  A_n(x)=\mathcal J_n(x/2)
- =\frac{\sigma_{n+1}(\lfloor2^nx\rfloor)}{2^{\binom n2}},
+ =\frac{\sigma_{n+1}(\Floor{2^nx})}{2^{\binom n2}},
  \qquad 0\le x\le1.                                      \label{tmrates:eq:An}
 \end{equation}
 Let
 \begin{equation}
- \theta_n(x)=\fract{2^nx}=2^nx-\lfloor2^nx\rfloor.        \label{tmrates:eq:theta}
+ \theta_n(x)=\fract{2^nx}=2^nx-\Floor{2^nx}.        \label{tmrates:eq:theta}
 \end{equation}
 The normalized prefix value in \eqref{tmrates:eq:An} is not located at $x-1$.  Its actual center is
 \begin{align}
  \lambda_n(x)
- &=\lambda_{n,\lfloor2^nx\rfloor} \notag\\
+ &=\lambda_{n,\Floor{2^nx}} \notag\\
  &=x-1+\delta_n(x),                                        \label{tmrates:eq:lambda-drift}\\
  \delta_n(x)
  &=\frac{n+2-2\theta_n(x)}{2^{n+1}}.                       \label{tmrates:eq:delta}
@@ -12126,7 +12133,7 @@ In terms of the omitted-tail support radius \eqref{tmrates:eq:rn},
 \begin{equation}
  \delta_n(x)=r_n-\theta_n(x)h_n.                           \label{tmrates:eq:delta-rn}
 \end{equation}
-Thus the index $\lfloor2^nx\rfloor$ compensates for the ordinary fractional cell position but
+Thus the index $\Floor{2^nx}$ compensates for the ordinary fractional cell position but
 not for the shortening of the finite support.  The residual is roughly $r_n\sim nh_n/2$,
 which is much larger than either the cell width error of the histogram or the variance-scale
 center bias.
@@ -12305,7 +12312,7 @@ using $\|F'\|_\infty=2$ gives \eqref{tmrates:eq:floor-sharp}.
 The source notation uses
 \begin{equation}
  \mathcal J_n(u)
- =\frac{\sigma_{n+1}(\lfloor2^{n+1}u\rfloor)}{2^{\binom n2}}.
+ =\frac{\sigma_{n+1}(\Floor{2^{n+1}u})}{2^{\binom n2}}.
 \end{equation}
 For $0\le u<1$ put $\vartheta_n(u)=\fract{2^{n+1}u}$ and
 \begin{equation}
@@ -12536,7 +12543,7 @@ term of order $nh_n^2$.
 \item Holding a center value constant across its width-$h_n$ cell changes the coordinate by
 at most $h_n/2$.  The target has maximal slope $2$, so the histogram error is $h_n$.
 \item Replacing the intrinsic coordinate by the naive dyadic coordinate implicit in
-$m=\lfloor2^nx\rfloor$ overlooks the support deficit $r_n$.  It changes the coordinate by
+$m=\Floor{2^nx}$ overlooks the support deficit $r_n$.  It changes the coordinate by
 roughly $nh_n/2$, so the Fabius error is roughly $nh_nF'(x)/2$.
 \end{enumerate}
 The three rates are therefore compatible, not contradictory.  They measure distinct
@@ -15004,7 +15011,7 @@ derivatives can have nonzero mean.  Write
 \begin{equation}
  \bigl\langle\Psi^{(a)}\Psi^{(b)}\bigr\rangle
  =\sum_{k\ne0}(2\pi\ImaginaryUnit k)^a(-2\pi\ImaginaryUnit k)^b
-   |\widehat\Psi(k)|^2.
+   |\FourierSeriesCoefficient{\Psi}{k}|^2.
  \label{smallarg:eq:derivative-product-mean}
 \end{equation}
 Integration by parts over one period gives, in particular,
@@ -15047,12 +15054,15 @@ identity into an approximation.
 The Gamma--zeta formula \eqref{dyadicasym:eq:Psi-Fourier-report} gives, numerically,
 \[
 \begin{aligned}
-  \widehat\Psi(1)&=(7.55864754098-7.47010355898\,\ImaginaryUnit)\,10^{-7},
-    &|\widehat\Psi(1)|&=1.06271162519\,10^{-6},\\
-  \widehat\Psi(2)&=(3.24812347723+5.85175898712\,\ImaginaryUnit)\,10^{-13},
-    &|\widehat\Psi(2)|&=6.69278636792\,10^{-13},\\
-  \widehat\Psi(3)&=(-2.81236523199-2.58674397916\,\ImaginaryUnit)\,10^{-19},
-    &|\widehat\Psi(3)|&=3.82107872359\,10^{-19}.
+  \FourierSeriesCoefficient{\Psi}{1}
+    &=(7.55864754098-7.47010355898\,\ImaginaryUnit)\,10^{-7},
+    &|\FourierSeriesCoefficient{\Psi}{1}|&=1.06271162519\,10^{-6},\\
+  \FourierSeriesCoefficient{\Psi}{2}
+    &=(3.24812347723+5.85175898712\,\ImaginaryUnit)\,10^{-13},
+    &|\FourierSeriesCoefficient{\Psi}{2}|&=6.69278636792\,10^{-13},\\
+  \FourierSeriesCoefficient{\Psi}{3}
+    &=(-2.81236523199-2.58674397916\,\ImaginaryUnit)\,10^{-19},
+    &|\FourierSeriesCoefficient{\Psi}{3}|&=3.82107872359\,10^{-19}.
 \end{aligned}
 \]
 Thus \(\Psi\) itself oscillates only by a few parts in \(10^6\), even though repeated
@@ -15060,13 +15070,16 @@ differentiation greatly amplifies that oscillation in the higher saddle coeffici
 
 \section{Fourier form and the amplitude law}\label{smallarg:sec:fourier}
 
-Because $\Psi^{(m)}(u)=\sum_{k\ne0}(2\pi\ImaginaryUnit k)^m\Psihat(k)\EulerE^{2\pi\ImaginaryUnit ku}$,
+Because
+$\Psi^{(m)}(u)=\sum_{k\ne0}(2\pi\ImaginaryUnit k)^m
+\FourierSeriesCoefficient{\Psi}{k}\EulerE^{2\pi\ImaginaryUnit ku}$,
 \cref{inverse:sec:coefficient-formulas} together with \cref{dyadicasym:eq:Psi-Fourier-report} turns every coefficient into
 an explicit Gamma--zeta Fourier object.  Discarding the terms of degree two
 and higher in the derivatives of $\Psi$ leaves the linearized Fourier form
 \[
   A_j(u)=A_j^{(0)}
-   +2\operatorname{Re}\Bigl(\sum_{k\ge1}c_j(k)\Psihat(k)\EulerE^{2\pi\ImaginaryUnit ku}\Bigr)
+   +2\operatorname{Re}\Bigl(\sum_{k\ge1}c_j(k)
+   \FourierSeriesCoefficient{\Psi}{k}\EulerE^{2\pi\ImaginaryUnit ku}\Bigr)
    +R_j(u),
 \]
 where \(A_j^{(0)}\) is the \(\Psi\)-free constant and \(R_j\) is the raw sum of
@@ -15086,7 +15099,8 @@ Here $c_j(k)$ is the polynomial in $w=2\pi\ImaginaryUnit k$ read off from
 The resulting data for $A_2$ are all confirmed numerically in
 \cref{smallarg:sec:numerics}.
 For the first Fourier mode, the linearized amplitude is
-$2|c_2(1)\Psihat(1)|$.  The left column is what the linearized form gives, the right what the exact
+$2|c_2(1)\FourierSeriesCoefficient{\Psi}{1}|$.  The left column is what the linearized
+form gives, the right what the exact
 $A_2$ gives; they are quoted separately because the difference is real, if
 small, and quoting ten digits of a linearization would be an overclaim.
 \[
@@ -15110,7 +15124,7 @@ The top term of \cref{inverse:thm:top-jet} dominates the oscillation, and it mul
 the $k$-th Fourier mode by $(2\pi k)^{2j}$.  Taking $k=1$,
 \begin{equation}\label{smallarg:eq:amplitude}
   \text{amplitude of }A_j\ \approx\
-  2|\Psihat(1)|\,\frac{(2\pi^2/L^2)^j}{j!},
+  2|\FourierSeriesCoefficient{\Psi}{1}|\,\frac{(2\pi^2/L^2)^j}{j!},
   \qquad \frac{2\pi^2}{L^2}=41.0845769104 .
 \end{equation}
 
@@ -15158,12 +15172,14 @@ never be used to size a particular coefficient.  So the periodic parts of
 the coefficients grow rapidly with $j$, even though \(\Psi\) itself has
 amplitude only about \(2\times10^{-6}\) (roughly \(4\times10^{-6}\) peak to
 peak): differentiation progressively cancels the smallness of
-$\Psihat(1)$.  Any numerical extraction of a coefficient beyond the first must
+$\FourierSeriesCoefficient{\Psi}{1}$.  Any numerical extraction of a coefficient beyond
+the first must
 therefore control the phase; see \cref{smallarg:sec:traps}.
 
 \subsection{Why the expansion is only asymptotic}
 
-$|\Psihat(k)|$ decays like $\exp(-\pi|\chi_k|/2)=\exp(-\pi^2k/L)$, that is,
+$|\FourierSeriesCoefficient{\Psi}{k}|$ decays like
+$\exp(-\pi|\chi_k|/2)=\exp(-\pi^2k/L)$, that is,
 about $\EulerE^{-14.24k}$, while mode $k$ is amplified by
 $(2\pi k)^{2j}/(2^jj!\,L^{2j})$.  The $k$-th contribution therefore behaves like
 $\exp(2j\log k-14.24k)$, maximized near $k^\ast=2j/14.24=0.14j$.  For $j$ beyond
@@ -15447,9 +15463,12 @@ wrong number.  Concretely, \texttt{mpmath.zeta} at these arguments returns
 values whose seventh significant digit drifts with the working precision:
 \[
 \begin{aligned}
-  \texttt{mp.dps}=30:&\quad \Psihat(1)=7.55865005\times10^{-7}-7.47011001\times10^{-7}\,\ImaginaryUnit,\\
-  \texttt{mp.dps}=50:&\quad \Psihat(1)=7.55864674\times10^{-7}-7.47009636\times10^{-7}\,\ImaginaryUnit,\\
-  \texttt{mp.dps}=80:&\quad \Psihat(1)=7.55865060\times10^{-7}-7.47008702\times10^{-7}\,\ImaginaryUnit,
+  \texttt{mp.dps}=30:&\quad \FourierSeriesCoefficient{\Psi}{1}
+    =7.55865005\times10^{-7}-7.47011001\times10^{-7}\,\ImaginaryUnit,\\
+  \texttt{mp.dps}=50:&\quad \FourierSeriesCoefficient{\Psi}{1}
+    =7.55864674\times10^{-7}-7.47009636\times10^{-7}\,\ImaginaryUnit,\\
+  \texttt{mp.dps}=80:&\quad \FourierSeriesCoefficient{\Psi}{1}
+    =7.55865060\times10^{-7}-7.47008702\times10^{-7}\,\ImaginaryUnit,
 \end{aligned}
 \]
 whereas a hand-rolled Euler--Maclaurin $\zeta$ ($N=300$, $25$ Bernoulli terms)
@@ -15898,7 +15917,8 @@ supplied one, so the statement is recorded here as proved rather than as a gap:
 \begin{candidate}[Discharged]
 For every \(N\in\NaturalNumbers\), there is \(C_N>0\) such that
 \[
- |\widehat{\RvachevUp}(\xi)|\le C_N(1+|\xi|)^{-N}\qquad(\xi\in\RealNumbers).
+ |\FourierTwoPi{\RvachevUp}(\xi)|\le C_N(1+|\xi|)^{-N}
+ \qquad(\xi\in\RealNumbers).
 \]
 \end{candidate}
 It is standardly equivalent to the proved polynomially weighted estimate after a
@@ -16105,7 +16125,7 @@ The all-real theorem is now public in \path{FabiusUniformSpline.lean}:
 with \(\sum_{r\ge0}\) read as a \lean{tsum} and the positive part as
 \(\max(\,\cdot\,,0)^p\); the pointwise-finiteness interpretation is its companion
 \lean{positivePart_summand_support_finite}, which exhibits the summand's support inside
-\(\{r<\lceil 2^px\rceil\}\).  The proof needs no fixed-range detour: left of the support both
+\(\{r<\Ceiling{2^px}\}\).  The proof needs no fixed-range detour: left of the support both
 sides vanish, and for \(x\ge0\) the positive parts cut the \lean{tsum} down to exactly the
 definitional prefix of the centered spline, the reversed power contributing the sign
 \((-1)^p\) absorbed by the normalizing constant.  No raw-spline smoothing law is asserted,
@@ -16304,7 +16324,7 @@ formalized; the finite-stage dependence and non-equality statements remain quara
 
 The estimate cited by the primary exposition has the factor \(\exp(|Q-\tfrac12|)\).  Put
 \[
- N_p(x)=\max\!\left(0,\left\lfloor2^px+\frac12\right\rfloor\right),\qquad
+ N_p(x)=\max\!\left(0,\Floor{2^px+\frac12}\right),\qquad
  S_p^{(Q)}(x)=\frac{(-1)^p}{2^{\binom p2}p!}
  \sum_{r=0}^{N_p(x)-1}(-1)^{\BinaryDigitSum(r)}(r-2^px+Q)^p,
 \]

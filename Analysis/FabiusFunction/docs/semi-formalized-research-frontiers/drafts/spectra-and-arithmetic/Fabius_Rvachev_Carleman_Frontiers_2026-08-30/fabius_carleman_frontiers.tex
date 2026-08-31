@@ -1,7 +1,7 @@
 \documentclass[11pt,a4paper]{article}
 
 \usepackage[T1]{fontenc}
-\usepackage{lmodern}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
@@ -397,7 +397,7 @@ same limiting law, with an explicit total-variation error.
 \subsection{The limiting probability measure}
 
 Let $Y$ be uniform on $[-1,1]$ and let $S$ be independent with
-$\mathbb P(S=1)=\mathbb P(S=-1)=1/2$.  Define the probability measure
+$\Probability(S=1)=\Probability(S=-1)=1/2$.  Define the probability measure
 \begin{equation}
   \mu_*=\operatorname{Law}(S\RvachevUp(Y)).
   \label{eq:mu-star}

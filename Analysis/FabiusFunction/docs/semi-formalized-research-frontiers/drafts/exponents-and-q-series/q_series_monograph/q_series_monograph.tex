@@ -1,9 +1,9 @@
 \documentclass[11pt]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
-\usepackage[margin=1.05in]{geometry}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
 \usepackage{amsmath,amssymb,mathtools,amsthm}
 \input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,array,tabularx}
@@ -144,8 +144,8 @@ For a list of parameters,
 
 The following elementary rules will be used without repeated comment:
 \begin{align}
-(a;q)_{m+n}&=(a;q)_m(aq^m;q)_n,\label{eq:split}\
-(aq^m;q)_n&=\frac{(a;q)_{m+n}}{(a;q)_m},\label{eq:shift}\
+(a;q)_{m+n}&=(a;q)_m(aq^m;q)_n,\label{eq:split}\\
+(aq^m;q)_n&=\frac{(a;q)_{m+n}}{(a;q)_m},\label{eq:shift}\\
 (a;q)_n&=(-a)^nq^{\binom n2}(q^{1-n}/a;q)_n.\label{eq:reverse}
 \end{align}
 All three follow directly by rearranging their finite products.

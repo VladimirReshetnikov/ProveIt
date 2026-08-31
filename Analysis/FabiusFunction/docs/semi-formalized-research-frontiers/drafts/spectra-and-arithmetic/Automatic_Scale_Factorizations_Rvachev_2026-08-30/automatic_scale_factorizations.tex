@@ -70,7 +70,6 @@
 \newcommand{\eps}{\varepsilon}
 \newcommand{\Mell}{\mathcal M}
 \newcommand{\Bell}{\mathcal B}
-\newcommand{\one}{\mathbf 1}
 \newcommand{\repo}{\texttt{ProveIt}}
 
 \newenvironment{statusbox}[1]{%
@@ -673,7 +672,7 @@ sums, and evaluate the selector sum with \eqref{eq:selector-generating} at $q^{2
 For real $0<q<1$, let $X_\sigma(q)$ be the selected uniform series of radii $q^{m+1}$.
 Its cumulant generating function is
 \begin{equation}
- K_\sigma(t;q)=\log\mathbb E\EulerE^{tX_\sigma(q)}
+ K_\sigma(t;q)=\log\Expectation\EulerE^{tX_\sigma(q)}
  =\sum_{m\ge0}a_m^\sigma h(tq^{m+1}).
  \label{eq:Kq}
 \end{equation}
@@ -709,7 +708,7 @@ power sum is \eqref{eq:selector-generating} with $q$ replaced by $q^{2r}$.
 
 \begin{corollary}[Bell moments]
 \label{cor:bell-moments}
-Let $m_n^\sigma(q)=\mathbb E[X_\sigma(q)^n]$.  Then
+Let $m_n^\sigma(q)=\Expectation[X_\sigma(q)^n]$.  Then
 \begin{equation}
  m_n^\sigma(q)=\Bell_n\bigl(\kappa_1^\sigma(q),\ldots,
  \kappa_n^\sigma(q)\bigr),
@@ -771,7 +770,7 @@ $g_\sigma(y)=R_\sigma u_\sigma(R_\sigma y)$ be its density.  Its Legendre expans
 \begin{equation}
  g_\sigma(y)\sim\sum_{n\ge0}c_n^\sigma P_n(y),
  \qquad
- c_n^\sigma=\frac{2n+1}{2}\mathbb E[P_n(Y_\sigma)].
+ c_n^\sigma=\frac{2n+1}{2}\Expectation[P_n(Y_\sigma)].
  \label{eq:legendre-expansion}
 \end{equation}
 Only even coefficients occur.
@@ -978,7 +977,7 @@ dyadic zeros each automatic factor receives.
 
 Let
 \begin{equation}
- K_\sigma(t)=\log\mathbb E\EulerE^{tX_\sigma}
+ K_\sigma(t)=\log\Expectation\EulerE^{tX_\sigma}
  =\sum_{m\ge0}a_m^\sigma h(t/2^{m+1}),
  \qquad h(t)=\log\frac{\sinh t}{t}.
  \label{eq:Ksigma}
@@ -1096,13 +1095,13 @@ series
 \label{thm:Laplace-asymptotic}
 Under \eqref{eq:bounded-discrepancy}, as $t\to+\infty$,
 \begin{equation}
- \log\mathbb E\EulerE^{-tD_A}
+ \log\Expectation\EulerE^{-tD_A}
  =-\frac{\delta}{2\log2}(\log t)^2+\BigO(\log t).
  \label{eq:Laplace-asymptotic}
 \end{equation}
 Equivalently,
 \begin{equation}
- \log\mathbb E\EulerE^{tX_A}
+ \log\Expectation\EulerE^{tX_A}
  =R_At-\frac{\delta}{2\log2}(\log t)^2+\BigO(\log t).
  \label{eq:mgf-edge}
 \end{equation}
@@ -1127,7 +1126,8 @@ $\BigO(1)$ in total, and the transition band contributes $\BigO(1)$.  Therefore
 \end{align}
 Use \eqref{eq:bounded-discrepancy}, \eqref{eq:weighted-count}, and
 $N=(\log t)/(\log2)+\BigO(1)$ to obtain \eqref{eq:Laplace-asymptotic}.  Since
-$\mathbb E\EulerE^{tX_A}=\EulerE^{R_At}\mathbb E\EulerE^{-tD_A}$, the second formula follows.
+$\Expectation\EulerE^{tX_A}=\EulerE^{R_At}\Expectation\EulerE^{-tD_A}$, the second
+formula follows.
 \end{proof}
 
 \subsection{Small-ball theorem}
@@ -1153,7 +1153,7 @@ Let $L=\log(1/\eps)$.  For the upper bound, exponential Markov with $t=1/\eps$ g
 \[
  G_A(\eps)
  =\Pr(\EulerE^{-tD_A}\ge\EulerE^{-t\eps})
- \le\EulerE^{t\eps}\mathbb E\EulerE^{-tD_A}.
+ \le\EulerE^{t\eps}\Expectation\EulerE^{-tD_A}.
 \]
 Apply \cref{thm:Laplace-asymptotic}; this yields
 \[
@@ -1258,7 +1258,7 @@ The leading law is not itself a Lambert-$W$ formula; Lambert $W_{-1}$ appears af
 retains the derivative of the quadratic-log Laplace action.  Suppose heuristically that a
 refined expansion along a stable symbolic phase has the form
 \begin{equation}
- \log\mathbb E\EulerE^{-tD_A}
+ \log\Expectation\EulerE^{-tD_A}
  =-c(\log t)^2+d\log t+C+o(1),
  \qquad c=\frac\delta{2\log2}.
  \label{eq:refined-Laplace-heuristic}
@@ -1386,7 +1386,7 @@ If $A(N)=\delta N+\BigO(1)$, then
  \log|\phi_{A,b}(x)|
  &\le-\frac\delta{2\log b}(\log|x|)^2+\BigO(\log|x|),
  \label{eq:base-b-Fourier}\\
- \log\mathbb E\EulerE^{-t(R_{A,b}-X_{A,b})}
+ \log\Expectation\EulerE^{-t(R_{A,b}-X_{A,b})}
  &=-\frac\delta{2\log b}(\log t)^2+\BigO(\log t),
  \label{eq:base-b-Laplace}\\
  \log\Pr(R_{A,b}-X_{A,b}\le\eps)
@@ -1420,7 +1420,7 @@ There exist continuous observables $B,C,\ldots$ on the two-sided Thue--Morse sub
 hull $\Omega_{\rm TM}$ such that, after associating to $t$ the shift state selected by
 $\Floor{\log_2t}$,
 \begin{equation}
- \log\mathbb E\EulerE^{-tD_\sigma}
+ \log\Expectation\EulerE^{-tD_\sigma}
  =-\frac{(\log t)^2}{4\log2}
  +B(\omega_t)\log t+C(\omega_t)
  +\sum_{j\ge1}\frac{C_j(\omega_t)}{(\log t)^j}
