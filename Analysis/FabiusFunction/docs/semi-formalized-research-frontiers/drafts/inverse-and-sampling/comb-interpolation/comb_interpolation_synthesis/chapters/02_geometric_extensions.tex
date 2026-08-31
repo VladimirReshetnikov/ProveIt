@@ -1,7 +1,6 @@
 \part{Analytic, probabilistic, and Mellin extensions}
 
 \section*{Editorial map of the independent extensions}
-\phantomsection
 \addcontentsline{toc}{section}{Editorial map of the independent extensions}
 The finite geometric-comb algebra is stated once in the preceding part. This part retains only the independent material not subsumed by that spine: confluent modal filters, regular variation, geometric-knot splines, geometric-uniform laws, Mellin symbols, superflat divergence, and the reciprocal Rvachev filter.
 
@@ -13,8 +12,8 @@ interpolation.  The following compact operator form is the common engine for
 the extensions in this part.  For $0<q<1$ put
 \begin{align}
  \lambda_{n,k}^{(q)}
- &:=\frac{(-1)^{n-k}q^{\binom{n-k+1}{2}}}
-          {(q;q)_k(q;q)_{n-k}},
+ &:={(-1)^{n-k}q^{\binom{n-k+1}{2}}
+       \over (q;q)_k(q;q)_{n-k}},
  \qquad 0\le k\le n,
  \label{g1:eq:lambda}\\
  (\Gc_{n,q}f)(A)&:=\sum_{k=0}^n\lambda_{n,k}^{(q)}f(Aq^k).
@@ -26,20 +25,20 @@ the extensions in this part.  For $0<q<1$ put
 Let $(T_qf)(x)=f(qx)$.  Then
 \begin{align}
  W_{n,q}(z):=\sum_{k=0}^n\lambda_{n,k}^{(q)}z^k
- &=\prod_{j=1}^n\frac{z-q^j}{1-q^j},
+ &=\prod_{j=1}^n{z-q^j\over1-q^j},
  \label{g1:eq:row-polynomial}\\
  \Gc_{n,q}=W_{n,q}(T_q)
- &=\frac{1}{(q;q)_n}\prod_{j=1}^n(T_q-q^jI),
+ &={1\over(q;q)_n}\prod_{j=1}^n(T_q-q^jI),
  \label{g1:eq:operator-factorization}\\
  \Gc_{0,q}=I,
  \qquad
- \Gc_{n,q}&=\frac{T_q-q^nI}{1-q^n}\Gc_{n-1,q}.
+ \Gc_{n,q}&={T_q-q^nI\over1-q^n}\Gc_{n-1,q}.
  \label{g1:eq:operator-recursion}
 \end{align}
 Consequently the filter can be evaluated in place: starting with
 $y_k=f(Aq^k)$, at stage $j=1,\ldots,n$ replace
 \begin{equation}
- y_k\longleftarrow\frac{y_{k+1}-q^jy_k}{1-q^j}
+ y_k\longleftarrow{y_{k+1}-q^jy_k\over1-q^j}
  \qquad(0\le k\le n-j).
  \label{g1:eq:triangular-filter}
 \end{equation}
@@ -61,7 +60,7 @@ For $A>0$ and a chosen branch of $A^\alpha,q^\alpha$,
 \begin{equation}
  (\Gc_{n,q}x^\alpha)(A)
  =A^\alpha W_{n,q}(q^\alpha)
- =A^\alpha q^{\alpha n}\frac{(q^{1-\alpha};q)_n}{(q;q)_n}.
+ =A^\alpha q^{\alpha n}{(q^{1-\alpha};q)_n\over(q;q)_n}.
  \label{g1:eq:pure-power}
 \end{equation}
 In particular, for every $d\in\NaturalNumbers$,
@@ -99,7 +98,7 @@ series is absolutely convergent,
 If $|a_m|\le C R^{-m}$ and $t=|A|/R<1$, then
 \begin{equation}
  \left|(\Gc_{n,q}f)(A)-f(0)\right|
- \le Cq^{\binom{n+1}{2}}\frac{t^{n+1}}{(t;q)_{n+1}}.
+ \le Cq^{\binom{n+1}{2}}{t^{n+1}\over(t;q)_{n+1}}.
  \label{g1:eq:sharp-majorant}
 \end{equation}
 This majorant is coefficientwise sharp: equality in the majorizing sum is
@@ -272,7 +271,7 @@ For reference,
 Thus the Fourier base $Q=1/4$ associated with dyadic Rvachev scaling is much
 better conditioned than a direct dyadic $q=1/2$ extrapolation.
 
-\subsection{The singular regime \texorpdfstring{$q\uparrow1$}{q approaching 1}}
+\subsection{The singular regime $q\uparrow1$}
 
 Two limits must be distinguished.  For fixed $n$,
 \begin{equation}
@@ -575,7 +574,7 @@ Thus the Gaussian coefficient is not only an interpolation residual: it is the
 moment sequence of the positive Peano-kernel distribution after a simple beta
 normalization.
 
-\subsection{A \texorpdfstring{$q$}{q}-Pochhammer scaling limit}
+\subsection{A $q$-Pochhammer scaling limit}
 
 The geometric B-spline has a nontrivial boundary-scale limit.  Let
 $E_*,E_0,E_1,\ldots$ be independent exponential random variables of mean $1$.
@@ -936,7 +935,7 @@ Thus a signed combination of values of a nowhere-analytic $C^\infty$ function
 is represented by a positive expectation and has a completely determined
 sign.
 
-\subsection{The boundary B-spline and its \texorpdfstring{$q$}{q}-exponential scale}
+\subsection{The boundary B-spline and its $q$-exponential scale}
 
 The variable $S_n$ is $Y_{n,1,1/2}$ from \cref{g1:sec:bspline}.  Therefore
 \begin{equation}
@@ -1035,7 +1034,7 @@ Hence the first nonzero term of the filtered residual is always
 \end{equation}
 For real $z$ near zero this is negative, regardless of the parity of $n$.
 
-\subsection{Application to \texorpdfstring{$\RvachevUp$}{the Rvachev up function}}
+\subsection{Application to $\RvachevUp$}
 
 For the Rvachev function,
 \[
@@ -1378,8 +1377,7 @@ $(qz;q)_\infty/(q;q)_\infty$.  Treat the resonant integer cases, where
 $C_q(\alpha)=0$, separately; there the correction may become the leading term.
 \end{problem}
 
-\subsection{The double-scaling transition
-\texorpdfstring{$q\uparrow1$, $n\to\infty$}{q approaching 1, n approaching infinity}}
+\subsection{The double-scaling transition $q\uparrow1$, $n\to\infty$}
 
 The fixed-order behavior \eqref{g1:eq:fixed-n-q1} and infinite-order behavior
 \eqref{g1:eq:K-modular} do not commute.  A natural transition parameter is
@@ -2024,13 +2022,9 @@ The centered random variable
  \qquad V_j\sim\operatorname{Unif}[-1,1],
  \label{g2:eq:Zq-definition}
 \end{equation}
-has an even $C^\infty$ density $u_q$ supported on $[-1,1]$.  Use the Fourier
+has an even $C^\infty$ density $u_q$ supported on $[-1,1]$.  With the Fourier
 convention
-\[
- \FourierTwoPi{f}(\xi)
- :=\int_\RealNumbers f(x)\EulerE^{-2\pi\ImaginaryUnit\xi x}\Differential x.
-\]
-Then
+$\FourierTwoPi{f}(\xi)=\int_\RealNumbers f(x)\EulerE^{-2\pi\ImaginaryUnit\xi x}\Differential x$,
 \begin{equation}
  \FourierTwoPi{u_q}(\xi)=\prod_{j=0}^\infty
  \SincPi\!\left(2(1-q)q^j\xi\right),
@@ -2248,8 +2242,8 @@ For every $n\ge0$,
  &=2^{-\binom{n+1}{2}}\mathfrak M_n,
  \label{g2:eq:qpoch-mersenne}\\
  \lambda_{n,k}^{(1/2)}
- &=(-1)^{n-k}\frac{2^{\binom{k+1}{2}}}
- {\mathfrak M_k\mathfrak M_{n-k}}
+ &=(-1)^{n-k}{2^{\binom{k+1}{2}}
+ \over\mathfrak M_k\mathfrak M_{n-k}}
  \qquad(0\le k\le n).
  \label{g2:eq:dyadic-lambda-mersenne}
 \end{align}

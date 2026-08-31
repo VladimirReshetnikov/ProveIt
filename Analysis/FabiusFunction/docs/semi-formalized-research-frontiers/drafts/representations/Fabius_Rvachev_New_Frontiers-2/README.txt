@@ -13,8 +13,8 @@ superseded, generated, proved, numerical, and conjectural material.
 Main deliverables
 -----------------
 fabius_rvachev_new_frontiers.tex
-    Current 2,783-line, 110,176-byte A4/27 mm/Libertinus LaTeX report,
-    SHA-256 9a9d59159ed3f447762088d14d3c1770346f182006961cbb9617ea32dbbe7401.
+    Current 2,783-line, 110,157-byte A4/27 mm/Libertinus LaTeX report,
+    SHA-256 00172d9b3e787e3483b4a9aa027d3834fd5ea390313cf4b2917fdfa577450b2b.
     The merge-resolved source
     preserves the canonical preamble, vector-figure and claim-status
     safeguards, retains
@@ -68,10 +68,10 @@ pdf_preflight.json
     the last validated render, plus the current uncompiled-source fingerprint.
 
 SHA256SUMS.txt
-    Last validated package ledger. Its current-source and pending-rebuild
-    metadata rows intentionally remain stale until the TeX receives three
-    strict serial passes and the TeX/PDF/preflight/README rows are refreshed
-    together. The existing PDF row still verifies the last validated render.
+    Current package payload ledger. All rows verify the current source and
+    metadata together with the retained historical PDF. This is an integrity
+    check, not a claim that the PDF was rendered from the current TeX; the
+    source/PDF rebuild remains pending.
 
 Numerical publication run
 -------------------------
@@ -155,11 +155,11 @@ Last validated repository rebuild
 * Pages 1, 7, 11, 13, 14, 25, 27, 34, 35, and 39 were visually inspected; the title,
   corrected status table, complete rational/Gaunt crosswalk, vector figures,
   formalization roadmap, and final references page are unclipped and readable.
-* At that checkpoint, the refreshed 20-entry checksum ledger included all five
-  PNG companions and synchronized the TeX, PDF, README, CORPUS_AUDIT, and
+* At that checkpoint, the 20-entry checksum ledger included all five PNG
+  companions and synchronized the TeX, PDF, README, CORPUS_AUDIT, and
   pdf_preflight entries. The current merge-resolved TeX is not synchronized
-  with that PDF. The TeX and the metadata rows carrying this notice remain
-  pending until the next rebuild and ledger refresh.
+  with that PDF. The source-only refresh records both as distinct verified
+  payloads; the next rebuild must synchronize them and refresh those rows.
 
 Claim status
 ------------
