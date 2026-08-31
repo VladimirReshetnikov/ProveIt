@@ -2,6 +2,26 @@
 
 New standalone intake members:
 
+- [`Non_Elementarity_of_the_Fabius_Function/`](Non_Elementarity_of_the_Fabius_Function/),
+  *The Fabius Function and Its Inverse are Not Elementary* (14 A4 pp,
+  1068 source lines), filed on 2026-08-31 from the bare directory
+  `drafts/incoming/Non_Elementarity_of_the_Fabius_Function/`.  Origin commit
+  `7bd49a7f7` had moved the byte-identical TeX/PDF pair from the former root
+  documentation path into the intake queue because full formalization had not
+  yet been established.  No archive or submitted checksum ledger accompanied
+  that move, so the repository-generated two-entry `ARRIVAL_SHA256SUMS.txt`
+  records and verifies both delivered payloads.  The TeX was already LF; the
+  supplied PDF is A4, uses embedded/subset Libertinus and Type-1 mathematical
+  fonts, and has no Type-3 font.  Its title and abstract concern the analytic
+  locus, elementary and algebraic branches, and the inverse Fabius function,
+  so it belongs in this inverse-facing group.  An older same-stem study remains
+  under `docs/archive/standalone-studies/`, but neither its TeX nor its PDF is
+  byte-identical to this later expanded package; intake preserves both and
+  defers any supersession decision.  The manuscript presents itself as a
+  human-readable account of a formal development, but quick intake did not
+  perform a claim-by-claim Lean audit; its status remains standalone and
+  unreviewed until that post-publication crosswalk.
+
 - [`geometric_comb_q_fabius_report/`](geometric_comb_q_fabius_report/),
   *Geometric-Comb Interpolation, Gaussian Pascal Transforms, and the
   Fabius--Rvachev Boundary Layer* (65 pp), arrived on 2026-08-30 from
