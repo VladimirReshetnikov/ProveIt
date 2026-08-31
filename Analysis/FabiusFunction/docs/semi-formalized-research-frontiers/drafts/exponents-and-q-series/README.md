@@ -474,8 +474,8 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 
 Member: `Exponents_and_q_Series_Frontiers`
 (retained pre-update PDF: 236 A4 pp; current merged TeX: 16,237 lines
-across seven parts; PDF rebuild pending; both parent ledgers fail only their
-TeX row and otherwise retain valid historical receipts) — the
+across seven parts; PDF rebuild pending; both parent ledgers verify the current
+source and retained PDF without asserting that the PDF was rebuilt) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic

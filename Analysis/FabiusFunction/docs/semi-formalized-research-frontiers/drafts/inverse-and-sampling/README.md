@@ -19,6 +19,13 @@ techniques or related forward results, but none is a better primary home. The
 inverse-iterate report retains its explicit reconciliation link to the forward
 iterate report under `representations/`.
 
+[`Inverse_Fabius_Analyticity_Asymptotics_and_Computability/`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/)
+is a consolidation workspace for five of these live source packages.  It
+currently contains provenance and a reproducible source-result inventory, not
+a canonical TeX/PDF deliverable.  The five source packages remain authoritative
+and will not be retired until every result and unique asset has a recorded
+disposition and a matching consolidated PDF passes the publication gate.
+
 ## Source-only merge status (2026-08-31)
 
 The canonical-notation integration changed nine living TeX roots in this
