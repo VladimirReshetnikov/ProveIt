@@ -8509,8 +8509,136 @@ The derivative witness and pointwise formula are
 \path{LambertBranchDichotomy.lean}.
 
 The strict-shape theorems include the finite branch point by continuity; they do not give
-a derivative or a second derivative there.  A branch-point vertical-tangent limit and a
-Puiseux expansion remain outside the proved API.
+a derivative or a second derivative there.  The later branch-point leaves close the
+one-sided vertical geometry and the first square-root term, as follows.
+
+\subsubsection{Branch-point vertical geometry and leading square-root law}
+Put
+\begin{equation}
+ b=-\exp(-1),\qquad \Delta(z)=z-b=z+\exp(-1),\qquad
+ \mathcal S(z)=\sqrt{2\exp(1)\bigl(z+\exp(-1)\bigr)}.
+ \label{eq:lambert-branch-point-scale}
+\end{equation}
+Every limit in this paragraph is one-sided, with \(z\downarrow b\), equivalently along
+the filter of points strictly to the right of \(b\).  The two interior derivatives and
+the two endpoint secant slopes satisfy
+\begin{align}
+ W_0'(z)&\longrightarrow+\infty,
+ &W_{-1}'(z)&\longrightarrow-\infty,
+                                                        \label{eq:lambert-branch-derivative-limits}\\
+ \frac{W_0(z)+1}{z+\exp(-1)}&\longrightarrow+\infty,
+ &\frac{W_{-1}(z)+1}{z+\exp(-1)}&\longrightarrow-\infty.
+                                                        \label{eq:lambert-branch-secant-limits}
+\end{align}
+Thus neither branch has a finite right derivative at \(b\): formally, each fails
+\(\operatorname{DifferentiableWithinAt}\) on the right-hand set \((b,\infty)\).
+Moreover, each totalized real branch fails to be differentiable at \(b\) as an
+all-real function.
+
+The proof of \eqref{eq:lambert-branch-derivative-limits} keeps the inverse derivative in
+the nonsingular form
+\[
+ W_j'(z)=\frac{1}{\exp(W_j(z))(W_j(z)+1)}.
+\]
+Endpoint continuity gives \(W_j(z)\to-1\).  On the principal branch the denominator
+therefore tends to zero through positive values, while on the lower branch it tends to
+zero through negative values; inversion gives the two signed infinite limits.  Principal
+concavity gives \(W_0'(z)\le (W_0(z)-W_0(b))/(z-b)\), and lower convexity on the first
+shape interval gives
+\((W_{-1}(z)-W_{-1}(b))/(z-b)\le W_{-1}'(z)\).  These inequalities transfer the
+derivative limits to \eqref{eq:lambert-branch-secant-limits}.  Mathlib's one-sided
+derivative-divergence obstruction then rules out a finite right derivative; ordinary
+differentiability would imply that forbidden within-set differentiability.
+
+The exact eight-theorem crosswalk for this geometry layer is:
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.48\textwidth}
+                         >{\raggedright\arraybackslash}p{0.46\textwidth}@{}}
+\toprule
+Declaration in \path{LambertWBranchPointGeometry.lean} & Formal content\\
+\midrule
+\endfirsthead
+\toprule
+Declaration in \path{LambertWBranchPointGeometry.lean} & Formal content\\
+\midrule
+\endhead
+\lean{tendsto_deriv_principalLambertW_branchPoint_atTop} & Principal derivative tends to \(+\infty\) from the right.\\
+\lean{tendsto_deriv_lowerLambertW_branchPoint_atBot} & Lower derivative tends to \(-\infty\) from the right.\\
+\lean{tendsto_principalLambertW_secantSlope_branchPoint_atTop} & Principal endpoint secant slope tends to \(+\infty\).\\
+\lean{tendsto_lowerLambertW_secantSlope_branchPoint_atBot} & Lower endpoint secant slope tends to \(-\infty\).\\
+\lean{principalLambertW_not_differentiableWithinAt_branchPoint} & No finite principal right derivative on \(\operatorname{Ioi}(b)\).\\
+\lean{lowerLambertW_not_differentiableWithinAt_branchPoint} & No finite lower right derivative on \(\operatorname{Ioi}(b)\).\\
+\lean{principalLambertW_not_differentiableAt_branchPoint} & The totalized principal branch is not differentiable at \(b\).\\
+\lean{lowerLambertW_not_differentiableAt_branchPoint} & The totalized lower branch is not differentiable at \(b\).\\
+\bottomrule
+\end{longtable}
+
+For the first-order asymptotics, the forward map
+\(\phi(w)=w\exp w\) has a double contact at \(w=-1\).  A
+punctured-neighborhood L'H\^opital calculation gives the limit
+\begin{equation}
+ \frac{\phi(w)+\exp(-1)}{(w+1)^2}
+ \longrightarrow\frac{\exp(-1)}2
+ \qquad(w\to-1,\ w\ne-1).                                \label{eq:lambert-forward-quadratic-ratio}
+\end{equation}
+Indeed, after differentiating numerator and denominator, the quotient reduces away
+from \(-1\) to \(\exp(w)/2\).  Composing with either branch, using
+\(W_j(z)\exp(W_j(z))=z\), and then inverting the nonzero limit proves
+\begin{equation}
+ \frac{(W_j(z)+1)^2}{z+\exp(-1)}\longrightarrow2\exp(1),
+ \qquad j\in\{0,-1\}.                                    \label{eq:lambert-branch-squared-ratio}
+\end{equation}
+Equivalently, each squared displacement is asymptotic to
+\(2\exp(1)(z+\exp(-1))\).  Finally, the strict signs
+\(W_0(z)+1>0\) and \(W_{-1}(z)+1<0\) select the two square roots:
+\begin{equation}
+ W_0(z)+1\sim +\mathcal S(z),
+ \qquad
+ W_{-1}(z)+1\sim -\mathcal S(z)
+ \qquad(z\downarrow-\exp(-1)).                            \label{eq:lambert-branch-signed-sqrt}
+\end{equation}
+
+The public inventory of \path{LambertWBranchPointAsymptotics.lean} is exactly one
+noncomputable definition and eight theorems:
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.48\textwidth}
+                         >{\raggedright\arraybackslash}p{0.46\textwidth}@{}}
+\toprule
+Declaration & Formal content\\
+\midrule
+\endfirsthead
+\toprule
+Declaration & Formal content\\
+\midrule
+\endhead
+\lean{lambertWBranchPointScale} & Definition of the exact scale \(\sqrt{2\exp(1)(z+\exp(-1))}\).\\
+\lean{lambertWBranchPointScale_pos} & Positivity of the scale for \(b<z\).\\
+\lean{lambertWBranchPointScale_sq} & Exact square identity \(\mathcal S(z)^2=2\exp(1)(z+\exp(-1))\) for \(b<z\).\\
+\lean{tendsto_principalLambertW_add_one_sq_div_branchPoint} & Principal squared-ratio limit \eqref{eq:lambert-branch-squared-ratio}.\\
+\lean{tendsto_lowerLambertW_add_one_sq_div_branchPoint} & Lower squared-ratio limit \eqref{eq:lambert-branch-squared-ratio}.\\
+\lean{principalLambertW_add_one_sq_isEquivalent_branchPoint} & Principal squared-displacement asymptotic equivalence.\\
+\lean{lowerLambertW_add_one_sq_isEquivalent_branchPoint} & Lower squared-displacement asymptotic equivalence.\\
+\lean{principalLambertW_add_one_isEquivalent_branchPoint} & The signed \(+\mathcal S\) principal law in \eqref{eq:lambert-branch-signed-sqrt}.\\
+\lean{lowerLambertW_add_one_isEquivalent_branchPoint} & The signed \(-\mathcal S\) lower law in \eqref{eq:lambert-branch-signed-sqrt}.\\
+\bottomrule
+\end{longtable}
+
+The dependency order is exact.  \path{PrincipalLambertW.lean} imports
+\path{LowerLambertW.lean}; \path{LambertBranchDichotomy.lean} imports the principal
+leaf; \path{LambertWCurvature.lean} imports that pair layer;
+\path{LambertWBranchPointGeometry.lean} imports the curvature leaf; and
+\path{LambertWBranchPointAsymptotics.lean} imports the geometry leaf together with
+Mathlib's specific-asymptotics and L'H\^opital modules.  The umbrella facade lists
+\path{LambertWCurvature.lean}, \path{LambertWBranchPointGeometry.lean}, and
+\path{LambertWBranchPointAsymptotics.lean} in this dependency order before the scaled
+power--exponential leaves.
+
+This is a current-tree addendum compiled on 30 August 2026: its inventory is exactly
+eight geometry theorems and one asymptotic definition plus eight asymptotic theorems,
+with private proof helpers excluded.  No aggregate commit hash is attributed to it.
+The result is only the leading square-root, or first Puiseux, equivalence.  An
+\(O(\Delta)\) remainder, higher coefficients, and a convergent or full Puiseux expansion
+remain open.  There are also no named generic power--exponential or Fabius endpoint
+vertical-tangent/secant/asymptotic wrappers yet, and the generic
+\(m\mathbin{\pm}\sqrt m\) threshold and shape layer remains open.
 
 \begin{corollary}[Solution of the saddle equation]
 \label{thm:tm-lambert-lambda}
@@ -8952,7 +9080,9 @@ The exact Lean crosswalk is \lean{powerExponentialLambertEpsilon},
 \(\epsilon\)-form with an \(o(1)\) remainder.  A cleaned formula in
 \(\log(A/x)\), further logarithmic terms, and a full series are not part of this package.
 The separate interior curvature formula \eqref{eq:power-exponential-phase-curvature} does
-not supply a branch-point vertical-tangent limit or a Puiseux expansion.
+not itself supply named generic-phase branch-point vertical-tangent, secant-slope, or
+leading square-root wrappers; the raw-branch results above have not yet been transported
+through the scaled coordinate.
 
 For the classical parameters \((m,A,\beta)=(1,1,L)\), the principal root is
 \lean{fabiusPrincipalLambertPhase} and the lower root is \lean{fabiusLambertPhase}.
@@ -10728,7 +10858,9 @@ Endpoint asymptotics &
 \path{PowerExponentialLambertInverse.lean},
 \path{PowerExponentialLambertAsymptotics.lean},
 \path{PowerExponentialLambertFabius}\texttt{.lean}, \path{FabiusLambertPhase.lean},
-\path{LambertWCurvature.lean}, \path{PowerExponentialLambertCurvature.lean},
+\path{LambertWCurvature.lean}, \path{LambertWBranchPointGeometry.lean},
+\path{LambertWBranchPointAsymptotics.lean},
+\path{PowerExponentialLambertCurvature.lean},
 \path{PowerExponentialLambertFabiusCurvature.lean},
 \path{FabiusLambertSaddle.lean}, \path{LambertPhaseLockedRichardson.lean},
 \path{FabiusSharpLambertMain.lean},
@@ -10960,6 +11092,13 @@ formula.
 \texttt{FabiusLambertPhaseExtractionBell.lean}.  The declarations cited in the text
 are exact finite algebraic rewrites and add no convergence, sign, or asymptotic
 estimate; no aggregate commit hash is attributed to this later tranche here.
+\newblock The still later current-tree Lambert branch-point tranche, compiled
+30 August 2026, consists of \texttt{LambertWBranchPointGeometry.lean} and
+\texttt{LambertWBranchPointAsymptotics.lean}.  Its exact public inventory is eight
+theorems and, respectively, one noncomputable definition plus eight theorems.  The
+declaration-by-declaration crosswalk above is not attributed to an aggregate commit
+hash; it closes the leading raw-branch geometry and square-root law only, with the
+stated remainder, higher-series, wrapper, and generic-shape boundaries left open.
 \newblock The generic three-theorem continuous-CDF bridge, the two-definition/twenty-five-
 theorem geometric-uniform CDF and smooth-density interface, the half-base Fabius/Rvachev
 bridges, and the one-definition/eight-theorem formal implicit-root engine are included in
