@@ -46,7 +46,13 @@ material appears in `Frontier_Compilations/`. It therefore remains standalone
 pending claim-by-claim crosswalk and deliberate deduplication. Its paper
 theorem labels do not by themselves assert Lean status, and its shipped Latin
 Modern source/PDF still needs canonical-preamble and Libertinus normalization
-in a later post-intake commit.
+in a later post-intake commit.  Its roadmap instruction to formalize the
+finite cumulative multiplicity-count/digit-sum arithmetic is now stale:
+BaseDigitMultiplicity.lean proves the cumulative floor-layer and base-b digit
+recovery formulas for every integer base greater than one, including composite
+bases and the zero endpoint.  That five-theorem arithmetic layer does not
+identify analytic zero orders or prove the report's sign interpolation, which
+remain part of the later claim-by-claim audit.
 
 Arithmetic and spectral structure of the Rvachev Fourier product,
 consolidated (2026-08-28) into the single volume

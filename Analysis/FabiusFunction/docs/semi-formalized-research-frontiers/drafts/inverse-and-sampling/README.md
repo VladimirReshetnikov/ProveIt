@@ -34,7 +34,8 @@ New standalone intake members:
   All 20 submitted payload hashes verified; four CSV entries were refreshed
   after CRLF-to-LF repository normalization. This is a distinct later
   arrival, not a byte duplicate of `geometric_comb_interpolation_report/`,
-  and is filed in a collision-safe wrapper without superseding that package.
+  and no submitted payload hash matches either existing geometric-comb report.
+  It is filed in a collision-safe wrapper without superseding either package.
   The A4 report retains 11 embedded Type-3 plot-font rows. It remains
   unreviewed pending post-publication reconciliation with the earlier report
   and a claim-by-claim Lean crosswalk; manuscript labels do not establish

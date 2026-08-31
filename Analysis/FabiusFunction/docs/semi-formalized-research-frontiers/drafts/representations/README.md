@@ -77,7 +77,7 @@ New standalone intake members:
   Libertinus prose, incomplete PDF metadata, and Type-3 plot fonts remain
   explicit post-intake normalization work.
 - [`Fabius_Rvachev_New_Frontiers-2/`](Fabius_Rvachev_New_Frontiers-2/),
-  *Fabius--Rvachev New Frontiers* (36 pp; 2619 source lines after the
+  *Fabius--Rvachev New Frontiers* (37 pp; 2639 source lines after the
   2026-08-30 formal crosswalk, 2539 at landing), arrived on
   2026-08-30 from a
   rootless archive with all 15 payload checksums verified. Its native up-law
@@ -118,8 +118,16 @@ New standalone intake members:
   Gaunt/Wigner/`3j` entry formula, entry
   rationality by that route, and Christoffel reconstruction remain outside
   this closure; `rvachevTranslateGram` is the distinct unweighted Gram kernel
-  of shifted-up atoms.  The refreshed 36-page A4/Libertinus PDF matches the
-  2619-line source; its 10 Type-3 font rows are the unchanged embedded-plot
+  of shifted-up atoms.  The downstream executable modules
+  `LegendrePolynomialRational.lean` (2 definitions + 6 theorems),
+  `FabiusLegendreRationalGram.lean` (3 + 11), and
+  `FabiusLegendreRationalGramValues.lean` (0 + 11) bring the complete
+  seven-module finite-algebra inventory to 13 definitions and 61 theorems.
+  They supply executable rational Legendre coefficients and Gram determinants,
+  including the exact `H_4` and zero-based `beta_4` values, without closing the
+  Gaunt/Wigner entry route or the remaining analytic program.  The refreshed
+  37-page A4/Libertinus PDF matches the 2639-line source; its 10 Type-3 font rows
+  are the unchanged embedded-plot
   baseline, and all 15 entries in the active payload ledger verify.
 - [`Fabius_Stein_Koopman_Frontier_Report/`](Fabius_Stein_Koopman_Frontier_Report/),
   *Dyadic Stein--Koopman and q-Oscillator Calculus for the Fabius--Rvachev
@@ -135,7 +143,7 @@ Other paper theorem labels do not by themselves assert Lean status.
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
-[`Representation_Frontiers/`](Representation_Frontiers/) (299 pp;
+[`Representation_Frontiers/`](Representation_Frontiers/) (300 pp;
 eight parts):
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform

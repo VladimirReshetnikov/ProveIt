@@ -10134,8 +10134,9 @@ satisfy the centered three-term recurrence in every degree.  The convention is z
  \pi_{n+2}(X)=X\pi_{n+1}(X)-\beta_{n+1}\pi_n(X).
 \]
 These four rational definitions are noncomputable finite-algebra objects, not native-code
-evaluators.  In particular, this layer proves all-degree rationality but does not evaluate
-the report's displayed \(H_4\) or \(\beta_4\) fractions.
+evaluators.  This module itself proves all-degree rationality without evaluating the
+report's displayed \(H_4\) or \(\beta_4\) fractions; the downstream executable
+rational-Legendre layer described below now supplies those named finite certificates.
 
 The polynomial change-of-basis layer is now explicit as well.
 \path{PolynomialMomentGramDeterminant.lean} has exactly two public definitions,
@@ -10202,6 +10203,72 @@ Christoffel reconstruction, or an infinite Jacobi product.  Also,
 \lean{rvachevTranslateGram} is a different object: it pairs shifted-up atoms under
 unweighted interval integration, whereas \lean{upLegendreGramMatrix} pairs polynomials under
 the up-law moment functional.
+
+Three downstream modules make that finite Legendre layer executable over \(\Q\).
+\path{LegendrePolynomialRational.lean} has exactly two public definitions,
+\lean{legendrePolynomialCoeffRat} and \lean{legendrePolynomialRat}, and six public
+theorems:
+\lean{legendrePolynomialRat_cast},
+\lean{coeff_legendrePolynomialRat},
+\lean{natDegree_legendrePolynomialRat},
+\lean{coeff_legendrePolynomialRat_self},
+\lean{coeff_legendrePolynomialRat_self_ne_zero}, and
+\lean{coeff_legendrePolynomialRat_self_div_succ}.  The first definition is an explicit
+finite rational coefficient sum; the polynomial wrapper is noncomputable, but casts
+coefficientwise to the real ordinary Legendre polynomial and has the exact degree,
+leading coefficient, nonvanishing, and consecutive-leading-coefficient quotient stated
+by these theorems.
+
+\path{FabiusLegendreRationalGram.lean} has exactly three finite public definitions,
+\lean{rvachevLegendreGramEntryRat},
+\lean{rvachevLegendreGramMatrixRat}, and
+\lean{rvachevLegendreGramDetRat}, and eleven public theorems:
+\lean{rvachevLegendreGramEntryRat_eq_momentPairing},
+\lean{rvachevLegendreGramMatrixRat_apply},
+\lean{rvachevLegendreGramMatrixRat_eq_polynomialMomentGramMatrix},
+\lean{rvachevLegendreGramEntryRat_cast},
+\lean{rvachevLegendreGramMatrixRat_cast},
+\lean{rvachevLegendreGramDetRat_cast},
+\lean{rvachevLegendreGramDetRat_eq_prod_leadingCoeff_sq_mul_rvachevHankelDetRat},
+\lean{rvachevLegendreGramDetRat_zero},
+\lean{rvachevLegendreGramDetRat_pos},
+\lean{rvachevOrthoNormRat_eq_rvachevLegendreGramDetRat_ratio}, and
+\lean{rvachevJacobiSubdiagonalRat_eq_rvachevLegendreGramDetRat_ratio}.
+The entry is a bounded double sum of rational Legendre coefficients and
+\lean{rvachevRawMomentRat}; hence its rationality is executable finite arithmetic,
+not a Gaunt/Wigner computation.  The determinant identity, empty value, strict
+positivity, and the rational norm and Jacobi ratios are unconditional.  Only the
+entry, matrix, and determinant cast bridges assume both
+\(F:\lean{BoundedFabius}\) and \(h_F:\lean{IsFabius}\,F\).
+
+Finally, \path{FabiusLegendreRationalGramValues.lean} has no public definitions and
+exactly eleven public theorems.  In addition to
+\[
+ \lean{moment_four}=\frac{132809}{32531625},
+\]
+it evaluates the first five rational Legendre Gram determinants:
+\[
+ D_1=1,\quad D_2=\frac19,\quad D_3=\frac8{2025},\quad
+ D_4=\frac{39616}{602791875},\quad
+ D_5=\frac{16544275456}{27453718922765625}.
+\]
+The named consequences
+\lean{rvachevOrthoNormRat_four} and
+\lean{rvachevJacobiSubdiagonalRat_three} give
+\[
+ H_4=\frac{26727424}{55791736875},
+ \qquad
+ \beta_4=\frac{835232}{4640643},
+\]
+where the subdiagonal index \(3\) is zero-based.  These eight exact rational
+certificates are unconditional.  The remaining three theorems,
+\lean{hankelRatio_four},
+\lean{integral_sq_upOrthoPolynomial_four}, and
+\lean{hankelRatio_four_div_three}, transport the same values to a bounded
+representative and require \(h_F:\lean{IsFabius}\,F\).
+This closes the displayed \(H_4,\beta_4\) evaluations, but still supplies no
+Gaunt/Wigner/\(3j\) entry expansion, roots, Christoffel reconstruction, Gaussian
+quadrature, continued-fraction or Pad\'e identification, or asymptotic theorem.
 
 This closure does not supply a complex logarithmic fixed point, complex order,
 pointwise or nontangential Sokhotski--Plemelj limits, a principal-value Hilbert-transform
@@ -10280,6 +10347,9 @@ renormalization, Laurent/Herglotz/inversion layers, initial Jacobi data, and fin
 \path{GramStieltjesNaturality.lean}, \path{RvachevRationalJacobi.lean},
 \path{PolynomialMomentGramDeterminant.lean},
 \path{FabiusLegendreHankelDeterminant.lean},
+\path{LegendrePolynomialRational.lean},
+\path{FabiusLegendreRationalGram.lean},
+\path{FabiusLegendreRationalGramValues.lean},
 \path{EarlyApproximants.lean},
 \path{EarlyMeasureBridge.lean}, \path{WeakConvergence.lean},
 \path{ProbabilityLaplaceMoments.lean}, \path{LaplaceMoments.lean},
