@@ -45,6 +45,7 @@ RETIRED_COMMANDS = {
     "N": "NaturalNumbers or PositiveIntegers",
     "Z": "IntegerNumbers",
     "Up": "RvachevUp",
+    "up": "RvachevUp",
     "upf": "RvachevUp",
     "sinc": "SincRad or SincPi",
     "sincpi": "SincPi",
@@ -98,6 +99,8 @@ RETIRED_COMMANDS = {
 SEMANTIC_COMMANDS = {
     "FabiusBounded", "FabiusGlobal", "FabiusQuantile",
     "FabiusClampedQuantile", "RvachevUp", "SincRad", "SincPi",
+    "FourierTwoPiOperator", "FourierAngularOperator",
+    "FourierTwoPiTransformOf", "FourierAngularTransformOf",
     "FourierTwoPi", "FourierAngular", "LaplaceTransformOf",
     "MellinTransformOf", "BinaryDigitSum", "ThueMorseSign",
     "GaussianBinomial", "QPochhammer", "QInteger", "MetricDistance",

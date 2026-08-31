@@ -41,6 +41,7 @@ SAFE_RENAMES = {
     "N": "NaturalNumbers",
     "Z": "IntegerNumbers",
     "Up": "RvachevUp",
+    "up": "RvachevUp",
     "upf": "RvachevUp",
     "sincpi": "SincPi",
     "wt": "BinaryDigitSum",
