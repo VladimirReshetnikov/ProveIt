@@ -1,0 +1,66 @@
+Pinned numerical replay
+=======================
+
+Date: 2026-08-30
+Working directory: package root
+Command: /tmp/geometric_comb_q_fabius_venv/bin/python geometric_comb_experiments.py
+Runtime network access: none
+Random input: none
+
+Interpreter and exact installed versions
+----------------------------------------
+
+Python 3.13.14
+contourpy==1.3.3
+cycler==0.12.1
+fonttools==4.63.0
+kiwisolver==1.5.1
+matplotlib==3.11.1
+mpmath==1.3.0
+numpy==2.5.2
+packaging==26.3
+pillow==12.3.0
+pyparsing==3.3.2
+python-dateutil==2.9.0.post0
+six==1.17.0
+
+Console result
+--------------
+
+All exact identity checks passed.
+Endpoint Lebesgue limit: 8.25598793577825006554414084943
+Global asymptotic prefactor: 1.75421915716734780836138830414
+
+Replay comparison
+-----------------
+
+Two consecutive runs in the pinned environment reproduced all 11 generated
+artifacts byte for byte. The Fabius interpolation CSV and exact identity
+transcript also reproduce the arrival bytes. The Lebesgue CSV now uses
+explicit top-gap column names. Apart from those header repairs, only the n=17
+floating optimizer row differs from arrival: delta x_top_gap_max is
++7.3454402560457766e-09, delta n(1-x_top_gap_max) is
+-1.2487248435277820e-07, delta log10 maximum is
+-7.1054273576010019e-15, and delta asymptotic ratio is
+-1.3211653993039363e-14. Exact fields are unchanged.
+
+Matplotlib PDF font type is pinned to 42 and artifact timestamps are fixed.
+The four vector PDFs contain only embedded/subset CID TrueType DejaVu Sans
+fonts; their combined Type 3 count is zero. Raster dimensions are 1258x772
+pixels for fabius_boundary_residue.png, fabius_gap_divergence.png, and
+lebesgue_growth.png, and 1259x736 for lebesgue_peak_location.png.
+
+Final generated-artifact SHA-256
+-------------------------------
+
+08d76a2c966598c17478ce439599a204f0d7259a6770c18666dbf61b8d6ab7c8  data/fabius_interpolation_data.csv
+a1d090fd0e1c2b9a3fb1de823c65f10e47eb5cc62e4327a20b12574f869aa2e0  data/identity_checks.txt
+5320ce07140cc182856326dbe244315bc222663f185593a4fd697c3edaa9234d  data/lebesgue_data.csv
+ecd29b4556b88c7e27d160da5b991a24ce788e4721a1c62bce77dea22de798c3  figures/fabius_boundary_residue.pdf
+4983d16f604ac32108dc6b509fd8fbdd4f9bbd39e854ead20496ce2df249f87c  figures/fabius_boundary_residue.png
+ad6ad5bc39f8ad501d935b371435355f8b07ef632d576af271802ef2764745ce  figures/fabius_gap_divergence.pdf
+655f685db4eb6c6069ca1bca0311d181c7205eedf47fd947d77f3b543f82b235  figures/fabius_gap_divergence.png
+4c7d37f0f87ce377aeb9006ec4db953e015f8e182abacdecb7b3d86af6096b81  figures/lebesgue_growth.pdf
+277b2a163628979a0c8d53cad61171025579397d27f4c3bb272c67cc8d69e566  figures/lebesgue_growth.png
+abfaf07a11a0a30f74bfcde34e03e011efc4964439c0d96f7fc81ca5a71187ff  figures/lebesgue_peak_location.pdf
+15e9b56bf062f4fb293ffac2bfc3457e790e36c16f887ae6d0a316c48372e1cc  figures/lebesgue_peak_location.png

@@ -27,11 +27,13 @@ and
 ## Filing and uniqueness
 
 The archive was filed under the collision-safe, title-derived directory
-`inverse-and-sampling/geometric_comb_lagrange_jackson_newton_report/`.
+`inverse-and-sampling/comb-interpolation/geometric_comb_interpolation_report-3/`.
 Hash-set comparison against the already published
 `geometric_comb_interpolation_report/` found zero identical non-ledger files.
-The arrival is therefore unique, not a reship, and the incoming ZIP must remain
-available until the parent intake registers and publishes this package.
+The arrival is therefore unique, not a reship. The package is now registered
+at this canonical path; the incoming ZIP has been removed from the working
+tree after publication, with its outer hash and Git history retaining the
+archive receipt.
 
 ## Normalization performed
 

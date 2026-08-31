@@ -9660,8 +9660,8 @@ with $\AbsoluteValue q^{-1}<1$ in place of $\AbsoluteValue q$.
 \end{proof}
 
 \paragraph{Lean boundary for \Cref{thm:qF-spectral}.}
-The current formal counterpart includes the general inside Pochhammer
-factorization, but not the whole theorem.  The module
+The current formal counterpart proves the general inside Pochhammer product,
+but not the whole compound theorem.  The module
 \path{RvachevPochhammerFactorization.lean} defines
 \path{complexQPochhammerInf} and proves its defining identity,
 multipliability, named product, and finite-prefix convergence through
@@ -9669,26 +9669,7 @@ multipliability, named product, and finite-prefix convergence through
 \path{multipliable_one_sub_mul_pow_complex},
 \path{hasProd_complexQPochhammerInf}, and
 \path{tendsto_finiteQPochhammerIn_complex}; the last three statements allow
-arbitrary complex $a$ and assume exactly $\lVert q\rVert<1$.  Its next three
-theorems are
-\path{summable_norm_sineTerm_qpow_pair},
-\path{geometricSincProduct_eq_tprod_pair}, and
-\path{geometricSincProduct_eq_tprod_complexQPochhammerInf}.  For every
-complex $q,z$ with $\lVert q\rVert<1$, the last of these proves the global
-identity
-\[
- S_q(z)=\prod_{k\ge0}
- \left(\frac{z^2}{(k+1)^2};q^2\right)_\infty .
-\]
-The preceding two declarations provide absolute summability of the paired
-Euler perturbations and the paired scale--spectral-zero product.  These
-results include $q=0$ and individual zero factors and require no nonvanishing
-hypothesis.  The module's final two theorems,
-\path{rvachevFourierProduct_eq_tprod_complexQPochhammerInf} and
-\path{rvachevFourier_eq_tprod_complexQPochhammerInf}, fix the dyadic scale and
-hence the nome $1/4$, hold for every complex argument including at zero
-factors, and transfer the product to a bounded Fabius witness satisfying
-\path{IsFabius}.
+arbitrary complex $a$ and assume exactly $\lVert q\rVert<1$.
 
 For arbitrary complex $q,z$ with $\lVert q\rVert<1$, the next three theorems,
 \path{summable_norm_sineTerm_qpow_pair},
@@ -9707,15 +9688,33 @@ requires no nonvanishing premise.  The last two theorems,
 scale and nome $1/4$ and transfer the product to a bounded Fabius witness
 satisfying \path{IsFabius}.
 
-In centered sinc coordinates, $t=4\pi z$ identifies the general theorem with
-the inside product.  In the uncentered MGF normalization of
-\eqref{eq:qF-spectral-inside}, the corresponding substitution is
+For arbitrary complex $q,z$ with $\lVert q\rVert<1$, the next three theorems,
+\path{summable_norm_sineTerm_qpow_pair},
+\path{geometricSincProduct_eq_tprod_pair}, and
+\path{geometricSincProduct_eq_tprod_complexQPochhammerInf}, prove absolute
+summability of the paired Euler perturbations, identify the scale--zero
+product, and justify the rearrangement
+\[
+ S_q(z)=\prod_{k\ge0}
+ \left(\frac{z^2}{(k+1)^2};q^2\right)_{\!\infty}.
+\]
+This is global in $z$, includes $q=0$, negative and nonreal contractions, and
+requires no nonvanishing premise.  The last two theorems,
+\path{rvachevFourierProduct_eq_tprod_complexQPochhammerInf} and
+\path{rvachevFourier_eq_tprod_complexQPochhammerInf}, specialize to dyadic
+scale and nome $1/4$ and transfer the product to a bounded Fabius witness
+satisfying \path{IsFabius}.
+
+In centered characteristic-function coordinates,
+$z=(1-q)t/(2\pi)$ identifies the general theorem with the inside product.
+At the dyadic scale this is $t=4\pi z$.  In the uncentered MGF normalization
+of \eqref{eq:qF-spectral-inside}, the corresponding dyadic substitution is
 $t=4\pi\mathrm i z$: its Pochhammer product becomes $\Phi(z)$ and the retained
 phase gives $M_{1/2}(4\pi\mathrm i z)=\EulerE^{2\pi\mathrm i z}\Phi(z)$.
 
-A separate sinc-product API supplies the convergence and
-characteristic-function bridge around this general factorization.  For complex $q,z$ with
-$\lVert q\rVert<1$, the theorems
+The complementary sinc-product API supplies the analytic convergence and
+characteristic-function bridge around this general factorization.  For
+complex $q,z$ with $\lVert q\rVert<1$, the theorems
 \path{hasProdLocallyUniformly_geometricSincProduct},
 \path{geometricSincProductFactors_multipliable},
 \path{hasProd_geometricSincProduct}, and
@@ -9739,7 +9738,7 @@ of the full prefixes on the real frequency line and uniform convergence on
 every compact real frequency set.  There is still no named centered
 or MGF bridge and no outside formula or zero--pole exchange; named
 local-uniform or normal convergence of the Pochhammer-product right-hand
-side and a packaged complex-frequency full-prefix statement are likewise
+side and a packaged complex-frequency full-prefix statement are also
 absent.  Thus \Cref{thm:qF-spectral} remains only partially formalized.
 
 \begin{remark}[The nome, and where the $q$-objects finally appear]\label{rem:qF-nome}
@@ -11952,10 +11951,11 @@ theory.  The separate \texttt{RvachevPochhammerFactorization} module now
 defines the complex symbol and proves its pointwise convergence for every
 contracting complex nome.  It also identifies every geometric sinc product
 at a strict complex contraction with the corresponding nome-\(q^2\)
-Pochhammer product, pointwise and globally in the complex argument.  This
-does not supply the book's named centered/MGF wrapper, outside-disk
-reciprocal formula, or local-uniform/normal-convergence theorem for the
-Pochhammer-product right-hand side.
+Pochhammer product, pointwise and globally in the complex argument; only its
+final two Rvachev wrappers fix the nome to \(1/4\).  This does not supply the
+book's named centered/MGF wrapper, outside-disk reciprocal formula, or
+local-uniform/normal-convergence theorem for the Pochhammer-product
+right-hand side.
 
 The promoted, strengthened, and new finite-$q$ and weighted
 symmetric-function rows in this edition were statically checked against the
@@ -12057,8 +12057,9 @@ Euler perturbations, the paired scale--spectral-zero tprod, and
  S_q(z)=\prod_{k\ge0}
  \left(\frac{z^2}{(k+1)^2};q^2\right)_\infty .
 \]
-This identity includes \(q=0\) and zero factors and has no nonvanishing
-hypothesis.  The final two factorizations specialize to the fixed nome
+This identity includes \(q=0\), negative and nonreal contractions, and zero
+factors, and it has no nonvanishing hypothesis.  The final two factorizations
+specialize to the fixed nome
 \(1/4\); the Fourier form assumes exactly a bounded Fabius witness and
 \path{IsFabius}.  What remains outside the API from
 \Cref{thm:qF-spectral} is its named centered/MGF packaging, outside-disk

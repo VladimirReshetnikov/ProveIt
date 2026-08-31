@@ -2,11 +2,12 @@
 
 > **Source-only merge status (2026-08-31).** The current TeX has 2,736 lines
 > (SHA-256
-> `b6d1ff047953e7ee6376c235210fa80de0e95ca1750ebd4eedd68a753950db9d`).
+> `eb47182f60fb5594a739bb54c211a24cca4ba267f4864f91251970d249587466`).
 > The retained submitted 36-page PDF was not rebuilt after the notation
 > migration and is not claimed to be synchronized with that source.
-> `SHA256SUMS.txt` was intentionally not refreshed: its TeX row and this
-> README row are pending, while its other twenty-three rows pass.
+> `SHA256SUMS.txt` was intentionally not refreshed: its TeX row, this README
+> row, and the relocated intake-audit row are pending, while its other
+> twenty-two rows pass.
 
 This collision-safe package contains the distinct report titled
 *Interpolation on a Geometric Comb: Lagrange Filters, Jackson--Newton Series,
@@ -31,7 +32,7 @@ intake limitations, not repaired facts; see `PDF_VALIDATION.txt`.
 
 ## Arrival provenance
 
-The source archive is
+The source archive was
 `drafts/incoming/geometric_comb_interpolation_report-3.zip` (1,296,171 bytes;
 SHA-256
 `89c9de31b9b78b614c13d5a3ff24ae41b73ef6704a9daef77ba724b396e90fa0`).
@@ -44,9 +45,10 @@ payload hashes verified before normalization.
 This arrival is not a reship of the existing
 `geometric_comb_interpolation_report/` package. The two packages have no
 byte-identical non-ledger files, different source and PDF hashes, different
-titles/bodies, and different data/figure inventories. The incoming ZIP should
-therefore be registered as this unique package and removed only after the
-archival batch is published.
+titles/bodies, and different data/figure inventories. The package is now
+registered at this canonical path; the incoming ZIP has been removed from the
+working tree, with its outer hash and Git history retaining the archive
+receipt.
 
 ## Contents
 
@@ -61,7 +63,7 @@ archival batch is published.
   bookkeeping;
 - `INTAKE_AUDIT.md` and `PDF_VALIDATION.txt` — quick-gate records;
 - `SHA256SUMS.txt` — unrefreshed 25-entry operational ledger, excluding itself;
-  its TeX and README rows are pending.
+  its TeX, README, and relocated intake-audit rows are pending.
 
 The submitted reproduction command, not replayed at this gate, is:
 

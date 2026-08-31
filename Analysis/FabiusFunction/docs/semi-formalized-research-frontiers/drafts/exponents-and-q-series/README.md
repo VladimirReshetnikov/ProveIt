@@ -65,13 +65,17 @@ establish Lean verification.
   Proof-Complete Synthesis* (85 A4 pages), is the canonical consolidation of
   the six former inverse-q and forward-expansion packages.  Its
   [`theorem_concordance.csv`](inverse_q_analogs_and_series/theorem_concordance.csv)
-  accounts for all 260 source result environments, while
+  accounts for all 260 source result environments, with the revision-backed
+  audit validating 260/260 rows; the retained-asset checksum ledger verifies
+  43/43 entries.  The
   [`PROVENANCE.md`](inverse_q_analogs_and_series/PROVENANCE.md) and
   [`assets/ASSET_DISPOSITION.csv`](inverse_q_analogs_and_series/assets/ASSET_DISPOSITION.csv)
   preserve package-, result-, archive-, and asset-level provenance.  Unique
   reproducibility assets live under `assets/`; the superseded layouts remain
   recoverable from the pinned pre-retirement Git revision and repository
-  history.  The q-Pochhammer monograph remains the broad forward-theory
+  history.  The canonical master remains source-only with no PDF; its stated
+  publication gate is deferred by user request.  The q-Pochhammer monograph
+  remains the broad forward-theory
   reference, while `Cyclotomic_q_Fabius_Rvachev_Frontier/` retains the wider
   natural-boundary and blow-up program beyond this inverse-branch synthesis.
   The three-pass build, clean-log, metadata/font, and all-page visual
@@ -464,7 +468,9 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 `149332f9d`.
 
 Member: `Exponents_and_q_Series_Frontiers`
-(237 pp, seven parts) — the
+(retained pre-update PDF: 236 A4 pp; current merged TeX: 16,237 lines
+across seven parts; PDF rebuild pending, with both parent ledgers refreshed for
+the current source and retained PDF) — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -696,9 +702,9 @@ matching `assets/` directories.
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Second member: `q_pochhammer_q_binomial_monograph/`
-(212 A4 pp; book class; 13,111 source lines and a 1,574,592-byte PDF;
-rebuilt after the exact `q = -1` and generalized sinc--Pochhammer crosswalk
-updates) —
+(212-page last validated A4 PDF; book class; the current source-only merge is
+13,121 lines while the retained PDF is 1,576,424 bytes; the PDF was not
+rebuilt after the merged sinc--Pochhammer crosswalk update) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
@@ -724,9 +730,11 @@ partial, 129 with no counterpart, and 3 interface-only.  Within that
 exhaustive total, the 191-result core in Chapters 1–23 has 36 exact, 29
 partial, 123 with no counterpart, and 3 interface-only entries.  The later
 Chapter 24 Fabius bridge is included in the full ledger and crosswalked
-locally; in particular its general spectral Pochhammer theorem remains
-partial despite the now-formal pointwise `q^2`-Pochhammer factorization for
-every complex strict contraction.  The algebra of
+locally; its pointwise inside `q^2`-Pochhammer factorization is now formal for
+every complex strict contraction, while the compound spectral theorem remains
+partial at its named centered/MGF wrappers, reciprocal outside-disk clause,
+and named local-uniform or normal convergence of the Pochhammer-product
+right-hand side.  The algebra of
 q-shifted factorials now accounts for 3 exact, 1 partial, and 11
 unformalized results; the q-integer and Gaussian-coefficient chapter for
 3 exact, 2 partial, and 4 unformalized results. The finite
@@ -785,9 +793,10 @@ convergence/positivity layer, replacing the stale claim that every infinite
 q-Pochhammer in the development was merely a finite `Finset.range` product.
 The separate complex symbol now has its own contractive-nome convergence
 API, and the geometric sinc product has a global spectral factorization for
-every complex strict contraction with nome `q^2`.  The compound Chapter 24
-theorem remains partial because its named centered/MGF wrapper, outside-disk
-reciprocal formula, and local-uniform/normal-convergence packaging are not all
+every complex strict contraction with nome `q^2`; only the two final Rvachev
+wrappers specialize to nome `1/4`.  The compound Chapter 24 theorem remains
+partial because its named centered/MGF wrapper, outside-disk reciprocal
+formula, and local-uniform/normal-convergence packaging are not all
 formalized.
 The complementary formal surfaces of
 `CompleteHomogeneousGenerating.lean` and
@@ -887,7 +896,8 @@ specializations, `geometricSincProduct_eq_tprod_complexQPochhammerInf` proves
 globally for every complex `q,z` with `‖q‖ < 1` that
 `S_q(z) = ∏'_k (z^2/(k+1)^2;q^2)_∞`; the paired-index and absolute-summability
 theorems justify the exchange of scale and spectral-zero indices, including
-`q = 0` and zero factors.  The eight-theorem sinc-product tranche above
+`q = 0`, negative and nonreal contractions, and zero factors.  The
+eight-theorem sinc-product tranche above
 supplies the general-`q` uncentered real-frequency bridge, locally uniform
 entire `S_q`, and real-frequency local and compact uniform convergence of the
 full phase-bearing prefixes.  There is still no named centered or MGF
