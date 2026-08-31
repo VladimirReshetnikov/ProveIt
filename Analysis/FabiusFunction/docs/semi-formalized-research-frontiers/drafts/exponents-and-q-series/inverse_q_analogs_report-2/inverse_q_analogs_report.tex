@@ -6,6 +6,7 @@
 \usepackage{microtype}
 \usepackage[margin=1.05in,headheight=25pt]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
+\input{../../../../fabius-notation.tex}
 \usepackage{bm}
 \usepackage{booktabs,longtable,tabularx,array,multirow}
 \usepackage{enumitem}
@@ -58,20 +59,9 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 
-\newcommand{\qpoch}[2]{\left(#1;#2\right)}
-\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
-\newcommand{\Li}{\operatorname{Li}}
-\newcommand{\Res}{\operatorname{Res}}
 \newcommand{\Disc}{\operatorname{Disc}}
 \newcommand{\Cat}{\operatorname{Cat}}
-\newcommand{\Log}{\operatorname{Log}}
-\newcommand{\e}{\mathrm{e}}
-\newcommand{\dd}{\,\mathrm{d}}
 \newcommand{\OO}{\mathcal{O}}
-\newcommand{\C}{\mathbb{C}}
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\Z}{\mathbb{Z}}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\statusproved}{\textcolor{deepgreen}{\textbf{proved here}}}
 \newcommand{\statusderived}{\textcolor{linkblue}{\textbf{derived here}}}
@@ -127,9 +117,9 @@ $q=1$; a complete Puiseux construction at $q=\infty$; exact classification of
 the exceptional inverse branches at $q=-1$; a root-of-unity radial theorem
 \[
  \log(a;\zeta e^{-t})_\infty
- =-\frac{\Li_2(a^d)}{d^2t}
+ =-\frac{\Polylogarithm_2(a^d)}{d^2t}
  +\sum_{r=0}^{d-1}\left(\frac12-\frac rd\right)
-      \Log(1-a\zeta^r)+\OO(t),
+      \PrincipalLogarithm(1-a\zeta^r)+\OO(t),
 \]
 for primitive $d$-th roots $\zeta$; the resulting $a\asymp t^{1/d}$ inverse
 law; global positive-real inverses of Gaussian polynomials; expansions at
@@ -169,12 +159,12 @@ The main recurring notation is
  (a;q)_\infty=\prod_{j=0}^{\infty}(1-aq^j),
 \]
 \[
- \qbinom{n}{k}{q}=\frac{(q;q)_n}{(q;q)_k(q;q)_{n-k}},\qquad
+ \GaussianBinomial{n}{k}{q}=\frac{(q;q)_n}{(q;q)_k(q;q)_{n-k}},\qquad
  [x]_q=\frac{1-q^x}{1-q}.
 \]
 For singular limits at $q=1$ we normally write $q=e^{-t}$ or $q=e^t$,
 according to whether the function is naturally defined inside the unit disk.
-Branches of $\Log$, fractional powers, and polylogarithms are always part of
+Branches of $\PrincipalLogarithm$, fractional powers, and polylogarithms are always part of
 the data of a complex inverse branch.
 
 \tableofcontents
@@ -198,7 +188,7 @@ degree $n$ when $n<\infty$; the second is algebraic of degree
 $n(n-1)/2$; and the third is transcendental but monotone on a useful real
 domain.  No single notation can hide the different branch geometries.
 
-For a Gaussian polynomial, $y=\qbinom{n}{k}{q}$ is an algebraic equation of
+For a Gaussian polynomial, $y=\GaussianBinomial{n}{k}{q}$ is an algebraic equation of
 degree $D=k(n-k)$ in $q$.  If $n,k$ are replaced by continuous parameters
 $\alpha,\beta$ through $\Gamma_q$, inversion in $\alpha$ is regular and
 one-sided on the positive real domain, while inversion in $\beta$ has a
@@ -216,7 +206,7 @@ $F_x=0$ or where the direct function itself becomes singular.  In polynomial
 problems the finite branch locus is controlled by
 \[
  \Disc_x(F(x;\lambda)-y)
- =\Res_x(F(x;\lambda)-y,F_x(x;\lambda)).
+ =\ResidueOperator_x(F(x;\lambda)-y,F_x(x;\lambda)).
 \]
 This viewpoint prevents three common errors: treating a multivalued inverse as
 single-valued, using Taylor series at a critical point, and confusing a zero of
@@ -243,9 +233,9 @@ $(a;q)_n$ in $q$ & $q=1$ & $\log\{y/(1-a)^n\}$ & logarithmic Taylor reversion\\
 $(a;q)_n$ in $q$ & $q=\pm\infty$ & $y^{-1/N}$ & $N$ Puiseux sheets\\
 $(a;q)_\infty$ in $q$ & $q\to\zeta$, $|q|<1$ & $1/(-\log y)$ & dilogarithmic singular inversion\\
 $(a;q)_\infty$ in $a$ & $q\to\zeta$ & $t^{1/d}$ & root-of-unity Puiseux scaling\\
-$\qbinom{n}{k}{q}$ in $q$ & $q=0$ & $y-1$ & partition-coefficient reversion\\
-$\qbinom{n}{k}{q}$ in $q$ & $q=1$ & $\log\{y/\binom nk\}$ & Bernoulli-cumulant reversion\\
-$\qbinom{n}{k}{q}$ in $q$ & $q=\pm\infty$ & $y^{-1/D}$ & reciprocal Puiseux sheets\\
+$\GaussianBinomial{n}{k}{q}$ in $q$ & $q=0$ & $y-1$ & partition-coefficient reversion\\
+$\GaussianBinomial{n}{k}{q}$ in $q$ & $q=1$ & $\log\{y/\binom nk\}$ & Bernoulli-cumulant reversion\\
+$\GaussianBinomial{n}{k}{q}$ in $q$ & $q=\pm\infty$ & $y^{-1/D}$ & reciprocal Puiseux sheets\\
 continuous $q$-binomial in $\beta$ & $\beta=\alpha/2$ & $\sqrt{-\log(y/y_{\max})}$ & symmetry-forced double branch\\
 $\Gamma_q(x)$ in $x$ & minimum & $\sqrt{y-y_{\min}}$ & two real sheets\\
 \bottomrule
@@ -278,12 +268,12 @@ The analytic assertion is the inverse-function theorem.  The coefficient
 formula is Lagrange--B\"urmann inversion.  Substituting a formal ansatz
 $x=b_1u+b_2u^2+\cdots$ and equating coefficients gives
 \eqref{eq:universal-reversion}; the calculation takes place in the complete
-local ring $\C[[u]]$ and therefore also proves formal uniqueness.
+local ring $\ComplexNumbers[[u]]$ and therefore also proves formal uniqueness.
 \end{proof}
 
 \begin{remark}
 For $q$-products it is usually better to revert a logarithm.  If $F(x_0)\ne0$,
-set $u=\Log(F(x)/F(x_0))$.  Logarithmic derivatives turn products into Lambert
+set $u=\PrincipalLogarithm(F(x)/F(x_0))$.  Logarithmic derivatives turn products into Lambert
 sums, and the $c_j$ in \eqref{eq:universal-reversion} become cumulants rather
 than raw derivatives.
 \end{remark}
@@ -396,7 +386,7 @@ essential for complex continuation and for the $q\to\infty$ analysis below.
 The finite $q$-binomial theorem gives
 \begin{equation}\label{eq:finite-a-expansion}
  P_n(a,q)=\sum_{r=0}^n(-a)^r E_r(n,q),
- \qquad E_r(n,q)=q^{r(r-1)/2}\qbinom{n}{r}{q}.
+ \qquad E_r(n,q)=q^{r(r-1)/2}\GaussianBinomial{n}{r}{q}.
 \end{equation}
 Thus $E_1=[n]_q$.  Put $z=1-y$.
 
@@ -640,13 +630,13 @@ These identities were also checked exactly in the companion SymPy script.
 \section{Logarithmic inversion at $q=1$}
 Set $q=e^t$ and
 \[
- u=\Log\frac{P_n(a,e^t)}{(1-a)^n}.
+ u=\PrincipalLogarithm\frac{P_n(a,e^t)}{(1-a)^n}.
 \]
 Let $S_m(n)=\sum_{j=0}^{n-1}j^m$.  Expanding the logarithm of every factor
 gives the exact jet
 \begin{equation}\label{eq:finite-cumulants-qone}
  u=\sum_{m\ge1}\frac{c_m}{m!}t^m,
- \qquad c_m=-S_m(n)\Li_{1-m}(a).
+ \qquad c_m=-S_m(n)\Polylogarithm_{1-m}(a).
 \end{equation}
 Thus the inverse $t=t(u)$ is obtained from
 \eqref{eq:universal-reversion}.  Explicitly,
@@ -789,7 +779,7 @@ Assume initially $|q|<1$.  The product
 is entire in $a$, while its dependence on $q$ is naturally tied to the unit
 disk.  The Lambert-series identity
 \begin{equation}\label{eq:lambert-log}
- \Log(a;q)_\infty
+ \PrincipalLogarithm(a;q)_\infty
  =-\sum_{m\ge1}\frac{a^m}{m(1-q^m)}
 \end{equation}
 holds absolutely for $|a|<1$, $|q|<1$ and extends by analytic continuation in
@@ -815,7 +805,7 @@ Hence it has a unique real base inverse on the corresponding range.
 \begin{proof}
 The $a$-derivative is
 \[
- \partial_a\Log(a;q)_\infty
+ \partial_a\PrincipalLogarithm(a;q)_\infty
  =-\sum_{j\ge0}\frac{q^j}{1-aq^j}<0
 \]
 for $a<1$.  The large negative-$a$ limit follows, for example, by retaining an
@@ -889,20 +879,20 @@ Put $q=e^{-t}$, $t\downarrow0$, and fix $a$ in a compact subset of a domain
 where the chosen branches are analytic.  The McIntosh expansion
 \cite{McIntosh1999,DLMFq} is
 \begin{align}
- \Log(a;e^{-t})_\infty
-={}&-\frac{\Li_2(a)}{t}+\frac12\Log(1-a)\notag\\
+ \PrincipalLogarithm(a;e^{-t})_\infty
+={}&-\frac{\Polylogarithm_2(a)}{t}+\frac12\PrincipalLogarithm(1-a)\notag\\
  &-\sum_{r=1}^{M-1}\frac{B_{2r}}{(2r)!}
- t^{2r-1}\Li_{2-2r}(a)+\OO(t^{2M-1}).
+ t^{2r-1}\Polylogarithm_{2-2r}(a)+\OO(t^{2M-1}).
  \label{eq:mcintosh}
 \end{align}
 For $0<a<1$, let
 \[
  Y=-\log y,\quad
- A=\Li_2(a),\quad B=\frac12\log(1-a),
+ A=\Polylogarithm_2(a),\quad B=\frac12\log(1-a),
 \]
 \[
- C=\frac{\Li_0(a)}{12}=\frac{a}{12(1-a)},
- \qquad E=\frac{\Li_{-2}(a)}{720}
+ C=\frac{\Polylogarithm_0(a)}{12}=\frac{a}{12(1-a)},
+ \qquad E=\frac{\Polylogarithm_{-2}(a)}{720}
  =\frac{a(1+a)}{720(1-a)^3},
  \qquad \Lambda=Y+B.
 \]
@@ -925,7 +915,7 @@ powers of $\Lambda$ at each correction.
 
 \begin{remark}[Complex sectors and exponentially small terms]
 Formula \eqref{eq:mcintosh} is a Poincar\'e expansion.  A complete global
-inverse requires a branch of $\Li_2(a)$ and $\Log(1-a)$ and, near Stokes
+inverse requires a branch of $\Polylogarithm_2(a)$ and $\PrincipalLogarithm(1-a)$ and, near Stokes
 rays, exponentially small modular or resurgence corrections.  These effects
 are invisible to algebraic powers of $1/\Lambda$ but can move the inverse by an
 amount comparable with the least term of the expansion.
@@ -972,34 +962,34 @@ Group factors by their residue class modulo $d$:
 \begin{theorem}[Root-of-unity dilogarithm law]\label{thm:root-unity-dilog}
 Let $|a|<1$ and fix compatible logarithm branches.  As $t\to0$ in a sector,
 \begin{align}
- \Log(a;\zeta e^{-t})_\infty
-={}&-\frac{\Li_2(a^d)}{d^2t}+C_{d,\zeta}(a)+\OO(t),
+ \PrincipalLogarithm(a;\zeta e^{-t})_\infty
+={}&-\frac{\Polylogarithm_2(a^d)}{d^2t}+C_{d,\zeta}(a)+\OO(t),
  \label{eq:root-unity-asymptotic}\\
  C_{d,\zeta}(a)
 ={}&\sum_{r=0}^{d-1}\left(\frac12-\frac rd\right)
-       \Log(1-a\zeta^r).\label{eq:root-unity-constant}
+       \PrincipalLogarithm(1-a\zeta^r).\label{eq:root-unity-constant}
 \end{align}
 \end{theorem}
 \begin{proof}
 Apply \eqref{eq:mcintosh} with base $e^{-dt}$ to every factor in
 \eqref{eq:root-unity-factorization-infinite}.  The leading term is
 \[
- -\frac1{dt}\sum_{r=0}^{d-1}\Li_2(a\zeta^r).
+ -\frac1{dt}\sum_{r=0}^{d-1}\Polylogarithm_2(a\zeta^r).
 \]
 The root-of-unity filter gives
 \[
- \sum_{r=0}^{d-1}\Li_2(a\zeta^r)
- =\frac1d\Li_2(a^d).
+ \sum_{r=0}^{d-1}\Polylogarithm_2(a\zeta^r)
+ =\frac1d\Polylogarithm_2(a^d).
 \]
 The parameter $a\zeta^re^{-rt}$ contributes
-$-(r/d)\Log(1-a\zeta^r)$ from the first-order expansion of its dilogarithm,
-while McIntosh contributes $\tfrac12\Log(1-a\zeta^r)$.  Summing gives
+$-(r/d)\PrincipalLogarithm(1-a\zeta^r)$ from the first-order expansion of its dilogarithm,
+while McIntosh contributes $\tfrac12\PrincipalLogarithm(1-a\zeta^r)$.  Summing gives
 \eqref{eq:root-unity-constant}.
 \end{proof}
 
 \begin{corollary}[Base inverse near a root of unity]\label{cor:q-root-unity-inverse}
 Let $y=(a;q)_\infty$ tend to zero along a branch for which
-$A_d=\Li_2(a^d)/d^2\ne0$.  Put $Y=-\Log y$ and
+$A_d=\Polylogarithm_2(a^d)/d^2\ne0$.  Put $Y=-\PrincipalLogarithm y$ and
 $\Lambda=Y+C_{d,\zeta}(a)$.  Then
 \[
  t=\frac{A_d}{\Lambda}+\OO(\Lambda^{-3}),
@@ -1021,7 +1011,7 @@ Thus radial inversion in $a$ has exponent $1/d$ at a primitive $d$-th root of
 unity.
 \end{corollary}
 \begin{proof}
-For small $a$, $\Li_2(a^d)=a^d+\OO(a^{2d})$.  Insert this into
+For small $a$, $\Polylogarithm_2(a^d)=a^d+\OO(a^{2d})$.  Insert this into
 \eqref{eq:root-unity-asymptotic} while keeping $L$ fixed.
 \end{proof}
 
@@ -1037,12 +1027,12 @@ Take $d=2$, $\zeta=-1$.  The exact factorization is
 For $0<a<1$, expansion to the first correction gives
 \begin{equation}\label{eq:minus-one-infinite-fixed-a}
  \log(a;-e^{-t})_\infty
- =-\frac{\Li_2(a^2)}{4t}+\frac12\log(1-a)
+ =-\frac{\Polylogarithm_2(a^2)}{4t}+\frac12\log(1-a)
  -\frac{a(a+3)}{12(1-a^2)}t+\OO(t^3).
 \end{equation}
 There is no $t^2$ term.  If
 \[
- A_-={\Li_2(a^2)\over4},\qquad
+ A_-={\Polylogarithm_2(a^2)\over4},\qquad
  B_-={1\over2}\log(1-a),\qquad
  C_-={a(a+3)\over12(1-a^2)},
 \]
@@ -1081,7 +1071,7 @@ For $|q|<1$, define the complex-order shifted factorial by
 \begin{equation}\label{eq:complex-order}
  (a;q)_\alpha=\frac{(a;q)_\infty}{(aq^\alpha;q)_\infty},
 \end{equation}
-with a chosen branch of $q^\alpha=e^{\alpha\Log q}$.
+with a chosen branch of $q^\alpha=e^{\alpha\PrincipalLogarithm q}$.
 
 \section{Global real order inverse}
 \begin{theorem}[Monotone order branch]\label{thm:alpha-global}
@@ -1095,20 +1085,20 @@ Consequently every $y\in((a;q)_\infty,1]$ has a unique real inverse order.
 \begin{proof}
 Differentiating \eqref{eq:complex-order} gives
 \begin{equation}\label{eq:alpha-logder}
- \partial_\alpha\Log(a;q)_\alpha
- =\Log q\sum_{j\ge0}\frac{aq^{\alpha+j}}{1-aq^{\alpha+j}}<0.
+ \partial_\alpha\PrincipalLogarithm(a;q)_\alpha
+ =\PrincipalLogarithm q\sum_{j\ge0}\frac{aq^{\alpha+j}}{1-aq^{\alpha+j}}<0.
 \end{equation}
 The endpoints follow directly from the definition.
 \end{proof}
 
 \section{Series at order $\alpha=0$}
-Put $u=\Log y$ and
+Put $u=\PrincipalLogarithm y$ and
 \[
- c_m=(\Log q)^m\sum_{j\ge0}\Li_{1-m}(aq^j),\qquad m\ge1.
+ c_m=(\PrincipalLogarithm q)^m\sum_{j\ge0}\Polylogarithm_{1-m}(aq^j),\qquad m\ge1.
 \]
 Then
 \[
- \Log(a;q)_\alpha
+ \PrincipalLogarithm(a;q)_\alpha
  =\sum_{m\ge1}\frac{c_m}{m!}\alpha^m,
 \]
 and hence
@@ -1142,7 +1132,7 @@ Reversion yields
 \end{align}
 Therefore
 \begin{align}
- \alpha={1\over\Log q}\biggl[&\Log\frac{(1-q)w}{a}
+ \alpha={1\over\PrincipalLogarithm q}\biggl[&\PrincipalLogarithm\frac{(1-q)w}{a}
  -\frac{w}{1+q}\notag\\
  &+\frac{3q^2+q+1}{2(1+q)^2(1+q+q^2)}w^2
  +\OO(w^3)\biggr].
@@ -1185,7 +1175,7 @@ numerically, as tangent predictors in continuation algorithms.
 
 Let
 \[
- B_{n,k}(q)=\qbinom{n}{k}{q},
+ B_{n,k}(q)=\GaussianBinomial{n}{k}{q},
  \qquad 0<k<n,
  \qquad D=k(n-k).
 \]
@@ -1620,9 +1610,9 @@ For
 \]
 inversion in $x$ is elementary once logarithm branches are chosen:
 \begin{equation}\label{eq:qnumber-xinverse}
- x=\frac{\Log(1-y(1-q))}{\Log q}.
+ x=\frac{\PrincipalLogarithm(1-y(1-q))}{\PrincipalLogarithm q}.
 \end{equation}
-This exact formula is useful as a model: branch changes in $\Log$ create all
+This exact formula is useful as a model: branch changes in $\PrincipalLogarithm$ create all
 complex inverse sheets, while the positive real branch is unique for
 $0<q<1$ and $y>0$ in its range.
 
@@ -1721,12 +1711,12 @@ motion from $q=0$ to $q=1$ is a concrete continuation problem.
 \section{Rogers--Szeg\H{o} polynomials}
 Let
 \[
- H_n(z;q)=\sum_{k=0}^n\qbinom{n}{k}{q}z^k.
+ H_n(z;q)=\sum_{k=0}^n\GaussianBinomial{n}{k}{q}z^k.
 \]
 Inversion in $z$ at the unit level is regular when $[n]_q\ne0$:
 \begin{equation}\label{eq:rogers-z-inverse}
  z=\frac{y-1}{[n]_q}
- -\frac{\qbinom{n}{2}{q}}{[n]_q^3}(y-1)^2
+ -\frac{\GaussianBinomial{n}{2}{q}}{[n]_q^3}(y-1)^2
  +\OO((y-1)^3).
 \end{equation}
 For inversion in $q$, the direct endpoint data are
@@ -1746,7 +1736,7 @@ can change the leading coefficient and create additional exceptional levels.
 \section{MacMahon's $q$-Catalan polynomial}
 Define
 \[
- \Cat_n(q)=\frac{1}{[n+1]_q}\qbinom{2n}{n}{q}.
+ \Cat_n(q)=\frac{1}{[n+1]_q}\GaussianBinomial{2n}{n}{q}.
 \]
 For every $n\ge2$,
 \begin{equation}\label{eq:qCatalan-qzero}
@@ -1772,7 +1762,7 @@ Let
  \Theta(z;q)=(z;q)_\infty(q/z;q)_\infty,
  \qquad 0<|q|<1.
 \end{equation}
-Its zeros $z=q^m$, $m\in\Z$, are simple when $q$ is not a root of unity, so
+Its zeros $z=q^m$, $m\in\IntegerNumbers$, are simple when $q$ is not a root of unity, so
 the inverse in $z$ is analytic at the zero level.  The functional equations
 \[
  \Theta(qz;q)=-z^{-1}\Theta(z;q),
@@ -1822,7 +1812,7 @@ reversion to recover the corresponding ordinary hypergeometric inverse.
 A broad class is
 \begin{equation}\label{eq:multi-product}
  F(\bm a,q)=\prod_{\nu=1}^r(a_\nu;q)_{n_\nu}^{\eps_\nu},
- \qquad \eps_\nu\in\Z.
+ \qquad \eps_\nu\in\IntegerNumbers.
 \end{equation}
 For a selected parameter $a_\mu$,
 \[
@@ -1870,7 +1860,7 @@ methods are:
 \begin{itemize}
 \item work with logarithmic cumulants and Bell polynomials;
 \item use Newton iteration in the truncated ring
-      $\C[[u]]/(u^{M+1})$, doubling the number of correct coefficients at each
+      $\ComplexNumbers[[u]]/(u^{M+1})$, doubling the number of correct coefficients at each
       step;
 \item exploit coefficient stability: a finite product with $n>M$ has the same
       $q=0$ inverse jet through order $M$ as the infinite product;
@@ -1931,7 +1921,7 @@ continuation around the critical values.
 
 \begin{conjecture}[Generic Pochhammer monodromy]\label{conj:poch-monodromy}
 Let $n\ge3$ and $N=n(n-1)/2$.  Over the rational function field
-$\C(a,y)$, the polynomial
+$\ComplexNumbers(a,y)$, the polynomial
 \[
  (a;q)_n-y
 \]
@@ -1949,7 +1939,7 @@ tracking.
 For rectangles outside an explicitly classifiable decomposable family, the
 polynomial map
 \[
- q\longmapsto\qbinom{n}{k}{q}
+ q\longmapsto\GaussianBinomial{n}{k}{q}
 \]
 has full symmetric monodromy $S_D$, $D=k(n-k)$, over a generic level.
 Reciprocity constrains the critical configuration but does not force an
@@ -1963,10 +1953,10 @@ before a full-symmetric statement can be true.
 \section{All-orders root-of-unity inversion}
 \begin{conjecture}[Cyclotomic polylogarithm closure]\label{conj:cyclotomic-closure}
 For primitive $\zeta$ of order $d$, the complete radial expansion of
-$\Log(a;\zeta e^{-t})_\infty$ has coefficients in the differential algebra
+$\PrincipalLogarithm(a;\zeta e^{-t})_\infty$ has coefficients in the differential algebra
 generated by
 \[
- \Li_m(a\zeta^r),\quad \Log(1-a\zeta^r),
+ \Polylogarithm_m(a\zeta^r),\quad \PrincipalLogarithm(1-a\zeta^r),
  \qquad 0\le r<d,
 \]
 with rational functions of $a$ and cyclotomic constants.  After inversion, the
@@ -1997,7 +1987,7 @@ can be amplified by the inverse condition number.
 Determine the Borel singularities and Stokes constants of the $q\to1$ and
 $q\to\zeta$ expansions, then derive the induced transseries for the inverse
 base $q(y)$.  Quantify how the inverse Stokes jump depends on
-$\Li_2(a^d)$ and on proximity to a critical level.
+$\Polylogarithm_2(a^d)$ and on proximity to a critical level.
 \end{problem}
 
 A promising method is to combine modular transformations of eta/theta
@@ -2011,7 +2001,7 @@ largely unexplored.
 \begin{problem}[Limit distribution of Gaussian critical values]
 Let $k/n\to\rho\in(0,1)$.  After the natural logarithmic scaling in $q$ and
 in the level, determine the limiting distribution of critical points and
-critical values of $\qbinom{n}{k}{q}$.  Relate it to the limit shape of
+critical values of $\GaussianBinomial{n}{k}{q}$.  Relate it to the limit shape of
 partitions in a rectangle and to saddle points of the associated free energy.
 \end{problem}
 
@@ -2149,7 +2139,7 @@ $a=z/E_1+E_2z^2/E_1^3+(2E_2^2/E_1^5-E_3/E_1^4)z^3+\cdots$, $z=1-y$\\
 $q\to0$, finite/infinite &
 $q=x-x^2+(a+1)x^3-(4a+1)x^4+(3a^2+11a+1)x^5+\cdots$\\
 $q\to1$, finite &
-$u=\sum_{m\ge1}-S_m(n)\Li_{1-m}(a)t^m/m!$, followed by universal reversion\\
+$u=\sum_{m\ge1}-S_m(n)\Polylogarithm_{1-m}(a)t^m/m!$, followed by universal reversion\\
 $q\to\infty$, finite &
 $s=xH(s)^{1/N}$, $[x^m]s=m^{-1}[u^{m-1}]H(u)^{m/N}$, $q=1/s$\\
 $a\to0$, infinite &
@@ -2159,11 +2149,11 @@ $t=A/\Lambda+A^2C/\Lambda^3+(2A^3C^2-A^4E)/\Lambda^5+\cdots$\\
 $q\to1$, infinite fixed $y=e^{-L}$ &
 $a=Lt-L(L+2)t^2/4+L(L^2+9L+12)t^3/72+\cdots$\\
 $q\to\zeta$, order $d$ &
-$\log(a;q)_\infty=-\Li_2(a^d)/(d^2t)+C_{d,\zeta}(a)+\OO(t)$\\
+$\log(a;q)_\infty=-\Polylogarithm_2(a^d)/(d^2t)+C_{d,\zeta}(a)+\OO(t)$\\
 $a$ at fixed level near $\zeta$ &
 $a\sim\omega(d^2Lt)^{1/d}$\\
 complex order $\alpha\to\infty$ &
-$\alpha=(\Log((1-q)w/a)-w/(1+q)+\cdots)/\Log q$\\
+$\alpha=(\PrincipalLogarithm((1-q)w/a)-w/(1+q)+\cdots)/\PrincipalLogarithm q$\\
 \bottomrule
 \end{longtable}
 

@@ -6,6 +6,7 @@
 \usepackage[a4paper,margin=27mm]{geometry}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\input{../../../../fabius-notation.tex}
 \usepackage{bm}
 \usepackage{booktabs,longtable,tabularx,array}
 \usepackage{graphicx}
@@ -48,39 +49,17 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{status}[theorem]{Status note}
 
-\DeclareMathOperator{\Li}{Li}
-\DeclareMathOperator{\Log}{Log}
 \DeclareMathOperator{\ord}{ord}
-\DeclareMathOperator{\Res}{Res}
-\DeclareMathOperator{\sgn}{sgn}
-\DeclareMathOperator{\Var}{Var}
-\DeclareMathOperator{\supp}{supp}
 \DeclareMathOperator{\dist}{dist}
-\newcommand{\C}{\mathbb C}
-\newcommand{\R}{\mathbb R}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
 \newcommand{\D}{\mathbb D}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\om}{\omega}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\upf}{\operatorname{up}}
 \newcommand{\PhiQ}{\Phi}
 \newcommand{\Aact}{\mathscr A}
 \newcommand{\Bact}{\mathscr B}
-\newcommand{\BigO}{\mathcal O}
-\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\set}[1]{\left\{#1\right\}}
 \newcommand{\brak}[1]{\left[#1\right]}
 \newcommand{\paren}[1]{\left(#1\right)}
-\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
-\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
 \newcommand{\coeff}[2]{\brak{#1^{#2}}}
-\newcommand{\qpoch}[2]{\left(#1;#2\right)_\infty}
 
 \crefname{equation}{equation}{equations}
 \Crefname{equation}{Equation}{Equations}
@@ -109,10 +88,10 @@ for the $q$-Fabius--Rvachev Sinc Product\\[8pt]
 \begin{abstract}
 The dyadic Rvachev up-function has Fourier transform
 \(
- \prod_{j\ge 1}\sinc(z/2^j)
+ \prod_{j\ge 1}\SincRad(z/2^j)
 \), and the surrounding repository develops its Fabius, Thue--Morse, $q$-series, Bell--Bernoulli, inverse, sampling, and Lambert-$W$ structures in considerable depth.  The current consolidated $q$-series frontier explicitly leaves two related tasks open: proving a generic natural boundary in the $q$-plane and constructing root-of-unity renormalizations.  This report resolves a concrete scalar version of both tasks for the complex geometric-uniform transform
 \[
- \Phi(q,z)=\prod_{j\ge0}\sinc\bigl((1-q)q^jz\bigr),\qquad |q|<1.
+ \Phi(q,z)=\prod_{j\ge0}\SincRad\bigl((1-q)q^jz\bigr),\qquad |q|<1.
 \]
 
 For a primitive $m$th root of unity $\omega$ and
@@ -124,7 +103,7 @@ For a primitive $m$th root of unity $\omega$ and
 locally uniformly for $|(1-\omega)z|<\pi$.  The action is an explicit spectral dilogarithm,
 \[
  \mathscr A_\omega(z)=\frac1{2d^2}
- \sum_{n\ge1}\Li_2\!\left(\left(\frac{(1-\omega)z}{\pi n}\right)^{2d}\right).
+ \sum_{n\ge1}\Polylogarithm_2\!\left(\left(\frac{(1-\omega)z}{\pi n}\right)^{2d}\right).
 \]
 Its sign is never zero for real $0<|z|<\pi/2$.  Because roots of unity are dense, this proves that the unit circle is a natural boundary for $q\mapsto\Phi(q,z)$ throughout that entire frequency interval, strengthening the repository's generic conjecture to an explicit theorem.
 
@@ -191,10 +170,10 @@ Let $V_0,V_1,\dots$ be independent random variables uniformly distributed on $[-
  Y_{1/2}=\sum_{j\ge0}2^{-(j+1)}V_j
  \label{eq:dyadic-series}
 \end{equation}
-has support $[-1,1]$ and density Rvachev's up-function $\upf$.  Its characteristic function, with the convention $\sinc z=\sin z/z$, is
+has support $[-1,1]$ and density Rvachev's up-function $\RvachevUp$.  Its characteristic function, with the convention $\SincRad z=\sin z/z$, is
 \begin{equation}
- \widehat{\upf}(z)
- =\prod_{j\ge0}\sinc\!\left(\frac{z}{2^{j+1}}\right).
+ \widehat{\RvachevUp}(z)
+ =\prod_{j\ge0}\SincRad\!\left(\frac{z}{2^{j+1}}\right).
  \label{eq:up-transform}
 \end{equation}
 The Fabius distribution on $[0,1]$ is obtained by the affine change
@@ -209,34 +188,34 @@ For real $0<q<1$, define
 \end{equation}
 The coefficient sum is one, so $Y_q$ is again supported on $[-1,1]$.  Independence gives
 \begin{equation}
- \mathbb E\e^{\ii zY_q}
- =\prod_{j\ge0}\sinc\bigl((1-q)q^jz\bigr).
+ \mathbb E\EulerE^{\ImaginaryUnit zY_q}
+ =\prod_{j\ge0}\SincRad\bigl((1-q)q^jz\bigr).
  \label{eq:real-char}
 \end{equation}
 For complex $q$ there is generally no positive probability law, but the product itself remains a natural analytic object.
 
 \begin{definition}[Complex $q$-Fabius--Rvachev sinc product]
-For $q\in\D=\set{q\in\C:|q|<1}$ and $z\in\C$, set
+For $q\in\D=\SetOf{q\in\ComplexNumbers:|q|<1}$ and $z\in\ComplexNumbers$, set
 \begin{equation}
  \Phi(q,z)=\prod_{j=0}^{\infty}
- \sinc\bigl((1-q)q^jz\bigr).
+ \SincRad\bigl((1-q)q^jz\bigr).
  \label{eq:Phi-def}
 \end{equation}
 \end{definition}
 
 \begin{proposition}[Holomorphy and normalization]
-The product in \cref{eq:Phi-def} converges locally uniformly on $\D\times\C$ and defines a holomorphic function there.  Moreover,
+The product in \cref{eq:Phi-def} converges locally uniformly on $\D\times\ComplexNumbers$ and defines a holomorphic function there.  Moreover,
 \[
  \Phi(q,0)=1,
  \qquad
- \Phi(0,z)=\sinc z,
+ \Phi(0,z)=\SincRad z,
  \qquad
- \Phi\left(\tfrac12,z\right)=\widehat{\upf}(z).
+ \Phi\left(\tfrac12,z\right)=\widehat{\RvachevUp}(z).
 \]
 \end{proposition}
 
 \begin{proof}
-On a compact set $|q|\le r<1$, $|z|\le R$, the $j$th argument is $O(r^j)$ uniformly.  Since $\sinc w=1-w^2/6+O(w^4)$, the deviation of the $j$th factor from one is $O(r^{2j})$.  The Weierstrass criterion gives locally uniform convergence of the product and of its holomorphic finite approximants.  The three normalizations follow directly.
+On a compact set $|q|\le r<1$, $|z|\le R$, the $j$th argument is $O(r^j)$ uniformly.  Since $\SincRad w=1-w^2/6+O(w^4)$, the deviation of the $j$th factor from one is $O(r^{2j})$.  The Weierstrass criterion gives locally uniform convergence of the product and of its holomorphic finite approximants.  The three normalizations follow directly.
 \end{proof}
 
 \section{Master logarithmic and $q$-Pochhammer representations}
@@ -245,9 +224,9 @@ On a compact set $|q|\le r<1$, $|z|\le R$, the $j$th argument is $O(r^j)$ unifor
 
 Euler's sine product and its logarithm give
 \begin{equation}
- \sinc w=\prod_{n\ge1}\left(1-\frac{w^2}{\pi^2n^2}\right),
+ \SincRad w=\prod_{n\ge1}\left(1-\frac{w^2}{\pi^2n^2}\right),
  \qquad
- \log\sinc w=-\sum_{k\ge1}c_kw^{2k},
+ \log\SincRad w=-\sum_{k\ge1}c_kw^{2k},
  \label{eq:sinc-log}
 \end{equation}
 where
@@ -255,12 +234,12 @@ where
  c_k=\frac{\zeta(2k)}{k\pi^{2k}}>0.
  \label{eq:ck}
 \end{equation}
-The logarithm is the branch normalized by $\log\sinc0=0$ in $|w|<\pi$.
+The logarithm is the branch normalized by $\log\SincRad0=0$ in $|w|<\pi$.
 
 \begin{theorem}[Master logarithm]
 On the domain
 \[
- \Omega=\set{(q,z)\in\D\times\C: |(1-q)z|<\pi},
+ \Omega=\SetOf{(q,z)\in\D\times\ComplexNumbers: |(1-q)z|<\pi},
 \]
 one has the absolutely and locally uniformly convergent expansion
 \begin{equation}
@@ -295,7 +274,7 @@ is simultaneously a geometric power sum, a cumulant multiplier, and the source o
 Let $(a;Q)_\infty=\prod_{j\ge0}(1-aQ^j)$.  Reordering Euler's sine factors gives a second exact representation.
 
 \begin{theorem}[Infinite spectral $q$-Pochhammer product]
-For every $q\in\D$ and $z\in\C$,
+For every $q\in\D$ and $z\in\ComplexNumbers$,
 \begin{equation}
  \boxed{
  \Phi(q,z)=\prod_{n\ge1}
@@ -327,7 +306,7 @@ Radial root-of-unity asymptotics of a single $q$-Pochhammer symbol are governed 
 
 Fix a primitive $m$th root
 \begin{equation}
- \omega=\exp\left(\frac{2\pi\ii h}{m}\right),
+ \omega=\exp\left(\frac{2\pi\ImaginaryUnit h}{m}\right),
  \qquad (h,m)=1,
  \qquad m\ge2,
  \label{eq:omega}
@@ -404,7 +383,7 @@ Also define
 \end{definition}
 
 \begin{theorem}[Two-term radial root-of-unity expansion]
-Let $K$ be a compact subset of $\set{z:|a_\omega z|<\pi}$.  Uniformly for $z\in K$,
+Let $K$ be a compact subset of $\SetOf{z:|a_\omega z|<\pi}$.  Uniformly for $z\in K$,
 \begin{equation}
  \boxed{
  \log\Phi\bigl(\omega(1-\delta),z\bigr)
@@ -429,7 +408,7 @@ For $|a_\omega z|<\pi$,
  \boxed{
  \Aact_\omega(z)
  =\frac{1}{2d^2}\sum_{n\ge1}
- \Li_2\!\left(
+ \Polylogarithm_2\!\left(
  \left(\frac{a_\omega z}{\pi n}\right)^{2d}
  \right).}
  \label{eq:spectral-dilog}
@@ -445,7 +424,7 @@ Expand $\zeta(2\ell d)=\sum_{n\ge1}n^{-2\ell d}$ in \cref{eq:action-series}, the
  \frac1{2(\ell d)^2}
  \left(\frac{a_\omega z}{\pi n}\right)^{2\ell d}\\
  &=\frac1{2d^2}\sum_{n\ge1}
- \Li_2\!\left(\left(\frac{a_\omega z}{\pi n}\right)^{2d}\right).
+ \Polylogarithm_2\!\left(\left(\frac{a_\omega z}{\pi n}\right)^{2d}\right).
 \end{align*}
 \end{proof}
 
@@ -457,8 +436,8 @@ For $|a_\omega z|<\pi$,
  =-\int_0^z
  \left[
  \frac1d\sum_{r=0}^{d-1}
- \log\sinc(a_\omega\omega^rt)
- \right]\frac{\dd t}{t}.}
+ \log\SincRad(a_\omega\omega^rt)
+ \right]\frac{\Differential t}{t}.}
  \label{eq:cyclic-projection}
 \end{equation}
 The integrand has a removable singularity at zero.
@@ -467,7 +446,7 @@ The integrand has a removable singularity at zero.
 \begin{proof}
 Average the logarithmic series:
 \[
- \frac1d\sum_{r=0}^{d-1}\log\sinc(a_\omega\omega^rt)
+ \frac1d\sum_{r=0}^{d-1}\log\SincRad(a_\omega\omega^rt)
  =-\sum_{k\ge1}c_ka_\omega^{2k}t^{2k}
  \left(\frac1d\sum_{r=0}^{d-1}\omega^{2kr}\right).
 \]
@@ -487,7 +466,7 @@ The crucial point is that the action cannot vanish on a uniform real-frequency i
 \begin{lemma}[Reality and sign of $a_\omega^{2d}$]
 The number $a_\omega^{2d}$ is real and nonzero.  For a primitive $m$th root,
 \begin{equation}
- \sgn\bigl(a_\omega^{2d}\bigr)=
+ \Sign\bigl(a_\omega^{2d}\bigr)=
  \begin{cases}
  -1,&m\text{ odd},\\
  (-1)^{d+1},&m\text{ even}.
@@ -498,14 +477,14 @@ Thus it is positive exactly when $m\equiv2\pmod4$.
 \end{lemma}
 
 \begin{proof}
-Write $\omega=\e^{\ii\theta}$.  Since
+Write $\omega=\EulerE^{\ImaginaryUnit\theta}$.  Since
 \(
- 1-\e^{\ii\theta}=-2\ii\e^{\ii\theta/2}\sin(\theta/2)
+ 1-\EulerE^{\ImaginaryUnit\theta}=-2\ImaginaryUnit\EulerE^{\ImaginaryUnit\theta/2}\sin(\theta/2)
 \),
 \[
- a_\omega^{2d}=(-4)^d\e^{\ii d\theta}\sin^{2d}(\theta/2).
+ a_\omega^{2d}=(-4)^d\EulerE^{\ImaginaryUnit d\theta}\sin^{2d}(\theta/2).
 \]
-If $m$ is odd then $d=m$ and $\e^{\ii d\theta}=1$, while $d$ is odd.  If $m$ is even then $d=m/2$, the primitive numerator $h$ is odd, and $\e^{\ii d\theta}=\e^{\ii\pi h}=-1$.  The signs follow.
+If $m$ is odd then $d=m$ and $\EulerE^{\ImaginaryUnit d\theta}=1$, while $d$ is odd.  If $m$ is even then $d=m/2$, the primitive numerator $h$ is odd, and $\EulerE^{\ImaginaryUnit d\theta}=\EulerE^{\ImaginaryUnit\pi h}=-1$.  The signs follow.
 \end{proof}
 
 \begin{theorem}[Nonvanishing action on a universal interval]
@@ -516,7 +495,7 @@ For every primitive root $\omega\ne1$ and every real $z$ with
 \end{equation}
 $\Aact_\omega(z)$ is real, nonzero, and
 \begin{equation}
- \sgn\Aact_\omega(z)=\sgn(a_\omega^{2d}).
+ \Sign\Aact_\omega(z)=\Sign(a_\omega^{2d}).
  \label{eq:sign-action}
 \end{equation}
 \end{theorem}
@@ -530,9 +509,9 @@ Because $|a_\omega|\le2$, condition \cref{eq:zinterval} implies
  \left(\frac{a_\omega z}{\pi n}\right)^{2d}
  =\sigma x_n,
  \qquad
- \sigma\in\set{-1,1},\quad 0<x_n<1.
+ \sigma\in\SetOf{-1,1},\quad 0<x_n<1.
 \]
-For $0<x<1$, $\Li_2(x)>0$ and $\Li_2(-x)<0$.  Every summand in \cref{eq:spectral-dilog} therefore has sign $\sigma$, proving the claim.
+For $0<x<1$, $\Polylogarithm_2(x)>0$ and $\Polylogarithm_2(-x)<0$.  Every summand in \cref{eq:spectral-dilog} therefore has sign $\sigma$, proving the claim.
 \end{proof}
 
 \subsection{Natural boundary}
@@ -549,14 +528,14 @@ has the unit circle as a natural boundary.  More strongly, it admits no single-v
 \begin{proof}
 Let $\omega\ne1$ be any root of unity.  By the preceding theorem,
 \(
- A:=\Aact_\omega(z)\in\R\setminus\set0
+ A:=\Aact_\omega(z)\in\RealNumbers\setminus\SetOf0
 \).  From \cref{eq:two-term-radial},
 \begin{equation}
  \log|\Phi(\omega(1-\delta),z)|
  =-\frac{A}{\delta}+O(1).
  \label{eq:mod-growth}
 \end{equation}
-If $A>0$, the modulus tends to zero faster than every power of $\delta$.  A holomorphic continuation through $\omega$ would either be nonzero there or have a zero of finite order, both incompatible with this decay.  A zero of infinite order would force the continuation to vanish identically near $\omega$, hence everywhere in the connected disk by identity, contradicting $\Phi(0,z)=\sinc z\ne0$.
+If $A>0$, the modulus tends to zero faster than every power of $\delta$.  A holomorphic continuation through $\omega$ would either be nonzero there or have a zero of finite order, both incompatible with this decay.  A zero of infinite order would force the continuation to vanish identically near $\omega$, hence everywhere in the connected disk by identity, contradicting $\Phi(0,z)=\SincRad z\ne0$.
 
 If $A<0$, the modulus grows faster than every power of $\delta$.  This is incompatible not only with a holomorphic continuation but also with a meromorphic continuation, whose singularity could have only finite pole order.
 
@@ -590,7 +569,7 @@ and define
 \end{equation}
 
 \begin{theorem}[Cyclotomic blow-up limit]
-Locally uniformly for $w\in\C$,
+Locally uniformly for $w\in\ComplexNumbers$,
 \begin{equation}
  \boxed{
  \Phi(q_\eps,\sqrt\eps\,w)
@@ -670,7 +649,7 @@ where the coefficient is the finite sum
 Consequently,
 \begin{equation}
  \Phi(q_\eps,\sqrt\eps\,w)
- \sim \e^{-A_\omega w^{2d}}
+ \sim \EulerE^{-A_\omega w^{2d}}
  \left(1+\sum_{n\ge1}P_n(w)\eps^n\right),
  \label{eq:all-Phi}
 \end{equation}
@@ -707,18 +686,18 @@ The first cyclotomic limit is Gaussian.
 \end{example}
 
 \begin{example}[Primitive cube root]
-For $\omega=\e^{2\pi\ii/3}$, $d=3$ and $A_\omega=-1/630$.  Moreover
+For $\omega=\EulerE^{2\pi\ImaginaryUnit/3}$, $d=3$ and $A_\omega=-1/630$.  Moreover
 \[
- C_{1,\omega}=-\frac{\ii}{2\sqrt3},
+ C_{1,\omega}=-\frac{\ImaginaryUnit}{2\sqrt3},
  \qquad
- C_{2,\omega}=-\frac{\ii}{20\sqrt3}.
+ C_{2,\omega}=-\frac{\ImaginaryUnit}{20\sqrt3}.
 \]
 Hence
 \begin{equation}
  \log\Phi\bigl(\omega(1-\eps^3),\sqrt\eps\,w\bigr)
  =\frac{w^6}{630}
- +\frac{\ii\eps w^2}{2\sqrt3}
- +\frac{\ii\eps^2w^4}{20\sqrt3}
+ +\frac{\ImaginaryUnit\eps w^2}{2\sqrt3}
+ +\frac{\ImaginaryUnit\eps^2w^4}{20\sqrt3}
  +O(\eps^3).
  \label{eq:m3}
 \end{equation}
@@ -726,13 +705,13 @@ The real-axis limit grows, so its transform interpretation belongs to rotated St
 \end{example}
 
 \begin{example}[Fourth root]
-For $\omega=\ii$, $d=2$, $A_\omega=-1/180$, and $C_{1,\omega}=-\ii/6$.  Therefore
+For $\omega=\ImaginaryUnit$, $d=2$, $A_\omega=-1/180$, and $C_{1,\omega}=-\ImaginaryUnit/6$.  Therefore
 \begin{align}
- \log\Phi\bigl(\ii(1-\eps^2),\sqrt\eps\,w\bigr)
- =&\frac{w^4}{180}+\frac{\ii\eps w^2}{6}
+ \log\Phi\bigl(\ImaginaryUnit(1-\eps^2),\sqrt\eps\,w\bigr)
+ =&\frac{w^4}{180}+\frac{\ImaginaryUnit\eps w^2}{6}
  \label{eq:m4-first}\\
  &-\eps^2\left[
- \left(\frac1{360}-\frac{\ii}{90}\right)w^4
+ \left(\frac1{360}-\frac{\ImaginaryUnit}{90}\right)w^4
  +\frac{w^8}{18900}
  \right]+O(\eps^3).
  \label{eq:m4-second}
@@ -740,18 +719,18 @@ For $\omega=\ii$, $d=2$, $A_\omega=-1/180$, and $C_{1,\omega}=-\ii/6$.  Therefor
 \end{example}
 
 \begin{example}[Primitive sixth root]
-For $\omega=\e^{\pi\ii/3}$, $d=3$, $A_\omega=1/17010$,
+For $\omega=\EulerE^{\pi\ImaginaryUnit/3}$, $d=3$, $A_\omega=1/17010$,
 \[
- C_{1,\omega}=-\frac{\ii}{6\sqrt3},
+ C_{1,\omega}=-\frac{\ImaginaryUnit}{6\sqrt3},
  \qquad
- C_{2,\omega}=\frac{\ii\sqrt3}{540}.
+ C_{2,\omega}=\frac{\ImaginaryUnit\sqrt3}{540}.
 \]
 Thus
 \begin{equation}
  \log\Phi\bigl(\omega(1-\eps^3),\sqrt\eps\,w\bigr)
  =-\frac{w^6}{17010}
- +\frac{\ii\eps w^2}{6\sqrt3}
- -\frac{\ii\sqrt3\eps^2w^4}{540}
+ +\frac{\ImaginaryUnit\eps w^2}{6\sqrt3}
+ -\frac{\ImaginaryUnit\sqrt3\eps^2w^4}{540}
  +O(\eps^3).
  \label{eq:m6}
 \end{equation}
@@ -775,7 +754,7 @@ For $|q|<1$ define
 \end{equation}
 Fix a root $\omega\ne1$, and let
 \begin{equation}
- r=\min\set{n\ge1:b_n\ne0\ \text{and}\ \omega^n=1}.
+ r=\min\SetOf{n\ge1:b_n\ne0\ \text{and}\ \omega^n=1}.
  \label{eq:r-germ}
 \end{equation}
 Assume this set is nonempty.  Then, locally uniformly for $w$,
@@ -797,7 +776,7 @@ For nonresonant $n$, the multiplier stays bounded and the scaled term is $O(\del
 \end{proof}
 
 \begin{corollary}[Sinc and $q$-Pochhammer specializations]
-For $h(z)=\sinc z$, only even coefficients occur and the first resonance is $r=2d$, recovering \cref{eq:blowup-limit}.  For $h(z)=1-z$ and a primitive $m$th root, $r=m$ and
+For $h(z)=\SincRad z$, only even coefficients occur and the first resonance is $r=2d$, recovering \cref{eq:blowup-limit}.  For $h(z)=1-z$ and a primitive $m$th root, $r=m$ and
 \begin{equation}
  \prod_{j\ge0}
  \left(1-(1-q)q^j\delta^{1/m}w\right)
@@ -818,7 +797,7 @@ The theorem separates three ingredients: the local Taylor support of $\log h$, t
 Every sinc factor contributes zeros
 \begin{equation}
  z_{\ell,j}(q)=\frac{\pi\ell}{(1-q)q^j},
- \qquad \ell\in\Z\setminus\set0,
+ \qquad \ell\in\IntegerNumbers\setminus\SetOf0,
  \quad j\ge0.
  \label{eq:zeros}
 \end{equation}
@@ -866,7 +845,7 @@ If $d\nmid k$, the multiplier in \cref{eq:Sk} remains bounded.  If $k=\ell d$, i
 \end{proof}
 
 \begin{remark}[Escaping zeros leave an exponential trace]
-The limiting entire function $\e^{-A_\omega w^{2d}}$ has no zeros.  The zero cloud of the rescaled sinc product escapes to infinity, but its $2d$th reciprocal moment remains finite and becomes the exponential factor in the Hadamard limit.  All other reciprocal moments disappear.
+The limiting entire function $\EulerE^{-A_\omega w^{2d}}$ has no zeros.  The zero cloud of the rescaled sinc product escapes to infinity, but its $2d$th reciprocal moment remains finite and becomes the exponential factor in the Hadamard limit.  All other reciprocal moments disappear.
 \end{remark}
 
 \section{Bernoulli cumulants, Bell moments, and Appell collapse}
@@ -876,8 +855,8 @@ The limiting entire function $\e^{-A_\omega w^{2d}}$ has no zeros.  The zero clo
 
 For real $0<q<1$, the moment generating function of $Y_q$ is
 \begin{equation}
- M(q,t)=\mathbb E\e^{tY_q}
- =\Phi(q,\ii t)
+ M(q,t)=\mathbb E\EulerE^{tY_q}
+ =\Phi(q,\ImaginaryUnit t)
  =\prod_{j\ge0}
  \frac{\sinh((1-q)q^jt)}{(1-q)q^jt}.
  \label{eq:MGF}
@@ -947,7 +926,7 @@ Expand $\exp(B_\omega t^{2d})$.  Equivalently, apply the complete Bell polynomia
 
 Let $\mathcal A_n^{(q)}$ denote the inverse-moment Appell polynomials generated by
 \begin{equation}
- \frac{\e^{xt}}{M(q,t)}
+ \frac{\EulerE^{xt}}{M(q,t)}
  =\sum_{n\ge0}\mathcal A_n^{(q)}(x)\frac{t^n}{n!}.
  \label{eq:Appell-q}
 \end{equation}
@@ -968,24 +947,24 @@ Coefficientwise as $\eps\downarrow0$,
 where
 \begin{equation}
  \sum_{n\ge0}H_n^{(d,B)}(x)\frac{t^n}{n!}
- =\e^{xt-Bt^{2d}}
+ =\EulerE^{xt-Bt^{2d}}
  \label{eq:GH-gen}
 \end{equation}
 and explicitly
 \begin{equation}
  \boxed{
  H_n^{(d,B)}(x)
- =n!\sum_{r=0}^{\floor{n/(2d)}}
+ =n!\sum_{r=0}^{\Floor{n/(2d)}}
  \frac{(-B)^r x^{n-2dr}}{r!(n-2dr)!}.}
  \label{eq:GH-explicit}
 \end{equation}
 These polynomials satisfy
 \begin{equation}
- H_n^{(d,B)}=\e^{-BD^{2d}}x^n,
+ H_n^{(d,B)}=\EulerE^{-BD^{2d}}x^n,
  \qquad
  H_{n+1}^{(d,B)}=
  \left(x-2dB D^{2d-1}\right)H_n^{(d,B)},
- \quad D=\frac{\dd}{\dd x}.
+ \quad D=\frac{\Differential}{\Differential x}.
  \label{eq:GH-operator}
 \end{equation}
 \end{theorem}
@@ -993,7 +972,7 @@ These polynomials satisfy
 \begin{proof}
 The generating function of \cref{eq:Appell-scaled} is
 \(
- \e^{xt}/M(q_\eps,\sqrt\eps t)
+ \EulerE^{xt}/M(q_\eps,\sqrt\eps t)
 \).  Apply \cref{eq:MGF-limit}.  Expanding the limiting exponential gives \cref{eq:GH-explicit}; differentiating its generating function gives the operator identities.
 \end{proof}
 
@@ -1007,8 +986,8 @@ By \cref{eq:sign-a}, $A_\omega>0$ exactly when the primitive root order satisfie
 For $A>0$, $d\ge1$, and $\tau>0$, set
 \begin{equation}
  K_{d,A}(x,\tau)
- =\frac1{2\pi}\int_{\R}
- \e^{-\tau A\xi^{2d}-\ii x\xi}\dd\xi.
+ =\frac1{2\pi}\int_{\RealNumbers}
+ \EulerE^{-\tau A\xi^{2d}-\ImaginaryUnit x\xi}\Differential\xi.
  \label{eq:heat-kernel}
 \end{equation}
 \end{definition}
@@ -1034,7 +1013,7 @@ For $d=1$ it is Gaussian; for $d\ge2$ it necessarily changes sign.
 \end{proposition}
 
 \begin{proof}
-Fourier inversion gives smoothness, mass, the PDE, and scaling.  Suppose $d\ge2$ and $\e^{-A\xi^{2d}}$ were a characteristic function of a positive probability measure.  Its second derivative at zero is zero, which would force variance zero; the measure would be a point mass and its characteristic function identically one, a contradiction.
+Fourier inversion gives smoothness, mass, the PDE, and scaling.  Suppose $d\ge2$ and $\EulerE^{-A\xi^{2d}}$ were a characteristic function of a positive probability measure.  Its second derivative at zero is zero, which would force variance zero; the measure would be a point mass and its characteristic function identically one, a contradiction.
 \end{proof}
 
 \begin{corollary}[The sixth-order Rvachev cyclotomic heat limit]
@@ -1048,9 +1027,9 @@ The associated fundamental solution has unit mass but alternating sign.
 
 \subsection{Backward roots and contour rotation}
 
-If $A_\omega<0$ (all odd $m$ and all $m\equiv0\pmod4$), the real-axis symbol $\e^{-A_\omega w^{2d}}$ grows.  It should not be interpreted as a tempered Fourier multiplier on $\R$.  It is nevertheless an entire function with canonical decaying sectors
+If $A_\omega<0$ (all odd $m$ and all $m\equiv0\pmod4$), the real-axis symbol $\EulerE^{-A_\omega w^{2d}}$ grows.  It should not be interpreted as a tempered Fourier multiplier on $\RealNumbers$.  It is nevertheless an entire function with canonical decaying sectors
 \begin{equation}
- \set{w:\Re(A_\omega w^{2d})>0}.
+ \SetOf{w:\Re(A_\omega w^{2d})>0}.
  \label{eq:stokes-sectors}
 \end{equation}
 On contours asymptotic to rays inside these sectors, inverse transforms converge and solve the same polyharmonic equation by analytic continuation.  The sector boundaries
@@ -1067,9 +1046,9 @@ Construct a single Riemann--Hilbert or steepest-descent description that connect
 
 \subsection{Inverse frequency at fixed radial scaling}
 
-Fix a nonzero target $y\in\C$ and a logarithm branch $\ell=\Log y$ with $\ell\ne0$:
+Fix a nonzero target $y\in\ComplexNumbers$ and a logarithm branch $\ell=\PrincipalLogarithm y$ with $\ell\ne0$:
 \begin{equation}
- \ell=\Log y.
+ \ell=\PrincipalLogarithm y.
  \label{eq:ell}
 \end{equation}
 Choose one of the $2d$ roots $w_0\ne0$ satisfying
@@ -1157,7 +1136,7 @@ and matching the coefficient of $z^2$ yields \cref{eq:delta-z}.
 \end{proof}
 
 \begin{remark}[Branch geometry]
-For each root $\omega$, each logarithm value $\ell+2\pi\ii k$, and each $2d$th root in \cref{eq:w0}, one obtains a local branch.  Analytic continuation around $y=0$ permutes these branches.  Thus the root-of-unity boundary is accompanied by a nontrivial inverse monodromy, not merely by a divergent scalar asymptotic.
+For each root $\omega$, each logarithm value $\ell+2\pi\ImaginaryUnit k$, and each $2d$th root in \cref{eq:w0}, one obtains a local branch.  Analytic continuation around $y=0$ permutes these branches.  Thus the root-of-unity boundary is accompanied by a nontrivial inverse monodromy, not merely by a divergent scalar asymptotic.
 \end{remark}
 
 \section{Numerical experiments}
@@ -1219,11 +1198,11 @@ The calculation tests both the divergent action and the finite constant term.  I
  \input{data/numerical_slopes_table.tex}
 \end{table}
 
-The inverse $q$ experiment at $\omega=\ii$ fixes $y=1.1$ and solves for
-\(q(z)=\ii(1-\delta(z))\).  The leading approximation has error $O(z^6)$; after the $C_{1,\omega}$ correction, the fitted exponent is $7.9960$, matching the predicted $O(z^8)$ remainder.  At $z=0.145$, the exact radial coordinate was
+The inverse $q$ experiment at $\omega=\ImaginaryUnit$ fixes $y=1.1$ and solves for
+\(q(z)=\ImaginaryUnit(1-\delta(z))\).  The leading approximation has error $O(z^6)$; after the $C_{1,\omega}$ correction, the fitted exponent is $7.9960$, matching the predicted $O(z^8)$ remainder.  At $z=0.145$, the exact radial coordinate was
 \[
  \delta=2.57314407304007927\times10^{-5}
- +9.47348632511157983\times10^{-7}\ii,
+ +9.47348632511157983\times10^{-7}\ImaginaryUnit,
 \]
 while the two-term absolute error was $3.53\times10^{-8}$.
 
@@ -1264,7 +1243,7 @@ The leading action is dilogarithmic, while standard root-of-unity asymptotics of
 \begin{problem}[Spectral cyclic dilogarithm]
 Find a convergent regularized product $\mathcal D_\omega(z)$ such that
 \[
- \e^{\mathscr B_\omega(z)}
+ \EulerE^{\mathscr B_\omega(z)}
  =\mathcal E_\omega(z)\mathcal D_\omega(z),
 \]
 where $\mathcal E_\omega$ is an elementary square-root factor and $\mathcal D_\omega$ is an infinite spectral product of finite cyclic quantum dilogarithms.  Determine its functional equations and zero divisor.
@@ -1272,10 +1251,10 @@ where $\mathcal E_\omega$ is an elementary square-root factor and $\mathcal D_\o
 
 \subsection{Irrational boundary phases and small divisors}
 
-At an irrational point $q=\e^{2\pi\ii\alpha}$ there is no exact resonance, but denominators $1-q^{2k}$ can be arbitrarily small.  Diophantine properties of $\alpha$ should govern the boundary growth.
+At an irrational point $q=\EulerE^{2\pi\ImaginaryUnit\alpha}$ there is no exact resonance, but denominators $1-q^{2k}$ can be arbitrarily small.  Diophantine properties of $\alpha$ should govern the boundary growth.
 
 \begin{conjecture}[Diophantine phase transition]
-For badly approximable $\alpha$, suitably Abel-regularized logarithms of $\Phi(r\e^{2\pi\ii\alpha},z)$ admit polynomial bounds as $r\uparrow1$ on a small frequency disk.  For Liouville $\alpha$, there exist frequency values with superpolynomial subsequential growth generated by near-resonant cumulants.
+For badly approximable $\alpha$, suitably Abel-regularized logarithms of $\Phi(r\EulerE^{2\pi\ImaginaryUnit\alpha},z)$ admit polynomial bounds as $r\uparrow1$ on a small frequency disk.  For Liouville $\alpha$, there exist frequency values with superpolynomial subsequential growth generated by near-resonant cumulants.
 \end{conjecture}
 
 This would interpolate between the exact root-of-unity action and generic natural-boundary behavior through small-divisor analysis.
@@ -1309,7 +1288,7 @@ remains nontrivial as $d\to\infty$, and identify whether the limiting profile is
 The $2d$ inverse frequency branches and the infinitely many logarithm sheets of $y$ form a branched covering.  The first coefficients are explicit, but global continuation may braid branches around zeros of $\Phi$.
 
 \begin{conjecture}[Cyclotomic inverse braid]
-For generic target $y$, continuation around a simple zero of the finite-level sinc product acts by a transposition on inverse branches, while continuation around $y=0$ acts by the cyclic rotation $w_0\mapsto\e^{\pi\ii/d}w_0$.  In the infinite limit these generators produce a nontrivial braid representation compatible with the escaping zero cloud.
+For generic target $y$, continuation around a simple zero of the finite-level sinc product acts by a transposition on inverse branches, while continuation around $y=0$ acts by the cyclic rotation $w_0\mapsto\EulerE^{\pi\ImaginaryUnit/d}w_0$.  In the infinite limit these generators produce a nontrivial braid representation compatible with the escaping zero cloud.
 \end{conjecture}
 
 \subsection{Two-nome extension}
@@ -1336,7 +1315,7 @@ The new theory has a favorable dependency graph.
 \)
 and derive a finite-truncation version of \cref{eq:cyclic-projection}.
 \item \textbf{Analytic tails.}  Establish geometric majorants for $|a_\omega z|<\pi$ and pass from truncations to the radial theorem.
-\item \textbf{Sign and natural boundary.}  Formalize the sign of $a_\omega^{2d}$ and $\Li_2(\pm x)$ on $0<x<1$, then use the finite-order zero/pole contradiction.
+\item \textbf{Sign and natural boundary.}  Formalize the sign of $a_\omega^{2d}$ and $\Polylogarithm_2(\pm x)$ on $0<x<1$, then use the finite-order zero/pole contradiction.
 \item \textbf{Moments.}  Reuse the repository's Bernoulli cumulant and Bell moment APIs to prove the one-cumulant limit.
 \item \textbf{Inverse branches.}  Begin with formal coefficient recursion; defer the analytic implicit-function theorem until the local complex-analysis library is convenient.
 \end{enumerate}
@@ -1345,7 +1324,7 @@ A compact first formal milestone would prove the blow-up limit and sparse moment
 
 \section{Conclusion}
 
-The complex $q$-plane reveals a structure invisible on the positive real interval.  At every root of unity, the geometric sinc product organizes itself by the order of $\omega^2$.  Fixed frequencies see a spectral dilogarithmic action of size $1/\delta$; shrinking frequencies at the exact cyclotomic rate isolate one resonant coefficient and produce a pure exponential $\e^{-A_\omega w^{2d}}$.  The same resonance appears simultaneously in the zero divisor, Bernoulli cumulants, Bell moments, and inverse Appell polynomials.
+The complex $q$-plane reveals a structure invisible on the positive real interval.  At every root of unity, the geometric sinc product organizes itself by the order of $\omega^2$.  Fixed frequencies see a spectral dilogarithmic action of size $1/\delta$; shrinking frequencies at the exact cyclotomic rate isolate one resonant coefficient and produce a pure exponential $\EulerE^{-A_\omega w^{2d}}$.  The same resonance appears simultaneously in the zero divisor, Bernoulli cumulants, Bell moments, and inverse Appell polynomials.
 
 This unifies several themes of the Fabius--Rvachev corpus without duplicating its existing results.  The sinc product supplies the spectral side; $q$-Pochhammer factorization explains the dilogarithm; Bell and Bernoulli polynomials control corrections and moments; root order determines a polyharmonic PDE; inverse-function theory reveals branch geometry; and the density of roots of unity turns the local action into a global natural boundary.  The scalar root-of-unity renormalization is therefore not an isolated asymptotic trick but a common cyclotomic layer connecting the repository's $q$-analog, Fourier, moment, and inverse theories.
 
@@ -1353,7 +1332,7 @@ This unifies several themes of the Fabius--Rvachev corpus without duplicating it
 
 \section{Uniformity details for the radial theorem}
 
-Let $K\Subset\set{z:|a_\omega z|<\pi}$ and choose $\rho<1$ such that
+Let $K\Subset\SetOf{z:|a_\omega z|<\pi}$ and choose $\rho<1$ such that
 \(
  |a_\omega z|\le\rho\pi
 \) on $K$.  The coefficient bound
@@ -1364,7 +1343,7 @@ Let $K\Subset\set{z:|a_\omega z|<\pi}$ and choose $\rho<1$ such that
 \end{equation}
 provides the basic summable majorant.  The nonresonant denominators at $\delta=0$ run through a finite set
 \(
- \set{1-\omega^{2r}:1\le r<d}
+ \SetOf{1-\omega^{2r}:1\le r<d}
 \), so they are uniformly separated from zero.  The $s$th Taylor coefficient in $\delta$ of either numerator or denominator quotient grows polynomially in $k$ for fixed $s$.  Therefore every fixed-order expansion is dominated by
 \(
  C_s k^{M_s}\rho^{2k}
@@ -1417,7 +1396,7 @@ Matching the $-C_{1,\omega}z^2$ term gives
 
 \begin{table}[H]
 \centering
-\caption{Leading constants for selected primitive roots $\omega=\e^{2\pi\ii/m}$.}
+\caption{Leading constants for selected primitive roots $\omega=\EulerE^{2\pi\ImaginaryUnit/m}$.}
 \begin{tabular}{@{}ccccc@{}}
 \toprule
 $m$ & $d$ & $a_\omega^{2d}$ & $A_\omega$ & real-axis type\\

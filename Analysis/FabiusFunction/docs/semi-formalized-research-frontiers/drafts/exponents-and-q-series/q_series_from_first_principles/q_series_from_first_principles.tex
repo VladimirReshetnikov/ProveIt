@@ -5,6 +5,7 @@
 \usepackage{microtype}
 \usepackage[margin=1in,headheight=15pt]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
+\input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,array,tabularx}
 \usepackage{enumitem}
 \usepackage{xcolor}
@@ -46,15 +47,6 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{example}[theorem]{Example}
 
-\newcommand{\C}{\mathbb C}
-\newcommand{\R}{\mathbb R}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\N}{\mathbb N}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\abs}[1]{\left|#1\right|}
-\newcommand{\qbinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
 \newcommand{\qfac}[1]{(q;q)_{#1}}
 \newcommand{\qinf}{(q;q)_{\infty}}
 
@@ -108,7 +100,7 @@ The phrase ``complete proof'' is used literally in the main line of the article.
 \section{Analytic and formal foundations}
 
 \begin{definition}[$q$-Pochhammer symbols]
-For $n\in\N_0$ define
+For $n\in\NaturalNumbers$ define
 \[
 (a;q)_0=1,\qquad (a;q)_n=\prod_{j=0}^{n-1}(1-aq^j).
 \]
@@ -148,7 +140,7 @@ for an absolute constant $C$. Thus $\sum_{j\ge J}\log(1-aq^j)$ converges uniform
 \end{proof}
 
 \begin{remark}[Formal versus analytic identities]
-An identity in $\C[[q]]$ is established once the coefficient of every $q^N$ agrees. In products such as $\prod_{m\ge1}(1-q^m)^{-1}$, a fixed coefficient involves only finitely many factors. Consequently, most partition identities below are simultaneously formal and analytic. Analytic language is needed chiefly when parameters other than $q$ vary or when modular transformations are considered.
+An identity in $\ComplexNumbers[[q]]$ is established once the coefficient of every $q^N$ agrees. In products such as $\prod_{m\ge1}(1-q^m)^{-1}$, a fixed coefficient involves only finitely many factors. Consequently, most partition identities below are simultaneously formal and analytic. Analytic language is needed chiefly when parameters other than $q$ vary or when modular transformations are considered.
 \end{remark}
 
 \section{Gaussian polynomials and finite $q$-algebra}
@@ -156,7 +148,7 @@ An identity in $\C[[q]]$ is established once the coefficient of every $q^N$ agre
 \begin{definition}[Gaussian polynomial]
 For integers $0\le k\le n$, set
 \[
-\qbinom{n}{k}=\frac{(q;q)_n}{(q;q)_k(q;q)_{n-k}},
+\GaussianBinomial{n}{k}{q}=\frac{(q;q)_n}{(q;q)_k(q;q)_{n-k}},
 \]
 and set it equal to $0$ for $k<0$ or $k>n$.
 \end{definition}
@@ -164,11 +156,11 @@ and set it equal to $0$ for $k<0$ or $k>n$.
 \begin{proposition}[$q$-Pascal recurrences]\label{prop:q-pascal}
 For $n\ge1$,
 \begin{align}
-\qbinom{n}{k}
- &=\qbinom{n-1}{k}+q^{n-k}\qbinom{n-1}{k-1}, \label{eq:qpascal1}\\
- &=q^k\qbinom{n-1}{k}+\qbinom{n-1}{k-1}. \label{eq:qpascal2}
+\GaussianBinomial{n}{k}{q}
+ &=\GaussianBinomial{n-1}{k}{q}+q^{n-k}\GaussianBinomial{n-1}{k-1}{q}, \label{eq:qpascal1}\\
+ &=q^k\GaussianBinomial{n-1}{k}{q}+\GaussianBinomial{n-1}{k-1}{q}. \label{eq:qpascal2}
 \end{align}
-In particular, all Gaussian coefficients lie in $\Z_{\ge0}[q]$.
+In particular, all Gaussian coefficients lie in $\IntegerNumbers_{\ge0}[q]$.
 \end{proposition}
 
 \begin{proof}
@@ -177,16 +169,16 @@ Put the two terms in \eqref{eq:qpascal1} over the common denominator $(q;q)_k(q;
 (q;q)_{n-1}\bigl((1-q^{n-k})+q^{n-k}(1-q^k)\bigr)
 =(q;q)_{n-1}(1-q^n)=(q;q)_n.
 \]
-This proves the first recurrence; the second follows similarly or by the symmetry $\qbinom nk=\qbinom n{n-k}$. Starting with the boundary values $1$, either recurrence proves polynomiality and coefficientwise nonnegativity by induction on $n$.
+This proves the first recurrence; the second follows similarly or by the symmetry $\GaussianBinomial{n}{k}{q}=\GaussianBinomial{n}{n-k}{q}$. Starting with the boundary values $1$, either recurrence proves polynomiality and coefficientwise nonnegativity by induction on $n$.
 \end{proof}
 
 \begin{theorem}[Finite $q$-binomial theorem]\label{thm:finite-qbinomial}
-For every $N\in\N_0$,
+For every $N\in\NaturalNumbers$,
 \begin{align}
 \prod_{j=0}^{N-1}(1+zq^j)
- &=\sum_{k=0}^{N}q^{\binom{k}{2}}\qbinom Nk z^k, \label{eq:finite-qbin-plus}\\
+ &=\sum_{k=0}^{N}q^{\binom{k}{2}}\GaussianBinomial{N}{k}{q} z^k, \label{eq:finite-qbin-plus}\\
 (z;q)_N
- &=\sum_{k=0}^{N}(-1)^kq^{\binom{k}{2}}\qbinom Nk z^k. \label{eq:finite-qbin-minus}
+ &=\sum_{k=0}^{N}(-1)^kq^{\binom{k}{2}}\GaussianBinomial{N}{k}{q} z^k. \label{eq:finite-qbin-minus}
 \end{align}
 \end{theorem}
 
@@ -194,8 +186,8 @@ For every $N\in\N_0$,
 The second formula follows from the first by replacing $z$ with $-z$. Let $P_N(z)$ denote the right side of \eqref{eq:finite-qbin-plus}. Using \eqref{eq:qpascal1},
 \begin{align*}
 P_N(z)
-&=\sum_k q^{\binom{k}{2}}\qbinom{N-1}{k}z^k
- +\sum_k q^{\binom{k}{2}+N-k}\qbinom{N-1}{k-1}z^k\\
+&=\sum_k q^{\binom{k}{2}}\GaussianBinomial{N-1}{k}{q}z^k
+ +\sum_k q^{\binom{k}{2}+N-k}\GaussianBinomial{N-1}{k-1}{q}z^k\\
 &=P_{N-1}(z)+zq^{N-1}P_{N-1}(z)
 =(1+zq^{N-1})P_{N-1}(z).
 \end{align*}
@@ -205,7 +197,7 @@ Since $P_0(z)=1$, induction gives the product.
 \begin{corollary}[Finite reciprocal expansion]\label{cor:finite-reciprocal}
 For $N\ge1$, as a formal power series in $z$,
 \[
-\frac1{(z;q)_N}=\sum_{m=0}^{\infty}\qbinom{N+m-1}{m}z^m.
+\frac1{(z;q)_N}=\sum_{m=0}^{\infty}\GaussianBinomial{N+m-1}{m}{q}z^m.
 \]
 \end{corollary}
 
@@ -213,13 +205,13 @@ For $N\ge1$, as a formal power series in $z$,
 Write the proposed right side as $R_N(z)$. For $N=1$ it is the geometric series. The recurrence \eqref{eq:qpascal2} gives
 \begin{align*}
 (1-zq^{N-1})R_N(z)
-&=\sum_{m\ge0}\left(\qbinom{N+m-1}{m}-q^{N-1}\qbinom{N+m-2}{m-1}\right)z^m\\
-&=\sum_{m\ge0}\qbinom{N+m-2}{m}z^m=R_{N-1}(z).
+&=\sum_{m\ge0}\left(\GaussianBinomial{N+m-1}{m}{q}-q^{N-1}\GaussianBinomial{N+m-2}{m-1}{q}\right)z^m\\
+&=\sum_{m\ge0}\GaussianBinomial{N+m-2}{m}{q}z^m=R_{N-1}(z).
 \end{align*}
 Induction yields $(z;q)_NR_N(z)=1$.
 \end{proof}
 
-The coefficient of $q^m$ in $\qbinom nk$ counts partitions of $m$ whose Ferrers diagram fits inside a $k\times(n-k)$ rectangle. Such diagrams are in bijection with lattice paths from $(0,0)$ to $(n-k,k)$, and the recurrences in \cref{prop:q-pascal} separate the paths by their last step. This gives a second, purely combinatorial proof of positivity.
+The coefficient of $q^m$ in $\GaussianBinomial{n}{k}{q}$ counts partitions of $m$ whose Ferrers diagram fits inside a $k\times(n-k)$ rectangle. Such diagrams are in bijection with lattice paths from $(0,0)$ to $(n-k,k)$, and the recurrences in \cref{prop:q-pascal} separate the paths by their last step. This gives a second, purely combinatorial proof of positivity.
 
 \section{The infinite $q$-binomial theorem and Heine's transformation}
 
@@ -252,7 +244,7 @@ The second series is entire in $z$.
 \begin{proof}
 Set $a=0$ in \cref{thm:infinite-qbinomial} for \eqref{eq:euler-first}. For \eqref{eq:euler-second}, let $N\to\infty$ in \eqref{eq:finite-qbin-minus}. For fixed $n$,
 \[
-\qbinom Nn=\frac{(q^{N-n+1};q)_n}{(q;q)_n}\longrightarrow\frac1{(q;q)_n}.
+\GaussianBinomial{N}{n}{q}=\frac{(q^{N-n+1};q)_n}{(q;q)_n}\longrightarrow\frac1{(q;q)_n}.
 \]
 The convergence is coefficientwise, and normal convergence on compact $z$-sets follows from the quadratic factor $|q|^{\binom n2}$.
 \end{proof}
@@ -321,7 +313,7 @@ Multiplication by the prefactor yields \eqref{eq:q-gauss}.
 \end{proof}
 
 \begin{corollary}[$q$-Chu--Vandermonde]\label{cor:q-chu}
-For $N\in\N_0$,
+For $N\in\NaturalNumbers$,
 \begin{equation}\label{eq:q-chu}
 {}_2\phi_1\!\left[\begin{matrix}q^{-N},a\\c\end{matrix};q,\frac{cq^N}{a}\right]
 =\frac{(c/a;q)_N}{(c;q)_N}.
@@ -365,7 +357,7 @@ with the second expression equal to $v_0/w_0$ when $k=0$.  Summation telescopes 
 \end{proof}
 
 \begin{theorem}[$q$-Pfaff--Saalsch\"utz summation]\label{thm:q-pfaff}
-For $N\in\N_0$,
+For $N\in\NaturalNumbers$,
 \begin{equation}\label{eq:q-pfaff}
 {}_3\phi_2\!\left[
 \begin{matrix}a,b,q^{-N}\\c,abq^{1-N}/c\end{matrix};q,q\right]
@@ -479,10 +471,10 @@ which is exactly the generating function for partitions into odd parts.  Equalit
 \begin{theorem}[Jacobi triple product]\label{thm:jtp}
 For $|q|<1$ and $z\ne0$,
 \begin{equation}\label{eq:jtp}
-\sum_{n\in\Z}(-1)^nq^{\binom n2}z^n
+\sum_{n\in\IntegerNumbers}(-1)^nq^{\binom n2}z^n
 =(q,z,q/z;q)_\infty.
 \end{equation}
-The series converges normally on compact subsets of $\C^\times$.
+The series converges normally on compact subsets of $\ComplexNumbers^\times$.
 \end{theorem}
 
 \begin{proof}
@@ -490,14 +482,14 @@ First consider the annulus $|q|<|z|<1$ and put
 \[
 F(z)=(z;q)_\infty(q/z;q)_\infty.
 \]
-It has an absolutely convergent Laurent expansion $F(z)=\sum_{n\in\Z}c_nz^n$.  Removing first factors gives
+It has an absolutely convergent Laurent expansion $F(z)=\sum_{n\in\IntegerNumbers}c_nz^n$.  Removing first factors gives
 \[
 F(qz)=(qz;q)_\infty(1/z;q)_\infty
 =-z^{-1}(z;q)_\infty(q/z;q)_\infty=-z^{-1}F(z).
 \]
 Comparing coefficients yields $c_{n+1}=-q^nc_n$, and therefore
 \begin{equation}\label{eq:jtp-coeff}
-c_n=(-1)^nq^{\binom n2}c_0\qquad(n\in\Z).
+c_n=(-1)^nq^{\binom n2}c_0\qquad(n\in\IntegerNumbers).
 \end{equation}
 It remains to determine $c_0$.  Expanding both factors by Euler's second formula,
 \begin{align*}
@@ -510,13 +502,13 @@ The constant term comes from $r=s$, so the Durfee identity gives
 \[
 c_0=\sum_{r\ge0}\frac{q^{r^2}}{(q;q)_r^2}=\frac1{(q;q)_\infty}.
 \]
-Substitution in \eqref{eq:jtp-coeff} proves \eqref{eq:jtp} on the annulus.  Both sides are holomorphic on $\C^\times$ and the series is normally convergent there, so analytic continuation proves the identity for all $z\ne0$.
+Substitution in \eqref{eq:jtp-coeff} proves \eqref{eq:jtp} on the annulus.  Both sides are holomorphic on $\ComplexNumbers^\times$ and the series is normally convergent there, so analytic continuation proves the identity for all $z\ne0$.
 \end{proof}
 
 \begin{corollary}[Ramanujan's general theta function]\label{cor:ramanujan-theta}
 For $|ab|<1$, define
 \[
-f(a,b)=\sum_{n\in\Z}a^{n(n+1)/2}b^{n(n-1)/2}.
+f(a,b)=\sum_{n\in\IntegerNumbers}a^{n(n+1)/2}b^{n(n-1)/2}.
 \]
 Then
 \begin{equation}\label{eq:ramanujan-theta}
@@ -537,7 +529,7 @@ and the product becomes $(-a,-b,ab;ab)_\infty$.
 For $|q|<1$,
 \begin{equation}\label{eq:pentagonal}
 (q;q)_\infty
-=\sum_{n\in\Z}(-1)^nq^{n(3n-1)/2}
+=\sum_{n\in\IntegerNumbers}(-1)^nq^{n(3n-1)/2}
 =1+\sum_{n=1}^{\infty}(-1)^n
  \left(q^{n(3n-1)/2}+q^{n(3n+1)/2}\right).
 \end{equation}
@@ -575,9 +567,9 @@ The triple product converts a bilateral theta series into three arithmetic progr
 
 Let $\tau$ lie in the upper half-plane $\mathbb H$ and put $Q=e^{\pi i\tau}$.  We use the theta constants
 \begin{align*}
-\vartheta_2(\tau)&=\sum_{n\in\Z}Q^{(n+1/2)^2},\\
-\vartheta_3(\tau)&=\sum_{n\in\Z}Q^{n^2},\\
-\vartheta_4(\tau)&=\sum_{n\in\Z}(-1)^nQ^{n^2},
+\vartheta_2(\tau)&=\sum_{n\in\IntegerNumbers}Q^{(n+1/2)^2},\\
+\vartheta_3(\tau)&=\sum_{n\in\IntegerNumbers}Q^{n^2},\\
+\vartheta_4(\tau)&=\sum_{n\in\IntegerNumbers}(-1)^nQ^{n^2},
 \end{align*}
 and the Dedekind eta function
 \begin{equation}\label{eq:eta-def}
@@ -604,7 +596,7 @@ Consequently,
 \begin{proof}
 Apply the Jacobi triple product with base $Q^2$.  Taking $z=-Q^2$ gives
 \[
-\sum_{n\in\Z}Q^{n(n+1)}=(Q^2,-Q^2,-1;Q^2)_\infty
+\sum_{n\in\IntegerNumbers}Q^{n(n+1)}=(Q^2,-Q^2,-1;Q^2)_\infty
 =2(Q^2;Q^2)_\infty(-Q^2;Q^2)_\infty^2.
 \]
 Multiplication by $Q^{1/4}$ proves \eqref{eq:theta2-product}.  Taking $z=-Q$ and $z=Q$ gives \eqref{eq:theta3-product} and \eqref{eq:theta4-product}.
@@ -620,7 +612,7 @@ show that all factors apart from $2Q^{1/4}(Q^2;Q^2)_\infty^3$ cancel.  This rema
 
 \subsection{Poisson summation from first principles}
 
-For an integrable function $f$ on $\R$, write
+For an integrable function $f$ on $\RealNumbers$, write
 \[
 \widehat f(\xi)=\int_{-\infty}^{\infty}f(x)e^{-2\pi i x\xi}\,dx.
 \]
@@ -628,16 +620,16 @@ For an integrable function $f$ on $\R$, write
 \begin{theorem}[Poisson summation for Schwartz functions]\label{thm:poisson}
 If $f$ is a Schwartz function, then
 \begin{equation}\label{eq:poisson}
-\sum_{n\in\Z}f(n)=\sum_{m\in\Z}\widehat f(m),
+\sum_{n\in\IntegerNumbers}f(n)=\sum_{m\in\IntegerNumbers}\widehat f(m),
 \end{equation}
 and both series converge absolutely.
 \end{theorem}
 
 \begin{proof}
-The periodization $P(x)=\sum_{n\in\Z}f(x+n)$ and all its derivatives converge uniformly on $[0,1]$, because $f$ is rapidly decreasing.  Thus $P$ is a smooth $1$-periodic function.  Its $m$th Fourier coefficient is
+The periodization $P(x)=\sum_{n\in\IntegerNumbers}f(x+n)$ and all its derivatives converge uniformly on $[0,1]$, because $f$ is rapidly decreasing.  Thus $P$ is a smooth $1$-periodic function.  Its $m$th Fourier coefficient is
 \begin{align*}
 \int_0^1P(x)e^{-2\pi imx}\,dx
-&=\sum_{n\in\Z}\int_0^1f(x+n)e^{-2\pi imx}\,dx\\
+&=\sum_{n\in\IntegerNumbers}\int_0^1f(x+n)e^{-2\pi imx}\,dx\\
 &=\int_{-\infty}^{\infty}f(u)e^{-2\pi imu}\,du
 =\widehat f(m).
 \end{align*}
@@ -673,14 +665,14 @@ On $\mathbb H$, with the holomorphic square root that is positive at $\tau=i$,
 \begin{proof}
 Take $t=-i\tau$, whose real part is positive.  Applying Poisson summation and \cref{lem:gaussian-ft} to $f(x)=e^{-\pi tx^2}$ gives
 \[
-\sum_{n\in\Z}e^{\pi i\tau n^2}
-=(-i\tau)^{-1/2}\sum_{m\in\Z}e^{-\pi im^2/\tau}.
+\sum_{n\in\IntegerNumbers}e^{\pi i\tau n^2}
+=(-i\tau)^{-1/2}\sum_{m\in\IntegerNumbers}e^{-\pi im^2/\tau}.
 \]
 Rearrangement proves \eqref{eq:theta3-S}.
 
 The shifted Poisson formula
 \begin{equation}\label{eq:shifted-poisson}
-\sum_{n\in\Z}f(n+a)=\sum_{m\in\Z}e^{2\pi ima}\widehat f(m)
+\sum_{n\in\IntegerNumbers}f(n+a)=\sum_{m\in\IntegerNumbers}e^{2\pi ima}\widehat f(m)
 \end{equation}
 follows by applying the proof of \cref{thm:poisson} to the periodization of $f(x+a)$.  Taking $a=1/2$ yields
 \[
@@ -719,12 +711,12 @@ is holomorphic on the connected domain $\mathbb H$ and satisfies $R(\tau)^3=1$. 
 
 \subsection{Theta powers and sums of squares}
 
-Let $r_d(n)$ denote the number of ordered $d$-tuples $(x_1,\ldots,x_d)\in\Z^d$ with $x_1^2+\cdots+x_d^2=n$.
+Let $r_d(n)$ denote the number of ordered $d$-tuples $(x_1,\ldots,x_d)\in\IntegerNumbers^d$ with $x_1^2+\cdots+x_d^2=n$.
 
 \begin{proposition}[Theta generating function for sums of squares]\label{prop:squares-theta}
 For $|q|<1$,
 \begin{equation}\label{eq:squares-theta}
-\left(\sum_{m\in\Z}q^{m^2}\right)^d
+\left(\sum_{m\in\IntegerNumbers}q^{m^2}\right)^d
 =\sum_{n=0}^{\infty}r_d(n)q^n.
 \end{equation}
 \end{proposition}
@@ -754,15 +746,15 @@ Two sequences $(\alpha_n)_{n\ge0}$ and $(\beta_n)_{n\ge0}$ form a \emph{Bailey p
 If $P(x)$ is a polynomial of degree less than $m$, then
 \begin{equation}\label{eq:q-annihilation}
 \sum_{s=0}^{m}(-1)^{m-s}q^{\binom{m-s}{2}}
-\qbinom ms P(q^s)=0.
+\GaussianBinomial{m}{s}{q} P(q^s)=0.
 \end{equation}
 \end{lemma}
 
 \begin{proof}
 By linearity it suffices to take $P(x)=x^h$ with $0\le h<m$.  Put $t=m-s$ and use the finite $q$-binomial theorem:
 \begin{align*}
-\sum_{s=0}^{m}(-1)^{m-s}q^{\binom{m-s}{2}}\qbinom ms q^{hs}
-&=q^{hm}\sum_{t=0}^{m}(-1)^tq^{\binom t2}\qbinom mt q^{-ht}\\
+\sum_{s=0}^{m}(-1)^{m-s}q^{\binom{m-s}{2}}\GaussianBinomial{m}{s}{q} q^{hs}
+&=q^{hm}\sum_{t=0}^{m}(-1)^tq^{\binom t2}\GaussianBinomial{m}{t}{q} q^{-ht}\\
 &=q^{hm}(q^{-h};q)_m=0,
 \end{align*}
 because the factor with index $h$ is $1-q^0$.
@@ -800,7 +792,7 @@ Therefore
 \[
 C_{n,r}=\frac{1-aq^{2n}}{(q;q)_m}
 \sum_{s=0}^{m}(-1)^{m-s}q^{\binom{m-s}{2}}
-\qbinom ms P(q^s),
+\GaussianBinomial{m}{s}{q} P(q^s),
 \]
 where
 \[
@@ -999,11 +991,11 @@ G(q)
 \left(1+\sum_{n\ge1}(-1)^n
 q^{(5n^2-n)/2}(1+q^n)\right)\\
 &=\frac1{(q;q)_\infty}
-\sum_{n\in\Z}(-1)^nq^{(5n^2-n)/2}.
+\sum_{n\in\IntegerNumbers}(-1)^nq^{(5n^2-n)/2}.
 \end{align*}
 The second equality pairs the positive index $n$ with the negative index $-n$.  Apply the Jacobi triple product with base $q^5$ and $z=q^2$:
 \[
-\sum_{n\in\Z}(-1)^nq^{(5n^2-n)/2}
+\sum_{n\in\IntegerNumbers}(-1)^nq^{(5n^2-n)/2}
 =(q^5,q^2,q^3;q^5)_\infty.
 \]
 Dividing by
@@ -1023,11 +1015,11 @@ H(q)
 &=\frac1{(q^2;q)_\infty}
 \sum_{n\ge0}q^{2n^2+2n}\alpha_n^{\mathrm U}(q)\\
 &=\frac1{(q;q)_\infty}
-\sum_{n\in\Z}(-1)^nq^{(5n^2+3n)/2}.
+\sum_{n\in\IntegerNumbers}(-1)^nq^{(5n^2+3n)/2}.
 \end{align*}
 Here the negative index $-n-1$ supplies the term obtained by multiplying the $n$th nonnegative term by $-q^{2n+1}$.  The triple product with base $q^5$ and $z=q^4$ gives
 \[
-\sum_{n\in\Z}(-1)^nq^{(5n^2+3n)/2}
+\sum_{n\in\IntegerNumbers}(-1)^nq^{(5n^2+3n)/2}
 =(q^5,q^4,q;q^5)_\infty.
 \]
 Division by $(q;q)_\infty$ yields \eqref{eq:RR2}.
@@ -1091,15 +1083,15 @@ Q_{-1}=0,\qquad Q_0=1,\qquad Q_N=Q_{N-1}+q^NQ_{N-2}. \label{eq:Q-recurrence}
 We claim
 \begin{align}
 P_N&=\sum_{j=0}^{\lfloor(N+1)/2\rfloor}
-q^{j^2}\qbinom{N+1-j}{j}, \label{eq:P-polynomial}\\
+q^{j^2}\GaussianBinomial{N+1-j}{j}{q}, \label{eq:P-polynomial}\\
 Q_N&=\sum_{j=0}^{\lfloor N/2\rfloor}
-q^{j^2+j}\qbinom{N-j}{j}. \label{eq:Q-polynomial}
+q^{j^2+j}\GaussianBinomial{N-j}{j}{q}. \label{eq:Q-polynomial}
 \end{align}
 The initial cases are immediate.  Substitution of the $q$-Pascal recurrence \eqref{eq:qpascal1} verifies that the right sides satisfy \eqref{eq:P-recurrence} and \eqref{eq:Q-recurrence}; uniqueness of the recurrence proves the claim.
 
 For fixed $j$,
 \[
-\qbinom{N+1-j}{j}
+\GaussianBinomial{N+1-j}{j}{q}
 =\frac{(q^{N+2-2j};q)_j}{(q;q)_j}\longrightarrow\frac1{(q;q)_j},
 \]
 and similarly for \eqref{eq:Q-polynomial}.  On every compact disk $|q|\le r<1$, these terms are bounded by a constant times $r^{j^2}/|(q;q)_j|$, so dominated convergence applies.  Therefore
@@ -1190,7 +1182,7 @@ On the alpha side, the $K$ chain steps and the final limiting identity together 
 \sum_{n\ge0}q^{(K+1)(n^2+n)}
 (-1)^nq^{\binom n2}\frac{1-q^{2n+1}}{1-q}\\
 &=\frac1{(q;q)_\infty}
-\sum_{m\in\Z}(-1)^m
+\sum_{m\in\IntegerNumbers}(-1)^m
 q^{\{Mm^2+(M-2)m\}/2}.
 \end{align*}
 The equality in the second line pairs the indices $m=n\ge0$ and $m=-n-1$; the $n=0$ pair contributes $1-q$.  The Jacobi triple product with base $q^M$ and $z=q^{M-1}$ evaluates the bilateral sum as
@@ -1248,7 +1240,7 @@ q^{\{Mn^2-(M-2i)n\}/2}
 (1+q^{(M-2i)n})
 \right)
 &=\frac1{(q;q)_\infty}
-\sum_{m\in\Z}(-1)^m
+\sum_{m\in\IntegerNumbers}(-1)^m
 q^{\{Mm^2-(M-2i)m\}/2}\\
 &=\frac{(q^M,q^i,q^{M-i};q^M)_\infty}
 {(q;q)_\infty},
@@ -1351,7 +1343,7 @@ The proofs above support several concrete extensions.
 
 \subsection{Finite forms before infinite limits}
 
-The continued-fraction proof shows the value of retaining the finite Gaussian-polynomial approximants.  The same principle applies to the Rogers--Ramanujan and Andrews--Gordon sums: before taking the limiting Bailey identity, stop at a finite outer index.  One obtains polynomial identities whose limits are the infinite products.  Such finitizations are particularly promising for coefficientwise inequalities, truncated pentagonal identities, and computer-assisted discovery, because every claim becomes a finite statement in $\Z[q]$.
+The continued-fraction proof shows the value of retaining the finite Gaussian-polynomial approximants.  The same principle applies to the Rogers--Ramanujan and Andrews--Gordon sums: before taking the limiting Bailey identity, stop at a finite outer index.  One obtains polynomial identities whose limits are the infinite products.  Such finitizations are particularly promising for coefficientwise inequalities, truncated pentagonal identities, and computer-assisted discovery, because every claim becomes a finite statement in $\IntegerNumbers[q]$.
 
 \subsection{Automating Bailey-pair discovery}
 
@@ -1361,7 +1353,7 @@ Bailey inversion \eqref{eq:bailey-inversion} turns pair discovery into a determi
 
 In the Rogers--Ramanujan and Andrews--Gordon proofs, the final bilateral sum has the form
 \[
-\sum_{n\in\Z}(-1)^nq^{(Mn^2+Bn)/2}.
+\sum_{n\in\IntegerNumbers}(-1)^nq^{(Mn^2+Bn)/2}.
 \]
 The Jacobi product forces modulus $M$, and the linear coefficient determines the two nontrivial factors.  This gives a useful reverse-engineering rule: a multisum whose Bailey reduction produces a quadratic coefficient $M/2$ should be tested against products modulo $M$.  The mod $9$, $14$, and $27$ files in the archive are natural test cases for systematic implementations of this rule.
 
@@ -1371,7 +1363,7 @@ The modern proofs of the first and second Borwein conjectures are asymptotic and
 
 \subsection{Bilateral and multilateral Bailey structures}
 
-Recent work has clarified bilateral Bailey lattices and new Andrews--Gordon-type identities \cite{DousseJouhetKonan2025,DousseJangJouhet2025}.  The elementary proof of \cref{lem:bailey-L} makes clear why bilateral extensions are plausible: the parameter shift is a first-order difference of neighboring alpha terms.  Allowing indices in $\Z$ replaces the boundary condition $\alpha_{-1}=0$ by a convergence condition at $-\infty$, opening a route to mock theta, Appell--Lerch, and false-theta identities.
+Recent work has clarified bilateral Bailey lattices and new Andrews--Gordon-type identities \cite{DousseJouhetKonan2025,DousseJangJouhet2025}.  The elementary proof of \cref{lem:bailey-L} makes clear why bilateral extensions are plausible: the parameter shift is a first-order difference of neighboring alpha terms.  Allowing indices in $\IntegerNumbers$ replaces the boundary condition $\alpha_{-1}=0$ by a convergence condition at $-\infty$, opening a route to mock theta, Appell--Lerch, and false-theta identities.
 
 \section{Conclusion}
 
@@ -1388,8 +1380,8 @@ For reference, we record the analytic justifications used in the main text.
 \begin{enumerate}[label=\textbf{A.\arabic*.}]
 \item \textbf{Infinite products.}  \Cref{lem:product-convergence} gives uniform convergence on compact parameter sets.  Ratios of products are therefore holomorphic away from explicit zeros of denominator factors.
 \item \textbf{Euler and basic hypergeometric series.}  For $|z|<1$, the coefficient ratio in the infinite $q$-binomial series tends to $z$.  In Heine's proof, one may initially impose $|z|<1$, $|b|<1$, and compact parameter bounds; the resulting double series is absolutely convergent.  The final identity extends by analytic continuation.
-\item \textbf{Jacobi's bilateral series.}  On a compact annulus $r\le|z|\le R$, the positive and negative tails are bounded by geometric multiples of $|q|^{n^2/3}$ for large $|n|$.  Hence normal convergence holds on $\C^\times$.
-\item \textbf{Partition products.}  Every coefficient of $q^N$ uses only factors indexed by $m\le N$, so all combinatorial product manipulations are valid in $\Z[[q]]$ independently of analytic convergence.
+\item \textbf{Jacobi's bilateral series.}  On a compact annulus $r\le|z|\le R$, the positive and negative tails are bounded by geometric multiples of $|q|^{n^2/3}$ for large $|n|$.  Hence normal convergence holds on $\ComplexNumbers^\times$.
+\item \textbf{Partition products.}  Every coefficient of $q^N$ uses only factors indexed by $m\le N$, so all combinatorial product manipulations are valid in $\IntegerNumbers[[q]]$ independently of analytic convergence.
 \item \textbf{Poisson summation.}  Schwartz decay permits uniform differentiation of the periodization, termwise integration, and absolute convergence of the Fourier series.
 \item \textbf{Bailey limits.}  The Rogers--Ramanujan and Andrews--Gordon applications have summands bounded by $C|q|^{cn^2}$ times products whose reciprocals remain bounded for $|q|\le r<1$.  Thus the limiting operations and sum rearrangements are absolutely and locally uniformly convergent.
 \item \textbf{Continued fractions.}  The explicit convergent polynomials are dominated by the convergent Rogers--Ramanujan series.  Their numerator and denominator limits are nonzero products in the unit disk, so passage to the quotient is valid.
@@ -1400,10 +1392,10 @@ For reference, we record the analytic justifications used in the main text.
 For convenient reuse, the central identities are collected here without proof references suppressed:
 \begin{align*}
 (a;q)_{m+n}&=(a;q)_m(aq^m;q)_n,\\
-(z;q)_N&=\sum_{k=0}^{N}(-1)^kq^{\binom k2}\qbinom Nk z^k,\\
+(z;q)_N&=\sum_{k=0}^{N}(-1)^kq^{\binom k2}\GaussianBinomial{N}{k}{q} z^k,\\
 \sum_{n\ge0}\frac{(a;q)_n}{(q;q)_n}z^n
 &=\frac{(az;q)_\infty}{(z;q)_\infty},\\
-\sum_{n\in\Z}(-1)^nq^{\binom n2}z^n
+\sum_{n\in\IntegerNumbers}(-1)^nq^{\binom n2}z^n
 &=(q,z,q/z;q)_\infty,\\
 \sum_{n\ge0}\frac{q^{n^2}}{(q;q)_n}
 &=\frac1{(q,q^4;q^5)_\infty},\\

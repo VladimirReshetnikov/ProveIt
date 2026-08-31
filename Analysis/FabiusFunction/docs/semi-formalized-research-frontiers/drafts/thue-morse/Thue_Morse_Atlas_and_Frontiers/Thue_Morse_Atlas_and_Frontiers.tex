@@ -6,6 +6,7 @@
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\input{../../../../fabius-notation.tex}
 \usepackage{bm}
 \usepackage{booktabs,longtable,array,tabularx}
 \usepackage{graphicx}
@@ -79,21 +80,7 @@
 \newsharedtheorem{remark}{Remark}
 \newsharedtheorem{warning}{Warning}
 
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
 \newcommand{\Ftwo}{\mathbb F_2}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\bigO}{\mathcal O}
-\newcommand{\smallo}{o}
-\newcommand{\sgn}{\operatorname{sgn}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\wt}{\operatorname{wt}_2}
-\newcommand{\vtwo}{\nu_2}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\xor}{\mathbin{\oplus}}
 \newcommand{\submask}{\mathrel{\preccurlyeq_2}}
@@ -166,8 +153,8 @@ partly overlapping collections of formulae for the Thue--Morse sequence.  This
 document merges them into one proof-oriented atlas, removes duplicated
 arguments, reconciles notation and sign conventions, and retains the strongest
 version of each genuinely different result.  The signed sequence
-\(\eps_n=(-1)^{\wt(n)}\) and the zero--one sequence
-\(\tau(n)=\wt(n)\bmod2\) are treated simultaneously.
+\(\eps_n=\ThueMorseSign{n}\) and the zero--one sequence
+\(\tau(n)=\BinaryDigitSum(n)\bmod2\) are treated simultaneously.
 
 The resulting network begins with binary recursion, block concatenation, XOR
 characters, floor and fractional-part sums, trigonometric signs, factorial and
@@ -200,8 +187,8 @@ continues to an entire function, satisfies an exact dyadic parameter equation,
 and vanishes at every nonpositive integer.  The proof is driven by the
 super-polynomial flatness
 \[
- \log\!\prod_{j\ge0}(1-\e^{-2^jt})
- =-\frac{\log^2(1/t)}{2\log2}+\bigO(\log(1/t))
+ \log\!\prod_{j\ge0}(1-\EulerE^{-2^jt})
+ =-\frac{\log^2(1/t)}{2\log2}+\BigO(\log(1/t))
  \qquad(t\downarrow0).
 \]
 A second consolidation pass merged three parallel sibling atlases into this
@@ -233,7 +220,7 @@ formalized in Lean.
 
 \subsection{Two normalizations}
 
-Write the binary expansion of \(n\in\N=\{0,1,2,\ldots\}\) as
+Write the binary expansion of \(n\in\NaturalNumbers=\{0,1,2,\ldots\}\) as
 \begin{equation}
   n=\sum_{j\ge0}b_j(n)2^j,
   \qquad b_j(n)\in\{0,1\},
@@ -242,11 +229,11 @@ Write the binary expansion of \(n\in\N=\{0,1,2,\ldots\}\) as
 with only finitely many nonzero digits.  Its binary weight and the two standard
 normalizations of the Thue--Morse sequence are
 \begin{equation}
-  \wt(n)=\sum_{j\ge0}b_j(n),
+  \BinaryDigitSum(n)=\sum_{j\ge0}b_j(n),
   \qquad
-  \tau(n)=\wt(n)\bmod2\in\{0,1\},
+  \tau(n)=\BinaryDigitSum(n)\bmod2\in\{0,1\},
   \qquad
-  \eps_n=(-1)^{\wt(n)}=1-2\tau(n).
+  \eps_n=\ThueMorseSign{n}=1-2\tau(n).
   \label{p1:eq:normalizations}
 \end{equation}
 Thus
@@ -263,8 +250,8 @@ expansions, and the formula in the source exposition.
 We use \(a\xor b\) for bitwise exclusive-or and \(k\submask n\) when every
 one-bit of \(k\) is also a one-bit of \(n\).  Empty products are \(1\), empty
 sums are \(0\), and \(0^0=1\) when it occurs in a finite moment identity.
-The valuation \(\vtwo(m)\) is the exponent of \(2\) in a positive integer
-\(m\), with \(\vtwo(1)=0\).
+The valuation \(\TwoAdicValuation(m)\) is the exponent of \(2\) in a positive integer
+\(m\), with \(\TwoAdicValuation(1)=0\).
 
 \subsection{The Pascal-row formula being complemented}
 
@@ -275,7 +262,7 @@ Section~11.8 of the main Fabius--Rvachev exposition defines
 \end{equation}
 and proves the exact-power identity
 \begin{equation}
-  n+1-\mathcal X(n)=2^{\wt(n)+1}.
+  n+1-\mathcal X(n)=2^{\BinaryDigitSum(n)+1}.
   \label{p1:eq:source-power}
 \end{equation}
 Consequently
@@ -351,41 +338,41 @@ Block concatenation & \(\eps_{2^mq+r}=\eps_q\eps_r\) for \(0\le r<2^m\). \\
 XOR character & \(\eps_{a\xor b}=\eps_a\eps_b\). \\
 Digit product & \(\eps_n=\prod_j(1-2b_j(n))\). \\
 Floors & \(\eps_n=(-1)^{\sum_{j\ge0}\lfloor n/2^j\rfloor}\). \\
-Fractional parts & \(\wt(n)=\sum_{j\ge1}\{n/2^j\}\). \\
-Factorials & \(\eps_n=(-1)^{n-\vtwo(n!)}\). \\
-Central binomial & \(\eps_n=(-1)^{\vtwo\binom{2n}{n}}\). \\
-Carries & \(\eps_{a+b}=\eps_a\eps_b(-1)^{\vtwo\binom{a+b}{a}}\). \\
-Pascal support & \(\#\{k:\binom nk\text{ odd}\}=2^{\wt(n)}\). \\
+Fractional parts & \(\BinaryDigitSum(n)=\sum_{j\ge1}\{n/2^j\}\). \\
+Factorials & \(\eps_n=(-1)^{n-\TwoAdicValuation(n!)}\). \\
+Central binomial & \(\eps_n=(-1)^{\TwoAdicValuation\binom{2n}{n}}\). \\
+Carries & \(\eps_{a+b}=\eps_a\eps_b(-1)^{\TwoAdicValuation\binom{a+b}{a}}\). \\
+Pascal support & \(\#\{k:\binom nk\text{ odd}\}=2^{\BinaryDigitSum(n)}\). \\
 Sparse Pascal probes & \(\eps_n=(-1)^{\sum_j\binom{n}{2^j}}\). \\
-Log-free Pascal residue & \(\tau(n)=\bigl(2^{\wt(n)}\bmod3\bigr)-1\). \\
-Multinomial support & \(O_r(n)=r^{\wt(n)}\). \\
+Log-free Pascal residue & \(\tau(n)=\bigl(2^{\BinaryDigitSum(n)}\bmod3\bigr)-1\). \\
+Multinomial support & \(O_r(n)=r^{\BinaryDigitSum(n)}\). \\
 Boolean M\"obius & \(\mu_2(k,n)=\eps_{n\xor k}\) for \(k\submask n\). \\
 Finite product & \(P_m(z)=\prod_{j=0}^{m-1}(1-z^{2^j})\). \\
-Weighted complex block & \(\sum_{n<2^m}u^{\wt(n)}\e^{a+nz}=\e^a\prod_{j<m}(1+u\e^{2^jz})\), including the base case \(a=0\). \\
-Signed complex block & \(\sum_{n<2^m}\eps_n\e^{a+nz}=\e^a\prod_{j<m}(1-\e^{2^jz})\), including the base case \(a=0\). \\
+Weighted complex block & \(\sum_{n<2^m}u^{\BinaryDigitSum(n)}\EulerE^{a+nz}=\EulerE^a\prod_{j<m}(1+u\EulerE^{2^jz})\), including the base case \(a=0\). \\
+Signed complex block & \(\sum_{n<2^m}\eps_n\EulerE^{a+nz}=\EulerE^a\prod_{j<m}(1-\EulerE^{2^jz})\), including the base case \(a=0\). \\
 Infinite product & \(E(z)=\prod_{j\ge0}(1-z^{2^j})\), \(|z|<1\). \\
 Mahler equation & \(E(z)=(1-z)E(z^2)\). \\
-Euler transform & \(\log E(z)=-\sum_{r\ge1}(2^{\vtwo(r)+1}-1)z^r/r\). \\
+Euler transform & \(\log E(z)=-\sum_{r\ge1}(2^{\TwoAdicValuation(r)+1}-1)z^r/r\). \\
 Finite differences & \(\sum_{n<2^m}\eps_nf(x+n)=(-1)^m\Delta_1\cdots\Delta_{2^{m-1}}f(x)\). \\
 Prouhet & \(\sum_{n<2^m}\eps_np(n)=0\) when \(\deg p<m\). \\
 Sharp moment & \(\sum_{n<2^m}\eps_nn^m=(-1)^mm!2^{\binom m2}\). \\
-Sparse Prouhet & \(\sum_{k\submask n}\eps_kp(k)=0\) when \(\deg p<\wt(n)\). \\
+Sparse Prouhet & \(\sum_{k\submask n}\eps_kp(k)=0\) when \(\deg p<\BinaryDigitSum(n)\). \\
 Prefix discrepancy & \(\sum_{n<N}\eps_n=0\) for even \(N\), \(\eps_{(N-1)/2}\) for odd \(N\). \\
 Walsh transform & A length-\(2^m\) block is one Walsh frequency. \\
-Ordinary DFT & \(\widehat\eps_m(k)=\prod_{j<m}(1-\e^{-2\pi\ii k2^j/2^m})\). \\
-Riesz density & \(2^{-m}|P_m(\e^{2\pi\ii x})|^2=\prod_{j<m}(1-\cos(2\pi2^jx))\). \\
+Ordinary DFT & \(\widehat\eps_m(k)=\prod_{j<m}(1-\EulerE^{-2\pi\ImaginaryUnit k2^j/2^m})\). \\
+Riesz density & \(2^{-m}|P_m(\EulerE^{2\pi\ImaginaryUnit x})|^2=\prod_{j<m}(1-\cos(2\pi2^jx))\). \\
 Characteristic two & \((1+x)^3T(x)^2+(1+x)^2T(x)+x=0\) in \(\Ftwo[[x]]\). \\
-Weighted enumerator & \(\sum_nu^{\wt(n)}z^n=\prod_j(1+uz^{2^j})\). \\
-Subtraction cocycle & \(\eps_{a-b}=\eps_a\eps_b(-1)^{\vtwo\binom ab}\) for \(b\le a\). \\
+Weighted enumerator & \(\sum_nu^{\BinaryDigitSum(n)}z^n=\prod_j(1+uz^{2^j})\). \\
+Subtraction cocycle & \(\eps_{a-b}=\eps_a\eps_b(-1)^{\TwoAdicValuation\binom ab}\) for \(b\le a\). \\
 Autocorrelation Mahler & \(2zC(z)=1-(1-z)^2C(z^2)\). \\
 Natural boundary & \(E\) continues across no arc of \(|z|=1\). \\
 Hankel rigidity & \(\det(\eps_{i+j})_{i,j<r}\ne0\) for every \(r\). \\
 Rarefaction mod 3 & \(\bigl(A^{(3)}_{2u,r}\bigr)_r=3^{u-1}(2,-1,-1)\). \\
-Gelfond exponent & \(3^{m/2}\le\sup_x|P_m(\e^{2\pi\ii x})|\le\tfrac2{\sqrt3}3^{m/2}\). \\
+Gelfond exponent & \(3^{m/2}\le\sup_x|P_m(\EulerE^{2\pi\ImaginaryUnit x})|\le\tfrac2{\sqrt3}3^{m/2}\). \\
 Newman positivity & \(\sum_{n<X,\,3\mid n}\eps_n>0\) for all \(X\ge1\). \\
 Critical exponent & Overlap-free; squares occur, exponent exactly \(2\). \\
 Factor complexity & \(\ell+1\le p(\ell)\le6\ell-4\) for \(\ell\ge1\). \\
-Dirichlet--Mellin & \(D(s,a)=\Gamma(s)^{-1}\int_0^\infty t^{s-1}\e^{-at}E(\e^{-t})\dd t\).  \emph{Delivered}: boundary flatness, convergence, the dyadic equation, the analytic infinite product, the Mellin representation, and the entire continuation (\path{ThueMorseBoundaryFlatness.lean}, \path{ThueMorseDirichlet.lean}, \path{ThueMorseInfiniteProduct.lean}, \path{ThueMorseMellin.lean}, \path{ThueMorseEntireContinuation.lean}). \\
+Dirichlet--Mellin & \(D(s,a)=\Gamma(s)^{-1}\int_0^\infty t^{s-1}\EulerE^{-at}E(\EulerE^{-t})\Differential t\).  \emph{Delivered}: boundary flatness, convergence, the dyadic equation, the analytic infinite product, the Mellin representation, and the entire continuation (\path{ThueMorseBoundaryFlatness.lean}, \path{ThueMorseDirichlet.lean}, \path{ThueMorseInfiniteProduct.lean}, \path{ThueMorseMellin.lean}, \path{ThueMorseEntireContinuation.lean}). \\
 \bottomrule
 \end{longtable}
 \renewcommand{\arraystretch}{1}
@@ -460,7 +447,7 @@ it, so there is no second candidate to rule out.
 \label{p1:thm:block-concatenation}
 For \(m,q\ge0\) and \(0\le r<2^m\),
 \begin{align}
-  \wt(2^mq+r)&=\wt(q)+\wt(r),
+  \BinaryDigitSum(2^mq+r)&=\BinaryDigitSum(q)+\BinaryDigitSum(r),
   \label{p1:eq:block-weight}\\
   \eps_{2^mq+r}&=\eps_q\eps_r,
   \label{p1:eq:block-sign}\\
@@ -490,7 +477,7 @@ unchanged.
 
 \begin{proof}
 Within \(m\) positions, \(2^m-1-n\) is the bitwise complement of \(n\), so
-its weight is \(m-\wt(n)\).  A permutation of positions leaves their sum
+its weight is \(m-\BinaryDigitSum(n)\).  A permutation of positions leaves their sum
 unchanged.
 \end{proof}
 
@@ -501,7 +488,7 @@ unchanged.
 the two-scale laws rather than through the weight of the complement;
 its only hypothesis is the stated \(n<2^m\).  Only the signed form is
 named in Lean; the bit form is its parity reading, and the
-digit-permutation invariance is the invariance of \(\wt\) under
+digit-permutation invariance is the invariance of \(\BinaryDigitSum\) under
 permuting positions.
 
 \subsection{Exclusive-or is the natural group law}
@@ -516,13 +503,13 @@ For all \(a,b\ge0\),
   \label{p1:eq:xor-character}
 \end{equation}
 Thus \(n\mapsto\eps_n\) is a character of the Boolean group
-\(\bigoplus_{j\ge0}\Z/2\Z\).
+\(\bigoplus_{j\ge0}\IntegerNumbers/2\IntegerNumbers\).
 \end{theorem}
 
 \begin{proof}
 At each position, XOR adds the two bits modulo two.  Summing the coordinate
 identities modulo two gives
-\(\wt(a\xor b)\equiv\wt(a)+\wt(b)\pmod2\).
+\(\BinaryDigitSum(a\xor b)\equiv\BinaryDigitSum(a)+\BinaryDigitSum(b)\pmod2\).
 \end{proof}
 
 \begin{corollary}[XOR autocorrelation and Hamming spheres]
@@ -532,7 +519,7 @@ Fix \(m\ge0\), \(0\le a<2^m\), and \(0\le r\le m\).  Then
   \sum_{n=0}^{2^m-1}\eps_n\eps_{n\xor a}
    &=2^m\eps_a,
   \label{p1:eq:xor-autocorrelation}\\
-  \sum_{\substack{0\le n<2^m\\\wt(n\xor a)=r}}\eps_n
+  \sum_{\substack{0\le n<2^m\\\BinaryDigitSum(n\xor a)=r}}\eps_n
    &=\eps_a(-1)^r\binom mr.
   \label{p1:eq:hamming-sphere}
 \end{align}
@@ -612,7 +599,7 @@ Algorithm~\ref{p1:alg:xor-fold}.
 
 \begin{theorem}[Primitive recursiveness]
 \label{p1:thm:primitive-recursive}
-The binary weight \(\wt\), the zero--one sequence \(\tau\), and the
+The binary weight \(\BinaryDigitSum\), the zero--one sequence \(\tau\), and the
 signed sequence \(\eps\) are primitive recursive functions.
 Consequently all three are computable, and the evil and odious sets are
 decidable.
@@ -672,7 +659,7 @@ and so is \(f(n)=\lambda(F(n+1),n)\).
 Deleting the last binary digit of \(n\) deletes exactly that digit from
 the digit sum, so
 \begin{equation}
-  \wt(n)=\wt\bigl(\lfloor n/2\rfloor\bigr)+(n\bmod2),
+  \BinaryDigitSum(n)=\BinaryDigitSum\bigl(\lfloor n/2\rfloor\bigr)+(n\bmod2),
   \label{p1:eq:weight-halving}
 \end{equation}
 an identity that holds at \(n=0\) as well, both sides being zero.  This
@@ -680,7 +667,7 @@ is \eqref{p1:eq:descent-recursion} with \(d(n)=\lfloor n/2\rfloor\),
 which is primitive recursive and satisfies \(d(n)<n\) for \(n\ge1\);
 with \(z=0\); and with \(g(n,s)=s+(n\bmod2)\), primitive recursive
 because addition and remainder are.  Lemma~\ref{p1:lem:descent-recursion} then
-makes \(\wt\) primitive recursive, whence \(\tau=\wt\bmod2\) is
+makes \(\BinaryDigitSum\) primitive recursive, whence \(\tau=\BinaryDigitSum\bmod2\) is
 primitive recursive by composition, and so is \(\eps=1-2\tau\) by
 \eqref{p1:eq:normalizations}.  Primitive recursive functions are total and
 computable, and a set whose characteristic function is primitive recursive
@@ -693,7 +680,7 @@ Identity \eqref{p1:eq:weight-halving} is the unsigned form of
 \(\tau(n)=\tau(\lfloor n/2\rfloor)\xor(n\bmod2)\), which is the two
 clauses \(\tau(2n)=\tau(n)\) and \(\tau(2n+1)=1-\tau(n)\) written as
 one.  The bounded expression
-\(\wt(n)=\sum_{i<n}\bigl(\lfloor n/2^i\rfloor\bmod2\bigr)\) yields a
+\(\BinaryDigitSum(n)=\sum_{i<n}\bigl(\lfloor n/2^i\rfloor\bmod2\bigr)\) yields a
 second, recursion-free proof, because bounded sums of primitive recursive
 functions are primitive recursive; the descent formulation is preferred
 here because it is the one that survives the passage to base \(q\) in
@@ -743,15 +730,15 @@ parity consequence.
 For every \(m\ge0\),
 \begin{equation}
   \boxed{
-  \sum_{n=0}^{2^m-1}u^{\wt(n)}=(1+u)^m.}
+  \sum_{n=0}^{2^m-1}u^{\BinaryDigitSum(n)}=(1+u)^m.}
   \label{p1:eq:weight-enumerator}
 \end{equation}
 Consequently
 \begin{equation}
-  \#\{0\le n<2^m:\wt(n)=r\}=\binom mr.
+  \#\{0\le n<2^m:\BinaryDigitSum(n)=r\}=\binom mr.
   \label{p1:eq:weight-distribution}
 \end{equation}
-Under the uniform distribution on the block, \(\wt(n)\) is binomial with
+Under the uniform distribution on the block, \(\BinaryDigitSum(n)\) is binomial with
 mean \(m/2\) and variance \(m/4\).
 \end{theorem}
 
@@ -765,7 +752,7 @@ binomial moments give the remaining statements.
 \lean{Fabius.sum_pow_binaryWeight_eq_one_add_pow}, proved over an arbitrary
 commutative semiring, and the count \eqref{p1:eq:weight-distribution} is
 \lean{Fabius.card_filter_binaryWeight_eq}, extracted from it exactly as in
-the proof above: read the enumerator in \(\N[z]\) and compare the
+the proof above: read the enumerator in \(\NaturalNumbers[z]\) and compare the
 coefficient of \(z^r\).  Both live in \path{ThueMorseEnumerators.lean};
 the underlying Boolean-cube machinery is described after
 \cref{p1:thm:finite-product}.
@@ -773,8 +760,8 @@ the underlying Boolean-cube machinery is described after
 Setting \(u=-1\) gives exact sign balance for \(m\ge1\).  More generally, the
 characteristic function of the weight is
 \begin{equation}
-  2^{-m}\sum_{n<2^m}\e^{\ii t\wt(n)}
-  =\left(\frac{1+\e^{\ii t}}2\right)^m.
+  2^{-m}\sum_{n<2^m}\EulerE^{\ImaginaryUnit t\BinaryDigitSum(n)}
+  =\left(\frac{1+\EulerE^{\ImaginaryUnit t}}2\right)^m.
   \label{p1:eq:weight-characteristic}
 \end{equation}
 This elementary statistical layer is useful when comparing Boolean/Walsh
@@ -782,7 +769,7 @@ structure with ordinary Fourier structure later in the report.
 
 \subsection{Evil and odious enumerators}
 
-Call \(n\) \emph{evil} when \(\wt(n)\) is even and \emph{odious} when it is
+Call \(n\) \emph{evil} when \(\BinaryDigitSum(n)\) is even and \emph{odious} when it is
 odd.  Let \(\mathcal E_n\) and \(\mathcal O_n\) be the increasing enumerations,
 starting at index zero.
 
@@ -930,10 +917,10 @@ display could be cited rather than paraphrased.
 For every \(n\ge0\),
 \begin{align}
   \sum_{j\ge1}\left\lfloor\frac{n}{2^j}\right\rfloor
-   &=n-\wt(n),
+   &=n-\BinaryDigitSum(n),
   \label{p1:eq:floor-sum}\\
   \sum_{j\ge0}\left\lfloor\frac{n}{2^j}\right\rfloor
-   &=2n-\wt(n).
+   &=2n-\BinaryDigitSum(n).
   \label{p1:eq:floor-sum-all}
 \end{align}
 \end{lemma}
@@ -969,21 +956,21 @@ Equivalently,
 \end{theorem}
 
 \begin{proof}
-By \eqref{p1:eq:floor-sum-all}, the exponent differs from \(\wt(n)\) by an even
+By \eqref{p1:eq:floor-sum-all}, the exponent differs from \(\BinaryDigitSum(n)\) by an even
 integer.
 \end{proof}
 
 \emph{Formal versions.}  \path{ThueMorseDigits.lean} proves the additive
-Legendre formula \(\wt(n)+\vtwo(n!)=n\)
+Legendre formula \(\BinaryDigitSum(n)+\TwoAdicValuation(n!)=n\)
 (\lean{Fabius.binaryWeight\_add\_padicValNat\_factorial}), and the floor sums
 as finite identities for every cutoff strictly above \(\log_2 n\)
 (\lean{Fabius.binaryWeight\_add\_sum\_div\_two\_pow},
 \lean{Fabius.sum\_div\_two\_pow\_add\_binaryWeight}), the floor-parity
 formula \eqref{p1:eq:floor-formulas} under the same cutoff hypothesis
 (\lean{Fabius.thueMorseSign\_eq\_neg\_one\_pow\_sum\_div}), the bound
-\(\wt(n)\le n\) (\lean{Fabius.binaryWeight\_le\_self}), and the
+\(\BinaryDigitSum(n)\le n\) (\lean{Fabius.binaryWeight\_le\_self}), and the
 bit-extraction bridge
-\(\wt(n)=\sum_{j<m}b_j(n)\)
+\(\BinaryDigitSum(n)=\sum_{j<m}b_j(n)\)
 (\lean{Fabius.binaryWeight\_eq\_sum\_testBit}) together with the digit
 product \eqref{p1:eq:digit-product}
 (\lean{Fabius.thueMorseSign\_eq\_prod\_testBit}).  Both finite statements
@@ -999,7 +986,7 @@ nevertheless always an integer.
 For every \(n\ge0\),
 \begin{equation}
   \boxed{
-  \wt(n)=\sum_{j\ge1}\left\{\frac{n}{2^j}\right\}.}
+  \BinaryDigitSum(n)=\sum_{j\ge1}\left\{\frac{n}{2^j}\right\}.}
   \label{p1:eq:fractional-weight}
 \end{equation}
 Consequently
@@ -1016,7 +1003,7 @@ Consequently
 \emph{Formal version.}  Equation \eqref{p1:eq:fractional-weight} is
 \lean{Fabius.tsum\_fract\_natCast\_div\_two\_pow} in \path{DigitDefectCounting.lean},
 \(\sum_{h\ge0}\{N/2^h\}=S_2(N)\); the index \(h=0\) contributes nothing, so the sum
-there and the sum here agree, and \(S_2\) is \(\wt\) by definition of the latter.  It
+there and the sum here agree, and \(S_2\) is \(\BinaryDigitSum\) by definition of the latter.  It
 sits in a defect-counting file rather than a Thue--Morse one because that is the role
 it plays: it is the regression test that fixes the \emph{sign} of the weighted defect
 series \lean{Fabius.tsum\_mul\_natCast\_div\_two\_pow} against Legendre's classical
@@ -1030,7 +1017,7 @@ The geometric series gives \(\sum_{j\ge1}n/2^j=n\).  Subtract
 \[
  \sum_{j\ge1}\left\{\frac n{2^j}\right\}
  =n-\sum_{j\ge1}\left\lfloor\frac n{2^j}\right\rfloor
- =\wt(n).
+ =\BinaryDigitSum(n).
 \]
 \end{proof}
 
@@ -1038,7 +1025,7 @@ The geometric series gives \(\sum_{j\ge1}n/2^j=n\).  Subtract
 
 For nonintegral \(x\),
 \begin{equation}
-  \sgn(\sin\pi x)=(-1)^{\lfloor x\rfloor}.
+  \Sign(\sin\pi x)=(-1)^{\lfloor x\rfloor}.
   \label{p1:eq:square-wave}
 \end{equation}
 The half-unit shift avoids every zero.
@@ -1049,7 +1036,7 @@ For every \(n\ge0\),
 \begin{equation}
   \boxed{
   \eps_n=\prod_{j\ge0}
-  \sgn\!\left(
+  \Sign\!\left(
     \sin\frac{\pi(n+\tfrac12)}{2^j}
   \right).}
   \label{p1:eq:sine-sign}
@@ -1093,7 +1080,7 @@ hypothesis.  The half-shifted factor group is
 \lean{Fabius.fract\_rademacherPoint\_ne\_zero},
 \lean{Fabius.sign\_sin\_rademacherPoint}, and
 \lean{Fabius.sign\_sin\_rademacherPoint\_eq\_one\_of\_lt}; the first three
-hold for every \(n,j\in\N\), while the last assumes exactly \(n<2^j\) and
+hold for every \(n,j\in\NaturalNumbers\), while the last assumes exactly \(n<2^j\) and
 proves that the factor is \(+1\).  Finally,
 \lean{Fabius.thueMorseSign\_eq\_prod\_sign\_sin} is the finite product under
 exactly \(n<2^m\), and
@@ -1106,10 +1093,10 @@ infinite nontrivial product nor any unshifted sine formula.
 \subsection{The sign of the Fabius sinc product}
 \label{p1:sec:sinc-sign}
 
-Define \(\sinc y=\sin y/y\), with \(\sinc0=1\), and
+Define \(\SincRad y=\sin y/y\), with \(\SincRad0=1\), and
 \begin{equation}
   \Phi(x)=\prod_{j=0}^{\infty}
-    \sinc\!\left(\frac{\pi x}{2^j}\right).
+    \SincRad\!\left(\frac{\pi x}{2^j}\right).
   \label{p1:eq:sinc-product}
 \end{equation}
 The product converges locally uniformly because the logarithm of the tail is
@@ -1118,14 +1105,14 @@ infinite Fourier product naturally associated with the Rvachev up-function.
 
 \begin{corollary}[Interval sign of the sinc product]
 \label{p1:cor:sinc-sign}
-If \(N\in\N\) and \(N<x<N+1\), then
+If \(N\in\NaturalNumbers\) and \(N<x<N+1\), then
 \begin{equation}
-  \sgn\Phi(x)=\eps_N.
+  \Sign\Phi(x)=\eps_N.
   \label{p1:eq:sinc-interval-sign}
 \end{equation}
 In particular,
 \begin{equation}
-  \eps_n=\sgn\Phi\!\left(n+\tfrac12\right).
+  \eps_n=\Sign\Phi\!\left(n+\tfrac12\right).
   \label{p1:eq:sinc-half-sample}
 \end{equation}
 \end{corollary}
@@ -1154,34 +1141,34 @@ half-integer sample without an extra analytic assumption.
 The same sinc product now has a complete formal zero-set statement:
 \[
  \Phi(z)=0\quad\Longleftrightarrow\quad
- \exists m\in\Z\setminus\{0\},\ z=m,
+ \exists m\in\IntegerNumbers\setminus\{0\},\ z=m,
 \]
 namely \lean{Fabius.rvachevFourierProduct\_eq\_zero\_iff} in
 \path{FourierProduct.lean}.  Its canonical product is
 \[
  \Phi(z)=\prod_{r=0}^{\infty}
- \left(1-\frac{z^2}{(r+1)^2}\right)^{1+\vtwo(r+1)},
+ \left(1-\frac{z^2}{(r+1)^2}\right)^{1+\TwoAdicValuation(r+1)},
 \]
 formalized as
 \lean{Fabius.rvachevFourierProduct\_eq\_canonical} in
 \path{SincCanonicalProduct.lean}.  For each positive integer \(m\), the older
 real punctured limit
 \[
- \frac{|\Phi(x)|}{|x-m|^{1+\vtwo(m)}}\longrightarrow C_m>0
+ \frac{|\Phi(x)|}{|x-m|^{1+\TwoAdicValuation(m)}}\longrightarrow C_m>0
  \qquad(x\to m,\ x\ne m)
 \]
 is \lean{Fabius.tendsto\_norm\_div\_pow\_zero\_order} in
 \path{PhiZeroOrder.lean}.  The complex theory is now stronger.  For every
-nonzero \(m\in\Z\), put
+nonzero \(m\in\IntegerNumbers\), put
 \[
- d=1+\vtwo(|m|),\qquad
+ d=1+\TwoAdicValuation(|m|),\qquad
  q=\operatorname{divMaxPow}(|m|,2),\qquad
  \sigma=\operatorname{sign}(m).
 \]
-Then, for every \(w\in\C\),
+Then, for every \(w\in\ComplexNumbers\),
 \[
  (m+w)^d\Phi(m+w)
- =-w^d\left(\prod_{h<d}\sinc\!\left(\frac{\pi w}{2^h}\right)\right)
+ =-w^d\left(\prod_{h<d}\SincRad\!\left(\frac{\pi w}{2^h}\right)\right)
    \Phi\!\left(\frac q2+\sigma\frac{w}{2^d}\right).
 \]
 This total denominator-cleared identity is
@@ -1196,7 +1183,7 @@ zero produces an analytic nonvanishing cofactor \(U_m\), and Lean proves
 More generally, every higher jet is retained without factorial division:
 \[
  \Phi^{(d+r)}(m)=\binom{d+r}{d}d!\,U_m^{(r)}(0)
- \qquad(r\in\N).
+ \qquad(r\in\NaturalNumbers).
 \]
 These are
 \lean{Fabius.analyticOrderAt\_rvachevFourierProduct\_int},
@@ -1226,8 +1213,8 @@ positive side lobe \((m,m+1)\) and reflected negative side lobe
 The product-level renormalization is available independently of the
 Fourier-transform wrapper:
 \[
- \Phi(z)=\sinc(\pi z)\Phi(z/2),\qquad
- \Phi(z)=\left(\prod_{j<n}\sinc(\pi z/2^j)\right)\Phi(z/2^n).
+ \Phi(z)=\SincRad(\pi z)\Phi(z/2),\qquad
+ \Phi(z)=\left(\prod_{j<n}\SincRad(\pi z/2^j)\right)\Phi(z/2^n).
 \]
 These are \lean{Fabius.rvachevFourierProduct\_scaling} and
 \lean{Fabius.rvachevFourierProduct\_shell} in
@@ -1294,7 +1281,7 @@ with strict inequality away from zero, as
 There is also an exact \(L^2\) identity for the logarithm of the normalized dyadic shell.
 For every \(n\ge0\), including the empty product,
 \begin{equation}
- \int_0^1\log^2\!\left|\prod_{j<n}2\sin(\pi2^jt)\right|\dd t
+ \int_0^1\log^2\!\left|\prod_{j<n}2\sin(\pi2^jt)\right|\Differential t
  =\frac{\pi^2}{4}n-\frac{\pi^2}{3}(1-2^{-n}).
  \label{p1:eq:sinc-log-variance}
 \end{equation}
@@ -1336,23 +1323,23 @@ Gelfond angle \(t=1/3\) among them
 \subsection{The ruler transition}
 
 Incrementing \(n\) flips all trailing one-bits to zero and the next zero-bit
-to one.  The number of erased one-bits is \(\vtwo(n+1)\).
+to one.  The number of erased one-bits is \(\TwoAdicValuation(n+1)\).
 
 \begin{theorem}[Successor and ruler formulae]
 \label{p1:thm:ruler-transition}
 For every \(n\ge0\),
 \begin{align}
-  \wt(n+1)-\wt(n)&=1-\vtwo(n+1),
+  \BinaryDigitSum(n+1)-\BinaryDigitSum(n)&=1-\TwoAdicValuation(n+1),
   \label{p1:eq:weight-successor}\\
-  \eps_{n+1}&=(-1)^{1+\vtwo(n+1)}\eps_n,
+  \eps_{n+1}&=(-1)^{1+\TwoAdicValuation(n+1)}\eps_n,
   \label{p1:eq:eps-successor}\\
-  (-1)^{\vtwo(n+1)}&=-\eps_n\eps_{n+1}.
+  (-1)^{\TwoAdicValuation(n+1)}&=-\eps_n\eps_{n+1}.
   \label{p1:eq:ruler-adjacent}
 \end{align}
 Consequently
 \begin{equation}
   \boxed{
-  \eps_n=\prod_{k=1}^{n}(-1)^{1+\vtwo(k)}.}
+  \eps_n=\prod_{k=1}^{n}(-1)^{1+\TwoAdicValuation(k)}.}
   \label{p1:eq:ruler-product}
 \end{equation}
 \end{theorem}
@@ -1363,7 +1350,7 @@ ones.  Exponentiate \((-1)\), then telescope from \(\eps_0=1\).
 \end{proof}
 
 \emph{Formal versions.}  The successor law in additive form
-\(\wt(n+1)+\vtwo(n+1)=\wt(n)+1\) is
+\(\BinaryDigitSum(n+1)+\TwoAdicValuation(n+1)=\BinaryDigitSum(n)+1\) is
 \lean{Fabius.binaryWeight\_succ\_add\_padicValNat}; the adjacent-sign
 readout \eqref{p1:eq:ruler-adjacent} is
 \lean{Fabius.thueMorseSign\_mul\_succ}, the recursion
@@ -1383,16 +1370,16 @@ The floor sum in \cref{p1:lem:floor-sum} counts powers of two in a factorial.
 \label{p1:thm:factorial-valuation}
 For every \(n\ge0\),
 \begin{equation}
-  \vtwo(n!)=\sum_{j\ge1}\left\lfloor\frac n{2^j}\right\rfloor
-           =n-\wt(n).
+  \TwoAdicValuation(n!)=\sum_{j\ge1}\left\lfloor\frac n{2^j}\right\rfloor
+           =n-\BinaryDigitSum(n).
   \label{p1:eq:legendre-two}
 \end{equation}
 Hence
 \begin{equation}
   \boxed{
-  \eps_n=(-1)^{n-\vtwo(n!)}=(-1)^{n+\vtwo(n!)},
+  \eps_n=(-1)^{n-\TwoAdicValuation(n!)}=(-1)^{n+\TwoAdicValuation(n!)},
   \qquad
-  \tau(n)\equiv n+\vtwo(n!)\pmod2.}
+  \tau(n)\equiv n+\TwoAdicValuation(n!)\pmod2.}
   \label{p1:eq:factorial-thue-morse}
 \end{equation}
 \end{theorem}
@@ -1405,11 +1392,11 @@ modulo two.
 \end{proof}
 
 The telescoping product \eqref{p1:eq:ruler-product} returns to this formula because
-\(\sum_{k=1}^{n}\vtwo(k)=\vtwo(n!)\).
+\(\sum_{k=1}^{n}\TwoAdicValuation(k)=\TwoAdicValuation(n!)\).
 
 \emph{Formal versions.}  Legendre's formula \eqref{p1:eq:legendre-two} is
 \lean{Fabius.binaryWeight\_add\_padicValNat\_factorial} in \path{ThueMorseDigits.lean},
-stated additively as \(\wt(n)+\vtwo(n!)=n\) so that no subtraction in \(\N\) is needed.
+stated additively as \(\BinaryDigitSum(n)+\TwoAdicValuation(n!)=n\) so that no subtraction in \(\NaturalNumbers\) is needed.
 The floor form \eqref{p1:eq:floor-sum} is
 \lean{Fabius.binaryWeight\_add\_sum\_div\_two\_pow} and the all-index variant
 \eqref{p1:eq:floor-sum-all} is \lean{Fabius.sum\_div\_two\_pow\_add\_binaryWeight}, both
@@ -1424,33 +1411,33 @@ zero.
 For every \(n\ge0\),
 \begin{equation}
   \boxed{
-  \vtwo\binom{2n}{n}=\wt(n).}
+  \TwoAdicValuation\binom{2n}{n}=\BinaryDigitSum(n).}
   \label{p1:eq:central-v2}
 \end{equation}
 Consequently
 \begin{equation}
   \boxed{
-  \eps_n=(-1)^{\vtwo\binom{2n}{n}},
+  \eps_n=(-1)^{\TwoAdicValuation\binom{2n}{n}},
   \qquad
-  \tau(n)=\vtwo\binom{2n}{n}\bmod2.}
+  \tau(n)=\TwoAdicValuation\binom{2n}{n}\bmod2.}
   \label{p1:eq:central-thue-morse}
 \end{equation}
 Equivalently,
 \begin{equation}
-  \tau(n)=\sin^2\!\left(\frac\pi2\vtwo\binom{2n}{n}\right),
+  \tau(n)=\sin^2\!\left(\frac\pi2\TwoAdicValuation\binom{2n}{n}\right),
   \qquad
-  \eps_n=\cos\!\left(\pi\vtwo\binom{2n}{n}\right).
+  \eps_n=\cos\!\left(\pi\TwoAdicValuation\binom{2n}{n}\right).
   \label{p1:eq:central-trig}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-Use \eqref{p1:eq:legendre-two} and \(\wt(2n)=\wt(n)\):
+Use \eqref{p1:eq:legendre-two} and \(\BinaryDigitSum(2n)=\BinaryDigitSum(n)\):
 \begin{align*}
- \vtwo\binom{2n}{n}
- &=\vtwo((2n)!)-2\vtwo(n!)\\
- &=\bigl(2n-\wt(2n)\bigr)-2\bigl(n-\wt(n)\bigr)
-  =\wt(n).
+ \TwoAdicValuation\binom{2n}{n}
+ &=\TwoAdicValuation((2n)!)-2\TwoAdicValuation(n!)\\
+ &=\bigl(2n-\BinaryDigitSum(2n)\bigr)-2\bigl(n-\BinaryDigitSum(n)\bigr)
+  =\BinaryDigitSum(n).
 \end{align*}
 \end{proof}
 
@@ -1463,7 +1450,7 @@ states that the valuation vanishes exactly when the binary weight is zero,
 which occurs only at \(n=0\); a positive power of two has valuation one, not
 zero.  The first identity is the \(a=b=n\) case of the additive Kummer theorem
 \lean{Fabius.binaryWeight_add_addChoose_padicValNat}, with
-\(\wt(2n)=\wt(n)\) cancelling one copy of the weight.  Thus the Lean proof does
+\(\BinaryDigitSum(2n)=\BinaryDigitSum(n)\) cancelling one copy of the weight.  Thus the Lean proof does
 not depend on a separate factorial-valuation argument.  The \(\tau(n)\)-mod-two
 and trigonometric displays are immediate report-level corollaries, not separate
 named declarations in this module.
@@ -1488,25 +1475,25 @@ Let
 \label{p1:cor:catalan-valuation}
 For every \(n\ge0\),
 \begin{equation}
-  \vtwo(\Cat_n)=\wt(n+1)-1,
+  \TwoAdicValuation(\Cat_n)=\BinaryDigitSum(n+1)-1,
   \label{p1:eq:catalan-v2}
 \end{equation}
 and hence
 \begin{equation}
   \boxed{
-  \eps_{n+1}=-(-1)^{\vtwo(\Cat_n)}.}
+  \eps_{n+1}=-(-1)^{\TwoAdicValuation(\Cat_n)}.}
   \label{p1:eq:catalan-thue-morse}
 \end{equation}
 \end{corollary}
 
 \begin{proof}
 By \cref{p1:thm:central-binomial},
-\(\vtwo(\Cat_n)=\wt(n)-\vtwo(n+1)\).  Equation
-\eqref{p1:eq:weight-successor} rewrites this as \(\wt(n+1)-1\).
+\(\TwoAdicValuation(\Cat_n)=\BinaryDigitSum(n)-\TwoAdicValuation(n+1)\).  Equation
+\eqref{p1:eq:weight-successor} rewrites this as \(\BinaryDigitSum(n+1)-1\).
 \end{proof}
 
 \emph{Formal versions.}  \lean{Fabius.catalan\_padicValNat\_two\_add\_one}
-(stated additively as \(\vtwo(\Cat_n)+1=\wt(n+1)\)) and the sign form
+(stated additively as \(\TwoAdicValuation(\Cat_n)+1=\BinaryDigitSum(n+1)\)) and the sign form
 \lean{Fabius.thueMorseSign\_succ\_eq\_neg\_catalan}, in
 \path{ThueMorseValuation.lean}.  The Lean proof derives the positivity of
 Catalan numbers inline from \((n+1)\Cat_n=\binom{2n}n\) rather than
@@ -1518,8 +1505,8 @@ importing it.
 \label{p1:thm:carry-cocycle}
 For all \(a,b\ge0\),
 \begin{equation}
-  \vtwo\binom{a+b}{a}
-  =\wt(a)+\wt(b)-\wt(a+b).
+  \TwoAdicValuation\binom{a+b}{a}
+  =\BinaryDigitSum(a)+\BinaryDigitSum(b)-\BinaryDigitSum(a+b).
   \label{p1:eq:kummer-digit-sum}
 \end{equation}
 This is the number of carry operations in the binary addition of \(a\) and
@@ -1527,13 +1514,13 @@ This is the number of carry operations in the binary addition of \(a\) and
 \begin{equation}
   \boxed{
   \eps_{a+b}=\eps_a\eps_b
-      (-1)^{\vtwo\binom{a+b}{a}}.}
+      (-1)^{\TwoAdicValuation\binom{a+b}{a}}.}
   \label{p1:eq:carry-sign}
 \end{equation}
 Equivalently,
 \begin{equation}
   \tau(a+b)\equiv\tau(a)+\tau(b)+
-    \vtwo\binom{a+b}{a}\pmod2.
+    \TwoAdicValuation\binom{a+b}{a}\pmod2.
   \label{p1:eq:carry-bit}
 \end{equation}
 \end{theorem}
@@ -1541,8 +1528,8 @@ Equivalently,
 \begin{proof}
 Legendre's formula gives
 \begin{align*}
- \vtwo\binom{a+b}{a}
- &=(a+b-\wt(a+b))-(a-\wt(a))-(b-\wt(b)),
+ \TwoAdicValuation\binom{a+b}{a}
+ &=(a+b-\BinaryDigitSum(a+b))-(a-\BinaryDigitSum(a))-(b-\BinaryDigitSum(b)),
 \end{align*}
 which is \eqref{p1:eq:kummer-digit-sum}.  Rearranging modulo two and raising
 \((-1)\) to both sides gives the sign formula.  The carry interpretation is
@@ -1557,12 +1544,12 @@ the separated-support case.
 \label{p1:cor:multinomial-carry}
 For \(a_1,\ldots,a_r\ge0\) and \(N=a_1+\cdots+a_r\),
 \begin{align}
- \vtwo\binom{N}{a_1,\ldots,a_r}
- &=\sum_{j=1}^{r}\wt(a_j)-\wt(N),
+ \TwoAdicValuation\binom{N}{a_1,\ldots,a_r}
+ &=\sum_{j=1}^{r}\BinaryDigitSum(a_j)-\BinaryDigitSum(N),
  \label{p1:eq:multinomial-v2}\\
  \eps_N
  &=\left(\prod_{j=1}^{r}\eps_{a_j}\right)
-   (-1)^{\vtwo\binom{N}{a_1,\ldots,a_r}}.
+   (-1)^{\TwoAdicValuation\binom{N}{a_1,\ldots,a_r}}.
  \label{p1:eq:multinomial-carry-sign}
 \end{align}
 \end{corollary}
@@ -1575,7 +1562,7 @@ Apply Legendre's formula to
 \emph{Formal versions.}  Kummer's identity \eqref{p1:eq:kummer-digit-sum} is
 \lean{Fabius.binaryWeight\_add\_addChoose\_padicValNat} in
 \path{ThueMorseValuation.lean}, again stated additively as
-\(\wt(a+b)+\vtwo\binom{a+b}a=\wt(a)+\wt(b)\); the sign cocycle
+\(\BinaryDigitSum(a+b)+\TwoAdicValuation\binom{a+b}a=\BinaryDigitSum(a)+\BinaryDigitSum(b)\); the sign cocycle
 \eqref{p1:eq:carry-sign} is \lean{Fabius.thueMorseSign\_add\_valuation} in
 \path{TwoAdic.lean}, and the borrow form for subtraction is
 \lean{Fabius.subChoose\_padicValNat\_two\_add}.  The multinomial valuation
@@ -1591,14 +1578,14 @@ Kummer's theorem has a mirror statement for subtraction.  For
 \(0\le b\le a\), the same Legendre computation applied to
 \(\binom ab=a!/(b!\,(a-b)!)\) gives
 \begin{equation}
-  \vtwo\binom ab=\wt(b)+\wt(a-b)-\wt(a),
+  \TwoAdicValuation\binom ab=\BinaryDigitSum(b)+\BinaryDigitSum(a-b)-\BinaryDigitSum(a),
   \label{p1:eq:borrow-count}
 \end{equation}
 which counts the borrow operations, including propagated borrows, in the
 binary subtraction \(a-b\).  Therefore
 \begin{equation}
   \boxed{
-  \eps_{a-b}=\eps_a\eps_b(-1)^{\vtwo\binom ab}.}
+  \eps_{a-b}=\eps_a\eps_b(-1)^{\TwoAdicValuation\binom ab}.}
   \label{p1:eq:borrow-sign}
 \end{equation}
 Addition and subtraction thus carry the same sign correction, read from the
@@ -1611,7 +1598,7 @@ the corpus (\lean{Fabius.addChoose\_padicValNat\_two},
 \lean{Fabius.thueMorseSign\_add\_valuation}, in \path{TwoAdic.lean});
 \path{ThueMorseValuation.lean} adds the truncation-free additive form
 \lean{Fabius.binaryWeight\_add\_addChoose\_padicValNat}, the weight
-subadditivity \(\wt(a+b)\le\wt(a)+\wt(b)\)
+subadditivity \(\BinaryDigitSum(a+b)\le\BinaryDigitSum(a)+\BinaryDigitSum(b)\)
 (\lean{Fabius.binaryWeight\_add\_le}, itself proved by a four-way parity
 induction), and the borrow pair
 \lean{Fabius.subChoose\_padicValNat\_two\_add},
@@ -1667,7 +1654,7 @@ The proof gives the complete factorization
 \label{p1:cor:glaisher-count}
 The number \(\nu(n)\) of odd entries in row \(n\) is
 \begin{equation}
-  \boxed{\nu(n)=2^{\wt(n)}.}
+  \boxed{\nu(n)=2^{\BinaryDigitSum(n)}.}
   \label{p1:eq:glaisher-count}
 \end{equation}
 \end{corollary}
@@ -1697,7 +1684,7 @@ submask cube by
 The source formula is now transparent.  Since even entries contribute \(+1\)
 and odd entries contribute \(-1\),
 \begin{equation}
-  \mathcal X(n)=n+1-2\nu(n)=n+1-2^{\wt(n)+1},
+  \mathcal X(n)=n+1-2\nu(n)=n+1-2^{\BinaryDigitSum(n)+1},
   \label{p1:eq:X-decomposition}
 \end{equation}
 which is exactly \eqref{p1:eq:source-power}.
@@ -1723,8 +1710,8 @@ The residue is always \(1\) or \(2\), never \(0\).
 \end{theorem}
 
 \begin{proof}
-By \eqref{p1:eq:glaisher-count}, \(\nu(n)=2^{\wt(n)}\).  Its residue is one when
-\(\wt(n)\) is even and two when it is odd.
+By \eqref{p1:eq:glaisher-count}, \(\nu(n)=2^{\BinaryDigitSum(n)}\).  Its residue is one when
+\(\BinaryDigitSum(n)\) is even and two when it is odd.
 \end{proof}
 
 A form using exactly the row signs of the source formula can be written without
@@ -1736,7 +1723,7 @@ the odd-count notation.  Put
 \end{equation}
 Since the omitted \(k=0\) term is \(-1\),
 \begin{equation}
-  S(n)=n+2-2^{\wt(n)+1}.
+  S(n)=n+2-2^{\BinaryDigitSum(n)+1}.
   \label{p1:eq:S-pascal-exact}
 \end{equation}
 
@@ -1757,9 +1744,9 @@ For every \(n\ge0\),
 
 \begin{proof}
 Equation \eqref{p1:eq:S-pascal-exact} gives
-\(2n+S(n)=3n+2-2^{\wt(n)+1}\), whose residue is zero or one according as the
+\(2n+S(n)=3n+2-2^{\BinaryDigitSum(n)+1}\), whose residue is zero or one according as the
 weight is even or odd.  Also
-\(n-S(n)=2^{\wt(n)+1}-2\), congruent to zero or two modulo three; the squared
+\(n-S(n)=2^{\BinaryDigitSum(n)+1}-2\), congruent to zero or two modulo three; the squared
 sine is therefore zero or \(3/4\).
 \end{proof}
 
@@ -1777,13 +1764,13 @@ For a scalar \(u\), define
 Exactly \(\nu(n)\) exponents are one and the others are zero, so
 \begin{equation}
   \boxed{
-  R_u(n)=n+1+(u-1)2^{\wt(n)}.}
+  R_u(n)=n+1+(u-1)2^{\BinaryDigitSum(n)}.}
   \label{p1:eq:Ru-exact}
 \end{equation}
 Thus \(R_{-1}(n)=\mathcal X(n)\), while \(R_0(n)\) counts the even entries.
 For every fixed \(u\ne1\),
 \begin{equation}
-  2^{\wt(n)}=\frac{R_u(n)-(n+1)}{u-1}.
+  2^{\BinaryDigitSum(n)}=\frac{R_u(n)-(n+1)}{u-1}.
   \label{p1:eq:Ru-recovery}
 \end{equation}
 The signed choice \(u=-1\) is elegant, but structurally it is one member of a
@@ -1816,7 +1803,7 @@ Only the columns \(2^j\le n\) matter.
 \begin{proof}
 Only the parity of each binomial coefficient contributes to the exponent or
 cosine.  Equation \eqref{p1:eq:pascal-bit-probe} turns their parity sum into
-\(\wt(n)\).
+\(\BinaryDigitSum(n)\).
 \end{proof}
 
 \emph{Formal version.}  The per-column probe \eqref{p1:eq:pascal-bit-probe} is Lucas's
@@ -1844,7 +1831,7 @@ Fix \(r\ge2\).  Let \(O_r(n)\) be the number of odd coefficients in
 \label{p1:thm:multinomial-support}
 For every \(n\ge0\),
 \begin{equation}
-  \boxed{O_r(n)=r^{\wt(n)}.}
+  \boxed{O_r(n)=r^{\BinaryDigitSum(n)}.}
   \label{p1:eq:multinomial-support}
 \end{equation}
 Consequently
@@ -1868,7 +1855,7 @@ In characteristic two,
 \end{equation}
 For each one-bit of \(n\), choose independently one of the \(r\) variables to
 receive it.  Unique binary expansions make distinct assignments produce
-distinct exponent vectors, so there are \(r^{\wt(n)}\) nonzero coefficients
+distinct exponent vectors, so there are \(r^{\BinaryDigitSum(n)}\) nonzero coefficients
 modulo two.
 \end{proof}
 
@@ -1886,7 +1873,7 @@ Define
 For every \(r\ge2\),
 \begin{equation}
   \binom{n+r-1}{r-1}-\mathcal X_r(n)
-   =2r^{\wt(n)},
+   =2r^{\BinaryDigitSum(n)},
   \label{p1:eq:rnomial-exact}
 \end{equation}
 and therefore
@@ -1903,7 +1890,7 @@ and therefore
 \begin{proof}
 Each odd multinomial coefficient contributes \(-1\), each even coefficient
 \(+1\).  Subtracting the signed sum from the total count gives twice the odd
-support size, which is \(2r^{\wt(n)}\) by
+support size, which is \(2r^{\BinaryDigitSum(n)}\) by
 \cref{p1:thm:multinomial-support}.
 \end{proof}
 
@@ -1935,16 +1922,16 @@ The submasks of \(n\) form a Boolean lattice on its set of one-bit positions.
 For every indeterminate \(z\),
 \begin{align}
   \boxed{
-  \sum_{k\submask n}z^{\wt(k)}=(1+z)^{\wt(n)},}
+  \sum_{k\submask n}z^{\BinaryDigitSum(k)}=(1+z)^{\BinaryDigitSum(n)},}
   \label{p1:eq:submask-enumerator}\\
   \boxed{
-  z^{\wt(n)}=\sum_{k\submask n}(z-1)^{\wt(k)}.}
+  z^{\BinaryDigitSum(n)}=\sum_{k\submask n}(z-1)^{\BinaryDigitSum(k)}.}
   \label{p1:eq:submask-inversion-polynomial}
 \end{align}
 More generally,
 \begin{equation}
   \sum_{k\submask n}
-    x^{\wt(k)}y^{\wt(n-k)}=(x+y)^{\wt(n)}.
+    x^{\BinaryDigitSum(k)}y^{\BinaryDigitSum(n-k)}=(x+y)^{\BinaryDigitSum(n)}.
   \label{p1:eq:submask-bivariate}
 \end{equation}
 \end{theorem}
@@ -1957,13 +1944,13 @@ The second formula is the first with \(z\) replaced by \(z-1\).
 
 Important specializations are
 \begin{align}
-  \#\{k:k\submask n\}&=2^{\wt(n)},
+  \#\{k:k\submask n\}&=2^{\BinaryDigitSum(n)},
   \label{p1:eq:submask-count}\\
   \sum_{k\submask n}\eps_k
   &=\begin{cases}1,&n=0,\\0,&n>0,\end{cases}
   \label{p1:eq:submask-cancellation}\\
   \boxed{
-  \eps_n=\sum_{k\submask n}(-2)^{\wt(k)}.}
+  \eps_n=\sum_{k\submask n}(-2)^{\BinaryDigitSum(k)}.}
   \label{p1:eq:submask-reconstruction}
 \end{align}
 
@@ -1971,7 +1958,7 @@ Important specializations are
 \label{p1:thm:boolean-mobius}
 If \(k\submask n\), then the M\"obius function of the submask poset is
 \begin{equation}
-  \mu_2(k,n)=(-1)^{\wt(n)-\wt(k)}=\eps_{n\xor k}.
+  \mu_2(k,n)=\ThueMorseSign{n}\ThueMorseSign{k}=\eps_{n\xor k}.
   \label{p1:eq:boolean-mobius}
 \end{equation}
 Thus
@@ -1986,7 +1973,7 @@ Thus
 
 \begin{proof}
 The interval \([k,n]\) is the Boolean lattice on the bits of \(n\) absent
-from \(k\); its rank is \(\wt(n)-\wt(k)=\wt(n\xor k)\).  The usual Boolean
+from \(k\); its rank is \(\BinaryDigitSum(n)-\BinaryDigitSum(k)=\BinaryDigitSum(n\xor k)\).  The usual Boolean
 M\"obius function is \((-1)^{\text{rank}}\), and standard M\"obius inversion
 applies.
 \end{proof}
@@ -2044,14 +2031,14 @@ For every \(n\ge0\),
   \eps_n=
   \sum_{k=0}^{n}
    \frac{1-(-1)^{\binom nk}}2
-   (-2)^{\vtwo\binom{2k}{k}}.}
+   (-2)^{\TwoAdicValuation\binom{2k}{k}}.}
   \label{p1:eq:nested-binomial}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
 The first factor is \(\ind_{k\submask n}\) by
-\eqref{p1:eq:odd-indicator}, and the exponent in the second is \(\wt(k)\) by
+\eqref{p1:eq:odd-indicator}, and the exponent in the second is \(\BinaryDigitSum(k)\) by
 \cref{p1:thm:central-binomial}.  The sum is therefore exactly
 \eqref{p1:eq:submask-reconstruction}.
 \end{proof}
@@ -2097,7 +2084,7 @@ corpus states the composite only in the
 one-variable specialization
 \(x_j=z^{2^j}\), as \lean{Fabius.prod\_one\_sub\_pow\_eq\_sum\_thueMorseSign}, and in the
 two-parameter form \lean{Fabius.prod\_one\_add\_mul\_pow},
-\(\prod_{j<m}(1+uz^{2^j})=\sum_{n<2^m}u^{\wt(n)}z^n\), from which the finite
+\(\prod_{j<m}(1+uz^{2^j})=\sum_{n<2^m}u^{\BinaryDigitSum(n)}z^n\), from which the finite
 Thue--Morse product and the weight enumerator follow by setting \(u=-1\) and
 \(z=1\), respectively.
 
@@ -2171,7 +2158,7 @@ sharpness witness for the parity hypothesis), and the Weierstrass product inequa
 neither of which was available in Mathlib.
 
 Two further consequences of the same block algebra are formal.  Dividing the block's
-ladder factorization by \((1-X)^{d+1}\) in \(\Z[X]\) puts the corpus's approximation
+ladder factorization by \((1-X)^{d+1}\) in \(\IntegerNumbers[X]\) puts the corpus's approximation
 polynomial --- the \(q\)-integer product \(A_d=\prod_{m=1}^{d}[2^m]_X\) --- in closed form as a
 product of self-reciprocal factors with scale-decreasing multiplicity,
 \(A_d=\prod_{i<d}\bigl(1+X^{2^i}\bigr)^{d-i}\)
@@ -2180,7 +2167,7 @@ And the Boolean-cube master identity acquires its \emph{bit-position} companion:
 \lean{Fabius.prod\_one\_add\_mul\_pow} grades a dyadic block by the value \(z^n\),
 \[
   \prod_{j<N}\bigl(1+y\,q^{j}\bigr)
-  =\sum_{n<2^{N}} y^{\wt(n)}\,q^{\sigma(n)},
+  =\sum_{n<2^{N}} y^{\BinaryDigitSum(n)}\,q^{\sigma(n)},
   \qquad \sigma(n)=\sum_{j\in\operatorname{bitSupport}(n)} j,
 \]
 grades it by the sum of its bit positions (\lean{Fabius.bitPositionSum},
@@ -2189,7 +2176,7 @@ the \(y=1\) and \(q=1\) faces recover the \(q^{\sigma}\)-enumerator and the bina
 enumerator respectively.  Its \(y^{r}\)-coefficient is now formal too: the
 \(q\)-binomial aggregation of a dyadic block by Hamming weight,
 \[
-  \sum_{\substack{n<2^{N}\\ \wt(n)=r}} q^{\sigma(n)}
+  \sum_{\substack{n<2^{N}\\ \BinaryDigitSum(n)=r}} q^{\sigma(n)}
   \;=\;q^{\binom{r}{2}}\genfrac[]{0pt}{}{N}{r}_{q},
 \]
 (\lean{Fabius.sum\_pow\_bitPositionSum\_filter\_eq\_gaussianBinomial}), with the
@@ -2197,11 +2184,11 @@ enumerator respectively.  Its \(y^{r}\)-coefficient is now formal too: the
 
 That shadow is now available in the generality the rest of the \(q\)-layer is stated in.
 \path{GaussianBinomialAtOne.lean} proves \(\left[\begin{smallmatrix}n\\k\end{smallmatrix}\right]_{1}=\binom{n}{k}\)
-over an \emph{arbitrary} semiring --- by an induction over \(\N\), where the \(q\)-Pascal
+over an \emph{arbitrary} semiring --- by an induction over \(\NaturalNumbers\), where the \(q\)-Pascal
 recurrence degenerates to Pascal's rule, transported along the functoriality of the
 Gaussian coefficient (\lean{Fabius.gaussianBinomial\_nat\_one}, \lean{Fabius.gaussianBinomial\_one};
 the corpus previously had no \(q=1\) evaluation at all, and the graded aggregation's own
-version was confined to \(\Z\)).  Alongside it the \(q\)-Pochhammer symbol acquires the same
+version was confined to \(\IntegerNumbers\)).  Alongside it the \(q\)-Pochhammer symbol acquires the same
 specializations --- \((a;1)_n=(1-a)^n\), and the degenerate \(a=0\), \(a=1\) cases
 (\lean{Fabius.finiteQPochhammerIn\_one}, \lean{Fabius.finiteQPochhammerIn\_zero\_left},
 \lean{Fabius.finiteQPochhammerIn\_one\_left}) --- and together these give the consistency
@@ -2212,7 +2199,7 @@ check the whole layer is measured against: the finite \(q\)-binomial theorem at 
 
 The same block algebra also inverts.  The truncated product \(\Theta_m=\prod_{j<m}(1-z^{2^j})\)
 has the restricted binary partition counts as its convolution (Green) inverse:
-\(\Theta_m\cdot P_m=1\) in \(\Z[[z]]\)
+\(\Theta_m\cdot P_m=1\) in \(\IntegerNumbers[[z]]\)
 (\lean{Fabius.prod\_one\_sub\_X\_two\_pow\_mul\_binaryPartitionSeries}), whence the finite
 convolution \(\sum_{r}\eps_r\,p_m(N-r)=[N=0]\)
 (\lean{Fabius.thueMorseSign\_binaryPartitionCount\_convolution}).  The summation range
@@ -2264,7 +2251,7 @@ proves it over an \emph{arbitrary} commutative ring as
 specialization \(u=-1\) of a two-parameter identity
 \[
  \prod_{j<m}\bigl(1+u\,z^{2^j}\bigr)
- =\sum_{n<2^m}u^{\wt(n)}z^{n}
+ =\sum_{n<2^m}u^{\BinaryDigitSum(n)}z^{n}
  \qquad(\lean{Fabius.prod\_one\_add\_mul\_pow}),
 \]
 valid in any commutative semiring with no convergence hypothesis.  Its
@@ -2409,7 +2396,7 @@ is the geometric series).  The coefficientwise content of
 \cref{p1:thm:infinite-product} has long been formal as the stabilization
 lemma \lean{Fabius.coeff\_finite\_thueMorse\_product}
 (\path{ThueMorseGenerating.lean}), and its analytic identity is
-now formal on the whole complex unit disc.  For every \(z\in\C\) with
+now formal on the whole complex unit disc.  For every \(z\in\ComplexNumbers\) with
 \(\lVert z\rVert<1\), the signed series converges absolutely
 (\lean{Fabius.summable\_thueMorseSign\_mul\_pow\_complex}), the
 lacunary product is multipliable
@@ -2432,9 +2419,9 @@ partial-product restatements
 restrict at scale \(2^m\) to the finite identity
 \eqref{p1:eq:finite-product} --- valid over any commutative ring --- and
 uniqueness of limits closes the argument.  The exponential ray
-\(\sum\eps_n\e^{-nt}=\mathcal E(t)\) for \(t>0\), which the
+\(\sum\eps_n\EulerE^{-nt}=\mathcal E(t)\) for \(t>0\), which the
 Dirichlet--Mellin layer consumes, is now the one-line specialization
-\(x=\e^{-t}\)
+\(x=\EulerE^{-t}\)
 (\lean{Fabius.tsum\_thueMorseSign\_exp\_eq\_lacunaryExpProduct}).
 The holomorphic sum \lean{Fabius.thueMorseDiscSeries} is identified
 with the same complex product by
@@ -2497,7 +2484,7 @@ product that keeps the whole digit sum, not only its parity.
 For \(|z|<1\) and any scalar \(u\), and coefficientwise as formal series,
 \begin{equation}
   \boxed{
-  F_u(z):=\sum_{n\ge0}u^{\wt(n)}z^n
+  F_u(z):=\sum_{n\ge0}u^{\BinaryDigitSum(n)}z^n
   =\prod_{j\ge0}\bigl(1+uz^{2^j}\bigr),}
   \label{p1:eq:Fu-definition}
 \end{equation}
@@ -2518,7 +2505,7 @@ The specializations \(u=1\) and \(u=-1\) are
 \begin{proof}
 Expanding the product chooses a finite set of bit positions; by uniqueness of
 binary expansions each exponent \(n\) arises exactly once, with coefficient
-\(u^{\wt(n)}\).  Peeling the first factor gives \eqref{p1:eq:Fu-mahler}.  At
+\(u^{\BinaryDigitSum(n)}\).  Peeling the first factor gives \eqref{p1:eq:Fu-mahler}.  At
 \(u=1\) every \(n\) receives coefficient one, which restates the uniqueness
 of binary expansions; at \(u=-1\) the coefficient is \(\eps_n\).
 \end{proof}
@@ -2527,12 +2514,12 @@ Differentiating \eqref{p1:eq:Fu-definition} with respect to \(u\) at \(u=1\)
 gives the ordinary generating function of the digit sum itself:
 \begin{equation}
   \boxed{
-  \sum_{n\ge0}\wt(n)z^n
+  \sum_{n\ge0}\BinaryDigitSum(n)z^n
   =\frac1{1-z}\sum_{j\ge0}\frac{z^{2^j}}{1+z^{2^j}}.}
   \label{p1:eq:digit-sum-ogf}
 \end{equation}
 Higher derivatives at \(u=1\) generate the falling-factorial moments
-\(\wt(n)(\wt(n)-1)\cdots(\wt(n)-r+1)\) in the same way.  The lacunary sum in
+\(\BinaryDigitSum(n)(\BinaryDigitSum(n)-1)\cdots(\BinaryDigitSum(n)-r+1)\) in the same way.  The lacunary sum in
 \eqref{p1:eq:digit-sum-ogf} is the characteristic-zero twin of the
 Artin--Schreier solution \eqref{p1:eq:Y-explicit} below: the same series
 \(\sum_jz^{2^j}/(1+z^{2^j})\) computes the digit sum with integer
@@ -2594,11 +2581,11 @@ Take the formal logarithm of \eqref{p1:eq:infinite-product}:
   \label{p1:eq:log-E-double}
 \end{align}
 For a fixed exponent \(k\), the admissible \(j\)'s satisfy
-\(0\le j\le\vtwo(k)\), and the corresponding denominator is \(k/2^j\).
+\(0\le j\le\TwoAdicValuation(k)\), and the corresponding denominator is \(k/2^j\).
 Define
 \begin{equation}
-  a_k=\sum_{j=0}^{\vtwo(k)}2^j
-      =2^{\vtwo(k)+1}-1.
+  a_k=\sum_{j=0}^{\TwoAdicValuation(k)}2^j
+      =2^{\TwoAdicValuation(k)+1}-1.
   \label{p1:eq:ak-definition}
 \end{equation}
 
@@ -2608,7 +2595,7 @@ As a formal series, and analytically for \(|z|<1\),
 \begin{equation}
   \boxed{
   \log E(z)=-\sum_{k\ge1}\frac{a_k}{k}z^k,
-  \qquad a_k=2^{\vtwo(k)+1}-1.}
+  \qquad a_k=2^{\TwoAdicValuation(k)+1}-1.}
   \label{p1:eq:log-E}
 \end{equation}
 \end{theorem}
@@ -3124,7 +3111,7 @@ analytic continuation across any arc is possible.
 \label{p1:thm:natural-boundary}
 Every point of the unit circle is a singular point of \(E\); the circle is a
 natural boundary.  Consequently \(E\) and \(T\) are transcendental over the
-field \(\C(z)\) of rational functions.
+field \(\ComplexNumbers(z)\) of rational functions.
 \end{theorem}
 
 \begin{proof}
@@ -3141,7 +3128,7 @@ Such roots of unity are dense on the circle.  If \(E\) continued
 analytically through some open boundary arc, the continued function would
 vanish on a set with an accumulation point inside its domain, hence would
 vanish identically by the identity theorem, contradicting \(E(0)=1\).  An
-algebraic function over \(\C(z)\) has only finitely many singular points on
+algebraic function over \(\ComplexNumbers(z)\) has only finitely many singular points on
 the Riemann sphere, so it cannot have a natural boundary; and \(T\) differs
 from \(-E/2\) by the rational function in \eqref{p1:eq:T-from-E}.
 \end{proof}
@@ -3168,9 +3155,9 @@ circle agrees with \(F\) on the overlap with the unit disc --- the
 hypothetical extension vanishes at the dyadic roots accumulating at
 the center, hence identically by the identity theorem, forcing
 \(F\equiv0\) on the disc against \(F(0)=1\).  Only the algebraic
-coda --- that an algebraic function over \(\C(z)\) has finitely many
+coda --- that an algebraic function over \(\ComplexNumbers(z)\) has finitely many
 singular points, whence the transcendence of \(E\) and \(T\) over
-\(\C(z)\) --- remains informal.
+\(\ComplexNumbers(z)\) --- remains informal.
 
 \begin{remark}
 Two softer routes to the same conclusion deserve mention.  The
@@ -3188,7 +3175,7 @@ The contrast with \cref{p1:sec:F2-series} is worth displaying:
  \begin{array}{c|c}
  \text{over }\Ftwo(z) &
  \Theta(z)\text{ is algebraic of degree two},\\[0.2em]
- \text{over }\C(z) &
+ \text{over }\ComplexNumbers(z) &
  T(z)\text{ is transcendental with a natural boundary}.
  \end{array}
  \label{p1:eq:characteristic-contrast}
@@ -3495,12 +3482,12 @@ points.  Then
  &=(-1)^m
  \int_0^h\int_0^{2h}\cdots\int_0^{2^{m-1}h}
  f^{(m)}(x+t_0+\cdots+t_{m-1})
- \dd t_{m-1}\cdots\dd t_0
+ \Differential t_{m-1}\cdots\Differential t_0
  \label{p1:eq:integral-cubature}\\
  &=(-1)^m2^{\binom m2}h^m
  \int_{[0,1]^m}
  f^{(m)}\!\left(x+h\sum_{j=0}^{m-1}2^ju_j\right)
- \dd\bm u.
+ \Differential\bm u.
  \label{p1:eq:unit-cube-cubature}
 \end{align}
 Consequently
@@ -3514,7 +3501,7 @@ Consequently
 
 \begin{proof}
 Apply
-\((I-T_a)f(x)=-\int_0^af'(x+t)\dd t\) successively.  Rescale
+\((I-T_a)f(x)=-\int_0^af'(x+t)\Differential t\) successively.  Rescale
 \(t_j=2^jhu_j\) for the unit-cube form.  The box volume is
 \(h^m2^{0+1+\cdots+(m-1)}\).
 \end{proof}
@@ -3532,7 +3519,7 @@ For \(a,s>0\),
   \sum_{n<2^m}\frac{\eps_n}{(a+n)^s}
   =(s)_m
   \int_0^1\int_0^2\cdots\int_0^{2^{m-1}}
-  \frac{\dd t_{m-1}\cdots\dd t_0}
+  \frac{\Differential t_{m-1}\cdots\Differential t_0}
        {(a+t_0+\cdots+t_{m-1})^{s+m}}>0,}
   \label{p1:eq:reciprocal-power-positive}
 \end{equation}
@@ -3743,7 +3730,7 @@ still the only completely elementary construction that scales
 \cite{p1:prouhet1851,p1:borweinIngalls1994,p1:wikipediaPTE}.  Ideal solutions are
 known for all \(d\le9\) and for \(d=11\); their existence for every degree
 is open.  The sparse Prouhet theorem of \cref{p1:sec:sparse-prouhet} produces
-further nonconsecutive solutions: for any \(n\) with \(\wt(n)=s\), splitting
+further nonconsecutive solutions: for any \(n\) with \(\BinaryDigitSum(n)=s\), splitting
 the submasks of \(n\) by sign parity gives two sets of size \(2^{s-1}\)
 with equal power sums through degree \(s-1\), supported on the odd positions
 of Pascal row \(n\) rather than on an interval.
@@ -3759,19 +3746,19 @@ Define
 
 \begin{theorem}[Finite complex Hamming-weight and Thue--Morse transforms]
 \label{p1:thm:complex-finite-block-transforms}
-For every \(m\in\N\) and \(u,a,z\in\C\),
+For every \(m\in\NaturalNumbers\) and \(u,a,z\in\ComplexNumbers\),
 \begin{align}
- \sum_{n<2^m}u^{\wt(n)}\e^{nz}
-  &=\prod_{j<m}\left(1+u\e^{2^jz}\right),
+ \sum_{n<2^m}u^{\BinaryDigitSum(n)}\EulerE^{nz}
+  &=\prod_{j<m}\left(1+u\EulerE^{2^jz}\right),
   \label{p1:eq:complex-weighted-block}\\
- \sum_{n<2^m}u^{\wt(n)}\e^{a+nz}
-  &=\e^a\prod_{j<m}\left(1+u\e^{2^jz}\right),
+ \sum_{n<2^m}u^{\BinaryDigitSum(n)}\EulerE^{a+nz}
+  &=\EulerE^a\prod_{j<m}\left(1+u\EulerE^{2^jz}\right),
   \label{p1:eq:complex-weighted-block-affine}\\
- \sum_{n<2^m}\eps_n\e^{nz}
-  &=\prod_{j<m}\left(1-\e^{2^jz}\right),
+ \sum_{n<2^m}\eps_n\EulerE^{nz}
+  &=\prod_{j<m}\left(1-\EulerE^{2^jz}\right),
   \label{p1:eq:complex-signed-block}\\
- \sum_{n<2^m}\eps_n\e^{a+nz}
-  &=\e^a\prod_{j<m}\left(1-\e^{2^jz}\right).
+ \sum_{n<2^m}\eps_n\EulerE^{a+nz}
+  &=\EulerE^a\prod_{j<m}\left(1-\EulerE^{2^jz}\right).
   \label{p1:eq:complex-signed-block-affine}
 \end{align}
 All four identities include \(m=0\), with the usual empty-product convention.
@@ -3780,11 +3767,11 @@ No convergence hypothesis is present: every sum and product is finite.
 
 \begin{proof}
 Expand the product in \eqref{p1:eq:complex-weighted-block}.  Choosing the
-\(u\e^{2^jz}\) term at the bit positions of \(n<2^m\) contributes
-\(u^{\wt(n)}\e^{nz}\), because the selected powers of two sum to \(n\).
-The exponential addition law factors the common translate \(\e^a\) and gives
+\(u\EulerE^{2^jz}\) term at the bit positions of \(n<2^m\) contributes
+\(u^{\BinaryDigitSum(n)}\EulerE^{nz}\), because the selected powers of two sum to \(n\).
+The exponential addition law factors the common translate \(\EulerE^a\) and gives
 \eqref{p1:eq:complex-weighted-block-affine}.  Finally put \(u=-1\) and use
-\((-1)^{\wt(n)}=\eps_n\) to obtain
+\(\ThueMorseSign{n}=\eps_n\) to obtain
 \eqref{p1:eq:complex-signed-block} and
 \eqref{p1:eq:complex-signed-block-affine}.
 \end{proof}
@@ -3804,8 +3791,8 @@ sum of exponentials gives
 \begin{equation}
   \boxed{
   \sum_{r\ge0}M_{m,r}\frac{t^r}{r!}
-  =\sum_{n<2^m}\eps_n\e^{nt}
-  =\prod_{j=0}^{m-1}(1-\e^{2^jt}).}
+  =\sum_{n<2^m}\eps_n\EulerE^{nt}
+  =\prod_{j=0}^{m-1}(1-\EulerE^{2^jt}).}
   \label{p1:eq:moment-egf}
 \end{equation}
 The order-\(m\) zero at \(t=0\) immediately gives
@@ -3830,10 +3817,10 @@ between the finite exponential sum and the finite product is now exactly
 \(t\).  The first equality, which reads that finite exponential sum as an
 analytic exponential generating function, is formal at the coefficient level:
 the dictionary
-\([t^r]\sum_{n<2^m}\eps_n\e^{nt}=M_{m,r}/r!\) is
+\([t^r]\sum_{n<2^m}\eps_n\EulerE^{nt}=M_{m,r}/r!\) is
 \lean{Fabius.coeff\_sum\_thueMorseSign\_exp\_pow}, and the right-hand
 product is the algebraic master product evaluated at
-\(z=\e^{t}\in\mathbb Q[[t]]\).  No named Lean theorem in this crosswalk
+\(z=\EulerE^{t}\in\mathbb Q[[t]]\).  No named Lean theorem in this crosswalk
 identifies that coefficientwise formal series with an analytically convergent
 EGF; the new complex theorem delivers precisely the finite middle-to-right
 identity, without silently adding that separate analytic bridge.
@@ -3846,9 +3833,9 @@ The normalized translated series itself has the exact finite product
     \frac{\displaystyle\sum_{r<2^k}\eps_r
       (r-2^k+c)^{n+k}}{(n+k)!}X^n,\\
  \mathscr S_{c,k}(X)
-  &=(-1)^k2^{\binom k2}\e^{(c-1)X}
-    \prod_{j<k}\frac{\e^{-2^jX}-1}{-2^jX}
-    \qquad(c\in\Q,\ k\in\N).
+  &=(-1)^k2^{\binom k2}\EulerE^{(c-1)X}
+    \prod_{j<k}\frac{\EulerE^{-2^jX}-1}{-2^jX}
+    \qquad(c\in\RationalNumbers,\ k\in\NaturalNumbers).
 \end{aligned}
 \label{p1:eq:translated-shifted-expm1-product}
 \end{equation}
@@ -3886,10 +3873,10 @@ Equivalently,
 \begin{proof}
 Factor the lowest-order term from each factor in \eqref{p1:eq:moment-egf}:
 \begin{align*}
- \prod_{j=0}^{m-1}(1-\e^{2^jt})
+ \prod_{j=0}^{m-1}(1-\EulerE^{2^jt})
  &=(-1)^m2^{\binom m2}t^m
    \prod_{j=0}^{m-1}
-    \frac{\e^{2^jt}-1}{2^jt}\\
+    \frac{\EulerE^{2^jt}-1}{2^jt}\\
  &=(-1)^m2^{\binom m2}t^m
    \prod_{j=0}^{m-1}
     \sum_{q\ge0}\frac{2^{jq}t^q}{(q+1)!}.
@@ -3912,7 +3899,7 @@ with the compositions realized as finitely supported functions
 \((2^j)^{q_j+1}=2^j\cdot2^{jq_j}\) across the product recovers the boxed
 constant \(2^{\binom m2}\) of \eqref{p1:eq:moment-composition}, and
 \(p_j=q_j+1\) gives \eqref{p1:eq:moment-positive-compositions}.  The
-substitution \(z=\e^{t}\) is performed once and for all on an
+substitution \(z=\EulerE^{t}\) is performed once and for all on an
 \emph{arbitrary} support of bit positions --- each factor becomes
 \(-t\) times an explicit entire series
 (\lean{Fabius.one\_sub\_exp\_pow}, specialized in
@@ -3959,7 +3946,7 @@ For \(m\ge1\) and \(r\ge0\),
 \begin{proof}
 The classical formal expansion
 \begin{equation}
-  \log\!\left(\frac{\e^y-1}{y}\right)
+  \log\!\left(\frac{\EulerE^y-1}{y}\right)
   =\frac y2+
    \sum_{\ell\ge1}
    \frac{B_{2\ell}}{2\ell(2\ell)!}y^{2\ell}
@@ -3967,7 +3954,7 @@ The classical formal expansion
 \end{equation}
 turns the normalized product into
 \begin{equation}
- \prod_{j=0}^{m-1}(1-\e^{2^jt})
+ \prod_{j=0}^{m-1}(1-\EulerE^{2^jt})
  =(-1)^m2^{\binom m2}t^m
   \exp\!\left(
     \sum_{r\ge1}\kappa_r^{(m)}\frac{t^r}{r!}
@@ -4009,7 +3996,7 @@ The centered exponential transform is especially symmetric.
 For every \(m\ge0\),
 \begin{equation}
   \boxed{
-  \sum_{n=0}^{2^m-1}\eps_n\e^{(n-c_m)t}
+  \sum_{n=0}^{2^m-1}\eps_n\EulerE^{(n-c_m)t}
   =(-2)^m\prod_{j=0}^{m-1}\sinh(2^{j-1}t).}
   \label{p1:eq:centered-sinh}
 \end{equation}
@@ -4029,9 +4016,9 @@ whenever \(r<m\) or \(r\not\equiv m\pmod2\).  At \(r=m\),
 
 \begin{proof}
 Use
-\(1-\e^u=-2\e^{u/2}\sinh(u/2)\) in
+\(1-\EulerE^u=-2\EulerE^{u/2}\sinh(u/2)\) in
 \eqref{p1:eq:moment-egf}.  The product of exponential factors is
-\(\e^{c_mt}\), which disappears after centering.  The right side is a product
+\(\EulerE^{c_mt}\), which disappears after centering.  The right side is a product
 of \(m\) odd functions, hence has parity \(m\), and each factor starts with a
 linear term.  Coefficient comparison proves the selection rule and the first
 coefficient.
@@ -4056,13 +4043,13 @@ the self-reflective translation \(x=-c_m\).
 
 \emph{Formal boundary.}  At the raw exponential level, the centered precursor
 \[
- \sum_{n<2^m}\eps_n\e^{(n-c_m)t}
- =\e^{-c_mt}\prod_{j<m}\left(1-\e^{2^jt}\right)
+ \sum_{n<2^m}\eps_n\EulerE^{(n-c_m)t}
+ =\EulerE^{-c_mt}\prod_{j<m}\left(1-\EulerE^{2^jt}\right)
 \]
 is formal for every complex \(t\): it is
 \lean{Fabius.sum\_range\_two\_pow\_thueMorseSign\_cexp\_affine} with
 \(a=-c_mt\) and \(z=t\).  The subsequent complex half-angle rewrite
-\(1-\e^u=-2\e^{u/2}\sinh(u/2)\), and hence the centered sinh product
+\(1-\EulerE^u=-2\EulerE^{u/2}\sinh(u/2)\), and hence the centered sinh product
 \eqref{p1:eq:centered-sinh} as a named complex theorem, is not yet packaged in
 Lean.  At the moment level, the reflection functional equation is
 \lean{Fabius.sum\_thueMorseSign\_mul\_add\_pow\_reflect}
@@ -4174,7 +4161,7 @@ Define
 \begin{equation}
   J(n)=\{j\ge0:b_j(n)=1\},
   \qquad
-  s=|J(n)|=\wt(n),
+  s=|J(n)|=\BinaryDigitSum(n),
   \qquad
   \beta(n)=\sum_{j\in J(n)}j.
   \label{p1:eq:J-beta}
@@ -4200,7 +4187,7 @@ Equivalently,
 \begin{proof}
 Expanding the product chooses a subset of the occupied bit positions of
 \(n\).  Its exponent is the corresponding submask \(k\), and its sign is
-\((-1)^{\wt(k)}=\eps_k\).  Lucas's criterion gives the second form.
+\(\ThueMorseSign{k}=\eps_k\).  Lucas's criterion gives the second form.
 \end{proof}
 
 \begin{corollary}[Balance on odd Pascal positions]
@@ -4216,12 +4203,12 @@ binary weight and half have odd binary weight.
 
 \begin{proof}
 Set \(z=1\) in \eqref{p1:eq:signed-Pascal-support}.  There are
-\(2^{\wt(n)}\) support positions by \cref{p1:cor:glaisher-count}.
+\(2^{\BinaryDigitSum(n)}\) support positions by \cref{p1:cor:glaisher-count}.
 \end{proof}
 
 \begin{theorem}[Sparse Prouhet theorem]
 \label{p1:thm:sparse-Prouhet}
-Let \(n\ge0\), \(s=\wt(n)\).  For every polynomial \(p\) of degree below
+Let \(n\ge0\), \(s=\BinaryDigitSum(n)\).  For every polynomial \(p\) of degree below
 \(s\),
 \begin{equation}
   \boxed{
@@ -4241,7 +4228,7 @@ The first surviving power moment is
 Every factor in \eqref{p1:eq:signed-Pascal-support} has a simple zero at
 \(z=1\), so \(R_n\) has a zero of exact order \(s\), with local leading term
 \[
- R_n(z)=(-1)^s2^{\beta(n)}(z-1)^s+\bigO((z-1)^{s+1}).
+ R_n(z)=(-1)^s2^{\beta(n)}(z-1)^s+\BigO((z-1)^{s+1}).
 \]
 The derivative/falling-factorial proof of \cref{p1:thm:prouhet} applies with the
 sum restricted to submasks.
@@ -4315,7 +4302,7 @@ For \(r\ge s\),
 \end{corollary}
 
 \begin{proof}
-Substitute \(z=\e^t\) in \eqref{p1:eq:signed-Pascal-support}, factor
+Substitute \(z=\EulerE^t\) in \eqref{p1:eq:signed-Pascal-support}, factor
 \(-2^jt\) from every occupied bit, and extract coefficients exactly as in
 \cref{p1:thm:moment-composition}.
 \end{proof}
@@ -4674,31 +4661,31 @@ modules; the purpose here is to expose the exact common algebraic spine.
 
 \subsection{A finite Fourier product}
 
-Putting \(z=\e^{\ii\theta}\) in \eqref{p1:eq:finite-product} gives
+Putting \(z=\EulerE^{\ImaginaryUnit\theta}\) in \eqref{p1:eq:finite-product} gives
 \begin{equation}
-  \sum_{n=0}^{2^m-1}\eps_n\e^{\ii n\theta}
-  =\prod_{j=0}^{m-1}(1-\e^{\ii2^j\theta}).
+  \sum_{n=0}^{2^m-1}\eps_n\EulerE^{\ImaginaryUnit n\theta}
+  =\prod_{j=0}^{m-1}(1-\EulerE^{\ImaginaryUnit2^j\theta}).
   \label{p1:eq:finite-Fourier-product-raw}
 \end{equation}
-Using \(1-\e^{\ii u}=-2\ii\e^{\ii u/2}\sin(u/2)\),
+Using \(1-\EulerE^{\ImaginaryUnit u}=-2\ImaginaryUnit\EulerE^{\ImaginaryUnit u/2}\sin(u/2)\),
 \begin{equation}
   \boxed{
-  \sum_{n=0}^{2^m-1}\eps_n\e^{\ii n\theta}
-  =(-2\ii)^m
-   \e^{\ii(2^m-1)\theta/2}
+  \sum_{n=0}^{2^m-1}\eps_n\EulerE^{\ImaginaryUnit n\theta}
+  =(-2\ImaginaryUnit)^m
+   \EulerE^{\ImaginaryUnit(2^m-1)\theta/2}
    \prod_{j=0}^{m-1}\sin(2^{j-1}\theta).}
   \label{p1:eq:finite-Fourier-sine}
 \end{equation}
 Hence
 \begin{equation}
-  \left|\sum_{n=0}^{2^m-1}\eps_n\e^{\ii n\theta}\right|
+  \left|\sum_{n=0}^{2^m-1}\eps_n\EulerE^{\ImaginaryUnit n\theta}\right|
   =2^m\prod_{j=0}^{m-1}|\sin(2^{j-1}\theta)|.
   \label{p1:eq:finite-Fourier-magnitude}
 \end{equation}
 
 \emph{Formal versions.}  The raw identity
 \eqref{p1:eq:finite-Fourier-product-raw} is the specialization
-\(z=\ii\theta\) of
+\(z=\ImaginaryUnit\theta\) of
 \lean{Fabius.sum\_range\_two\_pow\_thueMorseSign\_cexp}
 (\path{ThueMorseComplexExponential.lean}); it is valid for every
 \emph{complex} \(\theta\), with no reality or convergence hypothesis.  The
@@ -4707,22 +4694,22 @@ affine companion
 also allows an arbitrary complex translate of the exponent.  Equivalently,
 the raw identity follows by evaluating the ring-valued master product
 \lean{Fabius.prod\_one\_sub\_pow\_eq\_sum\_thueMorseSign} at
-\(\e^{\ii\theta}\).  The sine form
+\(\EulerE^{\ImaginaryUnit\theta}\).  The sine form
 \eqref{p1:eq:finite-Fourier-sine} is
 \lean{Fabius.sum\_thueMorseSign\_exp\_eq\_sin\_prod}
 (\path{ThueMorseSineProduct.lean}), built on the half-angle
-factorization \(1-\e^{\ii u}=-2\ii\e^{\ii u/2}\sin(u/2)\)
+factorization \(1-\EulerE^{\ImaginaryUnit u}=-2\ImaginaryUnit\EulerE^{\ImaginaryUnit u/2}\sin(u/2)\)
 (\lean{Fabius.one\_sub\_exp\_mul\_I}, proved by pure exponential
 algebra).  The magnitude \eqref{p1:eq:finite-Fourier-magnitude} is carried
 in squared form by the Riesz factorization
 \lean{Fabius.normSq\_sum\_thueMorseSign\_exp}
 (\path{ThueMorseFourier.lean}), whose factors are
-\(|1-\e^{\ii\theta}|^2=2-2\cos\theta\)
+\(|1-\EulerE^{\ImaginaryUnit\theta}|^2=2-2\cos\theta\)
 (\lean{Fabius.normSq\_one\_sub\_exp}).
 
 \begin{theorem}[Affine real sine form]
 \label{p1:thm:affine-real-sine-form}
-For every \(m\in\N\) and \(x,\phi\in\R\),
+For every \(m\in\NaturalNumbers\) and \(x,\phi\in\RealNumbers\),
 \begin{equation}
  \boxed{
  \sum_{n=0}^{2^m-1}\eps_n\sin(\phi+nx)
@@ -4751,7 +4738,7 @@ take \(x=2w\) and \(\phi=m\pi/2+w\), then append the resulting
 
 \begin{theorem}[Real lacunary sine product]
 \label{p1:thm:trig-product-to-sum}
-For every \(m\in\N\) and \(w\in\R\),
+For every \(m\in\NaturalNumbers\) and \(w\in\RealNumbers\),
 \begin{equation}
  \boxed{
  2^m\prod_{j=0}^{m}\sin(2^jw)
@@ -4767,7 +4754,7 @@ For every \(m\in\N\) and \(w\in\R\),
 specialization above.  The same module records the two binary
 reflection laws
 \begin{equation}
- \wt(2^m-1-n)+\wt(n)=m,\qquad
+ \BinaryDigitSum(2^m-1-n)+\BinaryDigitSum(n)=m,\qquad
  \eps_{2^m-1-n}=(-1)^m\eps_n
  \quad(n<2^m),                                             \label{p1:eq:formal-bit-complement-laws}
 \end{equation}
@@ -4806,13 +4793,13 @@ Both formulas extend from real to complex \(z\) by the identity theorem.
 \begin{proof}[Proof of the analytic companions]
 Set \(\theta=2z/2^m\) in
 \eqref{p1:eq:finite-Fourier-sine}, multiply by
-\(\ii^m\e^{\ii z/2^m}\), and simplify the phase.  The result is
+\(\ImaginaryUnit^m\EulerE^{\ImaginaryUnit z/2^m}\), and simplify the phase.  The result is
 \[
  \sum_{n<2^m}\eps_n
- \exp\!\left(\ii\left(
+ \exp\!\left(\ImaginaryUnit\left(
    \frac{\pi m}{2}+\frac{(2n+1)z}{2^m}
  \right)\right)
- =2^m\e^{\ii z}\prod_{r=1}^{m}\sin\frac z{2^r}.
+ =2^m\EulerE^{\ImaginaryUnit z}\prod_{r=1}^{m}\sin\frac z{2^r}.
 \]
 For real \(z\), take imaginary and real parts.  Both resulting identities
 are identities between entire functions of \(z\), so the identity theorem
@@ -4824,7 +4811,7 @@ product for every complex parameter, together with its arbitrary affine
 translate.  The complex half-angle and total sinc normalization are
 \lean{Fabius.sum\_thueMorseSign\_cexp\_eq\_sin\_prod} and
 \lean{Fabius.thueMorseBlock\_cexp\_eq\_sincPrefix} in
-\path{ThueMorseComplexProductBridge.lean}.  Over \(\R\), Lean proves
+\path{ThueMorseComplexProductBridge.lean}.  Over \(\RealNumbers\), Lean proves
 \eqref{p1:eq:affine-real-sine-form},
 \eqref{p1:eq:formal-lacunary-sine-product}, and the cosine companion
 \eqref{p1:eq:cosine-product-to-sum}; the last is
@@ -4841,7 +4828,7 @@ Let
 \begin{equation}
   \widehat\eps_m(k)=
   \sum_{n=0}^{2^m-1}\eps_n
-  \exp\!\left(-\frac{2\pi\ii kn}{2^m}\right),
+  \exp\!\left(-\frac{2\pi\ImaginaryUnit kn}{2^m}\right),
   \qquad 0\le k<2^m.
   \label{p1:eq:DFT-definition}
 \end{equation}
@@ -4852,14 +4839,14 @@ For every \(k\),
 \begin{equation}
   \widehat\eps_m(k)=
   \prod_{j=0}^{m-1}
-  \left(1-\exp\!\left(-\frac{2\pi\ii k2^j}{2^m}\right)\right).
+  \left(1-\exp\!\left(-\frac{2\pi\ImaginaryUnit k2^j}{2^m}\right)\right).
   \label{p1:eq:DFT-product}
 \end{equation}
 If \(m\ge1\), this is zero for every even \(k\).  For odd \(k\),
 \begin{equation}
   \boxed{
   \widehat\eps_m(k)=
-  (2\ii)^m\e^{-\pi\ii k(1-2^{-m})}
+  (2\ImaginaryUnit)^m\EulerE^{-\pi\ImaginaryUnit k(1-2^{-m})}
   \prod_{r=1}^{m}\sin\frac{\pi k}{2^r}.}
   \label{p1:eq:DFT-odd}
 \end{equation}
@@ -4874,13 +4861,13 @@ Thus
 
 \begin{proof}
 Evaluate \eqref{p1:eq:finite-product} at
-\(z=\e^{-2\pi\ii k/2^m}\).  If \(k\) is even, the factor with
+\(z=\EulerE^{-2\pi\ImaginaryUnit k/2^m}\).  If \(k\) is even, the factor with
 \(j=m-1\) is \(1-(-1)^k=0\).  For odd \(k\), apply
-\(1-\e^{-\ii u}=2\ii\e^{-\ii u/2}\sin(u/2)\) factorwise and sum the phases.
+\(1-\EulerE^{-\ImaginaryUnit u}=2\ImaginaryUnit\EulerE^{-\ImaginaryUnit u/2}\sin(u/2)\) factorwise and sum the phases.
 \end{proof}
 
 \emph{Formal versions.}  The product form \eqref{p1:eq:DFT-product} is the
-master product at \(z=\e^{-2\pi\ii k/2^m}\); the closed sine form
+master product at \(z=\EulerE^{-2\pi\ImaginaryUnit k/2^m}\); the closed sine form
 \eqref{p1:eq:DFT-odd} is the specialization of
 \lean{Fabius.sum\_thueMorseSign\_exp\_eq\_sin\_prod} at
 \(x=-2\pi k/2^m\) (the atlas phase convention conjugates it).  The
@@ -4901,7 +4888,7 @@ individual term:
   \boxed{
   \eps_n=\frac1{2^m}
    \sum_{\substack{0\le k<2^m\\k\text{ odd}}}
-   \widehat\eps_m(k)\e^{2\pi\ii kn/2^m},
+   \widehat\eps_m(k)\EulerE^{2\pi\ImaginaryUnit kn/2^m},
   \qquad 0\le n<2^m.}
   \label{p1:eq:DFT-inversion}
 \end{equation}
@@ -4948,11 +4935,11 @@ same block is spectrally pure in the Walsh basis.
 \emph{Formal versions.}  \path{ThueMorseWalsh.lean} proves
 \eqref{p1:eq:Walsh-character} as
 \lean{Fabius.thueMorseSign\_eq\_neg\_one\_pow\_land} (the inner
-product realized as \(\wt(a\mathbin{\&}n)\)), the point mass
+product realized as \(\BinaryDigitSum(a\mathbin{\&}n)\)), the point mass
 \eqref{p1:eq:Walsh-transform} as
 \lean{Fabius.sum\_thueMorseSign\_mul\_walsh}, and the underlying
 character orthogonality
-\(\sum_{n<2^m}(-1)^{\wt(a\mathbin{\&}n)}=2^m\ind_{a=0}\) as
+\(\sum_{n<2^m}\ThueMorseSign{a\mathbin{\&}n}=2^m\ind_{a=0}\) as
 \lean{Fabius.sum\_neg\_one\_pow\_binaryWeight\_land}.  The bit
 toolkit behind them --- the all-ones digit pattern of \(2^m-1\) and the
 masking of two-power sums --- is \lean{Fabius.sum\_range\_two\_pow},
@@ -4981,7 +4968,7 @@ on the dyadic partition.
 
 Define
 \begin{equation}
-  \rho_m(x)=2^{-m}|P_m(\e^{2\pi\ii x})|^2.
+  \rho_m(x)=2^{-m}|P_m(\EulerE^{2\pi\ImaginaryUnit x})|^2.
   \label{p1:eq:Riesz-density-definition}
 \end{equation}
 
@@ -4996,17 +4983,17 @@ For every \(m\ge0\),
 \end{equation}
 Moreover,
 \begin{equation}
-  \int_0^1\rho_m(x)\dd x=1,
+  \int_0^1\rho_m(x)\Differential x=1,
   \label{p1:eq:Riesz-mass}
 \end{equation}
-so \(\rho_m(x)\dd x\) is a probability measure.
+so \(\rho_m(x)\Differential x\) is a probability measure.
 \end{theorem}
 
 \begin{proof}
-Use \(|1-\e^{\ii\theta}|^2=2(1-\cos\theta)\) in
+Use \(|1-\EulerE^{\ImaginaryUnit\theta}|^2=2(1-\cos\theta)\) in
 \eqref{p1:eq:finite-product}.  Parseval gives
 \[
- \int_0^1\rho_m(x)\dd x
+ \int_0^1\rho_m(x)\Differential x
  =2^{-m}\sum_{n<2^m}|\eps_n|^2=1.
 \]
 \end{proof}
@@ -5030,7 +5017,7 @@ where nothing mentions Thue--Morse.  For integer frequencies
 \(\varphi_j\), and an integer probe frequency \(K\),
 \begin{equation}
  \int_0^1\cos(2\pi Kt+\psi)
-   \prod_{j<n}\bigl(1+a_j\cos(2\pi m_jt+\varphi_j)\bigr)\dd t
+   \prod_{j<n}\bigl(1+a_j\cos(2\pi m_jt+\varphi_j)\bigr)\Differential t
  =\begin{cases}\cos\psi,&K=0,\\0,&K\ne0,\end{cases}
  \label{p1:eq:riesz-orthogonality}
 \end{equation}
@@ -5057,7 +5044,7 @@ Hadamard-gap restatement, which still assumes \(2m_j\le m_{j+1}\) and
 \eqref{p1:eq:Riesz-mass} is the instance \(m_j=2^j\), \(a_j=-1\),
 \(\varphi_j=0\).  The companion
 exact identity
-\(\int_0^1\prod_{j<n}\sin^2(\pi m_jt)\dd t=2^{-n}\)
+\(\int_0^1\prod_{j<n}\sin^2(\pi m_jt)\Differential t=2^{-n}\)
 (\lean{Fabius.integral\_prod\_sin\_sq\_of\_superIncreasing}, with the
 geometric and dyadic specializations
 \lean{Fabius.integral\_prod\_sin\_sq\_pow} and
@@ -5068,7 +5055,7 @@ Fourier-decay audit of the Rvachev up-function uses.  The offset
 resonate through \(m_1-m_0=1\) --- and that counterexample, formerly
 recorded in prose in the module header, is now formalized in
 \path{RieszSharpness.lean}.  The integral is evaluated exactly,
-\(\int_0^1\cos(2\pi t)\,(1+\cos 6\pi t)(1+\cos 8\pi t)\dd t=\tfrac14\)
+\(\int_0^1\cos(2\pi t)\,(1+\cos 6\pi t)(1+\cos 8\pi t)\Differential t=\tfrac14\)
 (\lean{Fabius.integral\_cos\_mul\_sharpProduct}), and packaged as an
 existential refutation
 (\lean{Fabius.exists\_superIncreasing\_probe\_integral\_ne}) in which two
@@ -5080,8 +5067,8 @@ the weakest \(K\)-free hypothesis yielding the conclusion.
 The finite measures converge weakly to the Thue--Morse spectral measure.  The
 formal notation
 \begin{equation}
-  \dd\mu_{\mathrm{TM}}(x)
-  =\prod_{j\ge0}(1-\cos(2\pi2^jx))\dd x
+  \Differential\mu_{\mathrm{TM}}(x)
+  =\prod_{j\ge0}(1-\cos(2\pi2^jx))\Differential x
   \label{p1:eq:infinite-Riesz-formal}
 \end{equation}
 means this weak limit, not pointwise multiplication of ordinary densities.
@@ -5314,7 +5301,7 @@ recurrence bound is explicit and \emph{linear} --- a factor of length
 (\lean{Fabius.thueMorseBit\_uniformly\_recurrent}), so every factor of
 length \(\ell\) recurs with gap at most \(30\ell\).  The route is
 index arithmetic rather than supertiles: the full block-concatenation
-laws \(\wt(q\cdot2^k+r)=\wt(q)+\wt(r)\) and
+laws \(\BinaryDigitSum(q\cdot2^k+r)=\BinaryDigitSum(q)+\BinaryDigitSum(r)\) and
 \(\tau(q\cdot2^k+r)=\tau(q)\oplus\tau(r)\)
 (\lean{Fabius.binaryWeight\_block\_concat},
 \lean{Fabius.thueMorseBit\_block\_concat}) reduce any window to its
@@ -5352,7 +5339,7 @@ is constant --- a contradiction.
 runs the reflection argument above: aperiodicity is now a
 \emph{corollary of Thue's theorem} (\cref{p1:thm:overlap-free}), through
 a purely word-combinatorial implication that holds over an arbitrary
-alphabet and knows nothing about \(\eps\).  If \(f:\N\to A\) is a
+alphabet and knows nothing about \(\eps\).  If \(f:\NaturalNumbers\to A\) is a
 sequence over any set \(A\) and
 satisfies \(f(n+p)=f(n)\) for all \(n\ge N\) with \(p\ge1\), then the
 window of length \(2p+1\) starting at \(N\) is already an overlap of
@@ -5597,7 +5584,7 @@ For a modulus \(q\ge2\) and residue \(0\le r<q\), define
   =\sum_{\substack{0\le n<2^m\\ n\equiv r\ (\mathrm{mod}\ q)}}\eps_n.
   \label{p1:eq:rarefied-definition}
 \end{equation}
-Let \(\zeta_q=\e^{2\pi\ii/q}\), a primitive \(q\)-th root of unity.
+Let \(\zeta_q=\EulerE^{2\pi\ImaginaryUnit/q}\), a primitive \(q\)-th root of unity.
 Averaging the geometric identity
 \(\smash{\frac1q\sum_{\ell<q}\zeta_q^{(n-r)\ell}}=\ind_{q\mid n-r}\)
 against \eqref{p1:eq:finite-product} gives the exact finite formula
@@ -5643,7 +5630,7 @@ Modulo three the filter is subsumed by the closed vectors below.
 
 For \(q=3\) everything is explicit, because
 \(2^j\equiv1,2,1,2,\ldots\pmod3\) and, with
-\(\omega=\zeta_3=\e^{2\pi\ii/3}\),
+\(\omega=\zeta_3=\EulerE^{2\pi\ImaginaryUnit/3}\),
 \begin{equation}
   (1-\omega)(1-\omega^2)=3.
   \label{p1:eq:omega-pair-product}
@@ -5715,11 +5702,11 @@ power law.
 \subsection{Gelfond's uniform exponent}
 
 The rarefied sums are finitely many samples of the trigonometric polynomial
-\(p_m(x)=P_m(\e^{2\pi\ii x})\), whose modulus is the sine product
+\(p_m(x)=P_m(\EulerE^{2\pi\ImaginaryUnit x})\), whose modulus is the sine product
 \eqref{p1:eq:finite-Fourier-magnitude}.  How large can it get?  Evaluating at
 \(x=\tfrac13\) gives, by \eqref{p1:eq:omega-pair-product},
 \begin{equation}
-  \sup_{x\in\R}|p_m(x)|
+  \sup_{x\in\RealNumbers}|p_m(x)|
   \ge|P_m(\omega)|
   =3^{m/2}
   \qquad(m\ge0),
@@ -5730,7 +5717,7 @@ position.  Gelfond's theorem \cite{p1:gelfond1968} --- proved below --- shows th
 is sharp up to a bounded factor:
 \begin{equation}
   \boxed{
-  \sup_{x\in\R}|p_m(x)|
+  \sup_{x\in\RealNumbers}|p_m(x)|
   \le\frac2{\sqrt3}\,3^{m/2}
   =\frac2{\sqrt3}\,\bigl(2^m\bigr)^{\log_43}.}
   \label{p1:eq:gelfond-upper}
@@ -5774,7 +5761,7 @@ inequality \eqref{p1:eq:gelfond-key} is
 sum-of-squares certificate displayed; the telescoped product bound
 \(\prod_{j<m}2|\sin(2^j\theta)|\le2(\sqrt3)^{m-1}\) is
 \lean{Fabius.gelfond\_prod\_le}; and the exponential-sum form
-\(\bigl|\sum_{n<2^m}\eps_n\e^{\ii nx}\bigr|
+\(\bigl|\sum_{n<2^m}\eps_n\EulerE^{\ImaginaryUnit nx}\bigr|
 \le2(\sqrt3)^{m-1}=\tfrac2{\sqrt3}3^{m/2}\), uniform in the real
 frequency \(x\) (the normalization of the frequency is immaterial to
 a uniform bound), is \lean{Fabius.gelfond\_uniform\_bound}, riding
@@ -5784,9 +5771,9 @@ the corpus sine-product identity
 Decomposing an arbitrary range \([0,N)\) into at most one dyadic block per
 binary digit of \(N\) and applying \eqref{p1:eq:gelfond-upper} blockwise gives
 \begin{equation}
-  \sup_{x\in\R}
-  \left|\sum_{n=0}^{N-1}\eps_n\e^{2\pi\ii nx}\right|
-  =\bigO\bigl(N^{\log_43}\bigr),
+  \sup_{x\in\RealNumbers}
+  \left|\sum_{n=0}^{N-1}\eps_n\EulerE^{2\pi\ImaginaryUnit nx}\right|
+  =\BigO\bigl(N^{\log_43}\bigr),
   \label{p1:eq:gelfond-general}
 \end{equation}
 so \(\log_43\) is the optimal uniform growth exponent of Thue--Morse
@@ -5812,7 +5799,7 @@ since even \(n=2n'\equiv r\) forces \(n'\equiv2^{-1}r\) with
 \(n'\equiv2^{-1}(r-1)\) with \(\eps_n=-\eps_{n'}\).  Thus
 \(\mathbf A_{m+1}=M_q\mathbf A_m\) for a fixed matrix \(M_q\) with one
 entry \(+1\) and one entry \(-1\) per row; diagonalizing \(M_q\) by the
-discrete Fourier transform on \(\Z/q\Z\) reproduces
+discrete Fourier transform on \(\IntegerNumbers/q\IntegerNumbers\) reproduces
 \eqref{p1:eq:rarefied-filter}.  For \(q=3\) the eigenvalues have modulus
 \(\sqrt3\), which is the growth rate seen in
 \cref{p1:thm:mod3-rarefaction}.
@@ -5883,7 +5870,7 @@ refinement of the same induction and are not reproved here.
 Among multiples of three below any cutoff, integers of even binary weight
 always outnumber those of odd binary weight \cite{p1:newman1969}.  Coquet
 determined the precise structure:
-\(N_3(X)=X^{\log_43}\,\Psi(\log_4X)+\bigO(1)\) with \(\Psi\) a continuous,
+\(N_3(X)=X^{\log_43}\,\Psi(\log_4X)+\BigO(1)\) with \(\Psi\) a continuous,
 nowhere-differentiable periodic function \cite{p1:coquet1983}.
 
 \emph{Formal versions.}  The boxed positivity
@@ -5906,7 +5893,7 @@ such evaluations \cite{p1:shallit2023}.
 Beyond arithmetic progressions, the same digit-parity character is now
 understood along much thinner sequences.  Mauduit and Rivat proved
 Gelfond's conjecture that the parity is equidistributed along the primes:
-\(\sum_{p\le x}\eps_p=\smallo(\pi(x))\), the sum running over primes with
+\(\sum_{p\le x}\eps_p=\LittleO(\pi(x))\), the sum running over primes with
 \(\pi(x)\) their count \cite{p1:mauduitRivat2010}.  Drmota, Mauduit, and Rivat
 proved that along the squares the word
 \((\tau(n^2))_{n\ge0}\) is \emph{normal} --- every binary block of length
@@ -5934,8 +5921,8 @@ Thue--Morse Dirichlet series.
 
 For \(t>0\), set
 \begin{equation}
-  \mathcal E(t)=E(\e^{-t})
-  =\prod_{j\ge0}(1-\e^{-2^jt}).
+  \mathcal E(t)=E(\EulerE^{-t})
+  =\prod_{j\ge0}(1-\EulerE^{-2^jt}).
   \label{p1:eq:E-caligraphic}
 \end{equation}
 Every factor lies in \((0,1)\), so \(\mathcal E(t)>0\).
@@ -5947,12 +5934,12 @@ As \(t\downarrow0\),
   \boxed{
   \log\mathcal E(t)
   =-\frac{\log^2(1/t)}{2\log2}
-   +\bigO(\log(1/t)).}
+   +\BigO(\log(1/t)).}
   \label{p1:eq:boundary-log-asymptotic}
 \end{equation}
 Consequently, for every \(A>0\),
 \begin{equation}
-  \mathcal E(t)=\bigO_A(t^A)
+  \mathcal E(t)=\BigO_A(t^A)
   \qquad(t\downarrow0).
   \label{p1:eq:superpolynomial-flatness}
 \end{equation}
@@ -5964,30 +5951,30 @@ Assume \(0<t<1/2\), put \(L=\log(1/t)\), and let
 \(2^mt\in(1/2,1]\).  For \(0\le j<m\), one has \(0<2^jt\le1/2\), and the
 elementary bounds
 \begin{equation}
-  \frac{x}{2}\le1-\e^{-x}\le x
+  \frac{x}{2}\le1-\EulerE^{-x}\le x
   \qquad(0<x\le1)
   \label{p1:eq:one-minus-exp-bounds}
 \end{equation}
 show that
 \begin{equation}
-  \log(1-\e^{-2^jt})=\log t+j\log2+\bigO(1),
+  \log(1-\EulerE^{-2^jt})=\log t+j\log2+\BigO(1),
   \label{p1:eq:small-factor-log}
 \end{equation}
 with an absolute \(O(1)\).  Summing gives
 \begin{equation}
- \sum_{j=0}^{m-1}\log(1-\e^{-2^jt})
- =m\log t+\frac{m(m-1)}2\log2+\bigO(m).
+ \sum_{j=0}^{m-1}\log(1-\EulerE^{-2^jt})
+ =m\log t+\frac{m(m-1)}2\log2+\BigO(m).
  \label{p1:eq:small-factor-sum}
 \end{equation}
 
 For the tail, write \(2^mt=u\in(1/2,1]\).  Then
 \begin{equation}
- \sum_{j=m}^{\infty}\left|\log(1-\e^{-2^jt})\right|
- =\sum_{r=0}^{\infty}\left|\log(1-\e^{-2^ru})\right|=\bigO(1)
+ \sum_{j=m}^{\infty}\left|\log(1-\EulerE^{-2^jt})\right|
+ =\sum_{r=0}^{\infty}\left|\log(1-\EulerE^{-2^ru})\right|=\BigO(1)
  \label{p1:eq:tail-uniform}
 \end{equation}
 uniformly in \(u\), because the terms decay doubly exponentially.  Finally
-\(m=L/\log2+\bigO(1)\); substitution in
+\(m=L/\log2+\BigO(1)\); substitution in
 \eqref{p1:eq:small-factor-sum} yields
 \eqref{p1:eq:boundary-log-asymptotic}.  The negative quadratic term dominates
 \(-A\log(1/t)\) for every fixed \(A\), proving
@@ -6005,12 +5992,12 @@ effective two-sided form (\path{ThueMorseBoundaryFlatness.lean}).  The
 product \(\mathcal E\) is \lean{Fabius.lacunaryExpProduct},
 identified with the exponential of its log series and hence positive
 and at most one.  The key structural fact is the \emph{self-similarity}
-\(\mathcal E(t)=\prod_{j<m}(1-\e^{-2^jt})\cdot\mathcal E(2^mt)\)
+\(\mathcal E(t)=\prod_{j<m}(1-\EulerE^{-2^jt})\cdot\mathcal E(2^mt)\)
 (\lean{Fabius.lacunaryExpProduct\_eq\_prod\_mul}); combining it with
-the reusable sandwich \(x/2\le1-\e^{-x}\le x\) on \([0,1]\)
+the reusable sandwich \(x/2\le1-\EulerE^{-x}\le x\) on \([0,1]\)
 (\lean{Fabius.half\_le\_one\_sub\_exp\_neg},
 \lean{Fabius.one\_sub\_exp\_neg\_le} --- the lower half proved from
-\(\e^{-x}\le1/(1+x)\), no series expansion) gives, for \emph{every}
+\(\EulerE^{-x}\le1/(1+x)\), no series expansion) gives, for \emph{every}
 level \(m\),
 \[
   2^{\binom m2}(t/2)^m\,\mathcal E(\tfrac12)
@@ -6045,7 +6032,7 @@ The series \eqref{p1:eq:Dirichlet-definition} converges locally uniformly in
 \begin{proof}
 The partial sums \(S(N)=\sum_{n<N}\eps_n\) are bounded by one.  On a compact
 set \(\Re s\ge\sigma>0\), the first difference of
-\((n+a)^{-s}\) is uniformly \(\bigO(n^{-\sigma-1})\).  Summation by parts
+\((n+a)^{-s}\) is uniformly \(\BigO(n^{-\sigma-1})\).  Summation by parts
 therefore gives uniform convergence of the tails.
 \end{proof}
 
@@ -6069,7 +6056,7 @@ absolutely convergent real regime
 (\lean{Fabius.thueMorseDirichlet\_mellin},
 \path{ThueMorseMellin.lean}): for \(\sigma>1\) and \(a>0\),
 \(\Gamma(\sigma)D(\sigma,a)=\int_0^\infty
-t^{\sigma-1}\e^{-at}\mathcal E(t)\,\dd t\) --- the integrand is
+t^{\sigma-1}\EulerE^{-at}\mathcal E(t)\,\Differential t\) --- the integrand is
 rewritten through the analytic infinite-product identity, the sum and
 integral are interchanged by absolute convergence (the norm integrals
 are exactly the Gamma values, summable as a shifted \(p\)-series),
@@ -6079,7 +6066,7 @@ conditionally defined \(D\) is identified with the absolute sum
 continuation itself is now formal
 (\path{ThueMorseEntireContinuation.lean}): the function
 \(s\mapsto\Gamma(s)^{-1}\int_0^\infty
-t^{s-1}\e^{-at}\mathcal E(t)\,\dd t\) is differentiable on all of
+t^{s-1}\EulerE^{-at}\mathcal E(t)\,\Differential t\) is differentiable on all of
 \(\mathbb C\)
 (\lean{Fabius.dirichletMellinContinuation\_differentiable}) --- the
 effective flatness bound supplies an \(O(t^{-b})\) estimate at zero
@@ -6125,7 +6112,7 @@ Use \(\eps_{2n}=\eps_n\) and \(\eps_{2n+1}=-\eps_n\):
 \emph{every} complex \(s\), not only along the real ray.  The carrier
 is the entire continuation of \cref{p1:thm:Mellin-integral}, formalized
 as \lean{Fabius.dirichletMellinContinuation}: for every \(a>0\) and
-every \(s\in\C\),
+every \(s\in\ComplexNumbers\),
 \begin{equation}
  \widetilde D(s,a)=2^{-s}\left(
    \widetilde D\!\left(s,\frac a2\right)
@@ -6140,11 +6127,11 @@ is the reason the entirety layer was built: both sides of
 \lean{Fabius.dirichletMellinContinuation\_differentiable} at \(a\),
 the right by the same at \(a/2\) and \((a{+}1)/2\) multiplied by the
 entire \(s\mapsto2^{-s}\) --- and they agree on the ray
-\((1,\infty)\subseteq\R\subseteq\C\)
+\((1,\infty)\subseteq\RealNumbers\subseteq\ComplexNumbers\)
 (\lean{Fabius.dirichletMellinContinuation\_dyadic\_ofReal}, itself
 \lean{Fabius.thueMorseDirichlet\_dyadic} transported through
 \lean{Fabius.dirichletMellinContinuation\_eq}); that ray accumulates
-at \(s=2\), and \(\C\) is connected.  Note what is and is not
+at \(s=2\), and \(\ComplexNumbers\) is connected.  Note what is and is not
 delivered: \eqref{p1:eq:Dirichlet-dyadic-entire} is unconditional in
 \(s\), while its identification with \eqref{p1:eq:Dirichlet-dyadic} ---
 that is, \(\widetilde D=D\) --- is formal only where
@@ -6160,25 +6147,25 @@ For \(a>0\), initially when \(\Re s>1\),
 \begin{equation}
   \boxed{
   D(s,a)=\frac1{\Gamma(s)}
-  \int_0^{\infty}t^{s-1}\e^{-at}
-  E(\e^{-t})\dd t.}
+  \int_0^{\infty}t^{s-1}\EulerE^{-at}
+  E(\EulerE^{-t})\Differential t.}
   \label{p1:eq:Mellin-integral}
 \end{equation}
 The integral on the right is an entire function of \(s\).  Therefore
 \eqref{p1:eq:Mellin-integral} continues \(D(s,a)\) to an entire function of
-\(s\in\C\).
+\(s\in\ComplexNumbers\).
 \end{theorem}
 
 \begin{proof}
 For \(\Re s>1\), absolute convergence permits termwise use of
 \[
  (n+a)^{-s}=\frac1{\Gamma(s)}
- \int_0^\infty t^{s-1}\e^{-(n+a)t}\dd t.
+ \int_0^\infty t^{s-1}\EulerE^{-(n+a)t}\Differential t.
 \]
-Summing \(\eps_n\e^{-nt}\) gives \(E(\e^{-t})\).
+Summing \(\eps_n\EulerE^{-nt}\) gives \(E(\EulerE^{-t})\).
 
-At infinity, \(E(\e^{-t})=1+\bigO(\e^{-t})\), and the factor
-\(\e^{-at}\) gives exponential decay.  At zero,
+At infinity, \(E(\EulerE^{-t})=1+\BigO(\EulerE^{-t})\), and the factor
+\(\EulerE^{-at}\) gives exponential decay.  At zero,
 \cref{p1:thm:boundary-flatness} gives decay faster than every positive power of
 \(t\).  Thus the integral and all of its \(s\)-derivatives converge uniformly
 on compact subsets of the entire \(s\)-plane.  Multiplication by the entire
@@ -6232,9 +6219,9 @@ For \(a>0\),
   &=\sum_{n\ge0}\frac{\eps_n}{n+a}
   \label{p1:eq:H-definition}\\
   &=\boxed{
-  \int_0^1x^{a-1}E(x)\dd x
+  \int_0^1x^{a-1}E(x)\Differential x
   =\int_0^1x^{a-1}
-    \prod_{j\ge0}(1-x^{2^j})\dd x}>0.
+    \prod_{j\ge0}(1-x^{2^j})\Differential x}>0.
   \label{p1:eq:H-integral}
 \end{align}
 It satisfies
@@ -6247,7 +6234,7 @@ It satisfies
 \end{corollary}
 
 \begin{proof}
-Set \(s=1\) in \eqref{p1:eq:Mellin-integral} and substitute \(x=\e^{-t}\).
+Set \(s=1\) in \eqref{p1:eq:Mellin-integral} and substitute \(x=\EulerE^{-t}\).
 The integrand is positive on \((0,1)\).  Equation \eqref{p1:eq:H-dyadic} is
 \eqref{p1:eq:Dirichlet-dyadic} at \(s=1\).
 \end{proof}
@@ -6266,8 +6253,8 @@ gives the general reduction
     \left(\frac{R(2q)}{R(2q+1)}\right)^{\eps_q}.}
   \label{p1:eq:pair-reduction}
 \end{equation}
-A factor merely equal to \(1+\bigO(1/n)\) is often converted into a paired
-factor \(1+\bigO(1/n^2)\), explaining the good convergence of balanced
+A factor merely equal to \(1+\BigO(1/n)\) is often converted into a paired
+factor \(1+\BigO(1/n^2)\), explaining the good convergence of balanced
 rational products.
 
 \subsection{A two-parameter master product}
@@ -6280,7 +6267,7 @@ For \(a,b>0\), define
 \end{equation}
 The logarithm converges by summation by parts: the Thue--Morse partial sums are
 bounded and the first difference of
-\(\log((n+a)/(n+b))\) is \(\bigO(n^{-2})\).
+\(\log((n+a)/(n+b))\) is \(\BigO(n^{-2})\).
 
 \begin{theorem}[Cocycle and dyadic functional equation]
 \label{p1:thm:G-functional}
@@ -6356,24 +6343,24 @@ Frullani integral,
 \[
   \eps_n\log\frac{n+a}{n+b}
   =\eps_n\int_0^\infty
-   \frac{\e^{-(n+b)t}-\e^{-(n+a)t}}{t}\,\dd t ,
+   \frac{\EulerE^{-(n+b)t}-\EulerE^{-(n+a)t}}{t}\,\Differential t ,
 \]
 and summing over \(n<2^m\) factors the signed exponentials into the
 \emph{finite} lacunary product:
 \[
   \sum_{n<2^m}\eps_n\log\frac{n+a}{n+b}
-  =\int_0^\infty\frac{\e^{-bt}-\e^{-at}}{t}
-    \prod_{j<m}\bigl(1-\e^{-2^jt}\bigr)\,\dd t .
+  =\int_0^\infty\frac{\EulerE^{-bt}-\EulerE^{-at}}{t}
+    \prod_{j<m}\bigl(1-\EulerE^{-2^jt}\bigr)\,\Differential t .
 \]
 The partial products lie in \([0,1]\), so dominated convergence ---
-with the integrable dominator \(|a-b|\,\e^{-\min(a,b)\,t}\), a
-consequence of \(1-\e^{-x}\le x\) --- passes to the limit along the
+with the integrable dominator \(|a-b|\,\EulerE^{-\min(a,b)\,t}\), a
+consequence of \(1-\EulerE^{-x}\le x\) --- passes to the limit along the
 dyadic subsequence, along which the conditionally convergent series
 already converges:
 \begin{equation}
   \log G(a,b)
-  =\int_0^\infty\frac{\e^{-bt}-\e^{-at}}{t}\,
-   E(\e^{-t})\,\dd t .
+  =\int_0^\infty\frac{\EulerE^{-bt}-\EulerE^{-at}}{t}\,
+   E(\EulerE^{-t})\,\Differential t .
   \label{p1:eq:G-integral}
 \end{equation}
 Second, the factorization \(\Gamma(s)^{-1}=s\,\Gamma(s+1)^{-1}\)
@@ -6381,17 +6368,17 @@ Second, the factorization \(\Gamma(s)^{-1}=s\,\Gamma(s+1)^{-1}\)
 gives \((1/\Gamma)'(0)=1\) and \(\Gamma(0)^{-1}=0\), so by the
 product rule the entire continuation
 \(s\mapsto\Gamma(s)^{-1}\int_0^\infty
-t^{s-1}\e^{-at}E(\e^{-t})\,\dd t\) of \(D(s,a)\) constructed
+t^{s-1}\EulerE^{-at}E(\EulerE^{-t})\,\Differential t\) of \(D(s,a)\) constructed
 above has derivative at \(s=0\) equal to the Mellin value
-\(\int_0^\infty t^{-1}\e^{-at}E(\e^{-t})\,\dd t\) ---
-convergent, since boundary flatness gives \(E(\e^{-t})\le t\).
+\(\int_0^\infty t^{-1}\EulerE^{-at}E(\EulerE^{-t})\,\Differential t\) ---
+convergent, since boundary flatness gives \(E(\EulerE^{-t})\le t\).
 Subtracting the two parameters recovers \eqref{p1:eq:G-integral}.
 \end{remark}
 
 \emph{Formal versions.}  \Cref{p1:cor:G-Dirichlet} is fully formal
 along the route of \Cref{p1:rem:G-Dirichlet-route}
 (\path{ThueMorseGDirichlet.lean}).  The Frullani integral
-\(\int_0^\infty(\e^{-pt}-\e^{-qt})t^{-1}\dd t=\log(q/p)\) is
+\(\int_0^\infty(\EulerE^{-pt}-\EulerE^{-qt})t^{-1}\Differential t=\log(q/p)\) is
 proved from scratch by differentiation under the integral sign --- the
 \(1/t\) cancels exactly against the derivative of the exponential ---
 followed by the fundamental theorem of calculus in the parameter
@@ -6466,7 +6453,7 @@ sum exponentiates to a convergent product along an arbitrary filter
 (\lean{Fabius.tendsto\_prod\_zpow\_of\_tendsto\_sum}), and the closed
 values come from \lean{Fabius.exp\_neg\_mul\_log} with its two
 specializations \lean{Fabius.exp\_neg\_log\_div\_two}
-(\(\e^{-\frac12\log b}=1/\sqrt b\)) and
+(\(\EulerE^{-\frac12\log b}=1/\sqrt b\)) and
 \lean{Fabius.exp\_neg\_three\_halves\_log}.  Every product evaluation
 below reuses it.  No convergence step is left informal.
 
@@ -6546,7 +6533,7 @@ commutative group,
 \lean{Fabius.sum\_zsmul\_alternating\_thueMorseSign\_two\_mul},
 \path{ThueMorseEulerTransform.lean}); the alternating weight is
 exactly the one whose two halves add instead of cancelling, and the
-\(\Z\)-module formulation makes the same two lines serve real
+\(\IntegerNumbers\)-module formulation makes the same two lines serve real
 logarithms, complex values, and formal coefficients alike.  Applied to
 \(g(k)=\log(k+1)\) they give the exact partial-sum
 identity \(\sum_{k<2N}\eps_k\log(k+1)=L_A\)-partial\((N)\)
@@ -6678,7 +6665,7 @@ At the first surviving degree,
 \end{theorem}
 
 \begin{proof}
-Set \(z=\e^t\) in \eqref{p1:eq:base-q-product}.  Every factor has a zero at
+Set \(z=\EulerE^t\) in \eqref{p1:eq:base-q-product}.  Every factor has a zero at
 \(t=0\), proving cancellation below degree \(m\).  Its derivative at zero is
 \begin{equation}
  q^j\sum_{r=0}^{q-1}r\zeta^r
@@ -6749,7 +6736,7 @@ Module & Contents \\
 \path{AnalyticSeriesFilter.lean} & Convergent-series form of an arbitrary finite rescaling filter: diagonal action, exact finite head and infinite tail, the target-zero constant boundary, and geometric and geometric-Lagrange Gaussian tails, including shifted scales.  Mathlib \path{Summable} is unconditional; hypotheses are imposed on weighted samples, so a zero-weight node needs no unweighted convergence.  Conditionally-only boundary series, signs, bounds, uniform convergence, and sinc-product instantiations are not asserted by this generic module. \\
 \path{RvachevQBinomialFilter.lean} & Exact specialization of the Gaussian filter to the actual infinite Rvachev product: the named even Fourier modes sum to the product and scale by powers of \(c^2\); the generic complex theorem assumes exactly injectivity of the finite powers of \(c^2\), while \(c=1/2\), \(q=1/4\) is assumption-free.  This does not identify the finite prefixes \(Q_m\) or \(P_{b,N}\), their quotient or Bell coefficients, or prove the report's analytic acceleration estimates. \\
 \path{FractionalVolterraCalculus.lean} & Positive affine covariance on ordered real intervals for arbitrary real order and Gamma-normalized order raising for real \(\alpha>0\) in a complete normed real space, assuming continuity of the primitive, interval integrability of its displayed derivative, and the right derivative \path{HasDerivWithinAt} on the open interval; includes the zero-boundary form.  For \(\alpha\le0\), affine covariance is an identity for the totalized Lean interval-integral definition; a classical Riemann--Liouville or integrability interpretation is asserted only for positive order. \\
-\path{FabiusFractionalVolterra.lean} & Total causal Rvachev fractional primitive with its support-truncated integral, positive-natural bridge, and positive-order semigroup on \(x\ge-1\), plus boundary-free order raising and affine covariance specialized to the dyadic system: the signed extension for \(x\ge0\), bounded Fabius for \(0\le x\le1\), and the \(\operatorname{up}\)-to-Fabius bridge based at \(-1\) for \(x\ge-1\), all for real \(\alpha>0\).  Complex, weighted-monomial, iterated, negative-branch, shifted-lattice, endpoint-moment, transform/tail, piecewise/refinement, and inverse/quantile extensions remain outside the module. \\
+\path{FabiusFractionalVolterra.lean} & Total causal Rvachev fractional primitive with its support-truncated integral, positive-natural bridge, and positive-order semigroup on \(x\ge-1\), plus boundary-free order raising and affine covariance specialized to the dyadic system: the signed extension for \(x\ge0\), bounded Fabius for \(0\le x\le1\), and the \(\RvachevUp\)-to-Fabius bridge based at \(-1\) for \(x\ge-1\), all for real \(\alpha>0\).  Complex, weighted-monomial, iterated, negative-branch, shifted-lattice, endpoint-moment, transform/tail, piecewise/refinement, and inverse/quantile extensions remain outside the module. \\
 \path{LogSeriesMultiplicative.lean} & The recurrence-defined formal power-series logarithm over arbitrary commutative \(\mathbb Q\)-algebras: coefficient reconstruction, zero constant term, differential-equation characterization and uniqueness, binary product rule, unit law, and finite-product additivity; no analytic-logarithm or infinite-product claim. \\
 \path{FiniteQBinomialCore.lean} & Denominator-free Gaussian coefficients by both \(q\)-Pascal recurrences, functoriality under semiring maps, and reflection symmetry over commutative semirings; the integer-index extension \path{gaussianBinomialInt}, with its natural-index, negative-index, out-of-range, and reflection laws; finite \(q\)-Pochhammer shift/concatenation laws, the full product--Gaussian factorial identities, and the finite \(q\)-binomial theorem over commutative rings, including zero and roots of unity. \\
 \path{QBinomialVandermonde.lean} & Both zero-extended \(q\)-Vandermonde orientations, the full-range and exact-\(\min\)-support central identities, the total positive shifted-central form, and two negative-shift forms under exactly \(k\leq N\), plus the total integer-shift identity \path{gaussianBinomial_two_mul_int_shifted_central} and its finitely supported \path{finsum} form, all denominator-free over arbitrary commutative semirings. \\
@@ -6771,15 +6758,15 @@ Module & Contents \\
 \path{ThueMorseRecurrence.lean} & Full block-concatenation laws for weight and bit, all two-letter factors in every fourteen-letter window, uniform recurrence with an explicit linear bound. \\
 \path{ThueMorseMahler.lean} & Mahler equation and dyadic dissection for the signed series, cleared zero--one bridge, prefix generating function, finite-level autocorrelation Mahler equation. \\
 \path{ThueMorseBooleanMobius.lean} & Submask complement laws, submask weight enumerators, reconstruction and inversion-polynomial identities, nested binomial formula, Boolean M\"obius inversion on finsets and on submasks. \\
-\path{ThueMorseMultinomial.lean} & Kummer's criterion for multinomial coefficients, the multinomial support count \(O_r(n)=r^{\wt(n)}\), the signed \(r\)-nomial row formula, the exact \(r\)-nomial logarithm. \\
-\path{ThueMorseFourier.lean} & The circle factor \(|1-\e^{\ii\theta}|^2=2-2\cos\theta\) and the finite Riesz product with its nonnegativity. \\
+\path{ThueMorseMultinomial.lean} & Kummer's criterion for multinomial coefficients, the multinomial support count \(O_r(n)=r^{\BinaryDigitSum(n)}\), the signed \(r\)-nomial row formula, the exact \(r\)-nomial logarithm. \\
+\path{ThueMorseFourier.lean} & The circle factor \(|1-\EulerE^{\ImaginaryUnit\theta}|^2=2-2\cos\theta\) and the finite Riesz product with its nonnegativity. \\
 \path{ThueMorseSineProduct.lean} & The half-angle factorization, the complex sine-product closed form of the Thue--Morse trigonometric polynomial, and its arbitrary-phase affine real sine form. \\
 \path{ThueMorseComplexProductBridge.lean} & Total complex finite Thue--Morse sinc and negative-Laplace bridges at every level: complex-argument sine and half-angle forms, normalized prefixes with empty-level, successor, and origin laws, denominator-free block equalities valid at the removable origin, quotient normalizations away from zero, and the exact finite Fourier--Laplace rotation. \\
 \path{UniformDigitThueMorseBridge.lean} & The exact finite probability consumer: the characteristic function of the centered uniform-digit prefix is the normalized sinc prefix at every level and real frequency, hence satisfies the total Thue--Morse block identity; the reverse quotient formula assumes nonzero frequency. \\
 \path{LacunaryProductToSum.lean} & Binary-weight complementation on a dyadic block, the induced global-sign reflection, quarter-turn cosine parity, and the exact real lacunary sine product as a Thue--Morse sum. \\
 \path{ThueMorseFourierInversion.lean} & Root-of-unity orthogonality and finite Fourier inversion over any field with a primitive root, specialized to the dyadic DFT over \(\mathbb C\). \\
 \path{SummableCyclicAlias.lean} & Finite-range scalar twists of summable families in complete uniform additive groups, and bilateral integer residue sums with forward and inverse \(\operatorname{ZMod}\) Fourier transforms in complete Hausdorff uniform complex modules; no norm or absolute-convergence hypothesis is imposed. \\
-\path{ThueMorseParseval.lean} & Character orthonormality on \([0,1]\) and the Parseval mass \(\int_0^1|P_m(\e^{2\pi\ii x})|^2\,\dd x=2^m\). \\
+\path{ThueMorseParseval.lean} & Character orthonormality on \([0,1]\) and the Parseval mass \(\int_0^1|P_m(\EulerE^{2\pi\ImaginaryUnit x})|^2\,\Differential x=2^m\). \\
 \path{ThueMorseComplexity.lean} & Factor complexity: the supertile-pair window parametrization with the boundary-crossing case split, uniform-recurrence finiteness, and the sharpened two-sided bound \(\ell+1\le p(\ell)\le6\ell-4\) --- with \(p(\ell)\le2\cdot2^k+2(\ell-1)\) at every covering level and the older \(4\cdot2^k\), \(p(\ell)<8\ell\) kept as corollaries --- and the Morse--Hedlund strict-growth argument. \\
 \path{ThueMorseArithmeticFilter.lean} & The root-of-unity filter for arithmetic progressions over any field (division-free form), the boxed rarefied formula, and the even-modulus collapse. \\
 \path{ToeplitzHessenberg.lean} & Cramer's rule for a known solution over any commutative ring; the triangular and the lower Toeplitz--Hessenberg band matrices of arbitrary band data; the triangular determinant \(\prod_{i<n}d_i\); and the expansion-free Toeplitz--Hessenberg determinant formula, read off from any solution of the convolution system, in matrix and in scalar-recurrence form. \\
@@ -6797,38 +6784,38 @@ Module & Contents \\
 \path{ThueMorseIntegerLiftEquation.lean} & The boxed algebraic equation \((1-z)^3C^2+(1-z)^2C=z\) in \(\mathbb Z[[z]]\) for the constructed lift, by identification with the substituted series and cancellation. \\
 \path{ThueMorseIntegerLiftRecurrence.lean} & The linear ODE \((1+3z)(1-z)^2C'=1+3(1-z^2)C\) by differentiation and one linearization certificate, and the three-term recurrence by telescoping its coefficients. \\
 \path{ThueMorseLacunaryQuotient.lean} & The dyadic geometric series and its inversion of \(1-z^{2^j}\); the denominator-free bit Mahler equation; the lacunary quotient expansion at every finite level. \\
-\path{ThueMorseInfiniteProduct.lean} & The analytic infinite-product identity \(\sum\eps_nz^n=\prod_j(1-z^{2^j})\) on the complex unit disc \(\lVert z\rVert<1\), including absolute convergence and multipliability; the real interval \(|x|<1\) and exponential ray \(\sum\eps_n\e^{-nt}=\mathcal E(t)\), \(t>0\), are retained as specializations. \\
-\path{ThueMorseMellin.lean} & The Mellin representation \(\Gamma(\sigma)D(\sigma,a)=\int_0^\infty t^{\sigma-1}\e^{-at}\mathcal E(t)\,\dd t\) for \(\sigma>1\): kernel integrability, absolute interchange, and termwise Gamma evaluation. \\
+\path{ThueMorseInfiniteProduct.lean} & The analytic infinite-product identity \(\sum\eps_nz^n=\prod_j(1-z^{2^j})\) on the complex unit disc \(\lVert z\rVert<1\), including absolute convergence and multipliability; the real interval \(|x|<1\) and exponential ray \(\sum\eps_n\EulerE^{-nt}=\mathcal E(t)\), \(t>0\), are retained as specializations. \\
+\path{ThueMorseMellin.lean} & The Mellin representation \(\Gamma(\sigma)D(\sigma,a)=\int_0^\infty t^{\sigma-1}\EulerE^{-at}\mathcal E(t)\,\Differential t\) for \(\sigma>1\): kernel integrability, absolute interchange, and termwise Gamma evaluation. \\
 \path{RealZPowProduct.lean} & Finite products of integer powers of positive reals through the exponential: the signed-logarithm identity, the limit transfer from logarithm sums to products along an arbitrary filter, and the closed-form value computations; nothing in it mentions Thue--Morse. \\
 \path{ThueMorseWoodsRobbins.lean} & The Woods--Robbins evaluation \(\prod((2n+1)/(2n+2))^{\eps_n}=2^{-1/2}\): Dirichlet-test convergence of the three log-series, the termwise and interleaving identities, and exponentiation. \\
 \path{ThueMorseMasterProduct.lean} & The master product \(G(a,b)\): convergence for all positive parameters, the cocycle identities, the dyadic functional equation, and \(G=\exp L\). \\
 \path{ThueMorseBlockProducts.lean} & Block-product limits along \emph{every even} block length and for an arbitrary positive shift \(c\): the shift-general log collapse onto the master partials at \((\frac c2,\frac{c+1}2)\), the identification of Woods--Robbins as the master series at \((\frac12,1)\), the alternating telescoping along every multiple of four, and the three dyadic limits as subsequence corollaries. \\
 \path{ThueMorseEntireContinuation.lean} & The entire continuation: flatness of every order at zero, exponential decay, local integrability, entirety of \(\Gamma^{-1}\cdot\)Mellin, the trivial zeros at the nonpositive integers, agreement with \(D(\sigma,a)\) on \(\sigma>1\), and the dyadic parameter equation at \emph{every} complex \(s\) by the identity theorem. \\
-\path{FrullaniIntegral.lean} & The Frullani integral \(\int_0^\infty(\e^{-pt}-\e^{-qt})t^{-1}\dd t=\log(q/p)\), by differentiation under the integral sign; not in Mathlib. \\
+\path{FrullaniIntegral.lean} & The Frullani integral \(\int_0^\infty(\EulerE^{-pt}-\EulerE^{-qt})t^{-1}\Differential t=\log(q/p)\), by differentiation under the integral sign; not in Mathlib. \\
 \path{ThueMorseGDirichlet.lean} & The derivative bridge \(\log G(a,b)=D'(0,b)-D'(0,a)\): the closed integral form of \(\log G\), \((1/\Gamma)'(0)=1\), and the derivative of the entire continuation at zero. \\
 \path{ReciprocalGammaJets.lean} & Exact first jets of the entire reciprocal Gamma function at every nonpositive integer: derivative \((-1)^r r!\), simple analytic order, the punctured local coefficient, and the retained origin compatibility theorem; no derivative is assigned to raw Gamma at a pole. \\
 \path{ThueMorseGammaTower.lean} & Exact first jets of the entire Dirichlet--Mellin continuation, total GammaLog and exponentiated tower definitions, Mellin and real-integral GammaLog formulas, dyadic log and tower laws for positive parameter, and the positive-parameter level-zero master-product ratio; GammaLog is a chosen coordinate, while the parameter-differential ladder remains outside the module. \\
 \path{ThueMorseQuarterProduct.lean} & The quarter product \(G(1/4,3/4)=1/2\) from Woods--Robbins by parity splitting, and the value \(1/2\) of the half-shifted block product. \\
 \path{ThueMorseDiscSeries.lean} & The Thue--Morse power series as a holomorphic function on the unit disc: the complex-disc product wrapper \(F(z)=\prod_{j=0}^{\infty}(1-z^{2^j})\), locally uniform convergence, the analytic Mahler equation and its iterate, and the real-ray bound \(|F(x)|\le1-x\). \\
 \path{ThueMorseNaturalBoundary.lean} & The natural-boundary theorem: radial vanishing at dyadic roots of unity, two-power roots approximating every circle point, and the double identity-theorem argument. \\
-\path{ThueMorseComputability.lean} & Primitive recursiveness: the descent-recursion scheme for course-of-values recursions, the halving identity for the binary weight, and the primitive recursive and computable forms of \(\wt\), \(\tau\), and \(\eps\). \\
+\path{ThueMorseComputability.lean} & Primitive recursiveness: the descent-recursion scheme for course-of-values recursions, the halving identity for the binary weight, and the primitive recursive and computable forms of \(\BinaryDigitSum\), \(\tau\), and \(\eps\). \\
 \path{ThueMorseNewman.lean} & Newman's positivity theorem: residue-class sign sums, the modulo-three parity system, the base-four collapse with disjoint boundary corrections, and the strong induction. \\
 \path{ThueMorseGelfond.lean} & Gelfond's sharp uniform bound: the one-variable sum-of-squares inequality \(\varphi^2(t)\varphi(2t)\le3\sqrt3\), the telescoped doubling-orbit product bound, and the exponential-sum form with constant \(2/\sqrt3\). \\
 \path{PeriodDoublingHankel.lean} & The mod-two Hankel engine: reusable block-determinant eliminations, parity interleavings, the period-doubling bit, and the four determinant halvings forcing every \(\mathbb F_2\)-determinant to equal one. \\
 \path{ThueMorseHankel.lean} & The Allouche--Peyri\`ere--Wen--Wen theorem: the doubling factorizations \(H_{2n}=2^nH_nH_n(m)\), \(H_{2n+1}=2^nH_{n+1}H_n(m)\), oddness of the difference determinants, and the exact valuation \(v_2(H_r)=r-1\). \\
-\path{LacunaryRieszIntegral.lean} & The exact orthogonality theory of lacunary Riesz products, with no Thue--Morse content: the frequency detector, the master theorem \(\int_0^1\cos(2\pi Kt+\psi)\prod_{j<n}(1+a_j\cos(2\pi m_jt+\varphi_j))\dd t\) under the dissociation hypothesis \(|K|+\sum_{i<j}m_i<m_j\), its super-increasing and Hadamard-gap corollaries, the mean value \(1\), and the exact identity \(\int_0^1\prod_{j<n}\sin^2(\pi m_jt)\dd t=2^{-n}\) with its geometric and dyadic specializations. \\
+\path{LacunaryRieszIntegral.lean} & The exact orthogonality theory of lacunary Riesz products, with no Thue--Morse content: the frequency detector, the master theorem \(\int_0^1\cos(2\pi Kt+\psi)\prod_{j<n}(1+a_j\cos(2\pi m_jt+\varphi_j))\Differential t\) under the dissociation hypothesis \(|K|+\sum_{i<j}m_i<m_j\), its super-increasing and Hadamard-gap corollaries, the mean value \(1\), and the exact identity \(\int_0^1\prod_{j<n}\sin^2(\pi m_jt)\Differential t=2^{-n}\) with its geometric and dyadic specializations. \\
 \path{GelfondLogisticBound.lean} & The Gelfond rate from the logistic map, again with no Thue--Morse content: invariance of \([0,1]\), the potential telescope giving \(\prod_{j<n}u_j\le\frac53(\frac34)^n\) along any orbit from an initial value in \([0,1]\), exactness of the rate at the fixed point \(3/4\), the squared and unsquared dyadic sine-product bounds, and the \(L^1\) lower bracket for the sine product. \\
 \path{VarianceBookkeeping.lean} & Closed evaluation of the stationary covariance sum, including the zero-length variance identity. \\
 \path{BirkhoffVariance.lean} & Exact pair correlations for the logarithmic doubling cocycle and its all-index Birkhoff square mean. \\
 \path{BirkhoffProductBridge.lean} & The almost-everywhere bridge from the cocycle to the normalized dyadic sine product and the all-index logarithmic product variance \eqref{p1:eq:sinc-log-variance}. \\
-\path{FourierProduct.lean} & The Rvachev sinc product and its identification with the Fourier transform, including the exact complex zero set \(\Phi(z)=0\iff z\in\Z\setminus\{0\}\). \\
-\path{RenormalizationIdentity.lean} & The standalone product identity \(\Phi(z)=\sinc(\pi z)\Phi(z/2)\) and its exact \(n\)-fold shell form. \\
+\path{FourierProduct.lean} & The Rvachev sinc product and its identification with the Fourier transform, including the exact complex zero set \(\Phi(z)=0\iff z\in\IntegerNumbers\setminus\{0\}\). \\
+\path{RenormalizationIdentity.lean} & The standalone product identity \(\Phi(z)=\SincRad(\pi z)\Phi(z/2)\) and its exact \(n\)-fold shell form. \\
 \path{IntegerZeroLocalFactorization.lean} & Total denominator-clearing identities for shifted and arbitrarily complex-scaled sinc factors; the global local-coordinate factorization at \(2^kq\), its odd-center form, and canonical positive-natural and signed-integer forms using the exact dyadic valuation and odd part. \\
 \path{LeadingJet.lean} & Vector-valued, field-generic computation of every jet of \(z^n\mathbin{\cdot}U(z)\), including the all-index zero-or-binomial-factorial formula, division-free \(n+r\) forms, scalar specializations, and germ versions at zero and arbitrary centers; only the corresponding finite differentiability of \(U\) is required. \\
 \path{IntegerZeroAnalyticOrder.lean} & Entirety of the standalone sinc product; nonvanishing at odd half-integers; the total integer-zero local cofactor, its shifted and centered germ factorizations, analyticity away from the totalized denominator point and exact central value; exact complex analytic order at every nonzero integer; all lower-jet vanishings, every higher cofactor jet, and the exact nonzero leading derivative. \\
 \path{SincProductShells.lean} & Exact dyadic shell factorization of \(|\Phi|\), its total cross-multiplied form at every real seed (including zero and the empty shell), and its Gelfond-rate bound along every nonzero real dyadic ray. \\
-\path{SincCanonicalProduct.lean} & The canonical product \(\prod_{m\ge1}(1-z^2/m^2)^{1+\vtwo(m)}\), obtained by regrouping the absolutely convergent double Euler product. \\
-\path{PhiZeroOrder.lean} & The exact positive-integer real-axis zero order \(1+\vtwo(m)\), expressed by a punctured norm quotient converging to a positive constant. \\
+\path{SincCanonicalProduct.lean} & The canonical product \(\prod_{m\ge1}(1-z^2/m^2)^{1+\TwoAdicValuation(m)}\), obtained by regrouping the absolutely convergent double Euler product. \\
+\path{PhiZeroOrder.lean} & The exact positive-integer real-axis zero order \(1+\TwoAdicValuation(m)\), expressed by a punctured norm quotient converging to a positive constant. \\
 \path{ThueMorseLobeSign.lean} & The lobe identity \(\Phi(x)=\eps_m|\Phi(x)|\) for \(m<x<m+1\), from the closed lattice-point count. \\
 \path{RvachevProductContinuity.lean} & Real-axis continuity of \(\Phi\) and \(|\Phi|\); the origin as the unique unit-modulus point, with strict inequality elsewhere; and existence and uniqueness of the modulus maximum on every positive lobe \((m,m+1)\) and reflected negative lobe \((-(m+1),-m)\), \(m\ge1\). \\
 \path{RvachevFourierDecay.lean} & Public facade transferring the canonical product, total and divided shell formulas, global decay, strict peak, extremal ray, lobe signs and maxima, and zero orders from \(\Phi\) to the actual Rvachev Fourier transform. \\
@@ -6953,7 +6940,7 @@ Proposed module & Main declarations \\
 \midrule
 \path{ThueMorseValuation.lean}, \path{CentralBinomialValuation.lean} & Factorial, Catalan, successor, and carry formulae, together with the exhaustive three-theorem central-binomial valuation/sign bridge.  \emph{Delivered.} \\
 \path{ThueMorsePascal.lean} & Lucas submasks, Glaisher count, sparse probes, modulo-three formula.  \emph{Delivered} (in \path{Parity.lean}, \path{ThueMorseBinomialLog.lean}, \path{ThueMorseLucasSupport.lean}). \\
-\path{ThueMorseMultinomial.lean} & Frobenius factorization and \(O_r(n)=r^{\wt(n)}\).  \emph{Delivered} (via Kummer's criterion rather than Frobenius). \\
+\path{ThueMorseMultinomial.lean} & Frobenius factorization and \(O_r(n)=r^{\BinaryDigitSum(n)}\).  \emph{Delivered} (via Kummer's criterion rather than Frobenius). \\
 \path{ThueMorseBooleanMobius.lean} & Submask incidence algebra and inverse parity matrix.  \emph{Delivered} (poset form; the matrix form is its row-by-row reading). \\
 \path{ThueMorseGeneratingProduct.lean} & \(P_m\), cyclotomic multiplicities, Mahler equations.  \emph{Delivered} (\path{ThueMorseBlockAlgebra.lean}, \path{ThueMorseMahler.lean}). \\
 \path{ThueMorseProuhetMoments.lean} & Difference operators, all moments, centered parity.  \emph{Delivered} (\path{ThueMorseMoments.lean}, \path{ThueMorseMixedDifference.lean}, \path{ThueMorseSymmetricDifference.lean}). \\
@@ -7012,7 +6999,7 @@ Mellin/Dirichlet branch.
 
 Take \(n=13=(1101)_2\).  The occupied positions are \(0,2,3\), so
 \begin{equation}
-  \wt(13)=3,
+  \BinaryDigitSum(13)=3,
   \qquad
   \tau(13)=1,
   \qquad
@@ -7024,9 +7011,9 @@ The floor, factorial, and central-binomial routes give
  \sum_{j\ge1}\left\lfloor\frac{13}{2^j}\right\rfloor
  &=6+3+1=10,
  \label{p1:eq:example13-floor}\\
- (-1)^{13-\vtwo(13!)}&=(-1)^3=-1,
+ (-1)^{13-\TwoAdicValuation(13!)}&=(-1)^3=-1,
  \label{p1:eq:example13-factorial}\\
- \vtwo\binom{26}{13}&=3.
+ \TwoAdicValuation\binom{26}{13}&=3.
  \label{p1:eq:example13-central}
 \end{align}
 The distinguished Pascal entries are
@@ -7098,7 +7085,7 @@ No recursion through lower moments is needed.
 For \(m=4\), every even DFT frequency vanishes.  At \(k=1\),
 \begin{equation}
   \widehat\eps_4(1)
-  =(2\ii)^4\e^{-15\pi\ii/16}
+  =(2\ImaginaryUnit)^4\EulerE^{-15\pi\ImaginaryUnit/16}
   \sin\frac\pi2\sin\frac\pi4
   \sin\frac\pi8\sin\frac\pi{16}.
   \label{p1:eq:example-Fourier}
@@ -7153,7 +7140,7 @@ Take \(a=13=(1101)_2\) and \(b=7=(0111)_2\).  Then
 \(\eps_{13}=\eps_7=-1\), while \(a+b=20=(10100)_2\) has
 \(\eps_{20}=+1\).  Kummer's formula \eqref{p1:eq:kummer-digit-sum} counts
 \begin{equation}
-  \vtwo\binom{20}{13}=\wt(13)+\wt(7)-\wt(20)=3+3-2=4
+  \TwoAdicValuation\binom{20}{13}=\BinaryDigitSum(13)+\BinaryDigitSum(7)-\BinaryDigitSum(20)=3+3-2=4
   \label{p1:eq:carry-example}
 \end{equation}
 carries, and the correction \((-1)^4=1\) in \eqref{p1:eq:carry-sign} restores
@@ -7187,12 +7174,12 @@ recover it either globally, from the number of odd row entries, or sparsely,
 from the power-of-two columns.  The modulo-three identity shows that the exact
 base-two logarithm is optional: the exponent parity can also be read from the
 cycle of powers of two in a finite residue field.  Multinomial support turns the
-same mechanism into a whole \(r^{\wt(n)}\) family.
+same mechanism into a whole \(r^{\BinaryDigitSum(n)}\) family.
 
 The product
 \(P_m(z)=\prod_{j<m}(1-z^{2^j})\) is the central unifying engine.  At
 \(z=1\) it has an exact high-order zero and produces Prouhet cancellation.  At
-\(z=\e^t\) it produces every finite moment.  At roots of unity it produces the
+\(z=\EulerE^t\) it produces every finite moment.  At roots of unity it produces the
 dyadic DFT.  On the Boolean cube it is a pure Walsh character.  After taking
 absolute squares it produces Riesz densities.  After division by
 \((1-z)^k\) it produces iterated-prefix grids and their terminal flatness.
@@ -7255,23 +7242,23 @@ For quick reference, the principal exact translations are
  \tau(n)
  &\longleftrightarrow \eps_n=1-2\tau(n),\\
  \eps_n
- &\longleftrightarrow (-1)^{\wt(n)},\\
- \wt(n)
- &\longleftrightarrow n-\vtwo(n!),\\
- \wt(n)
- &\longleftrightarrow \vtwo\binom{2n}{n},\\
+ &\longleftrightarrow \ThueMorseSign{n},\\
+ \BinaryDigitSum(n)
+ &\longleftrightarrow n-\TwoAdicValuation(n!),\\
+ \BinaryDigitSum(n)
+ &\longleftrightarrow \TwoAdicValuation\binom{2n}{n},\\
  b_j(n)
  &\longleftrightarrow \binom{n}{2^j}\bmod2,\\
- 2^{\wt(n)}
+ 2^{\BinaryDigitSum(n)}
  &\longleftrightarrow \#\{k:\binom nk\text{ odd}\},\\
  \eps_n
  &\longleftrightarrow [z^n]\prod_{j\ge0}(1-z^{2^j}),\\
  \sum_{n<2^m}\eps_nf(x+n)
  &\longleftrightarrow (-1)^m\Delta_1\Delta_2\cdots
    \Delta_{2^{m-1}}f(x),\\
- P_m(\e^{-2\pi\ii k/2^m})
+ P_m(\EulerE^{-2\pi\ImaginaryUnit k/2^m})
  &\longleftrightarrow \widehat\eps_m(k),\\
- E(\e^{-t})
+ E(\EulerE^{-t})
  &\longleftrightarrow \Gamma(s)D(s,a)
   \text{ under Mellin transformation}.
 \end{align*}
@@ -7299,7 +7286,7 @@ Draft 1 & Carry and XOR viewpoints; Boolean M\"obius inversion and inverse Pasca
 Draft 2 & Sparse power-of-two Pascal columns; all-order dyadic moments; automaton/tensor/Walsh forms; exact DFT and Riesz products; master infinite products; base-\(q\) root-of-unity extension. \\
 Draft 3 & Multinomial support and exact \(r\)-nomial logarithms; sparse Prouhet theorem on arbitrary Pascal rows; autocorrelation recurrences; Artin--Schreier series over \(\mathbb F_2\); Catalan and fractional-part formulae. \\
 Draft 4 & Logarithm-free modulo-three Pascal formula; sinc-product interval signs; evil/odious enumerators; integer algebraic lift; trigonometric product-to-sum identities; explicit iterated-prefix/Fabius bridge. \\
-Unified additions & Dyadic weight-distribution chapter; centered-moment parity selection; all sparse Pascal-support moments; elementary boundary asymptotic for \(E(\e^{-t})\); entire shifted Dirichlet family, its nonpositive-integer zeros, and its derivative bridge to exponent products; sharp first moment for the general base-\(q\) character. \\
+Unified additions & Dyadic weight-distribution chapter; centered-moment parity selection; all sparse Pascal-support moments; elementary boundary asymptotic for \(E(\EulerE^{-t})\); entire shifted Dirichlet family, its nonpositive-integer zeros, and its derivative bridge to exponent products; sharp first moment for the general base-\(q\) character. \\
 \midrule
 Parallel atlas 1 & Self-contained natural-boundary proof; supertile arguments for uniform recurrence and the linear complexity bound \(p(\ell)<8\ell\); the literature panorama of arithmetic subsequences (primes, squares, cubes, level of distribution). \\
 Parallel atlas 2 & Gelfond's sharp uniform exponent with the lower bound at cube roots of unity; the odd-modulus matrix recursion; the autocorrelation Mahler equation; subtraction/borrow cocycle; weighted digit enumerator; Hankel/Pad\'e framing of irrationality measure. \\
@@ -7533,14 +7520,7 @@ L.~Spiegelhofer,
 
 
 % extra macros for part 2
-\newcommand{\E}{\mathbb E}
-\newcommand{\Prob}{\mathbb P}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\supp}{\operatorname{supp}}
 \newcommand{\wtPartx}{s_2}
-\newcommand{\LambertW}{W}
-\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
 \newcommand{\leanPartx}[1]{%
   \ifmmode\text{\texttt{\detokenize{#1}}}\else\nolinkurl{#1}\fi}
 \newcommand{\newresult}{\textbf{Result derived in this report.}}
@@ -7636,7 +7616,7 @@ the exact statement printed here has been formalized.
 
 The repository's documentation is not one article but a layered research environment.  The
 living primary exposition separates the bounded cumulative distribution $F$, the even bump
-$\Up$, and the signed global extension, and develops their construction, probability model,
+$\RvachevUp$, and the signed global extension, and develops their construction, probability model,
 Fourier products, dyadic arithmetic, and corrected endpoint asymptotics.  The consolidated
 frontier volume records non-formalized deductions and gaps; the Thue--Morse Atlas develops a
 large formula network; the active Fourier-decay directory contains twelve mutually auditing
@@ -7673,10 +7653,10 @@ Pillar & Established content & Remaining junction exploited here \\
 Thue--Morse & $\eps_n=(-1)^{s_2(n)}$, block products, Prouhet cancellation, Mahler equations,
 Walsh and lacunary products, shifted entire Dirichlet theory & Turn one finite block into a
 certified approximation engine for both Fourier and Laplace products \\
-Fabius/up probability & $\Up$ as a compactly supported probability density and $F$ as its
+Fabius/up probability & $\RvachevUp$ as a compactly supported probability density and $F$ as its
 rescaled CDF; finite atomic/uniform convolution models & Identify the omitted convolution tail
 as an exact scaled copy and expand it to all orders \\
-Fourier analysis & $\widehat{\Up}$ as a dyadic sinc product; shell factorization; pointwise,
+Fourier analysis & $\widehat{\RvachevUp}$ as a dyadic sinc product; shell factorization; pointwise,
 metric, averaged, and extremal decay regimes & Analyze truncation in the small tail variable,
 which is complementary to large-frequency shell dynamics \\
 Dyadic arithmetic & exact values at dyadic rationals, $q$-Pochhammer and Gaussian-binomial
@@ -7745,7 +7725,7 @@ theorems in \path{ThueMorseComplexExponential.lean}:
 \leanPartx{Fabius.sum_range_two_pow_thueMorseSign_cexp_affine}.  Thus the raw finite exponential
 block and an arbitrary common complex exponent shift are formal for every complex parameter,
 including $m=0$.  The substitutions below --- exponent parameter
-$\ii t/2^{m-1}$ in \cref{p2:thm:finite-sinc} and $-s/2^m$ in
+$\ImaginaryUnit t/2^{m-1}$ in \cref{p2:thm:finite-sinc} and $-s/2^m$ in
 \cref{p2:thm:finite-Laplace} --- are instances of the signed theorem.  This module is the raw
 finite layer; \path{ThueMorseComplexProductBridge.lean} separately supplies the total complex
 sinc and negative-Laplace normalizations, including their removable origins.  Neither module
@@ -7753,13 +7733,13 @@ asserts an infinite product.
 
 \subsection{Fourier and Laplace products}
 
-Use $\sinc z=\sin z/z$ with $\sinc0=1$, and define
+Use $\SincRad z=\sin z/z$ with $\SincRad0=1$, and define
 \begin{align}
- Q_m(t)&=\prod_{k=1}^{m}\sinc\!\left(\frac{t}{2^k}\right),
- &Q_\infty(t)&=\prod_{k=1}^{\infty}\sinc\!\left(\frac{t}{2^k}\right),
+ Q_m(t)&=\prod_{k=1}^{m}\SincRad\!\left(\frac{t}{2^k}\right),
+ &Q_\infty(t)&=\prod_{k=1}^{\infty}\SincRad\!\left(\frac{t}{2^k}\right),
  \label{p2:eq:Qdef}\\
- G_m(-s)&=\prod_{k=1}^{m}\frac{1-\e^{-s/2^k}}{s/2^k},
- &G(-s)&=\prod_{k=1}^{\infty}\frac{1-\e^{-s/2^k}}{s/2^k}.
+ G_m(-s)&=\prod_{k=1}^{m}\frac{1-\EulerE^{-s/2^k}}{s/2^k},
+ &G(-s)&=\prod_{k=1}^{\infty}\frac{1-\EulerE^{-s/2^k}}{s/2^k}.
  \label{p2:eq:Gdef}
 \end{align}
 The products converge locally uniformly and define entire functions after removable values
@@ -7767,18 +7747,18 @@ at zero are supplied.
 
 With the Fourier convention
 \[
- \widehat h(\xi)=\int_{\R}h(x)\e^{-2\pi\ii x\xi}\dd x,
+ \widehat h(\xi)=\int_{\RealNumbers}h(x)\EulerE^{-2\pi\ImaginaryUnit x\xi}\Differential x,
 \]
 the normalized Rvachev density satisfies
 \begin{equation}
- \widehat{\Up}(\xi)=Q_\infty(2\pi\xi)
- =\prod_{j=0}^{\infty}\sinc\!\left(\frac{\pi\xi}{2^j}\right).
+ \widehat{\RvachevUp}(\xi)=Q_\infty(2\pi\xi)
+ =\prod_{j=0}^{\infty}\SincRad\!\left(\frac{\pi\xi}{2^j}\right).
  \label{p2:eq:upFourier}
 \end{equation}
 The bounded Fabius distribution is related by
 \begin{equation}
- F'(x)=2\Up(2x-1),\qquad
- F(x)=\int_{-1}^{2x-1}\Up(y)\dd y\quad(0\le x\le1).
+ F'(x)=2\RvachevUp(2x-1),\qquad
+ F(x)=\int_{-1}^{2x-1}\RvachevUp(y)\Differential y\quad(0\le x\le1).
  \label{p2:eq:Fup}
 \end{equation}
 These conventions agree with the repository's primary exposition
@@ -7787,16 +7767,16 @@ These conventions agree with the repository's primary exposition
 \emph{Formal versions, and the convention check.}  Both normalizations used above are the ones
 carried by the Lean library, which matters because the corpus contains more than one Fourier
 convention and a crosswalk across a mismatch would be worthless.  The Lean transform
-\leanPartx{Fabius.rvachevFourier} is defined as $\int_\R\Up(t)\e^{-2\pi\ii tz}\dd t$ --- the
+\leanPartx{Fabius.rvachevFourier} is defined as $\int_\RealNumbers\RvachevUp(t)\EulerE^{-2\pi\ImaginaryUnit tz}\Differential t$ --- the
 convention of \eqref{p2:eq:upFourier} --- and
 \leanPartx{Fabius.rvachevFourier_eq_product} (\path{FourierProduct.lean}) proves it equal to
-\leanPartx{Fabius.rvachevFourierProduct}, namely $\prod_{n\ge0}\sinc(\pi z/2^n)$.  That is
+\leanPartx{Fabius.rvachevFourierProduct}, namely $\prod_{n\ge0}\SincRad(\pi z/2^n)$.  That is
 \eqref{p2:eq:upFourier} verbatim.  Likewise $G$ in \eqref{p2:eq:Gdef} is the Lean object
 \leanPartx{Fabius.complexGeneratingFunction}: that the entire half-moment generating function
-evaluated at $-s$ equals the dyadic product $\prod_{k\ge1}(1-\e^{-s/2^k})/(s/2^k)$ of
+evaluated at $-s$ equals the dyadic product $\prod_{k\ge1}(1-\EulerE^{-s/2^k})/(s/2^k)$ of
 \eqref{p2:eq:Gdef}, with the same removable value at each vanishing factor, is
 \leanPartx{Fabius.complexGeneratingFunction_neg_eq_tprod}
-(\path{NegativeLaplaceVertical.lean}), for every $s\in\C$.
+(\path{NegativeLaplaceVertical.lean}), for every $s\in\ComplexNumbers$.
 
 \subsection{The lower-Lambert phase}
 
@@ -7823,46 +7803,46 @@ periodically corrected saddle analysis.
 
 \begin{theorem}[Exact finite Thue--Morse--sinc identity]
 \label{p2:thm:finite-sinc}
-For every integer $m\ge1$ and every $t\in\C$,
+For every integer $m\ge1$ and every $t\in\ComplexNumbers$,
 \begin{equation}
  \boxed{
- P_m\!\left(\e^{\ii t/2^{m-1}}\right)
- =(-\ii)^m t^m 2^{-\binom m2}
-   \e^{\ii t(1-2^{-m})}Q_m(t).}
+ P_m\!\left(\EulerE^{\ImaginaryUnit t/2^{m-1}}\right)
+ =(-\ImaginaryUnit)^m t^m 2^{-\binom m2}
+   \EulerE^{\ImaginaryUnit t(1-2^{-m})}Q_m(t).}
  \label{p2:eq:finite-sinc}
 \end{equation}
 Equivalently, with the removable value at $t=0$ understood,
 \begin{equation}
  \boxed{
- Q_m(t)=\ii^m2^{\binom m2}t^{-m}
- \e^{-\ii t(1-2^{-m})}
- \sum_{n=0}^{2^m-1}\eps_n\e^{\ii nt/2^{m-1}}.}
+ Q_m(t)=\ImaginaryUnit^m2^{\binom m2}t^{-m}
+ \EulerE^{-\ImaginaryUnit t(1-2^{-m})}
+ \sum_{n=0}^{2^m-1}\eps_n\EulerE^{\ImaginaryUnit nt/2^{m-1}}.}
  \label{p2:eq:normalized-TM-Fourier}
 \end{equation}
 \newresult
 \end{theorem}
 
 \begin{proof}
-Insert $z=\e^{\ii t/2^{m-1}}$ in the product form of $P_m$ and reverse the
+Insert $z=\EulerE^{\ImaginaryUnit t/2^{m-1}}$ in the product form of $P_m$ and reverse the
 index:
 \[
- P_m(z)=\prod_{k=0}^{m-1}\left(1-\e^{\ii t/2^k}\right).
+ P_m(z)=\prod_{k=0}^{m-1}\left(1-\EulerE^{\ImaginaryUnit t/2^k}\right).
 \]
 For each factor use
 \[
- 1-\e^{\ii x}=(-\ii)x\e^{\ii x/2}\sinc(x/2).
+ 1-\EulerE^{\ImaginaryUnit x}=(-\ImaginaryUnit)x\EulerE^{\ImaginaryUnit x/2}\SincRad(x/2).
 \]
 The product of the linear terms is
 \[
- (-\ii)^m t^m2^{-\sum_{k=0}^{m-1}k}
- =(-\ii)^m t^m2^{-\binom m2}.
+ (-\ImaginaryUnit)^m t^m2^{-\sum_{k=0}^{m-1}k}
+ =(-\ImaginaryUnit)^m t^m2^{-\binom m2}.
 \]
 The product of the phases is
 \[
- \exp\!\left(\frac{\ii t}{2}\sum_{k=0}^{m-1}2^{-k}\right)
- =\e^{\ii t(1-2^{-m})},
+ \exp\!\left(\frac{\ImaginaryUnit t}{2}\sum_{k=0}^{m-1}2^{-k}\right)
+ =\EulerE^{\ImaginaryUnit t(1-2^{-m})},
 \]
-and the sinc factors are $\sinc(t/2),\ldots,\sinc(t/2^m)$.  This gives
+and the sinc factors are $\SincRad(t/2),\ldots,\SincRad(t/2^m)$.  This gives
 \eqref{p2:eq:finite-sinc}; the sum form follows from \eqref{p2:eq:Pm}.
 \end{proof}
 
@@ -7872,7 +7852,7 @@ and the sinc factors are $\sinc(t/2),\ldots,\sinc(t/2^m)$.  This gives
 (\path{ThueMorseComplexProductBridge.lean}); the stronger all-level scaling is
 \leanPartx{Fabius.thueMorseBlock_cexp_eq_sincPrefix}.  The Lean prefix
 \leanPartx{Fabius.shiftedComplexSincPrefix} is exactly $Q_m(t)$.
-The primary equality is over $\C$ and includes $t=0$, while
+The primary equality is over $\ComplexNumbers$ and includes $t=0$, while
 \leanPartx{Fabius.shiftedComplexSincPrefix_apply_zero} gives $Q_m(0)=1$.
 For $t\ne0$, the quotient normalization
 \eqref{p2:eq:normalized-TM-Fourier} is
@@ -7891,13 +7871,13 @@ $m$ power moments also regularizes the Fourier approximation at the origin.
 
 \begin{theorem}[Exact finite Thue--Morse--Laplace identity]
 \label{p2:thm:finite-Laplace}
-For every integer $m\ge1$ and every $s\in\C$,
+For every integer $m\ge1$ and every $s\in\ComplexNumbers$,
 \begin{equation}
  \boxed{
  G_m(-s)=\frac{2^{m(m+1)/2}}{s^m}
- P_m\!\left(\e^{-s/2^m}\right)
+ P_m\!\left(\EulerE^{-s/2^m}\right)
  =\frac{2^{m(m+1)/2}}{s^m}
-  \sum_{n=0}^{2^m-1}\eps_n\e^{-ns/2^m}.}
+  \sum_{n=0}^{2^m-1}\eps_n\EulerE^{-ns/2^m}.}
  \label{p2:eq:finite-Laplace}
 \end{equation}
 Again, the apparent singularity at $s=0$ is removable.
@@ -7905,10 +7885,10 @@ Again, the apparent singularity at $s=0$ is removable.
 \end{theorem}
 
 \begin{proof}
-The substitution $z=\e^{-s/2^m}$ gives
+The substitution $z=\EulerE^{-s/2^m}$ gives
 \[
- P_m(z)=\prod_{j=0}^{m-1}\left(1-\e^{-s2^j/2^m}\right)
-       =\prod_{k=1}^{m}\left(1-\e^{-s/2^k}\right).
+ P_m(z)=\prod_{j=0}^{m-1}\left(1-\EulerE^{-s2^j/2^m}\right)
+       =\prod_{k=1}^{m}\left(1-\EulerE^{-s/2^k}\right).
 \]
 The denominator in $G_m(-s)$ is
 \[
@@ -7923,7 +7903,7 @@ which proves the identity.
 \leanPartx{Fabius.thueMorseBlock_exp_neg_eq_laplacePrefix}
 (\path{ThueMorseComplexProductBridge.lean}).  Its prefix
 \leanPartx{Fabius.complexLaplacePrefix} is exactly $G_m(-s)$, and the theorem
-holds for every $m\ge0$ and every $s\in\C$, including $s=0$.
+holds for every $m\ge0$ and every $s\in\ComplexNumbers$, including $s=0$.
 The normalized origin value is
 \leanPartx{Fabius.complexLaplacePrefix_apply_zero}.  Away from zero,
 \leanPartx{Fabius.complexLaplacePrefix_eq_thueMorseBlock_exp_neg} is precisely
@@ -7936,8 +7916,8 @@ removable origin.
 
 \begin{boxedremark}
 \textbf{The exact finite-block principle.}
-The oscillatory sample $z=\e^{\ii t/2^{m-1}}$ converts $P_m$ into the truncated Fourier
-product $Q_m(t)$.  The decaying sample $z=\e^{-s/2^m}$ converts the same $P_m$ into the
+The oscillatory sample $z=\EulerE^{\ImaginaryUnit t/2^{m-1}}$ converts $P_m$ into the truncated Fourier
+product $Q_m(t)$.  The decaying sample $z=\EulerE^{-s/2^m}$ converts the same $P_m$ into the
 truncated negative-Laplace product $G_m(-s)$.  No asymptotic argument is involved.
 \end{boxedremark}
 
@@ -7970,25 +7950,25 @@ $c$, and every $k$,
  \prod_{n\ge0}g\!\left(\frac{c^kz}{c^n}\right)
  =\left(\prod_{j<k}g\!\left(c^{j+1}z\right)\right)\prod_{n\ge0}g\!\left(\frac{z}{c^n}\right),
 \]
-the only hypothesis being multipliability of the undilated family; nothing about $\sinc$,
-about base two, or even about $\C$ enters, and $g=\sinc$, $c=2$, $z=t/2^{m+1}$, $k=m$ gives
+the only hypothesis being multipliability of the undilated family; nothing about $\SincRad$,
+about base two, or even about $\ComplexNumbers$ enters, and $g=\SincRad$, $c=2$, $z=t/2^{m+1}$, $k=m$ gives
 \eqref{p2:eq:Q-tail-self}.  The instance stated directly for the transform is
 \leanPartx{Fabius.rvachevFourier_eq_finite_product} (\path{FourierProduct.lean}), in the
-$\e^{-2\pi\ii x\xi}$ convention of \eqref{p2:eq:upFourier}.  The Laplace half
+$\EulerE^{-2\pi\ImaginaryUnit x\xi}$ convention of \eqref{p2:eq:upFourier}.  The Laplace half
 \eqref{p2:eq:G-tail-self} is \leanPartx{Fabius.complexGeneratingFunction_neg_finite_refinement}
-(\path{NegativeLaplaceVertical.lean}), an exact identity for every $m$ and every $s\in\C$.
+(\path{NegativeLaplaceVertical.lean}), an exact identity for every $m$ and every $s\in\ComplexNumbers$.
 
 \begin{corollary}[Exact finite Thue--Morse factorization of the full products]
 \label{p2:cor:full-TM-factor}
 For $m\ge1$,
 \begin{align}
  Q_\infty(t)
- &=\ii^m2^{\binom m2}t^{-m}\e^{-\ii t(1-2^{-m})}
-   P_m\!\left(\e^{\ii t/2^{m-1}}\right)Q_\infty(t/2^m),
+ &=\ImaginaryUnit^m2^{\binom m2}t^{-m}\EulerE^{-\ImaginaryUnit t(1-2^{-m})}
+   P_m\!\left(\EulerE^{\ImaginaryUnit t/2^{m-1}}\right)Q_\infty(t/2^m),
  \label{p2:eq:full-Q-TM}\\
  G(-s)
  &=\frac{2^{m(m+1)/2}}{s^m}
-   P_m\!\left(\e^{-s/2^m}\right)G(-s/2^m).
+   P_m\!\left(\EulerE^{-s/2^m}\right)G(-s/2^m).
  \label{p2:eq:full-G-TM}
 \end{align}
 Thus every truncation error is represented by the original entire function in a small
@@ -8005,7 +7985,7 @@ argument.
 For $|z|<\pi$,
 \begin{equation}
  \boxed{
- \log\sinc z
+ \log\SincRad z
  =-\sum_{r=1}^{\infty}\frac{\zeta(2r)}{r\pi^{2r}}z^{2r}.}
  \label{p2:eq:logsinc}
 \end{equation}
@@ -8025,7 +8005,7 @@ convergence permits interchanging the sums, and the inner sum over $n$ is $\zeta
 \emph{Formal versions.}  The branch-free content of \eqref{p2:eq:logsinc} is formalized in
 \path{SincZetaSeries.lean} as the exponential identity
 \leanPartx{Fabius.complexSinc\_pi\_mul\_eq\_cexp}: for complex $x$ with $|x|<1$,
-$\sinc(\pi x)=\exp\bigl(-\sum_{r\ge1}\zeta(2r)x^{2r}/r\bigr)$, the values $\zeta(2r)$ carried
+$\SincRad(\pi x)=\exp\bigl(-\sum_{r\ge1}\zeta(2r)x^{2r}/r\bigr)$, the values $\zeta(2r)$ carried
 as the elementary series \leanPartx{Fabius.evenZeta} (\path{EvenZetaSeries.lean}); the $|z|<\pi$
 normalization printed above is \leanPartx{Fabius.complexSinc\_eq\_cexp}.  For real $0<|x|<1$ the
 boxed logarithmic form itself is \leanPartx{Fabius.log\_sin\_div\_pi\_mul}, the branch being the
@@ -8073,7 +8053,7 @@ By \cref{p2:prop:tail-self}, the quotient is $Q_\infty(t/2^m)$.  Apply
    \frac{\zeta(2r)}{r\pi^{2r}(4^r-1)}t^{2r}4^{-rm}.
 \end{align*}
 The closest zero of $Q_\infty(w)$ to $w=0$ is $w=\pm2\pi$, arising from the factor
-$\sinc(w/2)$.  Scaling by $w=t/2^m$ proves maximality.
+$\SincRad(w/2)$.  Scaling by $w=t/2^m$ proves maximality.
 \end{proof}
 
 \emph{Formal versions.}  The theorem is formalized in \path{SincZetaDyadic.lean}, in the
@@ -8081,14 +8061,14 @@ normalization $\Phi(z)=Q_\infty(2\pi z)$ and in exponential form.  At $m=0$,
 \leanPartx{Fabius.rvachevFourierProduct\_eq\_cexp} proves
 $\Phi(z)=\exp\bigl(-\sum_{r\ge1}\zeta(2r)4^rz^{2r}/(r(4^r-1))\bigr)$ on $|z|<1$; for general
 $m$, \leanPartx{Fabius.rvachevFourierProduct\_eq\_prefix\_mul\_cexp} is the exact factorization
-$\Phi(z)=\bigl(\prod_{j<m}\sinc(\pi z/2^j)\bigr)\exp\bigl(-\sum_{r\ge1}
+$\Phi(z)=\bigl(\prod_{j<m}\SincRad(\pi z/2^j)\bigr)\exp\bigl(-\sum_{r\ge1}
 \zeta(2r)4^r(z/2^m)^{2r}/(r(4^r-1))\bigr)$ on $|z|<2^m$ --- identity \eqref{p2:eq:Q-all-orders}
 with the quotient cleared and the finite prefix explicit.  The engine is one application of
-the Euler log transform to the pair family $(z/2^h)^2/(n+1)^2$ over $\N\times\N$; its power
+the Euler log transform to the pair family $(z/2^h)^2/(n+1)^2$ over $\NaturalNumbers\times\NaturalNumbers$; its power
 sums are evaluated for \emph{every} complex $z$, with no smallness hypothesis
 (\leanPartx{Fabius.sinc\_pair\_powerSum}).  Composed with the integral-to-product identity, the
 same series is the Fourier transform itself:
-$\widehat{\Up}(z)=\exp\bigl(-\sum_{r\ge1}\zeta(2r)4^rz^{2r}/(r(4^r-1))\bigr)$ on $|z|<1$
+$\widehat{\RvachevUp}(z)=\exp\bigl(-\sum_{r\ge1}\zeta(2r)4^rz^{2r}/(r(4^r-1))\bigr)$ on $|z|<1$
 (\leanPartx{Fabius.rvachevFourier\_eq\_cexp}).  Maximality of the disk is now formalized too, in
 \path{ExponentialDiskMaximality.lean}, and by an obstruction that uses none of the analysis:
 $\Phi$ vanishes at every nonzero integer while $\exp$ never vanishes, so $\Phi(1)=0$ is not
@@ -8101,7 +8081,7 @@ representation of $\Phi$ as an exponential
 element exactly $1$
 (\leanPartx{Fabius.isGreatest\_cexpRepresentable\_radius}).  The same argument does \emph{not}
 settle the prefixed form on $|z|<2^m$ for $m\ge1$: there the finite prefix already vanishes at
-every nonzero integer, its $j=0$ factor being $\sinc(\pi n)$, so both sides vanish together on
+every nonzero integer, its $j=0$ factor being $\SincRad(\pi n)$, so both sides vanish together on
 the zero set of $\Phi$ and the obstruction cannot detect a failure.  That too is recorded as a
 theorem rather than as a sentence
 (\leanPartx{Fabius.prod\_complexSinc\_int\_eq\_zero}), and maximality for $m\ge1$ stays open.
@@ -8172,10 +8152,10 @@ For $N=0$, this is $Q_m$.
 
 \begin{corollary}[Arbitrary-order convergence]
 \label{p2:cor:arbitrary-Q}
-For every compact set $K\subset\C$ and every fixed $N\ge0$,
+For every compact set $K\subset\ComplexNumbers$ and every fixed $N\ge0$,
 \begin{equation}
  Q_m^{[N]}(t)=Q_\infty(t)
- \left(1+\bigO_K(4^{-(N+1)m})\right)
+ \left(1+\BigO_K(4^{-(N+1)m})\right)
  \qquad(t\in K,\ m\to\infty).
  \label{p2:eq:arbitrary-Q}
 \end{equation}
@@ -8187,34 +8167,34 @@ length-$2^m$ Thue--Morse exponential sum multiplied by only $N$ explicit zeta co
 \begin{proof}
 For all sufficiently large $m$, $K$ lies in the disk \eqref{p2:eq:Q-domain}.  The exact quotient
 $Q_\infty/Q_m^{[N]}$ is $\exp(-R_{N,m})$.  The bound
-\eqref{p2:eq:Q-remainder-bound}, uniformly on $K$, is $\bigO_K(4^{-(N+1)m})$; exponentiation
+\eqref{p2:eq:Q-remainder-bound}, uniformly on $K$, is $\BigO_K(4^{-(N+1)m})$; exponentiation
 preserves that order.
 \end{proof}
 
 \emph{Formal versions.}  The quantitative content is
 \leanPartx{Fabius.rvachevFourierProduct\_eq\_prefix\_mul\_correction\_mul\_tail}
 (\path{SincZetaRemainder.lean}): on $|z|<2^m$, exactly
-$\Phi(z)=\bigl(\prod_{j<m}\sinc(\pi z/2^j)\bigr)\cdot
+$\Phi(z)=\bigl(\prod_{j<m}\SincRad(\pi z/2^j)\bigr)\cdot
 \exp\bigl(-\sum_{r=1}^{N}c_r(z/2^m)^{2r}\bigr)\cdot\exp\bigl(-R_{N}(z/2^m)\bigr)$, the finite
 prefix being the length-$2^m$ Thue--Morse block of \cref{p2:cor:full-TM-factor}, the middle
 factor the $N$ zeta corrections of \eqref{p2:eq:Qcorrected}, and the tail exponent bounded by
-\leanPartx{Fabius.norm\_sincZeta\_tail\_le}.  The $\bigO_K$ formulation printed here is a direct
+\leanPartx{Fabius.norm\_sincZeta\_tail\_le}.  The $\BigO_K$ formulation printed here is a direct
 reading of that bound and is not separately formalized.
 
 \begin{corollary}[Fourier approximation to the up-function]
 \label{p2:cor:up-Fourier-block}
-For fixed $\xi\in\C$,
+For fixed $\xi\in\ComplexNumbers$,
 \begin{align}
- \widehat\Up(\xi)
- &=\ii^m2^{\binom m2}(2\pi\xi)^{-m}
-   \e^{-2\pi\ii\xi(1-2^{-m})}
+ \widehat\RvachevUp(\xi)
+ &=\ImaginaryUnit^m2^{\binom m2}(2\pi\xi)^{-m}
+   \EulerE^{-2\pi\ImaginaryUnit\xi(1-2^{-m})}
    \sum_{n=0}^{2^m-1}\eps_n
-   \e^{2\pi\ii n\xi/2^{m-1}}
+   \EulerE^{2\pi\ImaginaryUnit n\xi/2^{m-1}}
  \notag\\[-0.2em]
  &\quad\times
  \exp\!\left[-\sum_{r=1}^{N}
  \frac{\zeta(2r)(2\pi\xi)^{2r}}{r\pi^{2r}(4^r-1)}4^{-rm}\right]
- \left(1+\bigO_{\xi,N}(4^{-(N+1)m})\right).
+ \left(1+\BigO_{\xi,N}(4^{-(N+1)m})\right).
  \label{p2:eq:up-TM-approx}
 \end{align}
 Thus the infinite Fourier product admits an arbitrary-order approximation from one finite
@@ -8248,8 +8228,8 @@ $(w;c)_\infty=\exp\bigl(-\sum_{r\ge1}w^r/(r(1-c^r))\bigr)$, with real counterpar
 \label{p2:thm:base-b}
 Let $b>1$ and
 \[
- Q_{m,b}(t)=\prod_{k=1}^{m}\sinc(t/b^k),\qquad
- Q_{\infty,b}(t)=\prod_{k=1}^{\infty}\sinc(t/b^k),\qquad q=b^{-2}.
+ Q_{m,b}(t)=\prod_{k=1}^{m}\SincRad(t/b^k),\qquad
+ Q_{\infty,b}(t)=\prod_{k=1}^{\infty}\SincRad(t/b^k),\qquad q=b^{-2}.
 \]
 For $|t|<\pi b^{m+1}$,
 \begin{equation}
@@ -8274,14 +8254,14 @@ one in $b^{-2r}$.
 
 \begin{lemma}[Fourier--Laplace rotation]
 \label{p2:lem:GQ}
-For every $s\in\C$,
+For every $s\in\ComplexNumbers$,
 \begin{equation}
- \boxed{G(-s)=\e^{-s/2}Q_\infty(\ii s/2).}
+ \boxed{G(-s)=\EulerE^{-s/2}Q_\infty(\ImaginaryUnit s/2).}
  \label{p2:eq:GQ}
 \end{equation}
 More generally,
 \begin{equation}
- G_m(-s)=\e^{-\frac{s}{2}(1-2^{-m})}Q_m(\ii s/2).
+ G_m(-s)=\EulerE^{-\frac{s}{2}(1-2^{-m})}Q_m(\ImaginaryUnit s/2).
  \label{p2:eq:GmQm}
 \end{equation}
 \end{lemma}
@@ -8289,8 +8269,8 @@ More generally,
 \begin{proof}
 For every $v$,
 \[
- \frac{1-\e^{-v}}{v}=\e^{-v/2}\frac{\sinh(v/2)}{v/2}
- =\e^{-v/2}\sinc(\ii v/2).
+ \frac{1-\EulerE^{-v}}{v}=\EulerE^{-v/2}\frac{\sinh(v/2)}{v/2}
+ =\EulerE^{-v/2}\SincRad(\ImaginaryUnit v/2).
 \]
 Multiply with $v=s/2^k$.  The linear exponents sum to $-s/2$ in the infinite product and to
 $-s(1-2^{-m})/2$ in the finite product.
@@ -8301,9 +8281,9 @@ three named theorems.  \leanPartx{Fabius.complexGeneratingFunction_neg_eq_tprod}
 (\path{NegativeLaplaceVertical.lean}) identifies $G(-s)$ with the entire half-moment
 generating function, as recorded after \eqref{p2:eq:Gdef};
 \leanPartx{Fabius.complexGeneratingFunction_eq_fourier_analytic} (\path{FourierAnalytic.lean})
-states that generating function to be $\e^{z/2}\widehat\Up(\ii z/(4\pi))$ for every
-$z\in\C$; and \leanPartx{Fabius.rvachevFourier_eq_product} (\path{FourierProduct.lean}) replaces
-$\widehat\Up$ by its sinc product.  Since $\widehat\Up(\ii z/(4\pi))=Q_\infty(\ii z/2)$ in the
+states that generating function to be $\EulerE^{z/2}\widehat\RvachevUp(\ImaginaryUnit z/(4\pi))$ for every
+$z\in\ComplexNumbers$; and \leanPartx{Fabius.rvachevFourier_eq_product} (\path{FourierProduct.lean}) replaces
+$\widehat\RvachevUp$ by its sinc product.  Since $\widehat\RvachevUp(\ImaginaryUnit z/(4\pi))=Q_\infty(\ImaginaryUnit z/2)$ in the
 normalization \eqref{p2:eq:upFourier}, and $Q_\infty$ is even, the composite at $z=-s$ is exactly
 \eqref{p2:eq:GQ}.  The finite form \eqref{p2:eq:GmQm} is the total theorem
 \leanPartx{Fabius.complexLaplacePrefix_eq_exp_mul_shiftedComplexSincPrefix}
@@ -8312,11 +8292,11 @@ in \path{ThueMorseComplexProductBridge.lean}; its factor-level engine is
 
 Define the centered products
 \begin{equation}
- C(-s)=\e^{s/2}G(-s),\qquad
- C_m(-s)=\e^{\frac{s}{2}(1-2^{-m})}G_m(-s).
+ C(-s)=\EulerE^{s/2}G(-s),\qquad
+ C_m(-s)=\EulerE^{\frac{s}{2}(1-2^{-m})}G_m(-s).
  \label{p2:eq:centered-G}
 \end{equation}
-Then $C(-s)=Q_\infty(\ii s/2)$ and
+Then $C(-s)=Q_\infty(\ImaginaryUnit s/2)$ and
 \begin{equation}
  C(-s)=C_m(-s)C(-s/2^m).
  \label{p2:eq:centered-tail}
@@ -8349,7 +8329,7 @@ The radius $4\pi$ is exact.
 \end{theorem}
 
 \begin{proof}
-Use \cref{p2:lem:GQ} and \cref{p2:thm:all-orders-Q} with $m=0$ and $t=\ii u/2$:
+Use \cref{p2:lem:GQ} and \cref{p2:thm:all-orders-Q} with $m=0$ and $t=\ImaginaryUnit u/2$:
 \[
  \log G(-u)=-\frac u2
  -\sum_{r\ge1}\frac{\zeta(2r)}{r\pi^{2r}(4^r-1)}
@@ -8360,7 +8340,7 @@ The standard evaluation
  \zeta(2r)=(-1)^{r+1}\frac{B_{2r}(2\pi)^{2r}}{2(2r)!}
 \]
 reduces the coefficient to the one displayed.  The closest zeros of $G(-u)$ are
-$u=\pm4\pi\ii$, coming from $1-\e^{-u/2}$, so the logarithmic radius is exact.
+$u=\pm4\pi\ImaginaryUnit$, coming from $1-\EulerE^{-u/2}$, so the logarithmic radius is exact.
 \end{proof}
 
 \begin{corollary}[Certified remainder for the centered Laplace tail]
@@ -8376,19 +8356,19 @@ while the exact linear term $-u/2$ is retained, then the remainder $\mathcal R_N
 \end{corollary}
 
 \begin{proof}
-This is \cref{p2:thm:Q-remainder} at $m=0$, $t=\ii u/2$.
+This is \cref{p2:thm:Q-remainder} at $m=0$, $t=\ImaginaryUnit u/2$.
 \end{proof}
 
 \subsection{The endpoint product from one finite digital block}
 
 \begin{theorem}[Finite Thue--Morse endpoint formula with all corrections]
 \label{p2:thm:G-TM-all}
-Let $m\ge1$, $s\in\C$, and $u=s/2^m$.  If $|u|<4\pi$, then
+Let $m\ge1$, $s\in\ComplexNumbers$, and $u=s/2^m$.  If $|u|<4\pi$, then
 \begin{equation}
  \boxed{
  \begin{aligned}
  G(-s)
- &=\frac{2^{m(m+1)/2}}{s^m}P_m(\e^{-u})\\
+ &=\frac{2^{m(m+1)/2}}{s^m}P_m(\EulerE^{-u})\\
  &\quad\times
  \exp\!\left[-\frac{u}{2}
  +\sum_{r=1}^{\infty}
@@ -8397,7 +8377,7 @@ Let $m\ge1$, $s\in\C$, and $u=s/2^m$.  If $|u|<4\pi$, then
  \label{p2:eq:G-TM-all}
 \end{equation}
 Stopping the correction series after $r=N$ incurs the explicit logarithmic error
-\eqref{p2:eq:G-rem}.  In sum form, $P_m(\e^{-u})=\sum_{n<2^m}\eps_n\e^{-nu}$.
+\eqref{p2:eq:G-rem}.  In sum form, $P_m(\EulerE^{-u})=\sum_{n<2^m}\eps_n\EulerE^{-nu}$.
 \newresult
 \end{theorem}
 
@@ -8451,7 +8431,7 @@ For $(q;q)_n=\prod_{k=1}^{n}(1-q^k)$, define
  \frac{(-1)^{p-j}q^{\binom{p-j+1}{2}}}
  {(q;q)_j(q;q)_{p-j}}
  =\frac{(-1)^{p-j}q^{\binom{p-j+1}{2}}}{(q;q)_p}
-   \qbinom{p}{j}{q},
+   \GaussianBinomial{p}{j}{q},
  \qquad 0\le j\le p.
  \label{p2:eq:weights}
 \end{equation}
@@ -8521,7 +8501,7 @@ zero extension above the diagonal now give the all-index forward formula
    \texttt{gaussianBinomial}\ q\ p\ j
 \]
 as \path{geometricQBinomialWeightNumerator_eq_forward}; thus the
-displayed coefficient \(\qbinom{p}{j}{q}\) in \eqref{p2:eq:weights} is now
+displayed coefficient \(\GaussianBinomial{p}{j}{q}\) in \eqref{p2:eq:weights} is now
 the literal proved forward-index form.  The same core also proves
 \texttt{map\_gaussianBinomial}, both \(q\)-Pascal recurrences, the
 \(q\)-Pochhammer concatenation laws, the full denominator-free
@@ -8582,10 +8562,10 @@ Define
  \qquad q=\frac14.
  \label{p2:eq:Rmp}
 \end{equation}
-For every compact $K\subset\C$ and fixed $p$,
+For every compact $K\subset\ComplexNumbers$ and fixed $p$,
 \begin{equation}
  \boxed{
- \mathcal R_{m,p}(t)=Q_\infty(t)+\bigO_K(q^{(p+1)m})
+ \mathcal R_{m,p}(t)=Q_\infty(t)+\BigO_K(q^{(p+1)m})
  \quad(t\in K).}
  \label{p2:eq:Richardson-order}
 \end{equation}
@@ -8593,7 +8573,7 @@ More precisely,
 \begin{equation}
  \mathcal R_{m,p}(t)-Q_\infty(t)
  =Q_\infty(t)(-1)^pq^{p(p+1)/2}h_{p+1}(t)q^{(p+1)m}
- +\bigO_K(q^{(p+2)m}).
+ +\BigO_K(q^{(p+2)m}).
  \label{p2:eq:Richardson-leading}
 \end{equation}
 Every $Q_{m+j}$ may be replaced by its exact finite Thue--Morse representation
@@ -8617,7 +8597,7 @@ series gives the uniform remainder on compact $t$-sets.
 
 \begin{corollary}[A derivative bound version]
 \label{p2:cor:Richardson-bound}
-Suppose $t\in\R$ and the interval $[0,q^m]$ contains no pole of $H_t$.  Then for some
+Suppose $t\in\RealNumbers$ and the interval $[0,q^m]$ contains no pole of $H_t$.  Then for some
 $\theta\in(0,q^m)$,
 \begin{equation}
  \frac{\mathcal R_{m,p}(t)}{Q_\infty(t)}-1
@@ -8663,7 +8643,7 @@ put
  Y_\infty=\sum_{k=1}^{\infty}2^{-k}V_k.
  \label{p2:eq:Ydef}
 \end{equation}
-Then $Y_\infty$ has density $\Up$, while $Y_m$ has the compactly supported centered uniform
+Then $Y_\infty$ has density $\RvachevUp$, while $Y_m$ has the compactly supported centered uniform
 spline density $u_m$.  Their characteristic functions are $Q_\infty$ and $Q_m$.
 
 \begin{theorem}[Exact random-tail decomposition]
@@ -8676,7 +8656,7 @@ There is an independent copy $Y_\infty'$ of $Y_\infty$ such that
 Consequently, in density form,
 \begin{equation}
  \boxed{
- \Up=u_m*\left(2^m\Up(2^m\,\cdot)\right).}
+ \RvachevUp=u_m*\left(2^m\RvachevUp(2^m\,\cdot)\right).}
  \label{p2:eq:density-deconv}
 \end{equation}
 \newresult
@@ -8693,9 +8673,9 @@ the corresponding densities gives \eqref{p2:eq:density-deconv}.
 \end{proof}
 
 \emph{Formal versions.}  The measure form of \eqref{p2:eq:density-deconv} is formalized in
-\path{MeasureRefinement.lean}: with $\mu_{\Up}$ the Borel probability measure with density
-$\Up$ (\leanPartx{Fabius.rvachevMeasure}), the one-step refinement equation
-$\mu_{\Up}=\mathrm{Unif}[-\tfrac12,\tfrac12]\ast\bigl(\mu_{\Up}\circ(\cdot/2)^{-1}\bigr)$ is
+\path{MeasureRefinement.lean}: with $\mu_{\RvachevUp}$ the Borel probability measure with density
+$\RvachevUp$ (\leanPartx{Fabius.rvachevMeasure}), the one-step refinement equation
+$\mu_{\RvachevUp}=\mathrm{Unif}[-\tfrac12,\tfrac12]\ast\bigl(\mu_{\RvachevUp}\circ(\cdot/2)^{-1}\bigr)$ is
 \leanPartx{Fabius.rvachevMeasure\_refinement}, and the $m$-fold form matching the split in this
 proof --- the first $m$ uniform digits convolved with a $2^{-m}$-scale copy of the whole ---
 is \leanPartx{Fabius.rvachevMeasure\_eq\_prefix\_conv}, with the digit-prefix law
@@ -8716,15 +8696,15 @@ characteristic-function route anticipated in the promotion table below.  On the
 random-variable side, the representation itself is formalized independently in
 \path{ProbabilityRepresentation.lean}: the product probability space of uniform digits,
 the uncentered random series \(X_\infty=(Y_\infty+1)/2\), and the identifications
-\(F(x)=\Prob[X_\infty\le x]\) and \(\Up(x)=\Prob[X_\infty\le1-|x|]\) (Arias de Reyna's
+\(F(x)=\Probability[X_\infty\le x]\) and \(\RvachevUp(x)=\Probability[X_\infty\le1-|x|]\) (Arias de Reyna's
 Theorem~3).  The
 bridge between the two sides is formalized in \path{RandomSeriesLaw.lean}: the up-measure
 is the pushforward of the law of \(X_\infty\) under \(x\mapsto2x-1\)
 (\leanPartx{Fabius.rvachevMeasure\_eq\_map\_weightedSum}, proved by the fundamental theorem
-of calculus for the folded derivative \(F'=2\,\Up(2\cdot{}-1)\), which exhibits
-\(y\mapsto F(\tfrac{y+1}{2})\) as the CDF of \(\mu_{\Up}\)); through it the characteristic
+of calculus for the folded derivative \(F'=2\,\RvachevUp(2\cdot{}-1)\), which exhibits
+\(y\mapsto F(\tfrac{y+1}{2})\) as the CDF of \(\mu_{\RvachevUp}\)); through it the characteristic
 function of the uncentered series takes the closed form
-\(\mathbb{E}[e^{itX_\infty}]=e^{it/2}\,\widehat{\Up}(t/(4\pi))\)
+\(\mathbb{E}[e^{itX_\infty}]=e^{it/2}\,\widehat{\RvachevUp}(t/(4\pi))\)
 (\leanPartx{Fabius.charFun\_weightedSumDistribution}).  The one-digit equality-in-law
 splitting underlying \eqref{p2:eq:random-tail} is the law identity
 \(\operatorname{law}(X_\infty)
@@ -8762,8 +8742,8 @@ In particular,
 \begin{proof}
 The cumulant expansion of the characteristic function is
 \[
- \log\E\e^{\ii tY_\infty}
- =\sum_{r\ge1}\kappa_{2r}\frac{(\ii t)^{2r}}{(2r)!}.
+ \log\Expectation\EulerE^{\ImaginaryUnit tY_\infty}
+ =\sum_{r\ge1}\kappa_{2r}\frac{(\ImaginaryUnit t)^{2r}}{(2r)!}.
 \]
 Set $m=0$ in \eqref{p2:eq:Q-all-orders} and identify coefficients.  The Bernoulli form follows
 from the classical evaluation of $\zeta(2r)$.
@@ -8785,9 +8765,9 @@ The first even moments, obtained from the complete Bell polynomials in the cumul
 Let $N\ge0$ and $\varphi\in C^{2N+2}([-1,1])$.  Then
 \begin{equation}
  \boxed{
- \E\varphi(Y_\infty)
+ \Expectation\varphi(Y_\infty)
  =\sum_{j=0}^{N}\frac{\mu_{2j}}{(2j)!}4^{-jm}
-   \E\varphi^{(2j)}(Y_m)+\mathcal E_{N,m}(\varphi),}
+   \Expectation\varphi^{(2j)}(Y_m)+\mathcal E_{N,m}(\varphi),}
  \label{p2:eq:weak-expansion}
 \end{equation}
 where $\mu_0=1$ and
@@ -8810,14 +8790,14 @@ $2^{-(2N+2)m}\|\varphi^{(2N+2)}\|_\infty/(2N+2)!$.
 
 The first terms are therefore
 \begin{align}
- \E\varphi(Y_\infty)
- &=\E\varphi(Y_m)
- +\frac{4^{-m}}{18}\E\varphi''(Y_m)
- +\frac{19\,16^{-m}}{16200}\E\varphi^{(4)}(Y_m)
+ \Expectation\varphi(Y_\infty)
+ &=\Expectation\varphi(Y_m)
+ +\frac{4^{-m}}{18}\Expectation\varphi''(Y_m)
+ +\frac{19\,16^{-m}}{16200}\Expectation\varphi^{(4)}(Y_m)
  \notag\\
  &\quad
- +\frac{583\,64^{-m}}{42865200}\E\varphi^{(6)}(Y_m)
- +\bigO_\varphi(256^{-m}).
+ +\frac{583\,64^{-m}}{42865200}\Expectation\varphi^{(6)}(Y_m)
+ +\BigO_\varphi(256^{-m}).
  \label{p2:eq:weak-first}
 \end{align}
 
@@ -8825,14 +8805,14 @@ The first terms are therefore
 \label{p2:cor:distributional}
 In the sense of distributions, for every fixed $N$,
 \begin{equation}
- \Up
+ \RvachevUp
  =\sum_{j=0}^{N}\frac{\mu_{2j}}{(2j)!}4^{-jm}D^{2j}u_m
- +\bigO_{\mathcal D'}(4^{-(N+1)m}).
+ +\BigO_{\mathcal D'}(4^{-(N+1)m}).
  \label{p2:eq:distributional}
 \end{equation}
 In particular,
 \begin{equation}
- \Up=u_m+\frac{4^{-m}}{18}D^2u_m
+ \RvachevUp=u_m+\frac{4^{-m}}{18}D^2u_m
  +\frac{19\,16^{-m}}{16200}D^4u_m+\cdots.
  \label{p2:eq:distributional-first}
 \end{equation}
@@ -8840,13 +8820,13 @@ In particular,
 
 \begin{proof}
 Pair the asserted distribution with a test function and use
-$\langle D^{2j}u_m,\varphi\rangle=\E\varphi^{(2j)}(Y_m)$.
+$\langle D^{2j}u_m,\varphi\rangle=\Expectation\varphi^{(2j)}(Y_m)$.
 \end{proof}
 
 \begin{remark}[Cumulant operator]
 Formally, and exactly at the level of the local Fourier logarithm,
 \begin{equation}
- \Up=\exp\!\left(\sum_{r\ge1}
+ \RvachevUp=\exp\!\left(\sum_{r\ge1}
  \frac{\kappa_{2r}}{(2r)!}4^{-rm}D^{2r}\right)u_m.
  \label{p2:eq:cumulant-operator}
 \end{equation}
@@ -8860,7 +8840,7 @@ already present in the repository's repeated-integration and probabilistic const
 
 \subsection{The canonical scale and the tail variable}
 
-For $0<x<1/(\e L)$, let $\lambda(x)$ and $s_0(x)$ be given by
+For $0<x<1/(\EulerE L)$, let $\lambda(x)$ and $s_0(x)$ be given by
 \eqref{p2:eq:lambda}--\eqref{p2:eq:s0}.  At an integer truncation level $m$, the entire omitted
 product is governed by the single tail variable
 \begin{equation}
@@ -8879,13 +8859,13 @@ Thus each extra factor beyond the Lambert phase halves the raw tail variable.
 Let
 \begin{align}
  \delta_{\rm raw}(u)&=|G(-u)-1|,\\
- \delta_{\rm ctr}(u)&=|\e^{u/2}G(-u)-1|=|C(-u)-1|.
+ \delta_{\rm ctr}(u)&=|\EulerE^{u/2}G(-u)-1|=|C(-u)-1|.
 \end{align}
 As $u\to0^+$,
 \begin{equation}
- \delta_{\rm raw}(u)=\frac u2+\bigO(u^2),
+ \delta_{\rm raw}(u)=\frac u2+\BigO(u^2),
  \qquad
- \delta_{\rm ctr}(u)=\frac{u^2}{72}+\bigO(u^4).
+ \delta_{\rm ctr}(u)=\frac{u^2}{72}+\BigO(u^4).
  \label{p2:eq:tail-orders}
 \end{equation}
 Consequently, for $m=\lceil\lambda(x)+h\rceil$ and $h\to\infty$,
@@ -8901,14 +8881,14 @@ respective errors at most $\eta$, then as $\eta\downarrow0$,
 \begin{align}
  \boxed{
  m_{\rm raw}(x,\eta)
- =-\frac{W_{-1}(-Lx)}{L}+\log_2\frac1\eta+\bigO(1),}
+ =-\frac{W_{-1}(-Lx)}{L}+\log_2\frac1\eta+\BigO(1),}
  \label{p2:eq:mraw}\\
  \boxed{
  m_{\rm ctr}(x,\eta)
- =-\frac{W_{-1}(-Lx)}{L}+\frac12\log_2\frac1\eta+\bigO(1).}
+ =-\frac{W_{-1}(-Lx)}{L}+\frac12\log_2\frac1\eta+\BigO(1).}
  \label{p2:eq:mctr}
 \end{align}
-The $\bigO(1)$ constants may be chosen uniformly for $x$ in any sufficiently small interval
+The $\BigO(1)$ constants may be chosen uniformly for $x$ in any sufficiently small interval
 $(0,x_0]$.
 \newresult
 \end{theorem}
@@ -8916,22 +8896,22 @@ $(0,x_0]$.
 \begin{proof}
 Equation \eqref{p2:eq:tail-orders} is the beginning of \eqref{p2:eq:G-all-orders}:
 \[
- G(-u)=\exp\!\left(-\frac u2+\frac{u^2}{72}+\bigO(u^4)\right),
+ G(-u)=\exp\!\left(-\frac u2+\frac{u^2}{72}+\BigO(u^4)\right),
  \qquad
- C(-u)=\exp\!\left(\frac{u^2}{72}+\bigO(u^4)\right).
+ C(-u)=\exp\!\left(\frac{u^2}{72}+\BigO(u^4)\right).
 \]
 Hence there are positive constants $c_i,C_i$ and $u_0$ such that
 $c_1u\le\delta_{\rm raw}(u)\le C_1u$ and
 $c_2u^2\le\delta_{\rm ctr}(u)\le C_2u^2$ for $0<u<u_0$.
 Combine these inequalities with \eqref{p2:eq:u-window}.  Solving $2^{-h}\asymp\eta$ and
 $4^{-h}\asymp\eta$, then adding the base depth $\lambda(x)$ and absorbing the ceiling into
-$\bigO(1)$, gives \eqref{p2:eq:mraw}--\eqref{p2:eq:mctr}.
+$\BigO(1)$, gives \eqref{p2:eq:mraw}--\eqref{p2:eq:mctr}.
 \end{proof}
 
 \begin{remark}[Why centering halves the precision surcharge]
 At the leading saddle scale, reaching relative tolerance $\eta$ in the raw product requires
 roughly $\log_2(1/\eta)$ factors beyond $\lambda$.  Removing the exactly known linear factor
-$\e^{-u/2}$ makes the residual even, so only half as many additional factors are required.
+$\EulerE^{-u/2}$ makes the residual even, so only half as many additional factors are required.
 This is a concrete algorithmic consequence of the probability centering hidden in
 \cref{p2:lem:GQ}.
 \end{remark}
@@ -8950,7 +8930,7 @@ Given small $x>0$, target logarithmic correction order $N$, and tolerance $\eta$
 where $c_N$ is a small safety margin determined from \eqref{p2:eq:G-rem}.
 \item Set $u=s_0/2^m$ and evaluate the finite digital sum
 \[
- P_m(\e^{-u})=\sum_{n=0}^{2^m-1}\eps_n\e^{-nu}
+ P_m(\EulerE^{-u})=\sum_{n=0}^{2^m-1}\eps_n\EulerE^{-nu}
 \]
 or its product form.
 \item Reconstruct $G(-s_0)$ from \eqref{p2:eq:G-TM-all}, using the first $N$ Bernoulli
@@ -8990,9 +8970,9 @@ and has trivial zeros
 It also supplies the Mellin representation
 \begin{equation}
  \widetilde D(s,a)=\frac1{\Gamma(s)}
- \int_0^\infty t^{s-1}\e^{-at}\mathcal E(t)\dd t,
+ \int_0^\infty t^{s-1}\EulerE^{-at}\mathcal E(t)\Differential t,
  \qquad
- \mathcal E(t)=\prod_{j\ge0}(1-\e^{-2^jt}),
+ \mathcal E(t)=\prod_{j\ge0}(1-\EulerE^{-2^jt}),
  \label{p2:eq:D-Mellin}
 \end{equation}
 where the extraordinary flatness of $\mathcal E$ at zero makes the continuation entire
@@ -9002,14 +8982,14 @@ where the extraordinary flatness of $\mathcal E$ at zero makes the continuation 
 formalized, in \path{ThueMorseEntireContinuation.lean}.  The Mellin representation
 \eqref{p2:eq:D-Mellin} is not a theorem there but the \emph{definition} of the continuation:
 \leanPartx{Fabius.dirichletMellinContinuation} is $s\mapsto\Gamma(s)^{-1}\!\int_0^\infty
-t^{s-1}\e^{-at}\mathcal E(t)\dd t$, with $\mathcal E$ the lacunary product
-\leanPartx{Fabius.lacunaryExpProduct} and the kernel $\e^{-at}\mathcal E(t)$ the object
+t^{s-1}\EulerE^{-at}\mathcal E(t)\Differential t$, with $\mathcal E$ the lacunary product
+\leanPartx{Fabius.lacunaryExpProduct} and the kernel $\EulerE^{-at}\mathcal E(t)$ the object
 \leanPartx{Fabius.mellinKernel}.  Entirety is
 \leanPartx{Fabius.dirichletMellinContinuation_differentiable}, resting on
 \leanPartx{Fabius.mellin_mellinKernel_differentiable}, which is where the boundary flatness of
 $\mathcal E$ is actually spent.  The dyadic equation \eqref{p2:eq:D-dyadic} is
 \leanPartx{Fabius.dirichletMellinContinuation_dyadic}, proved for every $a>0$ and \emph{every}
-$s\in\C$ by analytic continuation from the ray $\sigma>1$, so it is available at the
+$s\in\ComplexNumbers$ by analytic continuation from the ray $\sigma>1$, so it is available at the
 nonpositive integers where this section differentiates it.  The trivial zeros
 \eqref{p2:eq:Dzeros} are \leanPartx{Fabius.dirichletMellinContinuation_neg_natCast}; as that
 declaration's own documentation stresses, in isolation it is only the formal statement
@@ -9034,7 +9014,7 @@ The functions \eqref{p2:eq:gammaTM} satisfy:
 \begin{align}
  \log\Gamma_r^{\rm TM}(a)
  &=(-1)^rr!\int_0^\infty
- t^{-r-1}\e^{-at}\mathcal E(t)\dd t,
+ t^{-r-1}\EulerE^{-at}\mathcal E(t)\Differential t,
  \label{p2:eq:gamma-Mellin}\\
  \Gamma_r^{\rm TM}(a)
  &=\left(
@@ -9042,14 +9022,14 @@ The functions \eqref{p2:eq:gammaTM} satisfy:
  {\Gamma_r^{\rm TM}((a+1)/2)}
  \right)^{2^r},
  \label{p2:eq:gamma-dyadic}\\
- \frac{\dd}{\dd a}\log\Gamma_r^{\rm TM}(a)
+ \frac{\Differential}{\Differential a}\log\Gamma_r^{\rm TM}(a)
  &=r\log\Gamma_{r-1}^{\rm TM}(a)
  \qquad(r\ge1).
  \label{p2:eq:gamma-differential}
 \end{align}
 More generally, for $0\le k\le r$,
 \begin{equation}
- \frac{\dd^k}{\dd a^k}\log\Gamma_r^{\rm TM}(a)
+ \frac{\Differential^k}{\Differential a^k}\log\Gamma_r^{\rm TM}(a)
  =\fall{r}{k}\log\Gamma_{r-k}^{\rm TM}(a).
  \label{p2:eq:gamma-iterated}
 \end{equation}
@@ -9059,7 +9039,7 @@ More generally, for $0\le k\le r$,
 \begin{proof}
 Near $s=-r$, the reciprocal gamma function has the expansion
 \[
- \frac1{\Gamma(s)}=(-1)^rr!(s+r)+\bigO((s+r)^2).
+ \frac1{\Gamma(s)}=(-1)^rr!(s+r)+\BigO((s+r)^2).
 \]
 The Mellin integral in \eqref{p2:eq:D-Mellin} is finite there, so differentiation gives
 \eqref{p2:eq:gamma-Mellin}.
@@ -9117,7 +9097,7 @@ five public declarations:
 \leanPartx{Fabius.hasDerivAt_Gamma_inv_neg_nat},
 \leanPartx{Fabius.hasDerivAt_Gamma_inv_zero},
 \leanPartx{Fabius.analyticOrderAt_Gamma_inv_neg_nat}, and
-\leanPartx{Fabius.tendsto_Gamma_inv_div_add_nat}.  For every \(r\in\N\), these
+\leanPartx{Fabius.tendsto_Gamma_inv_div_add_nat}.  For every \(r\in\NaturalNumbers\), these
 give
 \[
  (\Gamma^{-1})'(-r)=(-1)^r r!,\qquad
@@ -9137,7 +9117,7 @@ declarations:
 \leanPartx{Fabius.thueMorseGammaLog_eq_mellin},
 \leanPartx{Fabius.thueMorseGammaLog_eq_integral},
 \leanPartx{Fabius.thueMorseGammaLog_dyadic}, and
-\leanPartx{Fabius.thueMorseGammaTower_dyadic}.  For \(a>0\) and \(r\in\N\),
+\leanPartx{Fabius.thueMorseGammaTower_dyadic}.  For \(a>0\) and \(r\in\NaturalNumbers\),
 the first two identify
 \[
  \partial_s\widetilde D(-r,a)=(-1)^r r!\,
@@ -9230,7 +9210,7 @@ $q$-Richardson $p=3$ & $4.00000013$ & $4$\\
 
 \subsection{Weak expansion check}
 
-For $\varphi(y)=\e^y$, all derivatives equal $\e^y$, so
+For $\varphi(y)=\EulerE^y$, all derivatives equal $\EulerE^y$, so
 \cref{p2:thm:weak-expansion} becomes a direct moment correction to the finite moment-generating
 function.  The relative errors are:
 \begin{center}
@@ -9335,7 +9315,7 @@ This distinction is conceptually useful.  It prevents the $q$-binomial notation 
 viewed as an incidental encoding of one exact formula; it reflects two different geometric
 lattices in the same theory.
 
-\subsection{A certified route from finite splines to $\Up$}
+\subsection{A certified route from finite splines to $\RvachevUp$}
 
 The repeated-integration dossiers identify finite stages with compactly supported splines and
 prove convergence.  The random-tail theorem strengthens the conceptual picture:
@@ -9542,7 +9522,7 @@ chain now has a formal counterpart (see the \emph{Formal version} paragraphs abo
 finite bridges, tail reindexing, $q$-interpolation, and analytic logarithms directly, and
 the probabilistic splitting twice over --- in measure form
 (\path{MeasureRefinement.lean}) and, through the affine bridge
-\(\mu_{\Up}=\operatorname{law}(X_\infty)\circ(2\cdot{}-1)^{-1}\), where
+\(\mu_{\RvachevUp}=\operatorname{law}(X_\infty)\circ(2\cdot{}-1)^{-1}\), where
 \(X_\infty=(Y_\infty+1)/2\), as the equality-in-law
 splitting of the random series itself (\path{RandomSeriesLaw.lean}).  Every stage of the
 chain is formal.
@@ -9550,31 +9530,31 @@ chain is formal.
 \begin{obligation}[Canonical normalization theorem --- discharged]
 The repository uses several Fourier-transform conventions across historical manuscripts.
 A promoted theorem should package the convention explicitly and derive all rescalings between
-$F$, $\Up$, $Q_\infty$, and the characteristic function of $Y_\infty$.  Doing so would prevent
+$F$, $\RvachevUp$, $Q_\infty$, and the characteristic function of $Y_\infty$.  Doing so would prevent
 sign and $2\pi$ factors from leaking into later shell or saddle arguments.
 \end{obligation}
 
 This obligation is now discharged: \leanPartx{Fabius.normalization\_dictionary} in
 \path{NormalizationDictionary.lean} is the promoted package.  Its four conjuncts fix the
-convention \(\widehat{\Up}(z)=\int_\R\Up(t)\e^{-2\pi\ii tz}\dd t\) and derive every rescaling
-simultaneously: the function-level fold \(\Up=F(1-|\cdot|)\) (also promoted separately as
+convention \(\widehat{\RvachevUp}(z)=\int_\RealNumbers\RvachevUp(t)\EulerE^{-2\pi\ImaginaryUnit tz}\Differential t\) and derive every rescaling
+simultaneously: the function-level fold \(\RvachevUp=F(1-|\cdot|)\) (also promoted separately as
 \leanPartx{Fabius.rvachevUp\_eq\_fabiusReal\_one\_sub\_abs}), the product identity
-\(\widehat{\Up}=Q_\infty\) on all of \(\C\), the centered characteristic function
-\(\mathbb{E}[e^{itY_\infty}]=\widehat{\Up}(t/(2\pi))\), and the uncentered
-\(\mathbb{E}[e^{itX_\infty}]=e^{it/2}\,\widehat{\Up}(t/(4\pi))\).  The individual legs that fix the
+\(\widehat{\RvachevUp}=Q_\infty\) on all of \(\ComplexNumbers\), the centered characteristic function
+\(\mathbb{E}[e^{itY_\infty}]=\widehat{\RvachevUp}(t/(2\pi))\), and the uncentered
+\(\mathbb{E}[e^{itX_\infty}]=e^{it/2}\,\widehat{\RvachevUp}(t/(4\pi))\).  The individual legs that fix the
 convention remain available: \leanPartx{Fabius.rvachevFourier} is
-$\int_\R\Up(t)\e^{-2\pi\ii tz}\dd t$,
+$\int_\RealNumbers\RvachevUp(t)\EulerE^{-2\pi\ImaginaryUnit tz}\Differential t$,
 \leanPartx{Fabius.rvachevFourier_eq_product} converts it into $Q_\infty$, and
 \leanPartx{Fabius.complexGeneratingFunction_eq_fourier_analytic} together with
 \leanPartx{Fabius.complexGeneratingFunction_neg_eq_tprod} carries the rotation to $G$.  The
 characteristic-function leg is now formal as well:
 \leanPartx{Fabius.charFun\_weightedSumDistribution} evaluates
-\(\mathbb{E}[e^{itX_\infty}]=e^{it/2}\,\widehat{\Up}(t/(4\pi))\) for the uncentered
+\(\mathbb{E}[e^{itX_\infty}]=e^{it/2}\,\widehat{\RvachevUp}(t/(4\pi))\) for the uncentered
 \(X_\infty=(Y_\infty+1)/2\), while
 \leanPartx{Fabius.rvachevMeasure\_charFun\_pos} gives the centered identity
-\(\mathbb{E}[e^{itY_\infty}]=\widehat{\Up}(t/(2\pi))\).  These fix the rescaling between
+\(\mathbb{E}[e^{itY_\infty}]=\widehat{\RvachevUp}(t/(2\pi))\).  These fix the rescaling between
 Mathlib's characteristic-function convention and \leanPartx{Fabius.rvachevFourier}, with
-the \(F\leftrightarrow\Up\) passage carried at measure level by
+the \(F\leftrightarrow\RvachevUp\) passage carried at measure level by
 \leanPartx{Fabius.rvachevMeasure\_eq\_map\_weightedSum} and its CDF identity
 \leanPartx{Fabius.rvachevMeasure\_Iic}.  The packaging the obligation asked for is exactly the four
 conjuncts of \leanPartx{Fabius.normalization\_dictionary}: later shell or saddle arguments
@@ -9660,7 +9640,7 @@ There is a fully explicit algorithm which, for sufficiently small $x>0$ and targ
 error $\eta$, evaluates $F(x)$ using
 \begin{equation}
  -\frac{W_{-1}(-x\log2)}{\log2}
- +\frac12\log_2\frac1\eta+\bigO(1)
+ +\frac12\log_2\frac1\eta+\BigO(1)
  \label{p2:eq:conj-depth}
 \end{equation}
 product layers, together with a bounded-order periodic saddle jet, and whose final error is
@@ -9678,7 +9658,7 @@ variance $\kappa_2=1/9$.
 After removing the first $N$ even cumulants of the centered tail in addition to the linear
 factor, the extra depth required for tolerance $\eta$ is
 \begin{equation}
- \frac{1}{2N+2}\log_2\frac1\eta+\bigO_N(1).
+ \frac{1}{2N+2}\log_2\frac1\eta+\BigO_N(1).
  \label{p2:eq:cumulant-depth-conj}
 \end{equation}
 Equivalently, the $N$-corrected finite block should require only one additional product layer
@@ -9694,12 +9674,12 @@ needed derivatives and the periodic phase.
 Fix $N\ge0$ and a compact interval $K\subset(-1,1)$.  After excluding a neighborhood of the
 knots of the finite spline $u_m$ whose width is comparable to $2^{-m}$, the distributional
 expansion \eqref{p2:eq:distributional} admits a pointwise or Hölder-norm version through order
-$N$, with remainder $\bigO_K(4^{-(N+1)m})$ after the natural derivative scaling.
+$N$, with remainder $\BigO_K(4^{-(N+1)m})$ after the natural derivative scaling.
 \end{conjecture}
 
 A global pointwise statement cannot be obtained by naively differentiating $u_m$: finite
-splines have knots, whereas $\Up$ is smooth.  The random-tail convolution indicates two viable
-repairs.  One may either retain the exact final mollifier $2^m\Up(2^m\cdot)$, or state the
+splines have knots, whereas $\RvachevUp$ is smooth.  The random-tail convolution indicates two viable
+repairs.  One may either retain the exact final mollifier $2^m\RvachevUp(2^m\cdot)$, or state the
 expansion on cells separated from their endpoints.  Establishing the best norm and boundary
 layer is a concrete approximation-theoretic problem.
 
