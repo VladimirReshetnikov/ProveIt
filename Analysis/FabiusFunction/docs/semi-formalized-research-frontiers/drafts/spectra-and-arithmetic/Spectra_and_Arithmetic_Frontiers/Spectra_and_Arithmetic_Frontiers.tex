@@ -4153,7 +4153,7 @@ At $s=s_k$ its residue is $\zeta(s_k)/\log2$.
 \end{theorem}
 
 \begin{proof}
-Write $1+\nu_2(n)=\sum_{h\ge0}\mathbf 1_{2^h\mid n}$.  Absolute convergence permits interchange:
+Write $1+\nu_2(n)=\sum_{h\ge0}\IndicatorOf{2^h\mid n}$.  Absolute convergence permits interchange:
 \[
  \mathcal Z_1(s)=\sum_{h\ge0}\sum_{m\ge1}(2^hm)^{-s}
  =\zeta(s)\sum_{h\ge0}2^{-hs}
@@ -4242,7 +4242,7 @@ For the densities,
 \begin{equation}\label{p3:eq:refinement-density}
   f_r(x)=2(f_r*f_{r-1})(2x),
   \qquad
-  f_0(x)=\frac12\mathbf 1_{[-1,1]}(x).
+  f_0(x)=\frac12\IndicatorOf{[-1,1]}(x).
 \end{equation}
 \end{theorem}
 
@@ -6850,7 +6850,8 @@ $K_N\sim\operatorname{Bin}(N,w)$.  Therefore
  =\Expectation\Probability(K_N/N\leq t\mid W).
 \]
 The conditional law of large numbers makes the inner probability converge to
-$\mathbf1_{\{W\leq t\}}$ away from $w=t$.  The distribution of $W$ is continuous, so the
+$\IndicatorOf{\{W\leq t\}}$ away from $w=t$.  The distribution of $W$ is continuous,
+so the
 expectation converges to
 $\Probability(W\leq t)=1-\FabiusQuantile(1-t)$ by
 \eqref{p4:eq:V-cdf}.  Uniqueness is also the classical determinacy of the Hausdorff moment

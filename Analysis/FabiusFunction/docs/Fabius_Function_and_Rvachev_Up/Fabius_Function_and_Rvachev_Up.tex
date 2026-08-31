@@ -1385,15 +1385,15 @@ The second equality is the product-map form of convolution.  Thus
 The transformer \(\mathcal A_{\rho,d,q}\) preserves probability measures, and its
 characteristic function factors as
 \begin{equation}
- \widehat{\mathcal A_{\rho,d,q}(\lambda)}(t)
- =\widehat{d_*\rho}(t)\,\widehat\lambda(qt).
+ \CharacteristicFunction{\mathcal A_{\rho,d,q}(\lambda)}(t)
+ =\CharacteristicFunction{d_*\rho}(t)\,\CharacteristicFunction{\lambda}(qt).
  \label{eq:affine-independent-copy-charfun}
 \end{equation}
 If \(\lambda\) is a fixed point, then for every \(n\in\NaturalNumbers\),
 \begin{equation}
- \widehat\lambda(t)
- =\left(\prod_{k=0}^{n-1}\widehat{d_*\rho}(q^kt)\right)
-    \widehat\lambda(q^nt).                                  \label{eq:affine-charfun-finite-iterate}
+ \CharacteristicFunction{\lambda}(t)
+ =\left(\prod_{k=0}^{n-1}\CharacteristicFunction{d_*\rho}(q^kt)\right)
+    \CharacteristicFunction{\lambda}(q^nt).                 \label{eq:affine-charfun-finite-iterate}
 \end{equation}
 If \(|q|<1\), the transformer has at most one probability fixed point.  Equivalently, two
 probability measures satisfying the product-map equation in
@@ -1405,9 +1405,9 @@ The factorization is the convolution product rule followed by the characteristic
 rule for real scalar multiplication.  For two fixed points, their common digit factor has
 modulus at most one, so one recurrence step gives
 \[
- \bigl|\widehat\lambda(t)-\widehat\nu(t)\bigr|
+ \bigl|\CharacteristicFunction{\lambda}(t)-\CharacteristicFunction{\nu}(t)\bigr|
  \le
- \bigl|\widehat\lambda(qt)-\widehat\nu(qt)\bigr|.
+ \bigl|\CharacteristicFunction{\lambda}(qt)-\CharacteristicFunction{\nu}(qt)\bigr|.
 \]
 Iteration moves the argument to \(q^nt\).  Since \(|q|<1\), this tends to zero; continuity
 of characteristic functions and their common value \(1\) at the origin force equality at
@@ -1579,7 +1579,7 @@ The digit formula is unconditional in real \(q\).  For every \(|q|<1\), depth
 \[
  \phi_q(t)=e^{\ImaginaryUnit(1-q^m)t/2}
  \left(\prod_{k=0}^{m-1}
-   \operatorname{sinc}\!\left(\frac{(1-q)q^kt}{2}\right)\right)
+   \SincRad\!\left(\frac{(1-q)q^kt}{2}\right)\right)
  \phi_q(q^m t),
 \]
 and the phase-bearing prefix without the residual converges pointwise to \(\phi_q(t)\).
@@ -1975,7 +1975,7 @@ There is also a completely discrete approximation theorem.  For \(k\ge0\), let
 Thus \(\nu_n\) is a finite atomic probability measure.  Its characteristic function is the
 finite weighted cosine product
 \begin{equation}
- \widehat\nu_n(t)
+ \CharacteristicFunction{\nu_n}(t)
  =\prod_{k=0}^{n-1}
    \left(\cos\frac{t}{2^{k+2}}\right)^{k+1}.                   \label{eq:finite-atomic-char}
 \end{equation}
@@ -1991,7 +1991,7 @@ Lebesgue-null set is also \(\mu_{\RvachevUp}\)-null.  These are
 Its characteristic function uses the positive-frequency normalization
 \begin{equation}
  \operatorname{charFun}(\mu_{\RvachevUp},t)
- =\widehat{\RvachevUp}\!\left(\frac{t}{2\pi}\right)\qquad(t\in\RealNumbers),
+ =\FourierTwoPi{\RvachevUp}\!\left(\frac{t}{2\pi}\right)\qquad(t\in\RealNumbers),
                                                                \label{eq:rvachev-charfun}
 \end{equation}
 the exact identity \lean{rvachevMeasure_charFun_pos} in \path{WeakConvergence.lean}.
@@ -2046,7 +2046,7 @@ Moreover,
  \mathcal P_m(1)=2^{\binom{m+1}{2}}.                          \label{eq:four-degree-mass}
 \end{equation}
 
-For \(\alpha<\beta\), let \(\mathbf 1^\ast_{[\alpha,\beta]}\) be \(1\) in the
+For \(\alpha<\beta\), let \(\IndicatorOf{[\alpha,\beta]}^\ast\) be \(1\) in the
 interior, \(1/2\) at either endpoint, and \(0\) elsewhere.  Put
 \begin{equation}
  I_{m,r}=
@@ -2057,7 +2057,7 @@ and
 \begin{equation}
  \mathcal W_m(x)=
  \frac{2^m}{2^{\binom{m+1}{2}}}
- \sum_{r=0}^{g_m}a_{m,r}\,\mathbf 1^\ast_{I_{m,r}}(x).         \label{eq:four-step-approximant}
+ \sum_{r=0}^{g_m}a_{m,r}\,\IndicatorOf{I_{m,r}}^\ast(x).      \label{eq:four-step-approximant}
 \end{equation}
 
 \begin{theorem}[Corrected step approximation]
@@ -2146,7 +2146,7 @@ one-sided approximation and improves its error by a factor of two.
 
 Let
 \begin{equation}
- N_p(x)=\max\left(0,\left\lfloor 2^p x+\frac12\right\rfloor\right),
+ N_p(x)=\max\left(0,\Floor{2^p x+\frac12}\right),
  \qquad \varepsilon_r=(-1)^{\BinaryDigitSum(r)},                       \label{eq:centered-cutoff}
 \end{equation}
 and interpret a sum with $N_p(x)=0$ as empty.  Define
@@ -2168,7 +2168,7 @@ where only the terms $r<N_p(x)$ can be nonzero and $t_+=\max(t,0)$.
 The cutoff in \eqref{eq:centered-cutoff} is a safe natural-number form of the
 inclusive upper limit
 \[
- 0\le r\le\left\lfloor2^p x-\frac12\right\rfloor.
+ 0\le r\le\Floor{2^p x-\frac12}.
 \]
 It handles the empty case without assigning a negative upper endpoint to a finite sum.
 
@@ -2376,7 +2376,7 @@ analytic questions, not consequences of the cell polynomial alone.
 
 Use the convention
 \begin{equation}
- \widehat f(z)=\int_\RealNumbers f(x)\EulerE^{-2\pi\ImaginaryUnit xz}\Differential x.          \label{eq:fourier-convention}
+ \FourierTwoPi{f}(z)=\int_\RealNumbers f(x)\EulerE^{-2\pi\ImaginaryUnit xz}\Differential x.   \label{eq:fourier-convention}
 \end{equation}
 The formal Fourier transform of \(\RvachevUp\) is entire and has two exact infinite-product
 descriptions.
@@ -2385,7 +2385,7 @@ descriptions.
 \label{thm:four-products}
 For every \(z\in\ComplexNumbers\),
 \begin{align}
- \widehat{\RvachevUp}(z)
+ \FourierTwoPi{\RvachevUp}(z)
  &=\prod_{n=0}^{\infty}
    \SincRad\!\left(\frac{\pi z}{2^n}\right),                 \label{eq:sinc-product}\\
  &=\prod_{m=1}^{\infty}
@@ -2393,7 +2393,7 @@ For every \(z\in\ComplexNumbers\),
 \end{align}
 The transform also satisfies
 \begin{equation}
- \widehat{\RvachevUp}(z)=\SincRad(\pi z)\widehat{\RvachevUp}(z/2).          \label{eq:fourier-refinement}
+ \FourierTwoPi{\RvachevUp}(z)=\SincRad(\pi z)\FourierTwoPi{\RvachevUp}(z/2). \label{eq:fourier-refinement}
 \end{equation}
 \end{theorem}
 
@@ -2618,9 +2618,9 @@ particular bounded Fabius solution uses the separate identification
 For every \(k\in\NaturalNumbers\) and \(z\in\ComplexNumbers\), dilation by \(2^k\) extracts exactly the first
 \(k\) factors of the sinc product:
 \begin{equation}
- \widehat{\RvachevUp}(2^kz)
+ \FourierTwoPi{\RvachevUp}(2^kz)
  =\left(\prod_{j=0}^{k-1}\SincRad\!\left(\pi 2^{j+1}z\right)\right)
-   \widehat{\RvachevUp}(z).                                      \label{eq:fourier-dyadic-shell}
+  \FourierTwoPi{\RvachevUp}(z).                                 \label{eq:fourier-dyadic-shell}
 \end{equation}
 \end{theorem}
 
@@ -2633,10 +2633,10 @@ for every \(k\in\NaturalNumbers\) and \(y\in\RealNumbers\),
 \begin{equation}
  \begin{split}
  &2^{k(k+1)/2}(\pi|y|)^k
-   \left|\widehat{\RvachevUp}(2^ky)\right|\\
+  \left|\FourierTwoPi{\RvachevUp}(2^ky)\right|\\
  &\qquad={}
  \left(\prod_{j=0}^{k-1}\left|\sin(2^{j+1}\pi y)\right|\right)
-   \left|\widehat{\RvachevUp}(y)\right|.
+  \left|\FourierTwoPi{\RvachevUp}(y)\right|.
  \end{split}                                               \label{eq:fourier-dyadic-shell-cross}
 \end{equation}
 This total form includes \(y=0\), and at \(k=0\) both sides are the same Fourier modulus.
@@ -2723,7 +2723,7 @@ For a quantitative global form, set
 \end{equation}
 There is a constant \(C>0\) such that the single two-sided estimate
 \begin{equation}
- |\widehat{\RvachevUp}(x)|\le C E_{\kappa_\infty}(|x|)
+ |\FourierTwoPi{\RvachevUp}(x)|\le C E_{\kappa_\infty}(|x|)
  \qquad(|x|\ge1)                                          \label{eq:fourier-two-sided-envelope}
 \end{equation}
 holds on both real tails.  This is
@@ -2731,14 +2731,14 @@ holds on both real tails.  This is
 \path{RvachevFourierDecay.lean}.  On the distinguished dyadic ray the same gauge occurs
 in an exact identity:
 \begin{equation}
- |\widehat{\RvachevUp}(2^k\,2/3)|
- =\frac{|\widehat{\RvachevUp}(2/3)|}{E_{\kappa_\infty}(2/3)}
+ |\FourierTwoPi{\RvachevUp}(2^k\,2/3)|
+ =\frac{|\FourierTwoPi{\RvachevUp}(2/3)|}{E_{\kappa_\infty}(2/3)}
    E_{\kappa_\infty}(2^k\,2/3),                           \label{eq:fourier-peak-ray-envelope}
 \end{equation}
 namely \lean{norm_rvachevFourier_peak_ray_envelope} in the same module.
 
 The exponent \(\kappa_\infty\) is sharp within this family of gauges.  Write \(\Phi\) for
-the standalone sinc product, which equals \(\widehat{\RvachevUp}\) by
+the standalone sinc product, which equals \(\FourierTwoPi{\RvachevUp}\) by
 \lean{rvachevFourier_eq_product}.  For every \(\kappa>\kappa_\infty\),
 \begin{equation}
  \frac{|\Phi(2^k\,2/3)|}{E_\kappa(2^k\,2/3)}
@@ -2762,9 +2762,9 @@ The limit, explicit peak-ray obstruction, and positive-ray nonexistence theorem 
 
 The transform also has the exact conjugation, parity, and real-axis identities
 \begin{equation}
- \overline{\widehat{\RvachevUp}(z)}=\widehat{\RvachevUp}(-\overline z),
- \qquad \widehat{\RvachevUp}(-z)=\widehat{\RvachevUp}(z),
- \qquad \operatorname{Im}\widehat{\RvachevUp}(t)=0\quad(t\in\RealNumbers).   \label{eq:fourier-symmetries}
+ \overline{\FourierTwoPi{\RvachevUp}(z)}=\FourierTwoPi{\RvachevUp}(-\overline z),
+ \qquad \FourierTwoPi{\RvachevUp}(-z)=\FourierTwoPi{\RvachevUp}(z),
+ \qquad \operatorname{Im}\FourierTwoPi{\RvachevUp}(t)=0\quad(t\in\RealNumbers). \label{eq:fourier-symmetries}
 \end{equation}
 These are \lean{rvachevFourier_conj} in \path{FourierAnalytic.lean} and
 \lean{rvachevFourier_neg}, \lean{rvachevFourier_ofReal_im_eq_zero} in
@@ -2774,7 +2774,7 @@ These are \lean{rvachevFourier_conj} in \path{FourierAnalytic.lean} and
 \label{thm:fourier-zeros}
 The complex zeros of the Fourier transform are precisely the nonzero integers:
 \begin{equation}
- \widehat{\RvachevUp}(z)=0
+ \FourierTwoPi{\RvachevUp}(z)=0
  \quad\Longleftrightarrow\quad
  \exists\,m\in\IntegerNumbers\setminus\{0\}\text{ such that }z=m,
  \qquad z\in\ComplexNumbers.                                           \label{eq:fourier-integer-zeros}
@@ -2784,13 +2784,13 @@ At every positive integer \(m\), its real-axis zero order is exactly
 \(C_m>0\) such that
 \begin{equation}
  \lim_{\substack{x\to m\\x\ne m}}
- \frac{\left|\widehat{\RvachevUp}(x)\right|}
+ \frac{\left|\FourierTwoPi{\RvachevUp}(x)\right|}
       {|x-m|^{\TwoAdicValuation(m)+1}}
  =C_m.                                                     \label{eq:fourier-zero-order}
 \end{equation}
 The corresponding canonical product records all of these orders at once:
 \begin{equation}
- \widehat{\RvachevUp}(z)=\prod_{r=0}^{\infty}
+ \FourierTwoPi{\RvachevUp}(z)=\prod_{r=0}^{\infty}
  \left(1-\frac{z^2}{(r+1)^2}\right)^{1+\TwoAdicValuation(r+1)}.       \label{eq:fourier-canonical-product}
 \end{equation}
 \end{theorem}
@@ -3044,7 +3044,7 @@ For every \(z\in\ComplexNumbers\), without a nonvanishing hypothesis,
    \left(\frac{z^2}{(k+1)^2};\frac14\right)_{\infty,\ComplexNumbers}.
                                                                \label{eq:rvachev-complex-qpochhammer}
 \end{equation}
-The same right-hand side equals \(\widehat{\RvachevUp}(z)\) for every bounded
+The same right-hand side equals \(\FourierTwoPi{\RvachevUp}(z)\) for every bounded
 Fabius witness satisfying the Fabius equations.  Equation
 \eqref{eq:rvachev-complex-qpochhammer} is the \(q=1/2\), nome-\(1/4\)
 specialization of \eqref{eq:geometric-complex-qpochhammer}.
@@ -3113,13 +3113,13 @@ origin that is useful independently of sinc products.  For \(b,N,J\in\NaturalNum
  c_J(b,m):=\#\{j\in\{0,\ldots,J\}:b^j\mid m\}.
 \]
 If \(q>0\), multiplication by \(q\) identifies the positive multiples of \(q\)
-not exceeding \(N\) with \(1,\ldots,\lfloor N/q\rfloor\).  Consequently, for
+not exceeding \(N\) with \(1,\ldots,\Floor{N/q}\).  Consequently, for
 every function \(f\) into a commutative monoid,
 \begin{align}
- \prod_{1\le n\le\lfloor N/q\rfloor}f(qn)
+ \prod_{1\le n\le\Floor{N/q}}f(qn)
    &=\prod_{\substack{1\le m\le N\\q\mid m}}f(m),
                                                                \label{eq:base-layer-reindexing}\\
- \prod_{j=0}^{J}\prod_{1\le n\le\lfloor N/b^j\rfloor}f(b^jn)
+ \prod_{j=0}^{J}\prod_{1\le n\le\Floor{N/b^j}}f(b^jn)
    &=\prod_{m=1}^{N}f(m)^{c_J(b,m)}\qquad(b>0).             \label{eq:base-layer-regrouping}
 \end{align}
 For \(b>1\) and \(m\ne0\), if the displayed layer range reaches the
@@ -3131,7 +3131,7 @@ multiplicity, that is, if
 Thus, under the explicit hypothesis
 \(\operatorname{multiplicity}(b,m)\le J\) for every \(1\le m\le N\),
 \begin{equation}
- \prod_{j=0}^{J}\prod_{1\le n\le\lfloor N/b^j\rfloor}f(b^jn)
+ \prod_{j=0}^{J}\prod_{1\le n\le\Floor{N/b^j}}f(b^jn)
  =\prod_{m=1}^{N}f(m)^{\operatorname{multiplicity}(b,m)+1}. \label{eq:base-layer-multiplicity}
 \end{equation}
 The same three identities hold in every additive commutative monoid, with
@@ -3404,7 +3404,7 @@ finite sums yields
  \qquad(b\ne1),                                         \label{eq:weighted-scale-cumulative}
 \end{equation}
 where \(\mathrm{div}\) denotes natural-number quotient.  For \(b>1\) this
-is the familiar floor \(\lfloor N/b^h\rfloor\).
+is the familiar floor \(\Floor{N/b^h}\).
 
 Pascal weights now give the hockey-stick identities
 \begin{align}
@@ -3464,7 +3464,7 @@ For every integer \(b>1\), including a composite base, the logarithmic height
 already contains all layers:
 \begin{equation}
  \sum_{m=0}^{N-1}W_{b,w}(m+1)
- =\sum_{h=0}^{\lfloor\log_bN\rfloor}
+ =\sum_{h=0}^{\Floor{\log_bN}}
    \bigl(N\mathbin{\mathrm{div}}b^h\bigr)\odot w(h).
  \label{eq:weighted-scale-log-height}
 \end{equation}
@@ -3501,15 +3501,15 @@ zero order.  Those analytic bridges remain separate obligations.
 
 On the real axis the origin is the unique global point of unit modulus:
 \begin{equation}
- |\widehat{\RvachevUp}(x)|=1\quad\Longleftrightarrow\quad x=0,
- \qquad x\ne0\quad\Longrightarrow\quad |\widehat{\RvachevUp}(x)|<1.
+ |\FourierTwoPi{\RvachevUp}(x)|=1\quad\Longleftrightarrow\quad x=0,
+ \qquad x\ne0\quad\Longrightarrow\quad |\FourierTwoPi{\RvachevUp}(x)|<1.
                                                                \label{eq:fourier-global-peak}
 \end{equation}
 These are \lean{norm_rvachevFourier_eq_one_iff} and
 \lean{norm_rvachevFourier_lt_one_of_ne_zero}.  On each positive real lobe
 the sign and peak are also exact.  If \(m\in\NaturalNumbers\) and \(m<x<m+1\), then
 \begin{equation}
- \widehat{\RvachevUp}(x)=\varepsilon_m|\widehat{\RvachevUp}(x)|,        \label{eq:fourier-lobe-sign}
+ \FourierTwoPi{\RvachevUp}(x)=\varepsilon_m|\FourierTwoPi{\RvachevUp}(x)|, \label{eq:fourier-lobe-sign}
 \end{equation}
 by \lean{rvachevFourier_eq_thueMorse_sign_mul_norm}.  If moreover \(m\ge1\),
 there is exactly one point of \((m,m+1)\) maximizing the modulus over that
@@ -3521,9 +3521,9 @@ declarations are in \path{RvachevFourierDecay.lean}.
 
 Globally, the origin is the unique real frequency of unit modulus:
 \begin{equation}
- \left|\widehat{\RvachevUp}(x)\right|\le1,
+ \left|\FourierTwoPi{\RvachevUp}(x)\right|\le1,
  \qquad
- \left|\widehat{\RvachevUp}(x)\right|=1\quad\Longleftrightarrow\quad x=0.
+ \left|\FourierTwoPi{\RvachevUp}(x)\right|=1\quad\Longleftrightarrow\quad x=0.
                                                                \label{eq:fourier-strict-global-peak}
 \end{equation}
 Equivalently, the first inequality is strict whenever \(x\ne0\).  These statements are
@@ -3535,12 +3535,12 @@ Equivalently, the first inequality is strict whenever \(x\ne0\).  These statemen
 
 For every \(N\in\NaturalNumbers\) there is a constant \(C_N>0\) such that
 \begin{equation}
- |\xi|^N|\widehat{\RvachevUp}(\xi)|\le C_N\qquad(\xi\in\RealNumbers),     \label{eq:schwartz-decay}
+ |\xi|^N|\FourierTwoPi{\RvachevUp}(\xi)|\le C_N\qquad(\xi\in\RealNumbers), \label{eq:schwartz-decay}
 \end{equation}
 and the companion formal theorem gives the corresponding polynomially weighted bound for
 every iterated real-frequency derivative.  Fourier inversion holds in the exact form
 \begin{equation}
- \RvachevUp(x)=\int_\RealNumbers\widehat{\RvachevUp}(\xi)\EulerE^{2\pi\ImaginaryUnit x\xi}\Differential\xi. \label{eq:fourier-inversion}
+ \RvachevUp(x)=\int_\RealNumbers\FourierTwoPi{\RvachevUp}(\xi)\EulerE^{2\pi\ImaginaryUnit x\xi}\Differential\xi. \label{eq:fourier-inversion}
 \end{equation}
 These are \lean{rvachevFourier_real_rapidDecay},
 \lean{rvachevFourier_real_iteratedDeriv_rapidDecay}, and
@@ -3552,7 +3552,7 @@ These are \lean{rvachevFourier_real_rapidDecay},
 For \(u>0\) and \(t\in\RealNumbers\), the formal Poisson identity is
 \begin{equation}
  \sum_{k\in\IntegerNumbers}\RvachevUp(t+uk)
- =\frac1u\sum_{k\in\IntegerNumbers}\widehat{\RvachevUp}(k/u)
+ =\frac1u\sum_{k\in\IntegerNumbers}\FourierTwoPi{\RvachevUp}(k/u)
    \EulerE^{2\pi\ImaginaryUnit kt/u}.                                     \label{eq:poisson-up}
 \end{equation}
 It is \lean{rvachev_poisson_summation}.  Combining it with
@@ -3714,7 +3714,7 @@ With
 \end{equation}
 the exact entire series is
 \begin{equation}
- \widehat{\RvachevUp}(z)=\sum_{n=0}^{\infty}
+ \FourierTwoPi{\RvachevUp}(z)=\sum_{n=0}^{\infty}
    \frac{(-1)^n c_n}{(2n)!}(2\pi z)^{2n}.                  \label{eq:fourier-moment-series}
 \end{equation}
 This is \lean{rvachevFourier_eq_momentSeries} in
@@ -3733,7 +3733,7 @@ The declarations \lean{rvachevFourierMomentTerm_zero} and
 More strongly than the equality of total sums in
 \eqref{eq:fourier-moment-series},
 \lean{hasSum_rvachevFourierMomentTerm} proves
-\(\operatorname{HasSum}(A_\bullet(z),\widehat{\RvachevUp}(z))\) for every bounded
+\(\operatorname{HasSum}(A_\bullet(z),\FourierTwoPi{\RvachevUp}(z))\) for every bounded
 Fabius solution.  These four declarations are in
 \path{AnalyticMoments.lean}; the canonical product specialization used below
 is in \path{RvachevQBinomialFilter.lean}.
@@ -3785,7 +3785,7 @@ $k,m\in\NaturalNumbers$ with $0\le m<2^k$,
  F^{(k)}\!\left(\frac{m}{2^k}\right)
  =\begin{cases}
    0,&m\text{ even},\\
-   2^{\binom{k+1}{2}}\varepsilon_{\lfloor m/2\rfloor},&m\text{ odd}.
+   2^{\binom{k+1}{2}}\varepsilon_{\Floor{m/2}},&m\text{ odd}.
   \end{cases}                                             \label{eq:fabius-dyadic-jet-thue-morse}
 \end{equation}
 Thus the even numerators are exactly the zeros, while every odd numerator attains the
@@ -5647,7 +5647,7 @@ sequences.  For \(n\ge1\),
  2^{2n-2k}(2^{2k}-2)\binom{2n}{2k}B_{2k}c_{n-k},
                                                                \label{eq:mom-c-bernoulli}\\
  d_n&=\frac{n\,2^{n}}{4(2^n-1)}d_{n-1}
- -\frac{1}{2^n-1}\sum_{k=1}^{\lfloor n/2\rfloor}
+ -\frac{1}{2^n-1}\sum_{k=1}^{\Floor{n/2}}
  \binom{n}{2k}2^{n-2k}B_{2k}d_{n-2k}.                         \label{eq:mom-d-bernoulli}
 \end{align}
 Here \(B_1=-1/2\).  These are
@@ -5678,7 +5678,7 @@ Let $n,a\in\NaturalNumbers$ with $0\le a\le2^n$.  Then
  F\!\left(\frac{a}{2^n}\right)
  =\frac{2^{-\binom{n+1}{2}}}{n!}
  \sum_{h=0}^{a-1}(-1)^{\BinaryDigitSum(h)}
- \sum_{k=0}^{\lfloor n/2\rfloor}
+ \sum_{k=0}^{\Floor{n/2}}
  \binom n{2k}c_k(2a-2h-1)^{n-2k}.}
                                                                \label{eq:dyadic-closed}
 \end{equation}
@@ -5704,7 +5704,7 @@ For all $n,a\in\NaturalNumbers$ the signed global extension satisfies
  \FabiusGlobal\!\left(\frac{a}{2^n}\right)
  =\frac{2^{-\binom{n+1}{2}}}{n!}
  \sum_{h=0}^{a-1}\varepsilon_h
- \sum_{k=0}^{\lfloor n/2\rfloor}
+ \sum_{k=0}^{\Floor{n/2}}
  \binom n{2k}c_k(2a-2h-1)^{n-2k}.}
                                                                \label{eq:dy-global-closed}
 \end{equation}
@@ -5748,7 +5748,7 @@ Let $n\in\NaturalNumbers$ and $q\in\IntegerNumbers$.  If $|q|<2^n$, then
  \RvachevUp\!\left(\frac q{2^n}\right)
  =\frac{2^{-\binom{n+1}{2}}}{n!}
  \sum_{h=0}^{q+2^n-1}\varepsilon_h
- \sum_{k=0}^{\lfloor n/2\rfloor}
+ \sum_{k=0}^{\Floor{n/2}}
  \binom n{2k}c_k\bigl(2q+2^{n+1}-2h-1\bigr)^{n-2k},
                                                                \label{eq:dy-bump-case}
 \end{equation}
@@ -5774,7 +5774,7 @@ for $q=2^n$ the value is $\FabiusGlobal(2)=0$.
 \begin{remark}[Why the sum is finite]
 \label{rem:dy-finiteness}
 Both index sets in \eqref{eq:dy-global-closed} are finite: the outer range is
-\(0\le h<a\), and the inner range is \(0\le k\le\lfloor n/2\rfloor\).
+\(0\le h<a\), and the inner range is \(0\le k\le\Floor{n/2}\).
 The moments \(c_k\) are rational by the proved recurrence \eqref{eq:c-recurrence}.
 Thus the formula is an exact computation in \(\RationalNumbers\), with no analytic truncation or
 floating-point roundoff.
@@ -5998,7 +5998,7 @@ the exact declaration \lean{thueMorseCenteredPowerSum_self}.
 
 Let \(e,a\in\NaturalNumbers\) with \(0<a\le2^e\), and write
 \begin{equation}
- b=\lfloor\log_2a\rfloor,\qquad
+ b=\Floor{\log_2a},\qquad
  r=e-b,\qquad q=a-2^b,\qquad y=\frac{q}{2^e}.              \label{eq:bit-split}
 \end{equation}
 Thus \(0\le q<a\): the leading binary power has been removed.  Put
@@ -6099,7 +6099,7 @@ and records the associated sign.  The fold is a reduction modulo $2$ followed by
 \label{thm:dy-triangular}
 Let $n\in\NaturalNumbers$ and put $s=2^n$.  Let $a\in\NaturalNumbers$ and write
 \begin{equation}
- a=2sB+R,\qquad B=\left\lfloor\frac a{2s}\right\rfloor,\qquad 0\le R<2s,
+ a=2sB+R,\qquad B=\Floor{\frac a{2s}},\qquad 0\le R<2s,
                                                                \label{eq:dy-triangular-split}
 \end{equation}
 and set
@@ -6132,7 +6132,7 @@ $0\le R<2s$.  The final statement is the vanishing of $\FabiusGlobal$ on the neg
 Combining \eqref{eq:dy-triangular} with Algorithm~\ref{alg:dyadic-evaluator} gives a total exact
 evaluator for $\FabiusGlobal$ at every dyadic rational: reduce with
 \eqref{eq:dy-triangular-split}--\eqref{eq:dy-triangular-fold}, compute the block sign
-$\varepsilon_B=(-1)^{\BinaryDigitSum(B)}$ from the binary digits of $B=\lfloor a/2^{n+1}\rfloor$, and call
+$\varepsilon_B=(-1)^{\BinaryDigitSum(B)}$ from the binary digits of $B=\Floor{a/2^{n+1}}$, and call
 $\operatorname{Eval}(n,C)$.
 
 The reduction is compatible with unreduced presentations.  Replacing $(n,a)$ by $(n+1,2a)$
@@ -6163,8 +6163,8 @@ Let
 Let $n\ge1$ and $a\in\IntegerNumbers$ with $|a|<2^n$.  Then
 \begin{equation}
  \RvachevUp(a/2^n)\;n!\,2^{\binom{n+1}{2}}
- \bigl(2\lfloor n/2\rfloor+1\bigr)!!\,
- M_{\lfloor n/2\rfloor}                                  \label{eq:denominator-bound}
+ \bigl(2\Floor{n/2}+1\bigr)!!\,
+ M_{\Floor{n/2}}                                          \label{eq:denominator-bound}
 \end{equation}
 is an integer.
 \end{theorem}
@@ -6180,7 +6180,7 @@ Let $\Delta_n$ be the least common multiple of the reduced denominators of the v
 $\RvachevUp(a/2^n)$ with odd $a$ in the support.  The theorem gives the explicit divisibility bound
 \begin{equation}
  \Delta_n\mid n!\,2^{\binom{n+1}{2}}
- \bigl(2\lfloor n/2\rfloor+1\bigr)!!M_{\lfloor n/2\rfloor}. \label{eq:lcm-bound}
+ \bigl(2\Floor{n/2}+1\bigr)!!M_{\Floor{n/2}}.            \label{eq:lcm-bound}
 \end{equation}
 A complementary lower statement is also formalized.
 
@@ -7314,8 +7314,8 @@ Binary complementation gives the raw inverse-dyadic form
 \end{equation}
 Its translated numerator is constant by
 \lean{qBinomialThueMorseRawTranslatedNumeratorPolynomial_eq_const}.  The
-algebraic statement is in fact valid over every field \(K\) equipped with an
-\(\mathbb Q\)-algebra structure and every scalar translation \(Q\in K\): the
+algebraic statement is in fact valid over every field \(K\) equipped with a
+\(\RationalNumbers\)-algebra structure and every scalar translation \(Q\in K\): the
 fully expanded right-hand side equals the canonical inverse-dyadic rational
 value after its scalar embedding by
 \lean{fabiusAtInverseTwoPow_cast_eq_qBinomialThueMorse_rawTranslated_sum}.
@@ -7355,17 +7355,17 @@ and $\mathcal T_0(y)=1$.  The signed Taylor-block identity is
 
 Fix $x\ge0$.  At scale $m$, put
 \begin{equation}
- p_m=\lfloor2^mx\rfloor,\qquad
+ p_m=\Floor{2^mx},\qquad
  y_m=x-\frac{p_m}{2^m},\qquad 0\le y_m<2^{-m}.            \label{eq:global-prefix-tail}
 \end{equation}
 The previous prefix requires a genuine half-scale value at $m=0$:
 \begin{equation}
  p^*_{m-1}=\begin{cases}
-  \lfloor x/2\rfloor,&m=0,\\
+  \Floor{x/2},&m=0,\\
   p_{m-1},&m\ge1.
  \end{cases}                                             \label{eq:global-previous-prefix}
 \end{equation}
-Uniformly, $p^*_{m-1}=\lfloor p_m/2\rfloor$.  Thus
+Uniformly, $p^*_{m-1}=\Floor{p_m/2}$.  Thus
 $p_m=2p^*_{m-1}+\delta_m$ with $\delta_m\in\{0,1\}$.  Define
 \begin{equation}
  \alpha_m(x)=(-1)^{\BinaryDigitSum(p_m)}(2p^*_{m-1}-p_m),\qquad
@@ -7500,18 +7500,18 @@ the corresponding summand in \eqref{eq:global-reduction-polynomial}.
 
 Let $\tau(a)=\BinaryDigitSum(a)\bmod2$.  Since
 \begin{equation*}
- \frac{(-1)^a-1}{2}=2\left\lfloor\frac a2\right\rfloor-a,
+ \frac{(-1)^a-1}{2}=2\Floor{\frac a2}-a,
 \end{equation*}
 the literal summand
 \begin{align}
  \Lambda_m(x)
  &:=
- \bigl((-1)^{\lfloor2^mx\rfloor}-1\bigr)
- (-1)^{\tau(\lfloor2^mx\rfloor)}                         \notag\\[-2pt]
+ \bigl((-1)^{\Floor{2^mx}}-1\bigr)
+ (-1)^{\tau(\Floor{2^mx})}                               \notag\\[-2pt]
  &\quad\times
  \sum_{j=0}^{m}2^{((j+2)(j-1))/2}
  \FabiusGlobal(2^{j-m})
- \frac{\left(x-\lfloor2^mx\rfloor/2^m\right)^j}{j!}     \label{eq:parity-power-literal-summand}
+ \frac{\left(x-\Floor{2^mx}/2^m\right)^j}{j!}           \label{eq:parity-power-literal-summand}
 \end{align}
 is exactly $\alpha_m(x)\mathcal T_m(y_m)$.  Both exponents
 $((j+2)(j-1))/2$ and $j-m$ in this display are integer exponents, not truncated natural
@@ -7538,7 +7538,7 @@ zeroth summand vanishes and one may start at $m=1$.
 The elementary parity identity and \eqref{eq:parity-power-half-reduction} prove
 $\Lambda_m=\alpha_m\mathcal T_m(y_m)$ term by term.  The claim follows from
 \eqref{eq:global-binary-reduction-series}.  The half-open corollary follows from
-$\lfloor x\rfloor=0$; the closed endpoint $x=1$ requires the restored zeroth term.
+$\Floor{x}=0$; the closed endpoint $x=1$ requires the restored zeroth term.
 \end{proof}
 
 \subsection{The global complex $q$-binomial series}
@@ -7641,7 +7641,7 @@ limit of finite shifted splines rather than a sequence of partial sums of
 \eqref{eq:global-q-binomial-series}.  Reuse the safe midpoint cutoff $N_p(x)$ from
 \eqref{eq:centered-cutoff}.  For $x\ge0$ it is equivalent to the inclusive source range
 \begin{equation}
- 0\le r\le\left\lfloor2^px-\frac12\right\rfloor,          \label{eq:discrete-cutoff-inclusive}
+ 0\le r\le\Floor{2^px-\frac12},                           \label{eq:discrete-cutoff-inclusive}
 \end{equation}
 including the empty case where the upper endpoint is $-1$.
 
@@ -7724,14 +7724,14 @@ We prove \eqref{eq:res-fixed-cutoff-branch}.  The dilation $x\mapsto2^{\,p-d}x$ 
 exactly for the drop in degree, in the sense that
 \begin{equation}
  N_d\!\left(2^{\,p-d}x\right)
- =\max\left(0,\left\lfloor2^{p}x+\frac12\right\rfloor\right)
+ =\max\left(0,\Floor{2^{p}x+\frac12}\right)
  =N_p(x)=M                                                \label{eq:res-cutoff-invariance}
 \end{equation}
 by \eqref{eq:centered-cutoff}.  If $M=0$, both sides of
 \eqref{eq:res-fixed-cutoff-branch} are empty sums and there is nothing to prove.  Assume
 $M\ge1$.  Every index in the range satisfies
 \[
- r\le M-1=\left\lfloor2^px+\frac12\right\rfloor-1\le2^px-\frac12,
+ r\le M-1=\Floor{2^px+\frac12}-1\le2^px-\frac12,
 \]
 so every base $2^px-\frac12-r$ occurring in \eqref{eq:res-fixed-cutoff-branch} is
 nonnegative and the truncation in \eqref{eq:centered-spline-positive} is inactive.  For
@@ -8293,7 +8293,7 @@ Let \(c,z\in\ComplexNumbers\), let \(p\in\NaturalNumbers\), put \(q=c^2\), and a
  j\longmapsto q^j
  \quad\hbox{is injective on }\{0,\ldots,p\}.
 \]
-Writing \(\Phi=\lean{rvachevFourierProduct}=\widehat{\RvachevUp}\), one has the
+Writing \(\Phi=\lean{rvachevFourierProduct}=\FourierTwoPi{\RvachevUp}\), one has the
 exact entire identity
 \begin{equation}
  \sum_{j=0}^{p}\lambda_{p,j}^{(q)}\Phi(c^jz)
@@ -9072,7 +9072,7 @@ The resulting step approximant is
 \begin{equation}
  \mathcal W_n(x)=\frac{2^n}{2^{\binom{n+1}2}}
  \sum_{m=0}^{g_n}\bigl[z^m\bigr]\mathcal P_n(z)\cdot
- \mathbf 1_{I_{n,m}}(x),                                   \label{eq:tm-histogram}
+ \IndicatorOf{I_{n,m}}(x),                                 \label{eq:tm-histogram}
 \end{equation}
 where a point shared by two adjacent cells is given the weight $\tfrac12$ in each, so that
 the two contributions add to the single value the formula is intended to have.  This
@@ -9122,7 +9122,7 @@ again agree.
 
 Sampling at the dyadic floor now gives an approximation scheme.  For $x\in\RealNumbers$ set
 \begin{equation}
- j_n(x)=\max\!\left(0,\bigl\lfloor2^{n+1}x\bigr\rfloor\right),
+ j_n(x)=\max\!\left(0,\Floor{2^{n+1}x}\right),
  \qquad
  \mathcal J_n(x)=\widetilde{\mathcal V}_n\bigl(j_n(x)\bigr)
  =\frac{\sigma_{n+1}\bigl(j_n(x)\bigr)}{2^{\binom n2}}.    \label{eq:tm-sample}
@@ -9650,21 +9650,21 @@ volume.
 
 For \(k\in\IntegerNumbers\), use the Fourier convention
 \begin{equation}
- \widehat\Psi(k)=\int_0^1\Psi(t)\exp(-2\pi\ImaginaryUnit kt)\,\Differential t,
+ \FourierSeriesCoefficient{\Psi}{k}=\int_0^1\Psi(t)\exp(-2\pi\ImaginaryUnit kt)\,\Differential t,
  \qquad
  \chi_k=\frac{2\pi\ImaginaryUnit k}{L}.                                \label{eq:Psi-Fourier-def}
 \end{equation}
 The zero mode vanishes, and every nonzero mode has the closed form
 \begin{equation}
- \widehat\Psi(0)=0,\qquad
- \widehat\Psi(k)=
+ \FourierSeriesCoefficient{\Psi}{0}=0,\qquad
+ \FourierSeriesCoefficient{\Psi}{k}=
  -\frac{\Gamma(-\chi_k)\zeta(1-\chi_k)}{L}
  \quad(k\ne0).                                              \label{eq:Psi-Fourier}
 \end{equation}
 Every coefficient with \(k\ne0\) is nonzero, so \(\Psi\) is genuinely nonconstant.
 The coefficient sequence is absolutely summable and reconstructs \(\Psi\) pointwise:
 \begin{equation}
- \Psi(t)=\sum_{k\in\IntegerNumbers}\widehat\Psi(k)\exp(2\pi\ImaginaryUnit kt).
+ \Psi(t)=\sum_{k\in\IntegerNumbers}\FourierSeriesCoefficient{\Psi}{k}\exp(2\pi\ImaginaryUnit kt).
                                                                   \label{eq:Psi-Fourier-series}
 \end{equation}
 These assertions are
@@ -9800,7 +9800,7 @@ This lower phase is also the exact specialization at
 \((m,A,\beta)=(1,1,L)\) of the generic scaled power--exponential inverse;
 this is \lean{lowerPowerExponentialPhase_one_one_log_two} in
 \path{PowerExponentialLambertFabius}\texttt{.lean}.  More generally, for
-\(m\in\mathbb N\setminus\{0\}\), \(A>0\), and \(\beta>0\), put
+\(m\in\PositiveIntegers\), \(A>0\), and \(\beta>0\), put
 \[
  S_{m,A,\beta}(t)=At^m\EulerE^{-\beta t},
  \qquad P_{m,A,\beta}=A\left(\frac m\beta\EulerE^{-1}\right)^m.
@@ -10853,7 +10853,7 @@ On the support interval \(-1\le t\le1\), Poisson summation yields the exact cosi
 \begin{equation}
  \RvachevUp(t)=\frac12+
  \sum_{k=0}^{\infty}
- \widehat{\RvachevUp}\!\left(\frac{2k+1}{2}\right)
+ \FourierTwoPi{\RvachevUp}\!\left(\frac{2k+1}{2}\right)
  \cos\bigl((2k+1)\pi t\bigr).                              \label{eq:cosine-series}
 \end{equation}
 This is \lean{rvachev_cosine_series}.  The two-term support specialization
@@ -10864,9 +10864,9 @@ is \lean{rvachev_add_shift_eq_one}.  More general scaled Poisson support identit
 sharp for either orientation of the lattice: whenever \(1/2\le|a|\),
 \begin{align}
  1+2\RvachevUp(a)
-   &=\sum_{m\in\IntegerNumbers}|a|^{-1}\widehat{\RvachevUp}(m/a),              \label{eq:poisson-support-abs-unscaled}\\
+  &=\sum_{m\in\IntegerNumbers}|a|^{-1}\FourierTwoPi{\RvachevUp}(m/a),        \label{eq:poisson-support-abs-unscaled}\\
  |a|+2|a|\RvachevUp(a)
-   &=\sum_{m\in\IntegerNumbers}\widehat{\RvachevUp}(m/a).                     \label{eq:poisson-support-abs}
+  &=\sum_{m\in\IntegerNumbers}\FourierTwoPi{\RvachevUp}(m/a).               \label{eq:poisson-support-abs}
 \end{align}
 These are \lean{rvachev_poisson_support_specialization_unscaled_of_one_half_le_abs} and
 \lean{rvachev_poisson_support_specialization_of_one_half_le_abs} in
@@ -11516,7 +11516,7 @@ substituting this normalization yields
 \[
  \mathcal G_{ij}^{\RationalNumbers}
  =\sum_{k=0}^{i+j} C_k^{\RationalNumbers}G_{ijk}^{\RationalNumbers}
- =\sum_{r=0}^{\lfloor(i+j)/2\rfloor}
+ =\sum_{r=0}^{\Floor{(i+j)/2}}
     c_r^{\RationalNumbers}G_{ij,2r}^{\RationalNumbers}.
 \]
 The second equality simply deletes the zero odd terms and reindexes \(k=2r\); the matrix
@@ -11524,7 +11524,7 @@ theorem is the same formula at finite indices.  Casting the finite sum, using th
 bridges term by term, gives
 \[
  \mathcal G_{ij}^{(n)}(F)
- =\sum_{r=0}^{\lfloor(i+j)/2\rfloor}
+ =\sum_{r=0}^{\Floor{(i+j)/2}}
     c_r(F)G_{ij,2r}
 \]
 under \(h_F\).  Every interchange here is finite: no infinite Legendre series is moved

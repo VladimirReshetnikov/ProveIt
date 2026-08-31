@@ -358,7 +358,7 @@ def write_moment_table(path: Path) -> None:
     path.write_text(
         "\\begin{tabular}{@{}rll@{}}\n"
         "\\toprule\n"
-        "$n$ & $\\mu_n=\\mathbb E(Y^n)$ & $m_n=\\mathbb E(Z^n)$ \\\\\n"
+        "$n$ & $\\mu_n=\\Expectation(Y^n)$ & $m_n=\\Expectation(Z^n)$ \\\\\n"
         "\\midrule\n"
         + "\n".join(rows)
         + "\n\\bottomrule\n\\end{tabular}\n",

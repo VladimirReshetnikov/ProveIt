@@ -54,11 +54,11 @@ SEMANTIC_LITERAL_PATTERNS = {
     ),
     r"\\lfloor(?![A-Za-z@])": r"use \Floor after checking the enclosed expression",
     r"\\lceil(?![A-Za-z@])": r"use \Ceiling after checking the enclosed expression",
-    r"\\(?:mathbf|mathbb)(?![A-Za-z@])\s*(?:\{\s*1\s*\}|1)(?![A-Za-z0-9])": (
+    r"\\(?:mathbf|mathbb)(?![A-Za-z@])\s*(?:\{\s*1\s*\}|1)(?![0-9])": (
         r"raw bold one requires classification; use \IndicatorOf for an indicator "
         r"or declare a constant-one function locally"
     ),
-    r"\\mathbb(?![A-Za-z@])\s*(?:\{\s*(?:N|Z|Q|R|C)\s*\}|(?:N|Z|Q|R|C))(?![A-Za-z])": (
+    r"\\mathbb(?![A-Za-z@])\s*(?:\{\s*(?:N|Z|Q|R|C)\s*\}|(?:N|Z|Q|R|C))": (
         r"use the explicit canonical number-system command and classify whether "
         r"natural numbers include zero"
     ),
@@ -81,8 +81,8 @@ SEMANTIC_LITERAL_PATTERNS = {
     r"\\operatorname\s*\{\s*sinc\s*\}": (
         r"classify the normalization and use \SincRad or \SincPi"
     ),
-    r"\\mathbb(?![A-Za-z@])\s*(?:\{\s*P\s*\}|P)(?![A-Za-z])": r"use \Probability for probability",
-    r"\\mathbb(?![A-Za-z@])\s*(?:\{\s*E\s*\}|E)(?![A-Za-z])": r"use \Expectation for expectation",
+    r"\\mathbb(?![A-Za-z@])\s*(?:\{\s*P\s*\}|P)": r"use \Probability for probability",
+    r"\\mathbb(?![A-Za-z@])\s*(?:\{\s*E\s*\}|E)": r"use \Expectation for expectation",
     r"\\operatorname\s*\{\s*Var\s*\}": r"use \Variance for probability variance",
     r"\\operatorname\s*\{\s*Cov\s*\}": r"use \Covariance for probability covariance",
 }
