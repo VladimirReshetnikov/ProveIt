@@ -11549,12 +11549,17 @@ while the logarithmic phase-extraction transform is implemented by
 \path{FabiusLambertPhaseLockedPullback.lean},
 \path{CompleteHomogeneousAsymptotics.lean},
 \path{LambertReciprocalAsymptotics.lean}, and
-\path{FabiusLambertPhaseExtraction.lean}.  This closed status does not extend
-to the Bell/generalized-harmonic conversion, the exponentiated estimator's
-Bell relative-error hierarchy, the higher derivative extractors, a Lambert
-sign/bracketing theorem, or estimates uniform in growing extrapolation order.
-The remaining sinc-tail sign, bracketing, and quantitative analytic claims are
-separate formalization obligations.
+\path{FabiusLambertPhaseExtraction.lean}.  The finite
+complete-homogeneous/Bell/generalized-harmonic conversion and the exact
+Bell rewrites of each residual term and finite residual partial sum are
+implemented by \path{CompleteHomogeneousBell.lean},
+\path{LambertPhaseLockedBell.lean}, and
+\path{FabiusLambertPhaseExtractionBell.lean}.  This closed status does not
+extend to convergence of an infinite residual series, the exponentiated
+estimator's Bell relative-error hierarchy, the higher derivative extractors,
+a Lambert sign/bracketing theorem, or estimates uniform in growing
+extrapolation order.  The remaining sinc-tail sign, bracketing, and
+quantitative analytic claims are separate formalization obligations.
 
 \section{Notation and structural background}
 \label{p8:sec:notation}
@@ -12497,6 +12502,34 @@ h_n\!\left(\frac1\lambda,\ldots,\frac1{\lambda+r}\right)
 \end{equation}
 This is the second exact Bell-polynomial bridge in the report: the first exponentiated a log error; the second resolves all residual moments of the Lambert extrapolator.
 
+\paragraph{Formalization status.}
+The finite identity \eqref{p8:eq:h-Bell} is now Lean-backed without using an
+analytic logarithm or an infinite-series convergence argument.
+\path{CompleteHomogeneousBell.lean} defines
+\nolinkurl{completeHomogeneousPowerSum} and
+\nolinkurl{completeHomogeneousBellInput}; its division-free theorem
+\nolinkurl{bellComplete_completeHomogeneousBellInput} is the generic finite
+Bell identity, and
+\nolinkurl{completeHomogeneousEvalOn_eq_factorialNormalize_completeBellPolynomial}
+is its normalized form over a commutative $\mathbb Q$-algebra.
+\path{LambertPhaseLockedBell.lean} specializes this result through
+\nolinkurl{shiftedReciprocalPowerSum},
+\nolinkurl{shiftedReciprocalBellInput}, and
+\nolinkurl{completeHomogeneousEvalOn_shiftedReciprocal_eq_bell}, and proves
+both
+\nolinkurl{sum_shiftedReciprocalLagrangeWeight_mul_invPow_card_add_eq_bell}
+and the report-shaped $s\ge1$ theorem
+\nolinkurl{sum_shiftedReciprocalLagrangeWeight_mul_invPow_eq_bell}.
+The shifted reciprocal definitions use total field inverses; the Bell
+specialization imposes no positivity hypothesis, while the exact weighted
+moment interfaces assume characteristic zero.
+Finally, \path{FabiusLambertPhaseExtractionBell.lean} proves the exact
+residual rewrites
+\nolinkurl{fabiusPhaseLockedResidualTerm_eq_bell} and
+\nolinkurl{fabiusPhaseLockedResidualPartialSum_eq_sum_bell}.  These are
+finite algebraic identities; they assert no convergence for the infinite
+residual series and add no new asymptotic estimate.
+
 \subsection{Extraction of the periodic endpoint factor}
 
 Define
@@ -12737,6 +12770,10 @@ The sinc-side results are well suited to formalization because their analytic an
       $(\lambda+j)2^{-(\lambda+j)}$.
 \item \texttt{shiftedReciprocalLagrangeWeight lambda r j}: the compiled
       Lagrange definition underlying \cref{p8:eq:omega}.
+\item \texttt{shiftedReciprocalPowerSum lambda r k}: the compiled generalized
+      power sum $\sum_{j=0}^{r}(\lambda+j)^{-k}$.
+\item \texttt{shiftedReciprocalBellInput lambda r}: the compiled
+      factorially weighted Bell input attached to that reciprocal alphabet.
 \item \texttt{fabiusPhaseLockedReducedSample} and
       \texttt{fabiusPhaseLockedPeriodicEstimator}: the compiled forms of
       $Y(x_j)$ and $\widehat\Psi_r$.
@@ -12747,17 +12784,23 @@ The sinc-side results are well suited to formalization because their analytic an
 
 \subsection{Algebraic theorem chain}
 
-The absolute-weight, Lambert-weight/cancellation, reciprocal-moment, and
-finite complete-homogeneous generating-product tasks in the post-snapshot
-plan are now discharged.  The remaining purely algebraic packaging task is:
-\begin{enumerate}
-\item package the Bell/generalized-harmonic power-sum presentation
-      \eqref{p8:eq:h-Bell} using the already formalized complete-Bell
-      machinery.
-\end{enumerate}
-The newly formalized product identity supplies the nonlogarithmic generating
-series input, but it does not discharge this Bell conversion.  The remaining
-step requires no delicate asymptotics.
+The absolute-weight, Lambert-weight/cancellation, reciprocal-moment, finite
+complete-homogeneous generating-product, and Bell/generalized-harmonic tasks
+in the post-snapshot plan are now discharged.  The generic finite-alphabet
+bridge is
+\nolinkurl{bellComplete_completeHomogeneousBellInput}, with normalized
+report form
+\nolinkurl{completeHomogeneousEvalOn_eq_factorialNormalize_completeBellPolynomial}.
+Its shifted reciprocal specialization is
+\nolinkurl{completeHomogeneousEvalOn_shiftedReciprocal_eq_bell}; the two exact
+moment interfaces are
+\nolinkurl{sum_shiftedReciprocalLagrangeWeight_mul_invPow_card_add_eq_bell}
+and \nolinkurl{sum_shiftedReciprocalLagrangeWeight_mul_invPow_eq_bell}.
+The extraction layer then rewrites an individual term and every finite
+partial sum through \nolinkurl{fabiusPhaseLockedResidualTerm_eq_bell} and
+\nolinkurl{fabiusPhaseLockedResidualPartialSum_eq_sum_bell}.  This closes the
+finite algebraic packaging only; it neither sums the infinite residual series
+nor strengthens the analytic phase-extraction estimates.
 
 \paragraph{Post-snapshot algebraic progress.}
 The later module \path{GeometricLagrange.lean} now formalizes Lagrange
@@ -12863,6 +12906,15 @@ product.  These declarations close the formal finite-product content of
 values, zero divisors, and nilpotents; they assert no analytic convergence or
 Bell/generalized-harmonic identity.
 
+The separate module \path{CompleteHomogeneousBell.lean} supplies that finite
+Bell identity.  Its semiring-cleared theorem
+\nolinkurl{bellComplete_completeHomogeneousBellInput} avoids division, while
+\nolinkurl{completeHomogeneousEvalOn_eq_factorialNormalize_completeBellPolynomial}
+gives the factorially normalized report form over a commutative
+$\mathbb Q$-algebra.  Thus the preceding disclaimer remains specific to the
+generating-series module: neither module evaluates a formal series at an
+analytic argument or proves convergence.
+
 Over every commutative ring, the hypotheses of
 \nolinkurl{sum_weight_mul_scaled_geometric_pow_succ_add} and
 \nolinkurl{sum_weight_mul_scaled_geometric_pow_of_pos} impose exactness
@@ -12913,8 +12965,12 @@ formula for an exponential coefficient with
 factorially normalizes the same engine into named complete-Bell and inverse
 moment--cumulant transforms, with the classical Bell recurrence and
 normalized inverse laws.  In particular, the coefficient mechanism behind
-\eqref{p8:eq:h-Bell} can reuse these bridges with
-\(E_k=k^{-1}\sum_i a_i^k\) for \(k\ge1\).  The geometric principal
+\eqref{p8:eq:h-Bell} is now instantiated in
+\path{CompleteHomogeneousBell.lean}: the division-free complete-Bell identity
+uses the factorially weighted finite power sums, and
+\nolinkurl{completeHomogeneousEvalOn_eq_factorialNormalize_completeBellPolynomial}
+gives the normalized formula over a commutative $\mathbb Q$-algebra.  No
+analytic logarithm is used.  The geometric principal
 specialization and all finite geometric residual moments are therefore no
 longer formalization obligations.
 
@@ -12938,13 +12994,22 @@ exact moments.  Its declarations
 finite Poincar\'e truncations, the raw error order, the leading formula, and
 the fixed-phase limit, respectively.
 
-The still-open algebraic item is the Bell/generalized-harmonic presentation
-\eqref{p8:eq:h-Bell}.  Also outside this closed tranche are the multiplicative
-estimator's Bell relative-error hierarchy, the higher derivative coefficient
-extractors, Lambert residual sign/bracketing results, and bounds uniform when
-$r$ or the residual depth grows with $\lambda$.  The transformed sinc-tail
-identities, analytic Richardson bracketing, and infinite condition-number
-limits are separate sinc-side frontier obligations.
+The downstream module \path{LambertPhaseLockedBell.lean} identifies the
+shifted reciprocal Bell input and proves both exact Bell forms of the
+reciprocal-grid moments.  The module
+\path{FabiusLambertPhaseExtractionBell.lean} then proves
+\nolinkurl{fabiusPhaseLockedResidualTerm_eq_bell} and
+\nolinkurl{fabiusPhaseLockedResidualPartialSum_eq_sum_bell}.  Consequently,
+the finite Bell/generalized-harmonic presentation \eqref{p8:eq:h-Bell} and its
+exact finite residual rewrites are closed.
+
+Outside this closed tranche remain convergence of the infinite residual
+series, the multiplicative estimator's Bell relative-error hierarchy, the
+higher derivative coefficient extractors, Lambert residual sign/bracketing
+results, and bounds uniform when $r$ or the residual depth grows with
+$\lambda$.  The transformed sinc-tail identities, analytic Richardson
+bracketing, and infinite condition-number limits are separate sinc-side
+frontier obligations.
 
 \subsection{Remaining sinc-side analytic theorem chain}
 
@@ -13193,8 +13258,12 @@ Their product therefore has the same sign for every residual degree. This is the
 The denominator-cleared formal product and its canonical formal inverse are
 now proved in \path{CompleteHomogeneousGenerating.lean}.  The logarithmic
 coefficient comparison in this subsection, including its specialization to
-generalized harmonic sums, is not part of that result and remains a separate
-formalization obligation.
+generalized harmonic sums, is not part of that generating-series result.
+The separate \path{CompleteHomogeneousBell.lean} proves the same finite
+coefficient identity by division-free Bell algebra and supplies its
+factorially normalized form; \path{LambertPhaseLockedBell.lean} specializes
+it to generalized harmonic sums.  Neither statement evaluates an infinite
+formal series or proves analytic convergence.
 
 Taking logarithms of \cref{p8:eq:complete-homogeneous},
 \[
@@ -13208,6 +13277,12 @@ h_n(a_0,\ldots,a_r)
 0!p_1,1!p_2,\ldots,(n-1)!p_n\right),
 \]
 where $p_k=\sum_j a_j^k$. Substituting $a_j=(\lambda+j)^{-1}$ proves \cref{p8:eq:h-Bell}.
+The corresponding compiled declarations are
+\nolinkurl{completeHomogeneousEvalOn_eq_factorialNormalize_completeBellPolynomial}
+and \nolinkurl{completeHomogeneousEvalOn_shiftedReciprocal_eq_bell}; the two
+downstream residual rewrites are
+\nolinkurl{fabiusPhaseLockedResidualTerm_eq_bell} and
+\nolinkurl{fabiusPhaseLockedResidualPartialSum_eq_sum_bell}.
 
 \section{Reproducibility notes}
 \label{p8:app:repro}

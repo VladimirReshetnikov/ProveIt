@@ -2,6 +2,24 @@
 
 New standalone intake members:
 
+- [`Geometric_Uniform_Convolutions_and_New_Frontiers/`](Geometric_Uniform_Convolutions_and_New_Frontiers/)
+  is the title-derived filing of the generic source-only wrapper
+  `drafts/incoming/fabius-frontier-report-H/`, committed directly by
+  `8a184546747082cbd92ad4675fb61981c6b8c3b6`.  The delivery consists of a
+  single TeX manuscript, *Geometric Uniform Convolutions and New Frontiers
+  around the Fabius--Rvachev System*: no PDF, README, code, figures, captured
+  output, checksum file, or archive was supplied.  Quick intake repaired three
+  form-feed control bytes that had replaced the backslash in `\frac`
+  commands and added a repository-generated one-entry `SHA256SUMS`.
+
+  Its q-deformed derivative formulas, Gaussian/Edgeworth layer,
+  valuation-weighted zeros, non-Gevrey growth, and periodic Lambert endpoint
+  program overlap several same-batch reports and the consolidated corpus.
+  The source remains standalone pending post-publication compilation,
+  claim-by-claim comparison, and a Lean crosswalk.  Nothing in the intake
+  establishes that the TeX compiles or that any manuscript theorem is proved
+  in Lean.
+
 - [`fabius_information_frontier/`](fabius_information_frontier/),
   *Exact Information Geometry and New Frontiers for the Fabius--Rvachev
   System* (30 pp), arrived on 2026-08-30 from the single-root archive
@@ -14,7 +32,9 @@ New standalone intake members:
   with the broad frontier series. It remains standalone pending
   post-publication claim review, semantic deduplication, experiment
   assessment, and a Lean crosswalk; manuscript labels do not establish Lean
-  verification.
+  verification. The filed PDF hard-codes Latin Modern and inherits five
+  embedded/subset Type-3 font rows from its vector figures; canonical promotion
+  requires a Libertinus/Type-3-free rebuild and refreshed checksums.
 
 - [`Digital_Spectral_Geometry_and_Log_Periodic_Saddles/`](Digital_Spectral_Geometry_and_Log_Periodic_Saddles/),
   *Digital Spectral Geometry and Log-Periodic Saddles: Frontier Results for
@@ -35,9 +55,48 @@ New standalone intake members:
   strict log-concavity for every real base `b > 1` is refuted for `b > 2` by
   the canonical exact plateau, and at `b = 2` by the flat mode (equivalently
   `q < 1/2` and `q = 1/2`, respectively), so it is not a live frontier claim.
-  The package remains standalone only until a claim-by-claim
-  deduplication and Lean crosswalk determine whether any refinement should be
-  retained; manuscript theorem labels do not establish Lean proof status.
+  A first Lean crosswalk now closes the finite base-`b` scale count and
+  digit-recovery arithmetic, including composite bases; the package remains
+  standalone while the bundled analytic product/order theorem and the
+  remaining report-wide deduplication are still pending.  Manuscript theorem
+  labels do not establish Lean proof status.
+
+## Current Lean crosswalk: general-base multiplicity arithmetic
+
+Put
+
+`ν_b(n) = max {h : b^h ∣ n}`, `A_b(N) = ∑_{n=1}^N (1 + ν_b(n))`,
+
+and let `s_b(N)` be the sum of the base-`b` digits of `N`.  When `b` is
+composite, `ν_b` is a base-`b` divisibility or scale exponent, not an additive
+valuation; for example, `ν_6(2) + ν_6(3) = 0` but `ν_6(6) = 1`.
+
+| Lean declaration | Human-readable statement |
+| --- | --- |
+| `weightedScaleMultiplicity_const` | In any additive commutative monoid, a constant layer weight `a` gives `W_{b,h ↦ a}(n) = (ν_b(n)+1) • a`. |
+| `weightedScaleMultiplicity_one_nat` | For natural-valued unit weights, `W_{b,1}(n) = ν_b(n)+1`. |
+| `sum_range_weightedScaleMultiplicity_of_log_lt` | For every integer `b ≥ 2`, every height `H` with `log_b N < H`, and weights in any additive commutative monoid, `∑_{n=1}^N ∑_{h=0}^{ν_b(n)} w_h = ∑_{h=0}^{H-1} ⌊N/b^h⌋ • w_h`. The extra high layers vanish automatically. |
+| `sum_range_weightedScaleMultiplicity_log` | For every integer `b ≥ 2`, every `N ≥ 0`, every additive commutative monoid, and every weight sequence `w_h`, `∑_{n=1}^N ∑_{h=0}^{ν_b(n)} w_h = ∑_{h=0}^{⌊log_b N⌋} ⌊N/b^h⌋ • w_h`. This sharpens the older cumulative theorem to the natural logarithmic height. |
+| `sum_range_div_pow_log_eq_self_add_tail` | If `L = ⌊log_b N⌋`, then `∑_{h=0}^L ⌊N/b^h⌋ = N + ∑_{i=0}^L ⌊N/b^(i+1)⌋`; the apparent final extra term is zero because `N < b^(L+1)`. |
+| `sub_one_mul_sum_padicValNat_succ_add_digitSum` | For every integer `b ≥ 2`, including composite bases, `(b-1)A_b(N) + s_b(N) = bN`, exactly in the naturals and including `N=0`. |
+| `sum_range_padicValNat_succ_eq_sub_digitSum_div` | Equivalently, `A_b(N) = (bN-s_b(N))/(b-1)`. |
+
+`BaseDigitMultiplicity.lean` proves the finite count and digit-recovery
+arithmetic in equations `base-b-count` and `digit-recovery` once the analytic
+zero count `N_b(c_bN)` has independently been identified with `A_b(N)`.  It
+does not define `Φ_b`, prove the base-`b` canonical product, or prove that its
+zeros have order `1 + ν_b(n)`.  The integer-base zero set is separately
+represented by `ReciprocalIntegerGammaZeros.lean`, which does not establish
+collision orders.  For real `s > 1`, `SpectralZetaWeighted.lean` proves the
+arithmetic Dirichlet-series identity
+
+`∑_{n≥1} (1+ν_b(n))n^(-s) = (∑_{n≥1} n^(-s))/(1-b^(-s))`.
+
+It deliberately leaves the first series in `p`-series form rather than
+identifying a complex meromorphic Riemann zeta function.  Thus the manuscript's
+bundled base-`b` canonical-product/order theorem, complex spectral-zeta
+identity, probabilistic cumulant formula, and log-periodic transseries are not
+proved wholesale by this arithmetic module.
 
 - [`Frontier_Directions_for_Fabius_Rvachev_Analysis/`](Frontier_Directions_for_Fabius_Rvachev_Analysis/),
   *Frontier Directions for Fabius--Rvachev Analysis* (33 pp), arrived on
@@ -100,10 +159,19 @@ arbitrary-order endpoint remainder to the exact Lambert nodes,
 `CompleteHomogeneousAsymptotics.lean` and
 `LambertReciprocalAsymptotics.lean` control the residual alphabet and growing
 row, and `FabiusLambertPhaseExtraction.lean` proves the fixed-order finite
-Poincaré hierarchy and integer-phase-ray convergence. The report's
-Bell/generalized-harmonic conversion, exponentiated Bell hierarchy, higher
-derivative extractors, sign/bracketing claims, and growing-order uniformity
-remain open.
+Poincaré hierarchy and integer-phase-ray convergence.
+`CompleteHomogeneousBell.lean` proves the generic finite-alphabet Bell
+conversion, `LambertPhaseLockedBell.lean` specializes it to shifted
+reciprocal power sums and both exact moment forms, and
+`FabiusLambertPhaseExtractionBell.lean` rewrites each residual term and every
+finite residual partial sum in Bell form. The normalized specialization uses
+the rational-algebra/characteristic-zero field layer; total field inversion
+still requires no positivity or nonzero-shift premise. Thus the finite
+complete-homogeneous/Bell/generalized-harmonic conversion is closed. These
+identities do not prove convergence of the infinite residual series or add a
+new asymptotic estimate. The infinite residual convergence problem,
+exponentiated/multiplicative Bell relative-error hierarchy, higher derivative
+extractors, sign/bracketing claims, and growing-order uniformity remain open.
 
 Post-snapshot Lean status began at source checkpoint `b3720d4b5` with two
 generic finite-algebra modules relevant to Report I; the current tree adds the

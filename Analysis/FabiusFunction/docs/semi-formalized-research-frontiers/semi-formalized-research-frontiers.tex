@@ -3553,9 +3553,10 @@ four public definitions,
 monic rational orthogonal polynomials, positive rational norms, a zero diagonal, positive
 rational subdiagonals, their real-cast comparisons, the determinant cross-ratio, and the
 centered rational recurrence in every degree.  The zero-based subdiagonal at index $n$ is
-the conventional $\beta_{n+1}$.  The rational definitions are noncomputable finite
-objects; no explicit $H_4$ or $\beta_4$ value, evaluator, root, Christoffel, quadrature,
-continued-fraction, Pad\'e, or asymptotic theorem is asserted.\\
+the conventional $\beta_{n+1}$.  These four rational definitions are noncomputable finite
+objects and do not themselves evaluate $H_4$ or $\beta_4$; the downstream executable
+tranche below does.  This module proves no root, Christoffel, quadrature,
+continued-fraction, Pad\'e, or asymptotic theorem.\\
 \path{PolynomialMomentGramDeterminant.lean} &
 Exactly two public definitions,
 \lean{polynomialCoefficientMatrix} and \lean{polynomialMomentGramMatrix}, and seven public
@@ -3603,6 +3604,33 @@ genuine nonsingular Jacobi formula.  It proves no finite
 Gaunt/Wigner/$3j$ entry formula, entry rationality by that route, Christoffel reconstruction,
 or infinite product.  The shifted-atom kernel \lean{rvachevTranslateGram} is a distinct
 unweighted interval Gram construction.\\
+\path{LegendrePolynomialRational.lean}, \path{FabiusLegendreRationalGram.lean},
+\path{FabiusLegendreRationalGramValues.lean} &
+The downstream executable tranche adds, respectively, exactly two public definitions and
+six public theorems, three definitions and eleven theorems, and eleven theorems.  Together
+with the preceding four finite-algebra modules, the complete seven-module inventory is
+thirteen definitions and sixty-one theorems, hence seventy-four public declarations.
+The first module gives executable rational Legendre coefficients and their polynomial
+wrapper.  The second gives executable rational Legendre Gram entries, matrices, and
+determinants, with unconditional rational determinant identity, $D_0=1$, strict
+positivity, norm quotient, and zero-based Jacobi ratio; only its entry, matrix, and
+determinant cast bridges require $F:\lean{BoundedFabius}$ and
+$h_F:\lean{IsFabius}\,F$.  The third proves unconditionally that
+\lean{moment_four} is $132809/32531625$, together with
+\[
+ \begin{aligned}
+ D_1&=1,& D_2&=\frac19,& D_3&=\frac8{2025},\\
+ D_4&=\frac{39616}{602791875},\\
+ D_5&=\frac{16544275456}{27453718922765625}.
+ \end{aligned}
+\]
+It also proves $H_4=26727424/55791736875$; the declaration
+\lean{rvachevJacobiSubdiagonalRat_three} gives the zero-based value
+\(\beta_4=835232/4640643\).
+Only its three real/integral consequences require
+$F:\lean{BoundedFabius}$ and $h_F:\lean{IsFabius}\,F$.  The finite
+Gaunt/Wigner/$3j$ entry expansion, roots, Christoffel reconstruction, quadrature,
+continued-fraction/Pad\'e theory, and asymptotics remain outside this tranche.\\
 \path{FractionalVolterra.lean}, \path{FractionalVolterraSemigroup.lean} &
 The total real-order Gamma-normalized operator, its unconditional endpoint/locality/scalar,
 order-one, and positive-natural-order rules, and its positive-order ordered-endpoint

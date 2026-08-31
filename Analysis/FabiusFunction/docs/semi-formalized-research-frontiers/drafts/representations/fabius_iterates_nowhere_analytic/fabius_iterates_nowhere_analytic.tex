@@ -93,8 +93,12 @@
 
 \statusnote{\textbf{Result status.}
 The theorem proved here is a new mathematical extension of the repository's formally verified base case.
-The proof is self-contained and has been checked symbolically and numerically, but it has not yet been translated into Lean.
-Repository statements explicitly marked as formalized are used only as established input facts; the composition theorem, the weighted partition-defect lemma, and the spine asymptotic are proved in this report.}
+The proof is self-contained and has undergone a repository proof review; the
+delivered numerical diagnostic has also been reproduced exactly in its recovered
+Linux environment.  Neither check is a Lean proof.  Since the report snapshot, the
+finite block-size arithmetic of the partition defect has been formalized in Lean,
+but the finite-set-partition wrapper, composition theorem, weighted partition
+estimate, and spine asymptotic remain manuscript results.}
 
 \begin{abstract}
 Let $F\colon[0,1]\to[0,1]$ be the bounded Fabius function and let
@@ -121,15 +125,18 @@ shows that the total branched remainder is exponentially smaller than the extrem
 terms after normalization by $Q_m$.  Iterating this reduction yields a finite spine
 sum indexed by the orbit $x,F(x),\ldots,F^{\comp(n-1)}(x)$.  Third, the orbit dynamics
 make the corresponding exponential spine weights strictly unimodal, apart from a
-finite tie set, while binary digit transitions force the dominant Thue--Morse amplitude
-to remain bounded away from zero along infinitely many derivative orders.  The
-resulting derivative lower bound grows like $Q_m$ times an ordinary exponential, far
-faster than $m!$, and hence forces zero Taylor radius.
+finite tie set.  Away from ties, binary digit transitions force the dominant
+Thue--Morse amplitude to recur.  At a tie, exact quarter-point values produce the
+explicit subsequence $m=6\ell+4$: the earlier maximal spine vanishes and the later one
+has amplitude exactly $\Up(1/9)\geq1/2$.  The resulting derivative lower bound grows
+like $Q_m$ times an ordinary exponential, far faster than $m!$, and hence forces zero
+Taylor radius.
 
 The report also records consequences for inverse iterates and local elementary
-representations, gives a reproducible sinc-product computation, and formulates
-several concrete research directions involving tie-point cancellation, $q$-Bell
-polynomials, Lambert--$W$ endpoint transseries, Legendre expansions, and formalization.
+representations, gives a reproducible sinc-product computation, proves the exact
+tie-point noncancellation mechanism, and formulates concrete research directions
+involving $q$-Bell polynomials, Lambert--$W$ endpoint transseries, Legendre expansions,
+and formalization.
 \end{abstract}
 
 \tableofcontents
@@ -175,10 +182,12 @@ convergence zero.
 \end{theorem}
 
 The distinction between \cref{thm:strong} and \cref{thm:main} is useful.  At a small
-exceptional countable set, several orbit spines can tie or the signed extension can
-vanish eventually at a dyadic orbit point.  We do not need to resolve those local
-cancellations: the zero-radius set is dense, whereas analyticity at one point would
-propagate to a whole neighborhood.
+exceptional countable set, the signed extension can vanish eventually at a dyadic
+orbit point, and several orbit spines can tie.  The tie itself is no longer an
+obstruction: \cref{prop:tie-noncancellation} proves zero Taylor radius at every tie
+point.  A complete classification of the remaining dyadic-orbit jets is unnecessary
+for the main theorem: the zero-radius set is dense, whereas analyticity at one point
+would propagate to a whole neighborhood.
 
 \section{Repository audit and novelty boundary}
 \label{sec:audit}
@@ -723,6 +732,81 @@ It therefore applies to every non-dyadic point, including highly non-generic aut
 Sturmian, or sparse-digit numbers.
 \end{remark}
 
+\begin{proposition}[Exact noncancellation and zero radius at a tie]
+\label{prop:tie-noncancellation}
+Suppose $x\in T_n$, and let $k$ be the unique index such that
+$B_k=B_{k+1}=H_n(x)$.  Put $m_\ell=6\ell+4$.  Then, for every $\ell\geq0$,
+\begin{align}
+ &\left|
+ A_{k,n}B_k^{m_\ell}\ThetaF(2^{m_\ell}x_k)
+ +A_{k+1,n}B_{k+1}^{m_\ell}\ThetaF(2^{m_\ell}x_{k+1})
+ \right| \notag\\
+ &\hspace{32mm}={}
+ A_{k+1,n}H_n(x)^{m_\ell}\Up(1/9)
+ \geq \frac{A_{k+1,n}}2H_n(x)^{m_\ell}.
+ \label{eq:tie-noncancellation}
+\end{align}
+Consequently, for all sufficiently large $\ell$,
+\begin{equation}
+ \abs{G_n^{(m_\ell)}(x)}
+ \geq \frac{A_{k+1,n}}4Q_{m_\ell}H_n(x)^{m_\ell},
+ \label{eq:tie-derivative-lower-bound}
+\end{equation}
+and the Taylor series of $G_n$ at $x$ has radius zero.
+\end{proposition}
+
+\begin{proof}
+The tie relation and \eqref{eq:ratio-decreasing} give $a_k=F'(x_k)=1$.
+Now
+\[
+ F'(\tfrac14)=2F(\tfrac12)=1.
+\]
+Derivative symmetry gives $F'(\tfrac34)=1$, and strict monotonicity of $F'$ on
+the two half intervals shows that these are the only interior solutions of
+$F'(y)=1$.  The exact formal anchors
+\path{fabiusReal_quarter} and \path{fabiusReal_three_quarters} in
+\path{InverseQuarterAnchor.lean} give
+$F(\tfrac14)=\tfrac5{72}$ and $F(\tfrac34)=\tfrac{67}{72}$.  Therefore
+\[
+ x_k\in\set{\tfrac14,\tfrac34},
+ \qquad
+ x_{k+1}=F(x_k)\in\set{\tfrac5{72},\tfrac{67}{72}}.
+\]
+
+For $m_\ell\geq4$, both $2^{m_\ell}/4$ and $3\cdot2^{m_\ell}/4$ are even
+integers.  The block formula \eqref{eq:theta-block} and $\Up(\pm1)=0$ hence give
+\begin{equation}
+ \ThetaF(2^{m_\ell}x_k)=0.
+ \label{eq:earlier-tied-spine-zero}
+\end{equation}
+Since $64\equiv1\pmod 9$, write $64^\ell=1+9q_\ell$.  Directly,
+\begin{align*}
+ 2^{m_\ell}\frac5{72}
+   &=10q_\ell+1+\frac19,\\
+ 2^{m_\ell}\frac{67}{72}
+   &=134q_\ell+15-\frac19.
+\end{align*}
+The displayed integer centers are odd.  Thus \eqref{eq:theta-block}, evenness
+of $\Up$, and monotonicity on $[0,1]$ show that
+\begin{equation}
+ \abs{\ThetaF(2^{m_\ell}x_{k+1})}
+ =\Up(1/9)\geq\Up(1/2)=\frac12.
+ \label{eq:later-tied-spine-amplitude}
+\end{equation}
+Together with $B_k=B_{k+1}=H_n(x)$, equations
+\eqref{eq:earlier-tied-spine-zero} and
+\eqref{eq:later-tied-spine-amplitude} prove
+\eqref{eq:tie-noncancellation}.
+
+Every other spine weight is strictly smaller than $H_n(x)$ by
+\cref{lem:prefix-unimodal}.  After division by $Q_{m_\ell}H_n(x)^{m_\ell}$,
+their finite sum tends to zero, as does the remainder in
+\eqref{eq:spine-expansion}.  Since $A_{k+1,n}>0$, the reverse triangle
+inequality gives \eqref{eq:tie-derivative-lower-bound} for all sufficiently
+large $\ell$.  Finally, the same estimate as in \eqref{eq:root-divergence},
+with $m=m_\ell$, tends to infinity and proves zero Taylor radius.
+\end{proof}
+
 \section{Proof of the zero-radius theorem}
 \label{sec:proof-main}
 
@@ -1059,40 +1143,34 @@ conclusion.
 A tempting strengthening would assert zero Taylor radius at every interior point.
 That statement is already false for $n=1$: at a dyadic point, the high-order jet of
 $F$ eventually vanishes, so the formal Taylor series is a finite polynomial, although
-it does not represent $F$ on any neighborhood.  The appropriate open problem is a
-classification rather than a universal zero-radius assertion.
-
-\begin{conjecture}[Complete Taylor-series trichotomy]
-\label{conj:trichotomy}
-For fixed $n$, every interior point belongs to exactly one of three explicitly
-classifiable classes:
+it does not represent $F$ on any neighborhood.  At any point, exactly one of the
+following three alternatives holds:
 \begin{enumerate}[label=(\roman*)]
  \item the Taylor series has radius zero;
- \item the Taylor series is a finite polynomial because the entire high-order jet
- eventually vanishes;
- \item the Taylor series has positive radius but does not represent the function.
+ \item only finitely many Taylor coefficients are nonzero, so the series is a
+ finite polynomial and has infinite radius;
+ \item the Taylor series has positive radius and infinitely many nonzero
+ coefficients.
 \end{enumerate}
-The third class is empty, and the second class is a countable orbit-arithmetic set
-that can be described using dyadic orbit points and exact tie cancellations.
+In alternatives (ii) and (iii), \cref{thm:main} says that the Taylor series cannot
+represent $G_n$ on any neighborhood.  The requirement of infinitely many nonzero
+coefficients in (iii) is essential: without it, every series in (ii) would also lie
+in (iii).
+
+\begin{conjecture}[Zero-radius or eventually-zero jet]
+\label{conj:trichotomy}
+For fixed $n$, alternative (iii) is empty.  The points in alternative (ii) form a
+countable orbit-arithmetic set governed by dyadic orbit points.
 \end{conjecture}
 
-The correction above illustrates why it is valuable to distinguish nowhere
-analyticity from zero Taylor radius.  The present theorem proves class (i) on a
-co-countable set and rules out local representation everywhere, while the detailed
-Taylor behavior at the exceptional points remains open for $n\geq2$.
-
-\begin{conjecture}[No persistent cancellation at a tie]
-\label{conj:ties}
-Suppose $x\in T_n$ so two adjacent spine weights are maximal.  Then the two leading
-symbolic amplitudes do not cancel to exponential accuracy for all sufficiently large
-orders.  More precisely, there is an infinite sequence $m_k$ and a constant $c>0$
-such that the sum of the two tied spine terms has absolute value at least
-$cH_n(x)^{m_k}$.
-\end{conjecture}
-
-A proof may use the fact that the two orbit points are related by one application of
-$F$ while their signed-extension samples are taken at the same dyadic scale.  This
-creates a nonlinear symbolic correlation problem for the doubling map.
+This distinction explains why nowhere analyticity does not by itself imply zero
+Taylor radius.  The present theorem proves alternative (i) on a co-countable set and
+rules out local representation everywhere.  Moreover, the tie-cancellation question
+posed in the submitted version is no longer conjectural:
+\cref{prop:tie-noncancellation} proves the exact amplitude on $m=6\ell+4$, the
+full-derivative lower bound with constant $A_{k+1,n}/4$, and zero Taylor radius at
+every tie point.  The remaining exceptional Taylor behavior for $n\geq2$ is therefore
+associated with dyadic orbit points and their mixed composition jets.
 
 \begin{conjecture}[Defect-polynomial spectral gap]
 \label{conj:defect-polynomial}
@@ -1115,7 +1193,10 @@ A Lean formalization can be modular.
 \begin{enumerate}[label=\arabic*.]
  \item Define $Q_m$ and prove the algebraic identity
  \eqref{eq:Q-factorization} for finite set partitions.
- \item Formalize the two extremal partitions and the defect-zero classification.
+ \item The block-size-list forms of the pairwise and triangular defect identities,
+ their zero classification, sharp fixed-block minimum, equality profile, and first
+ positive shell are now formalized in \path{PartitionDefect.lean}.  A
+ finite-set-partition wrapper and the quadratic-scale factorization remain open.
  \item Replace the asymptotic counting proof initially by a stronger but simpler
  explicit estimate sufficient for $\littleo(1)$.
  \item Use the existing iterated-derivative and bounded-derivative APIs for $F$.
@@ -1124,8 +1205,21 @@ A Lean formalization can be modular.
  Thue--Morse modules to construct $E_n$ and the dominant subsequence.
  \item Finish with the existing analytic-at and power-series-radius infrastructure.
 \end{enumerate}
-The combinatorial proposition is the only substantial library-building step.  Once it
-is available, the analytical induction closely follows the existing module style.
+Representative exact Lean declarations are listed below; the accompanying
+repository README gives the complete human-readable API.
+\begin{lstlisting}
+Fabius.partitionDefect_eq_pairSum_mul_sub_one
+Fabius.choose_sum_two_eq_choose_length_add_sum_add_partitionDefect
+Fabius.partitionDefect_eq_linear_add_pairwise_excess
+Fabius.partitionDefect_fixed_block_bound
+Fabius.partitionDefect_fixed_block_eq_iff
+Fabius.partitionDefect_eq_zero_iff
+Fabius.partitionDefect_eq_firstShell_iff
+\end{lstlisting}
+These declarations work more generally for arbitrary positive lists of block
+sizes.  The remaining combinatorial library-building step is the asymptotic
+weighted enumeration; after that, the analytical induction can follow the
+existing module style.
 
 \subsection{Generalization to other atomic functions}
 
@@ -1175,9 +1269,9 @@ This appendix records two identities useful for sharpening
 
 \begin{proposition}[Exact minimum at fixed block count]
 \label{prop:fixed-k-minimum}
-Among partitions of $m$ with $k$ blocks,
+For integers $m\geq1$ and $1\leq k\leq m$,
 \begin{equation}
- \min D(\pi)=(k-1)(m-k).
+ \min_{\substack{\pi\in\Pi_m\\\abs{\pi}=k}}D(\pi)=(k-1)(m-k).
  \label{eq:fixed-k-minimum}
 \end{equation}
 Equality holds exactly when one block has size $m-k+1$ and every other block is a
@@ -1185,7 +1279,8 @@ singleton.
 \end{proposition}
 
 \begin{proof}
-For fixed $m,k$, formula \eqref{eq:defect} shows that minimizing $D$ is equivalent to
+The indexing family is nonempty: take one block of size $m-k+1$ and $k-1$
+singletons.  Formula \eqref{eq:defect} shows that minimizing $D$ is equivalent to
 maximizing $\sum_i\binom{r_i}{2}$.  Strict convexity of $r\mapsto\binom r2$ transfers
 one unit from a smaller nonsingleton block to a larger block and increases the sum.
 Iteration leaves one large block and $k-1$ singletons.  Direct substitution gives
@@ -1194,14 +1289,15 @@ Iteration leaves one large block and $k-1$ singletons.  Direct substitution give
 
 \begin{proposition}[First defect shell]
 \label{prop:first-shell}
-For $m\geq3$, the least positive defect is $m-2$.  It occurs for exactly two block-size
-profiles:
+For $m\geq3$, the least positive defect is $m-2$.  Up to reordering, the only
+possible block-size profile families are
 \begin{equation}
- (2,1,\ldots,1)
+ (m-1,1)
  \qquad\text{and}\qquad
- (m-1,1).
+ (2,1,\ldots,1).
  \label{eq:first-shell}
 \end{equation}
+They coincide when $m=3$ and are distinct when $m\geq4$.
 \end{proposition}
 
 \begin{proof}
@@ -1209,8 +1305,9 @@ From \eqref{eq:fixed-k-minimum}, the least positive value over $2\leq k\leq m-1$
 \[
  \min_{2\leq k\leq m-1}(k-1)(m-k)=m-2,
 \]
-attained only at $k=2$ and $k=m-1$.  The equality classification in
-\cref{prop:fixed-k-minimum} gives the two profiles.
+attained at the endpoint block counts $k=2$ or $k=m-1$; these endpoint values
+coincide when $m=3$.  The equality classification in
+\cref{prop:fixed-k-minimum} gives the displayed profile families.
 \end{proof}
 
 This identifies the candidate leading correction to the spine sum.  At the
@@ -1270,6 +1367,8 @@ directly connected to the proof are:
  modules for the orbit dynamics;
  \item \path{OriginalPaperSupplement.lean} and \path{NowhereAnalytic.lean} for the
  base nonanalyticity proof;
+ \item \path{PartitionDefect.lean} for the exact finite block-size arithmetic,
+ including the zero profiles, sharp fixed-block minimum, and first positive shell;
  \item \path{docs/Non_Elementarity_of_the_Fabius_Function/} for the dense
  analytic-locus obstruction;
  \item \path{docs/semi-formalized-research-frontiers/} for q-series, Bell/Bernoulli,

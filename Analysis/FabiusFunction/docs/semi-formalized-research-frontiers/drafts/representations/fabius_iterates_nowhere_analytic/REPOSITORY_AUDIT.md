@@ -15,17 +15,31 @@ gap, but it repaired three points of exposition in the TeX source:
 - the finite tie set is indexed so that the empty case `n = 1` is literal.
 
 The source map was also corrected from the nonexistent
-`StrictMonotonicity.lean` to `Monotonicity.lean`.  Three direct `pdflatex`
-passes rebuilt the 19-page PDF without warnings, overfull boxes, or unresolved
-references.  Every rebuilt page was rendered and visually inspected.  The
-revised report still contains 14 nonconjectural labelled manuscript results
-and three conjecture environments.  Two conjecture labels are quarantined:
-the proposed Taylor-series trichotomy is nonexclusive at an `n = 1` interior
-dyadic point unless its third class excludes eventually-zero polynomial
-series, while the tie-cancellation statement follows from canonical
-quarter-point facts and the report's binary-transition lemma.  The
-positive-iterate theorem for `n >= 2`, its finite-spine machinery, and its
-partition estimates remain to be formalized in Lean.
+`StrictMonotonicity.lean` to `Monotonicity.lean`.  A second proof pass raises
+the revised report to 15 nonconjectural labelled manuscript results and leaves
+two conjecture environments.  After those edits, three direct `pdflatex`
+passes rebuilt the 20-page PDF without warnings, overfull boxes, or unresolved
+references.  Every rebuilt page was rendered and visually inspected.  The exhaustive
+Taylor-series alternatives are now stated disjointly: the positive-radius
+class explicitly requires infinitely many nonzero coefficients, while the
+genuine conjecture is the zero-radius/eventually-zero dichotomy.  The former
+tie-cancellation conjecture is now a proved manuscript proposition.  At a tie,
+the earlier maximal orbit point is `1/4` or `3/4`, its successor is `5/72` or
+`67/72`, and along the explicit orders `m = 6ℓ + 4` the earlier spine vanishes
+while the later one has amplitude exactly `Up(1/9) ≥ 1/2`.  The finite-spine
+expansion then gives the full derivative lower bound with constant
+`A_(k+1,n)/4` and zero Taylor radius at every tie point.  The supporting exact
+Lean anchors are `fabius_deriv_quarter`, `deriv_fabiusReal_one_sub`,
+`fabiusReal_quarter`, and `fabiusReal_three_quarters`; the tie proposition and
+its finite-spine conclusion are manuscript proofs, not Lean proofs.  The
+positive-iterate theorem for `n >= 2`, the quadratic-scale factorization,
+weighted-defect decay, two-spine reduction, finite-spine expansion,
+orbit-weight analysis, and analytic conclusion remain to be formalized in
+Lean.  The exact arithmetic of the partition defect--including its pairwise
+and triangular forms, zero-defect classification, sharp fixed-block minimum,
+equality profile, and first positive shell--is now formalized in
+`PartitionDefect.lean` for arbitrary positive block-size lists.  A bridge from
+finite set partitions to those lists is not yet present.
 
 ## Exact numerical replay
 

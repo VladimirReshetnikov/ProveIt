@@ -2,6 +2,53 @@
 
 New standalone intake members:
 
+- [`fabius_dyadic_chaos_frontier/`](fabius_dyadic_chaos_frontier/),
+  *Dyadic Sensitivity and Polynomial-Chaos Frontiers for the
+  Fabius--Rvachev Law* (34 pp), arrived in
+  `fabius_dyadic_chaos_frontier.zip` (outer SHA-256
+  `d57fd01c3991a6a7ecd6ba6e745729c745745d3265cb3cfd414aac1991b11b86`).
+  The archive had one safe top-level wrapper and all thirty submitted
+  non-ledger checksums verified before extraction.  Nine CSV entries and
+  their ledger hashes were then normalized from CRLF to repository LF.
+  All seven delivered PDFs are structurally readable and unencrypted
+  (40 pages total).
+
+  The report's Hoeffding/functional-ANOVA decomposition, active-digit law,
+  tensor-Legendre marks, smooth-observable interaction bounds,
+  q-binomial/Gaussian limit, periodic effective dimension, phase limit,
+  negative-Laplace bridge, and Thue--Morse corner make it an orthogonal-chaos
+  representation member.  It remains standalone pending post-publication
+  theorem comparison, experiment assessment, and a Lean crosswalk.  Quick
+  intake did not render pages, rebuild TeX, replay the experiment, or validate
+  the mathematical claims; manuscript result labels do not establish Lean
+  proof status.
+
+- [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/),
+  the 36-page *Common-Digit Fabius Zonoids* bundle committed directly to
+  `incoming/` by `fef364bfd162f80919cd77b808530dd0734f1cb1`.
+  All 24 non-ledger payloads are covered by its submitted ledger; six CSV
+  hashes were refreshed after repository CRLF-to-LF normalization.
+
+- [`Jacobi_Digit_Fabius_Rvachev_Frontier_Report/`](Jacobi_Digit_Fabius_Rvachev_Frontier_Report/),
+  the 32-page *Jacobi-Digit Deformations of the Fabius--Rvachev Law* bundle
+  from `92c9909242ed6a2ab51d68ed816d1aa2a5339719`.  Every one of its 38
+  submitted payload hashes verified without normalization.
+
+- [`Matrix_Dilated_Fabius_Rvachev_Frontier_Report/`](Matrix_Dilated_Fabius_Rvachev_Frontier_Report/),
+  the 29-page *Matrix-Dilated Fabius--Rvachev Laws* bundle from
+  `8a184546747082cbd92ad4675fb61981c6b8c3b6`.  Its complete 27-entry
+  ledger now records the LF repository bytes; seven CSV entries changed only
+  by line-ending normalization.
+
+These were already-extracted tracked directories, not archives, so no outer
+ZIP hashes exist.  The common-digit and matrix-dilated manuscripts are related
+multivariate/zonoid lifts, but no substantive payload was an exact duplicate
+of an existing draft; semantic consolidation is deferred to the post-
+publication assessment.  Every PDF in the three deliveries was structurally
+readable and unencrypted.  No page rendering, experiment replay, TeX rebuild,
+claim audit, or Lean build was part of this quick intake, and manuscript
+result labels do not establish Lean proof status.
+
 - [`Fabius_Zero_Bias_Frontier_Report/`](Fabius_Zero_Bias_Frontier_Report/),
   *Zero-Bias Towers and Spectral Peeling in the Fabius--Rvachev System*
   (26 pp), arrived on 2026-08-30 from
@@ -14,7 +61,7 @@ New standalone intake members:
 
 - [`fabius_iterates_nowhere_analytic/`](fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Fabius
-  Function* (19 pp), arrived on 2026-08-30 with all 14 submitted payload
+  Function* (19 pp at landing), arrived on 2026-08-30 with all 14 submitted payload
   checksums verified; the single CSV entry was refreshed after LF
   normalization.  A Faà di Bruno partition defect, two-spine expansion,
   strict weight-unimodality argument, and Thue--Morse binary-transition lemma
@@ -24,28 +71,34 @@ New standalone intake members:
   rather than a new Thue--Morse atlas member.  The `n = 1` case and the
   inverse/non-elementarity infrastructure already exist in Lean; the
   `n ≥ 2` theorem appears genuinely new and remains unformalized.  The report
-  has 14 nonconjectural labelled results and three conjecture environments.
-  A hostile
-  post-intake proof pass found no fatal gap and made three proof-exposition
+  now has 15 nonconjectural labelled results and two conjecture environments.
+  A hostile post-intake proof pass found no fatal gap and made three proof-exposition
   repairs: an explicit uniform estimate in the weighted-defect decay, the
   correct neighborhood for the outer function in the two-spine lemma, and an
   empty-union-safe definition of the `n = 1` tie set.  It also corrected the
   landing source map's nonexistent `StrictMonotonicity.lean` to the live
-  `Monotonicity.lean`.  Three direct `pdflatex` passes then rebuilt a clean
-  19-page PDF, and every page was rendered again.  The shipped command also
-  reproduced all six numerical outputs byte-for-byte in a recovered,
+  `Monotonicity.lean`.  The shipped command also reproduced all six numerical
+  outputs byte-for-byte in a recovered,
   fully-pinned Ubuntu/Python environment.  The companion
   [`REPOSITORY_AUDIT.md`](fabius_iterates_nowhere_analytic/REPOSITORY_AUDIT.md)
   records that environment, the output hashes, the cross-platform drift, and
-  the remaining reproducibility limitations.  Two conjecture labels are
-  quarantined rather than treated as open: the proposed Taylor-series
-  “trichotomy” is nonexclusive at an `n = 1` interior dyadic point unless its
-  third class excludes eventually-zero polynomial series, while the
-  tie-cancellation statement follows from the canonical quarter-point facts
-  and the report's own binary-transition lemma.  The floating-point/FFT
+  the remaining reproducibility limitations.  A second proof pass separates
+  the exhaustive Taylor-series alternatives from the genuine
+  zero-radius/eventually-zero conjecture, so the finite-polynomial and
+  positive-radius/infinite-support classes are disjoint.  It also promotes the
+  former tie-cancellation conjecture to an exact proposition: at every tie,
+  orders `m = 6ℓ + 4` kill the earlier maximal spine and leave amplitude
+  `Up(1/9) ≥ 1/2` on the later one.  The finite-spine expansion then yields a
+  full derivative lower bound and zero Taylor radius at every tie point.  This
+  argument uses existing Lean quarter-value and derivative anchors, but its
+  spine conclusion is not yet formalized.  The floating-point/FFT
   diagnostic also does not substantiate the manuscript's separate claim of
-  symbolic verification.  None of the manuscript or numerical labels elevate
-  a result to Lean status.
+  symbolic verification.  After both proof passes, three direct `pdflatex`
+  passes rebuilt a warning-free 20-page A4 PDF; every page was rendered and
+  visually inspected.  Manuscript labels and numerical replay alone do not
+  establish Lean status.  The finite block-size arithmetic is now formalized
+  exactly as cross-referenced below; the compositional and analytic results
+  remain manuscript-level.
 - [`Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/`](Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/),
   *Shape, Divisibility, and Stein Geometry of the Fabius--Rvachev Law*
   (50 pp), arrived on 2026-08-30 with all 14 submitted payload checksums
@@ -77,7 +130,7 @@ New standalone intake members:
   Libertinus prose, incomplete PDF metadata, and Type-3 plot fonts remain
   explicit post-intake normalization work.
 - [`Fabius_Rvachev_New_Frontiers-2/`](Fabius_Rvachev_New_Frontiers-2/),
-  *Fabius--Rvachev New Frontiers* (36 pp; 2619 source lines after the
+  *Fabius--Rvachev New Frontiers* (37 pp; 2639 source lines after the
   2026-08-30 formal crosswalk, 2539 at landing), arrived on
   2026-08-30 from a
   rootless archive with all 15 payload checksums verified. Its native up-law
@@ -118,8 +171,16 @@ New standalone intake members:
   Gaunt/Wigner/`3j` entry formula, entry
   rationality by that route, and Christoffel reconstruction remain outside
   this closure; `rvachevTranslateGram` is the distinct unweighted Gram kernel
-  of shifted-up atoms.  The refreshed 36-page A4/Libertinus PDF matches the
-  2619-line source; its 10 Type-3 font rows are the unchanged embedded-plot
+  of shifted-up atoms.  The downstream executable modules
+  `LegendrePolynomialRational.lean` (2 definitions + 6 theorems),
+  `FabiusLegendreRationalGram.lean` (3 + 11), and
+  `FabiusLegendreRationalGramValues.lean` (0 + 11) bring the complete
+  seven-module finite-algebra inventory to 13 definitions and 61 theorems.
+  They supply executable rational Legendre coefficients and Gram determinants,
+  including the exact `H_4` and zero-based `beta_4` values, without closing the
+  Gaunt/Wigner entry route or the remaining analytic program.  The refreshed
+  37-page A4/Libertinus PDF matches the 2639-line source; its 10 Type-3 font rows
+  are the unchanged embedded-plot
   baseline, and all 15 entries in the active payload ledger verify.
 - [`Fabius_Stein_Koopman_Frontier_Report/`](Fabius_Stein_Koopman_Frontier_Report/),
   *Dyadic Stein--Koopman and q-Oscillator Calculus for the Fabius--Rvachev
@@ -128,14 +189,60 @@ New standalone intake members:
   Poisson operators, martingales, nonreversibility certificate, scalar Stein
   kernel, and endpoint asymptotics extend the operator-representation theme.
 
-All six remain standalone pending deliberate consolidation and completion of
-their claim-by-claim Lean crosswalks; the determinant sublayer just identified
-is the recorded partial crosswalk for `Fabius_Rvachev_New_Frontiers-2/`.
-Other paper theorem labels do not by themselves assert Lean status.
+These six reports, from `Fabius_Zero_Bias_Frontier_Report/` through
+`Fabius_Stein_Koopman_Frontier_Report/`, remain standalone pending deliberate
+consolidation and completion of their claim-by-claim Lean crosswalks.  The
+determinant sublayer recorded above and the partition-defect sublayer below are
+explicit partial crosswalks; other paper theorem labels do not by themselves
+assert Lean status.
+
+## Current Lean crosswalk: partition-defect arithmetic
+
+For a list of block sizes `r = (r₁, ..., rₖ)`, write
+
+`P_f(r) = ∑_{1 ≤ i < j ≤ k} f(rᵢ, rⱼ)`
+
+and define
+
+`δ(x,y) = (x - 1)(y - 1) + (x - 1) + (y - 1)` and
+`D(r) = P_δ(r)`.
+
+All subtraction in the Lean statements is natural-number subtraction.  For
+positive block sizes it has the ordinary integer interpretation below.
+`PartitionDefect.lean` supplies the following exact human-readable API.
+
+| Lean declarations | Human-readable content |
+| --- | --- |
+| `pairSum_nil`, `pairSum_cons`, `pairSum_one` | `P_f([]) = 0`; adjoining a head gives `P_f(x :: r) = ∑_{y ∈ r} f(x,y) + P_f(r)`; and `P_1(r) = C(k,2)`. |
+| `pairSum_add`, `pairSum_congr`, `pairSum_map` | Pair summation is additive in the kernel, respects equality of kernels on the list entries, and commutes with mapping the entries. |
+| `choose_add_two`, `choose_list_sum_two` | `C(a+b,2) = C(a,2) + C(b,2) + ab`, hence `C(∑ rᵢ,2) = ∑ C(rᵢ,2) + ∑_{i<j} rᵢrⱼ`. |
+| `blockPairDefect_eq_mul_sub_one`, `partitionDefect_eq_pairSum_mul_sub_one`, `partitionDefect_nonneg` | For positive `x,y`, `δ(x,y) = xy - 1`; hence `D(r) = ∑_{i<j}(rᵢrⱼ - 1) ≥ 0`. |
+| `choose_sum_two_eq_choose_length_add_sum_add_partitionDefect`, `partitionDefect_eq_choose_sum_sub_choose_length_sub_sum` | If `m = ∑ rᵢ`, then `C(m,2) = C(k,2) + ∑ C(rᵢ,2) + D(r)`, equivalently `D(r) = C(m,2) - C(k,2) - ∑ C(rᵢ,2)`. |
+| `length_le_sum_of_pos`, `sum_map_sub_one` | Positive sizes satisfy `k ≤ m`, and their total excess is `∑(rᵢ - 1) = m - k`. |
+| `pairSum_add_eq`, `pairSum_map_add_eq` | Every list entry occurs in exactly `k - 1` pairs: `∑_{i<j}(aᵢ+aⱼ) = (k-1)∑aᵢ`, also after an arbitrary natural-valued map. |
+| `partitionDefect_eq_linear_add_pairwise_excess` | `D(r) = (k-1)∑(rᵢ-1) + ∑_{i<j}(rᵢ-1)(rⱼ-1)`. |
+| `partitionDefect_lower_bound`, `partitionDefect_fixed_block_bound` | For positive block sizes of total `m`, `D(r) ≥ (k-1)(m-k)`; the second theorem exposes `m` and `k` as named parameters. |
+| private `list_sum_eq_zero_iff`, `pairSum_eq_zero_iff_pairwise` | A natural-valued list sum is zero exactly when every term is zero; a natural-valued pair sum is zero exactly when its kernel vanishes on every list-position pair. |
+| `blockPairDefect_eq_zero_iff`, `partitionDefect_eq_zero_iff`, `sub_one_mul_sub_one_eq_zero_iff` | For positive `x,y`, `δ(x,y)=0` iff `x=y=1`, while `(x-1)(y-1)=0` iff at least one is `1`. Thus `D(r)=0` iff `k≤1` or every block is a singleton. |
+| `partitionDefect_eq_lower_bound_iff`, `partitionDefect_fixed_block_eq_iff` | Equality in the sharp bound holds exactly when every pair contains a singleton, equivalently when at most one block is nonsingleton. |
+| `add_sub_one_le_mul_of_pos`, `mul_eq_add_sub_one_iff` | For positive `a,b`, `a+b-1 ≤ ab`; equality holds iff `a=1` or `b=1`, by `ab = (a+b-1) + (a-1)(b-1)`. |
+| `firstShell_le_fixedBlockProduct`, `fixedBlockProduct_eq_firstShell_iff` | If `2 ≤ k < m`, then `m-2 ≤ (k-1)(m-k)`, with equality iff `k=2` or `k=m-1`. |
+| `firstShell_le_partitionDefect`, `partitionDefect_eq_firstShell_iff` | A positive block-size list of total `m` with `2 ≤ k < m` has `D(r) ≥ m-2`. Equality gives the endpoint profile families `(m-1,1)` and `(2,1,...,1)`, up to order; they coincide for `m=3`. |
+| `partitionDefect_twoBlock_firstShell` | Sharpness is explicit: `D([m-1,1]) = m-2` for `m ≥ 3`. |
+
+This formalizes the list-level finite arithmetic behind the report's dyadic
+partition defect: pairwise and triangular forms, zero classification, sharp
+fixed-block minimum, equality profile, and first positive shell.  It
+generalizes the arithmetic from set partitions to arbitrary positive
+block-size lists.  A wrapper turning a finite set partition into its block-size
+list is still absent.  The quadratic-scale factorization, weighted-defect
+decay, two-spine reduction, finite spine expansion, orbit-weight analysis,
+positive-iterate nowhere-analyticity, co-countable zero-radius theorem, and
+dependent inverse/non-elementarity corollaries remain manuscript-level.
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
-[`Representation_Frontiers/`](Representation_Frontiers/) (299 pp;
+[`Representation_Frontiers/`](Representation_Frontiers/) (300 pp;
 eight parts):
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform
