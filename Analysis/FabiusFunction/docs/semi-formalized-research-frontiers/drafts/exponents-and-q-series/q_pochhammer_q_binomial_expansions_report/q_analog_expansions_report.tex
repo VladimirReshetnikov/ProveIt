@@ -968,6 +968,19 @@ Pairing even and odd exponents gives the exact value
  \qpoch a n\big|_{q=-1}
  =(1-a)^{\ceil{n/2}}(1+a)^{\floor{n/2}}.
 \end{equation}
+In particular, for every $m\geq0$,
+\begin{equation}\label{eq:poc-minus-one-paired}
+ (a;-1)_{2m}=(1-a^2)^m,
+ \qquad
+ (a;-1)_{2m+1}=(1-a^2)^m(1-a).
+\end{equation}
+Indeed, the factor indexed by an even $j$ is $1-a$, while the factor indexed
+by an odd $j$ is $1+a$.  A product of length $2m$ contains $m$ factors of
+each kind, so pairing them gives $((1-a)(1+a))^m=(1-a^2)^m$; a product of
+length $2m+1$ has precisely one additional even-index factor.  This argument
+is valid in an arbitrary commutative ring and is the proof formalized by
+\path|finiteQPochhammerIn_neg_one_even| and
+\path|finiteQPochhammerIn_neg_one_odd|.
 When $a\ne\pm1$, the first derivative follows from
 \eqref{eq:finite-poc-logder}.  Writing $n=2m$ or $2m+1$ gives
 \begin{align}
@@ -1008,7 +1021,7 @@ without ever forming a numerical $0/0$.
 \section{The complete first jet of a Gaussian coefficient}
 
 \begin{theorem}[Value and derivative at $q=-1$]\label{thm:gaussian-minus-one-jet}
-Write
+Assume $0\leq k\leq n$ and write
 \[
  n=2a+\eps,
  \qquad k=2b+\delta,
@@ -1027,13 +1040,46 @@ If $n=2a$ and $k=2b+1$, then
  &=(a-b)\binom ab
  =a\binom{a-1}{b}.                                  \label{eq:minus-one-der-zero}
 \end{align}
-Thus every zero of a Gaussian coefficient at $-1$ is simple.
+Thus every zero at $-1$ among these admissible Gaussian coefficients is
+simple over $\Z$, and therefore after base change to any field of
+characteristic zero.  After reduction modulo a prime, the displayed nonzero
+integer slope can vanish, so simplicity in positive characteristic is a
+separate question.
 \end{theorem}
 
 \begin{proof}
-The values are the $m=2$ case of the $q$-Lucas theorem; they also follow
-directly from~\eqref{eq:qfactorial-minus-one} after cancelling equal powers of
-$q+1$.
+Here is a denominator-free proof of the values.  Work first over $\Z$, put
+$G_{n,k}=\qbinom nk|_{q=-1}$ and extend the Gaussian triangle by zero outside
+$0\leq k\leq n$.  Reciprocity has the polynomial form
+$\qbinom nk=q^{k(n-k)}\qbinombase{n}{k}{q^{-1}}$.  In an even row and an
+admissible odd column the exponent $k(n-k)$ is odd, so evaluation at $q=-1$ gives
+$G_{2a,2b+1}=-G_{2a,2b+1}$; the value is an integer, hence it is zero.
+Transport along the canonical homomorphism $\Z\to R$ gives the same vanishing
+identity in every commutative ring $R$, including rings with $2$-torsion.
+
+Now use the denominator-free alternate $q$-Pascal recurrence
+\[
+ \qbinom{n+1}{k+1}
+ =q^{k+1}\qbinom n{k+1}+\qbinom nk.
+\]
+Suppose the even row $2a$ has
+$G_{2a,2b}=\binom ab$ and $G_{2a,2b+1}=0$.  The two intervening odd-row
+entries are then
+\[
+ G_{2a+1,2b+1}=\binom ab,
+ \qquad
+ G_{2a+1,2b+2}=\binom a{b+1}.
+\]
+Applying the same recurrence once more gives
+\[
+ G_{2a+2,2b+2}
+ =\binom a{b+1}+\binom ab
+ =\binom{a+1}{b+1}.
+\]
+The boundary entries are $1$, so induction from row zero proves all four
+parity cases, including the zero-extended cases above the row.  This is also
+the $m=2$ case of $q$-Lucas and agrees with cancelling equal powers of $q+1$
+in~\eqref{eq:qfactorial-minus-one}.
 
 Assume first that the value is nonzero.  The degree is
 $D=k(n-k)$, which is even in precisely these parity cases.  Reciprocity gives
@@ -1066,80 +1112,34 @@ Taking the quotient gives
 which is the derivative at the simple zero.
 \end{proof}
 
+\begin{remark}[Lean status of the second-root calculation]
+The complete four-case value table is machine-checked over every commutative
+ring.  Its four exact declarations are:
+\begin{itemize}[nosep,leftmargin=2em]
+\item \path|Fabius.gaussianBinomial_neg_one_even_even|;
+\item \path|Fabius.gaussianBinomial_neg_one_even_odd_eq_zero|;
+\item \path|Fabius.gaussianBinomial_neg_one_odd_even|;
+\item \path|Fabius.gaussianBinomial_neg_one_odd_odd|.
+\end{itemize}
+The odd-column zero lives in \path|FabiusFunction.QBinomialReciprocity|, where
+it follows from reciprocal symmetry.  The other three values and the two
+product identities \path|Fabius.finiteQPochhammerIn_neg_one_even| and
+\path|Fabius.finiteQPochhammerIn_neg_one_odd| live in
+\path|FabiusFunction.GaussianBinomialAtNegOne|.  That module reuses the zero
+theorem, then needs only $q$-Pascal, parity, ordinary Pascal, and factor pairing.
+The first-jet formulas~\eqref{eq:minus-one-der-nonzero} and
+\eqref{eq:minus-one-der-zero} remain the next formalization layer; this report
+does not treat numerical checks as a substitute for that proof.  Their eventual
+formalization requires a polynomial Gaussian-coefficient interface; simplicity
+must be stated over the integers or in characteristic zero, because a nonzero
+integral slope may vanish after reduction modulo a prime.
+\end{remark}
+
 \begin{remark}[Why the derivative formula is structurally natural]
 In the nonvanishing cases, palindromicity alone fixes the derivative at $-1$.
 In the vanishing case, parity forces odd degree and reciprocity only predicts
 that the value must vanish; the uncancelled even factorial factor supplies the
 missing slope.  The two mechanisms together determine the entire first jet.
-\end{remark}
-
-\begin{proposition}[Denominator-free values over a commutative ring]
-\label{prop:gaussian-minus-one-ring}
-Let $R$ be a commutative ring, let $a,b\in\N$, and interpret ordinary
-binomial coefficients in $R$ (with their usual zero extension).  Then
-\begin{align*}
- \qbinombase{2a}{2b}{-1}&=\binom ab,
- &\qbinombase{2a}{2b+1}{-1}&=0,\\
- \qbinombase{2a+1}{2b}{-1}&=\binom ab,
- &\qbinombase{2a+1}{2b+1}{-1}&=\binom ab.
-\end{align*}
-Moreover, for every $z\in R$,
-\begin{align*}
- \poch{z}{-1}{2a}&=(1-z^2)^a,\\
- \poch{z}{-1}{2a+1}&=(1-z^2)^a(1-z).
-\end{align*}
-These identities remain valid in positive characteristic and in rings with
-zero divisors.
-\end{proposition}
-
-\begin{proof}
-Write $V_{n,k}=\qbinombase nk{-1}$, with $V_{n,k}=0$ when $k>n$.
-We prove the four displayed parity formulas simultaneously by induction on
-$a$.  For $a=0$, they reduce to the boundary values
-$V_{0,0}=V_{1,0}=V_{1,1}=1$ and the zero extension.
-
-For the induction step use the denominator-free $q$-Pascal recurrence
-\[
- V_{n+1,k+1}=(-1)^{k+1}V_{n,k+1}+V_{n,k}.
-\]
-Passing from row $2a+1$ to row $2a+2$, an even column adds two adjacent
-ordinary binomial coefficients and therefore gives Pascal's
-$\binom{a+1}{b}$; an odd column subtracts two equal coefficients and therefore
-vanishes.  Passing once more, from row $2a+2$ to row $2a+3$, an even column
-adds the intervening zero while an odd column subtracts that zero, so both
-surviving entries are the same $\binom{a+1}{b}$.  Together with the boundary
-column $V_{n,0}=1$, these are exactly the four assertions at $a+1$.
-
-For the products, pair the factors with exponents $2j$ and $2j+1$:
-\[
- (1-z(-1)^{2j})(1-z(-1)^{2j+1})=(1-z)(1+z)=1-z^2.
-\]
-There are $a$ such pairs in $\poch z{-1}{2a}$.  The product of length
-$2a+1$ has in addition the even-exponent factor $1-z$, proving both formulas.
-\end{proof}
-
-\begin{remark}[Exact Lean crosswalk and remaining boundary]
-The four Gaussian identities in
-Proposition~\ref{prop:gaussian-minus-one-ring} are the compiled declarations
-\path{Fabius.gaussianBinomial_neg_one_even_even},
-\path{Fabius.gaussianBinomial_neg_one_even_odd_eq_zero},
-\path{Fabius.gaussianBinomial_neg_one_odd_even}, and
-\path{Fabius.gaussianBinomial_neg_one_odd_odd}.  The two product identities are
-\path{Fabius.finiteQPochhammerIn_neg_one_even} and
-\path{Fabius.finiteQPochhammerIn_neg_one_odd}.  The odd-column zero lives in
-\path{FabiusFunction.QBinomialReciprocity}, where it follows from reciprocal
-symmetry; the other five live in
-\path{FabiusFunction.GaussianBinomialAtNegOne}.  The latter module reuses the
-zero theorem, then needs only $q$-Pascal, parity, ordinary Pascal, and factor
-pairing to obtain the remaining values and products.
-
-The derivative identities \eqref{eq:minus-one-der-nonzero} and
-\eqref{eq:minus-one-der-zero}, and hence the simple-root sentence in
-\cref{thm:gaussian-minus-one-jet}, are proved in this report but do not yet
-have Lean counterparts.  Their eventual formalization requires a polynomial
-Gaussian-coefficient interface; simplicity must be stated over the integers
-or in characteristic zero, because a nonzero integral slope may vanish after
-reduction modulo a prime.
 \end{remark}
 
 \chapter{General roots of unity}\label{chap:roots-finite}

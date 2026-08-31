@@ -7,7 +7,7 @@ q-binomial coefficients.
 ## Contents
 
 - `q_analog_expansions_report.tex` — complete LaTeX source.
-- `q_analog_expansions_report.pdf` — compiled 56-page report.
+- `q_analog_expansions_report.pdf` — compiled 57-page report.
 - `q_expansion_experiments.py` — commented exact-symbolic and high-precision
   numerical verification program.
 - `numerical_results.txt` — output of the included verification run.
