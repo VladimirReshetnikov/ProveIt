@@ -2,6 +2,79 @@
 
 New standalone intake members:
 
+- [`inverse_q_analog_jet_atlas/`](inverse_q_analog_jet_atlas/),
+  *An Inverse-Jet Atlas for q-Analogs: Multivariate Reversion, Singular
+  Branches, and Asymptotics at q=0,1,-1, Roots of Unity, and q=±∞*
+  (72 pp), arrived on 2026-08-30 from
+  `inverse_q_analog_jet_atlas_2026-08-30.zip` (outer SHA-256
+  `9c9a0353eb355e6defb87845c4a2a79d85c537fe5a6c38c5473f9d3d56448ead`).
+  The rootless archive supplied five non-ledger payloads plus
+  `SHA256SUMS.txt`; all five submitted payload hashes verified, and all five
+  text members were already LF. Its title and abstract place its inverse-jet
+  treatment of finite and infinite q-Pochhammer products, Gaussian and
+  q-multinomial coefficients, q-special functions, singular bases, roots of
+  unity, and the Fabius--Rvachev effective geometric base beside the existing
+  inverse-q reports in this group. It remains standalone pending
+  post-publication comparison and deliberate consolidation, plus a Lean
+  crosswalk; manuscript classifications and symbolic/numerical checks do not
+  establish Lean verification.
+
+- [`inverse_q_analog_functions_report/`](inverse_q_analog_functions_report/),
+  *Inverse Functions of q-Pochhammer Symbols, Gaussian Coefficients, and
+  Related q-Analogues: Branch Geometry, Local Reversion, Singular Limits, and
+  Computation* (59 pp), arrived on 2026-08-30 from
+  `inverse_q_analog_functions_report.zip` (outer SHA-256
+  `19cc7da37f71ddbbc0c46b91c55c23059a1e305500260bd0a306394f4c21f4de`).
+  The archive supplied nine payloads but no checksum ledger; the
+  repository-generated `SHA256SUMS` records and verifies all nine, and all five
+  text payloads were already LF. None of its nine payload hashes matches any
+  of the 48 payloads in the three previously filed inverse-q report wrappers.
+  Its finite and infinite q-Pochhammer, Gaussian, q-gamma/q-beta,
+  q-exponential, normalized q-polylogarithm, and basic hypergeometric inverse
+  branches nevertheless place it beside those reports. All four delivered
+  PDFs are structurally readable and unencrypted (62 pages total). It remains
+  standalone pending post-publication semantic comparison, deliberate
+  consolidation, and a Lean crosswalk; manuscript classifications and
+  numerical evidence do not establish Lean verification.
+
+- [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](Cyclotomic_q_Fabius_Rvachev_Frontier/),
+  *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
+  Product* (25 pp), arrived on 2026-08-30 from
+  `Cyclotomic_q_Fabius_Rvachev_Frontier.zip` (outer SHA-256
+  `029da7d9ec96a0b2e5c4164c37f2b361dd015112bd0c6237263e3c538c5b0f64`).
+  All 22 submitted payload hashes verified; five CSV entries were refreshed
+  after CRLF-to-LF repository normalization. Its title and abstract place its
+  radial root-of-unity expansions, claimed natural-boundary theorem,
+  cyclotomic blow-ups, Bell/moment condensation, and inverse branches beside
+  the consolidated q-series frontier. It remains standalone pending the
+  required post-publication claim-level comparison and a Lean crosswalk;
+  manuscript labels and numerical evidence do not establish Lean verification.
+
+- [`inverse_q_analogs_extended_report/`](inverse_q_analogs_extended_report/),
+  *Inverse q-Analogs in All Parameters* (104 pp), arrived on 2026-08-30 from
+  `inverse_q_analogs_all_parameters_report.zip` (outer SHA-256
+  `0263542a7a6a50459eeb0359015b4086245e7311528e80e3875657529825669f`).
+  All 26 submitted payload hashes verified; seven CSV entries were refreshed
+  after CRLF-to-LF normalization. Its README identifies it as an extension of
+  the filed inverse-q drafts, covering regular, singular, endpoint,
+  cyclotomic, and multivariate parameter inversion and Fabius--Rvachev
+  parameter recovery. It remains standalone pending post-publication
+  comparison and deliberate consolidation with both inverse-q siblings, plus
+  a Lean crosswalk; manuscript labels and numerical checks do not establish
+  Lean verification.
+
+- [`inverse_q_analogs_report-2/`](inverse_q_analogs_report-2/),
+  *Inverse Functions of q-Pochhammer Symbols, Gaussian Coefficients, and
+  Related q-Analogs* (59 pp), arrived on 2026-08-30 from
+  `inverse_q_analogs_report_bundle.zip` (outer SHA-256
+  `82ab1dc2cbdd4e69d638cfc045d9ca331e8152e1faeba763732fa9231578b875`).
+  It was given a collision-safe suffix because `inverse_q_analogs_report/`
+  already exists. All five submitted payload hashes verified, every text
+  payload was already LF, and none matches the existing report byte-for-byte.
+  It remains standalone pending post-publication semantic deduplication and a
+  Lean crosswalk; manuscript classifications and numerical checks do not
+  establish Lean verification.
+
 - [`Fabius_Rvachev_Frontier_Report/`](Fabius_Rvachev_Frontier_Report/),
 *Negative Parameters, Reciprocal Bases, and the Gaussian Boundary* (26 pp),
 arrived on 2026-08-30 with all 13 payload checksums verified.  It develops
@@ -360,6 +433,19 @@ The two `q = -1` theorems hold over every commutative ring, including
 characteristic two and above-diagonal zero-extension cases.  This proves the
 reciprocity clause of the monograph's compound structure theorem, while its
 separate degree and coefficient-polynomial clauses keep that full row partial.
+
+`GaussianBinomialAtNegOne.lean` adds exactly five public theorems:
+`gaussianBinomial_neg_one_even_even`,
+`gaussianBinomial_neg_one_odd_even`,
+`gaussianBinomial_neg_one_odd_odd`,
+`finiteQPochhammerIn_neg_one_even`, and
+`finiteQPochhammerIn_neg_one_odd`.  Together with
+`gaussianBinomial_neg_one_even_odd_eq_zero` from the reciprocity module, these
+give all four Gaussian parity values and both paired finite-product identities
+over arbitrary commutative rings, without division or characteristic
+restrictions.  The companion report proves the first derivative and
+simple-root statement only at paper level; those polynomial-interface results
+remain unformalized.
 
 The documents also cross-reference the independent real fractional-Volterra
 layer. `FractionalVolterraCalculus.lean` proves positive affine covariance on

@@ -2,6 +2,19 @@
 
 New standalone intake members:
 
+- [`fabius_information_frontier/`](fabius_information_frontier/),
+  *Exact Information Geometry and New Frontiers for the Fabius--Rvachev
+  System*, is the submitted 30-page A4 research report filed from
+  `fabius_information_frontier_report.zip` (751,588 bytes; SHA-256
+  `41f9aba6eb85bb173827f13cb6b7b1d54b7ea9346faf7c9e5b1af859bbd42ec7`).
+  Its submitted 18-entry ledger is preserved and verified, while the
+  exhaustive current ledger records only the repository-mandated LF
+  normalization of four CSVs and this provenance note.  This quick-gate
+  archival checkpoint makes no claim-level acceptance: hostile mathematical
+  audit, numerical replay, Lean crosswalk, canonical-preamble normalization,
+  plot-font repair, and rebuild remain deliberately deferred.  The submitted
+  PDF still uses Latin Modern and includes Type 3 plot-font rows.
+
 - [`geometric_comb_q_fabius_report/`](geometric_comb_q_fabius_report/),
   *Geometric-Comb Interpolation, Gaussian Pascal Transforms, and the
   Fabius--Rvachev Boundary Layer* (68 A4 pp; 3,575-line TeX and 637-line
@@ -76,7 +89,7 @@ New standalone intake members:
   been translated into Lean.
 
 The inverse function's frontiers and the sampling/deconvolution circle of
-ideas, in three consolidated volumes and five retained standalone reports.
+ideas, in three consolidated volumes and six retained standalone reports.
 
 ## `Inverse_and_Sampling_Frontiers/`
 

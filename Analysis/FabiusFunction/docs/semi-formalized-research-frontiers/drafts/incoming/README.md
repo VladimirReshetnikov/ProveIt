@@ -64,6 +64,13 @@ when no archives are waiting.
 
 Most recent processed batch (all filed and removed on 2026-08-30):
 
+- `fabius_information_frontier_report.zip` (751,588 bytes; SHA-256
+  `41f9aba6eb85bb173827f13cb6b7b1d54b7ea9346faf7c9e5b1af859bbd42ec7`)
+  became
+  [`../inverse-and-sampling/fabius_information_frontier/`](../inverse-and-sampling/fabius_information_frontier/).
+  Its submitted 18-entry ledger verified before four CSVs received the
+  repository's LF normalization; deeper claim audit and artifact normalization
+  are deferred until after publication of this archival checkpoint.
 - `geometric_comb_interpolation_report-3.zip` (1,296,171 bytes; SHA-256
   `89c9de31b9b78b614c13d5a3ff24ae41b73ef6704a9daef77ba724b396e90fa0`)
   was a unique arrival, not a reship, and became the quick-gate archival package

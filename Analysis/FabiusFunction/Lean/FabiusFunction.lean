@@ -14,6 +14,7 @@ import FabiusFunction.QBinomialTransform
 import FabiusFunction.QBinomialVandermonde
 import FabiusFunction.QBinomialCauchy
 import FabiusFunction.GaussianBinomialAtOne
+import FabiusFunction.GaussianBinomialAtNegOne
 import FabiusFunction.GeometricCompleteHomogeneous
 import FabiusFunction.GeometricLagrange
 import FabiusFunction.LagrangeResidualMoments
@@ -68,6 +69,8 @@ import FabiusFunction.GramStieltjesNaturality
 import FabiusFunction.PolynomialMomentGramDeterminant
 import FabiusFunction.LegendrePolynomialRational
 import FabiusFunction.WeightedScaleMultiplicity
+import FabiusFunction.BaseDigitMultiplicity
+import FabiusFunction.PartitionDefect
 import FabiusFunction.SpectralZetaWeighted
 import FabiusFunction.ShiftDifferenceWeights
 import FabiusFunction.NewtonMultiplicityAssembly
@@ -96,6 +99,7 @@ import FabiusFunction.ParityCharacter
 import FabiusFunction.ParityCharacterKernel
 import FabiusFunction.DigitCharacterCongruence
 import FabiusFunction.BinaryDigitFloor
+import FabiusFunction.RademacherSine
 import FabiusFunction.GeneralizedProuhetBlock
 import FabiusFunction.ProuhetBlockZeroOrder
 import FabiusFunction.BitPositionQBinomial
@@ -227,6 +231,7 @@ import FabiusFunction.OrthogonalPolynomialGramBridge
 import FabiusFunction.RvachevRationalJacobi
 import FabiusFunction.FabiusLegendreHankelDeterminant
 import FabiusFunction.FabiusLegendreRationalGram
+import FabiusFunction.FabiusLegendreRationalGramValues
 import FabiusFunction.OrthogonalPolynomialValues
 import FabiusFunction.OrthogonalPolynomialParity
 import FabiusFunction.OrthogonalPolynomialRecurrence

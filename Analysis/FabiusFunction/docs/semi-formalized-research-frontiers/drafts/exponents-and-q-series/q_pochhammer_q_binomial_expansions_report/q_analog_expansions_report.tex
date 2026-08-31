@@ -1197,6 +1197,75 @@ that the value must vanish; the uncancelled even factorial factor supplies the
 missing slope.  The two mechanisms together determine the entire first jet.
 \end{remark}
 
+\begin{proposition}[Denominator-free values over a commutative ring]
+\label{prop:gaussian-minus-one-ring}
+Let $R$ be a commutative ring, let $a,b\in\N$, and interpret ordinary
+binomial coefficients in $R$ (with their usual zero extension).  Then
+\begin{align*}
+ \qbinombase{2a}{2b}{-1}&=\binom ab,
+ &\qbinombase{2a}{2b+1}{-1}&=0,\\
+ \qbinombase{2a+1}{2b}{-1}&=\binom ab,
+ &\qbinombase{2a+1}{2b+1}{-1}&=\binom ab.
+\end{align*}
+Moreover, for every $z\in R$,
+\begin{align*}
+ \poch{z}{-1}{2a}&=(1-z^2)^a,\\
+ \poch{z}{-1}{2a+1}&=(1-z^2)^a(1-z).
+\end{align*}
+These identities remain valid in positive characteristic and in rings with
+zero divisors.
+\end{proposition}
+
+\begin{proof}
+Write $V_{n,k}=\qbinombase nk{-1}$, with $V_{n,k}=0$ when $k>n$.
+We prove the four displayed parity formulas simultaneously by induction on
+$a$.  For $a=0$, they reduce to the boundary values
+$V_{0,0}=V_{1,0}=V_{1,1}=1$ and the zero extension.
+
+For the induction step use the denominator-free $q$-Pascal recurrence
+\[
+ V_{n+1,k+1}=(-1)^{k+1}V_{n,k+1}+V_{n,k}.
+\]
+Passing from row $2a+1$ to row $2a+2$, an even column adds two adjacent
+ordinary binomial coefficients and therefore gives Pascal's
+$\binom{a+1}{b}$; an odd column subtracts two equal coefficients and therefore
+vanishes.  Passing once more, from row $2a+2$ to row $2a+3$, an even column
+adds the intervening zero while an odd column subtracts that zero, so both
+surviving entries are the same $\binom{a+1}{b}$.  Together with the boundary
+column $V_{n,0}=1$, these are exactly the four assertions at $a+1$.
+
+For the products, pair the factors with exponents $2j$ and $2j+1$:
+\[
+ (1-z(-1)^{2j})(1-z(-1)^{2j+1})=(1-z)(1+z)=1-z^2.
+\]
+There are $a$ such pairs in $\poch z{-1}{2a}$.  The product of length
+$2a+1$ has in addition the even-exponent factor $1-z$, proving both formulas.
+\end{proof}
+
+\begin{remark}[Exact Lean crosswalk and remaining boundary]
+The four Gaussian identities in
+Proposition~\ref{prop:gaussian-minus-one-ring} are the compiled declarations
+\path{Fabius.gaussianBinomial_neg_one_even_even},
+\path{Fabius.gaussianBinomial_neg_one_even_odd_eq_zero},
+\path{Fabius.gaussianBinomial_neg_one_odd_even}, and
+\path{Fabius.gaussianBinomial_neg_one_odd_odd}.  The two product identities are
+\path{Fabius.finiteQPochhammerIn_neg_one_even} and
+\path{Fabius.finiteQPochhammerIn_neg_one_odd}.  The odd-column zero lives in
+\path{FabiusFunction.QBinomialReciprocity}, where it follows from reciprocal
+symmetry; the other five live in
+\path{FabiusFunction.GaussianBinomialAtNegOne}.  The latter module reuses the
+zero theorem, then needs only $q$-Pascal, parity, ordinary Pascal, and factor
+pairing to obtain the remaining values and products.
+
+The derivative identities \eqref{eq:minus-one-der-nonzero} and
+\eqref{eq:minus-one-der-zero}, and hence the simple-root sentence in
+\cref{thm:gaussian-minus-one-jet}, are proved in this report but do not yet
+have Lean counterparts.  Their eventual formalization requires a polynomial
+Gaussian-coefficient interface; simplicity must be stated over the integers
+or in characteristic zero, because a nonzero integral slope may vanish after
+reduction modulo a prime.
+\end{remark}
+
 \chapter{General roots of unity}\label{chap:roots-finite}
 
 \section{Cyclotomic order and the carry criterion}

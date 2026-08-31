@@ -6,7 +6,7 @@ related q-analogues.
 
 ## Package contents
 
-- `q_analog_expansions_report.tex` — normalized report source (2,848 lines).
+- `q_analog_expansions_report.tex` — normalized report source (2,917 lines).
 - `q_analog_expansions_report.pdf` — validated 39-page report.
 - `q_expansion_experiments.py` — exact-symbolic and high-precision numerical
   checks (408 lines).
@@ -108,15 +108,31 @@ destinations, overfull boxes, underfull boxes, and fatal errors.
 - All 23 font records are embedded and subset; four are Libertinus text-font
   records. Canonical Computer Modern math is intentional. There are no Type 3
   or Latin Modern fonts.
-- `pdftotext -layout` extraction succeeds (2,480 lines, 144,414 bytes) and
+- `pdftotext -layout` extraction succeeds (2,511 lines, 147,482 bytes) and
   preserves the provenance/status boundary, public names, formulas, and
   references.
 - The PDF contains no raster images and is not encrypted or scan-only.
-- Every page was visually inspected, including the status crosswalk, dense
-  equations, numerical table, compact formula map, and bibliography; no
-  clipping, overlap, corruption, or malformed glyphs was found.
+- Focused visual inspection of pages 1, 17--19, and 39 covers the title,
+  complete first jet, new denominator-free ring theorem and Lean crosswalk,
+  following chapter boundary, formula map, and bibliography; no clipping,
+  overlap, corruption, or malformed glyphs was found. Programmatic geometry
+  and text checks cover all 39 pages.
 
 See `pdf_preflight.json` for the compact machine-readable record.
+
+## Lean crosswalk
+
+The value half of the report's complete first-jet theorem at `q = -1` is now
+formalized in the stronger setting of an arbitrary commutative ring.  The
+even-row/odd-column zero follows from reciprocal symmetry in
+`FabiusFunction.QBinomialReciprocity`; the other three parity values and the
+paired even- and odd-length finite q-Pochhammer product identities live in
+`FabiusFunction.GaussianBinomialAtNegOne`, whose induction reuses that zero
+theorem.  The focused Lake target has been compiled successfully.
+
+The first-derivative formulas and the resulting characteristic-zero
+simple-root theorem are not yet formalized.  The report's manuscript proof is
+not a substitute for those remaining Lean declarations.
 
 ## Baseline source
 
