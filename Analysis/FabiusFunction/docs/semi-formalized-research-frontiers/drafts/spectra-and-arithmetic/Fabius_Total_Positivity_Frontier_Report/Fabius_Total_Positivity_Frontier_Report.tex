@@ -27,6 +27,8 @@
 \fancyhf{}
 \fancyhead[L]{\small Fabius--Rvachev total positivity and Cartwright geometry}
 \fancyhead[R]{\small\thepage}
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
 \renewcommand{\headrulewidth}{0.35pt}
 \setcounter{tocdepth}{2}
 \setcounter{secnumdepth}{3}
@@ -47,28 +49,6 @@
 \newtheorem{warning}[theorem]{Warning}
 
 \DeclareMathOperator{\ord}{ord}
-\DeclareMathOperator{\supp}{supp}
-\DeclareMathOperator{\Var}{Var}
-\DeclareMathOperator{\E}{\mathbb E}
-\DeclareMathOperator{\sgn}{sgn}
-\DeclareMathOperator{\diag}{diag}
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\Up}{\operatorname{up}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\e}{\mathrm e}
-\newcommand{\ii}{\mathrm i}
-\newcommand{\dd}{\,\mathrm d}
-\newcommand{\Oh}{\mathrm O}
-\newcommand{\littleoh}{\mathrm o}
-\newcommand{\abs}[1]{\left|#1\right|}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
-\newcommand{\set}[1]{\left\{#1\right\}}
-\newcommand{\TM}{\tau}
 
 \title{\textbf{Total Positivity and Cartwright Geometry\\in the Fabius--Rvachev Dyadic Sinc Product}\\[0.55em]
 \large Laguerre--Pólya structure, multiplier sequences, exact Thue--Morse sign interpolation, and a geometric-scale deformation}
@@ -81,26 +61,26 @@
 \begin{abstract}
 The Fourier transform of Rvachev's compactly supported up function is the dyadic sinc product
 \[
- \widehat{\Up}(z)=\prod_{j=0}^{\infty}\sinc\!\left(\frac{\pi z}{2^j}\right).
+ \widehat{\RvachevUp}(z)=\prod_{j=0}^{\infty}\SincRad\!\left(\frac{\pi z}{2^j}\right).
 \]
 The existing \texttt{ProveIt} corpus develops its probabilistic construction, exact dyadic arithmetic, $q$-binomial and Thue--Morse identities, moments, Legendre expansions, endpoint and inverse-function asymptotics, Lambert-$W$ inversion, and several spectral and Hankel directions.  This report takes a different route.  Under the imaginary square-root substitution
 \[
- H(x):=\widehat{\Up}\!\left(\frac{\ii\sqrt{x}}{\pi}\right)
+ H(x):=\widehat{\RvachevUp}\!\left(\frac{\ImaginaryUnit\sqrt{x}}{\pi}\right)
       =\prod_{j=0}^{\infty}\frac{\sinh(2^{-j}\sqrt{x})}{2^{-j}\sqrt{x}},
 \]
-the oscillatory sinc product becomes a genus-zero entire function whose zeros are all negative.  Its Taylor coefficients are scaled even moments of $\Up$.  This observation places those moments in the Laguerre--Pólya, Pólya-frequency, multiplier-sequence, Jensen-polynomial, and Poisson-binomial theories simultaneously.
+the oscillatory sinc product becomes a genus-zero entire function whose zeros are all negative.  Its Taylor coefficients are scaled even moments of $\RvachevUp$.  This observation places those moments in the Laguerre--Pólya, Pólya-frequency, multiplier-sequence, Jensen-polynomial, and Poisson-binomial theories simultaneously.
 
 The main proved results are as follows.  The coefficient sequence of $H$ is PF$_\infty$; the factorially rescaled sequence is a classical multiplier sequence; every shifted Jensen polynomial is real-rooted with negative zeros; and the even moments satisfy a new two-sided adjacent-moment inequality.  The coefficients admit exact Bell-polynomial and Bernoulli recurrences driven by the Lambert factors $(1-4^{-m})^{-1}$.  More generally, a one-parameter family $H_q$ has the same structure for every $0<q<1$, with explicit power sums and coefficient asymptotics.  A Bernoulli-sum representation gives an implicit saddle formula and yields
 \[
- n^2a_n(q)^{1/n}\longrightarrow \frac{\e^2}{4(1-\sqrt q)^2},
+ n^2a_n(q)^{1/n}\longrightarrow \frac{\EulerE^2}{4(1-\sqrt q)^2},
  \qquad
  n^2\frac{a_{n+1}(q)}{a_n(q)}\longrightarrow \frac{1}{4(1-\sqrt q)^2}.
 \]
-For $q=1/4$ these limits are $\e^2$ and $1$.
+For $q=1/4$ these limits are $\EulerE^2$ and $1$.
 
 On the original Fourier side, the zero at the nonzero integer $N$ has multiplicity $\nu_2(N)+1$.  Consequently the multiplicity-weighted positive zero count is exactly $2N-s_2(N)$, and, more strikingly,
 \[
- \sgn\widehat{\Up}(x)=(-1)^{s_2(\floor{x})}\qquad(x>0,\ x\notin\Z).
+ \Sign\widehat{\RvachevUp}(x)=(-1)^{s_2(\Floor{x})}\qquad(x>0,\ x\notin\IntegerNumbers).
 \]
 Thus the sinc product analytically interpolates the Thue--Morse word by its signs on consecutive unit intervals.  We also determine its Cartwright indicator and extend the zero-count/sign theorem to integer dilation bases.  The report closes with conjectural Hermite limits for Jensen polynomials, a log-periodic coefficient transseries expected to be dual to the known endpoint fluctuation, arithmetic questions for rational $q$, and concrete formalization targets.
 
@@ -132,7 +112,7 @@ $q$-calculus and Thue--Morse & Finite $q$-Pochhammer products, Gaussian binomial
 Endpoint asymptotics & Small-argument Fabius asymptotics, all-orders corrections, periodic Gamma--zeta fluctuations, Lambert-$W$ inversion, and inverse-Fabius expansions.\\
 Transforms and products & Infinite sinc products, Mellin/Fourier transforms, moment generating functions, integral transforms, and related Bernoulli/Bell machinery.\\
 Approximation and sampling & Dyadic comb sums, Lagrange and Hermite interpolation, Runge phenomena, quadrature, antiderivatives, and fractional-calculus directions.\\
-Orthogonal representations & Legendre expansions of $\Up$, finite synthesis of polynomials by shifted up functions, and Lagrange/Legendre closed-loop substitutions.\\
+Orthogonal representations & Legendre expansions of $\RvachevUp$, finite synthesis of polynomials by shifted up functions, and Lagrange/Legendre closed-loop substitutions.\\
 Recent frontier drafts & Spectral moments, valuation packages, Gamma and zeta modes, Stieltjes and Hankel structures, Padé questions, and several compiled frontier surveys.\\
 \bottomrule
 \end{longtable}
@@ -166,29 +146,29 @@ Its linked deductions and useful joint packaging are the following.
 
 We use
 \[
- \sinc z=\begin{cases}\sin z/z,&z\ne0,\\1,&z=0.\end{cases}
+ \SincRad z=\begin{cases}\sin z/z,&z\ne0,\\1,&z=0.\end{cases}
 \]
 The Fourier convention is the one used in the source corpus:
 \[
- \widehat f(z)=\int_{\R}f(t)\e^{-2\pi\ii zt}\,\dd t.
+ \widehat f(z)=\int_{\RealNumbers}f(t)\EulerE^{-2\pi\ImaginaryUnit zt}\,\Differential t.
 \]
 The normalized up function has integral one and Fourier transform
 \begin{equation}\label{eq:up-product}
- \widehat{\Up}(z)=\prod_{j=0}^{\infty}\sinc\!\left(\frac{\pi z}{2^j}\right).
+ \widehat{\RvachevUp}(z)=\prod_{j=0}^{\infty}\SincRad\!\left(\frac{\pi z}{2^j}\right).
 \end{equation}
 Let
 \begin{equation}\label{eq:moments}
- c_n:=\int_{-1}^{1}t^{2n}\Up(t)\,\dd t\qquad(n\ge0).
+ c_n:=\int_{-1}^{1}t^{2n}\RvachevUp(t)\,\Differential t\qquad(n\ge0).
 \end{equation}
 Evenness gives the Maclaurin expansion
 \begin{equation}\label{eq:fourier-moment-expansion}
- \widehat{\Up}(z)=\sum_{n=0}^{\infty}(-1)^n\frac{c_n}{(2n)!}(2\pi z)^{2n}.
+ \widehat{\RvachevUp}(z)=\sum_{n=0}^{\infty}(-1)^n\frac{c_n}{(2n)!}(2\pi z)^{2n}.
 \end{equation}
 
 \begin{definition}[Imaginary square-root transform]\label{def:H}
 Define the entire function
 \begin{equation}\label{eq:H-def}
- H(x):=\widehat{\Up}\!\left(\frac{\ii\sqrt{x}}{\pi}\right)
+ H(x):=\widehat{\RvachevUp}\!\left(\frac{\ImaginaryUnit\sqrt{x}}{\pi}\right)
  =\prod_{j=0}^{\infty}\frac{\sinh(2^{-j}\sqrt{x})}{2^{-j}\sqrt{x}}
  =:\sum_{n=0}^{\infty}a_nx^n.
 \end{equation}
@@ -204,7 +184,7 @@ For every $n\ge0$,
 In particular all $a_n$ are positive rational numbers.
 \end{proposition}
 \begin{proof}
-At $z=\ii\sqrt{x}/\pi$, the two signs $(-1)^n$ and $\ii^{2n}=(-1)^n$ cancel, while $(2\pi z)^{2n}=(-4x)^n$.  Equation \eqref{eq:a-c} follows.  Positivity is also immediate from \eqref{eq:moments}; rationality is known from the moment recurrence, and will follow again from \cref{sec:bell}.
+At $z=\ImaginaryUnit\sqrt{x}/\pi$, the two signs $(-1)^n$ and $\ImaginaryUnit^{2n}=(-1)^n$ cancel, while $(2\pi z)^{2n}=(-4x)^n$.  Equation \eqref{eq:a-c} follows.  Positivity is also immediate from \eqref{eq:moments}; rationality is known from the moment recurrence, and will follow again from \cref{sec:bell}.
 \end{proof}
 
 The elementary Weierstrass product
@@ -227,14 +207,14 @@ This positive genus-zero product is the structural pivot of the report.
 
 Let $\nu_2(N)$ be the exponent of $2$ in the prime factorization of the positive integer $N$, and let $s_2(N)$ be its binary digit sum.  Write
 \[
- \TM_N:=(-1)^{s_2(N)}
+ \ThueMorseSign{N}:=(-1)^{s_2(N)}
 \]
 for the $\{+1,-1\}$ form of the Thue--Morse sequence.
 
 \begin{theorem}[Exact zero multiplicities]\label{thm:zero-multiplicity}
 For every nonzero integer $N$,
 \begin{equation}\label{eq:zero-order}
- \ord_{z=N}\widehat{\Up}(z)=\nu_2(\abs N)+1.
+ \ord_{z=N}\widehat{\RvachevUp}(z)=\nu_2(\AbsoluteValue N)+1.
 \end{equation}
 Equivalently, $H$ has a zero at $-\pi^2N^2$ of multiplicity $\nu_2(N)+1$ and has no other zeros.
 \end{theorem}
@@ -243,7 +223,7 @@ The $j$th factor of \eqref{eq:up-product} vanishes at $z=N$ precisely when $N/2^
 \end{proof}
 
 \begin{theorem}[Exact zero count and digit-sum discrepancy]\label{thm:zero-count}
-Let $M=\floor R$ for $R\ge0$, and count zeros with multiplicity.  The number of positive zeros of $\widehat{\Up}$ in $(0,R]$ is
+Let $M=\Floor R$ for $R\ge0$, and count zeros with multiplicity.  The number of positive zeros of $\widehat{\RvachevUp}$ in $(0,R]$ is
 \begin{equation}\label{eq:positive-zero-count}
  Z_+(R)=2M-s_2(M).
 \end{equation}
@@ -264,9 +244,9 @@ The parity consequence is stronger than a counting curiosity.
 \begin{theorem}[Thue--Morse sign interpolation]\label{thm:sign-interpolation}
 For every $x>0$ that is not an integer,
 \begin{equation}\label{eq:sign-interpolation}
- \sgn\widehat{\Up}(x)=\TM_{\floor x}=(-1)^{s_2(\floor x)}.
+ \Sign\widehat{\RvachevUp}(x)=\ThueMorseSign{\Floor{x}}=(-1)^{s_2(\Floor{x})}.
 \end{equation}
-Thus $\widehat{\Up}$ has constant sign on every open unit interval $(N,N+1)$, and those signs spell the Thue--Morse word exactly.
+Thus $\widehat{\RvachevUp}$ has constant sign on every open unit interval $(N,N+1)$, and those signs spell the Thue--Morse word exactly.
 \end{theorem}
 \begin{proof}
 The product is positive on $(0,1)$.  Passing a real zero of multiplicity $m$ changes the sign exactly when $m$ is odd.  Hence the sign on $(N,N+1)$ equals
@@ -291,7 +271,7 @@ This theorem realizes Thue--Morse without inserting its coefficients by hand: th
 
 For an integer $b\ge2$, define
 \begin{equation}\label{eq:base-b-product}
- \Phi_b(z):=\prod_{j=0}^{\infty}\sinc\!\left(\frac{\pi z}{b^j}\right).
+ \Phi_b(z):=\prod_{j=0}^{\infty}\SincRad\!\left(\frac{\pi z}{b^j}\right).
 \end{equation}
 Let $\nu_b(N)=\max\{j:b^j\mid N\}$ and let $s_b(N)$ be the sum of the base-$b$ digits of $N$.
 
@@ -304,14 +284,14 @@ For $N\ge1$,
 \end{align}
 Consequently, for $x\in(N,N+1)$,
 \begin{equation}\label{eq:b-sign}
- \sgn\Phi_b(x)=(-1)^{(bN-s_b(N))/(b-1)}.
+ \Sign\Phi_b(x)=(-1)^{(bN-s_b(N))/(b-1)}.
 \end{equation}
 The binary case $b=2$ is precisely Thue--Morse.
 \end{theorem}
 \begin{proof}
 The zero-order argument is unchanged.  Moreover,
 \[
- \sum_{n=1}^{N}\nu_b(n)=\sum_{j\ge1}\floor{N/b^j}
+ \sum_{n=1}^{N}\nu_b(n)=\sum_{j\ge1}\Floor{N/b^j}
  =\frac{N-s_b(N)}{b-1},
 \]
 the standard base-$b$ digit-sum form of Legendre's formula.  Adding $N$ gives \eqref{eq:b-count}; parity gives \eqref{eq:b-sign}.
@@ -326,7 +306,7 @@ exhaustive machine-checked closure of the finite counting identity behind
 \path{sum_range_div_pow_log_eq_self_add_tail},
 \path{sub_one_mul_sum_padicValNat_succ_add_digitSum}, and
 \path{sum_range_padicValNat_succ_eq_sub_digitSum_div}.  For every natural
-base \(b>1\), including composite \(b\), and every \(N\in\N\), including
+base \(b>1\), including composite \(b\), and every \(N\in\NaturalNumbers\), including
 \(N=0\), the last two respectively prove the additive identity
 \[
  (b-1)\sum_{n=1}^{N}\bigl(1+\nu_b(n)\bigr)+s_b(N)=bN
@@ -359,7 +339,7 @@ where collisions retain multiplicity.
 
 Recall that a real entire function belongs to the Laguerre--Pólya class of type I, denoted $\mathcal{LP}\!I$, when it is a locally uniform limit of polynomials whose zeros are real and nonpositive; equivalently, it has a representation
 \[
- Cz^m\e^{\gamma z}\prod_r(1+\alpha_r z),
+ Cz^m\EulerE^{\gamma z}\prod_r(1+\alpha_r z),
  \qquad C,\gamma,\alpha_r\ge0,\quad\sum_r\alpha_r<\infty.
 \]
 
@@ -387,13 +367,13 @@ Equation \eqref{eq:H-lambda-canonical} follows by applying \eqref{eq:sinh-produc
 \]
 Finite partial products have only negative real zeros, hence their locally uniform limit is in $\mathcal{LP}\!I$.  Expanding a product of linear factors gives \eqref{eq:elementary-symmetric}.
 
-Assume now $L<\infty$.  Since all Taylor coefficients are nonnegative, the maximum modulus on $\abs x=r$ is $H_\lambda(r)$.  The elementary bound $\sinh y/y\le\e^y$ for $y\ge0$ gives
+Assume now $L<\infty$.  Since all Taylor coefficients are nonnegative, the maximum modulus on $\AbsoluteValue x=r$ is $H_\lambda(r)$.  The elementary bound $\sinh y/y\le\EulerE^y$ for $y\ge0$ gives
 \[
  \log H_\lambda(r)\le\sqrt r\sum_j\lambda_j=L\sqrt r.
 \]
 For every fixed $J$, the first $J$ factors satisfy
 \[
- \log H_\lambda(r)\ge\sqrt r\sum_{j=0}^{J}\lambda_j+\littleoh(\sqrt r).
+ \log H_\lambda(r)\ge\sqrt r\sum_{j=0}^{J}\lambda_j+\LittleO(\sqrt r).
 \]
 Taking first $r\to\infty$ and then $J\to\infty$ shows
 $\log H_\lambda(r)/\sqrt r\to L$.  This is order $1/2$, type $L$.
@@ -502,13 +482,13 @@ For every $n\ge1$,
 Both inequalities are strict for the up function.
 \end{theorem}
 \begin{proof}
-The upper inequality is Cauchy--Schwarz in the positive measure $\Up(t)\dd t$:
+The upper inequality is Cauchy--Schwarz in the positive measure $\RvachevUp(t)\Differential t$:
 \[
- c_n^2=\left(\int t^{n-1}t^{n+1}\,\Up(t)\dd t\right)^2
- \le\left(\int t^{2n-2}\Up(t)\dd t\right)
-     \left(\int t^{2n+2}\Up(t)\dd t\right).
+ c_n^2=\left(\int t^{n-1}t^{n+1}\,\RvachevUp(t)\Differential t\right)^2
+ \le\left(\int t^{2n-2}\RvachevUp(t)\Differential t\right)
+     \left(\int t^{2n+2}\RvachevUp(t)\Differential t\right).
 \]
-The functions involved are not proportional on the interval where $\Up>0$, so the inequality is strict.
+The functions involved are not proportional on the interval where $\RvachevUp>0$, so the inequality is strict.
 
 For the lower inequality substitute \eqref{eq:a-c} into \eqref{eq:strong-a-turan}.  After cancellation of $4^{2n}$, the factorial factor is
 \[
@@ -555,7 +535,7 @@ The factor $(1-q^m)^{-1}$ is a one-term Lambert-series kernel.  At the Fabius va
 \end{equation}
 
 \begin{theorem}[Logarithm and coefficient recurrence]\label{thm:recurrence}
-For $\abs x<\pi^2$,
+For $\AbsoluteValue x<\pi^2$,
 \begin{equation}\label{eq:log-Hq}
  \log H_q(x)=\sum_{m=1}^{\infty}(-1)^{m+1}\frac{P_m(q)}m x^m.
 \end{equation}
@@ -618,36 +598,36 @@ where the absolutely convergent sum ranges over finite-support sequences.  Formu
 \section{Cartwright geometry of the Fourier product}\label{sec:cartwright}
 
 \begin{theorem}[Cartwright class and exact indicator]\label{thm:cartwright}
-The entire function $\widehat{\Up}$ is in the Cartwright class, has exponential type $2\pi$, and has indicator
+The entire function $\widehat{\RvachevUp}$ is in the Cartwright class, has exponential type $2\pi$, and has indicator
 \begin{equation}\label{eq:indicator}
- h(\theta)=2\pi\abs{\sin\theta}.
+ h(\theta)=2\pi\AbsoluteValue{\sin\theta}.
 \end{equation}
 It is not a sine-type function in the standard sense.
 \end{theorem}
 \begin{proof}
-Each factor in \eqref{eq:up-product} has exponential type $\pi2^{-j}$, so the product has type at most $2\pi$.  For a ray $z=re^{\ii\theta}$ with $\sin\theta\ne0$, split the product where $r2^{-j}$ is respectively large and small.  The large factors satisfy
+Each factor in \eqref{eq:up-product} has exponential type $\pi2^{-j}$, so the product has type at most $2\pi$.  For a ray $z=re^{\ImaginaryUnit\theta}$ with $\sin\theta\ne0$, split the product where $r2^{-j}$ is respectively large and small.  The large factors satisfy
 \[
- \log\abs{\sinc(\pi z/2^j)}
- =\frac{\pi r}{2^j}\abs{\sin\theta}+\Oh(\log r+j),
+ \log\AbsoluteValue{\SincRad(\pi z/2^j)}
+ =\frac{\pi r}{2^j}\AbsoluteValue{\sin\theta}+\BigO(\log r+j),
 \]
-while the tail contributes $\Oh(1)$.  There are only $\Oh(\log r)$ large factors, so
+while the tail contributes $\BigO(1)$.  There are only $\BigO(\log r)$ large factors, so
 \[
- \log\abs{\widehat{\Up}(re^{\ii\theta})}
- =2\pi r\abs{\sin\theta}+\Oh((\log r)^2).
+ \log\AbsoluteValue{\widehat{\RvachevUp}(re^{\ImaginaryUnit\theta})}
+ =2\pi r\AbsoluteValue{\sin\theta}+\BigO((\log r)^2).
 \]
 This proves \eqref{eq:indicator}; the real-axis value is zero by continuity and the bound below.
 
 For real $x$, every factor has modulus at most one, hence
-$\abs{\widehat{\Up}(x)}\le1$.  Therefore
+$\AbsoluteValue{\widehat{\RvachevUp}(x)}\le1$.  Therefore
 \[
- \int_{\R}\frac{\log^+\abs{\widehat{\Up}(x)}}{1+x^2}\,\dd x=0,
+ \int_{\RealNumbers}\frac{\log^+\AbsoluteValue{\widehat{\RvachevUp}(x)}}{1+x^2}\,\Differential x=0,
 \]
-which is the Cartwright integrability condition.  Finally, the zero multiplicities $\nu_2(N)+1$ are unbounded.  Standard sine-type functions have a uniformly separated zero divisor with uniformly bounded multiplicities (and in the usual definition, simple zeros), so $\widehat{\Up}$ is not sine-type.
+which is the Cartwright integrability condition.  Finally, the zero multiplicities $\nu_2(N)+1$ are unbounded.  Standard sine-type functions have a uniformly separated zero divisor with uniformly bounded multiplicities (and in the usual definition, simple zeros), so $\widehat{\RvachevUp}$ is not sine-type.
 \end{proof}
 
-The exact count \eqref{eq:total-zero-count} refines the density predicted by the indicator: $Z(R)=4R+\Oh(\log R)$, with the entire error replaced by the explicit binary quantity
+The exact count \eqref{eq:total-zero-count} refines the density predicted by the indicator: $Z(R)=4R+\BigO(\log R)$, with the entire error replaced by the explicit binary quantity
 \[
- Z(R)-4\floor R=-2s_2(\floor R).
+ Z(R)-4\Floor R=-2s_2(\Floor R).
 \]
 The Cartwright geometry is therefore regular at leading order but arithmetically singular at every dyadic collision.
 
@@ -655,7 +635,7 @@ For \eqref{eq:base-b-product}, the same proof gives exponential type
 \[
  \pi\sum_{j\ge0}b^{-j}=\frac{\pi b}{b-1}
 \]
-and indicator $\pi b\abs{\sin\theta}/(b-1)$.
+and indicator $\pi b\AbsoluteValue{\sin\theta}/(b-1)$.
 
 \section{A Poisson-binomial saddle model}\label{sec:poisson}
 
@@ -668,14 +648,14 @@ and put $S_t=\sum_rX_r(t)$.  Since $\sum_rp_r(t)<\infty$, this sum is almost sur
 \begin{proposition}[Exact coefficient probability]\label{prop:probability}
 The probability generating function and point probabilities are
 \begin{align}
- \E z^{S_t}&=\frac{H_q(tz)}{H_q(t)},\label{eq:pgf}\\
+ \Expectation z^{S_t}&=\frac{H_q(tz)}{H_q(t)},\label{eq:pgf}\\
  \Pr(S_t=n)&=\frac{a_n(q)t^n}{H_q(t)}.
  \label{eq:coefficient-probability}
 \end{align}
 The mean and variance are
 \begin{align}
- \mu_q(t)&:=\E S_t=t\frac{H_q'(t)}{H_q(t)},\label{eq:mu}\\
- v_q(t)&:=\Var S_t=t\mu_q'(t).
+ \mu_q(t)&:=\Expectation S_t=t\frac{H_q'(t)}{H_q(t)},\label{eq:mu}\\
+ v_q(t)&:=\Variance S_t=t\mu_q'(t).
  \label{eq:variance}
 \end{align}
 \end{proposition}
@@ -695,9 +675,9 @@ Let
 \begin{lemma}[Positive-axis growth]\label{lem:positive-growth}
 As $t\to\infty$,
 \begin{align}
- \log H_q(t)&=\sigma_q\sqrt t-\frac{(\log\sqrt t)^2}{2L_q}+\Oh(\log t),\label{eq:log-growth-refined}\\
- \mu_q(t)&=\frac{\sigma_q}{2}\sqrt t+\Oh(\log t),\label{eq:mu-growth}\\
- v_q(t)&=\frac{\sigma_q}{4}\sqrt t+\Oh(\log t).
+ \log H_q(t)&=\sigma_q\sqrt t-\frac{(\log\sqrt t)^2}{2L_q}+\BigO(\log t),\label{eq:log-growth-refined}\\
+ \mu_q(t)&=\frac{\sigma_q}{2}\sqrt t+\BigO(\log t),\label{eq:mu-growth}\\
+ v_q(t)&=\frac{\sigma_q}{4}\sqrt t+\BigO(\log t).
  \label{eq:v-growth}
 \end{align}
 \end{lemma}
@@ -705,18 +685,18 @@ As $t\to\infty$,
 Put $s=\sqrt t$, $r=\sqrt q$, and
 $f(y)=\log(\sinh y/y)$.  For $y\ge1$,
 \[
- f(y)=y-\log(2y)+\Oh(\e^{-2y}),
+ f(y)=y-\log(2y)+\BigO(\EulerE^{-2y}),
 \]
-while $f(y)=\Oh(y^2)$ for $0\le y\le1$.  Split the sum
+while $f(y)=\BigO(y^2)$ for $0\le y\le1$.  Split the sum
 $\log H_q(t)=\sum_{j\ge0}f(sr^j)$ at
-$J=\floor{\log s/L_q}$.  The linear terms sum to
-$s/(1-r)+\Oh(1)=\sigma_qs+\Oh(1)$.  The logarithmic terms form an arithmetic progression whose quadratic leading term is
-$-(\log s)^2/(2L_q)$; endpoint and floor effects are $\Oh(\log s)$.  The small-argument tail is bounded by a geometric series.  This proves \eqref{eq:log-growth-refined}.
+$J=\Floor{\log s/L_q}$.  The linear terms sum to
+$s/(1-r)+\BigO(1)=\sigma_qs+\BigO(1)$.  The logarithmic terms form an arithmetic progression whose quadratic leading term is
+$-(\log s)^2/(2L_q)$; endpoint and floor effects are $\BigO(\log s)$.  The small-argument tail is bounded by a geometric series.  This proves \eqref{eq:log-growth-refined}.
 
 For the mean, write $g(y)=yf'(y)=y\coth y-1$.  Then
-$g(y)=y-1+\Oh(y\e^{-2y})$ for $y\ge1$ and $g(y)=\Oh(y^2)$ near zero.  Since
+$g(y)=y-1+\BigO(y\EulerE^{-2y})$ for $y\ge1$ and $g(y)=\BigO(y^2)$ near zero.  Since
 $\mu_q(t)=\frac12\sum_jg(sr^j)$, the same split gives \eqref{eq:mu-growth}.  Finally
-$v_q(t)=\frac14\sum_j y g'(y)|_{y=sr^j}$; the large-$y$ term is $y+\Oh(y^2\e^{-2y})$ and the small-$y$ term is $\Oh(y^2)$, proving \eqref{eq:v-growth}.
+$v_q(t)=\frac14\sum_j y g'(y)|_{y=sr^j}$; the large-$y$ term is $y+\BigO(y^2\EulerE^{-2y})$ and the small-$y$ term is $\BigO(y^2)$, proving \eqref{eq:v-growth}.
 \end{proof}
 
 Since $\mu_q$ is strictly increasing from zero to infinity, there is a unique $t_n$ such that
@@ -727,12 +707,12 @@ Since $\mu_q$ is strictly increasing from zero to infinity, there is a unique $t
 \begin{theorem}[Probabilistic saddle formula]\label{thm:saddle}
 As $n\to\infty$,
 \begin{equation}\label{eq:implicit-saddle}
- a_n(q)=\frac{H_q(t_n)}{t_n^n\sqrt{2\pi v_q(t_n)}}(1+\littleoh(1)).
+ a_n(q)=\frac{H_q(t_n)}{t_n^n\sqrt{2\pi v_q(t_n)}}(1+\LittleO(1)).
 \end{equation}
 Moreover,
 \begin{equation}\label{eq:log-an}
  \log a_n(q)=2n-2n\log\!\left(\frac{2n}{\sigma_q}\right)
- -\frac{(\log n)^2}{2L_q}+\Oh(\log n).
+ -\frac{(\log n)^2}{2L_q}+\BigO(\log n).
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -742,43 +722,43 @@ At $t=t_n$, \eqref{eq:coefficient-probability} gives the exact identity
 \]
 The variance tends to infinity by \eqref{eq:v-growth}.  A local central limit theorem applies to this triangular family of Bernoulli sums.  For completeness, its Fourier proof is short: the centered characteristic function is a product; for every $\theta$,
 \[
- \abs{\E\e^{\ii\theta(S_t-\mu_q(t))}}
+ \AbsoluteValue{\Expectation\EulerE^{\ImaginaryUnit\theta(S_t-\mu_q(t))}}
  \le\exp\!\left(-2v_q(t)\sin^2(\theta/2)\right).
 \]
-On $\abs\theta\le v_q(t)^{-2/5}$, cumulant expansion gives the Gaussian characteristic function with a uniformly vanishing error after the scaling $\theta\mapsto\theta/\sqrt{v_q(t)}$; outside that arc, the displayed bound makes the Fourier inversion integral negligible.  Hence
+On $\AbsoluteValue\theta\le v_q(t)^{-2/5}$, cumulant expansion gives the Gaussian characteristic function with a uniformly vanishing error after the scaling $\theta\mapsto\theta/\sqrt{v_q(t)}$; outside that arc, the displayed bound makes the Fourier inversion integral negligible.  Hence
 \[
- \Pr(S_{t_n}=n)=\frac{1}{\sqrt{2\pi v_q(t_n)}}(1+\littleoh(1)),
+ \Pr(S_{t_n}=n)=\frac{1}{\sqrt{2\pi v_q(t_n)}}(1+\LittleO(1)),
 \]
 which proves \eqref{eq:implicit-saddle}.
 
 Equation \eqref{eq:mu-growth} gives
-$\sqrt{t_n}=2n/\sigma_q+\Oh(\log n)$.  Substitute this and
+$\sqrt{t_n}=2n/\sigma_q+\BigO(\log n)$.  Substitute this and
 \eqref{eq:log-growth-refined} into the logarithm of
-\eqref{eq:implicit-saddle}.  The first-order error in the saddle location cancels because \eqref{eq:saddle} is the stationarity equation.  The local-CLT prefactor contributes only $\Oh(\log n)$, yielding \eqref{eq:log-an}.
+\eqref{eq:implicit-saddle}.  The first-order error in the saddle location cancels because \eqref{eq:saddle} is the stationarity equation.  The local-CLT prefactor contributes only $\BigO(\log n)$, yielding \eqref{eq:log-an}.
 \end{proof}
 
 \begin{theorem}[Coefficient root and ratio limits]\label{thm:coefficient-limits}
 For every fixed $0<q<1$,
 \begin{align}
  \lim_{n\to\infty}n^2a_n(q)^{1/n}
- &=\frac{\e^2\sigma_q^2}{4}
- =\frac{\e^2}{4(1-\sqrt q)^2},\label{eq:root-limit}\\
+ &=\frac{\EulerE^2\sigma_q^2}{4}
+ =\frac{\EulerE^2}{4(1-\sqrt q)^2},\label{eq:root-limit}\\
  \lim_{n\to\infty}n^2\frac{a_{n+1}(q)}{a_n(q)}
  &=\frac{\sigma_q^2}{4}
  =\frac{1}{4(1-\sqrt q)^2}.
  \label{eq:ratio-limit}
 \end{align}
-For the Fabius product $q=1/4$, these limits are $\e^2$ and $1$.
+For the Fabius product $q=1/4$, these limits are $\EulerE^2$ and $1$.
 \end{theorem}
 \begin{proof}
 Taking $n$th roots in \eqref{eq:log-an} proves \eqref{eq:root-limit}.  To obtain the ratio without differentiating an error term, use total positivity.  By \cref{cor:logconcave-a}, $b_n:=-\log a_n(q)$ is convex.  Equation \eqref{eq:root-limit} is equivalent to
 \[
- b_n=2n\log n-n\log\!\left(\frac{\e^2\sigma_q^2}{4}\right)+\littleoh(n).
+ b_n=2n\log n-n\log\!\left(\frac{\EulerE^2\sigma_q^2}{4}\right)+\LittleO(n).
 \]
 For any fixed $0<\varepsilon<1$, convexity bounds the discrete derivative $b_{n+1}-b_n$ between the secant slopes over $[(1-\varepsilon)n,n]$ and $[n,(1+\varepsilon)n]$.  Let $n\to\infty$ and then $\varepsilon\downarrow0$.  One obtains
 \[
- b_{n+1}-b_n=2\log n+2-\log\!\left(\frac{\e^2\sigma_q^2}{4}\right)+\littleoh(1)
- =2\log n-\log\!\left(\frac{\sigma_q^2}{4}\right)+\littleoh(1).
+ b_{n+1}-b_n=2\log n+2-\log\!\left(\frac{\EulerE^2\sigma_q^2}{4}\right)+\LittleO(1)
+ =2\log n-\log\!\left(\frac{\sigma_q^2}{4}\right)+\LittleO(1).
 \]
 Exponentiation proves \eqref{eq:ratio-limit}.
 \end{proof}
@@ -786,7 +766,7 @@ Exponentiation proves \eqref{eq:ratio-limit}.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.82\textwidth]{figures/coefficient_root_asymptotics.png}
-\caption{Slow convergence of $n^2a_n^{1/n}$ to $\e^2$ in the dyadic case.  The logarithmic-square correction in \eqref{eq:log-an} explains the visible delay.}
+\caption{Slow convergence of $n^2a_n^{1/n}$ to $\EulerE^2$ in the dyadic case.  The logarithmic-square correction in \eqref{eq:log-an} explains the visible delay.}
 \label{fig:root-asymptotic}
 \end{figure}
 
@@ -811,7 +791,7 @@ $n$ & $n^2a_n^{1/n}$ & $n^2a_{n+1}/a_n$\\
 \bottomrule
 \end{tabular}
 \end{center}
-The target values are $\e^2\approx7.389056099$ and $1$.
+The target values are $\EulerE^2\approx7.389056099$ and $1$.
 
 \section{Structural consequences and interfaces with the existing corpus}\label{sec:interfaces}
 
@@ -835,13 +815,13 @@ moves through an integer lattice as $t$ grows.  Its floor generates a bounded pe
 
 \subsection{Moment and Legendre interfaces}
 
-The existing Legendre expansion of $\Up$ is linked to $(c_n)$ by a finite triangular transform, because each even Legendre polynomial is a linear combination of $1,x^2,\ldots,x^{2n}$.  Theorems \ref{thm:PF}, \ref{thm:multiplier}, and \ref{thm:moment-sandwich} therefore provide a new source of inequalities for every finite block of Legendre coefficients after conjugation by that triangular matrix.  Total positivity is not automatically preserved by an arbitrary basis change, so the strongest possible Legendre formulation remains open.  A concrete goal is to identify a sign-regular normalization of the monomial-to-Legendre matrix that transports selected Toeplitz minors to the even Legendre coefficient sequence.
+The existing Legendre expansion of $\RvachevUp$ is linked to $(c_n)$ by a finite triangular transform, because each even Legendre polynomial is a linear combination of $1,x^2,\ldots,x^{2n}$.  Theorems \ref{thm:PF}, \ref{thm:multiplier}, and \ref{thm:moment-sandwich} therefore provide a new source of inequalities for every finite block of Legendre coefficients after conjugation by that triangular matrix.  Total positivity is not automatically preserved by an arbitrary basis change, so the strongest possible Legendre formulation remains open.  A concrete goal is to identify a sign-regular normalization of the monomial-to-Legendre matrix that transports selected Toeplitz minors to the even Legendre coefficient sequence.
 
 \subsection{Operator meaning}
 
 The multiplier theorem supplies an explicit hyperbolicity preserver attached to the up function:
 \begin{equation}\label{eq:operator}
- \mathcal M_{\Up}\!\left(\sum_{n=0}^{d}u_nx^n\right)
+ \mathcal M_{\RvachevUp}\!\left(\sum_{n=0}^{d}u_nx^n\right)
  :=\sum_{n=0}^{d}\frac{4^nn!c_n}{(2n)!}u_nx^n.
 \end{equation}
 Every real-rooted input polynomial is sent to a real-rooted output polynomial.  This is an operator-theoretic statement about the moment sequence, not a property visible from the refinement differential equation alone.  The geometric family gives a continuous cone of such diagonal preservers indexed by $q\in(0,1)$.
@@ -885,7 +865,7 @@ Let $q=A/B\in(0,1)$ be rational in lowest terms.  After multiplying $a_n(q)$ by 
 The recurrence \eqref{eq:a-recurrence} proves rationality and gives a crude denominator bound; the conjecture asks for a sharp, cancellation-aware analogue of the known Fabius integrality phenomena.
 
 \begin{conjecture}[Legendre sign regularity]\label{conj:legendre}
-There is a diagonal sign and magnitude normalization of the even Legendre coefficient sequence of $\Up$ for which all contiguous minors up to each fixed order are eventually nonnegative.  Equivalently, a finite-order shadow of the PF$_\infty$ moment structure survives the monomial-to-Legendre basis transform.
+There is a diagonal sign and magnitude normalization of the even Legendre coefficient sequence of $\RvachevUp$ for which all contiguous minors up to each fixed order are eventually nonnegative.  Equivalently, a finite-order shadow of the PF$_\infty$ moment structure survives the monomial-to-Legendre basis transform.
 \end{conjecture}
 
 \section{Promising research directions}\label{sec:future}
@@ -909,7 +889,7 @@ These items are substantially more tractable than formalizing the local central 
 
 \subsection{de Branges and desingularized zero sets}
 
-The Cartwright function $\widehat{\Up}$ has the correct growth for de Branges-style analysis but the wrong zero geometry for the simplest sine-type machinery: dyadic collisions create unbounded multiplicity.  Two desingularizations are natural.  One may perturb the scales $2^{-j}$ to $2^{-j}\e^{\varepsilon_j}$ with rationally independent $\varepsilon_j$, splitting all collisions while preserving type; or divide out a controlled canonical product encoding the excess multiplicities.  The question is whether either construction produces a Hermite--Biehler function whose de Branges space has a meaningful limit as the perturbation vanishes.
+The Cartwright function $\widehat{\RvachevUp}$ has the correct growth for de Branges-style analysis but the wrong zero geometry for the simplest sine-type machinery: dyadic collisions create unbounded multiplicity.  Two desingularizations are natural.  One may perturb the scales $2^{-j}$ to $2^{-j}\EulerE^{\varepsilon_j}$ with rationally independent $\varepsilon_j$, splitting all collisions while preserving type; or divide out a controlled canonical product encoding the excess multiplicities.  The question is whether either construction produces a Hermite--Biehler function whose de Branges space has a meaningful limit as the perturbation vanishes.
 
 \subsection{Strict minors and tableaux}
 
@@ -950,7 +930,7 @@ These computations are evidence and consistency checks; the real-rootedness clai
 The imaginary square-root transform changes the viewpoint on the Fabius--Rvachev Fourier product.  What appears on the real axis as an oscillatory product with intricate dyadic cancellations becomes, in the new variable, a positive genus-zero product over an explicit spectral alphabet.  Five theories then meet at one formula:
 \[
  \boxed{
- H(x)=\widehat{\Up}\!\left(\frac{\ii\sqrt{x}}{\pi}\right)
+ H(x)=\widehat{\RvachevUp}\!\left(\frac{\ImaginaryUnit\sqrt{x}}{\pi}\right)
  =\prod_{n=1}^{\infty}
   \left(1+\frac{x}{\pi^2n^2}\right)^{\nu_2(n)+1}
  =\sum_{n=0}^{\infty}\frac{4^nc_n}{(2n)!}x^n.}
