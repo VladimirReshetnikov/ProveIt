@@ -532,9 +532,12 @@ the origin, with `F⁻¹(y)/y → ∞` as `y → 0⁺`.
 The derivative-distribution layer resolves the exact dyadic cell structure
 behind those sharp bounds.  It gives every signed cell profile and midpoint,
 the all-order Thue--Morse finite-mixture law for Banach-valued continuous
-tests, and equality of the Borel pushforwards of the normalized absolute
-derivative and `up` on `[-1,1]`.  All nonnegative real absolute moments follow
-with the exact scale `2^(p * C(n+1,2))`, including order and moment zero.
+tests, and every signed natural-power moment in one Boolean-cube formula.  Its
+even specialization holds at every derivative order, while positive-order odd
+moments vanish.  Equality of the Borel pushforwards of the normalized absolute
+derivative and `up` on `[-1,1]` separately yields all nonnegative real `rpow`
+absolute moments with exact scale `2^(p * C(n+1,2))`, including order and
+moment zero.
 
 The small-argument asymptotic layer is completed by closed forms for the
 objects that previously existed only as recursions.  The differential

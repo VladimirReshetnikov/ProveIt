@@ -6360,10 +6360,11 @@ The current source file
 \path{Analysis/FabiusFunction/Lean/FabiusFunction/RvachevDerivativeDistribution.lean}
 now formalizes the exact dyadic cell coordinate and tiling, every signed cell-midpoint value,
 the all-order signed finite-mixture identity for continuous tests with values in an arbitrary
-real Banach space, the normalized absolute continuous-test identity, the equality of the two
-absolute Borel pushforward measures on Lebesgue measure restricted to \([-1,1]\), and every
-nonnegative real absolute moment.  This is a post-audit proof-status update; it does not alter
-the pinned novelty comparison above.
+real Banach space, every signed natural-power moment through the exact Boolean-cube formula
+and its parity corollaries, the normalized absolute continuous-test identity, the equality of
+the two absolute Borel pushforward measures on Lebesgue measure restricted to \([-1,1]\), and
+every nonnegative real absolute moment.  This is a post-audit proof-status update; it does not
+alter the pinned novelty comparison above.
 
 The report as a whole is not thereby formalized.  In particular, the simplified signed
 Rademacher law as a Borel pushforward, the \path{eLpNorm} and general
@@ -6532,9 +6533,9 @@ length-$2^n$ Thue--Morse block has sign $+1$ and half sign $-1$, proving
 \eqref{p4:eq:H-signed}.
 \end{proof}
 
-\begin{statusbox}{Exact Lean parity for the distribution identities}
-The signed theorem presently exposed by Lean is the following all-order finite mixture,
-not yet its Rademacher simplification.  If \(E\) is any real Banach space and
+\begin{statusbox}{Exact Lean parity for the distribution identities and signed moments}
+At the continuous-test level, Lean exposes the following all-order signed finite mixture,
+not yet its Rademacher Borel simplification.  If \(E\) is any real Banach space and
 \(H:\RealNumbers\to E\) is continuous, then for every \(n\ge0\),
 \begin{equation}
  \int_{-1}^{1}H\!\left(\RvachevUp^{(n)}(x)\right)\Differential x
@@ -6545,6 +6546,24 @@ not yet its Rademacher simplification.  If \(E\) is any real Banach space and
 \end{equation}
 This is \path{intervalIntegral_comp_iteratedDeriv_rvachev}.  In particular, it includes the
 order-zero boundary without introducing a fictitious independent sign.
+
+Specializing to \(H(t)=t^m\) and evaluating the Boolean-cube weight enumerator gives the
+separately named all-order identity, valid for every \(n,m\in\NaturalNumbers\),
+\begin{equation}
+ \int_{-1}^{1}\RvachevUp^{(n)}(x)^m\Differential x
+ =2^{-n}\bigl(1+(-1)^m\bigr)^n
+   \left(2^{T_n}\right)^m
+   \int_{-1}^{1}\RvachevUp(y)^m\Differential y.
+ \label{p4:eq:formal-signed-moment-boolean-cube}
+\end{equation}
+This is \path{intervalIntegral_iteratedDeriv_rvachev_pow}.  Its even-moment corollary,
+valid for every derivative order including \(n=0\), is
+\path{intervalIntegral_iteratedDeriv_rvachev_pow_of_even}; its odd-moment corollary,
+valid only when \(0<n\), is
+\path{intervalIntegral_iteratedDeriv_rvachev_pow_eq_zero_of_odd}.  The boundary distinction
+is essential: when \(n=0\) and \(m\) is odd, the Boolean factor in
+\eqref{p4:eq:formal-signed-moment-boolean-cube} is \(0^0=1\), so the identity recovers the
+generally nonzero base moment.
 
 The same Banach-valued continuous-test API proves
 \begin{align}
@@ -6585,21 +6604,37 @@ For every real $p\geq0$, interpreting the powers as real powers and using \(0^0=
  =\left(2^{T_n}\right)^p\int_{-1}^{1}\RvachevUp(x)^p\Differential x.
  \label{p4:eq:absolute-moments}
 \end{equation}
-For every integer $m\geq0$ and $n\geq1$,
+For every $n,m\in\NaturalNumbers$, the signed natural-power moments satisfy the exact
+Boolean-cube identity
 \begin{equation}
  \int_{-1}^{1}\RvachevUp^{(n)}(x)^m\Differential x
- =\begin{cases}
-  0,&m\text{ odd},\\
-  2^{mT_n}\displaystyle\int_{-1}^{1}\RvachevUp(x)^m\Differential x,&m\text{ even}.
- \end{cases}
- \label{p4:eq:signed-moments}
+ =2^{-n}\bigl(1+(-1)^m\bigr)^n
+   \left(2^{T_n}\right)^m
+   \int_{-1}^{1}\RvachevUp(y)^m\Differential y.
+ \label{p4:eq:signed-moments-boolean-cube}
 \end{equation}
+Consequently,
+\begin{align}
+ \int_{-1}^{1}\RvachevUp^{(n)}(x)^m\Differential x
+ &=\left(2^{T_n}\right)^m
+   \int_{-1}^{1}\RvachevUp(x)^m\Differential x
+ &&(m\text{ even},\ n\geq0),\label{p4:eq:signed-moments-even}\\
+ \int_{-1}^{1}\RvachevUp^{(n)}(x)^m\Differential x
+ &=0
+ &&(m\text{ odd},\ 0<n).
+ \label{p4:eq:signed-moments}
+\end{align}
 \end{corollary}
 
 The absolute identity \eqref{p4:eq:absolute-moments}, with the exact hypothesis \(p\ge0\), is
 \path{intervalIntegral_abs_iteratedDeriv_rvachev_rpow}.  At \(p=0\) this uses Lean's
-\path{Real.rpow} convention \(0^0=1\).  The signed parity simplification
-\eqref{p4:eq:signed-moments} is not separately formalized.
+\path{Real.rpow} convention \(0^0=1\).  The signed master identity
+\eqref{p4:eq:signed-moments-boolean-cube} is
+\path{intervalIntegral_iteratedDeriv_rvachev_pow}; its two parity specializations are
+\path{intervalIntegral_iteratedDeriv_rvachev_pow_of_even} and
+\path{intervalIntegral_iteratedDeriv_rvachev_pow_eq_zero_of_odd}.  Thus the even formula is
+formal for every \(n\ge0\), whereas the zero odd moment is asserted only for \(0<n\); at
+\(n=0\), the master formula deliberately retains the Boolean factor \(0^0=1\).
 
 \subsection{Every rearrangement-invariant norm scales exactly}
 
@@ -7869,10 +7904,11 @@ as formalized.  A practical order is:
 \item \textbf{Completed.}  The derivative tiling has a public exact cell coordinate,
       endpoint/range lemmas, signed and absolute cellwise formulas, and signed midpoint
       corollary.
-\item \textbf{Absolute part completed.}  The normalized absolute law is an exact Borel
-      pushforward equality and has Banach-valued continuous-test forms.  The signed
-      finite-mixture identity is also formal for continuous Banach-valued tests and all
-      \(n\), but its simplified signed Rademacher Borel law remains open.
+\item \textbf{Absolute part and signed natural moments completed.}  The normalized absolute
+      law is an exact Borel pushforward equality and has Banach-valued continuous-test forms.
+      The signed finite-mixture identity is formal for continuous Banach-valued tests and all
+      \(n\); its Boolean-cube natural-moment identity and the exact even/positive-order odd
+      parity laws are also formal.  The simplified signed Rademacher Borel law remains open.
 \item \textbf{Still open beyond completed prerequisites.}  Use the all-\(p\ge0\)
       real-power moment theorem, midpoint signs, and existing pointwise bounds to derive
       \path{eLpNorm}, general rearrangement-invariant, total-variation, and exact
