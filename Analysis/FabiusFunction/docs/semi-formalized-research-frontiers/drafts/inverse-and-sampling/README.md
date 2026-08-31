@@ -1,7 +1,7 @@
 # Inverse and sampling
 
-Nine document bundles live in this theme, organized one level deeper by their
-principal overlap:
+Ten document bundles live in this theme. Nine are organized one level deeper
+by their principal overlap:
 
 - [`comb-interpolation/`](comb-interpolation/) — additive and geometric comb
   interpolation, quadrature, extrapolation, and stability;
@@ -12,37 +12,46 @@ principal overlap:
   nowhere-analytic inverse iterates and elementary-representation
   obstructions.
 
-The cross-cutting information-geometry intake now lives under
-[`../frontier-compilations/fabius_information_frontier/`](../frontier-compilations/fabius_information_frontier/),
-whose broader geometric-uniform scope is a better thematic fit. The
-inverse-iterate report here retains its explicit reconciliation link to the
-forward-iterate report under `representations/`.
+The cross-cutting information-geometry intake lives directly at
+[`fabius_information_frontier/`](fabius_information_frontier/). All ten
+documents remain in `inverse-and-sampling`: neighboring themes provide
+techniques or related forward results, but none is a better primary home. The
+inverse-iterate report retains its explicit reconciliation link to the forward
+iterate report under `representations/`.
+
+[`Inverse_Fabius_Analyticity_Asymptotics_and_Computability/`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/)
+is a consolidation workspace for five of these live source packages.  It
+currently contains provenance and a reproducible source-result inventory, not
+a canonical TeX/PDF deliverable.  The five source packages remain authoritative
+and will not be retired until every result and unique asset has a recorded
+disposition and a matching consolidated PDF passes the publication gate.
 
 ## Source-only merge status (2026-08-31)
 
-The local canonical-notation integration changed eight living TeX roots in this
+The canonical-notation integration changed nine living TeX roots in this
 group. The remote reorganization supplied a synchronized TeX/PDF/ledger trio
 for `analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function`, so
 that package is not included in the stale-artifact table below.
-By explicit integration policy, none of their same-stem PDFs was rebuilt and
-none of the seven local operational ledgers that cover a changed root was
-refreshed. The remote's relinked 12-entry ledger for
-`inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers` is safe
-to take unchanged and verifies 12/12 current files, but that integrity result
-does not make its retained PDF a rendering of the changed source.
+By explicit integration policy, none of the other same-stem PDFs was rebuilt;
+operational ledgers covering changed roots were not refreshed except as stated.
+The relinked 12-entry ledger for
+`inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers` now
+fails only its root-TeX row, while its other eleven rows pass. Its retained PDF
+is not a rendering of the changed source.
 The PDFs and their page/font/build facts below are therefore retained
 historical artifacts, not claimed renderings of the current sources.
 
-| Root report | Current TeX lines | Retained PDF | Operational-ledger status |
-|---|---:|---:|---|
-| `comb-interpolation/Dyadic_Comb_Frontiers` | 5,648 | 66 pages | no live root-pair ledger |
-| `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders` | 1,979 | 23 pages | no live root-pair ledger |
-| `inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report` | 2,937 | 42 pages | TeX row pending rebuild |
-| `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers` | 6,608 | 100 pages | remote relinked ledger passes; PDF remains historical |
-| `comb-interpolation/geometric_comb_interpolation_report` | 2,360 | 32 pages | TeX row pending rebuild |
-| `comb-interpolation/geometric_comb_interpolation_report-3` | 2,736 | 36 pages | TeX/README/relocated-audit rows pending |
-| `comb-interpolation/geometric_comb_q_fabius_report` | 3,554 | 68 pages | TeX row pending rebuild |
-| `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic` | 1,742 | 26 pages | TeX row pending rebuild |
+| Root report | Current TeX lines | Current TeX SHA-256 | Retained PDF | Operational-ledger status |
+|---|---:|---|---:|---|
+| `comb-interpolation/Dyadic_Comb_Frontiers` | 5,649 | `24bfa9196f00223f7e4dd04344a784ab7be2049499ee739b63d38267b20d6649` | 66 pages | no live root-pair ledger |
+| `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders` | 1,979 | `0709a513017d42b94f931f6e4a2b0ac396464497c8fa75ef660545f4ab163507` | 23 pages | no live root-pair ledger |
+| `inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report` | 2,937 | `d161226599c27c3a7b7818bcf9d30c226be66fdf2f46d359735d4f95f5044ae6` | 42 pages | TeX and README rows pending; other four pass |
+| `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers` | 6,607 | `d5f5ba096af58634fe0693bd4731b10898a85ad38204c661edde2ddbe38ed04a` | 100 pages | TeX row pending; other eleven pass |
+| `comb-interpolation/geometric_comb_interpolation_report` | 2,360 | `816e4408eb4e390738a58dadecdae842d8d932e741afbe276dceb0ee7d36f2f2` | 32 pages | TeX and README rows pending; other fifteen pass |
+| `comb-interpolation/geometric_comb_interpolation_report-3` | 2,735 | `df9456de278b3608658797ffaedf415526e487e1124a86e0907ca00c6b1cc349` | 36 pages | TeX, README, and relocated-audit rows pending; other twenty-two pass |
+| `comb-interpolation/geometric_comb_q_fabius_report` | 3,553 | `2d888100650656ef2c85bb08bf9967164e0b22c1486987d7a209091fe25ab80f` | 68 pages | TeX and README rows pending; other eighteen pass |
+| `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic` | 1,742 | `eda8c676e00a68c1e57e36ee22bfb3502cd56dd95f5630efcaf6a7f0f3b3d3d5` | 26 pages | TeX and README rows pending; other thirteen pass |
+| `fabius_information_frontier` | 2,137 | `a8dd383ef450f4a6338990115b982945dc7f36674f7a65f3e623ca2002883296` | 30 pages | TeX and README rows pending; other seventeen pass |
 
 Package README edits that record this source-only state also make their own
 operational-ledger rows intentionally pending.  Arrival ledgers and historical
@@ -90,7 +99,7 @@ New standalone intake members:
 - [`geometric_comb_q_fabius_report/`](comb-interpolation/geometric_comb_q_fabius_report/),
   *Geometric-Comb Interpolation, Gaussian Pascal Transforms, and the
   Fabius--Rvachev Boundary Layer* (retained 68-page A4 PDF; current
-  3,554-line TeX; 637-line deterministic experiment). No attributable source
+  3,553-line TeX; 637-line deterministic experiment). No attributable source
   archive remains, so no outer-archive hash is inferred; the immutable
   submitted ledger preserves the arrival state. The 20-entry operational
   ledger was intentionally not refreshed after the source-only merge: its TeX
@@ -142,7 +151,7 @@ New standalone intake members:
   expanded to 25 entries. It was intentionally not refreshed after the later
   source-only notation migration and thematic relocation: its TeX, README,
   and intake-audit rows are pending and the other 22 rows pass. The current
-  TeX has 2,736 lines; the retained 36-page
+  TeX has 2,735 lines; the retained 36-page
   submitted PDF was not rebuilt. This is not a reship of the neighboring comb
   report: none of their non-ledger payload hashes coincide. In accordance
   with the incoming-archive gate, replay, hostile claim audit, dependency
@@ -191,7 +200,7 @@ New standalone intake members:
   theorem, and precision asymptotics remain open Lean work. The `d_*` claim
   remains denominator-minimal only for the fixed dyadic proxy `2^{-r(n)}`, not
   the weaker target `1/n`. The current 2,937-line source has SHA-256
-  `3ee69aa0c27486d5005e4d5f8448b36a8133083c8b79df51e9d08a5af56880b5`;
+  `d161226599c27c3a7b7818bcf9d30c226be66fdf2f46d359735d4f95f5044ae6`;
   the retained 42-page A4 PDF has 711,374 bytes and SHA-256
   `5a9976f9ece840d1b8456b4ea3753c36e369cbade8caff1c04158cc7d33cff75`.
   That PDF was built at the preceding checkpoint in exactly three strict
@@ -234,11 +243,10 @@ the inverse Taylor series, and the Bell--Lagrange formula also remain open.
 
 ## `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers/`
 
-The current merged root has 6,608 lines. Its retained 100-page PDF was not
-rebuilt after the notation merge. The remote's relinked 12-entry ledger under
-`assets/Fabius_Inverse_Frontier_Report_Source_and_PDF/` matches the current
-source, retained PDF, and all ten supporting files; it is accepted as an
-integrity receipt, not as evidence that the PDF was rebuilt from this source.
+The current merged root has 6,607 lines. Its retained 100-page PDF was not
+rebuilt after the notation merge. The relinked 12-entry ledger under
+`assets/Fabius_Inverse_Frontier_Report_Source_and_PDF/` fails only the current
+root-TeX row; its other eleven rows pass.
 
 Consolidated (2026-08-28) from:
 
@@ -257,7 +265,7 @@ is recorded in the volume itself, and git history is the archive.
 
 ## `comb-interpolation/Dyadic_Comb_Frontiers/`
 
-The current merged root has 5,648 lines. Its retained 66-page PDF was not
+The current merged root has 5,649 lines. Its retained 66-page PDF was not
 rebuilt after the notation merge, and this volume has no live checksum ledger
 covering the root TeX/PDF pair.
 
@@ -351,7 +359,7 @@ Filed 2026-08-30 from `Inverse_Fabius_Computability_Report.zip` (689,198
 bytes; SHA-256
 `755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1`).
 The current canonical source has 2,937 lines (SHA-256
-`3ee69aa0c27486d5005e4d5f8448b36a8133083c8b79df51e9d08a5af56880b5`).
+`d161226599c27c3a7b7818bcf9d30c226be66fdf2f46d359735d4f95f5044ae6`).
 The retained historical 42-page A4/27 mm/Libertinus PDF has 711,374 bytes
 (SHA-256
 `5a9976f9ece840d1b8456b4ea3753c36e369cbade8caff1c04158cc7d33cff75`).
