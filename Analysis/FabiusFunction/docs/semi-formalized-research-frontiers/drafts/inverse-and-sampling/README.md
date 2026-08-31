@@ -93,8 +93,12 @@ Current members and recent intake:
   Unique computational evidence is preserved by source slug. The source
   inventory is pinned to
   `73f0b373126ef22a3b5dccadfa7b99d61d445345`; its 180-row disposition and
-  151-row historical-ledger audit are recorded in the canonical package.
-  Final PDF and full-validator success remain separate publication gates.
+  151-row historical-ledger audit are recorded in the canonical package. The
+  structural validator passes, and the final three-pass publication is a
+  155-page A4 PDF with embedded/subset fonts, no Type 3 font, extractable text
+  on every page, and complete visual inspection. Its exhaustive root ledger
+  verifies every other permanent package file. A full replay of all retained
+  numerical scripts remains separate reproducibility work.
 - [`fabius_information_frontier/`](fabius_information_frontier/), *Exact
   Information Geometry and New Frontiers for the Fabius--Rvachev System*
   (retained submitted 30-page PDF; current 2,137-line TeX), was filed on
@@ -233,8 +237,12 @@ data, text outputs, and PNG figures are retained by historical source slug;
 old manuscript wrappers, report/preview PDFs, stale package ledgers, and
 duplicated documentation are retired. The canonical package records a
 180-row source disposition and a 151-row historical-ledger audit. Its README
-and provenance file describe the evidence boundary. Final PDF and full
-validator success are not claimed until the separate publication gates pass.
+and provenance file describe the evidence boundary. The structural validator
+passes, and the final three-pass publication is a 155-page A4 PDF with
+embedded/subset fonts, no Type 3 font, extractable text on every page, and
+complete visual inspection. Its exhaustive root ledger verifies every other
+permanent package file. A full replay of all retained numerical scripts
+remains separate reproducibility work.
 
 ## `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders/`
 

@@ -76,12 +76,17 @@ pdflatex -interaction=nonstopmode -halt-on-error comb_interpolation_synthesis.te
 pdflatex -interaction=nonstopmode -halt-on-error comb_interpolation_synthesis.tex
 ```
 
-A successful command is not yet the complete publication gate. The final log
-must also be free of TeX errors, unresolved references, rerun requests, and
-overfull boxes; the PDF must be A4, use embedded/subset fonts with no Type 3
-font, and every rendered page must be inspected. That final build and visual
-validation are intentionally not claimed by this README while the source
-synthesis is still changing.
+A successful command is not, by itself, the complete publication gate. The
+current canonical PDF was built from the final source in exactly three strict,
+serial passes on 2026-08-31. It has 155 A4 pages, 2,447,377 bytes, and SHA-256
+`d6b6e1e87ac27be902eff9ab258f162f3dd57b5b39ce44753f075e81ab1a765c`.
+All 33 font rows are embedded and subset, seven are Libertinus faces, and none
+is Type 3. Every page has text, A4 geometry, zero rotation, and the same five
+page boxes; all pages were reviewed in contact sheets and representative
+pages were inspected at full size. The final log has no TeX errors, undefined
+references or citations, rerun requests, duplicate destinations, or overfull
+boxes. Its 36 package warnings and five underfull boxes are the recorded,
+visually checked hyperref/caption/amsmath and paragraph-layout diagnostics.
 
 ## Reproduce the computational evidence
 
@@ -114,7 +119,12 @@ The source reconciliation and the 180-row file disposition are complete at the
 recorded pin. The eight historical ledgers contribute 151 audit rows: 68
 match byte-for-byte, 34 match after CRLF/LF normalization, 29 differ
 substantively, and 20 point to files no longer present at that pin. These are
-historical facts, not a live checksum certificate. A fresh canonical PDF,
-the final all-source validator, a current payload ledger, and the final
-publication inspection remain separate gates until their results are recorded
-in `assets/VALIDATION.md`.
+historical facts, not a live checksum certificate. The deterministic canonical
+validator passes all structural, source-disposition, theorem-concordance,
+reference, citation, historical-ledger, and companion-payload gates. Its Lean
+check confirms only that each curated declaration name occurs in its nominated
+module; it is not a live Lean census or theorem-type checker. The current root
+`SHA256SUMS` is the exhaustive operational ledger for every other permanent
+package file. The final PDF and page/font/text/visual inspections are complete;
+a fresh-checkout reproduction and a full rerun of every retained numerical
+script remain deliberately separate reproducibility work.
