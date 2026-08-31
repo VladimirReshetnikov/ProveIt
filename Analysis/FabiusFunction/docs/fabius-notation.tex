@@ -56,6 +56,10 @@
 \newcommand{\FractionalPart}[1]{\left\{#1\right\}}
 \newcommand{\PositivePart}[1]{\left(#1\right)_{+}}
 \newcommand{\IndicatorOf}[1]{\mathbf{1}_{#1}}
+\newcommand{\SetOf}[1]{\left\{#1\right\}}
+\newcommand{\InnerProduct}[1]{\left\langle #1\right\rangle}
+\newcommand{\CardinalityOf}[1]{\left\lvert #1\right\rvert}
+\newcommand{\DefinitionEquals}{\mathrel{\coloneqq}}
 \newcommand{\Sign}{\operatorname{sgn}}
 \newcommand{\IdentityOperator}{\operatorname{id}}
 \newcommand{\SpanOperator}{\operatorname{span}}
@@ -64,19 +68,26 @@
 \newcommand{\DiagonalOperator}{\operatorname{diag}}
 \newcommand{\ResidueOperator}{\operatorname*{Res}}
 \newcommand{\LeastCommonMultiple}{\operatorname{lcm}}
+\newcommand{\OrderOperator}{\operatorname{ord}}
+\newcommand{\PrincipalLogarithm}{\operatorname{Log}}
+\newcommand{\FallingFactorial}[2]{\left(#1\right)^{\underline{#2}}}
+\newcommand{\RisingFactorial}[2]{\left(#1\right)^{\overline{#2}}}
 
 % Support, topology, convolution, and metric notation.
-\newcommand{\SupportOf}[1]{\operatorname{supp}\!\left(#1\right)}
+\newcommand{\SupportOperator}{\operatorname{supp}}
+\newcommand{\SupportOf}[1]{\SupportOperator\!\left(#1\right)}
 \newcommand{\TopologicalSupportOf}[1]{\operatorname{tsupp}\!\left(#1\right)}
 \newcommand{\Convolution}{\mathbin{*}}
 \newcommand{\MetricDistance}{\operatorname{dist}}
+\newcommand{\TotalVariationDistance}{d_{\mathrm{TV}}}
 
 % Probability.  Equality and convergence in law are not metric distance.
 \newcommand{\Probability}{\mathbb{P}}
 \newcommand{\Expectation}{\mathbb{E}}
 \newcommand{\Variance}{\operatorname{Var}}
 \newcommand{\Covariance}{\operatorname{Cov}}
-\newcommand{\LawOf}[1]{\operatorname{Law}\!\left(#1\right)}
+\newcommand{\LawOperator}{\operatorname{Law}}
+\newcommand{\LawOf}[1]{\LawOperator\!\left(#1\right)}
 \newcommand{\EqualInLaw}{\mathrel{\overset{\mathrm{law}}{=}}}
 \newcommand{\ConvergesInLaw}{\mathrel{\xrightarrow{\mathrm{law}}}}
 
@@ -84,8 +95,10 @@
 % FourierTwoPi uses exp(-2*pi*i*x*xi); FourierAngular uses exp(-i*x*omega).
 \newcommand{\FourierTwoPi}[1]{\widehat{#1}_{\,2\pi}}
 \newcommand{\FourierAngular}[1]{\widehat{#1}_{\,\mathrm{ang}}}
-\newcommand{\LaplaceTransformOf}[1]{\mathcal{L}\!\left[#1\right]}
-\newcommand{\MellinTransformOf}[1]{\mathcal{M}\!\left[#1\right]}
+\newcommand{\LaplaceTransformSymbol}{\mathcal{L}}
+\newcommand{\MellinTransformSymbol}{\mathcal{M}}
+\newcommand{\LaplaceTransformOf}[1]{\LaplaceTransformSymbol\!\left[#1\right]}
+\newcommand{\MellinTransformOf}[1]{\MellinTransformSymbol\!\left[#1\right]}
 \newcommand{\MomentGeneratingFunction}[1]{M_{#1}}
 \newcommand{\CharacteristicFunction}[1]{\varphi_{#1}}
 
@@ -95,6 +108,7 @@
 
 % Binary arithmetic and Thue--Morse notation.
 \newcommand{\BinaryDigitSum}{\operatorname{wt}_{2}}
+\newcommand{\ThueMorseSignSymbol}{\varepsilon}
 \newcommand{\ThueMorseSign}[1]{\varepsilon_{#1}}
 \newcommand{\PadicValuation}[1]{\nu_{#1}}
 \newcommand{\TwoAdicValuation}{\nu_{2}}
@@ -112,8 +126,9 @@
 \newcommand{\GammaFunction}{\Gamma}
 \newcommand{\RiemannZeta}{\zeta}
 
-% Asymptotics.  Prefer the At forms so that the limiting regime is printed.
-\newcommand{\BigO}[1]{\mathcal{O}\!\left(#1\right)}
-\newcommand{\LittleO}[1]{o\!\left(#1\right)}
+% Asymptotics.  BigO and LittleO are operator tokens for existing formula
+% grammar; prefer the At forms so that the limiting regime is printed.
+\newcommand{\BigO}{\mathcal{O}}
+\newcommand{\LittleO}{o}
 \newcommand{\BigOAt}[2]{\mathcal{O}_{#2}\!\left(#1\right)}
 \newcommand{\LittleOAt}[2]{o_{#2}\!\left(#1\right)}
