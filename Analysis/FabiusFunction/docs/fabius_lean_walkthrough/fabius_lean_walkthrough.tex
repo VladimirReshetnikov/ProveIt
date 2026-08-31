@@ -123,7 +123,8 @@
 \small base commit \nolinkurl{eaea1b9afe2b7ff0b7dd880bd1710e303dec6d80};
 Volterra addenda \nolinkurl{3da579387}, \nolinkurl{e109088ed};\\
 \small activation-series and finite-Taylor addendum
-\nolinkurl{a345425d21d90e680bf15e34093af42c69c08a83}}
+\nolinkurl{a345425d21d90e680bf15e34093af42c69c08a83};\
+\small inverse-modulus equality/rigidity addendum \nolinkurl{f05c2fc7d}}
 
 \begin{document}
 \maketitle
@@ -858,6 +859,127 @@ at both ends, by
 \nolinkurl{tendsto_deriv_fabiusInv_atTop_at_zero_right} and
 \nolinkurl{tendsto_deriv_fabiusInv_atTop_at_one_left}.  These are one-sided
 limits through \((0,1)\), not derivative values at the clamping points.
+
+\subsection{Exact inverse modulus and rigidity (post-snapshot)}
+
+The structural layer \nolinkurl{InverseModulus.lean} now has an exhaustive public
+surface of one definition and thirty-one theorems.  Relative to its earlier
+twenty-theorem surface, the eleven equality/rigidity declarations, in source order, are:
+\begin{lstlisting}[style=pseudo]
+fabiusIntervalMass_eq_zero_of_add_nonpos
+fabiusIntervalMass_eq_zero_of_one_le
+strictMonoOn_fabiusIntervalMass_firstHalf
+strictAntiOn_fabiusIntervalMass_secondHalf
+fabiusReal_lt_fabiusIntervalMass_of_mem_Ioo
+fabiusIntervalMass_eq_fabiusReal_iff
+fabiusReal_sub_lt_sub
+fabiusReal_sub_eq_sub_iff
+fabiusReal_add_eq_iff
+fabiusInv_sub_eq_sub_iff_of_mem_Icc
+abs_fabiusInv_sub_eq_iff_of_mem_Icc
+\end{lstlisting}
+The first two record the zero-mass tails for nonnegative interval lengths.  The
+global weak shape remains valid for every nonnegative length; at a nondegenerate
+length \(0<h\leq1\), the new strict branches are exactly
+\([-h,(1-h)/2]\) and \([(1-h)/2,1]\), ending where the two constant tails begin.
+Within \([0,1]\), an interval of length \(h\) has the endpoint mass \(F(h)\)
+exactly when \(h=0\), its left endpoint is zero, or its right endpoint is one.
+The strict-interior and subtraction wrappers give the same classification for the
+least-mass inequality, while constrained superadditivity is an equality exactly
+when one summand is zero or their sum is one.
+
+Transport through the inverse classifies the unit-interval equality cases as well.
+For \(0\leq u\leq v\leq1\), the ordered inverse-gap bound is sharp exactly when
+\(u=v\), \(u=0\), or \(v=1\).  In the order-free absolute bound, equality for
+\(u,v\in[0,1]\) means that the inputs coincide or at least one is an endpoint.
+Both restrictions to the unit interval are essential: the totalized inverse has
+constant tails, which create additional equality configurations on all of \(\R\).
+The preceding twenty declarations still supply the weak shape, sharp inequalities,
+attained exact moduli, and effective-injectivity implications; the next module turns
+the structural modulus into explicit recursive dyadic denominators.
+
+\subsection{Effective dyadic continuity of the noncomputable inverse}
+
+\nolinkurl{FabiusInverseEffectiveContinuity.lean} supplies an explicit
+primitive-recursive modulus for the totalized inverse.  Its two
+natural-valued denominators are
+\[
+ D_{\mathrm{fac}}(r)=2^{\binom{r+1}{2}}(r+1)!,
+ \qquad
+ D_{\Delta}(r)=2^{\binom{r+1}{2}}(r+1)^{r+1}.
+\]
+The first is defined recursively and then identified with the displayed
+factorial form; the second is the elementary box-event denominator from the
+inverse-computability report.  Both functions are primitive recursive and
+\(D_{\mathrm{fac}}(r)\le D_{\Delta}(r)\) for every \(r\).
+
+Fix \(F\) of type \nolinkurl{BoundedFabius} and let \(h_F\) witness
+\nolinkurl{IsFabius} \(F\).  Only the sharp one-term recurrence estimate
+requires \(r>0\):
+\[
+ \frac{1}{
+   2^{\binom r2}(r+1)!(2^r-1)}
+ \le F(2^{-r}).
+\]
+The consequences are total in \(r\), including \(r=0\):
+\[
+ D_{\mathrm{fac}}(r)^{-1}\le F(2^{-r}),
+ \qquad
+ D_{\Delta}(r)^{-1}\le F(2^{-r}).
+\]
+For every real \(u,v\), either denominator \(D\) gives the strict and closed
+inverse moduli
+\[
+\begin{aligned}
+ |u-v|<D(r)^{-1}
+   &\Longrightarrow |F^{-1}(u)-F^{-1}(v)|<2^{-r},\\
+ |u-v|\le D(r)^{-1}
+   &\Longrightarrow |F^{-1}(u)-F^{-1}(v)|\le2^{-r}.
+\end{aligned}
+\]
+Here \(F^{-1}\) means the globally clamped \nolinkurl{fabiusInv}, so no
+unit-interval hypothesis is placed on \(u\) or \(v\).  Taking the stronger
+factorial denominator at \(r=n\), and using \(n<2^n\), proves
+\nolinkurl{fabiusInv_effectivelyUniformContinuous}, namely
+\nolinkurl{EffectivelyUniformContinuous} for that totalized inverse, in the
+repository's positive-precision reciprocal convention.
+
+The module's exhaustive public inventory is two definitions and twelve
+theorems:
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.07\textwidth} >{\raggedright\arraybackslash}p{0.53\textwidth} >{\raggedright\arraybackslash}p{0.33\textwidth}@{}}
+\toprule
+No. & Declaration & Formal content \\
+\midrule
+\endfirsthead
+\toprule
+No. & Declaration & Formal content \\
+\midrule
+\endhead
+1 & \nolinkurl{inverseFabiusFactorialDenominator} & Recursive natural-valued factorial denominator. \\
+2 & \nolinkurl{inverseFabiusFactorialDenominator_eq} & Closed form \(D_{\mathrm{fac}}(r)\). \\
+3 & \nolinkurl{inverseFabiusFactorialDenominator_primrec} & Primitive recursiveness of \(D_{\mathrm{fac}}\). \\
+4 & \nolinkurl{inverseFabiusDeltaDenominator} & Natural-valued report denominator \(D_{\Delta}\). \\
+5 & \nolinkurl{inverseFabiusDeltaDenominator_primrec} & Primitive recursiveness of \(D_{\Delta}\). \\
+6 & \nolinkurl{fabiusReal_inverse_two_pow_one_term_lower_bound} & One-term endpoint bound, under \(h_F\) and \(r>0\). \\
+7 & \nolinkurl{inv_inverseFabiusFactorialDenominator_le_fabiusReal} & Factorial reciprocal bound for every \(r\), under \(h_F\). \\
+8 & \nolinkurl{inverseFabiusFactorialDenominator_le_deltaDenominator} & \(D_{\mathrm{fac}}(r)\le D_{\Delta}(r)\), with no Fabius hypothesis. \\
+9 & \nolinkurl{inv_inverseFabiusDeltaDenominator_le_fabiusReal} & Report reciprocal bound for every \(r\), under \(h_F\). \\
+10 & \nolinkurl{abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_factorialDenominator} & Strict factorial-threshold modulus for all real inputs. \\
+11 & \nolinkurl{abs_fabiusInv_sub_le_inverse_two_pow_of_le_factorialDenominator} & Closed factorial-threshold modulus for all real inputs. \\
+12 & \nolinkurl{abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_deltaDenominator} & Strict report-threshold modulus for all real inputs. \\
+13 & \nolinkurl{abs_fabiusInv_sub_le_inverse_two_pow_of_le_deltaDenominator} & Closed report-threshold modulus for all real inputs. \\
+14 & \nolinkurl{fabiusInv_effectivelyUniformContinuous} & Effective uniform continuity with witness \(D_{\mathrm{fac}}(n)\). \\
+\bottomrule
+\end{longtable}
+
+The boundary is important.  The two denominator definitions and their
+primitive-recursion proofs are executable, but \nolinkurl{fabiusInv} itself
+is still a \emph{noncomputable} order-isomorphism inverse.  An effective
+modulus alone is not a name-producing algorithm.  This module proves neither
+\nolinkurl{SequentiallyComputable} nor a combined
+\nolinkurl{IsComputableRealFunction} theorem for the inverse, and it supplies
+no logarithmic selector \(r(n)\), exact least/ceiling denominator, tolerant
+bisection realizer, or input-bit complexity bound.
 
 \subsection{Generic formal implicit roots versus inverse-Fabius germs}
 \nolinkurl{ImplicitPowerSeries.lean} isolates a purely formal root engine.
@@ -3898,6 +4020,8 @@ Module & Role in the development \\
 \nolinkurl{SharpFlatness.lean} & Factorial-strengthened endpoint power bounds for \(F\) and \(\Up\). \\
 \nolinkurl{NowhereAnalytic.lean} & Exact real-analytic loci: off the closed transition supports and nowhere on them. \\
 \nolinkurl{FabiusInverse.lean} & Totalized inverse, order isomorphism on the unit interval, exact positive reciprocal derivative, exact global smoothness locus (continuity everywhere, but differentiability and every positive finite or \(C^\infty\) order exactly off the clamping endpoints), reciprocal-cubic second derivative, midpoint jet and interior curvature loci, strict closed-half curvature, and endpoint quotient/derivative blow-up. \\
+\nolinkurl{InverseModulus.lean} & Exhaustive one-definition/thirty-one-theorem structural inverse-modulus layer: global weak and maximal strict fixed-length increment shape, exact endpoint minimizers, constrained-superadditivity equality, unit-interval inverse-gap rigidity, global sharp modulus bounds and attained suprema, and effective injectivity.  The inverse equality loci are deliberately not global because of the clamped tails. \\
+\nolinkurl{FabiusInverseEffectiveContinuity.lean} & Exhaustive two-definition/twelve-theorem effective inverse-continuity layer: primitive-recursive factorial and report denominators, recurrence and endpoint-mass lower bounds, strict and closed global inverse moduli, and \nolinkurl{EffectivelyUniformContinuous}; the inverse remains noncomputable and no sequential realizer or combined computable-function theorem is supplied. \\
 \nolinkurl{ImplicitPowerSeries.lean} & Nonmonic complete-adic lifting and residue-class uniqueness, with arbitrary-base and zero-constant formal implicit-root specializations over power-series rings; it does not construct or analytically realize a Fabius inverse germ. \\
 \nolinkurl{InverseBranch.lean} & Analytic inverse theorem, analytic-density preservation for continuous right-inverse branches, and the complement-interior analyticity condition and conditional Lambert-branch criterion for \nolinkurl{IsElementaryOrInverse}. \\
 \nolinkurl{AlgebraicBranch.lean} & Algebraic-function branch interface used in non-elementarity arguments. \\

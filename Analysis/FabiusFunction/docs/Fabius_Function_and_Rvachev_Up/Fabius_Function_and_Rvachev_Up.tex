@@ -4595,14 +4595,24 @@ the open interval, not finite derivatives at \(0\) or \(1\).
 
 The exact uniform modulus of this clamped inverse is now separated from the
 differential theory in \path{InverseModulus.lean}.  Its exhaustive public surface is one
-definition, \lean{fabiusIntervalMass}, and twenty theorems:
+definition, \lean{fabiusIntervalMass}, and thirty-one theorems:
 \lean{fabiusIntervalMass_reflect},
+\lean{fabiusIntervalMass_eq_zero_of_add_nonpos},
+\lean{fabiusIntervalMass_eq_zero_of_one_le},
 \lean{monotoneOn_fabiusIntervalMass_firstHalf},
 \lean{antitoneOn_fabiusIntervalMass_secondHalf},
-\lean{fabiusReal_sub_le_sub}, \lean{fabiusReal_add_le},
+\lean{strictMonoOn_fabiusIntervalMass_firstHalf},
+\lean{strictAntiOn_fabiusIntervalMass_secondHalf},
+\lean{fabiusReal_sub_le_sub},
+\lean{fabiusReal_lt_fabiusIntervalMass_of_mem_Ioo},
+\lean{fabiusIntervalMass_eq_fabiusReal_iff},
+\lean{fabiusReal_sub_lt_sub}, \lean{fabiusReal_sub_eq_sub_iff},
+\lean{fabiusReal_add_le}, \lean{fabiusReal_add_eq_iff},
 \lean{fabiusInv_sub_le_sub_of_mem_Icc},
+\lean{fabiusInv_sub_eq_sub_iff_of_mem_Icc},
 \lean{fabiusInv_sub_le_sub_of_le}, \lean{fabiusInv_sub_le_sub},
 \lean{fabiusInv_add_le}, \lean{abs_fabiusInv_sub_le},
+\lean{abs_fabiusInv_sub_eq_iff_of_mem_Icc},
 \lean{dist_fabiusInv_le}, \lean{fabiusInv_min_one},
 \lean{isGreatest_abs_fabiusInv_sub}, \lean{sSup_abs_fabiusInv_sub_eq},
 \lean{isGreatest_abs_fabiusInv_sub_Icc},
@@ -4611,16 +4621,25 @@ definition, \lean{fabiusIntervalMass}, and twenty theorems:
 \lean{abs_fabiusInv_sub_le_of_abs_sub_le_fabiusReal},
 \lean{fabiusReal_le_abs_sub_of_le_abs_fabiusInv_sub}, and
 \lean{forall_abs_fabiusInv_sub_lt_iff}.
-For every nonnegative interval length, the mass increment is reflection-invariant,
-increases toward the centered interval, and then decreases.  The resulting endpoint
-minimum gives the ordered and order-free inverse-gap bounds, subadditivity, absolute and
-metric self-moduli, saturation at one, and attained exact \path{IsGreatest}/\path{sSup}
-moduli over both all real inputs and unit-interval inputs.  The final four theorems are the
-strict and closed effective-injectivity bounds, their contrapositive separation form, and
-the exact uniform strict-threshold biconditional.  This structural API does not claim the
-computability report's closed \(\Delta_r\) lower bound, recursive-modulus packaging,
-tolerant bisection realizer, sequential computability, combined computable-real-function
-theorem, or bit-complexity estimate.
+For every nonnegative interval length, the mass increment is reflection-invariant, vanishes
+on both constant tails, and has the global weak increase--decrease shape.  For
+\(0<h\leq1\), it is strictly increasing on
+\([-h,(1-h)/2]\) and strictly decreasing on \([(1-h)/2,1]\), the maximal strict
+branches before the constant tails.  Inside \([0,1]\), the two endpoint intervals are the
+only nondegenerate least-mass intervals.  This classifies equality in the least-mass and
+constrained-superadditivity inequalities.  It also gives the ordered and order-free
+inverse-gap bounds, subadditivity, absolute and metric self-moduli, saturation at one, and
+attained exact \path{IsGreatest}/\path{sSup} moduli over both all real inputs and
+unit-interval inputs.  On the unit interval, equality in the ordered inverse-gap bound
+occurs exactly for a degenerate interval or one meeting an endpoint, while equality in the
+absolute bound occurs exactly for coincident inputs or an endpoint input.  These two
+equality classifications deliberately do not extend to arbitrary real inputs, where
+clamping creates additional cases.  The final four theorems are the strict and closed
+effective-injectivity bounds, their contrapositive separation form, and the exact uniform
+strict-threshold biconditional.  This structural API does not claim the computability
+report's closed \(\Delta_r\) lower bound, recursive-modulus packaging, tolerant bisection
+realizer, sequential computability, combined computable-real-function theorem, or
+bit-complexity estimate.
 
 \subsection{Effective dyadic continuity of the inverse}
 \label{sec:fabius-inverse-effective-continuity}
@@ -5621,6 +5640,81 @@ This is the strict-degree case of
 the monomial statement used internally is
 \lean{thueMorsePowerSum_eq_zero_of_lt}.
 \end{proof}
+
+The arbitrary-step centered version is packaged in
+\path{ThueMorseSymmetricDifference.lean}.  If an additive commutative group
+\(V\) acts additively on \(P\), the values lie in an additive commutative
+group \(A\), \(a_i\in V\) are half-steps, and \(s\) is a finite set of
+indices, then \lean{symmetricMixedDifference} is the ordinary mixed
+difference with full steps \(-2a_i\), evaluated at the result of the action
+of \(\sum_{i\in s}a_i\) on \(x\).  Its exact symmetric Boolean-cube expansion is
+\[
+ \sum_{t\subseteq s}(-1)^{|t|}\mathbin{\boldsymbol\cdot}
+ f\!\left(\left(\sum_{i\in s}a_i-2\sum_{i\in t}a_i\right)+_{\!v} x\right),
+\]
+where the bold dot denotes the integer action on \(A\), and \(+_{\!v}\) denotes
+the additive action on \(P\).  No distinctness
+assumption is imposed on the half-step values.
+
+Over a commutative ring, if \(p\) has degree at most \(|s|\), the same
+operator applied to \(p\) is
+\[
+ [X^{|s|}]p\; |s|!\prod_{i\in s}(2a_i).
+\]
+Thus every polynomial of degree below \(|s|\) is annihilated, including the
+zero-polynomial/empty-support boundary expressed in Lean with
+\nolinkurl{Polynomial.degree}, and the first surviving monomial has the
+sign-free value \(|s|!\prod_{i\in s}(2a_i)\).
+
+For the dyadic half-steps \(2^jh\), write the resulting operator as
+\(D_m(h;f,x)\).  Over a characteristic-zero field, the exact increasing-grid
+form is
+\[
+ D_m(2^{-m};f,x)
+ =\sum_{n<2^m}(-1)^m\varepsilon_n\mathbin{\boldsymbol\cdot}
+ f\!\left(x-(1-2^{-m})+2n2^{-m}\right).
+\]
+This includes \(m=0\).  At positive order \(N=m+1\), the full grid point is
+\[
+ x-(1-2^{-(m+1)})+\frac{n}{2^m},
+\]
+with sign \((-1)^N\varepsilon_n\); its varying term is \(n/2^m\), and its
+mesh spacing is \(1/2^m\).
+
+The module's complete public surface is exactly two definitions and eleven
+theorems:
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.07\textwidth} >{\raggedright\arraybackslash}p{0.50\textwidth} >{\raggedright\arraybackslash}p{0.36\textwidth}@{}}
+\toprule
+No. & Declaration & Formal content \\
+\midrule
+\endfirsthead
+\toprule
+No. & Declaration & Formal content \\
+\midrule
+\endhead
+1 & \lean{symmetricMixedDifference} & Centered operator from arbitrary half-steps. \\
+2 & \lean{symmetricMixedDifference_empty} & Empty operator equals evaluation at the center. \\
+3 & \lean{symmetricMixedDifference_singleton} & One factor is \(f(a_i+_{\!v} x)-f((-a_i)+_{\!v} x)\). \\
+4 & \lean{symmetricMixedDifference_insert} & Insert recurrence; only the index must be new. \\
+5 & \lean{symmetricMixedDifference_eq_sum_powerset_smul} & Exact symmetric Boolean-cube expansion. \\
+6 & \lean{symmetricMixedDifference_polynomial_eq_coeff_card} & Degree-\(|s|\) coefficient extraction over a commutative ring. \\
+7 & \lean{symmetricMixedDifference_polynomial_of_degree_lt} & Sharp cancellation below \(|s|\), including the zero boundary. \\
+8 & \lean{symmetricMixedDifference_pow_card} & Sign-free first surviving monomial value. \\
+9 & \lean{symmetricDyadicMixedDifference} & Dyadic half-step specialization. \\
+10 & \lean{symmetricDyadicMixedDifference_zero} & Zeroth dyadic operator equals evaluation. \\
+11 & \lean{symmetricDyadicMixedDifference_eq_sum_thueMorseSign_smul} & Centered dyadic Thue--Morse block over additive groups. \\
+12 & \lean{symmetricDyadicMixedDifference_inv_two_pow_eq_sum_thueMorseSign_smul} & Increasing affine grid over a characteristic-zero field, including \(m=0\). \\
+13 & \lean{symmetricDyadicMixedDifference_inv_two_pow_succ_eq_sum_thueMorseSign_smul} & Positive-order grid term \(n/2^m\) (mesh \(1/2^m\)). \\
+\bottomrule
+\end{longtable}
+
+This closes the symmetric-cube, polynomial cancellation/top-value, and exact
+affine-grid clauses of the continuous-chaos report's Thue--Morse corner
+theorem.  It does \emph{not} prove that report's repeated-integral equality
+under \(C^N\) hypotheses; that analytic clause and a single report-shaped
+wrapper remain.  The report's following Walsh conditional-expectation
+corollary also still needs its sign--magnitude probability construction,
+conditioning argument, and \(2^{-N}\) normalization.
 
 The finite block polynomial packages the same signs without introducing an analytic
 exponential identity:
@@ -11258,7 +11352,7 @@ Dyadic and \(q\)-binomial formulas &
 \path{FabiusDiscreteLimitToeplitz.lean},
 \path{FabiusDiscreteLimitIntegration.lean}\\
 Thue--Morse algebra, finite complex transforms, prefixes, disc series, and
-ring-valued Prouhet identities &
+ring-valued Prouhet identities, including centered symmetric mixed differences &
 \path{ThueMorseBitSupport.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseBooleanCube.lean}, \path{ThueMorseComplexExponential.lean},
 \path{ThueMorseGenerating.lean},
@@ -11266,6 +11360,8 @@ ring-valued Prouhet identities &
 \path{ThueMorseInfiniteProduct.lean}, \path{ThueMorseDiscSeries.lean},
 \path{ThueMorseNaturalBoundary.lean},
 \path{ThueMorseExponential.lean}, \path{ThueMorseApproximation.lean},
+\path{ThueMorseMixedDifference.lean},
+\path{ThueMorseSymmetricDifference.lean},
 \path{ThueMorseSparseProuhet.lean}, \path{PaperKFoldThueMorse.lean}\\
 Endpoint asymptotics &
 \path{NegativeLaplace.lean}, \path{NegativeLaplaceVertical.lean},
