@@ -2,6 +2,22 @@
 
 New standalone intake members:
 
+- [`fabius_information_frontier/`](fabius_information_frontier/),
+  *Exact Information Geometry and New Frontiers for the Fabius--Rvachev
+  System* (30 pp), arrived on 2026-08-30 from the rootless archive
+  `fabius_information_frontier_report.zip` (outer SHA-256
+  `41f9aba6eb85bb173827f13cb6b7b1d54b7ea9346faf7c9e5b1af859bbd42ec7`).
+  All 18 submitted non-ledger payload hashes verified; four CSV entries and
+  their ledger hashes were refreshed after CRLF-to-LF repository
+  normalization. Its geometric-uniform information laws, entropy/Fisher,
+  dyadic Thue--Morse, inverse-Fabius/Lambert, and q-asymptotic themes place it
+  with the broad frontier series. It remains standalone pending
+  post-publication claim review, semantic deduplication, experiment
+  assessment, and a Lean crosswalk; manuscript labels do not establish Lean
+  verification. The filed PDF hard-codes Latin Modern and inherits five
+  embedded/subset Type-3 font rows from its vector figures; canonical promotion
+  requires a Libertinus/Type-3-free rebuild and refreshed checksums.
+
 - [`Digital_Spectral_Geometry_and_Log_Periodic_Saddles/`](Digital_Spectral_Geometry_and_Log_Periodic_Saddles/),
   *Digital Spectral Geometry and Log-Periodic Saddles: Frontier Results for
   the Thue--Morse, Fabius, Inverse-Fabius, and Rvachev Systems* (23 pp),

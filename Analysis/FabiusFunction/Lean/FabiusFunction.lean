@@ -15,6 +15,7 @@ import FabiusFunction.QBinomialTransform
 import FabiusFunction.QBinomialVandermonde
 import FabiusFunction.QBinomialCauchy
 import FabiusFunction.GaussianBinomialAtOne
+import FabiusFunction.GaussianBinomialAtNegOne
 import FabiusFunction.GeometricCompleteHomogeneous
 import FabiusFunction.GeometricLagrange
 import FabiusFunction.LagrangeResidualMoments
