@@ -9691,8 +9691,25 @@ hence the nome $1/4$, hold for every complex argument including at zero
 factors, and transfer the product to a bounded Fabius witness satisfying
 \path{IsFabius}.
 
-In centered sinc coordinates, $t=4\pi z$ identifies this with the inside
-$q=1/2$ product.  In the uncentered MGF normalization of
+For arbitrary complex $q,z$ with $\lVert q\rVert<1$, the next three theorems,
+\path{summable_norm_sineTerm_qpow_pair},
+\path{geometricSincProduct_eq_tprod_pair}, and
+\path{geometricSincProduct_eq_tprod_complexQPochhammerInf}, prove absolute
+summability of the paired Euler perturbations, identify the scale--zero
+product, and justify the rearrangement
+\[
+ S_q(z)=\prod_{k\ge0}
+ \left(\frac{z^2}{(k+1)^2};q^2\right)_{\!\infty}.
+\]
+This is global in $z$, includes $q=0$, negative and nonreal contractions, and
+requires no nonvanishing premise.  The last two theorems,
+\path{rvachevFourierProduct_eq_tprod_complexQPochhammerInf} and
+\path{rvachevFourier_eq_tprod_complexQPochhammerInf}, specialize to dyadic
+scale and nome $1/4$ and transfer the product to a bounded Fabius witness
+satisfying \path{IsFabius}.
+
+In centered sinc coordinates, $t=4\pi z$ identifies the general theorem with
+the inside product.  In the uncentered MGF normalization of
 \eqref{eq:qF-spectral-inside}, the corresponding substitution is
 $t=4\pi\mathrm i z$: its Pochhammer product becomes $\Phi(z)$ and the retained
 phase gives $M_{1/2}(4\pi\mathrm i z)=\EulerE^{2\pi\mathrm i z}\Phi(z)$.
@@ -11965,6 +11982,7 @@ compatibility spelling of the primary identity;\\
 \path{GeometricLagrangeQMoments.lean}: one definition and 37 theorems;\\
 \path{FinitePolynomialFilterExactness.lean}: five theorems;\\
 \path{QuarterCatalanGerm.lean}: two definitions and thirteen theorems;\\
+\path{FabiusInverseQuarterJet.lean}: two theorems;\\
 \path{QuarterCatalanRichardson.lean}: three definitions and 15 theorems.
 \end{center}
 
@@ -12174,7 +12192,19 @@ denominator hypotheses and expose the first surviving mode.
 \path{Fabius.coeff_dyadicGermTwo_succ}.  This is the unique zero-constant
 solution of \(D+4D^2=(4/9)X\) in \(\RationalNumbers[[X]]\), with its complete coefficient
 formula and exact rescaling bridge to the distinguished dyadic germ and the
-quadratic inverse, but no convergence or real-inverse identification.
+quadratic inverse.  The downstream module
+\path{FabiusInverseQuarterJet.lean} connects this algebraic shadow to the
+actual smooth inverse through exactly two public theorems,
+\path{Fabius.iteratedDeriv_centeredFabiusInv_quarter_eq_quadraticInverse}
+and
+\path{Fabius.iteratedDeriv_fabiusInv_five_seventy_two_succ}.  For every
+bounded Fabius solution they prove the full centered jet identity at
+\(5/72=F(1/4)\) and the Catalan formula
+\[
+ G^{(m+1)}(5/72)=(m+1)!(-4)^m C_m.
+\]
+These are smooth derivative identities, not convergence of the formal series,
+equality on a neighborhood, or analyticity of the inverse at the anchor.
 
 \item \path{QuarterCatalanRichardson.lean} has the three definitions
 \path{Fabius.finiteRescaleFilter},

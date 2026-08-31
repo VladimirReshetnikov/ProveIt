@@ -5,32 +5,30 @@
 \usepackage[utf8]{inputenc}
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
-\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{bm}
+% Canonical project-wide mathematical notation.
 \input{../../../../fabius-notation.tex}
 \usepackage{booktabs,longtable,tabularx,array,multirow}
 \usepackage{graphicx}
-\usepackage{caption}
-\usepackage{float}
+\usepackage{pgfplots}
 \usepackage{xcolor}
 \usepackage{enumitem}
-\usepackage{listings}
-\usepackage{xurl}
 \usepackage{fancyhdr}
 \usepackage{titlesec}
-\usepackage[hypertexnames=false]{hyperref}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
-\usepackage{aliascnt}
 
-\graphicspath{{figures/}}
-\definecolor{linkblue}{RGB}{31,78,121}
-\definecolor{deepgreen}{RGB}{35,105,78}
+\definecolor{linkblue}{RGB}{25,75,135}
 \definecolor{shadegray}{RGB}{246,247,249}
-\definecolor{rulegray}{RGB}{194,201,208}
-\definecolor{deepred}{RGB}{140,45,45}
+\definecolor{rulegray}{RGB}{195,201,208}
+\pgfplotsset{compat=1.18}
 \hypersetup{
   colorlinks=true,
   linkcolor=linkblue,
-  citecolor=deepgreen,
+  citecolor=linkblue,
   urlcolor=linkblue,
   pdftitle={Fabius--Rvachev New Frontiers},
   pdfauthor={Research report for Vladimir Reshetnikov's ProveIt project},
@@ -44,6 +42,7 @@
 \fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
+
 \titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
 \titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
 \titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
@@ -51,30 +50,30 @@
 \setcounter{tocdepth}{2}
 \setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
 \setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
-\setlength{\emergencystretch}{3em}
-\allowdisplaybreaks[2]
-\numberwithin{equation}{section}
+
+% Long unbreakable inline mathematics occasionally leaves a line with no legal
+% break point.  A small emergency stretch lets TeX loosen such a line rather
+% than let it protrude into the margin; it applies only to lines that would
+% otherwise be overfull.
+\setlength{\emergencystretch}{2em}
 
 \newtheorem{theorem}{Theorem}[section]
-\newcommand{\newsharedtheorem}[2]{%
-  \newaliascnt{#1}{theorem}%
-  \newtheorem{#1}[#1]{#2}%
-  \aliascntresetthe{#1}%
-}
-\newsharedtheorem{proposition}{Proposition}
-\newsharedtheorem{lemma}{Lemma}
-\newsharedtheorem{corollary}{Corollary}
-\newsharedtheorem{identity}{Identity}
-\newsharedtheorem{conjecture}{Conjecture}
-\newsharedtheorem{problem}{Problem}
-\newsharedtheorem{principle}{Principle}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
-\newtheorem{example}[theorem]{Example}
 \newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
+
+% Document-specific support required by this report.
+\graphicspath{{figures/}}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
 
 \newenvironment{statusbox}[1]{%
   \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
@@ -102,7 +101,6 @@
 \newcommand{\eps}{\varepsilon}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction/docs}}
 \newcommand{\commit}{\nolinkurl{b863b90ee74ec0405af2d67ad04c61824c3aea00}}
-\DeclareMathOperator{\capop}{cap}
 
 \title{\bfseries Fabius--Rvachev New Frontiers\\[0.45em]
 \large Log-concavity, native orthogonal polynomials, Christoffel reconstruction,\\
@@ -197,8 +195,10 @@ searches.  That audit found pre-existing Nevai-limit, $J$-fraction, Hankel, and
 Gauss--Pad\'e programs in the canonical representation frontier.  It found no
 matching report-level result for the log-concavity of $\RvachevUp$, the rational
 Christoffel limits and alternating Jacobi product for $\pi$, or the finite
-Gaunt/Wigner entry expansion. The determinant change-of-basis and Jacobi
-cross-ratio are now formalized downstream. ``New'' therefore applies only to the
+Gaunt/Wigner entry expansion. The determinant change-of-basis, Jacobi
+cross-ratio, and equivalent finite rational Gaunt-sum entry expansion are now
+formalized downstream; the Wigner/$3j$ identification and its factorial closed
+form are not. ``New'' therefore applies only to the
 non-overlapping claims relative to this repository snapshot, not to the whole
 package and not as a claim of worldwide priority.  Every imported fact, new
 proof, standard external theorem, numerical observation, and conjecture is
@@ -304,7 +304,7 @@ and Pad\'e approximation, and has a universal large-degree limit fixed by the
 support.  The two viewpoints meet only later, through the finite Gaunt matrix
 of \cref{sec:legendre-gaunt}.
 
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
 \caption{Claim-status summary.  ``Repository baseline'' means imported from
 \commit; ``standard theorem'' means a classical external result whose
@@ -321,7 +321,7 @@ $\RvachevUp$ and $F$ are log-concave
 Dyadic Tur\'an inequality and action curvature
  & New theorem here & Log-concavity plus $F'(x)=2F(2x)$ \\
 $\beta_n\to1/4$, arcsine zeros
- & New application here & Rakhmanov/regular OPRL theory \\
+ & Overlap / application here & Canonical frontier; Rakhmanov/regular OPRL theory \\
 Fabius--Szeg\H{o} norm constant
  & New application here & Strong Szeg\H{o} norm asymptotics \\
 Christoffel reconstruction of $\RvachevUp$
@@ -331,13 +331,16 @@ Rational limits to $\pi$
 Alternating Jacobi product for $\pi$
  & New theorem here & Strong Szeg\H{o} center asymptotic \\
 Gauss--Pad\'e package
- & New synthesis here & Classical Markov/Stieltjes theory \\
+ & Inherited overlap & Canonical frontier; classical Markov/Stieltjes theory \\
 Legendre Gram determinant, executable rational data, and Jacobi cross-ratio
  & Exact Lean counterpart & \path{FabiusLegendreHankelDeterminant.lean};
    \path{FabiusLegendreRationalGram.lean};
    \path{FabiusLegendreRationalGramValues.lean} \\
-Finite Gaunt/Wigner entry expansion
- & New finite identity here & Existing exact Legendre coefficients \\
+Finite Gaunt integral, product linearization, and rational Gram-entry sum
+ & Exact Lean counterpart & \path{LegendreGaunt.lean};
+   \path{FabiusLegendreGaunt.lean} \\
+Wigner $3j$ identification and factorial closed form
+ & Report-level formula & Not represented in the current Lean API \\
 Monotone $\beta_n$, precise log-square rate
  & Conjectural & Exact checks and 4,800-digit computation through $n=200$ \\
 \bottomrule
@@ -667,6 +670,8 @@ $\pi_n$ by induction.
 \end{proof}
 
 \begin{remark}[Current Lean boundary and complete declaration inventory]
+The nine modules inventoried in this remark expose exactly 99 public names:
+18 definitions and 81 theorems.  Each name appears once in the inventory below.
 The scalar-base-change module \path{GramStieltjesNaturality.lean} contains zero
 public definitions and exactly six public theorems:
 \path{momentPairing_map}, \path{map_gramStieltjesNumerator},
@@ -745,44 +750,50 @@ identity, strict positivity, and the bridge identifying the ratio with the real 
 of the exact rational Rvachev subdiagonal additionally require \path{IsFabius}.
 Under that hypothesis positivity excludes the totalized singular case.
 
-The rational Legendre tranche first added 22 declarations while retaining all 18 names
-in the preceding two determinant modules.  \path{LegendrePolynomialRational.lean}
-has exactly two public definitions, \path{legendrePolynomialCoeffRat} and
-\path{legendrePolynomialRat}, and six public theorems:
-\path{legendrePolynomialRat_cast}, \path{coeff_legendrePolynomialRat},
-\path{natDegree_legendrePolynomialRat},
-\path{coeff_legendrePolynomialRat_self},
-\path{coeff_legendrePolynomialRat_self_ne_zero}, and
-\path{coeff_legendrePolynomialRat_self_div_succ}.  The scalar coefficient is a
-finite executable rational sum.  The polynomial is a noncomputable convenience wrapper,
-identified coefficientwise with that evaluator; its cast, degree, leading coefficient,
-nonvanishing, and consecutive-leading-coefficient quotient are exact.
+The executable rational continuation has the following dedicated API inventory;
+these are all and only its 22 public declarations, listed once here rather than
+repeating the generic and real inventories above.
+\begin{itemize}
+\item \path{LegendrePolynomialRational.lean} has two definitions and six
+      theorems: \path{legendrePolynomialCoeffRat},
+      \path{legendrePolynomialRat}, \path{legendrePolynomialRat_cast},
+      \path{coeff_legendrePolynomialRat},
+      \path{natDegree_legendrePolynomialRat},
+      \path{coeff_legendrePolynomialRat_self},
+      \path{coeff_legendrePolynomialRat_self_ne_zero}, and
+      \path{coeff_legendrePolynomialRat_self_div_succ}.
+\item \path{FabiusLegendreRationalGram.lean} has three definitions and eleven
+      theorems: \path{rvachevLegendreGramEntryRat},
+      \path{rvachevLegendreGramEntryRat_eq_momentPairing},
+      \path{rvachevLegendreGramMatrixRat},
+      \path{rvachevLegendreGramMatrixRat_apply},
+      \path{rvachevLegendreGramMatrixRat_eq_polynomialMomentGramMatrix},
+      \path{rvachevLegendreGramDetRat},
+      \path{rvachevLegendreGramEntryRat_cast},
+      \path{rvachevLegendreGramMatrixRat_cast},
+      \path{rvachevLegendreGramDetRat_cast},
+      \path{rvachevLegendreGramDetRat_eq_prod_leadingCoeff_sq_mul_rvachevHankelDetRat},
+      \path{rvachevLegendreGramDetRat_zero},
+      \path{rvachevLegendreGramDetRat_pos},
+      \path{rvachevOrthoNormRat_eq_rvachevLegendreGramDetRat_ratio}, and
+      \path{rvachevJacobiSubdiagonalRat_eq_rvachevLegendreGramDetRat_ratio}.
+\end{itemize}
+The first module closes the executable rational coefficient layer, including
+the rational polynomial wrapper, its real cast, exact degree and leading
+coefficient, leading-coefficient nonvanishing, and the consecutive-coefficient
+quotient.  The second closes executable rational entry, matrix, and determinant
+layers; identifies them with the abstract moment Gram construction; supplies
+entrywise, matrix, and determinant cast bridges; proves the determinant identity,
+empty case, and positivity; and expresses the exact rational norm and zero-based
+Jacobi subdiagonal as determinant ratios.  Each of the three rational-to-real
+cast bridges takes a \path{BoundedFabius} input together with its
+\path{IsFabius} certificate; the finite rational identities themselves have
+no such parameter.
 
-\path{FabiusLegendreRationalGram.lean} has exactly three public executable
-definitions, \path{rvachevLegendreGramEntryRat},
-\path{rvachevLegendreGramMatrixRat}, and \path{rvachevLegendreGramDetRat}, and
-eleven public theorems:
-\path{rvachevLegendreGramEntryRat_eq_momentPairing},
-\path{rvachevLegendreGramMatrixRat_apply},
-\path{rvachevLegendreGramMatrixRat_eq_polynomialMomentGramMatrix},
-\path{rvachevLegendreGramEntryRat_cast},
-\path{rvachevLegendreGramMatrixRat_cast},
-\path{rvachevLegendreGramDetRat_cast},
-\path{rvachevLegendreGramDetRat_eq_prod_leadingCoeff_sq_mul_rvachevHankelDetRat},
-\path{rvachevLegendreGramDetRat_zero}, \path{rvachevLegendreGramDetRat_pos},
-\path{rvachevOrthoNormRat_eq_rvachevLegendreGramDetRat_ratio}, and
-\path{rvachevJacobiSubdiagonalRat_eq_rvachevLegendreGramDetRat_ratio}.
-The entry is a direct bounded double sum of executable Legendre coefficients and rational
-moments.  It therefore closes entrywise rationality without invoking a Gaunt expansion;
-for a \path{BoundedFabius} input together with its \path{IsFabius} certificate, the entry,
-matrix, and determinant cast to their analytic up-law counterparts.  The finite rational
-identities themselves require no such analytic input.  The
-determinant is strictly positive over \(\RationalNumbers\), so the rational norm and zero-based Jacobi
-cross-ratios are genuine rather than merely totalized identities.  These definitions give
-an exact evaluator route to \(H_4\) and \(\beta_4\).
-
-\path{FabiusLegendreRationalGramValues.lean} adds no definitions and exactly eleven
-public theorems:
+The follow-on computation leaf \path{FabiusLegendreRationalGramValues.lean} has
+zero public definitions and exactly eleven public theorems, exhaustively.  Together
+with the positive determinant-ratio identities above, it gives an exact evaluator
+route to \(H_4\) and \(\beta_4\):
 \path{moment_four},
 \path{rvachevLegendreGramDetRat_one},
 \path{rvachevLegendreGramDetRat_two},
@@ -793,47 +804,93 @@ public theorems:
 \path{rvachevJacobiSubdiagonalRat_three},
 \path{hankelRatio_four},
 \path{integral_sq_upOrthoPolynomial_four}, and
-\path{hankelRatio_four_div_three}.  Thus this focused determinant/rational-Legendre
-inventory contains the preceding 40 declarations plus these eleven, for 51 in all.
-The module uses exact finite native computation to certify the fourth nontrivial even-moment
-value (the raw eighth moment) and
-Gram determinants through order five.  It then proves the printed values
+\path{hankelRatio_four_div_three}.
+The first theorem computes the raw eighth moment
+\(132809/32531625\).  The next five compute the order-one through order-five
+rational Legendre Gram determinants as
+\[
+ 1,\qquad \frac19,\qquad \frac8{2025},\qquad
+ \frac{39616}{602791875},\qquad
+ \frac{16544275456}{27453718922765625}.
+\]
+The next two are the unconditional rational certificates
 \[
  H_4=\frac{26727424}{55791736875},
  \qquad
- \beta_4=\frac{835232}{4640643}
+ \beta_4=\frac{835232}{4640643},
 \]
-as named rational theorems, and transports \(H_4\) to the real Hankel ratio and
-squared integral and \(\beta_4\) to the quotient of the fourth and third real Hankel
-ratios for every \path{IsFabius} representative.  These are exact low-order
-certificates, not a general native evaluator.
+where the Lean subdiagonal index is zero-based.  Each of the remaining three
+theorems requires an input \(F\) of type \path{BoundedFabius} and a certificate
+\(h_F\) of type \path{IsFabius}: respectively they identify the real fourth Hankel
+ratio, its squared monic-orthogonal-polynomial integral against
+\path{rvachevMeasure}, and the quotient of the fourth and third real Hankel
+ratios with those exact values.
 
-Together with the four finite-algebra modules above, the three downstream modules bring
-the complete seven-module inventory to thirteen definitions and sixty-one theorems,
-seventy-four public declarations.  More explicitly, the value module proves
-unconditionally that
-\path{moment_four} is \(132809/32531625\), together with
+The current finite Gaunt tranche adds two exhaustive APIs.  The generic module
+\path{LegendreGaunt.lean} has four public definitions,
+\path{legendreLebesgueMomentRat}, \path{legendreGauntRat},
+\path{legendreGaunt}, and \path{legendreProductLinearizationCoeffRat}, and
+exactly twelve public theorems:
+\path{legendreLebesgueMomentRat_even},
+\path{legendreLebesgueMomentRat_odd},
+\path{legendreLebesgueMomentRat_cast},
+\path{legendreGauntRat_eq_momentFunctional},
+\path{legendreGauntRat_cast},
+\path{legendreGauntRat_swap_left},
+\path{legendreGauntRat_swap_right},
+\path{legendrePolynomial_mul_eq_sum_gaunt},
+\path{legendrePolynomialRat_mul_eq_sum_gaunt},
+\path{legendreGauntRat_eq_zero_of_odd_sum},
+\path{legendreGauntRat_eq_zero_of_add_lt}, and
+\path{legendreGauntRat_eq_zero_of_triangle_violation}.
+It defines the Lebesgue moments on \([-1,1]\), an executable bounded rational
+triple coefficient sum, its real interval integral, and the normalized product
+coefficient.  The cast theorems identify the rational sums with the real
+integrals.  The two product theorems give exact finite Legendre linearization
+over both \(\RealNumbers\) and \(\RationalNumbers\); symmetry,
+odd-total-degree vanishing, and every
+strict triangle-violation zero are proved rather than imposed in the
+definition.
+
+The up-law specialization \path{FabiusLegendreGaunt.lean} has one public
+definition, \path{canonicalRvachevFullLegendreCoefficientRat}, and exactly
+eight public theorems:
+\path{canonicalRvachevFullLegendreCoefficientRat_even},
+\path{canonicalRvachevFullLegendreCoefficientRat_odd},
+\path{canonicalRvachevFullLegendreCoefficientRat_cast},
+\path{canonicalRvachevFullLegendreCoefficientRat_eq_normalized_moment},
+\path{rvachevLegendreGramEntryRat_eq_sum_full_gaunt},
+\path{rvachevLegendreGramEntryRat_eq_sum_gaunt},
+\path{rvachevLegendreGramMatrixRat_apply_eq_sum_gaunt}, and
+\path{upLegendreGramMatrix_apply_eq_sum_gaunt}.
+The full coefficient sequence inserts the proved odd zeros into the canonical
+even sequence and is the normalized rational Rvachev moment of the
+corresponding Legendre polynomial.  Every executable rational Gram entry is
+then a finite full Gaunt sum, equivalently the even-indexed sum
 \[
- (D_1,D_2,D_3,D_4,D_5)=
- \left(1,\frac19,\frac8{2025},\frac{39616}{602791875},
- \frac{16544275456}{27453718922765625}\right),
+ \sum_{r=0}^{\lfloor(i+j)/2\rfloor}
+ c_r\,\mathrm{legendreGauntRat}(i,j,2r),
 \]
-and \(H_4=26727424/55791736875\).  The declaration
-\path{rvachevJacobiSubdiagonalRat_three} gives the zero-based value
-\(\beta_4=835232/4640643\).
-Exactly its three real/integral consequences require a
-\path{BoundedFabius} witness \(F\) and a proof \path{IsFabius F}.
+with entrywise rational-matrix and real-integral forms.  The real form assumes
+a \path{BoundedFabius} representative and its \path{IsFabius} certificate;
+the rational identities are unconditional.  Thus the integral on the
+left-hand side of \cref{eq:gaunt-integral}, finite truncation,
+product-linearization, rationality, and Gram-entry content underlying
+\cref{eq:finite-gaunt-matrix} now have exact Lean counterparts without
+expanding an infinite series under an integral.
 
-This closure still does \emph{not} formalize equality with the finite Gaunt integral,
-Wigner/\(3j\)-symbol, or factorial entry formulas
-\cref{eq:gaunt-integral,eq:finite-gaunt-matrix,eq:wigner-factorial}.  Entry
-rationality is now proved by the direct moment-sum route, not by those formulas.
-Christoffel reconstruction, root and quadrature results, and the infinite continued-
-fraction or asymptotic Jacobi layers also remain open.
-Finally, the existing \path{rvachevTranslateGram} is a different object: it pairs
-shifted-up atoms under unweighted interval integration, whereas
-\path{upLegendreGramMatrix} and \path{rvachevLegendreGramMatrixRat} pair ordinary
-polynomials under the up-law moment functional.
+Lean does \emph{not} identify \path{legendreGaunt} with a Wigner \(3j\)
+symbol, prove the equality to twice its square in
+\cref{eq:gaunt-integral}, or prove the factorial closed form
+\cref{eq:wigner-factorial}.  It also proves only the necessary parity and
+triangle-support zeros, not their converse or positivity on admissible
+triples.  Christoffel reconstruction, root results, quadrature, infinite
+Jacobi products, Pad\'e identification, and asymptotics remain paper-only.
+Finally, the existing
+\path{rvachevTranslateGram} is a different object: it pairs shifted-up atoms
+under unweighted interval integration, whereas \path{upLegendreGramMatrix} and
+its rational executable counterpart pair ordinary polynomials under the up-law
+moment functional.
 \end{remark}
 
 This is an unusually rigid situation.  The infinite Jacobi matrix
@@ -857,26 +914,14 @@ The first moments from \cref{eq:moment-recurrence} are
  m_0=1,
  \qquad m_2=\frac19,
  \qquad m_4=\frac{19}{675},
- \qquad m_6=\frac{583}{59535},
- \qquad m_8=\frac{132809}{32531625}.
+ \qquad m_6=\frac{583}{59535}.
  \label{eq:native-first-moments}
 \end{equation}
 The repository directly formalizes \(\pi_0,\ldots,\pi_4\) and
-\(H_0,\ldots,H_4\); the displayed \(\beta_1,\beta_2,\beta_3\) follow as
-exact quotients of the earlier formal norm values, while
+\(H_0,\ldots,H_4\); the displayed \(\beta_1,\beta_2,\beta_3\) follow as exact
+quotients of the earlier formal norm values, while
 \path{rvachevJacobiSubdiagonalRat_three} gives the zero-based exact value
-\(\beta_4\).  The executable rational Gram determinants give an exact evaluation
-route for that final row:
-\path{rvachevOrthoNormRat_eq_rvachevLegendreGramDetRat_ratio} at \(n=4\)
-computes \(H_4\), and
-\path{rvachevJacobiSubdiagonalRat_eq_rvachevLegendreGramDetRat_ratio} at \(n=3\)
-computes \(\beta_4\).  The exact evaluations are now named directly as
-\path{rvachevOrthoNormRat_four} and
-\path{rvachevJacobiSubdiagonalRat_three}; \path{hankelRatio_four},
-\path{integral_sq_upOrthoPolynomial_four} identify \(H_4\) with the real Hankel
-ratio and squared integral, while \path{hankelRatio_four_div_three} identifies
-\(\beta_4\) with the quotient of the fourth and third real Hankel ratios.
-The combined table is included to fix every normalization used later:
+\(\beta_4\).  The combined table fixes every normalization used later:
 \begin{align}
  \pi_0(x)&=1, & H_0&=1,\notag\\
  \pi_1(x)&=x, & H_1&=\frac19,
@@ -891,9 +936,8 @@ The combined table is included to fix every normalization used later:
    & \beta_4&=\frac{835232}{4640643}.
  \label{eq:low-jacobi-data}
 \end{align}
-The two final-row fractions are exact rational Lean computations, follow from the same
-exact moment algorithm, are independently verified by the archive's Python program,
-and have the named Lean
+The two final-row fractions follow from the same exact moment algorithm, are
+independently verified by the archive's Python program, and now have the named Lean
 certificates \path{rvachevOrthoNormRat_four} and
 \path{rvachevJacobiSubdiagonalRat_three}.  Numerically,
 \begin{equation}
@@ -937,13 +981,13 @@ polynomial.  The recurrence then follows from orthogonality and parity.
 The rational-native Lean tranche formalizes the determinant construction,
 unique monic orthogonality, norm quotient, determinant cross-ratio, and centered
 recurrence that form the algebraic core of these engines.  The later rational
-Legendre tranche adds an executable scalar coefficient sum and executable Gram
-entry, finite matrix, and determinant.  Together with its positive determinant-ratio
-theorems, this is an exact evaluation route for the norm and Jacobi data, including
-\(H_4\) and \(\beta_4\); the convenience polynomial wrapper itself remains
-noncomputable.  The values module now states both displayed final-row fractions,
-the real Hankel and squared-integral forms of \(H_4\), and the real Hankel-ratio
-quotient form of \(\beta_4\) as named exact theorems.  Lean still does not
+Legendre tranche adds an executable scalar coefficient sum and executable bounded
+moment-pairing entry, finite matrix, and determinant.  Together with its positive
+determinant-ratio theorems, this is an exact evaluation route for the norm and
+Jacobi data, including \(H_4\) and \(\beta_4\); the convenience polynomial wrapper
+itself remains noncomputable.  The values module states both displayed final-row
+fractions, the real Hankel and squared-integral forms of \(H_4\), and the real
+Hankel-ratio quotient form of \(\beta_4\) as named exact theorems.  Lean still does not
 package all three procedures as one general algorithm, prove their operational
 equivalence exactly as this proposition states it, or certify the
 \(\BigO(n^2)\) operation count.
@@ -1055,9 +1099,9 @@ nonclassical local shape of $w$.  It is the equilibrium measure of the support
 $[-1,1]$.  The fifth figure in the archive compares the $100$ zeros obtained
 from the Jacobi truncation with the corresponding arcsine quantiles.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.82\textwidth]{zero_quantiles.png}
+\includegraphics[width=0.82\textwidth]{zero_quantiles.pdf}
 \caption{Zeros of $\pi_{100}$, computed as eigenvalues of the finite Jacobi
 matrix, against the arcsine quantiles.  This is a numerical illustration of
 \cref{eq:arcsine-zero-limit}, not an additional proof.}
@@ -1464,9 +1508,9 @@ The first two exact products and several high-precision values are
 The fact that these values increase and remain below $\pi$ is empirical at
 present; convergence itself is proved by \cref{thm:pi-product}.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.82\textwidth]{pi_approximants.png}
+\includegraphics[width=0.82\textwidth]{pi_approximants.pdf}
 \caption{The direct rational products $\Pi_M$ and the exact Christoffel
 harmonic means $2M\lambda_{2M}(0)$.  Both converge to $\pi$; monotone approach
 from below is conjectural.}
@@ -1748,27 +1792,23 @@ rational-cast companion
 \path{rvachevJacobiSubdiagonalRat_cast_eq_upLegendreGramDet_ratio} use index $k\ge0$
 for the conventional coefficient $\beta_{k+1}$; replacing $k$ by $n-1$ gives
 exactly \eqref{eq:beta-gaunt-determinants}.  Their proof is the displayed
-$G=C^{\mathsf T}HC$ determinant argument and does not pass through the still-open
-Gaunt/Wigner entry expansion.  The determinant identity, $D_0=1$, the
+$G=C^{\mathsf T}HC$ determinant argument and does not depend on the separately
+formalized finite Gaunt entry expansion.  The latter is supplied by
+\path{LegendreGaunt.lean} and \path{FabiusLegendreGaunt.lean}; only its
+Wigner/\(3j\) identification and factorial closed form remain outside Lean.
+The determinant identity, $D_0=1$, the
 leading-coefficient quotient, and the real Gram cross-ratio hold for every
 \path{BoundedFabius}; entry-as-integral, strict positivity, and the rational-cast
 bridge require \path{IsFabius}.  Without Hankel nonvanishing, the generic and real
 Gram cross-ratios are unconditional only through totalized division: a zero middle
 determinant makes both sides zero and does not supply a nonsingular Jacobi recurrence.
-The rational refinement \path{rvachevLegendreGramEntryRat} computes each entry as a
-bounded double sum of \path{legendrePolynomialCoeffRat} and
-\path{rvachevRawMomentRat}; \path{rvachevLegendreGramEntryRat_eq_momentPairing} and
-\path{rvachevLegendreGramEntryRat_cast} identify that rational number with the
-polynomial moment pairing and, for \path{IsFabius}, its real up-law counterpart.
-The named certificates \path{rvachevLegendreGramDetRat_one} through
-\path{rvachevLegendreGramDetRat_five} and
-\path{rvachevJacobiSubdiagonalRat_three} are specializations of this direct rational
-matrix/determinant route.
-Thus entrywise rationality is now closed by a direct moment-sum argument.  What remains
-open is equality of this evaluator with the finite Gaunt integral, Wigner/\(3j\), and
-factorial expressions in
-\cref{eq:gaunt-integral,eq:finite-gaunt-matrix,eq:wigner-factorial}; none of the
-determinant or rational-entry theorems proves those formulas.
+The executable rational continuation catalogued in
+\cref{sec:native-op} computes the same finite Legendre entries directly from
+rational coefficients and moments, casts its matrix and determinant to these
+real objects, and proves the corresponding rational norm and zero-based Jacobi
+determinant ratios.  The newer Gaunt modules prove that this entry is also the
+finite rational Gaunt sum and cast that formula to the real up-law Gram matrix.
+Neither route uses the Wigner identity or \cref{eq:wigner-factorial}.
 \end{remark}
 
 A low-degree check is instructive.  From the moments,
@@ -1863,7 +1903,7 @@ none of its partial files or values are used in this report.
 
 \subsection{Observed recurrence coefficients}
 The validated values include:
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
 \caption{Selected high-precision Jacobi coefficients.  The last column tests
 the scaling proposed in \cref{conj:beta-rate}.}
@@ -1893,17 +1933,17 @@ Only the endpoint limit $\beta_n\to1/4$ is proved; the strict inequalities in
 \cref{eq:computed-monotonicity} are evidence for
 \cref{conj:beta-monotone}.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.82\textwidth]{jacobi_coefficients.png}
+\includegraphics[width=0.82\textwidth]{jacobi_coefficients.pdf}
 \caption{The computed native recurrence coefficients and the proved limit
 $1/4$.}
 \label{fig:jacobi-coefficients}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.82\textwidth]{scaled_jacobi_deficit.png}
+\includegraphics[width=0.82\textwidth]{scaled_jacobi_deficit.pdf}
 \caption{The scaled deficit
 $n^2(1/4-\beta_n)/(\log_2n)^2$.  The horizontal line is the conjectural limit
 $2/\pi$, not a fitted value.}
@@ -1929,9 +1969,9 @@ The drift toward $1$ is substantially clearer than the corresponding drift
 toward $2/\pi$ in \cref{tab:beta-data}; the alternating product cancels part
 of the slowly varying lower-order structure.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.82\textwidth]{pi_product_error.png}
+\includegraphics[width=0.82\textwidth]{pi_product_error.pdf}
 \caption{Scaled error of the rational product.  The candidate limit $1$ is
 part of \cref{conj:beta-rate}.}
 \label{fig:pi-product-error}
@@ -2387,16 +2427,11 @@ coefficients, norms, zero diagonal, positive subdiagonals, determinant cross-rat
 orthogonality, centered recurrence, and real-cast bridges, with zero-based index
 \(n\) corresponding to \(\beta_{n+1}\).  The polynomial change-of-basis and Legendre
 specializations catalogued there now formalize
-\cref{eq:legendre-hankel,eq:beta-gaunt-determinants}, without formalizing the
-Gaunt/Wigner entry expansion.  The executable rational Legendre coefficient and
-Gram tranche now also closes direct moment-sum entry rationality and supplies finite
-evaluators for the Gram matrix, its positive determinant, and the resulting genuine
-norm/Jacobi ratios.  The subsequent low-order values module now supplies named exact
-Lean certificates for \(H_4=26727424/55791736875\) and
-\(\beta_4=835232/4640643\).  The former is also proved as the real Hankel ratio
-and squared integral; the latter is proved as the quotient of the fourth and third
-real Hankel ratios.  These finite certificates do not amount to a general native evaluator.
-The remaining formalization sequence is:
+\cref{eq:legendre-hankel,eq:beta-gaunt-determinants}.  The subsequent modules
+\path{LegendreGaunt.lean} and \path{FabiusLegendreGaunt.lean} formalize the
+finite integral, product-linearization, rational Gaunt-sum, and up-law
+Gram-entry layers; the Wigner/\(3j\) identification and factorial formula remain
+outside Lean.  The remaining formalization sequence is:
 \begin{enumerate}
 \item \textbf{Finite algebra:} the determinant change-of-basis and
       \cref{eq:legendre-hankel,eq:beta-gaunt-determinants} are supplied by
@@ -2409,9 +2444,13 @@ The remaining formalization sequence is:
       Formalize the remaining
       \cref{eq:inverse-hankel-christoffel,eq:monic-center-product,%
 eq:orthonormal-center-product,eq:harmonic-mean}.  These need only finite
-      linear algebra and the existing positivity and rational-native APIs.  Separately,
-      formalize \cref{eq:gaunt-integral,eq:finite-gaunt-matrix,eq:wigner-factorial}
-      if an entrywise Gaunt/\(3j\)-symbol realization is desired.
+      linear algebra and the existing positivity and rational-native APIs.  The
+      finite Gaunt integral and rational matrix-entry realization are already
+      supplied by \path{LegendreGaunt.lean} and
+      \path{FabiusLegendreGaunt.lean}.  Formalize only the remaining Wigner
+      identity in \cref{eq:gaunt-integral} and the factorial form
+      \cref{eq:wigner-factorial} if an explicit \(3j\)-symbol realization is
+      desired.
 \item \textbf{Quadrature and rational approximation:} define second-kind
       polynomials, prove \cref{eq:pade-exact-error}, and derive the Gaussian
       weights and exactness theorem.
@@ -2426,10 +2465,10 @@ eq:orthonormal-center-product,eq:harmonic-mean}.  These need only finite
 \item \textbf{Frontier rates:} only after the endpoint periodic normal form is
       proved should one attempt the conjectural $n^{-2}\log^2n$ correction.
 \end{enumerate}
-The finite Gaunt/Wigner/\(3j\) equality and Christoffel identities should not be
-blocked on the much larger infinite or asymptotic OPRL formalization.  In
-particular, the harmonic-mean theorem is already a useful exact target even if
-convergence to $\pi$ remains an imported classical corollary initially.
+The finite identities should not be blocked on the much larger formalization
+of OPRL asymptotics.  In particular, the harmonic-mean theorem is already a
+useful exact target even if convergence to $\pi$ remains an imported classical
+corollary initially.
 
 \begin{remark}[Historical provenance]
 The pinned audit and novelty boxes above remain historical statements about their
@@ -2524,7 +2563,7 @@ scale class but not the sharp coefficient conjectured in
 The following entries are reproduced from the exact arithmetic output.  Here
 $c_n=m_{2n}$ and $\Pi_M$ is defined by \cref{eq:pi-partial-product}.
 
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
 \caption{Exact initial native spectral data.}
 \label{tab:exact-low-degree}

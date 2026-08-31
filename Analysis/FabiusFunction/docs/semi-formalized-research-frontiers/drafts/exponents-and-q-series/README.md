@@ -104,6 +104,35 @@ consolidated volume, the report remains standalone until its genuinely new
 claims are isolated and the overlap is deliberately deduplicated.  Paper
 theorem labels do not by themselves assert Lean formalization.
 
+[`q_pochhammer_q_binomial_expansions_report/`](q_pochhammer_q_binomial_expansions_report/)
+is a 39-page A4 companion on q-Pochhammer and q-binomial jets,
+resonances, and asymptotic frontiers, filed from the 730,285-byte archive
+`q_pochhammer_q_binomial_expansions_report.zip` (SHA-256
+`e8c6e5be4512abc0bacfd904e3f0027b35fd5e47e916a6ad11cc76b2893b3a07`).
+Its five arrival hashes and seven-file current ledger pass, and its
+exact-rational numerical output replays byte-for-byte.  The canonical
+A4/27 mm/Libertinus report is deliberately crosswalked as a companion:
+the finite Pascal, symmetry, factorial, evaluation, and base-reversal layer
+has Lean counterparts, while the general jet, higher-cyclotomic, analytic,
+operator, and double-scaling claims remain paper-level.
+
+[`inverse_q_analogs_report/`](inverse_q_analogs_report/) is the 51-page
+A4/27 mm/Libertinus research-frontier companion *Inverse q-Analogues:
+Branch Geometry, Asymptotic Inversion, and Computation for q-Pochhammer
+Symbols, Gaussian Coefficients, and Related Functions*, filed 2026-08-30
+from `inverse_q_analogs_report.zip` (894,405 bytes; SHA-256
+`471ee715022df77f2c5f45b86c213e50e980478eee1a6fc48dd91556cdaeb627`).
+No checksum ledger was submitted; a repository-created 17-row arrival
+snapshot verifies 17/17, while the current 21-row ledger verifies 21/21.
+The 3,324-line TeX and 708-line deterministic script reproduce seven data
+outputs (five CSVs after LF normalization) and five regenerated vector
+figures. A hostile
+audit corrected the order endpoint, Newton convergence hypotheses,
+near-unit-base truncation cost, and conditional radicals boundary.
+Paper-proof labels do not assert Lean formalization: selected finite
+q-algebra and product convergence are formalized, but none of the
+report-specific inverse, branch, Maxwell/discriminant, monodromy, or
+inverse-asymptotic results has an exact public Lean counterpart.
 An exact reship, `Fabius_Rvachev_Frontier_Report_2026-08-30-E.zip`
 (outer SHA-256
 `174bf733156cd874cf4f9321c6ab71ca44f311856cc01dc158ddf83dc00cf813`),
@@ -113,14 +142,23 @@ LF normalization. No claim-level reassessment or experiment rerun was
 performed.
 
 - [`Fabius_Flat_Parameter_Response_Dynamics/`](Fabius_Flat_Parameter_Response_Dynamics/),
-  *Flat Parameter Fronts, q-Susceptibility, and Smooth Dynamics* (23 pp),
-  arrived on 2026-08-30 from `fabius_frontier_report_2026.zip` (outer SHA-256
-  `afdcf522589a7baad82c81a527c02dcc09e58455ab14c57a9c492e65563c647e`)
-  and was filed under a title-derived collision-safe name. All 13 submitted
-  payload hashes verified; five CSV entries were refreshed after CRLF-to-LF
-  repository normalization. It remains standalone pending post-publication
-  assessment and a Lean crosswalk; manuscript labels do not establish Lean
-  verification.
+  *Flat Parameter Fronts, q-Susceptibility, and Smooth Dynamics* (26 A4 pp;
+  1,944-line TeX and 519-line deterministic exact/Monte-Carlo program), was
+  filed on 2026-08-30 from `fabius_frontier_report_2026.zip` (803,598 bytes;
+  SHA-256
+  `afdcf522589a7baad82c81a527c02dcc09e58455ab14c57a9c492e65563c647e`).
+  Its immutable 13-entry arrival ledger verifies 13/13 and the exhaustive
+  current ledger verifies 17/17. The pinned replay reproduced the two exact
+  algebra tables, common-random-number table, and two figures byte-for-byte;
+  the two Monte-Carlo tables differed only at documented last-bit levels far
+  below their sampling errors. A hostile review repaired the conditional-law
+  quantifier in the velocity theorem, the KR basepoint argument, endpoint and
+  orbit hypotheses, and the false small-divisor expression. Higher-response
+  resolvents now require a finite zero-mass representing measure, while the
+  all-orders Koenigs/dynamical layer is explicitly conditional on hypothesis
+  (K); none of the new parameter-response claims is asserted as an exact Lean
+  theorem. The canonical A4/27 mm/Libertinus PDF was rebuilt in exactly three
+  strict passes with every font embedded/subset and no Type 3 fonts.
 
 Generalizations of the dyadic construction to arbitrary exponent
 sequences and the q-series calculus that organizes them: the
@@ -323,17 +361,31 @@ The current geometric q-layer has the following exhaustive public surfaces:
   assumptions, cancel the prescribed modes, and expose the first survivor.
 
 - `QuarterCatalanGerm.lean` has two definitions,
-  `quarterCatalanCoefficient` and `quarterCatalanGermSeries`, and nine
+  `quarterCatalanCoefficient` and `quarterCatalanGermSeries`, and thirteen
   theorems: `quarterCatalanCoefficient_zero`,
   `quarterCatalanCoefficient_succ_eq_report`,
   `quarterCatalanGermSeries_coeff`, `quarterCatalanGermSeries_coeff_succ`,
   `quarterCatalanGermSeries_constantCoeff`,
   `quarterCatalanGermSeries_equation`,
   `powerSeries_quadratic_injectiveOn_zeroConstant`,
-  `eq_quarterCatalanGermSeries_of_equation`, and
-  `existsUnique_quarterCatalanGermSeries`. They give the unique zero-constant
-  solution of `D + 4D^2 = (4/9)X` in `ℚ[[X]]` and all of its report
-  coefficients, but no analytic convergence or real-inverse identification.
+  `eq_quarterCatalanGermSeries_of_equation`,
+  `existsUnique_quarterCatalanGermSeries`,
+  `dyadicGermTwo_functionalEquation`,
+  `rescale_dyadicGermTwo_eq_quadraticInverse`,
+  `dyadicGermTwo_eq_rescale_quadraticInverse`, and
+  `coeff_dyadicGermTwo_succ`. They give the unique zero-constant solution of
+  `D + 4D^2 = (4/9)X` in `ℚ[[X]]`, all of its report coefficients, and the
+  exact rescaling bridge to the distinguished dyadic germ and the inverse of
+  `X + 4X^2`.
+
+- `FabiusInverseQuarterJet.lean` has exactly two public theorems,
+  `iteratedDeriv_centeredFabiusInv_quarter_eq_quadraticInverse` and
+  `iteratedDeriv_fabiusInv_five_seventy_two_succ`. They identify the complete
+  smooth derivative jet of the actual inverse at `5/72 = F(1/4)` with the
+  factorial-scaled quadratic-inverse coefficients and prove
+  `G^(m+1)(5/72) = (m+1)! (-4)^m C_m`. This is equality of jets only, not
+  convergence of the formal germ, equality on a neighborhood, or analyticity
+  at the quarter anchor.
 
 - `QuarterCatalanRichardson.lean` has three definitions,
   `finiteRescaleFilter`, `geometricRichardsonPowerSeriesFilter`, and
@@ -404,6 +456,29 @@ above-range zero theorem assume `q != 0`, while the displayed terminating
 quotient also assumes `(q;q)_(N-k) != 0`. The adjacent quotient corollaries
 remain restricted to `k < n` and instead assume exactly their displayed Gaussian and linear-factor
 denominators are nonzero and do not require `q != 0`.
+
+`QBinomialReciprocity.lean` adds exactly four public theorems:
+`gaussianBinomial_reciprocity_units`, `gaussianBinomial_reciprocity`,
+`gaussianBinomial_neg_one_eq_zero_of_odd_degree`, and
+`gaussianBinomial_neg_one_even_odd_eq_zero`.  Unit reciprocity is total over
+every commutative semiring; its semifield wrapper assumes only `q != 0`.
+The two `q = -1` theorems hold over every commutative ring, including
+characteristic two and above-diagonal zero-extension cases.  This proves the
+reciprocity clause of the monograph's compound structure theorem, while its
+separate degree and coefficient-polynomial clauses keep that full row partial.
+
+`GaussianBinomialAtNegOne.lean` adds exactly five public theorems:
+`gaussianBinomial_neg_one_even_even`,
+`gaussianBinomial_neg_one_odd_even`,
+`gaussianBinomial_neg_one_odd_odd`,
+`finiteQPochhammerIn_neg_one_even`, and
+`finiteQPochhammerIn_neg_one_odd`.  Together with
+`gaussianBinomial_neg_one_even_odd_eq_zero` from the reciprocity module, these
+give all four Gaussian parity values and both paired finite-product identities
+over arbitrary commutative rings, without division or characteristic
+restrictions.  The companion report proves the first derivative and
+simple-root statement only at paper level; those polynomial-interface results
+remain unformalized.
 
 The documents also cross-reference the independent real fractional-Volterra
 layer. `FractionalVolterraCalculus.lean` proves positive affine covariance on
@@ -542,8 +617,10 @@ the Dyadic Fabius Web*, and `Signed_Reciprocal_q_Fabius_Frontiers/`):
 affine sign conjugacy (negative q creates no new normalized shapes),
 the reciprocal moment germ with `M_q(t)·M_{1/q}(−t) = 1` and finite
 digit-reversal duality giving `q = ±2, ±4` exact meaning, geometric
-multisection (the Fabius law as an explicit convolution of two
-quarter-base laws), the spectral q²-Pochhammer factorization, the
+multisection (whose fixed normalized half--quarter series, product-law,
+and scaled-measure convolution are now formal, while the general `q,m`, MGF,
+cumulant, centered-density, and spectral forms remain frontier), the spectral
+q²-Pochhammer factorization, the
 Bernoulli cumulant dictionary with closed spectral zeta, log-concavity
 with the exact plateau phase `|q| ≤ 1/2`, the positive Laplace
 representation of reciprocal germs (vertical-line moments, Hankel
@@ -562,16 +639,19 @@ sixteenth wave's periodic-cocycle conjecture by Part VI's exact
 Gamma–zeta Laplace decomposition.  The eighth-wave fold also
 repaired the volume's part-boundary section numbering (Part II had
 rendered with `\appendix` letters G–N).  Supporting files under
-`assets/`, provenance with SHA-256 in the document itself.  For the
-spectral q²-Pochhammer theorem, the current Lean crosswalk remains
-deliberately partial. The newer sinc-product API does prove, for real
-`|q| < 1`, the uncentered real-frequency identity
+`assets/`, provenance with SHA-256 in the document itself.  For the spectral
+q²-Pochhammer theorem, the current Lean crosswalk proves the general inside
+product but remains partial at the surrounding wrappers.  The sinc-product
+API proves, for real `|q| < 1`, the uncentered real-frequency identity
 `φ_q(t) = exp(i t/2)·S_q((1-q)t/(2π))` and, for complex `‖q‖ < 1`, locally
-uniform convergence and entire-ness of `S_q(z) = ∏ sinc(πqⁿz)`. It does not
-package the centered/MGF q²-Pochhammer rearrangement, the reciprocal
-outside-disk formula, zero–pole exchange, or normal convergence of that
-double product; the older Pochhammer module itself still supplies only the
-inside `q = 1/2` Rvachev-product specialization under `t = 4πz`.
+uniform convergence and entire-ness of `S_q(z) = ∏ sinc(πqⁿz)`.  The
+Pochhammer module now proves absolute summability of the paired Euler
+perturbations and the global rearrangement
+`S_q(z) = ∏_k (z²/(k+1)²;q²)_∞` for every strict complex contraction,
+including `q = 0` and individual zero factors.  What remains outside Lean is
+the named centered/MGF packaging, the reciprocal outside-disk formula,
+zero–pole exchange, and a packaged compact-uniform theorem for the full
+phase-bearing characteristic prefixes.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.
 
@@ -651,7 +731,9 @@ matching `assets/` directories.
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Second member: `q_pochhammer_q_binomial_monograph/`
-(212 pp; A4 book class; rebuilt after the exact `q = -1` and geometric-sinc crosswalk updates) —
+(212 A4 pp; book class; 13,111 source lines and a 1,574,592-byte PDF;
+rebuilt after the exact `q = -1` and generalized sinc--Pochhammer crosswalk
+updates) —
 *q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
 proof-oriented reference monograph on the q-machinery itself, filed
 2026-08-28 per the Lambert-W precedent (a reference companion rather
@@ -772,6 +854,20 @@ kernel-verified four-face geometric-tail dictionary at every ratio
 product-form self-similarity into convolution form and instantiates
 `geometric_tail_dictionary` — the measure, characteristic-product,
 moment, and cumulant faces of the `m`-digit tail in one statement.
+The separate fixed two-section layer in
+`GeometricUniformMultisection.lean` has exactly two public definitions,
+`Fabius.ProbabilityRepresentation.evenCoordinates` and
+`Fabius.ProbabilityRepresentation.oddCoordinates`, and three public theorems:
+`Fabius.ProbabilityRepresentation.geometricUniformSeries_one_half_multisection`,
+`Fabius.ProbabilityRepresentation.geometricUniformDistribution_one_half_multisection`,
+and
+`Fabius.ProbabilityRepresentation.geometricUniformDistribution_one_half_conv_one_quarter`.
+They prove, without user hypotheses, the pointwise normalized identity
+`Y_(1/2)(ω) = (2/3)Y_(1/4)(ω_even) + (1/3)Y_(1/4)(ω_odd)`, the independence and
+product-map law of the two parity processes, and the equivalent convolution of
+the `2/3`- and `1/3`-scaled quarter laws.  This does not by itself prove a
+general multisection theorem, the centered-density formula, or the MGF,
+cumulant, Fourier, Pochhammer, `Z`, and comb identities in Part VII.
 The characteristic-product face is now closed in elementary terms:
 `GeometricSincFactorization.lean` computes the digit,
 `φ_digit(t) = e^{i(1-q)t/2}·sinc((1-q)t/2)`

@@ -21,7 +21,8 @@ series.
 - `audit/POST_INTAKE_REVIEW.md` - repository-side mathematical corrections,
   reproducibility replay, and formalization boundary.
 - `audit/corpus_manifest_2026-08-27.txt` - preserved recursive TeX path ledger.
-- `SHA256SUMS` - integrity hashes for all other files in the archive.
+- `SHA256SUMS.arrival.txt` - immutable submitted 30-entry ledger.
+- `SHA256SUMS` - authoritative integrity hashes for every other current file.
 
 ## Mathematical contribution map
 
@@ -163,15 +164,15 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error \
 ```
 
 Equivalently, run `pdflatex` repeatedly until the table of contents and cross
-references stabilize. The repository-side release PDF was rebuilt with three
-explicit `pdflatex` passes using MiKTeX-pdfTeX 4.26 (pdfTeX 1.40.29);
-`latexmk` was not available in that environment. Standard packages are used,
-with Libertinus fonts when available and Latin Modern as a fallback.
+references stabilize. The current repository release PDF was rebuilt from a
+clean source directory with exactly three explicit `pdflatex` passes using
+pdfTeX 1.40.22 (TeX Live 2022/dev); `latexmk` was not used. Standard packages
+are used, with Libertinus fonts when available and Latin Modern as a fallback.
 
 ## Verification status
 
 - All theorem, equation, figure, and bibliography references resolve.
-- The final PDF has 40 A4 pages and is an unencrypted 948,783-byte PDF 1.5
+- The final PDF has 40 A4 pages and is an unencrypted 819,265-byte PDF 1.5
   artifact. Every font is embedded and no Type 3 font is
   present in either the report or its six vector figures.
 - The final PDF was preflighted and all 40 pages were rendered at 120 dpi.
@@ -184,7 +185,7 @@ with Libertinus fonts when available and Latin Modern as a fallback.
 - The exact five appended compiler-backed result headings audited during the
   PDF release are each extractable once when matched with their theorem number
   and class. The report SHA-256 is
-  `0523771ad27522bda46c088659a85ed4b6243495795e3615c6ba5e5a5b2f1979`.
+  `0be7f0943e8d5fb795878aa0b3ecb21af25680155ad214ee2f1598de50e705ea`.
 - The experiment was replayed in two fresh trees. The six archived figure pairs
   were regenerated from the recorded environment after selecting TrueType
   output for the vector plots; the numerical data were retained where the
@@ -198,5 +199,30 @@ From the archive root:
 sha256sum -c SHA256SUMS
 ```
 
-The active ledger contains exactly 32 entries - every package file except
-`SHA256SUMS` itself - and verifies against the repository-normalized bytes.
+The active ledger contains exactly 33 entries—every regular package file
+except `SHA256SUMS` itself, including this README, the immutable arrival
+ledger, the Lean crosswalk, and all four audit files---and verifies against the
+repository-normalized bytes.
+
+## Repository filing provenance
+
+This package was filed on 2026-08-30 from
+`drafts/incoming/fabius_dyadic_chaos_frontier.zip` (1,351,045 bytes;
+SHA-256
+`d57fd01c3991a6a7ecd6ba6e745729c745745d3265cb3cfd414aac1991b11b86`).
+The archive was a safe single-wrapper delivery: it contained no absolute or
+parent-traversal paths, symlinks, encrypted entries, duplicate paths, or
+case-folding collisions, and its CRC check passed.  The submitted 30-entry
+ledger verified 30/30 against the arrival bytes and is preserved unchanged as
+`SHA256SUMS.arrival.txt` (SHA-256
+`85c42740d869c520d5264049f945e52b3c9cfc1bc837a19aaf05c886c55aa6ea`).
+Nine CSV files were then normalized from CRLF to the repository's required LF
+line endings; `SHA256SUMS` is the authoritative current-package ledger.
+
+After that intake checkpoint was published, the repository-side review
+replayed the numerical program, repaired the six vector figures to remove
+Type 3 fonts, corrected the manuscript's proof and status boundaries, added
+the label-complete Lean crosswalk, and rebuilt the 40-page report in exactly
+three explicit `pdflatex` passes. The details and remaining formalization
+obligations are recorded in `audit/POST_INTAKE_REVIEW.md` and
+`LEAN_CROSSWALK.md`.

@@ -30,8 +30,9 @@
   citecolor=linkblue,
   urlcolor=linkblue,
   pdftitle={Nowhere Analyticity of Every Positive Compositional Iterate of the Inverse Fabius Function},
-  pdfsubject={Inverse Fabius function, compositional iterates, formal power-series reversion, and dyadic-spine asymptotics},
-  pdfkeywords={inverse Fabius function, nowhere analytic, composition, formal reversion, Rvachev, Thue-Morse, Bell polynomials}
+  pdfauthor={Research report prepared for the ProveIt Fabius-function corpus},
+  pdfsubject={Inverse Fabius function, compositional iterates, formal power-series reversion, Rvachev up-function, and Thue--Morse sequence},
+  pdfkeywords={inverse Fabius function, nowhere analytic, composition, formal reversion, Rvachev, Thue--Morse, Bell polynomials}
 }
 
 \pagestyle{fancy}
@@ -96,29 +97,20 @@
   belowskip=0.8em
 }
 
-
-% Report-local notation retained after the canonical repository preamble.
-\newcommand{\D}{\mathcal{D}}
+% Report-specific notation used below.
+\newcommand{\D}{\mathcal D}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\id}{\operatorname{id}}
-\newcommand{\ord}{\operatorname{ord}}
-\newcommand{\brak}[1]{\left[#1\right]}
-\newcommand{\paren}[1]{\left(#1\right)}
 \newcommand{\comp}{\mathbin{\circ}}
-\newcommand{\Qm}{Q_m}
-\newcommand{\G}{G}
 \newcommand{\ThetaF}{\Theta}
 \newcommand{\half}{\tfrac12}
 \newcommand{\rad}{\operatorname{rad}}
-\newcommand{\Kiter}{K}
-
 \newcommand{\statusnote}[1]{%
   \begin{center}
   \fcolorbox{linkblue}{shadegray}{\parbox{0.91\textwidth}{\small #1}}
   \end{center}
 }
 
-\lstset{style=pseudo}
 \title{\textbf{Nowhere Analyticity of Every Positive\\Compositional Iterate of the Inverse Fabius Function}\\[0.5em]
 \large Formal reversion, analytic inversion, and the dyadic-spine theorem}
 \author{Research report prepared for the ProveIt Fabius-function corpus}
@@ -128,13 +120,21 @@
 \maketitle
 
 \statusnote{\textbf{Result status.}
-The requested theorem is proved in full.  The proof is self-contained after the
-repository-established derivative atlas, shape theory, endpoint asymptotic, and base
-inverse-function facts.  Its new ingredients are a composition-stable Fa\`a di Bruno
-``defect'' estimate, the resulting forward orbit-spine asymptotic, and a formal
-power-series reversion theorem that transfers zero Taylor radius to inverse iterates.
-The argument and numerical diagnostics have been checked, but the new iterate theorems
-have not yet been translated into Lean.}
+The inverse nowhere-analytic conclusion is already a corollary of the corrected
+forward-iterate report; this derived companion supplies the expanded formal-radius,
+center-jet, and iterated-endpoint analysis.  A hostile repository review ported the
+forward report's uniform defect estimate, corrected two-spine hypothesis, literal
+$n=1$ empty tie set, and live module name.  The one-fold inverse analytic-locus and
+endpoint H\"older obstructions have exact Lean counterparts.  The finite positive-list
+defect arithmetic is also exhaustively formalized in \path{PartitionDefect.lean}, but
+the set-partition wrapper and weighted Bell/spine estimates are not.  The forward and
+inverse iterate theorems for $n\geq2$, formal-radius transport, iterated endpoint
+scale, and all report conjectures remain manuscript mathematics.  The numerical
+script reproduced all seven outputs byte-for-byte in a pinned environment; this
+finite-order replay is not proof.  Former Conjecture 14.2 is already discharged, and
+former Conjecture 14.4 duplicates the forward report.  The inverse clause of former
+Conjecture 14.1 is false because formal reversion does not preserve eventual jet
+vanishing.  All three appear below only as numbered quarantine warnings.}
 
 \begin{abstract}
 Let $F\colon[0,1]\to[0,1]$ be the bounded Fabius function, let
@@ -346,14 +346,18 @@ to distinguish three inverse questions: local analytic representability, converg
 of the formal inverse Taylor series, and endpoint regularity.  The present report
 addresses all three.
 
-No audited canonical source states the all-$n$ theorem for $F^{\comp n}$ or for
-$I^{\comp n}$.  The new proof has two layers.  Sections
-\ref{sec:defect}--\ref{sec:proof-main} prove the forward iterate theorem by a
-composition-stable orbit-spine asymptotic.  Section \ref{sec:inverse-transfer} then
-proves a general theorem that convergence of a formal Taylor series is invariant under
-smooth local inversion with nonzero derivative.  This immediately transfers the dense
-zero-radius set from $G_n$ to $K_n$ and gives a second, stronger route to the requested
-conclusion.
+The corrected sibling report
+\path{drafts/representations/fabius_iterates_nowhere_analytic/} now proves the all-$n$
+forward theorem and already records inverse nowhere analyticity as a corollary.
+Accordingly, Sections \ref{sec:defect}--\ref{sec:proof-main} are a derived copy of that
+forward engine, not independent novelty.  They are retained here so the inverse
+argument can be read in one document, with all corrections from the sibling report
+ported verbatim.  The distinct manuscript layer begins in
+Section \ref{sec:inverse-transfer}: formal Taylor-radius transport through smooth local
+inversion, the affine but nonrepresenting center jet, and the iterated inverse endpoint
+scale.  The corpus formalizes the $n=1$ inverse analytic locus and one-fold endpoint
+H\"older obstruction, but it does not yet contain exact Lean counterparts for these
+$n\geq2$ iterate statements.
 
 \section{Fabius, Rvachev, Thue--Morse, and the derivative atlas}
 \label{sec:background}
@@ -635,16 +639,23 @@ those elements and partitioning them gives at most
  \label{eq:count-near-singletons}
 \end{equation}
 possibilities.  Also $s(\pi)\leq e$, while \eqref{eq:defect-e} gives
-$D(\pi)\geq e(3m/4-1)$.  For fixed $K$, the logarithm of the counting and weight
-factor is $\BigO(e\log m)$, whereas the negative dyadic exponent is
-$-\Omega(em)$.  Summing over $e$ therefore gives $\BigO(\rho^m)$ for some
-$\rho<1$.
+$D(\pi)\geq e(3m/4-1)$.  Uniformly for $1\leq e\leq m/4$, the base-two logarithm
+of the counting and weight factor is at most
+\[
+ \log_2(2e+1)+4e\log_2m+e\log_2\max(1,2K).
+\]
+For fixed $K$ this is at most $em/4$ once $m$ is large enough, whereas the
+negative defect exponent is at most $-e(3m/4-1)$.  Thus the $e$-th contribution
+is at most $2^{-em/3}$ after enlarging the threshold once more, uniformly in
+$e$.  The resulting geometric sum is $\BigO(2^{-m/3})$.
 
 Next consider partitions with $1\leq t\leq m/4$.  Choose the $t$ elements outside a
 largest block and partition them.  Up to harmless overcounting there are at most
 $m^t t^t$ choices, and $s(\pi)\leq t+1$.  By \eqref{eq:defect-t},
-$D(\pi)\geq t(3m/4-1)$.  The same comparison, $\BigO(t\log m)$ versus
-$-\Omega(tm)$, gives another exponentially decaying sum.
+$D(\pi)\geq t(3m/4-1)$.  The same explicit estimate as above, now with $t$ in
+place of $e$ (and one harmless extra factor $\max(1,2K)$), bounds the $t$-th
+contribution by $2^{-tm/3}$ for all sufficiently large $m$, uniformly for
+$1\leq t\leq m/4$.  Its sum is again exponentially small.
 
 It remains to treat the middle region $e>m/4$ and $t>m/4$.  If $t\leq3m/4$, then
 \eqref{eq:defect-t} gives $D(\pi)\geq c_1m^2$ for all sufficiently large $m$ and an
@@ -672,7 +683,8 @@ binary chain rule.
 
 \begin{lemma}[Two-spine reduction]
 \label{lem:two-spine}
-Let $f$ and $h$ be smooth near $x$, and put $y=h(x)$, $B=\AbsoluteValue{h'(x)}$.  Suppose
+Let $h$ be smooth near $x$, let $f$ be smooth near $y=h(x)$, and put
+$B=\AbsoluteValue{h'(x)}$.  Suppose
 there are constants $H>0$ and $K\geq1$ such that
 \begin{align}
  \AbsoluteValue{f^{(r)}(y)}&\leq Q_r &&(r\geq1),
@@ -835,11 +847,12 @@ Because $F'$ rises strictly from $0$ to $2$ on $[0,\half]$, there is a unique
 $u\in(0,\half)$ with $F'(u)=1$.  Symmetry gives the only other solution $1-u$.
 For a fixed $n$, the tie set is therefore
 \begin{equation}
- T_n:=\bigcup_{k=0}^{n-2}G_k^{-1}\SetOf{u,1-u}.
+ T_n:=\bigcup_{\substack{k\geq0\\k+1<n}}
+ G_k^{-1}\!\left(\SetOf{u,1-u}\right).
  \label{eq:tie-set}
 \end{equation}
-Each $G_k$ is a homeomorphism of $[0,1]$, so $T_n$ is finite, with at most
-$2(n-1)$ points.
+Thus $T_1=\varnothing$.  Each $G_k$ is a homeomorphism of $[0,1]$, so in
+general $T_n$ is finite, with at most $2(n-1)$ points.
 
 \section{Binary transitions force recurrent large amplitudes}
 \label{sec:binary}
@@ -1390,34 +1403,55 @@ global polynomial approximation.
 The main theorem is complete, but it leaves a structured exceptional countable set on
 which the formal Taylor series may converge without representing the function.  The
 formal-radius transport theorem shows that the inverse classification is exactly the
-homeomorphic image of the forward classification.
+homeomorphic image of the forward positive-radius locus.  Of the five submitted
+conjecture environments, only two remain live manuscript conjectures.  Three are
+retained as explicit warning records: one has a false inverse clause, one is already
+proved from exact quarter-point facts, and one duplicates the corrected forward
+report's sole live conjecture.  Neither live conjecture has an exact proved Lean
+counterpart.
 
-\begin{conjecture}[Exact Taylor-radius classification]
-\label{conj:trichotomy}
-For each fixed $n$, the positive-radius locus of $G_n$ is precisely the set of points at
-which the high-order jet is eventually zero.  Equivalently, no point has a genuinely
-infinite convergent Taylor series that fails to represent $G_n$.  By
-\cref{thm:formal-reversion}, the same statement then holds for $K_n$, with the loci
-transported by $G_n$.
-\end{conjecture}
+\begin{warning}[Former Conjecture 14.1 has a false inverse clause]
+\label{warn:trichotomy}
+The submitted statement first proposed that the positive-radius locus of $G_n$ is
+precisely its eventually-zero-jet locus, then claimed that
+\cref{thm:formal-reversion} gives the same eventual-zero classification for $K_n$.
+The second clause is false: formal reversion preserves convergence, not polynomiality.
+At $x=1/4$ the exact forward Taylor germ is
+\[
+ \widehat F_{1/4}(z)=\frac5{72}+z+4z^2,
+\]
+because $F'(1/4)=1$, $F''(1/4)=8$, and all higher derivatives vanish.  At
+$y=F(1/4)=5/72$, the inverse Taylor germ therefore solves $w=z+4z^2$ and is
+\[
+ z=\frac{\sqrt{1+16w}-1}{8},
+\]
+an infinite convergent series.  Thus $K_1=I$ has positive Taylor radius at $5/72$
+without an eventually-zero jet.  The forward-only assertion remains a plausible open
+classification problem, especially for $n\geq2$, but no inverse eventual-zero
+equivalence is asserted here.
+\end{warning}
 
-The center belongs to the eventually-zero class: both forward and inverse formal series
-are affine.  For $n=1$, dyadic points give further finite Taylor polynomials.  For
-$n\geq2$, exact cancellation among several orbit levels makes the arithmetic
-classification substantially more delicate.
+The center is exceptional in both directions because its forward and inverse formal
+series are affine.  At noncentral dyadic points for $n=1$, however, finite nonlinear
+forward Taylor polynomials revert to infinite convergent inverse series, exactly as the
+quarter-point example shows.
 
-\begin{conjecture}[No persistent cancellation at a forward tie]
-\label{conj:ties}
-Suppose $x\in T_n$, so two adjacent forward spine weights are maximal.  Then their two
-leading symbolic amplitudes do not cancel to exponential accuracy for all sufficiently
-large derivative orders.  More precisely, along an infinite sequence $m_k$ their sum
-has absolute value at least $cH_n(x)^{m_k}$ for some $c>0$.
-\end{conjecture}
-
-A proof would resolve the most visible exceptional mechanism in the forward theorem
-and, by formal reversion, the corresponding inverse points.  The two orbit points are
-related by one application of $F$, while both amplitudes sample the same dyadic shift;
-this is a nonlinear Thue--Morse correlation problem.
+\begin{warning}[Former Conjecture 14.2 is already discharged]
+\label{warn:ties}
+The submitted tie-cancellation statement is not a live conjecture.  If
+$x\in T_n$, the tied adjacent weights satisfy $a_k=1$.  Strict monotonicity of $F'$,
+together with $F'(1/4)=F'(3/4)=1$, forces
+$x_k\in\{1/4,3/4\}$.  Hence
+$x_{k+1}=F(x_k)\in\{5/72,67/72\}$.  The first orbit point is dyadic, so
+$\ThetaF(2^m x_k)=0$ for every sufficiently large $m$ by
+\eqref{eq:dyadic-jet}; the second is non-dyadic, so
+\cref{lem:binary-transition} supplies infinitely many $m$ with
+$\AbsoluteValue{\ThetaF(2^m x_{k+1})}\geq1/2$.  Since the fixed suffix coefficient
+$A_{k+1,n}$ is positive, along that subsequence the surviving tied spine term has
+absolute value at least $(A_{k+1,n}/2)H_n(x)^m$.  Thus persistent cancellation is
+already excluded by exact quarter-point facts and the binary-transition lemma; no
+additional Thue--Morse correlation conjecture remains.
+\end{warning}
 
 \begin{conjecture}[Direct inverse-spine asymptotic]
 \label{conj:inverse-spine}
@@ -1437,22 +1471,23 @@ slopes and with a unique dominant term off finite tie surfaces.
 The implicit identity $G_n\comp K_n=\id$ and the same partition defect provide a
 plausible route, but one must control the recursive inverse Bell polynomials without
 assuming the desired envelope.  A proof would upgrade abstract zero-radius transport
-to explicit derivative lower bounds for the inverse iterates.
+to explicit derivative lower bounds for the inverse iterates.  The finite-order replay
+does not establish the displayed scale, weights, exceptional set, or remainder.
 
-\begin{conjecture}[Defect-polynomial spectral gap]
-\label{conj:defect-polynomial}
-For every fixed $z>0$, the weighted partition sums
+\begin{warning}[Former Conjecture 14.4 duplicates the forward report]
+\label{warn:defect-duplicate}
+The submitted statement that, for every fixed $z>0$, the weighted partition sums
 \[
  \sum_{\substack{\pi\in\Pi_m\\1<|\pi|<m}}z^{s(\pi)}2^{-D(\pi)}
 \]
 admit a full asymptotic expansion whose leading term comes from the two first-defect
 shells: one block of size $2$ with the rest singleton, and one block of size $m-1$ with
-one singleton.
-\end{conjecture}
-
-A sharp version would give an explicit rate in the two-spine lemma, uniform estimates
-away from tie surfaces, and the first correction term for both forward and prospective
+one singleton is exactly Conjecture 14.3 of the corrected forward-iterate report.
+It remains open manuscript mathematics there, with no exact Lean counterpart, but it
+is not a second independent inverse-iterate conjecture.  A sharp version would give an
+explicit two-spine rate and the first correction term for both forward and prospective
 inverse spines.
+\end{warning}
 
 \begin{conjecture}[Nested Lambert phase law]
 \label{conj:nested-lambert}
@@ -1462,6 +1497,9 @@ smooth and periodic in a hierarchy of nested lower-branch Lambert phases.  The l
 term is \eqref{eq:iterated-inverse-endpoint}, and each iteration transports rather than
 erases the dyadic periodic ripple.
 \end{conjecture}
+
+This all-orders claim is not implied by the proved leading scale, has not been tested by
+the interior Taylor-reversion experiment, and has no exact Lean counterpart.
 
 \subsection{Promising formalization route}
 
@@ -1617,7 +1655,7 @@ weight, and maximum formal-reversion residual.\\
 \end{longtable}
 
 A typical reproduction command is
-\begin{lstlisting}[language=bash]
+\begin{lstlisting}[style=pseudo,language=bash]
 python numerical_experiments.py \
   --output-dir numerical_output \
   --x0 0.437123456789 \
@@ -1637,7 +1675,7 @@ directly connected to the proof are:
  for the primary exposition;
  \item \path{GlobalExtension.lean}
  and \path{BoundedDerivatives.lean} in \path{Lean/FabiusFunction/} for the derivative atlas;
- \item \path{Convexity.lean}, \path{StrictMonotonicity.lean}, and the order-isomorphism
+ \item \path{Convexity.lean}, \path{Monotonicity.lean}, and the order-isomorphism
  modules for the orbit dynamics;
  \item \path{OriginalPaperSupplement.lean} and \path{NowhereAnalytic.lean} for the
  base nonanalyticity proof;

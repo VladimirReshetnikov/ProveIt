@@ -53,6 +53,11 @@ import numpy as np
 import sympy as sp
 from scipy.special import gammaln
 
+# Keep regenerated vector figures repository-safe: embedded TrueType outlines,
+# rather than Matplotlib's default Type 3 PDF fonts.
+plt.rcParams["pdf.fonttype"] = 42
+plt.rcParams["ps.fonttype"] = 42
+
 
 # ---------------------------------------------------------------------------
 # Basic arithmetic helpers

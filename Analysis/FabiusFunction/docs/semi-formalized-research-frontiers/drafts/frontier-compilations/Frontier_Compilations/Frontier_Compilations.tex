@@ -15017,6 +15017,15 @@ rapid-decay and inversion proof, explicit Bernoulli-cumulant/Bell-moment formula
 asymptotics, further transforms, higher-derivative and endpoint-flatness wrappers, and shape
 theory remain outside that promotion.
 
+The post-snapshot activation tranche is a separate real, totalized hyperbolic kernel rather
+than an identification with the complex sinc product.  It proves the sharp local coefficient
+\(p(x)/x^2\to1/3\), the finite \(\tanh\) and activation Taylor jets through the displayed
+orders, the arbitrary-index square-summable activation budget and its sharp Tannery limit,
+and the geometric and dyadic effective-dimension specializations.  The positive-weight
+active-count interpretation remains restricted to \(0<q<1\); the formal geometric activation
+identities are deterministic and include negative \(q\), with no Bernoulli-family or
+expectation bridge claimed.
+
 The word \emph{new} is used only in a corpus-relative sense: these statements were not found
 in the 57 TeX sources inspected in the specified repository snapshot.  No claim of global
 priority is made.  Proven statements are separated sharply from conjectural transseries,
@@ -15503,6 +15512,59 @@ support, and smoothness layer uses \(0<q<1\).  In
 \path{weightedSumCDF_eq_geometricUniformCDF_one_half},
 \path{geometricUniformCDF_one_half_eq_fabiusReal}, and
 \path{geometricUniformDensity_one_half_eq_rvachevUp}.
+
+\subsection{Activation Taylor jets, square-summability, and effective dimension}
+The activation development is a separate real-valued layer.  It must not be conflated with
+the complex sinc product above: its local kernel is the totalized hyperbolic quotient
+\[
+ p(x):=\operatorname{activationProbability}(x)
+ =1-\frac{\tanh x}{x}\quad(x\ne0),\qquad p(0)=0.
+\]
+The module \path{HyperbolicActivation.lean} proves continuity, evenness, positivity exactly
+off zero, and the global estimate
+\[
+ 0\le p(x)<1,\qquad p(x)\le\min\left(1,\frac{x^2}{3}\right).
+\]
+The totalized \path{tanhDiv} is identified with the divided slope of \(\tanh\), so no
+ordinary quotient at the removable origin is being used.
+
+The seven-module activation tranche has six definitions and ninety-nine theorems.  Its
+finite local and series results are the exact declarations
+\path{tanh_sub_taylor_nine_isBigO},
+\path{activationProbability_sub_taylor_eight_isBigO},
+\path{activationProbability_sub_taylor_eight_isBigO_pow},
+\path{summable_activationProbability_mul_of_summable_sq},
+\path{tsum_activationProbability_mul_le},
+\path{tendsto_activationProbability_div_sq},
+\path{tendsto_activationProbability_mul_div_sq}, and
+\path{tendsto_tsum_activationProbability_mul_div_sq}.  Thus the displayed finite jet is
+\[
+ p(x)=\frac{x^2}{3}-\frac{2x^4}{15}+\frac{17x^6}{315}
+      -\frac{62x^8}{2835}+O(\lVert x\rVert^{10}),
+\]
+while the sharp punctured-neighborhood limit is \(p(x)/x^2\to1/3\).  For an arbitrary
+index type and real weights with \(\sum_iw_i^2<\infty\), the activation sum is genuinely
+summable and
+\[
+ \sum_i p(w_i t)\le \frac{t^2}{3}\sum_iw_i^2,
+ \qquad
+ \frac{\sum_i p(w_i t)}{t^2}\longrightarrow
+ \frac13\sum_iw_i^2\quad(t\to0,\ t\ne0).
+\]
+
+The geometric module defines
+\[
+ d_q(t):=\sum_{n\ge0}p\bigl(q^n(1-q)t\bigr).
+\]
+For \(\lvert q\rvert<1\), it proves genuine summability, refinement and finite-prefix/tail
+certificates, the bound
+\[
+ d_q(t)\le\frac{(1-q)t^2}{3(1+q)},
+\]
+and the sharp limit \(d_q(t)/t^2\to(1-q)/(3(1+q))\); at \(q=1/2\), the dyadic limit is
+\(1/9\).  Negative \(q\) belongs to this deterministic analytic range.  The report's
+positive-weight active-count reading is restricted to \(0<q<1\): no Bernoulli family or
+expectation bridge is asserted by these declarations.
 
 \subsection{Recovery of the classical functions}
 
