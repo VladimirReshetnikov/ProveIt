@@ -561,10 +561,10 @@ For $N\ge1$ and $x\in\RealNumbers$,
 \begin{equation}\label{eq:finite-cdf-formula}
  F_N(x)=
  \frac{2^{N(N+1)/2}}{N!}
- \sum_{j=0}^{2^N-1}(-1)^{s_2(j)}
+ \sum_{j=0}^{2^N-1}(-1)^{\BinaryDigitSum(j)}
  \PositivePart{x-\frac{j}{2^N}}^{N},
 \end{equation}
-where $s_2(j)$ is the sum of the binary digits of $j$.
+where $\BinaryDigitSum(j)$ is the sum of the binary digits of $j$.
 \end{proposition}
 
 \begin{proof}
@@ -584,7 +584,7 @@ $\prod a_k=2^{-N(N+1)/2}$.  The map
 \]
 is a bijection from subsets to $\{0,\ldots,2^N-1\}$, with
 $\sum_{k\in A}2^{-k}=j(A)/2^N$ and
-$|A|\equiv s_2(j(A))\pmod2$.  Substitution gives
+$|A|\equiv \BinaryDigitSum(j(A))\pmod2$.  Substitution gives
 \eqref{eq:finite-cdf-formula}.
 \end{proof}
 
@@ -604,7 +604,7 @@ Then \cref{prop:finite-cdf} gives
 \begin{equation}\label{eq:centered-spline-formula}
  S_N(x)=
  \frac{2^{N(N+1)/2}}{N!}
- \sum_{j=0}^{2^N-1}(-1)^{s_2(j)}
+ \sum_{j=0}^{2^N-1}(-1)^{\BinaryDigitSum(j)}
  \PositivePart{x-\frac{2j+1}{2^{N+1}}}^{N}.
 \end{equation}
 This is the centered uniform spline used by the repository's primitive-
@@ -615,7 +615,7 @@ The finite CDFs $F_N$ and $S_N$ are globally $2$-Lipschitz.
 \end{lemma}
 
 \begin{proof}
-The density of $2^{-1}U_1$ is $2\mathbf1_{[0,1/2]}$.  Convolution with any
+The density of $2^{-1}U_1$ is $2\IndicatorOf{[0,1/2]}$.  Convolution with any
 probability measure cannot increase the $L^\infty$ norm of a density.  Hence
 the density of $X_N$ is bounded by $2$.  Translating by $2^{-N-1}$ does not
 change this bound.  Integrating the density over an interval proves the
@@ -1977,7 +1977,7 @@ is proved by the abstract finite algorithm, regardless of practical runtime.
 
 The forward oracle is not an unrelated approximation scheme.  The binary
 subset map in \cref{prop:finite-cdf} makes the Thue--Morse sign
-$(-1)^{s_2(j)}$ the exact inclusion--exclusion coefficient of the finite
+$(-1)^{\BinaryDigitSum(j)}$ the exact inclusion--exclusion coefficient of the finite
 uniform convolution.  Thus the name-transformer for $G$ ultimately rests on
 the same cancellation mechanism that drives the repository's exact dyadic
 formulae and discrete-limit identities.
