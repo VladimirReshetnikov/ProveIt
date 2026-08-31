@@ -137,7 +137,7 @@ of an existing draft; semantic consolidation is deferred to the post-
   Libertinus prose, incomplete PDF metadata, and Type-3 plot fonts remain
   explicit post-intake normalization work.
 - [`Fabius_Rvachev_New_Frontiers-2/`](Fabius_Rvachev_New_Frontiers-2/),
-  *Fabius--Rvachev New Frontiers* (2,648 source lines after normalization and
+  *Fabius--Rvachev New Frontiers* (2,668 source lines after normalization and
   the 2026-08-30 formal crosswalk; 2,539 at landing), arrived on
   2026-08-30 from a
   rootless archive with all 15 payload checksums verified. Its native up-law
@@ -182,7 +182,7 @@ of an existing draft; semantic consolidation is deferred to the post-
   Gaunt/Wigner/`3j` entry formula, entry
   rationality by that route, and Christoffel reconstruction remain outside
   this closure; `rvachevTranslateGram` is the distinct unweighted Gram kernel
-  of shifted-up atoms. The merged 2,648-line source was rebuilt in exactly
+  of shifted-up atoms. The merged 2,668-line source was rebuilt in exactly
   three strict passes as a 37-page A4/Libertinus PDF; all report and figure
   fonts are embedded/subset, no Type 3 or raster content remains, and the
   exhaustive 15-entry current ledger passes.
@@ -200,7 +200,7 @@ Other paper theorem labels do not by themselves assert Lean status.
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
-[`Representation_Frontiers/`](Representation_Frontiers/) (299 pp;
+[`Representation_Frontiers/`](Representation_Frontiers/) (300 pp;
 eight parts):
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform

@@ -65,9 +65,9 @@ New standalone intake member:
 rootless `Fabius_Rvachev_Frontier_Report_Package.zip` on 2026-08-30. The
 title-based directory avoids collision with an unrelated q-series package
 that used the same generic report filename. Its delivered zero-file audit was
-replaced by a reproducible recursive audit of 140 prior TeX files (311,911
-lines and 13,787,029 bytes) excluding this package directory, with raw corpus
-digest `a6edc75336626f99b4a1a13e6d7b90dc14f8f2dede15b4a3de80879442932a2d`.
+replaced by a reproducible recursive audit of 187 prior TeX files (385,033
+lines and 16,550,290 bytes) excluding this package directory, with raw corpus
+digest `5a405ca8244090f73f907fb3ba36fbe10a79cbfee5277b3712aa3218ba639794`.
 Its
 failed numerical generation was repaired and rerun at 80-digit precision,
 producing all three optional figures and the generated tables. No theorem-
@@ -143,7 +143,13 @@ material appears in `Frontier_Compilations/`. It therefore remains standalone
 pending claim-by-claim crosswalk and deliberate deduplication. Its paper
 theorem labels do not by themselves assert Lean status, and its shipped Latin
 Modern source/PDF still needs canonical-preamble and Libertinus normalization
-in a later post-intake commit.
+in a later post-intake commit.  Its roadmap instruction to formalize the
+finite cumulative multiplicity-count/digit-sum arithmetic is now stale:
+BaseDigitMultiplicity.lean proves the cumulative floor-layer and base-b digit
+recovery formulas for every integer base greater than one, including composite
+bases and the zero endpoint.  That five-theorem arithmetic layer does not
+identify analytic zero orders or prove the report's sign interpolation, which
+remain part of the later claim-by-claim audit.
 
 Arithmetic and spectral structure of the Rvachev Fourier product,
 consolidated (2026-08-28) into the single volume

@@ -59,7 +59,8 @@ manuscript theorem/proof labels do not establish Lean proof status.
   inverse-q reports in this group. It remains standalone pending
   post-publication comparison and deliberate consolidation, plus a Lean
   crosswalk; manuscript classifications and symbolic/numerical checks do not
-  establish Lean verification.
+  establish Lean verification. Its Libertinus/Type-1-only report is letter
+  paper rather than A4, so page-size normalization remains deferred.
 
 - [`inverse_q_analog_functions_report/`](inverse_q_analog_functions_report/),
   *Inverse Functions of q-Pochhammer Symbols, Gaussian Coefficients, and
@@ -77,7 +78,10 @@ manuscript theorem/proof labels do not establish Lean proof status.
   PDFs are structurally readable and unencrypted (62 pages total). It remains
   standalone pending post-publication semantic comparison, deliberate
   consolidation, and a Lean crosswalk; manuscript classifications and
-  numerical evidence do not establish Lean verification.
+  numerical evidence do not establish Lean verification. The A4 main report
+  uses Libertinus but inherits six embedded/subset Type-3 rows from the three
+  vector figures (twelve Type-3 rows across all four PDFs); a Type-3-free
+  rebuild and refreshed checksums remain deferred.
 
 - [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](Cyclotomic_q_Fabius_Rvachev_Frontier/),
   *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
@@ -91,6 +95,9 @@ manuscript theorem/proof labels do not establish Lean proof status.
   the consolidated q-series frontier. It remains standalone pending the
   required post-publication claim-level comparison and a Lean crosswalk;
   manuscript labels and numerical evidence do not establish Lean verification.
+  The submitted 25-page A4 report uses Latin Modern rather than the house
+  Libertinus face and retains nine embedded/subset Type-3 figure-font rows;
+  normalization is deferred so that the verified arrival payload stays intact.
 
 - [`inverse_q_analogs_extended_report/`](inverse_q_analogs_extended_report/),
   *Inverse q-Analogs in All Parameters* (104 pp), arrived on 2026-08-30 from
@@ -103,7 +110,9 @@ manuscript theorem/proof labels do not establish Lean proof status.
   parameter recovery. It remains standalone pending post-publication
   comparison and deliberate consolidation with both inverse-q siblings, plus
   a Lean crosswalk; manuscript labels and numerical checks do not establish
-  Lean verification.
+  Lean verification. Its 104-page main report is letter paper and retains
+  twelve embedded/subset Type-3 figure-font rows; those are disclosed
+  post-intake normalization debts, not canonical rendering choices.
 
 - [`inverse_q_analogs_report-2/`](inverse_q_analogs_report-2/),
   *Inverse Functions of q-Pochhammer Symbols, Gaussian Coefficients, and
@@ -115,7 +124,9 @@ manuscript theorem/proof labels do not establish Lean proof status.
   payload was already LF, and none matches the existing report byte-for-byte.
   It remains standalone pending post-publication semantic deduplication and a
   Lean crosswalk; manuscript classifications and numerical checks do not
-  establish Lean verification.
+  establish Lean verification. Its 59-page PDF is letter paper and uses Latin
+  Modern rather than Libertinus (with no Type-3 fonts), so page/font
+  normalization remains deferred.
 
 - [`Fabius_Rvachev_Frontier_Report/`](Fabius_Rvachev_Frontier_Report/),
 *Negative Parameters, Reciprocal Bases, and the Gaussian Boundary* (26 pp),

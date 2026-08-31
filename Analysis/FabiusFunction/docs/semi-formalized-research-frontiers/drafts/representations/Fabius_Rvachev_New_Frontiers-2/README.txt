@@ -13,7 +13,7 @@ superseded, generated, proved, numerical, and conjectural material.
 Main deliverables
 -----------------
 fabius_rvachev_new_frontiers.tex
-    Complete 37-page, 2,648-line LaTeX report.  The semantic merge retains
+    Complete 37-page, 2,668-line LaTeX report.  The semantic merge retains
     the canonical A4/27 mm/Libertinus preamble and incorporates the current
     determinant/rational Lean crosswalk.
 

@@ -737,12 +737,11 @@ orthogonality, the Hankel cross-ratio, the centered recurrence, and all real-cas
 bridges.  The definition \path{rvachevJacobiSubdiagonalRat} is zero-based:
 its value at index \(n\) is the report coefficient \(\beta_{n+1}\).
 
-These are noncomputable adjugate-based finite definitions, not a rational
-evaluator.  In particular, they do not name or evaluate the explicit \(H_4\) and
-\(\beta_4\) fractions displayed below.  Those two modules by themselves also prove no
-roots, Christoffel reconstruction or central products, Gauss quadrature, second-kind
-polynomials, continued-fraction/Pad\'e identification, or
-Szeg\H{o}/Nevai/Rakhmanov asymptotics.
+These are noncomputable adjugate-based finite definitions and do not themselves
+evaluate the explicit \(H_4\) and \(\beta_4\) fractions displayed below; the downstream
+executable tranche does.  This layer proves no roots, Christoffel reconstruction or
+central products, Gauss quadrature, second-kind polynomials,
+continued-fraction/Pad\'e identification, or Szeg\H{o}/Nevai/Rakhmanov asymptotics.
 
 The later finite change-of-basis tranche closes precisely the determinant part of
 \cref{sec:legendre-gaunt}.  The generic module
@@ -785,6 +784,30 @@ identity, strict positivity, and the bridge identifying the ratio with the real 
 of the exact rational Rvachev subdiagonal additionally require \path{IsFabius}.
 Under that hypothesis positivity excludes the totalized singular case.
 
+The downstream executable tranche consists of
+\path{LegendrePolynomialRational.lean}, with exactly two public definitions and six
+public theorems; \path{FabiusLegendreRationalGram.lean}, with three definitions and
+eleven theorems; and \path{FabiusLegendreRationalGramValues.lean}, with eleven
+theorems.  Together with the four modules above, the complete seven-module inventory
+has thirteen definitions and sixty-one theorems, seventy-four public declarations.
+The first downstream module supplies executable rational Legendre coefficients.  The
+second supplies executable rational Gram entries, matrices, and determinants.  Its
+rational determinant identity, \(D_0=1\), strict positivity, norm quotient, and
+zero-based Jacobi ratio are unconditional; only its entry, matrix, and determinant cast
+bridges require a \path{BoundedFabius} witness \(F\) and a proof
+\path{IsFabius F}.  The value module proves unconditionally that
+\path{moment_four} is \(132809/32531625\), together with
+\[
+ (D_1,D_2,D_3,D_4,D_5)=
+ \left(1,\frac19,\frac8{2025},\frac{39616}{602791875},
+ \frac{16544275456}{27453718922765625}\right),
+\]
+and \(H_4=26727424/55791736875\).  The declaration
+\path{rvachevJacobiSubdiagonalRat_three} gives the zero-based value
+\(\beta_4=835232/4640643\).
+Only its three real/integral consequences require a
+\path{BoundedFabius} witness \(F\) and a proof \path{IsFabius F}.
+
 This closure does \emph{not} formalize the finite Gaunt integral,
 Wigner/\(3j\)-symbol, or factorial entry formulas
 \cref{eq:gaunt-integral,eq:finite-gaunt-matrix,eq:wigner-factorial}; consequently it
@@ -821,10 +844,9 @@ The first moments from \cref{eq:moment-recurrence} are
 \end{equation}
 The repository directly formalizes \(\pi_0,\ldots,\pi_4\) and
 \(H_0,\ldots,H_3\); the displayed \(\beta_1,\beta_2,\beta_3\) then follow as
-exact quotients of those formal norm values.  The final-row \(H_4\) and
-\(\beta_4\) fractions are instead report-level exact computations, not named
-Lean evaluations.  The combined table is included to fix every normalization
-used later:
+exact quotients of those formal norm values.  The downstream value module now also
+names and proves the final-row \(H_4\) and \(\beta_4\) fractions in Lean.  The combined
+table fixes every normalization used later:
 \begin{align}
  \pi_0(x)&=1, & H_0&=1,\notag\\
  \pi_1(x)&=x, & H_1&=\frac19,
@@ -839,10 +861,8 @@ used later:
    & \beta_4&=\frac{835232}{4640643}.
  \label{eq:low-jacobi-data}
 \end{align}
-The two final-row fractions follow from the same exact moment algorithm and are
-independently verified by the archive's Python program.  The all-degree rational
-objects described above prove their rationality and positivity but do not compute
-these explicit values.  Numerically,
+The two final-row fractions are named exact rational Lean computations and are also
+independently verified by the archive's Python program.  Numerically,
 \begin{equation}
  \beta_1=0.111111\ldots,
  \quad \beta_2=0.142222\ldots,

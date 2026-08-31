@@ -848,12 +848,20 @@ integer hierarchy, while \path{StieltjesGeneralizedOrder.lean} lowers real
 finite-height Herglotz--Poisson formulas, integrated interval Stieltjes--Perron inversion,
 and initial exact Jacobi data are likewise direct named results in the corresponding
 \path{Stieltjes*.lean} and \path{OrthogonalPolynomialJacobi.lean} modules.
-The later \path{GramStieltjesNaturality.lean} and
-\path{RvachevRationalJacobi.lean} tranche supplies scalar naturality and the exact
-all-degree rational centered Jacobi system; its exhaustive 23-name inventory and its
-zero-based-index convention \(n\leftrightarrow\beta_{n+1}\) are recorded at the finite-algebra
-boundary below.  Continued-fraction identification and asymptotics are not part of that
-tranche.
+The later \path{GramStieltjesNaturality.lean},
+\path{PolynomialMomentGramDeterminant.lean},
+\path{RvachevRationalJacobi.lean}, and
+\path{FabiusLegendreHankelDeterminant.lean}, followed by
+\path{LegendrePolynomialRational.lean},
+\path{FabiusLegendreRationalGram.lean}, and
+\path{FabiusLegendreRationalGramValues.lean}, supplies scalar naturality, the exact
+all-degree rational centered Jacobi system, coherent polynomial-basis Gram determinants,
+the finite Legendre Gram/Hankel cross-ratio bridge, and executable low-order values.  Its
+complete seven-module inventory has thirteen definitions and sixty-one theorems---seventy-four
+public declarations---and its zero-based-index convention
+\(n\leftrightarrow\beta_{n+1}\) is recorded at the finite-algebra boundary below.
+Finite Gaunt/Wigner entry expansions,
+continued-fraction identification, and asymptotics are not part of that tranche.
 
 The bounded-measure Laurent status is stronger than those two named
 specializations.  \path{MeasureCauchyMomentLaurent.lean} contains exactly one
@@ -1452,6 +1460,21 @@ definitions and exactly six public theorems:
 ring level; the normalized-polynomial and Jacobi-quotient results use fields.
 All six are finite algebra, with no measure, positivity, or convergence.
 
+The coherent-basis module \path{PolynomialMomentGramDeterminant.lean} has two
+public definitions, \path{polynomialCoefficientMatrix} and
+\path{polynomialMomentGramMatrix}, and seven public theorems: the two entry formulas,
+\path{polynomialMomentGramMatrix_eq_transpose_mul_hankel_mul},
+\path{polynomialMomentGramMatrix_det_eq_coefficient_det_sq_mul},
+\path{polynomialCoefficientMatrix_det_eq_prod_coeff},
+\path{polynomialMomentGramMatrix_det_eq_prod_coeff_sq_mul}, and
+\path{gramStieltjesJacobiSubdiagonal_eq_polynomialMomentGramMatrix_det_ratio}.
+Thus a degree-coherent family satisfies \(G_n=C_n^{\mathsf T}H_nC_n\), with determinant
+equal to the monomial Hankel determinant times the squared product of its diagonal
+coefficients, and nonzero diagonal coefficients transport the finite Jacobi cross-ratio.
+The coefficient matrix and entry formula are semiring-level; the Gram matrix and
+congruence are commutative-semiring-level; determinants are commutative-ring-level; and
+the quotient is field-level.
+
 The rational specialization \path{RvachevRationalJacobi.lean} has exactly four
 public definitions---\path{rvachevHankelDetRat},
 \path{rvachevOrthoPolynomialRat}, \path{rvachevOrthoNormRat}, and
@@ -1472,11 +1495,51 @@ the positive squared norm, zero diagonal, and positive subdiagonal, as well as
 the real-cast bridges, rational orthogonality, determinant cross-ratio, and
 centered recurrence.  Its zero-based \path{rvachevJacobiSubdiagonalRat} at
 index \(n\) is the report's conventional \(\beta_{n+1}\).  The definitions are
-noncomputable adjugate-based finite algebra, not an evaluator: no named theorem
-evaluates the report's displayed \(H_4\) or \(\beta_4\) fraction.  Nor does this
-tranche prove roots, Christoffel formulas, second-kind polynomials, Gaussian
-quadrature, continued-fraction/Pad\'e identification or convergence, central
-products, or Szeg\H{o}/Nevai/Rakhmanov asymptotics.
+noncomputable adjugate-based finite algebra and do not themselves evaluate the report's
+displayed \(H_4\) or \(\beta_4\) fractions; the downstream executable modules below do.
+
+The up-law specialization \path{FabiusLegendreHankelDeterminant.lean} has two public
+definitions, \path{upLegendreGramMatrix} and \path{upLegendreGramDet}, and seven
+public theorems: \path{upLegendreGramMatrix_apply_eq_integral},
+\path{upLegendreGramDet_eq_prod_leadingCoeff_sq_mul_hankelDet},
+\path{upLegendreGramDet_zero}, \path{upLegendreGramDet_pos},
+\path{coeff_legendrePolynomial_self_div_succ},
+\path{gramStieltjesJacobiSubdiagonal_upMoment_eq_upLegendreGramDet_ratio}, and
+\path{rvachevJacobiSubdiagonalRat_cast_eq_upLegendreGramDet_ratio}.  These close the
+finite Legendre determinant and \(\beta_{n+1}\) cross-ratio component.  The tranche does
+not impose \path{IsFabius F} on the determinant identity, empty value,
+leading-coefficient quotient, or real Gram cross-ratio; that hypothesis is required by
+the entry-integral, strict-positivity, and rational-cast bridge theorems.
+The tranche does
+not prove the finite Gaunt/Wigner entry expansion or rationality by that route, roots,
+Christoffel formulas, second-kind polynomials, Gaussian quadrature,
+continued-fraction/Pad\'e identification or convergence, central products, or
+Szeg\H{o}/Nevai/Rakhmanov asymptotics.
+
+The downstream executable tranche consists of
+\path{LegendrePolynomialRational.lean} (exactly two public definitions and six public
+theorems), \path{FabiusLegendreRationalGram.lean} (three definitions and eleven
+theorems), and \path{FabiusLegendreRationalGramValues.lean} (eleven theorems).  These
+raise the complete seven-module inventory from forty-one to seventy-four declarations:
+thirteen definitions and sixty-one theorems.  The first module supplies executable
+rational Legendre coefficients.  The second supplies executable rational Gram entries,
+matrices, and determinants; its rational determinant identity, \(D_0=1\), strict
+positivity, norm quotient, and zero-based Jacobi ratio are unconditional, while only its
+entry, matrix, and determinant cast bridges require a
+\path{BoundedFabius} witness \(F\) and a proof \path{IsFabius F}.  The third proves
+unconditionally that \path{moment_four} is \(132809/32531625\), together with
+\[
+ (D_1,D_2,D_3,D_4,D_5)=
+ \left(1,\frac19,\frac8{2025},\frac{39616}{602791875},
+ \frac{16544275456}{27453718922765625}\right),
+\]
+and \(H_4=26727424/55791736875\).  The declaration
+\path{rvachevJacobiSubdiagonalRat_three} gives the zero-based value
+\(\beta_4=835232/4640643\).
+Only its three real/integral consequences require a
+\path{BoundedFabius} witness \(F\) and a proof \path{IsFabius F}.  None of these modules
+closes the finite Gaunt/Wigner entry expansion, roots, Christoffel reconstruction,
+quadrature, continued-fraction/Pad\'e theory, or asymptotics.
 \end{remark}
 
 \subsection{Exact coefficients and numerical evidence}
@@ -1792,12 +1855,25 @@ modules formalize the moment side and first exact Jacobi data, while the
 generic finite-algebra modules above formalize the determinant construction
 and complete finite three-term recurrence without positivity.  Item 5 is now
 delivered by \path{OrthogonalPolynomialGramBridge.lean}.  In addition,
-\path{GramStieltjesNaturality.lean} and \path{RvachevRationalJacobi.lean}
-deliver the all-degree centered rational determinants, polynomial coefficients,
-norms, zero diagonal, positive subdiagonals, determinant cross-ratio,
+\path{GramStieltjesNaturality.lean}, \path{PolynomialMomentGramDeterminant.lean},
+\path{RvachevRationalJacobi.lean}, and
+\path{FabiusLegendreHankelDeterminant.lean}, with
+\path{LegendrePolynomialRational.lean}, \path{FabiusLegendreRationalGram.lean}, and
+\path{FabiusLegendreRationalGramValues.lean} downstream, deliver the all-degree centered rational
+determinants, polynomial coefficients, norms, zero diagonal, positive subdiagonals,
+coherent-basis and Legendre Gram determinant formulas, determinant cross-ratios,
 orthogonality, recurrence, and real-cast bridges.  The zero-based rational
-subdiagonal at index \(n\) is \(\beta_{n+1}\); this is exact finite algebra, not a
-native evaluator for the displayed \(H_4\) or \(\beta_4\) fractions.  Item 6's
+subdiagonal at index \(n\) is \(\beta_{n+1}\), and the downstream value module gives
+the named exact evaluations \(H_4=26727424/55791736875\) and
+\(\beta_4=835232/4640643\).  Its eight rational values are unconditional.  The finite
+Legendre entry-integral, strict-positivity, and rational-cast bridge results use
+\path{IsFabius F}; the determinant identity, empty value, leading-coefficient quotient,
+and real Gram cross-ratio do not.  Within the two new Gram/value modules, the
+unconditional rational determinant, ratio, and value identities require neither; only
+the three cast bridges and the three real/integral value consequences require both
+\path{BoundedFabius} and \path{IsFabius}.
+The finite
+Gaunt/Wigner entry expansion remains open.  Item 6's
 second-kind polynomials, complete finite convergents, and Gaussian error
 theorem and item 7's asymptotics remain open.
 \end{problem}

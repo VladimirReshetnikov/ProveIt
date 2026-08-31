@@ -98,10 +98,19 @@ arbitrary-order endpoint remainder to the exact Lambert nodes,
 `CompleteHomogeneousAsymptotics.lean` and
 `LambertReciprocalAsymptotics.lean` control the residual alphabet and growing
 row, and `FabiusLambertPhaseExtraction.lean` proves the fixed-order finite
-Poincaré hierarchy and integer-phase-ray convergence. The report's
-Bell/generalized-harmonic conversion, exponentiated Bell hierarchy, higher
-derivative extractors, sign/bracketing claims, and growing-order uniformity
-remain open.
+Poincaré hierarchy and integer-phase-ray convergence.
+`CompleteHomogeneousBell.lean` proves the generic finite-alphabet Bell
+conversion, `LambertPhaseLockedBell.lean` specializes it to shifted
+reciprocal power sums and both exact moment forms, and
+`FabiusLambertPhaseExtractionBell.lean` rewrites each residual term and every
+finite residual partial sum in Bell form. The normalized specialization uses
+the rational-algebra/characteristic-zero field layer; total field inversion
+still requires no positivity or nonzero-shift premise. Thus the finite
+complete-homogeneous/Bell/generalized-harmonic conversion is closed. These
+identities do not prove convergence of the infinite residual series or add a
+new asymptotic estimate. The infinite residual convergence problem,
+exponentiated/multiplicative Bell relative-error hierarchy, higher derivative
+extractors, sign/bracketing claims, and growing-order uniformity remain open.
 
 Post-snapshot Lean status began at source checkpoint `b3720d4b5` with two
 generic finite-algebra modules relevant to Report I; the current tree adds the
