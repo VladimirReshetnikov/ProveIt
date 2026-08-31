@@ -321,7 +321,7 @@ reproduces its captured output byte for byte.  Original five-file hashes are
 preserved in `ARRIVAL_SHA256SUMS.txt`. The six-entry `SHA256SUMS.txt` was not
 refreshed after the source-only merge: its TeX and README rows are pending and
 the other four rows pass. The live union audit scans 615 Lean modules
-and 8,383 public declarations with zero documentation/header gaps.
+and 8,389 public declarations with zero documentation/header gaps.
 
 ## `inverse_fabius_iterates_nowhere_analytic/`
 

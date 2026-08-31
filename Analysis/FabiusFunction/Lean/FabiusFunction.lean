@@ -582,6 +582,16 @@ elementary series with positivity, antitonicity, the closed evaluations
 `ζ(2) = π²/6` and `ζ(4) = π⁴/90`, the Bernoulli form, and agreement with
 `riemannZeta`.
 
+The generalized-product layer also carries every finite natural-linear
+identity between admissible exponent sequences to an exact product identity.
+For an admissible natural weight `a`, every natural depth `m`, and every
+complex `z`, dilation by `2^m` exposes precisely the first `m` sinc layers and
+leaves the product for the shifted weight `h ↦ a(h+m)`.  This all-depth
+shift--refinement theorem has no frequency restriction; at `m=0` its prefix
+is empty and the statement is reflexive.  Natural coefficients are the exact
+boundary of this API: it does not promote signed finite differences to an
+analytic-germ or pole-cancellation theorem.
+
 The Perron root `ρ₁` of the arithmetic-mean transfer operator is enclosed by
 kernel-checked arithmetic: `0.66126798 ≤ ρ₁ ≤ 0.66134921`, by carrying the
 audits' optimized cubic test function through the Collatz–Wielandt bracket
