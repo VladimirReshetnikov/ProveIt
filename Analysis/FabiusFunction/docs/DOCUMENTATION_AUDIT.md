@@ -128,9 +128,13 @@ strictness and equality refinements.  The fifth module,
 `GeometricUniformMultisection.lean`, contributes two coordinate definitions
 and three fixed half/quarter multisection theorems.  The baseline records the
 current inventory after the subsequent three-theorem signed natural-moment
-addition to `RvachevDerivativeDistribution.lean` and the all-depth
-`generalizedRvachevProduct_two_pow_mul` shift--refinement theorem in
-`WeightLinearityProducts.lean`, and records those zeroes, so every future
+addition and the two positive-order signed distribution theorems
+`intervalIntegral_comp_normalized_iteratedDeriv_rvachev` (the Banach-valued
+continuous-test half-mixture) and
+`map_normalized_iteratedDeriv_rvachev_restrict_Icc` (the restricted-Lebesgue
+Borel pushforward) in `RvachevDerivativeDistribution.lean`, together with the
+all-depth `generalizedRvachevProduct_two_pow_mul` shift--refinement theorem in
+`WeightLinearityProducts.lean`.  It records those zeroes, so every future
 source addition must preserve the
 full invariant rather than merely avoid worsening a historical backlog.  Run
 the script for live numbers after merging concurrent source work.
