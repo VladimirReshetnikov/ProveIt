@@ -1,0 +1,1943 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{bm}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\pgfplotsset{compat=1.18}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Digital Spectral Geometry and Log-Periodic Saddles},
+  pdfsubject={Frontier results for the Thue--Morse, Fabius, inverse-Fabius, and Rvachev systems},
+  pdfkeywords={Fabius function, Rvachev up-function, digital spectral geometry, log-periodic saddle, Thue-Morse, spectral zeta}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Digital spectral geometry}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+% Canonical project-wide mathematical notation.
+\input{../../../../fabius-notation.tex}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+
+% Long unbreakable inline mathematics occasionally leaves a line with no legal
+% break point.  A small emergency stretch lets TeX loosen such a line rather
+% than let it protrude into the margin; it applies only to lines that would
+% otherwise be overfull.
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
+\newcommand{\lean}[1]{%
+  \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
+\newcommand{\leanevaltwo}[1]{%
+  \nolinkurl{integral_eval}\texttt{\textsubscript{2}}\nolinkurl{#1}}
+
+\newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
+\newenvironment{boxedremark}{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{black}\hrule\vspace{0.6em}\small
+}{%
+  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
+}
+
+\lstdefinestyle{pseudo}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{shadegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  xleftmargin=0.7em,
+  xrightmargin=0.7em,
+  aboveskip=0.8em,
+  belowskip=0.8em
+}
+
+% Document-specific notation not present in the shared canonical block.
+\newcommand{\upf}{\Up}
+\DeclareMathOperator{\Res}{Res}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\fracpart}[1]{\left\{#1\right\}}
+
+\title{\bfseries Digital Spectral Geometry and Log-Periodic Saddles\\[0.35em]
+\large Frontier results for the Thue--Morse, Fabius, inverse-Fabius,
+and Rvachev systems}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{30 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The Fourier transform of Rvachev's compactly supported atomic function is the
+dyadic sinc product
+\[
+ \Phi(z)=\prod_{n\geq1}\SincRad\!\left(\frac{z}{2^n}\right).
+\]
+This report organizes a chain of results around the product's arithmetic
+divisor.  Regrouping Euler's products shows that the
+zero at \(2\pi m\) has multiplicity \(1+\nu_2(m)\).  Consequently the
+Fourier-zero spectral zeta function is
+\[
+ \mathcal Z_\Phi(s)
+ =\frac{\zeta(s)}{(2\pi)^s(1-2^{-s})},
+\]
+and the exact zero count is \(N(2\pi M)=2M-s_2(M)\).  Thus the binary digit
+sum---and, by parity, the Thue--Morse sequence---is recoverable from the
+spectral divisor of the up-function.
+
+The same zeta function yields an exact log-periodic transseries for the moment
+generating function.  Its imaginary poles
+\(2\pi\ImaginaryUnit k/\log2\) give explicit Fourier coefficients for the periodic term;
+all ordinary inverse-power corrections vanish because of the trivial zeros of
+\(\zeta\), while the surviving exponentially small sector has coefficients
+controlled by \(\nu_2\).  This makes it possible to write a phase-locked
+Lambert-\(W_{-1}\) saddle equation for the Fabius function at the flat endpoint,
+propose a refined inverse-Fabius expansion with an explicit periodic
+modulation, and organize its formal arbitrary-order saddle corrections.
+
+A second thread gives an exact dyadic Appell reproduction hierarchy.  On the grid
+\(2^{-r}\IntegerNumbers\), canonical Appell-weighted shifts of \(\RvachevUp\) reproduce exactly
+all polynomials of degree at most \(r\), and an explicit Fourier series gives
+the first unavoidable aliasing defect in degree \(r+1\).  Finally, all spectral,
+digital, cumulant, and transseries constructions are extended to an
+integer-base family \(u_b\).  The report distinguishes proved statements,
+audit boundaries, numerical evidence, and conjectures.
+\end{abstract}
+
+\paragraph{Corpus audit.}
+The current live-corpus audit reads \textbf{188} prior \texttt{.tex} files,
+comprising \textbf{390119} source lines and \textbf{16813357} bytes, under
+\texttt{Analysis/FabiusFunction/docs} recursively; it excludes this newly
+filed package directory.  The raw-byte concatenated source digest, in
+lexicographic relative-path order, is
+\texttt{bb8a7de4c16a960f8d640d99797085b4f17cd0cdcc38b38caa4014536806b4d3}.
+The accompanying \texttt{repository\_audit.py} reproduces the file-by-file
+manifest and broad phrase-cluster screen in
+\texttt{repository\_audit.md}.  Every advertised contribution cluster has
+substantial prior textual overlap (between 24 and 88 prior TeX files).
+Accordingly, theorem labels below mean proofs internal to this report, not
+Lean formalization, and no ``new'' wording inherited from the arrival source
+is a repository-relative or worldwide priority claim.  Claim-by-claim
+semantic deduplication remains pending.
+
+\tableofcontents
+
+\section{Scope, status, and the main chain of ideas}
+
+The repository corpus already develops a large network around the Fabius
+function, Rvachev's \(\RvachevUp\), dyadic rational values, the Thue--Morse
+sequence, \(q\)-analogues, infinite sinc products, Bell and Bernoulli
+polynomials, Lambert \(W\), and polynomial expansions.  Repeating isolated
+identities from that network would add little.  The strategy here is instead
+to expose a common analytic object---the \emph{divisor of the entire sinc
+product}---and let it control four apparently different phenomena:
+\[
+\boxed{
+\begin{array}{c}
+\text{\(2\)-adic zero multiplicities}\\
+\Downarrow\\
+\text{spectral zeta and digit sums}\\
+\Downarrow\\
+\text{complex dimensions and log-periodicity}\\
+\Downarrow\\
+\text{Lambert-\(W_{-1}\) endpoint saddle}\\
+\Downarrow\\
+\text{inverse-Fabius expansion}.
+\end{array}}
+\]
+A second arrow runs from the same zero multiplicities to exact polynomial
+reproduction on dyadic grids:
+\[
+ \text{zero order at reciprocal-lattice frequencies}
+ \Longleftrightarrow
+ \text{canonical Appell reproduction threshold}.
+\]
+
+The status conventions are as follows.
+
+\begin{itemize}[leftmargin=2em]
+\item A statement called a theorem, proposition, lemma, or corollary is proved
+      in this report.
+\item A numerical table is a high-precision consistency check, never a
+      substitute for proof.
+\item A conjecture is deliberately stated so that it can be falsified.
+\item No novelty statement is certified by the repaired lexical audit;
+      semantic comparison against the cited prior files remains necessary.
+\end{itemize}
+
+\section{Normalization and probabilistic model}
+
+\subsection{The atomic law}
+
+Let \(U_1,U_2,\ldots\) be independent random variables uniformly distributed
+on \([-1,1]\), and put
+\begin{equation}
+ X=\sum_{n=1}^{\infty}\frac{U_n}{2^n}.
+ \label{eq:X}
+\end{equation}
+The series converges almost surely and takes values in \([-1,1]\).  Its
+characteristic and moment generating functions are
+\begin{align}
+ \Phi(z)
+   &=\Expectation \EulerE^{\ImaginaryUnit zX}
+     =\prod_{n=1}^{\infty}
+       \SincRad\!\left(\frac{z}{2^n}\right),
+ \label{eq:Phi-def}\\
+ M(t)
+   &=\Expectation \EulerE^{tX}
+     =\Phi(-\ImaginaryUnit t)
+     =\prod_{n=1}^{\infty}
+       \frac{\sinh(t/2^n)}{t/2^n},
+ \qquad
+ K(t)=\log M(t).
+ \label{eq:M-def}
+\end{align}
+Here \(\SincRad z=\sin z/z\), with the removable value \(1\) at the origin.
+
+\begin{proposition}[Atomic density and the Fabius normalization]
+\label{prop:density}
+The law of \(X\) has an even \(C^\infty\) density \(u=\RvachevUp\), supported on
+\([-1,1]\), satisfying
+\begin{equation}
+ u'(x)=2\bigl(u(2x+1)-u(2x-1)\bigr).
+ \label{eq:up-de}
+\end{equation}
+With the standard Fabius normalization,
+\begin{equation}
+ F(x)=u(1-x),\qquad 0\leq x\leq1.
+ \label{eq:F-up}
+\end{equation}
+In particular, for \(0\leq x\leq\frac12\),
+\(F'(x)=2F(2x)\).
+\end{proposition}
+
+\begin{proof}
+The random series gives \eqref{eq:Phi-def}.  For \(|z|\) large, take
+\(N=\floor{\log_2|z|}-2\).  Since
+\[
+ \left|\SincRad\!\left(\frac z{2^n}\right)\right|
+ \leq \min\!\left(1,\frac{2^n}{|z|}\EulerE^{|\Im z|/2^n}\right),
+\]
+the product of the first \(N\) factors has logarithm
+\[
+ -\frac{(\log|z|)^2}{2\log2}+\BigO(\log|z|+|\Im z|).
+\]
+On the real axis this is rapidly decreasing; hence every
+\(z^j\Phi(z)\) is integrable, and Fourier inversion gives a \(C^\infty\)
+density.  Its support follows directly from \eqref{eq:X}.
+
+The product identity
+\[
+ \Phi(z)=\SincRad(z/2)\Phi(z/2)
+\]
+is the Fourier transform of \eqref{eq:up-de}.  Evenness follows from the
+symmetry of each \(U_n\).  Formula \eqref{eq:F-up} then gives, for
+\(x\leq\frac12\),
+\[
+ F'(x)=-u'(1-x)
+      =2u(1-2x)=2F(2x),
+\]
+because \(u(3-2x)=0\).
+\end{proof}
+
+\subsection{Finite splines and the Thue--Morse signs}
+
+Let
+\[
+ X_N=\sum_{n=1}^{N}2^{-n}U_n,
+ \qquad
+ a_N=1-2^{-N},
+\]
+and let \(u_N\) be its density.  Writing
+\(\tau_k=(-1)^{s_2(k)}\), the ordinary inclusion--exclusion formula for a
+convolution of boxes collapses, in the dyadic case, to
+\begin{equation}
+ u_N(x)=
+ \frac{2^{N(N-1)/2}}{(N-1)!}
+ \sum_{k=0}^{2^N-1}
+ \tau_k
+ \left(
+   x+a_N-\frac{k}{2^{N-1}}
+ \right)_{+}^{N-1}.
+ \label{eq:finite-spline}
+\end{equation}
+This is recalled because it displays the usual, ``physical-space''
+Thue--Morse mechanism.  The results below reveal a second mechanism:
+Thue--Morse parity is also encoded in the \emph{multiplicities of the
+Fourier zeros}.
+
+The tail is an exact scaled copy:
+\begin{equation}
+ X=X_N+2^{-N}X',
+ \qquad X'\stackrel d=X,\quad X'\perp X_N.
+ \label{eq:tail-copy}
+\end{equation}
+This identity will later explain finite-\(N\) \(q\)-integers and moment
+convergence.
+
+\section{The Fourier-zero divisor as a digital spectrum}
+
+\subsection{Canonical product and multiplicities}
+
+Euler's product for the sine gives
+\[
+ \SincRad w=\prod_{k=1}^{\infty}\left(1-\frac{w^2}{\pi^2k^2}\right).
+\]
+Substitution into \eqref{eq:Phi-def} and a nontrivial regrouping produce the
+first central result.
+
+\begin{theorem}[Digital canonical product]
+\label{thm:canonical}
+The entire function \(\Phi\) has the canonical product
+\begin{equation}
+ \boxed{\displaystyle
+ \Phi(z)=
+ \prod_{m=1}^{\infty}
+ \left(1-\frac{z^2}{(2\pi m)^2}\right)^{1+\nu_2(m)}.}
+ \label{eq:canonical}
+\end{equation}
+Consequently the nonzero zeros are precisely \(\pm2\pi m\), and the
+multiplicity at either zero is
+\begin{equation}
+ \operatorname{mult}_{2\pi m}\Phi=1+\nu_2(m).
+ \label{eq:multiplicity}
+\end{equation}
+The paired genus-zero product in \eqref{eq:canonical} converges locally
+uniformly.
+\end{theorem}
+
+\begin{proof}
+Expanding each sinc factor,
+\[
+ \Phi(z)=
+ \prod_{n\geq1}\prod_{k\geq1}
+ \left(1-\frac{z^2}{\pi^2k^2\,4^n}\right).
+\]
+Put \(m=2^{n-1}k\).  Then
+\(\pi^2k^2\,4^n=(2\pi m)^2\).  For a fixed \(m\), the admissible values of
+\(n\) are exactly
+\[
+ n=1,\ldots,1+\nu_2(m),
+\]
+which proves the multiplicity.  Finally,
+\[
+ \sum_{m\geq1}\frac{1+\nu_2(m)}{m^2}
+ =\zeta(2)\sum_{j\geq0}2^{-2j}<\infty,
+\]
+so regrouping is legitimate on compact subsets and the quadratic product
+converges locally uniformly.
+\end{proof}
+
+\begin{remark}
+The support and differential equation make \(u\) look ``dyadic'' in physical
+space.  \Cref{thm:canonical} says that its Fourier divisor is dyadic in a much
+more arithmetic sense: its multiplicity sequence is the ruler sequence
+\(1+\nu_2(m)\).
+\end{remark}
+
+\subsection{Spectral zeta and exact zero counting}
+
+\begin{definition}
+For \(\Re s>1\), define the positive-zero spectral zeta function
+\begin{equation}
+ \mathcal Z_\Phi(s)
+ =\sum_{m=1}^{\infty}
+   \frac{1+\nu_2(m)}{(2\pi m)^s}.
+ \label{eq:spectral-zeta-def}
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Closed spectral zeta]
+\label{thm:spectral-zeta}
+For \(\Re s>1\), and thereafter by meromorphic continuation,
+\begin{equation}
+ \boxed{\displaystyle
+ \mathcal Z_\Phi(s)
+ =\frac{\zeta(s)}{(2\pi)^s(1-2^{-s})}.}
+ \label{eq:spectral-zeta}
+\end{equation}
+Besides the pole at \(s=1\), it has the dyadic complex dimensions
+\begin{equation}
+ \chi_k=\frac{2\pi\ImaginaryUnit k}{\log2},
+ \qquad k\in\IntegerNumbers,
+ \label{eq:complex-dimensions}
+\end{equation}
+with \(k=0\) interpreted as the pole at the origin.
+\end{theorem}
+
+\begin{proof}
+Use
+\[
+ 1+\nu_2(m)=\sum_{j\geq0}\mathbf1_{2^j\mid m}.
+\]
+Absolute convergence for \(\Re s>1\) permits the interchange
+\[
+ \sum_{m\geq1}\frac{1+\nu_2(m)}{m^s}
+ =\sum_{j\geq0}\sum_{2^j\mid m}m^{-s}
+ =\zeta(s)\sum_{j\geq0}2^{-js}
+ =\frac{\zeta(s)}{1-2^{-s}}.
+\]
+The asserted continuation and poles follow from the right-hand side.
+\end{proof}
+
+Let \(N(R)\) count positive zeros not exceeding \(R\), with multiplicity.
+
+\begin{theorem}[Exact digit-sum zero count]
+\label{thm:zero-count}
+For every integer \(M\geq1\),
+\begin{equation}
+ \boxed{\displaystyle
+ N(2\pi M)=2M-s_2(M).}
+ \label{eq:zero-count}
+\end{equation}
+More generally,
+\[
+ N(R)=2\floor{\frac{R}{2\pi}}
+      -s_2\!\left(\floor{\frac{R}{2\pi}}\right).
+\]
+Therefore
+\begin{equation}
+ (-1)^{N(2\pi M)}=(-1)^{s_2(M)}=\tau_M.
+ \label{eq:TM-spectral-parity}
+\end{equation}
+The Thue--Morse sequence is the parity of the cumulative Fourier-zero
+multiplicity.
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:multiplicity},
+\[
+ N(2\pi M)=\sum_{m=1}^{M}(1+\nu_2(m))
+          =M+\nu_2(M!).
+\]
+Legendre's digit-sum formula gives
+\(\nu_2(M!)=M-s_2(M)\), proving \eqref{eq:zero-count}.  Since \(2M\) is
+even, its parity reduction gives \eqref{eq:TM-spectral-parity}.
+\end{proof}
+
+\IfFileExists{zero_count_digit_sum.png}{
+\begin{figure}[tbp]
+ \centering
+ \includegraphics[width=0.92\linewidth]{zero_count_digit_sum.png}
+ \caption{The exact discrepancy in the zero count is the binary digit sum.
+ The graph is not an error term fitted numerically; every plotted point is the
+ identity \(2M-N(2\pi M)=s_2(M)\).}
+ \label{fig:zero-count}
+\end{figure}
+}{}
+
+\subsection{Lambert series and a heat trace}
+
+The multiplicity generating function is the lacunary Lambert series
+\begin{equation}
+ \sum_{m\geq1}(1+\nu_2(m))q^m
+ =\sum_{j\geq0}\frac{q^{2^j}}{1-q^{2^j}},
+ \qquad |q|<1.
+ \label{eq:ruler-lambert}
+\end{equation}
+At \(q=\EulerE^{-2\pi t}\), this becomes a natural heat trace for the positive
+zero divisor:
+\begin{equation}
+ \mathcal H(t)
+ =\sum_{m\geq1}(1+\nu_2(m))\EulerE^{-2\pi mt}
+ =\sum_{j\geq0}\frac1{\EulerE^{2\pi2^jt}-1}.
+ \label{eq:heat-trace}
+\end{equation}
+
+\begin{theorem}[Heat-trace expansion and complex dimensions]
+\label{thm:heat}
+As \(t\downarrow0\),
+\begin{align}
+ \mathcal H(t)
+ \sim{}&
+ \frac1{\pi t}
+ +\frac{\log t+\gamma}{2\log2}
+ -\frac14
+ +\mathcal P_H(\log_2t)
+ \notag\\
+ &+
+ \sum_{r\geq1}
+ \frac{(2\pi)^{2r-1}B_{2r}}
+      {(2r)!\,(1-2^{2r-1})}\,t^{2r-1},
+ \label{eq:heat-expansion}
+\end{align}
+where
+\begin{equation}
+ \mathcal P_H(v)
+ =\sum_{k\neq0}
+ \frac{\Gamma(\chi_k)(2\pi)^{-\chi_k}\zeta(\chi_k)}
+      {\log2}\,
+ \EulerE^{-2\pi\ImaginaryUnit kv}.
+ \label{eq:heat-periodic}
+\end{equation}
+The periodic series is real analytic and exponentially convergent.
+\end{theorem}
+
+\begin{proof}
+Mellin inversion gives, initially on a vertical line \(\Re s>1\),
+\[
+ \mathcal H(t)
+ =\frac1{2\pi\ImaginaryUnit}\int
+   \Gamma(s)\mathcal Z_\Phi(s)t^{-s}\Differential s.
+\]
+Move the contour left.  The pole at \(s=1\) contributes \(1/(\pi t)\).
+At \(s=0\),
+\[
+ \mathcal Z_\Phi(s)
+ =-\frac1{2(\log2)s}-\frac14+\BigO(s),
+ \qquad
+ \Gamma(s)=\frac1s-\gamma+\BigO(s),
+\]
+which gives the logarithmic and constant terms.  The poles
+\(\chi_k\), \(k\neq0\), give \eqref{eq:heat-periodic}.  At
+\(s=-(2r-1)\), the residue of \(\Gamma\), together with
+\(\zeta(1-2r)=-B_{2r}/(2r)\), gives the displayed Bernoulli term.  At
+negative even integers the trivial zero of \(\zeta\) cancels the pole of
+\(\Gamma\).  Stirling's formula for \(\Gamma(\chi_k)\) proves exponential
+convergence of the periodic series.
+\end{proof}
+
+\section{Spectral--cumulant duality and Bell-polynomial algebra}
+
+The canonical product has a direct probabilistic interpretation.  Since
+\[
+ M(t)=\Phi(-\ImaginaryUnit t)
+ =\prod_{m\geq1}
+  \left(1+\frac{t^2}{(2\pi m)^2}\right)^{1+\nu_2(m)},
+\]
+we may expand its logarithm at the origin.
+
+\begin{theorem}[Reciprocal zero power sums are cumulants]
+\label{thm:cumulants}
+Let \(\kappa_j\) be the cumulants of \(X\).  Odd cumulants vanish, and
+\begin{equation}
+ \boxed{\displaystyle
+ \kappa_{2r}
+ =(-1)^{r+1}\frac{(2r)!}{r}\,
+  \mathcal Z_\Phi(2r)
+ =\frac{2^{2r-1}B_{2r}}{r(2^{2r}-1)}.}
+ \label{eq:cumulants}
+\end{equation}
+Thus every even cumulant is simultaneously
+\begin{enumerate}[label=(\roman*),leftmargin=2.5em]
+\item a Bernoulli number expression,
+\item a reciprocal power sum of Fourier zeros with multiplicity, and
+\item the cumulant of the dyadic random series \eqref{eq:X}.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+From the canonical product,
+\[
+ K(t)
+ =\sum_{m\geq1}(1+\nu_2(m))
+  \log\!\left(1+\frac{t^2}{(2\pi m)^2}\right)
+ =\sum_{r\geq1}\frac{(-1)^{r+1}}r
+   \mathcal Z_\Phi(2r)t^{2r}.
+\]
+Compare with
+\(K(t)=\sum_{r\geq1}\kappa_{2r}t^{2r}/(2r)!\).
+Substitution of \eqref{eq:spectral-zeta} and Euler's formula for
+\(\zeta(2r)\) yields the Bernoulli form.
+\end{proof}
+
+The first cumulants are
+\[
+ \kappa_2=\frac19,\qquad
+ \kappa_4=-\frac2{225},\qquad
+ \kappa_6=\frac{16}{3969},\qquad
+ \kappa_8=-\frac{16}{3825}.
+\]
+The moments are complete Bell polynomials:
+\begin{equation}
+ m_{2n}:=\Expectation X^{2n}
+ =(2n)!\!
+ \sum_{\substack{j_1+2j_2+\cdots+nj_n=n\\j_r\geq0}}
+ \prod_{r=1}^{n}
+ \frac1{j_r!}
+ \left(\frac{\kappa_{2r}}{(2r)!}\right)^{j_r}.
+ \label{eq:moment-bell}
+\end{equation}
+For example,
+\[
+ m_2=\frac19,\qquad
+ m_4=\frac{19}{675},\qquad
+ m_6=\frac{583}{59535}.
+\]
+
+\subsection{Finite products and \(q\)-integers}
+
+For the finite product
+\[
+ \Phi_N(z)=\prod_{n=1}^{N}\SincRad(z/2^n),
+\]
+the zero at \(2\pi m\) has multiplicity
+\[
+ \min\!\bigl(N,1+\nu_2(m)\bigr)
+ =\sum_{j=0}^{N-1}\mathbf1_{2^j\mid m}.
+\]
+Hence its spectral zeta is
+\begin{equation}
+ \mathcal Z_{\Phi,N}(s)
+ =(2\pi)^{-s}\zeta(s)
+   \frac{1-2^{-Ns}}{1-2^{-s}}
+ =(2\pi)^{-s}\zeta(s)\,[N]_{2^{-s}},
+ \label{eq:finite-qinteger}
+\end{equation}
+where \([N]_q=(1-q^N)/(1-q)\).  This is a direct \(q\)-analogue in the
+zero spectrum, not merely a formal resemblance.
+
+The finite cumulants consequently satisfy
+\begin{equation}
+ \kappa_{2r,N}=\kappa_{2r}(1-2^{-2rN}).
+ \label{eq:finite-cumulants}
+\end{equation}
+
+\begin{proposition}[First finite-spline moment correction]
+\label{prop:moment-convergence}
+For fixed \(n\geq1\),
+\begin{equation}
+ m_{2n,N}
+ =m_{2n}
+ -\binom{2n}{2}\kappa_2m_{2n-2}\,2^{-2N}
+ +\BigO(2^{-4N}).
+ \label{eq:moment-convergence}
+\end{equation}
+A full expansion in powers of \(2^{-2N}\) is obtained by substituting
+\eqref{eq:finite-cumulants} into the Bell polynomial
+\eqref{eq:moment-bell}.
+\end{proposition}
+
+\begin{proof}
+For complete Bell polynomials,
+\[
+ \frac{\partial m_j}{\partial\kappa_\ell}
+ =\binom j\ell m_{j-\ell}.
+\]
+The only cumulant perturbation of order \(2^{-2N}\) is
+\(-\kappa_2\,2^{-2N}\); all other direct perturbations and all quadratic
+terms are \(\BigO(2^{-4N})\).
+\end{proof}
+
+\subsection{A Fourier--Bessel bridge to Legendre coefficients}
+
+Write the even Legendre expansion
+\begin{equation}
+ u(x)=\sum_{n=0}^{\infty}a_{2n}P_{2n}(x),
+ \qquad
+ a_{2n}=\frac{4n+1}{2}\Expectation P_{2n}(X).
+ \label{eq:Legendre}
+\end{equation}
+
+\begin{proposition}[Sinc-product representation of Legendre coefficients]
+\label{prop:legendre-bessel}
+Let \(j_n\) denote the spherical Bessel function.  Then
+\begin{equation}
+ \boxed{\displaystyle
+ a_{2n}
+ =\frac{(4n+1)(-1)^n}{\pi}
+   \int_0^\infty \Phi(t)j_{2n}(t)\Differential t.}
+ \label{eq:legendre-bessel}
+\end{equation}
+Moreover,
+\begin{equation}
+ |a_{2n}|
+ \leq
+ \exp\!\left(
+  -\frac{(\log n)^2}{2\log2}+\BigO(\log n)
+ \right).
+ \label{eq:legendre-envelope}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Fourier inversion and
+\[
+ \int_{-1}^{1}\EulerE^{-\ImaginaryUnit tx}P_m(x)\Differential x
+ =2(-\ImaginaryUnit)^m j_m(t)
+\]
+give \eqref{eq:legendre-bessel}.  For the estimate, split the integral at a
+fixed fraction of \(2n\).  In the subturning region, standard bounds for
+\(j_{2n}\) are exponentially small in \(n\).  In the remaining region,
+\[
+ |\Phi(t)|
+ \leq
+ \exp\!\left(
+  -\frac{(\log|t|)^2}{2\log2}+\BigO(\log|t|)
+ \right),
+\]
+as in the proof of \cref{prop:density}; the integrable Bessel envelope and a
+dyadic decomposition of the tail then give \eqref{eq:legendre-envelope}.
+\end{proof}
+
+\begin{remark}
+The bound is an envelope.  Because \(\Phi\) has exact high-multiplicity zeros,
+individual Legendre coefficients may be substantially smaller through
+oscillatory cancellation.  Determining their sharp logarithmic asymptotics is
+one of the research problems in \cref{sec:future}.
+\end{remark}
+
+\section{An exact log-periodic transseries for \(K(t)\)}
+
+Put
+\[
+ f(x)=\log\frac{\sinh x}{x},
+ \qquad
+ K(t)=\sum_{n\geq1}f(t/2^n),
+ \qquad a=\log2.
+\]
+The usual statement that \(K(t)\) has a log-squared asymptotic conceals two
+different effects: a real-analytic periodic fluctuation of \(\log_2t\), and a
+separate exponentially small digital sector.  Both can be written exactly.
+
+\begin{theorem}[Exact split-sum transseries]
+\label{thm:exact-transseries}
+For \(t\geq1\), let
+\[
+ q=\log t,\qquad \theta=\fracpart{\log_2t}.
+\]
+Then
+\begin{equation}
+ \boxed{\displaystyle
+ K(t)
+ =t-\frac{q^2}{2a}-\frac q2+\Psi(\theta)+R(t),}
+ \label{eq:K-transseries}
+\end{equation}
+where \(\Psi\) is the \(1\)-periodic, real-analytic function
+\begin{align}
+ \Psi(\theta)
+ ={}&
+ -2^\theta+\frac a2(\theta^2+\theta)
+ \notag\\
+ &+\sum_{j=0}^{\infty}
+   \log\!\left(1-\EulerE^{-2^{j+\theta+1}}\right)
+ +\sum_{k=1}^{\infty}
+   \log\!\left(
+    \frac{\sinh(2^{\theta-k})}{2^{\theta-k}}
+   \right),
+ \quad 0\leq\theta<1,
+ \label{eq:Psi-split}
+\end{align}
+and
+\begin{align}
+ R(t)
+ &=-\sum_{\ell=0}^{\infty}
+   \log\!\left(1-\EulerE^{-2^{\ell+1}t}\right)
+ \label{eq:R-product}\\
+ &=\sum_{n=1}^{\infty}
+   \frac{2^{\nu_2(n)+1}-1}{n}\EulerE^{-2nt}.
+ \label{eq:R-digital}
+\end{align}
+In particular, there are no algebraic inverse powers of \(t\):
+\[
+ R(t)=\EulerE^{-2t}+\frac32\EulerE^{-4t}+\BigO(\EulerE^{-6t}).
+\]
+\end{theorem}
+
+\begin{proof}
+Write \(\log_2t=N+\theta\), with \(N=\floor{\log_2t}\).  For \(n\leq N\),
+\[
+ f(t/2^n)
+ =\frac{t}{2^n}
+  -\log\!\left(\frac{2t}{2^n}\right)
+  +\log\!\left(1-\EulerE^{-2t/2^n}\right).
+\]
+The first two finite sums are
+\begin{align*}
+ \sum_{n=1}^{N}\frac{t}{2^n}&=t-2^\theta,\\
+ -\sum_{n=1}^{N}\log\!\left(\frac{2t}{2^n}\right)
+ &=-\frac{q^2}{2a}-\frac q2+\frac a2(\theta^2+\theta).
+\end{align*}
+Reindex the exponential sum by \(j=N-n\), and the small-argument tail by
+\(k=n-N\).  Extending the finite \(j\)-sum to infinity creates exactly the
+remainder \eqref{eq:R-product}.  The expression is unchanged when
+\(\theta\) is increased by \(1\) and the two sums are reindexed, proving
+periodicity.
+
+Finally, expand each logarithm in \eqref{eq:R-product}.  In a term with
+exponent \(2nt\), write \(n=m2^\ell\).  Summing \(1/m=2^\ell/n\) over
+\(0\leq\ell\leq\nu_2(n)\) gives
+\((2^{\nu_2(n)+1}-1)/n\), proving \eqref{eq:R-digital}.
+\end{proof}
+
+\subsection{Explicit Fourier coefficients from the spectral zeta}
+
+The periodic function is extraordinarily flat, but not constant.
+
+\begin{theorem}[Fourier series of the periodic fluctuation]
+\label{thm:Psi-Fourier}
+Let
+\[
+ \Psi(\theta)=\sum_{k\in\IntegerNumbers}c_k\EulerE^{2\pi\ImaginaryUnit k\theta}.
+\]
+With \(\gamma_1\) denoting the first Stieltjes constant in the convention
+\[
+ \zeta(s)=\frac1{s-1}
+ +\sum_{n\geq0}\frac{(-1)^n\gamma_n}{n!}(s-1)^n,
+\]
+the coefficients are
+\begin{align}
+ c_0
+ &=
+ \frac{\gamma_1+\gamma^2/2-\pi^2/12}{\log2}
+ -\frac{\log2}{12},
+ \label{eq:c0}\\
+ c_k
+ &=
+ \frac{\pi(2\pi)^{-\chi_k}\zeta(\chi_k)}
+      {(\log2)\chi_k\sin(\pi\chi_k/2)},
+ \qquad
+ \chi_k=\frac{2\pi\ImaginaryUnit k}{\log2},
+ \quad k\neq0.
+ \label{eq:ck}
+\end{align}
+The series and all of its derivatives converge absolutely.  In particular,
+\[
+ c_k=\BigO\!\left(
+  |k|^A\EulerE^{-\pi^2|k|/\log2}
+ \right)
+\]
+for some fixed \(A\).
+\end{theorem}
+
+\begin{proof}
+The canonical product gives
+\[
+ K(t)=\sum_{m\geq1}(1+\nu_2(m))
+       \log\!\left(1+\frac{t^2}{(2\pi m)^2}\right).
+\]
+For \(1/2<c<1\),
+\[
+ K(t)=\frac1{2\pi\ImaginaryUnit}\int_{c-\ImaginaryUnit\infty}^{c+\ImaginaryUnit\infty}
+ \frac{\pi}{s\sin\pi s}\,
+ \mathcal Z_\Phi(2s)t^{2s}\Differential s.
+ \label{eq:K-Mellin}
+\]
+Moving the contour left crosses \(s=1/2\), the origin, and
+\(s=\chi_k/2\).  The first pole contributes \(t\).  At the origin,
+\[
+ \mathcal Z_\Phi(2s)
+ =-\frac1{4as}-\frac14
+ +s\left(
+   -\frac a{12}
+   +\frac{\zeta''(0)}a
+   +\frac{\log^2(2\pi)}{2a}
+  \right)+\BigO(s^2),
+\]
+while
+\(\pi/(s\sin\pi s)=s^{-2}+\pi^2/6+\cdots\).
+Taking the residue after multiplication by \(t^{2s}\) gives
+\[
+ -\frac{(\log t)^2}{2a}-\frac{\log t}{2}+c_0,
+\]
+where the standard identity
+\[
+ \zeta''(0)
+ =\gamma_1+\frac{\gamma^2}{2}
+  -\frac{\pi^2}{24}
+  -\frac12\log^2(2\pi)
+\]
+yields \eqref{eq:c0}.  The residue at \(s=\chi_k/2\) is
+\eqref{eq:ck}.  At every negative integer, the pole of
+\(\pi/(s\sin\pi s)\) is cancelled by a trivial zero of
+\(\zeta(2s)\); this is the Mellin explanation for the absence of inverse
+powers in \cref{thm:exact-transseries}.  The exponential estimate follows
+from
+\(\sin(\pi\chi_k/2)=\ImaginaryUnit\sinh(\pi^2k/\log2)\) and standard vertical-line
+bounds for \(\zeta\).
+\end{proof}
+
+\IfFileExists{psi_periodic.png}{
+\begin{figure}[tbp]
+ \centering
+ \includegraphics[width=0.92\linewidth]{psi_periodic.png}
+ \caption{The centered periodic fluctuation
+ \(\Psi(\theta)-c_0\).  Its small amplitude is a consequence of the
+ factor \(\sinh(\pi^2k/\log2)\) in \eqref{eq:ck}, not numerical
+ roundoff.}
+ \label{fig:psi}
+\end{figure}
+}{}
+
+\IfFileExists{psi_coefficients.png}{
+\begin{figure}[tbp]
+ \centering
+ \includegraphics[width=0.92\linewidth]{psi_coefficients.png}
+ \caption{Exponential decay of the Fourier coefficients \(c_k\).
+ The first harmonic already resolves the visible periodic oscillation.}
+ \label{fig:psi-coeff}
+\end{figure}
+}{}
+
+\input{numerical_results.tex}
+
+\section{The endpoint saddle and a phase-locked Lambert equation}
+
+Because \(F(x)=u(1-x)\), the flat endpoint \(x\downarrow0\) is a right-edge
+large-deviation problem for \(X\).  The cumulant function \(K\) is strictly
+convex, \(K'(0)=0\), and \(K'(t)\uparrow1\).  Hence, for every
+\(0<x<1\), there is a unique \(t=t(x)>0\) such that
+\begin{equation}
+ K'(t)=1-x.
+ \label{eq:saddle-eq}
+\end{equation}
+
+Set
+\[
+ q=\log t,\qquad
+ \theta=\fracpart{q/a},\qquad
+ p(\theta)=\Psi'(\theta).
+\]
+Differentiating \eqref{eq:K-transseries} gives the exact saddle equation
+\begin{equation}
+ xt
+ =\frac q a+\frac12-\frac{p(\theta)}a-tR'(t).
+ \label{eq:exact-saddle}
+\end{equation}
+The exponentially small term is explicit from \eqref{eq:R-product}.
+
+\begin{theorem}[Phase-locked Lambert-\(W_{-1}\) form]
+\label{thm:Lambert}
+After omission of the exponentially small \(R'\)-sector,
+\eqref{eq:exact-saddle} is equivalent to
+\begin{equation}
+ \boxed{\displaystyle
+ t=
+ -\frac1{ax}
+ W_{-1}\!\left(
+  -ax\exp\{-a/2+p(\log_2t)\}
+ \right).}
+ \label{eq:phase-Lambert}
+\end{equation}
+Its zeroth approximation,
+\begin{equation}
+ t_0(x)=
+ -\frac1{ax}W_{-1}\!\left(-\frac{ax}{\sqrt2}\right),
+ \label{eq:Lambert0}
+\end{equation}
+has relative error
+\(\BigO(\|\Psi'\|_\infty/\log(1/x))\), apart from the explicitly
+smaller \(R'\)-sector.  Iteration of the right-hand side of
+\eqref{eq:phase-Lambert} is contractive for sufficiently small \(x\).
+\end{theorem}
+
+\begin{proof}
+Let \(y=axt\).  Without \(R'\), \eqref{eq:exact-saddle} reads
+\[
+ y=\log t+\frac a2-p(\log_2t)
+   =\log\frac{y}{ax}+\frac a2-p(\log_2t).
+\]
+Therefore
+\[
+ ye^{-y}=ax\,\EulerE^{-a/2+p(\log_2t)}.
+\]
+The relevant solution has \(y\to\infty\), so it is the
+\(W_{-1}\)-branch, proving \eqref{eq:phase-Lambert}.  The derivative of
+the induced fixed-point map contains a factor \(1/(y-1)\), while
+\(\Psi''\) is bounded; hence it is a contraction when \(y\) is large.
+Linearization in the bounded phase perturbation gives the error estimate.
+\end{proof}
+
+\begin{remark}
+The Lambert approximation is much better than its formal order might suggest,
+because \(\Psi'\) is exponentially small in the complex-dimension spacing.
+Nevertheless, retaining it is conceptually important: it is the first
+explicit mechanism by which the dyadic spectral divisor changes the
+inverse-Fabius phase.
+\end{remark}
+
+\subsection{Arbitrary-order saddle expansion}
+
+Let \(t=t(x)\) solve \eqref{eq:saddle-eq}.  Bilateral Laplace inversion along
+the vertical line through \(t\) gives
+\[
+ F(x)
+ =\frac{\EulerE^{K(t)-t(1-x)}}{2\pi}
+  \int_{-\infty}^{\infty}
+  \exp\!\left(
+   K(t+\ImaginaryUnit y)-K(t)-\ImaginaryUnit yK'(t)
+  \right)\Differential y.
+ \label{eq:saddle-integral}
+\]
+The tilted variance is \(K''(t)\).  Put
+\[
+ \lambda_j(t)=
+ \frac{K^{(j)}(t)}{j!\,K''(t)^{j/2}},
+ \qquad j\geq3.
+\]
+Formal Gaussian expansion of \eqref{eq:saddle-integral} gives universal
+polynomials in the \(\lambda_j\).
+
+\begin{conjecture}[All-order edge expansion (arrival claim)]
+\label{thm:all-order-saddle}
+As \(x\downarrow0\), equivalently \(q=\log t\to\infty\),
+\begin{align}
+ F(x)
+ ={}&
+ \frac{\exp\{K(t)-t(1-x)\}}
+      {\sqrt{2\pi K''(t)}}
+ \left[
+  1+
+  \frac{K^{(4)}(t)}{8K''(t)^2}
+  -\frac{5K^{(3)}(t)^2}{24K''(t)^3}
+  +\BigO(q^{-2})
+ \right].
+ \label{eq:first-saddle-correction}
+\end{align}
+More generally, truncation after weighted Gaussian degree \(2m\) has
+relative error \(\BigO(q^{-m})\).  Every coefficient is generated by
+\begin{equation}
+ \frac1{\sqrt{2\pi}}
+ \int_{\RealNumbers}\EulerE^{-z^2/2}
+ \exp\!\left(
+  \sum_{j\geq3}\lambda_j(t)(\ImaginaryUnit z)^j
+ \right)\Differential z,
+ \label{eq:Gaussian-generator}
+\end{equation}
+expanded formally and evaluated using
+\(\Expectation Z^{2r}=(2r-1)!!\).
+\end{conjecture}
+
+\begin{remark}[Arrival derivation sketch and proof gap]
+Under the exponential tilt with parameter \(t\), \(X\) is still a sum of
+independent bounded variables.  The number of summands contributing
+non-negligibly is asymptotic to \(\log_2t\).  Direct differentiation of
+\eqref{eq:K-transseries} shows
+\[
+ K''(t)=\frac{q/a+\BigO(1)}{t^2},\qquad
+ \lambda_j(t)=\BigO(q^{1-j/2}).
+\]
+After the scaling \(y=z/\sqrt{K''(t)}\), the central part of
+\eqref{eq:saddle-integral} has the expansion
+\eqref{eq:Gaussian-generator}; odd Gaussian moments vanish.  The first
+nonzero terms are the quartic term and half the square of the cubic term,
+which yield \eqref{eq:first-saddle-correction}.  Boundedness of the summands
+under the tilt does not by itself give the uniform minor-arc and flat-tail
+estimates needed for the displayed relative remainder.  Thus the preceding
+calculation identifies the formal coefficients but does not prove the stated
+all-orders error bound.  The live corpus contains stronger rigorous endpoint
+expansions; a precise crosswalk to their normalizations is required before
+this arrival claim can be promoted.
+\end{remark}
+
+\section{A refined asymptotic for the inverse Fabius function}
+
+The preceding formulas can be inverted explicitly one order beyond the usual
+square-root logarithm, while retaining the spectral phase.
+
+Let
+\[
+ Y=\log\frac1y,\qquad
+ Q=\sqrt{2aY},\qquad
+ c=1+\frac a2,
+\]
+and define
+\begin{equation}
+ C(\theta)
+ =-\frac12-\Psi(\theta)
+   +\frac{\Psi'(\theta)}a
+   +\frac12\log\frac{2\pi}{a}.
+ \label{eq:Ctheta}
+\end{equation}
+
+\begin{conjecture}[Log-periodically modulated inverse-Fabius expansion (arrival claim)]
+\label{thm:inverse-Fabius}
+As \(y\downarrow0\), define the leading phase
+\[
+ \theta_0=
+ \fracpart{\frac{Q+c}{a}}.
+\]
+Then
+\begin{align}
+ q(y)
+ ={}&
+ Q+c+
+ \frac{
+  -\frac a2\log Q+\frac{c^2}{2}-aC(\theta_0)
+ }{Q}
+ +\BigO\!\left(\frac{(\log Q)^2}{Q^2}\right),
+ \label{eq:q-inverse}\\
+ F^{-1}(y)
+ ={}&
+ \EulerE^{-q(y)}
+ \left(
+  \frac{q(y)}a+\frac12
+  -\frac{\Psi'(\theta_0)}a
+ \right)
+ \left[
+  1+\BigO\!\left(\frac{(\log Q)^2}{Q^2}\right)
+ \right].
+ \label{eq:F-inverse}
+\end{align}
+The omitted \(R\)-sector is beyond all powers of \(1/Q\); after substitution
+of the saddle scale it is of order
+\(\exp\{-2t(y)\}\).
+\end{conjecture}
+
+\begin{remark}[Arrival derivation sketch]
+Write \(t=\EulerE^q\).  From \eqref{eq:exact-saddle},
+\[
+ xt=\frac q a+\frac12-\frac{\Psi'(\theta)}a+\BigO(t\EulerE^{-2t}).
+ \label{eq:x-param}
+\]
+Also,
+\[
+ K''(t)
+ =\frac{D(q)}{t^2}+\BigO(\EulerE^{-2t}),
+ \qquad
+ D(q)=\frac q a+\BigO(1).
+\]
+Substituting these relations into the logarithm of the leading saddle formula
+in \cref{thm:all-order-saddle} gives
+\begin{equation}
+ Y
+ =\frac{q^2}{2a}
+  -\left(\frac1a+\frac12\right)q
+  +\frac12\log q
+  +C(\theta)
+  +\BigO(q^{-1}).
+ \label{eq:Y-q}
+\end{equation}
+Now seek
+\[
+ q=Q+c+\frac{d\log Q+e}{Q}
+   +\BigO((\log Q)^2/Q^2).
+\]
+Substitution into \eqref{eq:Y-q} first gives
+\(c=1+a/2\), then \(d=-a/2\), and finally
+\(e=c^2/2-aC(\theta_0)\).  Replacing the exact phase by \(\theta_0\)
+changes only the stated remainder because \(\Psi\) is smooth.  Formula
+\eqref{eq:F-inverse} follows formally from \eqref{eq:x-param}.  Because this
+calculation invokes the unproved remainder in
+\cref{thm:all-order-saddle}, it is a formal asymptotic derivation rather than
+a self-contained proof of the stated error term.
+\end{remark}
+
+\begin{remark}[A numerically stable parametric algorithm]
+For extreme arguments, direct inversion of \(F\) is ill-conditioned.
+A stable algorithm is:
+\begin{enumerate}[label=\arabic*.,leftmargin=2em]
+\item solve the scalar equation \(K'(t)=1-x\) or its Lambert form;
+\item evaluate \(Y(t)\) from the saddle expansion;
+\item invert the monotone map \(t\mapsto Y(t)\);
+\item recover \(x\) from \eqref{eq:exact-saddle}.
+\end{enumerate}
+All products are evaluated at positive \(t\), avoiding cancellation in
+\(F(x)\) itself.
+\end{remark}
+
+\section{Exact canonical Appell reproduction on dyadic grids}
+
+This section uses the same zero multiplicities in a different way.  Define
+the Appell polynomials \(A_n\) by
+\begin{equation}
+ \frac{\EulerE^{zt}}{M(t)}
+ =\sum_{n=0}^{\infty}A_n(z)\frac{t^n}{n!}.
+ \label{eq:Appell}
+\end{equation}
+Equivalently,
+\begin{equation}
+ A_n(z)=M(D)^{-1}z^n,\qquad D=\frac{\Differential}{\Differential z},
+ \label{eq:Appell-operator}
+\end{equation}
+where the operator series terminates on every polynomial.  Its coefficients
+are Bell polynomials in the negatives of the Bernoulli cumulants
+\eqref{eq:cumulants}.  For example,
+\[
+ A_0=1,\quad A_1=z,\quad
+ A_2=z^2-\frac19,\quad
+ A_3=z^3-\frac z3,\quad
+ A_4=z^4-\frac23z^2+\frac{31}{675}.
+\]
+
+\begin{theorem}[Dyadic Appell reproduction]
+\label{thm:reproduction}
+Fix \(r\geq0\) and \(h=2^{-r}\).  For every \(0\leq n\leq r\),
+\begin{equation}
+ \boxed{\displaystyle
+ x^n=h\sum_{k\in\IntegerNumbers}A_n(kh)u(x-kh).}
+ \label{eq:monomial-reproduction}
+\end{equation}
+Consequently every polynomial \(p\) of degree at most \(r\) satisfies
+\begin{equation}
+ p(x)
+ =h\sum_{k\in\IntegerNumbers}
+ \bigl[M(D)^{-1}p\bigr](kh)\,u(x-kh).
+ \label{eq:poly-reproduction}
+\end{equation}
+For each fixed \(x\), the sums are finite because \(u\) is compactly
+supported.
+\end{theorem}
+
+\begin{proof}
+Consider the exponential generating function of the right-hand side:
+\[
+ G(t,x)
+ =\frac h{M(t)}
+  \sum_{k\in\IntegerNumbers}\EulerE^{tkh}u(x-kh).
+\]
+Poisson summation applied to \(y\mapsto\EulerE^{-ty}u(y)\) gives
+\begin{equation}
+ G(t,x)
+ =\EulerE^{tx}
+ \left[
+  1+\sum_{m\neq0}
+   \frac{M(t+\ImaginaryUnit\omega_m)}{M(t)}
+   \EulerE^{\ImaginaryUnit\omega_mx}
+ \right],
+ \qquad
+ \omega_m=\frac{2\pi m}{h}.
+ \label{eq:poisson-Appell}
+\end{equation}
+Now \(\omega_m=2\pi m2^r\).  By \cref{thm:canonical},
+\(M(t+\ImaginaryUnit\omega_m)\) has a zero at \(t=0\) of order
+\[
+ 1+\nu_2(m2^r)=r+1+\nu_2(m)\geq r+1.
+\]
+Therefore the alias sum contributes nothing through degree \(t^r\), and
+comparison of coefficients in \eqref{eq:poisson-Appell} proves
+\eqref{eq:monomial-reproduction}.  Linearity gives
+\eqref{eq:poly-reproduction}.
+\end{proof}
+
+The theorem specializes immediately to Legendre, Lagrange, Bernoulli, Bell,
+or any other polynomial family.  The report next records the exact first
+failure beyond the reproduction threshold.
+
+For odd \(m\), define
+\begin{equation}
+ T_m=\prod_{\ell=1}^{\infty}
+ \SincRad\!\left(\frac{\pi m}{2^\ell}\right).
+ \label{eq:Tm}
+\end{equation}
+
+\begin{theorem}[Exact first aliasing defect for the canonical Appell scheme]
+\label{thm:alias-defect}
+With \(h=2^{-r}\),
+\begin{align}
+ &h\sum_{k\in\IntegerNumbers}A_{r+1}(kh)u(x-kh)-x^{r+1}
+ \notag\\
+ &\qquad=
+ -(r+1)!
+ \sum_{\substack{m\in\IntegerNumbers\setminus\{0\}\\m\ {\rm odd}}}
+ \frac{T_m}
+      {(\ImaginaryUnit\,2\pi\,2^r m)^{r+1}}
+ \EulerE^{\,2\pi\ImaginaryUnit m2^rx}.
+ \label{eq:first-alias}
+\end{align}
+The right-hand side is not identically zero.  Hence the displayed canonical
+Appell-weighted scheme reproduces through degree \(r\) and fails at degree
+\(r+1\).  This calculation alone does not assert the maximal reproduction
+order of the entire shift-invariant space; that stronger Strang--Fix claim
+requires separate stability and necessity hypotheses.
+
+Moreover, as \(r\to\infty\), the \(m=\pm1\) pair dominates the normalized
+defect uniformly; the remaining harmonics are
+\(\BigO(3^{-(r+1)})\) relative to the first pair.
+\end{theorem}
+
+\begin{proof}
+In \eqref{eq:poisson-Appell}, only those \(m\) for which the zero order is
+exactly \(r+1\) can contribute to the coefficient of \(t^{r+1}\); these are
+the odd integers.  Put \(\omega_m=2\pi2^rm\).  The first \(r+1\) factors of
+\(M(t+\ImaginaryUnit\omega_m)\) vanish linearly.  Their product has leading term
+\[
+ -\frac{t^{r+1}}{(\ImaginaryUnit\omega_m)^{r+1}},
+\]
+because the sum of the relevant integer phases is
+\(m(2^{r+1}-1)\), which is odd.  The remaining factors equal \(T_m\).
+Since \(M(t)=1+\BigO(t^2)\), extracting the coefficient of \(t^{r+1}\)
+gives \eqref{eq:first-alias}.
+
+The \(m=1\) Fourier coefficient is nonzero because every factor in \(T_1\)
+is positive, proving failure of the canonical scheme in degree \(r+1\).
+Finally \(|T_m|\leq1\), and the absolute
+contribution of \(|m|\geq3\) contains the factor
+\(|m|^{-(r+1)}\); comparison with \(T_1>0\) proves first-harmonic dominance.
+\end{proof}
+
+\begin{corollary}[Defect for any degree-\(r+1\) polynomial]
+If \(p(x)=\alpha x^{r+1}+\) lower-degree terms, then the error in
+\eqref{eq:poly-reproduction} is \(\alpha\) times
+\eqref{eq:first-alias}.  In particular, for \(P_{r+1}\), the multiplier is
+\[
+ \alpha=2^{-(r+1)}\binom{2r+2}{r+1}.
+\]
+\end{corollary}
+
+\section{An integer-base family of atomic functions}
+
+The spectral mechanism is not peculiar to base \(2\).  Let \(b\geq2\) be an
+integer and define
+\begin{equation}
+ X_b=\sum_{n=1}^{\infty}\frac{b-1}{b^n}U_n,
+ \qquad
+ \Phi_b(z)=
+ \prod_{n=1}^{\infty}
+ \SincRad\!\left(\frac{(b-1)z}{b^n}\right).
+ \label{eq:base-b}
+\end{equation}
+The weights sum to \(1\), so \(X_b\in[-1,1]\).  The same Fourier-decay
+argument gives an even \(C^\infty\) density \(u_b\).
+
+Let
+\[
+ \nu_b(m)=\max\{j\geq0:b^j\mid m\},\qquad
+ c_b=\frac{\pi b}{b-1},
+\]
+and let \(s_b(m)\) be the sum of the base-\(b\) digits of \(m\).
+
+\begin{theorem}[Base-\(b\) digital spectrum]
+\label{thm:base-b-spectrum}
+The following identities hold:
+\begin{align}
+ \Phi_b(z)
+ &=
+ \prod_{m\geq1}
+ \left(1-\frac{z^2}{c_b^2m^2}\right)^{1+\nu_b(m)},
+ \label{eq:base-b-product}\\
+ \mathcal Z_b(s)
+ &:=
+ \sum_{m\geq1}\frac{1+\nu_b(m)}{(c_bm)^s}
+ =
+ c_b^{-s}\frac{\zeta(s)}{1-b^{-s}},
+ \label{eq:base-b-zeta}\\
+ N_b(c_bM)
+ &=
+ \frac{bM-s_b(M)}{b-1}.
+ \label{eq:base-b-count}
+\end{align}
+Thus the complete base-\(b\) digit sum is recoverable from the zero count:
+\begin{equation}
+ s_b(M)=bM-(b-1)N_b(c_bM).
+ \label{eq:digit-recovery}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Euler's sine product and the substitution \(m=b^{n-1}k\) give
+\eqref{eq:base-b-product}.  The same divisor-indicator sum as before gives
+\eqref{eq:base-b-zeta}.  Finally,
+\[
+ N_b(c_bM)
+ =M+\sum_{j\geq1}\floor{\frac M{b^j}}
+ =M+\frac{M-s_b(M)}{b-1},
+\]
+which is \eqref{eq:base-b-count}.
+\end{proof}
+
+\begin{remark}[Exact Lean boundary for the finite base count]
+The arithmetic part of \eqref{eq:base-b-count}--\eqref{eq:digit-recovery}
+has a compiler-validated counterpart in
+\path{BaseDigitMultiplicity.lean}, including composite integer bases
+\(b\geq2\).  In the notation
+\[
+ A_b(N)=\sum_{n=1}^{N}\bigl(1+\nu_b(n)\bigr),
+\]
+the declarations
+\path{weightedScaleMultiplicity_const} and
+\path{weightedScaleMultiplicity_one_nat} identify the constant-weight
+scale count, while
+\path{sum_range_weightedScaleMultiplicity_of_log_lt},
+\path{sum_range_weightedScaleMultiplicity_log}, and
+\path{sum_range_div_pow_log_eq_self_add_tail} give its finite floor-sum
+forms.  Finally,
+\path{sub_one_mul_sum_padicValNat_succ_add_digitSum} proves
+\[
+ (b-1)A_b(N)+s_b(N)=bN,
+\]
+and \path{sum_range_padicValNat_succ_eq_sub_digitSum_div} gives the
+equivalent quotient formula.
+
+This closes the finite arithmetic only after the analytic zero count
+\(N_b(c_bN)\) has independently been identified with \(A_b(N)\).  The
+module does not define \(\Phi_b\), prove the canonical product, or establish
+the analytic collision order \(1+\nu_b(n)\).  Likewise,
+\path{SpectralZetaWeighted.lean} proves the real \(p\)-series identity for
+weights \(1+\nu_b(n)\), not the manuscript's complex meromorphic zeta
+identification or its cumulant and log-periodic consequences.
+\end{remark}
+
+\begin{corollary}[Base-\(b\) cumulants]
+Odd cumulants vanish, and
+\begin{equation}
+ \kappa_{2r}^{(b)}
+ =
+ \frac{2^{2r-1}B_{2r}}r
+ \frac{(b-1)^{2r}}{b^{2r}-1}
+ =
+ (-1)^{r+1}\frac{(2r)!}{r}\mathcal Z_b(2r).
+ \label{eq:base-b-cumulants}
+\end{equation}
+In particular, all moments are rational for integer \(b\).
+\end{corollary}
+
+For the \(N\)-factor truncation,
+\begin{equation}
+ \mathcal Z_{b,N}(s)
+ =c_b^{-s}\zeta(s)
+  \frac{1-b^{-Ns}}{1-b^{-s}}
+ =c_b^{-s}\zeta(s)[N]_{b^{-s}},
+ \label{eq:base-b-qinteger}
+\end{equation}
+so the \(q\)-integer phenomenon is universal across integer bases.
+
+\subsection{Base-\(b\) log-periodicity}
+
+Set \(T=(b-1)t\), \(a_b=\log b\), \(q=\log T\), and
+\(\theta=\fracpart{q/a_b}\).  The split-sum proof of
+\cref{thm:exact-transseries} gives the following exact analogue.
+
+\begin{theorem}[Base-\(b\) transseries]
+\label{thm:base-b-transseries}
+For \(T\geq1\),
+\begin{align}
+ K_b(t)
+ :={}&\log\Expectation\EulerE^{tX_b}
+ \notag\\
+ ={}&
+ t-\frac{q^2}{2a_b}
+ +\left(\frac12-\frac{\log2}{a_b}\right)q
+ +\Psi_b(\theta)+R_b(T),
+ \label{eq:base-b-K}
+\end{align}
+where
+\begin{align}
+ \Psi_b(\theta)
+ ={}&
+ -\frac{b^\theta}{b-1}
+ +\theta\log2+\frac{a_b}{2}(\theta^2-\theta)
+ \notag\\
+ &+\sum_{j\geq0}\log(1-\EulerE^{-2b^{j+\theta}})
+ +\sum_{k\geq1}
+   \log\!\left(\frac{\sinh(b^{\theta-k})}{b^{\theta-k}}\right),
+ \label{eq:base-b-Psi}\\
+ R_b(T)
+ ={}&
+ -\sum_{\ell\geq0}\log(1-\EulerE^{-2b^\ell T})
+ \notag\\
+ ={}&
+ \sum_{n\geq1}
+ \frac{b^{\nu_b(n)+1}-1}{(b-1)n}\EulerE^{-2nT}.
+ \label{eq:base-b-R}
+\end{align}
+The meromorphic frequencies are
+\(2\pi\ImaginaryUnit k/\log b\).
+\end{theorem}
+
+\begin{proof}
+Repeat the finite/tail split with
+\(K_b(t)=\sum_{n\geq1}f(T/b^n)\).  The geometric linear sum contributes
+\(t-b^\theta/(b-1)\); the logarithmic finite sum contributes
+\[
+ -\frac{q^2}{2a_b}
+ +\left(\frac12-\frac{\log2}{a_b}\right)q
+ +\theta\log2+\frac{a_b}{2}(\theta^2-\theta).
+\]
+The remaining reindexing is identical to the dyadic proof.  Expanding the
+last product and grouping \(n=mb^\ell\) gives \eqref{eq:base-b-R}.
+\end{proof}
+
+\begin{remark}
+For noninteger \(b>1\), the random series and log-periodic asymptotics still
+make sense, but the exact digit-sum interpretation disappears.  Integer
+radices are precisely where analytic scale invariance and arithmetic
+divisibility lock together.
+\end{remark}
+
+\section{Further rigorous consequences}
+
+\subsection{Optimal sub-Gaussianity}
+
+The random-series model gives a useful global inequality.
+
+\begin{proposition}[Exact sub-Gaussian proxy]
+\label{prop:subgaussian}
+For all real \(t\),
+\begin{equation}
+ M(t)\leq \exp(t^2/18).
+ \label{eq:subgaussian}
+\end{equation}
+The variance proxy \(1/9\) is optimal.
+Consequently,
+\begin{equation}
+ m_{2n}\leq
+ \min\!\left(1,\frac{2^{n+1}n!}{9^n}\right).
+ \label{eq:moment-bound}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The elementary inequality
+\(\sinh y/y\leq\EulerE^{y^2/6}\) gives
+\[
+ M(t)
+ \leq
+ \exp\!\left(
+  \frac{t^2}{6}\sum_{n\geq1}4^{-n}
+ \right)
+ =\exp(t^2/18).
+\]
+No smaller Gaussian proxy is possible, because
+\(K''(0)=\Variance X=1/9\).  Chernoff's argument gives
+\(\Pr\{|X|\geq s\}\leq2\exp(-9s^2/2)\).  Integration of this tail bound,
+\[
+ \Expectation|X|^{2n}
+ =2n\int_0^\infty s^{2n-1}\Pr\{|X|\geq s\}\Differential s,
+\]
+gives \(2^{n+1}n!/9^n\); compact support gives the competing bound \(1\).
+\end{proof}
+
+\subsection{Log-concavity}
+
+Each finite density \(u_N\) is a convolution of interval indicators and is
+therefore log-concave.  Passage to the locally uniform limit gives:
+
+\begin{proposition}
+The Rvachev density \(u\), and more generally every \(u_b\), is log-concave
+on its support.
+\end{proposition}
+
+Strict log-concavity is more delicate because every finite stage has spline
+facets.  For \(b>2\) it is impossible: in this report's support
+normalization, \(u_b\) has the exact central plateau
+\[
+ u_b(x)=\frac{b}{2(b-1)}
+ \quad\text{for}\quad |x|\leq\frac{b-2}{b}.
+\]
+At \(b=2\), every positive-order derivative of \(u_2\) vanishes at the
+center even though the function is not locally constant there, so the
+pointwise condition \((\log u_2)''(0)<0\) also fails.  The remaining open
+range is isolated below as a corrected conjecture.
+
+\subsection{A distributional smoothing/deconvolution calculus}
+
+From \eqref{eq:tail-copy},
+\begin{equation}
+ u=u_N*\bigl[2^Nu(2^N\,\cdot)\bigr].
+ \label{eq:smoothing}
+\end{equation}
+For a test function \(\varphi\), Taylor expansion against the scaled tail
+gives the distributional asymptotic
+\begin{equation}
+ u
+ \sim
+ \sum_{j\geq0}
+ \frac{m_{2j}}{(2j)!\,2^{2Nj}}D^{2j}u_N.
+ \label{eq:smoothing-expansion}
+\end{equation}
+Conversely,
+\[
+ \widehat u_N(z)=\frac{\Phi(z)}{\Phi(z/2^N)}
+\]
+gives
+\begin{equation}
+ u_N
+ \sim
+ \sum_{j\geq0}
+ \frac{A_{2j}(0)}{(2j)!\,2^{2Nj}}D^{2j}u,
+ \label{eq:deconvolution-expansion}
+\end{equation}
+again distributionally, with the reciprocal-moment coefficients generated
+by \(1/M\).  These expansions provide systematic high-order corrections to
+finite Thue--Morse splines without recomputing the \(2^N\)-term formula
+\eqref{eq:finite-spline}.
+
+\section{Conjectures}
+
+The conjectures are ordered from concrete to structural.
+
+\begin{conjecture}[One-wave topology of the periodic fluctuation]
+\label{conj:one-wave}
+The dyadic function \(\Psi\) has exactly one maximum and one minimum on
+\(\RealNumbers/\IntegerNumbers\), both nondegenerate.  More generally, \(\Psi_b\) has this property
+for every integer \(b\geq2\).
+\end{conjecture}
+
+The exponential gap between \(c_1\) and the higher coefficients makes this
+highly plausible and numerically testable.  A proof should follow from an
+explicit domination inequality for \(\sum_{|k|\geq2}k c_k\EulerE^{2\pi\ImaginaryUnit
+k\theta}\) by the first harmonic.
+
+\begin{conjecture}[Strict log-concavity]
+\label{conj:strict-logconcavity}
+For every real \(1<b<2\), the density \(u_b\) is strictly log-concave on
+\((-1,1)\):
+\[
+ (\log u_b)''(x)<0,\qquad -1<x<1.
+\]
+\end{conjecture}
+
+The non-strict statement is proved above.  The arrival version incorrectly
+included all \(b\geq2\), contradicting the center flatness and exact plateau
+just recorded.  Strictness on the corrected range would sharpen concentration bounds and imply
+uniqueness properties for tilted saddle measures.
+
+\begin{conjecture}[Complete endpoint transseries]
+\label{conj:resurgence}
+After the exact decomposition of \(K_b\), the saddle expansion for
+\(u_b(1-x)\) is Gevrey--\(1\) in \(1/\log t\) and Borel summable along the
+positive saddle.  Its only beyond-all-orders exponential scales are those
+generated by
+\[
+ \EulerE^{-2n(b-1)t},\qquad n\geq1,
+\]
+with coefficients determined by the base-\(b\) valuation sequence in
+\eqref{eq:base-b-R}; there are no hidden exponential actions.
+\end{conjecture}
+
+\begin{conjecture}[Sharp Legendre logarithmic scale]
+\label{conj:legendre-sharp}
+For the nonzero even Legendre coefficients,
+\[
+ \log|a_{2n}|
+ =-\frac{(\log n)^2}{2\log2}+\BigO(\log n),
+\]
+and, after subtraction of an explicit linear-log term, the upper envelope has
+a \(1\)-periodic modulation in \(\log_2n\) governed by the same complex
+dimensions \(\chi_k\).
+\end{conjecture}
+
+The caveat ``upper envelope'' is essential because the zero divisor of
+\(\Phi\) can create deep arithmetic dips.
+
+\begin{conjecture}[Asymptotic exactness of the first alias wave]
+\label{conj:alias-norm}
+For standard Sobolev and uniform norms, the optimal degree-\(r+1\)
+polynomial quasi-interpolation error on the grid \(2^{-r}\IntegerNumbers\), after its
+natural normalization, is asymptotic to the \(m=\pm1\) wave in
+\eqref{eq:first-alias}; no alternative local coefficient functional can
+cancel that wave without sacrificing stability.
+\end{conjecture}
+
+The explicit defect proves first-wave dominance for the canonical Appell
+scheme.  The conjecture asserts its minimax optimality across stable local
+schemes.
+
+\section{Promising research directions}
+\label{sec:future}
+
+\subsection{Rigorous complex-dimension calculus}
+
+The spectral zeta \eqref{eq:spectral-zeta} is simple enough to support a
+complete ``explicit formula'' theory parallel to that of self-similar
+strings.  Natural next objects include:
+\[
+ \sum_m(1+\nu_2(m))g(2\pi m/T),
+ \qquad
+ \log\det\nolimits_\zeta(\lambda^2+\rho_m^2),
+\]
+and smoothed zero-counting errors.  Their residues should give a unified
+family of periodic functions, with exact transfer formulas between test
+functions.
+
+\subsection{A fully rigorous endpoint local limit theorem}
+
+The formal expansion in \cref{thm:all-order-saddle} requires a theorem uniform
+in complex sectors, obtained by treating the exponentially tilted summands as
+a triangular array.  The useful target is an explicit remainder with
+computable constants:
+\[
+ \left|
+ \frac{F(x)\sqrt{2\pi K''(t)}}
+      {\EulerE^{K(t)-t(1-x)}}
+ -\sum_{j=0}^{m-1}C_j(t)
+ \right|
+ \leq C_m(\log t)^{-m}.
+\]
+This would turn the asymptotic formulas into certified inverse-Fabius
+algorithms.
+
+\subsection{Interval-certified inverse evaluation}
+
+The phase-locked Lambert equation is well suited to interval Newton methods.
+A rigorous implementation would:
+\begin{enumerate}[label=\arabic*.,leftmargin=2em]
+\item bracket \(t\) with \(W_{-1}\);
+\item bound \(\Psi,\Psi'\), and \(\Psi''\) by truncating
+      \eqref{eq:ck} with an analytic tail estimate;
+\item bound \(R\) by its positive series \eqref{eq:R-digital};
+\item propagate the enclosure through the saddle expansion.
+\end{enumerate}
+This is likely far more efficient than direct evaluation of a flat
+\(C^\infty\) function near zero.
+
+\subsection{Legendre and other orthogonal bases}
+
+The Fourier--Bessel bridge \eqref{eq:legendre-bessel} converts the problem of
+sharp Legendre coefficients into a turning-point integral involving a
+lacunary canonical product.  A combined Debye--Airy analysis of \(j_n\) and
+the digital envelope of \(\Phi\) may prove \cref{conj:legendre-sharp}.
+Analogous transforms exist for Gegenbauer, Chebyshev, and Hermite systems.
+
+\subsection{\(q\)-binomial refinement of finite cascades}
+
+Equation \eqref{eq:finite-qinteger} identifies the first \(q\)-object:
+\([N]_{2^{-s}}\).  Higher exterior or subset statistics of the finite divisor
+should produce Gaussian binomial coefficients
+\(\genfrac{[}{]}{0pt}{}{N}{k}_{2^{-s}}\).  A concrete program is to define
+the \(k\)-fold distinct-zero spectral sums
+\[
+ E_{k,N}(s)
+ =\sum_{1\leq n_1<\cdots<n_k\leq N}
+ 2^{-s(n_1+\cdots+n_k)}
+ =2^{-sk(k+1)/2}
+  \genfrac{[}{]}{0pt}{}{N}{k}_{2^{-s}},
+\]
+then identify the corresponding cumulant or spline operators.  This would
+connect the repository's \(q\)-binomial formulas to the spectral divisor
+rather than only to coefficient algebra.
+
+\subsection{Digit masks beyond uniform boxes}
+
+Replace \(\SincRad\) by the Fourier transform of a compactly supported mask and
+form
+\[
+ \prod_{n\geq1}P(z/b^n).
+\]
+When the zeros of \(P\) fall in finitely many rational arithmetic
+progressions, the resulting spectral zeta should be a finite linear
+combination of terms
+\[
+ L(s,\chi)\,\frac{Q(b^{-s})}{1-b^{-s}},
+\]
+with Dirichlet \(L\)-functions and rational \(Q\).  This offers a route from
+Thue--Morse to Rudin--Shapiro and more general automatic sequences.
+
+\subsection{Formal verification}
+
+The algebraic core is friendly to proof assistants.  The live corpus already
+formalizes generalized versions of several items below; high-value intake
+tasks are therefore normalization-aware crosswalks from this report to those
+APIs, not claims that the mathematics is wholly unformalized:
+\begin{enumerate}[label=(\roman*),leftmargin=2.5em]
+\item the divisor regrouping in \cref{thm:canonical};
+\item the identity \(N(2\pi M)=2M-s_2(M)\);
+\item the finite spectral \(q\)-integer \eqref{eq:finite-qinteger};
+\item the Bell-polynomial cumulant formula;
+\item coefficient extraction in the Appell reproduction theorem.
+\end{enumerate}
+The Mellin-contour and saddle arguments can remain analytic interfaces until
+the finite algebra is fully mechanized.
+
+\section{Conclusions}
+
+The main organizing viewpoint is that the dyadic sinc product carries an arithmetic
+spectral divisor:
+\[
+ \operatorname{mult}_{2\pi m}\Phi=1+\nu_2(m).
+\]
+Around this identity, the report develops or proposes:
+\begin{itemize}[leftmargin=2em]
+\item the spectral zeta
+      \(\zeta(s)/((2\pi)^s(1-2^{-s}))\);
+\item the exact digit-sum count \(2M-s_2(M)\) and spectral Thue--Morse parity;
+\item Bernoulli cumulants as reciprocal zero power sums;
+\item complex dimensions \(2\pi\ImaginaryUnit k/\log2\);
+\item an exact periodic-plus-exponential transseries for \(\log M(t)\);
+\item a phase-corrected Lambert-\(W_{-1}\) endpoint saddle;
+\item a candidate refined inverse-Fabius asymptotic;
+\item and an exact dyadic hierarchy for the canonical Appell reproduction
+      scheme and its first aliasing defect.
+\end{itemize}
+The integer-base extension shows that this is not an accidental collection of
+dyadic tricks.  It is a general mechanism in which scale invariance,
+valuation arithmetic, Mellin poles, and flat compactly supported densities
+are different manifestations of the same structure.
+
+\appendix
+
+\section{A compact derivation of the Mellin kernel}
+
+For completeness, for \(0<c<1\),
+\[
+ \log(1+x)
+ =\frac1{2\pi\ImaginaryUnit}
+  \int_{c-\ImaginaryUnit\infty}^{c+\ImaginaryUnit\infty}
+  \frac{\pi}{s\sin\pi s}x^s\Differential s.
+\]
+For \(0<x<1\), closing to the right and accounting for orientation gives
+\[
+ -\sum_{n\geq1}\Res_{s=n}
+ \frac{\pi x^s}{s\sin\pi s}
+ =-\sum_{n\geq1}\frac{(-1)^n}{n}x^n
+ =\log(1+x).
+\]
+Analytic continuation gives the identity for all positive \(x\).
+Substitution \(x=t^2/(2\pi m)^2\), followed by the absolutely convergent
+sum over the zero divisor, yields \eqref{eq:K-Mellin}.
+
+\section{Coefficient generator for arbitrary saddle order}
+
+Let
+\[
+ \Lambda_j=\frac{K^{(j)}(t)}{j!\,K''(t)^{j/2}},
+ \qquad j\geq3.
+\]
+Introduce a bookkeeping parameter \(\varepsilon\) by assigning weight
+\(j-2\) to \(\Lambda_j\):
+\[
+ \mathfrak S(\varepsilon)
+ =
+ \frac1{\sqrt{2\pi}}\int_\RealNumbers\EulerE^{-z^2/2}
+ \exp\!\left(
+  \sum_{j\geq3}
+   \varepsilon^{j-2}\Lambda_j(\ImaginaryUnit z)^j
+ \right)\Differential z.
+\]
+Then the coefficient of \(\varepsilon^{2m}\) is the \(m\)-th relative
+saddle correction.  Expanding the exponential gives the explicit partition
+formula
+\[
+ C_m(t)=
+ \sum_{\substack{k_3,k_4,\ldots\geq0\\
+                 \sum_{j\geq3}(j-2)k_j=2m\\
+                 \sum j k_j\ \mathrm{even}}}
+ \frac{(-1)^{\frac12\sum j k_j}
+       \bigl(\sum j k_j-1\bigr)!!}
+      {\prod_{j\geq3}k_j!}
+ \prod_{j\geq3}\Lambda_j^{k_j}.
+\]
+Only finitely many indices occur at each \(m\).  This is the Bell-polynomial
+form of the arbitrary-order expansion requested in symbolic applications.
+
+\section{Repository-audit reproducibility}
+
+The archive contains:
+\begin{itemize}[leftmargin=2em]
+\item \texttt{repository\_audit.md}, with every audited file, source hash,
+      extracted structural heading, and phrase-cluster matches;
+\item \texttt{repository\_audit.py}, the dependency-free program that
+      regenerates that audit while excluding this package directory;
+\item \texttt{numerical\_experiments.py}, with all high-precision checks and
+      figure generation;
+\item \texttt{numerical\_results.tex}, generated by that program;
+\item the figures used in this report, when Matplotlib was available.
+\end{itemize}
+The repaired audit found prior hits for all six advertised clusters.  It
+deliberately records lexical overlap rather than claiming that automated text
+search decides mathematical equivalence; the package therefore remains a
+standalone intake pending a claim-by-claim crosswalk and deliberate
+deduplication.
+
+\begin{thebibliography}{99}
+
+\bibitem{AlloucheShallit}
+J.-P. Allouche and J. Shallit,
+\emph{Automatic Sequences: Theory, Applications, Generalizations},
+Cambridge University Press, 2003.
+
+\bibitem{Comtet}
+L. Comtet,
+\emph{Advanced Combinatorics},
+D. Reidel, 1974.
+
+\bibitem{Corless}
+R. M. Corless, G. H. Gonnet, D. E. G. Hare, D. J. Jeffrey, and
+D. E. Knuth,
+``On the Lambert \(W\) function,''
+\emph{Advances in Computational Mathematics} 5 (1996), 329--359.
+
+\bibitem{Daniels}
+H. E. Daniels,
+``Saddlepoint approximations in statistics,''
+\emph{Annals of Mathematical Statistics} 25 (1954), 631--650.
+
+\bibitem{deBruijn}
+N. G. de Bruijn,
+``On Mahler's partition problem,''
+\emph{Indagationes Mathematicae} 10 (1948), 210--220.
+
+\bibitem{Fabius}
+J. Fabius,
+``A probabilistic example of a nowhere analytic \(C^\infty\)-function,''
+\emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte Gebiete}
+5 (1966), 173--174.
+
+\bibitem{FlajoletGourdonDumas}
+P. Flajolet, X. Gourdon, and P. Dumas,
+``Mellin transforms and asymptotics: harmonic sums,''
+\emph{Theoretical Computer Science} 144 (1995), 3--58.
+
+\bibitem{GasperRahman}
+G. Gasper and M. Rahman,
+\emph{Basic Hypergeometric Series}, 2nd ed.,
+Cambridge University Press, 2004.
+
+\bibitem{Olver}
+F. W. J. Olver,
+\emph{Asymptotics and Special Functions},
+A K Peters, 1997 reprint.
+
+\bibitem{ParisKaminski}
+R. B. Paris and D. Kaminski,
+\emph{Asymptotics and Mellin--Barnes Integrals},
+Cambridge University Press, 2001.
+
+\bibitem{Rvachev}
+V. L. Rvachev,
+``Compactly supported solutions of functional-differential equations and
+their applications,''
+\emph{Russian Mathematical Surveys} 45:1 (1990), 87--120.
+
+\bibitem{StrangFix}
+G. Strang and G. Fix,
+``A Fourier analysis of the finite element variational method,''
+in \emph{Constructive Aspects of Functional Analysis},
+Edizioni Cremonese, Rome, 1971.
+
+\bibitem{Repo}
+V. Reshetnikov,
+\emph{ProveIt: Analysis/FabiusFunction documentation},
+GitHub repository,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs},
+accessed 30 August 2026.
+
+\end{thebibliography}
+
+\end{document}

@@ -15,51 +15,47 @@ gap, but it repaired three points of exposition in the TeX source:
 - the finite tie set is indexed so that the empty case `n = 1` is literal.
 
 The source map was also corrected from the nonexistent
-`StrictMonotonicity.lean` to `Monotonicity.lean`.  At that intake checkpoint,
-three direct `pdflatex` passes rebuilt the 19-page PDF without warnings,
-overfull boxes, or unresolved references, and every rebuilt page was rendered
-and visually inspected.
+`StrictMonotonicity.lean` to `Monotonicity.lean`.  The merged report retains
+15 nonconjectural labelled manuscript results, two numbered warning
+quarantines, and one live conjecture.  Former Conjecture 14.1 is nonexclusive
+as submitted: at an `n = 1` interior dyadic point, the eventually-zero Taylor
+polynomial also has positive radius without representing the function locally.
+No replacement zero-radius/eventually-zero classification is asserted.
 
-A later repository normalization replaced the bespoke preamble by the primary
-exposition's canonical A4, 27 mm, Libertinus preamble, corrected the PDF author
-metadata to match the title-page attribution, and removed an unsupported claim
-of symbolic verification.  Three serial `pdflatex` passes rebuilt that
-normalized checkpoint as a 21-page A4 PDF with embedded and subset fonts, no
-Type 3 font, no overfull box, and no unresolved reference, rerun request, or TeX
-error.  Every page was rendered and inspected, and generated `.aux`, `.log`,
-`.out`, and `.toc` files were removed afterward.
-
-The merged source also incorporates a second proof pass.  It now contains 15
-nonconjectural labelled manuscript results and two conjecture environments.
-The Taylor-series alternatives are disjoint: the positive-radius class
-explicitly requires infinitely many nonzero coefficients, while the live
-classification conjecture is the zero-radius/eventually-zero dichotomy.  The
-former tie-cancellation conjecture is now a proved manuscript proposition.  At
-a tie, the earlier maximal orbit point is `1/4` or `3/4`, its successor is
-`5/72` or `67/72`, and along the explicit orders `m = 6ℓ + 4` the earlier
-spine vanishes while the later one has amplitude exactly `Up(1/9) ≥ 1/2`.
-The finite-spine expansion then gives the full derivative lower bound with
-constant `A_(k+1,n)/4` and zero Taylor radius at every tie point.  The
-supporting exact Lean anchors are `fabius_deriv_quarter`,
-`deriv_fabiusReal_one_sub`, `fabiusReal_quarter`, and
-`fabiusReal_three_quarters`; the tie proposition and its finite-spine
-conclusion are manuscript proofs, not Lean proofs.
+Former Conjecture 14.2 is also not live.  The manuscript's exact tie
+proposition identifies the tied orbit points as `1/4` or `3/4` followed by
+`5/72` or `67/72`; along `m = 6ℓ + 4`, the earlier spine vanishes and the later
+one has amplitude exactly `Up(1/9) ≥ 1/2`.  The finite-spine expansion then
+gives a full-derivative lower bound with constant `A_(k+1,n)/4` and zero Taylor
+radius at every tie point.  The exact Lean anchors are
+`fabius_deriv_quarter`, `deriv_fabiusReal_one_sub`, `fabiusReal_quarter`, and
+`fabiusReal_three_quarters`; the tie proposition, finite-spine argument, and
+iterate conclusion remain manuscript proofs.
 
 The exact positive-list arithmetic of the partition defect--including its
 pairwise and triangular forms, zero-defect classification, sharp fixed-block
 minimum, equality profile, and first positive shell--is formalized in
-`PartitionDefect.lean`.  That module works for arbitrary positive block-size
-lists.  It does not supply the bridge from finite set partitions, the
-quadratic-scale factorization, weighted-defect decay, two-spine reduction,
-finite-spine expansion, orbit-weight analysis, analytic conclusion, or the
-positive-iterate theorem for `n >= 2`.
+`PartitionDefect.lean`.  The module has three public definitions and thirty-
+three public theorems, exhaustively crosswalked in the TeX.  It does not supply
+the bridge from finite set partitions, the quadratic-scale factorization,
+weighted-defect decay, two-spine reduction, finite-spine expansion,
+orbit-weight analysis, analytic conclusion, or the positive-iterate theorem
+for `n >= 2`.
 
-After the second-proof-pass integration, exactly three serial `pdflatex`
-passes rebuilt the 1,555-line source as a 21-page A4 PDF.  The final pass has
-no TeX error, unresolved reference, rerun request, or overfull box; every font
-is embedded and subset, Libertinus is present, and no Type 3 font is used.
-Representative proof, status, and final pages were rendered and inspected,
-and the synchronized payload hashes were refreshed in `SHA256SUMS.txt`.
+## Final merged-document validation
+
+The final TeX was frozen at 1,566 lines and 63,630 bytes with SHA-256
+`e46584803c86359e977f404ea4d9b7f515c5579cf392f10d87f2ceaeb8b3c835`.
+Starting from clean auxiliary state, exactly three strict serial `pdflatex`
+passes produced a 22-page, 785,347-byte A4 PDF with SHA-256
+`eed9b151ab43ba846e9d6d945a4e815d0ed11b9ecf530cee27711c26fb11bcf6`.
+The final log has no warning, TeX error, unresolved reference or citation,
+rerun request, duplicate destination, or overfull/underfull box.  All 22 font
+rows are embedded and subset Type 1 fonts, five are Libertinus, and none is
+Type 3 or Latin Modern.  Every page has extractable text and A4/zero-rotation
+geometry.  All 22 rendered pages were visually inspected, including the
+status boundary, exhaustive Lean crosswalk, exact tie proposition, warning
+quarantines, sole live conjecture, numerical figures, and source map.
 
 ## Exact numerical replay
 

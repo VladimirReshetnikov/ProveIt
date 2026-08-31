@@ -28,3 +28,25 @@ Parameters used in this run:
 
 The Monte Carlo results are checks only.  The accompanying report proves the
 identities independently.
+
+Validated replay environment
+----------------------------
+* Python: 3.13.14
+* NumPy: 2.3.3
+* SymPy: 1.14.0
+* Matplotlib: 3.10.8
+
+Exact replay command from the package root:
+
+python code/fabius_q_response_experiments.py --output-root OUTPUT_ROOT \
+  --samples 1000000 --cdf-samples 1500000 --chunk-size 25000 \
+  --digits 32 --q-step 0.005 --seed 20260830 \
+  --max-moment 14 --max-legendre 20
+
+The program writes CSV rows with an explicit LF line terminator on every
+platform.  Exact symbolic tables, the common-random-number CDF table, and both
+figures are expected to be byte-identical in the validated environment.
+Monte Carlo reductions can vary in their final floating-point bits across
+hardware or BLAS implementations; see EXPERIMENT_REPLAY.txt for the measured
+tolerances.  The committed Monte Carlo tables are validation evidence, not
+proof inputs.

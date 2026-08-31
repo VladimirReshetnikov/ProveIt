@@ -1,119 +1,56 @@
 # Frontier compilations
 
+The Digital Spectral Geometry intake is registered once, in the
+[`spectra-and-arithmetic`](../spectra-and-arithmetic/) group.  That filing
+preserves the full verified arrival ledger, repairs the failed audit and
+numerical generation, corrects the false curvature claim, and supplies the
+policy-conforming canonical build; the unrepaired duplicate formerly listed
+here has been removed.
+
 New standalone intake members:
+
+The standalone
+[`Geometric_Uniform_Frontier_Directions/`](Geometric_Uniform_Frontier_Directions/)
+package, *Frontier Directions for Fabius--Rvachev Analysis*, was filed on
+2026-08-30 from `fabius_frontier_report_bundle-D.zip` (1,508,514 bytes;
+SHA-256
+`39f3638f52f19955b88b7a865a60b76d9ce31154d98967d1400a6ad97396fa9a`).
+Its submitted 34-row ledger was verified and is preserved as
+`ARRIVAL_SHA256SUMS`; the normalized 36-row current ledger passes in full.
+The 1,641-line report and 874-line deterministic experiment suite were
+replayed, audited, normalized to the shared A4/27 mm/Libertinus style, and
+rebuilt as a 30-page PDF with embedded/subset fonts and no Type 3.  Exact
+tables reproduced; the three floating-point tables exhibit only documented
+last-place platform drift.  The report is paper-level: current Lean already
+covers the geometric-uniform law, its positive-parameter density and
+convolution interfaces, weighted sinc--zeta expansions, and the fixed
+half--quarter split, but not the report's negative-parameter duality,
+all-parameter asymptotics, exact subdyadic derivative norms, arbitrary-base
+spectral divisor, Legendre scaling, or periodic Laplace phase.  Its spectral
+and reciprocal-integer directions conceptually overlap the separately
+audited packages, without wholesale textual duplication.
 
 - [`Geometric_Uniform_Convolutions_and_New_Frontiers/`](Geometric_Uniform_Convolutions_and_New_Frontiers/),
   *Geometric Uniform Convolutions and New Frontiers around the
   Fabius--Rvachev System*, is the title-derived filing of the generic
   source-only wrapper `drafts/incoming/fabius-frontier-report-H/`, committed
-  directly by `8a184546747082cbd92ad4675fb61981c6b8c3b6`. The incomplete
+  directly by `8a184546747082cbd92ad4675fb61981c6b8c3b6`.  The incomplete
   delivery consists of one 1,656-line LF TeX manuscript: no PDF, README,
   external code, data, figures, captured output, checksum file, repository
-  metadata, or archive was supplied. Intake repaired three form-feed-corrupted
-  `\frac` tokens and added a repository-generated one-entry `SHA256SUMS`. The
+  metadata, or archive was supplied.  Intake repaired three form-feed-corrupted
+  `\frac` tokens and added a repository-generated one-entry `SHA256SUMS`.  The
   package still has no PDF, and the source has not yet been shown to compile.
 
   Its q-deformed derivative formulas, Gaussian/Edgeworth layer,
   valuation-weighted zeros, non-Gevrey growth, and periodic Lambert endpoint
   program overlap several same-batch reports and the consolidated corpus; its
   abstract also says reproducible Python code accompanies the report, but none
-  was delivered. The source remains standalone pending post-publication compilation,
+  was delivered.  The source remains standalone pending post-publication compilation,
   claim-by-claim comparison, and a Lean crosswalk.  Nothing in the intake
   establishes that any manuscript theorem is proved in Lean.
 
-- [`fabius_information_frontier/`](fabius_information_frontier/),
-  *Exact Information Geometry and New Frontiers for the Fabius--Rvachev
-  System* (30 pp), arrived on 2026-08-30 from the single-root archive
-  `fabius_information_frontier_report.zip` (outer SHA-256
-  `41f9aba6eb85bb173827f13cb6b7b1d54b7ea9346faf7c9e5b1af859bbd42ec7`).
-  All 18 submitted non-ledger payload hashes verified; four CSV entries and
-  their ledger hashes were refreshed after CRLF-to-LF repository
-  normalization. Its geometric-uniform information laws, entropy/Fisher,
-  dyadic Thue--Morse, inverse-Fabius/Lambert, and q-asymptotic themes place it
-  with the broad frontier series. It remains standalone pending
-  post-publication claim review, semantic deduplication, experiment
-  assessment, and a Lean crosswalk; manuscript labels do not establish Lean
-  verification. The filed PDF hard-codes Latin Modern and inherits five
-  embedded/subset Type-3 font rows from its vector figures; canonical promotion
-  requires a Libertinus/Type-3-free rebuild and refreshed checksums.
-
-- [`Digital_Spectral_Geometry_and_Log_Periodic_Saddles/`](Digital_Spectral_Geometry_and_Log_Periodic_Saddles/),
-  *Digital Spectral Geometry and Log-Periodic Saddles: Frontier Results for
-  the Thue--Morse, Fabius, Inverse-Fabius, and Rvachev Systems* (24 A4 pp,
-  1949 source lines; with a 490-line numerical generator),
-  arrived on 2026-08-30 from the rootless archive
-  `Fabius_Rvachev_Frontier_Report_Package.zip` (outer SHA-256
-  `0028cb4f47134574ba7cd698bfc0ec11f08776b320cbc82b8467bea20d865f6d`).
-  The arrival's own manifest covers only its TeX and PDF; the complete ten-file
-  arrival ledger is recorded in `ARRIVAL_SHA256SUMS`. The repository repair
-  replaces the failed numerical run with captured reproducible output and three
-  generated figures, reruns a dated 140-file corpus audit, records the
-  paper-versus-Lean boundary, adopts canonical A4/27 mm/Libertinus styling and
-  PDF metadata, and rebuilds exactly three passes. All fonts are embedded and
-  subset, no Type 3 font or overfull box remains, and the exhaustive 17-entry
-  live `SHA256SUMS` verifies. Its zero multiplicities,
-  spectral zeta and digit count, log-periodic complex dimensions, endpoint and
-  inverse-Fabius saddles, Appell/Strang--Fix reproduction, and integer-base
-  generalization substantially overlap Parts II, V, VII, and VIII of the
-  consolidated volume below. One conjecture is already false as stated:
-  strict log-concavity for every real base `b > 1` is refuted for `b > 2` by
-  the canonical exact plateau, and at `b = 2` by the flat mode (equivalently
-  `q < 1/2` and `q = 1/2`, respectively), so it is not a live frontier claim.
-  A first Lean crosswalk now closes the finite base-`b` scale count and
-  digit-recovery arithmetic, including composite bases; the package remains
-  standalone while the bundled analytic product/order theorem and the
-  remaining report-wide deduplication are still pending.  Manuscript theorem
-  labels do not establish Lean proof status.
-
-## Current Lean crosswalk: general-base multiplicity arithmetic
-
-Put
-
-`ν_b(n) = max {h : b^h ∣ n}`, `A_b(N) = ∑_{n=1}^N (1 + ν_b(n))`,
-
-and let `s_b(N)` be the sum of the base-`b` digits of `N`.  When `b` is
-composite, `ν_b` is a base-`b` divisibility or scale exponent, not an additive
-valuation; for example, `ν_6(2) + ν_6(3) = 0` but `ν_6(6) = 1`.
-
-| Lean declaration | Human-readable statement |
-| --- | --- |
-| `weightedScaleMultiplicity_const` | In any additive commutative monoid, a constant layer weight `a` gives `W_{b,h ↦ a}(n) = (ν_b(n)+1) • a`. |
-| `weightedScaleMultiplicity_one_nat` | For natural-valued unit weights, `W_{b,1}(n) = ν_b(n)+1`. |
-| `sum_range_weightedScaleMultiplicity_of_log_lt` | For every integer `b ≥ 2`, every height `H` with `log_b N < H`, and weights in any additive commutative monoid, `∑_{n=1}^N ∑_{h=0}^{ν_b(n)} w_h = ∑_{h=0}^{H-1} ⌊N/b^h⌋ • w_h`. The extra high layers vanish automatically. |
-| `sum_range_weightedScaleMultiplicity_log` | For every integer `b ≥ 2`, every `N ≥ 0`, every additive commutative monoid, and every weight sequence `w_h`, `∑_{n=1}^N ∑_{h=0}^{ν_b(n)} w_h = ∑_{h=0}^{⌊log_b N⌋} ⌊N/b^h⌋ • w_h`. This sharpens the older cumulative theorem to the natural logarithmic height. |
-| `sum_range_div_pow_log_eq_self_add_tail` | If `L = ⌊log_b N⌋`, then `∑_{h=0}^L ⌊N/b^h⌋ = N + ∑_{i=0}^L ⌊N/b^(i+1)⌋`; the apparent final extra term is zero because `N < b^(L+1)`. |
-| `sub_one_mul_sum_padicValNat_succ_add_digitSum` | For every integer `b ≥ 2`, including composite bases, `(b-1)A_b(N) + s_b(N) = bN`, exactly in the naturals and including `N=0`. |
-| `sum_range_padicValNat_succ_eq_sub_digitSum_div` | Equivalently, `A_b(N) = (bN-s_b(N))/(b-1)`. |
-
-`BaseDigitMultiplicity.lean` proves the finite count and digit-recovery
-arithmetic in equations `base-b-count` and `digit-recovery` once the analytic
-zero count `N_b(c_bN)` has independently been identified with `A_b(N)`.  It
-does not define `Φ_b`, prove the base-`b` canonical product, or prove that its
-zeros have order `1 + ν_b(n)`.  The integer-base zero set is separately
-represented by `ReciprocalIntegerGammaZeros.lean`, which does not establish
-collision orders.  For real `s > 1`, `SpectralZetaWeighted.lean` proves the
-arithmetic Dirichlet-series identity
-
-`∑_{n≥1} (1+ν_b(n))n^(-s) = (∑_{n≥1} n^(-s))/(1-b^(-s))`.
-
-It deliberately leaves the first series in `p`-series form rather than
-identifying a complex meromorphic Riemann zeta function.  Thus the manuscript's
-bundled base-`b` canonical-product/order theorem, complex spectral-zeta
-identity, probabilistic cumulant formula, and log-periodic transseries are not
-proved wholesale by this arithmetic module.
-
-- [`Frontier_Directions_for_Fabius_Rvachev_Analysis/`](Frontier_Directions_for_Fabius_Rvachev_Analysis/),
-  *Frontier Directions for Fabius--Rvachev Analysis* (33 pp), arrived on
-  2026-08-30 from `fabius_frontier_report_bundle-D.zip` (outer SHA-256
-  `39f3638f52f19955b88b7a865a60b76d9ce31154d98967d1400a6ad97396fa9a`)
-  and was filed under a title-derived collision-safe name rather than its
-  generic wrapper. All 34 submitted payload hashes verified; nine CSV entries
-  were refreshed after CRLF-to-LF repository normalization. It remains
-  standalone pending post-publication assessment, editorial deduplication, and
-  a Lean crosswalk; manuscript labels do not establish Lean verification.
-
 The broad multi-topic "collected new results" report series,
-consolidated (2026-08-28) into the 274-page single volume
+consolidated (2026-08-28) into the 275-page single volume
 [`Frontier_Compilations/`](Frontier_Compilations/): ten absorbed reports,
 displayed as ten outer parts.
 
@@ -155,7 +92,10 @@ figure selection were normalized for the consolidated layout. Report X
 received the same treatment plus post-snapshot Lean-status updates recording
 exact-support, absolute-continuity, and null-singleton results. The former
 report directories were deleted. Provenance with SHA-256 hashes is recorded
-in the volume itself, and git history is the archive.
+in the volume itself, and git history is the archive.  Bibliographic links to
+the retired Fourier-decay audit volumes are pinned to their immutable
+pre-consolidation snapshot; the live Fourier-decay corpus is the single
+canonical volume registered in the `rvachev_up_fourier_decay` group.
 
 Report VIII's logarithmic phase-extraction theorem is now represented
 directly in Lean. `FabiusLambertPhaseLockedPullback.lean` transports the
@@ -241,5 +181,40 @@ first exact Jacobi data.  Root location or simplicity, Gaussian/Lobatto
 quadrature, finite or infinite Jacobi/Stieltjes-fraction identification, and
 convergence remain open.  This status update does not alter the absorbed
 reports or their recorded provenance hashes.
+
+## Activation, sinc, and CDF status freeze
+
+The post-snapshot activation tranche is a separate real, totalized hyperbolic
+kernel, not a complex-sinc identification.  At source checkpoint
+`a345425d21d90e680bf15e34093af42c69c08a83`, its seven modules expose six
+definitions and 99 theorems: the totalized activation dictionary, the finite
+Taylor jet, the arbitrary-index square-summable budget and sharp Tannery limit,
+and the geometric/dyadic effective-dimension bounds and asymptotics.  The local
+coefficient is `activationProbability x / x^2 -> 1/3`, and the geometric
+coefficient is `(1-q)/(3*(1+q))` for `|q| < 1`.  Negative `q` is included in
+these deterministic identities; the report's positive-weight active-count
+interpretation is restricted to `0 < q < 1`, with no Bernoulli-family or
+expectation bridge asserted.
+
+The sinc union is now exact at both levels: the four product declarations in
+`GeometricReciprocalGamma.lean` give locally uniform complex product
+convergence, genuine `Multipliable`/`HasProd` witnesses, and entire-ness for
+`|q| < 1`; the two declarations in
+`GeometricSincCharacteristicFunction.lean` identify the real geometric-law
+characteristic function with the phase-bearing rescaled product and the paired
+geometric reciprocal-Gamma product, including `q = 0` and negative `q`.  A
+centered wrapper and compact-uniform convergence of the full phase-bearing
+prefixes remain open.
+
+The CDF union is parameter-scoped.  `GeometricUniformCDF.lean` has 31 public
+declarations: its CDF definition and basic order/measurability facts are total
+in real `q`; continuity, reflection, and midpoint use `|q| < 1`; exterior tails
+use `0 <= q < 1`; and conditioning, the classical nonnegative density,
+Radon--Nikodym identity, compact support, and `C^infty` regularity use
+`0 < q < 1`.  The nonpositive diagnostics show that the selected totalized
+density is zero or nonpositive and its clamped `withDensity` measure is zero,
+so the paper-level corrected signed-density construction remains open, even
+though fixed-point uniqueness for the probability law is proved for every
+`|q| < 1`.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.

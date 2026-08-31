@@ -27,7 +27,21 @@ from typing import List, Sequence
 
 import mpmath as mp
 import sympy as sp
+import matplotlib
+
+matplotlib.use("Agg")
+matplotlib.rcParams.update({
+    "pdf.fonttype": 42,
+    "ps.fonttype": 42,
+})
+
 import matplotlib.pyplot as plt
+
+
+PDF_METADATA = {
+    "CreationDate": None,
+    "ModDate": None,
+}
 
 
 # ---------------------------------------------------------------------------
@@ -560,7 +574,7 @@ def make_figures(figdir: Path, thresholds, a, b, Sinv2, free_roots, s_symbol, c)
     plt.title("Necessary free-infinite-divisibility thresholds")
     plt.grid(alpha=0.25)
     plt.tight_layout()
-    plt.savefig(figdir / "hankel_thresholds.pdf")
+    plt.savefig(figdir / "hankel_thresholds.pdf", metadata=PDF_METADATA)
     plt.savefig(figdir / "hankel_thresholds.png", dpi=180)
     plt.close()
 
@@ -584,7 +598,7 @@ def make_figures(figdir: Path, thresholds, a, b, Sinv2, free_roots, s_symbol, c)
     plt.legend()
     plt.grid(alpha=0.25)
     plt.tight_layout()
-    plt.savefig(figdir / "cumulant_root_trends.pdf")
+    plt.savefig(figdir / "cumulant_root_trends.pdf", metadata=PDF_METADATA)
     plt.savefig(figdir / "cumulant_root_trends.png", dpi=180)
     plt.close()
 
@@ -601,7 +615,7 @@ def make_figures(figdir: Path, thresholds, a, b, Sinv2, free_roots, s_symbol, c)
     plt.title("First free-cumulant obstruction in the geometric-uniform family")
     plt.grid(alpha=0.25)
     plt.tight_layout()
-    plt.savefig(figdir / "q_c4_obstruction.pdf")
+    plt.savefig(figdir / "q_c4_obstruction.pdf", metadata=PDF_METADATA)
     plt.savefig(figdir / "q_c4_obstruction.png", dpi=180)
     plt.close()
 

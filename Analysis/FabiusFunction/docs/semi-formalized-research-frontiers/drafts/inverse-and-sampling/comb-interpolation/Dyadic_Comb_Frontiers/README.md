@@ -1,5 +1,13 @@
 # Dyadic-Comb Frontiers for the Fabius–Rvachev System
 
+> **Source-only merge status (2026-08-31).** The current root TeX has 5,648
+> lines (SHA-256
+> `8fa52a142c14ea77cdc916f9fca8034b68718fc076d62a064f38af92c3fd4d6a`).
+> The retained 66-page PDF was not rebuilt after the notation migration and is
+> not claimed to be synchronized with that source. This volume has no live
+> checksum ledger covering the root TeX/PDF pair; historical build statements
+> below describe the preceding checkpoint.
+
 One editorially merged volume (2026-08-28) consolidating the six
 dyadic-comb drafts of the second and third waves:
 

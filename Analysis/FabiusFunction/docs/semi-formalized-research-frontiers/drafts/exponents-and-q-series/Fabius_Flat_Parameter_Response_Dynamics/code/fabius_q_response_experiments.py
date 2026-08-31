@@ -143,7 +143,7 @@ def write_exact_tables(data_dir: Path, max_degree: int, max_legendre: int) -> Tu
 
     cumulant_path = data_dir / "exact_cumulant_and_moment_jets.csv"
     with cumulant_path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(
             [
                 "degree",
@@ -170,7 +170,7 @@ def write_exact_tables(data_dir: Path, max_degree: int, max_legendre: int) -> Tu
 
     legendre_path = data_dir / "exact_tangent_legendre_coefficients.csv"
     with legendre_path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(["degree", "exact_coefficient", "decimal_coefficient", "sign"])
         for degree, coefficient in legendre.items():
             sign = 0 if coefficient == 0 else (1 if coefficient > 0 else -1)
@@ -256,7 +256,7 @@ def monte_carlo_pathwise_checks(
 
     moment_path = data_dir / "monte_carlo_moment_derivative_validation.csv"
     with moment_path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(
             [
                 "moment_order",
@@ -289,7 +289,7 @@ def monte_carlo_pathwise_checks(
 
     legendre_path = data_dir / "monte_carlo_legendre_validation.csv"
     with legendre_path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(
             [
                 "degree",
@@ -370,7 +370,7 @@ def tangent_cdf_common_random_numbers(
 
     output_path = data_dir / "tangent_cdf_common_random_numbers.csv"
     with output_path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(
             [
                 "x",
@@ -464,11 +464,11 @@ identities independently.
 def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-root", type=Path, required=True)
-    parser.add_argument("--samples", type=int, default=500_000)
-    parser.add_argument("--cdf-samples", type=int, default=350_000)
+    parser.add_argument("--samples", type=int, default=1_000_000)
+    parser.add_argument("--cdf-samples", type=int, default=1_500_000)
     parser.add_argument("--chunk-size", type=int, default=25_000)
     parser.add_argument("--digits", type=int, default=32)
-    parser.add_argument("--q-step", type=float, default=0.004)
+    parser.add_argument("--q-step", type=float, default=0.005)
     parser.add_argument("--seed", type=int, default=20260830)
     parser.add_argument("--max-moment", type=int, default=14)
     parser.add_argument("--max-legendre", type=int, default=20)

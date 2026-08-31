@@ -42,6 +42,11 @@ from math import factorial
 from pathlib import Path
 from typing import Iterable
 
+import matplotlib
+
+matplotlib.use("Agg")
+matplotlib.rcParams.update({"pdf.fonttype": 42, "ps.fonttype": 42})
+
 import matplotlib.pyplot as plt
 import mpmath as mp
 
@@ -136,7 +141,7 @@ def write_moment_checks() -> None:
     q = mp.mpf("0.5")
     path = HERE / "moment_checks.csv"
     with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(
             [
                 "n",
@@ -194,7 +199,7 @@ def write_stability_data_and_plot() -> None:
     with (HERE / "stability_growth.csv").open(
         "w", newline="", encoding="utf-8"
     ) as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(["q", "K_infinity", "asymptotic", "ratio"])
         for row in rows:
             writer.writerow([mp.nstr(x, 35) for x in row])
@@ -233,7 +238,7 @@ def write_regular_variation_data_and_plot() -> None:
     with (HERE / "regular_variation.csv").open(
         "w", newline="", encoding="utf-8"
     ) as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(
             ["alpha", "n", "normalized_multiplier", "limit", "absolute_error"]
         )
@@ -368,7 +373,7 @@ def write_fabius_data_and_plot() -> None:
     with (HERE / "fabius_boundary.csv").open(
         "w", newline="", encoding="utf-8"
     ) as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(
             [
                 "n",

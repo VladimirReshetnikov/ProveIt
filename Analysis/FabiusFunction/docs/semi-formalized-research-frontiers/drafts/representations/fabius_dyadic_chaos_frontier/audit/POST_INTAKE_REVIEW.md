@@ -254,14 +254,14 @@ resolution, covering the scaled and square-summable limits, geometric/dyadic
 sharp coefficients, conclusion, status matrix, and formula atlas. No
 clipping, collision, broken glyph, or black-render artifact was found.
 
-The final artifact is an unencrypted PDF 1.5 file of 948,783 bytes with
+The final artifact is an unencrypted PDF 1.5 file of 819,265 bytes with
 SHA-256
-`0523771ad27522bda46c088659a85ed4b6243495795e3615c6ba5e5a5b2f1979`.
+`0be7f0943e8d5fb795878aa0b3ecb21af25680155ad214ee2f1598de50e705ea`.
 All five appended compiler-backed result titles audited during the PDF release
 are extractable exactly once when matched with their theorem number and class.
 
 After the build-only temporary files were removed, `SHA256SUMS` was
-regenerated over exactly 32 non-ledger package files. Every entry was then
+regenerated over exactly 33 non-ledger package files. Every entry was then
 verified against the repository-normalized bytes.
 
 ## Remaining research boundary

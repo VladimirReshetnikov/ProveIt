@@ -1,35 +1,95 @@
 COMPUTABILITY OF THE INVERSE FABIUS FUNCTION
 =============================================
 
+SOURCE-ONLY MERGE STATUS (2026-08-31)
+-------------------------------------
+The current TeX has 2937 lines and SHA-256
+9945b23025006337e87001332db7a1141896b2f29f0d715fa85261682a6b0397.
+The retained 42-page PDF was not rebuilt after the notation migration and is
+not claimed to be synchronized with that source.  SHA256SUMS.txt was
+intentionally not refreshed: its TeX row and this README row are pending,
+while its other four rows pass.  Later uses of "synchronized", "current", or
+"final" in historical build notes refer to the preceding checkpoint.
+
 Contents
 --------
 inverse_fabius_computability.tex
-    Complete 2923-line LaTeX source of the report.  Its synchronized update
-    unites the equality/rigidity, effective-continuity, and logarithmic
-    reciprocal-modulus crosswalks described below.
+    Complete 2937-line, canonically styled LaTeX source of the report.  Its
+    semantic merge unites the equality/rigidity, effective-continuity, and
+    logarithmic reciprocal-modulus crosswalks described below.
 
 inverse_fabius_computability.pdf
-    Current 41-page A4 report, produced from the 2923-line source in exactly
-    three serial pdfLaTeX passes.
+    Retained 42-page A4 rendering from the preceding publication checkpoint;
+    not rebuilt from the current merged source.
 
 inverse_fabius_computability_experiments.py
-    Exact-rational Python supplement.  It uses only the Python standard
-    library and documents the finite Thue--Morse spline, endpoint-mass bounds,
-    interval-mass check, and a certified comparison/bisection demonstration.
+    Exact-rational Python supplement using only the standard library.  It
+    checks finite Thue--Morse splines, endpoint-mass bounds, interval masses,
+    and a certified comparison/bisection demonstration.
 
 numerical_output.txt
-    Captured output from the Python supplement with its default arguments.
+    Captured default output from the supplement.
+
+ARRIVAL_SHA256SUMS.txt
+    Immutable five-file ledger for the delivered payload.
 
 SHA256SUMS.txt
-    SHA-256 digests for the current built package revision.  All five entries
-    verify against the live payloads.
+    Six-entry operational ledger from the preceding checkpoint (the ledger
+    itself is intentionally not self-hashed); TeX and README rows are pending.
 
-Repository snapshot
--------------------
-The documentation audit and all repository-relative novelty statements are
-pinned to ProveIt commit:
+Arrival provenance
+------------------
+The source archive Inverse_Fabius_Computability_Report.zip was 689,198 bytes
+with SHA-256
 
-    40fdea4cc0a728189f357389e3f114a2cb00e561
+    755d77354490d25d4f327419d0345623e91ea49dd4ba681ba97c84a0b686b8c1
+
+Its path and integrity audit was clean.  The original five-file checksum
+ledger verified 5/5 before any editorial normalization; those hashes are
+preserved in ARRIVAL_SHA256SUMS.txt.  The manuscript recorded ProveIt commit
+40fdea4cc0a728189f357389e3f114a2cb00e561 as its arrival snapshot.
+
+Theorem-status boundary
+-----------------------
+The structural least-interval-mass and exact inverse-modulus layer now has
+matching public Lean declarations in `InverseModulus.lean`.  That module
+formalizes fixed-length increment shape and reflection, the least endpoint
+increment, constrained forward superadditivity, local and global inverse-gap
+bounds, inverse subadditivity, attained exact unit-interval and totalized
+moduli, and the exact effective-injectivity threshold.
+
+The numerical endpoint-mass estimate, strict and closed dyadic inverse
+moduli, primitive-recursive denominator packaging, and effective uniform
+continuity now have matching declarations in
+`FabiusInverseEffectiveContinuity.lean`; Lean derives the endpoint inequality
+through a stronger recurrence rather than the report's random-series event.
+`FabiusInverseLogarithmicModulus.lean` additionally formalizes the least
+logarithmic order, both composed denominators, the strict and closed
+reciprocal moduli, and effective uniform continuity with either logarithmic
+witness.  The probabilistic event proof, exact ceiling denominator,
+tolerant-bisection realizer, inverse sequential computability, combined
+computable-real-function theorem, and optimal input-bit law remain paper-level.
+The explicit periodic inverse correction and explicit all-orders inverse
+reversion are imported research-frontier results, not Lean theorems.
+
+The live formal corpus already proves the forward spline certificate and
+forward computability, strict density shape, the clamped inverse and its
+inverse identities/calculus, exact dyadic inverse evaluation, and the leading
+inverse endpoint equivalent.  The report names those exact declarations and
+keeps its remaining inverse-computability declarations unqualified and
+schematic.  The live union audit scans 615 Lean modules and 8,383 public
+declarations with zero documentation/header gaps.  No unqualified worldwide
+novelty claim is made.
+
+Reproducibility
+---------------
+Running
+
+    python3 inverse_fabius_computability_experiments.py
+
+reproduced numerical_output.txt byte for byte (SHA-256
+6f65be66860d65b95c20dee9f2cfa204b0b6c4464f8d768467184c3fd47e2ff9).
+No numerical experiment is used as a premise of the computability proof.
 
 Post-publication Lean crosswalk
 -------------------------------
@@ -78,18 +138,18 @@ correction for d_* remains in force: it is
 denominator-minimal for the fixed dyadic proxy 2^{-r(n)}, not for the weaker
 target tolerance 1/n.
 
-Render and ledger status
-------------------------
-The 2923-line source and 41-page A4 PDF are synchronized after exactly three
-serial pdfLaTeX passes.  The final log has no TeX errors, unresolved references,
-rerun request, or overfull box.  All fonts are embedded/subset, Libertinus is
-present, no Type 3 font is used, representative pages were inspected, and all
-five active checksum entries verify.
-
-Reproduce the numerical supplement
-----------------------------------
-Run:
-
-    python inverse_fabius_computability_experiments.py
-
-No numerical experiment is used as a premise of the computability proof.
+Build and validation
+--------------------
+At the preceding publication checkpoint, the then-2967-line source used the
+repository's canonical article/A4/27 mm/Libertinus style and was rebuilt from
+clean auxiliaries in exactly three strict serial pdfLaTeX passes.  The
+retained 42-page PDF has populated
+author metadata; every page is A4 with zero rotation; every font is embedded
+and subset; Libertinus is present; and no Type 3 font is used.  The final log
+has no errors, unresolved references/citations, rerun request, or overfull
+box.  Text extraction and visual checks cover the status boundary, corpus
+audit, asymptotic caveat, Lean roadmap, proof-status tables, and both
+exhaustive effective-continuity crosswalks.  Auxiliary files were removed
+after validation and the six-entry active checksum ledger refreshed. Those
+build and ledger facts are historical; the source-only merge status above is
+the current state.

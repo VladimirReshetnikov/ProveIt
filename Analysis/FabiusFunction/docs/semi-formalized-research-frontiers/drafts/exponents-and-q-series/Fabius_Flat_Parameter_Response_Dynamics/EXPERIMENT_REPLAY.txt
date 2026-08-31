@@ -1,0 +1,70 @@
+Fabius q-response isolated replay record
+========================================
+
+Replay date: 2026-08-30
+Exit status: 0
+Committed outputs were not overwritten.
+
+Environment
+-----------
+Python 3.13.14
+numpy 2.3.3
+sympy 1.14.0
+matplotlib 3.10.8
+
+Pinned requirements SHA-256:
+ff454d2c9b298640e562137df5beaa39ccc51b31959fd94b3c4c817c9770df2a
+
+Script
+------
+Path: code/fabius_q_response_experiments.py
+Lines: 519
+SHA-256: ab21914cdd560b596540cf28b074be0303b6720ccaeb6f2ab2bac698db05d0a9
+
+Command
+-------
+python code/fabius_q_response_experiments.py \
+  --output-root /tmp/flat-parameter-final-replay.MJFVbT \
+  --samples 1000000 \
+  --cdf-samples 1500000 \
+  --chunk-size 25000 \
+  --digits 32 \
+  --q-step 0.005 \
+  --seed 20260830 \
+  --max-moment 14 \
+  --max-legendre 20
+
+Byte comparisons
+----------------
+EXACT  data/exact_cumulant_and_moment_jets.csv
+EXACT  data/exact_tangent_legendre_coefficients.csv
+EXACT  data/tangent_cdf_common_random_numbers.csv
+EXACT  figures/tangent_cdf.png
+EXACT  figures/tangent_legendre_coefficients.png
+
+The generated NUMERICAL_README.txt has the same generated parameter block.
+The committed copy intentionally appends environment, LF, and tolerance notes.
+
+Floating-point Monte Carlo comparisons
+--------------------------------------
+data/monte_carlo_moment_derivative_validation.csv:
+  maximum absolute estimate drift: 3.3881317890172014e-21
+  maximum absolute standard-error drift: 3.3881317890172014e-21
+  9-digit z-score string differences: 0
+  exact/nonfloating-field differences: 0
+
+data/monte_carlo_legendre_validation.csv:
+  maximum absolute estimate drift: 6.6613381477509392e-16
+  maximum absolute standard-error drift: 6.9388939039072284e-18
+  9-digit z-score string differences: 0
+  exact/nonfloating-field differences: 0
+
+The submitted normalized Monte Carlo tables were retained. These differences are
+last-bit floating-point reduction variation and are far below the Monte Carlo standard
+errors; the tables are validation evidence only.
+
+Line endings
+------------
+All five committed CSV files and all five replayed CSV files contain zero CR bytes.
+Every csv.writer construction in the script specifies lineterminator="\n", so output
+uses explicit LF records independently of the host platform.
