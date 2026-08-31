@@ -157,8 +157,17 @@ def split_code_comment(line: str) -> tuple[str, str]:
     return (line, "") if offset is None else (line[:offset], line[offset:])
 
 
-def declaration_name(code: str) -> str | None:
-    for name, regexp in DECL_PATTERNS.items():
+def declaration_name(code: str, extra_names: set[str]) -> str | None:
+    patterns = dict(DECL_PATTERNS)
+    for name in extra_names:
+        patterns[name] = re.compile(
+            r"^[ \t]*\\(?:newcommand|renewcommand|providecommand)\*?\s*"
+            r"(?:\{\s*)?\\" + re.escape(name) + r"(?![A-Za-z@])"
+            r"|^[ \t]*\\DeclareMathOperator\*?\s*(?:\{\s*)?\\"
+            + re.escape(name) + r"(?![A-Za-z@])"
+            r"|^[ \t]*\\def\s*\\" + re.escape(name) + r"(?![A-Za-z@])"
+        )
+    for name, regexp in patterns.items():
         if regexp.search(code):
             return name
     return None
@@ -210,20 +219,34 @@ def transform(
     docs: Path,
     *,
     replace_global_fabius: bool,
+    sinc_normalization: str | None,
+    thue_morse_symbol: bool,
+    gaussian_binomial_three: bool,
 ) -> tuple[str, dict[str, int], bool]:
     text, added = add_input(text, path, docs)
-    counts = {name: 0 for name in SAFE_RENAMES}
+    renames = dict(SAFE_RENAMES)
+    if sinc_normalization == "rad":
+        renames["sinc"] = "SincRad"
+    elif sinc_normalization == "pi":
+        renames["sinc"] = "SincPi"
+    if thue_morse_symbol:
+        renames["tm"] = "ThueMorseSignSymbol"
+        renames["TM"] = "ThueMorseSignSymbol"
+    if gaussian_binomial_three:
+        renames["qbinom"] = "GaussianBinomial"
+    extra_names = set(renames) - set(SAFE_RENAMES)
+    counts = {name: 0 for name in renames}
     output: list[str] = []
     for line in text.splitlines(keepends=True):
         code, comment = split_code_comment(line)
-        name = declaration_name(code)
+        name = declaration_name(code, extra_names)
         if name is not None:
             # Only one-line definitions are mechanical.  A continuation marker
             # or unbalanced braces is left for semantic review.
             if not code.rstrip().endswith("%") and code.count("{") == code.count("}"):
                 counts[name] += 1
                 continue
-        for old, new in SAFE_RENAMES.items():
+        for old, new in renames.items():
             pattern = re.compile(r"\\" + re.escape(old) + r"(?![A-Za-z@])")
             code, substitutions = pattern.subn(r"\\" + new, code)
             counts[old] += substitutions
@@ -262,6 +285,21 @@ def main() -> int:
         action="store_true",
         help="semantically assert that literal mathcal/tilde F denotes FabiusGlobal",
     )
+    parser.add_argument(
+        "--sinc-normalization",
+        choices=("rad", "pi"),
+        help="semantically assert sinc(z)=sin(z)/z or sinc_pi(x)=sin(pi*x)/(pi*x)",
+    )
+    parser.add_argument(
+        "--thue-morse-symbol",
+        action="store_true",
+        help="semantically assert that legacy tm/TM macros denote the Thue-Morse sign symbol",
+    )
+    parser.add_argument(
+        "--gaussian-binomial-three",
+        action="store_true",
+        help="semantically assert that qbinom already has three explicit arguments n, k, q",
+    )
     args = parser.parse_args()
     docs, archive = repository_paths()
     try:
@@ -281,6 +319,9 @@ def main() -> int:
                 path,
                 docs,
                 replace_global_fabius=args.replace_global_fabius,
+                sinc_normalization=args.sinc_normalization,
+                thue_morse_symbol=args.thue_morse_symbol,
+                gaussian_binomial_three=args.gaussian_binomial_three,
             )
         except ValueError as error:
             print(str(error), file=sys.stderr)
@@ -306,8 +347,15 @@ def main() -> int:
             continue
         if name == "FabiusGlobal-literal":
             print(f"  {count:6d}  literal mathcal/tilde F -> \\FabiusGlobal")
-        else:
+        elif name in SAFE_RENAMES:
             print(f"  {count:6d}  \\{name} -> \\{SAFE_RENAMES[name]}")
+        elif name == "sinc":
+            target = "SincRad" if args.sinc_normalization == "rad" else "SincPi"
+            print(f"  {count:6d}  \\sinc -> \\{target}")
+        elif name in {"tm", "TM"}:
+            print(f"  {count:6d}  \\{name} -> \\ThueMorseSignSymbol")
+        else:
+            print(f"  {count:6d}  \\qbinom -> \\GaussianBinomial")
     if not args.apply and changed:
         print("\ndry run only; rerun with --apply to write")
     return 0
