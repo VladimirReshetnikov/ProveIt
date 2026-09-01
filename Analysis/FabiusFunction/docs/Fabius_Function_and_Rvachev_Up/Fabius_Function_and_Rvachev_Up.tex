@@ -5388,17 +5388,17 @@ bridges are
 \begin{align}
  \int_{\RealNumbers} A_n(x+y)u_F(y)\Differential y&=x^n,
    \label{eq:rvachev-appell-smoothing}\\
- \int_{\RealNumbers} (\mathcal D_{\RvachevUp}P)(x+y)u_F(y)\Differential y&=P(x),
+ \int_{\RealNumbers} (\mathscr D_{\RvachevUp}P)(x+y)u_F(y)\Differential y&=P(x),
    \label{eq:rvachev-deconvolution-smoothing}
 \end{align}
-where \(\mathcal D_{\RvachevUp}P\) denotes
+where \(\mathscr D_{\RvachevUp}P\) denotes
 \lean{rvachevDeconvolvedPolynomial}\(P\).
 Reflection invariance of the even Rvachev density gives the additional named
 centered identities
 \begin{align}
  \int_{\RealNumbers} A_n(x-y)u_F(y)\Differential y&=x^n,
    \label{eq:rvachev-appell-centered}\\
- \int_{\RealNumbers} (\mathcal D_{\RvachevUp}P)(x-y)u_F(y)\Differential y&=P(x)
+ \int_{\RealNumbers} (\mathscr D_{\RvachevUp}P)(x-y)u_F(y)\Differential y&=P(x)
    \label{eq:rvachev-deconvolution-centered}
 \end{align}
 These are respectively
@@ -5428,12 +5428,12 @@ exactly five public theorems:
 and
 \lean{normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp}.
 For \(M\in\NaturalNumbers\setminus\{0\}\) and
-\(\deg P\le v_2(M)\), they give
+\(\deg P\le \TwoAdicValuation(M)\), they give
 \begin{align}
- \sum_{k\in\IntegerNumbers}(\mathcal D_{\RvachevUp}P)(k/M)u_F(x-k/M)
+ \sum_{k\in\IntegerNumbers}(\mathscr D_{\RvachevUp}P)(k/M)u_F(x-k/M)
    &=M P(x),                                                 \label{eq:rvachev-polynomial-synthesis-global}\\
  P(x)&=\frac1M\sum_{-2M<k<2M}
-  (\mathcal D_{\RvachevUp}P)(k/M)u_F(x-k/M),\quad -1\le x\le1. \label{eq:rvachev-polynomial-synthesis-finite}
+  (\mathscr D_{\RvachevUp}P)(k/M)u_F(x-k/M),\quad -1\le x\le1. \label{eq:rvachev-polynomial-synthesis-finite}
 \end{align}
 The first sum is Lean's global \texttt{tsum}; compact support makes it
 pointwise finite.  The second is the exact uniform support truncation, including
@@ -5443,15 +5443,21 @@ The fifth theorem has arbitrary real phase \(\theta\) and arbitrary real
 evaluation point \(x\):
 \begin{equation}
  P(x)=\frac1M\sum_{k\in\IntegerNumbers}
-  (\mathcal D_{\RvachevUp}P)\!\left(x-\frac{\theta+k}{M}\right)
+  (\mathscr D_{\RvachevUp}P)\!\left(x-\frac{\theta+k}{M}\right)
   u_F\!\left(\frac{\theta+k}{M}\right).
  \label{eq:rvachev-polynomial-reproduction-arbitrary-phase}
 \end{equation}
-It assumes exactly \(M\ne0\) and \(\deg P\le v_2(M)\).  Thus the specialization
-\(M=2^N\) formalizes arbitrary-phase reproduction of every polynomial through
-degree \(n\le N\).  The Appell-lattice extension to degree \(N+1\) at
-parity-selected superconvergent phases, in particular the odd-\(N\) quarter
-phases, remains outside Lean.
+The displayed bilateral sum is Lean's \texttt{tsum}; since
+\(\SupportOf{u_F}\subseteq[-1,1]\), a summand can be nonzero only when
+\(\AbsoluteValue{\theta+k}\le M\), so only finitely many integers \(k\)
+contribute.  The theorem assumes exactly \(M\ne0\) and
+\(\deg P\le \TwoAdicValuation(M)\).  Thus the specialization \(M=2^N\)
+formalizes arbitrary-phase reproduction of every polynomial
+\(P\in\RealNumbers[X]\) with \(\deg P\le N\), equivalently every monomial
+\(X^n\) for \(0\le n\le N\).  The Appell-lattice extension to degree
+\(N+1\) remains outside Lean and uses the phases
+\(\theta\equiv0,1/2\pmod1\) for even \(N\), or
+\(\theta\equiv1/4,3/4\pmod1\) for odd \(N\).
 
 The current-tree module \path{LagrangeRvachevSynthesis.lean} has the exact
 public inventory of two definitions,
@@ -5468,7 +5474,7 @@ deconvolution of a finite Lagrange basis, and the atom coefficient is its
 \(1/M\)-normalized linear action on nodal data.  The first two theorems bound
 the basis and interpolant degrees by one less than the node count without a
 distinctness hypothesis.  If \(M\ne0\) and that degree bound is at most
-\(v_2(M)\), the next four identities give exact finite cardinal synthesis on
+\(\TwoAdicValuation(M)\), the next four identities give exact finite cardinal synthesis on
 \([-1,1]\), its componentwise Kronecker-delta evaluation at distinct in-range
 nodes, the coefficient/deconvolution identity, and reconstruction of the full
 Lagrange interpolant.  The last theorem says that each fixed lattice-sample
@@ -5500,12 +5506,12 @@ polynomial \(P\) of natural degree at most \(d\) and every real shift
 The two classification theorems prove
 \begin{align}
  \text{\ttfamily rvachevCombExactThrough}(F,M,d)
-  &\quad\Longleftrightarrow\quad M\ne0\ \hbox{ and }\ d\le v_2(M)\notag\\
+  &\quad\Longleftrightarrow\quad M\ne0\ \hbox{ and }\ d\le \TwoAdicValuation(M)\notag\\
   &\quad\Longleftrightarrow\quad M\ne0\ \hbox{ and }\ 2^d\mid M.
  \label{eq:rvachev-comb-sharp-classification}
 \end{align}
 For every nonzero \(M\), the first theorem supplies a real shift at which the
-monomial of degree \(v_2(M)+1\) fails
+monomial of degree \(\TwoAdicValuation(M)+1\) fails
 \eqref{eq:rvachev-comb-exact-through}.  The remaining order theorems put
 \(2^d\) in the exact class, bound every member below by \(2^d\), and prove
 that \(2^d\) is its least member; at even cutoff \(2N\), this least universal
@@ -10801,7 +10807,7 @@ public theorems are
 \lean{intervalIntegral_rvachevLegendreTranslateBlock_mul}, and
 \lean{sum_rvachevLegendreAtomCoefficient_mul_gram}.
 
-Writing \(Q_d=\mathcal D_{\RvachevUp}P_d\), the two degree theorems give
+Writing \(Q_d=\mathscr D_{\RvachevUp}P_d\), the two degree theorems give
 \begin{equation}
  \deg Q_d=d,\qquad \operatorname{lc}(Q_d)
  =2^{-d}\binom{2d}{d},                                    \label{eq:legendre-rvachev-degree}
@@ -10883,7 +10889,7 @@ exactly
 For the existing polynomial partial sum
 \(S_N=\sum_{n=0}^{N}u_nP_{2n}\), define
 \begin{equation}
- C_N:=\mathcal D_{\RvachevUp}S_N
+ C_N:=\mathscr D_{\RvachevUp}S_N
      =\sum_{n=0}^{N}u_nQ_{2n}.                             \label{eq:legendre-partial-sum-deconvolution}
 \end{equation}
 The equality is

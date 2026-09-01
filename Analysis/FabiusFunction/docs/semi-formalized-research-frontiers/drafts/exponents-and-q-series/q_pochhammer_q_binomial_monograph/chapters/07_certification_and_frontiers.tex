@@ -450,9 +450,9 @@ perturbation model and metric are specified.
 
 \subsection{A transcendental value determines the Gaussian rectangle}
 
-For integers \(a,b\ge0\), write
+For integers \(a,b\ge0\) and a polynomial variable \(x\), write
 \[
- G_{a,b}(Q)=\genfrac{[}{]}{0pt}{}{a+b}{a}_{Q}.
+ G_{a,b}(x)=\GaussianBinomial{a+b}{a}{x}.
 \]
 This is the generating polynomial for partitions whose Ferrers diagrams fit
 inside an \(a\)-by-\(b\) rectangle.
@@ -462,15 +462,15 @@ inside an \(a\)-by-\(b\) rectangle.
 Let \(q\in\ComplexNumbers\) be transcendental over \(\RationalNumbers\).  If
 \[
  0<k<n,\qquad 0<k'<n',\qquad
- \genfrac{[}{]}{0pt}{}{n}{k}_{q}
-   =\genfrac{[}{]}{0pt}{}{n'}{k'}_{q},
+ \GaussianBinomial{n}{k}{q}
+   =\GaussianBinomial{n'}{k'}{q},
 \]
 then \(n'=n\) and either \(k'=k\) or \(k'=n-k\).
 \end{theorem}
 
 \begin{proof}
 Transcendence says that evaluation at \(q\) is injective on
-\(\IntegerNumbers[Q]\).  The asserted equality of values is therefore an equality of
+\(\IntegerNumbers[x]\).  The asserted equality of values is therefore an equality of
 Gaussian polynomials.  Put
 \[
  a=k,\quad b=n-k,\quad
@@ -478,7 +478,7 @@ Gaussian polynomials.  Put
 \]
 and define \(a',b',m',M'\) similarly.
 
-The coefficient of \(Q^d\) in \(G_{a,b}\) counts partitions of \(d\) fitting
+The coefficient of \(x^d\) in \(G_{a,b}\) counts partitions of \(d\) fitting
 inside the rectangle.  Every partition of \(d\le m\) has at most \(m\) parts
 and largest part at most \(m\), so these coefficients equal the unrestricted
 partition numbers \(p(d)\).  At \(d=m+1\), at least one partition is excluded:

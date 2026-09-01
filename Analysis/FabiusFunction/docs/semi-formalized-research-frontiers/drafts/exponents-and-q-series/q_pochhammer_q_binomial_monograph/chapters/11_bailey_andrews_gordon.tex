@@ -47,19 +47,19 @@ Bailey pair relative to \(a\), and put
 \]
 Define
 \begin{align}
- \alpha_n^\star
+ \BaileyTransformAlpha{n}
  &=
  \frac{(\rho_1,\rho_2;q)_n A^n}
       {(aq/\rho_1,aq/\rho_2;q)_n}\,\alpha_n,
  \label{qg:eq:full-bailey-alpha}\\
- \beta_n^\star
+ \BaileyTransformBeta{n}
  &=
  \sum_{j=0}^{n}
  \frac{(\rho_1,\rho_2;q)_j(A;q)_{n-j}A^j}
       {(q;q)_{n-j}(aq/\rho_1,aq/\rho_2;q)_n}\,\beta_j.
  \label{qg:eq:full-bailey-beta}
 \end{align}
-Then \((\alpha^\star,\beta^\star)\) is a Bailey pair relative to
+Then \((\alpha^{\mathrm{BT}},\beta^{\mathrm{BT}})\) is a Bailey pair relative to
 \(a\).
 \end{theorem}
 
@@ -132,14 +132,14 @@ After cancellation, the coefficient
       {(aq/\rho_1,aq/\rho_2;q)_r}.
 \]
 The second factor is exactly the multiplier which defines
-\(\alpha_r^\star\) from \(\alpha_r\) in
+\(\BaileyTransformAlpha{r}\) from \(\alpha_r\) in
 \eqref{qg:eq:full-bailey-alpha}.  Thus, after multiplication by
 \(\alpha_r\), the coefficient contribution is the Bailey kernel times
-\(\alpha_r^\star\).  Summing over \(r\) gives
+\(\BaileyTransformAlpha{r}\).  Summing over \(r\) gives
 \[
-  \beta_n^\star
+  \BaileyTransformBeta{n}
   =\sum_{r=0}^{n}
-    \frac{\alpha_r^\star}
+    \frac{\BaileyTransformAlpha{r}}
          {(q;q)_{n-r}(aq;q)_{n+r}},
 \]
 which is the required Bailey-pair relation.
@@ -178,19 +178,19 @@ the two free parameters which the backbone's limiting form omits.
 Let \((\alpha,\beta)\) be a Bailey pair relative to \(a\), and assume
 \((a;q)_m\ne0\) for every \(m\ge1\).  Define
 \begin{align}
- \widetilde\alpha_0&=\alpha_0,
+ \BaileyLoweredAlpha{0}&=\alpha_0,
  \label{qg:eq:bailey-lowering-zero}\\
- \widetilde\alpha_n
+ \BaileyLoweredAlpha{n}
  &=(1-a)\left(
  \frac{\alpha_n}{1-aq^{2n}}
  -\frac{aq^{2n-2}\alpha_{n-1}}{1-aq^{2n-2}}
  \right)
  \qquad(n\ge1),
  \label{qg:eq:bailey-lowering-positive}\\
- \widetilde\beta_n&=\beta_n.
+ \BaileyLoweredBeta{n}&=\beta_n.
  \label{qg:eq:bailey-lowering-beta}
 \end{align}
-Then \((\widetilde\alpha,\widetilde\beta)\) is a Bailey pair
+Then \((\alpha^{\mathrm{BL}},\beta^{\mathrm{BL}})\) is a Bailey pair
 relative to \(a/q\).
 \end{lemma}
 
@@ -227,7 +227,7 @@ After cancellation, the coefficient is
  \frac{1}{(q;q)_{n-r}(aq;q)_{n+r}}.
 \]
 It is exactly the original Bailey kernel.  Therefore the transformed sum is
-\(\beta_n=\widetilde\beta_n\), proving the claim.
+\(\beta_n=\BaileyLoweredBeta{n}\), proving the claim.
 \end{proof}
 
 \begin{remark}
@@ -242,19 +242,21 @@ creates the different linear tails in the Andrews--Gordon sums.
 \label{qg:sec:iterated-bailey-chain}
 
 Let \(S_a\) denote exactly the finite pair transformation proved in
-\Cref{thm:bailey-limit-finite}.  We use a superscript \(^{(t)}\) for
-the result of applying \(S_a\) \(t\) times.
+\Cref{thm:bailey-limit-finite}.  The semantic superscript
+\(\mathrm{BC}(t)\) records the result of applying \(S_a\) exactly \(t\)
+times; it is not derivative notation.
 
 \begin{lemma}[Iterated Bailey chain]
 \label{qg:lem-bailey-chain-iterate}
 For every Bailey pair \((\alpha,\beta)\) relative to \(a\) and every
 \(t\in\NaturalNumbers\), put
-\((\alpha^{(0)},\beta^{(0)})=(\alpha,\beta)\).  For \(t\ge1\),
+\((\alpha^{\mathrm{BC}(0)},\beta^{\mathrm{BC}(0)})=(\alpha,\beta)\).
+For \(t\ge1\),
 \begin{align}
- \alpha_n^{(t)}
+ \BaileyChainAlpha{n}{t}
  &=a^{tn}q^{tn^2}\alpha_n,
  \label{qg:eq:iterated-bailey-alpha}\\
- \beta_n^{(t)}
+ \BaileyChainBeta{n}{t}
  &=
  \sum_{n\ge r_1\ge\cdots\ge r_t\ge0}
  \frac{
@@ -266,9 +268,9 @@ For every Bailey pair \((\alpha,\beta)\) relative to \(a\) and every
  \label{qg:eq:iterated-bailey-beta}
 \end{align}
 In particular, if \(\beta_n=\delta_{n,0}\), then
-\(\beta_n^{(1)}=1/(q;q)_n\), while for \(t\ge2\),
+\(\BaileyChainBeta{n}{1}=1/(q;q)_n\), while for \(t\ge2\),
 \begin{equation}
- \beta_n^{(t)}
+ \BaileyChainBeta{n}{t}
  =
  \sum_{n\ge r_1\ge\cdots\ge r_{t-1}\ge0}
  \frac{
@@ -293,10 +295,10 @@ For the beta component, one application of the same transformation gives
 empty.  Suppose the formula holds at some depth \(t\ge1\).  The next
 application of \(S_a\) gives
 \[
- \beta_n^{(t+1)}
+ \BaileyChainBeta{n}{t+1}
  =\sum_{j=0}^{n}
    \frac{a^jq^{j^2}}{(q;q)_{n-j}}\,
-   \beta_j^{(t)}.
+   \BaileyChainBeta{j}{t}.
 \]
 Insert the induction hypothesis with \(j\) as its outer bound and rename
 \(j=r_1\).  This adds precisely the new outer inequality
@@ -366,32 +368,35 @@ This proves both claims.
 
 For each \(m\in\NaturalNumbers\), introduce the single family
 \begin{equation}
-  F_m(q)=\sum_{n\ge0}\frac{q^{n^2+mn}}{(q;q)_n}.
+  \RogersSeries{m}{q}
+  =\sum_{n\ge0}\frac{q^{n^2+mn}}{(q;q)_n}.
   \label{qg:eq:rogers-family}
 \end{equation}
-Thus \(F_0=G\) and \(F_1=H\).
+Thus \(\RogersSeries{0}{q}=G(q)\) and \(\RogersSeries{1}{q}=H(q)\).
 
 \begin{lemma}[Rogers recurrence]
 \label{qg:lem-rogers-recurrence}
 For every \(m\in\NaturalNumbers\),
 \begin{equation}
-  F_m(q)=F_{m+1}(q)+q^{m+1}F_{m+2}(q).
+  \RogersSeries{m}{q}
+  =\RogersSeries{m+1}{q}+q^{m+1}\RogersSeries{m+2}{q}.
   \label{qg:eq:rogers-recurrence}
 \end{equation}
 \end{lemma}
 
 \begin{proof}
-The \(n=0\) terms cancel when \(F_m-F_{m+1}\) is formed.  For
+The \(n=0\) terms cancel when
+\(\RogersSeries{m}{q}-\RogersSeries{m+1}{q}\) is formed.  For
 \(n\ge1\), use
 \((1-q^n)/(q;q)_n=1/(q;q)_{n-1}\):
 \begin{align*}
- F_m-F_{m+1}
+ \RogersSeries{m}{q}-\RogersSeries{m+1}{q}
  &=\sum_{n\ge1}
    \frac{q^{n^2+mn}(1-q^n)}{(q;q)_n}\\
  &=\sum_{n\ge1}\frac{q^{n^2+mn}}{(q;q)_{n-1}}\\
  &=q^{m+1}\sum_{r\ge0}
    \frac{q^{r^2+(m+2)r}}{(q;q)_r}
- =q^{m+1}F_{m+2},
+ =q^{m+1}\RogersSeries{m+2}{q},
 \end{align*}
 where \(r=n-1\).  Absolute convergence justifies the subtraction.
 \end{proof}
@@ -400,7 +405,7 @@ where \(r=n-1\).  Absolute convergence justifies the subtraction.
 \label{qg:thm-rrcf}
 For \(|q|<1\), the single-valued ratio satisfies
 \begin{equation}
- \frac{F_1(q)}{F_0(q)}
+ \frac{\RogersSeries{1}{q}}{\RogersSeries{0}{q}}
  =
  \cfrac{1}{
   1+\cfrac{q}{
@@ -412,8 +417,9 @@ and the continued fraction converges locally uniformly in the unit disk.
 On any simply connected subdomain of \(0<|q|<1\), choose a branch of
 \(q^{1/5}\) and define
 \begin{equation}
- R(q)
- \coloneqq q^{1/5}\frac{F_1(q)}{F_0(q)}
+ \RogersContinuedFraction{q}
+ \coloneqq q^{1/5}
+ \frac{\RogersSeries{1}{q}}{\RogersSeries{0}{q}}
  =
  q^{1/5}
  \frac{(q,q^4;q^5)_\infty}
@@ -425,26 +431,28 @@ On any simply connected subdomain of \(0<|q|<1\), choose a branch of
 \begin{proof}
 For \(N\in\NaturalNumbers\), consider the finite continuant
 \[
- C_N
+ \FiniteContinuant{N}
  =1+\cfrac{q}{
   1+\cfrac{q^2}{
   \ddots+\cfrac{q^N}{1}}}
- =\frac{P_N}{Q_N}.
+ =\frac{\ContinuantNumerator{N}}{\ContinuantDenominator{N}}.
 \]
 Its numerator and denominator satisfy
 \begin{align*}
- P_{-1}=1,\quad P_0=1,\quad
- P_N&=P_{N-1}+q^NP_{N-2},\\
- Q_{-1}=0,\quad Q_0=1,\quad
- Q_N&=Q_{N-1}+q^NQ_{N-2}.
+ \ContinuantNumerator{-1}=1,\quad \ContinuantNumerator{0}=1,\quad
+ \ContinuantNumerator{N}
+ &=\ContinuantNumerator{N-1}+q^N\ContinuantNumerator{N-2},\\
+ \ContinuantDenominator{-1}=0,\quad \ContinuantDenominator{0}=1,\quad
+ \ContinuantDenominator{N}
+ &=\ContinuantDenominator{N-1}+q^N\ContinuantDenominator{N-2}.
 \end{align*}
 We claim
 \begin{align}
- P_N
+ \ContinuantNumerator{N}
  &=\sum_{j=0}^{\Floor{(N+1)/2}}
    q^{j^2}\GaussianBinomial{N+1-j}{j}{q},
  \label{qg:eq:continuant-P}\\
- Q_N
+ \ContinuantDenominator{N}
  &=\sum_{j=0}^{\Floor{N/2}}
    q^{j^2+j}\GaussianBinomial{N-j}{j}{q}.
  \label{qg:eq:continuant-Q}
@@ -459,11 +467,11 @@ from \Cref{thm:qpascal}:
  +q^{N+1-2j}\GaussianBinomial{N-j}{j-1}{q}.
 \]
 After multiplication by \(q^{j^2}\), the first term sums to
-\(P_{N-1}\).  In the second term put \(h=j-1\); its power is
+\(\ContinuantNumerator{N-1}\).  In the second term put \(h=j-1\); its power is
 \[
  j^2+N+1-2j=N+h^2,
 \]
-so it sums to \(q^NP_{N-2}\).  This proves
+so it sums to \(q^N\ContinuantNumerator{N-2}\).  This proves
 \eqref{qg:eq:continuant-P} by induction.  The same argument, using
 \[
  \GaussianBinomial{N-j}{j}{q}
@@ -490,27 +498,34 @@ coefficient occurring above is bounded in modulus by
 because all powers in its numerator are positive; the remaining factors
 \(r^{j^2}\) and \(r^{j^2+j}\) are summable.  Dominated convergence gives
 \[
-  P_N\longrightarrow F_0(q),
+  \ContinuantNumerator{N}\longrightarrow\RogersSeries{0}{q},
   \qquad
-  Q_N\longrightarrow F_1(q)
+  \ContinuantDenominator{N}\longrightarrow\RogersSeries{1}{q}
 \]
 locally uniformly.
 
-The products in \Cref{thm:rogers-ramanujan} show that \(F_0\) and
-\(F_1\) are nonzero for \(|q|<1\).  Let \(K_0\) be a compact subset of
+The products in \Cref{thm:rogers-ramanujan} show that
+\(\RogersSeries{0}{q}\) and \(\RogersSeries{1}{q}\) are nonzero for
+\(|q|<1\).  Let \(K_0\) be a compact subset of
 the unit disk.  Continuity and zero-freeness give
 \[
-  \eta_{K_0}=\min_{q\in K_0}|F_0(q)|>0.
+  \eta_{K_0}=\min_{q\in K_0}|\RogersSeries{0}{q}|>0.
 \]
-Uniform convergence \(P_N\to F_0\) gives
-\(|P_N-F_0|<\eta_{K_0}/2\) on \(K_0\) for all sufficiently large
-\(N\).  Those \(P_N\) are consequently zero-free on \(K_0\), and
+Uniform convergence
+\(\ContinuantNumerator{N}\to\RogersSeries{0}{q}\) gives
+\(|\ContinuantNumerator{N}-\RogersSeries{0}{q}|<\eta_{K_0}/2\) on
+\(K_0\) for all sufficiently large \(N\).  Those
+\(\ContinuantNumerator{N}\) are consequently zero-free on \(K_0\), and
 \[
-  C_N^{-1}=\frac{Q_N}{P_N}
-  \longrightarrow\frac{F_1(q)}{F_0(q)}.
+  \frac1{\FiniteContinuant{N}}
+  =\frac{\ContinuantDenominator{N}}{\ContinuantNumerator{N}}
+  \longrightarrow
+  \frac{\RogersSeries{1}{q}}{\RogersSeries{0}{q}}.
 \]
 The convergence is uniform on \(K_0\).  We define each finite truncation by
-the rational continuant \(Q_N/P_N\); where the nested expression is defined,
+the rational continuant
+\(\ContinuantDenominator{N}/\ContinuantNumerator{N}\); where the nested
+expression is defined,
 the two agree, and the continuant supplies its analytic continuation across
 removable intermediate singularities.  This proves
 \eqref{qg:eq:rogers-ramanujan-fraction} and its local uniform convergence.
@@ -521,9 +536,11 @@ proved product evaluations in \Cref{thm:rogers-ramanujan} and multiplying by
 \end{proof}
 
 \begin{remark}[Schur-type finitizations]
-The polynomials \(P_N\) and \(Q_N\) in
+The polynomials \(\ContinuantNumerator{N}\) and
+\(\ContinuantDenominator{N}\) in
 \eqref{qg:eq:continuant-P}--\eqref{qg:eq:continuant-Q} are Schur-type
-finitizations of \(F_0\) and \(F_1\).  Thus the same recurrence has three
+finitizations of \(\RogersSeries{0}{q}\) and \(\RogersSeries{1}{q}\).
+Thus the same recurrence has three
 compatible realizations: a finite rational continuant, an exact finite sum of
 Gaussian polynomials, and, after \(N\to\infty\), a Rogers--Ramanujan series.
 The finite level is useful in its own right: it retains coefficient data,
