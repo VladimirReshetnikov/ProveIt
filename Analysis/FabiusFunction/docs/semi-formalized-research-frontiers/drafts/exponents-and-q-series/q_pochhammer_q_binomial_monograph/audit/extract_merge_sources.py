@@ -370,6 +370,13 @@ Q_REDIRECTS = {
     "lem:fabius-real-spline": "lem:fabius-spline-expectation",
 }
 
+# Canonical proof statuses can advance after the immutable merge snapshot.
+CURRENT_Q_STATUS_OVERRIDES = {
+    "prop:dissection": "Lean-proved",
+    "cor:dissection-remainder": "Lean-proved",
+    "thm:poch-entire": "Lean-proved",
+}
+
 Q_SOURCE_LINE_TARGETS = {
     ("q_pochhammer_q_binomial_monograph", "1938"): (
         "cor:qbinom-inversion-law"
@@ -730,6 +737,8 @@ def reviewed_rows(
     groups: dict[str, str],
     q_statuses: dict[str, str],
 ) -> list[dict[str, str]]:
+    q_statuses = dict(q_statuses)
+    q_statuses.update(CURRENT_Q_STATUS_OVERRIDES)
     guide_map = parse_guide_map()
     inverse_statuses = inverse_status_projection()
     reviewed: list[dict[str, str]] = []

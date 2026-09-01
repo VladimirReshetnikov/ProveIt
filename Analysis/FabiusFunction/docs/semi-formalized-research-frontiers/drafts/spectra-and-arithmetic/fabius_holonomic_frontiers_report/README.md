@@ -37,13 +37,16 @@ clearly labelled as conjectures or research problems rather than theorems.
 
 ```bash
 python frontier_experiments.py --output-dir data
-latexmk -pdf -interaction=nonstopmode -halt-on-error \
-  fabius_holonomic_frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error fabius_holonomic_frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error fabius_holonomic_frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error fabius_holonomic_frontiers.tex
 ```
 
 Python dependencies are listed in `requirements.txt`. The report uses a
-standard TeX Live installation with `latexmk`, `pdflatex`, Libertinus, AMS,
+standard TeX Live installation with `pdflatex`, Libertinus, AMS,
 `hyperref`, `cleveref`, `listings`, and the usual graphics/table packages.
+The TeX source uses the retained PNG companions under `data/`; the vector PDFs
+remain as reproducibility assets.
 
 ## Files
 

@@ -38,7 +38,8 @@
   urlcolor=linkblue,
   pdftitle={Common-Digit Fabius Zonoids},
   pdfauthor={OpenAI GPT-5.6 Pro},
-  pdfsubject={Fabius function, Rvachev up-function, q-analogs, zonoids, hyperbolic secant kernel}
+  pdfsubject={Fabius function, Rvachev up-function, q-analogs, zonoids, hyperbolic secant kernel},
+  pdfkeywords={Fabius function, Rvachev up-function, common-digit coupling, zonoids, hyperbolic secant, Gaussianization}
 }
 
 \pagestyle{fancy}
@@ -104,10 +105,9 @@
 \newcommand{\statusinput}{\textcolor{deepblue}{\textbf{repository input}}}
 \newcommand{\statusconj}{\textcolor{deepred}{\textbf{conjecture}}}
 
-\DeclarePairedDelimiter{\AbsoluteValue}{\lvert}{\rvert}
-\DeclarePairedDelimiter{\Norm}{\lVert}{\rVert}
 \DeclarePairedDelimiter{\ip}{\langle}{\rangle}
 \allowdisplaybreaks
+\setlength{\emergencystretch}{2em}
 \graphicspath{{generated/}}
 
 \lstdefinestyle{pythonstyle}{
@@ -233,8 +233,8 @@ Two-parameter lens & Exact geometric-comb boundary and log-periodic interpolatio
 Gaussianization & Hyperbolic translations converge to the stationary Gaussian $\sech$ process; all cumulant corrections are explicit. & \statusproved\\
 Euler jets & Euler Hankel determinant, Meixner--Pollaczek recurrence, and a unit-variance local derivative-innovation ladder. & \statusproved\\
 Confluent support & Exact parameter-jet and multi-jet support volumes, plus Lambert-$W$ cutoff scales. & \statusproved\\
-Inverse/Legendre\newline bridges & Exact copula support using inverse Fabius; rational mixed shifted-Legendre coefficients. & \statusproved\\
-Signed/complex/ray\newline asymptotics & Chamber formulas, complex Pick geometry, sharp joint sinc-product decay, and endpoint copula laws. & \statusconj\\
+Inverse/\allowbreak Legendre\newline bridges & Exact copula support using inverse Fabius; rational mixed shifted-Legendre coefficients. & \statusproved\\
+Signed/\allowbreak complex/\allowbreak ray\newline asymptotics & Chamber formulas, complex Pick geometry, sharp joint sinc-product decay, and endpoint copula laws. & \statusconj\\
 \bottomrule
 \end{longtable}
 
@@ -646,7 +646,7 @@ Equation \eqref{eq:support-correlation} is not a generic zonoid identity.  Usual
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.78\textwidth]{hyperbolic_geometry.pdf}
+\includegraphics[width=0.78\textwidth]{hyperbolic_geometry.png}
 \caption{In dimension two, hyperbolic separation simultaneously increases support area and decreases correlation, with the exact Pythagorean relation \eqref{eq:area-correlation-circle}.}
 \label{fig:hyperbolic-geometry}
 \end{figure}
@@ -839,7 +839,7 @@ which independently recovers the $d=2$ case of \cref{thm:exact-volume}.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.80\textwidth]{support_zonotope_q050_q080.pdf}
+\includegraphics[width=0.80\textwidth]{support_zonotope_q050_q080.png}
 \caption{The common-digit support for $(q,r)=(1/2,4/5)$.  The upper and lower boundaries pass through the geometric comb and its reflection.  The exact area is $1/2$.}
 \label{fig:support-lens}
 \end{figure}
@@ -983,10 +983,11 @@ The covariance matrices are independent of $T$ and are obtained by differentiati
   \label{eq:derivative-variance-preview}
 \end{equation}
 proved in \cref{sec:euler}, and the $L^2$ increment estimate
-\[
+\begin{multline*}
   \Expectation\AbsoluteValue{Y_{u+h}^{(a)}-Y_u^{(a)}}^2
-   \le |h|^2\sup_v\Expectation\AbsoluteValue{Y_v^{(a+1)}}^2.
-\]
+  \\
+  \le |h|^2\sup_v\Expectation\AbsoluteValue{Y_v^{(a+1)}}^2.
+\end{multline*}
 Kolmogorov's criterion applied successively to derivatives gives tightness in $C^k(I)$.  Finite-dimensional convergence and tightness complete the proof.
 \end{proof}
 
@@ -1022,7 +1023,7 @@ The error is uniform on compact time sets.  This formula is an explicit Bell-pol
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.80\textwidth]{gaussianization_cumulants.pdf}
+\includegraphics[width=0.80\textwidth]{gaussianization_cumulants.png}
 \caption{Exact one-point cumulants of orders $4,6,8$ and their leading Bernoulli asymptotics.  The slopes are $-(m-2)$ in hyperbolic time.}
 \label{fig:gaussianization}
 \end{figure}
@@ -1325,7 +1326,7 @@ where $W_{-1}$ is the negative real branch of Lambert's function~\cite{Corless}.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.80\textwidth]{jet_volume_convergence.pdf}
+\includegraphics[width=0.80\textwidth]{jet_volume_convergence.png}
 \caption{Convergence of finite-generator jet volumes to \eqref{eq:jet-volume} at $q=1/2$.  Higher jets require more generators because polynomial factors $n^k$ delay the geometric tail.}
 \label{fig:jet-volume-convergence}
 \end{figure}
@@ -1528,7 +1529,14 @@ The function $\log\tanh x$ is strictly concave on $(0,\infty)$ because
 Thus $\Psi$ is concave and is strictly concave modulo common translation.  It tends to $-\infty$ at collisions.  Translation invariance lets us place $u_1=0$; if $u_d<L$, dilating all gaps increases every pair distance and therefore increases $\Psi$, so $u_d=L$.  Strict concavity on this affine slice gives uniqueness.  Reflection about $L/2$ preserves the objective, so uniqueness forces \eqref{eq:design-symmetry}.  Differentiation gives \eqref{eq:design-equilibrium}.  The $d=3$ claim follows from symmetry.
 \end{proof}
 
-The large-$d$ limit is a nonclassical logarithmic-energy problem with pair interaction $-\log\tanh|u-v|$.  Near the diagonal it has the usual $-\log|u-v|$ singularity, but its long-range interaction decays exponentially.  Determining the equilibrium density and edge scaling is posed in \cref{question:design-limit}.
+The large-$d$ limit is a nonclassical logarithmic-energy problem with pair
+interaction
+\[
+  -\log\tanh\AbsoluteValue{u-v}.
+\]
+Near the diagonal it has the usual $-\log\AbsoluteValue{u-v}$ singularity, but
+its long-range interaction decays exponentially. Determining the equilibrium
+density and edge scaling is posed in \cref{question:design-limit}.
 
 \section{Reproducible numerical experiments}
 \label{sec:numerics}
@@ -1562,7 +1570,7 @@ The four-dimensional truncation converges more slowly because many maximal minor
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.82\textwidth]{volume_convergence.pdf}
+\includegraphics[width=0.82\textwidth]{volume_convergence.png}
 \caption{Relative error of finite zonotope volumes.  The horizontal axis is the largest retained generator index.}
 \label{fig:volume-convergence}
 \end{figure}

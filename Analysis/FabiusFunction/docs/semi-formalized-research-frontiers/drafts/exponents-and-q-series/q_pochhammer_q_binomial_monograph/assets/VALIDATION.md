@@ -41,7 +41,9 @@ hashes under Matplotlib 3.11.1: PDF creation timestamps, producer
 metadata, font subset identifiers, and rendering-version details are allowed
 to vary.  The canonical archive therefore retains the 14 original vector PDFs
 byte-for-byte.  PNG previews are intentionally omitted because the PDFs are
-the authoritative vector artifacts.
+the authoritative vector artifacts.  Those historical Matplotlib PDFs contain
+embedded/subset Type 3 DejaVu glyphs; the consolidated manuscript does not
+input them, and its independent publication audit requires no Type 3 font.
 
 ## The one floating-point difference
 
@@ -63,5 +65,11 @@ dependence explicit.
 retained set consists of six Python programs, 19 CSV/TXT outputs, and 14 vector
 PDF figures.  No generated TeX fragment, PNG preview, source-package checksum
 ledger, report rendering, or TeX build byproduct is present in the canonical
-experiment tree.  `SHA256SUMS` fixes the exact post-migration bytes of this
-inventory and its documentation.
+experiment tree.  Before source retirement, the disposition ledger was frozen
+with 73 source SHA-256 values, four explicit
+`UNTRACKED_TRANSIENT_ABSENT` markers, 39 canonical destination SHA-256 values,
+and 38 `NOT_RETAINED` markers.  All 39 destination hashes verified, and all 33
+non-script migrations were byte-identical to their sources.  The six source
+directories were then retired; snapshot
+`f46e5d7f6f225bf0a43d8945e67d6f0e4aec8d54` preserves them.  `SHA256SUMS`
+fixes the exact post-migration bytes of this inventory and its documentation.

@@ -96,13 +96,13 @@ It checks every permanent package file except the self-referential root
 useful because it preserves the migrated experiment and research-figure
 boundary.
 
-The canonical publication pair is the live source
-`q_pochhammer_q_binomial_monograph.tex` (13,690 lines, 628,147 bytes, SHA-256
-`da420f5b2622cd088af43cea0ac448105c9f6af65cf1734de6535e3427f8e052`)
-and `q_pochhammer_q_binomial_monograph.pdf` (340 A4 pages, 2,180,191 bytes,
-SHA-256
-`e64a4ef65a9fcce3a4f211f2125b0f8440910cf4527635f76975b0967800e667`).
-The final source was built by exactly three guarded, serial
+The retained `q_pochhammer_q_binomial_monograph.pdf` is a 340-page A4
+historical checkpoint built from the then-current source (13,690 lines,
+628,147 bytes, SHA-256
+`da420f5b2622cd088af43cea0ac448105c9f6af65cf1734de6535e3427f8e052`).
+The PDF is 2,180,191 bytes with SHA-256
+`e64a4ef65a9fcce3a4f211f2125b0f8440910cf4527635f76975b0967800e667`.
+That checkpoint was built by exactly three guarded, serial
 `pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 331,
 340, and 340 pages. The inputs were unchanged before and after each pass, and
 no TeX, Lean, or Lake work interleaved with them. The final log scan found zero
@@ -113,3 +113,11 @@ Libertinus rows, with no Type-3 font. Fresh full-page visual inspection of
 physical pages 1, 247, 313, 314, 319, 338, and 340 was clean. The files under
 `assets/experiments/**/figures/` remain research figures, not publication
 manuscripts.
+
+The live source now includes exhaustive crosswalks for
+`QPochhammerEntire` (four theorems), `QPochhammerInfinite` (one definition and
+twenty-seven theorems), and `QPochhammerDissection` (two theorems), together
+with expanded Euler, infinite-q-binomial, Jacobi, and Rogers--Szegő material.
+Those post-checkpoint source changes mean that the retained PDF does not render
+the live source. Publication synchronization requires a fresh exact three-pass
+build followed by regeneration of the root package checksum ledger.

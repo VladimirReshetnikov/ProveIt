@@ -56,13 +56,15 @@ in `../source_disposition.csv`.
 - [`HISTORICAL_LEDGER_AUDIT.csv`](HISTORICAL_LEDGER_AUDIT.csv) classifies all
   151 rows from eight historical package ledgers at the immutable source pin.
 - [`VALIDATION.md`](VALIDATION.md) records completed source/evidence and
-  canonical-publication checks separately from the remaining fresh-checkout
-  and full numerical reproducibility work.
+  historical canonical-publication checks separately from the pending build of
+  the current source union and the remaining reproducibility work.
 - [`COMPANION_PAYLOADS.csv`](COMPANION_PAYLOADS.csv) is the canonical retained-
-  payload provenance map. The package root's [`SHA256SUMS`](../SHA256SUMS) is
-  the single exhaustive live checksum ledger and verifies in full at the
-  recorded publication checkpoint; neither should be confused with the
-  historical ledgers.
+  payload provenance map, not a checksum manifest. The package root's
+  [`SHA256SUMS`](../SHA256SUMS) is the sole live checksum ledger. It verified
+  exhaustively at the recorded upstream checkpoint and is explicitly partial
+  pending the current union's rebuild. There is no separate `assets/SHA256SUMS`.
+  None of these current records should be confused with the historical
+  per-package ledgers.
 
 The source pin is
 `73f0b373126ef22a3b5dccadfa7b99d61d445345`. Git history is the archive for

@@ -92,11 +92,18 @@ Then verify A4 geometry, embedded/subset Libertinus prose fonts, zero Type-3
 fonts, resolved references, page count, rendered pages, and the refreshed live
 ledger before committing.
 
-The normalized artifact was rebuilt with those exact three passes on
-2026-08-30. It has 34 A4 pages; all 20 font entries are embedded and subset,
-seven are Libertinus, and none is Type 3. The final log has no overfull box,
-TeX error, unresolved reference, or rerun request. The title/status page,
-corrected corpus boundary and Lean-input table, overlapping Stein identities,
-all four embedded PNG figures, endpoint-status correction, suggested-name section, and final page
-were rendered and inspected. Build sidecars were removed, and the exhaustive
-18-entry live ledger was refreshed only after this final payload freeze.
+The current source was rebuilt from a clean auxiliary state on 2026-08-31 in
+exactly three strict serial passes, producing 32, 34, and 34 pages. The
+2,057-line, 83,064-byte TeX source has SHA-256
+`ffb8a392291276e001fe433c936b83bb167275d8991d5f06848389c029648581`;
+the synchronized 790,142-byte PDF has SHA-256
+`e5c5b8dd1023dc57ae8a64fd5f463f62e079b99e32830a14f4268fea2e4a9478`.
+All 34 pages are A4 with zero rotation and nonblank extractable text, and the
+title, author, subject, and keyword metadata are complete. All 20 font entries
+are embedded and subset, seven are Libertinus, and none is Type 3. The final
+log has no LaTeX/package warning, overfull box, TeX error, unresolved
+reference/citation, or rerun request; its six underfull notices are benign.
+The title/status page, all four embedded PNG figures on pages 25--26, and the
+final references page were rendered and inspected. Build sidecars were
+removed, and the exhaustive 18-entry live ledger was refreshed only after
+this final payload freeze.
