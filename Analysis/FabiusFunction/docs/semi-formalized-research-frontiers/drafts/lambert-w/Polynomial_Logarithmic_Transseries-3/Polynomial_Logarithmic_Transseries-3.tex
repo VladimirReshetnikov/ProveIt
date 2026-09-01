@@ -193,7 +193,12 @@ polynomials
  \LambertPolynomial{n}(u)=\frac{(-1)^{n+1}}{(n+1)!}
    \D_u(\D_u-1)\cdots(\D_u-n+1)u^{n+1},
 \]
-including their Stirling-number formula, differential-integral recurrence,
+where the product is empty at \(n=0\), so
+\(\LambertPolynomial{0}(u)=-u\).  Thus the canonical family is indexed by
+\(n\in\NaturalNumbers\), even when a displayed expansion separates the
+index-zero logarithmic block and sums only over \(n\ge1\).
+The subsequent sections give their Stirling-number formula,
+differential-integral recurrence,
 generating equation, degree laws, and numerical behavior.  The final chapters
 treat implementation, precision control, extensions to Puiseux and Hahn
 supports, iterated logarithms, and the boundary between this discrete algebra
@@ -481,7 +486,7 @@ is that for every integer \(N>n_0\), there exists a finite exponent \(M_N\)
 such that
 \begin{equation}\label{eq:blockasymp}
   f(X)-\sum_{n=n_0}^{N-1}p_n(\log X)X^{-n}
-  =\BigO\!\left(X^{-N}(\log X)^{M_N}\right).
+  =\BigOAt{X^{-N}(\log X)^{M_N}}{X\to\infty,\ X\in S}.
 \end{equation}
 A sharper monomial-by-monomial expansion can be obtained by ordering every
 \(X^{-n}(\log X)^k\) separately as in \cref{eq:domorder}.  The blockwise form is
@@ -1855,8 +1860,8 @@ substitution order.
 
 For analytic realizations with \(F'(X)=1+o(1)\), a small composition residual
 also controls the inverse error.  Roughly, if
-\(F(H_N(X))-X=\BigO(X^{-N}(\log X)^M)\), the mean value theorem transfers the
-same order to \(H_N-F^{-1}\), because \(F'\) stays bounded away from zero.
+\(F(H_N(X))-X=\BigOAt{X^{-N}(\log X)^M}{X\to+\infty}\), the mean value theorem transfers the
+same order to \(H_N-F\rev\), because \(F'\) stays bounded away from zero.
 
 \section{Comparison of the four methods}
 \begin{center}
@@ -2602,11 +2607,11 @@ because replacing \(X\) by \(Y-p_0(\log Y)+\cdots\) changes both \(1/X\) and
 Not every natural map is asymptotic to \(X\), but many can be transformed into
 one.  Suppose
 \begin{equation}\label{eq:conjugateproblem}
- F=H^{-1}\compose(\IdentityOperator+\phi)\compose H,
+ F=H\rev\compose(\IdentityOperator+\phi)\compose H,
 \end{equation}
-where \(H\) and \(H^{-1}\) are known on the relevant transseries class.  Then
+where \(H\) and \(H\rev\) are known on the relevant transseries class.  Then
 \begin{equation}\label{eq:conjugateinverse}
- F\rev=H^{-1}\compose(\IdentityOperator+\phi)\rev\compose H.
+ F\rev=H\rev\compose(\IdentityOperator+\phi)\rev\compose H.
 \end{equation}
 Taking logarithms or exponentials is a common instance.  Edgar's general
 transseries inversion procedure uses iterated logarithms and exponentials to
@@ -2795,11 +2800,13 @@ It is helpful to make precision an exclusive upper bound:
 \begin{equation}\label{eq:exclusiveprecision}
  \TransseriesTruncateBelow{A}{N}=\sum_{n<N}p_n(\ell)t^n.
 \end{equation}
-Thus ``precision \(N\)'' means equality modulo \(t^N\).  Every operation should
+Thus ``precision \(N\)'' means equality after exclusive truncation below
+outer \(t\)-order \(N\).  Every operation should
 specify how much input precision it consumes and should return a value tagged
 with the precision it actually guarantees.
 
-For Laurent inputs with lower order \(r\), multiplication modulo \(t^N\)
+For Laurent inputs with lower order \(r\), multiplication truncated below
+\(t\)-order \(N\)
 requires the first factor through \(t^{N-s}\) when the second begins at
 \(t^s\).  Composition needs more careful backward precision planning because
 negative powers of the inner leading factor can amplify requested orders.
@@ -2831,9 +2838,9 @@ Either transform the generators
 \end{equation}
 and evaluate coefficient polynomials at \(\ell_G\), or use
 \begin{equation}\label{eq:algtaylor}
- F\compose(X+A)=
- \sum_{j=0}^{N-1}\frac{A^j}{j!}\D_X^jF
- \pmod{t^N}.
+ \TransseriesTruncateBelow{F\compose(X+A)}{N}=
+ \TransseriesTruncateBelow{
+   \sum_{j=0}^{N-1}\frac{A^j}{j!}\D_X^jF}{N}.
 \end{equation}
 The Taylor method has a simple stopping test when the derivative reaches the
 cutoff.  The generator method generalizes more naturally to
@@ -2842,9 +2849,9 @@ cutoff.  The generator method generalizes more naturally to
 \subsection{Reversal}
 For low and moderate precision, use
 \begin{equation}\label{eq:algreverseLagrange}
- \psi=\sum_{m=1}^{N}
- \frac{(-1)^m}{m!}\D_X^{m-1}(\phi^m)
- \pmod{t^N}.
+ \TransseriesTruncateBelow{\psi}{N}=
+ \TransseriesTruncateBelow{
+   \sum_{m=1}^{N}\frac{(-1)^m}{m!}\D_X^{m-1}(\phi^m)}{N}.
 \end{equation}
 For high precision, switch to Newton reversion
 \begin{equation}\label{eq:algreverseNewton}
@@ -2854,7 +2861,7 @@ with precision doubling.
 
 \section{Truncate early and often}
 Expression swell is the main practical enemy.  Suppose a product is needed
-modulo \(t^N\).  Expanding an intermediate through \(t^{2N}\) and truncating at
+below outer \(t\)-order \(N\).  Expanding an intermediate through \(t^{2N}\) and truncating at
 the end can multiply both runtime and memory by orders of magnitude, especially
 when coefficient degrees grow linearly with \(n\).  The safe discipline is:
 
@@ -2940,7 +2947,7 @@ def compose_generators(F, A, order: int):
 
 
 def reverse_lagrange(phi, order: int):
-    """psi in (X+phi)^[-1] = X+psi modulo t**order."""
+    """Return psi with compose(X + phi, X + psi) = X below t**order."""
     psi = 0
     for m in range(1, order + 1):
         term = trunc(phi**m, order)
@@ -3016,14 +3023,16 @@ Useful properties include:
 \begin{enumerate}
 \item \(\TransseriesTruncateBelow{A(B^{-1})-1}{N}=0\) for random unit series;
 \item generator composition equals Taylor composition;
-\item \((F\compose G)\compose H=F\compose(G\compose H)\) modulo the cutoff;
+\item the exclusive truncations of \((F\compose G)\compose H\) and
+      \(F\compose(G\compose H)\) agree below the cutoff;
 \item a computed reverse satisfies both \(F\compose F\rev=X\) and
 \(F\rev\compose F=X\);
 \item Lambert polynomials generated by the integral recurrence agree with the
 Stirling formula;
 \item the residual of the truncated omega expansion begins at the predicted
 order;
-\item differentiation obeys product and chain rules modulo the cutoff.
+\item differentiation obeys product and chain rules after exclusive
+      truncation at the cutoff.
 \end{enumerate}
 
 Randomized property tests are particularly effective.  Generate low-degree
@@ -3851,7 +3860,7 @@ Differentiate the large principal-branch expansion through
  \LambertW'(z)=\frac1z\left(1-\frac1{L_1}
  +\frac{1-L_2}{L_1^2}
  +\frac{-L_2^2+3L_2-1}{L_1^3}
- +\BigO\!\left(\frac{L_2^3}{L_1^4}\right)\right).
+ +\BigOAt{L_2^3/L_1^4}{|L_1|\to\infty,\ L_1\in S}\right).
 \]
 \end{exercise}
 
@@ -4040,7 +4049,7 @@ Lambert expansion while keeping \(L=\log\eta\) real.  The first blocks are
  =-\eta-L-\frac{L}{\eta}
  +\frac{L^2/2-L}{\eta^2}
  -\frac{L^3/3-3L^2/2+L}{\eta^3}
- +\BigO\!\left(\frac{L^4}{\eta^4}\right).
+ +\BigOAt{L^4/\eta^4}{\eta\to+\infty}.
 \]
 
 \subsection*{Solution 12}
@@ -4133,7 +4142,7 @@ at-infinity Lagrange--B\"urmann operator.
 Older literature often uses \emph{reversion} for compositional inversion of a
 series, while \emph{inverse} may mean either a multiplicative reciprocal or a
 compositional inverse.  This article uses \(A^{-1}\) for reciprocals and
-\(F^{[-1]}\) for compositional inverses.  The phrase \emph{series reversal}
+\(F\rev\) for compositional inverses.  The phrase \emph{series reversal}
 in the title is synonymous with reversion; it emphasizes reversal of the map
 rather than inversion of its values.
 

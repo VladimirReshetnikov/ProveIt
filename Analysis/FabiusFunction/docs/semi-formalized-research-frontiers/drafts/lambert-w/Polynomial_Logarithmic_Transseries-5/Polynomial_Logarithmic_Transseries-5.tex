@@ -330,7 +330,7 @@ Let the leading blocks be \(t^mp_m(L)\) and \(t^nQ_n(L)\).  The coefficient of \
 
 For \(N\in\IntegerNumbers\), write
 \begin{equation}\label{eq:formal-big-O}
- F=G+\BigO(t^N)
+ F=G+\FormalBigO_t(t^N)
  \quad\Longleftrightarrow\quad
  F-G\in t^N\PL.
 \end{equation}
@@ -338,7 +338,7 @@ This is a formal statement; it does not assert a uniform analytic bound in \(L\)
 \begin{equation}\label{eq:truncation}
  [F]_{<N}\DefinitionEquals\sum_{n<N}p_n(L)t^n.
 \end{equation}
-Then \(F=[F]_{<N}+\BigO(t^N)\).
+Then \(F=[F]_{<N}+\FormalBigO_t(t^N)\).
 
 \begin{proposition}[Completeness]\label{prop:complete}
 The ring \(\PL\) is complete and separated for the filtration
@@ -437,8 +437,8 @@ For Lambert's expansion, \(\deg \LambertPolynomial{n}=n\); products of finitely 
 
 Consider
 \begin{align*}
- F&=1+(L+1)t+(L^2-2L)t^2+(3-L)t^3+\BigO(t^4),\\
- G&=2-Lt+(L^2+1)t^2+2Lt^3+\BigO(t^4).
+ F&=1+(L+1)t+(L^2-2L)t^2+(3-L)t^3+\FormalBigO_t(t^4),\\
+ G&=2-Lt+(L^2+1)t^2+2Lt^3+\FormalBigO_t(t^4).
 \end{align*}
 Using \cref{eq:Cauchy-product},
 \begin{align*}
@@ -451,7 +451,7 @@ Using \cref{eq:Cauchy-product},
 \end{align*}
 Hence
 \begin{equation}\label{eq:worked-product}
- FG=2+(L+2)t+(2L^2-5L+1)t^2+(3L^2+L+7)t^3+\BigO(t^4).
+ FG=2+(L+2)t+(2L^2-5L+1)t^2+(3L^2+L+7)t^3+\FormalBigO_t(t^4).
 \end{equation}
 Every coefficient calculation takes place in the ordinary polynomial ring \(\K[L]\).
 
@@ -544,11 +544,11 @@ The recurrence gives
 \end{align*}
 Thus
 \begin{equation}\label{eq:reciprocal-example-C}
- \frac1B=1-Lt+t^2+(L^3-2L)t^3+(-L^4+L^2+1)t^4+\BigO(t^5).
+ \frac1B=1-Lt+t^2+(L^3-2L)t^3+(-L^4+L^2+1)t^4+\FormalBigO_t(t^5).
 \end{equation}
 A direct multiplication verifies that the product of
 \cref{eq:reciprocal-example-B,eq:reciprocal-example-C} is
-\(1+\BigO(t^5)\).
+\(1+\FormalBigO_t(t^5)\).
 
 \subsection{Geometric-series factorization}
 
@@ -582,7 +582,7 @@ If
 \(BC=1+E\) with \(E\in t^N\PL\), then
 \begin{equation}\label{eq:newton-reciprocal-error}
  BC_{\mathrm{new}}=(1+E)(1-E)=1-E^2
- =1+\BigO(t^{2N}).
+ =1+\FormalBigO_t(t^{2N}).
 \end{equation}
 Thus each step doubles the number of correct inverse-power blocks.  Starting from \(C_0=Q_0^{-1}\), one computes modulo \(t,t^2,t^4,t^8,\ldots\).  With fast multiplication this is asymptotically superior to the quadratic recurrence.
 
@@ -848,14 +848,14 @@ The smallness condition is relative: \(A\) need not tend to zero.  It may be \(L
 
 Let
 \begin{align}
- F&=x+A_0(L)+A_1(L)t+A_2(L)t^2+A_3(L)t^3+\BigO(t^4),
+ F&=x+A_0(L)+A_1(L)t+A_2(L)t^2+A_3(L)t^3+\FormalBigO_t(t^4),
  \label{eq:F-near-low}\\
- G&=x+B_0(L)+B_1(L)t+B_2(L)t^2+B_3(L)t^3+\BigO(t^4),
+ G&=x+B_0(L)+B_1(L)t+B_2(L)t^2+B_3(L)t^3+\FormalBigO_t(t^4),
  \label{eq:G-near-low}
 \end{align}
 and write
 \begin{equation}\label{eq:H-near-low}
- F\compose G=x+C_0(L)+C_1(L)t+C_2(L)t^2+C_3(L)t^3+\BigO(t^4).
+ F\compose G=x+C_0(L)+C_1(L)t+C_2(L)t^2+C_3(L)t^3+\FormalBigO_t(t^4).
 \end{equation}
 Primes below denote \(\Differential/\Differential L\).  Expanding either
 \cref{eq:composition-master} or \cref{eq:formal-Taylor} gives
@@ -1019,7 +1019,7 @@ such that \(F\compose G=x\).  The coefficient equations are triangular because c
 Let \(F=x+A\in\Gnear\), \(G\in\Gnear\), and \(c(L)\in\K[L]\).  Then
 \begin{equation}\label{eq:triangular-perturbation}
  F\compose\bigl(G+c(L)t^N\bigr)
- =F\compose G+c(L)t^N+\BigO(t^{N+1}).
+ =F\compose G+c(L)t^N+\FormalBigO_t(t^{N+1}).
 \end{equation}
 \end{lemma}
 
@@ -1029,8 +1029,8 @@ Apply formal Taylor expansion to the outer series \(F\) at \(G\):
  F(G+\delta)=F(G)+F'(G)\delta+\frac12F''(G)\delta^2+\cdots,
  \qquad \delta=c(L)t^N.
 \]
-Since \(F'=1+\BigO(t)\), the linear term is
-\(c(L)t^N+\BigO(t^{N+1})\).  Also \(F''=\BigO(t^2)\), so every term of degree at least two in \(\delta\) has order greater than \(N\).
+Since \(F'=1+\FormalBigO_t(t)\), the linear term is
+\(c(L)t^N+\FormalBigO_t(t^{N+1})\).  Also \(F''=\FormalBigO_t(t^2)\), so every term of degree at least two in \(\delta\) has order greater than \(N\).
 \end{proof}
 
 \begin{theorem}[Existence and uniqueness of reversion]\label{thm:reversion-existence}
@@ -1044,7 +1044,7 @@ Consequently \(\Gnear\) is a group under composition.
 \begin{proof}
 Begin with \(G_{<0}=x\).  Suppose coefficients through \(t^{N-1}\) have been chosen so that
 \begin{equation}\label{eq:reversion-residual-N}
- F\compose G_{<N}=x+r_N(L)t^N+\BigO(t^{N+1}).
+ F\compose G_{<N}=x+r_N(L)t^N+\FormalBigO_t(t^{N+1}).
 \end{equation}
 By \cref{lem:triangular-perturbation}, replacing \(G_{<N}\) by
 \[
@@ -1084,8 +1084,8 @@ A naive implementation recomposes from scratch at every step.  Incremental use o
 
 Write
 \begin{align}
- F={}&x+A_0+A_1t+A_2t^2+A_3t^3+\BigO(t^4),\label{eq:F-inverse-low}\\
- F^{\rev}={}&x+B_0+B_1t+B_2t^2+B_3t^3+\BigO(t^4).
+ F={}&x+A_0+A_1t+A_2t^2+A_3t^3+\FormalBigO_t(t^4),\label{eq:F-inverse-low}\\
+ F^{\rev}={}&x+B_0+B_1t+B_2t^2+B_3t^3+\FormalBigO_t(t^4).
  \label{eq:G-inverse-low}
 \end{align}
 Setting \(C_0,C_1,C_2,C_3\) in
@@ -1131,7 +1131,7 @@ This suggests
  G_{\mathrm{new}}
  =G-\frac{F\compose G-x}{F'\compose G}.
 \end{equation}
-The denominator is a unit because \(F'=1+\BigO(t)\).
+The denominator is a unit because \(F'=1+\FormalBigO_t(t)\).
 
 \begin{proposition}[Precision improvement]\label{prop:newton-reversion-precision}
 If \(F\compose G-x\in t^N\PL\), then the Newton update
@@ -1197,7 +1197,7 @@ Here \(A_0=L\), \(A_1=c\), and \(A_n=0\) for \(n\ge2\).  The low-order formulas 
  +\left(\frac{L^2}{2}-(c+1)L+c\right)t^2
  \notag\\
  &+\frac{1}{6}\left(2L^3-(6c+9)L^2+(18c+6)L-6c^2-6c\right)t^3
- +\BigO(t^4).
+ +\FormalBigO_t(t^4).
  \label{eq:perturbed-log-inverse}
 \end{align}
 Substitution into \cref{eq:perturbed-log-map} cancels every block through \(t^3\).  The case \(c=0\) is the inverse of \(x+\log x\), to which we now turn.
@@ -1487,7 +1487,7 @@ Let
 Triangular reversion implies
 \begin{equation}\label{eq:omega-residual-formal}
  \WrightOmega_N+\log\WrightOmega_N-x
- =-\LambertPolynomial{N+1}(L)x^{-N-1}+\BigO(x^{-N-2}).
+ =-\LambertPolynomial{N+1}(L)x^{-N-1}+\FormalBigO_t(t^{N+2}).
 \end{equation}
 Indeed, the omitted coefficient \(\LambertPolynomial{N+1}\) enters the next residual block with coefficient one.  Formula \cref{eq:omega-residual-formal} is an efficient symbolic unit test for any implementation of the recurrence.
 
@@ -1688,16 +1688,16 @@ is often preferable to \(\LambertWTruncation{N}\EulerE^{\LambertWTruncation{N}}-
 
 Let
 \begin{align*}
- A&=1+(2L-1)t+(L^2+3)t^2+(L^3-L)t^3+\BigO(t^4),\\
- B&=1+Lt+(L^2-1)t^2+\BigO(t^4).
+ A&=1+(2L-1)t+(L^2+3)t^2+(L^3-L)t^3+\FormalBigO_t(t^4),\\
+ B&=1+Lt+(L^2-1)t^2+\FormalBigO_t(t^4).
 \end{align*}
 Using the reciprocal from \cref{eq:reciprocal-example-C} and multiplying,
 \begin{align}
  \frac AB={}&1+(L-1)t+(-L^2+L+4)t^2
- +(L^3-4L-1)t^3+\BigO(t^4).
+ +(L^3-4L-1)t^3+\FormalBigO_t(t^4).
  \label{eq:worked-quotient}
 \end{align}
-The same result follows directly from \cref{eq:quotient-recurrence}.  A useful implementation test is to multiply the computed quotient by \(B\) and check equality with \(A\) modulo the requested precision.
+The same result follows directly from \cref{eq:quotient-recurrence}.  A useful implementation test is to multiply the computed quotient by \(B\) and check that its exclusive truncation agrees with that of \(A\) at the requested precision.
 
 \subsection{\texorpdfstring{Inverting \(x\log x\)}{Inverting x log x}}
 
@@ -1766,7 +1766,7 @@ Then direct use of \cref{eq:composition-master} gives
 \begin{equation}\label{eq:omega3-residual}
  (x+\log x)\compose G_3
  =x-\frac{L(3L^3-22L^2+36L-12)}{12}t^4
- +\BigO(t^5).
+ +\FormalBigO_t(t^5).
 \end{equation}
 The residual coefficient is \(-\LambertPolynomial{4}\), exactly as predicted by
 \cref{eq:omega-residual-formal}.  Appending \(\LambertPolynomial{4}t^4\) cancels it without changing any lower block.
@@ -1883,7 +1883,7 @@ Let \(f\) be continuously differentiable and strictly monotone for large argumen
 \begin{equation}\label{eq:fprime-to-one}
  f'(x)=1+\LittleO(1).
 \end{equation}
-Let \(g=f^{-1}\), and let \(G_N(y)\to\infty\) satisfy
+Let \(g=f^{\rev}\), and let \(G_N(y)\to\infty\) satisfy
 \begin{equation}\label{eq:inverse-residual-bound}
  f(G_N(y))-y=R_N(y).
 \end{equation}
@@ -2089,21 +2089,21 @@ For Laurent offsets and composition, the required input bound shifts according t
 
 The group \(\Gnear\) is generally nonabelian.  Let
 \[
- F=x+A_0(L)+\BigO(t),
+ F=x+A_0(L)+\FormalBigO_t(t),
  \qquad
- G=x+B_0(L)+\BigO(t).
+ G=x+B_0(L)+\FormalBigO_t(t).
 \]
 From \cref{eq:C1-compose},
 \begin{align}
  F\compose G
- &=x+A_0+B_0+B_0A_0't+\BigO(t),\notag\\
+ &=x+A_0+B_0+B_0A_0't+\FormalBigO_t(t),\notag\\
  G\compose F
- &=x+A_0+B_0+A_0B_0't+\BigO(t).
+ &=x+A_0+B_0+A_0B_0't+\FormalBigO_t(t).
 \end{align}
 Therefore
 \begin{equation}\label{eq:composition-commutator-leading}
  F\compose G-G\compose F
- =\bigl(B_0A_0'-A_0B_0'\bigr)t+\BigO(t^2).
+ =\bigl(B_0A_0'-A_0B_0'\bigr)t+\FormalBigO_t(t^2).
 \end{equation}
 The leading commutator is the one-dimensional vector-field bracket of the logarithmic displacement functions.  It vanishes when \(A_0\) and \(B_0\) are proportional, but not in general.  For example, \(A_0=L\) and \(B_0=L^2\) give a leading difference \(-L^2t\).
 

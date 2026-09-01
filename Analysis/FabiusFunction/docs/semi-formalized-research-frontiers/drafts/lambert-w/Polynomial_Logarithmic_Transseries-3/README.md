@@ -3,15 +3,15 @@
 Quick-gate archival receipt filed on 2026-09-01 from
 `drafts/incoming/Polynomial_Logarithmic_Transseries-3/`, delivered directly in
 commit `730e1763291099cd50ca1e20ed2c62c38d95ab4f`.  No archive or checksum
-ledger was submitted.  The source was already LF with a final newline, so no
-normalization was needed; the submitted TeX/PDF pair remains byte-for-byte.
-It was not rewritten, reviewed, or rebuilt.  In particular, the original
-trailing whitespace on source line 411 is intentionally retained.  The
-repository-added `SHA256SUMS` covers exactly the two payloads.
+ledger was submitted. At intake the source was already LF with a final
+newline, so no normalization was needed. Subsequent repository notation and
+formal/analytic-remainder migrations revised the source only; the retained PDF
+was not rebuilt. The repository-added `SHA256SUMS` records the current source
+and historical PDF as distinct payloads.
 
-- Source: `Polynomial_Logarithmic_Transseries-3.tex`, 4,255 lines and
-  146,006 bytes; SHA-256
-  `1158556784dbc58c1f997014b64c6c078c3d44ef04d298c32d0edf6e0d694e07`.
+- Current source: `Polynomial_Logarithmic_Transseries-3.tex`, 4,252 lines and
+  150,143 bytes; SHA-256
+  `76ed420e62e7f1c1b7f252293c7186263794d734148684fbe86da4236e0ad161`.
 - PDF: `Polynomial_Logarithmic_Transseries-3.pdf`, 87 unencrypted Letter
   pages and 510,663 bytes; SHA-256
   `3f7c4bc1e12e572bbfa675d55e35e399c98875ae2783a09842b7d961cd58a4af`.
