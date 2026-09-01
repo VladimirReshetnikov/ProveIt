@@ -1,4 +1,5 @@
-\part{Universal inversion calculus}
+\chapter{Universal inversion calculus}
+\label{chap:universal-inversion}
 
 This part collects the inversion machinery used throughout the volume.  Its
 purpose is not merely to quote familiar formulas: coefficient conventions,
@@ -264,12 +265,20 @@ Translating back from \(z\) and \(w\) proves the formula.
 
 \begin{warning}[Radius is branchwise]
 \label{warn:uq-inverse-radius}
-Lagrange--B\"urmann determines a germ, not its global sheet.  Its radius of
-convergence is the distance from the expansion value to the nearest
-singularity of the \emph{selected analytically continued inverse germ}.
-A critical value on another sheet, or a value reached only after crossing a
-cut, need not control that radius.  Thus the phrase \emph{the nearest
-critical value} is not a valid unqualified radius formula.
+Lagrange--B\"urmann determines a germ, not a global sheet.  If $g$ is the
+selected inverse germ at the expansion value $w_0$, its Taylor radius is
+precisely
+\[
+ R=\sup\bigl\{r>0:g\text{ extends as a single-valued holomorphic function to
+ }\AbsoluteValue{w-w_0}<r\bigr\}.
+\]
+Thus $R$ is the distance from $w_0$ to the boundary of the maximal centered
+disk of single-valued holomorphy of that germ.  A critical value belonging
+only to another sheet, or one reachable only after leaving this disk and
+crossing a chosen cut, need not control $R$; conversely, any obstruction to
+single-valued holomorphic continuation on the centered disk can control it.
+The phrase \emph{the nearest critical value} is therefore not a valid
+unqualified radius formula.
 \end{warning}
 
 \section{Bell-polynomial packaging}
@@ -923,25 +932,16 @@ additional structure and must be justified.
 \section{Residual, Rouch\'e, and interval-Newton certificates}
 \label{sec:uq-certificates}
 
-\begin{proposition}[Real residual certificate]
-\label{prop:uq-real-residual-certificate}
-Let \(F\) be differentiable on an interval \(I\), suppose
-\(\lvert F'(x)\rvert\ge m>0\) throughout \(I\), and let \(x_*\in I\) satisfy
-\(F(x_*)=y\).  Then \(x_*\) is the unique solution of \(F(x)=y\) in \(I\),
-and every \(\widetilde x\in I\) satisfies
-\[
+The real residual estimate needed here is already the general branchwise
+transfer principle \Cref{prop:uq-asymptotic-residual-transfer}.  If
+\(\lvert F'\rvert\ge m>0\) on all of an interval, Darboux's theorem forces
+the derivative to have constant sign, so \(F\) is injective there; taking
+\(m(y)=m\) gives the familiar bound
+\(
  \lvert\widetilde x-x_*\rvert
- \le\frac{\lvert F(\widetilde x)-y\rvert}{m}.
-\]
-\end{proposition}
-
-\begin{proof}
-Derivatives have the Darboux property, so a derivative bounded away from zero
-cannot change sign; hence \(F\) is strictly monotone on \(I\) and the root is
-unique.  Apply \cref{prop:uq-asymptotic-residual-transfer} with
-\(G(y)=x_*\), \(\widetilde G(y)=\widetilde x\), and \(m(y)=m\); its segment
-hypothesis follows from the bound on all of \(I\).
-\end{proof}
+ \le \lvert F(\widetilde x)-y\rvert/m
+\)
+without a second theorem or proof.
 
 \begin{theorem}[Rouch\'e disk certificate]
 \label{thm:uq-rouche-disk-certificate}
@@ -987,20 +987,27 @@ one zero there.  Hence \(H\) has total zero multiplicity one, which means
 its unique zero is simple.
 \end{proof}
 
-\begin{theorem}[Scalar interval-Newton certificate]
+\begin{theorem}[Scalar interval-Newton certificate at an arbitrary target]
 \label{thm:uq-interval-newton-certificate}
-Let \(I=[a,b]\subset\RealNumbers\), let \(F\in C^1(I)\), choose \(x_0\in I\), and let
+Let \(I=[a,b]\subset\RealNumbers\), let \(F\in C^1(I)\), choose
+\(x_0\in I\) and \(y\in\RealNumbers\), and let
 \(D=[d_-,d_+]\) be a closed real interval containing \(F'(I)\), with
-\(0\notin D\).  Interpret \(F(x_0)/D\) as its interval image and define
+\(0\notin D\).  Interpret \((F(x_0)-y)/D\) as its interval image and define
 \[
- N=x_0-\frac{F(x_0)}{D}.
+ N=x_0-\frac{F(x_0)-y}{D}.
 \]
-If \(N\subseteq I\), then \(F\) has exactly one zero \(x_*\) in \(I\), and
-\(x_*\in N\).  If \(N\subseteq\operatorname{int}I\), the certified zero lies
+If \(N\subseteq I\), then \(F(x)=y\) has exactly one solution \(x_*\) in
+\(I\), and \(x_*\in N\).  If \(N\subseteq\operatorname{int}I\), the
+certified solution lies
 in \(\operatorname{int}I\).
 \end{theorem}
 
 \begin{proof}
+Replace \(F\) by \(F-y\).  Its derivative enclosure is still \(D\), its
+zero set is the target level set of the original function, and its interval
+Newton image is exactly the displayed \(N\).  We may therefore assume
+\(y=0\).
+
 Replacing \(F\) by \(-F\) and \(D\) by \(-D\), if necessary, leaves \(N\)
 unchanged, so assume
 \(0<d_-\le F'(x)\le d_+\) on \(I\).  Thus \(F\) is strictly increasing.

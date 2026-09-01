@@ -1,14 +1,11 @@
 # Exponents and q-series
 
-The eleven live document packages are grouped one level deeper by their
+The seven live document packages are grouped one level deeper by their
 primary mathematical overlap:
 
-- [`general-q-series-guides/`](general-q-series-guides/) contains the three
-  closely overlapping introductions to classical q-series, theta products,
-  Bailey chains, and Rogers--Ramanujan theory.
-- [`q-pochhammer-and-inversion/`](q-pochhammer-and-inversion/) pairs the
-  comprehensive forward q-Pochhammer/Gaussian reference with the canonical
-  branch-aware inverse-q synthesis.
+- [`q-pochhammer-and-inversion/`](q-pochhammer-and-inversion/) contains the
+  single canonical source synthesis of forward q-series and branch-aware
+  inverse-q theory.
 - [`q-fabius-parameter-deformations/`](q-fabius-parameter-deformations/)
   contains the continuous-parameter, limit-regime, susceptibility, and smooth
   response reports for the geometric q-Fabius family.
@@ -16,20 +13,19 @@ primary mathematical overlap:
   contains the central exponent/geometric-sinc synthesis and its
   negative/reciprocal and cyclotomic companion reports.
 
-Every package appears in exactly one subgroup. No document was moved out of
-`exponents-and-q-series/`; the new level is navigational and does not change
-the mathematical or formalization status recorded below.
-
-This hierarchy-only move adds one parent-directory step to each master
-source's shared `fabius-notation.tex` include. No mathematical prose or formula
-changed, and the existing PDFs were deliberately retained rather than rebuilt.
-Accordingly, the publication-build statements below describe the most recent
-render, while any source/PDF byte-synchronization claim predates this path
-adjustment.
+Every live package appears in exactly one subgroup. The former three
+general-q-series guides, forward q-Pochhammer/q-binomial monograph, and
+inverse-q synthesis have been dispositioned into the neutral
+[`q_series_and_inverse_analogs/`](q-pochhammer-and-inversion/q_series_and_inverse_analogs/)
+package. Their earlier names, arrival hashes, and publication facts remain
+provenance, not parallel live documents. This consolidation is source-only:
+the superseded manuscript PDFs were deleted and no canonical PDF was generated
+by explicit user direction. Retained PDFs under its `assets/` tree are research
+figures rather than a rendered publication.
 
 ## Detailed package record
 
-Recent standalone intake members:
+Current packages and retained intake records:
 
 - [`fabius_q_frontiers_report/`](q-fabius-parameter-deformations/fabius_q_frontiers_report/),
   *Parameter-Flow, Gaussian, and Large-Deviation Frontiers for the
@@ -66,70 +62,31 @@ Recent standalone intake members:
   continuous-parameter Edgeworth and deviation regimes, Lambert endpoint
   asymptotics, and quadratic-exponential Denjoy--Carleman regularity.
 
-- [`q-series-proof-oriented-article/`](general-q-series-guides/q-series-proof-oriented-article/),
-  *A Proof-Oriented Guide to q-Series: Shifted Factorials, Basic
-  Hypergeometric Summation, Theta Products, Partitions, Bailey Pairs, and
-  Rogers--Ramanujan Theory* (39 letter-paper pages and 2,891 source lines at
-  arrival; current artifact: 39 A4 pages from 2,876 source lines), arrived as
-  a bare TeX/PDF directory in direct-arrival commit
-  `1360db6064c676f83bceb23bece5ed304dd09ce8` without an archive, outer hash,
-  or ledger. The current PDF was rebuilt from the final source in three strict
-  passes; the refreshed repository-generated `SHA256SUMS` verifies both the
-  current TeX and its synchronized PDF. The TeX was already LF.
+- [`q_series_and_inverse_analogs/`](q-pochhammer-and-inversion/q_series_and_inverse_analogs/),
+  *q-Series and Inverse q-Analogs: A Proof-Oriented Synthesis*, is the one
+  canonical source publication for this subgroup. The former
+  q-Pochhammer/q-binomial monograph is its forward backbone, the former
+  inverse-q synthesis contributes its nine branch-aware inverse chapters, and
+  the three general q-series guides were treated as donor manuscripts: repeated
+  results are stated once in their strongest proved form, while independent or
+  genuinely stronger results are transplanted with complete human-readable
+  proofs. Its [`PROVENANCE.md`](q-pochhammer-and-inversion/q_series_and_inverse_analogs/PROVENANCE.md)
+  records the five-publication merge surface and the earlier six-package
+  inverse lineage. The historical
+  [`theorem_concordance.csv`](q-pochhammer-and-inversion/q_series_and_inverse_analogs/theorem_concordance.csv)
+  continues to account for all 260 inverse-source result environments, and
+  [`assets/ASSET_DISPOSITION.csv`](q-pochhammer-and-inversion/q_series_and_inverse_analogs/assets/ASSET_DISPOSITION.csv)
+  preserves the 77-row decision record for unique scripts, data, outputs, and
+  figures. Pinned source revisions and Git history preserve every superseded
+  layout and arrival fact.
 
-- [`q_series_from_first_principles/`](general-q-series-guides/q_series_from_first_principles/),
-  *q-Series from First Principles: Products, Basic Hypergeometric Sums,
-  Theta Functions, Partitions, Bailey Pairs, and the Rogers--Ramanujan World*
-  (30 letter-paper pages and 1,548 source lines at arrival; current artifact:
-  28 A4 pages from a 1,540-line source with SHA-256
-  `d5145a089b4205b729f1c9ce79798d9f8d425a4686b53d92a89911015aeb78d7`),
-  likewise arrived as a bare TeX/PDF directory in direct-arrival commit
-  `c167e550348bfb33b4297684100d55dfb48b8c1a` without an archive, outer hash,
-  or ledger. The current PDF was rebuilt from the final source in three strict
-  passes; the refreshed repository-generated `SHA256SUMS` verifies both the
-  current TeX and its synchronized PDF. Its TeX was already LF.
-
-- [`q_series_monograph/`](general-q-series-guides/q_series_monograph/),
-  *A Proof-Driven Guide to q-Series, Basic Hypergeometric Identities, Bailey
-  Chains, and Rogers--Ramanujan Theory* (1,915 source lines at arrival; current
-  artifact: 27 A4 pages from 1,910 source lines), arrived as a source-only bare
-  directory in direct-arrival commit
-  `1f0f98390d551725fc7d2274638dbd7de86ee346` with neither PDF nor ledger.
-  Intake repaired the carriage-return (CR) corruption in the intended `\rho_2`
-  token at line 863 and added a one-entry repository `SHA256SUMS` for the sole
-  delivered TeX. No PDF was delivered; the current 27-page PDF is the first
-  repository build and was produced from the final source in three strict
-  passes. The expanded two-entry ledger verifies both current files.
-
-These five packages remain separate pending post-publication comparison,
-canonical document work, and Lean crosswalks. In particular, no semantic
-duplicate analysis of the three similarly scoped general q-series articles
-was performed during intake, and manuscript labels or numerical checks do not
-establish Lean verification.
-
-- [`inverse_q_analogs_and_series/`](q-pochhammer-and-inversion/inverse_q_analogs_and_series/),
-  *Inverse q-Analogs and Their Series Expansions: A Branch-Aware,
-  Proof-Complete Synthesis* (85 A4 pages; 6,689 source lines across the driver
-  and nine chapters), is the canonical consolidation of
-  the six former inverse-q and forward-expansion packages.  Its
-  [`theorem_concordance.csv`](q-pochhammer-and-inversion/inverse_q_analogs_and_series/theorem_concordance.csv)
-  accounts for all 260 source result environments, with the revision-backed
-  audit validating 260/260 rows; the retained-asset checksum ledger verifies
-  43/43 entries.  The
-  [`PROVENANCE.md`](q-pochhammer-and-inversion/inverse_q_analogs_and_series/PROVENANCE.md) and
-  [`assets/ASSET_DISPOSITION.csv`](q-pochhammer-and-inversion/inverse_q_analogs_and_series/assets/ASSET_DISPOSITION.csv)
-  preserve package-, result-, archive-, and asset-level provenance.  Unique
-  reproducibility assets live under `assets/`; the superseded layouts remain
-  recoverable from the pinned pre-retirement Git revision and repository
-  history.  The current canonical PDF is the 85-page publication artifact.
-  The q-Pochhammer monograph remains the broad forward-theory
-  reference, while `Cyclotomic_q_Fabius_Rvachev_Frontier/` retains the wider
-  natural-boundary and blow-up program beyond this inverse-branch synthesis.
-  The current PDF was rebuilt from the notation-normalized source in three
-  serial passes on 2026-08-31; its metadata, geometry, font, and text checks
-  pass. The earlier publication-gate receipt records the clean-log and all-page
-  visual inspections for the canonical layout; those two inspections were not
-  rerun during this metadata-only refresh.
+  This package deliberately has no canonical publication PDF. The former
+  forward and inverse manuscript PDFs were removed instead of being relabelled
+  as a partial rendering, and no replacement was generated by explicit user
+  direction. PDF files retained beneath `assets/` are vector research figures,
+  not manuscript builds. Consequently no page-count, font, clean-log, or visual
+  render claim is made for the merged master. Manuscript result labels and
+  numerical checks remain distinct from Lean verification.
 
 - [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/),
   *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
@@ -456,8 +413,9 @@ the analytic signs, error bounds, uniform/derivative convergence, and
 asymptotics. `FiniteQBinomialCore.lean` zero-extends Gaussian lower indices
 to all integers and proves total row reflection. `QBinomialVandermonde.lean`
 separately proves both q-Vandermonde orientations, both central supports, the
-three natural shifted forms, and the monograph's single shifted-central
-identity for every integer shift, all over arbitrary commutative semirings.
+three natural shifted forms, and the canonical forward backbone's single
+shifted-central identity for every integer shift, all over arbitrary
+commutative semirings.
 `QPochhammerElementaryIdentities.lean` adds exactly 13 public theorems:
 `finiteQPochhammerIn_base_reversal_units`,
 `finiteQPochhammerIn_inv_base_reversal_units`,
@@ -489,8 +447,9 @@ denominators are nonzero and do not require `q != 0`.
 every commutative semiring; its semifield wrapper assumes only `q != 0`.
 The two `q = -1` theorems hold over every commutative ring, including
 characteristic two and above-diagonal zero-extension cases.  This proves the
-reciprocity clause of the monograph's compound structure theorem, while its
-separate degree and coefficient-polynomial clauses keep that full row partial.
+reciprocity clause of the canonical forward backbone's compound structure
+theorem, while its separate degree and coefficient-polynomial clauses keep
+that full row partial.
 
 `GaussianBinomialAtNegOne.lean` adds exactly five public theorems:
 `gaussianBinomial_neg_one_even_even`,
@@ -761,36 +720,29 @@ matching `assets/` directories.
 `Signed_Reciprocal_q_Fabius_Frontiers/` were merged editorially as the
 volume's Part VII; their figures/data are likewise under `assets/`.)
 
-Forward/inverse subgroup member:
-[`q_pochhammer_q_binomial_monograph/`](q-pochhammer-and-inversion/q_pochhammer_q_binomial_monograph/)
-(213-page current A4 PDF; book class; the current source is
-13,117 lines with SHA-256
-`29d7b1d4bd2e5601f4eee63acc1ff7ef3f5f904e0f5f3b8474ce6c51a2129cca`;
-the 1,582,997-byte PDF has SHA-256
-`7ee6f8f6d8e72228a5b20daa119caa4d834b11063f910b526897b2677a2ede7b`
-and was rebuilt from that source in three strict passes) —
-*q-Pochhammer Symbols and q-Binomial Coefficients*, a standalone
-proof-oriented reference monograph on the q-machinery itself, filed
-2026-08-28 per the Lambert-W precedent (a reference companion rather
-than a research report, so it is kept as its own document instead of
-being merged into the frontier volume).  Its corpus role: Parts II, VI,
-and VII of the frontier volume, and the repository's formalized
-Gaussian-binomial core, consume exactly this machinery — shifted
-factorials, Gaussian coefficients with their cyclotomic structure,
-q-binomial theorems, q-Gauss summation, Jacobi's triple product, theta
-functions, Bailey pairs, q-Lucas congruences, q-Newton interpolation at
-geometric nodes, and Bernoulli asymptotics of Gaussian coefficients all
-appear in the frontier volume's q-Gaussian derivative-tower,
-Stieltjes–Wigert, and q-orbit chapters, and the monograph proves each
-from first principles with a formula atlas, a limit dictionary, a
-proof-dependency guide, and a formalization-architecture chapter.  It
-was audited on arrival (ten core theorems re-verified symbolically; the
-Chern–Dilcher–Jiu deleted-singularity identity and Ramanujan's ₁ψ₁
-verified numerically to 30 digits; one dominated-convergence majorant
-repaired with an `% ed.:` note).
+Canonical forward/inverse subgroup member:
+[`q_series_and_inverse_analogs/`](q-pochhammer-and-inversion/q_series_and_inverse_analogs/)
+(source-only; no canonical publication PDF) — *q-Series and Inverse q-Analogs:
+A Proof-Oriented Synthesis*. Its forward backbone proves from first principles
+the shifted-factorial, Gaussian, hypergeometric, theta, partition, Bailey,
+cyclotomic, interpolation, and Fabius--Rvachev machinery consumed by Parts II,
+VI, and VII of the frontier volume and by the repository's formalized
+Gaussian-binomial core. It retains the former monograph's formula atlas, limit
+dictionary, proof-dependency guide, and formalization architecture, and now
+places that material in the same master as the branch-aware inverse theory.
+The forward backbone was audited on arrival: ten core theorems were
+re-verified symbolically; the Chern--Dilcher--Jiu deleted-singularity identity
+and Ramanujan's ₁ψ₁ were verified numerically to 30 digits; and one
+dominated-convergence majorant was repaired with an `% ed.:` note. Its last
+pre-consolidation rendered checkpoint had 13,117 source lines (SHA-256
+`29d7b1d4bd2e5601f4eee63acc1ff7ef3f5f904e0f5f3b8474ce6c51a2129cca`)
+and a 1,582,997-byte, 213-page PDF (SHA-256
+`7ee6f8f6d8e72228a5b20daa119caa4d834b11063f910b526897b2677a2ede7b`).
+Those figures identify a retired historical artifact; they are not build
+claims about the current canonical source.
 
-Its current formalization ledger has 248 labelled results: 42 exact, 74
-partial, 129 with no counterpart, and 3 interface-only.  Within that
+The inherited forward formalization ledger has 248 labelled results: 42 exact,
+74 partial, 129 with no counterpart, and 3 interface-only.  Within that
 exhaustive total, the 191-result core in Chapters 1–23 has 36 exact, 29
 partial, 123 with no counterpart, and 3 interface-only entries.  The later
 Chapter 24 Fabius bridge is included in the full ledger and crosswalked
@@ -809,7 +761,8 @@ partial, and 8 unformalized results. The cyclotomic chapter now has 1 exact,
 0 partial, and 8 unformalized results. The exact rows include the primary and
 second q-Cauchy identities, both weighted-Pascal recurrences,
 elementary--complete orthogonality, and weighted symmetric-function inversion.
-Their adjacent strengthenings are recorded human-readably in the monograph:
+Their adjacent strengthenings are recorded human-readably in the canonical
+forward backbone:
 reflected q-Cauchy and the q-Bernstein partition of unity, plus total
 empty-family and degree-zero boundaries. Weighted generating products and the
 reciprocal finite theorem are partial because their formal power-series
@@ -836,9 +789,9 @@ The five `GaussianBinomialAtNegOne` theorems are
 `finiteQPochhammerIn_neg_one_even`, and
 `finiteQPochhammerIn_neg_one_odd`. The first three together with the reused
 `gaussianBinomial_neg_one_even_odd_eq_zero` theorem from
-`QBinomialReciprocity` prove the monograph's complete `q = -1` value formula
-over every commutative ring, for all natural parameters including above-row
-zero extension. The `q`-Lucas theorem used by the printed proof remains
+`QBinomialReciprocity` prove the forward backbone's complete `q = -1` value
+formula over every commutative ring, for all natural parameters including
+above-row zero extension. The `q`-Lucas theorem used by the printed proof remains
 unformalized; the status promotion concerns the corollary's exact statement.
 The q-difference annihilation row is exact through
 `qDifference_sum_eval₂_eq_zero_of_degree_lt`, with the stronger
@@ -848,8 +801,8 @@ weighted-subset conventions,
 named module-valued inversion iff, and both kernel orthogonalities are exact.
 Both orientations
 of q-Vandermonde and both central-support presentations are exact in
-`QBinomialVandermonde.lean`; the monograph's single signed shifted-central
-formula is now exact for every integer shift through the zero-extended
+`QBinomialVandermonde.lean`; the canonical forward backbone's single signed
+shifted-central formula is now exact for every integer shift through the zero-extended
 `gaussianBinomialInt`, both as a finite natural-range sum and literally as a
 finite-support `finsum` over all integers. The ledger also now records the
 genuine real infinite product `qPochhammerInf` and its contractive-base

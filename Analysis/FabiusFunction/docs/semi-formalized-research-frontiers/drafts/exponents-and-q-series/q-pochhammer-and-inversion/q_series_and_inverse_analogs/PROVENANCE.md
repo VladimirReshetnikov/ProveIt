@@ -1,5 +1,40 @@
 # Provenance ledger
 
+## Current five-publication synthesis
+
+This neutral package combines two peer canonical publications and three
+overlapping general guides. The immutable pre-retirement snapshot is commit
+`9560165ae2eb33590404a090ab26bd3ca715f32f`, recorded in
+`audit/MERGE_SOURCE_REVISION`.
+
+| Historical live package | Role in this synthesis |
+| --- | --- |
+| `q_pochhammer_q_binomial_monograph/` | Forward algebraic, combinatorial, analytic, arithmetic, geometric-interpolation, Thue--Morse, and Fabius--Rvachev backbone. |
+| `inverse_q_analogs_and_series/` | Universal and branch-aware inversion, asymptotic transfer, certification, inverse observables, five labelled conjectures, and the six-package provenance/assets preserved below. |
+| `general-q-series-guides/q-series-proof-oriented-article/` | Donor of stronger or independent very-well-poised, theta/modular, sums-of-squares, Bailey, and continued-fraction material. |
+| `general-q-series-guides/q_series_from_first_principles/` | Donor of the general Bailey parameter-lowering step and full Andrews--Gordon theorem. |
+| `general-q-series-guides/q_series_monograph/` | Donor of exact eta asymptotics, coefficientwise-limit, Borwein-reciprocity, and selected frontier material after correction. |
+
+The three guides arrived respectively in commits
+`1360db6064c676f83bceb23bece5ed304dd09ce8`,
+`c167e550348bfb33b4297684100d55dfb48b8c1a`, and
+`1f0f98390d551725fc7d2274638dbd7de86ee346`. They had no unique non-document
+assets: each live package consisted only of TeX, PDF, and a repository
+checksum ledger. Their superseded PDFs are not canonical renderings of this
+larger source and are retired with the donor packages.
+
+The former q-Pochhammer/q-binomial monograph arrived in commit
+`47172bc03ec078961d8b023dfe156ecd712efb65`. Its pre-repair source SHA-256 was
+`9c6aec1066e71bedc612703c12d29b44d44e166e3d72a25566b86d89291c95be`;
+the detailed seven-sibling consolidation and correction history remains in the
+repository draft manifest. The current five-publication concordance is kept
+separate from the older inverse-source concordance so neither immutable audit
+domain is silently reinterpreted.
+
+The remainder of this ledger preserves the earlier six-package inverse-q
+consolidation. Historical names, archive hashes, source paths, and the pinned
+revision are facts about that prior merge and deliberately remain unchanged.
+
 The canonical volume absorbs the following six source packages.  The paths
 below are historical paths relative to their former sibling layout under
 `exponents-and-q-series/`.  The exact normalized source tree is pinned by
@@ -91,12 +126,12 @@ asset-disposition ledger, which inventories the earlier immutable
 `53c431137` remains the byte-level archive for all seven sidecars summarized in
 this section.
 
-For that reason the consolidation lives in the neutral
-`inverse_q_analogs_and_series/` directory.  Although the extended report has
-the broadest pre-existing asset layout, promoting it in place would falsely
-suggest that the other five packages were merely earlier editions.  They are
-peer inputs, and several of their strongest results are absent from the
-extended report.
+For that reason the earlier six-package consolidation chose the neutral
+`inverse_q_analogs_and_series/` directory: promoting the broadest precursor in
+place would have falsely suggested that its five peers were merely earlier
+editions. The present, wider merger applies the same principle again through
+the neutral `q_series_and_inverse_analogs/` name. The old directory name is a
+historical source location, not the current package identity.
 
 ## Source-result inventory
 
@@ -176,11 +211,12 @@ as retirements in the asset-disposition audit.
 
 ## Scope boundaries with neighboring volumes
 
-This consolidation is canonical for branch-specified inverse maps, singular
-inverse regimes, certification, and the six-package concordance above.  The
-separate `q_pochhammer_q_binomial_monograph/` remains the broad reference for
-forward q-algebra, combinatorics, summation, and arithmetic; forward results
-are repeated here only when an inverse proof needs them.
+This synthesis is canonical both for forward q-algebra, combinatorics,
+summation, arithmetic, interpolation, and Fabius--Rvachev product theory and
+for branch-specified inverse maps, singular inverse regimes, certification,
+and the six-package concordance above. The former
+`q_pochhammer_q_binomial_monograph/` is now its forward backbone rather than a
+separate neighboring publication.
 
 `Cyclotomic_q_Fabius_Rvachev_Frontier/` remains a separate natural-boundary
 and blow-up volume.  Its radial root-of-unity layer overlaps Chapters 3 and 6,

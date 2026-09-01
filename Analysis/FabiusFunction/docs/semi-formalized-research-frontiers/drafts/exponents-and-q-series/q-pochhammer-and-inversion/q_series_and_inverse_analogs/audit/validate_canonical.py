@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Static publication and coverage gate for the canonical inverse-q volume.
+"""Intentionally source-only gate for the canonical q-series synthesis.
 
-This checker deliberately avoids TeX expansion.  It verifies the structural
-invariants that are easy to lose during a large editorial consolidation;
-pdfLaTeX and rendered-page inspection remain separate publication gates.
+The checker reads TeX and CSV sources directly and verifies structural,
+proof-coverage, label, status, and revision-pinned provenance invariants.  It
+never invokes a TeX engine or creates, reads, or validates a PDF.
 """
 
 from __future__ import annotations
@@ -20,13 +20,27 @@ from extract_source_results import (
     concordance_mismatches,
     inventory_revision,
 )
+from extract_merge_sources import (
+    ALL_FIELDS as MERGE_CONCORDANCE_FIELDS,
+    EXPECTED_GROUP_COUNTS as MERGE_EXPECTED_GROUP_COUNTS,
+    EXPECTED_TOTAL as MERGE_EXPECTED_TOTAL,
+    SOURCE_FIELDS as MERGE_SOURCE_FIELDS,
+    SOURCE_GROUPS as MERGE_SOURCE_GROUPS,
+    concordance_mismatches as merge_concordance_mismatches,
+    inventory_revision as inventory_merge_revision,
+)
 
 
 PACKAGE = Path(__file__).resolve().parents[1]
-MASTER = PACKAGE / "inverse_q_analogs_and_series.tex"
+MASTER = PACKAGE / "q_series_and_inverse_analogs.tex"
 CHAPTER_DIR = PACKAGE / "chapters"
 CONCORDANCE = PACKAGE / "theorem_concordance.csv"
 SOURCE_REVISION = PACKAGE / "audit" / "SOURCE_REVISION"
+MERGE_CONCORDANCE = PACKAGE / "source_concordance.csv"
+MERGE_SOURCE_REVISION = PACKAGE / "audit" / "MERGE_SOURCE_REVISION"
+MERGE_PACKAGE_GROUPS = {
+    package: group for package, group, _paths, _expected in MERGE_SOURCE_GROUPS
+}
 
 RESULT_ENVS = {
     "theorem",
@@ -37,8 +51,9 @@ RESULT_ENVS = {
     "definition",
     "algorithm",
     "example",
+    "principle",
 }
-PROVED_ENVS = {"theorem", "proposition", "lemma", "corollary"}
+PROVED_ENVS = {"theorem", "proposition", "lemma", "corollary", "principle"}
 ASSERTION_KINDS = PROVED_ENVS | {"conjecture", "problem", "researchproblem"}
 CANONICAL_STATUSES = {
     "Lean-proved",
@@ -261,6 +276,156 @@ def check_concordance(
     return len(rows), Counter(row["source_kind"] for row in rows), len(incomplete)
 
 
+def split_canonical_destinations(
+    raw: str, source_key: str, failures: list[str]
+) -> list[str]:
+    """Parse a concordance destination list and reject empty pipe components."""
+
+    if not raw.strip():
+        return []
+    pieces = raw.split("|")
+    destinations = [piece.strip() for piece in pieces]
+    if any(not destination for destination in destinations):
+        failures.append(
+            f"{source_key}: malformed canonical label list {raw!r}"
+        )
+    if len(destinations) != len(set(destinations)):
+        failures.append(
+            f"{source_key}: duplicate canonical destination in {raw!r}"
+        )
+    return [destination for destination in destinations if destination]
+
+
+def is_open_destination(label: str) -> bool:
+    """Recognize both theorem-style conjectures and labeled prose problems."""
+
+    return label.startswith("conj:") or label.startswith("qg:prob-")
+
+
+def check_merge_concordance(
+    canonical_labels: set[str], failures: list[str]
+) -> tuple[int, Counter[str], Counter[str], int]:
+    """Check the exhaustive 547-row merge ledger as a canonical source."""
+
+    with MERGE_CONCORDANCE.open(newline="", encoding="utf-8") as stream:
+        reader = csv.DictReader(stream)
+        rows = list(reader)
+    if reader.fieldnames != list(MERGE_CONCORDANCE_FIELDS):
+        failures.append(
+            "merge concordance header differs from the canonical schema: "
+            + repr(reader.fieldnames)
+        )
+    if len(rows) != MERGE_EXPECTED_TOTAL:
+        failures.append(
+            f"merge concordance has {len(rows)} rows, "
+            f"expected {MERGE_EXPECTED_TOTAL}"
+        )
+
+    keys = [row.get("source_key", "") for row in rows]
+    missing_keys = [str(index) for index, key in enumerate(keys, start=2) if not key]
+    if missing_keys:
+        failures.append(
+            "merge concordance rows lack source keys: " + ", ".join(missing_keys[:10])
+        )
+    duplicates = [key for key, count in Counter(keys).items() if key and count > 1]
+    if duplicates:
+        failures.append(
+            "duplicate merge-concordance source keys: "
+            + ", ".join(sorted(duplicates)[:10])
+        )
+
+    incomplete = [
+        row.get("source_key", f"CSV row {index}")
+        for index, row in enumerate(rows, start=2)
+        if not row.get("canonical_status", "").strip()
+        or not row.get("disposition_notes", "").strip()
+    ]
+    if incomplete:
+        failures.append(
+            f"{len(incomplete)} merge-concordance rows lack status/disposition "
+            f"(first: {', '.join(incomplete[:5])})"
+        )
+
+    source_counts: Counter[str] = Counter()
+    group_counts: Counter[str] = Counter()
+    for row in rows:
+        key = row.get("source_key", "<missing source_key>")
+        kind = row.get("source_kind", "").strip()
+        package = row.get("source_package", "").strip()
+        source_label = row.get("source_label", "").strip()
+        raw_label = row.get("canonical_label", "")
+        status = row.get("canonical_status", "").strip()
+        disposition = row.get("disposition_notes", "").strip()
+        destinations = split_canonical_destinations(raw_label, key, failures)
+
+        source_counts[kind] += 1
+        group = MERGE_PACKAGE_GROUPS.get(package)
+        if group is None:
+            failures.append(f"{key}: unknown merge source package {package!r}")
+        else:
+            group_counts[group] += 1
+
+        if status not in CANONICAL_STATUSES:
+            failures.append(f"{key}: unknown merge canonical status {status!r}")
+        for destination in destinations:
+            if destination not in canonical_labels:
+                failures.append(
+                    f"{key}: unknown merge canonical label {destination}"
+                )
+
+        retained_status = status in {
+            "Lean-proved",
+            "human-proved frontier result",
+            "conjecture",
+        }
+        retained_without_label = (
+            retained_status
+            and not destinations
+            and not source_label
+            and disposition.startswith("Retained as the unlabeled canonical ")
+        )
+        if retained_status and not destinations and not retained_without_label:
+            failures.append(
+                f"{key}: retained merge result has no canonical destination"
+            )
+        if status == "conjecture":
+            non_open = [
+                destination
+                for destination in destinations
+                if not is_open_destination(destination)
+            ]
+            if non_open:
+                failures.append(
+                    f"{key}: open status maps to non-open destination(s): "
+                    + ", ".join(non_open)
+                )
+        if status in {"Lean-proved", "human-proved frontier result"}:
+            open_targets = [
+                destination
+                for destination in destinations
+                if is_open_destination(destination)
+            ]
+            if open_targets:
+                failures.append(
+                    f"{key}: proved status maps to open destination(s): "
+                    + ", ".join(open_targets)
+                )
+
+    for group, expected in MERGE_EXPECTED_GROUP_COUNTS.items():
+        actual = group_counts[group]
+        if actual != expected:
+            failures.append(
+                f"merge concordance group {group} has {actual} rows, "
+                f"expected {expected}"
+            )
+    if sum(group_counts.values()) != MERGE_EXPECTED_TOTAL:
+        failures.append(
+            "merge concordance grouped total differs: "
+            f"actual={sum(group_counts.values())}, expected={MERGE_EXPECTED_TOTAL}"
+        )
+    return len(rows), source_counts, group_counts, len(incomplete)
+
+
 def check_source_snapshot(failures: list[str]) -> tuple[str, int]:
     """Reproduce immutable source columns from the pinned historical tree."""
 
@@ -278,6 +443,50 @@ def check_source_snapshot(failures: list[str]) -> tuple[str, int]:
             f"(fetch repository history if the clone is shallow): {error}"
         )
         return "unresolved", 0
+
+
+def check_merge_source_snapshot(
+    failures: list[str],
+) -> tuple[str, str, int, Counter[str]]:
+    """Reproduce the exhaustive ledger from its independently pinned revision."""
+
+    pin = "unresolved"
+    try:
+        pin = MERGE_SOURCE_REVISION.read_text(encoding="utf-8").strip()
+        if not pin:
+            raise ValueError("MERGE_SOURCE_REVISION is empty")
+        commit, rows, groups, _q_statuses = inventory_merge_revision(pin)
+        mismatches = merge_concordance_mismatches(rows, MERGE_CONCORDANCE)
+        failures.extend(
+            f"merge source snapshot: {message}" for message in mismatches
+        )
+
+        group_counts = Counter(groups[row["source_key"]] for row in rows)
+        if len(rows) != MERGE_EXPECTED_TOTAL:
+            failures.append(
+                f"merge source snapshot has {len(rows)} rows, "
+                f"expected {MERGE_EXPECTED_TOTAL}"
+            )
+        for group, expected in MERGE_EXPECTED_GROUP_COUNTS.items():
+            actual = group_counts[group]
+            if actual != expected:
+                failures.append(
+                    f"merge source snapshot group {group} has {actual} rows, "
+                    f"expected {expected}"
+                )
+        if sum(group_counts.values()) != MERGE_EXPECTED_TOTAL:
+            failures.append(
+                "merge source snapshot grouped total differs: "
+                f"actual={sum(group_counts.values())}, "
+                f"expected={MERGE_EXPECTED_TOTAL}"
+            )
+        return pin, commit, len(rows), group_counts
+    except (OSError, UnicodeError, ValueError, RuntimeError) as error:
+        failures.append(
+            "cannot reproduce pinned merge source snapshot "
+            f"(fetch repository history if the clone is shallow): {error}"
+        )
+        return pin, "unresolved", 0, Counter()
 
 
 def main() -> int:
@@ -307,6 +516,18 @@ def main() -> int:
     row_count, source_counts, incomplete = check_concordance(
         args.allow_incomplete_concordance, canonical_labels, failures
     )
+    (
+        merge_row_count,
+        merge_source_counts,
+        merge_group_counts,
+        merge_incomplete,
+    ) = check_merge_concordance(canonical_labels, failures)
+    (
+        merge_pin,
+        merge_source_commit,
+        merge_reproduced_rows,
+        merge_snapshot_groups,
+    ) = check_merge_source_snapshot(failures)
 
     print(f"master: {MASTER.name}")
     print(f"chapters: {len(chapter_paths)}")
@@ -323,6 +544,29 @@ def main() -> int:
         "source snapshot: "
         f"revision={source_commit}, rows={reproduced_rows}, "
         f"immutable-fields={len(SOURCE_FIELDS)}"
+    )
+    print(
+        f"merge concordance: rows={merge_row_count}, "
+        f"incomplete={merge_incomplete}; "
+        + ", ".join(
+            f"{group}={merge_group_counts[group]}"
+            for group in ("Q", "inverse", "guides")
+        )
+        + "; "
+        + ", ".join(
+            f"{kind}={merge_source_counts[kind]}"
+            for kind in sorted(merge_source_counts)
+        )
+    )
+    print(
+        "merge source snapshot: "
+        f"pin={merge_pin}, revision={merge_source_commit}, "
+        f"rows={merge_reproduced_rows}, "
+        f"immutable-fields={len(MERGE_SOURCE_FIELDS)}; "
+        + ", ".join(
+            f"{group}={merge_snapshot_groups[group]}"
+            for group in ("Q", "inverse", "guides")
+        )
     )
     if failures:
         print("\nFAILED", file=sys.stderr)

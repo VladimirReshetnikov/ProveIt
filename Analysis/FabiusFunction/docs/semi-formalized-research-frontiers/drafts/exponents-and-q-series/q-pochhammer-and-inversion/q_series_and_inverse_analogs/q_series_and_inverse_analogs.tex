@@ -28,9 +28,9 @@
   linkcolor=linkblue,
   citecolor=citegreen,
   urlcolor=linkblue,
-  pdftitle={q-Pochhammer Symbols and q-Binomial Coefficients},
-  pdfsubject={A proof-oriented monograph on q-shifted factorials, Gaussian coefficients, q-series, combinatorics, and arithmetic},
-  pdfkeywords={q-Pochhammer, q-binomial, Gaussian coefficient, basic hypergeometric series, q-series}
+  pdftitle={q-Series and Inverse q-Analogs},
+  pdfsubject={A proof-oriented synthesis of q-series, q-shifted factorials, Gaussian coefficients, inverse q-analogs, and Fabius-Rvachev theory},
+  pdfkeywords={q-series, q-Pochhammer, q-binomial, Gaussian coefficient, inverse q-analog, Lagrange inversion, Lambert W, Fabius function, Rvachev function}
 }
 
 \makeindex[intoc]
@@ -67,6 +67,10 @@
 \newtheorem{corollary}[corollary]{Corollary}
 \aliascntresetthe{corollary}
 
+\newaliascnt{conjecture}{theorem}
+\newtheorem{conjecture}[conjecture]{Conjecture}
+\aliascntresetthe{conjecture}
+
 \newaliascnt{identity}{theorem}
 \newtheorem{identity}[identity]{Identity}
 \aliascntresetthe{identity}
@@ -97,12 +101,18 @@
 \newtheorem{historicalnote}[historicalnote]{Historical note}
 \aliascntresetthe{historicalnote}
 
+\newaliascnt{warning}{theorem}
+\newtheorem{warning}[warning]{Warning}
+\aliascntresetthe{warning}
+
 \crefname{lemma}{lemma}{lemmas}
 \Crefname{lemma}{Lemma}{Lemmas}
 \crefname{proposition}{proposition}{propositions}
 \Crefname{proposition}{Proposition}{Propositions}
 \crefname{corollary}{corollary}{corollaries}
 \Crefname{corollary}{Corollary}{Corollaries}
+\crefname{conjecture}{conjecture}{conjectures}
+\Crefname{conjecture}{Conjecture}{Conjectures}
 \crefname{principle}{principle}{principles}
 \Crefname{principle}{Principle}{Principles}
 \crefname{definition}{definition}{definitions}
@@ -113,6 +123,8 @@
 \Crefname{algorithm}{Algorithm}{Algorithms}
 \crefname{remark}{remark}{remarks}
 \Crefname{remark}{Remark}{Remarks}
+\crefname{warning}{warning}{warnings}
+\Crefname{warning}{Warning}{Warnings}
 
 \newcommand{\qmultinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
 \newcommand{\qfact}[1]{[#1]_q!}
@@ -125,6 +137,16 @@
 \newcommand{\qbase}{\;q}
 \newcommand{\lean}[1]{%
   \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
+\newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
+\newcommand{\leanevaltwo}[1]{%
+  \nolinkurl{integral_eval}\texttt{\textsubscript{2}}\nolinkurl{#1}}
+
+\newenvironment{boxedremark}{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{black}\hrule\vspace{0.6em}\small
+}{%
+  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
+}
 
 % ed.: status flags for the formalization register, \Cref{app:lean-status}.
 \definecolor{statusgreen}{RGB}{20,110,60}
@@ -144,10 +166,11 @@
 \crefname{historicalnote}{historical note}{historical notes}
 \Crefname{historicalnote}{Historical note}{Historical notes}
 
-\title{\Huge\bfseries $q$-Pochhammer Symbols and $q$-Binomial Coefficients\\[8pt]
-\Large Algebra, Combinatorics, Analysis, Arithmetic, and Summation Theory}
-\author{A self-contained, proof-oriented monograph}
-\date{August 2026}
+\title{\Huge\bfseries $q$-Series and Inverse $q$-Analogs\\[8pt]
+\Large A Proof-Oriented Synthesis}
+\author{Human-readable research synthesis for\\
+\small Vladimir Reshetnikov's \texttt{ProveIt} repository}
+\date{Consolidated repository edition: 31 August 2026}
 
 \begin{document}
 \frontmatter
@@ -157,9 +180,27 @@
 
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
-The finite and infinite $q$-Pochhammer symbols and the Gaussian, or $q$-binomial, coefficients form a small set of notational primitives from which a remarkable amount of mathematics can be built.  They simultaneously encode weighted subsets, partitions inside rectangles, lattice paths, subspaces over finite fields, Schubert cells in Grassmannians, noncommutative binomial expansions, $q$-difference operators, basic hypergeometric summations, theta products, partition identities, and congruences at roots of unity.
+The finite and infinite $q$-Pochhammer symbols and the Gaussian, or
+$q$-binomial, coefficients form a small set of notational primitives from
+which a remarkable amount of mathematics can be built.  They simultaneously
+encode weighted subsets, partitions, lattice paths, finite-field geometry,
+$q$-difference operators, basic hypergeometric summations, theta products,
+cyclotomic arithmetic, geometric interpolation, and the Fabius--Rvachev
+functions.
 
-This monograph develops those themes from first principles.  It proves the algebraic laws of shifted factorials; the polynomial, reciprocal, and cyclotomic structure of Gaussian coefficients; finite and infinite $q$-binomial theorems; weighted generalizations through elementary and complete symmetric functions; combinatorial and finite-geometric models; unimodality by $\mathfrak{sl}_2$ representation theory; the $q$-Gauss, $q$-Chu--Vandermonde, and $q$-Pfaff--Saalsch\"utz summations; Jackson calculus and the $q$-gamma and $q$-beta functions; Jacobi's triple product, Euler's pentagonal theorem, and the Rogers--Ramanujan identities through Bailey pairs; cyclotomic factorization, $q$-Lucas and $q$-Babbage congruences; negative upper indices and $q$-Newton interpolation; a recent family of central $q$-binomial/Lambert-series evaluations; geometric Lagrange filters with exact Gaussian residual moments; half-base Mersenne normalizations and Prouhet--Thue--Morse cancellation; and geometric uniform sums, $q$-cumulants, finite spline approximants, and the Fabius--Rvachev specializations.  Every displayed theorem used in the main development is accompanied by a proof, and the final appendices collect formulas, limiting transitions, computational recipes, and a per-result record of what has and has not yet been formalized in Lean.
+This volume gives one proof-oriented account of both the forward theory and
+its branch-aware inverse problems.  The forward parts develop the algebraic,
+combinatorial, analytic, arithmetic, and asymptotic structure of $q$-series;
+the inverse part develops regular and ramified reversion, Bell-polynomial and
+Lagrange--Good coefficient engines, Lambert-$W$ asymptotic transfer,
+finite- and infinite-product branch atlases, $q$-special-function inversion,
+certified numerical enclosures, and parameter recovery from Fabius--Rvachev
+observables.  Repeated source results are stated once with the strongest
+proved hypotheses.  Every retained theorem, lemma, proposition, and corollary
+has a human-readable proof; genuinely open claims occur only in explicitly
+labelled conjecture environments.  The appendices distinguish exact Lean
+counterparts, partial formal infrastructure, human-proved frontier results,
+source records, and conjectures.
 
 \chapter*{Preface and source map}
 \addcontentsline{toc}{chapter}{Preface and source map}
@@ -203,7 +244,7 @@ The notation $(a;q)_\infty$ is analytic when $\AbsoluteValue q<1$; when formal p
 
 \section{Definitions and first examples}
 
-\begin{definition}
+\begin{definition}\label{qg:def-qshifted-factorial}
 For $n\in\NaturalNumbers$ the \emph{$q$-shifted factorial}, or \emph{$q$-Pochhammer symbol}, is
 \[
  (a;q)_n=\prod_{j=0}^{n-1}(1-aq^j),\qquad (a;q)_0=1.
@@ -352,7 +393,7 @@ The concatenation law suggests the only extension to negative integers that pres
  (a;q)_{m+n}=(a;q)_m(aq^m;q)_n.
 \]
 
-\begin{definition}
+\begin{definition}\label{qg:def-negative-qshifted-index}
 For $n\ge1$, define
 \[
  (a;q)_{-n}=\frac{1}{(aq^{-n};q)_n},
@@ -427,7 +468,11 @@ Assume $q^i\ne q^j$ for $0\le i<j\le n$.  Then
 \end{theorem}
 
 \begin{proof}
-The left side has simple poles at $z=q^{-j}$, $0\le j\le n$.  The coefficient of $(1-zq^j)^{-1}$ is
+If $q=0$, pairwise distinctness of $q^0,\ldots,q^n$ forces $n\le1$, and the
+formula is immediate in the two possible cases.  Assume henceforth that
+$q\ne0$.  The poles of the left-hand side are the distinct points
+$z=q^{-j}$, $0\le j\le n$, and the coefficient of $(1-zq^j)^{-1}$ in its
+partial-fraction expansion is
 \[
  A_j=\left.\frac{1-zq^j}{(z;q)_{n+1}}\right|_{z=q^{-j}}
  =\frac{1}{\prod_{r\ne j}(1-q^{r-j})}.
@@ -438,7 +483,10 @@ For $r<j$, put $s=j-r$ and obtain
  =\prod_{s=1}^{j}(1-q^{-s})
  =(-1)^jq^{-\binom{j+1}{2}}(q;q)_j.
 \]
-The factors with $r>j$ multiply to $(q;q)_{n-j}$.  Thus $A_j$ is the displayed coefficient.  Subtracting the proposed right side from the left gives a rational function with no poles and tending to $0$ at infinity, hence it is identically zero.
+The factors with $r>j$ multiply to $(q;q)_{n-j}$.  Thus $A_j$ is the
+displayed coefficient.  After subtracting the proposed right-hand side, all
+finite poles are removable.  The difference is therefore a polynomial; it is
+$O(z^{-1})$ at infinity, so it is identically zero.
 \end{proof}
 
 \begin{proposition}[Logarithmic derivatives]\label{prop:logder-finite}
@@ -531,25 +579,41 @@ recovers the finite product.  If $\alpha=-n<0$, the same relation, applied after
 \end{proof}
 
 \begin{proposition}[Derivative with respect to the order]\label{prop:order-derivative}
-On every domain avoiding the poles of \eqref{eq:complex-qshift},
+Fix $a\in\ComplexNumbers$ with $(a;q)_\infty\ne0$, and let
+$U\subset\ComplexNumbers$ be open with
 \[
- \frac{\partial}{\partial\alpha}\log(a;q)_\alpha
+ aq^{\alpha+j}\ne1\qquad(\alpha\in U,\ j\ge0).
+\]
+Then $\alpha\mapsto(a;q)_\alpha$ is holomorphic and nonvanishing on $U$, and
+its logarithmic derivative is
+\[
+ \frac{\partial_\alpha(a;q)_\alpha}{(a;q)_\alpha}
  =(\log q)\sum_{j=0}^{\infty}
  \frac{aq^{\alpha+j}}{1-aq^{\alpha+j}}.
  \tag{1.4}\label{eq:order-derivative}
 \]
-The series is locally uniformly convergent.
+Equivalently, the left-hand side is
+$\partial_\alpha\log(a;q)_\alpha$ for every local holomorphic branch of the
+logarithm.  The series converges locally uniformly on $U$.
 \end{proposition}
 
 \begin{proof}
-Only the denominator in \eqref{eq:complex-qshift} depends on $\alpha$.  Differentiate its locally uniformly convergent logarithm term by term:
+Put $G(\alpha)=(aq^\alpha;q)_\infty$.  The infinite-product theorem and the
+displayed nonvanishing condition show that $G$ is holomorphic and nonzero on
+$U$.  If $K\Subset U$, then
+$\sup_{\alpha\in K}\AbsoluteValue{aq^\alpha}<\infty$.  Choose $J$ so that
+$\AbsoluteValue{aq^{\alpha+j}}\le\tfrac12$ for $\alpha\in K$ and $j\ge J$.
+The corresponding summands are bounded by
+$2\sup_K\AbsoluteValue{aq^\alpha}\,\AbsoluteValue q^j$; the finitely many
+earlier denominators have a positive minimum on $K$.  Thus the series
+converges uniformly on $K$, and termwise logarithmic differentiation of the
+normally convergent product gives
 \[
- -\frac{\partial}{\partial\alpha}
- \sum_{j\ge0}\log(1-aq^{\alpha+j})
- =(\log q)\sum_{j\ge0}
- \frac{aq^{\alpha+j}}{1-aq^{\alpha+j}}.
+ \frac{G'(\alpha)}{G(\alpha)}
+ =-(\log q)\sum_{j\ge0}\frac{aq^{\alpha+j}}{1-aq^{\alpha+j}}.
 \]
-On a compact set avoiding the poles, the denominators of the tail are bounded away from zero and the numerators form a geometric majorant, proving local uniform convergence.
+Since $(a;q)_\alpha=(a;q)_\infty/G(\alpha)$ and the numerator is nonzero and
+independent of $\alpha$, the claimed formula follows.
 \end{proof}
 
 \begin{theorem}[Lambert-series expansion]\label{thm:lambert-log}
@@ -653,21 +717,29 @@ For $m>t^{-1}$, subtracting finitely many asymptotic terms leaves a quantity bou
 \section{Classical shifted factorials as a limit}
 
 \begin{proposition}[Finite classical limit]\label{prop:classical-poch-limit}
-For fixed $x\in\ComplexNumbers$ and $n\in\NaturalNumbers$,
+Let $U$ be a sufficiently small simply connected neighborhood of $1$ not
+containing $0$, and choose the holomorphic logarithm on $U$ with
+$\Log 1=0$.  For $q\in U$ put $q^x=\exp(x\Log q)$.  Then, for fixed
+$x\in\ComplexNumbers$ and $n\in\NaturalNumbers$,
 \[
  \lim_{q\to1}\frac{(q^x;q)_n}{(1-q)^n}
- =x(x+1)\cdots(x+n-1)=(x)_n,
+ =x(x+1)\cdots(x+n-1)=(x)_n.
 \]
-where the limit is taken through values for which a consistent branch of $q^x$ is chosen.
 \end{proposition}
 
 \begin{proof}
-Write
+Set $h=\Log q$, so $h\to0$ and $q=\exp h$.  For every fixed
+$u\in\ComplexNumbers$,
+\[
+ \frac{1-q^u}{1-q}=\frac{1-\exp(uh)}{1-\exp h}\longrightarrow u
+\]
+by the Taylor expansion of the exponential, also when $u=0$.  Applying this
+to $u=x+j$ in
 \[
  \frac{(q^x;q)_n}{(1-q)^n}
- =\prod_{j=0}^{n-1}\frac{1-q^{x+j}}{1-q}.
+ =\prod_{j=0}^{n-1}\frac{1-q^{x+j}}{1-q}
 \]
-Each factor tends to $x+j$, since $q^u=1+u(q-1)+o(q-1)$ for fixed $u$.
+proves the result.
 \end{proof}
 
 \chapter{\texorpdfstring{$q$}{q}-integers and Gaussian coefficients}\label{chap:gaussian}
@@ -676,7 +748,7 @@ Each factor tends to $x+j$, since $q^u=1+u(q-1)+o(q-1)$ for fixed $u$.
 
 \section{Definitions}
 
-\begin{definition}
+\begin{definition}\label{qg:def-gaussian-coefficient}
 For $n\in\NaturalNumbers$ define the $q$-integer and $q$-factorial by
 \[
  [n]_q=\frac{1-q^n}{1-q}=1+q+\cdots+q^{n-1},
@@ -2493,39 +2565,68 @@ where the denominator is positive because $(q;q)_r\to(q;q)_\infty\ne0$.  Thus th
 \end{proof}
 
 \begin{corollary}[A ratio expansion]\label{cor:ratio-expansion}
-For $\AbsoluteValue z<1$,
+If $\AbsoluteValue{b_jz}<1$ for $1\le j\le s$, then
 \[
  \frac{(a_1z;q)_\infty\cdots(a_rz;q)_\infty}
  {(b_1z;q)_\infty\cdots(b_sz;q)_\infty}
+ =\sum_{N\ge0}c_Nz^N,
 \]
-can be expanded by multiplying $r$ copies of \eqref{eq:euler-product-series} and $s$ copies of \eqref{eq:euler-reciprocal-series}.  In particular, every coefficient is a finite convolution of $q$-Pochhammer ratios.
+where
+\[
+ c_N=\!\sum_{u_1+\cdots+u_r+v_1+\cdots+v_s=N}
+ \prod_{i=1}^r
+ \frac{(-1)^{u_i}q^{\binom{u_i}{2}}a_i^{u_i}}{(q;q)_{u_i}}
+ \prod_{j=1}^s\frac{b_j^{v_j}}{(q;q)_{v_j}}.
+\]
+When $s=0$ there is no restriction on $z$.
 \end{corollary}
 
 \begin{proof}
-Each numerator factor has an entire series expansion and each reciprocal denominator factor converges for $\AbsoluteValue{b_jz}<1$.  Cauchy multiplication is valid in their common disk of absolute convergence.
+Each numerator factor has the entire Euler expansion, while the reciprocal
+expansion of $(b_jz;q)_\infty^{-1}$ converges absolutely for
+$\AbsoluteValue{b_jz}<1$.  Hence all finitely many series converge absolutely
+in the stated common domain, so repeated Cauchy multiplication is legitimate.
+Collecting the terms of total degree $N$ gives the displayed finite
+convolution.
 \end{proof}
 
 \section{Formal and analytic interpretations}
 
 \begin{proposition}[Formal version]\label{prop:formal-qbinomial}
-If $q$ is an indeterminate, then
+Let $A$ be a commutative ring complete and separated for the $I$-adic
+topology, let $q\in I$, and let $a\in A$.  Then the coefficientwise $I$-adic
+products are defined in $A[[z]]$, $(z;q)_\infty$ is a unit there, and
 \[
  \frac{(az;q)_\infty}{(z;q)_\infty}
  =\sum_{n\ge0}\frac{(a;q)_n}{(q;q)_n}z^n
 \]
-holds in the $q$-adically complete ring $\RationalNumbers(a)[[q]][[z]]$.  More generally, it remains valid after any specialization into a complete topological ring for which the displayed products and series converge.
+in $A[[z]]$.  Here every $(q;q)_n$ is a unit.  In particular, with $a$ and
+$q$ indeterminates, the identity holds in
+$\IntegerNumbers[a][[q]][[z]]$.
 \end{proposition}
 
 \begin{proof}
-The products are well defined $q$-adically: apart from their initial factors, the $j$th factors differ from $1$ by a multiple of $q^j$.  For a formal power series $F(z)=\sum c_nz^n$, the equation
+For $j\ge1$ the $j$th product factor differs from $1$ by a coefficient in
+$I^j$.  Thus the finite products form coefficientwise $I$-adic Cauchy
+sequences and have limits in $A[[z]]$.  Their constant coefficient in $z$ is
+$1$, so $(z;q)_\infty$ is invertible.  Also $q^n\in I$, hence
+\[
+ (1-q^n)^{-1}=\sum_{r\ge0}q^{nr}
+\]
+converges $I$-adically, and therefore $(q;q)_n$ is a unit.
+
+Write the quotient as $F(z)=\sum_{n\ge0}c_nz^n$.  Splitting off the initial
+factors gives
 \[
  (1-z)F(z)=(1-az)F(qz),\qquad c_0=1,
 \]
-determines $c_n$ recursively by
-\(
+and hence
+\[
  (1-q^n)c_n=(1-aq^{n-1})c_{n-1},
-\)
-because $1-q^n$ is a unit in $\RationalNumbers(a)[[q]]$.  Both sides satisfy this equation, so their coefficients agree.  The same uniqueness argument works in every stated complete specialization.
+ \qquad n\ge1.
+\]
+Because $1-q^n$ is a unit, this recurrence has a unique solution, namely
+$c_n=(a;q)_n/(q;q)_n$.
 \end{proof}
 
 \section{Limits in the number of factors}
@@ -2558,7 +2659,7 @@ The two Euler identities are therefore the stable limits of the finite product a
 
 \section{Definition and convergence}
 
-\begin{definition}
+\begin{definition}\label{qg:def-basic-hypergeometric-series}
 The basic hypergeometric series is
 \[
  {}_r\phi_s\!\left[
@@ -2985,13 +3086,13 @@ For \eqref{eq:qchu2}, let $b\to0$ in \Cref{thm:q-pfaff}, with its other numerato
 by comparing the leading factors of the two degree-$n$ polynomials in $1/b$.
 \end{proof}
 
-% =================================================================
+% -----------------------------------------------------------------
 % INSERTION 1 of 1 for this item.
 % Chapter: \ref{chap:basic-hypergeometric} ("Basic hypergeometric series"),
 % section "The two $q$-Chu--Vandermonde sums".
 % Place immediately after the \end{proof} of \Cref{cor:q-chu}
 % (MONOGRAPH line 1943) and before \section{A hierarchy of mechanisms}.
-% =================================================================
+% -----------------------------------------------------------------
 
 
 
@@ -3127,10 +3228,10 @@ identity-theorem step used for \eqref{eq:qchu1} in the proof of
 Every step used only finite products, so, after multiplication by $A^{-n}$ is undone and denominators are cleared, \eqref{eq:qchu2} holds over any commutative ring in which $q$ and $A$ are invertible.
 \end{proof}
 
-% =================================================================
+% -----------------------------------------------------------------
 % AMENDMENT to \section{A hierarchy of mechanisms}, MONOGRAPH lines 1945--1960.
 % Replace the second display and the closing paragraph by the following.
-% =================================================================
+% -----------------------------------------------------------------
 
 \section{A hierarchy of mechanisms}
 
@@ -3152,18 +3253,25 @@ while
 \]
 the last arrow being \Cref{prop:qchu2-by-reversal}.  The finite chain is valid in a commutative ring after denominators are cleared.  The infinite chain requires convergence or a suitable complete formal topology, but only as far as its third arrow: the first $q$-Chu--Vandermonde sum is already a rational, hence purely algebraic, identity, as the proof of \Cref{cor:q-chu} records, and by \Cref{lem:2phi1-reversal} the fourth arrow is finite-product algebra.  Thus \eqref{eq:qchu2} does not depend on \Cref{thm:q-pfaff}, and the two derivations of it given here are genuinely independent.  This distinction becomes important in computer formalization; see \Cref{chap:formalization}.
 
+\input{chapters/09_very_well_poised_summations}
+
 \chapter{Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum}\label{chap:bilateral}
 \index{Ramanujan ${}_1\psi_1$ summation}
 \index{bilateral basic hypergeometric series}
 
 \section{Definition}
 
-For integral $n$, negative $q$-shifted factorials are understood as in \Cref{prop:negative-index}.  Define
+For integral $n$, negative $q$-shifted factorials are understood as in
+\Cref{prop:negative-index}.
+\begin{definition}[Bilateral basic hypergeometric series]
+\label{qg:def-bilateral-basic-hypergeometric}
+Define
 \[
  {}_1\psi_1\!\left[\begin{matrix}a\\b\end{matrix};q,z\right]
  =\sum_{n\in\IntegerNumbers}\frac{(a;q)_n}{(b;q)_n}z^n.
 \]
 The positive tail behaves like a geometric series in $z$, while the negative tail behaves like a geometric series in $b/(az)$.
+\end{definition}
 
 \begin{proposition}[Convergence annulus]\label{prop:1psi1-convergence}
 If denominator factors do not vanish, the ${}_1\psi_1$ series converges absolutely in
@@ -3492,54 +3600,69 @@ Assume $0<q<1$.  Define
 whenever the series converges.
 
 \begin{theorem}[Fundamental theorem of $q$-calculus]\label{thm:q-fundamental}
-Let
+Let $\Omega\subset\ComplexNumbers$ satisfy $q\Omega\subset\Omega$, and
+suppose
 \[
- F(x)=\int_0^x f(t)\,d_qt.
+ F(x)=(1-q)x\sum_{n\ge0}q^nf(xq^n)
 \]
-Whenever the defining series converges locally uniformly,
+is defined for $x\in\Omega$, for example because the series converges locally
+uniformly.  Then
 \[
- D_qF(x)=f(x).
+ D_qF(x)=f(x)\qquad(x\in\Omega\setminus\{0\}).
 \]
-Conversely, if $G(aq^n)\to G(0)$, then
+If $0\in\Omega$ and $f$ is continuous at $0$, set $F(0)=0$; then $D_qF$
+has the continuous extension $D_qF(0)=f(0)$.
+
+Conversely, if $a\ne0$, $G$ is defined on
+$\{0,a,aq,aq^2,\ldots\}$, and $G(aq^n)\to G(0)$, then the Jackson sum of
+$D_qG$ converges and
 \[
  \int_0^aD_qG(t)\,d_qt=G(a)-G(0).
 \]
 \end{theorem}
 
 \begin{proof}
-From the definition,
-\[
- F(x)=(1-q)x\sum_{n\ge0}q^nf(xq^n),
-\]
-while
+For $x\ne0$, shifting the convergent series gives
 \[
  F(qx)=(1-q)x\sum_{n\ge1}q^nf(xq^n).
 \]
-Their difference is $(1-q)xf(x)$, proving the first identity.  For the second,
-\begin{align*}
- \int_0^aD_qG(t)\,d_qt
- &=(1-q)a\sum_{n\ge0}q^n
- \frac{G(aq^n)-G(aq^{n+1})}{(1-q)aq^n}\\
- &=\sum_{n\ge0}\bigl(G(aq^n)-G(aq^{n+1})\bigr),
-\end{align*}
-which telescopes to $G(a)-G(0)$.
+Thus $F(x)-F(qx)=(1-q)xf(x)$ and $D_qF(x)=f(x)$.  If $f$ is
+continuous at $0$, this identity itself gives the asserted continuous
+extension.
+
+For the converse, the $N$th partial Jackson sum is exactly
+\[
+ \sum_{n=0}^{N}\bigl(G(aq^n)-G(aq^{n+1})\bigr)
+ =G(a)-G(aq^{N+1}).
+\]
+Letting $N\to\infty$ proves both convergence and the formula.
 \end{proof}
 
 \begin{corollary}[Jackson integration by parts]\label{cor:q-integration-parts}
-Under convergence assumptions,
+Let $a\ne0$.  Suppose the two Jackson series below converge and
+\[
+ f(aq^N)g(aq^N)\longrightarrow f(0)g(0).
+\]
+Then
 \[
  \int_0^a f(t)D_qg(t)\,d_qt
  =f(a)g(a)-f(0)g(0)
  -\int_0^a g(qt)D_qf(t)\,d_qt.
 \]
+In particular, the endpoint condition holds when $f$ and $g$ are continuous
+at $0$.
 \end{corollary}
 
 \begin{proof}
-Use the product rule
-\(
- D_q(fg)=fD_qg+g(q\,\cdot)D_qf
-\)
-and integrate with \Cref{thm:q-fundamental}.
+For every $N$, the product rule gives the finite identity
+\begin{align*}
+ &(1-q)a\sum_{n=0}^{N}q^n
+ \bigl[f(aq^n)D_qg(aq^n)+g(aq^{n+1})D_qf(aq^n)\bigr]\\
+ &\qquad=\sum_{n=0}^{N}
+ \bigl(f(aq^n)g(aq^n)-f(aq^{n+1})g(aq^{n+1})\bigr)\\
+ &\qquad=f(a)g(a)-f(aq^{N+1})g(aq^{N+1}).
+\end{align*}
+Let $N\to\infty$ and use the assumed convergence and endpoint limit.
 \end{proof}
 
 \begin{example}[Monomials]
@@ -4137,13 +4260,22 @@ Set $z=q^x$ in \eqref{eq:jtp-minus}:
 Substitute this in \Cref{prop:qgamma-reflection}.
 \end{proof}
 
+\input{chapters/10_theta_modularity_and_squares}
+
 \chapter{Partitions and product--sum identities}\label{chap:partitions}
 \index{partition generating function}
 
 \section{Unrestricted, distinct, and odd parts}
 
+\begin{definition}\label{qg:def-partition}
+A \emph{partition} of $n$ is a weakly decreasing finite sequence of positive
+integers with sum $n$.  Let $p(n)$ count unrestricted partitions,
+$d(n)$ partitions into distinct parts, and $o(n)$ partitions into odd parts;
+set $p(0)=d(0)=o(0)=1$ and all three counts equal to $0$ for $n<0$.
+\end{definition}
+
 \begin{theorem}[Basic partition products]\label{thm:partition-products}
-Let $p(n)$ count unrestricted partitions, $d(n)$ partitions into distinct parts, and $o(n)$ partitions into odd parts.  Then
+With the notation of \Cref{qg:def-partition},
 \begin{align*}
  \sum_{n\ge0}p(n)q^n&=\frac1{(q;q)_\infty},\\
  \sum_{n\ge0}d(n)q^n&=(-q;q)_\infty,\\
@@ -4477,6 +4609,8 @@ Divide by the fivefold dissection of $(q;q)_\infty$ to obtain \eqref{eq:RR2}.
 The product side of \eqref{eq:RR1} counts partitions into parts congruent to $1$ or $4$ modulo $5$; the product side of \eqref{eq:RR2} counts parts congruent to $2$ or $3$ modulo $5$.  The sum sides count partitions with successive parts differing by at least $2$, with an additional smallest-part condition in the second identity.  Establishing the latter combinatorial interpretations requires a separate bijective or finite-polynomial argument; the proof above instead reveals the hypergeometric engine.
 \end{remark}
 
+
+\input{chapters/11_bailey_andrews_gordon}
 
 \part{Cyclotomic arithmetic and extended indices}
 
@@ -5886,6 +6020,8 @@ and the leading term as $q\to\infty$ is $q^{k(n-k)}$ with coefficient $1$.
 The partition generating polynomial has constant term $1$, proving the first assertion.  The second follows by replacing every ratio $(1-q^a)/(1-q^b)$ in the product formula by its limit $a/b$.  Palindromicity and degree $k(n-k)$ show that the leading coefficient equals the constant coefficient, namely $1$.
 \end{proof}
 
+\input{chapters/12_limits_reciprocity_and_frontiers}
+
 \chapter{Computation, certification, and formal proof architecture}\label{chap:formalization}
 
 The identities in this book are well suited to exact computation because their natural objects are polynomials, rational functions, and formal power series.  They are also well suited to proof assistants, provided algebraic identities are separated cleanly from analytic convergence.  Lau, Lee, and Ono's 2026 formalization project~\cite{LauLeeOno2026} demonstrates this architecture for $q$-Pochhammer symbols, Bailey pairs, Jacobi's triple product, and the Rogers--Ramanujan identities.
@@ -6774,7 +6910,9 @@ A second bridge from $q$-products to the Fabius theory is probabilistic.  Replac
 
 \section{The geometric uniform random series}
 
-Let $0<q<1$, let $U_0,U_1,\ldots$ be independent random variables uniformly distributed on $[0,1]$, and define
+Let $(\Omega,\mathcal F,\mathbb P)$ be a probability space, let $0<q<1$,
+and let $U_0,U_1,\ldots:\Omega\to[0,1]$ be independent random variables with
+the uniform law on $[0,1]$.  Define
 \begin{equation}\label{eq:geometric-uniform-series}
  X_q:=(1-q)\sum_{j=0}^{\infty}q^jU_j.
 \end{equation}
@@ -9599,18 +9737,33 @@ and Euler's product for the sine, in its hyperbolic form, is
 
 \begin{theorem}[Spectral Pochhammer factorization]\label{thm:qF-spectral}
 \index{Pochhammer symbol!spectral factorization}
-For $\AbsoluteValue q<1$,
+For $\AbsoluteValue q<1$ and every $t\in\ComplexNumbers$,
 \begin{equation}\label{eq:qF-spectral-inside}
  M_q(t)=\EulerE^{t/2}\prod_{m=1}^{\infty}
  \QPochhammer{-\dfrac{(1-q)^2t^2}{4\pi^2m^2}}{q^2}{\infty},
 \end{equation}
-and for $\AbsoluteValue q>1$,
+and the associated double product converges normally on compact subsets of
+the $t$-plane.
+
+For $\AbsoluteValue q>1$, put
+\[
+ \mathcal D_q(t):=\prod_{m=1}^{\infty}
+ \QPochhammer{-\dfrac{(1-q^{-1})^2t^2}{4\pi^2m^2}}{q^{-2}}{\infty}.
+\]
+Then $\mathcal D_q$ is entire, its defining double product converges normally on
+compact subsets of $\ComplexNumbers$, and, on the germ disk of
+\Cref{def:qF-germ},
 \begin{equation}\label{eq:qF-spectral-outside}
- M_q(t)=\EulerE^{t/2}\prod_{m=1}^{\infty}
- \QPochhammer{-\dfrac{(1-q^{-1})^2t^2}{4\pi^2m^2}}{q^{-2}}{\infty}^{-1}.
+ M_q(t)=\frac{\EulerE^{t/2}}{\mathcal D_q(t)}.
 \end{equation}
-In both cases the double product converges normally on compact subsets of the
-$t$-plane.
+Consequently the quotient in \eqref{eq:qF-spectral-outside} is the meromorphic
+continuation of $M_q$ to $\ComplexNumbers$.  Its pole divisor is the multiset
+\[
+ t=\frac{2\pi i kq^j}{1-q},
+ \qquad k\in\IntegerNumbers\setminus\{0\},\quad j\ge1,
+\]
+where multiplicities add when listed points coincide.  The reciprocal product
+converges locally uniformly on compact subsets avoiding this divisor.
 \end{theorem}
 
 \begin{proof}
@@ -9636,25 +9789,42 @@ convergent and may be rearranged.  Fixing $m$ and multiplying over $j$,
 by the definition $(x;p)_\infty=\prod_{j\ge0}(1-xp^j)$ with $p=q^2$.  This proves
 \eqref{eq:qF-spectral-inside}.
 
-Let $\AbsoluteValue q>1$ and apply the same substitution to the product
-$P(t)=\prod_{j\ge1}\mathcal E((1-q)q^{-j}t)$ of \eqref{eq:qF-germ-def}, so that
-$M_q=P^{-1}$.  Here the linear arguments sum to
+Now let $\AbsoluteValue q>1$ and write
+\[
+ P(t)=\prod_{j\ge1}\mathcal E((1-q)q^{-j}t),
+ \qquad M_q=P^{-1}
+\]
+on the germ disk.  The same estimate, with $q^{-1}$ in place of $q$, proves
+normal convergence on all compacta of the direct product obtained from the
+quadratic factors; hence $\mathcal D_q$ is entire.  The linear arguments sum to
 \[
  \frac t2(1-q)\sum_{j\ge1}q^{-j}
  =\frac t2(1-q)\frac{q^{-1}}{1-q^{-1}}
  =\frac t2\,\frac{1-q}{q-1}
  =-\frac t2,
 \]
-so $P$ contributes $\EulerE^{-t/2}$ and its reciprocal contributes $\EulerE^{t/2}$, as
-claimed.  For the quadratic part, reindex by $i=j-1\ge0$ and use
+and, for the quadratic part, reindexing by $i=j-1\ge0$ gives
 \[
  (1-q)^2q^{-2j}=(1-q)^2q^{-2}\,q^{-2i}=(1-q^{-1})^2\,(q^{-2})^{i},
 \]
-which is legitimate because $(1-q)^2q^{-2}=(q^{-1}-1)^2=(1-q^{-1})^2$.  Fixing
-$m$ and multiplying over $i\ge0$ gives
-$\QPochhammer{-(1-q^{-1})^2t^2/(4\pi^2m^2)}{q^{-2}}{\infty}$; taking reciprocals proves
-\eqref{eq:qF-spectral-outside}.  Normal convergence is the previous estimate
-with $\AbsoluteValue q^{-1}<1$ in place of $\AbsoluteValue q$.
+because $(1-q)^2q^{-2}=(q^{-1}-1)^2=(1-q^{-1})^2$.  Thus
+\[
+ P(t)=\EulerE^{-t/2}\mathcal D_q(t),
+\]
+which proves \eqref{eq:qF-spectral-outside} wherever the reciprocal germ is
+defined and supplies its meromorphic continuation.
+
+The zeros of $P$ arise from the simple nonzero zeros $2\pi i k$ of
+$\mathcal E$: they are precisely the solutions of
+\[
+ (1-q)q^{-j}t=2\pi i k,
+ \qquad k\in\IntegerNumbers\setminus\{0\},\quad j\ge1.
+\]
+This is the stated pole divisor, with multiplicities added at collisions; no
+cancellation is possible because $\EulerE^{t/2}$ never vanishes.  Finally, on
+a compact set disjoint from the divisor, $\mathcal D_q$ has a positive minimum.
+Uniform convergence of the direct partial products then implies uniform
+convergence of their reciprocals.
 \end{proof}
 
 \paragraph{Lean boundary for \Cref{thm:qF-spectral}.}
@@ -11668,7 +11838,21 @@ work one evaluates $A_j(\theta_j)$ from
 % ed.: quadrature ($\approx10^{-10}$).
 \end{remark}
 
+\part{Branch-aware inverse theory}
+\label{part:inverse-q-theory}
+
+\input{chapters/00_scope_status_and_normalizations}
+\input{chapters/01_universal_inversion}
+\input{chapters/02_finite_q_pochhammer}
+\input{chapters/03_infinite_q_pochhammer}
+\input{chapters/04_gaussian_multinomial}
+\input{chapters/05_q_special_functions}
+\input{chapters/06_cyclotomic_fabius}
+\input{chapters/07_certification_and_frontiers}
+
 \appendix
+
+\input{chapters/08_reference_appendices}
 
 \chapter{Formula atlas}\label{app:atlas}
 
@@ -11866,12 +12050,19 @@ Read \Cref{chap:geometric-filters,chap:halfbase-thuemorse,chap:geometric-uniform
 
 Every mathematical result in this book is intended, eventually, to have a
 machine-checked proof in the Lean development that accompanies the Fabius
-project~\cite{ReshetnikovProveIt2026}.  This appendix records all 248 labelled
-results result by result, so that what remains can be planned rather than
-rediscovered.  The 191-result core lies in Chapters~1--23; the later
-Chapter~24 Fabius bridge is also included, with local crosswalks such as the
-one at \Cref{thm:qF-spectral} and corresponding rows in the exhaustive ledger
-below.
+project~\cite{ReshetnikovProveIt2026}.  The table below is the exhaustive Lean
+crosswalk for the \emph{forward} part: the 248 labelled results inherited from
+the forward backbone together with all 36 labelled definitions and results
+retained from the three general guides.  The branch-aware inverse part has a
+separate exhaustive source-to-canonical register in
+\Cref{sec:ref-concordance}; the machine-readable
+\path{theorem_concordance.csv} records its 260 historical source results.
+Finally, \path{source_concordance.csv} maps all 547 result environments from
+the five publications merged into this volume, including duplicates and
+retired source assertions, to their surviving canonical destinations.  These
+three views are complementary: the table below answers the Lean-status
+question for each labelled forward result, while the concordances preserve
+complete merger provenance without counting a repeated theorem twice.
 
 The classification is deliberately severe, and it is the same rule the
 project uses to decide whether a claim may leave its quarantine boundary.
@@ -11894,10 +12085,12 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 248 labelled results, 42 are \statusexact, 74 are \statuspartial,
-129 are \statusnone, and 3 are \statusna.
-Within that exhaustive total, the 191-result Chapters~1--23 core has 36
-\statusexact, 29 \statuspartial, 123 \statusnone, and 3 \statusna{} entries.
+Of the 284 labelled forward results, 42 are \statusexact, 74 are
+\statuspartial, 160 are \statusnone, and 8 are \statusna.  The original
+191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
+\statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
+add 31 human-proved but not Lean-formalized assertions and five labelled
+definitions.  The later Fabius bridge contributes the remaining 57 rows.
 The formalized part is concentrated exactly where the Fabius development
 needed it: the finite Gaussian-coefficient core, the geometric Lagrange and
 filter calculus, half-base and Thue--Morse cancellation, and the geometric
@@ -12239,23 +12432,27 @@ Finite fields, Grassmannians, and rank enumeration & 0 & 1 & 5 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
 The infinite $q$-binomial theorem & 0 & 0 & 5 & 0\\
 Basic hypergeometric series & 1 & 0 & 8 & 0\\
+Euler telescoping and very-well-poised summations & 0 & 0 & 4 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 0 & 0 & 2 & 0\\
 $q$-difference calculus and the quantum binomial & 0 & 0 & 10 & 0\\
 The $q$-gamma and $q$-beta functions & 0 & 0 & 8 & 0\\
 Jacobi's triple product & 0 & 0 & 8 & 0\\
+Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
 Partitions and product--sum identities & 0 & 0 & 4 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 1 & 0 & 6 & 0\\
+Bailey transforms and the Andrews--Gordon identities & 0 & 0 & 8 & 1\\
 Cyclotomic factorization and congruences & 1 & 0 & 8 & 0\\
 Negative upper indices and geometric Newton interpolation & 0 & 2 & 7 & 0\\
 Central $q$-binomial sums and Lambert series & 0 & 0 & 7 & 0\\
 Asymptotic regimes and Bernoulli expansions & 0 & 0 & 8 & 0\\
+Exact limits, reciprocity, and research frontiers & 0 & 0 & 5 & 0\\
 Computation, certification, and formal proof architecture & 0 & 3 & 8 & 3\\
 Geometric interpolation and exact $q$-filters & 6 & 2 & 1 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 45 & 6 & 0\\
 \midrule
-\textbf{Total} & 42 & 74 & 129 & 3\\
+\textbf{Forward total} & 42 & 74 & 160 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -12898,6 +13095,54 @@ termination package}\\[2pt]
 {\footnotesize\texttt{FabiusGlobalQBinomialSeries};
 \texttt{FabiusDiscreteLimitIntegration}; the formalized global series has a
 different convolutional summand and lacks the stated sharp residual package}\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Euler telescoping and very-well-poised summations}\\
+\midrule
+\Cref{qg:lem-euler-telescope} & \statusnone & ---\\[2pt]
+\Cref{qg:lem-jackson-rational-certificate} & \statusnone & ---\\[2pt]
+\Cref{qg:thm-jackson-8phi7} & \statusnone & ---\\[2pt]
+\Cref{qg:cor-jackson-6phi5} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Theta modularity, lattice dissection, and sums of squares}\\
+\midrule
+\Cref{qg:thm-quintuple-product} & \statusnone & ---\\[2pt]
+\Cref{qg:def-jacobi-theta} & \statusna & notation only\\[2pt]
+\Cref{qg:prop-theta-products} & \statusnone & ---\\[2pt]
+\Cref{qg:prop-theta-heat} & \statusnone & ---\\[2pt]
+\Cref{qg:def-fourier-transform} & \statusna & transform convention\\[2pt]
+\Cref{qg:thm-poisson} & \statusnone & ---\\[2pt]
+\Cref{qg:lem-gaussian-fourier} & \statusnone & ---\\[2pt]
+\Cref{qg:thm-jacobi-imaginary} & \statusnone & ---\\[2pt]
+\Cref{qg:def-dedekind-eta} & \statusna & notation only\\[2pt]
+\Cref{qg:thm-theta-eta-modular} & \statusnone & ---\\[2pt]
+\Cref{qg:def-ramanujan-theta} & \statusna & notation only\\[2pt]
+\Cref{qg:prop-ramanujan-product} & \statusnone & ---\\[2pt]
+\Cref{qg:thm-schroeter} & \statusnone & ---\\[2pt]
+\Cref{qg:prop-squares-theta} & \statusnone & ---\\[2pt]
+\Cref{qg:lem-gaussian-ufd} & \statusnone & ---\\[2pt]
+\Cref{qg:thm-two-square} & \statusnone & ---\\[2pt]
+\Cref{qg:cor-two-square-lambert} & \statusnone & ---\\[2pt]
+\Cref{qg:thm-four-square} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Bailey transforms and the Andrews--Gordon identities}\\
+\midrule
+\Cref{qg:def-bailey-pair} & \statusna & notation only\\[2pt]
+\Cref{qg:thm-bailey-lemma} & \statusnone & ---\\[2pt]
+\Cref{qg:lem-bailey-lowering} & \statusnone & ---\\[2pt]
+\Cref{qg:lem-bailey-chain-iterate} & \statusnone & ---\\[2pt]
+\Cref{qg:cor-rr-partitions} & \statusnone & ---\\[2pt]
+\Cref{qg:lem-rogers-recurrence} & \statusnone & ---\\[2pt]
+\Cref{qg:thm-rrcf} & \statusnone & ---\\[2pt]
+\Cref{qg:thm-andrews-gordon} & \statusnone & ---\\[2pt]
+\Cref{qg:cor-andrews-gordon-mod7} & \statusnone & ---\\[2pt]
+\midrule
+\multicolumn{3}{@{}l}{\itshape Exact limits, reciprocity, and research frontiers}\\
+\midrule
+\Cref{qg:thm-qpochhammer-modular-asymptotic} & \statusnone & ---\\[2pt]
+\Cref{qg:prop-coefficientwise-limit} & \statusnone & ---\\[2pt]
+\Cref{qg:prop-truncation-principle} & \statusnone & ---\\[2pt]
+\Cref{qg:prop-borwein-reciprocity} & \statusnone & ---\\[2pt]
+\Cref{qg:prop-borwein-tail-stabilization} & \statusnone & ---\\[2pt]
 \bottomrule
 \end{longtable}
 \endgroup

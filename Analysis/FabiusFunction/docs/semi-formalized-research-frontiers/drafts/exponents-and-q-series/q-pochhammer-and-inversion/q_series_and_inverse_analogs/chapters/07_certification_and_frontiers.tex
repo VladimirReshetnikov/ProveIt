@@ -7,7 +7,8 @@
 % LOCAL-NON-FOURIER-HAT: \FormalGevreySeriesSymbol denotes a formal Gevrey series before Borel transformation, not a Fourier transform.
 \newcommand{\FormalGevreySeriesSymbol}[1]{\widehat{#1}}
 
-\part{Certification and research frontiers}
+\chapter{Certification and research frontiers}
+\label{chap:certification-and-frontiers}
 
 \section{Branch-aware numerical certification}
 \label{sec:certification-frontiers}
@@ -213,45 +214,11 @@ for some \(\xi\) between \(x_0\) and \(x_*\).  Taking absolute values and using
 the derivative lower bound proves \eqref{eq:real-residual-transfer}.
 \end{proof}
 
-The residual estimate assumes that the root already exists.  Interval Newton
-can certify existence as well, provided its derivative enclosure is separated
-from zero.
-
-\begin{theorem}[One-dimensional interval Newton]
-\label{thm:interval-newton-one-dimensional}
-Let \(X=[\alpha,\beta]\), let \(f\) be continuously differentiable on \(X\),
-and let \(D\) be a nonempty closed bounded real interval containing \(f'(X)\)
-with \(0\notin D\).
-For \(x_0\in X\), define
-\[
- N(X):=x_0-\frac{f(x_0)-y}{D}
- =\left\{x_0-\frac{f(x_0)-y}{d}:d\in D\right\}.
-\]
-If \(N(X)\subseteq X\), then \(f(x)=y\) has exactly one solution in \(X\).
-If \(N(X)\subseteq\operatorname{int}X\), the solution lies in the interior of
-\(X\).
-\end{theorem}
-
-\begin{proof}
-First suppose \(D=[m,M]\) with \(0<m\le M\).  Then \(f'\ge m\), so \(f\) is
-strictly increasing.  Put \(r=f(x_0)-y\).  If \(r=0\), \(x_0\) is the unique
-root.  If \(r>0\), the left endpoint of \(N(X)\) is \(x_0-r/m\).  Inclusion in
-\(X\) gives \(x_0-\alpha\ge r/m\).  The mean-value theorem therefore yields
-\[
- f(x_0)-f(\alpha)\ge m(x_0-\alpha)\ge r,
-\]
-so \(f(\alpha)\le y<f(x_0)\), and the intermediate value theorem gives a
-root.  If \(r<0\), the right endpoint of \(N(X)\) is \(x_0-r/m\); inclusion
-gives \(\beta-x_0\ge-r/m\), whence
-\(f(\beta)-f(x_0)\ge-r\).  Thus \(f(x_0)<y\le f(\beta)\), and again a root
-exists.  Strict increase makes it unique.
-
-If \(D\) is negative, apply the preceding argument to \(-f\) and target
-\(-y\); its interval Newton set is the same.  The stronger inclusion
-\(N(X)\subseteq\operatorname{int}X\) makes the relevant endpoint inequality
-strict, and therefore excludes an endpoint root when \(r\ne0\).  When
-\(r=0\), it says directly that the root \(x_0\in N(X)\) is interior.
-\end{proof}
+The residual estimate assumes that the root already exists.  The general
+arbitrary-target interval-Newton theorem
+\Cref{thm:uq-interval-newton-certificate} certifies existence, uniqueness,
+and enclosure as soon as the derivative interval is separated from zero.
+This is exactly the one-dimensional test formerly repeated here.
 
 Directed rounding is essential here.  A derivative sampled at many points is
 not an interval extension of \(f'(X)\), and an ordinary floating-point
@@ -299,34 +266,9 @@ displayed estimate is strict on the boundary, hence \(z_*\) is interior.
 \end{proof}
 
 When a second-derivative bound is sharper than an enclosure of the Newton map,
-the following Rouch\'e certificate is convenient.
-
-\begin{theorem}[One-zero Rouch\'e disk]
-\label{thm:rouche-one-zero-disk}
-Let \(f\) be holomorphic on a neighbourhood of
-\(D=\{z:\lvert z-z_0\rvert\le r\}\), where \(r>0\), and suppose \(M\ge0\)
-and
-\[
- \sup_{z\in D}\lvert f''(z)\rvert\le M,
- \qquad
- \lvert f(z_0)\rvert+\frac12Mr^2<\lvert f'(z_0)\rvert r.
-\]
-Then \(f\) has exactly one zero, counted with multiplicity, in the open disk.
-\end{theorem}
-
-\begin{proof}
-For \(z\in D\), Taylor's formula along the segment from \(z_0\) to \(z\) is
-\[
- f(z)=f(z_0)+f'(z_0)(z-z_0)
- +(z-z_0)^2\int_0^1(1-s)f''(z_0+s(z-z_0))\,\Differential s.
-\]
-The last term has modulus at most \(Mr^2/2\) on the boundary.  Therefore, on
-\(\lvert z-z_0\rvert=r\), the difference between \(f(z)\) and the linear
-function \(f'(z_0)(z-z_0)\) has modulus strictly smaller than
-\(\lvert f'(z_0)(z-z_0)\rvert\).  Rouch\'e's theorem says that the two
-functions have the same number of zeros in the disk.  The linear function has
-one, counted with multiplicity.
-\end{proof}
+apply the arbitrary-target Rouch\'e certificate
+\Cref{thm:uq-rouche-disk-certificate}.  Its specialization to target zero is
+exactly the one-zero disk test formerly repeated here.
 
 Disjoint one-zero disks do not by themselves prove that every inverse sheet
 has been found.  A validated argument-principle count closes that gap.
@@ -421,30 +363,15 @@ Cauchy's coefficient formula gives \(\lvert c_j\rvert\le M/R^j\).  Hence
 \end{proof}
 
 For an inverse expansion, it is usually sharper to certify its forward
-residual than to bound inverse coefficients separately.
-
-\begin{theorem}[Branchwise inverse residual transfer]
-\label{thm:inverse-residual-transfer}
-For each parameter \(s\), let \(p(s)\) be the selected real solution of
-\(F_s(p)=y_s\) in an interval \(I_s\), and suppose
-\(p\mapsto F_s(p)\) is continuously differentiable there.  Let
-\(p_N(s)\in I_s\) be any truncated inverse approximation.  If
+residual than to bound inverse coefficients separately.  Apply
+\Cref{prop:uq-asymptotic-residual-transfer} to each fixed parameter $s$, with
+$G(y_s)=p(s)$, $\widetilde G(y_s)=p_N(s)$, and $m(y_s)=m_s$.  It gives the
+branch-specific estimate
 \[
- \inf_{p\in I_s}\lvert\partial_pF_s(p)\rvert\ge m_s>0,
- \qquad
- \lvert F_s(p_N(s))-y_s\rvert\le E_N(s),
+ \lvert p_N(s)-p(s)\rvert
+ \le \frac{\lvert F_s(p_N(s))-y_s\rvert}{m_s}
+ \le \frac{E_N(s)}{m_s}.
 \]
-then
-\[
- \lvert p_N(s)-p(s)\rvert\le\frac{E_N(s)}{m_s}.
-\]
-\end{theorem}
-
-\begin{proof}
-Apply the mean-value theorem to \(p_N(s)\) and \(p(s)\) and use the derivative
-lower bound.  The fact that both points lie on the certified interval is what
-makes the bound branch-specific.
-\end{proof}
 
 At a fold, \(m_s\) tends to zero in the original coordinate.  One must first
 pass to the square-root coordinate in which the sheet is regular, or use a
@@ -802,40 +729,10 @@ Notice also that the endpoint above forces
 
 \subsection{\texorpdfstring{The minimum of the \(q\)-gamma function}{The minimum of the q-gamma function}}
 
-The existence and uniqueness of the minimizer are not conjectural.
-
-\begin{theorem}[Unique minimum of \(\Gamma_q\)]
-\label{thm:qgamma-unique-minimum}
-For every \(0<q<1\), the function
-\(\Gamma_q:(0,\infty)\to(0,\infty)\) has a unique global minimizer
-\(x_q^\ast\).
-\end{theorem}
-
-\begin{proof}
-The logarithmic derivative of the standard \(q\)-gamma product is
-\[
- \psi_q(x)
- =-\log(1-q)+(\log q)
-   \sum_{j=0}^{\infty}\frac{q^{x+j}}{1-q^{x+j}}.
-\]
-The series and its derivative converge locally uniformly, and
-\[
- \psi_q'(x)
-  =(\log q)^2
-    \sum_{j=0}^{\infty}
-      \frac{q^{x+j}}{(1-q^{x+j})^2}>0.
-\]
-Thus \(\psi_q\) is strictly increasing.  Its \(j=0\) summand shows that
-\(\psi_q(x)\to-\infty\) as \(x\downarrow0\), whereas dominated geometric
-convergence gives
-\(\psi_q(x)\to-\log(1-q)>0\) as \(x\to\infty\).
-It therefore has exactly one zero \(x_q^\ast\).  Since
-\(\Gamma_q'(x)=\Gamma_q(x)\psi_q(x)\) and \(\Gamma_q(x)>0\),
-the function decreases before this zero and increases after it.  The zero is
-the unique global minimizer.
-\end{proof}
-
-Write \(m_q=\Gamma_q(x_q^\ast)\).
+The existence and uniqueness of the minimizer are not conjectural: they are
+the first assertion of \Cref{thm:qs-qgamma-minimum}, whose proof also gives the
+complete two-branch description of every real level above the minimum.  Write
+$x_q^\ast=x_q$ and \(m_q=\Gamma_q(x_q^\ast)\).
 
 \begin{conjecture}[Monotonic motion of the \(q\)-gamma minimum]
 \label{conj:qgamma-monotone-minimizer}

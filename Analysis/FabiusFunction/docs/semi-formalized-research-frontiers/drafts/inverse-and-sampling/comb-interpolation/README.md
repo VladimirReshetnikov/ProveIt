@@ -17,5 +17,8 @@ The canonical package keeps each kind of record in one place:
 - its [companion-evidence index](comb_interpolation_synthesis/assets/README.md)
   routes the unique retained scripts, data, outputs, and figures.
 
-The geometric q-series layer also cross-links to the
-[`q_pochhammer_q_binomial_monograph`](../../exponents-and-q-series/q-pochhammer-and-inversion/q_pochhammer_q_binomial_monograph/).
+The geometric q-series layer also cross-links to the forward-theory part of
+the source-only canonical
+[`q_series_and_inverse_analogs`](../../exponents-and-q-series/q-pochhammer-and-inversion/q_series_and_inverse_analogs/)
+synthesis. No canonical publication PDF was generated for that synthesis;
+its retained figure PDFs are research assets only.

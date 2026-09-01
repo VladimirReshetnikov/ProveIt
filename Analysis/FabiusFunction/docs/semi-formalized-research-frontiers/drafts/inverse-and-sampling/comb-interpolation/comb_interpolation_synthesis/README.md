@@ -96,12 +96,13 @@ font, log, and visual-inspection facts are recorded once in
 [`assets/VALIDATION.md`](assets/VALIDATION.md). Keeping those mutable
 measurements in one record prevents status drift between README files.
 
-The later source-only crosswalk of `thm:weight-valuation` to
-`Fabius.twoPowChoose_padicValNat` changed
-`chapters/03_additive_dyadic.tex` but, by explicit instruction, did not rebuild
-the PDF. These measurements therefore describe the retained incoming
-publication artifact and do not assert render synchronization with the current
-chapter.
+Later source-only edits changed `chapters/03_additive_dyadic.tex` to crosswalk
+`thm:weight-valuation` to `Fabius.twoPowChoose_padicValNat`, and changed
+`chapters/01_geometric_core.tex` and `chapters/99_bibliography.tex` to point to
+the consolidated q-series synthesis.  By explicit instruction, none of these
+edits rebuilt the PDF.  The recorded measurements therefore describe the
+retained incoming publication artifact and do not assert render
+synchronization with the current sources.
 
 ## Reproduce the computational evidence
 
