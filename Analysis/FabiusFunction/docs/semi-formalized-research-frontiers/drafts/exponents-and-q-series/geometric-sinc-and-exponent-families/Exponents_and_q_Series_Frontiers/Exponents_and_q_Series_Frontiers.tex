@@ -91,7 +91,6 @@
 \newcommand{\statusopen}{\textcolor{deepred}{\textbf{conjectural/open}}}
 \newcommand{\NormalCDF}{\Phi_{\!G}}
 \newcommand{\NormalSurv}{\overline{\Phi}_{\!G}}
-\newcommand{\Bell}{\mathcal B}
 \newcommand{\Agen}{\mathcal A}
 \newcommand{\Zspec}{\mathcal Z}
 \newcommand{\Mellin}{\mathcal M}
@@ -1085,7 +1084,7 @@ $A(4^{-j})$.
 The even moments are
 \begin{equation}
  \Expectation X_a^{2n}
- =\Bell_{2n}\bigl(0,\kappa_2,0,\kappa_4,\ldots,0,\kappa_{2n}\bigr),
+ =\ExponentialCompleteBellPolynomial{2n}\bigl(0,\kappa_2,0,\kappa_4,\ldots,0,\kappa_{2n}\bigr),
  \label{p1:eq:bell-moments}
 \end{equation}
 or explicitly
@@ -15079,7 +15078,7 @@ with $[n]_q=1+q+\cdots+q^{n-1}$; all odd cumulants above the mean vanish, and
  \kappa_2(q)=\frac1{12}\,\frac{1-q}{1+q}.
 \end{equation}
 Moments are complete Bell polynomials,
-$m_n(q)=\Bell_n\bigl(\tfrac12,\kappa_2,0,\kappa_4,0,\ldots\bigr)$, hence exact
+$m_n(q)=\ExponentialCompleteBellPolynomial{n}\bigl(\tfrac12,\kappa_2,0,\kappa_4,0,\ldots\bigr)$, hence exact
 rationals at every rational $q$.
 \end{theorem}
 
@@ -15311,22 +15310,30 @@ The generic \path{QPochhammerDissection.lean} proves the exact finite
 residue-class formulas through
 \path{finiteQPochhammerIn_dissection} and
 \path{finiteQPochhammerIn_dissection_remainder}.  The companion
-\path{QPochhammerInfinite.lean}, with definition \path{qPochhammerInfIn},
-proves finite-prefix convergence, finite-shift and factor-removal identities,
-infinite dissection, and the exact zero locus for a fixed contracting nome.
+\path{QPochhammerInfinite.lean}, with one definition
+\path{qPochhammerInfIn} and 29 theorems, proves finite-prefix convergence,
+finite-shift and factor-removal identities, infinite dissection, and the exact
+zero locus for a fixed contracting nome.
 Its declarations \path{hasProdLocallyUniformly_qPochhammerInfIn},
 \path{differentiable_qPochhammerInfIn},
 \path{qPochhammerInfIn_eq_zero_iff_exists_inv_pow},
 \path{hasDerivAt_qPochhammerInfIn_inv_pow}, and
 \path{deriv_qPochhammerInfIn_inv_pow_ne_zero} give fixed-$q$ local uniformity
 in $a$, complex entire-ness, the zeros $q^{-j}$, and their explicit nonzero
-derivatives under their stated field hypotheses.
-The companion \path{QPochhammerEntire.lean} adds exactly the four theorems
+derivatives under their stated field hypotheses.  The division-free theorem
+\path{deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one} gives actual derivative
+nonvanishing whenever $aq^j=1$, including $q=0$, and
+\path{analyticOrderAt_qPochhammerInfIn_of_eq_zero} states that every zero has
+analytic order exactly one, also including $q=0$.
+The companion \path{QPochhammerEntire.lean} retains exactly the four legacy
+compatibility wrappers
 \path{hasProdLocallyUniformly_complexQPochhammerInf},
 \path{complexQPochhammerInf_differentiable},
 \path{complexQPochhammerInf_eq_zero_iff}, and
 \path{analyticOrderAt_complexQPochhammerInf_of_eq_zero}.
-For each fixed complex strict contraction $q$, they prove locally uniform
+For each fixed complex strict contraction $q$, they transfer the generic
+\path{qPochhammerInfIn} results to the older \path{complexQPochhammerInf}
+names, without duplicate analytic proofs.  They expose locally uniform
 convergence on the whole complex $a$-plane and entire-ness in $a$, identify
 the zero set in the division-free form
 \(\exists j,\ 1-aq^j=0\), including \(q=0\), and give analytic order one at
@@ -15561,7 +15568,7 @@ equation induces the refinement
 \end{equation}
 (with $B_1=-\tfrac12$), a Bernoulli-polynomial analogue of the Fabius Mahler
 equation; and the Bell form
-$\Br_n^{(r)}(x)=\Bell_n\bigl(x-\tfrac12,-\kappa_2(r),0,-\kappa_4(r),0,
+$\Br_n^{(r)}(x)=\ExponentialCompleteBellPolynomial{n}\bigl(x-\tfrac12,-\kappa_2(r),0,-\kappa_4(r),0,
 \ldots\bigr)$ gives
 \[
  \Br_2^{(r)}=z^2-v_r,\quad
@@ -15748,7 +15755,7 @@ Equivalently (general-radix Bell--Bernoulli form), the same subset sums obey
 \begin{gather}
  S_{N,N+\ell}(q)
  =(-1)^Nq^{\binom N2}\frac{(N+\ell)!}{\ell!}\,
- \Bell_\ell\bigl(\gamma_1,\ldots,\gamma_\ell\bigr),
+ \ExponentialCompleteBellPolynomial{\ell}\bigl(\gamma_1,\ldots,\gamma_\ell\bigr),
  \label{p7:eq:radix-bell}\\
  \gamma_1=\tfrac12[N]_q,\qquad
  \gamma_{2r}=\frac{B_{2r}}{2r}\,[N]_{q^{2r}},\qquad

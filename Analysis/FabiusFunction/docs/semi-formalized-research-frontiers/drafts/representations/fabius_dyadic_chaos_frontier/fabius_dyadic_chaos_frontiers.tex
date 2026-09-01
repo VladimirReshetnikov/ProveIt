@@ -74,7 +74,6 @@
 \newcommand{\sech}{\operatorname{sech}}
 \newcommand{\falling}[2]{#1^{\underline{#2}}}
 \newcommand{\rising}[2]{#1^{\overline{#2}}}
-\newcommand{\Bell}{\mathcal B}
 \newcommand{\Acal}{\mathcal A}
 \newcommand{\Hcal}{\mathcal H}
 \newcommand{\Ical}{\mathcal I}
@@ -379,10 +378,10 @@ Write $\kappa_n$ for the cumulants of $X$.  The corpus gives
 \end{equation}
 where $B_n$ are Bernoulli numbers.  Hence
 \begin{equation}
- \Expectation X^n=\Bell_n(\kappa_1,\ldots,\kappa_n),
+ \Expectation X^n=\ExponentialCompleteBellPolynomial{n}(\kappa_1,\ldots,\kappa_n),
  \label{eq:Bell-moments}
 \end{equation}
-with $\Bell_n$ the complete exponential Bell polynomial.  These formulae are
+with $\ExponentialCompleteBellPolynomial{n}$ the complete exponential Bell polynomial.  These formulae are
 imported; below they become coefficients of sensitivity and chaos objects.
 
 \subsection{Product probability space and projections}
@@ -606,7 +605,7 @@ Absolute convergence follows from $r(x)=O(x^2)$ at zero.
 For every $k\ge1$,
 \begin{equation}
  \boxed{
- A_k(t)=\frac1{k!}\Bell_k\bigl(\InteractionPowerSum{1}(t),-1!\InteractionPowerSum{2}(t),
+ A_k(t)=\frac1{k!}\ExponentialCompleteBellPolynomial{k}\bigl(\InteractionPowerSum{1}(t),-1!\InteractionPowerSum{2}(t),
  \ldots,(-1)^{k-1}(k-1)!\InteractionPowerSum{k}(t)\bigr).}
  \label{eq:A-Bell}
 \end{equation}
@@ -1383,7 +1382,7 @@ For $g(x)=x^d$ and a nonempty finite $S$,
 The tail moments are complete Bell polynomials in the tail cumulants:
 \begin{equation}
  m_r^{(S^c)}
- =\Bell_r\bigl(\kappa_1^{(S^c)},\ldots,\kappa_r^{(S^c)}\bigr),
+ =\ExponentialCompleteBellPolynomial{r}\bigl(\kappa_1^{(S^c)},\ldots,\kappa_r^{(S^c)}\bigr),
  \qquad
  \kappa_r^{(S^c)}=\sum_{j\notin S}a_j^r\kappa_r(V_1).
  \label{eq:tail-Bell}
@@ -1600,12 +1599,12 @@ Then, as Taylor series in the complex variable $t$,
  \qquad |t|<\pi,
  \label{eq:logR-cumulants}\\
  R(t)
- &=\sum_{n\ge0}\Bell_n(\lambda_1,\ldots,\lambda_n)
+ &=\sum_{n\ge0}\ExponentialCompleteBellPolynomial{n}(\lambda_1,\ldots,\lambda_n)
                    \frac{t^n}{n!},
  \qquad |t|<4\pi,
  \label{eq:R-Bell}\\
  R(t)-1
- &=\sum_{m\ge1}\Bell_{2m}(0,\lambda_2,0,\lambda_4,\ldots)
+ &=\sum_{m\ge1}\ExponentialCompleteBellPolynomial{2m}(0,\lambda_2,0,\lambda_4,\ldots)
                    \frac{t^{2m}}{(2m)!},
  \qquad |t|<4\pi.
  \label{eq:Rminus1-Bell}
@@ -2933,7 +2932,7 @@ Order product
 Order refinement
 & $A_k(2t)=A_k(t)+r(t)A_{k-1}(t)$ \\
 Power-sum Bell form
-& $A_k=k!^{-1}\Bell_k(\InteractionPowerSum{1},-1!\InteractionPowerSum{2},\ldots,(-1)^{k-1}(k-1)!\InteractionPowerSum{k})$ \\
+& $A_k=k!^{-1}\ExponentialCompleteBellPolynomial{k}(\InteractionPowerSum{1},-1!\InteractionPowerSum{2},\ldots,(-1)^{k-1}(k-1)!\InteractionPowerSum{k})$ \\
 Legendre coefficient
 & $c_\nu=M\prod_{\nu_j>0}\sqrt{2\nu_j+1}\,i_{\nu_j}(x_j)/i_0(x_j)$ \\
 Continuous degree mark
