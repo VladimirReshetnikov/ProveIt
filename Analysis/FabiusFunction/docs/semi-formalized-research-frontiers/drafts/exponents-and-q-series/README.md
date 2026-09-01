@@ -23,12 +23,13 @@ Their earlier names, arrival hashes, and publication facts remain provenance,
 not parallel live documents. The latest validated receipt is the 340-page A4
 publication built from source SHA-256
 `da420f5b2622cd088af43cea0ac448105c9f6af65cf1734de6535e3427f8e052`.
-The merged source incorporates the later `QPochhammerEntire.lean`,
-`QPochhammerInfinite.lean`, and `QPochhammerDissection.lean` surfaces in its
-formalization crosswalk; its post-merge source/PDF pair still requires a fresh
-three-pass build and ledger refresh. Retained PDFs under its `assets/` tree are
+The merged source incorporates the later five-theorem
+`QPochhammerEntire.lean`, `QPochhammerInfinite.lean`, and
+`QPochhammerDissection.lean` surfaces, together with the latest six-module
+q-series tranche, in its formalization crosswalk; its post-merge source/PDF
+pair still requires a fresh three-pass build and ledger refresh. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 623 facade-reachable modules and 8,476 public declarations, with no
+contains 629 facade-reachable modules and 8,546 public declarations, with no
 missing module headers or declaration documentation.
 
 ## Detailed package record
@@ -101,10 +102,14 @@ Current packages and retained intake records:
   `e64a4ef65a9fcce3a4f211f2125b0f8440910cf4527635f76975b0967800e667`.
   Exactly three guarded serial passes produced that pair; all 340 pages, A4
   boxes, text extraction, embedded/subset Type-1 fonts including Libertinus,
-  absence of Type-3 fonts, and targeted visual review passed. The merged source
-  now also carries the current `QPochhammerEntire.lean`,
-  `QPochhammerInfinite.lean`, and `QPochhammerDissection.lean` crosswalk; its
-  final post-merge render and ledger refresh are pending. PDF files retained
+  absence of Type-3 fonts, and targeted visual review passed. The current
+  post-merge source has 13,941 lines and 647,940 bytes, with SHA-256
+  `619d45dad475fd869c294aeed1f1eac6b99d9b3cfef6a9487383ee3e92931bbe`.
+  It carries the five-theorem `QPochhammerEntire.lean`, the generic
+  `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, and the
+  latest six-module q-series tranche. Its final post-merge render and ledger
+  refresh are pending, so the validated 340-page PDF remains a source-pinned
+  historical artifact. PDF files retained
   beneath `assets/` are vector research figures, not manuscript builds.
   Manuscript result labels and numerical checks remain
   distinct from Lean verification.
@@ -508,16 +513,24 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 
 Geometric-sinc subgroup member:
 [`Exponents_and_q_Series_Frontiers/`](geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/)
-(current semantic-union TeX: 16,274 lines and 731,692 bytes, SHA-256
-`4be184dc95f7c9d7665e5edf56cd22dc66bdacbc2f113b03b700468836018f8b`;
-current three-pass artifact: 238 A4 pages and 6,953,898 bytes, SHA-256
+(current semantic-union TeX: 16,353 lines and 736,736 bytes, SHA-256
+`ac929bb9a79e69ab59e253fa1acd6a1d97c5ee35bdac07dc22f22a1ec5c56bb3`;
+retained PDF: 238 A4 pages and 6,953,898 bytes, SHA-256
 `fa719a8ea68d3c474928b9fae7449f827eb35a5452613f2b660d8e88ba27267e`;
-across seven parts). Exactly three serial passes from the unchanged merged
-source produced 228, 238, and 238 pages. Both child ledgers identify the exact
-source and artifact; basic A4, text-extraction, embedded-font, and no-Type-3
-checks pass. The containing multi-document batch was stopped before a fresh
-full log, page-box, and visual audit, so final publication validation remains
-open. This is the
+across seven parts). Exactly three serial passes from the preceding 16,274-line,
+731,692-byte source SHA-256
+`4be184dc95f7c9d7665e5edf56cd22dc66bdacbc2f113b03b700468836018f8b`
+produced 228, 238, and 238 pages. Basic A4, text-extraction, embedded-font, and
+no-Type-3 checks passed, but the containing multi-document batch stopped before
+a fresh full log, page-box, and visual audit. The child ledgers now record the
+actual current TeX and retained PDF as distinct payloads; that does not assert
+render parity. The semantic-union source adds the upstream q-API crosswalk
+material and the exact `GeneralizedRvachevIdentifiability.lean`
+zero-order/exponent crosswalk after the PDF's source checkpoint. The latter
+gives constructive dyadic-order first differences and full-product rigidity;
+zeta-quotient, cumulant/analytic-sample, and probability-law identifiability
+remain Partial in Lean. Final-source rendering and full publication validation
+remain pending. This is the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -781,7 +794,7 @@ and 8 interface-only among the same 284 rows. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
-the later Fabius bridge contributes the remaining 57 rows. Its pointwise
+the later Fabius bridge contributes the remaining 56 rows. Its pointwise
 inside-`q^2` Pochhammer factorization is now formal for every complex strict
 contraction, while the compound spectral theorem remains partial at its named
 centered/MGF wrappers, reciprocal outside-disk clause, and named local-uniform
@@ -816,11 +829,11 @@ compatibility spelling of its primary identity),
 `QBinomialInversionSpecializations.lean` (two definitions, four theorems),
 `QPochhammerElementaryIdentities.lean` (13 theorems),
 `QPochhammerDissection.lean` (two theorems),
-`QPochhammerInfinite.lean` (one definition, 27 theorems),
+`QPochhammerInfinite.lean` (one definition, 29 theorems),
 `QBinomialReciprocity.lean` (four theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems),
 `RvachevPochhammerFactorization.lean` (one definition, nine theorems), and
-`QPochhammerEntire.lean` (four theorems).
+`QPochhammerEntire.lean` (four legacy compatibility wrappers).
 The five `GaussianBinomialAtNegOne` theorems are
 `gaussianBinomial_neg_one_even_even`,
 `gaussianBinomial_neg_one_odd_even`,
@@ -961,11 +974,16 @@ theorems justify the exchange of scale and spectral-zero indices, including
 `Fabius.finiteQPochhammerIn_dissection` and
 `Fabius.finiteQPochhammerIn_dissection_remainder` over every commutative ring;
 the latter allows the stronger boundary `u <= r`. `QPochhammerInfinite.lean`
-adds the generic definition `Fabius.qPochhammerInfIn` and 27 theorems. For a
+adds the generic definition `Fabius.qPochhammerInfIn` and 29 theorems. For a
 fixed contracting nome they include finite-prefix convergence, natural-number
 finite shifts, factor removal, infinite dissection, and the exact zero locus;
 over the complex numbers they include local uniformity in `a`, entire-ness,
-and an explicit nonzero derivative at every zero `q^(-j)`. Thus the finite
+and an explicit nonzero derivative at every zero `q^(-j)`. The new
+`Fabius.deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one` is the division-free
+derivative-nonvanishing statement at every raw factor zero `a*q^j = 1`, so it
+also covers `q = 0`; `Fabius.analyticOrderAt_qPochhammerInfIn_of_eq_zero`
+then states that every zero has analytic order exactly one, again including
+`q = 0`. Thus the finite
 dissection and remainder rows are exact, while the arbitrary-complex-order
 concatenation row is only partial. Infinite dissection assumes a positive
 modulus, while the two finite dissection theorems require no contraction or
@@ -973,12 +991,14 @@ nonvanishing. These free-parameter regularity results prove neither joint
 `(a,q)` holomorphy nor continuation in the nome, and they do not supply the canonical chapter's
 explicit uniform-in-`q` tails and derivative kernels.
 
-`QPochhammerEntire.lean` adds exactly the four theorems
+`QPochhammerEntire.lean` retains exactly the four legacy compatibility wrappers
 `Fabius.hasProdLocallyUniformly_complexQPochhammerInf`,
 `Fabius.complexQPochhammerInf_differentiable`,
 `Fabius.complexQPochhammerInf_eq_zero_iff`, and
 `Fabius.analyticOrderAt_complexQPochhammerInf_of_eq_zero`. For each fixed
-complex `q` with `‖q‖ < 1`, these prove local uniform convergence of the
+complex `q` with `‖q‖ < 1`, these transfer the generic `qPochhammerInfIn`
+results to the older `complexQPochhammerInf` names rather than duplicating
+their analytic proofs. They expose local uniform convergence of the
 defining factors on the whole complex `a`-plane, entire-ness in `a`, the raw
 factor-zero locus `∃ j, 1 - a*q^j = 0`, and analytic order one at every zero.
 The division-free zero statement includes `q = 0`; the module asserts neither
@@ -989,7 +1009,47 @@ eight-theorem sinc-product tranche above
 supplies the general-`q` uncentered real-frequency bridge, locally uniform
 entire `S_q`, and real-frequency local and compact uniform convergence of the
 full phase-bearing prefixes.  There is still no named centered or MGF wrapper
-or outside-disk reciprocal formula, and there is no named local-uniform or
-normal-convergence theorem for the outer Pochhammer product over the spectral
-index. The parameter-local statements in the generic leaves do not close that
-outer-product boundary.
+or outside-disk reciprocal formula. The later entire and generic
+infinite-product leaves supply the parameter-local-uniform and normal-
+convergence layer described below.
+
+`QPochhammerEntire.lean` adds exactly five public theorems beyond that
+pointwise product surface:
+`Fabius.hasProdLocallyUniformly_complexQPochhammerInf`,
+`Fabius.complexQPochhammerInf_differentiable`,
+`Fabius.complexQPochhammerInf_eq_zero_iff`,
+`Fabius.complexQPochhammerInf_eq_zero_iff_eq_inv_pow`, and
+`Fabius.analyticOrderAt_complexQPochhammerInf_of_eq_zero`. For every complex
+strict contraction, they prove locally uniform convergence in the parameter
+`a`, entire-ness of `a ↦ (a;q)_∞`, the exact factor-zero locus, and analytic
+order one at every zero. The division-free factor formulation includes the
+degenerate nome `q = 0`; under `q ≠ 0`, the additional theorem rewrites that
+locus as the literal reciprocal-power lattice. These are proved,
+facade-reachable Lean results. Their exact human-readable counterparts and
+refreshed crosswalk rows are now present in the current source, whose next
+canonical three-pass build remains pending.
+
+`QPochhammerDissection.lean` adds the two denominator-free finite residue-class
+factorizations over arbitrary commutative rings. `QPochhammerInfinite.lean`
+adds the generic infinite symbol `Fabius.qPochhammerInfIn` and 27 theorems:
+strict-contraction summability and convergence, finite-prefix and residue-class
+factorizations, exact zero criteria, locally uniform parameter convergence,
+continuity and complex differentiability, and explicit nonzero derivatives at
+inverse-power zeros. Its infinite dissection assumes a positive modulus, while
+the two finite dissection theorems require no contraction or nonvanishing.
+These APIs are regularity statements in the free parameter, not joint
+analyticity or continuation in the nome.
+
+The latest finite and infinite q-series tranche adds six further
+facade-reachable modules. `GaussianBinomialContinuity.lean` has three theorems
+for continuity, the classical `q → 1` limit, and the finite-Pochhammer
+quotient formula. `JacobiTripleProduct.lean` has 27 declarations covering its
+integer exponents, finite and infinite triple products, and Euler's pentagonal
+sum. `QBinomialTheoremInfinite.lean` has 23 declarations, including the
+dominated-limit engine, Gaussian majorant, Euler product/reciprocal expansions,
+and the infinite q-binomial theorem. `QPascalSummation.lean` has four theorems,
+`QuantumBinomial.lean` has two noncommutative q-binomial theorems, and
+`RogersSzegoPolynomial.lean` has ten declarations for the polynomial,
+recurrences, and generating function. Together they contribute 69 public
+declarations without weakening the strict-contraction or noncommutative
+hypotheses recorded in their source modules.

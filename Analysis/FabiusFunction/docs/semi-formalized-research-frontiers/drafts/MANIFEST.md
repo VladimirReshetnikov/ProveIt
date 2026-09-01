@@ -19,8 +19,8 @@ old flat layout; the **Previous path** column below is the map. Documents
 were moved verbatim — no `.tex` content was changed by the reorganization,
 so no PDF was rebuilt for it.
 
-**Current artifact checkpoint (2026-09-01).** The live Lean audit is 623
-facade-reachable modules and 8,476 public declarations, with no missing module
+**Current artifact checkpoint (2026-09-01).** The live Lean audit is 629
+facade-reachable modules and 8,546 public declarations, with no missing module
 headers or declaration documentation. Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
 In particular, the primary exposition, Lean walkthrough, canonical frontier,
@@ -30,21 +30,26 @@ synthesis, and canonical forward/inverse q-series synthesis require a fresh
 final-source build (the inverse-theory PDF has not yet been published).
 Documented pre-replay checkpoints include 167 pages
 for the primary exposition, 126 for the walkthrough, 237 for the canonical
-frontier, 377 for the Integration master, 71 for the notation catalogue, 301
+frontier, 377 for the Integration master, 88 for the notation catalogue, 301
 for Representation, 41 for New Frontiers-2, 42 for inverse computability, 158
-for the comb synthesis, and 335 for the consolidated q-series synthesis. The
-first eight page counts are historical build receipts, not claims of current
-source/PDF synchronization.
+for the comb synthesis, 340 for the consolidated q-series synthesis, and 238
+for Exponents. The
+listed page counts are artifact receipts, not claims of current source/PDF
+synchronization except where a package explicitly records it.
 
 The two canonical syntheses have newer, source-pinned publication receipts.
-The q-series master was built from pre-`c3720b763` source SHA-256
-`9b7ac11a815efa7f3c6ea08b9626c06143fd6b0d633fef6edfc8bc21c2f6783a`
-into a 335-page, 2,163,339-byte A4 PDF with SHA-256
-`91c649d0c69628e134e71f1be6c39c3cbc96b91bfc63e456011083cf0e882f03`.
-That receipt remains valid for the named source. The later four-theorem
-`QPochhammerEntire.lean`, 28-declaration `QPochhammerInfinite.lean`, and
-two-theorem `QPochhammerDissection.lean` surfaces are now incorporated into
-the current formalization crosswalk; the resulting semantic union requires
+The q-series master was rebuilt from source SHA-256
+`ec9455ecd789b0dbca777a5f5df49c4cfefa51d8e8e8719a7a29296eab4afe65`
+into a 340-page, 2,180,191-byte A4 PDF with SHA-256
+`e64a4ef65a9fcce3a4f211f2125b0f8440910cf4527635f76975b0967800e667`.
+That receipt includes the 28-declaration `QPochhammerInfinite.lean`, the
+two-theorem `QPochhammerDissection.lean`, and the first four
+`QPochhammerEntire.lean` theorems. Six subsequent finite/infinite q-series
+modules contribute another 69 public declarations for continuity at `q = 1`,
+Euler and q-binomial sums, Jacobi's triple product, q-Pascal summation, the
+noncommutative q-binomial theorem, and Rogers--Szegő polynomials. The local
+reciprocal-power zero-lattice theorem completes `QPochhammerEntire.lean` to
+five theorems, making the final merged TeX newer than that receipt and requiring
 another strict three-pass build and ledger refresh. The comb synthesis also
 has a later chapter-03 notation edit: its retained 158-page, 2,456,105-byte
 A4 PDF has SHA-256
@@ -57,20 +62,39 @@ their source dispositions. Their content and provenance now live in the single
 root-level `q_pochhammer_q_binomial_monograph/`; every retired layout remains
 recoverable from its pinned revision and Git history. The remaining standalone
 q-series reports retain their thematic subgroup paths. In particular,
-Exponents has a 16,274-line current source and a newly rendered 238-page PDF,
-with both child ledgers refreshed to their exact hashes; three-pass convergence
-and basic structural/font checks pass, while the full final visual audit remains
-open.  Meanwhile,
-Cyclotomic has a 1,875-line current source and a retained 28-page PDF; both
-still require the remaining final publication gates before synchronization is
-claimed. Package-local
-operational ledgers are refreshed only after final renders; immutable arrival
-ledgers remain unchanged. Any older row below that calls one of these changed
-pairs synchronized, gives Exponents as 236 or 237 pages, gives Cyclotomic as 29
+Exponents has a 16,353-line current source and a retained 238-page PDF.  That
+PDF is the three-pass artifact built from the preceding 16,274-line source;
+basic structural and font checks passed, but the larger batch stopped before a
+fresh full log, page-box, and visual publication audit.  It therefore remains a
+historical payload rather than a render of the current TeX.  Cyclotomic has a
+1,875-line current source and a retained 28-page PDF; both packages require
+final-source rebuilds before synchronization is claimed. Package-local
+operational ledgers may record current TeX and historical PDFs as distinct
+payloads; such a refresh does not assert render parity, and synchronization
+receipts wait for final renders. Immutable arrival ledgers remain unchanged.
+Any older row below that calls one of these changed pairs synchronized, gives
+Exponents as 236 or 237 pages, gives Cyclotomic as 29
 pages/1,896 lines, gives the comb synthesis as 156 pages, or treats a retained
 inverse/New-Frontiers PDF as current is superseded by this checkpoint. The
 closed-form Gaunt/Wigner-square boundary recorded below and the q-jet status
 in the linked q-series registry remain unchanged by this merge.
+
+For the final source-only union, package-local READMEs and ledgers record the
+current q-series and Exponents source fingerprints. The live Exponents TeX is
+16,353 lines and 736,736 bytes with SHA-256
+`ac929bb9a79e69ab59e253fa1acd6a1d97c5ee35bdac07dc22f22a1ec5c56bb3`;
+it includes the exact zero-order/exponent identifiability and constructive
+first-difference crosswalk from the new zero-definition, six-theorem Lean
+module, while zeta-quotient, cumulant/analytic-sample, and probability-law
+identifiability remain Partial in Lean. The retained Exponents PDF is 238 A4
+pages and 6,953,898 bytes with SHA-256
+`fa719a8ea68d3c474928b9fae7449f827eb35a5452613f2b660d8e88ba27267e`.
+It was rendered from the preceding 16,274-line, 731,692-byte source with
+SHA-256
+`4be184dc95f7c9d7665e5edf56cd22dc66bdacbc2f113b03b700468836018f8b`.
+The retained q-series and Exponents PDFs both predate their latest merged
+crosswalks and are therefore distinct historical payloads; no final-source/PDF
+parity is claimed. These current facts supersede the older rows below.
 
 ## Incoming status
 
@@ -102,20 +126,22 @@ links to pre-consolidation commit `2e3567feb14947ee3ebcdab11adca64e746ad26f`.
 ## combinatorial coefficient calculus — `combinatorial-coefficient-calculus/`
 
 Six standalone archival arrivals were filed here on 2026-09-01.  Each package
-preserves one submitted TeX/PDF pair byte-for-byte and adds only a two-row live
-checksum ledger.  The manuscripts have visibly overlapping subjects and titles,
-but comparison, deduplication, canonical selection, claim review, PDF rebuilding,
-and Lean crosswalking are deliberately deferred until after publication of this
-quick-gate intake.
+preserved one submitted TeX/PDF pair byte-for-byte at intake and added a two-row
+live checksum ledger.  A later notation migration revised the sources only;
+the retained PDFs remain the historical arrivals, and each refreshed ledger
+records those distinct payloads.  The manuscripts have visibly overlapping
+subjects and titles, but comparison, deduplication, canonical selection, claim
+review, PDF rebuilding, and Lean crosswalking are deliberately deferred until
+after publication of this quick-gate intake.
 
 | Directory | Document | Previous path / provenance |
 | --- | --- | --- |
-| `Combinatorial_Coefficient_Calculus-2/` | *Combinatorial Coefficient Calculus* (6,893 source lines; 147 A4 pp); pair ledger verifies 2/2 | `incoming/Combinatorial_Coefficient_Calculus-2.zip` (1,096,487 bytes; SHA-256 `a0ca605c1d3f1ee3e00eac1d69a8181e786dd414407a1b3b6db1a60f74d8766d`) |
-| `Combinatorial_Coefficient_Calculus/` | *Combinatorial Coefficient Calculus* (6,904 source lines; 143 A4 pp); pair ledger verifies 2/2 | `incoming/Combinatorial_Coefficient_Calculus.zip` (1,094,284 bytes; SHA-256 `a22479ac8f58e1710117af9d0a3f515c7d24ec250548f537520c9f9024f4321a`) |
-| `Combinatorial_Formulae_and_Inversion_Theorems/` | *Combinatorial Formulae and Inversion Theorems* (7,066 source lines; 140 A4 pp); pair ledger verifies 2/2 | `incoming/Combinatorial_Formulae_and_Inversion_Theorems.zip` (1,101,493 bytes; SHA-256 `dae561780a4442a9f11acb7edf1ec508daca1db237db01fabf77c695ec924960`) |
-| `Unified_Combinatorial_Coefficient_Calculus/` | *Unified Combinatorial Coefficient Calculus* (6,715 source lines; 144 A4 pp); pair ledger verifies 2/2 | `incoming/Unified_Combinatorial_Coefficient_Calculus.zip` (1,083,495 bytes; SHA-256 `c4217b088444eb3e4bf24a7542d360f02dfb8e240418b562a155ad0c251ab559`) |
-| `Unified_Combinatorial_Formulae/` | *A Unified Calculus of Combinatorial Formulae* (5,922 source lines; 130 A4 pp); pair ledger verifies 2/2 | `incoming/Unified_Combinatorial_Formulae.zip` (1,015,842 bytes; SHA-256 `611b14cfda15357b679a05d9586811d8fb39f6fe7d971f00424da2bb848a5594`) |
-| `Unified_Combinatorial_Formulae_and_Inversion_Theorems/` | *Unified Combinatorial Formulae and Inversion Theorems* (6,636 source lines; 138 A4 pp); pair ledger verifies 2/2 | `incoming/Unified_Combinatorial_Formulae_and_Inversion_Theorems.zip` (1,062,893 bytes; SHA-256 `ba62d0653fba9f0d1d867885e0b45272ba128973c1e49938d6cb1f597b457e33`) |
+| `Combinatorial_Coefficient_Calculus-2/` | *Combinatorial Coefficient Calculus* — current 6,862-line/277,653-byte source (`0b4176a2…8c93f6`) and retained historical 147-page A4 PDF; pair ledger verifies 2/2 | `incoming/Combinatorial_Coefficient_Calculus-2.zip` (1,096,487 bytes; SHA-256 `a0ca605c1d3f1ee3e00eac1d69a8181e786dd414407a1b3b6db1a60f74d8766d`) |
+| `Combinatorial_Coefficient_Calculus/` | *Combinatorial Coefficient Calculus* — current 6,873-line/276,828-byte source (`98497684…2ff63f`) and retained historical 143-page A4 PDF; pair ledger verifies 2/2 | `incoming/Combinatorial_Coefficient_Calculus.zip` (1,094,284 bytes; SHA-256 `a22479ac8f58e1710117af9d0a3f515c7d24ec250548f537520c9f9024f4321a`) |
+| `Combinatorial_Formulae_and_Inversion_Theorems/` | *Combinatorial Formulae and Inversion Theorems* — current 7,036-line/283,111-byte source (`f070ad09…4670b3`) and retained historical 140-page A4 PDF; pair ledger verifies 2/2 | `incoming/Combinatorial_Formulae_and_Inversion_Theorems.zip` (1,101,493 bytes; SHA-256 `dae561780a4442a9f11acb7edf1ec508daca1db237db01fabf77c695ec924960`) |
+| `Unified_Combinatorial_Coefficient_Calculus/` | *Unified Combinatorial Coefficient Calculus* — current 6,687-line/262,376-byte source (`9566ce29…8f8947`) and retained historical 144-page A4 PDF; pair ledger verifies 2/2 | `incoming/Unified_Combinatorial_Coefficient_Calculus.zip` (1,083,495 bytes; SHA-256 `c4217b088444eb3e4bf24a7542d360f02dfb8e240418b562a155ad0c251ab559`) |
+| `Unified_Combinatorial_Formulae/` | *A Unified Calculus of Combinatorial Formulae* — current 5,898-line/232,717-byte source (`089c6ece…c81bb3`) and retained historical 130-page A4 PDF; pair ledger verifies 2/2 | `incoming/Unified_Combinatorial_Formulae.zip` (1,015,842 bytes; SHA-256 `611b14cfda15357b679a05d9586811d8fb39f6fe7d971f00424da2bb848a5594`) |
+| `Unified_Combinatorial_Formulae_and_Inversion_Theorems/` | *Unified Combinatorial Formulae and Inversion Theorems* — current 6,610-line/257,216-byte source (`7f41ee4b…2417b2`) and retained historical 138-page A4 PDF; pair ledger verifies 2/2 | `incoming/Unified_Combinatorial_Formulae_and_Inversion_Theorems.zip` (1,062,893 bytes; SHA-256 `ba62d0653fba9f0d1d867885e0b45272ba128973c1e49938d6cb1f597b457e33`) |
 
 ## exponents-and-q-series — `exponents-and-q-series/`
 
@@ -164,12 +190,12 @@ No finite endpoint derivative is asserted.  An `O(z + exp(-1))` remainder after 
 | Directory | Document | Previous path |
 | --- | --- | --- |
 | `Lambert_W_Guide/` | *The Lambert W Function: A Real-Variable Guide* (62 A4 pp, consolidated edition, 2026-08-28) — editorial merge of the four independent treatments: the spine is the most complete article (branches, identities, exact branch-pair parametrization with Bernoulli gap expansions, derivative polynomials, integral calculus with all polynomial moments and Mellin integrals on both unbounded ends, local Taylor, Maclaurin with proved Lagrange–Bürmann, tree function/Cayley, signed Puiseux at the branch point with recurrences, unified Stirling-number logarithmic asymptotics for both branches, rigorous elementary bounds incl. Chatzigeorgiou's W₋₁ bracket, Padé and Euler continued fractions, Kalugin–Jeffrey–Corless cut integrals with complete monotonicity of W₀′, residual-certified branch-safe logarithmic Newton with monotone global starts, transcendental-equation catalogue, applications, Wright omega, complex-branch guide, problems with solutions, formula sheet); a complements section preserves the other three treatments' unique layers — the complete power-tower convergence theorem (exact interval e^{−e} ≤ a ≤ e^{1/e} with two-cycle exclusion and neutral endpoints), x^y = y^x, inverse-Taylor/Schröder corrections with branch-aware seeds, the logarithmic fixed-point iteration criterion (attracting iff \|W\|>1), branch-exchange involution, scaling identities, fixed points 2πin, unwinding-integer logarithm identity, closed Lagrange form of the Puiseux coefficients, square-root monodromy, the transcendence theorem (W_k(algebraic ≠ 0) is transcendental), a practitioner's toolkit (parameter gradients with the (1+w)^{−1} factor, differentiate-in-w, parametrize-by-w, floating-point hazards), further applications (patch residence via W₋₁, Wien displacement, linear-drag fall time, Schwarzschild tortoise inversion, π(x) < x/W₀(x)), and the r-Lambert/generalized-Lambert outlook; plus a corpus-role section and a four-way concordance appendix (all shared constants verified identical); the packages' figures/data/scripts live under `assets/` (absorbed article .tex sources deleted after merging; SHA-256 provenance in the document) | absorbed member packages deleted; git history is the archive |
-| `Polynomial-Logarithmic-Transseries-1/` | *Polynomial–Logarithmic Transseries: Algebra, Composition, Series Reversal, and the Lambert W Archetype* — archival pair: 4,023-line/182,487-byte source (`f2fa999b…e033d90`) and 119-page/584,392-byte custom-size PDF (`a4fc4af0…69e886`); repository-added ledger 2/2 | bare `incoming/Polynomial-Logarithmic-Transseries-1/`; direct-arrival commit `730e1763…95ab4f`, no submitted archive or ledger; filed byte-for-byte 2026-09-01 |
-| `Polynomial-Logarithmic-Transseries-2/` | *Polynomial-Logarithmic Transseries: Arithmetic, Division, Composition, and Series Reversal* — archival pair: 5,014-line/168,311-byte source (`7d2c7725…7bff18`) and 102-page/571,108-byte custom-size PDF (`5e9ff596…bfc68e`); repository-added ledger 2/2 | bare `incoming/Polynomial-Logarithmic-Transseries-2/`; direct-arrival commit `730e1763…95ab4f`, no submitted archive or ledger; filed byte-for-byte 2026-09-01 |
-| `Polynomial_Logarithmic_Transseries-3/` | *Polynomial-Logarithmic Transseries: Arithmetic, Composition, Series Reversal, and the Lambert W Expansion* — archival pair: 4,255-line/146,006-byte source (`11585567…694e07`; original line-411 trailing whitespace retained) and 87-page/510,663-byte Letter PDF (`3f7c4bc1…58a4af`); repository-added ledger 2/2 | bare `incoming/Polynomial_Logarithmic_Transseries-3/`; direct-arrival commit `730e1763…95ab4f`, no submitted archive or ledger; filed byte-for-byte 2026-09-01 |
-| `Polynomial-Logarithmic-Transseries-4/` | *Polynomial-Logarithmic Transseries: Algebra, Composition, Reversion, and the Lambert W Function* — archival pair: 3,138-line/118,001-byte source (`4ce4be2f…54c16f`) and 47-page/428,534-byte A4 PDF (`c2d75b35…45a3eb`); repository-added ledger 2/2 | bare `incoming/Polynomial-Logarithmic-Transseries-4/`; direct-arrival commit `730e1763…95ab4f`, no submitted archive or ledger; filed byte-for-byte 2026-09-01 |
-| `Polynomial_Logarithmic_Transseries-5/` | *Polynomial-Logarithmic Transseries: Algebra, Composition, Series Reversal, and the Lambert W Function* — archival pair: 2,440-line/102,903-byte source (`f522755b…c1c7d9`) and 44-page/389,188-byte Letter PDF (`189e95ab…58a2db`); repository-added ledger 2/2 | bare `incoming/Polynomial_Logarithmic_Transseries-5/`; direct-arrival commit `730e1763…95ab4f`, no submitted archive or ledger; filed byte-for-byte 2026-09-01 |
-| `Polynomial_Logarithmic_Transseries-6/` | *Polynomial–Logarithmic Transseries: Algebra, Division, Composition, and Asymptotic Series Reversal* (cover adds “with Lambert's W function as the guiding example”) — archival pair: 4,354-line/150,235-byte source (`f94b2e81…bece1a`) and 100-page/701,319-byte A4 PDF (`b5142bad…467aa`); repository-added ledger 2/2 | bare `incoming/Polynomial_Logarithmic_Transseries-6/`; direct-arrival commit `730e1763…95ab4f`, no submitted archive or ledger; filed byte-for-byte 2026-09-01 |
+| `Polynomial-Logarithmic-Transseries-1/` | *Polynomial–Logarithmic Transseries: Algebra, Composition, Series Reversal, and the Lambert W Archetype* — current 4,020-line/186,981-byte source (`fe5057f4…54b1a14`) and retained historical 119-page/584,392-byte custom-size PDF (`a4fc4af0…69e886`); live ledger 2/2 | bare `incoming/Polynomial-Logarithmic-Transseries-1/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration |
+| `Polynomial-Logarithmic-Transseries-2/` | *Polynomial-Logarithmic Transseries: Arithmetic, Division, Composition, and Series Reversal* — current 5,007-line/172,310-byte source (`c5f150b2…15c32`) and retained historical 102-page/571,108-byte custom-size PDF (`5e9ff596…bfc68e`); live ledger 2/2 | bare `incoming/Polynomial-Logarithmic-Transseries-2/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration |
+| `Polynomial_Logarithmic_Transseries-3/` | *Polynomial-Logarithmic Transseries: Arithmetic, Composition, Series Reversal, and the Lambert W Expansion* — current 4,249-line/150,074-byte source (`de7c5875…4c0f1e`) and retained historical 87-page/510,663-byte Letter PDF (`3f7c4bc1…58a4af`); live ledger 2/2 | bare `incoming/Polynomial_Logarithmic_Transseries-3/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration |
+| `Polynomial-Logarithmic-Transseries-4/` | *Polynomial-Logarithmic Transseries: Algebra, Composition, Reversion, and the Lambert W Function* — current 3,132-line/120,538-byte source (`e01272d5…8f483`) and retained historical 47-page/428,534-byte A4 PDF (`c2d75b35…45a3eb`); live ledger 2/2 | bare `incoming/Polynomial-Logarithmic-Transseries-4/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration |
+| `Polynomial_Logarithmic_Transseries-5/` | *Polynomial-Logarithmic Transseries: Algebra, Composition, Series Reversal, and the Lambert W Function* — current 2,443-line/106,051-byte source (`aa8557ab…97083b`) and retained historical 44-page/389,188-byte Letter PDF (`189e95ab…58a2db`); live ledger 2/2 | bare `incoming/Polynomial_Logarithmic_Transseries-5/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration |
+| `Polynomial_Logarithmic_Transseries-6/` | *Polynomial–Logarithmic Transseries: Algebra, Division, Composition, and Asymptotic Series Reversal* (cover adds “with Lambert's W function as the guiding example”) — current 4,389-line/155,691-byte source (`2020d6f9…a83646`) and retained historical 100-page/701,319-byte A4 PDF (`b5142bad…467aa`); live ledger 2/2 | bare `incoming/Polynomial_Logarithmic_Transseries-6/`; direct-arrival commit `730e1763…95ab4f`; later source-only notation/remainder migration |
 
 The six retained arrival PDFs have embedded/subset fonts and no Type 3 font,
 but none uses Libertinus; two are custom 522-by-738-point, two are Letter, and
@@ -202,7 +228,7 @@ Divisors has 2,307 lines; and Total Positivity has 1,060 lines.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `Integration_and_Transform_Frontiers/` | *Integration and Transform Frontiers for the Fabius–Rvachev System* (376 pp, 12 parts) — consolidation (2026-08-28) of the former `Fabius_Antiderivatives_Report/`, `Fabius_Monomial_Antiderivatives_Report/`, `fabius_monomial_antiderivatives_report-2/`, `Fabius_Integral_Transforms_Report/`, `Fabius_Integral_and_Transform_Frontiers/`, `fabius_integral_frontiers_bundle/`, `Fabius_Rvachev_Integral_Frontiers/`, `Fabius_Integral_Transform_Fractional_Frontiers/`, `Fabius_Rvachev_Fractional_Integral_Report/`, `Fabius_Fractional_Integral_Transform_Frontiers/`, and `fabius_fractional_transform_frontiers_bundle/`, plus (folded in later on 2026-08-28 as Part XII by the same mechanical per-part step) the second-wave `Fabius_Integral_Transforms_Report/` (*Integral and Transform Calculus for the Fabius–Rvachev–Quantile System*: order-statistic spacings, beta–quantile lattices, dyadic resolvents, sinc energies, beyond-all-orders localization — an independent report sharing its directory name with Part IV's 2026-08-27 source); part order and former titles in the group README; assets under `assets/` (second-wave member under `assets/Fabius_Integral_Transforms_Report_second_wave/`), provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
+| `Integration_and_Transform_Frontiers/` | *Integration and Transform Frontiers for the Fabius–Rvachev System* (retained historical 377 pp, 12 parts) — consolidation (2026-08-28) of the former `Fabius_Antiderivatives_Report/`, `Fabius_Monomial_Antiderivatives_Report/`, `fabius_monomial_antiderivatives_report-2/`, `Fabius_Integral_Transforms_Report/`, `Fabius_Integral_and_Transform_Frontiers/`, `fabius_integral_frontiers_bundle/`, `Fabius_Rvachev_Integral_Frontiers/`, `Fabius_Integral_Transform_Fractional_Frontiers/`, `Fabius_Rvachev_Fractional_Integral_Report/`, `Fabius_Fractional_Integral_Transform_Frontiers/`, and `fabius_fractional_transform_frontiers_bundle/`, plus (folded in later on 2026-08-28 as Part XII by the same mechanical per-part step) the second-wave `Fabius_Integral_Transforms_Report/` (*Integral and Transform Calculus for the Fabius–Rvachev–Quantile System*: order-statistic spacings, beta–quantile lattices, dyadic resolvents, sinc energies, beyond-all-orders localization — an independent report sharing its directory name with Part IV's 2026-08-27 source); part order and former titles in the group README; assets under `assets/` (second-wave member under `assets/Fabius_Integral_Transforms_Report_second_wave/`), provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
 
 ## inverse-and-sampling — `inverse-and-sampling/`
 

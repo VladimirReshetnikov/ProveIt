@@ -2,6 +2,7 @@ import FabiusFunction.Arithmetic
 import FabiusFunction.QPochhammerDissection
 import FabiusFunction.QPochhammerElementaryIdentities
 import FabiusFunction.ScaledInfiniteProducts
+import Mathlib.Analysis.Analytic.Order
 import Mathlib.Analysis.SpecialFunctions.Log.Summable
 import Mathlib.Analysis.SpecificLimits.Normed
 
@@ -33,7 +34,9 @@ alone.
   `(a;q)_∞ = (1 - a q^j) · (a;q)_j · (a q^{j+1}; q)_∞`.  At `a = q^{-j}` the
   cofactor is `(q^{-j};q)_j (q;q)_∞ ≠ 0`, so the derivative there is
   `-q^j (q^{-j};q)_j (q;q)_∞ = (-1)^{j+1} q^{-C(j,2)} (q;q)_j (q;q)_∞ ≠ 0`:
-  every zero is simple, with an explicit nonzero derivative.
+  every zero is simple, with an explicit nonzero derivative.  The raw-factor
+  formulation also covers the degenerate contraction `q = 0`, whose unique
+  zero is `a = 1` and has derivative `-1`.
 
 ## Main declarations
 
@@ -47,7 +50,9 @@ alone.
 * `hasProdLocallyUniformly_qPochhammerInfIn`, `continuous_qPochhammerInfIn`,
   `differentiable_qPochhammerInfIn`.
 * `hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one`,
-  `hasDerivAt_qPochhammerInfIn_inv_pow`, `deriv_qPochhammerInfIn_inv_pow_ne_zero`.
+  `hasDerivAt_qPochhammerInfIn_inv_pow`, `deriv_qPochhammerInfIn_inv_pow_ne_zero`,
+  `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, and
+  `analyticOrderAt_qPochhammerInfIn_of_eq_zero`.
 -/
 
 set_option autoImplicit false
@@ -444,6 +449,41 @@ theorem deriv_qPochhammerInfIn_inv_pow_ne_zero {q : ℂ} (hq0 : q ≠ 0) (hq : �
   · exact inv_ne_zero (pow_ne_zero _ hq0)
   · exact finiteQPochhammerIn_self_ne_zero hq j
   · exact qPochhammerInfIn_self_ne_zero hq
+
+/-- **The derivative is nonzero at every raw factor zero.**  If
+`a q^j = 1`, then `a` is a simple zero of `a ↦ (a;q)_∞`.  Unlike the
+inverse-power formula, this division-free statement includes `q = 0`: its
+factor equation forces `j = 0` and `a = 1`, where the derivative is `-1`. -/
+theorem deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one {q : ℂ}
+    (hq : ‖q‖ < 1) (j : ℕ) {a : ℂ} (ha : a * q ^ j = 1) :
+    deriv (fun z : ℂ => qPochhammerInfIn z q) a ≠ 0 := by
+  by_cases hq0 : q = 0
+  · subst q
+    have hj0 : j = 0 := by
+      by_contra hj0
+      rw [zero_pow hj0, mul_zero] at ha
+      exact zero_ne_one ha
+    subst j
+    have ha1 : a = 1 := by simpa using ha
+    subst a
+    rw [(hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one
+      (q := (0 : ℂ)) (by norm_num) 0 (by norm_num)).deriv]
+    simp [qPochhammerInfIn]
+  · have ha_inv : a = (q ^ j)⁻¹ := eq_inv_of_mul_eq_one_left ha
+    subst a
+    rw [(hasDerivAt_qPochhammerInfIn_inv_pow hq0 hq j).deriv]
+    exact deriv_qPochhammerInfIn_inv_pow_ne_zero hq0 hq j
+
+/-- **Every zero has analytic order one.**  For every complex strict
+contraction, including `q = 0`, a zero of `a ↦ (a;q)_∞` is detected by a raw
+factor and has nonvanishing derivative, hence analytic order exactly one. -/
+theorem analyticOrderAt_qPochhammerInfIn_of_eq_zero
+    (a q : ℂ) (hq : ‖q‖ < 1) (ha : qPochhammerInfIn a q = 0) :
+    analyticOrderAt (fun z : ℂ => qPochhammerInfIn z q) a = 1 := by
+  refine ((differentiable_qPochhammerInfIn hq).analyticAt a)
+    |>.analyticOrderAt_eq_one_of_zero_deriv_ne_zero ha ?_
+  obtain ⟨j, hj⟩ := (qPochhammerInfIn_eq_zero_iff a hq).mp ha
+  exact deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one hq j hj
 
 end Complex
 

@@ -132,7 +132,7 @@
 \large Canonical symbols, exact definitions, local namespaces, and historical aliases}
 \author{Encyclopedic companion to Vladimir Reshetnikov's \texttt{ProveIt} formalization}
 \date{Notation contract \FabiusNotationVersion\\
-\small Active corpus at the validation snapshot: 162 recursively inventoried
+\small Active corpus at the validation snapshot: 174 recursively inventoried
 \texttt{.tex} sources}
 
 \begin{document}
@@ -144,7 +144,7 @@ This catalogue is the normative dictionary for mathematical notation in the acti
 global extension, and Rvachev's up-function; fixes number-system, probability, transform,
 binary, $q$-series, asymptotic, fractional-calculus, approximation, and operator
 conventions; and records every recurring collision discovered by a recursive audit of the
-current 162-source active \texttt{.tex} corpus.  Each entry states its type, domain,
+current 174-source active \texttt{.tex} corpus.  Each entry states its type, domain,
 codomain, indices, parameters, normalization, exceptional values, and formalization
 status.  No phrase such as ``with the usual convention'' supplies missing data: when two
 usual conventions exist, both are defined and their conversion is printed.  Historical
@@ -331,10 +331,115 @@ with argument in $(-\pi,\pi]$ and domain $\ComplexNumbers\setminus(-\infty,0]$.\
 Falling factorial $\prod_{j=0}^{n-1}(x-j)$, equal to one when $n=0$.\\
 \commandname{RisingFactorial}\texttt{\{x\}\{n\}} & $\RisingFactorial{x}{n}$ &
 Rising factorial $\prod_{j=0}^{n-1}(x+j)$, equal to one when $n=0$.\\
+\commandname{SignedStirlingFirstKind}\texttt{\{n\}\{k\}} &
+\(\SignedStirlingFirstKind{n}{k}\) & Signed coefficient of \(x^k\) in the
+falling factorial \(\FallingFactorial{x}{n}\).\\
+\commandname{UnsignedStirlingFirstKind}\texttt{\{n\}\{k\}} &
+\(\UnsignedStirlingFirstKind{n}{k}\) & Number of permutations of \(n\)
+labels having \(k\) cycles.\\
+\commandname{StirlingSecondKind}\texttt{\{n\}\{k\}} &
+\(\StirlingSecondKind{n}{k}\) & Number of partitions of \(n\) labels into
+\(k\) nonempty unordered blocks.\\
+\commandname{LahNumber}\texttt{\{n\}\{k\}} & \(\LahNumber{n}{k}\) &
+Number of partitions of \(n\) labels into \(k\) nonempty linearly ordered
+lists.\\
+\commandname{TypeAEulerianNumber}\texttt{\{n\}\{k\}} &
+\(\TypeAEulerianNumber{n}{k}\) & Number of permutations of \(n\) labels with
+\(k\) ordinary descents.\\
+\commandname{TypeBEulerianNumber}\texttt{\{n\}\{k\}} &
+\(\TypeBEulerianNumber{n}{k}\) & Number of signed permutations of size \(n\)
+with \(k\) type-B descents, using the sentinel \(\pi_0=0\).\\
+\commandname{SecondOrderEulerianNumber}\texttt{\{n\}\{k\}} &
+\(\SecondOrderEulerianNumber{n}{k}\) & Number of order-\(n\) Stirling
+permutations with \(k\) ordinary descents.\\
+\commandname{TypeAEulerianPolynomial}\texttt{\{n\}} &
+\(\TypeAEulerianPolynomial{n}\) & Type-A Eulerian row polynomial; its
+evaluation argument follows the command.\\
+\commandname{TypeBEulerianPolynomial}\texttt{\{n\}} &
+\(\TypeBEulerianPolynomial{n}\) & Type-B Eulerian row polynomial; its
+evaluation argument follows the command.\\
+\commandname{SecondOrderEulerianPolynomial}\texttt{\{n\}} &
+\(\SecondOrderEulerianPolynomial{n}\) & Second-order Eulerian row polynomial;
+its evaluation argument follows the command.\\
+\commandname{BellNumber}\texttt{\{n\}} & \(\BellNumber{n}\) & Number of all
+set partitions of \(n\) labelled elements.\\
+\commandname{ComplementaryBellNumber}\texttt{\{n\}} &
+\(\ComplementaryBellNumber{n}\) & Signed block-parity sum
+\(\sum_k(-1)^k\StirlingSecondKind{n}{k}\).\\
+\commandname{TouchardPolynomial}\texttt{\{n\}} &
+\(\TouchardPolynomial{n}\) & Polynomial
+\(\sum_k\StirlingSecondKind{n}{k}x^k\); its evaluation argument follows.\\
+\commandname{ExponentialPartialBellPolynomial}\texttt{\{n\}\{k\}} &
+\(\ExponentialPartialBellPolynomial{n}{k}\) & Partial Bell polynomial in the
+exponential-series normalization.\\
+\commandname{ExponentialCompleteBellPolynomial}\texttt{\{n\}} &
+\(\ExponentialCompleteBellPolynomial{n}\) & Sum over all partial exponential
+Bell polynomials of total weight \(n\).\\
+\commandname{OrdinaryPartialBellPolynomial}\texttt{\{n\}\{k\}} &
+\(\OrdinaryPartialBellPolynomial{n}{k}\) & Partial Bell polynomial in the
+ordinary-series normalization.\\
+\commandname{CoefficientExtraction}\texttt{\{z\}\{n\}} &
+\(\CoefficientExtraction{z}{n}\) & Operator extracting the coefficient of
+\(z^n\) from the following series operand.\\
+\commandname{CycleCountOperator} & \(\CycleCountOperator\) & Number of cycles
+of the following permutation operand.\\
+\commandname{SetPartitionOperator} & \(\SetPartitionOperator\) & Set of set
+partitions of the following finite-set operand.\\
+\commandname{BitwiseAnd} & \(a\BitwiseAnd b\) & Bitwise AND on declared
+nonnegative integers.\\
+\commandname{ExponentialGeneratingFunctionOf}\texttt{\{A\}} &
+\(\ExponentialGeneratingFunctionOf{A}\) & Exponential generating function of
+the named coefficient family.\\
+\commandname{OrdinaryGeneratingFunctionOf}\texttt{\{A\}} &
+\(\OrdinaryGeneratingFunctionOf{A}\) & Ordinary generating function of the
+named coefficient family.\\
+\commandname{NormalizedReversionCoefficient}\texttt{\{f\}\{j\}} &
+\(\NormalizedReversionCoefficient{f}{j}\) & Normalized exponential-series
+input \(f_{j+1}/((j+1)f_1)\) used in compositional-reversion formulas.\\
+\commandname{OrdinaryGeneratingCoefficient}\texttt{\{x\}\{j\}} &
+\(\OrdinaryGeneratingCoefficient{x}{j}\) & Explicit family-and-index ledger
+coefficient in an ordinary generating series.\\
+\commandname{PartitionLatticeMinimum} & \(\PartitionLatticeMinimum\) &
+Discrete singleton partition, the minimum of a declared partition lattice.\\
+\commandname{PartitionLatticeMaximum} & \(\PartitionLatticeMaximum\) &
+One-block partition, the maximum of a declared partition lattice.\\
+\commandname{TraceBellArgument}\texttt{\{k\}} &
+\(\TraceBellArgument{k}\) & Scaled trace input
+\(-(k-1)!\TraceOperator(A^k)\) for determinant/Bell identities.\\
+\commandname{FiniteField} & \(\FiniteField_q\) & Finite field of the declared
+prime-power order \(q\).\\
+\commandname{CatalanNumber}\texttt{\{n\}} & \(\CatalanNumber{n}\) & Catalan
+number \(\binom{2n}{n}/(n+1)\), visibly separated from complementary Bell
+numbers.\\
+\commandname{GregoryCoefficient}\texttt{\{n\}} &
+\(\GregoryCoefficient{n}\) & Coefficient of \(z^n\) in
+\(z/\log(1+z)\).\\
+\commandname{GenocchiNumber}\texttt{\{n\}} & \(\GenocchiNumber{n}\) &
+Genocchi number in the exponential generating convention specified below.\\
+\commandname{GenocchiPolynomial}\texttt{\{n\}} &
+\(\GenocchiPolynomial{n}\) & Genocchi polynomial; its evaluation argument
+follows the command.\\
+\commandname{BarnesGFunction} & \(\BarnesGFunction\) & Barnes \(G\)-function
+normalized by \(\BarnesGFunction(1)=1\) and
+\(\BarnesGFunction(z+1)=\GammaFunction(z)\BarnesGFunction(z)\).\\
+\commandname{BellHessenbergMatrixH}\texttt{\{n\}} &
+\(\BellHessenbergMatrixH{n}\) & First explicit Hessenberg determinant model
+for the complete exponential Bell polynomial.\\
+\commandname{BellHessenbergMatrixK}\texttt{\{n\}} &
+\(\BellHessenbergMatrixK{n}\) & Second explicit Hessenberg determinant model
+for the complete exponential Bell polynomial.\\
+\commandname{AssociahedronByDimension}\texttt{\{d\}} &
+\(\AssociahedronByDimension{d}\) & Stasheff associahedron indexed by its
+actual dimension \(d\), never by an inherited ambiguous source index.\\
+\commandname{LagrangeShiftCoordinate} & \(\LagrangeShiftCoordinate\) & Local
+translated coordinate \(z-b\) in a declared Lagrange-inversion scope.\\
 \commandname{SupportOperator} & $\SupportOperator$ & Pointwise-support operator token;
 its operand and ambient space must follow.\\
 \commandname{SupportOf}\texttt{\{f\}} & $\SupportOf{f}$ & Pointwise support
 $\{x:f(x)\ne0\}$.\\
+\commandname{CoefficientSupportOf}\texttt{\{F\}} &
+\(\CoefficientSupportOf{F}\) & Set of exponent indices or monomials carrying
+nonzero coefficients; the ambient index set is stated locally.\\
 \commandname{TopologicalSupportOf}\texttt{\{f\}} & $\TopologicalSupportOf{f}$ & Closure
 of the pointwise support.\\
 \commandname{Convolution} & $f\Convolution g$ & Convolution, with the underlying group and
@@ -422,9 +527,41 @@ explicit base.\\
 subscript.\\
 \commandname{LambertW} & $\LambertW$ & Lambert $W$; a branch subscript is mandatory when
 more than one branch is possible.\\
+\commandname{WrightOmega} & $\WrightOmega$ & Wright omega, the inverse of
+\(y\mapsto y+\log y\) on the declared real or complex branch.\\
+\commandname{LambertPolynomial}\texttt{\{n\}} &
+\(\LambertPolynomial{n}\) & Canonical zero-based Lambert polynomial;
+\(\LambertPolynomial{0}(u)=-u\), and the evaluation variable follows outside
+the one-argument command.\\
+\commandname{ScaledLambertPolynomial}\texttt{\{n\}} &
+\(\ScaledLambertPolynomial{n}\) & Factorially scaled Lambert polynomial
+\(n!\LambertPolynomial{n}\) for \(n\ge1\); the evaluation variable follows the
+command.\\
+\commandname{MultiplicativeInverseOf}\texttt{\{F\}} &
+\(\MultiplicativeInverseOf{F}\) & Inverse of a unit \(F\) under multiplication.\\
+\commandname{CompositionalInverseOf}\texttt{\{F\}} &
+\(\CompositionalInverseOf{F}\) & Inverse of an admissible map \(F\) under
+composition; distinct from a reciprocal and a time-\((-1)\) iterate.\\
+\commandname{PolynomialLogPowerSeriesRing}\texttt{\{K\}} &
+\(\PolynomialLogPowerSeriesRing{K}\) & Polynomial-log power-series ring
+\(K[L][[t]]\), with \(t=X^{-1}\) and \(L=\log X\).\\
+\commandname{PolynomialLogLaurentRing}\texttt{\{K\}} &
+\(\PolynomialLogLaurentRing{K}\) & Polynomial-log Laurent ring
+\(K[L]((t))\), generally not a field.\\
+\commandname{RationalLogLaurentField}\texttt{\{K\}} &
+\(\RationalLogLaurentField{K}\) & Laurent-series field \(K(L)((t))\)
+with exact rational dependence on \(L\).\\
+\commandname{IteratedLaurentLogField}\texttt{\{K\}} &
+\(\IteratedLaurentLogField{K}\) & Iterated Laurent field
+\(K((L^{-1}))((t))\), with the completion order shown.\\
+\commandname{NearIdentityPolynomialLogGroup}\texttt{\{K\}} &
+\(\NearIdentityPolynomialLogGroup{K}\) & Near-identity composition group
+\(\SetOf{X+A:A\in K[L][[t]]}\), subject to admissibility.\\
 \commandname{GammaFunction} & $\GammaFunction$ & Euler Gamma function.\\
 \commandname{RiemannZeta} & $\RiemannZeta$ & Riemann zeta function or its meromorphic
 continuation, as stated.\\
+\commandname{HurwitzZeta}\texttt{\{s\}\{a\}} & \(\HurwitzZeta{s}{a}\) &
+Hurwitz zeta function with order \(s\) and shift \(a\) both explicit.\\
 \commandname{BigO} (operator token; 0 TeX arguments) & $\BigO{g}$ & Big-$O$ applied to
 the following mathematical operand $g$, in a limit declared in the same sentence.\\
 \commandname{LittleO} (operator token; 0 TeX arguments) & $\LittleO{g}$ & Little-$o$
@@ -434,6 +571,12 @@ sentence.\\
 regime $a$ printed.\\
 \commandname{LittleOAt}\texttt{\{g\}\{a\}} & $\LittleOAt{g}{a}$ & Little-$o$ with
 limiting regime $a$ printed.\\
+\commandname{FormalBigO} (operator token; 0 TeX arguments) &
+\(\FormalBigO\) & Formal valuation-tail operator; it is not an analytic
+estimate and, in a Laurent ring, not an ideal-quotient congruence.\\
+\commandname{FormalBigOAt}\texttt{\{t\string^N\}\{t\}} &
+\(\FormalBigOAt{t^N}{t}\) & Formal tail whose omitted difference has
+\(t\)-valuation at least \(N\).\\
 \bottomrule
 \end{longtable}
 \endgroup
@@ -1646,6 +1789,692 @@ equal $1$.}
 \entryfield{Factorials}{The shared
 $\FallingFactorial{x}{n}=x(x-1)\cdots(x-n+1)$ and
 $\RisingFactorial{x}{n}=x(x+1)\cdots(x+n-1)$ both equal $1$ at $n=0$.}
+\end{catalogueentry}
+
+\section{Combinatorial coefficient calculus and inversion}
+
+\begin{catalogueentry}{stirling-and-lah-families}
+  {Signed and unsigned Stirling numbers, second-kind numbers, and Lah numbers}
+\entryfield{Index domain and zero extension}{Unless a formula says otherwise,
+\(n,k\in\NaturalNumbers\).  Each triangular family is extended by zero when
+\(k<0\), \(n<0\), or \(k>n\).  Every empty degree-zero basis expansion has the
+single value at \((n,k)=(0,0)\) equal to \(1\).  Thus the boundary conventions
+are part of the notation, not omitted side conditions.}
+\entryfield{Signed first kind}{The signed Stirling number of the first kind is
+defined by
+\[
+ \FallingFactorial{x}{n}
+ =x(x-1)\cdots(x-n+1)
+ =\sum_{k=0}^{n}\SignedStirlingFirstKind{n}{k}x^k.
+\]
+Consequently
+\[
+ \SignedStirlingFirstKind{0}{0}=1,
+ \qquad
+ \SignedStirlingFirstKind{n}{0}=0\quad(n>0),
+\]
+and
+\[
+ \SignedStirlingFirstKind{n+1}{k}
+ =\SignedStirlingFirstKind{n}{k-1}
+  -n\SignedStirlingFirstKind{n}{k}.
+\]
+The sign is \((-1)^{n-k}\) whenever the corresponding unsigned count is
+nonzero.}
+\entryfield{Unsigned first kind}{The unsigned cycle number is
+\[
+ \UnsignedStirlingFirstKind{n}{k}
+ \DefinitionEquals
+ (-1)^{n-k}\SignedStirlingFirstKind{n}{k}.
+\]
+It counts permutations of an \(n\)-element set having exactly \(k\) disjoint
+cycles.  Its recurrence is
+\[
+ \UnsignedStirlingFirstKind{n+1}{k}
+ =\UnsignedStirlingFirstKind{n}{k-1}
+  +n\UnsignedStirlingFirstKind{n}{k}.
+\]
+The bracket is not a coefficient-extraction bracket and is not a Gaussian
+binomial coefficient.}
+\entryfield{Second kind}{The Stirling number
+\(\StirlingSecondKind{n}{k}\) counts partitions of an \(n\)-element labelled
+set into exactly \(k\) nonempty, unordered blocks.  It is characterized by
+\[
+ x^n=\sum_{k=0}^{n}\StirlingSecondKind{n}{k}
+                 \FallingFactorial{x}{k}
+\]
+and by
+\[
+ \StirlingSecondKind{n+1}{k}
+ =k\StirlingSecondKind{n}{k}
+  +\StirlingSecondKind{n}{k-1}.
+\]
+The boundary values are
+\(\StirlingSecondKind{0}{0}=1\),
+\(\StirlingSecondKind{n}{0}=0\) for \(n>0\), and
+\(\StirlingSecondKind{n}{n}=1\).}
+\entryfield{Inverse basis changes}{The lower-triangular matrices of signed
+first-kind and second-kind numbers are inverses:
+\[
+ \sum_{j=k}^{n}\SignedStirlingFirstKind{n}{j}
+                   \StirlingSecondKind{j}{k}
+ =\delta_{n,k}
+ =\sum_{j=k}^{n}\StirlingSecondKind{n}{j}
+                   \SignedStirlingFirstKind{j}{k}.
+\]
+This is matrix inversion over the integer-indexed triangular arrays; it is not
+functional or multiplicative inversion.}
+\entryfield{Unsigned Lah number}{For \(1\le k\le n\),
+\[
+ \LahNumber{n}{k}
+ \DefinitionEquals
+ \binom{n-1}{k-1}\frac{n!}{k!}.
+\]
+It counts partitions of an \(n\)-element labelled set into \(k\) nonempty
+linearly ordered lists, with the collection of lists itself unordered.  Put
+\(\LahNumber{0}{0}=1\) and set it to zero outside \(0\le k\le n\).}
+\entryfield{Lah basis changes}{With the preceding boundary convention,
+\[
+ \RisingFactorial{x}{n}
+ =\sum_{k=0}^{n}\LahNumber{n}{k}\FallingFactorial{x}{k},
+\]
+\[
+ \FallingFactorial{x}{n}
+ =\sum_{k=0}^{n}(-1)^{n-k}\LahNumber{n}{k}
+                    \RisingFactorial{x}{k}.
+\]
+The label \(\mathrm{Lah}\) prevents the family from colliding with a Lambert
+polynomial, logarithm, Laplace transform, or other \(L\)-family.}
+\entryfield{Shared commands}{The normative source commands are
+\commandname{SignedStirlingFirstKind},
+\commandname{UnsignedStirlingFirstKind},
+\commandname{StirlingSecondKind}, and \commandname{LahNumber}.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{bell-and-touchard-families}
+  {Bell numbers, Touchard polynomials, and the two Bell-polynomial normalizations}
+\entryfield{Bell number}{The Bell number is
+\[
+ \BellNumber{n}
+ \DefinitionEquals
+ \sum_{k=0}^{n}\StirlingSecondKind{n}{k},
+ \qquad \BellNumber{0}=1.
+\]
+It counts all set partitions of an \(n\)-element labelled set.  The superscript
+\(\mathrm{Bell}\) is printed because an unlabelled \(B_n\) is also widely used
+for Bernoulli numbers and polynomials.}
+\entryfield{Touchard polynomial}{For \(n\in\NaturalNumbers\),
+\[
+ \TouchardPolynomial{n}(x)
+ \DefinitionEquals
+ \sum_{k=0}^{n}\StirlingSecondKind{n}{k}x^k.
+\]
+Thus
+\(\TouchardPolynomial{n}(1)=\BellNumber{n}\) and
+\(\TouchardPolynomial{0}(x)=1\).  Its exponential generating function is
+\[
+ \sum_{n\ge0}\TouchardPolynomial{n}(x)\frac{z^n}{n!}
+ =\exp\!\bigl(x(\EulerE^z-1)\bigr).
+\]
+The tag \(\mathrm{Tou}\) distinguishes it from every other \(T_n\)-family.}
+\entryfield{Complementary Bell number}{The signed block-parity sum is
+\[
+ \ComplementaryBellNumber{n}
+ \DefinitionEquals
+ \sum_{k=0}^{n}(-1)^k\StirlingSecondKind{n}{k}
+ =\TouchardPolynomial{n}(-1).
+\]
+Its EGF and recurrence are
+\[
+ \sum_{n\ge0}\ComplementaryBellNumber{n}\frac{z^n}{n!}
+ =\exp(1-\EulerE^z),
+\]
+\[
+ \ComplementaryBellNumber{n+1}
+ =-\sum_{j=0}^{n}\binom{n}{j}\ComplementaryBellNumber{j}.
+\]
+The source aliases \(C_n\), \(\mathsf{U}_n\), and a hatted or tilded Bell number
+are retired because \(C_n\) also denoted a Catalan number and accents have
+unrelated meanings elsewhere.}
+\entryfield{Exponential partial Bell polynomial}{For
+\(0\le k\le n\),
+\[
+ \ExponentialPartialBellPolynomial{n}{k}(x_1,x_2,\ldots)
+ \DefinitionEquals
+ \sum_{\substack{m_1,m_2,\ldots\ge0\\
+                   \sum_{j\ge1}m_j=k\\
+                   \sum_{j\ge1}jm_j=n}}
+ \frac{n!}{\prod_{j\ge1}m_j!\,(j!)^{m_j}}
+ \prod_{j\ge1}x_j^{m_j}.
+\]
+Only \(x_1,\ldots,x_{n-k+1}\) can occur.  The empty-index boundary is
+\(\ExponentialPartialBellPolynomial{0}{0}=1\); it is zero for impossible
+indices.  Equivalently,
+\[
+ \frac1{k!}\left(\sum_{j\ge1}x_j\frac{t^j}{j!}\right)^k
+ =\sum_{n\ge k}
+   \ExponentialPartialBellPolynomial{n}{k}(x_1,x_2,\ldots)
+   \frac{t^n}{n!}.
+\]}
+\entryfield{Exponential complete Bell polynomial}{The complete polynomial is
+\[
+ \ExponentialCompleteBellPolynomial{n}(x_1,\ldots,x_n)
+ \DefinitionEquals
+ \sum_{k=0}^{n}
+ \ExponentialPartialBellPolynomial{n}{k}(x_1,\ldots,x_{n-k+1}),
+\]
+with \(\ExponentialCompleteBellPolynomial{0}=1\).  Its generating identity is
+\[
+ \exp\!\left(\sum_{j\ge1}x_j\frac{t^j}{j!}\right)
+ =\sum_{n\ge0}\ExponentialCompleteBellPolynomial{n}(x_1,\ldots,x_n)
+   \frac{t^n}{n!}.
+\]}
+\entryfield{Ordinary partial Bell polynomial}{For an ordinary series
+\(X(t)=\sum_{j\ge1}x_jt^j\), define
+\[
+ \OrdinaryPartialBellPolynomial{n}{k}(x_1,x_2,\ldots)
+ \DefinitionEquals
+ \sum_{\substack{m_1,m_2,\ldots\ge0\\
+                   \sum m_j=k\\
+                   \sum jm_j=n}}
+ \frac{k!}{\prod_{j\ge1}m_j!}\prod_{j\ge1}x_j^{m_j}.
+\]
+Then
+\[
+ X(t)^k
+ =\sum_{n\ge k}
+   \OrdinaryPartialBellPolynomial{n}{k}(x_1,x_2,\ldots)t^n.
+\]
+The printed \(\mathrm{ord}\) is essential: this polynomial differs from the
+exponential normalization by factorials.}
+\entryfield{Conversion of normalizations}{For all valid \(n,k\),
+\[
+ \OrdinaryPartialBellPolynomial{n}{k}(x_1,x_2,\ldots)
+ =\frac{k!}{n!}
+ \ExponentialPartialBellPolynomial{n}{k}
+   (1!x_1,2!x_2,3!x_3,\ldots).
+\]
+This equality explains the factorial conversion; it does not identify the two
+polynomial families.}
+\entryfield{Fa\`a di Bruno specialization}{For sufficiently differentiable
+functions \(f,g\) and \(n\ge1\),
+\[
+ \frac{\Differential^n}{\Differential x^n}f(g(x))
+ =\sum_{k=1}^{n}f^{(k)}(g(x))
+  \ExponentialPartialBellPolynomial{n}{k}
+  \bigl(g'(x),g''(x),\ldots,g^{(n-k+1)}(x)\bigr).
+\]
+The \(n=0\) case is simply \(f(g(x))\).  Derivatives therefore use the
+exponential Bell normalization, whereas ordinary series composition uses the
+ordinary normalization.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{eulerian-families}
+  {Type-A, type-B, and second-order Eulerian numbers and row polynomials}
+\entryfield{Type-A number}{For \(n\ge1\),
+\(\TypeAEulerianNumber{n}{k}\) counts permutations of
+\(\{1,\ldots,n\}\) with exactly \(k\) ordinary descents, where a descent is an
+index \(i\in\{1,\ldots,n-1\}\) satisfying \(\pi_i>\pi_{i+1}\).  It is zero
+outside \(0\le k\le n-1\), with
+\(\TypeAEulerianNumber{0}{0}=1\), and obeys
+\[
+ \TypeAEulerianNumber{n}{k}
+ =(k+1)\TypeAEulerianNumber{n-1}{k}
+ +(n-k)\TypeAEulerianNumber{n-1}{k-1}.
+\]}
+\entryfield{Type-A row polynomial}{Set
+\[
+ \TypeAEulerianPolynomial{0}(t)=1,
+ \qquad
+ \TypeAEulerianPolynomial{n}(t)
+ =\sum_{k=0}^{n-1}\TypeAEulerianNumber{n}{k}t^k
+ \quad(n\ge1).
+\]
+The type tag prevents this row polynomial from colliding with an arbitrary
+\(A_n(t)\).}
+\entryfield{Type-B descent convention}{A signed permutation of size \(n\) is
+a word \(\pi_1\cdots\pi_n\) whose absolute values form a permutation of
+\(\{1,\ldots,n\}\).  Put \(\pi_0=0\).  A type-B descent is an
+\(i\in\{0,\ldots,n-1\}\) for which \(\pi_i>\pi_{i+1}\).  The number with \(k\)
+such descents is \(\TypeBEulerianNumber{n}{k}\), not the type-A angle-bracket
+number.}
+\entryfield{Type-B recurrence and polynomial}{With
+\(\TypeBEulerianNumber{0}{0}=1\) and zero extension,
+\[
+ \TypeBEulerianNumber{n}{k}
+ =(2k+1)\TypeBEulerianNumber{n-1}{k}
+ +(2n-2k+1)\TypeBEulerianNumber{n-1}{k-1}.
+\]
+The row polynomial is
+\[
+ \TypeBEulerianPolynomial{n}(t)
+ \DefinitionEquals
+ \sum_{k=0}^{n}\TypeBEulerianNumber{n}{k}t^k,
+\]
+and satisfies
+\[
+ \sum_{m\ge0}(2m+1)^nt^m
+ =\frac{\TypeBEulerianPolynomial{n}(t)}{(1-t)^{n+1}}.
+\]}
+\entryfield{Second-order number}{A Stirling permutation of order \(n\) is a
+permutation of the multiset
+\(\{1,1,2,2,\ldots,n,n\}\) in which every entry between the two copies of
+\(i\) is larger than \(i\).  The number having \(k\) ordinary descents is
+\(\SecondOrderEulerianNumber{n}{k}\).  For \(n\ge1\),
+\[
+ \SecondOrderEulerianNumber{n}{k}
+ =(2n-k-1)\SecondOrderEulerianNumber{n-1}{k-1}
+ +(k+1)\SecondOrderEulerianNumber{n-1}{k}.
+\]
+The degree-zero convention is
+\(\SecondOrderEulerianNumber{0}{0}=1\).}
+\entryfield{Second-order row polynomial}{Define
+\[
+ \SecondOrderEulerianPolynomial{0}(t)=1,
+ \qquad
+ \SecondOrderEulerianPolynomial{n}(t)
+ =\sum_{k=0}^{n-1}\SecondOrderEulerianNumber{n}{k}t^k
+ \quad(n\ge1).
+\]
+Then
+\[
+ \SecondOrderEulerianPolynomial{n+1}(t)
+ =(2nt+1)\SecondOrderEulerianPolynomial{n}(t)
+ -t(t-1)\frac{\Differential}{\Differential t}
+   \SecondOrderEulerianPolynomial{n}(t),
+\]
+and
+\(\SecondOrderEulerianPolynomial{n}(1)=(2n-1)!!\) for \(n\ge1\).}
+\entryfield{Collision boundary}{Single angle brackets mean type A; double
+angle brackets mean second order; the explicitly tagged
+\(\mathsf{E}^{\mathrm{Eul},B}\)
+means type B.  None of these symbols is an inner product.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{combinatorial-series-normalizations}
+  {Coefficient extraction, EGF/OGF labels, reversion coefficients, and trace inputs}
+\entryfield{Coefficient extraction}{If
+\(F(z)=\sum_{m\in I}a_mz^m\), where \(I=\NaturalNumbers\) for an ordinary
+formal series or \(I\subseteq\IntegerNumbers\) for a Laurent series, then
+\[
+ \CoefficientExtraction{z}{n}F(z)\DefinitionEquals a_n.
+\]
+The first argument is the series variable and the second is its exponent; the
+series operand follows the bracket.  For a multivariate series,
+\([z_1^{n_1}\cdots z_d^{n_d}]F\) extracts the indicated multi-index
+coefficient.}
+\entryfield{Exponential generating function}{For a sequence
+\(A=(a_n)_{n\ge0}\),
+\[
+ \ExponentialGeneratingFunctionOf{A}(z)
+ \DefinitionEquals
+ \sum_{n\ge0}a_n\frac{z^n}{n!}.
+\]
+The superscript \(\mathrm{egf}\) is part of the printed symbol and is not a
+Fourier hat.}
+\entryfield{Ordinary generating function}{For the same sequence,
+\[
+ \OrdinaryGeneratingFunctionOf{A}(z)
+ \DefinitionEquals
+ \sum_{n\ge0}a_nz^n.
+\]
+The EGF and OGF are different transforms even when they are evaluated at the
+same variable.}
+\entryfield{Ordinary coefficient ledger}{If
+\[
+ X(z)=\sum_{j\ge1}x_j\frac{z^j}{j!}
+ \quad\text{and}\quad
+ \OrdinaryGeneratingFunctionOf{X}(z)
+ =\sum_{j\ge1}\OrdinaryGeneratingCoefficient{x}{j}z^j,
+\]
+then
+\[
+ \OrdinaryGeneratingCoefficient{x}{j}=\frac{x_j}{j!}.
+\]
+The family argument \(x\) and the index \(j\) are both explicit; this is not a
+reversion coefficient.}
+\entryfield{Normalized reversion coefficient}{Suppose
+\[
+ f(w)=\sum_{j\ge1}f_j\frac{w^j}{j!},
+ \qquad f_1\ne0,
+ \qquad
+ g(z)=f^{\langle-1\rangle}(z)
+     =\sum_{n\ge1}g_n\frac{z^n}{n!},
+\]
+where \(f(g(z))=z=g(f(z))\).  For \(j\ge1\), the reports use
+\[
+ \NormalizedReversionCoefficient{f}{j}
+ \DefinitionEquals
+ \frac{f_{j+1}}{(j+1)f_1}
+\]
+as an input to Bell-polynomial inverse formulas.  Its superscript
+\(\mathrm{rev,norm}\) records both reversion and normalization.  It is distinct
+from an ordinary-series coefficient and from a factorially rescaled transfer
+coefficient.}
+\entryfield{Scaled trace input for Bell polynomials}{For a square matrix \(A\)
+and \(k\ge1\),
+\[
+ \TraceBellArgument{k}
+ \DefinitionEquals
+ -(k-1)!\TraceOperator(A^k).
+\]
+This is the \(k\)-th scaled trace argument used in determinant/Bell identities.
+In particular \(\TraceBellArgument{2}\) is not the binary digit sum
+\(\BinaryDigitSum(2)\) and not a signed Stirling number.}
+\entryfield{Finite field}{The shared symbol \(\FiniteField_q\) denotes the
+finite field with \(q\) elements, where \(q=p^r\) is a prime power.  A bare
+\(\FiniteField\) denotes an unspecified finite base field only when its order
+is immaterial or declared in the same scope.}
+\entryfield{Small operators}{\(\CycleCountOperator(\sigma)\) is the number of
+cycles of a permutation \(\sigma\);
+\(\SetPartitionOperator(S)\) is the set of set partitions of \(S\); and
+\(a\BitwiseAnd b\) is bitwise AND of the nonnegative binary expansions of
+integers \(a,b\).  These operators are not multiplication, intersection, or a
+generic trace.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{partition-lattice-bounds}
+  {Partition-lattice endpoints and M\"obius inversion}
+\entryfield{Ambient poset}{For a finite set \(S\), let \(\Pi(S)\) be the set of
+partitions of \(S\), ordered by refinement:
+\(\pi\le\sigma\) means every block of \(\pi\) is contained in a block of
+\(\sigma\).  When \(S=\{1,\ldots,n\}\), write \(\Pi_n\).}
+\entryfield{Minimum and maximum}{The minimum
+\(\PartitionLatticeMinimum\) is the discrete partition into singleton blocks;
+the maximum \(\PartitionLatticeMaximum\) is the one-block partition.  Their
+\(\Pi\) subscripts are semantic and distinguish them from numeric \(0,1\),
+Boolean values, or endpoints of an unrelated poset.}
+\entryfield{M\"obius function}{For any locally finite poset, the M\"obius
+function is determined by
+\[
+ \mu(x,x)=1,
+ \qquad
+ \sum_{x\le z\le y}\mu(x,z)=0\quad(x<y).
+\]
+For the partition lattice,
+\[
+ \mu_{\Pi_n}(\pi,\PartitionLatticeMaximum)
+ =(-1)^{\CardinalityOf{\pi}-1}
+  (\CardinalityOf{\pi}-1)!,
+\]
+where \(\CardinalityOf{\pi}\) is the number of blocks, and
+\[
+ \mu_{\Pi_n}(\PartitionLatticeMinimum,\PartitionLatticeMaximum)
+ =(-1)^{n-1}(n-1)!\quad(n\ge1).
+\]}
+\entryfield{Moment--cumulant use}{For random variables indexed by \(S\), a
+moment factors over blocks of \(\pi\), and M\"obius inversion on \(\Pi(S)\)
+recovers the corresponding joint cumulant.  The lattice endpoints are
+combinatorial objects; no numerical substitution for their glyphs is valid.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{restricted-and-extended-combinatorial-families}
+  {Roman Stirling extensions, restricted partitions, Fubini numbers, Narayana
+   numbers, and generalized factorial coefficients}
+\entryfield{Why the qualifiers are structural}{Each family in this entry
+changes either the index domain, the admissible blocks, the order carried by
+blocks, or the coefficient basis.  Its decoration is therefore mathematical
+data.  None is an unqualified Stirling number, Bell number, Catalan number, or
+Gaussian binomial coefficient.}
+\entryfield{Roman Stirling extension}{The ordinary combinatorial triangles in
+\notelink{stirling-and-lah-families}{the Stirling-and-Lah entry} have
+nonnegative indices.  A report that
+explicitly announces the \emph{Roman extension} instead continues the
+triangular recurrences to integer indices and imposes the dualities
+\[
+ \UnsignedStirlingFirstKind{n}{k}
+ =\StirlingSecondKind{-k}{-n},
+ \qquad
+ \StirlingSecondKind{n}{k}
+ =\UnsignedStirlingFirstKind{-k}{-n}.
+\]
+These are defining equations for a reciprocal integer-indexed array.  When an
+index is negative, neither side retains its permutation-cycle or set-partition
+counting interpretation.  In the mixed quadrant \(n\ge1\), \(k\ge0\), the
+reports use
+\[
+ \UnsignedStirlingFirstKind{-n}{k}
+ =\frac1{n!}\sum_{j=1}^{n}
+   (-1)^{n-j}\binom{n}{j}\frac1{j^k}.
+\]
+The phrase \emph{Roman extension} must occur in the same scope; negative
+arguments do not silently change the default domain of the shared Stirling
+commands.}
+\entryfield{Negative-index Bell values}{Only after declaring that Roman
+extension, the reports define, for \(k\in\PositiveIntegers\),
+\[
+ \BellNumber{-k}
+ \DefinitionEquals
+ \sum_{n\ge1}\UnsignedStirlingFirstKind{-n}{k}
+ =\EulerE^{-1}\sum_{j\ge1}\frac1{j^k j!}.
+\]
+Both series converge absolutely.  This analytically continued sequence is not
+the cardinality of partitions of a negative-size set, and it is not obtained
+by substituting a negative integer into the Dobinski formula without the
+displayed definition.}
+\entryfield{\(r\)-Stirling numbers of the second kind}{For fixed
+\(r\in\NaturalNumbers\),
+\[
+ \StirlingSecondKind{n}{k}_{\!r}
+\]
+counts partitions of \(\{1,\ldots,n\}\) into \(k\) nonempty blocks such that
+the distinguished labels \(1,\ldots,r\) lie in pairwise distinct blocks.
+For \(n,k\in\NaturalNumbers\), its nonzero counting domain is
+\(n\ge r\) and \(r\le k\le n\); its boundary value is
+\(\StirlingSecondKind{r}{r}_{\!r}=1\); and it is zero outside that domain,
+including when \(n<r\), \(k<r\), or \(k>n\).  For \(n>r\),
+\[
+ \StirlingSecondKind{n}{k}_{\!r}
+ =k\StirlingSecondKind{n-1}{k}_{\!r}
+  +\StirlingSecondKind{n-1}{k-1}_{\!r}.
+\]
+The mixed bivariate EGF, including its shift by \(r\), is
+\[
+ \sum_{n\ge r}\sum_{k\ge r}
+ \StirlingSecondKind{n}{k}_{\!r}
+ y^k\frac{z^{n-r}}{(n-r)!}
+ =y^r\EulerE^{rz}\exp\!\bigl(y(\EulerE^z-1)\bigr).
+\]}
+\entryfield{Associated Stirling numbers}{For \(r\in\PositiveIntegers\),
+\(\mathsf{S}^{\ge r}(n,k)\) counts partitions of an \(n\)-element labelled
+set into \(k\) blocks, every block having size at least \(r\).  Set
+\(\mathsf{S}^{\ge r}(0,0)=1\); it is zero if \(n<rk\), if \(k<0\), if
+\(n<0\), or if \(k=0<n\).  Thus the empty set has one zero-block partition,
+whereas a nonempty set has none.  For \(n\ge0\),
+\[
+ \mathsf{S}^{\ge r}(n+1,k)
+ =k\mathsf{S}^{\ge r}(n,k)
+  +\binom{n}{r-1}\mathsf{S}^{\ge r}(n-r+1,k-1),
+\]
+where the zero extension interprets every out-of-domain term.  Equivalently,
+\[
+ \sum_{n\ge0}\mathsf{S}^{\ge r}(n,k)\frac{z^n}{n!}
+ =\frac1{k!}
+  \left(\EulerE^z-\sum_{j=0}^{r-1}\frac{z^j}{j!}\right)^k.
+\]
+The historical source glyph \(\mathsf{S}_r(n,k)\) is read with this
+minimum-block-size meaning only inside its declared section.}
+\entryfield{Reduced or gap Stirling numbers}{For \(d\in\PositiveIntegers\),
+\(\mathsf{S}^{[\mathrm{gap}\,d]}(n,k)\) counts partitions of
+\(\{1,\ldots,n\}\) into \(k\) blocks in which two labels in the same block
+differ by at least \(d\).  In the source range \(n\ge k\ge d\),
+\[
+ \mathsf{S}^{[\mathrm{gap}\,d]}(n,k)
+ =\StirlingSecondKind{n-d+1}{k-d+1}.
+\]
+The \(d=1\) specialization is the ordinary second-kind number.  Outside the
+stated range the combinatorial definition, not the displayed shifted formula,
+governs; no additional boundary values are inferred.}
+\entryfield{Fubini or ordered Bell numbers}{The visibly qualified number
+\(\mathsf{F}^{\mathrm{Fub}}_n\) counts linearly ordered lists of the blocks of
+a set partition.  For \(n\in\NaturalNumbers\),
+\[
+ \mathsf{F}^{\mathrm{Fub}}_n
+ =\sum_{k=0}^{n}k!\StirlingSecondKind{n}{k},
+ \qquad
+ \sum_{n\ge0}\mathsf{F}^{\mathrm{Fub}}_n\frac{z^n}{n!}
+ =\frac1{2-\EulerE^z},
+\]
+and
+\[
+ \mathsf{F}^{\mathrm{Fub}}_0=1,
+ \qquad
+ \mathsf{F}^{\mathrm{Fub}}_n
+ =\sum_{j=1}^{n}\binom{n}{j}\mathsf{F}^{\mathrm{Fub}}_{n-j}
+ \quad(n\ge1).
+\]
+It is not the unlabelled Bell number \(\BellNumber{n}\): ordering the blocks is
+the extra structure.}
+\entryfield{Narayana numbers}{For \(n\in\PositiveIntegers\) and
+\(1\le k\le n\), the Narayana number is
+\[
+ \mathsf{N}^{\mathrm{Nar}}_{n,k}
+ \DefinitionEquals
+ \frac1n\binom{n}{k}\binom{n}{k-1}.
+\]
+It counts Dyck paths of semilength \(n\) with exactly \(k\) peaks and satisfies
+\[
+ \sum_{k=1}^{n}\mathsf{N}^{\mathrm{Nar}}_{n,k}
+ =\CatalanNumber{n},
+ \qquad
+ \mathsf{N}^{\mathrm{Nar}}_{n,k}
+ =\mathsf{N}^{\mathrm{Nar}}_{n,n+1-k}.
+\]
+No value \(\mathsf{N}^{\mathrm{Nar}}_{0,0}\) is introduced by this convention;
+an empty Dyck path, when needed, is represented separately by the constant
+term of the relevant generating function.}
+\entryfield{Generalized factorial coefficients}{Let
+\(f\colon\NaturalNumbers\to\ComplexNumbers\), let
+\(x,t\in\ComplexNumbers\) with \(t\ne0\), and let \(n\ge1\) be an integer.
+The report-local product
+\[
+ (x)_{n;f,t}
+ \DefinitionEquals
+ \prod_{j=1}^{n-1}\left(x+\frac{f(j)}{t^j}\right)
+\]
+has degree \(n-1\), with the \(n=1\) empty product equal to \(1\).  Its
+coefficient triangle is
+\[
+ \genfrac{[}{]}{0pt}{}{n}{k}_{\!f,t}
+ \DefinitionEquals
+ \CoefficientExtraction{x}{k-1}(x)_{n;f,t},
+ \qquad 1\le k\le n.
+\]
+The four data \(n,k,f,t\) are all part of the object.  These brackets are not
+unsigned Stirling brackets, Gaussian binomials, or a \(q\)-Pochhammer symbol,
+and no \(n=0\) value is inferred without a separate declaration.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{combinatorial-letter-collisions}
+  {Catalan, complementary Bell, Gregory, Genocchi, Barnes, Hessenberg, associahedral,
+   and shifted-coordinate symbols}
+\entryfield{Catalan number}{For \(n\in\NaturalNumbers\),
+\[
+ \CatalanNumber{n}
+ \DefinitionEquals
+ \frac1{n+1}\binom{2n}{n}.
+\]
+It counts, among many equinumerous families, full plane binary trees with \(n\)
+internal vertices and triangulations of a convex \((n+2)\)-gon.  It is not the
+complementary Bell number, even though one source used \(C_n\) for both.}
+\entryfield{Gregory coefficient}{The Gregory coefficients are defined by the
+ordinary Taylor expansion
+\[
+ \frac{z}{\log(1+z)}
+ =1+\sum_{n\ge1}\GregoryCoefficient{n}z^n
+ \qquad(|z|<1\text{ analytically}).
+\]
+The equality also defines them formally over a characteristic-zero coefficient
+field.}
+\entryfield{Genocchi polynomial and number}{The Genocchi polynomials satisfy
+\[
+ \frac{2t\EulerE^{xt}}{\EulerE^t+1}
+ =\sum_{n\ge0}\GenocchiPolynomial{n}(x)\frac{t^n}{n!},
+\]
+and
+\[
+ \GenocchiNumber{n}\DefinitionEquals\GenocchiPolynomial{n}(0).
+\]
+They are unrelated to the Gregory coefficients despite the legacy shared
+letter \(G_n\).}
+\entryfield{Barnes G-function}{The Barnes function is denoted
+\(\BarnesGFunction(z)\) and normalized by
+\[
+ \BarnesGFunction(1)=1,
+ \qquad
+ \BarnesGFunction(z+1)=\GammaFunction(z)\BarnesGFunction(z).
+\]
+For \(N\in\PositiveIntegers\),
+\(\BarnesGFunction(N+1)=\prod_{k=1}^{N-1}k!\).  It is a function, not either
+\(G_n\) coefficient family.}
+\entryfield{Bell Hessenberg matrices}{For \(1\le i,j\le n\), define
+\[
+ (\BellHessenbergMatrixH{n})_{ij}
+ =\begin{cases}
+   \binom{n-i}{j-i}x_{j-i+1},&j\ge i,\\
+   -1,&j=i-1,\\
+   0,&j<i-1,
+  \end{cases}
+\]
+and
+\[
+ (\BellHessenbergMatrixK{n})_{ij}
+ =\begin{cases}
+   x_{j-i+1}/(j-i)!,&j\ge i,\\
+   -(i-1),&j=i-1,\\
+   0,&j<i-1.
+  \end{cases}
+\]
+Then
+\[
+ \det\BellHessenbergMatrixH{n}
+ =\det\BellHessenbergMatrixK{n}
+ =\ExponentialCompleteBellPolynomial{n}(x_1,\ldots,x_n).
+\]
+The labels \(H\) and \(K\) describe two determinant models for the same Bell
+polynomial; neither matrix is an associahedron.}
+\entryfield{Associahedron indexed by dimension}{The symbol
+\(\AssociahedronByDimension{d}\) denotes the \(d\)-dimensional Stasheff
+associahedron.  Its vertices correspond to triangulations of a convex
+\((d+3)\)-gon, equivalently to full parenthesizations of \(d+2\) factors.
+The lossless legacy-to-canonical crosswalk is:
+\(K_n\) of declared dimension \(n-1\) becomes
+\(\AssociahedronByDimension{n-1}\);
+\(K_n\) of declared dimension \(n-2\) becomes
+\(\AssociahedronByDimension{n-2}\);
+the corresponding shifted \(K_{n+1}\) becomes
+\(\AssociahedronByDimension{n-1}\); and
+\(\mathcal{K}_N\) for triangulations of an \(N\)-gon becomes
+\(\AssociahedronByDimension{N-3}\).
+The unified formulae-and-inversion report is internally mixed: one section
+declares \(K_n\) to have dimension \(n-1\), while a later section declares
+\(K_{n+1}\) to have dimension \(n-1\), which is the incompatible rule
+\(\dim K_m=m-2\).
+No source index may be copied without first applying its declared dimension
+formula.}
+\entryfield{Lagrange shift coordinate}{In a shifted Lagrange-inversion
+calculation, the local coordinate
+\[
+ \LagrangeShiftCoordinate\DefinitionEquals z-b
+\]
+is a translated variable.  It is not the Riemann zeta function
+\(\RiemannZeta(s)\), a Hurwitz zeta value \(\HurwitzZeta{s}{a}\), a root of
+unity, an incidence-algebra kernel, or a generic complex coordinate outside
+that declared scope.}
+\entryfield{Zeta-family boundary}{Five roles must remain separate:
+\(\RiemannZeta(s)\) is the one-argument Riemann zeta function;
+\(\HurwitzZeta{s}{a}\) is the two-argument Hurwitz zeta function;
+\(\LagrangeShiftCoordinate=z-b\) is a local translated coordinate;
+\(\zeta_P(x,y)=1\) for \(x\le y\) is the incidence-algebra zeta function of a
+locally finite poset \(P\), whose convolution inverse is the M\"obius
+function; and a root-of-unity variable satisfies \(\zeta^N=1\) for a declared
+positive integer \(N\).  Boolean-subset zeta transforms are the specialization
+of the poset construction to the subset lattice.  Their shared historical
+glyph does not identify the objects.}
+\entryfield{Governance rule}{A raw \(C_n\), \(G_n\), \(K_n\), \(L(n,k)\),
+\(T_n(x)\), or local \(\zeta\) is insufficient wherever two listed meanings
+coexist.  The semantic commands in this entry are normative and their printed
+tags are intentionally visible.}
 \end{catalogueentry}
 
 \section{\texorpdfstring{\(q\)-series}{q-series}, products, and arithmetic functions}
@@ -2904,9 +3733,11 @@ $\GammaFunction(n+1)=n!$.}
 \entryfield{Riemann zeta}{For $\operatorname{Re}s>1$,
 $\RiemannZeta(s)=\sum_{n=1}^\infty n^{-s}$, extended meromorphically to
 $\ComplexNumbers$ with a simple pole at $s=1$.}
-\entryfield{Hurwitz zeta}{$\zeta(s,a)=\sum_{n=0}^{\infty}(n+a)^{-s}$ initially for
+\entryfield{Hurwitz zeta}{$\HurwitzZeta{s}{a}
+=\sum_{n=0}^{\infty}(n+a)^{-s}$ initially for
 $\operatorname{Re}s>1$ and $a\notin\{0,-1,-2,\ldots\}$, with the branch of each power
-specified if $a$ is complex.}
+specified if $a$ is complex.  The two arguments of
+\commandname{HurwitzZeta} are the order and shift, respectively.}
 \entryfield{Collision policy}{The same Greek glyph may label a root of unity or a zeta
 function only with a semantic subscript or arguments that make its type immediate.}
 \end{catalogueentry}
@@ -3793,6 +4624,919 @@ Mesh and phase reproduction are in
 \modulepath{RvachevPolynomialSynthesis.lean}.  Status:
 \textbf{Lean-proved with the displayed hypotheses}; no analytic reciprocal-MGF
 convergence or infinite differential-operator expansion is claimed.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{polynomial-logarithmic-ambient}
+  {Polynomial--logarithmic variables, coefficient classes, and completions}
+\entryfield{Commands}{The shared semantic commands are
+\commandname{PolynomialLogPowerSeriesRing},
+\commandname{PolynomialLogLaurentRing},
+\commandname{RationalLogLaurentField},
+\commandname{IteratedLaurentLogField}, and
+\commandname{NearIdentityPolynomialLogGroup}.  Their arguments name the
+coefficient field.  A document-local calligraphic letter is not a synonym for
+any of these commands unless that document explicitly defines it.}
+\entryfield{Base data}{Fix a field \(K\) of characteristic zero, a large
+variable \(X\), and the generators
+\[
+ t\DefinitionEquals X^{-1},
+ \qquad
+ L\DefinitionEquals\log X.
+\]
+For real asymptotics the default regime is \(X\to+\infty\).  For complex
+asymptotics a sector and a branch of \(\log\) must be supplied.  In the formal
+algebra, \(t\) and \(L\) are independent generators; their analytic relation is
+recorded by the distinguished derivation \(D_Xt=-t^2\) and \(D_XL=t\).
+The letters \(x,\ell,\lambda\) used in individual reports are local
+renamings of \(X,L\), not additional global generators.}
+\entryfield{Polynomial-log power-series ring}{Define
+\[
+ \PolynomialLogPowerSeriesRing{K}
+ \DefinitionEquals K[L][[t]].
+\]
+An element is a unique series
+\[
+ F=\sum_{n\ge0}p_n(L)t^n,
+ \qquad p_n\in K[L].
+\]
+Each coefficient block is a finite polynomial in \(L\); no uniform bound on
+\(\deg_Lp_n\) is implicit.  The ideal of strictly positive outer order is
+\(tK[L][[t]]\).}
+\entryfield{Polynomial-log Laurent ring}{Define
+\[
+ \PolynomialLogLaurentRing{K}
+ \DefinitionEquals K[L]((t))
+ =\bigcup_{m\ge0}t^{-m}K[L][[t]].
+\]
+Every element has a unique representation
+\[
+ F=\sum_{n\ge n_0}p_n(L)t^n,
+ \qquad n_0\in\IntegerNumbers,\quad p_n\in K[L].
+\]
+Only finitely many negative powers of \(t\) may occur.  Equivalently, only
+finitely many positive powers of \(X\) occur.  This ring is an integral domain
+but, in general, not a field.}
+\entryfield{Unit criterion}{For nonzero
+\[
+ F=t^{n_0}\bigl(p_{n_0}(L)+p_{n_0+1}(L)t+\cdots\bigr),
+\]
+\(F\) is a unit of \(\PolynomialLogLaurentRing{K}\) exactly when
+\(p_{n_0}(L)\in K^\times\), that is, when its leading coefficient block is a
+nonzero scalar.  A nonzero polynomial such as \(L+1\) is not a unit in
+\(K[L]\).  Special divisibility may keep a particular quotient in the
+polynomial-log ring, but there is no unconditional division theorem by an
+arbitrary nonzero leading polynomial.}
+\entryfield{Rational-log Laurent field}{Unrestricted exact division of
+nonzero coefficient blocks is performed in
+\[
+ \RationalLogLaurentField{K}
+ \DefinitionEquals K(L)((t)).
+\]
+This field retains rational dependence on \(L\) exactly.  A scalar such as a
+chosen value of \(\log c\) must belong to \(K\); otherwise \(K\) must first be
+extended.}
+\entryfield{Iterated Laurent-log field}{Expanding rational functions at
+\(L=\infty\) gives
+\[
+ \IteratedLaurentLogField{K}
+ \DefinitionEquals K((L^{-1}))((t)).
+\]
+An element has the form
+\[
+ \sum_{n\ge n_0}t^n
+   \sum_{j\ge j_n}a_{n,j}L^{-j}.
+\]
+For each fixed outer level \(n\), the inner Laurent series contains only
+finitely many positive powers of \(L\), but it may contain infinitely many
+negative powers.  The iteration order is part of the type:
+\[
+ K((L^{-1}))((t))\ne K((t))((L^{-1}))
+\]
+in general, because the two fields impose different support conditions.
+The embedding
+\(K(L)((t))\hookrightarrow K((L^{-1}))((t))\) means Laurent expansion of
+each rational coefficient at \(L=\infty\); it changes an exact coefficient
+such as \(1/(L+1)\) into
+\(L^{-1}-L^{-2}+L^{-3}-\cdots\).}
+\entryfield{Completion order and finite data}{A finite representation in the
+iterated field needs an outer \(t\)-cutoff and an inner \(L^{-1}\)-cutoff, or
+one explicitly defined staircase in the lexicographic monomial order.  An
+outer cutoff alone does not make an infinite Laurent-log coefficient block
+finite.}
+\entryfield{Puiseux-log extension}{For a fixed
+\(s\in\PositiveIntegers\),
+\[
+ K[L]\bigl((t^{1/s})\bigr)
+\]
+allows exponents in \(s^{-1}\IntegerNumbers\).  Formally,
+\[
+ D_X\!\left(t^\alpha p(L)\right)
+ =t^{\alpha+1}\bigl(p'(L)-\alpha p(L)\bigr),
+ \qquad \alpha\in s^{-1}\IntegerNumbers.
+\]
+An analytic realization additionally requires a branch of \(X^{1/s}\).
+The union over all \(s\) allows rational exponents but has no single
+denominator bound.}
+\entryfield{Hahn power-log extension}{Let \(\Gamma\) be an ordered additive
+subgroup of \(\RealNumbers\).  A Hahn power-log series has schematic form
+\[
+ \sum_{\alpha\in S}p_\alpha(L)t^\alpha,
+ \qquad p_\alpha\in K[L],
+\]
+where \(S\subseteq\Gamma\) is well ordered in the direction of increasing
+smallness.  The support condition is what makes multiplication locally finite.
+If complex exponents are admitted, ordering merely by real part is
+insufficient: a tie-breaking order and a support convention must be stated.}
+\entryfield{Near-identity group}{Define
+\[
+ \NearIdentityPolynomialLogGroup{K}
+ \DefinitionEquals
+ \SetOf{X+A:A\in\PolynomialLogPowerSeriesRing{K}}.
+\]
+Under the admissibility hypotheses in
+\notelink{polynomial-logarithmic-composition}{the composition entry}, this is
+a group under composition.  It is not a multiplicative group of coefficient
+series.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{polynomial-logarithmic-leading-data}
+  {Coefficient support, dominance, valuation, and leading data}
+\entryfield{Coefficient support command}{The shared command is
+\commandname{CoefficientSupportOf}.  It is distinct from
+\commandname{SupportOf}, which is reserved for pointwise function support.
+For
+\[
+ F=\sum_{n\ge n_0}p_n(L)t^n
+  =\sum_{\substack{n\in\IntegerNumbers\\j\in\NaturalNumbers}}
+     a_{n,j}t^nL^j,
+\]
+define
+\[
+ \CoefficientSupportOf{F}
+ \DefinitionEquals
+ \SetOf{(n,j)\in\IntegerNumbers\times\NaturalNumbers:a_{n,j}\ne0}.
+\]
+Every fiber over a fixed \(n\) is finite, and the projection to the
+\(n\)-coordinate is bounded below.  The zero series has empty coefficient
+support.  This is support in an exponent-index set, not the pointwise support
+of a function on a topological space.}
+\entryfield{Dominance order}{On the positive ray as \(X\to+\infty\),
+\[
+ t^nL^j\succ t^mL^k
+ \quad\Longleftrightarrow\quad
+ n<m
+ \quad\text{or}\quad
+ (n=m\ \text{and}\ j>k).
+\]
+Thus outer inverse-power order is compared first; logarithmic degree refines
+only a fixed outer block.  Negative powers of \(L\) belong to an enlarged
+Laurent-log coefficient field, not to \(K[L]((t))\).}
+\entryfield{Outer valuation}{For nonzero
+\(F=\sum_{n\ge n_0}p_n(L)t^n\), define
+\[
+ \nu_t(F)\DefinitionEquals
+ \min\SetOf{n\in\IntegerNumbers:p_n\ne0},
+ \qquad
+ \nu_t(0)\DefinitionEquals+\infty.
+\]
+For nonzero inputs,
+\[
+ \nu_t(FG)=\nu_t(F)+\nu_t(G),
+ \qquad
+ \nu_t(F+G)\ge
+ \min\SetOf{\nu_t(F),\nu_t(G)}.
+\]
+The second inequality may be strict when the leading blocks cancel.}
+\entryfield{Leading block, monomial, and scalar}{Let
+\[
+ p_{\nu_t(F)}(L)=aL^d+\text{lower powers},
+ \qquad a\in K^\times.
+\]
+Then the leading coefficient block is the whole polynomial
+\(p_{\nu_t(F)}\); the leading monomial is
+\(t^{\nu_t(F)}L^d\); and the scalar leading coefficient is \(a\).
+These are three different objects.  For \(F=0\), the degree, leading monomial,
+and leading coefficient are undefined unless a separate extended convention
+is declared.}
+\entryfield{Rank-two valuation}{The refined monomial valuation is
+\[
+ v(t^nL^j)=(n,-j)
+\]
+with lexicographic order.  Hence for nonzero \(F\),
+\[
+ v(F)=\bigl(\nu_t(F),-\deg_Lp_{\nu_t(F)}\bigr).
+\]
+The negative sign makes larger logarithmic degree more dominant within a fixed
+outer block.}
+\entryfield{Log-degree profile}{Extend absent coefficient blocks by zero and
+define
+\[
+ d_F(n)=
+ \begin{cases}
+   \deg_Lp_n,&p_n\ne0,\\
+   -\infty,&p_n=0.
+ \end{cases}
+\]
+The profile \(d_F\) is additional data; it is not recoverable from the coarse
+number \(\nu_t(F)\).  Linear bounds such as \(d_F(n)\le an+b\) are hypotheses
+or proved invariants, never part of the ring definition.}
+\entryfield{Hahn support}{For a Hahn extension the support is a subset of the
+chosen exponent group and must be well ordered.  Multiplication uses
+Minkowski addition of supports.  Well ordering or the relevant local-finiteness
+condition ensures that every output coefficient receives only finitely many
+contributions.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{polynomial-logarithmic-truncation}
+  {Exclusive truncation, formal tails, analytic remainders, and summability}
+\entryfield{Exclusive outer truncation}{For \(N\in\IntegerNumbers\), define
+\[
+ \operatorname{Trunc}_{<N}F
+ \DefinitionEquals
+ \sum_{n<N}p_n(L)t^n.
+\]
+It keeps every logarithmic monomial in every retained coefficient block.  If
+\(N\le n_0\), the sum is empty and equals \(0\).  The zero series also truncates
+to \(0\).  “Through outer order \(t^{N-1}\)” is the exclusive cutoff
+\(<N\).}
+\entryfield{Inclusive outer truncation}{The report-6 local notation
+\[
+ [F]_{\le N}\DefinitionEquals\sum_{n\le N}p_n(L)t^n
+\]
+is inclusive.  Therefore
+\[
+ [F]_{\le N}=\operatorname{Trunc}_{<N+1}F.
+\]
+Any transfer between reports must account for this one-block difference.}
+\entryfield{Formal tail command}{The command
+\commandname{FormalBigOAt} is defined by
+\[
+ F=G+\FormalBigOAt{t^N}{t}
+ \quad\Longleftrightarrow\quad
+ \nu_t(F-G)\ge N
+ \quad\Longleftrightarrow\quad
+ F-G\in t^NK[L][[t]].
+\]
+It asserts coefficient agreement below outer order \(N\).  It asserts no
+numerical bound, convergence, uniformity in \(L\), or analytic realization.
+The token \commandname{FormalBigO} is the same operator without supplied
+arguments.}
+\entryfield{Why the Laurent tail is not an ideal}{In
+\(\PolynomialLogLaurentRing{K}=K[L]((t))\), \(t\) is a unit.  Therefore the
+principal ideal generated by \(t^N\) is the whole Laurent ring.  The subset
+\(t^NK[L][[t]]\) is an additive valuation-filtration tail, not an ideal under
+arbitrary Laurent multiplication.  Consequently:
+\begin{itemize}
+\item in \(K[L][[t]]\), reduction modulo the ideal \((t^N)\) is a genuine ring
+quotient;
+\item in \(K[L]((t))\), use \(\nu_t(F-G)\ge N\),
+\(\FormalBigOAt{t^N}{t}\), or equality of exclusive truncations;
+\item quotient-algebra language becomes legitimate after removing the finite
+Laurent principal part and restricting to a power-series tail ring.
+\end{itemize}}
+\entryfield{Coefficient extraction}{For the double expansion above,
+\[
+ [t^n]F=p_n(L),
+ \qquad
+ [t^nL^j]F=a_{n,j}.
+\]
+An absent coefficient is \(0\).  Bracket argument order is not uniform in
+the source reports: one local macro prints \([M]F\), another prints
+\([F]_M\).  Shared prose must state the series and monomial roles explicitly.}
+\entryfield{Separate logarithmic cutoff}{Bounding \(\deg_Lp_n\) is an
+additional approximation, not part of the outer \(t\)-adic topology.
+Discarding a high power of \(L\) in a retained \(t\)-block requires an explicit
+degree bound.  An iterated Laurent-log coefficient requires a second inner
+cutoff or a defined two-dimensional staircase.}
+\entryfield{Analytic big-O command}{For actual functions on a domain \(S\),
+\[
+ R(X)=\BigOAt{A(X)}{X\to\infty,\ X\in S}
+\]
+means that there exist \(C>0\) and a sufficiently late part of the stated
+domain such that
+\(\AbsoluteValue{R(X)}\le C\AbsoluteValue{A(X)}\) there.  In complex work the
+sector, closed subsector if uniformity is intended, and every logarithmic or
+fractional-power branch are part of the statement.  The limit must not be
+left to context.}
+\entryfield{Three different O-roles}{The corpus distinguishes:
+\[
+ \FormalBigOAt{t^N}{t}
+ \quad\text{(formal valuation tail)},\qquad
+ \BigOAt{A(X)}{X\to\infty}
+ \quad\text{(analytic estimate)},\qquad
+ \BigO(N^2)
+ \quad\text{(algorithmic complexity)}.
+\]
+No one of these meanings may be inferred from the other two.}
+\entryfield{Completeness and summability}{A sequence is \(t\)-adically Cauchy
+when every coefficient block below every fixed cutoff eventually stabilizes.
+A family \((S_r)_{r\ge0}\) is formally summable when
+\(\nu_t(S_r)\to+\infty\); below any cutoff only finitely many members then
+contribute.  This coefficientwise property is the formal substitute for
+numerical convergence.  On a Laurent ring, a Cauchy sequence must also have a
+common eventual lower support bound; otherwise it need not define a Laurent
+series with a finite principal part.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{polynomial-logarithmic-differential}
+  {Large-variable differentiation and shifted logarithmic operators}
+\entryfield{Distinguished derivation}{With \(t=X^{-1}\) and \(L=\log X\),
+\[
+ D_X=t\,\partial_L-t^2\,\partial_t.
+\]
+Here \(\partial_t\) and \(\partial_L\) are formal partial derivatives holding
+the other generator fixed.  The formula is the unique derivation satisfying
+\(D_Xt=-t^2\) and \(D_XL=t\).}
+\entryfield{One coefficient block}{For
+\(n\in\IntegerNumbers\) and \(p\in K[L]\),
+\[
+ D_X\bigl(t^np(L)\bigr)
+ =t^{n+1}\bigl(\partial_L-n\bigr)p(L).
+\]
+The Euler derivation preserves outer order:
+\[
+ XD_X\bigl(t^np(L)\bigr)
+ =t^n\bigl(\partial_L-n\bigr)p(L).
+\]}
+\entryfield{Repeated derivative operator}{For
+\(k\in\NaturalNumbers\), define
+\[
+ \Delta_{n,k}
+ \DefinitionEquals
+ \prod_{j=0}^{k-1}(\partial_L-n-j),
+ \qquad
+ \Delta_{n,0}\DefinitionEquals1.
+\]
+The \(k=0\) product is empty and acts as the identity.  The factors commute
+because each is a polynomial in \(\partial_L\).  Then
+\[
+ D_X^k\bigl(t^np(L)\bigr)
+ =t^{n+k}\Delta_{n,k}p(L).
+\]}
+\entryfield{Valuation behavior}{For nonzero \(F\),
+\[
+ \nu_t(D_XF)\ge\nu_t(F)+1.
+\]
+Equality can fail through annihilation or cancellation.  If the leading term
+is \(at^nL^d\), then:
+\begin{itemize}
+\item if \(n\ne0\), the derivative begins with
+\(-na\,t^{n+1}L^d\);
+\item if \(n=0\) and \(d>0\), it begins with
+\(ad\,tL^{d-1}\);
+\item if \(n=d=0\), the leading constant is annihilated and the next
+nonconstant term decides the order.
+\end{itemize}
+In particular, \(D_XK=0\) and
+\(D_X(K[L][[t]])\subseteq tK[L][[t]]\).}
+\entryfield{Formal partial versus analytic derivative}{The formal
+\(\partial_t\) used for coefficient extraction holds \(L\) fixed.  It is not
+the analytic derivative with respect to \(t\) after substituting
+\(L=-\log t\).  Likewise, a bare \(D\) may denote \(D_X\), \(\partial_L\), or
+differentiation in a Lambert-polynomial dummy variable; the differentiated
+variable must be printed.}
+\entryfield{Antiderivative resonance}{Solving
+\[
+ (\partial_L-n)p(L)=q(L)
+\]
+for a polynomial \(p\) is triangular and unique when \(n\ne0\).  When \(n=0\)
+it reduces to polynomial integration and introduces an arbitrary scalar
+constant.  This is the formal source of the constant of integration and must
+be handled separately at the resonant block.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{polynomial-logarithmic-composition}
+  {Admissible composition and near-identity substitution}
+\entryfield{Monomial-leading inner argument}{Let
+\[
+ F(Y)=\sum_{n\ge a}p_n(\log Y)Y^{-n}
+\]
+and
+\[
+ G(X)=cX^\rho(1+U(X)),
+ \qquad
+ c\in K^\times,\quad
+ \rho\in\PositiveIntegers,\quad
+ U\in tK[L][[t]].
+\]
+Choose a value of \(\log c\) in the coefficient field and put
+\(V=\log(1+U)\).  Then
+\[
+ (F\circ G)(X)
+ =
+ \sum_{n\ge a}
+ p_n\!\left(\rho L+\log c+V\right)
+ c^{-n}t^{\rho n}(1+U)^{-n}.
+\]
+Every coefficient below a fixed outer cutoff is a finite sum.  If
+\(\rho=r/s>0\) is rational, the result belongs to a Puiseux-log extension
+after adjoining \(t^{1/s}\); a general ordered real exponent requires a Hahn
+exponent group.}
+\entryfield{Generator substitution}{For
+\[
+ G=X+H=X(1+tH),
+ \qquad H\in K[L][[t]],
+\]
+composition changes both generators:
+\[
+ t\circ G=\frac{t}{1+tH},
+ \qquad
+ L\circ G=L+\log(1+tH).
+\]
+The substitution \(t\mapsto t+H\) is incorrect because \(t\) denotes
+\(X^{-1}\), not \(X\).  Updating \(L\) while leaving \(t\) fixed is also
+incorrect.}
+\entryfield{Exact formal Taylor formula}{For
+\(F\in K[L]((t))\) and \(H\in K[L][[t]]\),
+\[
+ F\circ(X+H)
+ =
+ \sum_{k\ge0}\frac{H^k}{k!}D_X^kF.
+\]
+This is an exact identity of formal series, not an analytic approximation.
+If \(a=\nu_t(F)\), then only finitely many \(k\), in particular
+\(k\le N-a\), can affect the coefficient of \(t^N\).}
+\entryfield{Finite coefficient formula}{Write
+\[
+ F=\sum_{n\ge a}p_n(L)t^n,
+ \qquad
+ H^k=\sum_{m\ge0}h_{k,m}(L)t^m,
+\]
+with \(h_{0,0}=1\) and \(h_{0,m}=0\) for \(m>0\).  Then
+\[
+ [t^r]\bigl(F\circ(X+H)\bigr)
+ =
+ \sum_{\substack{n\ge a,\ k,m\ge0\\n+k+m=r}}
+ \frac{h_{k,m}(L)}{k!}\Delta_{n,k}p_n(L).
+\]
+The displayed affine constraint makes the sum finite.}
+\entryfield{Convolution-polynomial boundary cases}{If
+\(H=\sum_{j\ge0}h_jt^j\), define
+\[
+ C_{m,r}
+ \DefinitionEquals
+ \sum_{\substack{j_1,\ldots,j_r\ge0\\j_1+\cdots+j_r=m}}
+ h_{j_1}\cdots h_{j_r}.
+\]
+The empty-product conventions are
+\[
+ C_{0,0}=1,\qquad C_{m,0}=0\quad(m>0).
+\]
+Equivalently, \(H^r=\sum_{m\ge0}C_{m,r}t^m\), and
+\[
+ C_{m,r+1}=\sum_{j=0}^{m}h_jC_{m-j,r}.
+\]
+If \(h_0=0\), then \(C_{m,r}=0\) whenever \(m<r\).}
+\entryfield{Associativity domain}{The identity
+\((F\circ G)\circ H=F\circ(G\circ H)\) is asserted only when every displayed
+composition exists in the selected support class.  For substitution maps,
+right substitution reverses the apparent order of operator composition.
+Formal closure is a theorem about support and local finiteness, not a license
+to compose arbitrary transseries.}
+\entryfield{Analytic admissibility}{For analytic realizations, the image of
+the inner map must eventually lie in the outer expansion's ray or sector,
+must avoid every relevant logarithmic branch cut, and must carry the omitted
+outer remainder below the requested output order.  These conditions are
+additional to the formal coefficient calculation.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{polynomial-logarithmic-reversion}
+  {Compositional inverse, multiplicative reciprocal, and residual certificates}
+\entryfield{Commands}{The shared commands are
+\commandname{MultiplicativeInverseOf} and
+\commandname{CompositionalInverseOf}.  They render
+\[
+ \MultiplicativeInverseOf{F}=F^{-1},
+ \qquad
+ \CompositionalInverseOf{F}
+ =F^{\langle-1\rangle_\circ}.
+\]
+The first is inverse under multiplication and satisfies
+\(F\MultiplicativeInverseOf{F}=1\).  The second is inverse under composition
+and satisfies
+\[
+ F\circ\CompositionalInverseOf{F}
+ =
+ \CompositionalInverseOf{F}\circ F
+ =X.
+\]
+Negative monomial powers, the branch label \(W_{-1}\), inverse transforms, and
+time-\((-1)\) iterates are not instances of either replacement merely because
+they contain the glyph \(-1\).}
+\entryfield{Near-identity inverse}{For
+\(F=X+A\in\NearIdentityPolynomialLogGroup{K}\), there is a unique
+\(\CompositionalInverseOf{F}=X+B\) in the same group.  The correction \(B\)
+is the unique fixed point
+\[
+ B=-A\circ(X+B).
+\]
+Starting with \(B_0=0\), the error gains at least one outer block per iteration
+because \(D_XA\in tK[L][[t]]\).}
+\entryfield{Lagrange--Bürmann formula}{The formal inverse is
+\[
+ \CompositionalInverseOf{(X+A)}(X)
+ =
+ X+\sum_{r\ge1}\frac{(-1)^r}{r!}
+ D_X^{\,r-1}\!\left(A(X)^r\right).
+\]
+The sum starts at \(r=1\), where the derivative order is zero.  The \(r\)-th
+summand has outer order at least \(r-1\), which makes the family formally
+summable.}
+\entryfield{Coefficient formula}{If
+\[
+ A^r=\sum_{m\ge0}A_{r,m}(L)t^m,
+ \qquad
+ \CompositionalInverseOf{F}
+ =X+\sum_{N\ge0}b_N(L)t^N,
+\]
+then
+\[
+ b_N(L)=
+ \sum_{r=1}^{N+1}\frac{(-1)^r}{r!}
+ \left[
+   \prod_{s=N-r+1}^{N-1}(\partial_L-s)
+ \right]
+ A_{r,N-r+1}(L).
+\]
+When the lower product bound exceeds the upper bound, in particular at
+\(r=1\), the product is empty and acts as the identity.}
+\entryfield{Residual with all arguments explicit}{For an ambient map \(F\)
+and a candidate inverse \(H\), define
+\[
+ \operatorname{Err}_{\mathrm{rev}}(F,H)
+ \DefinitionEquals F\circ H-X.
+\]
+A report-local one-argument macro may hide \(F\) in a subscript; shared prose
+must supply both \(F\) and \(H\) because the residual is not determined by
+\(H\) alone.}
+\entryfield{Finite certificate}{For
+\[
+ G_N=X+\sum_{j=0}^{N}b_j(L)t^j,
+\]
+\(G_N\) is a right inverse through outer block \(N\) exactly when
+\[
+ F\circ G_N-X=\FormalBigOAt{t^{N+1}}{t}.
+\]
+The left certificate is
+\[
+ G_N\circ F-X=\FormalBigOAt{t^{N+1}}{t}.
+\]
+An exact one-sided inverse in the group is two-sided by uniqueness.  At finite
+precision both residuals are useful because they detect different
+substitution-order mistakes.}
+\entryfield{Triangular correction}{If
+\[
+ F\circ G_N-X
+ =r_N(L)t^N+\FormalBigOAt{t^{N+1}}{t},
+\]
+then
+\[
+ G_{N+1}=G_N-r_N(L)t^N
+\]
+removes the residual at level \(N\) when the leading slope is \(1\).  For a
+leading slope \(a\in K^\times\), divide the correction by \(a\).}
+\entryfield{Newton reversion}{Newton's update is
+\[
+ G_{\mathrm{new}}
+ =
+ G-\frac{F\circ G-X}{(D_XF)\circ G}.
+\]
+For \(F=X+A\), the denominator is
+\(1+\FormalBigOAt{t}{t}\) and is therefore a unit.  The residual order
+approximately doubles when all intermediate arithmetic carries sufficient
+guard precision.}
+\entryfield{Analytic residual transfer}{If \(f\) is continuously
+differentiable and one-to-one on an interval, \(x_*=f^{\langle-1\rangle_\circ}(y)\),
+and \(\AbsoluteValue{f'(x)}\ge m>0\) between \(x_N\) and \(x_*\), then
+\[
+ \AbsoluteValue{x_N-x_*}
+ \le\frac{\AbsoluteValue{f(x_N)-y}}{m}.
+\]
+This analytic theorem requires injectivity and a derivative lower bound; a
+formal residual alone does not prove existence of an analytic inverse branch.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{wright-omega-lambert-polynomials}
+  {Wright omega, the canonical Lambert polynomials, and Stirling coefficients}
+\entryfield{Commands}{The shared commands are
+\commandname{WrightOmega},
+\commandname{LambertPolynomial}, and
+\commandname{ScaledLambertPolynomial}.  The polynomial command takes only an
+index; its evaluation argument is written after the command.}
+\entryfield{Real Wright omega}{The map
+\(y\mapsto y+\log y\) is a bijection from \((0,\infty)\) to
+\(\RealNumbers\).  Its real inverse is
+\[
+ \WrightOmega(x)+\log\WrightOmega(x)=x,
+ \qquad
+ \WrightOmega(x)=\LambertW_0(\EulerE^x).
+\]
+The real function is defined for every \(x\in\RealNumbers\); the
+polynomial-log expansion below concerns \(x\to+\infty\).  Complex Wright
+omega requires an unwinding-number or analytic-continuation convention.}
+\entryfield{Canonical zero-based family}{For
+\(n\in\NaturalNumbers\), define
+\[
+ \LambertPolynomial{n}(u)
+ \DefinitionEquals
+ \frac{(-1)^{n+1}}{(n+1)!}
+ \left[
+   \prod_{j=0}^{n-1}(\partial_u-j)
+ \right]u^{n+1}.
+\]
+At \(n=0\) the product is empty, so
+\[
+ \LambertPolynomial{0}(u)=-u.
+\]
+For \(n\ge1\), the first values are
+\[
+ \LambertPolynomial{1}(u)=u,\qquad
+ \LambertPolynomial{2}(u)=\frac{u^2}{2}-u,\qquad
+ \LambertPolynomial{3}(u)=\frac{u^3}{3}-\frac32u^2+u.
+\]}
+\entryfield{Omega expansion}{With \(L=\log x\),
+\[
+ \WrightOmega(x)
+ \sim
+ x+\sum_{n\ge0}\frac{\LambertPolynomial{n}(L)}{x^n}
+ =
+ x-L+\sum_{n\ge1}\frac{\LambertPolynomial{n}(L)}{x^n}.
+\]
+The two displays are identical.  The former is the canonical zero-based
+normalization; the latter merely separates the \(n=0\) logarithmic block.}
+\entryfield{Recurrence and boundary values}{For \(n\in\NaturalNumbers\),
+\[
+ \LambertPolynomial{n+1}(u)
+ =
+ -\LambertPolynomial{n}(u)
+ +n\int_0^u\LambertPolynomial{n}(v)\,\Differential v.
+\]
+Equivalently,
+\[
+ \frac{\Differential}{\Differential u}\LambertPolynomial{n+1}(u)
+ =n\LambertPolynomial{n}(u)
+  -\frac{\Differential}{\Differential u}\LambertPolynomial{n}(u),
+ \qquad
+ \LambertPolynomial{n}(0)=0.
+\]
+For \(n\ge1\),
+\[
+ \deg\LambertPolynomial{n}=n,\quad
+ [u^n]\LambertPolynomial{n}=\frac1n,\quad
+ \left.\frac{\Differential}{\Differential u}\LambertPolynomial{n}(u)
+ \right|_{u=0}=(-1)^{n-1}.
+\]
+The statement \(\deg\LambertPolynomial{0}=0\) would be false because
+\(\LambertPolynomial{0}=-u\) has degree \(1\); therefore the degree law is
+intentionally restricted to \(n\ge1\).}
+\entryfield{Signed and unsigned Stirling numbers}{Define signed Stirling
+numbers of the first kind by
+\[
+ z^{\underline n}
+ =z(z-1)\cdots(z-n+1)
+ =\sum_{k=0}^{n}s(n,k)z^k.
+\]
+The \(n=0\) product is empty, so \(s(0,0)=1\).  Set
+\(s(n,k)=0\) for \(k<0\) or \(k>n\).  Then
+\[
+ s(n+1,k)=s(n,k-1)-ns(n,k),
+ \qquad
+ \UnsignedStirlingFirstKind{n}{k}
+ =(-1)^{n-k}s(n,k).
+\]
+The bracket glyph here denotes an unsigned cycle number only when its two
+arguments are integer indices; it is neither coefficient extraction nor a
+Gaussian binomial coefficient.}
+\entryfield{Explicit coefficients}{For \(n\ge1\),
+\[
+ \LambertPolynomial{n}(u)
+ =
+ \sum_{m=1}^{n}
+ (-1)^{n-m}
+ \UnsignedStirlingFirstKind{n}{n-m+1}
+ \frac{u^m}{m!}.
+\]
+If
+\(\LambertPolynomial{n}(u)=\sum_{m=1}^{n}\lambda_{n,m}u^m\), then
+\[
+ \lambda_{n,m}
+ =
+ (-1)^{n-m}\frac1{m!}
+ \UnsignedStirlingFirstKind{n}{n-m+1},
+\]
+with \(\lambda_{n,0}=\lambda_{n,n+1}=0\) and
+\(\lambda_{1,1}=1\).}
+\entryfield{Scaled family}{For \(n\ge1\),
+\[
+ \ScaledLambertPolynomial{n}(u)
+ \DefinitionEquals n!\LambertPolynomial{n}(u)
+ \in\IntegerNumbers[u].
+\]
+Its recurrence is
+\[
+ \ScaledLambertPolynomial{n+1}(u)
+ =-(n+1)\ScaledLambertPolynomial{n}(u)
+ +n(n+1)\int_0^u
+   \ScaledLambertPolynomial{n}(v)\,\Differential v.
+\]
+The scaled family is a storage normalization; it does not define a different
+asymptotic coefficient sequence.}
+\entryfield{Generating equation}{If
+\[
+ Q(s,u)=\sum_{n\ge1}\LambertPolynomial{n}(u)s^n,
+\]
+then \(Q(0,u)=0\) and
+\[
+ Q=-\log(1-su+sQ).
+\]
+This equation determines the positive-index coefficient family uniquely in
+the formal power-series ring \(K[u][[s]]\).}
+\end{catalogueentry}
+
+\begin{catalogueentry}{lambert-branch-expansions}
+  {Lambert \(W\) branches, lower-branch scaling, and analytic status}
+\entryfield{Large complex branch coordinates}{Fix an integer branch label
+\(k\), a branch of the logarithm, and a sector on which
+\[
+ \xi_k\DefinitionEquals\PrincipalLogarithm z
+      +2\pi\ImaginaryUnit k,
+ \qquad
+ \ell_k\DefinitionEquals
+ \log_{\mathcal B_k}(\xi_k)
+\]
+are defined and \(\AbsoluteValue{\xi_k}\to\infty\).  Then the formal
+large-branch expansion is
+\[
+ \LambertW_k(z)
+ \sim
+ \xi_k-\ell_k+
+ \sum_{n\ge1}\frac{\LambertPolynomial{n}(\ell_k)}{\xi_k^n}
+ =
+ \xi_k+
+ \sum_{n\ge0}\frac{\LambertPolynomial{n}(\ell_k)}{\xi_k^n}.
+\]
+The polynomial family is branch-independent; the coordinates
+\(\xi_k,\ell_k\), their branches, and the analytic domain are not.}
+\entryfield{Formal versus analytic assertion}{A finite polynomial sum in
+\(\xi_k^{-1}\) is a formal truncation until an analytic theorem supplies an
+estimate such as
+\[
+ \LambertW_k(z)-\left(
+ \xi_k-\ell_k+
+ \sum_{n=1}^{N}
+ \frac{\LambertPolynomial{n}(\ell_k)}{\xi_k^n}
+ \right)
+ =
+ \BigOAt{\ell_k^{N+1}/\xi_k^{N+1}}
+        {\AbsoluteValue{\xi_k}\to\infty,\ \xi_k\in S_k}.
+\]
+The sector \(S_k\), distance from branch cuts, and compatibility of the two
+logarithms are hypotheses.  A formal residual does not by itself establish a
+uniform analytic constant.}
+\entryfield{Residual correction}{For
+\[
+ w_N=\xi_k-\ell_k+
+ \sum_{n=1}^{N}\frac{\LambertPolynomial{n}(\ell_k)}{\xi_k^n},
+ \qquad
+ R_N=w_N+\log_{\mathcal B_k}(w_N)-\xi_k,
+\]
+one Newton correction is
+\[
+ \delta_N=-\frac{R_N}{1+1/w_N}.
+\]
+Taylor's theorem transfers a sufficiently small residual to an inverse error
+only in a region avoiding \(w=0\) and the chosen logarithmic cut.}
+\entryfield{Principal real branch}{For \(z\to+\infty\), take
+\(\xi_0=\log z>0\) and \(\ell_0=\log\log z\) with the real logarithm.  This
+specialization yields the familiar principal-branch expansion of
+\(\LambertW_0(z)\).}
+\entryfield{Lower real branch near zero}{The report-6 local symbol
+\[
+ \varepsilon_{\mathrm{br}}>0,\qquad
+ \varepsilon_{\mathrm{br}}\to0
+\]
+is a branch-point-independent small parameter for
+\(\LambertW_{-1}(-\varepsilon_{\mathrm{br}})\).  Put
+\[
+ S=\log(1/\varepsilon_{\mathrm{br}}),\qquad L=\log S.
+\]
+Then the large variable is \(S\), and the expansion of the negative branch is
+obtained from the inverse of \(u\mapsto u-\log u\).  Its alternating signs do
+not define a second Lambert-polynomial family.}
+\entryfield{Square-root branch point}{At \(z=-\EulerE^{-1}\), the derivative
+of \(w\mapsto w\EulerE^w\) vanishes at \(w=-1\); the inverse is therefore not
+an ordinary power-log series in \(z+\EulerE^{-1}\).  A local coordinate such
+as
+\[
+ p=\sqrt{2(1+\EulerE z)}
+\]
+produces a Puiseux series with the sign distinguishing the two local branches.
+The square-root branch and continuation path must be stated.}
+\entryfield{Convergence boundary}{The polynomial recurrence and every
+finite residual identity are formal algebra.  Convergence or asymptotic
+validity of the infinite series is a separate analytic claim.  A statement of
+analytic validity must name the branch, limiting sector or ray, and remainder
+estimate; the notation catalogue does not promote an unverified source claim
+to a theorem.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{polynomial-logarithmic-local-roles}
+  {Precision records, epsilon roles, and collision policy in the six reports}
+\entryfield{Approximation marker}{The report-6 local command
+\(\commandname{ApproximationOf}\{F\}\) prints
+\[
+ F_{\mathrm{approx}}.
+\]
+It denotes a declared approximate or truncated representative of \(F\); it
+does not specify the cutoff, error norm, or formal valuation.  Those data must
+be supplied separately.  It is not a hat accent and is not synonymous with
+an estimator unless a statistical model is declared.}
+\entryfield{Inclusive truncation marker}{The same report's local
+\(\commandname{trunc}\{F\}\{N\}\) prints \([F]_{\le N}\) and is inclusive.
+Other reports use exclusive \(\operatorname{Trunc}_{<N}F\).  The relation is
+\([F]_{\le N}=\operatorname{Trunc}_{<N+1}F\).}
+\entryfield{Nested inverse-log scale}{For
+\[
+ L_0=X,\qquad L_{j+1}=\log L_j,
+\]
+the report-6 local symbol
+\[
+ \varepsilon_{\mathrm{log},j}
+ \DefinitionEquals L_j^{-1}
+\]
+is the reciprocal of the \(j\)-th iterated logarithm.  Its subscript
+\(\mathrm{log},j\) is semantic and must not be dropped when other epsilon
+roles coexist.}
+\entryfield{Lower-branch epsilon}{The symbol
+\(\varepsilon_{\mathrm{br}}\) is the positive small argument in
+\(\LambertW_{-1}(-\varepsilon_{\mathrm{br}})\), with
+\(\varepsilon_{\mathrm{br}}\to0^+\).  It is not an error tolerance.}
+\entryfield{Newton residual scale}{The symbol
+\(\varepsilon_{\mathrm{Newt}}\) denotes a local residual scale in an analytic
+Newton estimate.  Under a nonvanishing derivative, one normalized Newton step
+changes a first-order residual scale to a quadratic scale
+\(\varepsilon_{\mathrm{Newt}}^2\).  This is neither the branch parameter nor
+an inverse-log generator.}
+\entryfield{Coefficient bracket collision}{The glyph \([\,\cdot\,]\) has
+four unrelated roles in the broader corpus:
+\[
+ [t^n]F,\qquad [F]_{\le N},\qquad
+ \UnsignedStirlingFirstKind{n}{k},\qquad
+ \GaussianBinomial{n}{k}{q}.
+\]
+They mean coefficient extraction, inclusive truncation, an unsigned Stirling
+cycle number, and a Gaussian binomial coefficient, respectively.  Argument
+types and semantic macros disambiguate them.}
+\entryfield{Letter \(L\) collision}{In this namespace \(L=\log X\) is a
+logarithmic coordinate.  The Lambert family is always written
+\(\LambertPolynomial{n}\), never as a bare \(L_n\).  A local pair
+\(L_1=\log z\), \(L_2=\log L_1\) denotes iterated logarithms, not the first two
+Lambert polynomials.}
+\entryfield{Generic versus Lambert coefficients}{A generic coefficient block
+is \(p_n(L)\).  The distinguished Lambert coefficient is
+\(\LambertPolynomial{n}(L)\).  The bare family \(P_n\) is not globally
+reserved because several source reports used it for both roles.}
+\entryfield{Outer \(t\) versus q-series base}{The polynomial-logarithmic outer
+coordinate is \(t=X^{-1}\).  A free \(q\) is reserved for a genuine q-series
+base when q-series notation is present.  A bound summation index, rational
+exponent, or locally declared scalar may still be named \(q\), but it acquires
+no q-series meaning from the letter alone.}
+\entryfield{Inverse collision}{A reciprocal is
+\(\MultiplicativeInverseOf{F}\); a compositional inverse is
+\(\CompositionalInverseOf{F}\).  The glyph \(F^{[-1]}\) may denote a
+time-\((-1)\) iterate only in an explicitly declared iteration context and
+must not be silently identified with reversion.}
+\entryfield{Derivative collision}{Write \(D_X\), \(\partial_L\),
+\(\partial_t\), or \(\partial_u\) according to the differentiated variable.
+The formal partial \(\partial_t\) holds \(L\) fixed; it is not the analytic
+derivative after \(L=-\log t\).}
+\entryfield{Class-name collision}{The six reports formerly assigned the same
+bare calligraphic letters to different rings.  Shared text uses the exact
+semantic commands:
+\[
+\begin{array}{c|c}
+\text{command}&\text{defined class}\\
+\hline
+\PolynomialLogPowerSeriesRing{K}&K[L][[t]]\\
+\PolynomialLogLaurentRing{K}&K[L]((t))\\
+\RationalLogLaurentField{K}&K(L)((t))\\
+\IteratedLaurentLogField{K}&K((L^{-1}))((t))\\
+\NearIdentityPolynomialLogGroup{K}&
+ \SetOf{X+A:A\in K[L][[t]]}.
+\end{array}
+\]
+A document-local shorthand may expand to one of these commands, but the bare
+glyph has no corpus-wide type.}
+\entryfield{Sparse implementation record}{A finite one-log representative is
+a sparse map \(n\mapsto p_n(L)\) together with:
+\begin{itemize}
+\item the smallest and largest retained outer exponents;
+\item the coefficient field and logarithmic-degree policy;
+\item any inner cutoff for Laurent-log coefficients;
+\item branch and exponent-group metadata;
+\item the declared formal tail or analytic error certificate.
+\end{itemize}
+No finite record stores the infinite object itself.}
 \end{catalogueentry}
 
 \begin{catalogueentry}{lagrange-cardinal}{Lagrange and cardinal interpolation}
@@ -5954,6 +7698,57 @@ not a proved equality.\\
 \commandname{InvF} & \commandname{FabiusQuantile} or
 \commandname{FabiusClampedQuantile} & Decide from the input domain: $[0,1]$ for the
 ordinary inverse, all reals for the clamped totalization.\\
+\commandname{stirone} & \commandname{UnsignedStirlingFirstKind} & Preserve the
+upper and lower triangular indices; this is the unsigned cycle-count triangle.\\
+\commandname{stirtwo} & \commandname{StirlingSecondKind} & Preserve the upper
+and lower triangular indices; this is the set-partition triangle.\\
+\commandname{eulerian} & \commandname{TypeAEulerianNumber} & The legacy
+single-angle array is type A, not type B or second order.\\
+\commandname{eulertwo} & \commandname{SecondOrderEulerianNumber} & The legacy
+double-angle array counts descents of Stirling permutations.\\
+\commandname{BellP} & \commandname{ExponentialPartialBellPolynomial} & Supply
+the total degree and block/derivative count; retain the exponential factorial
+normalization.\\
+\commandname{BellC} & \commandname{ExponentialCompleteBellPolynomial} & Supply
+the total degree; do not replace it by a Bell number.\\
+\commandname{Bell} & \commandname{BellNumber},
+\commandname{ExponentialCompleteBellPolynomial},
+\commandname{ExponentialPartialBellPolynomial}, or a semantically named
+non-Bell family & Inspect the defining equation before using arity: a scalar
+indexed Bell sequence is a Bell number, while genuine one- and two-index Bell
+polynomial families are complete and partial exponential, respectively.  If
+the legacy glyph instead names another object---for example report H's
+geometric Bernoulli Appell family---rename that object
+\commandname{GeometricBernoulliPolynomial}; do not recast it as a Bell object.\\
+\commandname{coeff} & \commandname{CoefficientExtraction} & Supply the
+coefficient variable and exponent as the command's two explicit arguments;
+the series, polynomial, or other operand follows the command.\\
+\commandname{OrdinaryBellPolynomial} &
+\commandname{OrdinaryPartialBellPolynomial} & Preserve both indices and the
+ordinary-series, rather than exponential-series, normalization.\\
+\commandname{OrdinaryBellSeriesOf},
+\commandname{OrdinaryGeneratingSeriesOf} &
+\commandname{OrdinaryGeneratingFunctionOf} & Supply the coefficient-family
+argument and keep the ordinary generating convention explicit.\\
+\commandname{NormalizedInverseCoefficient} &
+\commandname{NormalizedReversionCoefficient} & Supply both the series family
+and coefficient index; this is compositional reversion, not a reciprocal.\\
+\commandname{NormalizedOrdinaryCoefficient} &
+\commandname{OrdinaryGeneratingCoefficient} & Supply both the coefficient
+family and index; this is not a reversion coefficient.\\
+\commandname{PosetMinimum}, \commandname{PosetMaximum} &
+\commandname{PartitionLatticeMinimum},
+\commandname{PartitionLatticeMaximum} & These aliases denoted the discrete and
+one-block partitions of a partition lattice, not numeric bounds or endpoints of
+an arbitrary poset.\\
+\commandname{TracePowerSum} & \commandname{TraceBellArgument} & Preserve the
+index and the scaling \(-(k-1)!\TraceOperator(A^k)\), not merely the raw trace.\\
+\commandname{cyc} & \commandname{CycleCountOperator} & Permutation cycle count
+only; a cyclic group or cycle-index polynomial remains locally typed.\\
+\commandname{setpart} & \commandname{SetPartitionOperator} & The set of set
+partitions of the following finite-set operand.\\
+\commandname{bitand} & \commandname{BitwiseAnd} & Bitwise AND of declared
+nonnegative integers, not set intersection or multiplication.\\
 \bottomrule
 \end{longtable}
 \endgroup
@@ -6016,6 +7811,9 @@ set-builder delimiters, and inner-product/declared duality delimiters.\\
 $\DefinitionEquals,\Sign,\IdentityOperator$ & \commandname{DefinitionEquals},
 \commandname{Sign}, \commandname{IdentityOperator} & Definition relation, real sign,
 and identity map.\\
+\(\MultiplicativeInverseOf{F},\CompositionalInverseOf{F}\) &
+\commandname{MultiplicativeInverseOf}, \commandname{CompositionalInverseOf} &
+Inverse under multiplication versus inverse under composition.\\
 $\SpanOperator,\TraceOperator,\RankOperator,\DiagonalOperator$ &
 \commandname{SpanOperator}, \commandname{TraceOperator}, \commandname{RankOperator},
 \commandname{DiagonalOperator} & Linear-algebra operators with an explicit field and
@@ -6027,10 +7825,75 @@ arithmetic LCM, qualified order species, and principal complex branch.\\
 $\FallingFactorial{x}{n},\RisingFactorial{x}{n}$ &
 \commandname{FallingFactorial}, \commandname{RisingFactorial} & Unit-step falling versus
 rising products; both equal one at length zero.\\
+\(\SignedStirlingFirstKind{n}{k},
+  \UnsignedStirlingFirstKind{n}{k},
+  \StirlingSecondKind{n}{k}\) &
+\commandname{SignedStirlingFirstKind},
+\commandname{UnsignedStirlingFirstKind},
+\commandname{StirlingSecondKind} & Signed first-kind, unsigned cycle, and
+second-kind partition triangles.\\
+\(\LahNumber{n}{k}\) & \commandname{LahNumber} & Unsigned Lah number with
+ordered blocks and an unordered block collection.\\
+\(\TypeAEulerianNumber{n}{k},\TypeBEulerianNumber{n}{k},
+  \SecondOrderEulerianNumber{n}{k}\) &
+\commandname{TypeAEulerianNumber}, \commandname{TypeBEulerianNumber},
+\commandname{SecondOrderEulerianNumber} & Type-A, type-B, and second-order
+Eulerian numbers.\\
+\(\TypeAEulerianPolynomial{n},\TypeBEulerianPolynomial{n},
+  \SecondOrderEulerianPolynomial{n}\) &
+\commandname{TypeAEulerianPolynomial}, \commandname{TypeBEulerianPolynomial},
+\commandname{SecondOrderEulerianPolynomial} & Corresponding row polynomials,
+with the evaluation variable following.\\
+\(\BellNumber{n},\ComplementaryBellNumber{n},\TouchardPolynomial{n}\) &
+\commandname{BellNumber}, \commandname{ComplementaryBellNumber},
+\commandname{TouchardPolynomial} & Set-partition count, signed block-parity
+sum, and Touchard row polynomial.\\
+\(\ExponentialPartialBellPolynomial{n}{k},
+  \ExponentialCompleteBellPolynomial{n},
+  \OrdinaryPartialBellPolynomial{n}{k}\) &
+\commandname{ExponentialPartialBellPolynomial},
+\commandname{ExponentialCompleteBellPolynomial},
+\commandname{OrdinaryPartialBellPolynomial} & Exponential partial/complete and
+ordinary partial Bell-polynomial normalizations.\\
+\(\CoefficientExtraction{z}{n}\) & \commandname{CoefficientExtraction} &
+Coefficient of \(z^n\) in the following formal or analytic series operand.\\
+\(\CycleCountOperator,\SetPartitionOperator,a\BitwiseAnd b\) &
+\commandname{CycleCountOperator}, \commandname{SetPartitionOperator},
+\commandname{BitwiseAnd} & Cycle count, set-partition constructor, and
+nonnegative-integer bitwise AND.\\
+\(\ExponentialGeneratingFunctionOf{A},\OrdinaryGeneratingFunctionOf{A}\) &
+\commandname{ExponentialGeneratingFunctionOf},
+\commandname{OrdinaryGeneratingFunctionOf} & Explicit EGF versus OGF labels.\\
+\(\NormalizedReversionCoefficient{f}{j},
+  \OrdinaryGeneratingCoefficient{x}{j}\) &
+\commandname{NormalizedReversionCoefficient},
+\commandname{OrdinaryGeneratingCoefficient} & Normalized exponential-series
+reversion input versus ordinary-series coefficient ledger.\\
+\(\PartitionLatticeMinimum,\PartitionLatticeMaximum,\TraceBellArgument{k}\) &
+\commandname{PartitionLatticeMinimum}, \commandname{PartitionLatticeMaximum},
+\commandname{TraceBellArgument} & Partition-lattice endpoints and scaled trace
+input for Bell identities.\\
+\(\FiniteField_q\) & \commandname{FiniteField} & Finite field with declared
+prime-power order \(q\).\\
+\(\CatalanNumber{n},\GregoryCoefficient{n},
+  \GenocchiNumber{n},\GenocchiPolynomial{n}\) &
+\commandname{CatalanNumber}, \commandname{GregoryCoefficient},
+\commandname{GenocchiNumber}, \commandname{GenocchiPolynomial} & Distinct
+Catalan, Gregory, and Genocchi families.\\
+\(\BarnesGFunction\) & \commandname{BarnesGFunction} & Barnes \(G\)-function,
+not a Gregory or Genocchi coefficient.\\
+\(\BellHessenbergMatrixH{n},\BellHessenbergMatrixK{n}\) &
+\commandname{BellHessenbergMatrixH}, \commandname{BellHessenbergMatrixK} &
+Two Hessenberg determinant models for complete Bell polynomials.\\
+\(\AssociahedronByDimension{d},\LagrangeShiftCoordinate\) &
+\commandname{AssociahedronByDimension}, \commandname{LagrangeShiftCoordinate}
+& Dimension-indexed associahedron and scope-local Lagrange shift coordinate.\\
 $\SupportOperator,\SupportOf{f},\allowbreak\TopologicalSupportOf{f}$ &
 \commandname{SupportOperator}, \commandname{SupportOf},
 \commandname{TopologicalSupportOf} & Operator token, pointwise support, and its
 topological closure.\\
+\(\CoefficientSupportOf{F}\) & \commandname{CoefficientSupportOf} &
+Coefficient-exponent support in an explicitly stated index set.\\
 $\Convolution,\MetricDistance,\TotalVariationOf{a},\TotalVariationDistance$ &
 \commandname{Convolution}, \commandname{MetricDistance},
 \commandname{TotalVariationOf}, \commandname{TotalVariationDistance} &
@@ -6083,13 +7946,31 @@ zero convention local.\\
 $\QPochhammer{a}{q}{n},\GaussianBinomial{n}{k}{q},\QInteger{n}{q}$ &
 \commandname{QPochhammer}, \commandname{GaussianBinomial}, \commandname{QInteger} & Every
 base and finite/infinite length explicit.\\
-$\Polylogarithm,\LambertW,\GammaFunction,\RiemannZeta$ &
+\(\Polylogarithm,\LambertW,\GammaFunction,\RiemannZeta,
+  \HurwitzZeta{s}{a}\) &
 \commandname{Polylogarithm}, \commandname{LambertW}, \commandname{GammaFunction},
-\commandname{RiemannZeta} & Named special functions; order, branch, and continuation
-domains printed as applicable.\\
+\commandname{RiemannZeta}, \commandname{HurwitzZeta} & Named special functions;
+order, branch, shift, and continuation domains printed as applicable.\\
+\(\WrightOmega,\LambertPolynomial{n},\ScaledLambertPolynomial{n}\) &
+\commandname{WrightOmega}, \commandname{LambertPolynomial},
+\commandname{ScaledLambertPolynomial} & Wright omega, canonical zero-based Lambert
+polynomial, and its factorial scaling.\\
+\(\PolynomialLogPowerSeriesRing{K},\PolynomialLogLaurentRing{K},
+\RationalLogLaurentField{K},\IteratedLaurentLogField{K}\) &
+\commandname{PolynomialLogPowerSeriesRing},
+\commandname{PolynomialLogLaurentRing},
+\commandname{RationalLogLaurentField},
+\commandname{IteratedLaurentLogField} & Power-series, polynomial-coefficient Laurent,
+rational-coefficient Laurent, and iterated Laurent-log classes.\\
+\(\NearIdentityPolynomialLogGroup{K}\) &
+\commandname{NearIdentityPolynomialLogGroup} & Near-identity composition group over
+the named coefficient field.\\
 $\BigO,\LittleO,\BigOAt{g}{a},\LittleOAt{g}{a}$ & \commandname{BigO},
 \commandname{LittleO}, \commandname{BigOAt}, \commandname{LittleOAt} & Token-only and
 explicit-limit asymptotic operators.\\
+\(\FormalBigO,\FormalBigOAt{t^N}{t}\) &
+\commandname{FormalBigO}, \commandname{FormalBigOAt} & Formal valuation-tail token and
+argument-bearing form; neither is an analytic estimate.\\
 \bottomrule
 \end{longtable}
 \endgroup
@@ -6111,16 +7992,40 @@ Command & Arity & Normative entry\\
 \midrule
 \endhead
 \commandname{AbsoluteValue} & 1 & \notelink{scalar-size}{Absolute value, norm, distance}.\\
+\commandname{AssociahedronByDimension} & 1 &
+\notelink{combinatorial-letter-collisions}{Associahedron indexing}.\\
+\commandname{BarnesGFunction} & 0 &
+\notelink{combinatorial-letter-collisions}{Barnes G-function}.\\
+\commandname{BellHessenbergMatrixH} & 1 &
+\notelink{combinatorial-letter-collisions}{Bell Hessenberg matrices}.\\
+\commandname{BellHessenbergMatrixK} & 1 &
+\notelink{combinatorial-letter-collisions}{Bell Hessenberg matrices}.\\
+\commandname{BellNumber} & 1 &
+\notelink{bell-and-touchard-families}{Bell numbers}.\\
 \commandname{BigO} & 0 & \notelink{big-o}{Asymptotic operators}.\\
 \commandname{BigOAt} & 2 & \notelink{big-o}{Asymptotic operators}.\\
 \commandname{BinaryDigitSum} & 0 & \notelink{binary-weight}{Binary digit sum}.\\
+\commandname{BitwiseAnd} & 0 &
+\notelink{combinatorial-series-normalizations}{Bitwise AND}.\\
 \commandname{CardinalityOf} & 1 & \notelink{semantic-delimiters}{Semantic delimiters}.\\
+\commandname{CatalanNumber} & 1 &
+\notelink{combinatorial-letter-collisions}{Catalan numbers}.\\
 \commandname{Ceiling} & 1 & \notelink{rounding-positive-part}{Rounding and positive part}.\\
 \commandname{CharacteristicFunction} & 1 & \notelink{characteristic-function}{Characteristic functions}.\\
+\commandname{CoefficientExtraction} & 2 &
+\notelink{combinatorial-series-normalizations}{Coefficient extraction}.\\
+\commandname{CoefficientSupportOf} & 1 &
+\notelink{polynomial-logarithmic-leading-data}{Coefficient support}.\\
+\commandname{ComplementaryBellNumber} & 1 &
+\notelink{bell-and-touchard-families}{Complementary Bell numbers}.\\
 \commandname{ComplexNumbers} & 0 & \notelink{number-systems}{Number systems}.\\
+\commandname{CompositionalInverseOf} & 1 &
+\notelink{polynomial-logarithmic-reversion}{Compositional inverse}.\\
 \commandname{ConvergesInLaw} & 0 & \notelink{law}{Law and weak convergence}.\\
 \commandname{Convolution} & 0 & \notelink{convolution}{Convolution}.\\
 \commandname{Covariance} & 0 & \notelink{expectation}{Expectation and moments}.\\
+\commandname{CycleCountOperator} & 0 &
+\notelink{combinatorial-series-normalizations}{Permutation cycle count}.\\
 \commandname{DecayOptimizationObjective} & 1 & \notelink{fourier-decay-objectives}{Decay objectives}.\\
 \commandname{DefinitionEquals} & 0 & \notelink{semantic-delimiters}{Semantic delimiters}.\\
 \commandname{DiagonalOperator} & 0 & \notelink{matrix-operators}{Matrix operators}.\\
@@ -6129,6 +8034,12 @@ Command & Arity & Normative entry\\
 \commandname{EqualInLaw} & 0 & \notelink{law}{Law and weak convergence}.\\
 \commandname{EulerE} & 0 & \notelink{elementary-constants}{Elementary constants}.\\
 \commandname{Expectation} & 0 & \notelink{expectation}{Expectation and moments}.\\
+\commandname{ExponentialCompleteBellPolynomial} & 1 &
+\notelink{bell-and-touchard-families}{Complete exponential Bell polynomials}.\\
+\commandname{ExponentialGeneratingFunctionOf} & 1 &
+\notelink{combinatorial-series-normalizations}{Exponential generating functions}.\\
+\commandname{ExponentialPartialBellPolynomial} & 2 &
+\notelink{bell-and-touchard-families}{Partial exponential Bell polynomials}.\\
 \commandname{ExtendedRealNumbers} & 0 & \notelink{number-systems}{Number systems}.\\
 \commandname{FabiusBounded} & 0 & \notelink{fabius-bounded}{Bounded Fabius function}.\\
 \commandname{FabiusClampedQuantile} & 0 & \notelink{fabius-quantile}{Fabius inverses}.\\
@@ -6136,7 +8047,13 @@ Command & Arity & Normative entry\\
 \commandname{FabiusNotationVersion} & 0 & \notelink{contract-version}{Contract version}.\\
 \commandname{FabiusQuantile} & 0 & \notelink{fabius-quantile}{Fabius inverses}.\\
 \commandname{FallingFactorial} & 2 & \notelink{powers-factorials}{Powers and factorials}.\\
+\commandname{FiniteField} & 0 &
+\notelink{combinatorial-series-normalizations}{Finite fields}.\\
 \commandname{Floor} & 1 & \notelink{rounding-positive-part}{Rounding and positive part}.\\
+\commandname{FormalBigO} & 0 &
+\notelink{polynomial-logarithmic-truncation}{Formal valuation tails}.\\
+\commandname{FormalBigOAt} & 2 &
+\notelink{polynomial-logarithmic-truncation}{Formal valuation tails}.\\
 \commandname{FourierAngular} & 1 & \notelink{fourier-angular}{Angular Fourier transform}.\\
 \commandname{FourierAngularOperator} & 0 & \notelink{fourier-angular}{Angular Fourier transform}.\\
 \commandname{FourierAngularTransformOf} & 1 & \notelink{fourier-angular}{Angular Fourier transform}.\\
@@ -6148,6 +8065,14 @@ Command & Arity & Normative entry\\
 \commandname{FractionalPart} & 1 & \notelink{rounding-positive-part}{Rounding and positive part}.\\
 \commandname{GammaFunction} & 0 & \notelink{polylog-gamma-zeta}{Gamma function}.\\
 \commandname{GaussianBinomial} & 3 & \notelink{gaussian-binomial}{Gaussian binomial}.\\
+\commandname{GenocchiNumber} & 1 &
+\notelink{combinatorial-letter-collisions}{Genocchi numbers}.\\
+\commandname{GenocchiPolynomial} & 1 &
+\notelink{combinatorial-letter-collisions}{Genocchi polynomials}.\\
+\commandname{GregoryCoefficient} & 1 &
+\notelink{combinatorial-letter-collisions}{Gregory coefficients}.\\
+\commandname{HurwitzZeta} & 2 &
+\notelink{polylog-gamma-zeta}{Hurwitz zeta function}.\\
 \commandname{IdentityOperator} & 0 & \notelink{maps}{Maps and the identity map}.\\
 \commandname{ImaginaryUnit} & 0 & \notelink{elementary-constants}{Elementary constants}.\\
 \commandname{IndicatorOf} & 1 & \notelink{indicator}{Indicators}.\\
@@ -6155,6 +8080,14 @@ Command & Arity & Normative entry\\
 \commandname{IntegerNumbers} & 0 & \notelink{number-systems}{Number systems}.\\
 \commandname{InverseFourierAngularOperator} & 0 & \notelink{fourier-angular}{Angular Fourier transform}.\\
 \commandname{InverseFourierTwoPiOperator} & 0 & \notelink{fourier-two-pi}{$2\pi$ Fourier transform}.\\
+\commandname{IteratedLaurentLogField} & 1 &
+\notelink{polynomial-logarithmic-ambient}{Iterated Laurent-log field}.\\
+\commandname{LagrangeShiftCoordinate} & 0 &
+\notelink{combinatorial-letter-collisions}{Lagrange shift coordinate}.\\
+\commandname{LahNumber} & 2 &
+\notelink{stirling-and-lah-families}{Lah numbers}.\\
+\commandname{LambertPolynomial} & 1 &
+\notelink{wright-omega-lambert-polynomials}{Canonical Lambert polynomials}.\\
 \commandname{LambertW} & 0 & \notelink{lambert-w}{Lambert (W)}.\\
 \commandname{LaplaceTransformOf} & 1 & \notelink{laplace-transform}{Laplace transforms}.\\
 \commandname{LaplaceTransformSymbol} & 0 & \notelink{laplace-transform}{Laplace transforms}.\\
@@ -6168,11 +8101,31 @@ Command & Arity & Normative entry\\
 \commandname{MellinTransformSymbol} & 0 & \notelink{mellin-transform}{Mellin transform}.\\
 \commandname{MetricDistance} & 0 & \notelink{scalar-size}{Absolute value, norm, distance}.\\
 \commandname{MomentGeneratingFunction} & 1 & \notelink{mgf}{Moment-generating functions}.\\
+\commandname{MultiplicativeInverseOf} & 1 &
+\notelink{polynomial-logarithmic-reversion}{Multiplicative reciprocal}.\\
 \commandname{NaturalNumbers} & 0 & \notelink{number-systems}{Number systems}.\\
+\commandname{NearIdentityPolynomialLogGroup} & 1 &
+\notelink{polynomial-logarithmic-ambient}{Near-identity polynomial-log group}.\\
 \commandname{Norm} & 1 & \notelink{scalar-size}{Absolute value, norm, distance}.\\
+\commandname{NormalizedReversionCoefficient} & 2 &
+\notelink{combinatorial-series-normalizations}{Normalized reversion coefficients}.\\
 \commandname{OrderOperator} & 0 & \notelink{logarithm-order}{Logarithm and order}.\\
+\commandname{OrdinaryGeneratingCoefficient} & 2 &
+\notelink{combinatorial-series-normalizations}{Ordinary generating coefficients}.\\
+\commandname{OrdinaryGeneratingFunctionOf} & 1 &
+\notelink{combinatorial-series-normalizations}{Ordinary generating functions}.\\
+\commandname{OrdinaryPartialBellPolynomial} & 2 &
+\notelink{bell-and-touchard-families}{Partial ordinary Bell polynomials}.\\
 \commandname{PadicValuation} & 1 & \notelink{padic-valuation}{Valuations}.\\
+\commandname{PartitionLatticeMaximum} & 0 &
+\notelink{partition-lattice-bounds}{Partition-lattice maximum}.\\
+\commandname{PartitionLatticeMinimum} & 0 &
+\notelink{partition-lattice-bounds}{Partition-lattice minimum}.\\
 \commandname{Polylogarithm} & 0 & \notelink{polylog-gamma-zeta}{Polylogarithm}.\\
+\commandname{PolynomialLogLaurentRing} & 1 &
+\notelink{polynomial-logarithmic-ambient}{Polynomial-log Laurent ring}.\\
+\commandname{PolynomialLogPowerSeriesRing} & 1 &
+\notelink{polynomial-logarithmic-ambient}{Polynomial-log power-series ring}.\\
 \commandname{PositiveIntegers} & 0 & \notelink{number-systems}{Number systems}.\\
 \commandname{PositivePart} & 1 & \notelink{rounding-positive-part}{Rounding and positive part}.\\
 \commandname{PrincipalLogarithm} & 0 & \notelink{logarithm-order}{Logarithm and order}.\\
@@ -6180,17 +8133,31 @@ Command & Arity & Normative entry\\
 \commandname{QInteger} & 2 & \notelink{q-integer}{(q)-integers}.\\
 \commandname{QPochhammer} & 3 & \notelink{q-pochhammer}{(q)-Pochhammer symbols}.\\
 \commandname{RankOperator} & 0 & \notelink{matrix-operators}{Matrix operators}.\\
+\commandname{RationalLogLaurentField} & 1 &
+\notelink{polynomial-logarithmic-ambient}{Rational-log Laurent field}.\\
 \commandname{RationalNumbers} & 0 & \notelink{number-systems}{Number systems}.\\
 \commandname{RealNumbers} & 0 & \notelink{number-systems}{Number systems}.\\
 \commandname{ResidueOperator} & 0 & \notelink{residue}{Residues}.\\
 \commandname{RiemannZeta} & 0 & \notelink{polylog-gamma-zeta}{Zeta functions}.\\
 \commandname{RisingFactorial} & 2 & \notelink{powers-factorials}{Powers and factorials}.\\
 \commandname{RvachevUp} & 0 & \notelink{rvachev-up}{Rvachev up-function}.\\
+\commandname{ScaledLambertPolynomial} & 1 &
+\notelink{wright-omega-lambert-polynomials}{Scaled Lambert polynomials}.\\
+\commandname{SecondOrderEulerianNumber} & 2 &
+\notelink{eulerian-families}{Second-order Eulerian numbers}.\\
+\commandname{SecondOrderEulerianPolynomial} & 1 &
+\notelink{eulerian-families}{Second-order Eulerian row polynomials}.\\
 \commandname{SetOf} & 1 & \notelink{semantic-delimiters}{Semantic delimiters}.\\
+\commandname{SetPartitionOperator} & 0 &
+\notelink{combinatorial-series-normalizations}{Set partitions}.\\
 \commandname{Sign} & 0 & \notelink{rounding-positive-part}{Rounding and positive part}.\\
+\commandname{SignedStirlingFirstKind} & 2 &
+\notelink{stirling-and-lah-families}{Signed first-kind Stirling numbers}.\\
 \commandname{SincPi} & 0 & \notelink{sinc}{Sinc normalizations}.\\
 \commandname{SincRad} & 0 & \notelink{sinc}{Sinc normalizations}.\\
 \commandname{SpanOperator} & 0 & \notelink{matrix-operators}{Matrix operators}.\\
+\commandname{StirlingSecondKind} & 2 &
+\notelink{stirling-and-lah-families}{Second-kind Stirling numbers}.\\
 \commandname{SupportOf} & 1 & \notelink{support}{Support}.\\
 \commandname{SupportOperator} & 0 & \notelink{support}{Support}.\\
 \commandname{ThueMorseSign} & 1 & \notelink{thue-morse}{Thue--Morse sign}.\\
@@ -6198,9 +8165,25 @@ Command & Arity & Normative entry\\
 \commandname{TopologicalSupportOf} & 1 & \notelink{support}{Support}.\\
 \commandname{TotalVariationDistance} & 0 & \notelink{probability-metrics}{Probability metrics}.\\
 \commandname{TotalVariationOf} & 1 & \notelink{probability-metrics}{Probability metrics}.\\
+\commandname{TouchardPolynomial} & 1 &
+\notelink{bell-and-touchard-families}{Touchard polynomials}.\\
+\commandname{TraceBellArgument} & 1 &
+\notelink{combinatorial-series-normalizations}{Scaled Bell trace inputs}.\\
 \commandname{TraceOperator} & 0 & \notelink{matrix-operators}{Matrix operators}.\\
 \commandname{TwoAdicValuation} & 0 & \notelink{padic-valuation}{Valuations}.\\
+\commandname{TypeAEulerianNumber} & 2 &
+\notelink{eulerian-families}{Type-A Eulerian numbers}.\\
+\commandname{TypeAEulerianPolynomial} & 1 &
+\notelink{eulerian-families}{Type-A Eulerian row polynomials}.\\
+\commandname{TypeBEulerianNumber} & 2 &
+\notelink{eulerian-families}{Type-B Eulerian numbers}.\\
+\commandname{TypeBEulerianPolynomial} & 1 &
+\notelink{eulerian-families}{Type-B Eulerian row polynomials}.\\
+\commandname{UnsignedStirlingFirstKind} & 2 &
+\notelink{stirling-and-lah-families}{Unsigned first-kind Stirling numbers}.\\
 \commandname{Variance} & 0 & \notelink{expectation}{Expectation and moments}.\\
+\commandname{WrightOmega} & 0 &
+\notelink{wright-omega-lambert-polynomials}{Wright omega}.\\
 \bottomrule
 \end{longtable}
 \endgroup
@@ -6334,11 +8317,11 @@ or a catalogue entry are not substitutes for inspecting the current declaration.
 
 The inventory below is the recursive active tree observed on 2026-09-01 at the
 source-validation checkpoint.  It excludes every path below \modulepath{docs/archive/} and
-counts this catalogue exactly once.  It contains 166 mathematical content sources: 61
+counts this catalogue exactly once.  It contains 172 mathematical content sources: 67
 standalone documents and 105 included or generated fragments.  The separate shared
-contract \modulepath{docs/fabius-notation.tex} raises the total before this catalogue to 167
-active TeX files.  Including this standalone catalogue gives 168 active TeX files and
-62 standalone documents.  ``Standalone'' means that the uncommented source
+contract \modulepath{docs/fabius-notation.tex} raises the total before this catalogue to 173
+active TeX files.  Including this standalone catalogue gives 174 active TeX files and
+68 standalone documents.  ``Standalone'' means that the uncommented source
 contains \commandname{documentclass}; every other content source is a fragment inheriting
 its root preamble.
 
@@ -6357,22 +8340,22 @@ Manifest group & Standalone & Fragments & Total\\
 \modulepath{FabiusFunction_Mathematical_Glossary/} & 1 & 0 & 1\\
 \modulepath{papers/} & 7 & 0 & 7\\
 Frontier synthesis root & 1 & 0 & 1\\
+\modulepath{drafts/combinatorial-coefficient-calculus/} & 6 & 0 & 6\\
 \modulepath{drafts/exponents-and-q-series/} & 7 & 20 & 27\\
 \modulepath{drafts/frontier-compilations/} & 3 & 1 & 4\\
 \modulepath{drafts/integration-and-transforms/} & 1 & 7 & 8\\
-\modulepath{drafts/incoming/} & 6 & 0 & 6\\
 \modulepath{drafts/inverse-and-sampling/} & 8 & 37 & 45\\
-\modulepath{drafts/lambert-w/} & 1 & 4 & 5\\
+\modulepath{drafts/lambert-w/} & 7 & 4 & 11\\
 \modulepath{drafts/representations/} & 12 & 26 & 38\\
 \modulepath{drafts/rvachev_up_fourier_decay/} & 1 & 0 & 1\\
 \modulepath{drafts/spectra-and-arithmetic/} & 10 & 10 & 20\\
 \modulepath{drafts/thue-morse/} & 1 & 0 & 1\\
 \midrule
-Mathematical content subtotal & 61 & 105 & 166\\
+Mathematical content subtotal & 67 & 105 & 172\\
 Shared notation contract & 0 & 1 & 1\\
 This catalogue & 1 & 0 & 1\\
 \midrule
-Active TeX total including catalogue & 62 & 106 & 168\\
+Active TeX total including catalogue & 68 & 106 & 174\\
 \bottomrule
 \end{longtable}
 \endgroup

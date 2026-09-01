@@ -164,7 +164,7 @@ theorem sum_mul_sum_eq_sum_antidiagonal (a b : ℕ → R) (N : ℕ) (z : R)
 `(z;q)_N` and the `j`-th coefficient of `∏_{j<N}(z - q^{j+1})` is the
 `(N-j)`-th summand of the shifted central `q`-Vandermonde convolution for
 `[2N, m]_q`, times the sign `(-1)^{N+m}` and the power `q^{e(m-N)}`. -/
-theorem thetaCoeff_pair_eq (q : R) {N i j m : ℕ} (hi : i ≤ N) (hj : j ≤ N)
+theorem thetaCoeff_pair_eq (q : R) {N i j m : ℕ} (_hi : i ≤ N) (hj : j ≤ N)
     (hm : i + j = m) :
     ((-1 : R) ^ i * q ^ i.choose 2 * gaussianBinomial q N i) *
         geometricQBinomialWeightNumerator q N j =

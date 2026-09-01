@@ -161,7 +161,7 @@ whose logarithmic expansion yields the even cumulants
  \kappa_{2r}=\frac{2^{2r-1}B_{2r}}{r\,(2^{2r}-1)},
  \qquad
  \Expectation X^{n}
- =\Bell_n(0,\kappa_2,0,\kappa_4,\dots),
+ =\ExponentialCompleteBellPolynomial{n}(0,\kappa_2,0,\kappa_4,\dots),
  \label{eq:cumulants}
 \end{equation}
 one of several places where complete Bell polynomials organize the
@@ -728,7 +728,7 @@ $s\ge0$,
  \boxed{\;
  T_{m,m+s}=(-1)^{m}2^{m(m-1)/2}\,
  \frac{(m+s)!}{s!}\,
- \Bell_s\bigl(\lambda_{m,1},\dots,\lambda_{m,s}\bigr).
+ \ExponentialCompleteBellPolynomial{s}\bigl(\lambda_{m,1},\dots,\lambda_{m,s}\bigr).
  \;}
  \label{eq:TN-Bell}
 \end{equation}
@@ -743,7 +743,7 @@ summed over $x=2^{j}t$, $0\le j<m$: the prefactors contribute
 $(-1)^{m}2^{0+1+\cdots+(m-1)}t^{m}$, the linear terms sum to
 $(M-1)t/2$, and each even term is the finite geometric sum in
 \eqref{eq:lambda-jets}.  Comparing
-$\exp(\sum_r x_rt^r/r!)=\sum_s\Bell_s(x_1,\dots,x_s)t^{s}/s!$ with the
+$\exp(\sum_r x_rt^r/r!)=\sum_s\ExponentialCompleteBellPolynomial{s}(x_1,\dots,x_s)t^{s}/s!$ with the
 definition of $T_{m,n}$ gives \eqref{eq:TN-Bell}.
 \end{proof}
 
@@ -1446,7 +1446,7 @@ $\lambda_s(n)=(\log\Psi_n)^{(s)}(0)$.  Then for every $r\ge0$
 \begin{equation}
  \Phi^{(d+r)}(n)
  =\frac{(d+r)!}{r!}\,\Psi_n(0)\,
- \Bell_r\bigl(\lambda_1(n),\dots,\lambda_r(n)\bigr),
+ \ExponentialCompleteBellPolynomial{r}\bigl(\lambda_1(n),\dots,\lambda_r(n)\bigr),
  \label{eq:Bell-jets}
 \end{equation}
 with
@@ -1471,7 +1471,7 @@ $s=2j$,
 \begin{proof}
 Equation \eqref{eq:Bell-jets} is the Leibniz expansion of
 $w^{d}\Psi_n(w)$ at $w=0$ combined with the Bell formula
-$\Psi_n^{(r)}(0)=\Psi_n(0)\Bell_r(\lambda_1,\dots,\lambda_r)$ for
+$\Psi_n^{(r)}(0)=\Psi_n(0)\ExponentialCompleteBellPolynomial{r}(\lambda_1,\dots,\lambda_r)$ for
 derivatives of $\exp(\log\Psi_n)$.  Logarithmic differentiation of the
 three factors of $\Psi_n$ gives \eqref{eq:lambda-s}; for the finite
 sinc block use
@@ -3875,11 +3875,49 @@ counterpart \path{Fabius.twoPowChoose_padicValNat} in
 stronger arbitrary-prime identity for $0<j\le p^m$, including the positive
 right endpoint $j=p^m$ that is excluded from the displayed dyadic theorem.
 
-The related assertion for the interior weights $\binom{M-2}{j-1}$ of
-\cref{sec:endpoint-flat} is separate from that exact Lean counterpart and
-remains unformalized: for $1\le j\le M-1$, Lucas's theorem gives oddness
-exactly for odd $j$, with higher valuations determined by the binary carries
-of $j-1$ against $M-2$.
+\begin{proposition}[Prime-power companion rows]
+\label{prop:prime-power-companion-rows}
+Let $p$ be prime and $m\ge0$.  Writing $v_p$ for the $p$-adic valuation,
+\begin{align*}
+ v_p\binom{p^m-1}{r}&=0 &&(0\le r<p^m),\\
+ v_p\binom{p^m-2}{j-1}&=v_p(j) &&(0<j<p^m).
+\end{align*}
+In particular, for $M=2^m$ and $1\le j\le M-1$,
+\[
+ \TwoAdicValuation\binom{M-2}{j-1}=\TwoAdicValuation(j),
+\]
+so the interior weight $\binom{M-2}{j-1}$ of
+\cref{sec:endpoint-flat} is odd exactly when $j$ is odd.
+\end{proposition}
+
+\begin{proof}
+For $0\le r<p^m$, combine
+\[
+ p^m\binom{p^m-1}{r}=(r+1)\binom{p^m}{r+1}
+\]
+with the prime-power row identity
+$v_p\binom{p^m}{k}+v_p(k)=m$ for $0<k\le p^m$; taking $k=r+1$
+shows that the valuation on the left is $m$ plus the first displayed
+valuation, while the valuation on the right is $m$.
+
+For $0<j<p^m$, necessarily $p^m\ge2$, and
+\[
+ (p^m-1)\binom{p^m-2}{j-1}=j\binom{p^m-1}{j}.
+\]
+The first part, used at columns $1$ and $j$, says that both $p^m-1$ and
+$\binom{p^m-1}{j}$ are $p$-adic units.  Taking valuations gives the second
+formula.  Specializing to $p=2$ gives the dyadic statement and its parity
+consequence.
+\end{proof}
+
+The two generic statements in \cref{prop:prime-power-companion-rows} have the
+exact Lean counterparts
+\path{Fabius.primePowerSubOneChoose_padicValNat} and
+\path{Fabius.primePowerSubTwoChoose_padicValNat}; the displayed dyadic
+specialization is \path{Fabius.twoPowSubTwoChoose_padicValNat}.  The latter two
+declarations deliberately assume the strict range $0<j<p^m$.  At the omitted
+upper endpoint $j=p^m$, the binomial coefficient in row $p^m-2$ vanishes, so
+the valuation identity cannot be extended there.
 
 Thus the weights that are catastrophic in the real norm are perfectly
 regular $2$-adically --- a hint (made precise in
