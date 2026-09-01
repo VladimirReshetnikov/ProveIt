@@ -176,8 +176,9 @@ product-linearization portion of this circuit and, by defining the total rationa
 integer-index zero-row square datum directly, proves its central-binomial and
 factorial forms, the identity \(\Gamma_{jk\ell}=2W^2_{jk\ell}\), sharp support and
 positivity, and the finite rational and real Wigner-square Gram sums.  It does not
-construct a signed Wigner symbol or phase convention, and the later Christoffel and
-limiting steps remain open.
+construct a signed Wigner symbol or phase convention, or develop half-integer,
+nonzero-magnetic-index, general \(3j/6j/9j\) orthogonality, or recoupling theory;
+the later Christoffel and limiting steps remain open.
 
 A fully commented Python program in the archive computes exact initial data and
 4,800-digit data through $\beta_{200}$.  It finds strict increase toward
@@ -209,8 +210,9 @@ rational/real Rvachev Gram-entry sums are now formalized downstream.  The later
 \path{FabiusLegendreGauntClosedForm.lean} leaves additionally formalize the
 integer-index zero-row square datum, its factorial form, the all-degree
 Gaunt--square identity, sharp support and positivity, and the finite
-Wigner-square Gram sums.  They do not define a signed/general Wigner symbol.
-``New''
+Wigner-square Gram sums.  They do not define a signed/general Wigner symbol,
+phase convention, half-integer or nonzero-magnetic-index object, or recoupling
+identity.  ``New''
 therefore applies only to the
 non-overlapping claims relative to this repository snapshot, not to the whole
 package and not as a claim of worldwide priority.  Every imported fact, new
@@ -353,9 +355,9 @@ Finite Gaunt integral, product linearization, and rational/real up-Gram entry su
  & Exact Lean counterpart & \path{LegendreGaunt.lean};
    \path{FabiusLegendreGaunt.lean} \\
 Integer-index zero-row square datum, factorial form, and finite Wigner-square matrix
- & Exact Lean counterpart & \path{LegendreGauntClosedForm.lean};
+ & Exact squared Lean counterpart & \path{LegendreGauntClosedForm.lean};
    \path{FabiusLegendreGauntClosedForm.lean} \\
-Signed/general Wigner symbols, phase, and recoupling
+Signed/general Wigner symbols, phase, magnetic indices, and recoupling
  & Open interface & No independent Wigner-symbol object in the current Lean API \\
 Monotone $\beta_n$, precise log-square rate
  & Conjectural & Exact checks and 4,800-digit computation through $n=200$ \\
@@ -687,7 +689,9 @@ $\pi_n$ by induction.
 
 \begin{remark}[Current Lean boundary and complete declaration inventory]
 The eleven modules inventoried in this remark expose exactly 129 public names:
-20 definitions and 109 theorems.  Each name appears once in the inventory below.
+20 definitions and 109 theorems.  The previously recorded nine-module subtotal
+was 99 names; the two closed-form leaves below add exactly 27 and three names.
+Each name appears once in the inventory below.
 The scalar-base-change module \path{GramStieltjesNaturality.lean} contains zero
 public definitions and exactly six public theorems:
 \path{momentPairing_map}, \path{map_gramStieltjesNumerator},
@@ -956,8 +960,9 @@ datum interprets the squared notation in
 \cref{eq:gaunt-wigner,eq:finite-wigner-matrix,eq:wigner-factorial}; those identities,
 the factorial form, sharp support, positivity, and finite Wigner-square matrix are
 Lean-exact.  No signed Wigner symbol or phase convention is defined, and there is no
-half-integer, nonzero-magnetic-index, general recoupling, or infinite-series/integral
-interchange theorem.  No named theorem evaluates the displayed
+half-integer or nonzero-magnetic-index symbols, general \(3j/6j/9j\)
+orthogonality or recoupling, or an infinite-series/integral interchange.  No
+named theorem evaluates the displayed
 \(G_3\) entries.  Christoffel reconstruction, roots and quadrature, and the infinite
 continued-fraction or asymptotic Jacobi layers also remain open.
 Finally, the existing \path{rvachevTranslateGram} is a different object: it pairs
@@ -1791,18 +1796,22 @@ Write the Gaunt integral as the separate quantity
  {}.
  \label{eq:gaunt-integral}
 \end{equation}
-Lean identifies this integral with an executable rational triple coefficient sum.
-It defines \(W^2_{jk\ell}\) to be the total rational integer-index zero-row square
-datum: the central-binomial quotient on the even weak-triangle support and zero
-off it.  This is not a signed Wigner symbol and makes no phase choice.  With that
-precise interpretation, Lean proves the all-degree identity
+The current Lean API identifies this integral with an executable rational triple
+coefficient sum.  It proves that odd $j+k+\ell$ or violation of a weak triangle
+inequality forces $\Gamma_{jk\ell}=0$, and the closed-form leaf proves the converse
+support and positivity statement.  It defines \(W^2_{jk\ell}\) to be the total
+rational integer-index zero-row square datum: the central-binomial quotient on the
+even weak-triangle support and zero off it.  This is not a signed Wigner symbol and
+makes no phase choice.  With that precise interpretation, Lean proves
 \begin{equation}
  \Gamma_{jk\ell}
  =2\begin{pmatrix}j&k&\ell\\0&0&0\end{pmatrix}^{\!2}.
  \label{eq:gaunt-wigner}
 \end{equation}
-as well as \(\Gamma_{jk\ell}>0\) exactly on the admissible support and zero
-exactly off it.
+This squared zero-row equation is Lean-exact as
+\path{legendreGaunt_eq_two_mul_wignerThreeJZeroSqRat}; Lean does not define the
+signed parenthesized symbol appearing in the paper.  Lean also proves
+\(\Gamma_{jk\ell}>0\) exactly on the admissible support and zero exactly off it.
 
 \begin{theorem}[Finite rational Gaunt matrix]
 \label{thm:finite-gaunt-matrix}
@@ -1848,7 +1857,10 @@ Substitution of the proved square identity gives the following Lean-exact finite
 \end{equation}
 Here the squared matrix notation denotes the directly defined
 \path{legendreWignerThreeJZeroSqRat}; it does not assert the existence of a
-signed/general Wigner-symbol object.
+signed/general Wigner-symbol object.  Its equality with
+\cref{eq:finite-gaunt-matrix} is formalized at rational-entry,
+rational-matrix-entry, and real up-law matrix-entry levels in
+\path{FabiusLegendreGauntClosedForm.lean}.
 
 For completeness, if $j+k+\ell=2s$ with $s\ge j$, $s\ge k$, and $s\ge\ell$
 (equivalently, all three weak triangle inequalities hold), the squared symbol is
@@ -1862,7 +1874,8 @@ otherwise it is zero.  The theorem
 \path{legendreWignerThreeJZeroSqRat_eq_factorial_of_halfSum} proves this formula,
 and the pairwise-add version proves the equivalent central-binomial form.  Thus
 \cref{eq:wigner-factorial} makes the rationality in
-\cref{eq:finite-wigner-matrix} completely explicit inside Lean.
+\cref{eq:finite-wigner-matrix} completely explicit inside Lean, including the
+total datum's exact admissible support.
 
 \subsection{Determinants recover the native recurrence}
 The leading coefficient of $P_n$ is
@@ -1959,8 +1972,8 @@ matrix, and real matrix versions of \eqref{eq:finite-wigner-matrix}.  The sharp
 support, zero, positivity, and nonnegativity theorems make the converse support
 statement exact.  Here ``Wigner'' always refers to the directly defined squared
 integer-index zero-row datum.  A signed symbol, phase convention, half-integer or
-nonzero-magnetic-index theory, and general Wigner orthogonality or recoupling remain
-open.  The displayed
+nonzero-magnetic-index theory, and general \(3j/6j/9j\) orthogonality or
+recoupling remain open.  The displayed
 entries of \(G_3\) in \eqref{eq:first-gaunt-matrix} have no named Lean value theorems.
 \end{remark}
 
@@ -2609,6 +2622,10 @@ The remaining formalization sequence is:
       swap symmetries, product linearizations, and necessary support zeros;
       \path{FabiusLegendreGaunt.lean} supplies the full/even rational Rvachev
       coefficients and finite rational/real Gram-entry sums.
+      \path{LegendreGauntClosedForm.lean} supplies the total zero-row square,
+      factorial forms, sharp support, Gaunt identification, and positivity;
+      \path{FabiusLegendreGauntClosedForm.lean} supplies the three finite
+      rational/real Wigner-square Gram sums.
       Formalize the remaining
       \cref{eq:inverse-hankel-christoffel,eq:monic-center-product,%
 eq:orthonormal-center-product,eq:harmonic-mean}.  These need only finite
@@ -2616,7 +2633,8 @@ eq:orthonormal-center-product,eq:harmonic-mean}.  These need only finite
       integer-index zero-row square identities in
       \cref{eq:gaunt-wigner,eq:finite-wigner-matrix,eq:wigner-factorial} are now
       exact; a future general Wigner layer would instead need signed symbols,
-      phase conventions, magnetic indices, orthogonality, and recoupling.
+      phase conventions, half-integer and nonzero magnetic indices, general
+      \(3j/6j/9j\) orthogonality, and recoupling.
 \item \textbf{Quadrature and rational approximation:} define second-kind
       polynomials, prove \cref{eq:pade-exact-error}, and derive the Gaussian
       weights and exactness theorem.

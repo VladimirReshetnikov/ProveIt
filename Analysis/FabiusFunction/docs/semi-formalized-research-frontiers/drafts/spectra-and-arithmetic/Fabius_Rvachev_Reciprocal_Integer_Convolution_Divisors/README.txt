@@ -53,11 +53,14 @@ font embedding, absence of Type 3 fonts and unresolved references, then inspect
 rendered pages before removing LaTeX sidecar files.
 
 The normalized artifact was rebuilt with those exact three passes on
-2026-08-30.  It has 35 A4 pages; all 25 font entries are embedded and subset,
-six are Libertinus, and none is Type 3.  The final log has no overfull box,
-TeX error, unresolved reference, or rerun request.  The title/status page,
-contents tail, Lean-boundary section, corpus matrix, and final reference page
-were rendered and inspected, and all LaTeX sidecars were removed.
+2026-08-31 from the current 2,307-line, 89,887-byte source (SHA-256
+ce215d9b809b7ea6f45e7529ef8afbb442c01e74c83236d0995c6b6c27892088).
+The retained PDF is 991,587 bytes (SHA-256
+06efd995e03514ac4a3c733a35b3e0fd56c72c9226925e9946f1f5ac7552d9ae) and
+has 35 A4 pages.  All 25 font entries are embedded and subset, six are
+Libertinus, and none is Type 3.  The final log has no overfull box, underfull
+box, TeX error, unresolved reference/citation, or rerun request.  All pages
+rendered and contained extractable text, and all LaTeX sidecars were removed.
 
 Research status
 ---------------

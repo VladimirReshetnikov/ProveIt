@@ -15,9 +15,9 @@ extraction pin.
 | --- | --- | ---: | --- | --- |
 | `Non_Elementarity_of_the_Fabius_Function/` | `Non_Elementarity_of_the_Fabius_Function.tex` | 1,057 | `8021f1f3aba753aac67a9a2b6ccbb7e2487ee1d3f60a8df3fd33551c0504c737` | Dense-open analyticity of elementary expressions and algebraic/inverse branch extensions; local non-elementarity of the Fabius function and its inverse. |
 | `inverse_fabius_iterates_nowhere_analytic/` | `inverse_fabius_iterates_nowhere_analytic.tex` | 1,742 | `eda8c676e00a68c1e57e36ee22bfb3502cd56dd95f5630efcaf6a7f0f3b3d3d5` | Nowhere analyticity and formal Taylor-radius behavior of positive inverse iterates, forward spine estimates, formal reversion, endpoint Holder obstructions, and iterated endpoint scales. |
-| `Inverse_and_Sampling_Frontiers/` | `Inverse_and_Sampling_Frontiers.tex` | 6,603 | `3bae6a0d6df38778f31365acb8d5da7a09bd3ecafcd2a257c6be964df3740601` | Inverse-dyadic germs, finite-prefix inversion, Barnes--Rvachev deconvolution, self-sampling, alias filtration, Richardson acceleration, and inverse-moment Appell theory. |
-| `Inverse_Endpoint_All_Orders/` | `Inverse_Endpoint_All_Orders.tex` | 1,978 | `1dbf538e16b619f2c03403333cd46c912dc28b66a2823a1bb1f2b81ba859613e` | All-orders endpoint inversion, Lambert/Wright-omega carriers, Bell-polynomial coefficient extraction, derivative hierarchy, exact dyadic completion, and transseries frontiers. |
-| `Inverse_Fabius_Computability_Report/` | `inverse_fabius_computability.tex` | 2,937 | `a6932249804ea3fb07a08b09542e123bbbca23b76a29e13ef27c91aa902ffbe3` | Exact inverse moduli, effective uniform continuity, certified tolerant bisection, sequential computability, and complexity consequences. |
+| `Inverse_and_Sampling_Frontiers/` | `Inverse_and_Sampling_Frontiers.tex` | 6,607 | `d5f5ba096af58634fe0693bd4731b10898a85ad38204c661edde2ddbe38ed04a` | Inverse-dyadic germs, finite-prefix inversion, Barnes--Rvachev deconvolution, self-sampling, alias filtration, Richardson acceleration, and inverse-moment Appell theory. |
+| `Inverse_Endpoint_All_Orders/` | `Inverse_Endpoint_All_Orders.tex` | 1,979 | `0709a513017d42b94f931f6e4a2b0ac396464497c8fa75ef660545f4ab163507` | All-orders endpoint inversion, Lambert/Wright-omega carriers, Bell-polynomial coefficient extraction, derivative hierarchy, exact dyadic completion, and transseries frontiers. |
+| `Inverse_Fabius_Computability_Report/` | `inverse_fabius_computability.tex` | 2,937 | `d161226599c27c3a7b7818bcf9d30c226be66fdf2f46d359735d4f95f5044ae6` | Exact inverse moduli, effective uniform continuity, certified tolerant bisection, sequential computability, and complexity consequences. |
 
 ## Historical directory lineage
 
@@ -79,22 +79,27 @@ data, figures, captured outputs, requirements, and audit material were migrated
 or explicitly dispositioned. No numerical output is used as a premise of a
 theorem.
 
-## Canonical publication artifact
+## Canonical source and retained publication artifact
 
-On 1 September 2026, exactly three serial `pdflatex` passes over the canonical
-TeX after merging `origin/main` through
-`c3720b763d159c3a009b66e6e89ac500b7843e98` produced
-`inverse_fabius_theory.pdf`. The synchronized artifact has 133 A4 pages,
-contains 2,417,414 bytes, and has SHA-256
-`83a2cc2050e4f6c0c6ea26b472c09f05d4c77d2d84d4ba47e316d8176e7c11c6`.
-Its final-pass log contains no TeX error, LaTeX or package warning, overfull or
-underfull box, undefined-reference notice, or rerun request.
+The current canonical master `inverse_fabius_theory.tex` has 296 lines and
+11,625 bytes and SHA-256
+`6798beac86a39ac4e021c2a4f21079abdc9c4bb9a2b1bdc28d7432639f7d9748`.
+Its exhaustive 23-input source closure has SHA-256
+`622546eb3af87bb5bf9fb334e215b059077f4cf59667bfe9154b3869b11d2647`;
+the closure comprises the master, shared notation, all nine chapters, three
+generated TeX fragments, and nine publication figures.
 
-All 31 font rows are embedded and subset Type 1 fonts; Libertinus is present
-and Type 3 is absent. The PDF has populated title, subject, keywords, and
-author metadata. Every one of its 133 pages was rendered at 120 dpi and
-inspected as part of the complete nine-sheet visual review. Text extraction
-covered all 133 pages without an unexpectedly blank page.
+The retained PDF has 134 A4 pages and 2,027,726 bytes, with SHA-256
+`22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
+Its historical three-pass sequence produced 127, 134, and 134 pages; detailed
+log, text, page-box, font, and visual evidence for those exact PDF bytes is
+recorded in `VALIDATION.md`. The master and shared notation changed afterward,
+so the retained PDF is not presented as a rendering of the current source. A
+fresh three-pass render is required before publication synchronization is
+claimed again.
+The exhaustive root `SHA256SUMS` includes the independent nested asset ledger;
+publication validation changes no historical claim, concordance row,
+disposition, lineage, or arrival checksum recorded above.
 
 ## Editorial relationship
 

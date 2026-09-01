@@ -1,0 +1,4020 @@
+\documentclass[11pt,openany]{book}
+
+% Polynomial--Logarithmic Transseries
+% A focused, self-contained article/monograph on arithmetic, composition,
+% compositional inversion, and Lambert W expansions.
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{geometry}
+\geometry{
+  paperwidth=7.25in,
+  paperheight=10.25in,
+  inner=0.88in,
+  outer=0.74in,
+  top=0.80in,
+  bottom=0.86in,
+  headsep=0.23in,
+  footskip=0.40in
+}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\input{../../../../fabius-notation.tex}
+\usepackage{newtxtext,newtxmath}
+\usepackage{bm}
+\usepackage{array,booktabs,longtable,tabularx,multirow}
+\usepackage{siunitx}
+\sisetup{scientific-notation=true,round-mode=places,round-precision=8}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,decorations.pathreplacing,positioning,patterns,shapes.geometric,matrix}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{imakeidx}
+\usepackage{etoolbox}
+\usepackage{needspace}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage[capitalise,nameinlink,noabbrev]{cleveref}
+
+\definecolor{DeepBlue}{HTML}{173A5E}
+\definecolor{MediumBlue}{HTML}{2F6690}
+\definecolor{PaleBlue}{HTML}{EAF2F8}
+\definecolor{DeepTeal}{HTML}{1D5C63}
+\definecolor{PaleTeal}{HTML}{E9F5F3}
+\definecolor{DeepGold}{HTML}{7A5B13}
+\definecolor{PaleGold}{HTML}{FBF5E6}
+\definecolor{DeepRed}{HTML}{7A2E2E}
+\definecolor{PaleRed}{HTML}{FBECEC}
+\definecolor{SoftGray}{HTML}{F4F5F6}
+\definecolor{DarkGray}{HTML}{3D4650}
+\definecolor{Purple}{HTML}{5A3D79}
+\definecolor{PalePurple}{HTML}{F1ECF6}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=DeepBlue,
+  citecolor=DeepTeal,
+  urlcolor=MediumBlue,
+  pdftitle={Polynomial--Logarithmic Transseries: Algebra, Composition, Reversion, and Lambert W},
+  pdfauthor={OpenAI},
+  pdfsubject={A detailed operational treatment of polynomial--logarithmic transseries},
+  pdfkeywords={transseries, logarithmic asymptotics, Lambert W, series reversion, composition, Hahn series, Dulac series}
+}
+\urlstyle{same}
+
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\makeindex[intoc,title=Index]
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\small\scshape\nouppercase{\leftmark}}
+\fancyhead[RO]{\small\scshape\nouppercase{\rightmark}}
+\fancyfoot[LE,RO]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\setlength{\headheight}{14pt}
+
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\color{DeepBlue}}
+  {\filleft\Large\chaptername\ \thechapter}
+  {0.5ex}
+  {\titlerule\vspace{1.0ex}\filright\Huge}
+  [\vspace{0.6ex}\titlerule]
+\titleformat{\section}{\Large\bfseries\color{DeepBlue}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{DeepTeal}}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{DarkGray}}{\thesubsubsection}{0.7em}{}
+
+\setlist[itemize]{leftmargin=1.45em,itemsep=0.25ex,topsep=0.55ex}
+\setlist[enumerate]{leftmargin=1.85em,itemsep=0.35ex,topsep=0.55ex}
+\setlength{\parindent}{1.15em}
+\setlength{\parskip}{0.18ex}
+\raggedbottom
+\allowdisplaybreaks[2]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{example}{Example}[chapter]
+\newtheorem{algorithm}{Algorithm}[chapter]
+\newtheorem{exercise}{Exercise}[chapter]
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{proposition}{Proposition}[chapter]
+\newtheorem{lemma}{Lemma}[chapter]
+\newtheorem{corollary}{Corollary}[chapter]
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[chapter]
+
+\newtcolorbox{intuitionbox}[1][]{
+  enhanced,breakable,colback=PaleBlue,colframe=MediumBlue,
+  boxrule=0.6pt,arc=1.2mm,left=1.6mm,right=1.6mm,top=1.1mm,bottom=1.1mm,
+  title={Intuition},fonttitle=\bfseries,#1
+}
+\newtcolorbox{checkpointbox}[1][]{
+  enhanced,breakable,colback=PaleTeal,colframe=DeepTeal,
+  boxrule=0.6pt,arc=1.2mm,left=1.6mm,right=1.6mm,top=1.1mm,bottom=1.1mm,
+  title={Structural checkpoint},fonttitle=\bfseries,#1
+}
+\newtcolorbox{warningbox}[1][]{
+  enhanced,breakable,colback=PaleRed,colframe=DeepRed,
+  boxrule=0.6pt,arc=1.2mm,left=1.6mm,right=1.6mm,top=1.1mm,bottom=1.1mm,
+  title={A common trap},fonttitle=\bfseries,#1
+}
+\newtcolorbox{workedbox}[1][]{
+  enhanced,breakable,colback=SoftGray,colframe=DarkGray,
+  boxrule=0.5pt,arc=1.2mm,left=1.6mm,right=1.6mm,top=1.1mm,bottom=1.1mm,
+  title={Worked calculation},fonttitle=\bfseries,#1
+}
+\newtcolorbox{algorithmicbox}[1][]{
+  enhanced,breakable,colback=PalePurple,colframe=Purple,
+  boxrule=0.6pt,arc=1.2mm,left=1.6mm,right=1.6mm,top=1.1mm,bottom=1.1mm,
+  title={Algorithmic viewpoint},fonttitle=\bfseries,#1
+}
+\newtcolorbox{summarybox}[1][]{
+  enhanced,breakable,colback=PaleGold,colframe=DeepGold,
+  boxrule=0.6pt,arc=1.2mm,left=1.6mm,right=1.6mm,top=1.1mm,bottom=1.1mm,
+  title={Chapter summary},fonttitle=\bfseries,#1
+}
+
+\lstdefinestyle{pseudo}{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  frame=single,
+  rulecolor=\color{DarkGray},
+  backgroundcolor=\color{SoftGray},
+  showstringspaces=false,
+  keepspaces=true,
+  xleftmargin=0.5em,
+  xrightmargin=0.5em,
+  aboveskip=0.8em,
+  belowskip=0.8em
+}
+
+% Notation.
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\A}{\mathscr{A}}
+\newcommand{\Plog}{\PolynomialLogLaurentRing{\K}}
+\newcommand{\Rlog}{\RationalLogLaurentField{\K}}
+\newcommand{\Hlog}{\IteratedLaurentLogField{\K}}
+% LOCAL-NON-FOURIER-HAT: \FormalAsymptoticExpansionOf formal Poincare asymptotic expansion
+\newcommand{\FormalAsymptoticExpansionOf}[1]{\widehat{#1}}
+% LOCAL-NON-FOURIER-HAT: \LambertAsymptoticApproximation truncated Lambert-W asymptotic approximation
+\newcommand{\LambertAsymptoticApproximation}[1]{\widehat{W}_{#1}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\M}{\mathfrak{M}}
+\newcommand{\m}{\mathfrak{m}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\asym}{\sim}
+\newcommand{\precdom}{\prec}
+\newcommand{\preceqdom}{\preccurlyeq}
+\newcommand{\succdom}{\succ}
+\newcommand{\succeqdom}{\succcurlyeq}
+\newcommand{\equivdom}{\asymp}
+\newcommand{\invcomp}{^{\langle -1\rangle_{\circ}}}
+\newcommand{\stirlingone}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+\DeclareMathOperator{\lm}{lm}
+\DeclareMathOperator{\lc}{lc}
+\newcommand{\val}{\nu}
+\DeclareMathOperator{\polydeg}{deg}
+\DeclareMathOperator{\trunc}{Trunc}
+\DeclareMathOperator{\ad}{ad}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\DeclarePairedDelimiter{\bracks}{[}{]}
+
+\crefname{definition}{definition}{definitions}
+\crefname{example}{example}{examples}
+\crefname{algorithm}{algorithm}{algorithms}
+\crefname{exercise}{exercise}{exercises}
+\crefname{theorem}{theorem}{theorems}
+\crefname{proposition}{proposition}{propositions}
+\crefname{lemma}{lemma}{lemmas}
+\crefname{corollary}{corollary}{corollaries}
+
+\begin{document}
+\frontmatter
+
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[PaleBlue] (current page.north west) rectangle (current page.south east);
+  \fill[DeepBlue] (current page.north west) rectangle ([xshift=1.0in]current page.south west);
+  \draw[MediumBlue,line width=1.1pt]
+    ([xshift=1.34in,yshift=-1.18in]current page.north west)
+    -- ([xshift=-0.55in,yshift=-1.18in]current page.north east);
+  \foreach \y/\a in {-3.82/0.23,-4.62/0.18,-5.38/0.14,-6.10/0.10,-6.78/0.07} {
+    \draw[DeepTeal,line width=1pt,opacity=0.85]
+      ([xshift=1.48in,yshift=\y in]current page.north west)
+      .. controls +(1.05in,0.38in) and +(-1.05in,-0.38in) ..
+      ([xshift=-0.72in,yshift=\y in]current page.north east);
+  }
+  \node[anchor=north west,text width=5.15in,align=left]
+    at ([xshift=1.47in,yshift=-1.58in]current page.north west) {
+      {\fontsize{29}{33}\selectfont\bfseries\color{DeepBlue} Polynomial--Logarithmic\par}
+      \vspace{0.08em}
+      {\fontsize{29}{33}\selectfont\bfseries\color{DeepBlue} Transseries\par}
+      \vspace{0.40em}
+      {\fontsize{18}{23}\selectfont\bfseries\color{DeepTeal} Algebra, composition, series reversal,\ and the Lambert \(W\) archetype\par}
+    };
+  \node[anchor=south west,text width=4.95in]
+    at ([xshift=1.47in,yshift=0.86in]current page.south west) {
+      {\large\color{DarkGray} A detailed operational monograph with proofs, coefficient recurrences, algorithms, support conditions, and worked verification examples}\par
+      \vspace{0.8em}
+      {\normalsize\color{DeepBlue} Prepared 31 August 2026}\par
+    };
+\end{tikzpicture}
+\null
+\end{titlepage}
+
+\thispagestyle{empty}
+\vspace*{\fill}
+\begin{center}
+\begin{minipage}{0.84\textwidth}
+\small
+This article is an original synthesis of the materials supplied in the archive accompanying the request and of the primary literature listed in the bibliography. In particular, it draws on Edgar's expositions of transseries and composition, the power--log and Dulac-series literature of Marde\v{s}i\'c, Resman, Rolin, \v{Z}upanovi\'c and collaborators, the logarithmic-exponential series literature, Corless--Gonnet--Hare--Jeffrey--Knuth on Lambert \(W\), the NIST Digital Library of Mathematical Functions, and recent work on Taylor approximation for transseries.
+
+\medskip
+The article deliberately separates three kinds of statement: formal identities in an ordered series algebra; Poincar\'e asymptotic statements for actual functions; and analytic convergence assertions. Whenever a formula is used algorithmically, a residual or composition check is given as the preferred certificate of correctness.
+
+\medskip
+The notation \(F^{-1}\) is reserved for a multiplicative reciprocal. A compositional inverse is written \(F\invcomp\). This distinction is maintained throughout.
+\end{minipage}
+\end{center}
+\vspace*{\fill}
+\cleardoublepage
+
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+Polynomial--logarithmic transseries are formal expansions in which each power of a small parameter carries a polynomial, rational function, or subordinate formal series in a logarithm. They occur whenever inversion or composition repeatedly feeds a dominant approximation back into a logarithm. The large-argument expansion of Lambert's \(W\) function,
+\[
+ W(x)=\log x-\log\log x+\frac{\log\log x}{\log x}+\cdots,
+\]
+is the canonical example, but the same algebra appears in Dulac maps, inverse asymptotics, implicit equations, normal forms, and computer algebra.
+
+This monograph develops a focused theory of these expansions. It starts from the block algebra \(\K[\lambda]((t))\), explains its support order and its completions, and proves coefficientwise formulas for multiplication and division. It identifies the precise obstruction to closure under arbitrary division: a nonconstant leading polynomial in \(\lambda\) generally forces rational or Laurent-log coefficients. It then develops exact substitution rules for near-linear inner arguments, a rigorous formal Taylor theorem in the power--log setting, and warnings for substitutions that increase logarithmic depth.
+
+The central part treats series reversal---compositional inversion---by four complementary methods: contractive fixed-point iteration, coefficient recursion, Newton correction, and a Lagrange--B\"urmann formula at infinity. Complete proofs are given for the near-identity class, together with worked reversions of \(x+\log x\), \(x-\log x\), affine-log perturbations, and tangent-to-identity Dulac transseries. Non-near-identity leading monomials \(cx^a(\log x)^b\) are reduced explicitly to Lambert \(W\), revealing when an iterated logarithm is unavoidable.
+
+Finally, the Lambert \(W\) expansion is derived in several ways. Its coefficient polynomials are obtained recursively, by Lagrange inversion, and in closed form through unsigned Stirling cycle numbers. The treatment covers all complex branches, the real branch \(W_{-1}\) near the origin, the different Puiseux scale at the branch point \(-\EulerE^{-1}\), algebraic operations on truncated \(W\)-transseries, numerical residuals, and implementable sparse algorithms. Appendices provide coefficient tables through order twelve, proof templates, pseudocode, and a notation concordance.
+
+\chapter*{How to read this article}
+\addcontentsline{toc}{chapter}{How to read this article}
+The text has three layers.
+
+\begin{enumerate}
+\item \textbf{Operational core.} \Cref{part:foundations,part:arithmetic,part:composition,part:reversion} give a self-contained calculus for finite truncations and formal infinite series. A reader interested mainly in computation can follow the displayed recurrences, algorithms, and worked boxes.
+\item \textbf{Lambert \(W\) case study.} \Cref{part:lambert} turns the general calculus into a complete derivation of the logarithmic expansion of \(W\), including branches, coefficient formulas, and error diagnostics.
+\item \textbf{Structural extensions.} \Cref{part:implementation,part:extensions} explain sparse implementation, generalized exponents, iterated logarithms, Dulac classes, and the relation with broader transseries fields.
+\end{enumerate}
+
+The default limit is \(X\to+\infty\). We write
+\[
+ t=X^{-1},\qquad \lambda=\log X.
+\]
+For Lambert \(W(z)\), the same algebra is used one level down by taking \(X=L_1=\PrincipalLogarithm z\) and \(\lambda=L_2=\PrincipalLogarithm L_1\). Near a small positive variable \(x\to0^+\), one may instead put \(X=x^{-1}\), or use the Dulac convention \(\ell=-1/\log x\).
+
+\tableofcontents
+\listoftables
+\mainmatter
+
+\part{Foundations of the power--log scale}\label{part:foundations}
+
+\chapter{Why logarithmic polynomials appear}\label{ch:why}
+
+\section{The first two balances for Lambert \texorpdfstring{\(W\)}{W}}
+Lambert's function is defined implicitly by
+\begin{equation}\label{eq:Wdef-preview}
+ W(z)\EulerE^{W(z)}=z.
+\end{equation}
+On a branch where \(W(z)\) is large, taking logarithms gives
+\begin{equation}\label{eq:Wlog-preview}
+ W+\PrincipalLogarithm W=\PrincipalLogarithm z.
+\end{equation}
+Set \(L_1=\PrincipalLogarithm z\). Since \(\PrincipalLogarithm W\) is smaller than \(W\), dominant balance gives \(W\sim L_1\). Feeding that approximation into the smaller term gives the improved balance
+\[
+ W\sim L_1-L_2,
+ \qquad L_2=\PrincipalLogarithm L_1.
+\]
+The next correction is obtained by writing \(W=L_1-L_2+u\). A short calculation leads to
+\begin{equation}\label{eq:preview-fixed}
+ u=-\PrincipalLogarithm\left(1-\frac{L_2-u}{L_1}\right).
+\end{equation}
+The right side is a formal power series in \(L_1^{-1}\), but every coefficient is a polynomial in \(L_2\). Thus the natural ansatz is
+\begin{equation}\label{eq:preview-ansatz}
+ u=\sum_{n\ge1}\frac{\LambertPolynomial{n}(L_2)}{L_1^n},
+ \qquad \LambertPolynomial{n}\in\RationalNumbers[L_2].
+\end{equation}
+This is the simplest important example of a polynomial--logarithmic transseries.
+
+\begin{intuitionbox}
+An ordinary power series asks for one coefficient at each power. A polynomial--logarithmic transseries asks for a finite \emph{block} of logarithmic coefficients at each power. The power tells us the main asymptotic level; the logarithmic degree resolves finer distinctions inside that level.
+\end{intuitionbox}
+
+\section{The recurring mechanism}
+The same pattern appears far beyond \(W\). Suppose an implicit problem has the shape
+\[
+ Y+\alpha\log Y=X+\text{smaller terms}.
+\]
+The leading approximation is \(Y\sim X\). Substitution into \(\log Y\) creates \(\log X\). Repeating the substitution creates powers of \(\log X\) divided by powers of \(X\). The coefficient of \(X^{-n}\) is therefore typically a polynomial of degree at most \(n\) in \(\log X\).
+
+A second mechanism is composition. If
+\[
+ G(X)=X+\log X,
+\]
+then
+\[
+ \log G(X)=\log X+\log\left(1+\frac{\log X}{X}\right)
+ =\lambda+t\lambda-\frac12t^2\lambda^2+\frac13t^3\lambda^3-\cdots.
+\]
+Again, each power of \(t=X^{-1}\) carries a polynomial in \(\lambda=\log X\).
+
+A third mechanism is reversion. The inverse of \(X+\log X\) begins
+\begin{equation}\label{eq:omega-preview}
+ (X+\log X)\invcomp
+ =X-\lambda+t\lambda
+ +\frac{t^2}{2}(\lambda^2-2\lambda)
+ +\frac{t^3}{6}(2\lambda^3-9\lambda^2+6\lambda)+\cdots.
+\end{equation}
+This inverse is the Wright \(\WrightOmega\) function. The coefficient polynomials in \cref{eq:omega-preview} are precisely the same universal polynomials that occur in the large-argument expansion of Lambert \(W\).
+
+\section{Why call these objects transseries?}
+A finite expression such as
+\[
+ X-\log X+\frac{\log X}{X}
+\]
+is merely an asymptotic approximation. The word \emph{transseries} refers to an infinite, formally organized expansion equipped with algebraic operations and a support condition that makes every requested coefficient a finite calculation. Polynomial--logarithmic transseries are a small but particularly useful sublanguage of the much larger logarithmic-exponential transseries field \(\T\) studied by Edgar, van der Hoeven, van den Dries--Macintyre--Marker, and Aschenbrenner--van den Dries--van der Hoeven \cite{edgar-beginners,edgar-composition,vdDMM-1997,vdDMM-2001,vdhoeven-book,adh-book}.
+
+The small language has two advantages. First, its operations can be written explicitly in terms of polynomial convolution and differentiation. Second, it isolates the exact algebra needed in many classical inverse-asymptotic calculations without requiring the full recursive construction of exponential height and logarithmic depth.
+
+\section{Formal identity, asymptotic expansion, and convergence}
+Three statements must not be confused.
+
+\begin{enumerate}
+\item A \emph{formal identity} is an equality in a series algebra. It is checked coefficient by coefficient.
+\item An \emph{asymptotic expansion} of a function is a hierarchy of remainder estimates after finite truncation.
+\item A \emph{convergent expansion} is an actual infinite sum in a specified numerical domain.
+\end{enumerate}
+
+The algebra in this article is formal unless a theorem about actual functions is explicitly invoked. For Lambert \(W\), the classical logarithmic expansion is not only asymptotic: in suitable domains it converges, and on the principal real branch the standard series converges for \(z\ge \EulerE\); see the NIST DLMF and Corless et al. \cite{dlmf-W,corless-W}. Nevertheless, residual-based formal calculation remains the safest way to derive and manipulate truncations.
+
+\begin{warningbox}
+An infinite formal expression is not evaluated by ``plugging in a large number'' unless analytic convergence or a summation theorem has been established. The native observable is a finite truncation together with its residual.
+\end{warningbox}
+
+\section{Road map of the operations}
+The four operations requested in this article have different algebraic characters.
+
+\begin{center}
+\begin{tikzpicture}[
+  node distance=1.25cm and 1.4cm,
+  box/.style={draw=DeepBlue,rounded corners,fill=PaleBlue,minimum width=3.25cm,minimum height=0.85cm,align=center},
+  arr/.style={-{Latex[length=2.3mm]},thick,draw=DeepTeal}
+]
+\node[box] (mul) {Multiplication\\finite convolution};
+\node[box,right=of mul] (div) {Division\\triangular recursion};
+\node[box,below=of mul] (comp) {Composition\\substitution + Taylor};
+\node[box,right=of comp] (rev) {Series reversal\\fixed point + Newton};
+\draw[arr] (mul) -- node[above,font=\small]{leading factor} (div);
+\draw[arr] (mul) -- node[left,font=\small]{derivatives} (comp);
+\draw[arr] (comp) -- node[above,font=\small]{solve \(F\circ G=X\)} (rev);
+\draw[arr] (div) -- node[right,font=\small]{Newton quotient} (rev);
+\end{tikzpicture}
+\end{center}
+
+Multiplication is the easiest: the coefficient at a given power is a finite Cauchy convolution. Division is triangular once the leading coefficient is invertible. Composition requires control of how supports move under substitution. Series reversal combines composition and division and is therefore the most delicate operation.
+
+\begin{summarybox}
+Polynomial--logarithmic transseries arise when a logarithm is repeatedly evaluated at an approximation that itself contains inverse powers. Lambert \(W\), the Wright \(\WrightOmega\) function, near-identity reversion, and Dulac-map inverses all exhibit this mechanism. The rest of the article turns the pattern into a precise algebra and a set of reliable algorithms.
+\end{summarybox}
+
+\chapter{The block algebra and its completions}\label{ch:block-algebra}
+
+\section{Basic variables and dominance}
+Fix a coefficient field \(\K\) of characteristic zero, usually \(\RealNumbers\) or \(\ComplexNumbers\). Let
+\begin{equation}\label{eq:t-lambda}
+ t=X^{-1},\qquad \lambda=\log X,
+ \qquad X\to+\infty.
+\end{equation}
+Then
+\[
+ t\precdom \lambda^{-N}\precdom1\precdom\lambda^N\precdom t^{-1}
+ \qquad\text{for every fixed }N>0.
+\]
+The power of \(t\) is the primary order. At a fixed power of \(t\), the power of \(\lambda\) is the secondary order. Thus
+\[
+ t^n\lambda^m\succdom t^{n'}\lambda^{m'}
+\]
+when either \(n<n'\), or \(n=n'\) and \(m>m'\).
+
+\begin{definition}[Polynomial--log block algebra]\label{def:Plog}
+The polynomial--log block algebra is
+\begin{equation}\label{eq:Plog}
+ \Plog=\K[\lambda]((t)).
+\end{equation}
+Its elements are formal Laurent series
+\begin{equation}\label{eq:block-form}
+ F(t,\lambda)=\sum_{n\ge n_0} A_n(\lambda)t^n,
+ \qquad A_n\in\K[\lambda],
+\end{equation}
+with a finite lower bound \(n_0\in\IntegerNumbers\).
+\end{definition}
+
+The notation \(((t))\) means that finitely many negative powers of \(t\) are allowed. This is useful because the large variable itself is \(X=t^{-1}\). If only nonnegative powers are needed, we write \(\K[\lambda][[t]]\).
+
+\section{Blocks, terms, and supports}
+For
+\[
+ F=\sum_{n\ge n_0}A_n(\lambda)t^n,
+\]
+the polynomial \(A_n\) is the \emph{block at power \(n\)}. Expanding
+\[
+ A_n(\lambda)=\sum_{m=0}^{d_n}a_{n,m}\lambda^m
+\]
+produces the monomial support
+\[
+ \SupportOf{F}=\{(n,m):a_{n,m}\ne0\}\subseteq\IntegerNumbers\times\NaturalNumbers.
+\]
+The lexicographic order just described makes every initial coefficient computation finite: at any fixed \(n\), there are finitely many \(m\), and below any fixed \(t\)-threshold there are finitely many block indices.
+
+\begin{example}
+The transseries
+\[
+ F=X^2+3X\log X+7+(\lambda^3-2\lambda)t
+ +\sum_{n\ge2}(\lambda^n+1)t^n
+\]
+belongs to \(\Plog\). Its first block indices are \(-2,-1,0,1,2,\ldots\). The degree of the \(n\)-th block need not be uniformly bounded.
+\end{example}
+
+\section{Why \texorpdfstring{\(\Plog\)}{P} is not a field}
+The ring \(\K[\lambda]\) is not a field, so neither is \(\Plog\). For instance,
+\[
+ \frac1{\lambda+1}\notin\K[\lambda].
+\]
+Consequently, the inverse of a nonzero element of \(\Plog\) need not remain in \(\Plog\). Two useful enlargements are
+\begin{align}
+ \Rlog&=\K(\lambda)((t)),\label{eq:Rlog}\\
+ \Hlog&=\K((\lambda^{-1}))((t)).\label{eq:Hlog}
+\end{align}
+Here \(\Rlog\) allows rational functions of \(\lambda\) as blocks, while \(\Hlog\) expands those rational functions asymptotically at \(\lambda=\infty\). Both are fields.
+
+For example,
+\begin{align*}
+ \frac1{\lambda+1+t}
+ &=\frac1{\lambda+1}
+ \left(1+\frac{t}{\lambda+1}\right)^{-1}\notag\\
+ &=\sum_{n\ge0}\frac{(-1)^n t^n}{(\lambda+1)^{n+1}}
+ \quad\in\Rlog.
+\end{align*}
+Expanding each rational block at \(\lambda=\infty\) gives an element of \(\Hlog\):
+\[
+ \frac1{\lambda+1}=\lambda^{-1}-\lambda^{-2}+\lambda^{-3}-\cdots.
+\]
+
+\begin{checkpointbox}
+There are three distinct closure questions.
+\begin{enumerate}
+\item Does an operation exist in a larger transseries field? Often yes.
+\item Does it stay in rational-log blocks \(\Rlog\)? Frequently yes.
+\item Does it stay in polynomial blocks \(\Plog\)? Only under additional leading-coefficient conditions.
+\end{enumerate}
+Confusing these questions is a common source of incorrect ``closure'' claims.
+\end{checkpointbox}
+
+\section{The \texorpdfstring{\(t\)}{t}-adic valuation}
+For a nonzero block series \(F\), define
+\begin{equation}\label{eq:t-valuation}
+ \val_t(F)=\min\{n:A_n\ne0\}.
+\end{equation}
+Set \(\val_t(0)=+\infty\). Then
+\begin{align*}
+ \val_t(FG)&=\val_t(F)+\val_t(G),\\
+ \val_t(F+G)&\ge\min\{\val_t(F),\val_t(G)\},
+\end{align*}
+with strict inequality in the second line exactly when leading blocks cancel.
+
+A sequence \(F_j\) converges \(t\)-adically to \(F\) when, for every \(N\), the blocks below \(t^N\) eventually agree. This is coefficient stabilization, not numerical convergence. The rings \(\K[\lambda][[t]]\), \(\K(\lambda)[[t]]\), and \(\K((\lambda^{-1}))[[t]]\) are complete in this topology.
+
+\section{Truncation operators}
+For \(N\in\IntegerNumbers\), define
+\begin{equation}\label{eq:trunc}
+ \trunc_{<N}F=\sum_{n<N}A_n(\lambda)t^n.
+\end{equation}
+Then
+\[
+ F=\trunc_{<N}F+\FormalBigO_t(t^N)
+\]
+is formal shorthand for \(\val_t(F-\trunc_{<N}F)\ge N\). A computation ``through order \(t^{N-1}\)'' means equality after applying \(\trunc_{<N}\).
+
+The block degree provides a secondary filtration. One may additionally truncate \(A_n(\lambda)\) by logarithmic degree, but this is less canonical because large \(\lambda\) means that discarded high-degree terms are not smaller within the same \(t\)-block. In polynomial-log asymptotics, a block should normally be kept intact.
+
+\section{Generalized exponents and iterated logarithms}
+The elementary block algebra uses integer powers of \(t\). Many applications require real exponents:
+\begin{equation}\label{eq:general-powerlog}
+ F=\sum_{\alpha\in S}t^\alpha p_\alpha(\lambda),
+\end{equation}
+where \(S\subset\RealNumbers\) is well ordered and each \(p_\alpha\) is a polynomial or Laurent series. This is a Hahn-type power--log series. Dulac transseries near \(x=0^+\) are often written
+\[
+ \sum_{\alpha\in S}x^\alpha p_\alpha(\ell),
+ \qquad \ell=-\frac1{\log x}.
+\]
+More general classes permit
+\[
+ x^\alpha\ell_1^{n_1}\ell_2^{n_2}\cdots\ell_k^{n_k},
+ \qquad
+ \ell_1=-\frac1{\log x},\quad
+ \ell_{j+1}=\ell_1\circ\ell_j.
+\]
+The power--log literature imposes well-ordering or finite-generation conditions that guarantee closure under the desired operations \cite{mardesic-normalforms,mardesic-length,resman-dulac,peran-logtransseries}.
+
+\section{A scale ladder}
+The following diagram summarizes the nested sizes at \(X\to\infty\):
+\begin{center}
+\begin{tikzpicture}[x=1.0cm,y=0.75cm]
+\foreach \i/\lab in {0/{X},1/{(\log X)^N},2/{1},3/{(\log X)^{-N}},4/{X^{-1}},5/{X^{-2}},6/{\EulerE^{-X}}} {
+  \node[draw=DeepBlue,fill=PaleBlue,rounded corners,minimum width=2.0cm] (n\i) at (0,-\i) {$\lab$};
+}
+\foreach \i in {0,...,5} {
+  \pgfmathtruncatemacro{\j}{\i+1}
+  \draw[-{Latex[length=2mm]},DeepTeal,thick] (n\i) -- node[right,font=\small]{$\succdom$} (n\j);
+}
+\node[align=left,anchor=west,text width=4.2cm] at (2.0,-2.9) {The block algebra resolves the middle portion: powers of $X^{-1}$ are primary; powers or Laurent series in $\log X$ refine each level. Full transseries add exponentials and further iterated logs.};
+\end{tikzpicture}
+\end{center}
+
+\begin{summarybox}
+The operational core is \(\Plog=\K[\lambda]((t))\), ordered primarily by the power of \(t=X^{-1}\) and secondarily by logarithmic degree. It is a complete domain but not a field. Arbitrary division naturally leads to \(\Rlog=\K(\lambda)((t))\), and asymptotic expansion of rational log blocks leads to \(\Hlog=\K((\lambda^{-1}))((t))\). Generalized exponents and iterated logs fit the same Hahn-series architecture.
+\end{summarybox}
+
+\chapter{Formal asymptotics, support, and proof discipline}\label{ch:support}
+
+\section{Poincar\'e meaning of a block expansion}
+Let \(f(X)\) be an actual function and let
+\[
+ \FormalAsymptoticExpansionOf{f}(X)=\sum_{n\ge n_0}A_n(\log X)X^{-n}.
+\]
+To say that \(\FormalAsymptoticExpansionOf{f}\) is a Poincar\'e asymptotic expansion in this scale means, at minimum, that for every \(N\),
+\begin{equation}\label{eq:block-asymptotic}
+ f(X)-\sum_{n_0\le n<N}A_n(\log X)X^{-n}
+ =o\!\left(X^{-N+1}(\log X)^{d_{N-1}}\right)
+\end{equation}
+with a suitably specified comparison scale. A cleaner formulation expands every polynomial block into monomials and orders the resulting two-index family lexicographically.
+
+In practical calculations, one usually proves a stronger residual statement. If \(f\) is defined by \(\mathcal E(f,X)=0\), insert the truncation \(f_{<N}\) and show
+\[
+ \mathcal E(f_{<N},X)
+ =\BigOAt{X^{-N}Q_N(\log X)}{X\to\infty,\ X\in S}.
+\]
+An implicit-function or contraction argument then converts the residual into an error estimate.
+
+\section{Why support conditions matter}
+Multiplying two infinite series forms all pairwise products of monomials. Composition may replace each monomial by an infinite series. These operations are meaningful only if the coefficient of every target monomial is a finite sum.
+
+In the simple block algebra, finiteness is immediate: the coefficient of \(t^n\) in a product receives contributions only from pairs \((i,j)\) with \(i+j=n\), and the lower bounds on \(i,j\) leave finitely many such pairs. In a general Hahn field \(\K[[\M]]\), the support is required to be well based so that the same finiteness property holds abstractly.
+
+\begin{definition}[Summable family]
+A family \((F_i)_{i\in I}\) of generalized series is formally summable if the union of its supports is well based and every monomial belongs to the support of only finitely many \(F_i\). Its sum is then defined coefficientwise.
+\end{definition}
+
+This definition replaces analytic absolute convergence. It is the correct notion behind geometric series, binomial series, and Taylor expansions in transseries fields.
+
+\section{Leading-block factorization}
+Every nonzero \(F\in\Rlog\) has a unique factorization
+\begin{equation}\label{eq:leading-block-factor}
+ F=t^\nu A_0(\lambda)(1+U),
+ \qquad \nu=\val_t(F),\quad U\in t\K(\lambda)[[t]].
+\end{equation}
+The factor \(1+U\) is a \(t\)-adic unit. This is the block analogue of the leading-monomial factorization
+\[
+ T=a\m(1+S),\qquad S\precdom1,
+\]
+in a general transseries field.
+
+The factorization is the starting point for division, rational powers, logarithms, and Newton iteration. The leading block \(A_0\) controls whether the result stays polynomial in \(\lambda\).
+
+\section{Coefficient stabilization as a proof method}
+Suppose an iteration produces \(F_0,F_1,F_2,\ldots\) and satisfies
+\begin{equation}\label{eq:gain-one}
+ \val_t(F_{j+1}-F_j)\ge j+c.
+\end{equation}
+Then each block eventually stops changing, and the limit exists in the complete \(t\)-adic ring. This simple observation proves the existence of geometric inverses, fixed-point solutions, and near-identity compositional inverses.
+
+A particularly useful form is the contraction estimate
+\begin{equation}\label{eq:valuation-contraction}
+ \val_t(\Phi(F)-\Phi(G))\ge \val_t(F-G)+1.
+\end{equation}
+Starting from any two approximations in the same admissible set, one application of \(\Phi\) pushes their first disagreement one block deeper.
+
+\section{Residuals as certificates}
+A displayed expansion should be accompanied by a check that can be automated. The four standard certificates are:
+\begin{align*}
+\text{product:}&\quad \trunc_{<N}(FG-H)=0,\\
+\text{quotient:}&\quad \trunc_{<N}(GQ-F)=0,\\
+\text{composition:}&\quad \trunc_{<N}(F\circ G-H)=0,\\
+\text{reversion:}&\quad \trunc_{<N}(F\circ G-X)=0.
+\end{align*}
+For an implicit equation \(\mathcal E(Y,X)=0\), use \(\trunc_{<N}\mathcal E(Y_{<N},X)=0\).
+
+\begin{algorithmicbox}
+A reliable symbolic system should never certify a transseries solely by displaying coefficients. It should return both the truncation and a residual whose valuation is beyond the requested order.
+\end{algorithmicbox}
+
+\section{Formal equality versus chosen branches}
+Over \(\ComplexNumbers\), logarithms and fractional powers require branch choices. A formula such as
+\[
+ \PrincipalLogarithm\bigl(cX^\beta(\log X)^\gamma\bigr)
+ =\PrincipalLogarithm c+\beta\PrincipalLogarithm X+\gamma\PrincipalLogarithm\PrincipalLogarithm X
+\]
+is valid only after branches are chosen consistently on a sector. Formal transseries record the algebra after that choice; they do not remove monodromy.
+
+For Lambert \(W_k\), the natural large parameter is
+\[
+ \xi_k=\PrincipalLogarithm z+2\pi\ImaginaryUnit k.
+\]
+The same universal coefficient polynomials apply on every branch, but \(\PrincipalLogarithm\xi_k\) and the sector of validity depend on \(k\).
+
+\section{Exercises}
+\begin{exercise}
+Show that \(\K[\lambda][[t]]\) is complete in the \(t\)-adic topology by constructing the limit of a Cauchy sequence block by block.
+\end{exercise}
+\begin{exercise}
+Give an example of two nonzero elements of \(\Plog\) whose leading blocks cancel on addition, increasing \(\val_t\) by at least two.
+\end{exercise}
+\begin{exercise}
+Prove that the family \((U^n)_{n\ge0}\) is formally summable whenever \(\val_t(U)\ge1\).
+\end{exercise}
+
+\begin{summarybox}
+Support conditions make infinite formal operations coefficientwise finite. The leading-block factorization isolates a unit \(1+U\), completeness converts valuation gains into existence, and residuals provide machine-checkable certificates. Branch choices remain analytic data even when the subsequent algebra is formal.
+\end{summarybox}
+
+\part{Arithmetic in polynomial--log blocks}\label{part:arithmetic}
+
+\chapter{Multiplication: finite convolution at every order}\label{ch:multiplication}
+
+\section{The block Cauchy product}
+Let
+\begin{equation}\label{eq:FG-blocks}
+ F=\sum_{n\ge a}A_n(\lambda)t^n,
+ \qquad
+ G=\sum_{n\ge b}B_n(\lambda)t^n.
+\end{equation}
+Their product is
+\begin{equation}\label{eq:block-cauchy}
+ FG=\sum_{n\ge a+b}C_n(\lambda)t^n,
+ \qquad
+ C_n(\lambda)=\sum_{i=a}^{n-b}A_i(\lambda)B_{n-i}(\lambda).
+\end{equation}
+The inner sum is finite. Thus multiplication in \(\Plog\) is ordinary Cauchy multiplication in \(t\), with exact polynomial arithmetic inside each block.
+
+\begin{theorem}[Closure and leading block]\label{thm:multiplication}
+The ring \(\Plog=\K[\lambda]((t))\) is closed under multiplication. If \(F,G\ne0\), then
+\begin{align}
+ \val_t(FG)&=\val_t(F)+\val_t(G),\label{eq:val-product}\\
+ [t^{a+b}](FG)&=A_aB_b.\label{eq:lead-product}
+\end{align}
+Moreover,
+\begin{equation}\label{eq:degree-bound-product}
+ \polydeg C_n\le
+ \max_{i+j=n}\bigl(\polydeg A_i+\polydeg B_j\bigr).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For a fixed \(n\), the bounds \(i\ge a\) and \(n-i\ge b\) imply \(a\le i\le n-b\), so \cref{eq:block-cauchy} is finite. The first possible power is \(t^{a+b}\), and its coefficient is the nonzero product \(A_aB_b\), because \(\K[\lambda]\) is an integral domain. The degree estimate follows term by term.
+\end{proof}
+
+\section{A complete worked product}
+Consider
+\begin{align*}
+ F&=1+(\lambda+1)t+(2\lambda^2-\lambda)t^2+\FormalBigO_t(t^3),\\
+ G&=1+(2-\lambda)t+(\lambda^2+3)t^2+\FormalBigO_t(t^3).
+\end{align*}
+At orders zero, one, and two,
+\begin{align*}
+ C_0&=1,\\
+ C_1&=(\lambda+1)+(2-\lambda)=3,\\
+ C_2&=(2\lambda^2-\lambda)+(\lambda^2+3)
+      +(\lambda+1)(2-\lambda)\\
+ &=2\lambda^2+5.
+\end{align*}
+Hence
+\begin{equation}\label{eq:worked-product}
+ FG=1+3t+(2\lambda^2+5)t^2+\FormalBigO_t(t^3).
+\end{equation}
+If the displayed series have no \(t^3\) blocks, then the next coefficient comes entirely from cross terms:
+\[
+ C_3=(\lambda+1)(\lambda^2+3)+(2\lambda^2-\lambda)(2-\lambda)
+ =-\lambda^3+6\lambda^2+\lambda+3.
+\]
+
+Notice the cancellation at order \(t\): the logarithmic terms disappear. This is why blocks must be collected exactly before their degree or leading logarithmic monomial is inferred.
+
+\section{Multiplication of individual monomials}
+At the monomial level,
+\begin{equation}\label{eq:monomial-product}
+ (t^n\lambda^m)(t^p\lambda^q)=t^{n+p}\lambda^{m+q}.
+\end{equation}
+Thus a sparse representation can use pairs \((n,m)\) as keys and coefficients in \(\K\) as values. The product is a two-dimensional convolution followed by collection of equal keys. The block representation is usually faster because polynomial multiplication handles the secondary convolution efficiently.
+
+For several logarithmic levels,
+\[
+ t^\alpha\lambda_1^{m_1}\cdots\lambda_r^{m_r}
+ \cdot
+ t^\beta\lambda_1^{n_1}\cdots\lambda_r^{n_r}
+ =t^{\alpha+\beta}\prod_{j=1}^r\lambda_j^{m_j+n_j}.
+\]
+The exponent vector is simply added.
+
+\section{Truncated multiplication}
+Suppose only terms below \(t^N\) are required. Then blocks \(A_i\) with \(i\ge N-b\) and blocks \(B_j\) with \(j\ge N-a\) cannot contribute. Consequently,
+\begin{equation}\label{eq:truncated-product}
+ \trunc_{<N}(FG)
+ =\trunc_{<N}\left(\trunc_{<N-b}F\right)
+                   \left(\trunc_{<N-a}G\right).
+\end{equation}
+This is an exact dependency bound, not a heuristic.
+
+\begin{algorithm}[Truncated block multiplication]\label{alg:multiply}
+Given block dictionaries \(A[i]\), \(B[j]\) and cutoff \(N\):
+\begin{enumerate}
+\item initialize all output blocks \(C[n]\) to zero;
+\item for every stored \(i,j\) with \(i+j<N\), add the polynomial product \(A[i]B[j]\) to \(C[i+j]\);
+\item delete zero blocks after exact simplification;
+\item return \(C\) and optionally the certificate that every omitted pair has \(i+j\ge N\).
+\end{enumerate}
+\end{algorithm}
+
+\begin{lstlisting}[style=pseudo,caption={Sparse truncated multiplication}]
+function multiply(A, B, cutoff N):
+    C := empty map from integer to polynomial
+    for (i, Ai) in A:
+        for (j, Bj) in B:
+            if i + j < N:
+                C[i+j] := C.get(i+j, 0) + Ai*Bj
+    simplify and remove zero blocks from C
+    return C
+\end{lstlisting}
+
+\section{Products of many factors}
+If \(F_r=1+U_r\) with \(\val_t(U_r)\ge1\), then the infinite product
+\begin{equation}\label{eq:formal-infinite-product}
+ \prod_{r\ge1}(1+U_r)
+\end{equation}
+is formally meaningful provided, for every \(N\), only finitely many \(r\) satisfy \(\val_t(U_r)<N\). Indeed, modulo \(t^N\), all remaining factors are congruent to one. This condition is the product analogue of formal summability.
+
+For a finite product, pairwise multiplication may cause intermediate expression swell. A balanced product tree often reduces the maximum size of intermediate expressions and coefficients in exact arithmetic. When the factors have increasing valuations, multiplying in increasing valuation order is often best because late factors affect only deep blocks.
+
+\section{Powers and repeated convolution}
+For an integer \(k\ge0\), \(F^k\) can be computed by repeated squaring. If \(F=1+U\) and a fixed cutoff is imposed, the binomial formula
+\begin{equation}\label{eq:integer-binomial}
+ (1+U)^k=\sum_{j=0}^{k}\binom{k}{j}U^j
+\end{equation}
+may be preferable. For noninteger exponents, the same formula becomes infinite and is treated in \cref{ch:elementary-functions}.
+
+A useful degree estimate follows from \cref{eq:degree-bound-product}. If
+\[
+ \polydeg A_n\le an+b
+\]
+for all \(n\ge0\), then the \(n\)-th block of \(F^k\) has degree at most \(an+kb\). In Lambert-type expansions one often has \(b=0\) and degree at most the power index.
+
+\section{Hahn-support version}
+Let \(S,T\subset\RealNumbers\) be well-ordered supports and consider
+\[
+ F=\sum_{\alpha\in S}A_\alpha(\lambda)t^\alpha,
+ \qquad
+ G=\sum_{\beta\in T}B_\beta(\lambda)t^\beta.
+\]
+Then
+\[
+ FG=\sum_\gamma
+ \left(\sum_{\alpha+\beta=\gamma}A_\alpha B_\beta\right)t^\gamma.
+\]
+The Hahn-series theorem states that \(S+T\) is well ordered and every \(\gamma\) has only finitely many representations \(\gamma=\alpha+\beta\) from the relevant initial portions. This is the abstract reason multiplication works in generalized power series \cite{hahn,vdhoeven-book}.
+
+\section{Exercises}
+\begin{exercise}
+Multiply
+\[
+ 1+(2\lambda-1)t+(\lambda^2+\lambda)t^2
+\quad\text{and}\quad
+ 1-(2\lambda-1)t+(3\lambda^2-4)t^2
+\]
+through order \(t^3\), assuming all undisplayed blocks vanish.
+\end{exercise}
+\begin{exercise}
+Prove \cref{eq:truncated-product} directly from the index bounds in \cref{eq:block-cauchy}.
+\end{exercise}
+\begin{exercise}
+Let \(F=1+\lambda t\). Find the coefficient of \(t^n\) in \(F^k\) for arbitrary integer \(k\ge0\), and then compare with the generalized binomial answer for arbitrary \(k\in\K\).
+\end{exercise}
+
+\begin{summarybox}
+Multiplication is a finite convolution of polynomial blocks. Valuations add, leading blocks multiply, and exact truncation bounds identify all required inputs. The same mechanism extends from integer powers to Hahn supports and several logarithmic levels.
+\end{summarybox}
+
+\chapter{Division and reciprocal expansions}\label{ch:division}
+
+\section{Reciprocal is not series reversal}
+Two operations are often denoted by the same symbol in informal work:
+\[
+ F^{-1}=\frac1F,
+ \qquad
+ F\invcomp\circ F=F\circ F\invcomp=X.
+\]
+The first is a multiplicative reciprocal and is the subject of this chapter. The second is a compositional inverse, or \emph{series reversal}, and is developed in \Cref{part:reversion}. Their algorithms are fundamentally different.
+
+\section{Geometric inversion of a unit}
+If \(U\in t\K(\lambda)[[t]]\), then
+\begin{equation}\label{eq:geometric-unit}
+ (1+U)^{-1}=1-U+U^2-U^3+\cdots.
+\end{equation}
+The family is formally summable because \(\val_t(U^j)\ge j\). Multiplying by \(1+U\) makes every nonconstant power cancel, so \cref{eq:geometric-unit} is an exact formal identity.
+
+For a general nonzero \(G\in\Rlog\), use the leading-block factorization
+\[
+ G=t^\beta B_0(\lambda)(1+U).
+\]
+Then
+\begin{equation}\label{eq:general-reciprocal}
+ G^{-1}=t^{-\beta}B_0(\lambda)^{-1}
+ \sum_{j\ge0}(-U)^j.
+\end{equation}
+This proves that \(\Rlog\) is a field.
+
+\begin{proposition}[Polynomial-block preservation]\label{prop:poly-division}
+Let \(G\in\Plog\setminus\{0\}\). If its leading block is a nonzero scalar,
+\[
+ G=t^\beta b_0(1+U),\qquad b_0\in\K^\times,
+\]
+then \(G^{-1}\in\Plog\). More generally, if \(F\in\Plog\), then \(F/G\in\Plog\).
+\end{proposition}
+
+\begin{proof}
+Scalar inversion contributes only \(b_0^{-1}\in\K\). Since \(U\in t\K[\lambda][[t]]\), every power \(U^j\) has polynomial blocks by closure under multiplication. At a fixed \(t\)-order only finitely many powers contribute.
+\end{proof}
+
+The scalar-leading-block condition is sufficient, not necessary. Special divisibility among blocks can keep a quotient polynomial even when \(B_0\) is nonconstant. But no unconditional closure theorem is possible in \(\Plog\), because \((\lambda+1)^{-1}\notin\K[\lambda]\).
+
+\section{Triangular coefficient recursion}
+Normalize the lower power to zero:
+\begin{align*}
+ A&=\sum_{n\ge0}A_n t^n,\\
+ B&=\sum_{n\ge0}B_n t^n,\qquad B_0\ne0,\\
+ Q&=\frac AB=\sum_{n\ge0}C_n t^n.
+\end{align*}
+The identity \(BQ=A\) gives
+\[
+ \sum_{j=0}^{n}B_jC_{n-j}=A_n.
+\]
+Therefore
+\begin{align}
+ C_0&=B_0^{-1}A_0,\label{eq:quotient-c0}\\
+ C_n&=B_0^{-1}
+ \left(A_n-\sum_{j=1}^{n}B_jC_{n-j}\right),
+ \qquad n\ge1.\label{eq:quotient-recursion}
+\end{align}
+The system is triangular: once \(C_0,\ldots,C_{n-1}\) are known, \(C_n\) follows by one block division by \(B_0\).
+
+\begin{theorem}[Existence and uniqueness of a block quotient]\label{thm:block-quotient}
+If \(B_0\) is invertible in the chosen coefficient field \(E\), then for every \(A\in E[[t]]\) there is a unique \(Q\in E[[t]]\) satisfying \(BQ=A\), and its blocks are given by \cref{eq:quotient-c0,eq:quotient-recursion}.
+\end{theorem}
+
+\begin{proof}
+The recursion constructs a candidate. Induction on \(n\) shows that the coefficient of \(t^n\) in \(BQ\) equals \(A_n\). If \(Q_1,Q_2\) are solutions, let \(n\) be the first index where they differ. Then the \(t^n\) coefficient of \(B(Q_1-Q_2)\) is \(B_0(C_n^{(1)}-C_n^{(2)})\ne0\), a contradiction.
+\end{proof}
+
+\section{Worked quotient with polynomial blocks}
+Return to
+\begin{align*}
+ A&=1+(\lambda+1)t+(2\lambda^2-\lambda)t^2+\FormalBigO_t(t^3),\\
+ B&=1+(2-\lambda)t+(\lambda^2+3)t^2+\FormalBigO_t(t^3).
+\end{align*}
+Since \(B_0=1\), the quotient stays in \(\Plog\). The recursion gives
+\begin{align*}
+ C_0&=1,\\
+ C_1&=(\lambda+1)-(2-\lambda)=2\lambda-1,\\
+ C_2&=(2\lambda^2-\lambda)
+ -(2-\lambda)(2\lambda-1)-(\lambda^2+3)\\
+ &=3\lambda^2-6\lambda-1.
+\end{align*}
+Thus
+\begin{equation}\label{eq:worked-quotient}
+ \frac AB
+ =1+(2\lambda-1)t+(3\lambda^2-6\lambda-1)t^2+\FormalBigO_t(t^3).
+\end{equation}
+Assuming the displayed inputs have zero \(t^3\) blocks, the next quotient block is
+\[
+ C_3=\lambda^3-11\lambda^2+5\lambda+5.
+\]
+Multiplying \cref{eq:worked-quotient} by \(B\) verifies the result to the requested order.
+
+\section{When rational logarithmic blocks are forced}
+Consider
+\[
+ B=\lambda+1+t.
+\]
+Its leading block is \(B_0=\lambda+1\), not a unit in \(\K[\lambda]\). The reciprocal is
+\begin{equation}\label{eq:rational-escape}
+ B^{-1}
+ =\frac1{\lambda+1}
+ -\frac{t}{(\lambda+1)^2}
+ +\frac{t^2}{(\lambda+1)^3}-\cdots,
+\end{equation}
+which belongs to \(\Rlog\) but not \(\Plog\).
+
+If one wants a pure monomial scale in both \(t\) and \(\lambda^{-1}\), expand
+\[
+ (\lambda+1)^{-r}
+ =\lambda^{-r}(1+\lambda^{-1})^{-r}
+ =\lambda^{-r}\sum_{j\ge0}(-1)^j
+ \binom{r+j-1}{j}\lambda^{-j}.
+\]
+Substitution into \cref{eq:rational-escape} produces a double formal series in \(t\) and \(\lambda^{-1}\). The hierarchy \(t\precdom\lambda^{-N}\) makes the iterated field \(\Hlog\) the natural home.
+
+\section{Long division versus leading-factor inversion}
+There are two equivalent computational routes.
+
+\begin{enumerate}
+\item \textbf{Triangular long division.} Use \cref{eq:quotient-recursion} directly. This is efficient when many quotient blocks are required and \(B_0^{-1}\) is simple.
+\item \textbf{Leading-factor inversion.} Write \(B=t^\beta B_0(1+U)\), expand \((1+U)^{-1}\), then multiply by \(A\). This exposes valuation structure and is convenient for proofs.
+\end{enumerate}
+
+The two methods produce the same coefficients because they solve the same unique triangular system.
+
+\section{Error propagation and residual correction}
+Suppose \(Q_*\) is an approximate quotient and
+\[
+ R=A-BQ_*,\qquad \val_t(R)\ge N.
+\]
+Then the exact correction is
+\begin{equation}\label{eq:quotient-correction}
+ \Delta Q=B^{-1}R,
+\end{equation}
+so
+\[
+ \val_t(\Delta Q)=\val_t(R)-\val_t(B)
+ \ge N-\val_t(B).
+\]
+This gives an exact relation between residual order and quotient error. It is the linear prototype of Newton correction for compositional inversion.
+
+\section{Quotients involving Lambert-type blocks}
+Let \(L\to\infty\), \(r=L^{-1}\), and \(\ell=\log L\). If
+\[
+ W=L-\ell+\ell r+\frac{\ell(\ell-2)}2r^2+\cdots,
+\]
+then factoring \(L=r^{-1}\) and applying geometric inversion gives
+\begin{align}
+ \frac1W={}&r+\ell r^2+(\ell^2-\ell)r^3
+ +\left(\ell^3-\frac52\ell^2+\ell\right)r^4\notag\\
+ &+\left(\ell^4-\frac{13}{3}\ell^3+\frac92\ell^2-\ell\right)r^5
+ +\FormalBigO_r(r^6).
+\label{eq:reciprocal-W-preview}
+\end{align}
+No new scale appears: the leading block of \(W/L\) is the scalar one. This simple observation underlies expansions for \(\EulerE^W=z/W\), \(W'\), and rational functions of \(W\).
+
+\section{Algorithm and complexity}
+\begin{lstlisting}[style=pseudo,caption={Triangular block division}]
+function divide(A, B, cutoff N):
+    require B[0] is invertible in the coefficient domain
+    C := empty map
+    for n from 0 to N-1:
+        S := A.get(n, 0)
+        for j from 1 to n:
+            S := S - B.get(j, 0)*C[n-j]
+        C[n] := S / B[0]
+    return C
+\end{lstlisting}
+For dense inputs and naive polynomial arithmetic, the block convolution costs \(\BigO(N^2)\) polynomial multiplications. Newton inversion of formal power series can reduce asymptotic complexity when fast polynomial multiplication is available, but the triangular recurrence is transparent and usually preferable at the moderate orders encountered in asymptotics.
+
+\section{Exercises}
+\begin{exercise}
+Compute \((1+\lambda t+(\lambda^2+1)t^2)^{-1}\) through \(t^4\).
+\end{exercise}
+\begin{exercise}
+Show that \(A/B\in\Plog\) whenever \(B_0\in\K^\times\), even if \(A\) and \(B\) have finitely many negative powers of \(t\).
+\end{exercise}
+\begin{exercise}
+Find necessary and sufficient divisibility conditions on \(A_0,A_1\) for the quotient \(A/(\lambda+1+t)\) to have polynomial blocks through order \(t\).
+\end{exercise}
+
+\begin{summarybox}
+Division is triangular after the leading block is isolated. A scalar leading block preserves polynomial-log blocks; a nonconstant leading polynomial generally forces rational-log coefficients. Geometric inversion, long division, and residual correction are equivalent views of the same unique quotient.
+\end{summarybox}
+
+\chapter{Small analytic operations and differentiation}\label{ch:elementary-functions}
+
+\section{Functions of a \texorpdfstring{\(t\)}{t}-adically small series}
+Let \(U\in t\K(\lambda)[[t]]\). Any ordinary formal power series
+\[
+ \phi(z)=\sum_{n\ge0}c_nz^n\in\K[[z]]
+\]
+can be substituted into \(U\):
+\begin{equation}\label{eq:ordinary-substitution}
+ \phi(U)=\sum_{n\ge0}c_nU^n.
+\end{equation}
+Because \(\val_t(U^n)\ge n\), every target block receives contributions from only finitely many powers. Thus numerical convergence of \(\phi\) is irrelevant to the formal definition.
+
+The central cases are
+\begin{align}
+ (1+U)^\alpha&=\sum_{n\ge0}\binom{\alpha}{n}U^n,
+ \label{eq:formal-binomial}\\
+ \log(1+U)&=\sum_{n\ge1}\frac{(-1)^{n-1}}{n}U^n,
+ \label{eq:formal-log}\\
+ \EulerE^U&=\sum_{n\ge0}\frac{U^n}{n!}.
+ \label{eq:formal-exp}
+\end{align}
+They satisfy the expected formal identities, including
+\[
+ \EulerE^{\log(1+U)}=1+U,
+ \qquad
+ \log(\EulerE^U)=U,
+ \qquad
+ (1+U)^\alpha=\EulerE^{\alpha\log(1+U)}.
+\]
+
+\section{Leading-factor formulas}
+For a nonzero positive real transseries with factorization
+\[
+ F=t^\nu A_0(\lambda)(1+U),
+\]
+one formally writes
+\begin{align}
+ \log F&=\nu\log t+\log A_0(\lambda)+\log(1+U),\label{eq:log-leading-factor}\\
+ F^\alpha&=t^{\alpha\nu}A_0(\lambda)^\alpha(1+U)^\alpha.
+ \label{eq:power-leading-factor}
+\end{align}
+These expressions need not lie in the original block ring. Since \(\log t=-\lambda\), that part is harmless. But \(\log A_0(\lambda)\) can introduce \(\log\lambda\), and a fractional power of a polynomial block can introduce Laurent-log expansions. Closure therefore depends on the chosen coefficient domain.
+
+\begin{example}
+For \(F=1+\lambda t\),
+\begin{align*}
+ \log F&=\lambda t-\frac12\lambda^2t^2
+ +\frac13\lambda^3t^3-\cdots,\\
+ F^{1/2}&=1+\frac12\lambda t-\frac18\lambda^2t^2
+ +\frac1{16}\lambda^3t^3-\cdots.
+\end{align*}
+Both stay in \(\Plog\) because the leading block is one.
+\end{example}
+
+\begin{example}[Depth increase]
+For \(F=\lambda(1+t)\),
+\[
+ \log F=\log\lambda+t-\frac12t^2+\cdots.
+\]
+The new scale \(\log\lambda=\log\log X\) is unavoidable. This is the elementary model for logarithmic-depth growth under composition and inversion.
+\end{example}
+
+\section{The basic derivative formula}
+Since
+\[
+ \frac{\Differential t}{\Differential X}=-t^2,
+ \qquad
+ \frac{\Differential\lambda}{\Differential X}=t,
+\]
+we obtain, for \(P\in\K[\lambda]\),
+\begin{equation}\label{eq:block-derivative}
+ \frac{\Differential}{\Differential X}\bigl(t^nP(\lambda)\bigr)
+ =t^{n+1}\bigl(P'(\lambda)-nP(\lambda)\bigr).
+\end{equation}
+Define the block operator
+\begin{equation}\label{eq:Dn}
+ \mathcal D_nP=P'-nP.
+\end{equation}
+Then differentiation maps the \(n\)-th block to the \((n+1)\)-st block by \(\mathcal D_n\).
+
+\begin{proposition}[Differential closure]\label{prop:differential-closure}
+The algebra \(\Plog\) is closed under \(\Differential/\Differential X\). For
+\[
+ F=\sum_{n\ge n_0}A_n(\lambda)t^n,
+\]
+we have
+\begin{equation}\label{eq:series-derivative}
+ F'=\sum_{n\ge n_0}t^{n+1}\mathcal D_nA_n.
+\end{equation}
+If \(\val_t(F)\ge0\) and \(F\) is nonconstant, then
+\[
+ \val_t(F')\ge\val_t(F)+1,
+\]
+with possible strict inequality from cancellation.
+\end{proposition}
+
+\begin{proof}
+Formula \cref{eq:block-derivative} preserves polynomial blocks. Each output block receives a contribution from only one input block. If the leading power is nonnegative, differentiation raises it by one unless \(\mathcal D_nA_n=0\).
+\end{proof}
+
+The exception \(F=X=t^{-1}\) is important: \(X'=1\), so its valuation rises from \(-1\) to \(0\). In all cases differentiation shifts the power index by one.
+
+\section{Repeated derivatives}
+Repeated differentiation gives
+\begin{equation}\label{eq:repeated-derivative-block}
+ \frac{\Differential^k}{\Differential X^k}\bigl(t^nP(\lambda)\bigr)
+ =t^{n+k}
+ \mathcal D_{n+k-1}\cdots\mathcal D_{n+1}\mathcal D_nP.
+\end{equation}
+For a pure logarithmic polynomial \(P(\lambda)\) this simplifies to
+\begin{equation}\label{eq:stirling-derivative}
+ X^k\frac{\Differential^k}{\Differential X^k}P(\log X)
+ =\sum_{j=1}^{k}s(k,j)P^{(j)}(\lambda),
+\end{equation}
+where \(s(k,j)\) are the signed Stirling numbers of the first kind. The identity follows from
+\[
+ X\frac{\Differential}{\Differential X}=\frac{\Differential}{\Differential\lambda}
+\]
+and the operator factorization
+\[
+ X^kD^k=(XD)(XD-1)\cdots(XD-k+1).
+\]
+Formula \cref{eq:stirling-derivative} is the bridge between Lagrange inversion and the Stirling-number formula for Lambert \(W\).
+
+\section{Formal chain and quotient rules}
+Because the derivative is defined termwise and obeys the ordinary product rule on monomials, it satisfies
+\begin{align*}
+ (FG)'&=F'G+FG',\\
+ (F^{-1})'&=-F^{-2}F',\\
+ \left(\frac FG\right)'&=\frac{F'G-FG'}{G^2}.
+\end{align*}
+When composition is admissible, the chain rule is
+\begin{equation}\label{eq:chain-rule-preview}
+ (F\circ G)'=(F'\circ G)G'.
+\end{equation}
+We prove the composition statement in \cref{ch:near-linear-composition}.
+
+\section{Logarithmic differentiation}
+For a nonzero \(F\), its logarithmic derivative is
+\[
+ F^\dagger=\frac{F'}F.
+\]
+If
+\[
+ F=X^a(\log X)^b(1+U),
+\]
+then
+\begin{equation}\label{eq:logarithmic-derivative}
+ F^\dagger=\frac aX+\frac b{X\log X}+\frac{U'}{1+U}.
+\end{equation}
+The quantity \(H(F^\dagger\circ G)\) measures whether a perturbation \(H\) is small on the variation scale of \(F\) at \(G\). It is therefore central in Taylor-composition theorems.
+
+\section{Antidifferentiation within blocks}
+To solve
+\[
+ Y'=t^{n+1}Q(\lambda),
+\]
+seek \(Y=t^nP(\lambda)\). Equation \cref{eq:block-derivative} becomes
+\begin{equation}\label{eq:block-antiderivative-ode}
+ P'-nP=Q.
+\end{equation}
+If \(n\ne0\) and \(Q\) is a polynomial, there is a unique polynomial solution
+\begin{equation}\label{eq:block-antiderivative-solution}
+ P=-\frac1n\sum_{j=0}^{\polydeg Q}\frac{Q^{(j)}}{n^j}.
+\end{equation}
+Indeed, the finite sum telescopes under \(D-n\). If \(n=0\), one simply integrates \(P'=Q\), introducing an arbitrary constant. Thus \(\Plog\) is closed under termwise antiderivatives, modulo the usual constant and after treating the resonant \(t^1\) block correctly.
+
+This fact is useful because Lagrange--B\"urmann coefficients contain repeated derivatives, while inverse differential problems may require undoing those derivatives.
+
+\section{A compact closure table}
+\begin{table}[htbp]
+\centering
+\caption{Typical closure behavior of the block classes}\label{tab:closure}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.19\textwidth}XXX@{}}
+\toprule
+Operation & \(\Plog\) & \(\Rlog\) & Possible new scale\\
+\midrule
+Addition, multiplication & closed & closed & none\\
+Derivative & closed & closed & none\\
+Division & if leading block is a scalar, or by special divisibility & closed & Laurent powers of \(\lambda^{-1}\) after expansion\\
+\(\log(1+U)\), \(\EulerE^U\), \((1+U)^\alpha\), \(U=\FormalBigO_t(t)\) & closed & closed & none\\
+\(\log F\) for general leading block & not always & not always & \(\log\lambda\) may appear\\
+Composition & under near-linear hypotheses & under near-linear hypotheses & iterated logs may appear for logarithmic leading factors\\
+Series reversal & near identity under stated hypotheses & near identity under stated hypotheses & leading log monomials may force depth increase\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Exercises}
+\begin{exercise}
+Use \cref{eq:block-derivative} to compute the first four derivatives of \(\lambda^3\), expressing each as \(t^k\) times a polynomial in \(\lambda\).
+\end{exercise}
+\begin{exercise}
+Verify \cref{eq:block-antiderivative-solution} directly for \(Q=\lambda^3-2\lambda+1\) and \(n=2\).
+\end{exercise}
+\begin{exercise}
+Expand \((1+\lambda t+(\lambda^2-1)t^2)^{\alpha}\) through order \(t^2\) for symbolic \(\alpha\).
+\end{exercise}
+
+\begin{summarybox}
+Every ordinary formal power series can be evaluated at a \(t\)-adically small block series. Geometric, binomial, logarithmic, and exponential expansions follow. Differentiation is especially simple: it raises the power index by one and applies \(P\mapsto P'-nP\) to the block. General leading factors can introduce \(\log\lambda\), so scale growth must always be checked.
+\end{summarybox}
+
+\part{Composition and formal substitution}\label{part:composition}
+
+\chapter{Near-linear composition by exact substitution}\label{ch:near-linear-composition}
+
+\section{The admissible inner argument}
+A transseries written at \(X=+\infty\) may be composed only with an inner argument that also tends to the appropriate asymptotic region. In the real setting, the standard assumption is that the inner transseries is positive and infinitely large. The most stable subclass for polynomial--log blocks is
+\begin{equation}\label{eq:near-linear-G}
+ G(X)=cX(1+U(X)),
+ \qquad c\in\K^\times,
+ \qquad U\in t\K(\lambda)[[t]].
+\end{equation}
+We assume that a chosen value of \(\log c\) belongs to the coefficient field; otherwise, extend \(\K\) by that constant. For real asymptotics we take \(c>0\). Then \(G/X\to c\), and the two basic generators transform as
+\begin{align}
+ t\circ G&=\frac1{G}
+ =c^{-1}t(1+U)^{-1},\label{eq:t-compose-G}\\
+ \lambda\circ G&=\log G
+ =\lambda+\log c+\log(1+U).\label{eq:lambda-compose-G}
+\end{align}
+Both right sides lie in the same rational-log block field, and in the polynomial field if \(U\in t\K[\lambda][[t]]\).
+
+\begin{definition}[Near-linear block composition]\label{def:near-linear-composition}
+For
+\[
+ F=\sum_{n\ge n_0}A_n(\lambda)t^n
+\]
+and \(G\) as in \cref{eq:near-linear-G}, define
+\begin{equation}\label{eq:exact-block-composition}
+ F\circ G
+ =\sum_{n\ge n_0}
+ A_n\!\left(\lambda+\log c+\log(1+U)\right)
+ \left(c^{-1}t(1+U)^{-1}\right)^n.
+\end{equation}
+\end{definition}
+For negative \(n\), the factor \((1+U)^{-n}\) is an ordinary nonnegative integer power. For positive \(n\), it is expanded binomially. Since every \(A_n\) is a polynomial, its substitution in the shifted logarithm is finite apart from the small-series expansion of \(\log(1+U)\).
+
+\begin{theorem}[Closure under near-linear composition]\label{thm:near-linear-closure}
+Let \(F\in\Plog\), and let \(G=cX(1+U)\) with \(c\in\K^\times\), a chosen \(\log c\in\K\), and \(U\in t\K[\lambda][[t]]\). Then \(F\circ G\in\Plog\). The same statement holds with \(\Plog\) replaced by \(\Rlog\).
+\end{theorem}
+
+\begin{proof}
+Put
+\[
+ V=\log(1+U),\qquad R=(1+U)^{-1}.
+\]
+Here \(V\in t\K[\lambda][[t]]\) and \(R\in1+t\K[\lambda][[t]]\). For a fixed block \(A_n\), the polynomial
+\[
+ A_n(\lambda+\log c+V)
+\]
+is a finite sum of powers of \(V\) with polynomial coefficients in \(\lambda\), hence is in \(\K[\lambda][[t]]\). The factor \(R^n\) is also in that ring. Their product begins at power \(t^n\). Since \(n\) is bounded below, only finitely many block indices \(n<N\) can contribute below any cutoff \(t^N\). Therefore the outer sum is formally summable and has polynomial blocks.
+
+For \(F\in\Rlog\), write a block as \(A_n=p_n/q_n\). After substitution,
+\[
+ Q_n(\lambda+\log c+V)
+ =Q_n(\lambda+\log c)\bigl(1+E_n\bigr),
+ \qquad E_n\in t\K(\lambda)[[t]].
+\]
+The first factor is a nonzero rational function, and \((1+E_n)^{-1}\) exists by geometric inversion. Thus each substituted rational block belongs to \(\K(\lambda)[[t]]\), and the same summability argument proves the rational-log statement.
+\end{proof}
+
+\section{First exact examples}
+For \(G=X+\log X=X(1+t\lambda)\), we have
+\begin{align}
+ \frac1G&=t(1+t\lambda)^{-1}
+ =t-t^2\lambda+t^3\lambda^2-t^4\lambda^3+\cdots,
+ \label{eq:inverse-XlogX}\\
+ \log G&=\lambda+\log(1+t\lambda)
+ =\lambda+t\lambda-\frac12t^2\lambda^2
+ +\frac13t^3\lambda^3-\cdots.
+ \label{eq:log-XlogX}
+\end{align}
+These two expansions are the building blocks for composing any \(F\in\Plog\) with \(X+\log X\).
+
+\begin{workedbox}
+Take
+\[
+ F(X)=\frac{\log X}{X}=t\lambda,
+ \qquad G(X)=X+\log X.
+\]
+Then
+\[
+ F\circ G=\frac{\log G}{G}.
+\]
+Multiplying \cref{eq:inverse-XlogX,eq:log-XlogX} gives
+\begin{align}
+ F\circ G={}&t\lambda+t^2(-\lambda^2+\lambda)
+ +t^3\left(\lambda^3-\frac32\lambda^2\right)\notag\\
+ &+t^4\left(-\lambda^4+\frac{11}{6}\lambda^3\right)
+ +\FormalBigO_t(t^5).
+\label{eq:compose-log-over-x}
+\end{align}
+Every coefficient is obtained by ordinary block multiplication.
+\end{workedbox}
+
+\begin{example}
+Let \(F(Y)=Y^2+\log Y\) and \(G=X(1+\lambda t)\). Then
+\begin{align*}
+ F\circ G
+ &=X^2(1+\lambda t)^2+\lambda+\log(1+\lambda t)\\
+ &=X^2+2X\lambda+\lambda^2+\lambda
+ +\lambda t-\frac12\lambda^2t^2+\cdots.
+\end{align*}
+The polynomial part contains negative powers of \(t\), but only finitely many, so it still lies in \(\Plog\).
+\end{example}
+
+\section{Composition of near-identity maps}
+Define the near-identity class
+\begin{equation}\label{eq:near-identity-class}
+ \mathcal G=\{X+H:H\in\K[\lambda][[t]]\}.
+\end{equation}
+Every \(G=X+H\) can be written as \(X(1+tH)\), so \cref{thm:near-linear-closure} applies. If \(G_1=X+H_1\) and \(G_2=X+H_2\), then
+\begin{equation}\label{eq:near-identity-compose}
+ G_1\circ G_2=X+H_2+H_1\circ(X+H_2),
+\end{equation}
+and the correction belongs to \(\K[\lambda][[t]]\). Thus \(\mathcal G\) is closed under composition. In \cref{ch:inverse-theorem} we prove that every element of \(\mathcal G\) has an inverse in \(\mathcal G\), so it is a group.
+
+\section{Associativity and the chain rule}
+On the near-linear class, associativity can be checked on the generators \(t\) and \(\lambda\), then extended by algebra and \(t\)-adic continuity:
+\begin{equation}\label{eq:composition-associativity}
+ (F\circ G)\circ H=F\circ(G\circ H).
+\end{equation}
+The identity element is \(X\).
+
+Differentiating the exact substitutions \cref{eq:t-compose-G,eq:lambda-compose-G} and using the product rule proves the chain rule first for the generators and hence for every polynomial block. Continuity extends it to the full series:
+\begin{equation}\label{eq:chain-rule}
+ (F\circ G)'=(F'\circ G)G'.
+\end{equation}
+
+\section{A direct coefficient dependency bound}
+Suppose \(F\) has lower valuation \(n_0\), \(U=\FormalBigO_t(t)\), and we seek \(\trunc_{<N}(F\circ G)\). In \cref{eq:exact-block-composition}, the term indexed by \(n\) begins at \(t^n\). Hence only \(n<N\) are needed. Within that term, \(V=\log(1+U)\) and \(R=(1+U)^{-1}\) are needed only through order \(t^{N-n-1}\). This gives an exact guard-term policy.
+
+\begin{algorithmicbox}
+Composition is not implemented by expanding everything to one global high order. Each outer block \(n\) has its own local cutoff \(N-n\). Respecting this triangular dependency can reduce expression swell dramatically.
+\end{algorithmicbox}
+
+\section{Complex constants and branch bookkeeping}
+When \(c\in\ComplexNumbers^\times\), choose a value of \(\PrincipalLogarithm c\) and a sector on which \(G\) avoids the logarithmic cut. Formula \cref{eq:lambda-compose-G} then uses that chosen branch. Changing \(\PrincipalLogarithm c\) by \(2\pi\ImaginaryUnit j\) changes the constant part of the composed logarithm and can move the result between branches of a multivalued inverse.
+
+The formal block manipulations are identical after the branch is fixed. A symbolic implementation should therefore carry the branch constant as data rather than silently replacing \(\PrincipalLogarithm c\) by a principal value.
+
+\section{Exercises}
+\begin{exercise}
+Compute \(\log(X+a\log X)\) through order \(X^{-4}\) for symbolic \(a\).
+\end{exercise}
+\begin{exercise}
+Let \(F=t^2(\lambda^2+1)\) and \(G=2X(1+\lambda t)\). Compute \(F\circ G\) through order \(t^4\), retaining \(\log2\) symbolically.
+\end{exercise}
+\begin{exercise}
+Prove directly from \cref{eq:exact-block-composition} that \((FG)\circ H=(F\circ H)(G\circ H)\).
+\end{exercise}
+
+\begin{summarybox}
+Near-linear composition is controlled by two exact substitutions: \(t\mapsto c^{-1}t(1+U)^{-1}\) and \(\lambda\mapsto\lambda+\log c+\log(1+U)\). These formulas prove closure, associativity, the chain rule, and exact truncation bounds for polynomial--log blocks.
+\end{summarybox}
+
+\chapter{Formal Taylor expansion}\label{ch:taylor}
+
+\section{The elementary block theorem}
+Let
+\begin{equation}\label{eq:G-XH}
+ G=X+H,
+ \qquad H\in\K[\lambda][[t]].
+\end{equation}
+Although \(H\) need not tend to zero---it may be a polynomial in \(\log X\)---we always have \(H/X=tH\precdom1\). This is exactly the near-identity scale.
+
+\begin{theorem}[Formal Taylor formula in the block algebra]\label{thm:block-taylor}
+For every \(F\in\Plog\) and \(H\in\K[\lambda][[t]]\),
+\begin{equation}\label{eq:block-taylor}
+ F(X+H)=\sum_{k\ge0}\frac{F^{(k)}(X)}{k!}H^k.
+\end{equation}
+The family on the right is formally summable in \(\Plog\).
+\end{theorem}
+
+\begin{proof}
+Let \(n_0=\val_t(F)\). By repeated use of \cref{eq:block-derivative},
+\[
+ \val_t(F^{(k)})\ge n_0+k
+\]
+unless the derivative vanishes, in which case the estimate is harmless. Since \(\val_t(H)\ge0\), the \(k\)-th Taylor term has valuation at least \(n_0+k\). Thus the family is formally summable.
+
+It remains to identify the sum. For \(F=X=t^{-1}\), the Taylor series terminates and gives \(X+H\). For \(F=t=X^{-1}\), it is the geometric identity
+\[
+ (X+H)^{-1}=t(1+tH)^{-1}
+ =\sum_{k\ge0}(-1)^kt^{k+1}H^k.
+\]
+For \(F=\lambda\), it is
+\[
+ \log(X+H)=\lambda+\log(1+tH)
+ =\lambda+\sum_{k\ge1}\frac{(-1)^{k-1}}k(tH)^k.
+\]
+The identity is preserved by addition and multiplication, so it holds for every monomial \(t^n\lambda^m\) and every polynomial block. Finally, both sides are continuous in the \(t\)-adic topology, so the result extends to \(F\).
+\end{proof}
+
+\section{Why the theorem is stronger than numerical Taylor expansion}
+Classical Taylor's theorem expands a function around a finite point and requires analytic or differentiability hypotheses. Here the base point is the asymptotic variable itself, the increment may grow like \(\log^d X\), and the conclusion is a formal identity. The small parameter is not \(H\) but the relative displacement \(H/X\).
+
+For example,
+\begin{align*}
+ \log(X+\lambda)
+ &=\lambda+\frac{\lambda}{X}-\frac{\lambda^2}{2X^2}
+ +\frac{\lambda^3}{3X^3}-\cdots,\\
+ (X+\lambda)^{1/2}
+ &=X^{1/2}\left(1+\frac{\lambda}{X}\right)^{1/2}.
+\end{align*}
+The first formula lies in the integer block algebra. The second requires the generalized monomial \(X^{1/2}\), but the correction blocks are governed by the same Taylor mechanism.
+
+\section{Taylor coefficients by the block derivative operator}
+Write
+\[
+ F=\sum_n t^nA_n(\lambda).
+\]
+Then
+\[
+ F^{(k)}=\sum_n t^{n+k}
+ \mathcal D_{n+k-1}\cdots\mathcal D_n A_n.
+\]
+Substituting into \cref{eq:block-taylor} yields an entirely algebraic formula:
+\begin{equation}\label{eq:taylor-block-operator}
+ F(X+H)=
+ \sum_{n}\sum_{k\ge0}
+ \frac{t^{n+k}H^k}{k!}
+ \mathcal D_{n+k-1}\cdots\mathcal D_n A_n.
+\end{equation}
+At output order \(t^N\), only \(k\le N-n\) can contribute.
+
+\section{A worked Taylor composition}
+Take \(F(X)=t\lambda=\lambda/X\) and \(H=\lambda\). We have
+\begin{align*}
+ F'&=t^2(1-\lambda),\\
+ F''&=t^3(2\lambda-3),\\
+ F'''&=t^4(11-6\lambda),
+\end{align*}
+so
+\begin{align*}
+ F(X+\lambda)
+ & =t\lambda+t^2\lambda(1-\lambda)
+ +\frac12t^3\lambda^2(2\lambda-3)\\
+ &\quad+\frac16t^4\lambda^3(11-6\lambda)+\cdots,
+\end{align*}
+which is exactly \cref{eq:compose-log-over-x}.
+
+\section{Taylor formula for a difference}
+For two corrections \(H,K\in\K[\lambda][[t]]\),
+\begin{equation}\label{eq:taylor-difference}
+ F(X+H)-F(X+K)
+ =(H-K)\int_0^1F'\bigl(X+K+s(H-K)\bigr)\Differential s
+\end{equation}
+may be interpreted formally by integrating the polynomial in \(s\) coefficientwise. Equivalently,
+\begin{equation}\label{eq:taylor-difference-series}
+ F(X+H)-F(X+K)
+ =\sum_{j\ge1}\frac{F^{(j)}(X+K)}{j!}(H-K)^j.
+\end{equation}
+If \(F'\in t\K[\lambda][[t]]\), the first disagreement gains at least one \(t\)-order:
+\begin{equation}\label{eq:composition-Lipschitz}
+ \val_t\bigl(F(X+H)-F(X+K)\bigr)
+ \ge\val_t(H-K)+1.
+\end{equation}
+This estimate drives the inverse fixed-point theorem.
+
+\section{Beyond the elementary class}
+In a full transseries field, the condition \(H/X\precdom1\) does not by itself guarantee that the infinite Taylor series is summable. A rapidly varying monomial \(\m\) can have a large logarithmic derivative, and the relevant quantity is
+\begin{equation}\label{eq:variation-scale}
+ H\left(\frac{\m'}{\m}\circ G\right).
+\end{equation}
+If this is not small, successive Taylor terms may fail to decrease.
+
+Edgar's work distinguishes shallow, moderate, and deep substitutions and establishes composition under appropriate support conditions \cite{edgar-composition,edgar-fractional}. Recent work of Mantova gives a broad Taylor approximation theorem for omega-series: under comparability of the base points and a logarithmic-derivative smallness condition, the finite Taylor polynomial has a controlled next-term error \cite{mantova-monotonicity}. The elementary theorem above avoids those complications because every derivative raises the primary \(t\)-order.
+
+\begin{warningbox}
+For polynomial--log blocks, \(H\in\K[\lambda][[t]]\) is a robust sufficient condition. In a deeper transseries containing, for example, \(\EulerE^{\EulerE^X}\), a perturbation that is small compared with \(X\) may still be enormous on the variation scale of the outer monomial.
+\end{warningbox}
+
+\section{Fa\`a di Bruno and nested composition}
+Repeated differentiation of a composition is governed by Bell polynomials:
+\begin{equation}\label{eq:faa-di-bruno}
+ \frac{\Differential^n}{\Differential X^n}F(G(X))
+ =\sum_{k=1}^{n}F^{(k)}(G(X))
+ B_{n,k}\bigl(G',G'',\ldots,G^{(n-k+1)}\bigr).
+\end{equation}
+In the block algebra, every derivative of a near-identity correction gains a power of \(t\), so each Bell-polynomial term has a predictable valuation. This makes high-order derivative and composition algorithms triangular, although direct exact substitution is usually simpler.
+
+\section{Truncation algorithm}
+\begin{algorithm}[Taylor composition through \(t^{N-1}\)]\label{alg:taylor-composition}
+For \(F\in\Plog\), \(H\in\K[\lambda][[t]]\):
+\begin{enumerate}
+\item let \(n_0=\val_t(F)\);
+\item compute derivatives \(F^{(k)}\) only for \(0\le k<N-n_0\);
+\item in the \(k\)-th term, truncate \(F^{(k)}\) and \(H^k\) so that their product is known below \(t^N\);
+\item add the terms and collect blocks;
+\item certify by comparing with the exact generator substitution, when available.
+\end{enumerate}
+\end{algorithm}
+
+\section{Exercises}
+\begin{exercise}
+Use formal Taylor expansion to compute \((X+\log X)^{-2}\) through order \(X^{-6}\).
+\end{exercise}
+\begin{exercise}
+Prove \cref{eq:composition-Lipschitz} under the assumption \(F'\in t\K[\lambda][[t]]\).
+\end{exercise}
+\begin{exercise}
+For \(F=\EulerE^{-X}\) in the larger transseries field and \(H=\log X\), show that the Taylor series is summable and agrees with \(\EulerE^{-X}X^{-1}\). Compare the relevant logarithmic derivative with the case \(F=\EulerE^{\EulerE^X}\).
+\end{exercise}
+
+\begin{summarybox}
+For the near-identity increment \(H\in\K[\lambda][[t]]\), formal Taylor expansion is an exact identity because each derivative raises the primary power order. The difference estimate gains one order when the outer derivative is \(\FormalBigO_t(t)\), providing the contraction needed for series reversal. Deeper transseries require a logarithmic-derivative test.
+\end{summarybox}
+
+\chapter{Composition beyond the near-linear class}\label{ch:composition-depth}
+
+\section{A general power--log leading monomial}
+Let
+\begin{equation}\label{eq:general-leading-G}
+ G(X)=cX^\beta(\log X)^\gamma(1+U),
+ \qquad U\precdom1.
+\end{equation}
+Then
+\begin{align}
+ \frac1G&=c^{-1}t^\beta\lambda^{-\gamma}(1+U)^{-1},
+ \label{eq:general-t-sub}\\
+ \log G&=\log c+\beta\lambda+\gamma\log\lambda+\log(1+U).
+ \label{eq:general-lambda-sub}
+\end{align}
+The term \(\gamma\log\lambda\) shows that a logarithmic factor in the leading monomial increases the iterated-log depth under composition. The original one-log block algebra cannot be closed under such substitutions when \(\gamma\ne0\).
+
+\section{Depth bookkeeping}
+Introduce
+\[
+ \lambda_1=\log X,
+ \qquad \lambda_2=\log\lambda_1,
+ \qquad \lambda_3=\log\lambda_2,
+ \quad\ldots.
+\]
+A depth-\(r\) polynomial-log transseries has blocks polynomial or Laurent in \(\lambda_1,\ldots,\lambda_r\), ordered lexicographically after the primary power. Under \cref{eq:general-leading-G}, depth one is mapped to depth two when \(\gamma\ne0\). More complicated leading monomials may increase depth further.
+
+In Dulac notation near \(x=0^+\), it is often more convenient to use
+\[
+ \ell_1=-\frac1{\log x},
+ \qquad \ell_{j+1}=\ell_1\circ\ell_j.
+\]
+The depth increase then appears through powers of \(\ell_2\). Marde\v{s}i\'c et al. show explicitly that inversion of a leading Dulac monomial involving a logarithm generally produces double logarithms \cite{mardesic-length}.
+
+\section{Composition by a power map}
+For \(G=X^\beta\), \(\beta>0\),
+\[
+ t\circ G=t^\beta,
+ \qquad
+ \lambda\circ G=\beta\lambda.
+\]
+Hence
+\begin{equation}\label{eq:power-composition}
+ \left(\sum_nA_n(\lambda)t^n\right)\circ X^\beta
+ =\sum_nA_n(\beta\lambda)t^{\beta n}.
+\end{equation}
+Integer exponents stay in \(\Plog\); arbitrary real \(\beta\) require a Hahn support in real powers.
+
+\section{Composition by a logarithm}
+For \(G=\log X=\lambda\),
+\[
+ t\circ G=\lambda^{-1},
+ \qquad
+ \lambda\circ G=\log\lambda.
+\]
+Thus right-composition by \(\log X\) shifts the entire hierarchy down one level. In a full logarithmic-exponential transseries field, iterated right-composition by logarithms is part of the construction of logarithmic depth \cite{edgar-beginners,vdhoeven-book}.
+
+\section{A controlled mixed example}
+Let
+\[
+ F(Y)=\frac{\log Y}{Y},
+ \qquad
+ G(X)=X^2\lambda(1+t).
+\]
+Then
+\begin{align*}
+ \frac1G&=t^2\lambda^{-1}(1-t+t^2-\cdots),\\
+ \log G&=2\lambda+\log\lambda+\log(1+t).
+\end{align*}
+Therefore
+\begin{align*}
+ F\circ G
+ &=t^2\lambda^{-1}(1-t+t^2-\cdots)
+ \left(2\lambda+\log\lambda+t-\frac12t^2+\cdots\right).
+\end{align*}
+The first terms are
+\[
+ 2t^2+t^2\frac{\log\lambda}{\lambda}
+ -2t^3-t^3\frac{\log\lambda}{\lambda}
+ +t^3\lambda^{-1}+\cdots.
+\]
+The appearance of \(\log\lambda\) is not a computational accident; it is forced by the leading factor \(\lambda\) in \(G\).
+
+\section{Collapse and support hazards}
+For an infinite outer series, substitution can fail if infinitely many distinct outer monomials collapse to the same inner monomial or if the substituted support ceases to be well based. Full composition theorems rule out these pathologies under structural hypotheses. In the block setting, near-linear substitution avoids collapse because the leading power \(t^n\) remains \(t^n\) up to a unit.
+
+A second hazard is branch ambiguity. A third is scale omission: computing in a class that lacks \(\log\lambda\) may falsely force coefficients to zero or produce a ``remainder'' that is actually larger than retained terms.
+
+\section{A decision procedure for the target class}
+Given an outer block series and a proposed inner argument:
+\begin{enumerate}
+\item compute the images of the generators \(t\) and \(\lambda\);
+\item factor their leading monomials;
+\item list every new logarithmic level appearing in those images;
+\item choose a Hahn or iterated-log class containing those levels;
+\item verify that substituted supports remain well based;
+\item only then expand and truncate.
+\end{enumerate}
+This generator-first procedure is much safer than expanding a complicated expression and trying to infer the correct scale afterward.
+
+\section{Exercises}
+\begin{exercise}
+Compute the generator substitutions for \(G=cX^\beta(\log X)^\gamma(\log\log X)^\delta(1+U)\), and identify the maximum logarithmic depth introduced when the outer series has depth one.
+\end{exercise}
+\begin{exercise}
+Show that composition by \(X^\beta\) is an automorphism of a suitable Hahn field with real power support when \(\beta>0\).
+\end{exercise}
+\begin{exercise}
+Explain why a one-log ansatz cannot invert \(X\log X\) to all orders, even though its leading inverse can be guessed as \(X/\log X\).
+\end{exercise}
+
+\begin{summarybox}
+Near-linear substitutions preserve one-log blocks, but a leading factor \((\log X)^\gamma\) introduces \(\log\log X\). Composition must therefore begin with generator images and depth bookkeeping. General Hahn and Dulac classes are designed precisely to accommodate this controlled scale growth.
+\end{summarybox}
+
+\part{Series reversal and compositional inversion}\label{part:reversion}
+
+\chapter{The near-identity inverse theorem}\label{ch:inverse-theorem}
+
+\section{The reversal problem}
+Let
+\begin{equation}\label{eq:F-near-id}
+ F(X)=X+H(X),
+ \qquad H\in\K[\lambda][[t]].
+\end{equation}
+Since \(H/X=tH\precdom1\), the leading behavior of \(F\) is the identity. We seek
+\begin{equation}\label{eq:G-near-id}
+ G(X)=X+K(X),
+ \qquad K\in\K[\lambda][[t]],
+\end{equation}
+such that
+\begin{equation}\label{eq:two-sided-inverse}
+ F\circ G=G\circ F=X.
+\end{equation}
+This operation is called \emph{series reversal}, \emph{reversion}, or \emph{compositional inversion}. We write \(G=F\invcomp\).
+
+Substituting \cref{eq:F-near-id,eq:G-near-id} into \(F\circ G=X\) gives the fixed-point equation
+\begin{equation}\label{eq:inverse-fixed-point}
+ K=-H(X+K).
+\end{equation}
+The derivative \(H'\) is \(\FormalBigO_t(t)\), so the right side is contractive in the \(t\)-adic sense.
+
+\section{The contraction lemma}
+\begin{lemma}[Gain of one block]\label{lem:inverse-contraction}
+Let \(H,K_1,K_2\in\K[\lambda][[t]]\). Then
+\begin{equation}\label{eq:gain-one-H}
+ \val_t\bigl(H(X+K_1)-H(X+K_2)\bigr)
+ \ge \val_t(K_1-K_2)+1.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Use the Taylor difference formula \cref{eq:taylor-difference-series}:
+\[
+ H(X+K_1)-H(X+K_2)
+ =\sum_{j\ge1}\frac{H^{(j)}(X+K_2)}{j!}(K_1-K_2)^j.
+\]
+Because \(H'\in t\K[\lambda][[t]]\), the first term has valuation at least \(\val_t(K_1-K_2)+1\). For \(j\ge2\), \(H^{(j)}\) has valuation at least \(j\), so the valuation is even larger.
+\end{proof}
+
+\section{Existence and uniqueness}
+\begin{theorem}[Near-identity reversal]\label{thm:near-id-inverse}
+For every \(F=X+H\) with \(H\in\K[\lambda][[t]]\), there is a unique \(G=X+K\) with \(K\in\K[\lambda][[t]]\) such that
+\[
+ F\circ G=G\circ F=X.
+\]
+Consequently, the class
+\[
+ \mathcal G=\{X+H:H\in\K[\lambda][[t]]\}
+\]
+is a group under composition.
+\end{theorem}
+
+\begin{proof}
+Define
+\[
+ \Phi(K)=-H(X+K).
+\]
+Start with \(K_0=0\) and iterate \(K_{j+1}=\Phi(K_j)\). By \cref{lem:inverse-contraction},
+\[
+ \val_t(K_{j+1}-K_j)\ge\val_t(K_j-K_{j-1})+1.
+\]
+Thus the differences tend to infinite valuation, and \((K_j)\) is Cauchy. Completeness gives a limit \(K\), and continuity of composition gives \(K=\Phi(K)\), hence \(F\circ(X+K)=X\).
+
+If \(K\) and \(\widetilde K\) are fixed points, then
+\[
+ \val_t(K-\widetilde K)
+ =\val_t(\Phi(K)-\Phi(\widetilde K))
+ \ge\val_t(K-\widetilde K)+1,
+\]
+which is impossible unless \(K=\widetilde K\). Thus the right inverse is unique.
+
+It remains to prove that it is also a left inverse. Put \(J=G\circ F\). Associativity and \(F\circ G=X\) give
+\[
+ J\circ J=G\circ F\circ G\circ F=G\circ F=J.
+\]
+Also \(J=X+R\) with \(R\in\K[\lambda][[t]]\). If \(R\ne0\), let \(r=\val_t(R)\). Taylor expansion gives
+\[
+ J\circ J=X+2R+\text{terms of valuation at least }r+1,
+\]
+whereas \(J=X+R\). The leading block cannot agree in characteristic zero. Hence \(R=0\) and \(G\circ F=X\).
+\end{proof}
+
+\section{One new correct block per iteration}
+The proof is constructive. If \(K_j\) is correct through \(t^{N-1}\), then
+\[
+ K_{j+1}=-H(X+K_j)
+\]
+is correct through \(t^N\). More precisely, if \(K_*-K_j=\FormalBigO_t(t^N)\), where \(K_*\) is the exact fixed point, then
+\[
+ K_*-K_{j+1}
+ =\Phi(K_*)-\Phi(K_j)=\FormalBigO_t(t^{N+1}).
+\]
+Thus fixed-point iteration is a coefficient-stabilizing algorithm.
+
+\begin{algorithm}[Fixed-point reversal]\label{alg:fixed-reversal}
+To reverse \(F=X+H\) through order \(t^{N-1}\):
+\begin{enumerate}
+\item set \(K_0=0\);
+\item for \(j=0,1,\ldots,N\), compute
+\[
+ K_{j+1}=\trunc_{<N}\bigl(-H(X+K_j)\bigr);
+\]
+\item stop when \(\trunc_{<N}K_{j+1}=\trunc_{<N}K_j\);
+\item return \(G=X+K_j\) and verify \(F\circ G-X=\FormalBigO_t(t^N)\).
+\end{enumerate}
+\end{algorithm}
+
+\section{Triangularity of the coefficient equations}
+Write
+\[
+ K=\sum_{n\ge0}K_n(\lambda)t^n.
+\]
+The block \(K_n\) appears on the right side of \cref{eq:inverse-fixed-point} only after multiplication by \(H'=\FormalBigO_t(t)\), so it cannot affect the coefficient of \(t^n\). Therefore the equation for \(K_n\) depends only on \(K_0,\ldots,K_{n-1}\). This is the compositional analogue of the triangular quotient recursion.
+
+At leading order,
+\begin{equation}\label{eq:inverse-leading-correction}
+ K_0=-H_0(\lambda),
+\end{equation}
+where \(H_0\) is the \(t^0\) block of \(H\). Higher blocks incorporate derivatives of \(H_0\) and the positive-power blocks of \(H\).
+
+\section{Formal monotonicity and functional interpretation}
+If \(\K=\RealNumbers\) and \(F'=1+H'>0\) in the formal order, then \(F\) is formally increasing. In a Hardy-field or germ realization, this corresponds to eventual strict monotonicity and makes the compositional inverse an actual germ. Full transseries fields admit broad compositional inverse theorems; in logarithmic-exponential series this is part of the established structure \cite{vdDMM-2001,adh-book}. The block theorem above gives an elementary, explicit proof for the class used in this article.
+
+\section{Exercises}
+\begin{exercise}
+Carry out three fixed-point iterates for \(F=X+\log X\) and identify which blocks stabilize at each step.
+\end{exercise}
+\begin{exercise}
+Prove that a near-identity idempotent \(J\circ J=J\) must equal \(X\) by comparing its first nonzero correction block.
+\end{exercise}
+\begin{exercise}
+Show that the inverse of \(X+H\), where \(H=\FormalBigO_t(t^q)\) for \(q\ge1\), has the form \(X-H+\FormalBigO_t(t^{2q+1})\).
+\end{exercise}
+
+\begin{summarybox}
+Every \(X+H\) with \(H\) in the nonnegative block algebra has a unique two-sided compositional inverse of the same form. The fixed-point map \(K\mapsto-H(X+K)\) gains one \(t\)-order, proving existence, uniqueness, and coefficient stabilization.
+\end{summarybox}
+
+\chapter{Four reversal algorithms}\label{ch:reversal-algorithms}
+
+\section{Method I: fixed-point iteration}
+The fixed-point method is conceptually simplest and requires only composition. Its linear convergence in valuation---one or more new blocks per step---makes it robust. It is especially effective after a good leading approximation has removed a large correction, as in the Lambert \(W\) equation \cref{eq:preview-fixed}.
+
+The main implementation choice is the normal form of the fixed-point equation. Algebraically equivalent equations can have very different contraction factors. For example, solving
+\[
+ Y+\log Y=X
+\]
+by \(Y=X-\log Y\) works, but writing
+\[
+ Y=X-\lambda+U
+\]
+and deriving an equation for \(U=\FormalBigO_t(t)\) begins one outer block closer to the answer; its leading coefficient may grow polynomially in \(\lambda\).
+
+\section{Method II: direct coefficient recursion}
+Insert an ansatz
+\[
+ G=X+\sum_{n=0}^{N-1}K_n(\lambda)t^n
+\]
+into \(F\circ G=X\), expand, and solve successively for \(K_n\). Triangularity guarantees that the new block enters linearly with coefficient one. This method is ideal when one wants symbolic formulas in parameters.
+
+\begin{algorithm}[Coefficient-by-coefficient reversal]\label{alg:coefficient-reversal}
+\begin{enumerate}
+\item choose a target class and ansatz for \(K\);
+\item compose \(F(X+K)\) only through the next unknown order;
+\item set that residual block equal to zero and solve for the new \(K_n\);
+\item repeat;
+\item verify both \(F\circ G\) and \(G\circ F\) to the target order.
+\end{enumerate}
+\end{algorithm}
+
+The method generalizes to real-exponent and iterated-log supports, but the order in which unknown monomials are solved must follow the support order rather than an integer loop.
+
+\section{Method III: Newton correction}
+Let \(G\) be an approximate inverse and define the composition residual
+\begin{equation}\label{eq:inverse-residual}
+ R=F\circ G-X.
+\end{equation}
+Linearizing \(F(G+\Delta)\) gives
+\[
+ F(G+\Delta)-X
+ =R+(F'\circ G)\Delta+\frac12(F''\circ G)\Delta^2+\cdots.
+\]
+Choose
+\begin{equation}\label{eq:newton-composition}
+ \Delta=-\frac{R}{F'\circ G}.
+\end{equation}
+The Newton update is therefore
+\begin{equation}\label{eq:newton-reversion}
+ G_{\mathrm{new}}
+ =G-\frac{F\circ G-X}{F'\circ G}.
+\end{equation}
+For \(F=X+H\), we have \(F'=1+\FormalBigO_t(t)\), so the denominator is a unit.
+
+\begin{proposition}[Quadratic valuation improvement]\label{prop:newton-improvement}
+Suppose \(F=X+H\), \(H\in\K[\lambda][[t]]\), and \(R=F\circ G-X=\FormalBigO_t(t^q)\) with \(q\ge0\). Then the Newton update satisfies
+\begin{equation}\label{eq:newton-improvement}
+ F\circ G_{\mathrm{new}}-X=\FormalBigO_t(t^{2q+2}).
+\end{equation}
+A weaker but often more convenient statement is that the number of correct blocks at least doubles after the initial normalization.
+\end{proposition}
+
+\begin{proof}
+The correction \(\Delta\) has valuation at least \(q\). The constant and linear residual terms cancel by construction. Since \(F''=H''=\FormalBigO_t(t^2)\), the quadratic Taylor term has valuation at least \(2+2q\); all higher terms are deeper.
+\end{proof}
+
+Newton iteration requires multiplication, division, differentiation, and composition, but its rapid convergence is valuable for high orders.
+
+\section{Method IV: Lagrange--B\"urmann at infinity}
+The inverse of \(F=X+H\) has the explicit formal expansion
+\begin{theorem}[Lagrange--B\"urmann reversal formula]\label{thm:lagrange-infinity}
+For \(H\in\K[\lambda][[t]]\),
+\begin{equation}\label{eq:lagrange-infinity}
+ (X+H)\invcomp
+ =X+\sum_{n\ge1}\frac{(-1)^n}{n!}
+ \frac{\Differential^{n-1}}{\Differential X^{n-1}}\bigl(H(X)^n\bigr).
+\end{equation}
+The family is formally summable in \(\Plog\).
+\end{theorem}
+
+\begin{proof}
+Introduce an auxiliary parameter \(u\) and solve
+\[
+ K(u)=-uH(X+K(u)),\qquad K(0)=0.
+\]
+The ordinary Lagrange inversion theorem in the formal parameter \(u\), with coefficients in the differential algebra of functions of \(X\), gives
+\[
+ [u^n]K(u)=\frac{(-1)^n}{n!}D^{n-1}(H^n).
+\]
+Setting \(u=1\) is formally legitimate because the \(n\)-th coefficient has \(t\)-valuation at least \(n-1\): every derivative raises the primary power, while \(H^n\) has nonnegative valuation. Therefore the family is \(t\)-adically summable and its sum satisfies the inverse fixed-point equation. Uniqueness from \cref{thm:near-id-inverse} identifies it with the inverse.
+\end{proof}
+
+\section{Universal differential expansion}
+The first four Lagrange terms are
+\begin{align}
+ (X+H)\invcomp={}&X-H+HH'
+ -H(H')^2-\frac12H^2H''\notag\\
+ &+H(H')^3+\frac32H^2H'H''+\frac16H^3H'''
+ +\cdots.
+\label{eq:universal-reversion}
+\end{align}
+These are universal differential polynomials. Higher terms can be expressed by partial Bell polynomials or rooted-tree combinatorics.
+
+Formula \cref{eq:universal-reversion} is useful when \(H\) is itself a short expression. Direct coefficient recursion is preferable when \(H\) has many blocks, because expanding \(H^n\) can create large intermediate expressions.
+
+\section{Comparison of the methods}
+\begin{table}[htbp]
+\centering
+\caption{Reversal methods for near-identity power--log transseries}\label{tab:reversal-methods}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.18\textwidth}XXX@{}}
+\toprule
+Method & Strength & Cost & Best use\\
+\midrule
+Fixed point & simplest proof; one-sided equation only & linear valuation convergence & moderate order; transparent derivations\\
+Coefficient recursion & exact control of symbolic parameters & repeated composition at each order & closed formulas and hand calculations\\
+Newton & near-quadratic improvement & needs derivative, division, composition & high-order computer algebra\\
+Lagrange--B\"urmann & explicit universal formula & powers and high derivatives can swell & short perturbations; coefficient identities\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{A hybrid strategy}
+A practical high-order solver often combines all four ideas:
+\begin{enumerate}
+\item use dominant balance to choose the correct scale;
+\item use a few fixed-point steps to normalize the first blocks;
+\item switch to Newton iteration for rapid order growth;
+\item use Lagrange coefficients or direct recursion as independent checks;
+\item certify the final result by composition residuals.
+\end{enumerate}
+Independent derivations are particularly valuable in logarithmic calculations because a sign error can propagate through many polynomial blocks while leaving the expression superficially plausible.
+
+\section{Exercises}
+\begin{exercise}
+Derive the first four terms in \cref{eq:universal-reversion} directly from \cref{eq:lagrange-infinity}.
+\end{exercise}
+\begin{exercise}
+Prove the valuation estimate in \cref{prop:newton-improvement} when the initial residual has valuation \(q=-1\), after first extracting the leading identity term.
+\end{exercise}
+\begin{exercise}
+Implement on paper one fixed-point step and one Newton step for \(F=X+\log X\), starting from \(G_0=X-\log X\), and compare the number of correct blocks.
+\end{exercise}
+
+\begin{summarybox}
+Fixed-point iteration, triangular recursion, Newton correction, and Lagrange--B\"urmann inversion solve the same reversal problem from complementary viewpoints. The first emphasizes support and existence, the second coefficient control, the third speed, and the fourth universal formulas.
+\end{summarybox}
+
+\chapter{Worked reversions in the block algebra}\label{ch:worked-reversions}
+
+\section{The inverse of \texorpdfstring{\(X+\log X\)}{X+log X}}
+Set \(H=\lambda\) in \cref{eq:lagrange-infinity}. Then
+\begin{equation}\label{eq:omega-lagrange}
+ (X+\log X)\invcomp
+ =X+\sum_{n\ge1}\frac{(-1)^n}{n!}D^{n-1}\lambda^n.
+\end{equation}
+The first terms are
+\begin{align}
+ \WrightOmega(X):=(X+\log X)\invcomp
+ ={}&X-\lambda+\frac{\lambda}{X}
+ +\frac{\lambda(\lambda-2)}{2X^2}\notag\\
+ &+\frac{\lambda(2\lambda^2-9\lambda+6)}{6X^3}\notag\\
+ &+\frac{\lambda(3\lambda^3-22\lambda^2+36\lambda-12)}{12X^4}\notag\\
+ &+\frac{\lambda(12\lambda^4-125\lambda^3+350\lambda^2-300\lambda+60)}{60X^5}
+ +\FormalBigO_t(t^6).
+\label{eq:omega-expansion}
+\end{align}
+The function \(\WrightOmega\) is Wright's omega function, characterized by
+\begin{equation}\label{eq:omega-equation}
+ \WrightOmega(X)+\log\WrightOmega(X)=X.
+\end{equation}
+On compatible branches, \(\WrightOmega(X)=W(\EulerE^X)\).
+
+\begin{workedbox}
+To verify \cref{eq:omega-expansion} through \(X^{-3}\), substitute
+\[
+ Y=X-\lambda+t\lambda
+ +\frac12t^2(\lambda^2-2\lambda)
+ +\frac16t^3(2\lambda^3-9\lambda^2+6\lambda)
+\]
+into \(Y+\log Y-X\). Factor \(Y=X(1+t(Y-X))\) and expand the logarithm. All blocks through \(t^3\) cancel. The residual begins at \(t^4\) with a polynomial in \(\lambda\).
+\end{workedbox}
+
+\section{The inverse of \texorpdfstring{\(X-\log X\)}{X-log X}}
+Now \(H=-\lambda\). Lagrange inversion gives
+\begin{align}
+ (X-\log X)\invcomp
+ ={}&X+\lambda+\frac{\lambda}{X}
+ -\frac{\lambda(\lambda-2)}{2X^2}\notag\\
+ &+\frac{\lambda(2\lambda^2-9\lambda+6)}{6X^3}\notag\\
+ &-\frac{\lambda(3\lambda^3-22\lambda^2+36\lambda-12)}{12X^4}
+ +\cdots.
+\label{eq:inverse-X-minus-log}
+\end{align}
+After a sign change, this is the pattern governing \(W_{-1}\) near the origin.
+
+\section{An affine-log perturbation}
+Consider
+\begin{equation}\label{eq:affine-log-F}
+ F(X)=X+a\lambda+b+(c\lambda+d)t+\FormalBigO_t(t^2).
+\end{equation}
+Write \(F=X+H\) and apply the universal formula. Through order \(t^2\),
+\begin{align}
+ F\invcomp(X)={}&X-a\lambda-b
+ +t\bigl((a^2-c)\lambda+ab-d\bigr)\notag\\
+ &+t^2\Bigg[
+ a^3\left(\frac{\lambda^2}{2}-\lambda\right)
+ +a^2b(\lambda-1)+\frac12ab^2
+ -ac\lambda^2+2ac\lambda\notag\\
+ &\hspace{2.9cm}-ad\lambda+ad-bc\lambda+bc-bd
+ \Bigg]
+ +\FormalBigO_t(t^3).
+\label{eq:affine-log-inverse}
+\end{align}
+This formula is useful when an implicit asymptotic equation has already been normalized to a linear variable plus logarithmic and reciprocal corrections.
+
+Several checks are immediate. Setting \(a=1\) and \(b=c=d=0\) recovers the first blocks of \cref{eq:omega-expansion}. Setting \(a=0\) gives the inverse of a constant and reciprocal perturbation.
+
+\section{A purely reciprocal example}
+Let
+\[
+ F=X+\frac{a}{X}.
+\]
+The exact inverse follows from a quadratic equation:
+\[
+ F\invcomp(X)=\frac{X+\sqrt{X^2-4a}}2.
+\]
+Its expansion is
+\begin{equation}\label{eq:catalan-inverse}
+ F\invcomp(X)
+ =X-\frac aX-\frac{a^2}{X^3}-\frac{2a^3}{X^5}
+ -\frac{5a^4}{X^7}-\cdots.
+\end{equation}
+The coefficients are Catalan numbers. This example provides an exact benchmark for reversal algorithms without logarithms.
+
+\section{A mixed logarithmic example by fixed point}
+Take
+\[
+ F=X+\lambda+\lambda t.
+\]
+The inverse correction satisfies
+\[
+ K=-\log(X+K)-\frac{\log(X+K)}{X+K}.
+\]
+Starting from \(K_0=0\), the first iterate is
+\[
+ K_1=-\lambda-\lambda t.
+\]
+To extract the second correct block, put \(K=-\lambda+A(\lambda)t+B(\lambda)t^2+\FormalBigO_t(t^3)\), expand the right side, and compare coefficients. One obtains
+\[
+ A(\lambda)=0,
+ \qquad
+ B(\lambda)=\lambda-\frac12\lambda^2.
+\]
+Thus the cancellation of the \(t\)-block is genuine, while the next block is
+\[
+ F\invcomp
+ =X-\lambda+\left(\lambda-\frac12\lambda^2\right)t^2+\FormalBigO_t(t^3).
+\]
+The same result follows at once from \cref{eq:affine-log-inverse} by setting \(a=c=1\) and \(b=d=0\). This illustrates why guessing a universal \(\lambda/X\) correction from \(X+\log X\) can fail when additional reciprocal-log terms are present.
+
+\section{Tangent-to-identity Dulac transseries}
+Near \(x=0^+\), let
+\[
+ \ell=-\frac1{\log x},
+ \qquad
+ f(x)=x+a x^\alpha\ell^m+\text{higher terms},
+ \qquad \alpha>1.
+\]
+Set \(h=a x^\alpha\ell^m\). The universal inverse formula gives
+\[
+ f\invcomp=x-h+hh'+\cdots.
+\]
+Since
+\[
+ \ell'=\frac{\ell^2}{x},
+ \qquad
+ h'=a x^{\alpha-1}
+ \left(\alpha\ell^m+m\ell^{m+1}\right),
+\]
+we obtain
+\begin{equation}\label{eq:dulac-inverse-first}
+ f\invcomp(x)
+ =x-a x^\alpha\ell^m
+ +a^2x^{2\alpha-1}
+ \left(\alpha\ell^{2m}+m\ell^{2m+1}\right)
+ +\cdots.
+\end{equation}
+Thus tangent-to-identity Dulac transseries remain in a power--log class under reversion. Marde\v{s}i\'c et al. prove group and embedding results for broader power--log algebras \cite{mardesic-normalforms}.
+
+\section{How to check a reversal}
+Given a truncation \(G_N\), compute both residuals
+\begin{equation}\label{eq:two-residuals}
+ R_N^{\mathrm{right}}=F\circ G_N-X,
+ \qquad
+ R_N^{\mathrm{left}}=G_N\circ F-X.
+\end{equation}
+For exact formal inverses the two vanish. At finite order they need not have identical first omitted blocks, because truncation and composition do not commute perfectly. Both should nevertheless lie beyond the stated accuracy.
+
+Differentiation provides another check. From \(F(G(X))=X\),
+\begin{equation}\label{eq:inverse-derivative-check}
+ G'(X)=\frac1{F'(G(X))}.
+\end{equation}
+The derivative residual often detects a wrong block one order earlier than visual inspection of the original expansion.
+
+\section{Exercises}
+\begin{exercise}
+Derive the \(X^{-6}\) block of \(\WrightOmega(X)\) using \cref{eq:omega-lagrange}.
+\end{exercise}
+\begin{exercise}
+Check \cref{eq:affine-log-inverse} by composition through order \(t\).
+\end{exercise}
+\begin{exercise}
+Compute the next term after those displayed in \cref{eq:dulac-inverse-first}, retaining the two dominant powers of \(\ell\).
+\end{exercise}
+
+\begin{summarybox}
+The inverse of \(X+\log X\) is Wright \(\WrightOmega\), and its block polynomials recur throughout Lambert \(W\) theory. Affine-log perturbations admit explicit parameter formulas, pure reciprocal examples connect to Catalan numbers, and tangent-to-identity Dulac transseries reverse within their power--log class.
+\end{summarybox}
+
+\chapter{Reversing a nontrivial leading monomial}\label{ch:leading-reversion}
+
+\section{Why dominant balance comes first}
+The near-identity theorem assumes that the leading map is \(X\). If
+\[
+ F(X)\sim cX^a(\log X)^b,
+\]
+then the first task is to invert this leading monomial. Only after that step should the remaining correction be treated by near-identity methods.
+
+The factorization principle is
+\begin{equation}\label{eq:leading-factorization-composition}
+ F=F_0\circ\Phi,
+ \qquad \Phi=X+\text{smaller correction}.
+\end{equation}
+Then
+\begin{equation}\label{eq:factorized-inverse}
+ F\invcomp=\Phi\invcomp\circ F_0\invcomp.
+\end{equation}
+This separates scale selection from coefficient refinement.
+
+\section{Exact inversion of \texorpdfstring{\(cX^a(\log X)^b\)}{a power-log leading monomial}}
+Let
+\begin{equation}\label{eq:powerlog-monomial}
+ Y=cX^a(\log X)^b,
+ \qquad ca\ne0.
+\end{equation}
+If \(b=0\), then \(X=(Y/c)^{1/a}\). Suppose \(b\ne0\) and put \(s=\log X\). Then
+\[
+ (Y/c)^{1/b}=s \EulerE^{(a/b)s}.
+\]
+Multiplying by \(a/b\) gives a Lambert equation, hence
+\begin{equation}\label{eq:powerlog-inverse-W}
+ X=
+ \exp\left[
+ \frac ba W_k\left(
+ \frac ab\left(\frac Yc\right)^{1/b}
+ \right)
+ \right].
+\end{equation}
+The branch \(k\) is chosen to match the intended sector or real interval.
+
+Formula \cref{eq:powerlog-inverse-W} is exact. Expanding \(W_k\) immediately produces the transseries inverse. Since the leading argument of \(W\) contains a power of \(Y\), the result involves \(\log Y\) and \(\log\log Y\). Thus an iterated logarithm is forced whenever \(b\ne0\).
+
+\begin{example}[Inverse of \(X\log X\)]
+For \(Y=X\log X\), \cref{eq:powerlog-inverse-W} gives
+\begin{equation}\label{eq:inverse-XlogX-exact}
+ X=\EulerE^{W(Y)}=\frac{Y}{W(Y)}.
+\end{equation}
+Using the reciprocal expansion of \(W\),
+\[
+ X\sim\frac{Y}{\log Y}
+ \left(1+\frac{\log\log Y}{\log Y}
+ +\frac{(\log\log Y)^2-\log\log Y}{(\log Y)^2}
+ +\cdots\right).
+\]
+A one-log ansatz in \(Y^{-1}\) cannot capture this scale.
+\end{example}
+
+\section{Near-zero Dulac leading monomials}
+Let
+\begin{equation}\label{eq:dulac-leading}
+ y=a x^\alpha\ell^m,
+ \qquad \ell=-\frac1{\log x},
+ \qquad x\to0^+.
+\end{equation}
+Put \(s=-\log x\), so \(x=\EulerE^{-s}\) and \(\ell=s^{-1}\). Then
+\[
+ y/a=\EulerE^{-\alpha s}s^{-m}.
+\]
+For \(m\ne0\), raise to the power \(-1/m\):
+\[
+ (y/a)^{-1/m}=s \EulerE^{(\alpha/m)s}.
+\]
+Therefore
+\begin{equation}\label{eq:dulac-leading-inverse}
+ x=
+ \exp\left[-\frac m\alpha
+ W_k\left(
+ \frac\alpha m\left(\frac ya\right)^{-1/m}
+ \right)\right].
+\end{equation}
+Again, the Lambert expansion generates an iterated logarithm. In the formal inverse theory of Dulac series, this is the mechanism by which depth two appears when the leading term contains a logarithm \cite{mardesic-length}.
+
+\section{Parabolic correction after leading inversion}
+Suppose a general Dulac transseries is factored as
+\begin{equation}\label{eq:dulac-factor}
+ g=g_{\alpha,m}\circ\varphi,
+ \qquad
+ g_{\alpha,m}(x)=a x^\alpha\ell^m,
+ \qquad
+ \varphi=x+\text{higher terms}.
+\end{equation}
+Then
+\begin{equation}\label{eq:dulac-factor-inverse}
+ g\invcomp=\varphi\invcomp\circ g_{\alpha,m}\invcomp.
+\end{equation}
+The first factor is handled by the near-identity theorem; the second by \cref{eq:dulac-leading-inverse}. This factorization is the conceptual form of the explicit inverse construction used in the Dulac literature.
+
+\section{Newton inversion after scale normalization}
+For an implicit equation \(F(Y)=X\), choose a leading inverse \(Y_0\). Write
+\[
+ Y=Y_0(1+U)
+ \quad\text{or}\quad
+ Y=Y_0+V,
+\]
+according to which makes the correction small. Substitute and derive an equation in a complete small-series algebra. Newton's method then becomes
+\begin{equation}\label{eq:newton-implicit}
+ Y_{j+1}=Y_j-\frac{F(Y_j)-X}{F'(Y_j)}.
+\end{equation}
+The crucial step is not Newton's formula itself but choosing a class in which the correction and the reciprocal derivative are defined.
+
+\section{Branch and reality conditions}
+The exact formulas \cref{eq:powerlog-inverse-W,eq:dulac-leading-inverse} involve fractional powers and \(W_k\). For real positive variables:
+\begin{itemize}
+\item if \(a,b,c\) make the leading monomial eventually increasing and positive, the real principal branch is often appropriate;
+\item decreasing branches may require \(W_{-1}\);
+\item signs of \(a/b\) and the power \((Y/c)^{1/b}\) determine whether the argument crosses \(-\EulerE^{-1}\);
+\item complex continuation requires explicit logarithmic cuts.
+\end{itemize}
+Formal coefficients alone do not choose among these alternatives.
+
+\section{A general reversal workflow}
+\begin{algorithm}[Reversal with a nonidentity leading term]\label{alg:general-reversal}
+\begin{enumerate}
+\item identify the leading monomial \(F_0\) by dominant balance;
+\item construct or recognize \(F_0\invcomp\), possibly using \(W\);
+\item factor \(F=F_0\circ\Phi\) or normalize \(F\circ F_0\invcomp\) to near identity;
+\item reverse the near-identity factor by fixed point or Newton iteration;
+\item compose the inverse factors in reverse order;
+\item enlarge the logarithmic depth whenever the generator images demand it;
+\item verify by two-sided composition residuals.
+\end{enumerate}
+\end{algorithm}
+
+\section{Exercises}
+\begin{exercise}
+Derive an exact Lambert-\(W\) formula for the inverse of \(Y=X^3(\log X)^{-2}\).
+\end{exercise}
+\begin{exercise}
+Expand the inverse of \(Y=X\log X\) through three corrections beyond \(Y/\log Y\).
+\end{exercise}
+\begin{exercise}
+For \(y=x^2/(-\log x)\) as \(x\to0^+\), choose the real branch in \cref{eq:dulac-leading-inverse} and derive the first two logarithmic levels of \(x(y)\).
+\end{exercise}
+
+\begin{summarybox}
+A nonidentity leading monomial must be inverted before near-identity corrections are computed. Power--log monomials reduce exactly to Lambert \(W\), and a logarithm in the leading monomial forces an iterated logarithm in the inverse. Factorization cleanly separates this scale change from parabolic reversion.
+\end{summarybox}
+
+\part{Lambert \texorpdfstring{\(W\)}{W} as the archetypal logarithmic reversion}\label{part:lambert}
+
+\chapter{Branches, Wright omega, and dominant balance}\label{ch:W-branches}
+
+\section{Definition and branches}
+Lambert's \(W\) function is the multivalued inverse of
+\[
+ w\longmapsto w\EulerE^w.
+\]
+Its branches \(W_k\), \(k\in\IntegerNumbers\), satisfy
+\begin{equation}\label{eq:W-definition}
+ W_k(z)\EulerE^{W_k(z)}=z.
+\end{equation}
+On \([0,\infty)\), the principal branch \(W_0\) is real, nonnegative, and increasing. On \((-\EulerE^{-1},0)\), there are two real values: \(W_0\in(-1,0)\) and \(W_{-1}\in(-\infty,-1)\) \cite{corless-W,dlmf-W}.
+
+Differentiating \cref{eq:W-definition} gives
+\begin{equation}\label{eq:W-derivative-exact}
+ W_k'(z)=\frac{W_k(z)}{z(1+W_k(z))},
+\end{equation}
+away from \(z=0\) and the branch point where \(W=-1\).
+
+\section{The branch-dependent large parameter}
+Fix a branch of \(\PrincipalLogarithm z\). For the branch \(W_k\), define
+\begin{equation}\label{eq:xi-k}
+ \xi_k=\PrincipalLogarithm z+2\pi\ImaginaryUnit k,
+ \qquad
+ \ell_k=\PrincipalLogarithm\xi_k.
+\end{equation}
+Taking a compatible logarithm of \(W_k\EulerE^{W_k}=z\) gives
+\begin{equation}\label{eq:W-log-branch}
+ W_k+\PrincipalLogarithm W_k=\xi_k.
+\end{equation}
+As \(\AbsoluteValue{z}\to\infty\) in an admissible sector, \(W_k\sim\xi_k\), then \(\PrincipalLogarithm W_k\sim\ell_k\), so
+\begin{equation}\label{eq:W-leading-two}
+ W_k\sim\xi_k-\ell_k.
+\end{equation}
+The same formal calculation works for every \(k\); all branch dependence is carried by \(\xi_k\) and the logarithm of \(\xi_k\).
+
+\section{Wright's omega function}
+The Wright omega function is locally characterized by
+\begin{equation}\label{eq:omega-def}
+ \WrightOmega(s)+\PrincipalLogarithm\WrightOmega(s)=s.
+\end{equation}
+On compatible branches,
+\begin{equation}\label{eq:omega-W}
+ \WrightOmega(s)=W(\EulerE^s).
+\end{equation}
+Thus \(\WrightOmega\) is the compositional inverse of \(y\mapsto y+\PrincipalLogarithm y\), while \(W\) is the inverse of \(y\mapsto y\EulerE^y\). The substitution \(s=\PrincipalLogarithm z\) turns one inversion problem into the other.
+
+The near-identity reversal formula of \cref{eq:omega-expansion} applies directly to \(\WrightOmega(s)\), because \(s+\log s\) has identity leading term. This is the cleanest route to the coefficient polynomials of \(W\).
+
+\section{The normalized fixed-point equation}
+For notational simplicity write
+\[
+ L=\xi_k,
+ \qquad \ell=\PrincipalLogarithm L,
+ \qquad r=L^{-1}.
+\]
+Set
+\begin{equation}\label{eq:W-normalized}
+ W_k=L-\ell+u.
+\end{equation}
+Then
+\[
+ \PrincipalLogarithm W_k
+ =\ell+\PrincipalLogarithm\bigl(1-r(\ell-u)\bigr).
+\]
+Substitution in \cref{eq:W-log-branch} yields
+\begin{equation}\label{eq:W-fixed-point}
+ u=-\PrincipalLogarithm\bigl(1-r(\ell-u)\bigr).
+\end{equation}
+Since the derivative of the right side with respect to \(u\) is
+\begin{equation}\label{eq:W-contraction-factor}
+ -\frac{r}{1-r(\ell-u)}=\FormalBigO_r(r),
+\end{equation}
+the map gains one power of \(r\). Therefore the ansatz
+\begin{equation}\label{eq:W-Pn-ansatz}
+ u=\sum_{n\ge1}\LambertPolynomial{n}(\ell)r^n
+\end{equation}
+is uniquely determined coefficient by coefficient.
+The canonical family is zero-based: \(\LambertPolynomial{0}(u)=-u\).  Hence
+the same expansion may be written without a separately displayed
+\(-\ell\)-block as
+\[
+ W_k=L+\sum_{n\ge0}\LambertPolynomial{n}(\ell)r^n.
+\]
+
+\section{A scale interpretation}
+For the original variable \(z\), the expansion is not in powers of \(z^{-1}\). It is in powers of
+\[
+ r=\frac1{\PrincipalLogarithm z+2\pi\ImaginaryUnit k},
+\]
+with polynomial coefficients in the subordinate logarithm
+\[
+ \ell=\PrincipalLogarithm(\PrincipalLogarithm z+2\pi\ImaginaryUnit k).
+\]
+Thus Lambert \(W\) is a polynomial--log transseries after the large variable has been changed from \(z\) to \(L=\xi_k\). This ``one level down'' viewpoint prevents a common confusion about which parameter is being expanded.
+
+\section{Branch consistency under composition}
+The identity \(W(z\EulerE^z)=z\) holds only when the branch of \(W\) is chosen so that \(z\) lies in the corresponding inverse sheet. Similarly, \(W(\EulerE^s)=\WrightOmega(s)\) is a local identity with an unwinding-number convention. The formal expansion records one chosen sheet through the integer \(k\); crossing a branch cut changes that data.
+
+\begin{summarybox}
+Every large branch of Lambert \(W\) is governed by \(W+\PrincipalLogarithm W=\xi_k\), with \(\xi_k=\PrincipalLogarithm z+2\pi\ImaginaryUnit k\). Removing the balances \(\xi_k\) and \(-\PrincipalLogarithm\xi_k\) leaves a contractive equation in \(1/\xi_k\). Wright omega is the near-identity inverse that exposes this structure directly.
+\end{summarybox}
+
+\chapter{The universal coefficient polynomials}\label{ch:W-coefficients}
+
+\section{Recursive extraction}
+Insert
+\[
+ u=\sum_{n\ge1}\LambertPolynomial{n}(\ell)r^n
+\]
+into \cref{eq:W-fixed-point}:
+\begin{equation}\label{eq:W-recursive-master}
+ u=\sum_{j\ge1}\frac{r^j}{j}(\ell-u)^j.
+\end{equation}
+The coefficient of \(r^n\) depends only on \(\LambertPolynomial{1},\ldots,\LambertPolynomial{n-1}\). A compact recursion is
+\begin{equation}\label{eq:Pn-coefficient-recursion}
+ \LambertPolynomial{n}(\ell)=
+ [r^n]\left\{-\PrincipalLogarithm\left(1-r\left(\ell-
+ \sum_{q=1}^{n-1}\LambertPolynomial{q}(\ell)r^q\right)\right)\right\}.
+\end{equation}
+Terms of degree \(r^n\) and higher inside the provisional \(u\) cannot affect \(\LambertPolynomial{n}\).
+
+At the first two orders,
+\begin{align*}
+ \LambertPolynomial{1}&=\ell,\\
+ \LambertPolynomial{2}&=-\LambertPolynomial{1}+\frac12\ell^2
+ =\frac12\ell(\ell-2).
+\end{align*}
+Continuing gives
+\begin{align}
+ \LambertPolynomial{3}(\ell)&=\frac{\ell(2\ell^2-9\ell+6)}6,\label{eq:P3}\\
+ \LambertPolynomial{4}(\ell)&=\frac{\ell(3\ell^3-22\ell^2+36\ell-12)}{12},\label{eq:P4}\\
+ \LambertPolynomial{5}(\ell)&=\frac{\ell(12\ell^4-125\ell^3+350\ell^2-300\ell+60)}{60}.
+\label{eq:P5}
+\end{align}
+
+\section{Lagrange inversion derivation}
+The equation for Wright omega is
+\[
+ y+\log y=s.
+\]
+It is the inverse of \(s=y+H(y)\) with \(H(y)=\log y\). By \cref{thm:lagrange-infinity},
+\begin{equation}\label{eq:omega-lagrange-again}
+ \WrightOmega(s)=s+\sum_{n\ge1}\frac{(-1)^n}{n!}
+ \frac{\Differential^{n-1}}{\Differential s^{n-1}}(\log s)^n.
+\end{equation}
+The \(n=1\) term is \(-\log s\). Put \(n=q+1\) in the remaining terms. Since the \(q\)-th derivative contributes \(s^{-q}\), the coefficient polynomial is
+\begin{equation}\label{eq:Pn-derivative}
+ \LambertPolynomial{q}(\ell)=
+ \frac{(-1)^{q+1}}{(q+1)!}
+ s^q\frac{\Differential^q}{\Differential s^q}(\log s)^{q+1},
+ \qquad \ell=\log s.
+\end{equation}
+This identity is both a closed formula and an efficient symbolic generator.
+
+\section{Stirling cycle number formula}
+Use the operator identity \cref{eq:stirling-derivative}:
+\[
+ s^qD^q f(\log s)=\sum_{j=1}^q s(q,j)f^{(j)}(\ell),
+\]
+where \(s(q,j)\) are signed Stirling numbers of the first kind. Taking \(f(\ell)=\ell^{q+1}\), changing the index to \(m=q+1-j\), and replacing signed by unsigned Stirling cycle numbers gives
+\begin{theorem}[Closed coefficient formula]\label{thm:Pn-stirling}
+For \(n\ge1\),
+\begin{equation}\label{eq:Pn-stirling}
+ \LambertPolynomial{n}(\ell)=
+ \sum_{m=1}^{n}
+ \frac{(-1)^{n-m}}{m!}
+ \stirlingone{n}{n-m+1}\ell^m.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+From \cref{eq:Pn-derivative},
+\begin{align*}
+ \LambertPolynomial{n}(\ell)
+ &=\frac{(-1)^{n+1}}{(n+1)!}
+ \sum_{j=1}^n s(n,j)
+ \frac{(n+1)!}{(n+1-j)!}\ell^{n+1-j}.
+\end{align*}
+Set \(m=n+1-j\). Since
+\[
+ s(n,n-m+1)=(-1)^{m-1}\stirlingone{n}{n-m+1},
+\]
+the total sign is \((-1)^{n-m}\), proving \cref{eq:Pn-stirling}.
+\end{proof}
+
+\section{Structural properties of \texorpdfstring{\(\LambertPolynomial{n}\)}{Pn}}
+Several facts follow immediately.
+\begin{enumerate}
+\item \(\LambertPolynomial{n}(0)=0\).
+\item \(\polydeg \LambertPolynomial{n}=n\).
+\item The leading coefficient is \(1/n\), because \(\stirlingone{n}{1}=(n-1)!\).
+\item The linear coefficient is \((-1)^{n-1}\), because \(\stirlingone{n}{n}=1\).
+\item The coefficient of \(\ell^{n-1}\) is \(-H_{n-1}\), since
+\[
+ \stirlingone{n}{2}=(n-1)!H_{n-1}.
+\]
+\end{enumerate}
+Thus
+\begin{equation}\label{eq:Pn-edge-coefficients}
+ \LambertPolynomial{n}(\ell)=\frac{\ell^n}{n}-H_{n-1}\ell^{n-1}
+ +\cdots+(-1)^{n-1}\ell.
+\end{equation}
+
+The coefficients are rational, but multiplying by a suitable least common multiple clears denominators. The factored forms in \cref{eq:P3,eq:P4,eq:P5} are often more readable than a monomial-by-monomial list.
+
+\section{The all-branch expansion}
+Combining \cref{eq:W-normalized,eq:W-Pn-ansatz,eq:Pn-stirling} gives
+\begin{equation}\label{eq:W-Pn-expansion}
+ W_k(z)=\xi_k-\ell_k+
+ \sum_{n\ge1}\frac{\LambertPolynomial{n}(\ell_k)}{\xi_k^n},
+ \qquad
+ \xi_k=\PrincipalLogarithm z+2\pi\ImaginaryUnit k,
+ \quad \ell_k=\PrincipalLogarithm\xi_k.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:W-DLMF-form}
+ W_k(z)\sim\xi_k-\PrincipalLogarithm\xi_k
+ +\sum_{n\ge1}\frac{(-1)^n}{\xi_k^n}
+ \sum_{m=1}^{n}
+ \stirlingone{n}{n-m+1}
+ \frac{(-\PrincipalLogarithm\xi_k)^m}{m!}.
+\end{equation}
+This is the standard DLMF/Corless form \cite{dlmf-W,corless-W,jeffrey-W}.
+
+Writing out the first five corrections,
+\begin{align}
+ W_k(z)={}&L-\ell+\frac{\ell}{L}
+ +\frac{\ell(\ell-2)}{2L^2}
+ +\frac{\ell(2\ell^2-9\ell+6)}{6L^3}\notag\\
+ &+\frac{\ell(3\ell^3-22\ell^2+36\ell-12)}{12L^4}\notag\\
+ &+\frac{\ell(12\ell^4-125\ell^3+350\ell^2-300\ell+60)}{60L^5}
+ +\BigOAt{\ell^6/L^6}{|L|\to\infty,\ L\in S_k},
+\label{eq:W-five-corrections}
+\end{align}
+where \(L=\xi_k\) and \(\ell=\PrincipalLogarithm L\).
+
+\section{Residual order}
+Let
+\begin{equation}\label{eq:WN}
+ W_{k,N}=L-\ell+\sum_{n=1}^{N}\frac{\LambertPolynomial{n}(\ell)}{L^n}.
+\end{equation}
+By construction,
+\begin{equation}\label{eq:W-residual-order}
+ W_{k,N}+\PrincipalLogarithm W_{k,N}-L
+ =\BigOAt{\ell^{N+1}/L^{N+1}}{|L|\to\infty,\ L\in S_k}.
+\end{equation}
+The leading coefficient of the residual can be computed by carrying one additional block. Since the derivative of \(w+\PrincipalLogarithm w-L\) with respect to \(w\) is \(1+1/w=1+\BigOAt{L^{-1}}{|L|\to\infty,\ L\in S_k}\), the solution error has the same leading order away from the branch point.
+
+\section{An efficient recurrence for Stirling numbers}
+Unsigned Stirling cycle numbers satisfy
+\begin{equation}\label{eq:stirling-recurrence}
+ \stirlingone{n}{j}
+ =\stirlingone{n-1}{j-1}
+ +(n-1)\stirlingone{n-1}{j},
+\end{equation}
+with \(\stirlingone{0}{0}=1\). Therefore all \(\LambertPolynomial{1},\ldots,\LambertPolynomial{N}\) can be generated by one triangular integer table followed by division by \(m!\). This is usually faster and more stable than repeated symbolic differentiation.
+
+\begin{lstlisting}[style=pseudo,caption={Generating the Lambert coefficient polynomials}]
+S[0,0] := 1
+for n = 1..N:
+    for j = 1..n:
+        S[n,j] := S[n-1,j-1] + (n-1)*S[n-1,j]
+    P[n] := 0
+    for m = 1..n:
+        P[n] += (-1)^(n-m) * S[n,n-m+1] * ell^m / m!
+\end{lstlisting}
+
+\section{Exercises}
+\begin{exercise}
+Use \cref{eq:Pn-coefficient-recursion} to derive \(\LambertPolynomial{3}\) and \(\LambertPolynomial{4}\) without Stirling numbers.
+\end{exercise}
+\begin{exercise}
+Prove the leading, next-to-leading, and linear coefficient statements in \cref{eq:Pn-edge-coefficients}.
+\end{exercise}
+\begin{exercise}
+Show directly from \cref{eq:Pn-derivative} that \(\LambertPolynomial{n}\) has rational coefficients and no constant term.
+\end{exercise}
+
+\begin{summarybox}
+The Lambert correction polynomials are determined by a triangular fixed-point recursion, by Lagrange inversion, and by the closed Stirling-cycle formula. These three descriptions are equivalent and provide independent derivations, structural information, and efficient algorithms.
+\end{summarybox}
+
+\chapter{Arithmetic and composition with the Lambert expansion}\label{ch:W-operations}
+
+\section{Reciprocal of \texorpdfstring{\(W\)}{W}}
+Let \(L=\xi_k\), \(\ell=\PrincipalLogarithm L\), and \(r=L^{-1}\). Factoring \(W=L(1+\FormalBigO_r(r))\), with polynomial dependence on \(\ell\) inside each coefficient block, and using geometric division gives
+\begin{align}
+ \frac1W={}&r+\ell r^2+(\ell^2-\ell)r^3
+ +\left(\ell^3-\frac52\ell^2+\ell\right)r^4\notag\\
+ &+\left(\ell^4-\frac{13}{3}\ell^3+\frac92\ell^2-\ell\right)r^5\notag\\
+ &+\left(\ell^5-\frac{77}{12}\ell^4+\frac{71}{6}\ell^3-7\ell^2+\ell\right)r^6
+ +\FormalBigO_r(r^7).
+\label{eq:W-reciprocal}
+\end{align}
+The scalar leading block after factoring \(L\) guarantees that polynomial-log blocks are preserved.
+
+From \(W\EulerE^W=z\),
+\begin{equation}\label{eq:expW}
+ \EulerE^{W_k(z)}=\frac{z}{W_k(z)}.
+\end{equation}
+Thus \cref{eq:W-reciprocal} immediately yields a transseries for \(\EulerE^W\) without exponentiating a long series.
+
+\section{The logarithm and powers of \texorpdfstring{\(W\)}{W}}
+Equation \cref{eq:W-log-branch} gives the exact simplification
+\begin{equation}\label{eq:logW-exact}
+ \PrincipalLogarithm W_k=L-W_k.
+\end{equation}
+Therefore
+\begin{align}
+ \PrincipalLogarithm W_k={}&\ell-\ell r
+ +\left(\ell-\frac12\ell^2\right)r^2
+ +\left(-\frac13\ell^3+\frac32\ell^2-\ell\right)r^3\notag\\
+ &+\left(-\frac14\ell^4+\frac{11}{6}\ell^3-3\ell^2+\ell\right)r^4
+ +\FormalBigO_r(r^5).
+\label{eq:logW-series}
+\end{align}
+For any fixed exponent \(\alpha\), write
+\[
+ W^\alpha=L^\alpha\left(1-\ell r+\ell r^2+\cdots\right)^\alpha
+\]
+and apply the generalized binomial series. The coefficient blocks remain polynomial in \(\ell\).
+
+As an example,
+\begin{align}
+ W^2={}&L^2-2L\ell+(\ell^2+2\ell)
+ -(\ell^2+2\ell)r\notag\\
+ &+\left(-\frac13\ell^3+2\ell\right)r^2
+ +\left(-\frac16\ell^4+\frac13\ell^3+2\ell^2-2\ell\right)r^3
+ +\FormalBigO_r(r^4).
+\label{eq:W-square}
+\end{align}
+
+\section{The derivative expansion}
+From \cref{eq:W-derivative-exact},
+\begin{equation}\label{eq:zWprime}
+ zW_k'(z)=\frac{W_k}{1+W_k}=1-\frac1{1+W_k}.
+\end{equation}
+Division gives
+\begin{align}
+ \frac1{1+W}={}&r+(\ell-1)r^2+(\ell^2-3\ell+1)r^3\notag\\
+ &+\left(\ell^3-\frac{11}{2}\ell^2+6\ell-1\right)r^4\notag\\
+ &+\left(\ell^4-\frac{25}{3}\ell^3+\frac{35}{2}\ell^2-10\ell+1\right)r^5
+ +\FormalBigO_r(r^6).
+\label{eq:one-over-oneplusW}
+\end{align}
+Hence
+\begin{align}
+ zW'(z)={}&1-r+(1-\ell)r^2
+ +(-\ell^2+3\ell-1)r^3\notag\\
+ &+\left(-\ell^3+\frac{11}{2}\ell^2-6\ell+1\right)r^4
+ +\FormalBigO_r(r^5).
+\label{eq:Wprime-series}
+\end{align}
+Termwise differentiation of \cref{eq:W-five-corrections}, taking account of \(L'=1/z\) and \(\ell'=1/(zL)\), yields the same result.
+
+\section{Rational functions of \texorpdfstring{\(W\)}{W}}
+Any rational expression \(R(W)\) can be expanded by the division recurrence after its leading power of \(L\) is factored. Common examples include
+\[
+ \frac{W}{1+W},
+ \qquad
+ \frac1{W(1+W)},
+ \qquad
+ \frac{W^2}{(1+W)^3}.
+\]
+These appear in derivatives, integrals, probability distributions, delay equations, and combinatorial saddle-point formulas.
+
+The algorithm is mechanical:
+\begin{enumerate}
+\item express numerator and denominator in \(r\)-blocks;
+\item factor the leading scalar block of the denominator;
+\item apply triangular division;
+\item verify by multiplication.
+\end{enumerate}
+No additional transcendental insight is required after the base \(W\) expansion is known.
+
+\section{Composition identities as reversal checks}
+The defining inverse identities are
+\begin{align}
+ W_k(z)\EulerE^{W_k(z)}&=z,\label{eq:W-check1}\\
+ W(y\EulerE^y)&=y,\label{eq:W-check2}\\
+ \WrightOmega(s)+\PrincipalLogarithm\WrightOmega(s)&=s,\label{eq:W-check3}\\
+ \WrightOmega(s)&=W(\EulerE^s),\label{eq:W-check4}
+\end{align}
+with compatible branches. Each gives a different residual check.
+
+For a truncated \(W_N\), the logarithmic residual
+\[
+ R_N=W_N+\PrincipalLogarithm W_N-L
+\]
+is usually numerically preferable to the multiplicative residual \(W_N\EulerE^{W_N}-z\), which may overflow when \(z\) is large. The two are related by
+\[
+ W_N\EulerE^{W_N}=z \EulerE^{R_N}.
+\]
+Thus a small \(R_N\) is a relative multiplicative certificate.
+
+\section{Composing the expansion with a perturbed argument}
+Suppose \(z\) is replaced by \(z(1+\delta)\), with \(\delta\precdom1\). Then
+\[
+ L\mapsto L+\log(1+\delta),
+ \qquad
+ \ell\mapsto\log\bigl(L+\log(1+\delta)\bigr).
+\]
+One may either substitute these transformed generators into \cref{eq:W-Pn-expansion} or use Taylor's formula
+\begin{equation}\label{eq:W-argument-Taylor}
+ W(z(1+\delta))
+ =\sum_{n\ge0}\frac{W^{(n)}(z)}{n!}(z\delta)^n.
+\end{equation}
+The generator route is often cleaner because it keeps the logarithmic hierarchy explicit.
+
+For an additive perturbation \(z+h\), Taylor is appropriate when \(h/z\) is small and the branch point is not approached. The exact first correction is
+\[
+ W(z+h)=W(z)+\frac{W(z)}{z(1+W(z))}h+\cdots.
+\]
+
+\section{Series reversal seen inside \texorpdfstring{\(W\)}{W}}
+The coefficient polynomials of \(W\) are not special-purpose artifacts. They are exactly the reversion coefficients of \(X+\log X\). Consequently, any problem normalized to
+\[
+ Y+\log Y=X+\text{small perturbation}
+\]
+can reuse the same base polynomials and treat the perturbation by composition or Newton correction. This modular viewpoint is one of the main practical benefits of transseries algebra.
+
+\section{Exercises}
+\begin{exercise}
+Derive \cref{eq:W-reciprocal} through \(r^4\) by triangular division.
+\end{exercise}
+\begin{exercise}
+Use \(\PrincipalLogarithm W=L-W\) to verify \cref{eq:logW-series} without taking a logarithm of a series.
+\end{exercise}
+\begin{exercise}
+Expand \(W/(1+W)^2\) through \(r^4\).
+\end{exercise}
+
+\begin{summarybox}
+Once the base Lambert expansion is available, reciprocals, powers, logarithms, derivatives, and rational functions follow from the block arithmetic already developed. Exact identities such as \(\PrincipalLogarithm W=L-W\) and \(\EulerE^W=z/W\) minimize unnecessary expansion and provide strong residual checks.
+\end{summarybox}
+
+\chapter{The lower real branch and the branch point}\label{ch:W-other-regimes}
+
+\section{The branch \texorpdfstring{\(W_{-1}\)}{W-1} near zero}
+Let \(x\to0^-\) and write
+\begin{equation}\label{eq:eta-def}
+ \eta=\log\left(-\frac1x\right)\to+\infty.
+\end{equation}
+Set
+\[
+ W_{-1}(x)=-v.
+\]
+The defining equation becomes
+\[
+ v\EulerE^{-v}=-x=\EulerE^{-\eta},
+\]
+so
+\begin{equation}\label{eq:v-minus-logv}
+ v-\log v=\eta.
+\end{equation}
+This is the reversion of \(X-\log X\), studied in \cref{eq:inverse-X-minus-log}. Put \(L=\log\eta\). Then
+\begin{equation}\label{eq:Wminus1-Pn}
+ W_{-1}(-\EulerE^{-\eta})
+ \sim-\eta-L+
+ \sum_{n\ge1}\frac{(-1)^n\LambertPolynomial{n}(L)}{\eta^n}.
+\end{equation}
+The first terms are
+\begin{align}
+ W_{-1}(-\EulerE^{-\eta})={}&-\eta-L-\frac{L}{\eta}
+ +\frac{L(L-2)}{2\eta^2}\notag\\
+ &-\frac{L(2L^2-9L+6)}{6\eta^3}
+ +\frac{L(3L^3-22L^2+36L-12)}{12\eta^4}
+ +\cdots.
+\label{eq:Wminus1-expanded}
+\end{align}
+This is equivalent to the standard DLMF expansion for \(W_{\pm1}(x\mp0i)\) \cite{dlmf-W}.
+
+\section{Sign pattern and universality}
+The same \(\LambertPolynomial{n}\) occur, multiplied by \((-1)^n\). The reason is structural: \(X+\log X\) and \(X-\log X\) differ only by the sign of the perturbation in Lagrange inversion. This universality lets one generate both branches from one coefficient table.
+
+The leading approximation
+\[
+ W_{-1}(x)\approx \log(-x)-\log(-\log(-x))
+\]
+is often written with negative logarithms. The \(\eta\)-form \cref{eq:Wminus1-Pn} avoids ambiguous signs and makes every large quantity positive.
+
+\section{The branch point \texorpdfstring{\(-\EulerE^{-1}\)}{-1/e}}
+At \(z=-\EulerE^{-1}\), both real branches meet at \(W=-1\), and \cref{eq:W-derivative-exact} has a pole because \(1+W=0\). The logarithmic expansion is not the correct local scale.
+
+Set
+\begin{equation}\label{eq:p-branchpoint}
+ p=\sqrt{2(1+\EulerE z)}.
+\end{equation}
+Then the two local branches have Puiseux expansions
+\begin{align}
+ W_0(z)&=-1+p-\frac{p^2}{3}
+ +\frac{11p^3}{72}-\frac{43p^4}{540}+\cdots,
+ \label{eq:W0-branchpoint}\\
+ W_{-1}(z)&=-1-p-\frac{p^2}{3}
+ -\frac{11p^3}{72}-\frac{43p^4}{540}+\cdots.
+ \label{eq:Wm1-branchpoint}
+\end{align}
+The branches are related by \(p\mapsto-p\). A square root, not an iterated logarithm, is forced by the quadratic critical point of \(w\EulerE^w\) at \(w=-1\).
+
+\section{Deriving the Puiseux scale}
+Write \(W=-1+q\). Then
+\begin{align*}
+ z\EulerE&=(-1+q)\EulerE^q\\
+ &=-1+\frac12q^2+\frac13q^3+\frac18q^4+\cdots.
+\end{align*}
+Therefore
+\[
+ 1+\EulerE z=\frac12q^2+\BigOAt{q^3}{q\to0},
+\]
+so \(q\sim\pm\sqrt{2(1+\EulerE z)}=\pm p\). Ordinary series reversion in \(p\) produces \cref{eq:W0-branchpoint,eq:Wm1-branchpoint}.
+
+This calculation illustrates a general rule: the order of the first nonzero derivative at a critical point determines the fractional-power scale of the inverse.
+
+\section{The principal branch near zero}
+At \(z=0\), the principal branch is analytic and has the classical tree series
+\begin{equation}\label{eq:W-Maclaurin}
+ W_0(z)=\sum_{n\ge1}\frac{(-n)^{n-1}}{n!}z^n
+ =z-z^2+\frac32z^3-\frac83z^4+\cdots.
+\end{equation}
+Its radius of convergence is \(\EulerE^{-1}\), set by the branch point. Thus three different regimes of the same function require three different scales:
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Regime & Natural scale & Expansion type\\
+\midrule
+\(z\to\infty\) & \(1/\PrincipalLogarithm z\), \(\PrincipalLogarithm\PrincipalLogarithm z\) & polynomial--log\\
+\(z\to0\) on \(W_0\) & \(z\) & ordinary power series\\
+\(z\to-\EulerE^{-1}\) & \(\sqrt{1+\EulerE z}\) & Puiseux series\\
+\(x\to0^-\) on \(W_{-1}\) & \(1/\eta\), \(\log\eta\) & polynomial--log\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Matching and overlapping descriptions}
+No single expansion is uniformly best across all regimes. Near the branch point, use the Puiseux series. Far down the \(W_{-1}\) branch, use \cref{eq:Wminus1-Pn}. On the principal positive axis, the large-log series is useful for large \(z\), while the Maclaurin series is useful near zero.
+
+In an intermediate region, Newton iteration initialized by the best local asymptotic approximation is usually superior to forcing more terms from a poorly scaled expansion.
+
+\section{Exercises}
+\begin{exercise}
+Derive the first three terms of \cref{eq:Wminus1-expanded} directly from \(v-\log v=\eta\).
+\end{exercise}
+\begin{exercise}
+Substitute \(W=-1+q\) into \(W\EulerE^W=z\) and derive the coefficients through \(p^3\) in \cref{eq:W0-branchpoint}.
+\end{exercise}
+\begin{exercise}
+Explain why the derivative of the inverse has a square-root singularity at a simple quadratic critical point.
+\end{exercise}
+
+\begin{summarybox}
+The lower real branch near zero uses the same universal coefficient polynomials with alternating block signs. At the branch point, logarithmic reversion breaks down and a Puiseux square-root scale takes over. The correct transseries scale is dictated by the local dominant balance, not by the global name of the function.
+\end{summarybox}
+
+\chapter{Convergence, truncation, and numerical residuals}\label{ch:W-numerics}
+
+\section{Asymptotic and convergent interpretations}
+Formula \cref{eq:W-DLMF-form} is a Poincar\'e asymptotic expansion as \(\AbsoluteValue{z}\to\infty\) on a fixed branch. In addition, the standard series is absolutely convergent for sufficiently large \(\AbsoluteValue{z}\); for \(k=0\) and real \(z\), it converges for \(z\ge \EulerE\) \cite{dlmf-W,corless-W}. These are analytic facts beyond the purely formal derivation.
+
+Convergence does not imply that every early partial sum improves monotonically. The block polynomials can change sign, and at moderate \(L\) two successive corrections may have similar magnitude. The residual should decide where to truncate.
+
+\section{Residual-based error estimation}
+For real \(z=\EulerE^L\), define
+\[
+ \LambertAsymptoticApproximation{N}=L-\ell+\sum_{n=1}^N\frac{\LambertPolynomial{n}(\ell)}{L^n},
+ \qquad \ell=\log L.
+\]
+The logarithmic residual is
+\begin{equation}\label{eq:numeric-residual}
+ \rho_N=\LambertAsymptoticApproximation{N}+\log\LambertAsymptoticApproximation{N}-L.
+\end{equation}
+Let \(W\) be the exact solution. By the mean-value theorem,
+\begin{equation}\label{eq:residual-error-relation}
+ \LambertAsymptoticApproximation{N}-W
+ =\frac{\rho_N}{1+1/\theta_N},
+\end{equation}
+for some \(\theta_N\) between \(W\) and \(\LambertAsymptoticApproximation{N}\). For large positive \(L\), the denominator is close to one, so the residual is an excellent error proxy.
+
+One Newton correction,
+\begin{equation}\label{eq:W-one-Newton}
+ \LambertAsymptoticApproximation{N}^{\mathrm{new}}
+ =\LambertAsymptoticApproximation{N}-
+ \frac{\LambertAsymptoticApproximation{N}+\log\LambertAsymptoticApproximation{N}-L}
+ {1+1/\LambertAsymptoticApproximation{N}},
+\end{equation}
+often squares the number of accurate digits.
+
+\section{Numerical examples on the principal branch}
+The following values were computed at high precision from the exact \(W_0(\EulerE^L)\). Here \(N=0\) means the two-term approximation \(L-\log L\).
+
+\begin{table}[htbp]
+\centering
+\caption{Absolute error of the polynomial--log truncation for \(W_0(\EulerE^L)\)}\label{tab:W-errors}
+\footnotesize
+\begin{tabular}{@{}r@{\qquad}r@{\qquad}r@{\qquad}r@{}}
+\toprule
+\(N\) & \(L=10\) & \(L=50\) & \(L=100\)\\
+\midrule
+0  & \texttt{2.3200519e-1}  & \texttt{7.9742171e-2}  & \texttt{4.6656832e-2}\\
+1  & \texttt{1.7466787e-3}  & \texttt{1.5017108e-3}  & \texttt{6.0512970e-4}\\
+2  & \texttt{1.7369609e-3}  & \texttt{5.7352148e-6}  & \texttt{5.2671005e-6}\\
+3  & \texttt{1.5605602e-4}  & \texttt{1.5653552e-6}  & \texttt{8.1538454e-8}\\
+5  & \texttt{5.1336371e-6}  & \texttt{2.2624977e-9}  & \texttt{1.5422596e-10}\\
+8  & \texttt{1.4208425e-8}  & \texttt{3.9029700e-13} & \texttt{2.9382859e-15}\\
+12 & \texttt{1.9269107e-11} & \texttt{1.8339191e-18} & \texttt{2.1346658e-21}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The exact values are approximately
+\begin{align*}
+ W_0(\EulerE^{10})&=7.9294200950196973486,\\
+ W_0(\EulerE^{50})&=46.167719165492089670,\\
+ W_0(\EulerE^{100})&=95.441486645575831840.
+\end{align*}
+At \(L=10\), the \(N=2\) truncation is slightly worse than \(N=1\), despite eventual convergence. At larger \(L\), the hierarchical decrease becomes much clearer.
+
+\section{Residuals track the actual errors}
+For the same cases, the residual magnitudes at \(N=5\) are approximately
+\begin{align*}
+ \AbsoluteValue{\rho_5}&=5.7811\times10^{-6},&&L=10,\\
+ \AbsoluteValue{\rho_5}&=2.3115\times10^{-9},&&L=50,\\
+ \AbsoluteValue{\rho_5}&=1.5584\times10^{-10},&&L=100.
+\end{align*}
+These are close to the actual errors because \(1+1/W\) is close to one. The multiplicative relative residual is
+\[
+ \frac{\LambertAsymptoticApproximation{N}\EulerE^{\LambertAsymptoticApproximation{N}}}{\EulerE^L}-1=\EulerE^{\rho_N}-1,
+\]
+which is approximately \(\rho_N\) when the residual is small.
+
+\section{The lower branch}
+For \(x=-\EulerE^{-\eta}\), the expansion \cref{eq:Wminus1-Pn} behaves similarly. At \(\eta=10\), the absolute errors for \(N=0,1,3,5,8\) are approximately
+\[
+ 2.2538\times10^{-1},\quad
+ 4.8804\times10^{-3},\quad
+ 1.8414\times10^{-4},\quad
+ 4.8310\times10^{-6},\quad
+ 1.7258\times10^{-8}.
+\]
+At \(\eta=100\), the corresponding \(N=8\) error is about \(2.76\times10^{-15}\).
+
+\section{Stable evaluation strategy}
+A robust evaluator can use the following regime-dependent plan.
+\begin{enumerate}
+\item Near \(z=0\) on \(W_0\), use the Maclaurin series or direct iteration.
+\item Near \(-\EulerE^{-1}\), use the Puiseux expansion to initialize Newton or Halley iteration.
+\item For large \(\AbsoluteValue{z}\), use \cref{eq:W-Pn-expansion} on the desired branch.
+\item Compute the logarithmic residual \(w+\PrincipalLogarithm w-\xi_k\).
+\item Apply one or two Newton or Halley corrections if numerical accuracy beyond the formal truncation is desired.
+\end{enumerate}
+
+Halley's method for \(w\EulerE^w-z=0\) is commonly used because it has cubic local convergence. The transseries expansion supplies an excellent branch-aware starting value.
+
+\section{Truncation by term size versus formal order}
+Formal truncation retains all blocks up to a selected power of \(1/L\), regardless of their numerical size. Numerical truncation may instead stop when the next evaluated block is smallest. These policies answer different questions:
+\begin{itemize}
+\item formal truncation preserves algebraic consistency and is required for symbolic composition;
+\item smallest-term truncation may minimize numerical error at a fixed \(z\);
+\item in a convergent regime, continued summation eventually improves accuracy, but cancellation and roundoff still matter.
+\end{itemize}
+A symbolic library should expose both choices rather than silently mixing them.
+
+\section{Exercises}
+\begin{exercise}
+For \(L=20\), evaluate the first six block terms and compare the smallest-term rule with fixed-order truncation.
+\end{exercise}
+\begin{exercise}
+Derive \cref{eq:residual-error-relation} and explain why it becomes unreliable near \(W=-1\).
+\end{exercise}
+\begin{exercise}
+Starting from the \(N=2\) approximation at \(L=10\), perform one Newton correction using \cref{eq:W-one-Newton}.
+\end{exercise}
+
+\begin{summarybox}
+The classical logarithmic expansion of Lambert \(W\) is formally asymptotic and analytically convergent in specified domains. Residuals provide a branch-aware and numerically stable accuracy certificate, while one Newton correction converts a symbolic truncation into a high-precision approximation.
+\end{summarybox}
+
+% -----------------------------------------------------------------------------
+% Implementation, extensions, and appendices
+% -----------------------------------------------------------------------------
+
+\part{Implementation and verification}\label{part:implementation}
+
+\chapter{Sparse algorithms for power--log blocks}\label{ch:implementation}
+
+\section{Finite truncations are the computational objects}
+An infinite transseries is a mathematical limit object. Every actual symbolic computation uses a truncation
+\begin{equation}\label{eq:finite-truncation-data}
+ F_{[p,N]}(t,\lambda)=\sum_{n=p}^{N} A_n(\lambda)t^n,
+\end{equation}
+where the block coefficients belong to a chosen coefficient domain, such as \(\K[\lambda]\), \(\K(\lambda)\), or \(\K((\lambda^{-1}))\). The first software design decision is therefore not ``how do we store an infinite transseries?'' but rather:
+\begin{quote}
+What finite data determine every requested block, and what invariant tells us that omitted blocks cannot influence the answer?
+\end{quote}
+The valuation and dependency bounds developed earlier answer this question. At a fixed target order, each multiplication coefficient is a finite convolution; each quotient coefficient is obtained from earlier quotient coefficients; and each composition coefficient depends on finitely many outer and inner blocks.
+
+A convenient sparse representation is an ordered map
+\[
+ n\longmapsto A_n(\lambda).
+\]
+Zero blocks are omitted. A polynomial block can itself be stored sparsely as a map \(j\mapsto a_{n,j}\) representing \(A_n(\lambda)=\sum_j a_{n,j}\lambda^j\). Rational-log blocks should be stored as normalized numerator--denominator pairs rather than prematurely expanded in \(\lambda^{-1}\).
+
+\index{sparse representation}
+\index{truncation}
+\index{block coefficient}
+
+\begin{checkpointbox}
+The exponent map and the coefficient domain are separate layers. The exponent map handles asymptotic order in \(t\); the coefficient object handles exact algebra in \(\lambda\). Keeping these layers separate prevents accidental expansion of \((1+\lambda)^{-1}\) when the intended coefficient domain is \(\K(\lambda)\).
+\end{checkpointbox}
+
+\section{Canonical normalization}
+A symbolic implementation should maintain the following invariants.
+\begin{enumerate}
+\item Every zero coefficient is removed.
+\item Exponents are stored in strictly increasing order.
+\item Polynomial blocks are collected by logarithmic degree.
+\item Rational blocks are reduced by their polynomial greatest common divisor and have a monic denominator, when the ground field permits this normalization.
+\item A truncation carries its cutoff as metadata. Equality of two truncated objects means equality through the common cutoff, not equality of unspecified tails.
+\item Branch constants, such as \(2\pi \ImaginaryUnit k\), are never silently discarded.
+\end{enumerate}
+The last point matters particularly for Lambert \(W\), powers, and logarithmic composition. A formal expression that is correct on one branch can differ from another by a constant block, and a constant block is asymptotically much larger than every negative power of \(X\).
+
+\section{Truncated multiplication}
+Let \(F\) and \(G\) be stored as sparse maps and suppose the target is every block with exponent at most \(N\). The mathematical rule is the finite convolution
+\[
+ C_n=\sum_{i+j=n}A_iB_j.
+\]
+The sparse algorithm iterates only over nonzero input pairs.
+
+\begin{algorithm}[Sparse truncated multiplication]\label{alg:sparse-multiply}
+Given maps \(A\) and \(B\), lower exponents \(p,q\), and cutoff \(N\):
+\begin{enumerate}
+\item Initialize an empty map \(C\).
+\item For each nonzero pair \((i,A_i)\) and \((j,B_j)\), skip the pair if \(i+j>N\).
+\item Otherwise add \(A_iB_j\) to \(C_{i+j}\).
+\item Normalize every affected coefficient and remove zero blocks.
+\end{enumerate}
+The result is \(FG+\FormalBigO_t(t^{N+1})\).
+\end{algorithm}
+
+\begin{lstlisting}[style=pseudo,caption={Sparse block multiplication}]
+function multiply(A, B, N):
+    C := empty ordered map
+    for (i, Ai) in A:
+        for (j, Bj) in B:
+            if i + j <= N:
+                C[i+j] := C.get(i+j, 0) + Ai*Bj
+    return normalize(C)
+\end{lstlisting}
+
+If \(s_A\) and \(s_B\) are the numbers of nonzero blocks, the naive sparse cost is \(\BigO(s_As_B)\) block multiplications. Dense convolution, Karatsuba methods, or FFT multiplication become relevant only when the exponent interval is long and most blocks are nonzero. In typical asymptotic work the logarithmic blocks grow rapidly in size while the number of power blocks remains modest, so coefficient simplification is often more expensive than the convolution itself.
+
+\section{Reciprocal and quotient algorithms}
+Suppose
+\[
+ B=t^q(B_0+B_1t+\cdots),\qquad B_0\ne0.
+\]
+After extracting \(t^q\), the reciprocal coefficients satisfy
+\begin{equation}\label{eq:implementation-reciprocal}
+ C_0=B_0^{-1},
+ \qquad
+ C_n=-B_0^{-1}\sum_{j=1}^{n}B_jC_{n-j}.
+\end{equation}
+For a quotient \(Q=A/B\), the same triangular loop uses
+\begin{equation}\label{eq:implementation-quotient}
+ C_n=B_0^{-1}\left(A_n-\sum_{j=1}^{n}B_jC_{n-j}\right).
+\end{equation}
+
+\begin{algorithm}[Truncated quotient]\label{alg:sparse-quotient}
+Normalize \(A=t^p\widetilde A\) and \(B=t^q\widetilde B\). To compute through the requested final exponent:
+\begin{enumerate}
+\item Check whether \(B_0^{-1}\) belongs to the chosen coefficient domain. If not, promote the domain explicitly.
+\item Compute \(C_0,C_1,\ldots\) in increasing order using \cref{eq:implementation-quotient}.
+\item Return \(t^{p-q}\sum C_nt^n\), truncated at the requested order.
+\item Certify by multiplying the result by \(B\) and comparing with \(A\).
+\end{enumerate}
+\end{algorithm}
+
+The recurrence has quadratic block complexity in the number of requested terms. Newton inversion can reduce the number of block operations when very high order is required. Starting from a reciprocal \(R\) correct through order \(M\), replace it by
+\begin{equation}\label{eq:newton-reciprocal-implementation}
+ R_{\mathrm{new}}=R(2-BR),
+\end{equation}
+with all products truncated through order \(2M\). The residual changes from \(E=1-BR\) to \(E^2\), so the number of correct blocks approximately doubles.
+
+\index{division!algorithm}
+\index{Newton iteration!reciprocal}
+
+\section{The derivative operator on blocks}
+For a polynomial block \(P(\lambda)t^n\), differentiation is represented by
+\[
+ \mathcal D_nP=P'-nP,
+ \qquad
+ D\bigl(t^nP(\lambda)\bigr)=t^{n+1}\mathcal D_nP.
+\]
+Thus differentiation shifts the exponent by one and applies a first-order linear operator to the block. Repeated differentiation can be implemented without expanding back into \(X\):
+\begin{equation}\label{eq:iterated-block-operator}
+ D^r\bigl(t^nP(\lambda)\bigr)
+ =t^{n+r}\mathcal D_{n+r-1}\cdots\mathcal D_nP.
+\end{equation}
+This representation is particularly effective in the Lagrange--B\"urmann formula, where many derivatives of powers \(H^n\) are required.
+
+\section{Near-linear composition by generators}
+When
+\[
+ G=cX(1+U),\qquad \val(U)>0,
+\]
+the substitution is completely determined by
+\begin{equation}\label{eq:implementation-generators}
+ t\circ G=c^{-1}t(1+U)^{-1},
+ \qquad
+ \lambda\circ G=\lambda+\log c+\log(1+U).
+\end{equation}
+An implementation should compute these two generator images once, truncate them to the target order, and reuse powers. For
+\[
+ F=\sum_n A_n(\lambda)t^n,
+\]
+one evaluates
+\begin{equation}\label{eq:composition-generator-eval}
+ F\circ G
+ =\sum_n A_n(\lambda\circ G)(t\circ G)^n.
+\end{equation}
+Polynomial evaluation in \(\lambda\circ G\) should use Horner's rule. Powers of \(t\circ G\) can be built incrementally, with negative powers obtained only after the unit factor has been inverted in the chosen coefficient domain.
+
+\begin{lstlisting}[style=pseudo,caption={Near-linear composition through a power cutoff}]
+function compose_near_linear(F, c, U, N):
+    tau := truncate((1/c)*t*inverse(1+U), N)
+    lam := truncate(lambda + log(c) + log_series(1+U), N)
+    result := 0
+    for (n, An) in F:
+        block_value := horner(An, lam, N)
+        result += truncate(block_value * power(tau, n), N)
+    return truncate(result, N)
+\end{lstlisting}
+
+The routine must reject an inner argument with nonpositive leading scale unless a broader composition engine is available. Substituting a small inner series into a large-variable transseries is not a harmless change of variables; it can reverse the dominance order or make infinitely many outer terms contribute to one target block.
+
+\section{Taylor composition and derivative budgeting}
+For \(G=X+H\), the Taylor formula
+\[
+ F\circ G=\sum_{k\ge0}\frac{F^{(k)}}{k!}H^k
+\]
+provides a second composition engine. If \(\val(H)=h\ge0\) and \(F-X\) has valuation at least \(0\), then differentiation typically raises the \(t\)-valuation by one while multiplication by \(H\) raises it by \(h\). Consequently the \(k\)-th Taylor term gains at least \(k(h+1)\) relative to the leading nontrivial outer block. Only finitely many derivatives can affect a fixed cutoff.
+
+A practical budgeting rule is:
+\begin{equation}\label{eq:Taylor-budget}
+ k\le \Floor{\frac{N-r}{h+1}},
+\end{equation}
+where \(r\) is a lower valuation bound for the outer block being processed. The bound can be sharpened block by block. Computing too many Taylor terms is not merely inefficient; large intermediate expressions can obscure cancellations and overwhelm exact polynomial arithmetic.
+
+\section{Series reversal engines}
+For \(F=X+H\), the fixed-point engine updates
+\begin{equation}\label{eq:implementation-fixedpoint}
+ K\leftarrow-H(X+K).
+\end{equation}
+At cutoff \(N\), one should truncate after every composition. The coefficient engine instead solves the residual block by block. If
+\[
+ G_N=X+\sum_{n=0}^{N}K_nt^n
+\]
+has been determined through exponent \(N\), introduce one unknown block \(K_{N+1}\), compose once, and solve the linear equation given by the first nonzero residual block. Near the identity, the coefficient of the new block is one, so no nonlinear equation is required.
+
+The Newton engine uses
+\begin{equation}\label{eq:implementation-newton-reversion}
+ G\leftarrow G-\frac{F\circ G-X}{F'\circ G}.
+\end{equation}
+It is usually fastest to start with a few triangular or fixed-point blocks and switch to Newton only after the leading scale and branch are correct.
+
+\begin{algorithm}[Hybrid reversal]\label{alg:hybrid-reversal}
+\begin{enumerate}
+\item Normalize the dominant part of \(F\). If it is not \(X\), invert the leading monomial first.
+\item Compute two or three correction blocks by triangular recursion. This detects the correct scale and coefficient domain.
+\item Apply Newton reversion, doubling the cutoff after each step.
+\item At the final cutoff, compute both left and right composition residuals.
+\item If the first omitted residual block is not beyond the target, enlarge the working cutoff and repeat.
+\end{enumerate}
+\end{algorithm}
+
+\index{series reversal!algorithm}
+\index{compositional inverse}
+\index{Newton iteration!series reversal}
+
+\section{A domain-promotion protocol}
+Operations should not silently leave the coefficient class. A safe protocol uses the chain
+\[
+ \K[\lambda]
+ \subset \K(\lambda)
+ \subset \K((\lambda^{-1}))
+ \subset \K((\lambda^{-1},\log\lambda,\ldots)).
+\]
+Promotion is triggered by a concrete obstruction:
+\begin{itemize}
+\item division by a nonconstant polynomial block promotes \(\K[\lambda]\) to \(\K(\lambda)\);
+\item expansion for large \(\lambda\) promotes a rational block to \(\K((\lambda^{-1}))\);
+\item inversion of a leading monomial containing \((\log X)^b\) generally introduces \(\log\log X\);
+\item composition with \(cX^\beta(\log X)^\gamma\) introduces \(\log\lambda\) when \(\gamma\ne0\).
+\end{itemize}
+Every promotion changes the meaning of support and truncation. The software should therefore report it as part of the result type, not as a cosmetic simplification.
+
+\section{Exact arithmetic and expression swell}
+The coefficient polynomials for Lambert \(W\) are rational. Exact integer and rational arithmetic therefore provides reproducible results and exact cancellation. Floating-point evaluation should occur only after the symbolic truncation has been constructed.
+
+Expression swell can be controlled by:
+\begin{enumerate}
+\item keeping blocks factored when they are merely multiplied;
+\item expanding only when coefficients must be compared;
+\item using Horner forms for polynomial substitution;
+\item caching repeated powers and logarithmic series;
+\item truncating immediately after every algebraic operation;
+\item separating formal simplification from analytic branch simplification.
+\end{enumerate}
+In particular, identities such as \(\PrincipalLogarithm(\EulerE^X)=X\) are branch-sensitive over \(\ComplexNumbers\) and should not be applied by a purely algebraic simplifier without hypotheses.
+
+\section{Exercises}
+\begin{exercise}
+Write sparse maps for the two series in the worked multiplication example of \cref{ch:multiplication}, and execute \cref{alg:sparse-multiply} by hand through order \(t^3\).
+\end{exercise}
+\begin{exercise}
+Show that the Newton reciprocal update \cref{eq:newton-reciprocal-implementation} changes the residual \(E=1-BR\) to \(E^2\).
+\end{exercise}
+\begin{exercise}
+Derive a sharp derivative budget for composing \(F=t^pP(\lambda)\) with \(X+H\) when \(\val(H)=h\).
+\end{exercise}
+\begin{exercise}
+Explain why automatic conversion of \(1/(1+\lambda)\) into a Laurent series in \(\lambda^{-1}\) is mathematically different from exact division in \(\K(\lambda)\).
+\end{exercise}
+
+\begin{summarybox}
+Finite truncations, sparse block maps, explicit coefficient domains, and aggressive valuation-based truncation turn the formal calculus into implementable algorithms. The same recurrences that prove existence also provide stable software: convolution for products, triangular loops for quotients, generator images or Taylor expansion for composition, and hybrid triangular--Newton methods for reversal.
+\end{summarybox}
+
+\chapter{Residual certificates and reproducible verification}\label{ch:verification}
+
+\section{Why a residual is stronger than visual agreement}
+Two long transseries can agree in many displayed terms while both being wrong. A residual tests the defining equation directly. For a quotient \(Q=A/B\), use
+\[
+ R_{\mathrm{div}}=A-BQ.
+\]
+For a compositional inverse \(G=F\invcomp\), use
+\[
+ R_{\mathrm{right}}=F\circ G-X,
+ \qquad
+ R_{\mathrm{left}}=G\circ F-X.
+\]
+For Lambert \(W\), the additive logarithmic residual
+\[
+ R_W=w+\PrincipalLogarithm w-\xi_k
+\]
+is usually better conditioned than evaluating \(w\EulerE^w-z\), which may overflow even when \(w\) is accurate.
+
+A truncation advertised as correct through \(t^N\) should have residual valuation at least \(N+1\), after all input tails have been budgeted consistently.
+
+\index{residual certificate}
+\index{verification}
+
+\section{Two-sided checks for composition groups}
+In a noncommutative operation such as composition, a one-sided inverse is not automatically a convincing computational certificate. Within the near-identity group, uniqueness shows that a sufficiently accurate right inverse is also the left inverse, but a software bug can violate the hypotheses or truncate inconsistently. Computing both sides catches asymmetric mistakes in the composition engine.
+
+Suppose
+\[
+ F=X+H,\qquad G=X+K,
+\]
+and both are known through \(t^N\). To check the inverse through \(t^N\), one may need one or more guard blocks beyond \(N\), because a derivative of an omitted term can descend into the target range after multiplication by a non-small displacement. The valuation estimates in \cref{ch:taylor} determine the required guard order.
+
+\section{Coefficientwise identity testing}
+A block residual
+\[
+ R=\sum_{n\ge r}R_n(\lambda)t^n
+\]
+vanishes through order \(N\) precisely when every polynomial or rational function \(R_n(\lambda)\) vanishes for \(r\le n\le N\). Each coefficient should be normalized before testing. Numerical substitution for \(\lambda\) is not a proof: a nonzero polynomial can vanish at sampled points, and severe cancellation can hide a wrong coefficient.
+
+For polynomial blocks, exact coefficient comparison is immediate. For rational blocks, cross-multiply normalized numerators and denominators. For Laurent-log blocks, compare every retained \(\lambda^{-j}\) coefficient and carry a separate tail order in the subordinate expansion.
+
+\section{Randomized tests as diagnostics, not proofs}
+Randomized substitution is nevertheless valuable for debugging. One can assign small rational values to symbolic parameters, choose a moderately large real \(X\), and compare:
+\begin{itemize}
+\item the truncated symbolic result;
+\item direct numerical evaluation of the original expression;
+\item the predicted order of the residual.
+\end{itemize}
+A randomized failure is decisive evidence of an error. A randomized success is only a diagnostic; the exact residual remains the certificate.
+
+\section{A complete verification workflow}
+For an operation returning \(S_N\), the following workflow is robust.
+\begin{enumerate}
+\item \textbf{State the domain.} Record the coefficient field, exponent group, logarithmic depth, and branch parameters.
+\item \textbf{State the target.} Record the cutoff and whether it is formal or numerical.
+\item \textbf{Compute with guards.} Retain enough extra blocks to prevent discarded tails from contaminating the target.
+\item \textbf{Normalize.} Collect blocks and reduce coefficient expressions.
+\item \textbf{Form the defining residual.}
+\item \textbf{Check its valuation.} Verify exact vanishing of every required block.
+\item \textbf{Optionally evaluate numerically.} Confirm that the observed error follows the formal order in a representative domain.
+\end{enumerate}
+
+\begin{algorithmicbox}
+A useful program should return not just a transseries but a record
+\[
+ (\text{series},\ \text{domain},\ \text{cutoff},\ \text{residual valuation},\ \text{branch data}).
+\]
+This turns implicit assumptions into inspectable output.
+\end{algorithmicbox}
+
+\section{Verifying the Lambert coefficient recurrence}
+Let
+\[
+ u_N=\sum_{n=1}^{N}\LambertPolynomial{n}(\ell)r^n,
+ \qquad
+ \Phi(u)=-\log(1-r(\ell-u)).
+\]
+The recurrence is verified by checking
+\begin{equation}\label{eq:Lambert-coeff-residual}
+ u_N-\Phi(u_N)=\FormalBigO_r(r^{N+1}).
+\end{equation}
+This single identity simultaneously verifies every coefficient polynomial through \(\LambertPolynomial{N}\). A second independent check uses the closed Stirling formula. Agreement of two derivations is valuable, but \cref{eq:Lambert-coeff-residual} is the direct defining certificate.
+
+\section{Verifying Lagrange--B\"urmann at infinity}
+For a concrete \(H\), form
+\[
+ G_N=X+\sum_{n=1}^{N}\frac{(-1)^n}{n!}D^{n-1}(H^n).
+\]
+Then compose \(F=X+H\) with \(G_N\). The first omitted order depends on the valuation of \(H\). When \(H\) is a logarithmic block of valuation zero, the \(n\)-th summand begins at \(t^{n-1}\); therefore terms through \(n=N+1\) may be needed to certify every block through \(t^N\). This indexing detail is an easy source of apparent one-block discrepancies.
+
+\section{Dimensional and scale checks}
+Before any exact algebra, three inexpensive checks detect many errors.
+\begin{enumerate}
+\item \textbf{Dominant scale.} Does the leading term satisfy the dominant balance of the defining equation?
+\item \textbf{Logarithmic depth.} Does the proposed inverse or composition contain every logarithmic level forced by the leading monomial?
+\item \textbf{Valuation parity or pattern.} Symmetry can force absent blocks, as in the Catalan expansion \cref{eq:catalan-inverse}, where only odd negative powers occur.
+\end{enumerate}
+These checks do not prove the formula, but they often reveal an impossible ansatz before lengthy coefficient work begins.
+
+\section{Numerical conditioning near exceptional points}
+Formal order alone does not describe numerical conditioning. For Lambert \(W\), the inverse derivative is
+\[
+ W'(z)=\frac{W(z)}{z(1+W(z))}.
+\]
+Near the branch point \(W=-1\), the factor \(1+W\) is small, so a small equation residual can correspond to a larger error in \(W\). This is why the branch-point Puiseux scale is preferable there. More generally, Newton reversion involves division by \(F'\circ G\); a nearly vanishing derivative signals an ill-conditioned inverse problem even when the formal algebra is correct.
+
+\section{Reproducible numerical tables}
+A numerical table should specify:
+\begin{itemize}
+\item the exact defining equation;
+\item the branch and parameter values;
+\item the truncation convention;
+\item the arithmetic precision;
+\item whether the reported quantity is term size, residual, or actual error;
+\item whether a Newton or Halley correction was applied.
+\end{itemize}
+Without these items, two correct experiments may appear inconsistent merely because they use different branches or truncation policies.
+
+\section{Common implementation failures}
+\begin{longtable}{@{}p{0.28\textwidth}p{0.62\textwidth}@{}}
+\toprule
+Failure & Consequence and remedy\\
+\midrule
+\endhead
+Using one symbol \(^{-1}\) for two operations & Multiplicative reciprocal and compositional inverse are confused. Use distinct types and notation.\\
+Discarding branch constants & A missing \(2\pi\ImaginaryUnit k\) changes the constant block and invalidates every subsequent coefficient.\\
+Dividing inside \(\K[\lambda]\) without checking the leading block & The result is silently forced into an incorrect class. Promote to rational-log coefficients.\\
+Substituting before checking the inner scale & Infinitely many outer terms may collapse to one order, making the formal sum undefined.\\
+Expanding every intermediate expression & Coefficient swell hides cancellations. Truncate and normalize blockwise.\\
+Testing polynomials numerically & Accidental zeros can mask a nonzero residual. Compare exact coefficients.\\
+Checking only \(F\circ G\) & An asymmetric composition bug may survive. Check both composition directions when feasible.\\
+Applying a large-argument expansion near a branch point & The wrong asymptotic scale produces poor conditioning. Switch to a Puiseux expansion.\\
+\bottomrule
+\end{longtable}
+
+\section{Exercises}
+\begin{exercise}
+For the inverse in \cref{eq:affine-log-inverse}, compute \(F\circ F\invcomp-X\) through \(t^2\) and verify exact cancellation.
+\end{exercise}
+\begin{exercise}
+Explain how many guard blocks are needed to check the inverse of \(X+\log X\) through \(t^5\) using the Lagrange formula.
+\end{exercise}
+\begin{exercise}
+Construct a nonzero polynomial residual that vanishes at three chosen numerical test values of \(\lambda\), illustrating why numerical sampling is not a proof.
+\end{exercise}
+
+\begin{summarybox}
+Residuals convert a formal calculation into a certificate. Exact coefficient comparison proves the requested truncation; two-sided composition checks expose asymmetric errors; and numerical evaluation diagnoses conditioning and branch choices. A reproducible computation records its algebraic domain and its residual valuation as part of the result.
+\end{summarybox}
+
+\part{Extensions and the wider transseries landscape}\label{part:extensions}
+
+\chapter{Generalized power--log and Dulac classes}\label{ch:extensions}
+
+\section{From integer powers to Hahn supports}
+The elementary block algebra uses integer powers of \(t\), but many applications require real or generalized exponents:
+\begin{equation}\label{eq:Hahn-power-log}
+ F(t)=\sum_{\alpha\in S}A_\alpha(\lambda)t^\alpha,
+\end{equation}
+where \(S\subset\RealNumbers\) or an ordered abelian group. Multiplication still uses convolution,
+\[
+ C_\gamma=\sum_{\alpha+\beta=\gamma}A_\alpha B_\beta,
+\]
+provided the support condition ensures that the sum is finite for each \(\gamma\). In a Hahn series, the support is well ordered in the direction compatible with the chosen dominance convention \cite{hahn,vdhoeven-book}.
+
+The arithmetic formulas from \cref{part:arithmetic} therefore survive almost unchanged. What changes is the proof that every target coefficient receives only finitely many contributions. Integer exponents make this finiteness nearly invisible; generalized supports make it a central axiom.
+
+\index{Hahn series}
+\index{well-ordered support}
+\index{generalized exponent}
+
+\section{Power--log transseries near the origin}
+For \(x\to0^+\), a common Dulac scale uses
+\[
+ \ell=-\frac1{\log x},
+\]
+and transseries of the form
+\begin{equation}\label{eq:Dulac-general-form}
+ F(x)=\sum_{(\alpha,m)\in S}a_{\alpha,m}x^\alpha\ell^m.
+\end{equation}
+The order is lexicographic in the dominant power \(x^\alpha\), refined by powers of \(\ell\). Depending on the convention, one may allow real \(\alpha\), integer \(m\), or polynomial/Laurent series blocks in \(\ell\).
+
+These classes arise naturally in return maps and normal forms. Broad power--log algebras are closed under important operations such as composition, inversion of parabolic elements, and formal embeddings, under suitable support hypotheses \cite{mardesic-normalforms,mardesic-length,resman-dulac,peran-logtransseries}.
+
+\section{The derivative in the Dulac scale}
+Because
+\[
+ \ell'=\frac{\ell^2}{x},
+\]
+one has
+\begin{equation}\label{eq:Dulac-derivative}
+ \frac{\Differential}{\Differential x}\bigl(x^\alpha\ell^m\bigr)
+ =x^{\alpha-1}\left(\alpha\ell^m+m\ell^{m+1}\right).
+\end{equation}
+Thus differentiation preserves power--log form but couples adjacent logarithmic powers. This is the near-zero analogue of
+\[
+ D[t^nP(\lambda)]=t^{n+1}(P'-nP)
+\]
+at infinity.
+
+Formula \cref{eq:Dulac-derivative} also explains the first inverse correction in \cref{eq:dulac-inverse-first}. The product \(hh'\) increases the power exponent from \(\alpha\) to \(2\alpha-1\), which is larger than \(\alpha\) when \(\alpha>1\). This strict gain is the contraction mechanism behind parabolic reversion.
+
+\section{Logarithmic depth}
+Introduce iterated logarithms
+\[
+ L_0=X,
+ \qquad L_1=\log X,
+ \qquad L_2=\log\log X,
+ \qquad L_{j+1}=\log L_j.
+\]
+A power--log monomial can then be written
+\begin{equation}\label{eq:iterated-log-monomial}
+ X^aL_1^{b_1}L_2^{b_2}\cdots L_d^{b_d}.
+\end{equation}
+The largest \(d\) present is its logarithmic depth. Multiplication does not increase depth. Division need not increase depth if reciprocals are allowed within the same coefficient field. Composition and reversion can increase depth: the leading inversion of \(X^a(\log X)^b\) contains \(\log\log X\) when \(b\ne0\).
+
+This depth increase is not a failure of the algorithm. It is information about the smallest class closed under the requested operation. In the Dulac setting, inversion of a leading term involving a logarithmic factor similarly produces a double logarithm; this phenomenon is explicit in the analysis of inverse asymptotics for Dulac maps \cite{mardesic-length}.
+
+\index{logarithmic depth}
+\index{iterated logarithm}
+
+\section{A depth-prediction rule}
+Suppose the leading scale is
+\[
+ Y\sim cX^a(\log X)^b.
+\]
+Taking logarithms gives
+\[
+ \log Y\sim \log c+a\log X+b\log\log X.
+\]
+Solving for \(\log X\) therefore requires a correction involving \(\log\log Y\) unless \(b=0\). This gives a useful rule:
+\begin{quote}
+The logarithmic factors attached to the dominant monomial predict the new logarithmic level required by reversion.
+\end{quote}
+The exact Lambert \(W\) formula in \cref{ch:leading-reversion} upgrades this heuristic to an identity.
+
+\section{Hyperbolic and strongly hyperbolic leading terms}
+Near zero, a germ with leading behavior \(f(x)\sim ax^\alpha\) is often called hyperbolic when the leading action is nontrivial in an appropriate dynamical sense. In logarithmic transseries, strongly hyperbolic normalization may involve non-unit power exponents and logarithmic corrections. The formal classification and normalization problem is broader than near-identity reversal, but the same operational principles recur: isolate the leading monomial, conjugate to a normalized scale, and solve corrections in an ordered support \cite{peran-logtransseries}.
+
+\section{Composition hazards in generalized supports}
+For generalized series, three hazards require explicit checks.
+\begin{enumerate}
+\item \textbf{Support collapse.} Distinct outer monomials can map to the same inner order, possibly producing an infinite coefficient sum.
+\item \textbf{Loss of well ordering.} The image of a well-ordered support need not remain well ordered under an inadmissible substitution.
+\item \textbf{Depth explosion.} Repeated substitution may generate unbounded iterated logarithmic depth.
+\end{enumerate}
+Edgar's composition theory formulates admissibility conditions for broad transseries classes and emphasizes that positive infinitely large inner arguments are the natural setting for large-variable composition \cite{edgar-composition}.
+
+\section{Reversion after dominant normalization}
+A generalized reversion problem should be decomposed into two stages.
+\begin{enumerate}
+\item Invert the dominant monomial \(M(X)\) exactly or asymptotically, obtaining \(X_0=M\invcomp(Y)\).
+\item Write \(X=X_0(1+\delta)\) or \(X=X_0+\Delta\), substitute into the full equation, and solve the small correction in the induced scale.
+\end{enumerate}
+The first stage chooses the correct logarithmic depth and branch. The second stage is then a near-identity problem, to which the triangular and Newton algorithms apply.
+
+\section{Example: one correction beyond a power--log leading term}
+Consider
+\begin{equation}\label{eq:powerlog-corrected}
+ Y=cX^a(\log X)^b\left(1+\frac{d}{\log X}\right),
+\end{equation}
+with \(a,b,c\ne0\). Let \(X_0\) denote the exact inverse of the leading factor, expressed by Lambert \(W\). Set \(X=X_0\EulerE^\eta\). Taking logarithms of \cref{eq:powerlog-corrected} and using the defining equation for \(X_0\) gives
+\[
+ 0=a\eta+b\log\left(1+\frac{\eta}{\log X_0}\right)
+ +\log\left(1+\frac{d}{\log X_0+\eta}\right).
+\]
+Since \(\log X_0\to\infty\), the first correction is
+\begin{equation}\label{eq:powerlog-correction}
+ \eta=-\frac{d}{a\log X_0}
+ +\BigOAt{(\log X_0)^{-2}}{X_0\to+\infty}.
+\end{equation}
+Thus
+\[
+ X=X_0\left(1-\frac{d}{a\log X_0}+\cdots\right).
+\]
+This example shows how an exact Lambert leading inverse and an ordinary small-series correction cooperate.
+
+\section{Exercises}
+\begin{exercise}
+Prove \cref{eq:Dulac-derivative} and compute the second derivative of \(x^\alpha\ell^m\).
+\end{exercise}
+\begin{exercise}
+Determine the logarithmic depth expected in the inverse of
+\[
+ Y=X^2(\log X)^3(\log\log X)^{-1}.
+\]
+\end{exercise}
+\begin{exercise}
+Derive the next term after \cref{eq:powerlog-correction} by expanding through \((\log X_0)^{-2}\).
+\end{exercise}
+
+\begin{summarybox}
+The block calculus extends from integer powers to Hahn-supported power--log and Dulac series once support finiteness is made explicit. Composition and reversion can force new iterated logarithms; dominant-monomial normalization predicts and controls this depth increase before near-identity algorithms compute the remaining corrections.
+\end{summarybox}
+
+\chapter{Relation with full transseries and further deductions}\label{ch:full-transseries}
+
+\section{What the polynomial--log class captures}
+The class developed in this article captures expansions assembled from powers of a main variable and a finite hierarchy of logarithms. It is rich enough for:
+\begin{itemize}
+\item the large-argument expansion of Lambert \(W\) and Wright omega;
+\item many implicit inversions with logarithmic corrections;
+\item power--log and Dulac normal forms;
+\item reciprocal, derivative, composition, and parabolic reversion calculations;
+\item coefficient algorithms based on polynomial and rational blocks.
+\end{itemize}
+It does not by itself contain exponentially small terms such as \(\EulerE^{-X}\), nested exponentials such as \(\EulerE^{\EulerE^X}\), or arbitrary mixtures of exponential scales. Those belong to broader logarithmic--exponential transseries fields.
+
+\section{From power--log blocks to logarithmic--exponential transseries}
+A full transseries is assembled recursively from a monomial group containing exponentials of previously constructed large series. Schematically, one encounters sums
+\[
+ T=\sum_{\m\in S}c_\m\m,
+\]
+where \(S\) is a well-based family of transmonomials and the monomials may involve powers, logarithms, and exponentials. The theories of logarithmic--exponential series and transseries establish broad fields closed under differentiation, exponentiation, logarithm, and suitable composition \cite{vdDMM-1997,vdDMM-2001,vdhoeven-book,adh-book}.
+
+Polynomial--log transseries form a tractable sector of this landscape. Their special advantage is that each dominant power level carries a finite algebraic block. This makes every operation transparent enough to derive by hand and efficient enough to implement with elementary exact arithmetic.
+
+\index{logarithmic-exponential transseries}
+\index{transmonomial}
+\index{transseries field}
+
+\section{Grid-based and well-based viewpoints}
+Two organizational ideas are common in transseries theory.
+\begin{itemize}
+\item A \emph{grid-based} series has support contained in the multiplicative semigroup generated by finitely many small monomials. Algorithms can manipulate exponent vectors on that grid.
+\item A \emph{well-based} series allows more general well-ordered support, providing conceptual closure beyond a fixed finite grid.
+\end{itemize}
+The elementary algebra \(\K[\lambda]((t))\) is grid-like in the main power \(t\), while the block variable \(\lambda\) is treated separately. Generalized power--log supports interpolate between this simple grid and fully well-based transseries.
+
+\section{Differential-algebraic structure}
+The derivative couples the power and logarithmic levels but preserves the ordered algebra. This makes polynomial--log series a differential algebra. In a full transseries field, the interaction of valuation, derivation, and asymptotic integration becomes a deep structural subject. The monograph of Aschenbrenner, van den Dries, and van der Hoeven develops the model-theoretic and differential-algebraic framework of transseries \cite{adh-book}.
+
+For the present class, one can already see a fundamental principle: differentiation of a small monomial need not make it smaller in every asymptotic structure, so Taylor composition requires a compatibility estimate between the displacement and the derivative. Recent work proves Taylor approximation theorems in very broad transseries settings under structural hypotheses \cite{mantova-monotonicity}.
+
+\section{A composition group near the identity}
+The set
+\[
+ \mathcal G=\{X+H:H\in\K[\lambda][[t]]\}
+\]
+forms a group under composition. The inverse theorem in \cref{ch:inverse-theorem} proves closure under inversion; associativity follows from admissible formal substitution. The valuation filtration
+\[
+ \mathcal G_{\ge n}=\{X+H:\val(H)\ge n\}
+\]
+is compatible with composition in the sense that deeper corrections affect only deeper blocks.
+
+This filtration gives a pronilpotent flavor: finite quotients modulo \(t^{N+1}\) are finite-step algebraic groups, and the full group is recovered as an inverse limit of these truncations. Newton and fixed-point algorithms work because the filtration turns nonlinear composition into a triangular process.
+
+\index{composition group}
+\index{valuation filtration}
+
+\section{Infinitesimal generators and iterative logarithms}
+For a tangent-to-identity map \(F=X+H\), one may ask for a formal vector field \(V=v(X)D\) such that
+\[
+ F=\exp(V)\,X
+ =X+v+\frac12v v'+\frac16v\bigl((v')^2+vv''\bigr)+\cdots.
+\]
+The coefficient \(v\) is the iterative logarithm of \(F\). Solving for \(v\) is another triangular transseries problem. Conversely, fractional iterates can be defined formally by
+\[
+ F^{[s]}=\exp(sV)X.
+\]
+Edgar develops fractional iteration in transseries settings and shows how support and composition govern these constructions \cite{edgar-fractional}.
+
+At the first orders,
+\[
+ v=H-\frac12HH'+\cdots.
+\]
+This resembles the inverse formula but encodes iteration rather than reversion. The distinction is important: \(F\invcomp=F^{[-1]}\) is the time \(-1\) iterate only after an iterative logarithm has been chosen and the embedding is valid.
+
+\section{A new deduction: degree bounds for Lambert blocks}
+The closed formula
+\[
+ \LambertPolynomial{n}(\ell)=\sum_{m=1}^{n}
+ \frac{(-1)^{n-m}}{m!}\stirlingone{n}{n-m+1}\ell^m
+\]
+immediately gives
+\[
+ \deg \LambertPolynomial{n}=n,
+ \qquad
+ [\ell^n]\LambertPolynomial{n}=\frac1n,
+ \qquad
+ [\ell]\LambertPolynomial{n}=(-1)^{n-1}.
+\]
+The leading coefficient follows from \(\stirlingone{n}{1}=(n-1)!\); the linear coefficient follows from \(\stirlingone{n}{n}=1\). Hence every Lambert block has the two-sided skeleton
+\begin{equation}\label{eq:Pn-skeleton}
+ \LambertPolynomial{n}(\ell)=\frac{\ell^n}{n}+\cdots+(-1)^{n-1}\ell.
+\end{equation}
+This gives an immediate checksum for generated coefficient tables.
+
+A second coefficient can also be read from \(\stirlingone{n}{2}=(n-1)!H_{n-1}\):
+\begin{equation}\label{eq:Pn-next-leading}
+ [\ell^{n-1}]\LambertPolynomial{n}
+ =-H_{n-1},
+ \qquad n\ge2.
+\end{equation}
+Indeed, the relevant Stirling number in the formula is \(\stirlingone{n}{2}\), and division by \((n-1)!\) gives the stated harmonic coefficient with a negative sign. This compactly explains the increasingly large negative subleading terms visible in the table.
+
+\section{A new deduction: a differential recurrence for the Lambert blocks}
+The Stirling recurrence
+\[
+ \stirlingone{n+1}{k}=n\stirlingone{n}{k}+\stirlingone{n}{k-1}
+\]
+can be translated into a recurrence among the polynomials. A convenient form follows directly from the fixed-point equation. Let
+\[
+ u=\sum_{n\ge1}\LambertPolynomial{n}(\ell)r^n,
+ \qquad
+ u=-\log(1-r(\ell-u)).
+\]
+Differentiate with respect to \(\ell\) while holding \(r\) fixed:
+\[
+ u_\ell=\frac{r(1-u_\ell)}{1-r(\ell-u)}.
+\]
+Using \(1-r(\ell-u)=\EulerE^{-u}\), we obtain
+\begin{equation}\label{eq:Lambert-generating-differential}
+ u_\ell=\frac{r\EulerE^u}{1+r\EulerE^u}.
+\end{equation}
+Together with the original fixed-point equation, this is an efficient bivariate generating relation for the derivatives \(\LambertPolynomial{n}'(\ell)\). Equating coefficients gives a triangular recurrence requiring only products of already known blocks. It also proves \(\LambertPolynomial{n}(0)=0\) for every \(n\ge1\).
+
+\section{A new deduction: reversal as a filtered implicit-function theorem}
+The near-identity inverse theorem can be reframed as a formal implicit-function theorem in a complete filtered algebra. Define
+\[
+ \Psi(K)=K+H(X+K).
+\]
+Its linearization at a partial solution is
+\[
+ \delta K\longmapsto \delta K+H'(X+K)\delta K.
+\]
+Because \(H'\) has positive valuation, the operator \(1+H'(X+K)\) is a unit. Therefore every residual block determines a unique correction block. This is precisely the triangular mechanism behind both coefficient recursion and Newton's method.
+
+The same argument applies to more general implicit equations \(\Phi(X,Y)=0\) whenever the partial derivative \(\partial_Y\Phi\) has an invertible leading block. Thus the methods of this article extend beyond explicit reversion to a broad class of logarithmic implicit asymptotic problems.
+
+\section{Research directions}
+Several directions emerge naturally from the operational theory.
+\begin{enumerate}
+\item \textbf{Certified computer algebra.} Implement the result record described in \cref{ch:verification}, including support proofs and residual valuations.
+\item \textbf{Fast high-order reversal.} Combine relaxed multiplication, Newton iteration, and automatic differentiation for hundreds or thousands of power--log blocks.
+\item \textbf{Coefficient combinatorics.} Develop analogous Stirling- or Bell-polynomial formulas for inverses of \(X+a\log X+\sum_j p_j(\log X)X^{-j}\) with a generic polynomial coefficient family \((p_j)_j\).
+\item \textbf{Depth-optimal inversion.} Given a generalized leading monomial, algorithmically prove the minimal iterated-logarithm depth needed by its inverse.
+\item \textbf{Uniform branch asymptotics.} Connect large-argument power--log expansions to branch-point Puiseux expansions with rigorous overlap estimates.
+\item \textbf{Dulac and resurgent extensions.} Add exponentially small sectors and Stokes data while preserving the transparent block arithmetic developed here.
+\item \textbf{Formalization.} Encode the filtered inverse theorem and finite-convolution lemmas in a proof assistant, using truncations as finite certificates for infinite formal identities.
+\end{enumerate}
+
+\section{Exercises}
+\begin{exercise}
+Prove the coefficient identities \cref{eq:Pn-skeleton,eq:Pn-next-leading} from the Stirling formula.
+\end{exercise}
+\begin{exercise}
+Expand \cref{eq:Lambert-generating-differential} through \(r^4\) and compare with the derivatives of the displayed polynomials \(\LambertPolynomial{1},\ldots,\LambertPolynomial{4}\).
+\end{exercise}
+\begin{exercise}
+Formulate and prove a filtered implicit-function theorem for \(\Phi(X,Y)=0\) when \(\partial_Y\Phi\) has an invertible constant leading block.
+\end{exercise}
+
+\begin{summarybox}
+Polynomial--log transseries are a concrete, algorithmically transparent sector of the wider logarithmic--exponential transseries field. Their filtered composition group explains why reversal is triangular, while the Lambert coefficient formula yields additional degree, harmonic-number, and differential identities. The same filtered implicit-function mechanism extends the calculus to many nonlinear asymptotic equations.
+\end{summarybox}
+
+\appendix
+
+\chapter{Lambert coefficient tables}\label{app:Lambert-tables}
+
+\section{Definition and reconstruction rule}
+The universal polynomials are
+\begin{equation}\label{eq:appendix-Pn}
+ \LambertPolynomial{n}(\ell)=\sum_{m=1}^{n}\frac{c_{n,m}}{m!}\ell^m,
+ \qquad
+ c_{n,m}=(-1)^{n-m}\stirlingone{n}{n-m+1}.
+\end{equation}
+The integer row \((c_{n,1},\ldots,c_{n,n})\) therefore reconstructs \(\LambertPolynomial{n}\) exactly after division of the \(m\)-th entry by \(m!\).
+
+\section{Explicit polynomials through order six}
+\begin{align*}
+\LambertPolynomial{1}(\ell)={}&\ell,\\
+\LambertPolynomial{2}(\ell)={}&\frac{\ell(\ell-2)}2,\\
+\LambertPolynomial{3}(\ell)={}&\frac{\ell(2\ell^2-9\ell+6)}6,\\
+\LambertPolynomial{4}(\ell)={}&\frac{\ell(3\ell^3-22\ell^2+36\ell-12)}{12},\\
+\LambertPolynomial{5}(\ell)={}&\frac{\ell(12\ell^4-125\ell^3+350\ell^2-300\ell+60)}{60},\\
+\LambertPolynomial{6}(\ell)={}&\frac{\ell(20\ell^5-274\ell^4+1125\ell^3-1700\ell^2+900\ell-120)}{120}.
+\end{align*}
+
+\section{Signed Stirling rows through order twelve}
+{\footnotesize
+\begin{longtable}{@{}r>{\raggedright\arraybackslash}p{0.78\textwidth}@{}}
+\toprule
+\(n\) & \((c_{n,1},c_{n,2},\ldots,c_{n,n})\)\\
+\midrule
+\endhead
+1 & \(1\)\\
+2 & \(-1,\allowbreak\ 1\)\\
+3 & \(1,\allowbreak\ -3,\allowbreak\ 2\)\\
+4 & \(-1,\allowbreak\ 6,\allowbreak\ -11,\allowbreak\ 6\)\\
+5 & \(1,\allowbreak\ -10,\allowbreak\ 35,\allowbreak\ -50,\allowbreak\ 24\)\\
+6 & \(-1,\allowbreak\ 15,\allowbreak\ -85,\allowbreak\ 225,\allowbreak\ -274,\allowbreak\ 120\)\\
+7 & \(1,\allowbreak\ -21,\allowbreak\ 175,\allowbreak\ -735,\allowbreak\ 1624,\allowbreak\ -1764,\allowbreak\ 720\)\\
+8 & \(-1,\allowbreak\ 28,\allowbreak\ -322,\allowbreak\ 1960,\allowbreak\ -6769,\allowbreak\ 13132,\allowbreak\ -13068,\allowbreak\ 5040\)\\
+9 & \(1,\allowbreak\ -36,\allowbreak\ 546,\allowbreak\ -4536,\allowbreak\ 22449,\allowbreak\ -67284,\allowbreak\ 118124,\allowbreak\ -109584,\allowbreak\ 40320\)\\
+10 & \(-1,\allowbreak\ 45,\allowbreak\ -870,\allowbreak\ 9450,\allowbreak\ -63273,\allowbreak\ 269325,\allowbreak\ -723680,\allowbreak\ 1172700,\allowbreak\ -1026576,\allowbreak\ 362880\)\\
+11 & \(1,\allowbreak\ -55,\allowbreak\ 1320,\allowbreak\ -18150,\allowbreak\ 157773,\allowbreak\ -902055,\allowbreak\ 3416930,\allowbreak\ -8409500,\allowbreak\ 12753576,\allowbreak\ -10628640,\allowbreak\ 3628800\)\\
+12 & \(-1,\allowbreak\ 66,\allowbreak\ -1925,\allowbreak\ 32670,\allowbreak\ -357423,\allowbreak\ 2637558,\allowbreak\ -13339535,\allowbreak\ 45995730,\allowbreak\ -105258076,\allowbreak\ 150917976,\allowbreak\ -120543840,\allowbreak\ 39916800\)\\
+\bottomrule
+\end{longtable}
+}
+\section{How to use the table}
+For \(n=7\), the row gives
+\[
+ \LambertPolynomial{7}(\ell)
+ =\ell-\frac{21}{2!}\ell^2+\frac{175}{3!}\ell^3
+ -\frac{735}{4!}\ell^4+\frac{1624}{5!}\ell^5
+ -\frac{1764}{6!}\ell^6+\frac{720}{7!}\ell^7.
+\]
+After simplification,
+\[
+ \LambertPolynomial{7}(\ell)
+ =\frac{\ell}{840}
+ \left(120\ell^6-2058\ell^5+11368\ell^4-25725\ell^3
+ +24500\ell^2-8820\ell+840\right).
+\]
+Every row satisfies the checks
+\[
+ c_{n,1}=(-1)^{n-1},
+ \qquad
+ c_{n,n}=(n-1)!,
+\]
+corresponding to the linear and leading coefficients in \cref{eq:Pn-skeleton}.
+
+\section{Expansion template}
+On branch \(k\), define
+\[
+ \xi_k=\PrincipalLogarithm z+2\pi\ImaginaryUnit k,
+ \qquad
+ \ell_k=\PrincipalLogarithm\xi_k.
+\]
+Then the order-twelve truncation is assembled as
+\begin{equation}\label{eq:order12-template}
+ W_k(z)=\xi_k-\ell_k+
+ \sum_{n=1}^{12}\frac{\LambertPolynomial{n}(\ell_k)}{\xi_k^n}
+ +\FormalBigO_{\xi_k^{-1}}\!\left(\xi_k^{-13}\right),
+\end{equation}
+with branch-compatible logarithms.  The displayed remainder records only outer
+formal order; its coefficient blocks may grow polynomially in \(\ell_k\).  A
+uniform analytic error bound requires a specified sector and distance from
+branch cuts.
+
+\chapter{Operational formula sheet}\label{app:formula-sheet}
+
+\section{Basic variables and domains}
+\[
+ t=X^{-1},\qquad \lambda=\log X,
+\]
+\[
+ \Plog=\K[\lambda]((t)),\qquad
+ \Rlog=\K(\lambda)((t)),\qquad
+ \Hlog=\K((\lambda^{-1}))((t)).
+\]
+
+\section{Arithmetic}
+For \(F=\sum A_nt^n\) and \(G=\sum B_nt^n\),
+\[
+ [t^n](FG)=\sum_{i+j=n}A_iB_j.
+\]
+For \(A=BQ\), with \(B_0\ne0\),
+\[
+ Q_0=B_0^{-1}A_0,
+ \qquad
+ Q_n=B_0^{-1}\left(A_n-\sum_{j=1}^{n}B_jQ_{n-j}\right).
+\]
+For a unit \(1+U\),
+\[
+ (1+U)^{-1}=\sum_{j\ge0}(-U)^j,
+ \quad
+ \log(1+U)=\sum_{j\ge1}\frac{(-1)^{j+1}}jU^j,
+ \quad
+ (1+U)^\alpha=\sum_{j\ge0}\binom\alpha jU^j.
+\]
+
+\section{Differentiation}
+\[
+ D[t^nP(\lambda)]=t^{n+1}(P'-nP),
+\]
+\[
+ D^r[t^nP]
+ =t^{n+r}\mathcal D_{n+r-1}\cdots\mathcal D_nP,
+ \qquad \mathcal D_j(P)=P'-jP.
+\]
+In the last display, \(\mathcal D_j\) denotes the operator \(P\mapsto P'-jP\).
+
+\section{Composition}
+For \(G=cX(1+U)\),
+\[
+ t\circ G=c^{-1}t(1+U)^{-1},
+ \qquad
+ \lambda\circ G=\lambda+\log c+\log(1+U).
+\]
+For \(G=X+H\),
+\[
+ F\circ G=\sum_{k\ge0}\frac{F^{(k)}}{k!}H^k.
+\]
+
+\section{Series reversal}
+For \(F=X+H\), write \(F\invcomp=X+K\). Then
+\[
+ K=-H(X+K).
+\]
+Newton correction is
+\[
+ G_{\mathrm{new}}=G-\frac{F\circ G-X}{F'\circ G}.
+\]
+Lagrange--B\"urmann at infinity is
+\[
+ (X+H)\invcomp
+ =X+\sum_{n\ge1}\frac{(-1)^n}{n!}D^{n-1}(H^n).
+\]
+
+\section{Lambert \texorpdfstring{\(W\)}{W}}
+\[
+ W_k(z)\EulerE^{W_k(z)}=z,
+ \qquad
+ \xi_k=\PrincipalLogarithm z+2\pi\ImaginaryUnit k,
+ \qquad
+ \ell_k=\PrincipalLogarithm\xi_k,
+\]
+\[
+ W_k(z)\sim\xi_k-\ell_k+\sum_{n\ge1}\frac{\LambertPolynomial{n}(\ell_k)}{\xi_k^n},
+\]
+\[
+ \LambertPolynomial{n}(\ell)=\sum_{m=1}^{n}
+ \frac{(-1)^{n-m}}{m!}\stirlingone{n}{n-m+1}\ell^m.
+\]
+Useful exact identities are
+\[
+ \log W=L-W,
+ \qquad
+ W'(z)=\frac{W}{z(1+W)},
+ \qquad
+ \frac1W=\frac{\EulerE^W}{z}.
+\]
+
+\section{Leading power--log inversion}
+For \(Y=cX^a(\log X)^b\), \(ab\ne0\),
+\[
+ X=
+ \exp\left[
+ \frac ba W_k\left(\frac ab(Y/c)^{1/b}\right)
+ \right],
+\]
+with the branch chosen to match the desired real or complex regime.
+
+\chapter{Proof and verification templates}\label{app:proof-templates}
+
+\section{Template for a formal product}
+\begin{enumerate}
+\item State the support and coefficient domain.
+\item Fix a target exponent \(n\).
+\item Prove that only finitely many support pairs sum to \(n\).
+\item Define the coefficient by finite convolution.
+\item Check that the resulting support remains admissible.
+\end{enumerate}
+
+\section{Template for division}
+\begin{enumerate}
+\item Factor out the leading power and leading block.
+\item Verify that the leading block is invertible in the declared coefficient domain.
+\item Normalize the denominator to \(1+U\) with \(\val(U)>0\).
+\item Use a geometric series or triangular recurrence.
+\item Multiply back and verify the residual order.
+\end{enumerate}
+
+\section{Template for composition}
+\begin{enumerate}
+\item Prove that the inner argument lies in the admissible asymptotic regime.
+\item Compute the images of the generators or establish a Taylor valuation bound.
+\item Prove finite dependence of every target block.
+\item Perform the substitution with a guard cutoff.
+\item Check associativity only within the stated admissible class.
+\end{enumerate}
+
+\section{Template for reversal}
+\begin{enumerate}
+\item Determine and invert the leading monomial.
+\item Normalize to a near-identity equation.
+\item Prove that the fixed-point map raises valuation, or that the linearized derivative is a unit.
+\item Solve recursively or by Newton iteration.
+\item Compute both composition residuals.
+\item Record branch choices and any increase in logarithmic depth.
+\end{enumerate}
+
+\section{Template for an asymptotic claim about a function}
+\begin{enumerate}
+\item Separate the formal series identity from the analytic statement.
+\item Specify the limit, sector, and branch.
+\item Substitute the truncation into the defining equation.
+\item Estimate the residual uniformly in the stated region.
+\item Convert the residual into a function error using an inverse-function or mean-value estimate, away from singular derivatives.
+\end{enumerate}
+
+\chapter{Notation concordance}\label{app:notation}
+
+\begin{longtable}{@{}p{0.21\textwidth}p{0.69\textwidth}@{}}
+\toprule
+Symbol & Meaning\\
+\midrule
+\endhead
+\(X\) & Large base variable, normally tending to \(+\infty\).\\
+\(t=X^{-1}\) & Small power variable.\\
+\(\lambda=\log X\) & First logarithmic block variable.\\
+\(L_1=\PrincipalLogarithm z\) & First logarithm in the Lambert \(W\) expansion.\\
+\(L_2=\PrincipalLogarithm L_1\) & Second logarithm in the Lambert \(W\) expansion.\\
+\(\xi_k=\PrincipalLogarithm z+2\pi\ImaginaryUnit k\) & Branch-adjusted large parameter for \(W_k\).\\
+\(\ell_k=\PrincipalLogarithm\xi_k\) & Logarithm of the branch-adjusted parameter.\\
+\(\Plog\) & Polynomial-log block algebra \(\K[\lambda]((t))\).\\
+\(\Rlog\) & Rational-log extension \(\K(\lambda)((t))\).\\
+\(\Hlog\) & Laurent-log extension \(\K((\lambda^{-1}))((t))\).\\
+\(\val(F)\) & Least power exponent of a nonzero block in \(F\).\\
+\(\SupportOf{F}\) & Set of exponents or monomials with nonzero coefficients.\\
+\(F^{-1}\) & Multiplicative reciprocal.\\
+\(F\invcomp\) & Compositional inverse or series reversal.\\
+\(\LambertPolynomial{n}\) & Universal coefficient polynomial in the large-argument expansion of Lambert \(W\).\\
+\(\stirlingone{n}{k}\) & Unsigned Stirling number of the first kind, counting permutations of \(n\) elements with \(k\) cycles.\\
+\(\ell=-1/\log x\) & Common near-zero Dulac logarithmic variable.\\
+\(\FormalBigO_t(t^N)\) & Formal tail: the omitted difference has \(t\)-valuation at least \(N\); no analytic bound is asserted.\\
+\(\BigOAt{R(X)}{X\to\infty,\ X\in S}\) & Analytic remainder on the stated limiting ray or sector \(S\).\\
+\bottomrule
+\end{longtable}
+
+\index{Lambert W function}
+\index{Wright omega function}
+\index{Stirling numbers of the first kind}
+\index{Lagrange--Bürmann inversion}
+\index{Dulac transseries}
+\index{power--log transseries}
+\index{polynomial--log transseries}
+\index{branch point}
+\index{Puiseux expansion}
+\index{formal Taylor expansion}
+\index{multiplicative reciprocal}
+
+\backmatter
+
+\chapter*{Bibliographic notes}
+\addcontentsline{toc}{chapter}{Bibliographic notes}
+Edgar's survey provides an accessible entry to transseries arithmetic, support, differentiation, and the Lambert \(W\) example \cite{edgar-beginners}. His companion work develops composition, recursion, and convergence issues in broader transseries classes \cite{edgar-composition}. The logarithmic--exponential series papers of van den Dries, Macintyre, and Marker and the books of van der Hoeven and Aschenbrenner--van den Dries--van der Hoeven supply the larger algebraic and model-theoretic setting \cite{vdDMM-1997,vdDMM-2001,vdhoeven-book,adh-book}.
+
+For power--log and Dulac transseries, the cited papers of Marde\v{s}i\'c, Resman, Rolin, \v{Z}upanovi\'c, Peran, and collaborators treat normal forms, embeddings, inverse behavior, and analytic moduli \cite{mardesic-normalforms,mardesic-length,resman-dulac,peran-logtransseries}. For Lambert \(W\), the standard comprehensive source is Corless et al.; the DLMF gives branch conventions and current reference formulas, and Jeffrey et al. connect inversion formulas with associated Stirling numbers \cite{corless-W,dlmf-W,jeffrey-W}.
+
+\begin{thebibliography}{99}
+
+\bibitem{adh-book}
+M. Aschenbrenner, L. van den Dries, and J. van der Hoeven,
+\emph{Asymptotic Differential Algebra and Model Theory of Transseries},
+Annals of Mathematics Studies, vol. 195,
+Princeton University Press, Princeton, 2017.
+
+\bibitem{corless-W}
+R. M. Corless, G. H. Gonnet, D. E. G. Hare, D. J. Jeffrey, and D. E. Knuth,
+``On the Lambert \(W\) function,''
+\emph{Advances in Computational Mathematics} \textbf{5} (1996), 329--359.
+
+\bibitem{edgar-beginners}
+G. A. Edgar,
+``Transseries for beginners,''
+\emph{Real Analysis Exchange} \textbf{35} (2009/2010), no. 2, 253--310;
+arXiv:0801.4877.
+
+\bibitem{edgar-composition}
+G. A. Edgar,
+``Transseries: composition, recursion, and convergence,''
+arXiv:0909.1259, 2009.
+
+\bibitem{edgar-fractional}
+G. A. Edgar,
+``Fractional iteration of series and transseries,''
+arXiv:1002.2378, 2010.
+
+\bibitem{hahn}
+H. Hahn,
+``\"Uber die nichtarchimedischen Gr\"o\ss ensysteme,''
+\emph{Sitzungsberichte der Kaiserlichen Akademie der Wissenschaften, Wien,
+Mathematisch-Naturwissenschaftliche Klasse, Abteilung IIa}
+\textbf{116} (1907), 601--655.
+
+\bibitem{jeffrey-W}
+D. J. Jeffrey, R. M. Corless, D. E. G. Hare, and D. E. Knuth,
+``On the inversion of \(y^\alpha \EulerE^y\) in terms of associated Stirling numbers,''
+\emph{Comptes Rendus de l'Acad\'emie des Sciences, S\'erie I, Math\'ematique}
+\textbf{320} (1995), 1449--1452;
+arXiv:math/9512230.
+
+\bibitem{mantova-monotonicity}
+V. Mantova,
+``Monotonicity and a Taylor approximation theorem for transseries,''
+arXiv:2601.07747, version 2, 2026.
+
+\bibitem{mardesic-normalforms}
+P. Marde\v{s}i\'c, M. Resman, J.-P. Rolin, and V. \v{Z}upanovi\'c,
+``Normal forms and embeddings for power-log transseries,''
+\emph{Advances in Mathematics} \textbf{303} (2016), 888--953.
+
+\bibitem{mardesic-length}
+P. Marde\v{s}i\'c, M. Resman, J.-P. Rolin, and V. \v{Z}upanovi\'c,
+``The length of \(\varepsilon\)-neighborhoods of orbits of Dulac maps,''
+arXiv:1606.02581, version 3, 2018.
+
+\bibitem{dlmf-W}
+NIST Digital Library of Mathematical Functions,
+``\S4.13 Lambert \(W\)-function,''
+F. W. J. Olver et al., eds., National Institute of Standards and Technology,
+accessed 31 August 2026.
+
+\bibitem{peran-logtransseries}
+D. Peran,
+``Normalization of strongly hyperbolic logarithmic transseries and complex Dulac germs,''
+arXiv:2302.14527, 2023.
+
+\bibitem{resman-dulac}
+P. Marde\v{s}i\'c and M. Resman,
+``Analytic moduli for parabolic Dulac germs,''
+\emph{Russian Mathematical Surveys} \textbf{76} (2021), no. 3, 389--460.
+
+\bibitem{vdDMM-1997}
+L. van den Dries, A. Macintyre, and D. Marker,
+``Logarithmic-exponential power series,''
+\emph{Journal of the London Mathematical Society}, second series,
+\textbf{56} (1997), 417--434.
+
+\bibitem{vdDMM-2001}
+L. van den Dries, A. Macintyre, and D. Marker,
+``Logarithmic-exponential series,''
+\emph{Annals of Pure and Applied Logic} \textbf{111} (2001), 61--113.
+
+\bibitem{vdhoeven-book}
+J. van der Hoeven,
+\emph{Transseries and Real Differential Algebra},
+Lecture Notes in Mathematics, vol. 1888,
+Springer, Berlin, 2006.
+
+\end{thebibliography}
+
+\printindex
+
+\end{document}

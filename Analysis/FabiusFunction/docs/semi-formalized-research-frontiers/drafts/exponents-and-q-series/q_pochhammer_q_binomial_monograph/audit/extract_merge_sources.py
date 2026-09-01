@@ -76,6 +76,13 @@ Q_STATUS_RE = re.compile(
     re.DOTALL,
 )
 
+# Formalization statuses can advance after the immutable merge-source pin.
+Q_STATUS_OVERRIDES = {
+    "prop:dissection": "Lean-proved",
+    "cor:dissection-remainder": "Lean-proved",
+    "thm:poch-entire": "Lean-proved",
+}
+
 AUDIT_DIR = Path(__file__).resolve().parent
 PACKAGE_ROOT = AUDIT_DIR.parent
 PIN_FILE = AUDIT_DIR / "MERGE_SOURCE_REVISION"
@@ -363,6 +370,13 @@ Q_REDIRECTS = {
     "lem:fabius-real-spline": "lem:fabius-spline-expectation",
 }
 
+# Canonical proof statuses can advance after the immutable merge snapshot.
+CURRENT_Q_STATUS_OVERRIDES = {
+    "prop:dissection": "Lean-proved",
+    "cor:dissection-remainder": "Lean-proved",
+    "thm:poch-entire": "Lean-proved",
+}
+
 Q_SOURCE_LINE_TARGETS = {
     ("q_pochhammer_q_binomial_monograph", "1938"): (
         "cor:qbinom-inversion-law"
@@ -611,6 +625,7 @@ def inventory_revision(
         for row in package_rows:
             groups[row["source_key"]] = group
         rows.extend(package_rows)
+    q_statuses.update(Q_STATUS_OVERRIDES)
     return commit, rows, groups, q_statuses
 
 
@@ -722,6 +737,8 @@ def reviewed_rows(
     groups: dict[str, str],
     q_statuses: dict[str, str],
 ) -> list[dict[str, str]]:
+    q_statuses = dict(q_statuses)
+    q_statuses.update(CURRENT_Q_STATUS_OVERRIDES)
     guide_map = parse_guide_map()
     inverse_statuses = inverse_status_projection()
     reviewed: list[dict[str, str]] = []

@@ -190,8 +190,9 @@ of an existing draft; semantic consolidation is deferred to the post-
   The original 29-page Letter/Type-3 rendering remains recoverable from the
   recorded arrival commit and archive SHA-256.
 - [`Fabius_Rvachev_New_Frontiers-2/`](Fabius_Rvachev_New_Frontiers-2/),
-  *Fabius--Rvachev New Frontiers* (final synchronized artifact: 41 A4 pp from
-  a 2,863-line source, with a 580-line high-precision experiment), arrived on
+  *Fabius--Rvachev New Frontiers* (last synchronized artifact: 41 A4 pp from
+  a 2,863-line source, with a 580-line high-precision experiment; the current
+  crosswalk edit is rebuild-pending), arrived on
   2026-08-30 from a rootless archive with all 15 arrival payload checksums
   verified. Its native up-law
   orthogonal polynomials, Jacobi and Christoffel reconstruction, rational
@@ -203,18 +204,17 @@ of an existing draft; semantic consolidation is deferred to the post-
   J-fraction, Hankel, and Gauss--Padé program; those strands are inherited
   overlap. The report retains repository-relative log-concavity, rational-pi,
   and finite Gaunt contributions, but manuscript labels do not imply Lean
-  proof status. The report's frozen intended union crosswalk inventories exactly
-  99 public declarations across nine modules: `GramStieltjesNaturality` (0
+  proof status. The updated union crosswalk inventories exactly 129 public
+  declarations across eleven modules: `GramStieltjesNaturality` (0
   definitions/6 theorems), `RvachevRationalJacobi` (4/13),
   `PolynomialMomentGramDeterminant` (2/7),
   `FabiusLegendreHankelDeterminant` (2/7),
   `LegendrePolynomialRational` (2/6),
   `FabiusLegendreRationalGram` (3/11), and
   `FabiusLegendreRationalGramValues` (0/11), `LegendreGaunt` (4/12), and
-  `FabiusLegendreGaunt` (1/8). The current thematic-source overlay adds
-  `LegendreGauntClosedForm` (2/25) and
-  `FabiusLegendreGauntClosedForm` (0/3), so the live union is eleven modules,
-  20 definitions and 109 theorems, or 129 declarations. The finite-moment crosswalk
+  `FabiusLegendreGaunt` (1/8), `LegendreGauntClosedForm` (2/25), and
+  `FabiusLegendreGauntClosedForm` (0/3), for 20 definitions and 109 theorems
+  in all. The finite-moment crosswalk
   below records the declaration-level hypotheses without duplicating them
   here. It closes scalar naturality, the rational Jacobi system, finite
   `G = Cᵀ H C` transport and determinant identities, executable rational
@@ -224,23 +224,27 @@ of an existing draft; semantic consolidation is deferred to the post-
   report's frozen checkpoint, Lean did not yet identify those integrals with
   Wigner `3j` symbols or prove the factorial closed form. The current overlay
   now identifies them with twice the total integer-index zero-row Wigner-square
-  datum, proves the central-binomial and factorial forms and sharp support, and
-  rewrites the finite up-law Gram-entry sums. Signed and general Wigner theory,
+  datum, proves the central-binomial and factorial forms, sharp support,
+  positivity, and nonnegativity, and supplies the three finite rational/real
+  Gram-sum wrappers. Signed phase, half-integer and nonzero-magnetic-index
+  symbols, general Wigner orthogonality, and recoupling remain open;
   Christoffel reconstruction, root and quadrature
   theory, Padé identification, infinite Jacobi products, and asymptotics also
   remain paper-only where specified. The final post-union report embeds five
   cleaned vector PDF figures, while five PNG companions remain supplemental.
-  Its frozen 2,863-line source has SHA-256
+  The last frozen 2,863-line source had SHA-256
   `4eeea1a1cbe5497e6db3424a0c185f3a3be750f5816b22be5e7baed091753455`;
-  exactly three strict serial passes (39/41/41 pages) produced the 780,141-byte,
+  exactly three strict serial passes (39/41/41 pages) produced the now-historical 780,141-byte,
   41-page A4 PDF with SHA-256
   `9871ac93cce5d8ee1aa48e946f46dc2e19865fb33a1d2e3b9b8be01360318901`.
   All 35 font rows are embedded/subset, five are Libertinus, and there are no
-  Latin Modern or Type 3 fonts and no raster images. Extraction retains all 99
-  public names, including all 25 predecessor Gaunt names; targeted page and
-  vector-figure visuals pass; and the fixed 20-entry ledger verifies 20/20.
-  Those PDF facts describe the frozen 99-declaration checkpoint, not the
-  current 129-declaration thematic-source overlay. The earlier
+  Latin Modern or Type 3 fonts and no raster images. That historical extraction
+  retained all 99 then-inventoried public names, including all 25 then-current
+  Gaunt names; targeted page and vector-figure visuals pass; and the fixed
+  20-entry ledger verifies 20/20. Those facts describe the frozen
+  99-declaration checkpoint, not the current 129-declaration source. The
+  retained 41-page PDF, preflight, and ledger are stale for the current source;
+  a synchronized rebuild and refreshed receipts remain pending. The earlier
   39-page cleaned-vector and 41-page local Gaunt builds remain documented as
   historical checkpoints.
 - [`Fabius_Stein_Koopman_Frontier_Report/`](Fabius_Stein_Koopman_Frontier_Report/),
@@ -303,15 +307,17 @@ dependent inverse/non-elementarity corollaries remain manuscript-level.
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
-[`Representation_Frontiers/`](Representation_Frontiers/) (301 pp;
+[`Representation_Frontiers/`](Representation_Frontiers/) (last built artifact:
+301 pp; the current Lean-status source edit is rebuild-pending;
 eight parts):
 
 > **Source/PDF synchronization.** The current consolidated TeX includes the
 > 31 August 2026 Legendre Gaunt--Wigner-square closed-form overlay. The
-> retained 301-page A4 PDF (SHA-256
-> `1f18c8be00bf79fcf79138cfcb0d7a0e83750710098eb674c751ff2401d3d6d3`)
-> was not rebuilt for that source-only update. It is a historical render and
-> does not display the current overlay.
+> retained 301-page, 3,608,573-byte A4 PDF has SHA-256
+> `5d44e25f7069fe2ea7091090521e290cab560355c3e29a35105eed7d3cc6d7ca`.
+> It is a readable historical artifact, not a certified rendering of the
+> current master. Exact three-pass, log, font, page-box, and visual parity are
+> deferred until a fresh rebuild.
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform
   Representations of the Fabius–Rvachev System* (Jacobi coefficients,

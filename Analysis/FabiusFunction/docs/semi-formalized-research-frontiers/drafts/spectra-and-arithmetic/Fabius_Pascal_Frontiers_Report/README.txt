@@ -11,11 +11,11 @@ Prepared: 30 August 2026
 Contents
 --------
 Fabius_Pascal_Frontiers.tex
-    Complete LaTeX source of the 27-page report.
+    Complete LaTeX source of the 26-page report.
 
 Fabius_Pascal_Frontiers.pdf
-    Compiled A4 PDF with embedded fonts, hyperlinks, bibliography, theorem
-    numbering, and a 62-item PDF outline.
+    Compiled A4 PDF with embedded and subset Type 1 fonts, Libertinus prose,
+    hyperlinks, bibliography, theorem numbering, and a 62-item PDF outline.
 
 frontier_experiments.py
     Deterministic, extensively commented Python program supporting the exact
@@ -70,8 +70,9 @@ Rebuilding the PDF
 ------------------
 A recent TeX Live distribution is sufficient. From this directory, run:
 
-    pdflatex Fabius_Pascal_Frontiers.tex
-    pdflatex Fabius_Pascal_Frontiers.tex
+    pdflatex -interaction=nonstopmode -halt-on-error Fabius_Pascal_Frontiers.tex
+    pdflatex -interaction=nonstopmode -halt-on-error Fabius_Pascal_Frontiers.tex
+    pdflatex -interaction=nonstopmode -halt-on-error Fabius_Pascal_Frontiers.tex
 
 The source uses standard packages including geometry, libertinus (with a
 Latin Modern fallback), microtype, amsmath, amsthm, mathtools, booktabs,
@@ -93,14 +94,32 @@ The program exits with an exception if an exact identity or internal
 consistency test fails. Its outputs are deterministic; the archived files were
 regenerated in a clean temporary directory and matched byte-for-byte.
 
-Validation performed
---------------------
-- The LaTeX source was rebuilt from a clean auxiliary state.
-- The final log contains no undefined citations/references, overfull boxes,
-  missing glyphs, or fatal errors.
-- The final PDF has 27 A4 pages, embedded fonts, no encryption, and a complete
-  hyperlink/outline structure.
-- All 27 pages were rendered to PNG and visually inspected for clipping,
-  overlap, broken glyphs, and malformed tables.
+Retained-PDF validation
+-----------------------
+The evidence below applies to the source checkpoint with SHA-256
+`bca454a58c26fd2c77eeefe719a218b008e91a4694f0a4205403f9e392c0bad9`
+and its exact PDF.  The current 1,926-line source has SHA-256
+`3184333a5a4348754652e6c727f2e015d2c415147b5adc1405f5d10704020964`;
+it changed after the render, so this section does not claim current source/PDF
+synchronization.
+
+- The LaTeX source was rebuilt from a clean auxiliary state in exactly three
+  serial passes.
+- The final log contains no undefined citations/references, rerun requests,
+  overfull boxes, missing glyphs, or fatal errors.
+- The final log retains one underfull hbox (badness 1881) at source lines
+  235--236; the affected contents page was visually inspected and is clean.
+- The final PDF has 26 A4 pages, no encryption, complete title/author/subject/
+  keyword metadata, and a complete hyperlink/outline structure.
+- Every page was checked individually for A4 geometry and nonblank extracted
+  content.
+- All 26 font rows are embedded and subset Type 1 fonts; six rows are
+  Libertinus, and no Type 3 font is present.
 - The Python file passes bytecode compilation and a clean rerun reproduces all
   archived numerical tables exactly.
+
+The retained PDF is 754,892 bytes with SHA-256
+`bd54f7ee169fa04a97f498abf1b076cf62e37f189a20a98cacee650326db454f`.
+Its rendered 1,926-line source checkpoint had SHA-256
+`bca454a58c26fd2c77eeefe719a218b008e91a4694f0a4205403f9e392c0bad9`.
+Pages 1, 3, 13, and 26 were sampled visually after the final pass.

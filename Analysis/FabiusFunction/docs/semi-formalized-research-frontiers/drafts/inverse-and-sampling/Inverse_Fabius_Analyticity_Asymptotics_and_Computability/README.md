@@ -29,8 +29,21 @@ The package audit surfaces are:
   files in the two superseded source subgroups;
 - [`assets/SHA256SUMS`](assets/SHA256SUMS): the exhaustive live ledger for 63
   retained, deduplicated reproducibility payloads;
+- [`SOURCE_CLOSURE.sha256`](SOURCE_CLOSURE.sha256): the reproducible ledger
+  of the 23 files consumed by the TeX build;
 - [`PROVENANCE.md`](PROVENANCE.md): source hashes, arrival lineage, nested
   predecessors, and immutable recovery points.
+
+The two live publication ledgers are checked independently:
+
+```bash
+python -B audit/build_source_closure.py --check
+python -B audit/build_package_checksums.py --check
+```
+
+The package checksum inventory is defined by the Git index. Resolve unmerged
+paths and stage every intended permanent package file before generating or
+checking it; the source-closure check is independent of that index state.
 
 The result and asset extractors are pinned by
 [`audit/SOURCE_REVISION`](audit/SOURCE_REVISION) to
@@ -46,19 +59,53 @@ deconvolution. The Appell lattice theorem remains human-proved: Lean covers
 its arbitrary-phase `0 <= n <= N` formula, but not its additional degree-`N+1`
 clause at the parity-selected superconvergent phases.
 
-## Publication certification
+## Inverse-asymptotics subgroup closure
 
-The synchronized publication artifact was built from the canonical TeX after
-merging `origin/main` through `c3720b763d159c3a009b66e6e89ac500b7843e98`
-on 1 September 2026 in
-exactly three serial `pdflatex` passes. The final-pass log contains no TeX
-error, LaTeX or package warning, overfull or underfull box,
-undefined-reference notice, or rerun request. The resulting unencrypted PDF
-has 133 A4 pages and 2,417,414 bytes; its SHA-256 is
-`83a2cc2050e4f6c0c6ea26b472c09f05d4c77d2d84d4ba47e316d8176e7c11c6`.
+The former `inverse-asymptotics-and-computability/` subgroup is fully
+dispositioned and consolidated here, rather than merely summarized. Its three
+masters contribute 152 of the 194 concordance rows:
 
-Every one of its 31 font rows is Type 1, embedded, and subset; Libertinus is
-present and no Type 3 font occurs. All 133 pages were rendered at 120 dpi and
-inspected in the complete nine-sheet contact set. Text extraction covered all
-133 pages without an unexpectedly blank page, and the title, subject,
-keywords, and author metadata are populated.
+- `Inverse_and_Sampling_Frontiers`: 83 rows;
+- `Inverse_Endpoint_All_Orders`: 29 rows; and
+- `Inverse_Fabius_Computability_Report`: 40 rows.
+
+Their canonical classifications are 23 exact Lean matches, 88 complete
+human-proved frontier results, 18 non-live source environments (seven
+definitions, three algorithms, two examples, four editorial obligations, and
+two superseded source conjectures), nine explicitly retained conjectures, and
+14 explicitly labelled open problems. The three package directories contribute
+67 audited files, and the subgroup README is a 68th disposition row.
+`ASSET_DISPOSITION.csv` accounts for all of them: unique scripts, exact tables,
+figures, generated fragments, and captured checks were retained in the
+deduplicated asset tree; superseded masters and renderings remain recoverable
+from the immutable pre-retirement revision. Thus the historical subgroup
+contains no live theorem, proof, or reproducibility payload that is absent or
+unaccounted for here.
+
+## Current source and retained publication artifact
+
+The canonical source surface is current and exhaustively inventoried:
+
+- `inverse_fabius_theory.tex`: 296 lines, 11,625 bytes, SHA-256
+  `6798beac86a39ac4e021c2a4f21079abdc9c4bb9a2b1bdc28d7432639f7d9748`;
+- its exhaustive 23-input source closure: SHA-256
+  `622546eb3af87bb5bf9fb334e215b059077f4cf59667bfe9154b3869b11d2647`;
+- the retained `inverse_fabius_theory.pdf`: 134 A4 pages, 2,027,726 bytes,
+  SHA-256
+  `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
+
+The PDF is the last fully reviewed publication checkpoint.  Its historical
+three-pass sequence was 127, 134, and 134 pages, and its log, page, text, box,
+font, and visual checks remain valid for those exact PDF bytes.  The master and
+shared notation have changed since that render, so this document does **not**
+claim that the retained PDF renders the current source.  A fresh three-pass
+render is required before source/PDF synchronization is claimed again.
+`VALIDATION.md` separates current source-integrity evidence from the retained
+artifact receipt.  The exhaustive root `SHA256SUMS` covers every permanent
+package file except itself, including the independent nested
+`assets/SHA256SUMS` ledger.
+
+The mathematical consolidation and provenance gate are complete.  The five
+source packages and their retained renderings are historical inputs represented
+by the immutable revision, concordance, migrated evidence, and repository
+history; they are not parallel renderings of this canonical master.
