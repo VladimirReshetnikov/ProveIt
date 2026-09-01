@@ -15297,11 +15297,38 @@ Theorems \path{tendstoLocallyUniformly_prefix_sinc_charFun} and
 uniform convergence of the full phase-bearing prefixes on \(\RealNumbers\) and its
 explicit uniform-on-every-compact-set form.
 
-There is still no named centered $\psi_q$ or MGF wrapper, no
-outside-$\AbsoluteValue q>1$ reciprocal formula or zero--pole exchange, and no named
-local-uniform or normal-convergence theorem for the Pochhammer-product
-right-hand side.  Consequently the compound label
-\cref{p7:thm:sinc-poch} remains only partially formalized.
+The source-only module \path{QPochhammerEntire.lean} now closes the exact
+fixed-symbol analytic layer without adding a second definition: its API has
+zero public definitions and five public theorems.  For arbitrary
+$a,q\in\ComplexNumbers$ with $\lVert q\rVert<1$,
+\path{hasProdLocallyUniformly_complexQPochhammerInf} proves locally uniform
+convergence on the whole $a$-plane, and
+\path{complexQPochhammerInf_differentiable} proves that
+$a\mapsto(a;q)_\infty$ is entire.  The division-free statement
+\path{complexQPochhammerInf_eq_zero_iff} identifies its zeros exactly with
+the displayed factor zeros
+\[
+ (a;q)_\infty=0
+ \quad\Longleftrightarrow\quad
+ \exists j\in\NaturalNumbers,\ 1-aq^j=0.
+\]
+This spelling includes the degenerate nome $q=0$.  Under the necessary
+additional hypothesis $q\ne0$,
+\path{complexQPochhammerInf_eq_zero_iff_eq_inv_pow} gives the literal
+reciprocal-power lattice $a=(q^j)^{-1}$; and
+\path{analyticOrderAt_complexQPochhammerInf_of_eq_zero} proves analytic
+order one at every factor zero, including the sole zero $a=1$ when $q=0$.
+
+These five theorems concern one fixed Pochhammer symbol as a function of its
+argument.  They do not by themselves establish locally uniform (normal)
+convergence of the \emph{outer} product over $k$ on the right-hand side of
+\eqref{p7:eq:sinc-poch}.  There is also still no named centered $\psi_q$ or
+MGF wrapper, and no outside-$\AbsoluteValue q>1$ reciprocal formula or
+zero--pole exchange.  Consequently the compound label
+\cref{p7:thm:sinc-poch} remains only partially formalized: its fixed-symbol
+inside-disk analytic and divisor layer is exact, while the centered/MGF
+bridges, the outer-$k$ normal-convergence statement, and the outside-disk
+reciprocal layer remain frontier obligations.
 \end{statusbox}
 
 The nome is $q^2$, not $q$: centering makes every factor even, and evenness

@@ -108,7 +108,8 @@
 Volterra addenda \nolinkurl{3da579387}, \nolinkurl{e109088ed};\\
 \small activation-series and finite-Taylor addendum
 \nolinkurl{a345425d21d90e680bf15e34093af42c69c08a83};\\
-\small inverse-modulus equality/rigidity addendum \nolinkurl{f05c2fc7d}}
+\small inverse-modulus equality/rigidity addendum \nolinkurl{f05c2fc7d};
+fixed-nome q-Pochhammer entire addendum, 1 September 2026}
 
 \begin{document}
 \maketitle
@@ -1879,10 +1880,76 @@ factors.  The final declarations
 \nolinkurl{rvachevFourierProduct_eq_tprod_complexQPochhammerInf} and
 \nolinkurl{rvachevFourier_eq_tprod_complexQPochhammerInf} specialize to
 \(q=1/2\), nome \(1/4\), first for the standalone Rvachev product and then for
-every bounded \nolinkurl{IsFabius} witness.  This module does not classify the
-Pochhammer zero lattice or multiplicities, construct a reciprocal zero--pole
-factorization, establish local-uniform or normal convergence of the rearranged
-Pochhammer product or joint holomorphy in \(q\), or treat \(\lVert q\rVert>1\).
+every bounded \nolinkurl{IsFabius} witness.  This factorization module itself
+does not classify the single-symbol zero lattice or multiplicities; the next
+leaf closes that fixed-nome problem.  Neither module constructs a reciprocal
+zero--pole factorization, establishes local-uniform or normal convergence of
+the rearranged outer Pochhammer product or joint holomorphy in \(q\), supplies
+a centered characteristic-function/MGF package, or treats
+\(\lVert q\rVert>1\).
+
+\subsubsection{Entire fixed-nome q-Pochhammer symbol and simple zeros}
+\label{ch:qpochhammer-entire}
+
+The zero-definition, five-theorem module
+\nolinkurl{QPochhammerEntire.lean} has the exhaustive public surface
+\nolinkurl{hasProdLocallyUniformly_complexQPochhammerInf},
+\nolinkurl{complexQPochhammerInf_differentiable},
+\nolinkurl{complexQPochhammerInf_eq_zero_iff},
+\nolinkurl{complexQPochhammerInf_eq_zero_iff_eq_inv_pow}, and
+\nolinkurl{analyticOrderAt_complexQPochhammerInf_of_eq_zero}.
+Fix a complex \(q\) with \(\lVert q\rVert<1\), and put
+\[
+ P_q(a)=(a;q)_{\infty,\ComplexNumbers}
+       =\prod_{j=0}^{\infty}(1-aq^j).
+\]
+The first theorem says that the finite prefixes converge locally uniformly as
+functions of \(a\) on all of \(\ComplexNumbers\); the second says that \(P_q\)
+is entire.  The next two give the exact zero descriptions
+\begin{align}
+ P_q(a)=0
+ &\quad\Longleftrightarrow\quad
+   \exists j\in\NaturalNumbers:\ 1-aq^j=0,                 \label{eq:walk-qpochhammer-factor-zero}\\
+ &\quad\Longleftrightarrow\quad
+   \exists j\in\NaturalNumbers:\ a=(q^j)^{-1}
+   \qquad(q\ne0),                                           \label{eq:walk-qpochhammer-inverse-lattice}
+\end{align}
+and the final theorem proves analytic order one at every zero.  The raw
+factor-zero line is primary because it also covers \(q=0\): in that case only
+the index-zero factor can vanish, at \(a=1\), and the zero is simple.
+
+Here is the proof architecture.  Take \(f(w)=1-w\) and scales \(q^j\) in the
+generic summable-scale product engine.  Since
+\(\sum_j\lVert q^j\rVert<\infty\), \(f(w)-1=-w=O(w)\), and \(f\) is entire,
+the engine gives the locally uniform product and holomorphy.  Its
+no-hidden-zero theorem gives \eqref{eq:walk-qpochhammer-factor-zero}.  Under
+\(q\ne0\), rewriting \(1-aq^j=0\) as \(aq^j=1\) proves
+\eqref{eq:walk-qpochhammer-inverse-lattice}; conversely \(q^j\ne0\), so its
+inverse cancels.
+
+For simplicity, first prove that a vanishing index is unique.  At \(q=0\), a
+factor equation forces the index to be zero.  At \(q\ne0\), two vanishing
+indices \(j,k\) give \(a\ne0\) and \(q^j=q^k\); norms give
+\(\lVert q\rVert^j=\lVert q\rVert^k\), and the natural powers of a number in
+\((0,1)\) are injective.  If \(j\) is the unique vanishing index, splitting the
+product after it yields
+\[
+ P_q(z)=(z-a)U(z),\qquad
+ U(z)=-q^j(z;q)_jP_q(zq^{j+1}).
+\]
+The cofactor \(U\) is entire.  At \(a\), its constant is nonzero (when
+\(q=0\), uniqueness gives \(j=0\)); its finite prefix is nonzero by uniqueness;
+and its tail is nonzero because a tail zero would shift to a second vanishing
+factor with index \(j+1+k\).  Hence \(U(a)\ne0\), which is exactly analytic
+order one.
+
+This is a fixed-\(q\), single-symbol result.  It proves no joint holomorphy in
+\((a,q)\), outside-disk reciprocal formula, local-uniform or normal convergence
+of the outer spectral product
+\(\prod_k(z^2/(k+1)^2;q^2)_\infty\), or centered characteristic-function/MGF
+wrapper.  This subsection is source-only: the retained 126-page walkthrough
+PDF predates the five-theorem overlay and is a historical render until the
+documented three-pass Libertinus rebuild is performed.
 
 The definition of \(F_q\), together with its monotonicity, range bounds, and
 measurability, is total in real \(q\).  If \(\lvert q\rvert<1\), then \(F_q\)
@@ -4795,6 +4862,7 @@ Affine independent-copy operator and uniqueness & \nolinkurl{affineIndependentCo
 Geometric uniform law \(\mu_q\) & \nolinkurl{geometricUniformDistribution}, \nolinkurl{geometricUniformDistribution_selfSimilar}, \nolinkurl{geometricUniformDistribution_support_eq_Icc}, \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar} & \nolinkurl{GeometricUniformLaw.lean} and \nolinkurl{GeometricUniformUniqueness.lean}; the characterization holds for \(\lvert q\rvert<1\) without support, density, or moment assumptions \\
 Fixed half--quarter multisection & \nolinkurl{evenCoordinates}, \nolinkurl{oddCoordinates}, \nolinkurl{geometricUniformSeries_one_half_multisection}, \nolinkurl{geometricUniformDistribution_one_half_multisection}, \nolinkurl{geometricUniformDistribution_one_half_conv_one_quarter} & \nolinkurl{GeometricUniformMultisection.lean}; fixed normalized two-section only \\
 General geometric-sinc Pochhammer factorization & \nolinkurl{complexQPochhammerInf}, \nolinkurl{summable_norm_sineTerm_qpow_pair}, \nolinkurl{geometricSincProduct_eq_tprod_pair}, \nolinkurl{geometricSincProduct_eq_tprod_complexQPochhammerInf}, \nolinkurl{rvachevFourierProduct_eq_tprod_complexQPochhammerInf}, \nolinkurl{rvachevFourier_eq_tprod_complexQPochhammerInf} & \nolinkurl{RvachevPochhammerFactorization.lean}; one definition and nine theorems, with the three additional symbol-convergence theorems listed in the text above \\
+Fixed-nome entire Pochhammer symbol and simple zero lattice & \nolinkurl{hasProdLocallyUniformly_complexQPochhammerInf}, \nolinkurl{complexQPochhammerInf_differentiable}, \nolinkurl{complexQPochhammerInf_eq_zero_iff}, \nolinkurl{complexQPochhammerInf_eq_zero_iff_eq_inv_pow}, \nolinkurl{analyticOrderAt_complexQPochhammerInf_of_eq_zero} & \nolinkurl{QPochhammerEntire.lean}; zero definitions and five theorems, including the \(q=0\)-safe factor-zero form and the reciprocal-power lattice under \(q\ne0\) \\
 Geometric CDF \(F_q\) and density \(f_q\) & \nolinkurl{geometricUniformCDF}, \nolinkurl{geometricUniformDensity}, \nolinkurl{geometricUniformDensity_zero}, \nolinkurl{geometricUniformDensity_nonpos_of_neg}, \nolinkurl{volume_withDensity_geometricUniformDensity_eq_zero_of_nonpos}, \nolinkurl{geometricUniformDistribution_ne_withDensity_geometricUniformDensity_of_nonpos}, \nolinkurl{geometricUniformCDF_hasDerivAt}, \nolinkurl{geometricUniformDistribution_eq_withDensity}, \nolinkurl{contDiff_geometricUniformCDF}, \nolinkurl{contDiff_geometricUniformDensity} & \nolinkurl{GeometricUniformCDF.lean} \\
 Weighted-sum CDF and half-base bridges & \nolinkurl{weightedSumCDF}, \nolinkurl{weightedSumCDF_eq_geometricUniformCDF_one_half}, \nolinkurl{geometricUniformCDF_one_half_eq_fabiusReal}, \nolinkurl{geometricUniformDensity_one_half_eq_rvachevUp} & \nolinkurl{ProbabilityRepresentation.lean} \\
 Totalized activation kernel \(p\) & \nolinkurl{activationProbability}, \nolinkurl{tanhDiv_eq_dslope}, \nolinkurl{activationProbability_le_min_one_sq_div_three}, \nolinkurl{activationProbability_mul_le_quadratic}, \nolinkurl{tendsto_activationProbability_mul_div_sq} & \nolinkurl{HyperbolicActivation.lean}, \nolinkurl{ActivationSeries.lean}, and \nolinkurl{ActivationAsymptotics.lean} \\
@@ -4930,6 +4998,7 @@ Module & Role in the development \\
 \nolinkurl{GeometricReciprocalGamma.lean} & Locally uniform convergence, pointwise multipliability and \nolinkurl{HasProd}, and entireness of the geometric sinc product, together with its reciprocal-Gamma reflection factorization. \\
 \nolinkurl{GeometricSincCharacteristicFunction.lean} & The four-theorem, zero-definition surface: two exact phase-bearing bridges from the geometric-uniform characteristic function to the rescaled geometric sinc product and paired reciprocal-Gamma factors, plus locally uniform convergence of the full phase-bearing prefixes on the real frequency line and uniform convergence on every compact real frequency set, for every \(\lvert q\rvert<1\), including zero and negative ratios. \\
 \nolinkurl{RvachevPochhammerFactorization.lean} & One definition and nine theorems: the total complex infinite Pochhammer product and its strict-contraction convergence API, absolute summability and paired scale--zero product, the global \(S_q(z)=\prod_{k\ge0}(z^2/(k+1)^2;q^2)_\infty\) factorization for complex \(\lVert q\rVert<1\), and its two dyadic Rvachev/Fabius specializations. \\
+\nolinkurl{QPochhammerEntire.lean} & No definitions and five theorems: for each fixed complex \(\lVert q\rVert<1\), locally uniform convergence in \(a\), entireness of \(a\mapsto(a;q)_\infty\), the total factor-zero criterion, the reciprocal-power lattice when \(q\ne0\), and analytic order one at every zero.  The \(q=0\)-safe theorem remains division-free; no outer-product normal convergence, joint holomorphy, or centered/MGF wrapper is asserted. \\
 \nolinkurl{GeometricUniformCDF.lean} & The named \(F_q\) and explicit \(f_q\), conditioning and interval-integral equations, pointwise derivative and exact positive-ratio \nolinkurl{withDensity} law, continuity, reflection, exterior zeros, ordinary/topological support containments, compact support, and \(C^\infty\) regularity under their exact parameter hypotheses.  It also proves that the selected total formula is zero at \(q=0\), nonpositive for \(q<0\), yields the zero clamped measure for \(q\le0\), and cannot represent \(\mu_q\) on the nonpositive contraction range. \\
 \nolinkurl{HyperbolicActivation.lean} & Four definitions and 58 theorems forming the totalized real hyperbolic-sinc, \nolinkurl{tanhDiv}, activation-odds, and activation-probability dictionary, with continuity, parity, positivity, exact odds bridges, global elementary bounds, and the canonical identification \nolinkurl{tanhDiv_eq_dslope}. \\
 \nolinkurl{ActivationTaylor.lean} & Three theorems: the exact degree-nine Taylor polynomial of \(\tanh\) with \(O(\lVert x\rVert^{11})\) remainder, the induced degree-eight activation-probability polynomial with \(O(\lVert x\rVert^{10})\) remainder, and its equivalent \(O(x^{10})\) form. \\
@@ -5222,8 +5291,8 @@ Lean audits of the previously recorded new or refactored declarations,
 \nolinkurl{propext}, \nolinkurl{Classical.choice}, and \nolinkurl{Quot.sound}
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
-the 105 activation declarations documented.  The present merged census is 619
-modules and 8,434 public declarations, all reachable from the facade under the
+the 105 activation declarations documented.  The present merged census is 620
+modules and 8,439 public declarations, all reachable from the facade under the
 current static audit.  No new aggregate facade build is claimed by this
 historical receipt.  The title-page pin and reproduction count continue to
 describe the older audited snapshot.

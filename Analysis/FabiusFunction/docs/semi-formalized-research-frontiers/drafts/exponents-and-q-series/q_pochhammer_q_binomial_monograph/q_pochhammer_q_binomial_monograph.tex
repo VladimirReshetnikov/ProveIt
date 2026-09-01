@@ -542,6 +542,25 @@ converges uniformly on $K$; equivalently, one may apply uniform convergence to t
 If $a=q^{-j}$, one factor vanishes.  Conversely, if no factor vanishes, then the tail product is nonzero because the sum of the absolute deviations from $1$ converges, while the finite initial product is nonzero.  At $a=q^{-j}$ exactly one factor vanishes and its derivative is $-q^j\ne0$, whereas all other factors are nonzero; the zero is simple.
 \end{proof}
 
+This theorem has an exact Lean counterpart in
+\path{FabiusFunction.QPochhammerEntire}.  For a fixed complex nome with
+$\Norm q<1$, the declaration
+\texttt{hasProdLocallyUniformly\_complexQPochhammerInf} proves locally
+uniform convergence on the whole $a$-plane and
+\texttt{complexQPochhammerInf\_differentiable} proves entirety.  The
+division-free theorem \texttt{complexQPochhammerInf\_eq\_zero\_iff} says
+that the product vanishes exactly when some factor $1-aq^j$ vanishes; it
+remains valid at $q=0$.  Under the present theorem's hypothesis $q\ne0$,
+\texttt{complexQPochhammerInf\_eq\_zero\_iff\_eq\_inv\_pow} gives the
+literal lattice $a=(q^j)^{-1}$.  Finally,
+\texttt{analyticOrderAt\_complexQPochhammerInf\_of\_eq\_zero} proves that
+every zero has analytic order one.  Its proof splits the infinite product
+into the first $j+1$ factors and a shifted tail; uniqueness of the vanishing
+factor makes both complementary factors nonzero, leaving a nonzero analytic
+unit times $a-q^{-j}$.  The Lean result is slightly stronger than the
+displayed theorem because its division-free and simple-order layers also
+cover $q=0$, where the sole zero is $a=1$.
+
 \subsection{Complex orders}
 
 Finite and negative integral indices extend naturally to a complex order once an infinite product is available.  Fix $0<\AbsoluteValue q<1$ and a branch of the logarithm at $q$, denoted by $\log q$, and write $q^\alpha=\exp(\alpha\log q)$.
@@ -12151,12 +12170,12 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 284 labelled forward results, 42 are \statusexact, 74 are
-\statuspartial, 160 are \statusnone, and 8 are \statusna.  The original
-191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
+Of the 282 labelled forward results, 42 are \statusexact, 73 are
+\statuspartial, 159 are \statusnone, and 8 are \statusna.  The original
+190-result pre-Fabius core now has 36 \statusexact, 29 \statuspartial, 122
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
-definitions.  The later Fabius bridge contributes the remaining 57 rows.
+definitions.  The later Fabius bridge contributes the remaining 56 rows.
 The formalized part is concentrated exactly where the Fabius development
 needed it: the finite Gaussian-coefficient core, the geometric Lagrange and
 filter calculus, half-base and Thue--Morse cancellation, and the geometric
@@ -12193,8 +12212,14 @@ at a strict complex contraction with the corresponding nome-\(q^2\)
 Pochhammer product, pointwise and globally in the complex argument; only its
 final two Rvachev wrappers fix the nome to \(1/4\).  This does not supply the
 book's named centered/MGF wrapper, outside-disk reciprocal formula, or
-local-uniform/normal-convergence theorem for the Pochhammer-product
-right-hand side.
+local-uniform/normal-convergence theorem for the \emph{outer} spectral
+Pochhammer-product right-hand side.  In contrast, the five-theorem
+\texttt{QPochhammerEntire} leaf closes the single-symbol analytic theorem
+\Cref{thm:poch-entire}: it proves local uniformity and entirety in the symbol
+argument at fixed contracting nome, the factor-zero and nonzero-nome
+reciprocal-power descriptions of the zero set, and simple analytic order at
+every zero.  These single-symbol results do not imply normal convergence of
+the additional outer product indexed by spectral scale.
 
 The promoted, strengthened, and new finite-$q$ and weighted
 symmetric-function rows in this edition were statically checked against the
@@ -12215,6 +12240,7 @@ compatibility spelling of the primary identity;\\
 \path{QBinomialReciprocity.lean}: four theorems;\\
 \path{GaussianBinomialAtNegOne.lean}: five theorems;\\
 \path{RvachevPochhammerFactorization.lean}: one definition and nine theorems;\\
+\path{QPochhammerEntire.lean}: zero definitions and five theorems;\\
 \path{GeometricCompleteHomogeneous.lean}: six theorems;\\
 \path{GeometricLagrangeCompleteHomogeneous.lean}: five theorems;\\
 \path{GeometricLagrangeQMoments.lean}: one definition and 37 theorems;\\
@@ -12489,14 +12515,14 @@ inferred from a related finite identity.
 \toprule
 Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
-The algebra of $q$-shifted factorials & 3 & 1 & 11 & 0\\
+The algebra of $q$-shifted factorials & 4 & 1 & 10 & 0\\
 $q$-integers and Gaussian coefficients & 3 & 2 & 4 & 0\\
 Finite $q$-binomial theorems and inversion & 9 & 1 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 2 & 3 & 0\\
-Partitions, words, paths, and inversion statistics & 1 & 1 & 7 & 0\\
+Partitions, words, paths, and inversion statistics & 0 & 1 & 8 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 0 & 1 & 5 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
-The infinite $q$-binomial theorem & 0 & 0 & 5 & 0\\
+The infinite $q$-binomial theorem & 0 & 0 & 4 & 0\\
 Basic hypergeometric series & 1 & 0 & 8 & 0\\
 Euler telescoping and very-well-poised summations & 0 & 0 & 4 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 0 & 0 & 2 & 0\\
@@ -12516,9 +12542,9 @@ Computation, certification, and formal proof architecture & 0 & 3 & 8 & 3\\
 Geometric interpolation and exact $q$-filters & 6 & 2 & 1 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
-Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 45 & 6 & 0\\
+Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 42 & 74 & 160 & 8\\
+\textbf{Forward total} & 42 & 73 & 159 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -12557,7 +12583,14 @@ quotient additionally assuming \((q;q)_{N-k}\ne0\); root-safe numerator and
 cleared forms are also exported}\\[2pt]
 \Cref{thm:partial-fraction} & \statusnone & ---\\[2pt]
 \Cref{prop:logder-finite} & \statusnone & ---\\[2pt]
-\Cref{thm:poch-entire} & \statusnone & ---\\[2pt]
+\Cref{thm:poch-entire} & \statusexact &
+\texttt{hasProdLocallyUniformly\_complexQPochhammerInf},
+\texttt{complexQPochhammerInf\_differentiable},
+\texttt{complexQPochhammerInf\_eq\_zero\_iff\_eq\_inv\_pow},
+\texttt{analyticOrderAt\_complexQPochhammerInf\_of\_eq\_zero}\newline
+{\footnotesize\texttt{QPochhammerEntire}; the additional division-free
+\texttt{complexQPochhammerInf\_eq\_zero\_iff} strengthens the zero-set API
+to include $q=0$}\\[2pt]
 \Cref{prop:complex-concat} & \statusnone & ---\\[2pt]
 \Cref{prop:order-derivative} & \statusnone & ---\\[2pt]
 \Cref{thm:lambert-log} & \statuspartial & \texttt{tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}geom}\newline{\footnotesize\texttt{EulerLogTransform}}\\[2pt]

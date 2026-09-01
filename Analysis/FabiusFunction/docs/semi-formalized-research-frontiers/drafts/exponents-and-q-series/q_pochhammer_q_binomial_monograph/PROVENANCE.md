@@ -26,16 +26,30 @@ The three guides arrived respectively in commits
 assets: each donor package consisted only of TeX, PDF, and a repository
 checksum ledger. Their superseded PDFs were retired with the donor packages
 and are not canonical renderings of this larger source. The former forward
-and inverse manuscript PDFs were removed for the same reason. The merged
-master now has one canonical publication rendering,
-`q_pochhammer_q_binomial_monograph.pdf`: a reproducible 334-page A4 artifact built
-by three byte-identical serial passes at fixed source epoch `1788242400`, with
-SHA-256
+and inverse manuscript PDFs were removed for the same reason. The retained
+`q_pochhammer_q_binomial_monograph.pdf` is the reproducible 334-page A4
+publication checkpoint built by three byte-identical serial passes at fixed
+source epoch `1788242400`.  It is 2,917,795 bytes and has SHA-256
 `aa75c32926fb0d5b20d831f9df0be584073f1cbc4232c25facbd21d98b9f680d`.
 The validation record in `README.md` distinguishes compilation, font
 embedding, complete page rendering, contact-sheet review, and full-resolution
 inspection. PDFs retained beneath `assets/` are research figures, not
 manuscripts.
+
+The 1 September 2026 source-only overlay is newer than that PDF. Its current
+13,490-line, 618,041-byte TeX source has SHA-256
+`36c961525f1609b6eabf8c4d6382811324bc6f7deb5b4ef0da432c367cce2b09`.
+The zero-definition, five-theorem `QPochhammerEntire.lean` leaf proves the
+fixed-nome single-symbol local-uniform product, differentiability, the
+division-free factor-zero criterion, the reciprocal-power zero lattice for a
+nonzero nome, and simple analytic order at every zero.  Only
+`thm:poch-entire` is promoted.  The forward status inventory is therefore
+42 exact / 73 partial / 159 none / 8 interface; the 190-result pre-Fabius core
+is 36 / 29 / 122 / 3 and the q-shifted-factorial chapter is 4 / 1 / 10 / 0.
+No normal-convergence claim is made for the additional outer product indexed
+by spectral scale.  Because no PDF was generated for this overlay, the
+retained 334-page artifact is historical with respect to current source and
+must not be treated as rendering the promotion.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit
 `47172bc03ec078961d8b023dfe156ecd712efb65`. Its pre-repair source SHA-256 was

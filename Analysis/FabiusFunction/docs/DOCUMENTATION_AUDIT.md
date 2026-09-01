@@ -109,10 +109,10 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 619 modules and 8,434 lexically
+The post-merge 2026-09-01 inventory contains 620 modules and 8,439 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  Relative to the 610/8,318 activation checkpoint, the current
-tree adds nine modules and 116 declarations.  The initial exact union added
+tree adds ten modules and 121 declarations.  The initial exact union added
 five modules and 67 declarations.  The branch-point geometry and
 asymptotics leaves contribute 17 declarations for the one-sided vertical
 tangents and leading signed square-root laws of both real Lambert branches.
@@ -190,6 +190,20 @@ names are `rvachevLegendreGramEntryRat_eq_two_mul_sum_wignerThreeJZeroSqRat`,
 `rvachevLegendreGramMatrixRat_apply_eq_two_mul_sum_wignerThreeJZeroSqRat`, and
 `upLegendreGramMatrix_apply_eq_two_mul_sum_wignerThreeJZeroSqRat`.
 
+The new `QPochhammerEntire.lean` leaf contributes no public definitions and
+five public theorems:
+`hasProdLocallyUniformly_complexQPochhammerInf`,
+`complexQPochhammerInf_differentiable`,
+`complexQPochhammerInf_eq_zero_iff`,
+`complexQPochhammerInf_eq_zero_iff_eq_inv_pow`, and
+`analyticOrderAt_complexQPochhammerInf_of_eq_zero`.  For a fixed complex
+strict contraction `q`, they give locally uniform convergence in the symbol
+variable, entireness, the division-free factor-zero criterion, the exact
+reciprocal-power zero lattice when `q ≠ 0`, and analytic order one at every
+zero.  The raw factor criterion includes `q = 0`; no joint holomorphy,
+outside-disk reciprocal formula, outer spectral-product normal convergence,
+or centered characteristic-function/MGF package is counted in this leaf.
+
 The audited formula contract is equally exact.  Admissibility is even total
 degree plus the three weak triangle inequalities, equivalently
 `i=b+c`, `j=a+c`, `k=a+b`.  If `C_n=choose (2*n) n` and `s=a+b+c`, then the
@@ -233,16 +247,18 @@ fresh, guarded three-pass Libertinus cycles on 2026-08-31.  They contain 166
 and 126 A4 pages and include the prime-power valuation and exhaustive
 30-declaration closed-form Gaunt crosswalks.  All fonts in these two artifacts
 are embedded and subset, with no Type 3 font.  The merged TeX sources retain
-those results and add expanded formula-and-proof ledgers, so exact post-merge
-source/PDF synchronization is not claimed.
+those results and add expanded formula-and-proof ledgers plus the five-theorem
+fixed-nome q-Pochhammer entire-function overlay, so exact post-merge source/PDF
+synchronization is not claimed.
 The retained 236-page canonical frontier, 376-page Integration and Transform
 Frontiers, 301-page Representation Frontiers, and 41-page filed New Frontiers
-PDFs predate the closed-form tranche and are not synchronized with their current
-sources.  Earlier checks of the canonical and filed artifacts, including the
+PDFs predate the closed-form and q-Pochhammer-entire tranches and are not
+synchronized with their current sources.  Earlier checks of the canonical and
+filed artifacts, including the
 filed package's historical 20-entry ledger, do not establish current parity.
 Those four PDFs retain explicit pending-build disclosures and await content
-rebuilds; the primary and walkthrough await only parity rebuilds for the
-expanded source commentary.
+rebuilds; the primary and walkthrough await parity rebuilds for the expanded
+source commentary and q-Pochhammer overlay.
 
 ### What the review pass caught
 

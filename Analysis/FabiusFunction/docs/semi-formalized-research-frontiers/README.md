@@ -28,6 +28,24 @@ The canonical frontier artifacts are:
 > was not rebuilt for that source-only update. It is a historical render and
 > must not be cited as displaying the current overlay.
 
+The 1 September 2026 source-only q-Pochhammer overlay is likewise newer than
+the retained PDFs.  The new `QPochhammerEntire.lean` leaf has zero definitions
+and five theorems: for a fixed complex nome with norm less than one it proves
+local uniform convergence of the infinite product, differentiability in the
+symbol, the division-free factor-zero criterion, the reciprocal-power zero
+lattice when the nome is nonzero, and analytic order one at every zero.  This
+promotes only `thm:poch-entire` in the consolidated q-series monograph.  Its
+forward status totals are now 42 exact / 73 partial / 159 none / 8 interface,
+with 36 / 29 / 122 / 3 in the 190-result pre-Fabius core and 4 / 1 / 10 / 0
+in the q-shifted-factorial chapter.  It does not claim normal convergence of
+the additional outer product indexed by spectral scale.
+
+The monograph's retained 334-page A4 PDF (2,917,795 bytes; SHA-256
+`aa75c32926fb0d5b20d831f9df0be584073f1cbc4232c25facbd21d98b9f680d`)
+predates that overlay.  It remains a reproducible historical publication
+checkpoint, but must not be cited as displaying the current theorem promotion
+until a new PDF is built and inspected.
+
 The current finite-moment/Legendre/Gaunt crosswalk covers eleven modules with
 20 public definitions and 109 public theorems, 129 declarations in all. The
 new leaves are `LegendreGauntClosedForm.lean` (2 definitions, 25 theorems) and

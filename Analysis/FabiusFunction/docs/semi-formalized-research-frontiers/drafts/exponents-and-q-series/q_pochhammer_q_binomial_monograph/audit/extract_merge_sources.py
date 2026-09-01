@@ -76,6 +76,14 @@ Q_STATUS_RE = re.compile(
     re.DOTALL,
 )
 
+# The source inventory is intentionally pinned to the pre-consolidation
+# publication revision, while Lean status continues to advance.  Keep these
+# label-level current-status promotions explicit instead of rewriting the
+# immutable source pin or hand-editing generated concordance rows.
+CURRENT_Q_STATUS_OVERRIDES = {
+    "thm:poch-entire": "Lean-proved",
+}
+
 AUDIT_DIR = Path(__file__).resolve().parent
 PACKAGE_ROOT = AUDIT_DIR.parent
 PIN_FILE = AUDIT_DIR / "MERGE_SOURCE_REVISION"
@@ -611,6 +619,15 @@ def inventory_revision(
         for row in package_rows:
             groups[row["source_key"]] = group
         rows.extend(package_rows)
+    missing_current_status_labels = sorted(
+        set(CURRENT_Q_STATUS_OVERRIDES) - set(q_statuses)
+    )
+    if missing_current_status_labels:
+        raise ValueError(
+            "current Q status overrides do not match pinned result labels: "
+            f"{missing_current_status_labels!r}"
+        )
+    q_statuses.update(CURRENT_Q_STATUS_OVERRIDES)
     return commit, rows, groups, q_statuses
 
 

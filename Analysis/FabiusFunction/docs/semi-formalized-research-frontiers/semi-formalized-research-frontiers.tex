@@ -170,7 +170,7 @@
 \author{Boundary layer between prose and proof in the \texttt{ProveIt} Fabius development\\
 \small Eleven source notebooks in six syntheses plus a post-audit gap register}
 \date{Base research snapshot: 25 August 2026; consolidated repository updated
-28 August 2026; formal-status audit updated 31 August 2026\\
+28 August 2026; formal-status audit updated 1 September 2026\\
 \small affine-law checkpoint \nolinkurl{d312c0603};
 fractional and inverse-layer-cake checkpoint \nolinkurl{37eab3c56}}
 
@@ -295,11 +295,16 @@ signed-density replacement for that parameter range remains open.  Write
 \]
 It also gives locally uniform convergence on \(\ComplexNumbers\) of the defining products for \(S_q\),
 their pointwise multipliability and exact \texttt{HasProd} identity, and entireness of
-\(S_q\).  For every real \(|q|<1\), the full phase-bearing prefixes now converge locally
+\(S_q\).  For every fixed complex \(\lVert q\rVert<1\), the single symbol
+\(a\mapsto(a;q)_\infty\) now also has a locally uniform defining product, is
+entire, vanishes exactly at a displayed factor (equivalently at
+\(a=(q^j)^{-1}\) when \(q\ne0\)), and has analytic order one at every zero.
+For every real \(|q|<1\), the full phase-bearing prefixes now converge locally
 uniformly on the real frequency line, hence uniformly on every compact real-frequency
 set, including at \(q=0\) and for negative \(q\).  A corresponding complex-frequency
-locally uniform theorem for the full phase-bearing prefix sequence, general-\(q\) rapid
-decay and Fourier inversion, and the further centered/MGF, shape, explicit
+locally uniform theorem for the full phase-bearing prefix sequence, local-uniform or normal
+convergence of the outer spectral Pochhammer product, general-\(q\) rapid decay
+and Fourier inversion, and the further centered/MGF, shape, explicit
 Bernoulli-cumulant/Bell-moment, transform, derivative-hierarchy, and endpoint-flatness
 layers remain in the frontier on the precise boundary recorded below.
 
@@ -328,10 +333,11 @@ formalize their later deductions.
 \begin{boxedremark}
 \textbf{Current source and retained PDF.}
 This source contains the 31 August 2026 Legendre Gaunt--Wigner-square
-closed-form overlay described in the audit map below.  The retained
+closed-form overlay and the 1 September 2026 five-theorem fixed-nome
+q-Pochhammer entire-function overlay described in the audit map below.  The retained
 236-page A4 PDF, SHA-256
 \nolinkurl{8b491f9296204f56b9477064531ad7546d55ea1ea0786b7d3f6425076f5fcf76},
-was not rebuilt for that source-only update and is therefore a historical
+was not rebuilt for these source-only updates and is therefore a historical
 render, not a rendering of the current TeX.
 \end{boxedremark}
 
@@ -495,6 +501,13 @@ product and paired reciprocal-Gamma factors, together with locally uniform real-
 convergence of the full phase-bearing prefixes and its compact-set specialization, for every
 real \(\lvert q\rvert<1\) &
 \nolinkurl{GeometricSincCharacteristicFunction.lean} \\
+Fixed-nome entire complex q-Pochhammer symbol &
+\nolinkurl{hasProdLocallyUniformly_complexQPochhammerInf},
+\nolinkurl{complexQPochhammerInf_differentiable},
+\nolinkurl{complexQPochhammerInf_eq_zero_iff},
+\nolinkurl{complexQPochhammerInf_eq_zero_iff_eq_inv_pow},
+\nolinkurl{analyticOrderAt_complexQPochhammerInf_of_eq_zero} &
+\nolinkurl{QPochhammerEntire.lean} \\
 Generic continuous-CDF bridge &
 \nolinkurl{continuous_cdf_of_nullSingleton},
 \nolinkurl{cdf_reflection_sub},
@@ -1767,6 +1780,67 @@ dyadic Rvachev-product and bounded-Fabius Fourier specializations.  The compound
 still lacks a named centered/MGF wrapper, the outside-disk reciprocal formula and
 zero--pole exchange, and a named local-uniform/normal-convergence theorem for the
 Pochhammer-product right-hand side.
+
+\begin{theorem}[Entire fixed-nome Pochhammer symbol and simple zero lattice]
+\label{integration:thm:qpochhammer-entire}
+Let \(q\in\ComplexNumbers\) satisfy \(\lVert q\rVert<1\), and write
+\[
+ P_q(a)=(a;q)_\infty=\prod_{j=0}^{\infty}(1-aq^j).
+\]
+The finite prefixes converge locally uniformly in \(a\) on all of
+\(\ComplexNumbers\), and \(P_q\) is entire.  Its zeros satisfy
+\begin{align}
+ P_q(a)=0
+ &\Longleftrightarrow \exists j\in\NaturalNumbers:\ 1-aq^j=0,
+ \label{integration:eq:qpochhammer-factor-zero}\\
+ &\Longleftrightarrow \exists j\in\NaturalNumbers:\ a=(q^j)^{-1}
+ \qquad(q\ne0).                                             \label{integration:eq:qpochhammer-inverse-lattice}
+\end{align}
+Every zero has complex analytic order one.  The first zero description is the
+total one: it includes \(q=0\), when the only vanishing factor has index zero,
+the only zero is \(a=1\), and it is simple.
+\end{theorem}
+
+\begin{proofidea}
+Use the generic product-at-summable-scales theorem with \(f(w)=1-w\) and
+scales \(q^j\).  The geometric estimate
+\(\sum_j\lVert q^j\rVert<\infty\), the identity
+\(f(w)-1=-w=O(w)\), and entireness of \(f\) give the locally uniform product
+and entireness of \(P_q\).  The generic no-hidden-zero theorem gives
+\eqref{integration:eq:qpochhammer-factor-zero}.  If \(q\ne0\), then \(q^j\ne0\),
+so \(1-aq^j=0\) is equivalent to \(a=(q^j)^{-1}\), proving
+\eqref{integration:eq:qpochhammer-inverse-lattice}.
+
+For simplicity, first show that a zero index is unique.  If \(q=0\), the
+equation \(aq^j=1\) forces \(j=0\).  If \(q\ne0\), two zero indices \(j,k\)
+give \(a\ne0\) and \(q^j=q^k\); taking norms and using
+\(0<\lVert q\rVert<1\) forces \(j=k\).  Splitting the product after the unique
+zero index gives the global factorization
+\[
+ P_q(z)=(z-a)U(z),\qquad
+ U(z)=-q^j(z;q)_jP_q(zq^{j+1}).
+\]
+The cofactor is entire.  At \(z=a\), its constant \(q^j\) is nonzero (also in
+the \(q=0\) case, where \(j=0\)), its finite prefix contains no zero by index
+uniqueness, and its tail cannot vanish because a tail zero would shift to a
+second zero factor with index \(j+1+k\).  Thus \(U(a)\ne0\), and the displayed
+linear factorization gives analytic order one.
+\end{proofidea}
+
+\paragraph{Exact fixed-nome Pochhammer API crosswalk.}
+The new \path{QPochhammerEntire.lean} leaf has no public definitions and
+exactly five public theorems:
+\lean{hasProdLocallyUniformly_complexQPochhammerInf},
+\lean{complexQPochhammerInf_differentiable},
+\lean{complexQPochhammerInf_eq_zero_iff},
+\lean{complexQPochhammerInf_eq_zero_iff_eq_inv_pow}, and
+\lean{analyticOrderAt_complexQPochhammerInf_of_eq_zero}.
+They are fixed-\(q\), single-symbol results.  They prove no joint holomorphy in
+\((a,q)\), outside-disk reciprocal formula, local-uniform or normal convergence
+of the outer product in \eqref{integration:eq:geometric-sinc-pochhammer}, or
+centered characteristic-function/MGF package.  This is a source-only overlay:
+the retained 236-page canonical PDF predates these five theorems and remains a
+historical render until a three-pass Libertinus rebuild is performed.
 
 The earlier compiler-validated checkpoint \texttt{e6f535e5d} supplied the two modules that
 promote the
@@ -3769,6 +3843,12 @@ convergence, absolute paired perturbation summability, the global general-\(q\)
 \(S_q(z)=\prod_{k\ge0}(z^2/(k+1)^2;q^2)_\infty\) factorization, and its dyadic
 Rvachev/Fabius specializations;
 \cref{integration:eq:geometric-sinc-pochhammer}.\\
+\path{QPochhammerEntire.lean} &
+The zero-definition, five-theorem fixed-nome interface: locally uniform
+convergence in the symbol variable, entireness, the total factor-zero criterion,
+the reciprocal-power lattice for nonzero \(q\), and analytic order one at every
+zero, including the \(q=0\) boundary;
+\cref{integration:thm:qpochhammer-entire}.\\
 \path{ContinuousCDF.lean} &
 The three reusable real-CDF bridges: continuity from null singletons, CDF reflection from
 affine reflection invariance, and identification of an everywhere pointwise CDF derivative
@@ -4284,7 +4364,11 @@ for \(|q|<1\), its exact nonnegative-range tails, and, for \(0<q<1\), refinement
 an explicit compactly supported Radon--Nikodym density, and real-space \(C^\infty\)
 regularity.  Series, law, CDF, and density half-base bridges are formal, and
 \texttt{geometricSincProduct} is now backed by locally uniform convergence on \(\ComplexNumbers\),
-pointwise multipliability and an exact \texttt{HasProd} theorem, and entireness.  With
+pointwise multipliability and an exact \texttt{HasProd} theorem, and entireness.  For each
+fixed complex \(\lVert q\rVert<1\), the single symbol \(a\mapsto(a;q)_\infty\)
+likewise has a locally uniform defining product, is entire, has exactly the
+factor-zero locus (the reciprocal-power lattice for nonzero \(q\)), and has
+only simple zeros.  With
 \(z_q(t)=(1-q)t/(2\pi)\), exact named bridges prove
 \(\phi_q(t)=e^{\ImaginaryUnit t/2}S_q(z_q(t))
 =e^{\ImaginaryUnit t/2}G_q(z_q(t))G_q(-z_q(t))\) throughout \(|q|<1\), including
@@ -4293,6 +4377,7 @@ phase-bearing prefixes on the real frequency line and uniform convergence on eve
 real-frequency set.  Failure of the selected total density formula on \(q\le0\) is formal;
 Lean formalization of the paper-level corrected signed-density replacement, a corresponding
 complex-frequency locally uniform theorem for the full phase-bearing prefix sequence,
+local-uniform/normal convergence of the outer spectral Pochhammer product,
 general-\(q\) rapid decay and Fourier inversion, centered/MGF package, closed
 higher-derivative and endpoint-flatness wrappers, shape, further transforms, and explicit
 Bernoulli-cumulant/Bell-moment formulas and asymptotics remain outside the formal boundary.

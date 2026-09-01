@@ -96,8 +96,8 @@ It checks every permanent package file except the self-referential root
 useful because it preserves the migrated experiment and research-figure
 boundary.
 
-The canonical publication artifact is `q_pochhammer_q_binomial_monograph.pdf`.
-It was built from `q_pochhammer_q_binomial_monograph.tex` by three consecutive serial
+The retained publication artifact is `q_pochhammer_q_binomial_monograph.pdf`.
+It was built from its publication-checkpoint source by three consecutive serial
 `pdflatex -interaction=nonstopmode -halt-on-error` passes with
 `SOURCE_DATE_EPOCH=1788242400`; all three passes produced the same bytes. The
 result is a 334-page A4 PDF of 2,917,795 bytes with SHA-256
@@ -111,3 +111,16 @@ inspected at full resolution, while the remaining 328 renders were
 byte-identical to their already reviewed versions. The files under
 `assets/experiments/**/figures/` remain research figures, not publication
 manuscripts.
+
+The current master TeX is a source-only successor to that checkpoint.  It
+contains later notation repairs and the exact five-theorem
+`FabiusFunction.QPochhammerEntire` crosswalk: fixed-nome local uniformity and
+entireness, both division-free and reciprocal-power zero descriptions, and
+simple analytic order at every zero.  Consequently the retained 334-page PDF
+is historical and exact source/PDF parity is not claimed; no PDF was rebuilt
+for this tranche.  The forward status ledger is now 42 Exact, 73 Partial, 159
+None, and 8 interface rows.  The 190-result pre-Fabius core is 36/29/122/3,
+and its q-shifted-factorial chapter is 4/1/10/0.  The compound outer
+spectral-product theorem remains Partial: the new locally uniform theorem
+concerns one symbol as a function of its argument at fixed contracting nome,
+not normal convergence of the additional product over spectral scales.

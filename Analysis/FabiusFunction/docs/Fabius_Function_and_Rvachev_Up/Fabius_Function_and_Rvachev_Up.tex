@@ -101,7 +101,7 @@
 \large Exact arithmetic, probability, Fourier analysis, and corrected sharp asymptotics}
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
-\date{Integrated repository snapshot: 31 August 2026\\
+\date{Integrated repository snapshot: 1 September 2026\\
 \small Historical Cauchy/complex-product checkpoint \nolinkurl{a81a13b46};
 CDF/implicit checkpoint \nolinkurl{e6f535e5d};
 affine-law checkpoint \nolinkurl{d312c0603};\\
@@ -146,7 +146,11 @@ the bounded Fabius function and the affine Rvachev bump exactly.  A support-free
 theorem transports uniform measure through
 the clamped Fabius inverse and gives Banach-valued quantile substitution.  The analytic part develops the
 formal sinc and cosine products, Fourier inversion and Poisson summation, exact moment
-recurrences, and the Fourier--Legendre expansion.  The arithmetic part gives reciprocal-power
+recurrences, and the Fourier--Legendre expansion.  For each fixed complex strict
+contraction, the infinite q-Pochhammer symbol is
+also proved entire in its symbol variable, with its exact factor-zero and
+reciprocal-power zero descriptions and analytic order one at every zero.  The arithmetic
+part gives reciprocal-power
 values, Thue--Morse formulas for arbitrary dyadic arguments, executable binary reduction,
 two-adic information, exact half-base values, and denominator-free arbitrary-base
 $q$-binomial and geometric-interpolation identities present in Lean.  A compact-rectangle
@@ -3098,13 +3102,102 @@ argument, the flattened paired Euler product, and
 \eqref{eq:geometric-complex-qpochhammer}.  The final two declarations fix the
 dyadic scale and hence the Pochhammer nome \(1/4\); their complex argument is
 unrestricted, and the Fourier-transform form assumes exactly a bounded witness
-and \lean{IsFabius}.  These declarations do not classify the Pochhammer zero
-lattice or its multiplicities, construct a reciprocal zero--pole
-factorization, derive spectral-zeta, Mellin, or logarithmic-derivative
-consequences, prove local-uniform or normal convergence of the rearranged
-Pochhammer product or joint holomorphy in \(q\), name the frontier's centered
-\(\psi_q\) or \(M_q\), or supply an outside \(\lVert q\rVert>1\) reciprocal
-formula.
+and \lean{IsFabius}.  This factorization module itself does not classify the
+single-symbol zero lattice or its multiplicities; the next theorem records the
+separate fixed-nome leaf that now closes exactly that problem.  Neither leaf
+constructs a reciprocal zero--pole factorization, derives spectral-zeta,
+Mellin, or logarithmic-derivative consequences, proves local-uniform or normal
+convergence of the rearranged outer Pochhammer product or joint holomorphy in
+\(q\), names the frontier's centered \(\psi_q\) or \(M_q\), or supplies an
+outside \(\lVert q\rVert>1\) reciprocal formula.
+\end{proof}
+
+\begin{theorem}[Entire fixed-nome Pochhammer symbol and simple zero lattice]
+\label{thm:complex-qpochhammer-entire}
+Fix \(q\in\ComplexNumbers\) with \(\lVert q\rVert<1\), and write
+\[
+ P_q(a):=(a;q)_{\infty,\ComplexNumbers}
+       =\prod_{j=0}^{\infty}(1-aq^j).
+\]
+Then the finite prefixes converge locally uniformly on the whole \(a\)-plane,
+\begin{equation}
+ \prod_{j=0}^{n-1}(1-aq^j)\longrightarrow P_q(a)
+ \quad\text{locally uniformly for }a\in\ComplexNumbers,       \label{eq:qpochhammer-locally-uniform}
+\end{equation}
+and \(P_q\) is entire.  Its zero set has the division-free description
+\begin{equation}
+ P_q(a)=0\quad\Longleftrightarrow\quad
+ \exists j\in\NaturalNumbers:\ 1-aq^j=0.                    \label{eq:qpochhammer-factor-zero}
+\end{equation}
+If \(q\ne0\), this is equivalently the exact reciprocal-power lattice
+\begin{equation}
+ P_q(a)=0\quad\Longleftrightarrow\quad
+ \exists j\in\NaturalNumbers:\ a=(q^j)^{-1}.                \label{eq:qpochhammer-zero-lattice}
+\end{equation}
+Every zero is simple:
+\begin{equation}
+ P_q(a)=0\quad\Longrightarrow\quad
+ \OrderOperator_{z=a}P_q(z)=1.                               \label{eq:qpochhammer-simple-zero}
+\end{equation}
+The factor form \eqref{eq:qpochhammer-factor-zero}, unlike the reciprocal-power
+form, includes \(q=0\): only the index-zero factor can then vanish, so the sole
+zero is \(a=1\), and \eqref{eq:qpochhammer-simple-zero} says it is simple.
+\end{theorem}
+
+\begin{proof}[Human proof and exact Lean crosswalk]
+Apply the summable-scale product engine to the entire factor \(f(w)=1-w\) and
+the scales \(q^j\).  The geometric series
+\(\sum_j\lVert q^j\rVert\) converges, while
+\(f(w)-1=-w=O(w)\) at zero.  The locally uniform product theorem therefore
+gives \eqref{eq:qpochhammer-locally-uniform}; the holomorphic specialization,
+using \(f(0)=1\), makes its product \(P_q\) entire.  The generic no-hidden-zero
+theorem for products at summable scales says that this product vanishes exactly
+when one of its factors does, which is
+\eqref{eq:qpochhammer-factor-zero}.  When \(q\ne0\), the equation
+\(1-aq^j=0\) is \(aq^j=1\), hence \(a=(q^j)^{-1}\); conversely the nonzero power
+\(q^j\) cancels against its inverse.  This proves
+\eqref{eq:qpochhammer-zero-lattice} without changing the \(q=0\)-safe primary
+statement.
+
+It remains to see why no two factors collide and why the surviving cofactor is
+nonzero.  Suppose \(1-aq^j=1-aq^k=0\).  If \(q=0\), either equality forces its
+index to be zero.  If \(q\ne0\), then \(a\ne0\), cancellation gives
+\(q^j=q^k\), and taking norms reduces this to
+\(\lVert q\rVert^j=\lVert q\rVert^k\).  Since
+\(0<\lVert q\rVert<1\), its natural powers are injective, so \(j=k\).
+Splitting the product immediately after this unique index gives, for every
+\(z\in\ComplexNumbers\),
+\begin{equation}
+ P_q(z)=(z-a)U(z),\qquad
+ U(z)=-q^j\,(z;q)_j\,P_q\!\left(zq^{j+1}\right).             \label{eq:qpochhammer-local-cofactor}
+\end{equation}
+The function \(U\) is entire: its first variable factor is constant, its
+finite Pochhammer prefix is a polynomial, and its tail is the composition of
+the entire \(P_q\) with a linear map.  At \(z=a\), the constant \(q^j\) is
+nonzero (also when \(q=0\), because then \(j=0\)); every prefix factor is
+nonzero by uniqueness of \(j\); and the tail is nonzero, since a tail zero
+would shift to another zero factor with index \(j+1+k\).  Thus \(U(a)\ne0\),
+and the analytic factorization \eqref{eq:qpochhammer-local-cofactor} gives
+order one.
+
+The exhaustive public surface of \path{QPochhammerEntire.lean} has no
+definitions and exactly five theorems:
+\lean{hasProdLocallyUniformly_complexQPochhammerInf},
+\lean{complexQPochhammerInf_differentiable},
+\lean{complexQPochhammerInf_eq_zero_iff},
+\lean{complexQPochhammerInf_eq_zero_iff_eq_inv_pow}, and
+\lean{analyticOrderAt_complexQPochhammerInf_of_eq_zero}.
+They prove, in that order, local uniformity, entireness, the total factor-zero
+criterion, its nonzero-nome reciprocal-power form, and simplicity.  Their
+scope is one fixed nome and one Pochhammer symbol.  They do not prove joint
+holomorphy in \((a,q)\), a reciprocal outside-disk formula, local-uniform or
+normal convergence of the outer product in
+\eqref{eq:geometric-complex-qpochhammer}, or a centered
+characteristic-function/MGF package.
+
+This five-theorem overlay is a source-only update.  The retained 166-page PDF
+predates it and remains a historical render until the documented three-pass
+Libertinus rebuild is performed.
 \end{proof}
 
 The exponent in the canonical product has a finite, base-generic double-counting
@@ -12023,10 +12116,10 @@ Fourier analysis &
 \path{PeakRayEnvelope.lean}, \path{GlobalDecayEnvelope.lean},
 \path{RvachevFourierDecay.lean}, \path{VarianceBookkeeping.lean},
 \path{BirkhoffVariance.lean}, \path{BirkhoffProductBridge.lean}\\
-Summable-scale products, geometric reciprocal-Gamma factorization, and the
-general complex Pochhammer product &
+Summable-scale products, geometric reciprocal-Gamma factorization, the
+general complex Pochhammer product, and its fixed-nome entire/zero-order API &
 \path{ScaledInfiniteProducts.lean}, \path{GeometricReciprocalGamma.lean},
-\path{RvachevPochhammerFactorization.lean},
+\path{RvachevPochhammerFactorization.lean}, \path{QPochhammerEntire.lean},
 \path{ReciprocalIntegerGammaZeros.lean}, \path{DyadicGammaOrder.lean}\\
 Reciprocal-Gamma first jets and the Thue--Morse Gamma tower &
 \path{ReciprocalGammaJets.lean}, \path{ThueMorseGammaTower.lean}\\
@@ -12212,6 +12305,7 @@ Article & Lean & Meaning\\
 \(d_q(t)\) & \lean{geometricActivationDimension}\hspace{0.35em}\lean{q}\hspace{0.35em}\lean{t} & normalized geometric activation dimension\\
 \(d_{\rm dy}(t)\) & \lean{dyadicEffectiveDimension}\hspace{0.35em}\lean{t} & dyadic specialization \(d_{1/2}(t)\)\\
 \(G_q\) & \lean{geometricReciprocalGamma}\hspace{0.35em}\lean{q} & entire reciprocal-Gamma product for \(\lVert q\rVert<1\)\\
+\((a;q)_{\infty,\ComplexNumbers}\) & \lean{complexQPochhammerInf}\hspace{0.35em}\lean{a}\hspace{0.35em}\lean{q} & total infinite symbol; for fixed \(\lVert q\rVert<1\), an entire function of \(a\) with the factor-zero set and simple zeros above\\
 \(\Gamma_{\langle q\rangle}\) & \lean{geometricGamma}\hspace{0.35em}\lean{q} & totalized meromorphic inverse of \(G_q\)\\
 \(G_{\rm dy},\Gamma_{\rm dy}\) & \lean{dyadicReciprocalGamma}\hspace{0.35em}\lean{dyadicGamma} & dyadic reciprocal product and totalized meromorphic inverse\\
 \(V_af\) & \lean{volterraPrimitive}\hspace{0.35em}\lean{a}\hspace{0.35em}\lean{f} & first oriented primitive at base \(a\)\\
