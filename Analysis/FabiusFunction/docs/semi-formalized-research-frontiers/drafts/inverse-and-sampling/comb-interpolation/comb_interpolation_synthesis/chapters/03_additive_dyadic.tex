@@ -3853,10 +3853,6 @@ For $M=2^{m}$ and $1\le j\le M-1$,
  \TwoAdicValuation\binom Mj=m-\TwoAdicValuation(j).
  \label{eq:weight-valuation}
 \end{equation}
-For the interior weights $\binom{M-2}{j-1}$ of
-\cref{sec:endpoint-flat}, Lucas's theorem gives oddness exactly for
-odd $j$, with higher valuations determined by the binary carries of
-$j-1$ against $M-2$.
 \end{theorem}
 
 \begin{proof}
@@ -3864,6 +3860,18 @@ $\binom Mj=\frac Mj\binom{M-1}{j-1}$, and every entry of row
 $M-1=2^{m}-1$ is odd by Lucas's theorem, since all binary digits of
 $M-1$ are $1$.
 \end{proof}
+
+The strict-interior formula \eqref{eq:weight-valuation} has the exact Lean
+counterpart \path{Fabius.twoPowChoose_padicValNat} in
+\path{FabiusFunction.PrimePowerBinomialValuation}.  The same module proves a
+stronger arbitrary-prime identity for $0<j\le p^m$, including the positive
+right endpoint $j=p^m$ that is excluded from the displayed dyadic theorem.
+
+The related assertion for the interior weights $\binom{M-2}{j-1}$ of
+\cref{sec:endpoint-flat} is separate from that exact Lean counterpart and
+remains unformalized: for $1\le j\le M-1$, Lucas's theorem gives oddness
+exactly for odd $j$, with higher valuations determined by the binary carries
+of $j-1$ against $M-2$.
 
 Thus the weights that are catastrophic in the real norm are perfectly
 regular $2$-adically --- a hint (made precise in

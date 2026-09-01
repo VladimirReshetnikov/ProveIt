@@ -149,6 +149,10 @@ ALIASES: dict[str, tuple[str, ...]] = {
 }
 
 LEAN_PROOFS = {
+    "thm:weight-valuation": (
+        "FabiusFunction.PrimePowerBinomialValuation",
+        "Fabius.twoPowChoose_padicValNat",
+    ),
     "gq:thm:up-polynomial-synthesis": (
         "FabiusFunction.RvachevPolynomialSynthesis",
         "Fabius.normalized_sum_Ioo_"
@@ -197,6 +201,15 @@ LEAN_SUPPORT: dict[str, tuple[str, tuple[str, ...], str]] = {
         "Lean proves componentwise node biorthogonality and the unnormalized "
         "decoder row-sum law; no Matrix wrapper or row-stochastic encoder "
         "package is formalized.",
+    ),
+}
+
+LEAN_DISPOSITION_NOTES = {
+    "thm:weight-valuation": (
+        "Exact Lean counterpart for the strict-interior dyadic formula only; "
+        "the companion assertion for choose(2^m - 2, j - 1) is stated "
+        "separately and remains unformalized. The same module proves an "
+        "arbitrary-prime form including the positive right endpoint."
     ),
 }
 
@@ -309,6 +322,7 @@ def build_rows(revision: str) -> tuple[str, list[dict[str, str]], Counter[str]]:
         )
         modes["direct" if direct else "deduplicated-or-unlabelled"] += 1
         status, module, declaration = status_for(source, label)
+        note = LEAN_DISPOSITION_NOTES.get(label, note)
         row = dict(source)
         row.update(
             {
