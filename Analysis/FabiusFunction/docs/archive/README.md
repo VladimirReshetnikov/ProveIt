@@ -32,7 +32,7 @@ Short informal notes from before the documentation campaign (from the old `Paper
 
 Self-contained formalization-backed articles on single questions.
 
-- **`Non_Elementarity_of_the_Fabius_Function/`** — First version of the still-living paper: no elementary function agrees with F on any nonempty open subset of [0,1], proved via density of the analytic locus of elementary functions, with the Lean development described.
+- **`Non_Elementarity_of_the_Fabius_Function/`** — First version of the later-expanded paper, now absorbed into the canonical inverse synthesis: no elementary function agrees with F on any nonempty open subset of [0,1], proved via density of the analytic locus of elementary functions, with the Lean development described.
   Files: `Non_Elementarity_of_the_Fabius_Function.pdf`, `Non_Elementarity_of_the_Fabius_Function.tex`.  Source commit: `92d08dc56` (2026-08-25); `95d4723dd` (2026-08-25).  Original location: `Analysis/FabiusFunction/docs/Non_Elementarity_of_the_Fabius_Function/`.
 
 - **`Small_Argument_Asymptotics/`** — The exponentially small small-argument expansion in the lower-Lambert phase: closed-form saddle jets, a general formula for every coefficient, the leading-derivative and amplitude laws, and numerical verification.
@@ -145,4 +145,3 @@ Per-topic research dossiers of non-formalized mathematics, their quarantine regi
 
 - **`Thue_Morse_Formula_Atlas-3/`** — The third parallel atlas consolidation; distinctive for the exact modulo-three rarefaction vectors with their two-scale constants, the Newman-positivity framing, complement/reversal closure of the factor language, the Mahler-value transcendence exposition, and the four-bit-block and carry-corrected worked examples.  Fully merged into the living primary Atlas draft on 2026-08-26 and moved here rather than deleted.
   Files: `Thue_Morse_Formula_Atlas.pdf`, `Thue_Morse_Formula_Atlas.tex`.  Source commit: `bc4c91a1e` (2026-08-26).  Original location: `Analysis/FabiusFunction/docs/non-formalized-research-frontiers/drafts/Thue_Morse_Formula_Atlas-3/`.
-

@@ -1,43 +1,37 @@
 # Inverse and sampling
 
-Most documents in this theme are organized one level deeper by their principal
-overlap:
+This theme has three live navigation targets:
 
-- [`comb-interpolation/`](comb-interpolation/) — additive and geometric comb
-  interpolation, quadrature, extrapolation, and stability;
-- [`inverse-asymptotics-and-computability/`](inverse-asymptotics-and-computability/)
-  — inverse germs, endpoint asymptotics, self-sampling, effective moduli, and
-  certified computation;
-- [`analyticity-and-elementarity/`](analyticity-and-elementarity/) —
-  nowhere-analytic inverse iterates and elementary-representation
-  obstructions.
+- [`Inverse_Fabius_Analyticity_Asymptotics_and_Computability/`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/)
+  — the canonical inverse-Fabius synthesis;
+- [`comb-interpolation/comb_interpolation_synthesis/`](comb-interpolation/comb_interpolation_synthesis/)
+  — the canonical additive and geometric comb synthesis;
+- [`fabius_information_frontier/`](fabius_information_frontier/)
+  — a separate information-geometry intake whose source/PDF synchronization
+  and claim-level acceptance remain explicitly qualified.
 
-The cross-cutting information-geometry intake lives directly at
-[`fabius_information_frontier/`](fabius_information_frontier/). Neighboring
-themes provide techniques or related forward results, but these documents
-remain in `inverse-and-sampling` when inverse behavior, sampling geometry, or
-their information geometry is the principal subject. The
-inverse-iterate report retains its explicit reconciliation link to the forward
-iterate report under `representations/`.
+## Canonical inverse synthesis
 
-[`Inverse_Fabius_Analyticity_Asymptotics_and_Computability/`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/)
-is now a canonical-source draft for five of these live source packages. Its
-master TeX and nine chapters are present, as are the pinned 194-row raw
-source-result inventory, the 88-row source-asset disposition, and a
-deduplicated asset tree whose exhaustive 61-row live checksum ledger passes.
-The reviewed `theorem_concordance.csv` preserves all ten immutable source
-fields across its 194 rows and classifies 39 as Lean-proved, 106 as
-human-proved frontier results, 10 as conjectures, 15 as open problems, and 24
-as nonassertoric.  Its three newly exact rows are centered Appell
-deconvolution, positive-degree Appell mean-zero, and arbitrarily phased
-polynomial deconvolution.  The Appell lattice row remains human-proved because
-Lean covers its `0 <= n <= N` formula but not its extra degree-`N+1`
-superconvergent-phase clause.  The static source validator passes.  No
-canonical PDF exists yet, so the publication gate remains incomplete and the
-five source packages stay live; their retained PDFs keep their separately
-documented historical/current status.
+[*Inverse Fabius Theory: Analyticity, Asymptotics, Computability, and Dyadic
+Sampling*](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/inverse_fabius_theory.tex)
+([PDF](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/inverse_fabius_theory.pdf))
+is the canonical editorial synthesis of five formerly live packages. It covers
+dense-open analyticity and non-elementarity, positive inverse iterates,
+inverse-dyadic germs, Barnes--Rvachev deconvolution, all-orders endpoint
+inversion, dyadic self-sampling, exact inverse moduli, and certified
+computation.
 
-## Non-comb source-only merge status (2026-08-31)
+Its
+[`theorem_concordance.csv`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/theorem_concordance.csv)
+fully dispositions all 194 immutable source-result rows: 39 are Lean-proved,
+106 are human-proved frontier results, 10 are conjectures, 15 are open
+problems, and 24 are non-applicable source environments.
+[`LEAN_CROSSWALK.md`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/LEAN_CROSSWALK.md)
+records exact module/declaration matches and separately classifies five
+post-snapshot additions without changing those source totals.
+[`ASSET_DISPOSITION.csv`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/ASSET_DISPOSITION.csv)
+accounts for all 88 source-subgroup files, and the live asset ledger covers 63
+retained, deduplicated payloads.
 
 The comb consolidation retired the former additive root and three geometric
 wrappers after recording their claim and asset dispositions; only
@@ -70,33 +64,24 @@ three-pass artifacts and refreshed operational ledgers.
 | `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic` | 1,744 | `c1e9839bee77207ea059f8604ce3773fa0c25c57511e4ca70c3f204f4336bd74` | 26 pages | all fifteen payload rows pass; PDF is historical |
 | `fabius_information_frontier` | 2,139 | `d1b90d107a38219a2ff64bbae883d6172b49b70721b631b58cd3b6072781c6dd` | 30 pages | all nineteen payload rows pass; PDF is historical |
 
-Arrival ledgers and historical PDF hashes remain immutable and are not
-affected by this operational-ledger refresh.
+The immutable extraction pin is
+`0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`. The five old layouts are also
+recoverable together at
+`93db15ad3c0645bd3cfd0a3e6e694e3c86a3aa2b`, a complete pre-retirement
+snapshot. Their former paths, nested predecessor packages, arrival hashes, and
+asset dispositions are recorded in
+[`PROVENANCE.md`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/PROVENANCE.md);
+they are provenance locators, not live navigation targets.
 
-Current members and recent intake:
+## Other live packages
 
-- [`Non_Elementarity_of_the_Fabius_Function/`](analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function/),
-  *The Fabius Function and Its Inverse are Not Elementary: Density of the
-  Analytic Locus under Algebraic Branches and Inversion* (14 A4 pp; 1,068
-  source lines at intake and 1,057 after the notation migration), was
-  reclassified on 2026-08-31 from the former top-level
-  `docs/Non_Elementarity_of_the_Fabius_Function/` pair through
-  `drafts/incoming/` and initially filed here without changing either submitted
-  payload. The bare two-file package supplied no archive or checksum ledger.
-  The intake hashes were PDF `ab722e11...` and TeX `3c3c2f48...`; the active
-  repository-added `SHA256SUMS` was refreshed after the post-publication
-  semantic-notation migration and verifies the current TeX/PDF pair. Its TeX
-  source remains LF, and its structurally readable, unencrypted PDF uses embedded/subset
-  fonts, includes Libertinus, and has no Type 3 font. The
-  title and abstract place its forward/inverse non-elementarity and analytic-
-  locus material with the inverse-function reports in this group. An older
-  same-stem study remains under `docs/archive/standalone-studies/`, but neither
-  its TeX nor its PDF is byte-identical to this later expanded package; both
-  are preserved and any supersession decision is deferred. It remains
-  standalone pending post-publication claim-level reassessment and verification
-  of its Lean crosswalk; manuscript theorem labels and the document's own
-  formalization description do not independently establish current Lean
-  verification.
+[`comb-interpolation/comb_interpolation_synthesis/`](comb-interpolation/comb_interpolation_synthesis/)
+is the canonical union of the additive-dyadic and geometric-comb manuscripts.
+It preserves the distinct modal, Mellin, regular-variation, spline,
+reciprocal-product, Euler--Maclaurin, Ruffa, Thue--Morse, and interpolation
+results while stating their common Gaussian--Pascal and Jackson--Newton spine
+once. Its 180-row source disposition, 151-row historical-ledger audit, and
+156-page certified publication are documented in that package.
 
 - [`comb_interpolation_synthesis/`](comb-interpolation/comb_interpolation_synthesis/),
   *Comb Interpolation and Sampling Frontiers: Additive and Geometric Combs in
@@ -193,23 +178,22 @@ Current members and recent intake:
   six-entry operational ledger verifies the current bytes without asserting
   source/PDF synchronization.
 
-- [`inverse_fabius_iterates_nowhere_analytic/`](analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/),
-  *Nowhere Analyticity of Every Positive Compositional Iterate of the Inverse
-  Fabius Function* (retained 26-page A4 PDF; current 1,744-line source),
-  arrived on 2026-08-30 from
-  `inverse_fabius_iterates_nowhere_analytic.zip` (outer SHA-256
-  `8b1c05d59e120ecd20d69cd5aeb0009639f2f3b9a6c9fef32bdf82270eee16bd`).
-  All 13 submitted payload hashes verified; `spine_diagnostic.csv` was
-  refreshed after CRLF-to-LF repository normalization. It remains standalone
-  pending post-publication reconciliation with
-  [`../representations/fabius_iterates_nowhere_analytic/`](../representations/fabius_iterates_nowhere_analytic/)
-  and further Lean work. Its source now crosswalks the complete finite
-  positive-list defect API in `PartitionDefect.lean`, while the set-partition
-  bridge, weighted Bell/spine asymptotics, and principal forward/inverse
-  iterate claims remain paper-only.
+`QuarterCatalanGerm.lean` proves that the distinguished rational quarter germ
+becomes the Catalan inverse of `X + 4 X^2` under the exact `9/4` parameter
+rescaling, together with the reverse rescaling and every positive coefficient.
+`FabiusInverseQuarterJet.lean` connects that quadratic inverse to the actual
+smooth inverse: its full centered jet at `5/72 = F(1/4)` is the
+factorial-scaled Catalan sequence. This is equality of all derivatives, not
+local analytic equality. A named nonzero flat-remainder decomposition remains
+open, as do the general-dyadic analytic/algebraic shadow and convergence of the
+inverse Taylor series.
 
-This theme combines consolidated volumes with retained standalone reports;
-the subgroup READMEs are the authoritative navigation after each synthesis.
+`FabiusFunction.LagrangeRvachevSynthesis` supplies two definitions and seven
+theorems closing the generic finite-node decoder, cardinal biorthogonality,
+and exact interpolation loop. It does not by itself prove the geometric-node
+Gaussian closed forms, a bundled matrix/right-inverse wrapper, or an
+optimal/minimum-variation decoder theorem; the exhaustive public inventory is
+in the root [`Analysis/FabiusFunction/README.md`](../../../../README.md).
 
 Post-snapshot formal status: `QuarterCatalanGerm.lean` now proves that the
 distinguished rational quarter germ becomes the Catalan inverse of
