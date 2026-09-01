@@ -64,7 +64,8 @@ presence of assembled TeX.
 
 ## File disposition
 
-The four source trees contain exactly 180 files at the source pin.
+The source-pin subtree contains exactly 180 files: 179 under the four source
+trees and the parent routing README.
 [`source_disposition.csv`](source_disposition.csv) records one row per file.
 Its current disposition counts are:
 
@@ -74,7 +75,7 @@ Its current disposition counts are:
 | `canonicalized` | 27 | evidence or editorial records represented by a canonical live artifact |
 | `replaced-publication` | 1 | the former primary publication replaced by this volume |
 | `retained-deduplicated-evidence` | 2 | two equivalent source rows represented by one shared live payload |
-| `retained-evidence` | 104 | unique scripts, data, text outputs, or PNG evidence retained by source slug |
+| `retained-evidence` | 104 | unique scripts, data, generated tables, text outputs, or PNG evidence retained by source slug |
 | `retired-broken-wrapper` | 1 | a nonfunctional build wrapper |
 | `retired-generated-preview` | 35 | stale report/figure PDFs replaced by source data or PNG companions |
 | `retired-placeholder` | 3 | files explicitly describing unavailable or unshipped generated content |
@@ -87,11 +88,11 @@ the two deduplicated rows intentionally share one live dependency file.
 Unique computational payloads are under `assets/companion-evidence/<source
 slug>/`. Keeping the historical slug makes the origin of every retained
 script, table, or figure explicit without retaining a second manuscript tree.
-All twelve noncanonical package READMEs—the nine nested additive-dyadic
-documents and the three geometric package documents—were absorbed into the
-canonical README, provenance record, validation record, and article. Old
-report PDFs, figure-preview PDFs, obsolete package ledgers, and broken wrappers
-were not treated as mathematical evidence.
+The documentation layers of all twelve noncanonical source packages—the nine
+nested additive-dyadic packages and the three geometric packages—were absorbed
+into the canonical README, provenance record, validation record, and article.
+Old report PDFs, figure-preview PDFs, obsolete package ledgers, and broken
+wrappers were not treated as mathematical evidence.
 
 The only byte-identical pair in the 180-file source inventory was the
 `requirements.txt` shared by `fabius_interpolation_report` and
@@ -111,12 +112,12 @@ No other retained payload was collapsed by byte identity.
 
 The immutable 180-file inventory remains pinned to the revision stated above,
 but the synthesis branch was merged with mainline revision
-`9e70a1a2145e9c01566d5638d33045af24516790` before publication.  Main had
-added or refreshed intake notes, arrival-ledger copies, historical PDF checks,
-and source-only status wrappers inside the report trees that this synthesis
-retires.  Those administrative files were reviewed during conflict resolution
-and distilled here rather than being preserved as a second documentation
-layer.
+`9e70a1a2145e9c01566d5638d33045af24516790` before publication. Main had added
+15 paths and modified eight inside the report trees that this synthesis
+retires. [`post_pin_disposition.csv`](post_pin_disposition.csv) records those
+23 Git-derived rows, their exact reconciliation hashes and sizes, and their
+canonical destinations. This delta ledger avoids rebasing or duplicating the
+immutable source-pin inventory.
 
 The useful conclusions were as follows.
 
@@ -148,6 +149,12 @@ checked against the reconciliation revision.  The superseded intake prose,
 arrival-ledger copies, and old-PDF preflight records remain recoverable at that
 Git revision but are not live publications or canonical evidence manifests.
 
+The 232-row theorem concordance covers the four peer manuscripts present at
+the source pin. The nine packages absorbed earlier by the additive-dyadic
+volume retain package-level hashes, contribution summaries, and original bytes
+in its predecessor provenance appendix and Git history; this package does not
+claim a second theorem-by-theorem concordance for those nine earlier sources.
+
 ## Historical checksum ledgers
 
 Eight source-package ledgers contain 151 entries in total. Re-evaluating them
@@ -163,9 +170,10 @@ against the immutable source pin gives:
 The row-level evidence is preserved in
 [`assets/HISTORICAL_LEDGER_AUDIT.csv`](assets/HISTORICAL_LEDGER_AUDIT.csv).
 These ledgers describe earlier package states and are not a checksum manifest
-for the canonical tree. The live root and asset payload ledgers are kept
-separate from this historical audit. At the recorded publication checkpoint,
-both verified in full.
+for the canonical tree. The live `assets/COMPANION_PAYLOADS.csv` provenance
+ledger is deliberately separate from this historical audit, while the single
+root `SHA256SUMS` exhaustively covers every other permanent package file and
+verifies in full.
 
 ## Recoverability
 
@@ -176,7 +184,8 @@ retains the absorbed manuscript bytes. The canonical tree deliberately keeps
 only one human-readable publication plus unique evidence; Git is the archival
 store for superseded wrappers and publications.
 
-Publication validation is tracked in [`assets/VALIDATION.md`](assets/VALIDATION.md),
-which records the completed canonical validator, final PDF, and live root/asset
-ledger gates. Full numerical replay and fresh-checkout reproduction remain
-separate reproducibility work.
+Publication validation is recorded once in
+[`assets/VALIDATION.md`](assets/VALIDATION.md), including the completed
+canonical validator, final PDF, and root-ledger gates. Full numerical replay
+and fresh-checkout reproduction remain separate reproducibility work; this
+provenance record neither duplicates nor supersedes those checks.

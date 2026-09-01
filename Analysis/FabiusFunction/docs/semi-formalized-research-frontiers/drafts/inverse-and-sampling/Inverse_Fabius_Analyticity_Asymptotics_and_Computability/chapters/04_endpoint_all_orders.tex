@@ -10,7 +10,7 @@
 
 \subsection{Forward input}
 
-With $X=\sum_{j\ge1}2^{-j}U_j$ ($U_j$ i.i.d.\ uniform on $[0,1]$) and
+With $X=\sum_{j\ge1}2^{-j}V_j$ ($V_j$ i.i.d.\ uniform on $[0,1]$) and
 $F(x)=\Probability(X\le x)$, the Laplace transform and exponent are
 \begin{equation}
  M(t)=\Expectation\,\EulerE^{-tX}
@@ -122,9 +122,9 @@ $-\tfrac L2\lambda^{2}+L\beta\lambda
 collapses exactly because $T=L\rho^{2}/2$) reduces
 $\log F(G(y))=-T$ to the fixed-point equation
 \begin{equation}
- \boxed{\;D=z\,\Phi(z,D),\;}
+ \boxed{\;D=z\,\EndpointKernel(z,D),\;}
  \qquad
- \Phi(z,w)=-\frac1L\mathcal R(z,w),
+ \EndpointKernel(z,w)=-\frac1L\mathcal R(z,w),
  \label{ao:eq:fixed-point}
 \end{equation}
 with the formal residual
@@ -239,13 +239,13 @@ For every $n\ge1$,
 \begin{equation}
  \boxed{\;
  d_n=\sum_{k=1}^{n}\frac1k\,
- [z^{\,n-k}w^{\,k-1}]\;\Phi(z,w)^{k}
+ [z^{\,n-k}w^{\,k-1}]\;\EndpointKernel(z,w)^{k}
  =\sum_{k=1}^{n}\frac{(-1)^{k}}{k\,L^{k}}\,
  [z^{\,n-k}w^{\,k-1}]\;\mathcal R(z,w)^{k},
  \;}
  \label{ao:eq:diagonal-dn}
 \end{equation}
-a finite formula: only the $z^{\,n-1}$-truncation of $\Phi$, the jets
+a finite formula: only the $z^{\,n-1}$-truncation of $\EndpointKernel$, the jets
 $\Psi,\dots,\Psi^{(n-1)}$, and $A_1,\dots,A_{n-1}$ enter.  More
 generally, for any formal $K(z,w)$,
 \begin{equation}
@@ -253,7 +253,7 @@ generally, for any formal $K(z,w)$,
  =[z^{n}]\,K(z,0)
  +\sum_{k=1}^{n}\frac1k\,
  [z^{\,n-k}w^{\,k-1}]\;
- \partial_wK(z,w)\,\Phi(z,w)^{k},
+ \partial_wK(z,w)\,\EndpointKernel(z,w)^{k},
  \label{ao:eq:diagonal-composition}
 \end{equation}
 which with $K=\log(1+\beta z+zw)-Lw$ and
@@ -262,17 +262,17 @@ $h_n$ and $g_n$ directly.
 \end{theorem}
 
 \begin{proof}
-Let $W(t,z)$ solve $W=t\,\Phi(z,W)$.  For fixed $z$, ordinary
+Let $W(t,z)$ solve $W=t\,\EndpointKernel(z,W)$.  For fixed $z$, ordinary
 Lagrange--B\"urmann inversion in $t$ gives
-$[t^{k}]W=\tfrac1k[w^{k-1}]\Phi(z,w)^{k}$ and the composition form
-$K(z,W)=K(z,0)+\sum_k\tfrac{t^{k}}k[w^{k-1}]\partial_wK\cdot\Phi^{k}$.
+$[t^{k}]W=\tfrac1k[w^{k-1}]\EndpointKernel(z,w)^{k}$ and the composition form
+$K(z,W)=K(z,0)+\sum_k\tfrac{t^{k}}k[w^{k-1}]\partial_wK\cdot\EndpointKernel^{k}$.
 Since $D(z)=W(z,z)$, set $t=z$ and extract total degree $n$.
 Finiteness: a term with Lagrange index $k$ asks for
 $z^{\,n-k}w^{\,k-1}$, so no $A_jz^{j}$ with $j>n-k$ and at most $k-1$
 phase derivatives occur.
 \end{proof}
 
-Expanding $\Phi=\sum\phi_{r,s}z^{r}w^{s}$ gives the fully unrolled
+Expanding $\EndpointKernel=\sum\phi_{r,s}z^{r}w^{s}$ gives the fully unrolled
 partition form
 \[
  d_n=\sum_k\tfrac1k
@@ -314,7 +314,7 @@ $[z^{n-1}]D\EulerE^{-LD}$, each a standard partial-Bell expansion.
 Fix an output order $N$: obtain $A_1,\dots,A_{N-1}$ (from
 \eqref{ao:eq:A1-and-topjet}--\eqref{ao:eq:A2} or the saddle pipeline of
 \cref{ao:sec:saddle}); Taylor-expand $\Psi(\theta+w)$, $A_j(\theta+w)$
-only as far as the bidegrees require; truncate $\Phi$ at
+only as far as the bidegrees require; truncate $\EndpointKernel$ at
 $z^{N-1}$; evaluate \eqref{ao:eq:diagonal-dn} for each needed $n$
 (no lower $d_j$ is mathematically required); and produce $g_n$ by
 \eqref{ao:eq:gn-direct} or the $h$-route.  The triangular and diagonal
@@ -392,8 +392,8 @@ yields laws invisible in a triangular expansion.
 \subsection{Logarithmic degrees and top logarithms}
 
 Write $\mathcal R=\tfrac12\ell+\mathcal R_0$ with $\mathcal R_0$
-independent of $\ell$, so the $z^{0}$ slice of $\Phi$ is
-$\Phi(0,w)=a\ell+\phi(w)$ with
+independent of $\ell$, so the $z^{0}$ slice of $\EndpointKernel$ is
+$\EndpointKernel(0,w)=a\ell+\phi(w)$ with
 \begin{equation}
  a=-\frac1{2L},
  \qquad
@@ -438,9 +438,9 @@ logarithm is \emph{universal}:
 \end{theorem}
 
 \begin{proof}
-In \eqref{ao:eq:diagonal-dn} a product $\Phi^{k}$ has $\ell$-degree at
+In \eqref{ao:eq:diagonal-dn} a product $\EndpointKernel^{k}$ has $\ell$-degree at
 most $k\le n$, and for $k=n$ the coefficient requested is
-$[w^{n-1}]\Phi(0,w)^{n}/n$, whose nominal $\ell^{n}$ term carries no
+$[w^{n-1}]\EndpointKernel(0,w)^{n}/n$, whose nominal $\ell^{n}$ term carries no
 $w$ and dies for $n\ge2$; the $\ell^{n-1}w^{n-1}$ term takes
 $a\ell$ from $n-1$ factors and $\phi$ from one, the multiplicity $n$
 cancelling $1/n$ --- this is \eqref{ao:eq:d-top-log}, and expanding
@@ -679,13 +679,17 @@ $[\kappa_0-\max\Psi,\kappa_0-\min\Psi]$.
 Writing $g_n(\ell,u)=\sum_{r\le n}g_{n,r}(u)\ell^{r}$, the
 renormalized statistic
 \begin{equation}
+ \begin{aligned}
  \mathcal T_{N,m}(u)
- =\rho_{m,u}^{N}\Bigl\{
- \frac{G(y_{m,u})}{\Gzero(y_{m,u})}-1
- -\sum_{n<N}\frac{g_n(\log\rho_{m,u},u)}{\rho_{m,u}^{n}}
- \Bigr\}
- =g_N(\log\rho_{m,u},u)
- +\BigO_N\Bigl(\frac{(1+\log\rho_{m,u})^{N+1}}{\rho_{m,u}}\Bigr)
+ &=\rho_{m,u}^{N}\Bigl\{
+   \frac{G(y_{m,u})}{\Gzero(y_{m,u})}-1
+   -\sum_{n<N}\frac{g_n(\log\rho_{m,u},u)}{\rho_{m,u}^{n}}
+   \Bigr\}\\
+ &=g_N(\log\rho_{m,u},u)
+   +\BigO_N\Bigl(
+     \frac{(1+\log\rho_{m,u})^{N+1}}{\rho_{m,u}}
+   \Bigr).
+ \end{aligned}
  \label{ao:eq:tomography}
 \end{equation}
 reconstructs, phase by phase, every periodic layer
@@ -875,17 +879,18 @@ Writing the exact phase as $\lambda=\vartheta+D_W$ with $z=1/w$ and
 negating the forward expansion against \eqref{ao:eq:w-carrier} leaves the
 residual
 \begin{equation}
- 0=\frac Lz D_W+\mathcal R_W(z,D_W),
- \qquad
- \mathcal R_W(z,u)=
- \frac L2u^{2}+\frac12\log(1+\beta z+zu)
- -\Psi(\vartheta+u)
- -\sum_{j\ge1}\frac{A_j(\vartheta+u)\,z^{j}}{(1+\beta z+zu)^{j}}:
+ \begin{aligned}
+ 0&=\frac Lz D_W+\mathcal R_W(z,D_W),\\
+ \mathcal R_W(z,u)
+ &=\frac L2u^{2}+\frac12\log(1+\beta z+zu)-\Psi(\vartheta+u)\\
+ &\quad-\sum_{j\ge1}
+   \frac{A_j(\vartheta+u)\,z^{j}}{(1+\beta z+zu)^{j}}.
+ \end{aligned}
  \label{ao:eq:RW}
 \end{equation}
 \emph{every constant and every logarithm has disappeared}.  The
 entire diagonal calculus of \cref{ao:sec:diagonal} applies verbatim to
-$\Phi_W=-\mathcal R_W/L$, and the ratio identity becomes
+$\EndpointKernel_W=-\mathcal R_W/L$, and the ratio identity becomes
 $G/G_W=\bigl(1+\tfrac{zD_W}{1+\beta z}\bigr)\EulerE^{-LD_W}$.
 
 \begin{theorem}[Log-free all-orders expansion, with an extra order]
@@ -923,7 +928,7 @@ $\mathcal R_{W,N}$ be the corresponding truncation of
 The constant and logarithmic terms were absorbed by the carrier equation, so
 all coefficients of $\mathcal R_{W,N}$ are bounded uniformly in the phase;
 there is no $\ell$ variable.  The formal fixed-point equation
-$D_W=z\Phi_W(z,D_W)$ therefore has unique coefficients
+$D_W=z\EndpointKernel_W(z,D_W)$ therefore has unique coefficients
 $D_W^{[N]}=\sum_{m\le N}d_m^Wz^m$, given by the diagonal formula of
 \cref{ao:thm:diagonal}.  Each coefficient uses only finitely many Taylor
 coefficients of $\Psi,A_1,\ldots,A_{m-1}$, and is consequently a bounded
@@ -952,7 +957,8 @@ $O_N(z^{N+1})$ remainder in \eqref{ao:eq:W-expansion}.  Since
 $z=w^{-1}$, this is the asserted result.
 \end{proof}
 
-\subsection{First coefficients and the universal $5/24$}
+\subsection{First coefficients and the universal
+\texorpdfstring{$5/24$}{5/24}}
 
 With $P_r=\Psi^{(r)}(\vartheta)$ (and $P=P_0$), the diagonal
 extraction gives
@@ -1094,7 +1100,7 @@ of $(1+\beta z+zu)^{-j}$ and of the logarithm in
 \eqref{ao:eq:RW} also have coefficients bounded by geometric powers, after
 enlarging a constant depending on $L$ and $\beta$.  Consequently there are
 $C_0,K_0$ such that every coefficient of total weight $r+s$ in
-$\Phi_W(z,u)$ is bounded on the $\sigma_1$ strip by
+$\EndpointKernel_W(z,u)$ is bounded on the $\sigma_1$ strip by
 \[
  C_0K_0^{r+s}(r+s)!.
 \]
@@ -1142,7 +1148,8 @@ On the exact dyadic quantiles the improvement over the
 $\rho$-carrier is dramatic --- the bare W-carrier already beats the
 $\rho$-scale's two-correction approximant at small $n$:
 
-\begin{center}
+\begin{table}[htbp]
+\centering
 \small
 \begin{tabular}{@{}rrrrrr@{}}
 \toprule
@@ -1156,7 +1163,7 @@ $n$ & $w$ & carrier only & order 1 & order 2 & order 3 \\
 160 & 165.444 & $-7.55\times10^{-6}$ & $-7.55\times10^{-6}$ & $6.11\times10^{-8}$ & $-1.14\times10^{-9}$ \\
 \bottomrule
 \end{tabular}
-\captionof{table}{Relative errors of the W-resummed approximants
+\caption{Relative errors of the W-resummed approximants
 $G_W\exp(\sum_{j\le r}h_j^W/w^{j})$ at $y_n=F(2^{-n})$.  Compare
 \cref{ao:tab:dyadic-errors}: order for order the W-scale wins throughout
 (at $n=160$, third order $-1.14\times10^{-9}$ versus
@@ -1167,12 +1174,12 @@ $n\approx40$ ($-1.07\times10^{-4}$ versus $-1.43\times10^{-4}$ at
 $n=40$; the comparison reverses beyond $n\approx80$ as the
 $\rho$-corrections catch up) by absorbing the logarithmic drift.}
 \label{ao:tab:W-errors}
-\end{center}
+\end{table}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.78\textwidth]{assets/endpoint/wright-omega/figures/carrier_comparison.pdf}\\[0.3em]
-\includegraphics[width=0.78\textwidth]{assets/endpoint/wright-omega/figures/scaled_residuals.pdf}
+\includegraphics[width=0.78\textwidth]{assets/endpoint/wright-omega/figures/carrier_comparison.png}\\[0.3em]
+\includegraphics[width=0.78\textwidth]{assets/endpoint/wright-omega/figures/scaled_residuals.png}
 \caption{Top: absolute relative errors of the $\rho$- and W-carrier
 approximants on the exact dyadic quantiles.  Bottom: scaled residuals
 after the second and third W-corrections, consistent with the
@@ -1648,7 +1655,8 @@ asymptotic formula is evaluated (at $100$ digits, twelve modes).
 Signed relative errors of $G^{[r]}
 =\Gzero\exp(\sum_{j\le r}h_j\rho^{-j})$:
 
-\begin{center}
+\begin{table}[htbp]
+\centering
 \small
 \begin{tabular}{@{}rrrrrr@{}}
 \toprule
@@ -1663,15 +1671,15 @@ $n$ & $\rho$ & $\Gzero$ only & through $h_1$ & through $h_2$ & through $h_3$ \\
 160 & 165.47 & $-3.08\times10^{-2}$ & $2.30\times10^{-4}$ & $-3.64\times10^{-6}$ & $4.92\times10^{-8}$ \\
 \bottomrule
 \end{tabular}
-\captionof{table}{Exact-quantile tests: the new third correction
+\caption{Exact-quantile tests: the new third correction
 improves the two-correction error by factors $11$--$74$ across the
 tested range.}
 \label{ao:tab:dyadic-errors}
-\end{center}
+\end{table}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.78\textwidth]{assets/endpoint/all-orders/figures/endpoint_error_plot.pdf}
+\includegraphics[width=0.78\textwidth]{assets/endpoint/all-orders/figures/endpoint_error_plot.png}
 \caption{Absolute relative errors on the exact dyadic quantiles;
 each added logarithmic correction produces the expected strong
 reduction once $\rho$ is moderately large.}
@@ -1680,8 +1688,8 @@ reduction once $\rho$ is moderately large.}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.72\textwidth]{assets/endpoint/dyadic-completion/figures/psi_periodic.pdf}\\[0.35em]
-\includegraphics[width=0.72\textwidth]{assets/endpoint/dyadic-completion/figures/dyadic_tail_convergence.pdf}
+\includegraphics[width=0.72\textwidth]{assets/endpoint/dyadic-completion/figures/psi_periodic.png}\\[0.35em]
+\includegraphics[width=0.72\textwidth]{assets/endpoint/dyadic-completion/figures/dyadic_tail_convergence.png}
 \caption{Top: the centered Gamma--zeta fluctuation $\Psi$ --- tiny
 amplitude, same asymptotic order as the constants.  Bottom: relative
 error of $N=1,2,4,8$ terms of the exact $2$-adic series for
@@ -1695,7 +1703,7 @@ $B(t)$, with the elementary enclosure of
 \label{ao:app:proof-details}
 
 \emph{Finiteness bookkeeping.}  In \eqref{ao:eq:diagonal-dn} the index-$k$
-summand requests $z^{\,n-k}w^{\,k-1}$: no $\Phi$-power beyond
+summand requests $z^{\,n-k}w^{\,k-1}$: no $\EndpointKernel$-power beyond
 $z^{\,n-k}$, no Taylor jet beyond order $k-1$, and $A_j$ only for
 $j\le n-k$; hence $A_{n-1}$ occurs only at $k=1$ --- the key to the
 top-jet proof.
@@ -1850,7 +1858,7 @@ Four layers, the first three purely formal:
 (1) a two-scale coefficient ring (truncated series over
 $\RealNumbers[\ell]\otimes C^\infty(\RealNumbers/\IntegerNumbers)$, closure under composition, log,
 exp); (2) parameterized Lagrange inversion
-$[t^{k}]W=\tfrac1k[w^{k-1}]\Phi^{k}$ and the diagonal specialization
+$[t^{k}]W=\tfrac1k[w^{k-1}]\EndpointKernel^{k}$ and the diagonal specialization
 \eqref{ao:eq:diagonal-dn}; (3) the Gaussian contraction
 \eqref{ao:eq:Cn-partition} over an algebraic moment functional, and the
 $2$-adic regrouping and Dirichlet identities of
