@@ -831,7 +831,7 @@ For $n\in\IntegerNumbers\setminus\{0\}$,
 \begin{equation}
  \FourierSeriesCoefficient{g_p}{n}
  =\sum_{j=0}^{p}
- \frac{\fall pj}{(2\pi\ImaginaryUnit n)^{j+1}}
+ \frac{\FallingFactorial{p}{j}}{(2\pi\ImaginaryUnit n)^{j+1}}
  \left(
  \frac{\chi^{(p-j)}(n)}{(-2\pi\ImaginaryUnit)^{p-j}}-1
  \right).
@@ -855,7 +855,7 @@ $\FourierSeriesCoefficient{g_p}{n}
 parts $p+1$ times, using $\EulerE^{-2\pi\ImaginaryUnit n}=1$ at the fixed endpoint,
 \[
  \int_Y^1x^{p}\EulerE^{-2\pi\ImaginaryUnit nx}\Differential x
- =\sum_{j=0}^{p}\frac{\fall pj}{(2\pi\ImaginaryUnit n)^{j+1}}
+ =\sum_{j=0}^{p}\frac{\FallingFactorial{p}{j}}{(2\pi\ImaginaryUnit n)^{j+1}}
  \Bigl(Y^{\,p-j}\EulerE^{-2\pi\ImaginaryUnit nY}-1\Bigr),
 \]
 and $\Expectation\bigl[Y^{r}\EulerE^{-2\pi\ImaginaryUnit nY}\bigr]=\chi^{(r)}(n)/(-2\pi\ImaginaryUnit)^{r}$.
@@ -876,7 +876,7 @@ For every $m\ge0$ and $p\in\NaturalNumbers$,
 \begin{equation}
  L_{m,p}=I_p-\frac h2+
  \sum_{r=1}^{\Floor{(p+1)/2}}
- \frac{B_{2r}}{(2r)!}\,\fall p{2r-1}\,h^{2r}
+ \frac{B_{2r}}{(2r)!}\,\FallingFactorial{p}{2r-1}\,h^{2r}
  +\defect_{m,p},
  \label{eq:EM-exact-remainder}
 \end{equation}
@@ -885,7 +885,7 @@ where
  \defect_{m,p}
  =\sum_{\ell\in\IntegerNumbers\setminus\{0\}}
  \sum_{j=0}^{p}
- \frac{\fall pj}{(2\pi\ImaginaryUnit M\ell)^{j+1}}\,
+ \frac{\FallingFactorial{p}{j}}{(2\pi\ImaginaryUnit M\ell)^{j+1}}\,
  \frac{\chi^{(p-j)}(M\ell)}{(-2\pi\ImaginaryUnit)^{p-j}}.
  \label{eq:R-alias}
 \end{equation}
@@ -895,8 +895,8 @@ where
 Insert \eqref{eq:gp-hat-chi} into \eqref{eq:trap-alias}.  In the
 boundary part only odd $j=2r-1$ survives the symmetric $\ell$-sum, and
 \[
- -\frac{\fall p{2r-1}}{(2\pi\ImaginaryUnit M)^{2r}}\sum_{\ell\ne0}\ell^{-2r}
- =\frac{B_{2r}}{(2r)!}\,\fall p{2r-1}M^{-2r}
+ -\frac{\FallingFactorial{p}{2r-1}}{(2\pi\ImaginaryUnit M)^{2r}}\sum_{\ell\ne0}\ell^{-2r}
+ =\frac{B_{2r}}{(2r)!}\,\FallingFactorial{p}{2r-1}M^{-2r}
 \]
 by $\zeta(2r)=(-1)^{r+1}B_{2r}(2\pi)^{2r}/(2(2r)!)$.  Finally
 $T_{m,p}=L_{m,p}+h/2$.
@@ -922,7 +922,7 @@ If $m\ge\tau(p)$, then $\defect_{m,p}=0$; that is,
  \boxed{\;
  L_{m,p}=I_p-\frac h2+
  \sum_{r=1}^{\Floor{(p+1)/2}}
- \frac{B_{2r}}{(2r)!}\,\fall p{2r-1}\,h^{2r}.
+ \frac{B_{2r}}{(2r)!}\,\FallingFactorial{p}{2r-1}\,h^{2r}.
  \;}
  \label{eq:EM-collapse}
 \end{equation}
@@ -994,7 +994,7 @@ Expanding $B_{p+1}(M+1)$ around $M=1/h$,
 \[
  \frac{h^{p+1}B_{p+1}(M+1)-1}{p+1}
  =\frac h2+\sum_{r=1}^{\Floor{(p+1)/2}}
- \frac{B_{2r}}{(2r)!}\fall p{2r-1}h^{2r},
+ \frac{B_{2r}}{(2r)!}\FallingFactorial{p}{2r-1}h^{2r},
 \]
 which combined with $I_p=(1-d_{p+1})/(p+1)$ and
 $R_{m,p}=L_{m,p}+h$ is \eqref{eq:EM-collapse}.
@@ -1802,7 +1802,7 @@ $n\ge0$,
 \end{equation}
 where $\mathcal A^{\mathrm{raw}}$ is the uncorrected grid average;
 equivalently, the corrected rule's error \eqref{eq:alias-general} equals
-$\sum_{r}\frac{(-1)^{r+1}}{r!M^{r}}\fall n{r-1}\,C_{n+1-r,r}(M,\theta)$.
+$\sum_{r}\frac{(-1)^{r+1}}{r!M^{r}}\FallingFactorial{n}{r-1}\,C_{n+1-r,r}(M,\theta)$.
 This is an exact identity, not an expansion: the Bernoulli addition and
 reflection formulas expand $B_{n+1}(M+\theta)$ and
 $B_{n+1}(MY+1-\{MY-\theta\})$, the $r=0$ term reproduces
@@ -1872,7 +1872,7 @@ $\TwoAdicValuation(M)\ge\tau(p)$,
  F\!\Bigl(\frac aM\Bigr)
  +\frac1{2M}
  -\sum_{r=1}^{\Floor{(p+1)/2}}
- \frac{B_{2r}}{(2r)!}\,\fall p{2r-1}\,M^{-2r}.
+ \frac{B_{2r}}{(2r)!}\,\FallingFactorial{p}{2r-1}\,M^{-2r}.
  \label{eq:Ip-composite}
 \end{equation}
 
@@ -2515,7 +2515,7 @@ certificates.
 The error at dyadic resolution $M=2^{m}$ has the exact separated
 finite-rank form
 \[
- \sum_{r\le d+1}\frac{\fall d{r-1}}{r!}\,B_r(\theta)\,2^{-mr}.
+ \sum_{r\le d+1}\frac{\FallingFactorial{d}{r-1}}{r!}\,B_r(\theta)\,2^{-mr}.
 \]
 Thus phase
 acts on the Bernoulli basis while each resolution step scales the
@@ -2564,7 +2564,7 @@ with $\Theta_{s;M,d}=\sum_{j<2^{s}}t_j\,
 \mathcal A^{\mathrm{raw}}_{M,\,j/2^{s}}[x^{d}]$,
 \begin{align}
  \Theta_{s;M,d}
- &=\sum_{r=s}^{d+1}\frac{\fall d{r-1}}{r!}\,\beta_{s,r}\,M^{-r},
+ &=\sum_{r=s}^{d+1}\frac{\FallingFactorial{d}{r-1}}{r!}\,\beta_{s,r}\,M^{-r},
  \qquad
  \Theta_{s;M,d}=0\ (s\ge d+2),
  \notag\\
@@ -2607,7 +2607,7 @@ If $\TwoAdicValuation(M)\ge d+1$, then the stable shifted Fabius rules obey
 \begin{equation}
  \sum_{j=0}^{b^s-1}\omega^{s_b(j)}
  \mathcal A^{\mathrm{raw}}_{M,j/b^s}[x^d]
- =\sum_{r=s}^{d+1}{\fall d{r-1}\over r!}
+ =\sum_{r=s}^{d+1}{\FallingFactorial{d}{r-1}\over r!}
  \gamma_{b,s,r}^{(\omega)}M^{-r}.
  \label{eq:root-unity-phase-filter}
 \end{equation}
@@ -2663,7 +2663,7 @@ Moreover, in the stable range $\TwoAdicValuation(M)\ge d+1$,
 \begin{equation}
  \sum_{j=0}^{b^s-1}w_s(j)
  \mathcal A^{\mathrm{raw}}_{M,j/b^s}[x^d]
- =\sum_{r=\rho s}^{d+1}{\fall d{r-1}\over r!}
+ =\sum_{r=\rho s}^{d+1}{\FallingFactorial{d}{r-1}\over r!}
  \delta_{b,s,r}M^{-r}.
  \label{eq:general-mask-phase-filter}
 \end{equation}
@@ -2760,11 +2760,11 @@ If both $b^N$ and $b^{N-1}$ have $2$-adic valuation at least $p+1$, then
 \begin{align}
  \mathcal E_{N,p}^{(b,\alpha)}
  &:=Q_{b^N,\theta_N,p}-Q_{b^{N-1},\theta_{N-1},p} \notag\\
- &=\sum_{r=1}^{p+1}{\fall p{r-1}\over r!}h_N^r
+ &=\sum_{r=1}^{p+1}{\FallingFactorial{p}{r-1}\over r!}h_N^r
  \left[B_r(\theta_N)-b^rB_r(\theta_{N-1})\right],
  \label{eq:coherent-Bernoulli-layer}\\
  I_p-Q_{b^N,\theta_N,p}
- &=-\sum_{r=1}^{p+1}{\fall p{r-1}\over r!}
+ &=-\sum_{r=1}^{p+1}{\FallingFactorial{p}{r-1}\over r!}
  B_r(\theta_N)h_N^r.
  \label{eq:coherent-Bernoulli-tail}
 \end{align}
@@ -2777,7 +2777,7 @@ At either stable mesh, \cref{thm:composite-termination} and the definition
 \eqref{eq:shifted-rule} give
 \[
  Q_{M,\theta,p}=I_p+
- \sum_{r=1}^{p+1}{\fall p{r-1}\over r!}B_r(\theta)M^{-r}.
+ \sum_{r=1}^{p+1}{\FallingFactorial{p}{r-1}\over r!}B_r(\theta)M^{-r}.
 \]
 Subtract the formula at $M=b^{N-1}$ from the one at $M=b^N$ and use
 $b^{-(N-1)r}=b^rh_N^r$ to obtain
@@ -2790,7 +2790,7 @@ grid has at least as much valuation.
 Tensor products make the multidimensional closure equally explicit.  Put
 \begin{equation}
  \mathcal P_{p,M}(\theta)
- :=\sum_{r=1}^{p+1}{\fall p{r-1}\over r!}B_r(\theta)M^{-r}.
+ :=\sum_{r=1}^{p+1}{\FallingFactorial{p}{r-1}\over r!}B_r(\theta)M^{-r}.
  \label{eq:tensor-one-dimensional-corrector}
 \end{equation}
 
@@ -2832,7 +2832,7 @@ For the open dyadic rule define, after its stable threshold,
 \[
  T_p(h):=I_p-Q_{1/h,0,p}
  ={h\over2}-\sum_{r=1}^{\Floor{(p+1)/2}}
- {B_{2r}\over(2r)!}\fall p{2r-1}h^{2r}.
+ {B_{2r}\over(2r)!}\FallingFactorial{p}{2r-1}h^{2r}.
 \]
 
 \begin{corollary}[Exact tensor Ruffa shell and remaining tail]
@@ -2925,7 +2925,7 @@ Fabius moment,
  \notag\\
  &+2^{-N-1}
  -\sum_{r=1}^{\Floor{(n+1)/2}}
- \frac{B_{2r}}{(2r)!}\,\fall n{2r-1}\,2^{-2rN},
+ \frac{B_{2r}}{(2r)!}\,\FallingFactorial{n}{2r-1}\,2^{-2rN},
  \label{eq:In-TM-family}
 \end{align}
 whose left side is independent of $N$ --- the members are linked by the
@@ -3000,7 +3000,7 @@ $x_a=(a+\theta)/M$,
 \begin{equation}
  \frac1M\sum_{a=0}^{M-1}x_a^{\alpha}F(x_a)
  =I(\alpha)
- +\sum_{r=1}^{K}\frac{\fall\alpha{r-1}}{r!}B_r(\theta)M^{-r}
+ +\sum_{r=1}^{K}\frac{\FallingFactorial{\alpha}{r-1}}{r!}B_r(\theta)M^{-r}
  +\BigO_{\alpha,K,\theta}\bigl(M^{-K-1}\bigr)
  \qquad(M\to\infty),
  \label{eq:complex-alpha-EM}
@@ -3017,7 +3017,7 @@ For every compact set of exponents and every integer $m$, flatness gives
 $F(x)=\BigO(x^N)$ near zero with $N$ large enough that all parameter and
 $x$-derivatives of $x^\alpha F(x)$ through order $m$ extend continuously
 and vanish at zero.  At $x=1$, the jump of the $(r-1)$st derivative of
-the one-periodic extension is $\fall\alpha{r-1}$, because all positive
+the one-periodic extension is $\FallingFactorial{\alpha}{r-1}$, because all positive
 derivatives of $F$ vanish there and $F(1)=1$.  The shifted
 Euler--Maclaurin formula through order $K+1$ therefore gives the displayed
 Bernoulli terms and a remainder of order $M^{-K-1}$.  Finally, on each
@@ -3172,7 +3172,7 @@ For $\alpha$ in a compact $K\subset\ComplexNumbers$ and every $R\ge1$,
  L_{m,\alpha}
  =I(\alpha)-\frac h2
  +\sum_{r=1}^{R-1}\frac{B_{2r}}{(2r)!}\,
- \fall{\alpha}{2r-1}\,h^{2r}
+ \FallingFactorial{\alpha}{2r-1}\,h^{2r}
  +\BigO_{K,R}\bigl(h^{2R}\bigr)
  \qquad(m\to\infty).
  \label{eq:complex-EM}
@@ -3183,7 +3183,7 @@ For $\alpha$ in a compact $K\subset\ComplexNumbers$ and every $R\ge1$,
 The function $x^{\alpha}F(x)$, extended by $0$ at $x=0$, is
 $C^\infty$ on $[0,1]$ uniformly for $\alpha\in K$: at $0$ all
 derivatives vanish by flatness, and at $1$ flatness of $1-F$ gives
-$\bigl(x^{\alpha}F(x)\bigr)^{(n)}\bigl|_{x=1}=\fall\alpha n$.  The
+$\bigl(x^{\alpha}F(x)\bigr)^{(n)}\bigl|_{x=1}=\FallingFactorial{\alpha}{n}$.  The
 classical Euler--Maclaurin formula with $R$ terms then has only the
 upper-endpoint corrections shown and a remainder
 $\BigO_{K,R}(h^{2R})$.
@@ -3384,7 +3384,7 @@ Through the bridge \eqref{eq:U-relation}, the critical case is also
 elementary: $U_m(-1)=2(H_{M-1}-L_{m,-1})$ with $H_n$ the harmonic
 number, and the complete Euler--Maclaurin tails of $H_{M-1}$ and of
 $L_{m,-1}$ (\cref{thm:complex-EM} at $\alpha=-1$, where
-$\fall{(-1)}{2r-1}=-(2r-1)!$ makes the corrections
+$\FallingFactorial{-1}{2r-1}=-(2r-1)!$ makes the corrections
 $-\sum B_{2r}h^{2r}/(2r)$) cancel \emph{term by term}, leaving
 \begin{equation}
  U_m(-1)=2\log M+2\bigl(\gamma-I(-1)\bigr)+\BigO_A(h^{A}),
@@ -3473,7 +3473,7 @@ of $1,1{+}h,\dots,1{+}(n{-}2)h$, and recognizing
 $h\sum_kx^{i}(k/M)^{\alpha}F(k/M)=L_{m,\alpha+i}$, gives
 \eqref{eq:iterated-symmetric}.  Alternatively, expand the same product
 of consecutive terms as the rising factorial
-$\prod_{r=1}^{n-1}(M-k-1+r)=\rise{(M-k)}{\,n-1}
+$\prod_{r=1}^{n-1}(M-k-1+r)=\RisingFactorial{M-k}{\,n-1}
 =\sum_{j}\stirlingfirst{n-1}{j}(M-k)^{j}$ and then $(M-k)^{j}$
 binomially; the identity
 $\sum_kk^{i}(k/M)^{\alpha}F(k/M)=M^{\,i+1}L_{m,\alpha+i}$ collects
@@ -3928,7 +3928,7 @@ the archimedean one.
 \subsection{Endpoint-jet defects: the Stirling transform}
 
 Differentiating \eqref{eq:newton-forward} at $0$ with
-$\fall{(Mx)}{k}=\sum_r s(k,r)M^{r}x^{r}$ ($s(k,r)$ the signed
+$\FallingFactorial{Mx}{k}=\sum_r s(k,r)M^{r}x^{r}$ ($s(k,r)$ the signed
 Stirling numbers):
 
 \begin{proposition}[Exact endpoint jets]
@@ -3949,7 +3949,7 @@ in particular the endpoint slope is the mixed binomial transform
 
 \begin{proof}
 Differentiate the Newton formula \eqref{eq:newton-forward}.  Since
-$\fall{Mx}{k}=\sum_{j=0}^k s(k,j)M^jx^j$, its $r$th derivative at zero
+$\FallingFactorial{Mx}{k}=\sum_{j=0}^k s(k,j)M^jx^j$, its $r$th derivative at zero
 is $r!M^rs(k,r)$, which proves \eqref{eq:jet-defect}.  For $r=1$ use
 $s(k,1)=(-1)^{k-1}(k-1)!$, expand
 $\Delta^kF(0)=\sum_{j=0}^k(-1)^{k-j}\binom{k}{j}F(j/M)$, and note
