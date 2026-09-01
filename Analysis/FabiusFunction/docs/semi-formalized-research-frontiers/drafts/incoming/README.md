@@ -62,7 +62,32 @@ This `README.md` is the permanent explanation of the directory and
 **must not be deleted** — it also keeps the directory present in git
 when no archives are waiting.
 
-Most recent processed batch (all filed and removed on 2026-08-30):
+Most recent processed batch (all filed and removed on 2026-09-01):
+
+- `Combinatorial_Coefficient_Calculus-2.zip` (1,096,487 bytes; SHA-256
+  `a0ca605c1d3f1ee3e00eac1d69a8181e786dd414407a1b3b6db1a60f74d8766d`)
+- `Combinatorial_Coefficient_Calculus.zip` (1,094,284 bytes; SHA-256
+  `a22479ac8f58e1710117af9d0a3f515c7d24ec250548f537520c9f9024f4321a`)
+- `Combinatorial_Formulae_and_Inversion_Theorems.zip` (1,101,493 bytes;
+  SHA-256 `dae561780a4442a9f11acb7edf1ec508daca1db237db01fabf77c695ec924960`)
+- `Unified_Combinatorial_Coefficient_Calculus.zip` (1,083,495 bytes;
+  SHA-256 `c4217b088444eb3e4bf24a7542d360f02dfb8e240418b562a155ad0c251ab559`)
+- `Unified_Combinatorial_Formulae.zip` (1,015,842 bytes; SHA-256
+  `611b14cfda15357b679a05d9586811d8fb39f6fe7d971f00424da2bb848a5594`)
+- `Unified_Combinatorial_Formulae_and_Inversion_Theorems.zip` (1,062,893
+  bytes; SHA-256
+  `ba62d0653fba9f0d1d867885e0b45272ba128973c1e49938d6cb1f597b457e33`)
+
+All six became standalone archival packages under
+[`../combinatorial-coefficient-calculus/`](../combinatorial-coefficient-calculus/).
+Each safe flat archive contained exactly one TeX/PDF pair; all CRCs passed, the
+filed payloads are byte-identical to their archive members, and every package's
+two-row checksum ledger verifies.  Their similar titles and subjects were noted
+without comparing or deduplicating them.  Claim review, canonical selection,
+LaTeX rewriting, PDF rebuilding, and Lean crosswalking remain deliberately
+deferred until this intake is published.
+
+The immediately preceding processed batch was filed and removed on 2026-08-30:
 
 - `fabius_dyadic_chaos_frontier.zip` (1,351,045 bytes; SHA-256
   `d57fd01c3991a6a7ecd6ba6e745729c745745d3265cb3cfd414aac1991b11b86`)

@@ -88,6 +88,24 @@ links to pre-consolidation commit `2e3567feb14947ee3ebcdab11adca64e746ad26f`.
 | --- | --- | --- |
 | `Thue_Morse_Atlas_and_Frontiers/` | *The Thue–Morse Sequence: Formula Atlas and Fabius–Rvachev Frontier Results* (137 pp) — consolidation (2026-08-28) of the former `Thue_Morse_Formula_Atlas/` (*A Unified Formula Atlas for the Thue–Morse Sequence*) and `Fabius_Rvachev_Thue_Morse_Frontier_Results/` (*A Finite-Block Calculus for the Fabius–Rvachev–Thue–Morse System*, heavily Lean-crosswalked); assets under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
 
+## combinatorial coefficient calculus — `combinatorial-coefficient-calculus/`
+
+Six standalone archival arrivals were filed here on 2026-09-01.  Each package
+preserves one submitted TeX/PDF pair byte-for-byte and adds only a two-row live
+checksum ledger.  The manuscripts have visibly overlapping subjects and titles,
+but comparison, deduplication, canonical selection, claim review, PDF rebuilding,
+and Lean crosswalking are deliberately deferred until after publication of this
+quick-gate intake.
+
+| Directory | Document | Previous path / provenance |
+| --- | --- | --- |
+| `Combinatorial_Coefficient_Calculus-2/` | *Combinatorial Coefficient Calculus* (6,893 source lines; 147 A4 pp); pair ledger verifies 2/2 | `incoming/Combinatorial_Coefficient_Calculus-2.zip` (1,096,487 bytes; SHA-256 `a0ca605c1d3f1ee3e00eac1d69a8181e786dd414407a1b3b6db1a60f74d8766d`) |
+| `Combinatorial_Coefficient_Calculus/` | *Combinatorial Coefficient Calculus* (6,904 source lines; 143 A4 pp); pair ledger verifies 2/2 | `incoming/Combinatorial_Coefficient_Calculus.zip` (1,094,284 bytes; SHA-256 `a22479ac8f58e1710117af9d0a3f515c7d24ec250548f537520c9f9024f4321a`) |
+| `Combinatorial_Formulae_and_Inversion_Theorems/` | *Combinatorial Formulae and Inversion Theorems* (7,066 source lines; 140 A4 pp); pair ledger verifies 2/2 | `incoming/Combinatorial_Formulae_and_Inversion_Theorems.zip` (1,101,493 bytes; SHA-256 `dae561780a4442a9f11acb7edf1ec508daca1db237db01fabf77c695ec924960`) |
+| `Unified_Combinatorial_Coefficient_Calculus/` | *Unified Combinatorial Coefficient Calculus* (6,715 source lines; 144 A4 pp); pair ledger verifies 2/2 | `incoming/Unified_Combinatorial_Coefficient_Calculus.zip` (1,083,495 bytes; SHA-256 `c4217b088444eb3e4bf24a7542d360f02dfb8e240418b562a155ad0c251ab559`) |
+| `Unified_Combinatorial_Formulae/` | *A Unified Calculus of Combinatorial Formulae* (5,922 source lines; 130 A4 pp); pair ledger verifies 2/2 | `incoming/Unified_Combinatorial_Formulae.zip` (1,015,842 bytes; SHA-256 `611b14cfda15357b679a05d9586811d8fb39f6fe7d971f00424da2bb848a5594`) |
+| `Unified_Combinatorial_Formulae_and_Inversion_Theorems/` | *Unified Combinatorial Formulae and Inversion Theorems* (6,636 source lines; 138 A4 pp); pair ledger verifies 2/2 | `incoming/Unified_Combinatorial_Formulae_and_Inversion_Theorems.zip` (1,062,893 bytes; SHA-256 `ba62d0653fba9f0d1d867885e0b45272ba128973c1e49938d6cb1f597b457e33`) |
+
 ## exponents-and-q-series — `exponents-and-q-series/`
 
 The seven live document packages are organized by content. The canonical
