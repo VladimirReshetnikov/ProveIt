@@ -96,8 +96,8 @@ the asserted uniformity.
 \section{\texorpdfstring{Coefficientwise and \(q\)-adic limits}{Coefficientwise and q-adic limits}}
 
 For a series \(G(q)=\sum_{d\ge0}g_dq^d\), write
-\(\OrderOperator_q G=\min\{d:g_d\ne0\}\), with
-\(\OrderOperator_q 0=\infty\).  The congruence
+\(\OrderOperator_{q=0} G=\min\{d:g_d\ne0\}\), with
+\(\OrderOperator_{q=0} 0=\infty\).  The congruence
 \(G\equiv H\pmod{q^{N+1}}\) means that their coefficients agree through
 degree \(N\).  These conventions make the finiteness behind the usual
 “truncate and pass to the limit” argument explicit.
@@ -153,7 +153,7 @@ Let \((e_j)_{j\ge1}\) be an arbitrary sequence of integers, and interpret
 negative powers by their binomial expansions in \(\IntegerNumbers[[q]]\).
 The finite products
 \[
- F_M(q)=\prod_{j=1}^{M}(1-q^j)^{e_j}
+ \ProductTruncation{M}{q}=\prod_{j=1}^{M}(1-q^j)^{e_j}
 \]
 have a well-defined coefficientwise limit \(F\in\IntegerNumbers[[q]]\), and
 for every \(N\ge0\),
@@ -165,13 +165,13 @@ for every \(N\ge0\),
 
 More generally, let \(R\) be a commutative ring and let
 \((S_m)_{m\ge0}\subset R[[q]]\) satisfy
-\(\OrderOperator_q S_m\to\infty\), in the precise sense that for each
+\(\OrderOperator_{q=0} S_m\to\infty\), in the precise sense that for each
 \(N\) only finitely many \(m\) have
-\(\OrderOperator_q S_m\le N\).  Then the \(q\)-adic sum
+\(\OrderOperator_{q=0} S_m\le N\).  Then the \(q\)-adic sum
 \(S=\sum_{m\ge0}S_m\) is well defined and
 \begin{equation}
  S(q)\equiv
- \sum_{\OrderOperator_q S_m\le N}S_m(q)
+ \sum_{\OrderOperator_{q=0} S_m\le N}S_m(q)
  \pmod{q^{N+1}}.
 \label{eq:qg-truncation-series}
 \end{equation}
@@ -192,9 +192,10 @@ For \(e\ge0\) this follows from the finite binomial theorem.  For
 Consequently, if \(M\ge N\), every factor with \(j>N\) is congruent to \(1\)
 modulo \(q^{N+1}\), and hence
 \[
- F_M(q)\equiv F_N(q)\pmod{q^{N+1}}.
+ \ProductTruncation{M}{q}\equiv\ProductTruncation{N}{q}
+ \pmod{q^{N+1}}.
 \]
-Thus every coefficient of \(F_M\) stabilizes; apply
+Thus every coefficient of \(\ProductTruncation{M}{q}\) stabilizes; apply
 \Cref{qg:prop-coefficientwise-limit} with \(R=\IntegerNumbers\).  Passing to
 the stabilized coefficients gives \eqref{eq:qg-truncation-product}.
 
@@ -210,14 +211,19 @@ This proves \eqref{eq:qg-truncation-series}.
 
 For \(n\ge1\), define
 \begin{equation}
- P_n(q)=\frac{(q;q)_{3n}}{(q^3;q^3)_n}
+ \BorweinProduct{n}{q}=\frac{(q;q)_{3n}}{(q^3;q^3)_n}
  =\prod_{j=1}^{n}(1-q^{3j-2})(1-q^{3j-1}).
 \label{eq:qg-borwein-product}
 \end{equation}
 Grouping coefficients by their exponent modulo \(3\) gives unique
-polynomials \(A_n,B_n,C_n\in\IntegerNumbers[x]\) such that
+polynomials
+\(A_n^{\mathrm{Bor}},B_n^{\mathrm{Bor}},C_n^{\mathrm{Bor}}
+\in\IntegerNumbers[x]\) such that
 \begin{equation}
- P_n(q)=A_n(q^3)-qB_n(q^3)-q^2C_n(q^3).
+ \BorweinProduct{n}{q}
+ =\BorweinComponentA{n}{q^3}
+  -q\BorweinComponentB{n}{q^3}
+  -q^2\BorweinComponentC{n}{q^3}.
 \label{eq:qg-borwein-dissection}
 \end{equation}
 The minus signs are part of the normalization; none of the arguments below
@@ -227,21 +233,24 @@ assumes a sign for the coefficients of the three polynomials.
 \label{qg:prop-borwein-reciprocity}
 For every \(n\ge1\),
 \begin{align}
- A_n(x)&=x^{n^2}A_n(x^{-1}),\\
- B_n(x)&=x^{n^2-1}C_n(x^{-1}),\\
- C_n(x)&=x^{n^2-1}B_n(x^{-1}).
+ \BorweinComponentA{n}{x}
+ &=x^{n^2}\BorweinComponentA{n}{x^{-1}},\\
+ \BorweinComponentB{n}{x}
+ &=x^{n^2-1}\BorweinComponentC{n}{x^{-1}},\\
+ \BorweinComponentC{n}{x}
+ &=x^{n^2-1}\BorweinComponentB{n}{x^{-1}}.
 \label{eq:qg-borwein-reciprocity}
 \end{align}
 In particular,
 \[
- B_n(1)=C_n(1),
+ \BorweinComponentB{n}{1}=\BorweinComponentC{n}{1},
  \qquad
- A_n(1)=2B_n(1).
+ \BorweinComponentA{n}{1}=2\BorweinComponentB{n}{1}.
 \]
 \end{proposition}
 
 \begin{proof}
-The degree of \(P_n\) is
+The degree of \(\BorweinProduct{n}{q}\) is
 \[
  \sum_{j=1}^{n}\bigl((3j-2)+(3j-1)\bigr)=3n^2.
 \]
@@ -249,47 +258,53 @@ For positive integers \(a,b\),
 \((1-q^{-a})(1-q^{-b})=q^{-a-b}(1-q^a)(1-q^b)\).
 There are two factors in every \(j\)-block, so their signs cancel, and
 \[
- P_n(q)=q^{3n^2}P_n(q^{-1}).
+ \BorweinProduct{n}{q}=q^{3n^2}\BorweinProduct{n}{q^{-1}}.
 \]
 Insert \eqref{eq:qg-borwein-dissection} on both sides and put \(x=q^3\).
 The residue-zero terms give
-\(A_n(x)=x^{n^2}A_n(x^{-1})\).  The residue-one terms on the left match the
+\(\BorweinComponentA{n}{x}
+=x^{n^2}\BorweinComponentA{n}{x^{-1}}\).  The residue-one terms on the left match the
 reflected residue-two terms on the right, giving
-\(B_n(x)=x^{n^2-1}C_n(x^{-1})\); the remaining residue class gives the third
+\(\BorweinComponentB{n}{x}
+=x^{n^2-1}\BorweinComponentC{n}{x^{-1}}\); the remaining residue class gives the third
 identity.  This comparison is legitimate in the Laurent-polynomial ring
 \(\IntegerNumbers[q,q^{-1}]\), where the three residue classes modulo \(3\)
 form a direct sum.
 
-Putting \(x=1\) in the last two identities gives \(B_n(1)=C_n(1)\).  Since
-\(P_n(1)=0\), equation \eqref{eq:qg-borwein-dissection} at \(q=1\) gives
-\(A_n(1)=B_n(1)+C_n(1)=2B_n(1)\).
+Putting \(x=1\) in the last two identities gives
+\(\BorweinComponentB{n}{1}=\BorweinComponentC{n}{1}\).  Since
+\(\BorweinProduct{n}{1}=0\), equation \eqref{eq:qg-borwein-dissection} at
+\(q=1\) gives
+\(\BorweinComponentA{n}{1}
+=\BorweinComponentB{n}{1}+\BorweinComponentC{n}{1}
+=2\BorweinComponentB{n}{1}\).
 \end{proof}
 
 \begin{proposition}[Exact stabilization at both reciprocal ends]
 \label{qg:prop-borwein-tail-stabilization}
 Write
 \[
- a_{n,r}=[x^r]A_n(x),
+ \BorweinCoefficientA{n}{r}=[x^r]\BorweinComponentA{n}{x},
  \qquad
- b_{n,r}=[x^r]B_n(x),
+ \BorweinCoefficientB{n}{r}=[x^r]\BorweinComponentB{n}{x},
  \qquad
- c_{n,r}=[x^r]C_n(x).
+ \BorweinCoefficientC{n}{r}=[x^r]\BorweinComponentC{n}{x}.
 \]
 For every fixed \(d\ge0\) and every \(n\ge d+1\), the lower-end
 coefficients have already stabilized:
 \[
- a_{n,d}=a_{d+1,d},
+ \BorweinCoefficientA{n}{d}=\BorweinCoefficientA{d+1}{d},
  \qquad
- b_{n,d}=b_{d+1,d},
+ \BorweinCoefficientB{n}{d}=\BorweinCoefficientB{d+1}{d},
  \qquad
- c_{n,d}=c_{d+1,d}.
+ \BorweinCoefficientC{n}{d}=\BorweinCoefficientC{d+1}{d}.
 \]
 The coefficients at the same fixed distance from the reciprocal ends satisfy
 the exact formulas
 \begin{align}
- a_{n,n^2-d}&=a_{d+1,d},\\
- b_{n,n^2-1-d}&=c_{d+1,d},\\
- c_{n,n^2-1-d}&=b_{d+1,d}.
+ \BorweinCoefficientA{n}{n^2-d}&=\BorweinCoefficientA{d+1}{d},\\
+ \BorweinCoefficientB{n}{n^2-1-d}&=\BorweinCoefficientC{d+1}{d},\\
+ \BorweinCoefficientC{n}{n^2-1-d}&=\BorweinCoefficientB{d+1}{d}.
 \label{eq:qg-borwein-tail-stabilization}
 \end{align}
 Thus every fixed-distance coefficient at either end of each polynomial is
@@ -299,30 +314,33 @@ eventually constant.  No coefficientwise nonnegativity assertion is needed.
 \begin{proof}
 Fix \(N\le n\).  Factoring the product at \(N\) gives
 \[
- P_n(q)=P_N(q)
+ \BorweinProduct{n}{q}=\BorweinProduct{N}{q}
  \prod_{j=N+1}^{n}(1-q^{3j-2})(1-q^{3j-1}).
 \]
 For \(j>N\), both nonconstant exponents in the \(j\)th new block are at least
 \(3N+1\).  Hence the entire tail product is congruent to \(1\) modulo
 \(q^{3N+1}\), and
 \begin{equation}
- P_n(q)\equiv P_N(q)\pmod{q^{3N+1}}.
+ \BorweinProduct{n}{q}\equiv\BorweinProduct{N}{q}
+ \pmod{q^{3N+1}}.
 \label{eq:qg-borwein-finite-product-stabilization}
 \end{equation}
 Take \(N=d+1\).  The exponents \(3d\), \(3d+1\), and \(3d+2\) are all less
-than \(3N+1=3d+4\), so their coefficients in \(P_n\) and \(P_{d+1}\) agree.
+than \(3N+1=3d+4\), so their coefficients in
+\(\BorweinProduct{n}{q}\) and \(\BorweinProduct{d+1}{q}\) agree.
 By \eqref{eq:qg-borwein-dissection}, those three coefficients are respectively
-\(a_{n,d}\), \(-b_{n,d}\), and \(-c_{n,d}\).  This proves the three lower-end
+\(\BorweinCoefficientA{n}{d}\), \(-\BorweinCoefficientB{n}{d}\), and
+\(-\BorweinCoefficientC{n}{d}\).  This proves the three lower-end
 stabilization identities.
 
 The reciprocity identities in \Cref{qg:prop-borwein-reciprocity} give, for
 every \(n\),
 \[
- a_{n,n^2-d}=a_{n,d},
+ \BorweinCoefficientA{n}{n^2-d}=\BorweinCoefficientA{n}{d},
  \qquad
- b_{n,n^2-1-d}=c_{n,d},
+ \BorweinCoefficientB{n}{n^2-1-d}=\BorweinCoefficientC{n}{d},
  \qquad
- c_{n,n^2-1-d}=b_{n,d}.
+ \BorweinCoefficientC{n}{n^2-1-d}=\BorweinCoefficientB{n}{d}.
 \]
 Substituting the already proved lower-end values yields
 \eqref{eq:qg-borwein-tail-stabilization} and completes the proof.
@@ -331,7 +349,8 @@ Substituting the already proved lower-end values yields
 \paragraph{Historical status of the sign question.}
 \label{qg:hist-borwein-sign-status}
 The donor manuscript stated coefficientwise nonnegativity of
-\(A_n,B_n,C_n\) as a Borwein conjecture.  That assertion is not retained here
+\(A_n^{\mathrm{Bor}},B_n^{\mathrm{Bor}},C_n^{\mathrm{Bor}}\) as a
+Borwein conjecture.  That assertion is not retained here
 as a conjecture: the relevant Borwein positivity conjectures are historically
 resolved in the literature~\cite{Wang2022,WangKrattenthaler2022}.  Their
 external proofs are not reproduced and are not used in this chapter.  The
@@ -357,7 +376,7 @@ One donor guide normalized fifteen further Rogers--Ramanujan--Slater-type
 formulas from its supplied archive.  They were deliberately not presented as
 theorems there, and they are not promoted to theorems here.  In the displays
 below, the decorated relation
-\(\mathrel{\stackrel{\mathrm{record}}{=}}\) means ``the source records this
+\(\RecordedIdentity\) means ``the source records this
 identity''; it does not assert that this volume has proved the infinite
 identity.  None of these records is used as a premise.  Slater's classical
 list and the modern survey of McLaughlin, Sills, and Zimmer provide the
@@ -369,19 +388,19 @@ appropriate literature map~\cite{Slater1952,McLaughlinSillsZimmer}.
  \sum_{n\ge0}
  \frac{q^{3n^2}(q;q)_{3n}}
  {(q^3;q^3)_n(q^3;q^3)_{2n}}
- &\mathrel{\stackrel{\mathrm{record}}{=}}
+ &\RecordedIdentity
  \frac{(q^4,q^5,q^9;q^9)_\infty}{(q^3;q^3)_\infty},
  \tag{SR-B9.1}\label{qg:eq-record-b9-1}\\
  \sum_{n\ge0}
  \frac{q^{3n^2+3n}(q;q)_{3n}(1-q^{3n+2})}
  {(q^3;q^3)_n(q^3;q^3)_{2n+1}}
- &\mathrel{\stackrel{\mathrm{record}}{=}}
+ &\RecordedIdentity
  \frac{(q^2,q^7,q^9;q^9)_\infty}{(q^3;q^3)_\infty},
  \tag{SR-B9.2}\label{qg:eq-record-b9-2}\\
  \sum_{n\ge0}
  \frac{q^{3n^2+3n}(q;q)_{3n+1}}
  {(q^3;q^3)_n(q^3;q^3)_{2n+1}}
- &\mathrel{\stackrel{\mathrm{record}}{=}}
+ &\RecordedIdentity
  \frac{(q,q^8,q^9;q^9)_\infty}{(q^3;q^3)_\infty}.
  \tag{SR-B9.3}\label{qg:eq-record-b9-3}
 \end{align}
@@ -394,27 +413,27 @@ The surviving product-side residue pairs are respectively
  1+\sum_{n\ge1}
  \frac{q^{n^2}(q^3;q^3)_{n-1}}
  {(q;q)_n(q;q)_{2n-1}}
- &\mathrel{\stackrel{\mathrm{record}}{=}}
+ &\RecordedIdentity
  \frac{(q^{12},q^{15},q^{27};q^{27})_\infty}
  {(q;q)_\infty},
  \tag{SR-D27.1}\label{qg:eq-record-d27-1}\\
  \sum_{n\ge0}
  \frac{q^{n^2+n}(q^3;q^3)_n}
  {(q;q)_n(q;q)_{2n+1}}
- &\mathrel{\stackrel{\mathrm{record}}{=}}
+ &\RecordedIdentity
  \frac{(q^9;q^9)_\infty}{(q;q)_\infty},
  \tag{SR-D27.2}\label{qg:eq-record-d27-2}\\
  \sum_{n\ge0}
  \frac{q^{n^2+2n}(q^3;q^3)_n}
  {(q;q)_n(q;q)_{2n+2}}
- &\mathrel{\stackrel{\mathrm{record}}{=}}
+ &\RecordedIdentity
  \frac{(q^6,q^{21},q^{27};q^{27})_\infty}
  {(q;q)_\infty},
  \tag{SR-D27.3}\label{qg:eq-record-d27-3}\\
  \sum_{n\ge0}
  \frac{q^{n^2+3n}(q^3;q^3)_n}
  {(q;q)_n(q;q)_{2n+2}}
- &\mathrel{\stackrel{\mathrm{record}}{=}}
+ &\RecordedIdentity
  \frac{(q^3,q^{24},q^{27};q^{27})_\infty}
  {(q;q)_\infty}.
  \tag{SR-D27.4}\label{qg:eq-record-d27-4}
@@ -427,17 +446,17 @@ modulus-nine factor \((q^9;q^9)_\infty\).
 \begin{align}
  \sum_{n\ge0}\frac{q^{n^2}}
  {(q;q)_n(q;q^2)_n}
- &\mathrel{\stackrel{\mathrm{record}}{=}}
+ &\RecordedIdentity
  \frac{(q^6,q^8,q^{14};q^{14})_\infty}{(q;q)_\infty},
  \tag{SR-R14.1}\label{qg:eq-record-r14-1}\\
  \sum_{n\ge0}\frac{q^{n^2+n}}
  {(q;q)_n(q;q^2)_{n+1}}
- &\mathrel{\stackrel{\mathrm{record}}{=}}
+ &\RecordedIdentity
  \frac{(q^4,q^{10},q^{14};q^{14})_\infty}{(q;q)_\infty},
  \tag{SR-R14.2}\label{qg:eq-record-r14-2}\\
  \sum_{n\ge0}\frac{q^{n^2+2n}}
  {(q;q)_n(q;q^2)_{n+1}}
- &\mathrel{\stackrel{\mathrm{record}}{=}}
+ &\RecordedIdentity
  \frac{(q^2,q^{12},q^{14};q^{14})_\infty}{(q;q)_\infty}.
  \tag{SR-R14.3}\label{qg:eq-record-r14-3}
 \end{align}
@@ -450,21 +469,21 @@ family.
 \begin{align}
  \sum_{n\ge0}\frac{q^{2n^2}}
  {(q^2;q^2)_n(-q;q)_{2n}}
- &\mathrel{\stackrel{\mathrm{record}}{=}}
+ &\RecordedIdentity
  \frac{(q^3,q^4,q^7;q^7)_\infty}{(q^2;q^2)_\infty},
  \tag{SR-RS.1}\label{qg:eq-record-rs-1}\\
  \sum_{n\ge0}\frac{q^{2n^2+2n}}
  {(q^2;q^2)_n(-q;q)_{2n}}
- &\mathrel{\stackrel{\mathrm{record}}{=}}
+ &\RecordedIdentity
  \frac{(q^2,q^5,q^7;q^7)_\infty}{(q^2;q^2)_\infty},
  \tag{SR-RS.2}\label{qg:eq-record-rs-2}\\
  \sum_{n\ge0}\frac{q^{2n^2+2n}}
  {(q^2;q^2)_n(-q;q)_{2n+1}}
- &\mathrel{\stackrel{\mathrm{record}}{=}}
+ &\RecordedIdentity
  \frac{(q,q^6,q^7;q^7)_\infty}{(q^2;q^2)_\infty},
  \tag{SR-RS.3}\label{qg:eq-record-rs-3}\\
  \sum_{n\ge0}\frac{q^{2n^2}}{(q;q)_{2n}}
- &\mathrel{\stackrel{\mathrm{record}}{=}}
+ &\RecordedIdentity
  \frac{(q,q^7,q^8;q^8)_\infty
        (q^6,q^{10};q^{16})_\infty}
  {(q;q)_\infty}.
@@ -477,7 +496,7 @@ record is
  &\frac{(q^2;q^2)_\infty(q^3;q^3)_\infty
         (q^8;q^8)_\infty(q^{12};q^{12})_\infty}
        {(q;q)_\infty(q^{24};q^{24})_\infty}
- \mathrel{\stackrel{\mathrm{record}}{=}}
+ \RecordedIdentity
  1+\sum_{k\ge1}
  \frac{q^k(1+q^{4k})(1+q^{6k})}{1+q^{12k}}.
  \tag{SR-F}\label{qg:eq-record-fine}

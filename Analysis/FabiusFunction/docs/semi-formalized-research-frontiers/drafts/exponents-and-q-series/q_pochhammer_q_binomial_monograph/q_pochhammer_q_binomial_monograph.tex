@@ -132,10 +132,41 @@
 \newcommand{\QMultinomial}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
 \newcommand{\GeneralizedQPochhammer}[3]{(#1;#2)_{#3}}
 \newcommand{\GeneralizedGaussianBinomial}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\GeneralizedQNumber}[2]{\left[#1\right]_{#2}}
+\newcommand{\QFallingPower}[4]{\left(#1-#2\right)_{#3}^{\langle #4\rangle}}
+\newcommand{\JacksonDifferential}[2]{\mathop{}\!\mathrm d_{#1}#2}
 \newcommand{\FiniteField}[1]{\mathbb F_{#1}}
 \newcommand{\InversionNumber}[1]{\operatorname{inv}(#1)}
 \newcommand{\LatticePathArea}[1]{\operatorname{area}(#1)}
-\newcommand{\WeightCharacter}[1]{\operatorname{ch}\!\left(#1\right)}
+\newcommand{\WeightCharacter}[2]{\operatorname{ch}_{#2}\!\left(#1\right)}
+\newcommand{\CyclotomicValuation}[3]{\nu^{\mathrm{cyc}}_{#1,#2}\!\left(#3\right)}
+\newcommand{\SubspaceMobius}[3]{\mu_{\mathcal L(#1)}\!\left(#2,#3\right)}
+\newcommand{\MultiplicativeTheta}[2]{\vartheta_{\mathrm{mult}}\!\left(#1;#2\right)}
+\newcommand{\BilateralTheta}[2]{\Theta_{\mathrm{bil}}\!\left(#1;#2\right)}
+\newcommand{\BilateralQuadraticTheta}[2]{\Theta_{\mathrm{quad}}\!\left(#1;#2\right)}
+\newcommand{\RamanujanTheta}[2]{\Theta_{\mathrm{Ram}}\!\left(#1,#2\right)}
+\newcommand{\JacksonPrefactor}{R_{\mathrm J}}
+\newcommand{\JacksonNormalizedSummand}[2]{F_{\mathrm J}\!\left(#1,#2\right)}
+\newcommand{\BaileyTransformAlpha}[1]{\alpha_{#1}^{\mathrm{BT}}}
+\newcommand{\BaileyTransformBeta}[1]{\beta_{#1}^{\mathrm{BT}}}
+\newcommand{\BaileyLoweredAlpha}[1]{\alpha_{#1}^{\mathrm{BL}}}
+\newcommand{\BaileyLoweredBeta}[1]{\beta_{#1}^{\mathrm{BL}}}
+\newcommand{\BaileyChainAlpha}[2]{\alpha_{#1}^{\mathrm{BC}(#2)}}
+\newcommand{\BaileyChainBeta}[2]{\beta_{#1}^{\mathrm{BC}(#2)}}
+\newcommand{\RecordedIdentity}{\mathrel{\stackrel{\mathrm{record}}{=}}}
+\newcommand{\RogersSeries}[2]{F_{#1}^{\mathrm{RR}}(#2)}
+\newcommand{\RogersContinuedFraction}[1]{R_{\mathrm{RR}}(#1)}
+\newcommand{\FiniteContinuant}[1]{C_{#1}^{\mathrm{cont}}}
+\newcommand{\ContinuantNumerator}[1]{P_{#1}^{\mathrm{cont}}}
+\newcommand{\ContinuantDenominator}[1]{Q_{#1}^{\mathrm{cont}}}
+\newcommand{\ProductTruncation}[2]{F_{#1}^{\mathrm{prod}}(#2)}
+\newcommand{\BorweinProduct}[2]{P_{#1}^{\mathrm{Bor}}(#2)}
+\newcommand{\BorweinComponentA}[2]{A_{#1}^{\mathrm{Bor}}(#2)}
+\newcommand{\BorweinComponentB}[2]{B_{#1}^{\mathrm{Bor}}(#2)}
+\newcommand{\BorweinComponentC}[2]{C_{#1}^{\mathrm{Bor}}(#2)}
+\newcommand{\BorweinCoefficientA}[2]{a_{#1,#2}^{\mathrm{Bor}}}
+\newcommand{\BorweinCoefficientB}[2]{b_{#1,#2}^{\mathrm{Bor}}}
+\newcommand{\BorweinCoefficientC}[2]{c_{#1,#2}^{\mathrm{Bor}}}
 \newcommand{\lean}[1]{%
   \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
@@ -230,7 +261,11 @@ Throughout the finite algebraic chapters, $q$ may be an indeterminate and identi
 \[
   q\in\ComplexNumbers,\qquad 0<\AbsoluteValue q<1.
 \]
-For the Jackson integral and positivity statements we usually assume $0<q<1$.  A capital $Q$ is used for the cardinality of a finite field, so $Q$ is a prime power and normally $Q>1$.
+For the Jackson integral and positivity statements we usually assume $0<q<1$.
+In the finite-geometry sections only, a capital $Q$ denotes the cardinality of a
+finite field, so there $Q$ is a prime power and $Q>1$.  Every other use of $Q$
+is redeclared in its own local scope (for example, as a complementary nome or a
+theta-series base) and does not inherit the finite-field meaning.
 
 \section*{Conventions}
 Empty products equal $1$, empty sums equal $0$, and
@@ -401,13 +436,16 @@ over a commutative ring.
 
 The concatenation law suggests the only extension to negative integers that preserves
 \[
- (a;q)_{m+n}=(a;q)_m(aq^m;q)_n.
+ \GeneralizedQPochhammer{a}{q}{m+n}
+ =\GeneralizedQPochhammer{a}{q}{m}
+  \GeneralizedQPochhammer{aq^m}{q}{n}.
 \]
 
 \begin{definition}\label{qg:def-negative-qshifted-index}
 For $n\ge1$, define
 \[
- (a;q)_{-n}=\frac{1}{(aq^{-n};q)_n},
+ \GeneralizedQPochhammer{a}{q}{-n}
+ =\frac{1}{\QPochhammer{aq^{-n}}{q}{n}},
 \]
 provided no factor in the denominator vanishes.
 \end{definition}
@@ -415,12 +453,15 @@ provided no factor in the denominator vanishes.
 \begin{proposition}[Closed form for a negative index]\label{prop:negative-index}
 For $n\ge1$ and $a\ne0$,
 \[
- (a;q)_{-n}
- =\frac{(-1)^n a^{-n}q^{\binom{n+1}{2}}}{(q/a;q)_n}.
+ \GeneralizedQPochhammer{a}{q}{-n}
+ =\frac{(-1)^n a^{-n}q^{\binom{n+1}{2}}}
+        {\QPochhammer{q/a}{q}{n}}.
 \]
 Moreover, for all integers $m,n$ for which both sides are defined,
 \[
- (a;q)_{m+n}=(a;q)_m(aq^m;q)_n.
+ \GeneralizedQPochhammer{a}{q}{m+n}
+ =\GeneralizedQPochhammer{a}{q}{m}
+  \GeneralizedQPochhammer{aq^m}{q}{n}.
 \]
 \end{proposition}
 
@@ -934,11 +975,18 @@ Use the $q$-factorial form and $[j]_q\to j$.
 \section{Multinomial coefficients and flags}
 
 \begin{definition}
-If $n_1,\dots,n_r\ge0$ and $n_1+\cdots+n_r=n$, define
+Let $r\in\PositiveIntegers$, let
+$n_1,\dots,n_r\in\NaturalNumbers$, and put
+$n=n_1+\cdots+n_r$.  Define
 \[
  \QMultinomial{n}{n_1,\ldots,n_r}{q}
  =\frac{(q;q)_n}{(q;q)_{n_1}\cdots(q;q)_{n_r}}.
 \]
+The quotient denotes its uniquely cancelled polynomial in
+$\IntegerNumbers[q]$, so removable singularities at roots of unity are filled
+by polynomial evaluation.  The cases $r=1$ and
+$n_1=\cdots=n_r=0$ both have value $1$.  Tuples outside the displayed
+composition domain are undefined here; no implicit zero extension is used.
 \end{definition}
 
 \begin{proposition}[Factorization into binomials]\label{prop:qmult-factor}
@@ -2122,17 +2170,32 @@ Conjugation exchanges a $k\times m$ rectangle with an $m\times k$ rectangle with
 
 \section{Lattice paths and area}
 
-Encode a binary word by a path from $(0,0)$ to $(m,k)$, reading $0$ as an east step and $1$ as a north step.  With a suitable choice of side, the number of unit squares between the path and the boundary is the inversion number.
+Encode a binary word $w$ by a path $P$ from $(0,0)$ to $(m,k)$, reading
+$0$ as an east step and $1$ as a north step.  Define
+\[
+ \LatticePathArea{P}
+ \DefinitionEquals
+ \sum_{\substack{e\text{ an east step of }P}}
+ \bigl(\text{starting height of }e\bigr).
+\]
+Equivalently, this is the number of unit cells in
+$[0,m]\times[0,k]$ whose interiors lie below $P$, or the sum over north
+steps of the number of later east steps.  Thus
+$\LatticePathArea{P}=\InversionNumber{w}$ exactly.  In particular the path
+$E^mN^k$ has area $0$, while $N^kE^m$ has area $mk$; no complementary-area
+convention is implicit.
 
 \begin{corollary}[Area generating function]\label{cor:path-area}
-The polynomial $\GaussianBinomial{m+k}{k}{q}$ is the generating function of monotone lattice paths from $(0,0)$ to $(m,k)$ by the area under the path:
+The polynomial $\GaussianBinomial{m+k}{k}{q}$ is the generating function of monotone lattice paths from $(0,0)$ to $(m,k)$ by the preceding, explicitly oriented area:
 \[
 \GaussianBinomial{m+k}{k}{q}=\sum_P q^{\LatticePathArea{P}}.
 \]
 \end{corollary}
 
 \begin{proof}
-Under the word--path encoding, every north step contributes the number of later east steps, which is precisely the number of squares in its row between the path and the chosen boundary.  Summing over north steps gives $\InversionNumber{w}$.
+Under the word--path encoding, every north step contributes the number of
+later east steps.  Summing over north steps gives $\InversionNumber{w}$ and,
+by the equivalent definition above, $\LatticePathArea{P}$.
 \end{proof}
 
 \section{Durfee squares and the central convolution}
@@ -2296,6 +2359,16 @@ geometric sum $1+z+\cdots+z^{n}$, as it must be.
 \index{Schubert cell}
 
 \section{Counting subspaces}
+
+Write a prime power as $Q=p^e$, where $p$ is prime and
+$e\in\PositiveIntegers$.  The symbol $\FiniteField{Q}$ denotes a field with
+$Q$ elements, unique up to field isomorphism but not by a distinguished
+isomorphism.  For $n\in\NaturalNumbers$, $\FiniteField{Q}^{n}$ is its
+$n$-fold Cartesian product and $n$-dimensional vector space; at $n=0$ this is
+the one-element zero space.  For $r\in\NaturalNumbers$,
+$\mathrm{GL}_r(\FiniteField{Q})$ is the group of invertible
+$r\times r$ matrices, with $\mathrm{GL}_0(\FiniteField{Q})$ the trivial
+group.
 
 \begin{theorem}[Gaussian coefficients count subspaces]\label{thm:subspace-count}
 Let $Q$ be a prime power.  The number of $k$-dimensional linear subspaces of $\FiniteField{Q}^{n}$ is
@@ -2480,10 +2553,29 @@ Let $L_{n-1}$ have a weight basis $v_0,\dots,v_{n-1}$ with
  Hv_i=(n-1-2i)v_i.
 \)
 
+For any finite-dimensional complex $H$-module with an integral weight
+decomposition
+\[
+ V=\bigoplus_{r\in\IntegerNumbers}V_r,
+ \qquad
+ V_r=\SetOf{v\in V:Hv=rv},
+\]
+define its weight character, in the explicitly displayed formal invertible
+variable $x$, by
+\[
+ \WeightCharacter{V}{x}
+ \DefinitionEquals
+ \sum_{r\in\IntegerNumbers}(\dim_{\ComplexNumbers}V_r)x^r
+ \in\IntegerNumbers[x,x^{-1}].
+\]
+Only finitely many $V_r$ are nonzero.  In particular
+$\WeightCharacter{0}{x}=0$, and repeated weights are counted through their
+dimensions; no unprinted multiplicity or evaluation point is implicit.
+
 \begin{proposition}[Exterior-power character]\label{prop:exterior-character}
 For $0\le k\le n$,
 \[
- \WeightCharacter{\bigwedge^kL_{n-1}}(x)
+ \WeightCharacter{\bigwedge^kL_{n-1}}{x}
  =x^{k(n-k)}\GaussianBinomial{n}{k}{x^{-2}}.
 \]
 \end{proposition}
@@ -2499,7 +2591,7 @@ with $0\le i_1<\cdots<i_k\le n-1$.  Its weight is
 \]
 Therefore
 \[
- \WeightCharacter{\bigwedge^kL_{n-1}}(x)=x^{k(n-1)}
+ \WeightCharacter{\bigwedge^kL_{n-1}}{x}=x^{k(n-1)}
  \sum_{i_1<\cdots<i_k}(x^{-2})^{i_1+\cdots+i_k}.
 \]
 Use \Cref{cor:weighted-subsets} with $q=x^{-2}$.  The prefactor becomes
@@ -3308,7 +3400,9 @@ For integral $n$, negative $q$-shifted factorials are understood as in
 Define
 \[
  {}_1\psi_1\!\left[\begin{matrix}a\\b\end{matrix};q,z\right]
- =\sum_{n\in\IntegerNumbers}\frac{(a;q)_n}{(b;q)_n}z^n.
+ =\sum_{n\in\IntegerNumbers}
+   \frac{\GeneralizedQPochhammer{a}{q}{n}}
+        {\GeneralizedQPochhammer{b}{q}{n}}z^n.
 \]
 The positive tail behaves like a geometric series in $z$, while the negative tail behaves like a geometric series in $b/(az)$.
 \end{definition}
@@ -3334,10 +3428,16 @@ For $\AbsoluteValue{b/a}<\AbsoluteValue z<1$,
 \end{theorem}
 
 \begin{proof}
-We first prove the formula for $b=q^{m+1}$, where $m\in\NaturalNumbers$.  In that case $1/(b;q)_n=0$ for $n<-m$ in the limiting sense, so shift $n=k-m$:
+We first prove the formula for $b=q^{m+1}$, where $m\in\NaturalNumbers$.
+In that case
+$1/\GeneralizedQPochhammer{b}{q}{n}=0$ for $n<-m$ in the limiting sense,
+so shift $n=k-m$:
 \begin{align*}
- \sum_{n\in\IntegerNumbers}\frac{(a;q)_n}{(q^{m+1};q)_n}z^n
- &=z^{-m}\frac{(a;q)_{-m}}{(q^{m+1};q)_{-m}}
+ \sum_{n\in\IntegerNumbers}
+ \frac{\GeneralizedQPochhammer{a}{q}{n}}
+      {\GeneralizedQPochhammer{q^{m+1}}{q}{n}}z^n
+ &=z^{-m}\frac{\GeneralizedQPochhammer{a}{q}{-m}}
+                  {\GeneralizedQPochhammer{q^{m+1}}{q}{-m}}
  \sum_{k=0}^{\infty}\frac{(aq^{-m};q)_k}{(q;q)_k}z^k\\
  &=z^{-m}\frac{(q;q)_m}{(aq^{-m};q)_m}
  \frac{(aq^{-m}z;q)_\infty}{(z;q)_\infty}.
@@ -3447,25 +3547,26 @@ by the second $q$-Pascal recurrence.
 
 Define the $q$-falling power based at $a$ by
 \[
- (x-a)_q^m=\prod_{j=0}^{m-1}(x-q^ja),
- \qquad (x-a)_q^0=1.
+ \QFallingPower{x}{a}{q}{m}=\prod_{j=0}^{m-1}(x-q^ja),
+ \qquad \QFallingPower{x}{a}{q}{0}=1.
 \]
 
 \begin{lemma}\label{lem:qfalling-derivative}
 For $m\ge1$,
 \[
- D_q(x-a)_q^m=[m]_q(x-a)_q^{m-1}.
+ D_q\QFallingPower{x}{a}{q}{m}
+ =[m]_q\QFallingPower{x}{a}{q}{m-1}.
 \]
 Consequently,
 \[
- D_q^j(x-a)_q^m
- =\frac{[m]_q!}{[m-j]_q!}(x-a)_q^{m-j}
+ D_q^j\QFallingPower{x}{a}{q}{m}
+ =\frac{[m]_q!}{[m-j]_q!}\QFallingPower{x}{a}{q}{m-j}
 \]
 for $0\le j\le m$.
 \end{lemma}
 
 \begin{proof}
-Let $P_m(x)=(x-a)_q^m$.  Then
+Let $P_m(x)=\QFallingPower{x}{a}{q}{m}$.  Then
 \[
  P_m(qx)=q^m(x-q^{-1}a)\prod_{j=0}^{m-2}(x-q^ja).
 \]
@@ -3483,14 +3584,15 @@ Divide by $(1-q)x$.  Iteration proves the second formula.
 \begin{theorem}[$q$-Taylor formula]\label{thm:q-taylor}
 Assume $[j]_q\ne0$ for $1\le j\le N$.  If $f$ is a polynomial of degree at most $N$, then
 \[
- f(x)=\sum_{k=0}^{N}\frac{(D_q^kf)(a)}{[k]_q!}(x-a)_q^k.
+ f(x)=\sum_{k=0}^{N}\frac{(D_q^kf)(a)}{[k]_q!}
+ \QFallingPower{x}{a}{q}{k}.
 \]
 \end{theorem}
 
 \begin{proof}
-The polynomials $(x-a)_q^k$, $0\le k\le N$, are monic of distinct degrees and hence form a basis.  Write
+The polynomials $\QFallingPower{x}{a}{q}{k}$, $0\le k\le N$, are monic of distinct degrees and hence form a basis.  Write
 \(
- f=\sum c_k(x-a)_q^k.
+ f=\sum c_k\QFallingPower{x}{a}{q}{k}.
 \)
 Apply $D_q^j$ and set $x=a$.  By \Cref{lem:qfalling-derivative}, every term with $k>j$ still contains the factor $x-a$, terms with $k<j$ vanish after too many derivatives, and the $k=j$ term equals $c_j[j]_q!$.  Thus $c_j=(D_q^jf)(a)/[j]_q!$.
 \end{proof}
@@ -3634,7 +3736,7 @@ Differentiate the series term by term and use $D_qx^n=[n]_qx^{n-1}$.
 
 Assume $0<q<1$.  Define
 \[
- \int_0^a f(t)\,d_qt
+ \int_0^a f(t)\,\JacksonDifferential{q}{t}
  =(1-q)a\sum_{n=0}^{\infty}q^nf(aq^n),
 \]
 whenever the series converges.
@@ -3657,7 +3759,7 @@ Conversely, if $a\ne0$, $G$ is defined on
 $\{0,a,aq,aq^2,\ldots\}$, and $G(aq^n)\to G(0)$, then the Jackson sum of
 $D_qG$ converges and
 \[
- \int_0^aD_qG(t)\,d_qt=G(a)-G(0).
+ \int_0^aD_qG(t)\,\JacksonDifferential{q}{t}=G(a)-G(0).
 \]
 \end{theorem}
 
@@ -3685,9 +3787,9 @@ Let $a\ne0$.  Suppose the two Jackson series below converge and
 \]
 Then
 \[
- \int_0^a f(t)D_qg(t)\,d_qt
+ \int_0^a f(t)D_qg(t)\,\JacksonDifferential{q}{t}
  =f(a)g(a)-f(0)g(0)
- -\int_0^a g(qt)D_qf(t)\,d_qt.
+ -\int_0^a g(qt)D_qf(t)\,\JacksonDifferential{q}{t}.
 \]
 In particular, the endpoint condition holds when $f$ and $g$ are continuous
 at $0$.
@@ -3708,11 +3810,11 @@ Let $N\to\infty$ and use the assumed convergence and endpoint limit.
 \begin{example}[Monomials]
 For $\Re(s)>-1$,
 \[
- \int_0^a t^s\,d_qt
+ \int_0^a t^s\,\JacksonDifferential{q}{t}
  =(1-q)a^{s+1}\sum_{n\ge0}q^{n(s+1)}
- =\frac{a^{s+1}}{[s+1]_q},
+ =\frac{a^{s+1}}{\GeneralizedQNumber{s+1}{q}},
 \]
-where $[u]_q=(1-q^u)/(1-q)$ for complex $u$.
+where $\GeneralizedQNumber{u}{q}=(1-q^u)/(1-q)$ for complex $u$.
 \end{example}
 
 \chapter{The \texorpdfstring{$q$}{q}-gamma and \texorpdfstring{$q$}{q}-beta functions}\label{chap:qgamma}
@@ -3740,9 +3842,9 @@ For $x>0$,
 \[
  \Gamma_q(1)=1,
  \qquad
- \Gamma_q(x+1)=[x]_q\Gamma_q(x).
+ \Gamma_q(x+1)=\GeneralizedQNumber{x}{q}\Gamma_q(x).
 \]
-Consequently, for $n\in\NaturalNumbers$,
+Consequently, for $n\in\PositiveIntegers$,
 \[
  \Gamma_q(n)=[n-1]_q!.
 \]
@@ -3758,7 +3860,7 @@ The value at $1$ is immediate.  The tail identity
 gives
 \[
  \frac{\Gamma_q(x+1)}{\Gamma_q(x)}
- =(1-q)^{-1}(1-q^x)=[x]_q.
+ =(1-q)^{-1}(1-q^x)=\GeneralizedQNumber{x}{q}.
 \]
 Iteration gives the integral values.  The same tail identity is valid for
 complex $x$, and hence proves the meromorphic recurrence wherever both
@@ -3792,7 +3894,7 @@ The function $\Gamma_q$ is the unique function $f:(0,\infty)\to(0,\infty)$ satis
 \[
  f(1)=1,
  \qquad
- f(x+1)=[x]_qf(x),
+ f(x+1)=\GeneralizedQNumber{x}{q}f(x),
 \]
 and such that $\log f$ is convex.
 \end{theorem}
@@ -3808,7 +3910,7 @@ A comparison of the adjacent secant slopes on $[n+x,n+1]$ and $[n+1,n+2]$ gives
 \]
 Using the recurrence,
 \[
- f(n+x)=f(x)\prod_{j=0}^{n-1}[x+j]_q,
+ f(n+x)=f(x)\prod_{j=0}^{n-1}\GeneralizedQNumber{x+j}{q},
  \quad
  f(n)=[n-1]_q!,
  \quad
@@ -3817,10 +3919,10 @@ Using the recurrence,
 we obtain
 \[
  \frac{[n]_q!}
- {[n+1]_q^{1-x}\prod_{j=0}^{n-1}[x+j]_q}
+ {[n+1]_q^{1-x}\prod_{j=0}^{n-1}\GeneralizedQNumber{x+j}{q}}
  \le f(x)\le
  \frac{[n-1]_q![n]_q^x}
- {\prod_{j=0}^{n-1}[x+j]_q}.
+ {\prod_{j=0}^{n-1}\GeneralizedQNumber{x+j}{q}}.
 \]
 The ratio of the upper bound to the lower bound is
 \[
@@ -3840,7 +3942,7 @@ The convergence is locally uniform on $(0,\infty)$.
 \end{theorem}
 
 \begin{proof}
-It suffices by the functional equations to consider $0<x\le1$.  The bounds in the proof of \Cref{thm:q-bohr-mollerup} hold for $\Gamma_q(x)$.  Fix $n$ and let $q\to1^-$.  Since $[u]_q\to u$, they become
+It suffices by the functional equations to consider $0<x\le1$.  The bounds in the proof of \Cref{thm:q-bohr-mollerup} hold for $\Gamma_q(x)$.  Fix $n$ and let $q\to1^-$.  Since $\GeneralizedQNumber{u}{q}\to u$, they become
 \[
  \frac{n!}{(n+1)^{1-x}x(x+1)\cdots(x+n-1)}
  \le \liminf_{q\to1^-}\Gamma_q(x)
@@ -3881,7 +3983,7 @@ The lower outer bound differs by the factor $(n/(n+1))^{1-x}$, which also tends 
 For $x,y>0$, define
 \[
  B_q(x,y)=\int_0^1 t^{x-1}
- \frac{(qt;q)_\infty}{(q^yt;q)_\infty}\,d_qt.
+ \frac{(qt;q)_\infty}{(q^yt;q)_\infty}\,\JacksonDifferential{q}{t}.
 \]
 \end{definition}
 
@@ -3917,9 +4019,11 @@ which is exactly the gamma quotient after substituting the definition of $\Gamma
 \begin{corollary}[Recurrences]\label{cor:qbeta-recurrence}
 For $x,y>0$,
 \[
- B_q(x+1,y)=\frac{[x]_q}{[x+y]_q}B_q(x,y),
- \qquad
- B_q(x,y+1)=\frac{[y]_q}{[x+y]_q}B_q(x,y).
+ B_q(x+1,y)=
+ \frac{\GeneralizedQNumber{x}{q}}{\GeneralizedQNumber{x+y}{q}}B_q(x,y),
+\qquad
+ B_q(x,y+1)=
+ \frac{\GeneralizedQNumber{y}{q}}{\GeneralizedQNumber{x+y}{q}}B_q(x,y).
 \]
 \end{corollary}
 
@@ -3990,7 +4094,7 @@ Unlike Euler's reflection formula, the right side is naturally a theta quotient 
 
 For $z\ne0$ and $\AbsoluteValue q<1$, define
 \[
- \Theta(z;q)=\sum_{n\in\IntegerNumbers}q^{\binom n2}z^n.
+ \BilateralTheta{z}{q}=\sum_{n\in\IntegerNumbers}q^{\binom n2}z^n.
 \]
 The series converges locally uniformly on $\ComplexNumbers^*$ because its terms decay quadratically in both directions.
 
@@ -4049,7 +4153,7 @@ so $c_0=1$.  Thus
 \begin{corollary}[Quasi-periodicity and zeros]\label{cor:theta-quasi}
 The theta function satisfies
 \[
- \Theta(qz;q)=z^{-1}\Theta(z;q).
+ \BilateralTheta{qz}{q}=z^{-1}\BilateralTheta{z}{q}.
 \]
 Its zeros are the simple points $z=-q^m$, $m\in\IntegerNumbers$.
 \end{corollary}
@@ -4389,12 +4493,16 @@ Thus $\GaussianBinomial{m+k}{k}{q}$ converges coefficientwise to $1/(q;q)_\infty
 
 \section{Bailey pairs}
 
-For brevity, write $(a)_n=(a;q)_n$ in this chapter.
+Every Bailey kernel below keeps the base explicit.  In particular,
+$(a)_n$ retains its corpus-wide meaning as an ordinary rising factorial and
+is never used as an abbreviation for a $q$-Pochhammer symbol.
 
 \begin{definition}[Bailey pair]\label{qg:def-bailey-pair}
 Sequences $(\alpha_n)_{n\ge0}$ and $(\beta_n)_{n\ge0}$ form a \emph{Bailey pair relative to $a$} if
 \begin{equation}\label{eq:bailey-pair}
- \beta_n=\sum_{r=0}^{n}\frac{\alpha_r}{(q)_{n-r}(aq)_{n+r}}
+ \beta_n=\sum_{r=0}^{n}
+ \frac{\alpha_r}
+      {\QPochhammer{q}{q}{n-r}\QPochhammer{aq}{q}{n+r}}
  \qquad(n\ge0).
 \end{equation}
 \end{definition}
@@ -4439,7 +4547,7 @@ Assume $a\ne1$ initially.  The Bailey-pair relation is equivalent to
 \[
  \alpha_n=\frac{1-aq^{2n}}{1-a}
  \sum_{j=0}^{n}
- \frac{(a)_{n+j}}{(q)_{n-j}}
+ \frac{\QPochhammer{a}{q}{n+j}}{\QPochhammer{q}{q}{n-j}}
  (-1)^{n-j}q^{\binom{n-j}{2}}\beta_j.
 \]
 At $a=1$, the right side is interpreted by its removable limit.
@@ -4450,27 +4558,30 @@ Substitute the definition of $\beta_j$ into the proposed inverse.  The coefficie
 \[
  \frac{1-aq^{2n}}{1-a}
  \sum_{j=r}^{n}
- \frac{(a)_{n+j}}{(q)_{n-j}(q)_{j-r}(aq)_{j+r}}
+ \frac{\QPochhammer{a}{q}{n+j}}
+      {\QPochhammer{q}{q}{n-j}\QPochhammer{q}{q}{j-r}
+       \QPochhammer{aq}{q}{j+r}}
  (-1)^{n-j}q^{\binom{n-j}{2}}.
 \]
 If $n=r$, only $j=n$ occurs, and
 \[
- \frac{1-aq^{2n}}{1-a}\frac{(a)_{2n}}{(aq)_{2n}}=1.
+ \frac{1-aq^{2n}}{1-a}
+ \frac{\QPochhammer{a}{q}{2n}}{\QPochhammer{aq}{q}{2n}}=1.
 \]
 Suppose $N=n-r>0$ and put $j=r+s$.  Then
 \[
- \frac{(a)_{n+r+s}}{(aq)_{2r+s}}
- =(1-a)(aq^{2r+s+1};q)_{N-1}.
+ \frac{\QPochhammer{a}{q}{n+r+s}}{\QPochhammer{aq}{q}{2r+s}}
+ =(1-a)\QPochhammer{aq^{2r+s+1}}{q}{N-1}.
 \]
 The coefficient becomes
 \[
- \frac{1-aq^{2n}}{(q)_N}
+ \frac{1-aq^{2n}}{\QPochhammer{q}{q}{N}}
  \sum_{s=0}^{N}(-1)^{N-s}q^{\binom{N-s}{2}}
  \GaussianBinomial{N}{s}{q} P(q^s),
 \]
 where
 \(
- P(x)=(aq^{2r+1}x;q)_{N-1}
+ P(x)=\QPochhammer{aq^{2r+1}x}{q}{N-1}
 \)
 has degree $N-1$.  It vanishes by \Cref{lem:qdiff-annihilation}.  Thus the two triangular matrices are inverse.  Since every expression is rational in $a$ and the singularity at $a=1$ is removable, the limiting statement follows.
 \end{proof}
@@ -4495,13 +4606,18 @@ Let $\beta_n=\delta_{n,0}$.
 With $\beta_j=\delta_{j,0}$, Bailey inversion gives
 \[
  \alpha_n=\frac{1-aq^{2n}}{1-a}
- \frac{(a)_n}{(q)_n}(-1)^nq^{\binom n2}.
+ \frac{\QPochhammer{a}{q}{n}}{\QPochhammer{q}{q}{n}}
+ (-1)^nq^{\binom n2}.
 \]
-For $a\to1$ and $n>0$, $(a)_n/(1-a)\to(q)_{n-1}$, so the prefactor reduces to
+For $a\to1$ and $n>0$,
+$\QPochhammer{a}{q}{n}/(1-a)\to\QPochhammer{q}{q}{n-1}$,
+so the prefactor reduces to
 \(
  (1-q^{2n})/(1-q^n)=1+q^n.
 \)
-For $a=q$, the ratio $(a)_n/(q)_n$ is $1$ and the remaining factor is $[2n+1]_q$.
+For $a=q$, the ratio
+$\QPochhammer{a}{q}{n}/\QPochhammer{q}{q}{n}$ is $1$ and the remaining
+factor is $[2n+1]_q$.
 \end{proof}
 
 \section{The limiting Bailey lemma}
@@ -4527,7 +4643,8 @@ If $(\alpha_n,\beta_n)$ is a Bailey pair relative to $a$, define
 \[
  \alpha_n'=a^nq^{n^2}\alpha_n,
  \qquad
- \beta_n'=\sum_{j=0}^{n}\frac{a^jq^{j^2}}{(q)_{n-j}}\beta_j.
+ \beta_n'=\sum_{j=0}^{n}
+ \frac{a^jq^{j^2}}{\QPochhammer{q}{q}{n-j}}\beta_j.
 \]
 Then $(\alpha_n',\beta_n')$ is also a Bailey pair relative to $a$.
 \end{theorem}
@@ -4537,22 +4654,26 @@ Substitute the Bailey relation for $\beta_j$ and interchange the finite sums.  T
 \[
  a^rq^{r^2}\sum_{s=0}^{N}
  \frac{a^sq^{s^2+2rs}}
- {(q)_{N-s}(q)_s(aq)_{2r+s}},
+ {\QPochhammer{q}{q}{N-s}\QPochhammer{q}{q}{s}
+  \QPochhammer{aq}{q}{2r+s}},
  \qquad N=n-r.
 \]
 Let $A=aq^{2r+1}$.  Since
 \[
  a^sq^{s^2+2rs}=A^sq^{s(s-1)},
  \qquad
- (aq)_{2r+s}=(aq)_{2r}(A)_s,
+ \QPochhammer{aq}{q}{2r+s}
+ =\QPochhammer{aq}{q}{2r}\QPochhammer{A}{q}{s},
 \]
 the desired Bailey coefficient
 \(
- a^rq^{r^2}/((q)_N(aq)_{n+r})
+ a^rq^{r^2}/
+ \bigl(\QPochhammer{q}{q}{N}\QPochhammer{aq}{q}{n+r}\bigr)
 \)
 is equivalent, after clearing factors, to
 \[
- \sum_{s=0}^{N}\GaussianBinomial{N}{s}{q} A^sq^{s(s-1)}(Aq^s)_{N-s}=1.
+ \sum_{s=0}^{N}\GaussianBinomial{N}{s}{q} A^sq^{s(s-1)}
+ \QPochhammer{Aq^s}{q}{N-s}=1.
 \]
 This is \Cref{lem:bailey-aux}.
 \end{proof}
@@ -4570,20 +4691,22 @@ If the series converge absolutely, then every Bailey pair relative to $a$ satisf
 The transformed pair in \Cref{thm:bailey-limit-finite} satisfies
 \[
  \beta_N'=\sum_{r=0}^{N}
- \frac{\alpha_r'}{(q)_{N-r}(aq)_{N+r}}.
+ \frac{\alpha_r'}
+      {\QPochhammer{q}{q}{N-r}\QPochhammer{aq}{q}{N+r}}.
 \]
 Let $N\to\infty$.  On the left,
 \[
- \beta_N'\longrightarrow\frac1{(q)_\infty}
+ \beta_N'\longrightarrow\frac1{\QPochhammer{q}{q}{\infty}}
  \sum_{j\ge0}a^jq^{j^2}\beta_j.
 \]
 On the right,
 \[
  \beta_N'\longrightarrow
- \frac1{(q)_\infty(aq)_\infty}
+ \frac1{\QPochhammer{q}{q}{\infty}\QPochhammer{aq}{q}{\infty}}
  \sum_{r\ge0}a^rq^{r^2}\alpha_r.
 \]
-Absolute convergence permits dominated convergence.  Cancel $(q)_\infty^{-1}$.
+Absolute convergence permits dominated convergence.  Cancel
+$\QPochhammer{q}{q}{\infty}^{-1}$.
 \end{proof}
 
 \section{The Rogers--Ramanujan identities}
@@ -4604,14 +4727,14 @@ For the first identity, begin with the unit pair relative to $a=1$ in \Cref{cor:
 \[
  \alpha_n'=q^{n^2}\alpha_n,
  \qquad
- \beta_n'=\frac1{(q)_n}.
+ \beta_n'=\frac1{\QPochhammer{q}{q}{n}}.
 \]  Applying the infinite limiting lemma to this new pair gives
 \begin{align*}
- \sum_{n\ge0}\frac{q^{n^2}}{(q)_n}
- &=\frac1{(q)_\infty}
+ \sum_{n\ge0}\frac{q^{n^2}}{\QPochhammer{q}{q}{n}}
+ &=\frac1{\QPochhammer{q}{q}{\infty}}
  \left(1+\sum_{r\ge1}(-1)^r
  q^{2r^2+\binom r2}(1+q^r)\right)\\
- &=\frac1{(q)_\infty}
+ &=\frac1{\QPochhammer{q}{q}{\infty}}
  \sum_{r\in\IntegerNumbers}(-1)^rq^{(5r^2-r)/2}.
 \end{align*}
 By Jacobi's triple product with base $q^5$ and $z=q^2$,
@@ -4629,11 +4752,11 @@ For the second identity use the unit pair relative to $a=q$.  After one finite l
 \[
  \alpha_n'=(-1)^nq^{n^2+n+\binom n2}[2n+1]_q,
  \qquad
- \beta_n'=\frac1{(q)_n}.
+ \beta_n'=\frac1{\QPochhammer{q}{q}{n}}.
 \]
 The infinite limiting lemma gives
 \begin{align*}
- \sum_{n\ge0}\frac{q^{n^2+n}}{(q)_n}
+ \sum_{n\ge0}\frac{q^{n^2+n}}{\QPochhammer{q}{q}{n}}
  &=\frac1{(q^2;q)_\infty}
  \sum_{r\ge0}q^{r^2+r}\alpha_r'\\
  &=\frac1{(q;q)_\infty}
@@ -4668,7 +4791,11 @@ Let $\Phi_d(q)$ denote the $d$th cyclotomic polynomial, normalized by
 \[
  q^n-1=\prod_{d\mid n}\Phi_d(q).
 \]
-For a nonzero polynomial $F\in\IntegerNumbers[q]$, write $\nu_d(F)$ for the exponent of $\Phi_d(q)$ in its factorization.
+For $d\in\PositiveIntegers$ and a nonzero polynomial
+$F\in\IntegerNumbers[q]$, write $\CyclotomicValuation{d}{q}{F}$ for the
+exponent of $\Phi_d(q)$ in its factorization.  Its value lies in
+$\NaturalNumbers$; it is not a $d$-adic valuation, and it is left undefined
+at $F=0$ rather than silently assigned $\infty$.
 
 \begin{theorem}[Cyclotomic factorization of a shifted factorial]\label{thm:cyclotomic-pochhammer}
 For every $n\ge0$,
@@ -4745,8 +4872,8 @@ Since $q^{N}-1=\prod_{d\mid N}\Phi_d(q)$ and $\Phi_1(q)=q-1$,
  \QInteger{n+1}{q}=\frac{q^{\,n+1}-1}{q-1}
  =\prod_{\substack{d\mid n+1\\ d>1}}\Phi_d(q).
 \]
-Hence $\nu_d(\QInteger{n+1}{q})=1$ exactly for those $d>1$ dividing $n+1$, and
-$\nu_d(\QInteger{n+1}{q})=0$ for every other $d$, the case $d=1$ included: indeed
+Hence $\CyclotomicValuation{d}{q}{\QInteger{n+1}{q}}=1$ exactly for those $d>1$ dividing $n+1$, and
+$\CyclotomicValuation{d}{q}{\QInteger{n+1}{q}}=0$ for every other $d$, the case $d=1$ included: indeed
 $\QInteger{n+1}{q}$ takes the value $n+1\ne0$ at $q=1$, so $q-1$ does not divide it.
 
 Let $d>1$ divide $n+1$.  Then $n\equiv-1\pmod d$, so $n\bmod d=d-1$, while
@@ -4758,9 +4885,10 @@ Therefore
 and the carry criterion \eqref{eq:carry-criterion} of
 \Cref{cor:squarefree-cyclotomic}, applied with upper index $2n$ and lower
 index $n$, gives $\Phi_d(q)\mid\GaussianBinomial{2n}{n}{q}$, that is,
-$\nu_d\bigl(\GaussianBinomial{2n}{n}{q}\bigr)=1$.  Combining the two paragraphs,
+$\CyclotomicValuation{d}{q}{\GaussianBinomial{2n}{n}{q}}=1$.  Combining the two paragraphs,
 \[
- \nu_d\bigl(\GaussianBinomial{2n}{n}{q}\bigr)\ge\nu_d\bigl(\QInteger{n+1}{q}\bigr)
+ \CyclotomicValuation{d}{q}{\GaussianBinomial{2n}{n}{q}}
+ \ge\CyclotomicValuation{d}{q}{\QInteger{n+1}{q}}
  \qquad\text{for every }d\ge1,
 \]
 so $\QInteger{n+1}{q}$ divides $\GaussianBinomial{2n}{n}{q}$ in $\RationalNumbers[q]$ and $C_n\in\RationalNumbers[q]$.
@@ -5150,20 +5278,25 @@ $\GeneralizedGaussianBinomial{\alpha}{\beta}{q}$.  The gamma functional equation
 \[
  \frac{\GeneralizedGaussianBinomial{\alpha+1}{\beta}{q}}
       {\GeneralizedGaussianBinomial{\alpha}{\beta}{q}}
- =\frac{[\alpha+1]_q}{[\alpha-\beta+1]_q},
+ =\frac{\GeneralizedQNumber{\alpha+1}{q}}
+        {\GeneralizedQNumber{\alpha-\beta+1}{q}},
  \qquad
  \frac{\GeneralizedGaussianBinomial{\alpha}{\beta-1}{q}}
       {\GeneralizedGaussianBinomial{\alpha}{\beta}{q}}
- =\frac{[\beta]_q}{[\alpha-\beta+1]_q}.
+ =\frac{\GeneralizedQNumber{\beta}{q}}
+        {\GeneralizedQNumber{\alpha-\beta+1}{q}}.
 \]
 The identity
 \(
- [\alpha+1]_q=q^\beta[\alpha-\beta+1]_q+[\beta]_q
+ \GeneralizedQNumber{\alpha+1}{q}
+ =q^\beta\GeneralizedQNumber{\alpha-\beta+1}{q}
+  +\GeneralizedQNumber{\beta}{q}
 \)
 proves \eqref{eq:complex-pascal-a}.  The alternative identity
 \(
- [\alpha+1]_q=[\alpha-\beta+1]_q
- +q^{\alpha+1-\beta}[\beta]_q
+ \GeneralizedQNumber{\alpha+1}{q}
+ =\GeneralizedQNumber{\alpha-\beta+1}{q}
+ +q^{\alpha+1-\beta}\GeneralizedQNumber{\beta}{q}
 \)
 proves \eqref{eq:complex-pascal-b}.
 \end{proof}
@@ -5336,7 +5469,7 @@ which is the claimed quotient.
 
 For a complex parameter $z$ and $0<q<1$, we use the analytic extension
 \[
- [z]_q=\frac{1-q^z}{1-q},
+ \GeneralizedQNumber{z}{q}=\frac{1-q^z}{1-q},
 \]
 with the real logarithm in $q^z=\exp(z\log q)$.
 
@@ -5347,7 +5480,7 @@ Let $0<q<1$, and let $\alpha\in\ComplexNumbers$ be such that none of the denomin
 \begin{align}
  &\sum_{k=0}^{\infty}
  \GaussianBinomial{2k}{k}{q^2}
- \frac{q^k}{(-q;q)_{2k}[2k+1+\alpha]_q}
+ \frac{q^k}{(-q;q)_{2k}\GeneralizedQNumber{2k+1+\alpha}{q}}
  \notag\\
  &\qquad=
  \frac{\Gamma_{q^2}(3/2)\,
@@ -5362,21 +5495,21 @@ $\alpha=-1,-3,-5,\ldots$.
 \begin{proof}
 By \Cref{lem:central-reduction} and the telescoping quotient
 \[
- \frac1{[2k+1+\alpha]_q}
- =\frac1{[\alpha+1]_q}
+ \frac1{\GeneralizedQNumber{2k+1+\alpha}{q}}
+ =\frac1{\GeneralizedQNumber{\alpha+1}{q}}
    \frac{(q^{\alpha+1};q^2)_k}
         {(q^{\alpha+3};q^2)_k},
 \]
 the left side is
 \[
- \frac1{[\alpha+1]_q}
+ \frac1{\GeneralizedQNumber{\alpha+1}{q}}
  {}_2\phi_1\!\left[
  \begin{matrix}q,q^{\alpha+1}\\q^{\alpha+3}\end{matrix};
  q^2,q\right].
 \]
 The $q$-Gauss sum from \Cref{thm:q-gauss}, with base $q^2$, gives
 \[
- \frac1{[\alpha+1]_q}
+ \frac1{\GeneralizedQNumber{\alpha+1}{q}}
  \frac{(q^{\alpha+2},q^2;q^2)_\infty}
       {(q^{\alpha+3},q;q^2)_\infty}.
  \tag{18.3}\label{eq:regular-central-product}
@@ -6362,7 +6495,8 @@ following is a necessary condition for $L=R$.
 \item \emph{Reversal.}  Substituting $q^{-1}$ for $q$ in a true identity
  yields a true identity, and by \Cref{thm:qbinom-structure}(ii),(iv) that
  substitution acts on a monomial $F$ as above by an explicit power:
- $F(q^{-1})=q^{-c_F}F(q)$ with $c_F=\deg F+\OrderOperator F$.  If $L$ and $R$ are such
+ $F(q^{-1})=q^{-c_F}F(q)$ with
+ $c_F=\deg F+\OrderOperator_{q=0}F$.  If $L$ and $R$ are such
  monomials with $c_L\ne c_R$, then $L=R$ forces $L=R=0$.
 \item \emph{The value $q=0$.}  After denominators have been cleared, the
  substitution $q=0$ must give a true numerical identity; here
@@ -6393,10 +6527,14 @@ $1$ and degree $k_i(n_i-k_i)$ by \Cref{thm:qbinom-structure}(iii); this proves
 item (i).  For item (ii), \Cref{thm:qbinom-structure}(ii) gives
 $\GaussianBinomial{n_i}{k_i}{q^{-1}}=q^{-k_i(n_i-k_i)}\GaussianBinomial{n_i}{k_i}{q}$, so
 \[
- F(q^{-1})=q^{-\alpha}\prod_i q^{-k_i(n_i-k_i)}\GaussianBinomial{n_i}{k_i}{q}
- =q^{-c_F}F(q),
- \qquad
- c_F=2\alpha+\sum_ik_i(n_i-k_i)=\deg F+\OrderOperator F,
+ \begin{aligned}
+ F(q^{-1})
+ &=q^{-\alpha}\prod_i q^{-k_i(n_i-k_i)}\GaussianBinomial{n_i}{k_i}{q}
+   =q^{-c_F}F(q),\\
+ c_F
+ &=2\alpha+\sum_i k_i(n_i-k_i)
+   =\deg F+\OrderOperator_{q=0}F.
+ \end{aligned}
 \]
 using $F(q)=q^{\alpha}\prod_i\GaussianBinomial{n_i}{k_i}{q}$.  If $L=R$, then applying the
 substitution gives $q^{-c_L}L=q^{-c_R}R=q^{-c_R}L$, so
@@ -10141,11 +10279,13 @@ $O(q^{-2})$, so comparing coefficients of $q^{-1}$ there gives
 \[
  -M_n=\sum_{k=0}^{n-1}\frac{(-1)^{n-k}\bigl(M_k-(n-k)L_k\bigr)}{(n-k+1)!},
 \]
-that is, $[s^n]\bigl(M\Psi\bigr)=[s^n]\bigl(L\Theta\bigr)$ for $n\ge2$, where
-$M(s)=\sum M_ns^n$ and $\Theta(s)=\sum_{r\ge0}(-1)^rr\,s^r/(r+1)!$.  Since
-$\sum_{r\ge0}(r+1)(-s)^r/(r+1)!=\EulerE^{-s}$, we have $\Theta=\EulerE^{-s}-\Psi$.  The two
+that is, $[s^n]\bigl(M\Psi\bigr)=[s^n]\bigl(L\Theta_{\mathrm{aux}}\bigr)$ for $n\ge2$, where
+$M(s)=\sum M_ns^n$ and
+$\Theta_{\mathrm{aux}}(s)=\sum_{r\ge0}(-1)^rr\,s^r/(r+1)!$.  Since
+$\sum_{r\ge0}(r+1)(-s)^r/(r+1)!=\EulerE^{-s}$, we have
+$\Theta_{\mathrm{aux}}=\EulerE^{-s}-\Psi$.  The two
 remaining coefficients are checked directly:
-$[s^0](M\Psi)=M_0=0=[s^0](L\Theta)$, while $[s^1](M\Psi)=M_1=0$ and
+$[s^0](M\Psi)=M_0=0=[s^0](L\Theta_{\mathrm{aux}})$, while $[s^1](M\Psi)=M_1=0$ and
 $[s^1](L\Theta)=L_0\Theta_1=-\tfrac12$.  Hence $M\Psi=L\Theta+\tfrac s2$, and
 since $1/\Psi=L$,
 \[
@@ -10347,27 +10487,41 @@ The transport statement \Cref{thm:universal-functoriality}(iii) is what licenses
 
 Counting is only the first half of the finite-field picture.  The subspaces of $\FiniteField{Q}^{n}$ form a lattice, and its M\"obius function is again a Gaussian datum: a sign and a quadratic power of $Q$.  This is the structural reason for the shape of the inverse kernel in \Cref{thm:qbinomial-inversion}.
 
+For an ambient vector space $V$, the notation
+$\SubspaceMobius{V}{U}{W}$ denotes the interval-poset M\"obius function on
+the subspace lattice $\mathcal L(V)$.  It is characterized by
+\[
+ \SubspaceMobius{V}{U}{U}=1,
+ \qquad
+ \sum_{U\subseteq X\subseteq W}\SubspaceMobius{V}{U}{X}=0
+ \quad(U\subsetneq W).
+\]
+It is neither the arithmetic M\"obius function nor a measure.
+
 \begin{theorem}[M\"obius function of the subspace lattice]\label{thm:subspace-mobius}
 Let $Q$ be a prime power and let $V$ be a $d$-dimensional vector space over $\FiniteField{Q}$.  In the lattice of subspaces of $V$, ordered by inclusion,
 \begin{equation}\label{eq:subspace-mobius}
- \mu(0,V)=(-1)^dQ^{\binom d2}.
+ \SubspaceMobius{V}{0}{V}=(-1)^dQ^{\binom d2}.
 \end{equation}
 More generally, if $U\subseteq W$ are subspaces and $r=\dim(W/U)$, then
 \[
- \mu(U,W)=(-1)^rQ^{\binom r2}.
+ \SubspaceMobius{V}{U}{W}=(-1)^rQ^{\binom r2}.
 \]
 \end{theorem}
 
 \begin{proof}
 The correspondence $X\mapsto X/U$ is an isomorphism from the interval $[U,W]$ onto the lattice of subspaces of $W/U$, and the M\"obius function of a poset depends only on the isomorphism type of the interval.  It therefore suffices to prove \eqref{eq:subspace-mobius}.
 
-Induct on $d$.  For $d=0$ the value is $\mu(0,0)=1$, as asserted.  Let $d\ge1$ and assume the formula for all smaller dimensions.  The defining relation for the M\"obius function of the interval $[0,V]$ is
+Induct on $d$.  For $d=0$ the value is
+$\SubspaceMobius{V}{0}{0}=1$, as asserted.  Let $d\ge1$ and assume the
+formula for all smaller dimensions.  The defining relation for the M\"obius
+function of the interval $[0,V]$ is
 \[
- \sum_{X\subseteq V}\mu(0,X)=0,
+ \sum_{X\subseteq V}\SubspaceMobius{V}{0}{X}=0,
 \]
 the sum running over all subspaces of $V$.  Grouping the subspaces by dimension and using \Cref{thm:subspace-count} together with the induction hypothesis,
 \[
- \mu(0,V)
+ \SubspaceMobius{V}{0}{V}
  =-\sum_{j=0}^{d-1}\GaussianBinomial{d}{j}{Q}(-1)^jQ^{\binom j2}.
 \]
 By \Cref{cor:alternating-qbinom} at base $Q$, which is \eqref{eq:finite-qbinomial-minus} at $z=1$,
@@ -10376,11 +10530,11 @@ By \Cref{cor:alternating-qbinom} at base $Q$, which is \eqref{eq:finite-qbinomia
  \qquad(d\ge1),
 \]
 since the factor with index $0$ in $(1;Q)_d$ vanishes.  Hence the truncated sum through $j=d-1$ equals the negative of the omitted term $j=d$, and therefore
-$\mu(0,V)=(-1)^dQ^{\binom d2}$.
+$\SubspaceMobius{V}{0}{V}=(-1)^dQ^{\binom d2}$.
 \end{proof}
 
 \begin{remark}[Where this kernel is met again]\label{rem:mobius-inversion-kernel}
-The inverse kernel $(-1)^{n-k}q^{\binom{n-k}{2}}\GaussianBinomial{n}{k}{q}$ of \Cref{thm:qbinomial-inversion} is exactly $\mu(U,W)$ of \Cref{thm:subspace-mobius} with $r=n-k$, multiplied by the number $\GaussianBinomial{n}{k}{Q}$ of intermediate subspaces: for $q=Q$ a prime power, $q$-binomial inversion \emph{is} M\"obius inversion over the subspace lattice for functions depending only on dimension, and the polynomial identity then extends it to an indeterminate $q$.  The reversed Gaussian row $N_{n,k}(q)$ of \eqref{eq:reversed-gaussian-row} carries the additional monomial $q^{\,n-k}$, because
+The inverse kernel $(-1)^{n-k}q^{\binom{n-k}{2}}\GaussianBinomial{n}{k}{q}$ of \Cref{thm:qbinomial-inversion} is exactly $\SubspaceMobius{V}{U}{W}$ of \Cref{thm:subspace-mobius} with $r=n-k$, multiplied by the number $\GaussianBinomial{n}{k}{Q}$ of intermediate subspaces: for $q=Q$ a prime power, $q$-binomial inversion \emph{is} M\"obius inversion over the subspace lattice for functions depending only on dimension, and the polynomial identity then extends it to an indeterminate $q$.  The reversed Gaussian row $N_{n,k}(q)$ of \eqref{eq:reversed-gaussian-row} carries the additional monomial $q^{\,n-k}$, because
 $\binom{n-k}{2}+(n-k)=\binom{n-k+1}{2}$ and its nodes are $q^1,\dots,q^n$ rather than $q^0,\dots,q^{n-1}$.  This accounts for the sign and the quadratic exponent that recur throughout \Cref{chap:geometric-filters}.
 \end{remark}
 
@@ -11936,7 +12090,7 @@ Concatenation & $(a;q)_{m+n}=(a;q)_m(aq^m;q)_n$ & \Cref{prop:concat}\\[1pt]
 Dissection & $(a;q)_{rn}=\prod_{j=0}^{r-1}(aq^j;q^r)_n$ & \Cref{prop:dissection}\\[1pt]
 Dissection with remainder & $(a;q)_{rn+u}=\prod_{s<u}(aq^s;q^r)_{n+1}\prod_{s\ge u}(aq^s;q^r)_n$ & \Cref{cor:dissection-remainder}\\[1pt]
 Base reversal & $(a;q)_n=(-a)^nq^{\binom n2}(a^{-1}q^{1-n};q)_n$, \(aq\ne0\) & \Cref{prop:base-reversal}\\[1pt]
-Negative index & $(a;q)_{-n}=1/(aq^{-n};q)_n$ & \Cref{prop:negative-index}\\[1pt]
+Negative index & $\GeneralizedQPochhammer{a}{q}{-n}=1/\QPochhammer{aq^{-n}}{q}{n}$ & \Cref{prop:negative-index}\\[1pt]
 Infinite logarithm & $\log(a;q)_\infty=-\sum_{r\ge1}a^r/(r(1-q^r))$ & \Cref{thm:lambert-log}\\[1pt]
 Gaussian product & $\GaussianBinomial{n}{k}{q}=(q;q)_n/((q;q)_k(q;q)_{n-k})$ & \Cref{prop:qbinom-products}\\[1pt]
 Pascal I & $\GaussianBinomial{n}{k}{q}=q^k\GaussianBinomial{n-1}{k}{q}+\GaussianBinomial{n-1}{k-1}{q}$ & \Cref{thm:qpascal}\\[1pt]
@@ -11974,7 +12128,7 @@ $\displaystyle\frac{F_1(q)}{F_0(q)}
 & \Cref{qg:thm-rrcf}\\[1pt]
 Pentagonal theorem & $(q;q)_\infty=\sum_{n\in\IntegerNumbers}(-1)^nq^{n(3n-1)/2}$ & \Cref{thm:pentagonal}\\[1pt]
 $q$-derivative & $D_qf(x)=(f(x)-f(qx))/((1-q)x)$ & \Cref{prop:qderivative-rules}\\[1pt]
-Jackson integral & $\int_0^af(x)\,\Differential_qx=(1-q)a\sum_{n\ge0}q^nf(aq^n)$ & \Cref{thm:q-fundamental}\\[1pt]
+Jackson integral & $\int_0^af(x)\,\JacksonDifferential{q}{x}=(1-q)a\sum_{n\ge0}q^nf(aq^n)$ & \Cref{thm:q-fundamental}\\[1pt]
 $q$-gamma & $\Gamma_q(x)=(1-q)^{1-x}(q;q)_\infty/(q^x;q)_\infty$ & \Cref{thm:qgamma-basic}\\[1pt]
 Cyclotomic factorization & $\GaussianBinomial{n}{k}{q}=\prod_d\Phi_d(q)^{\Floor{n/d}-\Floor{k/d}-\Floor{(n-k)/d}}$ & \Cref{thm:cyclotomic-pochhammer}\\[1pt]
 $q$-Lucas & $\GaussianBinomial{ad+b}{rd+s}{q}\equiv\binom ar\GaussianBinomial{b}{s}{q}\pmod{\Phi_d(q)}$ & \Cref{thm:q-lucas}\\[1pt]

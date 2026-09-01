@@ -3646,7 +3646,7 @@ The separately named half-sum theorem says that, under the explicit hypotheses
 Those dominance hypotheses matter because all indices and subtractions in the Lean
 statement are natural-number operations.
 
-For \(G^{\RationalNumbers}_{ijk}=\nolinkurl{legendreGauntRat}(i,j,k)\), the public
+For \(G^{\RationalNumbers}_{ijk}=\mathtt{legendreGauntRat}(i,j,k)\), the public
 boundary formulas are
 \[
  G^{\RationalNumbers}_{i,j,i+j}
@@ -3660,13 +3660,13 @@ boundary formulas are
 The identification is global, not merely a necessary support statement:
 \[
  G^{\RationalNumbers}_{ijk}=2W^2_{ijk},\qquad
- \nolinkurl{legendreGaunt}(i,j,k)=2(W^2_{ijk}:\RealNumbers).
+ \mathtt{legendreGaunt}(i,j,k)=2(W^2_{ijk}:\RealNumbers).
 \]
 For each of \(W^2_{ijk}\), \(G^{\RationalNumbers}_{ijk}\), and the real Gaunt integral,
 the API separately proves positivity exactly on \(\mathsf A\), zero exactly off
 \(\mathsf A\), and global nonnegativity.  Finally,
 \[
- \nolinkurl{legendreProductLinearizationCoeffRat}(i,j,k)
+ \mathtt{legendreProductLinearizationCoeffRat}(i,j,k)
  =(2k+1)W^2_{ijk},
 \]
 and that coefficient is positive exactly on \(\mathsf A(i,j,k)\).
@@ -3719,16 +3719,19 @@ The first two are unconditional rational identities:
 \]
 first for \nolinkurl{rvachevLegendreGramEntryRat} and then entrywise for
 \nolinkurl{rvachevLegendreGramMatrixRat}.  The third requires
-\(F:\nolinkurl{BoundedFabius}\) and \(h_F:\nolinkurl{IsFabius F}\), and for
+\(F:\mathtt{BoundedFabius}\) and \(h_F:\mathtt{IsFabius\ F}\), and for
 \(i,j:\operatorname{Fin}n\) states
 \[
- \nolinkurl{upLegendreGramMatrix}(F,n,i,j)
- =2\sum_{r=0}^{\Floor{((i:\NaturalNumbers)+(j:\NaturalNumbers))/2}}
- \nolinkurl{rvachevLegendreCoefficient}(F,r)
- \left(W^2_{(i:\NaturalNumbers),(j:\NaturalNumbers),2r}:\RealNumbers\right).
+ \begin{aligned}
+ \mathtt{upLegendreGramMatrix}(F,n,i,j)
+ &=2\sum_{r=0}^{\Floor{((i:\NaturalNumbers)+(j:\NaturalNumbers))/2}}
+   \mathtt{rvachevLegendreCoefficient}(F,r)\\
+ &\qquad{}\times
+   \left(W^2_{(i:\NaturalNumbers),(j:\NaturalNumbers),2r}:\RealNumbers\right).
+ \end{aligned}
 \]
 All three sums are finite, with Lean's actual index set
-\(\nolinkurl{range}(\Floor{(i+j)/2}+1)\).  Their proofs simply substitute the global
+\(\mathtt{range}(\Floor{(i+j)/2}+1)\).  Their proofs simply substitute the global
 Gaunt identity into the three predecessor sums and move the scalar \(2\) outside.
 
 The boundary of this API is deliberate and exact.  It defines only a total rational
@@ -4782,7 +4785,7 @@ Exact Fabius primitive ladders & \nolinkurl{normalizedVolterra_extendedFabius}, 
 Fractional Volterra operator and order calculus & \nolinkurl{fractionalVolterra}, \nolinkurl{fractionalVolterra_add}, \nolinkurl{fractionalVolterra_affine}, \nolinkurl{fractionalVolterra_add_one_deriv} & \nolinkurl{FractionalVolterra.lean}, \nolinkurl{FractionalVolterraSemigroup.lean}, and \nolinkurl{FractionalVolterraCalculus.lean} \\
 Fractional Fabius--Rvachev shifts & \nolinkurl{fractionalVolterra_add_one_extendedFabius_of_nonneg}, \nolinkurl{fractionalVolterra_add_one_fabiusReal}, \nolinkurl{fractionalVolterra_add_one_rvachevUp} & \nolinkurl{FabiusFractionalVolterra.lean} \\
 Pointwise analytic finite filters & \nolinkurl{finiteAnalyticSeriesFilter}, \nolinkurl{geometricAnalyticSeriesFilter}, \nolinkurl{geometricLagrangeAnalyticSeriesFilter_shifted} & unconditional diagonal, exact-head/tail, and Gaussian-residual identities in \nolinkurl{AnalyticSeriesFilter.lean} \\
-Rvachev Appell deconvolution and arbitrary-phase polynomial reproduction & \nolinkurl{integral_eval_rvachevDeconvolvedPolynomial_sub_mul_rvachev}, \nolinkurl{integral_eval_rvachevAppellPolynomial_sub_mul_rvachev}, \nolinkurl{integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero}, and \nolinkurl{normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp} & The first three belong to the exact six-definition/thirty-three-theorem surface of \nolinkurl{RvachevMomentAppell.lean}: evenness converts additive smoothing into centered \(x-y\) convolution for every deconvolved polynomial and every Appell monomial, and every positive-degree Appell polynomial has Rvachev mean zero.  The fourth is the fifth theorem of the zero-definition/five-theorem \nolinkurl{RvachevPolynomialSynthesis.lean}: for \(M\ne0\), \(\deg P\le v_2(M)\), and arbitrary real \(\theta,x\), the normalized lattice sum of \((\mathcal D_{\RvachevUp}P)(x-M^{-1}(\theta+k))\RvachevUp(M^{-1}(\theta+k))\) is \(P(x)\).  Thus \(M=2^N\) formalizes arbitrary-phase reproduction through every degree \(n\le N\), but the Appell-lattice degree-\(N+1\) extension at parity-selected superconvergent phases, including odd-\(N\) quarter phases, remains outside Lean.  Neither module supplies an analytic reciprocal MGF or Appell generating series, a literal differential-operator expansion, reciprocal/deconvolution parity, or the displayed low reciprocal coefficients.  With the four unchanged downstream modules, the six-module tranche now contains 104 public declarations. \\
+Rvachev Appell deconvolution and arbitrary-phase polynomial reproduction & \nolinkurl{integral_eval_rvachevDeconvolvedPolynomial_sub_mul_rvachev}, \nolinkurl{integral_eval_rvachevAppellPolynomial_sub_mul_rvachev}, \nolinkurl{integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero}, and \nolinkurl{normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp} & The first three belong to the exact six-definition/thirty-three-theorem surface of \nolinkurl{RvachevMomentAppell.lean}: evenness converts additive smoothing into centered \(x-y\) convolution for every deconvolved polynomial and every Appell monomial, and every positive-degree Appell polynomial has Rvachev mean zero.  The fourth is the fifth theorem of the zero-definition/five-theorem \nolinkurl{RvachevPolynomialSynthesis.lean}: for \(M\ne0\), \(\deg P\le \TwoAdicValuation(M)\), and arbitrary real \(\theta,x\), the normalized lattice sum of \((\mathscr D_{\RvachevUp}P)(x-(\theta+k)/M)\RvachevUp((\theta+k)/M)\) is \(P(x)\).  Here division by \(M\) means real scalar division, and compact support makes the bilateral \texttt{tsum} pointwise finite.  Thus \(M=2^N\) formalizes arbitrary-phase reproduction of every polynomial \(P\) with \(\deg P\le N\), equivalently every monomial \(X^n\) for \(0\le n\le N\).  The Appell-lattice degree-\(N+1\) extension remains outside Lean and uses phases \(\theta\equiv0,1/2\pmod1\) for even \(N\), or \(\theta\equiv1/4,3/4\pmod1\) for odd \(N\).  Neither module supplies an analytic reciprocal MGF or Appell generating series, a literal differential-operator expansion, reciprocal/deconvolution parity, or the displayed low reciprocal coefficients.  With the four unchanged downstream modules, the six-module tranche now contains 104 public declarations. \\
 Generic finite-node Lagrange--Rvachev dictionary & Definitions \nolinkurl{lagrangeRvachevDecoder}, \nolinkurl{lagrangeRvachevAtomCoefficient}; theorems \nolinkurl{natDegree_lagrangeBasis_le_card_sub_one}, \nolinkurl{natDegree_lagrangeInterpolate_le_card_sub_one}, \nolinkurl{normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp}, \nolinkurl{normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node}, \nolinkurl{lagrangeRvachevAtomCoefficient_eq_deconvolved_interpolate}, \nolinkurl{sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp}, \nolinkurl{sum_lagrangeRvachevDecoder_eq_one} & Exact two-definition/seven-theorem surface in \nolinkurl{LagrangeRvachevSynthesis.lean}.  It proves the generic finite-node cardinal synthesis, componentwise biorthogonality, linear data-to-atom transform, full interpolation loop, and unit row mass under the displayed mesh, interval, distinctness, and nonemptiness hypotheses.  It does not give a geometric Gaussian q-binomial/q-Pochhammer or elementary-symmetric decoder formula, a bundled matrix/right-inverse or stochastic-matrix wrapper, or an optimal/minimum-variation decoder. \\
 Exact even moment \(c_n\) & \nolinkurl{moment}, \nolinkurl{momentIntegral} & \nolinkurl{Arithmetic.lean}, \nolinkurl{Basic.lean}, and \nolinkurl{AnalyticMoments.lean} \\
 Normalized half moment \(d_n\) & \nolinkurl{halfMoment}, \nolinkurl{halfMomentIntegral} & \nolinkurl{Arithmetic.lean}, \nolinkurl{Basic.lean}, and \nolinkurl{AnalyticMoments.lean} \\

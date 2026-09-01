@@ -5907,17 +5907,17 @@ translates $m=0,1$ survive; evenness converts $p_n(x-1)$ to $p_n(1-x)$.
 
 \subsection{Fourier zeros}
 
-Let $v_2(k)$ denote the exponent of $2$ in a nonzero integer $k$.
+Let $\TwoAdicValuation(k)$ denote the exponent of $2$ in a nonzero integer $k$.
 
 \begin{proposition}[Exact zero multiplicities]
 \label{p3:prop:zero-multiplicity}
 For $k\in\IntegerNumbers\setminus\{0\}$,
 \begin{equation}
  \OrderOperator_{\xi=k}\Phi_n
- =1+\min\{v_2(k),n-1\}.
+ =1+\min\{\TwoAdicValuation(k),n-1\}.
  \label{p3:eq:zero-multiplicity}
 \end{equation}
-For fixed $k$, this stabilizes to $1+v_2(k)$, the multiplicity of the corresponding
+For fixed $k$, this stabilizes to $1+\TwoAdicValuation(k)$, the multiplicity of the corresponding
 zero of $\Phi$.
 \end{proposition}
 
@@ -10874,10 +10874,14 @@ arbitrary algebraic order, after any fixed number of differentiations.
 \end{theorem}
 
 \begin{proof}[Proof (condensed from the revised fifteenth wave)]
-Rescale to $V_n=2^{n+1}Z_n=2X_2+U_1+\cdots+U_n$, $s_n^2=(3n+4)/9$, so
-$W_n=V_n/s_n$ has characteristic function
-$\chi_n(t)=\FourierTwoPi{\RvachevUp}\bigl(2t/(2\pi s_n)\bigr)\SincRad(t/s_n)^n$ in the volume's
-convention.  Fix $0<\delta<\pi/2$.  On $|t|\le\delta s_n$ the cumulant series
+Rescale to $V_n=2^{n+1}Z_n=2X_2+U_1+\cdots+U_n$ and
+$s_n^2=(3n+4)/9$.  Then $W_n=V_n/s_n$ has characteristic function
+\[
+ \chi_n(t)=\FourierTwoPi{\RvachevUp}\bigl(2t/(2\pi s_n)\bigr)
+             \SincRad(t/s_n)^n
+\]
+in the volume's convention.  Fix $0<\delta<\pi/2$.  On
+$|t|\le\delta s_n$ the cumulant series
 converges, $|\lambda_{2m,n}|\le C_mn^{1-m}$, and
 $|\SincRad u|\le\EulerE^{-c_\delta u^2}$ for $|u|\le\delta$, so truncating the
 exponential of the cumulant series at total weight

@@ -17,6 +17,7 @@
 \usepackage{fancyhdr}
 \usepackage{listings}
 \usepackage{url}
+\input{../../../../fabius-notation.tex}
 
 \hypersetup{
   hypertexnames=false,
@@ -376,7 +377,7 @@ Section~\ref{p1:sec:cauchy}.
 Since \(2^{-k}U_k\) is uniform on \([-2^{-k},2^{-k}]\),
 \begin{equation}
  \rho=\mathop{\ast}_{k=1}^{\infty}
- \left(2^{k-1}\one_{[-2^{-k},2^{-k}]}\right).                \label{p1:eq:rho-convolution}
+ \left(2^{k-1}\IndicatorOf{[-2^{-k},2^{-k}]}\right).        \label{p1:eq:rho-convolution}
 \end{equation}
 This is the real-space counterpart of the sinc product.
 
@@ -1171,7 +1172,7 @@ sum exposes multiplicities and supports rigorous rational tail bounds.
 
 The valuation weight has the divisor decomposition
 \begin{equation}
- 1+\nu_2(n)=\sum_{k=0}^{\infty}\one_{2^k\mid n}.             \label{p1:eq:valuation-indicators}
+ 1+\nu_2(n)=\sum_{k=0}^{\infty}\IndicatorOf{2^k\mid n}.     \label{p1:eq:valuation-indicators}
 \end{equation}
 This turns the zero sum into a dyadic superposition of classical special functions.
 
@@ -4642,7 +4643,7 @@ In distributional notation this is the infinite-cube integral
 and
 \begin{equation}\label{p3:eq:F-cube}
  F(x)=\int_{[0,1]^{\NaturalNumbers}}
- \one_{\{\sum_{j\ge1}2^{-j}v_j\le x\}}
+ \IndicatorOf{\{\sum_{j\ge1}2^{-j}v_j\le x\}}
  \prod_{j\ge1}\Differential v_j.
 \end{equation}
 
@@ -4706,10 +4707,10 @@ Euler's product for sine yields two canonical products:
    \left(\frac{t^2}{4\pi^2m^2};\frac14\right)_\infty,
  \label{p3:eq:qpoch-Phi}\\
  &=\prod_{n=1}^\infty
-   \left(1-\frac{t^2}{4\pi^2n^2}\right)^{1+v_2(n)}.
+   \left(1-\frac{t^2}{4\pi^2n^2}\right)^{1+\TwoAdicValuation(n)}.
  \label{p3:eq:zero-product}
 \end{align}
-Thus $2\pi n$ is a zero of multiplicity $1+v_2(n)$.  For $|t|<2\pi$,
+Thus $2\pi n$ is a zero of multiplicity $1+\TwoAdicValuation(n)$.  For $|t|<2\pi$,
 \begin{equation}\label{p3:eq:log-Phi-zeta}
  \log\Phi(t)
  =-\sum_{r=1}^\infty
@@ -4719,7 +4720,7 @@ The Wick-rotated determinant
 \begin{equation}\label{p3:eq:wick-product}
  \mathcal A(s)=\Phi(\ImaginaryUnit\sqrt{s})
  =\prod_{n=1}^\infty
- \left(1+\frac{s}{4\pi^2n^2}\right)^{1+v_2(n)}
+ \left(1+\frac{s}{4\pi^2n^2}\right)^{1+\TwoAdicValuation(n)}
 \end{equation}
 underlies the spectral-zeta, total-positivity, and generalized-gamma-convolution
 results already developed in the corpus.
@@ -5144,7 +5145,7 @@ Every finite approximant is rational.
 Let
 \begin{equation}\label{p3:eq:eta-haar}
  \eta_{n,k}
- =\one_{I_{n+1,2k}}-\one_{I_{n+1,2k+1}},
+ =\IndicatorOf{I_{n+1,2k}}-\IndicatorOf{I_{n+1,2k+1}},
  \qquad 0\le k<2^n,
 \end{equation}
 and let $h_{n,k}=2^{n/2}\eta_{n,k}$ be the orthonormal Haar functions.
@@ -6107,7 +6108,7 @@ would expose the superalgebraic smoothness more efficiently.
 Let
 \begin{equation}\label{p3:eq:Kh-def}
  K_h(x)=h^{-1/2}
- \bigl(\one_{[-h/2,0]}(x)-\one_{[0,h/2]}(x)\bigr).
+ \bigl(\IndicatorOf{[-h/2,0]}(x)-\IndicatorOf{[0,h/2]}(x)\bigr).
 \end{equation}
 Its squared Fourier modulus is
 \begin{equation}\label{p3:eq:Kh-transform}
@@ -6546,7 +6547,8 @@ three coefficient arrays.
 \begin{openproblem}[Two-adic multiresolution spectrum]
 \label{p3:op:two-adic-spectrum}
 Determine sharp formulas or lower envelopes for
-$v_2(\gamma_{n,k})$, $v_2(d_{n,k})$, and $v_2(a_m)$ in terms of binary carries,
+$\TwoAdicValuation(\gamma_{n,k})$, $\TwoAdicValuation(d_{n,k})$, and
+$\TwoAdicValuation(a_m)$ in terms of binary carries,
 Hamming weight, and the known valuations of dyadic Fabius values.  In
 particular, classify the indices for which sibling subtraction creates
 additional two-adic cancellation.
@@ -6920,7 +6922,7 @@ $\RvachevUp$ & \eqref{p3:eq:BN-truncated-power} & limit of finite Thue--Morse sp
 $\RvachevUp$ & \eqref{p3:eq:up-head-tail} & finite spline convolved with a scaled copy\\
 $\Phi$ & \eqref{p3:eq:Phi-sinc-product} & infinite sinc product\\
 $\Phi$ & \eqref{p3:eq:qpoch-Phi} & $q$-Pochhammer product at $q=1/4$\\
-$\Phi$ & \eqref{p3:eq:zero-product} & canonical zero product with $1+v_2(n)$ multiplicity\\
+$\Phi$ & \eqref{p3:eq:zero-product} & canonical zero product with $1+\TwoAdicValuation(n)$ multiplicity\\
 $\log\Phi$ & \eqref{p3:eq:log-Phi-zeta} & zeta power series\\
 $\RvachevUp$ & \eqref{p3:eq:up-Fourier-inversion} & Fourier cosine integral\\
 $F$ & \eqref{p3:eq:F-GilPelaez} & sine-over-frequency integral\\
@@ -12233,7 +12235,7 @@ Section~\ref{p6:sec:cauchy}.
 Since \(2^{-k}U_k\) is uniform on \([-2^{-k},2^{-k}]\),
 \begin{equation}
  \rho=\mathop{\ast}_{k=1}^{\infty}
- \left(2^{k-1}\one_{[-2^{-k},2^{-k}]}\right).                \label{p6:eq:rho-convolution}
+ \left(2^{k-1}\IndicatorOf{[-2^{-k},2^{-k}]}\right).        \label{p6:eq:rho-convolution}
 \end{equation}
 This is the real-space counterpart of the sinc product.
 
@@ -12827,7 +12829,7 @@ sum exposes multiplicities and supports rigorous rational tail bounds.
 
 The valuation weight has the divisor decomposition
 \begin{equation}
- 1+\nu_2(n)=\sum_{k=0}^{\infty}\one_{2^k\mid n}.             \label{p6:eq:valuation-indicators}
+ 1+\nu_2(n)=\sum_{k=0}^{\infty}\IndicatorOf{2^k\mid n}.     \label{p6:eq:valuation-indicators}
 \end{equation}
 This turns the zero sum into a dyadic superposition of classical special functions.
 
@@ -16384,7 +16386,7 @@ $[0,1]$~\cite{p8:jessen1935} and let $V_j=2U_j-1$, uniform on $[-1,1]$.  Then
 $F(x)=\Probability(X\le x)$, and $Y$ has density $\RvachevUp$.  Consequently
 \begin{equation}
  \RvachevUp=\mathop{\ast}_{j=1}^{\infty}
- \left(2^{j-1}\1_{[-2^{-j},2^{-j}]}
+ \left(2^{j-1}\IndicatorOf{[-2^{-j},2^{-j}]}
  \right)              \label{p8:eq:infinite-convolution}
 \end{equation}
 in the sense of weak limits and, in fact, in the smooth-density topology
@@ -16940,8 +16942,8 @@ into $\omega_G(4^{-J})$ to resolve the non-algebraic global convergence rate.
 Define the unnormalized Haar step
 \begin{equation}
  H_{m,k}(x)=
- \1_{[\ell_{m,k},\xi_{m,k})}(x)
- -\1_{[\xi_{m,k},r_{m,k})}(x).                           \label{p8:eq:haar-step}
+ \IndicatorOf{[\ell_{m,k},\xi_{m,k})}(x)
+ -\IndicatorOf{[\xi_{m,k},r_{m,k})}(x).                  \label{p8:eq:haar-step}
 \end{equation}
 Then $\Lambda'_{m,k}=2^{m+1}H_{m,k}$ away from its three
 corners.
@@ -17409,7 +17411,7 @@ Expanding the independent binomial laws gives the finite sum
  F_N^\triangle(x)=2^{-N(N-1)/2}
  \sum_{k_2=0}^{1}\cdots\sum_{k_N=0}^{N-1}
  \left(\prod_{n=2}^{N}\binom{n-1}{k_n}\right)
- \1_{\{\sum_{n=2}^{N}k_n2^{-n}\le x\}}.}              \label{p8:eq:triangular-cdf}
+ \IndicatorOf{\{\sum_{n=2}^{N}k_n2^{-n}\le x\}}.}     \label{p8:eq:triangular-cdf}
 \end{equation}
 Then $F_N^\triangle(x)\to F(x)$ at every real $x$.
 
@@ -17843,7 +17845,7 @@ inclusion--exclusion evaluation of the same polytope volume.
 One may also write the infinite-dimensional product-measure integral
 \begin{equation}
  F(x)=\int_{[0,1]^\NaturalNumbers}
- \1_{\{\sum_{j\ge1}2^{-j}u_j\le x\}}\Differential\bm u.           \label{p8:eq:infinite-cube-integral}
+ \IndicatorOf{\{\sum_{j\ge1}2^{-j}u_j\le x\}}\Differential\bm u.  \label{p8:eq:infinite-cube-integral}
 \end{equation}
 This is the geometric form of the probability model, but it emphasizes that
 the Fabius function is the distribution of weighted half-spaces cutting a
@@ -18423,7 +18425,7 @@ Object & Formula & Status\\
 \midrule
 \endhead
 $F$ & $F(x)=\Probability(\sum_{j\ge1}2^{-j}U_j\le x)$ & baseline\\
-$\RvachevUp$ & $\RvachevUp(y)=\mathop{\ast}_{j\ge1}2^{j-1}\1_{[-2^{-j},2^{-j}]}(y)$ & baseline\\
+$\RvachevUp$ & $\RvachevUp(y)=\mathop{\ast}_{j\ge1}2^{j-1}\IndicatorOf{[-2^{-j},2^{-j}]}(y)$ & baseline\\
 $\Phi$ & $\Phi(t)=\prod_{j\ge1}\SincRad(t/2^j)$ & baseline\\
 $\Phi$ & $\Phi(t)=\prod_{n\ge1}(1-t^2/(4\pi^2n^2))^{1+\TwoAdicValuation(n)}$ & baseline\\
 $F_N$ & $\dfrac{2^{N(N+1)/2}}{N!}\sum_{k<2^N}(-1)^{\BinaryDigitSum(k)}(x-k/2^N)_+^N$ & baseline\\

@@ -3248,8 +3248,10 @@ interleaving:
 using \(p(k)+p(k+1)=p(\Floor{k/2})\) and the vanishing of
 all permutation signs in characteristic two.  Every value is \(1\) by
 strong induction.  Feeding the oddness back into the two
-factorizations gives \(v_2(H_{2n})=n+v_2(H_n)\) and
-\(v_2(H_{2n+1})=n+v_2(H_{n+1})\), whence \(v_2(H_r)=r-1\) exactly
+factorizations gives
+\(\TwoAdicValuation(H_{2n})=n+\TwoAdicValuation(H_n)\) and
+\(\TwoAdicValuation(H_{2n+1})=n+\TwoAdicValuation(H_{n+1})\), whence
+\(\TwoAdicValuation(H_r)=r-1\) exactly
 and \(H_r\ne0\).
 \end{proof}
 
@@ -6805,7 +6807,7 @@ Module & Contents \\
 \path{ThueMorseNewman.lean} & Newman's positivity theorem: residue-class sign sums, the modulo-three parity system, the base-four collapse with disjoint boundary corrections, and the strong induction. \\
 \path{ThueMorseGelfond.lean} & Gelfond's sharp uniform bound: the one-variable sum-of-squares inequality \(\varphi^2(t)\varphi(2t)\le3\sqrt3\), the telescoped doubling-orbit product bound, and the exponential-sum form with constant \(2/\sqrt3\). \\
 \path{PeriodDoublingHankel.lean} & The mod-two Hankel engine: reusable block-determinant eliminations, parity interleavings, the period-doubling bit, and the four determinant halvings forcing every \(\mathbb F_2\)-determinant to equal one. \\
-\path{ThueMorseHankel.lean} & The Allouche--Peyri\`ere--Wen--Wen theorem: the doubling factorizations \(H_{2n}=2^nH_nH_n(m)\), \(H_{2n+1}=2^nH_{n+1}H_n(m)\), oddness of the difference determinants, and the exact valuation \(v_2(H_r)=r-1\). \\
+\path{ThueMorseHankel.lean} & The Allouche--Peyri\`ere--Wen--Wen theorem: the doubling factorizations \(H_{2n}=2^nH_nH_n(m)\), \(H_{2n+1}=2^nH_{n+1}H_n(m)\), oddness of the difference determinants, and the exact valuation \(\TwoAdicValuation(H_r)=r-1\). \\
 \path{LacunaryRieszIntegral.lean} & The exact orthogonality theory of lacunary Riesz products, with no Thue--Morse content: the frequency detector, the master theorem \(\int_0^1\cos(2\pi Kt+\psi)\prod_{j<n}(1+a_j\cos(2\pi m_jt+\varphi_j))\Differential t\) under the dissociation hypothesis \(|K|+\sum_{i<j}m_i<m_j\), its super-increasing and Hadamard-gap corollaries, the mean value \(1\), and the exact identity \(\int_0^1\prod_{j<n}\sin^2(\pi m_jt)\Differential t=2^{-n}\) with its geometric and dyadic specializations. \\
 \path{GelfondLogisticBound.lean} & The Gelfond rate from the logistic map, again with no Thue--Morse content: invariance of \([0,1]\), the potential telescope giving \(\prod_{j<n}u_j\le\frac53(\frac34)^n\) along any orbit from an initial value in \([0,1]\), exactness of the rate at the fixed point \(3/4\), the squared and unsquared dyadic sine-product bounds, and the \(L^1\) lower bracket for the sine product. \\
 \path{VarianceBookkeeping.lean} & Closed evaluation of the stationary covariance sum, including the zero-length variance identity. \\
