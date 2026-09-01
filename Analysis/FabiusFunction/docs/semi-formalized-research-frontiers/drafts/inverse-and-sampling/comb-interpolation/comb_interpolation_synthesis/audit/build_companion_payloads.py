@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the live companion-payload provenance and SHA-256 ledgers.
+"""Build the live companion-payload provenance ledger.
 
 ``COMPANION_PAYLOADS.csv`` has one row per retained source-provenance row,
 not merely one row per physical file.  The two byte-identical historical
@@ -7,10 +7,11 @@ requirements files therefore remain two auditable rows pointing at one live
 payload.  Three PNGs without source-pin PNG counterparts are recorded as
 canonical generated assets derived from the pinned figure generator.
 
-``SHA256SUMS`` covers every live file below ``assets/`` after the provenance
-CSV is written and excludes itself by construction.  Two exact environment
-files added on main after the immutable 180-file source pin are checked
-against the mainline reconciliation revision and recorded separately.
+Two exact environment files added on main after the immutable 180-file source
+pin are checked against the mainline reconciliation revision and recorded
+separately.  The package-wide ``SHA256SUMS`` is built and checked by
+``build_package_checksums.py``; there is deliberately no duplicated asset-only
+checksum projection.
 """
 
 from __future__ import annotations
@@ -27,9 +28,9 @@ from pathlib import Path, PurePosixPath
 PACKAGE = Path(__file__).resolve().parents[1]
 ASSETS = PACKAGE / "assets"
 PIN = PACKAGE / "audit" / "SOURCE_REVISION"
+RECONCILIATION_PIN = PACKAGE / "audit" / "MAINLINE_RECONCILIATION_REVISION"
 DISPOSITION = PACKAGE / "source_disposition.csv"
 OUTPUT = ASSETS / "COMPANION_PAYLOADS.csv"
-SHA_OUTPUT = ASSETS / "SHA256SUMS"
 
 FIELDS = (
     "entry_kind",
@@ -56,9 +57,6 @@ EXPECTED_PHYSICAL_PAYLOADS = (
     EXPECTED_SOURCE_PAYLOADS + EXPECTED_GENERATED_ROWS + EXPECTED_MAINLINE_ROWS
 )
 
-MAINLINE_RECONCILIATION_REVISION = (
-    "9e70a1a2145e9c01566d5638d33045af24516790"
-)
 MAINLINE_FILES = (
     (
         "Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/"
@@ -129,6 +127,16 @@ def source_revision() -> str:
     return completed.stdout.decode("utf-8").strip()
 
 
+def mainline_reconciliation_revision() -> str:
+    requested = RECONCILIATION_PIN.read_text(encoding="utf-8").strip()
+    completed = subprocess.run(
+        ["git", "-C", str(REPOSITORY), "rev-parse", "--verify", f"{requested}^{{commit}}"],
+        check=True,
+        stdout=subprocess.PIPE,
+    )
+    return completed.stdout.decode("utf-8").strip()
+
+
 def disposition_rows() -> list[dict[str, str]]:
     with DISPOSITION.open(newline="", encoding="utf-8") as stream:
         rows = list(csv.DictReader(stream))
@@ -156,6 +164,7 @@ def git_blob_metadata(revision: str, repository_path: str) -> tuple[str, str]:
 
 def build_rows() -> tuple[str, list[dict[str, str]]]:
     revision = source_revision()
+    reconciliation = mainline_reconciliation_revision()
     source = disposition_rows()
     retained = [row for row in source if row["disposition"] in RETAINED]
     if len(retained) != EXPECTED_SOURCE_ROWS:
@@ -219,7 +228,7 @@ def build_rows() -> tuple[str, list[dict[str, str]]]:
 
     for source_path, live_path in MAINLINE_FILES:
         source_digest, source_size = git_blob_metadata(
-            MAINLINE_RECONCILIATION_REVISION, source_path
+            reconciliation, source_path
         )
         live_digest, live_size = live_metadata(live_path)
         if (source_digest, source_size) != (live_digest, live_size):
@@ -230,11 +239,11 @@ def build_rows() -> tuple[str, list[dict[str, str]]]:
         rows.append(
             {
                 "entry_kind": "post-pin-mainline",
-                "source_revision": MAINLINE_RECONCILIATION_REVISION,
+                "source_revision": reconciliation,
                 "source_path": source_path,
                 "source_sha256": source_digest,
                 "source_bytes": source_size,
-                "source_disposition": "retained-post-pin-environment",
+                "source_disposition": "retained-post-pin-evidence",
                 "live_path": live_path,
                 "live_sha256": live_digest,
                 "live_bytes": live_size,
@@ -277,49 +286,29 @@ def csv_bytes(rows: list[dict[str, str]]) -> bytes:
     return stream.getvalue().encode("utf-8")
 
 
-def sha_ledger_bytes() -> bytes:
-    rows: list[str] = []
-    for path in sorted(ASSETS.rglob("*"), key=lambda item: item.relative_to(ASSETS).as_posix()):
-        if not path.is_file() or path.resolve() == SHA_OUTPUT.resolve():
-            continue
-        relative = path.relative_to(ASSETS).as_posix()
-        rows.append(f"{sha256(path)}  {relative}\n")
-    return "".join(rows).encode("utf-8")
-
-
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--check",
         action="store_true",
-        help="compare both ledgers with their reproducible contents instead of writing",
+        help="compare the ledger with its reproducible contents instead of writing",
     )
     args = parser.parse_args()
     revision, rows = build_rows()
     payload = csv_bytes(rows)
 
     if args.check:
-        failed = False
         if not OUTPUT.is_file() or OUTPUT.read_bytes() != payload:
             print(f"FAILED: stale or missing payload ledger: {OUTPUT}")
-            failed = True
-        expected_sha = sha_ledger_bytes()
-        if not SHA_OUTPUT.is_file() or SHA_OUTPUT.read_bytes() != expected_sha:
-            print(f"FAILED: stale or missing SHA ledger: {SHA_OUTPUT}")
-            failed = True
-        if failed:
             return 1
-        print(f"companion payload ledgers: PASS ({len(rows)} rows)")
+        print(f"companion payload ledger: PASS ({len(rows)} rows)")
     else:
         OUTPUT.write_bytes(payload)
-        SHA_OUTPUT.write_bytes(sha_ledger_bytes())
         print(f"wrote: {OUTPUT}")
-        print(f"wrote: {SHA_OUTPUT}")
 
     print(f"source revision: {revision}")
     print(f"provenance rows: {len(rows)}")
     print(f"physical payloads: {len({row['live_path'] for row in rows})}")
-    print(f"SHA256SUMS rows: {len(SHA_OUTPUT.read_text(encoding='utf-8').splitlines())}")
     return 0
 
 
