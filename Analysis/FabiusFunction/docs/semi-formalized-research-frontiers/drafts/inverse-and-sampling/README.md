@@ -23,8 +23,8 @@ computation.
 
 Its
 [`theorem_concordance.csv`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/theorem_concordance.csv)
-fully dispositions all 194 immutable source-result rows: 36 are Lean-proved,
-109 are human-proved frontier results, 10 are conjectures, 15 are open
+fully dispositions all 194 immutable source-result rows: 39 are Lean-proved,
+106 are human-proved frontier results, 10 are conjectures, 15 are open
 problems, and 24 are non-applicable source environments.
 [`LEAN_CROSSWALK.md`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/LEAN_CROSSWALK.md)
 records exact module/declaration matches and separately classifies five
@@ -33,9 +33,15 @@ post-snapshot additions without changing those source totals.
 accounts for all 88 source-subgroup files, and the live asset ledger covers 63
 retained, deduplicated payloads.
 
-The synchronized publication artifact has 133 A4 pages and 2,414,428 bytes,
+The three newest exact source-row matches are centered Appell deconvolution,
+positive-degree Appell mean-zero, and arbitrary-phase polynomial
+deconvolution. The Appell lattice theorem remains human-proved because Lean
+covers its arbitrary-phase `0 <= n <= N` formula but not its additional
+degree-`N+1` superconvergent-phase clause.
+
+The synchronized publication artifact has 133 A4 pages and 2,417,414 bytes,
 with SHA-256
-`1d9cf53c16d50e8419eadd746820d358f7f917867a592eb170ad5b326101d163`.
+`83a2cc2050e4f6c0c6ea26b472c09f05d4c77d2d84d4ba47e316d8176e7c11c6`.
 Exactly three serial `pdflatex` passes produced a clean final log; all 31
 Type-1 font rows are embedded and subset, Libertinus is present, Type 3 is
 absent, and every rendered page was inspected.
@@ -57,7 +63,7 @@ It preserves the distinct modal, Mellin, regular-variation, spline,
 reciprocal-product, Euler--Maclaurin, Ruffa, Thue--Morse, and interpolation
 results while stating their common Gaussian--Pascal and Jackson--Newton spine
 once. Its 180-row source disposition, 151-row historical-ledger audit, and
-155-page certified publication are documented in that package.
+156-page certified publication are documented in that package.
 
 [`fabius_information_frontier/`](fabius_information_frontier/) remains an
 archival information-geometry intake. Its arrival and operational ledgers

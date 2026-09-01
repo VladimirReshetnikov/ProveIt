@@ -109,10 +109,10 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 619 modules and 8,434 lexically
+The post-merge 2026-08-31 inventory contains 619 modules and 8,438 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  Relative to the 610/8,318 activation checkpoint, the current
-tree adds nine modules and 116 declarations.  The initial exact union added
+tree adds nine modules and 120 declarations.  The initial exact union added
 five modules and 67 declarations.  The branch-point geometry and
 asymptotics leaves contribute 17 declarations for the one-sided vertical
 tangents and leading signed square-root laws of both real Lambert branches.
@@ -147,7 +147,10 @@ theorem.  The subsequent
 `integral_polynomial_mul_rvachevUp_eq_dyadic_tsum` theorem in
 `PolynomialCombExactness.lean` packages the polynomial-times-Rvachev integral
 as the corresponding dyadic shifted-polynomial sum and contributes one further
-declaration.  The valuation tranche's new leaf
+declaration.  The subsequent centered Appell/deconvolution and arbitrary-phase
+polynomial-reproduction tranche contributes four declarations: three in
+`RvachevMomentAppell.lean` and one in `RvachevPolynomialSynthesis.lean`.
+The valuation tranche's new leaf
 `PrimePowerBinomialValuation.lean` contributes three theorems: the additive and
 subtraction forms for an arbitrary prime-power Pascal row, and the strict-
 interior dyadic-comb specialization.
@@ -228,21 +231,18 @@ future source addition must preserve the full invariant
 rather than merely avoid worsening a historical backlog.  Run the script for
 live numbers after merging concurrent source work.
 
-The primary exposition and Lean walkthrough PDFs were rebuilt upstream in
-fresh, guarded three-pass Libertinus cycles on 2026-08-31.  They contain 166
-and 126 A4 pages and include the prime-power valuation and exhaustive
-30-declaration closed-form Gaunt crosswalks.  All fonts in these two artifacts
-are embedded and subset, with no Type 3 font.  The merged TeX sources retain
-those results and add expanded formula-and-proof ledgers, so exact post-merge
-source/PDF synchronization is not claimed.
-The retained 236-page canonical frontier, 376-page Integration and Transform
-Frontiers, 301-page Representation Frontiers, and 41-page filed New Frontiers
-PDFs predate the closed-form tranche and are not synchronized with their current
-sources.  Earlier checks of the canonical and filed artifacts, including the
-filed package's historical 20-entry ledger, do not establish current parity.
-Those four PDFs retain explicit pending-build disclosures and await content
-rebuilds; the primary and walkthrough await only parity rebuilds for the
-expanded source commentary.
+The retained primary exposition and Lean walkthrough PDFs are the last
+validated 166- and 126-page A4 renders and include the prime-power valuation
+and exhaustive 30-declaration closed-form Gaunt crosswalks.  Their merged TeX
+sources now also contain the reflected Appell/deconvolution results and
+expanded formula-and-proof commentary, so both PDFs await a post-merge
+three-pass rebuild.  The retained 236-page canonical-frontier, 301-page
+Representation Frontiers, 41-page filed New Frontiers, and 71-page notation-
+catalogue PDFs likewise predate their current sources.  The filed package's
+mixed 20-row ledger verifies its current source and retained PDF as separate
+payloads and does not establish parity.  By contrast, the upstream canonical
+q-series synthesis and rebuilt Integration-and-Transform master remain
+synchronized.  Package-local notices record the remaining rebuild debt.
 
 ### What the review pass caught
 

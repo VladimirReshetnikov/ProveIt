@@ -19,7 +19,7 @@ only as reproducible checks.
 The package audit surfaces are:
 
 - [`theorem_concordance.csv`](theorem_concordance.csv): all 194 immutable
-  source-result rows, fully dispositioned as 36 Lean-proved, 109 human-proved
+  source-result rows, fully dispositioned as 39 Lean-proved, 106 human-proved
   frontier results, 10 conjectures, 15 open problems, and 24 non-applicable
   source environments;
 - [`LEAN_CROSSWALK.md`](LEAN_CROSSWALK.md): exact module and declaration
@@ -40,15 +40,22 @@ at `93db15ad3c0645bd3cfd0a3e6e694e3c86a3aa2b`, a complete pre-retirement
 repository snapshot. The old paths are retained as provenance locators, not
 as live links.
 
+The three newest exact source-row matches are centered Appell deconvolution,
+positive-degree Appell mean-zero, and arbitrary-phase polynomial
+deconvolution. The Appell lattice theorem remains human-proved: Lean covers
+its arbitrary-phase `0 <= n <= N` formula, but not its additional degree-`N+1`
+clause at the parity-selected superconvergent phases.
+
 ## Publication certification
 
-The synchronized publication artifact was built from the canonical TeX at
-revision `1c032f51ce0d401f8d311d14fdb09b12540a0c80` on 1 September 2026 in
+The synchronized publication artifact was built from the canonical TeX after
+merging `origin/main` through `c3720b763d159c3a009b66e6e89ac500b7843e98`
+on 1 September 2026 in
 exactly three serial `pdflatex` passes. The final-pass log contains no TeX
 error, LaTeX or package warning, overfull or underfull box,
 undefined-reference notice, or rerun request. The resulting unencrypted PDF
-has 133 A4 pages and 2,414,428 bytes; its SHA-256 is
-`1d9cf53c16d50e8419eadd746820d358f7f917867a592eb170ad5b326101d163`.
+has 133 A4 pages and 2,417,414 bytes; its SHA-256 is
+`83a2cc2050e4f6c0c6ea26b472c09f05d4c77d2d84d4ba47e316d8176e7c11c6`.
 
 Every one of its 31 font rows is Type 1, embedded, and subset; Libertinus is
 present and no Type 3 font occurs. All 133 pages were rendered at 120 dpi and

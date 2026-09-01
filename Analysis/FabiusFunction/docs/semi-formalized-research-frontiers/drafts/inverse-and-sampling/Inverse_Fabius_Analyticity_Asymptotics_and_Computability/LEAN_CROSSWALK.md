@@ -24,12 +24,12 @@ The first ten columns of theorem_concordance.csv remain field-for-field identica
 
 | Source package | Rows | Lean-proved | Human-proved | Conjecture | Open problem | Not applicable |
 |---|---:|---:|---:|---:|---:|---:|
-| Inverse_and_Sampling_Frontiers | 83 | 5 | 55 | 2 | 10 | 11 |
+| Inverse_and_Sampling_Frontiers | 83 | 8 | 52 | 2 | 10 | 11 |
 | Inverse_Endpoint_All_Orders | 29 | 1 | 20 | 6 | 0 | 2 |
 | Inverse_Fabius_Computability_Report | 40 | 14 | 16 | 1 | 4 | 5 |
 | inverse_fabius_iterates_nowhere_analytic | 24 | 2 | 17 | 1 | 1 | 3 |
 | Non_Elementarity_of_the_Fabius_Function | 18 | 14 | 1 | 0 | 0 | 3 |
-| **Total** | **194** | **36** | **109** | **10** | **15** | **24** |
+| **Total** | **194** | **39** | **106** | **10** | **15** | **24** |
 
 The high human-proved count is intentional. In particular, a full forward asymptotic expansion composed with F inverse is not an explicit all-orders inverse reversion theorem, and a formal Catalan or Richardson identity is not an analytic asymptotic for the actual finite-prefix quantiles.
 
@@ -67,13 +67,16 @@ The four unlabelled source obligations are marked not applicable and point to th
 
 ## Exact declaration index
 
-The table below is generated from the 36 Lean-proved concordance rows. Declaration names are fully qualified.
+The table below is generated from the 39 Lean-proved concordance rows. Declaration names are fully qualified.
 
 | Source key | Canonical label | Lean module | Principal declaration |
 |---|---|---|---|
 | Inverse_and_Sampling_Frontiers:p1:lem:filter-moments | is:p1:lem:filter-moments | FabiusFunction.GeometricLagrangeQMoments | Fabius.quarterGeometricLagrangeQMoment_eq_residual_qBinomial |
 | Inverse_and_Sampling_Frontiers:p1:thm:quarter-exact | is:p1:thm:quarter-exact | FabiusFunction.QuarterQuantile | Fabius.quarterQuantile_eq |
 | Inverse_and_Sampling_Frontiers:p3:thm:self-sampling | is:p3:thm:self-sampling | FabiusFunction.PolynomialCombExactness | Fabius.integral_polynomial_mul_rvachevUp_eq_dyadic_tsum |
+| Inverse_and_Sampling_Frontiers:p3:thm:Appell-deconvolution | is:p3:thm:Appell-deconvolution | FabiusFunction.RvachevMomentAppell | Fabius.integral_eval_rvachevAppellPolynomial_sub_mul_rvachev |
+| Inverse_and_Sampling_Frontiers:p3:cor:Appell-mean-zero | is:p3:cor:Appell-mean-zero | FabiusFunction.RvachevMomentAppell | Fabius.integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero |
+| Inverse_and_Sampling_Frontiers:p3:cor:polynomial-deconvolution | is:p3:cor:polynomial-deconvolution | FabiusFunction.RvachevPolynomialSynthesis | Fabius.normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp |
 | Inverse_and_Sampling_Frontiers:p3:prop:half-integer-sign | is:p3:prop:half-integer-sign | FabiusFunction.ThueMorseLobeSign | Fabius.rvachevFourierProduct_eq_thueMorse_sign_mul_norm |
 | Inverse_and_Sampling_Frontiers:p3:lem:phi-half-lower | is:p3:lem:phi-half-lower | FabiusFunction.SincProductPositive | Fabius.four_ninths_lt_re_rvachevFourierProduct_half |
 | Inverse_Endpoint_All_Orders:thm:K-decomposition | ao:thm:K-decomposition | FabiusFunction.NegativeLaplace | Fabius.negativeLaplaceLog_exact_periodic_decomposition |
@@ -123,7 +126,7 @@ Several paper rows contain multiple clauses. For those rows, the principal decla
 
 ## Formal kernels of stronger human-proved results
 
-The following four canonical results have substantial Lean ingredients, but the
+The following three canonical results have substantial Lean ingredients, but the
 full paper statement is stronger than the cited declaration. They are therefore
 classified as human-proved frontier results, and their Lean fields are
 deliberately blank in the concordance.
@@ -132,8 +135,7 @@ deliberately blank in the concordance.
 |---|---|---|
 | `is:p3:prop:local-factorization` | `FabiusFunction.IntegerZeroLocalFactorization.Fabius.rvachevFourierProduct_int_add_factorization` proves the denominator-cleared integer-zero factorization; adjacent declarations construct the analytic cofactor and its derivative engine. | The same proposition includes the normalized exponential local form and its explicit logarithmic jet. |
 | `is:p3:thm:first-defect` | `FabiusFunction.CombDefectSeries.Fabius.tsum_shifted_monomial_sub_integral_odd` proves the odd-alias representation, and `FabiusFunction.CombFirstDefect.Fabius.iteratedDeriv_rvachevFourierProduct_nat_mul_int_of_odd` evaluates the surviving derivative. | No named declaration assembles the evaluated complex series and both displayed sine/cosine forms. |
-| `is:p3:thm:Appell-deconvolution` | `FabiusFunction.RvachevMomentAppell.Fabius.integral_eval_rvachevAppellPolynomial_add_mul_rvachev` proves the `x+y` smoothing identity. | The paper uses `x-y`; its human proof supplies the evenness/change-of-variables step, but no named formal theorem has that exact conclusion. |
-| `is:p3:cor:polynomial-deconvolution` | `FabiusFunction.RvachevPolynomialSynthesis.Fabius.normalized_tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp` proves phase-free shifted-up synthesis. | The paper gives an arbitrary phase `theta` through a different self-sampling formula. |
+| `is:p3:thm:Appell-lattice-reproduction` | `FabiusFunction.RvachevPolynomialSynthesis.Fabius.normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp`, specialized to `M = 2^N` and `P = X^n`, proves the arbitrary-phase formula for `0 <= n <= N`. | The same paper theorem additionally asserts degree `N+1` at the parity-selected superconvergent phases.  That stronger clause is not formalized, so the whole result remains human-proved and its concordance Lean fields stay blank. |
 
 ## Post-source strengthenings
 

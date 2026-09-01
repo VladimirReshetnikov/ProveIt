@@ -141,9 +141,14 @@ payloads. The former package paths, source hashes, nested lineage, and recovery
 revisions remain in the package's
 [`PROVENANCE.md`](drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/PROVENANCE.md).
 Its synchronized 133-page A4 publication has SHA-256
-`1d9cf53c16d50e8419eadd746820d358f7f917867a592eb170ad5b326101d163`;
+`83a2cc2050e4f6c0c6ea26b472c09f05d4c77d2d84d4ba47e316d8176e7c11c6`;
 the package README records the clean three-pass build, font preflight, and
 all-page visual inspection.
+The reviewed concordance classifies 39 source rows as Lean-proved and 106 as
+human-proved frontier results. Its three newest exact matches are centered
+Appell deconvolution, positive-degree Appell mean-zero, and arbitrary-phase
+polynomial deconvolution; the degree-`N+1` superconvergent phase in the Appell
+lattice theorem remains explicitly human-proved.
 
 Later the same day the groups other than the Fourier-decay corpus were
 **consolidated into volumes**, in two styles: the original members were

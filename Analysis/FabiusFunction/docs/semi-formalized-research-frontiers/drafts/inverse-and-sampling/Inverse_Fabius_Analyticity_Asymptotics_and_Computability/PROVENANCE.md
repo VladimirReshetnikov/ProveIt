@@ -81,10 +81,11 @@ dispositioned. No numerical output is used as a premise of a theorem.
 ## Canonical publication artifact
 
 On 1 September 2026, exactly three serial `pdflatex` passes over the canonical
-TeX at revision `1c032f51ce0d401f8d311d14fdb09b12540a0c80` produced
+TeX after merging `origin/main` through
+`c3720b763d159c3a009b66e6e89ac500b7843e98` produced
 `inverse_fabius_theory.pdf`. The synchronized artifact has 133 A4 pages,
-contains 2,414,428 bytes, and has SHA-256
-`1d9cf53c16d50e8419eadd746820d358f7f917867a592eb170ad5b326101d163`.
+contains 2,417,414 bytes, and has SHA-256
+`83a2cc2050e4f6c0c6ea26b472c09f05d4c77d2d84d4ba47e316d8176e7c11c6`.
 Its final-pass log contains no TeX error, LaTeX or package warning, overfull or
 underfull box, undefined-reference notice, or rerun request.
 
