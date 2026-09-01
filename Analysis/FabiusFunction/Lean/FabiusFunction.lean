@@ -315,6 +315,7 @@ import FabiusFunction.GeneralizedRvachevEntire
 import FabiusFunction.AlternatingNewtonFamily
 import FabiusFunction.AlternatingNewtonZeta
 import FabiusFunction.GeneralizedZeroDivisor
+import FabiusFunction.GeneralizedRvachevIdentifiability
 import FabiusFunction.LobeSignComplete
 import FabiusFunction.GeneralizedRealBound
 import FabiusFunction.GeneralizedExponentialType
