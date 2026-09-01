@@ -4,9 +4,9 @@
 This is intentionally a one-time editorial import, not a canonical-source
 generator.  It selects the mathematically substantive ranges, prefixes TeX
 identifiers, and leaves the resulting chapter files available for ordinary
-human editing.  A reviewed theorem concordance, once produced, rather than
-byte identity with these initial fragments, will record the final semantic
-disposition of every source result.
+human editing.  The theorem concordance, rather than byte identity with these
+initial fragments, records the final semantic disposition of every source
+result.
 """
 
 from __future__ import annotations

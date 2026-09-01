@@ -49,15 +49,26 @@ If $f\in\Elem$, then $\An(f)$ is a dense open subset of~$\RealNumbers$.
 \end{theorem}
 
 \begin{proof}
-Openness is \Cref{ne:lem:open}.  For density, induct on the derivation in
-\Cref{ne:def:elem}.  Constants and the identity are analytic everywhere.
-Finite intersections of dense open sets are dense, so sums, products, and
-negation preserve the assertion.  For every unary constructor,
-\Cref{ne:lem:generators} gives a finite set of exceptional input values and
-\Cref{ne:lem:key} proves that composing with that constructor preserves a
-dense analytic locus.  These are exactly the constructors of
-\Cref{ne:def:elem}, completing the induction.  The expanded case-by-case
-version appears in \Cref{ne:sec:density}.
+By \Cref{ne:lem:open}, the analytic locus of every real function is open, so
+only density requires proof.  Induct on the derivation of $f$ in
+\Cref{ne:def:elem}.  A constant and the identity are analytic everywhere.
+
+Suppose first that the final constructor is binary.  By the induction
+hypothesis, the analytic loci of its two arguments are dense and open; their
+intersection is therefore dense.  On that intersection both arguments are
+analytic, hence so are their sum and product.  Thus the analytic locus of the
+result contains a dense set.  Negation is even more immediate: it preserves
+every analytic point.
+
+It remains to treat the unary constructors.  For the reciprocal, logarithm,
+and a fixed real power, the outer function is analytic away from the single
+value $0$; for the arcsine it is analytic away from $\{-1,1\}$; and for the
+exponential, sine, cosine, and arctangent there are no exceptional values.
+These assertions are \Cref{ne:lem:generators}.  In every case the exceptional
+set is finite, so \Cref{ne:lem:key}, applied to the inner function supplied by
+the induction hypothesis, makes the analytic locus of the composite dense.
+These are all the constructors in \Cref{ne:def:elem}, and the induction is
+complete.
 \end{proof}
 
 \begin{corollary}[Main result]\label{ne:cor:main}
@@ -388,27 +399,15 @@ place where a theorem of substance about real analytic functions is used;
 well.
 \end{remark}
 
-\subsection{The induction}
+\subsection{Assembly}
 
-\begin{proof}[Proof of \Cref{ne:thm:density}]
-Openness of $\An(f)$ is Lemma~\ref{ne:lem:open} and holds for every $f$.  Density is
-proved by induction on the derivation of $f$ in Definition~\ref{ne:def:elem}.
-
-\emph{Constants and the identity.}  Here $\An(f)=\RealNumbers$.
-
-\emph{Sums and products.}  If $\An(f)$ and $\An(g)$ are dense then so is
-$\An(f)\cap\An(g)$, because a finite intersection of dense open sets is dense.
-Analyticity is preserved by sums and products pointwise, so
-$\An(f)\cap\An(g)\subseteq\An(f+g)$ and likewise for $fg$; a superset of a
-dense set is dense.
-
-\emph{Negation.}  $\An(f)\subseteq\An(-f)$.
-
-\emph{The unary clauses.}  Apply Lemma~\ref{ne:lem:key} with the pair $(f,g)$ and the
-finite bad set $B$ read off from Lemma~\ref{ne:lem:generators}: $B=\varnothing$ for
-$\exp$, $\sin$, $\cos$, $\arctan$; $B=\{0\}$ for $y\mapsto y^{-1}$, for
-$\log$, and for $y\mapsto y^{r}$; and $B=\{-1,1\}$ for $\arcsin$.
-\end{proof}
+The complete structural induction proving \Cref{ne:thm:density} is placed
+beside the theorem.  The present section supplies precisely its two
+non-formal ingredients: \Cref{ne:lem:open} makes the invariant open, while
+\Cref{ne:lem:key} shows that a unary constructor with finitely many exceptional
+input values preserves density.  Together with the exceptional sets computed
+in \Cref{ne:lem:generators}, this exhausts the grammar of
+\Cref{ne:def:elem}; there is no second proof to add here.
 
 \begin{remark}[Sharpness]
 Density cannot be strengthened to ``$\An(f)=\RealNumbers$'': the elementary functions
@@ -662,7 +661,8 @@ $y$.  Thus every nonempty open interval in $U$ meets $\An(g)$, as required.
 
 Applied to every nonempty open subset at once, this says that a continuous
 inverse branch is analytic on a relatively dense subset of its domain, and the
-domain need not be open: \texttt{analyticDenseOn\_of\_rightInverse}.  For a
+domain need not be open:
+\path{Fabius.analyticDenseOn_of_rightInverse}.  For a
 domain with empty interior the statement is vacuous, which is the correct
 reading --- there is no open set on which to test.
 

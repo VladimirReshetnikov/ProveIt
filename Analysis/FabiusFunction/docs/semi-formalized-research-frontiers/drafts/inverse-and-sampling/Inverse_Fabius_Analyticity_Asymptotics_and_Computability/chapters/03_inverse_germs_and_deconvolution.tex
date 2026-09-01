@@ -11,9 +11,9 @@
 \subsection{A general inverse perturbation theorem}
 
 The first new step is abstract.  It is useful well beyond the Fabius function.
-Let $q=1/4$ and abbreviate $Q_n=q^n$.  From \eqref{is:p1:eq:forward-prefix-expansion},
+Let $q=1/4$ and abbreviate $\varepsilon_n=q^n$.  From \eqref{is:p1:eq:forward-prefix-expansion},
 \begin{equation}
- \Fn(x)=F(x)+\sum_{j=1}^{J-1}a_j(x)Q_n^j+\BigO(Q_n^J),
+ \Fn(x)=F(x)+\sum_{j=1}^{J-1}a_j(x)\varepsilon_n^j+\BigO(\varepsilon_n^J),
  \qquad
  a_j(x)=(-1)^jb_jF^{(2j)}(x).
  \label{is:p1:eq:an-def}
@@ -25,21 +25,21 @@ Fix $0<\eta<1/2$ and an integer $J\ge1$.  There exist smooth functions
 $c_1,\ldots,c_{J-1}$ on $[\eta,1-\eta]$ such that
 \begin{equation}
  \boxed{
- \Gn(y)=\FabiusQuantile(y)+\sum_{j=1}^{J-1}c_j(y)Q_n^j
- +\BigO_{\eta,J}(Q_n^J)}
+ \Gn(y)=\FabiusQuantile(y)+\sum_{j=1}^{J-1}c_j(y)\varepsilon_n^j
+ +\BigO_{\eta,J}(\varepsilon_n^J)}
  \label{is:p1:eq:Gn-expansion}
 \end{equation}
 uniformly for $y\in[\eta,1-\eta]$.  Put $x=\FabiusQuantile(y)$ and
-$X_m=m!c_m(y)$.  With $\mathcal B_{m,k}$ denoting the partial exponential Bell
+$\widehat c_m:=m!c_m(y)$.  With $\mathcal B_{m,k}$ denoting the partial exponential Bell
 polynomial and $\mathcal B_{0,0}=1$, the coefficients obey
 \begin{align}
  c_m(y)=-\frac1{F'(x)}\Bigg[&
  \frac1{m!}\sum_{k=2}^{m}F^{(k)}(x)
- \mathcal B_{m,k}(X_1,\ldots,X_{m-k+1})
+ \mathcal B_{m,k}(\widehat c_1,\ldots,\widehat c_{m-k+1})
  \notag\\
  &+\sum_{j=1}^{m}\frac1{(m-j)!}
  \sum_{k=0}^{m-j}a_j^{(k)}(x)
- \mathcal B_{m-j,k}(X_1,\ldots,X_{m-j-k+1})
+ \mathcal B_{m-j,k}(\widehat c_1,\ldots,\widehat c_{m-j-k+1})
  \Bigg].
  \label{is:p1:eq:Bell-inverse-recursion}
 \end{align}
@@ -49,25 +49,30 @@ In the second line, the term with $m=j$ is interpreted as $a_m(x)$.
 \begin{proof}
 On the compact interval $K=\FabiusQuantile([\eta,1-\eta])\Subset(0,1)$, $F'$ has a
 positive minimum.  The derivative version of \eqref{is:p1:eq:forward-prefix-expansion}
-therefore implies $\Fn'>0$ on a fixed neighborhood of $K$ for all large $n$,
+therefore implies $(\Fn)'>0$ on a fixed neighborhood of $K$ for all large $n$,
 so the inverse branch $\Gn$ exists there.
 
-Write $x=\FabiusQuantile(y)$ and
+Write $x=\FabiusQuantile(y)$ and use the finite ansatz
 \[
- \delta_n(y):=\Gn(y)-x=\sum_{m\ge1}c_m(y)Q_n^m.
+ \delta_n^{[J]}(y):=\sum_{m=1}^{J-1}c_m(y)\varepsilon_n^m.
 \]
-Substitute $x+\delta_n$ into \eqref{is:p1:eq:an-def} and use
-$\Fn(x+\delta_n)=F(x)$.  The coefficient of $Q_n^m$ in
-$F(x+\delta_n)-F(x)$ is
+Substitute $x+\delta_n^{[J]}$ into the finite expansion
+\eqref{is:p1:eq:an-def}.  The coefficient of $\varepsilon_n^m$ in
+$F(x+\delta_n^{[J]})-F(x)$ is
 \[
  F'(x)c_m+\frac1{m!}\sum_{k=2}^{m}F^{(k)}(x)
  \mathcal B_{m,k}(1!c_1,2!c_2,\ldots).
 \]
-The coefficient of $Q_n^{m-j}$ in $a_j(x+\delta_n)$ is the corresponding
+The coefficient of $\varepsilon_n^{m-j}$ in $a_j(x+\delta_n)$ is the corresponding
 second Bell sum in \eqref{is:p1:eq:Bell-inverse-recursion}.  Solving the resulting
 triangular equation for $c_m$ gives the formula.  Taylor's theorem with a
-uniform remainder and the lower bound for $F'$ convert the formal cancellation
-through order $J-1$ into the uniform remainder in \eqref{is:p1:eq:Gn-expansion}.
+uniform remainder shows that
+$\Fn(x+\delta_n^{[J]})=y+\BigO_{\eta,J}(\varepsilon_n^J)$.
+The uniform positive lower bound for $(\Fn)'$ then converts this residual in
+the function value into
+$\Gn(y)=x+\delta_n^{[J]}(y)+\BigO_{\eta,J}(\varepsilon_n^J)$, proving the claimed
+finite-order expansion without assuming convergence of an infinite series in
+$\varepsilon_n$.
 \end{proof}
 
 \subsection{The first two quantile corrections}
@@ -152,15 +157,15 @@ $\sum_j\lambda_{s,j}=1$.
 Take $p=s-1$ in the general geometric Lagrange theorem
 \Cref{is:p2:thm:geometric-lagrange-residual}.  Then
 $\lambda_{s,j}=w_{p,j}(q)$, and
-\eqref{is:p2:eq:w-annihilation,is:p2:eq:w-residual} become exactly
+\cref{is:p2:eq:w-annihilation,is:p2:eq:w-residual} become exactly
 \eqref{is:p1:eq:all-filter-moments}.  The case $k=0$ is the constant
 interpolation identity $\sum_j\lambda_{s,j}=1$.
 \end{proof}
 
 Define the extrapolated quantile
 \begin{equation}
- \mathcal G_{n,s}(y):=\sum_{j=0}^{s-1}\lambda_{s,j}G_{n+j}(y),
- \qquad G_m:=P_m^{-1}.
+ \mathcal G_{n,s}(y):=\sum_{j=0}^{s-1}\lambda_{s,j}
+ \FiniteSplineInverse{n+j}(y).
  \label{is:p1:eq:G-richardson}
 \end{equation}
 
@@ -186,12 +191,14 @@ the displayed leading coefficient at $k=s$.
 
 The first filters are
 \begin{align}
- \mathcal G_{n,2}&=\frac{4G_{n+1}-G_n}{3},
+ \mathcal G_{n,2}&=\frac{4\FiniteSplineInverse{n+1}-\Gn}{3},
  \label{is:p1:eq:R2-filter}\\
- \mathcal G_{n,3}&=\frac{G_n-20G_{n+1}+64G_{n+2}}{45},
+ \mathcal G_{n,3}&=\frac{\Gn-20\FiniteSplineInverse{n+1}
+ +64\FiniteSplineInverse{n+2}}{45},
  \label{is:p1:eq:R3-filter}\\
  \mathcal G_{n,4}&=
- \frac{-G_n+84G_{n+1}-1344G_{n+2}+4096G_{n+3}}{2835}.
+ \frac{-\Gn+84\FiniteSplineInverse{n+1}-1344\FiniteSplineInverse{n+2}
+ +4096\FiniteSplineInverse{n+3}}{2835}.
  \label{is:p1:eq:R4-filter}
 \end{align}
 They have orders $16^{-n}$, $64^{-n}$, and $256^{-n}$ respectively.
@@ -218,7 +225,7 @@ Therefore $z\mapsto p_n(\xi_r+z)$ is an ordinary polynomial of degree at most
 $r$ on $[-a,a]$.  The next theorem identifies that polynomial exactly.
 
 Let $M(t)=\Expectation\EulerE^{tY}$ be the moment generating function of $Y$.  Since
-$M(t)=\Phi(\ImaginaryUnit t)$, \eqref{is:p1:eq:b-def} gives
+$M(t)=\PhiAng(\ImaginaryUnit t)$, \eqref{is:p1:eq:b-def} gives
 \begin{equation}
  \frac1{M(t)}=\sum_{j=0}^{\infty}(-1)^jb_jt^{2j}.
  \label{is:p1:eq:reciprocal-MGF}
@@ -297,7 +304,7 @@ $Q=0$ satisfying
 For all sufficiently large $n$,
 \begin{equation}
  \boxed{
- G_n(y_r)=x_r+\Delta_r(4^{-n}).}
+ \Gn(y_r)=x_r+\Delta_r(4^{-n}).}
  \label{is:p1:eq:exact-quantile-germ}
 \end{equation}
 The function $\Delta_r$ is algebraic over $\RationalNumbers(Q)$, and its Taylor coefficients are
@@ -315,7 +322,7 @@ $\Delta_r$ is algebraic and its recursive Taylor coefficients are rational.
 Moreover $\Delta_r(Q)=\BigO(Q)$, so
 $|\Delta_r(4^{-n})|<2^{-n}$ for all sufficiently large $n$.  On that interval
 \eqref{is:p1:eq:exact-local-Pn} applies, and its derivative remains positive near zero.
-The unique local solution of $P_n(x)=y_r$ is therefore exactly
+The unique local solution of $\Fn(x)=y_r$ is therefore exactly
 $x_r+\Delta_r(4^{-n})$.
 \end{proof}
 
@@ -364,8 +371,8 @@ The corresponding outputs are
  \qquad y_4=\frac{143}{2073600}.
  \label{is:p1:eq:y-first}
 \end{equation}
-Thus $G_n(1/288)$ is, for large $n$, the small real root of the cubic
-\eqref{is:p1:eq:A3local}, while $G_n(143/2073600)$ is governed by the quartic
+Thus $\Gn(1/288)$ is, for large $n$, the small real root of the cubic
+\eqref{is:p1:eq:A3local}, while $\Gn(143/2073600)$ is governed by the quartic
 \eqref{is:p1:eq:A4local}.  Their first coefficients are
 \begin{align}
  \Delta_3(Q)&=\frac85Q+\frac{512}{125}Q^2
@@ -386,7 +393,7 @@ asymptotic step.
 For every $n\ge3$,
 \begin{equation}
  \boxed{
- G_n\!\left(\frac5{72}\right)
+ \Gn\!\left(\frac5{72}\right)
  =\frac14+\frac{\sqrt{1+\frac{64}{9}4^{-n}}-1}{8}.}
  \label{is:p1:eq:quarter-exact}
 \end{equation}
@@ -399,7 +406,7 @@ For $r=2$ and $n\ge3$, the positive root
 \]
 satisfies $0<z_n<2^{-n}$.  The exact local identity
 \[
- P_n(1/4+z)=\frac5{72}+z+4z^2-\frac49 4^{-n}
+ \Fn(1/4+z)=\frac5{72}+z+4z^2-\frac49 4^{-n}
 \]
 therefore applies at $z=z_n$, and the right side equals $5/72$.  Positivity of
 the derivative $1+8z$ gives uniqueness on the local branch.
@@ -462,7 +469,7 @@ $q^{\binom s2}=2^{-s(s-1)}$.
 
 The first three error laws are therefore
 \begin{align}
- G_n(5/72)-\frac14&\sim\frac49\,4^{-n},\label{is:p1:eq:quarter-raw-law}\\
+ \Gn(5/72)-\frac14&\sim\frac49\,4^{-n},\label{is:p1:eq:quarter-raw-law}\\
  \mathcal G_{n,2}(5/72)-\frac14&\sim\frac{16}{81}\,16^{-n},\label{is:p1:eq:quarter-R2-law}\\
  \mathcal G_{n,3}(5/72)-\frac14&\sim\frac{32}{729}\,64^{-n}.
  \label{is:p1:eq:quarter-R3-law}
@@ -580,7 +587,7 @@ For every $r\ge2$,
  =\frac{2^{r-1}(r-1)d_{r-2}}{9d_{r-1}}>0.}
  \label{is:p1:eq:first-dyadic-germ-coefficient}
 \end{equation}
-For $r=1$, $\Delta_1\equiv0$ and $G_n(1/2)=1/2$ exactly.
+For $r=1$, $\Delta_1\equiv0$ and $\Gn(1/2)=1/2$ exactly.
 \end{proposition}
 
 \begin{proof}
@@ -603,12 +610,13 @@ sequence controlled by adjacent dyadic moments.
 % Source fragment: Inverse and sampling frontiers; prefix is.
 \subsection{The two random series}
 
-Let $(U_j)_{j\ge1}$ be independent uniform random variables on $[0,1]$, and let
-$(V_j)_{j\ge1}$ be independent uniform random variables on $[-1,1]$.  Put
+Recall the common variables from \cref{is:p1:eq:Y-prefix}: $(V_j)_{j\ge1}$
+are independent and uniform on $[0,1]$, while $U_j=2V_j-1$ is uniform on
+$[-1,1]$.  Thus
 \begin{equation}
- X=\sum_{j\ge1}2^{-j}U_j,
+ X=\sum_{j\ge1}2^{-j}V_j,
  \qquad
- Y=\sum_{j\ge1}2^{-j}V_j=2X-1.
+ Y=\sum_{j\ge1}2^{-j}U_j=2X-1.
  \label{is:p2:eq:XY-series}
 \end{equation}
 Then $F$ is the distribution function of $X$ and $\RvachevUp$ is the density of $Y$.  Their moment
@@ -631,7 +639,7 @@ Self-similarity gives
 \end{equation}
 On the imaginary axis,
 \begin{equation}
- M(2\pi\ImaginaryUnit z)=\prod_{k\ge0}\SincPi(z/2^k)=:\Phi(z),
+ M(2\pi\ImaginaryUnit z)=\prod_{k\ge0}\SincPi(z/2^k)=:\PhiCyc(z),
  \qquad \SincPi u=\frac{\sin(\pi u)}{\pi u}.
  \label{is:p2:eq:M-Phi}
 \end{equation}
@@ -664,6 +672,102 @@ The first centered moments are
 These established rational sequences will become coefficients in the exact finite-prefix expansion.
 
 % Source fragment: Inverse and sampling frontiers; prefix is.
+\section{Algebraic Taylor shadows of the inverse Fabius function}
+\label{is:p2:sec:inverse-germs}
+
+\subsection{The finite dyadic jet polynomial}
+
+Fix a reduced dyadic point
+\begin{equation}
+ x_0=\frac{a}{2^N}\in(0,1),
+ \qquad a\ \text{odd},
+ \qquad y_0=F(x_0).
+ \label{is:p2:eq:x0-y0}
+\end{equation}
+The derivative atlas \eqref{ii:eq:derivative-atlas} gives
+\begin{equation}
+ f_k:=F^{(k)}(x_0)
+ =2^{\binom{k+1}{2}}\ThetaF(2^kx_0),
+ \qquad
+ Q_{x_0}(h):=\sum_{k=1}^{N}\frac{f_k}{k!}h^k.
+ \label{is:p2:eq:Q-dyadic}
+\end{equation}
+For $k>N$, the argument $2^kx_0$ is an even integer, so the block formula
+\eqref{ii:eq:theta-block} gives $F^{(k)}(x_0)=0$.  Hence $y_0+Q_{x_0}$
+is the complete Taylor series of $F$ at $x_0$, not merely a finite-order
+truncation.  The exact dyadic evaluator in \cref{is:p3:sec:qbinomial} shows
+that every $f_k$ is rational.  Moreover $f_1=F'(x_0)>0$.
+
+Define the smooth remainder
+\begin{equation}
+ \rho_{x_0}(h):=F(x_0+h)-y_0-Q_{x_0}(h).
+ \label{is:p2:eq:rho-flat}
+\end{equation}
+Every derivative of $\rho_{x_0}$ at zero vanishes.  Nevertheless
+$\rho_{x_0}$ is not identically zero on any neighborhood: otherwise $F$
+would agree locally with a polynomial, contrary to \cref{ne:thm:nowhere}.
+
+\begin{theorem}[Dyadic algebraic inverse germ; \statusnew]
+\label{is:p2:thm:algebraic-inverse-germ}
+There is a unique real-analytic germ $S_{x_0}$ at zero satisfying
+\begin{equation}
+ Q_{x_0}(S_{x_0}(z))=z,
+ \qquad S_{x_0}(0)=0.
+ \label{is:p2:eq:S-inverse}
+\end{equation}
+It is algebraic over $\RationalNumbers(z)$.  On a neighborhood of zero,
+\begin{equation}
+ \boxed{
+ \FabiusQuantile(y_0+z)
+ =x_0+S_{x_0}(z)+R_{x_0}(z),}
+ \label{is:p2:eq:G-shadow}
+\end{equation}
+where $R_{x_0}$ is smooth, flat at zero, and nonzero on every neighborhood
+of zero.  Consequently the complete Taylor series of $\FabiusQuantile$ at
+$y_0$ has positive radius and an algebraic sum, but that sum does not
+represent $\FabiusQuantile$ on any neighborhood.
+\end{theorem}
+
+\begin{proof}
+Because $Q_{x_0}'(0)=f_1>0$, the real-analytic inverse-function theorem
+gives a unique analytic inverse germ $S_{x_0}$.  It satisfies the polynomial
+equation $Q_{x_0}(w)-z=0$ over $\RationalNumbers(z)$, so it is algebraic.
+
+Put
+\[
+ H(z):=\FabiusQuantile(y_0+z)-x_0.
+\]
+Then $H(0)=0$, $H'(0)=1/f_1>0$, and
+\begin{equation}
+ z=Q_{x_0}(H(z))+\rho_{x_0}(H(z)).
+ \label{is:p2:eq:H-flat-reversion}
+\end{equation}
+Fa\`a di Bruno's formula shows directly that $\rho_{x_0}\comp H$ is flat:
+every term in every derivative at zero contains a derivative of
+$\rho_{x_0}$ at $H(0)=0$.  Taking formal Taylor series in
+\eqref{is:p2:eq:H-flat-reversion} therefore gives
+$Q_{x_0}(\mathsf T_H(z))=z$.  A formal series with zero constant term and
+nonzero linear coefficient has a unique compositional inverse; hence
+$\mathsf T_H=\mathsf T_{S_{x_0}}$.  Thus
+$R_{x_0}:=H-S_{x_0}$ is smooth and flat.
+
+If $R_{x_0}$ vanished throughout some neighborhood, then
+$\FabiusQuantile$ would agree there with the analytic germ
+$x_0+S_{x_0}$.  Its derivative at $y_0$ is positive, so the analytic
+inverse-function theorem would make $F$ analytic at $x_0$, again
+contradicting \cref{ne:thm:nowhere}.  Therefore the flat remainder is
+nonzero in every neighborhood.  Finally, its vanishing Taylor series shows
+that the Taylor series of $\FabiusQuantile$ is precisely the convergent
+algebraic series of $S_{x_0}$.
+\end{proof}
+
+\begin{resultbox}[Analytic shadow versus the actual inverse]
+At each dyadic output $F(a/2^N)$, every derivative of the inverse is encoded
+by a finite rational polynomial, yet the actual inverse differs from that
+algebraic germ by a nontrivial flat function.  Positive Taylor radius and
+local analyticity are therefore sharply different properties here.
+\end{resultbox}
+
 \subsection{Lagrange--B\"urmann and Bell formulas}
 
 Factor
@@ -720,6 +824,125 @@ moment generating function in \cref{is:p2:sec:appell}.  The two appearances are 
 one organizes set partitions by the number of blocks, while the other sums over all block counts.
 \end{remark}
 
+\subsection{The midpoint and quarter-point shadows}
+
+At $x_0=y_0=1/2$, reflection gives $F'(1/2)=2$ and makes every higher
+derivative vanish.  Thus
+\begin{equation}
+ Q_{1/2}(h)=2h,
+ \qquad
+ S_{1/2}(z)=\frac z2,
+ \qquad
+ \FabiusQuantile(1/2+z)=\frac12+\frac z2+R_{1/2}(z).
+ \label{is:p2:eq:midpoint-shadow}
+\end{equation}
+The reflection law for $\FabiusQuantile$ makes $R_{1/2}$ odd;
+\cref{is:p2:thm:algebraic-inverse-germ} makes it flat and nonzero in every
+neighborhood.  Hence every derivative beyond the first vanishes even though
+the inverse is not affine on any interval.
+
+The first nonlinear shadow has a classical coefficient sequence.
+
+\begin{theorem}[Catalan inverse jet at $F(1/4)$; \statusnew]
+\label{is:p2:thm:Catalan-quarter}
+One has
+\begin{equation}
+ F(1/4)=\frac5{72},
+ \qquad F'(1/4)=1,
+ \qquad F''(1/4)=8,
+ \qquad F^{(m)}(1/4)=0\quad(m\ge3).
+ \label{is:p2:eq:quarter-jet}
+\end{equation}
+Consequently
+\begin{equation}
+ Q_{1/4}(h)=h+4h^2,
+ \qquad
+ S_{1/4}(z)=\frac{\sqrt{1+16z}-1}{8},
+ \label{is:p2:eq:quarter-shadow}
+\end{equation}
+and, for every $m\ge1$,
+\begin{equation}
+ \boxed{
+ \FabiusQuantile^{(m)}(5/72)
+ =m!(-1)^{m-1}4^{m-1}C_{m-1},
+ \qquad C_r=\frac1{r+1}\binom{2r}{r}.}
+ \label{is:p2:eq:Catalan-derivatives}
+\end{equation}
+In particular,
+\begin{equation}
+ \AbsoluteValue{\FabiusQuantile^{(m)}(5/72)}
+ \sim\frac{m!\,16^{m-1}}{\sqrt\pi\,(m-1)^{3/2}}.
+ \label{is:p2:eq:Catalan-asymptotic}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The exact dyadic formula of \cref{is:p3:sec:qbinomial} gives
+$F(1/4)=5/72$.  The derivative atlas and the values
+$\ThetaF(1/2)=F(1/2)=1/2$ and $\ThetaF(1)=\RvachevUp(0)=1$ give the first
+two derivatives in \eqref{is:p2:eq:quarter-jet}.  For $m\ge3$, the argument
+$2^m/4$ is an even integer, so \eqref{ii:eq:theta-block} gives zero.
+Solving $z=h+4h^2$ for the branch with $h(0)=0$ proves
+\eqref{is:p2:eq:quarter-shadow}.  The Catalan generating function, after
+the substitution $w=-4z$, is
+\[
+ \frac{\sqrt{1+16z}-1}{8}
+ =\sum_{m\ge1}(-1)^{m-1}4^{m-1}C_{m-1}z^m.
+\]
+Because the flat remainder has zero derivatives, multiplying the coefficient
+of $z^m$ by $m!$ proves \eqref{is:p2:eq:Catalan-derivatives}.  Finally use
+$C_r\sim4^r/(\sqrt\pi\,r^{3/2})$.
+\end{proof}
+
+For reference, the first values are
+\[
+ \FabiusQuantile'(5/72)=1,
+ \quad \FabiusQuantile''(5/72)=-8,
+ \quad \FabiusQuantile^{(3)}(5/72)=192,
+ \quad \FabiusQuantile^{(4)}(5/72)=-7680.
+\]
+These rapidly growing derivatives belong to the algebraic square-root
+shadow; they do not assert local analyticity of the actual inverse.
+
+\subsection{The eighth-point cubic and the singularity atlas}
+
+At $x_0=1/8$, exact dyadic evaluation and the derivative atlas give
+\begin{equation}
+ F(1/8)=\frac1{288},
+ \qquad F'(1/8)=\frac5{36},
+ \qquad F''(1/8)=4,
+ \qquad F^{(3)}(1/8)=64.
+ \label{is:p2:eq:eighth-jet}
+\end{equation}
+Thus the inverse Taylor series at $1/288$ is the origin branch of
+\begin{equation}
+ z=\frac5{36}h+2h^2+\frac{32}{3}h^3,
+ \label{is:p2:eq:eighth-cubic}
+\end{equation}
+and \cref{is:p2:thm:inverse-derivatives} specializes to
+\begin{equation}
+ \FabiusQuantile^{(m)}(1/288)
+ =(m-1)![u^{m-1}]
+ \left(\frac5{36}+2u+\frac{32}{3}u^2\right)^{-m}.
+ \label{is:p2:eq:eighth-coeff}
+\end{equation}
+
+The finite polynomial $Q_{x_0}$ also turns large-order derivative analysis
+into finite algebraic geometry.  Singularities of its inverse branch occur
+at critical values $Q_{x_0}(u_c)$ with $Q_{x_0}'(u_c)=0$ (or at infinity).
+A nearest simple critical value produces the universal square-root
+$m^{-3/2}$ coefficient factor seen above; higher critical multiplicity
+produces the corresponding Puiseux exponent.
+
+\begin{problem}[Dyadic inverse singularity atlas]
+\label{is:p2:prob:dyadic-singularity-atlas}
+For every reduced dyadic $a/2^N$, classify the critical values of
+$Q_{a/2^N}$, determine those visible from the origin branch and hence its
+exact convergence radius, and describe the Galois and $2$-adic structure of
+the associated Puiseux constants.  The cases $N=2$ and $N=3$ are the
+quadratic Catalan and cubic examples above.
+\end{problem}
+
 % Source fragment: Inverse and sampling frontiers; prefix is.
 \section{Kabaya--Iri polynomials and the Rvachev Appell inverse}
 \label{is:p2:sec:appell}
@@ -763,7 +986,7 @@ normalization.  The centering eliminates every odd cumulant and makes the pole a
 
 \begin{proposition}[Classical Appell package; \statuslit]
 \label{is:p2:prop:Appell-package}
-For $n\ge1$,
+For $n\ge1$ and, in the biorthogonality identities, every integer $r\ge0$,
 \begin{align}
  P_n'(x)&=nP_{n-1}(x),
  &A_n'(x)&=nA_{n-1}(x),
@@ -802,9 +1025,54 @@ Differentiate the generating functions with respect to $x$ to obtain
  \Expectation\sum_{n\ge0}P_n(x+X)\frac{t^n}{n!}
  =\Expectation\frac{\EulerE^{(x+X)t}}{L(t)}=\EulerE^{xt},
 \]
-and similarly for $A_n$.  The biorthogonality is Lee's general compactly supported
-distribution identity specialized to $f_X$ and transported affinely to $\RvachevUp$.  It can also be checked
-directly by repeated integration by parts and \eqref{is:p2:eq:mean-value-inversion}.
+and similarly for $A_n$.  Here is the distributional calculation, including
+the case in which the order of differentiation exceeds the polynomial degree.
+Regard $f_X$ as a compactly supported smooth function on $\RealNumbers$.  By
+the definition of a distributional derivative and repeated integration by
+parts,
+\begin{equation}
+ \left\langle(-1)^r f_X^{(r)},\frac{P_n}{n!}\right\rangle
+ =\left\langle f_X,
+   \left(\frac{P_n}{n!}\right)^{(r)}\right\rangle.
+ \label{is:p2:eq:P-biorthogonal-calculation}
+\end{equation}
+There are no boundary terms in this formulation.  Iterating the Appell rule
+shows that the polynomial on the right is
+\[
+ \left(\frac{P_n}{n!}\right)^{(r)}
+ =\begin{cases}
+   P_{n-r}/(n-r)!,&0\le r\le n,\\
+   0,&r>n.
+  \end{cases}
+\]
+For $r\le n$, the right side of
+\eqref{is:p2:eq:P-biorthogonal-calculation} is therefore
+\[
+ \frac{\Expectation P_{n-r}(X)}{(n-r)!}
+ =\delta_{rn},
+\]
+where the second equality is \eqref{is:p2:eq:mean-value-inversion} at $x=0$
+(the expectation is $1$ for $n-r=0$ and $0$ for $n-r>0$); for $r>n$ the
+pairing is zero because the test polynomial has vanished.  This proves
+\eqref{is:p2:eq:P-biorthogonal} for every $r\ge0$.
+
+For completeness, the centered identity is exactly the affine transport of
+this calculation.  Since $Y=2X-1$,
+\[
+ \RvachevUp(y)=\frac12 f_X\!\left(\frac{y+1}{2}\right),
+ \qquad
+ \RvachevUp^{(r)}(y)=2^{-r-1}f_X^{(r)}\!\left(\frac{y+1}{2}\right),
+\]
+while \eqref{is:p2:eq:A-P-affine} gives
+$A_n(y)=2^nP_n((y+1)/2)$.  Thus the substitution $y=2u-1$ gives
+\begin{align*}
+ \int_{-1}^{1}(-1)^r\RvachevUp^{(r)}(y)
+       \frac{A_n(y)}{n!}\,\Differential y
+ &=2^{n-r}
+   \left\langle(-1)^r f_X^{(r)},\frac{P_n}{n!}\right\rangle\\
+ &=2^{n-r}\delta_{rn}=\delta_{rn},
+\end{align*}
+which is \eqref{is:p2:eq:A-biorthogonal}.
 \end{proof}
 
 \begin{remark}
@@ -970,16 +1238,78 @@ In particular,
 \end{theorem}
 
 \begin{proof}
-Independence and \eqref{is:p2:eq:logistic-cf} give
+We first record the integrability needed to turn the formal coefficient
+comparison into an analytic one.  The logistic density satisfies
+$\ell(x)\le\EulerE^{-\AbsoluteValue{x}}$, so
+$\Expectation\EulerE^{s\AbsoluteValue{\Lambda}}<\infty$ for $0\le s<1$.
+Fix $0<a<2\pi$ and put $s_j=a/(\pi2^j)$.  Since
 \[
- \Expectation\EulerE^{\ImaginaryUnit tZ}
- =\prod_{j\ge1}
- \frac{t/2^j}{\sinh(t/2^j)}=\frac1{M(t)}.
+ \log\Expectation\EulerE^{s\AbsoluteValue{\Lambda}}=\BigO(s)
+ \qquad(s\downarrow0),
 \]
-The product converges locally uniformly on the real axis because the logarithm of its $j$th factor
-is $\BigO(4^{-j}t^2)$.  Multiplying by $\EulerE^{xt}$ and comparing the Taylor expansion at $0$ proves
-\eqref{is:p2:eq:A-logistic-moment}.  The affine identity \eqref{is:p2:eq:A-P-affine} gives
-\eqref{is:p2:eq:P-logistic-moment}.  Setting $x=0$ and using symmetry of $Z$ proves
+independence and monotone convergence give
+\begin{equation}
+ \Expectation\exp\!\left(
+   a\sum_{j\ge1}\frac{\AbsoluteValue{\Lambda_j}}{\pi2^j}
+  \right)
+ =\prod_{j\ge1}\Expectation\EulerE^{s_j\AbsoluteValue{\Lambda}}
+ <\infty.
+ \label{is:p2:eq:Z-exponential-moment}
+\end{equation}
+In particular, the defining series for $Z$ converges absolutely almost surely
+and $\Expectation\EulerE^{a\AbsoluteValue Z}<\infty$ for every
+$0<a<2\pi$.
+
+Let $Z_N=\sum_{j=1}^N\Lambda_j/(\pi2^j)$.  Independence and
+\eqref{is:p2:eq:logistic-cf} give, for real $t$,
+\[
+ \Expectation\EulerE^{\ImaginaryUnit tZ_N}
+ =\prod_{j=1}^{N}\frac{t/2^j}{\sinh(t/2^j)}.
+\]
+The almost-sure convergence $Z_N\to Z$ and bounded convergence pass the left
+side to $\Expectation\EulerE^{\ImaginaryUnit tZ}$.  On the right,
+\[
+ \log\!\left(\frac{w}{\sinh w}\right)=\BigO(w^2)
+ \qquad(w\to0),
+\]
+so the product converges locally uniformly for complex $t$ in
+$\AbsoluteValue t<2\pi$; its factors are nonzero there, and its product is
+the reciprocal of the locally uniformly convergent product defining $M(t)$.
+The exponential-moment bound makes
+$t\mapsto\Expectation\EulerE^{\ImaginaryUnit tZ}$ holomorphic on every strip
+$\AbsoluteValue{\operatorname{Im}t}<a<2\pi$.  Thus the identity theorem
+extends the equality from real $t$ throughout the disk
+$\AbsoluteValue t<2\pi$, and in particular proves \eqref{is:p2:eq:Z-cf}.
+
+It remains to justify coefficient comparison.  The exponential-moment bound
+\eqref{is:p2:eq:Z-exponential-moment} makes
+\[
+ t\longmapsto \Expectation\EulerE^{t(x+\ImaginaryUnit Z)}
+\]
+analytic near zero.  Indeed, on any smaller closed disk and for every $n$,
+the $n$th derivative of the integrand is dominated by
+\[
+ (\AbsoluteValue x+\AbsoluteValue Z)^n
+ \EulerE^{r(\AbsoluteValue x+\AbsoluteValue Z)},
+\]
+which is integrable after choosing $r<a<2\pi$.  Differentiation under the
+expectation is therefore valid to every order.  Consequently
+\[
+ \frac{\EulerE^{xt}}{M(t)}
+ =\EulerE^{xt}\Expectation\EulerE^{\ImaginaryUnit tZ}
+ =\Expectation\EulerE^{t(x+\ImaginaryUnit Z)}
+ =\sum_{n\ge0}\Expectation(x+\ImaginaryUnit Z)^n\frac{t^n}{n!}
+\]
+near zero, and comparison with \eqref{is:p2:eq:A-generating} proves
+\eqref{is:p2:eq:A-logistic-moment} for every real $x$, hence as a polynomial
+identity.  Substituting $2x-1$ and using
+\eqref{is:p2:eq:A-P-affine} gives \eqref{is:p2:eq:P-logistic-moment}.
+Finally $Z$ is symmetric and nondegenerate; indeed, independence and
+$\operatorname{Var}(\Lambda)=\pi^2/3$ give
+$\operatorname{Var}(Z)=\sum_{j\ge1}(3\cdot4^j)^{-1}=1/9$.
+Therefore setting $x=0$ gives
+$\alpha_{2m}=(-1)^m\Expectation Z^{2m}$ and
+$\Expectation Z^{2m}>0$ (with the value $1$ when $m=0$), proving
 \eqref{is:p2:eq:alpha-sign}.
 \end{proof}
 
@@ -987,11 +1317,11 @@ is $\BigO(4^{-j}t^2)$.  Multiplying by $\EulerE^{xt}$ and comparing the Taylor e
 The Rvachev variable $Y$ is compactly supported and has moment generating function $M$.  Its
 polynomial deconvolution sequence is represented by imaginary moments of the noncompact variable
 $Z$, an infinite dyadic sum of logistic variables, whose characteristic function is $M^{-1}$.
-Thus $M(t)^{-1}=\Phi(-\ImaginaryUnit t)^{-1}$ is not merely a formal
+Thus $M(t)^{-1}=\PhiAng(-\ImaginaryUnit t)^{-1}$ is not merely a formal
 series: on the real $t$-axis it is the positive-definite characteristic
 function of $Z$.  This is the reciprocal \emph{hyperbolic}-sinc product, or
 equivalently the analytic continuation of the reciprocal trigonometric-sinc
-product to the imaginary Fourier axis.  The function $1/\Phi(\xi)$ on the
+product to the imaginary Fourier axis.  The function $1/\PhiAng(\xi)$ on the
 real Fourier axis has poles and is not a characteristic function.
 \end{resultbox}
 
@@ -1026,7 +1356,7 @@ spatial variable.
 For $n\ge0$, $0\le k<2^n$, and $-1\le y\le1$, put
 \[
  c_{n,k}(y):=-1+\frac{2k+1+y}{2^n},
- \qquad S_n:=2^{\binom{n+1}{2}},
+ \qquad \mathcal D_n:=2^{\binom{n+1}{2}},
 \]
 and let $\BinaryDigitSum(k)$ be the binary digit sum.
 
@@ -1034,18 +1364,18 @@ and let $\BinaryDigitSum(k)$ be the binary digit sum.
 \label{rvd:thm:derivative-distribution}
 The $n$th derivative of the Rvachev function $u$ satisfies
 \begin{equation}
- u^{(n)}(c_{n,k}(y))=S_n(-1)^{\BinaryDigitSum(k)}u(y).
+ u^{(n)}(c_{n,k}(y))=\mathcal D_n(-1)^{\BinaryDigitSum(k)}u(y).
  \label{rvd:eq:cell-tiling}
 \end{equation}
 Consequently, for every continuous real- or Banach-valued test function $H$,
 \begin{equation}
- \int_{-1}^{1}H\!\left(S_n^{-1}|u^{(n)}(x)|\right)\Differential x
+ \int_{-1}^{1}H\!\left(\mathcal D_n^{-1}|u^{(n)}(x)|\right)\Differential x
  =\int_{-1}^{1}H(u(y))\Differential y.
  \label{rvd:eq:absolute-law}
 \end{equation}
 For $n\ge1$ the signed normalized law is the symmetric half-mixture
 \begin{equation}
- \int_{-1}^{1}H\!\left(S_n^{-1}u^{(n)}(x)\right)\Differential x
+ \int_{-1}^{1}H\!\left(\mathcal D_n^{-1}u^{(n)}(x)\right)\Differential x
  =\frac12\int_{-1}^{1}\bigl(H(u(y))+H(-u(y))\bigr)\Differential y.
  \label{rvd:eq:signed-law}
 \end{equation}
@@ -1053,14 +1383,14 @@ Equivalently, these are equalities of Borel pushforward measures under
 Lebesgue measure restricted to $[-1,1]$.  In particular, for $m\in\NaturalNumbers$,
 \begin{equation}
  \int_{-1}^{1}(u^{(n)}(x))^m\Differential x
- =2^{-n}(1+(-1)^m)^nS_n^m
+ =2^{-n}(1+(-1)^m)^n\mathcal D_n^m
   \int_{-1}^{1}u(y)^m\Differential y,
  \label{rvd:eq:signed-moments}
 \end{equation}
 and, for every real $p\ge0$,
 \begin{equation}
  \int_{-1}^{1}|u^{(n)}(x)|^p\Differential x
- =S_n^p\int_{-1}^{1}u(y)^p\Differential y.
+ =\mathcal D_n^p\int_{-1}^{1}u(y)^p\Differential y.
  \label{rvd:eq:absolute-moments}
 \end{equation}
 \end{theorem}
@@ -1073,7 +1403,7 @@ substituting $x=c_{n,k}(y)$ therefore gives
 \[
  \int_{-1}^{1}H(u^{(n)}(x))\Differential x
  =2^{-n}\sum_{k=0}^{2^n-1}
-   \int_{-1}^{1}H\!\left(S_n(-1)^{\BinaryDigitSum(k)}u(y)\right)\Differential y.
+   \int_{-1}^{1}H\!\left(\mathcal D_n(-1)^{\BinaryDigitSum(k)}u(y)\right)\Differential y.
 \]
 Taking absolute values erases every sign, and the $2^n$ equal summands cancel
 the Jacobian, proving \eqref{rvd:eq:absolute-law}.  For $n\ge1$, toggling the
@@ -1103,14 +1433,17 @@ declarations are \path{iteratedDeriv_rvachev_cell},
 
 \subsection{Finite random sums and finite Appell inverses}
 
-For $N\ge1$, define the convolution prefixes
+For $N\ge0$, define the convolution prefixes
 \begin{equation}
- X_N=\sum_{j=1}^{N}2^{-j}U_j,
+ X_N=\sum_{j=1}^{N}2^{-j}V_j,
  \qquad
- Y_N=\sum_{j=1}^{N}2^{-j}V_j,
+ Y_N=\sum_{j=1}^{N}2^{-j}U_j,
  \label{is:p2:eq:finite-XY}
 \end{equation}
-with moment generating functions
+with the empty-sum convention $X_0=Y_0=0$.  Empty products below are one,
+so $L_0=M_0=1$ and $P_n^{[0]}(x)=A_n^{[0]}(x)=x^n$.  This convention makes
+depth zero the identity averaging operator and will be used in the exact
+interpolation statements.  Their moment generating functions are
 \begin{align}
  L_N(t)&=\prod_{j=1}^{N}\frac{\EulerE^{t/2^j}-1}{t/2^j},
  \label{is:p2:eq:LN}\\
