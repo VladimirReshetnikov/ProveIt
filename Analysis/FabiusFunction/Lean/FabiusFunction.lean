@@ -491,6 +491,10 @@ import FabiusFunction.QPochhammerIntegerIndex
 import FabiusFunction.QPartialFractions
 import FabiusFunction.PolynomialQTaylor
 import FabiusFunction.GaussianBinomialUniversal
+import FabiusFunction.QPochhammerInfiniteBounds
+import FabiusFunction.HeineTransformation
+import FabiusFunction.QGaussSummation
+import FabiusFunction.QPochhammerComplexOrder
 
 set_option autoImplicit false
 

@@ -75,6 +75,15 @@ labels do not by themselves establish current Lean verification.
 
 ## Formalization notes
 
+The latest effective-inverse layer gives eight inverse-computability rows exact
+compiled counterparts: the main computability theorem, the three tolerant
+difference branch certificates, the branch-selection theorem, tolerant
+bisection, the totalized clamped inverse, and its effective modulus.  The
+canonical theorem concordance now classifies all 194 inherited rows as 47
+Lean-proved, 98 human-proved frontier results, 10 conjectures, 15 open problems,
+and 24 nonassertoric environments.  The retired source layouts remain immutable
+provenance only; these updates live in the canonical synthesis and crosswalk.
+
 `QuarterCatalanGerm.lean` proves that the distinguished rational quarter germ
 becomes the Catalan inverse of `X + 4 X^2` under the exact `9/4` parameter
 rescaling, together with the reverse rescaling and every positive coefficient.

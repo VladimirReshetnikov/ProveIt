@@ -81,11 +81,11 @@ theorem.
 
 ## Canonical source and retained publication artifact
 
-The current canonical master `inverse_fabius_theory.tex` has 296 lines and
-11,625 bytes and SHA-256
-`6798beac86a39ac4e021c2a4f21079abdc9c4bb9a2b1bdc28d7432639f7d9748`.
+The current canonical master `inverse_fabius_theory.tex` has 294 lines and
+11,557 bytes and SHA-256
+`75300424b728515c32989d6bf061e5f1e6959ba93a52b0f2df845da2de86bc4a`.
 Its exhaustive 23-input source closure has SHA-256
-`622546eb3af87bb5bf9fb334e215b059077f4cf59667bfe9154b3869b11d2647`;
+`6a42e4ec29f43fc0bbd5e8e9b79997b880e56aa7ad259e084379a0f64d28238e`;
 the closure comprises the master, shared notation, all nine chapters, three
 generated TeX fragments, and nine publication figures.
 

@@ -41,6 +41,24 @@ python -B audit/build_source_closure.py --check
 python -B audit/build_package_checksums.py --check
 ```
 
+`theorem_concordance.csv` records the disposition of all 194 source-result
+environments while preserving the ten immutable source fields reproduced from
+`audit/SOURCE_REVISION`.  Its current totals are 47 Lean-proved, 98
+human-proved frontier results, 10 conjectures, 15 open problems, and 24
+nonassertoric rows.  Eight inverse-computability rows now have exact compiled
+counterparts: the main theorem, the three tolerant-difference branch
+certificates, tolerant-bisection correctness, unit-interval sequential
+inversion, computable clamping, and sequential computability of the totalized
+inverse.  The abstract inversion theorem remains human-proved because the
+generic Lean theorem assumes a computable reciprocal inverse modulus rather
+than deriving that modulus and effective continuity from a computable positive
+gap sequence.  The centered Appell deconvolution, positive-degree Appell
+mean-zero, and arbitrarily phased polynomial-deconvolution rows also have exact
+named Lean counterparts.  The Appell lattice theorem remains human-proved:
+Lean covers its arbitrary-phase `0 <= n <= N` formula, but not its additional
+degree-`N+1` clause at the parity-selected superconvergent phases.  The static
+canonical validator passes.  `PROVENANCE.md` records source and asset lineage.
+
 The package checksum inventory is defined by the Git index. Resolve unmerged
 paths and stage every intended permanent package file before generating or
 checking it; the source-closure check is independent of that index state.
@@ -86,10 +104,10 @@ unaccounted for here.
 
 The canonical source surface is current and exhaustively inventoried:
 
-- `inverse_fabius_theory.tex`: 296 lines, 11,625 bytes, SHA-256
-  `6798beac86a39ac4e021c2a4f21079abdc9c4bb9a2b1bdc28d7432639f7d9748`;
+- `inverse_fabius_theory.tex`: 294 lines, 11,557 bytes, SHA-256
+  `75300424b728515c32989d6bf061e5f1e6959ba93a52b0f2df845da2de86bc4a`;
 - its exhaustive 23-input source closure: SHA-256
-  `622546eb3af87bb5bf9fb334e215b059077f4cf59667bfe9154b3869b11d2647`;
+  `6a42e4ec29f43fc0bbd5e8e9b79997b880e56aa7ad259e084379a0f64d28238e`;
 - the retained `inverse_fabius_theory.pdf`: 134 A4 pages, 2,027,726 bytes,
   SHA-256
   `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
