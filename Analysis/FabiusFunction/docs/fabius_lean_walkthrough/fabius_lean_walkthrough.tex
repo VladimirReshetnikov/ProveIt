@@ -1838,6 +1838,29 @@ locally uniform theorem concerns \(S_q\) as a complex-variable pure sinc product
 the full phase-bearing theorem is stated for real frequencies.  No complex-frequency
 analogue of the latter or uniform-convergence claim on all of \(\RealNumbers\) is made.
 The one-definition, nine-theorem module
+\nolinkurl{RvachevPochhammerFactorization.lean} then supplies the independent spectral
+rearrangement.  Besides the total \nolinkurl{complexQPochhammerInf} and its
+contracting-nome convergence API, the declarations
+\nolinkurl{summable_norm_sineTerm_qpow_pair},
+\nolinkurl{geometricSincProduct_eq_tprod_pair}, and
+\nolinkurl{geometricSincProduct_eq_tprod_complexQPochhammerInf} prove, for complex
+\(\lVert q\rVert<1\) and arbitrary \(z\),
+\[
+ S_q(z)=\prod_{k\ge0}
+ \left(\frac{z^2}{(k+1)^2};q^2\right)_\infty .
+\]
+The identity includes \(q=0\) and individual zero factors; its final two theorems are the
+dyadic nome-\(1/4\) Rvachev-product and bounded-Fabius Fourier specializations.  A named
+centered/MGF wrapper, the outside-disk reciprocal formula and zero--pole exchange, and a
+named local-uniform/normal-convergence theorem for the outer Pochhammer product over the
+spectral index remain outside this module.  The downstream
+\nolinkurl{QPochhammerEntire.lean} closes the locally uniform, entire, zero-locus, and
+simple-zero API for each inner Pochhammer function of \(a\), as detailed below.
+Rapid-decay bounds, Fourier inversion, a named centered family or MGF wrapper, explicit
+Bernoulli-cumulant and Bell-moment formulas and asymptotics, further transform formulas,
+and shape theory remain separate targets.
+
+The one-definition, nine-theorem module
 \nolinkurl{RvachevPochhammerFactorization.lean} gives a second, spectral
 description of this pure sinc product.  It defines
 \nolinkurl{complexQPochhammerInf} by
@@ -1881,104 +1904,79 @@ Pochhammer zero lattice or multiplicities, construct a reciprocal zero--pole
 factorization, establish local-uniform or normal convergence of the rearranged
 Pochhammer product or joint holomorphy in \(q\), or treat \(\lVert q\rVert>1\).
 
-The downstream zero-definition, four-theorem leaf
-\nolinkurl{QPochhammerEntire.lean} closes the individual-factor convergence and
-zero-locus questions just left open.  Its exhaustive public API is
+The downstream zero-definition, four-theorem module
+\nolinkurl{QPochhammerEntire.lean} has the exhaustive public surface
 \nolinkurl{hasProdLocallyUniformly_complexQPochhammerInf},
 \nolinkurl{complexQPochhammerInf_differentiable},
 \nolinkurl{complexQPochhammerInf_eq_zero_iff}, and
-\nolinkurl{analyticOrderAt_complexQPochhammerInf_of_eq_zero}.  For every complex
-\(q\) with \(\lVert q\rVert<1\), the first two promote
-\(a\mapsto(a;q)_\infty\) to a locally uniformly convergent product on the whole
-complex plane and an entire function.  The third gives the division-free zero locus
+\nolinkurl{analyticOrderAt_complexQPochhammerInf_of_eq_zero}.
+For each fixed complex \(q\) under exactly \(\lVert q\rVert<1\), the factors
+\(a\mapsto1-aq^j\) converge locally uniformly on the whole complex \(a\)-plane
+to \(\nolinkurl{complexQPochhammerInf a q}\), and that limit is entire in
+\(a\).  Its exact zero statement is the raw, division-free equivalence
 \[
- (a;q)_\infty=0
+ \nolinkurl{complexQPochhammerInf a q}=0
  \quad\Longleftrightarrow\quad
  \exists j\in\NaturalNumbers,\;1-aq^j=0,
 \]
-and the fourth proves that every such zero has analytic order one.  The factor-zero
-form deliberately includes the degenerate strict contraction \(q=0\), where the sole
-zero is \(a=1\).  This leaf does not define a new product, treat \(\lVert q\rVert\ge1\),
-or supply a closed derivative formula, growth order, reciprocal meromorphic
-continuation, joint holomorphy in \(q\), or a zero enumeration obtained by dividing by
-\(q^j\).  Rapid-decay bounds, Fourier inversion, a named centered family or MGF
-wrapper, explicit Bernoulli-cumulant and Bell-moment formulas and asymptotics, further
-transform formulas, and shape theory remain separate targets.
+and every zero has analytic order one.  The factor form is essential at
+\(q=0\), which is included and has the unique zero \(a=1\).  The module does
+not replace this locus by \(a=q^{-j}\), prove joint holomorphy in \(q\), give
+locally uniform convergence for the outer spectral product above, or assert a
+global entire-function growth, order, type, or asymptotic theorem.
 
-The current-tree generic layer is strictly broader algebraically and should
-not be conflated with that complex wrapper.  The zero-definition,
-two-theorem module \nolinkurl{QPochhammerDissection.lean} proves
-\nolinkurl{finiteQPochhammerIn_dissection} and
-\nolinkurl{finiteQPochhammerIn_dissection_remainder} over every commutative
-ring.  The first gives
-\((a;q)_{rn}=\prod_{s<r}(aq^s;q^r)_n\) for all natural \(r,n\); the second
-gives the two-block remainder formula under exactly \(u\le r\), including
-\(u=r\).  No topology, norm, nonvanishing, or restriction on \(q\) is used.
+Two further modules supply the finite and general-ring layers without
+replacing that \nolinkurl{complexQPochhammerInf} interface.
+\nolinkurl{QPochhammerDissection.lean} has zero definitions and exactly two
+theorems, \nolinkurl{finiteQPochhammerIn_dissection} and
+\nolinkurl{finiteQPochhammerIn_dissection_remainder}.  Over an arbitrary
+commutative ring they prove the exact residue-class split at length \(rn\)
+and, under exactly \(u\le r\), its partial-period form with lengths \(n+1\)
+for \(s<u\) and \(n\) for \(u\le s<r\).  No restriction on \(q\), topology,
+division, cancellation, or nonvanishing is present.
 
-The companion \nolinkurl{QPochhammerInfinite.lean} has exactly one public
-definition and twenty-seven public theorems.  The total definition
-\nolinkurl{qPochhammerInfIn} and its defining theorem
-\nolinkurl{qPochhammerInfIn_eq_tprod} require only a topological commutative
-ring; outside a multipliable range the total \texttt{tprod} has Mathlib's junk
-value.  In a normed ring with \(\lVert1\rVert=1\), the elementary inputs are
+The one-definition, twenty-seven-theorem module
+\nolinkurl{QPochhammerInfinite.lean} has the exhaustive public surface
+\nolinkurl{qPochhammerInfIn};
+\nolinkurl{qPochhammerInfIn_eq_tprod},
 \nolinkurl{summable_norm_mul_pow},
-\nolinkurl{one_sub_ne_zero_of_norm_lt_one}, and
-\nolinkurl{norm_mul_pow_self_lt_one};
-\nolinkurl{finiteQPochhammerIn_self_ne_zero} adds commutativity and no zero
-divisors.
-
-For a complete normed commutative ring with \(\lVert1\rVert=1\) and exactly
-\(\lVert q\rVert<1\), the exhaustive convergence/factorization block is
+\nolinkurl{one_sub_ne_zero_of_norm_lt_one},
+\nolinkurl{norm_mul_pow_self_lt_one},
+\nolinkurl{finiteQPochhammerIn_self_ne_zero},
 \nolinkurl{multipliable_one_sub_mul_pow_of_norm_lt_one},
 \nolinkurl{hasProd_qPochhammerInfIn},
 \nolinkurl{tendsto_finiteQPochhammerIn_qPochhammerInfIn},
 \nolinkurl{qPochhammerInfIn_eq_finite_mul_shift},
 \nolinkurl{qPochhammerInfIn_succ_shift},
-\nolinkurl{qPochhammerInfIn_eq_factor_mul}, and
-\nolinkurl{qPochhammerInfIn_dissection}.  These state multipliability, the
-named product, convergence of finite prefixes, arbitrary concatenation, the
-one-step shift, factor removal, and the infinite residue-class identity; only
-the last also assumes \(0<r\).  Adding a multiplicative norm gives the
-division-free zero block
+\nolinkurl{qPochhammerInfIn_eq_factor_mul},
+\nolinkurl{qPochhammerInfIn_dissection},
 \nolinkurl{qPochhammerInfIn_ne_zero},
-\nolinkurl{qPochhammerInfIn_eq_zero_iff}, and
-\nolinkurl{qPochhammerInfIn_self_ne_zero}.
-
-The unconditional normed-field support declarations are
-\nolinkurl{qPochhammerInfIn_eq_tprod_smul} and
-\nolinkurl{isBigO_one_sub_sub_one};
-\nolinkurl{summable_norm_pow_of_norm_lt_one} additionally assumes
-\(\lVert q\rVert<1\), while
-\nolinkurl{differentiable_finiteQPochhammerIn} needs only a nontrivially
-normed field.  A complete normed field, \(\lVert q\rVert<1\), and \(q\ne0\)
-give the reciprocal-power
-zero list in
-\nolinkurl{qPochhammerInfIn_eq_zero_iff_exists_inv_pow}; the same strict
-contraction together with local compactness is required by
-\nolinkurl{hasProdLocallyUniformly_qPochhammerInfIn} and
-\nolinkurl{continuous_qPochhammerInfIn}.  The purely algebraic identity
-\nolinkurl{pow_sq_mul_finiteQPochhammerIn_inv_pow_self} holds in every field
-with \(q\ne0\).
-
-Over \(\ComplexNumbers\),
-\nolinkurl{differentiable_qPochhammerInfIn} proves entireness for a strict
-contraction, and
-\nolinkurl{hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one} gives the raw
-factor-zero derivative from \(a_0q^j=1\), including \(q=0,j=0\).  Under the
-additional hypothesis \(q\ne0\),
-\nolinkurl{hasDerivAt_qPochhammerInfIn_inv_pow} identifies
-\[
- \frac{\Differential}{\Differential a}(a;q)_\infty\bigg|_{a=q^{-j}}
- =(-1)^{j+1}(q^{\binom j2})^{-1}(q;q)_j(q;q)_\infty,
-\]
-and \nolinkurl{deriv_qPochhammerInfIn_inv_pow_ne_zero} proves that displayed
-coefficient nonzero.  The latter theorem's conclusion is the coefficient
-nonvanishing statement; it becomes a statement about \texttt{deriv} only in
-combination with the preceding \texttt{HasDerivAt}.  This generic module has
-no \texttt{analyticOrderAt} theorem.  Analytic order one at every factor zero,
-including the sole zero at \(q=0\), remains the distinct
-\nolinkurl{QPochhammerEntire.lean} result above, while that wrapper contains
-none of the generic ring-valued concatenation or dissection API.
+\nolinkurl{qPochhammerInfIn_eq_zero_iff},
+\nolinkurl{qPochhammerInfIn_self_ne_zero},
+\nolinkurl{qPochhammerInfIn_eq_tprod_smul},
+\nolinkurl{summable_norm_pow_of_norm_lt_one},
+\nolinkurl{isBigO_one_sub_sub_one},
+\nolinkurl{differentiable_finiteQPochhammerIn},
+\nolinkurl{qPochhammerInfIn_eq_zero_iff_exists_inv_pow},
+\nolinkurl{hasProdLocallyUniformly_qPochhammerInfIn},
+\nolinkurl{continuous_qPochhammerInfIn},
+\nolinkurl{pow_sq_mul_finiteQPochhammerIn_inv_pow_self},
+\nolinkurl{differentiable_qPochhammerInfIn},
+\nolinkurl{hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one},
+\nolinkurl{hasDerivAt_qPochhammerInfIn_inv_pow}, and
+\nolinkurl{deriv_qPochhammerInfIn_inv_pow_ne_zero}.
+The total definition needs only a topological commutative ring.  For
+\(\lVert q\rVert<1\), completeness, a commutative normed-ring structure, and
+\(\lVert1\rVert=1\) support the product, finite-prefix limit, shift and
+factor-removal laws, and positive-modulus infinite dissection; a
+multiplicative norm gives the raw zero equivalence \(aq^j=1\) and
+\((q;q)_\infty\ne0\).  In a complete normed field, \(q\ne0\) gives the
+inverse-power parametrization.  Local compactness gives locally uniform
+convergence and continuity in \(a\) for fixed \(q\).  Over
+\(\ComplexNumbers\), the symbol is entire and has the raw factor-zero
+derivative formula; under \(q\ne0\), the inverse-power derivative has the
+displayed closed form and is nonzero.  The module proves no joint-\(q\)
+holomorphy or global growth/order/type/asymptotic result.
 
 The definition of \(F_q\), together with its monotonicity, range bounds, and
 measurability, is total in real \(q\).  If \(\lvert q\rvert<1\), then \(F_q\)
@@ -3673,12 +3671,12 @@ infinite-series result.
 \subsubsection{Expanded zero-row Wigner-square formula and proof ledger}
 \label{ch:legendre-gaunt-closed-form}
 
-\begin{boxedremark}\textbf{Source/PDF version notice.}\space
-The retained walkthrough PDF already contains the exhaustive combined two-definition,
-twenty-eight-theorem closed-form surface from the preceding source.  The present
-post-replay TeX union retains that material and adds the expanded formula-and-proof ledger
-in this subsubsection.  The PDF therefore predates the current union: source/PDF parity is
-not claimed, and a fresh uninterrupted three-pass Libertinus rebuild is pending.
+\begin{boxedremark}\textbf{Source/PDF parity convention.}\space
+This source contains the exhaustive two-definition, twenty-eight-theorem closed-form
+inventory and the expanded formula-and-proof ledger in this subsubsection.  Source/PDF
+parity is certified only by the repository metadata for a successful final-source build
+of this exact TeX checkpoint; the page count, checksum, and validation facts in that
+build receipt are authoritative.
 \end{boxedremark}
 
 The limitations just stated remain exact descriptions of the two predecessor modules.
@@ -4905,9 +4903,9 @@ Affine independent-copy operator and uniqueness & \nolinkurl{affineIndependentCo
 Geometric uniform law \(\mu_q\) & \nolinkurl{geometricUniformDistribution}, \nolinkurl{geometricUniformDistribution_selfSimilar}, \nolinkurl{geometricUniformDistribution_support_eq_Icc}, \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar} & \nolinkurl{GeometricUniformLaw.lean} and \nolinkurl{GeometricUniformUniqueness.lean}; the characterization holds for \(\lvert q\rvert<1\) without support, density, or moment assumptions \\
 Fixed half--quarter multisection & \nolinkurl{evenCoordinates}, \nolinkurl{oddCoordinates}, \nolinkurl{geometricUniformSeries_one_half_multisection}, \nolinkurl{geometricUniformDistribution_one_half_multisection}, \nolinkurl{geometricUniformDistribution_one_half_conv_one_quarter} & \nolinkurl{GeometricUniformMultisection.lean}; fixed normalized two-section only \\
 General geometric-sinc Pochhammer factorization & \nolinkurl{complexQPochhammerInf}, \nolinkurl{summable_norm_sineTerm_qpow_pair}, \nolinkurl{geometricSincProduct_eq_tprod_pair}, \nolinkurl{geometricSincProduct_eq_tprod_complexQPochhammerInf}, \nolinkurl{rvachevFourierProduct_eq_tprod_complexQPochhammerInf}, \nolinkurl{rvachevFourier_eq_tprod_complexQPochhammerInf} & \nolinkurl{RvachevPochhammerFactorization.lean}; one definition and nine theorems, with the three additional symbol-convergence theorems listed in the text above \\
-Entire q-Pochhammer factor and simple-zero locus & \nolinkurl{hasProdLocallyUniformly_complexQPochhammerInf}, \nolinkurl{complexQPochhammerInf_differentiable}, \nolinkurl{complexQPochhammerInf_eq_zero_iff}, \nolinkurl{analyticOrderAt_complexQPochhammerInf_of_eq_zero} & Exhaustive zero-definition/four-theorem surface of \nolinkurl{QPochhammerEntire.lean}; for complex \(\lVert q\rVert<1\), locally uniform convergence in \(a\), entireness, the division-free factor-zero equivalence, and analytic order one at every zero, including \(q=0\); no claim for \(\lVert q\rVert\ge1\) \\
-Finite q-Pochhammer residue-class dissection & \nolinkurl{finiteQPochhammerIn_dissection}, \nolinkurl{finiteQPochhammerIn_dissection_remainder} & Exhaustive zero-definition/two-theorem surface of \nolinkurl{QPochhammerDissection.lean}; arbitrary commutative ring, all natural \(r,n\), and remainder boundary \(u\le r\), with no hypothesis on \(q\) \\
-Generic infinite q-Pochhammer product & \nolinkurl{qPochhammerInfIn} and the twenty-seven theorems listed exhaustively in the current-tree discussion above & \nolinkurl{QPochhammerInfinite.lean}; total topological-ring definition, complete-normed-ring convergence/concatenation/dissection, multiplicative-norm zero locus, locally compact field continuity, complex entireness and explicit simple-zero derivative; distinct from the \nolinkurl{complexQPochhammerInf} analytic-order wrapper \\
+Finite Pochhammer residue dissections & \nolinkurl{finiteQPochhammerIn_dissection}, \nolinkurl{finiteQPochhammerIn_dissection_remainder} & \nolinkurl{QPochhammerDissection.lean}; zero definitions and exactly two theorems over arbitrary commutative rings, with the remainder identity assuming exactly \(u\le r\) \\
+General infinite Pochhammer algebra and analytic zero API & \nolinkurl{qPochhammerInfIn} and the exact twenty-seven theorem names listed in the text above & \nolinkurl{QPochhammerInfinite.lean}; complete-normed-ring product/shift/dissection and multiplicative-norm raw zeros, complete-field inverse-power zeros under \(q\ne0\), locally compact field local uniformity/continuity, and complex entire and simple-zero derivative formulas \\
+Entire complex Pochhammer product and simple factor zeros & \nolinkurl{hasProdLocallyUniformly_complexQPochhammerInf}, \nolinkurl{complexQPochhammerInf_differentiable}, \nolinkurl{complexQPochhammerInf_eq_zero_iff}, \nolinkurl{analyticOrderAt_complexQPochhammerInf_of_eq_zero} & \nolinkurl{QPochhammerEntire.lean}; zero definitions and exactly four theorems for fixed complex \(\lVert q\rVert<1\), including the raw factor-zero locus and \(q=0\), with no division-based parametrization or global growth-order claim \\
 Geometric CDF \(F_q\) and density \(f_q\) & \nolinkurl{geometricUniformCDF}, \nolinkurl{geometricUniformDensity}, \nolinkurl{geometricUniformDensity_zero}, \nolinkurl{geometricUniformDensity_nonpos_of_neg}, \nolinkurl{volume_withDensity_geometricUniformDensity_eq_zero_of_nonpos}, \nolinkurl{geometricUniformDistribution_ne_withDensity_geometricUniformDensity_of_nonpos}, \nolinkurl{geometricUniformCDF_hasDerivAt}, \nolinkurl{geometricUniformDistribution_eq_withDensity}, \nolinkurl{contDiff_geometricUniformCDF}, \nolinkurl{contDiff_geometricUniformDensity} & \nolinkurl{GeometricUniformCDF.lean} \\
 Weighted-sum CDF and half-base bridges & \nolinkurl{weightedSumCDF}, \nolinkurl{weightedSumCDF_eq_geometricUniformCDF_one_half}, \nolinkurl{geometricUniformCDF_one_half_eq_fabiusReal}, \nolinkurl{geometricUniformDensity_one_half_eq_rvachevUp} & \nolinkurl{ProbabilityRepresentation.lean} \\
 Totalized activation kernel \(p\) & \nolinkurl{activationProbability}, \nolinkurl{tanhDiv_eq_dslope}, \nolinkurl{activationProbability_le_min_one_sq_div_three}, \nolinkurl{activationProbability_mul_le_quadratic}, \nolinkurl{tendsto_activationProbability_mul_div_sq} & \nolinkurl{HyperbolicActivation.lean}, \nolinkurl{ActivationSeries.lean}, and \nolinkurl{ActivationAsymptotics.lean} \\
@@ -5045,9 +5043,9 @@ Module & Role in the development \\
 \nolinkurl{GeometricReciprocalGamma.lean} & Locally uniform convergence, pointwise multipliability and \nolinkurl{HasProd}, and entireness of the geometric sinc product, together with its reciprocal-Gamma reflection factorization. \\
 \nolinkurl{GeometricSincCharacteristicFunction.lean} & The four-theorem, zero-definition surface: two exact phase-bearing bridges from the geometric-uniform characteristic function to the rescaled geometric sinc product and paired reciprocal-Gamma factors, plus locally uniform convergence of the full phase-bearing prefixes on the real frequency line and uniform convergence on every compact real frequency set, for every \(\lvert q\rvert<1\), including zero and negative ratios. \\
 \nolinkurl{RvachevPochhammerFactorization.lean} & One definition and nine theorems: the total complex infinite Pochhammer product and its strict-contraction convergence API, absolute summability and paired scale--zero product, the global \(S_q(z)=\prod_{k\ge0}(z^2/(k+1)^2;q^2)_\infty\) factorization for complex \(\lVert q\rVert<1\), and its two dyadic Rvachev/Fabius specializations. \\
-\nolinkurl{QPochhammerEntire.lean} & Exactly four theorems and no public definitions: locally uniform convergence of \(a\mapsto(a;q)_\infty\) on \(\ComplexNumbers\), entireness, the exact division-free factor-zero locus, and simplicity of every zero for complex \(\lVert q\rVert<1\), including \(q=0\). \\
-\nolinkurl{QPochhammerDissection.lean} & Exactly two theorems and no public definitions: finite exact residue-class dissection over every commutative ring, and its remainder form under \(u\le r\), including all empty and \(u=r\) boundaries. \\
-\nolinkurl{QPochhammerInfinite.lean} & One definition and exactly twenty-seven theorems: the total generic \(q\)-Pochhammer \texttt{tprod}; strict-contraction summability, multipliability, finite-prefix convergence, concatenation, factor removal and positive-modulus dissection in complete normed commutative rings; the exact factor-zero locus under a multiplicative norm; locally uniform convergence and continuity over complete locally compact normed fields; complex entireness and the explicit nonzero derivative at every reciprocal-power zero for \(q\ne0\).  This module does not provide the separate wrapper's \texttt{analyticOrderAt} result. \\
+\nolinkurl{QPochhammerDissection.lean} & Zero definitions and exactly two theorems: exact finite residue-class dissection and its \(u\le r\) remainder form over every commutative ring, with no analytic or nonvanishing hypotheses. \\
+\nolinkurl{QPochhammerInfinite.lean} & One definition and exactly twenty-seven theorems: the total general-ring symbol; contracting complete-normed-ring product, shifts, dissection, and raw zero API; inverse-power field zeros under \(q\ne0\); fixed-\(q\) local uniformity and continuity; and complex entire and explicit nonzero derivative formulas.  No joint-\(q\) holomorphy or global asymptotics is asserted. \\
+\nolinkurl{QPochhammerEntire.lean} & Zero definitions and exactly four theorems: locally uniform convergence on the whole complex \(a\)-plane and entireness in \(a\) for each fixed \(\lVert q\rVert<1\), the raw factor-zero equivalence including \(q=0\), and analytic order one at every zero; no division-based zero parametrization, joint-\(q\) holomorphy, outer-product convergence, or global growth-order theorem. \\
 \nolinkurl{GeometricUniformCDF.lean} & The named \(F_q\) and explicit \(f_q\), conditioning and interval-integral equations, pointwise derivative and exact positive-ratio \nolinkurl{withDensity} law, continuity, reflection, exterior zeros, ordinary/topological support containments, compact support, and \(C^\infty\) regularity under their exact parameter hypotheses.  It also proves that the selected total formula is zero at \(q=0\), nonpositive for \(q<0\), yields the zero clamped measure for \(q\le0\), and cannot represent \(\mu_q\) on the nonpositive contraction range. \\
 \nolinkurl{HyperbolicActivation.lean} & Four definitions and 58 theorems forming the totalized real hyperbolic-sinc, \nolinkurl{tanhDiv}, activation-odds, and activation-probability dictionary, with continuity, parity, positivity, exact odds bridges, global elementary bounds, and the canonical identification \nolinkurl{tanhDiv_eq_dslope}. \\
 \nolinkurl{ActivationTaylor.lean} & Three theorems: the exact degree-nine Taylor polynomial of \(\tanh\) with \(O(\lVert x\rVert^{11})\) remainder, the induced degree-eight activation-probability polynomial with \(O(\lVert x\rVert^{10})\) remainder, and its equivalent \(O(x^{10})\) form. \\
@@ -5341,39 +5339,23 @@ Lean audits of the previously recorded new or refactored declarations,
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  The live current-tree census is
-623 modules and 8,476 public declarations, all reachable from the facade under
-the current static audit.  The immediately preceding census, after the
-Rvachev Appell and \nolinkurl{QPochhammerEntire.lean} tranche but before the
-generic q-Pochhammer modules, was 621 modules and 8,446 declarations.  Relative
-to the earlier 610/8,318 checkpoint,
-the union adds the two raw Lambert branch-point leaves (seventeen
-declarations), the two Legendre--Gaunt leaves (twenty-five),
-\nolinkurl{GeometricUniformMultisection.lean} (two coordinate definitions and
-three half--quarter laws), and the four-declaration
-\nolinkurl{GaussianBinomialAtNegOneDerivative.lean} leaf.  It also adds the
-two-definition/seven-theorem \nolinkurl{LagrangeRvachevSynthesis.lean} leaf,
-the three-theorem \nolinkurl{PrimePowerBinomialValuation.lean} leaf, the
-two-definition/twenty-five-theorem \nolinkurl{LegendreGauntClosedForm.lean}
-core, and its zero-definition/three-theorem
-\nolinkurl{FabiusLegendreGauntClosedForm.lean} wrapper.  Existing modules add
-the generalized spectral $q$-Pochhammer APIs, four geometric-density
-diagnostics, two geometric-sinc phase-prefix convergence theorems, eleven
-inverse-modulus refinements, three signed-power Rvachev moment theorems, and
-the general iterated shift--refinement product law; the merged
-\nolinkurl{PolynomialCombExactness.lean} surface also contains
-\nolinkurl{integral_polynomial_mul_rvachevUp_eq_dyadic_tsum}, the exact
-normalized physical-coordinate self-sampling quadrature.  The final increment
-at that historical stage, from 620/8,438 to 621/8,446, consisted exactly of the three centered-convolution
-and mean-zero theorems added to \nolinkurl{RvachevMomentAppell.lean}, the
-arbitrary-phase synthesis theorem added to
-\nolinkurl{RvachevPolynomialSynthesis.lean}, and the zero-definition/four-theorem
-\nolinkurl{QPochhammerEntire.lean} leaf documented above.  After that prior
-Appell/entire tranche, the increment from 621/8,446 to 623/8,476 is exactly
-\nolinkurl{QPochhammerDissection.lean}, with zero definitions and two theorems,
-and \nolinkurl{QPochhammerInfinite.lean}, with one definition and twenty-seven
-theorems: two modules and thirty public declarations.  No aggregate facade
-build is claimed for this current-tree census.  The title-page pin and reproduction count
-continue to describe the older audited snapshot.
+629 modules and 8,546 public declarations, all facade-reachable under the
+current static audit, with no missing module headers or declaration comments.
+Relative to the prior branch census of 622/8,472, the incoming union adds
+exactly seven modules and 74 declarations: the four-theorem
+\nolinkurl{GaussianBinomialAtNegOneDerivative.lean} leaf, plus
+\nolinkurl{QBinomialTheoremInfinite.lean} (one definition and twenty-three
+theorems), \nolinkurl{JacobiTripleProduct.lean} (two definitions and
+twenty-five theorems), \nolinkurl{QPascalSummation.lean} (four theorems),
+\nolinkurl{GaussianBinomialContinuity.lean} (three theorems),
+\nolinkurl{QuantumBinomial.lean} (two theorems), and
+\nolinkurl{RogersSzegoPolynomial.lean} (one definition and nine theorems).
+The prior 622/8,472 snapshot already included the centered Appell and
+deconvolution results and the separate
+\nolinkurl{QPochhammerEntire.lean}, \nolinkurl{QPochhammerDissection.lean}, and
+\nolinkurl{QPochhammerInfinite.lean} APIs documented above.  No aggregate
+facade build is claimed by this live source census.  The title-page pin and
+reproduction count continue to describe the older audited snapshot.
 \end{remark}
 
 \section{Corrections and critical distinctions}\label{app:corrections}
