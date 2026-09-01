@@ -109,19 +109,18 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live post-merge 2026-09-01 inventory contains 630 modules and 8,552
+The live post-merge 2026-09-01 inventory contains 641 modules and 8,650
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  Relative to the 610/8,318 activation checkpoint,
-the current tree adds twenty modules and 234 declarations.  Relative to the
-branch's prior 622/8,472 snapshot, the incoming union adds exactly seven
-modules and 74 declarations.  The 623/8,476 `origin/main` baseline was already
-stale because it did not count the latest six q-series modules.  Relative to
-that stale baseline the live delta is seven modules and 76 declarations,
-comprising those six modules' 69 declarations, the reciprocal-power
-zero-lattice theorem retained from the feature branch in
-`QPochhammerEntire.lean`, and the six-theorem generalized-product
-identifiability module.  The earlier additions and the final incoming
-q-series tranche are itemized below.  The branch-point geometry and
+the current tree adds thirty-one modules and 332 declarations.  Relative to
+the earlier 630/8,552 merged checkpoint, concurrent source work adds eleven
+modules and 98 declarations.  The two tranches audited here account for one
+of those modules and six declarations: the new zero-definition/three-theorem
+`GeometricPochhammerNormalConvergence.lean` leaf and three additional theorems
+in `PrimePowerBinomialValuation.lean`.  The older 622/8,472, 623/8,476,
+629/8,546, and 630/8,552 deltas below are retained as historical checkpoints,
+not descriptions of the live tree.  The earlier additions and q-series
+tranches are itemized below.  The branch-point geometry and
 asymptotics leaves contribute 17 declarations for the one-sided vertical
 tangents and leading signed square-root laws of both real Lambert branches.
 The two Legendre--Gaunt modules contribute 25: four definitions and twelve
@@ -180,20 +179,42 @@ probability-law identifiability are not included.
 The merged q-series leaves are inventoried below from the live source tree;
 those counts supersede the intermediate pre-union q-series subtotal.
 The valuation tranche's new leaf
-`PrimePowerBinomialValuation.lean` contributes three theorems: the additive and
-subtraction forms for an arbitrary prime-power Pascal row, and the strict-
-interior dyadic-comb specialization.
+`PrimePowerBinomialValuation.lean` contributes no definitions and exactly six
+theorems.  `primePowerChoose_padicValNat_add` and
+`primePowerChoose_padicValNat` are the additive and subtraction forms for row
+`p^m`, including the positive right endpoint and `m=0`.
+`primePowerSubOneChoose_padicValNat` says every column `j<p^m` in row
+`p^m-1` is a `p`-adic unit, while
+`primePowerSubTwoChoose_padicValNat` proves
+`v_p(C(p^m-2,j-1))=v_p(j)` for exactly `0<j<p^m`.
+`twoPowChoose_padicValNat` and `twoPowSubTwoChoose_padicValNat` are the two
+strict-interior dyadic-comb wrappers.  The upper companion boundary is
+necessarily excluded because at `j=p^m` the binomial coefficient is zero.
 The newly added leaf, `QPochhammerEntire.lean`, contributes no definitions
-and exactly four theorems:
+and exactly five theorems:
 `hasProdLocallyUniformly_complexQPochhammerInf`,
 `complexQPochhammerInf_differentiable`,
-`complexQPochhammerInf_eq_zero_iff`, and
+`complexQPochhammerInf_eq_zero_iff`,
+`complexQPochhammerInf_eq_zero_iff_eq_inv_pow`, and
 `analyticOrderAt_complexQPochhammerInf_of_eq_zero`.  For each fixed complex
 strict contraction `q`, they give locally uniform convergence on the whole
 complex `a`-plane, entireness in `a`, the raw factor-zero locus (including
-`q = 0`), and analytic order one at every zero.  They neither divide by powers
-of `q` to parametrize those zeros nor assert joint holomorphy in `q`, local
-uniformity of the outer spectral product, or a global growth/order/type claim.
+`q = 0`), its reciprocal-power spelling under `q ≠ 0`, and analytic order one
+at every zero.  They assert neither joint holomorphy in `q` nor a global
+growth/order/type claim.  Outer spectral-product local uniformity belongs to
+the separate three-theorem module recorded below.
+`GeometricPochhammerNormalConvergence.lean` contributes no definitions and
+exactly three theorems:
+`hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf`,
+`hasProdLocallyUniformly_rvachevFourierProduct_complexQPochhammerInf`, and
+`hasProdLocallyUniformly_rvachevFourier_complexQPochhammerInf`.  For every
+complex `q` satisfying exactly `‖q‖<1`, including `q=0`, the first gives the
+locally uniform outer product on the whole complex `z`-plane with limit
+`geometricSincProduct q`; the other two are the nome-`1/4` Rvachev-product and
+bounded-Fabius specializations.  This promotes only the locally-uniform/normal-
+convergence clause.  The compound `qF` spectral theorem remains partial:
+centered characteristic-function/MGF packaging, the outside-disk reciprocal
+formula, the pole divisor, and the zero--pole exchange remain absent.
 The two subsequent q-Pochhammer leaves contribute thirty declarations.
 `QPochhammerDissection.lean` has no definitions and exactly two theorems,
 `finiteQPochhammerIn_dissection` and
@@ -225,7 +246,7 @@ topological-ring definition, strict-contraction complete-normed-ring
 product/shift/dissection and multiplicative-norm zero API, complete-field
 inverse-power zeros, locally compact field local uniformity and continuity,
 and complex entire and simple-zero derivative formulas.  They make no
-joint-nome holomorphy or global asymptotic claim; the separate four-theorem
+joint-nome holomorphy or global asymptotic claim; the separate five-theorem
 `QPochhammerEntire.lean` API retains analytic order one for
 `complexQPochhammerInf`, including `q=0`.
 The final incoming seven-module increment consists of the four-theorem
@@ -301,8 +322,11 @@ strict contraction `q`, they give locally uniform convergence in the symbol
 variable, entireness, the division-free factor-zero criterion, the exact
 reciprocal-power zero lattice when `q ≠ 0`, and analytic order one at every
 zero.  The raw factor criterion includes `q = 0`; no joint holomorphy,
-outside-disk reciprocal formula, outer spectral-product normal convergence,
-or centered characteristic-function/MGF package is counted in this leaf.
+outside-disk reciprocal formula, or centered characteristic-function/MGF
+package is counted in this leaf.  The separately counted
+`GeometricPochhammerNormalConvergence.lean` leaf is 0+3 and supplies the
+outer spectral-product locally uniform theorem and its dyadic/Fabius
+specializations, but none of those remaining compound spectral clauses.
 
 The same merged tree adds the complementary general q-product leaves.
 `QPochhammerDissection.lean` contributes no definitions and two theorems,
@@ -397,7 +421,7 @@ retained 167-page primary, 126-page walkthrough, 237-page canonical frontier,
 notation-catalogue artifacts likewise predate their current merged sources.
 Their package notices treat those PDFs as historical validation receipts, not
 parity claims, until fresh uninterrupted three-pass builds complete.  The
-inverse-computability receipt likewise requires refresh for the 630/8,552
+inverse-computability receipt likewise requires refresh for the 641/8,650
 census.  The canonical inverse-theory publication is now a synchronized
 134-page A4 artifact at the latest-main source checkpoint.
 

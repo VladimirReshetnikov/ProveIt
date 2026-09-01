@@ -336,8 +336,10 @@ The retained PDF contains the 31 August 2026 Legendre Gaunt--Wigner-square
 closed-form overlay.  This source additionally contains the 1 September 2026
 five-theorem fixed-nome q-Pochhammer entire-function overlay and the later
 zero-definition/six-theorem generalized Rvachev identifiability overlay
-described in the audit map below.  The live source census is 630 facade-reachable
-modules and 8,552 public declarations.  The retained
+described in the audit map below, as well as the six-theorem prime-power
+companion-row and zero-definition/three-theorem outer Pochhammer
+normal-convergence overlays.  The live source census is 641 facade-reachable
+modules and 8,650 public declarations.  The retained
 237-page A4 PDF, SHA-256
 \nolinkurl{21180fa05a754b52a057495464674e9d6ac26a51488c2c770730c641b5ffe887},
 predates these source-only overlays and the expanded ledger and is therefore a
@@ -461,6 +463,18 @@ corollary also remains outside this module. &
 \nolinkurl{symmetricDyadicMixedDifference_inv_two_pow_eq_sum_thueMorseSign_smul},
 \nolinkurl{symmetricDyadicMixedDifference_inv_two_pow_succ_eq_sum_thueMorseSign_smul} &
 \emph{same module} \\
+Prime-power Pascal companion rows &
+\nolinkurl{primePowerChoose_padicValNat_add},
+\nolinkurl{primePowerChoose_padicValNat},
+\nolinkurl{primePowerSubOneChoose_padicValNat},
+\nolinkurl{primePowerSubTwoChoose_padicValNat},
+\nolinkurl{twoPowChoose_padicValNat},
+\nolinkurl{twoPowSubTwoChoose_padicValNat} &
+\nolinkurl{PrimePowerBinomialValuation.lean}; zero definitions and exactly
+six theorems.  Row \(p^m-1\) is a \(p\)-adic unit row for \(j<p^m\), and
+\(\nu_p\binom{p^m-2}{j-1}=\nu_p(j)\) holds for exactly \(0<j<p^m\), with a
+dyadic wrapper.  The upper companion boundary is excluded because its
+binomial coefficient is zero. \\
 Generic weighted uniform series and laws &
 \nolinkurl{uniformProduct_map_of_ae_head_tail_recursion},
 \nolinkurl{weightedUniformSeries_map},
@@ -519,6 +533,15 @@ Fixed-nome entire complex q-Pochhammer symbol &
 \nolinkurl{QPochhammerEntire.lean}; zero definitions and exactly five theorems,
 under exactly \(\lVert q\rVert<1\); the division-free factor-zero theorem
 includes \(q=0\), while the reciprocal-power form assumes \(q\ne0\) \\
+Outer geometric spectral Pochhammer normal convergence &
+\nolinkurl{hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf},
+\nolinkurl{hasProdLocallyUniformly_rvachevFourierProduct_complexQPochhammerInf},
+\nolinkurl{hasProdLocallyUniformly_rvachevFourier_complexQPochhammerInf} &
+\nolinkurl{GeometricPochhammerNormalConvergence.lean}; zero definitions and
+exactly three theorems.  The general theorem assumes exactly
+\(\lVert q\rVert<1\), includes \(q=0\), and the last two are the dyadic
+Rvachev/Fabius specializations.  Centered/MGF, outside-disk reciprocal,
+pole-divisor, and zero--pole clauses remain outside Lean. \\
 Finite q-Pochhammer dissection &
 \nolinkurl{finiteQPochhammerIn_dissection},
 \nolinkurl{finiteQPochhammerIn_dissection_remainder} &
@@ -1828,15 +1851,25 @@ the scale--zero index exchange and prove globally
 \end{equation}
 This includes \(q=0\) and individual zero factors; the last two declarations are its
 dyadic Rvachev-product and bounded-Fabius Fourier specializations.  The compound frontier
-still lacks a named centered/MGF wrapper, the outside-disk reciprocal formula and
-zero--pole exchange, and a named local-uniform/normal-convergence theorem for the
-outer Pochhammer product over the spectral index.
+still lacks a named centered/MGF wrapper, the outside-disk reciprocal formula,
+the pole divisor, and the zero--pole exchange.  The separate
+zero-definition/three-theorem module
+\path{GeometricPochhammerNormalConvergence.lean} now supplies the formerly
+missing outer-product convergence statement.  Its declarations are
+\lean{hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf},
+\lean{hasProdLocallyUniformly_rvachevFourierProduct_complexQPochhammerInf}, and
+\lean{hasProdLocallyUniformly_rvachevFourier_complexQPochhammerInf}.  The first
+holds on the whole complex plane for every \(\lVert q\rVert<1\), including
+\(q=0\); the last two are the nome-\(1/4\) Rvachev-product and bounded-Fabius
+specializations.  Hence the compound spectral theorem remains partial even
+though its locally-uniform/normal-convergence clause is now exact.
 
-The downstream zero-definition, four-theorem leaf
+The downstream zero-definition, five-theorem leaf
 \path{QPochhammerEntire.lean} has the exhaustive public surface
 \lean{hasProdLocallyUniformly_complexQPochhammerInf},
 \lean{complexQPochhammerInf_differentiable},
-\lean{complexQPochhammerInf_eq_zero_iff}, and
+\lean{complexQPochhammerInf_eq_zero_iff},
+\lean{complexQPochhammerInf_eq_zero_iff_eq_inv_pow}, and
 \lean{analyticOrderAt_complexQPochhammerInf_of_eq_zero}.
 For each fixed complex \(q\) satisfying exactly \(\lVert q\rVert<1\), the
 factors \(a\mapsto1-aq^j\) converge locally uniformly on the whole complex
@@ -1847,11 +1880,11 @@ The third theorem gives the exact raw locus
  \quad\Longleftrightarrow\quad
  \exists j\in\NaturalNumbers,\;1-aq^j=0,
 \]
-and the fourth gives analytic order one at every such zero.  This
-division-free form includes \(q=0\), with its unique zero \(a=1\).  There is no
-division-based parametrization \(a=q^{-j}\), joint holomorphy theorem in \(q\),
-locally uniform theorem for the outer spectral product, or global
-entire-function growth, order, type, or asymptotic claim.
+the fourth rewrites this as the reciprocal-power lattice when \(q\ne0\), and
+the fifth gives analytic order one at every such zero.  The division-free form
+includes \(q=0\), with its unique zero \(a=1\).  There is no joint holomorphy
+theorem in \(q\) or global entire-function growth, order, type, or asymptotic
+claim; the outer local-uniform theorem belongs to the separate module above.
 
 The finite and general-ring companion layers are separate.
 \path{QPochhammerDissection.lean} has zero definitions and exactly two
@@ -1959,11 +1992,14 @@ exactly five public theorems:
 \lean{complexQPochhammerInf_eq_zero_iff_eq_inv_pow}, and
 \lean{analyticOrderAt_complexQPochhammerInf_of_eq_zero}.
 They are fixed-\(q\), single-symbol results.  They prove no joint holomorphy in
-\((a,q)\), outside-disk reciprocal formula, local-uniform or normal convergence
-of the outer product in \eqref{integration:eq:geometric-sinc-pochhammer}, or
-centered characteristic-function/MGF package.  This is a source-only overlay:
-the retained 237-page canonical PDF predates these five theorems and remains a
-historical render until a three-pass Libertinus rebuild is performed.
+\((a,q)\), outside-disk reciprocal formula, or centered
+characteristic-function/MGF package.  The separate three-theorem module above
+proves local-uniform convergence of the outer product in
+\eqref{integration:eq:geometric-sinc-pochhammer}, but none of those remaining
+compound spectral clauses.  This is a source-only overlay: the retained
+237-page canonical PDF predates both these five theorems and the outer-product
+convergence tranche and remains a historical render until a three-pass
+Libertinus rebuild is performed.
 
 \paragraph{Exact generic infinite-product and dissection crosswalk.}
 The newer generic layer is complementary to, and not a renaming of, the
@@ -2178,9 +2214,11 @@ alone does not retain exponent sizes, and sampling product values at dyadic
 zeros records only vanishing.  No spectral-zeta reconstruction,
 cumulant-sample reconstruction, or underlying probability-law
 identifiability is formalized; those remain open.  This one-module,
-six-declaration overlay raises the live census from 629/8,546 to 630/8,552.
-It is source-only, and the retained 237-page PDF remains explicitly
-historical.
+six-declaration overlay raised its historical census from 629/8,546 to
+630/8,552.  With later concurrent integration, including the six-theorem
+prime-power companion row and zero-definition/three-theorem outer Pochhammer
+normal-convergence leaf, the live source census is 641/8,650.  These additions
+are source-only, and the retained 237-page PDF remains explicitly historical.
 
 The earlier compiler-validated checkpoint \texttt{e6f535e5d} supplied the two modules that
 promote the
@@ -4183,6 +4221,20 @@ convergence, absolute paired perturbation summability, the global general-\(q\)
 \(S_q(z)=\prod_{k\ge0}(z^2/(k+1)^2;q^2)_\infty\) factorization, and its dyadic
 Rvachev/Fabius specializations;
 \cref{integration:eq:geometric-sinc-pochhammer}.\\
+\path{PrimePowerBinomialValuation.lean} &
+The exhaustive zero-definition, six-theorem prime-power row interface: the
+additive/subtraction formulas for row \(p^m\), the unit row \(p^m-1\), the
+exact \(p^m-2\) companion valuation on \(0<j<p^m\), and both dyadic wrappers.
+The strict companion upper bound is essential, and no valuation-histogram
+claim is made.\\
+\path{GeometricPochhammerNormalConvergence.lean} &
+The zero-definition, three-theorem outer-product interface: locally uniform
+convergence on \(\ComplexNumbers\) to \(S_q\) for every complex
+\(\lVert q\rVert<1\), including \(q=0\), followed by the nome-\(1/4\)
+Rvachev-product and bounded-Fabius specializations.  The centered/MGF,
+outside-disk reciprocal, pole-divisor, and zero--pole clauses of the compound
+spectral theorem remain open;
+\cref{integration:eq:geometric-sinc-pochhammer}.\\
 \path{GeneralizedRvachevIdentifiability.lean} &
 The zero-definition, six-theorem recovery interface: dyadic analytic orders
 are inclusive exponent prefixes, consecutive finite-order differences decode
@@ -4766,9 +4818,11 @@ only simple zeros.  With
 zero and negative ratios.  The same module proves locally uniform convergence of the full
 phase-bearing prefixes on the real frequency line and uniform convergence on every compact
 real-frequency set.  Failure of the selected total density formula on \(q\le0\) is formal;
+the outer spectral Pochhammer product now also converges locally uniformly on
+the complex plane, including at \(q=0\), with exact dyadic Rvachev/Fabius
+specializations.  However,
 Lean formalization of the paper-level corrected signed-density replacement, a corresponding
 complex-frequency locally uniform theorem for the full phase-bearing prefix sequence,
-local-uniform/normal convergence of the outer spectral Pochhammer product,
 general-\(q\) rapid decay and Fourier inversion, centered/MGF package, closed
 higher-derivative and endpoint-flatness wrappers, shape, further transforms, and explicit
 Bernoulli-cumulant/Bell-moment formulas and asymptotics remain outside the formal boundary.

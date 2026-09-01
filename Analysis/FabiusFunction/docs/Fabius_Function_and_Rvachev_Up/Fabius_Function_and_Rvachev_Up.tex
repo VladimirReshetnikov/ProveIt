@@ -3103,15 +3103,22 @@ argument, the flattened paired Euler product, and
 \eqref{eq:geometric-complex-qpochhammer}.  The final two declarations fix the
 dyadic scale and hence the Pochhammer nome \(1/4\); their complex argument is
 unrestricted, and the Fourier-transform form assumes exactly a bounded witness
-and \lean{IsFabius}.  Taken alone, these declarations do not classify the
-Pochhammer zero set or its multiplicities, construct a reciprocal zero--pole
-factorization, derive spectral-zeta, Mellin, or logarithmic-derivative
-consequences, prove local-uniform or normal convergence of the outer
-Pochhammer product over the spectral index, name the frontier's centered
-\(\psi_q\) or \(M_q\), or supply an outside \(\lVert q\rVert>1\) reciprocal
-formula.  The next theorem records the downstream fixed-nome analytic and
-zero-set API, including its division-free \(q=0\) boundary and the
-reciprocal-power description when \(q\ne0\).
+and \lean{IsFabius}.  The downstream zero-definition, three-theorem module
+\path{GeometricPochhammerNormalConvergence.lean} upgrades the outer product
+itself to locally uniform convergence on the whole complex plane.  Its exact
+surface is
+\lean{hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf},
+\lean{hasProdLocallyUniformly_rvachevFourierProduct_complexQPochhammerInf},
+and \lean{hasProdLocallyUniformly_rvachevFourier_complexQPochhammerInf}.
+The first assumes exactly \(\lVert q\rVert<1\), includes \(q=0\), and has
+limit \(S_q\); the other two are the nome-\(1/4\) Rvachev-product and
+bounded-Fabius specializations.  Thus the locally-uniform/normal-convergence
+clause of the outer spectral product is exact.  The compound spectral theorem
+nevertheless remains partial: no declaration packages the centered
+characteristic-function/MGF form, the outside-disk reciprocal formula, its
+pole divisor, or the zero--pole exchange.  The next theorem records the
+downstream fixed-nome analytic and zero-set API, including its division-free
+\(q=0\) boundary and the reciprocal-power description when \(q\ne0\).
 \end{proof}
 
 \begin{theorem}[Entire complex q-Pochhammer factors and their simple zeros]
@@ -3163,9 +3170,10 @@ always under exactly \(\lVert q\rVert<1\).
 The factor form is deliberately stronger than a reciprocal-power listing
 because it remains valid at \(q=0\).  The module does not treat
 \(\lVert q\rVert\ge1\), joint holomorphy in \(q\), a closed derivative formula,
-growth order, reciprocal meromorphic continuation, or locally uniform
+growth order, or reciprocal meromorphic continuation.  Locally uniform
 convergence of the outer rearranged product in
-\eqref{eq:geometric-complex-qpochhammer}.
+\eqref{eq:geometric-complex-qpochhammer} is supplied by the separate
+three-theorem module above.
 \end{proof}
 
 \paragraph{Generic infinite-symbol and dissection API.}
@@ -3806,10 +3814,12 @@ The two summability hypotheses in the comparison theorem are essential
 because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
-open interfaces.  This zero-definition/six-theorem leaf raises the live
-facade census to 630 modules and 8,552 public declarations.  This is a
-source-only overlay; the retained 167-page PDF is explicitly historical and
-has not been regenerated for this addition.
+open interfaces.  With the later concurrent source union, the live facade
+census is 641 modules and 8,650 public declarations.  The current TeX also
+contains the six-theorem prime-power companion-row API and the
+zero-definition/three-theorem outer Pochhammer normal-convergence API.  These
+are source-only overlays; the retained 167-page PDF is explicitly historical
+and has not been regenerated for these additions.
 
 On the real axis the origin is the unique global point of unit modulus:
 \begin{equation}
@@ -6065,9 +6075,21 @@ The identities in \eqref{eq:prime-power-binomial-valuation} are
 \lean{primePowerChoose_padicValNat_add} and
 \lean{primePowerChoose_padicValNat}.  They include the right endpoint
 \(j=p^m\) and the boundary \(m=0\).  The strict dyadic-comb specialization
-\(0<j<2^m\) is \lean{twoPowChoose_padicValNat}.  These three declarations
-exhaust \path{PrimePowerBinomialValuation.lean}; no endpoint-flat
-\(\binom{2^m-2}{j-1}\) valuation or valuation-histogram theorem is claimed.
+\(0<j<2^m\) is \lean{twoPowChoose_padicValNat}.  The two preceding Pascal
+rows satisfy the companion identities
+\begin{equation}
+ \nu_p\!\binom{p^m-1}{j}=0\quad(0\le j<p^m),
+ \qquad
+ \nu_p\!\binom{p^m-2}{j-1}=\nu_p(j)\quad(0<j<p^m).
+ \label{eq:prime-power-companion-row-valuation}
+\end{equation}
+These are \lean{primePowerSubOneChoose_padicValNat} and
+\lean{primePowerSubTwoChoose_padicValNat}; the latter's dyadic wrapper is
+\lean{twoPowSubTwoChoose_padicValNat}.  Its strict upper bound is essential:
+at \(j=p^m\) the selected column lies beyond row \(p^m-2\), so the binomial
+coefficient is zero.  These six declarations, and no definitions, exhaust
+\path{PrimePowerBinomialValuation.lean}.  No valuation-histogram theorem is
+claimed.
 
 \subsection{Bernoulli recurrences}
 
@@ -12401,12 +12423,14 @@ Fourier analysis &
 Summable-scale products, finite and infinite q-Pochhammer dissection, the
 generic complete-normed-ring infinite symbol and its explicit complex zero
 derivatives, geometric reciprocal-Gamma factorization, the separate complex
-Pochhammer wrapper and its analytic-order-one factor theory, and the latest
+Pochhammer wrapper and its analytic-order-one factor theory, locally uniform
+convergence of the outer spectral Pochhammer product, and the latest
 infinite q-binomial, Jacobi, q-Pascal, continuity, quantum-binomial, and
 Rogers--Szeg\H{o} polynomial APIs &
 \path{ScaledInfiniteProducts.lean}, \path{GeometricReciprocalGamma.lean},
 \path{RvachevPochhammerFactorization.lean}, \path{QPochhammerDissection.lean},
 \path{QPochhammerInfinite.lean}, \path{QPochhammerEntire.lean},
+\path{GeometricPochhammerNormalConvergence.lean},
 \path{ReciprocalIntegerGammaZeros.lean}, \path{DyadicGammaOrder.lean}\\
 Gaussian (q=-1) first jets, Euler and infinite q-binomial expansions, Jacobi
 and pentagonal products, q-Pascal summation, Gaussian continuity, the quantum
