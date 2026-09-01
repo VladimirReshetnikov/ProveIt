@@ -476,6 +476,7 @@ import FabiusFunction.JacobiTripleProduct
 import FabiusFunction.QPascalSummation
 import FabiusFunction.GaussianBinomialContinuity
 import FabiusFunction.QuantumBinomial
+import FabiusFunction.RogersSzegoPolynomial
 
 set_option autoImplicit false
 
