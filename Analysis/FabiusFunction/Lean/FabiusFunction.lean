@@ -256,6 +256,7 @@ import FabiusFunction.OrthogonalPolynomialRecurrence
 import FabiusFunction.OrthogonalPolynomialJacobi
 import FabiusFunction.CompositeMeshExactness
 import FabiusFunction.RvachevPolynomialSynthesis
+import FabiusFunction.LagrangeRvachevSynthesis
 import FabiusFunction.CombFirstDefect
 import FabiusFunction.CompositeMeshSharpness
 import FabiusFunction.CombDefectSeries

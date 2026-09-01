@@ -109,33 +109,51 @@ the generic moment-Gram and real Fabius--Legendre determinant layers:
   are unconditional.  The real Hankel-ratio value, squared-integral value, and
   fourth/third Hankel-ratio quotient each require a `BoundedFabius` input and an
   `IsFabius` certificate.
-- `LegendreGaunt.lean` contributes four public definitions and twelve public
-  theorems.  It defines executable rational Lebesgue moments, rational and real
-  Legendre Gaunt coefficients, and rational product-linearization
-  coefficients; proves the moment and integral cast bridges, symmetry, exact
-  finite product linearization over both the rationals and reals, and the
-  necessary odd-sum and strict-triangle-violation zeros.
-- `FabiusLegendreGaunt.lean` contributes one public definition and eight public
-  theorems.  It extends the even rational Rvachev--Legendre coefficients by
-  proved odd zeros, identifies the full coefficient with its normalized
-  rational moment, proves full and even-indexed finite Gaunt sums for every
-  executable rational Gram entry and matrix entry, and casts the entry formula
-  to the real up-law Gram matrix under `BoundedFabius` and `IsFabius`.
+- `LegendreGaunt.lean` contributes exactly four public definitions,
+  `legendreLebesgueMomentRat`, `legendreGauntRat`, `legendreGaunt`, and
+  `legendreProductLinearizationCoeffRat`, and twelve public theorems:
+  `legendreLebesgueMomentRat_even`, `legendreLebesgueMomentRat_odd`,
+  `legendreLebesgueMomentRat_cast`, `legendreGauntRat_eq_momentFunctional`,
+  `legendreGauntRat_cast`, `legendreGauntRat_swap_left`,
+  `legendreGauntRat_swap_right`, `legendrePolynomial_mul_eq_sum_gaunt`,
+  `legendrePolynomialRat_mul_eq_sum_gaunt`,
+  `legendreGauntRat_eq_zero_of_odd_sum`,
+  `legendreGauntRat_eq_zero_of_add_lt`, and
+  `legendreGauntRat_eq_zero_of_triangle_violation`.  The executable rational
+  monomial moments feed a bounded triple coefficient sum whose cast is the real
+  triple-Legendre interval integral.  The module proves the swap symmetries,
+  exact finite product linearization over `ℚ` and `ℝ`, and necessary
+  odd-sum and strict-triangle vanishing conditions.  It proves no converse or
+  nonvanishing result, Wigner `3j` identification, factorial formula, or
+  nonnegativity derived from Wigner symbols.
+- `FabiusLegendreGaunt.lean` contributes exactly one public definition,
+  `canonicalRvachevFullLegendreCoefficientRat`, and eight public theorems:
+  `canonicalRvachevFullLegendreCoefficientRat_even`,
+  `canonicalRvachevFullLegendreCoefficientRat_odd`,
+  `canonicalRvachevFullLegendreCoefficientRat_cast`,
+  `canonicalRvachevFullLegendreCoefficientRat_eq_normalized_moment`,
+  `rvachevLegendreGramEntryRat_eq_sum_full_gaunt`,
+  `rvachevLegendreGramEntryRat_eq_sum_gaunt`,
+  `rvachevLegendreGramMatrixRat_apply_eq_sum_gaunt`, and
+  `upLegendreGramMatrix_apply_eq_sum_gaunt`.  The full/even rational coefficient,
+  normalized-moment, Gram-entry, and matrix identities are unconditional.  The
+  coefficient cast and real up-Gram finite even sum require `BoundedFabius` and
+  `IsFabius`.  These are finite polynomial and finite-sum identities, not an
+  infinite-series/integral interchange.
 
 Thus executable rational coefficient, entry, matrix, determinant, cast,
-positivity, norm-ratio, Jacobi-ratio, finite Gaunt-integral, product-
-linearization, and Gaunt-sum Gram-entry layers now have exact Lean
-counterparts, and the displayed `H_4` and `beta_4` have named exact values.  The
-Gaunt modules establish rationality by an executable finite triple sum and cast
-it to the real integral; they do not identify that integral with a Wigner `3j`
-symbol, prove the Wigner factorial formula, prove the converse of the parity
-and triangle support conditions, or prove positivity on admissible triples.
-Christoffel reconstruction, root results, quadrature, Padé identification,
-infinite Jacobi products, and asymptotics remain paper-only.  The report keeps
-the original 22-declaration coefficient/Gram inventory, exhaustive eleven-
-theorem values inventory, and new 25-declaration Gaunt inventory separate from
-the pre-existing generic and real module inventories; together the nine
-inventoried modules expose 99 public names.
+positivity, norm-ratio, and Jacobi-ratio layers now have exact Lean
+counterparts, and the displayed `H_4` and `beta_4` now have named exact values.
+The rational Gaunt triple sum, its real integral cast, rational/real product
+linearizations, and rational/real finite Rvachev Gram-entry expansions now have
+exact Lean counterparts as well.  The Wigner/`3j` identification and factorial
+formula, Wigner-based nonnegativity, converse support/nonvanishing, Christoffel
+reconstruction, named `G_3` entry values, roots, quadrature, infinite Jacobi
+products, and asymptotics remain paper-only.  The report keeps the original
+22-declaration coefficient/Gram inventory, the exhaustive eleven-theorem values
+inventory, and this 25-declaration Gaunt inventory separate.  The focused report
+crosswalk therefore grows from 51 to 76 names; the broader nine-module inventory
+has eighteen definitions and eighty-one theorems, ninety-nine declarations in all.
 
 ## Status discipline
 

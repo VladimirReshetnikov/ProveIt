@@ -32,6 +32,27 @@ The source packages supplied lower bounds rather than a fully pinned lock.
 lower bound for each dependency.  The computability script uses only the
 Python standard library.
 
+## Publication-safe figure variants
+
+The original Matplotlib PDF figures are retained as immutable reproducibility
+assets, but their embedded math text uses Type-3 glyphs.  The canonical master
+therefore includes the corresponding high-resolution PNG variants.  Three
+were supplied by the source packages.  The two dyadic-completion variants were
+rasterized from their single-page PDFs at 300 dpi with Poppler:
+
+```text
+pdftoppm -png -r 300 -singlefile \
+  endpoint/dyadic-completion/figures/psi_periodic.pdf \
+  endpoint/dyadic-completion/figures/psi_periodic
+pdftoppm -png -r 300 -singlefile \
+  endpoint/dyadic-completion/figures/dyadic_tail_convergence.pdf \
+  endpoint/dyadic-completion/figures/dyadic_tail_convergence
+```
+
+Their exact bytes are pinned in `SHA256SUMS`.  This changes only the publication
+container: the plotted data and visual content remain those of the retained
+vector originals.
+
 ```text
 python -m pip install -r requirements.txt
 ```

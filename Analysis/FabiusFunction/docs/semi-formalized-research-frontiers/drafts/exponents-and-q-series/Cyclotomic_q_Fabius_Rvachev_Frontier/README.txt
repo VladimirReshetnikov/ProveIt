@@ -24,12 +24,23 @@ used.
 
 Build the report
 ----------------
-With a standard TeX installation:
+With a standard TeX installation, run three strict serial passes:
 
-    latexmk -pdf -interaction=nonstopmode cyclotomic_q_fabius_frontier.tex
+    pdflatex -interaction=nonstopmode -halt-on-error -file-line-error cyclotomic_q_fabius_frontier.tex
+    pdflatex -interaction=nonstopmode -halt-on-error -file-line-error cyclotomic_q_fabius_frontier.tex
+    pdflatex -interaction=nonstopmode -halt-on-error -file-line-error cyclotomic_q_fabius_frontier.tex
 
-or use pdflatex three times so the contents and cross-references stabilize.
 The source expects figures/ and data/ to remain beside it.
+
+Current publication artifact
+----------------------------
+The 31 August 2026 rebuild matches the current 1,873-line source and is a
+705,892-byte, 28-page A4 PDF with extractable text and no encryption.  All 31
+font rows are embedded and subset; four are Libertinus rows and nine are
+Type-3 rows inherited from the four included Matplotlib vector figures.  The
+standalone figure PDFs contain the same nine Type-3 rows, so figure-font
+normalization remains outstanding.  The active 22-entry checksum ledger
+verifies the current package in full.
 
 Result status and inventory
 ---------------------------

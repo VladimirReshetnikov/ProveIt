@@ -1,13 +1,13 @@
 # Inverse Fabius compositional iterates: nowhere analyticity
 
-> **Source-only merge status (2026-08-31).** The current TeX has 1,742 lines
+> **Source-only merge status (2026-08-31).** The current TeX has 1,744 lines
 > (SHA-256
-> `eda8c676e00a68c1e57e36ee22bfb3502cd56dd95f5630efcaf6a7f0f3b3d3d5`).
+> `c1e9839bee77207ea059f8604ce3773fa0c25c57511e4ca70c3f204f4336bd74`).
 > The retained 26-page PDF was not rebuilt after the notation migration and is
-> not claimed to be synchronized with that source. `SHA256SUMS.txt` was
-> intentionally not refreshed: its TeX row and this README row are pending,
-> while its other thirteen rows pass. Historical build facts below describe
-> the preceding checkpoint.
+> not claimed to be synchronized with that source. The refreshed 15-entry
+> `SHA256SUMS.txt` verifies the current source/README and the retained
+> PDF/assets as distinct payloads. Historical build facts below describe the
+> preceding checkpoint.
 
 This package is a derived companion to the corrected forward report in
 `drafts/representations/fabius_iterates_nowhere_analytic/`.  Its repeated
@@ -82,8 +82,9 @@ submitted ledger had SHA-256
 `c270903631b0942aa7f7742b84ea0117bb9f2f4cc0d0eb374889077ba37873a0`
 and is preserved byte-for-byte as `SHA256SUMS.arrival.txt`.
 `MANIFEST.txt` is the unchanged submitted file list; `SHA256SUMS.txt` is the
-unrefreshed 15-entry operational ledger. See `REPOSITORY_AUDIT.md` for the claim audit,
-original source/PDF hashes, and replay details.
+refreshed 15-entry operational ledger for the current package. See
+`REPOSITORY_AUDIT.md` for the claim audit, original source/PDF hashes, and
+replay details.
 
 ## Files
 
@@ -97,8 +98,8 @@ original source/PDF hashes, and replay details.
 - `requirements.txt` — the submitted unpinned Python dependencies;
 - `REPOSITORY_AUDIT.md` — repository provenance, hostile audit, and limitations;
 - `SHA256SUMS.arrival.txt` — immutable submitted checksum ledger;
-- `SHA256SUMS.txt` — unrefreshed operational checksum ledger; its TeX and
-  README rows are pending.
+- `SHA256SUMS.txt` — refreshed operational checksum ledger; all fifteen rows
+  verify while the retained PDF remains a historical render.
 
 No numerical output is used as a proof premise.
 

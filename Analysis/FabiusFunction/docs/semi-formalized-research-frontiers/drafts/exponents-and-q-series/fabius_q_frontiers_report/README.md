@@ -24,7 +24,7 @@ Novelty claims in the report are explicitly limited to comparison with the live 
 ## Files
 
 - `q_fabius_parameter_frontiers.tex` — complete LaTeX source.
-- `q_fabius_parameter_frontiers.pdf` — compiled 23-page report.
+- `q_fabius_parameter_frontiers.pdf` — current compiled 22-page A4 report.
 - `experiments.py` — documented numerical experiments and figure generation.
 - `symbolic_checks.py` — exact SymPy verification of cumulants, rate series, Edgeworth coefficients, the parameter-kernel cocycle, and Euler–Maclaurin operators.
 - `requirements.txt` — Python package requirements.
@@ -66,14 +66,23 @@ The Monte Carlo stop-loss plot is only a diagnostic. The convex-order result is 
 
 ## LaTeX reproduction
 
-A TeX Live installation with `latexmk` and the standard packages named in the preamble is sufficient.
+A TeX Live installation with the standard packages named in the preamble is sufficient. Run exactly three strict serial passes from this directory.
 
 ```bash
-latexmk -pdf -interaction=nonstopmode -halt-on-error \
-  q_fabius_parameter_frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error q_fabius_parameter_frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error q_fabius_parameter_frontiers.tex
+pdflatex -interaction=nonstopmode -halt-on-error -file-line-error q_fabius_parameter_frontiers.tex
 ```
 
 The figures are already included. Running `experiments.py` regenerates them before compilation.
+
+The current publication artifact was rebuilt on 31 August 2026 from the
+1,492-line source. It is a 700,025-byte, 22-page A4 PDF with extractable text
+and no encryption. All 33 font rows are embedded and subset; five are
+Libertinus rows and eight are Type-3 rows inherited from the four included
+Matplotlib vector figures. The standalone figure PDFs contain the same eight
+Type-3 rows, so figure-font normalization remains outstanding. The active
+20-entry checksum ledger verifies the current package in full.
 
 ## Numerical methodology
 

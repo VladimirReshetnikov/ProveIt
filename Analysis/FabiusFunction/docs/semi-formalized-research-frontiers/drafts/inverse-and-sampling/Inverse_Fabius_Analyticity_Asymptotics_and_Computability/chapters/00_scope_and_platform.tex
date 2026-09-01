@@ -5,23 +5,27 @@
 
 \section{The shared analytic and probabilistic platform}
 \label{sec:common-platform}
+\label{is:p1:sec:platform}
 
 The five source reports use the same bounded Fabius function, Rvachev density, random series, Fourier product, and dyadic spline approximants.  They are fixed once in this part; later parts introduce only the notation peculiar to their question.
 
 
 % Source fragment: Inverse and sampling frontiers; prefix is.
-\section{Established platform and notation}
-\label{is:p1:sec:platform}
-
 \subsection{Fabius, Rvachev, and the random series}
 
-Let $U_1,U_2,\ldots$ be independent uniform random variables on $[-1,1]$ and put
+Let $V_1,V_2,\ldots$ be independent uniform random variables on $[0,1]$, put
+$U_k:=2V_k-1$, and define the uncentered and centered laws
 \begin{equation}
+ X:=\sum_{k=1}^{\infty}2^{-k}V_k,
+ \qquad
  Y:=\sum_{k=1}^{\infty}2^{-k}U_k,
  \qquad
  S_n:=\sum_{k=1}^{n}2^{-k}U_k.
  \label{is:p1:eq:Y-prefix}
 \end{equation}
+Thus $Y=2X-1$.  Throughout the volume, $X$ and $V_k$ refer to the
+uncentered $[0,1]$ model, while $Y$ and $U_k$ refer to its centered
+$[-1,1]$ model.
 The density of $Y$ is Rvachev's even up-function $\RvachevUp$, supported on $[-1,1]$ \cite{is:p1:Rvachev1990,is:p1:Arias1982,is:p1:ProveItPrimary}.
 The bounded Fabius function, originating in Fabius's probabilistic construction \cite{is:p1:Fabius1966}, satisfies
 \begin{equation}
@@ -47,7 +51,7 @@ Let $p_n$ be the density of $S_n$ and set
 On every compact subinterval of $(0,1)$, $\Fn$ is strictly increasing for all sufficiently
 large $n$.  Its increasing inverse branch will be denoted
 \begin{equation}
- \Gn:=\Fn^{-1}.
+ \Gn:=(\Fn)^{-1}.
  \label{is:p1:eq:Gn-def}
 \end{equation}
 The omitted random tail is a scaled copy of $Y$:
@@ -76,21 +80,24 @@ answers both questions at the inverse-dyadic outputs $y=F(2^{-r})$.
 With the angular-frequency convention
 $\FourierAngular{f}(\xi)=\int f(x)\EulerE^{-\ImaginaryUnit x\xi}\Differential x$,
 \begin{equation}
- \Phi(\xi):=\FourierAngular{\RvachevUp}(\xi)
- =\prod_{k=1}^{\infty}\SincRad(2^{-k}\xi),
- \qquad
- \FourierAngular{p_n}(\xi)=\prod_{k=1}^{n}\SincRad(2^{-k}\xi),\qquad\SincRad t:=\frac{\sin t}{t},\ \SincRad0:=1.
+ \begin{aligned}
+ \PhiAng(\xi):=\FourierAngular{\RvachevUp}(\xi)
+   &=\prod_{k=1}^{\infty}\SincRad(2^{-k}\xi),\\
+ \FourierAngular{p_n}(\xi)
+   &=\prod_{k=1}^{n}\SincRad(2^{-k}\xi),
+ &\SincRad t&:=\frac{\sin t}{t},\qquad \SincRad0:=1.
+ \end{aligned}
  \label{is:p1:eq:Phi-products}
 \end{equation}
 Near the origin define rational coefficients $b_j$ by
 \begin{equation}
- \frac1{\Phi(\xi)}=\sum_{j=0}^{\infty}b_j\xi^{2j},
+ \frac1{\PhiAng(\xi)}=\sum_{j=0}^{\infty}b_j\xi^{2j},
  \qquad b_0=1.
  \label{is:p1:eq:b-def}
 \end{equation}
 Euler's product gives
 \begin{equation}
- \log\frac1{\Phi(\xi)}=\sum_{k=1}^{\infty}\gamma_k\xi^{2k},
+ \log\frac1{\PhiAng(\xi)}=\sum_{k=1}^{\infty}\gamma_k\xi^{2k},
  \qquad
  \gamma_k=\frac{\zeta(2k)}{k\pi^{2k}(4^k-1)}.
  \label{is:p1:eq:gamma-def}
@@ -121,9 +128,34 @@ The first values are
  b_4=\frac{1904369}{1311675120000}.
  \label{is:p1:eq:b-first}
 \end{equation}
+
+The merged volume keeps the four polynomial/function families visually
+distinct.  The notation used below is summarized here once:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Object & Reserved notation \\
+\midrule
+finite-prefix spline and its local inverse
+  & $\FiniteSpline{n}$ and $\FiniteSplineInverse{n}$ \\
+forward and inverse compositional iterates
+  & $G_n=F^{\comp n}$ and $K_n=(F^{-1})^{\comp n}$ \\
+uncentered and centered Appell families
+  & $P_n$ and $A_n$ \\
+angular and $2\pi$ Fourier products
+  & $\PhiAng(\xi)$ and $\PhiCyc(z)=\PhiAng(2\pi z)$ \\
+endpoint reversion kernel
+  & $\EndpointKernel(z,w)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Thus a superscript ``$\mathrm{spl}$'' always signals a finite convolution
+prefix; bare $G_n,K_n$ are reserved for composition iterates; and the two
+Fourier coordinates are never silently interchanged.
+
 The corpus proves the uniform derivative expansion
 \begin{equation}
- \Fn^{(m)}(x)=
+ (\Fn)^{(m)}(x)=
  \sum_{j=0}^{J-1}(-1)^jb_j4^{-jn}F^{(m+2j)}(x)
  +\BigO_{m,J}(4^{-Jn})
  \label{is:p1:eq:forward-prefix-expansion}

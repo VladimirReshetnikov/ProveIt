@@ -33,7 +33,13 @@ unqualified moving branch.
 The source currently distinguishes exact Lean crosswalks from results proved
 only in the manuscript. A manuscript theorem label is never, by itself,
 evidence of a compiled Lean declaration. Likewise, numerical tables and plots
-are checks and illustrations, not proof premises.
+are checks and illustrations, not proof premises. The current
+`FabiusFunction.LagrangeRvachevSynthesis` crosswalk verifies generic scalar
+decoder synthesis, node biorthogonality, coefficient factorization, the full
+finite interpolation loop, and the unnormalized decoder row-sum law. It does
+not claim a formal geometric Gaussian closed-form decoder, the associated
+elementary-symmetric/prefactor formula, a `Matrix` wrapper, or decoder
+optimization.
 
 ## Sources reconciled
 
@@ -80,9 +86,10 @@ pdflatex -interaction=nonstopmode -halt-on-error comb_interpolation_synthesis.te
 ```
 
 A successful command is not, by itself, the complete publication gate. The
-current artifact's build, hash, page, font, log, and visual-inspection facts are
-recorded once in [`assets/VALIDATION.md`](assets/VALIDATION.md). Keeping those
-mutable measurements in one record prevents status drift between README files.
+current synchronized artifact's source/PDF hashes, page, font, log, and visual-
+inspection facts are recorded once in
+[`assets/VALIDATION.md`](assets/VALIDATION.md). Keeping those mutable
+measurements in one record prevents status drift between README files.
 
 ## Reproduce the computational evidence
 
@@ -114,7 +121,12 @@ full interpolation replay, is in [`assets/README.md`](assets/README.md).
 The 180-row source-pin disposition and 23-row post-pin reconciliation are
 complete. The deterministic canonical validator passes the structural,
 editorial, provenance, theorem-concordance, and exhaustive package-checksum
-gates. Its Lean check only confirms that each curated declaration name occurs
-in its nominated module; it is not a live Lean census or theorem-type checker.
-Publication measurements and the remaining fresh-checkout and numerical-replay
-work are recorded only in [`assets/VALIDATION.md`](assets/VALIDATION.md).
+gates. Its Lean check only confirms that each curated exact or partial-support
+declaration name occurs in its nominated module; it is not a live Lean census
+or theorem-type checker. Two concordance rows are exact Lean crosswalks; the
+compound decoder and biorthogonality rows remain human-proved with narrower
+partial-support notes. The root `SHA256SUMS` is the exhaustive ledger for every
+other permanent package file. The current PDF is synchronized with the
+formalization-crosswalk source; its measurements and inspections, together
+with the remaining fresh-checkout and numerical-replay work, are recorded only
+in [`assets/VALIDATION.md`](assets/VALIDATION.md).
