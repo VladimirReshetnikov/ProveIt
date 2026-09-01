@@ -518,26 +518,24 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 
 Geometric-sinc subgroup member:
 [`Exponents_and_q_Series_Frontiers/`](geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/)
-(current semantic-union TeX: 16,344 lines and 736,083 bytes, SHA-256
-`2c34d526f18379822ced4d807fd4049ecb85231f4a42a1cd2773fd3c990dd3b9`;
-latest validated PDF: 238 A4 pages and 6,316,535 bytes, SHA-256
-`df7b9ad69e0310b17988dd42cc22559cf22ff26027395c005c374ad51f9e62aa`;
-across seven parts). The PDF was built in exactly three guarded serial passes,
-from the pre-merge layout-fixed source SHA-256
-`2adbe7b1e450a858bb02e80e6b4c4c6420060733f2ae1fe25eb61b6546f58e0f`,
-with page counts 228, 238, and 238; its 41-input closure did not drift and no
-TeX, Lean, or Lake work interleaved with the passes. The final log had no
-blocking diagnostics, all 238 pages were text-bearing, all 1,190 page boxes
-matched A4 exactly, and all 42 Type-1 font rows were embedded and subsetted
-(including 11 Libertinus rows, with no Type-3 font). Fresh visual inspection of
-physical pages 1, 164, 220, 224--227, 236, and 238 was clean. The semantic-union
-source adds the upstream q-API crosswalk material and the exact
-`GeneralizedRvachevIdentifiability.lean` zero-order/exponent crosswalk after
-that receipt. The latter gives constructive dyadic-order first differences and
-full-product rigidity; zeta-quotient, cumulant/analytic-sample, and
-probability-law identifiability remain Partial in Lean. The PDF is therefore
-retained as a historical, source-pinned artifact and a fresh three-pass render
-is pending. This is the
+(current semantic-union TeX: 16,353 lines and 736,736 bytes, SHA-256
+`ac929bb9a79e69ab59e253fa1acd6a1d97c5ee35bdac07dc22f22a1ec5c56bb3`;
+retained PDF: 238 A4 pages and 6,953,898 bytes, SHA-256
+`fa719a8ea68d3c474928b9fae7449f827eb35a5452613f2b660d8e88ba27267e`;
+across seven parts). Exactly three serial passes from the preceding 16,274-line,
+731,692-byte source SHA-256
+`4be184dc95f7c9d7665e5edf56cd22dc66bdacbc2f113b03b700468836018f8b`
+produced 228, 238, and 238 pages. Basic A4, text-extraction, embedded-font, and
+no-Type-3 checks passed, but the containing multi-document batch stopped before
+a fresh full log, page-box, and visual audit. The child ledgers now record the
+actual current TeX and retained PDF as distinct payloads; that does not assert
+render parity. The semantic-union source adds the upstream q-API crosswalk
+material and the exact `GeneralizedRvachevIdentifiability.lean`
+zero-order/exponent crosswalk after the PDF's source checkpoint. The latter
+gives constructive dyadic-order first differences and full-product rigidity;
+zeta-quotient, cumulant/analytic-sample, and probability-law identifiability
+remain Partial in Lean. Final-source rendering and full publication validation
+remain pending. This is the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic

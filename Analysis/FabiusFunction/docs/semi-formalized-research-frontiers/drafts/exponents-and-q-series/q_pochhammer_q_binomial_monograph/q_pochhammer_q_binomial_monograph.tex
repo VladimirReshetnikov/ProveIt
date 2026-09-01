@@ -1044,13 +1044,13 @@ The wrapper \lean{Fabius.gaussianBinomial_reciprocity} specializes this to a
 nonzero element of an arbitrary semifield.  Unlike the quotient proof above,
 the formal proof is a denominator-free induction on the two Pascal
 recurrences, so it remains valid with zero divisors.  In
-\path{GaussianBinomialPolynomialStructure.lean},
-\lean{Fabius.natDegree_gaussianBinomial_universal},
-\lean{Fabius.gaussianBinomial_universal_monic}, and
-\lean{Fabius.coeff_zero_gaussianBinomial_universal} give the exact degree,
+\path{GaussianBinomialPalindromic.lean},
+\lean{Fabius.gaussianBinomial_natDegree},
+\lean{Fabius.gaussianBinomial_monic}, and
+\lean{Fabius.coeff_gaussianBinomial_zero} give the exact degree,
 leading coefficient, and constant coefficient of the universal polynomial;
-\lean{Fabius.gaussianBinomial_universal_reflect} and
-\lean{Fabius.coeff_gaussianBinomial_universal_symm} give reflection and
+\lean{Fabius.reflect_gaussianBinomial} and
+\lean{Fabius.coeff_gaussianBinomial_reflect} give reflection and
 coefficient palindromicity.  These statements hold for every \(k\le n\),
 including both boundary columns, so \Cref{thm:qbinom-structure} is
 \statusexact.
@@ -6704,12 +6704,16 @@ monomial $F=q^{\alpha}\prod_i\GaussianBinomial{n_i}{k_i}{q}$ each factor has con
 $1$ and degree $k_i(n_i-k_i)$ by \Cref{thm:qbinom-structure}(iii); this proves
 item (i).  For item (ii), \Cref{thm:qbinom-structure}(ii) gives
 $\GaussianBinomial{n_i}{k_i}{q^{-1}}=q^{-k_i(n_i-k_i)}\GaussianBinomial{n_i}{k_i}{q}$, so
-\begin{align*}
+\[
+ \begin{aligned}
  F(q^{-1})
- &=q^{-\alpha}\prod_i q^{-k_i(n_i-k_i)}\GaussianBinomial{n_i}{k_i}{q} \\
- &=q^{-c_F}F(q), \\
- c_F&=2\alpha+\sum_ik_i(n_i-k_i)=\deg F+\OrderOperator_{q=0}F.
-\end{align*}
+ &=q^{-\alpha}\prod_i q^{-k_i(n_i-k_i)}\GaussianBinomial{n_i}{k_i}{q}
+   =q^{-c_F}F(q),\\
+ c_F
+ &=2\alpha+\sum_i k_i(n_i-k_i)
+   =\deg F+\OrderOperator_{q=0}F.
+ \end{aligned}
+\]
 using $F(q)=q^{\alpha}\prod_i\GaussianBinomial{n_i}{k_i}{q}$.  If $L=R$, then applying the
 substitution gives $q^{-c_L}L=q^{-c_R}R=q^{-c_R}L$, so
 $(q^{-c_L}-q^{-c_R})L=0$ in $\RationalNumbers(q)$; when $c_L\ne c_R$ the first factor is
@@ -12485,9 +12489,9 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 66 are \statusexact, 77 are
-\statuspartial, 131 are \statusnone, and 8 are \statusna.  The original
-191-result pre-Fabius core now has 38 \statusexact, 28 \statuspartial, 122
+Of the 282 labelled forward results, 70 are \statusexact, 82 are
+\statuspartial, 122 are \statusnone, and 8 are \statusna.  The original
+191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
 definitions.  The later Fabius bridge contributes the remaining 57 rows.
@@ -12578,7 +12582,7 @@ theorems;\\
 use of \path{Fabius.finiteQPochhammerIn_zero_left} imports the unique
 declaration from \path{GaussianBinomialAtOne.lean};\\
 \path{QBinomialReciprocity.lean}: four theorems;\\
-\path{GaussianBinomialPolynomialStructure.lean}: zero definitions and five
+\path{GaussianBinomialPalindromic.lean}: zero definitions and twelve
 theorems;\\
 \path{GaussianBinomialAtNegOne.lean}: five theorems;\\
 \path{RvachevPochhammerFactorization.lean}: one definition and nine theorems;\\
@@ -12611,16 +12615,19 @@ identities, transported from the integer Gaussian polynomial, and the
 even-row odd-column statement includes columns above the row by zero
 extension.
 
-\item The five theorems of
-\path{GaussianBinomialPolynomialStructure.lean} are
-\path{Fabius.natDegree_gaussianBinomial_universal},
-\path{Fabius.gaussianBinomial_universal_monic},
-\path{Fabius.coeff_zero_gaussianBinomial_universal},
-\path{Fabius.gaussianBinomial_universal_reflect}, and
-\path{Fabius.coeff_gaussianBinomial_universal_symm}.  For every \(k\le n\),
+\item The direct structure theorems of
+\path{GaussianBinomialPalindromic.lean} are
+\path{Fabius.gaussianBinomial_natDegree},
+\path{Fabius.gaussianBinomial_monic},
+\path{Fabius.coeff_gaussianBinomial_zero},
+\path{Fabius.reflect_gaussianBinomial}, and
+\path{Fabius.coeff_gaussianBinomial_reflect}.  For every \(k\le n\),
 they give exact degree \(k(n-k)\), monicity, constant coefficient one,
 reflection in that exact degree, and coefficient palindromicity for the
-universal polynomial in \(\NaturalNumbers[X]\).  Together with symmetry,
+universal polynomial over every nontrivial commutative semiring where degree
+requires nontriviality.  The same module also exports
+\path{Fabius.coeff_gaussianBinomial_top} and
+\path{Fabius.two_mul_derivative_gaussianBinomial_eval_one}.  Together with symmetry,
 unit reciprocity, and the universal-evaluation theorem from
 \path{GaussianBinomialUniversal.lean}, this is the exact Lean counterpart of
 \Cref{cor:positivity,thm:qbinom-structure}.
@@ -12976,20 +12983,20 @@ inferred from a related finite identity.
 \toprule
 Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
-The algebra of $q$-shifted factorials & 10 & 2 & 3 & 0\\
-$q$-integers and Gaussian coefficients & 7 & 0 & 2 & 0\\
+The algebra of $q$-shifted factorials & 11 & 1 & 3 & 0\\
+$q$-integers and Gaussian coefficients & 8 & 0 & 1 & 0\\
 Finite $q$-binomial theorems and inversion & 9 & 1 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 2 & 3 & 0\\
 Partitions, words, paths, and inversion statistics & 3 & 1 & 5 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 0 & 1 & 5 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
 The infinite $q$-binomial theorem & 1 & 1 & 2 & 0\\
-Basic hypergeometric series & 1 & 0 & 8 & 0\\
+Basic hypergeometric series & 1 & 3 & 5 & 0\\
 Euler telescoping and very-well-poised summations & 0 & 0 & 4 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 0 & 0 & 2 & 0\\
-$q$-difference calculus and the quantum binomial & 5 & 0 & 5 & 0\\
+$q$-difference calculus and the quantum binomial & 7 & 2 & 1 & 0\\
 The $q$-gamma and $q$-beta functions & 1 & 1 & 6 & 0\\
-Jacobi's triple product & 4 & 1 & 3 & 0\\
+Jacobi's triple product & 4 & 2 & 2 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
 Partitions and product--sum identities & 0 & 0 & 4 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 1 & 0 & 6 & 0\\
@@ -13005,7 +13012,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 66 & 77 & 131 & 8\\
+\textbf{Forward total} & 70 & 82 & 122 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13101,11 +13108,15 @@ $\ComplexNumbers$-only module \texttt{QPochhammerEntire} retains five legacy
 compatibility wrappers that transfer these generic facts to
 \texttt{complexQPochhammerInf}, including $q=0$, and give the reciprocal-power
 zero lattice for $q\ne0$, without duplicate analytic proofs}\\[2pt]
-\Cref{prop:complex-concat} & \statuspartial &
-\texttt{qPochhammerInfIn\_\allowbreak{}eq\_\allowbreak{}finite\_\allowbreak{}mul\_\allowbreak{}shift},
-\texttt{qPochhammerInfIn\_\allowbreak{}succ\_\allowbreak{}shift}\newline
-{\footnotesize\texttt{QPochhammerInfinite}; exact for nonnegative integral
-shifts, not for arbitrary complex \(\alpha,\beta\)}\\[2pt]
+\Cref{prop:complex-concat} & \statusexact &
+\texttt{qPochhammerC\_\allowbreak{}add},
+\texttt{qPochhammerC\_\allowbreak{}add\_\allowbreak{}one},
+\texttt{qPochhammerC\_\allowbreak{}natCast}\newline
+{\footnotesize\texttt{QPochhammerComplexOrder}; with the principal branch of
+$q^\alpha$, each identity under the nonvanishing hypothesis that makes its
+right-hand side defined; the integral case is
+\texttt{qPochhammerInfIn\_\allowbreak{}eq\_\allowbreak{}finite\_\allowbreak{}mul\_\allowbreak{}shift}
+of \texttt{QPochhammerInfinite}}\\[2pt]
 \Cref{prop:order-derivative} & \statusnone & ---\\[2pt]
 \Cref{thm:lambert-log} & \statuspartial &
 \texttt{tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}geom},
@@ -13138,19 +13149,19 @@ commutative ring}\\[2pt]
 \Cref{thm:qpascal} & \statusexact & \texttt{gaussianBinomial\_\allowbreak{}succ\_\allowbreak{}succ\_\allowbreak{}alt}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
 \Cref{cor:positivity} & \statusexact &
 \texttt{gaussianBinomial\_\allowbreak{}eq\_\allowbreak{}eval₂\_\allowbreak{}universal}\newline
-{\footnotesize\texttt{GaussianBinomialUniversal}; every commutative semiring,
-as evaluation of the universal polynomial over \(\NaturalNumbers\), hence
-with nonnegative integral coefficients}\\[2pt]
+{\footnotesize\texttt{GaussianBinomialUniversal}; $[n,k]_q$ is the value at
+$q$ of the universal polynomial $[n,k]_X\in\NaturalNumbers[X]$, in every
+commutative semiring, by naturality of the $q$-Pascal recurrence}\\[2pt]
 \Cref{thm:qbinom-structure} & \statusexact &
 \texttt{gaussianBinomial\_\allowbreak{}symm},
 \texttt{gaussianBinomial\_\allowbreak{}reciprocity\_\allowbreak{}units},
-\texttt{natDegree\_\allowbreak{}gaussianBinomial\_\allowbreak{}universal},
-\texttt{gaussianBinomial\_\allowbreak{}universal\_\allowbreak{}monic},
-\texttt{coeff\_\allowbreak{}zero\_\allowbreak{}gaussianBinomial\_\allowbreak{}universal},
-\texttt{gaussianBinomial\_\allowbreak{}universal\_\allowbreak{}reflect},
-\texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}universal\_\allowbreak{}symm}\newline
+\texttt{gaussianBinomial\_\allowbreak{}natDegree},
+\texttt{gaussianBinomial\_\allowbreak{}monic},
+\texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}zero},
+\texttt{reflect\_\allowbreak{}gaussianBinomial},
+\texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}reflect}\newline
 {\footnotesize\texttt{FiniteQBinomialCore}; \texttt{QBinomialReciprocity};
-\texttt{GaussianBinomialPolynomialStructure}; all four items exact for every
+\texttt{GaussianBinomialPalindromic}; all four items exact for every
 \(k\le n\), including boundary columns}\\[2pt]
 \Cref{cor:qbinom-neg-one-odd} & \statusexact &
 \texttt{gaussianBinomial\_\allowbreak{}neg\_\allowbreak{}one\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}odd\_\allowbreak{}degree},
@@ -13162,7 +13173,14 @@ including above-row zero extension}\\[2pt]
 \texttt{continuous\_\allowbreak{}gaussianBinomial}\newline
 {\footnotesize\texttt{GaussianBinomialContinuity}; in every topological
 semiring, by continuity of the Gaussian coefficient in its base}\\[2pt]
-\Cref{prop:qmult-factor} & \statusnone & ---\\[2pt]
+\Cref{prop:qmult-factor} & \statusexact &
+\texttt{finiteQPochhammerIn\_\allowbreak{}self\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}qMultinomial\_\allowbreak{}mul},
+\texttt{qMultinomial\_\allowbreak{}eq\_\allowbreak{}div},
+\texttt{qMultinomial\_\allowbreak{}eq\_\allowbreak{}eval₂\_\allowbreak{}universal}\newline
+{\footnotesize\texttt{QMultinomial}; the product of Gaussian coefficients is
+the definition there, the factorial form is proved division-free over every
+commutative ring and as a quotient over every field with $(q;q)_n\ne0$, and
+polynomiality with natural coefficients is naturality of the recurrence}\\[2pt]
 \Cref{prop:adjacent-ratio} & \statusexact &
 \texttt{gaussianBinomial\_\allowbreak{}adjacent\_\allowbreak{}div},
 \texttt{gaussianBinomial\_\allowbreak{}row\_\allowbreak{}adjacent\_\allowbreak{}div}\newline
@@ -13301,10 +13319,31 @@ the first for every $z$, the second for $\lVert z\rVert<1$}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Basic hypergeometric series}\\
 \midrule
-\Cref{prop:phi-convergence} & \statusnone & ---\\[2pt]
+\Cref{prop:phi-convergence} & \statuspartial &
+\texttt{summable\_\allowbreak{}basicHypergeometricTerm\_\allowbreak{}of\_\allowbreak{}le},
+\texttt{summable\_\allowbreak{}basicHypergeometricTerm\_\allowbreak{}of\_\allowbreak{}eq},
+\texttt{norm\_\allowbreak{}basicHypergeometricTerm\_\allowbreak{}le}\newline
+{\footnotesize\texttt{BasicHypergeometricSeries}; (i) and the convergence
+half of (ii), in every complete normed field, from a uniform geometric
+domination of the terms valid for $r\le s+1$ whenever no denominator product
+$(b_j;q)_\infty$ vanishes; the divergence half of (ii) and (iii) are not
+formalized}\\[2pt]
 \Cref{thm:classical-hypergeometric-limit} & \statusnone & ---\\[2pt]
-\Cref{thm:heine} & \statusnone & ---\\[2pt]
-\Cref{thm:q-gauss} & \statusnone & ---\\[2pt]
+\Cref{thm:heine} & \statuspartial &
+\texttt{heine\_\allowbreak{}transformation},
+\texttt{summable\_\allowbreak{}twoPhiOneTerm}\newline
+{\footnotesize\texttt{HeineTransformation}; the transformation on the initial
+domain $\lVert z\rVert<1$, $\lVert b\rVert<1$, $b\ne0$, with $(c;q)_\infty$
+and $(az;q)_\infty$ nonvanishing, in every complete normed field, together
+with the absolute convergence of ${}_2\phi_1$ in the unit disc; the
+analytic-continuation clause is not formalized}\\[2pt]
+\Cref{thm:q-gauss} & \statuspartial &
+\texttt{q\_\allowbreak{}gauss\_\allowbreak{}summation}\newline
+{\footnotesize\texttt{QGaussSummation}; on the domain $\lVert b\rVert<1$,
+$\lVert c/(ab)\rVert<1$ where Heine's transformation is available, for
+$a,b\ne0$ and nonvanishing $(c;q)_\infty$, $(c/b;q)_\infty$; the extension to
+the full domain $\lVert c/(ab)\rVert<1$ by analytic continuation is not
+formalized}\\[2pt]
 \Cref{lem:cauchy-II} & \statusexact &
 \texttt{finite\_\allowbreak{}qCauchy\_\allowbreak{}second\_\allowbreak{}identity}\newline
 {\footnotesize\texttt{QBinomialCauchy}; arbitrary commutative ring and all parameters/degrees}\\[2pt]
@@ -13355,10 +13394,34 @@ $N$, rather than invoking a basis}\\[2pt]
 {\footnotesize\texttt{QuantumBinomial}; every semiring, with $q$ assumed only
 to commute with $X$ and $Y$; see \Cref{rem:quantum-binomial-generality}}\\[2pt]
 \Cref{cor:quantum-multinomial} & \statusnone & ---\\[2pt]
-\Cref{cor:qexp-factor} & \statusnone & ---\\[2pt]
-\Cref{prop:qexp-eigen} & \statusnone & ---\\[2pt]
-\Cref{thm:q-fundamental} & \statusnone & ---\\[2pt]
-\Cref{cor:q-integration-parts} & \statusnone & ---\\[2pt]
+\Cref{cor:qexp-factor} & \statuspartial &
+\texttt{hasSum\_\allowbreak{}qExp},
+\texttt{hasSum\_\allowbreak{}qExpBig},
+\texttt{qExp\_\allowbreak{}mul\_\allowbreak{}qExpBig\_\allowbreak{}neg}\newline
+{\footnotesize\texttt{QExponential}; the two series, their product formulas
+on the stated domains, and $e_q(x)E_q(-x)=1$, in every complete normed field;
+the noncommutative factorization $e_q(X+Y)=e_q(X)e_q(Y)$ is not formalized}\\[2pt]
+\Cref{prop:qexp-eigen} & \statusexact &
+\texttt{qDeriv\_\allowbreak{}qExp},
+\texttt{qDeriv\_\allowbreak{}qExpBig}\newline
+{\footnotesize\texttt{QExponential}; for $x\ne0$, with $D_q$ acting on
+functions as the difference quotient, proved from the tail identity
+$(a;q)_\infty=(1-a)(aq;q)_\infty$ rather than termwise from the series}\\[2pt]
+\Cref{thm:q-fundamental} & \statuspartial &
+\texttt{qDeriv\_\allowbreak{}jacksonIntegral},
+\texttt{tendsto\_\allowbreak{}jackson\_\allowbreak{}sum\_\allowbreak{}qDeriv},
+\texttt{jacksonIntegral\_\allowbreak{}qDeriv}\newline
+{\footnotesize\texttt{JacksonIntegral}; $D_qF=f$ at every $x\ne0$ where the
+series is summable, and the converse for partial sums (and for summable
+series), in every complete normed field; the continuous extension at $0$ is
+not formalized}\\[2pt]
+\Cref{cor:q-integration-parts} & \statusexact &
+\texttt{jackson\_\allowbreak{}parts\_\allowbreak{}of\_\allowbreak{}tendsto},
+\texttt{jacksonIntegral\_\allowbreak{}mul\_\allowbreak{}qDeriv}\newline
+{\footnotesize\texttt{JacksonIntegral}; for convergent Jackson series (limits
+of partial sums) and, in \texttt{jacksonIntegral} form, for summable ones;
+from the product rule \texttt{qDeriv\_\allowbreak{}mul} and the telescoping
+second half of the fundamental theorem}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape The $q$-gamma and $q$-beta functions}\\
 \midrule
@@ -13390,7 +13453,13 @@ not formalized}\\[2pt]
 \eqref{eq:jtp-plus} as \texttt{HasSum} over $\IntegerNumbers$, for every
 $z\ne0$ and $\lVert q\rVert<1$ in any complete normed field, with the exponent
 \texttt{thetaExponent}}\\[2pt]
-\Cref{cor:theta-quasi} & \statusnone & ---\\[2pt]
+\Cref{cor:theta-quasi} & \statuspartial &
+\texttt{bilateralTheta\_\allowbreak{}mul\_\allowbreak{}left},
+\texttt{bilateralTheta\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff}\newline
+{\footnotesize\texttt{ThetaQuasiPeriodicity}; the functional equation by
+reindexing the bilateral series, and the zero set $\{-q^m: m\in\IntegerNumbers\}$
+from the product form, in every complete normed field with $q\ne0$; the
+simplicity of the zeros is not formalized}\\[2pt]
 \Cref{thm:finite-jtp} & \statusexact &
 \texttt{finite\_\allowbreak{}triple\_\allowbreak{}product},
 \texttt{finite\_\allowbreak{}triple\_\allowbreak{}product\_\allowbreak{}poly}\newline

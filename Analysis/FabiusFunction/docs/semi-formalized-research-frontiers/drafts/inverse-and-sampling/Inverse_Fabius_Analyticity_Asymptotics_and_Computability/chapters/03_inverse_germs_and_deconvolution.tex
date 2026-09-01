@@ -1554,7 +1554,7 @@ Let $\eps_k=(-1)^{\BinaryDigitSum(k)}$.  For every $N\ge1$ and $n\ge0$,
  \boxed{
  \sum_{k=0}^{2^N-1}\eps_k
  P_n^{[N]}\!\left(x+\frac{k}{2^N}\right)
- =(-1)^N2^{-N(N+1)/2}\fall nN\,x^{n-N},
+ =(-1)^N2^{-N(N+1)/2}\FallingFactorial{n}{N}\,x^{n-N},
  }
  \label{is:p2:eq:TM-P-collapse}
 \end{equation}
@@ -1589,7 +1589,7 @@ completely diagonalized.
 
 \begin{proof}
 Specialize \eqref{is:p2:eq:TM-P-collapse}.  The falling factorial
-$\fall nN$ is zero for $n<N$.  At $n=N$ it equals $N!$ and $x^{n-N}=1$,
+$\FallingFactorial{n}{N}$ is zero for $n<N$.  At $n=N$ it equals $N!$ and $x^{n-N}=1$,
 which gives \eqref{is:p2:eq:TM-first-nonzero}.  When $n>N$, the same formula
 is a constant multiple of $x^{n-N}$; this is precisely the response of the
 $N$th finite-difference operator to a degree-$n$ Appell polynomial.
@@ -1604,7 +1604,7 @@ With $s_N=1-2^{-N}$, for every $N\ge1$ and $n\ge0$,
  \boxed{
  \sum_{k=0}^{2^N-1}\eps_k
  A_n^{[N]}\!\left(x+s_N-\frac{k}{2^{N-1}}\right)
- =2^{-N(N-1)/2}\fall nN\,x^{n-N}.
+ =2^{-N(N-1)/2}\FallingFactorial{n}{N}\,x^{n-N}.
  }
  \label{is:p2:eq:TM-A-collapse}
 \end{equation}

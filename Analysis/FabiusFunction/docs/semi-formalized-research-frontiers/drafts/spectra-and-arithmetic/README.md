@@ -4,13 +4,15 @@
 
 The canonical-notation integration changed the consolidated
 `Spectra_and_Arithmetic_Frontiers` source and eight standalone report sources.
-`Automatic_Scale_Factorizations_Rvachev_2026-08-30` and
-`Fabius_Pascal_Frontiers_Report` have since received exact three-pass rebuilds,
-full artifact validation, and live-ledger refreshes.  The earlier page, font,
-and build facts for the remaining six reports still describe their last
-validated renders, not the current TeX.  Their operational ledgers each fail
-only the changed TeX row: `Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30` (1/26),
-`Dyadic_Spectral_Divisors_and_Gamma_Duality` (1/3),
+`Automatic_Scale_Factorizations_Rvachev_2026-08-30` has an exact three-pass
+source/PDF receipt and a refreshed live ledger.  `Fabius_Pascal_Frontiers_Report`
+also has a reviewed three-pass PDF checkpoint, but its TeX changed afterward;
+that PDF is therefore historical rather than synchronized, while its live
+ledger now inventories the exact current mixed checkpoint.  The earlier page,
+font, and build facts for the remaining reports likewise describe their last
+validated renders, not the current TeX.  Pending operational-ledger work
+includes `Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30`,
+`Dyadic_Spectral_Divisors_and_Gamma_Duality`,
 `Fabius_Rvachev_Carleman_Frontiers_2026-08-30` (1/21),
 `Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors` (1/14),
 `Fabius_Total_Positivity_Frontier_Report` (1/12), and
@@ -40,7 +42,8 @@ Lean verification.
   LF storage and the JSON summary's missing final newline was repaired.  The
   current source selects the retained PNG plot companions; an exact three-pass
   rebuild embeds and subsets every font, retains Libertinus prose, and has no
-  Type 3 fonts, while the vector-PDF plots remain reproducibility payloads. Its
+  Type 3 fonts, while the vector-PDF plots remain reproducibility payloads. The
+  corresponding live ledger now verifies. Its
   Thue--Morse scale partition, q-Mahler, Mellin, moment, plateau, and endpoint
   themes remain standalone pending claim and experiment review, comparison,
   and a Lean crosswalk.
@@ -62,10 +65,12 @@ Lean verification.
   426-line program, four CSV tables, and a captured numerical summary), from
   `8a184546747082cbd92ad4675fb61981c6b8c3b6`. The nine-file delivery had no
   checksum ledger or dependency lock, so the repository-generated
-  `SHA256SUMS` records and verifies all nine payloads.  The current source was
-  rebuilt in exactly three serial passes; the 26-page A4 result has complete
-  metadata, embedded/subset Type 1 fonts, six Libertinus rows, and no Type 3
-  font. Its higher-rank spectral
+  `SHA256SUMS` records the nine-payload scope.  The retained 26-page A4 PDF was
+  rebuilt in exactly three serial passes and has complete metadata,
+  embedded/subset Type 1 fonts, six Libertinus rows, and no Type 3 font. The
+  source changed after that receipt, so a new build is required before
+  synchronization is claimed; the refreshed live ledger intentionally records
+  the exact mixed checkpoint. Its higher-rank spectral
   signs and Lambert series, dyadic cubature, Laguerre--Pólya/Pascal hierarchy,
   and probabilistic duals remain pending comparison.
 

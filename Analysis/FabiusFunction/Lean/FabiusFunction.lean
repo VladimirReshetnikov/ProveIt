@@ -492,6 +492,16 @@ import FabiusFunction.QPartialFractions
 import FabiusFunction.PolynomialQTaylor
 import FabiusFunction.GaussianBinomialUniversal
 import FabiusFunction.GaussianBinomialPolynomialStructure
+import FabiusFunction.QPochhammerInfiniteBounds
+import FabiusFunction.HeineTransformation
+import FabiusFunction.QGaussSummation
+import FabiusFunction.QPochhammerComplexOrder
+import FabiusFunction.BasicHypergeometricSeries
+import FabiusFunction.QMultinomial
+import FabiusFunction.QExponential
+import FabiusFunction.JacksonIntegral
+import FabiusFunction.GaussianBinomialPalindromic
+import FabiusFunction.ThetaQuasiPeriodicity
 
 set_option autoImplicit false
 

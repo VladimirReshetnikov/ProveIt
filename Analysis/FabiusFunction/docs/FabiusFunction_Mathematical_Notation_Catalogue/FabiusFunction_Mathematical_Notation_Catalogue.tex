@@ -132,7 +132,7 @@
 \large Canonical symbols, exact definitions, local namespaces, and historical aliases}
 \author{Encyclopedic companion to Vladimir Reshetnikov's \texttt{ProveIt} formalization}
 \date{Notation contract \FabiusNotationVersion\\
-\small Active corpus at the validation snapshot: 174 recursively inventoried
+\small Active corpus at the validation snapshot: 162 recursively inventoried
 \texttt{.tex} sources}
 
 \begin{document}
@@ -144,7 +144,7 @@ This catalogue is the normative dictionary for mathematical notation in the acti
 global extension, and Rvachev's up-function; fixes number-system, probability, transform,
 binary, $q$-series, asymptotic, fractional-calculus, approximation, and operator
 conventions; and records every recurring collision discovered by a recursive audit of the
-current 174-source active \texttt{.tex} corpus.  Each entry states its type, domain,
+current 162-source active \texttt{.tex} corpus.  Each entry states its type, domain,
 codomain, indices, parameters, normalization, exceptional values, and formalization
 status.  No phrase such as ``with the usual convention'' supplies missing data: when two
 usual conventions exist, both are defined and their conversion is printed.  Historical
@@ -375,6 +375,10 @@ exponential-series normalization.\\
 \commandname{ExponentialCompleteBellPolynomial}\texttt{\{n\}} &
 \(\ExponentialCompleteBellPolynomial{n}\) & Sum over all partial exponential
 Bell polynomials of total weight \(n\).\\
+\commandname{GeometricBernoulliPolynomial}\texttt{\{n\}\{q\}} &
+\(\GeometricBernoulliPolynomial{n}{q}(x)\) & Monic Appell polynomial that
+inverts averaging by the geometric uniform convolution; the evaluation
+argument follows the command.\\
 \commandname{OrdinaryPartialBellPolynomial}\texttt{\{n\}\{k\}} &
 \(\OrdinaryPartialBellPolynomial{n}{k}\) & Partial Bell polynomial in the
 ordinary-series normalization.\\
@@ -2007,6 +2011,89 @@ functions \(f,g\) and \(n\ge1\),
 The \(n=0\) case is simply \(f(g(x))\).  Derivatives therefore use the
 exponential Bell normalization, whereas ordinary series composition uses the
 ordinary normalization.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{geometric-bernoulli-appell-family}
+  {Geometric Bernoulli polynomials for geometric uniform convolution}
+\entryfield{Probability data}{Fix \(q\in(0,1)\), put \(a=1-q\), and let
+\(Z_0,Z_1,\ldots\) be independent random variables, each uniformly
+distributed on \([0,1]\).  Define
+\[
+ V_q\DefinitionEquals a\sum_{j=0}^{\infty}q^jZ_j.
+\]
+The series converges absolutely almost surely, satisfies \(0\le V_q\le1\),
+and has total deterministic weight
+\(a\sum_{j\ge0}q^j=1\).  Its moment-generating function is the entire
+function
+\[
+ M_q(t)\DefinitionEquals\Expectation\EulerE^{tV_q}
+ =\prod_{j=0}^{\infty}
+   \frac{\EulerE^{a q^jt}-1}{a q^jt},
+\]
+where every factor has its removable value \(1\) at \(t=0\).}
+\entryfield{Defining exponential generating function}{For
+\(n\in\NaturalNumbers\) and \(x\in\ComplexNumbers\), the canonical symbol
+\(\GeometricBernoulliPolynomial{n}{q}(x)\) is defined by
+\[
+ \frac{\EulerE^{xt}}{M_q(t)}
+ =\sum_{n=0}^{\infty}
+   \GeometricBernoulliPolynomial{n}{q}(x)\frac{t^n}{n!}.
+\]
+The identity may be read analytically near \(t=0\), where \(M_q(0)=1\), or
+formally in \(\ComplexNumbers[x][[t]]\).  It defines a monic polynomial of
+degree \(n\), with
+\(\GeometricBernoulliPolynomial{0}{q}(x)=1\).  The command arguments are the
+degree \(n\) and deformation parameter \(q\); the polynomial evaluation
+argument \(x\) follows the command.}
+\entryfield{Appell and averaging-inverse laws}{For \(n\ge1\),
+\[
+ \frac{\Differential}{\Differential x}
+ \GeometricBernoulliPolynomial{n}{q}(x)
+ =n\GeometricBernoulliPolynomial{n-1}{q}(x).
+\]
+For every \(n\in\NaturalNumbers\),
+\[
+ \Expectation\,
+ \GeometricBernoulliPolynomial{n}{q}(x+V_q)=x^n.
+\]
+Thus this family is the polynomial inverse of the averaging operator
+\(T_qp(x)=\Expectation p(x+V_q)\); it is not a Bell-polynomial family.}
+\entryfield{Difference and reflection laws}{The product decomposition
+\(M_q(t)=((\EulerE^{at}-1)/(at))M_q(qt)\) gives, for \(n\ge1\),
+\[
+ \GeometricBernoulliPolynomial{n}{q}(x+a)
+ -\GeometricBernoulliPolynomial{n}{q}(x)
+ =anq^{n-1}\GeometricBernoulliPolynomial{n-1}{q}(x/q).
+\]
+Since \(V_q\) and \(1-V_q\) have the same distribution,
+\[
+ \GeometricBernoulliPolynomial{n}{q}(1-x)
+ =(-1)^n\GeometricBernoulliPolynomial{n}{q}(x).
+\]}
+\entryfield{Cumulant representation}{Write the cumulant expansion as
+\[
+ \log M_q(t)=\sum_{j\ge1}\kappa_j(V_q)\frac{t^j}{j!}.
+\]
+Then
+\[
+ \GeometricBernoulliPolynomial{n}{q}(x)
+ =\ExponentialCompleteBellPolynomial{n}
+   \bigl(x-\kappa_1(V_q),-\kappa_2(V_q),\ldots,-\kappa_n(V_q)\bigr),
+ \qquad \kappa_1(V_q)=\tfrac12.
+\]
+This formula uses a complete exponential Bell polynomial to represent the
+Appell family; it does not identify the two families.}
+\entryfield{Classical limit}{As \(q\downarrow0\), \(a\to1\),
+\(V_q\) converges to one uniform random variable, and
+\[
+ \frac{\EulerE^{xt}}{M_q(t)}
+ \longrightarrow \frac{t\EulerE^{xt}}{\EulerE^t-1}.
+\]
+Consequently
+\(\GeometricBernoulliPolynomial{n}{q}(x)\) converges coefficientwise to the
+classical Bernoulli polynomial \(B_n(x)\) in this generating-function
+convention.  The endpoint \(q=0\) is a limit statement, not part of the
+declared parameter domain \((0,1)\).}
 \end{catalogueentry}
 
 \begin{catalogueentry}{eulerian-families}
@@ -6523,37 +6610,6 @@ written after the complete expansion as \(\widehat c_m(y)\); callers must not
 encode \(y\) as a second raw subscript.  Any derivative, superscript, or
 other decoration must group the complete expanded symbol.
 
-\paragraph{\localaccentname{FormalTaylorGerm}}
-TeX arity is one; argument \(1\) is a function or germ label, not the center or
-local variable.  The command prints a wide hat over that label.  For a smooth
-local map \(h:\RealNumbers\to\RealNumbers\) at \(x_0\), its full formal Taylor
-series in the increment \(z\) is
-\[
- \mathcal T_{x_0}h(z)
- \DefinitionEquals
- \sum_{m\ge0}\frac{h^{(m)}(x_0)}{m!}z^m
- \in\RealNumbers[[z]].
-\]
-When both source and target centers are translated, the document instead uses
-the zero-constant germ
-\[
- \mathcal T^{0}_{x_0}h(z)
- \DefinitionEquals
- \mathcal T_{x_0}h(z)-h(x_0)
- =
- \sum_{m\ge1}\frac{h^{(m)}(x_0)}{m!}z^m.
-\]
-The active use families are formal compositional inversion of smooth local
-inverses, the affine center jets of \(G_n\) and \(K_n\), numerical
-coefficient-reversion residuals, and the exact quarter-point germ of \(F\).
-Status is formal algebra: positive radius and equality with the original
-smooth map are separate assertions.  The center, increment variable, whether
-the output center was subtracted, coefficient field, and convergence status
-are all suppressed and must be stated at each use.  The accent means Taylor
-germ, not Fourier transformation.  A scripted function label such as
-\(F_{1/4}\) belongs wholly inside the one argument; any further decoration
-must group the complete expansion.
-
 \paragraph{\localaccentname{GeometricPrefixReproduction}}
 TeX arity is one; argument \(1\) is the prefix depth
 \(m\in\PositiveIntegers\).  The command prints a wide hat over \(X\) with
@@ -7698,6 +7754,16 @@ not a proved equality.\\
 \commandname{InvF} & \commandname{FabiusQuantile} or
 \commandname{FabiusClampedQuantile} & Decide from the input domain: $[0,1]$ for the
 ordinary inverse, all reals for the clamped totalization.\\
+\commandname{fall} & \commandname{FallingFactorial} & Supply the base and
+nonnegative length as two explicit arguments; the length-zero product is one.\\
+\commandname{rise} & \commandname{RisingFactorial} & Supply the base and
+nonnegative length as two explicit arguments; the length-zero product is one.\\
+\commandname{Lap} & \commandname{LaplaceTransformSymbol} & Bare transform
+symbol only; use \commandname{LaplaceTransformOf} when the transformed operand
+belongs inside the semantic command.\\
+\commandname{Mell} & \commandname{MellinTransformSymbol} & Bare transform
+symbol only; use \commandname{MellinTransformOf} when the transformed operand
+belongs inside the semantic command.\\
 \commandname{stirone} & \commandname{UnsignedStirlingFirstKind} & Preserve the
 upper and lower triangular indices; this is the unsigned cycle-count triangle.\\
 \commandname{stirtwo} & \commandname{StirlingSecondKind} & Preserve the upper
@@ -7880,6 +7946,9 @@ prime-power order \(q\).\\
 \commandname{CatalanNumber}, \commandname{GregoryCoefficient},
 \commandname{GenocchiNumber}, \commandname{GenocchiPolynomial} & Distinct
 Catalan, Gregory, and Genocchi families.\\
+\(\GeometricBernoulliPolynomial{n}{q}(x)\) &
+\commandname{GeometricBernoulliPolynomial} & Geometric-uniform-convolution
+Appell family; degree and deformation parameter are explicit.\\
 \(\BarnesGFunction\) & \commandname{BarnesGFunction} & Barnes \(G\)-function,
 not a Gregory or Genocchi coefficient.\\
 \(\BellHessenbergMatrixH{n},\BellHessenbergMatrixK{n}\) &
@@ -8069,6 +8138,8 @@ Command & Arity & Normative entry\\
 \notelink{combinatorial-letter-collisions}{Genocchi numbers}.\\
 \commandname{GenocchiPolynomial} & 1 &
 \notelink{combinatorial-letter-collisions}{Genocchi polynomials}.\\
+\commandname{GeometricBernoulliPolynomial} & 2 &
+\notelink{geometric-bernoulli-appell-family}{Geometric Bernoulli polynomials}.\\
 \commandname{GregoryCoefficient} & 1 &
 \notelink{combinatorial-letter-collisions}{Gregory coefficients}.\\
 \commandname{HurwitzZeta} & 2 &
@@ -8317,11 +8388,11 @@ or a catalogue entry are not substitutes for inspecting the current declaration.
 
 The inventory below is the recursive active tree observed on 2026-09-01 at the
 source-validation checkpoint.  It excludes every path below \modulepath{docs/archive/} and
-counts this catalogue exactly once.  It contains 172 mathematical content sources: 67
-standalone documents and 105 included or generated fragments.  The separate shared
-contract \modulepath{docs/fabius-notation.tex} raises the total before this catalogue to 173
-active TeX files.  Including this standalone catalogue gives 174 active TeX files and
-68 standalone documents.  ``Standalone'' means that the uncommented source
+counts this catalogue exactly once.  It contains 160 mathematical content sources: 62
+standalone documents and 98 included or generated fragments.  The separate shared
+contract \modulepath{docs/fabius-notation.tex} raises the total before this catalogue to 161
+active TeX files.  Including this standalone catalogue gives 162 active TeX files and
+63 standalone documents.  ``Standalone'' means that the uncommented source
 contains \commandname{documentclass}; every other content source is a fragment inheriting
 its root preamble.
 
@@ -8344,18 +8415,18 @@ Frontier synthesis root & 1 & 0 & 1\\
 \modulepath{drafts/exponents-and-q-series/} & 7 & 20 & 27\\
 \modulepath{drafts/frontier-compilations/} & 3 & 1 & 4\\
 \modulepath{drafts/integration-and-transforms/} & 1 & 7 & 8\\
-\modulepath{drafts/inverse-and-sampling/} & 8 & 37 & 45\\
+\modulepath{drafts/inverse-and-sampling/} & 3 & 30 & 33\\
 \modulepath{drafts/lambert-w/} & 7 & 4 & 11\\
 \modulepath{drafts/representations/} & 12 & 26 & 38\\
 \modulepath{drafts/rvachev_up_fourier_decay/} & 1 & 0 & 1\\
 \modulepath{drafts/spectra-and-arithmetic/} & 10 & 10 & 20\\
 \modulepath{drafts/thue-morse/} & 1 & 0 & 1\\
 \midrule
-Mathematical content subtotal & 67 & 105 & 172\\
+Mathematical content subtotal & 62 & 98 & 160\\
 Shared notation contract & 0 & 1 & 1\\
 This catalogue & 1 & 0 & 1\\
 \midrule
-Active TeX total including catalogue & 68 & 106 & 174\\
+Active TeX total including catalogue & 63 & 99 & 162\\
 \bottomrule
 \end{longtable}
 \endgroup

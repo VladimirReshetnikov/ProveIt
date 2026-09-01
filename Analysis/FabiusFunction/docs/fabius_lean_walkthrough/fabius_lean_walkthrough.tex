@@ -2015,9 +2015,10 @@ The zero-definition, five-theorem module
 \nolinkurl{complexQPochhammerInf_eq_zero_iff},
 \nolinkurl{complexQPochhammerInf_eq_zero_iff_eq_inv_pow}, and
 \nolinkurl{analyticOrderAt_complexQPochhammerInf_of_eq_zero}.
-Fix a complex \(q\) with \(\lVert q\rVert<1\), and put
+Fix a complex \(q\) under exactly \(\lVert q\rVert<1\), and put
 \[
- P_q(a)=(a;q)_{\infty,\ComplexNumbers}
+ P_q(a)=\mathtt{complexQPochhammerInf\ a\ q}
+       =(a;q)_{\infty,\ComplexNumbers}
        =\prod_{j=0}^{\infty}(1-aq^j).
 \]
 The first theorem says that the finite prefixes converge locally uniformly as
@@ -3986,7 +3987,7 @@ The separately named half-sum theorem says that, under the explicit hypotheses
 Those dominance hypotheses matter because all indices and subtractions in the Lean
 statement are natural-number operations.
 
-For \(G^{\RationalNumbers}_{ijk}=\nolinkurl{legendreGauntRat}(i,j,k)\), the public
+For \(G^{\RationalNumbers}_{ijk}=\mathtt{legendreGauntRat}(i,j,k)\), the public
 boundary formulas are
 \[
  G^{\RationalNumbers}_{i,j,i+j}
@@ -4000,13 +4001,13 @@ boundary formulas are
 The identification is global, not merely a necessary support statement:
 \[
  G^{\RationalNumbers}_{ijk}=2W^2_{ijk},\qquad
- \nolinkurl{legendreGaunt}(i,j,k)=2(W^2_{ijk}:\RealNumbers).
+ \mathtt{legendreGaunt}(i,j,k)=2(W^2_{ijk}:\RealNumbers).
 \]
 For each of \(W^2_{ijk}\), \(G^{\RationalNumbers}_{ijk}\), and the real Gaunt integral,
 the API separately proves positivity exactly on \(\mathsf A\), zero exactly off
 \(\mathsf A\), and global nonnegativity.  Finally,
 \[
- \nolinkurl{legendreProductLinearizationCoeffRat}(i,j,k)
+ \mathtt{legendreProductLinearizationCoeffRat}(i,j,k)
  =(2k+1)W^2_{ijk},
 \]
 and that coefficient is positive exactly on \(\mathsf A(i,j,k)\).
@@ -4059,16 +4060,19 @@ The first two are unconditional rational identities:
 \]
 first for \nolinkurl{rvachevLegendreGramEntryRat} and then entrywise for
 \nolinkurl{rvachevLegendreGramMatrixRat}.  The third requires
-\(F:\nolinkurl{BoundedFabius}\) and \(h_F:\nolinkurl{IsFabius F}\), and for
+\(F:\mathtt{BoundedFabius}\) and \(h_F:\mathtt{IsFabius\ F}\), and for
 \(i,j:\operatorname{Fin}n\) states
 \[
- \nolinkurl{upLegendreGramMatrix}(F,n,i,j)
- =2\sum_{r=0}^{\Floor{((i:\NaturalNumbers)+(j:\NaturalNumbers))/2}}
- \nolinkurl{rvachevLegendreCoefficient}(F,r)
- \left(W^2_{(i:\NaturalNumbers),(j:\NaturalNumbers),2r}:\RealNumbers\right).
+ \begin{aligned}
+ \mathtt{upLegendreGramMatrix}(F,n,i,j)
+ &=2\sum_{r=0}^{\Floor{((i:\NaturalNumbers)+(j:\NaturalNumbers))/2}}
+   \mathtt{rvachevLegendreCoefficient}(F,r)\\
+ &\qquad{}\times
+   \left(W^2_{(i:\NaturalNumbers),(j:\NaturalNumbers),2r}:\RealNumbers\right).
+ \end{aligned}
 \]
 All three sums are finite, with Lean's actual index set
-\(\nolinkurl{range}(\Floor{(i+j)/2}+1)\).  Their proofs simply substitute the global
+\(\mathtt{range}(\Floor{(i+j)/2}+1)\).  Their proofs simply substitute the global
 Gaunt identity into the three predecessor sums and move the scalar \(2\) outside.
 
 The boundary of this API is deliberate and exact.  It defines only a total rational
