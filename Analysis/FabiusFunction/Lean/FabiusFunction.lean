@@ -484,6 +484,11 @@ import FabiusFunction.PolynomialQLeibniz
 import FabiusFunction.QGamma
 import FabiusFunction.LambertSeriesLog
 import FabiusFunction.QPochhammerDerivative
+import FabiusFunction.ClassicalPochhammerLimit
+import FabiusFunction.QPochhammerIntegerIndex
+import FabiusFunction.QPartialFractions
+import FabiusFunction.PolynomialQTaylor
+import FabiusFunction.GaussianBinomialUniversal
 
 set_option autoImplicit false
 

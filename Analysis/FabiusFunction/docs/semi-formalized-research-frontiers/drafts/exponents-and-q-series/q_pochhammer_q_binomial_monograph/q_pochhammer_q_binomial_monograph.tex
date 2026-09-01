@@ -136,7 +136,6 @@
 \newcommand{\GeneralizedQNumber}[2]{\left[#1\right]_{#2}}
 \newcommand{\QFallingPower}[4]{\left(#1-#2\right)_{#3}^{\langle #4\rangle}}
 \newcommand{\JacksonDifferential}[2]{\mathop{}\!\mathrm d_{#1}#2}
-\newcommand{\FiniteField}[1]{\mathbb F_{#1}}
 \newcommand{\InversionNumber}[1]{\operatorname{inv}(#1)}
 \newcommand{\LatticePathArea}[1]{\operatorname{area}(#1)}
 \newcommand{\WeightCharacter}[2]{\operatorname{ch}_{#2}\!\left(#1\right)}
@@ -493,6 +492,20 @@ and the remaining product is
 Taking the reciprocal proves the formula.  The extended concatenation identity follows by cancelling the overlapping finite factors; the cases in which one of $m,n,m+n$ is negative reduce directly to the definition.
 \end{proof}
 
+% ed.: remark added to record the generality of the formalization.
+\begin{remark}[Signed interval products]\label{rem:negative-index-formalization}
+The formalization organizes all integer indices around the signed interval
+products $I(u,v)=\prod_{u\le j<v}(1-aq^j)$ for $u\le v$ and
+$I(v,u)=I(u,v)^{-1}$, so that $(a;q)_n=I(0,n)$ and $(aq^m;q)_n=I(m,m+n)$
+for all $m,n\in\IntegerNumbers$.  The single \emph{cocycle identity}
+$I(u,w)=I(u,v)\,I(v,w)$ then holds for all integers $u,v,w$ as soon as the
+two factors on the right are nonzero (unconditionally when $u\le v\le w$),
+and it contains the extended concatenation law, the shift
+$(a;q)_{n+1}=(a;q)_n(1-aq^n)$ for every $n\in\IntegerNumbers$, and the
+closed form above.  Nonvanishing of the two factors is exactly the
+``both sides defined'' proviso of the proposition.
+\end{remark}
+
 \begin{corollary}[A terminating factor]\label{cor:qminusN}
 Let $q$ be a nonzero element of a field.  If $0\le k\le N$ and
 $(q;q)_{N-k}\ne0$, then
@@ -552,6 +565,24 @@ displayed coefficient.  After subtracting the proposed right-hand side, all
 finite poles are removable.  The difference is therefore a polynomial; it is
 $O(z^{-1})$ at infinity, so it is identically zero.
 \end{proof}
+
+% ed.: remark added to record the division-free form proved in Lean.
+\begin{remark}[The polynomial form]\label{rem:partial-fraction-formalization}
+Clearing denominators, the theorem is the identity
+\[
+ \sum_{j=0}^{n}
+ \frac{(-1)^jq^{\binom{j+1}{2}}}{(q;q)_j(q;q)_{n-j}}
+ \prod_{\substack{0\le i\le n\\ i\ne j}}(1-zq^i)=1
+\]
+of polynomials in $z$, which is what the formalization proves, by Lagrange
+interpolation at the $n+1$ nodes $z=q^{-j}$: both sides have degree at most
+$n$, and at $z=q^{-j}$ only the $j$th summand survives, with value
+$A_j\prod_{r\ne j}(1-q^{r-j})=1$.  The only hypothesis needed is
+$(q;q)_n\ne0$, that is $q^m\ne1$ for $1\le m\le n$; for $q\ne0$ this is the
+displayed distinctness of $1,q,\ldots,q^n$, and for $q=0$ it holds
+automatically (the sum then reduces to its $j=0$ term).  The rational
+identity follows for every $z$ off the poles.
+\end{remark}
 
 \begin{proposition}[Logarithmic derivatives]\label{prop:logder-finite}
 Away from its zeros,
@@ -865,6 +896,19 @@ to $u=x+j$ in
 \]
 proves the result.
 \end{proof}
+
+% ed.: remark added to record the generality of the formalization.
+\begin{remark}[Only the derivative at $1$ enters]\label{rem:classical-limit-formalization}
+The proof uses nothing about $q^x$ beyond $q^x\to1$ and
+$(1-q^x)/(1-q)\to x$, that is, the value and the derivative of $q\mapsto q^x$
+at $q=1$.  Accordingly the formalization proves the limit for an arbitrary
+parameter family $a=f(q)$ in any nontrivially normed field: if $f(1)=1$ and
+$f'(1)=c$, then $(f(q);q)_n/(1-q)^n\to(c)_n$ as $q\to1$, $q\ne1$, because
+each factor $(1-f(q)q^j)/(1-q)$ is the difference quotient at $1$ of
+$q\mapsto f(q)q^j$, whose derivative there is $c+j$.  The complex statement
+above (principal branch) and its real analogue are the specializations
+$f(q)=q^x$.
+\end{remark}
 
 \chapter{\texorpdfstring{$q$}{q}-integers and Gaussian coefficients}\label{chap:gaussian}
 \index{Gaussian coefficient}
@@ -2429,24 +2473,24 @@ geometric sum $1+z+\cdots+z^{n}$, as it must be.
 \section{Counting subspaces}
 
 Write a prime power as $Q=p^e$, where $p$ is prime and
-$e\in\PositiveIntegers$.  The symbol $\FiniteField{Q}$ denotes a field with
+$e\in\PositiveIntegers$.  The symbol $\FiniteField_{Q}$ denotes a field with
 $Q$ elements, unique up to field isomorphism but not by a distinguished
-isomorphism.  For $n\in\NaturalNumbers$, $\FiniteField{Q}^{n}$ is its
+isomorphism.  For $n\in\NaturalNumbers$, $\FiniteField_{Q}^{n}$ is its
 $n$-fold Cartesian product and $n$-dimensional vector space; at $n=0$ this is
 the one-element zero space.  For $r\in\NaturalNumbers$,
-$\mathrm{GL}_r(\FiniteField{Q})$ is the group of invertible
-$r\times r$ matrices, with $\mathrm{GL}_0(\FiniteField{Q})$ the trivial
+$\mathrm{GL}_r(\FiniteField_{Q})$ is the group of invertible
+$r\times r$ matrices, with $\mathrm{GL}_0(\FiniteField_{Q})$ the trivial
 group.
 
 \begin{theorem}[Gaussian coefficients count subspaces]\label{thm:subspace-count}
-Let $Q$ be a prime power.  The number of $k$-dimensional linear subspaces of $\FiniteField{Q}^{n}$ is
+Let $Q$ be a prime power.  The number of $k$-dimensional linear subspaces of $\FiniteField_{Q}^{n}$ is
 \[
  \GaussianBinomial{n}{k}{Q}.
 \]
 \end{theorem}
 
 \begin{proof}
-Count ordered linearly independent $k$-tuples in $\FiniteField{Q}^{n}$.  The first vector may be any nonzero vector, the second any vector outside the span of the first, and so on, giving
+Count ordered linearly independent $k$-tuples in $\FiniteField_{Q}^{n}$.  The first vector may be any nonzero vector, the second any vector outside the span of the first, and so on, giving
 \[
  (Q^n-1)(Q^n-Q)\cdots(Q^n-Q^{k-1}).
 \]
@@ -2463,7 +2507,7 @@ ordered bases.  Dividing and cancelling $Q^i$ in corresponding factors yields
 \end{proof}
 
 \begin{theorem}[Geometric Pascal recurrence]\label{thm:geometric-pascal}
-Let $H$ be a fixed hyperplane in $\FiniteField{Q}^{n}$.  Then
+Let $H$ be a fixed hyperplane in $\FiniteField_{Q}^{n}$.  Then
 \[
  \GaussianBinomial{n}{k}{Q}
  =\GaussianBinomial{n-1}{k}{Q}+Q^{n-k}\GaussianBinomial{n-1}{k-1}{Q}.
@@ -2471,7 +2515,7 @@ Let $H$ be a fixed hyperplane in $\FiniteField{Q}^{n}$.  Then
 \end{theorem}
 
 \begin{proof}
-A $k$-subspace $U$ is either contained in $H$ or not.  The contained subspaces contribute $\GaussianBinomial{n-1}{k}{Q}$.  If $U\not\subseteq H$, then $W=U\cap H$ has dimension $k-1$.  Fixing $W$, the quotient $\FiniteField{Q}^{n}/W$ has dimension $n-k+1$, and $H/W$ is a hyperplane.  The subspace $U/W$ is a line not contained in $H/W$.  The total number of lines in $\FiniteField{Q}^{n-k+1}$ minus those in its hyperplane is
+A $k$-subspace $U$ is either contained in $H$ or not.  The contained subspaces contribute $\GaussianBinomial{n-1}{k}{Q}$.  If $U\not\subseteq H$, then $W=U\cap H$ has dimension $k-1$.  Fixing $W$, the quotient $\FiniteField_{Q}^{n}/W$ has dimension $n-k+1$, and $H/W$ is a hyperplane.  The subspace $U/W$ is a line not contained in $H/W$.  The total number of lines in $\FiniteField_{Q}^{n-k+1}$ minus those in its hyperplane is
 \[
  \frac{Q^{n-k+1}-1}{Q-1}-\frac{Q^{n-k}-1}{Q-1}=Q^{n-k}.
 \]
@@ -2483,7 +2527,7 @@ There are $\GaussianBinomial{n-1}{k-1}{Q}$ choices for $W$, proving the formula.
 \begin{theorem}[Partial flags]\label{thm:flag-count}
 Let $d_i=n_1+\cdots+n_i$.  The number of flags
 \[
- 0=V_0\subset V_1\subset\cdots\subset V_r=\FiniteField{Q}^{n},
+ 0=V_0\subset V_1\subset\cdots\subset V_r=\FiniteField_{Q}^{n},
  \qquad \dim(V_i/V_{i-1})=n_i,
 \]
 is
@@ -2493,20 +2537,20 @@ is
 \end{theorem}
 
 \begin{proof}
-Choose $V_1$ in $\GaussianBinomial{n}{n_1}{Q}$ ways.  In the quotient $\FiniteField{Q}^{n}/V_1$, choose $V_2/V_1$ in $\GaussianBinomial{n-n_1}{n_2}{Q}$ ways, and continue.  The product is the factorization in \Cref{prop:qmult-factor}.
+Choose $V_1$ in $\GaussianBinomial{n}{n_1}{Q}$ ways.  In the quotient $\FiniteField_{Q}^{n}/V_1$, choose $V_2/V_1$ in $\GaussianBinomial{n-n_1}{n_2}{Q}$ ways, and continue.  The product is the factorization in \Cref{prop:qmult-factor}.
 \end{proof}
 
 \section{Matrices of fixed rank}
 
 \begin{theorem}[Rank enumeration]\label{thm:rank-matrices}
-The number of $m\times n$ matrices of rank $r$ over $\FiniteField{Q}$ is
+The number of $m\times n$ matrices of rank $r$ over $\FiniteField_{Q}$ is
 \[
  N_{m,n,r}(Q)
- =\GaussianBinomial{m}{r}{Q}\GaussianBinomial{n}{r}{Q}\AbsoluteValue{\mathrm{GL}_r(\FiniteField{Q})},
+ =\GaussianBinomial{m}{r}{Q}\GaussianBinomial{n}{r}{Q}\AbsoluteValue{\mathrm{GL}_r(\FiniteField_{Q})},
 \]
 where
 \[
- \AbsoluteValue{\mathrm{GL}_r(\FiniteField{Q})}=\prod_{i=0}^{r-1}(Q^r-Q^i).
+ \AbsoluteValue{\mathrm{GL}_r(\FiniteField_{Q})}=\prod_{i=0}^{r-1}(Q^r-Q^i).
 \]
 Equivalently,
 \[
@@ -2529,7 +2573,7 @@ choices for $V$.  Two pairs $(U,V)$ and $(U',V')$ give the same $A$ exactly when
 \[
  U'=UG,\qquad V'=G^{-1}V
 \]
-for a unique $G\in\mathrm{GL}_r(\FiniteField{Q})$.  Thus every matrix is counted $\AbsoluteValue{\mathrm{GL}_r}$ times.  Substituting the subspace-count formulas gives the first expression.
+for a unique $G\in\mathrm{GL}_r(\FiniteField_{Q})$.  Thus every matrix is counted $\AbsoluteValue{\mathrm{GL}_r}$ times.  Substituting the subspace-count formulas gives the first expression.
 \end{proof}
 
 \section{Schubert cells and a topological meaning}
@@ -2550,7 +2594,7 @@ Fix the standard flag in $\ComplexNumbers^n$.  Every $k$-plane has a unique row-
 \end{proof}
 
 \begin{remark}[The ``same polynomial'' principle]
-For a prime power $Q$, evaluating $\GaussianBinomial{n}{k}{q}$ at $q=Q$ counts rational points of a Grassmannian over $\FiniteField{Q}$.  Evaluating it at $q=t^2$ records the even Betti numbers of the complex Grassmannian.  This is an elementary instance of the broad principle that polynomial point counts over finite fields often shadow topological invariants over $\ComplexNumbers$.
+For a prime power $Q$, evaluating $\GaussianBinomial{n}{k}{q}$ at $q=Q$ counts rational points of a Grassmannian over $\FiniteField_{Q}$.  Evaluating it at $q=t^2$ records the even Betti numbers of the complex Grassmannian.  This is an elementary instance of the broad principle that polynomial point counts over finite fields often shadow topological invariants over $\ComplexNumbers$.
 \end{remark}
 
 \section{Growth over finite fields}
@@ -8556,8 +8600,8 @@ Comparing \eqref{eq:halfbase-two-reciprocity} with \eqref{eq:halfbase-gaussian} 
 \[
  \GaussianBinomial{n}{k}{2}=\frac{\mathfrak m_n}{\mathfrak m_k\,\mathfrak m_{n-k}},
 \]
-and by \Cref{thm:subspace-count} it counts the $k$-dimensional subspaces of $\FiniteField{2}^{n}$.  Thus the half-base Gaussian row is a finite-geometric count divided by an explicit power of two, and the exponent of that power is $k(n-k)$, the dimension of the Grassmannian.  In the same way \eqref{eq:halfbase-factorial} exhibits $(1/2;1/2)_n$ as a power-of-two normalization of a product of Mersenne numbers, with $\TwoAdicValuation\!\left(\QPochhammer{1/2}{1/2}{n}\right)=-\binom{n+1}{2}$ because $\mathfrak m_n$ is odd.
-% ed.: an incoming draft restated reciprocity and the $\FiniteField{2}$-subspace count in
+and by \Cref{thm:subspace-count} it counts the $k$-dimensional subspaces of $\FiniteField_{2}^{n}$.  Thus the half-base Gaussian row is a finite-geometric count divided by an explicit power of two, and the exponent of that power is $k(n-k)$, the dimension of the Grassmannian.  In the same way \eqref{eq:halfbase-factorial} exhibits $(1/2;1/2)_n$ as a power-of-two normalization of a product of Mersenne numbers, with $\TwoAdicValuation\!\left(\QPochhammer{1/2}{1/2}{n}\right)=-\binom{n+1}{2}$ because $\mathfrak m_n$ is odd.
+% ed.: an incoming draft restated reciprocity and the $\FiniteField_{2}$-subspace count in
 % ed.: place; both are cross-referenced here instead.
 \end{remark}
 
@@ -10603,7 +10647,7 @@ The transport statement \Cref{thm:universal-functoriality}(iii) is what licenses
 \index{incidence algebra}
 \index{subspace lattice}
 
-Counting is only the first half of the finite-field picture.  The subspaces of $\FiniteField{Q}^{n}$ form a lattice, and its M\"obius function is again a Gaussian datum: a sign and a quadratic power of $Q$.  This is the structural reason for the shape of the inverse kernel in \Cref{thm:qbinomial-inversion}.
+Counting is only the first half of the finite-field picture.  The subspaces of $\FiniteField_{Q}^{n}$ form a lattice, and its M\"obius function is again a Gaussian datum: a sign and a quadratic power of $Q$.  This is the structural reason for the shape of the inverse kernel in \Cref{thm:qbinomial-inversion}.
 
 For an ambient vector space $V$, the notation
 $\SubspaceMobius{V}{U}{W}$ denotes the interval-poset M\"obius function on
@@ -10617,7 +10661,7 @@ the subspace lattice $\mathcal L(V)$.  It is characterized by
 It is neither the arithmetic M\"obius function nor a measure.
 
 \begin{theorem}[M\"obius function of the subspace lattice]\label{thm:subspace-mobius}
-Let $Q$ be a prime power and let $V$ be a $d$-dimensional vector space over $\FiniteField{Q}$.  In the lattice of subspaces of $V$, ordered by inclusion,
+Let $Q$ be a prime power and let $V$ be a $d$-dimensional vector space over $\FiniteField_{Q}$.  In the lattice of subspaces of $V$, ordered by inclusion,
 \begin{equation}\label{eq:subspace-mobius}
  \SubspaceMobius{V}{0}{V}=(-1)^dQ^{\binom d2}.
 \end{equation}
@@ -12423,8 +12467,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 59 are \statusexact, 78 are
-\statuspartial, 137 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 64 are \statusexact, 78 are
+\statuspartial, 132 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -12884,7 +12928,7 @@ inferred from a related finite identity.
 \toprule
 Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
-The algebra of $q$-shifted factorials & 7 & 2 & 6 & 0\\
+The algebra of $q$-shifted factorials & 10 & 2 & 3 & 0\\
 $q$-integers and Gaussian coefficients & 5 & 1 & 3 & 0\\
 Finite $q$-binomial theorems and inversion & 9 & 1 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 2 & 3 & 0\\
@@ -12895,7 +12939,7 @@ The infinite $q$-binomial theorem & 1 & 1 & 2 & 0\\
 Basic hypergeometric series & 1 & 0 & 8 & 0\\
 Euler telescoping and very-well-poised summations & 0 & 0 & 4 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 0 & 0 & 2 & 0\\
-$q$-difference calculus and the quantum binomial & 3 & 0 & 7 & 0\\
+$q$-difference calculus and the quantum binomial & 5 & 0 & 5 & 0\\
 The $q$-gamma and $q$-beta functions & 1 & 1 & 6 & 0\\
 Jacobi's triple product & 4 & 1 & 3 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
@@ -12913,7 +12957,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 59 & 78 & 137 & 8\\
+\textbf{Forward total} & 64 & 78 & 132 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -12952,14 +12996,28 @@ remainder allowed to equal $r$}\\[2pt]
 \texttt{finiteQPochhammerIn\_\allowbreak{}inv\_\allowbreak{}base\_\allowbreak{}reversal}\newline
 {\footnotesize\texttt{QPochhammerElementaryIdentities}; field wrappers with
 \(a\ne0\), \(q\ne0\), strengthened by the two unit-valued ring forms}\\[2pt]
-\Cref{prop:negative-index} & \statusnone & ---\\[2pt]
+\Cref{prop:negative-index} & \statusexact &
+\texttt{finiteQPochhammerZ\_\allowbreak{}neg\_\allowbreak{}natCast\_\allowbreak{}eq},
+\texttt{finiteQPochhammerZ\_\allowbreak{}add},
+\texttt{qIntervalProd\_\allowbreak{}trans}\newline
+{\footnotesize\texttt{QPochhammerIntegerIndex}; over every field with $q\ne0$:
+the closed form for $a\ne0$, and concatenation for all integer $m,n$ whenever
+both factors are nonzero, as the cocycle identity $I(u,w)=I(u,v)I(v,w)$ of
+signed interval products; see \Cref{rem:negative-index-formalization}}\\[2pt]
 \Cref{cor:qminusN} & \statusexact &
 \texttt{finiteQPochhammerIn\_\allowbreak{}inv\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}self\_\allowbreak{}div},
 \texttt{finiteQPochhammerIn\_\allowbreak{}inv\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}lt}\newline
 {\footnotesize\texttt{QPochhammerElementaryIdentities}; \(q\ne0\), with the
 quotient additionally assuming \((q;q)_{N-k}\ne0\); root-safe numerator and
 cleared forms are also exported}\\[2pt]
-\Cref{thm:partial-fraction} & \statusnone & ---\\[2pt]
+\Cref{thm:partial-fraction} & \statusexact &
+\texttt{one\_\allowbreak{}div\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}eq\_\allowbreak{}sum},
+\texttt{sum\_\allowbreak{}partialFractionCoeff\_\allowbreak{}mul\_\allowbreak{}prod\_\allowbreak{}erase}\newline
+{\footnotesize\texttt{QPartialFractions}; over every field, under the
+hypothesis $(q;q)_n\ne0$ (implied by the stated distinctness, and automatic
+for $q=0$), for $z$ off the poles; the division-free polynomial identity
+$\sum_j c_j\prod_{i\ne j}(1-Xq^i)=1$ in $K[X]$ is the formalized core; see
+\Cref{rem:partial-fraction-formalization}}\\[2pt]
 \Cref{prop:logder-finite} & \statusexact &
 \texttt{hasDerivAt\_\allowbreak{}finiteQPochhammerIn},
 \texttt{hasDerivAt\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}of\_\allowbreak{}ne\_\allowbreak{}zero},
@@ -13010,7 +13068,14 @@ form, and its exponential form $\exp(-\sum_m a^m/(m(1-q^m)))=(a;q)_\infty$;
 the two derivative formulas and the local uniformity are not formalized}\\[2pt]
 \Cref{cor:divisor-sum} & \statusnone & ---\\[2pt]
 \Cref{thm:poch-dilog} & \statusnone & ---\\[2pt]
-\Cref{prop:classical-poch-limit} & \statusnone & ---\\[2pt]
+\Cref{prop:classical-poch-limit} & \statusexact &
+\texttt{tendsto\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}cpow\_\allowbreak{}div\_\allowbreak{}pow},
+\texttt{tendsto\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}rpow\_\allowbreak{}div\_\allowbreak{}pow},
+\texttt{tendsto\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}div\_\allowbreak{}pow\_\allowbreak{}of\_\allowbreak{}hasDerivAt}\newline
+{\footnotesize\texttt{ClassicalPochhammerLimit}; the complex statement with
+the principal branch, the real statement, and the general form for any
+parameter family $a=f(q)$ with $f(1)=1$ over any nontrivially normed field,
+in which only $f'(1)$ enters; see \Cref{rem:classical-limit-formalization}}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape $q$-integers and Gaussian coefficients}\\
 \midrule
@@ -13211,8 +13276,19 @@ $(1-q)x\,D_qp(x)=p(x)-p(qx)$ over every commutative ring}\\[2pt]
 {\footnotesize\texttt{PolynomialQLeibniz}; on polynomials over every
 commutative semiring, from the product rule and the first $q$-Pascal
 summation}\\[2pt]
-\Cref{lem:qfalling-derivative} & \statusnone & ---\\[2pt]
-\Cref{thm:q-taylor} & \statusnone & ---\\[2pt]
+\Cref{lem:qfalling-derivative} & \statusexact &
+\texttt{qDerivative\_\allowbreak{}qFallingPower\_\allowbreak{}succ},
+\texttt{qDerivative\_\allowbreak{}iterate\_\allowbreak{}qFallingPower}\newline
+{\footnotesize\texttt{PolynomialQTaylor}; over every commutative ring, the
+iterated form for every $j$ as
+$D_q^j(x-a)_q^{\langle m\rangle}=[m]_q[m-1]_q\cdots[m-j+1]_q\,(x-a)_q^{\langle m-j\rangle}$,
+division-free, and vanishing automatically for $j>m$}\\[2pt]
+\Cref{thm:q-taylor} & \statusexact &
+\texttt{qTaylor}\newline
+{\footnotesize\texttt{PolynomialQTaylor}; over every field, under exactly the
+stated hypothesis $[j]_q\ne0$ for $1\le j\le N$; the formalized proof peels
+off the leading falling power $c\,(x-a)_q^{\langle N+1\rangle}$ and inducts on
+$N$, rather than invoking a basis}\\[2pt]
 \Cref{thm:quantum-binomial} & \statusexact &
 \texttt{quantum\_\allowbreak{}binomial},
 \texttt{quantumPlane\_\allowbreak{}mul\_\allowbreak{}pow}\newline

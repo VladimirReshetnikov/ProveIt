@@ -13,6 +13,11 @@ Fabius/global ``F`` symbols, Thue--Morse sign aliases, q-series commands, and
 multi-line macro definitions require semantic review.  Run the strict audit
 after this helper and finish those findings by hand.
 
+The opt-in ``--combinatorial-calculus`` profile applies the reviewed,
+argument-shape-preserving renames shared by the six combinatorial coefficient
+calculus reports.  It also removes their superseded one-line local definitions
+and the corresponding non-Fourier-hat markers.
+
 The command is dry-run by default and accepts one or more explicit files or
 directories.  ``--apply`` is required to write.  Archive paths are rejected.
 
@@ -102,6 +107,55 @@ SAFE_RENAMES = {
     "Fext": "FabiusGlobal",
     "InvF": "FabiusClampedQuantile",
 }
+
+# These names are safe only after the caller has asserted that the selected
+# sources are the reviewed combinatorial-coefficient-calculus reports.  Keeping
+# them behind an explicit profile prevents a generic local ``Bell`` or
+# ``PosetMinimum`` command elsewhere in the corpus from being reclassified.
+COMBINATORIAL_CALCULUS_RENAMES = {
+    "stirone": "UnsignedStirlingFirstKind",
+    "stirtwo": "StirlingSecondKind",
+    "eulerian": "TypeAEulerianNumber",
+    "eulertwo": "SecondOrderEulerianNumber",
+    "Bell": "BellNumber",
+    "BellP": "ExponentialPartialBellPolynomial",
+    "BellC": "ExponentialCompleteBellPolynomial",
+    "OrdinaryBellPolynomial": "OrdinaryPartialBellPolynomial",
+    "OrdinaryBellSeriesOf": "OrdinaryGeneratingFunctionOf",
+    "OrdinaryGeneratingSeriesOf": "OrdinaryGeneratingFunctionOf",
+    "NormalizedInverseCoefficient": "NormalizedReversionCoefficient",
+    "PosetMinimum": "PartitionLatticeMinimum",
+    "PosetMaximum": "PartitionLatticeMaximum",
+    "TracePowerSum": "TraceBellArgument",
+    "coeff": "CoefficientExtraction",
+    "cyc": "CycleCountOperator",
+    "setpart": "SetPartitionOperator",
+    "bitand": "BitwiseAnd",
+}
+
+COMBINATORIAL_SHARED_DECLARATIONS = {
+    "FiniteField",
+    "OrdinaryPartialBellPolynomial",
+    "ExponentialGeneratingFunctionOf",
+    "NormalizedReversionCoefficient",
+    "NormalizedOrdinaryCoefficient",
+    "PartitionLatticeMinimum",
+    "PartitionLatticeMaximum",
+    "TraceBellArgument",
+}
+
+COMBINATORIAL_PROMOTED_LOCAL_ACCENTS = {
+    "OrdinaryPartialBellPolynomial",
+    "ExponentialGeneratingFunctionOf",
+    "OrdinaryBellSeriesOf",
+    "NormalizedInverseCoefficient",
+    "PartitionLatticeMinimum",
+    "PartitionLatticeMaximum",
+}
+
+LOCAL_ACCENT_MARKER_RE = re.compile(
+    r"^[ \t]*%[ \t]*LOCAL-NON-FOURIER-HAT:[ \t]*\\([A-Za-z@]+)\b"
+)
 
 # Literal operator spellings duplicate a canonical command even when no local
 # alias is involved.  These replacements preserve the following argument
@@ -266,6 +320,7 @@ def transform(
     thue_morse_symbol: bool,
     gaussian_binomial_three: bool,
     ordinary_rising_poch: bool,
+    combinatorial_calculus: bool,
 ) -> tuple[str, dict[str, int], bool]:
     text, added = add_input(text, path, docs)
     renames = dict(SAFE_RENAMES)
@@ -280,17 +335,33 @@ def transform(
         renames["qbinom"] = "GaussianBinomial"
     if ordinary_rising_poch:
         renames["poch"] = "RisingFactorial"
-    extra_names = set(renames) - set(SAFE_RENAMES)
+    if combinatorial_calculus:
+        renames.update(COMBINATORIAL_CALCULUS_RENAMES)
+    shared_declarations = (
+        COMBINATORIAL_SHARED_DECLARATIONS if combinatorial_calculus else set()
+    )
+    extra_names = (set(renames) - set(SAFE_RENAMES)) | shared_declarations
     counts = {name: 0 for name in renames}
     output: list[str] = []
     for line in text.splitlines(keepends=True):
+        if combinatorial_calculus:
+            marker = LOCAL_ACCENT_MARKER_RE.match(line)
+            if marker and marker.group(1) in COMBINATORIAL_PROMOTED_LOCAL_ACCENTS:
+                key = f"local-accent-marker-{marker.group(1)}"
+                counts[key] = counts.get(key, 0) + 1
+                continue
         code, comment = split_code_comment(line)
         name = declaration_name(code, extra_names)
         if name is not None:
             # Only one-line definitions are mechanical.  A continuation marker
             # or unbalanced braces is left for semantic review.
             if not code.rstrip().endswith("%") and code.count("{") == code.count("}"):
-                counts[name] += 1
+                key = (
+                    f"shared-definition-{name}"
+                    if name in shared_declarations and name not in renames
+                    else name
+                )
+                counts[key] = counts.get(key, 0) + 1
                 continue
         # ``\NaturalNumbers`` deliberately renders N with a built-in zero
         # subscript.  Therefore a token-only rename of ``\N_{>0}`` would
@@ -322,6 +393,26 @@ def transform(
             counts["NaturalNumbers-redundant-zero"] = (
                 counts.get("NaturalNumbers-redundant-zero", 0) + substitutions
             )
+        if combinatorial_calculus:
+            code, substitutions = re.subn(
+                r"\\NormalizedReversionCoefficient\s*\{([^{}\r\n]+)\}"
+                r"(?!\s*\{)",
+                r"\\NormalizedReversionCoefficient{f}{\1}",
+                code,
+            )
+            if substitutions:
+                counts["normalized-reversion-implicit-f"] = (
+                    counts.get("normalized-reversion-implicit-f", 0) + substitutions
+                )
+            code, substitutions = re.subn(
+                r"\\NormalizedOrdinaryCoefficient\s*\{([^{}\r\n]+)\}",
+                r"\\OrdinaryGeneratingCoefficient{x}{\1}",
+                code,
+            )
+            if substitutions:
+                counts["ordinary-coefficient-implicit-x"] = (
+                    counts.get("ordinary-coefficient-implicit-x", 0) + substitutions
+                )
         for old, new in renames.items():
             pattern = re.compile(r"\\" + re.escape(old) + r"(?![A-Za-z@])")
             code, substitutions = pattern.subn(r"\\" + new, code)
@@ -388,6 +479,14 @@ def main() -> int:
         action="store_true",
         help="semantically assert that legacy two-argument poch denotes the ordinary rising factorial",
     )
+    parser.add_argument(
+        "--combinatorial-calculus",
+        action="store_true",
+        help=(
+            "semantically assert the reviewed shared namespace of the six "
+            "combinatorial-coefficient-calculus reports"
+        ),
+    )
     args = parser.parse_args()
     docs, archive = repository_paths()
     try:
@@ -411,6 +510,7 @@ def main() -> int:
                 thue_morse_symbol=args.thue_morse_symbol,
                 gaussian_binomial_three=args.gaussian_binomial_three,
                 ordinary_rising_poch=args.ordinary_rising_poch,
+                combinatorial_calculus=args.combinatorial_calculus,
             )
         except ValueError as error:
             print(str(error), file=sys.stderr)
@@ -451,6 +551,23 @@ def main() -> int:
             print(f"  {count:6d}  literal {name[9:]} operator -> \\{target}")
         elif name in SAFE_RENAMES:
             print(f"  {count:6d}  \\{name} -> \\{SAFE_RENAMES[name]}")
+        elif name in COMBINATORIAL_CALCULUS_RENAMES:
+            print(
+                f"  {count:6d}  \\{name} -> "
+                f"\\{COMBINATORIAL_CALCULUS_RENAMES[name]}"
+            )
+        elif name.startswith("shared-definition-"):
+            print(f"  {count:6d}  remove local \\{name[18:]} definition")
+        elif name.startswith("local-accent-marker-"):
+            print(f"  {count:6d}  remove local-hat marker for \\{name[20:]}")
+        elif name == "normalized-reversion-implicit-f":
+            print(
+                f"  {count:6d}  make the normalized reversion family f explicit"
+            )
+        elif name == "ordinary-coefficient-implicit-x":
+            print(
+                f"  {count:6d}  make the ordinary coefficient family x explicit"
+            )
         elif name == "sinc":
             target = "SincRad" if args.sinc_normalization == "rad" else "SincPi"
             print(f"  {count:6d}  \\sinc -> \\{target}")
