@@ -10875,8 +10875,12 @@ arbitrary algebraic order, after any fixed number of differentiations.
 \begin{proof}[Proof (condensed from the revised fifteenth wave)]
 Rescale to $V_n=2^{n+1}Z_n=2X_2+U_1+\cdots+U_n$, $s_n^2=(3n+4)/9$, so
 $W_n=V_n/s_n$ has characteristic function
-$\chi_n(t)=\FourierTwoPi{\RvachevUp}\bigl(2t/(2\pi s_n)\bigr)\SincRad(t/s_n)^n$ in the volume's
-convention.  Fix $0<\delta<\pi/2$.  On $|t|\le\delta s_n$ the cumulant series
+\[
+ \chi_n(t)=\FourierTwoPi{\RvachevUp}\bigl(2t/(2\pi s_n)\bigr)
+             \SincRad(t/s_n)^n
+\]
+in the volume's convention.  Fix $0<\delta<\pi/2$.  On
+$|t|\le\delta s_n$ the cumulant series
 converges, $|\lambda_{2m,n}|\le C_mn^{1-m}$, and
 $|\SincRad u|\le\EulerE^{-c_\delta u^2}$ for $|u|\le\delta$, so truncating the
 exponential of the cumulant series at total weight
@@ -15282,7 +15286,9 @@ the zero set in the division-free form
 every zero.  Neither API asserts joint holomorphy in \(q\), explicit
 uniform-in-\(q\) tail or derivative-kernel bounds, or local uniformity of the
 outer spectral product over \(k\).
+\end{statusbox}
 
+\begin{statusbox}{Lean crosswalk: spectral-product consequences and remaining boundary}
 The next three theorems of
 \path{RvachevPochhammerFactorization.lean} give absolute
 summability of the paired Euler perturbations, the paired scale--zero tprod,

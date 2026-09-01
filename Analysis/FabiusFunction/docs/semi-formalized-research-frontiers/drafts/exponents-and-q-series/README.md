@@ -20,9 +20,9 @@ general-q-series guides, forward q-Pochhammer/q-binomial monograph, and
 inverse-q synthesis have been dispositioned into
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/).
 Their earlier names, arrival hashes, and publication facts remain provenance,
-not parallel live documents. The synthesis has one reproducible 334-page A4
-publication PDF; retained PDFs under its `assets/` tree are research figures,
-not alternate manuscript renderings.
+not parallel live documents. The synthesis has one current, validated
+340-page A4 publication PDF; retained PDFs under its `assets/` tree are
+research figures, not alternate manuscript renderings.
 
 ## Detailed package record
 
@@ -85,13 +85,15 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The canonical `q_pochhammer_q_binomial_monograph.pdf` is a reproducible
-  334-page A4 rendering of the merged master (2,917,795 bytes; SHA-256
-  `aa75c32926fb0d5b20d831f9df0be584073f1cbc4232c25facbd21d98b9f680d`).
-  It was built in three byte-identical serial passes; every font is embedded
-  and subsetted, including Libertinus, and all 334 pages passed render review.
-  PDF files retained beneath `assets/` are vector research figures, not
-  manuscript builds. Manuscript result labels and numerical checks remain
+  The current canonical source `q_pochhammer_q_binomial_monograph.tex` has
+  13,690 lines and 628,147 bytes, with SHA-256
+  `da420f5b2622cd088af43cea0ac448105c9f6af65cf1734de6535e3427f8e052`.
+  Its validated `q_pochhammer_q_binomial_monograph.pdf` is a 340-page A4
+  rendering of 2,180,191 bytes, with SHA-256
+  `e64a4ef65a9fcce3a4f211f2125b0f8440910cf4527635f76975b0967800e667`.
+  The package-local build receipt and exhaustive checksum ledger certify this
+  live pair. PDF files retained beneath `assets/` are vector research figures,
+  not manuscript builds. Manuscript result labels and numerical checks remain
   distinct from Lean verification.
 
 - [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/),
@@ -490,12 +492,20 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 
 Geometric-sinc subgroup member:
 [`Exponents_and_q_Series_Frontiers/`](geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/)
-(current synchronized PDF: 237 A4 pp; current merged TeX: 16,235 lines,
-SHA-256 `fbd294c4cb23c979043725ca5596ff25364ad20a0dce7d01a67e7ac5da9f1450`,
-and current PDF: 6,313,577 bytes, SHA-256
-`7599ebc1dc137dbc0d3891e7fade43678abac255e2fa78627111ff0555b5681d`;
-across seven parts; the PDF was rebuilt from this source in three strict
-passes, and both refreshed parent ledgers verify every current row) — the
+(current merged TeX: 16,270 lines and 731,389 bytes, SHA-256
+`2adbe7b1e450a858bb02e80e6b4c4c6420060733f2ae1fe25eb61b6546f58e0f`;
+41-input build closure SHA-256
+`98fc1f42ff94bf2e23b8fac0285fe43c637ee6d8326cb6a71530113991c7a7c0`;
+current synchronized PDF: 238 A4 pages and 6,316,535 bytes, SHA-256
+`df7b9ad69e0310b17988dd42cc22559cf22ff26027395c005c374ad51f9e62aa`;
+across seven parts). The PDF was built in exactly three guarded serial passes,
+with page counts 228, 238, and 238; the input closure did not drift and no TeX,
+Lean, or Lake work interleaved with the passes. The final log had no blocking
+diagnostics, all 238 pages were text-bearing, all 1,190 page boxes matched A4
+exactly, and all 42 Type-1 font rows were embedded and subsetted (including 11
+Libertinus rows, with no Type-3 font). Fresh visual inspection of physical
+pages 1, 164, 220, 224--227, 236, and 238 was clean, and both refreshed parent
+ledgers verify every current row. This is the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -728,7 +738,7 @@ volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Canonical forward/inverse publication:
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/)
-(334-page canonical A4 publication PDF) — *q-Series and Inverse q-Analogs:
+(current validated 340-page canonical A4 publication PDF) — *q-Series and Inverse q-Analogs:
 A Proof-Oriented Synthesis*. Its forward backbone proves from first principles
 the shifted-factorial, Gaussian, hypergeometric, theta, partition, Bailey,
 cyclotomic, interpolation, and Fabius--Rvachev machinery consumed by Parts II,
