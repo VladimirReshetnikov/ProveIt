@@ -43,16 +43,31 @@ The stochastic experiment is used only to illustrate the already-proved lag-corr
 With a reasonably complete TeX Live installation:
 
 ```bash
-latexmk -pdf -interaction=nonstopmode -halt-on-error dyadic_stein_koopman_frontier.tex
+pdflatex -interaction=nonstopmode -halt-on-error dyadic_stein_koopman_frontier.tex
+pdflatex -interaction=nonstopmode -halt-on-error dyadic_stein_koopman_frontier.tex
+pdflatex -interaction=nonstopmode -halt-on-error dyadic_stein_koopman_frontier.tex
 ```
 
-The build used pdfLaTeX from TeX Live 2025. The PDF was also rendered page-by-page and preflighted with PyMuPDF and Poppler utilities.
+The original build used pdfLaTeX from TeX Live 2025. The PDF was also rendered page-by-page and preflighted with PyMuPDF and Poppler utilities.
 
 The repository copy uses the supplied PNG figure companions to avoid the
 Type-3 fonts embedded by the vector plots, and falls back to Latin Modern Mono
 when `inconsolata.sty` is unavailable.  The checked-in PDF was rebuilt for
 exactly three pdfLaTeX passes with embedded/subset Libertinus prose fonts;
 `pdf_inspect.txt` and `pdf_preflight.txt` retain the arrival-time preflight.
+The current source was rebuilt from clean auxiliaries on 2026-08-31 in exactly
+three strict serial passes, producing 30, 32, and 32 pages. The 1,913-line,
+81,554-byte source has SHA-256
+`61cf3646a6a04b7c1824323630f8eab1eeb29bfe58eed9f228f816913cd6846f`;
+the synchronized 854,688-byte PDF has SHA-256
+`0515e770996b039841926343bf136ac4fa918501545b1b74bcd747638e5f3d3a`.
+All 32 pages are A4 at rotation zero and have nonblank extractable text. All 25
+font entries are embedded and subset, five are Libertinus, and none is Type 3.
+The final log has no unresolved reference/citation, rerun request, overfull
+box, or TeX error. Its eight underfull notices are benign; the remaining
+notices are expected math-font size substitutions on the display title and
+the explicit disabled-shell-escape notice. PDF metadata is complete, and
+physical pages 1, 14, 18, and 32 were rendered and inspected.
 
 ## Tested environment
 

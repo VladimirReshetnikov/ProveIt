@@ -33,7 +33,7 @@
   citecolor=deepgreen,
   urlcolor=linkblue,
   pdftitle={Exponent-Sequence and q-Series Frontiers for the Fabius--Rvachev System},
-  pdfauthor={},
+  pdfauthor={Vladimir Reshetnikov; ProveIt formal-development synthesis},
   pdfsubject={Seven-part consolidated research frontier on exponent sequences, q-series, sinc products, and atomic functions},
   pdfkeywords={Fabius function, inverse Fabius function, Rvachev up-function, Thue-Morse, q-binomial, Richardson extrapolation, Bell polynomial, Bernoulli polynomial, Lambert W}
 }
@@ -3158,7 +3158,9 @@ are no longer Phase~I obligations.
 \begin{enumerate}
 \item Construct $X_a$ from finite uniform sums and pass to the bounded infinite series using
       the summability hypothesis $A(1/2)<\infty$.
-\item Prove local uniform convergence of $\Phi_a$ and the convolution-monoid law.
+\item Lift the formal product identity $\Phi_{a+b}=\Phi_a\Phi_b$ to the
+      convolution law for the probability measures.  Local uniform convergence
+      and the product identity themselves are already formalized.
 \item Derive cumulants from the uniform Bernoulli expansion and moments from the existing
       Bell-polynomial library.
 \item Formalize identifiability first from zero multiplicities, then from analytic samples
@@ -5550,7 +5552,7 @@ Cambridge University Press, 2004.
 
 %% ================= Part III =================
 % Non-duplicate preamble layer for Part III (dead definitions of the
-% source preamble dropped; theorem environments, \norm, \abs,
+% source preamble dropped; theorem environments, \norm, \AbsoluteValue,
 % \qbinom already provided by the volume or Part II).
 \definecolor{shade}{gray}{0.95}
 \lstdefinestyle{reportcode}{
@@ -5906,17 +5908,17 @@ translates $m=0,1$ survive; evenness converts $p_n(x-1)$ to $p_n(1-x)$.
 
 \subsection{Fourier zeros}
 
-Let $v_2(k)$ denote the exponent of $2$ in a nonzero integer $k$.
+Let $\TwoAdicValuation(k)$ denote the exponent of $2$ in a nonzero integer $k$.
 
 \begin{proposition}[Exact zero multiplicities]
 \label{p3:prop:zero-multiplicity}
 For $k\in\IntegerNumbers\setminus\{0\}$,
 \begin{equation}
  \OrderOperator_{\xi=k}\Phi_n
- =1+\min\{v_2(k),n-1\}.
+ =1+\min\{\TwoAdicValuation(k),n-1\}.
  \label{p3:eq:zero-multiplicity}
 \end{equation}
-For fixed $k$, this stabilizes to $1+v_2(k)$, the multiplicity of the corresponding
+For fixed $k$, this stabilizes to $1+\TwoAdicValuation(k)$, the multiplicity of the corresponding
 zero of $\Phi$.
 \end{proposition}
 
@@ -10875,8 +10877,12 @@ arbitrary algebraic order, after any fixed number of differentiations.
 \begin{proof}[Proof (condensed from the revised fifteenth wave)]
 Rescale to $V_n=2^{n+1}Z_n=2X_2+U_1+\cdots+U_n$, $s_n^2=(3n+4)/9$, so
 $W_n=V_n/s_n$ has characteristic function
-$\chi_n(t)=\FourierTwoPi{\RvachevUp}\bigl(2t/(2\pi s_n)\bigr)\SincRad(t/s_n)^n$ in the volume's
-convention.  Fix $0<\delta<\pi/2$.  On $|t|\le\delta s_n$ the cumulant series
+\[
+  \chi_n(t)=\FourierTwoPi{\RvachevUp}\bigl(2t/(2\pi s_n)\bigr)
+  \SincRad(t/s_n)^n
+\]
+in the volume's convention.  Fix $0<\delta<\pi/2$.  On
+$|t|\le\delta s_n$ the cumulant series
 converges, $|\lambda_{2m,n}|\le C_mn^{1-m}$, and
 $|\SincRad u|\le\EulerE^{-c_\delta u^2}$ for $|u|\le\delta$, so truncating the
 exponential of the cumulant series at total weight
@@ -14633,7 +14639,7 @@ Stanford University Press, 1968.
 
 
 % ed.: Part VII local macros (checked absent from the volume registry;
-% \abs and \norm are inherited from Part II's block)
+% \AbsoluteValue and \norm are inherited from Part II's block)
 \newcommand{\Unif}{\operatorname{Unif}}
 \newcommand{\Br}{\mathfrak B}
 \newcommand{\Zpart}{\mathscr Z}

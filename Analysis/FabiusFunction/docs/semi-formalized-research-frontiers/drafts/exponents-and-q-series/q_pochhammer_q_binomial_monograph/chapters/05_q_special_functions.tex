@@ -8,7 +8,7 @@ Fix a logarithm value \(\ell_q\) of
 \(q\in\ComplexNumbers\setminus\{0,1\}\), put
 \(q^x=\EulerE^{x\ell_q}\), and define
 \[
-  [x]_q:=\frac{1-q^x}{1-q}.
+  \GeneralizedQNumber{x}{q}:=\frac{1-q^x}{1-q}.
 \]
 
 \begin{proposition}[Exact inverse in the exponent]
@@ -18,11 +18,11 @@ Then, for every \(k\in\IntegerNumbers\),
 \[
   x_k=\frac{\ell_w+2\pi\ImaginaryUnit k}{\ell_q}
 \]
-solves \([x_k]_q=y\), and every solution is obtained in this way.
+solves \(\GeneralizedQNumber{x_k}{q}=y\), and every solution is obtained in this way.
 \end{proposition}
 
 \begin{proof}
-The equation \([x]_q=y\) is equivalent to
+The equation \(\GeneralizedQNumber{x}{q}=y\) is equivalent to
 \[
   \EulerE^{x\ell_q}=w.
 \]
@@ -218,7 +218,7 @@ For \(0<q<1\) and \(x>0\), define
 \]
 It satisfies
 \[
-  \Gamma_q(x+1)=[x]_q\Gamma_q(x),
+  \Gamma_q(x+1)=\GeneralizedQNumber{x}{q}\Gamma_q(x),
   \qquad
   \Gamma_q(1)=\Gamma_q(2)=1.
 \]
@@ -685,22 +685,28 @@ singularity is misclassified as a branch point.
 
 For \(0<|q|<1\), let
 \[
-  \vartheta(z;q)
+  \MultiplicativeTheta{z}{q}
   :=(z;q)_\infty(q/z;q)_\infty(q;q)_\infty,
   \qquad z\in\ComplexNumbers^\times.
 \]
+Jacobi's triple product gives the exact normalization crosswalk
+\[
+ \MultiplicativeTheta{z}{q}=\BilateralTheta{-z}{q}.
+\]
+Thus changing between the product and plus-sign bilateral conventions
+requires the displayed argument negation.
 
 \begin{proposition}[Simple theta zero atlas]
 \label{prop:qs-theta-zeros}
-The zeros of \(z\mapsto\vartheta(z;q)\) are exactly
+The zeros of \(z\mapsto\MultiplicativeTheta{z}{q}\) are exactly
 \(z=q^m\), \(m\in\IntegerNumbers\), and every zero is simple.  Hence the inverse at target
 zero is ordinary on every sheet:
 \[
-  z=q^m+\frac{y}{\partial_z\vartheta(q^m;q)}+\BigO(y^2).
+  z=q^m+\frac{y}{\partial_z\MultiplicativeTheta{q^m}{q}}+\BigO(y^2).
 \]
 Moreover,
 \[
-  \vartheta(qz;q)=-z^{-1}\vartheta(z;q),
+  \MultiplicativeTheta{qz}{q}=-z^{-1}\MultiplicativeTheta{z}{q},
 \]
 so one zero derivative determines all the others.
 \end{proposition}

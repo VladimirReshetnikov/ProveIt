@@ -48,12 +48,14 @@ Thus \(Z_q\) has density \(u_q\) and support \([-1,1]\).
 \label{thm:fr-geometric-density}
 For real \(t\),
 \begin{equation}
- \psi_q(t):=\Expectation\EulerE^{\ImaginaryUnit tZ_q}
+ \CharacteristicFunction{Z_q}(t)\DefinitionEquals
+ \Expectation\EulerE^{\ImaginaryUnit tZ_q}
  =\EulerE^{-\ImaginaryUnit t}\varphi_q(2t)
  =\prod_{j=0}^{\infty}\SincRad\bigl((1-q)q^jt\bigr),
  \label{eq:fr-sinc-product}
 \end{equation}
-The function \(\psi_q\) has the log-Gaussian, hence arbitrary-power, decay of
+The function \(t\mapsto\CharacteristicFunction{Z_q}(t)\) has the log-Gaussian,
+hence arbitrary-power, decay of
 \cref{thm:geometric-uniform-fourier-decay}; the density \(u_q\) is
 \(C^\infty\) and compactly supported.  If \(Z_q'\) is an independent copy,
 then \(Z_q\EqualInLaw(1-q)\varepsilon_0+qZ_q'\), and consequently
@@ -487,7 +489,7 @@ for the centered CDF.
 \label{prop:fr-fourier-score}
 Away from the zeros of the sinc factors,
 \begin{equation}
- \partial_q\log\psi_q(t)
+ \partial_q\log\CharacteristicFunction{Z_q}(t)
  =\sum_{j\ge0}w_j'(q)
  \left(t\cot(w_j(q)t)-\frac1{w_j(q)}\right).
  \label{eq:fr-fourier-score}
@@ -499,7 +501,7 @@ open set where none of those factors vanishes.  More quantitatively, for every
 compact \(K\Subset(0,1)\), every \(A>0\), and all integers \(k\ge0\), there is
 a constant \(C_{A,k,K}\) such that
 \begin{equation}
- \sup_{q\in K}\left|\partial_q^k\psi_q(t)\right|
+ \sup_{q\in K}\left|\partial_q^k\CharacteristicFunction{Z_q}(t)\right|
  \le C_{A,k,K}(1+|t|)^{-A}.
  \label{eq:fr-q-derivative-rapid}
 \end{equation}

@@ -450,9 +450,9 @@ perturbation model and metric are specified.
 
 \subsection{A transcendental value determines the Gaussian rectangle}
 
-For integers \(a,b\ge0\), write
+For integers \(a,b\ge0\) and a polynomial variable \(x\), write
 \[
- G_{a,b}(Q)=\genfrac{[}{]}{0pt}{}{a+b}{a}_{Q}.
+ G_{a,b}(x)=\GaussianBinomial{a+b}{a}{x}.
 \]
 This is the generating polynomial for partitions whose Ferrers diagrams fit
 inside an \(a\)-by-\(b\) rectangle.
@@ -462,15 +462,15 @@ inside an \(a\)-by-\(b\) rectangle.
 Let \(q\in\ComplexNumbers\) be transcendental over \(\RationalNumbers\).  If
 \[
  0<k<n,\qquad 0<k'<n',\qquad
- \genfrac{[}{]}{0pt}{}{n}{k}_{q}
-   =\genfrac{[}{]}{0pt}{}{n'}{k'}_{q},
+ \GaussianBinomial{n}{k}{q}
+   =\GaussianBinomial{n'}{k'}{q},
 \]
 then \(n'=n\) and either \(k'=k\) or \(k'=n-k\).
 \end{theorem}
 
 \begin{proof}
 Transcendence says that evaluation at \(q\) is injective on
-\(\IntegerNumbers[Q]\).  The asserted equality of values is therefore an equality of
+\(\IntegerNumbers[x]\).  The asserted equality of values is therefore an equality of
 Gaussian polynomials.  Put
 \[
  a=k,\quad b=n-k,\quad
@@ -478,7 +478,7 @@ Gaussian polynomials.  Put
 \]
 and define \(a',b',m',M'\) similarly.
 
-The coefficient of \(Q^d\) in \(G_{a,b}\) counts partitions of \(d\) fitting
+The coefficient of \(x^d\) in \(G_{a,b}\) counts partitions of \(d\) fitting
 inside the rectangle.  Every partition of \(d\le m\) has at most \(m\) parts
 and largest part at most \(m\), so these coefficients equal the unrestricted
 partition numbers \(p(d)\).  At \(d=m+1\), at least one partition is excluded:
@@ -899,6 +899,20 @@ Theorem~\ref{thm:fr-total-identifiability}. \\
 &
 The sinc-product characteristic function and its reciprocal-gamma form. \\
 
+\nolinkurl{QPochhammerEntire}
+&
+\nolinkurl{hasProdLocallyUniformly_complexQPochhammerInf};
+\nolinkurl{complexQPochhammerInf_differentiable};
+\nolinkurl{complexQPochhammerInf_eq_zero_iff};
+\nolinkurl{analyticOrderAt_complexQPochhammerInf_of_eq_zero}
+&
+Locally uniform convergence in the symbol variable, entireness, the exact
+factor-zero locus, and simplicity of every zero for each strict complex
+contraction, including \(q=0\).  This exactly formalizes
+Theorem~\ref{thm:poch-entire}; it supplies only the fixed-\(q\) entire-function
+and zero-set clauses of Theorem~\ref{thm:ip-normal-convergence}, not its
+uniform-in-\(q\) tail bounds, joint holomorphy, or derivative kernels. \\
+
 \nolinkurl{SincZetaRemainder};
 \nolinkurl{FabiusComputability}
 &
@@ -935,6 +949,18 @@ odd-degree vanishing mechanism at \(q=-1\). \\
 The remaining parity evaluations for Gaussian coefficients and the finite
 \(q\)-Pochhammer formulas at \(q=-1\); together with the preceding row these
 form the complete parity atlas. \\
+
+\nolinkurl{GaussianBinomialAtNegOneDerivative}
+&
+\nolinkurl{gaussianBinomial_derivative_eval_neg_one_of_even_degree};
+\nolinkurl{gaussianBinomial_derivative_eval_neg_one_even_odd};
+\nolinkurl{gaussianBinomial_even_odd_rootMultiplicity_int};
+\nolinkurl{gaussianBinomial_even_odd_rootMultiplicity}
+&
+The complete first-jet layer at \(q=-1\): two commutative-ring derivative
+formulas, plus multiplicity one for the alternating even-row/odd-column zero
+over \(\IntegerNumbers\) and every characteristic-zero commutative ring when
+the column is admissible. \\
 
 \nolinkurl{BellPolynomialInversion};
 \nolinkurl{QuadraticAsymptoticInversion}

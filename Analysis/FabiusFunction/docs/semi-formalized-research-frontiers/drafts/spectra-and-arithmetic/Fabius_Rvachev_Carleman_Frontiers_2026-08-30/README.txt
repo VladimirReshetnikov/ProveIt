@@ -23,7 +23,7 @@ Main files
       the Lambert-W saddle, and exact Bell-polynomial coefficients.
 
   figures/*.pdf and figures/*.png
-      Vector figures used in the report and raster copies for convenient viewing.
+      Retained vector sources and the raster figures used in the report.
 
   numerical_summary.txt
       Key constants and the scope of the exact Bell computation.
@@ -79,25 +79,21 @@ made.  The sinc product and Lambert-W calculations use 100 decimal digits.
 Build the PDF
 -------------
 
-A TeX Live installation with latexmk and the standard packages used by the source
-is sufficient.  From this directory:
+A TeX Live installation with Libertinus is required. From this directory, run
+exactly three serial passes:
 
-    latexmk -pdf -interaction=nonstopmode -halt-on-error \
-      fabius_carleman_frontiers.tex
-
-A clean rebuild can be requested with:
-
-    latexmk -C fabius_carleman_frontiers.tex
-    latexmk -pdf -interaction=nonstopmode -halt-on-error \
-      fabius_carleman_frontiers.tex
+    pdflatex -interaction=nonstopmode -halt-on-error -file-line-error fabius_carleman_frontiers.tex
+    pdflatex -interaction=nonstopmode -halt-on-error -file-line-error fabius_carleman_frontiers.tex
+    pdflatex -interaction=nonstopmode -halt-on-error -file-line-error fabius_carleman_frontiers.tex
 
 Verification notes
 ------------------
 
-The delivered PDF was compiled without LaTeX warnings, overfull boxes, or
-underfull boxes.  It was rendered page-by-page and inspected, then subjected to
-structural PDF preflight.  All fonts are embedded; figure PDFs use embedded
-TrueType/CID fonts rather than Type 3 fonts.
+The synchronized 2026-08-31 rebuild has 24 A4 pages at rotation zero. Every
+page rendered and contained extractable text. All 22 font rows are embedded
+and subset, four are Libertinus, and none is Type 3. The report uses the
+retained PNG companions for its plots. The final log has no TeX error,
+unresolved reference/citation, rerun request, overfull box, or underfull box.
 
 The novelty assessment is relative to the screened ProveIt corpus, not a claim of
 absolute publication priority.  See CORPUS_AUDIT.txt and Section 1 of the report.

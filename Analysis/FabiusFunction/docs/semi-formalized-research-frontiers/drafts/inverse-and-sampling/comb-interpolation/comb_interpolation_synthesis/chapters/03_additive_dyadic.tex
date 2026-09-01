@@ -662,14 +662,14 @@ For $p\in\NaturalNumbers$,
 \end{equation}
 where
 \begin{equation}
-\begin{aligned}
+ \begin{aligned}
  H_{m,p}(a)
  &=\sum_{j=0}^{\Floor{m/2}}\binom m{2j}c_j
    \sum_{r=0}^{p}\binom pr a^{p-r} \\
  &\quad\times
-   \sum_{s=0}^{m-2j}\binom{m-2j}{s}2^{s}(-1)^{m-2j-s}
-   \frac{B_{r+s+1}(M-a)-B_{r+s+1}(1)}{r+s+1}.
-\end{aligned}
+    \sum_{s=0}^{m-2j}\binom{m-2j}{s}2^{s}(-1)^{m-2j-s}\,
+    \frac{B_{r+s+1}(M-a)-B_{r+s+1}(1)}{r+s+1}.
+  \end{aligned}
  \label{eq:Hnp}
 \end{equation}
 \end{theorem}
@@ -1144,8 +1144,8 @@ exact rational number computable from the level-$(2r-1)$ comb.
 \end{theorem}
 
 \begin{proof}
-Solve \eqref{eq:odd-defect-series} for $D(m+1)$ with $m=2r-1$; the
-prefactor is
+Solve \eqref{eq:odd-defect-series} for $D(m+1)$ with $m=2r-1$.  The
+prefactor simplifies as
 \[
  \frac{(-1)^{(m+1)/2}(2\pi)^{m+1}2^{m(m+1)}}{2\,m!}
  =\frac{(-1)^{r}2^{(m+1)^2}\pi^{m+1}}{2\,m!}.
@@ -1320,24 +1320,24 @@ $P$ with $\deg P\le m$,
 \end{equation}
 \end{theorem}
 
-\emph{Formal crosswalk.}  The full polynomial statement is kernel-verified as
-\nolinkurl{Fabius.tsum_shifted_polynomial_eq_integral} in
+\emph{Formal crosswalk.}  The unscaled polynomial identity underlying this display is
+kernel-verified as \nolinkurl{Fabius.tsum_shifted_polynomial_eq_integral} in
 \nolinkurl{PolynomialCombExactness.lean} (with the finite support of the comb samples
-as \nolinkurl{Fabius.finite_support_comb}), by linearity from the monomial core, which is
-kernel-verified: kernel-verified: for
+as \nolinkurl{Fabius.finite_support_comb}), by linearity from the monomial core.  Namely, for
 every real shift $\theta$ and every $p\le m$,
 \nolinkurl{Fabius.tsum_shifted_monomial_eq_integral_real} in
 \nolinkurl{MonomialCombExactness.lean} proves
 $\sum_{k\in\IntegerNumbers}(\theta+k)^{p}\,\RvachevUp\bigl(2^{-m}(\theta+k)\bigr)=\int_\RealNumbers x^{p}\,\RvachevUp(2^{-m}x)\Differential x$
-(the display above is this identity multiplied by $h^{p+1}$ and substituted, and
-extends to polynomials by linearity).  The proof is the aliasing argument of this
+(the display above follows by applying the polynomial theorem to $P(hX)$, multiplying
+by $h$, and making the real change of variables $y=h x$).  This normalization step is
+not yet exported as its own named Lean theorem.  The proof of the compiled core is the aliasing argument of this
 section made formal: \nolinkurl{MonomialCombFourier.lean} packages $x^{p}\RvachevUp(2^{-m}x)$ as a
 Schwartz map with
 $(-2\pi\ImaginaryUnit)^{p}\FourierTwoPi{f_p}=(\FourierTwoPi{f_0})^{(p)}$,
 \nolinkurl{MonomialCombDerivatives.lean} evaluates $(\FourierTwoPi{f_0})^{(p)}$ through the entire
 transform via the real--complex derivative bridge, \nolinkurl{MonomialCombAlias.lean} kills
 every nonzero alias by the integer-zero order theorem
-($\OrderOperator_{2^{m}\ell}\Phi=v_2(2^{m}\ell)+1>m$),
+($\OrderOperator_{2^{m}\ell}\Phi=\TwoAdicValuation(2^{m}\ell)+1>m$),
 and Poisson summation for Schwartz maps collapses the comb to the zero-frequency
 integral.  The odd centered moments (\cref{cor:up-exact-specials}) vanish at every real
 scale with no level restriction by evenness alone
@@ -1430,13 +1430,14 @@ Let $n\ne0$ be an integer, $d=\TwoAdicValuation(n)+1$, $n=\sigma2^{d-1}q$ with $
 odd, $\sigma=\pm1$.  Factoring the $d$ vanishing sinc terms of
 \eqref{eq:Phi-product} at $n$ gives the exact local identity
 \begin{equation}
- \Phi(n+w)=w^{d}\,\Psi_n(w),
- \qquad
+ \begin{aligned}
+ \Phi(n+w)&=w^{d}\,\Psi_n(w),\\
  \Psi_n(w)
- =-\,\frac{P^{\mathrm{sinc}}_d(w)}{(n+w)^{d}}\,
- \Phi\!\left(\frac q2+\frac{\sigma w}{2^{d}}\right),
- \qquad
- P^{\mathrm{sinc}}_d(w):=\prod_{j=0}^{d-1}\SincPi\!\left(\frac{w}{2^{j}}\right),
+ &=-\,\frac{P^{\mathrm{sinc}}_d(w)}{(n+w)^{d}}\,
+   \Phi\!\left(\frac q2+\frac{\sigma w}{2^{d}}\right),\\
+ P^{\mathrm{sinc}}_d(w)
+ &:=\prod_{j=0}^{d-1}\SincPi\!\left(\frac{w}{2^{j}}\right).
+ \end{aligned}
  \label{eq:local-factorization}
 \end{equation}
 so $\Psi_n$ is smooth and nonvanishing near $w=0$ with
@@ -1664,12 +1665,15 @@ $p$ is $\zeta(-2r)=0$.
 For exact rational work at fixed level, insert the convolution
 \eqref{eq:dyadic-convolution} directly: with $L=M-a-1$,
 \begin{equation}
- U_{m,p}=\frac{2C_m}{M^{p+1}}
- \sum_{a=0}^{M-2}\eps_a
- \sum_{j=0}^{\Floor{m/2}}\binom m{2j}c_j
- \sum_{u=0}^{p}(-1)^{u}\binom pu L^{p-u}
- \sum_{v=0}^{m-2j}\binom{m-2j}{v}2^{v}\,
- \frac{B_{u+v+1}(L)-B_{u+v+1}}{u+v+1},
+ \begin{aligned}
+ U_{m,p}
+ &=\frac{2C_m}{M^{p+1}}
+   \sum_{a=0}^{M-2}\eps_a
+   \sum_{j=0}^{\Floor{m/2}}\binom m{2j}c_j\\
+ &\quad\times\sum_{u=0}^{p}(-1)^{u}\binom pu L^{p-u}
+   \sum_{v=0}^{m-2j}\binom{m-2j}{v}2^{v}\,
+   \frac{B_{u+v+1}(L)-B_{u+v+1}}{u+v+1},
+ \end{aligned}
  \label{eq:absolute-Bernoulli}
 \end{equation}
 an identity of rational numbers for every $m,p$.  When
@@ -2424,7 +2428,7 @@ for \(t^2<18\), concretely on \(\lvert t\rvert\le4\)
 \nolinkurl{Fabius.re_charFun_rvachevMeasure_pos},
 \nolinkurl{Fabius.charFun_rvachevMeasure_ne_zero},
 \nolinkurl{Fabius.charFun_rvachevMeasure_ne_zero_of_abs_le_four}).
-\Cref{thm:up-composite-mesh} itself is now kernel-verified in full polynomial form:
+The unscaled polynomial core of \cref{thm:up-composite-mesh} is kernel-verified:
 \nolinkurl{Fabius.tsum_shifted_polynomial_eq_integral_nat} in
 \nolinkurl{CompositeMeshExactness.lean} proves
 \(\sum_{k\in\IntegerNumbers}P(\theta+k)\,\RvachevUp((\theta+k)/M)=\int P(x)\RvachevUp(x/M)\Differential x\) for every mesh
@@ -2435,6 +2439,9 @@ and the polynomial assembly runs at a general positive real scale
 (\nolinkurl{Fabius.tsum_shifted_polynomial_eq_integral_of_forall_monomial}), of which the
 dyadic level (\nolinkurl{Fabius.tsum_shifted_monomial_eq_integral_real} in
 \nolinkurl{MonomialCombExactness.lean}) and the composite mesh are the two instances.
+The normalized display in \cref{thm:up-composite-mesh} follows by applying that theorem
+to $P(X/M)$, multiplying by $1/M$, and changing variables; this final normalization is
+not yet a named Lean wrapper.
 
 \subsection{Phase cubature and the phase--resolution separation}
 
@@ -2803,9 +2810,9 @@ one has
  Q_{\bm M,\bm\theta,\bm p}^{(d)}
  &=\prod_{j=1}^d\left(I_{p_j}+\mathcal P_{p_j,M_j}(\theta_j)\right),
  \label{eq:tensor-product-correction}\\
- &\boxed{\displaystyle I_{\bm p}^{(d)}
- =\prod_{j=1}^d\left(Q_{M_j,\theta_j,p_j}
- -\mathcal P_{p_j,M_j}(\theta_j)\right)}
+  I_{\bm p}^{(d)}
+  &=\boxed{\prod_{j=1}^d\left(Q_{M_j,\theta_j,p_j}
+  -\mathcal P_{p_j,M_j}(\theta_j)\right)}.
  \label{eq:tensor-exact-moment}
 \end{align}
 By linearity the same anisotropic rule integrates every polynomial times
@@ -3302,14 +3309,16 @@ For fixed $\alpha>-1$, $0<\theta<1$, and every $A>0$,
 \begin{align}
  h\sum_{k\in\IntegerNumbers}\AbsoluteValue{h(k+\theta)}^{\alpha}\,
  \RvachevUp\bigl(h(k+\theta)\bigr)
- &=\MellinTransformSymbol(\alpha)
- +h^{\alpha+1}\bigl[\zeta(-\alpha,\theta)+\zeta(-\alpha,1-\theta)\bigr]
- +\BigO(h^{A}),
+ &=\MellinTransformSymbol(\alpha)\notag\\
+ &\quad+h^{\alpha+1}
+   \bigl[\zeta(-\alpha,\theta)+\zeta(-\alpha,1-\theta)\bigr]
+   +\BigO(h^{A}),
  \label{eq:shifted-abs-Hurwitz}\\
  h\sum_{k\in\IntegerNumbers}\Sign(k+\theta)\,\AbsoluteValue{h(k+\theta)}^{\alpha}\,
  \RvachevUp\bigl(h(k+\theta)\bigr)
- &=h^{\alpha+1}\bigl[\zeta(-\alpha,\theta)-\zeta(-\alpha,1-\theta)\bigr]
- +\BigO(h^{A}).
+ &=h^{\alpha+1}
+   \bigl[\zeta(-\alpha,\theta)-\zeta(-\alpha,1-\theta)\bigr]
+   +\BigO(h^{A}).
  \label{eq:shifted-signed-Hurwitz}
 \end{align}
 \end{theorem}
@@ -3481,14 +3490,13 @@ $I_p,\dots,I_{p+n-1}$, Bernoulli numbers, and elementary symmetric
 polynomials.  The corresponding full-support Rvachev sums close in
 the moment basis alone: for $m\ge p+n-1$,
 \begin{equation}
-\begin{aligned}
- &h^{n}\sum_{k=-M}^{M}
-   \binom{M-k+n-1}{n-1}(kh)^{p}\,\RvachevUp(kh) \\
+  \begin{aligned}
+  &h^{n}\sum_{k=-M}^{M}\binom{M-k+n-1}{n-1}
+    (kh)^{p}\,\RvachevUp(kh)\\
  &\qquad=\frac{1}{(n-1)!}
-   \sum_{i=0}^{n-1}(-1)^{i}
-   e_{\,n-1-i}\bigl(1{+}h,\dots,1{+}(n{-}1)h\bigr)\,
-   \mu_{p+i}.
-\end{aligned}
+    \sum_{i=0}^{n-1}(-1)^{i}
+    e_{\,n-1-i}\bigl(1{+}h,\dots,1{+}(n{-}1)h\bigr)\,\mu_{p+i},
+  \end{aligned}
  \label{eq:iter-up-moments}
 \end{equation}
 with $\mu_{2r}=c_r$, $\mu_{2r+1}=0$, by
@@ -4000,12 +4008,13 @@ exact endpoint derivative growing almost like $2^{M}$.
 \begin{conjecture}[Fabius Runge divergence]
 \label{conj:runge-divergence}
 \[
- \Norm{F-P_{2^{m}}}_\infty\longrightarrow\infty;
- \qquad
- \frac1M\log_2\Norm{F-P_M}_\infty\longrightarrow1.
-\]
-The stronger limit is asserted along dyadic $M$, possibly
-with a subexponential, dyadically oscillatory correction.
+  \Norm{F-P_{2^{m}}}_\infty\longrightarrow\infty.
+ \]
+ More strongly, along dyadic $M$,
+\[
+  \frac1M\log_2\Norm{F-P_M}_\infty\longrightarrow1,
+ \]
+ possibly with a subexponential, dyadically oscillatory correction.
 \end{conjecture}
 
 \begin{conjecture}[Endpoint derivative law]

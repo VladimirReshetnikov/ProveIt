@@ -757,11 +757,33 @@ and the unconditional rational values
 where the subdiagonal index is zero-based.  The last three theorems transport the fourth
 real Hankel ratio, its squared orthogonal-polynomial integral, and its quotient by the
 third ratio only for an input \(F\) of type \path{Fabius.BoundedFabius} with
-an \path{Fabius.IsFabius} certificate.  The Gaunt/Wigner/\(3j\) entry expansion
-remains outside this values tranche but is supplied by the downstream four-module
+an \path{Fabius.IsFabius} certificate.  The Gaunt/Wigner/\(3j\) entry expansion remains
+outside this values leaf itself but is supplied by the downstream four-module
 closed-form overlay recorded above.  Roots, Christoffel formulas, Gaussian quadrature,
 finite or infinite \(J\)-fraction/Pad\'e identification, and asymptotics remain outside
-the formalized union.  The \emph{moment/Laurent layer} is
+the formalized union.
+
+The downstream finite Wigner-square layer is now formalized exactly.
+\path{LegendreGauntClosedForm.lean} has two public definitions,
+\path{Fabius.legendreGauntAdmissible} and
+\path{Fabius.legendreWignerThreeJZeroSqRat}, and twenty-five public theorems.  It defines
+the parity-and-weak-triangle support and a total rational square of the integer-index
+zero-row Wigner \(3j\) datum, proves its central-binomial and factorial forms, identifies
+every rational Gaunt coefficient with twice that datum and every real Gaunt integral with
+twice its real cast, and proves the sharp support, positivity, vanishing, nonnegativity,
+and product-linearization consequences.  The zero-definition, three-theorem
+\path{FabiusLegendreGauntClosedForm.lean} inventory is
+\path{Fabius.rvachevLegendreGramEntryRat_eq_two_mul_sum_wignerThreeJZeroSqRat},
+\path{Fabius.rvachevLegendreGramMatrixRat_apply_eq_two_mul_sum_wignerThreeJZeroSqRat},
+and \path{Fabius.upLegendreGramMatrix_apply_eq_two_mul_sum_wignerThreeJZeroSqRat}.
+They give, respectively, the finite rational entry sum, the finite rational matrix-entry
+sum, and---under \path{BoundedFabius} plus \path{IsFabius}---the corresponding finite real
+up-law Gram sum.  Only total squared integer zero-row data and finite rational/real Gram
+sums are formalized: no signed symbol or phase convention is chosen, and half-integer
+indices, nonzero magnetic indices, general \(3j/6j/9j\) theory, Wigner orthogonality, and
+recoupling remain open.
+
+The \emph{moment/Laurent layer} is
 now delivered on the symmetric side by
 \path{StieltjesMomentLaurent.lean}: for every real \(|z|>1\) and every \(N\),
 \(\int(z-x)^{-1}\Differential\mu_{\RvachevUp}=\sum_{k<N}m_k\,z^{-(k+1)}+z^{-N}\int x^N(z-x)^{-1}\Differential\mu_{\RvachevUp}\)
@@ -941,7 +963,14 @@ convention that zero-based index \(n\) is \(\beta_{n+1}\) is recorded above.  Th
 Gaunt modules listed in the preceding overlay add seven definitions and forty-eight
 theorems.  The combined eleven-module inventory therefore has twenty definitions and
 109 theorems, 129 declarations, and closes the finite Gaunt--zero-row-Wigner-square
-entry route.  What remains open is the complex logarithmic continuation/logarithmic
+entry route.  Specifically,
+\path{LegendreGaunt.lean}, \path{FabiusLegendreGaunt.lean},
+\path{LegendreGauntClosedForm.lean}, and \path{FabiusLegendreGauntClosedForm.lean}
+formalize the finite Gaunt expansion, its exact identification with the total squared
+integer zero-row Wigner-\(3j\) datum, and the corresponding finite rational and real
+Rvachev Gram sums.  Signed symbols and phase conventions, half-integer or nonzero
+magnetic indices, general recoupling and Wigner orthogonality remain open.  What also
+remains open is the complex logarithmic continuation/logarithmic
 potential, named Laplace/Fourier transform forms, complex order, pointwise or
 nontangential Sokhotski--Plemelj and principal-value Hilbert-transform formulas,
 the full J-fraction/Pad\'e package, and the separate explicit conversion of the
@@ -10397,10 +10426,12 @@ and all real-cast bridges.  Its zero-based subdiagonal at index \(n\) is
 \path{FabiusLegendreRationalGramValues.lean} inventory recorded above evaluates
 \(H_4=26727424/55791736875\) and the zero-based
 \(\beta_4=835232/4640643\), including their real and integral transports under
-\path{BoundedFabius} plus \path{IsFabius}.  At that predecessor checkpoint the
-Gaunt/Wigner/\(3j\) route was still open; the current four-module overlay at the front of
-this volume now closes its finite zero-row-square form.  Root, quadrature, Christoffel,
-\(J\)-fraction, Pad\'e, and asymptotic theorems remain open.
+\path{BoundedFabius} plus \path{IsFabius}.  Root, quadrature, Christoffel,
+\(J\)-fraction, Pad\'e, and asymptotic theorems remain open.  The total squared
+integer-index zero-row Wigner-\(3j\) datum, its exact Gaunt identification, and the finite
+rational and real Rvachev Gram sums are formalized by the four Gaunt modules recorded in
+the compilation status.  Signed symbols and phases, half-integer or nonzero magnetic
+indices, general recoupling, and Wigner orthogonality remain open.
 
 The separate up-measure pipeline in \path{MomentHankelMatrix.lean},
 \path{MomentHankelValues.lean}, and the \path{OrthogonalPolynomial*.lean} modules now
@@ -10608,8 +10639,8 @@ Gini/autocorrelation formulas
 & order statistics and Fourier representation of absolute distance\\
 \addlinespace
 Rational Jacobi parameters
-& centered all-degree rational recurrence, coherent-basis and Legendre determinant cross-ratios, exact \(H_4,\beta_4\) evaluations, and finite zero-row-Wigner-square Gaunt entries now formal; affine unit-interval and (J)-fraction bridges open
-& the seven predecessor modules listed here plus \path{LegendreGaunt.lean}, \path{FabiusLegendreGaunt.lean}, \path{LegendreGauntClosedForm.lean}, and \path{FabiusLegendreGauntClosedForm.lean}; signed/general Wigner theory, affine transport, and resolvent identification remain\\
+& centered all-degree rational recurrence, coherent-basis and Legendre determinant cross-ratios, exact \(H_4,\beta_4\) evaluations, finite Gaunt entries, and total squared integer zero-row Wigner sums now formal; affine unit-interval and \(J\)-fraction bridges open
+& \path{GramStieltjesNaturality.lean}, \path{PolynomialMomentGramDeterminant.lean}, \path{RvachevRationalJacobi.lean}, \path{FabiusLegendreHankelDeterminant.lean}, \path{LegendrePolynomialRational.lean}, \path{FabiusLegendreRationalGram.lean}, \path{FabiusLegendreRationalGramValues.lean}, \path{LegendreGaunt.lean}, \path{FabiusLegendreGaunt.lean}, \path{LegendreGauntClosedForm.lean}, and \path{FabiusLegendreGauntClosedForm.lean}; signed/general Wigner theory, affine transport, and resolvent identification remain\\
 \bottomrule
 \end{longtable}
 
@@ -16590,6 +16621,10 @@ appears in the compilation status above.  The four-module
 \path{LegendreGauntClosedForm.lean}/\path{FabiusLegendreGauntClosedForm.lean}
 overlay adds fifty-five declarations and closes the finite
 Gaunt--zero-row-Wigner-square entry route, bringing the union to 129 declarations.
+It formalizes the finite Gaunt entries, their exact total squared integer zero-row
+Wigner-\(3j\) identification, and the finite rational and real Rvachev Gram sums.  Signed
+symbols and phases, half-integer or nonzero magnetic indices, general recoupling, and
+Wigner orthogonality remain open.
 
 The Laurent obligation is now discharged at greater generality by the one-definition,
 fifteen-theorem \path{MeasureCauchyMomentLaurent.lean} API: arbitrary centers and
@@ -16689,11 +16724,14 @@ Downstream, \path{LegendrePolynomialRational.lean} and
 \path{FabiusLegendreRationalGram.lean} make the rational Legendre coefficients and Gram
 determinants executable, while \path{FabiusLegendreRationalGramValues.lean} proves the
 displayed \(H_4\) and \(\beta_4\) values exactly.
-These predecessor modules do not by themselves close the finite Gaunt/Wigner entry
-expansion; the current four-module overlay recorded at the front of the volume closes its
-zero-row-square form.  Signed and general Wigner theory, second-kind polynomials, affine
-unit-interval transport, Gaussian quadrature, continued-fraction/Pad\'e identification or
-convergence, and Szeg\H{o}/Nevai/Rakhmanov asymptotics remain open.
+The downstream \path{LegendreGaunt.lean}, \path{FabiusLegendreGaunt.lean},
+\path{LegendreGauntClosedForm.lean}, and \path{FabiusLegendreGauntClosedForm.lean} close
+the finite Gaunt expansion, its total squared integer zero-row Wigner-\(3j\)
+identification, and the corresponding finite rational and real Gram sums.  They do not
+close signed-symbol phases, half-integer or nonzero-magnetic-index theory, general
+recoupling or Wigner orthogonality, second-kind polynomials, affine unit-interval
+transport, Gaussian quadrature, continued-fraction/Pad\'e identification or convergence,
+or any Szeg\H{o}/Nevai/Rakhmanov asymptotics.
 
 % --------------------------------------------------------------------------
 \section{Conclusion}
