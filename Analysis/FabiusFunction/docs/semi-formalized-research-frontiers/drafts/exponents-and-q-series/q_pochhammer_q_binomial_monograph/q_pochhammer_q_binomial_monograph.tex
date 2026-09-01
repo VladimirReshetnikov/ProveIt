@@ -2391,12 +2391,6 @@ Compare the coefficients of $z^k$, $k\ge1$: on the left it is $q^k\GaussianBinom
 which is the claim established in the proof of \Cref{prop:rogers-szego-three-term} (read at the index $k$ in place of $k-1$; it is the product of the two cross identities of \Cref{prop:adjacent-ratio}).  The constant terms are both $1$.  Conversely, adding the dilation formula to the basic recurrence $H_{n+1}(z;q)=zH_n(z;q)+H_n(qz;q)$ gives the three-term recurrence at once, which is how the formalization organizes the three results: the basic recurrence is the second $q$-Pascal summation, the dilation formula is the column-adjacent cross identity read coefficientwise over every commutative ring, and the three-term recurrence is their sum.
 \end{proof}
 
-\begin{proof}
-By \Cref{prop:rogers-szego-recurrence}, $H_n(qz;q)=H_{n+1}(z;q)-zH_n(z;q)$.
-Substituting \Cref{prop:rogers-szego-three-term} for $H_{n+1}(z;q)$ and
-cancelling $zH_n(z;q)$ gives the formula.
-\end{proof}
-
 \begin{remark}\label{rem:rogers-szego-three-term}
 The recurrence of \Cref{prop:rogers-szego-recurrence} moves the argument, from
 $z$ to $qz$; the one above does not.  It is therefore a three-term recurrence
@@ -6629,12 +6623,12 @@ monomial $F=q^{\alpha}\prod_i\GaussianBinomial{n_i}{k_i}{q}$ each factor has con
 $1$ and degree $k_i(n_i-k_i)$ by \Cref{thm:qbinom-structure}(iii); this proves
 item (i).  For item (ii), \Cref{thm:qbinom-structure}(ii) gives
 $\GaussianBinomial{n_i}{k_i}{q^{-1}}=q^{-k_i(n_i-k_i)}\GaussianBinomial{n_i}{k_i}{q}$, so
-\[
- F(q^{-1})=q^{-\alpha}\prod_i q^{-k_i(n_i-k_i)}\GaussianBinomial{n_i}{k_i}{q}
- =q^{-c_F}F(q),
- \qquad
- c_F=2\alpha+\sum_ik_i(n_i-k_i)=\deg F+\OrderOperator_{q=0}F,
-\]
+\begin{align*}
+ F(q^{-1})
+ &=q^{-\alpha}\prod_i q^{-k_i(n_i-k_i)}\GaussianBinomial{n_i}{k_i}{q} \\
+ &=q^{-c_F}F(q), \\
+ c_F&=2\alpha+\sum_ik_i(n_i-k_i)=\deg F+\OrderOperator_{q=0}F.
+\end{align*}
 using $F(q)=q^{\alpha}\prod_i\GaussianBinomial{n_i}{k_i}{q}$.  If $L=R$, then applying the
 substitution gives $q^{-c_L}L=q^{-c_R}R=q^{-c_R}L$, so
 $(q^{-c_L}-q^{-c_R})L=0$ in $\RationalNumbers(q)$; when $c_L\ne c_R$ the first factor is
@@ -10205,8 +10199,8 @@ $q=0$ and negative contractions.  The additional declarations
 of the full prefixes on the real frequency line and uniform convergence on
 every compact real frequency set.  There is still no named centered
 or MGF bridge and no outside formula or zero--pole exchange; named
-local-uniform or normal convergence of the Pochhammer-product right-hand
-side and a packaged complex-frequency full-prefix statement are also
+local-uniform or normal convergence of the outer Pochhammer product over the
+spectral index and a packaged complex-frequency full-prefix statement are also
 absent.  Thus \Cref{thm:qF-spectral} remains only partially formalized.
 
 \begin{remark}[The nome, and where the $q$-objects finally appear]\label{rem:qF-nome}
@@ -12410,8 +12404,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 59 are \statusexact, 77 are
-\statuspartial, 138 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 59 are \statusexact, 78 are
+\statuspartial, 137 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -12427,11 +12421,14 @@ identities; its analytic evaluation and convergence clause is not
 formalized.  The finite-family theorem in
 \texttt{CompleteHomogeneousAsymptotics} separately transfers coordinatewise
 Big-O bounds through a fixed complete homogeneous degree, without asserting
-formal-series convergence.  Most of the classical analytic layer --- nonterminating basic
-hypergeometric summation, Jacobi triple product, Bailey inversion and the
-Bailey lemma, and the Rogers--Ramanujan identities --- remains untouched;
-the algebraic \(q\)-difference annihilation input to that chapter is now
-exact.  The elementary base-reversal, terminating-factor, and adjacent-ratio
+formal-series convergence.  Nonterminating basic hypergeometric summation,
+Bailey inversion and the Bailey lemma, and the Rogers--Ramanujan identities
+remain untouched.  The pointwise infinite \(q\)-binomial theorem and its Euler
+specializations now have named counterparts, as do the finite and infinite
+Jacobi triple products and the pentagonal specialization; the Rogers--Szegő
+recurrences remain unformalized.  The algebraic \(q\)-difference annihilation
+input to the Bailey chapter is now exact.  The elementary base-reversal,
+terminating-factor, and adjacent-ratio
 claims are now exact as well: their field forms record \(a\ne0\), \(q\ne0\),
 and every displayed nonzero denominator, while their cleared and
 cross-multiplied polynomial forms remain valid at roots of unity; both
@@ -12488,6 +12485,9 @@ compatibility spelling of the primary identity;\\
 \path{QDifferenceAnnihilation.lean}: four theorems;\\
 \path{QBinomialInversionSpecializations.lean}: two definitions and four theorems;\\
 \path{QPochhammerElementaryIdentities.lean}: 13 theorems;\\
+\path{QPochhammerDissection.lean}: two theorems;\\
+\path{QPochhammerInfinite.lean}: one definition and 27 theorems;\\
+\path{QPochhammerEntire.lean}: four theorems;\\
 \path{QBinomialReciprocity.lean}: four theorems;\\
 \path{GaussianBinomialAtNegOne.lean}: five theorems;\\
 \path{QPochhammerDissection.lean}: zero definitions and two theorems;\\
@@ -12648,7 +12648,7 @@ specialize to the fixed nome
 \path{IsFabius}.  What remains outside the API from
 \Cref{thm:qF-spectral} is its named centered/MGF packaging, outside-disk
 reciprocal and zero--pole clauses, and named local-uniform or normal
-convergence of the Pochhammer-product right-hand side.
+convergence of the outer Pochhammer product over the spectral index.
 
 \item The zero-definition, four-theorem module
 \path{QPochhammerEntire.lean} consists exactly of
@@ -12706,7 +12706,8 @@ These are exact subclaims of
 label is promoted, because no declaration packages the former's
 complex-frequency full phase-prefix convergence or the latter's centered/MGF
 wrapper, reciprocal outside-disk formula, zero--pole exchange, and named
-local-uniform or normal convergence of the Pochhammer-product right-hand side.
+local-uniform or normal convergence of the outer Pochhammer product over the
+spectral index.
 
 \item The six theorems of \path{GeometricCompleteHomogeneous.lean} are
 \path{Fabius.completeHomogeneousEval_geometric},
@@ -12859,7 +12860,7 @@ inferred from a related finite identity.
 \toprule
 Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
-The algebra of $q$-shifted factorials & 7 & 1 & 7 & 0\\
+The algebra of $q$-shifted factorials & 7 & 2 & 6 & 0\\
 $q$-integers and Gaussian coefficients & 5 & 1 & 3 & 0\\
 Finite $q$-binomial theorems and inversion & 9 & 1 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 2 & 3 & 0\\
@@ -12888,7 +12889,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 59 & 77 & 138 & 8\\
+\textbf{Forward total} & 59 & 78 & 137 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -12944,6 +12945,7 @@ field, as \texttt{HasDerivAt} statements: the product-rule form, the
 logarithmic form away from the zeros, and the chain-rule form for a
 differentiable parameter}\\[2pt]
 \Cref{thm:poch-entire} & \statusexact &
+\texttt{tendsto\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}qPochhammerInfIn},
 \texttt{hasProdLocallyUniformly\_\allowbreak{}qPochhammerInfIn},
 \texttt{differentiable\_\allowbreak{}qPochhammerInfIn},
 \texttt{qPochhammerInfIn\_\allowbreak{}eq\_\allowbreak{}finite\_\allowbreak{}mul\_\allowbreak{}shift},
@@ -12965,7 +12967,11 @@ $\ComplexNumbers$-only module \texttt{QPochhammerEntire} proves the same
 convergence, holomorphy, and factor-zero locus for
 \texttt{complexQPochhammerInf}, including $q=0$, together with analytic order
 one at every zero}\\[2pt]
-\Cref{prop:complex-concat} & \statusnone & ---\\[2pt]
+\Cref{prop:complex-concat} & \statuspartial &
+\texttt{qPochhammerInfIn\_\allowbreak{}eq\_\allowbreak{}finite\_\allowbreak{}mul\_\allowbreak{}shift},
+\texttt{qPochhammerInfIn\_\allowbreak{}succ\_\allowbreak{}shift}\newline
+{\footnotesize\texttt{QPochhammerInfinite}; exact for nonnegative integral
+shifts, not for arbitrary complex \(\alpha,\beta\)}\\[2pt]
 \Cref{prop:order-derivative} & \statusnone & ---\\[2pt]
 \Cref{thm:lambert-log} & \statuspartial &
 \texttt{tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}geom},
@@ -13096,20 +13102,20 @@ monoid carrying the module structure}\\[2pt]
 \Cref{cor:path-area} & \statusnone & ---\\[2pt]
 \Cref{thm:qmult-inversions} & \statusnone & ---\\[2pt]
 \Cref{prop:rogers-szego-recurrence} & \statusexact &
+\texttt{rogersSzego\_\allowbreak{}zero},
 \texttt{rogersSzego\_\allowbreak{}succ},
 \texttt{hasSum\_\allowbreak{}rogersSzego\_\allowbreak{}generating}\newline
-{\footnotesize\texttt{RogersSzegoPolynomial}; the recurrence over every
-commutative semiring, the generating function in every complete normed field
-for $\lVert q\rVert,\lVert t\rVert,\lVert zt\rVert<1$, as the Cauchy product of
-two Euler expansions}\\[2pt]
+{\footnotesize\texttt{RogersSzegoPolynomial}; the finite recurrence over every
+commutative semiring and the displayed generating function in every complete
+normed field under the three stated strict norm bounds}\\[2pt]
 \Cref{prop:rogers-szego-three-term} & \statusexact &
 \texttt{rogersSzego\_\allowbreak{}three\_\allowbreak{}term}\newline
-{\footnotesize\texttt{RogersSzegoPolynomial}; every commutative ring}\\[2pt]
+{\footnotesize\texttt{RogersSzegoPolynomial}; every commutative ring, with
+the displayed \(n\ge1\) form obtained by reindexing the total natural theorem}\\[2pt]
 \Cref{cor:rogers-szego-dilation} & \statusexact &
-\texttt{rogersSzego\_\allowbreak{}dilation},
-\texttt{one\_\allowbreak{}sub\_\allowbreak{}pow\_\allowbreak{}succ\_\allowbreak{}mul\_\allowbreak{}gaussianBinomial\_\allowbreak{}succ\_\allowbreak{}succ}\newline
-{\footnotesize\texttt{RogersSzegoPolynomial}; every commutative ring, via the
-column-adjacent cross identity}\\[2pt]
+\texttt{rogersSzego\_\allowbreak{}dilation}\newline
+{\footnotesize\texttt{RogersSzegoPolynomial}; every commutative ring, with
+the displayed \(n\ge1\) form obtained by reindexing the total natural theorem}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Finite fields, Grassmannians, and rank enumeration}\\
 \midrule

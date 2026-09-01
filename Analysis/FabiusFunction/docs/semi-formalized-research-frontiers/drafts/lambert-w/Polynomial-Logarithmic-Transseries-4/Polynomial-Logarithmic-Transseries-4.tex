@@ -5,6 +5,7 @@
 \usepackage[english]{babel}
 \usepackage{mathtools}
 \usepackage{amsthm}
+\usepackage{amssymb}
 \usepackage{newtxtext,newtxmath}
 \usepackage{mathrsfs}
 \usepackage{microtype}
@@ -21,6 +22,7 @@
 \usepackage{caption}
 \usepackage{hyperref}
 \usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+\input{../../../../fabius-notation.tex}
 
 \definecolor{ink}{HTML}{1D2733}
 \definecolor{accent}{HTML}{4A5D23}
@@ -95,35 +97,25 @@
   belowskip=0.8em
 }
 
-\newcommand{\K}{\mathbb K}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\C}{\mathbb C}
-\newcommand{\R}{\mathbb R}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\N}{\mathbb N}
-\newcommand{\PL}{\mathscr P}
-\newcommand{\RL}{\mathscr R}
-\newcommand{\HL}{\mathscr H}
-\newcommand{\Gnear}{\mathscr G}
-\newcommand{\ord}{\operatorname{ord}}
-\newcommand{\ordx}{\operatorname{ord}_{x^{-1}}}
-\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\PL}{\PolynomialLogLaurentRing{\K}}
+\newcommand{\RL}{\RationalLogLaurentField{\K}}
+\newcommand{\HL}{\IteratedLaurentLogField{\K}}
+\newcommand{\Gnear}{\NearIdentityPolynomialLogGroup{\K}}
+\newcommand{\ordx}{\nu_t}
 \newcommand{\lc}{\operatorname{lc}}
+\newcommand{\LeadingMonomialOf}[1]{\operatorname{lm}\!\left(#1\right)}
 \newcommand{\dlog}{\partial_{\ell}}
-\newcommand{\rev}{\langle -1\rangle}
-\newcommand{\littleo}{\mathrm{o}}
-\newcommand{\bigO}{\mathrm{O}}
+\newcommand{\rev}{\langle-1\rangle_{\circ}}
 \newcommand{\as}{\sim}
-\newcommand{\precasy}{\prec}
-\newcommand{\preceqasy}{\preccurlyeq}
-\newcommand{\coeff}[2]{[#1]\,#2}
-\newcommand{\trunc}[2]{\mathop{\mathrm{T}}_{<#1}\!\left(#2\right)}
-\newcommand{\StirlingFirst}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
-\newcommand{\Log}{\operatorname{Log}}
-\newcommand{\W}{\operatorname{W}}
-\newcommand{\dd}{\,\mathrm d}
+\newcommand{\TransseriesCoefficientOf}[2]{\left[#1\right]\,#2}
+\newcommand{\TransseriesTruncateBelow}[2]{%
+  \operatorname{Trunc}_{<#2}\!\left(#1\right)%
+}
+\newcommand{\UnsignedStirlingFirstKind}[2]{%
+  \genfrac{[}{]}{0pt}{}{#1}{#2}%
+}
 \DeclareMathOperator{\degell}{deg_{\ell}}
-\DeclareMathOperator{\res}{res}
 
 \begin{document}
 \pagenumbering{roman}
@@ -135,7 +127,7 @@
 {\color{accent}\rule{0.86\textwidth}{1.2pt}}\\[1.2cm]
 {\Huge\bfseries\color{ink} Polynomial-Logarithmic Transseries\par}
 \vspace{0.45cm}
-{\LARGE Algebra, Composition, Reversion, and the Lambert \(W\) Function\par}
+{\LARGE Algebra, Composition, Reversion, and the Lambert \(\LambertW\) Function\par}
 \vspace{1.2cm}
 {\large A self-contained computational and asymptotic treatment\par}
 \vfill
@@ -147,7 +139,7 @@
 \]
 with special attention to the four operations that most often cause mistakes:
 multiplication, division, composition, and compositional inversion.  The central
-running example is the large-argument expansion of the Lambert \(W\) function.
+running example is the large-argument expansion of the Lambert \(\LambertW\) function.
 The treatment distinguishes formal identities, closure properties, coefficient
 algorithms, and analytic asymptotic meaning.
 \end{minipage}
@@ -163,7 +155,7 @@ Polynomial-logarithmic transseries are Laurent series in \(x^{-1}\) whose
 coefficients are polynomials in \(\ell=\log x\).  They form one of the smallest
 useful fragments of the logarithmic-exponential transseries field: small enough
 for exact coefficient arithmetic, yet rich enough to express the standard
-large-argument expansions of Lambert \(W\), Wright's omega function, inverse
+large-argument expansions of Lambert \(\LambertW\), Wright's omega function, inverse
 logarithmic perturbations, and many solutions obtained from implicit equations.
 
 This article develops the fragment as a complete filtered algebraic calculus.
@@ -176,10 +168,10 @@ care is given to operations that leave the polynomial-logarithmic ring.  This
 leads naturally to rational-log, Laurent-log, Puiseux-log, and iterated-log
 enlargements.
 
-For Lambert \(W\), the article derives the complete expansion in Lambert
+For Lambert \(\LambertW\), the article derives the complete expansion in Lambert
 polynomials, proves their differential-operator, integral-recursion, generating-
 function, and Stirling-number descriptions, treats complex branches and the real
-branch \(W_{-1}\), and gives numerical and implementation guidance.  Throughout,
+branch \(\LambertW_{-1}\), and gives numerical and implementation guidance.  Throughout,
 ``formal'', ``asymptotic'', and ``convergent'' are kept logically separate.
 \end{abstract}
 
@@ -193,7 +185,7 @@ present article uses those materials as background but deliberately specializes
 to the rank-two polynomial-logarithmic class and develops coefficient-level
 algorithms not isolated in the broader surveys.  Additional primary references
 include the NIST Digital Library of Mathematical Functions, Corless et al. on
-Lambert \(W\), Cohen on Lambert polynomials, Gessel on formal Lagrange inversion,
+Lambert \(\LambertW\), Cohen on Lambert polynomials, Gessel on formal Lagrange inversion,
 and van der Hoeven's monograph on transseries.
 \end{minipage}
 \end{center}
@@ -217,7 +209,7 @@ and consider a formal expression
       =\sum_{n\ge n_0}p_n(\log x)x^{-n},
   \qquad p_n\in\K[X].
 \end{equation}
-Here \(n_0\in\Z\), so finitely many positive powers of \(x\) are permitted.
+Here \(n_0\in\IntegerNumbers\), so finitely many positive powers of \(x\) are permitted.
 At each fixed inverse-power level \(x^{-n}\), only a finite polynomial in
 \(\log x\) is allowed.  We call \eqref{eq:pl-shape} a
 \emph{polynomial-logarithmic transseries}, abbreviated PL transseries.
@@ -226,18 +218,18 @@ The prototype is obtained by inverting
 \[
   y+\log y=x.
 \]
-The inverse is the Wright omega function \(\omega(x)=W(e^x)\), and its expansion
+The inverse is the Wright omega function \(\WrightOmega(x)=\LambertW(\EulerE^x)\), and its expansion
 begins
 \begin{equation}\label{eq:omega-preview}
 \begin{split}
-  \omega(x)={}&x-\ell+\frac{\ell}{x}
+  \WrightOmega(x)={}&x-\ell+\frac{\ell}{x}
   +\frac{\ell^2/2-\ell}{x^2}
   +\frac{\ell^3/3-3\ell^2/2+\ell}{x^3}\\
   &+\frac{\ell^4/4-11\ell^3/6+3\ell^2-\ell}{x^4}+\cdots.
 \end{split}
 \end{equation}
-Every coefficient is a polynomial in \(\ell\).  For \(W(z)\), take
-\(x=\Log z\) and \(\ell=\Log\Log z\), with branch choices recorded explicitly.
+Every coefficient is a polynomial in \(\ell\).  For \(\LambertW(z)\), take
+\(x=\PrincipalLogarithm z\) and \(\ell=\PrincipalLogarithm\PrincipalLogarithm z\), with branch choices recorded explicitly.
 
 PL transseries occupy a useful middle ground.
 \begin{itemize}
@@ -278,7 +270,7 @@ convenient formulation is given in \cref{sec:analytic-meaning}.
 A formal series can also converge numerically for sufficiently large \(x\), or
 be summable by an external analytic procedure.  Neither follows merely from
 formal existence.  Conversely, a convergent expansion is automatically formal
-when its coefficients are compared algebraically.  Lambert \(W\) is unusually
+when its coefficients are compared algebraically.  Lambert \(\LambertW\) is unusually
 pleasant: its canonical inverse-logarithmic series is asymptotic and, in a
 sufficiently large domain, genuinely convergent.
 
@@ -298,7 +290,7 @@ Let \(\PL=\K[\ell]((x^{-1}))\).
   \(\K(\ell)((x^{-1}))\), and its large-\(\ell\) expansion belongs to
   \(\K((\ell^{-1}))((x^{-1}))\).
 \item If the inner argument is
-  \(G=cx^q(1+U)\), where \(q\in\N_{>0}\), \(c\ne0\), and
+  \(G=cx^q(1+U)\), where \(q\in\PositiveIntegers\), \(c\ne0\), and
   \(U\in x^{-1}\K[\ell][[x^{-1}]]\), then \(F\circ G\in\PL\) after choosing
   \(\log c\).  For rational \(q\), one naturally obtains a Puiseux-log series.
 \item The near-identity class
@@ -313,15 +305,15 @@ Let \(\PL=\K[\ell]((x^{-1}))\).
 \subsection{Coefficient field and variables}
 
 Throughout most of the article, \(\K\) is a field of characteristic zero.  For
-real asymptotics one can take \(\K=\R\); for branch-sensitive analytic work,
-\(\K=\C\); and for exact symbolic computation, \(\K=\Q\) or a finite algebraic
+real asymptotics one can take \(\K=\RealNumbers\); for branch-sensitive analytic work,
+\(\K=\ComplexNumbers\); and for exact symbolic computation, \(\K=\RationalNumbers\) or a finite algebraic
 extension is often ideal.  The symbols \(x\), \(t=x^{-1}\), and
 \(\ell=\log x\) are formal, but the derivation is chosen to reproduce their
 analytic relation:
 \begin{equation}\label{eq:basic-derivation}
-  \frac{\dd x}{\dd x}=1,
-  \qquad \frac{\dd t}{\dd x}=-t^2,
-  \qquad \frac{\dd\ell}{\dd x}=t.
+  \frac{\Differential x}{\Differential x}=1,
+  \qquad \frac{\Differential t}{\Differential x}=-t^2,
+  \qquad \frac{\Differential\ell}{\Differential x}=t.
 \end{equation}
 
 \begin{definition}[PL Laurent ring]
@@ -329,7 +321,7 @@ The polynomial-logarithmic Laurent ring is
 \begin{equation}\label{eq:PL-ring}
   \PL=\K[\ell]((t))
   =\left\{\sum_{n\ge n_0}p_n(\ell)t^n:
-      n_0\in\Z,\ p_n\in\K[\ell]\right\}.
+      n_0\in\IntegerNumbers,\ p_n\in\K[\ell]\right\}.
 \end{equation}
 Its power-series subring is
 \[
@@ -351,7 +343,7 @@ levels and powers of \(\log x\) refine each level.
 The monomials are
 \[
   t^n\ell^j=x^{-n}(\log x)^j,
-  \qquad n\in\Z,\quad j\in\N.
+  \qquad n\in\IntegerNumbers,\quad j\in\NaturalNumbers.
 \]
 For positive real \(x\to\infty\), define dominance by
 \begin{equation}\label{eq:monomial-order}
@@ -369,7 +361,7 @@ the field extension \(\HL\) below.
 It is often convenient to encode \eqref{eq:monomial-order} by the rank-two
 valuation
 \begin{equation}\label{eq:valuation-pair}
-  v(t^n\ell^j)=(n,-j)\in\Z\times\Z
+  v(t^n\ell^j)=(n,-j)\in\IntegerNumbers\times\IntegerNumbers
 \end{equation}
 with lexicographic order.  A nonzero \(F\in\PL\) has a least valuation because
 its \(t\)-exponents are bounded below and the polynomial at the first nonzero
@@ -385,7 +377,7 @@ For nonzero
 If \(a\ell^{d(F)}\) is the leading term of
 \(p_{\ordx F}\), then
 \[
-  \operatorname{lm}(F)=t^{\ordx F}\ell^{d(F)},\qquad
+  \LeadingMonomialOf{F}=t^{\ordx F}\ell^{d(F)},\qquad
   \lc(F)=a.
 \]
 \end{definition}
@@ -398,10 +390,10 @@ level are distinguished by their log degree.
 
 The support of \(F\) is
 \[
-  \supp F=\{(n,j):\coeff{t^n\ell^j}{F}\ne0\}.
+  \CoefficientSupportOf{F}=\{(n,j):\TransseriesCoefficientOf{t^n\ell^j}{F}\ne0\}.
 \]
 For every fixed \(n\), its fiber in \(j\) is finite, and the set of occurring
-\(n\)'s is bounded below.  Consequently every nonempty subset of \(\supp F\)
+\(n\)'s is bounded below.  Consequently every nonempty subset of \(\CoefficientSupportOf{F}\)
 has a dominant monomial.  This is the elementary rank-two instance of the
 well-based support condition used for Hahn series and general transseries
 \cite{EdgarBeginners,Hahn1907}.
@@ -414,13 +406,14 @@ reason that all operations below can be performed to finite order.
 
 \subsection{Truncation and completeness}
 
-For \(N\in\Z\), define the inverse-power truncation
+For \(N\in\IntegerNumbers\), define the inverse-power truncation
 \begin{equation}\label{eq:truncation}
-  \trunc{N}{F}=\sum_{n<N}p_n(\ell)t^n,
-  \qquad F\equiv G\pmod{t^N}
+  \TransseriesTruncateBelow{F}{N}=\sum_{n<N}p_n(\ell)t^n,
+  \qquad F=G+\FormalBigO_t(t^N)
   \Longleftrightarrow F-G\in t^N\K[\ell][[t]].
 \end{equation}
-A computation ``through order \(x^{-N+1}\)'' means modulo \(t^N\).
+A computation ``through order \(x^{-N+1}\)'' means equality after applying
+\(\TransseriesTruncateBelow{\,cdot\,}{N}\).
 This convention retains \emph{all} powers of \(\ell\) at each retained
 \(t\)-level.  It avoids the common ambiguity of a total-degree cutoff in two
 variables, which generally does not respect asymptotic dominance.
@@ -518,11 +511,11 @@ Cauchy convolution.
 
 \subsection{Truncated multiplication}
 
-Suppose only \(FG\bmod t^N\) is required.  Terms of \(F\) with exponent
+Suppose only \(\TransseriesTruncateBelow{FG}{N}\) is required.  Terms of \(F\) with exponent
 \(n\ge N-b\) and terms of \(G\) with exponent \(m\ge N-a\) cannot contribute.
 Hence
 \begin{equation}\label{eq:truncated-product}
-  FG\bmod t^N
+  \TransseriesTruncateBelow{FG}{N}
   =\sum_{r=a+b}^{N-1}
     \left(\sum_{n=\max(a,r-(N_G-1))}^{\min(N_F-1,r-b)}p_nq_{r-n}\right)t^r,
 \end{equation}
@@ -683,16 +676,16 @@ is well-defined \(t\)-adically.  In particular,
 \begin{align}
  (1+U)^\alpha&=\sum_{r\ge0}\binom{\alpha}{r}U^r,\label{eq:binomial-U}\\
  \log(1+U)&=\sum_{r\ge1}\frac{(-1)^{r+1}}{r}U^r,\label{eq:log-U}\\
- e^U&=\sum_{r\ge0}\frac{U^r}{r!}.\label{eq:exp-U}
+ \EulerE^U&=\sum_{r\ge0}\frac{U^r}{r!}.\label{eq:exp-U}
 \end{align}
 These formulas are formal; analytic convergence for a numerical \(x\) is a
 separate issue.
 
 The restrictions are important.  If \(P(\ell)\) is a nonlinear polynomial,
-then \(e^{P(\ell)}\) is generally not a PL series: for example,
-\(e^{\ell^2}=x^{\ell}\) introduces a new exponential monomial.  By contrast,
-\(e^{a\ell+b}=e^b x^a\) remains in a generalized-power extension, and remains in
-\(\PL\) when \(a\in\Z\).
+then \(\EulerE^{P(\ell)}\) is generally not a PL series: for example,
+\(\EulerE^{\ell^2}=x^{\ell}\) introduces a new exponential monomial.  By contrast,
+\(\EulerE^{a\ell+b}=\EulerE^b x^a\) remains in a generalized-power extension, and remains in
+\(\PL\) when \(a\in\IntegerNumbers\).
 
 \section{Differential and integral calculus}\label{sec:differential}
 
@@ -700,14 +693,14 @@ then \(e^{P(\ell)}\) is generally not a PL series: for example,
 
 For a monomial level \(t^n p(\ell)=x^{-n}p(\log x)\), the chain rule gives
 \begin{equation}\label{eq:one-derivative}
-  \frac{\dd}{\dd x}\bigl(t^n p(\ell)\bigr)
+  \frac{\Differential}{\Differential x}\bigl(t^n p(\ell)\bigr)
   =t^{n+1}(\dlog-n)p(\ell).
 \end{equation}
 Thus differentiation raises the \(t\)-order by one and applies a first-order
 operator to the log polynomial.
 
 \begin{definition}[Shifted logarithmic differential operator]
-For \(n\in\Z\) and \(k\in\N\), set
+For \(n\in\IntegerNumbers\) and \(k\in\NaturalNumbers\), set
 \begin{equation}\label{eq:Delta-def}
   \Delta_{n,k}
   =\prod_{j=0}^{k-1}(\dlog-n-j),
@@ -719,7 +712,7 @@ The factors commute because each is a polynomial in \(\dlog\).
 \begin{proposition}[Repeated derivative]\label{prop:repeated-derivative}
 For every \(k\ge0\),
 \begin{equation}\label{eq:repeated-derivative}
-  \frac{\dd^k}{\dd x^k}\bigl(t^n p(\ell)\bigr)
+  \frac{\Differential^k}{\Differential x^k}\bigl(t^n p(\ell)\bigr)
   =t^{n+k}\Delta_{n,k}p(\ell).
 \end{equation}
 Consequently \(\PL\) is closed under differentiation.
@@ -780,14 +773,14 @@ It suffices to integrate one term \(t^n p(\ell)=x^{-n}p(\ell)\).
 If \(n\ne1\), seek an antiderivative of the form
 \(x^{1-n}q(\ell)=t^{n-1}q(\ell)\).  Differentiation gives
 \[
-  \frac{\dd}{\dd x}\bigl(x^{1-n}q(\ell)\bigr)
+  \frac{\Differential}{\Differential x}\bigl(x^{1-n}q(\ell)\bigr)
   =x^{-n}\bigl(q'(\ell)+(1-n)q(\ell)\bigr).
 \]
 The operator \(\dlog+(1-n)\) is invertible on \(\K[\ell]\) when
 \(1-n\ne0\): solve recursively from the highest polynomial degree downward.
 If \(n=1\), then
 \[
-  \int x^{-1}p(\log x)\dd x=\int p(\ell)\dd\ell,
+  \int x^{-1}p(\log x)\Differential x=\int p(\ell)\Differential\ell,
 \]
 which is again a polynomial in \(\ell\) because \(\operatorname{char}\K=0\).
 Termwise integration is locally finite, and the only kernel of the derivation in
@@ -854,9 +847,9 @@ Let
 and let
 \begin{equation}\label{eq:admissible-G}
   G(x)=c x^q(1+U(x)),
-  \qquad c\in\K^\times,\quad q\in\N_{>0},\quad U\in\mathfrak m.
+  \qquad c\in\K^\times,\quad q\in\PositiveIntegers,\quad U\in\mathfrak m.
 \end{equation}
-Choose a value of \(\log c\) if \(\K\subseteq\C\).  Then
+Choose a value of \(\log c\) if \(\K\subseteq\ComplexNumbers\).  Then
 \begin{equation}\label{eq:composition-master}
 \boxed{
   (F\circ G)(x)=
@@ -885,7 +878,7 @@ modulo \(t^{N+1}\).  Thus every coefficient is a finite sum of polynomials in
 \end{proof}
 
 \begin{remark}[Rational and general powers]
-If \(q=r/s\in\Q_{>0}\), the same proof works after adjoining
+If \(q=r/s\in\RationalNumbers_{>0}\), the same proof works after adjoining
 \(x^{1/s}\), giving a Puiseux-log series.  For arbitrary real or complex \(q\),
 one enters a generalized Hahn-series scale with monomials \(x^{-\gamma}\).
 The obstruction is not composition itself; it is the decision to restrict
@@ -893,7 +886,7 @@ exponents to integers.
 \end{remark}
 
 \begin{corollary}[Scaling and power substitution]
-For \(c\ne0\) and \(q\in\N_{>0}\),
+For \(c\ne0\) and \(q\in\PositiveIntegers\),
 \begin{equation}\label{eq:scale-composition}
   F(cx^q)=\sum_{n\ge a}c^{-n}x^{-qn}
              p_n(q\ell+\log c).
@@ -918,7 +911,7 @@ For \(F\in\PL\) and \(H\in\PL_{\ge0}\),
 \begin{equation}\label{eq:formal-taylor}
 \boxed{
   F\circ(x+H)=\sum_{k\ge0}\frac{H^k}{k!}D^kF,
-  \qquad D=\frac{\dd}{\dd x}.
+  \qquad D=\frac{\Differential}{\Differential x}.
 }
 \end{equation}
 The family on the right is \(t\)-adically summable.  Modulo \(t^N\), only
@@ -956,7 +949,7 @@ Let
 Combining \cref{prop:repeated-derivative,thm:formal-taylor} yields
 \begin{equation}\label{eq:composition-coefficient}
 \boxed{
-  \coeff{t^r}{F\circ(x+H)}
+  \TransseriesCoefficientOf{t^r}{F\circ(x+H)}
   =\sum_{\substack{n\ge a,\ k\ge0,\ m\ge0\\n+k+m=r}}
     \frac{h_{k,m}(\ell)}{k!}\,\Delta_{n,k}p_n(\ell).
 }
@@ -989,7 +982,7 @@ Either these formulas or \eqref{eq:composition-coefficient} gives
  +\left(-\ell^3+\frac32\ell^2\right)t^2\\
  &+\left(\ell^4-\frac83\ell^3+\ell^2\right)t^3\\
  &+\left(-\ell^5+\frac{41}{12}\ell^4-2\ell^3\right)t^4
- +\bigO(t^5).
+ +\FormalBigO_t(t^5).
 \end{align*}
 The increasing log degree is not accidental: every expansion of
 \(\log(1+\ell t)\) supplies another factor of \(\ell\).
@@ -997,9 +990,9 @@ The increasing log degree is not accidental: every expansion of
 
 \subsection{Composition by an affine perturbation}
 
-For \(G=cx+d+\bigO(x^{-1})\), factor
+For \(G=cx+d+\FormalBigO_t(t)\), factor
 \[
-  G=cx\left(1+\frac{d}{cx}+\bigO(x^{-2})\right).
+  G=cx\left(1+\frac{d}{cx}+\FormalBigO_t(t^2)\right).
 \]
 Then
 \begin{align*}
@@ -1044,11 +1037,11 @@ The following table is a practical diagnostic.
 \toprule
 Inner leading behavior & Typical new object & Minimal customary enlargement\\
 \midrule
-\(cx^q\), \(q\in\N_{>0}\) & none & \(\PL\)\\
+\(cx^q\), \(q\in\PositiveIntegers\) & none & \(\PL\)\\
 \(cx^{r/s}\) & fractional powers of \(x\) & Puiseux-log series\\
 \(c\ell^q\) & negative powers of \(\ell\) from outer reciprocals & Laurent-log field \(\HL\)\\
 \(x\ell^a\) inside an outer logarithm & \(\log\ell\) & one additional iterated-log level\\
-\(e^x\) & exponential monomials & logarithmic-exponential transseries\\
+\(\EulerE^x\) & exponential monomials & logarithmic-exponential transseries\\
 inner series near a branch zero & fractional or ramified local powers & local Puiseux/branch expansion\\
 \bottomrule
 \end{tabularx}
@@ -1070,7 +1063,7 @@ Let
   \Gnear=\left\{x+A(x):A\in\PL_{\ge0}\right\}.
 \end{equation}
 Every member satisfies \(x+A\as x\) and has formal derivative
-\(1+A'=1+\bigO(t)\).
+\(1+A'=1+\FormalBigO_t(t)\).
 \end{definition}
 
 \begin{theorem}[Group theorem]\label{thm:near-group}
@@ -1095,7 +1088,7 @@ and \cref{thm:formal-taylor} shows that the correction belongs to
 If \(B-C\in t^N\PL_{\ge0}\), the formal mean-value/Taylor identity gives
 \[
   A\circ(x+B)-A\circ(x+C)
-  =(B-C)\int_0^1 A'\circ(x+C+s(B-C))\dd s.
+  =(B-C)\int_0^1 A'\circ(x+C+s(B-C))\Differential s.
 \]
 Since \(A'\in t\PL_{\ge0}\), the right side lies in
 \(t^{N+1}\PL_{\ge0}\).  Thus \(\Phi\) improves the agreement order by at least
@@ -1115,7 +1108,7 @@ points agree modulo \(t^N\) for all \(N\).
 
 This is the PL specialization of the fixed-point mechanism used for
 well-based transseries compositional inverses \cite{EdgarComposition}.  Here the
-contraction is visible in the elementary fact \(A'=\bigO(t)\).
+contraction is visible in the elementary fact \(A'=\FormalBigO_t(t)\).
 
 \subsection{Picard iteration}
 
@@ -1133,14 +1126,14 @@ coefficients and is not the fastest high-order algorithm.
 
 Suppose an approximation \(G_N=x+B_N\) satisfies
 \begin{equation}\label{eq:residual-order-N}
-  F\circ G_N-x=r_N(\ell)t^N+\bigO(t^{N+1}).
+  F\circ G_N-x=r_N(\ell)t^N+\FormalBigO_t(t^{N+1}).
 \end{equation}
-Because \(F'\circ G_N=1+\bigO(t)\), adding
+Because \(F'\circ G_N=1+\FormalBigO_t(t)\), adding
 \(-r_Nt^N\) to \(G_N\) removes the residual at level \(N\):
 \begin{equation}\label{eq:triangular-update}
   G_{N+1}=G_N-r_N(\ell)t^N
   \quad\Longrightarrow\quad
-  F\circ G_{N+1}=x+\bigO(t^{N+1}).
+  F\circ G_{N+1}=x+\FormalBigO_t(t^{N+1}).
 \end{equation}
 Thus inverse coefficients can be found one polynomial at a time.  No linear
 system larger than a scalar identity is needed because the leading derivative is
@@ -1156,7 +1149,7 @@ The formal Newton step is
   =G-\frac{F\circ G-x}{F'\circ G}.
 }
 \end{equation}
-The denominator is a unit because \(F'=1+\bigO(t)\).  If
+The denominator is a unit because \(F'=1+\FormalBigO_t(t)\).  If
 \(F\circ G-x\in t^N\PL_{\ge0}\), Taylor expansion around \(G\) shows that the
 new residual is in \(t^{2N+1}\PL_{\ge0}\) (the exact exponent can improve with
 additional valuation information).  Hence a precision-doubling implementation
@@ -1165,13 +1158,13 @@ uses truncation cutoffs
 the newly required precision.
 
 \begin{proof}[Residual estimate]
-Let \(R=F\circ G-x\) and \(C=-R/(F'\circ G)\).  Since \(C=\bigO(t^N)\),
+Let \(R=F\circ G-x\) and \(C=-R/(F'\circ G)\).  Since \(C=\FormalBigO_t(t^N)\),
 \[
  F\circ(G+C)-x
  =R+(F'\circ G)C+\frac12(F''\circ G)C^2+\cdots.
 \]
-The first two terms cancel.  Now \(F''=A''=\bigO(t^2)\), so the quadratic
-remainder is at least \(\bigO(t^{2N+2})\); allowing coarse bounds and Laurent
+The first two terms cancel.  Now \(F''=A''=\FormalBigO_t(t^2)\), so the quadratic
+remainder is at least \(\FormalBigO_t(t^{2N+2})\); allowing coarse bounds and Laurent
 shifts gives the stated precision-doubling behavior.  Every higher Taylor term
 is still smaller.
 \end{proof}
@@ -1259,7 +1252,7 @@ Applying \cref{prop:repeated-derivative} termwise in
 where an empty product is the identity.  This formula reduces reversal to
 multiplication of \(A\), polynomial differentiation, and a finite sum.
 
-Using a dot for \(\dd/\dd\ell\), the first three coefficients are
+Using a dot for \(\Differential/\Differential\ell\), the first three coefficients are
 \begin{align}
  b_0={}&-a_0,\label{eq:b0}\\
  b_1={}&-a_1+a_0\dot a_0,\label{eq:b1}\\
@@ -1301,7 +1294,7 @@ Then, with \(\ell=\log x\), its inverse begins
  &+\frac{a^3(\ell^2/2-\ell)+ab(1-\ell)}{x^2}\nonumber\\
  &+\frac{a^4(\ell^3/3-3\ell^2/2+\ell)
           +a^2b(-\ell^2+3\ell-1)-b^2}{x^3}
- +\bigO(x^{-4}\ell^4).
+ +\FormalBigO_t(t^4).
  \label{eq:generic-ab-inverse}
 \end{align}
 Setting \(b=0\) isolates the rescaled Lambert pattern; setting \(a=0\)
@@ -1327,18 +1320,18 @@ A mature implementation usually combines them: obtain a few seed terms by
 triangular matching, use Newton for high precision, and use the Lagrange formula
 as an independent exact test.
 
-\section{Lambert \texorpdfstring{\(W\)}{W} and the Lambert polynomials}\label{sec:lambert}
+\section{Lambert \texorpdfstring{\(\LambertW\)}{W} and the Lambert polynomials}\label{sec:lambert}
 
 \subsection{From \(we^w=z\) to a near-identity inverse}
 
 The Lambert function is defined by
 \begin{equation}\label{eq:W-definition}
-  W(z)e^{W(z)}=z.
+  \LambertW(z)\EulerE^{\LambertW(z)}=z.
 \end{equation}
-It has branches \(W_k\), \(k\in\Z\).  Taking a consistent logarithm converts
+It has branches \(\LambertW_k\), \(k\in\IntegerNumbers\).  Taking a consistent logarithm converts
 \eqref{eq:W-definition} to
 \begin{equation}\label{eq:W-log-equation}
-  w+\log w=\Log z+2\pi i k.
+  w+\log w=\PrincipalLogarithm z+2\pi \ImaginaryUnit k.
 \end{equation}
 Thus the large-argument problem is exactly the reversion problem for
 \begin{equation}\label{eq:f-lambert}
@@ -1350,13 +1343,13 @@ analytic treatment is Corless et al. \cite{Corless1996}.
 
 For a real variable \(x\to+\infty\), define Wright's omega function by
 \begin{equation}\label{eq:omega-def}
-  \omega(x)+\log\omega(x)=x,
-  \qquad \omega(x)=W_0(e^x).
+  \WrightOmega(x)+\log\WrightOmega(x)=x,
+  \qquad \WrightOmega(x)=\LambertW_0(\EulerE^x).
 \end{equation}
 The outer function in \eqref{eq:f-lambert} is \(x+A(x)\) with \(A=\ell\).
 Applying \cref{thm:lagrange-reversion} immediately gives
 \begin{equation}\label{eq:omega-lagrange}
-  \omega(x)=x+\sum_{r\ge1}\frac{(-1)^r}{r!}
+  \WrightOmega(x)=x+\sum_{r\ge1}\frac{(-1)^r}{r!}
   D^{r-1}\ell^r.
 \end{equation}
 Because the \(r\)-th summand begins at \(x^{-(r-1)}\), exactly one Lagrange
@@ -1366,23 +1359,23 @@ clean polynomial family.
 \subsection{Definition and differential-operator formula}
 
 \begin{definition}[Lambert polynomials]
-Define \(L_n(X)\in\Q[X]\), \(n\ge0\), by
+Define \(\LambertPolynomial{n}(X)\in\RationalNumbers[X]\), \(n\ge0\), by
 \begin{equation}\label{eq:Lambert-polynomial-operator}
 \boxed{
-  L_n(X)=\frac{(-1)^{n+1}}{(n+1)!}
+  \LambertPolynomial{n}(X)=\frac{(-1)^{n+1}}{(n+1)!}
   \left[\prod_{j=0}^{n-1}(\partial_X-j)\right]X^{n+1},
 }
 \end{equation}
-with an empty product when \(n=0\).  Thus \(L_0(X)=-X\).
+with an empty product when \(n=0\).  Thus \(\LambertPolynomial{0}(X)=-X\).
 \end{definition}
 
 Then \eqref{eq:omega-lagrange} is
 \begin{equation}\label{eq:omega-Ln}
 \boxed{
-  \omega(x)=x+\sum_{n\ge0}\frac{L_n(\ell)}{x^n}.
+  \WrightOmega(x)=x+\sum_{n\ge0}\frac{\LambertPolynomial{n}(\ell)}{x^n}.
 }
 \end{equation}
-The degree of \(L_n\) is \(n\) for \(n\ge1\), its leading coefficient is
+The degree of \(\LambertPolynomial{n}\) is \(n\) for \(n\ge1\), its leading coefficient is
 \(1/n\), and its linear coefficient is \((-1)^{n+1}\).
 
 \begin{proof}[Derivation of \eqref{eq:Lambert-polynomial-operator}]
@@ -1403,10 +1396,10 @@ The same polynomials satisfy a remarkably simple recurrence, emphasized in
 Cohen's treatment \cite{CohenLambert}.
 
 \begin{theorem}[Lambert recurrence]\label{thm:Lambert-recurrence}
-With \(L_0(X)=-X\),
+With \(\LambertPolynomial{0}(X)=-X\),
 \begin{equation}\label{eq:Lambert-recurrence}
 \boxed{
-  L_{n+1}(X)=-L_n(X)+n\int_0^X L_n(u)\dd u,
+  \LambertPolynomial{n+1}(X)=-\LambertPolynomial{n}(X)+n\int_0^X \LambertPolynomial{n}(u)\Differential u,
   \qquad n\ge0.
 }
 \end{equation}
@@ -1415,10 +1408,10 @@ With \(L_0(X)=-X\),
 \begin{proof}
 Let
 \begin{equation}\label{eq:Lambert-generating-F}
-  \mathcal L(T,X)=\sum_{n\ge0}L_n(X)T^n.
+  \mathcal L(T,X)=\sum_{n\ge0}\LambertPolynomial{n}(X)T^n.
 \end{equation}
-Substitute \(\omega(x)=x+\mathcal L(t,\ell)\) into
-\(\omega+\log\omega=x\).  Since
+Substitute \(\WrightOmega(x)=x+\mathcal L(t,\ell)\) into
+\(\WrightOmega+\log\WrightOmega=x\).  Since
 \[
   \log\bigl(x+\mathcal L(t,\ell)\bigr)
   =\ell+\log\bigl(1+t\mathcal L(t,\ell)\bigr),
@@ -1439,15 +1432,15 @@ and simplifying gives
 Equating coefficients, or equivalently differentiating the proposed recurrence,
 gives
 \[
-  L_{n+1}'(X)+L_n'(X)=nL_n(X),
-  \qquad L_{n+1}(0)=L_n(0)=0,
+  \LambertPolynomial{n+1}'(X)+\LambertPolynomial{n}'(X)=n\LambertPolynomial{n}(X),
+  \qquad \LambertPolynomial{n+1}(0)=\LambertPolynomial{n}(0)=0,
 \]
 which integrates to \eqref{eq:Lambert-recurrence}.  The initial polynomial is
 fixed by the constant term of \eqref{eq:Lambert-generating-implicit}.
 \end{proof}
 
-The recurrence computes \(L_{n+1}\) using one exact polynomial integral and one
-subtraction.  It is usually the fastest way to generate a table over \(\Q\).
+The recurrence computes \(\LambertPolynomial{n+1}\) using one exact polynomial integral and one
+subtraction.  It is usually the fastest way to generate a table over \(\RationalNumbers\).
 The differential-operator formula is more useful for proving identities.
 
 \subsection{Stirling-number formula}
@@ -1459,18 +1452,18 @@ characterized by
   =\sum_{k=0}^n s(n,k)z^k,
   s(n+1,k)=s(n,k-1)-n s(n,k).
 \]
-Let \(\StirlingFirst{n}{k}=(-1)^{n-k}s(n,k)\) be the unsigned Stirling cycle
+Let \(\UnsignedStirlingFirstKind{n}{k}=(-1)^{n-k}s(n,k)\) be the unsigned Stirling cycle
 numbers.
 
 \begin{theorem}[Explicit Lambert polynomial]\label{thm:Lambert-Stirling}
 For \(n\ge1\),
 \begin{align}
-  L_n(X)
+  \LambertPolynomial{n}(X)
   &=(-1)^{n+1}\sum_{m=1}^{n}
        s(n,n-m+1)\frac{X^m}{m!},
        \label{eq:Ln-signed-Stirling}\\
   &=\sum_{m=1}^{n}(-1)^{n+m}
-       \StirlingFirst{n}{n-m+1}\frac{X^m}{m!}.
+       \UnsignedStirlingFirstKind{n}{n-m+1}\frac{X^m}{m!}.
        \label{eq:Ln-unsigned-Stirling}
 \end{align}
 \end{theorem}
@@ -1478,27 +1471,27 @@ For \(n\ge1\),
 \begin{proof}
 Substitute \eqref{eq:Ln-signed-Stirling} into
 \eqref{eq:Lambert-recurrence}.  The coefficient of \(X^m/m!\) in
-\(-L_n+n\int_0^X L_n\) becomes, after shifting the integral index, exactly the
+\(-\LambertPolynomial{n}+n\int_0^X \LambertPolynomial{n}\) becomes, after shifting the integral index, exactly the
 Stirling recurrence
 \(s(n+1,k)=s(n,k-1)-ns(n,k)\).  The initial case
-\(L_1=X\) is immediate.  Equation \eqref{eq:Ln-unsigned-Stirling} follows from
+\(\LambertPolynomial{1}=X\) is immediate.  Equation \eqref{eq:Ln-unsigned-Stirling} follows from
 the relation between signed and unsigned Stirling numbers.
 \end{proof}
 
 Formula \eqref{eq:Ln-unsigned-Stirling} is exactly the polynomial content of the
-standard DLMF all-branch expansion.  It also shows that a common denominator of \(L_n\) divides \(n!\); more precisely, the
+standard DLMF all-branch expansion.  It also shows that a common denominator of \(\LambertPolynomial{n}\) divides \(n!\); more precisely, the
 coefficient of \(X^m\) is an integer divided by \(m!\).
 
 \subsection{Table of Lambert polynomials}
 
 \begin{longtable}{@{}c>{\(\displaystyle}l<{\)}@{}}
-\caption{Lambert polynomials \(L_n(X)\) through \(n=10\).}\label{tab:Lambert-polynomials}\\
+\caption{Lambert polynomials \(\LambertPolynomial{n}(X)\) through \(n=10\).}\label{tab:Lambert-polynomials}\\
 \toprule
-\(n\)&\multicolumn{1}{c}{\(L_n(X)\)}\\
+\(n\)&\multicolumn{1}{c}{\(\LambertPolynomial{n}(X)\)}\\
 \midrule
 \endfirsthead
 \toprule
-\(n\)&\multicolumn{1}{c}{\(L_n(X)\)}\\
+\(n\)&\multicolumn{1}{c}{\(\LambertPolynomial{n}(X)\)}\\
 \midrule
 \endhead
 0&-X\\[2pt]
@@ -1524,7 +1517,7 @@ coefficient of \(X^m\) is an integer divided by \(m!\).
 \bottomrule
 \end{longtable}
 
-The factored forms can be preferable numerically because every \(L_n\),
+The factored forms can be preferable numerically because every \(\LambertPolynomial{n}\),
 \(n\ge1\), contains the factor \(X\).  The expanded forms make comparison with
 Stirling numbers and coefficient recurrences immediate.
 
@@ -1532,24 +1525,24 @@ Stirling numbers and coefficient recurrences immediate.
 
 Let
 \begin{equation}\label{eq:xi-k}
-  \xi_k=\Log z+2\pi i k,
+  \xi_k=\PrincipalLogarithm z+2\pi \ImaginaryUnit k,
 \end{equation}
-with \(\Log\) the chosen principal logarithm and with the branch of
+with \(\PrincipalLogarithm\) the chosen principal logarithm and with the branch of
 \(\log\xi_k\) chosen consistently in the sector under consideration.  Then
-\begin{theorem}[Lambert \(W\) expansion]\label{thm:W-expansion}
+\begin{theorem}[Lambert \(\LambertW\) expansion]\label{thm:W-expansion}
 As \(|z|\to\infty\) in a sector avoiding the relevant cuts,
 \begin{equation}\label{eq:W-Lambert-polynomial}
 \boxed{
-  W_k(z)\as \xi_k+
-  \sum_{n\ge0}\frac{L_n(\log\xi_k)}{\xi_k^n}.
+  \LambertW_k(z)\as \xi_k+
+  \sum_{n\ge0}\frac{\LambertPolynomial{n}(\log\xi_k)}{\xi_k^n}.
 }
 \end{equation}
 Equivalently,
 \begin{equation}\label{eq:W-Stirling-DLMF}
-  W_k(z)\as\xi_k-\log\xi_k
+  \LambertW_k(z)\as\xi_k-\log\xi_k
   +\sum_{n\ge1}\frac{(-1)^n}{\xi_k^n}
     \sum_{m=1}^n
-      \StirlingFirst{n}{n-m+1}
+      \UnsignedStirlingFirstKind{n}{n-m+1}
       \frac{(-\log\xi_k)^m}{m!}.
 \end{equation}
 \end{theorem}
@@ -1562,14 +1555,14 @@ Equation \eqref{eq:W-log-equation} asks for the inverse of
 \eqref{eq:Ln-unsigned-Stirling} gives
 \eqref{eq:W-Stirling-DLMF}.  Formal substitution back into
 \(w+\log w=\xi_k\) verifies every coefficient recursively.  Analytic validity in
-sectors follows from the standard Lambert \(W\) asymptotic theory
+sectors follows from the standard Lambert \(\LambertW\) asymptotic theory
 \cite{Corless1996,DLMFLambert}.
 \end{proof}
 
-Writing \(L_1=\Log z\) and \(L_2=\Log L_1\) on the principal branch,
+Writing \(L_1=\PrincipalLogarithm z\) and \(L_2=\PrincipalLogarithm L_1\) on the principal branch,
 \eqref{eq:W-Lambert-polynomial} begins
 \begin{align}
- W_0(z)\as{}&L_1-L_2+\frac{L_2}{L_1}
+ \LambertW_0(z)\as{}&L_1-L_2+\frac{L_2}{L_1}
  +\frac{L_2(L_2-2)}{2L_1^2}\nonumber\\
  &+\frac{L_2(2L_2^2-9L_2+6)}{6L_1^3}
  +\frac{L_2(3L_2^3-22L_2^2+36L_2-12)}{12L_1^4}
@@ -1579,11 +1572,11 @@ Writing \(L_1=\Log z\) and \(L_2=\Log L_1\) on the principal branch,
 This is a PL series in the large variable \(L_1\), with logarithm
 \(L_2=\log L_1\).
 
-\subsection{The real nonprincipal branch \(W_{-1}\)}
+\subsection{The real nonprincipal branch \(\LambertW_{-1}\)}
 
-Let \(X\to+\infty\) and set \(z=-e^{-X}\).  Write
+Let \(X\to+\infty\) and set \(z=-\EulerE^{-X}\).  Write
 \begin{equation}\label{eq:Wminus-u}
-  W_{-1}(-e^{-X})=-u(X).
+  \LambertW_{-1}(-\EulerE^{-X})=-u(X).
 \end{equation}
 Then \(u>1\) and
 \begin{equation}\label{eq:u-minus-log-u}
@@ -1592,7 +1585,7 @@ Then \(u>1\) and
 This is again a near-identity inverse, now with correction \(-\log u\).  Put
 \(L=\log X\).  Lagrange reversion gives
 \begin{align}
- W_{-1}(-e^{-X})={}&-X-L-\frac{L}{X}
+ \LambertW_{-1}(-\EulerE^{-X})={}&-X-L-\frac{L}{X}
  +\frac{L^2/2-L}{X^2}\nonumber\\
  &-\frac{L^3/3-3L^2/2+L}{X^3}
  +\frac{L^4/4-11L^3/6+3L^2-L}{X^4}
@@ -1610,11 +1603,11 @@ DLMF states \eqref{eq:W-Stirling-DLMF} as a Poincar\'e asymptotic expansion.
 Cohen proves a stronger convergent representation.  In his notation, for a
 nonzero parameter \(K\) and
 \[
- M=K+\log K-\Log z-2\pi i k,
+ M=K+\log K-\PrincipalLogarithm z-2\pi \ImaginaryUnit k,
 \]
 one has
 \begin{equation}\label{eq:Cohen-K-expansion}
-  W_k(z)=K+\sum_{n\ge0}\frac{L_n(M)}{K^n}
+  \LambertW_k(z)=K+\sum_{n\ge0}\frac{\LambertPolynomial{n}(M)}{K^n}
 \end{equation}
 whenever, as a sufficient condition,
 \begin{equation}\label{eq:Cohen-convergence-condition}
@@ -1636,10 +1629,10 @@ have slightly different cancellation behavior.
 
 Define the truncation
 \begin{equation}\label{eq:omega-N}
-  \omega_N(x)=x+\sum_{n=0}^N\frac{L_n(\log x)}{x^n}.
+  \WrightOmega_N(x)=x+\sum_{n=0}^N\frac{\LambertPolynomial{n}(\log x)}{x^n}.
 \end{equation}
 The following absolute errors were computed at high precision against
-\(W_0(e^x)\).
+\(\LambertW_0(\EulerE^x)\).
 
 \begin{center}
 \begin{tabular}{@{}rccccc@{}}
@@ -1659,28 +1652,29 @@ Lambert polynomials already give about eighteen correct decimal digits.
 
 \subsection{Derivative and quotient identities}
 
-Differentiating \(W(z)e^{W(z)}=z\) gives
+Differentiating \(\LambertW(z)\EulerE^{\LambertW(z)}=z\) gives
 \begin{equation}\label{eq:W-derivative}
-  W'(z)=\frac{W(z)}{z(1+W(z))}.
+  \LambertW'(z)=\frac{\LambertW(z)}{z(1+\LambertW(z))}.
 \end{equation}
-For \(\omega(x)=W(e^x)\),
+For \(\WrightOmega(x)=\LambertW(\EulerE^x)\),
 \begin{equation}\label{eq:omega-derivative}
-  \omega'(x)=\frac{\omega(x)}{1+\omega(x)}
-  =1-\frac{1}{1+\omega(x)}.
+  \WrightOmega'(x)=\frac{\WrightOmega(x)}{1+\WrightOmega(x)}
+  =1-\frac{1}{1+\WrightOmega(x)}.
 \end{equation}
-Once \(\omega\) is known as a PL series, the right side is computed by the
+Once \(\WrightOmega\) is known as a PL series, the right side is computed by the
 reciprocal recurrence of \cref{sec:mul-div}.  Since
-\(1+\omega=x\bigl(1+\bigO(t\ell)\bigr)\), its reciprocal lies in \(\PL\).
+\(1+\WrightOmega=x\bigl(1+\FormalBigO_t(t)\bigr)\), its reciprocal lies in \(\PL\);
+the leading omitted coefficient is polynomial in \(\ell\).
 This provides a strong independent check on the differentiated Lambert
 polynomial expansion.
 
 Cohen derives, in the same notation as \eqref{eq:Cohen-K-expansion}, the
 convergent identity
 \begin{equation}\label{eq:W-denominator-Ln}
-  \frac{1}{1+W_k(z)}
-  =\sum_{n\ge1}\frac{L_n'(M)}{K^n}
+  \frac{1}{1+\LambertW_k(z)}
+  =\sum_{n\ge1}\frac{\LambertPolynomial{n}'(M)}{K^n}
 \end{equation}
-under the corresponding convergence conditions.  The fact that \(L_n'\) is
+under the corresponding convergence conditions.  The fact that \(\LambertPolynomial{n}'\) is
 monic of degree \(n-1\) makes the leading behavior transparent.
 
 \subsection{Generalized Lambert equations}
@@ -1692,7 +1686,7 @@ The equation
 \end{equation}
 has the exact solution
 \begin{equation}\label{eq:y-a-log-y-solution}
-  y=aW_k\!\left(\frac{e^{x/a}}{a}\right),
+  y=aW_k\!\left(\frac{\EulerE^{x/a}}{a}\right),
 \end{equation}
 with branch and logarithm choices matched to the desired solution.  Indeed, with
 \(u=y/a\), equation \eqref{eq:y-a-log-y} becomes
@@ -1703,13 +1697,13 @@ such as \(b/y\), as in \eqref{eq:generic-ab-inverse}.
 
 More generally,
 \begin{equation}\label{eq:power-exponential-equation}
-  y^\alpha e^{\beta y}=z,
+  y^\alpha \EulerE^{\beta y}=z,
   \qquad \alpha\beta\ne0,
 \end{equation}
 has solutions
 \begin{equation}\label{eq:power-exponential-solution}
   y=\frac{\alpha}{\beta}
-  W_k\!\left(\frac{\beta}{\alpha}z^{1/\alpha}\right).
+  \LambertW_k\!\left(\frac{\beta}{\alpha}z^{1/\alpha}\right).
 \end{equation}
 Fractional powers and complex branches may enlarge the coefficient field, but
 the subsequent large-argument expansion is still polynomial-logarithmic in the
@@ -1752,7 +1746,7 @@ and deterministic traversal.
 \end{description}
 
 The coefficient ring should be a generic parameter.  The same series engine can
-then operate over \(\Q[\ell]\), \(\Q(a,b)[\ell]\), algebraic-number fields, or
+then operate over \(\RationalNumbers[\ell]\), \(\RationalNumbers(a,b)[\ell]\), algebraic-number fields, or
 floating-point balls.  The algebraic algorithms do not change.
 
 \subsection{Precision discipline}
@@ -1760,7 +1754,7 @@ floating-point balls.  The algebraic algorithms do not change.
 Every public operation should document whether the cutoff is absolute or
 relative.  In this article,
 \[
-  \texttt{truncate(F,N)}=F\bmod t^N
+  \texttt{truncate(F,N)}=\TransseriesTruncateBelow{F}{N}
 \]
 uses an absolute exponent.  Thus \(x=t^{-1}\) is retained at every cutoff
 \(N>-1\), and multiplying a series starting at \(t^{-3}\) by one starting at
@@ -1778,7 +1772,7 @@ A safe implementation follows three rules.
 \end{enumerate}
 
 For compositions and derivatives, internal guard terms may be required.  For
-example, to compute \(D^kF\bmod t^N\), only coefficients of \(F\) below
+example, to compute \(\TransseriesTruncateBelow{D^kF}{N}\), only coefficients of \(F\) below
 \(t^{N-k}\) are needed, while applying a primitive can lower the \(t\)-exponent
 by one.
 
@@ -1934,7 +1928,7 @@ The exact initialization convention for \(p\) depends on whether the constant
 correction is counted as level zero.  The invariant that matters is verified,
 not assumed:
 \[
-  F\circ G-x\equiv0\pmod{t^p}.
+  F\circ G-x=\FormalBigO_t(t^p).
 \]
 After each step, recompute the residual order in debug builds.  This catches
 nearly every indexing error in derivative shifts and cutoffs.
@@ -1961,7 +1955,7 @@ function LambertPolynomials(N):
 The table should be cross-checked against either
 \eqref{eq:Lambert-polynomial-operator} or
 \eqref{eq:Ln-signed-Stirling}.  With rational coefficients and dense
-polynomials, producing \(L_0,\ldots,L_N\) takes \(O(N^2)\) scalar arithmetic
+polynomials, producing \(\LambertPolynomial{0},\ldots,\LambertPolynomial{N}\) takes \(\BigO(N^2)\) scalar arithmetic
 operations, apart from integer/rational bit growth.
 
 \subsection{Complexity in two models}
@@ -1972,17 +1966,17 @@ log degree.  There are two useful cost models.
 \begin{description}
 \item[Coefficient-ring model.]  Treat addition, multiplication, division, and
   differentiation in \(\K[\ell]\) as unit-cost operations.  Naive series
-  multiplication and unit inversion require \(O(N^2)\) coefficient operations.
-  Differentiation is \(O(N)\).  Straight Taylor composition is typically
-  \(O(N^3)\) if every power and product is formed naively, though degree/order
+  multiplication and unit inversion require \(\BigO(N^2)\) coefficient operations.
+  Differentiation is \(\BigO(N)\).  Straight Taylor composition is typically
+  \(\BigO(N^3)\) if every power and product is formed naively, though degree/order
   bounds often reduce the constant substantially.
 \item[Scalar model.]  Dense multiplication of two degree-\(M\) polynomials costs
-  \(O(M^2)\) scalar operations naively.  Hence naive PL multiplication costs
-  \(O(N^2M^2)\) in a uniform-degree bound.  Using the actual profile
+  \(\BigO(M^2)\) scalar operations naively.  Hence naive PL multiplication costs
+  \(\BigO(N^2M^2)\) in a uniform-degree bound.  Using the actual profile
   \(d_F(n)\) gives a much sharper sum
   \[
     \sum_{r<N}\sum_{i+j=r}
-      O\bigl((d_F(i)+1)(d_G(j)+1)\bigr).
+      \BigO\bigl((d_F(i)+1)(d_G(j)+1)\bigr).
   \]
 \end{description}
 
@@ -1998,9 +1992,11 @@ with precision doubling.
 A symbolic transseries engine should be tested by identities, not by printed
 coefficient snapshots alone.  Recommended exact tests include:
 \begin{enumerate}
-\item \(\trunc{N}{F(GH)}=\trunc{N}{(FG)H}\) for randomly generated truncated
+\item \(\TransseriesTruncateBelow{F(GH)}{N}
+  =\TransseriesTruncateBelow{(FG)H}{N}\) for randomly generated truncated
   series.
-\item \(\trunc{N}{G\,G^{-1}}=1\) for units with random polynomial coefficients.
+\item \(\TransseriesTruncateBelow{G\,G^{-1}}{N}=1\) for units with random
+  polynomial coefficients.
 \item The product, quotient, and chain rules.
 \item \(F\circ F^{\rev}=x\) and \(F^{\rev}\circ F=x\) independently.
 \item Equality of Picard, triangular, Newton, and Lagrange inverses through a
@@ -2040,7 +2036,7 @@ for every fixed \(d\).
 
 A stronger quantified form is
 \begin{equation}\label{eq:strong-remainder}
-  R_N(x)=O\bigl(x^{-N-1}(1+\log x)^{m_N}\bigr)
+  R_N(x)=\BigOAt{x^{-N-1}(1+\log x)^{m_N}}{x\to+\infty}
 \end{equation}
 for some degree bound \(m_N\).  Such bounds are useful for proving closure under
 composition and for uniform numerical error estimates.
@@ -2061,7 +2057,8 @@ unit in the chosen coefficient field.
 For example, if
 \[
   g(x)=c x^q\bigl(1+u(x)\bigr),
-  \qquad c\ne0,\quad u(x)=O(x^{-1}(\log x)^d),
+  \qquad c\ne0,\quad
+  u(x)=\BigOAt{x^{-1}(\log x)^d}{x\to+\infty},
 \]
 then \(1/g\), \(\log g\), and \(g^\alpha\) admit the expansions obtained from
 the geometric, logarithmic, and binomial series.  Uniform smallness of \(u\) on
@@ -2084,7 +2081,7 @@ Sufficient conditions include:
 \item holomorphy in a complex sector with uniform remainder estimates, allowing
   Cauchy estimates;
 \item membership in a symbol class with derivative bounds
-  \(D^jR_N=O(x^{-N-1-j}(\log x)^{m_{N,j}})\);
+  \(D^jR_N=\BigOAt{x^{-N-1-j}(\log x)^{m_{N,j}}}{x\to+\infty}\);
 \item a Hardy-field or comparable tame-germ setting in which differentiation is
   compatible with asymptotic comparison.
 \end{itemize}
@@ -2126,14 +2123,14 @@ inverse theorem.
 
 The formal group theorem alone does not choose among globally distinct inverse
 branches.  The condition \(G(x)\as x\) selects the branch near infinity.  For
-Lambert \(W\), the integer \(k\) and the logarithm branches in \(\xi_k\) carry the
+Lambert \(\LambertW\), the integer \(k\) and the logarithm branches in \(\xi_k\) carry the
 additional branch data.
 
 \subsection{Beyond-all-orders ambiguity}
 
 A PL expansion cannot detect exponentially small differences.  For example,
 \[
-  f(x)\quad\text{and}\quad f(x)+e^{-x}
+  f(x)\quad\text{and}\quad f(x)+\EulerE^{-x}
 \]
 have the same PL expansion to every inverse-power order.  Composition and
 reversion can transport such invisible terms, and in nonlinear problems they
@@ -2162,7 +2159,7 @@ rough coefficient estimate.
 
 Convergence in \(t\) for each fixed \(\ell\) should not be confused with
 uniform convergence as \(x\to\infty\), because \(t\) and \(\ell\) are linked by
-\(t=e^{-\ell}\).  The formal PL topology deliberately treats them as an ordered
+\(t=\EulerE^{-\ell}\).  The formal PL topology deliberately treats them as an ordered
 asymptotic pair, not as two independent small complex variables.
 
 \section{Boundary of the class and systematic enlargements}\label{sec:extensions}
@@ -2221,15 +2218,15 @@ extension determined by the denominators of all resulting exponents.
 
 Puiseux behavior is also forced by critical inversion.  If the leading
 linear derivative vanishes, Newton's unit condition fails.  For instance,
-\(y^2=x\) has inverse \(x^{1/2}\), and the Lambert \(W\) function near its branch
-point \(-e^{-1}\) has a square-root local parameter.  Such expansions are not a
+\(y^2=x\) has inverse \(x^{1/2}\), and the Lambert \(\LambertW\) function near its branch
+point \(-\EulerE^{-1}\) has a square-root local parameter.  Such expansions are not a
 failure of reversion; they belong to a ramified local scale rather than the
 near-identity group \(\Gnear\).
 
 \subsection{Generalized powers and Hahn exponents}
 
 Instead of fixing a denominator, let \(\Gamma\) be an ordered additive subgroup
-of \(\R\) or \(\C\) equipped with an asymptotically meaningful real part.  One
+of \(\RealNumbers\) or \(\ComplexNumbers\) equipped with an asymptotically meaningful real part.  One
 may form well-based sums
 \begin{equation}\label{eq:generalized-power-log}
   \sum_{\gamma\in S}p_\gamma(\ell)x^{-\gamma},
@@ -2329,10 +2326,10 @@ For \(F\in\PL\), write its additive decomposition according to size:
   F=F_{\mathrm{large}}+c+F_{\mathrm{small}}.
 \]
 If \(F_{\mathrm{large}}\) is merely an integral multiple of \(\ell\), then
-\(e^F\) is a power of \(x\) times a small exponential and can remain in a
+\(\EulerE^F\) is a power of \(x\) times a small exponential and can remain in a
 power-log extension.  If \(F_{\mathrm{large}}\) contains \(x\), \(\ell^2\), or
-more general large terms, \(e^F\) creates a genuinely new monomial such as
-\(e^x\) or \(e^{\ell^2}\).  Repeated closure under exponentials and logarithms
+more general large terms, \(\EulerE^F\) creates a genuinely new monomial such as
+\(\EulerE^x\) or \(\EulerE^{\ell^2}\).  Repeated closure under exponentials and logarithms
 leads to logarithmic-exponential transseries.
 
 These larger fields are ordered differential fields with composition on a
@@ -2374,7 +2371,7 @@ operations in \(y\).  Suppose an approximation \(Y_0\in\PL\) satisfies
 \]
 and the partial derivative
 \[
-  \Phi_y(x,Y_0)=c+\bigO(t),
+  \Phi_y(x,Y_0)=c+\FormalBigO_t(t),
   \qquad c\in\K^\times,
 \]
 is a unit.  Then the Newton iteration
@@ -2410,16 +2407,16 @@ Expanding \(U-U^2/2+U^3/3-U^4/4+\cdots\) gives
  +\left(\frac{\ell^2}{2}-1\right)t^2
  +\left(-\frac{2\ell^3}{3}+\ell\right)t^3\nonumber\\
  &+\left(\frac{\ell^4}{4}-\frac12\right)t^4
- +\bigO(t^5).
+ +\FormalBigO_t(t^5).
  \label{eq:worked-log-result}
 \end{align}
 Every coefficient at order \(t^N\) uses only powers \(U^r\) with \(r\le N\).
 
 If the parenthesis in \eqref{eq:worked-log-F} were replaced by
-\(\ell+1+O(t)\), the logarithm would begin with \(\log\ell\) and leave the
+\(\ell+1+\FormalBigO_t(t)\), the logarithm would begin with \(\log\ell\) and leave the
 one-log ring.  The difference is entirely in the leading coefficient.
 
-\subsection{Triangular construction of \(\omega(x)\)}
+\subsection{Triangular construction of \(\WrightOmega(x)\)}
 
 Let \(f(y)=y+\log y\).  Starting with \(G_0=x\), compute the residual
 \(R_j=f(G_j)-x\) and negate its leading coefficient as in
@@ -2437,13 +2434,13 @@ Let \(f(y)=y+\log y\).  Starting with \(G_0=x\), compute the residual
  &R_3&=-\left(\frac{\ell^3}{3}-\frac{3\ell^2}{2}+\ell\right)t^3
       +\cdots.
 \end{align*}
-The next correction is therefore \(L_3(\ell)t^3\).  In general, if
+The next correction is therefore \(\LambertPolynomial{3}(\ell)t^3\).  In general, if
 \[
-  G_N=x+\sum_{n=0}^{N-1}L_n(\ell)t^n,
+  G_N=x+\sum_{n=0}^{N-1}\LambertPolynomial{n}(\ell)t^n,
 \]
 then
 \begin{equation}\label{eq:Lambert-residual-staircase}
-  f(G_N)-x=-L_N(\ell)t^N+O(t^{N+1}\ell^{N+1}).
+  f(G_N)-x=-\LambertPolynomial{N}(\ell)t^N+\FormalBigO_t(t^{N+1}).
 \end{equation}
 This identity offers another characterization of the Lambert polynomials and a
 simple residual test for generated tables.
@@ -2465,7 +2462,7 @@ asymptotic to \(x\) is
  2a^4\ell^3-9a^4\ell^2+6a^4\ell
  -6a^2b\ell^2+18a^2b\ell-6a^2b\nonumber\\
  &\hspace{31mm}-12ac\ell+6ac-6b^2\Bigr)
- +O(x^{-4}\ell^4).
+ +\FormalBigO_t(t^4).
  \label{eq:worked-abc-inverse}
 \end{align}
 Several structural checks are visible:
@@ -2606,7 +2603,7 @@ The main conclusions of the preceding sections can be compressed as follows.
   vanishing or singular leading derivatives may require a different scale
   again.  Reversion does not repair an incorrectly chosen monomial group.
 
-\item \textbf{Lambert \(W\) is the canonical model.}
+\item \textbf{Lambert \(\LambertW\) is the canonical model.}
   Taking logarithms of \(we^w=z\) reduces every large branch to inversion of
   \(w+\log w\).  The resulting Lambert polynomials simultaneously encode the
   coefficient recurrence, the Lagrange differential formula, and the signed
@@ -2663,7 +2660,7 @@ polynomials underlying ordinary Bell polynomials.
 
 \subsection{A coefficient formula for near-identity composition}
 
-For \(n\in\Z\) and \(r\ge0\), set
+For \(n\in\IntegerNumbers\) and \(r\ge0\), set
 \begin{equation}\label{eq:Delta-nr-app}
   \Delta_{n,r}
   =\prod_{q=0}^{r-1}(\partial_\ell-n-q),
@@ -2830,9 +2827,9 @@ had first nonzero term \(q(\ell)t^m\) with \(m\le N\), then Taylor expansion of
 \(F\) at \(G\) would give
 \[
   F\circ G_N-F\circ G
-  =(F'\circ G)q(\ell)t^m+\bigO(t^{m+1}).
+  =(F'\circ G)q(\ell)t^m+\FormalBigO_t(t^{m+1}).
 \]
-Because \(F'\circ G=1+\bigO(t)\), the coefficient at level \(m\) would be
+Because \(F'\circ G=1+\FormalBigO_t(t)\), the coefficient at level \(m\) would be
 \(q\ne0\), contradicting \eqref{eq:inverse-certificate}.  Hence
 \(G_N-G\in t^{N+1}\PL_{\ge0}\).
 \end{proof}
@@ -2849,7 +2846,7 @@ Near-identity reversal is only one normal form.  Suppose more generally that
   \qquad c\ne0,
   \qquad U(y)\prec1,
 \end{equation}
-where \(q\in\Q_{>0}\).  Choose a branch of
+where \(q\in\RationalNumbers_{>0}\).  Choose a branch of
 \(d=c^{-1/q}\) and write
 \begin{equation}\label{eq:ramified-inverse-ansatz}
   y=d x^{1/q}(1+V).
@@ -2867,7 +2864,7 @@ the exponent group and makes branch selection part of the leading data.
 
 For \(q=1\), this normalization reduces to the monomial-leading composition
 calculus.  For \(q=2\), it explains the half-integer expansion of the inverse of
-\(y^2+y\).  If \(q\) is irrational, a Hahn group containing \(q^{-1}\Z\) is
+\(y^2+y\).  If \(q\) is irrational, a Hahn group containing \(q^{-1}\IntegerNumbers\) is
 required rather than an ordinary Puiseux group.
 
 \subsection{Direct implicit recursion}
@@ -2898,7 +2895,7 @@ works far beyond literal compositional inverses.
 
 Write
 \begin{equation}\label{eq:Lambert-coefficient-triangle}
-  L_n(X)=\sum_{m=1}^{n}\lambda_{n,m}X^m,
+  \LambertPolynomial{n}(X)=\sum_{m=1}^{n}\lambda_{n,m}X^m,
   \qquad n\ge1.
 \end{equation}
 The integral recurrence gives
@@ -2941,12 +2938,12 @@ this gives independent recurrences for derivatives and coefficients.  In a
 computer algebra system, checking both partial differential identities is a
 stronger test than checking the first few expanded polynomials.
 
-At the level of \(\omega\), implicit differentiation of
-\(\omega+\log\omega=x\) yields
+At the level of \(\WrightOmega\), implicit differentiation of
+\(\WrightOmega+\log\WrightOmega=x\) yields
 \begin{equation}\label{eq:omega-derivative-app}
-  \omega'(x)=\frac{\omega(x)}{1+\omega(x)}.
+  \WrightOmega'(x)=\frac{\WrightOmega(x)}{1+\WrightOmega(x)}.
 \end{equation}
-Substitution of \(\omega=x+\sum L_n(\ell)x^{-n}\) into
+Substitution of \(\WrightOmega=x+\sum \LambertPolynomial{n}(\ell)x^{-n}\) into
 \eqref{eq:omega-derivative-app} reproduces the Lambert recurrence after
 coefficient collection.  Hence the inverse equation, the differential equation,
 and the Stirling formula are three mutually independent certificates for the
@@ -2965,28 +2962,28 @@ can be reduced exactly to Wright omega.  Put \(y=a u\); then
 \]
 with a consistent logarithm of \(a\).  Consequently,
 \begin{equation}\label{eq:scaled-omega-exact}
-  y=a\,\omega\!\left(\frac{x}{a}-\log a\right).
+  y=a\,\WrightOmega\!\left(\frac{x}{a}-\log a\right).
 \end{equation}
 Expanding the right side in the original variable \(x\) recovers the powers
-\(a^{n+1}L_n(\log x)\) at their highest logarithmic degree, together with the
+\(a^{n+1}\LambertPolynomial{n}(\log x)\) at their highest logarithmic degree, together with the
 lower-degree corrections caused by the shift \(-\log a\) and by re-expanding
 \(\log(x/a-a\log a)\).  This identity is a useful exact benchmark for generic
 reversion code with symbolic parameters.
 
 \subsection{Why one should retain the nested variables}
 
-For direct evaluation of \(W_k(z)\), it is usually preferable to retain
+For direct evaluation of \(\LambertW_k(z)\), it is usually preferable to retain
 \[
-  \xi_k=\Log z+2\pi i k,
+  \xi_k=\PrincipalLogarithm z+2\pi \ImaginaryUnit k,
   \qquad \eta_k=\log\xi_k,
 \]
 and evaluate
 \[
-  W_k(z)\approx \xi_k+\sum_{n=0}^{N}\frac{L_n(\eta_k)}{\xi_k^n}
+  \LambertW_k(z)\approx \xi_k+\sum_{n=0}^{N}\frac{\LambertPolynomial{n}(\eta_k)}{\xi_k^n}
 \]
-rather than fully expand in powers of \((\Log z)^{-1}\) and \(2\pi i k\).
+rather than fully expand in powers of \((\PrincipalLogarithm z)^{-1}\) and \(2\pi \ImaginaryUnit k\).
 The nested form preserves branch information, has smaller intermediate
-expressions, and permits Horner evaluation of each \(L_n\).  A further
+expressions, and permits Horner evaluation of each \(\LambertPolynomial{n}\).  A further
 re-expansion should be performed only when a downstream calculation requires a
 single prescribed monomial scale.
 
@@ -3011,11 +3008,11 @@ Symbol & Meaning\\
 \(\degell p\) & degree of a coefficient polynomial in \(\ell\)\\
 \(\Delta_{n,r}\) & \(\prod_{q=0}^{r-1}(\partial_\ell-n-q)\), the shifted derivative operator\\
 \(F^{\rev}\) & compositional inverse of \(F\), not multiplicative reciprocal\\
-\(L_n(X)\) & Lambert polynomial at inverse-power level \(n\)\\
+\(\LambertPolynomial{n}(X)\) & Lambert polynomial at inverse-power level \(n\)\\
 \(s(n,k)\) & signed Stirling number of the first kind\\
-\(\StirlingFirst{n}{k}\) & unsigned Stirling cycle number\\
+\(\UnsignedStirlingFirstKind{n}{k}\) & unsigned Stirling cycle number\\
 \(\as\) & Poincar\'e asymptotic expansion in the stated scale\\
-\(\bigO(t^N\ell^d)\) & analytic remainder bound when explicitly justified\\
+\(\BigOAt{x^{-N}(\log x)^d}{x\to+\infty}\) & analytic remainder bound on the stated limiting domain\\
 \bottomrule
 \end{longtable}
 
@@ -3055,8 +3052,8 @@ invariants.
 \item Store each coefficient in canonical polynomial form and omit exact zero
   levels.
 \item Attach the exponent group and coefficient domain to every series value;
-  never silently coerce \(\K[\ell]\) to \(\K(\ell)\) or \(\Z\) exponents to
-  \(\Q\) exponents.
+  never silently coerce \(\K[\ell]\) to \(\K(\ell)\) or \(\IntegerNumbers\) exponents to
+  \(\RationalNumbers\) exponents.
 \item Normalize a nonzero series into leading monomial, leading coefficient,
   and scalar-leading unit before applying reciprocal, logarithm, or a rational
   power.
@@ -3082,18 +3079,18 @@ Princeton, 2017.
 
 \bibitem{CohenLambert}
 H. Cohen,
-``Lambert \(W\)-Function Branch Identities,''
+``Lambert \(\LambertW\)-Function Branch Identities,''
 \emph{arXiv preprint} arXiv:2012.11698, revised 2021.
 
 \bibitem{Corless1996}
 R. M. Corless, G. H. Gonnet, D. E. G. Hare, D. J. Jeffrey, and D. E. Knuth,
-``On the Lambert \(W\) Function,''
+``On the Lambert \(\LambertW\) Function,''
 \emph{Advances in Computational Mathematics} \textbf{5} (1996), 329--359,
 \href{https://doi.org/10.1007/BF02124750}{doi:10.1007/BF02124750}.
 
 \bibitem{DLMFLambert}
 NIST Digital Library of Mathematical Functions,
-``\S4.13 Lambert \(W\)-Function,'' in \emph{DLMF}, version 1.2.7,
+``\S4.13 Lambert \(\LambertW\)-Function,'' in \emph{DLMF}, version 1.2.7,
 release date June 15, 2026,
 \url{https://dlmf.nist.gov/4.13}.
 

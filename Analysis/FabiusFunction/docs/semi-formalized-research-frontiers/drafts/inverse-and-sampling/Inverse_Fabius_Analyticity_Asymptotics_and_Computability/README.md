@@ -1,7 +1,7 @@
 # Inverse Fabius analyticity, asymptotics, computability, and sampling
 
-This directory is the canonical consolidation workspace for five overlapping
-volumes currently stored in the two source subgroups beside it:
+This directory is the canonical consolidation and validated publication
+package for five overlapping source volumes:
 
 - `analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function/`;
 - `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/`;
@@ -9,7 +9,7 @@ volumes currently stored in the two source subgroups beside it:
 - `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders/`;
 - `inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report/`.
 
-The finished deliverable will be one LaTeX/PDF volume covering nowhere
+The canonical deliverable is one LaTeX/PDF volume covering nowhere
 analyticity, non-elementarity, inverse iterates, inverse-dyadic germs, endpoint
 asymptotics, dyadic self-sampling, exact inverse moduli, and certified
 computation.  Shared definitions and proofs will occur once; specialized
@@ -35,7 +35,28 @@ Lean covers its arbitrary-phase `0 <= n <= N` formula, but not its additional
 degree-`N+1` clause at the parity-selected superconvergent phases.  The static
 canonical validator passes.  `PROVENANCE.md` records source and asset lineage.
 
-The canonical PDF is still absent, so the publication gate is not complete.
-The five source packages remain live until that matching artifact has passed
-the gate; their retained PDFs remain historical/source artifacts rather than
-a rendering of this canonical master.
+## Validated publication
+
+The canonical publication pair is now final:
+
+- `inverse_fabius_theory.tex`: 296 lines, 11,625 bytes, SHA-256
+  `7b8cea5ff685db3bb676e08f8e3b3c6586a7702f8bf3a85298fb9ced00054d25`;
+- its exhaustive 23-input source closure: SHA-256
+  `0c856dd3329d53e2155616dfff8f9e503bd6a0f449622f0eae4e9cc84b548ee4`;
+- `inverse_fabius_theory.pdf`: 134 A4 pages, 2,027,726 bytes, SHA-256
+  `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
+
+Exactly three guarded final-source pdfLaTeX passes returned zero and produced
+page counts 127, 134, and 134.  The 23-input closure was unchanged before and
+after every pass, with no TeX/Lean/Lake interleave.  The final log has zero
+fatal, undefined, multiply-defined, duplicate, actionable-rerun, or overfull
+diagnostics; all-page text, geometry, page-box, font, and fresh targeted visual
+checks pass.
+`VALIDATION.md` is the detailed publication receipt.  The exhaustive root
+`SHA256SUMS` covers every permanent package file except itself, including the
+independent nested `assets/SHA256SUMS` ledger.
+
+The publication gate is therefore complete.  The five source packages and
+their retained renderings are historical inputs represented by the immutable
+revision, concordance, migrated evidence, and repository history; they are not
+parallel renderings of this canonical master.
