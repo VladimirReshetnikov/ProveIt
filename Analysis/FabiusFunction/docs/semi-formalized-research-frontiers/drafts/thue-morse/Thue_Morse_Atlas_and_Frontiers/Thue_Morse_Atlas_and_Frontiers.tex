@@ -88,10 +88,8 @@
 \newcommand{\ThueMorseDFTCoefficient}[2]{%
   \operatorname{DFT}_{2^{#1}}\!\left[\ThueMorseSignSymbol\right]\!\left[#2\right]%
 }
-\newcommand{\Bell}{\mathcal B}
 \newcommand{\Cat}{\operatorname{Cat}}
 \newcommand{\fall}[2]{#1^{\underline{#2}}}
-\newcommand{\coeff}[2]{[z^{#1}]\,#2}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
 \newcommand{\lean}[1]{%
   \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
@@ -2694,10 +2692,10 @@ Write
 terms of total degree \(n\).
 \end{proof}
 
-Let \(\Bell_n\) denote the complete exponential Bell polynomial, defined by
+Let \(\ExponentialCompleteBellPolynomial{n}\) denote the complete exponential Bell polynomial, defined by
 \begin{equation}
   \exp\!\left(\sum_{j\ge1}x_j\frac{z^j}{j!}\right)
-  =\sum_{n\ge0}\Bell_n(x_1,\ldots,x_n)\frac{z^n}{n!}.
+  =\sum_{n\ge0}\ExponentialCompleteBellPolynomial{n}(x_1,\ldots,x_n)\frac{z^n}{n!}.
   \label{p1:eq:Bell-definition}
 \end{equation}
 
@@ -2707,7 +2705,7 @@ For every \(n\ge0\),
 \begin{equation}
   \boxed{
   \eps_n=\frac1{n!}
-   \Bell_n\bigl(-0!a_1,-1!a_2,\ldots,-(n-1)!a_n\bigr).}
+   \ExponentialCompleteBellPolynomial{n}\bigl(-0!a_1,-1!a_2,\ldots,-(n-1)!a_n\bigr).}
   \label{p1:eq:Bell-coefficient}
 \end{equation}
 \end{corollary}
@@ -3941,7 +3939,7 @@ For \(m\ge1\) and \(r\ge0\),
   \boxed{
   M_{m,m+r}=(-1)^m2^{\binom m2}
     \frac{(m+r)!}{r!}
-    \Bell_r\!\left(
+    \ExponentialCompleteBellPolynomial{r}\!\left(
        \kappa_1^{(m)},\ldots,\kappa_r^{(m)}
     \right).}
   \label{p1:eq:Bell-moments}
