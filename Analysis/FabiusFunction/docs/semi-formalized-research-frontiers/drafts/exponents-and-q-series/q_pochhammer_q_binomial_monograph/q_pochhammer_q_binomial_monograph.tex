@@ -12467,8 +12467,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 67 are \statusexact, 80 are
-\statuspartial, 127 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 69 are \statusexact, 83 are
+\statuspartial, 122 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -12953,9 +12953,9 @@ The infinite $q$-binomial theorem & 1 & 1 & 2 & 0\\
 Basic hypergeometric series & 1 & 3 & 5 & 0\\
 Euler telescoping and very-well-poised summations & 0 & 0 & 4 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 0 & 0 & 2 & 0\\
-$q$-difference calculus and the quantum binomial & 5 & 0 & 5 & 0\\
+$q$-difference calculus and the quantum binomial & 7 & 2 & 1 & 0\\
 The $q$-gamma and $q$-beta functions & 1 & 1 & 6 & 0\\
-Jacobi's triple product & 4 & 1 & 3 & 0\\
+Jacobi's triple product & 4 & 2 & 2 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
 Partitions and product--sum identities & 0 & 0 & 4 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 1 & 0 & 6 & 0\\
@@ -12971,7 +12971,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 67 & 80 & 127 & 8\\
+\textbf{Forward total} & 69 & 83 & 122 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13347,10 +13347,34 @@ $N$, rather than invoking a basis}\\[2pt]
 {\footnotesize\texttt{QuantumBinomial}; every semiring, with $q$ assumed only
 to commute with $X$ and $Y$; see \Cref{rem:quantum-binomial-generality}}\\[2pt]
 \Cref{cor:quantum-multinomial} & \statusnone & ---\\[2pt]
-\Cref{cor:qexp-factor} & \statusnone & ---\\[2pt]
-\Cref{prop:qexp-eigen} & \statusnone & ---\\[2pt]
-\Cref{thm:q-fundamental} & \statusnone & ---\\[2pt]
-\Cref{cor:q-integration-parts} & \statusnone & ---\\[2pt]
+\Cref{cor:qexp-factor} & \statuspartial &
+\texttt{hasSum\_\allowbreak{}qExp},
+\texttt{hasSum\_\allowbreak{}qExpBig},
+\texttt{qExp\_\allowbreak{}mul\_\allowbreak{}qExpBig\_\allowbreak{}neg}\newline
+{\footnotesize\texttt{QExponential}; the two series, their product formulas
+on the stated domains, and $e_q(x)E_q(-x)=1$, in every complete normed field;
+the noncommutative factorization $e_q(X+Y)=e_q(X)e_q(Y)$ is not formalized}\\[2pt]
+\Cref{prop:qexp-eigen} & \statusexact &
+\texttt{qDeriv\_\allowbreak{}qExp},
+\texttt{qDeriv\_\allowbreak{}qExpBig}\newline
+{\footnotesize\texttt{QExponential}; for $x\ne0$, with $D_q$ acting on
+functions as the difference quotient, proved from the tail identity
+$(a;q)_\infty=(1-a)(aq;q)_\infty$ rather than termwise from the series}\\[2pt]
+\Cref{thm:q-fundamental} & \statuspartial &
+\texttt{qDeriv\_\allowbreak{}jacksonIntegral},
+\texttt{tendsto\_\allowbreak{}jackson\_\allowbreak{}sum\_\allowbreak{}qDeriv},
+\texttt{jacksonIntegral\_\allowbreak{}qDeriv}\newline
+{\footnotesize\texttt{JacksonIntegral}; $D_qF=f$ at every $x\ne0$ where the
+series is summable, and the converse for partial sums (and for summable
+series), in every complete normed field; the continuous extension at $0$ is
+not formalized}\\[2pt]
+\Cref{cor:q-integration-parts} & \statusexact &
+\texttt{jackson\_\allowbreak{}parts\_\allowbreak{}of\_\allowbreak{}tendsto},
+\texttt{jacksonIntegral\_\allowbreak{}mul\_\allowbreak{}qDeriv}\newline
+{\footnotesize\texttt{JacksonIntegral}; for convergent Jackson series (limits
+of partial sums) and, in \texttt{jacksonIntegral} form, for summable ones;
+from the product rule \texttt{qDeriv\_\allowbreak{}mul} and the telescoping
+second half of the fundamental theorem}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape The $q$-gamma and $q$-beta functions}\\
 \midrule
@@ -13382,7 +13406,13 @@ not formalized}\\[2pt]
 \eqref{eq:jtp-plus} as \texttt{HasSum} over $\IntegerNumbers$, for every
 $z\ne0$ and $\lVert q\rVert<1$ in any complete normed field, with the exponent
 \texttt{thetaExponent}}\\[2pt]
-\Cref{cor:theta-quasi} & \statusnone & ---\\[2pt]
+\Cref{cor:theta-quasi} & \statuspartial &
+\texttt{bilateralTheta\_\allowbreak{}mul\_\allowbreak{}left},
+\texttt{bilateralTheta\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff}\newline
+{\footnotesize\texttt{ThetaQuasiPeriodicity}; the functional equation by
+reindexing the bilateral series, and the zero set $\{-q^m: m\in\IntegerNumbers\}$
+from the product form, in every complete normed field with $q\ne0$; the
+simplicity of the zeros is not formalized}\\[2pt]
 \Cref{thm:finite-jtp} & \statusexact &
 \texttt{finite\_\allowbreak{}triple\_\allowbreak{}product},
 \texttt{finite\_\allowbreak{}triple\_\allowbreak{}product\_\allowbreak{}poly}\newline
