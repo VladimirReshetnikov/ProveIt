@@ -3817,7 +3817,7 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 649 modules and 8,697 public declarations.  The current TeX also
+census is 659 modules and 8,768 public declarations.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
 the two-module/nine-declaration effective-inverse tranche and six new
@@ -3834,6 +3834,32 @@ The six q-calculus module counts are
 \path{QMultinomial.lean} (1+9).  They supply bounds, Heine and q-Gauss,
 complex order, general basic-hypergeometric summability, and the recursive
 q-multinomial API under their displayed hypotheses.
+The four subsequent module counts are
+\path{GaussianBinomialPalindromic.lean} (0+12),
+\path{JacksonIntegral.lean} (1+7),
+\path{QExponential.lean} (3+8), and
+\path{ThetaQuasiPeriodicity.lean} (1+6).  Their five definitions and
+thirty-three theorems add Gaussian-polynomial degree and palindromicity,
+q-exponential and q-derivative laws, Jackson integration, and bilateral-theta
+quasi-periodicity and zeros, with all analytic hypotheses displayed.
+
+The four newest module counts are
+\path{GaussianBinomialPolynomialStructure.lean} (0+5),
+\path{JacobiCubic.lean} (0+2),
+\path{QPochhammerLogDerivative.lean} (0+10), and
+\path{QPochhammerOrderDerivative.lean} (0+3).  Their twenty theorems add
+universal Gaussian polynomial structure over \(\mathbb N[X]\), Jacobi's cubic
+identity, the q-Pochhammer logarithmic derivative and Lambert-series form, and
+the derivative with respect to complex order under the displayed hypotheses.
+
+The final two module counts are
+\path{CentralQBinomialReduction.lean} (0+6) and
+\path{CyclotomicFactorization.lean} (0+7).  Their thirteen division-free
+algebra theorems add sign pairing and even--odd finite q-Pochhammer dissection,
+the central Gaussian reduction, and the cyclotomic factorizations of
+\((X;X)_n\) and \([n,k]_X\).  The quotient reduction retains its two
+nonzero-denominator hypotheses, while the Gaussian cyclotomic factorization
+retains its integral-domain assumption.
 
 On the real axis the origin is the unique global point of unit modulus:
 \begin{equation}
@@ -5306,36 +5332,6 @@ mass ceiling denominator or a tolerant-bisection realizer.  The downstream
 modules below supply the realizer, \lean{SequentiallyComputable}, and the
 combined \lean{IsComputableRealFunction} theorem; input-bit asymptotics remain
 open.
-
-\subsection{Tolerant inversion and computability of the total inverse}
-\label{sec:fabius-inverse-computable}
-
-The generic module \path{EffectiveMonotoneInverse.lean} has exactly two public
-definitions and six public theorems.  The definitions are
-\lean{SequentiallyComputableOn} and \lean{unitClamp}; the theorem inventory is
-\lean{unitClamp_sequentiallyComputable},
-\lean{tolerantDifference_error},
-\lean{tolerantDifference_safe_updates},
-\lean{tolerantDifference_inconclusive},
-\lean{tolerantBisection_correct}, and
-\lean{effectiveInversionOn_Icc}.  Given a computably dyadically approximable
-strict monotone bijection of \([0,1]\), a computable positive denominator, and
-the corresponding reciprocal inverse modulus, tolerant bisection transforms
-every uniform fast dyadic input name into an inverse name at the same requested
-precision.  A certified large signed difference safely updates one end of the
-bracket; an inconclusive comparison already certifies the inverse error.  Thus
-the construction never decides equality of computable reals.
-
-The specialization \path{FabiusInverseComputable.lean} has no public
-definitions and exactly one public theorem,
-\lean{fabiusInv_isComputableRealFunction}.  For every bounded Fabius witness it
-uses the centered-spline forward evaluator, the logarithmic Delta inverse
-modulus, and the generic bisection theorem to obtain sequential computability
-on the unit interval.  Clamping input names then proves the statement for the
-total inverse on all of \(\RealNumbers\), while the same logarithmic modulus
-supplies effective uniform continuity.  This closes computability, but not an
-exact least endpoint-mass denominator or an input-bit running-time theorem.
-
 \subsection{Fixed-depth tolerant inversion and computability of the total inverse}
 \label{sec:fabius-inverse-computable}
 
@@ -6903,21 +6899,44 @@ semifield.  Over every commutative ring,
 algebraic identities: they use no quotient formula, cancellation, integral-domain,
 characteristic, topology, or convergence hypothesis.
 
-The downstream path{GaussianBinomialPolynomialStructure.lean} has no public
+The downstream \path{GaussianBinomialPalindromic.lean} has no public
+definitions and exactly twelve public theorems:
+\lean{reflect_add_of_natDegree_le}, \lean{reflect_one'},
+\lean{gaussianBinomial_natDegree_le},
+\lean{gaussianBinomial_zero_left}, \lean{gaussianBinomial_diag'},
+\lean{reflect_gaussianBinomial},
+\lean{coeff_gaussianBinomial_reflect},
+\lean{coeff_gaussianBinomial_zero},
+\lean{coeff_gaussianBinomial_top},
+\lean{gaussianBinomial_natDegree}, \lean{gaussianBinomial_monic}, and
+\lean{two_mul_derivative_gaussianBinomial_eval_one}.  Over every commutative
+semiring the module supplies the two generic reflection helpers, the Gaussian
+degree bound, zero and diagonal values, reflection in degree \(k(n-k)\),
+constant and top coefficients one, bounded-index coefficient reversal, and
+the division-free derivative-at-one mean identity
+\[
+ 2\GaussianBinomial{n}{k}{X}'\big|_{X=1}
+ = k(n-k)\binom nk .
+\]
+Exact degree and monicity require only that the commutative semiring be
+nontrivial.  Together with the existing row symmetry and reciprocal
+identities, this keeps the canonical forward q-binomial structure theorem
+exact.  No declaration in this surface says that the coefficient of \(q\)
+is one.
+
+The companion \path{GaussianBinomialPolynomialStructure.lean} has no public
 definitions and exactly five public theorems:
-lean{natDegree_gaussianBinomial_universal},
-lean{gaussianBinomial_universal_monic},
-lean{coeff_zero_gaussianBinomial_universal},
-lean{gaussianBinomial_universal_reflect}, and
-lean{coeff_gaussianBinomial_universal_symm}.  For (kle n), these state that
-the universal natural-coefficient polynomial
-(GaussianBinomial{n}{k}{X}inNaturalNumbers[X]) has exact natural degree
-(k(n-k)), is monic, has constant coefficient one, and is fixed by reflection
-in that degree.  Under the additional bound (dle k(n-k)), the last theorem
-identifies the coefficients in degrees (d) and (k(n-k)-d).  Together with
+\lean{natDegree_gaussianBinomial_universal},
+\lean{gaussianBinomial_universal_monic},
+\lean{coeff_zero_gaussianBinomial_universal},
+\lean{gaussianBinomial_universal_reflect}, and
+\lean{coeff_gaussianBinomial_universal_symm}.  For \(k\le n\), these state
+exact degree, monicity, constant coefficient one, reflection in degree
+\(k(n-k)\), and bounded-index coefficient symmetry for
+\(\GaussianBinomial{n}{k}{X}\in\NaturalNumbers[X]\).  Together with
 the existing row symmetry and reciprocal identities, this closes the canonical
 forward q-binomial structure theorem.  No declaration in this five-theorem
-surface says that the coefficient of (q) is one.
+surface says that the coefficient of \(q\) is one.
 
 Four denominator-free product identities make this recursion especially useful downstream.
 For natural \(m,n\), and for \(k\le n\),
@@ -12564,11 +12583,12 @@ Rogers--Szeg\H{o} polynomial APIs &
 \path{QPochhammerInfinite.lean}, \path{QPochhammerEntire.lean},
 \path{GeometricPochhammerNormalConvergence.lean},
 \path{ReciprocalIntegerGammaZeros.lean}, \path{DyadicGammaOrder.lean}\\
-Gaussian (q=-1) first jets, universal Gaussian-polynomial degree and
-palindromicity, Euler and infinite q-binomial expansions, Jacobi and
+Gaussian (q=-1) first jets, generic and universal Gaussian-polynomial degree,
+palindromicity, and mean, Euler and infinite q-binomial expansions, Jacobi and
 pentagonal products, q-Pascal summation, Gaussian continuity, the quantum
 binomial theorem, and Rogers--Szeg\H{o} polynomials &
 \path{GaussianBinomialAtNegOneDerivative.lean},
+\path{GaussianBinomialPalindromic.lean},
 \path{GaussianBinomialPolynomialStructure.lean},
 \path{QBinomialTheoremInfinite.lean}, \path{JacobiTripleProduct.lean},
 \path{QPascalSummation.lean}, \path{GaussianBinomialContinuity.lean},
@@ -12676,6 +12696,7 @@ Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
 \path{DyadicCorrectness.lean}, \path{FiniteQBinomialCore.lean},
 \path{QBinomialReciprocity.lean},
+\path{GaussianBinomialPalindromic.lean},
 \path{GaussianBinomialPolynomialStructure.lean},
 \path{QPochhammerElementaryIdentities.lean},
 \path{QBinomialCauchy.lean}, \path{QBinomialVandermonde.lean},

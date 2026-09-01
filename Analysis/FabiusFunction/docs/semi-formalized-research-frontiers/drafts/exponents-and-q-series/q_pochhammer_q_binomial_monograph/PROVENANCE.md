@@ -27,36 +27,57 @@ assets: each donor package consisted only of TeX, PDF, and a repository
 checksum ledger. Their superseded PDFs were retired with the donor packages
 and are not canonical renderings of this larger source. The former forward
 and inverse manuscript PDFs were removed for the same reason. The merged
-master retains one canonical publication checkpoint,
-`q_pochhammer_q_binomial_monograph.pdf`: a reproducible 347-page A4 artifact
-built from the then-current 14,072-line, 656,200-byte source with SHA-256
-`062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
-Exactly three guarded serial passes produced 337, 347, and 347 pages. The
-2,996,319-byte PDF has SHA-256
-`29b422a39c42be37bd1487d4245c44e55706720c545dd015957644e47014bd48`.
+master retains one publication checkpoint,
+`q_pochhammer_q_binomial_monograph.pdf`. This retained PDF is a historical
+348-page A4 artifact of 3,002,729 bytes with SHA-256
+`8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
+It was built from the then-current 14,158-line, 661,835-byte source with
+SHA-256
+`79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`;
+exactly three guarded serial passes produced 338, 348, and 348 pages. The live
+source now postdates that receipt: it has 14,287 lines, 669,121 bytes, and
+SHA-256
+`c1c9466bf2d166b47e7020033743e28ae39b610f8339b8f3d378ce3a2e1918d6`.
+The retained PDF therefore does not claim render parity with the current TeX.
 The validation record in `README.md` distinguishes compilation, font
 embedding, complete page rendering, contact-sheet review, and full-resolution
 inspection. PDFs retained beneath `assets/` are research figures, not
 manuscripts.  A later synchronized checkpoint supersedes that artifact: the
-retained 347-page, 2,996,319-byte A4 PDF has SHA-256
-`29b422a39c42be37bd1487d4245c44e55706720c545dd015957644e47014bd48`
-and was built in three serial passes from the 14,072-line, 656,200-byte source
+retained 348-page, 3,002,729-byte A4 PDF has SHA-256
+`8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`
+and was built in three serial passes from the 14,158-line, 661,835-byte source
 with SHA-256
 `062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
+The currently retained checkpoint supersedes it: the 348-page, 3,002,729-byte
+A4 PDF has SHA-256
+`8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`
+and was built in three serial passes from the 14,158-line, 661,835-byte source
+with SHA-256
+`79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
 
-The live source now postdates that receipt. Its 14,172-line, 662,701-byte TeX
+The live source now postdates that receipt. Its 14,304-line, 670,401-byte TeX
 source has SHA-256
-`5c3f2505062265d3ce9d0023564ed45c3b0486afa62fa3d6a7846894f3476af2`.
+`7b4a580f80d3993111c00b97110deb9059e8ad839c45a6a1630de86b0d594279`.
 It incorporates exhaustive crosswalks for `QPochhammerEntire` (zero
-definitions and five legacy compatibility theorems), `QPochhammerInfinite`
-(one definition and twenty-nine theorems), and `QPochhammerDissection` (zero
-definitions and two theorems), plus `GeometricPochhammerNormalConvergence`
-(zero definitions and three theorems). It also inventories `QMultinomial`
-(one definition and seven theorems), `QPochhammerInfiniteBounds` (five
-theorems), `QPochhammerComplexOrder` (one definition and four theorems),
+definitions and five theorems), `QPochhammerInfinite` (one definition and
+twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
+theorems), `GaussianBinomialPalindromic` (zero definitions and twelve
+theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
+theorems), and `GeometricPochhammerNormalConvergence` (zero definitions and
+three theorems). It also inventories `QMultinomial` (one definition and seven
+theorems), `QPochhammerInfiniteBounds` (five theorems),
+`QPochhammerComplexOrder` (one definition and four theorems),
 `BasicHypergeometricSeries` (two definitions and five theorems),
 `HeineTransformation` (two definitions and five theorems), and
-`QGaussSummation` (two theorems). The `QPochhammerEntire.lean` leaf proves the fixed-nome
+`QGaussSummation` (two theorems). The next tranche adds
+`GaussianBinomialPalindromic` (twelve theorems), `QExponential` (three
+definitions and eight theorems), `JacksonIntegral` (one definition and seven
+theorems), `ThetaQuasiPeriodicity` (one definition and six theorems),
+`QPochhammerLogDerivative` (ten theorems),
+`QPochhammerOrderDerivative` (three theorems), and `JacobiCubic` (two
+theorems). The current tail adds `CentralQBinomialReduction` (six theorems)
+and `CyclotomicFactorization` (seven theorems). The
+`QPochhammerEntire.lean` leaf proves the fixed-nome
 single-symbol locally uniform product and differentiability, the
 division-free factor-zero criterion including `q = 0`, the reciprocal-power
 zero lattice for nonzero nome, and simple analytic order at every zero. The
@@ -70,9 +91,9 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-forward status inventory is 67 exact / 80 partial / 127 none / 8
+forward status inventory is 73 exact / 84 partial / 117 none / 8
 interface; the 191-result pre-Fabius core remains 36 / 29 / 123 / 3. No PDF
-was generated for this source-only update, so the retained 347-page artifact
+was generated locally while resolving this merge, so the supplied 348-page artifact
 is historical and must not be treated as rendering the current source.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit

@@ -503,6 +503,8 @@ import FabiusFunction.JacksonIntegral
 import FabiusFunction.QPochhammerLogDerivative
 import FabiusFunction.QPochhammerOrderDerivative
 import FabiusFunction.JacobiCubic
+import FabiusFunction.CyclotomicFactorization
+import FabiusFunction.CentralQBinomialReduction
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 
@@ -633,6 +635,29 @@ criteria, and a division-free recursive q-multinomial coefficient.  These six
 modules expose exactly six definitions and thirty theorems; their explicit
 strict-contraction, nonvanishing, and denominator hypotheses are retained.
 
+Four companion modules add exactly five definitions and thirty-three theorems.
+They prove the degree, monicity, palindromicity, endpoint coefficients, and
+division-free mean identity for Gaussian polynomials; define the q-derivative
+and both q-exponentials with their product and eigenfunction laws; prove both
+directions of Jackson's fundamental theorem and integration by parts; and give
+the bilateral-theta product, quasi-periodicity, and exact zero criterion.  The
+analytic declarations retain their stated strict-contraction, nonzero-variable,
+convergence, and nonvanishing hypotheses.
+
+The next four q-series leaves add twenty theorems and no definitions.  They
+give the exact degree, monicity, constant coefficient, and palindromicity of
+the universal Gaussian polynomial over `ℕ`; Jacobi's cubic identity in
+`HasSum` form; the q-Pochhammer logarithmic derivative and its Lambert-series
+form on the unit disc; and differentiation of the complex-order q-Pochhammer
+symbol under its explicit strict-contraction and nonzero-nome hypotheses.
+
+Two further division-free algebra leaves add thirteen theorems and no
+definitions.  `CyclotomicFactorization` factors `(X;X)_n` and the universal
+Gaussian coefficient into cyclotomic polynomials over the stated commutative
+ring or integral-domain contexts.  `CentralQBinomialReduction` proves the
+sign-pairing and even--odd dissection identities and reduces `[2k,k]_(q²)` to
+finite q-Pochhammer products, with the quotient form retaining both explicit
+nonvanishing-denominator hypotheses.
 The zeta–Lambert tail calculus of the Thue–Morse frontier results is
 formalized end to end.  The engine is the Euler log transform: for any
 absolutely summable family with all norms below one, over any index type,

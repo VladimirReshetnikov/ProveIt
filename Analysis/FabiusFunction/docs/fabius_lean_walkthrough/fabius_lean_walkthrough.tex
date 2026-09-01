@@ -2179,7 +2179,27 @@ holomorphy or global growth/order/type/asymptotic result.
 
 \subsubsection{Latest q-series limit, triple-product, and polynomial tranche}
 
-The downstream \nolinkurl{GaussianBinomialPolynomialStructure.lean} has no
+The downstream \nolinkurl{GaussianBinomialPalindromic.lean} has no public
+definitions and exactly twelve public theorems:
+\nolinkurl{reflect_add_of_natDegree_le}, \nolinkurl{reflect_one'},
+\nolinkurl{gaussianBinomial_natDegree_le},
+\nolinkurl{gaussianBinomial_zero_left},
+\nolinkurl{gaussianBinomial_diag'}, \nolinkurl{reflect_gaussianBinomial},
+\nolinkurl{coeff_gaussianBinomial_reflect},
+\nolinkurl{coeff_gaussianBinomial_zero},
+\nolinkurl{coeff_gaussianBinomial_top},
+\nolinkurl{gaussianBinomial_natDegree},
+\nolinkurl{gaussianBinomial_monic}, and
+\nolinkurl{two_mul_derivative_gaussianBinomial_eval_one}.  Over every
+commutative semiring these give the general reflection helpers, the Gaussian
+degree bound, zero and diagonal values, reflection in degree \(k(n-k)\),
+constant and top coefficients one, bounded-index coefficient reversal, and
+the division-free mean identity.  Exact degree and monicity require only
+nontriviality.  With existing symmetry and reciprocity this keeps the canonical
+forward q-binomial structure theorem exact; it does not prove that the
+coefficient of \(q\) is one.
+
+The companion \nolinkurl{GaussianBinomialPolynomialStructure.lean} has no
 public definitions and exactly five public theorems:
 \nolinkurl{natDegree_gaussianBinomial_universal},
 \nolinkurl{gaussianBinomial_universal_monic},
@@ -5204,6 +5224,7 @@ Infinite q-binomial theorem and Euler expansions & \nolinkurl{gaussianMajorant},
 Jacobi triple product and pentagonal sums & \nolinkurl{thetaExponent}, \nolinkurl{pentagonalExponent}, \nolinkurl{hasSum_jacobi_triple_product}, \nolinkurl{hasSum_pentagonal}, \nolinkurl{hasSum_pentagonal_pairs} & \nolinkurl{JacobiTripleProduct.lean}; two definitions and twenty-five theorems, listed exhaustively above \\
 Finite q-Pascal summations & \nolinkurl{sum_gaussianBinomial_succ_mul}, \nolinkurl{sum_gaussianBinomial_succ_mul'}, \nolinkurl{Commute.gaussianBinomial_left}, \nolinkurl{Commute.gaussianBinomial_right} & Exhaustive zero-definition/four-theorem surface of \nolinkurl{QPascalSummation.lean} \\
 Continuity and classical limit of Gaussian binomials & \nolinkurl{continuous_gaussianBinomial}, \nolinkurl{tendsto_gaussianBinomial_nhds_one}, \nolinkurl{gaussianBinomial_eq_finiteQPochhammerIn_div} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{GaussianBinomialContinuity.lean} \\
+Generic Gaussian-polynomial degree, palindromicity, and mean & \nolinkurl{reflect_add_of_natDegree_le}, \nolinkurl{reflect_one'}, \nolinkurl{gaussianBinomial_natDegree_le}, \nolinkurl{gaussianBinomial_zero_left}, \nolinkurl{gaussianBinomial_diag'}, \nolinkurl{reflect_gaussianBinomial}, \nolinkurl{coeff_gaussianBinomial_reflect}, \nolinkurl{coeff_gaussianBinomial_zero}, \nolinkurl{coeff_gaussianBinomial_top}, \nolinkurl{gaussianBinomial_natDegree}, \nolinkurl{gaussianBinomial_monic}, \nolinkurl{two_mul_derivative_gaussianBinomial_eval_one} & Exhaustive zero-definition/twelve-theorem surface of \nolinkurl{GaussianBinomialPalindromic.lean}; no linear-coefficient claim \\
 Universal Gaussian-polynomial degree and palindromicity & \nolinkurl{natDegree_gaussianBinomial_universal}, \nolinkurl{gaussianBinomial_universal_monic}, \nolinkurl{coeff_zero_gaussianBinomial_universal}, \nolinkurl{gaussianBinomial_universal_reflect}, \nolinkurl{coeff_gaussianBinomial_universal_symm} & Exhaustive zero-definition/five-theorem surface of \nolinkurl{GaussianBinomialPolynomialStructure.lean}; no linear-coefficient claim \\
 Quantum binomial theorem & \nolinkurl{quantumPlane_mul_pow}, \nolinkurl{quantum_binomial} & Exhaustive zero-definition/two-theorem noncommutative surface of \nolinkurl{QuantumBinomial.lean} \\
 Rogers--Szeg\H{o} polynomials & \nolinkurl{rogersSzego}, \nolinkurl{rogersSzego_succ}, \nolinkurl{rogersSzego_three_term}, \nolinkurl{hasSum_rogersSzego_generating} & \nolinkurl{RogersSzegoPolynomial.lean}; one definition and nine theorems, listed exhaustively above \\
@@ -5357,6 +5378,7 @@ Module & Role in the development \\
 \nolinkurl{JacobiTripleProduct.lean} & Two definitions and exactly twenty-five theorems: theta and pentagonal exponents, finite and infinite Jacobi triple products, and Euler pentagonal sums. \\
 \nolinkurl{QPascalSummation.lean} & Exactly four theorems and no public definitions: two finite Gaussian-binomial summations and the left and right commuting q-binomial identities. \\
 \nolinkurl{GaussianBinomialContinuity.lean} & Exactly three theorems and no public definitions: continuity, the classical \(q\to1\) limit, and the finite-Pochhammer quotient formula. \\
+\nolinkurl{GaussianBinomialPalindromic.lean} & Exactly twelve theorems and no public definitions: general reflection helpers; generic degree bound, boundary values, reflection, constant/top coefficients, coefficient symmetry, and mean identity; exact degree and monicity over a nontrivial commutative semiring. \\
 \nolinkurl{GaussianBinomialPolynomialStructure.lean} & Exactly five theorems and no public definitions: universal natural degree, monicity, constant coefficient one, exact reflection, and bounded-index coefficient symmetry. \\
 \nolinkurl{QuantumBinomial.lean} & Exactly two theorems and no public definitions: the quantum-plane power lemma and the noncommutative quantum binomial theorem. \\
 \nolinkurl{RogersSzegoPolynomial.lean} & One definition and exactly nine theorems: the Rogers--Szeg\H{o} polynomial, its initial values, dilation and three-term recurrences, and its generating series. \\
@@ -5661,7 +5683,7 @@ Lean audits of the previously recorded new or refactored declarations,
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  The live current-tree audit scans
-649 modules and 8,697 public declarations, with no missing module headers or
+659 modules and 8,768 public declarations, with no missing module headers or
 declaration comments.  At the retained historical mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
 immediately preceding census, after the Rvachev Appell and original
@@ -5713,9 +5735,12 @@ Subsequent integration adds the zero-definition/three-theorem
 \nolinkurl{PrimePowerBinomialValuation.lean} from three to six theorems, adds
 the two-definition/six-theorem \nolinkurl{EffectiveMonotoneInverse.lean}
 module and the one-theorem \nolinkurl{FabiusInverseComputable.lean} module,
-and adds two theorems to \nolinkurl{QPochhammerInfinite.lean}.  The six newest
-q-calculus modules contribute another 36 declarations, bringing the current
-source census to 649/8,697.  No aggregate facade build is claimed for this
+and adds two theorems to \nolinkurl{QPochhammerInfinite.lean}.  The first six
+q-calculus modules contribute another 36 declarations.  Four subsequent
+modules contribute 38 more, the next four contribute twenty, and the final two
+contribute thirteen, bringing the current source census to 659/8,768.  No
+aggregate facade build is claimed
+for this
 current-tree census.  The retained PDF and the title-page pin remain historical
 receipts and do not claim parity with the merged source.
 
@@ -5725,6 +5750,28 @@ Those six counts are \nolinkurl{QPochhammerInfiniteBounds.lean} (0+5),
 \nolinkurl{QPochhammerComplexOrder.lean} (1+4),
 \nolinkurl{BasicHypergeometricSeries.lean} (2+5), and
 \nolinkurl{QMultinomial.lean} (1+9).
+The four subsequent counts are
+\nolinkurl{GaussianBinomialPalindromic.lean} (0+12),
+\nolinkurl{JacksonIntegral.lean} (1+7),
+\nolinkurl{QExponential.lean} (3+8), and
+\nolinkurl{ThetaQuasiPeriodicity.lean} (1+6).  They add Gaussian-polynomial
+degree and palindromicity, q-exponential and q-derivative laws, Jackson
+integration, and bilateral-theta quasi-periodicity and zeros under the
+displayed analytic hypotheses.
+The four newest counts are
+\nolinkurl{GaussianBinomialPolynomialStructure.lean} (0+5),
+\nolinkurl{JacobiCubic.lean} (0+2),
+\nolinkurl{QPochhammerLogDerivative.lean} (0+10), and
+\nolinkurl{QPochhammerOrderDerivative.lean} (0+3).  Their twenty theorems add
+universal Gaussian polynomial structure, Jacobi's cubic identity, the
+q-Pochhammer logarithmic derivative and Lambert-series form, and differentiation
+with respect to complex order under the displayed hypotheses.
+The final two counts are
+\nolinkurl{CentralQBinomialReduction.lean} (0+6) and
+\nolinkurl{CyclotomicFactorization.lean} (0+7).  Their thirteen theorems add
+finite-symbol sign pairing and even--odd dissection, the central Gaussian
+reduction, and cyclotomic factorizations.  The quotient and integral-domain
+hypotheses remain explicit.
 \end{remark}
 
 \section{Corrections and critical distinctions}\label{app:corrections}
