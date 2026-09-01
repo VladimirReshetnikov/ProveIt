@@ -23,7 +23,8 @@ identification are represented in Lean by the modules
 at \(q=1/2\).  The phase-bearing sinc-product bridge is formalized separately
 in \lean{FabiusFunction.GeometricSincCharacteristicFunction}, as
 \lean{charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct}.
-The arbitrary-power Fourier decay in \cref{eq:fr-fourier-rapid}, its
+The arbitrary-power Fourier decay in
+\cref{thm:geometric-uniform-fourier-decay}, its
 parameter-derivative strengthening in \cref{eq:fr-q-derivative-rapid}, and the
 cumulant inversions later in this chapter are complete human proofs at the
 frontier level; they are not claimed here as existing Lean declarations.
@@ -31,43 +32,31 @@ frontier level; they are not claimed here as existing Lean declarations.
 \section{The geometric uniform law and its sinc product}
 \label{sec:fr-geometric-law}
 
-Let \(V_0,V_1,\ldots\) be independent random variables uniformly distributed
-on \([0,1]\).  We choose the usual bounded versions, so
-\(0\le V_j(\omega)\le1\) for every \(j\) and every outcome \(\omega\);
-replacing arbitrary representatives on their null exceptional sets does not
-change their joint law or independence.  Let \(U_j=2V_j-1\), so that \(U_j\)
-is uniform on \([-1,1]\) and satisfies \(\lvert U_j(\omega)\rvert\le1\)
-pointwise.  For \(0<q<1\), define
-\begin{align}
- Y_q&=(1-q)\sum_{j=0}^{\infty}q^jV_j,\label{eq:fr-Y}\\
- X_q&=2Y_q-1=(1-q)\sum_{j=0}^{\infty}q^jU_j.\label{eq:fr-X}
-\end{align}
-The first variable takes values in \([0,1]\), while the centered variable
-takes values in \([-1,1]\).  Write \(F_q(x)=\Probability(Y_q\le x)\).
+Continue with the independent uniform variables \(U_j\), the random variable
+\(X_q\), its CDF \(F_q\), density \(f_q\), and characteristic function
+\(\varphi_q\) from \cref{chap:geometric-uniform-fabius}.  Put
+\begin{equation}\label{eq:fr-Z}
+ \varepsilon_j:=2U_j-1,
+ \qquad
+ Z_q:=2X_q-1=(1-q)\sum_{j=0}^{\infty}q^j\varepsilon_j,
+ \qquad
+ u_q(z):=\frac12 f_q\!\left(\frac{z+1}{2}\right).
+\end{equation}
+Thus \(Z_q\) has density \(u_q\) and support \([-1,1]\).
 
-\begin{theorem}[Geometric law, refinement, and smooth density]
+\begin{corollary}[The symmetric normalization and its refinement]
 \label{thm:fr-geometric-density}
-The series in \cref{eq:fr-Y,eq:fr-X} converge absolutely for every outcome.
-The characteristic function of \(X_q\) is
+For real \(t\),
 \begin{equation}
- \phi_q(t)=\Expectation\EulerE^{\ImaginaryUnit tX_q}
+ \psi_q(t):=\Expectation\EulerE^{\ImaginaryUnit tZ_q}
+ =\EulerE^{-\ImaginaryUnit t}\varphi_q(2t)
  =\prod_{j=0}^{\infty}\SincRad\bigl((1-q)q^jt\bigr),
- \qquad \SincRad z=\frac{\sin z}{z},
  \label{eq:fr-sinc-product}
 \end{equation}
-with the removable value \(\SincRad 0=1\); equivalently,
-\(\SincPi x=\SincRad(\pi x)\).  For every \(A>0\) there is a constant
-\(C_{A,q}\) such that
-\begin{equation}
- |\phi_q(t)|\le C_{A,q}(1+|t|)^{-A}.
- \label{eq:fr-fourier-rapid}
-\end{equation}
-Consequently \(X_q\) has a compactly supported \(C^\infty\) density \(u_q\),
-and \(F_q\) is \(C^\infty\).  The distributional decomposition
-\[
- X_q\EqualInLaw (1-q)U_0+qX_q',
-\]
-where \(X_q'\) is an independent copy, gives
+The function \(\psi_q\) has the log-Gaussian, hence arbitrary-power, decay of
+\cref{thm:geometric-uniform-fourier-decay}; the density \(u_q\) is
+\(C^\infty\) and compactly supported.  If \(Z_q'\) is an independent copy,
+then \(Z_q\EqualInLaw(1-q)\varepsilon_0+qZ_q'\), and consequently
 \begin{align}
  u_q(x)
  &=\frac1{2(1-q)}
@@ -77,52 +66,19 @@ where \(X_q'\) is an independent copy, gives
  &=\frac{u_q((x+(1-q))/q)-u_q((x-(1-q))/q)}
  {2q(1-q)}.\label{eq:fr-density-derivative}
 \end{align}
-Equivalently, the CDF of \(Y_q\) satisfies
-\begin{align}
- F_q(x)
- &=\int_0^1F_q\left(\frac{x-(1-q)v}{q}\right)\Differential v,
- \label{eq:fr-cdf-refinement}\\
- F_q'(x)
- &=\frac{F_q(x/q)-F_q((x-(1-q))/q)}{1-q}.
- \label{eq:fr-cdf-derivative}
-\end{align}
-\end{theorem}
+\end{corollary}
 
 \begin{proof}
-Since the nonnegative weights \((1-q)q^j\) sum to one and
-\(|U_j|\le1\), both random series converge absolutely and have the asserted
-supports.  For the \(N\)-th partial sum, independence and
-\(\Expectation\EulerE^{\ImaginaryUnit sU_j}=\SincRad s\) give the finite version of
-\cref{eq:fr-sinc-product}.  The partial sums converge pointwise and are
-bounded in modulus by one, so dominated convergence gives the infinite
-product.
-
-For real \(s\), \(|\SincRad s|\le\min(1,|s|^{-1})\).  Fix an integer \(r>A\).
-Once \(|t|\ge((1-q)q^{r-1})^{-1}\), the first \(r\) factors therefore give
-\[
- |\phi_q(t)|
- \le \prod_{j=0}^{r-1}\frac1{(1-q)q^j|t|}
- =\frac{q^{-r(r-1)/2}}{(1-q)^r}|t|^{-r}.
-\]
-The remaining factors have modulus at most one.  Enlarging the constant on a
-bounded interval proves \cref{eq:fr-fourier-rapid}.  Hence
-\(t^m\phi_q(t)\) is integrable for every \(m\).  Fourier inversion and
-differentiation under the integral produce a \(C^\infty\) density for the
- law of \(X_q\); its support is already contained in \([-1,1]\).  Since
- \(Y_q=(X_q+1)/2\), its density is \(2u_q(2x-1)\), and hence
- \(F_q'(x)=2u_q(2x-1)\).  Thus \(F_q\) is \(C^\infty\) as claimed.
-
-Removing the first summand in \cref{eq:fr-X} leaves \(q\) times an independent
-copy.  Conditioning on either summand gives
-\cref{eq:fr-density-refinement}; the fundamental theorem of calculus gives
-\cref{eq:fr-density-derivative}.  The same conditioning applied to
-\cref{eq:fr-Y} gives \cref{eq:fr-cdf-refinement}.  Changing variables in that
-integral yields
-\[
- F_q(x)=\frac q{1-q}
- \int_{(x-(1-q))/q}^{x/q}F_q(s)\Differential s,
-\]
-whose derivative is \cref{eq:fr-cdf-derivative}.
+The characteristic-function identity is the affine change
+\(Z_q=2X_q-1\) in \cref{thm:geometric-uniform-characteristic}; the phase
+cancels exactly.  Decay and smoothness follow from
+\cref{thm:geometric-uniform-fourier-decay,
+thm:geometric-uniform-smooth-density}.  Splitting off the first centered
+coordinate gives the displayed fixed point.  Conditional on \(Z_q'=s\), the
+variable \((1-q)\varepsilon_0+qs\) is uniform on
+\([qs-(1-q),qs+(1-q)]\); averaging its density gives
+\cref{eq:fr-density-refinement}.  Differentiating that identity by the
+fundamental theorem of calculus gives \cref{eq:fr-density-derivative}.
 \end{proof}
 
 \section{The exact Fabius and Rvachev member}
@@ -144,56 +100,18 @@ This exterior-tail normalization removes the additive and scaling ambiguities
 from the differential equation.
 \end{definition}
 
-\begin{theorem}[The half-base CDF is the Fabius function]
+\begin{theorem}[Uniqueness of the normalized bounded Fabius function]
 \label{thm:fr-fabius-identification}
-There is a unique normalized bounded Fabius function in the sense of
-\cref{def:fr-normalized-fabius}; denote it by \(\FabiusBounded\).  Then
-\begin{equation}
- F_{1/2}(x)=\FabiusBounded(x)\qquad(x\in\RealNumbers).
- \label{eq:fr-fabius-cdf}
-\end{equation}
-Moreover \(u_{1/2}\) is Rvachev's compactly supported function:
-\begin{equation}
- u_{1/2}(s)=\RvachevUp(s)=
- \begin{cases}
-   \FabiusBounded(s+1),&-1\le s\le0,\\
-   \FabiusBounded(1-s),&0\le s\le1,\\
-   0,&|s|\ge1.
- \end{cases}
- \label{eq:fr-up-fold}
-\end{equation}
-With the Fourier convention
-\(\FourierTwoPi{u}(z)=\int_\RealNumbers u(s)\EulerE^{-2\pi\ImaginaryUnit sz}\Differential s\), for every
-\(z\in\RealNumbers\),
-\begin{equation}
- \FourierTwoPi{\RvachevUp}(z)=\prod_{j=0}^{\infty}
- \SincPi\left(\frac{z}{2^j}\right).
- \label{eq:fr-rvachev-product}
-\end{equation}
-Thus the CDF statement and the translated-density statement are compatible;
-they are not competing normalizations.
+The function \(F\) of \cref{thm:probabilistic-fabius} is the unique
+normalized bounded Fabius function in the sense of
+\cref{def:fr-normalized-fabius}.
 \end{theorem}
 
 \begin{proof}
-The law of \(Y_{1/2}\) is contained in \([0,1]\), and
-\cref{thm:fr-geometric-density} gives it a smooth density; in particular it
-has no atoms.  Replacing every \(V_j\) by \(1-V_j\) shows that \(Y_{1/2}\)
-and \(1-Y_{1/2}\) have the same law.  Therefore
-\[
- F_{1/2}(1-x)=\Probability(Y_{1/2}\ge x)=1-F_{1/2}(x),
-\]
-where atomlessness justifies the second equality.  When
-\(0\le x\le1/2\),
-\cref{eq:fr-cdf-derivative} becomes
-\[
- F_{1/2}'(x)=2\bigl(F_{1/2}(2x)-F_{1/2}(2x-1)\bigr)
- =2F_{1/2}(2x),
-\]
-because \(2x-1\le0\).  Together with the two constant exterior tails and the
-reflection law, these are precisely the normalized bounded Fabius axioms.
-
-For completeness, uniqueness follows from a contraction argument.  Any
-candidate \(G\) in \cref{def:fr-normalized-fabius} is nondecreasing: its
+Existence is \cref{thm:probabilistic-fabius}: its CDF \(F\) has the constant
+exterior tails, reflection law, and local differential equation required by
+\cref{def:fr-normalized-fabius}.  For uniqueness, let \(G\) be any other
+candidate.  It is nondecreasing: its
 derivative is nonnegative on \([0,1/2]\), and differentiating reflection gives
 \(G'(1-x)=G'(x)\).  Thus \(G\) is the CDF of a probability measure \(\mu\)
 on \([0,1]\).  For such a CDF define
@@ -225,25 +143,23 @@ and taking the infimum over couplings yields
 \(W_1(\mathcal T\mu_1,\mathcal T\mu_2)
  \le\tfrac12W_1(\mu_1,\mu_2)\).  Two fixed points therefore have zero
 Wasserstein distance.  Finally, separating the first summand shows
-\(Y_{1/2}\EqualInLaw(V_0+Y_{1/2}')/2\), so its law is a fixed point.  It is
-the unique one, proving \cref{eq:fr-fabius-cdf}.  This is the
-human-readable argument whose conclusion is formalized by
+\(X_{1/2}\EqualInLaw(U_0+X_{1/2}')/2\), so its law is a fixed point.  It is
+the unique one.  This is the human-readable uniqueness argument complementing
+the formal identification
 \lean{geometricUniformCDF_one_half_eq_fabiusReal}.
-
-Since \(X_{1/2}=2Y_{1/2}-1\), change of variables gives
-\[
- u_{1/2}(s)=\frac12F_{1/2}'\left(\frac{s+1}{2}\right).
-\]
-For \(-1\le s\le0\), the Fabius derivative equation makes the right side
-\(\FabiusBounded(s+1)\).  Reflection gives the branch
-\(\FabiusBounded(1-s)\) for \(0\le s\le1\), and
-the support gives zero outside.  Finally, for real \(z\), the Fourier-sign
-convention gives
-\(\FourierTwoPi{\RvachevUp}(z)=\phi_{1/2}(-2\pi z)=\phi_{1/2}(2\pi z)\); the second equality
-uses the evenness of the centered law.  Substituting \(q=1/2\) in
-\cref{eq:fr-sinc-product} and using
-\(\SincPi x=\SincRad(\pi x)\) gives \cref{eq:fr-rvachev-product}.
 \end{proof}
+
+The centered normalization introduces no second Fabius or Rvachev result:
+\(u_{1/2}=\RvachevUp\) is exactly \cref{eq:up-definition}, its two Fabius
+branches are \cref{prop:up-tail}, and its angular Fourier product is
+\cref{thm:up-sinc-product}.  With
+\(\FourierTwoPi{u}(z)=\int_\RealNumbers
+u(s)\EulerE^{-2\pi\ImaginaryUnit sz}\Differential s\), substituting
+\(t=-2\pi z\) there and using evenness gives
+\[
+ \FourierTwoPi{\RvachevUp}(z)
+ =\prod_{j=0}^{\infty}\SincPi\!\left(\frac{z}{2^j}\right).
+\]
 
 \section{Thue--Morse spline approximants}
 \label{sec:fr-thue-morse}
@@ -252,12 +168,11 @@ Let \(\BinaryDigitSum(k)\) be the number of ones in the binary expansion of \(k\
 \(\ThueMorseSign{k}=(-1)^{\BinaryDigitSum(k)}\).  The occurrence of these signs is ordinary
 inclusion--exclusion on the dyadic geometric comb.
 
-\begin{theorem}[Exact Thue--Morse partial CDF]
+\begin{corollary}[Exact Thue--Morse partial CDF]
 \label{thm:fr-thue-morse-splines}
 For \(N\ge1\), put
 \[
- Y^{(N)}=\sum_{j=0}^{N-1}2^{-j-1}V_j,
- \qquad F_N(x)=\Probability(Y^{(N)}\le x),
+ F_N(x)=\Probability(X_{1/2,N}\le x),
  \qquad r_+=\max(r,0).
 \]
 Then
@@ -267,57 +182,44 @@ Then
  \left(x-\frac{k}{2^N}\right)_+^N.
  \label{eq:fr-thue-morse-spline}
 \end{equation}
-For the bounded Fabius function \(\FabiusBounded\) and every real \(x\),
+For the Fabius function \(F\) and every real \(x\),
 \begin{equation}
- F_N(x-2^{-N})\le \FabiusBounded(x)\le F_N(x).
+ F_N(x-2^{-N})\le F(x)\le F_N(x).
  \label{eq:fr-spline-sandwich}
 \end{equation}
-In particular the explicit splines converge pointwise to \(\FabiusBounded\), and uniformly
+In particular the explicit splines converge pointwise to \(F\), and uniformly
 with the quantitative bound
 \begin{equation}
- 0\le F_N(x)-\FabiusBounded(x)
- \le \FabiusBounded(x+2^{-N})-\FabiusBounded(x)
- \le \omega_{\FabiusBounded}(2^{-N}),
+ 0\le F_N(x)-F(x)
+ \le F(x+2^{-N})-F(x)
+ \le \omega_F(2^{-N}),
  \label{eq:fr-spline-uniform-bound}
 \end{equation}
 where
-\(\omega_{\FabiusBounded}(\delta)=
-\sup_{|a-b|\le\delta}|\FabiusBounded(a)-\FabiusBounded(b)|\).  Consequently
-\(\|F_N-\FabiusBounded\|_\infty
-\le\omega_{\FabiusBounded}(2^{-N})\to0\).
-\end{theorem}
+\(\omega_F(\delta)=\sup_{|a-b|\le\delta}|F(a)-F(b)|\).  Consequently
+\(\|F_N-F\|_\infty\le\omega_F(2^{-N})\to0\).
+\end{corollary}
 
 \begin{proof}
-For positive \(s\), the Laplace transform of a uniform variable on
-\([0,w]\) is \((1-\EulerE^{-sw})/(sw)\).  Therefore the Laplace transform, in the
-space variable \(x\), of the CDF of a sum of \(N\) such variables is
-\[
- \frac1{s^{N+1}\prod_jw_j}\prod_{j=0}^{N-1}(1-\EulerE^{-sw_j}).
-\]
-Expanding the last product over subsets and using
-\[
- \int_0^\infty \EulerE^{-sx}\frac{(x-a)_+^N}{N!}\Differential x
- =\frac{\EulerE^{-sa}}{s^{N+1}}
-\]
-gives the usual inclusion--exclusion formula.  Here
-\(\prod_jw_j=2^{-N(N+1)/2}\).  The subset sums
-\(\sum_j\varepsilon_j2^{-j-1}\) are \(k/2^N\) in bit-reversed order, and bit
-reversal preserves the number of selected indices.  The subset sign is thus
-\(\ThueMorseSign{k}\), proving \cref{eq:fr-thue-morse-spline}.
+Specialize the weighted cube-cut formula \cref{eq:weighted-cube-cut} to
+\(c_j=2^{-j-1}\).  The product of the weights is
+\(2^{-N(N+1)/2}\), and binary bit reversal identifies each subset sum with a
+unique \(k/2^N\) without changing the parity of the subset cardinality.  This
+is \cref{eq:fr-thue-morse-spline}.
 
-The omitted tail of \(Y_{1/2}\) lies pointwise, for every outcome, between
-zero and \(\sum_{j\ge N}2^{-j-1}=2^{-N}\).  Hence
+The tail estimate \cref{eq:finite-uniform-tail-bound} at \(q=1/2\) says
+\(0\le X-X_{1/2,N}\le2^{-N}\).  Hence
 \[
- \{Y^{(N)}\le x-2^{-N}\}
- \subseteq\{Y_{1/2}\le x\}
- \subseteq\{Y^{(N)}\le x\}.
+ \{X_{1/2,N}\le x-2^{-N}\}
+ \subseteq\{X\le x\}
+ \subseteq\{X_{1/2,N}\le x\}.
 \]
-Taking probabilities and using \cref{eq:fr-fabius-cdf} proves the sandwich.
-Its right inequality gives \(\FabiusBounded(x)\le F_N(x)\).  Applying its left inequality
-at \(x+2^{-N}\) gives \(F_N(x)\le\FabiusBounded(x+2^{-N})\), and hence
-\cref{eq:fr-spline-uniform-bound}.  The continuous function \(\FabiusBounded\) is constant
+Taking probabilities proves the sandwich.  Its right inequality gives
+\(F(x)\le F_N(x)\).  Applying its left inequality at \(x+2^{-N}\) gives
+\(F_N(x)\le F(x+2^{-N})\), and hence
+\cref{eq:fr-spline-uniform-bound}.  The continuous function \(F\) is constant
 off \([0,1]\), so it is uniformly continuous on \(\RealNumbers\) and
-\(\omega_{\FabiusBounded}(2^{-N})\to0\).  This proves the claimed uniform convergence.
+\(\omega_F(2^{-N})\to0\).  This proves the claimed uniform convergence.
 \end{proof}
 
 The finite sign identity behind the theorem is
@@ -339,19 +241,19 @@ We use the Bernoulli-number convention \(B_2=1/6\), \(B_4=-1/30\).
 \label{thm:fr-cumulant-recovery}
 For every \(m\ge1\),
 \begin{equation}
- \kappa_{2m}(X_q)
+ \kappa_{2m}(Z_q)
  =\frac{2^{2m}B_{2m}}{2m}
    \frac{(1-q)^{2m}}{1-q^{2m}},
  \label{eq:fr-cumulants}
 \end{equation}
 and every odd cumulant vanishes:
 \begin{equation}
- \kappa_{2m+1}(X_q)=0\qquad(m\ge0).
+ \kappa_{2m+1}(Z_q)=0\qquad(m\ge0).
  \label{eq:fr-odd-cumulants}
 \end{equation}
 After division by the nonzero uniform cumulant, set
 \[
- R_m(q)=\frac{\kappa_{2m}(X_q)}{\kappa_{2m}(U_0)}
+ R_m(q)=\frac{\kappa_{2m}(Z_q)}{\kappa_{2m}(\varepsilon_0)}
  =\frac{(1-q)^{2m}}{1-q^{2m}}.
 \]
 Then \(R_m\) is a strictly decreasing bijection from \((0,1)\) to \((0,1)\).
@@ -372,42 +274,18 @@ Its endpoint expansions are
 \end{theorem}
 
 \begin{proof}
-The moment generating function of \(U_0\) is \(\sinh z/z\).  Near the origin,
-differentiating its logarithm gives
+The forward chapter writes \(Y_q=X_q-1/2\), so \cref{eq:fr-Z} gives
+\(Z_q=2Y_q\).  Homogeneity of cumulants and
+\cref{thm:q-cumulants-uniform} therefore give
 \[
- \frac{\Differential}{\Differential z}\log\frac{\sinh z}{z}
- =\coth z-\frac1z
- =\sum_{m\ge1}\frac{2^{2m}B_{2m}}{(2m)!}z^{2m-1}.
+ \kappa_r(Z_q)=2^r\kappa_r(Y_q).
 \]
-After integration, comparison with
-\(\log\Expectation\EulerE^{zU_0}=\sum_r\kappa_r(U_0)z^r/r!\) gives
-\(\kappa_{2m}(U_0)=2^{2m}B_{2m}/(2m)\) and zero odd cumulants.
-
-Here is the limit argument that justifies adding the countably many
-cumulants.  Put
-\[
- X_{q,N}=(1-q)\sum_{j=0}^{N}q^jU_j.
-\]
-The chosen bounded versions give the deterministic estimate
-\(\lvert X_q-X_{q,N}\rvert\le q^{N+1}\), while both variables take values in
-\([-1,1]\).  Hence their moment generating functions converge locally
-uniformly for complex \(z\).  On a sufficiently small fixed disk about zero,
-\[
- \bigl|\Expectation\EulerE^{zX_{q,N}}-1\bigr|\le \EulerE^{|z|}-1<1
-\]
-uniformly in \(N\), and the same estimate holds for \(X_q\).  The analytic
-logarithms normalized to vanish at zero therefore converge locally uniformly;
-by the Cauchy integral formula, all their derivatives at zero converge.
-
-For each finite \(N\) and \(r\ge1\), independence and homogeneity of cumulants give
-\[
- \kappa_r(X_{q,N})
- =\kappa_r(U_0)(1-q)^r\sum_{j=0}^{N}q^{jr}.
-\]
-Passing to the limit and summing the geometric series proves
-\cref{eq:fr-cumulants}.  Symmetry of every finite partial sum, or directly of
-the full series, proves \cref{eq:fr-odd-cumulants}, including
-\(\kappa_1(X_q)=\Expectation X_q=0\).
+This is \cref{eq:fr-cumulants}, and the odd cumulants vanish for the same
+reason.  Equation \eqref{eq:centered-uniform-logmgf} gives
+\(\kappa_{2m}(U_0-1/2)=B_{2m}/(2m)\); since
+\(\varepsilon_0=2(U_0-1/2)\), homogeneity gives
+\(\kappa_{2m}(\varepsilon_0)=2^{2m}B_{2m}/(2m)\).  Thus the displayed
+normalization of \(R_m\) follows without a second cumulant derivation.
 
 Logarithmic differentiation gives
 \[
@@ -434,7 +312,7 @@ The case \(m=1\) is especially simple.
 \label{cor:fr-variance-inverse}
 The centered variance and its inverse are
 \begin{equation}
- V(q)=\Variance(X_q)=\frac{1-q}{3(1+q)},
+ V(q)=\Variance(Z_q)=\frac{1-q}{3(1+q)},
  \qquad q=\frac{1-3V}{1+3V}.
  \label{eq:fr-variance-inverse}
 \end{equation}
@@ -452,9 +330,9 @@ linear-fractional equation gives the inverse and the specialization.
 
 \begin{theorem}[Kurtosis inverse and total location--scale identifiability]
 \label{thm:fr-total-identifiability}
-The excess kurtosis of \(X_q\) is
+The excess kurtosis of \(Z_q\) is
 \begin{equation}
- \gamma_2(q)=\frac{\kappa_4(X_q)}{\kappa_2(X_q)^2}
+ \gamma_2(q)=\frac{\kappa_4(Z_q)}{\kappa_2(Z_q)^2}
  =-\frac65\frac{1-q^2}{1+q^2},
  \label{eq:fr-kurtosis}
 \end{equation}
@@ -465,16 +343,26 @@ inverse
  \label{eq:fr-kurtosis-inverse}
 \end{equation}
 Consequently the mean, positive variance, and excess kurtosis uniquely
-identify every member
+identify every member of the normalized family
 \[
- Z=\mu+cX_q,
- \qquad \mu\in\RealNumbers,\quad c>0,\quad0<q<1.
+ W_{\mu,s,q}=\mu+sZ_q,
+ \qquad \mu\in\RealNumbers,\quad s>0,\quad0<q<1.
 \]
-Explicitly, \(\mu=\Expectation Z\), \(q\) is given by
+Explicitly, \(\mu=\Expectation W_{\mu,s,q}\), \(q\) is given by
 \cref{eq:fr-kurtosis-inverse}, and
 \begin{equation}
- c=\sqrt{\Variance(Z)\,\frac{3(1+q)}{1-q}}.
+ s=\sqrt{\Variance(W_{\mu,s,q})\,\frac{3(1+q)}{1-q}}.
  \label{eq:fr-scale-inverse}
+\end{equation}
+Equivalently, in the raw-series convention
+\begin{equation}\label{eq:fr-raw-scale-family}
+ \widetilde W_{\mu,a,q}
+ :=\mu+a\sum_{j\ge0}q^j\varepsilon_j,
+ \qquad a=s(1-q),
+\end{equation}
+the recovered scale is
+\begin{equation}\label{eq:fr-raw-scale-inverse}
+ a=\sqrt{3\Variance(\widetilde W_{\mu,a,q})(1-q^2)}.
 \end{equation}
 Thus the total cumulant identifiability statement left conjectural in one
 source report is a theorem for the stated three-parameter family.
@@ -491,26 +379,31 @@ Insert \(B_2=1/6\) and \(B_4=-1/30\) into
 The last rational function is strictly increasing, with the stated endpoint
 limits.  Solving it for \(q^2\) gives
 \cref{eq:fr-kurtosis-inverse}.  Translation changes only the mean, positive
-scaling multiplies variance by \(c^2\), and excess kurtosis is unchanged by
+scaling multiplies variance by \(s^2\), and excess kurtosis is unchanged by
 both operations.  Hence the three displayed reconstruction formulas exist
 and are unique.  Formula \cref{eq:fr-scale-inverse} is just
-\(\Variance(Z)=c^2V(q)\) with \cref{eq:fr-variance-inverse} substituted.
+\(\Variance(W_{\mu,s,q})=s^2V(q)\) with
+\cref{eq:fr-variance-inverse} substituted.  Finally,
+\cref{eq:fr-Z,eq:fr-raw-scale-family} give \(a=s(1-q)\); multiplying the
+square of \cref{eq:fr-scale-inverse} by \((1-q)^2\) gives
+\cref{eq:fr-raw-scale-inverse}.
 \end{proof}
 
 For redundancy checks, the next standardized cumulant is
 \begin{equation}
- \frac{\kappa_6(X_q)}{\kappa_2(X_q)^3}
+ \frac{\kappa_6(Z_q)}{\kappa_2(Z_q)^3}
  =\frac{48}{7}\frac{(1-q^2)^2}{1+q^2+q^4}.
  \label{eq:fr-standardized-sixth}
 \end{equation}
 At \(q=1/2\), the exact diagnostic triple begins
 \[
- \Variance(X_{1/2})=\frac19,
- \qquad\gamma_2(X_{1/2})=-\frac{18}{25},
- \qquad\frac{\kappa_6(X_{1/2})}{\kappa_2(X_{1/2})^3}=\frac{144}{49}.
+ \Variance(Z_{1/2})=\frac19,
+ \qquad\gamma_2(Z_{1/2})=-\frac{18}{25},
+ \qquad\frac{\kappa_6(Z_{1/2})}{\kappa_2(Z_{1/2})^3}=\frac{144}{49}.
 \]
 Equation \cref{eq:fr-standardized-sixth} follows from
-\(\kappa_6(U_0)=16/63\) and the same geometric-series cancellation as above.
+\(\kappa_6(\varepsilon_0)=16/63\) and the same geometric-series cancellation
+as above.
 
 \section{Endpoint regimes and conditioning}
 \label{sec:fr-endpoints}
@@ -518,10 +411,10 @@ Equation \cref{eq:fr-standardized-sixth} follows from
 \begin{proposition}[Uniform and Gaussian endpoint laws]
 \label{prop:fr-endpoint-laws}
 As \(q\downarrow0\), for the chosen pointwise bounded versions,
-\(X_q\to U_0\) uniformly in the sample point (and hence almost surely).  As
-\(q\uparrow1\), \(X_q\to0\) in \(L^2\).  After standardization,
+\(Z_q\to\varepsilon_0\) uniformly in the sample point (and hence almost surely).
+As \(q\uparrow1\), \(Z_q\to0\) in \(L^2\).  After standardization,
 \begin{equation}
- \frac{X_q}{\sqrt{V(q)}}\ \ConvergesInLaw\ \mathcal N(0,1).
+ \frac{Z_q}{\sqrt{V(q)}}\ \ConvergesInLaw\ \mathcal N(0,1).
  \label{eq:fr-central-limit}
 \end{equation}
 \end{proposition}
@@ -529,11 +422,11 @@ As \(q\downarrow0\), for the chosen pointwise bounded versions,
 \begin{proof}
 The first limit has the deterministic bound
 \[
- |X_q-U_0|
- \le q|U_0|+(1-q)\sum_{j\ge1}q^j|U_j|\le2q.
+ |Z_q-\varepsilon_0|
+ \le q|\varepsilon_0|+(1-q)\sum_{j\ge1}q^j|\varepsilon_j|\le2q.
 \]
 The \(L^2\) assertion follows from
-\(\Expectation X_q^2=V(q)\to0\).  For the Gaussian limit, put
+\(\Expectation Z_q^2=V(q)\to0\).  For the Gaussian limit, put
 \[
  a_{q,j}=\frac{(1-q)q^j}{\sqrt{V(q)}}.
 \]
@@ -586,7 +479,7 @@ Put \(w_j(q)=(1-q)q^j\).  Then
 where the formula at \(j=0\) is interpreted by cancellation as \(-1\).
 Write
 \[
- H_q(x)=\Probability(X_q\le x)=F_q\left(\frac{x+1}{2}\right)
+ H_q(x)=\Probability(Z_q\le x)=F_q\left(\frac{x+1}{2}\right)
 \]
 for the centered CDF.
 
@@ -594,7 +487,7 @@ for the centered CDF.
 \label{prop:fr-fourier-score}
 Away from the zeros of the sinc factors,
 \begin{equation}
- \partial_q\log\phi_q(t)
+ \partial_q\log\psi_q(t)
  =\sum_{j\ge0}w_j'(q)
  \left(t\cot(w_j(q)t)-\frac1{w_j(q)}\right).
  \label{eq:fr-fourier-score}
@@ -606,7 +499,7 @@ open set where none of those factors vanishes.  More quantitatively, for every
 compact \(K\Subset(0,1)\), every \(A>0\), and all integers \(k\ge0\), there is
 a constant \(C_{A,k,K}\) such that
 \begin{equation}
- \sup_{q\in K}\left|\partial_q^k\phi_q(t)\right|
+ \sup_{q\in K}\left|\partial_q^k\psi_q(t)\right|
  \le C_{A,k,K}(1+|t|)^{-A}.
  \label{eq:fr-q-derivative-rapid}
 \end{equation}
@@ -616,7 +509,7 @@ subintervals of \((0,1)\), and parameter differentiation may be passed
 through Fourier inversion.  If a centered quantile branch satisfies
 \(H_q(x_p(q))=p\) and \(u_q(x_p(q))>0\), then it is locally smooth and
 \begin{equation}
- x_p'(q)=-\frac{\partial_q\Probability(X_q\le x)|_{x=x_p(q)}}{u_q(x_p(q))}.
+ x_p'(q)=-\frac{\partial_q\Probability(Z_q\le x)|_{x=x_p(q)}}{u_q(x_p(q))}.
  \label{eq:fr-quantile-sensitivity}
 \end{equation}
 \end{proposition}

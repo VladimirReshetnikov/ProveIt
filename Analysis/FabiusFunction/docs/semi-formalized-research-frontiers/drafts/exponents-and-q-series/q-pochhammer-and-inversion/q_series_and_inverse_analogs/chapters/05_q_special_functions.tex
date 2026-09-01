@@ -4,32 +4,32 @@
 \section{\texorpdfstring{\(q\)-numbers}{q-numbers}}
 \label{sec:qs-qnumbers}
 
-Choose a logarithm value \(\PrincipalLogarithm q\) for \(q\in\ComplexNumbers\setminus\{0,1\}\), put
-\(q^x=\EulerE^{x\PrincipalLogarithm q}\), and define
+Fix a logarithm value \(\ell_q\) of
+\(q\in\ComplexNumbers\setminus\{0,1\}\), put
+\(q^x=\EulerE^{x\ell_q}\), and define
 \[
   [x]_q:=\frac{1-q^x}{1-q}.
 \]
 
 \begin{proposition}[Exact inverse in the exponent]
 \label{prop:qs-qnumber-x}
-Let \(1-(1-q)y\ne0\), and choose a value of
-\(\PrincipalLogarithm(1-(1-q)y)\).  Then
+Let \(w=1-(1-q)y\ne0\), and fix one logarithm value \(\ell_w\) of \(w\).
+Then, for every \(k\in\IntegerNumbers\),
 \[
-  x=\frac{\PrincipalLogarithm(1-(1-q)y)}{\PrincipalLogarithm q}
+  x_k=\frac{\ell_w+2\pi\ImaginaryUnit k}{\ell_q}
 \]
-solves \([x]_q=y\).  Every solution is obtained by allowing the logarithm
-value in the numerator to vary by \(2\pi\ImaginaryUnit\IntegerNumbers\).
+solves \([x_k]_q=y\), and every solution is obtained in this way.
 \end{proposition}
 
 \begin{proof}
 The equation \([x]_q=y\) is equivalent to
 \[
-  \EulerE^{x\PrincipalLogarithm q}=1-(1-q)y.
+  \EulerE^{x\ell_q}=w.
 \]
-Taking a logarithm value gives the displayed expression.  Conversely,
-exponentiating that expression recovers the equation.  The complete
-preimage of a nonzero complex number under the exponential consists of one
-logarithm value plus \(2\pi\ImaginaryUnit\IntegerNumbers\), which proves the last assertion.
+The complete preimage of \(w\) under the exponential is
+\(\ell_w+2\pi\ImaginaryUnit\IntegerNumbers\).  Since \(q\ne1\), one has
+\(\ell_q\ne0\), so division by \(\ell_q\) gives precisely the displayed
+solutions.  Conversely, exponentiating any one of them recovers the equation.
 \end{proof}
 
 For an integer \(m\ge2\),
@@ -40,7 +40,8 @@ so inversion in the base is an algebraic covering.
 
 \begin{proposition}[Distinguished base jets of the \(q\)-number]
 \label{prop:qs-qnumber-jets}
-Let \(u=y-1\).  The inverse branch through \(q=0\) satisfies
+Fix an integer \(m\ge2\), and let \(u=y-1\).  The inverse branch through
+\(q=0\) satisfies
 \[
 \begin{array}{rll}
  m=2:&q=u,&\text{exactly},\\
@@ -102,7 +103,7 @@ and
   [2r+1]_{-1}=1,\qquad
   \left.\frac{\partial}{\partial q}[2r+1]_q\right|_{q=-1}=-r.
 \]
-At infinity,
+For every integer \(m\ge2\), at infinity,
 \[
   [m]_q=q^{m-1}(1+q^{-1}+\cdots+q^{-(m-1)}),
 \]

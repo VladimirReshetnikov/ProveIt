@@ -1202,7 +1202,8 @@ Subtracting $\binom r2$ gives $(m-j)(r-j)$, proving \eqref{eq:qvand1}.  Splittin
 For $m,n\ge0$,
 \[
  \GaussianBinomial{m+n}{m}{q}
- =\sum_j q^{j^2}\GaussianBinomial{m}{j}{q}\GaussianBinomial{n}{j}{q}.
+ =\sum_{j=0}^{\min(m,n)}
+ q^{j^2}\GaussianBinomial{m}{j}{q}\GaussianBinomial{n}{j}{q}.
 \]
 \end{corollary}
 
@@ -2007,8 +2008,9 @@ Let $F_{n,k}(q)$ denote the right side.  If the last letter is $1$, deletion of 
 The boundary values are $1$, so $F_{n,k}$ and $\GaussianBinomial{n}{k}{q}$ obey the same recurrence and initial conditions.
 \end{proof}
 
-\begin{corollary}
-The random variable in \Cref{thm:qbinom-moments} is the inversion number of a uniformly random word in $\mathcal W_{n,k}$.
+\begin{corollary}[Inversion-law interpretation]\label{cor:qbinom-inversion-law}
+For $0\le k\le n$, the random variable in \Cref{thm:qbinom-moments} is the
+inversion number of a uniformly random word in $\mathcal W_{n,k}$.
 \end{corollary}
 
 \begin{proof}
@@ -2089,21 +2091,20 @@ Under the word--path encoding, every north step contributes the number of later 
 
 The largest square in the northwest corner of a partition diagram is its Durfee square.
 
-\begin{theorem}[Durfee-square decomposition]\label{thm:durfee-qvand}
-For $m,n\ge0$,
-\[
- \GaussianBinomial{m+n}{m}{q}
- =\sum_{j=0}^{\min(m,n)}q^{j^2}\GaussianBinomial{m}{j}{q}\GaussianBinomial{n}{j}{q}.
-\]
-\end{theorem}
-
-\begin{proof}
-This is \Cref{cor:central-vandermonde}; we give the partition proof.  A partition in an $m\times n$ rectangle with Durfee square of side $j$ consists of the $j\times j$ square, a partition to its right fitting in a $j\times(n-j)$ rectangle, and a partition below it fitting in an $(m-j)\times j$ rectangle.  By \Cref{thm:rectangle-partitions}, their generating functions are
+\begin{remark}[Durfee-square proof of the central convolution]\label{rem:durfee-qvand}
+The identity in \Cref{cor:central-vandermonde} has a direct partition proof.
+A partition in an $m\times n$ rectangle with Durfee square of side $j$
+consists of the $j\times j$ square, a partition to its right fitting in a
+$j\times(n-j)$ rectangle, and a partition below it fitting in an
+$(m-j)\times j$ rectangle.  By \Cref{thm:rectangle-partitions}, their
+generating functions are
 \[
  q^{j^2}\GaussianBinomial{n}{j}{q}\GaussianBinomial{m}{j}{q}.
 \]
 The Durfee size is unique, so summing over $j$ counts every partition exactly once.
-\end{proof}
+Thus the algebraic proof above and the Durfee decomposition prove one and the
+same canonical result, rather than two separately labelled assertions.
+\end{remark}
 
 \section{Words with several letters}
 
@@ -2631,24 +2632,9 @@ $c_n=(a;q)_n/(q;q)_n$.
 
 \section{Limits in the number of factors}
 
-\begin{proposition}\label{prop:fixed-k-limit}
-For fixed $k$ and $\AbsoluteValue q<1$,
-\[
- \lim_{n\to\infty}\GaussianBinomial{n}{k}{q}=\frac1{(q;q)_k}.
-\]
-More generally,
-\[
- \lim_{n\to\infty}\GaussianBinomial{n+k}{k}{q}=\frac1{(q;q)_k}.
-\]
-\end{proposition}
-
-\begin{proof}
-Use
-\[
- \GaussianBinomial{n}{k}{q}=\frac{(q^{n-k+1};q)_k}{(q;q)_k}.
-\]
-Every numerator factor tends to $1$.
-\end{proof}
+The stronger effective statement \Cref{thm:fixed-column-limit} below gives
+both the fixed-column limit and its shifted form, together with a geometric
+error term.  This is the stable finite-to-infinite passage used here.
 
 \begin{remark}
 The two Euler identities are therefore the stable limits of the finite product and reciprocal-product formulas.  This stability is one reason finite $q$-binomial identities so often serve as polynomial approximations to infinite $q$-series identities.
@@ -2748,7 +2734,9 @@ uniformly for $\AbsoluteValue z\le\rho$.  Both sides are analytic in $\AbsoluteV
  \frac{z\prod_{i=1}^{r}(\alpha_i+n)}{(n+1)\prod_{j=1}^{r-1}(\beta_j+n)}\longrightarrow z
  \qquad(n\to\infty).
 \]
-If some $\alpha_i$ is a nonpositive integer, both sides reduce to the same polynomial in $z$; see \Cref{rem:classical-limit-terminating}.
+If some $\alpha_i$ is a nonpositive integer, both series terminate at the same
+degree, and the asserted limit follows term by term; see
+\Cref{rem:classical-limit-terminating}.
 \end{theorem}
 
 % ed.: the source omits the hypothesis $\beta_j\notin\{0,-1,-2,\dots\}$ (without
@@ -2990,7 +2978,8 @@ formalize the quotient-bearing \(q\)-Pfaff--Saalsch\"utz theorem that follows.
 \section{The \texorpdfstring{$q$}{q}-Pfaff--Saalsch\"utz sum}
 
 \begin{theorem}[$q$-Pfaff--Saalsch\"utz summation]\label{thm:q-pfaff}
-For $n\in\NaturalNumbers$,
+For $n\in\NaturalNumbers$ and parameters for which all displayed
+expressions are defined,
 \[
  {}_3\phi_2\!\left[
  \begin{matrix}a,b,q^{-n}\\c,abq^{1-n}/c\end{matrix};q,q\right]
@@ -3046,7 +3035,8 @@ Substitution yields exactly
 \section{The two \texorpdfstring{$q$}{q}-Chu--Vandermonde sums}
 
 \begin{corollary}[$q$-Chu--Vandermonde]\label{cor:q-chu}
-For $n\in\NaturalNumbers$,
+For $n\in\NaturalNumbers$, wherever the displayed rational expressions are
+defined,
 \begin{align}
  {}_2\phi_1\!\left[
  \begin{matrix}q^{-n},a\\c\end{matrix};q,\frac{cq^n}{a}\right]
@@ -3070,14 +3060,16 @@ For \eqref{eq:qchu1}, put $b=q^{-n}$ in the $q$-Gauss sum.  The infinite product
 % ed.: product side was produced under the $q$-Gauss hypothesis
 % ed.: $\abs{cq^n/a}<1$.  What extends it is rationality plus agreement on a
 % ed.: nonempty open set, as stated below.
-The substitution is legitimate because $\{\AbsoluteValue b>\AbsoluteValue{c/a}\}$ is connected and
-meets Heine's initial region $\AbsoluteValue b<1$, so \Cref{thm:q-gauss} continues
-analytically to $b=q^{-n}$.  Both sides of \eqref{eq:qchu1} are now rational
-in $(a,c)$, and they agree on the nonempty open set $\AbsoluteValue{cq^n/a}<1$ where the
-$q$-Gauss hypothesis holds; a rational function vanishing on a nonempty open
-subset of $\ComplexNumbers^2$ vanishes identically, so the identity holds wherever both
-sides are defined.  Termination alone would not give this: it makes the two
-sides defined, not equal.
+On the nonempty seed domain $\AbsoluteValue{cq^n/a}<1$, substitution of
+$b=q^{-n}$ is legitimate directly in \Cref{thm:q-gauss}; its convergence
+hypothesis becomes precisely that inequality, and
+$(q^{-n};q)_k=0$ for $k>n$.  Both sides of \eqref{eq:qchu1} are rational in
+$(a,c)$, and they agree on this open set wherever the displayed denominators
+are nonzero.  After taking their difference and clearing denominators, the
+resulting polynomial vanishes on a nonempty open subset of
+$\ComplexNumbers^2$, hence vanishes identically.  Thus the identity holds
+wherever both sides are defined.  Termination alone would not give this: it
+makes the two sides defined, not equal.
 
 For \eqref{eq:qchu2}, let $b\to0$ in \Cref{thm:q-pfaff}, with its other numerator parameter equal to $a$.  Then $(b;q)_k\to1$ and $(abq^{1-n}/c;q)_k\to1$, so the left side becomes the displayed ${}_2\phi_1$.  On the right,
 \[
@@ -3192,7 +3184,7 @@ These are nonzero, and by \Cref{prop:base-reversal} the hypotheses of \Cref{lem:
  \left(\frac{cq^{n}}{a}\right)^{n}
  \frac{(a;q)_n}{(c;q)_n}\,
  {}_2\phi_1\!\left[
- \begin{matrix}q^{-n},A\\ComplexNumbers\end{matrix};q,q\right].
+ \begin{matrix}q^{-n},A\\C\end{matrix};q,q\right].
 \]
 % ed.: the ARTICLE asserts that reversal returns \eqref{eq:qchu2} at the SAME
 % ed.: parameters $(a,c)$; it in fact returns it at the reflected pair
@@ -3202,7 +3194,7 @@ These are nonzero, and by \Cref{prop:base-reversal} the hypotheses of \Cref{lem:
 The left side is $(c/a;q)_n/(c;q)_n$ by \eqref{eq:qchu1}, and $c/a=C/A$.  Solving for the remaining series and using $a/(cq^{n})=A/(Cq^{n})$,
 \[
  {}_2\phi_1\!\left[
- \begin{matrix}q^{-n},A\\ComplexNumbers\end{matrix};q,q\right]
+ \begin{matrix}q^{-n},A\\C\end{matrix};q,q\right]
  =(-1)^nq^{\binom{n+1}{2}}
  \left(\frac{A}{Cq^{n}}\right)^{n}
  \frac{(C/A;q)_n}{(a;q)_n}.
@@ -3210,7 +3202,7 @@ The left side is $(c/a;q)_n/(c;q)_n$ by \eqref{eq:qchu1}, and $c/a=C/A$.  Solvin
 By \Cref{prop:base-reversal} once more, $(a;q)_n=(q^{1-n}/C;q)_n=(-C)^{-n}q^{-\binom n2}(C;q)_n$.  Substituting and cancelling $C^{n}$ and the two signs,
 \[
  {}_2\phi_1\!\left[
- \begin{matrix}q^{-n},A\\ComplexNumbers\end{matrix};q,q\right]
+ \begin{matrix}q^{-n},A\\C\end{matrix};q,q\right]
  =q^{\binom{n+1}{2}+\binom n2-n^2}\,A^{n}\frac{(C/A;q)_n}{(C;q)_n}
  =A^{n}\frac{(C/A;q)_n}{(C;q)_n},
 \]
@@ -4100,8 +4092,12 @@ $\GaussianBinomial{4}{2}{q}=1+q+2q^2+q^3+q^4$, with the outer $q$-powers
 $q^{\binom{-2}{2}}=q^{3}$, $q^{\binom{-1}{2}}=q$ and $q^{\binom22}=q$.
 \end{example}
 
-\begin{corollary}[Second proof of Jacobi's triple product]\label{cor:jtp-from-finite}
-Let $\AbsoluteValue q<1$ and $z\ne0$.  Letting $N\to\infty$ in \eqref{eq:finite-jtp} and multiplying by $(q;q)_\infty$ yields \eqref{eq:jtp-minus}.  The passage to the limit is uniform on every closed annulus $r\le\AbsoluteValue z\le R$ with $0<r\le R$.
+\begin{corollary}[Finite-to-infinite triple-product convergence]\label{cor:jtp-from-finite}
+Let $\AbsoluteValue q<1$ and $z\ne0$.  As $N\to\infty$, the two sides of
+\eqref{eq:finite-jtp} converge uniformly on every closed annulus
+$r\le\AbsoluteValue z\le R$ with $0<r\le R$.  Their common limit is
+$(z;q)_\infty(q/z;q)_\infty$; multiplying the limiting series by
+$(q;q)_\infty$ recovers Jacobi's triple product \eqref{eq:jtp-minus}.
 \end{corollary}
 
 \begin{proof}
@@ -4169,7 +4165,7 @@ which is \eqref{eq:jtp-minus}.
 \end{proof}
 
 \begin{remark}[Two mechanisms for one identity]\label{rem:jtp-two-proofs}
-\Cref{thm:jtp} was proved above from a functional equation together with the Durfee-square evaluation of the constant Laurent coefficient.  \Cref{cor:jtp-from-finite} proves it instead from the polynomial identity \eqref{eq:finite-jtp}, whose only inputs are \Cref{thm:finite-qbinomial} and \Cref{thm:q-vandermonde}.  The second route separates algebra from analysis completely: \eqref{eq:finite-jtp} holds in $\IntegerNumbers[q][z,z^{-1}]$, and the entire analytic content is the single limit $\GaussianBinomial{2N}{N+k}{q}\to1/(q;q)_\infty$, which is the same finite-to-infinite stabilization recorded coefficientwise in \Cref{prop:partition-stabilization} and columnwise in \Cref{thm:fixed-column-limit}.  That separation is exactly the architecture recommended in \Cref{chap:formalization}.  Note also that \eqref{eq:finite-jtp} is genuinely finer than \eqref{eq:jtp-minus}: its coefficients are the central Gaussian coefficients $\GaussianBinomial{2N}{N+k}{q}$, which by \Cref{thm:qbinom-structure} are palindromic polynomials of degree $(N+k)(N-k)$, whereas in the limit every one of them collapses to the single $k$-independent factor $1/(q;q)_\infty$; what survives of the polynomial is not its constant term but its stabilised coefficient sequence, namely the partition numbers of \Cref{prop:partition-stabilization}.
+\Cref{thm:jtp} was proved above from a functional equation together with the Durfee-square evaluation of the constant Laurent coefficient.  \Cref{cor:jtp-from-finite} instead proves the stronger local-uniform convergence statement from the polynomial identity \eqref{eq:finite-jtp}, whose only inputs are \Cref{thm:finite-qbinomial} and \Cref{thm:q-vandermonde}; Jacobi's identity is then a consequence, not a second canonical assertion.  This route separates algebra from analysis completely: \eqref{eq:finite-jtp} holds in $\IntegerNumbers[q][z,z^{-1}]$, and the entire analytic content is the single limit $\GaussianBinomial{2N}{N+k}{q}\to1/(q;q)_\infty$, which is the same finite-to-infinite stabilization recorded coefficientwise in \Cref{prop:partition-stabilization} and columnwise in \Cref{thm:fixed-column-limit}.  That separation is exactly the architecture recommended in \Cref{chap:formalization}.  Note also that \eqref{eq:finite-jtp} is genuinely finer than \eqref{eq:jtp-minus}: its coefficients are the central Gaussian coefficients $\GaussianBinomial{2N}{N+k}{q}$, which by \Cref{thm:qbinom-structure} are palindromic polynomials of degree $(N+k)(N-k)$, whereas in the limit every one of them collapses to the single $k$-independent factor $1/(q;q)_\infty$; what survives of the polynomial is not its constant term but its stabilised coefficient sequence, namely the partition numbers of \Cref{prop:partition-stabilization}.
 \end{remark}
 
 \section{Euler's pentagonal number theorem}
@@ -4347,12 +4343,12 @@ Thus $\GaussianBinomial{m+k}{k}{q}$ converges coefficientwise to $1/(q;q)_\infty
 
 For brevity, write $(a)_n=(a;q)_n$ in this chapter.
 
-\begin{definition}
+\begin{definition}[Bailey pair]\label{qg:def-bailey-pair}
 Sequences $(\alpha_n)_{n\ge0}$ and $(\beta_n)_{n\ge0}$ form a \emph{Bailey pair relative to $a$} if
-\[
+\begin{equation}\label{eq:bailey-pair}
  \beta_n=\sum_{r=0}^{n}\frac{\alpha_r}{(q)_{n-r}(aq)_{n+r}}
  \qquad(n\ge0).
-\]
+\end{equation}
 \end{definition}
 
 \section{Bailey inversion}
@@ -5851,21 +5847,30 @@ Therefore the centered quantity $\EulerE^{Dt/2}\GaussianBinomial{n}{k}{\EulerE^{
 \section{Fixed \texorpdfstring{$q$}{q} and growing parameters}
 
 \begin{theorem}[Fixed-column limit]\label{thm:fixed-column-limit}
-If $0<\AbsoluteValue q<1$ and $k$ is fixed, then
-\[
- \lim_{n\to\infty}\GaussianBinomial{n}{k}{q}=\frac1{(q;q)_k}.
- \tag{19.5}\label{eq:fixed-column-limit}
-\]
-More precisely,
-\[
+If $\AbsoluteValue q<1$ and $k\in\NaturalNumbers$ is fixed, then
+\begin{align}
+ \lim_{n\to\infty}\GaussianBinomial{n}{k}{q}
+ &=\frac1{(q;q)_k},
+ \tag{19.5}\label{eq:fixed-column-limit}\\
+ \lim_{n\to\infty}\GaussianBinomial{n+k}{k}{q}
+ &=\frac1{(q;q)_k}.
+ \label{eq:fixed-column-shifted-limit}
+\end{align}
+If moreover $0<\AbsoluteValue q<1$, then, as $n\to\infty$,
+\begin{align}
  \GaussianBinomial{n}{k}{q}
- =\frac1{(q;q)_k}\left(1+O(\AbsoluteValue q^{n-k+1})\right).
- \tag{19.6}\label{eq:fixed-column-error}
-\]
+ &=\frac1{(q;q)_k}\left(1+O(\AbsoluteValue q^{n-k+1})\right),
+ \tag{19.6}\label{eq:fixed-column-error}\\
+ \GaussianBinomial{n+k}{k}{q}
+ &=\frac1{(q;q)_k}\left(1+O(\AbsoluteValue q^{n+1})\right).
+ \label{eq:fixed-column-shifted-error}
+\end{align}
 \end{theorem}
 
 \begin{proof}
-The product formula gives
+If $q=0$, then $(q;q)_k=1$ and both Gaussian coefficients are $1$ once
+$n\ge k$, so both limits are immediate.  Assume henceforth that
+$0<\AbsoluteValue q<1$.  The product formula gives
 \[
  \GaussianBinomial{n}{k}{q}=\frac{(q^{n-k+1};q)_k}{(q;q)_k}.
 \]
@@ -5874,7 +5879,10 @@ The numerator tends to $1$.  Since the number of factors is fixed,
  \prod_{j=0}^{k-1}(1-q^{n-k+1+j})
  =1+O(\AbsoluteValue q^{n-k+1}),
 \]
-which proves both assertions.
+which proves \eqref{eq:fixed-column-limit} and
+\eqref{eq:fixed-column-error}.  Replacing $n$ by $n+k$ gives
+\eqref{eq:fixed-column-shifted-limit} and
+\eqref{eq:fixed-column-shifted-error}.
 \end{proof}
 
 % ed.: replaces the former statement of thm:central-fixed-q (monograph lines
@@ -7210,7 +7218,7 @@ $N\ge L/b$ and $N-1\ge L/b-1$, so
 \]
 This proves \eqref{eq:log-gaussian-fourier-bound}.
 
-After the change of variables $L=\log(A t)$, the right side is a Gaussian in $L$ multiplied by $\EulerE^{L/2}$.  It therefore dominates every negative power of $t$.  More explicitly, for each $M$ the exponent
+After the change of variables $L=\log(A t)$, the right side is a Gaussian in $L$ multiplied by $\EulerE^{L/2}$.  It is therefore dominated by every negative power of $t$.  More explicitly, for each $M$ the exponent
 $-L^2/(2b)+(M+3/2)L$ tends to $-\infty$ quadratically, which proves integrability of $\AbsoluteValue t^M\varphi_q(t)$.
 \end{proof}
 
@@ -11664,34 +11672,10 @@ representation: an exact series whose $j$th term is a finite rational expression
 attached to the $j$th binary digit of $x$, which terminates on the grid and
 converges superexponentially off it.
 
-\begin{lemma}[Spline representation at a real argument]\label{lem:fabius-real-spline}
-For every $n\ge1$ and every real $t$ with $0\le t\le2^n$,
-\begin{equation}\label{eq:fabius-real-spline}
- F\!\left(\frac t{2^n}\right)
- =\frac{2^{-\binom n2}}{n!}
-  \sum_{r=0}^{2^n-1}\tau_r\,\Expectation\bigl(t-r-X\bigr)_+^{\,n},
-\end{equation}
-where $y_+=\max(y,0)$.
-\end{lemma}
-
-\begin{proof}
-By \eqref{eq:fabius-scaled-split} we may write $X=X_{1/2,n}+2^{-n}X'$ with $X'$
-an independent copy of $X$, so conditioning on $X'$ gives
-$F(y)=\Expectation\bigl[F_{1/2,n}(y-2^{-n}X')\bigr]$ for every real $y$, where
-$F_{1/2,n}$ is the distribution function of the truncation
-\eqref{eq:finite-geometric-uniform-sum} at $q=1/2$.  Integrating
-\eqref{eq:dyadic-thue-morse-spline} term by term, with
-$\int_0^{y}(u-c)_+^{\,n-1}\Differential u=(y-c)_+^{\,n}/n$,
-\[
- F_{1/2,n}(y)
- =\frac{2^{\binom{n+1}{2}}}{n!}\sum_{r=0}^{2^n-1}\tau_r
-  \left(y-\frac r{2^n}\right)_+^{\,n}.
-\]
-Put $y=t/2^n$ and extract the factor $2^{-n}$ from each positive part,
-$\bigl(2^{-n}(t-X'-r)\bigr)_+^{\,n}=2^{-n^2}(t-X'-r)_+^{\,n}$.  With
-$\binom{n+1}{2}-n^2=-\binom n2$ and $X'\overset d=X$ this is
-\eqref{eq:fabius-real-spline}.
-\end{proof}
+The unrestricted spline identity \eqref{eq:fabius-spline-expectation} already
+gives this representation for every real $t$, and therefore in particular on
+$0\le t\le2^n$.  The binary expansion below uses that stronger canonical
+lemma directly.
 
 \begin{corollary}[Local reduction identity]\label{cor:fabius-local-reduction}
 For every $n\ge1$ and every $\theta\in[0,1)$,
@@ -11703,7 +11687,7 @@ For every $n\ge1$ and every $\theta\in[0,1)$,
 
 \begin{proof}
 Both $t=\theta$ and $t=1+\theta$ lie in $[0,2]\subseteq[0,2^n]$, so
-\Cref{lem:fabius-real-spline} applies to each.  Since $0\le X\le1$, a term with
+\Cref{lem:fabius-spline-expectation} applies to each.  Since $0\le X\le1$, a term with
 $r\ge1$ in the sum for $t=\theta$ has $\theta-r-X\le\theta-1<0$ and drops out,
 leaving
 \[
@@ -12082,8 +12066,8 @@ Read \Cref{chap:geometric-filters,chap:halfbase-thuemorse,chap:geometric-uniform
 Every mathematical result in this book is intended, eventually, to have a
 machine-checked proof in the Lean development that accompanies the Fabius
 project~\cite{ReshetnikovProveIt2026}.  The table below is the exhaustive Lean
-crosswalk for the \emph{forward} part: the 248 labelled results inherited from
-the forward backbone together with all 36 labelled definitions and results
+crosswalk for the \emph{forward} part: it covers the labelled results inherited
+from the forward backbone together with all labelled definitions and results
 retained from the three general guides.  The branch-aware inverse part has a
 separate exhaustive source-to-canonical register in
 \Cref{sec:ref-concordance}; the machine-readable
@@ -12576,7 +12560,8 @@ convergence proof for \(\lvert z\rvert<1\)}\\[2pt]
 \texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}vandermonde'}\newline
 {\footnotesize\texttt{QBinomialVandermonde}}\\[2pt]
 \Cref{cor:central-vandermonde} & \statusexact &
-\texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}central}\newline
+\texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}central},
+\texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}central\_\allowbreak{}min}\newline
 {\footnotesize\texttt{QBinomialVandermonde}}\\[2pt]
 \Cref{cor:shifted-central-vandermonde} & \statusexact &
 \texttt{gaussianBinomial\_\allowbreak{}two\_\allowbreak{}mul\_\allowbreak{}int\_\allowbreak{}shifted\_\allowbreak{}central\_\allowbreak{}finsum}\newline
@@ -12630,12 +12615,10 @@ monoid carrying the module structure}\\[2pt]
 \multicolumn{3}{@{}l}{\itshape Partitions, words, paths, and inversion statistics}\\
 \midrule
 \Cref{thm:binary-inversions} & \statusnone & ---\\[2pt]
+\Cref{cor:qbinom-inversion-law} & \statusnone & ---\\[2pt]
 \Cref{thm:rectangle-partitions} & \statusnone & ---\\[2pt]
 \Cref{cor:partition-symmetries} & \statuspartial & \texttt{qBinomial\_\allowbreak{}symm}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
 \Cref{cor:path-area} & \statusnone & ---\\[2pt]
-\Cref{thm:durfee-qvand} & \statusexact &
-\texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}central\_\allowbreak{}min}\newline
-{\footnotesize\texttt{QBinomialVandermonde}}\\[2pt]
 \Cref{thm:qmult-inversions} & \statusnone & ---\\[2pt]
 \Cref{prop:rogers-szego-recurrence} & \statusnone & ---\\[2pt]
 \Cref{prop:rogers-szego-three-term} & \statusnone & ---\\[2pt]
@@ -12662,7 +12645,6 @@ monoid carrying the module structure}\\[2pt]
 \Cref{cor:euler-infinite} & \statusnone & ---\\[2pt]
 \Cref{cor:ratio-expansion} & \statusnone & ---\\[2pt]
 \Cref{prop:formal-qbinomial} & \statusnone & ---\\[2pt]
-\Cref{prop:fixed-k-limit} & \statusnone & ---\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Basic hypergeometric series}\\
 \midrule
@@ -13106,10 +13088,6 @@ exist, but the Fabius-moment reflection law is absent}\\[2pt]
 {\footnotesize\texttt{FabiusQBinomialTaylor};
 \texttt{FabiusRawQBinomialScalar}; only the $\theta=0$ and $\theta=-1$
 specializations are present}\\[2pt]
-\Cref{lem:fabius-real-spline} & \statuspartial &
-\texttt{fabiusUniformSpline\_eq\_tsum\_positivePart}\newline
-{\footnotesize\texttt{FabiusUniformSpline}; no named declaration gives the same
-expectation formula for real $t$}\\[2pt]
 \Cref{cor:fabius-local-reduction} & \statuspartial &
 \texttt{extendedFabius\_reduction}\newline
 {\footnotesize\texttt{TaylorReduction}; Lean has the binary reduction identity,

@@ -62,6 +62,15 @@ canonical destination label. This includes historical-status destinations for
 the retired Borwein-sign conjecture and the donor's already-developed
 bilateral-Bailey-lattice prompt.
 
+The same extractor generates all thirteen concordance columns, not only the
+immutable ten-column source projection. Its default mode exact-compares every
+generated editorial decision with the checked ledger. The explicit
+`--write-reviewed-csv` mode uses only the pinned revision, requires every
+override selector to match exactly once, validates a temporary serialization,
+and atomically installs the result. Thus later deduplication redirects and
+historical literature dispositions are reproducible rather than hidden manual
+edits.
+
 The concordance is deliberately result-level: it does not pretend to be a
 byte archive of repeated proof prose, remarks, formula tables, bibliographies,
 or publication renderings. The pinned Git revision supplies that complete

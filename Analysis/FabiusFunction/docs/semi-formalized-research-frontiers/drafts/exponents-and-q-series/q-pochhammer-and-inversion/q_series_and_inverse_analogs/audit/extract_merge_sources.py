@@ -4,8 +4,9 @@
 The reviewed ``source_concordance.csv`` contains editorial decisions which a
 text extractor cannot infer.  This program therefore treats the ten source
 columns as immutable, reconstructs them from the commit pinned by
-``MERGE_SOURCE_REVISION``, and compares them with the checked-in concordance.
-It never overwrites the reviewed CSV.
+``MERGE_SOURCE_REVISION``, and combines them with the explicit editorial maps
+below.  It compares the complete generated artifact with the checked-in
+concordance and overwrites it only when ``--write-reviewed-csv`` is requested.
 """
 
 from __future__ import annotations
@@ -14,9 +15,11 @@ import argparse
 import csv
 import hashlib
 import io
+import os
 import re
 import subprocess
 import sys
+import tempfile
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -332,6 +335,110 @@ INVERSE_REDIRECTS = {
     "thm:rouche-one-zero-disk": "thm:uq-rouche-disk-certificate",
     "thm:inverse-residual-transfer": "prop:uq-asymptotic-residual-transfer",
     "thm:qgamma-unique-minimum": "thm:qs-qgamma-minimum",
+    "thm:fr-geometric-density": (
+        "thm:geometric-uniform-basic|"
+        "thm:geometric-uniform-characteristic|"
+        "thm:geometric-uniform-fourier-decay|"
+        "thm:geometric-uniform-smooth-density|"
+        "prop:geometric-uniform-density-band|"
+        "thm:fr-geometric-density"
+    ),
+    "thm:fr-fabius-identification": (
+        "thm:probabilistic-fabius|prop:up-tail|thm:up-sinc-product|"
+        "thm:fr-fabius-identification"
+    ),
+    "thm:fr-thue-morse-splines": (
+        "thm:finite-uniform-spline|cor:finite-uniform-convergence|"
+        "thm:fr-thue-morse-splines"
+    ),
+    "thm:fr-cumulant-recovery": (
+        "thm:q-cumulants-uniform|thm:fr-cumulant-recovery"
+    ),
+    "thm:total-cumulant-identifiability": "thm:fr-total-identifiability",
+}
+
+Q_REDIRECTS = {
+    "thm:durfee-qvand": "cor:central-vandermonde",
+    "prop:fixed-k-limit": "thm:fixed-column-limit",
+    "lem:fabius-real-spline": "lem:fabius-spline-expectation",
+}
+
+Q_SOURCE_LINE_TARGETS = {
+    ("q_pochhammer_q_binomial_monograph", "1938"): (
+        "cor:qbinom-inversion-law"
+    ),
+    ("q_pochhammer_q_binomial_monograph", "4218"): "qg:def-bailey-pair",
+}
+
+Q_REDIRECT_NOTES = {
+    "thm:durfee-qvand": (
+        "Merged as the same identity into cor:central-vandermonde; its Durfee "
+        "argument is retained there as an alternate combinatorial proof."
+    ),
+    "prop:fixed-k-limit": (
+        "Merged into thm:fixed-column-limit, which adds an effective geometric "
+        "error term, the shifted limit, and the q=0 edge case."
+    ),
+    "lem:fabius-real-spline": (
+        "Merged into lem:fabius-spline-expectation, whose identical formula "
+        "holds for every real argument rather than only on the stated interval."
+    ),
+}
+
+INVERSE_STATUS_OVERRIDES = {
+    "prop:qs-qnumber-jets": "human-proved frontier result",
+    "thm:monotone-branch-certificate": "human-proved frontier result",
+}
+
+INVERSE_REDIRECT_NOTES = {
+    "thm:fr-geometric-density": (
+        "The repeated law, characteristic-function, decay, and smoothness claims "
+        "were merged into their stronger forward results; the historical label "
+        "now retains only the affine centered refinement."
+    ),
+    "thm:fr-fabius-identification": (
+        "The probabilistic identification, up-fold, and Fourier product were "
+        "merged into their forward owners; the historical label now owns only "
+        "abstract normalized-solution uniqueness."
+    ),
+    "thm:fr-thue-morse-splines": (
+        "The partial CDF is retained as a dyadic specialization of the general "
+        "weighted cube cut, and its one-sided sandwich reuses the canonical "
+        "coupling tail bound."
+    ),
+    "thm:fr-cumulant-recovery": (
+        "The cumulant calculation was merged into thm:q-cumulants-uniform; the "
+        "historical label retains strict base recovery and endpoint inversion."
+    ),
+    "thm:total-cumulant-identifiability": (
+        "Merged into thm:fr-total-identifiability via the raw-to-normalized scale "
+        "conversion a=s(1-q)."
+    ),
+}
+
+GUIDE_TARGET_OVERRIDES = {
+    ("q_series_monograph", "1547"): "qg:hist-borwein-sign-status",
+    ("q_series_monograph", "1699"): "qg:hist-bilateral-bailey-lattices",
+}
+
+GUIDE_STATUS_OVERRIDES = {
+    ("q_series_monograph", "1547"): "not applicable",
+    ("q_series_monograph", "1686"): "not applicable",
+    ("q_series_monograph", "1699"): "not applicable",
+}
+
+GUIDE_NOTE_OVERRIDES = {
+    ("q_series_monograph", "1547"): (
+        "Retired as a conjecture because the relevant Borwein positivity "
+        "questions are historically resolved; the canonical historical-status "
+        "paragraph records this without importing an external proof."
+    ),
+    ("q_series_monograph", "1699"): (
+        "Retired after literature review: Dousse--Jouhet--Konan established "
+        "bilateral Bailey lattices and Andrews--Gordon/Bressoud applications; "
+        "the canonical historical-status paragraph explains why the "
+        "unspecialized prompt is not a new frontier."
+    ),
 }
 
 
@@ -558,6 +665,58 @@ def status_for_proved_labels(labels: str, q_statuses: dict[str, str]) -> str:
     return "human-proved frontier result"
 
 
+NONASSERTION_DESTINATION_PREFIXES = ("def:", "qg:def-", "chap:", "qg:hist-")
+OPEN_DESTINATION_PREFIXES = ("conj:", "qg:prob-")
+
+
+def status_for_destinations(
+    labels: str, proved_statuses: dict[str, str]
+) -> str:
+    """Classify what the canonical destinations prove, not what donors did."""
+    targets = [piece for piece in labels.split("|") if piece]
+    substantive = [
+        target
+        for target in targets
+        if not target.startswith(NONASSERTION_DESTINATION_PREFIXES)
+    ]
+    if not substantive:
+        return "not applicable"
+    open_targets = [
+        target
+        for target in substantive
+        if target.startswith(OPEN_DESTINATION_PREFIXES)
+    ]
+    proved_targets = [target for target in substantive if target not in open_targets]
+    if open_targets and proved_targets:
+        raise ValueError(f"mixed open/proved canonical destinations: {labels!r}")
+    if open_targets:
+        return "conjecture"
+    if all(proved_statuses.get(target) == "Lean-proved" for target in proved_targets):
+        return "Lean-proved"
+    return "human-proved frontier result"
+
+
+def guide_disposition_note(disposition: str, target: str) -> str:
+    """Turn old audit codes into durable, label-based editorial prose."""
+    if re.search(r"(?:^|_)[AFM]\d+(?:_|$)|(?:^|_)A(?:_|$)", disposition):
+        destinations = target.replace("|", ", ")
+        if "split" in disposition:
+            return (
+                "Guide audit disposition: split and merged into canonical "
+                f"destinations {destinations}."
+            )
+        if "stronger" in disposition:
+            return (
+                "Guide audit disposition: merged into stronger canonical result "
+                f"{destinations}."
+            )
+        return (
+            "Guide audit disposition: merged into canonical result "
+            f"{destinations}."
+        )
+    return "Guide audit disposition: " + disposition.replace("_", " ") + "."
+
+
 def reviewed_rows(
     rows: list[dict[str, str]],
     groups: dict[str, str],
@@ -567,6 +726,7 @@ def reviewed_rows(
     inverse_statuses = inverse_status_projection()
     reviewed: list[dict[str, str]] = []
     seen_guide_keys: set[tuple[str, str]] = set()
+    override_usage: Counter[tuple[str, object]] = Counter()
 
     for source in rows:
         row = dict(source)
@@ -575,16 +735,32 @@ def reviewed_rows(
         label = source["source_label"]
 
         if group == "Q":
-            row["canonical_label"] = label
+            source_selector = source["source_package"], source["source_line"]
+            target = Q_SOURCE_LINE_TARGETS.get(
+                source_selector, Q_REDIRECTS.get(label, label)
+            )
+            if source_selector in Q_SOURCE_LINE_TARGETS:
+                override_usage["Q_SOURCE_LINE_TARGETS", source_selector] += 1
+            if label in Q_REDIRECTS:
+                override_usage["Q_REDIRECTS", label] += 1
+            row["canonical_label"] = target
             if kind in {"definition", "example", "algorithm"}:
                 row["canonical_status"] = "not applicable"
             elif kind == "conjecture":
                 row["canonical_status"] = "conjecture"
             else:
                 row["canonical_status"] = q_statuses.get(
-                    label, "human-proved frontier result"
+                    target, "human-proved frontier result"
                 )
-            if label:
+            if label in Q_REDIRECT_NOTES:
+                override_usage["Q_REDIRECT_NOTES", label] += 1
+                row["disposition_notes"] = Q_REDIRECT_NOTES[label]
+            elif source_selector in Q_SOURCE_LINE_TARGETS:
+                row["disposition_notes"] = (
+                    f"Assigned the stable canonical destination {target} to this "
+                    "historically unlabeled source result."
+                )
+            elif label:
                 row["disposition_notes"] = (
                     "Retained in the forward q-series backbone under its existing "
                     "canonical label."
@@ -598,18 +774,30 @@ def reviewed_rows(
 
         elif group == "inverse":
             target = INVERSE_REDIRECTS.get(label, label)
+            if label in INVERSE_REDIRECTS:
+                override_usage["INVERSE_REDIRECTS", label] += 1
             row["canonical_label"] = target
             if kind == "conjecture":
                 status = "conjecture"
             elif kind in {"definition", "example", "algorithm"}:
                 status = "not applicable"
+            elif label in INVERSE_STATUS_OVERRIDES:
+                override_usage["INVERSE_STATUS_OVERRIDES", label] += 1
+                status = INVERSE_STATUS_OVERRIDES[label]
+            elif kind in PROVED_KINDS:
+                combined_statuses = dict(q_statuses)
+                combined_statuses.update(inverse_statuses)
+                status = status_for_destinations(target, combined_statuses)
             else:
                 status = inverse_statuses.get(
                     target,
                     inverse_statuses.get(label, "human-proved frontier result"),
                 )
             row["canonical_status"] = status
-            if target != label:
+            if label in INVERSE_REDIRECT_NOTES:
+                override_usage["INVERSE_REDIRECT_NOTES", label] += 1
+                row["disposition_notes"] = INVERSE_REDIRECT_NOTES[label]
+            elif target != label:
                 row["disposition_notes"] = (
                     f"Merged as a duplicate or specialization into {target}; the "
                     "stronger retained inverse result carries the canonical proof."
@@ -626,29 +814,23 @@ def reviewed_rows(
                 raise ValueError(f"guide source row lacks editorial mapping: {key!r}")
             seen_guide_keys.add(key)
             target, disposition = guide_map[key]
+            if key in GUIDE_TARGET_OVERRIDES:
+                override_usage["GUIDE_TARGET_OVERRIDES", key] += 1
+                target = GUIDE_TARGET_OVERRIDES[key]
             row["canonical_label"] = target
-            if not target or disposition.startswith("retire") or disposition.startswith(
-                "retired"
-            ):
-                status = "not applicable"
-            elif kind == "definition":
-                status = "not applicable"
-            elif kind == "problem":
-                status = "conjecture"
-            elif kind == "conjecture":
-                status = (
-                    "human-proved frontier result"
-                    if "recast_as_proposition" in disposition
-                    else "conjecture"
-                )
-            elif kind in PROVED_KINDS:
-                status = status_for_proved_labels(target, q_statuses)
+            if key in GUIDE_STATUS_OVERRIDES:
+                override_usage["GUIDE_STATUS_OVERRIDES", key] += 1
+                status = GUIDE_STATUS_OVERRIDES[key]
             else:
-                status = "not applicable"
+                status = status_for_destinations(target, q_statuses)
             row["canonical_status"] = status
-            row["disposition_notes"] = (
-                "Guide audit disposition: " + disposition.replace("_", " ") + "."
-            )
+            if key in GUIDE_NOTE_OVERRIDES:
+                override_usage["GUIDE_NOTE_OVERRIDES", key] += 1
+                row["disposition_notes"] = GUIDE_NOTE_OVERRIDES[key]
+            else:
+                row["disposition_notes"] = guide_disposition_note(
+                    disposition, target
+                )
 
         reviewed.append(row)
 
@@ -659,6 +841,27 @@ def reviewed_rows(
         raise ValueError(
             f"guide editorial/source mismatch: missing={missing!r}, extra={extra!r}"
         )
+    override_tables = {
+        "Q_SOURCE_LINE_TARGETS": Q_SOURCE_LINE_TARGETS,
+        "Q_REDIRECTS": Q_REDIRECTS,
+        "Q_REDIRECT_NOTES": Q_REDIRECT_NOTES,
+        "INVERSE_REDIRECTS": INVERSE_REDIRECTS,
+        "INVERSE_STATUS_OVERRIDES": INVERSE_STATUS_OVERRIDES,
+        "INVERSE_REDIRECT_NOTES": INVERSE_REDIRECT_NOTES,
+        "GUIDE_TARGET_OVERRIDES": GUIDE_TARGET_OVERRIDES,
+        "GUIDE_STATUS_OVERRIDES": GUIDE_STATUS_OVERRIDES,
+        "GUIDE_NOTE_OVERRIDES": GUIDE_NOTE_OVERRIDES,
+    }
+    for table_name, table in override_tables.items():
+        bad = {
+            key: override_usage[table_name, key]
+            for key in table
+            if override_usage[table_name, key] != 1
+        }
+        if bad:
+            raise ValueError(
+                f"{table_name} selectors must match exactly once: {bad!r}"
+            )
     return reviewed
 
 
@@ -670,7 +873,9 @@ def source_projection_sha256(rows: list[dict[str, str]]) -> str:
     return hashlib.sha256(stream.getvalue().encode("utf-8")).hexdigest()
 
 
-def concordance_mismatches(rows: list[dict[str, str]], path: Path) -> list[str]:
+def concordance_mismatches(
+    expected_rows: list[dict[str, str]], path: Path
+) -> list[str]:
     with path.open(newline="", encoding="utf-8") as stream:
         reader = csv.DictReader(stream)
         retained = list(reader)
@@ -683,17 +888,22 @@ def concordance_mismatches(rows: list[dict[str, str]], path: Path) -> list[str]:
             f"concordance row count differs: retained={len(retained)}, "
             f"expected={EXPECTED_TOTAL}"
         )
-    if len(rows) != len(retained):
-        failures.append(f"row count differs: extracted={len(rows)}, retained={len(retained)}")
+    if len(expected_rows) != len(retained):
+        failures.append(
+            f"row count differs: generated={len(expected_rows)}, "
+            f"retained={len(retained)}"
+        )
     keys = [row.get("source_key", "") for row in retained]
     duplicates = [key for key, count in Counter(keys).items() if count > 1]
     if duplicates:
         failures.append("duplicate source keys: " + ", ".join(duplicates[:10]))
-    for index, (extracted, reviewed) in enumerate(zip(rows, retained), start=2):
-        for field in SOURCE_FIELDS:
-            if extracted[field] != reviewed.get(field, ""):
+    for index, (expected, reviewed) in enumerate(
+        zip(expected_rows, retained), start=2
+    ):
+        for field in ALL_FIELDS:
+            if expected[field] != reviewed.get(field, ""):
                 failures.append(
-                    f"CSV row {index} {field}: extracted={extracted[field]!r}, "
+                    f"CSV row {index} {field}: generated={expected[field]!r}, "
                     f"retained={reviewed.get(field, '')!r}"
                 )
                 if len(failures) >= 30:
@@ -733,6 +943,46 @@ def print_summary(rows: list[dict[str, str]], groups: dict[str, str]) -> None:
     print(f"without following proofs: {sum(row['source_proof_present'] == 'no' for row in rows)}")
 
 
+def write_reviewed_csv_atomically(
+    path: Path, rows: list[dict[str, str]]
+) -> None:
+    """Validate a temporary serialization before atomically replacing the ledger."""
+    temporary: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            newline="",
+            prefix=path.name + ".",
+            suffix=".tmp",
+            dir=path.parent,
+            delete=False,
+        ) as stream:
+            temporary = Path(stream.name)
+            writer = csv.DictWriter(stream, fieldnames=ALL_FIELDS, lineterminator="\n")
+            writer.writeheader()
+            writer.writerows(rows)
+            stream.flush()
+            os.fsync(stream.fileno())
+        failures = concordance_mismatches(rows, temporary)
+        if failures:
+            raise RuntimeError(
+                "temporary reviewed CSV failed exact comparison: "
+                + "; ".join(failures[:5])
+            )
+        os.replace(temporary, path)
+        temporary = None
+        failures = concordance_mismatches(rows, path)
+        if failures:
+            raise RuntimeError(
+                "installed reviewed CSV failed exact comparison: "
+                + "; ".join(failures[:5])
+            )
+    finally:
+        if temporary is not None and temporary.exists():
+            temporary.unlink()
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument(
@@ -744,17 +994,25 @@ def main() -> int:
         action="store_true",
         help="print immutable-source counts without requiring the concordance",
     )
-    parser.add_argument(
+    output = parser.add_mutually_exclusive_group()
+    output.add_argument(
         "--print-source-csv",
         action="store_true",
         help="write the immutable ten-column source projection to stdout",
     )
-    parser.add_argument(
+    output.add_argument(
         "--print-reviewed-csv",
         action="store_true",
         help="write the complete reviewed concordance to stdout",
     )
+    output.add_argument(
+        "--write-reviewed-csv",
+        action="store_true",
+        help="regenerate the checked-in complete reviewed concordance",
+    )
     args = parser.parse_args()
+    if args.write_reviewed_csv and args.revision is not None:
+        parser.error("--write-reviewed-csv requires audit/MERGE_SOURCE_REVISION")
 
     revision = args.revision or PIN_FILE.read_text(encoding="ascii").strip()
     commit, rows, groups, q_statuses = inventory_revision(revision)
@@ -773,10 +1031,17 @@ def main() -> int:
         writer.writerows(rows)
         return 0
 
+    generated_reviewed = reviewed_rows(rows, groups, q_statuses)
+
     if args.print_reviewed_csv:
         writer = csv.DictWriter(sys.stdout, fieldnames=ALL_FIELDS, lineterminator="\n")
         writer.writeheader()
-        writer.writerows(reviewed_rows(rows, groups, q_statuses))
+        writer.writerows(generated_reviewed)
+        return 0
+
+    if args.write_reviewed_csv:
+        write_reviewed_csv_atomically(CONCORDANCE, generated_reviewed)
+        print(f"wrote {len(generated_reviewed)} reviewed rows to {CONCORDANCE}")
         return 0
 
     print(f"merge source revision: {commit}")
@@ -786,7 +1051,7 @@ def main() -> int:
     if not CONCORDANCE.is_file():
         print(f"missing concordance: {CONCORDANCE}", file=sys.stderr)
         return 1
-    failures = concordance_mismatches(rows, CONCORDANCE)
+    failures = concordance_mismatches(generated_reviewed, CONCORDANCE)
     if failures:
         print("\nFAILED", file=sys.stderr)
         for failure in failures:

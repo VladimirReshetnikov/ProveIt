@@ -424,78 +424,25 @@ theorems.
 
 \subsection{Total cumulants identify the geometric uniform law}
 
-Let \(U_0,U_1,\ldots\) be independent random variables, each uniform on
-\([-1,1]\), and put
+Let \(\varepsilon_0,\varepsilon_1,\ldots\) be independent random variables,
+each uniform on \([-1,1]\), and put
 \[
- X_{\mu,c,q}=\mu+c\sum_{j=0}^{\infty}q^jU_j,
+ X_{\mu,c,q}=\mu+c\sum_{j=0}^{\infty}q^j\varepsilon_j,
  \qquad
  \mu\in\RealNumbers,\quad c>0,\quad 0<q<1.
 \]
 The series converges absolutely almost surely: with probability one all the
-inequalities \(\lvert U_j\rvert\le1\) hold, and then its absolute value is
+inequalities \(\lvert\varepsilon_j\rvert\le1\) hold, and then its absolute value is
 bounded by \(\sum_jq^j\).
 
-\begin{theorem}[Total-cumulant identifiability]
-\label{thm:total-cumulant-identifiability}
-Let \(M\), \(V\), and \(K\) denote respectively the mean, variance, and
-standardized fourth cumulant of \(X_{\mu,c,q}\), so
-\(K=\kappa_4(X_{\mu,c,q})/V^2\).  Then
-\[
- M=\mu,\qquad
- V=\frac{c^2}{3(1-q^2)},\qquad
- K=-\frac65\,\frac{1-q^2}{1+q^2}.
-\]
-The resulting map
-\[
- (\mu,c,q)\longmapsto(M,V,K)
-\]
-is a bijection from
-\(\RealNumbers\times(0,\infty)\times(0,1)\) onto
-\(\RealNumbers\times(0,\infty)\times(-6/5,0)\).  Its inverse is
-\[
- \mu=M,\qquad
- q=\sqrt{\frac{1+5K/6}{1-5K/6}},\qquad
- c=\sqrt{3V(1-q^2)}.
-\]
-\end{theorem}
-
-\begin{proof}
-For a uniform variable \(U\) on \([-1,1]\),
-\[
- \Expectation U=0,\qquad
- \Expectation U^2=\frac13,\qquad
- \Expectation U^4=\frac15.
-\]
-Consequently its second and fourth cumulants are
-\[
- \kappa_2(U)=\frac13,\qquad
- \kappa_4(U)=\Expectation U^4-3(\Expectation U^2)^2=-\frac{2}{15}.
-\]
-The partial sums converge to \(X_{\mu,c,q}\) in every \(L^r\), because their
-tails are bounded deterministically by a geometric series.  Their moments
-through order four therefore converge.  Independence, additivity of
-cumulants, and homogeneity of \(\kappa_r\) give
-\[
- \kappa_2(X_{\mu,c,q})
-  =\frac{c^2}{3}\sum_{j\ge0}q^{2j}
-  =\frac{c^2}{3(1-q^2)}
-\]
-and
-\[
- \kappa_4(X_{\mu,c,q})
-  =-\frac{2c^4}{15}\sum_{j\ge0}q^{4j}
-  =-\frac{2c^4}{15(1-q^4)}.
-\]
-Dividing the latter by the square of the former yields the displayed formula
-for \(K\).  Solving it gives
-\[
- q^2=\frac{1+5K/6}{1-5K/6}.
-\]
-As \(K\) runs from \(-6/5\) to \(0\), this expression runs strictly from
-\(0\) to \(1\).  The formulas for \(\mu\) and \(c\) then follow uniquely from
-\(M\) and \(V\), and they plainly reconstruct the prescribed triple.
-\end{proof}
-
+This is exactly the raw-series convention
+\(\widetilde W_{\mu,a,q}\) of
+\cref{eq:fr-raw-scale-family}, with \(a=c\).  The complete proof therefore
+appears once, in \cref{thm:fr-total-identifiability}.  Its raw-scale clause
+proves the full bijection from \((\mu,c,q)\) to mean, positive variance, and
+standardized fourth cumulant, together with all three inverse formulas.  This
+subsection records the source normalization and its disposition; it does not
+state or prove the same identifiability result a second time.
 Thus total cumulants identify the exact three-parameter model.  Stability
 under noisy cumulants, missing observations, or a perturbed digit law is a
 different problem; it becomes a theorem or conjecture only after the
@@ -850,7 +797,7 @@ Several former conjectures were deliberately not carried forward.
   not specify a topology, scaling, normalization, or limiting class.
 \item Total cumulant identifiability and discrete Gaussian uniqueness at a
   transcendental base were upgraded to
-  Theorems~\ref{thm:total-cumulant-identifiability}
+  Theorems~\ref{thm:fr-total-identifiability}
   and~\ref{thm:transcendental-gaussian-uniqueness}.
 \end{itemize}
 
@@ -943,7 +890,7 @@ Convergence, support, and self-similarity of Lean's normalized \([0,1]\)
 geometric uniform law.  If
 \(Z=(1-q)\sum_{j\ge0}q^jV_j\) and \(U_j=2V_j-1\), then
 \(\sum_{j\ge0}q^jU_j=(2Z-1)/(1-q)\).  This affine rescaling underlies
-Theorem~\ref{thm:total-cumulant-identifiability}. \\
+Theorem~\ref{thm:fr-total-identifiability}. \\
 
 \nolinkurl{GeometricSincCharacteristicFunction}
 &

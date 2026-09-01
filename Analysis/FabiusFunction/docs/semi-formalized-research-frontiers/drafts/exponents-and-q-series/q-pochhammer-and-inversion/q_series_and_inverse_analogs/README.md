@@ -58,9 +58,21 @@ python audit/validate_canonical.py
 ```
 
 It checks the complete input graph, balanced environments, unique labels,
-resolved references, proof coverage, both concordances---the 260-row inverse
-ledger and the completed 547-row five-publication ledger---and reproduction of
-both pinned source inventories.
+resolved references, immediate one-to-one ownership of a nonempty proof by
+every proved result, both concordances---the 260-row inverse ledger and the
+completed 547-row five-publication ledger---and reproduction of both pinned
+source inventories.  Canonical status describes the destination, not the
+donor's editorial disposition: a proved row with a live result destination
+may never be marked `not applicable`, even when the donor copy was retired.
+The larger ledger is reproduced, including all editorial columns, with
+
+```text
+python audit/extract_merge_sources.py
+```
+
+and may be regenerated explicitly with `--write-reviewed-csv`.  That write is
+atomic, is tied to `audit/MERGE_SOURCE_REVISION`, and fails if any editorial
+override does not match its pinned source exactly once.
 
 The fifteen status-labelled archival identity records have a separate exact
 finite check:

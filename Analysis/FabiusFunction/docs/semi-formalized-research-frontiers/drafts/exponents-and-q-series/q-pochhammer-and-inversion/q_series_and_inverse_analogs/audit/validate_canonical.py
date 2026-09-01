@@ -28,6 +28,7 @@ from extract_merge_sources import (
     SOURCE_GROUPS as MERGE_SOURCE_GROUPS,
     concordance_mismatches as merge_concordance_mismatches,
     inventory_revision as inventory_merge_revision,
+    reviewed_rows as reviewed_merge_rows,
 )
 
 
@@ -180,10 +181,33 @@ def check_proof_coverage(path: Path, text: str, failures: list[str]) -> Counter[
             continue
         next_begin = blocks[index + 1][1] if index + 1 < len(blocks) else len(clean)
         between = clean[end:next_begin]
-        if r"\begin{proof}" not in between:
+        proof_marker = r"\begin{proof}"
+        proof_count = between.count(proof_marker)
+        if proof_count == 0:
             failures.append(
                 f"{path.name}:{line}: {name} has no proof before the next result"
             )
+            continue
+        if proof_count != 1:
+            failures.append(
+                f"{path.name}:{line}: {name} owns {proof_count} proofs before "
+                "the next result; expected exactly one"
+            )
+        proof_start = between.find(proof_marker)
+        if between[:proof_start].strip():
+            failures.append(
+                f"{path.name}:{line}: substantive material intervenes between "
+                f"the {name} and its proof"
+            )
+        proof_end = between.find(r"\end{proof}", proof_start + len(proof_marker))
+        if proof_end < 0:
+            failures.append(
+                f"{path.name}:{line}: {name} proof does not close before the next result"
+            )
+            continue
+        proof_body = between[proof_start + len(proof_marker) : proof_end]
+        if not re.search(r"[A-Za-z0-9]", proof_body):
+            failures.append(f"{path.name}:{line}: {name} has an empty proof body")
     return counts
 
 
@@ -413,7 +437,6 @@ def check_merge_concordance(
         key = row.get("source_key", "<missing source_key>")
         kind = row.get("source_kind", "").strip()
         package = row.get("source_package", "").strip()
-        source_label = row.get("source_label", "").strip()
         raw_label = row.get("canonical_label", "")
         status = row.get("canonical_status", "").strip()
         disposition = row.get("disposition_notes", "").strip()
@@ -430,9 +453,24 @@ def check_merge_concordance(
             failures.append(
                 f"{key}: retired guide result has no explicit canonical destination"
             )
+        if group == "guides" and re.search(
+            r"\b[AFM]\d+\b|\bstronger A\b", disposition
+        ):
+            failures.append(
+                f"{key}: guide disposition contains an unstable audit identifier"
+            )
 
         if status not in CANONICAL_STATUSES:
             failures.append(f"{key}: unknown merge canonical status {status!r}")
+        if (
+            kind in PROVED_ENVS
+            and status == "not applicable"
+            and destinations
+        ):
+            failures.append(
+                f"{key}: proved source result has a canonical destination but is "
+                "marked not applicable; status must describe the destination"
+            )
         for destination in destinations:
             if destination not in canonical_labels:
                 failures.append(
@@ -444,13 +482,7 @@ def check_merge_concordance(
             "human-proved frontier result",
             "conjecture",
         }
-        retained_without_label = (
-            retained_status
-            and not destinations
-            and not source_label
-            and disposition.startswith("Retained as the unlabeled canonical ")
-        )
-        if retained_status and not destinations and not retained_without_label:
+        if retained_status and not destinations:
             failures.append(
                 f"{key}: retained merge result has no canonical destination"
             )
@@ -521,8 +553,9 @@ def check_merge_source_snapshot(
         pin = MERGE_SOURCE_REVISION.read_text(encoding="utf-8").strip()
         if not pin:
             raise ValueError("MERGE_SOURCE_REVISION is empty")
-        commit, rows, groups, _q_statuses = inventory_merge_revision(pin)
-        mismatches = merge_concordance_mismatches(rows, MERGE_CONCORDANCE)
+        commit, rows, groups, q_statuses = inventory_merge_revision(pin)
+        generated = reviewed_merge_rows(rows, groups, q_statuses)
+        mismatches = merge_concordance_mismatches(generated, MERGE_CONCORDANCE)
         failures.extend(
             f"merge source snapshot: {message}" for message in mismatches
         )
