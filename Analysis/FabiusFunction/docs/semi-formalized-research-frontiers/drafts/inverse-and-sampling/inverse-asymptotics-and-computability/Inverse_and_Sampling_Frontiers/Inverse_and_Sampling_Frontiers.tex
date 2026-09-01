@@ -2324,7 +2324,6 @@ V.~Reshetnikov,
 % extra macros for part 2
 \renewcommand{\headrulewidth}{0.35pt}
 \renewcommand{\headrule}{\hbox to\headwidth{\color{RuleGray}\leaders\hrule height \headrulewidth\hfill}}
-\newcommand{\fall}[2]{#1^{\underline{#2}}}
 \newcommand{\statusrepo}{\textsc{Repo}}
 \newcommand{\statuslit}{\textsc{Prior}}
 \newcommand{\statusnew}{\textsc{New}}
@@ -2422,7 +2421,7 @@ $A_n(x)=\Expectation(x+\ImaginaryUnit Z)^n$, giving exact sign alternation of th
 Finite dyadic convolution prefixes are identified exactly with normalized Barnes multiple Bernoulli
 polynomials at the period vector $(1,1/2,\ldots,2^{1-N})$.  Applying the complete Thue--Morse
 difference operator to these polynomials collapses them to one monomial, with a closed factor
-$2^{-N(N-1)/2}\fall nN$.  Tail self-similarity then shows that every finite-prefix polynomial is an
+$2^{-N(N-1)/2}\FallingFactorial{n}{N}$.  Tail self-similarity then shows that every finite-prefix polynomial is an
 \emph{exact} polynomial in $2^{-N}$ (or $4^{-N}$ after centering).  Gaussian $q$-binomial Lagrange
 weights therefore recover the infinite Kabaya--Iri polynomial exactly after finitely many prefix
 levels; this is Richardson extrapolation without a remainder.
@@ -3356,7 +3355,7 @@ Let $\eps_k=(-1)^{\BinaryDigitSum(k)}$.  For every $N\ge1$ and $n\ge0$,
  \boxed{
  \sum_{k=0}^{2^N-1}\eps_k
  P_n^{[N]}\!\left(x+\frac{k}{2^N}\right)
- =(-1)^N2^{-N(N+1)/2}\fall nN\,x^{n-N},
+ =(-1)^N2^{-N(N+1)/2}\FallingFactorial{n}{N}\,x^{n-N},
  }
  \label{p2:eq:TM-P-collapse}
 \end{equation}
@@ -3398,7 +3397,7 @@ With $s_N=1-2^{-N}$, for every $N\ge1$ and $n\ge0$,
  \boxed{
  \sum_{k=0}^{2^N-1}\eps_k
  A_n^{[N]}\!\left(x+s_N-\frac{k}{2^{N-1}}\right)
- =2^{-N(N-1)/2}\fall nN\,x^{n-N}.
+ =2^{-N(N-1)/2}\FallingFactorial{n}{N}\,x^{n-N}.
  }
  \label{p2:eq:TM-A-collapse}
 \end{equation}
@@ -4495,7 +4494,7 @@ For convenient reuse, the main formulas are collected here.
  \left(x+1-2^{-N}\mid1,\frac12,\ldots,2^{1-N}\right),\\
  \sum_{k<2^N}\eps_k
  A_n^{[N]}\left(x+1-2^{-N}-\frac{k}{2^{N-1}}\right)
- &=2^{-N(N-1)/2}\fall nN x^{n-N},\\[0.3em]
+ &=2^{-N(N-1)/2}\FallingFactorial{n}{N} x^{n-N},\\[0.3em]
  A_n^{[N]}(x)
  &=\sum_{r=0}^{\Floor{n/2}}
  \binom n{2r}m_{2r}4^{-Nr}A_{n-2r}(x),\\
