@@ -491,6 +491,7 @@ import FabiusFunction.QPochhammerIntegerIndex
 import FabiusFunction.QPartialFractions
 import FabiusFunction.PolynomialQTaylor
 import FabiusFunction.GaussianBinomialUniversal
+import FabiusFunction.GaussianBinomialPolynomialStructure
 import FabiusFunction.QPochhammerInfiniteBounds
 import FabiusFunction.HeineTransformation
 import FabiusFunction.QGaussSummation
@@ -613,6 +614,25 @@ on all of `ℝ` to the signed extension with error at most `2⁻ᵖ`, while the
 finite binary-reduction telescope through scale `N ≥ 1` converges uniformly
 with error at most `2^(1-N)`.
 
+The inverse now has the same full computable-real interface.  A generic
+tolerant-bisection layer proves that every computably dyadically approximable
+strict monotone bijection of `[0,1]` has a sequentially computable inverse once
+a computable positive reciprocal inverse modulus is supplied.  Its certified
+three-way comparisons never decide equality: a large signed difference safely
+shrinks the bracket, while an inconclusive result already meets the requested
+inverse tolerance.  Specializing the construction to `fabiusReal`, clamping
+input names to `[0,1]`, and combining it with the logarithmic Delta modulus
+proves `fabiusInv_isComputableRealFunction` for every bounded Fabius witness.
+This is a computability certificate for the total inverse, not an input-bit
+running-time theorem or an exact least endpoint-mass denominator.
+
+The q-calculus surface further includes finite-prefix infinite-product bounds,
+the Heine transformation and q-Gauss summation, a ratio-defined complex-order
+q-Pochhammer symbol, general basic-hypergeometric terms with their convergence
+criteria, and a division-free recursive q-multinomial coefficient.  These six
+modules expose exactly six definitions and thirty theorems; their explicit
+strict-contraction, nonvanishing, and denominator hypotheses are retained.
+
 The zeta–Lambert tail calculus of the Thue–Morse frontier results is
 formalized end to end.  The engine is the Euler log transform: for any
 absolutely summable family with all norms below one, over any index type,
@@ -629,6 +649,26 @@ prefix–corrections–tail form of `Φ`.  The even zeta values enter as
 elementary series with positivity, antitonicity, the closed evaluations
 `ζ(2) = π²/6` and `ζ(4) = π⁴/90`, the Bernoulli form, and agreement with
 `riemannZeta`.
+
+The prime-power valuation leaf has no definitions and six theorems.  Besides
+the additive and subtraction formulas for row `p ^ m`, it proves that every
+entry of row `p ^ m - 1` is a `p`-adic unit and, for exactly
+`0 < j < p ^ m`, that
+`vₚ ((p ^ m - 2).choose (j - 1)) = vₚ(j)`.  The two dyadic wrappers give the
+ordinary comb-weight formula and this endpoint-flat companion.  The strict
+upper bound is essential: at `j = p ^ m` the companion binomial coefficient
+is outside its row and hence zero.
+
+The spectral q-Pochhammer layer now also exposes a zero-definition,
+three-theorem locally uniform outer-product API.  For every complex `q` with
+`‖q‖ < 1`, including `q = 0`, the functions
+`z ↦ complexQPochhammerInf (z ^ 2 / (k + 1) ^ 2) (q ^ 2)` have a locally
+uniform product on all of `ℂ` equal to `geometricSincProduct q`; the other two
+theorems are its dyadic Rvachev-product and bounded-Fabius specializations.
+This closes the outer normal-convergence clause only.  It does not package the
+centered characteristic-function/MGF form, an outside-disk reciprocal
+formula, a pole divisor, or the zero--pole exchange of the compound spectral
+theorem.
 
 The generalized-product layer also carries every finite natural-linear
 identity between admissible exponent sequences to an exact product identity.
