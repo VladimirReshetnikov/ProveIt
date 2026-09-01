@@ -978,6 +978,16 @@ For all $0\le k\le n$, the Gaussian coefficient $\GaussianBinomial{n}{k}{q}$ bel
 Induct on $n$.  The boundary values are $1$.  Either recurrence in \Cref{thm:qpascal} expresses an interior coefficient as a sum of two polynomials with nonnegative integral coefficients.
 \end{proof}
 
+\begin{remark}[Exact universal polynomial in Lean]
+The theorem
+\lean{Fabius.gaussianBinomial_eq_eval₂_universal} in
+\path{GaussianBinomialUniversal.lean} identifies every Gaussian coefficient
+over a commutative semiring with the evaluation of the universal polynomial
+\(GaussianBinomial{n}{k}{X}\in\NaturalNumbers[X]\).  Thus the polynomiality
+and coefficientwise nonnegativity asserted in \Cref{cor:positivity} are
+\statusexact{} in Lean, without a quotient or a nonvanishing hypothesis.
+\end{remark}
+
 \section{Symmetry, reciprocity, and degree}
 
 \begin{theorem}[Elementary structure]\label{thm:qbinom-structure}
@@ -1020,9 +1030,9 @@ Writing \(\GaussianBinomial{n}{k}{q}=\sum_{j=0}^{k(n-k)}c_jq^j\) and comparing p
 \(c_j=c_{k(n-k)-j}\), which is precisely palindromicity.
 \end{proof}
 
-\begin{remark}[Exact reciprocal core in Lean]
-Items~\textup{(i)} and \textup{(ii)} have exact machine-checked counterparts.
-Symmetry is \lean{Fabius.gaussianBinomial_symm}.  Reciprocity is
+\begin{remark}[Exact polynomial structure in Lean]
+All four items have exact machine-checked counterparts.  Symmetry is
+\lean{Fabius.gaussianBinomial_symm}.  Reciprocity is
 \lean{Fabius.gaussianBinomial_reciprocity_units} in
 \path{QBinomialReciprocity.lean}: for every unit \(u\) in every commutative
 semiring and all \(n,k\in\NaturalNumbers\), including the zero extension above the
@@ -1033,9 +1043,17 @@ diagonal,
 The wrapper \lean{Fabius.gaussianBinomial_reciprocity} specializes this to a
 nonzero element of an arbitrary semifield.  Unlike the quotient proof above,
 the formal proof is a denominator-free induction on the two Pascal
-recurrences, so it remains valid with zero divisors.  Items~\textup{(iii)} and
-\textup{(iv)} are not yet represented as polynomial-degree and coefficient
-theorems; consequently \Cref{thm:qbinom-structure} remains \statuspartial.
+recurrences, so it remains valid with zero divisors.  In
+\path{GaussianBinomialPolynomialStructure.lean},
+\lean{Fabius.natDegree_gaussianBinomial_universal},
+\lean{Fabius.gaussianBinomial_universal_monic}, and
+\lean{Fabius.coeff_zero_gaussianBinomial_universal} give the exact degree,
+leading coefficient, and constant coefficient of the universal polynomial;
+\lean{Fabius.gaussianBinomial_universal_reflect} and
+\lean{Fabius.coeff_gaussianBinomial_universal_symm} give reflection and
+coefficient palindromicity.  These statements hold for every \(k\le n\),
+including both boundary columns, so \Cref{thm:qbinom-structure} is
+\statusexact.
 \end{remark}
 
 \begin{corollary}[Odd reciprocal degree at \(q=-1\)]
@@ -12467,9 +12485,9 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 64 are \statusexact, 78 are
-\statuspartial, 132 are \statusnone, and 8 are \statusna.  The original
-191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
+Of the 282 labelled forward results, 66 are \statusexact, 77 are
+\statuspartial, 131 are \statusnone, and 8 are \statusna.  The original
+191-result pre-Fabius core now has 38 \statusexact, 28 \statuspartial, 122
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
 definitions.  The later Fabius bridge contributes the remaining 57 rows.
@@ -12560,6 +12578,8 @@ theorems;\\
 use of \path{Fabius.finiteQPochhammerIn_zero_left} imports the unique
 declaration from \path{GaussianBinomialAtOne.lean};\\
 \path{QBinomialReciprocity.lean}: four theorems;\\
+\path{GaussianBinomialPolynomialStructure.lean}: zero definitions and five
+theorems;\\
 \path{GaussianBinomialAtNegOne.lean}: five theorems;\\
 \path{RvachevPochhammerFactorization.lean}: one definition and nine theorems;\\
 \path{GeometricCompleteHomogeneous.lean}: six theorems;\\
@@ -12590,6 +12610,20 @@ semifield.  The two \(q=-1\) consequences are universal commutative-ring
 identities, transported from the integer Gaussian polynomial, and the
 even-row odd-column statement includes columns above the row by zero
 extension.
+
+\item The five theorems of
+\path{GaussianBinomialPolynomialStructure.lean} are
+\path{Fabius.natDegree_gaussianBinomial_universal},
+\path{Fabius.gaussianBinomial_universal_monic},
+\path{Fabius.coeff_zero_gaussianBinomial_universal},
+\path{Fabius.gaussianBinomial_universal_reflect}, and
+\path{Fabius.coeff_gaussianBinomial_universal_symm}.  For every \(k\le n\),
+they give exact degree \(k(n-k)\), monicity, constant coefficient one,
+reflection in that exact degree, and coefficient palindromicity for the
+universal polynomial in \(\NaturalNumbers[X]\).  Together with symmetry,
+unit reciprocity, and the universal-evaluation theorem from
+\path{GaussianBinomialUniversal.lean}, this is the exact Lean counterpart of
+\Cref{cor:positivity,thm:qbinom-structure}.
 
 \item The five theorems of \path{GaussianBinomialAtNegOne.lean} are
 \path{Fabius.gaussianBinomial_neg_one_even_even},
@@ -12943,7 +12977,7 @@ inferred from a related finite identity.
 Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
 The algebra of $q$-shifted factorials & 10 & 2 & 3 & 0\\
-$q$-integers and Gaussian coefficients & 5 & 1 & 3 & 0\\
+$q$-integers and Gaussian coefficients & 7 & 0 & 2 & 0\\
 Finite $q$-binomial theorems and inversion & 9 & 1 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 2 & 3 & 0\\
 Partitions, words, paths, and inversion statistics & 3 & 1 & 5 & 0\\
@@ -12971,7 +13005,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 64 & 78 & 132 & 8\\
+\textbf{Forward total} & 66 & 77 & 131 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13102,12 +13136,22 @@ in which only $f'(1)$ enters; see \Cref{rem:classical-limit-formalization}}\\[2p
 the quotient form in any field with $(q;q)_k\ne0$, the cleared form in every
 commutative ring}\\[2pt]
 \Cref{thm:qpascal} & \statusexact & \texttt{gaussianBinomial\_\allowbreak{}succ\_\allowbreak{}succ\_\allowbreak{}alt}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
-\Cref{cor:positivity} & \statusnone & ---\\[2pt]
-\Cref{thm:qbinom-structure} & \statuspartial &
+\Cref{cor:positivity} & \statusexact &
+\texttt{gaussianBinomial\_\allowbreak{}eq\_\allowbreak{}eval₂\_\allowbreak{}universal}\newline
+{\footnotesize\texttt{GaussianBinomialUniversal}; every commutative semiring,
+as evaluation of the universal polynomial over \(\NaturalNumbers\), hence
+with nonnegative integral coefficients}\\[2pt]
+\Cref{thm:qbinom-structure} & \statusexact &
 \texttt{gaussianBinomial\_\allowbreak{}symm},
-\texttt{gaussianBinomial\_\allowbreak{}reciprocity\_\allowbreak{}units}\newline
+\texttt{gaussianBinomial\_\allowbreak{}reciprocity\_\allowbreak{}units},
+\texttt{natDegree\_\allowbreak{}gaussianBinomial\_\allowbreak{}universal},
+\texttt{gaussianBinomial\_\allowbreak{}universal\_\allowbreak{}monic},
+\texttt{coeff\_\allowbreak{}zero\_\allowbreak{}gaussianBinomial\_\allowbreak{}universal},
+\texttt{gaussianBinomial\_\allowbreak{}universal\_\allowbreak{}reflect},
+\texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}universal\_\allowbreak{}symm}\newline
 {\footnotesize\texttt{FiniteQBinomialCore}; \texttt{QBinomialReciprocity};
-items (i)--(ii) exact, polynomial degree and coefficient reversal still open}\\[2pt]
+\texttt{GaussianBinomialPolynomialStructure}; all four items exact for every
+\(k\le n\), including boundary columns}\\[2pt]
 \Cref{cor:qbinom-neg-one-odd} & \statusexact &
 \texttt{gaussianBinomial\_\allowbreak{}neg\_\allowbreak{}one\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}odd\_\allowbreak{}degree},
 \texttt{gaussianBinomial\_\allowbreak{}neg\_\allowbreak{}one\_\allowbreak{}even\_\allowbreak{}odd\_\allowbreak{}eq\_\allowbreak{}zero}\newline

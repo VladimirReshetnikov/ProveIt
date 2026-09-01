@@ -30,7 +30,7 @@ q-series tranche, in its formalization crosswalk. That source is a source-only
 successor to the fresh artifact receipt and requires a later synchronized
 three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 643 facade-reachable modules and 8,661 public declarations, with no
+contains 644 facade-reachable modules and 8,666 public declarations, with no
 missing module headers or declaration documentation.
 
 ## Detailed package record
@@ -104,13 +104,17 @@ Current packages and retained intake records:
   Exactly three guarded serial passes produced that pair; all 347 pages, A4
   boxes, text extraction, embedded/subset Type-1 fonts including Libertinus,
   absence of Type-3 fonts, and targeted visual review passed. The current
-  post-merge source has 14,088 lines and 657,425 bytes, with SHA-256
-  `791152ff41477e4f187d18edab195f1aa1232e9fbcafbbd536a62b24a7b8e799`.
+  post-merge source has 14,132 lines and 659,897 bytes, with SHA-256
+  `046f018324a681bc49dc391e482e3577fe60d708e4052170f1c4f5098566989e`.
   It carries the five-theorem `QPochhammerEntire.lean`, the generic
-  `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, and the
-  latest six-module q-series tranche. It postdates the fresh build checkpoint,
-  so the validated 347-page PDF remains an explicit source-pinned artifact;
-  the operational ledger records the actual current hashes of both. PDF files retained
+  `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, the latest
+  six-module q-series tranche, and the zero-definition/five-theorem
+  `GaussianBinomialPolynomialStructure.lean` surface. The forward crosswalk is
+  now 66 Exact, 77 Partial, 131 None, and 8 interface rows; the source ledger
+  is 65 Lean-proved, 413 human-proved frontier, 60 not applicable, and 9
+  conjectures. It postdates the fresh build checkpoint, so the validated
+  347-page PDF remains an explicit source-pinned artifact; the operational
+  ledger records the actual current hashes of both. PDF files retained
   beneath `assets/` are vector research figures, not manuscript builds.
   Manuscript result labels and numerical checks remain
   distinct from Lean verification.
@@ -790,14 +794,12 @@ claims about the current canonical source. The canonical synthesis's newer
 and is now a source-pinned receipt because the semantic-union source postdates
 that fresh build checkpoint.
 
-The latest validated forward formalization crosswalk has 284 labelled results:
-45 exact, 75 partial, 156 with no counterpart, and 8 interface-only. The
-pre-`c3720b763` checkpoint had 42 exact, 74 partial, 160 with no counterpart,
-and 8 interface-only among the same 284 rows. The original
-191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
-and 3 interface-only entries. The four integrated-guide chapters add 31
+The latest source-audited forward formalization crosswalk has 282 labelled
+results: 66 exact, 77 partial, 131 with no counterpart, and 8 interface-only.
+The original 191-result pre-Fabius core now has 38 exact, 28 partial, 122 with
+no counterpart, and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
-the later Fabius bridge contributes the remaining 56 rows. Its pointwise
+the later Fabius bridge contributes the remaining rows. Its pointwise
 inside-`q^2` Pochhammer factorization is now formal for every complex strict
 contraction, while the compound spectral theorem remains partial at its named
 centered/MGF wrappers, reciprocal outside-disk clause, and named local-uniform
@@ -805,7 +807,7 @@ or normal convergence of the outer Pochhammer product over its spectral
 index. The algebra of q-shifted factorials now accounts for 6 exact, 2
 partial, and 7
 unformalized results; the q-integer and Gaussian-coefficient chapter for
-3 exact, 2 partial, and 4 unformalized results. The finite
+7 exact, 0 partial, and 2 unformalized results. The finite
 q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
 unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
 unformalized results; and the basic-hypergeometric chapter for 1 exact, 0
@@ -834,9 +836,20 @@ compatibility spelling of its primary identity),
 `QPochhammerDissection.lean` (two theorems),
 `QPochhammerInfinite.lean` (one definition, 29 theorems),
 `QBinomialReciprocity.lean` (four theorems),
+`GaussianBinomialPolynomialStructure.lean` (zero definitions, five theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems),
 `RvachevPochhammerFactorization.lean` (one definition, nine theorems), and
 `QPochhammerEntire.lean` (five legacy compatibility wrappers).
+The five `GaussianBinomialPolynomialStructure` theorems are
+`natDegree_gaussianBinomial_universal`,
+`gaussianBinomial_universal_monic`,
+`coeff_zero_gaussianBinomial_universal`,
+`gaussianBinomial_universal_reflect`, and
+`coeff_gaussianBinomial_universal_symm`. They close exact degree, monicity,
+constant coefficient one, reflection, and coefficient palindromicity in the
+universal polynomial. The inverse-source proposition
+`prop:gq-positive-palindromic` remains partial because its assertion that the
+coefficient of `q` is one is not formalized.
 The five `GaussianBinomialAtNegOne` theorems are
 `gaussianBinomial_neg_one_even_even`,
 `gaussianBinomial_neg_one_odd_even`,

@@ -3806,10 +3806,11 @@ The two summability hypotheses in the comparison theorem are essential
 because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
-open interfaces.  This zero-definition/six-theorem leaf raises the live
-facade census to 630 modules and 8,552 public declarations.  This is a
-source-only overlay; the retained 167-page PDF is explicitly historical and
-has not been regenerated for this addition.
+open interfaces.  At its source-only checkpoint this zero-definition,
+six-theorem leaf raised the facade census to 630 modules and 8,552 public
+declarations.  The current facade union has 644 modules and 8,666 public
+declarations.  The retained 167-page PDF is explicitly historical and has not
+been regenerated for these later source additions.
 
 On the real axis the origin is the unique global point of unit modulus:
 \begin{equation}
@@ -6836,6 +6837,22 @@ semifield.  Over every commutative ring,
 \(\GaussianBinomial{2a}{2b+1}{-1}=0\), including the above-diagonal cases.  These are finite
 algebraic identities: they use no quotient formula, cancellation, integral-domain,
 characteristic, topology, or convergence hypothesis.
+
+The downstream path{GaussianBinomialPolynomialStructure.lean} has no public
+definitions and exactly five public theorems:
+lean{natDegree_gaussianBinomial_universal},
+lean{gaussianBinomial_universal_monic},
+lean{coeff_zero_gaussianBinomial_universal},
+lean{gaussianBinomial_universal_reflect}, and
+lean{coeff_gaussianBinomial_universal_symm}.  For (kle n), these state that
+the universal natural-coefficient polynomial
+(GaussianBinomial{n}{k}{X}inNaturalNumbers[X]) has exact natural degree
+(k(n-k)), is monic, has constant coefficient one, and is fixed by reflection
+in that degree.  Under the additional bound (dle k(n-k)), the last theorem
+identifies the coefficients in degrees (d) and (k(n-k)-d).  Together with
+the existing row symmetry and reciprocal identities, this closes the canonical
+forward q-binomial structure theorem.  No declaration in this five-theorem
+surface says that the coefficient of (q) is one.
 
 Four denominator-free product identities make this recursion especially useful downstream.
 For natural \(m,n\), and for \(k\le n\),
@@ -12480,10 +12497,12 @@ Rogers--Szeg\H{o} polynomial APIs &
 \path{RvachevPochhammerFactorization.lean}, \path{QPochhammerDissection.lean},
 \path{QPochhammerInfinite.lean}, \path{QPochhammerEntire.lean},
 \path{ReciprocalIntegerGammaZeros.lean}, \path{DyadicGammaOrder.lean}\\
-Gaussian (q=-1) first jets, Euler and infinite q-binomial expansions, Jacobi
-and pentagonal products, q-Pascal summation, Gaussian continuity, the quantum
+Gaussian (q=-1) first jets, universal Gaussian-polynomial degree and
+palindromicity, Euler and infinite q-binomial expansions, Jacobi and
+pentagonal products, q-Pascal summation, Gaussian continuity, the quantum
 binomial theorem, and Rogers--Szeg\H{o} polynomials &
 \path{GaussianBinomialAtNegOneDerivative.lean},
+\path{GaussianBinomialPolynomialStructure.lean},
 \path{QBinomialTheoremInfinite.lean}, \path{JacobiTripleProduct.lean},
 \path{QPascalSummation.lean}, \path{GaussianBinomialContinuity.lean},
 \path{QuantumBinomial.lean}, \path{RogersSzegoPolynomial.lean}\\
@@ -12588,6 +12607,7 @@ Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
 \path{DyadicCorrectness.lean}, \path{FiniteQBinomialCore.lean},
 \path{QBinomialReciprocity.lean},
+\path{GaussianBinomialPolynomialStructure.lean},
 \path{QPochhammerElementaryIdentities.lean},
 \path{QBinomialCauchy.lean}, \path{QBinomialVandermonde.lean},
 \path{HalfQBinomial.lean},

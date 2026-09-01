@@ -110,13 +110,15 @@ fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The current master TeX is a source-only successor to that checkpoint. Its
-14,088-line, 657,425-byte source has SHA-256
-`791152ff41477e4f187d18edab195f1aa1232e9fbcafbbd536a62b24a7b8e799`.
+14,132-line, 659,897-byte source has SHA-256
+`046f018324a681bc49dc391e482e3577fe60d708e4052170f1c4f5098566989e`.
 It includes exhaustive crosswalks for `QPochhammerEntire` (zero definitions
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
-theorems), and `QBinomialTheoremInfinite` (one definition and twenty-two
-theorems), together with expanded Euler, Jacobi, and Rogers--Szegő material.
+theorems), `QBinomialTheoremInfinite` (one definition and twenty-two
+theorems), and `GaussianBinomialPolynomialStructure` (zero definitions and
+five theorems), together with expanded Euler, Jacobi, and Rogers--Szegő
+material.
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
 derivative at every raw factor zero `a*q^j = 1` including `q = 0`, and
@@ -127,14 +129,22 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 64 Exact, 78 Partial, 132 None, and 8 interface rows; the
-191-result pre-Fabius core is 36/29/123/3. The compound outer spectral-product
-theorem remains Partial: local uniformity for one symbol as a function of its
-argument at fixed contracting nome does not establish normal convergence of
-the additional product over spectral scales.
+status ledger is 66 Exact, 77 Partial, 131 None, and 8 interface rows; the
+191-result pre-Fabius core is 38/28/122/3, and the q-integer/Gaussian chapter
+is 7/0/2/0.  The completed source concordance records 65 Lean-proved rows,
+413 human-proved frontier rows, 60 not-applicable rows, and 9 conjectures.
+The five new universal-polynomial declarations give exact degree, monicity,
+constant coefficient one, reflection, and coefficient palindromicity; they
+promote `thm:qbinom-structure` to Exact.  The independent inverse-source
+proposition `prop:gq-positive-palindromic` remains Partial because its
+coefficient-of-`q`-equals-one clause has no Lean counterpart. The compound
+outer spectral-product theorem remains Partial: local uniformity for one
+symbol as a function of its argument at fixed contracting nome does not
+establish normal convergence of the additional product over spectral scales.
 
-Source and PDF were synchronized by this build, and the root package checksum
-ledger (`SHA256SUMS`) was regenerated with `audit/build_package_checksums.py`
-afterwards. PDFs are rebuilt in batches, at most about once per hour, so
-source-only commits may precede the next synchronization; the ledger and the
-figures above always describe the retained PDF.
+The retained PDF and its named checkpoint source were synchronized by that
+build.  The current source now postdates the checkpoint, and the root package
+checksum ledger (`SHA256SUMS`) records the actual hashes of both.  No PDF was
+built for this source-only formalization crosswalk update; the 347-page PDF
+remains a historical, source-pinned artifact until the next synchronized
+three-pass build.
