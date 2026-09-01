@@ -18,4 +18,4 @@ The canonical package keeps each kind of record in one place:
   routes the unique retained scripts, data, outputs, and figures.
 
 The geometric q-series layer also cross-links to the
-[`q_pochhammer_q_binomial_monograph`](../../exponents-and-q-series/q_pochhammer_q_binomial_monograph/).
+[`q_pochhammer_q_binomial_monograph`](../../exponents-and-q-series/q-pochhammer-and-inversion/q_pochhammer_q_binomial_monograph/).
