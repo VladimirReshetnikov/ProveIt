@@ -77,8 +77,9 @@ pdflatex -interaction=nonstopmode -halt-on-error comb_interpolation_synthesis.te
 ```
 
 A successful command is not, by itself, the complete publication gate. The
-current canonical PDF was built from the final source in exactly three strict,
-serial passes on 2026-08-31. It has 155 A4 pages, 2,448,906 bytes, and SHA-256
+retained canonical PDF was built from the preceding publication source in
+exactly three strict, serial passes on 2026-08-31. It has 155 A4 pages,
+2,448,906 bytes, and SHA-256
 `d1f89b005bcae9afc9c70b4ccce632aa8c665ed68e98bacb2ff96827dd427095`.
 All 33 font rows are embedded and subset, seven are Libertinus faces, and none
 is Type 3. Every page has text, A4 geometry, zero rotation, and the same five
@@ -87,6 +88,11 @@ pages were inspected at full size. The final log has no TeX errors, undefined
 references or citations, rerun requests, duplicate destinations, or overfull
 boxes. Its 36 package warnings and six underfull boxes are the recorded,
 visually checked hyperref/caption/amsmath and paragraph-layout diagnostics.
+The later source-only crosswalk of `thm:weight-valuation` to
+`Fabius.twoPowChoose_padicValNat` changed
+`chapters/03_additive_dyadic.tex` but, by explicit instruction, did not rebuild
+the PDF.  These measurements therefore describe the retained publication
+artifact and do not assert render synchronization with the current chapter.
 
 ## Reproduce the computational evidence
 
@@ -125,6 +131,8 @@ reference, citation, historical-ledger, and companion-payload gates. Its Lean
 check confirms only that each curated declaration name occurs in its nominated
 module; it is not a live Lean census or theorem-type checker. The current root
 `SHA256SUMS` is the exhaustive operational ledger for every other permanent
-package file. The final PDF and page/font/text/visual inspections are complete;
-a fresh-checkout reproduction and a full rerun of every retained numerical
-script remain deliberately separate reproducibility work.
+package file. The PDF and page/font/text/visual inspections were complete at
+the preceding publication checkpoint; rendering the current valuation
+crosswalk is deliberately pending under the source-only update.  A
+fresh-checkout reproduction and a full rerun of every retained numerical
+script remain separate reproducibility work.

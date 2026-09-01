@@ -7,6 +7,13 @@ recorded checkpoint; full numerical replay and fresh-checkout reproduction
 remain separate. The immutable source baseline is
 `73f0b373126ef22a3b5dccadfa7b99d61d445345`.
 
+After that publication checkpoint, the source-only Lean crosswalk for
+`thm:weight-valuation` updated `chapters/03_additive_dyadic.tex` and the
+theorem concordance.  The canonical validator and live ledgers were refreshed,
+but the PDF was intentionally not rebuilt.  Consequently the PDF measurements
+below are historical validation of the retained artifact, not a claim that it
+renders the current chapter bytes.
+
 ## Completed source and evidence checks
 
 - The four pre-synthesis report trees contain exactly 180 files at the source
@@ -56,14 +63,14 @@ rewritten. They do not certify the current canonical payloads.
 
 - `python audit/validate_canonical.py` passes the canonical nine-file TeX
   graph, environment balance, 212 result environments (149 proof-required),
-  800 labels, 769 references, 62 bibliography keys, the 180-row source
+  800 labels, 770 references, 62 bibliography keys, the 180-row source
   disposition, the 151-row historical-ledger audit, 111 companion-payload
   provenance rows for 110 physical payloads and 114 live asset hashes, and the
   232-row theorem concordance. The concordance source projection is
   `a065b161c80786829033f1efd39bb5d1e4c521b9b9c4446959a73729a55718e0`.
 - The validator's Lean check is intentionally narrow: it confirms that the
   curated declaration name occurs in its nominated module. It does not invoke
-  Lean, compare theorem types, or claim that the one curated row is a complete
+  Lean, compare theorem types, or claim that the two curated rows are a complete
   census of current formal results.
 - The final source has 188 lines, 6,722 bytes, and SHA-256
   `92878edbef877a5e121c96cc80a003bd2137150550c8e05b5cd970ecefe6b248`.

@@ -109,7 +109,7 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 615 modules and 8,391 lexically
+The post-merge 2026-08-31 inventory contains 616 modules and 8,394 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  Relative to the 610/8,318 activation checkpoint, the initial exact
 union added five modules and 67 declarations.  The branch-point geometry and
@@ -134,8 +134,11 @@ addition to `RvachevDerivativeDistribution.lean`, the all-depth
 theorems `intervalIntegral_comp_normalized_iteratedDeriv_rvachev` and
 `map_normalized_iteratedDeriv_rvachev_restrict_Icc`.  The last pair gives the
 exact symmetric half-mixture first against continuous Banach-valued tests and
-then as a Borel pushforward equality.  The baseline records those zeroes, so
-every future source addition must preserve the
+then as a Borel pushforward equality.  The new leaf
+`PrimePowerBinomialValuation.lean` contributes three theorems:
+the additive and subtraction forms for an arbitrary prime-power Pascal row,
+and the strict-interior dyadic-comb specialization.  The baseline records
+those zeroes, so every future source addition must preserve the
 full invariant rather than merely avoid worsening a historical backlog.  Run
 the script for live numbers after merging concurrent source work.
 
