@@ -12198,10 +12198,13 @@ defines the complex symbol and proves its pointwise convergence for every
 contracting complex nome.  It also identifies every geometric sinc product
 at a strict complex contraction with the corresponding nome-\(q^2\)
 Pochhammer product, pointwise and globally in the complex argument; only its
-final two Rvachev wrappers fix the nome to \(1/4\).  This does not supply the
-book's named centered/MGF wrapper, outside-disk reciprocal formula, or
-local-uniform/normal-convergence theorem for the Pochhammer-product
-right-hand side.
+final two Rvachev wrappers fix the nome to \(1/4\).  The downstream
+\texttt{QPochhammerEntire} module now proves locally uniform convergence in
+the symbol variable, entireness, the exact factor-zero locus, and simplicity
+of every zero for every strict complex contraction, including \(q=0\).  The
+combined interface still does not supply the book's named centered/MGF
+wrapper, outside-disk reciprocal formula, or local-uniform/normal-convergence
+theorem for the \emph{outer rearranged} Pochhammer-product right-hand side.
 
 The promoted, strengthened, and new finite-$q$ and weighted
 symmetric-function rows in this edition were statically checked against the
@@ -12222,6 +12225,7 @@ compatibility spelling of the primary identity;\\
 \path{QBinomialReciprocity.lean}: four theorems;\\
 \path{GaussianBinomialAtNegOne.lean}: five theorems;\\
 \path{RvachevPochhammerFactorization.lean}: one definition and nine theorems;\\
+\path{QPochhammerEntire.lean}: zero definitions and four theorems;\\
 \path{GeometricCompleteHomogeneous.lean}: six theorems;\\
 \path{GeometricLagrangeCompleteHomogeneous.lean}: five theorems;\\
 \path{GeometricLagrangeQMoments.lean}: one definition and 37 theorems;\\
@@ -12311,6 +12315,31 @@ specialize to the fixed nome
 \Cref{thm:qF-spectral} is its named centered/MGF packaging, outside-disk
 reciprocal and zero--pole clauses, and named local-uniform or normal
 convergence of the Pochhammer-product right-hand side.
+
+\item The zero-definition, four-theorem module
+\path{QPochhammerEntire.lean} consists exactly of
+\path{Fabius.hasProdLocallyUniformly_complexQPochhammerInf},
+\path{Fabius.complexQPochhammerInf_differentiable},
+\path{Fabius.complexQPochhammerInf_eq_zero_iff}, and
+\path{Fabius.analyticOrderAt_complexQPochhammerInf_of_eq_zero}.
+For every complex \(q\) under exactly \(\lVert q\rVert<1\), the first theorem
+gives locally uniform convergence on the whole \(a\)-plane to
+\(a\mapsto(a;q)_\infty\), and the second proves that this function is entire.
+The third is the division-free equivalence
+\[
+ (a;q)_\infty=0
+ \quad\Longleftrightarrow\quad
+ \exists j\in\NaturalNumbers,\;1-aq^j=0,
+\]
+while the fourth says that every zero has analytic order one.  Consequently
+these four theorems cover all of \Cref{thm:poch-entire}: its printed premise
+\(0<\AbsoluteValue q<1\) makes \(q\ne0\), so the factor equation is equivalent
+to \(a=q^{-j}\), and analytic order one is precisely simplicity.  The Lean
+surface is stronger at the boundary \(q=0\), where the same factor form remains
+valid and the sole zero is \(a=1\).  It asserts nothing for
+\(\lVert q\rVert\ge1\), no joint holomorphy in \(q\), closed derivative or
+growth formula, reciprocal meromorphic continuation, or local-uniform
+convergence of the separate outer product over spectral indices.
 
 \item The final geometric-sinc tranche contributes four public theorems in
 \path{GeometricReciprocalGamma.lean}, namely
@@ -12564,7 +12593,14 @@ quotient additionally assuming \((q;q)_{N-k}\ne0\); root-safe numerator and
 cleared forms are also exported}\\[2pt]
 \Cref{thm:partial-fraction} & \statusnone & ---\\[2pt]
 \Cref{prop:logder-finite} & \statusnone & ---\\[2pt]
-\Cref{thm:poch-entire} & \statusnone & ---\\[2pt]
+\Cref{thm:poch-entire} & \statusexact &
+\texttt{hasProdLocallyUniformly\_\allowbreak{}complexQPochhammerInf},
+\texttt{complexQPochhammerInf\_\allowbreak{}differentiable},
+\texttt{complexQPochhammerInf\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff},
+\texttt{analyticOrderAt\_\allowbreak{}complexQPochhammerInf\_\allowbreak{}of\_\allowbreak{}eq\_\allowbreak{}zero}\newline
+{\footnotesize\texttt{QPochhammerEntire}; exact under \(\lVert q\rVert<1\);
+the theorem's \(q\ne0\) premise converts the factor-zero form to
+\(a=q^{-j}\), while Lean also covers \(q=0\)}\\[2pt]
 \Cref{prop:complex-concat} & \statusnone & ---\\[2pt]
 \Cref{prop:order-derivative} & \statusnone & ---\\[2pt]
 \Cref{thm:lambert-log} & \statuspartial & \texttt{tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}geom}\newline{\footnotesize\texttt{EulerLogTransform}}\\[2pt]

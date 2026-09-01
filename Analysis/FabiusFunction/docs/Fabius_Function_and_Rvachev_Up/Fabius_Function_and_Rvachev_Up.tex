@@ -3108,6 +3108,58 @@ Pochhammer product or joint holomorphy in \(q\), name the frontier's centered
 formula.
 \end{proof}
 
+\begin{theorem}[Entire complex q-Pochhammer factors and their simple zeros]
+\label{thm:complex-qpochhammer-entire-simple}
+Let \(q\in\ComplexNumbers\) satisfy \(\lVert q\rVert<1\).  Then the finite products
+\[
+ a\longmapsto\prod_{j=0}^{n-1}(1-aq^j)
+\]
+converge locally uniformly on \(\ComplexNumbers\) to
+\(a\mapsto(a;q)_{\infty,\ComplexNumbers}\), and this limit is entire.  Moreover,
+for every \(a\in\ComplexNumbers\),
+\begin{equation}
+ (a;q)_{\infty,\ComplexNumbers}=0
+ \quad\Longleftrightarrow\quad
+ \exists j\in\NaturalNumbers,\;1-aq^j=0,                 \label{eq:complex-qpochhammer-zero-locus}
+\end{equation}
+and every zero has analytic order one.  If \(q\ne0\), the right side of
+\eqref{eq:complex-qpochhammer-zero-locus} is equivalently
+\(a=q^{-j}\) for some \(j\); if \(q=0\), the unique zero is \(a=1\).
+\end{theorem}
+
+\begin{proof}[Human proof and exhaustive Lean crosswalk]
+On a compact set \(K\subset\ComplexNumbers\), put
+\(M=\max_{a\in K}\lVert a\rVert\).  The perturbations from one obey
+\[
+ \sum_{j=0}^{\infty}\sup_{a\in K}\lVert aq^j\rVert
+ \le M\sum_{j=0}^{\infty}\lVert q\rVert^j<\infty.
+\]
+The uniform infinite-product criterion therefore gives convergence uniformly
+on every compact set, and the Weierstrass theorem makes the limit entire.  An
+absolutely convergent product of nonzero factors is nonzero, so the product
+vanishes exactly when one displayed factor does.  Two distinct factors cannot
+vanish at the same \(a\): for \(q\ne0\) that would force two distinct powers of
+a strict contraction to agree, while for \(q=0\) only the zeroth factor can
+vanish.  Factoring out that unique linear term leaves a holomorphic cofactor
+which is nonzero at \(a\), proving that the zero is simple.
+
+The downstream module \path{QPochhammerEntire.lean} introduces no public
+definition and has exactly four public theorems:
+\lean{hasProdLocallyUniformly_complexQPochhammerInf},
+\lean{complexQPochhammerInf_differentiable},
+\lean{complexQPochhammerInf_eq_zero_iff}, and
+\lean{analyticOrderAt_complexQPochhammerInf_of_eq_zero}.
+They formalize, in order, the locally uniform product, entireness, the
+division-free equivalence \eqref{eq:complex-qpochhammer-zero-locus}, and
+analytic order one at every zero, always under exactly \(\lVert q\rVert<1\).
+The factor form is deliberately stronger than a reciprocal-power listing
+because it remains valid at \(q=0\).  The module does not treat
+\(\lVert q\rVert\ge1\), joint holomorphy in \(q\), a closed derivative formula,
+growth order, reciprocal meromorphic continuation, or locally uniform
+convergence of the outer rearranged product in
+\eqref{eq:geometric-complex-qpochhammer}.
+\end{proof}
+
 The exponent in the canonical product has a finite, base-generic double-counting
 origin that is useful independently of sinc products.  For \(b,N,J\in\NaturalNumbers\), put
 \[
@@ -5287,13 +5339,13 @@ not the analytic transfer expansion or its remainder estimates.
 \subsection{Rvachev moment--Appell deconvolution and polynomial synthesis}
 \label{sec:rvachev-moment-appell}
 
-At compiled source checkpoint \texttt{a3854643d},
+In the current compiled tree,
 \path{RvachevMomentAppell.lean} specializes the formal Bell and Appell engines
 to the Rvachev probability law.  Its six public definitions are
 \lean{rvachevRawMomentRat}, \lean{rvachevReciprocalMomentRat},
 \lean{rvachevAppellPolynomialRat}, \lean{rvachevAppellPolynomial}, and
 \lean{rvachevDeconvolvedPolynomial}, together with
-\lean{rvachevDeconvolutionLinearMap}.  Its thirty public theorems are
+\lean{rvachevDeconvolutionLinearMap}.  Its thirty-three public theorems are
 \lean{rvachevRawMomentRat_zero}, \lean{rvachevRawMomentRat_even},
 \lean{rvachevRawMomentRat_odd}, \lean{rvachevReciprocalMomentRat_zero},
 \lean{binomialConv_rvachevRawMomentRat_reciprocal},
@@ -5320,8 +5372,11 @@ to the Rvachev probability law.  Its six public definitions are
 \lean{leadingCoeff_rvachevDeconvolvedPolynomial},
 \lean{rvachevDeconvolvedPolynomial_eq_zero_iff},
 \lean{rvachevDeconvolutionLinearMap_injective},
-\lean{rvachevDeconvolvedPolynomial_injective}, and
-\lean{integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev}.
+\lean{rvachevDeconvolvedPolynomial_injective},
+\lean{integral_eval_rvachevDeconvolvedPolynomial_add_mul_rvachev},
+\lean{integral_eval_rvachevDeconvolvedPolynomial_sub_mul_rvachev},
+\lean{integral_eval_rvachevAppellPolynomial_sub_mul_rvachev}, and
+\lean{integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero}.
 
 Thus the full rational raw-moment sequence has the executable even moments at
 even indices and zero at odd indices; its formal binomial-convolution
@@ -5337,7 +5392,21 @@ bridges are
    \label{eq:rvachev-deconvolution-smoothing}
 \end{align}
 where \(\mathcal D_{\RvachevUp}P\) denotes
-\lean{rvachevDeconvolvedPolynomial}\(P\).  This coefficientwise operation sends
+\lean{rvachevDeconvolvedPolynomial}\(P\).
+Reflection invariance of the even Rvachev density gives the additional named
+centered identities
+\begin{align}
+ \int_{\RealNumbers} A_n(x-y)u_F(y)\Differential y&=x^n,
+   \label{eq:rvachev-appell-centered}\\
+ \int_{\RealNumbers} (\mathcal D_{\RvachevUp}P)(x-y)u_F(y)\Differential y&=P(x)
+   \label{eq:rvachev-deconvolution-centered}
+\end{align}
+These are respectively
+\lean{integral_eval_rvachevAppellPolynomial_sub_mul_rvachev} and
+\lean{integral_eval_rvachevDeconvolvedPolynomial_sub_mul_rvachev}.  For every
+positive \(n\),
+\lean{integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero} further says
+that \(A_n\) has Rvachev mean zero.  This coefficientwise operation sends
 a monomial and \(X^n\) to the correspondingly scaled and unscaled
 Rvachev--Appell polynomial.  Its triangular top term is exact: the coefficient
 in the original natural degree is unchanged, so both natural degree and
@@ -5345,16 +5414,19 @@ leading coefficient are preserved.  Its kernel is trivial, and both the
 linear-map package and the underlying operation are injective.  The linear-map
 package proves preservation of zero, addition, real scalar multiplication,
 finite sums, and multiplication by a constant polynomial; these are algebraic
-identities and do not assert an analytic reciprocal-MGF, differential-series,
-or Appell generating function.
+identities and do not assert an analytic reciprocal MGF or Appell generating
+series, a literal differential-operator expansion, reciprocal/deconvolution
+parity, or the displayed low reciprocal coefficients.
 
-At compiled source checkpoint \texttt{a3854643d},
+In the current compiled tree,
 \path{RvachevPolynomialSynthesis.lean} exports no public definitions and
-exactly four public theorems:
+exactly five public theorems:
 \lean{tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp},
 \lean{normalized_tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp},
-\lean{sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp}, and
-\lean{normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp}.
+\lean{sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp},
+\lean{normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp},
+and
+\lean{normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp}.
 For \(M\in\NaturalNumbers\setminus\{0\}\) and
 \(\deg P\le v_2(M)\), they give
 \begin{align}
@@ -5366,6 +5438,20 @@ For \(M\in\NaturalNumbers\setminus\{0\}\) and
 The first sum is Lean's global \texttt{tsum}; compact support makes it
 pointwise finite.  The second is the exact uniform support truncation, including
 the vanishing boundary atoms.
+
+The fifth theorem has arbitrary real phase \(\theta\) and arbitrary real
+evaluation point \(x\):
+\begin{equation}
+ P(x)=\frac1M\sum_{k\in\IntegerNumbers}
+  (\mathcal D_{\RvachevUp}P)\!\left(x-\frac{\theta+k}{M}\right)
+  u_F\!\left(\frac{\theta+k}{M}\right).
+ \label{eq:rvachev-polynomial-reproduction-arbitrary-phase}
+\end{equation}
+It assumes exactly \(M\ne0\) and \(\deg P\le v_2(M)\).  Thus the specialization
+\(M=2^N\) formalizes arbitrary-phase reproduction of every polynomial through
+degree \(n\le N\).  The Appell-lattice extension to degree \(N+1\) at
+parity-selected superconvergent phases, in particular the odd-\(N\) quarter
+phases, remains outside Lean.
 
 The current-tree module \path{LagrangeRvachevSynthesis.lean} has the exact
 public inventory of two definitions,
@@ -10829,8 +10915,8 @@ The six modules \path{RvachevMomentAppell.lean},
 \path{CompositeMeshSharpness.lean},
 \path{FabiusLegendreTranslateBlocks.lean}, and
 \path{FabiusLegendreTranslateSeries.lean} therefore have public
-definition/theorem inventories $6/30$, $0/4$, $2/7$, $1/7$, $6/7$, and $5/25$,
-respectively: exactly $100$ public declarations.  The fourth module proves
+definition/theorem inventories $6/33$, $0/5$, $2/7$, $1/7$, $6/7$, and $5/25$,
+respectively: exactly $104$ public declarations.  The fourth module proves
 least-mesh sharpness only for universal exactness on the complete polynomial
 space through a degree cutoff.  It does not prove minimality for an individual
 Legendre polynomial or a particular partial sum.  The six modules also do not
@@ -12048,10 +12134,10 @@ Fourier analysis &
 \path{PeakRayEnvelope.lean}, \path{GlobalDecayEnvelope.lean},
 \path{RvachevFourierDecay.lean}, \path{VarianceBookkeeping.lean},
 \path{BirkhoffVariance.lean}, \path{BirkhoffProductBridge.lean}\\
-Summable-scale products, geometric reciprocal-Gamma factorization, and the
-general complex Pochhammer product &
+Summable-scale products, geometric reciprocal-Gamma factorization, the general
+complex Pochhammer product, and its entire/simple-zero factor theory &
 \path{ScaledInfiniteProducts.lean}, \path{GeometricReciprocalGamma.lean},
-\path{RvachevPochhammerFactorization.lean},
+\path{RvachevPochhammerFactorization.lean}, \path{QPochhammerEntire.lean},
 \path{ReciprocalIntegerGammaZeros.lean}, \path{DyadicGammaOrder.lean}\\
 Reciprocal-Gamma first jets and the Thue--Morse Gamma tower &
 \path{ReciprocalGammaJets.lean}, \path{ThueMorseGammaTower.lean}\\

@@ -13,7 +13,7 @@ local general-$q$/endpoint-jet, Lagrange,
 revisions in `chapters/03_additive_dyadic.tex`,
 `chapters/90_reference_appendices.tex`, and
 `comb_interpolation_synthesis.tex`. The repository-wide documentation census
-at this merge checkpoint is 620 Lean modules and 8,438 public declarations.
+at this merge checkpoint is 621 Lean modules and 8,446 public declarations.
 The checked-in PDF was built from this final union and passed the complete
 publication gate. The root `SHA256SUMS` is the single exhaustive package
 ledger; there is no `assets/SHA256SUMS`.

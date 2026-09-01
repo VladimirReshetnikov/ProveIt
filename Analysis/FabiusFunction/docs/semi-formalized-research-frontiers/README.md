@@ -134,10 +134,17 @@ The inverse group also contains the in-progress canonical-source draft
 Its master and nine chapters, pinned 194-row raw source-result inventory,
 88-row source-asset disposition, and deduplicated 61-payload asset ledger are
 present; the asset ledger passes in full. The raw inventory is not the reviewed
-theorem concordance. `theorem_concordance.csv` and the canonical PDF are absent,
-so the source validator and publication gate remain pending and all five source
-packages stay live. Their existing PDFs remain source-package or historical
-artifacts, not renderings of the new canonical master.
+theorem concordance: it remains the immutable source projection.  The reviewed
+`theorem_concordance.csv` now preserves all 194 source rows, classifying 39 as
+Lean-proved and 106 as human-proved, with 10 conjectures, 15 open problems, and
+24 nonassertoric rows.  The centered Appell deconvolution, positive-degree
+Appell mean-zero, and arbitrarily phased polynomial-deconvolution rows have
+exact Lean counterparts; only the `0 <= n <= N` clause of Appell lattice
+reproduction is formalized, not its degree-`N+1` superconvergent-phase clause.
+The static source validator passes.  The canonical PDF is still absent, so the
+publication gate remains pending and all five source packages stay live.
+Their existing PDFs remain source-package or historical artifacts, not
+renderings of the new canonical master.
 
 Later the same day the groups other than the Fourier-decay corpus were
 **consolidated into volumes**, in two styles: the original members were

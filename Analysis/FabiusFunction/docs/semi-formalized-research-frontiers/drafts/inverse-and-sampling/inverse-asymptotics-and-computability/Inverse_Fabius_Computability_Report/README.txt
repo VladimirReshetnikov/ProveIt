@@ -1,16 +1,18 @@
 COMPUTABILITY OF THE INVERSE FABIUS FUNCTION
 =============================================
 
-CURRENT SYNCHRONIZED BUILD (2026-08-31)
----------------------------------------
+CURRENT SOURCE AND RETAINED PDF CHECKPOINT (2026-09-01)
+-------------------------------------------------------
 The current TeX has 2937 lines and SHA-256
-498749c2dd2a74c048a6446aba39260263540d2dea5e4a2f64f2a3d489e9a671.
+4cdb8a13e9c0a86cd15df6fc337ae12c0e3942e96b995cf77e52be725ab30515.
 It retains the Lagrange/synthesis crosswalk and local inverse-notation/source
-repairs, with the combined live audit updated to 620 modules and 8,438 public
+repairs, with the combined live audit updated to 621 modules and 8,446 public
 declarations.  Exactly three clean, strict, serial pdfLaTeX passes produced
-the current 42-page A4 PDF (712,447 bytes; SHA-256
+the retained 42-page A4 PDF (712,447 bytes; SHA-256
 dc8da9d476d6b5330aad0ac3253bab162ddcb944653b038bc0aede4be4fc3fe1).
-The source, PDF, and refreshed six-entry operational ledger are synchronized.
+That PDF predates the present census update. A fresh three-pass render is
+required before publication synchronization is claimed again; the operational
+ledger already verifies the current distinct source and retained PDF.
 
 Contents
 --------
@@ -21,7 +23,8 @@ inverse_fabius_computability.tex
     retaining the local inverse-notation and source repairs.
 
 inverse_fabius_computability.pdf
-    Current validated 42-page A4 rendering of the merged source.
+    Retained validated 42-page A4 rendering of the preceding source checkpoint;
+    it is pending a fresh render from the current source.
 
 inverse_fabius_computability_experiments.py
     Exact-rational Python supplement using only the standard library.  It
@@ -36,7 +39,8 @@ ARRIVAL_SHA256SUMS.txt
 
 SHA256SUMS.txt
     Refreshed six-entry operational payload ledger (the ledger itself is
-    intentionally not self-hashed); all six rows verify.
+    intentionally not self-hashed); all six rows verify the current distinct
+    source and retained-PDF payloads without asserting render synchronization.
 
 Arrival provenance
 ------------------
@@ -78,7 +82,7 @@ forward computability, strict density shape, the clamped inverse and its
 inverse identities/calculus, exact dyadic inverse evaluation, and the leading
 inverse endpoint equivalent.  The report names those exact declarations and
 keeps its remaining inverse-computability declarations unqualified and
-schematic.  The live union audit scans 620 Lean modules and 8,438 public
+schematic.  The live union audit scans 621 Lean modules and 8,446 public
 declarations with zero documentation/header gaps.  No unqualified worldwide
 novelty claim is made.
 
@@ -142,12 +146,13 @@ target tolerance 1/n.
 Build and validation
 --------------------
 The current 2937-line source uses the repository's canonical
-article/A4/27 mm/Libertinus style.  Starting from clean auxiliaries, exactly
-three strict serial pdfLaTeX passes produced the synchronized 42-page PDF with
+article/A4/27 mm/Libertinus style.  At the preceding source checkpoint, exactly
+three strict serial pdfLaTeX passes produced the retained 42-page PDF with
 populated title, author, subject, and keyword metadata.  All 42 pages are A4
 with zero rotation and contain extractable text.  All 22 font rows are
 embedded and subset, six are Libertinus, and no Type 3 font is used.  The
 final log has no errors, warnings, unresolved references or citations, rerun
 request, overfull box, or underfull box.  Pages 1, 21, and 42 were inspected
-visually.  Auxiliary sidecars were removed after validation, and the active
-six-entry ledger verifies the complete current payload.
+visually.  Auxiliary sidecars were removed after validation.  The active
+six-entry ledger verifies the complete current payload, but the census-only
+source update means the PDF is no longer claimed to render that source.

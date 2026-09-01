@@ -13,19 +13,21 @@ overlap:
   contains the central exponent/geometric-sinc synthesis and its
   negative/reciprocal and cyclotomic companion reports.
 
-The former `q-pochhammer-and-inversion/` subgroup name records a historical
-source location and is no longer a live directory. Every live package appears
-exactly once. The former three
+The former `q-pochhammer-and-inversion/` locations are recorded in pinned
+history; no live index or package remains at that path. Every live package
+appears exactly once. The former three
 general-q-series guides, forward q-Pochhammer/q-binomial monograph, and
 inverse-q synthesis have been dispositioned into
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/).
 Their earlier names, arrival hashes, and publication facts remain provenance,
-not parallel live documents. The documented upstream synthesis checkpoint is
-a verified 334-page A4 publication; replayed source updates require a fresh final-source
-build before source/PDF synchronization is claimed. Retained PDFs under its
-`assets/` tree are research figures, not alternate manuscript renderings. The
-current Lean audit contains 620 facade-reachable modules and 8,438 public
-declarations, with no missing module headers or declaration documentation.
+not parallel live documents. The canonical pre-`c3720b763` source has a
+verified reproducible 335-page A4 publication. Its source/PDF receipt remains
+valid, but the new four-theorem `QPochhammerEntire.lean` surface must be added
+to the formalization crosswalk before the final semantic-union source is rebuilt.
+Retained PDFs under its `assets/` tree are research figures, not alternate
+manuscript renderings. The current Lean audit contains 621 facade-reachable
+modules and 8,446 public declarations, with no missing module headers or
+declaration documentation.
 
 ## Detailed package record
 
@@ -88,16 +90,20 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The documented upstream `q_pochhammer_q_binomial_monograph.pdf` checkpoint is
-  a reproducible 334-page A4 render of the merged master (2,917,795 bytes;
-  SHA-256
-  `aa75c32926fb0d5b20d831f9df0be584073f1cbc4232c25facbd21d98b9f680d`).
-  It was built in three byte-identical serial passes; every font is embedded
-  and subsetted, including Libertinus, and all 334 pages passed render review.
-  Replayed q-series and formalization-crosswalk edits postdate that rendering,
-  so a fresh strict three-pass final-source build and ledger refresh remain
-  pending. PDF files retained beneath `assets/` are vector research figures,
-  not manuscript builds. Manuscript result labels and numerical checks remain
+  The current `q_pochhammer_q_binomial_monograph.pdf` is a reproducible
+  335-page A4 render of source SHA-256
+  `9b7ac11a815efa7f3c6ea08b9626c06143fd6b0d633fef6edfc8bc21c2f6783a`
+  (2,163,339 bytes; PDF SHA-256
+  `91c649d0c69628e134e71f1be6c39c3cbc96b91bfc63e456011083cf0e882f03`).
+  Exactly three strict serial passes produced the artifact; all 335 pages,
+  A4 media, metadata, text extraction, embedded/subset fonts including
+  Libertinus, absence of Type 3 fonts, and targeted visual review passed. This
+  remains a valid receipt for the pre-`c3720b763` source. The newly merged
+  `QPochhammerEntire.lean` API is not yet represented in the publication
+  crosswalk, so incorporating that four-theorem surface will create a new
+  final source that needs another strict three-pass build and ledger refresh.
+  PDF files retained beneath `assets/` are vector research figures, not
+  manuscript builds. Manuscript result labels and numerical checks remain
   distinct from Lean verification.
 
 - [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/),
@@ -739,7 +745,7 @@ volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Canonical forward/inverse publication:
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/)
-(documented 334-page upstream checkpoint; final-source rebuild pending) —
+(verified 335-page pre-`c3720b763` checkpoint; post-crosswalk rebuild pending) —
 *q-Series and Inverse q-Analogs:
 A Proof-Oriented Synthesis*. Its forward backbone proves from first principles
 the shifted-factorial, Gaussian, hypergeometric, theta, partition, Bailey,
@@ -757,11 +763,12 @@ pre-consolidation rendered checkpoint had 13,117 source lines (SHA-256
 and a 1,582,997-byte, 213-page PDF (SHA-256
 `7ee6f8f6d8e72228a5b20daa119caa4d834b11063f910b526897b2677a2ede7b`).
 Those figures identify a retired historical artifact; they are not build
-claims about the current canonical source. Likewise, the documented 334-page
-synthesis checkpoint predates the replayed source edits and is not claimed to render
-the current merged source.
+claims about the current canonical source. The canonical synthesis's newer
+335-page PDF does render its explicitly hashed pre-`c3720b763` source; it will
+become a historical source-pinned receipt once the `QPochhammerEntire.lean`
+crosswalk is incorporated and the resulting final union is rebuilt.
 
-The current forward formalization crosswalk has 284 labelled results: 42
+The pre-`c3720b763` forward formalization crosswalk has 284 labelled results: 42
 exact, 74 partial, 160 with no counterpart, and 8 interface-only. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
@@ -940,3 +947,17 @@ entire `S_q`, and real-frequency local and compact uniform convergence of the
 full phase-bearing prefixes.  There is still no named centered or MGF
 wrapper, no outside-disk reciprocal formula, and no named local-uniform or
 normal-convergence theorem for the Pochhammer-product right-hand side.
+
+`QPochhammerEntire.lean` adds exactly four public theorems beyond that
+pointwise product surface:
+`Fabius.hasProdLocallyUniformly_complexQPochhammerInf`,
+`Fabius.complexQPochhammerInf_differentiable`,
+`Fabius.complexQPochhammerInf_eq_zero_iff`, and
+`Fabius.analyticOrderAt_complexQPochhammerInf_of_eq_zero`. For every complex
+strict contraction, they prove locally uniform convergence in the parameter
+`a`, entire-ness of `a ↦ (a;q)_∞`, the exact factor-zero locus, and analytic
+order one at every zero. The division-free factor formulation includes the
+degenerate nome `q = 0`. These are proved, facade-reachable Lean results, but
+they postdate the 284-row publication crosswalk above; adding their exact
+human-readable counterparts and refreshed crosswalk rows is the outstanding
+source edit before the next canonical three-pass build.

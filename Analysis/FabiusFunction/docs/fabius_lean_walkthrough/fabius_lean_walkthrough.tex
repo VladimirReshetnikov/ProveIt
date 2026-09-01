@@ -1838,27 +1838,6 @@ locally uniform theorem concerns \(S_q\) as a complex-variable pure sinc product
 the full phase-bearing theorem is stated for real frequencies.  No complex-frequency
 analogue of the latter or uniform-convergence claim on all of \(\RealNumbers\) is made.
 The one-definition, nine-theorem module
-\nolinkurl{RvachevPochhammerFactorization.lean} then supplies the independent spectral
-rearrangement.  Besides the total \nolinkurl{complexQPochhammerInf} and its
-contracting-nome convergence API, the declarations
-\nolinkurl{summable_norm_sineTerm_qpow_pair},
-\nolinkurl{geometricSincProduct_eq_tprod_pair}, and
-\nolinkurl{geometricSincProduct_eq_tprod_complexQPochhammerInf} prove, for complex
-\(\lVert q\rVert<1\) and arbitrary \(z\),
-\[
- S_q(z)=\prod_{k\ge0}
- \left(\frac{z^2}{(k+1)^2};q^2\right)_\infty .
-\]
-The identity includes \(q=0\) and individual zero factors; its final two theorems are the
-dyadic nome-\(1/4\) Rvachev-product and bounded-Fabius Fourier specializations.  A named
-centered/MGF wrapper, the outside-disk reciprocal formula and zero--pole exchange, and a
-named local-uniform/normal-convergence theorem for the Pochhammer right-hand side remain
-outside this module.
-Rapid-decay bounds, Fourier inversion, a named centered family or MGF wrapper, explicit
-Bernoulli-cumulant and Bell-moment formulas and asymptotics, further transform formulas,
-and shape theory remain separate targets.
-
-The one-definition, nine-theorem module
 \nolinkurl{RvachevPochhammerFactorization.lean} gives a second, spectral
 description of this pure sinc product.  It defines
 \nolinkurl{complexQPochhammerInf} by
@@ -1901,6 +1880,30 @@ every bounded \nolinkurl{IsFabius} witness.  This module does not classify the
 Pochhammer zero lattice or multiplicities, construct a reciprocal zero--pole
 factorization, establish local-uniform or normal convergence of the rearranged
 Pochhammer product or joint holomorphy in \(q\), or treat \(\lVert q\rVert>1\).
+
+The downstream zero-definition, four-theorem leaf
+\nolinkurl{QPochhammerEntire.lean} closes the individual-factor convergence and
+zero-locus questions just left open.  Its exhaustive public API is
+\nolinkurl{hasProdLocallyUniformly_complexQPochhammerInf},
+\nolinkurl{complexQPochhammerInf_differentiable},
+\nolinkurl{complexQPochhammerInf_eq_zero_iff}, and
+\nolinkurl{analyticOrderAt_complexQPochhammerInf_of_eq_zero}.  For every complex
+\(q\) with \(\lVert q\rVert<1\), the first two promote
+\(a\mapsto(a;q)_\infty\) to a locally uniformly convergent product on the whole
+complex plane and an entire function.  The third gives the division-free zero locus
+\[
+ (a;q)_\infty=0
+ \quad\Longleftrightarrow\quad
+ \exists j\in\NaturalNumbers,\;1-aq^j=0,
+\]
+and the fourth proves that every such zero has analytic order one.  The factor-zero
+form deliberately includes the degenerate strict contraction \(q=0\), where the sole
+zero is \(a=1\).  This leaf does not define a new product, treat \(\lVert q\rVert\ge1\),
+or supply a closed derivative formula, growth order, reciprocal meromorphic
+continuation, joint holomorphy in \(q\), or a zero enumeration obtained by dividing by
+\(q^j\).  Rapid-decay bounds, Fourier inversion, a named centered family or MGF
+wrapper, explicit Bernoulli-cumulant and Bell-moment formulas and asymptotics, further
+transform formulas, and shape theory remain separate targets.
 
 The definition of \(F_q\), together with its monotonicity, range bounds, and
 measurability, is total in real \(q\).  If \(\lvert q\rvert<1\), then \(F_q\)
@@ -4812,6 +4815,7 @@ Exact Fabius primitive ladders & \nolinkurl{normalizedVolterra_extendedFabius}, 
 Fractional Volterra operator and order calculus & \nolinkurl{fractionalVolterra}, \nolinkurl{fractionalVolterra_add}, \nolinkurl{fractionalVolterra_affine}, \nolinkurl{fractionalVolterra_add_one_deriv} & \nolinkurl{FractionalVolterra.lean}, \nolinkurl{FractionalVolterraSemigroup.lean}, and \nolinkurl{FractionalVolterraCalculus.lean} \\
 Fractional Fabius--Rvachev shifts & \nolinkurl{fractionalVolterra_add_one_extendedFabius_of_nonneg}, \nolinkurl{fractionalVolterra_add_one_fabiusReal}, \nolinkurl{fractionalVolterra_add_one_rvachevUp} & \nolinkurl{FabiusFractionalVolterra.lean} \\
 Pointwise analytic finite filters & \nolinkurl{finiteAnalyticSeriesFilter}, \nolinkurl{geometricAnalyticSeriesFilter}, \nolinkurl{geometricLagrangeAnalyticSeriesFilter_shifted} & unconditional diagonal, exact-head/tail, and Gaussian-residual identities in \nolinkurl{AnalyticSeriesFilter.lean} \\
+Rvachev Appell deconvolution and arbitrary-phase polynomial reproduction & \nolinkurl{integral_eval_rvachevDeconvolvedPolynomial_sub_mul_rvachev}, \nolinkurl{integral_eval_rvachevAppellPolynomial_sub_mul_rvachev}, \nolinkurl{integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero}, and \nolinkurl{normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp} & The first three belong to the exact six-definition/thirty-three-theorem surface of \nolinkurl{RvachevMomentAppell.lean}: evenness converts additive smoothing into centered \(x-y\) convolution for every deconvolved polynomial and every Appell monomial, and every positive-degree Appell polynomial has Rvachev mean zero.  The fourth is the fifth theorem of the zero-definition/five-theorem \nolinkurl{RvachevPolynomialSynthesis.lean}: for \(M\ne0\), \(\deg P\le v_2(M)\), and arbitrary real \(\theta,x\), the normalized lattice sum of \((\mathcal D_{\RvachevUp}P)(x-M^{-1}(\theta+k))\RvachevUp(M^{-1}(\theta+k))\) is \(P(x)\).  Thus \(M=2^N\) formalizes arbitrary-phase reproduction through every degree \(n\le N\), but the Appell-lattice degree-\(N+1\) extension at parity-selected superconvergent phases, including odd-\(N\) quarter phases, remains outside Lean.  Neither module supplies an analytic reciprocal MGF or Appell generating series, a literal differential-operator expansion, reciprocal/deconvolution parity, or the displayed low reciprocal coefficients.  With the four unchanged downstream modules, the six-module tranche now contains 104 public declarations. \\
 Generic finite-node Lagrange--Rvachev dictionary & Definitions \nolinkurl{lagrangeRvachevDecoder}, \nolinkurl{lagrangeRvachevAtomCoefficient}; theorems \nolinkurl{natDegree_lagrangeBasis_le_card_sub_one}, \nolinkurl{natDegree_lagrangeInterpolate_le_card_sub_one}, \nolinkurl{normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp}, \nolinkurl{normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node}, \nolinkurl{lagrangeRvachevAtomCoefficient_eq_deconvolved_interpolate}, \nolinkurl{sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp}, \nolinkurl{sum_lagrangeRvachevDecoder_eq_one} & Exact two-definition/seven-theorem surface in \nolinkurl{LagrangeRvachevSynthesis.lean}.  It proves the generic finite-node cardinal synthesis, componentwise biorthogonality, linear data-to-atom transform, full interpolation loop, and unit row mass under the displayed mesh, interval, distinctness, and nonemptiness hypotheses.  It does not give a geometric Gaussian q-binomial/q-Pochhammer or elementary-symmetric decoder formula, a bundled matrix/right-inverse or stochastic-matrix wrapper, or an optimal/minimum-variation decoder. \\
 Exact even moment \(c_n\) & \nolinkurl{moment}, \nolinkurl{momentIntegral} & \nolinkurl{Arithmetic.lean}, \nolinkurl{Basic.lean}, and \nolinkurl{AnalyticMoments.lean} \\
 Normalized half moment \(d_n\) & \nolinkurl{halfMoment}, \nolinkurl{halfMomentIntegral} & \nolinkurl{Arithmetic.lean}, \nolinkurl{Basic.lean}, and \nolinkurl{AnalyticMoments.lean} \\
@@ -4826,6 +4830,7 @@ Affine independent-copy operator and uniqueness & \nolinkurl{affineIndependentCo
 Geometric uniform law \(\mu_q\) & \nolinkurl{geometricUniformDistribution}, \nolinkurl{geometricUniformDistribution_selfSimilar}, \nolinkurl{geometricUniformDistribution_support_eq_Icc}, \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar} & \nolinkurl{GeometricUniformLaw.lean} and \nolinkurl{GeometricUniformUniqueness.lean}; the characterization holds for \(\lvert q\rvert<1\) without support, density, or moment assumptions \\
 Fixed half--quarter multisection & \nolinkurl{evenCoordinates}, \nolinkurl{oddCoordinates}, \nolinkurl{geometricUniformSeries_one_half_multisection}, \nolinkurl{geometricUniformDistribution_one_half_multisection}, \nolinkurl{geometricUniformDistribution_one_half_conv_one_quarter} & \nolinkurl{GeometricUniformMultisection.lean}; fixed normalized two-section only \\
 General geometric-sinc Pochhammer factorization & \nolinkurl{complexQPochhammerInf}, \nolinkurl{summable_norm_sineTerm_qpow_pair}, \nolinkurl{geometricSincProduct_eq_tprod_pair}, \nolinkurl{geometricSincProduct_eq_tprod_complexQPochhammerInf}, \nolinkurl{rvachevFourierProduct_eq_tprod_complexQPochhammerInf}, \nolinkurl{rvachevFourier_eq_tprod_complexQPochhammerInf} & \nolinkurl{RvachevPochhammerFactorization.lean}; one definition and nine theorems, with the three additional symbol-convergence theorems listed in the text above \\
+Entire q-Pochhammer factor and simple-zero locus & \nolinkurl{hasProdLocallyUniformly_complexQPochhammerInf}, \nolinkurl{complexQPochhammerInf_differentiable}, \nolinkurl{complexQPochhammerInf_eq_zero_iff}, \nolinkurl{analyticOrderAt_complexQPochhammerInf_of_eq_zero} & Exhaustive zero-definition/four-theorem surface of \nolinkurl{QPochhammerEntire.lean}; for complex \(\lVert q\rVert<1\), locally uniform convergence in \(a\), entireness, the division-free factor-zero equivalence, and analytic order one at every zero, including \(q=0\); no claim for \(\lVert q\rVert\ge1\) \\
 Geometric CDF \(F_q\) and density \(f_q\) & \nolinkurl{geometricUniformCDF}, \nolinkurl{geometricUniformDensity}, \nolinkurl{geometricUniformDensity_zero}, \nolinkurl{geometricUniformDensity_nonpos_of_neg}, \nolinkurl{volume_withDensity_geometricUniformDensity_eq_zero_of_nonpos}, \nolinkurl{geometricUniformDistribution_ne_withDensity_geometricUniformDensity_of_nonpos}, \nolinkurl{geometricUniformCDF_hasDerivAt}, \nolinkurl{geometricUniformDistribution_eq_withDensity}, \nolinkurl{contDiff_geometricUniformCDF}, \nolinkurl{contDiff_geometricUniformDensity} & \nolinkurl{GeometricUniformCDF.lean} \\
 Weighted-sum CDF and half-base bridges & \nolinkurl{weightedSumCDF}, \nolinkurl{weightedSumCDF_eq_geometricUniformCDF_one_half}, \nolinkurl{geometricUniformCDF_one_half_eq_fabiusReal}, \nolinkurl{geometricUniformDensity_one_half_eq_rvachevUp} & \nolinkurl{ProbabilityRepresentation.lean} \\
 Totalized activation kernel \(p\) & \nolinkurl{activationProbability}, \nolinkurl{tanhDiv_eq_dslope}, \nolinkurl{activationProbability_le_min_one_sq_div_three}, \nolinkurl{activationProbability_mul_le_quadratic}, \nolinkurl{tendsto_activationProbability_mul_div_sq} & \nolinkurl{HyperbolicActivation.lean}, \nolinkurl{ActivationSeries.lean}, and \nolinkurl{ActivationAsymptotics.lean} \\
@@ -4963,6 +4968,7 @@ Module & Role in the development \\
 \nolinkurl{GeometricReciprocalGamma.lean} & Locally uniform convergence, pointwise multipliability and \nolinkurl{HasProd}, and entireness of the geometric sinc product, together with its reciprocal-Gamma reflection factorization. \\
 \nolinkurl{GeometricSincCharacteristicFunction.lean} & The four-theorem, zero-definition surface: two exact phase-bearing bridges from the geometric-uniform characteristic function to the rescaled geometric sinc product and paired reciprocal-Gamma factors, plus locally uniform convergence of the full phase-bearing prefixes on the real frequency line and uniform convergence on every compact real frequency set, for every \(\lvert q\rvert<1\), including zero and negative ratios. \\
 \nolinkurl{RvachevPochhammerFactorization.lean} & One definition and nine theorems: the total complex infinite Pochhammer product and its strict-contraction convergence API, absolute summability and paired scale--zero product, the global \(S_q(z)=\prod_{k\ge0}(z^2/(k+1)^2;q^2)_\infty\) factorization for complex \(\lVert q\rVert<1\), and its two dyadic Rvachev/Fabius specializations. \\
+\nolinkurl{QPochhammerEntire.lean} & Exactly four theorems and no public definitions: locally uniform convergence of \(a\mapsto(a;q)_\infty\) on \(\ComplexNumbers\), entireness, the exact division-free factor-zero locus, and simplicity of every zero for complex \(\lVert q\rVert<1\), including \(q=0\). \\
 \nolinkurl{GeometricUniformCDF.lean} & The named \(F_q\) and explicit \(f_q\), conditioning and interval-integral equations, pointwise derivative and exact positive-ratio \nolinkurl{withDensity} law, continuity, reflection, exterior zeros, ordinary/topological support containments, compact support, and \(C^\infty\) regularity under their exact parameter hypotheses.  It also proves that the selected total formula is zero at \(q=0\), nonpositive for \(q<0\), yields the zero clamped measure for \(q\le0\), and cannot represent \(\mu_q\) on the nonpositive contraction range. \\
 \nolinkurl{HyperbolicActivation.lean} & Four definitions and 58 theorems forming the totalized real hyperbolic-sinc, \nolinkurl{tanhDiv}, activation-odds, and activation-probability dictionary, with continuity, parity, positivity, exact odds bridges, global elementary bounds, and the canonical identification \nolinkurl{tanhDiv_eq_dslope}. \\
 \nolinkurl{ActivationTaylor.lean} & Three theorems: the exact degree-nine Taylor polynomial of \(\tanh\) with \(O(\lVert x\rVert^{11})\) remainder, the induced degree-eight activation-probability polynomial with \(O(\lVert x\rVert^{10})\) remainder, and its equivalent \(O(x^{10})\) form. \\
@@ -5255,8 +5261,8 @@ Lean audits of the previously recorded new or refactored declarations,
 \nolinkurl{propext}, \nolinkurl{Classical.choice}, and \nolinkurl{Quot.sound}
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
-the 105 activation declarations documented.  The present merged census is 620
-modules and 8,438 public declarations, all reachable from the facade under the
+the 105 activation declarations documented.  The present merged census is 621
+modules and 8,446 public declarations, all reachable from the facade under the
 current static audit.  Relative to that 610/8,318 checkpoint,
 the union adds the two raw Lambert branch-point leaves (seventeen
 declarations), the two Legendre--Gaunt leaves (twenty-five),
@@ -5274,10 +5280,14 @@ inverse-modulus refinements, three signed-power Rvachev moment theorems, and
 the general iterated shift--refinement product law; the merged
 \nolinkurl{PolynomialCombExactness.lean} surface also contains
 \nolinkurl{integral_polynomial_mul_rvachevUp_eq_dyadic_tsum}, the exact
-normalized physical-coordinate self-sampling quadrature.  No aggregate facade
-build is claimed for this checkpoint.
-The title-page pin and reproduction count continue to describe the older
-audited snapshot.
+normalized physical-coordinate self-sampling quadrature.  The final increment
+from 620/8,438 to 621/8,446 consists exactly of the three centered-convolution
+and mean-zero theorems added to \nolinkurl{RvachevMomentAppell.lean}, the
+arbitrary-phase synthesis theorem added to
+\nolinkurl{RvachevPolynomialSynthesis.lean}, and the zero-definition/four-theorem
+\nolinkurl{QPochhammerEntire.lean} leaf documented above.  No aggregate facade
+build is claimed for this checkpoint.  The title-page pin and reproduction count
+continue to describe the older audited snapshot.
 \end{remark}
 
 \section{Corrections and critical distinctions}\label{app:corrections}

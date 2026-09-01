@@ -144,7 +144,7 @@ with the local general-$q$, endpoint-jet, Lagrange-synthesis,
 `PrimePowerBinomialValuation`, reference-appendix, layout, and driver edits in
 `chapters/03_additive_dyadic.tex`, `chapters/90_reference_appendices.tex`, and
 `comb_interpolation_synthesis.tex`. The repository-wide Lean documentation
-census at this merge checkpoint is 620 modules and 8,438 public declarations.
+census at this merge checkpoint is 621 modules and 8,446 public declarations.
 That census is contextual evidence, not a claim that every manuscript result
 in this volume is formalized.
 

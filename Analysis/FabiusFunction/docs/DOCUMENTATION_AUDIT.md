@@ -109,10 +109,10 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 620 modules and 8,438 lexically
+The post-merge 2026-09-01 inventory contains 621 modules and 8,446 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  Relative to the 610/8,318 activation checkpoint, the exact
-union adds ten modules and 120 declarations.  The branch-point geometry and
+union adds eleven modules and 128 declarations.  The branch-point geometry and
 asymptotics leaves contribute 17 declarations for the one-sided vertical
 tangents and leading signed square-root laws of both real Lambert branches.
 The two Legendre--Gaunt modules contribute 25: four definitions and twelve
@@ -150,7 +150,16 @@ optimal/minimum-variation decoder theorem.  The subsequent
 `integral_polynomial_mul_rvachevUp_eq_dyadic_tsum` theorem in
 `PolynomialCombExactness.lean` packages the polynomial-times-Rvachev integral
 as the corresponding dyadic shifted-polynomial sum and contributes one further
-declaration.  The valuation tranche's new leaf
+declaration.  The subsequent centered Appell/deconvolution and arbitrary-phase
+polynomial-reproduction tranche contributes four declarations: three in
+`RvachevMomentAppell.lean` and one in `RvachevPolynomialSynthesis.lean`.
+The new `QPochhammerEntire.lean` leaf contributes four further theorems:
+locally uniform convergence of the defining products for every strict complex
+contraction, complex differentiability in the free parameter, the exact
+factor-zero classification (including the `q = 0` boundary), and simple zeros
+expressed as analytic order one.  Together with the branch-only four-theorem
+Gaussian `q = -1` first-jet leaf, both q-series modules remain facade-reachable.
+The valuation tranche's new leaf
 `PrimePowerBinomialValuation.lean` contributes three theorems: the additive and
 subtraction forms for an arbitrary prime-power Pascal row, and the strict-
 interior dyadic-comb specialization.
@@ -236,20 +245,18 @@ The additional declaration in `PolynomialCombExactness.lean` is
 physical-coordinate self-sampling quadrature for every real polynomial whose
 natural degree is at most the dyadic level and every real phase.
 
-The current retained comb-interpolation synthesis PDF contains 158 A4 pages.
-The retained canonical frontier PDF contains 237 A4 pages, but its source is
-under separate union resolution, so source/PDF parity is not claimed and a
-parity rebuild is pending if that resolution changes the TeX.  The filed New
-Frontiers artifact remains at 41 A4 pages, with parity governed by its separate
-source merge.  The notation catalogue, primary exposition, and Lean
-walkthrough TeX sources contain post-replay unions, including the
-Lagrange--Rvachev, prime-power, and total rational integer-index zero-row
-Wigner-square material.  Their retained PDFs predate those unions; the locally
-validated 167-page primary render is a historical receipt rather than a
-current parity claim.  All three source/PDF pairs are pending fresh
-uninterrupted three-pass Libertinus builds.  Other frontier packages with a
-source newer than their retained PDF carry an explicit local pending-build
-disclosure rather than relying on this global audit note.
+The current comb-interpolation synthesis PDF is a synchronized 158-page A4
+render, and the rebuilt Integration-and-Transform master is synchronized at
+377 pages.  The canonical q-series synthesis passed its complete publication
+gate at 335 pages before this merge; adding the new entire-q-Pochhammer
+crosswalk makes a final semantic-union rebuild pending.  The retained
+167-page primary, 126-page walkthrough, 237-page canonical frontier, 301-page
+Representation Frontiers, 41-page New Frontiers, and 71-page notation-
+catalogue artifacts all predate their current merged sources.  Their package
+notices treat those PDFs as historical validation receipts, not parity claims,
+until fresh uninterrupted three-pass builds complete.  The inverse-
+computability and canonical inverse-theory receipts likewise require refresh
+for the 621/8,446 census and the new Appell/deconvolution crosswalk.
 
 ### What the review pass caught
 
