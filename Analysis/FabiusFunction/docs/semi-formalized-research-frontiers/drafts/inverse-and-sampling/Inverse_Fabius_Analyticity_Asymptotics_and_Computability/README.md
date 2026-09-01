@@ -1,13 +1,14 @@
-# Inverse Fabius analyticity, asymptotics, computability, and sampling
+# Inverse Fabius Theory: analyticity, asymptotics, computability, and dyadic sampling
 
 This directory is the canonical consolidation and validated publication
 package for five overlapping source volumes:
 
-- `analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function/`;
-- `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/`;
-- `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers/`;
-- `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders/`;
-- `inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report/`.
+Every nonconjectural retained assertion has a complete human-readable proof.
+`Lean-proved` is reserved for an exact current declaration with matching
+hypotheses and conclusion; other complete proofs are labelled
+`human-proved frontier result`. Genuine unresolved obligations remain visibly
+labelled as conjectures or open problems, and numerical experiments are used
+only as reproducible checks.
 
 The canonical deliverable is one LaTeX/PDF volume covering nowhere
 analyticity, non-elementarity, inverse iterates, inverse-dyadic germs, endpoint
@@ -15,21 +16,41 @@ asymptotics, dyadic self-sampling, exact inverse moduli, and certified
 computation.  Shared definitions and proofs will occur once; specialized
 consequences will point back to the strongest common statement.
 
-Status language is strict:
+- [`theorem_concordance.csv`](theorem_concordance.csv): all 194 immutable
+  source-result rows, fully dispositioned as 39 Lean-proved, 106 human-proved
+  frontier results, 10 conjectures, 15 open problems, and 24 non-applicable
+  source environments;
+- [`LEAN_CROSSWALK.md`](LEAN_CROSSWALK.md): exact module and declaration
+  matches, formalization boundaries, and five separately classified
+  post-snapshot additions;
+- [`ASSET_DISPOSITION.csv`](ASSET_DISPOSITION.csv): the disposition of all 88
+  files in the two superseded source subgroups;
+- [`assets/SHA256SUMS`](assets/SHA256SUMS): the exhaustive live ledger for 63
+  retained, deduplicated reproducibility payloads;
+- [`PROVENANCE.md`](PROVENANCE.md): source hashes, arrival lineage, nested
+  predecessors, and immutable recovery points.
 
-- `Lean-proved` requires an exact compiled declaration with matching
-  hypotheses and conclusion.
-- `Human-proved frontier result` requires a complete proof in the canonical
-  volume but need not yet have an exact Lean counterpart.
-- `Conjecture` or `open problem` means that a genuine proof obligation
-  remains.
+The result and asset extractors are pinned by
+[`audit/SOURCE_REVISION`](audit/SOURCE_REVISION) to
+`0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`.
+The five later notation-normalized source layouts remain recoverable together
+at `93db15ad3c0645bd3cfd0a3e6e694e3c86a3aa2b`, a complete pre-retirement
+repository snapshot. The old paths are retained as provenance locators, not
+as live links.
 
 `theorem_concordance.csv` records the disposition of all 194 source-result
 environments while preserving the ten immutable source fields reproduced from
-`audit/SOURCE_REVISION`.  Its current totals are 39 Lean-proved, 106
+`audit/SOURCE_REVISION`.  Its current totals are 47 Lean-proved, 98
 human-proved frontier results, 10 conjectures, 15 open problems, and 24
-nonassertoric rows.  The centered Appell deconvolution, positive-degree Appell
-mean-zero, and arbitrarily phased polynomial-deconvolution rows now have exact
+nonassertoric rows.  Eight inverse-computability rows now have exact compiled
+counterparts: the main theorem, the three tolerant-difference branch
+certificates, tolerant-bisection correctness, unit-interval sequential
+inversion, computable clamping, and sequential computability of the totalized
+inverse.  The abstract inversion theorem remains human-proved because the
+generic Lean theorem assumes a computable reciprocal inverse modulus rather
+than deriving that modulus and effective continuity from a computable positive
+gap sequence.  The centered Appell deconvolution, positive-degree Appell
+mean-zero, and arbitrarily phased polynomial-deconvolution rows also have exact
 named Lean counterparts.  The Appell lattice theorem remains human-proved:
 Lean covers its arbitrary-phase `0 <= n <= N` formula, but not its additional
 degree-`N+1` clause at the parity-selected superconvergent phases.  The static

@@ -181,8 +181,8 @@ repository results from the arguments proved here, relates the construction to
 $q$-binomial and sinc-product representations, Lambert-$W$ inverse asymptotics,
 Legendre expansions, and Bell/Bernoulli coefficient calculi.  It records both
 the completed post-publication Lean crosswalks for the structural inverse
-modulus and effective uniform continuity, and the remaining roadmap for a
-computable name-transformer.  An
+modulus, effective uniform continuity, the tolerant-bisection name
+transformer, and the final computable-real-function package.  An
 exact-rational Python supplement reproduces the finite-spline and modulus
 calculations.
 \end{abstract}
@@ -195,7 +195,7 @@ repository audit and all relative-novelty statements remain pinned to commit
 fixed-length Fabius-increment inequality, the exact inverse modulus, and the
 closed elementary modulus were absent under the formulations used here.
 
-A post-publication Lean development now formalizes three layers.  The structural
+A post-publication Lean development now formalizes five layers.  The structural
 inverse-modulus layer lives in
 \path{Analysis/FabiusFunction/Lean/FabiusFunction/InverseModulus.lean}.  It
 proves the global weak shape and maximal strict branches of fixed-length
@@ -216,11 +216,22 @@ families with it, and packages the report-exact $d(n)$ as well as the stronger
 factorial alternative.  Exhaustive declaration-level crosswalks are given in
 \cref{sec:lean-status}.
 
+The generic module
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/EffectiveMonotoneInverse.lean}
+formalizes computable unit-interval clamping, all three certified comparison
+branches, a fixed-depth natural-state bisection realizer, its uniform
+dyadic-name error, and restricted sequential inversion from a computable
+inverse modulus.  The concrete module
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/FabiusInverseComputable.lean}
+instantiates that construction with the Fabius spline oracle and Delta
+denominator, then combines it with the logarithmic modulus to prove
+\texttt{IsComputableRealFunction (fabiusInv F hF)}.
+
 The probabilistic box-event \emph{proof} of the $\Delta_r$ inequality is not
 formalized: Lean reaches the same inequality by the stronger recurrence
 route.  The exact ceiling denominator $d_*$ and its qualified fixed-target
-minimality, tolerant bisection, sequential computability, the combined
-computable-real-function theorem, and the input-precision asymptotics remain
+minimality, the stronger abstract principle that derives an inverse modulus
+from a computable positive gap sequence, and the input-precision asymptotics remain
 outside the current formalization.  Those claims retain the complete human
 proofs and imported-source qualifications stated below.  ``New'' means new
 relative to the pinned corpus; no unqualified worldwide priority claim is
@@ -414,8 +425,9 @@ occurs exactly at $x=0$ or $x=1-h$; in the equivalent form
 $F(b)-F(a)=F(b-a)$ the complete alternatives are $a=b$, $a=0$, or $b=1$.
 The second bound is elementary and recursive.
 Together with the existing forward evaluator they close both clauses of the
-requested definition at the paper level.  Formalizing those clauses remains
-the roadmap in \cref{sec:lean-status}.
+requested definition at the paper level.  The post-publication modules now
+formalize those clauses exactly; \cref{sec:lean-status} records the complete
+name-level crosswalk.
 
 The historical statement above remains about the pinned snapshot.  In the
 current post-publication development, \path{InverseModulus.lean} formally
@@ -427,9 +439,12 @@ attainment.
 simple primitive-recursive reciprocal modulus.
 \path{FabiusInverseLogarithmicModulus.lean} now formalizes the report's smaller
 logarithmic-$r(n)$ packaging, including its primitive-recursive selector and
-denominators.  The report's probabilistic event proof and its
-tolerant-bisection realizer remain on the human-proof side of the boundary
-recorded in \cref{sec:lean-status}.
+denominators.  \path{EffectiveMonotoneInverse.lean} now supplies the
+tolerant-bisection realizer and its computable name transformer, while
+\path{FabiusInverseComputable.lean} proves the final totalized inverse theorem.
+The report's probabilistic event proof, exact ceiling modulus, and stronger
+gap-derived abstract inversion principle remain on the human-proof side of the
+boundary recorded in \cref{sec:lean-status}.
 
 \subsection{Three functions that must not be conflated}
 
@@ -2356,32 +2371,58 @@ modulus declarations are an exact formal counterpart of
 \cref{thm:reciprocal-modulus}; the factorial declarations provide a stronger
 alternative at the same order.  This module does not formalize the
 probabilistic box event used in the human proof of the endpoint lower bound,
-the exact ceiling $d_*$, tolerant bisection, sequential computability, the
-combined computable-real-function theorem, or input-bit asymptotics.
+the exact ceiling $d_*$, or input-bit asymptotics.  Tolerant bisection and the
+combined computable-real-function theorem are supplied by the two downstream
+modules below.
 
-\subsection{The remaining name-transformation module}
+\subsection{The completed tolerant name-transformation layer}
 
-A natural downstream file remains
+The representation-generic realizer is
 \begin{center}
 \path{Analysis/FabiusFunction/Lean/FabiusFunction/}\\
-\path{FabiusInverseComputability.lean}.
+\path{EffectiveMonotoneInverse.lean}.
 \end{center}
-It should import
-\path{FabiusFunction.FabiusInverseLogarithmicModulus}.  It no longer needs to
-reprove interval shape, inverse-gap estimates, dyadic endpoint lower bounds,
-or effective uniform continuity.  Its remaining public surface is the
-name-transformation layer; the following Lean is schematic rather than a
-claim about declarations already present.
+Its two definitions and six theorems are exhausted by the following table.
 
-\begin{lstlisting}[style=reportpseudo,language={}]
-/-- Tolerant bisection transforms every computable input sequence. -/
-theorem fabiusInv_sequentiallyComputable :
-    SequentiallyComputable (fabiusInv fabius fabius_spec)
+\begin{longtable}{@{}p{0.43\textwidth}p{0.52\textwidth}@{}}
+\toprule
+Lean declaration & Exact role \\
+\midrule
+\endhead
+\path{Fabius.SequentiallyComputableOn} &
+Sequential computability restricted to a specified set.\\
+\path{Fabius.unitClamp} &
+The canonical projection of a real input into $[0,1]$.\\
+\path{Fabius.unitClamp_sequentiallyComputable} &
+Clamping transforms every computable real sequence into a computable one.\\
+\path{Fabius.tolerantDifference_error} &
+Two $\delta/8$ oracle errors give a $\delta/4$ signed-difference certificate.\\
+\path{Fabius.tolerantDifference_safe_updates} &
+Either strict comparison beyond $\delta/2$ selects a sound half-bracket.\\
+\path{Fabius.tolerantDifference_inconclusive} &
+The third comparison branch is already within the requested inverse modulus.\\
+\path{Fabius.tolerantBisection_correct} &
+The fixed-depth natural-state loop computes one uniform dyadic output name and
+proves error at most $2^{-p}$ at precision $p$.\\
+\path{Fabius.effectiveInversionOn_Icc} &
+A computably approximable strictly increasing bijection of $[0,1]$, supplied
+with a computable positive reciprocal inverse modulus, has a sequentially
+computable inverse on $[0,1]$.\\
+\bottomrule
+\end{longtable}
 
-/-- Both Grzegorczyk clauses, packaged together. -/
-theorem fabiusInv_isComputableRealFunction :
-    IsComputableRealFunction (fabiusInv fabius fabius_spec)
-\end{lstlisting}
+The Fabius-specific wrapper is
+\begin{center}
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/}\\
+\path{FabiusInverseComputable.lean}.
+\end{center}
+Its sole public theorem,
+\path{Fabius.fabiusInv_isComputableRealFunction}, instantiates the generic
+loop with the centered-spline oracle and the Delta denominator, composes input
+names with computable clamping, and uses the logarithmic Delta theorem for the
+effective-uniform-continuity field.  Thus it proves both clauses of
+\texttt{IsComputableRealFunction (fabiusInv F hF)} for every bounded Fabius
+solution $F$ satisfying the defining equations.
 
 \subsection{Remaining formalization order}
 
@@ -2389,7 +2430,9 @@ The former structural roadmap steps are complete in
 \path{InverseModulus.lean}, and the closed-bound/effective-continuity steps are
 complete in \path{FabiusInverseEffectiveContinuity.lean}.  The logarithmic
 selector and report denominator are complete in
-\path{FabiusInverseLogarithmicModulus.lean}.  The remaining order is:
+\path{FabiusInverseLogarithmicModulus.lean}, and the generic and concrete
+name-transformer steps are complete in the two modules above.  The remaining
+order is:
 
 \begin{enumerate}
 \item If a probability-level counterpart is desired, formalize the particular
@@ -2400,31 +2443,29 @@ selector and report denominator are complete in
       $F(2^{-r})$ and package the reciprocal-ceiling modulus, including the
       qualified fixed-dyadic-target minimality statement of
       \cref{prop:exact-dyadic-modulus}.
-\item Formalize a generic tolerant-bisection lemma for a monotone computable
-      map equipped with a recursive lower-increment bound.  The result should
-      not be Fabius-specific.
-\item Instantiate the generic lemma with the primitive-recursive centered
-      spline evaluator from \path{FabiusComputableSpline.lean}.
-\item Package the resulting sequential-computability theorem together with
-      the now-formalized effective uniform continuity into the repository's
-      computable-real-function interface.
-\item Only after the effective core is complete, formalize the flatness bounds
+\item Strengthen \path{effectiveInversionOn_Icc} by deriving its computable
+      inverse-modulus argument directly from a computable positive
+      lower-increment sequence, thereby matching
+      \cref{thm:abstract-inversion} without a prepackaged modulus.
+\item Formalize the flatness bounds
       and input-bit asymptotics; they are not logical prerequisites of the
       computability theorem.
 \end{enumerate}
 
 \subsection{Reusable generic infrastructure}
 
-The abstract \cref{thm:abstract-inversion} deserves its own module.  In a
-representation-oriented library it can be stated using an oracle for $f$ and a
-recursive lower-separation function
+The representation-oriented realizer now lives in
+\path{EffectiveMonotoneInverse.lean}; its theorem accepts an already packaged
+computable inverse modulus.  The remaining strengthening required for the
+full abstract \cref{thm:abstract-inversion} is to derive that argument from an
+oracle for $f$ and a recursive lower-separation function
 \[
   \alpha(p)>0,
   \qquad x+2^{-p}\le b
   \Longrightarrow f(x+2^{-p})-f(x)\ge\alpha(p).
 \]
-The conclusion is a computable realizer for the inverse.  Tolerant bisection
-then becomes library infrastructure usable for distribution quantiles,
+The existing realizer can then be reused without changing its loop or
+correctness invariant.  Tolerant bisection is already library infrastructure usable for distribution quantiles,
 implicit monotone roots, cumulative spectral measures, and monotone solutions
 of integral equations.  The proof is constructive in the strong sense that
 all precision budgets are explicit.
@@ -2605,16 +2646,19 @@ probability, computable analysis, exact dyadic arithmetic, and inverse
 asymptotics.  It is also the part most likely to generalize beyond the
 particular atomic function studied here.
 
-The current Lean boundary cuts through the two clauses of computability.
+The current Lean development now closes both clauses of computability.
 \path{InverseModulus.lean} certifies the exact structural modulus, and
 \path{FabiusInverseEffectiveContinuity.lean} certifies the closed dyadic bound
 and \texttt{EffectivelyUniformContinuous}, using a recurrence estimate that is
 stronger than the report's box bound.
 \path{FabiusInverseLogarithmicModulus.lean} certifies the least
 logarithmic-$r(n)$ selector and both the report-exact and stronger factorial
-reciprocal moduli.  The probabilistic box-event proof, exact-ceiling modulus,
-tolerant bisection, sequential computability, final computable-real-function
-package, and precision asymptotics remain to be formalized.
+reciprocal moduli. \path{EffectiveMonotoneInverse.lean} certifies the
+tolerant-bisection name transformer, and
+\path{FabiusInverseComputable.lean} proves the final
+computable-real-function package. The probabilistic box-event proof,
+exact-ceiling modulus, gap-derived abstract inversion strengthening, and
+precision asymptotics remain to be formalized.
 
 \appendix
 
@@ -2742,9 +2786,10 @@ qualified fixed-target minimality is yet formalized.\\
 \addlinespace
 Sequential computability & Forward rational oracle, closed inverse modulus,
 and tolerant bisection & Proved in
-\cref{thm:bisection-correct,cor:GT-sequential}.  No tolerant-bisection or
-sequential-computability declaration is supplied by the current inverse
-effective-continuity modules.\\
+\cref{thm:bisection-correct,cor:GT-sequential}.  Exact counterparts are
+\path{Fabius.tolerantBisection_correct},
+\path{Fabius.effectiveInversionOn_Icc}, and the sequential field of
+\path{Fabius.fabiusInv_isComputableRealFunction}.\\
 \addlinespace
 Optimal bit asymptotic & Closed lower bound plus iterated-flatness upper bound &
 Paper-level proof in \cref{thm:mu-asymptotic}; no direct public Lean theorem.\\
@@ -2822,9 +2867,19 @@ $d_*$, or a sequential realizer.  Every public declaration is crosswalked in
 the primitive-recursive least order $r(n)$, its binary-length identity, the
 report-exact $d(n)$ and stronger factorial denominator, strict and closed-input
 reciprocal moduli, and effective uniform continuity with either logarithmic
-witness.  It does not formalize the exact ceiling $d_*$, tolerant bisection, a
-sequential realizer, or input-bit asymptotics.  Every public declaration is
+witness.  It does not itself formalize the exact ceiling $d_*$, tolerant
+bisection, a sequential realizer, or input-bit asymptotics.  Every public declaration is
 crosswalked in \cref{sec:lean-status}.\\
+\addlinespace
+\path{EffectiveMonotoneInverse.lean} & Generic computable unit-interval
+clamping, certified tolerant comparison, a fixed-depth natural-state
+bisection name transformer, its uniform $2^{-p}$ error theorem, and restricted
+sequential inversion from a computable reciprocal inverse modulus.\\
+\addlinespace
+\path{FabiusInverseComputable.lean} & Fabius-specific instantiation of the
+generic realizer and the final theorem
+\path{Fabius.fabiusInv_isComputableRealFunction}, combining sequential
+computability with the logarithmic Delta effective-continuity witness.\\
 \addlinespace
 \path{Inverse_and_Sampling_Frontiers.tex} and
 \path{Inverse_Endpoint_All_Orders.tex} & Exact finite-prefix quantiles,
