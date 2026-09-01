@@ -3464,6 +3464,183 @@ identities.  No infinite Legendre series is interchanged with integration, and t
 module proves no Wigner \(3j\) or factorial formula, Christoffel reconstruction, or
 new positivity or asymptotic result.
 
+\subsubsection{Closed zero-row Wigner-square formulas}
+\label{ch:legendre-gaunt-closed-form}
+
+\begin{boxedremark}\textbf{Source/PDF version notice.}\space
+This subsubsection and its two module-guide rows are a source-only post-PDF addendum.
+The TeX source is newer than the retained 125-page walkthrough PDF in the same directory;
+that PDF predates the
+\nolinkurl{LegendreGauntClosedForm.lean}/\nolinkurl{FabiusLegendreGauntClosedForm.lean}
+tranche and is intentionally not regenerated at this checkpoint.
+\end{boxedremark}
+
+The limitations just stated remain exact descriptions of the two predecessor modules.
+The downstream core \nolinkurl{LegendreGauntClosedForm.lean} closes precisely the
+integer-index, zero-row \emph{squared} problem.  It has exactly two public definitions:
+\nolinkurl{legendreGauntAdmissible} and
+\nolinkurl{legendreWignerThreeJZeroSqRat}.  Write
+\[
+ \mathsf A(i,j,k)\Longleftrightarrow
+ (i+j+k)\bmod 2=0\ \land\
+ i\le j+k\ \land\ j\le i+k\ \land\ k\le i+j,
+\]
+put \(C_n=\binom{2n}{n}\), and let \(s=\Floor{(i+j+k)/2}\).  The second definition
+is the total rational datum
+\[
+ W^2_{ijk}=
+ \begin{cases}
+ \displaystyle\frac{C_{s-i}C_{s-j}C_{s-k}}{(2s+1)C_s},
+     &\mathsf A(i,j,k),\\[0.8em]
+ 0,&\neg\mathsf A(i,j,k).
+ \end{cases}
+\]
+The notation \(W^2\) is expository: Lean defines this square datum directly, not as the
+square of a separately defined signed symbol.
+
+Its exhaustive public API then has exactly twenty-five theorems, in source order:
+\nolinkurl{legendreGauntAdmissible_iff_exists_pairwise_add},
+\nolinkurl{legendreGauntAdmissible_pairwise_add},
+\nolinkurl{legendreWignerThreeJZeroSqRat_pairwise_add},
+\nolinkurl{legendreWignerThreeJZeroSqRat_pairwise_add_factorial},
+\nolinkurl{legendreWignerThreeJZeroSqRat_eq_factorial_of_halfSum},
+\nolinkurl{legendreWignerThreeJZeroSqRat_eq_zero_of_not_admissible},
+\nolinkurl{legendreGauntRat_add_boundary},
+\nolinkurl{legendreGauntRat_add_boundary_eq_two_mul_wignerThreeJZeroSqRat},
+\nolinkurl{legendreGauntRat_zero_left},
+\nolinkurl{legendreGauntRat_zero_left_eq_two_mul_wignerThreeJZeroSqRat},
+\nolinkurl{legendreGauntRat_pairwise_add_eq_two_mul_wignerThreeJZeroSqRat},
+\nolinkurl{legendreGauntRat_eq_zero_of_not_admissible},
+\nolinkurl{legendreGauntRat_eq_two_mul_wignerThreeJZeroSqRat},
+\nolinkurl{legendreGaunt_eq_two_mul_wignerThreeJZeroSqRat},
+\nolinkurl{legendreWignerThreeJZeroSqRat_pos_iff_admissible},
+\nolinkurl{legendreWignerThreeJZeroSqRat_nonneg},
+\nolinkurl{legendreWignerThreeJZeroSqRat_eq_zero_iff_not_admissible},
+\nolinkurl{legendreGauntRat_pos_iff_admissible},
+\nolinkurl{legendreGauntRat_eq_zero_iff_not_admissible},
+\nolinkurl{legendreGaunt_pos_iff_admissible},
+\nolinkurl{legendreGaunt_eq_zero_iff_not_admissible},
+\nolinkurl{legendreGauntRat_nonneg},
+\nolinkurl{legendreGaunt_nonneg},
+\nolinkurl{legendreProductLinearizationCoeffRat_eq_mul_wignerThreeJZeroSqRat}, and
+\nolinkurl{legendreProductLinearizationCoeffRat_pos_iff_admissible}.
+
+The first structural theorem gives the exact triangle-coordinate parametrization
+\[
+ \mathsf A(i,j,k)\Longleftrightarrow
+ \exists a,b,c\in\NaturalNumbers,\qquad
+ i=b+c,\quad j=a+c,\quad k=a+b.
+\]
+If \(S=a+b+c\), the two closed forms on this support are
+\[
+ W^2_{b+c,a+c,a+b}
+ =\frac{C_aC_bC_c}{(2S+1)C_S}
+ =\frac{(S!)^2(2a)!(2b)!(2c)!}
+ {(2S+1)!(a!)^2(b!)^2(c!)^2}.
+\]
+The separately named half-sum theorem says that, under the explicit hypotheses
+\(i+j+k=2s\) and \(i,j,k\le s\),
+\[
+ W^2_{ijk}
+ =\frac{(s!)^2(2(s-i))!(2(s-j))!(2(s-k))!}
+ {(2s+1)!((s-i)!)^2((s-j)!)^2((s-k)!)^2}.
+\]
+Those dominance hypotheses matter because all indices and subtractions in the Lean
+statement are natural-number operations.
+
+For \(G^{\RationalNumbers}_{ijk}=\nolinkurl{legendreGauntRat}(i,j,k)\), the public
+boundary formulas are
+\[
+ G^{\RationalNumbers}_{i,j,i+j}
+ =\frac{2C_iC_j}{(2(i+j)+1)C_{i+j}}
+ =2W^2_{i,j,i+j},
+\qquad
+ G^{\RationalNumbers}_{0,j,k}
+ =\begin{cases}2/(2j+1),&j=k,\\0,&j\ne k,\end{cases}
+ =2W^2_{0,j,k}.
+\]
+The identification is global, not merely a necessary support statement:
+\[
+ G^{\RationalNumbers}_{ijk}=2W^2_{ijk},\qquad
+ \nolinkurl{legendreGaunt}(i,j,k)=2(W^2_{ijk}:\RealNumbers).
+\]
+For each of \(W^2_{ijk}\), \(G^{\RationalNumbers}_{ijk}\), and the real Gaunt integral,
+the API separately proves positivity exactly on \(\mathsf A\), zero exactly off
+\(\mathsf A\), and global nonnegativity.  Finally,
+\[
+ \nolinkurl{legendreProductLinearizationCoeffRat}(i,j,k)
+ =(2k+1)W^2_{ijk},
+\]
+and that coefficient is positive exactly on \(\mathsf A(i,j,k)\).
+
+\begin{proofidea}
+The proof stays inside the executable rational Legendre layer.  Let
+\(\lambda_n=[X^n]P_n=2^{-n}C_n\).  In the finite product linearization of \(P_iP_j\),
+only its \(P_{i+j}\) term reaches degree \(i+j\), so
+\[
+ \lambda_i\lambda_j
+ =\frac{2(i+j)+1}{2}G^{\RationalNumbers}_{i,j,i+j}\lambda_{i+j}.
+\]
+Solving this identity gives the degenerate-triangle boundary above.  The zero-left law
+uses the diagonal boundary together with the already proved triangle zeros.
+
+The private engine next derives the rational Bonnet recurrence
+\[
+ XP_n=\frac{n+1}{2n+1}P_{n+1}+\frac n{2n+1}P_{n-1}.
+\]
+Applying the rational moment functional to
+\((XP_i)P_jP_k=P_i(XP_j)P_k\) gives
+\[
+ \frac{i+1}{2i+1}G^{\RationalNumbers}_{i+1,j,k}
+ +\frac{i}{2i+1}G^{\RationalNumbers}_{i-1,j,k}
+ =\frac{j+1}{2j+1}G^{\RationalNumbers}_{i,j+1,k}
+ +\frac{j}{2j+1}G^{\RationalNumbers}_{i,j-1,k}.
+\]
+The proposed central-binomial quotient obeys the corresponding recurrence by
+\((n+1)C_{n+1}=2(2n+1)C_n\).  A nested induction in the pairwise coordinates uses the
+degenerate-triangle values on its two boundary faces, the recurrence in the interior,
+and cancellation of a strictly positive rational leading coefficient.  Thus
+\(G^{\RationalNumbers}=2W^2\) for all pairwise-sum triples.  The coordinate equivalence
+covers the admissible support; the predecessor parity and strict-triangle zeros settle
+its complement.  Replacing \(C_n\) by \((2n)!/(n!)^2\), and using positivity of central
+binomials, yields the factorial, exact-support, and sign packages.  The real result is
+then the existing cast theorem.  In particular, the proof imports no external Wigner
+integral evaluation or representation-theory theorem.
+\end{proofidea}
+
+The wrapper \nolinkurl{FabiusLegendreGauntClosedForm.lean} has no public definition and
+exactly three public theorems:
+\nolinkurl{rvachevLegendreGramEntryRat_eq_two_mul_sum_wignerThreeJZeroSqRat},
+\nolinkurl{rvachevLegendreGramMatrixRat_apply_eq_two_mul_sum_wignerThreeJZeroSqRat}, and
+\nolinkurl{upLegendreGramMatrix_apply_eq_two_mul_sum_wignerThreeJZeroSqRat}.
+The first two are unconditional rational identities:
+\[
+ R^{\RationalNumbers}_{ij}
+ =2\sum_{r=0}^{\Floor{(i+j)/2}}
+ c_r^{\RationalNumbers}W^2_{i,j,2r},
+\]
+first for \nolinkurl{rvachevLegendreGramEntryRat} and then entrywise for
+\nolinkurl{rvachevLegendreGramMatrixRat}.  The third requires
+\(F:\nolinkurl{BoundedFabius}\) and \(h_F:\nolinkurl{IsFabius F}\), and for
+\(i,j:\operatorname{Fin}n\) states
+\[
+ \nolinkurl{upLegendreGramMatrix}(F,n,i,j)
+ =2\sum_{r=0}^{\Floor{((i:\NaturalNumbers)+(j:\NaturalNumbers))/2}}
+ \nolinkurl{rvachevLegendreCoefficient}(F,r)
+ \left(W^2_{(i:\NaturalNumbers),(j:\NaturalNumbers),2r}:\RealNumbers\right).
+\]
+All three sums are finite, with Lean's actual index set
+\(\nolinkurl{range}(\Floor{(i+j)/2}+1)\).  Their proofs simply substitute the global
+Gaunt identity into the three predecessor sums and move the scalar \(2\) outside.
+
+The boundary of this API is deliberate and exact.  It defines only a total rational
+square datum for natural angular indices and a zero magnetic row.  There is no signed
+symbol and no Condon--Shortley or other phase convention; in particular, there is no Lean
+theorem whose left side is the square of a formal signed Wigner term.  There are no
+half-integer or nonzero-magnetic-index symbols, no general \(3j\), \(6j\), or \(9j\)
+theory, and no Wigner orthogonality or recoupling result.  The wrapper is a finite-sum
+transport only and asserts no infinite Legendre-series interchange.
+
 \subsection{Computational significance}
 The exact coefficient theorem gives a certified way to produce rational polynomial approximants.  The least-squares theorem certifies optimality in \(L^2\), while uniform convergence certifies pointwise approximation.  This is a rare combination:
 \begin{itemize}
@@ -4820,7 +4997,9 @@ Module & Role in the development \\
 \nolinkurl{FabiusLegendreLeastSquares.lean} & Pythagorean identity and unique least-squares optimality of finite Legendre truncations. \\
 \nolinkurl{FabiusLegendreEnergy.lean} & Polynomial-form Legendre blocks, their complete orthogonality, full coefficient Parseval identity, exact shifted coefficient-energy tails in \nolinkurl{HasSum} and \nolinkurl{tsum} form, and the real-variable Legendre series for \(\int_0^1F(t)^2\,dt\).  Finite up-translate realization, Fourier/sinc energy formulas, and rationality of partial sums remain outside the module. \\
 \nolinkurl{LegendreGaunt.lean} & Four definitions and twelve theorems giving executable rational Lebesgue moments and Gaunt coefficients, real-cast and moment-functional bridges, two index swaps, finite real/rational Legendre product linearizations, and the proved parity and triangle-support zeros; see \cref{ch:legendre-gaunt}. \\
+\nolinkurl{LegendreGauntClosedForm.lean} & Two definitions and twenty-five theorems giving the total rational integer-index zero-row Wigner-square datum, its central-binomial and factorial forms, the global rational/real Gaunt identification, and exact support, positivity, and product-coefficient laws; see \cref{ch:legendre-gaunt-closed-form}. \\
 \nolinkurl{FabiusLegendreGaunt.lean} & One definition and eight theorems extending the rational Rvachev--Legendre coefficients by odd zeros and expressing rational and genuine up-law Gram entries as exact finite full/even Gaunt sums; see \cref{ch:legendre-gaunt}. \\
+\nolinkurl{FabiusLegendreGauntClosedForm.lean} & No public definitions and three theorems expressing the rational Gram entry, rational Gram-matrix entry, and real up-law Gram-matrix entry as finite zero-row Wigner-square sums; see \cref{ch:legendre-gaunt-closed-form}. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{K-fold Thue--Morse audit and auxiliary asymptotics}}\\[0.25em]
 \nolinkurl{ThueMorseApproximation.lean} & Exact identification of corrected grid samples with moving-center step approximants and pointwise convergence, including the endpoint. \\

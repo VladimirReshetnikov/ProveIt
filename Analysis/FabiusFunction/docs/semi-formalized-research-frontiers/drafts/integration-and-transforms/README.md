@@ -6,6 +6,13 @@ the single volume
 [`Integration_and_Transform_Frontiers/`](Integration_and_Transform_Frontiers/)
 (376 pp; twelve parts):
 
+> **Source/PDF synchronization.** The current consolidated TeX includes a
+> source-only Legendre Gaunt--Wigner-square status overlay added on 31 August
+> 2026. The retained 376-page A4 PDF (SHA-256
+> `a395829ff9944343d8804df220605c3f6ea5e7641fac927e6749c2a7b435e695`)
+> predates that overlay and was not rebuilt. It remains a historical render,
+> not a rendering of the current source.
+
 - **Part I** — *Antiderivatives of Monomially Weighted Fabius-Type
   Functions* (formerly `Fabius_Antiderivatives_Report/`);
 - **Part II** — *Fabius Monomial Antiderivatives and Inverse-Quantile
@@ -41,6 +48,36 @@ The member drafts were absorbed verbatim (labels, citation keys, and
 asset paths mechanically prefixed per part; no mathematical content
 altered) and their directories deleted; provenance with SHA-256 hashes
 is recorded in the volume itself, and git history is the archive.
+
+The current-source finite Gaunt overlay is exact and finite. The predecessor
+modules `LegendreGaunt.lean` (4 definitions/12 theorems) and
+`FabiusLegendreGaunt.lean` (1/8) are now followed by
+`LegendreGauntClosedForm.lean` (2/25) and
+`FabiusLegendreGauntClosedForm.lean` (0/3), for a four-module Gaunt surface of
+7 definitions and 48 theorems, 55 declarations. Together with the seven
+finite-moment, rational-Jacobi, and Legendre-Gram modules already crosswalked
+in the volume, the canonical aggregate is eleven modules, 20 definitions and
+109 theorems, or 129 declarations.
+
+The new definition `legendreGauntAdmissible i j k` is even total degree plus
+the three weak triangle inequalities. Equivalently, write
+`i = b + c`, `j = a + c`, `k = a + b` and `s = a + b + c`. Then the total
+rational zero-row square datum is
+
+`W²(i,j,k) = C(2a,a) C(2b,b) C(2c,c) / ((2s+1) C(2s,s))`,
+
+with equivalent factorial and half-sum formulas, and the exact identities are
+`legendreGauntRat i j k = 2 W²(i,j,k)` and its real-cast analogue. The square
+datum and both Gaunt coefficients are positive exactly on the admissible
+support and zero off it; the coefficient of `P_k` in `P_i P_j` is
+`(2k+1) W²(i,j,k)`. The three Fabius-specific theorems substitute this into
+the finite Gram formulas, giving
+`Hᵢⱼ = 2 ∑_{r≤⌊(i+j)/2⌋} c_r W²(i,j,2r)` rationally and, under
+`BoundedFabius` plus `IsFabius`, over the real up law. This is only the
+integer-index zero-row square datum: there is no sign or Condon--Shortley
+phase choice, half-integer or nonzero-magnetic-index symbol, general
+`3j`/`6j`/`9j` theory, Wigner orthogonality, recoupling, or infinite-series
+claim.
 
 The current ordinary Cauchy–Stieltjes foundation starts in
 `MeasureCauchyTransform.lean`, which packages oriented transforms and every

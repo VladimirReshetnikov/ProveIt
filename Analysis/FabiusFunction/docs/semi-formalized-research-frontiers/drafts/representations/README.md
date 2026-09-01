@@ -203,23 +203,30 @@ of an existing draft; semantic consolidation is deferred to the post-
   J-fraction, Hankel, and Gauss--Padé program; those strands are inherited
   overlap. The report retains repository-relative log-concavity, rational-pi,
   and finite Gaunt contributions, but manuscript labels do not imply Lean
-  proof status. The intended union crosswalk inventories exactly 99 public declarations
-  across nine modules: `GramStieltjesNaturality` (0
+  proof status. The report's frozen intended union crosswalk inventories exactly
+  99 public declarations across nine modules: `GramStieltjesNaturality` (0
   definitions/6 theorems), `RvachevRationalJacobi` (4/13),
   `PolynomialMomentGramDeterminant` (2/7),
   `FabiusLegendreHankelDeterminant` (2/7),
   `LegendrePolynomialRational` (2/6),
   `FabiusLegendreRationalGram` (3/11), and
   `FabiusLegendreRationalGramValues` (0/11), `LegendreGaunt` (4/12), and
-  `FabiusLegendreGaunt` (1/8). The finite-moment crosswalk
+  `FabiusLegendreGaunt` (1/8). The current thematic-source overlay adds
+  `LegendreGauntClosedForm` (2/25) and
+  `FabiusLegendreGauntClosedForm` (0/3), so the live union is eleven modules,
+  20 definitions and 109 theorems, or 129 declarations. The finite-moment crosswalk
   below records the declaration-level hypotheses without duplicating them
   here. It closes scalar naturality, the rational Jacobi system, finite
   `G = Cᵀ H C` transport and determinant identities, executable rational
   Legendre data, the zero-based Jacobi cross-ratio, executable rational Gaunt
   integrals, exact product linearization over `ℚ` and `ℝ`, parity/triangle
-  support zeros, and finite rational and real up-law Gram-entry sums. Lean
-  does not yet identify those integrals with Wigner `3j` symbols or prove the
-  factorial closed form; Christoffel reconstruction, root and quadrature
+  support zeros, and finite rational and real up-law Gram-entry sums. At the
+  report's frozen checkpoint, Lean did not yet identify those integrals with
+  Wigner `3j` symbols or prove the factorial closed form. The current overlay
+  now identifies them with twice the total integer-index zero-row Wigner-square
+  datum, proves the central-binomial and factorial forms and sharp support, and
+  rewrites the finite up-law Gram-entry sums. Signed and general Wigner theory,
+  Christoffel reconstruction, root and quadrature
   theory, Padé identification, infinite Jacobi products, and asymptotics also
   remain paper-only where specified. The final post-union report embeds five
   cleaned vector PDF figures, while five PNG companions remain supplemental.
@@ -230,8 +237,10 @@ of an existing draft; semantic consolidation is deferred to the post-
   `9871ac93cce5d8ee1aa48e946f46dc2e19865fb33a1d2e3b9b8be01360318901`.
   All 35 font rows are embedded/subset, five are Libertinus, and there are no
   Latin Modern or Type 3 fonts and no raster images. Extraction retains all 99
-  public names, including all 25 Gaunt names; targeted page and vector-figure
-  visuals pass; and the fixed 20-entry ledger verifies 20/20. The earlier
+  public names, including all 25 predecessor Gaunt names; targeted page and
+  vector-figure visuals pass; and the fixed 20-entry ledger verifies 20/20.
+  Those PDF facts describe the frozen 99-declaration checkpoint, not the
+  current 129-declaration thematic-source overlay. The earlier
   39-page cleaned-vector and 41-page local Gaunt builds remain documented as
   historical checkpoints.
 - [`Fabius_Stein_Koopman_Frontier_Report/`](Fabius_Stein_Koopman_Frontier_Report/),
@@ -296,6 +305,13 @@ Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
 [`Representation_Frontiers/`](Representation_Frontiers/) (301 pp;
 eight parts):
+
+> **Source/PDF synchronization.** The current consolidated TeX includes the
+> 31 August 2026 Legendre Gaunt--Wigner-square closed-form overlay. The
+> retained 301-page A4 PDF (SHA-256
+> `1f18c8be00bf79fcf79138cfcb0d7a0e83750710098eb674c751ff2401d3d6d3`)
+> was not rebuilt for that source-only update. It is a historical render and
+> does not display the current overlay.
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform
   Representations of the Fabius–Rvachev System* (Jacobi coefficients,
@@ -456,6 +472,69 @@ and gives the exact rational norm and zero-based `beta_(n+1)` ratios, the latter
 with prefactor `((n+1)/(2*n+1))^2`. This does not prove a Gaunt/Wigner/`3j`
 entry expansion, Christoffel reconstruction, roots, quadrature, an infinite
 Jacobi product/continued fraction, or asymptotics.
+
+### Current finite Gaunt–Wigner-square overlay
+
+The four-module Gaunt surface now contains 7 public definitions and 48 public
+theorems, 55 declarations in all: `LegendreGaunt.lean` (4/12),
+`FabiusLegendreGaunt.lean` (1/8), `LegendreGauntClosedForm.lean` (2/25),
+and `FabiusLegendreGauntClosedForm.lean` (0/3). The first two remain the
+predecessor executable-integral, product-linearization, and finite Gram-sum
+layer. The latter two close its integer-index zero-row square formulas and
+sharp support.
+
+The two new definitions are `legendreGauntAdmissible` and
+`legendreWignerThreeJZeroSqRat`. The 25-theorem closed-form inventory is
+`legendreGauntAdmissible_iff_exists_pairwise_add`,
+`legendreGauntAdmissible_pairwise_add`,
+`legendreWignerThreeJZeroSqRat_pairwise_add`,
+`legendreWignerThreeJZeroSqRat_pairwise_add_factorial`,
+`legendreWignerThreeJZeroSqRat_eq_factorial_of_halfSum`,
+`legendreWignerThreeJZeroSqRat_eq_zero_of_not_admissible`,
+`legendreGauntRat_add_boundary`,
+`legendreGauntRat_add_boundary_eq_two_mul_wignerThreeJZeroSqRat`,
+`legendreGauntRat_zero_left`,
+`legendreGauntRat_zero_left_eq_two_mul_wignerThreeJZeroSqRat`,
+`legendreGauntRat_pairwise_add_eq_two_mul_wignerThreeJZeroSqRat`,
+`legendreGauntRat_eq_zero_of_not_admissible`,
+`legendreGauntRat_eq_two_mul_wignerThreeJZeroSqRat`,
+`legendreGaunt_eq_two_mul_wignerThreeJZeroSqRat`,
+`legendreWignerThreeJZeroSqRat_pos_iff_admissible`,
+`legendreWignerThreeJZeroSqRat_nonneg`,
+`legendreWignerThreeJZeroSqRat_eq_zero_iff_not_admissible`,
+`legendreGauntRat_pos_iff_admissible`,
+`legendreGauntRat_eq_zero_iff_not_admissible`,
+`legendreGaunt_pos_iff_admissible`,
+`legendreGaunt_eq_zero_iff_not_admissible`,
+`legendreGauntRat_nonneg`, `legendreGaunt_nonneg`,
+`legendreProductLinearizationCoeffRat_eq_mul_wignerThreeJZeroSqRat`, and
+`legendreProductLinearizationCoeffRat_pos_iff_admissible`.
+
+Admissibility means even `i+j+k` and all three weak triangle inequalities;
+equivalently `i=b+c`, `j=a+c`, `k=a+b`. With `s=a+b+c`,
+
+`W²(i,j,k) = C(2a,a) C(2b,b) C(2c,c) / ((2s+1) C(2s,s))`.
+
+The module also proves the equivalent factorial and half-sum formulas,
+`legendreGauntRat i j k = 2 W²(i,j,k)`, its real-cast counterpart, exact
+positive/zero support for the square datum and both Gaunt coefficients,
+nonnegativity, and the product coefficient `(2k+1) W²(i,j,k)`.
+
+The Fabius-specific inventory is exactly
+`rvachevLegendreGramEntryRat_eq_two_mul_sum_wignerThreeJZeroSqRat`,
+`rvachevLegendreGramMatrixRat_apply_eq_two_mul_sum_wignerThreeJZeroSqRat`,
+and `upLegendreGramMatrix_apply_eq_two_mul_sum_wignerThreeJZeroSqRat`. The
+first two are unconditional rational finite-sum identities. The last requires
+`F : BoundedFabius` and `hF : IsFabius F`. They give
+`Hᵢⱼ = 2 ∑_{r≤⌊(i+j)/2⌋} c_r W²(i,j,2r)` entrywise.
+
+The Wigner-named definition is deliberately a total rational square datum for
+integer indices and zero magnetic row. It chooses no sign or
+Condon–Shortley phase and supplies no half-integer, nonzero-magnetic-index,
+general `3j`/`6j`/`9j`, Wigner-orthogonality, recoupling, or infinite-series
+theory. Together with the seven predecessor finite-moment/Legendre modules,
+this makes the canonical union 20 definitions plus 109 theorems, 129 public
+declarations.
 
 Separately, `QBinomialReciprocity.lean` has no public definitions and exactly
 four public theorems: `gaussianBinomial_reciprocity_units`,
