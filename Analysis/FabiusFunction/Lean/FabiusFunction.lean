@@ -435,6 +435,8 @@ import FabiusFunction.NotElementary
 import FabiusFunction.InverseBranch
 import FabiusFunction.InverseNotElementary
 import FabiusFunction.FabiusComputableSpline
+import FabiusFunction.EffectiveMonotoneInverse
+import FabiusFunction.FabiusInverseComputable
 import FabiusFunction.FabiusSaddleJetClosedForm
 import FabiusFunction.FabiusSaddleExponentClosedForm
 import FabiusFunction.FabiusSaddleJetStirling
