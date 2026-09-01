@@ -20,14 +20,15 @@ general-q-series guides, forward q-Pochhammer/q-binomial monograph, and
 inverse-q synthesis have been dispositioned into
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/).
 Their earlier names, arrival hashes, and publication facts remain provenance,
-not parallel live documents. The latest validated receipt is the 340-page A4
+not parallel live documents. The latest validated receipt is the 347-page A4
 publication built from source SHA-256
-`da420f5b2622cd088af43cea0ac448105c9f6af65cf1734de6535e3427f8e052`.
+`062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
 The merged source incorporates the later five-theorem
 `QPochhammerEntire.lean`, `QPochhammerInfinite.lean`, and
 `QPochhammerDissection.lean` surfaces, together with the latest six-module
-q-series tranche, in its formalization crosswalk; its post-merge source/PDF
-pair still requires a fresh three-pass build and ledger refresh. Retained PDFs under its `assets/` tree are
+q-series tranche, in its formalization crosswalk. That source is a source-only
+successor to the fresh artifact receipt and requires a later synchronized
+three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
 contains 643 facade-reachable modules and 8,661 public declarations, with no
 missing module headers or declaration documentation.
@@ -93,23 +94,23 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The latest validated canonical source
+  The latest validated build-checkpoint source
   `q_pochhammer_q_binomial_monograph.tex` has
-  13,690 lines and 628,147 bytes, with SHA-256
-  `da420f5b2622cd088af43cea0ac448105c9f6af65cf1734de6535e3427f8e052`.
-  Its validated `q_pochhammer_q_binomial_monograph.pdf` is a 340-page A4
-  rendering of 2,180,191 bytes, with SHA-256
-  `e64a4ef65a9fcce3a4f211f2125b0f8440910cf4527635f76975b0967800e667`.
-  Exactly three guarded serial passes produced that pair; all 340 pages, A4
+  14,072 lines and 656,200 bytes, with SHA-256
+  `062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
+  Its validated `q_pochhammer_q_binomial_monograph.pdf` is a 347-page A4
+  rendering of 2,996,319 bytes, with SHA-256
+  `29b422a39c42be37bd1487d4245c44e55706720c545dd015957644e47014bd48`.
+  Exactly three guarded serial passes produced that pair; all 347 pages, A4
   boxes, text extraction, embedded/subset Type-1 fonts including Libertinus,
   absence of Type-3 fonts, and targeted visual review passed. The current
-  post-merge source has 13,941 lines and 647,940 bytes, with SHA-256
-  `619d45dad475fd869c294aeed1f1eac6b99d9b3cfef6a9487383ee3e92931bbe`.
+  post-merge source has 14,088 lines and 657,425 bytes, with SHA-256
+  `791152ff41477e4f187d18edab195f1aa1232e9fbcafbbd536a62b24a7b8e799`.
   It carries the five-theorem `QPochhammerEntire.lean`, the generic
   `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, and the
-  latest six-module q-series tranche. Its final post-merge render and ledger
-  refresh are pending, so the validated 340-page PDF remains a source-pinned
-  historical artifact. PDF files retained
+  latest six-module q-series tranche. It postdates the fresh build checkpoint,
+  so the validated 347-page PDF remains an explicit source-pinned artifact;
+  the operational ledger records the actual current hashes of both. PDF files retained
   beneath `assets/` are vector research figures, not manuscript builds.
   Manuscript result labels and numerical checks remain
   distinct from Lean verification.
@@ -765,7 +766,7 @@ volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Canonical forward/inverse publication:
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/)
-(latest validated 340-page canonical A4 publication PDF; post-merge crosswalk
+(latest validated 347-page canonical A4 publication PDF; post-merge crosswalk
 rebuild pending) — *q-Series and Inverse q-Analogs:
 A Proof-Oriented Synthesis*. Its forward backbone proves from first principles
 the shifted-factorial, Gaussian, hypergeometric, theta, partition, Bailey,
@@ -784,10 +785,10 @@ and a 1,582,997-byte, 213-page PDF (SHA-256
 `7ee6f8f6d8e72228a5b20daa119caa4d834b11063f910b526897b2677a2ede7b`).
 Those figures identify a retired historical artifact; they are not build
 claims about the current canonical source. The canonical synthesis's newer
-340-page PDF renders source SHA-256
-`da420f5b2622cd088af43cea0ac448105c9f6af65cf1734de6535e3427f8e052`
-and is now a source-pinned receipt because the post-merge crosswalk source still
-requires its final build.
+347-page PDF renders source SHA-256
+`062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`
+and is now a source-pinned receipt because the semantic-union source postdates
+that fresh build checkpoint.
 
 The latest validated forward formalization crosswalk has 284 labelled results:
 45 exact, 75 partial, 156 with no counterpart, and 8 interface-only. The

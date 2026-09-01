@@ -9,9 +9,9 @@ formal/analytic-remainder migrations revised the source only; the retained PDF
 was not rebuilt. The repository-added `SHA256SUMS` records the current source
 and historical PDF as distinct payloads.
 
-- Current source: `Polynomial-Logarithmic-Transseries-4.tex`, 3,135 lines and
-  120,618 bytes; SHA-256
-  `0f6614c8842123fb033f256edd8f0447d19569fc6356e3a8e2198a054eb87683`.
+- Current source: `Polynomial-Logarithmic-Transseries-4.tex`, 3,132 lines and
+  120,538 bytes; SHA-256
+  `e01272d5890faa7e4b761db80288b2329411f7cdf82e19e55c1b437aa8c8f483`.
 - PDF: `Polynomial-Logarithmic-Transseries-4.pdf`, 47 unencrypted A4 pages
   and 428,534 bytes; SHA-256
   `c2d75b3534f74c91ac4ee25b176ffbdca7d912b157104954d5dd3f961945a3eb`.

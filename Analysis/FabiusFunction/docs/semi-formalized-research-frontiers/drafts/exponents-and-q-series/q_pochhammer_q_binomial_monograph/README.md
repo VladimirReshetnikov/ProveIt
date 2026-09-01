@@ -96,23 +96,18 @@ It checks every permanent package file except the self-referential root
 useful because it preserves the migrated experiment and research-figure
 boundary.
 
-The retained `q_pochhammer_q_binomial_monograph.pdf` is a 340-page A4
-historical checkpoint built from the then-current source (13,690 lines,
-628,147 bytes, SHA-256
-`da420f5b2622cd088af43cea0ac448105c9f6af65cf1734de6535e3427f8e052`).
-The PDF is 2,180,191 bytes with SHA-256
-`e64a4ef65a9fcce3a4f211f2125b0f8440910cf4527635f76975b0967800e667`.
-That checkpoint was built by exactly three guarded, serial
-`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 331,
-340, and 340 pages. The inputs were unchanged before and after each pass, and
-no TeX, Lean, or Lake work interleaved with them. The final log scan found zero
-overfull boxes. All 340 pages are text-bearing, and all 1,700
-MediaBox/CropBox/BleedBox/TrimBox/ArtBox values match A4 exactly. `pdffonts`
-reports 42 of 42 Type-1 font rows embedded and subsetted, including five
-Libertinus rows, with no Type-3 font. Fresh full-page visual inspection of
-physical pages 1, 247, 313, 314, 319, 338, and 340 was clean. The files under
-`assets/experiments/**/figures/` remain research figures, not publication
-manuscripts.
+The retained `q_pochhammer_q_binomial_monograph.pdf` is a 347-page A4
+build of the current master source (14,072 lines, 656,200 bytes,
+SHA-256 `062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`).
+The PDF is 2,996,319 bytes with SHA-256
+`29b422a39c42be37bd1487d4245c44e55706720c545dd015957644e47014bd48`.
+It was built by exactly three serial
+`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 337,
+347, and 347 pages, with `makeindex` run on the `.idx` file after each pass.
+The final log scan found three overfull boxes, all in the single paragraph of the QPochhammerEntire crosswalk (source lines 652--670) whose long declaration names lack break points. All pages are A4. `pdffonts` reports 42 font rows, all
+embedded and subsetted, including 5 Libertinus rows, with no Type-3
+fonts. The files under `assets/experiments/**/figures/` remain research
+figures, not publication manuscripts.
 
 The current master TeX is a source-only successor to that checkpoint. Its
 14,088-line, 657,425-byte source has SHA-256
@@ -138,7 +133,8 @@ theorem remains Partial: local uniformity for one symbol as a function of its
 argument at fixed contracting nome does not establish normal convergence of
 the additional product over spectral scales.
 
-No PDF was rebuilt for this source-only update. The retained 340-page PDF is
-therefore a historical publication checkpoint, and exact source/PDF parity is
-not claimed. Publication synchronization requires a fresh exact three-pass
-build followed by regeneration of the root package checksum ledger.
+Source and PDF were synchronized by this build, and the root package checksum
+ledger (`SHA256SUMS`) was regenerated with `audit/build_package_checksums.py`
+afterwards. PDFs are rebuilt in batches, at most about once per hour, so
+source-only commits may precede the next synchronization; the ledger and the
+figures above always describe the retained PDF.

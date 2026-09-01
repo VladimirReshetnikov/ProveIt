@@ -71,17 +71,18 @@ noncomputable def finiteQPochhammerZ (a q : K) (n : ℤ) : K :=
 
 variable {a q : K}
 
-/-- On an increasing interval, `qIntervalProd` is the direct finite product. -/
+/-- On a forward interval, `qIntervalProd` is the ordinary finite product. -/
 theorem qIntervalProd_of_le {u v : ℤ} (h : u ≤ v) :
     qIntervalProd a q u v = ∏ j ∈ Finset.Ico u v, (1 - a * q ^ j) :=
   if_pos h
 
-/-- On a decreasing interval, `qIntervalProd` is the inverse reversed product. -/
+/-- On a reversed interval, `qIntervalProd` is the inverse of the corresponding
+forward product. -/
 theorem qIntervalProd_of_lt {u v : ℤ} (h : v < u) :
     qIntervalProd a q u v = (∏ j ∈ Finset.Ico v u, (1 - a * q ^ j))⁻¹ :=
   if_neg (not_le.mpr h)
 
-/-- The signed product over an empty interval is one. -/
+/-- The signed product over an empty integer interval is one. -/
 @[simp] theorem qIntervalProd_self (u : ℤ) : qIntervalProd a q u u = 1 := by
   simp [qIntervalProd]
 

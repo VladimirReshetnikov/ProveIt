@@ -96,11 +96,11 @@ noncomputable def qDerivative (q : R) : R[X] →ₗ[R] R[X] where
       simp only [mul_sum, ← C_mul', mul_assoc, RingHom.map_mul, forall_const,
         zero_mul, RingHom.map_zero, sum]
 
-/-- Unfold the coefficientwise definition of the `q`-derivative. -/
+/-- Unfold the coefficientwise definition of the polynomial `q`-derivative. -/
 theorem qDerivative_apply (q : R) (p : R[X]) :
     qDerivative q p = p.sum fun n a => C (a * qInt q n) * X ^ (n - 1) := rfl
 
-/-- The `q`-derivative of a monomial. -/
+/-- The `q`-derivative of `a Xⁿ` is `a [n]_q Xⁿ⁻¹`. -/
 @[simp] theorem qDerivative_monomial (q : R) (n : ℕ) (a : R) :
     qDerivative q (monomial n a) = C (a * qInt q n) * X ^ (n - 1) := by
   rw [qDerivative_apply, sum_monomial_index]
@@ -111,7 +111,7 @@ theorem qDerivative_apply (q : R) (p : R[X]) :
   rw [← monomial_zero_left, qDerivative_monomial]
   simp
 
-/-- The `q`-derivative of `X ^ n` is `[n]_q X ^ (n - 1)`. -/
+/-- The `q`-derivative of `Xⁿ` is `[n]_q Xⁿ⁻¹`. -/
 @[simp] theorem qDerivative_X_pow (q : R) (n : ℕ) :
     qDerivative q (X ^ n) = C (qInt q n) * X ^ (n - 1) := by
   rw [← monomial_one_right_eq_X_pow, qDerivative_monomial, one_mul]
@@ -120,7 +120,7 @@ theorem qDerivative_apply (q : R) (p : R[X]) :
 @[simp] theorem qDerivative_X (q : R) : qDerivative q X = 1 := by
   simpa using qDerivative_X_pow q 1
 
-/-- The `q`-derivative of the scalar monomial `C a * X ^ n`. -/
+/-- The `q`-derivative of `a Xⁿ`, written using `C a * X ^ n`. -/
 theorem qDerivative_C_mul_X_pow (q a : R) (n : ℕ) :
     qDerivative q (C a * X ^ n) = C (a * qInt q n) * X ^ (n - 1) := by
   rw [C_mul_X_pow_eq_monomial, qDerivative_monomial]
