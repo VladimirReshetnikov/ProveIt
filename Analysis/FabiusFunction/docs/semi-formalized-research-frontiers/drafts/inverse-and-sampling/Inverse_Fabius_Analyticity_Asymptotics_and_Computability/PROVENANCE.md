@@ -78,6 +78,22 @@ from the pre-retirement revision. Unique scripts, exact tables, data, figures,
 captured outputs, requirements, and audit material were migrated or explicitly
 dispositioned. No numerical output is used as a premise of a theorem.
 
+## Canonical publication artifact
+
+On 1 September 2026, exactly three serial `pdflatex` passes over the canonical
+TeX at revision `1c032f51ce0d401f8d311d14fdb09b12540a0c80` produced
+`inverse_fabius_theory.pdf`. The synchronized artifact has 133 A4 pages,
+contains 2,414,428 bytes, and has SHA-256
+`1d9cf53c16d50e8419eadd746820d358f7f917867a592eb170ad5b326101d163`.
+Its final-pass log contains no TeX error, LaTeX or package warning, overfull or
+underfull box, undefined-reference notice, or rerun request.
+
+All 31 font rows are embedded and subset Type 1 fonts; Libertinus is present
+and Type 3 is absent. The PDF has populated title, subject, keywords, and
+author metadata. Every one of its 133 pages was rendered at 120 dpi and
+inspected as part of the complete nine-sheet visual review. Text extraction
+covered all 133 pages without an unexpectedly blank page.
+
 ## Editorial relationship
 
 The five inputs were peer sources, not successive editions. They overlapped in

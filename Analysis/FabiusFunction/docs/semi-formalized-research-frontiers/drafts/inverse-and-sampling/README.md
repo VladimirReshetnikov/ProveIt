@@ -33,6 +33,13 @@ post-snapshot additions without changing those source totals.
 accounts for all 88 source-subgroup files, and the live asset ledger covers 63
 retained, deduplicated payloads.
 
+The synchronized publication artifact has 133 A4 pages and 2,414,428 bytes,
+with SHA-256
+`1d9cf53c16d50e8419eadd746820d358f7f917867a592eb170ad5b326101d163`.
+Exactly three serial `pdflatex` passes produced a clean final log; all 31
+Type-1 font rows are embedded and subset, Libertinus is present, Type 3 is
+absent, and every rendered page was inspected.
+
 The immutable extraction pin is
 `0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`. The five old layouts are also
 recoverable together at

@@ -140,6 +140,10 @@ asset dispositions, and the deduplicated live asset ledger covers 63 retained
 payloads. The former package paths, source hashes, nested lineage, and recovery
 revisions remain in the package's
 [`PROVENANCE.md`](drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/PROVENANCE.md).
+Its synchronized 133-page A4 publication has SHA-256
+`1d9cf53c16d50e8419eadd746820d358f7f917867a592eb170ad5b326101d163`;
+the package README records the clean three-pass build, font preflight, and
+all-page visual inspection.
 
 Later the same day the groups other than the Fourier-decay corpus were
 **consolidated into volumes**, in two styles: the original members were
