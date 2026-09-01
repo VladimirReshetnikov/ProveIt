@@ -1,12 +1,13 @@
 # Exact Information Geometry and New Frontiers for the Fabius--Rvachev System
 
-> **Source-only merge status (2026-08-31).** The current TeX has 2,137 lines
+> **Source-only merge status (2026-08-31).** The current TeX has 2,139 lines
 > (SHA-256
-> `a8dd383ef450f4a6338990115b982945dc7f36674f7a65f3e623ca2002883296`).
+> `d1b90d107a38219a2ff64bbae883d6172b49b70721b631b58cd3b6072781c6dd`).
 > The retained submitted 30-page PDF was not rebuilt after the notation
 > migration and is not claimed to be synchronized with that source.
-> `SHA256SUMS` was intentionally not refreshed: its TeX row and this README
-> row are pending, while its other seventeen rows pass.
+> The refreshed 19-entry `SHA256SUMS` verifies the current TeX and README
+> together with the retained PDF and other payloads; it does not assert
+> source/PDF synchronization.
 
 This archive accompanies the report
 `fabius_information_frontier.pdf` and its complete LaTeX source
@@ -101,8 +102,9 @@ This package was quick-gate filed on 2026-08-30 from
 The archive was path-safe and passed its CRC test.  Its submitted 18-entry
 ledger verified 18/18 before normalization and is preserved byte-for-byte as
 `SHA256SUMS.arrival.txt`.  Four CSV files are stored with repository-standard
-LF endings. `SHA256SUMS` is the unrefreshed 19-entry operational ledger; its
-TeX and README rows are pending after the source-only merge.
+LF endings. `SHA256SUMS` is the refreshed 19-entry operational ledger; it
+verifies the current package while retaining the submitted PDF as a distinct
+historical payload.
 
 This is an archival intake, not a claim-level acceptance.  The theorem labels
 record manuscript statements and do not assert Lean formalization.  A hostile

@@ -40,9 +40,22 @@ from typing import Iterable
 
 
 CANONICAL_INPUT = "fabius-notation.tex"
+CATALOGUE_PREFIX = "FabiusFunction_Mathematical_Notation_Catalogue/"
 HISTORICAL_NOTATION_MARKER = "HISTORICAL-NOTATION-SCOPE"
 LOCAL_NON_FOURIER_HAT_MARKER = "LOCAL-NON-FOURIER-HAT:"
 RAW_HAT_PATTERN = r"\\(?:widehat|hat)(?![A-Za-z@])"
+LOCAL_NON_FOURIER_HAT_LINE_RE = re.compile(
+    r"^[ \t]*%[ \t]*LOCAL-NON-FOURIER-HAT:[ \t]*"
+    r"\\(?P<name>[A-Za-z@]+)[ \t]+(?P<meaning>\S[^\r\n]*)[ \t]*$"
+)
+LOCAL_NON_FOURIER_HAT_RE = re.compile(
+    r"(?m)^[ \t]*%[ \t]*LOCAL-NON-FOURIER-HAT:[ \t]*"
+    r"\\(?P<name>[A-Za-z@]+)[ \t]+\S[^\r\n]*\r?\n"
+    r"[ \t]*\\newcommand\s*\{\s*\\(?P=name)\s*\}"
+)
+LOCAL_ACCENT_CATALOGUE_RE = re.compile(
+    r"\\localaccentname\s*\{\s*(?P<name>[A-Za-z@]+)\s*\}"
+)
 
 # Broader recurring spellings whose meaning must be classified during the
 # semantic source pass.  This is intentionally opt-in: the ordinary strict gate
@@ -267,6 +280,51 @@ def line_number(text: str, offset: int) -> int:
     return text.count("\n", 0, offset) + 1
 
 
+def local_hat_declaration_span(line: str) -> tuple[str, int, int] | None:
+    """Return ``(name, body_start, body_end)`` for a sole one-line newcommand.
+
+    The span excludes the replacement text's outer braces.  Requiring the
+    declaration to occupy the complete uncommented line prevents a classified
+    macro definition from laundering an unrelated raw hat later on that line.
+    """
+    code = strip_comments(line).rstrip()
+    header = re.match(
+        r"^[ \t]*\\newcommand\s*\{\s*\\(?P<name>[A-Za-z@]+)\s*\}"
+        r"(?:\s*\[\s*\d+\s*\])?\s*",
+        code,
+    )
+    if header is None or header.end() >= len(code) or code[header.end()] != "{":
+        return None
+
+    opening = header.end()
+    depth = 0
+    closing: int | None = None
+    for index in range(opening, len(code)):
+        char = code[index]
+        if char not in "{}":
+            continue
+        backslashes = 0
+        cursor = index - 1
+        while cursor >= 0 and code[cursor] == "\\":
+            backslashes += 1
+            cursor -= 1
+        if backslashes % 2:
+            continue
+        if char == "{":
+            depth += 1
+        else:
+            depth -= 1
+            if depth == 0:
+                closing = index
+                break
+            if depth < 0:
+                return None
+
+    if closing is None or code[closing + 1:].strip():
+        return None
+    return header.group("name"), opening + 1, closing
+
+
 def is_annotated_local_non_fourier_hat_definition(
     raw: str,
     code: str,
@@ -287,25 +345,20 @@ def is_annotated_local_non_fourier_hat_definition(
 
     declaration_line = source_lines[number - 1]
     marker_line = source_lines[number - 2]
-    marker_at = marker_line.find(LOCAL_NON_FOURIER_HAT_MARKER)
-    if marker_at < 0:
+    marker = LOCAL_NON_FOURIER_HAT_LINE_RE.fullmatch(marker_line)
+    if marker is None:
         return False
 
-    explanation = marker_line[marker_at + len(LOCAL_NON_FOURIER_HAT_MARKER):].strip()
-    if not explanation:
-        return False
-
-    declaration = re.search(
-        r"\\newcommand\s*\{\s*\\(?P<name>[A-Za-z@]+)\s*\}"
-        r"(?:\s*\[\s*\d+\s*\])?\s*\{[^\n]*"
-        + RAW_HAT_PATTERN,
-        declaration_line,
-    )
+    declaration = local_hat_declaration_span(declaration_line)
     if declaration is None:
         return False
 
-    name = declaration.group("name")
-    if f"\\{name}" not in explanation:
+    name, body_start, body_end = declaration
+    if marker.group("name") != name:
+        return False
+    line_start = code.rfind("\n", 0, match.start()) + 1
+    column = match.start() - line_start
+    if not body_start <= column < body_end:
         return False
     if name in RETIRED_COMMANDS or name in shared_commands:
         return False
@@ -314,6 +367,72 @@ def is_annotated_local_non_fourier_hat_definition(
 
 def relative(path: Path, docs: Path) -> str:
     return path.relative_to(docs).as_posix()
+
+
+def audit_local_accent_catalogue(files: list[Path], docs: Path) -> list[Finding]:
+    """Require an exact catalogue row for every marked local non-Fourier hat.
+
+    Source markers are comments by design, so this cross-file check reads raw
+    text.  Catalogue rows use ``\\localaccentname{MacroName}``; the dedicated
+    token makes coverage mechanically checkable without mistaking prose or a
+    generic policy example for an encyclopedic definition.
+    """
+    source: dict[str, list[tuple[str, int]]] = defaultdict(list)
+    catalogue: dict[str, list[tuple[str, int]]] = defaultdict(list)
+
+    for path in files:
+        raw = path.read_text(encoding="utf-8-sig")
+        rel = relative(path, docs)
+        if rel.startswith(CATALOGUE_PREFIX):
+            code = strip_comments(raw)
+            for match in LOCAL_ACCENT_CATALOGUE_RE.finditer(code):
+                catalogue[match.group("name")].append(
+                    (rel, line_number(code, match.start()))
+                )
+            continue
+
+        for match in LOCAL_NON_FOURIER_HAT_RE.finditer(raw):
+            source[match.group("name")].append(
+                (rel, line_number(raw, match.start()))
+            )
+
+    findings: list[Finding] = []
+    for name in sorted(source.keys() - catalogue.keys()):
+        rel, line = source[name][0]
+        findings.append(Finding(
+            rel,
+            line,
+            "local-accent-catalogue",
+            (
+                f"marked local non-Fourier hat \\{name} has no exact "
+                r"\localaccentname catalogue row"
+            ),
+        ))
+
+    for name in sorted(catalogue.keys() - source.keys()):
+        rel, line = catalogue[name][0]
+        findings.append(Finding(
+            rel,
+            line,
+            "local-accent-catalogue-extra",
+            (
+                f"catalogue row for \\{name} has no active "
+                f"{LOCAL_NON_FOURIER_HAT_MARKER} source marker"
+            ),
+        ))
+
+    for name, locations in sorted(catalogue.items()):
+        if len(locations) <= 1:
+            continue
+        rel, line = locations[1]
+        findings.append(Finding(
+            rel,
+            line,
+            "local-accent-catalogue-duplicate",
+            f"catalogue contains {len(locations)} rows for local accent \\{name}; expected one",
+        ))
+
+    return findings
 
 
 def input_targets(text: str) -> list[str]:
@@ -330,7 +449,7 @@ def audit_file(
     code = strip_comments(raw)
     rel = relative(path, docs)
     canonical_source = rel == CANONICAL_INPUT
-    catalogue_source = rel.startswith("FabiusFunction_Mathematical_Notation_Catalogue/")
+    catalogue_source = rel.startswith(CATALOGUE_PREFIX)
     historical_source = rel.startswith("papers/")
     historical_scope = HISTORICAL_NOTATION_MARKER in raw
     shared_commands = canonical_command_names(docs / CANONICAL_INPUT)
@@ -526,6 +645,15 @@ def main() -> int:
         file_info.append(info)
         findings.extend(file_findings)
         commands.update(file_commands)
+
+    all_active_files = active_tex_files([], docs, archive)
+    whole_corpus = {
+        path.resolve() for path in files
+    } == {
+        path.resolve() for path in all_active_files
+    }
+    if whole_corpus:
+        findings.extend(audit_local_accent_catalogue(files, docs))
 
     finding_dicts = [asdict(item) for item in findings]
     finding_counts = Counter(item.code for item in findings)

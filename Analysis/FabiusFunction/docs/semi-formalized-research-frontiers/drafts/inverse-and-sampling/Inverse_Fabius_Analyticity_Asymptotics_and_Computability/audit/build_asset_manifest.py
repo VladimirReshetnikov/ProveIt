@@ -151,7 +151,7 @@ omit(
     f"{SAMPLING}/Inverse_and_Sampling_Frontiers.tex",
     "master_source",
     "absorbed_into_canonical_text",
-    "Result-level content is tracked by the theorem concordance and canonical chapters.",
+    "Result-level content is represented in the raw source inventory and canonical chapters; reviewed theorem-concordance disposition remains pending.",
     "chapters/03_inverse_germs_and_deconvolution.tex; "
     "chapters/04_endpoint_all_orders.tex; chapters/05_dyadic_self_sampling.tex",
 )
@@ -165,7 +165,7 @@ omit(
     f"{ENDPOINT}/Inverse_Endpoint_All_Orders.tex",
     "master_source",
     "absorbed_into_canonical_text",
-    "Result-level content is tracked by the theorem concordance and endpoint chapter.",
+    "Result-level content is represented in the raw source inventory and endpoint chapter; reviewed theorem-concordance disposition remains pending.",
     "chapters/04_endpoint_all_orders.tex",
 )
 omit(
@@ -178,7 +178,7 @@ omit(
     f"{COMPUTABILITY}/inverse_fabius_computability.tex",
     "master_source",
     "absorbed_into_canonical_text",
-    "Result-level content is tracked by the theorem concordance and computability chapter.",
+    "Result-level content is represented in the raw source inventory and computability chapter; reviewed theorem-concordance disposition remains pending.",
     "chapters/06_computability.tex",
 )
 omit(
@@ -191,7 +191,7 @@ omit(
     f"{NON_ELEMENTARY}/Non_Elementarity_of_the_Fabius_Function.tex",
     "master_source",
     "absorbed_into_canonical_text",
-    "Result-level content is tracked by the theorem concordance and analyticity chapter.",
+    "Result-level content is represented in the raw source inventory and analyticity chapter; reviewed theorem-concordance disposition remains pending.",
     "chapters/01_analyticity_and_elementarity.tex",
 )
 omit(
@@ -204,7 +204,7 @@ omit(
     f"{ITERATES}/inverse_fabius_iterates_nowhere_analytic.tex",
     "master_source",
     "absorbed_into_canonical_text",
-    "Unique inverse-facing content is tracked by the concordance and iterate chapter.",
+    "Unique inverse-facing content is represented in the raw source inventory and iterate chapter; reviewed theorem-concordance disposition remains pending.",
     "chapters/02_inverse_iterates.tex",
 )
 omit(
