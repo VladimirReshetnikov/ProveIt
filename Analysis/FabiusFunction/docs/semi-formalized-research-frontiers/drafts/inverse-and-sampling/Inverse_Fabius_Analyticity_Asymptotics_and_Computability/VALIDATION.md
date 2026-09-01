@@ -9,8 +9,8 @@ below are **not** asserted to form a synchronized source/PDF pair.
 
 | Item | Size | SHA-256 |
 | --- | ---: | --- |
-| `inverse_fabius_theory.tex` | 294 lines; 11,557 bytes | `75300424b728515c32989d6bf061e5f1e6959ba93a52b0f2df845da2de86bc4a` |
-| `SOURCE_CLOSURE.sha256` | Exhaustive ledger of 23 permanent build inputs | `6a42e4ec29f43fc0bbd5e8e9b79997b880e56aa7ad259e084379a0f64d28238e` |
+| `inverse_fabius_theory.tex` | 293 lines; 11,514 bytes | `92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c` |
+| `SOURCE_CLOSURE.sha256` | Exhaustive ledger of 23 permanent build inputs | `239ba326027a555b5f33a7b94c07dc33a28f5a01ec55df0b24d7afd75327d372` |
 | `inverse_fabius_theory.pdf` | 134 A4 pages; 2,027,726 bytes | `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d` |
 
 The first two rows identify the current source surface.  The third identifies

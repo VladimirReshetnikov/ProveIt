@@ -28,12 +28,12 @@ checksum ledger. Their superseded PDFs were retired with the donor packages
 and are not canonical renderings of this larger source. The former forward
 and inverse manuscript PDFs were removed for the same reason. The merged
 master retains one canonical publication checkpoint,
-`q_pochhammer_q_binomial_monograph.pdf`: a reproducible 340-page A4 artifact
-built from the then-current 13,690-line, 628,147-byte source with SHA-256
-`da420f5b2622cd088af43cea0ac448105c9f6af65cf1734de6535e3427f8e052`.
-Exactly three guarded serial passes produced 331, 340, and 340 pages. The
-2,180,191-byte PDF has SHA-256
-`e64a4ef65a9fcce3a4f211f2125b0f8440910cf4527635f76975b0967800e667`.
+`q_pochhammer_q_binomial_monograph.pdf`: a reproducible 347-page A4 artifact
+built from the then-current 14,072-line, 656,200-byte source with SHA-256
+`062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
+Exactly three guarded serial passes produced 337, 347, and 347 pages. The
+2,996,319-byte PDF has SHA-256
+`29b422a39c42be37bd1487d4245c44e55706720c545dd015957644e47014bd48`.
 The validation record in `README.md` distinguishes compilation, font
 embedding, complete page rendering, contact-sheet review, and full-resolution
 inspection. PDFs retained beneath `assets/` are research figures, not

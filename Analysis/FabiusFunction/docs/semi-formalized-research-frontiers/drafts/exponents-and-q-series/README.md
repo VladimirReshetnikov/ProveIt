@@ -31,7 +31,7 @@ q-series tranche and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 643 facade-reachable modules and 8,661 public declarations, with no
+contains 644 facade-reachable modules and 8,666 public declarations, with no
 missing module headers or declaration documentation.
 
 ## Detailed package record
@@ -515,8 +515,8 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 
 Geometric-sinc subgroup member:
 [`Exponents_and_q_Series_Frontiers/`](geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/)
-(current semantic-union TeX: 16,353 lines and 736,736 bytes, SHA-256
-`ac929bb9a79e69ab59e253fa1acd6a1d97c5ee35bdac07dc22f22a1ec5c56bb3`;
+(current semantic-union TeX: 16,352 lines and 736,693 bytes, SHA-256
+`10aaa650902a48834021a7713ee8ec15eea3c9c15b5617ff276e423480474eb7`;
 retained PDF: 238 A4 pages and 6,953,898 bytes, SHA-256
 `fa719a8ea68d3c474928b9fae7449f827eb35a5452613f2b660d8e88ba27267e`;
 across seven parts). Exactly three serial passes from the preceding 16,274-line,
@@ -802,7 +802,7 @@ centered/MGF wrappers and its reciprocal outside-disk formula, pole divisor,
 and zero--pole exchange. The algebra of q-shifted factorials now accounts for 6 exact, 2
 partial, and 7
 unformalized results; the q-integer and Gaussian-coefficient chapter for
-3 exact, 2 partial, and 4 unformalized results. The finite
+7 exact, 0 partial, and 2 unformalized results. The finite
 q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
 unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
 unformalized results; and the basic-hypergeometric chapter for 1 exact, 0
@@ -831,6 +831,7 @@ compatibility spelling of its primary identity),
 `QPochhammerDissection.lean` (two theorems),
 `QPochhammerInfinite.lean` (one definition, 29 theorems),
 `QBinomialReciprocity.lean` (four theorems),
+`GaussianBinomialPolynomialStructure.lean` (zero definitions, five theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems),
 `RvachevPochhammerFactorization.lean` (one definition, nine theorems), and
 `QPochhammerEntire.lean` (zero definitions; four legacy compatibility
