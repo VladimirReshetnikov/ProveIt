@@ -158,6 +158,50 @@ LEAN_PROOFS = {
         "Fabius.normalized_sum_Ioo_"
         "rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp",
     ),
+    "gq:cor:interpolation-up-factorization": (
+        "FabiusFunction.LagrangeRvachevSynthesis",
+        "Fabius.sum_Ioo_lagrangeRvachevAtomCoefficient_"
+        "mul_shifted_rvachevUp",
+    ),
+}
+
+# These declarations verify exact generic scalar ingredients of compound
+# manuscript results without upgrading the whole source row to Lean-proved.
+# In particular, the Gaussian closed forms and Matrix-level packaging in the
+# paper are stronger than the declarations named here.
+LEAN_SUPPORT: dict[str, tuple[str, tuple[str, ...], str]] = {
+    "gq:thm:gaussian-Appell-decoder": (
+        "FabiusFunction.LagrangeRvachevSynthesis",
+        (
+            "Fabius.normalized_sum_Ioo_lagrangeRvachevDecoder_"
+            "mul_shifted_rvachevUp",
+        ),
+        "Lean proves the generic finite scalar decoder synthesis; the "
+        "geometric Gaussian closed form, elementary-symmetric formula, and "
+        "prefactor in this compound theorem remain manuscript-only.",
+    ),
+    "gq:cor:interpolation-up-factorization": (
+        "FabiusFunction.LagrangeRvachevSynthesis",
+        (
+            "Fabius.lagrangeRvachevAtomCoefficient_"
+            "eq_deconvolved_interpolate",
+            "Fabius.sum_Ioo_lagrangeRvachevAtomCoefficient_"
+            "mul_shifted_rvachevUp",
+        ),
+        "Lean proves both the generic scalar coefficient/deconvolution "
+        "factorization and the full finite interpolation loop; the latter "
+        "is the exact compiled crosswalk recorded in this row.",
+    ),
+    "gq:thm:gaussian-Appell-biorthogonality": (
+        "FabiusFunction.LagrangeRvachevSynthesis",
+        (
+            "Fabius.normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node",
+            "Fabius.sum_lagrangeRvachevDecoder_eq_one",
+        ),
+        "Lean proves componentwise node biorthogonality and the unnormalized "
+        "decoder row-sum law; no Matrix wrapper or row-stochastic encoder "
+        "package is formalized.",
+    ),
 }
 
 LEAN_DISPOSITION_NOTES = {
@@ -270,6 +314,8 @@ def build_rows(revision: str) -> tuple[str, list[dict[str, str]], Counter[str]]:
     modes: Counter[str] = Counter()
     for source in source_rows:
         label, note = choose_label(source, labels)
+        if label in LEAN_SUPPORT:
+            note = f"{note} {LEAN_SUPPORT[label][2]}"
         direct = bool(
             source["source_label"]
             and label == PREFIX[source["source_package"]] + source["source_label"]
@@ -316,12 +362,16 @@ def verify_lean_declarations(rows: list[dict[str, str]]) -> None:
         stdout=subprocess.PIPE,
     )
     lean_files = [Path(line) for line in completed.stdout.decode("utf-8").splitlines()]
+    entries = [
+        (row["lean_module"], row["lean_declaration"])
+        for row in rows
+        if row["lean_module"]
+    ]
+    for module, declarations, _note in LEAN_SUPPORT.values():
+        entries.extend((module, declaration) for declaration in declarations)
+
     checked: set[tuple[str, str]] = set()
-    for row in rows:
-        module = row["lean_module"]
-        declaration = row["lean_declaration"]
-        if not module:
-            continue
+    for module, declaration in entries:
         key = (module, declaration)
         if key in checked:
             continue

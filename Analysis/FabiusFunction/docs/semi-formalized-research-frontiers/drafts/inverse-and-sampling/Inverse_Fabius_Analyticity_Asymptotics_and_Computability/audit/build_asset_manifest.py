@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """Build and verify the canonical inverse-Fabius reproducibility assets.
 
-The source packages remain untouched.  This program copies only reviewed,
-unique payloads, writes the exhaustive 88-row disposition ledger, and writes
-the live checksum ledger for the canonical ``assets`` tree.  ``--check`` is a
-strict read-only replay after the initial build.
+The source corpus is read from the exact Git commit recorded in
+``audit/SOURCE_REVISION``; later edits or retirement of the source packages
+therefore cannot change this audit.  This program copies only reviewed, unique
+payloads, writes the exhaustive 88-row disposition ledger, and writes the live
+checksum ledger for the canonical ``assets`` tree.  ``--check`` is a strict
+read-only replay after the initial build.
 """
 
 from __future__ import annotations
@@ -13,7 +15,7 @@ import argparse
 import csv
 import hashlib
 import io
-import shutil
+import subprocess
 import sys
 from collections import Counter, defaultdict
 from dataclasses import dataclass
@@ -25,6 +27,7 @@ from typing import Callable
 
 CANONICAL_ROOT = Path(__file__).resolve().parents[1]
 SOURCE_ROOT = CANONICAL_ROOT.parent
+SOURCE_REVISION_FILE = CANONICAL_ROOT / "audit/SOURCE_REVISION"
 ASSET_ROOT = CANONICAL_ROOT / "assets"
 DISPOSITION_CSV = CANONICAL_ROOT / "ASSET_DISPOSITION.csv"
 LIVE_LEDGER = ASSET_ROOT / "SHA256SUMS"
@@ -151,7 +154,7 @@ omit(
     f"{SAMPLING}/Inverse_and_Sampling_Frontiers.tex",
     "master_source",
     "absorbed_into_canonical_text",
-    "Result-level content is represented in the raw source inventory and canonical chapters; reviewed theorem-concordance disposition remains pending.",
+    "Result-level content is tracked by the theorem concordance and canonical chapters.",
     "chapters/03_inverse_germs_and_deconvolution.tex; "
     "chapters/04_endpoint_all_orders.tex; chapters/05_dyadic_self_sampling.tex",
 )
@@ -165,7 +168,7 @@ omit(
     f"{ENDPOINT}/Inverse_Endpoint_All_Orders.tex",
     "master_source",
     "absorbed_into_canonical_text",
-    "Result-level content is represented in the raw source inventory and endpoint chapter; reviewed theorem-concordance disposition remains pending.",
+    "Result-level content is tracked by the theorem concordance and endpoint chapter.",
     "chapters/04_endpoint_all_orders.tex",
 )
 omit(
@@ -178,7 +181,7 @@ omit(
     f"{COMPUTABILITY}/inverse_fabius_computability.tex",
     "master_source",
     "absorbed_into_canonical_text",
-    "Result-level content is represented in the raw source inventory and computability chapter; reviewed theorem-concordance disposition remains pending.",
+    "Result-level content is tracked by the theorem concordance and computability chapter.",
     "chapters/06_computability.tex",
 )
 omit(
@@ -191,7 +194,7 @@ omit(
     f"{NON_ELEMENTARY}/Non_Elementarity_of_the_Fabius_Function.tex",
     "master_source",
     "absorbed_into_canonical_text",
-    "Result-level content is represented in the raw source inventory and analyticity chapter; reviewed theorem-concordance disposition remains pending.",
+    "Result-level content is tracked by the theorem concordance and analyticity chapter.",
     "chapters/01_analyticity_and_elementarity.tex",
 )
 omit(
@@ -204,7 +207,7 @@ omit(
     f"{ITERATES}/inverse_fabius_iterates_nowhere_analytic.tex",
     "master_source",
     "absorbed_into_canonical_text",
-    "Unique inverse-facing content is represented in the raw source inventory and iterate chapter; reviewed theorem-concordance disposition remains pending.",
+    "Unique inverse-facing content is tracked by the concordance and iterate chapter.",
     "chapters/02_inverse_iterates.tex",
 )
 omit(
@@ -689,36 +692,99 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
-def source_files() -> dict[str, Path]:
-    files: dict[str, Path] = {}
-    for group in SOURCE_GROUPS:
-        group_root = SOURCE_ROOT / group
-        if not group_root.is_dir():
-            raise FileNotFoundError(f"missing source group: {group_root}")
-        for path in group_root.rglob("*"):
-            if path.is_file():
-                relative = path.relative_to(SOURCE_ROOT).as_posix()
-                files[relative] = path
+def git_output(repository_root: Path, *arguments: str) -> bytes:
+    result = subprocess.run(
+        ["git", "-C", str(repository_root), *arguments],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if result.returncode != 0:
+        detail = result.stderr.decode("utf-8", errors="replace").strip()
+        raise ValueError(
+            f"git {' '.join(arguments)} failed with exit code "
+            f"{result.returncode}: {detail}"
+        )
+    return result.stdout
+
+
+def repository_root() -> Path:
+    root = git_output(CANONICAL_ROOT, "rev-parse", "--show-toplevel")
+    return Path(root.decode("utf-8").strip()).resolve()
+
+
+def source_revision(repository_root: Path) -> str:
+    revision = SOURCE_REVISION_FILE.read_text(encoding="ascii").strip()
+    if len(revision) != 40 or any(
+        character not in "0123456789abcdef" for character in revision
+    ):
+        raise ValueError(
+            f"{SOURCE_REVISION_FILE} must contain one full lowercase Git object ID"
+        )
+    resolved = git_output(
+        repository_root, "rev-parse", "--verify", f"{revision}^{{commit}}"
+    ).decode("ascii").strip()
+    if resolved != revision:
+        raise ValueError(
+            f"source revision did not resolve to itself: {revision} -> {resolved}"
+        )
+    return revision
+
+
+def source_files() -> dict[str, bytes]:
+    repository = repository_root()
+    revision = source_revision(repository)
+    try:
+        source_prefix = SOURCE_ROOT.relative_to(repository).as_posix()
+    except ValueError as error:
+        raise ValueError(
+            f"source root is outside the Git repository: {SOURCE_ROOT}"
+        ) from error
+
+    group_paths = [f"{source_prefix}/{group}" for group in SOURCE_GROUPS]
+    listing = git_output(
+        repository,
+        "ls-tree",
+        "-r",
+        "-z",
+        "--name-only",
+        revision,
+        "--",
+        *group_paths,
+    )
+    repository_paths = [
+        path.decode("utf-8") for path in listing.split(b"\0") if path
+    ]
+    relative_prefix = f"{source_prefix}/"
+    files: dict[str, bytes] = {}
+    for repository_path in repository_paths:
+        if not repository_path.startswith(relative_prefix):
+            raise ValueError(
+                f"Git listed a path outside the source root: {repository_path}"
+            )
+        relative = repository_path.removeprefix(relative_prefix)
+        files[relative] = git_output(
+            repository, "show", f"{revision}:{repository_path}"
+        )
     return files
 
 
-def transformed_payload(path: Path, entry: Entry) -> bytes:
-    payload = path.read_bytes()
+def transformed_payload(payload: bytes, entry: Entry) -> bytes:
     if entry.transform:
         payload = TRANSFORMS[entry.transform](payload)
     return payload
 
 
-def disposition_rows(files: dict[str, Path]) -> list[dict[str, str]]:
+def disposition_rows(files: dict[str, bytes]) -> list[dict[str, str]]:
     rows: list[dict[str, str]] = []
     for source in sorted(files):
-        path = files[source]
+        payload = files[source]
         entry = ENTRIES[source]
         rows.append(
             {
                 "source_path": source,
-                "sha256": sha256_file(path),
-                "size_bytes": str(path.stat().st_size),
+                "sha256": sha256_bytes(payload),
+                "size_bytes": str(len(payload)),
                 "semantic_class": entry.semantic_class,
                 "canonical_destination": entry.canonical_destination,
                 "disposition": entry.disposition,
@@ -957,6 +1023,8 @@ def expected_asset_files() -> set[str]:
     }
     return copied | {
         "README.md",
+        "endpoint/dyadic-completion/figures/dyadic_tail_convergence.png",
+        "endpoint/dyadic-completion/figures/psi_periodic.png",
         "requirements.txt",
         "self-sampling/appell_a8_sturm_certificate.txt",
         "SHA256SUMS",
@@ -1053,7 +1121,7 @@ def main() -> int:
             if entry.disposition != "deduplicated_to_retained_payload":
                 continue
             destination = CANONICAL_ROOT / entry.canonical_destination
-            if sha256_file(files[source]) != sha256_file(destination):
+            if sha256_bytes(files[source]) != sha256_file(destination):
                 raise ValueError(f"deduplication target differs from source: {source}")
 
         rows = disposition_rows(files)

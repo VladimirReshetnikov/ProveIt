@@ -43,10 +43,12 @@ First let $y\in(0,1)$ and put $x=K_n(y)$.  The derivative formula
 \eqref{ii:eq:inverse-iterate-derivative} gives $K_n'(y)>0$.  If $K_n$ were
 analytic at $y$, the analytic inverse-function theorem would make its local
 inverse $G_n$ analytic at $x$, contradicting \Cref{ii:thm:main}.  At $0$,
-the totalized $K_n$ is identically zero on a left-hand interval.  An analytic
-germ there would therefore vanish on a two-sided neighbourhood by the
-identity theorem, contradicting strict increase on $(0,1)$.  Reflection,
-$K_n(1-y)=1-K_n(y)$, gives the same contradiction at $1$.
+the quotient argument \eqref{ii:eq:Kn-no-derivative} shows that $K_n$ has no
+finite right derivative, so it cannot be analytic even in the one-sided
+endpoint sense.  Reflection, $K_n(1-y)=1-K_n(y)$, gives the same contradiction
+at $1$.  Under the bounded totalization convention there is also a shorter
+endpoint obstruction: $K_n$ is constant on the exterior side but strictly
+increasing on the interior side, which is incompatible with an analytic germ.
 \end{proof}
 
 The proof yields a stronger statement about formal Taylor series.  For a smooth
@@ -75,7 +77,11 @@ $E_n$ is defined in \eqref{ii:eq:En} from forward orbit arithmetic.
 
 \begin{proof}
 Take the co-countable dense set $E_n$ of \eqref{ii:eq:En} and put
-$Y_n=G_n(E_n)$.  The homeomorphism $G_n:(0,1)\to(0,1)$ preserves density and
+\begin{equation}
+ Y_n:=G_n(E_n).
+ \label{ii:eq:Yn}
+\end{equation}
+The homeomorphism $G_n:(0,1)\to(0,1)$ preserves density and
 sends the countable complement of $E_n$ to the countable complement of
 $Y_n$.  For $y=G_n(x)$ with $x\in E_n$, \Cref{ii:thm:strong} gives
 $R_{G_n}(x)=0$, and the formal-reversion theorem
@@ -152,10 +158,11 @@ the countable dyadic set.  At $x\in E_n$, the dominant-spine lower bound
  \qquad Q_m=2^{m(m+1)/2}.
 \]
 Since $m!\le m^m$, taking $m$-th roots gives
-\[
+\begin{equation}
  \left(\frac{|G_n^{(m)}(x)|}{m!}\right)^{1/m}
  \ge c(x,n)^{1/m}H_n(x)\frac{2^{(m+1)/2}}m\longrightarrow\infty
-\]
+ \label{ii:eq:root-divergence}
+\end{equation}
 along that subsequence.  Cauchy--Hadamard now gives $R_{G_n}(x)=0$.
 \end{proof}
 
@@ -649,30 +656,11 @@ $m\in M$, the normalized absolute value is at least $A_{j_*,n}/4$.  We may take
 $c(x,n)=A_{j_*,n}/4>0$.
 \end{proof}
 
-\begin{proof}[Proof of \cref{ii:thm:strong}]
-At every $x\in E_n$, \cref{ii:prop:dominant-lower-bound} and $m!\leq m^m$ give along an
-infinite subsequence
-\begin{align}
- \left(\frac{\AbsoluteValue{G_n^{(m)}(x)}}{m!}\right)^{1/m}
- &\geq c(x,n)^{1/m}H_n(x)
-   \frac{Q_m^{1/m}}{(m!)^{1/m}}\\
- &\geq c(x,n)^{1/m}H_n(x)\frac{2^{(m+1)/2}}{m}
- \longrightarrow+\infty.
- \label{ii:eq:root-divergence}
-\end{align}
-This proves \eqref{ii:eq:infinite-limsup}.  The Cauchy--Hadamard formula then gives zero
-radius of convergence for the Taylor series at $x$.
-\end{proof}
-
-\begin{proof}[Proof of \cref{ii:thm:main}]
-Suppose $G_n$ were real analytic at some $p\in[0,1]$.  Real analyticity is a local open
-property: there would be a radius $r>0$ such that $G_n$ is represented by a convergent
-power series throughout $(p-r,p+r)$, and hence is analytic at every point of that
-interval.  The interval intersects $(0,1)$ in a nonempty open set, even when $p$ is an
-endpoint.  Since $E_n$ is dense, choose
-$x\in E_n\cap(p-r,p+r)$.  This contradicts the zero Taylor radius at $x$ established
-in \cref{ii:thm:strong}.
-\end{proof}
+This proposition is the last engine needed by the unique proofs of
+\cref{ii:thm:strong,ii:thm:main} given with their statements.  Namely, taking
+$m$th roots yields \eqref{ii:eq:root-divergence}; Cauchy--Hadamard gives zero
+Taylor radius on the dense set $E_n$, and an analytic neighbourhood cannot
+meet such a point.
 
 \section{The inverse-iterate theorem}
 \label{ii:sec:inverse-transfer}
@@ -693,16 +681,12 @@ Equivalently, writing $y_j=I^{\comp j}(y)$,
  \label{ii:eq:inverse-product-slope}
 \end{equation}
 
-\begin{proof}[First proof of \cref{ii:thm:inverse-main} on $(0,1)$]
-Suppose $K_n$ were real analytic at some $y_0\in(0,1)$.  Its derivative is nonzero by
-\eqref{ii:eq:inverse-iterate-derivative}.  The real-analytic inverse-function theorem then
-makes its local inverse $G_n$ analytic at $x_0=K_n(y_0)$, contradicting
-\cref{ii:thm:main}.
-\end{proof}
-
-This short argument proves local nonrepresentability, but it does not yet say whether
-the formal Taylor series of $K_n$ converges to some unrelated analytic germ.  Formal
-reversion settles that stronger question.
+The nonzero derivative in \eqref{ii:eq:inverse-iterate-derivative} is the
+interior mechanism used in the unique proof of \cref{ii:thm:inverse-main}:
+an analytic germ for $K_n$ would have an analytic local inverse, contrary to
+\cref{ii:thm:main}.  That argument proves local nonrepresentability, but it
+does not say whether the formal Taylor series of $K_n$ converges to some
+unrelated analytic germ.  Formal reversion settles that stronger question.
 
 \subsection{Formal-radius invariance under local inversion}
 
@@ -753,20 +737,17 @@ For every $n\geq1$ and $x\in(0,1)$,
 The same equivalence holds with ``$=0$'' replaced by ``$>0$''.
 \end{corollary}
 
-\begin{proof}[Proof of \cref{ii:thm:inverse-strong}]
-Let $E_n$ be the co-countable dense set in \eqref{ii:eq:En} and define
-\begin{equation}
- Y_n:=G_n(E_n).
- \label{ii:eq:Yn}
-\end{equation}
-Because $G_n$ is a homeomorphism, $Y_n$ is dense.  Its complement is the image under
-$G_n$ of the countable set $(0,1)\setminus E_n$, so $Y_n$ is co-countable.  If
-$y=G_n(x)$ with $x\in E_n$, then $R_{G_n}(x)=0$ by \cref{ii:thm:strong};
-\cref{ii:thm:formal-reversion} gives $R_{K_n}(y)=0$.  The Cauchy--Hadamard formula is
-exactly the limsup assertion in \eqref{ii:eq:inverse-zero-radius}.
+\begin{proof}
+At $x$ and $G_n(x)$, the smooth germs of $G_n$ and $K_n$ are mutually
+inverse and $G_n'(x)>0$.  Applying \cref{ii:thm:formal-reversion} gives the
+equivalence for positive radius.  A power-series radius is nonnegative, so
+negating that equivalence gives the displayed zero-radius equivalence.
 \end{proof}
 
-The theorem gives a second proof of interior nowhere analyticity: an analytic point has
+Applied to the set $Y_n$ of \eqref{ii:eq:Yn}, the radius-transport corollary
+is precisely the formal-series step in the unique proof of
+\cref{ii:thm:inverse-strong}.  That theorem also gives an independent route
+to interior nowhere analyticity: an analytic point has
 an open analytic neighborhood, but every nonempty open interval meets the dense set
 $Y_n$ on which the Taylor radius is zero.
 
@@ -792,8 +773,9 @@ $K_n(y)\geq I(y)$.  Hence
 \end{equation}
 Thus $K_n$ has no finite right derivative at $0$ and cannot be analytic there.
 The symmetry $I(1-y)=1-I(y)$, inherited by every iterate, gives the same conclusion at
-$1$.  Together with the interior proof, this completes \cref{ii:thm:inverse-main} under
-either the one-sided or totalized endpoint convention.
+$1$.  This is the endpoint ingredient invoked in the unique proof of
+\cref{ii:thm:inverse-main}; it works under either the one-sided or totalized
+endpoint convention.
 
 The repository's formally backed endpoint theorem yields substantially more.  Put
 $L=\log2$.  Its quadratic logarithmic law is
@@ -896,11 +878,13 @@ The main theorem is complete, but it leaves a structured exceptional countable s
 which the formal Taylor series may converge without representing the function.  The
 formal-radius transport theorem shows that the inverse classification is exactly the
 homeomorphic image of the forward positive-radius locus.  Of the five submitted
-conjecture environments, only two remain live manuscript conjectures.  Three are
-retained as explicit warning records: one has a false inverse clause, one is already
-proved from exact quarter-point facts, and one duplicates the corrected forward
-report's sole live conjecture.  Neither live conjecture has an exact proved Lean
-counterpart.
+conjecture environments, only the direct inverse-spine statement remains a manuscript
+conjecture.  Three are retained as explicit warning records: one has a false inverse
+clause, one is already proved from exact quarter-point facts, and one duplicates the
+corrected forward report's sole live conjecture.  The former nested-Lambert statement
+is demoted below to a precise research problem because its proposed coefficient scale,
+phase recursion, and uniform remainder had not been specified.  Neither the surviving
+conjecture nor that problem has an exact proved Lean counterpart.
 
 \begin{warning}[Former Conjecture 14.1 has a false inverse clause]
 \label{ii:warn:trichotomy}
@@ -981,17 +965,58 @@ explicit two-spine rate and the first correction term for both forward and prosp
 inverse spines.
 \end{warning}
 
-\begin{conjecture}[Nested Lambert phase law]
-\label{ii:conj:nested-lambert}
-The repository's all-orders endpoint expansion for $I$ can be iterated a fixed number
-of times to produce an all-orders transseries for $K_n$ whose coefficient functions are
-smooth and periodic in a hierarchy of nested lower-branch Lambert phases.  The leading
-term is \eqref{ii:eq:iterated-inverse-endpoint}, and each iteration transports rather than
-erases the dyadic periodic ripple.
-\end{conjecture}
+\begin{problem}[Nested Lambert phase closure]
+\label{ii:prob:nested-lambert}
+Put $y_0=y$, $y_{r+1}=I(y_r)$ and, for $0\le r<n$,
+\[
+ T_r:=\log(1/y_r),\qquad
+ \rho_r:=\sqrt{2T_r/L},\qquad
+ \vartheta_r:=\rho_r+\beta\pmod{1}.
+\]
+For fixed $n$ set $q_n:=T_0^{-2^{-n}}$ and $\ell:=\log T_0$.
+Determine whether, for every truncation order $N$, there are recursively
+computable functions $C_{n,j}$, polynomial in $\ell$ and real analytic and
+one-periodic in each of $\vartheta_0,\ldots,\vartheta_{n-1}$, such that
+\begin{equation}
+ T_n=c_nq_n^{-1}
+ +\sum_{j=0}^{N-1}
+ C_{n,j}(\ell,\vartheta_0,\ldots,\vartheta_{n-1})q_n^j
+ +\BigO_{n,N}\!\left((1+\ell)^{D_{n,N}}q_n^N\right),
+ \label{ii:eq:nested-lambert-template}
+\end{equation}
+where $c_n=(2L)^{1-2^{-n}}$, $D_{n,N}$ is finite, and the remainder
+constant is uniform in all phase vectors attained as $y\downarrow0$.
+Here ``recursively computable'' is to mean the following explicit
+composition-and-truncation procedure.  With the one-step coefficients $h_j$
+of \cref{ao:thm:all-orders}, form
+\[
+ \mathcal I_N(T):=L\rho+L\beta-\log\rho
+ -\sum_{j=1}^{N}\frac{h_j(\log\rho,\rho+\beta)}{\rho^j},
+ \qquad \rho=\sqrt{2T/L}.
+\]
+Starting from $\widehat T_0=T_0$, expand
+$\mathcal I_N(\widehat T_r)$ in $q_n$, retain all powers below $q_n^N$,
+and call the result $\widehat T_{r+1}$.  Prove, uniformly in the attained
+phases, that
+\[
+ T_r-\widehat T_r
+ =\BigO_{n,N}\!\left((1+\ell)^{D'_{n,N}}q_n^N\right)
+ \qquad(0\le r\le n),
+\]
+including the phase-error estimates needed before each periodic $h_j$ is
+composed with $\sqrt{2\widehat T_r/L}+\beta$.  Finally, determine the first
+coefficient in which each $\vartheta_r$ occurs and prove that its dependence
+is nonconstant; this is the precise ``periodic ripple is transported''
+claim.  If the single lattice $q_n^{\IntegerNumbers}$ is not closed under the
+recursion, identify and prove minimality of the larger exponent semigroup.
+\end{problem}
 
-This all-orders claim is not implied by the proved leading scale, has not been tested by
-the interior Taylor-reversion experiment, and has no exact Lean counterpart.
+The one-step theorem \cref{ao:thm:all-orders} supplies the input to this
+problem, and \eqref{ii:eq:iterated-inverse-endpoint} supplies its leading
+term.  Neither result by itself justifies the multiscale closure, the phase
+substitutions, or the uniform remainder in
+\eqref{ii:eq:nested-lambert-template}; the interior Taylor-reversion
+experiment tests none of them.
 
 \subsection{Promising formalization route}
 
@@ -1020,10 +1045,10 @@ The formal-reversion layer should be reusable well beyond the Fabius development
 The proof abstracts beyond the classical dyadic case.  Suppose a smooth increasing map
 $f$ has derivatives
 \begin{equation}
- f^{(m)}(x)=q^{\binom{m+1}{2}}\Phi(q^m x),
+ f^{(m)}(x)=q^{\binom{m+1}{2}}\Psi(q^m x),
  \label{ii:eq:q-atomic-derivatives}
 \end{equation}
-for some $q>1$, with bounded $\Phi$, recurrent nonvanishing along a dense set of
+for some $q>1$, with bounded $\Psi$, recurrent nonvanishing along a dense set of
 $q$-adic orbits, and monotone orbit slopes yielding a unique dominant prefix.  The same
 partition calculation replaces $2^{-D(\pi)}$ by $q^{-D(\pi)}$.  Once forward iterates
 are controlled, \cref{ii:thm:formal-reversion} automatically transfers every zero-radius
@@ -1073,7 +1098,7 @@ This appendix records two identities useful for sharpening
 
 \begin{proposition}[Exact minimum at fixed block count]
 \label{ii:prop:fixed-k-minimum}
-Among partitions of $m$ with $k$ blocks,
+Let $m\ge1$ and $1\le k\le m$.  Among partitions of $m$ with $k$ blocks,
 \begin{equation}
  \min D(\pi)=(k-1)(m-k).
  \label{ii:eq:fixed-k-minimum}
@@ -1092,14 +1117,15 @@ Iteration leaves one large block and $k-1$ singletons.  Direct substitution give
 
 \begin{proposition}[First defect shell]
 \label{ii:prop:first-shell}
-For $m\geq3$, the least positive defect is $m-2$.  It occurs for exactly two block-size
-profiles:
+For $m\geq3$, the least positive defect is $m-2$.  It occurs for the two
+endpoint forms
 \begin{equation}
  (2,1,\ldots,1)
  \qquad\text{and}\qquad
  (m-1,1).
  \label{ii:eq:first-shell}
 \end{equation}
+which coincide in the boundary case $m=3$ and are distinct for $m\ge4$.
 \end{proposition}
 
 \begin{proof}
@@ -1107,8 +1133,10 @@ From \eqref{ii:eq:fixed-k-minimum}, the least positive value over $2\leq k\leq m
 \[
  \min_{2\leq k\leq m-1}(k-1)(m-k)=m-2,
 \]
-attained only at $k=2$ and $k=m-1$.  The equality classification in
-\cref{ii:prop:fixed-k-minimum} gives the two profiles.
+attained only at the endpoint values $k=2$ and $k=m-1$; these are the same
+value when $m=3$.  The equality classification in
+\cref{ii:prop:fixed-k-minimum} gives the displayed forms and the stated
+distinctness.
 \end{proof}
 
 This identifies the candidate leading correction to the spine sum.  At the

@@ -30,7 +30,18 @@ unqualified moving branch.
 The source currently distinguishes exact Lean crosswalks from results proved
 only in the manuscript. A manuscript theorem label is never, by itself,
 evidence of a compiled Lean declaration. Likewise, numerical tables and plots
-are checks and illustrations, not proof premises.
+are checks and illustrations, not proof premises. The current
+`FabiusFunction.LagrangeRvachevSynthesis` crosswalk verifies generic scalar
+decoder synthesis, node biorthogonality, coefficient factorization, the full
+finite interpolation loop, and the unnormalized decoder row-sum law. It does
+not claim a formal geometric Gaussian closed-form decoder, the associated
+elementary-symmetric/prefactor formula, a `Matrix` wrapper, or decoder
+optimization.
+
+The separate `Fabius.twoPowChoose_padicValNat` crosswalk is an exact Lean
+counterpart only for the strict-interior formula in `thm:weight-valuation`.
+The companion endpoint-flat assertion for `choose(2^m - 2, j - 1)` is stated
+separately in the chapter and remains unformalized.
 
 ## Sources reconciled
 
@@ -77,22 +88,28 @@ pdflatex -interaction=nonstopmode -halt-on-error comb_interpolation_synthesis.te
 ```
 
 A successful command is not, by itself, the complete publication gate. The
-retained canonical PDF was built from the preceding publication source in
-exactly three strict, serial passes on 2026-08-31. It has 155 A4 pages,
-2,448,906 bytes, and SHA-256
-`d1f89b005bcae9afc9c70b4ccce632aa8c665ed68e98bacb2ff96827dd427095`.
-All 33 font rows are embedded and subset, seven are Libertinus faces, and none
-is Type 3. Every page has text, A4 geometry, zero rotation, and the same five
-page boxes; all pages were reviewed in contact sheets and representative
-pages were inspected at full size. The final log has no TeX errors, undefined
-references or citations, rerun requests, duplicate destinations, or overfull
-boxes. Its 36 package warnings and six underfull boxes are the recorded,
-visually checked hyperref/caption/amsmath and paragraph-layout diagnostics.
+retained incoming publication PDF was built from its frozen source in exactly
+three strict, uninterrupted serial passes on 2026-08-31 after a separate
+empty-lane and clean-auxiliary gate. No other TeX process appeared and the
+complete input source digest remained fixed between passes. The PDF has 156 A4 pages,
+2,452,884 bytes, and SHA-256
+`ea23b4ad19a41c5246b548db7c79e18d50835b697a88e9a5aa2b1188af3b4d35`.
+All 33 font rows are embedded and subset Type 1 faces, seven are Libertinus,
+and none is Type 3. Every page has text, A4 geometry, zero rotation, and the
+same five page boxes. All pages were reviewed in six contact sheets; pages 1,
+10, 37, 38, 45, 149, 150, and 156 were also inspected at full size. The
+final-pass log has
+no TeX errors, undefined references or citations, rerun requests, duplicate
+destinations, or overfull boxes. Its 36 package warnings and six underfull
+boxes were the recorded, visually checked hyperref/caption/amsmath and
+paragraph-layout diagnostics.
+
 The later source-only crosswalk of `thm:weight-valuation` to
 `Fabius.twoPowChoose_padicValNat` changed
 `chapters/03_additive_dyadic.tex` but, by explicit instruction, did not rebuild
-the PDF.  These measurements therefore describe the retained publication
-artifact and do not assert render synchronization with the current chapter.
+the PDF. These measurements therefore describe the retained incoming
+publication artifact and do not assert render synchronization with the current
+chapter.
 
 ## Reproduce the computational evidence
 
@@ -128,11 +145,14 @@ substantively, and 20 point to files no longer present at that pin. These are
 historical facts, not a live checksum certificate. The deterministic canonical
 validator passes all structural, source-disposition, theorem-concordance,
 reference, citation, historical-ledger, and companion-payload gates. Its Lean
-check confirms only that each curated declaration name occurs in its nominated
-module; it is not a live Lean census or theorem-type checker. The current root
-`SHA256SUMS` is the exhaustive operational ledger for every other permanent
-package file. The PDF and page/font/text/visual inspections were complete at
-the preceding publication checkpoint; rendering the current valuation
-crosswalk is deliberately pending under the source-only update.  A
+check confirms only that each curated exact or partial-support declaration
+name occurs in its nominated module; it is not a live Lean census or
+theorem-type checker. Three concordance rows are exact Lean crosswalks; the
+compound decoder and biorthogonality rows remain human-proved and carry
+narrower partial-support notes. The current root `SHA256SUMS` is the exhaustive
+operational ledger for every other permanent package file. The retained
+incoming publication PDF's page, box, rotation, text, font, log, render, and
+visual gates are complete, but rendering the later valuation crosswalk remains
+pending and the PDF is not synchronized with the current chapter. A
 fresh-checkout reproduction and a full rerun of every retained numerical
-script remain separate reproducibility work.
+script remain deliberately separate reproducibility work.
