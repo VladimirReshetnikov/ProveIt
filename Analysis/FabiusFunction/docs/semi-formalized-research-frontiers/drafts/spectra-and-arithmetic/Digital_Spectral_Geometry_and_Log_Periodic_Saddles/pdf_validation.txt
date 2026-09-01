@@ -1,10 +1,8 @@
-PDF validation — final merged-corpus audit refresh, 2026-08-31
+PDF validation — synchronized canonical-notation rebuild, 2026-08-31
 
-Checkpoint status: this file describes the last validated PDF render. The
-subsequent source-only canonical-notation merge was intentionally not rendered;
-the PDF/source synchronization and corpus-audit refresh are deferred. The live
-checksum ledger therefore currently passes 15/18 rows; the changed TeX source,
-README, and this checkpoint note are pending.
+Checkpoint status: the source, PDF, final-pass transcript, package notes, and
+live checksum ledger are synchronized. The separate arrival ledger remains
+byte-for-byte preserved.
 
 Repository audit:
 - repository_audit.py was run against Analysis/FabiusFunction/docs/**/*.tex,
@@ -25,12 +23,12 @@ Build:
 - exactly three clean, strict, serial pdfLaTeX passes completed with exit 0 and
   `-shell-escape` enabled for the report's self-contained figure inputs
 - final settled page count: 24
-- final-source TeX SHA-256: 6612eaca5ba7f1a29c863cf4faf24904d0a991056dee747388c39a40fde14880
-- final-source TeX lines: 1963
+- final-source TeX SHA-256: a7a2bb45abf7c3a546b87c499dcd8d52d95a2569da8cc6614c3642103da19d74
+- final-source TeX lines: 1940
 - generated TeX input SHA-256: da703d296abdff0a61a67cfe0699568859c903a27c31eb43b321e8457cf3f6e7
-- PDF SHA-256: a87074c73f97d7040dbc1e5cd665e5214fcefecec64426441152caf306201dba
+- PDF SHA-256: 7038edd1f789245645333b97b67d27244987aed461ac7d1b713273010e65309f
 - final-pass compile_transcript.txt SHA-256:
-  ac8c1ca7119b9470a8898baa6acc71fd710fdd4e5be177550ce5dad07b9da7a1
+  3637f2b9f04f8f500547200d3ba6268e8e1e601976e57a5c464c1e6ba69f1b83
 - PDF is newer than the final TeX source and generated TeX input
 - the shared preamble through the canonical listing style is byte-for-byte
   identical to the primary document except for permitted PDF metadata and
@@ -50,22 +48,19 @@ PDF structure:
 - readable and text-extractable: yes; all 24 pages contain text
 - pages: 24
 - every page: 595.276 x 841.89 pt (A4), rotation 0
-- file size: 852061 bytes
+- file size: 853955 bytes
 - PDF version: 1.5
 - font rows: 24; embedded: 24/24; subset: 24/24; Type 3: 0
 - canonical face: Libertinus (5 rows); Latin Modern rows: 0
 - raster images: three generated 1440 x 684 PNG figures, all present
 - all 24 pages rendered successfully with Poppler
 
-Search and visual checks:
+Search and render checks:
 - title, exact 188-file corpus statistics and digest, zero-multiplicity/count
   formula, numerical tables, Lean/novelty boundary, proof-gap quarantine,
   corrected plateau boundary, and conjecture boundary extract correctly
-- title/audit page; zero-count figure; periodic and Fourier-coefficient figures;
-  A4-wrapped numerical tables; all-orders and inverse proof-gap quarantine;
-  canonical-Appell boundary; finite general-base Lean crosswalk; and final
-  audit/bibliography pages were inspected without clipping, overlap, or
-  malformed layout
+- Poppler rendered all 24 pages successfully; every rendered page was nonblank,
+  and text extraction found non-whitespace content on every page
 
 Numerical outputs:
 - audit regeneration did not require numerical regeneration

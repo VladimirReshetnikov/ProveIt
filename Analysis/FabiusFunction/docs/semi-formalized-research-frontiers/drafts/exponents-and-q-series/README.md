@@ -20,9 +20,16 @@ general-q-series guides, forward q-Pochhammer/q-binomial monograph, and
 inverse-q synthesis have been dispositioned into
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/).
 Their earlier names, arrival hashes, and publication facts remain provenance,
-not parallel live documents. The synthesis has one reproducible 334-page A4
-publication PDF; retained PDFs under its `assets/` tree are research figures,
-not alternate manuscript renderings.
+not parallel live documents. The canonical pre-`c3720b763` source has a
+verified reproducible 335-page A4 publication. Its source/PDF receipt remains
+valid. The subsequent `QPochhammerEntire.lean`,
+`QPochhammerInfinite.lean`, and `QPochhammerDissection.lean` surfaces are now
+incorporated into the current formalization crosswalk; that semantic-union
+source requires a fresh three-pass build and ledger refresh.
+Retained PDFs under its `assets/` tree are research figures, not alternate
+manuscript renderings. The current Lean audit contains 623 facade-reachable
+modules and 8,476 public declarations, with no missing module headers or
+declaration documentation.
 
 ## Detailed package record
 
@@ -85,19 +92,25 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The canonical `q_pochhammer_q_binomial_monograph.pdf` is a reproducible
-  334-page A4 rendering of the merged master (2,917,795 bytes; SHA-256
-  `aa75c32926fb0d5b20d831f9df0be584073f1cbc4232c25facbd21d98b9f680d`).
-  It was built in three byte-identical serial passes; every font is embedded
-  and subsetted, including Libertinus, and all 334 pages passed render review.
+  The retained `q_pochhammer_q_binomial_monograph.pdf` is a reproducible
+  335-page A4 render of source SHA-256
+  `9b7ac11a815efa7f3c6ea08b9626c06143fd6b0d633fef6edfc8bc21c2f6783a`
+  (2,163,339 bytes; PDF SHA-256
+  `91c649d0c69628e134e71f1be6c39c3cbc96b91bfc63e456011083cf0e882f03`).
+  Exactly three strict serial passes produced the artifact; all 335 pages,
+  A4 media, metadata, text extraction, embedded/subset fonts including
+  Libertinus, absence of Type 3 fonts, and targeted visual review passed. This
+  remains a valid receipt for the pre-`c3720b763` source. The later
+  `QPochhammerEntire.lean`, `QPochhammerInfinite.lean`, and
+  `QPochhammerDissection.lean` APIs are represented in the current source;
+  that post-receipt union needs another strict three-pass build and ledger refresh.
   PDF files retained beneath `assets/` are vector research figures, not
   manuscript builds. Manuscript result labels and numerical checks remain
   distinct from Lean verification.
 
 - [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/),
   *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
-  Product* (25 pp at arrival; current 28-page A4 main PDF and
-  1,873-line source),
+  Product* (25 pp at arrival; currently 28 A4 pp and 1,875 source lines),
   arrived on 2026-08-30 from
   `Cyclotomic_q_Fabius_Rvachev_Frontier.zip` (outer SHA-256
   `029da7d9ec96a0b2e5c4164c37f2b361dd015112bd0c6237263e3c538c5b0f64`).
@@ -108,12 +121,13 @@ Current packages and retained intake records:
   the consolidated q-series frontier. A post-publication revision crosswalks
   the global geometric-sinc q-Pochhammer factorization while leaving the
   cyclotomic asymptotic and natural-boundary layers manuscript-only. The
-  current PDF was rebuilt after the source-only checkpoint. The refreshed
-  22-entry active ledger verifies 22/22 current payloads. The five current PDFs
-  have 32 pages in total (28 main plus four one-page figures). The main report
-  has 31 embedded/subset font rows, including four Libertinus rows and nine
-  Type-3 figure-font rows; the standalone figures contain the same nine Type-3
-  rows. Figure-font normalization remains deferred.
+  retained main PDF has 28 A4 pages, so the five PDFs have 32 pages in total
+  (28 main plus four one-page figures). Its current 1,875-line source postdates
+  that rendering; a fresh strict three-pass build and operational-ledger
+  refresh are pending. The retained main PDF uses
+  embedded/subset Type-1 Libertinus fonts with no Type 3 font; the unchanged
+  standalone vector figures retain nine embedded/subset Type-3 rows as
+  disclosed archival debt.
 
 - [`Fabius_Rvachev_Frontier_Report/`](geometric-sinc-and-exponent-families/Fabius_Rvachev_Frontier_Report/),
 *Negative Parameters, Reciprocal Bases, and the Gaussian Boundary* (current
@@ -466,9 +480,12 @@ that full row partial.
 `gaussianBinomial_neg_one_even_odd_eq_zero` from the reciprocity module, these
 give all four Gaussian parity values and both paired finite-product identities
 over arbitrary commutative rings, without division or characteristic
-restrictions.  The companion report proves the first derivative and
-simple-root statement only at paper level; those polynomial-interface results
-remain unformalized.
+restrictions.  `GaussianBinomialAtNegOneDerivative.lean` closes the companion
+first-jet layer with exactly four public theorems: the even-degree derivative
+law and total even-row/odd-column slope over every commutative ring, plus
+root-multiplicity one first over `ℤ` and then over every characteristic-zero
+commutative ring when `b<a`.  It does not assert simplicity in arbitrary
+characteristic or at every cyclotomic zero.
 
 The documents also cross-reference the independent real fractional-Volterra
 layer. `FractionalVolterraCalculus.lean` proves positive affine covariance on
@@ -490,12 +507,14 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 
 Geometric-sinc subgroup member:
 [`Exponents_and_q_Series_Frontiers/`](geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/)
-(current synchronized PDF: 237 A4 pp; current merged TeX: 16,235 lines,
-SHA-256 `fbd294c4cb23c979043725ca5596ff25364ad20a0dce7d01a67e7ac5da9f1450`,
-and current PDF: 6,313,577 bytes, SHA-256
-`7599ebc1dc137dbc0d3891e7fade43678abac255e2fa78627111ff0555b5681d`;
-across seven parts; the PDF was rebuilt from this source in three strict
-passes, and both refreshed parent ledgers verify every current row) — the
+(retained 237-page A4 PDF, SHA-256
+`2142b5d232abe6a1088b9f715ae5bf3ee7b451f1f218d968aaa5a086f6b4bfca`;
+current path-adjusted merged TeX: 16,241 lines, SHA-256
+`c273f630ea0feef714513395adb3b2369aa4b9566161d73d63b8dbc526fc56f0`,
+across seven parts). The retained PDF passed the complete metadata, all-page,
+embedded/subset Type-1 Libertinus, and Type-3-free gates at the preceding
+source checkpoint. The hierarchy move changed the shared-notation traversal,
+so a fresh three-pass render and final parent-ledger refresh are pending — the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -728,7 +747,8 @@ volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Canonical forward/inverse publication:
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/)
-(334-page canonical A4 publication PDF) — *q-Series and Inverse q-Analogs:
+(verified 335-page pre-`c3720b763` checkpoint; post-crosswalk rebuild pending) —
+*q-Series and Inverse q-Analogs:
 A Proof-Oriented Synthesis*. Its forward backbone proves from first principles
 the shifted-factorial, Gaussian, hypergeometric, theta, partition, Bailey,
 cyclotomic, interpolation, and Fabius--Rvachev machinery consumed by Parts II,
@@ -745,12 +765,16 @@ pre-consolidation rendered checkpoint had 13,117 source lines (SHA-256
 and a 1,582,997-byte, 213-page PDF (SHA-256
 `7ee6f8f6d8e72228a5b20daa119caa4d834b11063f910b526897b2677a2ede7b`).
 Those figures identify a retired historical artifact; they are not build
-claims about the current canonical source.
+claims about the current canonical source. The canonical synthesis's newer
+335-page PDF does render its explicitly hashed pre-`c3720b763` source and is
+now a historical source-pinned receipt because the three later q-Pochhammer
+module crosswalks are incorporated into the current source. That source still
+requires its final build.
 
-The current forward formalization crosswalk has 284 labelled results: 42
+The pre-`c3720b763` forward formalization crosswalk has 284 labelled results: 42
 exact, 74 partial, 160 with no counterpart, and 8 interface-only. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
-and 3 interface-only entries. The four integrated guide chapters add 31
+and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
 the later Fabius bridge contributes the remaining 57 rows. Its pointwise
 inside-`q^2` Pochhammer factorization is now formal for every complex strict
@@ -923,6 +947,31 @@ theorems justify the exchange of scale and spectral-zero indices, including
 eight-theorem sinc-product tranche above
 supplies the general-`q` uncentered real-frequency bridge, locally uniform
 entire `S_q`, and real-frequency local and compact uniform convergence of the
-full phase-bearing prefixes.  There is still no named centered or MGF
-wrapper, no outside-disk reciprocal formula, and no named local-uniform or
-normal-convergence theorem for the Pochhammer-product right-hand side.
+full phase-bearing prefixes.  There is still no named centered or MGF wrapper
+or outside-disk reciprocal formula. The later entire and generic
+infinite-product leaves supply the parameter-local-uniform and normal-
+convergence layer described below.
+
+`QPochhammerEntire.lean` adds exactly four public theorems beyond that
+pointwise product surface:
+`Fabius.hasProdLocallyUniformly_complexQPochhammerInf`,
+`Fabius.complexQPochhammerInf_differentiable`,
+`Fabius.complexQPochhammerInf_eq_zero_iff`, and
+`Fabius.analyticOrderAt_complexQPochhammerInf_of_eq_zero`. For every complex
+strict contraction, they prove locally uniform convergence in the parameter
+`a`, entire-ness of `a ↦ (a;q)_∞`, the exact factor-zero locus, and analytic
+order one at every zero. The division-free factor formulation includes the
+degenerate nome `q = 0`. These are proved, facade-reachable Lean results. Their
+exact human-readable counterparts and refreshed crosswalk rows are now present
+in the current source, whose next canonical three-pass build remains pending.
+
+`QPochhammerDissection.lean` adds the two denominator-free finite residue-class
+factorizations over arbitrary commutative rings. `QPochhammerInfinite.lean`
+adds the generic infinite symbol `Fabius.qPochhammerInfIn` and 27 theorems:
+strict-contraction summability and convergence, finite-prefix and residue-class
+factorizations, exact zero criteria, locally uniform parameter convergence,
+continuity and complex differentiability, and explicit nonzero derivatives at
+inverse-power zeros. Its infinite dissection assumes a positive modulus, while
+the two finite dissection theorems require no contraction or nonvanishing.
+These APIs are regularity statements in the free parameter, not joint
+analyticity or continuation in the nome.

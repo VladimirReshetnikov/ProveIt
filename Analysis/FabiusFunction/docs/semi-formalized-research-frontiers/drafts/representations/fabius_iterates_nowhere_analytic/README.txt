@@ -81,10 +81,13 @@ The source uses the repository's canonical A4, 27 mm, Libertinus preamble.
 After a successful build, inspect every rendered page and remove the generated
 .aux, .log, .out, and .toc sidecars before committing the matching PDF.
 
-Validated repository build (2026-08-30)
+Validated repository build (2026-08-31)
 ---------------------------------------
 - Exactly three strict serial passes from clean auxiliary state produced a
-  22-page A4 PDF from the frozen 1,566-line source.
+  22-page A4 PDF from the frozen 1,542-line, 63,320-byte source with SHA-256
+  c0684c7c790d9e1b2b569d49d4d2a294aabc409c23a74f8cc1cdc5eb83ff6384.
+- The retained PDF is 786,569 bytes with SHA-256
+  46244adfe1289f318b76b306ae0b11f751425488b1099c785c85ad3dcba45b08.
 - The final log has no warnings, errors, unresolved references, rerun requests,
   duplicate destinations, or overfull/underfull boxes.
 - All 22 font rows are embedded and subset Type 1 fonts; five are Libertinus,
@@ -93,5 +96,6 @@ Validated repository build (2026-08-30)
   were rendered and visually inspected, including the status box, exhaustive
   Lean crosswalk, exact tie proposition, two quarantine warnings, sole live
   conjecture, figures, and source map.
+- Title, author, subject, and keywords metadata are present.
 - The numerical script and Lean sources were not rerun.  The four tracked
   figure pairs remain byte-identical.

@@ -1,7 +1,7 @@
 # Reproducibility assets
 
 This directory is the reproducibility companion to the consolidated
-`Inverse q-Analogs and Their Series Expansions` volume.  It preserves the
+`q-Series and Inverse q-Analogs` volume.  It preserves the
 distinct computational experiments that accompanied the six source reports
 without preserving six parallel report bundles.
 
@@ -16,14 +16,25 @@ The mathematical status is deliberately strict:
 - decimal agreement, plots, and asymptotic residuals never upgrade a claim to
   theorem status.
 
-`ASSET_DISPOSITION.csv` is the completed path-by-path migration ledger.  Its
-source paths are historical paths formerly relative to the surrounding
-`exponents-and-q-series/` directory; destination paths are relative to the
-canonical `q_pochhammer_q_binomial_monograph/` directory.  The inventory covered
-all 77 files in the six source packages: 39 were retained as reproducibility
-assets and 38 were retired as superseded reports, duplicate renderings,
-package metadata, or build byproducts.  No content-based deletion was inferred
-merely from a similar filename.
+`ASSET_DISPOSITION.csv` is the immutable path-by-path migration and retirement
+record.  Its source paths are historical paths formerly relative to the
+surrounding `exponents-and-q-series/` directory, and destination paths are
+relative to the canonical `q_pochhammer_q_binomial_monograph/` directory.  Its 73
+tracked source hashes are frozen against asset snapshot
+`f46e5d7f6f225bf0a43d8945e67d6f0e4aec8d54`, where all 73 match.  This is
+distinct from `../audit/SOURCE_REVISION` at
+`6fe9fb8f50e1b8a9a800fa0e8ef6f688f5bb5838`, which pins the normalized
+six-package inputs for the theorem/source-concordance audit and matches only 66
+of the 73 asset rows.  The inventory has 77 rows: 73 tracked source files plus
+four ignored TeX-build paths that were absent untracked transients at the
+retirement freeze.  Every tracked row records its source SHA-256, every one of
+the 39 migrations records its canonical SHA-256, and the other 38 rows carry
+`NOT_RETAINED`.  The four absent paths carry `UNTRACKED_TRANSIENT_ABSENT`.  The
+retained set consists of six
+programs, 19 computational outputs, and 14 vector figures.  The retirements
+cover superseded reports, duplicate renderings, package metadata, and build
+byproducts.  No content-based deletion was inferred merely from a similar
+filename.
 
 | Disposition | Asset class | Count |
 | --- | --- | ---: |
@@ -94,7 +105,10 @@ All CSV files are retained in `data/`.  The two branch-geometry text files
 remain in `data/` as well because they are part of that program's established
 `DATA` contract.  Source-root audit logs move to `output/`.  Only vector PDF
 figures are retained; the extended experiment's six PNG files are preview
-renderings of those vector figures.
+renderings of those vector figures.  The 14 retained PDFs are historical
+Matplotlib artifacts and contain embedded/subset Type 3 DejaVu glyphs.  They
+are not input by the canonical manuscript; its separate publication gate
+requires Libertinus prose, Type-1 fonts, and no Type 3 fonts.
 
 ## Environment
 
@@ -219,23 +233,25 @@ precision, row order, or displayed values.  Text and CSV writers also use
 explicit LF line endings so that retained audit logs are reproducible across
 Windows and POSIX hosts.
 
-The source copies remain untouched.  `VALIDATION.md` records the clean-room
-rerun of every migrated program and distinguishes byte-for-byte reproduction
-from harmless rendering metadata and last-digit floating-point drift.
+The source copies remained untouched through the hash freeze and were then
+retired together.  `VALIDATION.md` records the clean-room rerun of every
+migrated program and distinguishes byte-for-byte reproduction from harmless
+rendering metadata and last-digit floating-point drift.
 
 ## What is not retained
 
 The six old report PDFs and LaTeX manuscripts are superseded by the single
 canonical volume.  Their mathematical provenance lives in the theorem
-concordance rather than in six competing renderings.  Source READMEs are
-absorbed here; source checksum ledgers will be replaced by a canonical
-post-migration ledger; the two source requirements files are replaced by the
+concordance rather than in six competing renderings.  Source READMEs were
+absorbed here; source checksum ledgers were replaced by the canonical
+post-migration ledger; the two source requirements files were replaced by the
 single requirements file above; generated LaTeX table fragments and TeX
 `.aux`, `.log`, `.out`, and `.toc` files are build products; and PNG previews
 are unnecessary when the corresponding vector PDFs are present.
 
 Retirement does not erase history: every old package remains recoverable from
-Git.  `SHA256SUMS` is the canonical post-migration ledger.  It covers every
+repository snapshot `f46e5d7f6f225bf0a43d8945e67d6f0e4aec8d54`.
+`SHA256SUMS` is the canonical post-migration ledger.  It covers every
 retained file beneath `assets/` except the ledger itself; a verifier can thus
 detect changes to programs, historical numerical snapshots, vector figures,
 the dependency manifest, or the migration documentation.
