@@ -1,15 +1,21 @@
-# Canonical publication validation
+# Canonical source integrity and retained-PDF validation
 
-This receipt certifies the final source/PDF pair for the canonical inverse
-Fabius synthesis.  The certification applies only to the exact hashes below.
+This receipt records two distinct audit surfaces for the canonical inverse
+Fabius synthesis: the current source closure and the last fully reviewed PDF
+artifact.  Because the source changed after that PDF was rendered, the hashes
+below are **not** asserted to form a synchronized source/PDF pair.
 
 ## Artifact identity
 
 | Item | Size | SHA-256 |
 | --- | ---: | --- |
-| `inverse_fabius_theory.tex` | 296 lines; 11,625 bytes | `7b8cea5ff685db3bb676e08f8e3b3c6586a7702f8bf3a85298fb9ced00054d25` |
-| Exhaustive 23-input source closure | 23 permanent build inputs | `0c856dd3329d53e2155616dfff8f9e503bd6a0f449622f0eae4e9cc84b548ee4` |
+| `inverse_fabius_theory.tex` | 294 lines; 11,557 bytes | `75300424b728515c32989d6bf061e5f1e6959ba93a52b0f2df845da2de86bc4a` |
+| `SOURCE_CLOSURE.sha256` | Exhaustive ledger of 23 permanent build inputs | `6a42e4ec29f43fc0bbd5e8e9b79997b880e56aa7ad259e084379a0f64d28238e` |
 | `inverse_fabius_theory.pdf` | 134 A4 pages; 2,027,726 bytes | `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d` |
+
+The first two rows identify the current source surface.  The third identifies
+the retained historical PDF checkpoint.  A fresh three-pass render is required
+before those surfaces may again be described as a publication pair.
 
 The 23-input closure consists of:
 
@@ -40,11 +46,13 @@ The 23-input closure consists of:
   `assets/self-sampling/figures/quadrature_weights.png`, and
   `assets/self-sampling/figures/appell_roots.png`.
 
-## Guarded build convergence
+## Retained PDF build convergence
 
-Exactly three guarded serial final-source pdfLaTeX passes were run.  Every
-pass returned zero; the independently hashed 23-input closure was identical
-before and after each pass, and no TeX/Lean/Lake work interleaved with them.
+At the retained PDF checkpoint, exactly three guarded serial pdfLaTeX passes
+were run.  Every pass returned zero; the independently hashed input closure for
+that build was identical before and after each pass, and no TeX/Lean/Lake work
+interleaved with them.  These passes were not rerun after the current master and
+shared-notation edits.
 
 | Pass | Produced pages |
 | ---: | ---: |
@@ -82,15 +90,16 @@ claiming byte identity between intermediate pass artifacts.
 
 - No canonical `.aux`, `.log`, `.out`, or `.toc` file, guarded-pass/render
   temporary, or shallow generated sidecar remains in the package.
-- Root `SHA256SUMS` contains exactly 87 rows, one for every permanent package
+- Root `SHA256SUMS` contains exactly 90 rows, one for every permanent package
   file except the self-referential ledger itself.
 - The root ledger includes the nested `assets/SHA256SUMS` as a permanent file.
   That 63-row asset ledger remains byte-identical, with SHA-256
-  `b274fe39cde808c34e82789136af51616e9177f424763b3eec153bc18e10fa3c`.
+  `a745240295306ceef87c90f944cb76f7b127cba3945cf3f3293a706894d08a0f`.
 - Python byte-code caches and other transient files are excluded from the root
   ledger and are not publication payloads.
 
 The root ledger, source-closure hash, and PDF hash serve different purposes:
 the root ledger inventories the complete permanent package, the closure hash
-identifies exactly what entered the TeX build, and the PDF hash identifies the
-reviewed publication artifact.
+identifies the current build inputs, and the PDF hash identifies the reviewed
+historical artifact.  Their independent validity must not be mistaken for
+current source/PDF synchronization.

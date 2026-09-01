@@ -108,22 +108,28 @@ notebook, and the primary-exposition gap register are preserved in the canonical
 That volume labels claims still awaiting literal Lean counterparts and records
 their exact outstanding proof obligations.
 
-Non-elementarity is treated in
-[*The Fabius Function and Its Inverse are Not Elementary*](docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.tex)
-([PDF](docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.pdf)):
-the class of elementary functions of one real variable is formalized, every
-member of it is proved real analytic on a dense open subset of the line, and
-this is combined with nowhere analyticity to show that no elementary function
-agrees with the Fabius function on any subset of `[0,1]` with nonempty
-interior.  The
-same conclusion is proved for a class the inductive definition does not
-reach — any continuous branch of a polynomial equation whose coefficients are
-elementary and whose leading coefficient vanishes nowhere — which covers the
-algebraic functions that are not expressible by radicals.  The inverse Fabius
-function is treated too: it is real analytic at no point of `[0,1]` either,
-hence not elementary, and neither it nor the Fabius function is reachable once
-the class is closed under continuous inverse branches at any depth — a class
-containing the Lambert `W` function.
+Inverse analyticity, non-elementarity, endpoint asymptotics, dyadic
+self-sampling, and effective inverse computation are treated together in
+[*Inverse Fabius Theory: Analyticity, Asymptotics, Computability, and Dyadic
+Sampling*](docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/inverse_fabius_theory.tex)
+([PDF](docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/inverse_fabius_theory.pdf)).
+Its
+[theorem concordance](docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/theorem_concordance.csv)
+distinguishes exact Lean counterparts from human-proved frontier results,
+conjectures, open problems, and non-theorem source material; its
+[provenance ledger](docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/PROVENANCE.md)
+records the five retired source packages and their immutable recovery points.
+
+On the formal side, the class of elementary functions of one real variable is
+proved real analytic on a dense open subset of the line, and this is combined
+with nowhere analyticity to show that no elementary function agrees with the
+Fabius function on any subset of `[0,1]` with nonempty interior. The same
+conclusion holds for the stated class of continuous algebraic branches, which
+also reaches algebraic functions not expressible by radicals. The inverse
+Fabius function is nowhere real analytic on `[0,1]`, hence is not elementary;
+neither it nor the Fabius function becomes representable after closing the
+class under continuous inverse branches at any depth, a closure that includes
+the Lambert `W` function.
 
 The development contains executable exact arithmetic.  The evaluator and its
 analytic correctness at every dyadic, the canonical function's existence and
