@@ -82,7 +82,7 @@ their source dispositions. Their content and provenance now live in the single
 root-level `q_pochhammer_q_binomial_monograph/`; every retired layout remains
 recoverable from its pinned revision and Git history. The remaining standalone
 q-series reports retain their thematic subgroup paths. In particular,
-Exponents has a 16,352-line current source and a retained 238-page PDF.  That
+Exponents has a 16,371-line current source and a retained 238-page PDF.  That
 PDF is the three-pass artifact built from the preceding 16,274-line source;
 basic structural and font checks passed, but the larger batch stopped before a
 fresh full log, page-box, and visual publication audit.  It therefore remains a
@@ -101,12 +101,16 @@ in the linked q-series registry remain unchanged by this merge.
 
 For the final source-only union, package-local READMEs and ledgers record the
 current q-series and Exponents source fingerprints. The live Exponents TeX is
-16,352 lines and 736,693 bytes with SHA-256
-`10aaa650902a48834021a7713ee8ec15eea3c9c15b5617ff276e423480474eb7`;
+16,371 lines and 737,767 bytes with SHA-256
+`2e2a7f423dd85e64201043de56349e533eb040b395b1a5e6c2ae8d5b2c99ce9b`;
 it includes the exact zero-order/exponent identifiability and constructive
 first-difference crosswalk from the new zero-definition, six-theorem Lean
 module, while zeta-quotient, cumulant/analytic-sample, and probability-law
-identifiability remain Partial in Lean. The retained Exponents PDF is 238 A4
+identifiability remain Partial in Lean. It also records the exact
+zero-definition, three-theorem outer q-Pochhammer normal-convergence API;
+the centered/MGF wrappers, outside-disk reciprocal formula, pole divisor, and
+zero--pole exchange in the compound claim remain Partial.
+The retained Exponents PDF is 238 A4
 pages and 6,953,898 bytes with SHA-256
 `fa719a8ea68d3c474928b9fae7449f827eb35a5452613f2b660d8e88ba27267e`.
 It was rendered from the preceding 16,274-line, 731,692-byte source with

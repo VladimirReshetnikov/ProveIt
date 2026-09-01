@@ -520,8 +520,8 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 
 Geometric-sinc subgroup member:
 [`Exponents_and_q_Series_Frontiers/`](geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/)
-(current semantic-union TeX: 16,352 lines and 736,693 bytes, SHA-256
-`10aaa650902a48834021a7713ee8ec15eea3c9c15b5617ff276e423480474eb7`;
+(current semantic-union TeX: 16,371 lines and 737,767 bytes, SHA-256
+`2e2a7f423dd85e64201043de56349e533eb040b395b1a5e6c2ae8d5b2c99ce9b`;
 retained PDF: 238 A4 pages and 6,953,898 bytes, SHA-256
 `fa719a8ea68d3c474928b9fae7449f827eb35a5452613f2b660d8e88ba27267e`;
 across seven parts). Exactly three serial passes from the preceding 16,274-line,
@@ -536,8 +536,13 @@ material and the exact `GeneralizedRvachevIdentifiability.lean`
 zero-order/exponent crosswalk after the PDF's source checkpoint. The latter
 gives constructive dyadic-order first differences and full-product rigidity;
 zeta-quotient, cumulant/analytic-sample, and probability-law identifiability
-remain Partial in Lean. Final-source rendering and full publication validation
-remain pending. This is the
+remain Partial in Lean. The source also records the exact zero-definition,
+three-theorem `GeometricPochhammerNormalConvergence.lean` crosswalk: the outer
+spectral product converges locally uniformly for every complex strict
+contraction, including `q = 0`, with dyadic Rvachev-product and bounded-Fabius
+Fourier specializations. The compound centered/MGF and exterior reciprocal
+formula, pole divisor, and zero--pole exchange remain Partial. Final-source
+rendering and full publication validation remain pending. This is the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -1089,3 +1094,23 @@ and the infinite q-binomial theorem. `QPascalSummation.lean` has four theorems,
 recurrences, and generating function. Together they contribute 69 public
 declarations without weakening the strict-contraction or noncommutative
 hypotheses recorded in their source modules.
+
+The next six-module inventory adds `QMultinomial.lean` (one definition, seven
+theorems), `QPochhammerInfiniteBounds.lean` (five theorems),
+`QPochhammerComplexOrder.lean` (one definition, four theorems),
+`BasicHypergeometricSeries.lean` (two definitions, five theorems),
+`HeineTransformation.lean` (two definitions, five theorems), and
+`QGaussSummation.lean` (two theorems). Together these 34 declarations cover
+q-multinomial algebra, quantitative infinite-product bounds, principal-branch
+complex order, basic-hypergeometric convergence, Heine transformation, and the
+q-Gauss specialization, with each analytic-continuation boundary retained at
+its audited status.
+
+The newest four-module inventory adds `GaussianBinomialPalindromic.lean`
+(12 theorems), `JacksonIntegral.lean` (one definition, seven theorems),
+`QExponential.lean` (three definitions, eight theorems), and
+`ThetaQuasiPeriodicity.lean` (one definition, six theorems). The resulting
+status changes make the q-exponential eigenfunction and Jackson
+integration-by-parts subclaims Exact; q-exponential factorization, the Jackson
+fundamental theorem, and theta quasi-periodicity remain Partial at the
+unformalized clauses stated in their rows.

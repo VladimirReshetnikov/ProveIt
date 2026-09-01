@@ -110,8 +110,8 @@ fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The current master TeX is a source-only successor to that checkpoint. Its
-14,294-line, 669,417-byte source has SHA-256
-`697238ad7c03ba7611f03524de3445e152da2ea3bff18cca3cbb07986fb09ab2`.
+14,310-line, 670,626-byte source has SHA-256
+`526cd2e3b406105d84aa5ae8dd66bea8adc9cd6101a04741b03f76ff6333973a`.
 It includes exhaustive crosswalks for `QPochhammerEntire` (zero definitions
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
@@ -136,7 +136,7 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 71 Exact, 84 Partial, 119 None, and 8 interface rows; the
+status ledger is 73 Exact, 84 Partial, 117 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
 q-integer/Gaussian chapter is 8/1/0/0.  The completed source concordance records 65 Lean-proved rows,
 413 human-proved frontier rows, 60 not-applicable rows, and 9 conjectures.

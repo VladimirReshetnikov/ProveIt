@@ -12521,8 +12521,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 71 are \statusexact, 84 are
-\statuspartial, 119 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 73 are \statusexact, 84 are
+\statuspartial, 117 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -12609,6 +12609,8 @@ compatibility spelling of the primary identity;\\
 \path{SymmetricFunctionTransform.lean}: four definitions and five theorems;\\
 \path{SymmetricFunctionGenerating.lean}: two definitions and six theorems;\\
 \path{QDifferenceAnnihilation.lean}: four theorems;\\
+\path{QExponential.lean}: three definitions and eight theorems;\\
+\path{JacksonIntegral.lean}: one definition and seven theorems;\\
 \path{QBinomialInversionSpecializations.lean}: two definitions and four theorems;\\
 \path{QPochhammerElementaryIdentities.lean}: 13 theorems;\\
 \path{QPochhammerDissection.lean}: zero definitions and two theorems;\\
@@ -13068,9 +13070,9 @@ Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
 Partitions and product--sum identities & 0 & 0 & 4 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 1 & 0 & 6 & 0\\
 Bailey transforms and the Andrews--Gordon identities & 0 & 0 & 8 & 1\\
-Cyclotomic factorization and congruences & 1 & 0 & 8 & 0\\
+Cyclotomic factorization and congruences & 2 & 0 & 7 & 0\\
 Negative upper indices and geometric Newton interpolation & 0 & 2 & 7 & 0\\
-Central $q$-binomial sums and Lambert series & 0 & 0 & 7 & 0\\
+Central $q$-binomial sums and Lambert series & 1 & 0 & 6 & 0\\
 Asymptotic regimes and Bernoulli expansions & 0 & 2 & 6 & 0\\
 Exact limits, reciprocity, and research frontiers & 0 & 0 & 5 & 0\\
 Computation, certification, and formal proof architecture & 0 & 3 & 8 & 3\\
@@ -13079,7 +13081,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 71 & 84 & 119 & 8\\
+\textbf{Forward total} & 73 & 84 & 117 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13594,7 +13596,14 @@ differentiation; see \Cref{rem:jacobi-cubic-formalization}}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Cyclotomic factorization and congruences}\\
 \midrule
-\Cref{thm:cyclotomic-pochhammer} & \statusnone & ---\\[2pt]
+\Cref{thm:cyclotomic-pochhammer} & \statusexact &
+\texttt{finiteQPochhammerIn\_\allowbreak{}X\_\allowbreak{}eq\_\allowbreak{}prod\_\allowbreak{}cyclotomic},
+\texttt{gaussianBinomial\_\allowbreak{}X\_\allowbreak{}eq\_\allowbreak{}prod\_\allowbreak{}cyclotomic},
+\texttt{div\_\allowbreak{}le\_\allowbreak{}div\_\allowbreak{}add\_\allowbreak{}div\_\allowbreak{}add\_\allowbreak{}one}\newline
+{\footnotesize\texttt{CyclotomicFactorization}; for the universal polynomials
+in $R[X]$, the factorial factorization over every commutative ring and the
+Gaussian factorization over every integral domain, with
+$e_d(n,k)\in\{0,1\}$ as the two divisibility estimates}\\[2pt]
 \Cref{cor:squarefree-cyclotomic} & \statusnone & ---\\[2pt]
 \Cref{cor:q-catalan} & \statusnone & ---\\[2pt]
 \Cref{lem:root-block} & \statusnone & ---\\[2pt]
@@ -13625,7 +13634,14 @@ classes, including total above-row zero extension}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Central $q$-binomial sums and Lambert series}\\
 \midrule
-\Cref{lem:central-reduction} & \statusnone & ---\\[2pt]
+\Cref{lem:central-reduction} & \statusexact &
+\texttt{central\_\allowbreak{}gaussianBinomial\_\allowbreak{}sq\_\allowbreak{}div},
+\texttt{central\_\allowbreak{}gaussianBinomial\_\allowbreak{}sq\_\allowbreak{}mul}\newline
+{\footnotesize\texttt{CentralQBinomialReduction}; the quotient form over every
+field with nonvanishing denominators, from the division-free form
+$[2k,k]_{q^2}(q^2;q^2)_k=(q;q^2)_k(-q;q)_{2k}$ valid in every commutative
+ring (proved in $\IntegerNumbers[X]$ by cancellation and transported by
+naturality)}\\[2pt]
 \Cref{thm:regular-central-sum} & \statusnone & ---\\[2pt]
 \Cref{cor:regular-central-classical} & \statusnone & ---\\[2pt]
 \Cref{thm:singular-central} & \statusnone & ---\\[2pt]
