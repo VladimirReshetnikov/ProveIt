@@ -467,6 +467,8 @@ import FabiusFunction.PrefixKernelCounting
 import FabiusFunction.ThueMorseFormalProduct
 import FabiusFunction.GlobalBlockFold
 import FabiusFunction.NormalizationDictionary
+import FabiusFunction.QPochhammerDissection
+import FabiusFunction.QPochhammerInfinite
 
 set_option autoImplicit false
 
