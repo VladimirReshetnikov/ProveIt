@@ -307,6 +307,7 @@ import FabiusFunction.SincEulerProduct
 import FabiusFunction.SincCanonicalProduct
 import FabiusFunction.RvachevPochhammerFactorization
 import FabiusFunction.QPochhammerEntire
+import FabiusFunction.GeometricPochhammerNormalConvergence
 import FabiusFunction.GeneralizedCanonicalForm
 import FabiusFunction.LobeSignLaw
 import FabiusFunction.CanonicalIntegerPoint
