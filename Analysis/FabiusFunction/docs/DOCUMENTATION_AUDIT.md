@@ -109,10 +109,10 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 617 modules and 8,404 lexically
+The post-merge 2026-08-31 inventory contains 618 modules and 8,432 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  Relative to the 610/8,318 activation checkpoint, the exact
-union adds seven modules and 86 declarations.  The branch-point geometry and
+union adds eight modules and 114 declarations.  The branch-point geometry and
 asymptotics leaves contribute 17 declarations for the one-sided vertical
 tangents and leading signed square-root laws of both real Lambert branches.
 The two Legendre--Gaunt modules contribute 25: four definitions and twelve
@@ -135,7 +135,8 @@ two positive-order signed-distribution theorems are
 `intervalIntegral_comp_normalized_iteratedDeriv_rvachev` (the Banach-valued
 continuous-test half-mixture) and
 `map_normalized_iteratedDeriv_rvachev_restrict_Icc` (the restricted-Lebesgue
-Borel pushforward).  The all-depth
+Borel pushforward).  These theorems require exactly `0<n`; order zero retains
+the unsymmetrized original `rvachevUp` law.  The all-depth
 `generalizedRvachevProduct_two_pow_mul` shift--refinement theorem belongs to
 `WeightLinearityProducts.lean`.  The final nine declarations are the two
 definitions and seven theorems of `LagrangeRvachevSynthesis.lean`: the generic
@@ -143,10 +144,21 @@ finite-node decoder and atom coefficient, degree bounds, cardinal synthesis,
 componentwise biorthogonality, linear coefficient identity, exact finite
 interpolation loop, and unit row mass.  This inventory claim does not extend to
 a geometric Gaussian closed-form decoder, a matrix wrapper, or an
-optimal/minimum-variation decoder theorem.  The baseline records zero missing
-headers and zero missing doc comments, so every future source addition must
-preserve the full invariant rather than merely avoid worsening a historical
-backlog.  Run the script for live numbers after merging concurrent source work.
+optimal/minimum-variation decoder theorem.  The subsequent
+`integral_polynomial_mul_rvachevUp_eq_dyadic_tsum` theorem in
+`PolynomialCombExactness.lean` packages the polynomial-times-Rvachev integral
+as the corresponding dyadic shifted-polynomial sum and contributes one further
+declaration.
+Finally, `LegendreGauntClosedForm.lean` contributes two definitions and
+twenty-five theorems: the total integer zero-row Wigner-square datum, its exact
+central-binomial and factorial forms, the all-degree Gaunt identification,
+sharp support, positivity and vanishing criteria, and the product-linearization
+coefficient bridge.  It makes no signed-symbol, phase, half-integer,
+nonzero-magnetic-index, or general Wigner recoupling claim.  The baseline
+records zero missing headers and zero missing doc comments, so every future
+source addition must preserve the full invariant
+rather than merely avoid worsening a historical backlog.  Run the script for
+live numbers after merging concurrent source work.
 
 The primary exposition and Lean walkthrough were rebuilt from their current
 sources in fresh, uninterrupted three-pass Libertinus cycles on 2026-08-31 and
