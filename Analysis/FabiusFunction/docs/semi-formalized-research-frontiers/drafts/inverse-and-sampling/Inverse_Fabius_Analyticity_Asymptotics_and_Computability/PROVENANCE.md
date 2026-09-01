@@ -72,11 +72,12 @@ two superseded source subgroups. The deduplicated canonical asset tree contains
 Arrival ledgers and internal source hashes remain under
 [`assets/provenance/`](assets/provenance/), including separate records for the
 sampling, endpoint, computability, non-elementarity, and inverse-iterate
-lineages. The five historical source PDFs are retired with their source
-layouts after the canonical publication passes; their bytes remain recoverable
-from the pre-retirement revision. Unique scripts, exact tables, data, figures,
-captured outputs, requirements, and audit material were migrated or explicitly
-dispositioned. No numerical output is used as a premise of a theorem.
+lineages. The five historical source PDFs were retired with their source
+layouts only after the canonical publication gate passed; their bytes remain
+recoverable from the pre-retirement revision. Unique scripts, exact tables,
+data, figures, captured outputs, requirements, and audit material were migrated
+or explicitly dispositioned. No numerical output is used as a premise of a
+theorem.
 
 ## Canonical publication artifact
 

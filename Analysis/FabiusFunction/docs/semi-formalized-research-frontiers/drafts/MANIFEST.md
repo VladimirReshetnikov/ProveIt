@@ -162,8 +162,8 @@ No finite endpoint derivative is asserted.  An `O(z + exp(-1))` remainder after 
 The canonical inverse synthesis and the information-geometry intake live
 directly in this group; the comb synthesis lives under `comb-interpolation/`.
 The former `analyticity-and-elementarity/` and
-`inverse-asymptotics-and-computability/` layouts are retained only as
-historical provenance.
+`inverse-asymptotics-and-computability/` layouts survive only through the
+pinned pre-retirement snapshot and the canonical provenance ledger.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
