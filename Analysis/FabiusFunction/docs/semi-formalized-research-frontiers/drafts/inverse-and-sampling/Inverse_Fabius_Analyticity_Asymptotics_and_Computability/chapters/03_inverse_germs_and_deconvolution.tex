@@ -30,16 +30,18 @@ $c_1,\ldots,c_{J-1}$ on $[\eta,1-\eta]$ such that
  \label{is:p1:eq:Gn-expansion}
 \end{equation}
 uniformly for $y\in[\eta,1-\eta]$.  Put $x=\FabiusQuantile(y)$ and
-$\widehat c_m:=m!c_m(y)$.  With $\mathcal B_{m,k}$ denoting the partial exponential Bell
+$\FactorialScaledInverseTransferCoefficient{m}:=m!c_m(y)$.  With $\mathcal B_{m,k}$ denoting the partial exponential Bell
 polynomial and $\mathcal B_{0,0}=1$, the coefficients obey
 \begin{align}
  c_m(y)=-\frac1{F'(x)}\Bigg[&
  \frac1{m!}\sum_{k=2}^{m}F^{(k)}(x)
- \mathcal B_{m,k}(\widehat c_1,\ldots,\widehat c_{m-k+1})
+ \mathcal B_{m,k}(\FactorialScaledInverseTransferCoefficient{1},\ldots,
+ \FactorialScaledInverseTransferCoefficient{m-k+1})
  \notag\\
  &+\sum_{j=1}^{m}\frac1{(m-j)!}
  \sum_{k=0}^{m-j}a_j^{(k)}(x)
- \mathcal B_{m-j,k}(\widehat c_1,\ldots,\widehat c_{m-j-k+1})
+ \mathcal B_{m-j,k}(\FactorialScaledInverseTransferCoefficient{1},\ldots,
+ \FactorialScaledInverseTransferCoefficient{m-j-k+1})
  \Bigg].
  \label{is:p1:eq:Bell-inverse-recursion}
 \end{align}
@@ -1305,8 +1307,8 @@ near zero, and comparison with \eqref{is:p2:eq:A-generating} proves
 identity.  Substituting $2x-1$ and using
 \eqref{is:p2:eq:A-P-affine} gives \eqref{is:p2:eq:P-logistic-moment}.
 Finally $Z$ is symmetric and nondegenerate; indeed, independence and
-$\operatorname{Var}(\Lambda)=\pi^2/3$ give
-$\operatorname{Var}(Z)=\sum_{j\ge1}(3\cdot4^j)^{-1}=1/9$.
+$\Variance(\Lambda)=\pi^2/3$ give
+$\Variance(Z)=\sum_{j\ge1}(3\cdot4^j)^{-1}=1/9$.
 Therefore setting $x=0$ gives
 $\alpha_{2m}=(-1)^m\Expectation Z^{2m}$ and
 $\Expectation Z^{2m}>0$ (with the value $1$ when $m=0$), proving
