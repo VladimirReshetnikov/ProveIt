@@ -109,15 +109,16 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live post-merge 2026-09-01 inventory contains 629 modules and 8,547
+The live post-merge 2026-09-01 inventory contains 631 modules and 8,556
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  Relative to the 610/8,318 activation checkpoint,
-the current tree adds nineteen modules and 229 declarations.  Relative to the
-branch's prior 622/8,472 snapshot, the deduplicated incoming union adds exactly
-seven modules and 73 declarations; the two-theorem
-`QPochhammerInfinite.lean` follow-up brings the live delta to seven modules and
-75 declarations.  The earlier additions and the final incoming
-q-series tranche are itemized below.  The branch-point geometry and
+the current tree adds twenty-one modules and 238 declarations.  Relative to the
+branch's prior 622/8,472 snapshot, the earlier deduplicated incoming union added
+exactly seven modules and 73 declarations; the two-theorem
+`QPochhammerInfinite.lean` follow-up brought that delta to seven modules and 75
+declarations, and the two inverse-computability modules now bring the live
+delta to nine modules and 84 declarations.  The earlier additions and the
+final incoming q-series tranche are itemized below.  The branch-point geometry and
 asymptotics leaves contribute 17 declarations for the one-sided vertical
 tangents and leading signed square-root laws of both real Lambert branches.
 The two Legendre--Gaunt modules contribute 25: four definitions and twelve
@@ -260,7 +261,36 @@ recurrence laws, plus the complete-normed-field generating series under
 69, and with the four q=-1 derivative declarations give the deduplicated
 73-name incoming increment.  The two subsequent
 `QPochhammerInfinite.lean` theorems bring the live change from 622/8,472 to
-629/8,547 to 75 declarations.
+629/8,547 and 75 declarations.  The two inverse-computability modules then
+bring the live census to 631/8,556 and the change from 622/8,472 to nine modules
+and 84 declarations.
+
+`EffectiveMonotoneInverse.lean` has exactly two public definitions,
+`Fabius.SequentiallyComputableOn` and `Fabius.unitClamp`, and exactly six
+public theorems: `Fabius.unitClamp_sequentiallyComputable`,
+`Fabius.tolerantDifference_error`, `Fabius.tolerantDifference_safe_updates`,
+`Fabius.tolerantDifference_inconclusive`,
+`Fabius.tolerantBisection_correct`, and
+`Fabius.effectiveInversionOn_Icc`.  Its natural-number controller performs
+exactly `p` dyadic halvings at requested precision `p`; certified signed-code
+comparisons update the bracket, while the third, inconclusive branch certifies
+the current midpoint.  Doubling an accepted numerator through remaining
+depths and using the final left endpoint in the no-hit case yield a uniform
+dyadic name at denominator `2^p` with error at most `2^-p`.  The abstract Lean
+theorem assumes a computable positive reciprocal inverse modulus.  It does not
+formalize the canonical report's stronger gap-to-modulus theorem, which starts
+from a computable positive gap sequence and also derives effective uniform
+continuity.
+
+`FabiusInverseComputable.lean` has zero public definitions and exactly one
+public theorem, `Fabius.fabiusInv_isComputableRealFunction`.  It instantiates
+the generic realizer with the centered-spline dyadic oracle for `fabiusReal`
+and `inverseFabiusDeltaDenominator`, clamps arbitrary input names without
+changing the totalized inverse, and combines total sequential computability
+with the logarithmic-Delta effective-uniform-continuity witness.  This closes
+the total inverse computability certificate without asserting a practical
+running-time or input-bit complexity bound.
+
 The closed-form Gaunt leaf `LegendreGauntClosedForm.lean` contributes two definitions and
 twenty-five theorems: the total integer zero-row Wigner-square datum, its exact
 central-binomial and factorial forms, the all-degree Gaunt identification,
@@ -356,7 +386,7 @@ Representation Frontiers, 41-page New Frontiers, and 71-page notation-
 catalogue artifacts all predate their current merged sources.  Their package
 notices treat those PDFs as historical validation receipts, not parity claims,
 until fresh uninterrupted three-pass builds complete.  The inverse-
-computability receipt likewise requires refresh for the 629/8,547 census;
+computability receipt likewise requires refresh for the 631/8,556 census;
 the canonical inverse-theory publication remains pending after its
 Appell/deconvolution crosswalk update.
 

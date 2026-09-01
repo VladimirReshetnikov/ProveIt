@@ -26,10 +26,17 @@ Status language is strict:
 
 `theorem_concordance.csv` records the disposition of all 194 source-result
 environments while preserving the ten immutable source fields reproduced from
-`audit/SOURCE_REVISION`.  Its current totals are 39 Lean-proved, 106
+`audit/SOURCE_REVISION`.  Its current totals are 47 Lean-proved, 98
 human-proved frontier results, 10 conjectures, 15 open problems, and 24
-nonassertoric rows.  The centered Appell deconvolution, positive-degree Appell
-mean-zero, and arbitrarily phased polynomial-deconvolution rows now have exact
+nonassertoric rows.  Eight inverse-computability rows now have exact compiled
+counterparts: the main theorem, the three tolerant-difference branch
+certificates, tolerant-bisection correctness, unit-interval sequential
+inversion, computable clamping, and sequential computability of the totalized
+inverse.  The abstract inversion theorem remains human-proved because the
+generic Lean theorem assumes a computable reciprocal inverse modulus rather
+than deriving that modulus and effective continuity from a computable positive
+gap sequence.  The centered Appell deconvolution, positive-degree Appell
+mean-zero, and arbitrarily phased polynomial-deconvolution rows also have exact
 named Lean counterparts.  The Appell lattice theorem remains human-proved:
 Lean covers its arbitrary-phase `0 <= n <= N` formula, but not its additional
 degree-`N+1` clause at the parity-selected superconvergent phases.  The static
