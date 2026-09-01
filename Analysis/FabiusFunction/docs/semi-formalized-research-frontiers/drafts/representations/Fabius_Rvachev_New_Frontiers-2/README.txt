@@ -13,23 +13,26 @@ superseded, generated, proved, numerical, and conjectural material.
 Main deliverables
 -----------------
 fabius_rvachev_new_frontiers.tex
-    Frozen post-union source: 2,863 lines, 115,122 bytes, SHA-256
-    4eeea1a1cbe5497e6db3424a0c185f3a3be750f5816b22be5e7baed091753455.
+    Current source: 2,957 lines, 120,695 bytes, SHA-256
+    e03548653eeee69e9e8fdc4d7bf83bda93d4ee5620ab81dafdab87e7419ec6ba.
     It preserves the canonical
     preamble, cleaned-vector-figure and claim-status safeguards, the
     scalar-base-change Gram--Stieltjes and all-degree rational native Jacobi
     boundaries, and the detailed generic/Legendre determinant and finite-Gaunt
-    crosswalk.  Its target inventory is all 99 public names across nine modules,
-    including the 25-declaration generic/up-law finite Gaunt tranche.  The
-    source is synchronized with the final post-union PDF described below.
+    crosswalk.  Its target inventory is all 129 public names across eleven
+    modules, including the 25-declaration finite Gaunt tranche, the
+    27-declaration integer-index zero-row square/factorial tranche, and the
+    three finite Wigner-square Gram corollaries.  The current source is newer
+    than the retained PDF described below; a rebuild is pending.
 
 fabius_rvachev_new_frontiers.pdf
-    Final synchronized post-union artifact: 41 A4 pages, 780,141 bytes,
+    Retained pre-update post-union artifact: 41 A4 pages, 780,141 bytes,
     SHA-256 9871ac93cce5d8ee1aa48e946f46dc2e19865fb33a1d2e3b9b8be01360318901.
     Exactly three strict serial passes from the frozen 2,863-line source
-    produced 39, 41, and 41 pages.  The report embeds the five cleaned vector
-    PDF figures.  Earlier 39-page and 41-page checkpoints remain recorded below
-    as historical evidence.
+    produced 39, 41, and 41 pages.  It renders the former 99-name inventory but
+    not the later 30-declaration Wigner-square addition.  The report embeds the
+    five cleaned vector PDF figures.  Earlier 39-page and 41-page checkpoints
+    remain recorded below as historical evidence.
 
 fabius_frontier_experiments.py
     Fully commented 580-line exact/high-precision experiment. It computes
@@ -60,13 +63,13 @@ CORPUS_AUDIT.md
     Scope, source strata, nonduplication method, and status boundary.
 
 pdf_preflight.json
-    PDF structural, geometry, font, text, build-log, and visual preflight for
-    the synchronized final post-union render, with historical checkpoints
-    retained explicitly.
+    Historical structural, geometry, font, text, build-log, and visual
+    preflight for the retained post-union render.  It explicitly records that
+    the current source/PDF pair is not synchronized.
 
 SHA256SUMS.txt
-    Final 20-payload inventory ledger.  Its fixed historical payload scope is
-    preserved, every row is current, and all 20 entries verify.
+    Current 20-payload mixed source/retained-artifact inventory.  Its fixed
+    payload scope is preserved, every row is current, and all 20 entries verify.
 
 Numerical publication run
 -------------------------
@@ -115,13 +118,13 @@ for figure in jacobi_coefficients pi_approximants pi_product_error \
       "figures/${figure}.pdf" "figures/${figure}"
 done
 
-Final post-union verification
------------------------------
-* The frozen 2,863-line, 115,122-byte source has SHA-256
+Retained post-union PDF verification (historical)
+-------------------------------------------------
+* The then-frozen 2,863-line, 115,122-byte source had SHA-256
   4eeea1a1cbe5497e6db3424a0c185f3a3be750f5816b22be5e7baed091753455.
   Exactly three halted serial pdflatex passes exited zero and produced 39, 41,
   and 41 pages.
-* The final 780,141-byte PDF has SHA-256
+* The retained 780,141-byte PDF has SHA-256
   9871ac93cce5d8ee1aa48e946f46dc2e19865fb33a1d2e3b9b8be01360318901.
   It is unencrypted PDF 1.5 with 41 zero-rotation A4 pages and A4 MediaBox,
   CropBox, BleedBox, TrimBox, and ArtBox values on every page.
@@ -140,8 +143,9 @@ Final post-union verification
   were visually inspected.  All five vector figures render cleanly on pages
   17, 22, 29 (two figures), and 30, with intact axes, legends, captions, and
   curves.
-* The refreshed fixed-scope checksum ledger verifies all 20 payloads and the
-  publication log remains preserved.
+* At that checkpoint the fixed-scope checksum ledger verified all 20 payloads.
+  The current ledger is refreshed independently for the newer source while
+  retaining this PDF byte-for-byte.
 
 Historical verification
 -----------------------
@@ -218,8 +222,11 @@ The report distinguishes:
 The post-snapshot Lean layer now proves executable rational Gaunt coefficients,
 their real integral casts, finite Legendre product linearization, parity and
 triangle-support zeros, and the finite rational and real up-law Gram-entry
-sums.  It does not yet identify those integrals with Wigner 3j symbols or prove
-the Wigner factorial form.  Christoffel reconstruction, root results,
+sums.  It also defines the total rational integer-index zero-row square datum,
+proves its central-binomial and factorial forms, identifies every rational and
+real Gaunt coefficient with twice that datum, proves sharp support and
+positivity, and derives the finite rational and real Wigner-square Gram sums.
+This is not a signed Wigner-symbol or phase API.  Christoffel reconstruction, root results,
 quadrature, Pade identification, infinite Jacobi products, and the report's
 asymptotic claims remain outside Lean.
 
