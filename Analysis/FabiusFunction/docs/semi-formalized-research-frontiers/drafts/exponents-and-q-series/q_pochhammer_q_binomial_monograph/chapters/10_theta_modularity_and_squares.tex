@@ -409,14 +409,14 @@ constant.  At $\tau=\ImaginaryUnit$ it equals $1$, proving
 \label{qg:def-ramanujan-theta}
 For $a,b\in\ComplexNumbers$ with $\AbsoluteValue{ab}<1$, set
 \begin{equation}
- f(a,b)=\sum_{n\in\IntegerNumbers}
+ \RamanujanTheta{a}{b}=\sum_{n\in\IntegerNumbers}
  a^{n(n+1)/2}b^{n(n-1)/2}.
 \label{eq:qg-ramanujan-theta}
 \end{equation}
 Here a zeroth power is $1$, including at a zero base.  Pairing the terms
 indexed by $n$ and $-n$ gives the unambiguous form
 \[
- f(a,b)=1+\sum_{n=1}^{\infty}
+ \RamanujanTheta{a}{b}=1+\sum_{n=1}^{\infty}
  (a^n+b^n)(ab)^{n(n-1)/2}.
 \]
 This series converges normally on compact subsets of
@@ -429,7 +429,7 @@ $\rho<1$.
 \label{qg:prop-ramanujan-product}
 For $a,b\in\ComplexNumbers$ with $\AbsoluteValue{ab}<1$,
 \begin{equation}
- f(a,b)=(-a,-b,ab;ab)_\infty.
+ \RamanujanTheta{a}{b}=(-a,-b,ab;ab)_\infty.
 \label{eq:qg-ramanujan-product}
 \end{equation}
 At base zero, the infinite symbol is interpreted by its natural extension
@@ -446,7 +446,7 @@ the base to be $ab$ and the argument to be $-a$.  The $n$th summand becomes
 and the product is $(-a,-b,ab;ab)_\infty$.
 
 If $ab=0$, the paired form of the defining series gives
-$f(a,b)=1+a+b$.  With the stated zero-base convention, the product side is
+$\RamanujanTheta{a}{b}=1+a+b$.  With the stated zero-base convention, the product side is
 \[
  (1+a)(1+b)=1+a+b+ab=1+a+b.
 \]
@@ -455,21 +455,40 @@ Thus the identity also holds in the degenerate cases.
 
 For $\AbsoluteValue Q<1$ and $x\in\ComplexNumbers^\times$ write
 \[
- \mathcal T(x;Q)=\sum_{n\in\IntegerNumbers}Q^{n^2}x^n.
+ \BilateralQuadraticTheta{x}{Q}
+ =\sum_{n\in\IntegerNumbers}Q^{n^2}x^n.
 \]
 The quadratic exponent makes this series absolutely convergent for every such
 $Q$ and $x$.
+Its exact crosswalk to the bilateral Jacobi series defined earlier is
+\[
+ \BilateralQuadraticTheta{x}{Q}=\BilateralTheta{Qx}{Q^2}.
+\]
+The semantic subscript distinguishes this function from the Fabius transfer
+operator $\mathcal T$ and from every proof-local transformation.
+With the theta nome and elliptic exponential declared above, the complete
+crosswalk is
+\begin{align*}
+ \vartheta_3(z\mid\tau)
+ &=\BilateralQuadraticTheta{\zeta}{q}
+  =\BilateralTheta{q\zeta}{q^2},\\
+ \vartheta_4(z\mid\tau)
+ &=\BilateralQuadraticTheta{-\zeta}{q}
+  =\MultiplicativeTheta{q\zeta}{q^2},\\
+ \vartheta_2(z\mid\tau)
+ &=q^{1/4}\zeta^{1/2}\BilateralTheta{q^2\zeta}{q^2}.
+\end{align*}
 
 \begin{theorem}[Schr\"oter lattice dissection]
 \label{qg:thm-schroeter}
 Let $a,b$ be positive integers, let $0<\AbsoluteValue q<1$, and let
 $x,y\in\ComplexNumbers^\times$.  Then
 \begin{align}
- \mathcal T(x;q^a)\mathcal T(y;q^b)
+ \BilateralQuadraticTheta{x}{q^a}\BilateralQuadraticTheta{y}{q^b}
  &=\sum_{k=0}^{a+b-1}y^kq^{bk^2}
- \mathcal T(xyq^{2bk};q^{a+b})\notag\\
+ \BilateralQuadraticTheta{xyq^{2bk}}{q^{a+b}}\notag\\
  &\qquad\qquad\times
- \mathcal T(y^ax^{-b}q^{2abk};q^{ab(a+b)}).
+ \BilateralQuadraticTheta{y^ax^{-b}q^{2abk}}{q^{ab(a+b)}}.
 \label{eq:qg-schroeter}
 \end{align}
 \end{theorem}
@@ -574,8 +593,10 @@ For every rational prime $p$:
 \item $2=-\ImaginaryUnit(1+\ImaginaryUnit)^2$;
 \item if $p\equiv3\pmod4$, then $p$ is irreducible in
       $\IntegerNumbers[\ImaginaryUnit]$;
-\item if $p\equiv1\pmod4$, then $p=\pi\bar\pi$ for a Gaussian prime
-      $\pi$, unique up to a unit and conjugation.
+\item if $p\equiv1\pmod4$, then $p=\varpi\bar\varpi$ for a Gaussian prime
+      $\varpi$, unique up to a unit and conjugation.  The alternate letter
+      $\varpi$ prevents collision with the circular constant $\pi$ used in
+      the theta and Fourier formulas above.
 \end{enumerate}
 \end{lemma}
 
@@ -615,16 +636,16 @@ because $(p-1)/2$ is even.  Hence
 $p\mid(t+\ImaginaryUnit)(t-\ImaginaryUnit)$ in the Gaussian integers.
 If $p$ were irreducible, it would be prime and would divide one factor, which
 is impossible because its imaginary coordinate is $\pm1$.  Therefore
-$p=\pi\rho$ with nonunits.  Norms force
-$N(\pi)=N(\rho)=p$.  An element of prime norm is irreducible, so $\pi$ and
+$p=\varpi\rho$ with nonunits.  Norms force
+$N(\varpi)=N(\rho)=p$.  An element of prime norm is irreducible, so $\varpi$ and
 $\rho$ are Gaussian primes.  Moreover,
 \[
- \pi\bar\pi=N(\pi)=p=\pi\rho,
+ \varpi\bar\varpi=N(\varpi)=p=\varpi\rho,
 \]
-and cancellation gives $\rho=\bar\pi$.  If
+and cancellation gives $\rho=\bar\varpi$.  If
 $p=\sigma\bar\sigma$ is another such factorization, uniqueness of
-factorization applied to $\pi\bar\pi=\sigma\bar\sigma$ shows that $\sigma$
-is associated either to $\pi$ or to $\bar\pi$.  This proves uniqueness up to
+factorization applied to $\varpi\bar\varpi=\sigma\bar\sigma$ shows that $\sigma$
+is associated either to $\varpi$ or to $\bar\varpi$.  This proves uniqueness up to
 a unit and conjugation.
 \end{proof}
 
@@ -652,8 +673,8 @@ A representation $n=x^2+y^2$ is a Gaussian integer of norm $n$.  By
 unit.  A prime $r_\ell\equiv3\pmod4$ is self-conjugate and contributes an
 even exponent to a norm, so $\beta_\ell$ must be even and then its exponent
 in $x+\ImaginaryUnit y$ is forced.  For
-$p_j=\pi_j\bar\pi_j$, the exponent of $\pi_j$ may be any
-$e_j\in\{0,\ldots,\alpha_j\}$ and the exponent of $\bar\pi_j$ is then
+$p_j=\varpi_j\bar\varpi_j$, the exponent of $\varpi_j$ may be any
+$e_j\in\{0,\ldots,\alpha_j\}$ and the exponent of $\bar\varpi_j$ is then
 $\alpha_j-e_j$.  Finally there are four units.  Unique factorization shows
 that these choices are exhaustive and nonduplicative, proving the product
 formula.
