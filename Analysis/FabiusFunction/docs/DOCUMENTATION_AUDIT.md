@@ -109,17 +109,18 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live post-merge 2026-09-01 inventory contains 629 modules and 8,546
+The live post-merge 2026-09-01 inventory contains 630 modules and 8,552
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  Relative to the 610/8,318 activation checkpoint,
-the current tree adds nineteen modules and 228 declarations.  Relative to the
+the current tree adds twenty modules and 234 declarations.  Relative to the
 branch's prior 622/8,472 snapshot, the incoming union adds exactly seven
 modules and 74 declarations.  The 623/8,476 `origin/main` baseline was already
 stale because it did not count the latest six q-series modules.  Relative to
-that stale baseline the live delta is six modules and 70 declarations,
-comprising those six modules' 69 declarations together with the reciprocal-
-power zero-lattice theorem retained from the feature branch in
-`QPochhammerEntire.lean`.  The earlier additions and the final incoming
+that stale baseline the live delta is seven modules and 76 declarations,
+comprising those six modules' 69 declarations, the reciprocal-power
+zero-lattice theorem retained from the feature branch in
+`QPochhammerEntire.lean`, and the six-theorem generalized-product
+identifiability module.  The earlier additions and the final incoming
 q-series tranche are itemized below.  The branch-point geometry and
 asymptotics leaves contribute 17 declarations for the one-sided vertical
 tangents and leading signed square-root laws of both real Lambert branches.
@@ -161,6 +162,21 @@ as the corresponding dyadic shifted-polynomial sum and contributes one further
 declaration.  The subsequent centered Appell/deconvolution and arbitrary-phase
 polynomial-reproduction tranche contributes four declarations: three in
 `RvachevMomentAppell.lean` and one in `RvachevPolynomialSynthesis.lean`.
+The subsequent `GeneralizedRvachevIdentifiability.lean` leaf contributes no
+definitions and exactly six theorems:
+`weightSequence_eq_of_weightedScaleMultiplicity_base_pow_eq`,
+`analyticOrderAt_generalizedRvachevProduct_two_pow`,
+`exponent_zero_eq_toNat_analyticOrderAt_generalizedRvachevProduct`,
+`exponent_succ_eq_toNat_analyticOrderAt_generalizedRvachevProduct`,
+`exponentSequence_eq_of_analyticOrderAt_two_pow_eq`, and
+`generalizedRvachevProduct_eq_iff`.  They recover an exponent sequence from
+weighted multiplicities at base powers or, under the exact summability
+hypotheses, from analytic orders at `1, 2, 4, ...`, and make equality of two
+admissible entire products equivalent to equality of their exponent
+sequences.  The input is the multiplicity/order divisor: a bare zero set or
+the product values at its zero points does not distinguish, for example, a
+sequence from its double.  Spectral-zeta, cumulant-sample, and generalized
+probability-law identifiability are not included.
 The merged q-series leaves are inventoried below from the live source tree;
 those counts supersede the intermediate pre-union q-series subtotal.
 The valuation tranche's new leaf
@@ -381,7 +397,7 @@ retained 167-page primary, 126-page walkthrough, 237-page canonical frontier,
 notation-catalogue artifacts likewise predate their current merged sources.
 Their package notices treat those PDFs as historical validation receipts, not
 parity claims, until fresh uninterrupted three-pass builds complete.  The
-inverse-computability receipt likewise requires refresh for the 629/8,546
+inverse-computability receipt likewise requires refresh for the 630/8,552
 census.  The canonical inverse-theory publication is now a synchronized
 134-page A4 artifact at the latest-main source checkpoint.
 

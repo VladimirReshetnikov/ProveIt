@@ -3728,9 +3728,88 @@ Lean totalizes the boundary cases:
 Accordingly, the resulting \(W\)-values at those degenerate inputs are
 algebraic conventions.  More importantly, this subsection proves finite
 arithmetic identities only.  Formula \eqref{eq:weighted-scale-pascal}
-supplies the binomial expression proposed for higher-rank Rvachev products,
-but it does not assert convergence of such a product or identify its analytic
-zero order.  Those analytic bridges remain separate obligations.
+supplies the binomial expression proposed for higher-rank Rvachev products;
+the analytic bridge for admissible dyadic exponent sequences is now supplied
+by the following separate layer.
+
+\subsection{Recovering generalized Rvachev exponents from dyadic orders}
+
+Let \(a:\NaturalNumbers\to\NaturalNumbers\) satisfy
+\(\sum_{h\ge0}a(h)/2^h<\infty\), and set
+\begin{equation}
+ \Phi_a(z):=\prod_{h\ge0}
+   \SincRad\!\left(\frac{\pi z}{2^h}\right)^{a(h)}.
+ \label{eq:generalized-rvachev-product-identifiability}
+\end{equation}
+The complete generalized zero-divisor theorem and
+\(\nu_2(2^n)=n\) give the sparse but lossless sampling formula
+\begin{equation}
+ \boxed{\quad
+ \OrderOperator_{z=2^n}\Phi_a(z)
+   =W_{2,a}(2^n)=P_a(n)=\sum_{h=0}^{n}a(h).
+ \quad}                                                        \label{eq:generalized-rvachev-dyadic-order}
+\end{equation}
+These orders are finite.  Hence Lean's \(\operatorname{ENat.toNat}\)
+converts them back to natural numbers, and the exponent decoder is
+\begin{align}
+ a(0)
+   &=\operatorname{ENat.toNat}\!\left(
+       \OrderOperator_{z=1}\Phi_a(z)\right),                  \label{eq:generalized-rvachev-exponent-zero}\\
+ a(n+1)
+   &=\operatorname{ENat.toNat}\!\left(
+       \OrderOperator_{z=2^{n+1}}\Phi_a(z)\right)
+     -\operatorname{ENat.toNat}\!\left(
+       \OrderOperator_{z=2^n}\Phi_a(z)\right).               \label{eq:generalized-rvachev-exponent-succ}
+\end{align}
+In particular, for two admissible sequences \(a,c\),
+\begin{equation}
+ \boxed{\qquad \Phi_a=\Phi_c\quad\Longleftrightarrow\quad a=c.\qquad}
+                                                               \label{eq:generalized-rvachev-product-injective}
+\end{equation}
+
+\begin{proof}[Formal proof and exact recovery argument]
+Equation \eqref{eq:generalized-rvachev-dyadic-order} is
+\lean{analyticOrderAt_generalizedRvachevProduct_two_pow}: the complete
+integer zero-divisor formula identifies the order at a positive integer with
+\lean{weightedScaleMultiplicity}, and
+\lean{padicValNat_base_pow} reduces its value at \(2^n\) to the inclusive
+prefix \(P_a(n)\).  At \(n=0\) the sampled point is \(2^0=1\), not the
+origin, and \(P_a(0)=a(0)\); every product in
+\eqref{eq:generalized-rvachev-product-identifiability} instead has value one
+at the origin.  Next,
+\(P_a(n+1)=P_a(n)+a(n+1)\).  Applying
+\(\operatorname{ENat.toNat}\) to the finite natural-cast order formula and
+using natural-number cancellation gives
+\eqref{eq:generalized-rvachev-exponent-succ}.
+
+The constructive formulas are
+\lean{exponent_zero_eq_toNat_analyticOrderAt_generalizedRvachevProduct} and
+\lean{exponent_succ_eq_toNat_analyticOrderAt_generalizedRvachevProduct}.
+Equality of all dyadic orders implies equality of the exponent sequences by
+\lean{exponentSequence_eq_of_analyticOrderAt_two_pow_eq}; its reusable
+general-base cancellation lemma is
+\lean{weightSequence_eq_of_weightedScaleMultiplicity_base_pow_eq}, valid for
+every \(b>1\) in an additive cancellative commutative monoid.  Finally, full
+function equality transports through \lean{analyticOrderAt} at every dyadic
+point, so the decoder proves the forward implication in
+\eqref{eq:generalized-rvachev-product-injective}; the reverse implication is
+substitution.  This is \lean{generalizedRvachevProduct_eq_iff}.
+All six theorems, and no definitions, form
+\path{GeneralizedRvachevIdentifiability.lean}.
+\end{proof}
+
+The datum used here is the analytic divisor---the zero locations together
+with their multiplicities.  The unweighted zero set alone is insufficient,
+and sampling the product values at the dyadic zeros is also insufficient:
+distinct positive exponent sequences can vanish at the same sampled points.
+The two summability hypotheses in the comparison theorem are essential
+because the underlying infinite product is totalized outside its admissible
+range.  No spectral-zeta recovery, cumulant-sample recovery, or
+identifiability of an underlying probability law is asserted; those remain
+open interfaces.  This zero-definition/six-theorem leaf raises the live
+facade census to 630 modules and 8,552 public declarations.  This is a
+source-only overlay; the retained 167-page PDF is explicitly historical and
+has not been regenerated for this addition.
 
 On the real axis the origin is the unique global point of unit modulus:
 \begin{equation}

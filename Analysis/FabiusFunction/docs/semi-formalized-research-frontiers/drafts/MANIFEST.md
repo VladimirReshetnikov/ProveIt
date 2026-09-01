@@ -76,8 +76,14 @@ closed-form Gaunt/Wigner-square boundary recorded below and the q-jet status
 in the linked q-series registry remain unchanged by this merge.
 
 For the final source-only union, package-local READMEs and ledgers record the
-current q-series and Exponents source fingerprints. The retained Exponents
-PDF is 238 A4 pages and 6,316,535 bytes with SHA-256
+current q-series and Exponents source fingerprints. The live Exponents TeX is
+16,344 lines and 736,083 bytes with SHA-256
+`2c34d526f18379822ced4d807fd4049ecb85231f4a42a1cd2773fd3c990dd3b9`;
+it includes the exact zero-order/exponent identifiability and constructive
+first-difference crosswalk from the new zero-definition, six-theorem Lean
+module, while zeta-quotient, cumulant/analytic-sample, and probability-law
+identifiability remain Partial in Lean. The retained Exponents PDF is 238 A4
+pages and 6,316,535 bytes with SHA-256
 `df7b9ad69e0310b17988dd42cc22559cf22ff26027395c005c374ad51f9e62aa`.
 Both rebuilt PDFs predate the merged fifth-theorem crosswalk and are therefore
 retained as distinct historical payloads; no final-source/PDF parity is

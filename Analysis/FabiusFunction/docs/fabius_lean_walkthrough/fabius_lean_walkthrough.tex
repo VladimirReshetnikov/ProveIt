@@ -1566,6 +1566,60 @@ The result is the celebrated formula
 \]
 with the indexing adjusted to the normalization used by the code.
 
+\subsection{Generalized products and dyadic-order identifiability}
+For an exponent sequence \(a:\NaturalNumbers\to\NaturalNumbers\) with
+\(\sum_{h\ge0}a(h)/2^h<\infty\), the generalized product is
+\[
+ \Phi_a(z)=\prod_{h\ge0}
+   \SincRad\!\left(\frac{\pi z}{2^h}\right)^{a(h)}.
+\]
+The complete divisor API reduces its analytic order at a positive integer to
+the weighted dyadic multiplicity.  At the power \(2^n\), this becomes
+\begin{equation}
+ \OrderOperator_{z=2^n}\Phi_a
+   =\sum_{h=0}^{n}a(h).                                  \label{eq:walkthrough-generalized-dyadic-order}
+\end{equation}
+Thus the dyadic orders recover every exponent:
+\begin{align}
+ a(0)&=\operatorname{ENat.toNat}\!\left(
+   \OrderOperator_{z=1}\Phi_a\right),\label{eq:walkthrough-generalized-head}\\
+ a(n+1)&=\operatorname{ENat.toNat}\!\left(
+   \OrderOperator_{z=2^{n+1}}\Phi_a\right)
+ -\operatorname{ENat.toNat}\!\left(
+   \OrderOperator_{z=2^n}\Phi_a\right).\label{eq:walkthrough-generalized-difference}
+\end{align}
+The use of \(\operatorname{ENat.toNat}\) is safe here because
+\eqref{eq:walkthrough-generalized-dyadic-order} has already exhibited each
+order as a finite natural cast.
+
+The proof is deliberately triangular.  The valuation identity
+\(\nu_2(2^n)=n\) turns each sampled order into the inclusive prefix
+\(P_a(n)\).  For \(n=0\), the sample is \(z=1\), not \(z=0\), and
+\(P_a(0)=a(0)\); all these products have value one at the origin.  The
+successor law \(P_a(n+1)=P_a(n)+a(n+1)\) and natural cancellation give the
+consecutive-difference formula.  If two full product functions are equal,
+applying \nolinkurl{congrArg} to \nolinkurl{analyticOrderAt} at each dyadic
+point makes all prefixes equal, so cancellation recovers the same sequence.
+Conversely, equal sequences give definitionally equal products.  Hence, for
+admissible \(a,c\),
+\[
+ \Phi_a=\Phi_c\quad\Longleftrightarrow\quad a=c.
+\]
+Both summability hypotheses are required: the underlying \nolinkurl{tprod}
+is totalized outside the admissible range.
+
+This is identifiability from the divisor, meaning zeros with their analytic
+multiplicities.  The unweighted zero set does not record the exponent sizes,
+and the product values at dyadic zeros are likewise insufficient because
+they merely record vanishing.  The result does not identify a probability
+law and supplies no spectral-zeta or cumulant-sample recovery theorem; those
+interfaces remain open.  The zero-definition/six-theorem module
+\nolinkurl{GeneralizedRvachevIdentifiability.lean} contains the order formula,
+the head and successor decoders, the dyadic-order uniqueness theorem, its
+general-base additive-cancellation core, and
+\nolinkurl{generalizedRvachevProduct_eq_iff}.  This is a source-only overlay;
+the retained 126-page walkthrough PDF is historical and was not rebuilt.
+
 \subsection{Fourier injectivity and uniqueness}
 If two original candidates satisfy the same hypotheses, the iteration argument gives the same Fourier transform for both.  The source then uses injectivity of the Fourier transform on Schwartz functions to conclude equality.  The final transition is:
 \begin{enumerate}
@@ -5156,6 +5210,7 @@ Module & Role in the development \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Fourier, probability, and the first paper}}\\[0.25em]
 \nolinkurl{FourierProduct.lean} & Entire sinc, pointwise multipliability, finite-product recurrence, and equality of the product with the analytic Fourier transform. \\
+\nolinkurl{GeneralizedRvachevIdentifiability.lean} & Zero definitions and six theorems recovering an admissible exponent sequence from dyadic analytic orders, with the exact generalized-product equality criterion. \\
 \nolinkurl{FourierAnalytic.lean} & Entire Fourier transform of \(\RvachevUp\), Fourier inversion consequences, and its imaginary-axis relation to the half-moment generating function. \\
 \nolinkurl{OriginalCharacterization.lean} & Rvachev's original compact-support predicate, derived scale positivity, the forced scale and normalization, and the general fold from bounded Fabius solutions. \\
 \nolinkurl{OriginalUniqueness.lean} & Fourier-refinement uniqueness, the exact kernel of the fold, and the equivalences with fixed candidates or unique bounded Fabius witnesses. \\
@@ -5473,7 +5528,7 @@ Lean audits of the previously recorded new or refactored declarations,
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  The live merged-tree census is
-629 modules and 8,546 public declarations, all reachable from the facade under
+630 modules and 8,552 public declarations, all reachable from the facade under
 the current static audit.  The historical mainline census before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
 immediately preceding census, after the Rvachev Appell and original
@@ -5516,9 +5571,12 @@ theorems), \nolinkurl{QPascalSummation.lean} (four theorems),
 \nolinkurl{RogersSzegoPolynomial.lean} (one definition, nine theorems).
 Those six modules contribute sixty-nine declarations; together with the added
 reciprocal-lattice theorem, they explain the exact 623/8,476 to 629/8,546
-increment.  No aggregate facade build is claimed for this current-tree
-census.  The retained PDF and the title-page pin remain historical receipts
-and do not claim parity with the merged source.
+q-series increment.  The subsequent zero-definition/six-theorem
+\nolinkurl{GeneralizedRvachevIdentifiability.lean} leaf raises that census by
+one module and six declarations to 630/8,552.  No aggregate facade build is
+claimed for this current-tree census.  The retained PDF and the title-page
+pin remain historical receipts and do not claim parity with the merged
+source.
 \end{remark}
 
 \section{Corrections and critical distinctions}\label{app:corrections}

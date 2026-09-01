@@ -513,8 +513,8 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 
 Geometric-sinc subgroup member:
 [`Exponents_and_q_Series_Frontiers/`](geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/)
-(current semantic-union TeX: 16,299 lines and 733,008 bytes, SHA-256
-`30cc1b2d3c1cb7dc6c89f2e1ebef0f42c32e7ecaca39802e7aa63ba3dac31646`;
+(current semantic-union TeX: 16,344 lines and 736,083 bytes, SHA-256
+`2c34d526f18379822ced4d807fd4049ecb85231f4a42a1cd2773fd3c990dd3b9`;
 latest validated PDF: 238 A4 pages and 6,316,535 bytes, SHA-256
 `df7b9ad69e0310b17988dd42cc22559cf22ff26027395c005c374ad51f9e62aa`;
 across seven parts). The PDF was built in exactly three guarded serial passes,
@@ -526,9 +526,13 @@ blocking diagnostics, all 238 pages were text-bearing, all 1,190 page boxes
 matched A4 exactly, and all 42 Type-1 font rows were embedded and subsetted
 (including 11 Libertinus rows, with no Type-3 font). Fresh visual inspection of
 physical pages 1, 164, 220, 224--227, 236, and 238 was clean. The semantic-union
-source adds the upstream q-API crosswalk material after that receipt, so the
-PDF is retained as a source-pinned artifact and a fresh three-pass render plus
-final parent-ledger refresh is pending. This is the
+source adds the upstream q-API crosswalk material and the exact
+`GeneralizedRvachevIdentifiability.lean` zero-order/exponent crosswalk after
+that receipt. The latter gives constructive dyadic-order first differences and
+full-product rigidity; zeta-quotient, cumulant/analytic-sample, and
+probability-law identifiability remain Partial in Lean. The PDF is therefore
+retained as a historical, source-pinned artifact and a fresh three-pass render
+is pending. This is the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic

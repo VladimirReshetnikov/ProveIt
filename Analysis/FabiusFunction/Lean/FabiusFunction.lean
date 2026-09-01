@@ -614,6 +614,26 @@ is empty and the statement is reflexive.  Natural coefficients are the exact
 boundary of this API: it does not promote signed finite differences to an
 analytic-germ or pole-cancellation theorem.
 
+The companion `GeneralizedRvachevIdentifiability` module has no public
+definitions and exactly six public theorems:
+`weightSequence_eq_of_weightedScaleMultiplicity_base_pow_eq`,
+`analyticOrderAt_generalizedRvachevProduct_two_pow`,
+`exponent_zero_eq_toNat_analyticOrderAt_generalizedRvachevProduct`,
+`exponent_succ_eq_toNat_analyticOrderAt_generalizedRvachevProduct`,
+`exponentSequence_eq_of_analyticOrderAt_two_pow_eq`, and
+`generalizedRvachevProduct_eq_iff`.  The first recovers a cancellative-monoid
+weight sequence from its weighted multiplicities at every power of any base
+greater than one.  Under the generalized product's exact summability
+hypothesis, the remaining results identify the analytic order at `2^n` with
+the inclusive exponent prefix, give head and consecutive-difference decoders,
+recover the full exponent sequence from all dyadic orders, and make equality
+of the entire products equivalent to equality of their exponent sequences.
+This is identifiability from the multiplicity/order divisor, not from a bare
+zero set or merely the product values at its zero points; those data cannot
+distinguish a sequence from its double.  Spectral-zeta, cumulant-sample, and
+generalized probability-law identifiability remain outside the facade's
+proved surface.
+
 The Perron root `ρ₁` of the arithmetic-mean transfer operator is enclosed by
 kernel-checked arithmetic: `0.66126798 ≤ ρ₁ ≤ 0.66134921`, by carrying the
 audits' optimized cubic test function through the Collatz–Wielandt bracket
