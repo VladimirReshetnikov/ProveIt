@@ -17,7 +17,7 @@ to the named source-slug directory.
 
 | Source slug | Retained role | Reproduction entry point |
 | --- | --- | --- |
-| `Fabius_Dyadic_Comb_Sums_Report_Package` | exact dyadic comb identities and generated tables | `python dyadic_comb_experiments.py --outdir generated --max-level 8` |
+| `Fabius_Dyadic_Comb_Sums_Report_Package` | exact dyadic comb identities and generated tables | `python dyadic_comb_experiments.py --outdir <scratch-output> --max-level 8` |
 | `fabius-dyadic-comb-sums-report` | exact/high-precision comb, spectral, iterated-sum, and corpus experiments | `python experiments.py --repo-docs <FabiusFunction-docs> --out <scratch-output>` |
 | `fabius_dyadic_comb_report_final` | threshold, shifted-Rvachev, all-depth, and iterated-sum checks | `python fabius_dyadic_comb_experiments.py --skip-fractional` |
 | `fabius_dyadic_interpolation_report` | endpoint-flat global and local interpolation checks | `python fabius_dyadic_interpolation_experiments.py --mode quick --output-dir <scratch-output>`; use `--mode report` for the longer replay |
@@ -55,14 +55,14 @@ in `../source_disposition.csv`.
 
 - [`HISTORICAL_LEDGER_AUDIT.csv`](HISTORICAL_LEDGER_AUDIT.csv) classifies all
   151 rows from eight historical package ledgers at the immutable source pin.
-- [`VALIDATION.md`](VALIDATION.md) records the completed source/evidence and
-  canonical-publication gates, including the structural validator and final
-  PDF. Full numerical replay and fresh-checkout reproduction remain separate.
-- `COMPANION_PAYLOADS.csv` and `SHA256SUMS` are the canonical destination map
-  and live asset checksum ledger. The package-root `../SHA256SUMS` separately
-  covers every other permanent package file. At the recorded canonical-
-  publication checkpoint, both live ledgers verified in full; they must not be
-  confused with the historical ledgers.
+- [`VALIDATION.md`](VALIDATION.md) records completed source/evidence and
+  canonical-publication checks separately from the remaining fresh-checkout
+  and full numerical reproducibility work.
+- [`COMPANION_PAYLOADS.csv`](COMPANION_PAYLOADS.csv) is the canonical retained-
+  payload provenance map. The package root's [`SHA256SUMS`](../SHA256SUMS) is
+  the single exhaustive live checksum ledger and verifies in full at the
+  recorded publication checkpoint; neither should be confused with the
+  historical ledgers.
 
 The source pin is
 `73f0b373126ef22a3b5dccadfa7b99d61d445345`. Git history is the archive for

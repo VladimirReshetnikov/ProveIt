@@ -21,7 +21,10 @@ unqualified moving branch.
   geometric extensions, additive-dyadic theory, reference appendices,
   provenance, and bibliography.
 - [`source_disposition.csv`](source_disposition.csv) accounts for all 180
-  files in the four pre-synthesis report trees at the source pin.
+  files in the source-pin subtree: the four pre-synthesis report trees and
+  their parent routing README.
+- [`post_pin_disposition.csv`](post_pin_disposition.csv) accounts separately
+  for all 23 paths added or modified before the mainline reconciliation pin.
 - [`assets/`](assets/) contains the unique retained computational evidence and
   the audit of the historical ledgers.
 - [`audit/`](audit/) contains the source pin and the deterministic editorial
@@ -30,7 +33,13 @@ unqualified moving branch.
 The source currently distinguishes exact Lean crosswalks from results proved
 only in the manuscript. A manuscript theorem label is never, by itself,
 evidence of a compiled Lean declaration. Likewise, numerical tables and plots
-are checks and illustrations, not proof premises.
+are checks and illustrations, not proof premises. The current
+`FabiusFunction.LagrangeRvachevSynthesis` crosswalk verifies generic scalar
+decoder synthesis, node biorthogonality, coefficient factorization, the full
+finite interpolation loop, and the unnormalized decoder row-sum law. It does
+not claim a formal geometric Gaussian closed-form decoder, the associated
+elementary-symmetric/prefactor formula, a `Matrix` wrapper, or decoder
+optimization.
 
 ## Sources reconciled
 
@@ -50,10 +59,10 @@ This synthesis adds the three formerly standalone geometric-comb manuscripts:
 - `geometric_comb_interpolation_report-3` supplies complementary arbitrary-
   target, Fabius-transform, reciprocal-product, and asymptotic material.
 
-The twelve noncanonical package READMEs (nine nested additive-dyadic packages
-and three geometric packages), the old report TeX/PDF pairs, package wrappers,
-stale checksum ledgers, and generated preview PDFs are no longer live
-publications. Original bytes remain
+The documentation layers of all twelve noncanonical source packages (nine
+nested additive-dyadic packages and three geometric packages), the old report
+TeX/PDF pairs, package wrappers, stale checksum ledgers, and generated preview
+PDFs are no longer live publications. Original bytes remain
 recoverable from the immutable Git baseline. Scripts, exact tables, data,
 text outputs, and PNG figures that remain useful for reproduction are retained
 under [`assets/companion-evidence/`](assets/companion-evidence/), grouped by
@@ -62,8 +71,8 @@ the two interpolation packages is stored once at
 [`assets/companion-evidence/shared/requirements-mpmath-matplotlib.txt`](assets/companion-evidence/shared/requirements-mpmath-matplotlib.txt).
 
 See [`PROVENANCE.md`](PROVENANCE.md) for the editorial chain and
-[`assets/VALIDATION.md`](assets/VALIDATION.md) for completed and pending
-validation gates.
+[`assets/VALIDATION.md`](assets/VALIDATION.md) for completed checks and
+remaining reproducibility work.
 
 ## Build the canonical article
 
@@ -77,16 +86,10 @@ pdflatex -interaction=nonstopmode -halt-on-error comb_interpolation_synthesis.te
 ```
 
 A successful command is not, by itself, the complete publication gate. The
-current canonical PDF was built from the final source in exactly three strict,
-serial passes on 2026-08-31. It has 155 A4 pages, 2,448,906 bytes, and SHA-256
-`d1f89b005bcae9afc9c70b4ccce632aa8c665ed68e98bacb2ff96827dd427095`.
-All 33 font rows are embedded and subset, seven are Libertinus faces, and none
-is Type 3. Every page has text, A4 geometry, zero rotation, and the same five
-page boxes; all pages were reviewed in contact sheets and representative
-pages were inspected at full size. The final log has no TeX errors, undefined
-references or citations, rerun requests, duplicate destinations, or overfull
-boxes. Its 36 package warnings and six underfull boxes are the recorded,
-visually checked hyperref/caption/amsmath and paragraph-layout diagnostics.
+current synchronized artifact's source/PDF hashes, page, font, log, and visual-
+inspection facts are recorded once in
+[`assets/VALIDATION.md`](assets/VALIDATION.md). Keeping those mutable
+measurements in one record prevents status drift between README files.
 
 ## Reproduce the computational evidence
 
@@ -96,15 +99,15 @@ outputs to a scratch directory so the reviewed evidence is not overwritten.
 The principal exact or quick entry points are:
 
 ```text
-python dyadic_comb_experiments.py --outdir generated --max-level 8
+python dyadic_comb_experiments.py --outdir <scratch-output> --max-level 8
 python fabius_dyadic_comb_experiments.py --skip-fractional
-python fabius_dyadic_interpolation_experiments.py --mode quick --output-dir reproduced-results
+python fabius_dyadic_interpolation_experiments.py --mode quick --output-dir <scratch-output>
 python numerical_experiments.py --task smoke
-python fabius_dyadic_interpolation_experiments.py --outdir quick-results --quick
-python fabius_em_experiments.py --output-dir reproduced-data --max-power 10 --max-level 10
-python verify_fabius_rvachev_quadrature.py --max-degree 7 --output-dir reproduced-data
-python experiments.py --output-dir reproduced-data --grid-power 19 --skip-fft
-python geometric_comb_experiments.py --output-dir reproduced-output
+python fabius_dyadic_interpolation_experiments.py --outdir <scratch-output> --quick
+python fabius_em_experiments.py --output-dir <scratch-output> --max-power 10 --max-level 10
+python verify_fabius_rvachev_quadrature.py --max-degree 7 --output-dir <scratch-output>
+python experiments.py --output-dir <scratch-output> --grid-power 19 --skip-fft
+python geometric_comb_experiments.py --output-dir <scratch-output>
 ```
 
 Those commands are run from the corresponding source-slug directory under
@@ -115,16 +118,15 @@ full interpolation replay, is in [`assets/README.md`](assets/README.md).
 
 ## Current status
 
-The source reconciliation and the 180-row file disposition are complete at the
-recorded pin. The eight historical ledgers contribute 151 audit rows: 68
-match byte-for-byte, 34 match after CRLF/LF normalization, 29 differ
-substantively, and 20 point to files no longer present at that pin. These are
-historical facts, not a live checksum certificate. The deterministic canonical
-validator passes all structural, source-disposition, theorem-concordance,
-reference, citation, historical-ledger, and companion-payload gates. Its Lean
-check confirms only that each curated declaration name occurs in its nominated
-module; it is not a live Lean census or theorem-type checker. The current root
-`SHA256SUMS` is the exhaustive operational ledger for every other permanent
-package file. The final PDF and page/font/text/visual inspections are complete;
-a fresh-checkout reproduction and a full rerun of every retained numerical
-script remain deliberately separate reproducibility work.
+The 180-row source-pin disposition and 23-row post-pin reconciliation are
+complete. The deterministic canonical validator passes the structural,
+editorial, provenance, theorem-concordance, and exhaustive package-checksum
+gates. Its Lean check only confirms that each curated exact or partial-support
+declaration name occurs in its nominated module; it is not a live Lean census
+or theorem-type checker. Two concordance rows are exact Lean crosswalks; the
+compound decoder and biorthogonality rows remain human-proved with narrower
+partial-support notes. The root `SHA256SUMS` is the exhaustive ledger for every
+other permanent package file. The current PDF is synchronized with the
+formalization-crosswalk source; its measurements and inspections, together
+with the remaining fresh-checkout and numerical-replay work, are recorded only
+in [`assets/VALIDATION.md`](assets/VALIDATION.md).

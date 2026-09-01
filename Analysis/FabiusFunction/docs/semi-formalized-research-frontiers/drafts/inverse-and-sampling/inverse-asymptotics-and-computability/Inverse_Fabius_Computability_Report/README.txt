@@ -4,7 +4,7 @@ COMPUTABILITY OF THE INVERSE FABIUS FUNCTION
 SOURCE-ONLY MERGE STATUS (2026-08-31)
 -------------------------------------
 The current TeX has 2937 lines and SHA-256
-ca8fa1819440543c011b5fcd2b6dd7816ee3d5f2da1e0975a0dfe07c84e8c16f.
+96109e926661ee18e336bc9b3e6c55ac9b070b51d4f200d80b9c8d78c88e4d61.
 The retained 42-page PDF was not rebuilt after the notation migration and is
 not claimed to be synchronized with that source.  The refreshed six-entry
 SHA256SUMS.txt verifies the current source/README and the retained PDF as
@@ -78,7 +78,7 @@ forward computability, strict density shape, the clamped inverse and its
 inverse identities/calculus, exact dyadic inverse evaluation, and the leading
 inverse endpoint equivalent.  The report names those exact declarations and
 keeps its remaining inverse-computability declarations unqualified and
-schematic.  The live union audit scans 615 Lean modules and 8,391 public
+schematic.  The live union audit scans 616 Lean modules and 8,401 public
 declarations with zero documentation/header gaps.  No unqualified worldwide
 novelty claim is made.
 

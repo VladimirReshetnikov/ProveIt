@@ -19,7 +19,7 @@ We use
 \begin{equation}
  \FourierTwoPi{f}(\xi)=\int_{\RealNumbers}f(x)\EulerE^{-2\pi\iu x\xi}\Differential x,
  \qquad
- \Phi(\xi)=\FourierTwoPi{u}(\xi)
+ \PhiCyc(\xi)=\FourierTwoPi{u}(\xi)
  =\prod_{j=0}^{\infty}\SincPi\!\left(\frac{\xi}{2^j}\right),
  \label{is:p3:eq:Phi-product}
 \end{equation}
@@ -29,7 +29,7 @@ where
 \]
 The product is entire.  If $m\in\IntegerNumbers\setminus\{0\}$, then
 \begin{equation}
- \OrderOperator_{\xi=m}\Phi=1+\nu_2(m).
+ \OrderOperator_{\xi=m}\PhiCyc=1+\nu_2(m).
  \label{is:p3:eq:integer-multiplicity}
 \end{equation}
 Indeed, the factors indexed by $0\le j\le\nu_2(m)$ vanish simply and all later factors are nonzero.
@@ -39,7 +39,7 @@ corpus.  The standalone product is entire by
 \path{Fabius.rvachevFourierProduct_differentiable}; for every nonzero
 integer \(m\), Lean proves
 \[
- \OrderOperator_{\xi=m}\Phi=1+\nu_2(|m|)
+ \OrderOperator_{\xi=m}\PhiCyc=1+\nu_2(|m|)
 \]
 as \path{Fabius.analyticOrderAt_rvachevFourierProduct_int}, together with
 all lower derivative vanishings and the exact nonzero leading derivative
@@ -52,9 +52,9 @@ The standard Fabius distribution function $F:[0,1]\to[0,1]$ is related to $u$ by
  F(t)=u(t-1)\quad(0\le t\le1).
  \label{is:p3:eq:F-up-relation}
 \end{equation}
-If $X$ has density $u$, then
+If $Y$ has density $u$, then
 \begin{equation}
- \Probability(X\le x)=F\!\left(\frac{x+1}{2}\right),
+ \Probability(Y\le x)=F\!\left(\frac{x+1}{2}\right),
  \qquad -1\le x\le1.
  \label{is:p3:eq:centered-CDF}
 \end{equation}
@@ -83,7 +83,7 @@ The moment generating function is
 \begin{align}
  M(z)
  &=\int_{-1}^{1}\EulerE^{zx}u(x)\Differential x
- =\Phi\!\left(\frac{\iu z}{2\pi}\right)\notag\\
+ =\PhiCyc\!\left(\frac{\iu z}{2\pi}\right)\notag\\
  &=\prod_{j=0}^{\infty}
  \frac{\sinh(z/2^{j+1})}{z/2^{j+1}}.
  \label{is:p3:eq:mgf-product}
@@ -161,15 +161,15 @@ Let $0\le r\le N$ and set $f_r(x)=x^ru(x)$.  Since $u\in C_c^\infty(\RealNumbers
 \end{equation}
 Differentiating \eqref{is:p3:eq:Phi-product},
 \begin{equation}
- \FourierTwoPi{f_r}(\xi)=\frac{\Phi^{(r)}(\xi)}{(-2\pi\iu)^r}.
+ \FourierTwoPi{f_r}(\xi)=\frac{\PhiCyc^{(r)}(\xi)}{(-2\pi\iu)^r}.
  \label{is:p3:eq:monomial-transform}
 \end{equation}
 The term $\ell=0$ is $\mu_r$.  If $\ell\ne0$, then \eqref{is:p3:eq:integer-multiplicity} gives
 \[
- \OrderOperator_{\xi=2^N\ell}\Phi
+ \OrderOperator_{\xi=2^N\ell}\PhiCyc
  =N+1+\nu_2(\ell)>r,
 \]
-so $\Phi^{(r)}(2^N\ell)=0$.  Thus every nonzero alias vanishes, proving the identity for monomials and hence for all polynomials of degree at most $N$.
+so $\PhiCyc^{(r)}(2^N\ell)=0$.  Thus every nonzero alias vanishes, proving the identity for monomials and hence for all polynomials of degree at most $N$.
 \end{proof}
 
 \begin{remark}[A dyadic Strang--Fix phenomenon]
@@ -230,7 +230,8 @@ Apply \cref{is:p3:thm:self-sampling} to $p(x)=x^{2r}$.  Pair the nodes $\pm k/2^
 The exact dyadic values in the corpus were previously used primarily as point evaluations, denominator data, or inputs to signed extrapolation.  Equations \eqref{is:p3:eq:self-sampling-main}--\eqref{is:p3:eq:centered-moment-F} instead organize them as a hierarchy of positive moment designs.  Fourier zero multiplicities, dyadic rationality, and probability positivity become three faces of one formula.
 \end{resultbox}
 
-\section{The master alias function and the $2$-adic error filtration}
+\section{The master alias function and the
+\texorpdfstring{$2$}{2}-adic error filtration}
 \label{is:p3:sec:alias}
 
 \subsection{An entire generating function for all moment defects}
@@ -256,7 +257,7 @@ For every $N\ge0$, $\theta\in\RealNumbers$, and $z\in\ComplexNumbers$,
  G_{N,\theta}(z)
  =\sum_{\ell\in\IntegerNumbers\setminus\{0\}}
  \EulerE^{2\pi\iu\ell\theta}
- \Phi\!\left(2^N\ell+\frac{\iu z}{2\pi}\right).}
+ \PhiCyc\!\left(2^N\ell+\frac{\iu z}{2\pi}\right).}
  \label{is:p3:eq:master-alias}
 \end{equation}
 The series is locally normally convergent.  Moreover $G_{N,\theta}$ has a zero of order at least $N+1$ at $z=0$.
@@ -266,7 +267,7 @@ The series is locally normally convergent.  Moreover $G_{N,\theta}$ has a zero o
 Apply shifted Poisson summation to $f_z(x)=\EulerE^{zx}u(x)$.  Its Fourier transform is
 \[
  \FourierTwoPi{f_z}(\xi)
- =\Phi\!\left(\xi+\frac{\iu z}{2\pi}\right).
+ =\PhiCyc\!\left(\xi+\frac{\iu z}{2\pi}\right).
 \]
 The zero-frequency term is $M(z)$, giving \eqref{is:p3:eq:master-alias}.  Compact support and smoothness imply the local normal convergence needed to differentiate termwise.  At $z=0$, the summand indexed by $\ell\ne0$ has order
 $N+1+\nu_2(\ell)$, so the full sum begins at order $N+1$.
@@ -281,7 +282,7 @@ For $r>N$,
  \sum_{a=0}^{r-N-1}
  \sum_{\substack{q\in\IntegerNumbers\setminus\{0\}\\q\ \mathrm{odd}}}
  \EulerE^{2\pi\iu 2^aq\theta}
- \Phi^{(r)}(2^{N+a}q).
+ \PhiCyc^{(r)}(2^{N+a}q).
  \label{is:p3:eq:valuation-filtration}
 \end{equation}
 Thus the excess degree $r-N$ exposes exactly the first $r-N$ layers of the $2$-adic alias tree.
@@ -305,18 +306,18 @@ The integer zero jets can be organized in a form that makes Bell polynomials app
 Let $m=2^{d-1}q\ne0$, where $q$ is odd and $d=1+\nu_2(m)$.  Then, for $w$ near $0$,
 \begin{equation}
  \boxed{\displaystyle
- \Phi(m+w)
+ \PhiCyc(m+w)
  =-\left(\frac{w}{m+w}\right)^d
  \left(\prod_{j=0}^{d-1}\SincPi\!\left(\frac{w}{2^j}\right)\right)
- \Phi\!\left(\frac q2+\frac{w}{2^d}\right).}
+ \PhiCyc\!\left(\frac q2+\frac{w}{2^d}\right).}
  \label{is:p3:eq:local-factorization}
 \end{equation}
 In particular,
 \begin{equation}
- \Phi(m+w)=C_mw^d
+ \PhiCyc(m+w)=C_mw^d
  \exp\!\left(\sum_{j\ge1}\gamma_j(m)\frac{w^j}{j!}\right),
  \qquad
- C_m=-\frac{\Phi(q/2)}{m^d},
+ C_m=-\frac{\PhiCyc(q/2)}{m^d},
  \label{is:p3:eq:local-Bell-form}
 \end{equation}
 where the logarithmic jet $\gamma_j(m)$ is explicit.
@@ -336,7 +337,7 @@ The product of the signs is $-1$ because
 is odd.  The remaining tail is
 \[
  \prod_{j=d}^{\infty}\SincPi\!\left(\frac{m+w}{2^j}\right)
- =\Phi\!\left(\frac q2+\frac{w}{2^d}\right).
+ =\PhiCyc\!\left(\frac q2+\frac{w}{2^d}\right).
 \]
 This proves \eqref{is:p3:eq:local-factorization}; taking the analytic logarithm after removing $C_mw^d$ gives \eqref{is:p3:eq:local-Bell-form}.
 \end{proof}
@@ -353,7 +354,7 @@ lower-jet vanishing, and the leading identity
 \eqref{is:p3:eq:first-zero-jet}.  More generally, if that cofactor is denoted by
 \(U_m\) and \(d=1+\nu_2(|m|)\), Lean proves every higher jet as
 \[
- \Phi^{(d+r)}(m)=\binom{d+r}{d}d!\,U_m^{(r)}(0)
+ \PhiCyc^{(d+r)}(m)=\binom{d+r}{d}d!\,U_m^{(r)}(0)
  \qquad(r\in\NaturalNumbers)
 \]
 in \path{Fabius.iteratedDeriv_rvachevFourierProduct_int_add_order}.
@@ -368,7 +369,7 @@ results, not named Lean theorems.
 The first logarithmic coefficient is especially simple:
 \begin{equation}
  \gamma_1(m)=-\frac d m
- +2^{-d}\frac{\Phi'(q/2)}{\Phi(q/2)}.
+ +2^{-d}\frac{\PhiCyc'(q/2)}{\PhiCyc(q/2)}.
  \label{is:p3:eq:gamma1}
 \end{equation}
 For general $j$,
@@ -383,7 +384,7 @@ where
 \[
  \ell_j=\left.\frac{\Differential^j}{\Differential z^j}\log\SincPi z\right|_{z=0},
  \qquad
- L_j(t)=\frac{\Differential^j}{\Differential t^j}\log\Phi(t).
+ L_j(t)=\frac{\Differential^j}{\Differential t^j}\log\PhiCyc(t).
 \]
 The universal local coefficients satisfy
 \begin{equation}
@@ -398,7 +399,7 @@ so Bernoulli numbers may be substituted through Euler's formula for $\zeta(2r)$.
 With the notation of \cref{is:p3:prop:local-factorization}, for every $s\ge0$,
 \begin{equation}
  \boxed{\displaystyle
- \Phi^{(d+s)}(m)
+ \PhiCyc^{(d+s)}(m)
  =C_m\frac{(d+s)!}{s!}
  Y_s\bigl(\gamma_1(m),\ldots,\gamma_s(m)\bigr).}
  \label{is:p3:eq:Bell-zero-jets}
@@ -439,7 +440,7 @@ For every $N\ge0$ and $\theta\in\RealNumbers$,
  E_N(\theta)
  =-\frac{r!}{(-2\pi\iu)^r2^{Nr}}
  \sum_{\substack{\ell\in\IntegerNumbers\setminus\{0\}\\\ell\ \mathrm{odd}}}
- \frac{\Phi(\ell/2)}{\ell^r}
+ \frac{\PhiCyc(\ell/2)}{\ell^r}
  \EulerE^{2\pi\iu\ell\theta}.}
  \label{is:p3:eq:first-defect-complex}
 \end{equation}
@@ -448,7 +449,7 @@ Equivalently, if $r=2s$,
  E_N(\theta)
  =\frac{2(-1)^{s+1}r!}{(2\pi)^r2^{Nr}}
  \sum_{\substack{m\ge1\\m\ \mathrm{odd}}}
- \frac{\Phi(m/2)}{m^r}\cos(2\pi m\theta),
+ \frac{\PhiCyc(m/2)}{m^r}\cos(2\pi m\theta),
  \label{is:p3:eq:first-defect-even}
 \end{equation}
 and if $r=2s+1$,
@@ -456,7 +457,7 @@ and if $r=2s+1$,
  E_N(\theta)
  =\frac{2(-1)^sr!}{(2\pi)^r2^{Nr}}
  \sum_{\substack{m\ge1\\m\ \mathrm{odd}}}
- \frac{\Phi(m/2)}{m^r}\sin(2\pi m\theta).
+ \frac{\PhiCyc(m/2)}{m^r}\sin(2\pi m\theta).
  \label{is:p3:eq:first-defect-odd}
 \end{equation}
 \end{theorem}
@@ -464,8 +465,8 @@ and if $r=2s+1$,
 \begin{proof}
 For $m=2^N\ell$ with $\ell$ odd, \cref{is:p3:prop:local-factorization} with $d=r$ gives
 \begin{equation}
- \Phi^{(r)}(2^N\ell)
- =-\frac{r!\Phi(\ell/2)}{(2^N\ell)^r}.
+ \PhiCyc^{(r)}(2^N\ell)
+ =-\frac{r!\PhiCyc(\ell/2)}{(2^N\ell)^r}.
  \label{is:p3:eq:first-zero-jet}
 \end{equation}
 Insert this into \eqref{is:p3:eq:valuation-filtration}.  Pair positive and negative odd frequencies to obtain the real forms.
@@ -477,7 +478,7 @@ Insert this into \eqref{is:p3:eq:valuation-filtration}.  Pair positive and negat
 \label{is:p3:prop:half-integer-sign}
 For $j\ge0$,
 \begin{equation}
- \Sign\Phi\!\left(\frac{2j+1}{2}\right)
+ \Sign\PhiCyc\!\left(\frac{2j+1}{2}\right)
  =(-1)^{\BinaryDigitSum(j)}=\eps_j.
  \label{is:p3:eq:half-integer-sign}
 \end{equation}
@@ -485,7 +486,7 @@ Hence the first quadrature defect is a Thue--Morse-signed half-integer spectral 
 \end{proposition}
 
 \begin{proof}
-On the positive real axis, $\Phi$ changes sign whenever an integer zero has odd multiplicity.  At the point $(2j+1)/2=j+1/2$, the total number of zero crossings, counted with multiplicity, is
+On the positive real axis, $\PhiCyc$ changes sign whenever an integer zero has odd multiplicity.  At the point $(2j+1)/2=j+1/2$, the total number of zero crossings, counted with multiplicity, is
 \[
  \sum_{m=1}^{j}\bigl(1+\nu_2(m)\bigr)
  =j+\nu_2(j!)
@@ -493,15 +494,15 @@ On the positive real axis, $\Phi$ changes sign whenever an integer zero has odd 
 \]
 where the last equality is Legendre's formula
 $\nu_2(j!)=j-\BinaryDigitSum(j)$.  Its parity is therefore
-$\BinaryDigitSum(j)$.  Since $\Phi(1/2)>0$, the claimed sign follows.
+$\BinaryDigitSum(j)$.  Since $\PhiCyc(1/2)>0$, the claimed sign follows.
 \end{proof}
 
 Writing
 \begin{equation}
- a_j=\AbsoluteValue{\Phi((2j+1)/2)},
+ a_j=\AbsoluteValue{\PhiCyc((2j+1)/2)},
  \label{is:p3:eq:half-amplitudes}
 \end{equation}
-we may rewrite the spectral coefficient as $\Phi((2j+1)/2)=\eps_ja_j$.  Thus the signs are purely digital, while the amplitudes record the sinc-product decay.
+we may rewrite the spectral coefficient as $\PhiCyc((2j+1)/2)=\eps_ja_j$.  Thus the signs are purely digital, while the amplitudes record the sinc-product decay.
 
 \subsection{Symmetries}
 
@@ -535,7 +536,7 @@ with periodic extension.  Its mean is zero.  For $n\ne0$, its Fourier coefficien
 \begin{equation}
  \FourierSeriesCoefficient{\Kcal}{n}
  =\int_{-1/2}^{1/2}\Kcal(t)\EulerE^{-2\pi\iu nt}\Differential t
- =\Phi(n/2).
+ =\PhiCyc(n/2).
  \label{is:p3:eq:K-Fourier}
 \end{equation}
 In particular the even nonzero coefficients vanish, and the odd coefficients carry the Thue--Morse signs of \cref{is:p3:prop:half-integer-sign}.
@@ -568,19 +569,56 @@ This formula is not an Euler--Maclaurin expansion with an unspecified remainder.
 
 \subsection{A rigorous first-harmonic bound}
 
+\begin{lemma}[Finite product loss bound]
+\label{is:p3:lem:finite-product-loss}
+If $0\le a_j\le1$ for $0\le j\le J$, then
+\begin{equation}
+ \prod_{j=0}^{J}(1-a_j)\ge1-\sum_{j=0}^{J}a_j.
+ \label{is:p3:eq:finite-product-loss}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The assertion is equality for $J=0$.  If it holds through $J-1$, put
+$S=\sum_{j=0}^{J-1}a_j$.  Multiplication by the nonnegative number
+$1-a_J$ and the induction hypothesis give
+\[
+ \prod_{j=0}^{J}(1-a_j)
+ \ge(1-S)(1-a_J)
+ =1-S-a_J+Sa_J
+ \ge1-S-a_J.
+\]
+This proves the induction step.
+\end{proof}
+
 \begin{lemma}[A uniform lower bound at the first half-integer]
 \label{is:p3:lem:phi-half-lower}
 \begin{equation}
- \Phi(1/2)>1-\frac{\pi^2}{18}>\frac49.
+ \PhiCyc(1/2)>1-\frac{\pi^2}{18}>\frac49.
  \label{is:p3:eq:phi-half-lower}
 \end{equation}
 \end{lemma}
 
 \begin{proof}
-For $0\le x\le1/2$, $\SincPi x\ge1-\pi^2x^2/6$.  Since all factors are nonnegative,
+For $0\le x\le1/2$, $\SincPi x\ge1-\pi^2x^2/6$.  Set
+$a_j=(\pi^2/6)4^{-(j+1)}$.  All $a_j$ lie in $(0,1)$, and
+\cref{is:p3:lem:finite-product-loss}, followed by passage to the limit, gives
 \[
- \Phi(1/2)
- \ge1-\frac{\pi^2}{6}\sum_{j=0}^{\infty}4^{-(j+1)}
+ \PhiCyc(1/2)\ge\prod_{j=0}^{\infty}(1-a_j).
+\]
+This product is strictly larger than $1-\sum_ja_j$.  Indeed, if
+$S=\sum_{j=2}^{\infty}a_j$, another application of the finite product bound
+to the tail and passage to the limit yield
+\begin{align*}
+ \prod_{j=0}^{\infty}(1-a_j)
+ &\ge(1-a_0)(1-a_1)(1-S)\\
+ &=1-a_0-a_1-S
+   +a_0a_1+S(a_0+a_1-a_0a_1)\\
+ &>1-a_0-a_1-S.
+\end{align*}
+Consequently
+\[
+ \PhiCyc(1/2)>1-\frac{\pi^2}{6}\sum_{j=0}^{\infty}4^{-(j+1)}
  =1-\frac{\pi^2}{18}.
 \]
 The final inequality follows from $\pi^2<10$.
@@ -589,7 +627,7 @@ The final inequality follows from $\pi^2<10$.
 For $r\ge2$,
 \begin{equation}
  \sum_{\substack{m\ge3\\m\ \mathrm{odd}}}
- \frac{\AbsoluteValue{\Phi(m/2)}}{m^r}
+ \frac{\AbsoluteValue{\PhiCyc(m/2)}}{m^r}
  \le\sum_{\substack{m\ge3\\m\ \mathrm{odd}}}\frac1{m^r}
  \le\frac{\pi^2}{8}-1<\frac14.
  \label{is:p3:eq:harmonic-tail-bound}
@@ -600,7 +638,7 @@ Thus the first coefficient is larger than the sum of all remaining absolute coef
 \label{is:p3:thm:sinusoidal-asymptotics}
 Let $N\ge1$, put $r=N+1$, and define
 \begin{equation}
- A_{N,r}=\frac{2r!\Phi(1/2)}{(2\pi)^r2^{Nr}}.
+ A_{N,r}=\frac{2r!\PhiCyc(1/2)}{(2\pi)^r2^{Nr}}.
  \label{is:p3:eq:first-harmonic-amplitude}
 \end{equation}
 Then, uniformly in $\theta$,
@@ -618,7 +656,7 @@ The implied constant is absolute.
 \end{theorem}
 
 \begin{proof}
-Separate the frequency $m=1$ in \eqref{is:p3:eq:first-defect-even} or \eqref{is:p3:eq:first-defect-odd}.  Since $\AbsoluteValue{\Phi(m/2)}\le1$ and
+Separate the frequency $m=1$ in \eqref{is:p3:eq:first-defect-even} or \eqref{is:p3:eq:first-defect-odd}.  Since $\AbsoluteValue{\PhiCyc(m/2)}\le1$ and
 $\sum_{m\ge3,\,m\text{ odd}}m^{-r}=\BigO(3^{-r})$, the remaining series has the stated uniform bound.
 \end{proof}
 
@@ -690,7 +728,7 @@ Here $r=N+1\ge3$.  Suppose first that $r$ is odd.  Factor $\sin(2\pi\theta)$ fro
  \le\sum_{\substack{m\ge3\\m\ \mathrm{odd}}}m^{-2}
  =\frac{\pi^2}{8}-1<\frac14.
 \]
-The first bracket coefficient is $\Phi(1/2)>4/9$, so the bracket never vanishes.  Hence the zero set is exactly $\sin(2\pi\theta)=0$.
+The first bracket coefficient is $\PhiCyc(1/2)>4/9$, so the bracket never vanishes.  Hence the zero set is exactly $\sin(2\pi\theta)=0$.
 
 If $r$ is even, factor $\cos(2\pi\theta)$ and use the cosine bound in the same way.  The bracket again has a fixed nonzero sign, so its only zeros are those of $\cos(2\pi\theta)$.
 \end{proof}
@@ -729,14 +767,11 @@ Then $Q_{N,\theta_N}$ is positive, rational, and exact through degree $N+1$.  It
 \label{is:p3:fig:quadrature-weights}
 \end{figure}
 
-\begin{conjecturebox}[Exact precision conjecture]
-For every $N\ge0$, the canonical rule $Q_{N,\theta_N}$ has exact degree $N+1$ and not $N+2$.  Equivalently,
-\[
- E_{N,N+2}(\theta_N)\ne0
- \qquad(N\ge0).
-\]
-The table proves this for $0\le N\le8$ by exact rational arithmetic.  A general proof should use the two-layer decomposition $a=0,1$ in \eqref{is:p3:eq:valuation-filtration} together with the Bell coefficient $\gamma_1$ in \eqref{is:p3:eq:gamma1}.
-\end{conjecturebox}
+The table proves by exact rational arithmetic that the canonical rule has
+degree exactly $N+1$ for $0\le N\le8$.  The corresponding assertion for all
+$N$, together with its experimentally observed sign refinement, is stated
+once as \cref{is:p3:conj:next-defect-sign}; its exact two-layer formula is
+derived in \cref{is:p3:app:next-defect}.
 
 \section{Positive alias filters as Richardson extrapolation}
 \label{is:p3:sec:positive-richardson}
@@ -836,9 +871,15 @@ The frontier volume already uses the forward moment Appell sequence
 \end{equation}
 We now reverse the moment multiplier.
 
-\begin{definition}[Inverse-moment Rvachev--Appell sequence]
+\begin{definition}[Sampling notation for the canonical Rvachev--Appell sequence]
 \label{is:p3:def:inverse-Appell}
-Define $\Acal_n(x)$ by
+Set
+\[
+ \Acal_n(x):=A_n(x),
+\]
+where $A_n$ is the centered Rvachev--Appell sequence already defined in
+\cref{is:p2:def:Appell-polys}.  Equivalently, its canonical generating
+function reads
 \begin{equation}
  \boxed{\displaystyle
  \frac{\EulerE^{xz}}{M(z)}
@@ -847,15 +888,18 @@ Define $\Acal_n(x)$ by
 \end{equation}
 \end{definition}
 
-Because $M(0)=1$, this is a well-defined formal power series and an analytic generating function near $z=0$.  Its logarithm is
+Thus $\Acal_n$ is notation, not a second inverse-moment family.  Because
+$M(0)=1$, the displayed series is well-defined formally and analytically near
+$z=0$.  Its logarithm is
 \begin{equation}
  xz-\sum_{r\ge1}\kappa_{2r}\frac{z^{2r}}{(2r)!}.
  \label{is:p3:eq:inverse-Appell-log}
 \end{equation}
 
-\begin{theorem}[Bell--Bernoulli structure]
+\begin{theorem}[Canonical Appell package in sampling notation]
 \label{is:p3:thm:Appell-Bell}
-The sequence $\Acal_n$ has the following properties.
+Under the identification $\Acal_n=A_n$, the established Appell, Bell, and
+operator identities take the following forms.
 \begin{enumerate}
 \item It is Appell and parity adapted:
 \begin{equation}
@@ -890,12 +934,24 @@ The sequence $\Acal_n$ has the following properties.
 \end{theorem}
 
 \begin{proof}
-Differentiate \eqref{is:p3:eq:inverse-Appell-gen} with respect to $x$ for the Appell law; use the evenness of $M$ for parity.  Equation \eqref{is:p3:eq:Appell-Bell} is the defining generating identity of complete exponential Bell polynomials applied to \eqref{is:p3:eq:inverse-Appell-log}.  Differentiating with respect to $z$ gives
+The Appell law is \eqref{is:p2:eq:Appell-derivative}, and parity follows at
+once from the evenness of $M$ in the canonical generating function
+\eqref{is:p2:eq:A-generating}.  Combining the canonical Bell reconstruction
+\eqref{is:p2:eq:alpha-Bell} with the translation formula
+\eqref{is:p2:eq:A-from-alpha} gives \eqref{is:p3:eq:Appell-Bell}; equivalently,
+it is the defining complete-Bell expansion of
+\eqref{is:p3:eq:inverse-Appell-log}.  The only additional displayed formula is
+the convenient triangular form.  Differentiating the generating function
+with respect to $z$ gives
 \[
  \frac{\partial}{\partial z}\frac{\EulerE^{xz}}{M(z)}
  =\left(x-\frac{M'(z)}{M(z)}\right)\frac{\EulerE^{xz}}{M(z)},
 \]
-and coefficient comparison gives \eqref{is:p3:eq:Appell-recurrence}.  Finally, $M(D)$ multiplies an exponential $\EulerE^{xz}$ by $M(z)$, proving \eqref{is:p3:eq:umbral-inverse} on exponential generating functions.
+and coefficient comparison gives \eqref{is:p3:eq:Appell-recurrence}.  Finally,
+the first identity in \eqref{is:p3:eq:umbral-inverse} is the canonical operator
+formula \eqref{is:p2:eq:A-operator}.  The generating function
+\eqref{is:p3:eq:forward-Appell} says $\Pcal_n=M(D)x^n$; applying
+$M(D)^{-1}$ proves the second identity.
 \end{proof}
 
 The first polynomials are reproduced in \cref{is:p3:app:Appell-table}.  In compact notation,
@@ -920,7 +976,10 @@ Equivalently, the convolution operator by $u$ maps the inverse-moment Appell bas
 \end{theorem}
 
 \begin{proof}
-Multiply generating functions:
+This is the centered mean-value inversion
+\eqref{is:p2:eq:mean-value-inversion}, with symmetry replacing $Y$ by $-Y$.
+For completeness, the generating-function proof that will be discretized
+below is as follows.  Multiply generating functions:
 \begin{align*}
  \int_{-1}^{1}\frac{\EulerE^{(x-y)z}}{M(z)}u(y)\Differential y
  &=\frac{\EulerE^{xz}}{M(z)}M(-z)\\
@@ -1126,7 +1185,7 @@ The corpus's sharp endpoint theory expresses $F(x)$ through the exact lower-Lamb
 \end{equation}
 with a nonconstant periodic correction in the dyadic phase of $\lambda$.  Thus the new quadrature rules supply exact rational global moment constraints whose smallest weights lie precisely in the Lambert boundary layer.  Turning these constraints into identities for the endpoint periodic factor is an open program formulated in \cref{is:p3:prob:Lambert-sum-rules}.
 
-\section{Finite Gaussian-$q$-binomial identities forced by quadrature}
+\section{Finite Gaussian-\texorpdfstring{$q$}{q}-binomial identities forced by quadrature}
 \label{is:p3:sec:qbinomial}
 
 \subsection{The exact dyadic evaluator}
@@ -1160,7 +1219,7 @@ The established arbitrary-numerator theorem states
 \end{equation}
 and the right side of \eqref{is:p3:eq:Qfrak-def} is independent of $c$.  Its Gaussian coefficients arise from Lagrange interpolation on a geometric grid.
 
-\subsection{A $q$-binomial--Thue--Morse--Bell identity}
+\subsection{A \texorpdfstring{$q$}{q}-binomial--Thue--Morse--Bell identity}
 
 \begin{theorem}[Finite arithmetic moment identity]
 \label{is:p3:thm:qbinomial-moment-identity}
@@ -1209,7 +1268,7 @@ After inserting \eqref{is:p3:eq:Qfrak-def}, this is a finite identity containing
 Set $x=0$ in \eqref{is:p3:eq:Appell-lattice-reproduction} and clear the common factor $2^{-N}$.
 \end{proof}
 
-\section{Base-$b$ and multidimensional extensions}
+\section{Base-\texorpdfstring{$b$}{b} and multidimensional extensions}
 \label{is:p3:sec:extensions}
 
 \subsection{Integer dilation bases}
@@ -1220,7 +1279,71 @@ Let $b\ge2$ be an integer and define
  \SincPi\!\left(\frac{\xi}{b^j}\right).
  \label{is:p3:eq:Phi-b}
 \end{equation}
-It is the characteristic function of a compactly supported smooth probability density $u_b$, obtained as an infinite convolution of centered uniform laws.  The support radius is $b/(2(b-1))$.
+
+\begin{proposition}[Construction and regularity of the base-$b$ density]
+\label{is:p3:prop:base-b-density}
+Let $(U_j)_{j\ge0}$ be independent, with $U_j$ uniform on
+\[
+ I_j=\left[-\frac1{2b^j},\frac1{2b^j}\right].
+\]
+Then the series $S_b=\sum_{j\ge0}U_j$ converges absolutely.  Its law has a
+nonnegative density $u_b\in C_c^\infty(\RealNumbers)$ satisfying
+\begin{equation}
+ \FourierTwoPi{u_b}(\xi)=\Phi_b(\xi),
+ \qquad
+ \int_{\RealNumbers}u_b(x)\Differential x=1,
+ \qquad
+ \SupportOperator(u_b)=
+ \left[-\frac{b}{2(b-1)},\frac{b}{2(b-1)}\right].
+ \label{is:p3:eq:base-b-density-properties}
+\end{equation}
+Thus $u_b$ is precisely the infinite convolution of the centered uniform
+density factors.
+\end{proposition}
+
+\begin{proof}
+The deterministic estimate
+\[
+ \sum_{j\ge0}\AbsoluteValue{U_j}
+ \le\frac12\sum_{j\ge0}b^{-j}=\frac{b}{2(b-1)}
+\]
+proves absolute convergence.  The $j$th uniform law has Fourier transform
+$\SincPi(\xi/b^j)$, so independence and convergence of the partial sums give
+$\Expectation\EulerE^{-2\pi\iu\xi S_b}=\Phi_b(\xi)$.
+
+It remains to justify that this probability law is smooth rather than merely
+a compactly supported measure.  The elementary estimate
+\[
+ \AbsoluteValue{\SincPi t}\le
+ \min\left(1,\frac1{\pi\AbsoluteValue t}\right)
+\]
+shows, by retaining any fixed number $K$ of factors in
+\eqref{is:p3:eq:Phi-b}, that
+\[
+ \AbsoluteValue{\Phi_b(\xi)}\le C_K(1+\AbsoluteValue\xi)^{-K}
+ \qquad(\xi\in\RealNumbers)
+\]
+for some constant $C_K$.  Hence $\xi^r\Phi_b(\xi)$ is integrable for every
+$r\ge0$.  Fourier inversion therefore supplies a $C^r$ density for every
+$r$, and differentiating under the inverse-transform integral identifies all
+of its derivatives.  Thus $u_b\in C^\infty$.  Since it represents a
+probability law, it is nonnegative and has integral one.
+
+For the exact support, equip $\prod_{j\ge0}I_j$ with the product measure.  It
+has full support, and the summation map is continuous because the defining
+series converges uniformly.  Its image is the interval
+\[
+ \sum_{j\ge0}I_j=
+ \left[-\frac12\sum_{j\ge0}b^{-j},
+        \frac12\sum_{j\ge0}b^{-j}\right]
+ =\left[-\frac{b}{2(b-1)},\frac{b}{2(b-1)}\right].
+\]
+(For example, every point in this interval is obtained by choosing all
+coordinates in the same fixed proportion of their respective endpoints.)
+The continuous image of this full-support product measure consequently has
+exactly that interval as its support.  This proves
+\eqref{is:p3:eq:base-b-density-properties}.
+\end{proof}
 
 If $m\ne0$ is an integer, then
 \begin{equation}
@@ -1228,6 +1351,8 @@ If $m\ne0$ is an integer, then
  \label{is:p3:eq:b-multiplicity}
 \end{equation}
 where $\nu_b(m)$ is the largest $a$ such that $b^a\mid m$.
+Indeed, precisely the factors with $0\le j\le\nu_b(m)$ vanish at $m$; each
+has a simple zero there, and every later factor is nonzero.
 
 \begin{theorem}[Base-$b$ self-sampling]
 \label{is:p3:thm:base-b}
@@ -1239,11 +1364,32 @@ For every $N\ge0$, phase $\theta$, and polynomial $p$ of degree at most $N$,
  u_b\!\left(\frac{k+\theta}{b^N}\right).
  \label{is:p3:eq:base-b-self-sampling}
 \end{equation}
-Moreover, averaging the $b^s$ phases $a/b^s$ gives the level-$N+s$ rule and is the unique full DFT filter annihilating every nonzero residue modulo $b^s$.
+Moreover, averaging the $b^s$ phases $a/b^s$ gives the level-$N+s$ rule and is
+the unique normalized full DFT filter: among coefficient vectors $(c_a)$ with
+$\sum_a c_a=1$, it is the only one annihilating every nonzero residue modulo
+$b^s$.
 \end{theorem}
 
 \begin{proof}
-Repeat the Poisson argument.  A nonzero alias $b^N\ell$ has zero order $N+1+\nu_b(\ell)$.  The coset and uniqueness arguments are identical with the $b^s$-point DFT.
+By \cref{is:p3:prop:base-b-density}, the functions
+$x^ru_b(x)$ are smooth and compactly supported, so Poisson summation applies.
+For $0\le r\le N$, its nonzero alias at $b^N\ell$ is a constant multiple of
+$\Phi_b^{(r)}(b^N\ell)$.  Equation \eqref{is:p3:eq:b-multiplicity} gives
+\[
+ \OrderOperator_{\xi=b^N\ell}\Phi_b
+ =N+1+\nu_b(\ell)>r,
+\]
+so every such alias vanishes.  The zero alias is the $r$th moment.  This proves
+\eqref{is:p3:eq:base-b-self-sampling} for monomials and hence for all stated
+polynomials.
+
+For the phase refinement, average the rules with phases $a/b^s$.  Writing
+$r=b^sk+a$ identifies their nodes bijectively with $r/b^{N+s}$, and the
+averaged coefficient is $b^{-(N+s)}$; the result is exactly the level-$N+s$
+rule.  Finally, normalized weights $c_a$ with $\sum_a c_a=1$ annihilate every
+nonzero residue precisely when their $b^s$-point discrete Fourier transform is
+$(1,0,\ldots,0)$.  Fourier
+inversion gives $c_a=b^{-s}$ for every $a$, proving uniqueness.
 \end{proof}
 
 The binary case is distinguished arithmetically because half-integer spectral signs reduce to the classical Thue--Morse sequence and dyadic Fabius values are rational.  For general $b$, the same analytic framework suggests generalized digital sign sequences and $q=b^{-1}$ arithmetic.
@@ -1313,7 +1459,7 @@ The exact two-layer formula is given in \cref{is:p3:app:next-defect}.  A proof s
 \item the odd-alias contribution with one Bell correction $\gamma_1$;
 \item the twice-odd contribution with its leading zero jet;
 \item the parity-specific phase factors;
-\item a first-frequency dominance estimate sharp enough to control the logarithmic derivative $\Phi'/\Phi$ at half-integers.
+\item a first-frequency dominance estimate sharp enough to control the logarithmic derivative $\PhiCyc'/\PhiCyc$ at half-integers.
 \end{enumerate}
 A successful argument would determine the exact degree of every positive phase-adapted rule.
 
@@ -1397,7 +1543,7 @@ This statement deliberately does not extrapolate the short numerical
 staircase.  A stronger, separately testable target is weak convergence of the
 empirical measures
 \[
- \nu_n:=\frac1n\sum_{\Acal_n(z)=0}\delta_{,2\pi z/n}
+ \nu_n:=\frac1n\sum_{\Acal_n(z)=0}\delta_{2\pi z/n}
 \]
 (zeros counted with multiplicity) to a probability measure with compact
 support.  Identifying such a measure and its support belongs to the spectral
@@ -1476,11 +1622,11 @@ Put $R=N+2$.  The valuation filtration \eqref{is:p3:eq:valuation-filtration} con
 \end{align}
 Then \cref{is:p3:cor:Bell-zero-jets} gives
 \begin{align}
- \Phi^{(R)}(m_0)
- &=-\frac{R!\Phi(q/2)}{m_0^{N+1}}\gamma_1(m_0),
+ \PhiCyc^{(R)}(m_0)
+ &=-\frac{R!\PhiCyc(q/2)}{m_0^{N+1}}\gamma_1(m_0),
  \label{is:p3:eq:next-defect-layer0}\\
- \Phi^{(R)}(m_1)
- &=-\frac{R!\Phi(q/2)}{m_1^R}.
+ \PhiCyc^{(R)}(m_1)
+ &=-\frac{R!\PhiCyc(q/2)}{m_1^R}.
  \label{is:p3:eq:next-defect-layer1}
 \end{align}
 Consequently
@@ -1490,7 +1636,7 @@ Consequently
  E_{N,N+2}(\theta)
  =-\frac{R!}{(-2\pi\iu)^R}
  \sum_{\substack{q\in\IntegerNumbers\setminus\{0\}\\q\ \mathrm{odd}}}
- \Phi(q/2)\Bigg[&
+ \PhiCyc(q/2)\Bigg[&
  \frac{\gamma_1(2^Nq)}{(2^Nq)^{N+1}}
  \EulerE^{2\pi\iu q\theta}\\
  &+\frac{1}{(2^{N+1}q)^R}
@@ -1502,7 +1648,7 @@ Here
 \begin{equation}
  \gamma_1(2^Nq)
  =-\frac{N+1}{2^Nq}
- +2^{-N-1}\frac{\Phi'(q/2)}{\Phi(q/2)}.
+ +2^{-N-1}\frac{\PhiCyc'(q/2)}{\PhiCyc(q/2)}.
  \label{is:p3:eq:next-defect-gamma1}
 \end{equation}
 This formula is the proposed starting point for \cref{is:p3:conj:next-defect-sign}.  It isolates exactly what is new beyond the first defect: a half-integer logarithmic derivative and one newly activated $2$-adic alias layer.

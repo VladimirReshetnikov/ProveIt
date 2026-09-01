@@ -12,6 +12,10 @@ real polynomial `P` of degree at most `m`,
 by linearity from the monomial case.  The comb samples have finite
 support (the up-factor vanishes outside `(-2^m, 2^m)`), so every
 interchange is a finite one.
+
+Rescaling the polynomial and the whole-line integral gives the normalized
+physical-coordinate rule `integral_polynomial_mul_rvachevUp_eq_dyadic_tsum`,
+whose nodes and weights are samples of the Rvachev density itself.
 -/
 
 set_option autoImplicit false
@@ -116,5 +120,82 @@ theorem tsum_shifted_polynomial_eq_integral (F : BoundedFabius)
         dsimp only
         rw [Polynomial.eval_eq_sum_range, Finset.sum_mul]
         exact Finset.sum_congr rfl fun i _ => by ring
+
+/-- **Shifted dyadic self-sampling quadrature.**  At dyadic mesh
+`2⁻ᴺ`, samples of the Rvachev density itself integrate every real
+polynomial of degree at most `N`, for an arbitrary real phase `θ`:
+
+`integral P(x) * up(x) dx =
+  2⁻ᴺ * ∑ k : ℤ, P(2⁻ᴺ * (θ + k)) * up(2⁻ᴺ * (θ + k))`.
+
+The `tsum` is actually finite by compact support.  This is the normalized,
+physical-coordinate form of `tsum_shifted_polynomial_eq_integral`: rescale
+the polynomial before applying comb exactness, then change variables in the
+whole-line integral. -/
+theorem integral_polynomial_mul_rvachevUp_eq_dyadic_tsum
+    (F : BoundedFabius) (hF : IsFabius F) (N : ℕ)
+    {P : Polynomial ℝ} (hdeg : P.natDegree ≤ N) (θ : ℝ) :
+    (∫ x : ℝ, P.eval x * rvachevUp F x) =
+      ((2 : ℝ) ^ N)⁻¹ *
+        ∑' k : ℤ,
+          P.eval (((2 : ℝ) ^ N)⁻¹ * (θ + k)) *
+            rvachevUp F (((2 : ℝ) ^ N)⁻¹ * (θ + k)) := by
+  let Q : Polynomial ℝ :=
+    P.comp
+      (Polynomial.C (((2 : ℝ) ^ N)⁻¹) * Polynomial.X + Polynomial.C 0)
+  have hQdeg : Q.natDegree ≤ N := by
+    calc
+      Q.natDegree ≤ P.natDegree *
+          (Polynomial.C (((2 : ℝ) ^ N)⁻¹) * Polynomial.X +
+            Polynomial.C 0).natDegree := by
+        exact Polynomial.natDegree_comp_le
+      _ ≤ P.natDegree * 1 := by
+        exact Nat.mul_le_mul_left P.natDegree Polynomial.natDegree_linear_le
+      _ = P.natDegree := by omega
+      _ ≤ N := hdeg
+  have hcomb := tsum_shifted_polynomial_eq_integral F hF N hQdeg θ
+  have hpow : (2 : ℝ) ^ N ≠ 0 := pow_ne_zero N (by norm_num)
+  have hscale := MeasureTheory.Measure.integral_comp_inv_mul_left
+    (fun x : ℝ ↦ P.eval x * rvachevUp F x) ((2 : ℝ) ^ N)
+  have hintegral :
+      (∫ z : ℝ,
+          Q.eval z * rvachevUp F (((2 : ℝ) ^ N)⁻¹ * z)) =
+        (2 : ℝ) ^ N * ∫ x : ℝ, P.eval x * rvachevUp F x := by
+    calc
+      (∫ z : ℝ,
+          Q.eval z * rvachevUp F (((2 : ℝ) ^ N)⁻¹ * z)) =
+          ∫ z : ℝ,
+            P.eval (((2 : ℝ) ^ N)⁻¹ * z) *
+              rvachevUp F (((2 : ℝ) ^ N)⁻¹ * z) := by
+        refine integral_congr_ae (Filter.Eventually.of_forall fun z ↦ ?_)
+        simp only [Q, Polynomial.eval_comp, Polynomial.eval_add,
+          Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X,
+          add_zero]
+      _ = (2 : ℝ) ^ N * ∫ x : ℝ, P.eval x * rvachevUp F x := by
+        simpa only [abs_of_nonneg (by positivity : (0 : ℝ) ≤ (2 : ℝ) ^ N),
+          smul_eq_mul] using hscale
+  calc
+    (∫ x : ℝ, P.eval x * rvachevUp F x) =
+        ((2 : ℝ) ^ N)⁻¹ *
+          ((2 : ℝ) ^ N * ∫ x : ℝ, P.eval x * rvachevUp F x) := by
+      rw [← mul_assoc, inv_mul_cancel₀ hpow, one_mul]
+    _ = ((2 : ℝ) ^ N)⁻¹ *
+          ∫ z : ℝ,
+            Q.eval z * rvachevUp F (((2 : ℝ) ^ N)⁻¹ * z) := by
+      rw [hintegral]
+    _ = ((2 : ℝ) ^ N)⁻¹ *
+          ∑' k : ℤ,
+            Q.eval (θ + k) *
+              rvachevUp F (((2 : ℝ) ^ N)⁻¹ * (θ + k)) := by
+      rw [hcomb]
+    _ = ((2 : ℝ) ^ N)⁻¹ *
+          ∑' k : ℤ,
+            P.eval (((2 : ℝ) ^ N)⁻¹ * (θ + k)) *
+              rvachevUp F (((2 : ℝ) ^ N)⁻¹ * (θ + k)) := by
+      apply congrArg (fun s : ℝ ↦ ((2 : ℝ) ^ N)⁻¹ * s)
+      exact tsum_congr fun k ↦ by
+        simp only [Q, Polynomial.eval_comp, Polynomial.eval_add,
+          Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X,
+          add_zero]
 
 end Fabius

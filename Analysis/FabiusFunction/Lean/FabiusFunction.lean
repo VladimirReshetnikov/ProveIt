@@ -256,6 +256,7 @@ import FabiusFunction.OrthogonalPolynomialRecurrence
 import FabiusFunction.OrthogonalPolynomialJacobi
 import FabiusFunction.CompositeMeshExactness
 import FabiusFunction.RvachevPolynomialSynthesis
+import FabiusFunction.LagrangeRvachevSynthesis
 import FabiusFunction.CombFirstDefect
 import FabiusFunction.CompositeMeshSharpness
 import FabiusFunction.CombDefectSeries
@@ -384,6 +385,7 @@ import FabiusFunction.LaplacePeriodicSecondOrder
 import FabiusFunction.FabiusTranslatedLegendreSeries
 import FabiusFunction.FabiusLegendreLeastSquares
 import FabiusFunction.LegendreGaunt
+import FabiusFunction.LegendreGauntClosedForm
 import FabiusFunction.FabiusLegendreEnergy
 import FabiusFunction.FabiusLegendreRationalEnergy
 import FabiusFunction.FabiusLegendreGaunt

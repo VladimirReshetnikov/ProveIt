@@ -5357,6 +5357,32 @@ The first sum is Lean's global \texttt{tsum}; compact support makes it
 pointwise finite.  The second is the exact uniform support truncation, including
 the vanishing boundary atoms.
 
+The current-tree module \path{LagrangeRvachevSynthesis.lean} has the exact
+public inventory of two definitions,
+\lean{lagrangeRvachevDecoder} and
+\lean{lagrangeRvachevAtomCoefficient}, and seven theorems,
+\lean{natDegree_lagrangeBasis_le_card_sub_one},
+\lean{natDegree_lagrangeInterpolate_le_card_sub_one},
+\lean{normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp},
+\lean{normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node},
+\lean{lagrangeRvachevAtomCoefficient_eq_deconvolved_interpolate},
+\lean{sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp}, and
+\lean{sum_lagrangeRvachevDecoder_eq_one}.  The decoder samples the Rvachev
+deconvolution of a finite Lagrange basis, and the atom coefficient is its
+\(1/M\)-normalized linear action on nodal data.  The first two theorems bound
+the basis and interpolant degrees by one less than the node count without a
+distinctness hypothesis.  If \(M\ne0\) and that degree bound is at most
+\(v_2(M)\), the next four identities give exact finite cardinal synthesis on
+\([-1,1]\), its componentwise Kronecker-delta evaluation at distinct in-range
+nodes, the coefficient/deconvolution identity, and reconstruction of the full
+Lagrange interpolant.  The last theorem says that each fixed lattice-sample
+decoder row has total mass one for a nonempty distinct node family.
+Consequently generic finite-node synthesis, componentwise biorthogonality,
+and the exact finite interpolation loop are proved.  This does not supply the
+geometric-node Gaussian q-binomial/q-Pochhammer or elementary-symmetric
+closed form for decoder entries, a bundled matrix/right-inverse or stochastic
+matrix wrapper, or an optimal or minimum-variation decoder.
+
 \clearpage
 At the focused-build checkpoint of 30 August 2026,
 \path{CompositeMeshSharpness.lean} exports one public definition,
@@ -10770,17 +10796,19 @@ supremum norm.  The API also provides the raw
 to zero, and the pointwise corollary at every \(x\in[-1,1]\).  It asserts no
 rate, coefficientwise limit, or uniform convergence outside this interval.
 
-The five modules \path{RvachevMomentAppell.lean},
+The six modules \path{RvachevMomentAppell.lean},
 \path{RvachevPolynomialSynthesis.lean},
+\path{LagrangeRvachevSynthesis.lean},
 \path{CompositeMeshSharpness.lean},
 \path{FabiusLegendreTranslateBlocks.lean}, and
 \path{FabiusLegendreTranslateSeries.lean} therefore have public
-definition/theorem inventories $6/30$, $0/4$, $1/7$, $6/7$, and $5/25$,
-respectively: exactly $91$ public declarations.  The third module proves
+definition/theorem inventories $6/30$, $0/4$, $2/7$, $1/7$, $6/7$, and $5/25$,
+respectively: exactly $100$ public declarations.  The fourth module proves
 least-mesh sharpness only for universal exactness on the complete polynomial
 space through a degree cutoff.  It does not prove minimality for an individual
-Legendre polynomial or a particular partial sum.  The five modules also do not
-prove rationality of the atom rows, equality of the fixed-scale and separately
+Legendre polynomial or a particular partial sum.  The six modules also do not
+prove a geometric closed form or bundled matrix form for the finite-node
+decoder, decoder optimality, rationality of the atom rows, equality of the fixed-scale and separately
 scaled coefficient vectors, an unconditional
 \(\operatorname{natDegree}(S_N)=2N\) theorem or nonvanishing of the top
 Legendre coefficient, or the later refinement, projector, and asymptotic
