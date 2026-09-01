@@ -76,13 +76,11 @@ and as a [rendered PDF](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_
 That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
-> **Artifact status (2026-08-31).**  The incoming Lagrange-synthesis checkpoint
-> rebuilt the primary exposition and Lean walkthrough in fresh, uninterrupted
-> three-pass Libertinus cycles; the retained PDFs contain 165 and 125 A4 pages,
-> respectively.  The primary source subsequently gained the prime-power
-> valuation crosswalk without another PDF build, so its PDF renders the
-> Lagrange tranche but not that later source-only addition; the walkthrough
-> remains synchronized.  The canonical frontier and filed New Frontiers PDFs were
+> **Artifact status (2026-08-31).**  The primary exposition and Lean
+> walkthrough were rebuilt from their final merged sources in fresh, guarded
+> three-pass Libertinus cycles; their synchronized PDFs contain 166 and 126 A4
+> pages, respectively, and include the prime-power valuation and closed-form
+> Gaunt crosswalks.  The canonical frontier and filed New Frontiers PDFs were
 > likewise rebuilt from their final merged sources and contain 236 and 41 A4
 > pages.  Every font in these four refreshed artifacts is embedded and subset,
 > with no Type 3 font.  Other frontier documents that still await a matching

@@ -401,6 +401,21 @@ so that \(\varepsilon(2n)=\varepsilon(n)\) and \(\varepsilon(2n+1)=-\varepsilon(
 
 Lean's natural-number division and remainder operations require explicit control of positivity.  Proofs that are a one-line observation on binary expansions often become a short cluster of lemmas about \nolinkurl{Nat.div}, \nolinkurl{Nat.mod}, powers of two, and bit constructors.  Establishing this API once prevents the higher-level files from repeatedly descending to bit arithmetic.
 
+\subsection{Prime-power Pascal-row valuations}
+The exhaustive public surface of \nolinkurl{PrimePowerBinomialValuation.lean}
+consists of three theorems.  For a prime \(p\), a natural exponent \(m\), and
+\(0<j\leq p^m\),
+\[
+  \nu_p\!\binom{p^m}{j}+\nu_p(j)=m,
+  \qquad
+  \nu_p\!\binom{p^m}{j}=m-\nu_p(j).
+\]
+These are \nolinkurl{primePowerChoose_padicValNat_add} and
+\nolinkurl{primePowerChoose_padicValNat}; they include \(j=p^m\) and the
+boundary \(m=0\).  The strict dyadic specialization \(0<j<2^m\) is
+\nolinkurl{twoPowChoose_padicValNat}.  No endpoint-flat
+\(\binom{2^m-2}{j-1}\) valuation or valuation-histogram theorem is claimed.
+
 \subsection{Product normalizations}
 Several finite products recur in moment denominators.  The arithmetic module names them rather than expanding them at every use.  Principal examples include variants of
 \[
@@ -4712,6 +4727,7 @@ Module & Role in the development \\
 \nolinkurl{NormalizedEvenMoments.lean} & Natural numerator and common-denominator formula for even centered moments. \\
 \nolinkurl{Parity.lean} & Lucas-theorem parity analysis and oddness of natural moment numerators. \\
 \nolinkurl{TwoAdic.lean} & Reduced numerator/denominator parity and exact two-adic valuation consequences. \\
+\nolinkurl{PrimePowerBinomialValuation.lean} & Three exhaustive theorems for prime-power Pascal-row valuations: the additive and subtraction forms for \(0<j\le p^m\), including \(m=0\) and \(j=p^m\), and the strict-interior dyadic specialization; no endpoint-flat or histogram result. \\
 \nolinkurl{DenominatorBound.lean} & Common-denominator divisibility and explicit denominator bounds for source-facing arithmetic results. \\
 \nolinkurl{HalfMomentDenominator.lean} & Denominator control specialized to half moments and inverse-power values. \\
 \nolinkurl{BernoulliRecurrences.lean} & Translation of moment recurrences into Bernoulli-number identities used by the arithmetic paper. \\
