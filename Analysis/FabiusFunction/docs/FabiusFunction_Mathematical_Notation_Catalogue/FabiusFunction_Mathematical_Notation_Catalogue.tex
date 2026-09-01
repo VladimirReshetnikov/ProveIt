@@ -132,7 +132,7 @@
 \large Canonical symbols, exact definitions, local namespaces, and historical aliases}
 \author{Encyclopedic companion to Vladimir Reshetnikov's \texttt{ProveIt} formalization}
 \date{Notation contract \FabiusNotationVersion\\
-\small Active corpus at the validation snapshot: 174 recursively inventoried
+\small Active corpus at the validation snapshot: 165 recursively inventoried
 \texttt{.tex} sources}
 
 \begin{document}
@@ -144,7 +144,7 @@ This catalogue is the normative dictionary for mathematical notation in the acti
 global extension, and Rvachev's up-function; fixes number-system, probability, transform,
 binary, $q$-series, asymptotic, fractional-calculus, approximation, and operator
 conventions; and records every recurring collision discovered by a recursive audit of the
-current 174-source active \texttt{.tex} corpus.  Each entry states its type, domain,
+current 165-source active \texttt{.tex} corpus.  Each entry states its type, domain,
 codomain, indices, parameters, normalization, exceptional values, and formalization
 status.  No phrase such as ``with the usual convention'' supplies missing data: when two
 usual conventions exist, both are defined and their conversion is printed.  Historical
@@ -6610,37 +6610,6 @@ written after the complete expansion as \(\widehat c_m(y)\); callers must not
 encode \(y\) as a second raw subscript.  Any derivative, superscript, or
 other decoration must group the complete expanded symbol.
 
-\paragraph{\localaccentname{FormalTaylorGerm}}
-TeX arity is one; argument \(1\) is a function or germ label, not the center or
-local variable.  The command prints a wide hat over that label.  For a smooth
-local map \(h:\RealNumbers\to\RealNumbers\) at \(x_0\), its full formal Taylor
-series in the increment \(z\) is
-\[
- \mathcal T_{x_0}h(z)
- \DefinitionEquals
- \sum_{m\ge0}\frac{h^{(m)}(x_0)}{m!}z^m
- \in\RealNumbers[[z]].
-\]
-When both source and target centers are translated, the document instead uses
-the zero-constant germ
-\[
- \mathcal T^{0}_{x_0}h(z)
- \DefinitionEquals
- \mathcal T_{x_0}h(z)-h(x_0)
- =
- \sum_{m\ge1}\frac{h^{(m)}(x_0)}{m!}z^m.
-\]
-The active use families are formal compositional inversion of smooth local
-inverses, the affine center jets of \(G_n\) and \(K_n\), numerical
-coefficient-reversion residuals, and the exact quarter-point germ of \(F\).
-Status is formal algebra: positive radius and equality with the original
-smooth map are separate assertions.  The center, increment variable, whether
-the output center was subtracted, coefficient field, and convergence status
-are all suppressed and must be stated at each use.  The accent means Taylor
-germ, not Fourier transformation.  A scripted function label such as
-\(F_{1/4}\) belongs wholly inside the one argument; any further decoration
-must group the complete expansion.
-
 \paragraph{\localaccentname{GeometricPrefixReproduction}}
 TeX arity is one; argument \(1\) is the prefix depth
 \(m\in\PositiveIntegers\).  The command prints a wide hat over \(X\) with
@@ -8419,11 +8388,11 @@ or a catalogue entry are not substitutes for inspecting the current declaration.
 
 The inventory below is the recursive active tree observed on 2026-09-01 at the
 source-validation checkpoint.  It excludes every path below \modulepath{docs/archive/} and
-counts this catalogue exactly once.  It contains 172 mathematical content sources: 67
-standalone documents and 105 included or generated fragments.  The separate shared
-contract \modulepath{docs/fabius-notation.tex} raises the total before this catalogue to 173
-active TeX files.  Including this standalone catalogue gives 174 active TeX files and
-68 standalone documents.  ``Standalone'' means that the uncommented source
+counts this catalogue exactly once.  It contains 163 mathematical content sources: 65
+standalone documents and 98 included or generated fragments.  The separate shared
+contract \modulepath{docs/fabius-notation.tex} raises the total before this catalogue to 164
+active TeX files.  Including this standalone catalogue gives 165 active TeX files and
+66 standalone documents.  ``Standalone'' means that the uncommented source
 contains \commandname{documentclass}; every other content source is a fragment inheriting
 its root preamble.
 
@@ -8446,18 +8415,18 @@ Frontier synthesis root & 1 & 0 & 1\\
 \modulepath{drafts/exponents-and-q-series/} & 7 & 20 & 27\\
 \modulepath{drafts/frontier-compilations/} & 3 & 1 & 4\\
 \modulepath{drafts/integration-and-transforms/} & 1 & 7 & 8\\
-\modulepath{drafts/inverse-and-sampling/} & 8 & 37 & 45\\
+\modulepath{drafts/inverse-and-sampling/} & 6 & 30 & 36\\
 \modulepath{drafts/lambert-w/} & 7 & 4 & 11\\
 \modulepath{drafts/representations/} & 12 & 26 & 38\\
 \modulepath{drafts/rvachev_up_fourier_decay/} & 1 & 0 & 1\\
 \modulepath{drafts/spectra-and-arithmetic/} & 10 & 10 & 20\\
 \modulepath{drafts/thue-morse/} & 1 & 0 & 1\\
 \midrule
-Mathematical content subtotal & 67 & 105 & 172\\
+Mathematical content subtotal & 65 & 98 & 163\\
 Shared notation contract & 0 & 1 & 1\\
 This catalogue & 1 & 0 & 1\\
 \midrule
-Active TeX total including catalogue & 68 & 106 & 174\\
+Active TeX total including catalogue & 66 & 99 & 165\\
 \bottomrule
 \end{longtable}
 \endgroup
