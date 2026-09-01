@@ -37,18 +37,20 @@ The validated publication pair is `inverse_fabius_theory.tex` and
 bytes and has SHA-256
 `7b8cea5ff685db3bb676e08f8e3b3c6586a7702f8bf3a85298fb9ced00054d25`.
 Its exhaustive 23-input closure has SHA-256
-`775c993b8e94c67b90e884e095daba7542140966863319206d8e6eb5fc23715b`.
+`0c856dd3329d53e2155616dfff8f9e503bd6a0f449622f0eae4e9cc84b548ee4`.
 That closure comprises the master, the shared repository notation file, all
 nine canonical chapter files, three generated TeX fragments, and nine
 publication PNG figures.
 
-The matching final PDF has 134 A4 pages and 2,027,672 bytes, with SHA-256
-`a530b433392effd3a7941764c19b4c2dae3b35832ab569e9d6b630358646ede3`.
-Exactly three guarded passes produced 127, 134, and 134 pages.  The detailed
-log, text, page-box, font, visual, and package-cleanliness results are recorded
-in `VALIDATION.md`.  Root `SHA256SUMS` is the exhaustive current package
-ledger; it includes `assets/SHA256SUMS` as a permanent payload while leaving
-that independently useful nested asset ledger unchanged.
+The matching final PDF has 134 A4 pages and 2,027,726 bytes, with SHA-256
+`22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
+Exactly three guarded final-source pdfLaTeX passes returned zero and produced
+127, 134, and 134 pages.  The input closure remained unchanged before and
+after every pass, with no TeX/Lean/Lake interleave.  The detailed log, text,
+page-box, font, fresh visual, and package-cleanliness results are recorded in
+`VALIDATION.md`.  Root `SHA256SUMS` is the exhaustive current package ledger;
+it includes `assets/SHA256SUMS` as a permanent payload while leaving that
+independently useful nested asset ledger unchanged.
 
 Publication validation changes no historical claim, source pin, concordance
 row, disposition, asset lineage, or arrival checksum recorded above.  It

@@ -8,8 +8,8 @@ Fabius synthesis.  The certification applies only to the exact hashes below.
 | Item | Size | SHA-256 |
 | --- | ---: | --- |
 | `inverse_fabius_theory.tex` | 296 lines; 11,625 bytes | `7b8cea5ff685db3bb676e08f8e3b3c6586a7702f8bf3a85298fb9ced00054d25` |
-| Exhaustive 23-input source closure | 23 permanent build inputs | `775c993b8e94c67b90e884e095daba7542140966863319206d8e6eb5fc23715b` |
-| `inverse_fabius_theory.pdf` | 134 A4 pages; 2,027,672 bytes | `a530b433392effd3a7941764c19b4c2dae3b35832ab569e9d6b630358646ede3` |
+| Exhaustive 23-input source closure | 23 permanent build inputs | `0c856dd3329d53e2155616dfff8f9e503bd6a0f449622f0eae4e9cc84b548ee4` |
+| `inverse_fabius_theory.pdf` | 134 A4 pages; 2,027,726 bytes | `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d` |
 
 The 23-input closure consists of:
 
@@ -42,7 +42,9 @@ The 23-input closure consists of:
 
 ## Guarded build convergence
 
-Exactly three guarded serial passes were run:
+Exactly three guarded serial final-source pdfLaTeX passes were run.  Every
+pass returned zero; the independently hashed 23-input closure was identical
+before and after each pass, and no TeX/Lean/Lake work interleaved with them.
 
 | Pass | Produced pages |
 | ---: | ---: |
@@ -52,28 +54,34 @@ Exactly three guarded serial passes were run:
 
 The final log census is:
 
-- fatal diagnostics: 0;
-- undefined diagnostics: 0;
+- fatal or emergency diagnostics: 0;
+- undefined-control diagnostics: 0;
+- undefined-reference diagnostics: 0;
+- multiply-defined diagnostics: 0;
 - actionable rerun diagnostics: 0;
 - duplicate diagnostics: 0; and
-- overfull boxes: 0.
+- overfull horizontal or vertical boxes: 0.
 
 The stable 134-page count on the final two passes is recorded here without
 claiming byte identity between intermediate pass artifacts.
 
 ## PDF structural and visual checks
 
-- Page format and count: 134 of 134 pages are A4.
-- Text extraction: text was present and inspectable on 134 of 134 pages.
-- Page-box census: 670 of 670 expected boxes were present.
+- Page format and count: 134 of 134 pages are A4 and 134 of 134 have rotation
+  zero.
+- Text extraction: all 134 of 134 pages are nonblank.
+- Page-box census: all 670 of 670 Media, Crop, Bleed, Trim, and Art boxes have
+  the exact A4 geometry.
 - Fonts: all 31 reported Type-1 font entries were embedded and subsetted; six
   entries were Libertinus; no Type-3 font was present.
-- Targeted visual inspection covered pages 1, 36, 65, 100, 110, 132, and 134.
+- A fresh targeted visual inspection covered physical pages 1, 36, 65, 100,
+  110, 132, and 134, including the Appell material and chapter-07 provenance.
   Every inspected page was clean.
 
 ## Package integrity and cleanliness
 
-- No TeX auxiliary or build-temporary file remains in the package.
+- No canonical `.aux`, `.log`, `.out`, or `.toc` file, guarded-pass/render
+  temporary, or shallow generated sidecar remains in the package.
 - Root `SHA256SUMS` contains exactly 87 rows, one for every permanent package
   file except the self-referential ledger itself.
 - The root ledger includes the nested `assets/SHA256SUMS` as a permanent file.

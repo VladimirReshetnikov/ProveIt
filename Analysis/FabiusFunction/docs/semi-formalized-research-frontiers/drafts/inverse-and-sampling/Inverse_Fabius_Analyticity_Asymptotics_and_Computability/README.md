@@ -42,13 +42,16 @@ The canonical publication pair is now final:
 - `inverse_fabius_theory.tex`: 296 lines, 11,625 bytes, SHA-256
   `7b8cea5ff685db3bb676e08f8e3b3c6586a7702f8bf3a85298fb9ced00054d25`;
 - its exhaustive 23-input source closure: SHA-256
-  `775c993b8e94c67b90e884e095daba7542140966863319206d8e6eb5fc23715b`;
-- `inverse_fabius_theory.pdf`: 134 A4 pages, 2,027,672 bytes, SHA-256
-  `a530b433392effd3a7941764c19b4c2dae3b35832ab569e9d6b630358646ede3`.
+  `0c856dd3329d53e2155616dfff8f9e503bd6a0f449622f0eae4e9cc84b548ee4`;
+- `inverse_fabius_theory.pdf`: 134 A4 pages, 2,027,726 bytes, SHA-256
+  `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
 
-Exactly three guarded passes produced page counts 127, 134, and 134.  The
-final log has zero fatal, undefined, actionable-rerun, duplicate, or overfull
-diagnostics; text, page-box, font, and targeted visual checks all pass.
+Exactly three guarded final-source pdfLaTeX passes returned zero and produced
+page counts 127, 134, and 134.  The 23-input closure was unchanged before and
+after every pass, with no TeX/Lean/Lake interleave.  The final log has zero
+fatal, undefined, multiply-defined, duplicate, actionable-rerun, or overfull
+diagnostics; all-page text, geometry, page-box, font, and fresh targeted visual
+checks pass.
 `VALIDATION.md` is the detailed publication receipt.  The exhaustive root
 `SHA256SUMS` covers every permanent package file except itself, including the
 independent nested `assets/SHA256SUMS` ledger.
