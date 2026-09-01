@@ -109,12 +109,12 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live post-merge 2026-09-01 inventory contains 657 modules and 8,755
+The live post-merge 2026-09-01 inventory contains 659 modules and 8,768
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  Relative to the 610/8,318 activation checkpoint,
-the current tree adds forty-seven modules and 437 declarations.  Relative to
-the earlier 630/8,552 merged checkpoint, concurrent source work adds twenty-seven
-modules and 203 declarations.  The prime-power and outer-product tranches
+the current tree adds forty-nine modules and 450 declarations.  Relative to
+the earlier 630/8,552 merged checkpoint, concurrent source work adds twenty-nine
+modules and 216 declarations.  The prime-power and outer-product tranches
 account for one module and six declarations: the zero-definition/three-theorem
 `GeometricPochhammerNormalConvergence.lean` leaf and three additional theorems
 in `PrimePowerBinomialValuation.lean`.  The q-polish adds two theorems to
@@ -128,6 +128,9 @@ Four still newer q-series leaves contribute twenty theorems and no definitions:
 `GaussianBinomialPolynomialStructure.lean` 0+5, `JacobiCubic.lean` 0+2,
 `QPochhammerLogDerivative.lean` 0+10, and
 `QPochhammerOrderDerivative.lean` 0+3.
+The two newest algebra leaves add thirteen theorems and no definitions:
+`CentralQBinomialReduction.lean` 0+6 and
+`CyclotomicFactorization.lean` 0+7.
 The older 622/8,472, 623/8,476, 629/8,546, 630/8,552,
 641/8,650, and 643/8,661 values below are historical checkpoints, not
 descriptions of the live tree.  The earlier additions and q-series tranches are
@@ -321,8 +324,9 @@ inverse-computability modules then brought that feature snapshot to 631/8,556,
 a nine-module/84-declaration change.  The six further incoming q-calculus
 leaves contribute 36 declarations and brought the intermediate audit to
 649/8,697.  The four subsequent leaves contribute 38 declarations and bring
-that audit to 653/8,735.  The final four leaves contribute twenty declarations
-and bring the live audit to the 657/8,755 census recorded above.
+that audit to 653/8,735.  The next four leaves contribute twenty declarations
+and bring that audit to 657/8,755.  The final two leaves contribute thirteen
+declarations and bring the live audit to the 659/8,768 census recorded above.
 
 That increment is exhaustively counted as
 `QPochhammerInfiniteBounds.lean` 0+5, `HeineTransformation.lean` 2+5,
@@ -351,6 +355,15 @@ Gaussian polynomial structure over `ℕ[X]`, Jacobi's cubic identity, the
 q-Pochhammer logarithmic derivative and Lambert-series form on the unit disc,
 and the derivative with respect to complex order.  The strict-contraction,
 unit-disc, nonzero-nome, and shifted-argument hypotheses remain explicit.
+
+The final two-module increment is exhaustively counted as
+`CentralQBinomialReduction.lean` 0+6 and
+`CyclotomicFactorization.lean` 0+7.  It adds finite q-Pochhammer sign pairing,
+even--odd dissection and ring-hom naturality; the division-free central
+Gaussian reduction and its conditional quotient form; and the cyclotomic
+factorizations of `(X;X)_n` and `[n,k]_X`.  The quotient theorem retains both
+nonzero-denominator hypotheses, and the Gaussian cyclotomic factorization
+retains its integral-domain assumption.
 
 `EffectiveMonotoneInverse.lean` has exactly two public definitions,
 `Fabius.SequentiallyComputableOn` and `Fabius.unitClamp`, and exactly six
@@ -544,7 +557,7 @@ Integration-and-Transform master retains a historical 377-page PDF.  The canonic
 q-series synthesis is a validated 340-page historical receipt.  It contains
 the earlier general finite/infinite q-Pochhammer crosswalks and six q-series
 modules; the merged fifth fixed-nome theorem, two later general
-q-Pochhammer theorems, and the fourteen newest q-series/q-calculus modules make
+q-Pochhammer theorems, and the sixteen newest q-series/q-calculus modules make
 final parity
 pending.  The retained 167-page primary, 126-page walkthrough, 237-page
 canonical frontier, 301-page Representation Frontiers, 41-page New Frontiers,
@@ -552,7 +565,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise requires refresh for the
-657/8,755 census.  The canonical inverse-theory publication retains a 134-page
+659/8,768 census.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion tranche makes current parity pending.
 

@@ -503,6 +503,8 @@ import FabiusFunction.JacksonIntegral
 import FabiusFunction.QPochhammerLogDerivative
 import FabiusFunction.QPochhammerOrderDerivative
 import FabiusFunction.JacobiCubic
+import FabiusFunction.CyclotomicFactorization
+import FabiusFunction.CentralQBinomialReduction
 import FabiusFunction.GaussianBinomialPalindromic
 import FabiusFunction.ThetaQuasiPeriodicity
 
@@ -648,6 +650,14 @@ the universal Gaussian polynomial over `ℕ`; Jacobi's cubic identity in
 `HasSum` form; the q-Pochhammer logarithmic derivative and its Lambert-series
 form on the unit disc; and differentiation of the complex-order q-Pochhammer
 symbol under its explicit strict-contraction and nonzero-nome hypotheses.
+
+Two further division-free algebra leaves add thirteen theorems and no
+definitions.  `CyclotomicFactorization` factors `(X;X)_n` and the universal
+Gaussian coefficient into cyclotomic polynomials over the stated commutative
+ring or integral-domain contexts.  `CentralQBinomialReduction` proves the
+sign-pairing and even--odd dissection identities and reduces `[2k,k]_(q²)` to
+finite q-Pochhammer products, with the quotient form retaining both explicit
+nonvanishing-denominator hypotheses.
 The zeta–Lambert tail calculus of the Thue–Morse frontier results is
 formalized end to end.  The engine is the Euler log transform: for any
 absolutely summable family with all norms below one, over any index type,

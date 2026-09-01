@@ -103,9 +103,9 @@ Current packages and retained intake records:
   `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
   Exactly three serial passes produced 338, 348, and 348 pages; A4 geometry,
   text extraction, embedded/subset Type-1 fonts including Libertinus, and
-  absence of Type-3 fonts passed. The current source has 14,288 lines and
-  669,172 bytes, with SHA-256
-  `f0025c44ff2021f576625fb7628e23e8102827d2152f3135e381ae2b31d818bd`.
+  absence of Type-3 fonts passed. The current source has 14,304 lines and
+  670,401 bytes, with SHA-256
+  `7b4a580f80d3993111c00b97110deb9059e8ad839c45a6a1630de86b0d594279`.
   It carries the five-theorem `QPochhammerEntire.lean`, the generic
   `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, and the
   subsequent q-series module tranches, plus the three-theorem
@@ -794,8 +794,8 @@ claims about the current canonical source. The canonical synthesis's newer
 and is now a source-pinned receipt because the semantic-union source, including
 the outer-normal-convergence crosswalk, postdates that fresh build checkpoint.
 
-The latest validated forward formalization ledger has 282 rows: 71 Exact, 84
-Partial, 119 with no counterpart, and 8 interface-only. The original
+The latest validated forward formalization ledger has 282 rows: 73 Exact, 84
+Partial, 117 with no counterpart, and 8 interface-only. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
@@ -837,12 +837,16 @@ compatibility spelling of its primary identity),
 `QPochhammerInfinite.lean` (one definition, 29 theorems),
 `QBinomialReciprocity.lean` (four theorems),
 `GaussianBinomialPolynomialStructure.lean` (zero definitions, five theorems),
+`CentralQBinomialReduction.lean` (zero definitions, six theorems),
+`CyclotomicFactorization.lean` (zero definitions, seven theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems),
 `RvachevPochhammerFactorization.lean` (one definition, nine theorems), and
 `QPochhammerEntire.lean` (zero definitions; four legacy compatibility
 wrappers plus one analytic-order compatibility theorem), and
 `GeometricPochhammerNormalConvergence.lean` (zero definitions, three
-theorems).
+theorems), `QPochhammerLogDerivative.lean` (zero definitions, ten theorems),
+`QPochhammerOrderDerivative.lean` (zero definitions, three theorems), and
+`JacobiCubic.lean` (zero definitions, two theorems).
 The five `GaussianBinomialAtNegOne` theorems are
 `gaussianBinomial_neg_one_even_even`,
 `gaussianBinomial_neg_one_odd_even`,
@@ -1102,3 +1106,13 @@ status changes make the q-exponential eigenfunction and Jackson
 integration-by-parts subclaims Exact; q-exponential factorization, the Jackson
 fundamental theorem, and theta quasi-periodicity remain Partial at the
 unformalized clauses stated in their rows.
+
+The subsequent tail adds `QPochhammerLogDerivative.lean` (ten theorems),
+`QPochhammerOrderDerivative.lean` (three theorems), `JacobiCubic.lean` (two
+theorems), `CentralQBinomialReduction.lean` (six theorems), and
+`CyclotomicFactorization.lean` (seven theorems). The last two modules make the
+central-reduction and cyclotomic-Pochhammer rows Exact: the central identity is
+division-free over every commutative ring with a field/nonzero-denominator
+quotient wrapper, while the factorial cyclotomic factorization holds over every
+commutative ring and the Gaussian factorization over every integral domain,
+with the exponent bounded in `{0,1}` by the proved divisibility inequalities.

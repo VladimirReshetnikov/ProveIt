@@ -55,8 +55,8 @@ SHA-256
 `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`,
 built from the 14,158-line, 661,835-byte source with SHA-256
 `79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`.
-The live q-series source is now 14,288 lines and 669,172 bytes, with SHA-256
-`f0025c44ff2021f576625fb7628e23e8102827d2152f3135e381ae2b31d818bd`.
+The live q-series source is now 14,304 lines and 670,401 bytes, with SHA-256
+`7b4a580f80d3993111c00b97110deb9059e8ad839c45a6a1630de86b0d594279`.
 Six finite/infinite q-series modules contribute 69 public declarations for
 continuity at `q = 1`, Euler and q-binomial sums, Jacobi's triple product,
 q-Pascal summation, the noncommutative q-binomial theorem, and Rogers--Szegő
@@ -67,6 +67,12 @@ polynomials. A further six-module inventory adds `QMultinomial.lean`,
 `GaussianBinomialPalindromic.lean` (12 theorems), `JacksonIntegral.lean` (one
 definition, seven theorems), `QExponential.lean` (three definitions, eight
 theorems), and `ThetaQuasiPeriodicity.lean` (one definition, six theorems).
+The subsequent tail adds `QPochhammerLogDerivative.lean` (10 theorems),
+`QPochhammerOrderDerivative.lean` (three theorems), `JacobiCubic.lean` (two
+theorems), `CentralQBinomialReduction.lean` (six theorems), and
+`CyclotomicFactorization.lean` (seven theorems); the final two modules make the
+central-reduction and cyclotomic-factorization rows Exact at their audited
+commutative-ring, field, and integral-domain boundaries.
 The local reciprocal-power zero-lattice theorem completes
 `QPochhammerEntire.lean` to five theorems, and two further general-product
 theorems complete `QPochhammerInfinite.lean` to one definition and 29
@@ -75,8 +81,8 @@ theorems. The source also adds the zero-definition, three-theorem
 product's locally uniform convergence is exact for every complex strict
 contraction, including `q = 0`, with dyadic Rvachev and bounded-Fabius Fourier
 specializations. The compound centered/MGF and exterior reciprocal/pole
-theorem remains Partial. The forward status ledger is 71 Exact / 84 Partial /
-119 None / 8 interface rows. No PDF was generated locally for this source-only
+theorem remains Partial. The forward status ledger is 73 Exact / 84 Partial /
+117 None / 8 interface rows. No PDF was generated locally for this source-only
 update, so the supplied 348-page artifact remains historical. The comb synthesis also
 has a later chapter-03 notation edit: its retained 158-page, 2,456,105-byte
 A4 PDF has SHA-256

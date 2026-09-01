@@ -111,8 +111,8 @@ fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The current master TeX is a source-only successor to that checkpoint. Its
-14,288-line, 669,172-byte source has SHA-256
-`f0025c44ff2021f576625fb7628e23e8102827d2152f3135e381ae2b31d818bd`.
+14,304-line, 670,401-byte source has SHA-256
+`7b4a580f80d3993111c00b97110deb9059e8ad839c45a6a1630de86b0d594279`.
 It includes exhaustive crosswalks for `QPochhammerEntire` (zero definitions
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
@@ -130,7 +130,8 @@ definitions and eight theorems), `JacksonIntegral` (one definition and seven
 theorems), `ThetaQuasiPeriodicity` (one definition and six theorems),
 `QPochhammerLogDerivative` (ten theorems),
 `QPochhammerOrderDerivative` (three theorems), and `JacobiCubic` (two
-theorems).
+theorems). The current tail adds `CentralQBinomialReduction` (six theorems)
+and `CyclotomicFactorization` (seven theorems).
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
 derivative at every raw factor zero `a*q^j = 1` including `q = 0`, and
@@ -141,7 +142,7 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 71 Exact, 84 Partial, 119 None, and 8 interface rows; the
+status ledger is 73 Exact, 84 Partial, 117 None, and 8 interface rows; the
 191-result pre-Fabius core is 36/29/123/3. The compound outer spectral-product
 theorem remains Partial even though the three-theorem outer-product leaf proves
 local-uniform (normal) convergence for every complex strict contraction, its
@@ -156,6 +157,10 @@ The incoming tail further makes the full elementary Gaussian-polynomial
 structure and Jacobi's cubic identity Exact, while adding Partial order
 derivative and Gaussian-moment rows; the Lambert logarithm row remains
 Partial with both displayed derivative formulas now formalized.
+The central-reduction row is now Exact through a division-free commutative-ring
+identity and its field quotient wrapper; the cyclotomic-factorization row is
+Exact over every commutative ring for the factorial form and every integral
+domain for the Gaussian form, with the exponent bounds stated explicitly.
 
 No PDF was generated locally while resolving this merge. The supplied
 348-page PDF therefore remains a source-pinned historical artifact, while the root package
