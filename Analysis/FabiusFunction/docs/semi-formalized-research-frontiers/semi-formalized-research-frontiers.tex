@@ -1939,48 +1939,6 @@ they give the exact residue-class split at length \(rn\) and, under exactly
 \(n\) for \(u\le s<r\).  They assume nothing about the nome and use no
 topology, division, cancellation, or nonvanishing premise.
 
-\path{QPochhammerInfinite.lean} has one public definition,
-\lean{qPochhammerInfIn}, and exactly twenty-seven public theorems:
-\lean{qPochhammerInfIn_eq_tprod},
-\lean{summable_norm_mul_pow},
-\lean{one_sub_ne_zero_of_norm_lt_one},
-\lean{norm_mul_pow_self_lt_one},
-\lean{finiteQPochhammerIn_self_ne_zero},
-\lean{multipliable_one_sub_mul_pow_of_norm_lt_one},
-\lean{hasProd_qPochhammerInfIn},
-\lean{tendsto_finiteQPochhammerIn_qPochhammerInfIn},
-\lean{qPochhammerInfIn_eq_finite_mul_shift},
-\lean{qPochhammerInfIn_succ_shift},
-\lean{qPochhammerInfIn_eq_factor_mul},
-\lean{qPochhammerInfIn_dissection},
-\lean{qPochhammerInfIn_ne_zero},
-\lean{qPochhammerInfIn_eq_zero_iff},
-\lean{qPochhammerInfIn_self_ne_zero},
-\lean{qPochhammerInfIn_eq_tprod_smul},
-\lean{summable_norm_pow_of_norm_lt_one},
-\lean{isBigO_one_sub_sub_one},
-\lean{differentiable_finiteQPochhammerIn},
-\lean{qPochhammerInfIn_eq_zero_iff_exists_inv_pow},
-\lean{hasProdLocallyUniformly_qPochhammerInfIn},
-\lean{continuous_qPochhammerInfIn},
-\lean{pow_sq_mul_finiteQPochhammerIn_inv_pow_self},
-\lean{differentiable_qPochhammerInfIn},
-\lean{hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one},
-\lean{hasDerivAt_qPochhammerInfIn_inv_pow}, and
-\lean{deriv_qPochhammerInfIn_inv_pow_ne_zero}.
-The definition is total in a topological commutative ring.  For
-\(\lVert q\rVert<1\), the complete commutative normed-ring layer with
-\(\lVert1\rVert=1\) proves the product, finite-prefix limit, shift,
-factor-removal, and positive-modulus dissection laws; adding a multiplicative
-norm gives the raw zero locus \(aq^j=1\).  Complete normed fields admit the
-inverse-power locus when \(q\ne0\), and local compactness gives locally uniform
-convergence and continuity in \(a\) for fixed \(q\).  The complex layer gives
-entireness and the factor-zero derivative; for \(q\ne0\), it gives the closed
-inverse-power derivative and its nonvanishing.  There is no joint-\(q\)
-holomorphy or global growth/order/type/asymptotic claim.  The preceding
-\path{QPochhammerEntire.lean} remains the separate
-\lean{complexQPochhammerInf} analytic-order-one API, including \(q=0\).
-
 \begin{theorem}[Entire fixed-nome Pochhammer symbol and simple zero lattice]
 \label{integration:thm:qpochhammer-entire}
 Let \(q\in\ComplexNumbers\) satisfy \(\lVert q\rVert<1\), and write
@@ -2057,7 +2015,7 @@ exactly \(u\le r\), including \(u=r\).  Neither theorem uses a topology, a
 norm, a nonvanishing hypothesis, or any restriction on \(q\).
 
 The exhaustive public surface of \path{QPochhammerInfinite.lean} is the
-definition \lean{qPochhammerInfIn} and twenty-seven theorems.  In an arbitrary
+definition \lean{qPochhammerInfIn} and twenty-nine theorems.  In an arbitrary
 topological commutative ring the definition is the total
 \(\prod'_{j\ge0}(1-aq^j)\), and \lean{qPochhammerInfIn_eq_tprod} records this
 defining equality; no convergence is implied outside a multipliable range.
@@ -2102,7 +2060,7 @@ The algebraic cofactor normalization
 \lean{pow_sq_mul_finiteQPochhammerIn_inv_pow_self} needs only a field and
 \(q\ne0\).
 
-The remaining four theorems are complex.  Under \(\lVert q\rVert<1\),
+The remaining six theorems are complex.  Under \(\lVert q\rVert<1\),
 \lean{differentiable_qPochhammerInfIn} proves entireness and
 \lean{hasDerivAt_qPochhammerInfIn_of_mul_pow_eq_one} gives the derivative from
 the raw equation \(a_0q^j=1\), including \(q=0,j=0\).  With \(q\ne0\),
@@ -2114,12 +2072,16 @@ the raw equation \(a_0q^j=1\), including \(q=0,j=0\).  With \(q\ne0\),
 and \lean{deriv_qPochhammerInfIn_inv_pow_ne_zero} proves the displayed
 coefficient nonzero.  Its literal conclusion is coefficient nonvanishing;
 the preceding \texttt{HasDerivAt} declaration supplies the derivative
-identification.  No theorem in this generic module states
-\texttt{analyticOrderAt}.  That conclusion for the separate public name
-\lean{complexQPochhammerInf}, including \(q=0\), remains exactly the final
-theorem of \path{QPochhammerEntire.lean}; conversely the five-theorem wrapper
-contains no generic ring-valued concatenation or dissection theorem.  Neither
-API proves joint holomorphy in \(q\) or an outside-disk reciprocal theory.
+identification.  The division-free theorem
+\lean{deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one} strengthens this to
+nonvanishing of the actual derivative at every raw factor zero, including
+\(q=0\), and \lean{analyticOrderAt_qPochhammerInfIn_of_eq_zero} concludes that
+every zero of the generic product has analytic order exactly one.  The
+separate public name \lean{complexQPochhammerInf} has the corresponding
+compatibility theorem \lean{analyticOrderAt_complexQPochhammerInf_of_eq_zero},
+also including \(q=0\); conversely the five-theorem wrapper contains no generic
+ring-valued concatenation or dissection theorem.  Neither API proves joint
+holomorphy in \(q\) or an outside-disk reciprocal theory.
 
 \paragraph{Exact latest q-series tranche.}
 The downstream \path{GaussianBinomialPalindromic.lean} has no public

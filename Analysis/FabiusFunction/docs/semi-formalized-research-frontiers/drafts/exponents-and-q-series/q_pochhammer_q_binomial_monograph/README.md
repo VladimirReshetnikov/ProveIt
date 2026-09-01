@@ -102,7 +102,7 @@ historical build of the immediately preceding master source (14,158 lines,
 SHA-256 `79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`).
 The PDF is 3,002,729 bytes with SHA-256
 `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
-It was built by exactly three serial
+It was produced by exactly three serial
 `pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 338,
 348, and 348 pages, with `makeindex` run on the `.idx` file after each pass.
 The final log scan found three overfull boxes, all in the single paragraph of the QPochhammerEntire crosswalk (source lines 652--670) whose long declaration names lack break points. All pages are A4. `pdffonts` reports 42 font rows, all
@@ -121,7 +121,7 @@ theorems), `GaussianBinomialPalindromic` (zero definitions and twelve
 theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
 theorems), and `GeometricPochhammerNormalConvergence` (zero
 definitions and three theorems). The newer inventory also includes
-`QMultinomial` (one definition and seven theorems),
+`QMultinomial` (one definition and nine theorems),
 `QPochhammerInfiniteBounds` (five theorems), `QPochhammerComplexOrder` (one
 definition and four theorems), `BasicHypergeometricSeries` (two definitions
 and five theorems), `HeineTransformation` (two definitions and five theorems),

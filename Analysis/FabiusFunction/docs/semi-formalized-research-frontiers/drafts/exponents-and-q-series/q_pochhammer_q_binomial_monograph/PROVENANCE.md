@@ -27,13 +27,18 @@ assets: each donor package consisted only of TeX, PDF, and a repository
 checksum ledger. Their superseded PDFs were retired with the donor packages
 and are not canonical renderings of this larger source. The former forward
 and inverse manuscript PDFs were removed for the same reason. The merged
-master retains one canonical publication checkpoint,
-`q_pochhammer_q_binomial_monograph.pdf`: a reproducible 347-page A4 artifact
-built from the then-current 14,072-line, 656,200-byte source with SHA-256
-`062b7230d95ff8bd52b11253c6c3c8820d6f6a82e4307ae5d82a1d793c00c517`.
-Exactly three guarded serial passes produced 337, 347, and 347 pages. The
-2,996,319-byte PDF has SHA-256
-`29b422a39c42be37bd1487d4245c44e55706720c545dd015957644e47014bd48`.
+master retains one publication checkpoint,
+`q_pochhammer_q_binomial_monograph.pdf`. This retained PDF is a historical
+348-page A4 artifact of 3,002,729 bytes with SHA-256
+`8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
+It was built from the then-current 14,158-line, 661,835-byte source with
+SHA-256
+`79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`;
+exactly three guarded serial passes produced 338, 348, and 348 pages. The live
+source now postdates that receipt: it has 14,287 lines, 669,121 bytes, and
+SHA-256
+`c1c9466bf2d166b47e7020033743e28ae39b610f8339b8f3d378ce3a2e1918d6`.
+The retained PDF therefore does not claim render parity with the current TeX.
 The validation record in `README.md` distinguishes compilation, font
 embedding, complete page rendering, contact-sheet review, and full-resolution
 inspection. PDFs retained beneath `assets/` are research figures, not
