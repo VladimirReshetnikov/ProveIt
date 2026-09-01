@@ -109,15 +109,17 @@ when four articles on the Lambert W function itself arrived), with new
 archives arriving through `drafts/incoming/` (see its README for the
 protocol).
 
-The inverse group also contains the in-progress canonical-source draft
-[`Inverse_Fabius_Analyticity_Asymptotics_and_Computability/`](drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/).
-Its master and nine chapters, pinned 194-row raw source-result inventory,
-88-row source-asset disposition, and deduplicated 61-payload asset ledger are
-present; the asset ledger passes in full. The raw inventory is not the reviewed
-theorem concordance. `theorem_concordance.csv` and the canonical PDF are absent,
-so the source validator and publication gate remain pending and all five source
-packages stay live. Their existing PDFs remain source-package or historical
-artifacts, not renderings of the new canonical master.
+The inverse group publishes the canonical source
+[*Inverse Fabius Theory: Analyticity, Asymptotics, Computability, and Dyadic
+Sampling*](drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/inverse_fabius_theory.tex)
+([PDF](drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/inverse_fabius_theory.pdf)).
+Its immutable extraction input is pinned at
+`0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`; all 194 source-result rows have
+reviewed dispositions, all 88 files in the two superseded source subgroups have
+asset dispositions, and the deduplicated live asset ledger covers 63 retained
+payloads. The former package paths, source hashes, nested lineage, and recovery
+revisions remain in the package's
+[`PROVENANCE.md`](drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/PROVENANCE.md).
 
 Later the same day the groups other than the Fourier-decay corpus were
 **consolidated into volumes**, in two styles: the original members were
@@ -126,8 +128,9 @@ drafts verbatim with per-part label prefixes (the later second-wave
 integral-transforms arrival was folded into that volume the same way,
 as Part XII) — while the closely overlapping arrivals of waves two
 through six were merged **editorially** into additional volumes
-(`inverse-and-sampling/comb-interpolation/comb_interpolation_synthesis/` and
-`inverse-and-sampling/inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders/`,
+(`inverse-and-sampling/comb-interpolation/comb_interpolation_synthesis/`, the
+former `inverse-and-sampling/inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders/`
+now recorded as an input to the canonical inverse synthesis, and
 `representations/Up_Polynomial_Synthesis/`): shared theorems stated
 once with the best proof, unified notation, cross-source constants
 verified, all source-specific material retained.  Waves seven through
