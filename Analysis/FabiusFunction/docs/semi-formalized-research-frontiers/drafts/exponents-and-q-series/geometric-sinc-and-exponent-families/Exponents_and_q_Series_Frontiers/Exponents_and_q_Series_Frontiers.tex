@@ -15321,16 +15321,19 @@ Its declarations \path{hasProdLocallyUniformly_qPochhammerInfIn},
 \path{hasDerivAt_qPochhammerInfIn_inv_pow}, and
 \path{deriv_qPochhammerInfIn_inv_pow_ne_zero} give fixed-$q$ local uniformity
 in $a$, complex entire-ness, the zeros $q^{-j}$, and their explicit nonzero
-derivatives under their stated field hypotheses.  The division-free theorem
+derivatives under their stated field hypotheses.
+The division-free theorem
 \path{deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one} gives actual derivative
 nonvanishing whenever $aq^j=1$, including $q=0$, and
 \path{analyticOrderAt_qPochhammerInfIn_of_eq_zero} states that every zero has
 analytic order exactly one, also including $q=0$.
-The companion \path{QPochhammerEntire.lean} retains exactly the four legacy
-compatibility wrappers
+The zero-definition companion \path{QPochhammerEntire.lean} exposes the four
+legacy compatibility wrappers together with the analytic-order theorem, for
+exactly five public theorems:
 \path{hasProdLocallyUniformly_complexQPochhammerInf},
 \path{complexQPochhammerInf_differentiable},
-\path{complexQPochhammerInf_eq_zero_iff}, and
+\path{complexQPochhammerInf_eq_zero_iff},
+\path{complexQPochhammerInf_eq_zero_iff_eq_inv_pow}, and
 \path{analyticOrderAt_complexQPochhammerInf_of_eq_zero}.
 For each fixed complex strict contraction $q$, they transfer the generic
 \path{qPochhammerInfIn} results to the older \path{complexQPochhammerInf}
@@ -15338,9 +15341,11 @@ names, without duplicate analytic proofs.  They expose locally uniform
 convergence on the whole complex $a$-plane and entire-ness in $a$, identify
 the zero set in the division-free form
 \(\exists j,\ 1-aq^j=0\), including \(q=0\), and give analytic order one at
-every zero.  Neither API asserts joint holomorphy in \(q\), explicit
-uniform-in-\(q\) tail or derivative-kernel bounds, or local uniformity of the
-outer spectral product over \(k\).
+every zero; for $q\ne0$ the fourth theorem rewrites that set as the literal
+reciprocal-power lattice.  These symbol-level APIs do not assert joint
+holomorphy in \(q\) or explicit uniform-in-\(q\) tail or derivative-kernel
+bounds.  The separate outer-product leaf described below supplies the missing
+local-uniform convergence over the spectral index.
 \end{statusbox}
 
 \begin{statusbox}{Lean crosswalk: spectral-product consequences and remaining boundary}
@@ -15409,16 +15414,30 @@ reciprocal-power lattice $a=(q^j)^{-1}$; and
 \path{analyticOrderAt_complexQPochhammerInf_of_eq_zero} proves analytic
 order one at every factor zero, including the sole zero $a=1$ when $q=0$.
 
-These five theorems concern one fixed Pochhammer symbol as a function of its
-argument.  They do not by themselves establish locally uniform (normal)
-convergence of the \emph{outer} product over $k$ on the right-hand side of
-\eqref{p7:eq:sinc-poch}.  There is also still no named centered $\psi_q$ or
-MGF wrapper, and no outside-$\AbsoluteValue q>1$ reciprocal formula or
-zero--pole exchange.  Consequently the compound label
-\cref{p7:thm:sinc-poch} remains only partially formalized: its fixed-symbol
-inside-disk analytic and divisor layer is exact, while the centered/MGF
-bridges, the outer-$k$ normal-convergence statement, and the outside-disk
-reciprocal layer remain frontier obligations.
+The zero-definition, three-theorem leaf
+\path{GeometricPochhammerNormalConvergence.lean} now closes the outer-product
+analytic subclaim.  Its general declaration
+\path{hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf}
+proves, for every complex $q$ with $\lVert q\rVert<1$, that the product over
+$k$ of the displayed nome-$q^2$ symbols converges locally uniformly on the
+whole $z$-plane to $S_q(z)$.  This includes the degenerate contraction $q=0$
+without a division or nonzero hypothesis.  The two specializations
+\path{hasProdLocallyUniformly_rvachevFourierProduct_complexQPochhammerInf}
+and
+\path{hasProdLocallyUniformly_rvachevFourier_complexQPochhammerInf}
+give the nome-$1/4$ Rvachev product and then the Fourier transform of every
+bounded Fabius witness satisfying \path{IsFabius}.  After the linear
+substitution $z=(1-q)t/(2\pi)$, the general theorem is exactly the outer
+locally-uniform (normal-convergence) part of the inside-disk formula
+\eqref{p7:eq:sinc-poch}.
+
+There is still no single declaration with the manuscript's named centered
+$\psi_q$ or MGF wrapper, and there is no outside-$\AbsoluteValue q>1$
+reciprocal formula, pole divisor, or zero--pole exchange.  Consequently the
+compound label \cref{p7:thm:sinc-poch} remains only partially formalized: its
+inside-disk pointwise factorization and outer normal convergence are exact,
+while the centered/MGF packaging and outside-disk reciprocal layer remain
+frontier obligations.
 \end{statusbox}
 
 The nome is $q^2$, not $q$: centering makes every factor even, and evenness
