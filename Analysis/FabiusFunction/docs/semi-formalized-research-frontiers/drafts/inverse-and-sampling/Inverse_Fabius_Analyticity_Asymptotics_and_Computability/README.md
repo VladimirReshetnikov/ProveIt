@@ -29,16 +29,17 @@ The package audit surfaces are:
   files in the two superseded source subgroups;
 - [`assets/SHA256SUMS`](assets/SHA256SUMS): the exhaustive live ledger for 63
   retained, deduplicated reproducibility payloads;
+- [`SOURCE_CLOSURE.sha256`](SOURCE_CLOSURE.sha256): the reproducible ledger
+  of the 23 files consumed by the TeX build;
 - [`PROVENANCE.md`](PROVENANCE.md): source hashes, arrival lineage, nested
   predecessors, and immutable recovery points.
 
-The result and asset extractors are pinned by
-[`audit/SOURCE_REVISION`](audit/SOURCE_REVISION) to
-`0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`.
-The five later notation-normalized source layouts remain recoverable together
-at `93db15ad3c0645bd3cfd0a3e6e694e3c86a3aa2b`, a complete pre-retirement
-repository snapshot. The old paths are retained as provenance locators, not
-as live links.
+The two live publication ledgers are checked independently:
+
+```bash
+python -B audit/build_source_closure.py --check
+python -B audit/build_package_checksums.py --check
+```
 
 `theorem_concordance.csv` records the disposition of all 194 source-result
 environments while preserving the ten immutable source fields reproduced from

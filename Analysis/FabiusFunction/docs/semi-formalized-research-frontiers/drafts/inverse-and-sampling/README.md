@@ -74,8 +74,9 @@ is the canonical union of the additive-dyadic and geometric-comb manuscripts.
 It preserves the distinct modal, Mellin, regular-variation, spline,
 reciprocal-product, Euler--Maclaurin, Ruffa, Thue--Morse, and interpolation
 results while stating their common Gaussian--Pascal and Jackson--Newton spine
-once. Its 180-row source disposition, 151-row historical-ledger audit, and
-156-page certified publication are documented in that package.
+once. Its 180-row source disposition and 151-row historical-ledger audit pass;
+the retained 158-page PDF is a historical checkpoint pending a fresh render of
+the current notation-normalized source.
 
 ## Formalization notes
 
@@ -93,10 +94,18 @@ becomes the Catalan inverse of `X + 4 X^2` under the exact `9/4` parameter
 rescaling, together with the reverse rescaling and every positive coefficient.
 `FabiusInverseQuarterJet.lean` connects that quadratic inverse to the actual
 smooth inverse: its full centered jet at `5/72 = F(1/4)` is the
-factorial-scaled Catalan sequence. This is equality of all derivatives, not
-local analytic equality. A named nonzero flat-remainder decomposition remains
-open, as do the general-dyadic analytic/algebraic shadow and convergence of the
-inverse Taylor series.
+factorial-scaled Catalan sequence. In ordinary mathematical notation, if
+`G = F^{-1}` and `C_m` is the `m`-th Catalan number, the proved identity is
+
+\[
+G^{(m+1)}(5/72)=(m+1)!\,(-4)^m C_m \qquad (m\ge 0).
+\]
+
+This is equality of the full smooth jet, not local analytic equality. A named
+nonzero flat-remainder decomposition remains open, as do the general-dyadic
+analytic/algebraic shadow, convergence and identification of the inverse
+Taylor series, and the corresponding all-orders Bell--Lagrange coefficient
+formula.
 
 `FabiusFunction.LagrangeRvachevSynthesis` supplies two definitions and seven
 theorems closing the generic finite-node decoder, cardinal biorthogonality,
