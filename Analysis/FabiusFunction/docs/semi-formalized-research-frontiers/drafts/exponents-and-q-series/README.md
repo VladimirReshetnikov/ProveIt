@@ -13,9 +13,9 @@ overlap:
   contains the central exponent/geometric-sinc synthesis and its
   negative/reciprocal and cyclotomic companion reports.
 
-The retained [`q-pochhammer-and-inversion/`](q-pochhammer-and-inversion/)
-index records historical source locations; it no longer contains a live
-package. Every live package appears exactly once. The former three
+The former `q-pochhammer-and-inversion/` locations are recorded in pinned
+history; no live index or package remains at that path. Every live package
+appears exactly once. The former three
 general-q-series guides, forward q-Pochhammer/q-binomial monograph, and
 inverse-q synthesis have been dispositioned into
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/).

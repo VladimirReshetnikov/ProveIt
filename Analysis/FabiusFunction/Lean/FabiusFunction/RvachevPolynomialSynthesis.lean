@@ -191,4 +191,95 @@ theorem normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp
     F hF hM hdeg hx]
   rw [← mul_assoc, inv_mul_cancel₀ (Nat.cast_ne_zero.mpr hM), one_mul]
 
+/-- **Arbitrarily phased polynomial deconvolution.**  For every nonzero
+natural mesh `M`, every real phase `θ`, and every polynomial of degree at
+most `v₂(M)`, sampling the reflected translates of its Rvachev
+deconvolution against the shifted Rvachev density reconstructs the polynomial
+exactly.  This is complementary to
+`normalized_tsum_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`: here
+the density samples stay at the shifted lattice nodes while the deconvolved
+polynomial is translated by `x`. -/
+theorem normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp
+    (F : BoundedFabius) (hF : IsFabius F) {M : ℕ} (hM : M ≠ 0)
+    {P : ℝ[X]} (hdeg : P.natDegree ≤ padicValNat 2 M) (θ x : ℝ) :
+    ((M : ℝ))⁻¹ *
+        ∑' k : ℤ,
+          (rvachevDeconvolvedPolynomial P).eval
+              (x - ((M : ℝ))⁻¹ * (θ + k)) *
+            rvachevUp F (((M : ℝ))⁻¹ * (θ + k)) =
+      P.eval x := by
+  let Q : ℝ[X] := rvachevDeconvolvedPolynomial P
+  let R : ℝ[X] :=
+    Q.comp (C (-((M : ℝ))⁻¹) * X + C x)
+  have hRdeg : R.natDegree ≤ padicValNat 2 M := by
+    calc
+      R.natDegree ≤
+          Q.natDegree * (C (-((M : ℝ))⁻¹) * X + C x).natDegree := by
+        exact Polynomial.natDegree_comp_le
+      _ ≤ Q.natDegree * 1 := by
+        exact Nat.mul_le_mul_left Q.natDegree Polynomial.natDegree_linear_le
+      _ = Q.natDegree := by omega
+      _ ≤ P.natDegree := by
+        simpa only [Q] using natDegree_rvachevDeconvolvedPolynomial_le P
+      _ ≤ padicValNat 2 M := hdeg
+  have hcomb := tsum_shifted_polynomial_eq_integral_nat
+    F hF hM hRdeg θ
+  have hMreal : (M : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hM
+  have hsummand : ∀ k : ℤ,
+      R.eval (θ + k) *
+          rvachevUp F (((M : ℝ))⁻¹ * (θ + k)) =
+        Q.eval (x - ((M : ℝ))⁻¹ * (θ + k)) *
+          rvachevUp F (((M : ℝ))⁻¹ * (θ + k)) := by
+    intro k
+    simp only [R, Polynomial.eval_comp, Polynomial.eval_add,
+      Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X]
+    have harg : -((M : ℝ))⁻¹ * (θ + (k : ℝ)) + x =
+        x - ((M : ℝ))⁻¹ * (θ + (k : ℝ)) := by ring
+    rw [harg]
+  have hintegral :
+      (∫ z : ℝ, R.eval z * rvachevUp F (((M : ℝ))⁻¹ * z)) =
+        (M : ℝ) * P.eval x := by
+    have hscale := MeasureTheory.Measure.integral_comp_inv_mul_left
+      (fun y : ℝ ↦ Q.eval (x - y) * rvachevUp F y) (M : ℝ)
+    have hsmooth :
+        (∫ y : ℝ, Q.eval (x - y) * rvachevUp F y) = P.eval x := by
+      simpa only [Q] using
+        integral_eval_rvachevDeconvolvedPolynomial_sub_mul_rvachev
+          F hF P x
+    calc
+      (∫ z : ℝ, R.eval z * rvachevUp F (((M : ℝ))⁻¹ * z)) =
+          ∫ z : ℝ,
+            Q.eval (x - ((M : ℝ))⁻¹ * z) *
+              rvachevUp F (((M : ℝ))⁻¹ * z) := by
+        refine integral_congr_ae (Filter.Eventually.of_forall fun z ↦ ?_)
+        simp only [R, Polynomial.eval_comp, Polynomial.eval_add,
+          Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X]
+        congr 2
+        ring
+      _ = (M : ℝ) *
+          ∫ y : ℝ, Q.eval (x - y) * rvachevUp F y := by
+        simpa only [abs_of_nonneg
+          (show (0 : ℝ) ≤ (M : ℝ) from Nat.cast_nonneg M), smul_eq_mul] using
+          hscale
+      _ = (M : ℝ) * P.eval x := by rw [hsmooth]
+  calc
+    ((M : ℝ))⁻¹ *
+        ∑' k : ℤ,
+          (rvachevDeconvolvedPolynomial P).eval
+              (x - ((M : ℝ))⁻¹ * (θ + k)) *
+            rvachevUp F (((M : ℝ))⁻¹ * (θ + k)) =
+        ((M : ℝ))⁻¹ *
+          ∑' k : ℤ,
+            R.eval (θ + k) *
+              rvachevUp F (((M : ℝ))⁻¹ * (θ + k)) := by
+      apply congrArg (fun s : ℝ ↦ ((M : ℝ))⁻¹ * s)
+      exact tsum_congr fun k ↦ (hsummand k).symm
+    _ = ((M : ℝ))⁻¹ *
+          ∫ z : ℝ, R.eval z * rvachevUp F (((M : ℝ))⁻¹ * z) := by
+      rw [hcomb]
+    _ = ((M : ℝ))⁻¹ * ((M : ℝ) * P.eval x) := by
+      rw [hintegral]
+    _ = P.eval x := by
+      rw [← mul_assoc, inv_mul_cancel₀ hMreal, one_mul]
+
 end Fabius
