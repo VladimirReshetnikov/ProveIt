@@ -110,9 +110,9 @@ embedded and subsetted, including 5 Libertinus rows, with no Type-3
 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
-The current master source postdates that checkpoint: it has 14,287 lines,
-669,121 bytes, and SHA-256
-`c1c9466bf2d166b47e7020033743e28ae39b610f8339b8f3d378ce3a2e1918d6`.
+The current master source postdates that checkpoint: it has 14,298 lines,
+669,990 bytes, and SHA-256
+`3cb7365875c11c05c5e4991a3ba88cd08c33ed8a049313e39b7b5f9aa3c10885`.
 Consequently the retained PDF is historical, and no render parity with the
 current TeX is claimed. The current source includes exhaustive crosswalks for
 `QPochhammerEntire` (zero definitions
@@ -137,8 +137,7 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger covers 282 labelled results: 71 Exact, 84 Partial, 119 None,
-and 8 N/A; the
+status ledger is 73 Exact, 84 Partial, 117 None, and 8 interface rows; the
 191-result pre-Fabius core is 36/29/123/3. The compound outer spectral-product
 theorem remains Partial even though the three-theorem outer-product leaf proves
 local-uniform (normal) convergence for every complex strict contraction, its

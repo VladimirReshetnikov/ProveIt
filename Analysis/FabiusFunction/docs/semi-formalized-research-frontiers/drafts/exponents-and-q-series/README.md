@@ -94,9 +94,9 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The current `q_pochhammer_q_binomial_monograph.tex` has 14,287 lines,
-  669,121 bytes, and SHA-256
-  `c1c9466bf2d166b47e7020033743e28ae39b610f8339b8f3d378ce3a2e1918d6`.
+  The current `q_pochhammer_q_binomial_monograph.tex` has 14,298 lines,
+  669,990 bytes, and SHA-256
+  `3cb7365875c11c05c5e4991a3ba88cd08c33ed8a049313e39b7b5f9aa3c10885`.
   Its retained `q_pochhammer_q_binomial_monograph.pdf` is a historical
   348-page A4 artifact of 3,002,729 bytes, with SHA-256
   `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`.
@@ -530,8 +530,13 @@ material and the exact `GeneralizedRvachevIdentifiability.lean`
 zero-order/exponent crosswalk after the PDF's source checkpoint. The latter
 gives constructive dyadic-order first differences and full-product rigidity;
 zeta-quotient, cumulant/analytic-sample, and probability-law identifiability
-remain Partial in Lean. Final-source rendering and full publication validation
-remain pending. This is the
+remain Partial in Lean. The source also records the exact zero-definition,
+three-theorem `GeometricPochhammerNormalConvergence.lean` crosswalk: the outer
+spectral product converges locally uniformly for every complex strict
+contraction, including `q = 0`, with dyadic Rvachev-product and bounded-Fabius
+Fourier specializations. The compound centered/MGF and exterior reciprocal
+formula, pole divisor, and zero--pole exchange remain Partial. Final-source
+rendering and full publication validation remain pending. This is the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -787,7 +792,7 @@ source and retained historical PDF are identified by the single exact receipt
 in the detailed package record above.
 
 The latest validated forward formalization ledger has 282 labelled results:
-71 Exact, 84 Partial, 119 None, and 8 N/A. The original
+73 Exact, 84 Partial, 117 None, and 8 N/A. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
@@ -1074,3 +1079,23 @@ and the infinite q-binomial theorem. `QPascalSummation.lean` has four theorems,
 recurrences, and generating function. Together they contribute 69 public
 declarations without weakening the strict-contraction or noncommutative
 hypotheses recorded in their source modules.
+
+The next six-module inventory adds `QMultinomial.lean` (one definition, seven
+theorems), `QPochhammerInfiniteBounds.lean` (five theorems),
+`QPochhammerComplexOrder.lean` (one definition, four theorems),
+`BasicHypergeometricSeries.lean` (two definitions, five theorems),
+`HeineTransformation.lean` (two definitions, five theorems), and
+`QGaussSummation.lean` (two theorems). Together these 34 declarations cover
+q-multinomial algebra, quantitative infinite-product bounds, principal-branch
+complex order, basic-hypergeometric convergence, Heine transformation, and the
+q-Gauss specialization, with each analytic-continuation boundary retained at
+its audited status.
+
+The newest four-module inventory adds `GaussianBinomialPalindromic.lean`
+(12 theorems), `JacksonIntegral.lean` (one definition, seven theorems),
+`QExponential.lean` (three definitions, eight theorems), and
+`ThetaQuasiPeriodicity.lean` (one definition, six theorems). The resulting
+status changes make the q-exponential eigenfunction and Jackson
+integration-by-parts subclaims Exact; q-exponential factorization, the Jackson
+fundamental theorem, and theta quasi-periodicity remain Partial at the
+unformalized clauses stated in their rows.

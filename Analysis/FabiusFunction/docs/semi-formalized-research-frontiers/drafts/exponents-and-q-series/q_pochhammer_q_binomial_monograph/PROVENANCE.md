@@ -35,9 +35,9 @@ It was built from the then-current 14,158-line, 661,835-byte source with
 SHA-256
 `79ee5e60a6c7e42a91c58dcd9bcae56173cc6b4aa3e54739a461943f705f3904`;
 exactly three guarded serial passes produced 338, 348, and 348 pages. The live
-source now postdates that receipt: it has 14,287 lines, 669,121 bytes, and
+source now postdates that receipt: it has 14,298 lines, 669,990 bytes, and
 SHA-256
-`c1c9466bf2d166b47e7020033743e28ae39b610f8339b8f3d378ce3a2e1918d6`.
+`3cb7365875c11c05c5e4991a3ba88cd08c33ed8a049313e39b7b5f9aa3c10885`.
 The retained PDF therefore does not claim render parity with the current TeX.
 The validation record in `README.md` distinguishes compilation, font
 embedding, complete page rendering, contact-sheet review, and full-resolution
@@ -67,8 +67,8 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-forward status inventory covers 282 labelled results: 71 Exact / 84 Partial /
-119 None / 8 N/A; the 191-result pre-Fabius core remains 36 / 29 / 123 / 3.
+forward status inventory covers 282 labelled results: 73 Exact / 84 Partial /
+117 None / 8 N/A; the 191-result pre-Fabius core remains 36 / 29 / 123 / 3.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit
 `47172bc03ec078961d8b023dfe156ecd712efb65`. Its pre-repair source SHA-256 was
