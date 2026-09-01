@@ -96,18 +96,20 @@ It checks every permanent package file except the self-referential root
 useful because it preserves the migrated experiment and research-figure
 boundary.
 
-The canonical publication artifact is `q_pochhammer_q_binomial_monograph.pdf`.
-It was built from `q_pochhammer_q_binomial_monograph.tex` by three consecutive serial
-`pdflatex -interaction=nonstopmode -halt-on-error` passes with
-`SOURCE_DATE_EPOCH=1788242400`; all three passes produced the same bytes. The
-result is a 334-page A4 PDF of 2,917,795 bytes with SHA-256
-`aa75c32926fb0d5b20d831f9df0be584073f1cbc4232c25facbd21d98b9f680d`.
-The final log has no layout, reference, rerun, font, package, or PDF-string
-warning. `pdffonts` reports every font embedded and subsetted, including the
-Libertinus serif and monospaced faces. Poppler rendered all 334 pages at
-827-by-1170 pixels. Every page was covered by the complete contact-sheet
-review; the six pages changed during the final typography repair were also
-inspected at full resolution, while the remaining 328 renders were
-byte-identical to their already reviewed versions. The files under
+The canonical publication pair is the live source
+`q_pochhammer_q_binomial_monograph.tex` (13,690 lines, 628,147 bytes, SHA-256
+`da420f5b2622cd088af43cea0ac448105c9f6af65cf1734de6535e3427f8e052`)
+and `q_pochhammer_q_binomial_monograph.pdf` (340 A4 pages, 2,180,191 bytes,
+SHA-256
+`e64a4ef65a9fcce3a4f211f2125b0f8440910cf4527635f76975b0967800e667`).
+The final source was built by exactly three guarded, serial
+`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 331,
+340, and 340 pages. The inputs were unchanged before and after each pass, and
+no TeX, Lean, or Lake work interleaved with them. The final log scan found zero
+overfull boxes. All 340 pages are text-bearing, and all 1,700
+MediaBox/CropBox/BleedBox/TrimBox/ArtBox values match A4 exactly. `pdffonts`
+reports 42 of 42 Type-1 font rows embedded and subsetted, including five
+Libertinus rows, with no Type-3 font. Fresh full-page visual inspection of
+physical pages 1, 247, 313, 314, 319, 338, and 340 was clean. The files under
 `assets/experiments/**/figures/` remain research figures, not publication
 manuscripts.
