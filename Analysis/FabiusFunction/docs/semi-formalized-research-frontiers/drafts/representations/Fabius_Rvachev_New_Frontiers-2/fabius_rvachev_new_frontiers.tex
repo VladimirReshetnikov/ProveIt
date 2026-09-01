@@ -171,9 +171,13 @@ Finally, the repository's exact Legendre coefficients give a finite
 Legendre--Gaunt Gram matrix whose determinants recover the $\beta_n$; this
 closes a new exact circuit from dyadic Fabius values through Wigner $3j$
 coefficients to $\pi$ and back to $\RvachevUp$ in a single exact circuit.
-The current Lean development closes the finite Gaunt-integral and product-linearization
-portion of this circuit, but not the Wigner identification or the later
-Christoffel and limiting steps.
+The current Lean development closes the finite Gaunt-integral and
+product-linearization portion of this circuit and, by defining the total rational
+integer-index zero-row square datum directly, proves its central-binomial and
+factorial forms, the identity \(\Gamma_{jk\ell}=2W^2_{jk\ell}\), sharp support and
+positivity, and the finite rational and real Wigner-square Gram sums.  It does not
+construct a signed Wigner symbol or phase convention, and the later Christoffel and
+limiting steps remain open.
 
 A fully commented Python program in the archive computes exact initial data and
 4,800-digit data through $\beta_{200}$.  It finds strict increase toward
@@ -200,8 +204,13 @@ matching report-level result for the log-concavity of $\RvachevUp$, the rational
 Christoffel limits and alternating Jacobi product for $\pi$, or the finite
 Gaunt/Wigner entry expansion.  The determinant change-of-basis, Jacobi
 cross-ratio, finite Gaunt integral and product linearization, and equivalent
-rational/real Rvachev Gram-entry sums are now formalized downstream; the
-Wigner/$3j$ identification and its factorial closed form are not.  ``New''
+rational/real Rvachev Gram-entry sums are now formalized downstream.  The later
+\path{LegendreGauntClosedForm.lean} and
+\path{FabiusLegendreGauntClosedForm.lean} leaves additionally formalize the
+integer-index zero-row square datum, its factorial form, the all-degree
+Gaunt--square identity, sharp support and positivity, and the finite
+Wigner-square Gram sums.  They do not define a signed/general Wigner symbol.
+``New''
 therefore applies only to the
 non-overlapping claims relative to this repository snapshot, not to the whole
 package and not as a claim of worldwide priority.  Every imported fact, new
@@ -343,8 +352,11 @@ Legendre Gram determinant, executable rational data, and Jacobi cross-ratio
 Finite Gaunt integral, product linearization, and rational/real up-Gram entry sums
  & Exact Lean counterpart & \path{LegendreGaunt.lean};
    \path{FabiusLegendreGaunt.lean} \\
-Wigner/$3j$ identification and factorial entry formula
- & Classical report-level formula & Not represented in the current Lean API \\
+Integer-index zero-row square datum, factorial form, and finite Wigner-square matrix
+ & Exact Lean counterpart & \path{LegendreGauntClosedForm.lean};
+   \path{FabiusLegendreGauntClosedForm.lean} \\
+Signed/general Wigner symbols, phase, and recoupling
+ & Open interface & No independent Wigner-symbol object in the current Lean API \\
 Monotone $\beta_n$, precise log-square rate
  & Conjectural & Exact checks and 4,800-digit computation through $n=200$ \\
 \bottomrule
@@ -674,8 +686,8 @@ $\pi_n$ by induction.
 \end{proof}
 
 \begin{remark}[Current Lean boundary and complete declaration inventory]
-The nine modules inventoried in this remark expose exactly 99 public names:
-18 definitions and 81 theorems.  Each name appears once in the inventory below.
+The eleven modules inventoried in this remark expose exactly 129 public names:
+20 definitions and 109 theorems.  Each name appears once in the inventory below.
 The scalar-base-change module \path{GramStieltjesNaturality.lean} contains zero
 public definitions and exactly six public theorems:
 \path{momentPairing_map}, \path{map_gramStieltjesNumerator},
@@ -831,8 +843,56 @@ rational matrix-entry sum are unconditional.  Its coefficient cast and real up-G
 finite even Gaunt sum require a \path{BoundedFabius} witness \(F\) together with
 \path{IsFabius} \(F\).  The proof uses finite product linearization and a finite sum, not
 an interchange of the infinite Legendre series with integration.  This closes the finite
-Rvachev Gram-entry expansion, but not the Wigner identification/factorial formula,
-Christoffel reconstruction, or named values for the displayed \(G_3\) entries.
+Rvachev Gram-entry expansion.  This predecessor module itself does not prove the
+Wigner-square identification or factorial formula; the two downstream leaves
+inventoried next do.  Christoffel reconstruction and named values for the displayed
+\(G_3\) entries remain outside it.
+
+\path{LegendreGauntClosedForm.lean} has exactly two public definitions,
+\path{legendreGauntAdmissible} and
+\path{legendreWignerThreeJZeroSqRat}, and exactly twenty-five public theorems:
+\path{legendreGauntAdmissible_iff_exists_pairwise_add},
+\path{legendreGauntAdmissible_pairwise_add},
+\path{legendreWignerThreeJZeroSqRat_pairwise_add},
+\path{legendreWignerThreeJZeroSqRat_pairwise_add_factorial},
+\path{legendreWignerThreeJZeroSqRat_eq_factorial_of_halfSum},
+\path{legendreWignerThreeJZeroSqRat_eq_zero_of_not_admissible},
+\path{legendreGauntRat_add_boundary},
+\path{legendreGauntRat_add_boundary_eq_two_mul_wignerThreeJZeroSqRat},
+\path{legendreGauntRat_zero_left},
+\path{legendreGauntRat_zero_left_eq_two_mul_wignerThreeJZeroSqRat},
+\path{legendreGauntRat_pairwise_add_eq_two_mul_wignerThreeJZeroSqRat},
+\path{legendreGauntRat_eq_zero_of_not_admissible},
+\path{legendreGauntRat_eq_two_mul_wignerThreeJZeroSqRat},
+\path{legendreGaunt_eq_two_mul_wignerThreeJZeroSqRat},
+\path{legendreWignerThreeJZeroSqRat_pos_iff_admissible},
+\path{legendreWignerThreeJZeroSqRat_nonneg},
+\path{legendreWignerThreeJZeroSqRat_eq_zero_iff_not_admissible},
+\path{legendreGauntRat_pos_iff_admissible},
+\path{legendreGauntRat_eq_zero_iff_not_admissible},
+\path{legendreGaunt_pos_iff_admissible},
+\path{legendreGaunt_eq_zero_iff_not_admissible},
+\path{legendreGauntRat_nonneg}, \path{legendreGaunt_nonneg},
+\path{legendreProductLinearizationCoeffRat_eq_mul_wignerThreeJZeroSqRat}, and
+\path{legendreProductLinearizationCoeffRat_pos_iff_admissible}.
+The first definition is precisely parity plus the three weak triangle
+inequalities.  The second is a total rational integer-index zero-row square datum:
+it is the central-binomial quotient on that support and zero off it.  The theorems
+prove its factorial form, the unconditional rational and real identities
+\(\Gamma_{jk\ell}=2W^2_{jk\ell}\), sharp support, vanishing, positivity and
+nonnegativity, and the product coefficient identity
+\(L_{jk\ell}=(2\ell+1)W^2_{jk\ell}\).
+
+\path{FabiusLegendreGauntClosedForm.lean} has zero public definitions and exactly
+three public theorems:
+\path{rvachevLegendreGramEntryRat_eq_two_mul_sum_wignerThreeJZeroSqRat},
+\path{rvachevLegendreGramMatrixRat_apply_eq_two_mul_sum_wignerThreeJZeroSqRat}, and
+\path{upLegendreGramMatrix_apply_eq_two_mul_sum_wignerThreeJZeroSqRat}.
+The rational entry and rational matrix identities are unconditional.  The real
+up-Gram identity requires \path{BoundedFabius} and \path{IsFabius}; all three are
+finite sums.  This is a square-datum API only: it introduces no signed symbol,
+Condon--Shortley phase, half-integer or nonzero-magnetic-index object, general
+Wigner orthogonality, or recoupling theory.
 
 \path{FabiusLegendreRationalGramValues.lean} adds no definitions and exactly eleven
 public theorems:
@@ -847,8 +907,10 @@ public theorems:
 \path{hankelRatio_four},
 \path{integral_sq_upOrthoPolynomial_four}, and
 \path{hankelRatio_four_div_three}.
-Thus this focused determinant/rational-Legendre and Gaunt inventory contains
-the preceding 65 declarations plus these eleven, for 76 in all.  The first
+Excluding the two later closed-form leaves, the predecessor focused
+determinant/rational-Legendre and Gaunt inventory contained the preceding 65
+declarations plus these eleven, for 76 in all.  The two leaves add 30, so the
+current focused subtotal is 106.  The first
 theorem computes the raw eighth moment \(132809/32531625\).  The next five
 compute the order-one through order-five rational Legendre Gram determinants as
 \[
@@ -870,9 +932,9 @@ Hankel ratio, its squared monic-orthogonal-polynomial integral against
 ratios with those exact values.  These are exact low-order certificates, not a
 general native evaluator.
 
-Together with the four finite-algebra modules above, the five downstream modules bring
-the complete nine-module inventory to eighteen definitions and eighty-one theorems,
-ninety-nine public declarations.  More explicitly, the value module proves
+Together with the four finite-algebra modules above, the seven downstream modules bring
+the complete eleven-module inventory to twenty definitions and one hundred nine
+theorems, 129 public declarations.  More explicitly, the value module proves
 unconditionally that
 \path{moment_four} is \(132809/32531625\), together with
 \[
@@ -889,10 +951,13 @@ Exactly its three real/integral consequences require a
 This closure now formalizes the rational Gaunt triple sum, its real integral cast,
 the exact finite Legendre product linearizations, and both full and even finite rational
 Rvachev Gram-entry sums, together with the real even sum under
-\path{BoundedFabius} and \path{IsFabius}.  It does \emph{not} formalize the
-Wigner/\(3j\)-symbol equalities and factorial formula recorded in
-\cref{eq:gaunt-wigner,eq:finite-wigner-matrix,eq:wigner-factorial}, nor an
-infinite-series/integral interchange.  No named theorem evaluates the displayed
+\path{BoundedFabius} and \path{IsFabius}.  The total integer-index zero-row square
+datum interprets the squared notation in
+\cref{eq:gaunt-wigner,eq:finite-wigner-matrix,eq:wigner-factorial}; those identities,
+the factorial form, sharp support, positivity, and finite Wigner-square matrix are
+Lean-exact.  No signed Wigner symbol or phase convention is defined, and there is no
+half-integer, nonzero-magnetic-index, general recoupling, or infinite-series/integral
+interchange theorem.  No named theorem evaluates the displayed
 \(G_3\) entries.  Christoffel reconstruction, roots and quadrature, and the infinite
 continued-fraction or asymptotic Jacobi layers also remain open.
 Finally, the existing \path{rvachevTranslateGram} is a different object: it pairs
@@ -1726,17 +1791,18 @@ Write the Gaunt integral as the separate quantity
  {}.
  \label{eq:gaunt-integral}
 \end{equation}
-The current Lean theorem identifies this integral with an executable rational triple
-coefficient sum.  It also proves that odd $j+k+\ell$ or violation of any strict triangle
-inequality forces $\Gamma_{jk\ell}=0$; these are necessary support conditions, not a
-converse or nonvanishing theorem.  The classical Wigner identification used by the report
-is the further equality
+Lean identifies this integral with an executable rational triple coefficient sum.
+It defines \(W^2_{jk\ell}\) to be the total rational integer-index zero-row square
+datum: the central-binomial quotient on the even weak-triangle support and zero
+off it.  This is not a signed Wigner symbol and makes no phase choice.  With that
+precise interpretation, Lean proves the all-degree identity
 \begin{equation}
  \Gamma_{jk\ell}
  =2\begin{pmatrix}j&k&\ell\\0&0&0\end{pmatrix}^{\!2}.
  \label{eq:gaunt-wigner}
 \end{equation}
-This second equation remains outside Lean.
+as well as \(\Gamma_{jk\ell}>0\) exactly on the admissible support and zero
+exactly off it.
 
 \begin{theorem}[Finite rational Gaunt matrix]
 \label{thm:finite-gaunt-matrix}
@@ -1772,7 +1838,7 @@ Finally, both $c_r$ and $\Gamma_{jk,2r}$ are rational, so the finite sum is rati
 \end{proof}
 \end{theorem}
 
-The equivalent Wigner form used in the paper is the following classical consequence:
+Substitution of the proved square identity gives the following Lean-exact finite form:
 \begin{equation}
  \boxed{
  (G_N)_{jk}=
@@ -1780,8 +1846,9 @@ The equivalent Wigner form used in the paper is the following classical conseque
  \begin{pmatrix}j&k&2r\\0&0&0\end{pmatrix}^{\!2}.}
  \label{eq:finite-wigner-matrix}
 \end{equation}
-Its equality with \cref{eq:finite-gaunt-matrix} still depends on the open Lean
-identity in \cref{eq:gaunt-wigner}.
+Here the squared matrix notation denotes the directly defined
+\path{legendreWignerThreeJZeroSqRat}; it does not assert the existence of a
+signed/general Wigner-symbol object.
 
 For completeness, if $j+k+\ell=2s$ with $s\ge j$, $s\ge k$, and $s\ge\ell$
 (equivalently, all three weak triangle inequalities hold), the squared symbol is
@@ -1791,8 +1858,11 @@ For completeness, if $j+k+\ell=2s$ with $s\ge j$, $s\ge k$, and $s\ge\ell$
   \frac{(2s-2j)!(2s-2k)!(2s-2\ell)!}{(2s+1)!};
  \label{eq:wigner-factorial}
 \end{equation}
-otherwise it is zero.  \Cref{eq:wigner-factorial} makes the
-rationality in \cref{eq:finite-wigner-matrix} completely explicit.
+otherwise it is zero.  The theorem
+\path{legendreWignerThreeJZeroSqRat_eq_factorial_of_halfSum} proves this formula,
+and the pairwise-add version proves the equivalent central-binomial form.  Thus
+\cref{eq:wigner-factorial} makes the rationality in
+\cref{eq:finite-wigner-matrix} completely explicit inside Lean.
 
 \subsection{Determinants recover the native recurrence}
 The leading coefficient of $P_n$ is
@@ -1842,8 +1912,11 @@ for the conventional coefficient $\beta_{k+1}$; replacing $k$ by $n-1$ gives
 exactly \eqref{eq:beta-gaunt-determinants}.  Their proof is the displayed
 $G=C^{\mathsf T}HC$ determinant argument and does not depend on the separately
 formalized finite Gaunt entry expansion.  The latter is supplied by
-\path{LegendreGaunt.lean} and \path{FabiusLegendreGaunt.lean}; only its
-Wigner/\(3j\) identification and factorial closed form remain outside Lean.
+\path{LegendreGaunt.lean} and \path{FabiusLegendreGaunt.lean}; the subsequent
+\path{LegendreGauntClosedForm.lean} and
+\path{FabiusLegendreGauntClosedForm.lean} identify the total integer-index
+zero-row square datum, prove its factorial form, and substitute it into the
+finite matrix.
 The determinant identity, $D_0=1$, the
 leading-coefficient quotient, and the real Gram cross-ratio hold for every
 \path{BoundedFabius}; entry-as-integral, strict positivity, and the rational-cast
@@ -1875,10 +1948,19 @@ full/even entry and matrix forms, while
 \path{IsFabius}.  This is a finite polynomial argument, not an interchange of
 \eqref{eq:up-legendre-series} with integration.
 
-Thus the integral Gaunt form and finite Rvachev Gram-entry expansion are Lean-exact.
-The Wigner identities in \cref{eq:gaunt-wigner,eq:finite-wigner-matrix} and factorial
-formula \eqref{eq:wigner-factorial} remain open, as do Wigner-based nonnegativity and
-any converse to the proved parity/triangle vanishing conditions.  The displayed
+The unconditional theorems
+\path{legendreGauntRat_eq_two_mul_wignerThreeJZeroSqRat} and
+\path{legendreGaunt_eq_two_mul_wignerThreeJZeroSqRat} prove
+\eqref{eq:gaunt-wigner};
+\path{legendreWignerThreeJZeroSqRat_eq_factorial_of_halfSum} proves
+\eqref{eq:wigner-factorial}; and the three theorems in
+\path{FabiusLegendreGauntClosedForm.lean} prove the rational entry, rational
+matrix, and real matrix versions of \eqref{eq:finite-wigner-matrix}.  The sharp
+support, zero, positivity, and nonnegativity theorems make the converse support
+statement exact.  Here ``Wigner'' always refers to the directly defined squared
+integer-index zero-row datum.  A signed symbol, phase convention, half-integer or
+nonzero-magnetic-index theory, and general Wigner orthogonality or recoupling remain
+open.  The displayed
 entries of \(G_3\) in \eqref{eq:first-gaunt-matrix} have no named Lean value theorems.
 \end{remark}
 
@@ -2501,8 +2583,11 @@ specializations catalogued there now formalize
 \cref{eq:legendre-hankel,eq:beta-gaunt-determinants}.  The executable rational
 Gaunt tranche now also formalizes \eqref{eq:gaunt-integral}, exact finite product
 linearization over rational and real scalars, the parity and strict-triangle vanishing
-conditions, and the rational and real forms of \eqref{eq:finite-gaunt-matrix}; it does
-not formalize the Wigner forms.  The executable rational Legendre coefficient and
+conditions, and the rational and real forms of \eqref{eq:finite-gaunt-matrix}.
+The closed-form tranche additionally formalizes the square-datum interpretation of
+\cref{eq:gaunt-wigner,eq:finite-wigner-matrix,eq:wigner-factorial}, sharp support,
+and positivity.  It does not define a signed/general Wigner symbol.  The executable
+rational Legendre coefficient and
 Gram tranche now also closes direct moment-sum entry rationality and supplies finite
 evaluators for the Gram matrix, its positive determinant, and the resulting genuine
 norm/Jacobi ratios.  The subsequent low-order values module now supplies named exact
@@ -2527,10 +2612,11 @@ The remaining formalization sequence is:
       Formalize the remaining
       \cref{eq:inverse-hankel-christoffel,eq:monic-center-product,%
 eq:orthonormal-center-product,eq:harmonic-mean}.  These need only finite
-      linear algebra and the existing positivity and rational-native APIs.  Separately,
-      formalize the Wigner identities in
-      \cref{eq:gaunt-wigner,eq:finite-wigner-matrix,eq:wigner-factorial}; the
-      Gaunt-integral forms no longer belong on the open list.
+      linear algebra and the existing positivity and rational-native APIs.  The
+      integer-index zero-row square identities in
+      \cref{eq:gaunt-wigner,eq:finite-wigner-matrix,eq:wigner-factorial} are now
+      exact; a future general Wigner layer would instead need signed symbols,
+      phase conventions, magnetic indices, orthogonality, and recoupling.
 \item \textbf{Quadrature and rational approximation:} define second-kind
       polynomials, prove \cref{eq:pade-exact-error}, and derive the Gaussian
       weights and exactness theorem.
@@ -2545,8 +2631,8 @@ eq:orthonormal-center-product,eq:harmonic-mean}.  These need only finite
 \item \textbf{Frontier rates:} only after the endpoint periodic normal form is
       proved should one attempt the conjectural $n^{-2}\log^2n$ correction.
 \end{enumerate}
-The remaining Wigner/\(3j\) equality and Christoffel identities should not be
-blocked on the much larger infinite or asymptotic OPRL formalization.  In
+The remaining signed/general Wigner interface and Christoffel identities should not
+be blocked on the much larger infinite or asymptotic OPRL formalization.  In
 particular, the harmonic-mean theorem is already a useful exact target even if
 convergence to $\pi$ remains an imported classical corollary initially.
 
@@ -2554,6 +2640,14 @@ convergence to $\pi$ remains an imported classical corollary initially.
 The pinned audit and novelty boxes above remain historical statements about their
 declared repository snapshot.  This crosswalk updates current Lean status without
 retroactively altering those snapshot claims.
+\end{remark}
+
+\begin{remark}[Source and retained artifact]
+Source status, 2026-08-31: this source now documents
+\path{LegendreGauntClosedForm.lean} (two definitions and twenty-five theorems)
+and \path{FabiusLegendreGauntClosedForm.lean} (three theorems).  The retained
+41-page PDF predates this thirty-declaration addition and is not synchronized
+with the current source; rebuilding that artifact remains pending.
 \end{remark}
 
 \section{Conclusion}

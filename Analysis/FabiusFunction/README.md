@@ -78,14 +78,17 @@ in it must have a proved counterpart in the Lean development.
 
 > **Artifact status (2026-09-01).**  The retained primary exposition and Lean
 > walkthrough PDFs are the last validated 166- and 126-page A4 renders; they
-> include the prime-power valuation and closed-form Gaunt crosswalks.  Their
-> TeX sources now additionally document the reflected Appell/deconvolution
-> tranche, so both PDFs are historical until the post-merge three-pass rebuild.
-> The 236-page canonical-frontier PDF is likewise older than its current source.
-> The filed New Frontiers PDF remains synchronized at 41 A4 pages.  Every font
-> in these four retained artifacts is embedded and subset, with no Type 3 font.
-> Other frontier documents awaiting a matching render carry package-local
-> pending notices.
+> include the prime-power valuation and exhaustive 30-declaration closed-form
+> Gaunt crosswalks.  Their merged TeX sources now also contain the reflected
+> Appell/deconvolution results and expanded formula-and-proof commentary, so
+> both PDFs are historical pending a post-merge three-pass rebuild.  The
+> retained 236-page canonical-frontier, 301-page Representation Frontiers,
+> 41-page filed New Frontiers, and 71-page notation-catalogue PDFs likewise
+> predate their current sources.  In particular, the filed package's mixed
+> 20-row ledger verifies its current source and retained PDF as separate
+> payloads; it does not establish source/PDF parity.  The upstream canonical
+> q-series synthesis and rebuilt Integration-and-Transform master remain
+> synchronized.  Package-local notices record the remaining rebuild debt.
 
 The formally proved small-argument hierarchy—including the corrected sharp
 asymptotic, the general coefficient algebra for the recursive all-orders
@@ -204,6 +207,23 @@ LAKE_JOBS=1 lake build +FabiusFunction
 Use `import FabiusFunction` when downstream code needs the entire development.
 For a smaller dependency footprint, the following imports are useful entry
 points:
+
+The current New Frontiers finite Gram--Legendre crosswalk has eleven modules,
+twenty public definitions, and 109 public theorems, hence 129 declarations.
+Its former nine-module `18+81=99` subtotal is extended by
+`LegendreGauntClosedForm` (`2+25`) and `FabiusLegendreGauntClosedForm` (`0+3`).
+Thus the integer-index zero-row square datum and finite Wigner-square Gram route
+are closed; only signed/general Wigner and the later infinite spectral layers
+remain outside this tranche.
+
+Precisely, the directly defined square datum is not a bridge to a separately
+implemented general Wigner symbol.  There is no signed value or phase
+convention, half-integer or nonzero-magnetic-index API, general
+`3j`/`6j`/`9j`, orthogonality, recoupling, or named Wigner-symmetry theorem.
+The Gaunt factorial form and product-coefficient nonnegativity/zero criteria are
+available by composing the listed results but have no separate named wrappers.
+Infinite Legendre interchange, Christoffel reconstruction, roots/quadrature,
+Padé/J-fractions, infinite Jacobi theory, and asymptotics also remain open.
 
 | Purpose | Focused import | Good starting declarations |
 | --- | --- | --- |

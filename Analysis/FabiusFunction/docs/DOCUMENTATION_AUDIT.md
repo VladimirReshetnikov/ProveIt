@@ -163,21 +163,86 @@ nonzero-magnetic-index, or general Wigner recoupling claim.  The baseline
 also includes the three finite rational-entry, rational-matrix, and real-matrix
 Wigner-square sum corollaries in `FabiusLegendreGauntClosedForm.lean`.  These
 two new leaves therefore contribute thirty declarations in total.  The
-baseline records zero missing headers and zero missing doc comments, so every
+two definitions are `legendreGauntAdmissible` and
+`legendreWignerThreeJZeroSqRat`.  In source order, the twenty-five core theorem
+names are `legendreGauntAdmissible_iff_exists_pairwise_add`,
+`legendreGauntAdmissible_pairwise_add`,
+`legendreWignerThreeJZeroSqRat_pairwise_add`,
+`legendreWignerThreeJZeroSqRat_pairwise_add_factorial`,
+`legendreWignerThreeJZeroSqRat_eq_factorial_of_halfSum`,
+`legendreWignerThreeJZeroSqRat_eq_zero_of_not_admissible`,
+`legendreGauntRat_add_boundary`,
+`legendreGauntRat_add_boundary_eq_two_mul_wignerThreeJZeroSqRat`,
+`legendreGauntRat_zero_left`,
+`legendreGauntRat_zero_left_eq_two_mul_wignerThreeJZeroSqRat`,
+`legendreGauntRat_pairwise_add_eq_two_mul_wignerThreeJZeroSqRat`,
+`legendreGauntRat_eq_zero_of_not_admissible`,
+`legendreGauntRat_eq_two_mul_wignerThreeJZeroSqRat`,
+`legendreGaunt_eq_two_mul_wignerThreeJZeroSqRat`,
+`legendreWignerThreeJZeroSqRat_pos_iff_admissible`,
+`legendreWignerThreeJZeroSqRat_nonneg`,
+`legendreWignerThreeJZeroSqRat_eq_zero_iff_not_admissible`,
+`legendreGauntRat_pos_iff_admissible`,
+`legendreGauntRat_eq_zero_iff_not_admissible`,
+`legendreGaunt_pos_iff_admissible`,
+`legendreGaunt_eq_zero_iff_not_admissible`, `legendreGauntRat_nonneg`,
+`legendreGaunt_nonneg`,
+`legendreProductLinearizationCoeffRat_eq_mul_wignerThreeJZeroSqRat`, and
+`legendreProductLinearizationCoeffRat_pos_iff_admissible`.  The three wrapper
+names are `rvachevLegendreGramEntryRat_eq_two_mul_sum_wignerThreeJZeroSqRat`,
+`rvachevLegendreGramMatrixRat_apply_eq_two_mul_sum_wignerThreeJZeroSqRat`, and
+`upLegendreGramMatrix_apply_eq_two_mul_sum_wignerThreeJZeroSqRat`.
+
+The audited formula contract is equally exact.  Admissibility is even total
+degree plus the three weak triangle inequalities, equivalently
+`i=b+c`, `j=a+c`, `k=a+b`.  If `C_n=choose (2*n) n` and `s=a+b+c`, then the
+square datum is zero off support and
+`W²(b+c,a+c,a+b)=C_a*C_b*C_c/((2*s+1)*C_s)`; factorially this is
+`s!^2*(2*a)!*(2*b)!*(2*c)!/((2*s+1)!*a!^2*b!^2*c!^2)`.  The half-sum theorem
+assumes exactly `i+j+k=2*s` and `i≤s`, `j≤s`, `k≤s`.  The two named boundaries
+are `G_Q(i,j,i+j)=2*C_i*C_j/((2*(i+j)+1)*C_(i+j))=2*W²(i,j,i+j)` and
+`G_Q(0,j,k)=(if j=k then 2/(2*j+1) else 0)=2*W²(0,j,k)`.  At every natural
+triple `G_Q=2*W²`, its real counterpart is twice the real cast, positivity is
+equivalent to admissibility, vanishing is equivalent to nonadmissibility, and
+all three forms are nonnegative.  The rational product coefficient is
+`(2*k+1)*W²` and is positive exactly on support.  Both rational finite-Gram
+wrappers are the unconditional twice-sum
+`2*∑ r∈range ((i+j)/2+1), c_r*W²(i,j,2*r)`; the real wrapper has the same finite
+form and assumes exactly `F : BoundedFabius` and `hF : IsFabius F`.
+
+This square datum is not a bridge to a separately implemented general Wigner
+symbol.  No signed value or phase convention, half-integer or
+nonzero-magnetic-index API, general `3j`/`6j`/`9j`, orthogonality, recoupling,
+or named Wigner-symmetry theorem is present.  The Gaunt factorial identity and
+product-coefficient nonnegativity/zero criteria are composable but do not have
+separate named wrappers.  Infinite Legendre interchange, Christoffel
+reconstruction, roots/quadrature, Padé/J-fractions, infinite Jacobi theory, and
+asymptotics remain open.
+
+The New Frontiers finite Gram--Legendre crosswalk consequently has eleven modules,
+twenty definitions, and 109 theorems, hence 129 public declarations; its
+predecessor nine-module subtotal was `18+81=99`, and the two closed-form leaves
+contribute `2+25` and `0+3`.  The integer-index zero-row square datum and finite
+Wigner-square Gram route are closed, while signed/phase, half-integer,
+nonzero-magnetic-index, general Wigner/recoupling, and later infinite spectral
+layers remain outside this tranche.  The baseline records zero missing headers
+and zero missing doc comments, so every
 future source addition must preserve the full invariant
 rather than merely avoid worsening a historical backlog.  Run the script for
 live numbers after merging concurrent source work.
 
 The retained primary exposition and Lean walkthrough PDFs are the last
 validated 166- and 126-page A4 renders and include the prime-power valuation
-and closed-form Gaunt crosswalks.  Their current TeX sources additionally
-document the reflected Appell/deconvolution tranche, so both PDFs await a
-post-merge three-pass rebuild.  The 236-page canonical-frontier PDF is likewise
-older than its current source.  The filed New Frontiers PDF remains synchronized
-at 41 A4 pages and its 20-entry ledger verifies 20/20.  All fonts in these four
-retained artifacts are embedded and subset and no Type 3 font remains.
-Frontier packages with source newer than their retained PDF carry an explicit
-local pending-build disclosure rather than relying on this global audit note.
+and exhaustive 30-declaration closed-form Gaunt crosswalks.  Their merged TeX
+sources now also contain the reflected Appell/deconvolution results and
+expanded formula-and-proof commentary, so both PDFs await a post-merge
+three-pass rebuild.  The retained 236-page canonical-frontier, 301-page
+Representation Frontiers, 41-page filed New Frontiers, and 71-page notation-
+catalogue PDFs likewise predate their current sources.  The filed package's
+mixed 20-row ledger verifies its current source and retained PDF as separate
+payloads and does not establish parity.  By contrast, the upstream canonical
+q-series synthesis and rebuilt Integration-and-Transform master remain
+synchronized.  Package-local notices record the remaining rebuild debt.
 
 ### What the review pass caught
 

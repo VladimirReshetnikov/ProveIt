@@ -155,6 +155,17 @@ Parts II--V rendered with colliding appendix letters), restored the
 members' full part titles, and deduplicated colliding macro
 definitions; all edits are marked \verb|% ed.:| in the source.
 
+\begin{center}
+\fbox{\begin{minipage}{0.92\textwidth}\small
+\textbf{Current source and retained PDF.}
+This source contains the 31 August 2026 Legendre Gaunt--Wigner-square
+closed-form overlay in Part~I.  The retained 301-page A4 PDF, SHA-256
+\path{1f18c8be00bf79fcf79138cfcb0d7a0e83750710098eb674c751ff2401d3d6d3},
+was not rebuilt for that source-only update.  It remains a historical render
+and does not display the current overlay.
+\end{minipage}}
+\end{center}
+
 \clearpage
 \part{Resolvent, Continued-Fraction, and Transform Representations of the Fabius--Rvachev System}
 % Absorbed from Fabius_Rvachev_Representation_Frontiers/rvachev_fabius_representation_frontiers.tex
@@ -1592,9 +1603,63 @@ analytic input.  Each of the three real/integral transports requires an input
 an input \(F\) of type \path{BoundedFabius} together with a certificate
 \(h_F\) of type \path{IsFabius}; they identify the
 real fourth Hankel ratio, its squared orthogonal-polynomial integral, and its quotient
-by the third ratio.  This closes the displayed low-order values, not the finite
-Gaunt/Wigner/\(3j\) entry expansion, Christoffel reconstruction, root or quadrature
-theory, infinite Jacobi products/continued fractions, or asymptotics.
+by the third ratio.  This values leaf closes the displayed low-order values, not by
+itself the finite Gaunt/Wigner/\(3j\) entry expansion, Christoffel reconstruction,
+root or quadrature theory, infinite Jacobi products/continued fractions, or
+asymptotics.  The current-source overlay immediately below closes the finite
+zero-row-square part of the Gaunt/Wigner boundary.
+\end{remark}
+
+\begin{remark}[Current-source finite Gaunt--Wigner-square overlay]
+The exact Gaunt surface now consists of four modules.  The predecessor
+\path{LegendreGaunt.lean} and \path{FabiusLegendreGaunt.lean} modules expose,
+respectively, four definitions plus twelve theorems and one definition plus eight
+theorems.  The new \path{LegendreGauntClosedForm.lean} leaf exposes exactly two
+definitions plus twenty-five theorems, and
+\path{FabiusLegendreGauntClosedForm.lean} exposes zero definitions plus three
+theorems.  The overlay therefore has seven definitions and forty-eight theorems,
+fifty-five public declarations.
+
+The two new definitions are the parity-and-weak-triangle predicate
+\path{legendreGauntAdmissible} and the total rational integer-index zero-row square
+datum \path{legendreWignerThreeJZeroSqRat}.  Admissibility is equivalent to
+\(i=b+c\), \(j=a+c\), and \(k=a+b\).  For \(s=a+b+c\), the exact central-binomial
+formula is
+\[
+ W_{ijk}^{2}=
+ \frac{\binom{2a}{a}\binom{2b}{b}\binom{2c}{c}}
+      {(2s+1)\binom{2s}{s}},
+\]
+with equivalent factorial and half-sum forms.  The declarations
+\path{legendreGauntRat_eq_two_mul_wignerThreeJZeroSqRat} and
+\path{legendreGaunt_eq_two_mul_wignerThreeJZeroSqRat} give
+\[
+ G_{ijk}^{\RationalNumbers}=2W_{ijk}^{2},
+ \qquad
+ G_{ijk}^{\RealNumbers}=2(W_{ijk}^{2}:\RealNumbers).
+\]
+The square datum and both Gaunt coefficients are positive exactly on the
+admissible support and zero off it, and all are nonnegative.  The coefficient of
+\(P_k\) in \(P_iP_j\) is \((2k+1)W_{ijk}^{2}\).  This strengthens the predecessor's
+one-way parity and triangle vanishing statements to exact support characterizations.
+
+The three Fabius-specific declarations
+\path{rvachevLegendreGramEntryRat_eq_two_mul_sum_wignerThreeJZeroSqRat},
+\path{rvachevLegendreGramMatrixRat_apply_eq_two_mul_sum_wignerThreeJZeroSqRat}, and
+\path{upLegendreGramMatrix_apply_eq_two_mul_sum_wignerThreeJZeroSqRat}
+substitute that identity into the finite Gaunt sums.  Rationally and without analytic
+hypotheses,
+\[
+ H_{ij}^{\RationalNumbers}=2\sum_{r=0}^{\Floor{(i+j)/2}}c_rW_{ij,2r}^{2};
+\]
+the real up-law matrix version requires exactly an input of type
+\path{BoundedFabius} satisfying \path{IsFabius}.
+
+This is deliberately a square-level statement: it makes no signed-symbol or
+Condon--Shortley phase choice and proves no half-integer, nonzero-magnetic-index,
+general \(3j/6j/9j\), Wigner-orthogonality, recoupling, or infinite-series result.
+Accordingly, historical claims below that the finite Wigner identification was open
+describe their pinned predecessor snapshots; they do not describe the current source.
 \end{remark}
 
 \subsection{Exact coefficients and numerical evidence}
