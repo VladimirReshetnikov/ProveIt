@@ -109,10 +109,10 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The post-merge 2026-08-31 inventory contains 616 modules and 8,400 lexically
+The post-merge 2026-08-31 inventory contains 616 modules and 8,401 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  Relative to the 610/8,318 activation checkpoint, the current
-tree adds six modules and 82 declarations.  The initial exact union added five
+tree adds six modules and 83 declarations.  The initial exact union added five
 modules and 67 declarations.  The branch-point geometry and
 asymptotics leaves contribute 17 declarations for the one-sided vertical
 tangents and leading signed square-root laws of both real Lambert branches.
@@ -143,7 +143,11 @@ linear coefficient identity, exact finite interpolation loop, and unit row
 mass.  This inventory claim does not extend to a geometric Gaussian
 closed-form decoder, a matrix wrapper, or an optimal/minimum-variation decoder
 theorem.  The baseline records zero missing headers and zero missing doc
-comments, so every future source addition must preserve the full invariant
+comments.  The subsequent
+`integral_polynomial_mul_rvachevUp_eq_dyadic_tsum` theorem in
+`PolynomialCombExactness.lean` packages the polynomial-times-Rvachev integral
+as the corresponding dyadic shifted-polynomial sum, bringing the live total to
+8,401.  Every future source addition must preserve the full invariant
 rather than merely avoid worsening a historical backlog.  Run the script for
 live numbers after merging concurrent source work.
 
