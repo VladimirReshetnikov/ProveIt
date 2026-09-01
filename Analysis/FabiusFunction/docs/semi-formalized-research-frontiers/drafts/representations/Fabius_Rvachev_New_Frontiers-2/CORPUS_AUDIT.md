@@ -140,20 +140,36 @@ the generic moment-Gram and real Fabius--Legendre determinant layers:
   coefficient cast and real up-Gram finite even sum require `BoundedFabius` and
   `IsFabius`.  These are finite polynomial and finite-sum identities, not an
   infinite-series/integral interchange.
+- `LegendreGauntClosedForm.lean` contributes exactly two public definitions and
+  twenty-five public theorems.  `legendreGauntAdmissible` is the even
+  weak-triangle support and `legendreWignerThreeJZeroSqRat` is the total
+  rational integer-index zero-row square datum.  The theorems prove the
+  pairwise-add central-binomial and factorial forms, the half-sum factorial
+  form, the boundary and zero-index cases, the unconditional rational and real
+  identities `Gaunt = 2 * square`, sharp support, zero, positivity and
+  nonnegativity, and the product-linearization coefficient bridge.  The
+  square notation makes no signed-symbol or phase choice.
+- `FabiusLegendreGauntClosedForm.lean` contributes zero definitions and three
+  public theorems.  They substitute the square identity into the finite
+  rational entry, rational matrix, and real up-Gram sums.  The first two are
+  unconditional; the real theorem requires `BoundedFabius` and `IsFabius`.
 
 Thus executable rational coefficient, entry, matrix, determinant, cast,
 positivity, norm-ratio, and Jacobi-ratio layers now have exact Lean
 counterparts, and the displayed `H_4` and `beta_4` now have named exact values.
 The rational Gaunt triple sum, its real integral cast, rational/real product
-linearizations, and rational/real finite Rvachev Gram-entry expansions now have
-exact Lean counterparts as well.  The Wigner/`3j` identification and factorial
-formula, Wigner-based nonnegativity, converse support/nonvanishing, Christoffel
-reconstruction, named `G_3` entry values, roots, quadrature, infinite Jacobi
-products, and asymptotics remain paper-only.  The report keeps the original
-22-declaration coefficient/Gram inventory, the exhaustive eleven-theorem values
-inventory, and this 25-declaration Gaunt inventory separate.  The focused report
-crosswalk therefore grows from 51 to 76 names; the broader nine-module inventory
-has eighteen definitions and eighty-one theorems, ninety-nine declarations in all.
+linearizations, rational/real finite Rvachev Gram-entry expansions, total
+integer-index zero-row square datum, factorial form, sharp support and
+positivity, and finite Wigner-square matrix now have exact Lean counterparts.
+A signed symbol, phase convention, half-integer and nonzero-magnetic-index
+objects, general Wigner orthogonality/recoupling, Christoffel reconstruction,
+named `G_3` entry values, roots, quadrature, infinite Jacobi products, and
+asymptotics remain paper-only.  The report keeps the original 22-declaration
+coefficient/Gram inventory, the exhaustive eleven-theorem values inventory,
+the 25-declaration Gaunt inventory, and the 30-declaration closed-form/wrapper
+addition separate.  The broader eleven-module inventory has twenty definitions
+and one hundred nine theorems, 129 declarations in all.  The retained 41-page
+PDF is a verified historical 99-name artifact and predates this last addition.
 
 ## Status discipline
 

@@ -10,6 +10,28 @@ see its
 [LaTeX source](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex)
 or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf).
 
+> **Artifact status (2026-08-31).**  This crosswalk records all 30 declarations
+> in `LegendreGauntClosedForm.lean` and
+> `FabiusLegendreGauntClosedForm.lean`.  The primary exposition and Lean
+> walkthrough PDFs were rebuilt upstream at 166 and 126 A4 pages; both include
+> this closed-form Gaunt tranche and the prime-power-valuation crosswalk.  The
+> merged TeX sources add expanded formula-and-proof ledgers, so exact post-merge
+> source/PDF synchronization is not claimed.  The retained canonical frontier
+> (236 pages), Integration and Transform Frontiers (376), Representation
+> Frontiers (301), and filed New Frontiers (41) PDFs predate the tranche and
+> remain unsynchronized with their current sources; those four await content
+> rebuilds, while the primary and walkthrough await only parity rebuilds.
+
+The Wigner boundary in this crosswalk is literal: the directly defined
+integer-index zero-row square datum is not a bridge to a separately implemented
+general Wigner symbol.  There is no signed value or phase convention,
+half-integer or nonzero-magnetic-index API, general `3j`/`6j`/`9j`,
+orthogonality, recoupling, or named Wigner-symmetry theorem.  A Gaunt factorial
+identity and product-coefficient nonnegativity/zero criteria can be composed
+from the named declarations but are not separate wrappers.  Infinite Legendre
+interchange, Christoffel reconstruction, roots/quadrature, Padé/J-fractions,
+infinite Jacobi theory, and asymptotics remain open.
+
 ## arXiv:1702.05442
 
 The exact version used by this audit is vendored as
@@ -126,6 +148,8 @@ prefixes on the real frequency line and uniform convergence on its compact sets.
 
 | Claim | Status | Lean declaration(s) |
 | --- | --- | --- |
+| Total integer zero-row Wigner-square datum and closed Legendre Gaunt form | `LegendreGauntClosedForm.lean` has exactly two public definitions and twenty-five public theorems.  Its admissibility predicate means even `i+j+k` and the three weak triangle inequalities, equivalently `i=b+c`, `j=a+c`, `k=a+b` for naturals `a,b,c`.  With `C_n=choose (2*n) n` and `s=a+b+c`, the total rational square datum is zero off support and equals `C_a*C_b*C_c/((2*s+1)*C_s)` on the pairwise-add coordinates; its factorial form is `s!^2*(2*a)!*(2*b)!*(2*c)!/((2*s+1)!*a!^2*b!^2*c!^2)`.  The half-sum theorem assumes exactly `i+j+k=2*s` and `i≤s`, `j≤s`, `k≤s`.  The degenerate boundaries are `legendreGauntRat i j (i+j)=2*C_i*C_j/((2*(i+j)+1)*C_(i+j))=2*W²(i,j,i+j)` and `legendreGauntRat 0 j k = if j=k then 2/(2*j+1) else 0 = 2*W²(0,j,k)`.  At every natural triple, rational Gaunt is `2*W²`, real Gaunt is twice its real cast, the square and both Gaunt forms are nonnegative, positivity is equivalent to admissibility, and vanishing is equivalent to nonadmissibility.  The product-linearization coefficient is `(2*k+1)*W²` and is positive exactly on support.  Here `W²` abbreviates the directly defined `legendreWignerThreeJZeroSqRat`; it is only an integer-index zero-row square datum, with no signed/phase, half-integer, nonzero-magnetic-index, general `3j`/`6j`/`9j`, orthogonality, recoupling, or infinite-series claim. | Definitions: `Fabius.legendreGauntAdmissible`, `Fabius.legendreWignerThreeJZeroSqRat`.  Theorems: `Fabius.legendreGauntAdmissible_iff_exists_pairwise_add`, `Fabius.legendreGauntAdmissible_pairwise_add`, `Fabius.legendreWignerThreeJZeroSqRat_pairwise_add`, `Fabius.legendreWignerThreeJZeroSqRat_pairwise_add_factorial`, `Fabius.legendreWignerThreeJZeroSqRat_eq_factorial_of_halfSum`, `Fabius.legendreWignerThreeJZeroSqRat_eq_zero_of_not_admissible`, `Fabius.legendreGauntRat_add_boundary`, `Fabius.legendreGauntRat_add_boundary_eq_two_mul_wignerThreeJZeroSqRat`, `Fabius.legendreGauntRat_zero_left`, `Fabius.legendreGauntRat_zero_left_eq_two_mul_wignerThreeJZeroSqRat`, `Fabius.legendreGauntRat_pairwise_add_eq_two_mul_wignerThreeJZeroSqRat`, `Fabius.legendreGauntRat_eq_zero_of_not_admissible`, `Fabius.legendreGauntRat_eq_two_mul_wignerThreeJZeroSqRat`, `Fabius.legendreGaunt_eq_two_mul_wignerThreeJZeroSqRat`, `Fabius.legendreWignerThreeJZeroSqRat_pos_iff_admissible`, `Fabius.legendreWignerThreeJZeroSqRat_nonneg`, `Fabius.legendreWignerThreeJZeroSqRat_eq_zero_iff_not_admissible`, `Fabius.legendreGauntRat_pos_iff_admissible`, `Fabius.legendreGauntRat_eq_zero_iff_not_admissible`, `Fabius.legendreGaunt_pos_iff_admissible`, `Fabius.legendreGaunt_eq_zero_iff_not_admissible`, `Fabius.legendreGauntRat_nonneg`, `Fabius.legendreGaunt_nonneg`, `Fabius.legendreProductLinearizationCoeffRat_eq_mul_wignerThreeJZeroSqRat`, `Fabius.legendreProductLinearizationCoeffRat_pos_iff_admissible` |
+| Finite Wigner-square sums for rational and real up-law Legendre Gram entries | `FabiusLegendreGauntClosedForm.lean` has zero public definitions and exactly three public theorems.  Unconditionally for natural `i,j`, `rvachevLegendreGramEntryRat i j` is `2 * ∑ r ∈ range ((i+j)/2+1), canonicalRvachevLegendreCoefficientRat r * legendreWignerThreeJZeroSqRat i j (2*r)`; the identical formula holds entrywise for `i j : Fin n` in the rational Gram matrix.  For `F : BoundedFabius` with exactly `hF : IsFabius F`, the real up-Gram entry is the same finite twice-sum using `rvachevLegendreCoefficient F r` and the real cast of the square datum.  This closes the finite Wigner-square Gram route only; it supplies no signed/general Wigner symbol and no infinite Legendre-series interchange, Christoffel reconstruction, root/quadrature, Padé/J-fraction, infinite-Jacobi, or asymptotic theorem. | `Fabius.rvachevLegendreGramEntryRat_eq_two_mul_sum_wignerThreeJZeroSqRat`, `Fabius.rvachevLegendreGramMatrixRat_apply_eq_two_mul_sum_wignerThreeJZeroSqRat`, `Fabius.upLegendreGramMatrix_apply_eq_two_mul_sum_wignerThreeJZeroSqRat` |
 | Denominator-free geometric complete-homogeneous and Lagrange residual layer | The six `GeometricCompleteHomogeneous` theorems prove both orientations of the geometric principal specialization, its common-scale and range forms, and two denominator-free Gaussian symmetry laws over every commutative semiring.  The five `GeometricLagrangeCompleteHomogeneous` theorems retain report-facing aliases, specialize every offset residual moment, and connect the recursive Gaussian coefficient to the rational q-binomial API under exactly the stated field/injectivity or `0 < q < 1` hypotheses.  At target zero, `sum_lagrangeEvalWeight_mul_pow_card_add_zero` gives every higher moment of a nonempty distinct field-valued node family as the negative signed nodal product times its complete homogeneous function; nonemptiness excludes precisely the empty-row `0^0` exception. | `Fabius.completeHomogeneousEval_geometric`, `Fabius.completeHomogeneousEval_scaled_geometric`, `Fabius.completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial`, `Fabius.completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial_degree`, `Fabius.gaussianBinomial_add_symm`, `Fabius.gaussianBinomial_symm_via_completeHomogeneous`; `Fabius.completeHomogeneousEvalOn_geometric_range`, `Fabius.sum_geometricLagrangeWeight_mul_pow_succ_add_eq_gaussianBinomial`, `Fabius.geometricLagrangeQMoment_eq_residual_gaussianBinomial`, `Fabius.completeHomogeneousEvalOn_geometric_range_eq_qBinomial`, `Fabius.geometricLagrangeQMoment_eq_residual_qBinomial_via_completeHomogeneous`; `Fabius.sum_lagrangeEvalWeight_mul_pow_card_add_zero` |
 | Exact finite polynomial filters | The five-theorem `FinitePolynomialFilterExactness` surface first evaluates an arbitrary finite coefficient filter on a baseline plus finitely many geometric modes, then derives mass-one/root exactness over every commutative semiring.  Its field-valued geometric specializations cancel the prescribed inverse or forward modes, preserve the baseline, and evaluate the first uncancelled forward mode as `(-1)^n q^(choose (n+1) 2)`, retaining the explicit nonzero-base and normalization-denominator assumptions. | `Fabius.polynomialFilter_response_eq`, `Fabius.polynomialFilter_exact`, `Fabius.normalizedGeometricRootPolynomial_filter_exact`, `Fabius.forwardGeometricRichardsonPolynomial_filter_exact`, `Fabius.forwardGeometricRichardsonPolynomial_filter_firstUncancelled` |
 | Complete rational geometric-moment and finite-conditioning API | `GeometricLagrangeQMoments` exhaustively contains one definition and 37 theorems.  They identify the moment with the weight and forward-Richardson polynomials, prove exact zero and residual q-Pochhammer/q-binomial forms, positivity and sign on `0 < q < 1`, both Pascal orientations and the finite q-binomial theorem in the rational quotient notation, pointwise absolute weights and exact row variation, and all dedicated quarter-base forms.  These are finite algebraic identities; quotient statements retain their nonzero-denominator hypotheses and no analytic convergence or remainder estimate is asserted. | `Fabius.geometricLagrangeQMoment`; `Fabius.geometricLagrangeQMoment_eq_weightPolynomial_eval`, `Fabius.geometricLagrangeQMoment_eq_forwardRichardson_eval`, `Fabius.geometricRootPolynomial_inv_eval_pow_mul_signedPowers`, `Fabius.geometricRootPolynomial_inv_eval_pow_mul_triangular`, `Fabius.geometricRootPolynomial_inv_eval_one_mul_triangular`, `Fabius.geometricLagrangeQMoment_eq_qPochhammer`, `Fabius.geometricLagrangeQMoment_zero`, `Fabius.geometricLagrangeQMoment_eq_zero`, `Fabius.geometricRootPolynomial_inv_eval_pow_eq_qPochhammer_of_le`, `Fabius.geometricLagrangeQMoment_eq_residual_qPochhammer`, `Fabius.qPochhammer_self_add`, `Fabius.qPochhammer_self_pos_of_pos_of_lt_one`, `Fabius.qBinomial_pos_of_pos_of_lt_one`, `Fabius.gaussianBinomial_eq_qBinomial_of_pos_of_lt_one`, `Fabius.qPochhammer_pow_pos_of_pos_of_lt_one`, `Fabius.qPochhammer_tail_div_self_eq_qBinomial`, `Fabius.geometricLagrangeQMoment_eq_residual_qBinomial`, `Fabius.geometricLagrangeQMoment_firstUncancelled`, `Fabius.negOnePow_mul_geometricLagrangeQMoment_eq_positiveResidual`, `Fabius.negOnePow_mul_geometricLagrangeQMoment_pos`, `Fabius.qPochhammer_self_succ`, `Fabius.qBinomial_succ_succ_of_pos_of_lt_one'`, `Fabius.qBinomial_succ_succ_of_pos_of_lt_one`, `Fabius.qBinomial_theorem_of_pos_of_lt_one`, `Fabius.sum_qBinomial_triangular_succ_eq_neg_qPochhammer`, `Fabius.abs_geometricLagrangeWeight_eq_qBinomial`, `Fabius.abs_geometricLagrangeWeight_eq_sign_mul`, `Fabius.abs_geometricLagrangeWeight_complement_eq_qBinomial`, `Fabius.sum_abs_geometricLagrangeWeight_eq_qPochhammer_ratio`, `Fabius.neg_qPochhammer_div_self_eq_prod`, `Fabius.sum_abs_geometricLagrangeWeight_eq_prod`, `Fabius.quarterGeometricLagrangeQMoment_eq_qPochhammer`, `Fabius.quarterGeometricLagrangeQMoment_eq_zero`, `Fabius.quarterGeometricLagrangeQMoment_eq_residual_qPochhammer`, `Fabius.quarterGeometricLagrangeQMoment_eq_residual_qBinomial`, `Fabius.quarterGeometricLagrangeQMoment_firstUncancelled`, `Fabius.sum_abs_quarterGeometricLagrangeWeight_eq_qPochhammer_ratio` |
@@ -337,15 +361,23 @@ binary-digit row above is its exhaustive public-API inventory.
 `BaseDigitMultiplicity.lean` has no public definitions and five public theorems,
 and `RademacherSine.lean` has no public definitions and nine public theorems.
 `PartitionDefect.lean` has exactly three public definitions and 33 public
-theorems; its one private helper is excluded.  Together,
-`BaseDigitMultiplicity.lean`, `PartitionDefect.lean`,
-`LegendrePolynomialRational.lean`, `FabiusLegendreRationalGram.lean`,
-`FabiusLegendreRationalGramValues.lean`, `LegendreGaunt.lean`,
-`LegendreGauntClosedForm.lean`, `FabiusLegendreGaunt.lean`, and
-`FabiusLegendreGauntClosedForm.lean` contribute exactly 129 public declarations:
-respectively `0+5`, `3+33`, `2+6`, `3+11`, `0+11`, `4+12`, `2+25`, `1+8`, and
-`0+3` definitions-plus-theorems.  The Rademacher row exhausts its separate
-nine-theorem surface.
+theorems; its one private helper is excluded.  Those rows and the Rademacher row
+exhaust their respective public surfaces.
+
+The current New Frontiers finite Gram--Legendre inventory consists of eleven
+modules and exactly 129 public declarations: twenty definitions and 109
+theorems.  In dependency order the exhaustive component counts are
+`PolynomialMomentGramDeterminant.lean` `2+7`,
+`GramStieltjesNaturality.lean` `0+6`, `RvachevRationalJacobi.lean` `4+13`,
+`LegendrePolynomialRational.lean` `2+6`,
+`FabiusLegendreHankelDeterminant.lean` `2+7`,
+`FabiusLegendreRationalGram.lean` `3+11`,
+`FabiusLegendreRationalGramValues.lean` `0+11`, `LegendreGaunt.lean` `4+12`,
+`FabiusLegendreGaunt.lean` `1+8`, `LegendreGauntClosedForm.lean` `2+25`, and
+`FabiusLegendreGauntClosedForm.lean` `0+3`, where each pair is
+definitions-plus-theorems.  The predecessor nine-module subtotal is the
+historical `18+81=99`; the two closed-form leaves add
+`(2+25)+(0+3)=30` declarations.
 
 The three companion rows for `BellPolynomialInversion.lean`,
 `AppellSequence.lean`, and `ReciprocalExponentialGenerating.lean`, together with

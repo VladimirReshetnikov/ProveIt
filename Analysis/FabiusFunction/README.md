@@ -77,14 +77,20 @@ That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
 > **Artifact status (2026-08-31).**  The primary exposition and Lean
-> walkthrough were rebuilt from their final merged sources in fresh, guarded
-> three-pass Libertinus cycles; their synchronized PDFs contain 166 and 126 A4
-> pages, respectively, and include the prime-power valuation and closed-form
-> Gaunt crosswalks.  The canonical frontier and filed New Frontiers PDFs were
-> likewise rebuilt from their final merged sources and contain 236 and 41 A4
-> pages.  Every font in these four refreshed artifacts is embedded and subset,
-> with no Type 3 font.  Other frontier documents that still await a matching
-> render are identified by explicit package-local pending notices.
+> walkthrough PDFs were rebuilt upstream in fresh, guarded three-pass
+> Libertinus cycles; they contain 166 and 126 A4 pages, respectively, and
+> include the prime-power valuation and exhaustive 30-declaration closed-form
+> Gaunt crosswalks.  Every font in these two refreshed artifacts is embedded
+> and subset, with no Type 3 font.  The merged TeX retains those results and
+> adds expanded formula-and-proof ledgers, so exact post-merge source/PDF
+> synchronization is not claimed.  The retained canonical frontier
+> (236 pages), Integration and Transform Frontiers (376), Representation
+> Frontiers (301), and filed New Frontiers (41) PDFs predate the closed-form
+> tranche and are not synchronized with their current sources.  Earlier checks
+> of the canonical and filed artifacts, including the filed package's historical
+> ledger, are rendering records rather than claims of current source/PDF parity.
+> The latter four require content rebuilds; the primary and walkthrough require
+> only a parity rebuild for the expanded source commentary.
 
 The formally proved small-argument hierarchy—including the corrected sharp
 asymptotic, the general coefficient algebra for the recursive all-orders
@@ -204,8 +210,27 @@ Use `import FabiusFunction` when downstream code needs the entire development.
 For a smaller dependency footprint, the following imports are useful entry
 points:
 
+The current New Frontiers finite Gram--Legendre crosswalk has eleven modules,
+twenty public definitions, and 109 public theorems, hence 129 declarations.
+Its former nine-module `18+81=99` subtotal is extended by
+`LegendreGauntClosedForm` (`2+25`) and `FabiusLegendreGauntClosedForm` (`0+3`).
+Thus the integer-index zero-row square datum and finite Wigner-square Gram route
+are closed; only signed/general Wigner and the later infinite spectral layers
+remain outside this tranche.
+
+Precisely, the directly defined square datum is not a bridge to a separately
+implemented general Wigner symbol.  There is no signed value or phase
+convention, half-integer or nonzero-magnetic-index API, general
+`3j`/`6j`/`9j`, orthogonality, recoupling, or named Wigner-symmetry theorem.
+The Gaunt factorial form and product-coefficient nonnegativity/zero criteria are
+available by composing the listed results but have no separate named wrappers.
+Infinite Legendre interchange, Christoffel reconstruction, roots/quadrature,
+Padé/J-fractions, infinite Jacobi theory, and asymptotics also remain open.
+
 | Purpose | Focused import | Good starting declarations |
 | --- | --- | --- |
+| Total integer zero-row Wigner-square datum and closed Legendre Gaunt form | `FabiusFunction.LegendreGauntClosedForm` | Exhaustive public inventory: two definitions, `legendreGauntAdmissible` and `legendreWignerThreeJZeroSqRat`; and twenty-five theorems, `legendreGauntAdmissible_iff_exists_pairwise_add`, `legendreGauntAdmissible_pairwise_add`, `legendreWignerThreeJZeroSqRat_pairwise_add`, `legendreWignerThreeJZeroSqRat_pairwise_add_factorial`, `legendreWignerThreeJZeroSqRat_eq_factorial_of_halfSum`, `legendreWignerThreeJZeroSqRat_eq_zero_of_not_admissible`, `legendreGauntRat_add_boundary`, `legendreGauntRat_add_boundary_eq_two_mul_wignerThreeJZeroSqRat`, `legendreGauntRat_zero_left`, `legendreGauntRat_zero_left_eq_two_mul_wignerThreeJZeroSqRat`, `legendreGauntRat_pairwise_add_eq_two_mul_wignerThreeJZeroSqRat`, `legendreGauntRat_eq_zero_of_not_admissible`, `legendreGauntRat_eq_two_mul_wignerThreeJZeroSqRat`, `legendreGaunt_eq_two_mul_wignerThreeJZeroSqRat`, `legendreWignerThreeJZeroSqRat_pos_iff_admissible`, `legendreWignerThreeJZeroSqRat_nonneg`, `legendreWignerThreeJZeroSqRat_eq_zero_iff_not_admissible`, `legendreGauntRat_pos_iff_admissible`, `legendreGauntRat_eq_zero_iff_not_admissible`, `legendreGaunt_pos_iff_admissible`, `legendreGaunt_eq_zero_iff_not_admissible`, `legendreGauntRat_nonneg`, `legendreGaunt_nonneg`, `legendreProductLinearizationCoeffRat_eq_mul_wignerThreeJZeroSqRat`, and `legendreProductLinearizationCoeffRat_pos_iff_admissible`.  Admissibility means even `i+j+k` together with all three weak triangle inequalities, equivalently `i=b+c`, `j=a+c`, and `k=a+b` for naturals `a,b,c`.  With `C_n=choose (2*n) n` and `s=a+b+c`, the total datum is zero off support and on support is `W²(b+c,a+c,a+b)=C_a*C_b*C_c/((2*s+1)*C_s)`; its factorial form is `s!^2*(2*a)!*(2*b)!*(2*c)!/((2*s+1)!*a!^2*b!^2*c!^2)`.  The half-sum form assumes exactly `i+j+k=2*s` and `i≤s`, `j≤s`, `k≤s`.  The degenerate boundaries are `legendreGauntRat i j (i+j)=2*C_i*C_j/((2*(i+j)+1)*C_(i+j))=2*W²(i,j,i+j)` and `legendreGauntRat 0 j k = if j=k then 2/(2*j+1) else 0 = 2*W²(0,j,k)`.  For all natural indices, `legendreGauntRat i j k=2*W²(i,j,k)` and `legendreGaunt i j k=2*(W²(i,j,k):ℝ)`; the square and both Gaunt forms are nonnegative, are positive exactly on admissible support, and vanish exactly off it.  Finally `legendreProductLinearizationCoeffRat i j k=(2*k+1)*W²(i,j,k)` and is positive exactly on support.  This is a directly defined rational square datum only: no signed symbol or Condon--Shortley phase, half-integer or nonzero-magnetic-index symbols, general `3j`/`6j`/`9j`, Wigner orthogonality, recoupling, or infinite-series result is claimed. |
+| Finite Wigner-square sums for rational and real up-law Legendre Gram entries | `FabiusFunction.FabiusLegendreGauntClosedForm` | Exhaustive public inventory: zero definitions and three theorems, `rvachevLegendreGramEntryRat_eq_two_mul_sum_wignerThreeJZeroSqRat`, `rvachevLegendreGramMatrixRat_apply_eq_two_mul_sum_wignerThreeJZeroSqRat`, and `upLegendreGramMatrix_apply_eq_two_mul_sum_wignerThreeJZeroSqRat`.  Unconditionally for natural `i,j`, the rational entry is `2 * ∑ r ∈ range ((i+j)/2+1), canonicalRvachevLegendreCoefficientRat r * legendreWignerThreeJZeroSqRat i j (2*r)`; the identical formula holds entrywise for `i j : Fin n` in `rvachevLegendreGramMatrixRat n`.  For `F : BoundedFabius` with exactly `hF : IsFabius F`, the real entry `upLegendreGramMatrix F n i j` is the same finite twice-sum with `rvachevLegendreCoefficient F r` and the real cast of the square datum.  These theorems close the finite Wigner-square Gram route only; they do not introduce a signed/general Wigner API or any infinite Legendre-series interchange, Christoffel reconstruction, root/quadrature, Padé/J-fraction, infinite-Jacobi, or asymptotic theorem. |
 | Definitions, the bounded characterization, folded `up`, and the global first-jet reflection law | `FabiusFunction.Basic`, `FabiusFunction.Differential` | `BoundedFabius`, `IsFabius`, `rvachevUp`, `rvachevUp_even`, `rvachevUp_eq_zero_of_not_mem_Ioo`, `support_rvachev_subset_Ioo`, `rvachev_hasDerivAt`, `fabius_hasDerivAt`, `deriv_fabiusReal`, `deriv_fabiusReal_one_sub` |
 | Sharp bounded derivatives and the exact zero-interleaved Thue--Morse pattern on every matched dyadic grid | `FabiusFunction.BoundedDerivatives` | `iteratedDeriv_fabiusReal_of_lt_one`, `iteratedDeriv_fabiusReal_dyadicGrid_eq_ite`, `iteratedDeriv_fabiusReal_dyadicGrid_eq_zero_iff`, `abs_iteratedDeriv_fabiusReal_dyadicGrid_of_odd`, `abs_iteratedDeriv_fabiusReal_le`, `isGreatest_abs_iteratedDeriv_fabiusReal` |
 | Exact derivative cells, signed natural moments, and normalized signed and absolute distributions | `FabiusFunction.RvachevDerivativeDistribution` | Exhaustive public surface (one definition and 18 theorems): `rvachevDerivativeCell`; `rvachevDerivativeCell_eq_div_add`, `rvachevDerivativeCell_one_eq_succ_neg_one`, `rvachevDerivativeCell_zero_neg_one`, `rvachevDerivativeCell_two_pow_neg_one`, `rvachevDerivativeCell_mem_Icc`, `iteratedDeriv_rvachev_cell`, `iteratedDeriv_rvachev_cell_zero`, `abs_iteratedDeriv_rvachev_cell`, `intervalIntegral_comp_iteratedDeriv_rvachev`, `intervalIntegral_iteratedDeriv_rvachev_pow`, `intervalIntegral_iteratedDeriv_rvachev_pow_of_even`, `intervalIntegral_iteratedDeriv_rvachev_pow_eq_zero_of_odd`, `intervalIntegral_comp_normalized_iteratedDeriv_rvachev`, `intervalIntegral_comp_abs_iteratedDeriv_rvachev`, `intervalIntegral_comp_normalized_abs_iteratedDeriv_rvachev`, `map_normalized_abs_iteratedDeriv_rvachev_restrict_Icc`, `map_normalized_iteratedDeriv_rvachev_restrict_Icc`, and `intervalIntegral_abs_iteratedDeriv_rvachev_rpow`.  If `T_n=(n+1).choose 2`, the general `Nat`-power identity is `integral (up^(n))^m = (2^n)^-1 * (1+(-1)^m)^n * (2^T_n)^m * integral up^m`; its even specialization holds for every `n`, including `n=0`, while its odd vanishing specialization assumes exactly `0<n`.  For every `0<n`, the sharply normalized signed derivative has, both against continuous Banach-valued tests and as a restricted-Lebesgue Borel pushforward, the symmetric half-mixture of the `up` law and its reflection; the positive-order hypothesis is essential because at `n=0` the signed law is the unsymmetrized `up` law.  Separately, the absolute-moment theorem uses `Real.rpow` for every real `p>=0`, and the normalized absolute derivative has the same restricted-Lebesgue pushforward as `up` for every `n`.  No `eLpNorm` or general rearrangement-invariant norm ladder, inverse-Fabius level-set formula, beta package, or spectral layer is asserted. |
