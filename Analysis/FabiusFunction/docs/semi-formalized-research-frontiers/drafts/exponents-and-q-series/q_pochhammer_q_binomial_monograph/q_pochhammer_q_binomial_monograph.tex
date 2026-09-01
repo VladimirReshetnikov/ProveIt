@@ -311,33 +311,31 @@ In the second product put $j=m+r$, where $0\le r<n$.
 \end{proof}
 
 \begin{proposition}[Dissection into residue classes]\label{prop:dissection}
-For integers $r,n\ge1$,
+For integers $r,n\ge0$,
 \[
  (a;q)_{rn}=\prod_{s=0}^{r-1}(aq^s;q^r)_n.
 \]
-If $\AbsoluteValue q<1$, then also
+If $\AbsoluteValue q<1$ and $r\ge1$, then also
 \[
  (a;q)_\infty=\prod_{s=0}^{r-1}(aq^s;q^r)_\infty.
 \]
 \end{proposition}
 
 \begin{proof}
-Every integer $j$ with $0\le j<rn$ has a unique representation $j=s+rt$ with $0\le s<r$ and $0\le t<n$.  Reordering the finite product gives the first identity.  For the infinite identity, the factors are absolutely summably close to $1$ because
-\(
- \sum_{j\ge0}\AbsoluteValue{a q^j}<\infty,
-\)
-so the product may be regrouped into the $r$ residue classes.
+Every integer $j$ with $0\le j<rn$ has a unique representation $j=s+rt$ with $0\le s<r$ and $0\le t<n$.  Reordering the finite product gives the first identity; when $r=0$ or $n=0$ both sides are empty products.  Equivalently, one may induct on $n$: passing from $rn$ to $r(n+1)$ appends one full period $(aq^{rn};q)_r=\prod_{s<r}\bigl(1-aq^{s}(q^r)^{n}\bigr)$, whose $r$ factors are exactly the next factors of the $r$ residue-class products.  This is the argument used by the formalization, which is valid over every commutative ring.
+
+For the infinite identity, $(a;q)_{rn}\to(a;q)_\infty$ along the multiples of $r$ by \Cref{thm:poch-entire}, while $(aq^s;q^r)_n\to(aq^s;q^r)_\infty$ for each residue $s$ because $\AbsoluteValue{q^r}<1$; the finite dissection therefore passes to the limit.  (Alternatively, the factors are absolutely summably close to $1$ because $\sum_{j\ge0}\AbsoluteValue{aq^j}<\infty$, so the product may be regrouped into the $r$ residue classes.)
 \end{proof}
 
 \begin{corollary}[Dissection with a remainder]\label{cor:dissection-remainder}
 \index{dissection!with a remainder}
-Let $r\ge1$ and $n\ge0$ be integers, let $0\le u<r$, and set $N=rn+u$.  Then
+Let $r\ge1$ and $n\ge0$ be integers, let $0\le u\le r$, and set $N=rn+u$.  Then
 \[
  (a;q)_N
  =\prod_{s=0}^{u-1}(aq^s;q^r)_{n+1}
   \prod_{s=u}^{r-1}(aq^s;q^r)_n .
 \]
-For $u=0$ this is \Cref{prop:dissection}.
+For $u=0$ this is \Cref{prop:dissection}, and for $u=r$ it is \Cref{prop:dissection} at length $n+1$ (the second product being empty).
 \end{corollary}
 
 \begin{proof}
@@ -519,16 +517,32 @@ Differentiate the logarithm of the finite product term by term.
 
 \section{Infinite products and Lambert series}
 
-\begin{theorem}[Convergence and zero set]\label{thm:poch-entire}
-Let $0<\AbsoluteValue q<1$.  The product $(a;q)_\infty$ converges locally uniformly as a function of $a\in\ComplexNumbers$ and therefore defines an entire function.  Its zeros are precisely
+\begin{theorem}[Convergence, zero set, and simplicity of the zeros]\label{thm:poch-entire}
+Let $\AbsoluteValue q<1$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The product $(a;q)_\infty$ converges locally uniformly as a function of $a\in\ComplexNumbers$ and therefore defines an entire function.  For every $n\ge0$,
+\[
+ (a;q)_\infty=(a;q)_n\,(aq^n;q)_\infty .
+\]
+\item $(a;q)_\infty=0$ if and only if $aq^j=1$ for some $j\ge0$.  Thus for $q\ne0$ the zeros are precisely
 \[
  a=q^{-j},\qquad j=0,1,2,\ldots,
 \]
-and all are simple.
+while for $q=0$ the only zero is $a=1$.
+\item Every zero is simple, with an explicit derivative: if $a_0q^j=1$, then
+\[
+ \frac{\Differential}{\Differential a}(a;q)_\infty\Big|_{a=a_0}
+ =-q^{j}\,(a_0;q)_j\,(a_0q^{j+1};q)_\infty\ne0,
+\]
+and for $q\ne0$, $a_0=q^{-j}$, this equals
+\[
+ (-1)^{j+1}q^{-\binom j2}\,(q;q)_j\,(q;q)_\infty .
+\]
+\end{enumerate}
 \end{theorem}
 
 \begin{proof}
-On a compact set $K\subset\ComplexNumbers$ let $M=\max_{a\in K}\AbsoluteValue a$.  Then
+(i) On a compact set $K\subset\ComplexNumbers$ let $M=\max_{a\in K}\AbsoluteValue a$.  Then
 \[
  \sum_{j=0}^{\infty}\sup_{a\in K}\AbsoluteValue{a q^j}
  \le \frac{M}{1-\AbsoluteValue q}<\infty.
@@ -537,10 +551,21 @@ The standard convergence criterion for infinite products shows that
 \(
  \prod_j(1-aq^j)
 \)
-converges uniformly on $K$; equivalently, one may apply uniform convergence to the tails after choosing an analytic branch of the logarithm near $1$.  Uniform limits of holomorphic functions are holomorphic, so the limit is entire.
+converges uniformly on $K$; equivalently, one may apply uniform convergence to the tails after choosing an analytic branch of the logarithm near $1$.  Uniform limits of holomorphic functions are holomorphic, so the limit is entire.  The concatenation identity is the limit, as $N\to\infty$, of the finite concatenation $(a;q)_{n+N}=(a;q)_n(aq^n;q)_N$ of \Cref{prop:concat}, since both $(a;q)_{n+N}\to(a;q)_\infty$ and $(aq^n;q)_N\to(aq^n;q)_\infty$.
 
-If $a=q^{-j}$, one factor vanishes.  Conversely, if no factor vanishes, then the tail product is nonzero because the sum of the absolute deviations from $1$ converges, while the finite initial product is nonzero.  At $a=q^{-j}$ exactly one factor vanishes and its derivative is $-q^j\ne0$, whereas all other factors are nonzero; the zero is simple.
+(ii) If $aq^j=1$, one factor vanishes.  Conversely, if no factor vanishes, then the tail product is nonzero because the sum of the absolute deviations from $1$ converges, while the finite initial product is nonzero.  For $q\ne0$ the condition $aq^j=1$ reads $a=q^{-j}$; for $q=0$ only the factor $j=0$ can vanish, at $a=1$.
+
+(iii) Removing the $j$-th factor by (i) at $n=j+1$ gives
+\[
+ (a;q)_\infty=(1-aq^j)\,g_j(a),
+ \qquad g_j(a):=(a;q)_j\,(aq^{j+1};q)_\infty ,
+\]
+with $g_j$ entire.  Differentiating at $a_0$, where $1-a_0q^j=0$, leaves only $-q^j g_j(a_0)$.  This is nonzero: $(a_0;q)_j=\prod_{i<j}(1-q^{i-j})$ has no vanishing factor because $\AbsoluteValue{q^{i-j}}>1$ for $i<j$, and $(a_0q^{j+1};q)_\infty=(q;q)_\infty\ne0$ by (ii).  For $q\ne0$ the closed form follows from $(q^{-j};q)_j=(-1)^jq^{-\binom{j+1}2}(q;q)_j$ (\Cref{cor:qminusN} with $N=k=j$), since $j-\binom{j+1}2=-\binom j2$.
 \end{proof}
+
+\begin{remark}[The generality of the convergence statements]\label{rem:poch-entire-generality}
+Only the norm of the coefficient ring enters into (i) and (ii).  The formalization defines $(a;q)_\infty=\prod'_{j\ge0}(1-aq^j)$ in an arbitrary topological commutative ring; for $\AbsoluteValue q<1$ in any complete normed commutative ring with $\AbsoluteValue1=1$ the factors are multipliable, the finite symbols $(a;q)_n$ converge to $(a;q)_\infty$, and the concatenation and dissection identities hold.  When the norm is moreover multiplicative, the zero criterion (ii) holds verbatim.  Over any complete, locally compact normed field the convergence is locally uniform in $a$, so $a\mapsto(a;q)_\infty$ is continuous; holomorphy and the derivative formula (iii) are stated for $\ComplexNumbers$.
+\end{remark}
 
 \subsection{Complex orders}
 
@@ -661,6 +686,14 @@ Thus the order of summation may be exchanged:
 \]
 The geometric sum gives the first formula.  Local uniform convergence permits termwise differentiation.  Expanding $(1-aq^j)^{-1}$ geometrically gives the second form of the derivative.
 \end{proof}
+
+\begin{remark}[Branches]\label{rem:lambert-log-branch}
+The logarithm on the left is the sum $\sum_{j\ge0}\log(1-aq^j)$ of the principal logarithms of the factors, each of which lies in the disk $\AbsoluteValue{1-(1-aq^j)}<1$ where the Mercator series converges; the identity therefore fixes a definite branch, the one that is continuous in $a$ on $\AbsoluteValue a<1$ and vanishes at $a=0$.  The branch-free form is
+\[
+ \exp\Bigl(-\sum_{m=1}^{\infty}\frac{a^m}{m(1-q^m)}\Bigr)=(a;q)_\infty,
+\]
+which is how the formalization records the first display, over $\ComplexNumbers$, via the absolutely convergent double series.
+\end{remark}
 
 \begin{corollary}[Divisor sums]\label{cor:divisor-sum}
 As a formal power series,
@@ -928,7 +961,7 @@ For fixed $n,k$,
 \end{corollary}
 
 \begin{proof}
-Use the $q$-factorial form and $[j]_q\to j$.
+Use the $q$-factorial form and $[j]_q\to j$.  Alternatively, and in the generality of an arbitrary topological semiring, the Gaussian coefficient is built from $q$ by finitely many additions, multiplications, and powers through the $q$-Pascal recurrence, hence is a continuous function of $q$; its value at $q=1$ is $\binom nk$ by the same recurrence, so the limit is that value.  This is the route taken by the formalization.
 \end{proof}
 
 \section{Multinomial coefficients and flags}
@@ -2274,6 +2307,14 @@ For $n\ge1$,
 \end{corollary}
 
 \begin{proof}
+Compare the coefficients of $z^k$, $k\ge1$: on the left it is $q^k\GaussianBinomial{n}{k}{q}$, on the right $\GaussianBinomial{n}{k}{q}-(1-q^n)\GaussianBinomial{n-1}{k-1}{q}$, and the two agree exactly when
+\[
+ (1-q^k)\GaussianBinomial{n}{k}{q}=(1-q^n)\GaussianBinomial{n-1}{k-1}{q},
+\]
+which is the claim established in the proof of \Cref{prop:rogers-szego-three-term} (read at the index $k$ in place of $k-1$; it is the product of the two cross identities of \Cref{prop:adjacent-ratio}).  The constant terms are both $1$.  Conversely, adding the dilation formula to the basic recurrence $H_{n+1}(z;q)=zH_n(z;q)+H_n(qz;q)$ gives the three-term recurrence at once, which is how the formalization organizes the three results: the basic recurrence is the second $q$-Pascal summation, the dilation formula is the column-adjacent cross identity read coefficientwise over every commutative ring, and the three-term recurrence is their sum.
+\end{proof}
+
+\begin{proof}
 By \Cref{prop:rogers-szego-recurrence}, $H_n(qz;q)=H_{n+1}(z;q)-zH_n(z;q)$.
 Substituting \Cref{prop:rogers-szego-three-term} for $H_{n+1}(z;q)$ and
 cancelling $zH_n(z;q)$ gives the formula.
@@ -2612,6 +2653,26 @@ For fixed $n$, $\GaussianBinomial{N}{n}{q}\to1/(q;q)_n$ as $N\to\infty$.  The li
 \]
 where the denominator is positive because $(q;q)_r\to(q;q)_\infty\ne0$.  Thus the summands, extended by zero for $n>N$, are dominated by a constant multiple of $\AbsoluteValue q^{\binom n2}R^n$.  Dominated convergence, together with local uniform convergence of the products, now permits passage to the limit.
 \end{proof}
+
+\begin{remark}[Both identities as stable limits of finite ones]\label{rem:qbinomial-finite-route}
+The formalization proves \Cref{thm:infinite-qbinomial} itself, and not only \eqref{eq:euler-product-series}, by the finite-to-infinite mechanism of the preceding proof, over an arbitrary complete normed field.  Divide the finite $q$-Cauchy identity of \Cref{thm:q-cauchy}, with $u=a$ and $v=z$, by $(z;q)_N$:
+\[
+ \frac{(az;q)_N}{(z;q)_N}
+ =\sum_{k=0}^{N}\GaussianBinomial{N}{k}{q}(a;q)_k z^k\,\frac{(z;q)_{N-k}}{(z;q)_N}.
+\]
+As $N\to\infty$ the left side tends to $(az;q)_\infty/(z;q)_\infty$, and the $k$-th summand tends to $(a;q)_kz^k/(q;q)_k$ by the fixed-column limit \eqref{eq:fixed-column-limit} and \Cref{thm:poch-entire}.  The summands are dominated, uniformly in $N$, by a geometric sequence in $k$: with
+\[
+ \mu:=(\AbsoluteValue q;\AbsoluteValue q)_\infty>0,
+ \qquad
+ M:=(-\AbsoluteValue q;\AbsoluteValue q)_\infty,
+\]
+one has $\mu\le\AbsoluteValue{(q;q)_n}\le M$ for every $n$, because $\AbsoluteValue{1-q^{j+1}}$ lies between $1-\AbsoluteValue q^{j+1}$ and $1+\AbsoluteValue q^{j+1}$ and the two real products are monotone in $n$; hence
+\[
+ \left|\GaussianBinomial{N}{k}{q}\right|\le\frac{M}{\mu^2}
+ \qquad\text{for all }N\text{ and }k,
+\]
+and likewise $\AbsoluteValue{(a;q)_k}\le(-\AbsoluteValue a;\AbsoluteValue q)_\infty$, $\AbsoluteValue{(z;q)_{N-k}}\le(-\AbsoluteValue z;\AbsoluteValue q)_\infty$, and $\AbsoluteValue{(z;q)_N}\ge(\AbsoluteValue z;\AbsoluteValue q)_\infty>0$.  Tannery's theorem (dominated convergence for series) then yields the $q$-binomial theorem, and \eqref{eq:euler-reciprocal-series} is its case $a=0$.  This route uses no functional equation and no uniqueness argument; its only analytic input is the fixed-column limit.  It does not by itself give the local uniformity in $(a,z)$ asserted in \Cref{thm:infinite-qbinomial}, which the functional-equation proof supplies.
+\end{remark}
 
 \begin{corollary}[A ratio expansion]\label{cor:ratio-expansion}
 If $\AbsoluteValue{b_jz}<1$ for $1\le j\le s$, then
@@ -3416,6 +3477,19 @@ For the first product rule, insert and subtract $f(qx)g(x)$ in
 For the second, insert and subtract $f(x)g(qx)$.  The scaling rule follows directly from the definition.
 \end{proof}
 
+\begin{remark}[The polynomial $q$-derivative, division-free]\label{rem:qderivative-polynomial}
+On polynomials the $q$-derivative needs neither $q\ne1$ nor $x\ne0$: it is the coefficientwise operator
+\[
+ D_q\Bigl(\sum_n a_nx^n\Bigr)=\sum_n a_n[n]_qx^{n-1},
+ \qquad [n]_q=1+q+\cdots+q^{n-1},
+\]
+which is $R$-linear on $R[x]$ over every commutative semiring $R$ and satisfies the exact identity
+\[
+ (1-q)\,x\,(D_qp)(x)=p(x)-p(qx)
+\]
+over every commutative ring, because $(1-q)[n]_q=1-q^n$.  The product rules and the scaling rule $D_q\bigl(p(cx)\bigr)=c\,(D_qp)(cx)$, for an arbitrary scale $c$, hold in this generality; by bilinearity they reduce to monomials, where they are the addition law $[m+n]_q=[m]_q+q^m[n]_q$ of $q$-integers.  This is the form in which the formalization records \Cref{prop:qderivative-rules}.
+\end{remark}
+
 \begin{theorem}[$q$-Leibniz rule]\label{thm:q-leibniz}
 For $n\in\NaturalNumbers$,
 \[
@@ -3517,8 +3591,16 @@ Induct on $n$ and multiply on the right by $X+Y$.  Since $Y^kX=q^kXY^k$, the coe
 \[
  q^k\GaussianBinomial{n}{k}{q}+\GaussianBinomial{n}{k-1}{q}=\GaussianBinomial{n+1}{k}{q}
 \]
-by the first $q$-Pascal recurrence.
+by the first $q$-Pascal recurrence.  Multiplying on the left instead uses $YX^{m}=q^{m}X^{m}Y$ and produces the coefficient
+\[
+ \GaussianBinomial{n}{k}{q}+q^{\,n+1-k}\GaussianBinomial{n}{k-1}{q}=\GaussianBinomial{n+1}{k}{q},
+\]
+the second $q$-Pascal recurrence; this is the route taken by the formalization.
 \end{proof}
+
+\begin{remark}[Generality]\label{rem:quantum-binomial-generality}
+Only two things are used: that $q$ commutes with $X$ and with $Y$, so that $YX^m=q^mX^mY$ and so that the Gaussian coefficients, being polynomials in $q$ with natural coefficients, commute with $X$ and $Y$; and the $q$-Pascal recurrence.  The theorem therefore holds in every semiring, with no commutativity assumption on the ambient ring and no requirement that $q$ be central beyond commuting with $X$ and $Y$; over a commutative ring it is the finite $q$-binomial theorem of \Cref{thm:finite-qbinomial} in reversed form.
+\end{remark}
 
 \index{quantum affine space}
 \index{$q$-multinomial coefficient!as structure constants}
@@ -4214,6 +4296,13 @@ which is \eqref{eq:jtp-minus}.
 
 \begin{remark}[Two mechanisms for one identity]\label{rem:jtp-two-proofs}
 \Cref{thm:jtp} was proved above from a functional equation together with the Durfee-square evaluation of the constant Laurent coefficient.  \Cref{cor:jtp-from-finite} instead proves the stronger local-uniform convergence statement from the polynomial identity \eqref{eq:finite-jtp}, whose only inputs are \Cref{thm:finite-qbinomial} and \Cref{thm:q-vandermonde}; Jacobi's identity is then a consequence, not a second canonical assertion.  This route separates algebra from analysis completely: \eqref{eq:finite-jtp} holds in $\IntegerNumbers[q][z,z^{-1}]$, and the entire analytic content is the single limit $\GaussianBinomial{2N}{N+k}{q}\to1/(q;q)_\infty$, which is the same finite-to-infinite stabilization recorded coefficientwise in \Cref{prop:partition-stabilization} and columnwise in \Cref{thm:fixed-column-limit}.  That separation is exactly the architecture recommended in \Cref{chap:formalization}.  Note also that \eqref{eq:finite-jtp} is genuinely finer than \eqref{eq:jtp-minus}: its coefficients are the central Gaussian coefficients $\GaussianBinomial{2N}{N+k}{q}$, which by \Cref{thm:qbinom-structure} are palindromic polynomials of degree $(N+k)(N-k)$, whereas in the limit every one of them collapses to the single $k$-independent factor $1/(q;q)_\infty$; what survives of the polynomial is not its constant term but its stabilised coefficient sequence, namely the partition numbers of \Cref{prop:partition-stabilization}.
+
+The formalization follows this second route, and in slightly greater generality.  Multiplied by $z^N$, identity \eqref{eq:finite-jtp} becomes the polynomial identity
+\[
+ (z;q)_N\prod_{j=1}^{N}(z-q^{j})
+ =\sum_{m=0}^{2N}(-1)^{N+m}q^{\binom{m-N}{2}}\GaussianBinomial{2N}{m}{q}z^{m},
+\]
+valid over every commutative ring; the coefficient of $z^m$ is computed by pairing the $i$-th coefficient of $(z;q)_N$ with the $j$-th coefficient of $\prod_j(z-q^j)$, $i+j=m$, and the pairs correspond, under $\ell=N-j$, exactly to the summands of the shifted central convolution \Cref{cor:shifted-central-vandermonde} for $\GaussianBinomial{2N}{m}{q}$, the exponents matching by $\binom i2+\binom{N-j+1}2=\binom{m-N}2+(N-j)i$.  Dividing by $z^N$ recovers \eqref{eq:finite-jtp} in any field.  The passage to the limit is Tannery's theorem over $\IntegerNumbers$ in any complete normed field, with the dominating sequence $C\AbsoluteValue q^{\binom k2}\AbsoluteValue z^{k}$ obtained from the uniform Gaussian bound of \Cref{rem:qbinomial-finite-route}; the termwise limit $\GaussianBinomial{2N}{N+k}{q}\to1/(q;q)_\infty$ is \Cref{thm:central-fixed-q} for a fixed integer shift.  Pointwise convergence for every $z\ne0$ is what this yields; the uniformity on annuli asserted in \Cref{cor:jtp-from-finite} is not part of the formal statement.
 \end{remark}
 
 \section{Euler's pentagonal number theorem}
@@ -12151,8 +12240,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 284 labelled forward results, 42 are \statusexact, 74 are
-\statuspartial, 160 are \statusnone, and 8 are \statusna.  The original
+Of the 284 labelled forward results, 49 are \statusexact, 78 are
+\statuspartial, 149 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -12489,20 +12578,20 @@ inferred from a related finite identity.
 \toprule
 Chapter & \statusexact & \statuspartial & \statusnone & \statusna\\
 \midrule
-The algebra of $q$-shifted factorials & 3 & 1 & 11 & 0\\
+The algebra of $q$-shifted factorials & 6 & 1 & 8 & 0\\
 $q$-integers and Gaussian coefficients & 3 & 2 & 4 & 0\\
 Finite $q$-binomial theorems and inversion & 9 & 1 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 2 & 3 & 0\\
 Partitions, words, paths, and inversion statistics & 1 & 1 & 7 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 0 & 1 & 5 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
-The infinite $q$-binomial theorem & 0 & 0 & 5 & 0\\
+The infinite $q$-binomial theorem & 1 & 1 & 3 & 0\\
 Basic hypergeometric series & 1 & 0 & 8 & 0\\
 Euler telescoping and very-well-poised summations & 0 & 0 & 4 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 0 & 0 & 2 & 0\\
 $q$-difference calculus and the quantum binomial & 0 & 0 & 10 & 0\\
 The $q$-gamma and $q$-beta functions & 0 & 0 & 8 & 0\\
-Jacobi's triple product & 0 & 0 & 8 & 0\\
+Jacobi's triple product & 3 & 1 & 4 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
 Partitions and product--sum identities & 0 & 0 & 4 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 1 & 0 & 6 & 0\\
@@ -12510,7 +12599,7 @@ Bailey transforms and the Andrews--Gordon identities & 0 & 0 & 8 & 1\\
 Cyclotomic factorization and congruences & 1 & 0 & 8 & 0\\
 Negative upper indices and geometric Newton interpolation & 0 & 2 & 7 & 0\\
 Central $q$-binomial sums and Lambert series & 0 & 0 & 7 & 0\\
-Asymptotic regimes and Bernoulli expansions & 0 & 0 & 8 & 0\\
+Asymptotic regimes and Bernoulli expansions & 0 & 2 & 6 & 0\\
 Exact limits, reciprocity, and research frontiers & 0 & 0 & 5 & 0\\
 Computation, certification, and formal proof architecture & 0 & 3 & 8 & 3\\
 Geometric interpolation and exact $q$-filters & 6 & 2 & 1 & 0\\
@@ -12518,7 +12607,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 45 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 42 & 74 & 160 & 8\\
+\textbf{Forward total} & 49 & 78 & 149 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -12541,8 +12630,17 @@ Result & Status & Lean counterpart\\
 \multicolumn{3}{@{}l}{\itshape The algebra of $q$-shifted factorials}\\
 \midrule
 \Cref{prop:concat} & \statusexact & \texttt{finiteQPochhammerIn\_\allowbreak{}add}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
-\Cref{prop:dissection} & \statusnone & ---\\[2pt]
-\Cref{cor:dissection-remainder} & \statusnone & ---\\[2pt]
+\Cref{prop:dissection} & \statusexact &
+\texttt{finiteQPochhammerIn\_\allowbreak{}dissection},
+\texttt{qPochhammerInfIn\_\allowbreak{}dissection}\newline
+{\footnotesize\texttt{QPochhammerDissection}; \texttt{QPochhammerInfinite}; the
+finite identity holds over every commutative ring and all $r,n\ge0$; the
+infinite one in every complete normed commutative ring with $\lVert1\rVert=1$,
+for $\lVert q\rVert<1$ and $r\ge1$}\\[2pt]
+\Cref{cor:dissection-remainder} & \statusexact &
+\texttt{finiteQPochhammerIn\_\allowbreak{}dissection\_\allowbreak{}remainder}\newline
+{\footnotesize\texttt{QPochhammerDissection}; every commutative ring, with the
+remainder allowed to equal $r$}\\[2pt]
 \Cref{prop:base-reversal} & \statusexact &
 \texttt{finiteQPochhammerIn\_\allowbreak{}base\_\allowbreak{}reversal},
 \texttt{finiteQPochhammerIn\_\allowbreak{}inv\_\allowbreak{}base\_\allowbreak{}reversal}\newline
@@ -12557,7 +12655,22 @@ quotient additionally assuming \((q;q)_{N-k}\ne0\); root-safe numerator and
 cleared forms are also exported}\\[2pt]
 \Cref{thm:partial-fraction} & \statusnone & ---\\[2pt]
 \Cref{prop:logder-finite} & \statusnone & ---\\[2pt]
-\Cref{thm:poch-entire} & \statusnone & ---\\[2pt]
+\Cref{thm:poch-entire} & \statusexact &
+\texttt{hasProdLocallyUniformly\_\allowbreak{}qPochhammerInfIn},
+\texttt{differentiable\_\allowbreak{}qPochhammerInfIn},
+\texttt{qPochhammerInfIn\_\allowbreak{}eq\_\allowbreak{}finite\_\allowbreak{}mul\_\allowbreak{}shift},
+\texttt{qPochhammerInfIn\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff},
+\texttt{qPochhammerInfIn\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff\_\allowbreak{}exists\_\allowbreak{}inv\_\allowbreak{}pow},
+\texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}of\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}one},
+\texttt{hasDerivAt\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}inv\_\allowbreak{}pow},
+\texttt{deriv\_\allowbreak{}qPochhammerInfIn\_\allowbreak{}inv\_\allowbreak{}pow\_\allowbreak{}ne\_\allowbreak{}zero}\newline
+{\footnotesize\texttt{QPochhammerInfinite}; convergence, concatenation, and the
+zero criterion in every complete normed commutative ring (multiplicative norm
+for the zeros), locally uniform convergence and continuity over every
+complete locally compact normed field, holomorphy and the derivative formula
+over $\ComplexNumbers$; see \Cref{rem:poch-entire-generality}.  The parallel
+$\ComplexNumbers$-only module \texttt{QPochhammerEntire} proves analytic order
+one at every zero of \texttt{complexQPochhammerInf}}\\[2pt]
 \Cref{prop:complex-concat} & \statusnone & ---\\[2pt]
 \Cref{prop:order-derivative} & \statusnone & ---\\[2pt]
 \Cref{thm:lambert-log} & \statuspartial & \texttt{tsum\_\allowbreak{}log\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}geom}\newline{\footnotesize\texttt{EulerLogTransform}}\\[2pt]
@@ -12692,8 +12805,17 @@ monoid carrying the module structure}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape The infinite $q$-binomial theorem}\\
 \midrule
-\Cref{thm:infinite-qbinomial} & \statusnone & ---\\[2pt]
-\Cref{cor:euler-infinite} & \statusnone & ---\\[2pt]
+\Cref{thm:infinite-qbinomial} & \statuspartial &
+\texttt{hasSum\_\allowbreak{}qBinomial\_\allowbreak{}theorem}\newline
+{\footnotesize\texttt{QBinomialTheoremInfinite}; the pointwise identity for
+every $a$, $\lVert z\rVert<1$, $\lVert q\rVert<1$ in any complete normed
+field, by the finite-to-infinite route of \Cref{rem:qbinomial-finite-route};
+the local uniformity in $(a,z)$ is not formalized}\\[2pt]
+\Cref{cor:euler-infinite} & \statusexact &
+\texttt{hasSum\_\allowbreak{}euler\_\allowbreak{}product},
+\texttt{hasSum\_\allowbreak{}euler\_\allowbreak{}reciprocal}\newline
+{\footnotesize\texttt{QBinomialTheoremInfinite}; every complete normed field;
+the first for every $z$, the second for $\lVert z\rVert<1$}\\[2pt]
 \Cref{cor:ratio-expansion} & \statusnone & ---\\[2pt]
 \Cref{prop:formal-qbinomial} & \statusnone & ---\\[2pt]
 \midrule
@@ -12742,11 +12864,33 @@ monoid carrying the module structure}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Jacobi's triple product}\\
 \midrule
-\Cref{thm:jtp} & \statusnone & ---\\[2pt]
+\Cref{thm:jtp} & \statusexact &
+\texttt{hasSum\_\allowbreak{}jacobi\_\allowbreak{}triple\_\allowbreak{}product},
+\texttt{hasSum\_\allowbreak{}jacobi\_\allowbreak{}triple\_\allowbreak{}product'}\newline
+{\footnotesize\texttt{JacobiTripleProduct}; \eqref{eq:jtp-minus} and
+\eqref{eq:jtp-plus} as \texttt{HasSum} over $\IntegerNumbers$, for every
+$z\ne0$ and $\lVert q\rVert<1$ in any complete normed field, with the exponent
+\texttt{thetaExponent}}\\[2pt]
 \Cref{cor:theta-quasi} & \statusnone & ---\\[2pt]
-\Cref{thm:finite-jtp} & \statusnone & ---\\[2pt]
-\Cref{cor:jtp-from-finite} & \statusnone & ---\\[2pt]
-\Cref{thm:pentagonal} & \statusnone & ---\\[2pt]
+\Cref{thm:finite-jtp} & \statusexact &
+\texttt{finite\_\allowbreak{}triple\_\allowbreak{}product},
+\texttt{finite\_\allowbreak{}triple\_\allowbreak{}product\_\allowbreak{}poly}\newline
+{\footnotesize\texttt{JacobiTripleProduct}; the Laurent form in every field
+for $z\ne0$, and the polynomial form (multiplied by $z^N$) in every
+commutative ring}\\[2pt]
+\Cref{cor:jtp-from-finite} & \statuspartial &
+\texttt{tendsto\_\allowbreak{}gaussianBinomialInt\_\allowbreak{}central},
+\texttt{hasSum\_\allowbreak{}jacobi\_\allowbreak{}triple\_\allowbreak{}product}\newline
+{\footnotesize\texttt{JacobiTripleProduct}; the pointwise limit of the finite
+sums to the bilateral series, and hence \eqref{eq:jtp-minus}, is the formal
+route; uniform convergence on annuli is not stated}\\[2pt]
+\Cref{thm:pentagonal} & \statusexact &
+\texttt{hasSum\_\allowbreak{}pentagonal},
+\texttt{hasSum\_\allowbreak{}pentagonal\_\allowbreak{}pairs}\newline
+{\footnotesize\texttt{JacobiTripleProduct}; the bilateral series
+$\sum_{n\in\IntegerNumbers}(-1)^nq^{n(3n-1)/2}$ with the exponent
+\texttt{pentagonalExponent}, and the paired one-sided form, in any complete
+normed field including $q=0$}\\[2pt]
 \Cref{cor:euler-partition-recurrence} & \statusnone & ---\\[2pt]
 \Cref{thm:jacobi-cubic} & \statusnone & ---\\[2pt]
 \Cref{cor:qgamma-theta} & \statusnone & ---\\[2pt]
@@ -12814,8 +12958,17 @@ classes, including total above-row zero extension}\\[2pt]
 \Cref{lem:basic-bernoulli-log} & \statusnone & ---\\[2pt]
 \Cref{thm:gaussian-bernoulli} & \statusnone & ---\\[2pt]
 \Cref{cor:gaussian-first-asymptotic} & \statusnone & ---\\[2pt]
-\Cref{thm:fixed-column-limit} & \statusnone & ---\\[2pt]
-\Cref{thm:central-fixed-q} & \statusnone & ---\\[2pt]
+\Cref{thm:fixed-column-limit} & \statuspartial &
+\texttt{tendsto\_\allowbreak{}gaussianBinomial\_\allowbreak{}atTop},
+\texttt{tendsto\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}pow\_\allowbreak{}atTop}\newline
+{\footnotesize\texttt{QBinomialTheoremInfinite}; the limit
+\eqref{eq:fixed-column-limit} in any complete normed field; the geometric
+error terms are not stated}\\[2pt]
+\Cref{thm:central-fixed-q} & \statuspartial &
+\texttt{tendsto\_\allowbreak{}gaussianBinomialInt\_\allowbreak{}central}\newline
+{\footnotesize\texttt{JacobiTripleProduct}; only the last clause, the limit
+of $\GaussianBinomial{2m}{m+r}{q}$ for a fixed integer shift $r$, read through
+the zero-extended integer-indexed coefficient}\\[2pt]
 \Cref{prop:gaussian-bound} & \statusnone & ---\\[2pt]
 \Cref{cor:qgreaterone} & \statusnone & ---\\[2pt]
 \Cref{prop:extreme-specializations} & \statusnone & ---\\[2pt]
