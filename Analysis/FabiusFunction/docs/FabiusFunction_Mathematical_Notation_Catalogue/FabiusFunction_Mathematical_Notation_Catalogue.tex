@@ -3384,9 +3384,9 @@ quantiles, transform hats, and any future decorated semantic command.}
 \label{sec:local-non-fourier-hats}
 
 This register inventories every distinct command named by an active
-\texttt{LOCAL-NON-FOURIER-HAT:} declaration.  There are 35 marked declarations
-and 33 distinct command names; the two Bailey-pair commands are each declared in two
-document scopes.  The phrase \emph{prints a wide hat over \(X\)} describes literal output
+\texttt{LOCAL-NON-FOURIER-HAT:} declaration.  There are 31 marked declarations
+and 31 distinct command names; each is declared in exactly one active document scope.
+The phrase \emph{prints a wide hat over \(X\)} describes literal output
 without reintroducing a generic accent command.  TeX arguments, mathematical arguments,
 and scripts appended by a caller are distinguished explicitly.  These commands are
 document-local: their definitions and ambient data do not survive the document or
@@ -5151,13 +5151,13 @@ or a catalogue entry are not substitutes for inspecting the current declaration.
 
 \subsection{Snapshot boundary}
 
-The inventory below is the recursive active tree observed on 2026-08-31 at the
+The inventory below is the recursive active tree observed on 2026-09-01 at the
 source-validation checkpoint.  It excludes every path below \modulepath{docs/archive/} and
-counts this catalogue exactly once.  It contains 160 mathematical content sources: 59
-standalone documents and 101 included or generated fragments.  The separate shared
+counts this catalogue exactly once.  It contains 160 mathematical content sources: 55
+standalone documents and 105 included or generated fragments.  The separate shared
 contract \modulepath{docs/fabius-notation.tex} raises the total before this catalogue to 161
 active TeX files.  Including this standalone catalogue gives 162 active TeX files and
-60 standalone documents.  ``Standalone'' means that the uncommented source
+56 standalone documents.  ``Standalone'' means that the uncommented source
 contains \commandname{documentclass}; every other content source is a fragment inheriting
 its root preamble.
 
@@ -5176,7 +5176,7 @@ Manifest group & Standalone & Fragments & Total\\
 \modulepath{FabiusFunction_Mathematical_Glossary/} & 1 & 0 & 1\\
 \modulepath{papers/} & 7 & 0 & 7\\
 Frontier synthesis root & 1 & 0 & 1\\
-\modulepath{drafts/exponents-and-q-series/} & 11 & 16 & 27\\
+\modulepath{drafts/exponents-and-q-series/} & 7 & 20 & 27\\
 \modulepath{drafts/frontier-compilations/} & 3 & 1 & 4\\
 \modulepath{drafts/integration-and-transforms/} & 1 & 7 & 8\\
 \modulepath{drafts/inverse-and-sampling/} & 8 & 37 & 45\\
@@ -5186,11 +5186,11 @@ Frontier synthesis root & 1 & 0 & 1\\
 \modulepath{drafts/spectra-and-arithmetic/} & 10 & 10 & 20\\
 \modulepath{drafts/thue-morse/} & 1 & 0 & 1\\
 \midrule
-Mathematical content subtotal & 59 & 101 & 160\\
+Mathematical content subtotal & 55 & 105 & 160\\
 Shared notation contract & 0 & 1 & 1\\
 This catalogue & 1 & 0 & 1\\
 \midrule
-Active TeX total including catalogue & 60 & 102 & 162\\
+Active TeX total including catalogue & 56 & 106 & 162\\
 \bottomrule
 \end{longtable}
 \endgroup
@@ -5250,7 +5250,7 @@ At shared-contract version \FabiusNotationVersion:
 \item The retired-alias index is exhaustive with respect to the audit's retired-command
       registry.  Ambiguous aliases map only after semantic classification.
 \item The active corpus has 35 validated \texttt{LOCAL-NON-FOURIER-HAT:}
-      marker/declaration pairs representing 33 distinct document-local command names.
+      marker/declaration pairs representing 31 distinct document-local command names.
       Every distinct name occurs exactly once in the exhaustive accent register, and the
       whole-corpus audit rejects missing, extra, or duplicate registry metadata.
 \item Symbols not promoted to the shared API remain governed by the local declaration
